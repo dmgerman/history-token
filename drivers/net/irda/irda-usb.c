@@ -1,5 +1,5 @@
 multiline_comment|/*****************************************************************************&n; *&n; * Filename:      irda-usb.c&n; * Version:       0.9b&n; * Description:   IrDA-USB Driver&n; * Status:        Experimental &n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *&t;Copyright (C) 2000, Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; *      Copyright (C) 2001, Dag Brattli &lt;dag@brattli.net&gt;&n; *      Copyright (C) 2001, Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *          &n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *&t;&t;&t;    IMPORTANT NOTE&n; *&t;&t;&t;    --------------&n; *&n; * As of kernel 2.4.10, this is the state of compliance and testing of&n; * this driver (irda-usb) with regards to the USB low level drivers...&n; *&n; * This driver has been tested SUCCESSFULLY with the following drivers :&n; *&t;o usb-uhci&t;(For Intel/Via USB controllers)&n; *&t;o usb-ohci&t;(For other USB controllers)&n; *&n; * This driver has NOT been tested with the following drivers :&n; *&t;o usb-ehci&t;(USB 2.0 controllers)&n; *&n; * This driver WON&squot;T WORK with the following drivers :&n; *&t;o uhci&t;&t;(Alternate/JE driver for Intel/Via USB controllers)&n; * Amongst the reasons :&n; *&t;o uhci doesn&squot;t implement USB_ZERO_PACKET&n; *&t;o uhci non-compliant use of urb-&gt;timeout&n; *&n; * Jean II&n; */
+multiline_comment|/*&n; *&t;&t;&t;    IMPORTANT NOTE&n; *&t;&t;&t;    --------------&n; *&n; * As of kernel 2.4.10, this is the state of compliance and testing of&n; * this driver (irda-usb) with regards to the USB low level drivers...&n; *&n; * This driver has been tested SUCCESSFULLY with the following drivers :&n; *&t;o usb-uhci&t;(For Intel/Via USB controllers)&n; *&t;o usb-ohci&t;(For other USB controllers)&n; *&n; * This driver has NOT been tested with the following drivers :&n; *&t;o usb-ehci&t;(USB 2.0 controllers)&n; *&n; * This driver WON&squot;T WORK with the following drivers :&n; *&t;o uhci&t;&t;(Alternate/JE driver for Intel/Via USB controllers)&n; * Amongst the reasons :&n; *&t;o uhci doesn&squot;t implement USB_ZERO_PACKET&n; *&t;o uhci non-compliant use of urb-&gt;timeout&n; * The final fix for USB_ZERO_PACKET in uhci is likely to be in 2.4.19 and&n; * 2.5.8. With this fix, the driver will work properly. More on that later.&n; *&n; * Jean II&n; */
 multiline_comment|/*------------------------------------------------------------------*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -658,7 +658,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Send a command to change the speed of the dongle&n; */
+multiline_comment|/*&n; * Send a command to change the speed of the dongle&n; * Need to be called with spinlock on.&n; */
 DECL|function|irda_usb_change_speed_xbofs
 r_static
 r_void
@@ -671,10 +671,6 @@ op_star
 id|self
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|__u8
 op_star
 id|frame
@@ -723,15 +719,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Allocate the fake frame */
 id|frame
 op_assign
@@ -791,6 +778,7 @@ c_func
 l_int|100
 )paren
 suffix:semicolon
+multiline_comment|/* Irq disabled -&gt; GFP_ATOMIC */
 r_if
 c_cond
 (paren
@@ -802,7 +790,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 )paren
@@ -815,15 +803,6 @@ l_string|&quot;(), failed Speed URB&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Note : this function will be called with both speed_urb and empty_urb...&n; */
@@ -972,7 +951,23 @@ id|res
 comma
 id|mtt
 suffix:semicolon
-multiline_comment|/* Check if the device is still there */
+id|netif_stop_queue
+c_func
+(paren
+id|netdev
+)paren
+suffix:semicolon
+multiline_comment|/* Protect us from USB callbacks, net watchdog and else. */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Check if the device is still there.&n;&t; * We need to check self-&gt;present under the spinlock because&n;&t; * of irda_usb_disconnect() is synchronous - Jean II */
 r_if
 c_cond
 (paren
@@ -996,17 +991,20 @@ id|__FUNCTION__
 l_string|&quot;(), Device is gone...&bslash;n&quot;
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* Failed */
 )brace
-id|netif_stop_queue
-c_func
-(paren
-id|netdev
-)paren
-suffix:semicolon
 multiline_comment|/* Check if we need to change the number of xbofs */
 id|xbofs
 op_assign
@@ -1088,15 +1086,9 @@ id|netdev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 multiline_comment|/* Will netif_wake_queue() in callback */
-r_return
-l_int|0
+r_goto
+id|drop
 suffix:semicolon
 )brace
 )brace
@@ -1115,14 +1107,8 @@ id|__FUNCTION__
 l_string|&quot;(), URB still in use!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|drop
 suffix:semicolon
 )brace
 multiline_comment|/* Make sure there is room for IrDA-USB header. The actual&n;&t; * allocation will be done lower in skb_push().&n;&t; * Also, we don&squot;t use directly skb_cow(), because it require&n;&t; * headroom &gt;= 16, which force unnecessary copies - Jean II */
@@ -1166,26 +1152,11 @@ id|__FUNCTION__
 l_string|&quot;(), failed skb_cow() !!!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|drop
 suffix:semicolon
 )brace
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Change setting for next frame */
 id|irda_usb_build_header
 c_func
@@ -1362,7 +1333,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* Ask USB to send the packet */
+multiline_comment|/* Ask USB to send the packet - Irq disabled -&gt; GFP_ATOMIC */
 r_if
 c_cond
 (paren
@@ -1374,7 +1345,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 )paren
@@ -1419,6 +1390,27 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|drop
+suffix:colon
+multiline_comment|/* Drop silently the skb and exit */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Note : this function will be called only for tx_urb...&n; */
@@ -1434,6 +1426,10 @@ op_star
 id|urb
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -1525,9 +1521,16 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* urb is now available */
-id|urb-&gt;status
-op_assign
-l_int|0
+singleline_comment|//urb-&gt;status = 0; -&gt; tested above
+multiline_comment|/* Make sure we read self-&gt;present properly */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 multiline_comment|/* If the network is closed, stop everything */
 r_if
@@ -1551,6 +1554,15 @@ l_int|0
 comma
 id|__FUNCTION__
 l_string|&quot;(), Network is gone...&bslash;n&quot;
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -1601,6 +1613,15 @@ id|self-&gt;netdev
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Watchdog timer from the network layer.&n; * After a predetermined timeout, if we don&squot;t give confirmation that&n; * the packet has been sent (i.e. no call to netif_wake_queue()),&n; * the network layer will call this function.&n; * Note that URB that we submit have also a timeout. When the URB timeout&n; * expire, the normal URB callback is called (write_bulk_callback()).&n; */
@@ -1616,6 +1637,10 @@ op_star
 id|netdev
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|irda_usb_cb
 op_star
@@ -1643,6 +1668,16 @@ id|__FUNCTION__
 l_string|&quot;(), Network layer thinks we timed out!&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Protect us from USB callbacks, net Tx and else. */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1668,6 +1703,15 @@ id|netif_stop_queue
 c_func
 (paren
 id|netdev
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -1924,6 +1968,15 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Maybe we need a reset */
 multiline_comment|/* Note : Some drivers seem to use a usb_set_interface() when they&n;&t; * need to reset the hardware. Hum...&n;&t; */
 multiline_comment|/* if(done == 0) */
@@ -2103,6 +2156,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Don&squot;t auto resubmit URBs */
+multiline_comment|/* Can be called from irda_usb_receive (irq handler) -&gt; GFP_ATOMIC */
 id|ret
 op_assign
 id|usb_submit_urb
@@ -2110,7 +2164,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -2915,12 +2969,22 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Cancel Tx and speed URB */
+multiline_comment|/* Cancel Tx and speed URB - need to be synchronous to avoid races */
+id|self-&gt;tx_urb-&gt;transfer_flags
+op_and_assign
+op_complement
+id|USB_ASYNC_UNLINK
+suffix:semicolon
 id|usb_unlink_urb
 c_func
 (paren
 id|self-&gt;tx_urb
 )paren
+suffix:semicolon
+id|self-&gt;speed_urb-&gt;transfer_flags
+op_and_assign
+op_complement
+id|USB_ASYNC_UNLINK
 suffix:semicolon
 id|usb_unlink_urb
 c_func
@@ -2972,6 +3036,10 @@ r_int
 id|cmd
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|if_irda_req
 op_star
@@ -3037,19 +3105,6 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/* Check if the device is still there */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|self-&gt;present
-)paren
-(brace
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -3074,6 +3129,23 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+multiline_comment|/* Protect us from USB callbacks, net watchdog and else. */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Check if the device is still there */
+r_if
+c_cond
+(paren
+id|self-&gt;present
+)paren
+(brace
 multiline_comment|/* Set the desired speed */
 id|self-&gt;new_speed
 op_assign
@@ -3085,7 +3157,16 @@ c_func
 id|self
 )paren
 suffix:semicolon
-multiline_comment|/* Note : will spinlock in above function */
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -3106,6 +3187,13 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+multiline_comment|/* Check if the IrDA stack is still there */
+r_if
+c_cond
+(paren
+id|self-&gt;netopen
+)paren
+(brace
 id|irda_device_set_media_busy
 c_func
 (paren
@@ -3114,6 +3202,7 @@ comma
 id|TRUE
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -4285,7 +4374,7 @@ comma
 id|dev-&gt;descriptor.idProduct
 )paren
 suffix:semicolon
-multiline_comment|/* Try to cleanup all instance that have a pending disconnect&n;&t; * Instance will be in this state is the disconnect() occurs&n;&t; * before the net_close().&n;&t; * Jean II */
+multiline_comment|/* Try to cleanup all instance that have a pending disconnect&n;&t; * In theory, it can&squot;t happen any longer.&n;&t; * Jean II */
 r_for
 c_loop
 (paren
@@ -4812,7 +4901,7 @@ id|self
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * The current irda-usb device is removed, the USB layer tell us&n; * to shut it down...&n; */
+multiline_comment|/*&n; * The current irda-usb device is removed, the USB layer tell us&n; * to shut it down...&n; * One of the constraints is that when we exit this function,&n; * we cannot use the usb_device no more. Gone. Destroyed. kfree().&n; * Most other subsystem allow you to destroy the instance at a time&n; * when it&squot;s convenient to you, to postpone it to a later date, but&n; * not the USB subsystem.&n; * So, we must make bloody sure that everything gets deactivated.&n; * Jean II&n; */
 DECL|function|irda_usb_disconnect
 r_static
 r_void
@@ -4829,6 +4918,10 @@ op_star
 id|ptr
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|irda_usb_cb
 op_star
@@ -4853,16 +4946,42 @@ id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Oups ! We are not there any more */
+multiline_comment|/* Make sure that the Tx path is not executing. - Jean II */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Oups ! We are not there any more.&n;&t; * This will stop/desactivate the Tx path. - Jean II */
 id|self-&gt;present
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Hum... Check if networking is still active */
+multiline_comment|/* We need to have irq enabled to unlink the URBs. That&squot;s OK,&n;&t; * at this point the Tx path is gone - Jean II */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Hum... Check if networking is still active (avoid races) */
 r_if
 c_cond
 (paren
+(paren
 id|self-&gt;netopen
+)paren
+op_logical_or
+(paren
+id|self-&gt;irlap
+)paren
 )paren
 (brace
 multiline_comment|/* Accept no more transmissions */
@@ -4897,30 +5016,28 @@ id|i
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* Cancel Tx and speed URB */
+multiline_comment|/* Cancel Tx and speed URB.&n;&t;&t; * Toggle flags to make sure it&squot;s synchronous. */
+id|self-&gt;tx_urb-&gt;transfer_flags
+op_and_assign
+op_complement
+id|USB_ASYNC_UNLINK
+suffix:semicolon
 id|usb_unlink_urb
 c_func
 (paren
 id|self-&gt;tx_urb
 )paren
 suffix:semicolon
+id|self-&gt;speed_urb-&gt;transfer_flags
+op_and_assign
+op_complement
+id|USB_ASYNC_UNLINK
+suffix:semicolon
 id|usb_unlink_urb
 c_func
 (paren
 id|self-&gt;speed_urb
 )paren
-suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|0
-comma
-id|__FUNCTION__
-l_string|&quot;(), postponing disconnect, network is still active...&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* better not do anything just yet, usb_irda_cleanup()&n;&t;&t; * will do whats needed */
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Cleanup the device stuff */
@@ -4959,7 +5076,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* Cancel Tx and speed URB */
+multiline_comment|/* Clean up Tx and speed URB */
 id|usb_free_urb
 c_func
 (paren
@@ -5076,7 +5193,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* Find zombie instances and kill them... */
+multiline_comment|/* Find zombie instances and kill them...&n;&t; * In theory, it can&squot;t happen any longer. Jean II */
 r_for
 c_loop
 (paren

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * WARNING: the debugging will use recursive algorithms so never enable this&n; * unless you know what you are doing.&n; */
 DECL|macro|DEBUG_MM_RB
 macro_line|#undef DEBUG_MM_RB

@@ -396,6 +396,9 @@ id|discovery_t
 op_star
 id|discovery
 comma
+id|DISCOVERY_MODE
+id|mode
+comma
 r_void
 op_star
 id|priv
@@ -442,6 +445,18 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * I didn&squot;t check it, but I bet that IrLAN suffer from the same&n;&t; * deficiency as IrComm and doesn&squot;t handle two instances&n;&t; * simultaneously connecting to each other.&n;&t; * Same workaround, drop passive discoveries.&n;&t; * Jean II */
+r_if
+c_cond
+(paren
+id|mode
+op_eq
+id|DISCOVERY_PASSIVE
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 id|saddr
 op_assign
 id|discovery-&gt;saddr
