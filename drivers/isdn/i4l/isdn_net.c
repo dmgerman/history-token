@@ -1084,7 +1084,7 @@ id|ISDN_INHUP
 id|isdn_net_hangup
 c_func
 (paren
-id|lp
+id|idev
 )paren
 suffix:semicolon
 r_return
@@ -1126,7 +1126,7 @@ suffix:semicolon
 id|isdn_net_hangup
 c_func
 (paren
-id|lp
+id|idev
 )paren
 suffix:semicolon
 r_return
@@ -1162,7 +1162,7 @@ suffix:semicolon
 id|isdn_net_hangup
 c_func
 (paren
-id|lp
+id|idev
 )paren
 suffix:semicolon
 r_return
@@ -1182,7 +1182,7 @@ id|ISDN_INHUP
 id|isdn_net_hangup
 c_func
 (paren
-id|lp
+id|idev
 )paren
 suffix:semicolon
 r_return
@@ -1722,7 +1722,7 @@ suffix:semicolon
 id|isdn_net_hangup
 c_func
 (paren
-id|lp
+id|idev
 )paren
 suffix:semicolon
 r_return
@@ -1759,7 +1759,7 @@ suffix:semicolon
 id|isdn_net_hangup
 c_func
 (paren
-id|lp
+id|idev
 )paren
 suffix:semicolon
 r_return
@@ -2087,7 +2087,7 @@ suffix:semicolon
 id|isdn_net_hangup
 c_func
 (paren
-id|lp
+id|idev
 )paren
 suffix:semicolon
 r_return
@@ -2285,7 +2285,7 @@ suffix:colon
 id|isdn_net_hangup
 c_func
 (paren
-id|lp
+id|idev
 )paren
 suffix:semicolon
 r_return
@@ -2390,7 +2390,7 @@ suffix:colon
 id|isdn_net_hangup
 c_func
 (paren
-id|lp
+id|idev
 )paren
 suffix:semicolon
 r_break
@@ -2510,16 +2510,17 @@ DECL|function|isdn_net_hangup
 id|isdn_net_hangup
 c_func
 (paren
-id|isdn_net_local
-op_star
-id|lp
-)paren
-(brace
 id|isdn_net_dev
 op_star
 id|idev
+)paren
+(brace
+id|isdn_net_local
+op_star
+id|lp
 op_assign
-id|lp-&gt;netdev
+op_amp
+id|idev-&gt;local
 suffix:semicolon
 id|isdn_ctrl
 id|cmd
@@ -2592,7 +2593,7 @@ suffix:semicolon
 id|isdn_net_hangup
 c_func
 (paren
-id|slp
+id|sidev
 )paren
 suffix:semicolon
 )brace
@@ -2698,8 +2699,7 @@ suffix:semicolon
 id|isdn_net_hangup
 c_func
 (paren
-op_amp
-id|p-&gt;local
+id|p
 )paren
 suffix:semicolon
 )brace
@@ -6269,12 +6269,12 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|netdev-&gt;local.ppp_slot
+id|netdev-&gt;ppp_slot
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|netdev-&gt;local.pppbind
+id|netdev-&gt;pppbind
 op_assign
 op_minus
 l_int|1
@@ -7083,7 +7083,7 @@ id|cfg
 (brace
 id|isdn_net_dev
 op_star
-id|p
+id|idev
 op_assign
 id|isdn_net_findif
 c_func
@@ -7096,7 +7096,7 @@ op_star
 id|lp
 op_assign
 op_amp
-id|p-&gt;local
+id|idev-&gt;local
 suffix:semicolon
 id|ulong
 id|features
@@ -7110,7 +7110,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|p
+id|idev
 )paren
 (brace
 id|retval
@@ -7211,7 +7211,7 @@ op_assign
 id|isdn_net_set_encap
 c_func
 (paren
-id|p
+id|idev
 comma
 id|cfg-&gt;p_encap
 )paren
@@ -7229,7 +7229,7 @@ op_assign
 id|isdn_net_bind
 c_func
 (paren
-id|p
+id|idev
 comma
 id|cfg
 )paren
@@ -7301,7 +7301,7 @@ id|cfg-&gt;slavedelay
 op_star
 id|HZ
 suffix:semicolon
-id|lp-&gt;pppbind
+id|idev-&gt;pppbind
 op_assign
 id|cfg-&gt;pppbind
 suffix:semicolon
@@ -7447,7 +7447,7 @@ id|ISDN_NET_DM_OFF
 id|isdn_net_hangup
 c_func
 (paren
-id|lp
+id|lp-&gt;netdev
 )paren
 suffix:semicolon
 r_if
@@ -7742,7 +7742,7 @@ l_int|0
 suffix:semicolon
 id|cfg-&gt;pppbind
 op_assign
-id|lp-&gt;pppbind
+id|idev-&gt;pppbind
 suffix:semicolon
 id|cfg-&gt;dialtimeout
 op_assign
@@ -8568,10 +8568,14 @@ id|isdn_net_hangup
 c_func
 (paren
 (paren
+(paren
 id|isdn_net_local
 op_star
 )paren
 id|q-&gt;priv
+)paren
+op_member_access_from_pointer
+id|netdev
 )paren
 suffix:semicolon
 id|q

@@ -563,6 +563,12 @@ op_star
 id|lp
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -575,7 +581,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 template_param
 id|ISDN_MAX_CHANNELS
 )paren
@@ -588,7 +594,7 @@ l_string|&quot;%s: ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 r_return
@@ -649,7 +655,7 @@ macro_line|#endif /* CONFIG_ISDN_MPP */
 r_if
 c_cond
 (paren
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 template_param
 id|ISDN_MAX_CHANNELS
 )paren
@@ -662,7 +668,7 @@ l_string|&quot;%s: ppp_slot(%d) now invalid&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 id|restore_flags
@@ -678,7 +684,7 @@ id|is
 op_assign
 id|ippp_table
 (braket
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )braket
 suffix:semicolon
 r_if
@@ -693,7 +699,7 @@ id|IPPP_CONNECT
 id|isdn_ppp_closewait
 c_func
 (paren
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 multiline_comment|/* force wakeup on ippp device */
@@ -721,27 +727,21 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;isdn_ppp_free %d %lx %lx&bslash;n&quot;
+l_string|&quot;isdn_ppp_free %d %p %p&bslash;n&quot;
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 comma
-(paren
-r_int
-)paren
 id|lp
 comma
-(paren
-r_int
-)paren
-id|is-&gt;lp
+id|is-&gt;idev
 )paren
 suffix:semicolon
-id|is-&gt;lp
+id|is-&gt;idev
 op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* link is down .. set lp to NULL */
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 op_assign
 op_minus
 l_int|1
@@ -806,12 +806,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;pppbind
+id|idev-&gt;pppbind
 OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* device bounded to ippp device ? */
+multiline_comment|/* device bound to ippp device ? */
 r_struct
 id|list_head
 op_star
@@ -858,23 +858,16 @@ comma
 id|global_list
 )paren
 suffix:semicolon
-id|isdn_net_local
-op_star
-id|lp
-op_assign
-op_amp
-id|p-&gt;local
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;pppbind
+id|p-&gt;pppbind
 op_ge
 l_int|0
 )paren
 id|exclusive
 (braket
-id|lp-&gt;pppbind
+id|p-&gt;pppbind
 )braket
 op_assign
 l_int|1
@@ -953,7 +946,7 @@ id|i
 op_member_access_from_pointer
 id|minor
 op_eq
-id|lp-&gt;pppbind
+id|idev-&gt;pppbind
 op_logical_and
 (paren
 id|ippp_table
@@ -1037,7 +1030,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 op_assign
 id|i
 suffix:semicolon
@@ -1048,9 +1041,9 @@ id|ippp_table
 id|i
 )braket
 suffix:semicolon
-id|is-&gt;lp
+id|is-&gt;idev
 op_assign
-id|lp
+id|idev
 suffix:semicolon
 id|is-&gt;unit
 op_assign
@@ -1087,7 +1080,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_ISDN_MPP */
 id|retval
 op_assign
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 suffix:semicolon
 id|out
 suffix:colon
@@ -1113,14 +1106,20 @@ op_star
 id|lp
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 OL
 l_int|0
 op_logical_or
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 op_ge
 id|ISDN_MAX_CHANNELS
 )paren
@@ -1133,7 +1132,7 @@ l_string|&quot;%s: ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 r_return
@@ -1141,7 +1140,7 @@ suffix:semicolon
 )brace
 id|ippp_table
 (braket
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )braket
 op_member_access_from_pointer
 id|state
@@ -1158,7 +1157,7 @@ c_func
 op_amp
 id|ippp_table
 (braket
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )braket
 op_member_access_from_pointer
 id|wq
@@ -1399,7 +1398,7 @@ c_func
 id|is
 )paren
 suffix:semicolon
-id|is-&gt;lp
+id|is-&gt;idev
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1552,20 +1551,17 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;ippp: release, minor: %d %lx&bslash;n&quot;
+l_string|&quot;ippp: release, minor: %d %p&bslash;n&quot;
 comma
 id|minor
 comma
-(paren
-r_int
-)paren
-id|is-&gt;lp
+id|is-&gt;idev
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|is-&gt;lp
+id|is-&gt;idev
 )paren
 (brace
 multiline_comment|/* a lp address says: this link is still up */
@@ -1578,7 +1574,7 @@ suffix:semicolon
 id|isdn_net_hangup
 c_func
 (paren
-id|is-&gt;lp
+id|is-&gt;idev
 )paren
 suffix:semicolon
 )brace
@@ -1903,6 +1899,10 @@ r_int
 id|arg
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+suffix:semicolon
 r_int
 r_int
 id|val
@@ -1919,14 +1919,6 @@ id|ippp_struct
 op_star
 id|is
 suffix:semicolon
-id|isdn_net_dev
-op_star
-id|idev
-suffix:semicolon
-id|isdn_net_local
-op_star
-id|lp
-suffix:semicolon
 r_struct
 id|isdn_ppp_comp_data
 id|data
@@ -1940,13 +1932,9 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-id|lp
-op_assign
-id|is-&gt;lp
-suffix:semicolon
 id|idev
 op_assign
-id|lp-&gt;netdev
+id|is-&gt;idev
 suffix:semicolon
 r_if
 c_cond
@@ -2114,7 +2102,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lp
+id|idev
 )paren
 (brace
 r_return
@@ -2316,7 +2304,7 @@ id|IPPP_CONNECT
 r_if
 c_cond
 (paren
-id|lp
+id|idev
 )paren
 (brace
 multiline_comment|/* OK .. we are ready to send buffers */
@@ -2324,7 +2312,7 @@ id|netif_wake_queue
 c_func
 (paren
 op_amp
-id|lp-&gt;netdev-&gt;dev
+id|idev-&gt;dev
 )paren
 suffix:semicolon
 )brace
@@ -2342,7 +2330,7 @@ multiline_comment|/* get idle time information */
 r_if
 c_cond
 (paren
-id|lp
+id|idev
 )paren
 (brace
 r_struct
@@ -2353,7 +2341,7 @@ id|pidle.xmit_idle
 op_assign
 id|pidle.recv_idle
 op_assign
-id|lp-&gt;huptimer
+id|idev-&gt;local.huptimer
 suffix:semicolon
 r_if
 c_cond
@@ -2816,7 +2804,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp
+id|idev
 )paren
 (brace
 id|strncpy
@@ -2824,7 +2812,7 @@ c_func
 (paren
 id|pci.local_num
 comma
-id|lp-&gt;msn
+id|idev-&gt;local.msn
 comma
 l_int|63
 )paren
@@ -2839,7 +2827,7 @@ c_func
 id|phone
 comma
 op_amp
-id|lp-&gt;phone
+id|idev-&gt;local.phone
 (braket
 l_int|1
 )braket
@@ -2853,7 +2841,7 @@ c_cond
 id|i
 op_increment
 op_eq
-id|lp-&gt;dial
+id|idev-&gt;local.dial
 )paren
 (brace
 id|strncpy
@@ -2872,12 +2860,12 @@ suffix:semicolon
 )brace
 id|pci.charge_units
 op_assign
-id|lp-&gt;charge
+id|idev-&gt;local.charge
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;outgoing
+id|idev-&gt;local.outgoing
 )paren
 (brace
 id|pci.calltype
@@ -2893,7 +2881,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;flags
+id|idev-&gt;local.flags
 op_amp
 id|ISDN_NET_CALLBACK
 )paren
@@ -3639,10 +3627,6 @@ op_star
 id|off
 )paren
 (brace
-id|isdn_net_local
-op_star
-id|lp
-suffix:semicolon
 id|isdn_net_dev
 op_star
 id|idev
@@ -3705,30 +3689,26 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|lp
-op_assign
-id|is-&gt;lp
-suffix:semicolon
 multiline_comment|/* -&gt; push it directly to the lowlevel interface */
+id|idev
+op_assign
+id|is-&gt;idev
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|lp
+id|idev
 )paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;isdn_ppp_write: lp == NULL&bslash;n&quot;
+l_string|&quot;isdn_ppp_write: idev == NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
 (brace
-id|idev
-op_assign
-id|lp-&gt;netdev
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Don&squot;t reset huptimer for&n;&t;&t; * LCP packets. (Echo requests).&n;&t;&t; */
 r_if
 c_cond
@@ -3768,7 +3748,7 @@ id|proto
 op_ne
 id|PPP_LCP
 )paren
-id|lp-&gt;huptimer
+id|idev-&gt;local.huptimer
 op_assign
 l_int|0
 suffix:semicolon
@@ -3941,16 +3921,17 @@ l_int|32
 comma
 id|is-&gt;unit
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 )brace
 id|isdn_ppp_send_ccp
 c_func
 (paren
-id|lp-&gt;netdev
+id|idev
 comma
-id|lp
+op_amp
+id|idev-&gt;local
 comma
 id|skb
 )paren
@@ -3959,7 +3940,8 @@ multiline_comment|/* keeps CCP/compression states in sync */
 id|isdn_net_write_super
 c_func
 (paren
-id|lp
+op_amp
+id|idev-&gt;local
 comma
 id|skb
 )paren
@@ -4556,6 +4538,12 @@ op_star
 id|skb
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_struct
 id|ippp_struct
 op_star
@@ -4590,7 +4578,7 @@ id|lp
 suffix:semicolon
 id|slot
 op_assign
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 suffix:semicolon
 r_if
 c_cond
@@ -4606,7 +4594,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;isdn_ppp_receive: lp-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
-id|lp-&gt;ppp_slot
+id|slot
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -4637,19 +4625,13 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;ippp_receive: is:%08lx lp:%08lx slot:%d unit:%d len:%d&bslash;n&quot;
+l_string|&quot;ippp_receive: is:%p lp:%p slot:%d unit:%d len:%d&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|is
 comma
-(paren
-r_int
-)paren
 id|lp
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 comma
 id|is-&gt;unit
 comma
@@ -4672,7 +4654,7 @@ l_int|32
 comma
 id|is-&gt;unit
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 )brace
@@ -4830,6 +4812,12 @@ r_int
 id|proto
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_struct
 id|net_device
 op_star
@@ -4851,7 +4839,7 @@ id|slot
 suffix:semicolon
 id|slot
 op_assign
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 suffix:semicolon
 r_if
 c_cond
@@ -4867,7 +4855,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;isdn_ppp_push_higher: lp-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
-id|lp-&gt;ppp_slot
+id|slot
 )paren
 suffix:semicolon
 r_goto
@@ -4900,7 +4888,7 @@ id|lp-&gt;master-&gt;priv
 )paren
 )paren
 op_member_access_from_pointer
-id|ppp_slot
+id|netdev-&gt;ppp_slot
 suffix:semicolon
 r_if
 c_cond
@@ -4916,7 +4904,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;isdn_ppp_push_higher: master-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
-id|lp-&gt;ppp_slot
+id|slot
 )paren
 suffix:semicolon
 r_goto
@@ -4966,7 +4954,7 @@ l_int|32
 comma
 id|is-&gt;unit
 comma
-id|lp-&gt;ppp_slot
+id|slot
 )paren
 suffix:semicolon
 )brace
@@ -5101,7 +5089,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|net_dev-&gt;local.ppp_slot
+id|net_dev-&gt;ppp_slot
 OL
 l_int|0
 )paren
@@ -5110,11 +5098,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: net_dev-&gt;local-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+l_string|&quot;%s: net_dev-&gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|net_dev-&gt;local.ppp_slot
+id|net_dev-&gt;ppp_slot
 )paren
 suffix:semicolon
 r_goto
@@ -5129,7 +5117,7 @@ c_func
 (paren
 id|ippp_table
 (braket
-id|net_dev-&gt;local.ppp_slot
+id|net_dev-&gt;ppp_slot
 )braket
 op_member_access_from_pointer
 id|slcomp
@@ -5248,7 +5236,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|net_dev-&gt;local.ppp_slot
+id|net_dev-&gt;ppp_slot
 OL
 l_int|0
 )paren
@@ -5257,11 +5245,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: net_dev-&gt;local-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+l_string|&quot;%s: net_dev-&gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|net_dev-&gt;local.ppp_slot
+id|net_dev-&gt;ppp_slot
 )paren
 suffix:semicolon
 r_goto
@@ -5275,7 +5263,7 @@ c_func
 (paren
 id|ippp_table
 (braket
-id|net_dev-&gt;local.ppp_slot
+id|net_dev-&gt;ppp_slot
 )braket
 op_member_access_from_pointer
 id|slcomp
@@ -5373,7 +5361,7 @@ id|skb-&gt;len
 comma
 id|proto
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 multiline_comment|/* push data to pppd device */
@@ -5609,7 +5597,7 @@ suffix:semicolon
 multiline_comment|/* get master lp */
 id|slot
 op_assign
-id|mlp-&gt;ppp_slot
+id|nd-&gt;ppp_slot
 suffix:semicolon
 r_if
 c_cond
@@ -5625,7 +5613,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;isdn_ppp_xmit: lp-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
-id|mlp-&gt;ppp_slot
+id|slot
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -5762,7 +5750,7 @@ id|lp-&gt;netdev
 suffix:semicolon
 id|slot
 op_assign
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 suffix:semicolon
 r_if
 c_cond
@@ -5778,7 +5766,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;isdn_ppp_xmit: lp-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
-id|lp-&gt;ppp_slot
+id|slot
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -5851,7 +5839,7 @@ l_int|32
 comma
 id|ipts-&gt;unit
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_PPP_VJ
@@ -6542,7 +6530,7 @@ l_int|32
 comma
 id|ipt-&gt;unit
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 )brace
@@ -6752,6 +6740,12 @@ op_star
 id|add_to
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_struct
 id|ippp_struct
 op_star
@@ -6760,7 +6754,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 OL
 l_int|0
 )paren
@@ -6769,11 +6763,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+l_string|&quot;%s: &gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 r_return
@@ -6785,7 +6779,7 @@ id|is
 op_assign
 id|ippp_table
 (braket
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )braket
 suffix:semicolon
 r_if
@@ -6977,6 +6971,12 @@ op_star
 id|skb
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_struct
 id|ippp_struct
 op_star
@@ -7042,7 +7042,7 @@ id|mp-&gt;stats
 suffix:semicolon
 id|slot
 op_assign
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 suffix:semicolon
 r_if
 c_cond
@@ -7056,11 +7056,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: lp-&gt;ppp_slot(%d)&bslash;n&quot;
+l_string|&quot;%s: ppp_slot(%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|lp-&gt;ppp_slot
+id|slot
 )paren
 suffix:semicolon
 id|stats-&gt;frame_drops
@@ -7115,7 +7115,7 @@ l_int|0x8
 id|isdn_ppp_mp_print_recv_pkt
 c_func
 (paren
-id|lp-&gt;ppp_slot
+id|slot
 comma
 id|skb
 )paren
@@ -7210,7 +7210,7 @@ suffix:semicolon
 (brace
 id|slot
 op_assign
-id|lpq-&gt;ppp_slot
+id|lpq-&gt;netdev-&gt;ppp_slot
 suffix:semicolon
 r_if
 c_cond
@@ -7228,7 +7228,7 @@ l_string|&quot;%s: lpq-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|lpq-&gt;ppp_slot
+id|slot
 )paren
 suffix:semicolon
 )brace
@@ -8129,6 +8129,12 @@ op_star
 id|to
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 id|ippp_bundle
 op_star
 id|mp
@@ -8150,7 +8156,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 template_param
 id|ISDN_MAX_CHANNELS
 )paren
@@ -8159,11 +8165,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+l_string|&quot;%s: ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 r_return
@@ -8190,7 +8196,7 @@ c_cond
 (paren
 id|ippp_table
 (braket
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )braket
 op_member_access_from_pointer
 id|debug
@@ -8278,7 +8284,7 @@ c_cond
 (paren
 id|ippp_table
 (braket
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )braket
 op_member_access_from_pointer
 id|debug
@@ -8560,12 +8566,12 @@ id|isdn_net_dev
 op_star
 id|p
 suffix:semicolon
-id|isdn_net_local
+id|isdn_net_dev
 op_star
-id|lp
+id|idev
 comma
 op_star
-id|nlp
+id|nidev
 suffix:semicolon
 r_int
 id|rc
@@ -8622,30 +8628,34 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|nlp
+id|nidev
 op_assign
-id|is-&gt;lp
+id|is-&gt;idev
 suffix:semicolon
-id|lp
+id|idev
 op_assign
-id|p-&gt;queue
+id|p-&gt;queue-&gt;netdev
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|nlp-&gt;ppp_slot
+id|nidev-&gt;ppp_slot
 OL
 l_int|0
 op_logical_or
-id|nlp-&gt;ppp_slot
+id|nidev-&gt;ppp_slot
 op_ge
 id|ISDN_MAX_CHANNELS
 op_logical_or
-id|lp-&gt;ppp_slot
+id|idev
+op_member_access_from_pointer
+id|ppp_slot
 OL
 l_int|0
 op_logical_or
-id|lp-&gt;ppp_slot
+id|idev
+op_member_access_from_pointer
+id|ppp_slot
 op_ge
 id|ISDN_MAX_CHANNELS
 )paren
@@ -8656,18 +8666,18 @@ c_func
 id|KERN_ERR
 l_string|&quot;ippp_bundle: binding to invalid slot %d&bslash;n&quot;
 comma
-id|nlp-&gt;ppp_slot
+id|nidev-&gt;ppp_slot
 OL
 l_int|0
 op_logical_or
-id|nlp-&gt;ppp_slot
+id|nidev-&gt;ppp_slot
 op_ge
 id|ISDN_MAX_CHANNELS
 ques
 c_cond
-id|nlp-&gt;ppp_slot
+id|nidev-&gt;ppp_slot
 suffix:colon
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 id|rc
@@ -8684,19 +8694,20 @@ c_func
 (paren
 id|p
 comma
-id|nlp
+op_amp
+id|nidev-&gt;local
 )paren
 suffix:semicolon
 id|ippp_table
 (braket
-id|nlp-&gt;ppp_slot
+id|nidev-&gt;ppp_slot
 )braket
 op_member_access_from_pointer
 id|unit
 op_assign
 id|ippp_table
 (braket
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )braket
 op_member_access_from_pointer
 id|unit
@@ -8704,14 +8715,14 @@ suffix:semicolon
 multiline_comment|/* maybe also SC_CCP stuff */
 id|ippp_table
 (braket
-id|nlp-&gt;ppp_slot
+id|nidev-&gt;ppp_slot
 )braket
 op_member_access_from_pointer
 id|pppcfg
 op_or_assign
 id|ippp_table
 (braket
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )braket
 op_member_access_from_pointer
 id|pppcfg
@@ -8726,14 +8737,14 @@ id|SC_REJ_COMP_TCP
 suffix:semicolon
 id|ippp_table
 (braket
-id|nlp-&gt;ppp_slot
+id|nidev-&gt;ppp_slot
 )braket
 op_member_access_from_pointer
 id|mpppcfg
 op_or_assign
 id|ippp_table
 (braket
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )braket
 op_member_access_from_pointer
 id|mpppcfg
@@ -8753,7 +8764,8 @@ op_assign
 id|isdn_ppp_mp_init
 c_func
 (paren
-id|nlp
+op_amp
+id|nidev-&gt;local
 comma
 id|p-&gt;pb
 )paren
@@ -9098,7 +9110,7 @@ op_assign
 id|isdn_ppp_dev_ioctl_stats
 c_func
 (paren
-id|lp-&gt;ppp_slot
+id|lp-&gt;netdev-&gt;ppp_slot
 comma
 id|ifr
 comma
@@ -9555,7 +9567,7 @@ l_int|0
 comma
 id|PPP_COMP
 comma
-id|is-&gt;lp-&gt;ppp_slot
+id|is-&gt;idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 )brace
@@ -9610,17 +9622,11 @@ id|cnt
 op_assign
 l_int|0
 suffix:semicolon
-id|isdn_net_local
-op_star
-id|lp
-op_assign
-id|is-&gt;lp
-suffix:semicolon
 id|isdn_net_dev
 op_star
 id|idev
 op_assign
-id|lp-&gt;netdev
+id|is-&gt;idev
 suffix:semicolon
 multiline_comment|/* Alloc large enough skb */
 id|hl
@@ -9823,13 +9829,14 @@ l_int|32
 comma
 id|is-&gt;unit
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 id|isdn_net_write_super
 c_func
 (paren
-id|lp
+op_amp
+id|idev-&gt;local
 comma
 id|skb
 )paren
@@ -11444,6 +11451,12 @@ r_int
 id|proto
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_struct
 id|ippp_struct
 op_star
@@ -11474,13 +11487,13 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;Received CCP frame from peer slot(%d)&bslash;n&quot;
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 template_param
 id|ISDN_MAX_CHANNELS
 )paren
@@ -11489,11 +11502,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+l_string|&quot;%s: ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 r_return
@@ -11503,7 +11516,7 @@ id|is
 op_assign
 id|ippp_table
 (braket
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )braket
 suffix:semicolon
 id|isdn_ppp_frame_log
@@ -11519,7 +11532,7 @@ l_int|32
 comma
 id|is-&gt;unit
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 r_if
@@ -11541,7 +11554,7 @@ id|lp-&gt;master-&gt;priv
 )paren
 )paren
 op_member_access_from_pointer
-id|ppp_slot
+id|netdev-&gt;ppp_slot
 suffix:semicolon
 r_if
 c_cond
@@ -12175,6 +12188,12 @@ op_star
 id|skb
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_struct
 id|ippp_struct
 op_star
@@ -12188,7 +12207,7 @@ id|proto
 comma
 id|slot
 op_assign
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 suffix:semicolon
 r_int
 r_char
@@ -12338,7 +12357,7 @@ l_int|32
 comma
 id|is-&gt;unit
 comma
-id|lp-&gt;ppp_slot
+id|idev-&gt;ppp_slot
 )paren
 suffix:semicolon
 r_if
@@ -12359,7 +12378,7 @@ id|lp-&gt;master-&gt;priv
 )paren
 )paren
 op_member_access_from_pointer
-id|ppp_slot
+id|netdev-&gt;ppp_slot
 suffix:semicolon
 r_if
 c_cond

@@ -164,7 +164,7 @@ r_void
 id|isdn_net_hangup
 c_func
 (paren
-id|isdn_net_local
+id|isdn_net_dev
 op_star
 )paren
 suffix:semicolon

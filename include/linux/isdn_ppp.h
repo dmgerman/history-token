@@ -692,11 +692,11 @@ r_int
 r_int
 id|maxcid
 suffix:semicolon
-DECL|member|lp
+DECL|member|idev
 r_struct
-id|isdn_net_local_s
+id|isdn_net_dev_s
 op_star
-id|lp
+id|idev
 suffix:semicolon
 DECL|member|unit
 r_int

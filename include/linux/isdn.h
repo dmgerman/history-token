@@ -731,11 +731,6 @@ id|net_device_stats
 id|stats
 suffix:semicolon
 multiline_comment|/* Ethernet Statistics              */
-DECL|member|ppp_slot
-r_int
-id|ppp_slot
-suffix:semicolon
-multiline_comment|/* PPPD device slot number          */
 DECL|member|flags
 r_int
 id|flags
@@ -952,11 +947,6 @@ suffix:semicolon
 multiline_comment|/* used to protect the xmit path of */
 multiline_comment|/* a particular channel (including  */
 multiline_comment|/* the frame_cnt                    */
-DECL|member|pppbind
-r_int
-id|pppbind
-suffix:semicolon
-multiline_comment|/* ippp device for bindings         */
 DECL|member|dialtimeout
 r_int
 id|dialtimeout
@@ -1099,6 +1089,16 @@ id|timer_list
 id|hup_timer
 suffix:semicolon
 multiline_comment|/* auto hangup timer                */
+DECL|member|pppbind
+r_int
+id|pppbind
+suffix:semicolon
+multiline_comment|/* ippp device for bindings         */
+DECL|member|ppp_slot
+r_int
+id|ppp_slot
+suffix:semicolon
+multiline_comment|/* PPPD device slot number          */
 DECL|member|queue
 id|isdn_net_local
 op_star
