@@ -3,6 +3,14 @@ DECL|macro|__LINUX_VIDEODEV_H
 mdefine_line|#define __LINUX_VIDEODEV_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#if 0
+multiline_comment|/*&n; * v4l2 is still work-in-progress, integration planed for 2.5.x&n; *   v4l2 project homepage:   http://www.thedirks.org/v4l2/&n; *   patches available from:  http://bytesex.org/patches/&n; */
+macro_line|# define HAVE_V4L2 1
+macro_line|# include &lt;linux/videodev2.h&gt;
+macro_line|#else
+DECL|macro|HAVE_V4L2
+macro_line|# undef HAVE_V4L2
+macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
@@ -28,155 +36,51 @@ DECL|member|type
 r_int
 id|type
 suffix:semicolon
+multiline_comment|/* v4l1 */
+DECL|member|type2
+r_int
+id|type2
+suffix:semicolon
+multiline_comment|/* v4l2 */
 DECL|member|hardware
 r_int
 id|hardware
 suffix:semicolon
-DECL|member|open
+DECL|member|minor
 r_int
-(paren
-op_star
-id|open
-)paren
-(paren
-r_struct
-id|video_device
-op_star
-comma
-r_int
-id|mode
-)paren
+id|minor
 suffix:semicolon
-DECL|member|close
-r_void
-(paren
-op_star
-id|close
-)paren
-(paren
+multiline_comment|/* new interface -- we will use file_operations directly&n; &t; * like soundcore does.&n; &t; * kernel_ioctl() will be called by video_generic_ioctl.&n; &t; * video_generic_ioctl() does the userspace copying of the&n; &t; * ioctl arguments */
+DECL|member|fops
 r_struct
-id|video_device
+id|file_operations
 op_star
-)paren
+id|fops
 suffix:semicolon
-DECL|member|read
+DECL|member|kernel_ioctl
 r_int
 (paren
 op_star
-id|read
+id|kernel_ioctl
 )paren
 (paren
 r_struct
-id|video_device
+id|inode
 op_star
-comma
-r_char
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-id|noblock
-)paren
-suffix:semicolon
-multiline_comment|/* Do we need a write method ? */
-DECL|member|write
-r_int
-(paren
-op_star
-id|write
-)paren
-(paren
-r_struct
-id|video_device
-op_star
-comma
-r_const
-r_char
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-id|noblock
-)paren
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020100
-DECL|member|poll
-r_int
-r_int
-(paren
-op_star
-id|poll
-)paren
-(paren
-r_struct
-id|video_device
-op_star
+id|inode
 comma
 r_struct
 id|file
 op_star
-comma
-id|poll_table
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|member|ioctl
-r_int
-(paren
-op_star
-id|ioctl
-)paren
-(paren
-r_struct
-id|video_device
-op_star
+id|file
 comma
 r_int
 r_int
+id|cmd
 comma
 r_void
 op_star
-)paren
-suffix:semicolon
-DECL|member|mmap
-r_int
-(paren
-op_star
-id|mmap
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_struct
-id|video_device
-op_star
-comma
-r_const
-r_char
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|member|initialize
-r_int
-(paren
-op_star
-id|initialize
-)paren
-(paren
-r_struct
-id|video_device
-op_star
+id|arg
 )paren
 suffix:semicolon
 DECL|member|priv
@@ -185,13 +89,15 @@ op_star
 id|priv
 suffix:semicolon
 multiline_comment|/* Used to be &squot;private&squot; but that upsets C++ */
-DECL|member|busy
+multiline_comment|/* for videodev.c intenal usage -- don&squot;t touch */
+DECL|member|users
 r_int
-id|busy
+id|users
 suffix:semicolon
-DECL|member|minor
-r_int
-id|minor
+DECL|member|lock
+r_struct
+id|semaphore
+id|lock
 suffix:semicolon
 DECL|member|devfs_handle
 id|devfs_handle_t
@@ -235,7 +141,75 @@ id|video_device
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif
+r_extern
+r_struct
+id|video_device
+op_star
+id|video_devdata
+c_func
+(paren
+r_struct
+id|file
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|video_exclusive_open
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|video_exclusive_release
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|video_generic_ioctl
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 DECL|macro|VID_TYPE_CAPTURE
 mdefine_line|#define VID_TYPE_CAPTURE&t;1&t;/* Can capture */
 DECL|macro|VID_TYPE_TUNER
@@ -525,6 +499,8 @@ DECL|macro|VIDEO_AUDIO_BASS
 mdefine_line|#define VIDEO_AUDIO_BASS&t;8
 DECL|macro|VIDEO_AUDIO_TREBLE
 mdefine_line|#define VIDEO_AUDIO_TREBLE&t;16&t;
+DECL|macro|VIDEO_AUDIO_BALANCE
+mdefine_line|#define VIDEO_AUDIO_BALANCE&t;32
 DECL|member|name
 r_char
 id|name
@@ -1110,5 +1086,6 @@ DECL|macro|VID_HARDWARE_MEYE
 mdefine_line|#define VID_HARDWARE_MEYE&t;32&t;/* Sony Vaio MotionEye cameras */
 DECL|macro|VID_HARDWARE_CPIA2
 mdefine_line|#define VID_HARDWARE_CPIA2&t;33
-macro_line|#endif
+macro_line|#endif /* __LINUX_VIDEODEV_H */
+multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof
