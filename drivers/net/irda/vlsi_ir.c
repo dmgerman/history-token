@@ -7700,7 +7700,7 @@ suffix:semicolon
 multiline_comment|/********************************************************/
 DECL|function|vlsi_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|vlsi_interrupt
 c_func
 (paren
@@ -7747,6 +7747,11 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|got_act
 op_assign
@@ -7814,6 +7819,10 @@ id|IRINTR_INT_MASK
 )paren
 multiline_comment|/* not our INT - probably shared */
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -7917,6 +7926,13 @@ id|KERN_WARNING
 l_string|&quot;%s: too much work in interrupt!&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

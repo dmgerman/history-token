@@ -458,24 +458,6 @@ id|baud
 )paren
 suffix:semicolon
 r_static
-r_void
-id|nsc_ircc_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
 r_int
 id|nsc_ircc_is_receiving
 c_func
@@ -6858,7 +6840,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Function nsc_ircc_interrupt (irq, dev_id, regs)&n; *&n; *    An interrupt from the chip has arrived. Time to do some work&n; *&n; */
 DECL|function|nsc_ircc_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|nsc_ircc_interrupt
 c_func
 (paren
@@ -6918,6 +6900,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|self
@@ -7055,6 +7038,9 @@ c_func
 op_amp
 id|self-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function nsc_ircc_is_receiving (self)&n; *&n; *    Return TRUE is we are currently receiving a frame&n; *&n; */
