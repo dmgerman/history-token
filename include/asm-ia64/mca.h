@@ -143,8 +143,6 @@ DECL|typedef|ia64_mc_info_t
 )brace
 id|ia64_mc_info_t
 suffix:semicolon
-DECL|macro|PERCPU_MCA_SIZE
-mdefine_line|#define PERCPU_MCA_SIZE sizeof(struct ia64_mc_info_s)
 DECL|struct|ia64_mca_sal_to_os_state_s
 r_typedef
 r_struct
@@ -363,6 +361,8 @@ id|u64
 id|ia64_init_stack
 (braket
 id|KERNEL_STACK_SIZE
+op_div
+l_int|8
 )braket
 id|__attribute__
 c_func
@@ -380,6 +380,8 @@ DECL|typedef|ia64_mca_cpu_t
 )brace
 id|ia64_mca_cpu_t
 suffix:semicolon
+DECL|macro|PERCPU_MCA_SIZE
+mdefine_line|#define PERCPU_MCA_SIZE sizeof(ia64_mca_cpu_t)
 r_extern
 r_void
 id|ia64_mca_init
