@@ -17,7 +17,7 @@ suffix:semicolon
 DECL|macro|to_dev
 mdefine_line|#define to_dev(node) container_of(node,struct device,bus_list)
 DECL|macro|to_drv
-mdefine_line|#define to_drv(node) container_of(node,struct device_driver,bus_list)
+mdefine_line|#define to_drv(node) container_of(node,struct device_driver,kobj.entry)
 DECL|macro|to_bus_attr
 mdefine_line|#define to_bus_attr(_attr) container_of(_attr,struct bus_attribute,attr)
 DECL|macro|to_bus
@@ -757,16 +757,16 @@ id|start
 ques
 c_cond
 op_amp
-id|start-&gt;bus_list
+id|start-&gt;kobj.entry
 suffix:colon
 op_amp
-id|bus-&gt;drivers
+id|bus-&gt;drvsubsys.list
 suffix:semicolon
 id|down_read
 c_func
 (paren
 op_amp
-id|bus-&gt;subsys.rwsem
+id|bus-&gt;drvsubsys.rwsem
 )paren
 suffix:semicolon
 id|list_for_each
@@ -822,7 +822,7 @@ id|up_read
 c_func
 (paren
 op_amp
-id|bus-&gt;subsys.rwsem
+id|bus-&gt;drvsubsys.rwsem
 )paren
 suffix:semicolon
 r_return
@@ -1030,7 +1030,7 @@ c_func
 id|entry
 comma
 op_amp
-id|bus-&gt;drivers
+id|bus-&gt;drvsubsys.list
 )paren
 (brace
 r_struct
@@ -1038,15 +1038,10 @@ id|device_driver
 op_star
 id|drv
 op_assign
-id|container_of
+id|to_drv
 c_func
 (paren
 id|entry
-comma
-r_struct
-id|device_driver
-comma
-id|bus_list
 )paren
 suffix:semicolon
 r_if
@@ -1546,16 +1541,6 @@ c_func
 id|drv
 )paren
 suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|drv-&gt;bus_list
-comma
-op_amp
-id|bus-&gt;drivers
-)paren
-suffix:semicolon
 id|driver_attach
 c_func
 (paren
@@ -1613,13 +1598,6 @@ id|driver_detach
 c_func
 (paren
 id|drv
-)paren
-suffix:semicolon
-id|list_del_init
-c_func
-(paren
-op_amp
-id|drv-&gt;bus_list
 )paren
 suffix:semicolon
 id|devclass_remove_driver
@@ -1722,13 +1700,6 @@ c_func
 (paren
 op_amp
 id|bus-&gt;devices
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|bus-&gt;drivers
 )paren
 suffix:semicolon
 id|down
