@@ -48,13 +48,6 @@ id|dummy
 suffix:semicolon
 DECL|macro|TR_SR_DEBUG
 mdefine_line|#define TR_SR_DEBUG 0
-DECL|typedef|rif_cache
-r_typedef
-r_struct
-id|rif_cache_s
-op_star
-id|rif_cache
-suffix:semicolon
 multiline_comment|/*&n; *&t;Each RIF entry we learn is kept this way&n; */
 DECL|struct|rif_cache_s
 r_struct
@@ -84,7 +77,9 @@ l_int|8
 )braket
 suffix:semicolon
 DECL|member|next
-id|rif_cache
+r_struct
+id|rif_cache_s
+op_star
 id|next
 suffix:semicolon
 DECL|member|last_used
@@ -104,7 +99,9 @@ mdefine_line|#define RIF_TABLE_SIZE 32
 multiline_comment|/*&n; *&t;We hash the RIF cache 32 ways. We do after all have to look it&n; *&t;up a lot.&n; */
 DECL|variable|rif_table
 r_static
-id|rif_cache
+r_struct
+id|rif_cache_s
+op_star
 id|rif_table
 (braket
 id|RIF_TABLE_SIZE
@@ -823,7 +820,9 @@ r_int
 r_int
 id|hash
 suffix:semicolon
-id|rif_cache
+r_struct
+id|rif_cache_s
+op_star
 id|entry
 suffix:semicolon
 r_int
@@ -1320,7 +1319,9 @@ id|rii_p
 op_assign
 l_int|0
 suffix:semicolon
-id|rif_cache
+r_struct
+id|rif_cache_s
+op_star
 id|entry
 suffix:semicolon
 id|spin_lock_bh
@@ -1845,9 +1846,12 @@ id|i
 op_increment
 )paren
 (brace
-id|rif_cache
+r_struct
+id|rif_cache_s
+op_star
 id|entry
 comma
+op_star
 op_star
 id|pentry
 op_assign
@@ -2151,7 +2155,9 @@ id|segment
 comma
 id|brdgnmb
 suffix:semicolon
-id|rif_cache
+r_struct
+id|rif_cache_s
+op_star
 id|entry
 op_assign
 id|v
