@@ -1091,17 +1091,6 @@ comma
 id|agp_bridge-&gt;gatt_bus_addr
 )paren
 suffix:semicolon
-multiline_comment|/* Flush the tlb */
-id|OUTREG32
-c_func
-(paren
-id|ati_generic_private.registers
-comma
-id|ATI_GART_CACHE_CNTRL
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
