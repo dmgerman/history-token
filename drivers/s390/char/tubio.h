@@ -847,26 +847,6 @@ r_struct
 id|tty_driver
 id|tty3270_driver
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-r_extern
-r_void
-id|fs3270_devfs_register
-c_func
-(paren
-id|tub_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|fs3270_devfs_unregister
-c_func
-(paren
-id|tub_t
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifndef spin_trylock_irqsave
 DECL|macro|spin_trylock_irqsave
 mdefine_line|#define spin_trylock_irqsave(lock, flags) &bslash;&n;({ &bslash;&n;&t;int success; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;success = spin_trylock(lock); &bslash;&n;&t;if (success == 0) &bslash;&n;&t;&t;local_irq_restore(flags); &bslash;&n;&t;success; &bslash;&n;})

@@ -1462,12 +1462,6 @@ op_star
 id|port
 )paren
 (brace
-r_char
-id|name
-(braket
-l_int|32
-)braket
-suffix:semicolon
 multiline_comment|/* Register our module into parport */
 id|table
 (braket
@@ -1518,45 +1512,18 @@ r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* Use devfs, tree: /dev/ticables/par/[0..2] */
-id|sprintf
+id|devfs_mk_cdev
 c_func
 (paren
-id|name
-comma
-l_string|&quot;ticables/par/%d&quot;
-comma
-id|nr
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;tipar: registering to devfs : major = %d, minor = %d, node = %s&bslash;n&quot;
-comma
-id|TISER_MAJOR
-comma
-(paren
-id|TIPAR_MINOR
-op_plus
-id|nr
-)paren
-comma
-id|name
-)paren
-suffix:semicolon
-id|devfs_register
+id|MKDEV
 c_func
 (paren
-l_int|NULL
-comma
-id|name
-comma
-id|DEVFS_FL_DEFAULT
-comma
 id|TIPAR_MAJOR
 comma
 id|TIPAR_MINOR
 op_plus
 id|nr
+)paren
 comma
 id|S_IFCHR
 op_or
@@ -1564,10 +1531,9 @@ id|S_IRUGO
 op_or
 id|S_IWUGO
 comma
-op_amp
-id|tipar_fops
+l_string|&quot;ticables/par/%d&quot;
 comma
-l_int|NULL
+id|nr
 )paren
 suffix:semicolon
 multiline_comment|/* Display informations */
