@@ -144,9 +144,13 @@ r_struct
 id|sctp_association
 op_star
 id|asoc
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|error
+op_assign
+l_int|0
 comma
 id|notify
 suffix:semicolon
