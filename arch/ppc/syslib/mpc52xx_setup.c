@@ -122,14 +122,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Turn on the watchdog and wait for it to expire. It effectively&n;&t;  does a reset */
-r_if
-c_cond
-(paren
-id|gpt0
-op_ne
-l_int|NULL
-)paren
-(brace
 id|out_be32
 c_func
 (paren
@@ -146,15 +138,6 @@ op_amp
 id|gpt0-&gt;mode
 comma
 l_int|0x00009004
-)paren
-suffix:semicolon
-)brace
-r_else
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;mpc52xx_restart: Unable to ioremap GPT0 registers, -&gt; looping ...&quot;
 )paren
 suffix:semicolon
 r_while
