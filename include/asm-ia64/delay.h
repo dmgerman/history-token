@@ -203,10 +203,9 @@ c_loop
 id|loops
 op_decrement
 )paren
-id|ia64_nop
+id|barrier
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 )brace
