@@ -151,6 +151,21 @@ r_int
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Prefetching support - only ARMv5.&n; */
+macro_line|#if __LINUX_ARM_ARCH__ &gt;= 5
+DECL|macro|ARCH_HAS_PREFETCH
+mdefine_line|#define ARCH_HAS_PREFETCH
+DECL|macro|prefetch
+mdefine_line|#define prefetch(ptr)&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&bslash;&n;&t;&t;&quot;pld&bslash;t%0&quot;&t;&t;&t;&bslash;&n;&t;&t;:&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;o&quot; (*(char *)(ptr))&t;&t;&bslash;&n;&t;&t;: &quot;cc&quot;);&t;&t;&t;&bslash;&n;&t;})
+DECL|macro|ARCH_HAS_PREFETCHW
+mdefine_line|#define ARCH_HAS_PREFETCHW
+DECL|macro|prefetchw
+mdefine_line|#define prefetchw(ptr)&t;prefetch(ptr)
+DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
+mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
+DECL|macro|spin_lock_prefetch
+mdefine_line|#define spin_lock_prefetch(x) do { } while (0)
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif /* __ASM_ARM_PROCESSOR_H */
 eof
