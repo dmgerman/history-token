@@ -724,6 +724,15 @@ id|cifs_inode-&gt;clientCanCacheAll
 op_assign
 id|FALSE
 suffix:semicolon
+id|cifs_inode-&gt;vfs_inode.i_blksize
+op_assign
+id|CIFS_MAX_MSGSIZE
+suffix:semicolon
+id|cifs_inode-&gt;vfs_inode.i_blkbits
+op_assign
+l_int|14
+suffix:semicolon
+multiline_comment|/* 2**14 = CIFS_MAX_MSGSIZE */
 id|INIT_LIST_HEAD
 c_func
 (paren

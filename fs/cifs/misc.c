@@ -90,6 +90,7 @@ op_amp
 id|GlobalMid_Lock
 )paren
 suffix:semicolon
+multiline_comment|/* if(GlobalTotalActiveXid == 0)&n;&t;&t;BUG(); */
 id|GlobalTotalActiveXid
 op_decrement
 suffix:semicolon

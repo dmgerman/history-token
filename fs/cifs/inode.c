@@ -1254,24 +1254,6 @@ id|pfindData-&gt;AllocationSize
 op_rshift
 id|inode-&gt;i_blkbits
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; Size %ld and blocks %ld &quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|inode-&gt;i_size
-comma
-id|inode-&gt;i_blocks
-)paren
-)paren
-suffix:semicolon
 id|inode-&gt;i_nlink
 op_assign
 id|le32_to_cpu
@@ -2548,6 +2530,8 @@ id|cifsInode-&gt;time
 op_plus
 id|HZ
 )paren
+op_logical_and
+id|lookupCacheEnabled
 )paren
 (brace
 r_if
@@ -2567,12 +2551,6 @@ op_logical_or
 id|direntry-&gt;d_inode-&gt;i_nlink
 op_eq
 l_int|1
-)paren
-op_logical_or
-(paren
-id|lookupCacheEnabled
-op_eq
-l_int|0
 )paren
 )paren
 (brace
