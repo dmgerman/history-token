@@ -7,6 +7,14 @@ macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#ifndef CONFIG_SA1111
 macro_line|#error &quot;This file is SA-1111 bus glue.  CONFIG_SA1111 must be defined.&quot;
 macro_line|#endif
+r_extern
+r_int
+id|usb_disabled
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|function|sa1111_start_hc
 r_static
@@ -1127,6 +1135,18 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_disabled
+c_func
+(paren
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|ret
 op_assign

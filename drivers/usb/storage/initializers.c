@@ -37,13 +37,7 @@ c_func
 (paren
 id|us-&gt;pusb_dev
 comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-l_int|0
-)paren
+id|us-&gt;send_ctrl_pipe
 comma
 l_int|0x0C
 comma

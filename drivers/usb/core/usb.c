@@ -52,6 +52,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|variable|nousb
+r_int
+id|nousb
+suffix:semicolon
+multiline_comment|/* Disable USB when built into kernel image */
+multiline_comment|/* Not honored on modular build */
 DECL|function|generic_probe
 r_static
 r_int
@@ -464,6 +470,15 @@ r_int
 id|retval
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nousb
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|new_driver-&gt;driver.name
 op_assign
@@ -3835,6 +3850,50 @@ id|usb_hotplug
 comma
 )brace
 suffix:semicolon
+macro_line|#ifndef MODULE
+DECL|function|usb_setup_disable
+r_static
+r_int
+id|__init
+id|usb_setup_disable
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|nousb
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* format to disable USB on kernel command line is: nousb */
+id|__setup
+c_func
+(paren
+l_string|&quot;nousb&quot;
+comma
+id|usb_setup_disable
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n; * for external read access to &lt;nousb&gt;&n; */
+DECL|function|usb_disabled
+r_int
+id|usb_disabled
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|nousb
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Init&n; */
 DECL|function|usb_init
 r_static
@@ -3846,6 +3905,22 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|nousb
+)paren
+(brace
+id|info
+c_func
+(paren
+l_string|&quot;USB support disabled&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|bus_register
 c_func
 (paren
@@ -3890,6 +3965,14 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* This will matter if shutdown/reboot does exitcalls. */
+r_if
+c_cond
+(paren
+id|nousb
+)paren
+r_return
+suffix:semicolon
 id|remove_driver
 c_func
 (paren
@@ -3954,6 +4037,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_deregister
+)paren
+suffix:semicolon
+DECL|variable|usb_disabled
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_disabled
 )paren
 suffix:semicolon
 DECL|variable|usb_device_probe
