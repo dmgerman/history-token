@@ -9,7 +9,7 @@ DECL|variable|pm_active
 r_int
 id|pm_active
 suffix:semicolon
-multiline_comment|/*&n; *&t;Locking notes:&n; *&t;&t;pm_devs_lock can be a semaphore providing pm ops are not called&n; *&t;from an interrupt handler (already a bad idea so no change here). Each&n; *&t;change must be protected so that an unlink of an entry doesnt clash&n; *&t;with a pm send - which is permitted to sleep in the current architecture&n; *&n; *&t;Module unloads clashing with pm events now work out safely, the module &n; *&t;unload path will block until the event has been sent. It may well block&n; *&t;until a resume but that will be fine.&n; */
+multiline_comment|/*&n; *&t;Locking notes:&n; *&t;&t;pm_devs_lock can be a semaphore providing pm ops are not called&n; *&t;from an interrupt handler (already a bad idea so no change here). Each&n; *&t;change must be protected so that an unlink of an entry doesn&squot;t clash&n; *&t;with a pm send - which is permitted to sleep in the current architecture&n; *&n; *&t;Module unloads clashing with pm events now work out safely, the module &n; *&t;unload path will block until the event has been sent. It may well block&n; *&t;until a resume but that will be fine.&n; */
 r_static
 id|DECLARE_MUTEX
 c_func
