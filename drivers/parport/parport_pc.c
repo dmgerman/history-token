@@ -1121,7 +1121,6 @@ op_star
 )paren
 id|buf
 )paren
-op_increment
 op_assign
 id|inb
 (paren
@@ -1130,6 +1129,9 @@ id|EPPDATA
 id|port
 )paren
 )paren
+suffix:semicolon
+id|buf
+op_increment
 suffix:semicolon
 id|got
 op_increment
@@ -1291,7 +1293,6 @@ op_star
 )paren
 id|buf
 )paren
-op_increment
 op_assign
 id|inb
 (paren
@@ -1301,6 +1302,9 @@ c_func
 id|port
 )paren
 )paren
+suffix:semicolon
+id|buf
+op_increment
 suffix:semicolon
 r_if
 c_cond
@@ -1473,7 +1477,6 @@ op_star
 )paren
 id|buf
 )paren
-op_increment
 comma
 id|EPPDATA
 c_func
@@ -1481,6 +1484,9 @@ c_func
 id|port
 )paren
 )paren
+suffix:semicolon
+id|buf
+op_increment
 suffix:semicolon
 r_if
 c_cond
@@ -1612,7 +1618,6 @@ op_star
 )paren
 id|buf
 )paren
-op_increment
 op_assign
 id|inb
 (paren
@@ -1621,6 +1626,9 @@ id|EPPADDR
 id|port
 )paren
 )paren
+suffix:semicolon
+id|buf
+op_increment
 suffix:semicolon
 r_if
 c_cond
@@ -1754,13 +1762,15 @@ op_star
 )paren
 id|buf
 )paren
-op_increment
 comma
 id|EPPADDR
 (paren
 id|port
 )paren
 )paren
+suffix:semicolon
+id|buf
+op_increment
 suffix:semicolon
 r_if
 c_cond
