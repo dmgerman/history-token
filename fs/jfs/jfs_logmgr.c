@@ -4170,6 +4170,18 @@ id|lp-&gt;h.eor
 )paren
 )paren
 suffix:semicolon
+id|log-&gt;bp
+op_assign
+id|bp
+suffix:semicolon
+id|bp-&gt;l_pn
+op_assign
+id|log-&gt;page
+suffix:semicolon
+id|bp-&gt;l_eor
+op_assign
+id|log-&gt;eor
+suffix:semicolon
 multiline_comment|/* if current page is full, move on to next page */
 r_if
 c_cond
@@ -4185,18 +4197,6 @@ c_func
 (paren
 id|log
 )paren
-suffix:semicolon
-id|log-&gt;bp
-op_assign
-id|bp
-suffix:semicolon
-id|bp-&gt;l_pn
-op_assign
-id|log-&gt;page
-suffix:semicolon
-id|bp-&gt;l_eor
-op_assign
-id|log-&gt;eor
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * initialize log syncpoint&n;&t;&t; */
 multiline_comment|/*&n;&t;&t; * write the first SYNCPT record with syncpoint = 0&n;&t;&t; * (i.e., log redo up to HERE !);&n;&t;&t; * remove current page from lbm write queue at end of pageout&n;&t;&t; * (to write log superblock update), but do not release to&n;&t;&t; * freelist;&n;&t;&t; */
