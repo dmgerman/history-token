@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp.,
 macro_line|#ifndef _H_JFS_INCORE
 DECL|macro|_H_JFS_INCORE
 mdefine_line|#define _H_JFS_INCORE
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;jfs_types.h&quot;
@@ -10,26 +11,6 @@ macro_line|#include &quot;jfs_dtree.h&quot;
 multiline_comment|/*&n; * JFS magic number&n; */
 DECL|macro|JFS_SUPER_MAGIC
 mdefine_line|#define JFS_SUPER_MAGIC 0x3153464a /* &quot;JFS1&quot; */
-multiline_comment|/*&n; * Due to header ordering problems this can&squot;t be in jfs_lock.h&n; */
-DECL|struct|jfs_rwlock
-r_typedef
-r_struct
-id|jfs_rwlock
-(brace
-DECL|member|rw_sem
-r_struct
-id|rw_semaphore
-id|rw_sem
-suffix:semicolon
-DECL|member|in_use
-id|atomic_t
-id|in_use
-suffix:semicolon
-multiline_comment|/* for hacked implementation of trylock */
-DECL|typedef|jfs_rwlock_t
-)brace
-id|jfs_rwlock_t
-suffix:semicolon
 multiline_comment|/*&n; * JFS-private inode information&n; */
 DECL|struct|jfs_inode_info
 r_struct
@@ -139,11 +120,18 @@ id|list_head
 id|mp_list
 suffix:semicolon
 multiline_comment|/* metapages in inode&squot;s address space */
+multiline_comment|/*&n;&t; * rdwrlock serializes xtree between reads &amp; writes and synchronizes&n;&t; * changes to special inodes.  It&squot;s use would be redundant on&n;&t; * directories since the i_sem taken in the VFS is sufficient.&n;&t; */
 DECL|member|rdwrlock
-id|jfs_rwlock_t
+r_struct
+id|rw_semaphore
 id|rdwrlock
 suffix:semicolon
-multiline_comment|/* read/write lock&t;*/
+multiline_comment|/*&n;&t; * commit_sem serializes transaction processing on an inode.&n;&t; * It must be taken after beginning a transaction (txBegin), since&n;&t; * dirty inodes may be committed while a new transaction on the&n;&t; * inode is blocked in txBegin or TxBeginAnon&n;&t; */
+DECL|member|commit_sem
+r_struct
+id|semaphore
+id|commit_sem
+suffix:semicolon
 DECL|member|xtlid
 id|lid_t
 id|xtlid
@@ -236,6 +224,14 @@ DECL|macro|i_dtroot
 mdefine_line|#define i_dtroot u.dir._dtroot
 DECL|macro|i_inline
 mdefine_line|#define i_inline u.link._inline
+DECL|macro|IREAD_LOCK
+mdefine_line|#define IREAD_LOCK(ip)&t;&t;down_read(&amp;JFS_IP(ip)-&gt;rdwrlock)
+DECL|macro|IREAD_UNLOCK
+mdefine_line|#define IREAD_UNLOCK(ip)&t;up_read(&amp;JFS_IP(ip)-&gt;rdwrlock)
+DECL|macro|IWRITE_LOCK
+mdefine_line|#define IWRITE_LOCK(ip)&t;&t;down_write(&amp;JFS_IP(ip)-&gt;rdwrlock)
+DECL|macro|IWRITE_UNLOCK
+mdefine_line|#define IWRITE_UNLOCK(ip)&t;up_write(&amp;JFS_IP(ip)-&gt;rdwrlock)
 multiline_comment|/*&n; * cflag&n; */
 DECL|enum|cflags
 r_enum

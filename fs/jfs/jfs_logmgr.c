@@ -4384,7 +4384,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;lmLogFileSystem()&n; *&n; * FUNCTION:&t;insert (&lt;activate&gt; = true)/remove (&lt;activate&gt; = false)&n; *&t;file system into/from log active file system list.&n; *&n; * PARAMETE:&t;log&t;- pointer to logs inode.&n; *&t;&t;fsdev&t;- kdev_t of filesystem.&n; *&t;&t;serial  - pointer to returned log serial number&n; *&t;&t;activate - insert/remove device from active list.&n; *&n; * RETURN:&t;0&t;- success&n; *&t;&t;errors returned by vms_iowait().&n; *&t;&t;&t;&n; * serialization: IWRITE_LOCK(log inode) held on entry/exit&n; */
+multiline_comment|/*&n; * NAME:&t;lmLogFileSystem()&n; *&n; * FUNCTION:&t;insert (&lt;activate&gt; = true)/remove (&lt;activate&gt; = false)&n; *&t;file system into/from log active file system list.&n; *&n; * PARAMETE:&t;log&t;- pointer to logs inode.&n; *&t;&t;fsdev&t;- kdev_t of filesystem.&n; *&t;&t;serial  - pointer to returned log serial number&n; *&t;&t;activate - insert/remove device from active list.&n; *&n; * RETURN:&t;0&t;- success&n; *&t;&t;errors returned by vms_iowait().&n; */
 DECL|function|lmLogFileSystem
 r_static
 r_int
