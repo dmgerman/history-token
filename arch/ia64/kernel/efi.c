@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
@@ -44,22 +43,6 @@ id|efi_runtime_services_t
 op_star
 id|runtime
 suffix:semicolon
-multiline_comment|/*&n; * efi_dir is allocated here, but the directory isn&squot;t created&n; * here, as proc_mkdir() doesn&squot;t work this early in the bootup&n; * process.  Therefore, each module, like efivars, must test for&n; *    if (!efi_dir)  efi_dir = proc_mkdir(&quot;efi&quot;, NULL);&n; * prior to creating their own entries under /proc/efi.&n; */
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|efi_dir
-r_struct
-id|proc_dir_entry
-op_star
-id|efi_dir
-suffix:semicolon
-DECL|variable|efi_dir
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|efi_dir
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|mem_limit
 r_static
 r_int
@@ -2747,25 +2730,5 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
-r_static
-r_void
-id|__exit
-DECL|function|efivars_exit
-id|efivars_exit
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_PROC_FS
-id|remove_proc_entry
-c_func
-(paren
-id|efi_dir-&gt;name
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 eof
