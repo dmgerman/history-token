@@ -1,21 +1,21 @@
 multiline_comment|/*=======================================================/&n;  Header file for nsp_cs.c&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    Ver.1.0 : Cut unused lines.&n;    Ver 0.1 : Initial version.&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;&n;=========================================================*/
-multiline_comment|/* $Id: nsp_cs.h,v 1.27 2001/09/10 10:31:13 elca Exp $ */
+multiline_comment|/* $Id: nsp_cs.h,v 1.3 2002/10/10 11:07:52 elca Exp $ */
 macro_line|#ifndef  __nsp_cs__
 DECL|macro|__nsp_cs__
 mdefine_line|#define  __nsp_cs__
 multiline_comment|/* for debugging */
-multiline_comment|/*#define PCMCIA_DEBUG 9*/
+singleline_comment|//#define PCMCIA_DEBUG 9
 multiline_comment|/*&n;#define static&n;#define inline&n;*/
 multiline_comment|/************************************&n; * Some useful macros...&n; */
 DECL|macro|Number
 mdefine_line|#define Number(arr) ((int) (sizeof(arr) / sizeof(arr[0])))
 DECL|macro|BIT
-mdefine_line|#define BIT(x)      (1&lt;&lt;(x))
+mdefine_line|#define BIT(x)      (1L &lt;&lt; (x))
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b)    ((a) &gt; (b) ? (b) : (a))
-multiline_comment|/* SCSI initiator must be 7 */
-DECL|macro|SCSI_INITIATOR_ID
-mdefine_line|#define SCSI_INITIATOR_ID  7
+multiline_comment|/* SCSI initiator must be ID 7 */
+DECL|macro|NSP_INITIATOR_ID
+mdefine_line|#define NSP_INITIATOR_ID  7
 DECL|macro|NSP_SELTIMEOUT
 mdefine_line|#define NSP_SELTIMEOUT 200
 multiline_comment|/* base register */
@@ -80,6 +80,8 @@ DECL|macro|CLOCK_40M
 macro_line|#  define CLOCK_40M 0x02
 DECL|macro|CLOCK_20M
 macro_line|#  define CLOCK_20M 0x01
+DECL|macro|FAST_20
+macro_line|#  define FAST_20   BIT(2)
 DECL|macro|TERMPWRCTRL
 mdefine_line|#define TERMPWRCTRL&t;0x13
 DECL|macro|POWER_ON
@@ -175,6 +177,12 @@ DECL|macro|HOST_COUNTER_CLEAR
 macro_line|#  define HOST_COUNTER_CLEAR BIT(3)
 DECL|macro|READ_SOURCE
 macro_line|#  define READ_SOURCE        0x30
+DECL|macro|ACK_COUNTER
+macro_line|#   define ACK_COUNTER       (0)
+DECL|macro|REQ_COUNTER
+macro_line|#   define REQ_COUNTER       (BIT(4))
+DECL|macro|HOST_COUNTER
+macro_line|#   define HOST_COUNTER      (BIT(5))
 DECL|macro|TRANSFERCOUNT
 mdefine_line|#define TRANSFERCOUNT&t;0x1E  /* R */
 DECL|macro|TRANSFERMODE
@@ -338,10 +346,10 @@ DECL|typedef|sync_data
 )brace
 id|sync_data
 suffix:semicolon
-DECL|struct|_nsp_data
+DECL|struct|_nsp_hw_data
 r_typedef
 r_struct
-id|_nsp_data
+id|_nsp_hw_data
 (brace
 DECL|member|BaseAddress
 r_int
@@ -358,6 +366,13 @@ r_int
 r_int
 id|IrqNumber
 suffix:semicolon
+DECL|member|MmioAddress
+r_int
+r_int
+id|MmioAddress
+suffix:semicolon
+DECL|macro|NSP_MMIO_OFFSET
+mdefine_line|#define NSP_MMIO_OFFSET 0x0800
 DECL|member|ScsiClockDiv
 r_int
 r_char
@@ -391,10 +406,10 @@ r_int
 id|Residual
 suffix:semicolon
 DECL|macro|RESID
-mdefine_line|#define RESID data-&gt;Residual
+mdefine_line|#define RESID (data-&gt;Residual)
 macro_line|#else
 DECL|macro|RESID
-mdefine_line|#define RESID SCpnt-&gt;resid
+mdefine_line|#define RESID (SCpnt-&gt;resid)
 macro_line|#endif
 DECL|macro|MSGBUF_SIZE
 mdefine_line|#define MSGBUF_SIZE 20
@@ -412,22 +427,37 @@ id|MsgLen
 suffix:semicolon
 DECL|macro|N_TARGET
 mdefine_line|#define N_TARGET 8
-DECL|macro|N_LUN
-mdefine_line|#define N_LUN    8
 DECL|member|Sync
 id|sync_data
 id|Sync
 (braket
 id|N_TARGET
 )braket
+suffix:semicolon
+DECL|member|nspinfo
+r_char
+id|nspinfo
 (braket
-id|N_LUN
+l_int|110
 )braket
+suffix:semicolon
+multiline_comment|/* description */
+DECL|member|Lock
+id|spinlock_t
+id|Lock
 suffix:semicolon
 DECL|typedef|nsp_hw_data
 )brace
 id|nsp_hw_data
 suffix:semicolon
+multiline_comment|/* scatter-gather table */
+macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,2))
+DECL|macro|BUFFER_ADDR
+macro_line|# define BUFFER_ADDR ((char *)((unsigned int)(SCpnt-&gt;SCp.buffer-&gt;page) + SCpnt-&gt;SCp.buffer-&gt;offset))
+macro_line|#else
+DECL|macro|BUFFER_ADDR
+macro_line|# define BUFFER_ADDR SCpnt-&gt;SCp.buffer-&gt;address
+macro_line|#endif
 r_static
 r_void
 id|nsp_cs_release
@@ -538,6 +568,33 @@ id|shpnt
 suffix:semicolon
 r_static
 r_int
+id|nsp_proc_info
+c_func
+(paren
+r_char
+op_star
+id|buffer
+comma
+r_char
+op_star
+op_star
+id|start
+comma
+id|off_t
+id|offset
+comma
+r_int
+id|length
+comma
+r_int
+id|hostno
+comma
+r_int
+id|inout
+)paren
+suffix:semicolon
+r_static
+r_int
 id|nsp_queuecommand
 c_func
 (paren
@@ -576,26 +633,8 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_static
-r_int
-id|nsp_eh_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-suffix:semicolon
-r_static
-r_int
-id|nsp_eh_device_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-suffix:semicolon
+multiline_comment|/*static int nsp_eh_abort(Scsi_Cmnd * SCpnt);*/
+multiline_comment|/*static int nsp_eh_device_reset(Scsi_Cmnd *SCpnt);*/
 r_static
 r_int
 id|nsp_eh_bus_reset
@@ -742,6 +781,12 @@ id|PH_DISCONNECT
 comma
 DECL|enumerator|PH_RESELECT
 id|PH_RESELECT
+comma
+DECL|enumerator|PH_ABORT
+id|PH_ABORT
+comma
+DECL|enumerator|PH_RESET
+id|PH_RESET
 )brace
 suffix:semicolon
 DECL|enum|_data_in_out
@@ -758,13 +803,33 @@ DECL|enumerator|IO_OUT
 id|IO_OUT
 )brace
 suffix:semicolon
+DECL|enum|_burst_mode
+r_enum
+id|_burst_mode
+(brace
+DECL|enumerator|BURST_IO8
+id|BURST_IO8
+op_assign
+l_int|0
+comma
+DECL|enumerator|BURST_IO32
+id|BURST_IO32
+comma
+DECL|enumerator|BURST_MEM32
+id|BURST_MEM32
+)brace
+suffix:semicolon
 multiline_comment|/* SCSI messaage */
 DECL|macro|MSG_COMMAND_COMPLETE
 mdefine_line|#define MSG_COMMAND_COMPLETE 0x00
 DECL|macro|MSG_EXTENDED
 mdefine_line|#define MSG_EXTENDED         0x01
+DECL|macro|MSG_ABORT
+mdefine_line|#define MSG_ABORT            0x06
 DECL|macro|MSG_NO_OPERATION
 mdefine_line|#define MSG_NO_OPERATION     0x08
+DECL|macro|MSG_BUS_DEVICE_RESET
+mdefine_line|#define MSG_BUS_DEVICE_RESET 0x0c
 DECL|macro|MSG_EXT_SDTR
 mdefine_line|#define MSG_EXT_SDTR         0x01
 macro_line|#endif  /*__nsp_cs__*/

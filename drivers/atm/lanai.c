@@ -9346,15 +9346,7 @@ c_func
 (paren
 id|KERN_ERR
 id|DEV_LABEL
-l_string|&quot;(itf %d): can&squot;t read &quot;
-"&quot;"
-id|PCI_SUBSYSTEM_ID
-suffix:colon
-op_mod
-id|d
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;(itf %d): can&squot;t read PCI_SUBSYSTEM_ID: %d&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 161 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 165 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -251,6 +251,9 @@ suffix:colon
 multiline_comment|/*&n;&t;&t;&t;&t; * Build an object around the static string&n;&t;&t;&t;&t; */
 id|obj_desc-&gt;string.length
 op_assign
+(paren
+id|u32
+)paren
 id|ACPI_STRLEN
 (paren
 id|init_val-&gt;val
@@ -269,6 +272,10 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_MUTEX
 suffix:colon
+id|obj_desc-&gt;mutex.node
+op_assign
+id|new_node
+suffix:semicolon
 id|obj_desc-&gt;mutex.sync_level
 op_assign
 (paren
@@ -481,6 +488,9 @@ suffix:semicolon
 id|u32
 id|num_segments
 suffix:semicolon
+id|u32
+id|num_carats
+suffix:semicolon
 id|acpi_name
 id|simple_name
 suffix:semicolon
@@ -635,43 +645,11 @@ id|prefix_node
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * This check is explicitly split to relax the Type_to_check_for&n;&t; * conditions for Bank_field_defn. Originally, both Bank_field_defn and&n;&t; * Def_field_defn caused Type_to_check_for to be set to ACPI_TYPE_REGION,&n;&t; * but the Bank_field_defn may also check for a Field definition as well&n;&t; * as an Operation_region.&n;&t; */
-r_if
-c_cond
-(paren
-id|INTERNAL_TYPE_FIELD_DEFN
-op_eq
-id|type
-)paren
-(brace
-multiline_comment|/* Def_field_defn defines fields in a Region */
-id|type_to_check_for
-op_assign
-id|ACPI_TYPE_REGION
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|INTERNAL_TYPE_BANK_FIELD_DEFN
-op_eq
-id|type
-)paren
-(brace
-multiline_comment|/* Bank_field_defn defines data fields in a Field Object */
-id|type_to_check_for
-op_assign
-id|ACPI_TYPE_ANY
-suffix:semicolon
-)brace
-r_else
-(brace
+multiline_comment|/* Save type   TBD: may be no longer necessary */
 id|type_to_check_for
 op_assign
 id|type
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Begin examination of the actual pathname&n;&t; */
 r_if
 c_cond
@@ -753,7 +731,9 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Searching relative to prefix scope [%p]&bslash;n&quot;
+l_string|&quot;Searching relative to prefix scope [%4.4s] (%p)&bslash;n&quot;
+comma
+id|prefix_node-&gt;name.ascii
 comma
 id|prefix_node
 )paren
@@ -763,6 +743,10 @@ multiline_comment|/*&n;&t;&t;&t; * Handle multiple Parent Prefixes (carat) by ju
 id|this_node
 op_assign
 id|prefix_node
+suffix:semicolon
+id|num_carats
+op_assign
+l_int|0
 suffix:semicolon
 r_while
 c_loop
@@ -786,6 +770,9 @@ id|path
 op_increment
 suffix:semicolon
 multiline_comment|/* Backup to the parent node */
+id|num_carats
+op_increment
+suffix:semicolon
 id|this_node
 op_assign
 id|acpi_ns_get_parent_node
@@ -828,7 +815,11 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Path is absolute with one or more carats&bslash;n&quot;
+l_string|&quot;Search scope is [%4.4s], path has %d carat(s)&bslash;n&quot;
+comma
+id|this_node-&gt;name.ascii
+comma
+id|num_carats
 )paren
 )paren
 suffix:semicolon
@@ -849,6 +840,10 @@ multiline_comment|/*&n;&t;&t;&t; * Null name after a root or parent prefixes. We
 id|num_segments
 op_assign
 l_int|0
+suffix:semicolon
+id|type
+op_assign
+id|this_node-&gt;type
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -1108,13 +1103,18 @@ id|current_node
 )paren
 suffix:semicolon
 )brace
+op_star
+id|return_node
+op_assign
+id|this_node
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Sanity typecheck of the target object:&n;&t;&t; *&n;&t;&t; * If 1) This is the last segment (Num_segments == 0)&n;&t;&t; *    2) And we are looking for a specific type&n;&t;&t; *       (Not checking for TYPE_ANY)&n;&t;&t; *    3) Which is not an alias&n;&t;&t; *    4) Which is not a local type (TYPE_DEF_ANY)&n;&t;&t; *    5) Which is not a local type (TYPE_SCOPE)&n;&t;&t; *    6) Which is not a local type (TYPE_INDEX_FIELD_DEFN)&n;&t;&t; *    7) And the type of target object is known (not TYPE_ANY)&n;&t;&t; *    8) And target object does not match what we are looking for&n;&t;&t; *&n;&t;&t; * Then we have a type mismatch.  Just warn and ignore it.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Sanity typecheck of the target object:&n;&t;&t; *&n;&t;&t; * If 1) This is the last segment (Num_segments == 0)&n;&t;&t; *    2) And we are looking for a specific type&n;&t;&t; *       (Not checking for TYPE_ANY)&n;&t;&t; *    3) Which is not an alias&n;&t;&t; *    4) Which is not a local type (TYPE_SCOPE)&n;&t;&t; *    5) And the type of target object is known (not TYPE_ANY)&n;&t;&t; *    6) And target object does not match what we are looking for&n;&t;&t; *&n;&t;&t; * Then we have a type mismatch.  Just warn and ignore it.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1133,25 +1133,13 @@ op_logical_and
 (paren
 id|type_to_check_for
 op_ne
-id|INTERNAL_TYPE_ALIAS
+id|ACPI_TYPE_LOCAL_ALIAS
 )paren
 op_logical_and
 (paren
 id|type_to_check_for
 op_ne
-id|INTERNAL_TYPE_DEF_ANY
-)paren
-op_logical_and
-(paren
-id|type_to_check_for
-op_ne
-id|INTERNAL_TYPE_SCOPE
-)paren
-op_logical_and
-(paren
-id|type_to_check_for
-op_ne
-id|INTERNAL_TYPE_INDEX_FIELD_DEFN
+id|ACPI_TYPE_LOCAL_SCOPE
 )paren
 op_logical_and
 (paren
@@ -1171,7 +1159,7 @@ multiline_comment|/* Complain about a type mismatch */
 id|ACPI_REPORT_WARNING
 (paren
 (paren
-l_string|&quot;Ns_lookup: %4.4s, type %X, checking for type %X&bslash;n&quot;
+l_string|&quot;Ns_lookup: Type mismatch on %4.4s (%s), searching for (%s)&bslash;n&quot;
 comma
 (paren
 r_char
@@ -1180,9 +1168,15 @@ op_star
 op_amp
 id|simple_name
 comma
+id|acpi_ut_get_type_name
+(paren
 id|this_node-&gt;type
+)paren
 comma
+id|acpi_ut_get_type_name
+(paren
 id|type_to_check_for
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1241,7 +1235,7 @@ c_cond
 (paren
 id|acpi_ns_opens_scope
 (paren
-id|type_to_check_for
+id|type
 )paren
 )paren
 (brace
@@ -1271,19 +1265,6 @@ id|status
 )paren
 suffix:semicolon
 )brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_NAMES
-comma
-l_string|&quot;Setting current scope to [%4.4s] (%p)&bslash;n&quot;
-comma
-id|this_node-&gt;name.ascii
-comma
-id|this_node
-)paren
-)paren
-suffix:semicolon
 )brace
 )brace
 op_star

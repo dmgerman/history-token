@@ -654,7 +654,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;raid0_mergeable_bvec -- tell bio layer if a two requests can be merged&n; *&t;@q: request queue&n; *&t;@bio: the buffer head that&squot;s been built up so far&n; *&t;@biovec: the request that could be merged to it.&n; *&n; *&t;Return 1 if the merge is not permitted (because the&n; *&t;result would cross a chunk boundary), 0 otherwise.&n; */
+multiline_comment|/**&n; *&t;raid0_mergeable_bvec -- tell bio layer if a two requests can be merged&n; *&t;@q: request queue&n; *&t;@bio: the buffer head that&squot;s been built up so far&n; *&t;@biovec: the request that could be merged to it.&n; *&n; *&t;Return amount of bytes we can accept at this offset&n; */
 DECL|function|raid0_mergeable_bvec
 r_static
 r_int
@@ -716,8 +716,9 @@ op_rshift
 l_int|10
 suffix:semicolon
 r_return
+(paren
 id|chunk_size
-OL
+op_minus
 (paren
 (paren
 id|block
@@ -731,6 +732,9 @@ l_int|1
 op_plus
 id|bio_sz
 )paren
+)paren
+op_lshift
+l_int|10
 suffix:semicolon
 )brace
 DECL|function|raid0_run

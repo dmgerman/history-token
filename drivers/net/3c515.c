@@ -1,11 +1,10 @@
-multiline_comment|/* 3c515.c: A 3Com ISA EtherLink XL &quot;Corkscrew&quot; ethernet driver for linux. */
-multiline_comment|/*&n;&t;Written 1997-1998 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver is for the 3Com ISA EtherLink XL &quot;Corkscrew&quot; 3c515 ethercard.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;2/2/00- Added support for kernel-level ISAPnP &n;&t;&t;by Stephen Frost &lt;sfrost@snowman.net&gt; and Alessandro Zummo&n;&t;Cleaned up for 2.3.x/softnet by Jeff Garzik and Alan Cox.&n;&t;&n;&t;11/17/2001 - Added ethtool support (jgarzik)&n;&n;*/
+multiline_comment|/*&n;&t;Written 1997-1998 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver is for the 3Com ISA EtherLink XL &quot;Corkscrew&quot; 3c515 ethercard.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;2000/2/2- Added support for kernel-level ISAPnP &n;&t;&t;by Stephen Frost &lt;sfrost@snowman.net&gt; and Alessandro Zummo&n;&t;Cleaned up for 2.3.x/softnet by Jeff Garzik and Alan Cox.&n;&t;&n;&t;2001/11/17 - Added ethtool support (jgarzik)&n;&t;&n;&t;2002/10/28 - Locking updates for 2.5 (alan@redhat.com)&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;3c515&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;0.99t&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;0.99t-ac&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&t;&quot;17-Nov-2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;28-Oct-2002&quot;
 DECL|variable|version
 r_static
 r_char
@@ -86,13 +85,6 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 DECL|macro|NEW_MULTICAST
 mdefine_line|#define NEW_MULTICAST
 macro_line|#include &lt;linux/delay.h&gt;
-multiline_comment|/* Kernel version compatibility functions. */
-DECL|macro|RUN_AT
-mdefine_line|#define RUN_AT(x) (jiffies + (x))
-DECL|macro|REQUEST_IRQ
-mdefine_line|#define REQUEST_IRQ(i,h,f,n, instance) request_irq(i,h,f,n, instance)
-DECL|macro|IRQ
-mdefine_line|#define IRQ(irq, dev_id, pt_regs) (irq, dev_id, pt_regs)
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -282,6 +274,7 @@ l_int|11
 comma
 DECL|enumerator|UpStall
 DECL|enumerator|UpUnstall
+DECL|enumerator|DownStall
 id|UpStall
 op_assign
 l_int|6
@@ -298,8 +291,6 @@ l_int|11
 op_plus
 l_int|1
 comma
-DECL|enumerator|DownStall
-DECL|enumerator|DownUnstall
 id|DownStall
 op_assign
 (paren
@@ -310,6 +301,9 @@ l_int|11
 op_plus
 l_int|2
 comma
+DECL|enumerator|DownUnstall
+DECL|enumerator|RxDiscard
+DECL|enumerator|TxEnable
 id|DownUnstall
 op_assign
 (paren
@@ -320,9 +314,6 @@ l_int|11
 op_plus
 l_int|3
 comma
-DECL|enumerator|RxDiscard
-DECL|enumerator|TxEnable
-DECL|enumerator|TxDisable
 id|RxDiscard
 op_assign
 l_int|8
@@ -335,9 +326,11 @@ l_int|9
 op_lshift
 l_int|11
 comma
+DECL|enumerator|TxDisable
+DECL|enumerator|TxReset
+DECL|enumerator|FakeIntr
 id|TxDisable
 op_assign
-DECL|enumerator|TxReset
 l_int|10
 op_lshift
 l_int|11
@@ -348,15 +341,15 @@ l_int|11
 op_lshift
 l_int|11
 comma
-DECL|enumerator|FakeIntr
-DECL|enumerator|AckIntr
-DECL|enumerator|SetIntrEnb
 id|FakeIntr
 op_assign
 l_int|12
 op_lshift
 l_int|11
 comma
+DECL|enumerator|AckIntr
+DECL|enumerator|SetIntrEnb
+DECL|enumerator|SetStatusEnb
 id|AckIntr
 op_assign
 l_int|13
@@ -369,15 +362,14 @@ l_int|14
 op_lshift
 l_int|11
 comma
-DECL|enumerator|SetStatusEnb
-DECL|enumerator|SetRxFilter
-DECL|enumerator|SetRxThreshold
 id|SetStatusEnb
 op_assign
 l_int|15
 op_lshift
 l_int|11
 comma
+DECL|enumerator|SetRxFilter
+DECL|enumerator|SetRxThreshold
 id|SetRxFilter
 op_assign
 l_int|16
@@ -392,6 +384,7 @@ l_int|11
 comma
 DECL|enumerator|SetTxThreshold
 DECL|enumerator|SetTxStart
+DECL|enumerator|StartDMAUp
 id|SetTxThreshold
 op_assign
 l_int|18
@@ -404,15 +397,14 @@ l_int|19
 op_lshift
 l_int|11
 comma
-DECL|enumerator|StartDMAUp
-DECL|enumerator|StartDMADown
-DECL|enumerator|StatsEnable
 id|StartDMAUp
 op_assign
 l_int|20
 op_lshift
 l_int|11
 comma
+DECL|enumerator|StartDMADown
+DECL|enumerator|StatsEnable
 id|StartDMADown
 op_assign
 (paren
@@ -736,6 +728,7 @@ id|w3_config_fields
 DECL|member|ram_size
 DECL|member|ram_width
 DECL|member|ram_speed
+DECL|member|rom_size
 r_int
 r_int
 id|ram_size
@@ -750,7 +743,6 @@ id|ram_speed
 suffix:colon
 l_int|2
 comma
-DECL|member|rom_size
 id|rom_size
 suffix:colon
 l_int|2
@@ -765,6 +757,7 @@ DECL|member|ram_split
 DECL|member|pad18
 DECL|member|xcvr
 DECL|member|pad21
+DECL|member|autoselect
 r_int
 r_int
 id|ram_split
@@ -783,7 +776,6 @@ id|pad21
 suffix:colon
 l_int|1
 comma
-DECL|member|autoselect
 id|autoselect
 suffix:colon
 l_int|1
@@ -1128,6 +1120,10 @@ id|tx_full
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* The action to take with a media selection timer tick.&n;   Note that we deviate from the 3Com order by checking 10base2 before AUI.&n; */
@@ -1136,12 +1132,12 @@ r_enum
 id|xcvr_types
 (brace
 DECL|enumerator|XCVR_10baseT
-id|XCVR_10baseT
-op_assign
 DECL|enumerator|XCVR_AUI
 DECL|enumerator|XCVR_10baseTOnly
 DECL|enumerator|XCVR_10base2
 DECL|enumerator|XCVR_100baseTx
+id|XCVR_10baseT
+op_assign
 l_int|0
 comma
 id|XCVR_AUI
@@ -2977,6 +2973,13 @@ comma
 id|ioaddr
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|vp-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* Read the station address from the EEPROM. */
 id|EL3WINDOW
 c_func
@@ -3667,16 +3670,14 @@ id|vp-&gt;timer
 suffix:semicolon
 id|vp-&gt;timer.expires
 op_assign
-id|RUN_AT
-c_func
-(paren
+id|jiffies
+op_plus
 id|media_tbl
 (braket
 id|dev-&gt;if_port
 )braket
 dot
 id|wait
-)paren
 suffix:semicolon
 id|vp-&gt;timer.data
 op_assign
@@ -4624,15 +4625,13 @@ dot
 id|name
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|vp-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 (brace
@@ -4883,16 +4882,14 @@ id|name
 suffix:semicolon
 id|vp-&gt;timer.expires
 op_assign
-id|RUN_AT
-c_func
-(paren
+id|jiffies
+op_plus
 id|media_tbl
 (braket
 id|dev-&gt;if_port
 )braket
 dot
 id|wait
-)paren
 suffix:semicolon
 id|add_timer
 c_func
@@ -4983,9 +4980,12 @@ id|old_window
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|vp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -5421,15 +5421,13 @@ id|skb-&gt;len
 op_or
 l_int|0x80000000
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|vp-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outw
@@ -5539,9 +5537,12 @@ op_plus
 id|EL3_CMD
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|vp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6029,6 +6030,13 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|inw
@@ -6109,6 +6117,11 @@ comma
 id|dev
 )paren
 suffix:semicolon
+id|dev-&gt;irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 )brace
 )brace
 r_do
@@ -6159,6 +6172,7 @@ OG
 l_int|5
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot;&t;TX room bit was handled.&bslash;n&quot;
 )paren
@@ -6250,9 +6264,7 @@ id|entry
 id|dev_kfree_skb_irq
 c_func
 (paren
-id|lp
-op_member_access_from_pointer
-id|tx_skbuff
+id|lp-&gt;tx_skbuff
 (braket
 id|entry
 )braket
@@ -6734,6 +6746,13 @@ id|IntLatch
 op_or
 id|RxComplete
 )paren
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -7979,15 +7998,13 @@ id|dev
 )paren
 )paren
 (brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|vp-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|update_stats
@@ -7998,9 +8015,12 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|vp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;sd.h&quot;
@@ -22,6 +23,7 @@ mdefine_line|#define AUTOSENSE
 macro_line|#include &quot;NCR5380.h&quot;
 macro_line|#include &quot;NCR5380.c&quot;
 DECL|function|dmx3191d_detect
+r_static
 r_int
 id|__init
 id|dmx3191d_detect
@@ -216,7 +218,7 @@ c_func
 (paren
 id|pdev-&gt;irq
 comma
-id|dmx3191d_do_intr
+id|dmx3191d_intr
 comma
 id|SA_SHIRQ
 comma
@@ -250,6 +252,7 @@ id|boards
 suffix:semicolon
 )brace
 DECL|function|dmx3191d_info
+r_static
 r_const
 r_char
 op_star
@@ -275,6 +278,7 @@ id|info
 suffix:semicolon
 )brace
 DECL|function|dmx3191d_release_resources
+r_static
 r_int
 id|dmx3191d_release_resources
 c_func

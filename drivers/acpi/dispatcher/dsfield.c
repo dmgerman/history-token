@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *              $Revision: 68 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *              $Revision: 69 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -136,7 +136,7 @@ id|walk_state-&gt;scope_info
 comma
 id|arg-&gt;common.value.string
 comma
-id|INTERNAL_TYPE_DEF_ANY
+id|ACPI_TYPE_ANY
 comma
 id|ACPI_IMODE_LOAD_PASS1
 comma
@@ -697,7 +697,7 @@ suffix:semicolon
 multiline_comment|/* Each remaining arg is a Named Field */
 id|info.field_type
 op_assign
-id|INTERNAL_TYPE_REGION_FIELD
+id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:semicolon
 id|info.region_node
 op_assign
@@ -780,7 +780,7 @@ l_int|2
 suffix:semicolon
 id|type
 op_assign
-id|INTERNAL_TYPE_REGION_FIELD
+id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -798,7 +798,7 @@ l_int|4
 suffix:semicolon
 id|type
 op_assign
-id|INTERNAL_TYPE_BANK_FIELD
+id|ACPI_TYPE_LOCAL_BANK_FIELD
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -816,7 +816,7 @@ l_int|3
 suffix:semicolon
 id|type
 op_assign
-id|INTERNAL_TYPE_INDEX_FIELD
+id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1021,7 +1021,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Second arg is the Bank Register (must already exist) */
+multiline_comment|/* Second arg is the Bank Register (Field) (must already exist) */
 id|arg
 op_assign
 id|arg-&gt;common.next
@@ -1034,7 +1034,7 @@ id|walk_state-&gt;scope_info
 comma
 id|arg-&gt;common.value.string
 comma
-id|INTERNAL_TYPE_BANK_FIELD_DEFN
+id|ACPI_TYPE_ANY
 comma
 id|ACPI_IMODE_EXECUTE
 comma
@@ -1089,7 +1089,7 @@ suffix:semicolon
 multiline_comment|/* Each remaining arg is a Named Field */
 id|info.field_type
 op_assign
-id|INTERNAL_TYPE_BANK_FIELD
+id|ACPI_TYPE_LOCAL_BANK_FIELD
 suffix:semicolon
 id|info.region_node
 op_assign
@@ -1208,7 +1208,7 @@ id|walk_state-&gt;scope_info
 comma
 id|arg-&gt;common.value.string
 comma
-id|INTERNAL_TYPE_INDEX_FIELD_DEFN
+id|ACPI_TYPE_ANY
 comma
 id|ACPI_IMODE_EXECUTE
 comma
@@ -1254,7 +1254,7 @@ suffix:semicolon
 multiline_comment|/* Each remaining arg is a Named Field */
 id|info.field_type
 op_assign
-id|INTERNAL_TYPE_INDEX_FIELD
+id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:semicolon
 id|info.region_node
 op_assign

@@ -28,12 +28,6 @@ mdefine_line|#define NCR5380_STATS
 DECL|macro|NCR5380_STAT_LIMIT
 macro_line|#undef NCR5380_STAT_LIMIT
 macro_line|#endif
-macro_line|#if defined(CONFIG_SCSI_G_NCR5380_PORT) &amp;&amp; defined(CONFIG_SCSI_G_NCR5380_MEM)
-macro_line|#error You can not configure the Generic NCR 5380 SCSI Driver for memory mapped I/O and port mapped I/O at the same time (yet)
-macro_line|#endif
-macro_line|#if !defined(CONFIG_SCSI_G_NCR5380_PORT) &amp;&amp; !defined(CONFIG_SCSI_G_NCR5380_MEM)
-macro_line|#error You must configure the Generic NCR 5380 SCSI Driver for one of memory mapped I/O and port mapped I/O.
-macro_line|#endif
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -48,6 +42,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 DECL|macro|NCR_NOT_SET
 mdefine_line|#define NCR_NOT_SET 0
 DECL|variable|ncr_irq
@@ -147,6 +142,7 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|NO_OVERRIDES
 mdefine_line|#define NO_OVERRIDES (sizeof(overrides) / sizeof(struct override))
+macro_line|#ifndef MODULE 
 multiline_comment|/**&n; *&t;internal_setup&t;&t;-&t;handle lilo command string override&n; *&t;@board:&t;BOARD_* identifier for the board&n; *&t;@str: unused&n; *&t;@ints: numeric parameters&n; *&n; * &t;Do LILO command line initialization of the overrides array. Display&n; *&t;errors when needed&n; *&n; *&t;Locks: none&n; */
 DECL|function|internal_setup
 r_static
@@ -599,6 +595,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/**&n; * &t;generic_NCR5380_detect&t;-&t;look for NCR5380 controllers&n; *&t;@tpnt: the scsi template&n; *&n; *&t;Scan for the present of NCR5380, NCR53C400, NCR53C400A, DTC3181E&n; *&t;and DTC436(ISAPnP) controllers. If overrides have been set we use&n; *&t;them.&n; *&n; *&t;The caller supplied NCR5380_init function is invoked from here, before&n; *&t;the interrupt line is taken.&n; *&n; *&t;Locks: none&n; */
 DECL|function|generic_NCR5380_detect
 r_int
@@ -1145,7 +1142,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
+macro_line|#ifndef CONFIG_SCSI_G_NCR5380_MEM
 r_if
 c_cond
 (paren
@@ -1479,7 +1476,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
+macro_line|#ifndef CONFIG_SCSI_G_NCR5380_MEM
 id|release_region
 c_func
 (paren
@@ -1575,7 +1572,7 @@ c_func
 (paren
 id|instance-&gt;irq
 comma
-id|do_generic_NCR5380_intr
+id|generic_NCR5380_intr
 comma
 id|SA_INTERRUPT
 comma
@@ -1756,7 +1753,7 @@ c_func
 id|instance
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
+macro_line|#ifndef CONFIG_SCSI_G_NCR5380_MEM
 id|release_region
 c_func
 (paren
@@ -1980,7 +1977,7 @@ op_amp
 id|CSR_HOST_BUF_NOT_RDY
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
+macro_line|#ifndef CONFIG_SCSI_G_NCR5380_MEM
 (brace
 r_int
 id|i
@@ -2058,7 +2055,7 @@ id|CSR_HOST_BUF_NOT_RDY
 (brace
 singleline_comment|// FIXME - no timeout
 )brace
-macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
+macro_line|#ifndef CONFIG_SCSI_G_NCR5380_MEM
 (brace
 r_int
 id|i
@@ -2329,7 +2326,7 @@ id|CSR_HOST_BUF_NOT_RDY
 )paren
 suffix:semicolon
 singleline_comment|// FIXME - timeout
-macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
+macro_line|#ifndef CONFIG_SCSI_G_NCR5380_MEM
 (brace
 r_for
 c_loop
@@ -2403,7 +2400,7 @@ id|CSR_HOST_BUF_NOT_RDY
 )paren
 suffix:semicolon
 singleline_comment|// FIXME - no timeout
-macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
+macro_line|#ifndef CONFIG_SCSI_G_NCR5380_MEM
 (brace
 r_for
 c_loop
@@ -2870,27 +2867,13 @@ id|MAX_SCSI_DEVICE_CODE
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* For now this is constant so we may walk it */
-r_for
-c_loop
-(paren
 id|scsi_ptr
 op_assign
-id|first_instance
-suffix:semicolon
-id|scsi_ptr
-suffix:semicolon
-id|scsi_ptr
-op_assign
-id|scsi_ptr-&gt;next
-)paren
-r_if
-c_cond
+id|scsi_host_hn_get
+c_func
 (paren
-id|scsi_ptr-&gt;host_no
-op_eq
 id|hostno
 )paren
-r_break
 suffix:semicolon
 id|NCR5380_setup
 c_func

@@ -1436,14 +1436,12 @@ r_int
 id|chip
 suffix:semicolon
 multiline_comment|/* set to chip type; 700-66 is&n;&t;&t;&t;&t;&t;   700-66, rest are last three&n;&t;&t;&t;&t;&t;   digits of part number */
-multiline_comment|/*&n;     * PCI bus, device, function, only for NCR53c8x0 chips.&n;     * pci_valid indicates that the PCI configuration information&n;     * is valid, and we can twiddle MAX_LAT, etc. as recommended&n;     * for maximum performance in the NCR documentation.&n;     */
-DECL|member|pci_bus
-DECL|member|pci_device_fn
-r_int
-r_char
-id|pci_bus
-comma
-id|pci_device_fn
+multiline_comment|/*&n;     * PCI device, only for NCR53c8x0 chips.&n;     * pci_valid indicates that the PCI configuration information&n;     * is valid, and we can twiddle MAX_LAT, etc. as recommended&n;     * for maximum performance in the NCR documentation.&n;     */
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
 suffix:semicolon
 DECL|member|pci_valid
 r_int

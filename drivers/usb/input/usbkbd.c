@@ -661,13 +661,41 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|urb-&gt;status
 )paren
+(brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+multiline_comment|/* unlink */
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
 r_return
 suffix:semicolon
+multiline_comment|/* -EPIPE:  should clear the halt */
+r_default
+suffix:colon
+multiline_comment|/* error */
+r_goto
+id|resubmit
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -898,6 +926,33 @@ op_member_access_from_pointer
 r_new
 comma
 l_int|8
+)paren
+suffix:semicolon
+id|resubmit
+suffix:colon
+id|i
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|SLAB_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+)paren
+id|err
+(paren
+l_string|&quot;can&squot;t resubmit intr, %s-%s/input0, status %d&quot;
+comma
+id|kbd-&gt;usbdev-&gt;bus-&gt;bus_name
+comma
+id|kbd-&gt;usbdev-&gt;devpath
+comma
+id|i
 )paren
 suffix:semicolon
 )brace
