@@ -2911,9 +2911,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_increment
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
