@@ -1564,12 +1564,6 @@ comma
 id|smbus-&gt;base
 )paren
 suffix:semicolon
-id|smbus-&gt;adapter.id
-op_assign
-id|I2C_ALGO_SMBUS
-op_or
-id|I2C_HW_SMBUS_AMD8111
-suffix:semicolon
 id|smbus-&gt;adapter
 dot
 r_class

@@ -1682,13 +1682,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|id
-op_assign
-id|I2C_ALGO_SMBUS
-op_or
-id|I2C_HW_SMBUS_ALI1535
-comma
-dot
 id|algo
 op_assign
 op_amp

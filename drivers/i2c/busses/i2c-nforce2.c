@@ -197,13 +197,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|id
-op_assign
-id|I2C_ALGO_SMBUS
-op_or
-id|I2C_HW_SMBUS_NFORCE2
-comma
-dot
 r_class
 op_assign
 id|I2C_ADAP_CLASS_SMBUS

@@ -2371,13 +2371,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-core.o: I2C adapter %04x: I2C level transfers not supported&bslash;n&quot;
+op_amp
+id|client-&gt;adapter-&gt;dev
 comma
-id|client-&gt;adapter-&gt;id
+l_string|&quot;I2C level transfers not supported&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2523,13 +2523,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: I2C adapter %04x: I2C level transfers not supported&bslash;n&quot;
+op_amp
+id|client-&gt;adapter-&gt;dev
 comma
-id|client-&gt;adapter-&gt;id
+l_string|&quot;I2C level transfers not supported&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
