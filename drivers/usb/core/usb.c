@@ -2811,7 +2811,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * By the time we get here, we chose a new device address&n; * and is in the default state. We need to identify the thing and&n; * get the ball rolling..&n; *&n; * Returns 0 for success, != 0 for error.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; */
+multiline_comment|/*&n; * By the time we get here, we chose a new device address&n; * and is in the default state. We need to identify the thing and&n; * get the ball rolling..&n; *&n; * Returns 0 for success, != 0 for error.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Only the hub driver should ever call this; root hub registration&n; * uses it only indirectly.&n; */
 DECL|macro|NEW_DEVICE_RETRYS
 mdefine_line|#define NEW_DEVICE_RETRYS&t;2
 DECL|macro|SET_ADDRESS_RETRYS
@@ -4462,13 +4462,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_ifnum_to_if
-)paren
-suffix:semicolon
-DECL|variable|usb_new_device
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|usb_new_device
 )paren
 suffix:semicolon
 DECL|variable|usb_reset_device
