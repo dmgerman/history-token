@@ -123,8 +123,8 @@ id|atalk_sockets_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
-DECL|function|atalk_insert_socket
-r_extern
+macro_line|#if 0 /* currently unused -DaveM */
+r_static
 r_inline
 r_void
 id|atalk_insert_socket
@@ -174,8 +174,9 @@ id|atalk_sockets_lock
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|atalk_remove_socket
-r_extern
+r_static
 r_inline
 r_void
 id|atalk_remove_socket
@@ -561,7 +562,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|atalk_destroy_socket
-r_extern
+r_static
 r_inline
 r_void
 id|atalk_destroy_socket
