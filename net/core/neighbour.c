@@ -1627,47 +1627,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|tbl-&gt;entries
-OG
-(paren
-id|tbl-&gt;hash_mask
-op_plus
-l_int|1
-)paren
-)paren
-(brace
-id|write_lock_bh
-c_func
-(paren
-op_amp
-id|tbl-&gt;lock
-)paren
-suffix:semicolon
-id|neigh_hash_grow
-c_func
-(paren
-id|tbl
-comma
-(paren
-id|tbl-&gt;hash_mask
-op_plus
-l_int|1
-)paren
-op_lshift
-l_int|1
-)paren
-suffix:semicolon
-id|write_unlock_bh
-c_func
-(paren
-op_amp
-id|tbl-&gt;lock
-)paren
-suffix:semicolon
-)brace
 id|memcpy
 c_func
 (paren
@@ -1769,6 +1728,32 @@ c_func
 (paren
 op_amp
 id|tbl-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tbl-&gt;entries
+OG
+(paren
+id|tbl-&gt;hash_mask
+op_plus
+l_int|1
+)paren
+)paren
+(brace
+id|neigh_hash_grow
+c_func
+(paren
+id|tbl
+comma
+(paren
+id|tbl-&gt;hash_mask
+op_plus
+l_int|1
+)paren
+op_lshift
+l_int|1
 )paren
 suffix:semicolon
 id|hash_val
@@ -1924,7 +1909,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-DECL|function|pneigh_lookup
 r_struct
 id|pneigh_entry
 op_star
@@ -2203,7 +2187,6 @@ r_return
 id|n
 suffix:semicolon
 )brace
-DECL|function|pneigh_delete
 r_int
 id|pneigh_delete
 c_func
@@ -2389,7 +2372,6 @@ op_minus
 id|ENOENT
 suffix:semicolon
 )brace
-DECL|function|pneigh_ifdown
 r_static
 r_int
 id|pneigh_ifdown
@@ -2516,7 +2498,6 @@ id|ENOENT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;neighbour must already be out of the table;&n; *&n; */
-DECL|function|neigh_destroy
 r_void
 id|neigh_destroy
 c_func
@@ -2692,7 +2673,6 @@ id|neigh
 suffix:semicolon
 )brace
 multiline_comment|/* Neighbour state is suspicious;&n;   disable fast path.&n;&n;   Called with write_locked neigh.&n; */
-DECL|function|neigh_suspect
 r_static
 r_void
 id|neigh_suspect
@@ -2740,7 +2720,6 @@ id|neigh-&gt;ops-&gt;output
 suffix:semicolon
 )brace
 multiline_comment|/* Neighbour state is OK;&n;   enable fast path.&n;&n;   Called with write_locked neigh.&n; */
-DECL|function|neigh_connect
 r_static
 r_void
 id|neigh_connect
@@ -2787,7 +2766,6 @@ op_assign
 id|neigh-&gt;ops-&gt;hh_output
 suffix:semicolon
 )brace
-DECL|function|neigh_periodic_timer
 r_static
 r_void
 id|neigh_periodic_timer
@@ -3090,7 +3068,6 @@ id|tbl-&gt;lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|neigh_max_probes
 r_static
 id|__inline__
 r_int
@@ -3128,7 +3105,6 @@ id|p-&gt;mcast_probes
 suffix:semicolon
 )brace
 multiline_comment|/* Called when a timer expires for a neighbour entry. */
-DECL|function|neigh_timer_handler
 r_static
 r_void
 id|neigh_timer_handler
@@ -3634,7 +3610,6 @@ id|neigh
 )paren
 suffix:semicolon
 )brace
-DECL|function|__neigh_event_send
 r_int
 id|__neigh_event_send
 c_func
@@ -3894,7 +3869,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|neigh_update_hhs
 r_static
 id|__inline__
 r_void
@@ -3981,7 +3955,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Generic update routine.&n;   -- lladdr is new lladdr or NULL, if it is not supplied.&n;   -- new    is new state.&n;   -- flags&n;&t;NEIGH_UPDATE_F_OVERRIDE allows to override existing lladdr,&n;&t;&t;&t;&t;if it is different.&n;&t;NEIGH_UPDATE_F_WEAK_OVERRIDE will suspect existing &quot;connected&quot;&n;&t;&t;&t;&t;lladdr instead of overriding it &n;&t;&t;&t;&t;if it is different.&n;&t;&t;&t;&t;It also allows to retain current state&n;&t;&t;&t;&t;if lladdr is unchanged.&n;&t;NEIGH_UPDATE_F_ADMIN&t;means that the change is administrative.&n;&n;&t;NEIGH_UPDATE_F_OVERRIDE_ISROUTER allows to override existing &n;&t;&t;&t;&t;NTF_ROUTER flag.&n;&t;NEIGH_UPDATE_F_ISROUTER&t;indicates if the neighbour is known as&n;&t;&t;&t;&t;a router.&n;&n;   Caller MUST hold reference count on the entry.&n; */
-DECL|function|neigh_update
 r_int
 id|neigh_update
 c_func
@@ -4593,7 +4566,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|neigh_event_ns
 r_struct
 id|neighbour
 op_star
@@ -4660,7 +4632,6 @@ r_return
 id|neigh
 suffix:semicolon
 )brace
-DECL|function|neigh_hh_init
 r_static
 r_void
 id|neigh_hh_init
@@ -4854,7 +4825,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* This function can be used in contexts, where only old dev_queue_xmit&n;   worked, f.e. if you want to override normal output path (eql, shaper),&n;   but resolution is not made yet.&n; */
-DECL|function|neigh_compat_output
 r_int
 id|neigh_compat_output
 c_func
@@ -4931,7 +4901,6 @@ id|skb
 suffix:semicolon
 )brace
 multiline_comment|/* Slow and careful. */
-DECL|function|neigh_resolve_output
 r_int
 id|neigh_resolve_output
 c_func
@@ -5175,7 +5144,6 @@ id|out
 suffix:semicolon
 )brace
 multiline_comment|/* As fast as possible without hh cache */
-DECL|function|neigh_connected_output
 r_int
 id|neigh_connected_output
 c_func
@@ -5293,7 +5261,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|neigh_proxy_process
 r_static
 r_void
 id|neigh_proxy_process
@@ -5479,7 +5446,6 @@ id|tbl-&gt;proxy_queue.lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|pneigh_enqueue
 r_void
 id|pneigh_enqueue
 c_func
@@ -5622,7 +5588,6 @@ id|tbl-&gt;proxy_queue.lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|neigh_parms_alloc
 r_struct
 id|neigh_parms
 op_star
@@ -5765,7 +5730,6 @@ r_return
 id|p
 suffix:semicolon
 )brace
-DECL|function|neigh_rcu_free_parms
 r_static
 r_void
 id|neigh_rcu_free_parms
@@ -5800,7 +5764,6 @@ id|parms
 )paren
 suffix:semicolon
 )brace
-DECL|function|neigh_parms_release
 r_void
 id|neigh_parms_release
 c_func
@@ -5916,7 +5879,6 @@ l_string|&quot;neigh_parms_release: not found&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|neigh_parms_destroy
 r_void
 id|neigh_parms_destroy
 c_func
@@ -5934,7 +5896,6 @@ id|parms
 )paren
 suffix:semicolon
 )brace
-DECL|function|neigh_table_init
 r_void
 id|neigh_table_init
 c_func
@@ -6244,7 +6205,6 @@ id|neigh_tbl_lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|neigh_table_clear
 r_int
 id|neigh_table_clear
 c_func
@@ -6385,7 +6345,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|neigh_delete
 r_int
 id|neigh_delete
 c_func
@@ -6665,7 +6624,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|neigh_add
 r_int
 id|neigh_add
 c_func
@@ -7119,7 +7077,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|neigh_fill_info
 r_static
 r_int
 id|neigh_fill_info
@@ -7359,7 +7316,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|neigh_dump_table
 r_static
 r_int
 id|neigh_dump_table
@@ -7560,7 +7516,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|neigh_dump_info
 r_int
 id|neigh_dump_info
 c_func
@@ -7725,7 +7680,6 @@ r_return
 id|skb-&gt;len
 suffix:semicolon
 )brace
-DECL|function|neigh_for_each
 r_void
 id|neigh_for_each
 c_func
@@ -7817,7 +7771,6 @@ id|tbl-&gt;lock
 )paren
 suffix:semicolon
 )brace
-DECL|variable|neigh_for_each
 id|EXPORT_SYMBOL
 c_func
 (paren
@@ -7825,7 +7778,6 @@ id|neigh_for_each
 )paren
 suffix:semicolon
 multiline_comment|/* The tbl-&gt;lock must be held as a writer and BH disabled. */
-DECL|function|__neigh_for_each_release
 r_void
 id|__neigh_for_each_release
 c_func
@@ -7956,7 +7908,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|variable|__neigh_for_each_release
 id|EXPORT_SYMBOL
 c_func
 (paren
@@ -7964,7 +7915,6 @@ id|__neigh_for_each_release
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
-DECL|function|neigh_get_first
 r_static
 r_struct
 id|neighbour
