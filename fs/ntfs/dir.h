@@ -38,7 +38,6 @@ id|ntfs_name
 suffix:semicolon
 multiline_comment|/* The little endian Unicode string $I30 as a global constant. */
 r_extern
-r_const
 id|uchar_t
 id|I30
 (braket
