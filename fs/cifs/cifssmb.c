@@ -9838,6 +9838,11 @@ suffix:semicolon
 r_int
 id|bytes_returned
 suffix:semicolon
+id|__u16
+id|params
+comma
+id|byte_count
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -9897,11 +9902,15 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_assign
 l_int|14
 suffix:semicolon
 multiline_comment|/* includes 2 bytes of null string, converted to LE below */
+id|byte_count
+op_assign
+l_int|0
+suffix:semicolon
 id|pSMB-&gt;TotalDataCount
 op_assign
 l_int|0
@@ -10084,18 +10093,18 @@ comma
 id|name_len
 )paren
 suffix:semicolon
-id|pSMB-&gt;ByteCount
+id|byte_count
 op_add_assign
 id|name_len
 suffix:semicolon
 )brace
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_add_assign
 id|name_len
 suffix:semicolon
-id|pSMB-&gt;ByteCount
+id|byte_count
 op_assign
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_plus
 l_int|1
 multiline_comment|/* pad */
@@ -10105,7 +10114,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;TotalParameterCount
+id|params
 )paren
 suffix:semicolon
 id|pSMB-&gt;ParameterCount
@@ -10115,14 +10124,14 @@ suffix:semicolon
 multiline_comment|/* BB improve error handling here */
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|byte_count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|byte_count
 )paren
 suffix:semicolon
 id|rc
