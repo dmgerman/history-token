@@ -13149,6 +13149,7 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* Module management */
 DECL|function|init_mister
+r_static
 r_int
 id|__init
 id|init_mister
