@@ -2081,6 +2081,8 @@ id|drive
 comma
 op_amp
 id|args
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|printk

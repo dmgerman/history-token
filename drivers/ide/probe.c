@@ -1661,6 +1661,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: use ata_status_poll()  --bkz */
 id|ata_busy_poll
 c_func
 (paren
@@ -1968,6 +1969,10 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+id|drive-&gt;current_speed
+op_assign
+id|speed
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
