@@ -249,7 +249,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -591,7 +590,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 id|spin_unlock_irq
