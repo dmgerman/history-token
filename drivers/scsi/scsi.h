@@ -265,7 +265,7 @@ DECL|macro|SCSI_LOG_HLCOMPLETE_BITS
 mdefine_line|#define SCSI_LOG_HLCOMPLETE_BITS          3
 DECL|macro|SCSI_LOG_IOCTL_BITS
 mdefine_line|#define SCSI_LOG_IOCTL_BITS               3
-macro_line|#if CONFIG_SCSI_LOGGING
+macro_line|#ifdef CONFIG_SCSI_LOGGING
 DECL|macro|SCSI_CHECK_LOGGING
 mdefine_line|#define SCSI_CHECK_LOGGING(SHIFT, BITS, LEVEL, CMD)     &bslash;&n;{                                                       &bslash;&n;        unsigned int mask;                              &bslash;&n;                                                        &bslash;&n;        mask = (1 &lt;&lt; (BITS)) - 1;                       &bslash;&n;        if( ((scsi_logging_level &gt;&gt; (SHIFT)) &amp; mask) &gt; (LEVEL) ) &bslash;&n;        {                                               &bslash;&n;                (CMD);                                  &bslash;&n;        }&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|SCSI_SET_LOGGING

@@ -354,6 +354,10 @@ r_void
 op_star
 )paren
 (paren
+r_int
+r_int
+)paren
+(paren
 id|uptr
 op_amp
 l_int|0x7fffffffUL

@@ -1866,6 +1866,11 @@ comma
 id|PAGE_KERNEL_NOCACHE
 )paren
 suffix:semicolon
+id|global_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|agp_gatt_table
 op_assign
 id|gatt

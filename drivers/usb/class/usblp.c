@@ -430,11 +430,6 @@ l_string|&quot;(null)&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-r_extern
-id|devfs_handle_t
-id|usb_devfs_handle
-suffix:semicolon
-multiline_comment|/* /dev/usb dir. */
 multiline_comment|/* Quirks: various printer quirks are handled by this table &amp; its flags. */
 DECL|struct|quirk_printer_struct
 r_struct
@@ -3269,7 +3264,7 @@ suffix:semicolon
 r_char
 id|name
 (braket
-l_int|6
+l_int|10
 )braket
 suffix:semicolon
 multiline_comment|/* Malloc and start initializing usblp structure so we can use it&n;&t; * directly. */
@@ -3642,7 +3637,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;lp%d&quot;
+l_string|&quot;usb/lp%d&quot;
 comma
 id|usblp-&gt;minor
 )paren
@@ -3652,7 +3647,7 @@ op_assign
 id|devfs_register
 c_func
 (paren
-id|usb_devfs_handle
+l_int|NULL
 comma
 id|name
 comma

@@ -46,9 +46,6 @@ multiline_comment|/* we can have up to this number of device plugged in at once 
 DECL|macro|AUER_MAX_DEVICES
 mdefine_line|#define AUER_MAX_DEVICES 16
 macro_line|#endif
-multiline_comment|/* prefix for the device descriptors in /dev/usb */
-DECL|macro|AU_PREFIX
-mdefine_line|#define AU_PREFIX&t;&quot;auer&quot;
 multiline_comment|/* Number of read buffers for each device */
 DECL|macro|AU_RBUFFERS
 mdefine_line|#define AU_RBUFFERS     10
@@ -480,7 +477,7 @@ DECL|member|name
 r_char
 id|name
 (braket
-l_int|16
+l_int|20
 )braket
 suffix:semicolon
 multiline_comment|/* name of the /dev/usb entry */
@@ -577,11 +574,6 @@ id|auerswald_t
 comma
 op_star
 id|pauerswald_t
-suffix:semicolon
-multiline_comment|/* the global usb devfs handle */
-r_extern
-id|devfs_handle_t
-id|usb_devfs_handle
 suffix:semicolon
 multiline_comment|/* array of pointers to our devices that are currently connected */
 DECL|variable|dev_table
@@ -5064,7 +5056,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;open %s as /dev/usb/%s&quot;
+l_string|&quot;open %s as /dev/%s&quot;
 comma
 id|cp-&gt;dev_desc
 comma
@@ -7225,8 +7217,7 @@ id|sprintf
 (paren
 id|cp-&gt;name
 comma
-id|AU_PREFIX
-l_string|&quot;%d&quot;
+l_string|&quot;usb/auer%d&quot;
 comma
 id|dtindex
 )paren
@@ -7253,12 +7244,13 @@ multiline_comment|/* initialize the devfs node for this device and register it *
 id|cp-&gt;devfs
 op_assign
 id|devfs_register
+c_func
 (paren
-id|usb_devfs_handle
+l_int|NULL
 comma
 id|cp-&gt;name
 comma
-id|DEVFS_FL_DEFAULT
+l_int|0
 comma
 id|USB_MAJOR
 comma
@@ -7717,7 +7709,7 @@ id|cp-&gt;mutex
 suffix:semicolon
 id|info
 (paren
-l_string|&quot;device /dev/usb/%s now disconnecting&quot;
+l_string|&quot;device /dev/%s now disconnecting&quot;
 comma
 id|cp-&gt;name
 )paren

@@ -365,6 +365,14 @@ l_int|128
 )brace
 comma
 (brace
+l_int|0x3b
+comma
+id|LVL_2
+comma
+l_int|128
+)brace
+comma
+(brace
 l_int|0x3C
 comma
 id|LVL_2

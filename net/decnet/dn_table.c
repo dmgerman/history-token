@@ -4350,21 +4350,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-"&quot;"
-id|DECnet
-suffix:colon
-id|BUG
-op_logical_neg
-id|Attempt
-id|to
-id|create
-id|routing
-id|table
-id|from
-id|interrupt
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;DECnet: BUG! Attempt to create routing table from interrupt&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

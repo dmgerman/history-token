@@ -1976,7 +1976,7 @@ suffix:semicolon
 r_char
 id|name
 (braket
-l_int|10
+l_int|14
 )braket
 suffix:semicolon
 id|dbg
@@ -2831,7 +2831,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;scanner%d&quot;
+l_string|&quot;usb/scanner%d&quot;
 comma
 id|scn-&gt;scn_minor
 op_minus
@@ -2843,7 +2843,7 @@ op_assign
 id|devfs_register
 c_func
 (paren
-id|usb_devfs_handle
+l_int|NULL
 comma
 id|name
 comma

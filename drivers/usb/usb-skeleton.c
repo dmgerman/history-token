@@ -215,11 +215,6 @@ suffix:semicolon
 multiline_comment|/* locks this structure */
 )brace
 suffix:semicolon
-multiline_comment|/* the global usb devfs handle */
-r_extern
-id|devfs_handle_t
-id|usb_devfs_handle
-suffix:semicolon
 multiline_comment|/* prevent races between open() and disconnect() */
 r_static
 id|DECLARE_MUTEX
@@ -1522,7 +1517,7 @@ suffix:semicolon
 r_char
 id|name
 (braket
-l_int|10
+l_int|14
 )braket
 suffix:semicolon
 multiline_comment|/* See if the device offered us matches what we can accept */
@@ -1897,7 +1892,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;skel%d&quot;
+l_string|&quot;usb/skel%d&quot;
 comma
 id|dev-&gt;minor
 )paren
@@ -1905,8 +1900,9 @@ suffix:semicolon
 id|dev-&gt;devfs
 op_assign
 id|devfs_register
+c_func
 (paren
-id|usb_devfs_handle
+l_int|NULL
 comma
 id|name
 comma

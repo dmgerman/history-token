@@ -17,8 +17,7 @@ id|eeprom_addr
 suffix:semicolon
 DECL|function|eisa_eeprom_llseek
 r_static
-r_int
-r_int
+id|loff_t
 id|eisa_eeprom_llseek
 c_func
 (paren
