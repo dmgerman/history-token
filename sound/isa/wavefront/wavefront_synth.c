@@ -272,7 +272,7 @@ DECL|macro|DPRINT
 mdefine_line|#define DPRINT(cond, ...) &bslash;&n;       if ((dev-&gt;debug &amp; (cond)) == (cond)) { &bslash;&n;&t;     snd_printk (__VA_ARGS__); &bslash;&n;       }
 macro_line|#else
 DECL|macro|DPRINT
-mdefine_line|#define DPRINT(cond, args...) &bslash;&n;       if ((dev-&gt;debug &amp; (cond)) == (cond)) { &bslash;&n;&t;     snd_printk (##args); &bslash;&n;       }
+mdefine_line|#define DPRINT(cond, args...) &bslash;&n;       if ((dev-&gt;debug &amp; (cond)) == (cond)) { &bslash;&n;&t;     snd_printk (args); &bslash;&n;       }
 macro_line|#endif
 macro_line|#else
 DECL|macro|DPRINT
