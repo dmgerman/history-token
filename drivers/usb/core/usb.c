@@ -87,15 +87,8 @@ id|nousb
 suffix:semicolon
 multiline_comment|/* Disable USB when built into kernel image */
 multiline_comment|/* Not honored on modular build */
-DECL|variable|usb_all_devices_rwsem
+r_static
 id|DECLARE_RWSEM
-c_func
-(paren
-id|usb_all_devices_rwsem
-)paren
-suffix:semicolon
-DECL|variable|usb_all_devices_rwsem
-id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_all_devices_rwsem
