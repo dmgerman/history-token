@@ -1938,6 +1938,18 @@ op_eq
 id|id
 )paren
 (brace
+multiline_comment|/* Maybe we didn&squot;t expect a card to be here... */
+r_if
+c_cond
+(paren
+id|es-&gt;eisa_slot_id
+op_eq
+l_int|0xffffffff
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/* this board is not here or it does not &n;&t;&t;&t; * support readid &n;&t;&t;&t; */
 id|printk
 c_func
@@ -2201,9 +2213,7 @@ id|es
 )paren
 )paren
 (brace
-r_return
-op_minus
-l_int|1
+r_continue
 suffix:semicolon
 )brace
 r_if
@@ -2261,7 +2271,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-l_int|0
+id|eh-&gt;num_slots
 suffix:semicolon
 )brace
 eof

@@ -5,6 +5,8 @@ DECL|macro|EISA_SIG_LEN
 mdefine_line|#define EISA_SIG_LEN   8
 DECL|macro|EISA_MAX_SLOTS
 mdefine_line|#define EISA_MAX_SLOTS 8
+DECL|macro|EISA_MAX_RESOURCES
+mdefine_line|#define EISA_MAX_RESOURCES 4
 multiline_comment|/* A few EISA constants/offsets... */
 DECL|macro|EISA_DMA1_STATUS
 mdefine_line|#define EISA_DMA1_STATUS            8
@@ -28,6 +30,12 @@ DECL|macro|EISA_INT2_EDGE_LEVEL
 mdefine_line|#define EISA_INT2_EDGE_LEVEL    0x4D1
 DECL|macro|EISA_VENDOR_ID_OFFSET
 mdefine_line|#define EISA_VENDOR_ID_OFFSET   0xC80
+DECL|macro|EISA_CONFIG_OFFSET
+mdefine_line|#define EISA_CONFIG_OFFSET      0xC84
+DECL|macro|EISA_CONFIG_ENABLED
+mdefine_line|#define EISA_CONFIG_ENABLED         1
+DECL|macro|EISA_CONFIG_FORCED
+mdefine_line|#define EISA_CONFIG_FORCED          2
 multiline_comment|/* The EISA signature, in ASCII form, null terminated */
 DECL|struct|eisa_device_id
 r_struct
@@ -47,7 +55,7 @@ id|driver_data
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* There is not much we can say about an EISA device, apart from&n; * signature, slot number, and base address. dma_mask is set by&n; * default to 32 bits.*/
+multiline_comment|/* There is not much we can say about an EISA device, apart from&n; * signature, slot number, and base address. dma_mask is set by&n; * default to parent device mask..*/
 DECL|struct|eisa_device
 r_struct
 id|eisa_device
@@ -61,6 +69,10 @@ DECL|member|slot
 r_int
 id|slot
 suffix:semicolon
+DECL|member|state
+r_int
+id|state
+suffix:semicolon
 DECL|member|base_addr
 r_int
 r_int
@@ -70,6 +82,9 @@ DECL|member|res
 r_struct
 id|resource
 id|res
+(braket
+id|EISA_MAX_RESOURCES
+)braket
 suffix:semicolon
 DECL|member|dma_mask
 id|u64
@@ -85,6 +100,39 @@ multiline_comment|/* generic device */
 suffix:semicolon
 DECL|macro|to_eisa_device
 mdefine_line|#define to_eisa_device(n) container_of(n, struct eisa_device, dev)
+DECL|function|eisa_get_region_index
+r_static
+r_inline
+r_int
+id|eisa_get_region_index
+(paren
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_int
+r_int
+id|x
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|addr
+suffix:semicolon
+id|x
+op_and_assign
+l_int|0xc00
+suffix:semicolon
+r_return
+(paren
+id|x
+op_rshift
+l_int|12
+)paren
+suffix:semicolon
+)brace
 DECL|struct|eisa_driver
 r_struct
 id|eisa_driver
@@ -195,6 +243,16 @@ r_int
 id|slots
 suffix:semicolon
 multiline_comment|/* Max slot number */
+DECL|member|force_probe
+r_int
+id|force_probe
+suffix:semicolon
+multiline_comment|/* Probe even when no slot 0 */
+DECL|member|dma_mask
+id|u64
+id|dma_mask
+suffix:semicolon
+multiline_comment|/* from bridge device */
 DECL|member|bus_nr
 r_int
 id|bus_nr

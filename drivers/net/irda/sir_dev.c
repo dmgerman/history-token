@@ -698,17 +698,14 @@ op_logical_neg
 id|dev-&gt;netdev
 )paren
 (brace
-id|IRDA_DEBUG
+id|WARNING
 c_func
 (paren
-l_int|0
-comma
 l_string|&quot;%s(), not ready yet!&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* Use WARNING instead of IRDA_DEBUG */
 r_return
 op_minus
 l_int|1
@@ -721,11 +718,9 @@ op_logical_neg
 id|dev-&gt;irlap
 )paren
 (brace
-id|IRDA_DEBUG
+id|WARNING
 c_func
 (paren
-l_int|0
-comma
 l_string|&quot;%s - too early: %p / %d!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -735,7 +730,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-multiline_comment|/* Use WARNING instead of IRDA_DEBUG */
 r_return
 op_minus
 l_int|1
@@ -761,10 +755,11 @@ suffix:semicolon
 id|dev-&gt;stats.rx_dropped
 op_increment
 suffix:semicolon
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_INFO
+l_int|0
+comma
 l_string|&quot;%s; rx-drop: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1551,7 +1546,6 @@ id|dev-&gt;rx_buff.head
 op_assign
 id|dev-&gt;rx_buff.skb-&gt;data
 suffix:semicolon
-multiline_comment|/* No need to memset the buffer, unless you are really pedantic */
 id|dev-&gt;tx_buff.head
 op_assign
 id|kmalloc
@@ -1587,17 +1581,6 @@ suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
-suffix:semicolon
-multiline_comment|/* Hu ??? This should not be here, Martin ? */
-id|memset
-c_func
-(paren
-id|dev-&gt;tx_buff.head
-comma
-l_int|0
-comma
-id|dev-&gt;tx_buff.truesize
-)paren
 suffix:semicolon
 )brace
 id|dev-&gt;tx_buff.data
@@ -1805,10 +1788,11 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_INFO
+l_int|2
+comma
 l_string|&quot;%s - done, speed = %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1889,15 +1873,7 @@ id|sir_driver
 op_star
 id|drv
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
+singleline_comment|//&t;IRDA_DEBUG(0, &quot;%s&bslash;n&quot;, __FUNCTION__);
 id|netif_stop_queue
 c_func
 (paren
@@ -2099,10 +2075,11 @@ id|sir_dev
 op_star
 id|dev
 suffix:semicolon
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_INFO
+l_int|0
+comma
 l_string|&quot;%s - %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -2146,12 +2123,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;IrDA: Can&squot;t allocate memory for &quot;
-l_string|&quot;IrDA control block!&bslash;n&quot;
+l_string|&quot;%s - Can&squot;t allocate memory for IrDA control block!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_goto
@@ -2391,10 +2368,11 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_INFO
+l_int|0
+comma
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|__FUNCTION__
