@@ -3243,6 +3243,20 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|emu-&gt;revision
+op_eq
+l_int|4
+)paren
+(brace
+multiline_comment|/*  FIXME - Audigy 2 ZS detection */
+id|emu-&gt;spk71
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|emu-&gt;fx8010.fxbus_mask
 op_assign
 l_int|0x303f

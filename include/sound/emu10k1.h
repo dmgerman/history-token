@@ -1885,8 +1885,14 @@ DECL|member|rear_ac97
 id|rear_ac97
 suffix:colon
 l_int|1
-suffix:semicolon
+comma
 multiline_comment|/* rear channels are on AC&squot;97 */
+DECL|member|spk71
+id|spk71
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 7.1 configuration (Audigy 2 ZS) */
 DECL|member|audigy
 r_int
 r_int
@@ -2038,11 +2044,6 @@ DECL|member|pcm_efx
 id|snd_pcm_t
 op_star
 id|pcm_efx
-suffix:semicolon
-DECL|member|pcm_fx8010
-id|snd_pcm_t
-op_star
-id|pcm_fx8010
 suffix:semicolon
 DECL|member|synth_lock
 id|spinlock_t
@@ -3066,6 +3067,10 @@ DECL|macro|FXBUS_MIDI_REVERB
 mdefine_line|#define FXBUS_MIDI_REVERB&t;0x0c
 DECL|macro|FXBUS_MIDI_CHORUS
 mdefine_line|#define FXBUS_MIDI_CHORUS&t;0x0d
+DECL|macro|FXBUS_PCM_LEFT_SIDE
+mdefine_line|#define FXBUS_PCM_LEFT_SIDE&t;0x0e
+DECL|macro|FXBUS_PCM_RIGHT_SIDE
+mdefine_line|#define FXBUS_PCM_RIGHT_SIDE&t;0x0f
 DECL|macro|FXBUS_PT_LEFT
 mdefine_line|#define FXBUS_PT_LEFT&t;&t;0x14
 DECL|macro|FXBUS_PT_RIGHT
@@ -3184,8 +3189,10 @@ DECL|macro|A_EXTOUT_ACENTER
 mdefine_line|#define A_EXTOUT_ACENTER&t;0x0a&t;/* analog center */
 DECL|macro|A_EXTOUT_ALFE
 mdefine_line|#define A_EXTOUT_ALFE&t;&t;0x0b&t;/* analog LFE */
-multiline_comment|/* 0x0c ?? */
-multiline_comment|/* 0x0d ?? */
+DECL|macro|A_EXTOUT_ASIDE_L
+mdefine_line|#define A_EXTOUT_ASIDE_L&t;0x0c&t;/* analog side left  - Audigy 2 ZS */
+DECL|macro|A_EXTOUT_ASIDE_R
+mdefine_line|#define A_EXTOUT_ASIDE_R&t;0x0d&t;/*             right - Audigy 2 ZS */
 DECL|macro|A_EXTOUT_AREAR_L
 mdefine_line|#define A_EXTOUT_AREAR_L&t;0x0e&t;/* analog rear left */
 DECL|macro|A_EXTOUT_AREAR_R
