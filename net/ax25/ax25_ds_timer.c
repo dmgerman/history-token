@@ -592,7 +592,7 @@ id|SOCK_DEAD
 )paren
 suffix:semicolon
 )brace
-id|bh_lock_sock
+id|bh_unlock_sock
 c_func
 (paren
 id|ax25-&gt;sk
