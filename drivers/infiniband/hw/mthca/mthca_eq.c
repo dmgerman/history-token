@@ -41,10 +41,11 @@ DECL|member|logsize_usrpage
 id|u32
 id|logsize_usrpage
 suffix:semicolon
-DECL|member|pd
+DECL|member|tavor_pd
 id|u32
-id|pd
+id|tavor_pd
 suffix:semicolon
+multiline_comment|/* reserved for Arbel */
 DECL|member|reserved1
 id|u8
 id|reserved1
@@ -56,10 +57,11 @@ DECL|member|intr
 id|u8
 id|intr
 suffix:semicolon
-DECL|member|lost_count
+DECL|member|arbel_pd
 id|u32
-id|lost_count
+id|arbel_pd
 suffix:semicolon
+multiline_comment|/* lost_count for Tavor */
 DECL|member|lkey
 id|u32
 id|lkey
@@ -115,6 +117,8 @@ DECL|macro|MTHCA_EQ_STATE_FIRED
 mdefine_line|#define MTHCA_EQ_STATE_FIRED        ( 2 &lt;&lt;  8)
 DECL|macro|MTHCA_EQ_STATE_ALWAYS_ARMED
 mdefine_line|#define MTHCA_EQ_STATE_ALWAYS_ARMED ( 3 &lt;&lt;  8)
+DECL|macro|MTHCA_EQ_STATE_ARBEL
+mdefine_line|#define MTHCA_EQ_STATE_ARBEL        ( 8 &lt;&lt;  8)
 r_enum
 (brace
 DECL|enumerator|MTHCA_EVENT_TYPE_COMP
@@ -1832,12 +1836,19 @@ op_or
 id|MTHCA_EQ_FLAG_TR
 )paren
 suffix:semicolon
-id|eq_context-&gt;start
-op_assign
-id|cpu_to_be64
+r_if
+c_cond
+(paren
+id|dev-&gt;hca_type
+op_eq
+id|ARBEL_NATIVE
+)paren
+id|eq_context-&gt;flags
+op_or_assign
+id|cpu_to_be32
 c_func
 (paren
-l_int|0
+id|MTHCA_EQ_STATE_ARBEL
 )paren
 suffix:semicolon
 id|eq_context-&gt;logsize_usrpage
@@ -1856,11 +1867,17 @@ l_int|1
 )paren
 op_lshift
 l_int|24
-op_or
-id|dev-&gt;driver_uar.index
 )paren
 suffix:semicolon
-id|eq_context-&gt;pd
+r_if
+c_cond
+(paren
+id|dev-&gt;hca_type
+op_eq
+id|ARBEL_NATIVE
+)paren
+(brace
+id|eq_context-&gt;arbel_pd
 op_assign
 id|cpu_to_be32
 c_func
@@ -1868,6 +1885,26 @@ c_func
 id|dev-&gt;driver_pd.pd_num
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|eq_context-&gt;logsize_usrpage
+op_or_assign
+id|cpu_to_be32
+c_func
+(paren
+id|dev-&gt;driver_uar.index
+)paren
+suffix:semicolon
+id|eq_context-&gt;tavor_pd
+op_assign
+id|cpu_to_be32
+c_func
+(paren
+id|dev-&gt;driver_pd.pd_num
+)paren
+suffix:semicolon
+)brace
 id|eq_context-&gt;intr
 op_assign
 id|intr
