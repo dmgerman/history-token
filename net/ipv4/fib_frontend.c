@@ -2629,6 +2629,14 @@ c_func
 id|ifa
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH
+id|fib_sync_up
+c_func
+(paren
+id|ifa-&gt;ifa_dev-&gt;dev
+)paren
+suffix:semicolon
+macro_line|#endif
 id|rt_cache_flush
 c_func
 (paren
