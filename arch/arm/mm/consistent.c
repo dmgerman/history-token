@@ -333,6 +333,7 @@ id|c
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This allocates one page of cache-coherent memory space and returns&n; * both the virtual and a &quot;dma&quot; address to that space.&n; */
+r_static
 DECL|function|consistent_alloc
 r_void
 op_star
@@ -654,13 +655,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|variable|consistent_alloc
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|consistent_alloc
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Since we have the DMA mask available to us here, we could try to do&n; * a normal allocation, and only fall back to a &quot;DMA&quot; allocation if the&n; * resulting bus address does not satisfy the dma_mask requirements.&n; */
 r_void
 op_star
@@ -782,17 +776,22 @@ id|dma_alloc_writecombine
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * free a page as defined by the above mapping.&n; */
-DECL|function|consistent_free
+DECL|function|dma_free_coherent
 r_void
-id|consistent_free
+id|dma_free_coherent
 c_func
 (paren
-r_void
+r_struct
+id|device
 op_star
-id|vaddr
+id|dev
 comma
 r_int
 id|size
+comma
+r_void
+op_star
+id|cpu_addr
 comma
 id|dma_addr_t
 id|handle
@@ -840,7 +839,7 @@ comma
 r_int
 r_int
 )paren
-id|vaddr
+id|cpu_addr
 )paren
 suffix:semicolon
 r_if
@@ -1055,11 +1054,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|consistent_free
+DECL|variable|dma_free_coherent
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|consistent_free
+id|dma_free_coherent
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Initialise the consistent memory allocation.&n; */
