@@ -3227,16 +3227,7 @@ id|PAGE_CACHE_SHIFT
 op_plus
 id|to
 suffix:semicolon
-r_struct
-id|cifsFileInfo
-op_star
-id|open_file
-suffix:semicolon
-r_struct
-id|cifs_sb_info
-op_star
-id|cifs_sb
-suffix:semicolon
+multiline_comment|/* struct cifsFileInfo *open_file;&n;&t;struct cifs_sb_info *cifs_sb; */
 id|xid
 op_assign
 id|GetXid
@@ -3250,15 +3241,11 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;commit write for page %p up to position %ld or 0x%lx for %d or 0x%x bytes&quot;
+l_string|&quot;commit write for page %p up to position %lld for %d&quot;
 comma
 id|page
 comma
 id|position
-comma
-id|position
-comma
-id|to
 comma
 id|to
 )paren
@@ -4337,10 +4324,10 @@ r_if
 c_cond
 (paren
 id|contig_pages
+op_plus
+id|i
 OG
 id|num_pages
-op_minus
-id|i
 )paren
 (brace
 multiline_comment|/*&t;&t;&t;cERROR(1,(&quot;reducing contig_pages from %d with i: %d&quot;,contig_pages,i));*/
@@ -4580,6 +4567,9 @@ r_if
 c_cond
 (paren
 (paren
+r_int
+)paren
+(paren
 id|bytes_read
 op_amp
 id|PAGE_CACHE_MASK
@@ -4620,7 +4610,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;No bytes read (%d) at offset %d . Cleaning remaining pages from readahead list&quot;
+l_string|&quot;No bytes read (%d) at offset %lld . Cleaning remaining pages from readahead list&quot;
 comma
 id|bytes_read
 comma

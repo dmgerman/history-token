@@ -1625,7 +1625,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In read_wrapper size %d at %d&quot;
+l_string|&quot;In read_wrapper size %d at %lld&quot;
 comma
 id|read_size
 comma
@@ -1757,7 +1757,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In write_wrapper size %d at %d&quot;
+l_string|&quot;In write_wrapper size %d at %lld&quot;
 comma
 id|write_size
 comma
