@@ -1,4 +1,4 @@
-multiline_comment|/* linux/drivers/i2c/busses/i2c-s3c2410.c&n; *&n; * Copyright (C) 2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 I2C Controller&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
+multiline_comment|/* linux/drivers/i2c/busses/i2c-s3c2410.c&n; *&n; * Copyright (C) 2004,2005 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 I2C Controller&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -517,6 +517,17 @@ id|stat
 op_or_assign
 id|S3C2410_IICSTAT_MASTER_TX
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|msg-&gt;flags
+op_amp
+id|I2C_M_REV_DIR_ADDR
+)paren
+id|addr
+op_xor_assign
+l_int|1
+suffix:semicolon
 singleline_comment|// todo - check for wether ack wanted or not
 id|s3c24xx_i2c_enable_ack
 c_func
@@ -842,7 +853,7 @@ id|I2C_M_IGNORE_NAK
 )paren
 (brace
 multiline_comment|/* ack was not received... */
-id|dev_err
+id|dev_dbg
 c_func
 (paren
 id|i2c-&gt;dev
@@ -1734,6 +1745,27 @@ op_minus
 id|EREMOTEIO
 suffix:semicolon
 )brace
+multiline_comment|/* declare our i2c functionality */
+DECL|function|s3c24xx_i2c_func
+r_static
+id|u32
+id|s3c24xx_i2c_func
+c_func
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|adap
+)paren
+(brace
+r_return
+id|I2C_FUNC_I2C
+op_or
+id|I2C_FUNC_SMBUS_EMUL
+op_or
+id|I2C_FUNC_PROTOCOL_MANGLING
+suffix:semicolon
+)brace
 multiline_comment|/* i2c bus registration info */
 DECL|variable|s3c24xx_i2c_algorithm
 r_static
@@ -1751,6 +1783,11 @@ dot
 id|master_xfer
 op_assign
 id|s3c24xx_i2c_xfer
+comma
+dot
+id|functionality
+op_assign
+id|s3c24xx_i2c_func
 comma
 )brace
 suffix:semicolon
@@ -1783,6 +1820,11 @@ dot
 id|name
 op_assign
 l_string|&quot;s3c2410-i2c&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|algo
