@@ -4466,6 +4466,13 @@ c_func
 id|scmd-&gt;device
 )paren
 op_logical_and
+op_logical_neg
+id|blk_noretry_request
+c_func
+(paren
+id|scmd-&gt;request
+)paren
+op_logical_and
 (paren
 op_increment
 id|scmd-&gt;retries
