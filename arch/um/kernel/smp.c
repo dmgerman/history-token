@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &quot;linux/config.h&quot;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &quot;linux/sched.h&quot;
+macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/threads.h&quot;
 macro_line|#include &quot;linux/interrupt.h&quot;
 macro_line|#include &quot;linux/err.h&quot;
@@ -24,6 +25,13 @@ id|cpumask_of_cpu
 c_func
 (paren
 l_int|0
+)paren
+suffix:semicolon
+DECL|variable|cpu_online_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_online_map
 )paren
 suffix:semicolon
 multiline_comment|/* Per CPU bogomips and other parameters&n; * The only piece used here is the ipi pipe, which is set before SMP is&n; * started and never changed.&n; */

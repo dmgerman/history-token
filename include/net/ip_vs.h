@@ -876,27 +876,10 @@ DECL|member|protocol
 id|__u16
 id|protocol
 suffix:semicolon
-DECL|member|minhlen
-r_int
-id|minhlen
-suffix:semicolon
-DECL|member|minhlen_icmp
-r_int
-id|minhlen_icmp
-suffix:semicolon
 DECL|member|dont_defrag
 r_int
 id|dont_defrag
 suffix:semicolon
-DECL|member|skip_nonexisting
-r_int
-id|skip_nonexisting
-suffix:semicolon
-DECL|member|slave
-r_int
-id|slave
-suffix:semicolon
-multiline_comment|/* if controlled by others */
 DECL|member|appcnt
 id|atomic_t
 id|appcnt
@@ -1358,7 +1341,7 @@ id|atomic_t
 id|in_pkts
 suffix:semicolon
 multiline_comment|/* incoming packet counter */
-multiline_comment|/* packet transmitter for different forwarding methods */
+multiline_comment|/* packet transmitter for different forwarding methods.  If it&n;&t;   mangles the packet, it must return NF_DROP or NF_STOLEN, otherwise&n;&t;   this must be changed to a sk_buff **.&n;&t; */
 DECL|member|packet_xmit
 r_int
 (paren

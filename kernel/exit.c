@@ -1215,6 +1215,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|daemonize
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|daemonize
+)paren
+suffix:semicolon
 DECL|function|close_files
 r_static
 r_inline
@@ -1645,6 +1652,13 @@ id|tsk
 )paren
 suffix:semicolon
 )brace
+DECL|variable|exit_fs
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|exit_fs
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Turn us into a lazy TLB process if we&n; * aren&squot;t already..&n; */
 DECL|function|__exit_mm
 r_static
@@ -1793,6 +1807,13 @@ id|tsk
 )paren
 suffix:semicolon
 )brace
+DECL|variable|exit_mm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|exit_mm
+)paren
+suffix:semicolon
 DECL|function|choose_new_parent
 r_static
 r_inline
@@ -2934,6 +2955,13 @@ id|code
 )paren
 suffix:semicolon
 )brace
+DECL|variable|complete_and_exit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|complete_and_exit
+)paren
+suffix:semicolon
 DECL|function|sys_exit
 id|asmlinkage
 r_int
@@ -3050,6 +3078,13 @@ id|PIDTYPE_TGID
 )paren
 suffix:semicolon
 )brace
+DECL|variable|next_thread
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|next_thread
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Take down every thread in the group.  This is called by fatal signals&n; * as well as by sys_exit_group (below).&n; */
 id|NORET_TYPE
 r_void

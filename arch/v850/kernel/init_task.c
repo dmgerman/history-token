@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * arch/v850/kernel/init_task.c -- Initial task/thread structures&n; *&n; *  Copyright (C) 2002,03  NEC Electronics Corporation&n; *  Copyright (C) 2002,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/init_task.h&gt;
@@ -55,6 +56,13 @@ id|INIT_MM
 id|init_mm
 )paren
 suffix:semicolon
+DECL|variable|init_mm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_mm
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Initial task structure.&n; *&n; * All other task structs will be allocated on slabs in fork.c&n; */
 DECL|variable|init_task
 r_struct
@@ -62,6 +70,13 @@ id|task_struct
 id|init_task
 op_assign
 id|INIT_TASK
+(paren
+id|init_task
+)paren
+suffix:semicolon
+DECL|variable|init_task
+id|EXPORT_SYMBOL
+c_func
 (paren
 id|init_task
 )paren

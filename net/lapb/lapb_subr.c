@@ -276,7 +276,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This routine is the centralised routine for parsing the control&n; *&t;information for the different frame formats.&n; */
 DECL|function|lapb_decode
-r_void
+r_int
 id|lapb_decode
 c_func
 (paren
@@ -328,6 +328,23 @@ l_int|2
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* We always need to look at 2 bytes, sometimes we need&n;&t; * to look at 3 and those cases are handled below.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pskb_may_pull
+c_func
+(paren
+id|skb
+comma
+l_int|2
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -506,6 +523,22 @@ id|LAPB_S
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pskb_may_pull
+c_func
+(paren
+id|skb
+comma
+l_int|2
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * I frame - carries NR/NS/PF&n;&t;&t;&t; */
 id|frame-&gt;type
 op_assign
@@ -591,6 +624,22 @@ op_eq
 l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pskb_may_pull
+c_func
+(paren
+id|skb
+comma
+l_int|2
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * S frame - take out PF/NR&n;&t;&t;&t; */
 id|frame-&gt;type
 op_assign
@@ -877,6 +926,9 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* &n; *&t;This routine is called when the HDLC layer internally  generates a&n; *&t;command or  response  for  the remote machine ( eg. RR, UA etc. ). &n; *&t;Only supervisory or unnumbered frames are processed, FRMRs are handled&n; *&t;by lapb_transmit_frmr below.&n; */
 DECL|function|lapb_send_control

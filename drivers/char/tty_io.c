@@ -97,6 +97,13 @@ op_assign
 id|INIT_C_CC
 )brace
 suffix:semicolon
+DECL|variable|tty_std_termios
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tty_std_termios
+)paren
+suffix:semicolon
 DECL|variable|tty_drivers
 id|LIST_HEAD
 c_func
@@ -8663,6 +8670,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|tty_flip_buffer_push
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tty_flip_buffer_push
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This subroutine initializes a tty structure.&n; */
 DECL|function|initialize_tty_struct
 r_static
@@ -10017,6 +10031,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|tty_register_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tty_register_driver
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Called by a tty driver to unregister itself.&n; */
 DECL|function|tty_unregister_driver
 r_int
@@ -10211,6 +10232,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|tty_unregister_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tty_unregister_driver
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Initialize the console device. This is called *early*, so&n; * we can&squot;t necessarily depend on lots of kernel help here.&n; * Just do some early initializations, and do the complex setup&n; * later.&n; */
 DECL|function|console_init
 r_void

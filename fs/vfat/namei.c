@@ -247,7 +247,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
 r_if
@@ -265,7 +265,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
 )brace
@@ -3500,7 +3500,7 @@ id|slots
 )paren
 op_increment
 suffix:semicolon
-id|strncpy
+id|memcpy
 c_func
 (paren
 id|de-&gt;name
@@ -4558,8 +4558,6 @@ suffix:semicolon
 multiline_comment|/* remove the shortname */
 id|dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
-suffix:semicolon
 id|dir-&gt;i_atime
 op_assign
 id|CURRENT_TIME
@@ -4766,8 +4764,6 @@ l_int|0
 suffix:semicolon
 id|dentry-&gt;d_inode-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
-suffix:semicolon
 id|dentry-&gt;d_inode-&gt;i_atime
 op_assign
 id|CURRENT_TIME
@@ -4903,8 +4899,6 @@ l_int|0
 suffix:semicolon
 id|dentry-&gt;d_inode-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
-suffix:semicolon
 id|dentry-&gt;d_inode-&gt;i_atime
 op_assign
 id|CURRENT_TIME
@@ -5150,8 +5144,6 @@ l_int|0
 suffix:semicolon
 id|inode-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
-suffix:semicolon
 id|inode-&gt;i_atime
 op_assign
 id|CURRENT_TIME

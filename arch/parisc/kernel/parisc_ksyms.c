@@ -311,13 +311,6 @@ c_func
 id|flush_kernel_icache_range_asm
 )paren
 suffix:semicolon
-DECL|variable|__flush_dcache_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__flush_dcache_page
-)paren
-suffix:semicolon
 DECL|variable|flush_all_caches
 id|EXPORT_SYMBOL
 c_func

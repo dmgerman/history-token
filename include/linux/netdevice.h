@@ -403,6 +403,11 @@ c_func
 (paren
 id|LL_MAX_HEADER
 )paren
+op_div
+r_sizeof
+(paren
+r_int
+)paren
 )braket
 suffix:semicolon
 )brace
@@ -1325,8 +1330,6 @@ mdefine_line|#define SET_MODULE_OWNER(dev) do { } while (0)
 multiline_comment|/* Set the sysfs physical device reference for the network logical device&n; * if set prior to registration will cause a symlink during initialization.&n; */
 DECL|macro|SET_NETDEV_DEV
 mdefine_line|#define SET_NETDEV_DEV(net, pdev)&t;((net)-&gt;class_dev.dev = (pdev))
-DECL|macro|PKT_CAN_SHARE_SKB
-mdefine_line|#define PKT_CAN_SHARE_SKB&t;((void*)1)
 DECL|struct|packet_type
 r_struct
 id|packet_type
@@ -1364,12 +1367,11 @@ id|packet_type
 op_star
 )paren
 suffix:semicolon
-DECL|member|data
+DECL|member|af_packet_priv
 r_void
 op_star
-id|data
+id|af_packet_priv
 suffix:semicolon
-multiline_comment|/* Private to the packet type&t;&t;*/
 DECL|member|list
 r_struct
 id|list_head

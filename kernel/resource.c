@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&t;linux/kernel/resource.c&n; *&n; * Copyright (C) 1999&t;Linus Torvalds&n; * Copyright (C) 1999&t;Martin Mares &lt;mj@ucw.cz&gt;&n; *&n; * Arbitrary resource management.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -38,6 +39,13 @@ id|IORESOURCE_IO
 comma
 )brace
 suffix:semicolon
+DECL|variable|ioport_resource
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ioport_resource
+)paren
+suffix:semicolon
 DECL|variable|iomem_resource
 r_struct
 id|resource
@@ -66,6 +74,13 @@ op_assign
 id|IORESOURCE_MEM
 comma
 )brace
+suffix:semicolon
+DECL|variable|iomem_resource
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iomem_resource
+)paren
 suffix:semicolon
 DECL|variable|resource_lock
 r_static
@@ -892,6 +907,13 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|request_resource
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_resource
+)paren
+suffix:semicolon
 DECL|function|release_resource
 r_int
 id|release_resource
@@ -932,6 +954,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|release_resource
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|release_resource
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Find empty slot in the resource tree given range and alignment.&n; */
 DECL|function|find_resource
 r_static
@@ -1282,6 +1311,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|allocate_resource
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|allocate_resource
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This is compatibility stuff for IO resources.&n; *&n; * Note how this, unlike the above, knows about&n; * the IO flag meanings (busy etc).&n; *&n; * Request-region creates a new busy region.&n; *&n; * Check-region returns non-zero if the area is already busy&n; *&n; * Release-region releases a matching busy region.&n; */
 DECL|function|__request_region
 r_struct
@@ -1454,6 +1490,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|variable|__request_region
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__request_region
+)paren
+suffix:semicolon
 DECL|function|__check_region
 r_int
 id|__deprecated
@@ -1519,6 +1562,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|__check_region
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__check_region
+)paren
+suffix:semicolon
 DECL|function|__release_region
 r_void
 id|__release_region
@@ -1660,6 +1710,13 @@ id|end
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__release_region
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__release_region
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Called from init/main.c to reserve IO ports.&n; */
 DECL|macro|MAXRESERVE
 mdefine_line|#define MAXRESERVE 4

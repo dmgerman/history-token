@@ -936,8 +936,6 @@ DECL|macro|valid_swaphandles
 mdefine_line|#define valid_swaphandles(swp, off)&t;&t;0
 DECL|macro|can_share_swap_page
 mdefine_line|#define can_share_swap_page(p)&t;&t;&t;0
-DECL|macro|remove_exclusive_swap_page
-mdefine_line|#define remove_exclusive_swap_page(p)&t;&t;0
 DECL|macro|move_to_swap_cache
 mdefine_line|#define move_to_swap_cache(p, swp)&t;&t;1
 DECL|macro|move_from_swap_cache
@@ -946,6 +944,23 @@ DECL|macro|__delete_from_swap_cache
 mdefine_line|#define __delete_from_swap_cache(p)&t;&t;/*NOTHING*/
 DECL|macro|delete_from_swap_cache
 mdefine_line|#define delete_from_swap_cache(p)&t;&t;/*NOTHING*/
+DECL|function|remove_exclusive_swap_page
+r_static
+r_inline
+r_int
+id|remove_exclusive_swap_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|p
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|get_swap_page
 r_static
 r_inline

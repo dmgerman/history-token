@@ -10240,6 +10240,13 @@ r_struct
 id|in6_addr
 id|maddr
 suffix:semicolon
+multiline_comment|/* Deactivate timers */
+id|ipv6_mc_down
+c_func
+(paren
+id|idev
+)paren
+suffix:semicolon
 multiline_comment|/* Delete all-nodes address. */
 id|ipv6_addr_all_nodes
 c_func

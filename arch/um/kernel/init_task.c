@@ -1,6 +1,7 @@
 multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/mm.h&quot;
+macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/init_task.h&quot;
 macro_line|#include &quot;linux/version.h&quot;
@@ -47,6 +48,13 @@ c_func
 id|init_signals
 )paren
 suffix:semicolon
+DECL|variable|init_mm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_mm
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Initial task structure.&n; *&n; * All other task structs will be allocated on slabs in fork.c&n; */
 DECL|variable|init_task
 r_struct
@@ -54,6 +62,13 @@ id|task_struct
 id|init_task
 op_assign
 id|INIT_TASK
+c_func
+(paren
+id|init_task
+)paren
+suffix:semicolon
+DECL|variable|init_task
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|init_task

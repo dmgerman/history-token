@@ -2,6 +2,7 @@ multiline_comment|/*&n; * mm/readahead.c - address_space-level file readahead.&n
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
@@ -28,6 +29,13 @@ op_assign
 l_int|0
 comma
 )brace
+suffix:semicolon
+DECL|variable|default_backing_dev_info
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|default_backing_dev_info
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Initialise a struct file&squot;s readahead state&n; */
 r_void
@@ -65,6 +73,13 @@ op_assign
 id|mapping-&gt;backing_dev_info-&gt;ra_pages
 suffix:semicolon
 )brace
+DECL|variable|file_ra_state_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|file_ra_state_init
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Return max readahead size for this inode in number-of-pages.&n; */
 DECL|function|get_max_readahead
 r_static
@@ -308,6 +323,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|read_cache_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|read_cache_pages
+)paren
+suffix:semicolon
 DECL|function|read_pages
 r_static
 r_int

@@ -1,16 +1,20 @@
 multiline_comment|/*&n; * v4l2 device driver for philips saa7134 based TV cards&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/version.h&gt;
+DECL|macro|SAA7134_VERSION_CODE
+mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,9)
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
+macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#ifdef CONFIG_VIDEO_IR
+macro_line|#include &quot;ir-common.h&quot;
+macro_line|#endif
 macro_line|#include &lt;media/video-buf.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &lt;media/id.h&gt;
-DECL|macro|SAA7134_VERSION_CODE
-mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,8)
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
 macro_line|# define TRUE (1==1)
@@ -316,6 +320,16 @@ DECL|macro|SAA7134_BOARD_ELSA
 mdefine_line|#define SAA7134_BOARD_ELSA             14
 DECL|macro|SAA7134_BOARD_ELSA_500TV
 mdefine_line|#define SAA7134_BOARD_ELSA_500TV       15
+DECL|macro|SAA7134_BOARD_ASUSTeK_TVFM7134
+mdefine_line|#define SAA7134_BOARD_ASUSTeK_TVFM7134 16
+DECL|macro|SAA7134_BOARD_VA1000POWER
+mdefine_line|#define SAA7134_BOARD_VA1000POWER      17
+DECL|macro|SAA7134_BOARD_BMK_MPEX_NOTUNER
+mdefine_line|#define SAA7134_BOARD_BMK_MPEX_NOTUNER 18
+DECL|macro|SAA7134_BOARD_VIDEOMATE_TV
+mdefine_line|#define SAA7134_BOARD_VIDEOMATE_TV     19
+DECL|macro|SAA7134_BOARD_CRONOS_PLUS
+mdefine_line|#define SAA7134_BOARD_CRONOS_PLUS      20
 DECL|macro|SAA7134_INPUT_MAX
 mdefine_line|#define SAA7134_INPUT_MAX 8
 DECL|struct|saa7134_input
@@ -506,6 +520,11 @@ DECL|member|scan2
 r_int
 r_int
 id|scan2
+suffix:semicolon
+DECL|member|mode
+r_int
+r_int
+id|mode
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -700,6 +719,10 @@ r_struct
 id|saa7134_pgtable
 id|pt_ts
 suffix:semicolon
+DECL|member|started
+r_int
+id|started
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* oss dsp status */
@@ -813,6 +836,47 @@ id|read_count
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_VIDEO_IR
+multiline_comment|/* IR input */
+DECL|struct|saa7134_ir
+r_struct
+id|saa7134_ir
+(brace
+DECL|member|dev
+r_struct
+id|input_dev
+id|dev
+suffix:semicolon
+DECL|member|ir
+r_struct
+id|ir_input_state
+id|ir
+suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|member|mask_keycode
+id|u32
+id|mask_keycode
+suffix:semicolon
+DECL|member|mask_keydown
+id|u32
+id|mask_keydown
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* global device status */
 DECL|struct|saa7134_dev
 r_struct
@@ -841,21 +905,25 @@ suffix:semicolon
 DECL|member|video_dev
 r_struct
 id|video_device
+op_star
 id|video_dev
 suffix:semicolon
 DECL|member|ts_dev
 r_struct
 id|video_device
+op_star
 id|ts_dev
 suffix:semicolon
 DECL|member|radio_dev
 r_struct
 id|video_device
+op_star
 id|radio_dev
 suffix:semicolon
 DECL|member|vbi_dev
 r_struct
 id|video_device
+op_star
 id|vbi_dev
 suffix:semicolon
 DECL|member|oss
@@ -868,6 +936,19 @@ r_struct
 id|saa7134_ts
 id|ts
 suffix:semicolon
+multiline_comment|/* infrared remote */
+DECL|member|has_remote
+r_int
+id|has_remote
+suffix:semicolon
+macro_line|#ifdef CONFIG_VIDEO_IR
+DECL|member|remote
+r_struct
+id|saa7134_ir
+op_star
+id|remote
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* pci i/o */
 DECL|member|name
 r_char
@@ -910,6 +991,11 @@ DECL|member|tuner_type
 r_int
 r_int
 id|tuner_type
+suffix:semicolon
+DECL|member|gpio_value
+r_int
+r_int
+id|gpio_value
 suffix:semicolon
 multiline_comment|/* i2c i/o */
 DECL|member|i2c_adap
@@ -1093,8 +1179,10 @@ DECL|macro|saa_setb
 mdefine_line|#define saa_setb(reg,bit)          saa_andorb((reg),(bit),(bit))
 DECL|macro|saa_clearb
 mdefine_line|#define saa_clearb(reg,bit)        saa_andorb((reg),(bit),0)
+singleline_comment|//#define saa_wait(d) { if (need_resched()) schedule(); else udelay(d);}
 DECL|macro|saa_wait
-mdefine_line|#define saa_wait(d) { if (need_resched()) schedule(); else udelay(d);}
+mdefine_line|#define saa_wait(d) { udelay(d); }
+singleline_comment|//#define saa_wait(d) { schedule_timeout(HZ*d/1000 ?:1); }
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* saa7134-core.c                                              */
 r_extern
@@ -1421,7 +1509,17 @@ id|arg
 )paren
 suffix:semicolon
 r_int
-id|saa7134_video_init
+id|saa7134_video_init1
+c_func
+(paren
+r_struct
+id|saa7134_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_int
+id|saa7134_video_init2
 c_func
 (paren
 r_struct
@@ -1472,7 +1570,7 @@ id|video_device
 id|saa7134_ts_template
 suffix:semicolon
 r_int
-id|saa7134_ts_init
+id|saa7134_ts_init1
 c_func
 (paren
 r_struct
@@ -1518,7 +1616,7 @@ id|video_device
 id|saa7134_vbi_template
 suffix:semicolon
 r_int
-id|saa7134_vbi_init
+id|saa7134_vbi_init1
 c_func
 (paren
 r_struct
@@ -1610,7 +1708,7 @@ id|dev
 )paren
 suffix:semicolon
 r_int
-id|saa7134_tvaudio_init
+id|saa7134_tvaudio_init2
 c_func
 (paren
 r_struct
@@ -1668,7 +1766,7 @@ id|file_operations
 id|saa7134_mixer_fops
 suffix:semicolon
 r_int
-id|saa7134_oss_init
+id|saa7134_oss_init1
 c_func
 (paren
 r_struct
@@ -1699,6 +1797,38 @@ comma
 r_int
 r_int
 id|status
+)paren
+suffix:semicolon
+multiline_comment|/* ----------------------------------------------------------- */
+multiline_comment|/* saa7134-input.c                                             */
+r_int
+id|saa7134_input_init1
+c_func
+(paren
+r_struct
+id|saa7134_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_void
+id|saa7134_input_fini
+c_func
+(paren
+r_struct
+id|saa7134_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_void
+id|saa7134_input_irq
+c_func
+(paren
+r_struct
+id|saa7134_dev
+op_star
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */

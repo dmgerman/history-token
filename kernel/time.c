@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  This file contains the interface functions for the various&n; *  time related system calls: time, stime, gettimeofday, settimeofday,&n; *&t;&t;&t;       adjtime&n; */
 multiline_comment|/*&n; * Modification history kernel/time.c&n; * &n; * 1993-09-02    Philip Gladstone&n; *      Created file with time related functions from sched.c and adjtimex() &n; * 1993-10-08    Torsten Duwe&n; *      adjtime interface update and CMOS clock write code&n; * 1995-08-13    Torsten Duwe&n; *      kernel PLL updated to 1994-12-13 specs (rfc-1589)&n; * 1999-01-16    Ulrich Windl&n; *&t;Introduced error checking for many cases in adjtimex().&n; *&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&t;Allow time_constant larger than MAXTC(6) for NTP v4 (MAXTC == 10)&n; *&t;(Even though the technical memorandum forbids it)&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -9,6 +10,13 @@ DECL|variable|sys_tz
 r_struct
 id|timezone
 id|sys_tz
+suffix:semicolon
+DECL|variable|sys_tz
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sys_tz
+)paren
 suffix:semicolon
 macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__)
 multiline_comment|/*&n; * sys_time() can be implemented in user-level using&n; * sys_gettimeofday().  Is this for backwards compatibility?  If so,&n; * why not move it into the appropriate arch directory (for those&n; * architectures that need it).&n; *&n; * XXX This function is NOT 64-bit clean!&n; */
@@ -1504,6 +1512,13 @@ r_return
 id|now
 suffix:semicolon
 )brace
+DECL|variable|current_kernel_time
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|current_kernel_time
+)paren
+suffix:semicolon
 macro_line|#if (BITS_PER_LONG &lt; 64)
 DECL|function|get_jiffies_64
 id|u64
@@ -1553,5 +1568,19 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|get_jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_jiffies_64
+)paren
+suffix:semicolon
 macro_line|#endif
+DECL|variable|jiffies
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|jiffies
+)paren
+suffix:semicolon
 eof

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/readdir.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -121,6 +122,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|variable|vfs_readdir
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfs_readdir
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Traditional linux readdir() handling..&n; *&n; * &quot;count=1&quot; is a special case, meaning that the buffer is one&n; * dirent-structure in size and that the code can&squot;t handle more&n; * anyway. Thus the special &quot;fillonedir()&quot; function for that&n; * case (the low-level handlers don&squot;t need to care about this).&n; */
 DECL|macro|NAME_OFFSET
 mdefine_line|#define NAME_OFFSET(de) ((int) ((de)-&gt;d_name - (char *) (de)))

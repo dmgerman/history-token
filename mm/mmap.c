@@ -2845,6 +2845,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|do_mmap_pgoff
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_mmap_pgoff
+)paren
+suffix:semicolon
 multiline_comment|/* Get an address range which is currently unmapped.&n; * For shmat() with addr=0.&n; *&n; * Ugly calling convention alert:&n; * Return value with the low bits set means error value,&n; * ie&n; *&t;if (ret &amp; ~PAGE_MASK)&n; *&t;&t;error = ret;&n; *&n; * This function &quot;knows&quot; that -ENOMEM has the bits set.&n; */
 macro_line|#ifndef HAVE_ARCH_UNMAPPED_AREA
 r_static
@@ -3227,6 +3234,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|get_unmapped_area
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_unmapped_area
+)paren
+suffix:semicolon
 multiline_comment|/* Look up the first VMA which satisfies  addr &lt; vm_end,  NULL if none. */
 DECL|function|find_vma
 r_struct
@@ -3365,6 +3379,13 @@ r_return
 id|vma
 suffix:semicolon
 )brace
+DECL|variable|find_vma
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_vma
+)paren
+suffix:semicolon
 multiline_comment|/* Same as find_vma, but also return a pointer to the previous VMA in *pprev. */
 r_struct
 id|vm_area_struct
@@ -5117,6 +5138,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|do_munmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_munmap
+)paren
+suffix:semicolon
 DECL|function|sys_munmap
 id|asmlinkage
 r_int
@@ -5568,6 +5596,13 @@ r_return
 id|addr
 suffix:semicolon
 )brace
+DECL|variable|do_brk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_brk
+)paren
+suffix:semicolon
 multiline_comment|/* Build the RB tree corresponding to the VMA list. */
 DECL|function|build_mmap_rb
 r_void

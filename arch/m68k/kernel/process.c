@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/arch/m68k/kernel/process.c&n; *&n; *  Copyright
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -73,6 +74,13 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
+DECL|variable|init_mm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_mm
+)paren
+suffix:semicolon
 DECL|variable|init_thread_union
 r_union
 id|thread_union
@@ -110,6 +118,13 @@ id|task_struct
 id|init_task
 op_assign
 id|INIT_TASK
+c_func
+(paren
+id|init_task
+)paren
+suffix:semicolon
+DECL|variable|init_task
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|init_task
@@ -322,6 +337,13 @@ suffix:semicolon
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_restart
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_restart
+)paren
+suffix:semicolon
 DECL|function|machine_halt
 r_void
 id|machine_halt
@@ -348,6 +370,13 @@ suffix:semicolon
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_halt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_halt
+)paren
+suffix:semicolon
 DECL|function|machine_power_off
 r_void
 id|machine_power_off
@@ -374,6 +403,13 @@ suffix:semicolon
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_power_off
+)paren
+suffix:semicolon
 DECL|function|show_regs
 r_void
 id|show_regs

@@ -1,4 +1,5 @@
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -55,6 +56,13 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
+DECL|variable|init_mm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_mm
+)paren
+suffix:semicolon
 multiline_comment|/* .text section in head.S is aligned at 2 page boundary and this gets linked&n; * right after that so that the init_thread_union is aligned properly as well.&n; * We really don&squot;t need this special alignment like the Intel does, but&n; * I do it anyways for completeness.&n; */
 id|__asm__
 (paren
@@ -91,6 +99,13 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Initial task structure.&n; *&n; * All other task structs will be allocated on slabs in fork.c&n; */
+DECL|variable|init_task
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_task
+)paren
+suffix:semicolon
 id|__asm__
 c_func
 (paren

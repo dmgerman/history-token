@@ -5472,20 +5472,9 @@ id|ETH_P_IP
 )paren
 comma
 dot
-id|dev
-op_assign
-l_int|NULL
-comma
-multiline_comment|/* All devices */
-dot
 id|func
 op_assign
 id|ip_rcv
-comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
 comma
 )brace
 suffix:semicolon

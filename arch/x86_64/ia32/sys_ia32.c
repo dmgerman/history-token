@@ -40,6 +40,7 @@ macro_line|#include &lt;linux/aio.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -58,28 +59,6 @@ DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP(x,a)&t;((__typeof__(x))(((unsigned long)(x) + ((a) - 1)) &amp; ~((a) - 1)))
 DECL|macro|NAME_OFFSET
 mdefine_line|#define NAME_OFFSET(de) ((int) ((de)-&gt;d_name - (char *) (de)))
-DECL|macro|high2lowuid
-macro_line|#undef high2lowuid
-DECL|macro|high2lowgid
-macro_line|#undef high2lowgid
-DECL|macro|low2highuid
-macro_line|#undef low2highuid
-DECL|macro|low2highgid
-macro_line|#undef low2highgid
-DECL|macro|high2lowuid
-mdefine_line|#define high2lowuid(uid) ((uid) &gt; 65535) ? (u16)overflowuid : (u16)(uid)
-DECL|macro|high2lowgid
-mdefine_line|#define high2lowgid(gid) ((gid) &gt; 65535) ? (u16)overflowgid : (u16)(gid)
-DECL|macro|low2highuid
-mdefine_line|#define low2highuid(uid) ((uid) == (u16)-1) ? (uid_t)-1 : (uid_t)(uid)
-DECL|macro|low2highgid
-mdefine_line|#define low2highgid(gid) ((gid) == (u16)-1) ? (gid_t)-1 : (gid_t)(gid)
-r_extern
-r_int
-id|overflowuid
-comma
-id|overflowgid
-suffix:semicolon
 DECL|function|cp_compat_stat
 r_int
 id|cp_compat_stat
@@ -96,6 +75,40 @@ op_star
 id|ubuf
 )paren
 (brace
+id|typeof
+c_func
+(paren
+id|ubuf-&gt;st_uid
+)paren
+id|uid
+op_assign
+l_int|0
+suffix:semicolon
+id|typeof
+c_func
+(paren
+id|ubuf-&gt;st_gid
+)paren
+id|gid
+op_assign
+l_int|0
+suffix:semicolon
+id|SET_UID
+c_func
+(paren
+id|uid
+comma
+id|kbuf-&gt;uid
+)paren
+suffix:semicolon
+id|SET_GID
+c_func
+(paren
+id|gid
+comma
+id|kbuf-&gt;gid
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -112,6 +125,17 @@ c_func
 (paren
 id|kbuf-&gt;rdev
 )paren
+)paren
+r_return
+op_minus
+id|EOVERFLOW
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|kbuf-&gt;size
+op_ge
+l_int|0x7fffffff
 )paren
 r_return
 op_minus
@@ -172,7 +196,7 @@ id|ubuf-&gt;st_nlink
 op_logical_or
 id|__put_user
 (paren
-id|kbuf-&gt;uid
+id|uid
 comma
 op_amp
 id|ubuf-&gt;st_uid
@@ -180,7 +204,7 @@ id|ubuf-&gt;st_uid
 op_logical_or
 id|__put_user
 (paren
-id|kbuf-&gt;gid
+id|gid
 comma
 op_amp
 id|ubuf-&gt;st_gid
@@ -296,6 +320,40 @@ op_star
 id|stat
 )paren
 (brace
+id|typeof
+c_func
+(paren
+id|ubuf-&gt;st_uid
+)paren
+id|uid
+op_assign
+l_int|0
+suffix:semicolon
+id|typeof
+c_func
+(paren
+id|ubuf-&gt;st_gid
+)paren
+id|gid
+op_assign
+l_int|0
+suffix:semicolon
+id|SET_UID
+c_func
+(paren
+id|uid
+comma
+id|stat-&gt;uid
+)paren
+suffix:semicolon
+id|SET_GID
+c_func
+(paren
+id|gid
+comma
+id|stat-&gt;gid
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -360,7 +418,7 @@ id|ubuf-&gt;st_nlink
 op_logical_or
 id|__put_user
 (paren
-id|stat-&gt;uid
+id|uid
 comma
 op_amp
 id|ubuf-&gt;st_uid
@@ -368,7 +426,7 @@ id|ubuf-&gt;st_uid
 op_logical_or
 id|__put_user
 (paren
-id|stat-&gt;gid
+id|gid
 comma
 op_amp
 id|ubuf-&gt;st_gid
@@ -9285,19 +9343,19 @@ op_amp
 id|arg32-&gt;ca32_export.ex32_anon_gid
 )paren
 suffix:semicolon
-id|karg-&gt;ca_export.ex_anon_uid
-op_assign
-id|high2lowuid
+id|SET_UID
 c_func
 (paren
+id|karg-&gt;ca_export.ex_anon_uid
+comma
 id|karg-&gt;ca_export.ex_anon_uid
 )paren
 suffix:semicolon
-id|karg-&gt;ca_export.ex_anon_gid
-op_assign
-id|high2lowgid
+id|SET_GID
 c_func
 (paren
+id|karg-&gt;ca_export.ex_anon_gid
+comma
 id|karg-&gt;ca_export.ex_anon_gid
 )paren
 suffix:semicolon

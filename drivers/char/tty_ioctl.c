@@ -206,6 +206,13 @@ id|wait
 )paren
 suffix:semicolon
 )brace
+DECL|variable|tty_wait_until_sent
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tty_wait_until_sent
+)paren
+suffix:semicolon
 DECL|function|unset_locked_termios
 r_static
 r_void

@@ -2,6 +2,7 @@ macro_line|#ifndef __LINUX_NETLINK_H
 DECL|macro|__LINUX_NETLINK_H
 mdefine_line|#define __LINUX_NETLINK_H
 macro_line|#include &lt;linux/socket.h&gt; /* for sa_family_t */
+macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|NETLINK_ROUTE
 mdefine_line|#define NETLINK_ROUTE&t;&t;0&t;/* Routing/device hook&t;&t;&t;&t;*/
 DECL|macro|NETLINK_SKIP

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/mm/vmalloc.c&n; *&n; *  Copyright (C) 1993  Linus Torvalds&n; *  Support of BIGMEM added by Gerhard Wichert, Siemens AG, July 1999&n; *  SMP-safe vmalloc/vfree/ioremap, Tigran Aivazian &lt;tigran@veritas.com&gt;, May 2000&n; *  Major rework to support vmap/vunmap, Christoph Hellwig, SGI, August 2002&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -1416,6 +1417,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vfree
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfree
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;vunmap  -  release virtual mapping obtained by vmap()&n; *&n; *&t;@addr:&t;&t;memory base address&n; *&n; *&t;Free the virtually contiguous memory area starting at @addr,&n; *&t;which was created from the page array passed to vmap().&n; *&n; *&t;May not be called in interrupt context.&n; */
 DECL|function|vunmap
 r_void
@@ -1445,6 +1453,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vunmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vunmap
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;vmap  -  map an array of pages into virtually contiguous space&n; *&n; *&t;@pages:&t;&t;array of page pointers&n; *&t;@count:&t;&t;number of pages to map&n; *&t;@flags:&t;&t;vm_area-&gt;flags&n; *&t;@prot:&t;&t;page protection for the mapping&n; *&n; *&t;Maps @count pages from @pages into contiguous kernel virtual&n; *&t;space.&n; */
 DECL|function|vmap
 r_void
@@ -1537,6 +1552,13 @@ r_return
 id|area-&gt;addr
 suffix:semicolon
 )brace
+DECL|variable|vmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmap
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;__vmalloc  -  allocate virtually contiguous memory&n; *&n; *&t;@size:&t;&t;allocation size&n; *&t;@gfp_mask:&t;flags for the page level allocator&n; *&t;@prot:&t;&t;protection mask for the allocated pages&n; *&n; *&t;Allocate enough pages to cover @size from the page level&n; *&t;allocator with @gfp_mask flags.  Map them into contiguous&n; *&t;kernel virtual space, using a pagetable protection of @prot.&n; */
 DECL|function|__vmalloc
 r_void
@@ -1773,6 +1795,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|__vmalloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__vmalloc
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;vmalloc  -  allocate virtually contiguous memory&n; *&n; *&t;@size:&t;&t;allocation size&n; *&n; *&t;Allocate enough pages to cover @size from the page level&n; *&t;allocator and map them into contiguous kernel virtual space.&n; *&n; *&t;For tight cotrol over page level allocator and protection flags&n; *&t;use __vmalloc() instead.&n; */
 DECL|function|vmalloc
 r_void
@@ -1799,6 +1828,13 @@ id|PAGE_KERNEL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vmalloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmalloc
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;vmalloc_32  -  allocate virtually contiguous memory (32bit addressable)&n; *&n; *&t;@size:&t;&t;allocation size&n; *&n; *&t;Allocate enough 32bit PA addressable pages to cover @size from the&n; *&t;page level allocator and map them into contiguous kernel virtual space.&n; */
 DECL|function|vmalloc_32
 r_void
@@ -1823,6 +1859,13 @@ id|PAGE_KERNEL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vmalloc_32
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmalloc_32
+)paren
+suffix:semicolon
 DECL|function|vread
 r_int
 id|vread

@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/percpu_counter.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 DECL|function|percpu_counter_mod
@@ -87,4 +88,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|percpu_counter_mod
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|percpu_counter_mod
+)paren
+suffix:semicolon
 eof

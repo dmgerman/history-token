@@ -416,6 +416,13 @@ r_return
 id|found
 suffix:semicolon
 )brace
+DECL|variable|lookup_mnt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|lookup_mnt
+)paren
+suffix:semicolon
 DECL|function|check_mnt
 r_static
 r_int
@@ -778,6 +785,13 @@ id|sb
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__mntput
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__mntput
+)paren
+suffix:semicolon
 multiline_comment|/* iterator */
 DECL|function|m_start
 r_static
@@ -1319,6 +1333,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|may_umount
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|may_umount
+)paren
+suffix:semicolon
 DECL|function|umount_tree
 r_void
 id|umount_tree
@@ -4570,6 +4591,13 @@ id|old_rootmnt
 suffix:semicolon
 )brace
 )brace
+DECL|variable|set_fs_root
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_fs_root
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Replace the fs-&gt;{pwdmnt,pwd} with {mnt,dentry}. Put the old values.&n; * It can block. Requires the big lock held.&n; */
 DECL|function|set_fs_pwd
 r_void
@@ -4660,6 +4688,13 @@ id|old_pwdmnt
 suffix:semicolon
 )brace
 )brace
+DECL|variable|set_fs_pwd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_fs_pwd
+)paren
+suffix:semicolon
 DECL|function|chroot_fs_refs
 r_static
 r_void
