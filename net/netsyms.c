@@ -86,20 +86,6 @@ macro_line|#ifdef CONFIG_ATALK_MODULE
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#endif
 multiline_comment|/* Socket layer support routines */
-DECL|variable|memcpy_fromiovec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|memcpy_fromiovec
-)paren
-suffix:semicolon
-DECL|variable|memcpy_tokerneliovec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|memcpy_tokerneliovec
-)paren
-suffix:semicolon
 DECL|variable|sk_run_filter
 id|EXPORT_SYMBOL
 c_func
@@ -158,20 +144,12 @@ c_func
 id|net_srandom
 )paren
 suffix:semicolon
-multiline_comment|/* Needed by smbfs.o */
 multiline_comment|/* Needed by unix.o */
 DECL|variable|files_stat
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|files_stat
-)paren
-suffix:semicolon
-DECL|variable|memcpy_toiovec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|memcpy_toiovec
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IPX_MODULE
@@ -403,21 +381,6 @@ id|flow_cache_genid
 suffix:semicolon
 macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_IP_SCTP_MODULE)
 multiline_comment|/* inet functions common to v4 and v6 */
-multiline_comment|/* Socket demultiplexing. */
-DECL|variable|memcpy_fromiovecend
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|memcpy_fromiovecend
-)paren
-suffix:semicolon
-DECL|variable|csum_partial_copy_fromiovecend
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|csum_partial_copy_fromiovecend
-)paren
-suffix:semicolon
 multiline_comment|/* UDP/TCP exported functions for TCPv6 */
 DECL|variable|net_statistics
 id|EXPORT_SYMBOL
@@ -467,7 +430,6 @@ id|tr_type_trans
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Device callback registration */
 multiline_comment|/* support for loadable net drivers */
 macro_line|#ifdef CONFIG_NET
 DECL|variable|loopback_dev
