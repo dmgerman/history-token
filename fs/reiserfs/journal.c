@@ -11470,6 +11470,9 @@ op_member_access_from_pointer
 id|j_journal_list
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|reiserfs_allocate_list_bitmaps
 c_func
 (paren
@@ -11489,6 +11492,9 @@ c_func
 id|p_s_sb
 )paren
 )paren
+)paren
+r_goto
+id|free_and_return
 suffix:semicolon
 id|allocate_bitmap_nodes
 c_func
