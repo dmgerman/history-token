@@ -243,12 +243,6 @@ multiline_comment|/*&n;&t; * The callback can be invoked on the cpu that first d
 id|irq_exit
 c_func
 (paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|save_and_cli
@@ -1251,12 +1245,6 @@ multiline_comment|/*&n;&t; * Restore in-interrupt status for a resume from obp.&
 id|irq_enter
 c_func
 (paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return

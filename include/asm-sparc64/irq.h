@@ -120,6 +120,8 @@ DECL|macro|IBF_ACTIVE
 mdefine_line|#define IBF_ACTIVE&t;0x04&t;/* This interrupt is active and has a handler.&t; */
 DECL|macro|IBF_MULTI
 mdefine_line|#define IBF_MULTI&t;0x08&t;/* On PCI, indicates shared bucket.&t;&t; */
+DECL|macro|IBF_INPROGRESS
+mdefine_line|#define IBF_INPROGRESS&t;0x10&t;/* IRQ is being serviced.&t;&t;&t; */
 DECL|macro|NUM_IVECS
 mdefine_line|#define NUM_IVECS&t;8192
 r_extern

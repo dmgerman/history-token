@@ -4357,9 +4357,6 @@ id|boot_cpu_id
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|kstat.irqs
@@ -4380,9 +4377,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace

@@ -686,13 +686,6 @@ id|kernel_flag
 )paren
 suffix:semicolon
 multiline_comment|/* Hard IRQ locking */
-DECL|variable|global_irq_holder
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|global_irq_holder
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|synchronize_irq
 id|EXPORT_SYMBOL
@@ -702,34 +695,6 @@ id|synchronize_irq
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|__global_cli
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_cli
-)paren
-suffix:semicolon
-DECL|variable|__global_sti
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_sti
-)paren
-suffix:semicolon
-DECL|variable|__global_save_flags
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_save_flags
-)paren
-suffix:semicolon
-DECL|variable|__global_restore_flags
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_restore_flags
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_MCOUNT)
 r_extern
 r_void
