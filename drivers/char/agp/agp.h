@@ -1131,6 +1131,14 @@ r_int
 id|type
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|agp_off
+suffix:semicolon
+r_extern
+r_int
+id|agp_try_unsupported_boot
+suffix:semicolon
 multiline_comment|/* Standard agp registers */
 DECL|macro|AGPSTAT
 mdefine_line|#define AGPSTAT&t;&t;&t;0x4
