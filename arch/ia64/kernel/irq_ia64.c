@@ -20,6 +20,9 @@ macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#ifdef CONFIG_PERFMON
+macro_line|# include &lt;asm/perfmon.h&gt;
+macro_line|#endif
 DECL|macro|IRQ_DEBUG
 mdefine_line|#define IRQ_DEBUG&t;0
 multiline_comment|/* default base addr of IPI table */
@@ -481,6 +484,13 @@ id|IA64_IPI_VECTOR
 comma
 op_amp
 id|ipi_irqaction
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PERFMON
+id|perfmon_init_percpu
+c_func
+(paren
 )paren
 suffix:semicolon
 macro_line|#endif

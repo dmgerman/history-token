@@ -474,6 +474,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|perfmon_init_percpu
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_PERFMON_H */
 eof
