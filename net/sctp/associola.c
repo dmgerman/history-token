@@ -684,7 +684,8 @@ op_star
 id|asoc
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -837,7 +838,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -922,7 +924,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Add a transport address to an association.  */
 DECL|function|sctp_assoc_add_peer
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_assoc_add_peer
 c_func
@@ -941,7 +944,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|peer
 suffix:semicolon
@@ -1223,7 +1227,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Lookup a transport by address. */
 DECL|function|sctp_assoc_lookup_paddr
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_assoc_lookup_paddr
 c_func
@@ -1240,7 +1245,8 @@ op_star
 id|address
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|t
 suffix:semicolon
@@ -1266,7 +1272,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -1301,7 +1308,8 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
@@ -1312,17 +1320,20 @@ id|sctp_sn_error_t
 id|error
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|t
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|first
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|second
 suffix:semicolon
@@ -1444,7 +1455,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -1801,7 +1813,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find which transport this TSN was sent on.&n; */
 DECL|function|sctp_assoc_lookup_tsn
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_assoc_lookup_tsn
 c_func
@@ -1814,11 +1827,13 @@ id|__u32
 id|tsn
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|active
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|match
 suffix:semicolon
@@ -1830,7 +1845,8 @@ comma
 op_star
 id|pos
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -1912,7 +1928,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -1973,7 +1990,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Is this the association we are looking for? */
 DECL|function|sctp_assoc_is_match
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_assoc_is_match
 c_func
@@ -1995,7 +2013,8 @@ op_star
 id|paddr
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -2442,7 +2461,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Choose the transport for sending a shutdown packet.&n; * Round-robin through the active transports, else round-robin&n; * through the inactive transports as this is the next best thing&n; * we can try.&n; */
 DECL|function|sctp_assoc_choose_shutdown_transport
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_assoc_choose_shutdown_transport
 c_func
@@ -2452,7 +2472,8 @@ op_star
 id|asoc
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|t
 comma
@@ -2526,7 +2547,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren

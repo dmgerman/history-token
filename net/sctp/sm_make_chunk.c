@@ -2353,7 +2353,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
@@ -2396,7 +2397,8 @@ multiline_comment|/* Cast away the &squot;const&squot;, as this is just telling 
 id|retval-&gt;transport
 op_assign
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 )paren
 id|transport
@@ -5048,7 +5050,8 @@ r_union
 id|sctp_params
 id|param
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -5273,7 +5276,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -5351,7 +5355,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren

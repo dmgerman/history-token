@@ -1772,12 +1772,14 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 )paren
 id|arg
@@ -1911,12 +1913,14 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 )paren
 id|arg
@@ -1997,7 +2001,7 @@ c_func
 (paren
 id|commands
 comma
-id|SCTP_CMD_HB_TIMERS_UPDATE
+id|SCTP_CMD_HB_TIMER_UPDATE
 comma
 id|SCTP_TRANSPORT
 c_func
@@ -2196,7 +2200,8 @@ r_union
 id|sctp_addr
 id|from_addr
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|link
 suffix:semicolon
@@ -2552,7 +2557,8 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|new_addr
 comma
@@ -2596,7 +2602,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -2621,7 +2628,8 @@ c_func
 (paren
 id|pos2
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -4433,7 +4441,7 @@ suffix:semicolon
 r_case
 l_char|&squot;C&squot;
 suffix:colon
-multiline_comment|/* Collisioun case C. */
+multiline_comment|/* Collision case C. */
 id|retval
 op_assign
 id|sctp_sf_do_dupcook_c
@@ -4953,7 +4961,8 @@ id|list_head
 op_star
 id|pos
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|t
 suffix:semicolon
@@ -5133,7 +5142,7 @@ id|SCTP_COUNTER_INIT_ERROR
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* If we&squot;ve sent any data bundled with COOKIE-ECHO we need to resend. */
+multiline_comment|/* If we&squot;ve sent any data bundled with COOKIE-ECHO we need to &n;&t; * resend. &n;&t; */
 id|list_for_each
 c_func
 (paren
@@ -5150,7 +5159,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -9535,7 +9545,8 @@ comma
 id|type
 comma
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 )paren
 id|arg
@@ -9701,6 +9712,20 @@ id|SCTP_STATE_SHUTDOWN_SENT
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* sctp-implguide 2.10 Issues with Heartbeating and failover&n;&t; *&n;&t; * HEARTBEAT ... is discontinued after sending either SHUTDOWN&n;         * or SHUTDOWN-ACK.&n;&t; */
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_HB_TIMERS_STOP
+comma
+id|SCTP_NULL
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -9851,6 +9876,20 @@ id|SCTP_STATE_SHUTDOWN_ACK_SENT
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* sctp-implguide 2.10 Issues with Heartbeating and failover&n;&t; *&n;&t; * HEARTBEAT ... is discontinued after sending either SHUTDOWN&n;         * or SHUTDOWN-ACK.&n;&t; */
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_HB_TIMERS_STOP
+comma
+id|SCTP_NULL
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -9945,7 +9984,8 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign
@@ -10989,7 +11029,8 @@ id|sctp_packet_t
 op_star
 id|packet
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon

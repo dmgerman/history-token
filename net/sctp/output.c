@@ -118,7 +118,8 @@ id|sctp_packet_t
 op_star
 id|packet
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
@@ -577,7 +578,8 @@ op_star
 id|packet
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign
@@ -1307,7 +1309,8 @@ id|rwnd
 comma
 id|inflight
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign

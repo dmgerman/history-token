@@ -662,7 +662,8 @@ id|sctp_addr
 op_star
 id|paddr
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 op_star
 id|transport
@@ -776,7 +777,8 @@ id|sctp_addr
 op_star
 id|paddr
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 op_star
 id|transport
@@ -934,7 +936,8 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon

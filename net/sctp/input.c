@@ -44,7 +44,8 @@ id|sctp_addr
 op_star
 id|paddr
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 op_star
 id|transportp
@@ -221,7 +222,8 @@ id|sctp_endpoint_common_t
 op_star
 id|rcvr
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign
@@ -2016,7 +2018,8 @@ id|sctp_addr
 op_star
 id|paddr
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 op_star
 id|transportp
@@ -2034,7 +2037,8 @@ id|sctp_association_t
 op_star
 id|asoc
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -2169,7 +2173,8 @@ id|sctp_addr
 op_star
 id|paddr
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 op_star
 id|transportp
@@ -2228,7 +2233,8 @@ id|sctp_association_t
 op_star
 id|asoc
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -2290,7 +2296,8 @@ id|sctp_addr
 op_star
 id|laddr
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 op_star
 id|transportp
@@ -2467,7 +2474,8 @@ id|sctp_addr
 op_star
 id|laddr
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 op_star
 id|transportp

@@ -1922,7 +1922,8 @@ id|asoc
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -3878,7 +3879,8 @@ id|sctp_addr
 op_star
 id|addr
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|trans
 suffix:semicolon
@@ -4466,7 +4468,8 @@ id|sctp_association_t
 op_star
 id|asoc
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -5159,7 +5162,8 @@ id|assoc
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -6178,7 +6182,8 @@ id|sctp_addr
 op_star
 id|addr
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|trans
 suffix:semicolon
@@ -6564,7 +6569,8 @@ r_struct
 id|sctp_getaddrs
 id|getaddrs
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|from
 suffix:semicolon
@@ -6662,7 +6668,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
