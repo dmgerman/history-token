@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/mtd/nand/sharpsl.c&n; *&n; *  Copyright (C) 2004 Richard Purdie&n; *&n; *  $Id: sharpsl.c,v 1.2 2004/11/24 20:38:07 rpurdie Exp $&n; *&n; *  Based on Sharp&squot;s NAND driver sharp_sl.c&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; * drivers/mtd/nand/sharpsl.c&n; *&n; *  Copyright (C) 2004 Richard Purdie&n; *&n; *  $Id: sharpsl.c,v 1.3 2005/01/03 14:53:50 rpurdie Exp $&n; *&n; *  Based on Sharp&squot;s NAND driver sharp_sl.c&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 DECL|variable|sharpsl_io_base
 r_static
 r_void
@@ -65,37 +66,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Define partitions for flash device&n; */
 DECL|macro|DEFAULT_NUM_PARTITIONS
 mdefine_line|#define DEFAULT_NUM_PARTITIONS 3
-macro_line|#if defined CONFIG_MACH_POODLE
-DECL|macro|SHARPSL_ROOTFS_SIZE
-mdefine_line|#define SHARPSL_ROOTFS_SIZE 22
-DECL|macro|SHARPSL_FLASH_SIZE
-mdefine_line|#define SHARPSL_FLASH_SIZE 64
-macro_line|#elif defined CONFIG_MACH_CORGI 
-DECL|macro|SHARPSL_ROOTFS_SIZE
-mdefine_line|#define SHARPSL_ROOTFS_SIZE 25
-DECL|macro|SHARPSL_FLASH_SIZE
-mdefine_line|#define SHARPSL_FLASH_SIZE 32
-macro_line|#elif defined CONFIG_MACH_SHEPHERD
-DECL|macro|SHARPSL_ROOTFS_SIZE
-mdefine_line|#define SHARPSL_ROOTFS_SIZE 25
-DECL|macro|SHARPSL_FLASH_SIZE
-mdefine_line|#define SHARPSL_FLASH_SIZE 64
-macro_line|#elif defined CONFIG_MACH_HUSKY
-DECL|macro|SHARPSL_ROOTFS_SIZE
-mdefine_line|#define SHARPSL_ROOTFS_SIZE 53
-DECL|macro|SHARPSL_FLASH_SIZE
-mdefine_line|#define SHARPSL_FLASH_SIZE 128
-macro_line|#elif defined CONFIG_MACH_TOSA
-DECL|macro|SHARPSL_ROOTFS_SIZE
-mdefine_line|#define SHARPSL_ROOTFS_SIZE 28
-DECL|macro|SHARPSL_FLASH_SIZE
-mdefine_line|#define SHARPSL_FLASH_SIZE 64
-macro_line|#else
-DECL|macro|SHARPSL_ROOTFS_SIZE
-mdefine_line|#define SHARPSL_ROOTFS_SIZE 30
-DECL|macro|SHARPSL_FLASH_SIZE
-mdefine_line|#define SHARPSL_FLASH_SIZE 64
-macro_line|#endif
 DECL|variable|nr_partitions
 r_static
 r_int
@@ -114,7 +84,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;NAND flash partition 0&quot;
+l_string|&quot;System Area&quot;
 comma
 dot
 id|offset
@@ -136,7 +106,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;NAND flash partition 1&quot;
+l_string|&quot;Root Filesystem&quot;
 comma
 dot
 id|offset
@@ -150,7 +120,7 @@ comma
 dot
 id|size
 op_assign
-id|SHARPSL_ROOTFS_SIZE
+l_int|30
 op_star
 l_int|1024
 op_star
@@ -162,35 +132,17 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;NAND flash partition 2&quot;
+l_string|&quot;Home Filesystem&quot;
 comma
 dot
 id|offset
 op_assign
-(paren
-id|SHARPSL_ROOTFS_SIZE
-op_plus
-l_int|7
-)paren
-op_star
-l_int|1024
-op_star
-l_int|1024
+id|MTDPART_OFS_APPEND
 comma
 dot
 id|size
 op_assign
-(paren
-id|SHARPSL_FLASH_SIZE
-op_minus
-id|SHARPSL_ROOTFS_SIZE
-op_minus
-l_int|7
-)paren
-op_star
-l_int|1024
-op_star
-l_int|1024
+id|MTDPART_SIZ_FULL
 comma
 )brace
 comma
@@ -813,14 +765,98 @@ id|sharpsl_partition_info
 op_assign
 id|sharpsl_nand_default_partition_info
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|machine_is_poodle
+c_func
+(paren
+)paren
+)paren
+(brace
+id|sharpsl_partition_info
+(braket
+l_int|1
+)braket
+dot
+id|size
+op_assign
+l_int|22
+op_star
+l_int|1024
+op_star
+l_int|1024
+suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MACH_HUSKY
+r_else
+r_if
+c_cond
+(paren
+id|machine_is_corgi
+c_func
+(paren
+)paren
+op_logical_or
+id|machine_is_shepherd
+c_func
+(paren
+)paren
+)paren
+(brace
+id|sharpsl_partition_info
+(braket
+l_int|1
+)braket
+dot
+id|size
+op_assign
+l_int|25
+op_star
+l_int|1024
+op_star
+l_int|1024
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|machine_is_husky
+c_func
+(paren
+)paren
+)paren
+(brace
+id|sharpsl_partition_info
+(braket
+l_int|1
+)braket
+dot
+id|size
+op_assign
+l_int|53
+op_star
+l_int|1024
+op_star
+l_int|1024
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|machine_is_husky
+c_func
+(paren
+)paren
+)paren
+(brace
 multiline_comment|/* Need to use small eraseblock size for backward compatibility */
 id|sharpsl_mtd-&gt;flags
 op_or_assign
 id|MTD_NO_VIRTBLOCKS
 suffix:semicolon
-macro_line|#endif
+)brace
 id|add_mtd_partitions
 c_func
 (paren
