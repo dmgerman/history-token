@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/pagevec.h&gt;
 DECL|variable|totalram_pages
 r_int
 r_int
@@ -2145,6 +2146,46 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+)brace
+DECL|function|__pagevec_free
+r_void
+id|__pagevec_free
+c_func
+(paren
+r_struct
+id|pagevec
+op_star
+id|pvec
+)paren
+(brace
+r_int
+id|i
+op_assign
+id|pagevec_count
+c_func
+(paren
+id|pvec
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_decrement
+id|i
+op_ge
+l_int|0
+)paren
+id|__free_pages_ok
+c_func
+(paren
+id|pvec-&gt;pages
+(braket
+id|i
+)braket
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 DECL|function|__free_pages
 r_void
