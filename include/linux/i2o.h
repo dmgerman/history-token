@@ -6,7 +6,7 @@ macro_line|#ifdef __KERNEL__&t;&t;/* This file to be included by kernel only */
 macro_line|#include &lt;linux/i2o-dev.h&gt;
 multiline_comment|/* How many different OSM&squot;s are we allowing */
 DECL|macro|I2O_MAX_DRIVERS
-mdefine_line|#define I2O_MAX_DRIVERS&t;&t;4
+mdefine_line|#define I2O_MAX_DRIVERS&t;&t;8
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;&t;/* Needed for MUTEX init macros */
 macro_line|#include &lt;linux/pci.h&gt;

@@ -1059,9 +1059,11 @@ c_func
 (paren
 id|dev
 comma
-id|c-&gt;out_queue.phys
+id|mv
 comma
 id|MSG_FRAME_SIZE
+op_star
+l_int|4
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
