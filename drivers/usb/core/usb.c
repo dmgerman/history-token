@@ -110,7 +110,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;generic&quot;
+l_string|&quot;usb&quot;
 comma
 dot
 id|bus
@@ -2631,6 +2631,52 @@ suffix:semicolon
 r_int
 id|j
 suffix:semicolon
+multiline_comment|/*&n;&t; * Set the driver for the usb device to point to the &quot;generic&quot; driver.&n;&t; * This prevents the main usb device from being sent to the usb bus&n;&t; * probe function.  Yes, it&squot;s a hack, but a nice one :)&n;&t; *&n;&t; * Do it asap, so more driver model stuff (like the device.h message&n;&t; * utilities) can be used in hcd submit/unlink code paths.&n;&t; */
+id|usb_generic_driver.bus
+op_assign
+op_amp
+id|usb_bus_type
+suffix:semicolon
+id|dev-&gt;dev.parent
+op_assign
+id|parent
+suffix:semicolon
+id|dev-&gt;dev.driver
+op_assign
+op_amp
+id|usb_generic_driver
+suffix:semicolon
+id|dev-&gt;dev.bus
+op_assign
+op_amp
+id|usb_bus_type
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;dev.bus_id
+(braket
+l_int|0
+)braket
+op_eq
+l_int|0
+)paren
+id|sprintf
+(paren
+op_amp
+id|dev-&gt;dev.bus_id
+(braket
+l_int|0
+)braket
+comma
+l_string|&quot;%d-%s&quot;
+comma
+id|dev-&gt;bus-&gt;busnum
+comma
+id|dev-&gt;devpath
+)paren
+suffix:semicolon
+multiline_comment|/* USB device state == default ... it&squot;s not usable yet */
 multiline_comment|/* USB 2.0 section 5.5.3 talks about ep0 maxpacket ...&n;&t; * it&squot;s fixed size except for full speed devices.&n;&t; */
 r_switch
 c_cond
@@ -2889,6 +2935,7 @@ op_assign
 id|dev-&gt;descriptor.bMaxPacketSize0
 suffix:semicolon
 )brace
+multiline_comment|/* USB device state == addressed ... still not usable */
 id|err
 op_assign
 id|usb_get_device_descriptor
@@ -3049,6 +3096,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* USB device state == configured ... tell the world! */
 id|dbg
 c_func
 (paren
@@ -3083,51 +3131,7 @@ id|dev-&gt;descriptor.iSerialNumber
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Set the driver for the usb device to point to the &quot;generic&quot; driver.&n;&t; * This prevents the main usb device from being sent to the usb bus&n;&t; * probe function.  Yes, it&squot;s a hack, but a nice one :)&n;&t; */
-id|usb_generic_driver.bus
-op_assign
-op_amp
-id|usb_bus_type
-suffix:semicolon
-id|dev-&gt;dev.parent
-op_assign
-id|parent
-suffix:semicolon
-id|dev-&gt;dev.driver
-op_assign
-op_amp
-id|usb_generic_driver
-suffix:semicolon
-id|dev-&gt;dev.bus
-op_assign
-op_amp
-id|usb_bus_type
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;dev.bus_id
-(braket
-l_int|0
-)braket
-op_eq
-l_int|0
-)paren
-id|sprintf
-(paren
-op_amp
-id|dev-&gt;dev.bus_id
-(braket
-l_int|0
-)braket
-comma
-l_string|&quot;%d-%s&quot;
-comma
-id|dev-&gt;bus-&gt;busnum
-comma
-id|dev-&gt;devpath
-)paren
-suffix:semicolon
+multiline_comment|/* put into sysfs, with device and config specific files */
 id|err
 op_assign
 id|device_register
@@ -3144,7 +3148,6 @@ id|err
 r_return
 id|err
 suffix:semicolon
-multiline_comment|/* add the USB device specific driverfs files */
 id|usb_create_driverfs_dev_files
 (paren
 id|dev
