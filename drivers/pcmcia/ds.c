@@ -1590,6 +1590,12 @@ comma
 id|refcount
 )paren
 suffix:semicolon
+id|pcmcia_put_socket
+c_func
+(paren
+id|s-&gt;parent
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -5381,7 +5387,11 @@ id|pcmcia_socket
 op_star
 id|socket
 op_assign
-id|class_dev-&gt;class_data
+id|class_get_devdata
+c_func
+(paren
+id|class_dev
+)paren
 suffix:semicolon
 r_struct
 id|pcmcia_bus_socket
@@ -5431,6 +5441,41 @@ id|pcmcia_bus_socket
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* get reference to parent socket */
+id|s-&gt;parent
+op_assign
+id|pcmcia_get_socket
+c_func
+(paren
+id|socket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|s-&gt;parent
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PCMCIA obtaining reference to socket %p failed&bslash;n&quot;
+comma
+id|socket
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|s
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|kref_init
 c_func
 (paren
@@ -5465,11 +5510,6 @@ c_func
 op_amp
 id|s-&gt;devices_list
 )paren
-suffix:semicolon
-multiline_comment|/* initialize data */
-id|s-&gt;parent
-op_assign
-id|socket
 suffix:semicolon
 multiline_comment|/* Set up hotline to Card Services */
 id|s-&gt;callback.owner
@@ -5548,7 +5588,11 @@ id|pcmcia_socket
 op_star
 id|socket
 op_assign
-id|class_dev-&gt;class_data
+id|class_get_devdata
+c_func
+(paren
+id|class_dev
+)paren
 suffix:semicolon
 r_if
 c_cond
