@@ -130,16 +130,6 @@ id|unit
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|at1500_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|net_device
 op_star
@@ -1054,14 +1044,6 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_SEEQ8005 
 (brace
 id|seeq8005_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_AT1500
-(brace
-id|at1500_probe
 comma
 l_int|0
 )brace
