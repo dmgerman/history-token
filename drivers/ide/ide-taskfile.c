@@ -760,8 +760,6 @@ comma
 id|buffer
 comma
 id|wcount
-op_lshift
-l_int|1
 )paren
 suffix:semicolon
 )brace
