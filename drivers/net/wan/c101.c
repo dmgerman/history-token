@@ -266,8 +266,6 @@ id|C101_PAGE
 )paren
 suffix:semicolon
 )brace
-DECL|macro|close_windows
-mdefine_line|#define close_windows(card) {} /* no hardware support */
 macro_line|#include &quot;hd6457x.c&quot;
 DECL|function|sca_msci_intr
 r_static
