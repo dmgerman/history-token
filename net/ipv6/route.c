@@ -1486,6 +1486,13 @@ r_goto
 id|out2
 suffix:semicolon
 multiline_comment|/* Race condition! In the gap, when rt6_lock was&n;&t;&t;   released someone could insert this route.  Relookup.&n;&t;&t;*/
+id|dst_release
+c_func
+(paren
+op_amp
+id|rt-&gt;u.dst
+)paren
+suffix:semicolon
 r_goto
 id|relookup
 suffix:semicolon
@@ -1742,6 +1749,13 @@ r_goto
 id|out2
 suffix:semicolon
 multiline_comment|/* Race condition! In the gap, when rt6_lock was&n;&t;&t;   released someone could insert this route.  Relookup.&n;&t;&t;*/
+id|dst_release
+c_func
+(paren
+op_amp
+id|rt-&gt;u.dst
+)paren
+suffix:semicolon
 r_goto
 id|relookup
 suffix:semicolon
@@ -4261,6 +4275,7 @@ id|RTF_DYNAMIC
 op_or
 id|RTF_EXPIRES
 suffix:semicolon
+)brace
 id|dst_release
 c_func
 (paren
@@ -4268,7 +4283,6 @@ op_amp
 id|nrt-&gt;u.dst
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
