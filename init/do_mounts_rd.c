@@ -1218,8 +1218,11 @@ DECL|macro|Tracecv
 mdefine_line|#define Tracecv(c,x)
 DECL|macro|STATIC
 mdefine_line|#define STATIC static
+DECL|macro|INIT
+mdefine_line|#define INIT __init
 r_static
 r_int
+id|__init
 id|fill_inbuf
 c_func
 (paren
@@ -1228,6 +1231,7 @@ r_void
 suffix:semicolon
 r_static
 r_void
+id|__init
 id|flush_window
 c_func
 (paren
@@ -1236,6 +1240,7 @@ r_void
 suffix:semicolon
 r_static
 r_void
+id|__init
 op_star
 id|malloc
 c_func
@@ -1246,6 +1251,7 @@ id|size
 suffix:semicolon
 r_static
 r_void
+id|__init
 id|free
 c_func
 (paren
@@ -1256,6 +1262,7 @@ id|where
 suffix:semicolon
 r_static
 r_void
+id|__init
 id|error
 c_func
 (paren
@@ -1266,6 +1273,7 @@ id|m
 suffix:semicolon
 r_static
 r_void
+id|__init
 id|gzip_mark
 c_func
 (paren
@@ -1276,6 +1284,7 @@ op_star
 suffix:semicolon
 r_static
 r_void
+id|__init
 id|gzip_release
 c_func
 (paren
