@@ -607,7 +607,8 @@ r_int
 id|sbni_probe
 c_func
 (paren
-r_void
+r_int
+id|unit
 )paren
 suffix:semicolon
 DECL|struct|devprobe
@@ -1285,7 +1286,8 @@ id|__init
 id|ethif_probe
 c_func
 (paren
-r_void
+r_int
+id|unit
 )paren
 (brace
 r_struct
@@ -1316,6 +1318,16 @@ id|dev
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|dev-&gt;name
+comma
+l_string|&quot;eth%d&quot;
+comma
+id|unit
+)paren
 suffix:semicolon
 id|netdev_boot_setup_check
 c_func
@@ -1479,7 +1491,8 @@ r_int
 id|trif_probe
 c_func
 (paren
-r_void
+r_int
+id|unit
 )paren
 (brace
 r_struct
@@ -1510,6 +1523,16 @@ id|dev
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|dev-&gt;name
+comma
+l_string|&quot;tr%d&quot;
+comma
+id|unit
+)paren
 suffix:semicolon
 id|netdev_boot_setup_check
 c_func
@@ -1646,6 +1669,7 @@ c_cond
 id|sbni_probe
 c_func
 (paren
+id|num
 )paren
 )paren
 r_break
@@ -1672,6 +1696,7 @@ c_cond
 id|trif_probe
 c_func
 (paren
+id|num
 )paren
 )paren
 r_break
@@ -1697,6 +1722,7 @@ c_cond
 id|ethif_probe
 c_func
 (paren
+id|num
 )paren
 )paren
 r_break
