@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; * Module: jfs_mount.c&n; *&n; * note: file system in transition to aggregate/fileset:&n; *&n; * file system mount is interpreted as the mount of aggregate, &n; * if not already mounted, and mount of the single/only fileset in &n; * the aggregate;&n; *&n; * a file system/aggregate is represented by an internal inode&n; * (aka mount inode) initialized with aggregate superblock;&n; * each vfs represents a fileset, and points to its &quot;fileset inode &n; * allocation map inode&quot; (aka fileset inode):&n; * (an aggregate itself is structured recursively as a filset: &n; * an internal vfs is constructed and points to its &quot;fileset inode &n; * allocation map inode&quot; (aka aggregate inode) where each inode &n; * represents a fileset inode) so that inode number is mapped to &n; * on-disk inode in uniform way at both aggregate and fileset level;&n; *&n; * each vnode/inode of a fileset is linked to its vfs (to facilitate&n; * per fileset inode operations, e.g., unmount of a fileset, etc.);&n; * each inode points to the mount inode (to facilitate access to&n; * per aggregate information, e.g., block size, etc.) as well as&n; * its file set inode.&n; *&n; *   aggregate &n; *   ipmnt&n; *   mntvfs -&gt; fileset ipimap+ -&gt; aggregate ipbmap -&gt; aggregate ipaimap;&n; *             fileset vfs     -&gt; vp(1) &lt;-&gt; ... &lt;-&gt; vp(n) &lt;-&gt;vproot;&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -31,7 +31,7 @@ op_star
 id|sb
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * NAME:&t;jfs_mount(sb)&n; *&n; * FUNCTION:&t;vfs_mount()&n; *&n; * PARAMETER:&t;sb&t;- super block&n; *&n; * RETURN:&t;EBUSY&t;- device already mounted or open for write&n; *&t;&t;EBUSY&t;- cvrdvp already mounted;&n; *&t;&t;EBUSY&t;- mount table full&n; *&t;&t;ENOTDIR&t;- cvrdvp not directory on a device mount&n; *&t;&t;ENXIO&t;- device open failure&n; */
+multiline_comment|/*&n; * NAME:&t;jfs_mount(sb)&n; *&n; * FUNCTION:&t;vfs_mount()&n; *&n; * PARAMETER:&t;sb&t;- super block&n; *&n; * RETURN:&t;-EBUSY&t;- device already mounted or open for write&n; *&t;&t;-EBUSY&t;- cvrdvp already mounted;&n; *&t;&t;-EBUSY&t;- mount table full&n; *&t;&t;-ENOTDIR- cvrdvp not directory on a device mount&n; *&t;&t;-ENXIO&t;- device open failure&n; */
 DECL|function|jfs_mount
 r_int
 id|jfs_mount
@@ -135,6 +135,7 @@ l_string|&quot;jfs_mount: Faild to read AGGREGATE_I&quot;
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -203,6 +204,7 @@ l_int|NULL
 (brace
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -289,6 +291,7 @@ l_string|&quot;jfs_mount: Faild to read AGGREGATE_I&quot;
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -372,6 +375,7 @@ suffix:semicolon
 multiline_comment|/* open fileset secondary inode allocation map */
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -869,9 +873,9 @@ id|JFS_VERSION
 )paren
 )paren
 (brace
-singleline_comment|//rc = EFORMAT;
 id|rc
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
@@ -903,6 +907,7 @@ l_string|&quot;Currently only 4K block size supported!&quot;
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
@@ -1140,6 +1145,7 @@ l_string|&quot;jfs_mount: Mount Failure: File System Dirty.&quot;
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
@@ -1301,7 +1307,71 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-multiline_comment|/*&n;&t; * Only fsck can fix dirty state&n;&t; */
+r_if
+c_cond
+(paren
+id|sbi-&gt;flag
+op_amp
+id|JFS_NOINTEGRITY
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|state
+op_eq
+id|FM_DIRTY
+)paren
+(brace
+id|sbi-&gt;p_state
+op_assign
+id|state
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|state
+op_eq
+id|FM_MOUNT
+)paren
+(brace
+id|sbi-&gt;p_state
+op_assign
+id|sbi-&gt;state
+suffix:semicolon
+id|state
+op_assign
+id|FM_DIRTY
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|state
+op_eq
+id|FM_CLEAN
+)paren
+(brace
+id|state
+op_assign
+id|sbi-&gt;p_state
+suffix:semicolon
+)brace
+r_else
+id|jfs_err
+c_func
+(paren
+l_string|&quot;updateSuper: bad state&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren

@@ -50,7 +50,7 @@ DECL|macro|DT_PAGE
 mdefine_line|#define DT_PAGE(IP, MP) BT_PAGE(IP, MP, dtpage_t, i_dtroot)
 multiline_comment|/* get page buffer for specified block address */
 DECL|macro|DT_GETPAGE
-mdefine_line|#define DT_GETPAGE(IP, BN, MP, SIZE, P, RC)&bslash;&n;{&bslash;&n;&t;BT_GETPAGE(IP, BN, MP, dtpage_t, SIZE, P, RC, i_dtroot)&bslash;&n;&t;if (!(RC))&bslash;&n;&t;{&bslash;&n;&t;&t;if (((P)-&gt;header.nextindex &gt; (((BN)==0)?DTROOTMAXSLOT:(P)-&gt;header.maxslot)) ||&bslash;&n;&t;&t;    ((BN) &amp;&amp; ((P)-&gt;header.maxslot &gt; DTPAGEMAXSLOT)))&bslash;&n;&t;&t;{&bslash;&n;&t;&t;&t;jfs_err(&quot;DT_GETPAGE: dtree page corrupt&quot;);&bslash;&n;&t;&t;&t;BT_PUTPAGE(MP);&bslash;&n;&t;&t;&t;updateSuper((IP)-&gt;i_sb, FM_DIRTY);&bslash;&n;&t;&t;&t;MP = NULL;&bslash;&n;&t;&t;&t;RC = EIO;&bslash;&n;&t;&t;}&bslash;&n;&t;}&bslash;&n;}
+mdefine_line|#define DT_GETPAGE(IP, BN, MP, SIZE, P, RC)&bslash;&n;{&bslash;&n;&t;BT_GETPAGE(IP, BN, MP, dtpage_t, SIZE, P, RC, i_dtroot)&bslash;&n;&t;if (!(RC))&bslash;&n;&t;{&bslash;&n;&t;&t;if (((P)-&gt;header.nextindex &gt; (((BN)==0)?DTROOTMAXSLOT:(P)-&gt;header.maxslot)) ||&bslash;&n;&t;&t;    ((BN) &amp;&amp; ((P)-&gt;header.maxslot &gt; DTPAGEMAXSLOT)))&bslash;&n;&t;&t;{&bslash;&n;&t;&t;&t;jfs_err(&quot;DT_GETPAGE: dtree page corrupt&quot;);&bslash;&n;&t;&t;&t;BT_PUTPAGE(MP);&bslash;&n;&t;&t;&t;updateSuper((IP)-&gt;i_sb, FM_DIRTY);&bslash;&n;&t;&t;&t;MP = NULL;&bslash;&n;&t;&t;&t;RC = -EIO;&bslash;&n;&t;&t;}&bslash;&n;&t;}&bslash;&n;}
 multiline_comment|/* for consistency */
 DECL|macro|DT_PUTPAGE
 mdefine_line|#define DT_PUTPAGE(MP) BT_PUTPAGE(MP)
@@ -1301,7 +1301,7 @@ l_string|&quot;add_index: xtInsert failed!&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EPERM
 suffix:semicolon
 )brace
 id|ip-&gt;i_size
@@ -1356,7 +1356,7 @@ id|COMMIT_PWMAP
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EPERM
 suffix:semicolon
 )brace
 id|tlck
@@ -1535,7 +1535,7 @@ op_decrement
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EPERM
 suffix:semicolon
 )brace
 id|ip-&gt;i_size
@@ -1619,7 +1619,7 @@ l_string|&quot;add_index: get/read_metapage failed!&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EPERM
 suffix:semicolon
 )brace
 id|lock_index
@@ -2136,6 +2136,7 @@ l_int|0
 (brace
 id|rc
 op_assign
+op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
@@ -2402,6 +2403,7 @@ id|inumber
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EEXIST
 suffix:semicolon
 r_goto
@@ -2430,6 +2432,7 @@ id|inumber
 (brace
 id|rc
 op_assign
+op_minus
 id|ESTALE
 suffix:semicolon
 r_goto
@@ -2520,6 +2523,7 @@ id|JFS_RENAME
 (brace
 id|rc
 op_assign
+op_minus
 id|ENOENT
 suffix:semicolon
 r_goto
@@ -2597,6 +2601,7 @@ id|FM_DIRTY
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -2813,6 +2818,7 @@ id|mp
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EMLINK
 suffix:semicolon
 )brace
@@ -3262,6 +3268,7 @@ id|smp
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
@@ -5495,7 +5502,7 @@ id|pxd
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|rc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;dtExtendPage()&n; *&n; * function: extend 1st/only directory leaf page&n; *&n; * parameter:&n; *&n; * return: 0 - success;&n; *&t;   errno - failure;&n; *&t;return extended page pinned;&n; */
@@ -9393,6 +9400,7 @@ op_amp
 id|BT_LEAF
 )paren
 r_return
+op_minus
 id|ESTALE
 suffix:semicolon
 multiline_comment|/* get the leftmost entry */
@@ -9566,6 +9574,7 @@ id|mp
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ESTALE
 suffix:semicolon
 )brace
@@ -10526,7 +10535,11 @@ id|dtlck
 suffix:semicolon
 id|lv
 op_assign
+op_amp
 id|dtlck-&gt;lv
+(braket
+id|dtlck-&gt;index
+)braket
 suffix:semicolon
 id|lv-&gt;offset
 op_assign
@@ -11173,7 +11186,6 @@ id|btstack
 )paren
 )paren
 r_return
-op_minus
 id|rc
 suffix:semicolon
 id|DT_GETSEARCH
@@ -11980,7 +11992,6 @@ id|dirent_buf
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace
@@ -16147,7 +16158,7 @@ op_assign
 id|dtlck
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME: dtModify&n; *&n; * FUNCTION: Modify the inode number part of a directory entry&n; *&n; * PARAMETERS:&n; *&t;tid&t;- Transaction id&n; *&t;ip&t;- Inode of parent directory&n; *&t;key&t;- Name of entry to be modified&n; *&t;orig_ino&t;- Original inode number expected in entry&n; *&t;new_ino&t;- New inode number to put into entry&n; *&t;flag&t;- JFS_RENAME&n; *&n; * RETURNS:&n; *&t;ESTALE&t;- If entry found does not match orig_ino passed in&n; *&t;ENOENT&t;- If no entry can be found to match key&n; *&t;0&t;- If successfully modified entry&n; */
+multiline_comment|/*&n; * NAME: dtModify&n; *&n; * FUNCTION: Modify the inode number part of a directory entry&n; *&n; * PARAMETERS:&n; *&t;tid&t;- Transaction id&n; *&t;ip&t;- Inode of parent directory&n; *&t;key&t;- Name of entry to be modified&n; *&t;orig_ino&t;- Original inode number expected in entry&n; *&t;new_ino&t;- New inode number to put into entry&n; *&t;flag&t;- JFS_RENAME&n; *&n; * RETURNS:&n; *&t;-ESTALE&t;- If entry found does not match orig_ino passed in&n; *&t;-ENOENT&t;- If no entry can be found to match key&n; *&t;0&t;- If successfully modified entry&n; */
 DECL|function|dtModify
 r_int
 id|dtModify
