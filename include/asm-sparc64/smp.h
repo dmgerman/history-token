@@ -171,6 +171,7 @@ DECL|function|any_online_cpu
 r_static
 r_inline
 r_int
+r_int
 id|any_online_cpu
 c_func
 (paren
@@ -198,8 +199,7 @@ id|mask
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|NR_CPUS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;General functions that each host system must provide.&n; */
