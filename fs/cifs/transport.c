@@ -831,6 +831,26 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* Ensure that we do not send more than 50 overlapping requests &n;&t;   to the same server. We may make this configurable later or&n;&t;   use ses-&gt;maxReq */
+r_if
+c_cond
+(paren
+id|long_op
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+multiline_comment|/* oplock breaks must not be held up */
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|ses-&gt;server-&gt;inFlight
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|spin_lock
 c_func
 (paren
@@ -889,7 +909,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* can not count locking commands against the total since&n;&t;&t;&t;   they are allowed to block on server */
+multiline_comment|/* can not count locking commands against total since&n;&t;&t;&t;   they are allowed to block on server */
 r_if
 c_cond
 (paren
@@ -898,7 +918,7 @@ OL
 l_int|3
 )paren
 (brace
-multiline_comment|/* update # of requests on the wire to this server */
+multiline_comment|/* update # of requests on the wire to server */
 id|atomic_inc
 c_func
 (paren
@@ -916,6 +936,7 @@ id|GlobalMid_Lock
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* make sure that we sign in the same order that we send on this socket &n;&t;   and avoid races inside tcp sendmsg code that could cause corruption&n;&t;   of smb data */

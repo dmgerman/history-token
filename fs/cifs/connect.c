@@ -658,15 +658,7 @@ op_amp
 id|GlobalMid_Lock
 )paren
 suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|server-&gt;inFlight
-comma
-l_int|0
-)paren
-suffix:semicolon
+multiline_comment|/*&t;&t;atomic_set(&amp;server-&gt;inFlight,0);*/
 id|wake_up
 c_func
 (paren
