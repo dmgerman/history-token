@@ -2871,23 +2871,6 @@ DECL|macro|MII_TG3_INT_DUPLEXCHG
 mdefine_line|#define MII_TG3_INT_DUPLEXCHG&t;&t;0x0008
 DECL|macro|MII_TG3_INT_ANEG_PAGE_RX
 mdefine_line|#define MII_TG3_INT_ANEG_PAGE_RX&t;0x0400
-multiline_comment|/* XXX Add this to mii.h */
-macro_line|#ifndef ADVERTISE_PAUSE
-DECL|macro|ADVERTISE_PAUSE_CAP
-mdefine_line|#define ADVERTISE_PAUSE_CAP&t;&t;0x0400
-macro_line|#endif
-macro_line|#ifndef ADVERTISE_PAUSE_ASYM
-DECL|macro|ADVERTISE_PAUSE_ASYM
-mdefine_line|#define ADVERTISE_PAUSE_ASYM&t;&t;0x0800
-macro_line|#endif
-macro_line|#ifndef LPA_PAUSE
-DECL|macro|LPA_PAUSE_CAP
-mdefine_line|#define LPA_PAUSE_CAP&t;&t;&t;0x0400
-macro_line|#endif
-macro_line|#ifndef LPA_PAUSE_ASYM
-DECL|macro|LPA_PAUSE_ASYM
-mdefine_line|#define LPA_PAUSE_ASYM&t;&t;&t;0x0800
-macro_line|#endif
 multiline_comment|/* There are two ways to manage the TX descriptors on the tigon3.&n; * Either the descriptors are in host DMA&squot;able memory, or they&n; * exist only in the cards on-chip SRAM.  All 16 send bds are under&n; * the same mode, they may not be configured individually.&n; *&n; * This driver always uses host memory TX descriptors.&n; *&n; * To use host memory TX descriptors:&n; *&t;1) Set GRC_MODE_HOST_SENDBDS in GRC_MODE register.&n; *&t;   Make sure GRC_MODE_4X_NIC_SEND_RINGS is clear.&n; *&t;2) Allocate DMA&squot;able memory.&n; *&t;3) In NIC_SRAM_SEND_RCB (of desired index) of on-chip SRAM:&n; *&t;   a) Set TG3_BDINFO_HOST_ADDR to DMA address of memory&n; *&t;      obtained in step 2&n; *&t;   b) Set TG3_BDINFO_NIC_ADDR to NIC_SRAM_TX_BUFFER_DESC.&n; *&t;   c) Set len field of TG3_BDINFO_MAXLEN_FLAGS to number&n; *            of TX descriptors.  Leave flags field clear.&n; *&t;4) Access TX descriptors via host memory.  The chip&n; *&t;   will refetch into local SRAM as needed when producer&n; *&t;   index mailboxes are updated.&n; *&n; * To use on-chip TX descriptors:&n; *&t;1) Set GRC_MODE_4X_NIC_SEND_RINGS in GRC_MODE register.&n; *&t;   Make sure GRC_MODE_HOST_SENDBDS is clear.&n; *&t;2) In NIC_SRAM_SEND_RCB (of desired index) of on-chip SRAM:&n; *&t;   a) Set TG3_BDINFO_HOST_ADDR to zero.&n; *&t;   b) Set TG3_BDINFO_NIC_ADDR to NIC_SRAM_TX_BUFFER_DESC&n; *&t;   c) TG3_BDINFO_MAXLEN_FLAGS is don&squot;t care.&n; *&t;3) Access TX descriptors directly in on-chip SRAM&n; *&t;   using normal {read,write}l().  (and not using&n; *         pointer dereferencing of ioremap()&squot;d memory like&n; *&t;   the broken Broadcom driver does)&n; *&n; * Note that BDINFO_FLAGS_DISABLED should be set in the flags field of&n; * TG3_BDINFO_MAXLEN_FLAGS of all unused SEND_RCB indices.&n; */
 DECL|struct|tg3_tx_buffer_desc
 r_struct
