@@ -691,6 +691,8 @@ comma
 l_int|0
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -748,6 +750,8 @@ comma
 l_int|0
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -794,7 +798,10 @@ id|p
 suffix:semicolon
 r_int
 op_star
-id|user_tid
+id|parent_tidptr
+comma
+op_star
+id|child_tidptr
 suffix:semicolon
 multiline_comment|/* syscall2 puts clone_flags in d1 and usp in d2 */
 id|clone_flags
@@ -805,13 +812,21 @@ id|newsp
 op_assign
 id|regs-&gt;d2
 suffix:semicolon
-id|user_tid
+id|parent_tidptr
 op_assign
 (paren
 r_int
 op_star
 )paren
 id|regs-&gt;d3
+suffix:semicolon
+id|child_tidptr
+op_assign
+(paren
+r_int
+op_star
+)paren
+id|regs-&gt;d4
 suffix:semicolon
 r_if
 c_cond
@@ -842,7 +857,9 @@ id|regs
 comma
 l_int|0
 comma
-id|user_tid
+id|parent_tidptr
+comma
+id|child_tidptr
 )paren
 suffix:semicolon
 r_return
