@@ -26,8 +26,7 @@ id|numa_memory_lookup_table
 )braket
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|numa_cpumask_lookup_table
 (braket
 )braket

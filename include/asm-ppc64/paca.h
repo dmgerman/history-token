@@ -72,11 +72,10 @@ id|u32
 id|default_decr
 suffix:semicolon
 multiline_comment|/* Default decrementer value&t;&t;0x1c */
-DECL|member|xHrdIntStack
+DECL|member|unused1
 id|u64
-id|xHrdIntStack
+id|unused1
 suffix:semicolon
-multiline_comment|/* Stack for hardware interrupts&t;0x20 */
 DECL|member|xKsave
 id|u64
 id|xKsave
@@ -123,11 +122,10 @@ id|u8
 id|xProcEnabled
 suffix:semicolon
 multiline_comment|/* 1=soft enabled&t;&t;&t;0x78 */
-DECL|member|xHrdIntCount
+DECL|member|unused2
 id|u8
-id|xHrdIntCount
+id|unused2
 suffix:semicolon
-multiline_comment|/* Count of active hardware interrupts  0x79  */
 DECL|member|prof_enabled
 id|u8
 id|prof_enabled
