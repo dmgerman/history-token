@@ -85,12 +85,6 @@ r_struct
 id|sctp_association
 id|sctp_association_t
 suffix:semicolon
-DECL|typedef|sctp_packet_t
-r_typedef
-r_struct
-id|sctp_packet
-id|sctp_packet_t
-suffix:semicolon
 DECL|typedef|sctp_chunk_t
 r_typedef
 r_struct
@@ -1662,13 +1656,15 @@ op_star
 suffix:semicolon
 DECL|typedef|sctp_outq_ohandler_init_t
 r_typedef
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 (paren
 id|sctp_outq_ohandler_init_t
 )paren
 (paren
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 comma
 r_struct
@@ -1684,13 +1680,15 @@ id|dport
 suffix:semicolon
 DECL|typedef|sctp_outq_ohandler_config_t
 r_typedef
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 (paren
 id|sctp_outq_ohandler_config_t
 )paren
 (paren
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 comma
 id|__u32
@@ -1711,7 +1709,8 @@ id|sctp_xmit_t
 id|sctp_outq_ohandler_t
 )paren
 (paren
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 comma
 id|sctp_chunk_t
@@ -1725,7 +1724,8 @@ r_int
 id|sctp_outq_ohandler_force_t
 )paren
 (paren
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 )paren
 suffix:semicolon
@@ -1753,7 +1753,8 @@ r_void
 id|sctp_packet_free
 c_func
 (paren
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 )paren
 suffix:semicolon
@@ -1939,7 +1940,8 @@ id|transmitted
 suffix:semicolon
 multiline_comment|/* We build bundle-able packets for this transport here.  */
 DECL|member|packet
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 id|packet
 suffix:semicolon
 multiline_comment|/* This is the list of transports that have chunks to send.  */
@@ -2227,12 +2229,17 @@ id|sctp_association_t
 op_star
 id|asoc
 suffix:semicolon
-multiline_comment|/* BUG: This really should be an array of streams.&n;&t; * This really holds a list of chunks (one stream).&n;&t; * FIXME: If true, why so?&n;&t; */
+multiline_comment|/* Data pending that has never been transmitted.  */
 DECL|member|out
 r_struct
 id|sk_buff_head
 id|out
 suffix:semicolon
+DECL|member|out_qlen
+r_int
+id|out_qlen
+suffix:semicolon
+multiline_comment|/* Total length of queued data chunks. */
 multiline_comment|/* These are control chunks we want to send.  */
 DECL|member|control
 r_struct
@@ -2251,7 +2258,7 @@ r_struct
 id|list_head
 id|retransmit
 suffix:semicolon
-multiline_comment|/* Call these functions to send chunks down to the next lower&n;&t; * layer.  This is always SCTP_packet, but we separate the two&n;&t; * structures to make testing simpler.&n;&t; */
+multiline_comment|/* Call these functions to send chunks down to the next lower&n;&t; * layer.  This is always sctp_packet, but we separate the two&n;&t; * structures to make testing simpler.&n;&t; */
 DECL|member|init_output
 id|sctp_outq_ohandler_init_t
 op_star

@@ -145,6 +145,12 @@ comma
 multiline_comment|/* Get all local addresss. */
 DECL|macro|SCTP_GET_LOCAL_ADDRS
 mdefine_line|#define SCTP_GET_LOCAL_ADDRS&t;SCTP_GET_LOCAL_ADDRS
+DECL|enumerator|SCTP_NODELAY
+id|SCTP_NODELAY
+comma
+multiline_comment|/* Get/set nodelay option. */
+DECL|macro|SCTP_NODELAY
+mdefine_line|#define SCTP_NODELAY&t;SCTP_NODELAY
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * 5.2 SCTP msg_control Structures&n; *&n; * A key element of all SCTP-specific socket extensions is the use of&n; * ancillary data to specify and access SCTP-specific data via the&n; * struct msghdr&squot;s msg_control member used in sendmsg() and recvmsg().&n; * Fine-grained control over initialization and sending parameters are&n; * handled with ancillary data.&n; *&n; * Each ancillary data item is preceeded by a struct cmsghdr (see&n; * Section 5.1), which defines the function and purpose of the data&n; * contained in in the cmsg_data[] member.&n; */

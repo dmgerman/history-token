@@ -693,7 +693,8 @@ id|chunk
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|packet
 suffix:semicolon

@@ -579,6 +579,9 @@ comma
 DECL|enumerator|SCTP_XMIT_MUST_FRAG
 id|SCTP_XMIT_MUST_FRAG
 comma
+DECL|enumerator|SCTP_XMIT_NAGLE_DELAY
+id|SCTP_XMIT_NAGLE_DELAY
+comma
 DECL|typedef|sctp_xmit_t
 )brace
 id|sctp_xmit_t
