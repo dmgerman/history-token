@@ -414,7 +414,7 @@ r_void
 op_star
 id|pointer
 comma
-id|u32
+id|acpi_size
 id|length
 )paren
 suffix:semicolon
@@ -425,7 +425,7 @@ r_void
 op_star
 id|pointer
 comma
-id|u32
+id|acpi_size
 id|length
 )paren
 suffix:semicolon

@@ -37,6 +37,11 @@ id|acpi_operand_object
 op_star
 id|second_desc
 suffix:semicolon
+r_union
+id|acpi_operand_object
+op_star
+id|next_desc
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;ut_delete_internal_obj&quot;
@@ -176,6 +181,31 @@ id|object-&gt;device.gpe_block
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Walk the handler list for this device */
+id|handler_desc
+op_assign
+id|object-&gt;device.address_space
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|handler_desc
+)paren
+(brace
+id|next_desc
+op_assign
+id|handler_desc-&gt;address_space.next
+suffix:semicolon
+id|acpi_ut_remove_reference
+(paren
+id|handler_desc
+)paren
+suffix:semicolon
+id|handler_desc
+op_assign
+id|next_desc
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -305,25 +335,31 @@ id|second_desc
 multiline_comment|/*&n;&t;&t;&t; * Free the region_context if and only if the handler is one of the&n;&t;&t;&t; * default handlers -- and therefore, we created the context object&n;&t;&t;&t; * locally, it was not created by an external caller.&n;&t;&t;&t; */
 id|handler_desc
 op_assign
-id|object-&gt;region.addr_handler
+id|object-&gt;region.address_space
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|handler_desc
 )paren
-op_logical_and
+(brace
+r_if
+c_cond
 (paren
-id|handler_desc-&gt;addr_handler.hflags
-op_eq
+id|handler_desc-&gt;address_space.hflags
+op_amp
 id|ACPI_ADDR_HANDLER_DEFAULT_INSTALLED
-)paren
 )paren
 (brace
 id|obj_pointer
 op_assign
 id|second_desc-&gt;extra.region_context
+suffix:semicolon
+)brace
+id|acpi_ut_remove_reference
+(paren
+id|handler_desc
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Now we can free the Extra object */
@@ -522,7 +558,7 @@ id|new_count
 op_assign
 id|count
 suffix:semicolon
-multiline_comment|/*&n;&t; * Reference count action (increment, decrement, or force delete)&n;&t; */
+multiline_comment|/*&n;&t; * Perform the reference count action (increment, decrement, or force delete)&n;&t; */
 r_switch
 c_cond
 (paren
@@ -741,16 +777,6 @@ id|u32
 id|i
 suffix:semicolon
 r_union
-id|acpi_operand_object
-op_star
-id|next
-suffix:semicolon
-r_union
-id|acpi_operand_object
-op_star
-r_new
-suffix:semicolon
-r_union
 id|acpi_generic_state
 op_star
 id|state_list
@@ -783,7 +809,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Make sure that this isn&squot;t a namespace handle&n;&t; */
+multiline_comment|/* Make sure that this isn&squot;t a namespace handle */
 r_if
 c_cond
 (paren
@@ -853,77 +879,20 @@ id|object
 r_case
 id|ACPI_TYPE_DEVICE
 suffix:colon
-id|status
-op_assign
-id|acpi_ut_create_update_state_and_push
-(paren
-id|object-&gt;device.addr_handler
-comma
-id|action
-comma
-op_amp
-id|state_list
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_goto
-id|error_exit
-suffix:semicolon
-)brace
 id|acpi_ut_update_ref_count
 (paren
-id|object-&gt;device.sys_handler
+id|object-&gt;device.system_notify
 comma
 id|action
 )paren
 suffix:semicolon
 id|acpi_ut_update_ref_count
 (paren
-id|object-&gt;device.drv_handler
+id|object-&gt;device.device_notify
 comma
 id|action
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_TYPE_LOCAL_ADDRESS_HANDLER
-suffix:colon
-multiline_comment|/* Must walk list of address handlers */
-id|next
-op_assign
-id|object-&gt;addr_handler.next
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|next
-)paren
-(brace
-r_new
-op_assign
-id|next-&gt;addr_handler.next
-suffix:semicolon
-id|acpi_ut_update_ref_count
-(paren
-id|next
-comma
-id|action
-)paren
-suffix:semicolon
-id|next
-op_assign
-r_new
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -1220,7 +1189,7 @@ comma
 id|object
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Ensure that we have a valid object&n;&t; */
+multiline_comment|/* Ensure that we have a valid object */
 r_if
 c_cond
 (paren
@@ -1234,7 +1203,7 @@ id|object
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We have a valid ACPI internal object, now increment the reference count&n;&t; */
+multiline_comment|/* Increment the reference count */
 (paren
 r_void
 )paren
@@ -1286,7 +1255,7 @@ id|ACPI_DESC_TYPE_NAMED
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Ensure that we have a valid object&n;&t; */
+multiline_comment|/* Ensure that we have a valid object */
 r_if
 c_cond
 (paren

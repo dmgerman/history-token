@@ -248,7 +248,7 @@ op_assign
 op_amp
 id|acpi_namespace_kset
 suffix:semicolon
-id|kobject_register
+id|kobject_add
 c_func
 (paren
 op_amp
