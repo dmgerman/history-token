@@ -854,6 +854,32 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Part of multi-function device */
+multiline_comment|/* keep track of device state */
+DECL|member|is_enabled
+r_int
+r_int
+id|is_enabled
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* pci_enable_device has been called */
+DECL|member|is_busmaster
+r_int
+r_int
+id|is_busmaster
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* device is busmaster */
+DECL|member|saved_config_space
+r_int
+r_int
+id|saved_config_space
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* config space saved at suspend time */
 macro_line|#ifdef CONFIG_PCI_NAMES
 DECL|macro|PCI_NAME_SIZE
 mdefine_line|#define PCI_NAME_SIZE&t;96
