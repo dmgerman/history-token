@@ -896,7 +896,7 @@ op_plus
 id|PCI_SLOT
 c_func
 (paren
-id|bridge-&gt;devfn
+id|dev-&gt;devfn
 )paren
 )paren
 op_mod
