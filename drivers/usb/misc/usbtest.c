@@ -1615,7 +1615,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|le32_to_cpus
+id|le16_to_cpus
 (paren
 op_amp
 id|config-&gt;wTotalLength
