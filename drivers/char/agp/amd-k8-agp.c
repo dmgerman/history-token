@@ -1694,26 +1694,6 @@ l_int|0x00
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Ok, here we have a AGP device. Disable impossible &n;&t;&t;&t; * settings, and adjust the readqueue to the minimum.&n;&t;&t;&t; */
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;AGP: Setting up AGPv3 capable device at %d:%d:%d&bslash;n&quot;
-comma
-id|device-&gt;bus-&gt;number
-comma
-id|PCI_FUNC
-c_func
-(paren
-id|device-&gt;devfn
-)paren
-comma
-id|PCI_SLOT
-c_func
-(paren
-id|device-&gt;devfn
-)paren
-)paren
-suffix:semicolon
 id|pci_read_config_dword
 c_func
 (paren
@@ -1853,20 +1833,12 @@ l_int|2
 )paren
 )paren
 )paren
-(brace
 id|command
 op_and_assign
 op_complement
 l_int|2
 suffix:semicolon
 multiline_comment|/* 8x */
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;AGP: Putting device into 8x mode&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1891,20 +1863,12 @@ l_int|1
 )paren
 )paren
 )paren
-(brace
 id|command
 op_and_assign
 op_complement
 l_int|1
 suffix:semicolon
 multiline_comment|/* 4x */
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;AGP: Putting device into 4x mode&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/*&n;&t; * PASS3: Figure out the 8X/4X setting and enable the&n;&t; *        target (our motherboard chipset).&n;&t; */
@@ -1955,6 +1919,8 @@ id|agp_device_command
 c_func
 (paren
 id|command
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace

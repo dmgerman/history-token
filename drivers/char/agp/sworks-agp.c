@@ -2247,6 +2247,8 @@ id|agp_device_command
 c_func
 (paren
 id|command
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
