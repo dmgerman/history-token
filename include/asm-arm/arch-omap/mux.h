@@ -3295,7 +3295,7 @@ l_int|12
 comma
 l_int|1
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
