@@ -4,6 +4,7 @@ DECL|macro|__SKAS_UACCESS_H
 mdefine_line|#define __SKAS_UACCESS_H
 macro_line|#include &quot;linux/string.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
+macro_line|#include &quot;linux/err.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
 macro_line|#include &quot;asm/errno.h&quot;

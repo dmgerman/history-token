@@ -5,6 +5,7 @@ macro_line|#include &quot;linux/sys.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
+macro_line|#include &quot;asm/stat.h&quot;
 macro_line|#include &quot;sysdep/syscalls.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 DECL|function|check_area
