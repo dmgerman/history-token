@@ -4288,7 +4288,7 @@ c_func
 (paren
 id|chip
 comma
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_screamer_mixers2
@@ -4305,7 +4305,7 @@ c_func
 (paren
 id|chip
 comma
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_awacs_mixers2
