@@ -20,12 +20,102 @@ r_int
 r_int
 id|timer_startval
 suffix:semicolon
-DECL|variable|timer_ticks_usec
+DECL|variable|timer_usec_ticks
 r_static
 r_int
 r_int
-id|timer_ticks_usec
+id|timer_usec_ticks
 suffix:semicolon
+DECL|macro|TIMER_USEC_SHIFT
+mdefine_line|#define TIMER_USEC_SHIFT 16
+multiline_comment|/* we use the shifted arithmetic to work out the ratio of timer ticks&n; * to usecs, as often the peripheral clock is not a nice even multiple&n; * of 1MHz.&n; *&n; * shift of 14 and 15 are too low for the 12MHz, 16 seems to be ok&n; * for the current HZ value of 200 without producing overflows.&n; *&n; * Original patch by Dimitry Andric, updated by Ben Dooks&n;*/
+multiline_comment|/* timer_mask_usec_ticks&n; *&n; * given a clock and divisor, make the value to pass into timer_ticks_to_usec&n; * to scale the ticks into usecs&n;*/
+r_static
+r_inline
+r_int
+r_int
+DECL|function|timer_mask_usec_ticks
+id|timer_mask_usec_ticks
+c_func
+(paren
+r_int
+r_int
+id|scaler
+comma
+r_int
+r_int
+id|pclk
+)paren
+(brace
+r_int
+r_int
+id|den
+op_assign
+id|pclk
+op_div
+l_int|1000
+suffix:semicolon
+r_return
+(paren
+(paren
+l_int|1000
+op_lshift
+id|TIMER_USEC_SHIFT
+)paren
+op_star
+id|scaler
+op_plus
+(paren
+id|den
+op_rshift
+l_int|1
+)paren
+)paren
+op_div
+id|den
+suffix:semicolon
+)brace
+multiline_comment|/* timer_ticks_to_usec&n; *&n; * convert timer ticks to usec.&n;*/
+DECL|function|timer_ticks_to_usec
+r_static
+r_inline
+r_int
+r_int
+id|timer_ticks_to_usec
+c_func
+(paren
+r_int
+r_int
+id|ticks
+)paren
+(brace
+r_int
+r_int
+id|res
+suffix:semicolon
+id|res
+op_assign
+id|ticks
+op_star
+id|timer_usec_ticks
+suffix:semicolon
+id|res
+op_add_assign
+l_int|1
+op_lshift
+(paren
+id|TIMER_USEC_SHIFT
+op_minus
+l_int|4
+)paren
+suffix:semicolon
+multiline_comment|/* round up slightly */
+r_return
+id|res
+op_rshift
+id|TIMER_USEC_SHIFT
+suffix:semicolon
+)brace
 multiline_comment|/***&n; * Returns microsecond  since last clock interrupt.  Note that interrupts&n; * will have been disabled by do_gettimeoffset()&n; * IRQs are disabled before entering here from do_gettimeofday()&n; */
 DECL|macro|SRCPND_TIMER4
 mdefine_line|#define SRCPND_TIMER4 (1&lt;&lt;(IRQ_TIMER4 - IRQ_EINT0))
@@ -44,17 +134,15 @@ id|tdone
 suffix:semicolon
 r_int
 r_int
-id|usec
-suffix:semicolon
-r_int
-r_int
 id|irqpend
 suffix:semicolon
+r_int
+r_int
+id|tval
+suffix:semicolon
 multiline_comment|/* work out how many ticks have gone since last timer interrupt */
-id|tdone
+id|tval
 op_assign
-id|timer_startval
-op_minus
 id|__raw_readl
 c_func
 (paren
@@ -64,6 +152,12 @@ c_func
 l_int|4
 )paren
 )paren
+suffix:semicolon
+id|tdone
+op_assign
+id|timer_startval
+op_minus
+id|tval
 suffix:semicolon
 multiline_comment|/* check to see if there is an interrupt pending */
 id|irqpend
@@ -82,11 +176,9 @@ op_amp
 id|SRCPND_TIMER4
 )paren
 (brace
-multiline_comment|/* re-read the timer, and try and fix up for the missed&n;&t;&t; * interrupt */
-id|tdone
+multiline_comment|/* re-read the timer, and try and fix up for the missed&n;&t;&t; * interrupt. Note, the interrupt may go off before the&n;&t;&t; * timer has re-loaded from wrapping.&n;&t;&t; */
+id|tval
 op_assign
-id|timer_startval
-op_minus
 id|__raw_readl
 c_func
 (paren
@@ -98,21 +190,29 @@ l_int|4
 )paren
 suffix:semicolon
 id|tdone
+op_assign
+id|timer_startval
+op_minus
+id|tval
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tval
+op_ne
+l_int|0
+)paren
+id|tdone
 op_add_assign
-l_int|1
-op_lshift
-l_int|16
+id|timer_startval
 suffix:semicolon
 )brace
-multiline_comment|/* currently, tcnt is in 12MHz units, but this may change&n;&t; * for non-bast machines...&n;&t; */
-id|usec
-op_assign
-id|tdone
-op_div
-id|timer_ticks_usec
-suffix:semicolon
 r_return
-id|usec
+id|timer_ticks_to_usec
+c_func
+(paren
+id|tdone
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * IRQ handler for the timer&n; */
@@ -252,22 +352,20 @@ c_func
 )paren
 )paren
 (brace
-id|timer_ticks_usec
+multiline_comment|/* timer is at 12MHz, scaler is 1 */
+id|timer_usec_ticks
 op_assign
-l_int|12
+id|timer_mask_usec_ticks
+c_func
+(paren
+l_int|1
+comma
+l_int|12000000
+)paren
 suffix:semicolon
-multiline_comment|/* timer is at 12MHz */
 id|tcnt
 op_assign
-(paren
-id|timer_ticks_usec
-op_star
-(paren
-l_int|1000
-op_star
-l_int|1000
-)paren
-)paren
+l_int|12000000
 op_div
 id|HZ
 suffix:semicolon
@@ -283,21 +381,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* for the h1940 (and others), we use the pclk from the core&n;&t;&t; * to generate the timer values. since values around 50 to&n;&t;&t; * 70MHz are not values we can directly generate the timer&n;&t;&t; * value from, we need to pre-scaleand divide before using it.&n;&t;&t; */
+multiline_comment|/* for the h1940 (and others), we use the pclk from the core&n;&t;&t; * to generate the timer values. since values around 50 to&n;&t;&t; * 70MHz are not values we can directly generate the timer&n;&t;&t; * value from, we need to pre-scale and divide before using it.&n;&t;&t; *&n;&t;&t; * for instance, using 50.7MHz and dividing by 6 gives 8.45MHz&n;&t;&t; * (8.45 ticks per usec)&n;&t;&t; */
 multiline_comment|/* this is used as default if no other timer can be found */
-id|timer_ticks_usec
+id|timer_usec_ticks
 op_assign
-id|s3c24xx_pclk
-op_div
+id|timer_mask_usec_ticks
+c_func
 (paren
-l_int|1000
-op_star
-l_int|1000
-)paren
-suffix:semicolon
-id|timer_ticks_usec
-op_div_assign
 l_int|6
+comma
+id|s3c24xx_pclk
+)paren
 suffix:semicolon
 id|tcfg1
 op_and_assign
@@ -338,10 +432,14 @@ op_div
 id|HZ
 suffix:semicolon
 )brace
+multiline_comment|/* timers reload after counting zero, so reduce the count by 1 */
+id|tcnt
+op_decrement
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;setup_timer tcon=%08lx, tcnt %04lx, tcfg %08lx,%08lx&bslash;n&quot;
+l_string|&quot;timer tcon=%08lx, tcnt %04lx, tcfg %08lx,%08lx, usec %08lx&bslash;n&quot;
 comma
 id|tcon
 comma
@@ -350,6 +448,8 @@ comma
 id|tcfg0
 comma
 id|tcfg1
+comma
+id|timer_usec_ticks
 )paren
 suffix:semicolon
 multiline_comment|/* check to see if timer is within 16bit range... */
