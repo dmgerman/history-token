@@ -4314,12 +4314,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|tmp
 op_amp
 (paren
 l_int|1
 op_lshift
 l_int|3
+)paren
 )paren
 )paren
 (brace

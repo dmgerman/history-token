@@ -734,12 +734,6 @@ comma
 r_struct
 id|dentry
 op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 r_extern

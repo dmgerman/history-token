@@ -20840,6 +20840,11 @@ c_func
 (paren
 id|PPPIOCATTCHAN
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|PPPIOCGCHAN
+)paren
 multiline_comment|/* PPPOX */
 id|COMPATIBLE_IOCTL
 c_func

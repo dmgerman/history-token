@@ -1432,12 +1432,16 @@ id|printk
 (paren
 l_string|&quot;ISAPnP reports %s at i/o 0x%x, irq %d&bslash;n&quot;
 comma
+(paren
+r_char
+op_star
+)paren
 id|el3_isapnp_adapters
 (braket
 id|i
 )braket
 dot
-id|name
+id|driver_data
 comma
 id|ioaddr
 comma

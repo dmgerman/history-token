@@ -32,6 +32,7 @@ suffix:semicolon
 r_struct
 id|pglist_data
 suffix:semicolon
+multiline_comment|/*&n; * On machines where it is needed (eg PCs) we divide physical memory&n; * into multiple physical zones. On a PC we have 3 zones:&n; *&n; * ZONE_DMA&t;  &lt; 16 MB&t;ISA DMA capable memory&n; * ZONE_NORMAL&t;16-896 MB&t;direct mapped by the kernel&n; * ZONE_HIGHMEM&t; &gt; 896 MB&t;only page cache and user processes&n; */
 DECL|struct|zone_struct
 r_typedef
 r_struct
@@ -159,6 +160,7 @@ id|zonelist_t
 suffix:semicolon
 DECL|macro|NR_GFPINDEX
 mdefine_line|#define NR_GFPINDEX&t;&t;0x100
+multiline_comment|/*&n; * The pg_data_t structure is used in machines with CONFIG_DISCONTIGMEM&n; * (mostly NUMA machines?) to denote a higher-level memory zone than the&n; * zone_struct denotes.&n; *&n; * On NUMA machines, each NUMA node would have a pg_data_t to describe&n; * it&squot;s memory layout.&n; *&n; * XXX: we need to move the global memory statistics (active_list, ...)&n; *      into the pg_data_t to properly support NUMA.&n; */
 r_struct
 id|bootmem_data
 suffix:semicolon

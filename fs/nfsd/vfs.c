@@ -2807,7 +2807,10 @@ c_func
 (paren
 id|exp
 )paren
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
 (paren
 id|atomic_read
 c_func
@@ -2828,23 +2831,7 @@ op_eq
 id|inode-&gt;i_dev
 )paren
 )paren
-)paren
 (brace
-macro_line|#if 0
-id|interruptible_sleep_on_timeout
-c_func
-(paren
-op_amp
-id|inode-&gt;i_wait
-comma
-l_int|10
-op_star
-id|HZ
-op_div
-l_int|1000
-)paren
-suffix:semicolon
-macro_line|#else
 id|dprintk
 c_func
 (paren
@@ -2853,7 +2840,6 @@ comma
 id|current-&gt;pid
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: Olaf commented this out [gam3] */
 id|set_current_state
 c_func
 (paren
@@ -2884,7 +2870,6 @@ comma
 id|current-&gt;pid
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -2919,6 +2904,7 @@ id|inode-&gt;i_wait
 )paren
 suffix:semicolon
 macro_line|#endif
+)brace
 id|last_ino
 op_assign
 id|inode-&gt;i_ino

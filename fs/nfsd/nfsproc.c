@@ -680,10 +680,6 @@ comma
 id|type
 comma
 id|mode
-comma
-id|rdonly
-op_assign
-l_int|0
 suffix:semicolon
 id|dev_t
 id|rdev
@@ -728,42 +724,7 @@ r_goto
 id|done
 suffix:semicolon
 multiline_comment|/* must fh_put dirfhp even on error */
-multiline_comment|/* Check for MAY_WRITE separately. */
-id|nfserr
-op_assign
-id|nfsd_permission
-c_func
-(paren
-id|dirfhp-&gt;fh_export
-comma
-id|dirfhp-&gt;fh_dentry
-comma
-id|MAY_WRITE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nfserr
-op_eq
-id|nfserr_rofs
-)paren
-(brace
-id|rdonly
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Non-fatal error for echo &gt; /dev/null */
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|nfserr
-)paren
-r_goto
-id|done
-suffix:semicolon
+multiline_comment|/* Check for MAY_WRITE in nfsd_create if necessary */
 id|nfserr
 op_assign
 id|nfserr_acces
@@ -956,18 +917,18 @@ id|inode-&gt;i_mode
 op_amp
 id|S_IFMT
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|type
-op_eq
-id|S_IFCHR
-op_logical_or
-id|type
-op_eq
-id|S_IFBLK
 )paren
 (brace
+r_case
+id|S_IFCHR
+suffix:colon
+r_case
+id|S_IFBLK
+suffix:colon
 multiline_comment|/* reserve rdev for later checking */
 id|attr-&gt;ia_size
 op_assign
@@ -976,6 +937,35 @@ suffix:semicolon
 id|attr-&gt;ia_valid
 op_or_assign
 id|ATTR_SIZE
+suffix:semicolon
+multiline_comment|/* FALLTHROUGH */
+r_case
+id|S_IFIFO
+suffix:colon
+multiline_comment|/* this is probably a permission check..&n;&t;&t;&t;&t;&t; * at least IRIX implements perm checking on&n;&t;&t;&t;&t;&t; *   echo thing &gt; device-special-file-or-pipe&n;&t;&t;&t;&t;&t; * by does a CREATE with type==0&n;&t;&t;&t;&t;&t; */
+id|nfserr
+op_assign
+id|nfsd_permission
+c_func
+(paren
+id|newfhp-&gt;fh_export
+comma
+id|newfhp-&gt;fh_dentry
+comma
+id|MAY_WRITE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nfserr
+op_logical_and
+id|nfserr
+op_ne
+id|nfserr_rofs
+)paren
+r_goto
+id|out_unlock
 suffix:semicolon
 )brace
 )brace
@@ -1019,28 +1009,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* ??? */
 )brace
-multiline_comment|/* This is for &quot;echo &gt; /dev/null&quot; a la SunOS. Argh. */
-id|nfserr
-op_assign
-id|nfserr_rofs
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rdonly
-op_logical_and
-(paren
-op_logical_neg
-id|inode
-op_logical_or
-id|type
-op_eq
-id|S_IFREG
-)paren
-)paren
-r_goto
-id|out_unlock
-suffix:semicolon
 id|attr-&gt;ia_valid
 op_or_assign
 id|ATTR_MODE

@@ -631,7 +631,7 @@ suffix:semicolon
 DECL|macro|MAX_SEGMENTS
 mdefine_line|#define MAX_SEGMENTS 128
 DECL|macro|MAX_SECTORS
-mdefine_line|#define MAX_SECTORS (MAX_SEGMENTS*8)
+mdefine_line|#define MAX_SECTORS 255
 DECL|macro|PageAlignSize
 mdefine_line|#define PageAlignSize(size) (((size) + PAGE_SIZE -1) &amp; PAGE_MASK)
 multiline_comment|/* read-ahead in pages.. */
