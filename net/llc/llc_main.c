@@ -204,7 +204,7 @@ comma
 id|ETH_ALEN
 )paren
 suffix:semicolon
-id|spin_lock_init
+id|rwlock_init
 c_func
 (paren
 op_amp
@@ -2280,7 +2280,7 @@ op_amp
 id|llc_main_station.sap_list.list
 )paren
 suffix:semicolon
-id|spin_lock_init
+id|rwlock_init
 c_func
 (paren
 op_amp
