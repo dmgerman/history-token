@@ -359,24 +359,36 @@ DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)  (((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;0xf0000000
+macro_line|#ifndef __ASSEMBLY__
+r_extern
+r_int
+r_int
+id|phys_base
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|pfn_base
+suffix:semicolon
+macro_line|#endif
 DECL|macro|__pa
-mdefine_line|#define __pa(x)                 ((unsigned long)(x) - PAGE_OFFSET)
+mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long)(x) - PAGE_OFFSET + phys_base)
 DECL|macro|__va
-mdefine_line|#define __va(x)                 ((void *)((unsigned long) (x) + PAGE_OFFSET))
+mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long) (x) - phys_base + PAGE_OFFSET))
 DECL|macro|virt_to_phys
-mdefine_line|#define virt_to_phys(x)&t;&t;__pa((unsigned long)(x))
+mdefine_line|#define virt_to_phys&t;&t;__pa
 DECL|macro|phys_to_virt
-mdefine_line|#define phys_to_virt(x)&t;&t;__va((unsigned long)(x))
+mdefine_line|#define phys_to_virt&t;&t;__va
 DECL|macro|pfn_to_page
-mdefine_line|#define pfn_to_page(pfn)        (mem_map + (pfn))
+mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + ((pfn)-(pfn_base)))
 DECL|macro|page_to_pfn
-mdefine_line|#define page_to_pfn(page)       ((unsigned long)((page) - mem_map))
+mdefine_line|#define page_to_pfn(page)&t;((unsigned long)(((page) - mem_map) + pfn_base))
 DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;(mem_map + (__pa(kaddr) &gt;&gt; PAGE_SHIFT))
+mdefine_line|#define virt_to_page(kaddr)&t;(mem_map + ((((unsigned long)(kaddr)-PAGE_OFFSET)&gt;&gt;PAGE_SHIFT)))
 DECL|macro|pfn_valid
-mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
+mdefine_line|#define pfn_valid(pfn)&t;&t;(((pfn) &gt;= (pfn_base)) &amp;&amp; (((pfn)-(pfn_base)) &lt; max_mapnr))
 DECL|macro|virt_addr_valid
-mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+mdefine_line|#define virt_addr_valid(kaddr)&t;((((unsigned long)(kaddr)-PAGE_OFFSET)&gt;&gt;PAGE_SHIFT) &lt; max_mapnr)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* __KERNEL__ */
