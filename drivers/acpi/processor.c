@@ -37,6 +37,28 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|macro|ACPI_PROCESSOR_COMPONENT
+mdefine_line|#define ACPI_PROCESSOR_COMPONENT&t;0x01000000
+DECL|macro|ACPI_PROCESSOR_CLASS
+mdefine_line|#define ACPI_PROCESSOR_CLASS&t;&t;&quot;processor&quot;
+DECL|macro|ACPI_PROCESSOR_DRIVER_NAME
+mdefine_line|#define ACPI_PROCESSOR_DRIVER_NAME&t;&quot;ACPI Processor Driver&quot;
+DECL|macro|ACPI_PROCESSOR_DEVICE_NAME
+mdefine_line|#define ACPI_PROCESSOR_DEVICE_NAME&t;&quot;Processor&quot;
+DECL|macro|ACPI_PROCESSOR_FILE_INFO
+mdefine_line|#define ACPI_PROCESSOR_FILE_INFO&t;&quot;info&quot;
+DECL|macro|ACPI_PROCESSOR_FILE_POWER
+mdefine_line|#define ACPI_PROCESSOR_FILE_POWER&t;&quot;power&quot;
+DECL|macro|ACPI_PROCESSOR_FILE_PERFORMANCE
+mdefine_line|#define ACPI_PROCESSOR_FILE_PERFORMANCE&t;&quot;performance&quot;
+DECL|macro|ACPI_PROCESSOR_FILE_THROTTLING
+mdefine_line|#define ACPI_PROCESSOR_FILE_THROTTLING&t;&quot;throttling&quot;
+DECL|macro|ACPI_PROCESSOR_FILE_LIMIT
+mdefine_line|#define ACPI_PROCESSOR_FILE_LIMIT&t;&quot;limit&quot;
+DECL|macro|ACPI_PROCESSOR_NOTIFY_PERFORMANCE
+mdefine_line|#define ACPI_PROCESSOR_NOTIFY_PERFORMANCE 0x80
+DECL|macro|ACPI_PROCESSOR_NOTIFY_POWER
+mdefine_line|#define ACPI_PROCESSOR_NOTIFY_POWER&t;0x81
 DECL|macro|US_TO_PM_TIMER_TICKS
 mdefine_line|#define US_TO_PM_TIMER_TICKS(t)&t;&t;((t * (PM_TIMER_FREQUENCY/1000)) / 1000)
 DECL|macro|C2_OVERHEAD

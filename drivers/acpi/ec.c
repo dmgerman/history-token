@@ -15,6 +15,18 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;acpi_ec&quot;
 )paren
+DECL|macro|ACPI_EC_COMPONENT
+mdefine_line|#define ACPI_EC_COMPONENT&t;&t;0x00100000
+DECL|macro|ACPI_EC_CLASS
+mdefine_line|#define ACPI_EC_CLASS&t;&t;&t;&quot;embedded_controller&quot;
+DECL|macro|ACPI_EC_HID
+mdefine_line|#define ACPI_EC_HID&t;&t;&t;&quot;PNP0C09&quot;
+DECL|macro|ACPI_EC_DRIVER_NAME
+mdefine_line|#define ACPI_EC_DRIVER_NAME&t;&t;&quot;ACPI Embedded Controller Driver&quot;
+DECL|macro|ACPI_EC_DEVICE_NAME
+mdefine_line|#define ACPI_EC_DEVICE_NAME&t;&t;&quot;Embedded Controller&quot;
+DECL|macro|ACPI_EC_FILE_INFO
+mdefine_line|#define ACPI_EC_FILE_INFO&t;&t;&quot;info&quot;
 DECL|macro|ACPI_EC_FLAG_OBF
 mdefine_line|#define ACPI_EC_FLAG_OBF&t;0x01&t;/* Output buffer full */
 DECL|macro|ACPI_EC_FLAG_IBF

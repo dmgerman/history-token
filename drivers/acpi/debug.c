@@ -9,6 +9,10 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;debug&quot;
 )paren
+DECL|macro|ACPI_SYSTEM_FILE_DEBUG_LAYER
+mdefine_line|#define ACPI_SYSTEM_FILE_DEBUG_LAYER&t;&quot;debug_layer&quot;
+DECL|macro|ACPI_SYSTEM_FILE_DEBUG_LEVEL
+mdefine_line|#define ACPI_SYSTEM_FILE_DEBUG_LEVEL&t;&quot;debug_level&quot;
 r_static
 r_int
 DECL|function|acpi_system_read_debug

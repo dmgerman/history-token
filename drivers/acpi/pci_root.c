@@ -16,6 +16,14 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;pci_root&quot;
 )paren
+DECL|macro|ACPI_PCI_ROOT_CLASS
+mdefine_line|#define ACPI_PCI_ROOT_CLASS&t;&t;&quot;pci_bridge&quot;
+DECL|macro|ACPI_PCI_ROOT_HID
+mdefine_line|#define ACPI_PCI_ROOT_HID&t;&t;&quot;PNP0A03&quot;
+DECL|macro|ACPI_PCI_ROOT_DRIVER_NAME
+mdefine_line|#define ACPI_PCI_ROOT_DRIVER_NAME&t;&quot;ACPI PCI Root Bridge Driver&quot;
+DECL|macro|ACPI_PCI_ROOT_DEVICE_NAME
+mdefine_line|#define ACPI_PCI_ROOT_DEVICE_NAME&t;&quot;PCI Root Bridge&quot;
 r_extern
 r_struct
 id|pci_ops

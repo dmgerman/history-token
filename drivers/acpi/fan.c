@@ -32,6 +32,20 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|macro|ACPI_FAN_COMPONENT
+mdefine_line|#define ACPI_FAN_COMPONENT&t;&t;0x00200000
+DECL|macro|ACPI_FAN_CLASS
+mdefine_line|#define ACPI_FAN_CLASS&t;&t;&t;&quot;fan&quot;
+DECL|macro|ACPI_FAN_HID
+mdefine_line|#define ACPI_FAN_HID&t;&t;&t;&quot;PNP0C0B&quot;
+DECL|macro|ACPI_FAN_DRIVER_NAME
+mdefine_line|#define ACPI_FAN_DRIVER_NAME&t;&t;&quot;ACPI Fan Driver&quot;
+DECL|macro|ACPI_FAN_DEVICE_NAME
+mdefine_line|#define ACPI_FAN_DEVICE_NAME&t;&t;&quot;Fan&quot;
+DECL|macro|ACPI_FAN_FILE_STATE
+mdefine_line|#define ACPI_FAN_FILE_STATE&t;&t;&quot;state&quot;
+DECL|macro|ACPI_FAN_NOTIFY_STATUS
+mdefine_line|#define ACPI_FAN_NOTIFY_STATUS&t;&t;0x80
 r_int
 id|acpi_fan_add
 (paren
