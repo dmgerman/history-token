@@ -751,13 +751,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|snd_printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;no device found&bslash;n&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* snd_printk(KERN_ERR &quot;no device found&bslash;n&quot;); */
 id|rc
 op_assign
 op_minus
