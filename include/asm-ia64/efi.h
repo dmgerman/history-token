@@ -135,6 +135,8 @@ DECL|macro|EFI_MEMORY_RUNTIME
 mdefine_line|#define EFI_MEMORY_RUNTIME&t;0x8000000000000000&t;/* range requires runtime mapping */
 DECL|macro|EFI_MEMORY_DESCRIPTOR_VERSION
 mdefine_line|#define EFI_MEMORY_DESCRIPTOR_VERSION&t;1
+DECL|macro|EFI_PAGE_SHIFT
+mdefine_line|#define EFI_PAGE_SHIFT&t;&t;12
 r_typedef
 r_struct
 (brace
@@ -856,6 +858,14 @@ id|u64
 id|efi_get_iobase
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+id|u32
+id|efi_mem_type
+(paren
+id|u64
+id|phys_addr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Variable Attributes&n; */

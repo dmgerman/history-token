@@ -1269,17 +1269,30 @@ id|efi.acpi
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_VT
-macro_line|# if defined(CONFIG_VGA_CONSOLE)
-id|conswitchp
-op_assign
-op_amp
-id|vga_con
-suffix:semicolon
-macro_line|# elif defined(CONFIG_DUMMY_CONSOLE)
+macro_line|# if defined(CONFIG_DUMMY_CONSOLE)
 id|conswitchp
 op_assign
 op_amp
 id|dummy_con
+suffix:semicolon
+macro_line|# endif
+macro_line|# if defined(CONFIG_VGA_CONSOLE)
+multiline_comment|/*&n;&t; * Non-legacy systems may route legacy VGA MMIO range to system&n;&t; * memory.  vga_con probes the MMIO hole, so memory looks like&n;&t; * a VGA device to it.  The EFI memory map can tell us if it&squot;s&n;&t; * memory so we can avoid this problem.&n;&t; */
+r_if
+c_cond
+(paren
+id|efi_mem_type
+c_func
+(paren
+l_int|0xA0000
+)paren
+op_ne
+id|EFI_CONVENTIONAL_MEMORY
+)paren
+id|conswitchp
+op_assign
+op_amp
+id|vga_con
 suffix:semicolon
 macro_line|# endif
 macro_line|#endif
