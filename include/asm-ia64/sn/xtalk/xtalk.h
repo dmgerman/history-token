@@ -509,6 +509,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* Error Management */
 multiline_comment|/* Early Action Support */
 r_typedef
 id|caddr_t
@@ -654,7 +655,6 @@ id|xtalk_provider_shutdown_f
 op_star
 id|provider_shutdown
 suffix:semicolon
-multiline_comment|/* Error Management     */
 DECL|typedef|xtalk_provider_t
 )brace
 id|xtalk_provider_t

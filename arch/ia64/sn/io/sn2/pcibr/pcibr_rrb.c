@@ -203,7 +203,7 @@ r_int
 id|vchan
 )paren
 (brace
-id|bridgereg_t
+r_uint64
 id|tmp
 suffix:semicolon
 r_uint16
@@ -359,7 +359,7 @@ id|pciio_slot_t
 id|slot
 )paren
 (brace
-id|bridgereg_t
+r_uint64
 id|tmp
 suffix:semicolon
 r_uint16
@@ -483,14 +483,11 @@ r_int
 id|more
 )paren
 (brace
-id|bridgereg_t
+r_uint64
 id|reg
 comma
 id|tmp
 op_assign
-(paren
-id|bridgereg_t
-)paren
 l_int|0
 suffix:semicolon
 r_uint16
@@ -712,14 +709,11 @@ r_int
 id|less
 )paren
 (brace
-id|bridgereg_t
+r_uint64
 id|reg
 comma
 id|tmp
 op_assign
-(paren
-id|bridgereg_t
-)paren
 l_int|0
 comma
 id|clr
@@ -1072,7 +1066,7 @@ r_int
 id|rrb
 )paren
 (brace
-id|bridgereg_t
+r_uint64
 id|status
 suffix:semicolon
 multiline_comment|/* bridge_lock must be held;&n;     * this RRB must be disabled.&n;     */
@@ -1432,7 +1426,7 @@ id|bridge
 op_assign
 id|pcibr_soft-&gt;bs_base
 suffix:semicolon
-id|bridgereg_t
+r_uint64
 id|tmp
 suffix:semicolon
 r_uint16

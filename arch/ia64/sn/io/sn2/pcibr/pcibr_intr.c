@@ -1127,30 +1127,6 @@ op_assign
 op_star
 id|xtalk_intr_p
 suffix:semicolon
-macro_line|#if PARANOID
-multiline_comment|/* once xtalk_intr is set, we never clear it,&n;&t;&t;     * so if the CAS fails above, this condition&n;&t;&t;     * can &quot;never happen&quot; ...&n;&t;&t;     */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|xtalk_intr
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ALERT
-l_string|&quot;pcibr_intr_alloc %v: unable to set xtalk interrupt resources&quot;
-comma
-id|xconn_vhdl
-)paren
-suffix:semicolon
-multiline_comment|/* yes, we leak resources here. */
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 )brace
 id|pcibr_intr-&gt;bi_ibits
@@ -2279,7 +2255,6 @@ id|pcibr_int_bits
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* PIC WAR. PV# 854697&n;     * On PIC we must write 64-bit MMRs with 64-bit stores&n;     */
 id|s
 op_assign
 id|pcibr_lock
@@ -3151,7 +3126,7 @@ id|PCIIO_INTR_CONNECTED
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;     * This device may have initiated write&n;&t;&t;     * requests since the bridge last saw&n;&t;&t;     * an edge on this interrupt input; flushing&n;&t;&t;     * the buffer prior to invoking the handler&n;&t;&t;     * should help but may not be sufficient if we &n;&t;&t;     * get more requests after the flush, followed&n;&t;&t;     * by the card deciding it wants service, before&n;&t;&t;     * the interrupt handler checks to see if things need&n;&t;&t;     * to be done.&n;&t;&t;     *&n;&t;&t;     * There is a similar race condition if&n;&t;&t;     * an interrupt handler loops around and&n;&t;&t;     * notices further service is required.&n;&t;&t;     * Perhaps we need to have an explicit&n;&t;&t;     * call that interrupt handlers need to&n;&t;&t;     * do between noticing that DMA to memory&n;&t;&t;     * has completed, but before observing the&n;&t;&t;     * contents of memory?&n;&t;&t;     */
+multiline_comment|/*&n;&t;&t; * This device may have initiated write&n;&t;&t; * requests since the bridge last saw&n;&t;&t; * an edge on this interrupt input; flushing&n;&t;&t; * the buffer prior to invoking the handler&n;&t;&t; * should help but may not be sufficient if we &n;&t;&t; * get more requests after the flush, followed&n;&t;&t; * by the card deciding it wants service, before&n;&t;&t; * the interrupt handler checks to see if things need&n;&t;&t; * to be done.&n;&t;&t; *&n;&t;&t; * There is a similar race condition if&n;&t;&t; * an interrupt handler loops around and&n;&t;&t; * notices further service is requred.&n;&t;&t; * Perhaps we need to have an explicit&n;&t;&t; * call that interrupt handlers need to&n;&t;&t; * do between noticing that DMA to memory&n;&t;&t; * has completed, but before observing the&n;&t;&t; * contents of memory?&n;&t;&t; */
 r_if
 c_cond
 (paren

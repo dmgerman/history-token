@@ -848,16 +848,6 @@ l_string|&quot;&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|BEM_ADD_STR
-mdefine_line|#define BEM_ADD_STR(s)  printk(&quot;%s&quot;, (s))
-DECL|macro|BEM_ADD_VAR
-mdefine_line|#define BEM_ADD_VAR(v)  printk(&quot;&bslash;t%20s: 0x%llx&bslash;n&quot;, #v, ((unsigned long long)v))
-DECL|macro|BEM_ADD_REG
-mdefine_line|#define BEM_ADD_REG(r)  printk(&quot;&bslash;t%20s: &quot;, #r); print_register((r), r ## _desc)
-DECL|macro|BEM_ADD_NSPC
-mdefine_line|#define BEM_ADD_NSPC(n,s)       printk(&quot;&bslash;t%20s: &quot;, n); print_register(s, space_desc)
-DECL|macro|BEM_ADD_SPC
-mdefine_line|#define BEM_ADD_SPC(s)          BEM_ADD_NSPC(#s, s)
 multiline_comment|/*&n; * display memory directory state&n; */
 r_static
 r_void

@@ -744,7 +744,7 @@ id|PCIBR_DEBUG_ATTACH
 comma
 id|conn_v
 comma
-l_string|&quot;pic_attach: bridge0=0x%x, bridge1=0x%x&bslash;n&quot;
+l_string|&quot;pic_attach: bridge0=0x%lx, bridge1=0x%lx&bslash;n&quot;
 comma
 id|bridge0
 comma
@@ -759,13 +759,8 @@ op_assign
 id|conn_v
 suffix:semicolon
 multiline_comment|/* If dual-ported then split the two PIC buses across both Cbricks */
-r_if
-c_cond
-(paren
-(paren
 id|peer_conn_v
 op_assign
-(paren
 id|pic_bus1_redist
 c_func
 (paren
@@ -777,8 +772,11 @@ id|bridge0
 comma
 id|conn_v
 )paren
-)paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|peer_conn_v
 )paren
 id|conn_v1
 op_assign
@@ -901,7 +899,7 @@ id|PCIBR_DEBUG_ATTACH
 comma
 id|conn_v
 comma
-l_string|&quot;pic_attach: pcibr_vhdl0=%v, pcibr_vhdl1=%v&bslash;n&quot;
+l_string|&quot;pic_attach: pcibr_vhdl0=0x%lx, pcibr_vhdl1=0x%lx&bslash;n&quot;
 comma
 id|pcibr_vhdl0
 comma
@@ -987,7 +985,7 @@ id|PCIBR_DEBUG_ATTACH
 comma
 id|conn_v
 comma
-l_string|&quot;pic_attach: bus0_soft=0x%x, bus1_soft=0x%x&bslash;n&quot;
+l_string|&quot;pic_attach: bus0_soft=0x%lx, bus1_soft=0x%lx&bslash;n&quot;
 comma
 id|bus0_soft
 comma

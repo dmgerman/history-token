@@ -1209,33 +1209,16 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-l_string|&quot;%v: Bus running in PCI-X mode, But card in slot %d, &quot;
+l_string|&quot;%s: Bus running in PCI-X mode, But card in slot %d, &quot;
 l_string|&quot;func %d not PCI-X capable&bslash;n&quot;
 comma
-id|pcibr_vhdl
+id|pcibr_soft-&gt;bs_name
 comma
 id|slot
 comma
 id|func
 )paren
 suffix:semicolon
-macro_line|#else
-l_string|&quot;0x%lx: Bus running in PCI-X mode, But card in slot %d, &quot;
-l_string|&quot;func %d not PCI-X capable&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|pcibr_vhdl
-comma
-id|slot
-comma
-id|func
-)paren
-suffix:semicolon
-macro_line|#endif
 id|pcibr_device_info_new
 c_func
 (paren

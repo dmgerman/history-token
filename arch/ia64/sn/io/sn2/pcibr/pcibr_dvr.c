@@ -7394,13 +7394,11 @@ id|PCIBR_DEBUG_DEVREG
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_addr_pci_to_xio: Device(%d): %x&bslash;n&quot;
+l_string|&quot;pcibr_addr_pci_to_xio: Device(%d): 0x%x&bslash;n&quot;
 comma
 id|win
 comma
 id|devreg
-comma
-id|device_bits
 )paren
 )paren
 suffix:semicolon
@@ -7717,14 +7715,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Bridge/Xbridge */
-id|base
-op_assign
-id|BRIDGE_PCI_MEM32_BASE
+id|printk
+c_func
+(paren
+l_string|&quot;pcibr_addr_pci_to_xio(): unknown bridge type&quot;
+)paren
 suffix:semicolon
-id|limit
-op_assign
-id|BRIDGE_PCI_MEM32_LIMIT
+r_return
+(paren
+id|iopaddr_t
+)paren
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -7801,14 +7802,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Bridge/Xbridge */
-id|base
-op_assign
-id|BRIDGE_PCI_MEM64_BASE
+id|printk
+c_func
+(paren
+l_string|&quot;pcibr_addr_pci_to_xio(): unknown bridge type&quot;
+)paren
 suffix:semicolon
-id|limit
-op_assign
-id|BRIDGE_PCI_MEM64_LIMIT
+r_return
+(paren
+id|iopaddr_t
+)paren
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -9252,6 +9256,14 @@ c_func
 (paren
 id|pconn_vhdl
 )paren
+suffix:semicolon
+id|pcibr_soft_t
+id|pcibr_soft
+op_assign
+(paren
+id|pcibr_soft_t
+)paren
+id|pcibr_info-&gt;f_mfast
 suffix:semicolon
 id|pciio_piospace_t
 id|piosp
