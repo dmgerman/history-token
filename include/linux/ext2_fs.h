@@ -44,6 +44,32 @@ mdefine_line|#define EXT2_GOOD_OLD_FIRST_INO&t;11
 multiline_comment|/*&n; * The second extended file system magic number&n; */
 DECL|macro|EXT2_SUPER_MAGIC
 mdefine_line|#define EXT2_SUPER_MAGIC&t;0xEF53
+macro_line|#ifdef __KERNEL__
+DECL|function|EXT2_SB
+r_static
+r_inline
+r_struct
+id|ext2_sb_info
+op_star
+id|EXT2_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+op_amp
+id|sb-&gt;u.ext2_sb
+suffix:semicolon
+)brace
+macro_line|#else
+multiline_comment|/* Assume that user mode programs are passing in an ext2fs superblock, not&n; * a kernel struct super_block.  This will allow us to call the feature-test&n; * macros from user land. */
+DECL|macro|EXT2_SB
+mdefine_line|#define EXT2_SB(sb)&t;(sb)
+macro_line|#endif
 multiline_comment|/*&n; * Maximal count of links to a file&n; */
 DECL|macro|EXT2_LINK_MAX
 mdefine_line|#define EXT2_LINK_MAX&t;&t;32000
@@ -74,11 +100,11 @@ macro_line|# define EXT2_BLOCK_SIZE_BITS(s)&t;((s)-&gt;s_log_block_size + 10)
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 DECL|macro|EXT2_ADDR_PER_BLOCK_BITS
-mdefine_line|#define&t;EXT2_ADDR_PER_BLOCK_BITS(s)&t;((s)-&gt;u.ext2_sb.s_addr_per_block_bits)
+mdefine_line|#define&t;EXT2_ADDR_PER_BLOCK_BITS(s)&t;(EXT2_SB(s)-&gt;s_addr_per_block_bits)
 DECL|macro|EXT2_INODE_SIZE
-mdefine_line|#define EXT2_INODE_SIZE(s)&t;&t;((s)-&gt;u.ext2_sb.s_inode_size)
+mdefine_line|#define EXT2_INODE_SIZE(s)&t;&t;(EXT2_SB(s)-&gt;s_inode_size)
 DECL|macro|EXT2_FIRST_INO
-mdefine_line|#define EXT2_FIRST_INO(s)&t;&t;((s)-&gt;u.ext2_sb.s_first_ino)
+mdefine_line|#define EXT2_FIRST_INO(s)&t;&t;(EXT2_SB(s)-&gt;s_first_ino)
 macro_line|#else
 DECL|macro|EXT2_INODE_SIZE
 mdefine_line|#define EXT2_INODE_SIZE(s)&t;(((s)-&gt;s_rev_level == EXT2_GOOD_OLD_REV) ? &bslash;&n;&t;&t;&t;&t; EXT2_GOOD_OLD_INODE_SIZE : &bslash;&n;&t;&t;&t;&t; (s)-&gt;s_inode_size)
@@ -94,9 +120,9 @@ DECL|macro|EXT2_MIN_FRAG_LOG_SIZE
 mdefine_line|#define EXT2_MIN_FRAG_LOG_SIZE&t;&t;  10
 macro_line|#ifdef __KERNEL__
 DECL|macro|EXT2_FRAG_SIZE
-macro_line|# define EXT2_FRAG_SIZE(s)&t;&t;((s)-&gt;u.ext2_sb.s_frag_size)
+macro_line|# define EXT2_FRAG_SIZE(s)&t;&t;(EXT2_SB(s)-&gt;s_frag_size)
 DECL|macro|EXT2_FRAGS_PER_BLOCK
-macro_line|# define EXT2_FRAGS_PER_BLOCK(s)&t;((s)-&gt;u.ext2_sb.s_frags_per_block)
+macro_line|# define EXT2_FRAGS_PER_BLOCK(s)&t;(EXT2_SB(s)-&gt;s_frags_per_block)
 macro_line|#else
 DECL|macro|EXT2_FRAG_SIZE
 macro_line|# define EXT2_FRAG_SIZE(s)&t;&t;(EXT2_MIN_FRAG_SIZE &lt;&lt; (s)-&gt;s_log_frag_size)
@@ -214,13 +240,13 @@ suffix:semicolon
 multiline_comment|/*&n; * Macro-instructions used to manage group descriptors&n; */
 macro_line|#ifdef __KERNEL__
 DECL|macro|EXT2_BLOCKS_PER_GROUP
-macro_line|# define EXT2_BLOCKS_PER_GROUP(s)&t;((s)-&gt;u.ext2_sb.s_blocks_per_group)
+macro_line|# define EXT2_BLOCKS_PER_GROUP(s)&t;(EXT2_SB(s)-&gt;s_blocks_per_group)
 DECL|macro|EXT2_DESC_PER_BLOCK
-macro_line|# define EXT2_DESC_PER_BLOCK(s)&t;&t;((s)-&gt;u.ext2_sb.s_desc_per_block)
+macro_line|# define EXT2_DESC_PER_BLOCK(s)&t;&t;(EXT2_SB(s)-&gt;s_desc_per_block)
 DECL|macro|EXT2_INODES_PER_GROUP
-macro_line|# define EXT2_INODES_PER_GROUP(s)&t;((s)-&gt;u.ext2_sb.s_inodes_per_group)
+macro_line|# define EXT2_INODES_PER_GROUP(s)&t;(EXT2_SB(s)-&gt;s_inodes_per_group)
 DECL|macro|EXT2_DESC_PER_BLOCK_BITS
-macro_line|# define EXT2_DESC_PER_BLOCK_BITS(s)&t;((s)-&gt;u.ext2_sb.s_desc_per_block_bits)
+macro_line|# define EXT2_DESC_PER_BLOCK_BITS(s)&t;(EXT2_SB(s)-&gt;s_desc_per_block_bits)
 macro_line|#else
 DECL|macro|EXT2_BLOCKS_PER_GROUP
 macro_line|# define EXT2_BLOCKS_PER_GROUP(s)&t;((s)-&gt;s_blocks_per_group)
@@ -582,7 +608,7 @@ mdefine_line|#define clear_opt(o, opt)&t;&t;o &amp;= ~EXT2_MOUNT_##opt
 DECL|macro|set_opt
 mdefine_line|#define set_opt(o, opt)&t;&t;&t;o |= EXT2_MOUNT_##opt
 DECL|macro|test_opt
-mdefine_line|#define test_opt(sb, opt)&t;&t;((sb)-&gt;u.ext2_sb.s_mount_opt &amp; &bslash;&n;&t;&t;&t;&t;&t; EXT2_MOUNT_##opt)
+mdefine_line|#define test_opt(sb, opt)&t;&t;(EXT2_SB(sb)-&gt;s_mount_opt &amp; &bslash;&n;&t;&t;&t;&t;&t; EXT2_MOUNT_##opt)
 multiline_comment|/*&n; * Maximal mount counts between two filesystem checks&n; */
 DECL|macro|EXT2_DFL_MAX_MNT_COUNT
 mdefine_line|#define EXT2_DFL_MAX_MNT_COUNT&t;&t;20&t;/* Allow 20 mounts */
@@ -812,14 +838,6 @@ suffix:semicolon
 multiline_comment|/* Padding to the end of the block */
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-DECL|macro|EXT2_SB
-mdefine_line|#define EXT2_SB(sb)&t;(&amp;((sb)-&gt;u.ext2_sb))
-macro_line|#else
-multiline_comment|/* Assume that user mode programs are passing in an ext2fs superblock, not&n; * a kernel struct super_block.  This will allow us to call the feature-test&n; * macros from user land. */
-DECL|macro|EXT2_SB
-mdefine_line|#define EXT2_SB(sb)&t;(sb)
-macro_line|#endif
 multiline_comment|/*&n; * Codes for operating systems&n; */
 DECL|macro|EXT2_OS_LINUX
 mdefine_line|#define EXT2_OS_LINUX&t;&t;0
