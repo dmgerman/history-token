@@ -18,6 +18,8 @@ DECL|macro|Elf_Sym
 mdefine_line|#define Elf_Sym     Elf32_Sym
 DECL|macro|ELF_ST_BIND
 mdefine_line|#define ELF_ST_BIND ELF32_ST_BIND
+DECL|macro|ELF_ST_TYPE
+mdefine_line|#define ELF_ST_TYPE ELF32_ST_TYPE
 macro_line|#else
 DECL|macro|Elf_Ehdr
 mdefine_line|#define Elf_Ehdr    Elf64_Ehdr 
@@ -27,6 +29,8 @@ DECL|macro|Elf_Sym
 mdefine_line|#define Elf_Sym     Elf64_Sym
 DECL|macro|ELF_ST_BIND
 mdefine_line|#define ELF_ST_BIND ELF64_ST_BIND
+DECL|macro|ELF_ST_TYPE
+mdefine_line|#define ELF_ST_TYPE ELF64_ST_TYPE
 macro_line|#endif
 macro_line|#if KERNEL_ELFDATA != HOST_ELFDATA
 DECL|function|__endian
