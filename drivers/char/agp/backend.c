@@ -847,6 +847,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|agp_off
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|bridge-&gt;dev
 )paren
