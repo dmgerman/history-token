@@ -5039,7 +5039,7 @@ r_struct
 id|file_allocation_info
 (brace
 DECL|member|AllocationSize
-id|__u64
+id|__le64
 id|AllocationSize
 suffix:semicolon
 )brace
@@ -5050,7 +5050,7 @@ r_struct
 id|file_end_of_file_info
 (brace
 DECL|member|FileSize
-id|__u64
+id|__le64
 id|FileSize
 suffix:semicolon
 multiline_comment|/* offset to end of file */
