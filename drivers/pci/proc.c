@@ -1743,7 +1743,6 @@ id|bus-&gt;procdir
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pci_name_bus
 c_func
 (paren
