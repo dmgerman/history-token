@@ -287,7 +287,7 @@ r_const
 r_struct
 id|ip_ct_irc_expect
 op_star
-id|ct_irc_info
+id|exp_irc_info
 comma
 r_struct
 id|ip_conntrack
@@ -368,7 +368,7 @@ l_string|&quot;IRC_NAT: info (seq %u + %u) in %u&bslash;n&quot;
 comma
 id|expect-&gt;seq
 comma
-id|ct_irc_info-&gt;len
+id|exp_irc_info-&gt;len
 comma
 id|ntohl
 c_func
@@ -401,7 +401,7 @@ c_loop
 (paren
 id|port
 op_assign
-id|ct_irc_info-&gt;port
+id|exp_irc_info-&gt;port
 suffix:semicolon
 id|port
 op_ne
@@ -507,7 +507,7 @@ c_func
 id|tcph-&gt;seq
 )paren
 comma
-id|ct_irc_info-&gt;len
+id|exp_irc_info-&gt;len
 comma
 id|buffer
 comma
@@ -593,7 +593,7 @@ suffix:semicolon
 r_struct
 id|ip_ct_irc_expect
 op_star
-id|ct_irc_info
+id|exp_irc_info
 suffix:semicolon
 r_if
 c_cond
@@ -607,7 +607,7 @@ c_func
 l_string|&quot;ip_nat_irc: no exp!!&quot;
 )paren
 suffix:semicolon
-id|ct_irc_info
+id|exp_irc_info
 op_assign
 op_amp
 id|exp-&gt;help.exp_irc_info
@@ -729,7 +729,7 @@ c_func
 (paren
 id|exp-&gt;seq
 op_plus
-id|ct_irc_info-&gt;len
+id|exp_irc_info-&gt;len
 comma
 id|ntohl
 c_func
@@ -754,7 +754,7 @@ op_logical_neg
 id|irc_data_fixup
 c_func
 (paren
-id|ct_irc_info
+id|exp_irc_info
 comma
 id|ct
 comma
@@ -796,7 +796,7 @@ l_string|&quot;IRC_NAT: partial packet %u/%u in %u/%u&bslash;n&quot;
 comma
 id|exp-&gt;seq
 comma
-id|ct_irc_info-&gt;len
+id|exp_irc_info-&gt;len
 comma
 id|ntohl
 c_func

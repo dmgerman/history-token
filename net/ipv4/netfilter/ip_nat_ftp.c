@@ -767,7 +767,7 @@ r_const
 r_struct
 id|ip_ct_ftp_expect
 op_star
-id|ct_ftp_info
+id|exp_ftp_info
 comma
 r_struct
 id|ip_conntrack
@@ -841,7 +841,7 @@ l_string|&quot;FTP_NAT: seq %u + %u in %u&bslash;n&quot;
 comma
 id|expect-&gt;seq
 comma
-id|ct_ftp_info-&gt;len
+id|exp_ftp_info-&gt;len
 comma
 id|ntohl
 c_func
@@ -854,11 +854,11 @@ multiline_comment|/* Change address inside packet to match way we&squot;re mappi
 r_if
 c_cond
 (paren
-id|ct_ftp_info-&gt;ftptype
+id|exp_ftp_info-&gt;ftptype
 op_eq
 id|IP_CT_FTP_PASV
 op_logical_or
-id|ct_ftp_info-&gt;ftptype
+id|exp_ftp_info-&gt;ftptype
 op_eq
 id|IP_CT_FTP_EPSV
 )paren
@@ -939,7 +939,7 @@ c_loop
 (paren
 id|port
 op_assign
-id|ct_ftp_info-&gt;port
+id|exp_ftp_info-&gt;port
 suffix:semicolon
 id|port
 op_ne
@@ -990,7 +990,7 @@ c_cond
 op_logical_neg
 id|mangle
 (braket
-id|ct_ftp_info-&gt;ftptype
+id|exp_ftp_info-&gt;ftptype
 )braket
 (paren
 id|pskb
@@ -1007,7 +1007,7 @@ c_func
 id|tcph-&gt;seq
 )paren
 comma
-id|ct_ftp_info-&gt;len
+id|exp_ftp_info-&gt;len
 comma
 id|ct
 comma
@@ -1095,7 +1095,7 @@ suffix:semicolon
 r_struct
 id|ip_ct_ftp_expect
 op_star
-id|ct_ftp_info
+id|exp_ftp_info
 suffix:semicolon
 r_if
 c_cond
@@ -1109,7 +1109,7 @@ c_func
 l_string|&quot;ip_nat_ftp: no exp!!&quot;
 )paren
 suffix:semicolon
-id|ct_ftp_info
+id|exp_ftp_info
 op_assign
 op_amp
 id|exp-&gt;help.exp_ftp_info
@@ -1225,7 +1225,7 @@ c_func
 (paren
 id|exp-&gt;seq
 op_plus
-id|ct_ftp_info-&gt;len
+id|exp_ftp_info-&gt;len
 comma
 id|ntohl
 c_func
@@ -1250,7 +1250,7 @@ op_logical_neg
 id|ftp_data_fixup
 c_func
 (paren
-id|ct_ftp_info
+id|exp_ftp_info
 comma
 id|ct
 comma
@@ -1293,7 +1293,7 @@ l_string|&quot;FTP_NAT: partial packet %u/%u in %u/%u&bslash;n&quot;
 comma
 id|exp-&gt;seq
 comma
-id|ct_ftp_info-&gt;len
+id|exp_ftp_info-&gt;len
 comma
 id|ntohl
 c_func
