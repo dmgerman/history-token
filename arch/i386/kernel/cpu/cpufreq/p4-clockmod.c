@@ -337,6 +337,7 @@ comma
 id|h
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -344,7 +345,17 @@ id|l
 op_amp
 l_int|0x01
 )paren
-singleline_comment|//&t;&t;printk(KERN_DEBUG PFX &quot;CPU#%d currently thermal throttled&bslash;n&quot;, cpu);
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+id|PFX
+l_string|&quot;CPU#%d currently thermal throttled&bslash;n&quot;
+comma
+id|cpu
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -385,7 +396,7 @@ op_eq
 id|DC_DISABLE
 )paren
 (brace
-singleline_comment|//&t;&t;printk(KERN_INFO PFX &quot;CPU#%d disabling modulation&bslash;n&quot;, cpu);
+multiline_comment|/* printk(KERN_INFO PFX &quot;CPU#%d disabling modulation&bslash;n&quot;, cpu); */
 id|wrmsr
 c_func
 (paren
@@ -406,7 +417,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//&t;&t;printk(KERN_INFO PFX &quot;CPU#%d setting duty cycle to %d%%&bslash;n&quot;, cpu, ((125 * newstate) / 10));
+multiline_comment|/* printk(KERN_INFO PFX &quot;CPU#%d setting duty cycle to %d%%&bslash;n&quot;,&n;&t;&t;&t;cpu, ((125 * newstate) / 10)); */
 multiline_comment|/* bits 63 - 5&t;: reserved &n;&t;&t; * bit  4&t;: enable/disable&n;&t;&t; * bits 3-1&t;: duty cycle&n;&t;&t; * bit  0&t;: reserved&n;&t;&t; */
 id|l
 op_assign

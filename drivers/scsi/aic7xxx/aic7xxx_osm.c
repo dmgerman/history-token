@@ -342,10 +342,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Certain newer motherboards have put new PCI based devices into the&n; * IO spaces that used to typically be occupied by VLB or EISA cards.&n; * This overlap can cause these newer motherboards to lock up when scanned&n; * for older EISA and VLB devices.  Setting this option to non-0 will&n; * cause the driver to skip scanning for any VLB or EISA controllers and&n; * only support the PCI controllers.  NOTE: this means that if the kernel&n; * os compiled with PCI support disabled, then setting this to non-0&n; * would result in never finding any devices :)&n; */
 macro_line|#ifndef CONFIG_AIC7XXX_PROBE_EISA_VL
-DECL|macro|CONFIG_AIC7XXX_PROBE_EISA_VL
-mdefine_line|#define CONFIG_AIC7XXX_PROBE_EISA_VL n
-macro_line|#endif
-macro_line|#if CONFIG_AIC7XXX_PROBE_EISA_VL == n
 DECL|variable|aic7xxx_probe_eisa_vl
 r_static
 r_uint32

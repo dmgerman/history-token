@@ -3,7 +3,7 @@ macro_line|#ifndef _LINUX_TPQIC02_H
 DECL|macro|_LINUX_TPQIC02_H
 mdefine_line|#define _LINUX_TPQIC02_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if CONFIG_QIC02_TAPE || CONFIG_QIC02_TAPE_MODULE
+macro_line|#if defined(CONFIG_QIC02_TAPE) || defined(CONFIG_QIC02_TAPE_MODULE)
 multiline_comment|/* need to have QIC02_TAPE_DRIVE and QIC02_TAPE_IFC expand to something */
 macro_line|#include &lt;linux/mtio.h&gt;
 multiline_comment|/* Make QIC02_TAPE_IFC expand to something.&n; *&n; * The only difference between WANGTEK and EVEREX is in the &n; * handling of the DMA channel 3.&n; * Note that the driver maps EVEREX to WANGTEK internally for speed&n; * reasons. Externally WANGTEK==1, EVEREX==2, ARCHIVE==3.&n; * These must correspond to the values used in qic02config(1).&n; *&n; * Support for Mountain controllers was added by Erik Jacobson&n; * and severely hacked by me.   -- hhb&n; * &n; * Support for Emerald controllers by Alan Bain &lt;afrb2@chiark.chu.cam.ac.uk&gt;&n; * with more hacks by me.   -- hhb&n; */

@@ -19,6 +19,8 @@ DECL|macro|EXT2_XATTR_INDEX_POSIX_ACL_DEFAULT
 mdefine_line|#define EXT2_XATTR_INDEX_POSIX_ACL_DEFAULT&t;3
 DECL|macro|EXT2_XATTR_INDEX_TRUSTED
 mdefine_line|#define EXT2_XATTR_INDEX_TRUSTED&t;&t;4
+DECL|macro|EXT2_XATTR_INDEX_LUSTRE
+mdefine_line|#define&t;EXT2_XATTR_INDEX_LUSTRE&t;&t;&t;5
 DECL|macro|EXT2_XATTR_INDEX_SECURITY
 mdefine_line|#define EXT2_XATTR_INDEX_SECURITY&t;        6
 DECL|struct|ext2_xattr_header

@@ -1859,4 +1859,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|module_arch_cleanup
+r_void
+id|module_arch_cleanup
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|mod
+)paren
+(brace
+)brace
 eof

@@ -131,5 +131,16 @@ op_star
 id|mod
 )paren
 suffix:semicolon
+multiline_comment|/* Any cleanup needed when module leaves. */
+r_void
+id|module_arch_cleanup
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|mod
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

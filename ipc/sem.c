@@ -40,6 +40,11 @@ r_static
 r_void
 id|freeary
 (paren
+r_struct
+id|sem_array
+op_star
+id|sma
+comma
 r_int
 id|id
 )paren
@@ -1464,21 +1469,21 @@ r_return
 id|semzcnt
 suffix:semicolon
 )brace
-multiline_comment|/* Free a semaphore set. */
+multiline_comment|/* Free a semaphore set. freeary() is called with sem_ids.sem down and&n; * the spinlock for this semaphore set hold. sem_ids.sem remains locked&n; * on exit.&n; */
 DECL|function|freeary
 r_static
 r_void
 id|freeary
 (paren
-r_int
-id|id
-)paren
-(brace
 r_struct
 id|sem_array
 op_star
 id|sma
-suffix:semicolon
+comma
+r_int
+id|id
+)paren
+(brace
 r_struct
 id|sem_undo
 op_star
@@ -1491,14 +1496,6 @@ id|q
 suffix:semicolon
 r_int
 id|size
-suffix:semicolon
-id|sma
-op_assign
-id|sem_rmid
-c_func
-(paren
-id|id
-)paren
 suffix:semicolon
 multiline_comment|/* Invalidate the existing undo structures for this semaphore set.&n;&t; * (They will be freed without any further action in sem_exit()&n;&t; * or during the next semop.)&n;&t; */
 r_for
@@ -1551,6 +1548,15 @@ id|q-&gt;sleeper
 suffix:semicolon
 multiline_comment|/* doesn&squot;t sleep */
 )brace
+multiline_comment|/* Remove the semaphore set from the ID array*/
+id|sma
+op_assign
+id|sem_rmid
+c_func
+(paren
+id|id
+)paren
+suffix:semicolon
 id|sem_unlock
 c_func
 (paren
@@ -3188,6 +3194,8 @@ suffix:colon
 id|freeary
 c_func
 (paren
+id|sma
+comma
 id|semid
 )paren
 suffix:semicolon

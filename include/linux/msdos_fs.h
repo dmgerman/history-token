@@ -300,7 +300,7 @@ DECL|member|next_cluster
 id|__u32
 id|next_cluster
 suffix:semicolon
-multiline_comment|/* Most recently allocated cluster.&n;&t;&t;&t;&t; * Unused under Linux. */
+multiline_comment|/* Most recently allocated cluster */
 DECL|member|reserved2
 id|__u32
 id|reserved2

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * net/nonet.c&n; *&n; * Dummy functions to allow us to configure network support entirely&n; * out of the kernel.&n; *&n; * Distributed under the terms of the GNU GPL version 2.&n; * Copyright (c) Matthew Wilcox 2003&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
