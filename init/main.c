@@ -187,16 +187,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_SYSVIPC)
-r_extern
-r_void
-id|ipc_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Are we up and running (ie do we have all the infrastructure&n; * set up)&n; */
 DECL|variable|system_running
 r_int
@@ -1538,13 +1528,6 @@ c_func
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 id|proc_root_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_SYSVIPC)
-id|ipc_init
 c_func
 (paren
 )paren
