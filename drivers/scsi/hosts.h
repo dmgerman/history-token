@@ -1154,10 +1154,11 @@ id|sdev-&gt;lun
 op_eq
 id|lun
 )paren
-r_break
-suffix:semicolon
 r_return
 id|sdev
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sysfs support&n; */
