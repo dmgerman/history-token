@@ -1946,7 +1946,7 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
-id|list_splice
+id|list_splice_init
 c_func
 (paren
 op_amp
@@ -1954,13 +1954,6 @@ id|mapping-&gt;dirty_pages
 comma
 op_amp
 id|mapping-&gt;io_pages
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|mapping-&gt;dirty_pages
 )paren
 suffix:semicolon
 r_while
@@ -2250,20 +2243,8 @@ id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|mapping-&gt;io_pages
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Put the rest back, in the correct order.&n;&t;&t; */
-id|list_splice
+multiline_comment|/*&n;&t; * Put the rest back, in the correct order.&n;&t; */
+id|list_splice_init
 c_func
 (paren
 op_amp
@@ -2272,14 +2253,6 @@ comma
 id|mapping-&gt;dirty_pages.prev
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|mapping-&gt;io_pages
-)paren
-suffix:semicolon
-)brace
 id|write_unlock
 c_func
 (paren
