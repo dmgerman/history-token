@@ -2887,8 +2887,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/************&n;**   ATM   **&n;************/
-multiline_comment|/***************************************************************************&n;*&n;* init functions&n;*&n;****************************************************************************/
+multiline_comment|/**********&n;**  ATM  **&n;**********/
 DECL|function|udsl_atm_dev_close
 r_static
 r_void
@@ -2955,7 +2954,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/***************************************************************************&n;*&n;* ATM helper functions&n;*&n;****************************************************************************/
 DECL|function|udsl_atm_proc_read
 r_static
 r_int
@@ -3209,7 +3207,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/***************************************************************************&n;*&n;* SAR driver entries&n;*&n;****************************************************************************/
 DECL|function|udsl_atm_open
 r_static
 r_int
@@ -3528,7 +3525,7 @@ id|ENOIOCTLCMD
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/************&n;**   USB   **&n;************/
+multiline_comment|/**********&n;**  USB  **&n;**********/
 DECL|function|udsl_usb_ioctl
 r_static
 r_int
@@ -5028,7 +5025,7 @@ id|instance-&gt;atm_dev
 suffix:semicolon
 multiline_comment|/* frees instance */
 )brace
-multiline_comment|/***************************************************************************&n;*&n;* Driver Init&n;*&n;****************************************************************************/
+multiline_comment|/***********&n;**  init  **&n;***********/
 DECL|function|udsl_usb_init
 r_static
 r_int
@@ -5135,8 +5132,8 @@ id|MODULE_LICENSE
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+multiline_comment|/************&n;**  debug  **&n;************/
 macro_line|#ifdef DEBUG_PACKET
-multiline_comment|/*******************************************************************************&n;*&n;* Debug&n;*&n;*******************************************************************************/
 DECL|function|udsl_print_packet
 r_static
 r_int
@@ -5250,5 +5247,5 @@ r_return
 id|i
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* PACKETDEBUG */
+macro_line|#endif
 eof
