@@ -2460,6 +2460,10 @@ DECL|macro|PCI_DEVICE_ID_RP8J
 mdefine_line|#define PCI_DEVICE_ID_RP8J&t;&t;0x0006
 DECL|macro|PCI_DEVICE_ID_RP4J
 mdefine_line|#define PCI_DEVICE_ID_RP4J&t;&t;0x0007
+DECL|macro|PCI_DEVICE_ID_RP8SNI
+mdefine_line|#define PCI_DEVICE_ID_RP8SNI&t;&t;0x0008&t;
+DECL|macro|PCI_DEVICE_ID_RP16SNI
+mdefine_line|#define PCI_DEVICE_ID_RP16SNI&t;&t;0x0009&t;
 DECL|macro|PCI_DEVICE_ID_RPP4
 mdefine_line|#define PCI_DEVICE_ID_RPP4&t;&t;0x000A
 DECL|macro|PCI_DEVICE_ID_RPP8
