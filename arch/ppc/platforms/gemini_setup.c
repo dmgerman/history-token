@@ -759,7 +759,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|PVR
+id|SPRN_PVR
 )paren
 suffix:semicolon
 id|hid1
@@ -768,7 +768,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|HID1
+id|SPRN_HID1
 )paren
 op_rshift
 l_int|28
@@ -932,7 +932,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|PVR
+id|SPRN_PVR
 )paren
 suffix:semicolon
 r_switch
@@ -2199,7 +2199,7 @@ multiline_comment|/* Restore BATs for now */
 id|mtspr
 c_func
 (paren
-id|DBAT3U
+id|SPRN_DBAT3U
 comma
 l_int|0xf0001fff
 )paren
@@ -2207,7 +2207,7 @@ suffix:semicolon
 id|mtspr
 c_func
 (paren
-id|DBAT3L
+id|SPRN_DBAT3L
 comma
 l_int|0xf000002a
 )paren

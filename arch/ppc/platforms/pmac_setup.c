@@ -1064,7 +1064,7 @@ c_func
 id|mfspr
 c_func
 (paren
-id|PVR
+id|SPRN_PVR
 )paren
 )paren
 suffix:semicolon

@@ -108,18 +108,18 @@ DECL|macro|L2CACHE_PARITY
 mdefine_line|#define L2CACHE_PARITY  0x08    /* Mask for L2 Cache Parity Protected bit */
 macro_line|#ifdef CONFIG_8xx
 multiline_comment|/* Cache control on the MPC8xx is provided through some additional&n; * special purpose registers.&n; */
-DECL|macro|IC_CST
-mdefine_line|#define IC_CST&t;&t;560&t;/* Instruction cache control/status */
-DECL|macro|IC_ADR
-mdefine_line|#define IC_ADR&t;&t;561&t;/* Address needed for some commands */
-DECL|macro|IC_DAT
-mdefine_line|#define IC_DAT&t;&t;562&t;/* Read-only data register */
-DECL|macro|DC_CST
-mdefine_line|#define DC_CST&t;&t;568&t;/* Data cache control/status */
-DECL|macro|DC_ADR
-mdefine_line|#define DC_ADR&t;&t;569&t;/* Address needed for some commands */
-DECL|macro|DC_DAT
-mdefine_line|#define DC_DAT&t;&t;570&t;/* Read-only data register */
+DECL|macro|SPRN_IC_CST
+mdefine_line|#define SPRN_IC_CST&t;560&t;/* Instruction cache control/status */
+DECL|macro|SPRN_IC_ADR
+mdefine_line|#define SPRN_IC_ADR&t;561&t;/* Address needed for some commands */
+DECL|macro|SPRN_IC_DAT
+mdefine_line|#define SPRN_IC_DAT&t;562&t;/* Read-only data register */
+DECL|macro|SPRN_DC_CST
+mdefine_line|#define SPRN_DC_CST&t;568&t;/* Data cache control/status */
+DECL|macro|SPRN_DC_ADR
+mdefine_line|#define SPRN_DC_ADR&t;569&t;/* Address needed for some commands */
+DECL|macro|SPRN_DC_DAT
+mdefine_line|#define SPRN_DC_DAT&t;570&t;/* Read-only data register */
 multiline_comment|/* Commands.  Only the first few are available to the instruction cache.&n;*/
 DECL|macro|IDC_ENABLE
 mdefine_line|#define&t;IDC_ENABLE&t;0x02000000&t;/* Cache enable */

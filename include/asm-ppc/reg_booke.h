@@ -688,40 +688,6 @@ DECL|macro|SPEFSCR_FOVFE
 mdefine_line|#define SPEFSCR_FOVFE&t;0x00000004&t;/* Embedded FP overflow enable */
 DECL|macro|SPEFSCR_FRMC
 mdefine_line|#define SPEFSCR_FRMC &t;0x00000003&t;/* Embedded FP rounding mode control */
-multiline_comment|/* Short-hand for various SPRs. */
-macro_line|#ifdef CONFIG_BOOKE
-DECL|macro|CSRR0
-mdefine_line|#define CSRR0&t;SPRN_CSRR0&t;/* Critical Save and Restore Register 0 */
-DECL|macro|CSRR1
-mdefine_line|#define CSRR1&t;SPRN_CSRR1&t;/* Critical Save and Restore Register 1 */
-macro_line|#else
-DECL|macro|CSRR0
-mdefine_line|#define CSRR0&t;SPRN_SRR2&t;/* Logically and functionally equivalent. */
-DECL|macro|CSRR1
-mdefine_line|#define CSRR1&t;SPRN_SRR3&t;/* Logically and functionally equivalent. */
-macro_line|#endif
-DECL|macro|MCSRR0
-mdefine_line|#define MCSRR0&t;SPRN_MCSRR0&t;/* Machine Check Save and Restore Register 0 */
-DECL|macro|MCSRR1
-mdefine_line|#define MCSRR1&t;SPRN_MCSRR1&t;/* Machine Check Save and Restore Register 1 */
-DECL|macro|DCMP
-mdefine_line|#define DCMP&t;SPRN_DCMP&t;/* Data TLB Compare Register */
-DECL|macro|SPRG4R
-mdefine_line|#define SPRG4R&t;SPRN_SPRG4R&t;/* Supervisor Private Registers */
-DECL|macro|SPRG5R
-mdefine_line|#define SPRG5R&t;SPRN_SPRG5R
-DECL|macro|SPRG6R
-mdefine_line|#define SPRG6R&t;SPRN_SPRG6R
-DECL|macro|SPRG7R
-mdefine_line|#define SPRG7R&t;SPRN_SPRG7R
-DECL|macro|SPRG4W
-mdefine_line|#define SPRG4W&t;SPRN_SPRG4W
-DECL|macro|SPRG5W
-mdefine_line|#define SPRG5W&t;SPRN_SPRG5W
-DECL|macro|SPRG6W
-mdefine_line|#define SPRG6W&t;SPRN_SPRG6W
-DECL|macro|SPRG7W
-mdefine_line|#define SPRG7W&t;SPRN_SPRG7W
 multiline_comment|/*&n; * The IBM-403 is an even more odd special case, as it is much&n; * older than the IBM-405 series.  We put these down here incase someone&n; * wishes to support these machines again.&n; */
 macro_line|#ifdef CONFIG_403GCX
 multiline_comment|/* Special Purpose Registers (SPRNs)*/

@@ -264,7 +264,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|HID1
+id|SPRN_HID1
 )paren
 op_rshift
 l_int|28
@@ -1789,7 +1789,7 @@ suffix:semicolon
 id|mtspr
 c_func
 (paren
-id|DBAT1U
+id|SPRN_DBAT1U
 comma
 id|addr
 op_or
@@ -1802,7 +1802,7 @@ multiline_comment|/* Vs == 1; Vp == 0 */
 id|mtspr
 c_func
 (paren
-id|DBAT1L
+id|SPRN_DBAT1L
 comma
 id|addr
 op_or

@@ -9304,7 +9304,7 @@ op_logical_and
 id|mfspr
 c_func
 (paren
-id|HID1
+id|SPRN_HID1
 )paren
 op_amp
 id|HID1_DFS

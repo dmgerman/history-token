@@ -154,7 +154,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|HID1
+id|SPRN_HID1
 )paren
 op_rshift
 l_int|28
@@ -399,7 +399,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|PVR
+id|SPRN_PVR
 )paren
 suffix:semicolon
 id|printk

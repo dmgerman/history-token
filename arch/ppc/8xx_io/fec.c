@@ -6054,7 +6054,7 @@ c_cond
 id|mfspr
 c_func
 (paren
-id|IMMR
+id|SPRN_IMMR
 )paren
 op_amp
 l_int|0xffff

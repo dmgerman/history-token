@@ -520,7 +520,7 @@ c_func
 id|mfspr
 c_func
 (paren
-id|SVR
+id|SPRN_SVR
 )paren
 )paren
 suffix:semicolon

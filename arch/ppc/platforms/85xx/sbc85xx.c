@@ -438,7 +438,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|PVR
+id|SPRN_PVR
 )paren
 suffix:semicolon
 id|svid
@@ -446,7 +446,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|SVR
+id|SPRN_SVR
 )paren
 suffix:semicolon
 id|seq_printf
@@ -515,7 +515,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|HID1
+id|SPRN_HID1
 )paren
 suffix:semicolon
 id|seq_printf

@@ -1692,7 +1692,7 @@ suffix:semicolon
 id|mtspr
 c_func
 (paren
-id|DBAT1U
+id|SPRN_DBAT1U
 comma
 l_int|0xfe8000fe
 )paren
@@ -1700,7 +1700,7 @@ suffix:semicolon
 id|mtspr
 c_func
 (paren
-id|DBAT1L
+id|SPRN_DBAT1L
 comma
 l_int|0xfe80002a
 )paren

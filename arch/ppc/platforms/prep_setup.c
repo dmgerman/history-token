@@ -2514,7 +2514,7 @@ multiline_comment|/* setup DBATs */
 id|mtspr
 c_func
 (paren
-id|DBAT2U
+id|SPRN_DBAT2U
 comma
 l_int|0x80001ffe
 )paren
@@ -2522,7 +2522,7 @@ suffix:semicolon
 id|mtspr
 c_func
 (paren
-id|DBAT2L
+id|SPRN_DBAT2L
 comma
 l_int|0x8000002a
 )paren

@@ -369,7 +369,7 @@ c_cond
 id|mfspr
 c_func
 (paren
-id|HID1
+id|SPRN_HID1
 )paren
 op_amp
 id|HID1_DFS
@@ -1906,7 +1906,7 @@ c_func
 id|mfspr
 c_func
 (paren
-id|PVR
+id|SPRN_PVR
 )paren
 )paren
 op_eq

@@ -225,13 +225,13 @@ id|pll_ext
 suffix:semicolon
 id|pvr
 op_assign
-id|PVR_VER
+id|SPRN_VER
 c_func
 (paren
 id|mfspr
 c_func
 (paren
-id|PVR
+id|SPRN_PVR
 )paren
 )paren
 suffix:semicolon
@@ -252,7 +252,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|HID1
+id|SPRN_HID1
 )paren
 op_rshift
 l_int|28
@@ -279,7 +279,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|HID1
+id|SPRN_HID1
 )paren
 op_amp
 l_int|0x0001e000
@@ -2168,7 +2168,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|PVR
+id|SPRN_PVR
 )paren
 suffix:semicolon
 id|seq_printf
@@ -2305,7 +2305,7 @@ suffix:semicolon
 id|mtspr
 c_func
 (paren
-id|DBAT1U
+id|SPRN_DBAT1U
 comma
 l_int|0xfb0001fe
 )paren
@@ -2313,7 +2313,7 @@ suffix:semicolon
 id|mtspr
 c_func
 (paren
-id|DBAT1L
+id|SPRN_DBAT1L
 comma
 l_int|0xfb00002a
 )paren

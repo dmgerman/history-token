@@ -1687,7 +1687,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|HID1
+id|SPRN_HID1
 )paren
 op_rshift
 l_int|28
@@ -1699,7 +1699,7 @@ c_cond
 id|mfspr
 c_func
 (paren
-id|PVR
+id|SPRN_PVR
 )paren
 op_rshift
 l_int|16
@@ -2042,7 +2042,7 @@ c_func
 id|mfspr
 c_func
 (paren
-id|PVR
+id|SPRN_PVR
 )paren
 )paren
 suffix:semicolon
@@ -2101,7 +2101,7 @@ multiline_comment|/* rfi restores MSR from SRR1 and sets the PC to the SRR0 valu
 id|mtspr
 c_func
 (paren
-id|SRR0
+id|SPRN_SRR0
 comma
 l_int|0xfff00100
 )paren
@@ -2109,7 +2109,7 @@ suffix:semicolon
 id|mtspr
 c_func
 (paren
-id|SRR1
+id|SPRN_SRR1
 comma
 l_int|0
 )paren
@@ -2184,7 +2184,7 @@ multiline_comment|/* setup DBATs */
 id|mtspr
 c_func
 (paren
-id|DBAT2U
+id|SPRN_DBAT2U
 comma
 l_int|0x80001ffe
 )paren
@@ -2192,7 +2192,7 @@ suffix:semicolon
 id|mtspr
 c_func
 (paren
-id|DBAT2L
+id|SPRN_DBAT2L
 comma
 l_int|0x8000002a
 )paren
@@ -2200,7 +2200,7 @@ suffix:semicolon
 id|mtspr
 c_func
 (paren
-id|DBAT3U
+id|SPRN_DBAT3U
 comma
 l_int|0xf0001ffe
 )paren
@@ -2208,7 +2208,7 @@ suffix:semicolon
 id|mtspr
 c_func
 (paren
-id|DBAT3L
+id|SPRN_DBAT3L
 comma
 l_int|0xf000002a
 )paren

@@ -345,7 +345,7 @@ c_func
 id|mfspr
 c_func
 (paren
-id|PVR
+id|SPRN_PVR
 )paren
 )paren
 op_eq
@@ -953,7 +953,7 @@ op_assign
 id|mfspr
 c_func
 (paren
-id|PVR
+id|SPRN_PVR
 )paren
 suffix:semicolon
 )brace

@@ -584,8 +584,8 @@ mdefine_line|#define BPP_RX&t;0x01&t;&t;/* Read only */
 DECL|macro|BPP_RW
 mdefine_line|#define BPP_RW&t;0x02&t;&t;/* Read/write */
 multiline_comment|/* Control/status registers for the MPC8xx.&n; * A write operation to these registers causes serialized access.&n; * During software tablewalk, the registers used perform mask/shift-add&n; * operations when written/read.  A TLB entry is created when the Mx_RPN&n; * is written, and the contents of several registers are used to&n; * create the entry.&n; */
-DECL|macro|MI_CTR
-mdefine_line|#define MI_CTR&t;&t;784&t;/* Instruction TLB control register */
+DECL|macro|SPRN_MI_CTR
+mdefine_line|#define SPRN_MI_CTR&t;784&t;/* Instruction TLB control register */
 DECL|macro|MI_GPM
 mdefine_line|#define MI_GPM&t;&t;0x80000000&t;/* Set domain manager mode */
 DECL|macro|MI_PPM
@@ -601,15 +601,15 @@ mdefine_line|#define MI_IDXMASK&t;0x00001f00&t;/* TLB index to be loaded */
 DECL|macro|MI_RESETVAL
 mdefine_line|#define MI_RESETVAL&t;0x00000000&t;/* Value of register at reset */
 multiline_comment|/* These are the Ks and Kp from the PowerPC books.  For proper operation,&n; * Ks = 0, Kp = 1.&n; */
-DECL|macro|MI_AP
-mdefine_line|#define MI_AP&t;&t;786
+DECL|macro|SPRN_MI_AP
+mdefine_line|#define SPRN_MI_AP&t;786
 DECL|macro|MI_Ks
 mdefine_line|#define MI_Ks&t;&t;0x80000000&t;/* Should not be set */
 DECL|macro|MI_Kp
 mdefine_line|#define MI_Kp&t;&t;0x40000000&t;/* Should always be set */
 multiline_comment|/* The effective page number register.  When read, contains the information&n; * about the last instruction TLB miss.  When MI_RPN is written, bits in&n; * this register are used to create the TLB entry.&n; */
-DECL|macro|MI_EPN
-mdefine_line|#define MI_EPN&t;&t;787
+DECL|macro|SPRN_MI_EPN
+mdefine_line|#define SPRN_MI_EPN&t;787
 DECL|macro|MI_EPNMASK
 mdefine_line|#define MI_EPNMASK&t;0xfffff000&t;/* Effective page number for entry */
 DECL|macro|MI_EVALID
@@ -618,8 +618,8 @@ DECL|macro|MI_ASIDMASK
 mdefine_line|#define MI_ASIDMASK&t;0x0000000f&t;/* ASID match value */
 multiline_comment|/* Reset value is undefined */
 multiline_comment|/* A &quot;level 1&quot; or &quot;segment&quot; or whatever you want to call it register.&n; * For the instruction TLB, it contains bits that get loaded into the&n; * TLB entry when the MI_RPN is written.&n; */
-DECL|macro|MI_TWC
-mdefine_line|#define MI_TWC&t;&t;789
+DECL|macro|SPRN_MI_TWC
+mdefine_line|#define SPRN_MI_TWC&t;789
 DECL|macro|MI_APG
 mdefine_line|#define MI_APG&t;&t;0x000001e0&t;/* Access protection group (0) */
 DECL|macro|MI_GUARDED
@@ -636,13 +636,13 @@ DECL|macro|MI_SVALID
 mdefine_line|#define MI_SVALID&t;0x00000001&t;/* Segment entry is valid */
 multiline_comment|/* Reset value is undefined */
 multiline_comment|/* Real page number.  Defined by the pte.  Writing this register&n; * causes a TLB entry to be created for the instruction TLB, using&n; * additional information from the MI_EPN, and MI_TWC registers.&n; */
-DECL|macro|MI_RPN
-mdefine_line|#define MI_RPN&t;&t;790
+DECL|macro|SPRN_MI_RPN
+mdefine_line|#define SPRN_MI_RPN&t;790
 multiline_comment|/* Define an RPN value for mapping kernel memory to large virtual&n; * pages for boot initialization.  This has real page number of 0,&n; * large page size, shared page, cache enabled, and valid.&n; * Also mark all subpages valid and write access.&n; */
 DECL|macro|MI_BOOTINIT
 mdefine_line|#define MI_BOOTINIT&t;0x000001fd
-DECL|macro|MD_CTR
-mdefine_line|#define MD_CTR&t;&t;792&t;/* Data TLB control register */
+DECL|macro|SPRN_MD_CTR
+mdefine_line|#define SPRN_MD_CTR&t;792&t;/* Data TLB control register */
 DECL|macro|MD_GPM
 mdefine_line|#define MD_GPM&t;&t;0x80000000&t;/* Set domain manager mode */
 DECL|macro|MD_PPM
@@ -661,20 +661,20 @@ DECL|macro|MD_IDXMASK
 mdefine_line|#define MD_IDXMASK&t;0x00001f00&t;/* TLB index to be loaded */
 DECL|macro|MD_RESETVAL
 mdefine_line|#define MD_RESETVAL&t;0x04000000&t;/* Value of register at reset */
-DECL|macro|M_CASID
-mdefine_line|#define M_CASID&t;&t;793&t;/* Address space ID (context) to match */
+DECL|macro|SPRN_M_CASID
+mdefine_line|#define SPRN_M_CASID&t;793&t;/* Address space ID (context) to match */
 DECL|macro|MC_ASIDMASK
 mdefine_line|#define MC_ASIDMASK&t;0x0000000f&t;/* Bits used for ASID value */
 multiline_comment|/* These are the Ks and Kp from the PowerPC books.  For proper operation,&n; * Ks = 0, Kp = 1.&n; */
-DECL|macro|MD_AP
-mdefine_line|#define MD_AP&t;&t;794
+DECL|macro|SPRN_MD_AP
+mdefine_line|#define SPRN_MD_AP&t;794
 DECL|macro|MD_Ks
 mdefine_line|#define MD_Ks&t;&t;0x80000000&t;/* Should not be set */
 DECL|macro|MD_Kp
 mdefine_line|#define MD_Kp&t;&t;0x40000000&t;/* Should always be set */
 multiline_comment|/* The effective page number register.  When read, contains the information&n; * about the last instruction TLB miss.  When MD_RPN is written, bits in&n; * this register are used to create the TLB entry.&n; */
-DECL|macro|MD_EPN
-mdefine_line|#define MD_EPN&t;&t;795
+DECL|macro|SPRN_MD_EPN
+mdefine_line|#define SPRN_MD_EPN&t;795
 DECL|macro|MD_EPNMASK
 mdefine_line|#define MD_EPNMASK&t;0xfffff000&t;/* Effective page number for entry */
 DECL|macro|MD_EVALID
@@ -683,16 +683,16 @@ DECL|macro|MD_ASIDMASK
 mdefine_line|#define MD_ASIDMASK&t;0x0000000f&t;/* ASID match value */
 multiline_comment|/* Reset value is undefined */
 multiline_comment|/* The pointer to the base address of the first level page table.&n; * During a software tablewalk, reading this register provides the address&n; * of the entry associated with MD_EPN.&n; */
-DECL|macro|M_TWB
-mdefine_line|#define M_TWB&t;&t;796
+DECL|macro|SPRN_M_TWB
+mdefine_line|#define SPRN_M_TWB&t;796
 DECL|macro|M_L1TB
 mdefine_line|#define&t;M_L1TB&t;&t;0xfffff000&t;/* Level 1 table base address */
 DECL|macro|M_L1INDX
 mdefine_line|#define M_L1INDX&t;0x00000ffc&t;/* Level 1 index, when read */
 multiline_comment|/* Reset value is undefined */
 multiline_comment|/* A &quot;level 1&quot; or &quot;segment&quot; or whatever you want to call it register.&n; * For the data TLB, it contains bits that get loaded into the TLB entry&n; * when the MD_RPN is written.  It is also provides the hardware assist&n; * for finding the PTE address during software tablewalk.&n; */
-DECL|macro|MD_TWC
-mdefine_line|#define MD_TWC&t;&t;797
+DECL|macro|SPRN_MD_TWC
+mdefine_line|#define SPRN_MD_TWC&t;797
 DECL|macro|MD_L2TB
 mdefine_line|#define MD_L2TB&t;&t;0xfffff000&t;/* Level 2 table base address */
 DECL|macro|MD_L2INDX
@@ -715,11 +715,11 @@ DECL|macro|MD_SVALID
 mdefine_line|#define MD_SVALID&t;0x00000001&t;/* Segment entry is valid */
 multiline_comment|/* Reset value is undefined */
 multiline_comment|/* Real page number.  Defined by the pte.  Writing this register&n; * causes a TLB entry to be created for the data TLB, using&n; * additional information from the MD_EPN, and MD_TWC registers.&n; */
-DECL|macro|MD_RPN
-mdefine_line|#define MD_RPN&t;&t;798
+DECL|macro|SPRN_MD_RPN
+mdefine_line|#define SPRN_MD_RPN&t;798
 multiline_comment|/* This is a temporary storage register that could be used to save&n; * a processor working register during a tablewalk.&n; */
-DECL|macro|M_TW
-mdefine_line|#define M_TW&t;&t;799
+DECL|macro|SPRN_M_TW
+mdefine_line|#define SPRN_M_TW&t;799
 multiline_comment|/*&n; * At present, all PowerPC 400-class processors share a similar TLB&n; * architecture. The instruction and data sides share a unified,&n; * 64-entry, fully-associative TLB which is maintained totally under&n; * software control. In addition, the instruction side has a&n; * hardware-managed, 4-entry, fully- associative TLB which serves as a&n; * first level to the shared TLB. These two TLBs are known as the UTLB&n; * and ITLB, respectively.&n; */
 DECL|macro|PPC4XX_TLB_SIZE
 mdefine_line|#define        PPC4XX_TLB_SIZE 64
