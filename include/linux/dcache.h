@@ -207,24 +207,24 @@ DECL|member|d_count
 id|atomic_t
 id|d_count
 suffix:semicolon
+DECL|member|d_flags
+r_int
+r_int
+id|d_flags
+suffix:semicolon
+multiline_comment|/* protected by d_lock */
 DECL|member|d_lock
 id|spinlock_t
 id|d_lock
 suffix:semicolon
 multiline_comment|/* per dentry lock */
-DECL|member|d_vfs_flags
-r_int
-r_int
-id|d_vfs_flags
-suffix:semicolon
-multiline_comment|/* moved here to be on same cacheline */
 DECL|member|d_inode
 r_struct
 id|inode
 op_star
 id|d_inode
 suffix:semicolon
-multiline_comment|/* Where the name belongs to - NULL is negative */
+multiline_comment|/* Where the name belongs to - NULL is&n;&t;&t;&t;&t;&t; * negative */
 DECL|member|d_lru
 r_struct
 id|list_head
@@ -268,11 +268,6 @@ op_star
 id|d_sb
 suffix:semicolon
 multiline_comment|/* The root of the dentry tree */
-DECL|member|d_flags
-r_int
-r_int
-id|d_flags
-suffix:semicolon
 DECL|member|d_mounted
 r_int
 id|d_mounted
@@ -466,13 +461,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|dentry-&gt;d_vfs_flags
+id|dentry-&gt;d_flags
 op_amp
 id|DCACHE_UNHASHED
 )paren
 )paren
 (brace
-id|dentry-&gt;d_vfs_flags
+id|dentry-&gt;d_flags
 op_or_assign
 id|DCACHE_UNHASHED
 suffix:semicolon
@@ -909,7 +904,7 @@ id|dentry
 (brace
 r_return
 (paren
-id|dentry-&gt;d_vfs_flags
+id|dentry-&gt;d_flags
 op_amp
 id|DCACHE_UNHASHED
 )paren
