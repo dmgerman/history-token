@@ -2,6 +2,9 @@ macro_line|#ifndef _LINUX_HUGETLB_H
 DECL|macro|_LINUX_HUGETLB_H
 mdefine_line|#define _LINUX_HUGETLB_H
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
+r_struct
+id|ctl_table
+suffix:semicolon
 DECL|function|is_vm_hugetlb_page
 r_static
 r_inline
@@ -21,6 +24,27 @@ op_amp
 id|VM_HUGETLB
 suffix:semicolon
 )brace
+r_int
+id|hugetlb_sysctl_handler
+c_func
+(paren
+r_struct
+id|ctl_table
+op_star
+comma
+r_int
+comma
+r_struct
+id|file
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
 r_int
 id|copy_hugetlb_page_range
 c_func
@@ -121,6 +145,10 @@ r_struct
 id|page
 op_star
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|htlbpage_max
 suffix:semicolon
 macro_line|#else /* !CONFIG_HUGETLB_PAGE */
 DECL|function|is_vm_hugetlb_page

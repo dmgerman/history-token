@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_ROOT_NFS
 macro_line|#include &lt;linux/nfs_fs.h&gt;
@@ -197,20 +198,6 @@ r_int
 id|acct_parm
 (braket
 )braket
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_HUGETLB_PAGE
-r_extern
-r_int
-id|htlbpage_max
-suffix:semicolon
-r_extern
-r_int
-id|set_hugetlb_mem_size
-c_func
-(paren
-r_int
-)paren
 suffix:semicolon
 macro_line|#endif
 r_static
@@ -1722,7 +1709,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_dointvec
+id|hugetlb_sysctl_handler
 )brace
 comma
 macro_line|#endif
@@ -4300,24 +4287,6 @@ id|left
 op_sub_assign
 id|len
 suffix:semicolon
-macro_line|#ifdef CONFIG_HUGETLB_PAGE
-r_if
-c_cond
-(paren
-id|i
-op_eq
-op_amp
-id|htlbpage_max
-)paren
-id|val
-op_assign
-id|set_hugetlb_mem_size
-c_func
-(paren
-id|val
-)paren
-suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
