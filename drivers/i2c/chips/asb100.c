@@ -69,9 +69,6 @@ op_assign
 id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
-multiline_comment|/* default VRM to 9.0 instead of 8.2 */
-DECL|macro|ASB100_DEFAULT_VRM
-mdefine_line|#define ASB100_DEFAULT_VRM 90
 multiline_comment|/* Insmod parameters */
 DECL|variable|asb100
 id|SENSORS_INSMOD_1
@@ -3987,7 +3984,10 @@ l_int|4
 suffix:semicolon
 id|data-&gt;vrm
 op_assign
-id|ASB100_DEFAULT_VRM
+id|i2c_which_vrm
+c_func
+(paren
+)paren
 suffix:semicolon
 id|vid
 op_assign

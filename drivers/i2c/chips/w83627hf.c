@@ -5049,7 +5049,10 @@ r_else
 multiline_comment|/* Convert VID to voltage based on default VRM */
 id|data-&gt;vrm
 op_assign
-id|DEFAULT_VRM
+id|i2c_which_vrm
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 id|tmp

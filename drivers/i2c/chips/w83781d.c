@@ -6307,7 +6307,10 @@ suffix:semicolon
 )brace
 id|data-&gt;vrm
 op_assign
-l_int|82
+id|i2c_which_vrm
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
