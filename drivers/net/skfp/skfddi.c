@@ -8131,8 +8131,6 @@ r_struct
 id|net_device
 op_star
 id|mdev
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/************************&n; *&n; * init_module&n; *&n; *  If compiled as a module, find&n; *  adapters and initialize them.&n; *&n; ************************/
 DECL|function|init_module

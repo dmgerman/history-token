@@ -941,8 +941,6 @@ r_struct
 id|scc_info
 op_star
 id|first
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|rand
 r_static
@@ -2743,12 +2741,6 @@ comma
 id|ax25_test
 comma
 l_int|7
-)paren
-suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
 )paren
 suffix:semicolon
 id|rtnl_lock

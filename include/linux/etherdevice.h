@@ -176,7 +176,7 @@ id|len
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * is_valid_ether_addr - Determine if the given Ethernet address is valid&n; * @addr: Pointer to a six-byte array containing the Ethernet address&n; *&n; * Check that the Ethernet address (MAC) is not 00:00:00:00:00:00, is not&n; * a multicast address, and is not FF:FF:FF:FF:FF:FF.&n; *&n; * Return true if the address is valid.&n; */
+multiline_comment|/**&n; * is_valid_ether_addr - Determine if the given Ethernet address is valid&n; * @addr: Pointer to a six-byte array containing the Ethernet address&n; *&n; * Check that the Ethernet address (MAC) is not 00:00:00:00:00:00, is not&n; * a multicast address, and is not FF:FF:FF:FF:FF:FF.  The multicast&n; * and FF:FF:... tests are combined into the single test &quot;!(addr[0]&amp;1)&quot;.&n; *&n; * Return true if the address is valid.&n; */
 DECL|function|is_valid_ether_addr
 r_static
 r_inline

@@ -3384,12 +3384,6 @@ id|dev-&gt;change_mtu
 op_assign
 id|ipip6_tunnel_change_mtu
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|dev-&gt;type
 op_assign
 id|ARPHRD_SIT

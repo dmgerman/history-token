@@ -3561,12 +3561,6 @@ id|IFF_NOARP
 op_or
 id|IFF_MULTICAST
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  support.h&n; *  Header file for specific support.c&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; */
+multiline_comment|/*  support.h - Header file for specific support.c&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; */
 multiline_comment|/* Debug levels */
 DECL|macro|DEBUG_OTHER
 mdefine_line|#define DEBUG_OTHER&t;1
@@ -41,32 +41,11 @@ dot
 dot
 )paren
 suffix:semicolon
-macro_line|#ifdef NTFS_IN_LINUX_KERNEL
 macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|ntfs_malloc
-mdefine_line|#define ntfs_malloc(size)  kmalloc(size,GFP_KERNEL)
+mdefine_line|#define ntfs_malloc(size)  kmalloc(size, GFP_KERNEL)
 DECL|macro|ntfs_free
 mdefine_line|#define ntfs_free(ptr)     kfree(ptr)
-macro_line|#else
-r_void
-op_star
-id|ntfs_malloc
-c_func
-(paren
-r_int
-id|size
-)paren
-suffix:semicolon
-r_void
-id|ntfs_free
-c_func
-(paren
-r_void
-op_star
-id|block
-)paren
-suffix:semicolon
-macro_line|#endif
 r_void
 id|ntfs_bzero
 c_func
@@ -219,5 +198,4 @@ op_star
 id|out_len
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

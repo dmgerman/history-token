@@ -1477,8 +1477,6 @@ suffix:semicolon
 r_static
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -25482,22 +25480,16 @@ DECL|variable|io
 r_static
 r_int
 id|io
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|irq
 r_static
 r_int
 id|irq
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|bad
 r_static
 r_int
 id|bad
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* 0xbad = bad sig or no reset ack */
 DECL|variable|scsi_registered

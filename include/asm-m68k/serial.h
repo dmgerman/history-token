@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-m68k/serial.h&n; *&n; * currently this seems usefull only for a Q40,&n; * its an almost exact copy of ../asm/alpha/serial.h &n; *&n; */
+multiline_comment|/*&n; * include/asm-m68k/serial.h&n; *&n; * currently this seems useful only for a Q40,&n; * its an almost exact copy of ../asm/alpha/serial.h &n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if 0
 mdefine_line|#define rs_init serial_rs_init

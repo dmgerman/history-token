@@ -2531,11 +2531,6 @@ id|dev-&gt;mtu
 op_assign
 l_int|9216
 suffix:semicolon
-id|dev_init_buffers
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|pr_debug
 (paren
 l_string|&quot;%s: iucv_init  dev@=%p&bslash;n&quot;

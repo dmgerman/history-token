@@ -2950,8 +2950,6 @@ id|str
 r_static
 r_int
 id|nr_dev
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|ints

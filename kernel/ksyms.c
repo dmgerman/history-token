@@ -36,6 +36,8 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/in6.h&gt;
+macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#endif
@@ -824,13 +826,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|notify_change
-)paren
-suffix:semicolon
-DECL|variable|get_hardblocksize
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|get_hardblocksize
 )paren
 suffix:semicolon
 DECL|variable|set_blocksize
@@ -2431,6 +2426,14 @@ c_func
 id|daemonize
 )paren
 suffix:semicolon
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
+multiline_comment|/* for networking and md */
 multiline_comment|/* Program loader interfaces */
 DECL|variable|setup_arg_pages
 id|EXPORT_SYMBOL

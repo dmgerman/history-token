@@ -255,7 +255,7 @@ id|report_count
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * This is the local enviroment. It is resistent up the the next main-item.&n; */
+multiline_comment|/*&n; * This is the local enviroment. It is resistent up the next main-item.&n; */
 DECL|macro|HID_MAX_DESCRIPTOR_SIZE
 mdefine_line|#define HID_MAX_DESCRIPTOR_SIZE&t;&t;4096
 DECL|macro|HID_MAX_USAGES

@@ -44,14 +44,6 @@ id|tr_table
 )braket
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ECONET
-r_extern
-id|ctl_table
-id|econet_table
-(braket
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|variable|net_table
 id|ctl_table
 id|net_table
@@ -148,22 +140,6 @@ comma
 l_int|0555
 comma
 id|tr_table
-)brace
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_ECONET
-(brace
-id|NET_ECONET
-comma
-l_string|&quot;econet&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0555
-comma
-id|econet_table
 )brace
 comma
 macro_line|#endif

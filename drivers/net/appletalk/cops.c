@@ -88,8 +88,6 @@ DECL|variable|io
 r_static
 r_int
 id|io
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Default IO for Dayna */
 macro_line|#endif

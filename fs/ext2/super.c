@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/ext2_fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|error_buf
 r_static
@@ -1965,6 +1966,99 @@ suffix:semicolon
 )brace
 DECL|macro|log2
 mdefine_line|#define log2(n) ffz(~(n))
+multiline_comment|/*&n; * Maximal file size.  There is a direct, and {,double-,triple-}indirect&n; * block limit, and also a limit of (2^32 - 1) 512-byte sectors in i_blocks.&n; * We need to be 1 filesystem block less than the 2^32 sector limit.&n; */
+DECL|function|ext2_max_size
+r_static
+id|loff_t
+id|ext2_max_size
+c_func
+(paren
+r_int
+id|bits
+)paren
+(brace
+id|loff_t
+id|res
+op_assign
+id|EXT2_NDIR_BLOCKS
+suffix:semicolon
+id|res
+op_add_assign
+l_int|1LL
+op_lshift
+(paren
+id|bits
+op_minus
+l_int|2
+)paren
+suffix:semicolon
+id|res
+op_add_assign
+l_int|1LL
+op_lshift
+(paren
+l_int|2
+op_star
+(paren
+id|bits
+op_minus
+l_int|2
+)paren
+)paren
+suffix:semicolon
+id|res
+op_add_assign
+l_int|1LL
+op_lshift
+(paren
+l_int|3
+op_star
+(paren
+id|bits
+op_minus
+l_int|2
+)paren
+)paren
+suffix:semicolon
+id|res
+op_lshift_assign
+id|bits
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|res
+OG
+(paren
+l_int|512LL
+op_lshift
+l_int|32
+)paren
+op_minus
+(paren
+l_int|1
+op_lshift
+id|bits
+)paren
+)paren
+id|res
+op_assign
+(paren
+l_int|512LL
+op_lshift
+l_int|32
+)paren
+op_minus
+(paren
+l_int|1
+op_lshift
+id|bits
+)paren
+suffix:semicolon
+r_return
+id|res
+suffix:semicolon
+)brace
 DECL|function|ext2_read_super
 r_struct
 id|super_block
@@ -2048,7 +2142,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * See what the current blocksize for the device is, and&n;&t; * use that as the blocksize.  Otherwise (or if the blocksize&n;&t; * is smaller than the default) use the default.&n;&t; * This is important for devices that have a hardware&n;&t; * sectorsize that is larger than the default.&n;&t; */
 id|blocksize
 op_assign
-id|get_hardblocksize
+id|get_hardsect_size
 c_func
 (paren
 id|dev
@@ -2057,10 +2151,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|blocksize
-op_eq
-l_int|0
-op_logical_or
 id|blocksize
 OL
 id|BLOCK_SIZE
@@ -2393,6 +2483,14 @@ l_int|1
 op_lshift
 id|sb-&gt;s_blocksize_bits
 suffix:semicolon
+id|sb-&gt;s_maxbytes
+op_assign
+id|ext2_max_size
+c_func
+(paren
+id|sb-&gt;s_blocksize_bits
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2418,7 +2516,7 @@ l_int|4096
 multiline_comment|/*&n;&t;&t; * Make sure the blocksize for the filesystem is larger&n;&t;&t; * than the hardware sectorsize for the machine.&n;&t;&t; */
 id|hblock
 op_assign
-id|get_hardblocksize
+id|get_hardsect_size
 c_func
 (paren
 id|dev
@@ -2427,22 +2525,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|hblock
-op_ne
-l_int|0
-)paren
-op_logical_and
-(paren
 id|sb-&gt;s_blocksize
 OL
 id|hblock
-)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;EXT2-fs: blocksize too small for device.&bslash;n&quot;
 )paren
 suffix:semicolon

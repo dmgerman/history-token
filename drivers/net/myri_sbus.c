@@ -2,8 +2,9 @@ multiline_comment|/* myri_sbus.h: MyriCOM MyriNET SBUS card driver.&n; *&n; * Co
 DECL|variable|version
 r_static
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;myri_sbus.c:v1.9 12/Sep/99 David S. Miller (davem@redhat.com)&bslash;n&quot;
 suffix:semicolon

@@ -7508,12 +7508,6 @@ id|dev-&gt;mtu
 op_assign
 id|SDLA_MAX_MTU
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|flp-&gt;activate
 op_assign
 id|sdla_activate

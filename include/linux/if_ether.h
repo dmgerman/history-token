@@ -16,10 +16,10 @@ mdefine_line|#define ETH_FRAME_LEN&t;1514&t;&t;/* Max. octets in frame sans FCS 
 multiline_comment|/*&n; *&t;These are the defined Ethernet Protocol ID&squot;s.&n; */
 DECL|macro|ETH_P_LOOP
 mdefine_line|#define ETH_P_LOOP&t;0x0060&t;&t;/* Ethernet Loopback packet&t;*/
-DECL|macro|ETH_P_ECHO
-mdefine_line|#define ETH_P_ECHO&t;0x0200&t;&t;/* Ethernet Echo packet&t;&t;*/
 DECL|macro|ETH_P_PUP
-mdefine_line|#define ETH_P_PUP&t;0x0400&t;&t;/* Xerox PUP packet&t;&t;*/
+mdefine_line|#define ETH_P_PUP&t;0x0200&t;&t;/* Xerox PUP packet&t;&t;*/
+DECL|macro|ETH_P_PUPAT
+mdefine_line|#define ETH_P_PUPAT&t;0x0201&t;&t;/* Xerox PUP Addr Trans packet&t;*/
 DECL|macro|ETH_P_IP
 mdefine_line|#define ETH_P_IP&t;0x0800&t;&t;/* Internet Protocol packet&t;*/
 DECL|macro|ETH_P_X25
@@ -28,6 +28,10 @@ DECL|macro|ETH_P_ARP
 mdefine_line|#define ETH_P_ARP&t;0x0806&t;&t;/* Address Resolution packet&t;*/
 DECL|macro|ETH_P_BPQ
 mdefine_line|#define&t;ETH_P_BPQ&t;0x08FF&t;&t;/* G8BPQ AX.25 Ethernet Packet&t;[ NOT AN OFFICIALLY REGISTERED ID ] */
+DECL|macro|ETH_P_IEEEPUP
+mdefine_line|#define ETH_P_IEEEPUP&t;0x0a00&t;&t;/* Xerox IEEE802.3 PUP packet */
+DECL|macro|ETH_P_IEEEPUPAT
+mdefine_line|#define ETH_P_IEEEPUPAT&t;0x0a01&t;&t;/* Xerox IEEE802.3 PUP Addr Trans packet */
 DECL|macro|ETH_P_DEC
 mdefine_line|#define ETH_P_DEC       0x6000          /* DEC Assigned proto           */
 DECL|macro|ETH_P_DNA_DL

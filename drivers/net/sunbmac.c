@@ -71,8 +71,6 @@ r_struct
 id|bigmac
 op_star
 id|root_bigmac_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|macro|DEFAULT_JAMSIZE
 mdefine_line|#define DEFAULT_JAMSIZE    4 /* Toe jam */

@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *&t;This module implements the (SPP-derived) Sequenced Packet eXchange&n; *&t;(SPX) protocol for Linux 2.1.X as specified in&n; *&t;&t;NetWare SPX Services Specification, Semantics and API&n; *&t;&t; Revision:       1.00&n; *&t;&t; Revision Date:  February 9, 1993&n; *&n; *&t;Developers:&n; *      Jay Schulist    &lt;jschlst@turbolinux.com&gt;&n; *&t;Jim Freeman&t;&lt;jfree@caldera.com&gt;&n; *&n; *&t;Changes:&n; *&t;Alan Cox&t;:&t;Fixed an skb_unshare check for NULL&n; *&t;&t;&t;&t;that crashed it under load. Renamed and&n; *&t;&t;&t;&t;made static the ipx ops. Removed the hack&n; *&t;&t;&t;&t;ipx methods interface. Dropped AF_SPX - its&n; *&t;&t;&t;&t;the wrong abstraction.&n; *&t;Eduardo Trapani&t;:&t;Added a check for the return value of&n; *&t;&t;&t;&t;ipx_if_offset that crashed sock_alloc_send_skb.&n; *&t;&t;&t;&t;Added spx_datagram_poll() so that select()&n; *&t;&t;&t;&t;works now on SPX sockets.  Added updating&n; *&t;&t;&t;&t;of the alloc count to follow rmt_seq.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;None of the authors or maintainers or their employers admit&n; *&t;liability nor provide warranty for any of this software.&n; *&t;This material is provided &quot;as is&quot; and at no charge.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_SPX) || defined(CONFIG_SPX_MODULE)
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/ipx.h&gt;
 macro_line|#include &lt;net/spx.h&gt;
@@ -4104,13 +4102,32 @@ id|net_proto_family
 id|spx_family_ops
 op_assign
 (brace
+id|family
+suffix:colon
 id|PF_IPX
 comma
+id|create
+suffix:colon
 id|spx_create
+comma
 )brace
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;NET4: Sequenced Packet eXchange (SPX) 0.02 for Linux NET4.0&bslash;n&quot;
+suffix:semicolon
 DECL|function|spx_proto_init
-r_void
+r_static
+r_int
+id|__init
 id|spx_proto_init
 c_func
 (paren
@@ -4156,15 +4173,24 @@ multiline_comment|/* route socket(PF_IPX, SOCK_SEQPACKET) calls through spx_crea
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;NET4: Sequenced Packet eXchange (SPX) 0.02 for Linux NET4.0&bslash;n&quot;
+id|banner
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
+DECL|variable|spx_proto_init
+id|module_init
+c_func
+(paren
+id|spx_proto_init
+)paren
+suffix:semicolon
 DECL|function|spx_proto_finito
+r_static
 r_void
+id|__exit
 id|spx_proto_finito
 c_func
 (paren
@@ -4179,40 +4205,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|spx_proto_finito
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
-id|spx_proto_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
 id|spx_proto_finito
-c_func
-(paren
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
-macro_line|#endif /* CONFIG_SPX || CONFIG_SPX_MODULE */
 eof

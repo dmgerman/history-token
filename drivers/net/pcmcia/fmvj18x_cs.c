@@ -74,8 +74,6 @@ DECL|variable|sram_config
 r_static
 r_int
 id|sram_config
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -324,8 +322,6 @@ r_static
 id|dev_link_t
 op_star
 id|dev_list
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;    card type&n; */
 DECL|enumerator|MBH10302

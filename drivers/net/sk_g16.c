@@ -3,8 +3,9 @@ DECL|variable|rcsid
 r_static
 r_const
 r_char
-op_star
 id|rcsid
+(braket
+)braket
 op_assign
 l_string|&quot;$Id: sk_g16.c,v 1.1 1994/06/30 16:25:15 root Exp $&quot;
 suffix:semicolon
@@ -946,8 +947,6 @@ DECL|variable|io
 r_static
 r_int
 id|io
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* 0 == probe */
 DECL|function|SK_init_module

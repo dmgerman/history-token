@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/minix_fs.h&gt;
@@ -766,7 +767,7 @@ l_string|&quot;bad V2 i-node size&quot;
 suffix:semicolon
 id|hblock
 op_assign
-id|get_hardblocksize
+id|get_hardsect_size
 c_func
 (paren
 id|dev
@@ -775,8 +776,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hblock
-op_logical_and
 id|hblock
 OG
 id|BLOCK_SIZE
@@ -1163,10 +1162,6 @@ l_int|0
 op_member_access_from_pointer
 id|b_data
 )paren
-suffix:semicolon
-id|s-&gt;s_maxbytes
-op_assign
-id|MAX_NON_LFS
 suffix:semicolon
 multiline_comment|/* set up enough so that it can read an inode */
 id|s-&gt;s_op

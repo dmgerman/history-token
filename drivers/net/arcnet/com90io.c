@@ -1431,16 +1431,12 @@ DECL|variable|io
 r_static
 r_int
 id|io
-op_assign
-l_int|0x0
 suffix:semicolon
 multiline_comment|/* use the insmod io= irq= shmem= options */
 DECL|variable|irq
 r_static
 r_int
 id|irq
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|device
 r_static

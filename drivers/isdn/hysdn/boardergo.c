@@ -1482,6 +1482,16 @@ r_if
 c_cond
 (paren
 (paren
+id|hynet_enable
+op_amp
+(paren
+l_int|1
+op_lshift
+id|card-&gt;myid
+)paren
+)paren
+op_logical_and
+(paren
 id|i
 op_assign
 id|hysdn_net_create

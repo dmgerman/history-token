@@ -6297,7 +6297,7 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------*/
 singleline_comment|// submits USB interrupt (ie. polling ;-) 
 singleline_comment|// ASAP-flag set implicitely
-singleline_comment|// if period==0, the the transfer is only done once
+singleline_comment|// if period==0, the transfer is only done once
 DECL|function|uhci_submit_int_urb
 id|_static
 r_int
@@ -10685,7 +10685,7 @@ id|urb-&gt;pipe
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// if any error occured: ignore this td, and continue
+singleline_comment|// if any error occurred: ignore this td, and continue
 r_if
 c_cond
 (paren

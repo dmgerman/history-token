@@ -1058,12 +1058,6 @@ id|d-&gt;neigh_setup
 op_assign
 id|hostess_neigh_setup_dev
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|d
-)paren
-suffix:semicolon
 macro_line|#else
 id|d-&gt;init
 op_assign

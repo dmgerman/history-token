@@ -1353,12 +1353,6 @@ id|dev-&gt;mtu
 op_assign
 l_int|2048
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|dev-&gt;flags
 op_assign
 id|IFF_NOARP

@@ -6123,9 +6123,14 @@ id|net_proto_family
 id|rose_family_ops
 op_assign
 (brace
+id|family
+suffix:colon
 id|PF_ROSE
 comma
+id|create
+suffix:colon
 id|rose_create
+comma
 )brace
 suffix:semicolon
 DECL|variable|rose_proto_ops
@@ -6225,9 +6230,10 @@ id|notifier_block
 id|rose_dev_notifier
 op_assign
 (brace
+id|notifier_call
+suffix:colon
 id|rose_device_event
 comma
-l_int|0
 )brace
 suffix:semicolon
 DECL|variable|dev_rose
@@ -6236,6 +6242,17 @@ r_struct
 id|net_device
 op_star
 id|dev_rose
+suffix:semicolon
+DECL|variable|banner
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+op_assign
+id|KERN_INFO
+l_string|&quot;F6FBB/G4KLX ROSE for Linux. Version 0.62 for AX25.037 Linux 2.4&bslash;n&quot;
 suffix:semicolon
 DECL|function|rose_proto_init
 r_static
@@ -6254,6 +6271,32 @@ id|rose_callsign
 op_assign
 id|null_ax25_address
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rose_ndevs
+OG
+l_int|0x7FFFFFFF
+op_div
+r_sizeof
+(paren
+r_struct
+id|net_device
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ROSE: rose_proto_init - rose_ndevs parameter to large&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6373,8 +6416,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;F6FBB/G4KLX ROSE for Linux. Version 0.62 for AX25.037 Linux 2.4&bslash;n&quot;
+id|banner
 )paren
 suffix:semicolon
 id|ax25_protocol_register

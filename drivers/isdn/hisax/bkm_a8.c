@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: bkm_a8.c,v 1.14.6.4 2001/02/16 16:43:25 kai Exp $&n; * bkm_a8.c     low level stuff for Scitel Quadro (4*S0, passive)&n; *              derived from the original file sedlbauer.c&n; *              derived from the original file niccy.c&n; *              derived from the original file netjet.c&n; *&n; * Author       Roland Klabunde (R.Klabunde@Berkom.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: bkm_a8.c,v 1.14.6.5 2001/04/15 14:51:09 keil Exp $&n; * bkm_a8.c     low level stuff for Scitel Quadro (4*S0, passive)&n; *              derived from the original file sedlbauer.c&n; *              derived from the original file niccy.c&n; *              derived from the original file netjet.c&n; *&n; * Author       Roland Klabunde (R.Klabunde@Berkom.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -28,7 +28,7 @@ id|sct_quadro_revision
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.14.6.4 $&quot;
+l_string|&quot;$Revision: 1.14.6.5 $&quot;
 suffix:semicolon
 DECL|variable|sct_quadro_subtypes
 r_static
@@ -898,7 +898,7 @@ id|cs-&gt;hw.ax.base
 op_amp
 l_int|0xffffffc0
 comma
-l_int|256
+l_int|128
 )paren
 suffix:semicolon
 r_if
@@ -913,7 +913,7 @@ c_func
 (paren
 id|cs-&gt;hw.ax.plx_adr
 comma
-l_int|256
+l_int|64
 )paren
 suffix:semicolon
 )brace
@@ -1962,7 +1962,7 @@ c_func
 (paren
 id|pci_ioaddr1
 comma
-l_int|256
+l_int|128
 )paren
 )paren
 r_return
@@ -1976,7 +1976,7 @@ c_func
 (paren
 id|pci_ioaddr5
 comma
-l_int|256
+l_int|64
 )paren
 )paren
 r_return
@@ -2064,7 +2064,7 @@ c_func
 (paren
 id|pci_ioaddr4
 comma
-l_int|256
+l_int|64
 )paren
 )paren
 r_return
@@ -2089,7 +2089,7 @@ c_func
 (paren
 id|pci_ioaddr3
 comma
-l_int|256
+l_int|64
 )paren
 )paren
 r_return
@@ -2114,7 +2114,7 @@ c_func
 (paren
 id|pci_ioaddr2
 comma
-l_int|256
+l_int|64
 )paren
 )paren
 r_return

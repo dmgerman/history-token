@@ -1875,11 +1875,6 @@ id|sb-&gt;u.adfs_sb.s_log2sharesize
 op_assign
 id|dr-&gt;log2sharesize
 suffix:semicolon
-multiline_comment|/*&n;&t; * Max file size is 2Gb&n;&t; */
-id|sb-&gt;s_maxbytes
-op_assign
-id|MAX_NON_LFS
-suffix:semicolon
 id|sb-&gt;u.adfs_sb.s_map
 op_assign
 id|adfs_read_map

@@ -685,12 +685,6 @@ op_assign
 id|eql_get_stats
 suffix:semicolon
 multiline_comment|/*&n;  &t; *&t;Fill in the fields of the device structure with &n;&t; *&t;eql-generic values. &n;&t; */
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Now we undo some of the things that eth_setup does&n;&t; * &t;that we don&squot;t like &n;&t; */
 id|dev-&gt;mtu
 op_assign

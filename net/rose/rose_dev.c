@@ -692,12 +692,6 @@ id|dev-&gt;get_stats
 op_assign
 id|rose_get_stats
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

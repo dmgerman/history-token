@@ -42,8 +42,6 @@ DECL|variable|mtu
 r_static
 r_int
 id|mtu
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Maximum number of multicast addresses to filter (vs. rx-all-multicast).&n;   Typical is a 64 element hash table based on the Ethernet CRC.  */
 DECL|variable|multicast_filter_limit
@@ -58,8 +56,6 @@ DECL|variable|rx_copybreak
 r_static
 r_int
 id|rx_copybreak
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; should exist for driver&n;   interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;*/
 DECL|macro|MAX_UNITS
@@ -2192,8 +2188,6 @@ DECL|variable|mii_preamble_required
 r_static
 r_char
 id|mii_preamble_required
-op_assign
-l_int|0
 suffix:semicolon
 DECL|enum|mii_reg_bits
 r_enum

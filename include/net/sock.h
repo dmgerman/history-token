@@ -2146,8 +2146,8 @@ suffix:semicolon
 multiline_comment|/* Called with local bh disabled */
 DECL|function|sock_prot_inc_use
 r_static
-r_void
 id|__inline__
+r_void
 id|sock_prot_inc_use
 c_func
 (paren
@@ -2171,8 +2171,8 @@ suffix:semicolon
 )brace
 DECL|function|sock_prot_dec_use
 r_static
-r_void
 id|__inline__
+r_void
 id|sock_prot_dec_use
 c_func
 (paren

@@ -4969,14 +4969,14 @@ r_if
 c_cond
 (paren
 id|nr_ndevs
-op_star
+OG
+l_int|0x7fffffff
+op_div
 r_sizeof
 (paren
 r_struct
 id|net_device
 )paren
-op_ge
-id|KMALLOC_MAXSIZE
 )paren
 (brace
 id|printk

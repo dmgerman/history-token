@@ -46,8 +46,9 @@ DECL|variable|cardname
 r_static
 r_const
 r_char
-op_star
 id|cardname
+(braket
+)braket
 op_assign
 l_string|&quot;smctr&quot;
 suffix:semicolon
@@ -112,8 +113,9 @@ multiline_comment|/* SMC Name of the Adapter. */
 DECL|variable|smctr_name
 r_static
 r_char
-op_star
 id|smctr_name
+(braket
+)braket
 op_assign
 l_string|&quot;SMC TokenCard&quot;
 suffix:semicolon

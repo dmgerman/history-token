@@ -81,15 +81,9 @@ DECL|macro|__RWSEM_DEBUG_MINIT
 mdefine_line|#define __RWSEM_DEBUG_MINIT(name)&t;/* */
 macro_line|#endif
 DECL|macro|__RWSEM_INITIALIZER
-mdefine_line|#define __RWSEM_INITIALIZER(name,count) &bslash;&n;{ RWSEM_UNLOCKED_VALUE, SPIN_LOCK_UNLOCKED, &bslash;&n;&t;__WAIT_QUEUE_HEAD_INITIALIZER((name).wait) &bslash;&n;&t;__RWSEM_DEBUG_INIT __RWSEM_DEBUG_MINIT(name) }
-DECL|macro|__DECLARE_RWSEM_GENERIC
-mdefine_line|#define __DECLARE_RWSEM_GENERIC(name,count) &bslash;&n;&t;struct rw_semaphore name = __RWSEM_INITIALIZER(name,count)
+mdefine_line|#define __RWSEM_INITIALIZER(name) &bslash;&n;{ RWSEM_UNLOCKED_VALUE, SPIN_LOCK_UNLOCKED, &bslash;&n;&t;__WAIT_QUEUE_HEAD_INITIALIZER((name).wait) &bslash;&n;&t;__RWSEM_DEBUG_INIT __RWSEM_DEBUG_MINIT(name) }
 DECL|macro|DECLARE_RWSEM
-mdefine_line|#define DECLARE_RWSEM(name) __DECLARE_RWSEM_GENERIC(name,RW_LOCK_BIAS)
-DECL|macro|DECLARE_RWSEM_READ_LOCKED
-mdefine_line|#define DECLARE_RWSEM_READ_LOCKED(name) __DECLARE_RWSEM_GENERIC(name,RW_LOCK_BIAS-1)
-DECL|macro|DECLARE_RWSEM_WRITE_LOCKED
-mdefine_line|#define DECLARE_RWSEM_WRITE_LOCKED(name) __DECLARE_RWSEM_GENERIC(name,0)
+mdefine_line|#define DECLARE_RWSEM(name) &bslash;&n;&t;struct rw_semaphore name = __RWSEM_INITIALIZER(name)
 DECL|function|init_rwsem
 r_static
 r_inline

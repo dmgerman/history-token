@@ -59,8 +59,6 @@ id|slip_ctrl_t
 op_star
 op_star
 id|slip_ctrls
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|slip_maxdev
 r_int
@@ -2341,12 +2339,6 @@ op_assign
 l_int|10
 suffix:semicolon
 id|SET_MODULE_OWNER
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|dev_init_buffers
 c_func
 (paren
 id|dev

@@ -311,12 +311,6 @@ op_assign
 id|get_stats
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Fill in the generic fields of the device structure. &n;&t; */
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

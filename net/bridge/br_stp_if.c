@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Spanning tree protocol; interface code&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_stp_if.c,v 1.3 2000/05/05 02:17:17 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Spanning tree protocol; interface code&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_stp_if.c,v 1.4 2001/04/14 21:14:39 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -866,20 +866,22 @@ r_int
 id|newprio
 )paren
 (brace
-r_int
+id|__u16
 id|new_port_id
+suffix:semicolon
+id|p-&gt;priority
 op_assign
-(paren
-(paren
 id|newprio
 op_amp
 l_int|0xFF
+suffix:semicolon
+id|new_port_id
+op_assign
+id|br_make_port_id
+c_func
+(paren
+id|p
 )paren
-op_lshift
-l_int|8
-)paren
-op_or
-id|p-&gt;port_no
 suffix:semicolon
 r_if
 c_cond

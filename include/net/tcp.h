@@ -5,7 +5,7 @@ mdefine_line|#define _TCP_H
 DECL|macro|TCP_DEBUG
 mdefine_line|#define TCP_DEBUG 1
 DECL|macro|FASTRETRANS_DEBUG
-mdefine_line|#define FASTRETRANS_DEBUG 2
+mdefine_line|#define FASTRETRANS_DEBUG 1
 multiline_comment|/* Cancel timers, when they are not required. */
 DECL|macro|TCP_CLEAR_TIMERS
 macro_line|#undef TCP_CLEAR_TIMERS

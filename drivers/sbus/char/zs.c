@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: zs.c,v 1.61 2001/01/03 08:08:49 ecd Exp $&n; * zs.c: Zilog serial port driver for the Sparc.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost   (ecd@skynet.be)&n; * Fixes by Pete A. Zaitcev &lt;zaitcev@metabyte.com&gt;.&n; */
+multiline_comment|/* $Id: zs.c,v 1.63 2001/04/17 06:30:36 davem Exp $&n; * zs.c: Zilog serial port driver for the Sparc.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost   (ecd@skynet.be)&n; * Fixes by Pete A. Zaitcev &lt;zaitcev@metabyte.com&gt;.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -593,12 +593,11 @@ DECL|variable|tmp_buf
 r_static
 r_int
 r_char
+op_star
 id|tmp_buf
-(braket
-l_int|4096
-)braket
+op_assign
+l_int|0
 suffix:semicolon
-multiline_comment|/* This is cheating */
 r_static
 id|DECLARE_MUTEX
 c_func
@@ -761,7 +760,6 @@ suffix:semicolon
 multiline_comment|/* Reading and writing Zilog8530 registers.  The delays are to make this&n; * driver work on the Sun4 which needs a settling delay after each chip&n; * register access, other machines handle this in hardware via auxiliary&n; * flip-flops which implement the settle time we do in software.&n; */
 DECL|function|read_zsreg
 r_static
-r_inline
 r_int
 r_char
 id|read_zsreg
@@ -825,7 +823,6 @@ suffix:semicolon
 )brace
 DECL|function|write_zsreg
 r_static
-r_inline
 r_void
 id|write_zsreg
 c_func
@@ -885,7 +882,6 @@ suffix:semicolon
 )brace
 DECL|function|load_zsregs
 r_static
-r_inline
 r_void
 id|load_zsregs
 c_func
@@ -1289,7 +1285,6 @@ DECL|macro|ZS_PUT_CHAR_MAX_DELAY
 mdefine_line|#define ZS_PUT_CHAR_MAX_DELAY&t;2000&t;/* 10 ms */
 DECL|function|zs_put_char
 r_static
-r_inline
 r_void
 id|zs_put_char
 c_func
@@ -1388,7 +1383,6 @@ suffix:semicolon
 multiline_comment|/* Sets or clears DTR/RTS on the requested line */
 DECL|function|zs_rtsdtr
 r_static
-r_inline
 r_void
 id|zs_rtsdtr
 c_func
@@ -1487,7 +1481,6 @@ suffix:semicolon
 )brace
 DECL|function|kgdb_chaninit
 r_static
-r_inline
 r_void
 id|kgdb_chaninit
 c_func
@@ -1867,7 +1860,6 @@ multiline_comment|/*&n; * ------------------------------------------------------
 multiline_comment|/*&n; * This routine is used by the interrupt handler to schedule&n; * processing in the software interrupt portion of the driver.&n; */
 DECL|function|zs_sched_event
 r_static
-id|_INLINE_
 r_void
 id|zs_sched_event
 c_func
@@ -1917,7 +1909,6 @@ multiline_comment|/* For the KGDB frame character */
 macro_line|#endif
 DECL|function|receive_chars
 r_static
-id|_INLINE_
 r_void
 id|receive_chars
 c_func
@@ -2296,7 +2287,6 @@ suffix:semicolon
 )brace
 DECL|function|transmit_chars
 r_static
-id|_INLINE_
 r_void
 id|transmit_chars
 c_func
@@ -2471,7 +2461,6 @@ suffix:semicolon
 )brace
 DECL|function|status_handle
 r_static
-id|_INLINE_
 r_void
 id|status_handle
 c_func
@@ -2674,7 +2663,6 @@ suffix:semicolon
 )brace
 DECL|function|special_receive
 r_static
-id|_INLINE_
 r_void
 id|special_receive
 c_func
@@ -4822,6 +4810,9 @@ id|info
 op_logical_or
 op_logical_neg
 id|info-&gt;xmit_buf
+op_logical_or
+op_logical_neg
+id|tmp_buf
 )paren
 r_return
 l_int|0
@@ -8079,6 +8070,55 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tmp_buf
+)paren
+(brace
+r_int
+r_int
+id|page
+op_assign
+id|get_free_page
+c_func
+(paren
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp_buf
+)paren
+id|free_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_else
+id|tmp_buf
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+id|page
+suffix:semicolon
+)brace
 id|info-&gt;count
 op_increment
 suffix:semicolon
@@ -8243,7 +8283,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.61 $&quot;
+l_string|&quot;$Revision: 1.63 $&quot;
 suffix:semicolon
 r_char
 op_star

@@ -330,7 +330,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------*/
-multiline_comment|/*&n; * dequeue_next_skb - submit the first thing on the tx_skb_list to the&n; * USB stack.  This function should be called each time we get a new&n; * message to send to the other host, or each time a message is sucessfully&n; * sent.&n; */
+multiline_comment|/*&n; * dequeue_next_skb - submit the first thing on the tx_skb_list to the&n; * USB stack.  This function should be called each time we get a new&n; * message to send to the other host, or each time a message is successfully&n; * sent.&n; */
 DECL|function|dequeue_next_skb
 r_static
 r_void
@@ -769,7 +769,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
-multiline_comment|/*&n; * plusb_write_bulk_complete () - callback after the data has been&n; *   sent to the USB device, or a timeout occured.&n; */
+multiline_comment|/*&n; * plusb_write_bulk_complete () - callback after the data has been&n; *   sent to the USB device, or a timeout occurred.&n; */
 DECL|function|plusb_write_bulk_complete
 r_static
 r_void

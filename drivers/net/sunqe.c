@@ -2,8 +2,9 @@ multiline_comment|/* $Id: sunqe.c,v 1.50 2001/02/18 08:10:21 davem Exp $&n; * su
 DECL|variable|version
 r_static
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;sunqe.c:v2.9 9/11/99 David S. Miller (davem@redhat.com)&bslash;n&quot;
 suffix:semicolon
@@ -43,8 +44,6 @@ r_struct
 id|sunqec
 op_star
 id|root_qec_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 r_static
 r_void
@@ -3346,8 +3345,6 @@ id|sdev
 r_static
 r_int
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|net_device
@@ -4878,8 +4875,6 @@ suffix:semicolon
 r_static
 r_int
 id|called
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|cards

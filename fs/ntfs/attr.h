@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  attr.h&n; *  Header file for attr.c&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; */
+multiline_comment|/*  attr.h -  Header file for attr.c&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; */
 r_int
 id|ntfs_extend_attr
 c_func

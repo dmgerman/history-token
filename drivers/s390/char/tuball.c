@@ -4,7 +4,7 @@ macro_line|#include &quot;tubio.h&quot;
 macro_line|#ifndef MODULE
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0))
-macro_line|#include &quot;../../../arch/s390/kernel/cpcmd.h&quot;
+macro_line|#include &lt;asm/cpcmd.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#else
 macro_line|#include &quot;../../../../arch/s390/kernel/cpcmd.h&quot;

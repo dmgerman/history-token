@@ -876,7 +876,12 @@ id|start
 suffix:semicolon
 id|irq
 op_assign
-id|idev-&gt;irq
+id|idev-&gt;irq_resource
+(braket
+l_int|0
+)braket
+dot
+id|start
 suffix:semicolon
 multiline_comment|/* check I/O base and IRQ */
 r_if

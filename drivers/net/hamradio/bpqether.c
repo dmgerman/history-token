@@ -1863,12 +1863,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|dev-&gt;hard_start_xmit
 op_assign
 id|bpq_xmit

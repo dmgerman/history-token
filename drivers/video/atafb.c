@@ -434,7 +434,7 @@ id|external_card_type
 op_assign
 id|IS_VGA
 suffix:semicolon
-multiline_comment|/*&n;The MV300 mixes the color registers. So we need an array of munged&n;indices in order to acces the correct reg.&n;*/
+multiline_comment|/*&n;The MV300 mixes the color registers. So we need an array of munged&n;indices in order to access the correct reg.&n;*/
 DECL|variable|MV300_reg_1bit
 r_static
 r_int

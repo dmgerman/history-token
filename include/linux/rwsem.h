@@ -11,13 +11,8 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#ifdef CONFIG_RWSEM_GENERIC_SPINLOCK
-macro_line|#include &lt;linux/rwsem-spinlock.h&gt; /* use a generic implementation */
-macro_line|#else
-macro_line|#include &lt;asm/rwsem.h&gt; /* use an arch-specific implementation */
-macro_line|#endif
 multiline_comment|/* defined contention handler functions for the generic case&n; * - these are also used for the exchange-and-add based algorithm&n; */
-macro_line|#if defined(CONFIG_RWSEM_GENERIC) || defined(CONFIG_RWSEM_XCHGADD_ALGORITHM)
+macro_line|#if defined(CONFIG_RWSEM_GENERIC_SPINLOCK) || defined(CONFIG_RWSEM_XCHGADD_ALGORITHM)
 multiline_comment|/* we use FASTCALL convention for the helpers */
 r_extern
 r_struct
@@ -70,6 +65,11 @@ id|sem
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_RWSEM_GENERIC_SPINLOCK
+macro_line|#include &lt;linux/rwsem-spinlock.h&gt; /* use a generic implementation */
+macro_line|#else
+macro_line|#include &lt;asm/rwsem.h&gt; /* use an arch-specific implementation */
 macro_line|#endif
 macro_line|#ifndef rwsemtrace
 macro_line|#if RWSEM_DEBUG

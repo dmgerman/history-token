@@ -260,7 +260,7 @@ comma
 id|data_ptr
 )paren
 suffix:semicolon
-multiline_comment|/* #Specification: ioctl / acces&n;&t; * Only root (effective id) is allowed to do IOCTL on directory&n;&t; * in UMSDOS. EPERM is returned for other user.&n;&t; */
+multiline_comment|/* #Specification: ioctl / access&n;&t; * Only root (effective id) is allowed to do IOCTL on directory&n;&t; * in UMSDOS. EPERM is returned for other user.&n;&t; */
 multiline_comment|/*&n;&t; * Well, not all cases require write access, but it simplifies&n;&t; * the code, and let&squot;s face it, there is only one client (umssync)&n;&t; * for all this.&n;&t; */
 id|ret
 op_assign

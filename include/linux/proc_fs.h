@@ -546,7 +546,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|function|create_proc_read_entry
-r_extern
+r_static
 r_inline
 r_struct
 id|proc_dir_entry
@@ -611,7 +611,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|create_proc_info_entry
-r_extern
+r_static
 r_inline
 r_struct
 id|proc_dir_entry
@@ -666,7 +666,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|proc_net_create
-r_extern
+r_static
 r_inline
 r_struct
 id|proc_dir_entry
@@ -702,7 +702,7 @@ id|get_info
 suffix:semicolon
 )brace
 DECL|function|proc_net_remove
-r_extern
+r_static
 r_inline
 r_void
 id|proc_net_remove
@@ -725,7 +725,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|function|proc_net_create
-r_extern
+r_static
 r_inline
 r_struct
 id|proc_dir_entry
@@ -751,7 +751,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|proc_net_remove
-r_extern
+r_static
 r_inline
 r_void
 id|proc_net_remove
@@ -765,7 +765,7 @@ id|name
 (brace
 )brace
 DECL|function|create_proc_entry
-r_extern
+r_static
 r_inline
 r_struct
 id|proc_dir_entry
@@ -792,7 +792,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|remove_proc_entry
-r_extern
+r_static
 r_inline
 r_void
 id|remove_proc_entry
@@ -812,7 +812,7 @@ id|parent
 )brace
 suffix:semicolon
 DECL|function|proc_symlink
-r_extern
+r_static
 r_inline
 r_struct
 id|proc_dir_entry
@@ -840,7 +840,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|proc_mknod
-r_extern
+r_static
 r_inline
 r_struct
 id|proc_dir_entry
@@ -870,7 +870,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|proc_mkdir
-r_extern
+r_static
 r_inline
 r_struct
 id|proc_dir_entry
@@ -894,7 +894,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|create_proc_read_entry
-r_extern
+r_static
 r_inline
 r_struct
 id|proc_dir_entry
@@ -949,7 +949,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|create_proc_info_entry
-r_extern
+r_static
 r_inline
 r_struct
 id|proc_dir_entry
@@ -980,7 +980,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|proc_tty_register_driver
-r_extern
+r_static
 r_inline
 r_void
 id|proc_tty_register_driver
@@ -995,7 +995,7 @@ id|driver
 )brace
 suffix:semicolon
 DECL|function|proc_tty_unregister_driver
-r_extern
+r_static
 r_inline
 r_void
 id|proc_tty_unregister_driver

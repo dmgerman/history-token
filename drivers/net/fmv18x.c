@@ -3,8 +3,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;fmv18x.c:v2.2.0 09/24/98  Yutaka TAMIYA (tamy@flab.fujitsu.co.jp)&bslash;n&quot;
 suffix:semicolon

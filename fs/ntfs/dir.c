@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  dir.c&n; *&n; *  Copyright (C) 1995-1997, 1999 Martin von L&#xfffd;wis&n; *  Copyright (C) 1999 Steve Dodd&n; *  Copyright (C) 1999 Joseph Malicki&n; */
+multiline_comment|/*  dir.c&n; *&n; *  Copyright (C) 1995-1997, 1999 Martin von L&#xfffd;wis&n; *  Copyright (C) 1999 Steve Dodd&n; *  Copyright (C) 1999 Joseph Malicki&n; *  Copyright (C) 2001 Anton Altaparmakov (AIA)&n; */
 macro_line|#include &quot;ntfstypes.h&quot;
 macro_line|#include &quot;struct.h&quot;
 macro_line|#include &quot;dir.h&quot;
@@ -18,7 +18,7 @@ id|I30
 op_assign
 l_string|&quot;$I30&quot;
 suffix:semicolon
-multiline_comment|/* An index record should start with INDX, and the last word in each&n;   block should contain the check value. If it passes, the original&n;   values need to be restored */
+multiline_comment|/* An index record should start with INDX, and the last word in each block&n; * should contain the check value. If it passes, the original values need to&n; * be restored. */
 DECL|function|ntfs_check_index_record
 r_int
 id|ntfs_check_index_record
@@ -82,7 +82,40 @@ id|width
 l_int|16
 )braket
 op_assign
-initialization_block
+(brace
+l_int|1
+comma
+l_int|2
+comma
+l_int|1
+comma
+l_int|3
+comma
+l_int|1
+comma
+l_int|2
+comma
+l_int|1
+comma
+l_int|4
+comma
+l_int|1
+comma
+l_int|2
+comma
+l_int|1
+comma
+l_int|3
+comma
+l_int|1
+comma
+l_int|2
+comma
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
 suffix:semicolon
 r_int
 id|res
@@ -266,7 +299,6 @@ id|i
 OL
 l_int|7
 )paren
-(brace
 r_return
 (paren
 id|stack
@@ -280,7 +312,6 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -288,7 +319,6 @@ id|i
 OL
 l_int|23
 )paren
-(brace
 r_return
 (paren
 id|stack
@@ -308,7 +338,6 @@ l_int|2
 op_or
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -316,7 +345,6 @@ id|i
 OL
 l_int|55
 )paren
-(brace
 r_return
 (paren
 id|stack
@@ -336,7 +364,6 @@ l_int|3
 op_or
 l_int|3
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -344,7 +371,6 @@ id|i
 OL
 l_int|120
 )paren
-(brace
 r_return
 (paren
 id|stack
@@ -364,7 +390,6 @@ l_int|4
 op_or
 l_int|7
 suffix:semicolon
-)brace
 id|ntfs_error
 c_func
 (paren
@@ -424,7 +449,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* True if the entry points to another block of entries */
+multiline_comment|/* True if the entry points to another block of entries. */
 DECL|function|ntfs_entry_has_subnodes
 r_static
 r_inline
@@ -452,7 +477,7 @@ op_amp
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* True if it is not the &squot;end of dir&squot; entry */
+multiline_comment|/* True if it is not the &squot;end of dir&squot; entry. */
 DECL|function|ntfs_entry_is_used
 r_static
 r_inline
@@ -528,7 +553,7 @@ id|vol
 op_assign
 id|walk-&gt;dir-&gt;vol
 suffix:semicolon
-multiline_comment|/* check for allocation attribute */
+multiline_comment|/* Check for allocation attribute. */
 id|allocation
 op_assign
 id|ntfs_find_attr
@@ -554,7 +579,7 @@ id|bmp
 l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* create index allocation attribute */
+multiline_comment|/* Create index allocation attribute. */
 id|error
 op_assign
 id|ntfs_create_attr
@@ -579,11 +604,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
 id|ntfs_bzero
 c_func
 (paren
@@ -622,14 +645,11 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
 )brace
-)brace
 r_else
-(brace
 id|bitmap
 op_assign
 id|ntfs_find_attr
@@ -642,7 +662,6 @@ comma
 id|I30
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -657,6 +676,7 @@ l_string|&quot;Directory w/o bitmap&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -678,11 +698,10 @@ c_cond
 op_logical_neg
 id|bmap
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|io.fn_put
 op_assign
 id|ntfs_put
@@ -747,10 +766,11 @@ id|bmap
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* allocate a bit */
+multiline_comment|/* Allocate a bit. */
 r_for
 c_loop
 (paren
@@ -778,10 +798,8 @@ id|i
 op_eq
 l_int|0xFF
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -814,10 +832,8 @@ l_int|1
 op_eq
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -825,10 +841,8 @@ id|bit
 op_ne
 l_int|8
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -837,12 +851,11 @@ id|i
 op_eq
 id|size
 )paren
-(brace
-multiline_comment|/* FIXME: extend bitmap */
+multiline_comment|/* FIXME: Extend bitmap. */
 r_return
+op_minus
 id|EOPNOTSUPP
 suffix:semicolon
-)brace
 id|walk-&gt;newblock
 op_assign
 (paren
@@ -911,6 +924,7 @@ ques
 c_cond
 id|error
 suffix:colon
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -920,7 +934,7 @@ c_func
 id|bmap
 )paren
 suffix:semicolon
-multiline_comment|/* check whether record is out of allocated range */
+multiline_comment|/* Check whether record is out of allocated range. */
 id|size
 op_assign
 id|allocation-&gt;size
@@ -935,7 +949,7 @@ op_ge
 id|size
 )paren
 (brace
-multiline_comment|/* build index record */
+multiline_comment|/* Build index record. */
 r_int
 id|s1
 op_assign
@@ -969,11 +983,10 @@ c_cond
 op_logical_neg
 id|record
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|ntfs_bzero
 c_func
 (paren
@@ -982,7 +995,7 @@ comma
 id|s1
 )paren
 suffix:semicolon
-multiline_comment|/* magic */
+multiline_comment|/* Magic */
 id|ntfs_memcpy
 c_func
 (paren
@@ -993,7 +1006,7 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/* offset to fixups */
+multiline_comment|/* Offset to fixups */
 id|NTFS_PUTU16
 c_func
 (paren
@@ -1004,7 +1017,7 @@ comma
 l_int|0x28
 )paren
 suffix:semicolon
-multiline_comment|/* number of fixups */
+multiline_comment|/* Number of fixups. */
 id|NTFS_PUTU16
 c_func
 (paren
@@ -1015,7 +1028,17 @@ comma
 id|nr_fix
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: log file number */
+multiline_comment|/* Log file sequence number - We don&squot;t do journalling so we&n;&t;&t; * just set it to zero which should be the Right Thing. (AIA) */
+id|NTFS_PUTU64
+c_func
+(paren
+id|record
+op_plus
+l_int|8
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* VCN of buffer */
 id|NTFS_PUTU64
 c_func
@@ -1027,7 +1050,7 @@ comma
 id|walk-&gt;newblock
 )paren
 suffix:semicolon
-multiline_comment|/* header size. */
+multiline_comment|/* Header size. */
 id|hsize
 op_assign
 l_int|0x10
@@ -1058,7 +1081,7 @@ comma
 id|hsize
 )paren
 suffix:semicolon
-multiline_comment|/* total size of record */
+multiline_comment|/* Total size of record. */
 id|NTFS_PUTU32
 c_func
 (paren
@@ -1121,6 +1144,7 @@ ques
 c_cond
 id|error
 suffix:colon
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -1135,7 +1159,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Write an index block (root or allocation) back to storage.&n;   used is the total number of bytes in buf, including all headers. */
+multiline_comment|/* Write an index block (root or allocation) back to storage.&n; * Used is the total number of bytes in buf, including all headers. */
 DECL|function|ntfs_index_writeback
 r_static
 r_int
@@ -1206,7 +1230,7 @@ op_minus
 l_int|0x10
 )paren
 suffix:semicolon
-multiline_comment|/* 0x18 is a copy thereof */
+multiline_comment|/* 0x18 is a copy thereof. */
 id|NTFS_PUTU16
 c_func
 (paren
@@ -1245,11 +1269,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1257,12 +1279,11 @@ id|io.size
 op_ne
 id|used
 )paren
-(brace
 r_return
+op_minus
 id|EIO
 suffix:semicolon
-)brace
-multiline_comment|/* shrink if necessary */
+multiline_comment|/* Shrink if necessary. */
 id|a
 op_assign
 id|ntfs_find_attr
@@ -1336,11 +1357,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1348,11 +1367,10 @@ id|io.size
 op_ne
 id|walk-&gt;dir-&gt;u.index.recordsize
 )paren
-(brace
 r_return
+op_minus
 id|EIO
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|0
@@ -1429,12 +1447,10 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
-multiline_comment|/* This should not happen */
+multiline_comment|/* This should not happen. */
 r_if
 c_cond
 (paren
@@ -1451,6 +1467,7 @@ l_string|&quot;Trying to split root&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
@@ -1493,12 +1510,10 @@ op_plus
 l_int|8
 )paren
 )paren
-(brace
 id|prev
 op_assign
 id|entry
 suffix:semicolon
-)brace
 id|newbuf
 op_assign
 id|ntfs_malloc
@@ -1513,11 +1528,10 @@ c_cond
 op_logical_neg
 id|newbuf
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|io.fn_put
 op_assign
 id|ntfs_put
@@ -1534,7 +1548,7 @@ id|io.size
 op_assign
 id|vol-&gt;index_recordsize
 suffix:semicolon
-multiline_comment|/* read in old header. FIXME: reading everything is overkill */
+multiline_comment|/* Read in old header. FIXME: Reading everything is overkill. */
 id|error
 op_assign
 id|ntfs_read_attr
@@ -1559,11 +1573,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1574,14 +1586,15 @@ id|vol-&gt;index_recordsize
 (brace
 id|error
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: adjust header */
-multiline_comment|/* copy everything from entry to new block */
+multiline_comment|/* FIXME: Adjust header. */
+multiline_comment|/* Copy everything from entry to new block. */
 id|othersize
 op_assign
 id|usize
@@ -1658,12 +1671,10 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
-multiline_comment|/* move prev to walk */
+multiline_comment|/* Move prev to walk. */
 id|mlen
 op_assign
 id|NTFS_GETU16
@@ -1684,7 +1695,6 @@ c_func
 id|prev
 )paren
 )paren
-(brace
 id|oldblock
 op_assign
 id|NTFS_GETU32
@@ -1697,14 +1707,13 @@ op_minus
 l_int|8
 )paren
 suffix:semicolon
-)brace
 r_else
 id|oldblock
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* allow for pointer to subnode */
+multiline_comment|/* Allow for pointer to subnode. */
 id|middle
 op_assign
 id|ntfs_malloc
@@ -1733,6 +1742,7 @@ id|middle
 (brace
 id|error
 op_assign
+op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
@@ -1749,7 +1759,7 @@ comma
 id|mlen
 )paren
 suffix:semicolon
-multiline_comment|/* set has_subnodes flag */
+multiline_comment|/* Set has_subnodes flag. */
 id|NTFS_PUTU8
 c_func
 (paren
@@ -1768,7 +1778,7 @@ op_or
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* middle entry points to block, parent entry will point to newblock */
+multiline_comment|/* Middle entry points to block, parent entry will point to newblock. */
 id|NTFS_PUTU64
 c_func
 (paren
@@ -1786,14 +1796,12 @@ c_cond
 (paren
 id|walk-&gt;new_entry
 )paren
-(brace
 id|ntfs_error
 c_func
 (paren
-l_string|&quot;entry not reset&quot;
+l_string|&quot;Entry not reset&quot;
 )paren
 suffix:semicolon
-)brace
 id|walk-&gt;new_entry
 op_assign
 id|middle
@@ -1892,7 +1900,7 @@ op_add_assign
 l_int|0x18
 suffix:semicolon
 )brace
-multiline_comment|/* write back original block */
+multiline_comment|/* Write back original block. */
 id|error
 op_assign
 id|ntfs_index_writeback
@@ -1914,27 +1922,23 @@ c_cond
 (paren
 id|newbuf
 )paren
-(brace
 id|ntfs_free
 c_func
 (paren
 id|newbuf
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|middle
 )paren
-(brace
 id|ntfs_free
 c_func
 (paren
 id|middle
 )paren
 suffix:semicolon
-)brace
 r_return
 id|error
 suffix:semicolon
@@ -1987,7 +1991,7 @@ op_minus
 l_int|1
 )paren
 (brace
-multiline_comment|/*index root */
+multiline_comment|/* index root */
 id|blocksize
 op_assign
 id|walk-&gt;dir-&gt;vol-&gt;mft_recordsize
@@ -2052,11 +2056,10 @@ c_cond
 op_logical_neg
 id|s1
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|ntfs_memcpy
 c_func
 (paren
@@ -2071,7 +2074,7 @@ id|do_split
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* adjust entry to s1 */
+multiline_comment|/* Adjust entry to s1. */
 id|entry
 op_assign
 id|s1
@@ -2173,19 +2176,17 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Try to split INDEX_ROOT attributes. Return E2BIG if nothing changed. */
-r_int
+multiline_comment|/* Try to split INDEX_ROOT attributes. Return -E2BIG if nothing changed. */
 DECL|function|ntfs_split_indexroot
+r_int
 id|ntfs_split_indexroot
 c_func
 (paren
@@ -2244,11 +2245,10 @@ c_cond
 op_logical_neg
 id|ra
 )paren
-(brace
 r_return
+op_minus
 id|E2BIG
 suffix:semicolon
-)brace
 id|bsize
 op_assign
 id|ino-&gt;vol-&gt;mft_recordsize
@@ -2267,11 +2267,10 @@ c_cond
 op_logical_neg
 id|root
 )paren
-(brace
 r_return
+op_minus
 id|E2BIG
 suffix:semicolon
-)brace
 id|io.fn_put
 op_assign
 id|ntfs_put
@@ -2306,11 +2305,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|off
 op_assign
 l_int|0x20
@@ -2334,7 +2331,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|off
 op_add_assign
 id|NTFS_GETU16
@@ -2347,7 +2343,6 @@ op_plus
 l_int|8
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2359,6 +2354,7 @@ l_int|2
 multiline_comment|/* We don&squot;t split small index roots. */
 id|error
 op_assign
+op_minus
 id|E2BIG
 suffix:semicolon
 r_goto
@@ -2382,6 +2378,7 @@ id|index
 (brace
 id|error
 op_assign
+op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
@@ -2421,11 +2418,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/* Write old root to new index block. */
 id|io.param
 op_assign
@@ -2459,11 +2454,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|isize
 op_assign
 id|NTFS_GETU16
@@ -2677,7 +2670,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* use $UpCase some day */
+multiline_comment|/* Use $UpCase some day. */
 DECL|function|ntfs_my_toupper
 r_static
 r_inline
@@ -2694,7 +2687,7 @@ id|ntfs_u16
 id|x
 )paren
 (brace
-multiline_comment|/* we should read any pending rest of $UpCase here */
+multiline_comment|/* We should read any pending rest of $UpCase here. */
 r_if
 c_cond
 (paren
@@ -2702,11 +2695,9 @@ id|x
 op_ge
 id|vol-&gt;upcase_length
 )paren
-(brace
 r_return
 id|x
 suffix:semicolon
-)brace
 r_return
 id|vol-&gt;upcase
 (braket
@@ -2714,7 +2705,7 @@ id|x
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/* everything passed in walk and entry */
+multiline_comment|/* Everything passed in walk and entry. */
 DECL|function|ntfs_my_strcmp
 r_static
 r_int
@@ -2814,10 +2805,8 @@ id|i
 )paren
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2829,11 +2818,9 @@ id|i
 op_eq
 id|walk-&gt;namelen
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2841,11 +2828,9 @@ id|i
 op_eq
 id|lu
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2853,12 +2838,10 @@ id|i
 op_eq
 id|walk-&gt;namelen
 )paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2890,17 +2873,15 @@ id|i
 )paren
 )paren
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Necessary forward declaration */
+multiline_comment|/* Necessary forward declaration. */
 r_static
 r_int
 id|ntfs_getdir_iterate
@@ -2919,7 +2900,7 @@ op_star
 id|entry
 )paren
 suffix:semicolon
-multiline_comment|/* Parse a block of entries. Load the block, fix it up, and iterate&n;   over the entries. The block is given as virtual cluster number */
+multiline_comment|/* Parse a block of entries. Load the block, fix it up, and iterate over the&n; * entries. The block is given as virtual cluster number. */
 DECL|function|ntfs_getdir_record
 r_static
 r_int
@@ -2974,11 +2955,10 @@ c_cond
 op_logical_neg
 id|record
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|io.fn_put
 op_assign
 id|ntfs_put
@@ -2991,7 +2971,7 @@ id|io.size
 op_assign
 id|length
 suffix:semicolon
-multiline_comment|/* Read the block from the index allocation attribute */
+multiline_comment|/* Read the block from the index allocation attribute. */
 id|error
 op_assign
 id|ntfs_read_attr
@@ -3116,7 +3096,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* go down to the next block of entries. These collate before&n;   the current entry */
+multiline_comment|/* Go down to the next block of entries. These collate before the current&n; * entry. */
 DECL|function|ntfs_descend
 r_static
 r_int
@@ -3247,9 +3227,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|function|ntfs_getdir_iterate_byposition
 r_static
 r_int
-DECL|function|ntfs_getdir_iterate_byposition
 id|ntfs_getdir_iterate_byposition
 c_func
 (paren
@@ -3300,11 +3280,9 @@ c_func
 id|walk-&gt;u.pos
 )paren
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|destpos
 op_assign
 id|ntfs_pop
@@ -3338,7 +3316,6 @@ c_func
 id|entry
 )paren
 )paren
-(brace
 id|ntfs_descend
 c_func
 (paren
@@ -3349,7 +3326,6 @@ comma
 id|entry
 )paren
 suffix:semicolon
-)brace
 r_else
 id|walk-&gt;u.pos
 op_assign
@@ -3374,11 +3350,9 @@ c_func
 id|entry
 )paren
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|walk-&gt;u.pos
 op_assign
 id|ntfs_push
@@ -3450,8 +3424,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -3462,16 +3434,13 @@ c_func
 id|entry
 )paren
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|walk-&gt;u.pos
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -3525,10 +3494,8 @@ c_func
 id|entry
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|length
 op_assign
 id|NTFS_GETU16
@@ -3565,7 +3532,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Iterate over a list of entries, either from an index block, or from&n;   the index root. &n;   If searching BY_POSITION, pop the top index from the position. If the&n;   position stack is empty then, return the item at the index and set the&n;   position to the next entry. If the position stack is not empty, &n;   recursively proceed for subnodes. If the entry at the position is the&n;   &squot;end of dir&squot; entry, return &squot;not found&squot; and the empty stack.&n;   If searching BY_NAME, walk through the items until found or until&n;   one item is collated after the requested item. In the former case, return&n;   the result. In the latter case, recursively proceed to the subnodes.&n;   If &squot;end of dir&squot; is reached, the name is not in the directory */
+multiline_comment|/* Iterate over a list of entries, either from an index block, or from the&n; * index root.&n; * If searching BY_POSITION, pop the top index from the position. If the&n; * position stack is empty then, return the item at the index and set the&n; * position to the next entry. If the position stack is not empty, &n; * recursively proceed for subnodes. If the entry at the position is the&n; * &squot;end of dir&squot; entry, return &squot;not found&squot; and the empty stack.&n; * If searching BY_NAME, walk through the items until found or until&n; * one item is collated after the requested item. In the former case, return&n; * the result. In the latter case, recursively proceed to the subnodes.&n; * If &squot;end of dir&squot; is reached, the name is not in the directory */
 DECL|function|ntfs_getdir_iterate
 r_static
 r_int
@@ -3598,7 +3565,6 @@ id|walk-&gt;type
 op_eq
 id|BY_POSITION
 )paren
-(brace
 r_return
 id|ntfs_getdir_iterate_byposition
 c_func
@@ -3610,10 +3576,9 @@ comma
 id|entry
 )paren
 suffix:semicolon
-)brace
 r_do
 (brace
-multiline_comment|/* if the current entry is a real one, compare with the&n;&t;&t;   requested item. If the current entry is the last item,&n;&t;&t;   it is always larger than the requested item */
+multiline_comment|/* If the current entry is a real one, compare with the&n;&t;&t; * requested item. If the current entry is the last item, it&n;&t;&t; * is always larger than the requested item. */
 id|cmp
 op_assign
 id|ntfs_entry_is_used
@@ -3738,6 +3703,7 @@ r_case
 l_int|0
 suffix:colon
 r_return
+op_minus
 id|EEXIST
 suffix:semicolon
 r_case
@@ -3756,6 +3722,7 @@ c_func
 l_string|&quot;TODO&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: ? */
 )brace
 r_if
 c_cond
@@ -3810,8 +3777,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&t;Tree walking is done using position numbers. The following numbers have&n;    a special meaning:&n;        0    start (.)&n;        -1   no more entries&n;        -2   ..&n;    All other numbers encode sequences of indices. The sequence a,b,c is &n;    encoded as &lt;stop&gt;&lt;c&gt;&lt;b&gt;&lt;a&gt;, where &lt;foo&gt; is the encoding of foo. The&n;    first few integers are encoded as follows:&n;        0:    0000    1:    0010    2:    0100    3:    0110&n;        4:    1000    5:    1010    6:    1100 stop:    1110&n;        7:  000001    8:  000101&t;9:  001001   10:  001101&n;    The least significant bits give the width of this encoding, the&n;    other bits encode the value, starting from the first value of the &n;    interval.&n;     tag     width  first value  last value&n;     0       3      0            6&n;     01      4      7            22&n;     011     5      23           54&n;     0111    6      55           119&n;     More values are hopefully not needed, as the file position has currently&n;     64 bits in total.&n;*/
-multiline_comment|/* Find an entry in the directory. Return 0 if not found, otherwise copy&n;   the entry to the result buffer. */
+multiline_comment|/*  Tree walking is done using position numbers. The following numbers have a&n; *  special meaning:&n; *       0   start (.)&n; *      -1   no more entries&n; *      -2   ..&n; *  All other numbers encode sequences of indices. The sequence a, b, c is &n; *  encoded as &lt;stop&gt;&lt;c&gt;&lt;b&gt;&lt;a&gt;, where &lt;foo&gt; is the encoding of foo. The&n; *  first few integers are encoded as follows:&n; *      0:    0000    1:    0010    2:    0100    3:    0110&n; *      4:    1000    5:    1010    6:    1100 stop:    1110&n; *      7:  000001    8:  000101    9:  001001   10:  001101&n; *  The least significant bits give the width of this encoding, the other bits&n; *  encode the value, starting from the first value of the interval.&n; *   tag     width  first value  last value&n; *   0       3      0            6&n; *   01      4      7            22&n; *   011     5      23           54&n; *   0111    6      55           119&n; *   More values are hopefully not needed, as the file position has currently&n; *   64 bits in total. */
+multiline_comment|/* Find an entry in the directory. Return 0 if not found, otherwise copy the&n; * entry to the result buffer. */
 DECL|function|ntfs_getdir
 r_int
 id|ntfs_getdir
@@ -3832,7 +3799,7 @@ id|retval
 comma
 id|error
 suffix:semicolon
-multiline_comment|/* start at the index root.*/
+multiline_comment|/* Start at the index root. */
 r_char
 op_star
 id|root
@@ -3852,11 +3819,10 @@ c_cond
 op_logical_neg
 id|root
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|io.fn_put
 op_assign
 id|ntfs_put
@@ -3907,7 +3873,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* FIXME: move these to walk */
+multiline_comment|/* FIXME: Move these to walk. */
 id|walk-&gt;dir-&gt;u.index.recordsize
 op_assign
 id|NTFS_GETU32
@@ -3928,8 +3894,8 @@ op_plus
 l_int|0xC
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: consistency check */
-multiline_comment|/* skip header */
+multiline_comment|/* FIXME: Consistency check. */
+multiline_comment|/* Skip header. */
 id|retval
 op_assign
 id|ntfs_getdir_iterate
@@ -3954,7 +3920,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Find an entry in the directory by its position stack. Iteration starts&n;   if the stack is 0, in which case the position is set to the first item&n;   in the directory. If the position is nonzero, return the item at the&n;   position and change the position to the next item. The position is -1&n;   if there are no more items */
+multiline_comment|/* Find an entry in the directory by its position stack. Iteration starts&n; * if the stack is 0, in which case the position is set to the first item&n; * in the directory. If the position is nonzero, return the item at the&n; * position and change the position to the next item. The position is -1&n; * if there are no more items. */
 DECL|function|ntfs_getdir_byposition
 r_int
 id|ntfs_getdir_byposition
@@ -3977,7 +3943,7 @@ id|walk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Find an entry in the directory by its name. Return 0 if not found */
+multiline_comment|/* Find an entry in the directory by its name. Return 0 if not found. */
 DECL|function|ntfs_getdir_byname
 r_int
 id|ntfs_getdir_byname
@@ -4092,6 +4058,7 @@ l_string|&quot;No inode passed to getdir_unsorted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -4111,6 +4078,7 @@ id|ino-&gt;i_number
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -4122,7 +4090,7 @@ comma
 l_string|&quot;unsorted 1&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* are we still in the index root */
+multiline_comment|/* Are we still in the index root? */
 r_if
 c_cond
 (paren
@@ -4148,11 +4116,10 @@ c_cond
 op_logical_neg
 id|buf
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|io.fn_put
 op_assign
 id|ntfs_put
@@ -4254,11 +4221,10 @@ c_cond
 op_logical_neg
 id|buf
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|io.fn_put
 op_assign
 id|ntfs_put
@@ -4271,7 +4237,7 @@ id|io.size
 op_assign
 id|length
 suffix:semicolon
-multiline_comment|/* 0 is index root, index allocation starts with 4 */
+multiline_comment|/* 0 is index root, index allocation starts with 4. */
 id|block
 op_assign
 op_star
@@ -4308,12 +4274,11 @@ id|io.size
 op_ne
 id|length
 )paren
-(brace
 id|error
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4364,6 +4329,7 @@ id|buf
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENOTDIR
 suffix:semicolon
 )brace
@@ -4390,7 +4356,7 @@ l_string|&quot;unsorted 3&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* process the entries */
+multiline_comment|/* Process the entries. */
 id|start
 op_assign
 op_star
@@ -4419,12 +4385,10 @@ c_cond
 (paren
 id|start
 )paren
-(brace
 id|start
 op_decrement
 suffix:semicolon
-)brace
-multiline_comment|/* skip entries that were already processed */
+multiline_comment|/* Skip entries that were already processed. */
 r_else
 (brace
 id|ntfs_debug
@@ -4450,11 +4414,9 @@ id|param
 )paren
 )paren
 )paren
-(brace
-multiline_comment|/* the entry could not be processed */
+multiline_comment|/* The entry could not be processed. */
 r_break
 suffix:semicolon
-)brace
 (paren
 op_star
 id|p_low
@@ -4481,7 +4443,7 @@ comma
 l_string|&quot;unsorted 6&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* caller did not process all entries */
+multiline_comment|/* Caller did not process all entries. */
 r_if
 c_cond
 (paren
@@ -4506,7 +4468,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* we have to locate the next record */
+multiline_comment|/* We have to locate the next record. */
 id|ntfs_free
 c_func
 (paren
@@ -4541,7 +4503,7 @@ op_logical_neg
 id|attr
 )paren
 (brace
-multiline_comment|/* directory does not have index allocation */
+multiline_comment|/* Directory does not have index allocation. */
 op_star
 id|p_high
 op_assign
@@ -4580,11 +4542,10 @@ c_cond
 op_logical_neg
 id|buf
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|io.param
 op_assign
 id|buf
@@ -4620,12 +4581,11 @@ id|io.size
 op_ne
 id|length
 )paren
-(brace
 id|error
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4647,6 +4607,7 @@ l_string|&quot;unsorted 9&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -4679,7 +4640,7 @@ OG
 id|attr-&gt;size
 )paren
 (brace
-multiline_comment|/* no more index records */
+multiline_comment|/* No more index records. */
 op_star
 id|p_high
 op_assign
@@ -4733,7 +4694,7 @@ id|byte
 op_rshift
 l_int|3
 suffix:semicolon
-multiline_comment|/* this record is allocated */
+multiline_comment|/* This record is allocated. */
 r_if
 c_cond
 (paren
@@ -4744,10 +4705,8 @@ id|byte
 op_amp
 id|bit
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 id|ntfs_debug
 c_func
@@ -4877,11 +4836,10 @@ c_cond
 op_logical_neg
 id|entry
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|ntfs_bzero
 c_func
 (paren
@@ -4908,7 +4866,7 @@ comma
 id|esize
 )paren
 suffix:semicolon
-multiline_comment|/* size of entry */
+multiline_comment|/* Size of entry. */
 id|NTFS_PUTU16
 c_func
 (paren
@@ -4919,7 +4877,7 @@ comma
 id|nsize
 )paren
 suffix:semicolon
-multiline_comment|/* size of original name attribute */
+multiline_comment|/* Size of original name attribute. */
 id|NTFS_PUTU32
 c_func
 (paren
@@ -4957,14 +4915,12 @@ c_cond
 (paren
 id|walk.new_entry
 )paren
-(brace
 id|ntfs_free
 c_func
 (paren
 id|walk.new_entry
 )paren
 suffix:semicolon
-)brace
 r_return
 id|error
 suffix:semicolon
@@ -5031,12 +4987,10 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
-multiline_comment|/* FIXME: set flags */
+multiline_comment|/* FIXME: Set flags. */
 id|walk.type
 op_assign
 id|DIR_INSERT
@@ -5045,9 +4999,9 @@ id|walk.dir
 op_assign
 id|dir
 suffix:semicolon
-multiline_comment|/*walk.new=ino;*/
-multiline_comment|/* prepare new entry */
-multiline_comment|/* round up to a multiple of 8 */
+multiline_comment|/* walk.new = ino; */
+multiline_comment|/* Prepare new entry. */
+multiline_comment|/* Round up to a multiple of 8. */
 id|walk.new_entry_size
 op_assign
 id|nsize
@@ -5084,11 +5038,10 @@ c_cond
 op_logical_neg
 id|entry
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|ntfs_bzero
 c_func
 (paren
@@ -5129,7 +5082,7 @@ op_star
 id|namelen
 )paren
 suffix:semicolon
-multiline_comment|/*FIXME: size of name attr*/
+multiline_comment|/* FIXME: Size of name &n;&t;&t;&t;&t;&t;&t;       * attribute. */
 id|NTFS_PUTU32
 c_func
 (paren
@@ -5140,7 +5093,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*FIXME: D-F? */
+multiline_comment|/* FIXME: D-F? */
 id|name_attr
 op_assign
 id|ntfs_find_attr
@@ -5153,7 +5106,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME:multiple names */
+multiline_comment|/* FIXME: multiple names */
 r_if
 c_cond
 (paren
@@ -5163,12 +5116,11 @@ op_logical_or
 op_logical_neg
 id|name_attr-&gt;resident
 )paren
-(brace
 r_return
+op_minus
 id|EIDRM
 suffix:semicolon
-)brace
-multiline_comment|/* directory, file stamps, sizes, filename */
+multiline_comment|/* Directory, file stamps, sizes, filename. */
 id|ntfs_memcpy
 c_func
 (paren
@@ -5206,9 +5158,10 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Fills out and creates an INDEX_ROOT attribute. */
-r_int
 DECL|function|ntfs_add_index_root
+r_int
 id|ntfs_add_index_root
+c_func
 (paren
 id|ntfs_inode
 op_star
@@ -5228,7 +5181,7 @@ id|data
 l_int|0x30
 )braket
 suffix:semicolon
-multiline_comment|/* 0x20 header, 0x10 last entry */
+multiline_comment|/* 0x20 header, 0x10 last entry. */
 r_char
 id|name
 (braket
@@ -5243,7 +5196,7 @@ comma
 id|type
 )paren
 suffix:semicolon
-multiline_comment|/* ??? */
+multiline_comment|/* FIXME: ??? */
 id|NTFS_PUTU32
 c_func
 (paren
@@ -5274,7 +5227,7 @@ comma
 id|ino-&gt;vol-&gt;index_clusters_per_record
 )paren
 suffix:semicolon
-multiline_comment|/* ??? */
+multiline_comment|/* FXIME: ??? */
 id|NTFS_PUTU32
 c_func
 (paren
@@ -5317,8 +5270,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* add last entry. */
-multiline_comment|/* indexed MFT record. */
+multiline_comment|/* Add last entry. */
+multiline_comment|/* Indexed MFT record. */
 id|NTFS_PUTU64
 c_func
 (paren
@@ -5329,7 +5282,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* size of entry */
+multiline_comment|/* Size of entry. */
 id|NTFS_PUTU32
 c_func
 (paren
@@ -5340,7 +5293,7 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
-multiline_comment|/* flags: last entry, no child nodes. */
+multiline_comment|/* Flags: Last entry, no child nodes. */
 id|NTFS_PUTU32
 c_func
 (paren
@@ -5351,7 +5304,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-multiline_comment|/* compute name */
+multiline_comment|/* Compute name. */
 id|ntfs_indexname
 c_func
 (paren
@@ -5382,8 +5335,8 @@ id|da
 )paren
 suffix:semicolon
 )brace
-r_int
 DECL|function|ntfs_mkdir
+r_int
 id|ntfs_mkdir
 c_func
 (paren
@@ -5428,11 +5381,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|error
 op_assign
 id|ntfs_add_index_root
@@ -5451,7 +5402,7 @@ id|error
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* Set directory bit */
+multiline_comment|/* Set directory bit. */
 id|result-&gt;attr
 (braket
 l_int|0x16
@@ -5462,6 +5413,7 @@ suffix:semicolon
 id|error
 op_assign
 id|ntfs_update_inode
+c_func
 (paren
 id|dir
 )paren
@@ -5495,5 +5447,4 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

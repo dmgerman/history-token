@@ -1,13 +1,14 @@
-multiline_comment|/*&n; *  super.c&n; *&n; *  Copyright (C) 1995-1997, 1999 Martin von L&#xfffd;wis&n; *  Copyright (C) 1996-1997 R&#xfffd;gis Duchesne&n; *  Copyright (C) 1999 Steve Dodd&n; *  Copyright (C) 2000 Anton Altparmakov&n; */
+multiline_comment|/*  super.c&n; *&n; *  Copyright (C) 1995-1997, 1999 Martin von L&#xfffd;wis&n; *  Copyright (C) 1996-1997 R&#xfffd;gis Duchesne&n; *  Copyright (C) 1999 Steve Dodd&n; *  Copyright (C) 2000-2001 Anton Altparmakov (AIA)&n; */
 macro_line|#include &quot;ntfstypes.h&quot;
 macro_line|#include &quot;struct.h&quot;
 macro_line|#include &quot;super.h&quot;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &quot;macros.h&quot;
 macro_line|#include &quot;inode.h&quot;
 macro_line|#include &quot;support.h&quot;
 macro_line|#include &quot;util.h&quot;
-multiline_comment|/*&n; * All important structures in NTFS use 2 consistency checks :&n; * . a magic structure identifier (FILE, INDX, RSTR, RCRD...)&n; * . a fixup technique : the last word of each sector (called a fixup) of a&n; *   structure&squot;s record should end with the word at offset &lt;n&gt; of the first&n; *   sector, and if it is the case, must be replaced with the words following&n; *   &lt;n&gt;. The value of &lt;n&gt; and the number of fixups is taken from the fields&n; *   at the offsets 4 and 6.&n; *&n; * This function perform these 2 checks, and _fails_ if :&n; * . the magic identifier is wrong&n; * . the size is given and does not match the number of sectors&n; * . a fixup is invalid&n; */
+multiline_comment|/* All important structures in NTFS use 2 consistency checks:&n; * . a magic structure identifier (FILE, INDX, RSTR, RCRD...)&n; * . a fixup technique : the last word of each sector (called a fixup) of a&n; *   structure&squot;s record should end with the word at offset &lt;n&gt; of the first&n; *   sector, and if it is the case, must be replaced with the words following&n; *   &lt;n&gt;. The value of &lt;n&gt; and the number of fixups is taken from the fields&n; *   at the offsets 4 and 6.&n; *&n; * This function perform these 2 checks, and _fails_ if :&n; * . the magic identifier is wrong&n; * . the size is given and does not match the number of sectors&n; * . a fixup is invalid&n; */
 DECL|function|ntfs_fixup_record
 r_int
 id|ntfs_fixup_record
@@ -51,11 +52,9 @@ comma
 id|magic
 )paren
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|start
 op_assign
 id|NTFS_GETU16
@@ -135,11 +134,9 @@ id|offset
 op_ne
 id|fixup
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|NTFS_PUTU16
 c_func
 (paren
@@ -169,7 +166,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Get vital informations about the ntfs partition from the boot sector */
+multiline_comment|/*&n; * Get vital informations about the ntfs partition from the boot sector.&n; * Return 0 on success or -1 on error.&n; */
 DECL|function|ntfs_init_volume
 r_int
 id|ntfs_init_volume
@@ -184,7 +181,7 @@ op_star
 id|boot
 )paren
 (brace
-multiline_comment|/* Historical default values, in case we don&squot;t load $AttrDef */
+multiline_comment|/* Historical default values, in case we don&squot;t load $AttrDef. */
 id|vol-&gt;at_standard_information
 op_assign
 l_int|0x10
@@ -244,8 +241,11 @@ op_plus
 l_int|0xB
 )paren
 suffix:semicolon
-id|vol-&gt;clusterfactor
+id|vol-&gt;clusterfactorbits
 op_assign
+id|ffs
+c_func
+(paren
 id|NTFS_GETU8
 c_func
 (paren
@@ -253,6 +253,9 @@ id|boot
 op_plus
 l_int|0xD
 )paren
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 id|vol-&gt;mft_clusters_per_record
 op_assign
@@ -274,7 +277,7 @@ op_plus
 l_int|0x44
 )paren
 suffix:semicolon
-multiline_comment|/* Just some consistency checks */
+multiline_comment|/* Just some consistency checks. */
 r_if
 c_cond
 (paren
@@ -288,14 +291,12 @@ l_int|0x40
 OG
 l_int|256
 )paren
-(brace
 id|ntfs_error
 c_func
 (paren
 l_string|&quot;Unexpected data #1 in boot block&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -309,60 +310,17 @@ l_int|0x44
 OG
 l_int|256
 )paren
-(brace
 id|ntfs_error
 c_func
 (paren
 l_string|&quot;Unexpected data #2 in boot block&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|vol-&gt;index_clusters_per_record
-OL
-l_int|0
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-l_string|&quot;Unexpected data #3 in boot block&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* If this really means a fraction, setting it to 1&n;&t;&t;   should be safe. */
-id|vol-&gt;index_clusters_per_record
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* in some cases, 0xF6 meant 1024 bytes. Other strange values have not&n;&t;   been observed */
-r_if
-c_cond
-(paren
-id|vol-&gt;mft_clusters_per_record
-OL
-l_int|0
-op_logical_and
-id|vol-&gt;mft_clusters_per_record
-op_ne
-op_minus
-l_int|10
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-l_string|&quot;Unexpected data #4 in boot block&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 id|vol-&gt;clustersize
 op_assign
 id|vol-&gt;blocksize
-op_star
-id|vol-&gt;clusterfactor
+op_lshift
+id|vol-&gt;clusterfactorbits
 suffix:semicolon
 r_if
 c_cond
@@ -371,15 +329,41 @@ id|vol-&gt;mft_clusters_per_record
 OG
 l_int|0
 )paren
-(brace
 id|vol-&gt;mft_recordsize
 op_assign
 id|vol-&gt;clustersize
 op_star
 id|vol-&gt;mft_clusters_per_record
 suffix:semicolon
-)brace
 r_else
+(brace
+multiline_comment|/* If mft_recordsize &lt; clustersize then mft_clusters_per_record&n;&t;&t;   = -log2(mft_recordsize) bytes. Mft_recordsize normaly equals&n;&t;&t;   1024 bytes, which is encoded as 0xF6. */
+r_if
+c_cond
+(paren
+id|vol-&gt;mft_clusters_per_record
+OL
+op_minus
+l_int|31
+op_logical_or
+op_minus
+l_int|9
+OL
+id|vol-&gt;mft_clusters_per_record
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+l_string|&quot;Unexpected mft clusters per record value &quot;
+l_string|&quot;in boot block.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|vol-&gt;mft_recordsize
 op_assign
 l_int|1
@@ -389,12 +373,88 @@ op_minus
 id|vol-&gt;mft_clusters_per_record
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|vol-&gt;index_clusters_per_record
+OG
+l_int|0
+)paren
 id|vol-&gt;index_recordsize
 op_assign
 id|vol-&gt;clustersize
 op_star
 id|vol-&gt;index_clusters_per_record
 suffix:semicolon
+r_else
+(brace
+multiline_comment|/* If index_recordsize &lt; clustersize then&n;&t;&t;   index_clusters_per_record = -log2(index_recordsize) bytes.&n;&t;&t;   Index_recordsize normaly equals 1024 bytes, which is&n;&t;&t;   encoded as 0xF6. */
+r_if
+c_cond
+(paren
+id|vol-&gt;index_clusters_per_record
+OL
+op_minus
+l_int|31
+op_logical_or
+op_minus
+l_int|9
+OL
+id|vol-&gt;index_clusters_per_record
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+l_string|&quot;Unexpected index clusters per record &quot;
+l_string|&quot;value in boot block.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|vol-&gt;index_recordsize
+op_assign
+l_int|1
+op_lshift
+(paren
+op_minus
+id|vol-&gt;index_clusters_per_record
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|NTFS_GETU64
+c_func
+(paren
+id|boot
+op_plus
+l_int|0x30
+)paren
+op_ge
+(paren
+l_int|1ULL
+op_lshift
+l_int|32
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+l_string|&quot;Would require 64-bit inodes to mount partition.&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* FIXME: long long value */
 id|vol-&gt;mft_cluster
 op_assign
@@ -406,7 +466,7 @@ op_plus
 l_int|0x30
 )paren
 suffix:semicolon
-multiline_comment|/* This will be initialized later */
+multiline_comment|/* This will be initialized later. */
 id|vol-&gt;upcase
 op_assign
 l_int|0
@@ -423,9 +483,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|ntfs_init_upcase
 r_static
 r_void
-DECL|function|ntfs_init_upcase
 id|ntfs_init_upcase
 c_func
 (paren
@@ -444,9 +504,9 @@ op_assign
 id|ntfs_malloc
 c_func
 (paren
-l_int|2
-op_star
 id|UPCASE_LENGTH
+op_lshift
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -455,10 +515,8 @@ c_cond
 op_logical_neg
 id|upcase-&gt;vol-&gt;upcase
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|io.fn_put
 op_assign
 id|ntfs_put
@@ -477,9 +535,9 @@ id|upcase-&gt;vol-&gt;upcase
 suffix:semicolon
 id|io.size
 op_assign
-l_int|2
-op_star
 id|UPCASE_LENGTH
+op_lshift
+l_int|1
 suffix:semicolon
 id|ntfs_read_attr
 c_func
@@ -499,13 +557,13 @@ suffix:semicolon
 id|upcase-&gt;vol-&gt;upcase_length
 op_assign
 id|io.size
-op_div
-l_int|2
+op_rshift
+l_int|1
 suffix:semicolon
 )brace
+DECL|function|process_attrdef
 r_static
 r_int
-DECL|function|process_attrdef
 id|process_attrdef
 c_func
 (paren
@@ -894,6 +952,7 @@ id|check_type
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -901,8 +960,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_int
 DECL|function|ntfs_init_attrdef
+r_int
 id|ntfs_init_attrdef
 c_func
 (paren
@@ -944,11 +1003,10 @@ c_cond
 op_logical_neg
 id|buf
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|io.fn_put
 op_assign
 id|ntfs_put
@@ -991,6 +1049,7 @@ id|buf
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -1075,7 +1134,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* ntfs_get_version will determine the NTFS version of the &n;   volume and will return the version in a BCD format, with&n;   the MSB being the major version number and the LSB the&n;   minor one. Otherwise return &lt;0 on error. &n;   Example: version 3.1 will be returned as 0x0301.&n;   This has the obvious limitation of not coping with version&n;   numbers above 0x80 but that shouldn&squot;t be a problem... */
+multiline_comment|/* ntfs_get_version will determine the NTFS version of the volume and will&n; * return the version in a BCD format, with the MSB being the major version&n; * number and the LSB the minor one. Otherwise return &lt;0 on error.&n; * Example: version 3.1 will be returned as 0x0301. This has the obvious&n; * limitation of not coping with version numbers above 0x80 but that shouldn&squot;t&n; * be a problem... */
 DECL|function|ntfs_get_version
 r_int
 id|ntfs_get_version
@@ -1195,6 +1254,7 @@ id|ntfs_inode
 suffix:semicolon
 id|error
 op_assign
+op_minus
 id|ENOMEM
 suffix:semicolon
 id|ntfs_debug
@@ -1221,7 +1281,9 @@ id|vol-&gt;mft_ino
 comma
 id|vol
 comma
-id|FILE_MFT
+id|FILE_
+"$"
+id|Mft
 )paren
 )paren
 )paren
@@ -1263,7 +1325,9 @@ id|vol-&gt;mftmirr
 comma
 id|vol
 comma
-id|FILE_MFTMIRR
+id|FILE_
+"$"
+id|MftMirr
 )paren
 )paren
 )paren
@@ -1307,7 +1371,9 @@ id|vol-&gt;bitmap
 comma
 id|vol
 comma
-id|FILE_BITMAP
+id|FILE_
+"$"
+id|BitMap
 )paren
 )paren
 )paren
@@ -1340,7 +1406,9 @@ id|upcase
 comma
 id|vol
 comma
-id|FILE_UPCASE
+id|FILE_
+"$"
+id|UpCase
 )paren
 suffix:semicolon
 r_if
@@ -1348,11 +1416,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
 id|ntfs_init_upcase
 c_func
 (paren
@@ -1385,7 +1451,9 @@ id|attrdef
 comma
 id|vol
 comma
-id|FILE_ATTRDEF
+id|FILE_
+"$"
+id|AttrDef
 )paren
 suffix:semicolon
 r_if
@@ -1393,11 +1461,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
 id|error
 op_assign
 id|ntfs_init_attrdef
@@ -1419,12 +1485,10 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
-multiline_comment|/* Check for NTFS version and if Win2k version (ie. 3.0+)&n;&t;   do not allow write access since the driver write support&n;&t;   is broken, especially for Win2k. */
+multiline_comment|/* Check for NTFS version and if Win2k version (ie. 3.0+) do not allow&n;&t; * write access since the driver write support is broken. */
 id|ntfs_debug
 c_func
 (paren
@@ -1443,7 +1507,9 @@ id|volume
 comma
 id|vol
 comma
-id|FILE_VOLUME
+id|FILE_
+"$"
+id|Volume
 )paren
 suffix:semicolon
 r_if
@@ -1469,6 +1535,19 @@ id|volume
 )paren
 op_ge
 l_int|0x0300
+op_logical_and
+op_logical_neg
+(paren
+id|NTFS_SB
+c_func
+(paren
+id|vol
+)paren
+op_member_access_from_pointer
+id|s_flags
+op_amp
+id|MS_RDONLY
+)paren
 )paren
 (brace
 id|NTFS_SB
@@ -1484,7 +1563,8 @@ suffix:semicolon
 id|ntfs_error
 c_func
 (paren
-l_string|&quot;Warning! NTFS volume version is Win2k+: Mounting read-only&bslash;n&quot;
+l_string|&quot;Warning! NTFS volume version is Win2k+: Mounting &quot;
+l_string|&quot;read-only&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1586,7 +1666,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Writes the volume size into vol_size. Returns 0 if successful&n; * or error.&n; */
+multiline_comment|/* Writes the volume size into vol_size. Returns 0 if successful or error. */
 DECL|function|ntfs_get_volumesize
 r_int
 id|ntfs_get_volumesize
@@ -1614,11 +1694,10 @@ c_cond
 op_logical_neg
 id|vol_size
 )paren
-(brace
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|cluster0
 op_assign
 id|ntfs_malloc
@@ -1633,11 +1712,10 @@ c_cond
 op_logical_neg
 id|cluster0
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|io.fn_put
 op_assign
 id|ntfs_put
@@ -1681,6 +1759,8 @@ id|cluster0
 op_plus
 l_int|0x28
 )paren
+op_rshift
+id|vol-&gt;clusterfactorbits
 suffix:semicolon
 id|ntfs_free
 c_func
@@ -1702,8 +1782,8 @@ l_int|16
 op_assign
 initialization_block
 suffix:semicolon
-r_int
 DECL|function|ntfs_get_free_cluster_count
+r_int
 id|ntfs_get_free_cluster_count
 c_func
 (paren
@@ -1788,10 +1868,8 @@ id|io.size
 op_eq
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 multiline_comment|/* I never thought I would do loop unrolling some day */
 r_for
 c_loop
@@ -2009,14 +2087,12 @@ l_int|0xF
 )braket
 suffix:semicolon
 )brace
-r_for
+r_while
 c_loop
 (paren
-suffix:semicolon
 id|i
 OL
 id|io.size
-suffix:semicolon
 )paren
 (brace
 id|clusters
@@ -2054,7 +2130,7 @@ r_return
 id|clusters
 suffix:semicolon
 )brace
-multiline_comment|/* Insert the fixups for the record. The number and location of the fixes &n;   is obtained from the record header */
+multiline_comment|/* Insert the fixups for the record. The number and location of the fixes&n; * is obtained from the record header */
 DECL|function|ntfs_insert_fixups
 r_void
 id|ntfs_insert_fixups
@@ -2109,9 +2185,20 @@ id|first
 )paren
 suffix:semicolon
 id|fix
-op_assign
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|fix
-op_plus
+op_eq
+l_int|0xffff
+op_logical_or
+op_logical_neg
+id|fix
+)paren
+id|fix
+op_assign
 l_int|1
 suffix:semicolon
 id|NTFS_PUTU16
@@ -2171,10 +2258,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 )brace
-multiline_comment|/* search the bitmap bits of l bytes for *cnt zero bits. Return the bit&n;   number in *loc, which is initially set to the number of the first bit.&n;   Return the largest block found in *cnt. Return 0 on success, ENOSPC if&n;   all bits are used */
+multiline_comment|/* Search the bitmap bits of l bytes for *cnt zero bits. Return the bit number&n; * in *loc, which is initially set to the number of the first bit. Return the&n; * largest block found in *cnt. Return 0 on success, -ENOSPC if all bits are&n; * used. */
+DECL|function|search_bits
 r_static
 r_int
-DECL|function|search_bits
 id|search_bits
 c_func
 (paren
@@ -2269,11 +2356,10 @@ c_cond
 op_logical_neg
 id|l
 )paren
-(brace
 r_return
+op_minus
 id|ENOSPC
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -2290,14 +2376,12 @@ id|c
 op_rshift_assign
 l_int|1
 )paren
-(brace
 (paren
 op_star
 id|loc
 )paren
 op_increment
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2363,11 +2447,9 @@ l_int|1
 op_eq
 l_int|0
 )paren
-(brace
 id|stop
 op_increment
 suffix:semicolon
-)brace
 r_else
 (brace
 multiline_comment|/* end of sequence of zeroes */
@@ -2412,10 +2494,8 @@ OG
 op_star
 id|cnt
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 id|start
 op_assign
@@ -2434,11 +2514,9 @@ id|c
 op_amp
 l_int|1
 )paren
-(brace
 id|start
 op_increment
 suffix:semicolon
-)brace
 r_else
 (brace
 multiline_comment|/*start of sequence*/
@@ -2500,11 +2578,10 @@ c_cond
 op_logical_neg
 id|found
 )paren
-(brace
 r_return
+op_minus
 id|ENOSPC
 suffix:semicolon
-)brace
 op_star
 id|loc
 op_assign
@@ -2520,7 +2597,6 @@ id|bstop
 op_minus
 id|bstart
 )paren
-(brace
 op_star
 id|cnt
 op_assign
@@ -2528,13 +2604,12 @@ id|bstop
 op_minus
 id|bstart
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-r_int
 DECL|function|ntfs_set_bitrange
+r_int
 id|ntfs_set_bitrange
 c_func
 (paren
@@ -2603,6 +2678,16 @@ c_func
 id|bsize
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bits
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|io.param
 op_assign
 id|bits
@@ -2611,17 +2696,6 @@ id|io.size
 op_assign
 id|bsize
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|bits
-)paren
-(brace
-r_return
-id|ENOMEM
-suffix:semicolon
-)brace
 id|error
 op_assign
 id|ntfs_read_attr
@@ -2663,10 +2737,11 @@ ques
 c_cond
 id|error
 suffix:colon
+op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* now set the bits */
+multiline_comment|/* Now set the bits. */
 id|it
 op_assign
 id|bits
@@ -2691,7 +2766,6 @@ c_cond
 (paren
 id|bit
 )paren
-(brace
 op_star
 id|it
 op_or_assign
@@ -2703,7 +2777,6 @@ op_mod
 l_int|8
 )paren
 suffix:semicolon
-)brace
 r_else
 op_star
 id|it
@@ -2734,11 +2807,9 @@ l_int|8
 op_eq
 l_int|0
 )paren
-(brace
 id|it
 op_increment
 suffix:semicolon
-)brace
 )brace
 r_while
 c_loop
@@ -2783,7 +2854,6 @@ c_cond
 (paren
 id|bit
 )paren
-(brace
 op_star
 id|it
 op_or_assign
@@ -2795,7 +2865,6 @@ op_mod
 l_int|8
 )paren
 suffix:semicolon
-)brace
 r_else
 op_star
 id|it
@@ -2857,11 +2926,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2869,18 +2936,17 @@ id|io.size
 op_ne
 id|bsize
 )paren
-(brace
 r_return
+op_minus
 id|EIO
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* allocate count clusters around location. If location is -1,&n;   it does not matter where the clusters are. Result is 0 if&n;   success, in which case location and count says what they really got */
-r_int
+multiline_comment|/* Allocate count clusters around location. If location is -1, it does not&n; * matter where the clusters are. Result is 0 if success, in which case&n; * location and count says what they really got. */
 DECL|function|ntfs_search_bits
+r_int
 id|ntfs_search_bits
 c_func
 (paren
@@ -2949,11 +3015,10 @@ c_cond
 op_logical_neg
 id|bits
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|io.fn_put
 op_assign
 id|ntfs_put
@@ -3013,11 +3078,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 id|loc
 op_assign
 id|start
@@ -3050,11 +3113,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3076,7 +3137,7 @@ r_goto
 id|success
 suffix:semicolon
 )brace
-multiline_comment|/* now search from the beginning */
+multiline_comment|/* Now search from the beginning. */
 r_for
 c_loop
 (paren
@@ -3121,11 +3182,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3148,6 +3207,7 @@ r_else
 (brace
 id|error
 op_assign
+op_minus
 id|ENOSPC
 suffix:semicolon
 r_goto
@@ -3187,11 +3247,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3200,11 +3258,9 @@ id|count
 op_eq
 id|cnt
 )paren
-(brace
 r_goto
 id|success
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3250,12 +3306,11 @@ id|location
 op_ne
 id|bloc
 )paren
-(brace
 id|error
 op_assign
+op_minus
 id|ENOSPC
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -3271,12 +3326,11 @@ id|count
 op_ne
 id|bcnt
 )paren
-(brace
 id|error
 op_assign
+op_minus
 id|ENOSPC
 suffix:semicolon
-)brace
 r_else
 id|ntfs_set_bitrange
 c_func
@@ -3290,7 +3344,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* If allocation failed due to the flags, tell the caller what he&n;&t;   could have gotten */
+multiline_comment|/* If allocation failed due to the flags, tell the caller what he could&n;&t; * have gotten */
 op_star
 id|location
 op_assign
@@ -3406,5 +3460,4 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

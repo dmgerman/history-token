@@ -169,8 +169,9 @@ DECL|variable|tlan_banner
 r_static
 r_const
 r_char
-op_star
 id|tlan_banner
+(braket
+)braket
 op_assign
 l_string|&quot;ThunderLAN driver v1.14a&bslash;n&quot;
 suffix:semicolon
@@ -1438,8 +1439,6 @@ r_void
 r_static
 r_int
 id|pad_allocated
-op_assign
-l_int|0
 suffix:semicolon
 id|printk
 c_func

@@ -565,8 +565,6 @@ id|dev
 r_static
 r_int
 id|found
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -630,8 +628,6 @@ suffix:semicolon
 r_static
 r_int
 id|did_version
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|found
@@ -2303,8 +2299,6 @@ suffix:semicolon
 r_static
 r_int
 id|in_interrupt
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

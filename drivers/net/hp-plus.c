@@ -4,8 +4,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;hp-plus.c:v1.10 9/24/94 Donald Becker (becker@cesdis.gsfc.nasa.gov)&bslash;n&quot;
 suffix:semicolon
@@ -471,8 +472,9 @@ l_int|0
 suffix:semicolon
 r_const
 r_char
-op_star
 id|name
+(braket
+)braket
 op_assign
 l_string|&quot;HP-PC-LAN+&quot;
 suffix:semicolon

@@ -304,8 +304,6 @@ r_struct
 id|tms_isa_card
 op_star
 id|tms_isa_card_list
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|tms_isa_probe1
 r_static
@@ -459,8 +457,6 @@ id|dev
 r_static
 r_int
 id|versionprinted
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|net_local

@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;
 macro_line|#include &quot;msbuffer.h&quot;
-macro_line|#include &quot;tables.h&quot;
 DECL|variable|fat_new_dir
 id|EXPORT_SYMBOL
 c_func

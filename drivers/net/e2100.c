@@ -4,8 +4,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;e2100.c:v1.01 7/21/94 Donald Becker (becker@cesdis.gsfc.nasa.gov)&bslash;n&quot;
 suffix:semicolon

@@ -110,8 +110,6 @@ r_struct
 id|madgemc_card
 op_star
 id|madgemc_card_list
-op_assign
-l_int|NULL
 suffix:semicolon
 r_int
 id|madgemc_probe
@@ -556,8 +554,6 @@ r_void
 r_static
 r_int
 id|versionprinted
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|net_device
@@ -1899,8 +1895,6 @@ id|page
 r_static
 r_int
 id|reg1
-op_assign
-l_int|0
 suffix:semicolon
 id|reg1
 op_assign

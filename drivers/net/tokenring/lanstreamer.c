@@ -36,8 +36,9 @@ multiline_comment|/* I&squot;ve got to put some intelligence into the version nu
 DECL|variable|version
 r_static
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;LanStreamer.c v0.4.0 03/08/01 - Mike Sullivan&quot;
 suffix:semicolon

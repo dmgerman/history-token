@@ -299,8 +299,6 @@ r_void
 r_static
 r_int
 id|arcnet_inited
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|count
@@ -1308,12 +1306,6 @@ id|dev-&gt;rebuild_header
 op_assign
 id|arcnet_rebuild_header
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Open/initialize the board.  This is called sometime after booting when&n; * the &squot;ifconfig&squot; program is run.&n; *&n; * This routine should set everything up anew at each open, even registers&n; * that &quot;should&quot; only need to be set once at boot, so that there is&n; * non-reboot way to recover if something goes wrong.&n; */
 DECL|function|arcnet_open
@@ -2018,6 +2010,8 @@ id|type
 suffix:semicolon
 r_uint8
 id|daddr
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond

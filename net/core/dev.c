@@ -4027,8 +4027,8 @@ suffix:semicolon
 macro_line|#endif
 DECL|function|handle_bridge
 r_static
-r_int
 id|__inline__
+r_int
 id|handle_bridge
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: timod.c,v 1.10 2000/07/28 12:15:02 davem Exp $&n; * timod.c: timod emulation.&n; *&n; * Copyright (C) 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; *&n; * Streams &amp; timod emulation based on code&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; *&n; */
+multiline_comment|/* $Id: timod.c,v 1.11 2001/04/14 21:12:01 davem Exp $&n; * timod.c: timod emulation.&n; *&n; * Copyright (C) 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; *&n; * Streams &amp; timod emulation based on code&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -3401,6 +3401,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;timod_putmsg: unsupported command %u.&bslash;n&quot;
 comma
 id|ret

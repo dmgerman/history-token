@@ -332,11 +332,10 @@ r_continue
 suffix:semicolon
 singleline_comment|//&t;&t;request_region(pci_cisaddr, AIRONET4X00_CIS_SIZE, &quot;aironet4x00 cis&quot;);
 singleline_comment|//&t;&t;request_region(pci_memaddr, AIRONET4X00_MEM_SIZE, &quot;aironet4x00 mem&quot;);
-singleline_comment|//&t;&t;pci_write_config_word(pdev, PCI_COMMAND, 0);
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|10000
+l_int|10
 )paren
 suffix:semicolon
 id|pci_read_config_word
@@ -354,11 +353,7 @@ id|new_command
 op_assign
 id|pci_command
 op_or
-l_int|0x100
-op_or
-id|PCI_COMMAND_MEMORY
-op_or
-id|PCI_COMMAND_IO
+id|PCI_COMMAND_SERR
 suffix:semicolon
 r_if
 c_cond
@@ -367,19 +362,6 @@ id|pci_command
 op_ne
 id|new_command
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;  The PCI BIOS has not enabled this&quot;
-l_string|&quot; device!  Updating PCI command %4.4x-&gt;%4.4x.&bslash;n&quot;
-comma
-id|pci_command
-comma
-id|new_command
-)paren
-suffix:semicolon
 id|pci_write_config_word
 c_func
 (paren
@@ -390,7 +372,6 @@ comma
 id|new_command
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&t;&t;if (device == PCI_DEVICE_AIRONET_4800)&n;&t;&t;&t;pci_write_config_dword(pdev, 0x40, 0x00000000);&n;&n;&t;&t;udelay(1000);&n;*/
 r_if
 c_cond

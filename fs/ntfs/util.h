@@ -1,43 +1,132 @@
-multiline_comment|/*&n; *  util.h&n; *  Header file for util.c&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; */
-multiline_comment|/* Which character set is used for file names */
-multiline_comment|/*  Translate everything to UTF-8 */
+multiline_comment|/*  util.h - Header file for util.c&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *  Copyright (C) 2001 Anton Altaparmakov&n; */
+multiline_comment|/* Which character set is used for file names. */
+multiline_comment|/*  Translate everything to UTF-8. */
 DECL|macro|nct_utf8
 mdefine_line|#define nct_utf8             1
-multiline_comment|/*  Translate to 8859-1 */
+multiline_comment|/*  Translate to 8859-1. */
 DECL|macro|nct_iso8859_1
 mdefine_line|#define nct_iso8859_1        2
-multiline_comment|/*  Quote unprintables with : */
+multiline_comment|/*  Quote unprintables with &quot;:&quot;. */
 DECL|macro|nct_uni_xlate
 mdefine_line|#define nct_uni_xlate        4
-multiline_comment|/*  Do that in the vfat way instead of the documented way */
+multiline_comment|/*  Do that in the vfat way instead of the documented way. */
 DECL|macro|nct_uni_xlate_vfat
 mdefine_line|#define nct_uni_xlate_vfat   8
-multiline_comment|/*  Use a mapping table to determine printables */
+multiline_comment|/*  Use a mapping table to determine printables. */
 DECL|macro|nct_map
 mdefine_line|#define nct_map              16
-multiline_comment|/* The first 11 inodes correspond to special files */
-DECL|macro|FILE_MFT
-mdefine_line|#define FILE_MFT      0
-DECL|macro|FILE_MFTMIRR
-mdefine_line|#define FILE_MFTMIRR  1
-DECL|macro|FILE_LOGFILE
-mdefine_line|#define FILE_LOGFILE  2
-DECL|macro|FILE_VOLUME
-mdefine_line|#define FILE_VOLUME   3
-DECL|macro|FILE_ATTRDEF
-mdefine_line|#define FILE_ATTRDEF  4
-DECL|macro|FILE_ROOT
-mdefine_line|#define FILE_ROOT     5
-DECL|macro|FILE_BITMAP
-mdefine_line|#define FILE_BITMAP   6
-DECL|macro|FILE_BOOT
-mdefine_line|#define FILE_BOOT     7
-DECL|macro|FILE_BADCLUS
-mdefine_line|#define FILE_BADCLUS  8
-DECL|macro|FILE_QUOTA
-mdefine_line|#define FILE_QUOTA    9
-DECL|macro|FILE_UPCASE
-mdefine_line|#define FILE_UPCASE  10
+multiline_comment|/* The first 16 inodes correspond to NTFS special files */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|FILE_$Mft
+id|FILE_
+"$"
+id|Mft
+op_assign
+l_int|0
+comma
+DECL|enumerator|FILE_$MftMirr
+id|FILE_
+"$"
+id|MftMirr
+op_assign
+l_int|1
+comma
+DECL|enumerator|FILE_$LogFile
+id|FILE_
+"$"
+id|LogFile
+op_assign
+l_int|2
+comma
+DECL|enumerator|FILE_$Volume
+id|FILE_
+"$"
+id|Volume
+op_assign
+l_int|3
+comma
+DECL|enumerator|FILE_$AttrDef
+id|FILE_
+"$"
+id|AttrDef
+op_assign
+l_int|4
+comma
+DECL|enumerator|FILE_$root
+id|FILE_
+"$"
+id|root
+op_assign
+l_int|5
+comma
+DECL|enumerator|FILE_$BitMap
+id|FILE_
+"$"
+id|BitMap
+op_assign
+l_int|6
+comma
+DECL|enumerator|FILE_$Boot
+id|FILE_
+"$"
+id|Boot
+op_assign
+l_int|7
+comma
+DECL|enumerator|FILE_$BadClus
+id|FILE_
+"$"
+id|BadClus
+op_assign
+l_int|8
+comma
+DECL|enumerator|FILE_$Secure
+id|FILE_
+"$"
+id|Secure
+op_assign
+l_int|9
+comma
+DECL|enumerator|FILE_$UpCase
+id|FILE_
+"$"
+id|UpCase
+op_assign
+l_int|10
+comma
+DECL|enumerator|FILE_$Extend
+id|FILE_
+"$"
+id|Extend
+op_assign
+l_int|11
+comma
+DECL|enumerator|FILE_Reserved12
+id|FILE_Reserved12
+op_assign
+l_int|12
+comma
+DECL|enumerator|FILE_Reserved13
+id|FILE_Reserved13
+op_assign
+l_int|13
+comma
+DECL|enumerator|FILE_Reserved14
+id|FILE_Reserved14
+op_assign
+l_int|14
+comma
+DECL|enumerator|FILE_Reserved15
+id|FILE_Reserved15
+op_assign
+l_int|15
+comma
+DECL|typedef|NTFS_SYSTEM_FILES
+)brace
+id|NTFS_SYSTEM_FILES
+suffix:semicolon
 multiline_comment|/* Memory management */
 r_void
 op_star
@@ -236,5 +325,4 @@ r_int
 id|type
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

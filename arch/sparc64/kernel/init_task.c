@@ -46,21 +46,15 @@ id|init_mm
 )paren
 suffix:semicolon
 multiline_comment|/* .text section in head.S is aligned at 2 page boundry and this gets linked&n; * right after that so that the init_task_union is aligned properly as well.&n; * We really don&squot;t need this special alignment like the Intel does, but&n; * I do it anyways for completeness.&n; */
+id|__asm__
+(paren
+l_string|&quot;.text&quot;
+)paren
+suffix:semicolon
 DECL|variable|init_task_union
 r_union
 id|task_union
 id|init_task_union
-id|__attribute__
-c_func
-(paren
-(paren
-id|__section__
-c_func
-(paren
-l_string|&quot;.text&quot;
-)paren
-)paren
-)paren
 op_assign
 (brace
 id|INIT_TASK

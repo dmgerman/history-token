@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: setup.c,v 1.123 2001/02/13 01:16:43 davem Exp $&n; *  linux/arch/sparc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 2000  Anton Blanchard (anton@samba.org)&n; */
+multiline_comment|/*  $Id: setup.c,v 1.124 2001/04/14 21:13:46 davem Exp $&n; *  linux/arch/sparc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 2000  Anton Blanchard (anton@samba.org)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -2260,12 +2260,6 @@ id|dev-&gt;dev_addr
 )paren
 )paren
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

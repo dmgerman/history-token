@@ -42,7 +42,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;elsa_cs.c $Revision: 3.0 $ $Date: 2001/03/10 10:00:23 $ (K.Lichtenwalder)&quot;
+l_string|&quot;elsa_cs.c $Revision: 1.1.2.1 $ $Date: 2001/04/15 08:01:34 $ (K.Lichtenwalder)&quot;
 suffix:semicolon
 macro_line|#else
 DECL|macro|DEBUG

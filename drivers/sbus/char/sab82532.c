@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sab82532.c,v 1.56 2001/03/15 02:11:10 davem Exp $&n; * sab82532.c: ASYNC Driver for the SIEMENS SAB82532 DUSCC.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; */
+multiline_comment|/* $Id: sab82532.c,v 1.58 2001/04/17 06:30:36 davem Exp $&n; * sab82532.c: ASYNC Driver for the SIEMENS SAB82532 DUSCC.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -56,7 +56,7 @@ multiline_comment|/* number of characters left in xmit buffer before we ask for 
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS 256
 DECL|macro|SERIAL_PARANOIA_CHECK
-mdefine_line|#define SERIAL_PARANOIA_CHECK
+macro_line|#undef SERIAL_PARANOIA_CHECK
 DECL|macro|SERIAL_DO_RESTART
 mdefine_line|#define SERIAL_DO_RESTART
 multiline_comment|/* Set of debugging defines */
@@ -1000,7 +1000,6 @@ multiline_comment|/*&n; * ------------------------------------------------------
 multiline_comment|/*&n; * This routine is used by the interrupt handler to schedule&n; * processing in the software interrupt portion of the driver.&n; */
 DECL|function|sab82532_sched_event
 r_static
-r_inline
 r_void
 id|sab82532_sched_event
 c_func
@@ -1039,7 +1038,6 @@ suffix:semicolon
 )brace
 DECL|function|receive_chars
 r_static
-r_inline
 r_void
 id|receive_chars
 c_func
@@ -1389,7 +1387,6 @@ suffix:semicolon
 )brace
 DECL|function|transmit_chars
 r_static
-r_inline
 r_void
 id|transmit_chars
 c_func
@@ -1642,7 +1639,6 @@ suffix:semicolon
 )brace
 DECL|function|check_status
 r_static
-r_inline
 r_void
 id|check_status
 c_func
@@ -8264,17 +8260,6 @@ id|info-&gt;count
 )paren
 suffix:semicolon
 macro_line|#endif
-id|info-&gt;count
-op_increment
-suffix:semicolon
-id|tty-&gt;driver_data
-op_assign
-id|info
-suffix:semicolon
-id|info-&gt;tty
-op_assign
-id|tty
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8322,6 +8307,17 @@ op_star
 id|page
 suffix:semicolon
 )brace
+id|info-&gt;count
+op_increment
+suffix:semicolon
+id|tty-&gt;driver_data
+op_assign
+id|info
+suffix:semicolon
+id|info-&gt;tty
+op_assign
+id|tty
+suffix:semicolon
 multiline_comment|/*&n;&t; * If the port is in the middle of closing, bail out now.&n;&t; */
 r_if
 c_cond
@@ -9546,7 +9542,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.56 $&quot;
+l_string|&quot;$Revision: 1.58 $&quot;
 suffix:semicolon
 r_char
 op_star

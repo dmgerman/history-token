@@ -2725,13 +2725,6 @@ id|dev-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* is this ever supposed to be used ? */
 r_return
 l_int|0
 suffix:semicolon

@@ -454,8 +454,6 @@ r_static
 id|dev_link_t
 op_star
 id|dev_list
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|if_names
 r_static
@@ -495,8 +493,6 @@ DECL|variable|if_port
 r_static
 r_int
 id|if_port
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Bit map of interrupts to choose from */
 DECL|variable|irq_mask
@@ -5298,8 +5294,6 @@ l_int|1
 r_static
 r_int
 id|old
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5536,8 +5530,6 @@ l_int|1
 r_static
 r_int
 id|old
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

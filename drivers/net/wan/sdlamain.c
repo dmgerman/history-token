@@ -1290,7 +1290,7 @@ id|wandev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Piggiback spin lock has already been initialized,&n;&t;&t; * in check_s514/s508_conflicts() */
+multiline_comment|/* Piggyback spin lock has already been initialized,&n;&t;&t; * in check_s514/s508_conflicts() */
 r_if
 c_cond
 (paren
@@ -1403,7 +1403,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Starting x25 Protocol Init.&bslash;n&quot;
+l_string|&quot;%s: Starting X.25 Protocol Init.&bslash;n&quot;
 comma
 id|card-&gt;devname
 )paren

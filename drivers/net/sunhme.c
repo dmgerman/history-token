@@ -1,9 +1,10 @@
-multiline_comment|/* $Id: sunhme.c,v 1.115 2001/03/29 06:37:09 davem Exp $&n; * sunhme.c: Sparc HME/BigMac 10/100baseT half/full duplex auto switching,&n; *           auto carrier detecting ethernet driver.  Also known as the&n; *           &quot;Happy Meal Ethernet&quot; found on SunSwift SBUS cards.&n; *&n; * Copyright (C) 1996, 1998, 1999 David S. Miller (davem@redhat.com)&n; *&n; * Changes :&n; * 2000/11/11 Willy Tarreau &lt;willy AT meta-x.org&gt;&n; *   - port to non-sparc architectures. Tested only on x86 and&n; *     only currently works with QFE PCI cards.&n; *   - ability to specify the MAC address at module load time by passing this&n; *     argument : macaddr=0x00,0x10,0x20,0x30,0x40,0x50&n; */
+multiline_comment|/* $Id: sunhme.c,v 1.116 2001/04/17 07:20:52 davem Exp $&n; * sunhme.c: Sparc HME/BigMac 10/100baseT half/full duplex auto switching,&n; *           auto carrier detecting ethernet driver.  Also known as the&n; *           &quot;Happy Meal Ethernet&quot; found on SunSwift SBUS cards.&n; *&n; * Copyright (C) 1996, 1998, 1999 David S. Miller (davem@redhat.com)&n; *&n; * Changes :&n; * 2000/11/11 Willy Tarreau &lt;willy AT meta-x.org&gt;&n; *   - port to non-sparc architectures. Tested only on x86 and&n; *     only currently works with QFE PCI cards.&n; *   - ability to specify the MAC address at module load time by passing this&n; *     argument : macaddr=0x00,0x10,0x20,0x30,0x40,0x50&n; */
 DECL|variable|version
 r_static
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;sunhme.c:v1.99 12/Sep/99 David S. Miller (davem@redhat.com)&bslash;n&quot;
 suffix:semicolon
@@ -74,8 +75,6 @@ r_struct
 id|happy_meal
 op_star
 id|root_happy_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#ifdef CONFIG_SBUS
 DECL|variable|qfe_sbus_list
@@ -84,8 +83,6 @@ r_struct
 id|quattro
 op_star
 id|qfe_sbus_list
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
@@ -95,8 +92,6 @@ r_struct
 id|quattro
 op_star
 id|qfe_pci_list
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 DECL|macro|HMEDEBUG
@@ -161,8 +156,6 @@ DECL|variable|txlog_cur_entry
 r_static
 r_int
 id|txlog_cur_entry
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|tx_add_log
 r_static
@@ -9177,20 +9170,6 @@ comma
 id|DMA_TODEVICE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|frag
-op_ne
-id|skb_shinfo
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|nr_frags
-)paren
-(brace
 id|elem
 op_assign
 id|NEXT_TX
@@ -9208,7 +9187,6 @@ id|elem
 )braket
 suffix:semicolon
 )brace
-)brace
 id|dev_kfree_skb_irq
 c_func
 (paren
@@ -9217,14 +9195,6 @@ id|skb
 suffix:semicolon
 id|hp-&gt;net_stats.tx_packets
 op_increment
-suffix:semicolon
-id|elem
-op_assign
-id|NEXT_TX
-c_func
-(paren
-id|elem
-)paren
 suffix:semicolon
 )brace
 id|hp-&gt;tx_old
@@ -11811,8 +11781,6 @@ DECL|variable|hme_version_printed
 r_static
 r_int
 id|hme_version_printed
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_SBUS
 DECL|function|quattro_get_ranges

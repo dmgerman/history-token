@@ -157,26 +157,6 @@ suffix:semicolon
 multiline_comment|/* Econet protocol address */
 )brace
 suffix:semicolon
-r_extern
-r_struct
-id|sock
-op_star
-id|ec_listening_socket
-c_func
-(paren
-r_int
-r_char
-id|port
-comma
-r_int
-r_char
-id|station
-comma
-r_int
-r_char
-id|net
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 eof

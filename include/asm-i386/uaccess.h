@@ -433,6 +433,17 @@ comma
 id|n
 )paren
 suffix:semicolon
+r_else
+id|memset
+c_func
+(paren
+id|to
+comma
+l_int|0
+comma
+id|n
+)paren
+suffix:semicolon
 r_return
 id|n
 suffix:semicolon

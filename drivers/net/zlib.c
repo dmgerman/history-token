@@ -7205,8 +7205,6 @@ c_func
 r_static
 r_int
 id|static_init_done
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|n

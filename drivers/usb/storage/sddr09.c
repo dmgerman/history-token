@@ -367,7 +367,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Transfered %d of %d bytes&bslash;n&quot;
+l_string|&quot;Transferred %d of %d bytes&bslash;n&quot;
 comma
 id|act_len
 comma

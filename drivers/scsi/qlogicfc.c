@@ -1840,7 +1840,7 @@ c_func
 (paren
 l_string|&quot;qlogicfc%d : could not register host.&bslash;n&quot;
 comma
-id|hostdata-&gt;host_id
+id|hosts
 )paren
 suffix:semicolon
 r_continue
@@ -1914,7 +1914,7 @@ c_func
 (paren
 l_string|&quot;qlogicfc%d : could not allocate memory for request and response queue.&bslash;n&quot;
 comma
-id|hostdata-&gt;host_id
+id|hosts
 )paren
 suffix:semicolon
 id|pci64_free_consistent

@@ -31,7 +31,22 @@ id|hycapi_revision
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.8.6.1 $&quot;
+l_string|&quot;$Revision: 1.11 $&quot;
+suffix:semicolon
+DECL|variable|hycapi_enable
+r_int
+r_int
+id|hycapi_enable
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|hycapi_enable
+comma
+l_string|&quot;i&quot;
+)paren
 suffix:semicolon
 DECL|struct|_hycapi_appl
 r_typedef
@@ -2556,15 +2571,6 @@ op_logical_neg
 id|cinfo
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;HYSDN Card%d: no HYCAPI-controller!&bslash;n&quot;
-comma
-id|card-&gt;myid
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2579,15 +2585,6 @@ op_logical_neg
 id|ctrl
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;HYSDN Card%d: no CAPI-controller (1)!&bslash;n&quot;
-comma
-id|card-&gt;myid
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3044,15 +3041,6 @@ op_logical_neg
 id|cinfo
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;HYSDN Card%d: no CAPI-controller (2)!&bslash;n&quot;
-comma
-id|card-&gt;myid
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3144,15 +3132,6 @@ op_logical_neg
 id|cinfo
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;HYSDN Card%d: no CAPI-controller! (3)&bslash;n&quot;
-comma
-id|card-&gt;myid
-)paren
-suffix:semicolon
 r_return
 (paren
 r_struct
@@ -3569,6 +3548,26 @@ l_string|&quot;hycapi_capi_create&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+(paren
+id|hycapi_enable
+op_amp
+(paren
+l_int|1
+op_lshift
+id|card-&gt;myid
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

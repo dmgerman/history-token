@@ -334,8 +334,6 @@ DECL|variable|mem_speed
 r_static
 r_int
 id|mem_speed
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Bit map of interrupts to choose from */
 multiline_comment|/* This means pick from 15, 14, 12, 11, 10, 9, 7, 5, 4, and 3 */
@@ -664,8 +662,6 @@ r_static
 id|dev_link_t
 op_star
 id|dev_list
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;   A dev_link_t structure has fields for most things that are needed&n;   to keep track of a socket, but there will usually be some device&n;   specific information that also needs to be kept track of.  The&n;   &squot;priv&squot; pointer in a dev_link_t structure can be used to point to&n;   a device-specific private data structure, like this.&n;&n;   A driver needs to provide a dev_node_t structure for each device&n;   on a card.  In some cases, there is only one device per card (for&n;   example, ethernet cards, modems).  In other cases, there may be&n;   many actual or logical devices (SCSI adapters, memory cards with&n;   multiple partitions).  The dev_node_t structures need to be kept&n;   in a linked list starting at the &squot;dev&squot; field of a dev_link_t&n;   structure.  We allocate them in the card&squot;s private data structure,&n;   because they generally can&squot;t be allocated dynamically.&n;*/
 DECL|macro|SIOCGIPSNAP
@@ -5882,8 +5878,6 @@ l_int|2
 r_static
 r_int
 id|old
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

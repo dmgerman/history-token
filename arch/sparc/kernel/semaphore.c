@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: semaphore.c,v 1.6 2001/01/05 04:40:07 davem Exp $ */
+multiline_comment|/* $Id: semaphore.c,v 1.7 2001/04/18 21:06:05 davem Exp $ */
 multiline_comment|/* sparc32 semaphore implementation, based on i386 version */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;

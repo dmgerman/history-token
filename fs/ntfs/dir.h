@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  dir.h&n; *  Header file for dir.c&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; */
+multiline_comment|/*  dir.h - Header file for dir.c&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; */
 DECL|macro|ITERATE_SPLIT_DONE
 mdefine_line|#define ITERATE_SPLIT_DONE      1
 DECL|enum|ntfs_iterate_e

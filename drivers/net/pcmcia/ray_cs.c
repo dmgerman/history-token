@@ -64,8 +64,6 @@ DECL|variable|ray_debug
 r_static
 r_int
 id|ray_debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|pc_debug
 r_static
@@ -765,8 +763,6 @@ DECL|variable|psm
 r_static
 r_int
 id|psm
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* String for network&squot;s Extended Service Set ID. 32 Characters max */
 DECL|variable|essid
@@ -774,8 +770,6 @@ r_static
 r_char
 op_star
 id|essid
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* Default to encapsulation unless translation requested */
 DECL|variable|translate
@@ -796,15 +790,11 @@ DECL|variable|sniffer
 r_static
 r_int
 id|sniffer
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|bc
 r_static
 r_int
 id|bc
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* 48 bit physical card address if overriding card&squot;s real physical&n; * address is required.  Since IEEE 802.11 addresses are 48 bits&n; * like ethernet, an int can&squot;t be used, so a string is used. To&n; * allow use of addresses starting with a decimal digit, the first&n; * character must be a letter and will be ignored. This letter is&n; * followed by up to 12 hex digits which are the address.  If less&n; * than 12 digits are used, the address will be left filled with 0&squot;s.&n; * Note that bit 0 of the first byte is the broadcast bit, and evil&n; * things will happen if it is not 0 in a card address.&n; */
 DECL|variable|phy_addr

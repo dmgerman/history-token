@@ -4,8 +4,9 @@ mdefine_line|#define MAX_POLL_TIME&t;10
 DECL|variable|version
 r_static
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;bionet.c:v1.0 06-feb-96 (c) Hartmut Laue.&bslash;n&quot;
 suffix:semicolon

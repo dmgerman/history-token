@@ -1809,12 +1809,6 @@ op_assign
 l_int|10
 suffix:semicolon
 multiline_comment|/* Initialize socket buffers */
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|set_chan_state
 c_func
 (paren

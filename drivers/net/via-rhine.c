@@ -21,8 +21,6 @@ DECL|variable|rx_copybreak
 r_static
 r_int
 id|rx_copybreak
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; should exist for driver&n;   interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;*/
 DECL|macro|MAX_UNITS
@@ -1503,8 +1501,6 @@ suffix:semicolon
 r_static
 r_int
 id|did_version
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|ioaddr

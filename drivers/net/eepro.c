@@ -4,8 +4,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;eepro.c: v0.12c 01/08/2000 aris@conectiva.com.br&bslash;n&quot;
 suffix:semicolon

@@ -2055,7 +2055,7 @@ op_star
 id|dev
 )paren
 (brace
-multiline_comment|/* DO NOTHING */
+multiline_comment|/* WILL BE REMOVED IN 2.5.0 */
 )brace
 r_extern
 r_int

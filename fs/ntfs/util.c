@@ -1,19 +1,14 @@
-multiline_comment|/*&n; *  util.c&n; *  Miscellaneous support&n; *&n; *  Copyright (C) 1997,1999 Martin von L&#xfffd;wis&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *&n; *  The utf8 routines are copied from Python wstrop module.&n; */
+multiline_comment|/*  util.c -  Miscellaneous support&n; *&n; *  Copyright (C) 1997,1999 Martin von L&#xfffd;wis&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *  Copyright (C) 2001 Anton Altaparmakov (AIA)&n; *&n; *  The utf8 routines are copied from Python wstrop module.&n; */
 macro_line|#include &quot;ntfstypes.h&quot;
 macro_line|#include &quot;struct.h&quot;
 macro_line|#include &quot;util.h&quot;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-multiline_comment|/* FreeBSD doesn&squot;t seem to have EILSEQ in errno.h */
-macro_line|#ifndef EILSEQ
-DECL|macro|EILSEQ
-macro_line|# define EILSEQ&t;EINVAL
-macro_line|#endif
 macro_line|#include &quot;support.h&quot;
-multiline_comment|/* Converts a single wide character to a sequence of utf8 bytes.&n; * The character is represented in host byte order.&n; * Returns the number of bytes, or 0 on error.&n; */
+multiline_comment|/* Converts a single wide character to a sequence of utf8 bytes.&n; * The character is represented in host byte order.&n; * Returns the number of bytes, or 0 on error. */
+DECL|function|to_utf8
 r_static
 r_int
-DECL|function|to_utf8
 id|to_utf8
 c_func
 (paren
@@ -33,12 +28,10 @@ id|c
 op_eq
 l_int|0
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
-multiline_comment|/* No support for embedded 0 runes */
+multiline_comment|/* No support for embedded 0 runes. */
 r_if
 c_cond
 (paren
@@ -52,7 +45,6 @@ c_cond
 (paren
 id|buf
 )paren
-(brace
 id|buf
 (braket
 l_int|0
@@ -64,7 +56,6 @@ r_char
 )paren
 id|c
 suffix:semicolon
-)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -176,15 +167,15 @@ r_return
 l_int|3
 suffix:semicolon
 )brace
-multiline_comment|/* We don&squot;t support characters above 0xFFFF in NTFS */
+multiline_comment|/* We don&squot;t support characters above 0xFFFF in NTFS. */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Decodes a sequence of utf8 bytes into a single wide character.&n; * The character is returned in host byte order.&n; * Returns the number of bytes consumed, or 0 on error.&n; */
+multiline_comment|/* Decodes a sequence of utf8 bytes into a single wide character.&n; * The character is returned in host byte order.&n; * Returns the number of bytes consumed, or 0 on error. */
+DECL|function|from_utf8
 r_static
 r_int
-DECL|function|from_utf8
 id|from_utf8
 c_func
 (paren
@@ -233,13 +224,11 @@ id|str
 OL
 l_int|0xc0
 )paren
-(brace
-multiline_comment|/* lead byte must not be 10xxxxxx */
+multiline_comment|/* Lead byte must not be 10xxxxxx. */
 r_return
 l_int|0
 suffix:semicolon
-)brace
-multiline_comment|/* is c0 a possible lead byte? */
+multiline_comment|/* Is c0 a possible lead byte? */
 r_if
 c_cond
 (paren
@@ -312,12 +301,10 @@ l_int|4
 suffix:semicolon
 )brace
 r_else
-(brace
-multiline_comment|/* We don&squot;t support characters above 0xFFFF in NTFS */
+multiline_comment|/* We don&squot;t support characters above 0xFFFF in NTFS. */
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -333,7 +320,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* all other bytes must be 10xxxxxx */
+multiline_comment|/* All other bytes must be 10xxxxxx. */
 r_if
 c_cond
 (paren
@@ -348,11 +335,9 @@ l_int|0xc0
 op_ne
 l_int|0x80
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 op_star
 id|c
 op_lshift_assign
@@ -373,7 +358,7 @@ r_return
 id|l
 suffix:semicolon
 )brace
-multiline_comment|/* Converts wide string to UTF-8. Expects two in- and two out-parameters.&n; * Returns 0 on success, or error code. &n; * The caller has to free the result string.&n; * There is no support for UTF-16, yet&n; */
+multiline_comment|/* Converts wide string to UTF-8. Expects two in- and two out-parameters.&n; * Returns 0 on success, or error code. &n; * The caller has to free the result string.&n; * There is no support for UTF-16, yet. */
 DECL|function|ntfs_dupuni2utf8
 r_static
 r_int
@@ -415,12 +400,12 @@ c_func
 (paren
 id|DEBUG_NAME1
 comma
-l_string|&quot;converting l=%d&bslash;n&quot;
+l_string|&quot;converting l = %d&bslash;n&quot;
 comma
 id|in_len
 )paren
 suffix:semicolon
-multiline_comment|/* count the length of the resulting UTF-8 */
+multiline_comment|/* Count the length of the resulting UTF-8. */
 r_for
 c_loop
 (paren
@@ -460,12 +445,11 @@ c_cond
 op_logical_neg
 id|tmp
 )paren
-(brace
 multiline_comment|/* invalid character */
 r_return
+op_minus
 id|EILSEQ
 suffix:semicolon
-)brace
 id|len8
 op_add_assign
 id|tmp
@@ -491,11 +475,10 @@ c_cond
 op_logical_neg
 id|result
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|result
 (braket
 id|len8
@@ -524,7 +507,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|len8
 op_add_assign
 id|to_utf8
@@ -543,7 +525,6 @@ op_plus
 id|len8
 )paren
 suffix:semicolon
-)brace
 id|ntfs_debug
 c_func
 (paren
@@ -560,7 +541,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Converts an UTF-8 sequence to a wide string. Same conventions as the&n; * previous function&n; */
+multiline_comment|/* Converts an UTF-8 sequence to a wide string. Same conventions as the&n; * previous function. */
 DECL|function|ntfs_duputf82uni
 r_static
 r_int
@@ -640,11 +621,10 @@ c_cond
 op_logical_neg
 id|tmp
 )paren
-(brace
 r_return
+op_minus
 id|EILSEQ
 suffix:semicolon
-)brace
 )brace
 op_star
 id|out
@@ -669,11 +649,10 @@ c_cond
 op_logical_neg
 id|result
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|result
 (braket
 id|len16
@@ -735,7 +714,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* See above. Produces ISO-8859-1 from wide strings */
+multiline_comment|/* See above. Produces ISO-8859-1 from wide strings. */
 DECL|function|ntfs_dupuni288591
 r_static
 r_int
@@ -766,7 +745,7 @@ r_char
 op_star
 id|result
 suffix:semicolon
-multiline_comment|/* check for characters out of range */
+multiline_comment|/* Check for characters out of range. */
 r_for
 c_loop
 (paren
@@ -794,11 +773,10 @@ id|i
 op_ge
 l_int|256
 )paren
-(brace
 r_return
+op_minus
 id|EILSEQ
 suffix:semicolon
-)brace
 op_star
 id|out
 op_assign
@@ -818,11 +796,10 @@ c_cond
 op_logical_neg
 id|result
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|result
 (braket
 id|in_len
@@ -849,7 +826,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|result
 (braket
 id|i
@@ -867,12 +843,11 @@ op_plus
 id|i
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* See above */
+multiline_comment|/* See above. */
 DECL|function|ntfs_dup885912uni
 r_static
 r_int
@@ -923,11 +898,10 @@ c_cond
 op_logical_neg
 id|result
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 op_star
 id|out_len
 op_assign
@@ -947,7 +921,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|NTFS_PUTU16
 c_func
 (paren
@@ -961,7 +934,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1000,7 +972,6 @@ id|vol-&gt;nct
 op_amp
 id|nct_utf8
 )paren
-(brace
 r_return
 id|ntfs_dupuni2utf8
 c_func
@@ -1014,7 +985,6 @@ comma
 id|out_len
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -1023,7 +993,6 @@ id|vol-&gt;nct
 op_amp
 id|nct_iso8859_1
 )paren
-(brace
 r_return
 id|ntfs_dupuni288591
 c_func
@@ -1037,7 +1006,6 @@ comma
 id|out_len
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -1051,7 +1019,7 @@ id|nct_uni_xlate
 )paren
 )paren
 (brace
-multiline_comment|/* uni_xlate is handled inside map */
+multiline_comment|/* uni_xlate is handled inside map. */
 r_return
 id|ntfs_dupuni2map
 c_func
@@ -1070,6 +1038,7 @@ suffix:semicolon
 )brace
 r_else
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* unknown encoding */
@@ -1107,7 +1076,6 @@ id|vol-&gt;nct
 op_amp
 id|nct_utf8
 )paren
-(brace
 r_return
 id|ntfs_duputf82uni
 c_func
@@ -1121,7 +1089,6 @@ comma
 id|out_len
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -1130,7 +1097,6 @@ id|vol-&gt;nct
 op_amp
 id|nct_iso8859_1
 )paren
-(brace
 r_return
 id|ntfs_dup885912uni
 c_func
@@ -1144,7 +1110,6 @@ comma
 id|out_len
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -1157,7 +1122,6 @@ op_or
 id|nct_uni_xlate
 )paren
 )paren
-(brace
 r_return
 id|ntfs_dupmap2uni
 c_func
@@ -1173,13 +1137,13 @@ comma
 id|out_len
 )paren
 suffix:semicolon
-)brace
 r_else
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* Same address space copies */
+multiline_comment|/* Same address space copies. */
 DECL|function|ntfs_put
 r_void
 id|ntfs_put
@@ -1281,7 +1245,6 @@ c_cond
 (paren
 id|result
 )paren
-(brace
 id|ntfs_bzero
 c_func
 (paren
@@ -1290,13 +1253,12 @@ comma
 id|size
 )paren
 suffix:semicolon
-)brace
 r_return
 id|result
 suffix:semicolon
 )brace
 macro_line|#if 0
-multiline_comment|/* copy len unicode characters from from to to :) */
+multiline_comment|/* Copy len unicode characters from from to to. :) */
 r_void
 id|ntfs_uni2ascii
 c_func
@@ -1305,7 +1267,8 @@ r_char
 op_star
 id|to
 comma
-r_char
+r_int
+r_int
 op_star
 id|from
 comma
@@ -1330,20 +1293,19 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|to
 (braket
 id|i
 )braket
 op_assign
+id|NTFS_GETU16
+c_func
+(paren
 id|from
-(braket
-l_int|2
-op_star
+op_plus
 id|i
-)braket
+)paren
 suffix:semicolon
-)brace
 id|to
 (braket
 id|i
@@ -1353,7 +1315,7 @@ l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* copy len asci characters from from to to :) */
+multiline_comment|/* Copy len ascii characters from from to to. :) */
 DECL|function|ntfs_ascii2uni
 r_void
 id|ntfs_ascii2uni
@@ -1389,18 +1351,19 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
+id|NTFS_PUTU16
+c_func
+(paren
 id|to
-(braket
+op_plus
 id|i
-)braket
-op_assign
+comma
 id|from
 (braket
 id|i
 )braket
+)paren
 suffix:semicolon
-)brace
 id|to
 (braket
 id|i
@@ -1409,7 +1372,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* strncmp for Unicode strings */
+multiline_comment|/* strncmp for Unicode strings. */
 DECL|function|ntfs_uni_strncmp
 r_int
 id|ntfs_uni_strncmp
@@ -1450,47 +1413,58 @@ op_increment
 r_if
 c_cond
 (paren
+id|NTFS_GETU16
+c_func
+(paren
 id|a
-(braket
+op_plus
 id|i
-)braket
-OL
-id|b
-(braket
-id|i
-)braket
 )paren
-(brace
+OL
+id|NTFS_GETU16
+c_func
+(paren
+id|b
+op_plus
+id|i
+)paren
+)paren
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
+id|NTFS_GETU16
+c_func
+(paren
 id|b
-(braket
+op_plus
 id|i
-)braket
-OL
-id|a
-(braket
-id|i
-)braket
 )paren
-(brace
+OL
+id|NTFS_GETU16
+c_func
+(paren
+id|a
+op_plus
+id|i
+)paren
+)paren
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
+id|NTFS_GETU16
+c_func
+(paren
 id|a
-(braket
+op_plus
 id|i
-)braket
+)paren
 op_eq
 l_int|0
 )paren
@@ -1502,7 +1476,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* strncmp between Unicode and ASCII strings */
+multiline_comment|/* strncmp between Unicode and ASCII strings. */
 DECL|function|ntfs_ua_strncmp
 r_int
 id|ntfs_ua_strncmp
@@ -1600,7 +1574,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Convert the NT UTC (based 1.1.1601, in hundred nanosecond units)&n; * into Unix UTC (based 1.1.1970, in seconds)&n; */
+multiline_comment|/* Convert the NT UTC (based 1.1.1601, in hundred nanosecond units)&n; * into Unix UTC (based 1.1.1970, in seconds). */
 DECL|function|ntfs_ntutc2unixutc
 id|ntfs_time_t
 id|ntfs_ntutc2unixutc
@@ -1610,7 +1584,7 @@ id|ntfs_time64_t
 id|ntutc
 )paren
 (brace
-multiline_comment|/*&n; * This is very gross because&n; * 1: We must do 64-bit division on a 32-bit machine&n; * 2: We can&squot;t use libgcc for long long operations in the kernel&n; * 3: Floating point math in the kernel would corrupt user data&n; */
+multiline_comment|/* This is very gross because:&n; * 1: We must do 64-bit division on a 32-bit machine.&n; * 2: We can&squot;t use libgcc for long long operations in the kernel.&n; * 3: Floating point math in the kernel would corrupt user data. */
 r_const
 r_int
 r_int
@@ -1666,11 +1640,9 @@ r_int
 )paren
 l_int|0xd53e8000
 )paren
-(brace
 id|H
 op_decrement
 suffix:semicolon
-)brace
 id|L
 op_sub_assign
 (paren
@@ -1685,7 +1657,7 @@ r_int
 )paren
 l_int|0x019db1de
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now divide 64-bit numbers on a 32-bit machine :-)&n;&t; * With the subtraction already done, the result fits in 32 bits.&n;&t; * The numerator fits in 56 bits and the denominator fits&n;&t; * in 24 bits, so we can shift by 8 bits to make this work.&n;&t; */
+multiline_comment|/* Now divide 64-bit numbers on a 32-bit machine. :-)&n;&t; * With the subtraction already done, the result fits in 32 bits.&n;&t; * The numerator fits in 56 bits and the denominator fits&n;&t; * in 24 bits, so we can shift by 8 bits to make this work. */
 id|numerator2
 op_assign
 (paren
@@ -1830,7 +1802,7 @@ r_return
 id|lowseconds
 suffix:semicolon
 )brace
-multiline_comment|/* Convert the Unix UTC into NT UTC */
+multiline_comment|/* Convert the Unix UTC into NT UTC. */
 DECL|function|ntfs_unixutc2ntutc
 id|ntfs_time64_t
 id|ntfs_unixutc2ntutc
@@ -1866,8 +1838,8 @@ l_int|10000000
 suffix:semicolon
 )brace
 multiline_comment|/* Fill index name. */
-r_void
 DECL|function|ntfs_indexname
+r_void
 id|ntfs_indexname
 c_func
 (paren
@@ -1927,10 +1899,8 @@ id|index
 op_amp
 id|type
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -1965,5 +1935,4 @@ op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

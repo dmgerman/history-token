@@ -10392,13 +10392,9 @@ id|j_join_wait
 suffix:semicolon
 )brace
 )brace
-id|lock_journal
-c_func
-(paren
-id|p_s_sb
-)paren
+r_goto
+id|relock
 suffix:semicolon
-multiline_comment|/* relock to continue */
 )brace
 r_if
 c_cond

@@ -58,7 +58,7 @@ DECL|macro|IOP_MSGSTATUS_COMPLETE
 mdefine_line|#define IOP_MSGSTATUS_COMPLETE&t;3&t;/* message complete and reply rcvd */
 DECL|macro|IOP_MSGSTATUS_UNSOL
 mdefine_line|#define IOP_MSGSTATUS_UNSOL&t;6&t;/* message is unsolicited          */
-multiline_comment|/* IOP memory addresses of the members of the the mac_iop_kernel structure. */
+multiline_comment|/* IOP memory addresses of the members of the mac_iop_kernel structure. */
 DECL|macro|IOP_ADDR_MAX_SEND_CHAN
 mdefine_line|#define IOP_ADDR_MAX_SEND_CHAN&t;0x0200
 DECL|macro|IOP_ADDR_SEND_STATE

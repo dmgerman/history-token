@@ -665,8 +665,6 @@ DECL|variable|mii_preamble_required
 r_static
 r_char
 id|mii_preamble_required
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifdef PCMCIA_DEBUG
 DECL|variable|pc_debug
@@ -990,8 +988,6 @@ r_static
 id|dev_link_t
 op_star
 id|dev_list
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|flush_stale_links
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: capi.c,v 1.44.6.8 2001/03/21 08:52:21 kai Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; * $Log: capi.c,v $&n; * Revision 1.44.6.8  2001/03/21 08:52:21  kai&n; * merge from main branch: fix buffer for revision string (calle)&n; *&n; * Revision 1.44.6.7  2001/03/15 15:11:24  kai&n; * *** empty log message ***&n; *&n; * Revision 1.44.6.6  2001/03/13 16:17:07  kai&n; * spelling fixes from 2.4.3-pre&n; *&n; * Revision 1.44.6.5  2001/02/13 11:43:29  kai&n; * more compatility changes for 2.2.19&n; *&n; * Revision 1.44.6.4  2001/02/10 14:41:20  kai&n; * Changes from kernel tree&n; *&n; * Revision 1.44.6.3  2000/12/17 22:45:08  kai&n; * That&squot;s hopefully it for test13-4&n; *&n; * Revision 1.44.6.2  2000/12/14 23:04:12  kai&n; * Makefile changes and the like for 2.4.0-test13-pre1&n; * No compatiblity code for older kernels yet, but note the branch&n; *&n; * Revision 1.45  2000/12/02 19:47:29  kai&n; * Change the Makefiles to new style.&n; * There may be problems there that I missed, so this shouldn&squot;t go into&n; * an offical kernel any time soon.&n; * However, if I didn&squot;t commit it, we wouldn&squot;t find the bugs...&n; *&n; * Revision 1.44  2000/11/25 17:00:59  kai&n; * compatibility cleanup - final part for the time being&n; *&n; * Revision 1.43  2000/11/23 20:45:14  kai&n; * fixed module_init/exit stuff&n; * Note: compiled-in kernel doesn&squot;t work pre 2.2.18 anymore.&n; *&n; * Revision 1.42  2000/11/19 17:03:55  kai&n; * compatibility cleanup - part 5&n; *&n; * Revision 1.41  2000/11/01 14:05:02  calle&n; * - use module_init/module_exit from linux/init.h.&n; * - all static struct variables are initialized with &quot;membername:&quot; now.&n; * - avm_cs.c, let it work with newer pcmcia-cs.&n; *&n; * Revision 1.40  2000/10/24 15:15:04  calle&n; * Workaround: pppd calls restoretty before reseting the ldisc and&n; *   ldisc &quot;ppp_sync&quot; didn&squot;t support this. So we call n_tty_ioctl&n; *   in the driver ioctl function. (remember: driver ioctl function is&n; *   only called if ldisc ioctl function did not handle the call)&n; *&n; * Revision 1.39  2000/07/24 13:42:50  calle&n; * - lock_kernel/unlock_kernel for _release functions. (from 2.4)&n; *&n; * Revision 1.38  2000/07/24 08:49:09  calle&n; * - Bugfix: capiminor_del_all_ack completely wrong :-(&n; *&n; * Revision 1.37  2000/07/20 10:22:27  calle&n; * - Made procfs function cleaner and removed variable &quot;begin&quot;.&n; *&n; * Revision 1.36  2000/06/29 13:59:35  calle&n; * - call to devfs_register was wrong&n; *&n; * Revision 1.35  2000/06/19 15:11:24  keil&n; * avoid use of freed structs&n; * changes from 2.4.0-ac21&n; *&n; * Revision 1.34  2000/06/18 16:09:54  keil&n; * more changes for 2.4&n; *&n; * Revision 1.33  2000/05/18 16:35:43  calle&n; * Uaaahh. Bad memory leak fixed.&n; *&n; * Revision 1.32  2000/04/21 12:38:42  calle&n; * Bugfix: error in proc_ functions, begin-off =&gt; off-begin&n; *&n; * Revision 1.31  2000/04/03 13:29:24  calle&n; * make Tim Waugh happy (module unload races in 2.3.99-pre3).&n; * no real problem there, but now it is much cleaner ...&n; *&n; * Revision 1.30  2000/03/19 12:31:36  calle&n; * PPP over CAPI raw driver disabled for now, ppp_generic has been changed.&n; *&n; * Revision 1.29  2000/03/13 17:48:13  calle&n; * removed unused variable.&n; *&n; * Revision 1.28  2000/03/08 17:06:33  calle&n; * - changes for devfs and 2.3.49&n; * - capifs now configurable (no need with devfs)&n; * - New Middleware ioctl CAPI_NCCI_GETUNIT&n; * - Middleware again tested with 2.2.14 and 2.3.49 (with and without devfs)&n; *&n; * Revision 1.27  2000/03/06 18:00:23  calle&n; * - Middleware extention now working with 2.3.49 (capifs).&n; * - Fixed typos in debug section of capi.c&n; * - Bugfix: Makefile corrected for b1pcmcia.c&n; *&n; * Revision 1.26  2000/03/03 16:48:38  calle&n; * - Added CAPI2.0 Middleware support (CONFIG_ISDN_CAPI)&n; *   It is now possible to create a connection with a CAPI2.0 applikation&n; *   and than to handle the data connection from /dev/capi/ (capifs) and also&n; *   using async or sync PPP on this connection.&n; *   The two major device number 190 and 191 are not confirmed yet,&n; *   but I want to save the code in cvs, before I go on.&n; *&n; * Revision 1.25  2000/03/03 16:37:11  kai&n; * incorporated some cosmetic changes from the official kernel tree back&n; * into CVS&n; *&n; * Revision 1.24  2000/03/03 15:50:42  calle&n; * - kernel CAPI:&n; *   - Changed parameter &quot;param&quot; in capi_signal from __u32 to void *.&n; *   - rewrote notifier handling in kcapi.c&n; *   - new notifier NCCI_UP and NCCI_DOWN&n; * - User CAPI:&n; *   - /dev/capi20 is now a cloning device.&n; *   - middleware extentions prepared.&n; * - capidrv.c&n; *   - locking of list operations and module count updates.&n; *&n; * Revision 1.23  2000/02/26 01:00:53  keil&n; * changes from 2.3.47&n; *&n; * Revision 1.22  1999/11/13 21:27:16  keil&n; * remove KERNELVERSION&n; *&n; * Revision 1.21  1999/09/10 17:24:18  calle&n; * Changes for proposed standard for CAPI2.0:&n; * - AK148 &quot;Linux Exention&quot;&n; *&n; * Revision 1.20  1999/09/07 09:02:53  calle&n; * SETDATA removed. Now inside the kernel the datapart of DATA_B3_REQ and&n; * DATA_B3_IND is always directly after the CAPI message. The &quot;Data&quot; member&n; * ist never used inside the kernel.&n; *&n; * Revision 1.19  1999/07/09 15:05:42  keil&n; * compat.h is now isdn_compat.h&n; *&n; * Revision 1.18  1999/07/06 07:42:01  calle&n; * - changes in /proc interface&n; * - check and changed calls to [dev_]kfree_skb and [dev_]alloc_skb.&n; *&n; * Revision 1.17  1999/07/01 15:26:30  calle&n; * complete new version (I love it):&n; * + new hardware independed &quot;capi_driver&quot; interface that will make it easy to:&n; *   - support other controllers with CAPI-2.0 (i.e. USB Controller)&n; *   - write a CAPI-2.0 for the passive cards&n; *   - support serial link CAPI-2.0 boxes.&n; * + wrote &quot;capi_driver&quot; for all supported cards.&n; * + &quot;capi_driver&quot; (supported cards) now have to be configured with&n; *   make menuconfig, in the past all supported cards where included&n; *   at once.&n; * + new and better informations in /proc/capi/&n; * + new ioctl to switch trace of capi messages per controller&n; *   using &quot;avmcapictrl trace [contr] on|off|....&quot;&n; * + complete testcircle with all supported cards and also the&n; *   PCMCIA cards (now patch for pcmcia-cs-3.0.13 needed) done.&n; *&n; * Revision 1.16  1999/07/01 08:22:57  keil&n; * compatibility macros now in &lt;linux/isdn_compat.h&gt;&n; *&n; * Revision 1.15  1999/06/21 15:24:11  calle&n; * extend information in /proc.&n; *&n; * Revision 1.14  1999/06/10 16:51:03  calle&n; * Bugfix: open/release of control device was not handled correct.&n; *&n; * Revision 1.13  1998/08/28 04:32:25  calle&n; * Added patch send by Michael.Mueller4@post.rwth-aachen.de, to get AVM B1&n; * driver running with 2.1.118.&n; *&n; * Revision 1.12  1998/05/26 22:39:34  he&n; * sync&squot;ed with 2.1.102 where appropriate (CAPABILITY changes)&n; * concap typo&n; * cleared dev.tbusy in isdn_net BCONN status callback&n; *&n; * Revision 1.11  1998/03/09 17:46:37  he&n; * merged in 2.1.89 changes&n; *&n; * Revision 1.10  1998/02/13 07:09:13  calle&n; * change for 2.1.86 (removing FREE_READ/FREE_WRITE from [dev]_kfree_skb()&n; *&n; * Revision 1.9  1998/01/31 11:14:44  calle&n; * merged changes to 2.0 tree, prepare 2.1.82 to work.&n; *&n; * Revision 1.8  1997/11/04 06:12:08  calle&n; * capi.c: new read/write in file_ops since 2.1.60&n; * capidrv.c: prepared isdnlog interface for d2-trace in newer firmware.&n; * capiutil.c: needs config.h (CONFIG_ISDN_DRV_AVMB1_VERBOSE_REASON)&n; * compat.h: added #define LinuxVersionCode&n; *&n; * Revision 1.7  1997/10/11 10:29:34  calle&n; * llseek() parameters changed in 2.1.56.&n; *&n; * Revision 1.6  1997/10/01 09:21:15  fritz&n; * Removed old compatibility stuff for 2.0.X kernels.&n; * From now on, this code is for 2.1.X ONLY!&n; * Old stuff is still in the separate branch.&n; *&n; * Revision 1.5  1997/08/21 23:11:55  fritz&n; * Added changes for kernels &gt;= 2.1.45&n; *&n; * Revision 1.4  1997/05/27 15:17:50  fritz&n; * Added changes for recent 2.1.x kernels:&n; *   changed return type of isdn_close&n; *   queue_task_* -&gt; queue_task&n; *   clear/set_bit -&gt; test_and_... where apropriate.&n; *   changed type of hard_header_cache parameter.&n; *&n; * Revision 1.3  1997/05/18 09:24:14  calle&n; * added verbose disconnect reason reporting to avmb1.&n; * some fixes in capi20 interface.&n; * changed info messages for B1-PCI&n; *&n; * Revision 1.2  1997/03/05 21:17:59  fritz&n; * Added capi_poll for compiling under 2.1.27&n; *&n; * Revision 1.1  1997/03/04 21:50:29  calle&n; * Frirst version in isdn4linux&n; *&n; * Revision 2.2  1997/02/12 09:31:39  calle&n; * new version&n; *&n; * Revision 1.1  1997/01/31 10:32:20  calle&n; * Initial revision&n; *&n; */
+multiline_comment|/*&n; * $Id: capi.c,v 1.44.6.9 2001/04/08 17:51:42 kai Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; * $Log: capi.c,v $&n; * Revision 1.44.6.9  2001/04/08 17:51:42  kai&n; * merge various fixes from HEAD (found by the CHECKER project)&n; *&n; * Revision 1.44.6.8  2001/03/21 08:52:21  kai&n; * merge from main branch: fix buffer for revision string (calle)&n; *&n; * Revision 1.44.6.7  2001/03/15 15:11:24  kai&n; * *** empty log message ***&n; *&n; * Revision 1.44.6.6  2001/03/13 16:17:07  kai&n; * spelling fixes from 2.4.3-pre&n; *&n; * Revision 1.44.6.5  2001/02/13 11:43:29  kai&n; * more compatility changes for 2.2.19&n; *&n; * Revision 1.44.6.4  2001/02/10 14:41:20  kai&n; * Changes from kernel tree&n; *&n; * Revision 1.44.6.3  2000/12/17 22:45:08  kai&n; * That&squot;s hopefully it for test13-4&n; *&n; * Revision 1.44.6.2  2000/12/14 23:04:12  kai&n; * Makefile changes and the like for 2.4.0-test13-pre1&n; * No compatiblity code for older kernels yet, but note the branch&n; *&n; * Revision 1.45  2000/12/02 19:47:29  kai&n; * Change the Makefiles to new style.&n; * There may be problems there that I missed, so this shouldn&squot;t go into&n; * an offical kernel any time soon.&n; * However, if I didn&squot;t commit it, we wouldn&squot;t find the bugs...&n; *&n; * Revision 1.44  2000/11/25 17:00:59  kai&n; * compatibility cleanup - final part for the time being&n; *&n; * Revision 1.43  2000/11/23 20:45:14  kai&n; * fixed module_init/exit stuff&n; * Note: compiled-in kernel doesn&squot;t work pre 2.2.18 anymore.&n; *&n; * Revision 1.42  2000/11/19 17:03:55  kai&n; * compatibility cleanup - part 5&n; *&n; * Revision 1.41  2000/11/01 14:05:02  calle&n; * - use module_init/module_exit from linux/init.h.&n; * - all static struct variables are initialized with &quot;membername:&quot; now.&n; * - avm_cs.c, let it work with newer pcmcia-cs.&n; *&n; * Revision 1.40  2000/10/24 15:15:04  calle&n; * Workaround: pppd calls restoretty before reseting the ldisc and&n; *   ldisc &quot;ppp_sync&quot; didn&squot;t support this. So we call n_tty_ioctl&n; *   in the driver ioctl function. (remember: driver ioctl function is&n; *   only called if ldisc ioctl function did not handle the call)&n; *&n; * Revision 1.39  2000/07/24 13:42:50  calle&n; * - lock_kernel/unlock_kernel for _release functions. (from 2.4)&n; *&n; * Revision 1.38  2000/07/24 08:49:09  calle&n; * - Bugfix: capiminor_del_all_ack completely wrong :-(&n; *&n; * Revision 1.37  2000/07/20 10:22:27  calle&n; * - Made procfs function cleaner and removed variable &quot;begin&quot;.&n; *&n; * Revision 1.36  2000/06/29 13:59:35  calle&n; * - call to devfs_register was wrong&n; *&n; * Revision 1.35  2000/06/19 15:11:24  keil&n; * avoid use of freed structs&n; * changes from 2.4.0-ac21&n; *&n; * Revision 1.34  2000/06/18 16:09:54  keil&n; * more changes for 2.4&n; *&n; * Revision 1.33  2000/05/18 16:35:43  calle&n; * Uaaahh. Bad memory leak fixed.&n; *&n; * Revision 1.32  2000/04/21 12:38:42  calle&n; * Bugfix: error in proc_ functions, begin-off =&gt; off-begin&n; *&n; * Revision 1.31  2000/04/03 13:29:24  calle&n; * make Tim Waugh happy (module unload races in 2.3.99-pre3).&n; * no real problem there, but now it is much cleaner ...&n; *&n; * Revision 1.30  2000/03/19 12:31:36  calle&n; * PPP over CAPI raw driver disabled for now, ppp_generic has been changed.&n; *&n; * Revision 1.29  2000/03/13 17:48:13  calle&n; * removed unused variable.&n; *&n; * Revision 1.28  2000/03/08 17:06:33  calle&n; * - changes for devfs and 2.3.49&n; * - capifs now configurable (no need with devfs)&n; * - New Middleware ioctl CAPI_NCCI_GETUNIT&n; * - Middleware again tested with 2.2.14 and 2.3.49 (with and without devfs)&n; *&n; * Revision 1.27  2000/03/06 18:00:23  calle&n; * - Middleware extention now working with 2.3.49 (capifs).&n; * - Fixed typos in debug section of capi.c&n; * - Bugfix: Makefile corrected for b1pcmcia.c&n; *&n; * Revision 1.26  2000/03/03 16:48:38  calle&n; * - Added CAPI2.0 Middleware support (CONFIG_ISDN_CAPI)&n; *   It is now possible to create a connection with a CAPI2.0 applikation&n; *   and than to handle the data connection from /dev/capi/ (capifs) and also&n; *   using async or sync PPP on this connection.&n; *   The two major device number 190 and 191 are not confirmed yet,&n; *   but I want to save the code in cvs, before I go on.&n; *&n; * Revision 1.25  2000/03/03 16:37:11  kai&n; * incorporated some cosmetic changes from the official kernel tree back&n; * into CVS&n; *&n; * Revision 1.24  2000/03/03 15:50:42  calle&n; * - kernel CAPI:&n; *   - Changed parameter &quot;param&quot; in capi_signal from __u32 to void *.&n; *   - rewrote notifier handling in kcapi.c&n; *   - new notifier NCCI_UP and NCCI_DOWN&n; * - User CAPI:&n; *   - /dev/capi20 is now a cloning device.&n; *   - middleware extentions prepared.&n; * - capidrv.c&n; *   - locking of list operations and module count updates.&n; *&n; * Revision 1.23  2000/02/26 01:00:53  keil&n; * changes from 2.3.47&n; *&n; * Revision 1.22  1999/11/13 21:27:16  keil&n; * remove KERNELVERSION&n; *&n; * Revision 1.21  1999/09/10 17:24:18  calle&n; * Changes for proposed standard for CAPI2.0:&n; * - AK148 &quot;Linux Exention&quot;&n; *&n; * Revision 1.20  1999/09/07 09:02:53  calle&n; * SETDATA removed. Now inside the kernel the datapart of DATA_B3_REQ and&n; * DATA_B3_IND is always directly after the CAPI message. The &quot;Data&quot; member&n; * ist never used inside the kernel.&n; *&n; * Revision 1.19  1999/07/09 15:05:42  keil&n; * compat.h is now isdn_compat.h&n; *&n; * Revision 1.18  1999/07/06 07:42:01  calle&n; * - changes in /proc interface&n; * - check and changed calls to [dev_]kfree_skb and [dev_]alloc_skb.&n; *&n; * Revision 1.17  1999/07/01 15:26:30  calle&n; * complete new version (I love it):&n; * + new hardware independed &quot;capi_driver&quot; interface that will make it easy to:&n; *   - support other controllers with CAPI-2.0 (i.e. USB Controller)&n; *   - write a CAPI-2.0 for the passive cards&n; *   - support serial link CAPI-2.0 boxes.&n; * + wrote &quot;capi_driver&quot; for all supported cards.&n; * + &quot;capi_driver&quot; (supported cards) now have to be configured with&n; *   make menuconfig, in the past all supported cards where included&n; *   at once.&n; * + new and better informations in /proc/capi/&n; * + new ioctl to switch trace of capi messages per controller&n; *   using &quot;avmcapictrl trace [contr] on|off|....&quot;&n; * + complete testcircle with all supported cards and also the&n; *   PCMCIA cards (now patch for pcmcia-cs-3.0.13 needed) done.&n; *&n; * Revision 1.16  1999/07/01 08:22:57  keil&n; * compatibility macros now in &lt;linux/isdn_compat.h&gt;&n; *&n; * Revision 1.15  1999/06/21 15:24:11  calle&n; * extend information in /proc.&n; *&n; * Revision 1.14  1999/06/10 16:51:03  calle&n; * Bugfix: open/release of control device was not handled correct.&n; *&n; * Revision 1.13  1998/08/28 04:32:25  calle&n; * Added patch send by Michael.Mueller4@post.rwth-aachen.de, to get AVM B1&n; * driver running with 2.1.118.&n; *&n; * Revision 1.12  1998/05/26 22:39:34  he&n; * sync&squot;ed with 2.1.102 where appropriate (CAPABILITY changes)&n; * concap typo&n; * cleared dev.tbusy in isdn_net BCONN status callback&n; *&n; * Revision 1.11  1998/03/09 17:46:37  he&n; * merged in 2.1.89 changes&n; *&n; * Revision 1.10  1998/02/13 07:09:13  calle&n; * change for 2.1.86 (removing FREE_READ/FREE_WRITE from [dev]_kfree_skb()&n; *&n; * Revision 1.9  1998/01/31 11:14:44  calle&n; * merged changes to 2.0 tree, prepare 2.1.82 to work.&n; *&n; * Revision 1.8  1997/11/04 06:12:08  calle&n; * capi.c: new read/write in file_ops since 2.1.60&n; * capidrv.c: prepared isdnlog interface for d2-trace in newer firmware.&n; * capiutil.c: needs config.h (CONFIG_ISDN_DRV_AVMB1_VERBOSE_REASON)&n; * compat.h: added #define LinuxVersionCode&n; *&n; * Revision 1.7  1997/10/11 10:29:34  calle&n; * llseek() parameters changed in 2.1.56.&n; *&n; * Revision 1.6  1997/10/01 09:21:15  fritz&n; * Removed old compatibility stuff for 2.0.X kernels.&n; * From now on, this code is for 2.1.X ONLY!&n; * Old stuff is still in the separate branch.&n; *&n; * Revision 1.5  1997/08/21 23:11:55  fritz&n; * Added changes for kernels &gt;= 2.1.45&n; *&n; * Revision 1.4  1997/05/27 15:17:50  fritz&n; * Added changes for recent 2.1.x kernels:&n; *   changed return type of isdn_close&n; *   queue_task_* -&gt; queue_task&n; *   clear/set_bit -&gt; test_and_... where apropriate.&n; *   changed type of hard_header_cache parameter.&n; *&n; * Revision 1.3  1997/05/18 09:24:14  calle&n; * added verbose disconnect reason reporting to avmb1.&n; * some fixes in capi20 interface.&n; * changed info messages for B1-PCI&n; *&n; * Revision 1.2  1997/03/05 21:17:59  fritz&n; * Added capi_poll for compiling under 2.1.27&n; *&n; * Revision 1.1  1997/03/04 21:50:29  calle&n; * Frirst version in isdn4linux&n; *&n; * Revision 2.2  1997/02/12 09:31:39  calle&n; * new version&n; *&n; * Revision 1.1  1997/01/31 10:32:20  calle&n; * Initial revision&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -41,7 +41,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.44.6.8 $&quot;
+l_string|&quot;$Revision: 1.44.6.9 $&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -1199,33 +1199,6 @@ id|np-&gt;cdev
 op_assign
 id|cdev
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|pp
-op_assign
-op_amp
-id|cdev-&gt;nccis
-suffix:semicolon
-op_star
-id|pp
-suffix:semicolon
-id|pp
-op_assign
-op_amp
-(paren
-op_star
-id|pp
-)paren
-op_member_access_from_pointer
-id|next
-)paren
-suffix:semicolon
-op_star
-id|pp
-op_assign
-id|np
-suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE
 id|mp
 op_assign
@@ -1313,6 +1286,33 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#endif /* CONFIG_ISDN_CAPI_MIDDLEWARE */
+r_for
+c_loop
+(paren
+id|pp
+op_assign
+op_amp
+id|cdev-&gt;nccis
+suffix:semicolon
+op_star
+id|pp
+suffix:semicolon
+id|pp
+op_assign
+op_amp
+(paren
+op_star
+id|pp
+)paren
+op_member_access_from_pointer
+id|next
+)paren
+suffix:semicolon
+op_star
+id|pp
+op_assign
+id|np
+suffix:semicolon
 r_return
 id|np
 suffix:semicolon
@@ -8832,6 +8832,10 @@ r_char
 op_star
 id|p
 suffix:semicolon
+r_char
+op_star
+id|compileinfo
+suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
@@ -9298,15 +9302,35 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE
+macro_line|#if defined(CONFIG_ISDN_CAPI_CAPIFS) || defined(CONFIG_ISDN_CAPI_CAPIFS_MODULE)
+id|compileinfo
+op_assign
+l_string|&quot; (middleware+capifs)&quot;
+suffix:semicolon
+macro_line|#else
+id|compileinfo
+op_assign
+l_string|&quot; (no capifs)&quot;
+suffix:semicolon
+macro_line|#endif
+macro_line|#else
+id|compileinfo
+op_assign
+l_string|&quot; (no middleware)&quot;
+suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;capi20: Rev%s: started up with major %d&bslash;n&quot;
+l_string|&quot;capi20: Rev %s: started up with major %d%s&bslash;n&quot;
 comma
 id|rev
 comma
 id|capi_major
+comma
+id|compileinfo
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT

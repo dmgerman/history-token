@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_sabre.c,v 1.25 2001/02/28 03:28:55 davem Exp $&n; * pci_sabre.c: Sabre specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_sabre.c,v 1.26 2001/04/17 01:19:23 davem Exp $&n; * pci_sabre.c: Sabre specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -3093,6 +3093,14 @@ op_or
 id|SABRE_UEAFSR_PDTE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error_bits
+)paren
+r_return
+suffix:semicolon
 id|sabre_write
 c_func
 (paren
@@ -3375,6 +3383,14 @@ op_or
 id|SABRE_CEAFSR_SDWR
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error_bits
+)paren
+r_return
+suffix:semicolon
 id|sabre_write
 c_func
 (paren
@@ -3634,6 +3650,14 @@ id|SABRE_PIOAFSR_SRTRY
 op_or
 id|SABRE_PIOAFSR_SPERR
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error_bits
+)paren
+r_return
 suffix:semicolon
 id|sabre_write
 c_func

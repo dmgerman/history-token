@@ -2316,12 +2316,6 @@ l_int|100
 suffix:semicolon
 multiline_comment|/* Initialize socket buffers */
 macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 macro_line|#else
 r_for
 c_loop

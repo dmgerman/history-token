@@ -2115,6 +2115,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;msdos_mkdir: error=%d, attempting cleanup&bslash;n&quot;
 comma
 id|res

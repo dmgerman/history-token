@@ -2107,12 +2107,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Intialise the packet queues&n;&t; */
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Handlers for when we attach to a device.&n;&t; */
 id|dev-&gt;hard_header
 op_assign

@@ -497,7 +497,7 @@ r_int
 id|mmlist_nr
 suffix:semicolon
 DECL|macro|INIT_MM
-mdefine_line|#define INIT_MM(name) &bslash;&n;{&t;&t;&t; &t;&t;&t;&t;&bslash;&n;&t;mmap:&t;&t;&amp;init_mmap, &t;&t;&t;&bslash;&n;&t;mmap_avl:&t;NULL, &t;&t;&t;&t;&bslash;&n;&t;mmap_cache:&t;NULL, &t;&t;&t;&t;&bslash;&n;&t;pgd:&t;&t;swapper_pg_dir, &t;&t;&bslash;&n;&t;mm_users:&t;ATOMIC_INIT(2), &t;&t;&bslash;&n;&t;mm_count:&t;ATOMIC_INIT(1), &t;&t;&bslash;&n;&t;map_count:&t;1, &t;&t;&t;&t;&bslash;&n;&t;mmap_sem:&t;__RWSEM_INITIALIZER(name.mmap_sem, RW_LOCK_BIAS), &bslash;&n;&t;page_table_lock: SPIN_LOCK_UNLOCKED, &t;&t;&bslash;&n;&t;mmlist:&t;&t;LIST_HEAD_INIT(name.mmlist),&t;&bslash;&n;}
+mdefine_line|#define INIT_MM(name) &bslash;&n;{&t;&t;&t; &t;&t;&t;&t;&bslash;&n;&t;mmap:&t;&t;&amp;init_mmap, &t;&t;&t;&bslash;&n;&t;mmap_avl:&t;NULL, &t;&t;&t;&t;&bslash;&n;&t;mmap_cache:&t;NULL, &t;&t;&t;&t;&bslash;&n;&t;pgd:&t;&t;swapper_pg_dir, &t;&t;&bslash;&n;&t;mm_users:&t;ATOMIC_INIT(2), &t;&t;&bslash;&n;&t;mm_count:&t;ATOMIC_INIT(1), &t;&t;&bslash;&n;&t;map_count:&t;1, &t;&t;&t;&t;&bslash;&n;&t;mmap_sem:&t;__RWSEM_INITIALIZER(name.mmap_sem), &bslash;&n;&t;page_table_lock: SPIN_LOCK_UNLOCKED, &t;&t;&bslash;&n;&t;mmlist:&t;&t;LIST_HEAD_INIT(name.mmlist),&t;&bslash;&n;}
 DECL|struct|signal_struct
 r_struct
 id|signal_struct

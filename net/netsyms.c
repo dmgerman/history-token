@@ -791,13 +791,6 @@ c_func
 id|memcpy_toiovec
 )paren
 suffix:semicolon
-DECL|variable|csum_partial
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|csum_partial
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_IPX_MODULE
 DECL|variable|make_8023_client
 id|EXPORT_SYMBOL

@@ -26,8 +26,9 @@ DECL|variable|filename
 r_static
 r_const
 r_char
-op_star
 id|filename
+(braket
+)braket
 op_assign
 id|__FILE__
 suffix:semicolon
@@ -35,8 +36,9 @@ DECL|variable|timeout_msg
 r_static
 r_const
 r_char
-op_star
 id|timeout_msg
+(braket
+)braket
 op_assign
 l_string|&quot;*** timeout at %s:%s (line %d) ***&bslash;n&quot;
 suffix:semicolon
@@ -46,8 +48,9 @@ DECL|variable|invalid_pcb_msg
 r_static
 r_const
 r_char
-op_star
 id|invalid_pcb_msg
+(braket
+)braket
 op_assign
 l_string|&quot;*** invalid pcb length %d at %s:%s (line %d) ***&bslash;n&quot;
 suffix:semicolon

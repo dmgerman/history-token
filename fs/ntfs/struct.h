@@ -1,245 +1,23 @@
-multiline_comment|/*&n; * struct.h&n; * Structure definitions&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *  Copyright (C) 2000 Anton Altaparmakov&n; */
-multiline_comment|/* Necessary forward definition */
+multiline_comment|/*  struct.h - Structure definitions&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *  Copyright (C) 2000-2001 Anton Altaparmakov (AIA)&n; */
+multiline_comment|/* Necessary forward definition. */
 r_struct
 id|ntfs_inode
 suffix:semicolon
-macro_line|#ifdef __FreeBSD__
-macro_line|#include &lt;sys/queue.h&gt;
-multiline_comment|/* Define the struct ntfs_head type */
-id|LIST_HEAD
-c_func
-(paren
-id|ntfs_head
-comma
-id|ntfs_inode
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* which files should be returned from a director listing */
-multiline_comment|/* only short names, no hidden files */
+multiline_comment|/* Which files should be returned from a director listing. */
 DECL|macro|ngt_dos
-mdefine_line|#define ngt_dos   1
-multiline_comment|/* only long names, all-uppercase becomes all-lowercase, no hidden files */
+mdefine_line|#define ngt_dos   1&t;/* only short names, no hidden files */
 DECL|macro|ngt_nt
-mdefine_line|#define ngt_nt    2
-multiline_comment|/* all names except hidden files */
+mdefine_line|#define ngt_nt    2&t;/* only long names, all-uppercase becomes &n;&t;&t;&t; * all-lowercase, no hidden files */
 DECL|macro|ngt_posix
-mdefine_line|#define ngt_posix 3
-multiline_comment|/* all entries */
+mdefine_line|#define ngt_posix 3&t;/* all names except hidden files */
 DECL|macro|ngt_full
-mdefine_line|#define ngt_full  4
-macro_line|#ifdef NTFS_IN_LINUX_KERNEL
+mdefine_line|#define ngt_full  4&t;/* all entries */
 DECL|typedef|ntfs_volume
 r_typedef
 r_struct
 id|ntfs_sb_info
 id|ntfs_volume
 suffix:semicolon
-macro_line|#else
-DECL|struct|_ntfs_volume
-r_typedef
-r_struct
-id|_ntfs_volume
-(brace
-multiline_comment|/* NTFS_SB_INFO_START */
-multiline_comment|/* Configuration provided by user at mount time */
-DECL|member|uid
-id|ntfs_uid_t
-id|uid
-suffix:semicolon
-DECL|member|gid
-id|ntfs_gid_t
-id|gid
-suffix:semicolon
-DECL|member|umask
-id|ntmode_t
-id|umask
-suffix:semicolon
-DECL|member|nct
-r_int
-r_int
-id|nct
-suffix:semicolon
-DECL|member|nls_map
-r_void
-op_star
-id|nls_map
-suffix:semicolon
-DECL|member|ngt
-r_int
-r_int
-id|ngt
-suffix:semicolon
-multiline_comment|/* Configuration provided by user with ntfstools */
-DECL|member|partition_bias
-id|ntfs_size_t
-id|partition_bias
-suffix:semicolon
-multiline_comment|/* for access to underlying device */
-multiline_comment|/* Attribute definitions */
-DECL|member|at_standard_information
-id|ntfs_u32
-id|at_standard_information
-suffix:semicolon
-DECL|member|at_attribute_list
-id|ntfs_u32
-id|at_attribute_list
-suffix:semicolon
-DECL|member|at_file_name
-id|ntfs_u32
-id|at_file_name
-suffix:semicolon
-DECL|member|at_volume_version
-id|ntfs_u32
-id|at_volume_version
-suffix:semicolon
-DECL|member|at_security_descriptor
-id|ntfs_u32
-id|at_security_descriptor
-suffix:semicolon
-DECL|member|at_volume_name
-id|ntfs_u32
-id|at_volume_name
-suffix:semicolon
-DECL|member|at_volume_information
-id|ntfs_u32
-id|at_volume_information
-suffix:semicolon
-DECL|member|at_data
-id|ntfs_u32
-id|at_data
-suffix:semicolon
-DECL|member|at_index_root
-id|ntfs_u32
-id|at_index_root
-suffix:semicolon
-DECL|member|at_index_allocation
-id|ntfs_u32
-id|at_index_allocation
-suffix:semicolon
-DECL|member|at_bitmap
-id|ntfs_u32
-id|at_bitmap
-suffix:semicolon
-DECL|member|at_symlink
-id|ntfs_u32
-id|at_symlink
-suffix:semicolon
-multiline_comment|/* aka SYMBOLIC_LINK or REPARSE_POINT */
-multiline_comment|/* Data read from the boot file */
-DECL|member|blocksize
-r_int
-id|blocksize
-suffix:semicolon
-DECL|member|clusterfactor
-r_int
-id|clusterfactor
-suffix:semicolon
-DECL|member|clustersize
-r_int
-id|clustersize
-suffix:semicolon
-DECL|member|mft_recordsize
-r_int
-id|mft_recordsize
-suffix:semicolon
-DECL|member|mft_clusters_per_record
-r_int
-id|mft_clusters_per_record
-suffix:semicolon
-DECL|member|index_recordsize
-r_int
-id|index_recordsize
-suffix:semicolon
-DECL|member|index_clusters_per_record
-r_int
-id|index_clusters_per_record
-suffix:semicolon
-DECL|member|mft_cluster
-r_int
-id|mft_cluster
-suffix:semicolon
-multiline_comment|/* data read from special files */
-DECL|member|mft
-r_int
-r_char
-op_star
-id|mft
-suffix:semicolon
-DECL|member|upcase
-r_int
-r_int
-op_star
-id|upcase
-suffix:semicolon
-DECL|member|upcase_length
-r_int
-r_int
-id|upcase_length
-suffix:semicolon
-multiline_comment|/* inodes we always hold onto */
-DECL|member|mft_ino
-r_struct
-id|ntfs_inode
-op_star
-id|mft_ino
-suffix:semicolon
-DECL|member|mftmirr
-r_struct
-id|ntfs_inode
-op_star
-id|mftmirr
-suffix:semicolon
-DECL|member|bitmap
-r_struct
-id|ntfs_inode
-op_star
-id|bitmap
-suffix:semicolon
-multiline_comment|/* NTFS_SB_INFO_END */
-(def_block
-r_union
-(brace
-DECL|member|fd
-r_int
-id|fd
-suffix:semicolon
-multiline_comment|/* file descriptor for the tools */
-DECL|member|sb
-r_void
-op_star
-id|sb
-suffix:semicolon
-multiline_comment|/* pointer to super block for the kernel */
-DECL|member|u
-)brace
-)def_block
-id|u
-suffix:semicolon
-macro_line|#ifdef __FreeBSD__
-DECL|member|rdev
-id|dev_t
-id|rdev
-suffix:semicolon
-DECL|member|devvp
-r_struct
-id|vnode
-op_star
-id|devvp
-suffix:semicolon
-DECL|member|inode_hash
-r_struct
-id|ntfs_head
-op_star
-id|inode_hash
-suffix:semicolon
-multiline_comment|/* not really a hash */
-macro_line|#endif
-DECL|typedef|ntfs_volume
-)brace
-id|ntfs_volume
-suffix:semicolon
-macro_line|#endif
 r_typedef
 r_struct
 (brace
@@ -304,7 +82,6 @@ DECL|member|cengine
 r_int
 id|cengine
 suffix:semicolon
-(def_block
 r_union
 (brace
 DECL|member|data
@@ -330,116 +107,19 @@ id|r
 suffix:semicolon
 DECL|member|d
 )brace
-)def_block
 id|d
 suffix:semicolon
 DECL|typedef|ntfs_attribute
 )brace
 id|ntfs_attribute
 suffix:semicolon
-multiline_comment|/* Structure to define IO to user buffer. do_read means that&n;   the destination has to be written using fn_put, do_write means&n;   that the destination has to read using fn_get. So, do_read is&n;   from a user&squot;s point of view, while put and get are from the driver&squot;s&n;   point of view. The first argument is always the destination of the IO&n;*/
-macro_line|#ifdef NTFS_IN_LINUX_KERNEL
+multiline_comment|/* Structure to define IO to user buffer. do_read means that the destination&n; * has to be written using fn_put, do_write means that the destination has to&n; * read using fn_get. So, do_read is from a user&squot;s point of view, while put and&n; * get are from the driver&squot;s point of view. The first argument is always the&n; * destination of the IO. */
 DECL|typedef|ntfs_inode
 r_typedef
 r_struct
 id|ntfs_inode_info
 id|ntfs_inode
 suffix:semicolon
-macro_line|#else
-DECL|struct|ntfs_inode
-r_typedef
-r_struct
-id|ntfs_inode
-(brace
-DECL|member|vol
-id|ntfs_volume
-op_star
-id|vol
-suffix:semicolon
-multiline_comment|/* NTFS_INODE_INFO_START */
-DECL|member|i_number
-r_int
-id|i_number
-suffix:semicolon
-multiline_comment|/* should be really 48 bits */
-DECL|member|sequence_number
-r_int
-id|sequence_number
-suffix:semicolon
-DECL|member|attr
-r_int
-r_char
-op_star
-id|attr
-suffix:semicolon
-multiline_comment|/* array of the attributes */
-DECL|member|attr_count
-r_int
-id|attr_count
-suffix:semicolon
-multiline_comment|/* size of attrs[] */
-DECL|member|attrs
-r_struct
-id|ntfs_attribute
-op_star
-id|attrs
-suffix:semicolon
-DECL|member|record_count
-r_int
-id|record_count
-suffix:semicolon
-multiline_comment|/* size of records[] */
-multiline_comment|/* array of the record numbers of the MFT &n;&t;   whose attributes have been inserted in the inode */
-DECL|member|records
-r_int
-op_star
-id|records
-suffix:semicolon
-(def_block
-r_union
-(brace
-(def_block
-r_struct
-(brace
-DECL|member|recordsize
-r_int
-id|recordsize
-suffix:semicolon
-DECL|member|clusters_per_record
-r_int
-id|clusters_per_record
-suffix:semicolon
-DECL|member|index
-)brace
-)def_block
-id|index
-suffix:semicolon
-DECL|member|u
-)brace
-)def_block
-id|u
-suffix:semicolon
-multiline_comment|/* NTFS_INODE_INFO_END */
-macro_line|#ifdef __FreeBSD__
-DECL|member|vp
-r_struct
-id|vnode
-op_star
-id|vp
-suffix:semicolon
-id|LIST_ENTRY
-c_func
-(paren
-id|ntfs_inode
-)paren
-id|h_next
-suffix:semicolon
-macro_line|#endif
-DECL|typedef|ntfs_inode
-)brace
-id|ntfs_inode
-suffix:semicolon
-macro_line|#endif
 DECL|struct|ntfs_io
 r_typedef
 r_struct

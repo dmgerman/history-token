@@ -5686,12 +5686,6 @@ id|dev-&gt;get_stats
 op_assign
 id|yam_get_stats
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|skb_queue_head_init
 c_func
 (paren

@@ -10,13 +10,28 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &quot;hysdn_defs.h&quot;
+DECL|variable|hynet_enable
+r_int
+r_int
+id|hynet_enable
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|hynet_enable
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* store the actual version for log reporting */
 DECL|variable|hysdn_net_revision
 r_char
 op_star
 id|hysdn_net_revision
 op_assign
-l_string|&quot;$Revision: 1.8.6.1 $&quot;
+l_string|&quot;$Revision: 1.10 $&quot;
 suffix:semicolon
 DECL|macro|MAX_SKB_BUFFERS
 mdefine_line|#define MAX_SKB_BUFFERS 20&t;/* number of buffers for keeping TX-data */

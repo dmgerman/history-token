@@ -1445,7 +1445,7 @@ id|first_byte
 op_assign
 id|port-&gt;write_urb-&gt;transfer_buffer
 suffix:semicolon
-multiline_comment|/* Was seeing a race here, got a read callback, then write callback before&n;&t;&t;   hitting interuptible_sleep_on  - so wrapping in a wait_queue */
+multiline_comment|/* Was seeing a race here, got a read callback, then write callback before&n;&t;&t;   hitting interruptible_sleep_on  - so wrapping in a wait_queue */
 id|add_wait_queue
 c_func
 (paren

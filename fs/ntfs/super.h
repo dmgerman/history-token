@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  super.h&n; *  Header file for super.c&n; *&n; *  Copyright (C) 1995-1997 Martin von L&#xfffd;wis&n; *  Copyright (C) 1996-1997 R&#xfffd;gis Duchesne&n; */
+multiline_comment|/*  super.h - Header file for super.c&n; *&n; *  Copyright (C) 1995-1997 Martin von L&#xfffd;wis&n; *  Copyright (C) 1996-1997 R&#xfffd;gis Duchesne&n; */
 DECL|macro|ALLOC_REQUIRE_LOCATION
 mdefine_line|#define ALLOC_REQUIRE_LOCATION 1
 DECL|macro|ALLOC_REQUIRE_SIZE

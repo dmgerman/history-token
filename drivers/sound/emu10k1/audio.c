@@ -1130,7 +1130,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|mem_map_reserve
+id|mem_map_unreserve
 c_func
 (paren
 id|virt_to_page
@@ -1341,7 +1341,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|mem_map_reserve
+id|mem_map_unreserve
 c_func
 (paren
 id|virt_to_page
@@ -4538,6 +4538,8 @@ r_struct
 id|emu10k1_card
 op_star
 id|card
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|list_head
@@ -5422,7 +5424,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|mem_map_reserve
+id|mem_map_unreserve
 c_func
 (paren
 id|virt_to_page

@@ -1,7 +1,4 @@
-multiline_comment|/*&n; *  support.c&n; *  Specific support functions&n; *&n; *  Copyright (C) 1997 Martin von L&#xfffd;wis&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *&n; */
-macro_line|#ifdef HAVE_CONFIG_H
-macro_line|#include &quot;config.h&quot;
-macro_line|#endif
+multiline_comment|/*  support.c -  Specific support functions&n; *&n; *  Copyright (C) 1997 Martin von L&#xfffd;wis&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *  Copyright (C) 2001 Anton Altaparmakov (AIA)&n; */
 macro_line|#include &quot;ntfstypes.h&quot;
 macro_line|#include &quot;struct.h&quot;
 macro_line|#include &quot;support.h&quot;
@@ -169,7 +166,7 @@ id|block
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#else
+macro_line|#else /* End of DEBUG functions. Normal ones below... */
 DECL|function|ntfs_debug
 r_void
 id|ntfs_debug
@@ -314,7 +311,7 @@ id|n
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Warn that an error occured. */
+multiline_comment|/* Warn that an error occurred. */
 DECL|function|ntfs_error
 r_void
 id|ntfs_error
@@ -412,7 +409,9 @@ c_cond
 (paren
 id|mftno
 op_eq
-id|FILE_MFT
+id|FILE_
+"$"
+id|Mft
 )paren
 (brace
 id|ntfs_memcpy
@@ -439,10 +438,13 @@ id|vol-&gt;mft_ino
 id|printk
 c_func
 (paren
-l_string|&quot;ntfs:something is terribly wrong here&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;NTFS: mft_ino is NULL. Something is terribly &quot;
+l_string|&quot;wrong here!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENODATA
 suffix:semicolon
 )brace
@@ -498,7 +500,8 @@ c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;read_mft_record: read %x failed (%d,%d,%d)&bslash;n&quot;
+l_string|&quot;read_mft_record: read %x failed &quot;
+l_string|&quot;(%d,%d,%d)&bslash;n&quot;
 comma
 id|mftno
 comma
@@ -515,6 +518,7 @@ ques
 c_cond
 id|error
 suffix:colon
+op_minus
 id|ENODATA
 suffix:semicolon
 )brace
@@ -541,15 +545,18 @@ id|buf
 )paren
 )paren
 (brace
+multiline_comment|/* FIXME: This is incomplete behaviour. We might be able to&n;&t;&t; * recover at this stage. ntfs_check_mft_record() is too&n;&t;&t; * conservative at aborting it&squot;s operations. It is OK for&n;&t;&t; * now as we just can&squot;t handle some on disk structures&n;&t;&t; * this way. (AIA) */
 id|printk
 c_func
 (paren
-l_string|&quot;Invalid MFT record for %x&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;NTFS: Invalid MFT record for %x&bslash;n&quot;
 comma
 id|mftno
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -611,34 +618,19 @@ id|length
 op_assign
 id|buf-&gt;size
 suffix:semicolon
-r_if
-c_cond
+id|ntfs_debug
+c_func
 (paren
+id|DEBUG_OTHER
+comma
+l_string|&quot;%s_clusters %d %d %d&bslash;n&quot;
+comma
 id|buf-&gt;do_read
-)paren
-(brace
-id|ntfs_debug
-c_func
-(paren
-id|DEBUG_OTHER
-comma
-l_string|&quot;get_clusters %d %d %d&bslash;n&quot;
-comma
-id|cluster
-comma
-id|start_offs
-comma
-id|length
-)paren
-suffix:semicolon
-)brace
-r_else
-id|ntfs_debug
-c_func
-(paren
-id|DEBUG_OTHER
-comma
-l_string|&quot;put_clusters %d %d %d&bslash;n&quot;
+ques
+c_cond
+l_string|&quot;get&quot;
+suffix:colon
+l_string|&quot;put&quot;
 comma
 id|cluster
 comma
@@ -688,6 +680,7 @@ l_string|&quot;Writing&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -714,7 +707,6 @@ c_cond
 (paren
 id|buf-&gt;do_read
 )paren
-(brace
 id|buf
 op_member_access_from_pointer
 id|fn_put
@@ -729,7 +721,6 @@ comma
 id|to_copy
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 id|buf
@@ -797,7 +788,7 @@ id|CURRENT_TIME
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* when printing unicode characters base64, use this table.&n;   It is not strictly base64, but the Linux vfat encoding.&n;   base64 has the disadvantage of using the slash.&n;*/
+multiline_comment|/* When printing unicode characters base64, use this table. It is not strictly&n; * base64, but the Linux vfat encoding. base64 has the disadvantage of using&n; * the slash. */
 DECL|variable|uni2esc
 r_static
 r_char
@@ -808,10 +799,10 @@ l_int|64
 op_assign
 l_string|&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+-&quot;
 suffix:semicolon
+DECL|function|esc2uni
 r_static
 r_int
 r_char
-DECL|function|esc2uni
 id|esc2uni
 c_func
 (paren
@@ -826,11 +817,9 @@ id|c
 OL
 l_char|&squot;0&squot;
 )paren
-(brace
 r_return
 l_int|255
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -838,13 +827,11 @@ id|c
 op_le
 l_char|&squot;9&squot;
 )paren
-(brace
 r_return
 id|c
 op_minus
 l_char|&squot;0&squot;
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -852,11 +839,9 @@ id|c
 OL
 l_char|&squot;A&squot;
 )paren
-(brace
 r_return
 l_int|255
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -864,7 +849,6 @@ id|c
 op_le
 l_char|&squot;Z&squot;
 )paren
-(brace
 r_return
 id|c
 op_minus
@@ -872,7 +856,6 @@ l_char|&squot;A&squot;
 op_plus
 l_int|10
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -880,11 +863,9 @@ id|c
 OL
 l_char|&squot;a&squot;
 )paren
-(brace
 r_return
 l_int|255
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -892,7 +873,6 @@ id|c
 op_le
 l_char|&squot;z&squot;
 )paren
-(brace
 r_return
 id|c
 op_minus
@@ -900,7 +880,6 @@ l_char|&squot;a&squot;
 op_plus
 l_int|36
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -908,11 +887,9 @@ id|c
 op_eq
 l_char|&squot;+&squot;
 )paren
-(brace
 r_return
 l_int|62
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -920,11 +897,9 @@ id|c
 op_eq
 l_char|&squot;-&squot;
 )paren
-(brace
 r_return
 l_int|63
 suffix:semicolon
-)brace
 r_return
 l_int|255
 suffix:semicolon
@@ -1001,11 +976,10 @@ c_cond
 op_logical_neg
 id|result
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 op_star
 id|out_len
 op_assign
@@ -1222,11 +1196,9 @@ op_amp
 id|nct_uni_xlate
 )paren
 )paren
-(brace
 r_goto
 id|inval
 suffix:semicolon
-)brace
 multiline_comment|/* realloc */
 id|buf
 op_assign
@@ -1253,6 +1225,7 @@ id|result
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
@@ -1443,6 +1416,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+op_minus
 id|EILSEQ
 suffix:semicolon
 )brace
@@ -1507,11 +1481,10 @@ c_cond
 op_logical_neg
 id|result
 )paren
-(brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 op_star
 id|out_len
 op_assign
@@ -1562,7 +1535,6 @@ l_int|0
 r_int
 id|charlen
 suffix:semicolon
-multiline_comment|/* FIXME: is this error handling ok? */
 id|charlen
 op_assign
 id|nls
@@ -1678,12 +1650,10 @@ id|c3
 op_eq
 l_int|255
 )paren
-(brace
 id|uni
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -1787,6 +1757,7 @@ id|result
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EILSEQ
 suffix:semicolon
 )brace
@@ -1795,5 +1766,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

@@ -3,8 +3,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;es3210.c: Driver revision v0.03, 14/09/96&bslash;n&quot;
 suffix:semicolon

@@ -24,16 +24,4 @@ DECL|macro|free_dmabuf2
 mdefine_line|#define free_dmabuf2(state, dmabuf) &bslash;&n;&t;pci_free_consistent((state)-&gt;pcidev, &bslash;&n;&t;&t;&t;&t;    PAGE_SIZE &lt;&lt; (state)-&gt;buforder_tmpbuff, &bslash;&n;&t;&t;&t;&t;    (state)-&gt;tmpbuff, (state)-&gt;dmaaddr_tmpbuff);
 DECL|macro|cs4x_pgoff
 mdefine_line|#define cs4x_pgoff(vma) ((vma)-&gt;vm_pgoff)
-DECL|macro|RSRCISIOREGION
-mdefine_line|#define RSRCISIOREGION(dev,num) ((dev)-&gt;resource[(num)].start != 0 &amp;&amp; &bslash;&n;&t; ((dev)-&gt;resource[(num)].flags &amp; PCI_BASE_ADDRESS_SPACE) == PCI_BASE_ADDRESS_SPACE_IO)
-DECL|macro|RSRCISMEMORYREGION
-mdefine_line|#define RSRCISMEMORYREGION(dev,num) ((dev)-&gt;resource[(num)].start != 0 &amp;&amp; &bslash;&n;&t; ((dev)-&gt;resource[(num)].flags &amp; PCI_BASE_ADDRESS_SPACE) == PCI_BASE_ADDRESS_SPACE_MEMORY)
-DECL|macro|RSRCADDRESS
-mdefine_line|#define RSRCADDRESS(dev,num) ((dev)-&gt;resource[(num)].start)
-DECL|macro|PCI_GET_DRIVER_DATA
-mdefine_line|#define PCI_GET_DRIVER_DATA pci_get_drvdata
-DECL|macro|PCI_SET_DRIVER_DATA
-mdefine_line|#define PCI_SET_DRIVER_DATA pci_set_drvdata
-DECL|macro|PCI_SET_DMA_MASK
-mdefine_line|#define PCI_SET_DMA_MASK(pcidev,mask) pcidev-&gt;dma_mask = mask
 eof

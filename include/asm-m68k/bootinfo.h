@@ -176,7 +176,7 @@ mdefine_line|#define BI_MAC_ETHTYPE&t;&t;0x801d&t;/* Mac builtin ethernet type (
 DECL|macro|BI_MAC_ETHBASE
 mdefine_line|#define BI_MAC_ETHBASE&t;&t;0x801e&t;/* Mac builtin ethernet base address */
 DECL|macro|BI_MAC_PMU
-mdefine_line|#define BI_MAC_PMU&t;&t;0x801f&t;/* Mac power managment / poweroff hardware */
+mdefine_line|#define BI_MAC_PMU&t;&t;0x801f&t;/* Mac power management / poweroff hardware */
 DECL|macro|BI_MAC_IOP_SWIM
 mdefine_line|#define BI_MAC_IOP_SWIM&t;&t;0x8020&t;/* Mac SWIM floppy IOP */
 DECL|macro|BI_MAC_IOP_ADB

@@ -25023,12 +25023,6 @@ l_int|10
 op_star
 id|HZ
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|d
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

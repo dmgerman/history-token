@@ -4907,7 +4907,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-multiline_comment|/* Idea from tcp.c: use 1/16384 of memory.  On i386: 32MB&n;&t; * machine has 256 buckets.  1GB machine has 8192 buckets. */
+multiline_comment|/* Idea from tcp.c: use 1/16384 of memory.  On i386: 32MB&n;&t; * machine has 256 buckets.  &gt;= 1GB machines have 8192 buckets. */
 id|ip_conntrack_htable_size
 op_assign
 (paren
@@ -4927,6 +4927,36 @@ r_struct
 id|list_head
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_physpages
+OG
+(paren
+l_int|1024
+op_star
+l_int|1024
+op_star
+l_int|1024
+op_div
+id|PAGE_SIZE
+)paren
+)paren
+id|ip_conntrack_htable_size
+op_assign
+l_int|8192
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ip_conntrack_htable_size
+OL
+l_int|16
+)paren
+id|ip_conntrack_htable_size
+op_assign
+l_int|16
 suffix:semicolon
 id|ip_conntrack_max
 op_assign

@@ -104,8 +104,6 @@ r_struct
 id|net_device
 op_star
 id|root_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * These are checked at init time to see if they are at least 256KB&n; * and increased to 256KB if they are not. This is done to avoid ending&n; * up with socket buffers smaller than the MTU size,&n; */
 r_extern

@@ -1792,7 +1792,7 @@ id|result
 suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Transport routines&n; ***********************************************************************/
-multiline_comment|/* Invoke the transport and basic error-handling/recovery methods&n; *&n; * This is used by the protocol layers to actually send the message to&n; * the device and recieve the response.&n; */
+multiline_comment|/* Invoke the transport and basic error-handling/recovery methods&n; *&n; * This is used by the protocol layers to actually send the message to&n; * the device and receive the response.&n; */
 DECL|function|usb_stor_invoke_transport
 r_void
 id|usb_stor_invoke_transport
@@ -2441,7 +2441,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;USB IRQ recieved for device on host %d&bslash;n&quot;
+l_string|&quot;USB IRQ received for device on host %d&bslash;n&quot;
 comma
 id|us-&gt;host_no
 )paren
@@ -3549,7 +3549,7 @@ r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
-multiline_comment|/* if the command transfered well, then we go to the data stage */
+multiline_comment|/* if the command transferred well, then we go to the data stage */
 r_if
 c_cond
 (paren

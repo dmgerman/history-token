@@ -390,8 +390,6 @@ DECL|variable|if_port
 r_static
 r_int
 id|if_port
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Bit map of interrupts to choose from */
 DECL|variable|irq_mask
@@ -665,8 +663,6 @@ r_static
 id|dev_link_t
 op_star
 id|dev_list
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*======================================================================&n;&n;    This bit of code is used to avoid unregistering network devices&n;    at inappropriate times.  2.2 and later kernels are fairly picky&n;    about when this can happen.&n;    &n;======================================================================*/
 DECL|function|flush_stale_links

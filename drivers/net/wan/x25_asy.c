@@ -3309,12 +3309,6 @@ id|dev-&gt;tx_queue_len
 op_assign
 l_int|10
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/* New-style flags. */
 id|dev-&gt;flags
 op_assign

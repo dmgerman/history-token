@@ -59,8 +59,6 @@ DECL|variable|mtu
 r_static
 r_int
 id|mtu
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Maximum number of multicast addresses to filter (vs. rx-all-multicast).&n;   The Starfire has a 512 element hash table based on the Ethernet CRC.  */
 DECL|variable|multicast_filter_limit
@@ -164,20 +162,26 @@ DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT  (2*HZ)
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;&t;1536&t;&t;&t;/* Size of each temporary Rx buffer.*/
+multiline_comment|/*&n; * The ia64 doesn&squot;t allow for unaligned loads even of integers being&n; * misaligned on a 2 byte boundary. Thus always force copying of&n; * packets as the starfire doesn&squot;t allow for misaligned DMAs ;-(&n; * 23/10/2000 - Jes&n; */
+macro_line|#ifdef __ia64__
+DECL|macro|PKT_SHOULD_COPY
+mdefine_line|#define PKT_SHOULD_COPY(pkt_len)&t;1
+macro_line|#else
+DECL|macro|PKT_SHOULD_COPY
+mdefine_line|#define PKT_SHOULD_COPY(pkt_len)&t;(pkt_len &lt; rx_copybreak)
+macro_line|#endif
 macro_line|#if !defined(__OPTIMIZE__)
 macro_line|#warning  You must compile this file with the correct options!
 macro_line|#warning  See the last lines of the source file.
 macro_line|#error You must compile this driver with &quot;-O&quot;.
 macro_line|#endif
-multiline_comment|/* Include files, designed to support most kernel versions 2.0.0 and later. */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -766,6 +770,8 @@ id|mapping
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|MII_CNT
+mdefine_line|#define MII_CNT&t;&t;4
 DECL|struct|netdev_private
 r_struct
 id|netdev_private
@@ -953,10 +959,10 @@ r_int
 r_char
 id|phys
 (braket
-l_int|2
+id|MII_CNT
 )braket
 suffix:semicolon
-multiline_comment|/* MII device addresses. */
+multiline_comment|/* MII device addresses, only first one used. */
 )brace
 suffix:semicolon
 r_static
@@ -1230,8 +1236,6 @@ suffix:semicolon
 r_static
 r_int
 id|printed_version
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|ioaddr
@@ -1289,6 +1293,18 @@ comma
 id|version3
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_enable_device
+(paren
+id|pdev
+)paren
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
 id|ioaddr
 op_assign
 id|pci_resource_start
@@ -1335,11 +1351,9 @@ suffix:semicolon
 )brace
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
 c_func
 (paren
-l_int|NULL
-comma
 r_sizeof
 (paren
 op_star
@@ -1367,6 +1381,12 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|irq
 op_assign
 id|pdev-&gt;irq
@@ -1374,44 +1394,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|request_mem_region
-(paren
-id|ioaddr
-comma
-id|io_size
-comma
-id|dev-&gt;name
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;starfire %d: resource 0x%x @ 0x%lx busy, aborting&bslash;n&quot;
-comma
-id|card_idx
-comma
-id|io_size
-comma
-id|ioaddr
-)paren
-suffix:semicolon
-r_goto
-id|err_out_free_netdev
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|pci_enable_device
+id|pci_request_regions
 (paren
 id|pdev
+comma
+l_string|&quot;starfire&quot;
 )paren
 )paren
 r_goto
-id|err_out_free_res
+id|err_out_free_netdev
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -1453,24 +1444,6 @@ id|pci_set_master
 id|pdev
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: %s at 0x%lx, &quot;
-comma
-id|dev-&gt;name
-comma
-id|netdrv_tbl
-(braket
-id|chip_idx
-)braket
-dot
-id|name
-comma
-id|ioaddr
-)paren
-suffix:semicolon
 multiline_comment|/* Serial EEPROM reads are hidden by the hardware. */
 r_for
 c_loop
@@ -1501,44 +1474,6 @@ op_plus
 l_int|20
 op_minus
 id|i
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|5
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%2.2x:&quot;
-comma
-id|dev-&gt;dev_addr
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%2.2x, IRQ %d.&bslash;n&quot;
-comma
-id|dev-&gt;dev_addr
-(braket
-id|i
-)braket
-comma
-id|irq
 )paren
 suffix:semicolon
 macro_line|#if ! defined(final_version) /* Dump the EEPROM contents during development. */
@@ -1618,9 +1553,13 @@ id|np
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 id|dev
+)paren
 suffix:semicolon
 id|np-&gt;pci_dev
 op_assign
@@ -1749,6 +1688,78 @@ id|dev-&gt;mtu
 op_assign
 id|mtu
 suffix:semicolon
+id|i
+op_assign
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+)paren
+r_goto
+id|err_out_cleardev
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: %s at 0x%lx, &quot;
+comma
+id|dev-&gt;name
+comma
+id|netdrv_tbl
+(braket
+id|chip_idx
+)braket
+dot
+id|name
+comma
+id|ioaddr
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|5
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%2.2x:&quot;
+comma
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%2.2x, IRQ %d.&bslash;n&quot;
+comma
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+comma
+id|irq
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1777,7 +1788,7 @@ l_int|32
 op_logical_and
 id|phy_idx
 OL
-l_int|4
+id|MII_CNT
 suffix:semicolon
 id|phy
 op_increment
@@ -1854,13 +1865,31 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|err_out_cleardev
+suffix:colon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|ioaddr
+)paren
+suffix:semicolon
 id|err_out_free_res
 suffix:colon
-id|release_mem_region
+id|pci_release_regions
 (paren
-id|ioaddr
-comma
-id|io_size
+id|pdev
 )paren
 suffix:semicolon
 id|err_out_free_netdev
@@ -2029,11 +2058,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -2047,8 +2071,6 @@ comma
 id|retval
 suffix:semicolon
 multiline_comment|/* Do we ever need to reset the chip??? */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|retval
 op_assign
 id|request_irq
@@ -2071,13 +2093,9 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
-)brace
 multiline_comment|/* Disable the Rx and Tx, and reset the chip. */
 id|writel
 c_func
@@ -2285,8 +2303,6 @@ id|np-&gt;rx_ring
 comma
 id|np-&gt;rx_ring_dma
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -2797,11 +2813,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -3010,11 +3021,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -3169,11 +3175,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -3655,13 +3656,9 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
+r_int
 r_int
 id|entry
 suffix:semicolon
@@ -3817,6 +3814,12 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Non-x86: explicitly flush descriptor cache lines here. */
+multiline_comment|/* Ensure everything is written back above before the transmit is&n;&t;   initiated. - Jes */
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Update the producer index. */
 id|writel
 c_func
@@ -4459,11 +4462,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -4644,9 +4642,11 @@ multiline_comment|/* Check if the packet is long enough to accept without copyin
 r_if
 c_cond
 (paren
+id|PKT_SHOULD_COPY
+c_func
+(paren
 id|pkt_len
-OL
-id|rx_copybreak
+)paren
 op_logical_and
 (paren
 id|skb
@@ -4803,58 +4803,6 @@ id|mapping
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifndef final_version&t;&t;&t;&t;/* Remove after testing. */
-r_if
-c_cond
-(paren
-id|le32_to_cpu
-c_func
-(paren
-id|np-&gt;rx_ring
-(braket
-id|entry
-)braket
-dot
-id|rxaddr
-op_amp
-op_complement
-l_int|3
-)paren
-op_ne
-(paren
-(paren
-r_int
-r_int
-)paren
-id|temp
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: Internal fault: The skbuff addresses &quot;
-l_string|&quot;do not match in netdev_rx: %d vs. %p / %p.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|np-&gt;rx_ring
-(braket
-id|entry
-)braket
-dot
-id|rxaddr
-)paren
-comma
-id|skb-&gt;head
-comma
-id|temp
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#ifndef final_version&t;&t;&t;&t;/* Remove after testing. */
 multiline_comment|/* You will want this info for the initial debug. */
@@ -5271,11 +5219,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_if
@@ -5444,11 +5387,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* This adapter architecture needs no SMP locks. */
@@ -6171,11 +6109,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|u16
@@ -6411,11 +6344,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -6811,8 +6739,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6834,7 +6760,11 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 r_struct
 id|netdev_private
@@ -6870,6 +6800,11 @@ r_char
 op_star
 )paren
 id|dev-&gt;base_addr
+)paren
+suffix:semicolon
+id|pci_release_regions
+(paren
+id|pdev
 )paren
 suffix:semicolon
 r_if
@@ -6944,6 +6879,14 @@ id|kfree
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

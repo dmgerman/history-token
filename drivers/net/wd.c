@@ -4,8 +4,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;wd.c:v1.10 9/23/94 Donald Becker (becker@cesdis.gsfc.nasa.gov)&bslash;n&quot;
 suffix:semicolon
@@ -420,8 +421,6 @@ suffix:semicolon
 r_static
 r_int
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 r_for
 c_loop

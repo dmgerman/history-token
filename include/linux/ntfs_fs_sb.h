@@ -5,7 +5,7 @@ DECL|struct|ntfs_sb_info
 r_struct
 id|ntfs_sb_info
 (brace
-multiline_comment|/* Configuration provided by user at mount time */
+multiline_comment|/* Configuration provided by user at mount time. */
 DECL|member|uid
 id|ntfs_uid_t
 id|uid
@@ -33,13 +33,13 @@ r_int
 r_int
 id|ngt
 suffix:semicolon
-multiline_comment|/* Configuration provided by user with ntfstools */
+multiline_comment|/* Configuration provided by user with the ntfstools.&n;&t; * FIXME: This is no longer possible. What is this good for? (AIA) */
 DECL|member|partition_bias
 id|ntfs_size_t
 id|partition_bias
 suffix:semicolon
-multiline_comment|/* for access to underlying device */
-multiline_comment|/* Attribute definitions */
+multiline_comment|/* For access to underlying device. */
+multiline_comment|/* Attribute definitions. */
 DECL|member|at_standard_information
 id|ntfs_u32
 id|at_standard_information
@@ -89,14 +89,14 @@ id|ntfs_u32
 id|at_symlink
 suffix:semicolon
 multiline_comment|/* aka SYMBOLIC_LINK or REPARSE_POINT */
-multiline_comment|/* Data read from the boot file */
+multiline_comment|/* Data read / calculated from the boot file. */
 DECL|member|blocksize
 r_int
 id|blocksize
 suffix:semicolon
-DECL|member|clusterfactor
+DECL|member|clusterfactorbits
 r_int
-id|clusterfactor
+id|clusterfactorbits
 suffix:semicolon
 DECL|member|clustersize
 r_int
@@ -122,7 +122,7 @@ DECL|member|mft_cluster
 r_int
 id|mft_cluster
 suffix:semicolon
-multiline_comment|/* data read from special files */
+multiline_comment|/* Data read from special files. */
 DECL|member|mft
 r_int
 r_char
@@ -140,7 +140,7 @@ r_int
 r_int
 id|upcase_length
 suffix:semicolon
-multiline_comment|/* inodes we always hold onto */
+multiline_comment|/* Inodes we always hold onto. */
 DECL|member|mft_ino
 r_struct
 id|ntfs_inode_info

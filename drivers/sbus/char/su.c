@@ -1,7 +1,7 @@
-multiline_comment|/* $Id: su.c,v 1.45 2001/03/15 02:11:10 davem Exp $&n; * su.c: Small serial driver for keyboard/mouse interface on sparc32/PCI&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1998-1999  Pete Zaitcev   (zaitcev@metabyte.com)&n; *&n; * This is mainly a variation of drivers/char/serial.c,&n; * credits go to authors mentioned therein.&n; */
+multiline_comment|/* $Id: su.c,v 1.47 2001/04/18 21:06:15 davem Exp $&n; * su.c: Small serial driver for keyboard/mouse interface on sparc32/PCI&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1998-1999  Pete Zaitcev   (zaitcev@metabyte.com)&n; *&n; * This is mainly a variation of drivers/char/serial.c,&n; * credits go to authors mentioned therein.&n; */
 multiline_comment|/*&n; * Configuration section.&n; */
 DECL|macro|SERIAL_PARANOIA_CHECK
-mdefine_line|#define SERIAL_PARANOIA_CHECK
+macro_line|#undef SERIAL_PARANOIA_CHECK
 DECL|macro|CONFIG_SERIAL_NOPAUSE_IO
 mdefine_line|#define CONFIG_SERIAL_NOPAUSE_IO&t;/* Unused on sparc */
 DECL|macro|SERIAL_DO_RESTART
@@ -950,7 +950,6 @@ suffix:semicolon
 multiline_comment|/*&n; * ----------------------------------------------------------------------&n; *&n; * Here starts the interrupt handling routines.  All of the following&n; * subroutines are declared as inline and are folded into&n; * su_interrupt().  They were separated out for readability&squot;s sake.&n; *&n; * Note: rs_interrupt() is a &quot;fast&quot; interrupt, which means that it&n; * runs with interrupts turned off.  People who may want to modify&n; * rs_interrupt() should try to keep the interrupt handler as fast as&n; * possible.  After you are done making modifications, it is not a bad&n; * idea to do:&n; * &n; * gcc -S -DKERNEL -Wall -Wstrict-prototypes -O6 -fomit-frame-pointer serial.c&n; *&n; * and look at the resulting assemble code in serial.s.&n; *&n; * &t;&t;&t;&t;- Ted Ts&squot;o (tytso@mit.edu), 7-Mar-93&n; * -----------------------------------------------------------------------&n; */
 multiline_comment|/*&n; * This routine is used by the interrupt handler to schedule&n; * processing in the software interrupt portion of the driver.&n; */
 r_static
-id|__inline__
 r_void
 DECL|function|su_sched_event
 id|su_sched_event
@@ -989,7 +988,6 @@ id|SERIAL_BH
 suffix:semicolon
 )brace
 r_static
-id|__inline__
 r_void
 DECL|function|receive_kbd_ms_chars
 id|receive_kbd_ms_chars
@@ -1170,7 +1168,6 @@ id|UART_LSR_DR
 suffix:semicolon
 )brace
 r_static
-id|__inline__
 r_void
 DECL|function|receive_serial_chars
 id|receive_serial_chars
@@ -1571,7 +1568,6 @@ c_func
 suffix:semicolon
 )brace
 r_static
-id|__inline__
 r_void
 DECL|function|transmit_chars
 id|transmit_chars
@@ -1772,7 +1768,6 @@ suffix:semicolon
 )brace
 )brace
 r_static
-id|__inline__
 r_void
 DECL|function|check_modem_status
 id|check_modem_status
@@ -3463,7 +3458,6 @@ id|flags
 suffix:semicolon
 )brace
 r_static
-id|__inline__
 r_int
 DECL|function|su_get_baud_rate
 id|su_get_baud_rate
@@ -8759,7 +8753,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * /proc fs routines....&n; */
 r_static
-id|__inline__
 r_int
 DECL|function|line_info
 id|line_info
@@ -9312,7 +9305,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.45 $&quot;
+l_string|&quot;$Revision: 1.47 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -12101,6 +12094,10 @@ suffix:colon
 id|cflag
 op_or_assign
 id|B9600
+suffix:semicolon
+id|baud
+op_assign
+l_int|9600
 suffix:semicolon
 r_break
 suffix:semicolon

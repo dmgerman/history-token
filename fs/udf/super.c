@@ -1335,23 +1335,13 @@ id|bsize
 )paren
 (brace
 multiline_comment|/* Use specified block size if specified */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|sb-&gt;s_blocksize
 op_assign
-id|get_hardblocksize
+id|get_hardsect_size
 c_func
 (paren
 id|sb-&gt;s_dev
 )paren
-)paren
-)paren
-id|sb-&gt;s_blocksize
-op_assign
-l_int|2048
 suffix:semicolon
 r_if
 c_cond

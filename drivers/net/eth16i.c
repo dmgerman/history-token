@@ -834,8 +834,9 @@ suffix:semicolon
 DECL|variable|cardname
 r_static
 r_char
-op_star
 id|cardname
+(braket
+)braket
 op_assign
 l_string|&quot;ICL EtherTeam 16i/32&quot;
 suffix:semicolon

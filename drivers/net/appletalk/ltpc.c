@@ -7,8 +7,6 @@ DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|DEBUG_VERBOSE
 mdefine_line|#define DEBUG_VERBOSE 1
@@ -20,22 +18,16 @@ DECL|variable|io
 r_static
 r_int
 id|io
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|irq
 r_static
 r_int
 id|irq
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dma
 r_static
 r_int
 id|dma
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -217,13 +209,9 @@ r_struct
 id|xmitQel
 op_star
 id|xmQhd
-op_assign
-l_int|NULL
 comma
 op_star
 id|xmQtl
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|enQ
 r_static
@@ -1311,8 +1299,6 @@ DECL|variable|QInIdle
 r_static
 r_int
 id|QInIdle
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* idle expects to be called with the IRQ line high -- either because of&n; * an interrupt, or because the line is tri-stated&n; */
 DECL|function|idle
@@ -3233,8 +3219,6 @@ DECL|variable|ltpc_poll_counter
 r_static
 r_int
 id|ltpc_poll_counter
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|ltpc_poll
 r_static

@@ -144,7 +144,7 @@ r_int
 id|ntfs_cluster_t
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Definition of NTFS in-memory inode structure */
+multiline_comment|/* Definition of the NTFS in-memory inode structure. */
 DECL|struct|ntfs_inode_info
 r_struct
 id|ntfs_inode_info
@@ -164,23 +164,24 @@ DECL|member|i_number
 r_int
 id|i_number
 suffix:semicolon
-multiline_comment|/* should be really 48 bits */
+multiline_comment|/* Should be really 48 bits. */
 DECL|member|sequence_number
-r_int
+id|__u16
 id|sequence_number
 suffix:semicolon
+multiline_comment|/* The current sequence number. */
 DECL|member|attr
 r_int
 r_char
 op_star
 id|attr
 suffix:semicolon
-multiline_comment|/* array of the attributes */
+multiline_comment|/* Array of the attributes. */
 DECL|member|attr_count
 r_int
 id|attr_count
 suffix:semicolon
-multiline_comment|/* size of attrs[] */
+multiline_comment|/* Size of attrs[]. */
 DECL|member|attrs
 r_struct
 id|ntfs_attribute
@@ -191,17 +192,15 @@ DECL|member|record_count
 r_int
 id|record_count
 suffix:semicolon
-multiline_comment|/* size of records[] */
-multiline_comment|/* array of the record numbers of the MFT &n;&t;   whose attributes have been inserted in the inode */
+multiline_comment|/* Size of records[]. */
 DECL|member|records
 r_int
 op_star
 id|records
 suffix:semicolon
-(def_block
+multiline_comment|/* Array of the record numbers of the $Mft whose &n;&t;&t;       * attributes have been inserted in the inode. */
 r_union
 (brace
-(def_block
 r_struct
 (brace
 DECL|member|recordsize
@@ -214,12 +213,10 @@ id|clusters_per_record
 suffix:semicolon
 DECL|member|index
 )brace
-)def_block
 id|index
 suffix:semicolon
 DECL|member|u
 )brace
-)def_block
 id|u
 suffix:semicolon
 )brace

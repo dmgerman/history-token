@@ -5028,8 +5028,7 @@ l_string|&quot;ESS1xxx MPU&quot;
 suffix:semicolon
 id|devc-&gt;midi_irq_cookie
 op_assign
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

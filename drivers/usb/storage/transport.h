@@ -134,7 +134,7 @@ multiline_comment|/*&n; * us_bulk_transfer() return codes&n; */
 DECL|macro|US_BULK_TRANSFER_GOOD
 mdefine_line|#define US_BULK_TRANSFER_GOOD&t;&t;0  /* good transfer                 */
 DECL|macro|US_BULK_TRANSFER_SHORT
-mdefine_line|#define US_BULK_TRANSFER_SHORT&t;&t;1  /* transfered less than expected */
+mdefine_line|#define US_BULK_TRANSFER_SHORT&t;&t;1  /* transferred less than expected */
 DECL|macro|US_BULK_TRANSFER_FAILED
 mdefine_line|#define US_BULK_TRANSFER_FAILED&t;&t;2  /* transfer died in the middle   */
 DECL|macro|US_BULK_TRANSFER_ABORTED

@@ -77,16 +77,12 @@ DECL|variable|mmiobase
 r_static
 id|u_long
 id|mmiobase
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* SRAM base address */
 DECL|variable|srambase
 r_static
 id|u_long
 id|srambase
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* SRAM size 8,16,32,64 */
 DECL|variable|sramsize
@@ -229,8 +225,6 @@ r_static
 id|dev_link_t
 op_star
 id|dev_list
-op_assign
-l_int|NULL
 suffix:semicolon
 r_extern
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hfc_pci.h,v 1.8 2000/06/26 08:59:13 keil Exp $&n; *&n; *  specific defines for CCD&squot;s HFC 2BDS0 PCI chips&n; *&n; * Author     Werner Cornelius (werner@isdn4linux.de)      &n; *&n; * Copyright 1999  by Werner Cornelius (werner@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: hfc_pci.h,v 1.8.6.1 2001/04/08 19:32:26 kai Exp $&n; *&n; *  specific defines for CCD&squot;s HFC 2BDS0 PCI chips&n; *&n; * Author     Werner Cornelius (werner@isdn4linux.de)      &n; *&n; * Copyright 1999  by Werner Cornelius (werner@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 multiline_comment|/*********************************************/
 multiline_comment|/* thresholds for transparent B-channel mode */
 multiline_comment|/* change mask and threshold simultaneously  */
@@ -227,6 +227,12 @@ DECL|macro|HFCPCI_FIFOEN_B2
 mdefine_line|#define HFCPCI_FIFOEN_B2     0x0C
 DECL|macro|HFCPCI_FIFOEN_DTX
 mdefine_line|#define HFCPCI_FIFOEN_DTX    0x10
+DECL|macro|HFCPCI_FIFOEN_B1TX
+mdefine_line|#define HFCPCI_FIFOEN_B1TX   0x01
+DECL|macro|HFCPCI_FIFOEN_B1RX
+mdefine_line|#define HFCPCI_FIFOEN_B1RX   0x02
+DECL|macro|HFCPCI_FIFOEN_B2TX
+mdefine_line|#define HFCPCI_FIFOEN_B2TX   0x04
 DECL|macro|HFCPCI_FIFOEN_B2RX
 mdefine_line|#define HFCPCI_FIFOEN_B2RX   0x08
 multiline_comment|/***********************************/

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 macro_line|#ifdef CONFIG_PCI

@@ -3454,12 +3454,6 @@ op_assign
 id|hdlcdrv_get_stats
 suffix:semicolon
 multiline_comment|/* Fill in the fields of the device structure */
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|s-&gt;skb
 op_assign
 l_int|NULL

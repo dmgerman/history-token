@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  olympic.h (c) 1999 Peter De Schrijver All Rights Reserved&n; *                1999 Mike Phillips (mikep@linuxtr.net)&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the olympic and the PIT/PHY chipset.&n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/*&n; *  olympic.h (c) 1999 Peter De Schrijver All Rights Reserved&n; *                1999,2000 Mike Phillips (mikep@linuxtr.net)&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the olympic and the PIT/PHY chipset.&n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; */
 DECL|macro|CID
 mdefine_line|#define CID 0x4e
 DECL|macro|BCTL
@@ -429,6 +429,12 @@ id|__u8
 op_star
 id|olympic_lap
 suffix:semicolon
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
 DECL|member|olympic_card_name
 r_char
 op_star
@@ -464,6 +470,7 @@ DECL|member|trb_wait
 id|wait_queue_head_t
 id|trb_wait
 suffix:semicolon
+multiline_comment|/* These must be on a 4 byte boundary. */
 DECL|member|olympic_rx_ring
 r_struct
 id|olympic_rx_desc
@@ -548,12 +555,15 @@ suffix:semicolon
 DECL|member|olympic_receive_options
 DECL|member|olympic_copy_all_options
 DECL|member|olympic_message_level
+DECL|member|olympic_network_monitor
 id|__u8
 id|olympic_receive_options
 comma
 id|olympic_copy_all_options
 comma
 id|olympic_message_level
+comma
+id|olympic_network_monitor
 suffix:semicolon
 DECL|member|olympic_addr_table_addr
 DECL|member|olympic_parms_addr
@@ -568,6 +578,22 @@ id|olympic_laa
 (braket
 l_int|6
 )braket
+suffix:semicolon
+DECL|member|rx_ring_dma_addr
+id|__u32
+id|rx_ring_dma_addr
+suffix:semicolon
+DECL|member|rx_status_ring_dma_addr
+id|__u32
+id|rx_status_ring_dma_addr
+suffix:semicolon
+DECL|member|tx_ring_dma_addr
+id|__u32
+id|tx_ring_dma_addr
+suffix:semicolon
+DECL|member|tx_status_ring_dma_addr
+id|__u32
+id|tx_status_ring_dma_addr
 suffix:semicolon
 )brace
 suffix:semicolon

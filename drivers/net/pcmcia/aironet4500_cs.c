@@ -161,8 +161,6 @@ r_static
 id|dev_link_t
 op_star
 id|dev_list
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|cs_error
 r_static

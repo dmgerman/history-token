@@ -46,6 +46,19 @@ id|chan
 r_case
 id|CHAN_NDIS_DATA
 suffix:colon
+r_if
+c_cond
+(paren
+id|hynet_enable
+op_amp
+(paren
+l_int|1
+op_lshift
+id|card-&gt;myid
+)paren
+)paren
+(brace
+multiline_comment|/* give packet to network handler */
 id|hysdn_rx_netpkt
 c_func
 (paren
@@ -56,7 +69,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/* give packet to network handler */
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -95,6 +108,18 @@ r_case
 id|CHAN_CAPI
 suffix:colon
 multiline_comment|/* give packet to CAPI handler */
+r_if
+c_cond
+(paren
+id|hycapi_enable
+op_amp
+(paren
+l_int|1
+op_lshift
+id|card-&gt;myid
+)paren
+)paren
+(brace
 id|hycapi_rx_capipkt
 c_func
 (paren
@@ -105,6 +130,7 @@ comma
 id|len
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 macro_line|#endif /* CONFIG_HYSDN_CAPI */
@@ -351,6 +377,16 @@ r_if
 c_cond
 (paren
 (paren
+id|hynet_enable
+op_amp
+(paren
+l_int|1
+op_lshift
+id|card-&gt;myid
+)paren
+)paren
+op_logical_and
+(paren
 id|skb
 op_assign
 id|hysdn_tx_netget
@@ -419,6 +455,19 @@ r_if
 c_cond
 (paren
 (paren
+(paren
+id|hycapi_enable
+op_amp
+(paren
+l_int|1
+op_lshift
+id|card-&gt;myid
+)paren
+)paren
+)paren
+op_logical_and
+(paren
+(paren
 id|skb
 op_assign
 id|hycapi_tx_capiget
@@ -429,6 +478,7 @@ id|card
 )paren
 op_ne
 l_int|NULL
+)paren
 )paren
 (brace
 r_if

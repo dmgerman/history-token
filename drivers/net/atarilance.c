@@ -3,8 +3,9 @@ multiline_comment|/*&n;&t;Written 1995/96 by Roman Hodek (Roman.Hodek@informatik
 DECL|variable|version
 r_static
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;atarilance.c: v1.3 04/04/96 &quot;
 l_string|&quot;Roman.Hodek@informatik.uni-erlangen.de&bslash;n&quot;

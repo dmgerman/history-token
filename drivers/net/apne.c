@@ -213,8 +213,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;apne.c:v1.1 7/10/98 Alain Malek (Alain.Malek@cryogen.ch)&bslash;n&quot;
 suffix:semicolon

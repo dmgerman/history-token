@@ -3,8 +3,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;znet.c:v1.02 9/23/94 becker@cesdis.gsfc.nasa.gov&bslash;n&quot;
 suffix:semicolon

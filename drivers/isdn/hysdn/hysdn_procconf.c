@@ -28,7 +28,7 @@ mdefine_line|#define CONF_STATE_CONF   1&t;/* writing config data */
 DECL|macro|CONF_STATE_POF
 mdefine_line|#define CONF_STATE_POF    2&t;/* writing pof data */
 DECL|macro|CONF_LINE_LEN
-mdefine_line|#define CONF_LINE_LEN    80&t;/* 80 chars max */
+mdefine_line|#define CONF_LINE_LEN   255&t;/* 255 chars max */
 DECL|struct|conf_writedata
 r_struct
 id|conf_writedata

@@ -28,8 +28,6 @@ DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Network device part of the driver */
@@ -389,12 +387,6 @@ suffix:semicolon
 id|dev-&gt;tx_queue_len
 op_assign
 l_int|10
-suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_common.c,v 1.114.6.8 2001/02/16 16:43:22 kai Exp $&n;&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdn_common.c,v 1.114.6.10 2001/04/08 19:14:00 kai Exp $&n;&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -37,7 +37,7 @@ r_char
 op_star
 id|isdn_revision
 op_assign
-l_string|&quot;$Revision: 1.114.6.8 $&quot;
+l_string|&quot;$Revision: 1.114.6.10 $&quot;
 suffix:semicolon
 r_extern
 r_char
@@ -943,13 +943,6 @@ id|isdn_timer_cnt3
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|isdn_timer_cnt4
-r_static
-r_int
-id|isdn_timer_cnt4
-op_assign
-l_int|0
-suffix:semicolon
 r_static
 r_void
 DECL|function|isdn_timer_funct
@@ -1074,7 +1067,7 @@ c_cond
 (paren
 op_increment
 id|isdn_timer_cnt3
-OG
+op_ge
 id|ISDN_TIMER_RINGING
 )paren
 (brace
@@ -1090,32 +1083,6 @@ op_amp
 id|ISDN_TIMER_MODEMRING
 )paren
 id|isdn_tty_modem_ring
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_increment
-id|isdn_timer_cnt4
-OG
-id|ISDN_TIMER_KEEPINT
-)paren
-(brace
-id|isdn_timer_cnt4
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tf
-op_amp
-id|ISDN_TIMER_KEEPALIVE
-)paren
-id|isdn_net_slarp_out
 c_func
 (paren
 )paren

@@ -4,16 +4,18 @@ macro_line|#undef DEBUG_DRIVER
 DECL|variable|version
 r_static
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;sunlance.c:v2.00 11/Sep/99 Miguel de Icaza (miguel@nuclecu.unam.mx)&bslash;n&quot;
 suffix:semicolon
 DECL|variable|lancestr
 r_static
 r_char
-op_star
 id|lancestr
+(braket
+)braket
 op_assign
 l_string|&quot;LANCE&quot;
 suffix:semicolon
@@ -516,8 +518,6 @@ r_struct
 id|lance_private
 op_star
 id|root_lance_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* Load the CSR registers */
 DECL|function|load_csrs
@@ -5983,8 +5983,6 @@ id|lebuffer
 r_static
 r_int
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|lance_private
@@ -6919,8 +6917,6 @@ suffix:semicolon
 r_static
 r_int
 id|called
-op_assign
-l_int|0
 suffix:semicolon
 id|root_lance_dev
 op_assign
@@ -7053,8 +7049,6 @@ suffix:semicolon
 r_static
 r_int
 id|called
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|cards

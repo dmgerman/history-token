@@ -623,7 +623,7 @@ id|TVPADDRW
 op_assign
 l_int|0x00
 comma
-multiline_comment|/* 0  Palette/Cursor RAM Write Adress/Index */
+multiline_comment|/* 0  Palette/Cursor RAM Write Address/Index */
 DECL|enumerator|TVPPDATA
 id|TVPPDATA
 op_assign
@@ -641,7 +641,7 @@ id|TVPPADRR
 op_assign
 l_int|0x0c
 comma
-multiline_comment|/* 3  Palette/Cursor RAM Read Adress */
+multiline_comment|/* 3  Palette/Cursor RAM Read Address */
 DECL|enumerator|TVPCADRW
 id|TVPCADRW
 op_assign

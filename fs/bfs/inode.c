@@ -1141,10 +1141,6 @@ id|s-&gt;s_blocksize_bits
 op_assign
 id|BFS_BSIZE_BITS
 suffix:semicolon
-id|s-&gt;s_maxbytes
-op_assign
-id|MAX_NON_LFS
-suffix:semicolon
 id|bh
 op_assign
 id|bread

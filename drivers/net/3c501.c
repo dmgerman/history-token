@@ -5,8 +5,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;3c501.c: 2000/02/08 Alan Cox (alan@redhat.com).&bslash;n&quot;
 suffix:semicolon

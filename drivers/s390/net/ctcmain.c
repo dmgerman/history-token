@@ -12402,12 +12402,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|dev-&gt;flags
 op_assign
 id|IFF_POINTOPOINT

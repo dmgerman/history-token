@@ -4,8 +4,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;seeq8005.c:v1.00 8/07/95 Hamish Coleman (hamish@zot.apana.org.au)&bslash;n&quot;
 suffix:semicolon

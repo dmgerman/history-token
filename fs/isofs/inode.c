@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * We have no support for &quot;multi volume&quot; CDs, but more and more disks carry&n; * wrong information within the volume descriptors.&n; */
@@ -2369,10 +2370,10 @@ id|opt.iocharset
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; &t; * First of all, get the hardware blocksize for this device.&n; &t; * If we don&squot;t know what it is, or the hardware blocksize is&n; &t; * larger than the blocksize the user specified, then use&n; &t; * that value.&n; &t; */
+multiline_comment|/*&n;&t; * First of all, get the hardware blocksize for this device.&n;&t; * If we don&squot;t know what it is, or the hardware blocksize is&n;&t; * larger than the blocksize the user specified, then use&n;&t; * that value.&n;&t; */
 id|blocksize
 op_assign
-id|get_hardblocksize
+id|get_hardsect_size
 c_func
 (paren
 id|dev
@@ -2386,7 +2387,7 @@ OG
 id|opt.blocksize
 )paren
 (brace
-multiline_comment|/*&n; &t;     * Force the blocksize we are going to use to be the&n; &t;     * hardware blocksize.&n; &t;     */
+multiline_comment|/*&n;&t;     * Force the blocksize we are going to use to be the&n;&t;     * hardware blocksize.&n;&t;     */
 id|opt.blocksize
 op_assign
 id|blocksize
@@ -3034,10 +3035,6 @@ id|MS_RDONLY
 multiline_comment|/* | MS_NODEV | MS_NOSUID */
 suffix:semicolon
 multiline_comment|/* Set this for reference. Its not currently used except on write&n;&t;   which we don&squot;t have .. */
-id|s-&gt;s_maxbytes
-op_assign
-id|MAX_NON_LFS
-suffix:semicolon
 multiline_comment|/* RDE: data zone now byte offset! */
 id|first_data_zone
 op_assign

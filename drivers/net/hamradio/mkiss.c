@@ -4162,12 +4162,6 @@ comma
 id|AX25_ADDR_LEN
 )paren
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/* New-style flags. */
 id|dev-&gt;flags
 op_assign

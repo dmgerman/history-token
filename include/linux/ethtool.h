@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ethtool.h,v 1.2 2000/11/12 10:05:57 davem Exp $&n; * ethtool.h: Defines for Linux ethtool.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: ethtool.h,v 1.2 2000/11/12 10:05:57 davem Exp $&n; * ethtool.h: Defines for Linux ethtool.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; * Copyright 2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n; */
 macro_line|#ifndef _LINUX_ETHTOOL_H
 DECL|macro|_LINUX_ETHTOOL_H
 mdefine_line|#define _LINUX_ETHTOOL_H

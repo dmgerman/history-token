@@ -495,10 +495,6 @@ op_assign
 op_amp
 id|coda_super_operations
 suffix:semicolon
-id|sb-&gt;s_maxbytes
-op_assign
-id|MAX_NON_LFS
-suffix:semicolon
 multiline_comment|/* get root fid from Venus: this needs the root inode */
 id|error
 op_assign

@@ -778,10 +778,6 @@ id|super.root
 )paren
 )paren
 suffix:semicolon
-id|sb-&gt;s_maxbytes
-op_assign
-id|MAX_NON_LFS
-suffix:semicolon
 id|retval
 op_assign
 id|sb

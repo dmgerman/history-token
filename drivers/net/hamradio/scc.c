@@ -366,8 +366,9 @@ DECL|variable|SCC_DriverName
 r_static
 r_int
 r_char
-op_star
 id|SCC_DriverName
+(braket
+)braket
 op_assign
 l_string|&quot;scc&quot;
 suffix:semicolon
@@ -5807,12 +5808,6 @@ op_star
 id|dev
 )paren
 (brace
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|dev-&gt;tx_queue_len
 op_assign
 l_int|16

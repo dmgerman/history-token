@@ -217,6 +217,7 @@ multiline_comment|/* Big problems... */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;VFS: filp allocation failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -233,6 +234,7 @@ id|old_max
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;VFS: file-max limit %d reached&bslash;n&quot;
 comma
 id|files_stat.max_files

@@ -4089,12 +4089,6 @@ id|IFF_POINTOPOINT
 op_or
 id|IFF_NOARP
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 )brace
 DECL|variable|sppp_attach
 id|EXPORT_SYMBOL

@@ -9630,6 +9630,12 @@ r_struct
 id|pci_dev
 op_star
 id|pdev
+comma
+r_int
+id|autoirq
+comma
+r_int
+id|autodma
 )paren
 (brace
 id|u8
@@ -9768,7 +9774,7 @@ suffix:colon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;parport_pc: Via 686A weird parport base 0x%X, ignoring&bslash;n&quot;
+l_string|&quot;parport_pc: Weird Via 686A parport base 0x%X, ignoring&bslash;n&quot;
 comma
 id|port1
 )paren
@@ -9918,6 +9924,35 @@ id|dma
 op_assign
 id|PARPORT_DMA_NONE
 suffix:semicolon
+multiline_comment|/* Let the user (or defaults) steer us away from interrupts and DMA */
+r_if
+c_cond
+(paren
+id|autoirq
+op_ne
+id|PARPORT_IRQ_AUTO
+)paren
+(brace
+id|irq
+op_assign
+id|PARPORT_IRQ_NONE
+suffix:semicolon
+id|dma
+op_assign
+id|PARPORT_DMA_NONE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|autodma
+op_ne
+id|PARPORT_DMA_AUTO
+)paren
+id|dma
+op_assign
+id|PARPORT_DMA_NONE
+suffix:semicolon
 multiline_comment|/* finally, do the probe with values obtained */
 r_if
 c_cond
@@ -10028,6 +10063,12 @@ r_struct
 id|pci_dev
 op_star
 id|pdev
+comma
+r_int
+id|autoirq
+comma
+r_int
+id|autodma
 )paren
 suffix:semicolon
 DECL|variable|__devinitdata
@@ -12159,7 +12200,11 @@ r_int
 id|__init
 id|parport_pc_init_superio
 (paren
-r_void
+r_int
+id|autoirq
+comma
+r_int
+id|autodma
 )paren
 (brace
 macro_line|#ifdef CONFIG_PCI
@@ -12211,6 +12256,10 @@ dot
 id|probe
 (paren
 id|pdev
+comma
+id|autoirq
+comma
+id|autodma
 )paren
 suffix:semicolon
 )brace
@@ -12346,6 +12395,9 @@ id|count
 op_add_assign
 id|parport_pc_init_superio
 (paren
+id|autoirq
+comma
+id|autodma
 )paren
 suffix:semicolon
 multiline_comment|/* ISA ports and whatever (see asm/parport.h). */

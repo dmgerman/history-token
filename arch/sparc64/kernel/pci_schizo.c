@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_schizo.c,v 1.13 2001/03/21 00:29:58 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_schizo.c,v 1.14 2001/04/17 01:19:23 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -2892,6 +2892,14 @@ op_or
 id|SCHIZO_UEAFSR_SDMA
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error_bits
+)paren
+r_return
+suffix:semicolon
 id|schizo_write
 c_func
 (paren
@@ -3267,6 +3275,14 @@ id|SCHIZO_CEAFSR_SPIO
 op_or
 id|SCHIZO_CEAFSR_SDMA
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error_bits
+)paren
+r_return
 suffix:semicolon
 id|schizo_write
 c_func
@@ -3677,6 +3693,14 @@ id|SCHIZO_PCIAFSR_STTO
 op_or
 id|SCHIZO_PCIAFSR_SUNUS
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error_bits
+)paren
+r_return
 suffix:semicolon
 id|schizo_write
 c_func

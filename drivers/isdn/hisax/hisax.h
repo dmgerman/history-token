@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hisax.h,v 2.52.6.3 2001/02/16 16:43:27 kai Exp $&n; *&n; *   Basic declarations, defines and prototypes&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: hisax.h,v 2.52.6.4 2001/04/08 19:32:26 kai Exp $&n; *&n; *   Basic declarations, defines and prototypes&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -2542,6 +2542,14 @@ op_star
 id|fifos
 suffix:semicolon
 multiline_comment|/* FIFO memory */
+DECL|member|last_bfifo_cnt
+r_int
+id|last_bfifo_cnt
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* marker saving last b-fifo frame count */
 DECL|member|timer
 r_struct
 id|timer_list

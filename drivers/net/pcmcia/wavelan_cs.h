@@ -1229,8 +1229,6 @@ r_static
 id|dev_link_t
 op_star
 id|dev_list
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* Linked list of devices */
 multiline_comment|/* WARNING : the following variable MUST be volatile&n; * It is used by wv_82593_cmd to syncronise with wavelan_interrupt */
@@ -1239,8 +1237,6 @@ r_static
 r_volatile
 r_int
 id|wv_wait_completed
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Parameters that can be set with &squot;insmod&squot;&n; * The exact syntax is &squot;insmod wavelan_cs.o &lt;var&gt;=&lt;value&gt;&squot;&n; */
 multiline_comment|/* Bit map of interrupts to choose from */
@@ -1270,8 +1266,6 @@ DECL|variable|mem_speed
 r_static
 r_int
 id|mem_speed
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* New module interface */
 id|MODULE_PARM
@@ -1304,8 +1298,6 @@ DECL|variable|do_roaming
 r_static
 r_int
 id|do_roaming
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func

@@ -403,7 +403,7 @@ mdefine_line|#define E8390_PAGE1&t;0x40&t;/* using the two high-order bits */
 DECL|macro|E8390_PAGE2
 mdefine_line|#define E8390_PAGE2&t;0x80&t;/* Page 3 is invalid. */
 multiline_comment|/*&n; *&t;Only generate indirect loads given a machine that needs them.&n; */
-macro_line|#if defined(CONFIG_MAC) || defined(CONFIG_AMIGA_PCMCIA) || &bslash;&n;    defined(CONFIG_ARIADNE2) || defined(CONFIG_ARIADNE2_MODULE) || &bslash;&n;    defined(CONFIG_HYDRA) || defined(CONFIG_HYDRA_MODULE)
+macro_line|#if defined(CONFIG_MAC) || defined(CONFIG_AMIGA_PCMCIA) || &bslash;&n;    defined(CONFIG_ARIADNE2) || defined(CONFIG_ARIADNE2_MODULE) || &bslash;&n;    defined(CONFIG_HYDRA) || defined(CONFIG_HYDRA_MODULE) || &bslash;&n;    defined(CONFIG_ARM_ETHERH) || defined(CONFIG_ARM_ETHERH_MODULE)
 DECL|macro|EI_SHIFT
 mdefine_line|#define EI_SHIFT(x)&t;(ei_local-&gt;reg_offset[x])
 macro_line|#else

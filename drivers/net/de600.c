@@ -2,8 +2,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;de600.c: $Revision: 1.40 $,  Bjorn Ekwall (bj0rn@blox.se)&bslash;n&quot;
 suffix:semicolon

@@ -811,6 +811,11 @@ suffix:semicolon
 multiline_comment|/* send one cfg line */
 multiline_comment|/* hysdn_net.c */
 r_extern
+r_int
+r_int
+id|hynet_enable
+suffix:semicolon
+r_extern
 r_char
 op_star
 id|hysdn_net_revision
@@ -884,6 +889,11 @@ id|word
 suffix:semicolon
 multiline_comment|/* rxed packet from network */
 macro_line|#ifdef CONFIG_HYSDN_CAPI
+r_extern
+r_int
+r_int
+id|hycapi_enable
+suffix:semicolon
 r_extern
 r_struct
 id|capi_driver_interface
