@@ -75,22 +75,6 @@ macro_line|# endif /* KERNEL */
 multiline_comment|/*&n; * Memory fence w/accept.  This should never be used in code that is&n; * not IA-64 specific.&n; */
 DECL|macro|__ia64_mf_a
 mdefine_line|#define __ia64_mf_a()&t;__asm__ __volatile__ (&quot;mf.a&quot; ::: &quot;memory&quot;)
-multiline_comment|/**&n; * __ia64_mmiob - I/O space memory barrier&n; *&n; * Acts as a memory mapped I/O barrier for platforms that queue writes to&n; * I/O space.  This ensures that subsequent writes to I/O space arrive after&n; * all previous writes.  For most ia64 platforms, this is a simple&n; * &squot;mf.a&squot; instruction, so the address is ignored.  For other platforms,&n; * the address may be required to ensure proper ordering of writes to I/O space&n; * since a &squot;dummy&squot; read might be necessary to barrier the write operation.&n; */
-r_static
-r_inline
-r_void
-DECL|function|__ia64_mmiob
-id|__ia64_mmiob
-(paren
-r_void
-)paren
-(brace
-id|__ia64_mf_a
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 r_static
 r_inline
 r_const
@@ -949,8 +933,6 @@ DECL|macro|__outw
 mdefine_line|#define __outw&t;&t;platform_outw
 DECL|macro|__outl
 mdefine_line|#define __outl&t;&t;platform_outl
-DECL|macro|__mmiob
-mdefine_line|#define __mmiob         platform_mmiob
 DECL|macro|inb
 mdefine_line|#define inb(p)&t;&t;__inb(p)
 DECL|macro|inw
@@ -975,15 +957,13 @@ DECL|macro|outsw
 mdefine_line|#define outsw(p,s,c)&t;__outsw(p,s,c)
 DECL|macro|outsl
 mdefine_line|#define outsl(p,s,c)&t;__outsl(p,s,c)
-DECL|macro|mmiob
-mdefine_line|#define mmiob()&t;&t;__mmiob()
-multiline_comment|/*&n; * The address passed to these functions are ioremap()ped already.&n; */
+multiline_comment|/*&n; * The address passed to these functions are ioremap()ped already.&n; *&n; * We need these to be machine vectors since some platforms don&squot;t provide&n; * DMA coherence via PIO reads (PCI drivers and the spec imply that this is&n; * a good idea).  Writes are ok though for all existing ia64 platforms (and&n; * hopefully it&squot;ll stay that way).&n; */
 r_static
 r_inline
 r_int
 r_char
-DECL|function|__readb
-id|__readb
+DECL|function|__ia64_readb
+id|__ia64_readb
 (paren
 r_void
 op_star
@@ -1005,8 +985,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__readw
-id|__readw
+DECL|function|__ia64_readw
+id|__ia64_readw
 (paren
 r_void
 op_star
@@ -1028,8 +1008,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__readl
-id|__readl
+DECL|function|__ia64_readl
+id|__ia64_readl
 (paren
 r_void
 op_star
@@ -1051,8 +1031,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__readq
-id|__readq
+DECL|function|__ia64_readq
+id|__ia64_readq
 (paren
 r_void
 op_star
@@ -1178,6 +1158,14 @@ op_assign
 id|val
 suffix:semicolon
 )brace
+DECL|macro|__readb
+mdefine_line|#define __readb&t;&t;platform_readb
+DECL|macro|__readw
+mdefine_line|#define __readw&t;&t;platform_readw
+DECL|macro|__readl
+mdefine_line|#define __readl&t;&t;platform_readl
+DECL|macro|__readq
+mdefine_line|#define __readq&t;&t;platform_readq
 DECL|macro|readb
 mdefine_line|#define readb(a)&t;__readb((void *)(a))
 DECL|macro|readw

@@ -411,7 +411,7 @@ multiline_comment|/*&n; * SCSI specific stuff&n; */
 DECL|macro|SBP2_MAX_SG_ELEMENT_LENGTH
 mdefine_line|#define SBP2_MAX_SG_ELEMENT_LENGTH&t;0xf000
 DECL|macro|SBP2SCSI_MAX_SCSI_IDS
-mdefine_line|#define SBP2SCSI_MAX_SCSI_IDS&t;&t;16&t;/* Max sbp2 device instances supported */
+mdefine_line|#define SBP2SCSI_MAX_SCSI_IDS&t;&t;32&t;/* Max sbp2 device instances supported */
 DECL|macro|SBP2_MAX_SECTORS
 mdefine_line|#define SBP2_MAX_SECTORS&t;&t;255&t;/* Max sectors supported */
 macro_line|#ifndef TYPE_SDAD
@@ -1053,6 +1053,9 @@ DECL|macro|SBP2_BREAKAGE_128K_MAX_TRANSFER
 mdefine_line|#define SBP2_BREAKAGE_128K_MAX_TRANSFER&t;&t;0x1
 DECL|macro|SBP2_BREAKAGE_INQUIRY_HACK
 mdefine_line|#define SBP2_BREAKAGE_INQUIRY_HACK&t;&t;0x2
+r_struct
+id|sbp2scsi_host_info
+suffix:semicolon
 multiline_comment|/*&n; * Information needed on a per scsi id basis (one for each sbp2 device)&n; */
 DECL|struct|scsi_id_instance_data
 r_struct
@@ -1190,6 +1193,13 @@ id|node_entry
 op_star
 id|ne
 suffix:semicolon
+multiline_comment|/* A backlink to our host_info */
+DECL|member|hi
+r_struct
+id|sbp2scsi_host_info
+op_star
+id|hi
+suffix:semicolon
 multiline_comment|/* Device specific workarounds/brokeness */
 DECL|member|workarounds
 id|u32
@@ -1249,11 +1259,6 @@ r_struct
 id|scsi_id_instance_data
 op_star
 id|scsi_id
-comma
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
 )paren
 suffix:semicolon
 r_static
@@ -1265,11 +1270,6 @@ r_struct
 id|scsi_id_instance_data
 op_star
 id|scsi_id
-comma
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
 )paren
 suffix:semicolon
 r_static
@@ -1330,11 +1330,6 @@ id|Current_done
 id|Scsi_Cmnd
 op_star
 )paren
-comma
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
 )paren
 suffix:semicolon
 r_static
@@ -1355,7 +1350,9 @@ id|command
 suffix:semicolon
 multiline_comment|/*&n; * IEEE-1394 core driver related prototypes&n; */
 r_static
-r_void
+r_struct
+id|sbp2scsi_host_info
+op_star
 id|sbp2_add_host
 c_func
 (paren
@@ -1395,20 +1392,20 @@ id|sbp2_probe
 c_func
 (paren
 r_struct
-id|unit_directory
+id|device
 op_star
-id|ud
+id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
-id|sbp2_disconnect
+r_int
+id|sbp2_remove
 c_func
 (paren
 r_struct
-id|unit_directory
+id|device
 op_star
-id|ud
+id|dev
 )paren
 suffix:semicolon
 r_static
@@ -1443,11 +1440,6 @@ r_void
 id|sbp2_remove_device
 c_func
 (paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
 r_struct
 id|scsi_id_instance_data
 op_star
@@ -1522,11 +1514,6 @@ id|sbp2_login_device
 c_func
 (paren
 r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
-r_struct
 id|scsi_id_instance_data
 op_star
 id|scsi_id
@@ -1538,11 +1525,6 @@ id|sbp2_reconnect_device
 c_func
 (paren
 r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
-r_struct
 id|scsi_id_instance_data
 op_star
 id|scsi_id
@@ -1553,11 +1535,6 @@ r_int
 id|sbp2_logout_device
 c_func
 (paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
 r_struct
 id|scsi_id_instance_data
 op_star
@@ -1601,11 +1578,6 @@ id|sbp2_agent_reset
 c_func
 (paren
 r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
-r_struct
 id|scsi_id_instance_data
 op_star
 id|scsi_id
@@ -1619,11 +1591,6 @@ r_int
 id|sbp2_create_command_orb
 c_func
 (paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
 r_struct
 id|scsi_id_instance_data
 op_star
@@ -1661,11 +1628,6 @@ id|sbp2_link_orb_command
 c_func
 (paren
 r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
-r_struct
 id|scsi_id_instance_data
 op_star
 id|scsi_id
@@ -1681,11 +1643,6 @@ r_int
 id|sbp2_send_command
 c_func
 (paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
 r_struct
 id|scsi_id_instance_data
 op_star
@@ -1768,11 +1725,6 @@ id|sbp2_set_busy_timeout
 c_func
 (paren
 r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
-r_struct
 id|scsi_id_instance_data
 op_star
 id|scsi_id
@@ -1783,11 +1735,6 @@ r_int
 id|sbp2_max_speed_and_size
 c_func
 (paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
 r_struct
 id|scsi_id_instance_data
 op_star

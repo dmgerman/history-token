@@ -5732,6 +5732,7 @@ id|policy
 comma
 r_struct
 id|sched_param
+id|__user
 op_star
 id|param
 )paren
@@ -6101,6 +6102,7 @@ id|policy
 comma
 r_struct
 id|sched_param
+id|__user
 op_star
 id|param
 )paren
@@ -6129,6 +6131,7 @@ id|pid
 comma
 r_struct
 id|sched_param
+id|__user
 op_star
 id|param
 )paren
@@ -6247,6 +6250,7 @@ id|pid
 comma
 r_struct
 id|sched_param
+id|__user
 op_star
 id|param
 )paren
@@ -6392,6 +6396,7 @@ id|len
 comma
 r_int
 r_int
+id|__user
 op_star
 id|user_mask_ptr
 )paren
@@ -6574,6 +6579,7 @@ id|len
 comma
 r_int
 r_int
+id|__user
 op_star
 id|user_mask_ptr
 )paren
@@ -7028,6 +7034,7 @@ id|pid
 comma
 r_struct
 id|timespec
+id|__user
 op_star
 id|interval
 )paren
@@ -8050,8 +8057,10 @@ op_star
 id|data
 )paren
 (brace
+multiline_comment|/* Marking &quot;param&quot; __user is ok, since we do a set_fs(KERNEL_DS); */
 r_struct
 id|sched_param
+id|__user
 id|param
 op_assign
 (brace

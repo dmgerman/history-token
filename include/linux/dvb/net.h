@@ -25,5 +25,7 @@ DECL|macro|NET_ADD_IF
 mdefine_line|#define NET_ADD_IF                 _IOWR(&squot;o&squot;, 52, struct dvb_net_if)
 DECL|macro|NET_REMOVE_IF
 mdefine_line|#define NET_REMOVE_IF              _IO(&squot;o&squot;, 53)
+DECL|macro|NET_GET_IF
+mdefine_line|#define NET_GET_IF                 _IOWR(&squot;o&squot;, 54, struct dvb_net_if)
 macro_line|#endif /*_DVBNET_H_*/
 eof

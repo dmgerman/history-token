@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
-macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;

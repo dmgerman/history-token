@@ -1,6 +1,7 @@
 macro_line|#ifndef _IEEE1394_HOSTS_H
 DECL|macro|_IEEE1394_HOSTS_H
 mdefine_line|#define _IEEE1394_HOSTS_H
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -166,6 +167,11 @@ r_struct
 id|pci_dev
 op_star
 id|pdev
+suffix:semicolon
+DECL|member|device
+r_struct
+id|device
+id|device
 suffix:semicolon
 )brace
 suffix:semicolon

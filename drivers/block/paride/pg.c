@@ -491,6 +491,7 @@ suffix:semicolon
 multiline_comment|/* transfer size requested */
 DECL|member|timeout
 r_int
+r_int
 id|timeout
 suffix:semicolon
 multiline_comment|/* timeout requested */
@@ -755,6 +756,7 @@ r_int
 id|stop
 comma
 r_int
+r_int
 id|tmo
 comma
 r_char
@@ -772,6 +774,8 @@ comma
 id|s
 comma
 id|p
+comma
+id|to
 suffix:semicolon
 id|PG.status
 op_assign
@@ -815,14 +819,12 @@ id|stop
 )paren
 )paren
 op_logical_and
-(paren
 id|time_before
 c_func
 (paren
 id|jiffies
 comma
 id|tmo
-)paren
 )paren
 )paren
 (brace
@@ -848,6 +850,16 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+id|to
+op_assign
+id|time_after_eq
+c_func
+(paren
+id|jiffies
+comma
+id|tmo
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -861,13 +873,7 @@ id|stop
 )paren
 )paren
 op_logical_or
-id|time_after_eq
-c_func
-(paren
-id|jiffies
-comma
-id|tmo
-)paren
+id|to
 )paren
 (brace
 id|s
@@ -922,13 +928,7 @@ id|e
 comma
 id|p
 comma
-id|time_after_eq
-c_func
-(paren
-id|jiffies
-comma
-id|tmo
-)paren
+id|to
 ques
 c_cond
 l_string|&quot; timeout&quot;
@@ -939,13 +939,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|time_after_eq
-c_func
-(paren
-id|jiffies
-comma
-id|tmo
-)paren
+id|to
 )paren
 id|e
 op_or_assign
@@ -986,6 +980,7 @@ comma
 r_int
 id|dlen
 comma
+r_int
 r_int
 id|tmo
 )paren
@@ -1216,6 +1211,7 @@ r_char
 op_star
 id|buf
 comma
+r_int
 r_int
 id|tmo
 )paren

@@ -70,6 +70,8 @@ DECL|macro|LOSS_CARRIER
 mdefine_line|#define&t;LOSS_CARRIER&t;&t;0x08
 DECL|macro|JABBER_TIMEOUT
 mdefine_line|#define&t;JABBER_TIMEOUT&t;&t;0x04
+DECL|macro|LINK_STATUS
+mdefine_line|#define&t;LINK_STATUS&t;&t;0x01
 DECL|macro|PEGASUS_REQT_READ
 mdefine_line|#define&t;PEGASUS_REQT_READ&t;0xc0
 DECL|macro|PEGASUS_REQT_WRITE

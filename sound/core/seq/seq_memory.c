@@ -887,7 +887,7 @@ op_amp
 id|pool-&gt;lock
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 3, 0)
+macro_line|#ifdef LINUX_2_2
 multiline_comment|/* change semaphore to allow other clients&n;&t;&t;   to access device file */
 r_if
 c_cond
@@ -913,7 +913,7 @@ op_amp
 id|pool-&gt;output_sleep
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 3, 0)
+macro_line|#ifdef LINUX_2_2
 multiline_comment|/* restore semaphore again */
 r_if
 c_cond

@@ -2353,6 +2353,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|snd_seq_oss_readq_put_timestamp
+c_func
+(paren
+id|dp-&gt;readq
+comma
+id|ev-&gt;time.tick
+comma
+id|dp-&gt;seq_mode
+)paren
+suffix:semicolon
 id|snd_seq_oss_readq_put_event
 c_func
 (paren

@@ -1,18 +1,28 @@
 multiline_comment|/*&n; * IEEE 1394 for Linux&n; *&n; * CSR implementation, iso/bus manager implementation.&n; *&n; * Copyright (C) 1999 Andreas E. Bombe&n; *               2002 Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *&n; * This code is licensed under the GPL.  See the file COPYING in the root&n; * directory of the kernel sources for details.&n; *&n; *&n; * Contributions:&n; *&n; * Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *        configuration ROM manipulation&n; *&n; */
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/module.h&gt; /* needed for MODULE_PARM */
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
 multiline_comment|/* Module Parameters */
 multiline_comment|/* this module parameter can be used to disable mapping of the FCP registers */
-id|MODULE_PARM
+DECL|variable|fcp
+r_static
+r_int
+id|fcp
+op_assign
+l_int|1
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|fcp
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -22,13 +32,6 @@ id|fcp
 comma
 l_string|&quot;Map FCP registers (default = 1, disable = 0).&quot;
 )paren
-suffix:semicolon
-DECL|variable|fcp
-r_static
-r_int
-id|fcp
-op_assign
-l_int|1
 suffix:semicolon
 DECL|function|csr_crc16
 r_static

@@ -599,7 +599,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * MS_SYNC syncs the entire file - including mappings.&n; *&n; * MS_ASYNC initiates writeout of just the dirty mapped data.&n; * This provides no guarantee of file integrity - things like indirect&n; * blocks may not have started writeout.  MS_ASYNC is primarily useful&n; * where the application knows that it has finished with the data and&n; * wishes to intelligently schedule its own I/O traffic.&n; */
+multiline_comment|/*&n; * MS_SYNC syncs the entire file - including mappings.&n; *&n; * MS_ASYNC does not start I/O (it used to, up to 2.5.67).  Instead, it just&n; * marks the relevant pages dirty.  The application may now run fsync() to&n; * write out the dirty pages and wait on the writeout and check the result.&n; * Or the application may run fadvise(FADV_DONTNEED) against the fd to start&n; * async writeout immediately.&n; * So my _not_ starting I/O in MS_ASYNC we provide complete flexibility to&n; * applications.&n; */
 DECL|function|msync_interval
 r_static
 r_int
@@ -691,11 +691,7 @@ op_logical_and
 (paren
 id|flags
 op_amp
-(paren
 id|MS_SYNC
-op_or
-id|MS_ASYNC
-)paren
 )paren
 )paren
 (brace
@@ -724,14 +720,6 @@ c_func
 id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|MS_SYNC
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -785,7 +773,6 @@ id|ret
 op_assign
 id|err
 suffix:semicolon
-)brace
 id|up
 c_func
 (paren

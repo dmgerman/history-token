@@ -873,7 +873,7 @@ suffix:colon
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 r_goto
 id|out
@@ -995,7 +995,7 @@ suffix:colon
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 r_goto
 id|out
@@ -1107,7 +1107,7 @@ suffix:colon
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 r_goto
 id|out
@@ -1117,7 +1117,7 @@ r_else
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 id|out
 suffix:colon
@@ -1133,6 +1133,7 @@ c_func
 (paren
 r_struct
 id|new_utsname
+id|__user
 op_star
 id|name
 )paren
@@ -1145,6 +1146,7 @@ c_func
 (paren
 r_struct
 id|new_utsname
+id|__user
 op_star
 id|name
 )paren
@@ -1970,6 +1972,7 @@ id|sys_getdomainname
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|name
 comma
@@ -2021,11 +2024,9 @@ id|len
 OG
 id|__NEW_UTS_LEN
 )paren
-(brace
 r_goto
 id|done
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2039,11 +2040,9 @@ comma
 id|len
 )paren
 )paren
-(brace
 r_goto
 id|done
 suffix:semicolon
-)brace
 id|err
 op_assign
 l_int|0
@@ -2206,13 +2205,11 @@ id|count
 op_le
 l_int|20
 )paren
-(brace
 id|printk
 (paren
 l_string|&quot;SunOS binary emulation not compiled in&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 id|force_sig
 c_func
 (paren
@@ -2243,10 +2240,12 @@ id|utrap_handler_t
 id|new_d
 comma
 id|utrap_handler_t
+id|__user
 op_star
 id|old_p
 comma
 id|utrap_handler_t
+id|__user
 op_star
 id|old_d
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sound/opl3sa2.c&n; *&n; * A low level driver for Yamaha OPL3-SA2 and SA3 cards.&n; * NOTE: All traces of the name OPL3-SAx have now (December 2000) been&n; *       removed from the driver code, as an email exchange with Yamaha&n; *       provided the information that the YMF-719 is indeed just a&n; *       re-badged 715.&n; *&n; * Copyright 1998-2001 Scott Murray &lt;scott@spiteful.org&gt;&n; *&n; * Originally based on the CS4232 driver (in cs4232.c) by Hannu Savolainen&n; * and others.  Now incorporates code/ideas from pss.c, also by Hannu&n; * Savolainen.  Both of those files are distributed with the following&n; * license:&n; *&n; * &quot;Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; *  OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; *  Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; *  for more info.&quot;&n; *&n; * As such, in accordance with the above license, this file, opl3sa2.c, is&n; * distributed under the GNU GENERAL PUBLIC LICENSE (GPL) Version 2 (June 1991).&n; * See the &quot;COPYING&quot; file distributed with this software for more information.&n; *&n; * Change History&n; * --------------&n; * Scott Murray            Original driver (Jun 14, 1998)&n; * Paul J.Y. Lahaie        Changed probing / attach code order&n; * Scott Murray            Added mixer support (Dec 03, 1998)&n; * Scott Murray            Changed detection code to be more forgiving,&n; *                         added force option as last resort,&n; *                         fixed ioctl return values. (Dec 30, 1998)&n; * Scott Murray            Simpler detection code should work all the time now&n; *                         (with thanks to Ben Hutchings for the heuristic),&n; *                         removed now unnecessary force option. (Jan 5, 1999)&n; * Christoph Hellwig&t;   Adapted to module_init/module_exit (Mar 4, 2000)&n; * Scott Murray            Reworked SA2 versus SA3 mixer code, updated chipset&n; *                         version detection code (again!). (Dec 5, 2000)&n; * Scott Murray            Adjusted master volume mixer scaling. (Dec 6, 2000)&n; * Scott Murray            Based on a patch by Joel Yliluoma (aka Bisqwit),&n; *                         integrated wide mixer and adjusted mic, bass, treble&n; *                         scaling. (Dec 6, 2000)&n; * Scott Murray            Based on a patch by Peter Englmaier, integrated&n; *                         ymode and loopback options. (Dec 6, 2000)&n; * Scott Murray            Inspired by a patch by Peter Englmaier, and based on&n; *                         what ALSA does, added initialization code for the&n; *                         default DMA and IRQ settings. (Dec 6, 2000)&n; * Scott Murray            Added some more checks to the card detection code,&n; *                         based on what ALSA does. (Dec 12, 2000)&n; * Scott Murray            Inspired by similar patches from John Fremlin,&n; *                         Jim Radford, Mike Rolig, and Ingmar Steen, added 2.4&n; *                         ISA PnP API support, mainly based on bits from&n; *                         sb_card.c and awe_wave.c. (Dec 12, 2000)&n; * Scott Murray            Some small cleanups to the init code output.&n; *                         (Jan 7, 2001)&n; * Zwane Mwaikambo&t;   Added PM support. (Dec 4 2001)&n; *&n; * Adam Belay              Converted driver to new PnP Layer (Oct 12, 2002)&n; */
+multiline_comment|/*&n; * sound/opl3sa2.c&n; *&n; * A low level driver for Yamaha OPL3-SA2 and SA3 cards.&n; * NOTE: All traces of the name OPL3-SAx have now (December 2000) been&n; *       removed from the driver code, as an email exchange with Yamaha&n; *       provided the information that the YMF-719 is indeed just a&n; *       re-badged 715.&n; *&n; * Copyright 1998-2001 Scott Murray &lt;scott@spiteful.org&gt;&n; *&n; * Originally based on the CS4232 driver (in cs4232.c) by Hannu Savolainen&n; * and others.  Now incorporates code/ideas from pss.c, also by Hannu&n; * Savolainen.  Both of those files are distributed with the following&n; * license:&n; *&n; * &quot;Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; *  OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; *  Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; *  for more info.&quot;&n; *&n; * As such, in accordance with the above license, this file, opl3sa2.c, is&n; * distributed under the GNU GENERAL PUBLIC LICENSE (GPL) Version 2 (June 1991).&n; * See the &quot;COPYING&quot; file distributed with this software for more information.&n; *&n; * Change History&n; * --------------&n; * Scott Murray            Original driver (Jun 14, 1998)&n; * Paul J.Y. Lahaie        Changed probing / attach code order&n; * Scott Murray            Added mixer support (Dec 03, 1998)&n; * Scott Murray            Changed detection code to be more forgiving,&n; *                         added force option as last resort,&n; *                         fixed ioctl return values. (Dec 30, 1998)&n; * Scott Murray            Simpler detection code should work all the time now&n; *                         (with thanks to Ben Hutchings for the heuristic),&n; *                         removed now unnecessary force option. (Jan 5, 1999)&n; * Christoph Hellwig&t;   Adapted to module_init/module_exit (Mar 4, 2000)&n; * Scott Murray            Reworked SA2 versus SA3 mixer code, updated chipset&n; *                         version detection code (again!). (Dec 5, 2000)&n; * Scott Murray            Adjusted master volume mixer scaling. (Dec 6, 2000)&n; * Scott Murray            Based on a patch by Joel Yliluoma (aka Bisqwit),&n; *                         integrated wide mixer and adjusted mic, bass, treble&n; *                         scaling. (Dec 6, 2000)&n; * Scott Murray            Based on a patch by Peter Englmaier, integrated&n; *                         ymode and loopback options. (Dec 6, 2000)&n; * Scott Murray            Inspired by a patch by Peter Englmaier, and based on&n; *                         what ALSA does, added initialization code for the&n; *                         default DMA and IRQ settings. (Dec 6, 2000)&n; * Scott Murray            Added some more checks to the card detection code,&n; *                         based on what ALSA does. (Dec 12, 2000)&n; * Scott Murray            Inspired by similar patches from John Fremlin,&n; *                         Jim Radford, Mike Rolig, and Ingmar Steen, added 2.4&n; *                         ISA PnP API support, mainly based on bits from&n; *                         sb_card.c and awe_wave.c. (Dec 12, 2000)&n; * Scott Murray            Some small cleanups to the init code output.&n; *                         (Jan 7, 2001)&n; * Zwane Mwaikambo&t;   Added PM support. (Dec 4 2001)&n; *&n; * Adam Belay              Converted driver to new PnP Layer (Oct 12, 2002)&n; * Zwane Mwaikambo&t;   Code, data structure cleanups. (Feb 15 2002)&n; * Zwane Mwaikambo&t;   Free resources during auxiliary device probe&n; * &t;&t;&t;   failures (Apr 29 2002)&n; *   &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,6 +8,10 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;ad1848.h&quot;
 macro_line|#include &quot;mpu401.h&quot;
+DECL|macro|OPL3SA2_MODULE_NAME
+mdefine_line|#define OPL3SA2_MODULE_NAME&t;&quot;opl3sa2&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX&t;&t;&t;OPL3SA2_MODULE_NAME &quot;: &quot;
 multiline_comment|/* Useful control port indexes: */
 DECL|macro|OPL3SA2_PM
 mdefine_line|#define OPL3SA2_PM&t;     0x01
@@ -39,12 +43,14 @@ mdefine_line|#define DEFAULT_MIC    50
 DECL|macro|DEFAULT_TIMBRE
 mdefine_line|#define DEFAULT_TIMBRE 0
 multiline_comment|/* Power saving modes */
+DECL|macro|OPL3SA2_PM_MODE0
+mdefine_line|#define OPL3SA2_PM_MODE0&t;0x00
 DECL|macro|OPL3SA2_PM_MODE1
-mdefine_line|#define OPL3SA2_PM_MODE1&t;0x05
+mdefine_line|#define OPL3SA2_PM_MODE1&t;0x04&t;/* PSV */
 DECL|macro|OPL3SA2_PM_MODE2
-mdefine_line|#define OPL3SA2_PM_MODE2&t;0x04
+mdefine_line|#define OPL3SA2_PM_MODE2&t;0x05&t;/* PSV | PDX */
 DECL|macro|OPL3SA2_PM_MODE3
-mdefine_line|#define OPL3SA2_PM_MODE3&t;0x03
+mdefine_line|#define OPL3SA2_PM_MODE3&t;0x27&t;/* ADOWN | PSV | PDN | PDX */
 multiline_comment|/* For checking against what the card returns: */
 DECL|macro|VERSION_UNKNOWN
 mdefine_line|#define VERSION_UNKNOWN 0
@@ -64,6 +70,21 @@ DECL|macro|CHIPSET_OPL3SA2
 mdefine_line|#define CHIPSET_OPL3SA2 0
 DECL|macro|CHIPSET_OPL3SA3
 mdefine_line|#define CHIPSET_OPL3SA3 1
+DECL|variable|CHIPSET_TABLE
+r_static
+r_const
+r_char
+op_star
+id|CHIPSET_TABLE
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;OPL3-SA2&quot;
+comma
+l_string|&quot;OPL3-SA3&quot;
+)brace
+suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
 DECL|macro|OPL3SA2_CARDS_MAX
 mdefine_line|#define OPL3SA2_CARDS_MAX 4
@@ -78,66 +99,45 @@ r_int
 id|opl3sa2_cards_num
 suffix:semicolon
 multiline_comment|/* = 0 */
-multiline_comment|/* What&squot;s my version(s)? */
-DECL|variable|chipset
-r_static
-r_int
-id|chipset
-(braket
-id|OPL3SA2_CARDS_MAX
-)braket
-op_assign
-(brace
-id|CHIPSET_UNKNOWN
-)brace
-suffix:semicolon
-multiline_comment|/* Oh well, let&squot;s just cache the name(s) */
-DECL|variable|chipset_name
-r_static
-r_char
-id|chipset_name
-(braket
-id|OPL3SA2_CARDS_MAX
-)braket
-(braket
-l_int|12
-)braket
-suffix:semicolon
-multiline_comment|/* Where&squot;s my mixer(s)? */
-DECL|variable|opl3sa2_mixer
-r_static
-r_int
-id|opl3sa2_mixer
-(braket
-id|OPL3SA2_CARDS_MAX
-)braket
-op_assign
-(brace
-op_minus
-l_int|1
-)brace
-suffix:semicolon
-multiline_comment|/* Bag o&squot; mixer data */
-DECL|struct|opl3sa2_mixerdata_tag
 r_typedef
 r_struct
-id|opl3sa2_mixerdata_tag
 (brace
+multiline_comment|/* device resources */
 DECL|member|cfg_port
 r_int
 r_int
 id|cfg_port
 suffix:semicolon
-DECL|member|padding
-r_int
-r_int
-id|padding
+DECL|member|cfg
+r_struct
+id|address_info
+id|cfg
 suffix:semicolon
-DECL|member|reg
-r_int
-r_char
-id|reg
+DECL|member|cfg_mss
+r_struct
+id|address_info
+id|cfg_mss
 suffix:semicolon
+DECL|member|cfg_mpu
+r_struct
+id|address_info
+id|cfg_mpu
+suffix:semicolon
+macro_line|#ifdef CONFIG_PNP
+multiline_comment|/* PnP Stuff */
+DECL|member|pdev
+r_struct
+id|pnp_dev
+op_star
+id|pdev
+suffix:semicolon
+DECL|member|activated
+r_int
+id|activated
+suffix:semicolon
+multiline_comment|/* Whether said devices have been activated */
+macro_line|#endif
+macro_line|#ifdef CONFIG_PM
 DECL|member|in_suspend
 r_int
 r_int
@@ -149,10 +149,26 @@ id|pm_dev
 op_star
 id|pmdev
 suffix:semicolon
+macro_line|#endif
 DECL|member|card
 r_int
 r_int
 id|card
+suffix:semicolon
+DECL|member|chipset
+r_int
+id|chipset
+suffix:semicolon
+multiline_comment|/* What&squot;s my version(s)? */
+DECL|member|chipset_name
+r_char
+op_star
+id|chipset_name
+suffix:semicolon
+multiline_comment|/* mixer data */
+DECL|member|mixer
+r_int
+id|mixer
 suffix:semicolon
 DECL|member|volume_l
 r_int
@@ -199,49 +215,22 @@ r_int
 r_int
 id|wide_r
 suffix:semicolon
-DECL|typedef|opl3sa2_mixerdata
+DECL|typedef|opl3sa2_state_t
 )brace
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 suffix:semicolon
-DECL|variable|opl3sa2_data
+DECL|variable|opl3sa2_state
 r_static
-id|opl3sa2_mixerdata
-id|opl3sa2_data
+id|opl3sa2_state_t
+id|opl3sa2_state
 (braket
 id|OPL3SA2_CARDS_MAX
 )braket
 suffix:semicolon
-DECL|variable|cfg
-r_static
-r_struct
-id|address_info
-id|cfg
-(braket
-id|OPL3SA2_CARDS_MAX
-)braket
-suffix:semicolon
-DECL|variable|cfg_mss
-r_static
-r_struct
-id|address_info
-id|cfg_mss
-(braket
-id|OPL3SA2_CARDS_MAX
-)braket
-suffix:semicolon
-DECL|variable|cfg_mpu
-r_static
-r_struct
-id|address_info
-id|cfg_mpu
-(braket
-id|OPL3SA2_CARDS_MAX
-)braket
-suffix:semicolon
-DECL|variable|lock
+DECL|variable|opl3sa2_lock
 r_static
 id|spinlock_t
-id|lock
+id|opl3sa2_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -639,7 +628,7 @@ r_void
 id|opl3sa2_set_volume
 c_func
 (paren
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 id|devc
 comma
@@ -933,7 +922,7 @@ r_void
 id|opl3sa2_set_mic
 c_func
 (paren
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 id|devc
 comma
@@ -1010,7 +999,7 @@ r_void
 id|opl3sa3_set_bass
 c_func
 (paren
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 id|devc
 comma
@@ -1088,7 +1077,7 @@ r_void
 id|opl3sa3_set_treble
 c_func
 (paren
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 id|devc
 comma
@@ -1166,7 +1155,7 @@ r_void
 id|opl3sa3_set_wide
 c_func
 (paren
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 id|devc
 comma
@@ -1244,12 +1233,9 @@ r_void
 id|opl3sa2_mixer_reset
 c_func
 (paren
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 id|devc
-comma
-r_int
-id|card
 )paren
 (brace
 r_if
@@ -1289,10 +1275,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|chipset
-(braket
-id|card
-)braket
+id|devc-&gt;chipset
 op_eq
 id|CHIPSET_OPL3SA3
 )paren
@@ -1338,12 +1321,9 @@ r_void
 id|opl3sa2_mixer_restore
 c_func
 (paren
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 id|devc
-comma
-r_int
-id|card
 )paren
 (brace
 r_if
@@ -1373,10 +1353,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|chipset
-(braket
-id|card
-)braket
+id|devc-&gt;chipset
 op_eq
 id|CHIPSET_OPL3SA3
 )paren
@@ -1558,20 +1535,15 @@ id|cmd
 op_amp
 l_int|0xff
 suffix:semicolon
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 id|devc
 op_assign
-(paren
-id|opl3sa2_mixerdata
-op_star
-)paren
-id|mixer_devs
+op_amp
+id|opl3sa2_state
 (braket
 id|dev
 )braket
-op_member_access_from_pointer
-id|devc
 suffix:semicolon
 r_switch
 c_cond
@@ -1624,12 +1596,10 @@ l_int|0xff
 op_ne
 l_char|&squot;M&squot;
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1910,20 +1880,15 @@ id|cmd
 op_amp
 l_int|0xff
 suffix:semicolon
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 id|devc
 op_assign
-(paren
-id|opl3sa2_mixerdata
-op_star
-)paren
-id|mixer_devs
+op_amp
+id|opl3sa2_state
 (braket
 id|dev
 )braket
-op_member_access_from_pointer
-id|devc
 suffix:semicolon
 r_switch
 c_cond
@@ -1977,12 +1942,10 @@ l_int|0xff
 op_ne
 l_char|&squot;M&squot;
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2292,20 +2255,24 @@ id|mixer_operations
 id|opl3sa2_mixer_operations
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|id
-suffix:colon
+op_assign
 l_string|&quot;OPL3-SA2&quot;
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Yamaha OPL3-SA2&quot;
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|opl3sa2_mixer_ioctl
 )brace
 suffix:semicolon
@@ -2316,20 +2283,24 @@ id|mixer_operations
 id|opl3sa3_mixer_operations
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|id
-suffix:colon
+op_assign
 l_string|&quot;OPL3-SA3&quot;
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Yamaha OPL3-SA3&quot;
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|opl3sa3_mixer_ioctl
 )brace
 suffix:semicolon
@@ -2360,7 +2331,7 @@ suffix:semicolon
 DECL|function|attach_opl3sa2_mpu
 r_static
 r_inline
-r_void
+r_int
 id|__init
 id|attach_opl3sa2_mpu
 c_func
@@ -2371,6 +2342,7 @@ op_star
 id|hw_config
 )paren
 (brace
+r_return
 id|attach_mpu401
 c_func
 (paren
@@ -2509,7 +2481,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;opl3sa2: MSS mixer not installed?&bslash;n&quot;
+id|PFX
+l_string|&quot;MSS mixer not installed?&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2564,19 +2537,19 @@ r_int
 r_char
 id|version
 suffix:semicolon
-r_char
-id|tag
-suffix:semicolon
-multiline_comment|/*&n;&t; * Verify that the I/O port range is free.&n;&t; */
+multiline_comment|/*&n;&t; * Try and allocate our I/O port range.&n;&t; */
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|hw_config-&gt;io_base
 comma
 l_int|2
+comma
+id|OPL3SA2_MODULE_NAME
 )paren
 )paren
 (brace
@@ -2584,13 +2557,14 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;opl3sa2: Control I/O port %#x not free&bslash;n&quot;
+id|PFX
+l_string|&quot;Control I/O port %#x not free&bslash;n&quot;
 comma
 id|hw_config-&gt;io_base
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_nodev
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Check if writing to the read-only version bits of the miscellaneous&n;&t; * register succeeds or not (it should not).&n;&t; */
@@ -2640,13 +2614,14 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;opl3sa2: Control I/O port %#x is not a YMF7xx chipset!&bslash;n&quot;
+id|PFX
+l_string|&quot;Control I/O port %#x is not a YMF7xx chipset!&bslash;n&quot;
 comma
 id|hw_config-&gt;io_base
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_region
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Check if the MIC register is accessible.&n;&t; */
@@ -2698,13 +2673,14 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;opl3sa2: Control I/O port %#x is not a YMF7xx chipset!&bslash;n&quot;
+id|PFX
+l_string|&quot;Control I/O port %#x is not a YMF7xx chipset!&bslash;n&quot;
 comma
 id|hw_config-&gt;io_base
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_region
 suffix:semicolon
 )brace
 id|opl3sa2_write
@@ -2728,7 +2704,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;opl3sa2: chipset version = %#x&bslash;n&quot;
+id|PFX
+l_string|&quot;Chipset version = %#x&bslash;n&quot;
 comma
 id|version
 )paren
@@ -2742,23 +2719,21 @@ id|version
 r_case
 l_int|0
 suffix:colon
-id|chipset
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|chipset
 op_assign
 id|CHIPSET_UNKNOWN
 suffix:semicolon
-id|tag
-op_assign
-l_char|&squot;?&squot;
-suffix:semicolon
-multiline_comment|/* silence compiler warning */
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;opl3sa2: Unknown Yamaha audio controller version&bslash;n&quot;
+id|PFX
+l_string|&quot;Unknown Yamaha audio controller version&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2766,22 +2741,21 @@ suffix:semicolon
 r_case
 id|VERSION_YMF711
 suffix:colon
-id|chipset
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|chipset
 op_assign
 id|CHIPSET_OPL3SA2
-suffix:semicolon
-id|tag
-op_assign
-l_char|&squot;2&squot;
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;opl3sa2: Found OPL3-SA2 (YMF711)&bslash;n&quot;
+id|PFX
+l_string|&quot;Found OPL3-SA2 (YMF711)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2789,22 +2763,21 @@ suffix:semicolon
 r_case
 id|VERSION_YMF715
 suffix:colon
-id|chipset
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|chipset
 op_assign
 id|CHIPSET_OPL3SA3
-suffix:semicolon
-id|tag
-op_assign
-l_char|&squot;3&squot;
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;opl3sa2: Found OPL3-SA3 (YMF715 or YMF719)&bslash;n&quot;
+id|PFX
+l_string|&quot;Found OPL3-SA3 (YMF715 or YMF719)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2812,22 +2785,21 @@ suffix:semicolon
 r_case
 id|VERSION_YMF715B
 suffix:colon
-id|chipset
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|chipset
 op_assign
 id|CHIPSET_OPL3SA3
-suffix:semicolon
-id|tag
-op_assign
-l_char|&squot;3&squot;
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;opl3sa2: Found OPL3-SA3 (YMF715B or YMF719B)&bslash;n&quot;
+id|PFX
+l_string|&quot;Found OPL3-SA3 (YMF715B or YMF719B)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2837,22 +2809,21 @@ id|VERSION_YMF715E
 suffix:colon
 r_default
 suffix:colon
-id|chipset
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|chipset
 op_assign
 id|CHIPSET_OPL3SA3
-suffix:semicolon
-id|tag
-op_assign
-l_char|&squot;3&squot;
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;opl3sa2: Found OPL3-SA3 (YMF715E or YMF719E)&bslash;n&quot;
+id|PFX
+l_string|&quot;Found OPL3-SA3 (YMF715E or YMF719E)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2861,34 +2832,57 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|chipset
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|chipset
 op_ne
 id|CHIPSET_UNKNOWN
 )paren
 (brace
 multiline_comment|/* Generate a pretty name */
-id|sprintf
-c_func
-(paren
-id|chipset_name
+id|opl3sa2_state
 (braket
 id|card
 )braket
-comma
-l_string|&quot;OPL3-SA%c&quot;
-comma
-id|tag
+dot
+id|chipset_name
+op_assign
+(paren
+r_char
+op_star
 )paren
+id|CHIPSET_TABLE
+(braket
+id|opl3sa2_state
+(braket
+id|card
+)braket
+dot
+id|chipset
+)braket
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 r_return
 l_int|0
+suffix:semicolon
+)brace
+id|out_region
+suffix:colon
+id|release_region
+c_func
+(paren
+id|hw_config-&gt;io_base
+comma
+l_int|2
+)paren
+suffix:semicolon
+id|out_nodev
+suffix:colon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|attach_opl3sa2
@@ -2907,19 +2901,6 @@ r_int
 id|card
 )paren
 (brace
-id|request_region
-c_func
-(paren
-id|hw_config-&gt;io_base
-comma
-l_int|2
-comma
-id|chipset_name
-(braket
-id|card
-)braket
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize IRQ configuration to IRQ-B: -, IRQ-A: WSS+MPU+OPL3 */
 id|opl3sa2_write
 c_func
@@ -2988,18 +2969,21 @@ id|mixer_operations
 op_star
 id|mixer_operations
 suffix:semicolon
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 id|devc
+op_assign
+op_amp
+id|opl3sa2_state
+(braket
+id|card
+)braket
 suffix:semicolon
 multiline_comment|/* Install master mixer */
 r_if
 c_cond
 (paren
-id|chipset
-(braket
-id|card
-)braket
+id|devc-&gt;chipset
 op_eq
 id|CHIPSET_OPL3SA3
 )paren
@@ -3018,28 +3002,11 @@ op_amp
 id|opl3sa2_mixer_operations
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
-id|devc
-op_assign
-op_amp
-id|opl3sa2_data
-(braket
-id|card
-)braket
-)paren
-)paren
-(brace
 id|devc-&gt;cfg_port
 op_assign
 id|hw_config-&gt;io_base
 suffix:semicolon
-id|opl3sa2_mixer
-(braket
-id|card
-)braket
+id|devc-&gt;mixer
 op_assign
 id|sound_install_mixer
 c_func
@@ -3062,10 +3029,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|opl3sa2_mixer
-(braket
-id|card
-)braket
+id|devc-&gt;mixer
 OL
 l_int|0
 )paren
@@ -3074,19 +3038,19 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;opl3sa2: Could not install %s master mixer&bslash;n&quot;
+id|PFX
+l_string|&quot;Could not install %s master mixer&bslash;n&quot;
 comma
 id|mixer_operations-&gt;name
 )paren
 suffix:semicolon
 )brace
 r_else
+(brace
 id|opl3sa2_mixer_reset
 c_func
 (paren
 id|devc
-comma
-id|card
 )paren
 suffix:semicolon
 )brace
@@ -3211,7 +3175,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;opl3sa2: not setting ymode, it must be one of 0,1,2,3&bslash;n&quot;
+id|PFX
+l_string|&quot;not setting ymode, it must be one of 0,1,2,3&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3294,7 +3259,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;opl3sa2: not setting loopback, it must be either 0 or 1&bslash;n&quot;
+id|PFX
+l_string|&quot;not setting loopback, it must be either 0 or 1&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3328,10 +3294,12 @@ multiline_comment|/* Unload mixer */
 r_if
 c_cond
 (paren
-id|opl3sa2_mixer
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|mixer
 op_ge
 l_int|0
 )paren
@@ -3339,10 +3307,12 @@ l_int|0
 id|sound_unload_mixerdev
 c_func
 (paren
-id|opl3sa2_mixer
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|mixer
 )paren
 suffix:semicolon
 )brace
@@ -3407,6 +3377,7 @@ id|card
 op_assign
 id|opl3sa2_cards_num
 suffix:semicolon
+multiline_comment|/* we don&squot;t actually want to return an error as the user may have specified&n;&t; * no multiple card search&n;&t; */
 r_if
 c_cond
 (paren
@@ -3425,12 +3396,12 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Our own config: */
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|io_base
+id|cfg.io_base
 op_assign
 id|pnp_port_start
 c_func
@@ -3440,12 +3411,12 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|irq
+id|cfg.irq
 op_assign
 id|pnp_irq
 c_func
@@ -3455,12 +3426,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|dma
+id|cfg.dma
 op_assign
 id|pnp_dma
 c_func
@@ -3470,12 +3441,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|dma2
+id|cfg.dma2
 op_assign
 id|pnp_dma
 c_func
@@ -3486,12 +3457,12 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* The MSS config: */
-id|cfg_mss
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|io_base
+id|cfg_mss.io_base
 op_assign
 id|pnp_port_start
 c_func
@@ -3501,12 +3472,12 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|cfg_mss
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|irq
+id|cfg_mss.irq
 op_assign
 id|pnp_irq
 c_func
@@ -3516,12 +3487,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|cfg_mss
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|dma
+id|cfg_mss.dma
 op_assign
 id|pnp_dma
 c_func
@@ -3531,12 +3502,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|cfg_mss
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|dma2
+id|cfg_mss.dma2
 op_assign
 id|pnp_dma
 c_func
@@ -3546,22 +3517,22 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|cfg_mss
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|card_subtype
+id|cfg_mss.card_subtype
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* No IRQ or DMA setup */
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|io_base
+id|cfg_mpu.io_base
 op_assign
 id|pnp_port_start
 c_func
@@ -3571,12 +3542,12 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|irq
+id|cfg_mpu.irq
 op_assign
 id|pnp_irq
 c_func
@@ -3586,32 +3557,32 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|dma
+id|cfg_mpu.dma
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|dma2
+id|cfg_mpu.dma2
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|always_detect
+id|cfg_mpu.always_detect
 op_assign
 l_int|1
 suffix:semicolon
@@ -3621,36 +3592,44 @@ id|opl3sa2_clear_slots
 c_func
 (paren
 op_amp
+id|opl3sa2_state
+(braket
+id|card
+)braket
+dot
 id|cfg
-(braket
-id|card
-)braket
 )paren
 suffix:semicolon
 id|opl3sa2_clear_slots
 c_func
 (paren
 op_amp
+id|opl3sa2_state
+(braket
+id|card
+)braket
+dot
 id|cfg_mss
-(braket
-id|card
-)braket
 )paren
 suffix:semicolon
 id|opl3sa2_clear_slots
 c_func
 (paren
 op_amp
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg_mpu
 )paren
 suffix:semicolon
-id|opl3sa2_dev
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|pdev
 op_assign
 id|dev
 suffix:semicolon
@@ -3687,6 +3666,7 @@ comma
 suffix:semicolon
 macro_line|#endif /* CONFIG_PNP */
 multiline_comment|/* End of component functions */
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/* Power Management support functions */
 DECL|function|opl3sa2_suspend
 r_static
@@ -3700,7 +3680,7 @@ op_star
 id|pdev
 comma
 r_int
-r_char
+r_int
 id|pm_mode
 )paren
 (brace
@@ -3708,7 +3688,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 id|p
 suffix:semicolon
@@ -3726,7 +3706,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|opl3sa2_lock
 comma
 id|flags
 )paren
@@ -3734,14 +3714,10 @@ suffix:semicolon
 id|p
 op_assign
 (paren
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 )paren
 id|pdev-&gt;data
-suffix:semicolon
-id|p-&gt;in_suspend
-op_assign
-l_int|1
 suffix:semicolon
 r_switch
 c_cond
@@ -3778,25 +3754,26 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|pm_mode
-op_assign
-id|OPL3SA2_PM_MODE3
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* its supposed to automute before suspending, so we won&squot;t bother */
-id|opl3sa2_read
+multiline_comment|/* we don&squot;t know howto handle this... */
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|p-&gt;cfg_port
-comma
-id|OPL3SA2_PM
-comma
 op_amp
-id|p-&gt;reg
+id|opl3sa2_lock
+comma
+id|flags
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+id|p-&gt;in_suspend
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* its supposed to automute before suspending, so we won&squot;t bother */
 id|opl3sa2_write
 c_func
 (paren
@@ -3804,16 +3781,21 @@ id|p-&gt;cfg_port
 comma
 id|OPL3SA2_PM
 comma
-id|p-&gt;reg
-op_or
 id|pm_mode
+)paren
+suffix:semicolon
+multiline_comment|/* wait a while for the clock oscillator to stabilise */
+id|mdelay
+c_func
+(paren
+l_int|10
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|opl3sa2_lock
 comma
 id|flags
 )paren
@@ -3838,7 +3820,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 id|p
 suffix:semicolon
@@ -3855,7 +3837,7 @@ suffix:semicolon
 id|p
 op_assign
 (paren
-id|opl3sa2_mixerdata
+id|opl3sa2_state_t
 op_star
 )paren
 id|pdev-&gt;data
@@ -3864,7 +3846,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|opl3sa2_lock
 comma
 id|flags
 )paren
@@ -3877,15 +3859,13 @@ id|p-&gt;cfg_port
 comma
 id|OPL3SA2_PM
 comma
-id|p-&gt;reg
+id|OPL3SA2_PM_MODE0
 )paren
 suffix:semicolon
 id|opl3sa2_mixer_restore
 c_func
 (paren
 id|p
-comma
-id|p-&gt;card
 )paren
 suffix:semicolon
 id|p-&gt;in_suspend
@@ -3896,7 +3876,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|opl3sa2_lock
 comma
 id|flags
 )paren
@@ -3905,6 +3885,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PM */
 DECL|function|opl3sa2_pm_callback
 r_static
 r_int
@@ -3980,8 +3961,7 @@ r_void
 (brace
 r_int
 id|card
-suffix:semicolon
-r_int
+comma
 id|max
 suffix:semicolon
 multiline_comment|/* Sanitize isapnp and multiple settings */
@@ -4045,7 +4025,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;opl3sa2: No PnP cards found&bslash;n&quot;
+id|PFX
+l_string|&quot;No PnP cards found&bslash;n&quot;
 )paren
 suffix:semicolon
 id|isapnp
@@ -4115,135 +4096,136 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;opl3sa2: io, mss_io, irq, dma, and dma2 must be set&bslash;n&quot;
+id|PFX
+l_string|&quot;io, mss_io, irq, dma, and dma2 must be set&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 id|opl3sa2_cards_num
 op_increment
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t;&t; * Our own config:&n;&t;&t;&t; * (NOTE: IRQ and DMA aren&squot;t used, so they&squot;re set to&n;&t;&t;&t; *  give pretty output from conf_printf. :)&n;&t;&t;&t; */
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|io_base
+id|cfg.io_base
 op_assign
 id|io
 suffix:semicolon
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|irq
+id|cfg.irq
 op_assign
 id|irq
 suffix:semicolon
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|dma
+id|cfg.dma
 op_assign
 id|dma
 suffix:semicolon
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|dma2
+id|cfg.dma2
 op_assign
 id|dma2
 suffix:semicolon
 multiline_comment|/* The MSS config: */
-id|cfg_mss
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|io_base
+id|cfg_mss.io_base
 op_assign
 id|mss_io
 suffix:semicolon
-id|cfg_mss
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|irq
+id|cfg_mss.irq
 op_assign
 id|irq
 suffix:semicolon
-id|cfg_mss
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|dma
+id|cfg_mss.dma
 op_assign
 id|dma
 suffix:semicolon
-id|cfg_mss
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|dma2
+id|cfg_mss.dma2
 op_assign
 id|dma2
 suffix:semicolon
-id|cfg_mss
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|card_subtype
+id|cfg_mss.card_subtype
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* No IRQ or DMA setup */
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|io_base
+id|cfg_mpu.io_base
 op_assign
 id|mpu_io
 suffix:semicolon
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|irq
+id|cfg_mpu.irq
 op_assign
 id|irq
 suffix:semicolon
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|dma
+id|cfg_mpu.dma
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|always_detect
+id|cfg_mpu.always_detect
 op_assign
 l_int|1
 suffix:semicolon
@@ -4253,62 +4235,91 @@ id|opl3sa2_clear_slots
 c_func
 (paren
 op_amp
+id|opl3sa2_state
+(braket
+id|card
+)braket
+dot
 id|cfg
-(braket
-id|card
-)braket
 )paren
 suffix:semicolon
 id|opl3sa2_clear_slots
 c_func
 (paren
 op_amp
+id|opl3sa2_state
+(braket
+id|card
+)braket
+dot
 id|cfg_mss
-(braket
-id|card
-)braket
 )paren
 suffix:semicolon
 id|opl3sa2_clear_slots
 c_func
 (paren
 op_amp
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg_mpu
 )paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-op_logical_neg
 id|probe_opl3sa2
 c_func
 (paren
 op_amp
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg
 comma
 id|card
 )paren
-op_logical_or
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|probe_opl3sa2_mss
 c_func
 (paren
 op_amp
-id|cfg_mss
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg_mss
 )paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * If one or more cards are already registered, don&squot;t&n;&t;&t;&t; * return an error but print a warning.  Note, this&n;&t;&t;&t; * should never really happen unless the hardware or&n;&t;&t;&t; * ISA PnP screwed up.&n;&t;&t;&t; */
+id|release_region
+c_func
+(paren
+id|opl3sa2_state
+(braket
+id|card
+)braket
+dot
+id|cfg.io_base
+comma
+l_int|2
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4319,7 +4330,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;opl3sa2: There was a problem probing one &quot;
+id|PFX
+l_string|&quot;There was a problem probing one &quot;
 l_string|&quot; of the ISA PNP cards, continuing&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4339,10 +4351,12 @@ id|attach_opl3sa2
 c_func
 (paren
 op_amp
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg
 comma
 id|card
 )paren
@@ -4350,41 +4364,50 @@ suffix:semicolon
 id|conf_printf
 c_func
 (paren
-id|chipset_name
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|chipset_name
 comma
 op_amp
+id|opl3sa2_state
+(braket
+id|card
+)braket
+dot
 id|cfg
-(braket
-id|card
-)braket
-)paren
-suffix:semicolon
-id|attach_opl3sa2_mss
-c_func
-(paren
-op_amp
-id|cfg_mss
-(braket
-id|card
-)braket
 )paren
 suffix:semicolon
 id|attach_opl3sa2_mixer
 c_func
 (paren
 op_amp
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg
 comma
 id|card
 )paren
 suffix:semicolon
-id|opl3sa2_data
+id|attach_opl3sa2_mss
+c_func
+(paren
+op_amp
+id|opl3sa2_state
+(braket
+id|card
+)braket
+dot
+id|cfg_mss
+)paren
+suffix:semicolon
+multiline_comment|/* ewww =) */
+id|opl3sa2_state
 (braket
 id|card
 )braket
@@ -4393,8 +4416,9 @@ id|card
 op_assign
 id|card
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/* register our power management capabilities */
-id|opl3sa2_data
+id|opl3sa2_state
 (braket
 id|card
 )braket
@@ -4414,14 +4438,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|opl3sa2_data
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
 id|pmdev
 )paren
-id|opl3sa2_data
+id|opl3sa2_state
 (braket
 id|card
 )braket
@@ -4429,11 +4453,12 @@ dot
 id|pmdev-&gt;data
 op_assign
 op_amp
-id|opl3sa2_data
+id|opl3sa2_state
 (braket
 id|card
 )braket
 suffix:semicolon
+macro_line|#endif /* CONFIG_PM */
 multiline_comment|/*&n;&t;&t; * Set the Yamaha 3D enhancement mode (aka Ymersion) if asked to and&n;&t;&t; * it&squot;s supported.&n;&t;&t; */
 r_if
 c_cond
@@ -4447,10 +4472,12 @@ l_int|1
 r_if
 c_cond
 (paren
-id|chipset
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|chipset
 op_eq
 id|CHIPSET_OPL3SA2
 )paren
@@ -4459,7 +4486,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;opl3sa2: ymode not supported on OPL3-SA2&bslash;n&quot;
+id|PFX
+l_string|&quot;ymode not supported on OPL3-SA2&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4469,10 +4497,12 @@ id|opl3sa2_set_ymode
 c_func
 (paren
 op_amp
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg
 comma
 id|ymode
 )paren
@@ -4493,25 +4523,27 @@ id|opl3sa2_set_loopback
 c_func
 (paren
 op_amp
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg
 comma
 id|loopback
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Attach MPU if we&squot;ve been asked to do so */
+multiline_comment|/* Attach MPU if we&squot;ve been asked to do so, failure isn&squot;t fatal */
 r_if
 c_cond
 (paren
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|io_base
+id|cfg_mpu.io_base
 op_ne
 op_minus
 l_int|1
@@ -4524,23 +4556,53 @@ id|probe_opl3sa2_mpu
 c_func
 (paren
 op_amp
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg_mpu
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|attach_opl3sa2_mpu
 c_func
 (paren
 op_amp
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg_mpu
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;failed to attach MPU401&bslash;n&quot;
 )paren
 suffix:semicolon
+id|opl3sa2_state
+(braket
+id|card
+)braket
+dot
+id|cfg_mpu.slots
+(braket
+l_int|1
+)braket
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 )brace
 )brace
 )brace
@@ -4554,7 +4616,8 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;opl3sa2: %d PnP card(s) found.&bslash;n&quot;
+id|PFX
+l_string|&quot;%d PnP card(s) found.&bslash;n&quot;
 comma
 id|opl3sa2_cards_num
 )paren
@@ -4596,7 +4659,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|opl3sa2_data
+id|opl3sa2_state
 (braket
 id|card
 )braket
@@ -4606,7 +4669,7 @@ id|pmdev
 id|pm_unregister
 c_func
 (paren
-id|opl3sa2_data
+id|opl3sa2_state
 (braket
 id|card
 )braket
@@ -4617,12 +4680,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
 dot
-id|slots
+id|cfg_mpu.slots
 (braket
 l_int|1
 )braket
@@ -4635,10 +4698,12 @@ id|unload_opl3sa2_mpu
 c_func
 (paren
 op_amp
-id|cfg_mpu
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg_mpu
 )paren
 suffix:semicolon
 )brace
@@ -4646,20 +4711,24 @@ id|unload_opl3sa2_mss
 c_func
 (paren
 op_amp
-id|cfg_mss
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg_mss
 )paren
 suffix:semicolon
 id|unload_opl3sa2
 c_func
 (paren
 op_amp
-id|cfg
+id|opl3sa2_state
 (braket
 id|card
 )braket
+dot
+id|cfg
 comma
 id|card
 )paren

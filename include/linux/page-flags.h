@@ -69,12 +69,6 @@ r_int
 id|nr_page_table_pages
 suffix:semicolon
 multiline_comment|/* Pages used for pagetables */
-DECL|member|nr_reverse_maps
-r_int
-r_int
-id|nr_reverse_maps
-suffix:semicolon
-multiline_comment|/* includes PageDirect */
 DECL|member|nr_mapped
 r_int
 r_int

@@ -4150,7 +4150,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#if defined(CONFIG_BRIDGE) || defined (CONFIG_BRIDGE_MODULE)
 DECL|variable|br_handle_frame_hook
 r_int
 (paren
@@ -4166,7 +4166,6 @@ id|skb
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 DECL|function|handle_bridge
 r_static
 id|__inline__
@@ -4243,6 +4242,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_NET_DIVERT
 DECL|function|handle_diverter
 r_static
@@ -4479,8 +4479,6 @@ r_if
 c_cond
 (paren
 id|skb-&gt;dev-&gt;br_port
-op_logical_and
-id|br_handle_frame_hook
 )paren
 (brace
 r_int
@@ -9232,6 +9230,8 @@ id|decl_subsys
 c_func
 (paren
 id|net
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren

@@ -11,9 +11,7 @@ macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -34,13 +32,6 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 DECL|macro|PALINFO_VERSION
 mdefine_line|#define PALINFO_VERSION &quot;0.5&quot;
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|cpu_is_online
-mdefine_line|#define cpu_is_online(i) (cpu_online_map &amp; (1UL &lt;&lt; i))
-macro_line|#else
-DECL|macro|cpu_is_online
-mdefine_line|#define cpu_is_online(i)&t;1
-macro_line|#endif
 DECL|typedef|palinfo_func_t
 r_typedef
 r_int
@@ -3583,7 +3574,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_is_online
+id|cpu_online
 c_func
 (paren
 id|i

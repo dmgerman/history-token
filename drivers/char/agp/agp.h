@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * AGPGART&n; * Copyright (C) 2002 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
+multiline_comment|/*&n; * AGPGART&n; * Copyright (C) 2002-2003 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
 macro_line|#ifndef _AGP_BACKEND_PRIV_H
 DECL|macro|_AGP_BACKEND_PRIV_H
 mdefine_line|#define _AGP_BACKEND_PRIV_H 1
@@ -73,7 +73,6 @@ suffix:semicolon
 macro_line|#else
 DECL|function|global_cache_flush
 r_static
-r_inline
 r_void
 id|global_cache_flush
 c_func
@@ -764,6 +763,8 @@ DECL|macro|INTEL_I7505_ERRSTS
 mdefine_line|#define INTEL_I7505_ERRSTS&t;0x42
 DECL|macro|INTEL_I7505_AGPCTRL
 mdefine_line|#define INTEL_I7505_AGPCTRL&t;0x70
+DECL|macro|INTEL_I7505_MCHCFG
+mdefine_line|#define INTEL_I7505_MCHCFG&t;0x50
 multiline_comment|/* VIA register */
 DECL|macro|VIA_APBASE
 mdefine_line|#define VIA_APBASE&t;0x10
@@ -954,15 +955,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Generic routines. */
 r_void
-id|agp_generic_agp_enable
-c_func
-(paren
-id|u32
-id|mode
-)paren
-suffix:semicolon
-r_void
-id|agp_generic_agp_3_0_enable
+id|agp_generic_enable
 c_func
 (paren
 id|u32
@@ -1128,6 +1121,17 @@ id|command
 comma
 r_int
 id|agp_v3
+)paren
+suffix:semicolon
+r_int
+id|agp_3_0_node_enable
+c_func
+(paren
+id|u32
+id|mode
+comma
+id|u32
+id|minor
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_PRIV_H */

@@ -161,4 +161,13 @@ op_star
 id|ac97
 )paren
 suffix:semicolon
+r_int
+id|patch_cm9739
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
 eof

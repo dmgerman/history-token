@@ -81,10 +81,16 @@ c_cond
 op_logical_neg
 id|mapping
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|bdi
 op_assign
 id|mapping-&gt;backing_dev_info
@@ -227,6 +233,8 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 id|fput
 c_func
 (paren

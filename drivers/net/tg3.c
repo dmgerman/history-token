@@ -7270,10 +7270,10 @@ comma
 id|mapping
 )paren
 comma
+id|skb_headlen
+c_func
 (paren
-id|skb-&gt;len
-op_minus
-id|skb-&gt;data_len
+id|skb
 )paren
 comma
 id|PCI_DMA_TODEVICE
@@ -9637,9 +9637,11 @@ l_int|0
 )paren
 id|len
 op_assign
-id|skb-&gt;len
-op_minus
-id|skb-&gt;data_len
+id|skb_headlen
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 r_else
 id|len
@@ -10121,10 +10123,10 @@ id|flags
 suffix:semicolon
 id|len
 op_assign
+id|skb_headlen
+c_func
 (paren
-id|skb-&gt;len
-op_minus
-id|skb-&gt;data_len
+id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* No BH disabling for tx_lock here.  We are running in BH disabled&n;&t; * context and TX reclaim runs via tp-&gt;poll inside of a software&n;&t; * interrupt.  Rejoice!&n;&t; *&n;&t; * Actually, things are not so simple.  If we are to take a hw&n;&t; * IRQ here, we can deadlock, consider:&n;&t; *&n;&t; *       CPU1&t;&t;CPU2&n;&t; *   tg3_start_xmit&n;&t; *   take tp-&gt;tx_lock&n;&t; *&t;&t;&t;tg3_timer&n;&t; *&t;&t;&t;take tp-&gt;lock&n;&t; *   tg3_interrupt&n;&t; *   spin on tp-&gt;lock&n;&t; *&t;&t;&t;spin on tp-&gt;tx_lock&n;&t; *&n;&t; * So we really do need to disable interrupts when taking&n;&t; * tx_lock here.&n;&t; */
@@ -10674,9 +10676,11 @@ l_int|0
 )paren
 id|len
 op_assign
-id|skb-&gt;len
-op_minus
-id|skb-&gt;data_len
+id|skb_headlen
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 r_else
 id|len
@@ -10956,10 +10960,10 @@ id|flags
 suffix:semicolon
 id|len
 op_assign
+id|skb_headlen
+c_func
 (paren
-id|skb-&gt;len
-op_minus
-id|skb-&gt;data_len
+id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* No BH disabling for tx_lock here.  We are running in BH disabled&n;&t; * context and TX reclaim runs via tp-&gt;poll inside of a software&n;&t; * interrupt.  Rejoice!&n;&t; *&n;&t; * Actually, things are not so simple.  If we are to take a hw&n;&t; * IRQ here, we can deadlock, consider:&n;&t; *&n;&t; *       CPU1&t;&t;CPU2&n;&t; *   tg3_start_xmit&n;&t; *   take tp-&gt;tx_lock&n;&t; *&t;&t;&t;tg3_timer&n;&t; *&t;&t;&t;take tp-&gt;lock&n;&t; *   tg3_interrupt&n;&t; *   spin on tp-&gt;lock&n;&t; *&t;&t;&t;spin on tp-&gt;tx_lock&n;&t; *&n;&t; * So we really do need to disable interrupts when taking&n;&t; * tx_lock here.&n;&t; */
@@ -11900,10 +11904,10 @@ comma
 id|mapping
 )paren
 comma
+id|skb_headlen
+c_func
 (paren
-id|skb-&gt;len
-op_minus
-id|skb-&gt;data_len
+id|skb
 )paren
 comma
 id|PCI_DMA_TODEVICE

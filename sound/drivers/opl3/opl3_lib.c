@@ -2026,10 +2026,10 @@ id|OPL3_RIGHT
 op_or
 id|OPL3_REG_MODE
 comma
-l_int|0x00
+id|OPL3_OPL3_ENABLE
 )paren
 suffix:semicolon
-multiline_comment|/* Enter OPL2 mode */
+multiline_comment|/* Enter OPL3 mode */
 )brace
 r_if
 c_cond

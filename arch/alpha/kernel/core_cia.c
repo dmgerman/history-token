@@ -2454,7 +2454,7 @@ op_assign
 id|temp
 suffix:semicolon
 )brace
-multiline_comment|/* Syncronize with all previous changes.  */
+multiline_comment|/* Synchronize with all previous changes.  */
 id|mb
 c_func
 (paren

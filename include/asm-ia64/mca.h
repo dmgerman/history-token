@@ -27,7 +27,7 @@ l_int|1
 )brace
 suffix:semicolon
 DECL|macro|IA64_MCA_RENDEZ_TIMEOUT
-mdefine_line|#define IA64_MCA_RENDEZ_TIMEOUT&t;&t;(100 * HZ)&t;/* 1000 milliseconds */
+mdefine_line|#define IA64_MCA_RENDEZ_TIMEOUT&t;&t;(20 * 1000)&t;/* value in milliseconds - 20 seconds */
 DECL|macro|IA64_CMC_INT_DISABLE
 mdefine_line|#define IA64_CMC_INT_DISABLE&t;&t;0
 DECL|macro|IA64_CMC_INT_ENABLE

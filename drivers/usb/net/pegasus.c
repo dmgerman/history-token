@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;pegasus.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.5.9 (2002/12/31)&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.5.10 (2003/04/01)&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;petkan@users.sourceforge.net&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -316,7 +316,7 @@ c_func
 (paren
 id|size
 comma
-id|GFP_KERNEL
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -579,7 +579,7 @@ c_func
 (paren
 id|size
 comma
-id|GFP_KERNEL
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -837,7 +837,7 @@ c_func
 (paren
 l_int|1
 comma
-id|GFP_KERNEL
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -925,10 +925,9 @@ id|PEGASUS_REQ_SET_REG
 suffix:semicolon
 id|pegasus-&gt;dr.wValue
 op_assign
-id|cpu_to_le16p
+id|cpu_to_le16
 c_func
 (paren
-op_amp
 id|data
 )paren
 suffix:semicolon
@@ -3538,20 +3537,13 @@ c_cond
 (paren
 id|d
 (braket
-l_int|0
+l_int|5
 )braket
 op_amp
-(paren
-id|NO_CARRIER
-op_or
-id|LOSS_CARRIER
-)paren
+id|LINK_STATUS
 )paren
 (brace
-id|pegasus-&gt;stats.tx_carrier_errors
-op_increment
-suffix:semicolon
-id|netif_carrier_off
+id|netif_carrier_on
 c_func
 (paren
 id|net
@@ -3560,7 +3552,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|netif_carrier_on
+id|pegasus-&gt;stats.tx_carrier_errors
+op_increment
+suffix:semicolon
+id|netif_carrier_off
 c_func
 (paren
 id|net
@@ -5878,34 +5873,6 @@ id|id
 op_minus
 id|pegasus_ids
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|usb_set_configuration
-c_func
-(paren
-id|dev
-comma
-id|dev-&gt;config
-(braket
-l_int|0
-)braket
-dot
-id|desc.bConfigurationValue
-)paren
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;usb_set_configuration() failed&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

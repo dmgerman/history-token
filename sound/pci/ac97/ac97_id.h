@@ -51,4 +51,8 @@ DECL|macro|AC97_ID_YMF753
 mdefine_line|#define AC97_ID_YMF753&t;&t;0x594d4803
 DECL|macro|AC97_ID_VT1616
 mdefine_line|#define AC97_ID_VT1616&t;&t;0x49434551
+DECL|macro|AC97_ID_CM9738
+mdefine_line|#define AC97_ID_CM9738&t;&t;0x434d4941
+DECL|macro|AC97_ID_CM9739
+mdefine_line|#define AC97_ID_CM9739&t;&t;0x434d4961
 eof

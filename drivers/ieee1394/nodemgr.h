@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 2000&t;Andreas E. Bombe&n; *            
 macro_line|#ifndef _IEEE1394_NODEMGR_H
 DECL|macro|_IEEE1394_NODEMGR_H
 mdefine_line|#define _IEEE1394_NODEMGR_H
+macro_line|#include &lt;linux/device.h&gt;
 DECL|macro|CONFIG_ROM_BUS_INFO_LENGTH
 mdefine_line|#define CONFIG_ROM_BUS_INFO_LENGTH(q)&t;&t;((q) &gt;&gt; 24)
 DECL|macro|CONFIG_ROM_BUS_CRC_LENGTH
@@ -117,6 +118,19 @@ suffix:semicolon
 multiline_comment|/* Maximum packet size node can receive */
 )brace
 suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|DEV_CLASS_NODE
+id|DEV_CLASS_NODE
+comma
+DECL|enumerator|DEV_CLASS_UNIT_DIRECTORY
+id|DEV_CLASS_UNIT_DIRECTORY
+comma
+DECL|enumerator|DEV_CLASS_HOST
+id|DEV_CLASS_HOST
+comma
+)brace
+suffix:semicolon
 DECL|macro|UNIT_DIRECTORY_VENDOR_ID
 mdefine_line|#define UNIT_DIRECTORY_VENDOR_ID&t;0x01
 DECL|macro|UNIT_DIRECTORY_MODEL_ID
@@ -129,7 +143,7 @@ DECL|macro|UNIT_DIRECTORY_VENDOR_TEXT
 mdefine_line|#define UNIT_DIRECTORY_VENDOR_TEXT&t;0x10
 DECL|macro|UNIT_DIRECTORY_MODEL_TEXT
 mdefine_line|#define UNIT_DIRECTORY_MODEL_TEXT&t;0x20
-multiline_comment|/*&n; * A unit directory corresponds to a protocol supported by the&n; * node. If a node supports eg. IP/1394 and AV/C, its config rom has a&n; * unit directory for each of these protocols.&n; * &n; * Unit directories appear on two types of lists: for each node we&n; * maintain a list of the unit directories found in its config rom and&n; * for each driver we maintain a list of the unit directories&n; * (ie. devices) the driver manages.&n; */
+multiline_comment|/*&n; * A unit directory corresponds to a protocol supported by the&n; * node. If a node supports eg. IP/1394 and AV/C, its config rom has a&n; * unit directory for each of these protocols.&n; */
 DECL|struct|unit_directory
 r_struct
 id|unit_directory
@@ -161,6 +175,12 @@ r_char
 op_star
 id|vendor_name
 suffix:semicolon
+DECL|member|vendor_oui
+r_const
+r_char
+op_star
+id|vendor_oui
+suffix:semicolon
 DECL|member|vendor_name_size
 r_int
 id|vendor_name_size
@@ -187,34 +207,22 @@ DECL|member|version
 id|quadlet_t
 id|version
 suffix:semicolon
-DECL|member|driver
-r_struct
-id|hpsb_protocol_driver
-op_star
-id|driver
-suffix:semicolon
-DECL|member|driver_data
-r_void
-op_star
-id|driver_data
-suffix:semicolon
-multiline_comment|/* For linking the nodes managed by the driver, or unmanaged nodes */
-DECL|member|driver_list
-r_struct
-id|list_head
-id|driver_list
-suffix:semicolon
-multiline_comment|/* For linking directories belonging to a node */
-DECL|member|node_list
-r_struct
-id|list_head
-id|node_list
-suffix:semicolon
-DECL|member|count
+DECL|member|id
 r_int
-id|count
+r_int
+id|id
+suffix:semicolon
+DECL|member|length
+r_int
+id|length
 suffix:semicolon
 multiline_comment|/* Number of quadlets */
+DECL|member|device
+r_struct
+id|device
+id|device
+suffix:semicolon
+multiline_comment|/* XXX Must be last in the struct! */
 DECL|member|quadlets
 id|quadlet_t
 id|quadlets
@@ -228,16 +236,23 @@ DECL|struct|node_entry
 r_struct
 id|node_entry
 (brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
 DECL|member|guid
 id|u64
 id|guid
 suffix:semicolon
 multiline_comment|/* GUID of this node */
+DECL|member|guid_vendor_id
+id|u32
+id|guid_vendor_id
+suffix:semicolon
+multiline_comment|/* Top 24bits of guid */
+DECL|member|guid_vendor_oui
+r_const
+r_char
+op_star
+id|guid_vendor_oui
+suffix:semicolon
+multiline_comment|/* OUI name of guid vendor id */
 DECL|member|host
 r_struct
 id|hpsb_host
@@ -267,14 +282,21 @@ DECL|member|vendor_id
 id|u32
 id|vendor_id
 suffix:semicolon
+DECL|member|vendor_name
+r_const
+r_char
+op_star
+id|vendor_name
+suffix:semicolon
+DECL|member|vendor_oui
+r_const
+r_char
+op_star
+id|vendor_oui
+suffix:semicolon
 DECL|member|capabilities
 id|u32
 id|capabilities
-suffix:semicolon
-DECL|member|unit_directories
-r_struct
-id|list_head
-id|unit_directories
 suffix:semicolon
 DECL|member|tpool
 r_struct
@@ -282,17 +304,12 @@ id|hpsb_tlabel_pool
 op_star
 id|tpool
 suffix:semicolon
-DECL|member|vendor_name
-r_const
-r_char
-op_star
-id|vendor_name
+DECL|member|device
+r_struct
+id|device
+id|device
 suffix:semicolon
-DECL|member|oui_name
-r_char
-op_star
-id|oui_name
-suffix:semicolon
+multiline_comment|/* XXX Must be last in the struct! */
 DECL|member|quadlets
 id|quadlet_t
 id|quadlets
@@ -343,6 +360,11 @@ op_star
 id|hpsb_nodeid_get_entry
 c_func
 (paren
+r_struct
+id|hpsb_host
+op_star
+id|host
+comma
 id|nodeid_t
 id|nodeid
 )paren
@@ -354,6 +376,11 @@ op_star
 id|hpsb_check_nodeid
 c_func
 (paren
+r_struct
+id|hpsb_host
+op_star
+id|host
+comma
 id|nodeid_t
 id|nodeid
 )paren
@@ -454,8 +481,7 @@ r_void
 id|init_ieee1394_nodemgr
 c_func
 (paren
-r_int
-id|disable_hotplug
+r_void
 )paren
 suffix:semicolon
 r_void

@@ -2,12 +2,11 @@ macro_line|#ifndef _ASM_IA64_UNALIGNED_H
 DECL|macro|_ASM_IA64_UNALIGNED_H
 mdefine_line|#define _ASM_IA64_UNALIGNED_H
 macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/*&n; * The main single-value unaligned transfer routines.  Derived from&n; * the Linux/Alpha version.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * The main single-value unaligned transfer routines.  Derived from&n; * the Linux/Alpha version.&n; *&n; * Copyright (C) 1998, 1999, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 DECL|macro|get_unaligned
 mdefine_line|#define get_unaligned(ptr) &bslash;&n;&t;((__typeof__(*(ptr)))ia64_get_unaligned((ptr), sizeof(*(ptr))))
 DECL|macro|put_unaligned
 mdefine_line|#define put_unaligned(x,ptr) &bslash;&n;&t;ia64_put_unaligned((unsigned long)(x), (ptr), sizeof(*(ptr)))
-multiline_comment|/*&n; * EGCS 1.1 knows about arbitrary unaligned loads.  Define some&n; * packed structures to talk about such things with.&n; */
 DECL|struct|__una_u64
 DECL|member|x
 r_struct
@@ -63,14 +62,14 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__uldq
-id|__uldq
+DECL|function|__uld8
+id|__uld8
 (paren
 r_const
 r_int
 r_int
 op_star
-id|r11
+id|addr
 )paren
 (brace
 r_const
@@ -85,7 +84,7 @@ r_struct
 id|__una_u64
 op_star
 )paren
-id|r11
+id|addr
 suffix:semicolon
 r_return
 id|ptr-&gt;x
@@ -95,14 +94,14 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__uldl
-id|__uldl
+DECL|function|__uld4
+id|__uld4
 (paren
 r_const
 r_int
 r_int
 op_star
-id|r11
+id|addr
 )paren
 (brace
 r_const
@@ -117,7 +116,7 @@ r_struct
 id|__una_u32
 op_star
 )paren
-id|r11
+id|addr
 suffix:semicolon
 r_return
 id|ptr-&gt;x
@@ -127,14 +126,14 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__uldw
-id|__uldw
+DECL|function|__uld2
+id|__uld2
 (paren
 r_const
 r_int
 r_int
 op_star
-id|r11
+id|addr
 )paren
 (brace
 r_const
@@ -149,7 +148,7 @@ r_struct
 id|__una_u16
 op_star
 )paren
-id|r11
+id|addr
 suffix:semicolon
 r_return
 id|ptr-&gt;x
@@ -158,17 +157,17 @@ suffix:semicolon
 r_static
 r_inline
 r_void
-DECL|function|__ustq
-id|__ustq
+DECL|function|__ust8
+id|__ust8
 (paren
 r_int
 r_int
-id|r5
+id|val
 comma
 r_int
 r_int
 op_star
-id|r11
+id|addr
 )paren
 (brace
 r_struct
@@ -181,27 +180,27 @@ r_struct
 id|__una_u64
 op_star
 )paren
-id|r11
+id|addr
 suffix:semicolon
 id|ptr-&gt;x
 op_assign
-id|r5
+id|val
 suffix:semicolon
 )brace
 r_static
 r_inline
 r_void
-DECL|function|__ustl
-id|__ustl
+DECL|function|__ust4
+id|__ust4
 (paren
 r_int
 r_int
-id|r5
+id|val
 comma
 r_int
 r_int
 op_star
-id|r11
+id|addr
 )paren
 (brace
 r_struct
@@ -214,27 +213,27 @@ r_struct
 id|__una_u32
 op_star
 )paren
-id|r11
+id|addr
 suffix:semicolon
 id|ptr-&gt;x
 op_assign
-id|r5
+id|val
 suffix:semicolon
 )brace
 r_static
 r_inline
 r_void
-DECL|function|__ustw
-id|__ustw
+DECL|function|__ust2
+id|__ust2
 (paren
 r_int
 r_int
-id|r5
+id|val
 comma
 r_int
 r_int
 op_star
-id|r11
+id|addr
 )paren
 (brace
 r_struct
@@ -247,14 +246,14 @@ r_struct
 id|__una_u16
 op_star
 )paren
-id|r11
+id|addr
 suffix:semicolon
 id|ptr-&gt;x
 op_assign
-id|r5
+id|val
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function doesn&squot;t actually exist.  The idea is that when&n; * someone uses the macros below with an unsupported size (datatype),&n; * the linker will alert us to the problem via an unresolved reference&n; * error.&n; */
+multiline_comment|/*&n; * This function doesn&squot;t actually exist.  The idea is that when someone uses the macros&n; * below with an unsupported size (datatype), the linker will alert us to the problem via&n; * an unresolved reference error.&n; */
 r_extern
 r_int
 r_int
@@ -264,8 +263,8 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|ia64_get_unaligned
-mdefine_line|#define ia64_get_unaligned(_ptr,size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *ptr = (_ptr);&t;&t;&t;&t;&bslash;&n;&t;unsigned long val;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 1:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;val = *(const unsigned char *) ptr;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 2:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;val = __uldw((const unsigned short *)ptr);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 4:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;val = __uldl((const unsigned int *)ptr);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 8:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;val = __uldq((const unsigned long *)ptr);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      default:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;val = ia64_bad_unaligned_access_length();&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ia64_get_unaligned(_ptr,size)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__ia64_ptr = (_ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __ia64_val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 1:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ia64_val = *(const unsigned char *) __ia64_ptr;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 2:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ia64_val = __uld2((const unsigned short *)__ia64_ptr);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 4:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ia64_val = __uld4((const unsigned int *)__ia64_ptr);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 8:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ia64_val = __uld8((const unsigned long *)__ia64_ptr);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      default:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ia64_val = ia64_bad_unaligned_access_length();&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__ia64_val;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|ia64_put_unaligned
-mdefine_line|#define ia64_put_unaligned(_val,_ptr,size)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *ptr = (_ptr);&t;&t;&t;&bslash;&n;&t;unsigned long val = (_val);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&bslash;&n;&t;      case 1:&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(unsigned char *)ptr = (val);&t;&t;&bslash;&n;&t;        break;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 2:&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ustw(val, (unsigned short *)ptr);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 4:&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ustl(val, (unsigned int *)ptr);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 8:&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ustq(val, (unsigned long *)ptr);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;      default:&t;&t;&t;&t;&t;&bslash;&n;&t;    &t;ia64_bad_unaligned_access_length();&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define ia64_put_unaligned(_val,_ptr,size)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__ia64_ptr = (_ptr);&t;&t;&t;&t;&bslash;&n;&t;unsigned long __ia64_val = (_val);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 1:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(unsigned char *)__ia64_ptr = (__ia64_val);&t;&t;&bslash;&n;&t;        break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 2:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ust2(__ia64_val, (unsigned short *)__ia64_ptr);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 4:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ust4(__ia64_val, (unsigned int *)__ia64_ptr);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 8:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ust8(__ia64_val, (unsigned long *)__ia64_ptr);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      default:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    &t;ia64_bad_unaligned_access_length();&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* _ASM_IA64_UNALIGNED_H */
 eof

@@ -574,6 +574,14 @@ id|no_swap_incoming
 suffix:colon
 l_int|1
 suffix:semicolon
+multiline_comment|/* Force extra paranoia checking on bus-reset handling */
+DECL|member|check_busreset
+r_int
+r_int
+id|check_busreset
+suffix:colon
+l_int|1
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|cross_bound
@@ -742,6 +750,20 @@ DECL|macro|OHCI1394_HCControlSet
 mdefine_line|#define OHCI1394_HCControlSet                 0x050
 DECL|macro|OHCI1394_HCControlClear
 mdefine_line|#define OHCI1394_HCControlClear               0x054
+DECL|macro|OHCI1394_HCControl_noByteSwap
+mdefine_line|#define  OHCI1394_HCControl_noByteSwap&t;&t;0x40000000
+DECL|macro|OHCI1394_HCControl_programPhyEnable
+mdefine_line|#define  OHCI1394_HCControl_programPhyEnable&t;0x00800000
+DECL|macro|OHCI1394_HCControl_aPhyEnhanceEnable
+mdefine_line|#define  OHCI1394_HCControl_aPhyEnhanceEnable&t;0x00400000
+DECL|macro|OHCI1394_HCControl_LPS
+mdefine_line|#define  OHCI1394_HCControl_LPS&t;&t;&t;0x00080000
+DECL|macro|OHCI1394_HCControl_postedWriteEnable
+mdefine_line|#define  OHCI1394_HCControl_postedWriteEnable&t;0x00040000
+DECL|macro|OHCI1394_HCControl_linkEnable
+mdefine_line|#define  OHCI1394_HCControl_linkEnable&t;&t;0x00020000
+DECL|macro|OHCI1394_HCControl_softReset
+mdefine_line|#define  OHCI1394_HCControl_softReset&t;&t;0x00010000
 DECL|macro|OHCI1394_SelfIDBuffer
 mdefine_line|#define OHCI1394_SelfIDBuffer                 0x064
 DECL|macro|OHCI1394_SelfIDCount

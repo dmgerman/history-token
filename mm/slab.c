@@ -557,6 +557,10 @@ op_assign
 DECL|macro|CACHE
 mdefine_line|#define CACHE(x) { .name = &quot;size-&quot; #x, .name_dma = &quot;size-&quot; #x &quot;(DMA)&quot; },
 macro_line|#include &lt;linux/kmalloc_sizes.h&gt;
+(brace
+l_int|0
+comma
+)brace
 DECL|macro|CACHE
 macro_line|#undef CACHE
 )brace

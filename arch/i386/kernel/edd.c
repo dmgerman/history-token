@@ -2999,6 +2999,8 @@ id|edd
 comma
 op_amp
 id|ktype_edd
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * edd_dev_is_type() - is this EDD device a &squot;type&squot; device?&n; * @edev&n; * @type - a host bus or interface identifier string per the EDD spec&n; *&n; * Returns 1 (TRUE) if it is a &squot;type&squot; device, 0 otherwise.&n; */

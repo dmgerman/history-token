@@ -1747,7 +1747,7 @@ id|cards
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR

@@ -62,6 +62,8 @@ DECL|macro|_SUN4C_PAGE_PRESENT
 mdefine_line|#define _SUN4C_PAGE_PRESENT      0x08000000   /* implemented in software */
 DECL|macro|_SUN4C_PAGE_IO
 mdefine_line|#define _SUN4C_PAGE_IO           0x04000000   /* I/O page */
+DECL|macro|_SUN4C_PAGE_FILE
+mdefine_line|#define _SUN4C_PAGE_FILE         0x02000000   /* implemented in software */
 DECL|macro|_SUN4C_PAGE_READ
 mdefine_line|#define _SUN4C_PAGE_READ         0x00800000   /* implemented in software */
 DECL|macro|_SUN4C_PAGE_WRITE
@@ -86,6 +88,9 @@ DECL|macro|SUN4C_PAGE_READONLY
 mdefine_line|#define SUN4C_PAGE_READONLY&t;__pgprot(_SUN4C_PAGE_PRESENT|_SUN4C_READABLE)
 DECL|macro|SUN4C_PAGE_KERNEL
 mdefine_line|#define SUN4C_PAGE_KERNEL&t;__pgprot(_SUN4C_READABLE|_SUN4C_WRITEABLE|&bslash;&n;&t;&t;&t;&t;&t; _SUN4C_PAGE_DIRTY|_SUN4C_PAGE_PRIV)
+multiline_comment|/*&n; * We have a couple of free bits left, but it&squot;s probably not a big&n; * deal, considering sizes of RAM and swap on sun4c.&n; */
+DECL|macro|SUN4C_PTE_FILE_MAX_BITS
+mdefine_line|#define SUN4C_PTE_FILE_MAX_BITS&t;20
 macro_line|#ifndef __ASSEMBLY__
 DECL|function|sun4c_get_synchronous_error
 r_extern

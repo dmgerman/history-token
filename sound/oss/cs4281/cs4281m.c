@@ -2,7 +2,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/* uncomment the following line to disable building PM support into the driver */
 singleline_comment|//#define NOT_CS4281_PM 1 
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;

@@ -32,6 +32,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 comma
@@ -168,6 +169,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 )paren
@@ -3688,6 +3690,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|name
 comma
@@ -5654,6 +5657,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 comma
@@ -6029,6 +6033,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|pathname
 comma
@@ -6457,6 +6462,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|pathname
 )paren
@@ -6798,6 +6804,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|pathname
 )paren
@@ -7172,11 +7179,13 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|oldname
 comma
 r_const
 r_char
+id|__user
 op_star
 id|newname
 )paren
@@ -7568,11 +7577,13 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|oldname
 comma
 r_const
 r_char
+id|__user
 op_star
 id|newname
 )paren
@@ -8744,11 +8755,13 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|oldname
 comma
 r_const
 r_char
+id|__user
 op_star
 id|newname
 )paren
@@ -8855,6 +8868,7 @@ op_star
 id|dentry
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -9250,6 +9264,7 @@ op_star
 id|dentry
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma

@@ -100,6 +100,26 @@ r_typedef
 id|__kernel_fsid_t
 id|compat_fsid_t
 suffix:semicolon
+DECL|typedef|compat_int_t
+r_typedef
+id|s32
+id|compat_int_t
+suffix:semicolon
+DECL|typedef|compat_long_t
+r_typedef
+id|s32
+id|compat_long_t
+suffix:semicolon
+DECL|typedef|compat_uint_t
+r_typedef
+id|u32
+id|compat_uint_t
+suffix:semicolon
+DECL|typedef|compat_ulong_t
+r_typedef
+id|u32
+id|compat_ulong_t
+suffix:semicolon
 DECL|struct|compat_timespec
 r_struct
 id|compat_timespec
@@ -240,6 +260,46 @@ id|l_pid
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|F_GETLK64
+mdefine_line|#define F_GETLK64&t;12
+DECL|macro|F_SETLK64
+mdefine_line|#define F_SETLK64&t;13
+DECL|macro|F_SETLKW64
+mdefine_line|#define F_SETLKW64&t;14
+multiline_comment|/*&n; * IA32 uses 4 byte alignment for 64 bit quantities,&n; * so we need to pack this structure.&n; */
+DECL|struct|compat_flock64
+r_struct
+id|compat_flock64
+(brace
+DECL|member|l_type
+r_int
+id|l_type
+suffix:semicolon
+DECL|member|l_whence
+r_int
+id|l_whence
+suffix:semicolon
+DECL|member|l_start
+id|compat_loff_t
+id|l_start
+suffix:semicolon
+DECL|member|l_len
+id|compat_loff_t
+id|l_len
+suffix:semicolon
+DECL|member|l_pid
+id|compat_pid_t
+id|l_pid
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|struct|compat_statfs
 r_struct
 id|compat_statfs
@@ -305,5 +365,38 @@ r_typedef
 id|u32
 id|compat_sigset_word
 suffix:semicolon
+DECL|macro|COMPAT_OFF_T_MAX
+mdefine_line|#define COMPAT_OFF_T_MAX&t;0x7fffffff
+DECL|macro|COMPAT_LOFF_T_MAX
+mdefine_line|#define COMPAT_LOFF_T_MAX&t;0x7fffffffffffffffL
+multiline_comment|/*&n; * A pointer passed in from user mode. This should not be used for syscall parameters,&n; * just declare them as pointers because the syscall entry code will have appropriately&n; * comverted them already.&n; */
+DECL|typedef|compat_uptr_t
+r_typedef
+id|u32
+id|compat_uptr_t
+suffix:semicolon
+r_static
+r_inline
+r_void
+op_star
+DECL|function|compat_ptr
+id|compat_ptr
+(paren
+id|compat_uptr_t
+id|uptr
+)paren
+(brace
+r_return
+(paren
+r_void
+op_star
+)paren
+(paren
+r_int
+r_int
+)paren
+id|uptr
+suffix:semicolon
+)brace
 macro_line|#endif /* _ASM_IA64_COMPAT_H */
 eof

@@ -1407,7 +1407,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s(%d): floating-point assist fault at ip %016lx&bslash;n&quot;
+l_string|&quot;%s(%d): floating-point assist fault at ip %016lx, isr %016lx&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
@@ -1422,6 +1422,8 @@ id|regs
 )paren
 op_member_access_from_pointer
 id|ri
+comma
+id|isr
 )paren
 suffix:semicolon
 )brace

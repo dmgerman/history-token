@@ -415,6 +415,12 @@ op_assign
 l_int|56
 comma
 multiline_comment|/* string: pattern for core-file names */
+DECL|enumerator|KERN_PANIC_ON_OOPS
+id|KERN_PANIC_ON_OOPS
+op_assign
+l_int|57
+comma
+multiline_comment|/* int: whether we will panic on an oops */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
@@ -2471,14 +2477,17 @@ r_int
 id|nlen
 comma
 r_void
+id|__user
 op_star
 id|oldval
 comma
 r_int
+id|__user
 op_star
 id|oldlenp
 comma
 r_void
+id|__user
 op_star
 id|newval
 comma
@@ -2708,14 +2717,17 @@ r_int
 id|nlen
 comma
 r_void
+id|__user
 op_star
 id|oldval
 comma
 r_int
+id|__user
 op_star
 id|oldlenp
 comma
 r_void
+id|__user
 op_star
 id|newval
 comma

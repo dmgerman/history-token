@@ -150,6 +150,7 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * redirect is the pseudo-tty that console output&n; * is redirected to if asked by TIOCCONS.&n; */
 DECL|variable|redirect
+r_static
 r_struct
 id|tty_struct
 op_star

@@ -13,9 +13,10 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/videodev.h&gt;
-macro_line|#include &quot;compat.h&quot;
 macro_line|#include &quot;dvbdev.h&quot;
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
+macro_line|#include &quot;compat.h&quot;
+macro_line|#endif
 DECL|variable|dvbdev_debug
 r_static
 r_int
@@ -494,7 +495,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|video_usercopy
+id|dvb_usercopy
 (paren
 id|inode
 comma
@@ -977,6 +978,7 @@ op_star
 op_star
 id|padap
 comma
+r_const
 r_char
 op_star
 id|name
@@ -1083,7 +1085,12 @@ op_amp
 id|adap-&gt;device_list
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
+multiline_comment|/* fixme: is this correct? */
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 id|printk
 (paren
@@ -1105,6 +1112,10 @@ suffix:semicolon
 id|adap-&gt;num
 op_assign
 id|num
+suffix:semicolon
+id|adap-&gt;name
+op_assign
+id|name
 suffix:semicolon
 id|list_add_tail
 (paren
@@ -1171,7 +1182,12 @@ id|kfree
 id|adap
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+multiline_comment|/* fixme: is this correct? */
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 l_int|0

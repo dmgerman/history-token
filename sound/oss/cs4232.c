@@ -999,7 +999,7 @@ suffix:semicolon
 DECL|function|unload_cs4232
 r_static
 r_void
-id|__exit
+id|__devexit
 id|unload_cs4232
 c_func
 (paren
@@ -1625,6 +1625,7 @@ suffix:semicolon
 DECL|function|cs4232_pnp_remove
 r_static
 r_void
+id|__devexit
 id|cs4232_pnp_remove
 c_func
 (paren
@@ -1690,7 +1691,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|cs4232_pnp_remove
+)paren
 comma
 )brace
 suffix:semicolon

@@ -77,9 +77,13 @@ DECL|struct|hpsb_tlabel_pool
 r_struct
 id|hpsb_tlabel_pool
 (brace
-DECL|member|pool
-id|u64
+id|DECLARE_BITMAP
+c_func
+(paren
 id|pool
+comma
+l_int|64
+)paren
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t
@@ -101,7 +105,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|HPSB_TPOOL_INIT
-mdefine_line|#define HPSB_TPOOL_INIT(_tp)            &bslash;&n;do {                                    &bslash;&n;&t;sema_init(&amp;(_tp)-&gt;count, 63);   &bslash;&n;&t;spin_lock_init(&amp;(_tp)-&gt;lock);   &bslash;&n;&t;(_tp)-&gt;next = 0;                &bslash;&n;&t;(_tp)-&gt;pool = 0;                &bslash;&n;} while(0)
+mdefine_line|#define HPSB_TPOOL_INIT(_tp)            &t;&bslash;&n;do {                                    &t;&bslash;&n;&t;CLEAR_BITMAP((_tp)-&gt;pool, 64);&t;&t;&bslash;&n;&t;spin_lock_init(&amp;(_tp)-&gt;lock);   &t;&bslash;&n;&t;(_tp)-&gt;next = 0;                &t;&bslash;&n;&t;(_tp)-&gt;allocations = 0;&t;&t;&t;&bslash;&n;&t;sema_init(&amp;(_tp)-&gt;count, 63);   &t;&bslash;&n;} while(0)
 DECL|typedef|quadlet_t
 r_typedef
 id|u32

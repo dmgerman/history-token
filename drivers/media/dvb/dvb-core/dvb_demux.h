@@ -2,6 +2,8 @@ multiline_comment|/* &n; * dvb_demux.h - DVB kernel demux API&n; *&n; * Copyrigh
 macro_line|#ifndef _DVB_DEMUX_H_
 DECL|macro|_DVB_DEMUX_H_
 mdefine_line|#define _DVB_DEMUX_H_
+macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &quot;demux.h&quot;
 DECL|macro|DMX_TYPE_TS
 mdefine_line|#define DMX_TYPE_TS  0
@@ -94,6 +96,8 @@ id|ts_state
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|DMX_FEED_ENTRY
+mdefine_line|#define DMX_FEED_ENTRY(pos) list_entry(pos, struct dvb_demux_feed, list_head)
 DECL|struct|dvb_demux_feed
 r_struct
 id|dvb_demux_feed
@@ -132,6 +136,11 @@ id|dvb_demux
 op_star
 id|demux
 suffix:semicolon
+DECL|member|priv
+r_void
+op_star
+id|priv
+suffix:semicolon
 DECL|member|type
 r_int
 id|type
@@ -157,10 +166,6 @@ DECL|member|descramble
 r_int
 id|descramble
 suffix:semicolon
-DECL|member|check_crc
-r_int
-id|check_crc
-suffix:semicolon
 DECL|member|timeout
 r_struct
 id|timespec
@@ -184,21 +189,6 @@ DECL|member|pes_type
 id|dmx_ts_pes_t
 id|pes_type
 suffix:semicolon
-DECL|member|secbuf
-id|u8
-id|secbuf
-(braket
-l_int|4096
-)braket
-suffix:semicolon
-DECL|member|secbufp
-r_int
-id|secbufp
-suffix:semicolon
-DECL|member|seclen
-r_int
-id|seclen
-suffix:semicolon
 DECL|member|cc
 r_int
 id|cc
@@ -206,6 +196,11 @@ suffix:semicolon
 DECL|member|peslen
 id|u16
 id|peslen
+suffix:semicolon
+DECL|member|list_head
+r_struct
+id|list_head
+id|list_head
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -240,6 +235,7 @@ id|start_feed
 r_struct
 id|dvb_demux_feed
 op_star
+id|feed
 )paren
 suffix:semicolon
 DECL|member|stop_feed
@@ -252,6 +248,7 @@ id|stop_feed
 r_struct
 id|dvb_demux_feed
 op_star
+id|feed
 )paren
 suffix:semicolon
 DECL|member|write_to_decoder
@@ -264,11 +261,61 @@ id|write_to_decoder
 r_struct
 id|dvb_demux_feed
 op_star
+id|feed
+comma
+r_const
+id|u8
+op_star
+id|buf
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+DECL|member|check_crc32
+id|u32
+(paren
+op_star
+id|check_crc32
+)paren
+(paren
+r_struct
+id|dvb_demux_feed
+op_star
+id|feed
+comma
+r_const
+id|u8
+op_star
+id|buf
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+DECL|member|memcopy
+r_void
+(paren
+op_star
+id|memcopy
+)paren
+(paren
+r_struct
+id|dvb_demux_feed
+op_star
+id|feed
 comma
 id|u8
 op_star
+id|dst
+comma
+r_const
+id|u8
+op_star
+id|src
 comma
 r_int
+id|len
 )paren
 suffix:semicolon
 DECL|member|users
@@ -320,16 +367,10 @@ id|recording
 suffix:semicolon
 DECL|macro|DMX_MAX_PID
 mdefine_line|#define DMX_MAX_PID 0x2000
-DECL|member|pid2feed
+DECL|member|feed_list
 r_struct
-id|dvb_demux_feed
-op_star
-id|pid2feed
-(braket
-id|DMX_MAX_PID
-op_plus
-l_int|1
-)braket
+id|list_head
+id|feed_list
 suffix:semicolon
 DECL|member|tsbuf
 id|u8
@@ -396,6 +437,24 @@ r_struct
 id|dvb_demux
 op_star
 id|dvbdmx
+comma
+r_const
+id|u8
+op_star
+id|buf
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
+r_void
+id|dvb_dmx_swfilter
+c_func
+(paren
+r_struct
+id|dvb_demux
+op_star
+id|demux
 comma
 r_const
 id|u8

@@ -940,7 +940,7 @@ id|list_head
 op_star
 id|list
 suffix:semicolon
-multiline_comment|/* Hardcoded from _DRM_FRAME_BUFFER,&n;                                   _DRM_REGISTERS, _DRM_SHM, and&n;                                   _DRM_AGP. */
+multiline_comment|/* Hardcoded from _DRM_FRAME_BUFFER,&n;                                   _DRM_REGISTERS, _DRM_SHM, _DRM_AGP, and&n;                                   _DRM_SCATTER_GATHER. */
 r_const
 r_char
 op_star
@@ -956,6 +956,8 @@ comma
 l_string|&quot;SHM&quot;
 comma
 l_string|&quot;AGP&quot;
+comma
+l_string|&quot;SG&quot;
 )brace
 suffix:semicolon
 r_const
@@ -1026,11 +1028,15 @@ id|dev-&gt;maplist-&gt;head
 (brace
 id|r_list
 op_assign
+id|list_entry
+c_func
 (paren
-id|drm_map_list_t
-op_star
-)paren
 id|list
+comma
+id|drm_map_list_t
+comma
+id|head
+)paren
 suffix:semicolon
 id|map
 op_assign
@@ -1051,7 +1057,7 @@ c_cond
 (paren
 id|map-&gt;type
 template_param
-l_int|3
+l_int|4
 )paren
 id|type
 op_assign

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;&t;&t;/* rtnetlink stuff */
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Pretty obvious */
+macro_line|#include &lt;linux/init.h&gt;&t;&t;&t;/* for __init */
 macro_line|#include &lt;net/iw_handler.h&gt;&t;&t;/* New driver API */
 macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* copy_to_user() */
 multiline_comment|/**************************** CONSTANTS ****************************/

@@ -39,6 +39,7 @@ suffix:semicolon
 DECL|variable|ps_timeout
 r_static
 r_int
+r_int
 id|ps_timeout
 suffix:semicolon
 DECL|variable|ps_tq_active

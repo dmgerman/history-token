@@ -9,6 +9,8 @@ c_func
 id|firmware
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 DECL|function|firmware_register

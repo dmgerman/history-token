@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_FPU_H
 DECL|macro|_ASM_IA64_FPU_H
 mdefine_line|#define _ASM_IA64_FPU_H
-multiline_comment|/*&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 1998, 1999, 2002, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/* floating point status register: */
 DECL|macro|FPSR_TRAP_VD
@@ -77,20 +77,17 @@ id|bits
 l_int|2
 )braket
 suffix:semicolon
+DECL|member|__dummy
+r_int
+r_float
+id|__dummy
+suffix:semicolon
+multiline_comment|/* force 16-byte alignment */
 DECL|member|u
 )brace
 id|u
 suffix:semicolon
 )brace
-id|__attribute__
-(paren
-(paren
-id|aligned
-(paren
-l_int|16
-)paren
-)paren
-)paren
 suffix:semicolon
 macro_line|# endif /* __ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_FPU_H */

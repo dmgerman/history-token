@@ -12,6 +12,7 @@ id|s387
 comma
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
@@ -26,6 +27,7 @@ id|s387
 comma
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
