@@ -2297,7 +2297,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;keyboard&quot;
+l_string|&quot;usbkbd&quot;
 comma
 dot
 id|probe

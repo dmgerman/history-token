@@ -1129,7 +1129,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;usb_mouse&quot;
+l_string|&quot;usbmouse&quot;
 comma
 dot
 id|probe
