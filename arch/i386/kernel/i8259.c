@@ -57,6 +57,13 @@ op_or
 id|IRQ_INPROGRESS
 )paren
 )paren
+op_logical_and
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|action
 )paren
 id|enable_8259A_irq
 c_func
