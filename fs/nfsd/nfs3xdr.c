@@ -3816,6 +3816,10 @@ l_int|3
 )paren
 (brace
 multiline_comment|/* need to pad the tail */
+id|rqstp-&gt;rq_restailpage
+op_assign
+l_int|0
+suffix:semicolon
 id|rqstp-&gt;rq_res.tail
 (braket
 l_int|0
@@ -3956,6 +3960,10 @@ l_int|3
 )paren
 (brace
 multiline_comment|/* need to pad the tail */
+id|rqstp-&gt;rq_restailpage
+op_assign
+l_int|0
+suffix:semicolon
 id|rqstp-&gt;rq_res.tail
 (braket
 l_int|0
