@@ -4089,7 +4089,11 @@ id|p
 comma
 id|PIDTYPE_PGID
 comma
-id|p-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|p
+)paren
 )paren
 suffix:semicolon
 id|attach_pid

@@ -256,7 +256,11 @@ id|sbi
 r_return
 id|sbi-&gt;catatonic
 op_logical_or
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 op_eq
 id|sbi-&gt;oz_pgrp
 suffix:semicolon

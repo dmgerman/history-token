@@ -2179,7 +2179,11 @@ l_int|0
 suffix:colon
 multiline_comment|/* getpgrp */
 r_return
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 r_case
 l_int|1
@@ -2238,7 +2242,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_return
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 )brace
 r_case

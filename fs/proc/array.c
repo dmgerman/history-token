@@ -1364,7 +1364,11 @@ id|state
 comma
 id|ppid
 comma
-id|task-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|task
+)paren
 comma
 id|task-&gt;session
 comma

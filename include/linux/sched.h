@@ -930,10 +930,11 @@ DECL|member|pid
 id|pid_t
 id|pid
 suffix:semicolon
-DECL|member|pgrp
+DECL|member|__pgrp
 id|pid_t
-id|pgrp
+id|__pgrp
 suffix:semicolon
+multiline_comment|/* Accessed via process_group() */
 DECL|member|tty_old_pgrp
 id|pid_t
 id|tty_old_pgrp
@@ -984,6 +985,7 @@ id|task_struct
 op_star
 id|group_leader
 suffix:semicolon
+multiline_comment|/* threadgroup leader */
 multiline_comment|/* PID/PID hash table linkage. */
 DECL|member|pids
 r_struct
@@ -1375,6 +1377,23 @@ suffix:semicolon
 multiline_comment|/* For ptrace use.  */
 )brace
 suffix:semicolon
+DECL|function|process_group
+r_static
+r_inline
+id|pid_t
+id|process_group
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+r_return
+id|tsk-&gt;group_leader-&gt;__pgrp
+suffix:semicolon
+)brace
 r_extern
 r_void
 id|__put_task_struct
