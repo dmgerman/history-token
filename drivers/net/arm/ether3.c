@@ -194,11 +194,13 @@ r_int
 id|v
 comma
 r_const
-r_int
+r_void
+id|__iomem
+op_star
 id|r
 )paren
 (brace
-id|outb
+id|writeb
 c_func
 (paren
 id|v
@@ -224,11 +226,13 @@ r_int
 id|v
 comma
 r_const
-r_int
+r_void
+id|__iomem
+op_star
 id|r
 )paren
 (brace
-id|outw
+id|writew
 c_func
 (paren
 id|v
@@ -244,9 +248,9 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|macro|ether3_inb
-mdefine_line|#define ether3_inb(r)&t;&t;({ unsigned int __v = inb((r)); udelay(1); __v; })
+mdefine_line|#define ether3_inb(r)&t;&t;({ unsigned int __v = readb((r)); udelay(1); __v; })
 DECL|macro|ether3_inw
-mdefine_line|#define ether3_inw(r)&t;&t;({ unsigned int __v = inw((r)); udelay(1); __v; })
+mdefine_line|#define ether3_inw(r)&t;&t;({ unsigned int __v = readw((r)); udelay(1); __v; })
 r_static
 r_int
 DECL|function|ether3_setbuffer
@@ -421,18 +425,18 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * write data to the buffer memory&n; */
 DECL|macro|ether3_writebuffer
-mdefine_line|#define ether3_writebuffer(dev,data,length)&t;&t;&t;&bslash;&n;&t;outsw(REG_BUFWIN, (data), (length) &gt;&gt; 1)
+mdefine_line|#define ether3_writebuffer(dev,data,length)&t;&t;&t;&bslash;&n;&t;writesw(REG_BUFWIN, (data), (length) &gt;&gt; 1)
 DECL|macro|ether3_writeword
-mdefine_line|#define ether3_writeword(dev,data)&t;&t;&t;&t;&bslash;&n;&t;outw((data), REG_BUFWIN)
+mdefine_line|#define ether3_writeword(dev,data)&t;&t;&t;&t;&bslash;&n;&t;writew((data), REG_BUFWIN)
 DECL|macro|ether3_writelong
-mdefine_line|#define ether3_writelong(dev,data)&t;{&t;&t;&t;&bslash;&n;&t;unsigned long reg_bufwin = REG_BUFWIN;&t;&t;&t;&bslash;&n;&t;outw((data), reg_bufwin);&t;&t;&t;&t;&bslash;&n;&t;outw((data) &gt;&gt; 16, reg_bufwin);&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define ether3_writelong(dev,data)&t;{&t;&t;&t;&bslash;&n;&t;void __iomem *reg_bufwin = REG_BUFWIN;&t;&t;&t;&bslash;&n;&t;writew((data), reg_bufwin);&t;&t;&t;&t;&bslash;&n;&t;writew((data) &gt;&gt; 16, reg_bufwin);&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * read data from the buffer memory&n; */
 DECL|macro|ether3_readbuffer
-mdefine_line|#define ether3_readbuffer(dev,data,length)&t;&t;&t;&bslash;&n;&t;insw(REG_BUFWIN, (data), (length) &gt;&gt; 1)
+mdefine_line|#define ether3_readbuffer(dev,data,length)&t;&t;&t;&bslash;&n;&t;readsw(REG_BUFWIN, (data), (length) &gt;&gt; 1)
 DECL|macro|ether3_readword
-mdefine_line|#define ether3_readword(dev)&t;&t;&t;&t;&t;&bslash;&n;&t;inw(REG_BUFWIN)
+mdefine_line|#define ether3_readword(dev)&t;&t;&t;&t;&t;&bslash;&n;&t;readw(REG_BUFWIN)
 DECL|macro|ether3_readlong
-mdefine_line|#define ether3_readlong(dev)&t; &t;&t;&t;&t;&bslash;&n;&t;inw(REG_BUFWIN) | (inw(REG_BUFWIN) &lt;&lt; 16)
+mdefine_line|#define ether3_readlong(dev)&t; &t;&t;&t;&t;&bslash;&n;&t;readw(REG_BUFWIN) | (readw(REG_BUFWIN) &lt;&lt; 16)
 multiline_comment|/*&n; * Switch LED off...&n; */
 DECL|function|ether3_ledoff
 r_static
@@ -1714,7 +1718,7 @@ id|write_high
 comma
 id|REG_RECVPTR
 op_plus
-l_int|1
+l_int|4
 )paren
 suffix:semicolon
 id|read_low
@@ -1732,7 +1736,7 @@ c_func
 (paren
 id|REG_RECVPTR
 op_plus
-l_int|1
+l_int|4
 )paren
 suffix:semicolon
 id|printk
@@ -1950,7 +1954,7 @@ l_int|0x80
 comma
 id|REG_CONFIG2
 op_plus
-l_int|1
+l_int|4
 )paren
 suffix:semicolon
 id|ether3_outw
@@ -3905,21 +3909,25 @@ id|name
 op_assign
 l_string|&quot;ether3&quot;
 suffix:semicolon
-id|dev-&gt;base_addr
-op_assign
-id|ecard_address
-c_func
-(paren
-id|ec
-comma
-id|ECARD_MEMC
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|dev-&gt;irq
 op_assign
 id|ec-&gt;irq
+suffix:semicolon
+id|priv
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|seeq
+op_assign
+id|priv
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|base
 suffix:semicolon
 r_if
 c_cond
@@ -3933,9 +3941,23 @@ op_eq
 id|PROD_ANT_ETHERB
 )paren
 (brace
-id|dev-&gt;base_addr
-op_add_assign
-l_int|0x200
+id|priv
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|seeq
+op_assign
+id|priv
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|base
+op_plus
+l_int|0x800
 suffix:semicolon
 id|name
 op_assign
@@ -3944,17 +3966,13 @@ suffix:semicolon
 )brace
 id|ec-&gt;irqaddr
 op_assign
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|ioaddr
+id|priv
 c_func
 (paren
-id|dev-&gt;base_addr
+id|dev
 )paren
+op_member_access_from_pointer
+id|seeq
 suffix:semicolon
 id|ec-&gt;irqmask
 op_assign
@@ -4063,6 +4081,65 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|ec-&gt;dev
+)paren
+suffix:semicolon
+id|priv
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|base
+op_assign
+id|ioremap
+c_func
+(paren
+id|ecard_resource_start
+c_func
+(paren
+id|ec
+comma
+id|ECARD_RES_MEMC
+)paren
+comma
+id|ecard_resource_len
+c_func
+(paren
+id|ec
+comma
+id|ECARD_RES_MEMC
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|priv
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|base
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|free
+suffix:semicolon
+)brace
 id|name
 op_assign
 id|ether3_get_dev
@@ -4110,7 +4187,7 @@ l_int|0x80
 comma
 id|REG_CONFIG2
 op_plus
-l_int|1
+l_int|4
 )paren
 suffix:semicolon
 id|bus_type
@@ -4354,6 +4431,29 @@ l_int|0
 suffix:semicolon
 id|free
 suffix:colon
+r_if
+c_cond
+(paren
+id|priv
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|base
+)paren
+id|iounmap
+c_func
+(paren
+id|priv
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|base
+)paren
+suffix:semicolon
 id|free_netdev
 c_func
 (paren
@@ -4410,6 +4510,18 @@ id|unregister_netdev
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|priv
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|base
 )paren
 suffix:semicolon
 id|free_netdev

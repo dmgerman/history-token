@@ -19,7 +19,7 @@ DECL|macro|priv
 mdefine_line|#define priv(dev)&t;((struct dev_priv *)netdev_priv(dev))
 multiline_comment|/* Command register definitions &amp; bits */
 DECL|macro|REG_COMMAND
-mdefine_line|#define REG_COMMAND&t;&t;(dev-&gt;base_addr + 0x00)
+mdefine_line|#define REG_COMMAND&t;&t;(priv(dev)-&gt;seeq + 0x0000)
 DECL|macro|CMD_ENINTDMA
 mdefine_line|#define CMD_ENINTDMA&t;&t;0x0001
 DECL|macro|CMD_ENINTRX
@@ -54,7 +54,7 @@ DECL|macro|CMD_FIFOWRITE
 mdefine_line|#define CMD_FIFOWRITE&t;&t;0x8000
 multiline_comment|/* status register */
 DECL|macro|REG_STATUS
-mdefine_line|#define REG_STATUS&t;&t;(dev-&gt;base_addr + 0x00)
+mdefine_line|#define REG_STATUS&t;&t;(priv(dev)-&gt;seeq + 0x0000)
 DECL|macro|STAT_ENINTSTAT
 mdefine_line|#define STAT_ENINTSTAT&t;&t;0x0001
 DECL|macro|STAT_ENINTRX
@@ -85,7 +85,7 @@ DECL|macro|STAT_FIFODIR
 mdefine_line|#define STAT_FIFODIR&t;&t;0x8000
 multiline_comment|/* configuration register 1 */
 DECL|macro|REG_CONFIG1
-mdefine_line|#define REG_CONFIG1&t;&t;(dev-&gt;base_addr + 0x10)
+mdefine_line|#define REG_CONFIG1&t;&t;(priv(dev)-&gt;seeq + 0x0040)
 DECL|macro|CFG1_BUFSELSTAT0
 mdefine_line|#define CFG1_BUFSELSTAT0&t;0x0000
 DECL|macro|CFG1_BUFSELSTAT1
@@ -145,7 +145,7 @@ DECL|macro|CFG1_RECVCOMPSTAT5
 mdefine_line|#define CFG1_RECVCOMPSTAT5&t;0x2000
 multiline_comment|/* configuration register 2 */
 DECL|macro|REG_CONFIG2
-mdefine_line|#define REG_CONFIG2&t;&t;(dev-&gt;base_addr + 0x20)
+mdefine_line|#define REG_CONFIG2&t;&t;(priv(dev)-&gt;seeq + 0x0080)
 DECL|macro|CFG2_BYTESWAP
 mdefine_line|#define CFG2_BYTESWAP&t;&t;0x0001
 DECL|macro|CFG2_ERRENCRC
@@ -171,15 +171,15 @@ mdefine_line|#define CFG2_CTRLO&t;&t;0x1000
 DECL|macro|CFG2_RESET
 mdefine_line|#define CFG2_RESET&t;&t;0x8000
 DECL|macro|REG_RECVEND
-mdefine_line|#define REG_RECVEND&t;&t;(dev-&gt;base_addr + 0x30)
+mdefine_line|#define REG_RECVEND&t;&t;(priv(dev)-&gt;seeq + 0x00c0)
 DECL|macro|REG_BUFWIN
-mdefine_line|#define REG_BUFWIN&t;&t;(dev-&gt;base_addr + 0x40)
+mdefine_line|#define REG_BUFWIN&t;&t;(priv(dev)-&gt;seeq + 0x0100)
 DECL|macro|REG_RECVPTR
-mdefine_line|#define REG_RECVPTR&t;&t;(dev-&gt;base_addr + 0x50)
+mdefine_line|#define REG_RECVPTR&t;&t;(priv(dev)-&gt;seeq + 0x0140)
 DECL|macro|REG_TRANSMITPTR
-mdefine_line|#define REG_TRANSMITPTR&t;&t;(dev-&gt;base_addr + 0x60)
+mdefine_line|#define REG_TRANSMITPTR&t;&t;(priv(dev)-&gt;seeq + 0x0180)
 DECL|macro|REG_DMAADDR
-mdefine_line|#define REG_DMAADDR&t;&t;(dev-&gt;base_addr + 0x70)
+mdefine_line|#define REG_DMAADDR&t;&t;(priv(dev)-&gt;seeq + 0x01c0)
 multiline_comment|/*&n; * Cards transmit/receive headers&n; */
 DECL|macro|TX_NEXT
 mdefine_line|#define TX_NEXT&t;&t;&t;(0xffff)
@@ -240,6 +240,18 @@ DECL|struct|dev_priv
 r_struct
 id|dev_priv
 (brace
+DECL|member|base
+r_void
+id|__iomem
+op_star
+id|base
+suffix:semicolon
+DECL|member|seeq
+r_void
+id|__iomem
+op_star
+id|seeq
+suffix:semicolon
 r_struct
 (brace
 DECL|member|command

@@ -12,10 +12,10 @@ DECL|macro|priv
 mdefine_line|#define priv(dev)&t;((struct ether1_priv *)netdev_priv(dev))
 multiline_comment|/* Page register */
 DECL|macro|REG_PAGE
-mdefine_line|#define REG_PAGE&t;(dev-&gt;base_addr + 0x00)
+mdefine_line|#define REG_PAGE&t;(priv(dev)-&gt;base + 0x0000)
 multiline_comment|/* Control register */
 DECL|macro|REG_CONTROL
-mdefine_line|#define REG_CONTROL&t;(dev-&gt;base_addr + 0x01)
+mdefine_line|#define REG_CONTROL&t;(priv(dev)-&gt;base + 0x0004)
 DECL|macro|CTRL_RST
 mdefine_line|#define CTRL_RST&t;0x01
 DECL|macro|CTRL_LOOPBACK
@@ -25,14 +25,20 @@ mdefine_line|#define CTRL_CA&t;&t;0x04
 DECL|macro|CTRL_ACK
 mdefine_line|#define CTRL_ACK&t;0x08
 DECL|macro|ETHER1_RAM
-mdefine_line|#define ETHER1_RAM&t;(dev-&gt;base_addr + 0x800)
+mdefine_line|#define ETHER1_RAM&t;(priv(dev)-&gt;base + 0x2000)
 multiline_comment|/* HW address */
 DECL|macro|IDPROM_ADDRESS
-mdefine_line|#define IDPROM_ADDRESS&t;(dev-&gt;base_addr + 0x09)
+mdefine_line|#define IDPROM_ADDRESS&t;(priv(dev)-&gt;base + 0x0024)
 DECL|struct|ether1_priv
 r_struct
 id|ether1_priv
 (brace
+DECL|member|base
+r_void
+id|__iomem
+op_star
+id|base
+suffix:semicolon
 DECL|member|stats
 r_struct
 id|net_device_stats
