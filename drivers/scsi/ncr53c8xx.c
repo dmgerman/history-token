@@ -26083,9 +26083,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*===================== LINUX ENTRY POINTS SECTION ==========================*/
 multiline_comment|/*&n;**   Linux select queue depths function&n;*/
-DECL|function|ncr53c8xx_slave_attach
+DECL|function|ncr53c8xx_slave_configure
 r_int
-id|ncr53c8xx_slave_attach
+id|ncr53c8xx_slave_configure
 c_func
 (paren
 id|Scsi_Device

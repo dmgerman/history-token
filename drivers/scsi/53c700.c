@@ -161,7 +161,7 @@ id|host
 suffix:semicolon
 id|STATIC
 r_int
-id|NCR_700_slave_attach
+id|NCR_700_slave_configure
 c_func
 (paren
 id|Scsi_Device
@@ -171,7 +171,7 @@ id|SDpnt
 suffix:semicolon
 id|STATIC
 r_void
-id|NCR_700_slave_detach
+id|NCR_700_slave_destroy
 c_func
 (paren
 id|Scsi_Device
@@ -555,13 +555,13 @@ id|tpnt-&gt;proc_info
 op_assign
 id|NCR_700_proc_directory_info
 suffix:semicolon
-id|tpnt-&gt;slave_attach
+id|tpnt-&gt;slave_configure
 op_assign
-id|NCR_700_slave_attach
+id|NCR_700_slave_configure
 suffix:semicolon
-id|tpnt-&gt;slave_detach
+id|tpnt-&gt;slave_destroy
 op_assign
-id|NCR_700_slave_detach
+id|NCR_700_slave_destroy
 suffix:semicolon
 id|tpnt-&gt;use_blk_tcq
 op_assign
@@ -9135,8 +9135,8 @@ suffix:semicolon
 )brace
 id|STATIC
 r_int
-DECL|function|NCR_700_slave_attach
-id|NCR_700_slave_attach
+DECL|function|NCR_700_slave_configure
+id|NCR_700_slave_configure
 c_func
 (paren
 id|Scsi_Device
@@ -9173,8 +9173,8 @@ suffix:semicolon
 )brace
 id|STATIC
 r_void
-DECL|function|NCR_700_slave_detach
-id|NCR_700_slave_detach
+DECL|function|NCR_700_slave_destroy
+id|NCR_700_slave_destroy
 c_func
 (paren
 id|Scsi_Device

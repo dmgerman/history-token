@@ -4542,8 +4542,8 @@ mdefine_line|#define device_queue_depth(np, t, l)&t;(sym_driver_setup.max_tag)
 macro_line|#endif&t;/* SYM_LINUX_BOOT_COMMAND_LINE_SUPPORT */
 multiline_comment|/*&n; * Linux entry point for device queue sizing.&n; */
 r_int
-DECL|function|sym53c8xx_slave_attach
-id|sym53c8xx_slave_attach
+DECL|function|sym53c8xx_slave_configure
+id|sym53c8xx_slave_configure
 c_func
 (paren
 id|Scsi_Device

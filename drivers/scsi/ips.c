@@ -1390,7 +1390,7 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|ips_slave_attach
+id|ips_slave_configure
 c_func
 (paren
 id|Scsi_Device
@@ -7621,7 +7621,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*static void&n;ips_select_queue_depth(struct Scsi_Host *host, Scsi_Device *scsi_devs) {&n;   Scsi_Device *device;&n;   ips_ha_t    *ha;&n;   int          count = 0;&n;   int          min;&n;&n;   ha = IPS_HA(host);&n;   min = ha-&gt;max_cmds / 4;&n;&n;   for (device = scsi_devs; device; device = device-&gt;next) {&n;     if (device-&gt;host == host) {&n;        if ((device-&gt;channel == 0) &amp;&amp; (device-&gt;type == 0))&n;           count++;&n;     }&n;   }&n;&n;   for (device = scsi_devs; device; device = device-&gt;next) {&n;      if (device-&gt;host == host) {&n;         if ((device-&gt;channel == 0) &amp;&amp; (device-&gt;type == 0)) {&n;            device-&gt;queue_depth = ( ha-&gt;max_cmds - 1 ) / count;&n;            if (device-&gt;queue_depth &lt; min) &n;               device-&gt;queue_depth = min;&n;         }&n;         else {&n;            device-&gt;queue_depth = 2;&n;         }&n;&n;         if (device-&gt;queue_depth &lt; 2)&n;            device-&gt;queue_depth = 2;&n;      }&n;   }&n;}&n;*/
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
-multiline_comment|/* Routine Name: ips_slave_attach                                           */
+multiline_comment|/* Routine Name: ips_slave_configure                                        */
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Description:                                                     */
 multiline_comment|/*                                                                          */
@@ -7629,8 +7629,8 @@ multiline_comment|/*   Set queue depths on devices once scan is complete        
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_int
-DECL|function|ips_slave_attach
-id|ips_slave_attach
+DECL|function|ips_slave_configure
+id|ips_slave_configure
 c_func
 (paren
 id|Scsi_Device

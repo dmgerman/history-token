@@ -1281,10 +1281,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|adpt_slave_attach
+DECL|function|adpt_slave_configure
 r_static
 r_int
-id|adpt_slave_attach
+id|adpt_slave_configure
 c_func
 (paren
 id|Scsi_Device

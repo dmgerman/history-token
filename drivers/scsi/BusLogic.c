@@ -8793,10 +8793,10 @@ op_assign
 id|HostAdapter-&gt;UntaggedQueueDepth
 suffix:semicolon
 )brace
-multiline_comment|/*&n;  BusLogic_SlaveAttach will actually set the queue depth on individual&n;  scsi devices as they are permanently added to the device chain.  We&n;  shamelessly rip off the SelectQueueDepths code to make this work mostly&n;  like it used to.  Since we don&squot;t get called once at the end of the scan&n;  but instead get called for each device, we have to do things a bit&n;  differently.&n;*/
-DECL|function|BusLogic_SlaveAttach
+multiline_comment|/*&n;  BusLogic_SlaveConfigure will actually set the queue depth on individual&n;  scsi devices as they are permanently added to the device chain.  We&n;  shamelessly rip off the SelectQueueDepths code to make this work mostly&n;  like it used to.  Since we don&squot;t get called once at the end of the scan&n;  but instead get called for each device, we have to do things a bit&n;  differently.&n;*/
+DECL|function|BusLogic_SlaveConfigure
 r_int
-id|BusLogic_SlaveAttach
+id|BusLogic_SlaveConfigure
 c_func
 (paren
 id|SCSI_Device_T

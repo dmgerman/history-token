@@ -270,7 +270,7 @@ op_star
 suffix:semicolon
 r_static
 r_int
-id|qla1280_slave_attach
+id|qla1280_slave_configure
 c_func
 (paren
 id|Scsi_Device
@@ -5844,11 +5844,11 @@ id|cpu_flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; *   qla1280_slave_attach&n; *&n; * Description:&n; *   Determines the queue depth for a given device.  There are two ways&n; *   a queue depth can be obtained for a tagged queueing device.  One&n; *   way is the default queue depth which is determined by whether&n; *   If it is defined, then it is used&n; *   as the default queue depth.  Otherwise, we use either 4 or 8 as the&n; *   default queue depth (dependent on the number of hardware SCBs).&n; **************************************************************************/
+multiline_comment|/**************************************************************************&n; *   qla1280_slave_configure&n; *&n; * Description:&n; *   Determines the queue depth for a given device.  There are two ways&n; *   a queue depth can be obtained for a tagged queueing device.  One&n; *   way is the default queue depth which is determined by whether&n; *   If it is defined, then it is used&n; *   as the default queue depth.  Otherwise, we use either 4 or 8 as the&n; *   default queue depth (dependent on the number of hardware SCBs).&n; **************************************************************************/
 r_static
 r_int
-DECL|function|qla1280_slave_attach
-id|qla1280_slave_attach
+DECL|function|qla1280_slave_configure
+id|qla1280_slave_configure
 c_func
 (paren
 id|Scsi_Device

@@ -808,9 +808,9 @@ op_star
 id|fcmd
 )paren
 suffix:semicolon
-DECL|function|fcal_slave_attach
+DECL|function|fcal_slave_configure
 r_int
-id|fcal_slave_attach
+id|fcal_slave_configure
 c_func
 (paren
 id|Scsi_Device
