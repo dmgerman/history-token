@@ -6064,15 +6064,18 @@ r_struct
 id|timer_list
 id|pb_daemon_timer
 op_assign
-(brace
-dot
-id|function
-op_assign
+id|TIMER_INITIALIZER
+c_func
+(paren
 (paren
 id|timeout_fn
 )paren
 id|pagebuf_daemon_wakeup
-)brace
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/*  Set up the thread  */
 id|daemonize
