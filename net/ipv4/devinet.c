@@ -163,13 +163,6 @@ id|p
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Locks all the inet devices. */
-DECL|variable|inetdev_lock
-r_static
-id|spinlock_t
-id|inetdev_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|function|inet_alloc_ifa
 r_static
 r_struct
@@ -512,17 +505,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-id|inetdev_lock
-)paren
-suffix:semicolon
-id|dev-&gt;ip_ptr
-op_assign
-id|in_dev
-suffix:semicolon
 multiline_comment|/* Account for reference dev-&gt;ip_ptr */
 id|in_dev_hold
 c_func
@@ -530,12 +512,14 @@ c_func
 id|in_dev
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|smp_wmb
 c_func
 (paren
-op_amp
-id|inetdev_lock
 )paren
+suffix:semicolon
+id|dev-&gt;ip_ptr
+op_assign
+id|in_dev
 suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL
 id|devinet_sysctl_register
@@ -697,24 +681,9 @@ id|in_dev-&gt;cnf
 )paren
 suffix:semicolon
 macro_line|#endif
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-id|inetdev_lock
-)paren
-suffix:semicolon
 id|in_dev-&gt;dev-&gt;ip_ptr
 op_assign
 l_int|NULL
-suffix:semicolon
-multiline_comment|/* in_dev_put following below will kill the in_device */
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-id|inetdev_lock
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL
 id|neigh_sysctl_unregister
@@ -929,24 +898,10 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-id|inetdev_lock
-)paren
-suffix:semicolon
 op_star
 id|ifap1
 op_assign
 id|ifa-&gt;ifa_next
-suffix:semicolon
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-id|inetdev_lock
-)paren
 suffix:semicolon
 id|rtmsg_ifa
 c_func
@@ -979,24 +934,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* 2. Unlink it */
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-id|inetdev_lock
-)paren
-suffix:semicolon
 op_star
 id|ifap
 op_assign
 id|ifa1-&gt;ifa_next
-suffix:semicolon
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-id|inetdev_lock
-)paren
 suffix:semicolon
 multiline_comment|/* 3. Announce address deletion */
 multiline_comment|/* Send message first, then call notifier.&n;&t;   At first sight, FIB update triggered by notifier&n;&t;   will refer to already deleted ifaddr, that could confuse&n;&t;   netlink listeners. It is not true: look, gated sees&n;&t;   that route deleted and if it still thinks that ifaddr&n;&t;   is valid, it will try to restore deleted routes... Grr.&n;&t;   So that, this order is correct.&n;&t; */
@@ -1250,24 +1191,10 @@ op_assign
 op_star
 id|ifap
 suffix:semicolon
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-id|inetdev_lock
-)paren
-suffix:semicolon
 op_star
 id|ifap
 op_assign
 id|ifa
-suffix:semicolon
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-id|inetdev_lock
-)paren
 suffix:semicolon
 multiline_comment|/* Send message first, then call notifier.&n;&t;   Notifier will trigger FIB update, so that&n;&t;   listeners of netlink will know about new ifaddr */
 id|rtmsg_ifa
