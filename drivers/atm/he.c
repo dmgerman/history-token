@@ -12032,12 +12032,6 @@ c_func
 id|sleep
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
