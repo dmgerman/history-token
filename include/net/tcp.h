@@ -1321,6 +1321,22 @@ id|sysctl_tcp_westwood
 suffix:semicolon
 r_extern
 r_int
+id|sysctl_tcp_vegas_cong_avoid
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_tcp_vegas_alpha
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_tcp_vegas_beta
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_tcp_vegas_gamma
+suffix:semicolon
+r_extern
+r_int
 id|sysctl_tcp_nometrics_save
 suffix:semicolon
 r_extern
@@ -4010,6 +4026,59 @@ l_int|2U
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Stop taking Vegas samples for now. */
+DECL|macro|tcp_vegas_disable
+mdefine_line|#define tcp_vegas_disable(__tp)&t;((__tp)-&gt;vegas.doing_vegas_now = 0)
+multiline_comment|/* Is this TCP connection using Vegas (regardless of whether it is taking&n; * Vegas measurements at the current time)?&n; */
+DECL|macro|tcp_is_vegas
+mdefine_line|#define tcp_is_vegas(__tp)&t;((__tp)-&gt;vegas.do_vegas)
+DECL|function|tcp_vegas_enable
+r_static
+r_inline
+r_void
+id|tcp_vegas_enable
+c_func
+(paren
+r_struct
+id|tcp_opt
+op_star
+id|tp
+)paren
+(brace
+multiline_comment|/* There are several situations when we must &quot;re-start&quot; Vegas:&n;&t; *&n;&t; *  o when a connection is established&n;&t; *  o after an RTO&n;&t; *  o after fast recovery&n;&t; *  o when we send a packet and there is no outstanding&n;&t; *    unacknowledged data (restarting an idle connection)&n;&t; *&n;&t; * In these circumstances we cannot do a Vegas calculation at the&n;&t; * end of the first RTT, because any calculation we do is using&n;&t; * stale info -- both the saved cwnd and congestion feedback are&n;&t; * stale.&n;&t; *&n;&t; * Instead we must wait until the completion of an RTT during&n;&t; * which we actually receive ACKs.&n;&t; */
+multiline_comment|/* Begin taking Vegas samples next time we send something. */
+id|tp-&gt;vegas.doing_vegas_now
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Set the beginning of the next send window. */
+id|tp-&gt;vegas.beg_snd_nxt
+op_assign
+id|tp-&gt;snd_nxt
+suffix:semicolon
+id|tp-&gt;vegas.cntRTT
+op_assign
+l_int|0
+suffix:semicolon
+id|tp-&gt;vegas.minRTT
+op_assign
+l_int|0x7fffffff
+suffix:semicolon
+)brace
+multiline_comment|/* Should we be taking Vegas samples right now? */
+DECL|macro|tcp_vegas_enabled
+mdefine_line|#define tcp_vegas_enabled(__tp)&t;((__tp)-&gt;vegas.doing_vegas_now)
+r_extern
+r_void
+id|tcp_vegas_init
+c_func
+(paren
+r_struct
+id|tcp_opt
+op_star
+id|tp
+)paren
+suffix:semicolon
 DECL|function|tcp_set_ca_state
 r_static
 r_inline
@@ -4026,6 +4095,37 @@ id|u8
 id|ca_state
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|tcp_is_vegas
+c_func
+(paren
+id|tp
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ca_state
+op_eq
+id|TCP_CA_Open
+)paren
+id|tcp_vegas_enable
+c_func
+(paren
+id|tp
+)paren
+suffix:semicolon
+r_else
+id|tcp_vegas_disable
+c_func
+(paren
+id|tp
+)paren
+suffix:semicolon
+)brace
 id|tp-&gt;ca_state
 op_assign
 id|ca_state

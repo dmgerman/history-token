@@ -1284,6 +1284,53 @@ DECL|member|westwood
 )brace
 id|westwood
 suffix:semicolon
+multiline_comment|/* Vegas variables */
+r_struct
+(brace
+DECL|member|beg_snd_nxt
+id|__u32
+id|beg_snd_nxt
+suffix:semicolon
+multiline_comment|/* right edge during last RTT */
+DECL|member|beg_snd_una
+id|__u32
+id|beg_snd_una
+suffix:semicolon
+multiline_comment|/* left edge  during last RTT */
+DECL|member|beg_snd_cwnd
+id|__u32
+id|beg_snd_cwnd
+suffix:semicolon
+multiline_comment|/* saves the size of the cwnd */
+DECL|member|do_vegas
+id|__u8
+id|do_vegas
+suffix:semicolon
+multiline_comment|/* do vegas for this connection */
+DECL|member|doing_vegas_now
+id|__u8
+id|doing_vegas_now
+suffix:semicolon
+multiline_comment|/* if true, do vegas for this RTT */
+DECL|member|cntRTT
+id|__u16
+id|cntRTT
+suffix:semicolon
+multiline_comment|/* # of RTTs measured within last RTT */
+DECL|member|minRTT
+id|__u32
+id|minRTT
+suffix:semicolon
+multiline_comment|/* min of RTTs measured within last RTT (in usec) */
+DECL|member|baseRTT
+id|__u32
+id|baseRTT
+suffix:semicolon
+multiline_comment|/* the min of all Vegas RTT measurements seen (in usec) */
+DECL|member|vegas
+)brace
+id|vegas
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* WARNING: don&squot;t change the layout of the members in tcp_sock! */

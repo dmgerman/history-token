@@ -3217,6 +3217,12 @@ id|newsk-&gt;sk_no_largesend
 op_assign
 l_int|1
 suffix:semicolon
+id|tcp_vegas_init
+c_func
+(paren
+id|newtp
+)paren
+suffix:semicolon
 id|TCP_INC_STATS_BH
 c_func
 (paren
