@@ -18,16 +18,6 @@ id|line
 )paren
 suffix:semicolon
 r_void
-id|serial8250_get_irq_map
-c_func
-(paren
-r_int
-r_int
-op_star
-id|map
-)paren
-suffix:semicolon
-r_void
 id|serial8250_suspend_port
 c_func
 (paren
