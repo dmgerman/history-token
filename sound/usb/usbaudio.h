@@ -420,5 +420,9 @@ macro_line|#ifndef snd_usb_complete_callback
 DECL|macro|snd_usb_complete_callback
 mdefine_line|#define snd_usb_complete_callback(x) (x)
 macro_line|#endif
+macro_line|#ifndef snd_usb_get_speed
+DECL|macro|snd_usb_get_speed
+mdefine_line|#define snd_usb_get_speed(dev) ((dev)-&gt;speed)
+macro_line|#endif
 macro_line|#endif /* __USBAUDIO_H */
 eof
