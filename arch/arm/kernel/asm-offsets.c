@@ -8,10 +8,10 @@ multiline_comment|/*&n; * Make sure that the compiler and target are compatible.
 macro_line|#if defined(__APCS_26__)
 macro_line|#error Sorry, your compiler targets APCS-26 but this kernel requires APCS-32
 macro_line|#endif
-multiline_comment|/*&n; * GCC 2.95.1, 2.95.2: ignores register clobber list in asm().&n; * GCC 3.0, 3.1: general bad code generation.&n; * GCC 3.2.0: incorrect function argument offset calculation.&n; * GCC 3.2.x: miscompiles NEW_AUX_ENT in fs/binfmt_elf.c&n; *            (http://gcc.gnu.org/cgi-bin/gnatsweb.pl?cmd=view&amp;pr=8896)&n; */
-macro_line|#if __GNUC__ &lt; 2 || &bslash;&n;   (__GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ &lt; 95) || &bslash;&n;   (__GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ == 95 &amp;&amp; __GNUC_PATCHLEVEL__ != 0 &amp;&amp; &bslash;&n;&t;&t;&t;&t;&t;     __GNUC_PATCHLEVEL__ &lt; 3) || &bslash;&n;   (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 2) || &bslash;&n;   (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ == 2 &amp;&amp; __GNUC_PATCHLEVEL__ &lt; 1)
+multiline_comment|/*&n; * GCC 2.95.1, 2.95.2: ignores register clobber list in asm().&n; * GCC 3.0, 3.1: general bad code generation.&n; * GCC 3.2.0: incorrect function argument offset calculation.&n; * GCC 3.2.x: miscompiles NEW_AUX_ENT in fs/binfmt_elf.c&n; *            (http://gcc.gnu.org/PR8896) and incorrect structure&n; *&t;      initialisation in fs/jffs2/erase.c&n; */
+macro_line|#if __GNUC__ &lt; 2 || &bslash;&n;   (__GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ &lt; 95) || &bslash;&n;   (__GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ == 95 &amp;&amp; __GNUC_PATCHLEVEL__ != 0 &amp;&amp; &bslash;&n;&t;&t;&t;&t;&t;     __GNUC_PATCHLEVEL__ &lt; 3) || &bslash;&n;   (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 3)
 macro_line|#error Your compiler is too buggy; it is known to miscompile kernels.
-macro_line|#error    Known good compilers: 2.95.3, 2.95.4, 2.96, 3.2.2+PR8896
+macro_line|#error    Known good compilers: 2.95.3, 2.95.4, 2.96, 3.3
 macro_line|#endif
 multiline_comment|/* Use marker if you need to separate the values later */
 DECL|macro|DEFINE
