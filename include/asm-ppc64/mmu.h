@@ -346,8 +346,6 @@ r_extern
 id|HTAB
 id|htab_data
 suffix:semicolon
-DECL|macro|LARGE_PAGE_SHIFT
-mdefine_line|#define LARGE_PAGE_SHIFT 24
 DECL|function|hpt_hash
 r_static
 r_inline

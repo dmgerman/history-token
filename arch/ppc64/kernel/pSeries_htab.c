@@ -1342,7 +1342,7 @@ id|vpn
 op_assign
 id|va
 op_rshift
-id|LARGE_PAGE_SHIFT
+id|HPAGE_SHIFT
 suffix:semicolon
 r_else
 id|vpn
