@@ -5216,6 +5216,14 @@ id|ab
 r_if
 c_cond
 (paren
+op_logical_neg
+id|ab
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|ab-&gt;child
 )paren
 id|pciehprm_free_bridges

@@ -307,6 +307,8 @@ DECL|macro|PCI_CAP_ID_CHSWP
 mdefine_line|#define  PCI_CAP_ID_CHSWP&t;0x06&t;/* CompactPCI HotSwap */
 DECL|macro|PCI_CAP_ID_PCIX
 mdefine_line|#define  PCI_CAP_ID_PCIX&t;0x07&t;/* PCI-X */
+DECL|macro|PCI_CAP_ID_SHPC
+mdefine_line|#define  PCI_CAP_ID_SHPC &t;0x0C&t;/* PCI Standard Hot-Plug Controller */
 DECL|macro|PCI_CAP_ID_EXP
 mdefine_line|#define  PCI_CAP_ID_EXP &t;0x10&t;/* PCI Express */
 DECL|macro|PCI_CAP_ID_MSIX
