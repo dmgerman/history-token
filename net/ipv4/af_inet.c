@@ -4667,6 +4667,13 @@ c_func
 id|inet_unregister_protosw
 )paren
 suffix:semicolon
+DECL|variable|net_statistics
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|net_statistics
+)paren
+suffix:semicolon
 DECL|variable|tcp_protocol
 id|EXPORT_SYMBOL
 c_func

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/fddidevice.h&gt;
 macro_line|#include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;linux/fcdevice.h&gt;
-macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#ifdef CONFIG_HIPPI
 macro_line|#include &lt;linux/hippidevice.h&gt;
@@ -100,15 +99,6 @@ id|destroy_EII_client
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_INET
-multiline_comment|/* Route manipulation */
-multiline_comment|/* needed for ip_gre -cw */
-DECL|variable|ip_statistics
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_statistics
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_INET_ESP) || defined(CONFIG_INET_ESP_MODULE) || defined(CONFIG_INET6_ESP) || defined(CONFIG_INET6_ESP_MODULE)
 DECL|variable|skb_cow_data
 id|EXPORT_SYMBOL_GPL
@@ -132,32 +122,6 @@ id|skb_to_sgvec
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_IP_SCTP_MODULE)
-multiline_comment|/* inet functions common to v4 and v6 */
-multiline_comment|/* UDP/TCP exported functions for TCPv6 */
-DECL|variable|net_statistics
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|net_statistics
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Used by at least ipip.c.  */
-DECL|variable|ipv4_config
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ipv4_config
-)paren
-suffix:semicolon
-DECL|variable|ip_rcv
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_rcv
-)paren
-suffix:semicolon
 macro_line|#endif  /* CONFIG_INET */
 macro_line|#ifdef CONFIG_TR
 DECL|variable|tr_source_route
