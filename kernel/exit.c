@@ -2014,8 +2014,8 @@ id|child_reaper
 )paren
 (brace
 multiline_comment|/*&n;&t; * Make sure we&squot;re not reparenting to ourselves and that&n;&t; * the parent is not a zombie.&n;&t; */
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|p
 op_eq
@@ -2025,11 +2025,7 @@ id|reaper-&gt;state
 op_ge
 id|TASK_ZOMBIE
 )paren
-id|p-&gt;real_parent
-op_assign
-id|child_reaper
 suffix:semicolon
-r_else
 id|p-&gt;real_parent
 op_assign
 id|reaper
@@ -2315,9 +2311,15 @@ comma
 op_star
 id|_n
 suffix:semicolon
+r_do
+(brace
 id|reaper
 op_assign
-id|father-&gt;group_leader
+id|next_thread
+c_func
+(paren
+id|reaper
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2326,9 +2328,22 @@ id|reaper
 op_eq
 id|father
 )paren
+(brace
 id|reaper
 op_assign
 id|child_reaper
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_while
+c_loop
+(paren
+id|reaper-&gt;state
+op_ge
+id|TASK_ZOMBIE
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * There are only two places where our children can be:&n;&t; *&n;&t; * - in our child list&n;&t; * - in our ptraced child list&n;&t; *&n;&t; * Search them and reparent children.&n;&t; */
 id|list_for_each_safe

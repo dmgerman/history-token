@@ -4188,7 +4188,11 @@ c_cond
 (paren
 id|clone_flags
 op_amp
+(paren
 id|CLONE_PARENT
+op_or
+id|CLONE_THREAD
+)paren
 )paren
 id|p-&gt;real_parent
 op_assign
