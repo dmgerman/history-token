@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/sound/dmasound/dmasound_awacs.c&n; *&n; *  PowerMac `AWACS&squot; and `Burgundy&squot; DMA Sound Driver&n; *  with some limited support for DACA &amp; Tumbler&n; *&n; *  See linux/drivers/sound/dmasound/dmasound_core.c for copyright and&n; *  history prior to 2001/01/26.&n; *&n; *&t;26/01/2001 ed 0.1 Iain Sandoe&n; *&t;&t;- added version info.&n; *&t;&t;- moved dbdma command buffer allocation to PMacXXXSqSetup()&n; *&t;&t;- fixed up beep dbdma cmd buffers&n; *&n; *&t;08/02/2001 [0.2]&n; *&t;&t;- make SNDCTL_DSP_GETFMTS return the correct info for the h/w&n; *&t;&t;- move soft format translations to a separate file&n; *&t;&t;- [0.3] make SNDCTL_DSP_GETCAPS return correct info.&n; *&t;&t;- [0.4] more informative machine name strings.&n; *&t;&t;- [0.5]&n; *&t;&t;- record changes.&n; *&t;&t;- made the default_hard/soft entries.&n; *&t;04/04/2001 [0.6]&n; *&t;&t;- minor correction to bit assignments in awacs_defs.h&n; *&t;&t;- incorporate mixer changes from 2.2.x back-port.&n; *&t;&t;- take out passthru as a rec input (it isn&squot;t).&n; *              - make Input Gain slider work the &squot;right way up&squot;.&n; *              - try to make the mixer sliders more logical - so now the&n; *                input selectors are just two-state (&gt;50% == ON) and the&n; *                Input Gain slider handles the rest of the gain issues.&n; *              - try to pick slider representations that most closely match&n; *                the actual use - e.g. IGain for input gain... &n; *              - first stab at over/under-run detection.&n; *&t;&t;- minor cosmetic changes to IRQ identification.&n; *&t;&t;- fix bug where rates &gt; max would be reported as supported.&n; *              - first stab at over/under-run detection.&n; *              - make use of i2c for mixer settings conditional on perch&n; *                rather than cuda (some machines without perch have cuda).&n; *              - fix bug where TX stops when dbdma status comes up &quot;DEAD&quot;&n; *&t;&t;  so far only reported on PowerComputing clones ... but.&n; *&t;&t;- put in AWACS/Screamer register write timeouts.&n; *&t;&t;- part way to partitioning the init() stuff&n; *&t;&t;- first pass at &squot;tumbler&squot; stuff (not support - just an attempt&n; *&t;&t;  to allow the driver to load on new G4s).&n; *      01/02/2002 [0.7] - BenH&n; *&t;        - all sort of minor bits went in since the latest update, I&n; *&t;          bumped the version number for that reason&n; *&n; *      07/26/2002 [0.8] - BenH&n; *&t;        - More minor bits since last changelog (I should be more careful&n; *&t;          with those)&n; *&t;        - Support for snapper &amp; better tumbler integration by Toby Sargeant&n; *&t;        - Headphone detect for scremer by Julien Blache&n; *&t;        - More tumbler fixed by Andreas Schwab&n; */
+multiline_comment|/*&n; *  linux/drivers/sound/dmasound/dmasound_awacs.c&n; *&n; *  PowerMac `AWACS&squot; and `Burgundy&squot; DMA Sound Driver&n; *  with some limited support for DACA &amp; Tumbler&n; *&n; *  See linux/drivers/sound/dmasound/dmasound_core.c for copyright and&n; *  history prior to 2001/01/26.&n; *&n; *&t;26/01/2001 ed 0.1 Iain Sandoe&n; *&t;&t;- added version info.&n; *&t;&t;- moved dbdma command buffer allocation to PMacXXXSqSetup()&n; *&t;&t;- fixed up beep dbdma cmd buffers&n; *&n; *&t;08/02/2001 [0.2]&n; *&t;&t;- make SNDCTL_DSP_GETFMTS return the correct info for the h/w&n; *&t;&t;- move soft format translations to a separate file&n; *&t;&t;- [0.3] make SNDCTL_DSP_GETCAPS return correct info.&n; *&t;&t;- [0.4] more informative machine name strings.&n; *&t;&t;- [0.5]&n; *&t;&t;- record changes.&n; *&t;&t;- made the default_hard/soft entries.&n; *&t;04/04/2001 [0.6]&n; *&t;&t;- minor correction to bit assignments in awacs_defs.h&n; *&t;&t;- incorporate mixer changes from 2.2.x back-port.&n; *&t;&t;- take out passthru as a rec input (it isn&squot;t).&n; *              - make Input Gain slider work the &squot;right way up&squot;.&n; *              - try to make the mixer sliders more logical - so now the&n; *                input selectors are just two-state (&gt;50% == ON) and the&n; *                Input Gain slider handles the rest of the gain issues.&n; *              - try to pick slider representations that most closely match&n; *                the actual use - e.g. IGain for input gain... &n; *              - first stab at over/under-run detection.&n; *&t;&t;- minor cosmetic changes to IRQ identification.&n; *&t;&t;- fix bug where rates &gt; max would be reported as supported.&n; *              - first stab at over/under-run detection.&n; *              - make use of i2c for mixer settings conditional on perch&n; *                rather than cuda (some machines without perch have cuda).&n; *              - fix bug where TX stops when dbdma status comes up &quot;DEAD&quot;&n; *&t;&t;  so far only reported on PowerComputing clones ... but.&n; *&t;&t;- put in AWACS/Screamer register write timeouts.&n; *&t;&t;- part way to partitioning the init() stuff&n; *&t;&t;- first pass at &squot;tumbler&squot; stuff (not support - just an attempt&n; *&t;&t;  to allow the driver to load on new G4s).&n; *      01/02/2002 [0.7] - BenH&n; *&t;        - all sort of minor bits went in since the latest update, I&n; *&t;          bumped the version number for that reason&n; *&n; *      07/26/2002 [0.8] - BenH&n; *&t;        - More minor bits since last changelog (I should be more careful&n; *&t;          with those)&n; *&t;        - Support for snapper &amp; better tumbler integration by Toby Sargeant&n; *&t;        - Headphone detect for scremer by Julien Blache&n; *&t;        - More tumbler fixed by Andreas Schwab&n; *&t;11/29/2003 [0.8.1] - Renzo Davoli (King Enzo)&n; *&t;&t;- Support for Snapper line in&n; *&t;&t;- snapper input resampling (for rates &lt; 44100)&n; *&t;&t;- software line gain control&n; */
 multiline_comment|/* GENERAL FIXME/TODO: check that the assumptions about what is written to&n;   mac-io is valid for DACA &amp; Tumbler.&n;&n;   This driver is in bad need of a rewrite. The dbdma code has to be split,&n;   some proper device-tree parsing code has to be written, etc...&n;*/
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#ifdef CONFIG_ADB_CUDA
 macro_line|#include &lt;linux/cuda.h&gt;
@@ -100,11 +101,6 @@ DECL|variable|awacs_subframe
 r_static
 r_int
 id|awacs_subframe
-suffix:semicolon
-DECL|variable|awacs_spkr_vol
-r_static
-r_int
-id|awacs_spkr_vol
 suffix:semicolon
 DECL|variable|awacs_node
 r_static
@@ -1104,6 +1100,11 @@ r_int
 id|expand_bal
 suffix:semicolon
 multiline_comment|/* Balance factor for expanding (not volume!) */
+DECL|variable|expand_read_bal
+r_int
+id|expand_read_bal
+suffix:semicolon
+multiline_comment|/* Balance factor for expanding reads (not volume!) */
 multiline_comment|/*** Low level stuff *********************************************************/
 r_static
 r_void
@@ -1294,30 +1295,6 @@ r_int
 id|lshift
 )paren
 suffix:semicolon
-r_static
-r_void
-id|awacs_mksound
-c_func
-(paren
-r_int
-r_int
-id|hz
-comma
-r_int
-r_int
-id|ticks
-)paren
-suffix:semicolon
-r_static
-r_void
-id|awacs_nosound
-c_func
-(paren
-r_int
-r_int
-id|xx
-)paren
-suffix:semicolon
 multiline_comment|/*** Mid level stuff **********************************************************/
 r_static
 r_int
@@ -1366,6 +1343,10 @@ suffix:semicolon
 r_extern
 id|TRANS
 id|transAwacsNormalRead
+suffix:semicolon
+r_extern
+id|TRANS
+id|transAwacsExpandRead
 suffix:semicolon
 r_extern
 r_int
@@ -2556,9 +2537,12 @@ suffix:semicolon
 r_case
 id|SOUND_MIXER_READ_RECMASK
 suffix:colon
+singleline_comment|// XXX FIXME: find a way to check what is really available */
 id|data
 op_assign
-l_int|0
+id|SOUND_MASK_LINE
+op_or
+id|SOUND_MASK_MIC
 suffix:semicolon
 id|rc
 op_assign
@@ -2575,9 +2559,33 @@ suffix:semicolon
 r_case
 id|SOUND_MIXER_READ_RECSRC
 suffix:colon
-id|data
-op_assign
+r_if
+c_cond
+(paren
+id|awacs_reg
+(braket
 l_int|0
+)braket
+op_amp
+id|MASK_MUX_AUDIN
+)paren
+id|data
+op_or_assign
+id|SOUND_MASK_LINE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|awacs_reg
+(braket
+l_int|0
+)braket
+op_amp
+id|MASK_MUX_MIC
+)paren
+id|data
+op_or_assign
+id|SOUND_MASK_MIC
 suffix:semicolon
 id|rc
 op_assign
@@ -3708,12 +3716,20 @@ id|dmasound.hard.speed
 op_minus
 id|tolerance
 )paren
+(brace
 id|dmasound.trans_write
 op_assign
 op_amp
 id|transAwacsNormal
 suffix:semicolon
+id|dmasound.trans_read
+op_assign
+op_amp
+id|transAwacsNormalRead
+suffix:semicolon
+)brace
 r_else
+(brace
 id|dmasound.trans_write
 op_assign
 op_amp
@@ -3722,8 +3738,9 @@ suffix:semicolon
 id|dmasound.trans_read
 op_assign
 op_amp
-id|transAwacsNormalRead
+id|transAwacsExpandRead
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3762,6 +3779,11 @@ l_int|0
 suffix:semicolon
 )brace
 id|expand_bal
+op_assign
+op_minus
+id|dmasound.soft.speed
+suffix:semicolon
+id|expand_read_bal
 op_assign
 op_minus
 id|dmasound.soft.speed
@@ -5896,36 +5918,28 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|variable|beep_timer
+multiline_comment|/*&n; * We generate the beep with a single dbdma command that loops a buffer&n; * forever - without generating interrupts.&n; *&n; * So, to stop it you have to stop dma output as per awacs_nosound.&n; */
+DECL|function|awacs_beep_event
 r_static
-r_struct
-id|timer_list
-id|beep_timer
-op_assign
-id|TIMER_INITIALIZER
-c_func
-(paren
-id|awacs_nosound
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#if 0 /* would need to go through the input layer in 2.6, later..  --hch */
-multiline_comment|/* we generate the beep with a single dbdma command that loops a buffer&n;   forever - without generating interrupts.&n;   So, to stop it you have to stop dma output as per awacs_nosound.&n;*/
-r_static
-r_void
-id|awacs_mksound
-c_func
-(paren
 r_int
+id|awacs_beep_event
+c_func
+(paren
+r_struct
+id|input_dev
+op_star
+id|dev
+comma
+r_int
+r_int
+id|type
+comma
+r_int
+r_int
+id|code
+comma
 r_int
 id|hz
-comma
-r_int
-r_int
-id|ticks
 )paren
 (brace
 r_int
@@ -5973,11 +5987,56 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|type
+op_ne
+id|EV_SND
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|code
+)paren
+(brace
+r_case
+id|SND_BELL
+suffix:colon
+r_if
+c_cond
+(paren
+id|hz
+)paren
+id|hz
+op_assign
+l_int|1000
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SND_TONE
+suffix:colon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|beep_buf
 op_eq
 l_int|NULL
 )paren
 r_return
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* quick-hack fix for DACA, Burgundy &amp; Tumbler */
 r_if
@@ -6052,17 +6111,6 @@ op_div
 l_int|2
 )paren
 (brace
-macro_line|#if 1
-multiline_comment|/* this is a hack for broken X server code */
-id|hz
-op_assign
-l_int|750
-suffix:semicolon
-id|ticks
-op_assign
-l_int|12
-suffix:semicolon
-macro_line|#else
 multiline_comment|/* cancel beep currently playing */
 id|awacs_nosound
 c_func
@@ -6071,8 +6119,8 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
-macro_line|#endif
 )brace
 id|spin_lock_irqsave
 c_func
@@ -6083,33 +6131,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|beep_timer
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ticks
-)paren
-(brace
-id|beep_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|ticks
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|beep_timer
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6132,6 +6153,8 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* too hard, sorry :-( */
 )brace
@@ -6456,8 +6479,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* used in init and for wake-up */
 r_static
 r_void
@@ -8314,10 +8339,6 @@ macro_line|#ifdef CONFIG_ADB_CUDA
 r_struct
 id|adb_request
 id|req
-suffix:semicolon
-id|awacs_spkr_vol
-op_assign
-id|spkr_vol
 suffix:semicolon
 r_if
 c_cond
@@ -13194,6 +13215,70 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|awacs_beep_dev
+r_static
+r_struct
+id|input_dev
+id|awacs_beep_dev
+op_assign
+(brace
+dot
+id|evbit
+op_assign
+(brace
+id|BIT
+c_func
+(paren
+id|EV_SND
+)paren
+)brace
+comma
+dot
+id|sndbit
+op_assign
+(brace
+id|BIT
+c_func
+(paren
+id|SND_BELL
+)paren
+op_or
+id|BIT
+c_func
+(paren
+id|SND_TONE
+)paren
+)brace
+comma
+dot
+id|event
+op_assign
+id|awacs_beep_event
+comma
+dot
+id|name
+op_assign
+l_string|&quot;dmasound beeper&quot;
+comma
+dot
+id|phys
+op_assign
+l_string|&quot;macio/input0&quot;
+comma
+multiline_comment|/* what the heck is this?? */
+dot
+id|id
+op_assign
+(brace
+dot
+id|bustype
+op_assign
+id|BUS_HOST
+comma
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|dmasound_awacs_init
 r_int
 id|__init
@@ -14377,18 +14462,10 @@ id|dmasound.mach.hardware_afmts
 op_assign
 id|AFMT_S16_BE
 suffix:semicolon
-multiline_comment|/* shut out chips that do output only.&n;&t; * may need to extend this to machines which have no inputs - even tho&squot;&n;&t; * they use screamer - IIRC one of the powerbooks is like this.&n;&t; *&n;&t; * FIXME: Actually, some TUMBLER and SNAPPER do have inputs...  &n;&t; */
+multiline_comment|/* shut out chips that do output only.&n;&t; * may need to extend this to machines which have no inputs - even tho&squot;&n;&t; * they use screamer - IIRC one of the powerbooks is like this.&n;&t; */
 r_if
 c_cond
 (paren
-id|awacs_revision
-op_ne
-id|AWACS_TUMBLER
-op_logical_and
-id|awacs_revision
-op_ne
-id|AWACS_SNAPPER
-op_logical_and
 id|awacs_revision
 op_ne
 id|AWACS_DACA
@@ -14500,6 +14577,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * XXX: we should handle errors here, but that would mean&n;&t; * rewriting the whole init code.  later..&n;&t; */
+id|input_register_device
+c_func
+(paren
+op_amp
+id|awacs_beep_dev
+)paren
+suffix:semicolon
 r_return
 id|dmasound_init
 c_func
@@ -14517,6 +14602,13 @@ c_func
 r_void
 )paren
 (brace
+id|input_unregister_device
+c_func
+(paren
+op_amp
+id|awacs_beep_dev
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
