@@ -85,6 +85,8 @@ DECL|macro|SOCK_ASYNC_WAITDATA
 mdefine_line|#define SOCK_ASYNC_WAITDATA&t;1
 DECL|macro|SOCK_NOSPACE
 mdefine_line|#define SOCK_NOSPACE&t;&t;2
+DECL|macro|SOCK_PASSCRED
+mdefine_line|#define SOCK_PASSCRED&t;&t;3
 macro_line|#ifndef ARCH_HAS_SOCKET_TYPES
 multiline_comment|/** sock_type - Socket types&n; * &n; * When adding some new socket type please&n; * grep ARCH_HAS_SOCKET_TYPE include/asm-* /socket.h, at least MIPS&n; * overrides this enum for binary compat reasons.&n; * &n; * @SOCK_STREAM - stream (connection) socket&n; * @SOCK_DGRAM - datagram (conn.less) socket&n; * @SOCK_RAW - raw socket&n; * @SOCK_RDM - reliably-delivered message&n; * @SOCK_SEQPACKET - sequential packet socket &n; * @SOCK_PACKET - linux specific way of getting packets at the dev level.&n; *&t;&t;  For writing rarp and other similar things on the user level.&n; */
 DECL|enum|sock_type
@@ -171,11 +173,6 @@ suffix:semicolon
 DECL|member|type
 r_int
 id|type
-suffix:semicolon
-DECL|member|passcred
-r_int
-r_char
-id|passcred
 suffix:semicolon
 )brace
 suffix:semicolon
