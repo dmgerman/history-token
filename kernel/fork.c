@@ -42,7 +42,7 @@ id|tsk
 suffix:semicolon
 r_extern
 r_void
-id|exit_semundo
+id|exit_sem
 c_func
 (paren
 r_struct
@@ -4215,7 +4215,7 @@ suffix:semicolon
 multiline_comment|/* blocking */
 id|bad_fork_cleanup_semundo
 suffix:colon
-id|exit_semundo
+id|exit_sem
 c_func
 (paren
 id|p

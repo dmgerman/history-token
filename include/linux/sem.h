@@ -410,12 +410,6 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|member|add_count
-r_volatile
-r_int
-r_int
-id|add_count
-suffix:semicolon
 DECL|member|proc_list
 r_struct
 id|sem_undo
@@ -433,12 +427,6 @@ r_struct
 id|sem_undo_list
 op_star
 id|undo_list
-suffix:semicolon
-DECL|member|sleep_list
-r_struct
-id|sem_queue
-op_star
-id|sleep_list
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -514,6 +502,16 @@ id|timespec
 id|__user
 op_star
 id|timeout
+)paren
+suffix:semicolon
+r_void
+id|exit_sem
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|p
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

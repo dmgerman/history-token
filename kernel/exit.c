@@ -2648,9 +2648,10 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
-id|sem_exit
+id|exit_sem
 c_func
 (paren
+id|tsk
 )paren
 suffix:semicolon
 id|__exit_files
