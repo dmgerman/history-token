@@ -73,11 +73,8 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: find_boot_record(inftl=0x%x)&bslash;n&quot;
+l_string|&quot;INFTL: find_boot_record(inftl=%p)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 )paren
 suffix:semicolon
@@ -1189,12 +1186,9 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: check_free_sectors(inftl=0x%x,&quot;
+l_string|&quot;INFTL: check_free_sectors(inftl=%p,&quot;
 l_string|&quot;address=0x%x,len=%d,check_oob=%d)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 comma
 id|address
@@ -1347,12 +1341,9 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: INFTL_formatblock(inftl=0x%x,&quot;
+l_string|&quot;INFTL: INFTL_formatblock(inftl=%p,&quot;
 l_string|&quot;block=%d)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 comma
 id|block
@@ -2052,11 +2043,8 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: INFTL_mount(inftl=0x%x)&bslash;n&quot;
+l_string|&quot;INFTL: INFTL_mount(inftl=%p)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|s
 )paren
 suffix:semicolon

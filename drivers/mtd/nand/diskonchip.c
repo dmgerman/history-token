@@ -3400,9 +3400,6 @@ c_func
 (paren
 id|end
 comma
-(paren
-r_int
-)paren
 id|mtd-&gt;size
 )paren
 suffix:semicolon
@@ -3733,11 +3730,8 @@ op_assign
 id|min
 c_func
 (paren
-l_int|32768
+l_int|32768U
 comma
-(paren
-r_int
-)paren
 id|mtd-&gt;erasesize
 op_minus
 id|psize
@@ -3773,7 +3767,7 @@ op_assign
 id|min
 c_func
 (paren
-l_int|32768
+l_int|32768U
 comma
 (paren
 id|maxblocks
@@ -3843,11 +3837,8 @@ op_assign
 id|min
 c_func
 (paren
-l_int|32768
+l_int|32768U
 comma
-(paren
-r_int
-)paren
 id|mtd-&gt;erasesize
 op_minus
 id|psize

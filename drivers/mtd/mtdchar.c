@@ -2152,10 +2152,14 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL0
 comma
-l_string|&quot;Invalid ioctl %x (MEMGETINFO = %x)&bslash;n&quot;
+l_string|&quot;Invalid ioctl %x (MEMGETINFO = %lx)&bslash;n&quot;
 comma
 id|cmd
 comma
+(paren
+r_int
+r_int
+)paren
 id|MEMGETINFO
 )paren
 suffix:semicolon
