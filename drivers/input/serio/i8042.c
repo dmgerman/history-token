@@ -3421,6 +3421,13 @@ op_amp
 id|i8042_kbd_port
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|i8042_timer
+)paren
+suffix:semicolon
 id|i8042_timer.function
 op_assign
 id|i8042_timer_func
