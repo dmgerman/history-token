@@ -406,11 +406,11 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
-DECL|variable|create_bounce
+DECL|variable|blk_queue_bounce
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|create_bounce
+id|blk_queue_bounce
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM

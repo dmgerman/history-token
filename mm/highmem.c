@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * High memory handling common code and variables.&n; *&n; * (C) 1999 Andrea Arcangeli, SuSE GmbH, andrea@suse.de&n; *          Gerhard Wichert, Siemens AG, Gerhard.Wichert@pdb.siemens.de&n; *&n; *&n; * Redesigned the x86 32-bit VM architecture to deal with&n; * 64-bit physical space. With current x86 CPUs this&n; * means up to 64 Gigabytes physical RAM.&n; *&n; * Rewrote high memory support to move the page cache into&n; * high memory. Implemented permanent (schedulable) kmaps&n; * based on Linus&squot; idea.&n; *&n; * Copyright (C) 1999 Ingo Molnar &lt;mingo@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
@@ -1198,17 +1199,14 @@ id|isa_page_pool
 )paren
 suffix:semicolon
 )brace
-DECL|function|create_bounce
+DECL|function|blk_queue_bounce
 r_void
-id|create_bounce
+id|blk_queue_bounce
 c_func
 (paren
-r_int
-r_int
-id|pfn
-comma
-r_int
-id|gfp
+id|request_queue_t
+op_star
+id|q
 comma
 r_struct
 id|bio
@@ -1254,6 +1252,17 @@ suffix:semicolon
 id|mempool_t
 op_star
 id|pool
+suffix:semicolon
+r_int
+r_int
+id|pfn
+op_assign
+id|q-&gt;bounce_pfn
+suffix:semicolon
+r_int
+id|gfp
+op_assign
+id|q-&gt;bounce_gfp
 suffix:semicolon
 id|BUG_ON
 c_func

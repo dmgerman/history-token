@@ -239,7 +239,6 @@ id|Boundary
 comma
 id|boundary
 )paren
-multiline_comment|/*&n; * FIXME: this is used only by bh_kmap, which is used only by RAID5.&n; * Move all that stuff into raid5.c&n; */
 DECL|macro|bh_offset
 mdefine_line|#define bh_offset(bh)&t;&t;((unsigned long)(bh)-&gt;b_data &amp; ~PAGE_MASK)
 DECL|macro|touch_buffer
