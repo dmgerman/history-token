@@ -235,6 +235,48 @@ id|integrity_failed
 suffix:semicolon
 )brace
 suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|XFRM_POLICY_IN
+id|XFRM_POLICY_IN
+op_assign
+l_int|0
+comma
+DECL|enumerator|XFRM_POLICY_OUT
+id|XFRM_POLICY_OUT
+op_assign
+l_int|1
+comma
+DECL|enumerator|XFRM_POLICY_FWD
+id|XFRM_POLICY_FWD
+op_assign
+l_int|2
+comma
+DECL|enumerator|XFRM_POLICY_MAX
+id|XFRM_POLICY_MAX
+op_assign
+l_int|3
+)brace
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|XFRM_SHARE_ANY
+id|XFRM_SHARE_ANY
+comma
+multiline_comment|/* No limitations */
+DECL|enumerator|XFRM_SHARE_SESSION
+id|XFRM_SHARE_SESSION
+comma
+multiline_comment|/* For this session only */
+DECL|enumerator|XFRM_SHARE_USER
+id|XFRM_SHARE_USER
+comma
+multiline_comment|/* For this user only */
+DECL|enumerator|XFRM_SHARE_UNIQUE
+id|XFRM_SHARE_UNIQUE
+multiline_comment|/* Use once */
+)brace
+suffix:semicolon
 multiline_comment|/* Netlink configuration messages.  */
 DECL|macro|XFRM_MSG_BASE
 mdefine_line|#define XFRM_MSG_BASE&t;&t;0x10
@@ -254,8 +296,10 @@ DECL|macro|XFRM_MSG_ALLOCSPI
 mdefine_line|#define XFRM_MSG_ALLOCSPI&t;(RTM_BASE + 6)
 DECL|macro|XFRM_MSG_ACQUIRE
 mdefine_line|#define XFRM_MSG_ACQUIRE&t;(RTM_BASE + 7)
+DECL|macro|XFRM_MSG_EXPIRE
+mdefine_line|#define XFRM_MSG_EXPIRE&t;&t;(RTM_BASE + 8)
 DECL|macro|XFRM_MSG_MAX
-mdefine_line|#define XFRM_MSG_MAX&t;&t;(XFRM_MSG_ACQUIRE+1)
+mdefine_line|#define XFRM_MSG_MAX&t;&t;(XFRM_MSG_EXPIRE+1)
 DECL|struct|xfrm_user_tmpl
 r_struct
 id|xfrm_user_tmpl
@@ -280,6 +324,10 @@ suffix:semicolon
 DECL|member|share
 id|__u8
 id|share
+suffix:semicolon
+DECL|member|optional
+id|__u8
+id|optional
 suffix:semicolon
 DECL|member|aalgos
 id|__u32
@@ -352,6 +400,10 @@ r_struct
 id|xfrm_stats
 id|stats
 suffix:semicolon
+DECL|member|seq
+id|__u32
+id|seq
+suffix:semicolon
 DECL|member|family
 id|__u16
 id|family
@@ -359,10 +411,6 @@ suffix:semicolon
 DECL|member|reqid
 id|__u16
 id|reqid
-suffix:semicolon
-DECL|member|sa_type
-id|__u8
-id|sa_type
 suffix:semicolon
 DECL|member|mode
 id|__u8
@@ -393,6 +441,25 @@ id|proto
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|xfrm_userspi_info
+r_struct
+id|xfrm_userspi_info
+(brace
+DECL|member|info
+r_struct
+id|xfrm_usersa_info
+id|info
+suffix:semicolon
+DECL|member|min
+id|u32
+id|min
+suffix:semicolon
+DECL|member|max
+id|u32
+id|max
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|xfrm_userpolicy_info
 r_struct
 id|xfrm_userpolicy_info
@@ -401,11 +468,6 @@ DECL|member|sel
 r_struct
 id|xfrm_selector
 id|sel
-suffix:semicolon
-DECL|member|id
-r_struct
-id|xfrm_id
-id|id
 suffix:semicolon
 DECL|member|lft
 r_struct
@@ -416,6 +478,10 @@ DECL|member|curlft
 r_struct
 id|xfrm_lifetime_cur
 id|curlft
+suffix:semicolon
+DECL|member|priority
+id|__u32
+id|priority
 suffix:semicolon
 DECL|member|index
 id|__u32
@@ -432,6 +498,20 @@ suffix:semicolon
 DECL|member|action
 id|__u8
 id|action
+suffix:semicolon
+DECL|macro|XFRM_POLICY_ALLOW
+mdefine_line|#define XFRM_POLICY_ALLOW&t;0
+DECL|macro|XFRM_POLICY_BLOCK
+mdefine_line|#define XFRM_POLICY_BLOCK&t;1
+DECL|member|flags
+id|__u8
+id|flags
+suffix:semicolon
+DECL|macro|XFRM_POLICY_LOCALOK
+mdefine_line|#define XFRM_POLICY_LOCALOK&t;1&t;/* Allow user to override global policy */
+DECL|member|share
+id|__u8
+id|share
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -454,5 +534,60 @@ id|dir
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|xfrm_user_acquire
+r_struct
+id|xfrm_user_acquire
+(brace
+DECL|member|id
+r_struct
+id|xfrm_id
+id|id
+suffix:semicolon
+DECL|member|saddr
+id|xfrm_address_t
+id|saddr
+suffix:semicolon
+DECL|member|policy
+r_struct
+id|xfrm_userpolicy_info
+id|policy
+suffix:semicolon
+DECL|member|aalgos
+id|__u32
+id|aalgos
+suffix:semicolon
+DECL|member|ealgos
+id|__u32
+id|ealgos
+suffix:semicolon
+DECL|member|calgos
+id|__u32
+id|calgos
+suffix:semicolon
+DECL|member|seq
+id|__u32
+id|seq
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|xfrm_user_expire
+r_struct
+id|xfrm_user_expire
+(brace
+DECL|member|state
+r_struct
+id|xfrm_usersa_info
+id|state
+suffix:semicolon
+DECL|member|hard
+id|__u8
+id|hard
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|XFRMGRP_ACQUIRE
+mdefine_line|#define XFRMGRP_ACQUIRE&t;&t;1
+DECL|macro|XFRMGRP_EXPIRE
+mdefine_line|#define XFRMGRP_EXPIRE&t;&t;2
 macro_line|#endif /* _LINUX_XFRM_H */
 eof

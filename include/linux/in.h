@@ -162,6 +162,8 @@ DECL|macro|IP_FREEBIND
 mdefine_line|#define IP_FREEBIND&t;15
 DECL|macro|IP_IPSEC_POLICY
 mdefine_line|#define IP_IPSEC_POLICY&t;16
+DECL|macro|IP_XFRM_POLICY
+mdefine_line|#define IP_XFRM_POLICY&t;17
 multiline_comment|/* BSD compatibility */
 DECL|macro|IP_RECVRETOPTS
 mdefine_line|#define IP_RECVRETOPTS&t;IP_RETOPTS
