@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (C) 1994-1998  Linus Torvalds and authors:&n; *&n; *&t;Mark Lord &lt;mlord@pobox.com&gt;&n; *&t;Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; *&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&t;Jens Axboe &lt;axboe@suse.de&gt;&n; *&t;Marcin Dalecki &lt;dalecki@evision.ag&gt;&n; *&n; * This is the ATA disk device driver, as evolved from hd.c and ide.c.&n; */
+multiline_comment|/***** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; *  Copyright (C) 1994-1998,2002  Linus Torvalds and authors:&n; *&n; *&t;Mark Lord&t;&lt;mlord@pobox.com&gt;&n; *&t;Gadi Oxman&t;&lt;gadio@netvision.net.il&gt;&n; *&t;Andre Hedrick&t;&lt;andre@linux-ide.org&gt;&n; *&t;Jens Axboe&t;&lt;axboe@suse.de&gt;&n; *&t;Marcin Dalecki&t;&lt;martin@dalecki.de&gt;&n; *&n; * This is the ATA disk device driver, as evolved from hd.c and ide.c.&n; */
 DECL|macro|IDEDISK_VERSION
 mdefine_line|#define IDEDISK_VERSION&t;&quot;1.14&quot;
 macro_line|#include &lt;linux/config.h&gt;
