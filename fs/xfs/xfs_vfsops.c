@@ -2180,14 +2180,8 @@ op_eq
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Drop the reference count, and then&n;&t; * run the vnode through vn_remove.&n;&t; */
+multiline_comment|/*&n;&t; * Drop the reference count&n;&t; */
 id|VN_RELE
-c_func
-(paren
-id|rvp
-)paren
-suffix:semicolon
-id|vn_remove
 c_func
 (paren
 id|rvp
