@@ -7825,6 +7825,12 @@ c_func
 id|PCI_DEVICE_ID_INTEL_7205_0
 )paren
 comma
+id|ID
+c_func
+(paren
+id|PCI_DEVICE_ID_INTEL_82915G_HB
+)paren
+comma
 (brace
 )brace
 )brace
