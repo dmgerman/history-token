@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  (C) 2001-2003  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 3 different versions of Longhaul.&n; *&n; *  +---------------------+----------+---------------------------------+&n; *  | Marketing name      | Codename | longhaul version / features.    |&n; *  +---------------------+----------+---------------------------------+&n; *  |  Samuel/CyrixIII    |   C5A    | v1 : multipliers only           |&n; *  |  Samuel2/C3         | C3E/C5B  | v1 : multiplier only            |&n; *  |  Ezra               |   C5C    | v2 : multipliers &amp; voltage      |&n; *  |  Ezra-T             | C5M/C5N  | v3 : multipliers, voltage &amp; FSB |&n; *  +---------------------+----------+---------------------------------+&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  (C) 2001-2003  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 3 different versions of Longhaul.&n; *&n; *  +---------------------+----------+---------------------------------+&n; *  | Marketing name      | Codename | longhaul version / features.    |&n; *  +---------------------+----------+---------------------------------+&n; *  |  Samuel/CyrixIII    | C5A      | v1 : multipliers only           |&n; *  |  Samuel2/C3         | C3E/C5B  | v1 : multiplier only            |&n; *  |  Ezra               | C5C      | v2 : multipliers &amp; voltage      |&n; *  |  Ezra-T             | C5M      | v3 : multipliers, voltage &amp; FSB |&n; *  |  Nehemiah           | C5N      | v3 : multipliers, voltage &amp; FSB |&n; *  +---------------------+----------+---------------------------------+&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -1405,6 +1405,12 @@ id|c
 op_assign
 id|cpu_data
 suffix:semicolon
+r_char
+op_star
+id|cpuname
+op_assign
+l_int|NULL
+suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -1417,7 +1423,10 @@ id|c-&gt;x86_model
 r_case
 l_int|6
 suffix:colon
-multiline_comment|/* VIA C3 Samuel C5A */
+id|cpuname
+op_assign
+l_string|&quot;C3 &squot;Samuel&squot; [C5A]&quot;
+suffix:semicolon
 id|longhaul_version
 op_assign
 l_int|1
@@ -1461,6 +1470,10 @@ id|c-&gt;x86_mask
 r_case
 l_int|0
 suffix:colon
+id|cpuname
+op_assign
+l_string|&quot;C3 &squot;Samuel 2&squot; [C5B]&quot;
+suffix:semicolon
 id|longhaul_version
 op_assign
 l_int|1
@@ -1498,6 +1511,10 @@ dot
 dot
 l_int|15
 suffix:colon
+id|cpuname
+op_assign
+l_string|&quot;C3 &squot;Ezra&squot; [C5C]&quot;
+suffix:semicolon
 id|longhaul_version
 op_assign
 l_int|2
@@ -1534,7 +1551,10 @@ suffix:semicolon
 r_case
 l_int|8
 suffix:colon
-multiline_comment|/* C5M/C5N */
+id|cpuname
+op_assign
+l_string|&quot;C3 &squot;Ezra-T [C5M]&quot;
+suffix:semicolon
 id|longhaul_version
 op_assign
 l_int|3
@@ -1569,12 +1589,23 @@ id|c5m_eblcr
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/*&n;&t;case 9:&n;&t;&t;cpuname = &quot;C3 &squot;Nehemiah&squot; [C5N]&quot;;&n;&t;&t;longhaul_version=3;&n;&t;&t;numscales=32;&n;&t;*/
+r_default
+suffix:colon
+id|cpuname
+op_assign
+l_string|&quot;Unknown&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 id|printk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;VIA CPU detected. Longhaul version %d supported&bslash;n&quot;
+l_string|&quot;VIA %s CPU detected. Longhaul v%d supported.&bslash;n&quot;
+comma
+id|cpuname
 comma
 id|longhaul_version
 )paren
