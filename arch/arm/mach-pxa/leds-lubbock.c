@@ -157,7 +157,6 @@ id|hw_led_state
 op_or_assign
 id|D21
 suffix:semicolon
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -177,7 +176,6 @@ id|hw_led_state
 op_or_assign
 id|D22
 suffix:semicolon
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -196,7 +194,6 @@ suffix:colon
 id|hw_led_state
 op_or_assign
 id|D23
-suffix:semicolon
 suffix:semicolon
 r_break
 suffix:semicolon
