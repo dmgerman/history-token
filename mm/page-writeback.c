@@ -133,12 +133,6 @@ id|nr_to_write
 op_assign
 l_int|1500
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;sync thresh&bslash;n&quot;
-)paren
-suffix:semicolon
 id|writeback_unlocked_inodes
 c_func
 (paren
