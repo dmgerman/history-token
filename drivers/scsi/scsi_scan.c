@@ -5650,30 +5650,6 @@ op_assign
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * For untagged devices, did the lldd set the untagged queue&n;&t;&t; * depth?&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|sdev-&gt;tagged_supported
-op_eq
-l_int|0
-op_logical_and
-id|sdev-&gt;new_queue_depth
-op_ne
-id|sdev-&gt;host-&gt;cmd_per_lun
-)paren
-(brace
-id|scsi_adjust_queue_depth
-c_func
-(paren
-id|sdev
-comma
-l_int|0
-comma
-id|sdev-&gt;host-&gt;cmd_per_lun
-)paren
-suffix:semicolon
-)brace
 )brace
 r_else
 r_if
@@ -5769,7 +5745,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sdevscan-&gt;queue_depth
+id|sdevscan-&gt;current_queue_depth
 op_eq
 l_int|0
 )paren
@@ -6032,7 +6008,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sdevscan-&gt;queue_depth
+id|sdevscan-&gt;current_queue_depth
 op_ne
 l_int|0
 )paren
@@ -6428,7 +6404,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sdevscan-&gt;queue_depth
+id|sdevscan-&gt;current_queue_depth
 op_eq
 l_int|0
 )paren
@@ -7430,7 +7406,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sdev-&gt;queue_depth
+id|sdev-&gt;current_queue_depth
 op_eq
 l_int|0
 )paren

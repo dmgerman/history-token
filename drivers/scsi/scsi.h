@@ -1277,10 +1277,10 @@ op_star
 id|current_cmnd
 suffix:semicolon
 multiline_comment|/* currently active command */
-DECL|member|queue_depth
+DECL|member|current_queue_depth
 r_int
 r_int
-id|queue_depth
+id|current_queue_depth
 suffix:semicolon
 multiline_comment|/* How deep of a queue we have */
 DECL|member|new_queue_depth

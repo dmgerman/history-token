@@ -23375,7 +23375,7 @@ id|boardp-&gt;device
 id|i
 )braket
 op_member_access_from_pointer
-id|queue_depth
+id|current_queue_depth
 )paren
 suffix:semicolon
 id|ASC_PRT_NEXT

@@ -6125,7 +6125,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;device-&gt;queue_depth
+id|SCpnt-&gt;device-&gt;new_queue_depth
 OG
 l_int|2
 op_logical_and
@@ -9994,7 +9994,7 @@ c_cond
 (paren
 id|linked_comm
 op_logical_and
-id|SCpnt-&gt;device-&gt;queue_depth
+id|SCpnt-&gt;device-&gt;new_queue_depth
 OG
 l_int|2
 op_logical_and

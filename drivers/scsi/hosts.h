@@ -315,22 +315,6 @@ r_int
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Used to set the queue depth for a specific device.&n;     *&n;     * Once the slave_attach() function is in full use, this will go away.&n;     */
-DECL|member|select_queue_depths
-r_void
-(paren
-op_star
-id|select_queue_depths
-)paren
-(paren
-r_struct
-id|Scsi_Host
-op_star
-comma
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n;     * This determines if we will use a non-interrupt driven&n;     * or an interrupt driven scheme,  It is set to the maximum number&n;     * of simultaneous commands a given host adapter will accept.&n;     */
 DECL|member|can_queue
 r_int

@@ -5941,7 +5941,7 @@ id|device-&gt;id
 comma
 id|device-&gt;lun
 comma
-id|device-&gt;queue_depth
+id|device-&gt;new_queue_depth
 )paren
 suffix:semicolon
 )brace
