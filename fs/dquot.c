@@ -5962,15 +5962,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sb
-)paren
-r_goto
-id|out
-suffix:semicolon
 multiline_comment|/* We need to serialize quota_off() for device */
 id|down
 c_func
