@@ -5677,7 +5677,7 @@ id|jh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Remove a buffer from its current buffer list in preparation for&n; * dropping it from its current transaction entirely.  If the buffer has&n; * already started to be used by a subsequent transaction, refile the&n; * buffer on that transaction&squot;s metadata list.&n; */
+multiline_comment|/* &n; * Remove a buffer from its current buffer list in preparation for&n; * dropping it from its current transaction entirely.  If the buffer has&n; * already started to be used by a subsequent transaction, refile the&n; * buffer on that transaction&squot;s metadata list.&n; *&n; * Called under journal_datalist_lock&n; *&n; * Called under jbd_lock_bh_state(jh2bh(jh))&n; */
 DECL|function|__journal_refile_buffer
 r_void
 id|__journal_refile_buffer
