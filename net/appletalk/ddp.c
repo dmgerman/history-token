@@ -7471,13 +7471,6 @@ id|create
 op_assign
 id|atalk_create
 comma
-)brace
-suffix:semicolon
-dot
-id|family
-op_assign
-id|PF_APPLETALK
-comma
 dot
 id|release
 op_assign
@@ -7569,6 +7562,7 @@ comma
 id|PF_APPLETALK
 )paren
 suffix:semicolon
+DECL|variable|ddp_notifier
 r_static
 r_struct
 id|notifier_block
@@ -7582,6 +7576,7 @@ id|ddp_device_event
 comma
 )brace
 suffix:semicolon
+DECL|variable|ltalk_packet_type
 r_struct
 id|packet_type
 id|ltalk_packet_type
@@ -7603,6 +7598,7 @@ id|ltalk_rcv
 comma
 )brace
 suffix:semicolon
+DECL|variable|ppptalk_packet_type
 r_struct
 id|packet_type
 id|ppptalk_packet_type
@@ -7624,6 +7620,7 @@ id|atalk_rcv
 comma
 )brace
 suffix:semicolon
+DECL|variable|ddp_snap_id
 r_static
 r_char
 id|ddp_snap_id
@@ -7643,18 +7640,21 @@ l_int|0x9B
 )brace
 suffix:semicolon
 multiline_comment|/* Export symbols for use by drivers when AppleTalk is a module */
+DECL|variable|aarp_send_ddp
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|aarp_send_ddp
 )paren
 suffix:semicolon
+DECL|variable|atrtr_get_dev
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|atrtr_get_dev
 )paren
 suffix:semicolon
+DECL|variable|atalk_find_dev_addr
 id|EXPORT_SYMBOL
 c_func
 (paren
@@ -7662,6 +7662,7 @@ id|atalk_find_dev_addr
 )paren
 suffix:semicolon
 multiline_comment|/* Called by proto.c on kernel start up */
+DECL|function|atalk_init
 r_static
 r_int
 id|__init
@@ -7785,6 +7786,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|atalk_init
 id|module_init
 c_func
 (paren
@@ -7793,6 +7795,7 @@ id|atalk_init
 suffix:semicolon
 macro_line|#ifdef MODULE
 multiline_comment|/*&n; * Note on MOD_{INC,DEC}_USE_COUNT:&n; *&n; * Use counts are incremented/decremented when&n; * sockets are created/deleted.&n; *&n; * AppleTalk interfaces are not incremented until atalkd is run&n; * and are only decremented when they are downed.&n; *&n; * Ergo, before the AppleTalk module can be removed, all AppleTalk&n; * sockets be closed from user space.&n; */
+DECL|function|atalk_exit
 r_static
 r_void
 id|__exit
@@ -7874,6 +7877,7 @@ id|PF_APPLETALK
 )paren
 suffix:semicolon
 )brace
+DECL|variable|atalk_exit
 id|module_exit
 c_func
 (paren
