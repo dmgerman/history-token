@@ -451,6 +451,8 @@ macro_line|#elif defined(CONFIG_ALPHA_JENSEN)
 macro_line|# include &lt;asm/jensen.h&gt;
 macro_line|#elif defined(CONFIG_ALPHA_LCA)
 macro_line|# include &lt;asm/core_lca.h&gt;
+macro_line|#elif defined(CONFIG_ALPHA_MARVEL)
+macro_line|# include &lt;asm/core_marvel.h&gt;
 macro_line|#elif defined(CONFIG_ALPHA_MCPCIA)
 macro_line|# include &lt;asm/core_mcpcia.h&gt;
 macro_line|#elif defined(CONFIG_ALPHA_POLARIS)

@@ -1,9 +1,11 @@
 multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/machvec.h&n; *&n; *&t;Copyright (C) 1997, 1998  Richard Henderson&n; *&n; * This file has goodies to help simplify instantiation of machine vectors.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
-multiline_comment|/* Whee.  IRONGATE, POLARIS, TSUNAMI, TITAN, and WILDFIRE don&squot;t have an HAE.&n;   Fix things up for the GENERIC kernel by defining the HAE address&n;   to be that of the cache. Now we can read and write it as we like.  ;-)  */
+multiline_comment|/* Whee.  These systems don&squot;t have an HAE:&n;       IRONGATE, MARVEL, POLARIS, TSUNAMI, TITAN, WILDFIRE&n;   Fix things up for the GENERIC kernel by defining the HAE address&n;   to be that of the cache. Now we can read and write it as we like.  ;-)  */
 DECL|macro|IRONGATE_HAE_ADDRESS
 mdefine_line|#define IRONGATE_HAE_ADDRESS&t;(&amp;alpha_mv.hae_cache)
+DECL|macro|MARVEL_HAE_ADDRESS
+mdefine_line|#define MARVEL_HAE_ADDRESS&t;(&amp;alpha_mv.hae_cache)
 DECL|macro|POLARIS_HAE_ADDRESS
 mdefine_line|#define POLARIS_HAE_ADDRESS&t;(&amp;alpha_mv.hae_cache)
 DECL|macro|TSUNAMI_HAE_ADDRESS
@@ -40,6 +42,8 @@ DECL|macro|DO_EV5_MMU
 mdefine_line|#define DO_EV5_MMU&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;max_asn:&t;&t;&t;EV5_MAX_ASN,&t;&t;&t;&bslash;&n;&t;mv_switch_mm:&t;&t;&t;ev5_switch_mm,&t;&t;&t;&bslash;&n;&t;mv_activate_mm:&t;&t;&t;ev5_activate_mm,&t;&t;&bslash;&n;&t;mv_flush_tlb_current:&t;&t;ev5_flush_tlb_current,&t;&t;&bslash;&n;&t;mv_flush_tlb_current_page:&t;ev5_flush_tlb_current_page
 DECL|macro|DO_EV6_MMU
 mdefine_line|#define DO_EV6_MMU&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;max_asn:&t;&t;&t;EV6_MAX_ASN,&t;&t;&t;&bslash;&n;&t;mv_switch_mm:&t;&t;&t;ev5_switch_mm,&t;&t;&t;&bslash;&n;&t;mv_activate_mm:&t;&t;&t;ev5_activate_mm,&t;&t;&bslash;&n;&t;mv_flush_tlb_current:&t;&t;ev5_flush_tlb_current,&t;&t;&bslash;&n;&t;mv_flush_tlb_current_page:&t;ev5_flush_tlb_current_page
+DECL|macro|DO_EV7_MMU
+mdefine_line|#define DO_EV7_MMU&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;max_asn:&t;&t;&t;EV6_MAX_ASN,&t;&t;&t;&bslash;&n;&t;mv_switch_mm:&t;&t;&t;ev5_switch_mm,&t;&t;&t;&bslash;&n;&t;mv_activate_mm:&t;&t;&t;ev5_activate_mm,&t;&t;&bslash;&n;&t;mv_flush_tlb_current:&t;&t;ev5_flush_tlb_current,&t;&t;&bslash;&n;&t;mv_flush_tlb_current_page:&t;ev5_flush_tlb_current_page
 DECL|macro|IO_LITE
 mdefine_line|#define IO_LITE(UP,low)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;hae_register:&t;&t;(unsigned long *) CAT(UP,_HAE_ADDRESS),&t;&bslash;&n;&t;iack_sc:&t;&t;CAT(UP,_IACK_SC),&t;&t;&t;&bslash;&n;&t;mv_inb:&t;&t;&t;CAT(low,_inb),&t;&t;&t;&t;&bslash;&n;&t;mv_inw:&t;&t;&t;CAT(low,_inw),&t;&t;&t;&t;&bslash;&n;&t;mv_inl:&t;&t;&t;CAT(low,_inl),&t;&t;&t;&t;&bslash;&n;&t;mv_outb:&t;&t;CAT(low,_outb),&t;&t;&t;&t;&bslash;&n;&t;mv_outw:&t;&t;CAT(low,_outw),&t;&t;&t;&t;&bslash;&n;&t;mv_outl:&t;&t;CAT(low,_outl),&t;&t;&t;&t;&bslash;&n;&t;mv_readb:&t;&t;CAT(low,_readb),&t;&t;&t;&bslash;&n;&t;mv_readw:&t;&t;CAT(low,_readw),&t;&t;&t;&bslash;&n;&t;mv_readl:&t;&t;CAT(low,_readl),&t;&t;&t;&bslash;&n;&t;mv_readq:&t;&t;CAT(low,_readq),&t;&t;&t;&bslash;&n;&t;mv_writeb:&t;&t;CAT(low,_writeb),&t;&t;&t;&bslash;&n;&t;mv_writew:&t;&t;CAT(low,_writew),&t;&t;&t;&bslash;&n;&t;mv_writel:&t;&t;CAT(low,_writel),&t;&t;&t;&bslash;&n;&t;mv_writeq:&t;&t;CAT(low,_writeq),&t;&t;&t;&bslash;&n;&t;mv_ioremap:&t;&t;CAT(low,_ioremap),&t;&t;&t;&bslash;&n;&t;mv_iounmap:&t;&t;CAT(low,_iounmap)&t;&t;&t;&bslash;&n;
 DECL|macro|IO
@@ -52,6 +56,8 @@ DECL|macro|DO_IRONGATE_IO
 mdefine_line|#define DO_IRONGATE_IO&t;IO(IRONGATE,irongate)
 DECL|macro|DO_LCA_IO
 mdefine_line|#define DO_LCA_IO&t;IO(LCA,lca)
+DECL|macro|DO_MARVEL_IO
+mdefine_line|#define DO_MARVEL_IO&t;IO(MARVEL,marvel)
 DECL|macro|DO_MCPCIA_IO
 mdefine_line|#define DO_MCPCIA_IO&t;IO(MCPCIA,mcpcia)
 DECL|macro|DO_POLARIS_IO
@@ -76,6 +82,8 @@ DECL|macro|DO_IRONGATE_BUS
 mdefine_line|#define DO_IRONGATE_BUS&t;BUS(irongate)
 DECL|macro|DO_LCA_BUS
 mdefine_line|#define DO_LCA_BUS&t;BUS(lca)
+DECL|macro|DO_MARVEL_BUS
+mdefine_line|#define DO_MARVEL_BUS&t;BUS(marvel)
 DECL|macro|DO_MCPCIA_BUS
 mdefine_line|#define DO_MCPCIA_BUS&t;BUS(mcpcia)
 DECL|macro|DO_POLARIS_BUS

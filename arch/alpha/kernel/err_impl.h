@@ -466,6 +466,29 @@ id|el_subpacket_handler
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * err_marvel.c&n; */
+r_extern
+r_void
+id|marvel_machine_check
+c_func
+(paren
+id|u64
+comma
+id|u64
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|marvel_register_error_handlers
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * err_titan.c&n; */
 r_extern
 r_int
