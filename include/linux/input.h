@@ -994,6 +994,8 @@ DECL|macro|BUS_USB
 mdefine_line|#define BUS_USB&t;&t;&t;0x03
 DECL|macro|BUS_HIL
 mdefine_line|#define BUS_HIL&t;&t;&t;0x04
+DECL|macro|BUS_BLUETOOTH
+mdefine_line|#define BUS_BLUETOOTH&t;&t;0x05
 DECL|macro|BUS_ISA
 mdefine_line|#define BUS_ISA&t;&t;&t;0x10
 DECL|macro|BUS_I8042
