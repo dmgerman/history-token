@@ -1,13 +1,15 @@
 multiline_comment|/* -*-linux-c-*-&n;&n; * vendor-specific code for SCSI CD-ROM&squot;s goes here.&n; *&n; * This is needed becauce most of the new features (multisession and&n; * the like) are too new to be included into the SCSI-II standard (to&n; * be exact: there is&squot;nt anything in my draft copy).&n; *&n; * Aug 1997: Ha! Got a SCSI-3 cdrom spec across my fingers. SCSI-3 does&n; *           multisession using the READ TOC command (like SONY).&n; *&n; *           Rearranged stuff here: SCSI-3 is included allways, support&n; *           for NEC/TOSHIBA/HP commands is optional.&n; *&n; *   Gerd Knorr &lt;kraxel@cs.tu-berlin.de&gt; &n; *&n; * --------------------------------------------------------------------------&n; *&n; * support for XA/multisession-CD&squot;s&n; * &n; *   - NEC:     Detection and support of multisession CD&squot;s.&n; *     &n; *   - TOSHIBA: Detection and support of multisession CD&squot;s.&n; *              Some XA-Sector tweaking, required for older drives.&n; *&n; *   - SONY:    Detection and support of multisession CD&squot;s.&n; *              added by Thomas Quinot &lt;thomas@cuivre.freenix.fr&gt;&n; *&n; *   - PIONEER, HITACHI, PLEXTOR, MATSHITA, TEAC, PHILIPS: known to&n; *              work with SONY (SCSI3 now)  code.&n; *&n; *   - HP:      Much like SONY, but a little different... (Thomas)&n; *              HP-Writers only ??? Maybe other CD-Writers work with this too ?&n; *              HP 6020 writers now supported.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
-macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &quot;sr.h&quot;
 macro_line|#if 0
 mdefine_line|#define DEBUG
@@ -387,7 +389,7 @@ id|modesel
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:semicolon
 id|cgc.timeout
 op_assign
@@ -587,7 +589,7 @@ l_int|1
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|cgc.timeout
 op_assign
@@ -751,7 +753,7 @@ l_int|1
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|cgc.timeout
 op_assign
@@ -903,7 +905,7 @@ l_int|1
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|cgc.timeout
 op_assign
@@ -1060,7 +1062,7 @@ l_int|1
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|cgc.timeout
 op_assign
@@ -1161,7 +1163,7 @@ l_int|1
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|cgc.timeout
 op_assign

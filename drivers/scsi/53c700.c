@@ -751,7 +751,7 @@ id|NCR_700_CMD_PER_LUN
 suffix:semicolon
 id|tpnt-&gt;use_clustering
 op_assign
-id|DISABLE_CLUSTERING
+id|ENABLE_CLUSTERING
 suffix:semicolon
 id|tpnt-&gt;slave_configure
 op_assign

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * QLogic ISP2x00 device driver for Linux 2.6.x&n; * Copyright (C) 2003-2004 QLogic Corporation&n; * (www.qlogic.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; */
-macro_line|#include &quot;qla_os.h&quot;
 macro_line|#include &quot;qla_def.h&quot;
+macro_line|#include &lt;linux/delay.h&gt;
 r_static
 r_void
 DECL|function|qla2x00_mbx_sem_timeout
@@ -197,7 +197,7 @@ suffix:semicolon
 )brace
 id|ha-&gt;flags.mbox_busy
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 multiline_comment|/* Save mailbox command for debug */
 id|ha-&gt;mcp
@@ -443,7 +443,7 @@ macro_line|#endif
 multiline_comment|/* Issue set host interrupt command to send cmd out. */
 id|ha-&gt;flags.mbox_int
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|clear_bit
 c_func
@@ -778,7 +778,7 @@ suffix:semicolon
 multiline_comment|/* Got interrupt. Clear the flag. */
 id|ha-&gt;flags.mbox_int
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|clear_bit
 c_func
@@ -945,7 +945,7 @@ id|mbx_flags
 suffix:semicolon
 id|ha-&gt;flags.mbox_busy
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 multiline_comment|/* Clean up */
 id|ha-&gt;mcp
@@ -2222,6 +2222,10 @@ comma
 r_uint16
 op_star
 id|attributes
+comma
+r_uint32
+op_star
+id|memory
 )paren
 (brace
 r_int
@@ -2265,6 +2269,10 @@ suffix:semicolon
 id|mcp-&gt;in_mb
 op_assign
 id|MBX_6
+op_or
+id|MBX_5
+op_or
+id|MBX_4
 op_or
 id|MBX_3
 op_or
@@ -2323,6 +2331,45 @@ op_assign
 id|mcp-&gt;mb
 (braket
 l_int|6
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_QLA2100
+c_func
+(paren
+id|ha
+)paren
+op_logical_or
+id|IS_QLA2200
+c_func
+(paren
+id|ha
+)paren
+)paren
+op_star
+id|memory
+op_assign
+l_int|0x1FFFF
+suffix:semicolon
+multiline_comment|/* Defaults to 128KB. */
+r_else
+op_star
+id|memory
+op_assign
+(paren
+id|mcp-&gt;mb
+(braket
+l_int|5
+)braket
+op_lshift
+l_int|16
+)paren
+op_or
+id|mcp-&gt;mb
+(braket
+l_int|4
 )braket
 suffix:semicolon
 r_if
@@ -5485,10 +5532,33 @@ r_if
 c_cond
 (paren
 id|rval
-op_eq
+op_ne
 id|QLA_SUCCESS
 )paren
+r_goto
+id|gpd_error_out
+suffix:semicolon
+multiline_comment|/* Check for logged in state. */
+r_if
+c_cond
+(paren
+id|pd-&gt;master_state
+op_ne
+id|PD_STATE_PORT_LOGGED_IN
+op_logical_and
+id|pd-&gt;slave_state
+op_ne
+id|PD_STATE_PORT_LOGGED_IN
+)paren
 (brace
+id|rval
+op_assign
+id|QLA_FUNCTION_FAILED
+suffix:semicolon
+r_goto
+id|gpd_error_out
+suffix:semicolon
+)brace
 multiline_comment|/* Names are little-endian. */
 id|memcpy
 c_func
@@ -5570,36 +5640,17 @@ id|BIT_4
 op_eq
 l_int|0
 )paren
-(brace
 id|fcport-&gt;port_type
 op_assign
 id|FCT_INITIATOR
 suffix:semicolon
-)brace
 r_else
-(brace
 id|fcport-&gt;port_type
 op_assign
 id|FCT_TARGET
 suffix:semicolon
-multiline_comment|/* Check for logged in. */
-r_if
-c_cond
-(paren
-id|pd-&gt;master_state
-op_ne
-id|PD_STATE_PORT_LOGGED_IN
-op_logical_and
-id|pd-&gt;slave_state
-op_ne
-id|PD_STATE_PORT_LOGGED_IN
-)paren
-id|rval
-op_assign
-id|QLA_FUNCTION_FAILED
-suffix:semicolon
-)brace
-)brace
+id|gpd_error_out
+suffix:colon
 id|pci_free_consistent
 c_func
 (paren

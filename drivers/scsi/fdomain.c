@@ -15,8 +15,12 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
+macro_line|#include &quot;fdomain.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -326,7 +330,8 @@ id|in_command
 suffix:semicolon
 DECL|variable|current_SC
 r_static
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|current_SC
 suffix:semicolon
@@ -452,11 +457,13 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+r_static
 r_int
 id|fdomain_16x0_bus_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -1042,7 +1049,6 @@ suffix:semicolon
 )brace
 DECL|function|fdomain_setup
 r_int
-id|__init
 id|fdomain_setup
 c_func
 (paren
@@ -2299,7 +2305,8 @@ op_star
 id|__fdomain_16x0_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -2837,7 +2844,8 @@ r_int
 id|fdomain_16x0_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -3992,13 +4000,9 @@ id|current_SC-&gt;cmd_len
 r_if
 c_cond
 (paren
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|current_SC-&gt;sc_data_direction
-)paren
 op_eq
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 (brace
 id|current_SC-&gt;SCp.have_data_in
@@ -4651,7 +4655,8 @@ r_int
 id|fdomain_16x0_queue
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -4661,7 +4666,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -4855,7 +4861,8 @@ r_void
 id|print_info
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -5300,7 +5307,8 @@ r_int
 id|fdomain_16x0_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -5376,11 +5384,13 @@ id|SUCCESS
 suffix:semicolon
 )brace
 DECL|function|fdomain_16x0_bus_reset
+r_static
 r_int
 id|fdomain_16x0_bus_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -5433,37 +5443,6 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-DECL|function|fdomain_16x0_host_reset
-r_static
-r_int
-id|fdomain_16x0_host_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-DECL|function|fdomain_16x0_device_reset
-r_static
-r_int
-id|fdomain_16x0_device_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 DECL|function|fdomain_16x0_biosparam
 r_static
 r_int
@@ -5961,7 +5940,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|fdomain_driver_template
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|fdomain_driver_template
 op_assign
 (brace
@@ -6004,16 +5984,6 @@ dot
 id|eh_bus_reset_handler
 op_assign
 id|fdomain_16x0_bus_reset
-comma
-dot
-id|eh_device_reset_handler
-op_assign
-id|fdomain_16x0_device_reset
-comma
-dot
-id|eh_host_reset_handler
-op_assign
-id|fdomain_16x0_host_reset
 comma
 dot
 id|bios_param

@@ -4,23 +4,28 @@ macro_line|# define dprintk(x)
 macro_line|#endif
 multiline_comment|/*------------------------------------------------------------------------------&n; *              D E F I N E S&n; *----------------------------------------------------------------------------*/
 DECL|macro|MAXIMUM_NUM_CONTAINERS
-mdefine_line|#define MAXIMUM_NUM_CONTAINERS&t;31
+mdefine_line|#define MAXIMUM_NUM_CONTAINERS&t;32
 DECL|macro|MAXIMUM_NUM_ADAPTERS
 mdefine_line|#define MAXIMUM_NUM_ADAPTERS&t;8
 DECL|macro|AAC_NUM_FIB
-mdefine_line|#define AAC_NUM_FIB&t;&t;578
-singleline_comment|//#define AAC_NUM_IO_FIB&t;512
+mdefine_line|#define AAC_NUM_FIB&t;&t;(256 + 64)
 DECL|macro|AAC_NUM_IO_FIB
 mdefine_line|#define AAC_NUM_IO_FIB&t;&t;100
-DECL|macro|AAC_MAX_TARGET
-mdefine_line|#define AAC_MAX_TARGET &t;&t;(MAXIMUM_NUM_CONTAINERS+1)
 DECL|macro|AAC_MAX_LUN
 mdefine_line|#define AAC_MAX_LUN&t;&t;(8)
 DECL|macro|AAC_MAX_HOSTPHYSMEMPAGES
 mdefine_line|#define AAC_MAX_HOSTPHYSMEMPAGES (0xfffff)
 multiline_comment|/*&n; * These macros convert from physical channels to virtual channels&n; */
 DECL|macro|CONTAINER_CHANNEL
-mdefine_line|#define CONTAINER_CHANNEL&t;(0)
+mdefine_line|#define CONTAINER_CHANNEL&t;&t;(0)
+DECL|macro|ID_LUN_TO_CONTAINER
+mdefine_line|#define ID_LUN_TO_CONTAINER(id, lun)&t;(id)
+DECL|macro|CONTAINER_TO_CHANNEL
+mdefine_line|#define CONTAINER_TO_CHANNEL(cont)&t;(CONTAINER_CHANNEL)
+DECL|macro|CONTAINER_TO_ID
+mdefine_line|#define CONTAINER_TO_ID(cont)&t;&t;(cont)
+DECL|macro|CONTAINER_TO_LUN
+mdefine_line|#define CONTAINER_TO_LUN(cont)&t;&t;(0)
 DECL|macro|aac_phys_to_logical
 mdefine_line|#define aac_phys_to_logical(x)  (x+1)
 DECL|macro|aac_logical_to_phys
@@ -102,7 +107,7 @@ mdefine_line|#define&t;&t;FT_FIFO&t;&t;7&t;/* fifo */
 DECL|macro|FT_FILESYS
 mdefine_line|#define&t;&t;FT_FILESYS&t;8&t;/* ADAPTEC&squot;s &quot;FSA&quot;(tm) filesystem */
 DECL|macro|FT_DRIVE
-mdefine_line|#define&t;&t;FT_DRIVE&t;9&t;/* physical disk - addressable in scsi by bus/target/lun */
+mdefine_line|#define&t;&t;FT_DRIVE&t;9&t;/* physical disk - addressable in scsi by bus/id/lun */
 DECL|macro|FT_SLICE
 mdefine_line|#define&t;&t;FT_SLICE&t;10&t;/* virtual disk - raw volume - slice */
 DECL|macro|FT_PARTITION
@@ -1019,10 +1024,6 @@ r_struct
 id|aac_dev
 op_star
 id|dev
-comma
-r_int
-r_int
-id|num
 )paren
 suffix:semicolon
 DECL|member|name
@@ -1467,6 +1468,12 @@ DECL|macro|InboundMailbox3
 mdefine_line|#define&t;InboundMailbox3&t;&t;IndexRegs.Mailbox[3]
 DECL|macro|InboundMailbox4
 mdefine_line|#define&t;InboundMailbox4&t;&t;IndexRegs.Mailbox[4]
+DECL|macro|InboundMailbox5
+mdefine_line|#define&t;InboundMailbox5&t;&t;IndexRegs.Mailbox[5]
+DECL|macro|InboundMailbox6
+mdefine_line|#define&t;InboundMailbox6&t;&t;IndexRegs.Mailbox[6]
+DECL|macro|InboundMailbox7
+mdefine_line|#define&t;InboundMailbox7&t;&t;IndexRegs.Mailbox[7]
 DECL|macro|INBOUNDDOORBELL_0
 mdefine_line|#define&t;INBOUNDDOORBELL_0&t;cpu_to_le32(0x00000001)
 DECL|macro|INBOUNDDOORBELL_1
@@ -1601,6 +1608,11 @@ DECL|member|size
 id|s16
 id|size
 suffix:semicolon
+DECL|member|unique
+id|u32
+id|unique
+suffix:semicolon
+singleline_comment|// unique value representing this context
 DECL|member|jiffies
 id|ulong
 id|jiffies
@@ -2095,11 +2107,7 @@ id|u32
 id|OIMR
 suffix:semicolon
 multiline_comment|/* Mask Register Cache */
-multiline_comment|/*&n;&t; *&t;The following is the number of the individual adapter&n;&t; */
-DECL|member|devnum
-id|u32
-id|devnum
-suffix:semicolon
+multiline_comment|/*&n;&t; *&t;AIF thread states&n;&t; */
 DECL|member|aif_thread
 id|u32
 id|aif_thread
@@ -2126,15 +2134,15 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|AllocateAndMapFibSpace
-mdefine_line|#define AllocateAndMapFibSpace(dev, MapFibContext) &bslash;&n;&t;dev-&gt;a_ops.AllocateAndMapFibSpace(dev, MapFibContext)
+mdefine_line|#define AllocateAndMapFibSpace(dev, MapFibContext) &bslash;&n;&t;(dev)-&gt;a_ops.AllocateAndMapFibSpace(dev, MapFibContext)
 DECL|macro|UnmapAndFreeFibSpace
-mdefine_line|#define UnmapAndFreeFibSpace(dev, MapFibContext) &bslash;&n;&t;dev-&gt;a_ops.UnmapAndFreeFibSpace(dev, MapFibContext)
+mdefine_line|#define UnmapAndFreeFibSpace(dev, MapFibContext) &bslash;&n;&t;(dev)-&gt;a_ops.UnmapAndFreeFibSpace(dev, MapFibContext)
 DECL|macro|aac_adapter_interrupt
-mdefine_line|#define aac_adapter_interrupt(dev) &bslash;&n;&t;dev-&gt;a_ops.adapter_interrupt(dev)
+mdefine_line|#define aac_adapter_interrupt(dev) &bslash;&n;&t;(dev)-&gt;a_ops.adapter_interrupt(dev)
 DECL|macro|aac_adapter_notify
-mdefine_line|#define aac_adapter_notify(dev, event) &bslash;&n;&t;dev-&gt;a_ops.adapter_notify(dev, event)
+mdefine_line|#define aac_adapter_notify(dev, event) &bslash;&n;&t;(dev)-&gt;a_ops.adapter_notify(dev, event)
 DECL|macro|aac_adapter_enable_int
-mdefine_line|#define aac_adapter_enable_int(dev, event) &bslash;&n;&t;dev-&gt;a_ops.adapter_enable_int(dev, event)
+mdefine_line|#define aac_adapter_enable_int(dev, event) &bslash;&n;&t;(dev)-&gt;a_ops.adapter_enable_int(dev, event)
 DECL|macro|aac_adapter_disable_int
 mdefine_line|#define aac_adapter_disable_int(dev, event) &bslash;&n;&t;dev-&gt;a_ops.adapter_disable_int(dev, event)
 DECL|macro|aac_adapter_check_health
@@ -2482,9 +2490,9 @@ DECL|member|channel
 id|u32
 id|channel
 suffix:semicolon
-DECL|member|target
+DECL|member|id
 id|u32
-id|target
+id|id
 suffix:semicolon
 DECL|member|lun
 id|u32
@@ -2905,9 +2913,9 @@ DECL|member|bus
 id|s32
 id|bus
 suffix:semicolon
-DECL|member|target
+DECL|member|id
 id|s32
-id|target
+id|id
 suffix:semicolon
 DECL|member|lun
 id|s32
@@ -2961,12 +2969,11 @@ r_struct
 id|fib_ioctl
 (brace
 DECL|member|fibctx
-r_char
-op_star
+id|u32
 id|fibctx
 suffix:semicolon
 DECL|member|wait
-r_int
+id|s32
 id|wait
 suffix:semicolon
 DECL|member|fib
@@ -3023,6 +3030,8 @@ DECL|macro|FSACTL_GET_PCI_INFO
 mdefine_line|#define FSACTL_GET_PCI_INFO               &t;CTL_CODE(2119, METHOD_BUFFERED)
 DECL|macro|FSACTL_FORCE_DELETE_DISK
 mdefine_line|#define FSACTL_FORCE_DELETE_DISK&t;&t;CTL_CODE(2120, METHOD_NEITHER)
+DECL|macro|FSACTL_GET_CONTAINERS
+mdefine_line|#define FSACTL_GET_CONTAINERS&t;&t;&t;2131
 DECL|struct|aac_common
 r_struct
 id|aac_common
@@ -3107,18 +3116,25 @@ DECL|macro|HOST_CRASHING
 mdefine_line|#define HOST_CRASHING&t;&t;&t;cpu_to_le32(0x0000000d)
 DECL|macro|SEND_SYNCHRONOUS_FIB
 mdefine_line|#define&t;SEND_SYNCHRONOUS_FIB&t;&t;cpu_to_le32(0x0000000c)
+DECL|macro|COMMAND_POST_RESULTS
+mdefine_line|#define&t;COMMAND_POST_RESULTS&t;&t;cpu_to_le32(0x00000014)
 DECL|macro|GET_ADAPTER_PROPERTIES
 mdefine_line|#define GET_ADAPTER_PROPERTIES&t;&t;cpu_to_le32(0x00000019)
 DECL|macro|RE_INIT_ADAPTER
 mdefine_line|#define RE_INIT_ADAPTER&t;&t;&t;cpu_to_le32(0x000000ee)
 multiline_comment|/*&n; *&t;Adapter Status Register&n; *&n; *  Phase Staus mailbox is 32bits:&n; *&t;&lt;31:16&gt; = Phase Status&n; *&t;&lt;15:0&gt;  = Phase&n; *&n; *&t;The adapter reports is present state through the phase.  Only&n; *&t;a single phase should be ever be set.  Each phase can have multiple&n; *&t;phase status bits to provide more detailed information about the &n; *&t;state of the board.  Care should be taken to ensure that any phase &n; *&t;status bits that are set when changing the phase are also valid&n; *&t;for the new phase or be cleared out.  Adapter software (monitor,&n; *&t;iflash, kernel) is responsible for properly maintining the phase &n; *&t;status mailbox when it is running.&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&n; *&t;MONKER_API Phases&t;&t;&t;&t;&t;&t;&t;&n; *&n; *&t;Phases are bit oriented.  It is NOT valid  to have multiple bits set&t;&t;&t;&t;&t;&t;&n; */
 DECL|macro|SELF_TEST_FAILED
-mdefine_line|#define&t;SELF_TEST_FAILED&t;&t;cpu_to_le32(0x00000004)
+mdefine_line|#define&t;SELF_TEST_FAILED&t;&t;(cpu_to_le32(0x00000004))
+DECL|macro|MONITOR_PANIC
+mdefine_line|#define MONITOR_PANIC&t;&t;&t;(cpu_to_le32(0x00000020))
 DECL|macro|KERNEL_UP_AND_RUNNING
-mdefine_line|#define&t;KERNEL_UP_AND_RUNNING&t;&t;cpu_to_le32(0x00000080)
+mdefine_line|#define&t;KERNEL_UP_AND_RUNNING&t;&t;(cpu_to_le32(0x00000080))
 DECL|macro|KERNEL_PANIC
-mdefine_line|#define&t;KERNEL_PANIC&t;&t;&t;cpu_to_le32(0x00000100)
+mdefine_line|#define&t;KERNEL_PANIC&t;&t;&t;(cpu_to_le32(0x00000100))
 multiline_comment|/*&n; *&t;Doorbell bit defines&n; */
+DECL|macro|DoorBellSyncCmdAvailable
+mdefine_line|#define DoorBellSyncCmdAvailable&t;cpu_to_le32(1&lt;&lt;0)&t;
+singleline_comment|// Host -&gt; Adapter
 DECL|macro|DoorBellPrintfDone
 mdefine_line|#define DoorBellPrintfDone&t;&t;cpu_to_le32(1&lt;&lt;5)&t;
 singleline_comment|// Host -&gt; Adapter
@@ -3140,12 +3156,36 @@ singleline_comment|// Adapter -&gt; Host
 multiline_comment|/*&n; *&t;For FIB communication, we need all of the following things&n; *&t;to send back to the user.&n; */
 DECL|macro|AifCmdEventNotify
 mdefine_line|#define &t;AifCmdEventNotify&t;1&t;/* Notify of event */
+DECL|macro|AifEnConfigChange
+mdefine_line|#define&t;&t;&t;AifEnConfigChange&t;3&t;/* Adapter configuration change */
+DECL|macro|AifEnContainerChange
+mdefine_line|#define&t;&t;&t;AifEnContainerChange&t;4&t;/* Container configuration change */
+DECL|macro|AifEnDeviceFailure
+mdefine_line|#define&t;&t;&t;AifEnDeviceFailure&t;5&t;/* SCSI device failed */
+DECL|macro|AifEnAddContainer
+mdefine_line|#define&t;&t;&t;AifEnAddContainer&t;15&t;/* A new array was created */
+DECL|macro|AifEnDeleteContainer
+mdefine_line|#define&t;&t;&t;AifEnDeleteContainer&t;16&t;/* A container was deleted */
+DECL|macro|AifEnExpEvent
+mdefine_line|#define&t;&t;&t;AifEnExpEvent&t;&t;23&t;/* Firmware Event Log */
+DECL|macro|AifExeFirmwarePanic
+mdefine_line|#define&t;&t;&t;AifExeFirmwarePanic&t;3&t;/* Firmware Event Panic */
+DECL|macro|AifHighPriority
+mdefine_line|#define&t;&t;&t;AifHighPriority&t;&t;3&t;/* Highest Priority Event */
 DECL|macro|AifCmdJobProgress
 mdefine_line|#define&t;&t;AifCmdJobProgress&t;2&t;/* Progress report */
+DECL|macro|AifJobCtrZero
+mdefine_line|#define&t;&t;&t;AifJobCtrZero&t;101&t;/* Array Zero progress */
+DECL|macro|AifJobStsSuccess
+mdefine_line|#define&t;&t;&t;AifJobStsSuccess 1&t;/* Job completes */
 DECL|macro|AifCmdAPIReport
 mdefine_line|#define&t;&t;AifCmdAPIReport&t;&t;3&t;/* Report from other user of API */
 DECL|macro|AifCmdDriverNotify
 mdefine_line|#define&t;&t;AifCmdDriverNotify&t;4&t;/* Notify host driver of event */
+DECL|macro|AifDenMorphComplete
+mdefine_line|#define&t;&t;&t;AifDenMorphComplete 200&t;/* A morph operation completed */
+DECL|macro|AifDenVolumeExtendComplete
+mdefine_line|#define&t;&t;&t;AifDenVolumeExtendComplete 201 /* A volume extend completed */
 DECL|macro|AifReqJobList
 mdefine_line|#define&t;&t;AifReqJobList&t;&t;100&t;/* Gets back complete job list */
 DECL|macro|AifReqJobsForCtr
@@ -3485,10 +3525,6 @@ r_struct
 id|aac_dev
 op_star
 id|dev
-comma
-r_int
-r_int
-id|devNumber
 )paren
 suffix:semicolon
 r_int
@@ -3499,10 +3535,6 @@ r_struct
 id|aac_dev
 op_star
 id|dev
-comma
-r_int
-r_int
-id|devNumber
 )paren
 suffix:semicolon
 r_int
@@ -3513,10 +3545,6 @@ r_struct
 id|aac_dev
 op_star
 id|dev
-comma
-r_int
-r_int
-id|devNumber
 )paren
 suffix:semicolon
 r_int

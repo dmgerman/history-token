@@ -5,9 +5,8 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 multiline_comment|/*&n; * scsi_dev_info_list: structure to hold black/white listed devices.&n; */
 DECL|struct|scsi_dev_info_list
@@ -755,7 +754,7 @@ l_string|&quot;HSV110&quot;
 comma
 l_int|NULL
 comma
-id|BLIST_SPARSELUN
+id|BLIST_REPORTLUN2
 op_or
 id|BLIST_NOSTARTONADD
 )brace
@@ -994,7 +993,7 @@ l_string|&quot;HSV100&quot;
 comma
 l_int|NULL
 comma
-id|BLIST_SPARSELUN
+id|BLIST_REPORTLUN2
 op_or
 id|BLIST_NOSTARTONADD
 )brace
@@ -1134,9 +1133,7 @@ l_string|&quot;DACARMRB&quot;
 comma
 l_string|&quot;*&quot;
 comma
-id|BLIST_SPARSELUN
-op_or
-id|BLIST_LARGELUN
+id|BLIST_REPORTLUN2
 )brace
 comma
 (brace
@@ -1294,9 +1291,7 @@ l_string|&quot;TP9100&quot;
 comma
 l_string|&quot;*&quot;
 comma
-id|BLIST_SPARSELUN
-op_or
-id|BLIST_LARGELUN
+id|BLIST_REPORTLUN2
 )brace
 comma
 (brace

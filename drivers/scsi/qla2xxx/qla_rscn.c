@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * QLogic ISP2x00 device driver for Linux 2.6.x&n; * Copyright (C) 2003-2004 QLogic Corporation&n; * (www.qlogic.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; */
-macro_line|#include &quot;qla_os.h&quot;
 macro_line|#include &quot;qla_def.h&quot;
 multiline_comment|/**&n; * IO descriptor handle definitions.&n; *&n; * Signature form:&n; *&n; *&t;|31------28|27-------------------12|11-------0|&n; *&t;|   Type   |   Rolling Signature   |   Index  |&n; *&t;|----------|-----------------------|----------|&n; *&n; **/
 DECL|macro|HDL_TYPE_SCSI
@@ -1356,6 +1355,11 @@ c_func
 id|handle_to_abort
 )paren
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|qla2x00_add_iodesc_timer
 c_func
 (paren
@@ -1663,6 +1667,11 @@ id|__constant_cpu_to_le16
 c_func
 (paren
 id|BIT_0
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
 )paren
 suffix:semicolon
 id|qla2x00_add_iodesc_timer
@@ -2056,6 +2065,11 @@ c_func
 id|iodesc-&gt;remote_fcport-&gt;loop_id
 )paren
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|qla2x00_add_iodesc_timer
 c_func
 (paren
@@ -2326,6 +2340,11 @@ id|__constant_cpu_to_le16
 c_func
 (paren
 id|BIT_0
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
 )paren
 suffix:semicolon
 id|qla2x00_add_iodesc_timer
