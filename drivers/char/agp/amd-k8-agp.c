@@ -1304,7 +1304,7 @@ suffix:semicolon
 DECL|function|agp_amdk8_remove
 r_static
 r_void
-id|__exit
+id|__devexit
 id|agp_amdk8_remove
 c_func
 (paren

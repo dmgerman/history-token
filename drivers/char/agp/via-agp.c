@@ -1819,7 +1819,7 @@ suffix:semicolon
 DECL|function|agp_via_remove
 r_static
 r_void
-id|__exit
+id|__devexit
 id|agp_via_remove
 c_func
 (paren

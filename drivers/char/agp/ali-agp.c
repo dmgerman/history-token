@@ -1639,7 +1639,7 @@ suffix:semicolon
 DECL|function|agp_ali_remove
 r_static
 r_void
-id|__exit
+id|__devexit
 id|agp_ali_remove
 c_func
 (paren

@@ -6475,7 +6475,7 @@ suffix:semicolon
 DECL|function|agp_intel_remove
 r_static
 r_void
-id|__exit
+id|__devexit
 id|agp_intel_remove
 c_func
 (paren

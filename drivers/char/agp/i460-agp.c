@@ -2493,7 +2493,7 @@ suffix:semicolon
 DECL|function|agp_intel_i460_remove
 r_static
 r_void
-id|__exit
+id|__devexit
 id|agp_intel_i460_remove
 c_func
 (paren
