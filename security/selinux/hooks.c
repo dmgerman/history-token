@@ -3366,7 +3366,11 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|inode-&gt;i_sock
+id|S_ISSOCK
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
 )paren
 (brace
 r_struct
