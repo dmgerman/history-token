@@ -29548,12 +29548,12 @@ l_int|NULL
 suffix:semicolon
 macro_line|# endif
 )brace
+id|disk-&gt;number
+op_assign
 id|devfs_register_tape
+c_func
 (paren
-id|tpnt-&gt;de_r
-(braket
-l_int|0
-)braket
+id|SDp-&gt;de
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -30308,6 +30308,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|devfs_unregister_tape
+c_func
+(paren
+id|tpnt-&gt;disk-&gt;number
+)paren
+suffix:semicolon
 macro_line|#endif
 id|put_disk
 c_func

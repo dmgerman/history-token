@@ -26260,6 +26260,12 @@ c_func
 id|tape-&gt;de_n
 )paren
 suffix:semicolon
+id|devfs_unregister_tape
+c_func
+(paren
+id|drive-&gt;disk-&gt;number
+)paren
+suffix:semicolon
 id|kfree
 (paren
 id|tape
@@ -26990,10 +26996,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|drive-&gt;disk-&gt;number
+op_assign
 id|devfs_register_tape
 c_func
 (paren
-id|tape-&gt;de_r
+id|drive-&gt;de
 )paren
 suffix:semicolon
 id|drive-&gt;disk-&gt;fops
