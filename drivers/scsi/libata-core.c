@@ -3841,6 +3841,19 @@ id|ATA_FLAG_PORT_DISABLED
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ap-&gt;ops-&gt;post_set_mode
+)paren
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|post_set_mode
+c_func
+(paren
+id|ap
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;ata_busy_sleep - sleep until BSY clears, or timeout&n; *&t;@ap: port containing status register to be polled&n; *&t;@tmout_pat: impatience timeout&n; *&t;@tmout: overall timeout&n; *&n; *&t;LOCKING:&n; *&n; */
 DECL|function|ata_busy_sleep
