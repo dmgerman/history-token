@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 DECL|variable|cur_cpu_spec
 r_struct
@@ -12,6 +13,13 @@ op_star
 id|cur_cpu_spec
 op_assign
 l_int|NULL
+suffix:semicolon
+DECL|variable|cur_cpu_spec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cur_cpu_spec
+)paren
 suffix:semicolon
 multiline_comment|/* NOTE:&n; * Unlike ppc32, ppc64 will only call this once for the boot CPU, it&squot;s&n; * the responsibility of the appropriate CPU save/restore functions to&n; * eventually copy these settings over. Those save/restore aren&squot;t yet&n; * part of the cputable though. That has to be fixed for both ppc32&n; * and ppc64&n; */
 r_extern

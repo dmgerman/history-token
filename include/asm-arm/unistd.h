@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/unistd.h&n; *&n; *  Copyright (C) 2001-2003 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Please forward _all_ changes to this file to rmk@arm.linux.org.uk,&n; * no matter what the change is.  Thanks!&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/unistd.h&n; *&n; *  Copyright (C) 2001-2005 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Please forward _all_ changes to this file to rmk@arm.linux.org.uk,&n; * no matter what the change is.  Thanks!&n; */
 macro_line|#ifndef __ASM_ARM_UNISTD_H
 DECL|macro|__ASM_ARM_UNISTD_H
 mdefine_line|#define __ASM_ARM_UNISTD_H
@@ -540,6 +540,44 @@ DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr&t;&t;(__NR_SYSCALL_BASE+279)
 DECL|macro|__NR_waitid
 mdefine_line|#define __NR_waitid&t;&t;&t;(__NR_SYSCALL_BASE+280)
+macro_line|#if 0 /* reserve these for un-muxing socketcall */
+mdefine_line|#define __NR_socket&t;&t;&t;(__NR_SYSCALL_BASE+281)
+mdefine_line|#define __NR_bind&t;&t;&t;(__NR_SYSCALL_BASE+282)
+mdefine_line|#define __NR_connect&t;&t;&t;(__NR_SYSCALL_BASE+283)
+mdefine_line|#define __NR_listen&t;&t;&t;(__NR_SYSCALL_BASE+284)
+mdefine_line|#define __NR_accept&t;&t;&t;(__NR_SYSCALL_BASE+285)
+mdefine_line|#define __NR_getsockname&t;&t;(__NR_SYSCALL_BASE+286)
+mdefine_line|#define __NR_getpeername&t;&t;(__NR_SYSCALL_BASE+287)
+mdefine_line|#define __NR_socketpair&t;&t;&t;(__NR_SYSCALL_BASE+288)
+mdefine_line|#define __NR_send&t;&t;&t;(__NR_SYSCALL_BASE+289)
+mdefine_line|#define __NR_sendto&t;&t;&t;(__NR_SYSCALL_BASE+290)
+mdefine_line|#define __NR_recv&t;&t;&t;(__NR_SYSCALL_BASE+291)
+mdefine_line|#define __NR_recvfrom&t;&t;&t;(__NR_SYSCALL_BASE+292)
+mdefine_line|#define __NR_shutdown&t;&t;&t;(__NR_SYSCALL_BASE+293)
+mdefine_line|#define __NR_setsockopt&t;&t;&t;(__NR_SYSCALL_BASE+294)
+mdefine_line|#define __NR_getsockopt&t;&t;&t;(__NR_SYSCALL_BASE+295)
+mdefine_line|#define __NR_sendmsg&t;&t;&t;(__NR_SYSCALL_BASE+296)
+mdefine_line|#define __NR_recvmsg&t;&t;&t;(__NR_SYSCALL_BASE+297)
+macro_line|#endif
+macro_line|#if 0 /* reserve these for un-muxing ipc */
+mdefine_line|#define __NR_semop&t;&t;&t;(__NR_SYSCALL_BASE+298)
+mdefine_line|#define __NR_semget&t;&t;&t;(__NR_SYSCALL_BASE+299)
+mdefine_line|#define __NR_semctl&t;&t;&t;(__NR_SYSCALL_BASE+300)
+mdefine_line|#define __NR_msgsnd&t;&t;&t;(__NR_SYSCALL_BASE+301)
+mdefine_line|#define __NR_msgrcv&t;&t;&t;(__NR_SYSCALL_BASE+302)
+mdefine_line|#define __NR_msgget&t;&t;&t;(__NR_SYSCALL_BASE+303)
+mdefine_line|#define __NR_msgctl&t;&t;&t;(__NR_SYSCALL_BASE+304)
+mdefine_line|#define __NR_shmat&t;&t;&t;(__NR_SYSCALL_BASE+305)
+mdefine_line|#define __NR_shmdt&t;&t;&t;(__NR_SYSCALL_BASE+306)
+mdefine_line|#define __NR_shmget&t;&t;&t;(__NR_SYSCALL_BASE+307)
+mdefine_line|#define __NR_shmctl&t;&t;&t;(__NR_SYSCALL_BASE+308)
+macro_line|#endif
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key&t;&t;&t;(__NR_SYSCALL_BASE+309)
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key&t;&t;(__NR_SYSCALL_BASE+310)
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl&t;&t;&t;(__NR_SYSCALL_BASE+311)
 multiline_comment|/*&n; * The following SWIs are ARM private.&n; */
 DECL|macro|__ARM_NR_BASE
 mdefine_line|#define __ARM_NR_BASE&t;&t;&t;(__NR_SYSCALL_BASE+0x0f0000)
@@ -567,7 +605,7 @@ mdefine_line|#define __syscall(name) &quot;swi&bslash;t&quot; __sys1(__NR_##name
 macro_line|#endif
 macro_line|#endif
 DECL|macro|__syscall_return
-mdefine_line|#define __syscall_return(type, res)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) {&t;&t;&bslash;&n;&t;&t;errno = -(res);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;res = -1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (type) (res);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define __syscall_return(type, res)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-129)) {&t;&t;&bslash;&n;&t;&t;errno = -(res);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;res = -1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (type) (res);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type,name)&t;&t;&t;&t;&t;&t;&bslash;&n;type name(void) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  register long __res_r0 __asm__(&quot;r0&quot;);&t;&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res_r0)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;lr&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __res = __res_r0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|_syscall1

@@ -11,9 +11,9 @@ DECL|macro|___io
 mdefine_line|#define ___io(p)&t;&t;((void __iomem *)((p)+IXP2000_PCI_IO_VIRT_BASE))
 multiline_comment|/*&n; * IXP2000 does not do proper byte-lane conversion for PCI addresses,&n; * so we need to override standard functions.&n; */
 DECL|macro|alignb
-mdefine_line|#define alignb(addr)&t;&t;(((unsigned long)addr &amp; ~3) + (3 - ((unsigned long)addr &amp; 3)))
+mdefine_line|#define alignb(addr)&t;&t;(void __iomem *)(((unsigned long)addr &amp; ~3) + (3 - ((unsigned long)addr &amp; 3)))
 DECL|macro|alignw
-mdefine_line|#define alignw(addr)&t;&t;(((unsigned long)addr &amp; ~2) + (2 - ((unsigned long)addr &amp; 2)))
+mdefine_line|#define alignw(addr)&t;&t;(void __iomem *)(((unsigned long)addr &amp; ~2) + (2 - ((unsigned long)addr &amp; 2)))
 DECL|macro|outb
 mdefine_line|#define outb(v,p)&t;&t;__raw_writeb(v,alignb(___io(p)))
 DECL|macro|outw

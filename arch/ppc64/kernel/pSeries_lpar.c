@@ -2036,9 +2036,9 @@ r_int
 id|lock_tlbie
 op_assign
 op_logical_neg
+id|cpu_has_feature
+c_func
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
 id|CPU_FTR_LOCKLESS_TLBIE
 )paren
 suffix:semicolon

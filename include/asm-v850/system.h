@@ -220,5 +220,7 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
+DECL|macro|arch_align_stack
+mdefine_line|#define arch_align_stack(x) (x)
 macro_line|#endif /* __V850_SYSTEM_H__ */
 eof

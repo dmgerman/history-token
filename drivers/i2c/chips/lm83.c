@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 multiline_comment|/*&n; * Addresses to scan&n; * Address is selected using 2 three-level pins, resulting in 9 possible&n; * addresses.&n; */
@@ -300,12 +301,6 @@ id|alarms
 suffix:semicolon
 multiline_comment|/* bitvector, combined */
 )brace
-suffix:semicolon
-multiline_comment|/*&n; * Internal variables&n; */
-DECL|variable|lm83_id
-r_static
-r_int
-id|lm83_id
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show_temp
@@ -1059,11 +1054,6 @@ comma
 id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|lm83_id
-op_increment
-suffix:semicolon
 id|data-&gt;valid
 op_assign
 l_int|0
@@ -1343,20 +1333,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_updated
-OG
+op_plus
 id|HZ
 op_star
 l_int|2
-)paren
-op_logical_or
-(paren
-id|jiffies
-OL
-id|data-&gt;last_updated
 )paren
 op_logical_or
 op_logical_neg

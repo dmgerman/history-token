@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/i2c-vid.h&gt;
@@ -1045,12 +1046,6 @@ op_assign
 id|lm85_detach_client
 comma
 )brace
-suffix:semicolon
-multiline_comment|/* Unique ID assigned to each LM85 detected */
-DECL|variable|lm85_id
-r_static
-r_int
-id|lm85_id
 suffix:semicolon
 multiline_comment|/* 4 Fans */
 DECL|function|show_fan
@@ -4889,11 +4884,6 @@ id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* Fill in the remaining client fields */
-id|new_client-&gt;id
-op_assign
-id|lm85_id
-op_increment
-suffix:semicolon
 id|data-&gt;type
 op_assign
 id|kind
@@ -4907,27 +4897,6 @@ c_func
 (paren
 op_amp
 id|data-&gt;update_lock
-)paren
-suffix:semicolon
-id|dev_dbg
-c_func
-(paren
-op_amp
-id|adapter-&gt;dev
-comma
-l_string|&quot;Assigning ID %d to %s at %d,0x%02x&bslash;n&quot;
-comma
-id|new_client-&gt;id
-comma
-id|new_client-&gt;name
-comma
-id|i2c_adapter_id
-c_func
-(paren
-id|new_client-&gt;adapter
-)paren
-comma
-id|new_client-&gt;addr
 )paren
 suffix:semicolon
 multiline_comment|/* Tell the I2C layer a new client has arrived */
@@ -6262,11 +6231,13 @@ c_cond
 op_logical_neg
 id|data-&gt;valid
 op_logical_or
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_reading
-OG
+op_plus
 id|LM85_DATA_INTERVAL
 )paren
 )paren
@@ -6551,11 +6522,13 @@ c_cond
 op_logical_neg
 id|data-&gt;valid
 op_logical_or
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_config
-OG
+op_plus
 id|LM85_CONFIG_INTERVAL
 )paren
 )paren

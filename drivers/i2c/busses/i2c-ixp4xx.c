@@ -432,12 +432,12 @@ suffix:semicolon
 id|drv_data-&gt;adapter.id
 op_assign
 id|I2C_HW_B_IXP4XX
-comma
+suffix:semicolon
 id|drv_data-&gt;adapter.algo_data
 op_assign
 op_amp
 id|drv_data-&gt;algo_data
-comma
+suffix:semicolon
 id|drv_data-&gt;adapter.dev.parent
 op_assign
 op_amp

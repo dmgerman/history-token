@@ -40,6 +40,12 @@ suffix:semicolon
 multiline_comment|/*&n; * Flags for bug emulation.&n; *&n; * These occupy the top three bytes.&n; */
 r_enum
 (brace
+DECL|enumerator|ADDR_NO_RANDOMIZE
+id|ADDR_NO_RANDOMIZE
+op_assign
+l_int|0x0040000
+comma
+multiline_comment|/* disable randomization of VA space */
 DECL|enumerator|FDPIC_FUNCPTRS
 id|FDPIC_FUNCPTRS
 op_assign
@@ -90,7 +96,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * Security-relevant compatibility flags that must be&n; * cleared upon setuid or setgid exec:&n; */
 DECL|macro|PER_CLEAR_ON_SETID
-mdefine_line|#define PER_CLEAR_ON_SETID (READ_IMPLIES_EXEC)
+mdefine_line|#define PER_CLEAR_ON_SETID (READ_IMPLIES_EXEC|ADDR_NO_RANDOMIZE)
 multiline_comment|/*&n; * Personality types.&n; *&n; * These go in the low byte.  Avoid using the top bit, it will&n; * conflict with error returns.&n; */
 r_enum
 (brace

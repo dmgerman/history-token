@@ -94,6 +94,13 @@ DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;1
 DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;((TASK_SIZE/PGDIR_SIZE) - FIRST_USER_PGD_NR)
+multiline_comment|/*&n; * ARMv6 supersection address mask and size definitions.&n; */
+DECL|macro|SUPERSECTION_SHIFT
+mdefine_line|#define SUPERSECTION_SHIFT&t;24
+DECL|macro|SUPERSECTION_SIZE
+mdefine_line|#define SUPERSECTION_SIZE&t;(1UL &lt;&lt; SUPERSECTION_SHIFT)
+DECL|macro|SUPERSECTION_MASK
+mdefine_line|#define SUPERSECTION_MASK&t;(~(SUPERSECTION_SIZE-1))
 multiline_comment|/*&n; * Hardware page table definitions.&n; *&n; * + Level 1 descriptor (PMD)&n; *   - common&n; */
 DECL|macro|PMD_TYPE_MASK
 mdefine_line|#define PMD_TYPE_MASK&t;&t;(3 &lt;&lt; 0)
@@ -126,6 +133,8 @@ DECL|macro|PMD_SECT_S
 mdefine_line|#define PMD_SECT_S&t;&t;(1 &lt;&lt; 16)&t;/* v6 */
 DECL|macro|PMD_SECT_nG
 mdefine_line|#define PMD_SECT_nG&t;&t;(1 &lt;&lt; 17)&t;/* v6 */
+DECL|macro|PMD_SECT_SUPER
+mdefine_line|#define PMD_SECT_SUPER&t;&t;(1 &lt;&lt; 18)&t;/* v6 */
 DECL|macro|PMD_SECT_UNCACHED
 mdefine_line|#define PMD_SECT_UNCACHED&t;(0)
 DECL|macro|PMD_SECT_BUFFERED

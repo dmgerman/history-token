@@ -3,6 +3,7 @@ multiline_comment|/*&n;    Supports following chips:&n;&n;    Chip&t;#vin&t;#fan
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/i2c-vid.h&gt;
@@ -5237,6 +5238,99 @@ c_cond
 id|init
 )paren
 (brace
+multiline_comment|/* Enable temp2 */
+id|tmp
+op_assign
+id|w83627hf_read_value
+c_func
+(paren
+id|client
+comma
+id|W83781D_REG_TEMP2_CONFIG
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_amp
+l_int|0x01
+)paren
+(brace
+id|dev_warn
+c_func
+(paren
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;Enabling temp2, readings &quot;
+l_string|&quot;might not make sense&bslash;n&quot;
+)paren
+suffix:semicolon
+id|w83627hf_write_value
+c_func
+(paren
+id|client
+comma
+id|W83781D_REG_TEMP2_CONFIG
+comma
+id|tmp
+op_amp
+l_int|0xfe
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Enable temp3 */
+r_if
+c_cond
+(paren
+id|type
+op_ne
+id|w83697hf
+)paren
+(brace
+id|tmp
+op_assign
+id|w83627hf_read_value
+c_func
+(paren
+id|client
+comma
+id|W83781D_REG_TEMP3_CONFIG
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_amp
+l_int|0x01
+)paren
+(brace
+id|dev_warn
+c_func
+(paren
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;Enabling temp3, &quot;
+l_string|&quot;readings might not make sense&bslash;n&quot;
+)paren
+suffix:semicolon
+id|w83627hf_write_value
+c_func
+(paren
+id|client
+comma
+id|W83781D_REG_TEMP3_CONFIG
+comma
+id|tmp
+op_amp
+l_int|0xfe
+)paren
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -5364,22 +5458,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_updated
-OG
+op_plus
 id|HZ
 op_plus
 id|HZ
 op_div
 l_int|2
-)paren
-op_logical_or
-(paren
-id|jiffies
-OL
-id|data-&gt;last_updated
 )paren
 op_logical_or
 op_logical_neg

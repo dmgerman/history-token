@@ -1190,10 +1190,10 @@ mdefine_line|#define ipoib_warn(priv, format, arg...)&t;&t;&bslash;&n;&t;ipoib_p
 macro_line|#ifdef CONFIG_INFINIBAND_IPOIB_DEBUG
 r_extern
 r_int
-id|debug_level
+id|ipoib_debug_level
 suffix:semicolon
 DECL|macro|ipoib_dbg
-mdefine_line|#define ipoib_dbg(priv, format, arg...)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;        &bslash;&n;&t;&t;if (debug_level &gt; 0)&t;&t;&t;&bslash;&n;&t;&t;&t;ipoib_printk(KERN_DEBUG, priv, format , ## arg); &bslash;&n;&t;} while (0)
+mdefine_line|#define ipoib_dbg(priv, format, arg...)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;        &bslash;&n;&t;&t;if (ipoib_debug_level &gt; 0)&t;&t;&t;&bslash;&n;&t;&t;&t;ipoib_printk(KERN_DEBUG, priv, format , ## arg); &bslash;&n;&t;} while (0)
 DECL|macro|ipoib_dbg_mcast
 mdefine_line|#define ipoib_dbg_mcast(priv, format, arg...)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;        &bslash;&n;&t;&t;if (mcast_debug_level &gt; 0)&t;&t;&bslash;&n;&t;&t;&t;ipoib_printk(KERN_DEBUG, priv, format , ## arg); &bslash;&n;&t;} while (0)
 macro_line|#else /* CONFIG_INFINIBAND_IPOIB_DEBUG */

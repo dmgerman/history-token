@@ -427,8 +427,6 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
@@ -1463,11 +1461,6 @@ id|serial21285_port
 op_assign
 (brace
 dot
-id|membase
-op_assign
-l_int|0
-comma
-dot
 id|mapbase
 op_assign
 l_int|0x42000160
@@ -1481,11 +1474,6 @@ dot
 id|irq
 op_assign
 id|NO_IRQ
-comma
-dot
-id|uartclk
-op_assign
-l_int|0
 comma
 dot
 id|fifosize

@@ -11,6 +11,9 @@ multiline_comment|/* forward declaration */
 r_struct
 id|s3c2410_uartcfg
 suffix:semicolon
+r_struct
+id|map_desc
+suffix:semicolon
 multiline_comment|/* core initialisation functions */
 r_extern
 r_void
@@ -107,5 +110,11 @@ r_extern
 r_struct
 id|sys_timer
 id|s3c24xx_timer
+suffix:semicolon
+multiline_comment|/* system device classes */
+r_extern
+r_struct
+id|sysdev_class
+id|s3c2440_sysclass
 suffix:semicolon
 eof

@@ -633,6 +633,11 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+r_class
+op_assign
+id|I2C_CLASS_HWMON
+comma
+dot
 id|id
 op_assign
 id|I2C_HW_P_ELEK

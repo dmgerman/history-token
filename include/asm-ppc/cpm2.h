@@ -1314,7 +1314,7 @@ mdefine_line|#define SCU_PSMR_REVP&t;&t;((ushort)0x0008)
 DECL|macro|SCU_PSMR_TPM
 mdefine_line|#define SCU_PSMR_TPM&t;&t;((ushort)0x0003)
 DECL|macro|SCU_PSMR_TEVP
-mdefine_line|#define SCU_PSMR_TEVP&t;&t;((ushort)0x0003)
+mdefine_line|#define SCU_PSMR_TEVP&t;&t;((ushort)0x0002)
 multiline_comment|/* CPM Transparent mode SCC.&n; */
 DECL|struct|scc_trans
 r_typedef

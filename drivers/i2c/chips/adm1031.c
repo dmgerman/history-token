@@ -2,6 +2,7 @@ multiline_comment|/*&n;  adm1031.c - Part of lm_sensors, Linux kernel modules fo
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 multiline_comment|/* Following macros takes channel parameter starting from 0 to 2 */
@@ -343,11 +344,6 @@ op_assign
 id|adm1031_detach_client
 comma
 )brace
-suffix:semicolon
-DECL|variable|adm1031_id
-r_static
-r_int
-id|adm1031_id
 suffix:semicolon
 DECL|function|adm1031_read_value
 r_static
@@ -3642,11 +3638,6 @@ comma
 id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|adm1031_id
-op_increment
-suffix:semicolon
 id|data-&gt;valid
 op_assign
 l_int|0
@@ -4271,22 +4262,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_updated
-OG
+op_plus
 id|HZ
 op_plus
 id|HZ
 op_div
 l_int|2
-)paren
-op_logical_or
-(paren
-id|jiffies
-OL
-id|data-&gt;last_updated
 )paren
 op_logical_or
 op_logical_neg

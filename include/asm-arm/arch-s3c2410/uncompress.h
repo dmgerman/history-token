@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm-arm/arch-s3c2410/uncompress.h&n; *&n; * (c) 2003 Simtec Electronics&n; *    Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 - uncompress code&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  22-May-2003 BJD  Created&n; *  08-Sep-2003 BJD  Moved to linux v2.6&n; *  12-Mar-2004 BJD  Updated header protection&n; *  12-Oct-2004 BJD  Take account of debug uart configuration&n; *  15-Nov-2004 BJD  Fixed uart configuration&n;*/
+multiline_comment|/* linux/include/asm-arm/arch-s3c2410/uncompress.h&n; *&n; * (c) 2003 Simtec Electronics&n; *    Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 - uncompress code&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  22-May-2003 BJD  Created&n; *  08-Sep-2003 BJD  Moved to linux v2.6&n; *  12-Mar-2004 BJD  Updated header protection&n; *  12-Oct-2004 BJD  Take account of debug uart configuration&n; *  15-Nov-2004 BJD  Fixed uart configuration&n; *  22-Feb-2005 BJD  Added watchdog to uncompress&n;*/
 macro_line|#ifndef __ASM_ARCH_UNCOMPRESS_H
 DECL|macro|__ASM_ARCH_UNCOMPRESS_H
 mdefine_line|#define __ASM_ARCH_UNCOMPRESS_H
@@ -6,12 +6,17 @@ macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* defines for UART registers */
 macro_line|#include &quot;asm/arch/regs-serial.h&quot;
 macro_line|#include &quot;asm/arch/regs-gpio.h&quot;
+macro_line|#include &quot;asm/arch/regs-watchdog.h&quot;
 macro_line|#include &lt;asm/arch/map.h&gt;
 multiline_comment|/* working in physical space... */
 DECL|macro|S3C2410_GPIOREG
 macro_line|#undef S3C2410_GPIOREG
+DECL|macro|S3C2410_WDOGREG
+macro_line|#undef S3C2410_WDOGREG
 DECL|macro|S3C2410_GPIOREG
 mdefine_line|#define S3C2410_GPIOREG(x) ((S3C2410_PA_GPIO + (x)))
+DECL|macro|S3C2410_WDOGREG
+mdefine_line|#define S3C2410_WDOGREG(x) ((S3C2410_PA_WATCHDOG + (x)))
 multiline_comment|/* how many bytes we allow into the FIFO at a time in FIFO mode */
 DECL|macro|FIFO_MAX
 mdefine_line|#define FIFO_MAX&t; (14)
@@ -96,30 +101,6 @@ r_return
 op_star
 id|ptr
 suffix:semicolon
-)brace
-multiline_comment|/* currently we do not need the watchdog... */
-DECL|macro|arch_decomp_wdog
-mdefine_line|#define arch_decomp_wdog()
-r_static
-r_void
-id|error
-c_func
-(paren
-r_char
-op_star
-id|err
-)paren
-suffix:semicolon
-r_static
-r_void
-DECL|function|arch_decomp_setup
-id|arch_decomp_setup
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* we may need to setup the uart(s) here if we are not running&n;&t; * on an BAST... the BAST will have left the uarts configured&n;&t; * after calling linux.&n;&t; */
 )brace
 multiline_comment|/* we can deal with the case the UARTs are being run&n; * in FIFO mode, so that we don&squot;t hold up our execution&n; * waiting for tx to happen...&n;*/
 r_static
@@ -295,6 +276,107 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* CONFIG_S3C2410_BOOT_WATCHDOG&n; *&n; * Simple boot-time watchdog setup, to reboot the system if there is&n; * any problem with the boot process&n;*/
+macro_line|#ifdef CONFIG_S3C2410_BOOT_WATCHDOG
+DECL|macro|WDOG_COUNT
+mdefine_line|#define WDOG_COUNT (0xff00)
+DECL|macro|__raw_writel
+mdefine_line|#define __raw_writel(d,ad) do { *((volatile unsigned int *)(ad)) = (d); } while(0)
+DECL|function|arch_decomp_wdog
+r_static
+r_inline
+r_void
+id|arch_decomp_wdog
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__raw_writel
+c_func
+(paren
+id|WDOG_COUNT
+comma
+id|S3C2410_WTCNT
+)paren
+suffix:semicolon
+)brace
+DECL|function|arch_decomp_wdog_start
+r_static
+r_void
+id|arch_decomp_wdog_start
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__raw_writel
+c_func
+(paren
+id|WDOG_COUNT
+comma
+id|S3C2410_WTDAT
+)paren
+suffix:semicolon
+id|__raw_writel
+c_func
+(paren
+id|WDOG_COUNT
+comma
+id|S3C2410_WTCNT
+)paren
+suffix:semicolon
+id|__raw_writel
+c_func
+(paren
+id|S3C2410_WTCON_ENABLE
+op_or
+id|S3C2410_WTCON_DIV128
+op_or
+id|S3C2410_WTCON_RSTEN
+op_or
+id|S3C2410_WTCON_PRESCALE
+c_func
+(paren
+l_int|0x40
+)paren
+comma
+id|S3C2410_WTCON
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|arch_decomp_wdog_start
+mdefine_line|#define arch_decomp_wdog_start()
+DECL|macro|arch_decomp_wdog
+mdefine_line|#define arch_decomp_wdog()
+macro_line|#endif
+r_static
+r_void
+id|error
+c_func
+(paren
+r_char
+op_star
+id|err
+)paren
+suffix:semicolon
+r_static
+r_void
+DECL|function|arch_decomp_setup
+id|arch_decomp_setup
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* we may need to setup the uart(s) here if we are not running&n;&t; * on an BAST... the BAST will have left the uarts configured&n;&t; * after calling linux.&n;&t; */
+id|arch_decomp_wdog_start
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif /* __ASM_ARCH_UNCOMPRESS_H */
 eof

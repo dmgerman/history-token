@@ -289,17 +289,7 @@ op_or
 id|__IRQT_FALEDGE
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;IRQ%d (GPIO%d): &quot;
-comma
-id|irq
-comma
-id|gpio
-)paren
-suffix:semicolon
+multiline_comment|/* printk(KERN_DEBUG &quot;IRQ%d (GPIO%d): &quot;, irq, gpio); */
 id|pxa_gpio_mode
 c_func
 (paren
@@ -316,12 +306,7 @@ op_amp
 id|__IRQT_RISEDGE
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;rising &quot;
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;rising &quot;); */
 id|__set_bit
 (paren
 id|gpio
@@ -346,12 +331,7 @@ op_amp
 id|__IRQT_FALEDGE
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;falling &quot;
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;falling &quot;); */
 id|__set_bit
 (paren
 id|gpio
@@ -368,12 +348,7 @@ comma
 id|GPIO_IRQ_falling_edge
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;edges&bslash;n&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;edges&bslash;n&quot;); */
 id|GRER
 c_func
 (paren

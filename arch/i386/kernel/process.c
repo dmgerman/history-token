@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -3026,6 +3027,38 @@ id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|arch_align_stack
+r_int
+r_int
+id|arch_align_stack
+c_func
+(paren
+r_int
+r_int
+id|sp
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|randomize_va_space
+)paren
+id|sp
+op_sub_assign
+id|get_random_int
+c_func
+(paren
+)paren
+op_mod
+l_int|8192
+suffix:semicolon
+r_return
+id|sp
+op_amp
+op_complement
+l_int|0xf
 suffix:semicolon
 )brace
 eof

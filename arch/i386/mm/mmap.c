@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/i386/mm/mmap.c&n; *&n; *  flexible mmap layout support&n; *&n; * Copyright 2003-2004 Red Hat Inc., Durham, North Carolina.&n; * All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; * Started by Ingo Molnar &lt;mingo@elte.hu&gt;&n; */
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 multiline_comment|/*&n; * Top of mmap area (just below the process stack).&n; *&n; * Leave an at least ~128 MB hole.&n; */
 DECL|macro|MIN_GAP
 mdefine_line|#define MIN_GAP (128*1024*1024)
@@ -31,6 +32,32 @@ id|RLIMIT_STACK
 dot
 id|rlim_cur
 suffix:semicolon
+r_int
+r_int
+id|random_factor
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_RANDOMIZE
+)paren
+id|random_factor
+op_assign
+id|get_random_int
+c_func
+(paren
+)paren
+op_mod
+(paren
+l_int|1024
+op_star
+l_int|1024
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -55,12 +82,14 @@ op_assign
 id|MAX_GAP
 suffix:semicolon
 r_return
+id|PAGE_ALIGN
+c_func
+(paren
 id|TASK_SIZE
 op_minus
-(paren
 id|gap
-op_amp
-id|PAGE_MASK
+op_minus
+id|random_factor
 )paren
 suffix:semicolon
 )brace

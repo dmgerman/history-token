@@ -32,5 +32,5 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* __PPC4XX_PIC_H__ */
+macro_line|#endif&t;&t;&t;&t;/* __PPC4XX_PIC_H__ */
 eof

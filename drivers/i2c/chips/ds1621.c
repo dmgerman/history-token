@@ -2,6 +2,7 @@ multiline_comment|/*&n;    ds1621.c - Part of lm_sensors, Linux kernel modules f
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &quot;lm75.h&quot;
@@ -259,11 +260,6 @@ op_assign
 id|ds1621_detach_client
 comma
 )brace
-suffix:semicolon
-DECL|variable|ds1621_id
-r_static
-r_int
-id|ds1621_id
 suffix:semicolon
 multiline_comment|/* All registers are word-sized, except for the configuration register.&n;   DS1621 uses a high-byte first convention, which is exactly opposite to&n;   the usual practice. */
 DECL|function|ds1621_read_value
@@ -856,11 +852,6 @@ comma
 id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|ds1621_id
-op_increment
-suffix:semicolon
 id|data-&gt;valid
 op_assign
 l_int|0
@@ -1061,22 +1052,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_updated
-OG
+op_plus
 id|HZ
 op_plus
 id|HZ
 op_div
 l_int|2
-)paren
-op_logical_or
-(paren
-id|jiffies
-OL
-id|data-&gt;last_updated
 )paren
 op_logical_or
 op_logical_neg

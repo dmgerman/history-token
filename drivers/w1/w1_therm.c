@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;w1.h&quot;
 macro_line|#include &quot;w1_io.h&quot;
 macro_line|#include &quot;w1_int.h&quot;
@@ -479,6 +480,11 @@ op_amp
 id|sl-&gt;refcnt
 )paren
 suffix:semicolon
+id|smp_mb__after_atomic_inc
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -603,6 +609,8 @@ suffix:semicolon
 r_int
 r_int
 id|tm
+op_assign
+l_int|750
 suffix:semicolon
 id|memcpy
 c_func
@@ -641,40 +649,18 @@ comma
 id|W1_CONVERT_TEMP
 )paren
 suffix:semicolon
-id|tm
-op_assign
-id|jiffies
-op_plus
-id|msecs_to_jiffies
-c_func
-(paren
-l_int|750
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
 id|tm
-)paren
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|tm
+op_assign
+id|msleep_interruptible
 c_func
 (paren
 id|tm
-op_minus
-id|jiffies
 )paren
 suffix:semicolon
 r_if
@@ -939,6 +925,11 @@ id|dev-&gt;mutex
 suffix:semicolon
 id|out_dec
 suffix:colon
+id|smp_mb__before_atomic_inc
+c_func
+(paren
+)paren
+suffix:semicolon
 id|atomic_dec
 c_func
 (paren

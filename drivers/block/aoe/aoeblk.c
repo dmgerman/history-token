@@ -104,6 +104,11 @@ id|PAGE_SIZE
 comma
 l_string|&quot;%012llx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|mac_addr
 c_func
 (paren
@@ -1132,6 +1137,11 @@ id|KERN_INFO
 l_string|&quot;aoe: %012llx e%lu.%lu v%04x has %llu &quot;
 l_string|&quot;sectors&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|mac_addr
 c_func
 (paren

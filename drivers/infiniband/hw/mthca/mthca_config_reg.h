@@ -21,5 +21,7 @@ DECL|macro|MTHCA_CLR_INT_BASE
 mdefine_line|#define MTHCA_CLR_INT_BASE     0xf00d8
 DECL|macro|MTHCA_CLR_INT_SIZE
 mdefine_line|#define MTHCA_CLR_INT_SIZE     0x00008
+DECL|macro|MTHCA_EQ_SET_CI_SIZE
+mdefine_line|#define MTHCA_EQ_SET_CI_SIZE   (8 * 32)
 macro_line|#endif /* MTHCA_CONFIG_REG_H */
 eof

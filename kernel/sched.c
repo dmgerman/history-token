@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/kthread.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
+macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/*&n; * Convert user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ MAX_RT_PRIO..MAX_PRIO-1 ],&n; * and back.&n; */
@@ -7605,6 +7606,20 @@ c_func
 id|cpustat-&gt;idle
 comma
 id|tmp
+)paren
+suffix:semicolon
+multiline_comment|/* Account for system time used */
+id|acct_update_integrals
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+multiline_comment|/* Update rss highwater mark */
+id|update_mem_hiwater
+c_func
+(paren
+id|p
 )paren
 suffix:semicolon
 )brace

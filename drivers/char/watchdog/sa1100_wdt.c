@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|OSCR_FREQ
-mdefine_line|#define OSCR_FREQ&t;&t;3686400
+mdefine_line|#define OSCR_FREQ&t;&t;CLOCK_TICK_RATE
 DECL|macro|SA1100_CLOSE_MAGIC
 mdefine_line|#define SA1100_CLOSE_MAGIC&t;(0x5afc4453)
 DECL|variable|sa1100wdt_users

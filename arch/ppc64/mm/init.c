@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/idr.h&gt;
 macro_line|#include &lt;linux/nodemask.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
@@ -40,6 +41,7 @@ macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
+macro_line|#include &lt;asm/vdso.h&gt;
 DECL|variable|mem_init_done
 r_int
 id|mem_init_done
@@ -1714,6 +1716,27 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|variable|ioremap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ioremap
+)paren
+suffix:semicolon
+DECL|variable|__ioremap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__ioremap
+)paren
+suffix:semicolon
+DECL|variable|iounmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iounmap
+)paren
+suffix:semicolon
 DECL|function|free_initmem
 r_void
 id|free_initmem
@@ -3064,6 +3087,12 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Initialize the vDSO */
+id|vdso_init
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is called when a page has been modified by the kernel.&n; * It just marks the page as not i-cache clean.  We do the i-cache&n; * flush later when the page is given to a user process, if necessary.&n; */
 DECL|function|flush_dcache_page
@@ -3080,9 +3109,11 @@ id|page
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_COHERENT_ICACHE
+)paren
 )paren
 r_return
 suffix:semicolon
@@ -3109,6 +3140,13 @@ id|page-&gt;flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|flush_dcache_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_dcache_page
+)paren
+suffix:semicolon
 DECL|function|clear_user_page
 r_void
 id|clear_user_page
@@ -3137,9 +3175,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_COHERENT_ICACHE
+)paren
 )paren
 r_return
 suffix:semicolon
@@ -3167,6 +3207,13 @@ id|pg-&gt;flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|clear_user_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|clear_user_page
+)paren
+suffix:semicolon
 DECL|function|copy_user_page
 r_void
 id|copy_user_page
@@ -3222,9 +3269,11 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_COHERENT_ICACHE
+)paren
 )paren
 r_return
 suffix:semicolon
@@ -3308,6 +3357,13 @@ id|len
 )paren
 suffix:semicolon
 )brace
+DECL|variable|flush_icache_user_range
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_icache_user_range
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This is called at the end of handling a user page fault, when the&n; * fault has been handled by updating a PTE in the linux page tables.&n; * We use it to preload an HPTE into the hash table corresponding to&n; * the updated linux PTE.&n; * &n; * This must always be called with the mm-&gt;page_table_lock held&n; */
 DECL|function|update_mmu_cache
 r_void
@@ -3356,16 +3412,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|cpu_has_feature
+c_func
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
 id|CPU_FTR_COHERENT_ICACHE
 )paren
 op_logical_and
 op_logical_neg
+id|cpu_has_feature
+c_func
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
 id|CPU_FTR_NOEXECUTE
 )paren
 )paren

@@ -234,6 +234,32 @@ comma
 id|urandom_fops
 suffix:semicolon
 macro_line|#endif
+r_int
+r_int
+id|get_random_int
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+r_int
+id|randomize_range
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+comma
+r_int
+r_int
+id|len
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL___ */
 macro_line|#endif /* _LINUX_RANDOM_H */
 eof

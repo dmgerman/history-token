@@ -88,9 +88,11 @@ multiline_comment|/*&n;&t; * SIHV / SIPR bits are only implemented on POWER4+ (G
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_MMCRA_SIHV
+)paren
 )paren
 id|mmcra_has_sihv
 op_assign

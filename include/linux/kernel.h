@@ -945,6 +945,15 @@ r_void
 suffix:semicolon
 DECL|macro|BUILD_BUG_ON
 mdefine_line|#define BUILD_BUG_ON(condition) do { if (condition) BUILD_BUG(); } while(0)
+macro_line|#ifdef CONFIG_SYSCTL
+r_extern
+r_int
+id|randomize_va_space
+suffix:semicolon
+macro_line|#else
+DECL|macro|randomize_va_space
+mdefine_line|#define randomize_va_space 1
+macro_line|#endif
 multiline_comment|/* Trap pasters of __FUNCTION__ at compile-time */
 macro_line|#if __GNUC__ &gt; 2 || __GNUC_MINOR__ &gt;= 95
 DECL|macro|__FUNCTION__

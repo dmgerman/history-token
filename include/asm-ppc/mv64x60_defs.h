@@ -31,6 +31,8 @@ DECL|macro|GT64260_WINDOW_SIZE_MIN
 mdefine_line|#define GT64260_WINDOW_SIZE_MIN&t;&t;&t;0x00100000
 DECL|macro|MV64360_WINDOW_SIZE_MIN
 mdefine_line|#define MV64360_WINDOW_SIZE_MIN&t;&t;&t;0x00010000
+DECL|macro|MV64x60_TCLK_FREQ_MAX
+mdefine_line|#define&t;MV64x60_TCLK_FREQ_MAX&t;&t;&t;133333333U
 multiline_comment|/* IRQ&squot;s for embedded controllers */
 DECL|macro|MV64x60_IRQ_DEV
 mdefine_line|#define&t;MV64x60_IRQ_DEV&t;&t;&t;&t;1
@@ -44,6 +46,16 @@ DECL|macro|MV64x60_IRQ_TIMER_4_5
 mdefine_line|#define&t;MV64x60_IRQ_TIMER_4_5&t;&t;&t;10
 DECL|macro|MV64x60_IRQ_TIMER_6_7
 mdefine_line|#define&t;MV64x60_IRQ_TIMER_6_7&t;&t;&t;11
+DECL|macro|MV64x60_IRQ_P1_GPP_0_7
+mdefine_line|#define&t;MV64x60_IRQ_P1_GPP_0_7&t;&t;&t;24
+DECL|macro|MV64x60_IRQ_P1_GPP_8_15
+mdefine_line|#define&t;MV64x60_IRQ_P1_GPP_8_15&t;&t;&t;25
+DECL|macro|MV64x60_IRQ_P1_GPP_16_23
+mdefine_line|#define&t;MV64x60_IRQ_P1_GPP_16_23&t;&t;26
+DECL|macro|MV64x60_IRQ_P1_GPP_24_31
+mdefine_line|#define&t;MV64x60_IRQ_P1_GPP_24_31&t;&t;27
+DECL|macro|MV64x60_IRQ_DOORBELL
+mdefine_line|#define&t;MV64x60_IRQ_DOORBELL&t;&t;&t;28
 DECL|macro|MV64x60_IRQ_ETH_0
 mdefine_line|#define&t;MV64x60_IRQ_ETH_0&t;&t;&t;32
 DECL|macro|MV64x60_IRQ_ETH_1
@@ -62,6 +74,14 @@ DECL|macro|MV64x60_IRQ_MPSC_1
 mdefine_line|#define&t;MV64x60_IRQ_MPSC_1&t;&t;&t;42
 DECL|macro|MV64x60_IRQ_COMM
 mdefine_line|#define&t;MV64x60_IRQ_COMM&t;&t;&t;43
+DECL|macro|MV64x60_IRQ_P0_GPP_0_7
+mdefine_line|#define&t;MV64x60_IRQ_P0_GPP_0_7&t;&t;&t;56
+DECL|macro|MV64x60_IRQ_P0_GPP_8_15
+mdefine_line|#define&t;MV64x60_IRQ_P0_GPP_8_15&t;&t;&t;57
+DECL|macro|MV64x60_IRQ_P0_GPP_16_23
+mdefine_line|#define&t;MV64x60_IRQ_P0_GPP_16_23&t;&t;58
+DECL|macro|MV64x60_IRQ_P0_GPP_24_31
+mdefine_line|#define&t;MV64x60_IRQ_P0_GPP_24_31&t;&t;59
 DECL|macro|MV64360_IRQ_PCI0
 mdefine_line|#define&t;MV64360_IRQ_PCI0&t;&t;&t;12
 DECL|macro|MV64360_IRQ_SRAM_PAR_ERR
@@ -70,6 +90,70 @@ DECL|macro|MV64360_IRQ_PCI1
 mdefine_line|#define&t;MV64360_IRQ_PCI1&t;&t;&t;16
 DECL|macro|MV64360_IRQ_SDMA_1
 mdefine_line|#define&t;MV64360_IRQ_SDMA_1&t;&t;&t;38
+DECL|macro|MV64x60_IRQ_GPP0
+mdefine_line|#define&t;MV64x60_IRQ_GPP0&t;&t;&t;64
+DECL|macro|MV64x60_IRQ_GPP1
+mdefine_line|#define&t;MV64x60_IRQ_GPP1&t;&t;&t;65
+DECL|macro|MV64x60_IRQ_GPP2
+mdefine_line|#define&t;MV64x60_IRQ_GPP2&t;&t;&t;66
+DECL|macro|MV64x60_IRQ_GPP3
+mdefine_line|#define&t;MV64x60_IRQ_GPP3&t;&t;&t;67
+DECL|macro|MV64x60_IRQ_GPP4
+mdefine_line|#define&t;MV64x60_IRQ_GPP4&t;&t;&t;68
+DECL|macro|MV64x60_IRQ_GPP5
+mdefine_line|#define&t;MV64x60_IRQ_GPP5&t;&t;&t;69
+DECL|macro|MV64x60_IRQ_GPP6
+mdefine_line|#define&t;MV64x60_IRQ_GPP6&t;&t;&t;70
+DECL|macro|MV64x60_IRQ_GPP7
+mdefine_line|#define&t;MV64x60_IRQ_GPP7&t;&t;&t;71
+DECL|macro|MV64x60_IRQ_GPP8
+mdefine_line|#define&t;MV64x60_IRQ_GPP8&t;&t;&t;72
+DECL|macro|MV64x60_IRQ_GPP9
+mdefine_line|#define&t;MV64x60_IRQ_GPP9&t;&t;&t;73
+DECL|macro|MV64x60_IRQ_GPP10
+mdefine_line|#define&t;MV64x60_IRQ_GPP10&t;&t;&t;74
+DECL|macro|MV64x60_IRQ_GPP11
+mdefine_line|#define&t;MV64x60_IRQ_GPP11&t;&t;&t;75
+DECL|macro|MV64x60_IRQ_GPP12
+mdefine_line|#define&t;MV64x60_IRQ_GPP12&t;&t;&t;76
+DECL|macro|MV64x60_IRQ_GPP13
+mdefine_line|#define&t;MV64x60_IRQ_GPP13&t;&t;&t;77
+DECL|macro|MV64x60_IRQ_GPP14
+mdefine_line|#define&t;MV64x60_IRQ_GPP14&t;&t;&t;78
+DECL|macro|MV64x60_IRQ_GPP15
+mdefine_line|#define&t;MV64x60_IRQ_GPP15&t;&t;&t;79
+DECL|macro|MV64x60_IRQ_GPP16
+mdefine_line|#define&t;MV64x60_IRQ_GPP16&t;&t;&t;80
+DECL|macro|MV64x60_IRQ_GPP17
+mdefine_line|#define&t;MV64x60_IRQ_GPP17&t;&t;&t;81
+DECL|macro|MV64x60_IRQ_GPP18
+mdefine_line|#define&t;MV64x60_IRQ_GPP18&t;&t;&t;82
+DECL|macro|MV64x60_IRQ_GPP19
+mdefine_line|#define&t;MV64x60_IRQ_GPP19&t;&t;&t;83
+DECL|macro|MV64x60_IRQ_GPP20
+mdefine_line|#define&t;MV64x60_IRQ_GPP20&t;&t;&t;84
+DECL|macro|MV64x60_IRQ_GPP21
+mdefine_line|#define&t;MV64x60_IRQ_GPP21&t;&t;&t;85
+DECL|macro|MV64x60_IRQ_GPP22
+mdefine_line|#define&t;MV64x60_IRQ_GPP22&t;&t;&t;86
+DECL|macro|MV64x60_IRQ_GPP23
+mdefine_line|#define&t;MV64x60_IRQ_GPP23&t;&t;&t;87
+DECL|macro|MV64x60_IRQ_GPP24
+mdefine_line|#define&t;MV64x60_IRQ_GPP24&t;&t;&t;88
+DECL|macro|MV64x60_IRQ_GPP25
+mdefine_line|#define&t;MV64x60_IRQ_GPP25&t;&t;&t;89
+DECL|macro|MV64x60_IRQ_GPP26
+mdefine_line|#define&t;MV64x60_IRQ_GPP26&t;&t;&t;90
+DECL|macro|MV64x60_IRQ_GPP27
+mdefine_line|#define&t;MV64x60_IRQ_GPP27&t;&t;&t;91
+DECL|macro|MV64x60_IRQ_GPP28
+mdefine_line|#define&t;MV64x60_IRQ_GPP28&t;&t;&t;92
+DECL|macro|MV64x60_IRQ_GPP29
+mdefine_line|#define&t;MV64x60_IRQ_GPP29&t;&t;&t;93
+DECL|macro|MV64x60_IRQ_GPP30
+mdefine_line|#define&t;MV64x60_IRQ_GPP30&t;&t;&t;94
+DECL|macro|MV64x60_IRQ_GPP31
+mdefine_line|#define&t;MV64x60_IRQ_GPP31&t;&t;&t;95
 multiline_comment|/* Offsets for register blocks */
 DECL|macro|GT64260_ENET_PHY_ADDR
 mdefine_line|#define&t;GT64260_ENET_PHY_ADDR&t;&t;&t;0x2000
@@ -448,7 +532,7 @@ mdefine_line|#define&t;MV64360_SRAM_ERR_DATA_HI&t;&t;0x03a0
 DECL|macro|MV64360_SRAM_ERR_PARITY
 mdefine_line|#define&t;MV64360_SRAM_ERR_PARITY&t;&t;&t;0x03a8
 DECL|macro|MV64360_SRAM_SIZE
-mdefine_line|#define&t;MV64360_SRAM_SIZE&t;&t;&t;0x00040000 /* 256 KB of SRAM */
+mdefine_line|#define&t;MV64360_SRAM_SIZE&t;&t;&t;0x00200000 /* 2 MB of SRAM */
 multiline_comment|/*&n; *****************************************************************************&n; *&n; *&t;SDRAM/MEM Cotnroller Registers&n; *&n; *****************************************************************************&n; */
 multiline_comment|/* SDRAM Config Registers (64260) */
 DECL|macro|GT64260_SDRAM_CONFIG

@@ -1092,7 +1092,11 @@ c_func
 (paren
 l_string|&quot;PCI: Fixing base address flags for device %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -1158,7 +1162,11 @@ c_func
 (paren
 l_string|&quot;PCI: IDE base address fixup for %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -1233,7 +1241,11 @@ c_func
 (paren
 l_string|&quot;PCI: IDE base address trash cleared for %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 r_for

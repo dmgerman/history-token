@@ -903,9 +903,8 @@ id|adapter
 comma
 r_struct
 id|i2c_msg
+op_star
 id|msg
-(braket
-)braket
 comma
 r_int
 id|num

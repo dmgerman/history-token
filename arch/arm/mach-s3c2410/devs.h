@@ -1,4 +1,13 @@
-multiline_comment|/* arch/arm/mach-s3c2410/devs.h&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Header file for s3c2410 standard platform devices&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *      18-Aug-2004 BJD  Created initial version&n; *&t;27-Aug-2004 BJD  Added timers 0 through 3&n;*/
+multiline_comment|/* arch/arm/mach-s3c2410/devs.h&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Header file for s3c2410 standard platform devices&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *      18-Aug-2004 BJD  Created initial version&n; *&t;27-Aug-2004 BJD  Added timers 0 through 3&n; *&t;10-Feb-2005 BJD&t; Added camera from guillaume.gourat@nexvision.tv&n;*/
+macro_line|#include &lt;linux/config.h&gt;
+r_extern
+r_struct
+id|platform_device
+op_star
+id|s3c24xx_uart_devs
+(braket
+)braket
+suffix:semicolon
 r_extern
 r_struct
 id|platform_device
@@ -79,4 +88,12 @@ r_struct
 id|platform_device
 id|s3c_device_usbgadget
 suffix:semicolon
+multiline_comment|/* s3c2440 specific devices */
+macro_line|#ifdef CONFIG_CPU_S3C2440
+r_extern
+r_struct
+id|platform_device
+id|s3c_device_camif
+suffix:semicolon
+macro_line|#endif
 eof

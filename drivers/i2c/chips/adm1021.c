@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 multiline_comment|/* Registers */
@@ -380,11 +381,6 @@ op_assign
 id|adm1021_detach_client
 comma
 )brace
-suffix:semicolon
-DECL|variable|adm1021_id
-r_static
-r_int
-id|adm1021_id
 suffix:semicolon
 DECL|macro|show
 mdefine_line|#define show(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct adm1021_data *data = adm1021_update_device(dev);&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP_FROM_REG(data-&gt;value));&t;&bslash;&n;}
@@ -1158,11 +1154,6 @@ id|data-&gt;type
 op_assign
 id|kind
 suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|adm1021_id
-op_increment
-suffix:semicolon
 id|data-&gt;valid
 op_assign
 l_int|0
@@ -1520,22 +1511,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_updated
-OG
+op_plus
 id|HZ
 op_plus
 id|HZ
 op_div
 l_int|2
-)paren
-op_logical_or
-(paren
-id|jiffies
-OL
-id|data-&gt;last_updated
 )paren
 op_logical_or
 op_logical_neg

@@ -160,6 +160,8 @@ DECL|macro|TODC_TYPE_DS1557
 mdefine_line|#define TODC_TYPE_DS1557&t;&t;11&t;/* Dallas DS1557 RTC */
 DECL|macro|TODC_TYPE_DS17285
 mdefine_line|#define TODC_TYPE_DS17285&t;&t;12&t;/* Dallas DS17285 RTC */
+DECL|macro|TODC_TYPE_DS1553
+mdefine_line|#define TODC_TYPE_DS1553&t;&t;13&t;/* Dallas DS1553 RTC */
 DECL|macro|TODC_TYPE_MC146818
 mdefine_line|#define&t;TODC_TYPE_MC146818&t;&t;100&t;/* Leave room for m48txx&squot;s */
 multiline_comment|/*&n; * Bit to clear/set to enable reads/writes to the chip&n; */
@@ -343,6 +345,48 @@ DECL|macro|TODC_TYPE_DS1501_NVRAM_ADDR_REG
 mdefine_line|#define&t;TODC_TYPE_DS1501_NVRAM_ADDR_REG&t;0x10
 DECL|macro|TODC_TYPE_DS1501_NVRAM_DATA_REG
 mdefine_line|#define&t;TODC_TYPE_DS1501_NVRAM_DATA_REG&t;0x13
+DECL|macro|TODC_TYPE_DS1553_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_DS1553_NVRAM_SIZE&t;&t;0x1ff0
+DECL|macro|TODC_TYPE_DS1553_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_DS1553_SW_FLAGS&t;&t;0
+DECL|macro|TODC_TYPE_DS1553_YEAR
+mdefine_line|#define&t;TODC_TYPE_DS1553_YEAR&t;&t;&t;0x1fff
+DECL|macro|TODC_TYPE_DS1553_MONTH
+mdefine_line|#define&t;TODC_TYPE_DS1553_MONTH&t;&t;&t;0x1ffe
+DECL|macro|TODC_TYPE_DS1553_DOM
+mdefine_line|#define&t;TODC_TYPE_DS1553_DOM&t;&t;&t;0x1ffd&t;/* Day of Month */
+DECL|macro|TODC_TYPE_DS1553_DOW
+mdefine_line|#define&t;TODC_TYPE_DS1553_DOW&t;&t;&t;0x1ffc&t;/* Day of Week */
+DECL|macro|TODC_TYPE_DS1553_HOURS
+mdefine_line|#define&t;TODC_TYPE_DS1553_HOURS&t;&t;&t;0x1ffb
+DECL|macro|TODC_TYPE_DS1553_MINUTES
+mdefine_line|#define&t;TODC_TYPE_DS1553_MINUTES&t;&t;0x1ffa
+DECL|macro|TODC_TYPE_DS1553_SECONDS
+mdefine_line|#define&t;TODC_TYPE_DS1553_SECONDS&t;&t;0x1ff9
+DECL|macro|TODC_TYPE_DS1553_CNTL_B
+mdefine_line|#define&t;TODC_TYPE_DS1553_CNTL_B&t;&t;&t;0x1ff9
+DECL|macro|TODC_TYPE_DS1553_CNTL_A
+mdefine_line|#define&t;TODC_TYPE_DS1553_CNTL_A&t;&t;&t;0x1ff8&t;/* control_a R/W regs */
+DECL|macro|TODC_TYPE_DS1553_WATCHDOG
+mdefine_line|#define&t;TODC_TYPE_DS1553_WATCHDOG&t;&t;0x1ff7
+DECL|macro|TODC_TYPE_DS1553_INTERRUPTS
+mdefine_line|#define&t;TODC_TYPE_DS1553_INTERRUPTS&t;&t;0x1ff6
+DECL|macro|TODC_TYPE_DS1553_ALARM_DATE
+mdefine_line|#define&t;TODC_TYPE_DS1553_ALARM_DATE&t;&t;0x1ff5
+DECL|macro|TODC_TYPE_DS1553_ALARM_HOUR
+mdefine_line|#define&t;TODC_TYPE_DS1553_ALARM_HOUR&t;&t;0x1ff4
+DECL|macro|TODC_TYPE_DS1553_ALARM_MINUTES
+mdefine_line|#define&t;TODC_TYPE_DS1553_ALARM_MINUTES&t;&t;0x1ff3
+DECL|macro|TODC_TYPE_DS1553_ALARM_SECONDS
+mdefine_line|#define&t;TODC_TYPE_DS1553_ALARM_SECONDS&t;&t;0x1ff2
+DECL|macro|TODC_TYPE_DS1553_CENTURY
+mdefine_line|#define&t;TODC_TYPE_DS1553_CENTURY&t;&t;0x1ff8
+DECL|macro|TODC_TYPE_DS1553_FLAGS
+mdefine_line|#define&t;TODC_TYPE_DS1553_FLAGS&t;&t;&t;0x1ff0
+DECL|macro|TODC_TYPE_DS1553_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_DS1553_NVRAM_ADDR_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS1553_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_DS1553_NVRAM_DATA_REG&t;&t;0
 DECL|macro|TODC_TYPE_DS1557_NVRAM_SIZE
 mdefine_line|#define&t;TODC_TYPE_DS1557_NVRAM_SIZE&t;&t;0x7fff0
 DECL|macro|TODC_TYPE_DS1557_SW_FLAGS

@@ -11210,7 +11210,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: Could not get Sleep Image version&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
