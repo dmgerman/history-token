@@ -95,7 +95,7 @@ macro_line|#else
 DECL|macro|local_save_flags
 mdefine_line|#define local_save_flags(flags)&t;((flags) = mfmsr())
 DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(flags)&t;__mtmsrd((flags), 1)
+mdefine_line|#define local_irq_restore(flags) do { &bslash;&n;&t;__asm__ __volatile__(&quot;&quot;: : :&quot;memory&quot;); &bslash;&n;&t;__mtmsrd((flags), 1); &bslash;&n;} while(0)
 DECL|function|local_irq_disable
 r_static
 r_inline

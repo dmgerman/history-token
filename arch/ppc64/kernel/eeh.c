@@ -618,12 +618,10 @@ r_if
 c_cond
 (paren
 id|ibm_set_eeh_option
-op_ne
+op_eq
 id|RTAS_UNKNOWN_SERVICE
 )paren
-id|eeh_implemented
-op_assign
-l_int|1
+r_return
 suffix:semicolon
 r_if
 c_cond

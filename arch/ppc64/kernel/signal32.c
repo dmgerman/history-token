@@ -546,7 +546,7 @@ id|regs
 )paren
 (brace
 r_struct
-id|sigcontext32_struct
+id|sigcontext32
 op_star
 id|sc
 comma
@@ -574,7 +574,7 @@ id|sc
 op_assign
 (paren
 r_struct
-id|sigcontext32_struct
+id|sigcontext32
 op_star
 )paren
 (paren
@@ -642,7 +642,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -658,7 +658,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -956,13 +956,13 @@ id|newsp
 )paren
 (brace
 r_struct
-id|sigcontext32_struct
+id|sigcontext32
 op_star
 id|sc
 op_assign
 (paren
 r_struct
-id|sigcontext32_struct
+id|sigcontext32
 op_star
 )paren
 (paren
@@ -1444,7 +1444,7 @@ op_star
 id|rt_sf
 suffix:semicolon
 r_struct
-id|sigcontext32_struct
+id|sigcontext32
 id|sigctx
 suffix:semicolon
 r_struct
@@ -1556,7 +1556,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -1572,7 +1572,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 multiline_comment|/* If currently owning the floating point - give them up */
@@ -3959,7 +3959,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|saveset
@@ -3979,7 +3979,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|regs-&gt;gpr
@@ -4550,7 +4550,7 @@ id|frame
 )paren
 (brace
 r_struct
-id|sigcontext32_struct
+id|sigcontext32
 op_star
 id|sc
 suffix:semicolon
@@ -4832,7 +4832,7 @@ id|sc
 op_assign
 (paren
 r_struct
-id|sigcontext32_struct
+id|sigcontext32
 op_star
 )paren
 (paren
@@ -4963,7 +4963,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|sigorsets
@@ -4997,7 +4997,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 )brace

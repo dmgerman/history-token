@@ -488,14 +488,6 @@ comma
 id|openpic
 )paren
 suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;OpenPIC addr: %lx&bslash;n&quot;
-comma
-id|openpic
-)paren
-suffix:semicolon
 id|OpenPIC_Addr
 op_assign
 id|__ioremap
@@ -532,6 +524,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Manually leave the kernel version on the panel. */
+id|ppc_md
+dot
+id|progress
+c_func
+(paren
+l_string|&quot;Linux ppc64&bslash;n&quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|ppc_md
 dot
 id|progress
@@ -539,7 +542,7 @@ c_func
 (paren
 id|UTS_RELEASE
 comma
-l_int|0x7777
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -843,16 +846,6 @@ id|ppc_md.progress
 op_assign
 id|chrp_progress
 suffix:semicolon
-id|ppc_md
-dot
-id|progress
-c_func
-(paren
-l_string|&quot;Linux ppc64&bslash;n&quot;
-comma
-l_int|0x0
-)paren
-suffix:semicolon
 )brace
 r_void
 DECL|function|chrp_progress
@@ -896,27 +889,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hex
-)paren
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;&lt;chrp_progress&gt; %s&bslash;n&quot;
-comma
-id|s
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 op_logical_neg
 id|rtas.base
-op_logical_or
-(paren
-id|naca-&gt;platform
-op_ne
-id|PLATFORM_PSERIES
-)paren
 )paren
 r_return
 suffix:semicolon
