@@ -2995,6 +2995,10 @@ r_case
 op_minus
 id|EBUSY
 suffix:colon
+r_case
+op_minus
+id|EIDRM
+suffix:colon
 r_continue
 suffix:semicolon
 r_default
@@ -4074,23 +4078,6 @@ c_cond
 id|status
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|status
-op_eq
-op_minus
-id|ECONNRESET
-op_logical_or
-id|status
-op_eq
-op_minus
-id|ENOENT
-)paren
-id|status
-op_assign
-l_int|0
-suffix:semicolon
 id|urb-&gt;status
 op_assign
 id|status
@@ -4249,9 +4236,14 @@ id|retval
 op_eq
 op_minus
 id|EBUSY
+op_logical_or
+id|retval
+op_eq
+op_minus
+id|EIDRM
 )paren
 (brace
-multiline_comment|/* we can&squot;t unlink urbs while they&squot;re completing.&n;&t;&t; * &quot;normal&quot; drivers would prevent resubmission, but&n;&t;&t; * since we&squot;re testing unlink paths, we can&squot;t.&n;&t;&t; */
+multiline_comment|/* we can&squot;t unlink urbs while they&squot;re completing.&n;&t;&t; * or if they&squot;ve completed, and we haven&squot;t resubmitted.&n;&t;&t; * &quot;normal&quot; drivers would prevent resubmission, but&n;&t;&t; * since we&squot;re testing unlink paths, we can&squot;t.&n;&t;&t; */
 id|dev_dbg
 (paren
 op_amp
