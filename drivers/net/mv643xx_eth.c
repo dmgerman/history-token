@@ -14,12 +14,10 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &quot;mv643xx_eth.h&quot;
 multiline_comment|/*&n; * The first part is the high level driver of the gigE ethernet ports. &n; */
 multiline_comment|/* Constants */
-DECL|macro|EXTRA_BYTES
-mdefine_line|#define EXTRA_BYTES 32
 DECL|macro|WRAP
-mdefine_line|#define WRAP       ETH_HLEN + 2 + 4 + 16
-DECL|macro|BUFFER_MTU
-mdefine_line|#define BUFFER_MTU dev-&gt;mtu + WRAP
+mdefine_line|#define WRAP&t;&t;&t;&t;ETH_HLEN + 2 + 4
+DECL|macro|RX_SKB_SIZE
+mdefine_line|#define RX_SKB_SIZE&t;&t;&t;((dev-&gt;mtu + WRAP + 7) &amp; ~0x7)
 DECL|macro|INT_CAUSE_UNMASK_ALL
 mdefine_line|#define INT_CAUSE_UNMASK_ALL&t;&t;0x0007ffff
 DECL|macro|INT_CAUSE_UNMASK_ALL_EXT
@@ -378,17 +376,12 @@ l_int|5
 )paren
 )paren
 (brace
-multiline_comment|/* The +8 for buffer allignment and another 32 byte extra */
 id|skb
 op_assign
 id|dev_alloc_skb
 c_func
 (paren
-id|BUFFER_MTU
-op_plus
-l_int|8
-op_plus
-id|EXTRA_BYTES
+id|RX_SKB_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -397,7 +390,6 @@ c_cond
 op_logical_neg
 id|skb
 )paren
-multiline_comment|/* Better luck next time */
 r_break
 suffix:semicolon
 id|mp-&gt;rx_ring_skbs
@@ -409,36 +401,8 @@ id|ETH_RX_ENABLE_INTERRUPT
 suffix:semicolon
 id|pkt_info.byte_cnt
 op_assign
-id|dev-&gt;mtu
-op_plus
-id|ETH_HLEN
-op_plus
-l_int|4
-op_plus
-l_int|2
-op_plus
-id|EXTRA_BYTES
+id|RX_SKB_SIZE
 suffix:semicolon
-multiline_comment|/* Allign buffer to 8 bytes */
-r_if
-c_cond
-(paren
-id|pkt_info.byte_cnt
-op_amp
-op_complement
-l_int|0x7
-)paren
-(brace
-id|pkt_info.byte_cnt
-op_and_assign
-op_complement
-l_int|0x7
-suffix:semicolon
-id|pkt_info.byte_cnt
-op_add_assign
-l_int|8
-suffix:semicolon
-)brace
 id|pkt_info.buf_ptr
 op_assign
 id|dma_map_single
@@ -448,15 +412,7 @@ l_int|NULL
 comma
 id|skb-&gt;data
 comma
-id|dev-&gt;mtu
-op_plus
-id|ETH_HLEN
-op_plus
-l_int|4
-op_plus
-l_int|2
-op_plus
-id|EXTRA_BYTES
+id|RX_SKB_SIZE
 comma
 id|DMA_FROM_DEVICE
 )paren
