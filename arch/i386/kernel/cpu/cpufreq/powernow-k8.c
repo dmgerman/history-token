@@ -3096,7 +3096,12 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;changing to fid 0x%x, vid 0x%x&bslash;n&quot;
+l_string|&quot;cpu %d, changing to fid 0x%x, vid 0x%x&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
 id|fid
 comma
@@ -3109,7 +3114,7 @@ id|data-&gt;cpu
 suffix:semicolon
 id|freqs.old
 op_assign
-id|find_freq_from_fid
+id|find_khz_freq_from_fid
 c_func
 (paren
 id|data-&gt;currfid
@@ -3119,7 +3124,7 @@ id|freqs
 dot
 r_new
 op_assign
-id|find_freq_from_fid
+id|find_khz_freq_from_fid
 c_func
 (paren
 id|fid
@@ -3164,7 +3169,7 @@ id|freqs
 dot
 r_new
 op_assign
-id|find_freq_from_fid
+id|find_khz_freq_from_fid
 c_func
 (paren
 id|data-&gt;currfid
