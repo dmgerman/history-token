@@ -5174,15 +5174,14 @@ l_int|0
 op_assign
 id|RELEASE
 suffix:semicolon
-singleline_comment|// allocate with wait = true, interruptible = false 
 id|SCpnt
 op_assign
-id|scsi_allocate_device
+id|scsi_getset_command
 c_func
 (paren
 id|ScsiDev
 comma
-l_int|1
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 (brace
@@ -5241,7 +5240,7 @@ id|SDpnt
 op_assign
 id|SCpnt-&gt;device
 suffix:semicolon
-id|scsi_release_command
+id|scsi_put_command
 c_func
 (paren
 id|SCpnt

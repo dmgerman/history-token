@@ -3133,7 +3133,7 @@ id|ahd_softc
 op_star
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 multiline_comment|/*&n;&t; * Save the callback on completion function.&n;&t; */
 id|cmd-&gt;scsi_done
@@ -3212,11 +3212,11 @@ c_func
 (paren
 id|ahd
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 multiline_comment|/*alloc*/
 id|TRUE
@@ -4203,7 +4203,7 @@ id|ahd_softc
 op_star
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 macro_line|#if NOTYET
 r_int
@@ -4339,7 +4339,7 @@ id|ahd_softc
 op_star
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 macro_line|#ifdef AHD_DEBUG
 r_if
@@ -4456,7 +4456,7 @@ id|ahd_softc
 op_star
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 macro_line|#ifdef AHD_DEBUG
 r_if
@@ -4501,7 +4501,7 @@ c_func
 (paren
 id|ahd
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 op_plus
 l_char|&squot;A&squot;
 comma
@@ -4964,7 +4964,7 @@ suffix:semicolon
 )brace
 multiline_comment|/******************************** Macros **************************************/
 DECL|macro|BUILD_SCSIID
-mdefine_line|#define BUILD_SCSIID(ahd, cmd)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((((cmd)-&gt;target &lt;&lt; TID_SHIFT) &amp; TID) | (ahd)-&gt;our_id)
+mdefine_line|#define BUILD_SCSIID(ahd, cmd)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((((cmd)-&gt;device-&gt;id &lt;&lt; TID_SHIFT) &amp; TID) | (ahd)-&gt;our_id)
 multiline_comment|/******************************** Bus DMA *************************************/
 r_int
 DECL|function|ahd_dma_tag_create
@@ -14856,7 +14856,7 @@ id|ahd_softc
 op_star
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 )paren
 suffix:semicolon
 id|ahd_lock
@@ -14958,7 +14958,7 @@ c_func
 (paren
 id|ahd
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 op_plus
 l_char|&squot;A&squot;
 comma
@@ -15154,7 +15154,7 @@ id|ahd_softc
 op_star
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 )paren
 suffix:semicolon
 multiline_comment|/* Delete the DV timer before it goes off! */
@@ -15183,9 +15183,9 @@ c_func
 id|ahd
 )paren
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
 id|cmd-&gt;result
 )paren
@@ -15950,7 +15950,7 @@ l_char|&squot;A&squot;
 comma
 id|ahd-&gt;our_id
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
 op_amp
 id|tstate
@@ -15992,9 +15992,9 @@ op_assign
 id|AHD_BUILD_COL_IDX
 c_func
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 )brace
@@ -16086,7 +16086,7 @@ id|cmd
 suffix:semicolon
 id|hscb-&gt;lun
 op_assign
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 suffix:semicolon
 id|mask
 op_assign
@@ -18836,11 +18836,11 @@ c_func
 (paren
 id|ahd
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 multiline_comment|/*alloc*/
 id|FALSE
