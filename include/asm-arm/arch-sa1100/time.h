@@ -265,7 +265,7 @@ id|set_rtc
 op_assign
 id|sa1100_set_rtc
 suffix:semicolon
-id|tv.tv.nsec
+id|tv.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
