@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
-macro_line|#include &lt;asm/rmap.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 multiline_comment|/* HugePTE layout:&n; *&n; * 31 30 ... 15 14 13 12 10 9  8  7   6    5    4    3    2    1    0&n; * PFN&gt;&gt;12..... -  -  -  -  -  -  HASH_IX....   2ND  HASH RW   -    HG=1&n; */
 DECL|macro|HUGEPTE_SHIFT
@@ -930,10 +929,10 @@ c_func
 id|pmd
 )paren
 suffix:semicolon
-id|pgtable_remove_rmap
+id|dec_page_state
 c_func
 (paren
-id|page
+id|nr_page_table_pages
 )paren
 suffix:semicolon
 id|pte_free_tlb

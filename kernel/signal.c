@@ -9389,23 +9389,11 @@ r_struct
 id|sigqueue
 )paren
 comma
-l_int|0
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sigqueue_cachep
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;signals_init(): cannot create sigqueue SLAB cache&quot;
 )paren
 suffix:semicolon
 )brace

@@ -203,12 +203,6 @@ macro_line|# define __SUN3_PAGE_NOCACHE&t;0
 macro_line|#endif
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(MMU_IS_SUN3&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; ? (__pgprot(pgprot_val(prot) | __SUN3_PAGE_NOCACHE))&t;&t;&t;&bslash;&n;&t; : ((MMU_IS_851 || MMU_IS_030)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    ? (__pgprot(pgprot_val(prot) | _PAGE_NOCACHE030))&t;&t;&t;&bslash;&n;&t;    : (MMU_IS_040 || MMU_IS_060)&t;&t;&t;&t;&t;&bslash;&n;&t;    ? (__pgprot((pgprot_val(prot) &amp; _CACHEMASK040) | _PAGE_NOCACHE_S))&t;&bslash;&n;&t;    : (prot)))
-DECL|typedef|pte_addr_t
-r_typedef
-id|pte_t
-op_star
-id|pte_addr_t
-suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init

@@ -3287,22 +3287,11 @@ id|radix_tree_node
 comma
 l_int|0
 comma
-l_int|0
+id|SLAB_PANIC
 comma
 id|radix_tree_node_ctor
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|radix_tree_node_cachep
-)paren
-id|panic
-(paren
-l_string|&quot;Failed to create radix_tree_node cache&bslash;n&quot;
 )paren
 suffix:semicolon
 id|radix_tree_init_maxindex

@@ -15,6 +15,10 @@ DECL|macro|flush_dcache_range
 mdefine_line|#define flush_dcache_range(start,len)&t;&t;do { } while (0)
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
+DECL|macro|flush_dcache_mmap_lock
+mdefine_line|#define flush_dcache_mmap_lock(mapping)&t;&t;do { } while (0)
+DECL|macro|flush_dcache_mmap_unlock
+mdefine_line|#define flush_dcache_mmap_unlock(mapping)&t;do { } while (0)
 DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start,len)&t;&t;__flush_cache_all()
 DECL|macro|flush_icache_page

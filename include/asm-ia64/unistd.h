@@ -469,12 +469,12 @@ DECL|macro|__NR_fstatfs64
 mdefine_line|#define __NR_fstatfs64&t;&t;&t;1257
 DECL|macro|__NR_statfs64
 mdefine_line|#define __NR_statfs64&t;&t;&t;1258
-DECL|macro|__NR_reserved1
-mdefine_line|#define __NR_reserved1&t;&t;&t;1259&t;/* reserved for NUMA interface */
-DECL|macro|__NR_reserved2
-mdefine_line|#define __NR_reserved2&t;&t;&t;1260&t;/* reserved for NUMA interface */
-DECL|macro|__NR_reserved3
-mdefine_line|#define __NR_reserved3&t;&t;&t;1261&t;/* reserved for NUMA interface */
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;&t;1259
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;&t;1260
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;&t;1261
 DECL|macro|__NR_mq_open
 mdefine_line|#define __NR_mq_open&t;&t;&t;1262
 DECL|macro|__NR_mq_unlink
