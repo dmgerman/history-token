@@ -3306,9 +3306,6 @@ id|len
 suffix:semicolon
 r_int
 id|rc
-op_assign
-op_minus
-id|EINVAL
 suffix:semicolon
 id|args
 op_assign
@@ -3332,6 +3329,11 @@ id|rc
 )paren
 r_goto
 id|out
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* Convert the user. */
 id|usrdatum
