@@ -6712,6 +6712,12 @@ r_return
 op_minus
 id|ENOSYS
 suffix:semicolon
+id|invalidate_buffers
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 id|cdo
 op_member_access_from_pointer

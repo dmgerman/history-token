@@ -1450,12 +1450,6 @@ op_star
 id|cdi
 )paren
 (brace
-id|invalidate_buffers
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
