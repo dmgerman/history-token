@@ -4058,6 +4058,24 @@ op_assign
 id|_PREP_Motorola
 suffix:semicolon
 )brace
+multiline_comment|/* Switch off all residual data processing if the user requests it */
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|cmd_line
+comma
+l_string|&quot;noresidual&quot;
+)paren
+op_ne
+l_int|NULL
+)paren
+id|res
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Initialise progress early to get maximum benefit */
 id|prep_set_bat
 c_func
