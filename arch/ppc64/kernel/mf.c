@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -136,11 +137,10 @@ DECL|struct|VspRspData
 r_struct
 id|VspRspData
 (brace
-DECL|member|sem
+DECL|member|com
 r_struct
-id|semaphore
-op_star
-id|sem
+id|completion
+id|com
 suffix:semicolon
 DECL|member|response
 r_struct
@@ -885,12 +885,6 @@ r_struct
 id|VspRspData
 id|response
 suffix:semicolon
-id|DECLARE_MUTEX_LOCKED
-c_func
-(paren
-id|Semaphore
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -902,10 +896,12 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|response.sem
-op_assign
+id|init_completion
+c_func
+(paren
 op_amp
-id|Semaphore
+id|response.com
+)paren
 suffix:semicolon
 id|response.response
 op_assign
@@ -992,11 +988,11 @@ id|rc
 op_eq
 l_int|0
 )paren
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|Semaphore
+id|response.com
 )paren
 suffix:semicolon
 r_return
@@ -1730,17 +1726,11 @@ id|event-&gt;data.vsp_cmd
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rsp-&gt;sem
-op_ne
-l_int|NULL
-)paren
-id|up
+id|complete
 c_func
 (paren
-id|rsp-&gt;sem
+op_amp
+id|rsp-&gt;com
 )paren
 suffix:semicolon
 )brace
@@ -3802,11 +3792,10 @@ DECL|struct|RtcTimeData
 r_struct
 id|RtcTimeData
 (brace
-DECL|member|sem
+DECL|member|com
 r_struct
-id|semaphore
-op_star
-id|sem
+id|completion
+id|com
 suffix:semicolon
 DECL|member|xCeMsg
 r_struct
@@ -3866,10 +3855,11 @@ id|rtc-&gt;xRc
 op_assign
 l_int|0
 suffix:semicolon
-id|up
+id|complete
 c_func
 (paren
-id|rtc-&gt;sem
+op_amp
+id|rtc-&gt;com
 )paren
 suffix:semicolon
 )brace
@@ -4120,12 +4110,6 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-id|DECLARE_MUTEX_LOCKED
-c_func
-(paren
-id|Semaphore
-)paren
-suffix:semicolon
 id|memset
 c_func
 (paren
@@ -4154,10 +4138,12 @@ id|rtcData
 )paren
 )paren
 suffix:semicolon
-id|rtcData.sem
-op_assign
+id|init_completion
+c_func
+(paren
 op_amp
-id|Semaphore
+id|rtcData.com
+)paren
 suffix:semicolon
 id|ceComplete.handler
 op_assign
@@ -4192,11 +4178,11 @@ op_eq
 l_int|0
 )paren
 (brace
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|Semaphore
+id|rtcData.com
 )paren
 suffix:semicolon
 r_if
