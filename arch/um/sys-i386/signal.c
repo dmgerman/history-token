@@ -1271,16 +1271,16 @@ id|frame-&gt;extramask
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This is movl $,%eax ; int $0x80&n;&t; *&n;&t; * WE DO NOT USE IT ANY MORE! It&squot;s only left here for historical&n;&t; * reasons and because gdb uses it as a signature to notice&n;&t; * signal handler stack frames.&n;&t; */
+multiline_comment|/*&n;&t; * This is popl %eax ; movl $,%eax ; int $0x80&n;&t; *&n;&t; * WE DO NOT USE IT ANY MORE! It&squot;s only left here for historical&n;&t; * reasons and because gdb uses it as a signature to notice&n;&t; * signal handler stack frames.&n;&t; */
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
-l_int|0xb8
+l_int|0xb858
 comma
 (paren
-r_char
+r_int
 id|__user
 op_star
 )paren
@@ -1296,7 +1296,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|__NR_rt_sigreturn
+id|__NR_sigreturn
 comma
 (paren
 r_int
@@ -1306,7 +1306,7 @@ op_star
 (paren
 id|frame-&gt;retcode
 op_plus
-l_int|1
+l_int|2
 )paren
 )paren
 suffix:semicolon
@@ -1325,7 +1325,7 @@ op_star
 (paren
 id|frame-&gt;retcode
 op_plus
-l_int|5
+l_int|6
 )paren
 )paren
 suffix:semicolon
