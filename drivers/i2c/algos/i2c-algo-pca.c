@@ -558,6 +558,9 @@ suffix:semicolon
 r_int
 id|state
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 id|state
 op_assign
 id|pca_status
@@ -750,6 +753,11 @@ id|curmsg
 op_assign
 l_int|0
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EREMOTEIO
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -896,9 +904,8 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EREMOTEIO
+r_goto
+id|out
 suffix:semicolon
 r_case
 l_int|0x40
@@ -1005,9 +1012,8 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EREMOTEIO
+r_goto
+id|out
 suffix:semicolon
 r_case
 l_int|0x30
@@ -1019,9 +1025,8 @@ c_func
 l_string|&quot;NOT ACK received after data byte&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EREMOTEIO
+r_goto
+id|out
 suffix:semicolon
 r_case
 l_int|0x38
@@ -1033,9 +1038,8 @@ c_func
 l_string|&quot;Arbitration lost&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EREMOTEIO
+r_goto
+id|out
 suffix:semicolon
 r_case
 l_int|0x58
@@ -1112,9 +1116,8 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EREMOTEIO
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_break
@@ -1135,9 +1138,8 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EREMOTEIO
+r_goto
+id|out
 suffix:semicolon
 r_case
 l_int|0x90
@@ -1155,9 +1157,8 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EREMOTEIO
+r_goto
+id|out
 suffix:semicolon
 r_case
 l_int|0x00
@@ -1175,9 +1176,8 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EREMOTEIO
+r_goto
+id|out
 suffix:semicolon
 r_default
 suffix:colon
@@ -1195,12 +1195,20 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|ret
+op_assign
+id|curmsg
+suffix:semicolon
+id|out
+suffix:colon
 id|DEB1
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;}}} transfered %d messages. &quot;
+l_string|&quot;}}} transfered %d/%d messages. &quot;
 l_string|&quot;status is %#04x. control is %#04x&bslash;n&quot;
+comma
+id|curmsg
 comma
 id|num
 comma
@@ -1218,7 +1226,7 @@ id|adap
 )paren
 suffix:semicolon
 r_return
-id|curmsg
+id|ret
 suffix:semicolon
 )brace
 DECL|function|pca_func
