@@ -342,13 +342,13 @@ id|uhci_td
 op_star
 id|td
 comma
-id|__u32
+id|u32
 id|status
 comma
-id|__u32
+id|u32
 id|token
 comma
-id|__u32
+id|u32
 id|buffer
 )paren
 (brace
@@ -458,7 +458,7 @@ id|td-&gt;link
 op_assign
 id|ltd-&gt;link
 suffix:semicolon
-id|mb
+id|wmb
 c_func
 (paren
 )paren
@@ -481,7 +481,7 @@ id|uhci-&gt;fl-&gt;frame
 id|framenum
 )braket
 suffix:semicolon
-id|mb
+id|wmb
 c_func
 (paren
 )paren
@@ -648,7 +648,7 @@ op_assign
 id|td-&gt;link
 suffix:semicolon
 )brace
-id|mb
+id|wmb
 c_func
 (paren
 )paren
@@ -1187,6 +1187,16 @@ c_func
 suffix:semicolon
 multiline_comment|/* Ordering is important */
 multiline_comment|/*&n;&t; * Patch QHs for previous endpoint&squot;s queued URBs?  HC goes&n;&t; * here next, not to the next skelqh it now points to.&n;&t; *&n;&t; *    lqh --&gt; td ... --&gt; qh ... --&gt; td --&gt; qh ... --&gt; td&n;&t; *     |                 |                 |&n;&t; *     v                 v                 v&n;&t; *     +&lt;----------------+-----------------+&n;&t; *     v&n;&t; *    newqh --&gt; td ... --&gt; td&n;&t; *     |&n;&t; *     v&n;&t; *    ...&n;&t; *&n;&t; * The HC could see (and use!) any of these as we write them.&n;&t; */
+id|lqh-&gt;link
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|urbp-&gt;qh-&gt;dma_handle
+)paren
+op_or
+id|UHCI_PTR_QH
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1219,26 +1229,10 @@ id|queue_list
 suffix:semicolon
 id|turbp-&gt;qh-&gt;link
 op_assign
-id|cpu_to_le32
-c_func
-(paren
-id|urbp-&gt;qh-&gt;dma_handle
-)paren
-op_or
-id|UHCI_PTR_QH
-suffix:semicolon
-)brace
-)brace
 id|lqh-&gt;link
-op_assign
-id|cpu_to_le32
-c_func
-(paren
-id|urbp-&gt;qh-&gt;dma_handle
-)paren
-op_or
-id|UHCI_PTR_QH
 suffix:semicolon
+)brace
+)brace
 id|list_add_tail
 c_func
 (paren
@@ -1273,7 +1267,7 @@ id|uhci_qh
 op_star
 id|pqh
 suffix:semicolon
-id|__u32
+id|u32
 id|newlink
 suffix:semicolon
 r_if
@@ -1433,7 +1427,7 @@ id|newlink
 suffix:semicolon
 )brace
 )brace
-id|mb
+id|wmb
 c_func
 (paren
 )paren
@@ -1807,7 +1801,7 @@ id|urbp-&gt;qh-&gt;link
 op_assign
 id|eurbp-&gt;qh-&gt;link
 suffix:semicolon
-id|mb
+id|wmb
 c_func
 (paren
 )paren
