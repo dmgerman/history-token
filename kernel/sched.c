@@ -15482,6 +15482,9 @@ r_case
 id|CPU_UP_CANCELED
 suffix:colon
 r_case
+id|CPU_DOWN_FAILED
+suffix:colon
+r_case
 id|CPU_ONLINE
 suffix:colon
 r_case
