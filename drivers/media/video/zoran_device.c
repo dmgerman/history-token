@@ -3394,8 +3394,6 @@ r_int
 id|res
 comma
 id|noerr
-suffix:semicolon
-id|noerr
 op_assign
 l_int|0
 suffix:semicolon
@@ -6533,9 +6531,6 @@ r_int
 id|set_master
 )paren
 (brace
-id|u16
-id|command
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6551,6 +6546,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|u16
+id|command
+suffix:semicolon
 id|pci_read_config_word
 c_func
 (paren
