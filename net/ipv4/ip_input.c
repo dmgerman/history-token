@@ -442,6 +442,12 @@ op_logical_neg
 id|raw_sk
 )paren
 (brace
+id|IP_INC_STATS_BH
+c_func
+(paren
+id|IpInUnknownProtos
+)paren
+suffix:semicolon
 id|icmp_send
 c_func
 (paren
