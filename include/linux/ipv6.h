@@ -439,6 +439,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|IP6CB
 mdefine_line|#define IP6CB(skb)&t;((struct inet6_skb_parm*)((skb)-&gt;cb))
+multiline_comment|/**&n; * struct ipv6_pinfo - ipv6 private area&n; *&n; * In the struct sock hierarchy (tcp6_sock, upd6_sock, etc)&n; * this _must_ be the last member, so that inet6_sk_generic&n; * is able to calculate its offset from the base struct sock&n; * by using the struct proto-&gt;slab_obj_size member. -acme&n; */
 DECL|struct|ipv6_pinfo
 r_struct
 id|ipv6_pinfo
@@ -794,16 +795,6 @@ op_member_access_from_pointer
 id|raw6
 suffix:semicolon
 )brace
-DECL|struct|ipv6_sk_offset
-r_struct
-id|ipv6_sk_offset
-(brace
-DECL|member|offset
-r_int
-id|offset
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 DECL|macro|__ipv6_only_sock
 mdefine_line|#define __ipv6_only_sock(sk)&t;(inet6_sk(sk)-&gt;ipv6only)
