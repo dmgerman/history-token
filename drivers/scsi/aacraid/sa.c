@@ -1067,9 +1067,8 @@ id|KERN_WARNING
 l_string|&quot;aacraid: unable to map ARM.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|error_iounmap
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Check to see if the board failed any self tests.&n;&t; */
@@ -1098,9 +1097,8 @@ comma
 id|instance
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|error_iounmap
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Check to see if the board panic&squot;d while booting.&n;&t; */
@@ -1129,9 +1127,8 @@ comma
 id|instance
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|error_iounmap
 suffix:semicolon
 )brace
 id|start
@@ -1201,9 +1198,8 @@ id|status
 )paren
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|error_iounmap
 suffix:semicolon
 )brace
 id|set_current_state
@@ -1264,9 +1260,8 @@ comma
 id|instance
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|error_iounmap
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Fill in the function dispatch table.&n;&t; */
@@ -1314,9 +1309,8 @@ op_eq
 l_int|NULL
 )paren
 (brace
-r_return
-op_minus
-l_int|1
+r_goto
+id|error_irq
 suffix:semicolon
 )brace
 id|dprintk
@@ -1365,9 +1359,8 @@ id|KERN_ERR
 l_string|&quot;aacraid: Unable to create command thread.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|error_kfree
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Tell the adapter that all is configure, and it can start &n;&t; *&t;accepting requests&n;&t; */
@@ -1395,6 +1388,40 @@ l_string|&quot;STARTED&bslash;n&quot;
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|error_kfree
+suffix:colon
+id|kfree
+c_func
+(paren
+id|dev-&gt;queues
+)paren
+suffix:semicolon
+id|error_irq
+suffix:colon
+id|free_irq
+c_func
+(paren
+id|dev-&gt;scsi_host_ptr-&gt;irq
+comma
+(paren
+r_void
+op_star
+)paren
+id|dev
+)paren
+suffix:semicolon
+id|error_iounmap
+suffix:colon
+id|iounmap
+c_func
+(paren
+id|dev-&gt;regs.sa
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 eof
