@@ -33,14 +33,6 @@ macro_line|#ifdef CONFIG_8139TOO_PIO
 DECL|macro|USE_IO_OPS
 mdefine_line|#define USE_IO_OPS 1
 macro_line|#endif
-multiline_comment|/* use a 16K rx ring buffer instead of the default 64K */
-macro_line|#if defined(CONFIG_SH_DREAMCAST) || defined(CONFIG_EMBEDDED)
-DECL|macro|USE_BUF16K
-mdefine_line|#define USE_BUF16K 1
-macro_line|#else
-DECL|macro|USE_BUF64K
-mdefine_line|#define USE_BUF64K 1
-macro_line|#endif
 multiline_comment|/* define to 1 to enable copious debugging info */
 DECL|macro|RTL8139_DEBUG
 macro_line|#undef RTL8139_DEBUG
@@ -151,25 +143,14 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* Size of the in-memory receive ring. */
-multiline_comment|/* 0==8K, 1==16K, 2==32K, 3==64K */
-macro_line|#ifdef USE_BUF16K
-DECL|macro|RX_BUF_LEN_IDX
-mdefine_line|#define RX_BUF_LEN_IDX&t;1
-macro_line|#elif defined(USE_BUF32K)
-DECL|macro|RX_BUF_LEN_IDX
-mdefine_line|#define RX_BUF_LEN_IDX&t;2
-macro_line|#else
-DECL|macro|RX_BUF_LEN_IDX
-mdefine_line|#define RX_BUF_LEN_IDX&t;3
-macro_line|#endif
+multiline_comment|/* Ring size is now a config option */
 DECL|macro|RX_BUF_LEN
-mdefine_line|#define RX_BUF_LEN&t;(8192 &lt;&lt; RX_BUF_LEN_IDX)
+mdefine_line|#define RX_BUF_LEN&t;(8192 &lt;&lt; CONFIG_8139_RXBUF_IDX)
 DECL|macro|RX_BUF_PAD
 mdefine_line|#define RX_BUF_PAD&t;16
 DECL|macro|RX_BUF_WRAP_PAD
 mdefine_line|#define RX_BUF_WRAP_PAD 2048 /* spare padding to handle lack of packet wrap */
-macro_line|#ifdef USE_BUF64K
+macro_line|#if RX_BUF_LEN == 65536
 DECL|macro|RX_BUF_TOT_LEN
 mdefine_line|#define RX_BUF_TOT_LEN&t;RX_BUF_LEN
 macro_line|#else
@@ -2605,7 +2586,31 @@ id|TxOK
 op_or
 id|RxErr
 suffix:semicolon
-macro_line|#ifdef USE_BUF16K 
+macro_line|#if CONFIG_8139_RXBUF_IDX == 0
+DECL|variable|rtl8139_rx_config
+r_static
+r_const
+r_int
+r_int
+id|rtl8139_rx_config
+op_assign
+id|RxCfgRcv8K
+op_or
+id|RxNoWrap
+op_or
+(paren
+id|RX_FIFO_THRESH
+op_lshift
+id|RxCfgFIFOShift
+)paren
+op_or
+(paren
+id|RX_DMA_BURST
+op_lshift
+id|RxCfgDMAShift
+)paren
+suffix:semicolon
+macro_line|#elif CONFIG_8139_RXBUF_IDX == 1
 DECL|variable|rtl8139_rx_config
 r_static
 r_const
@@ -2629,7 +2634,7 @@ op_lshift
 id|RxCfgDMAShift
 )paren
 suffix:semicolon
-macro_line|#elif defined(USE_BUF32K)
+macro_line|#elif CONFIG_8139_RXBUF_IDX == 2
 DECL|variable|rtl8139_rx_config
 r_static
 r_const
@@ -2653,7 +2658,7 @@ op_lshift
 id|RxCfgDMAShift
 )paren
 suffix:semicolon
-macro_line|#elif defined(USE_BUF64K)
+macro_line|#elif CONFIG_8139_RXBUF_IDX == 3
 DECL|variable|rtl8139_rx_config
 r_static
 r_const
@@ -2676,7 +2681,7 @@ id|RxCfgDMAShift
 )paren
 suffix:semicolon
 macro_line|#else
-macro_line|#error &quot;Need to define receive buffer window&quot;
+macro_line|#error &quot;Invalid configuration for 8139_RXBUF_IDX&quot;
 macro_line|#endif
 DECL|variable|rtl8139_tx_config
 r_static
@@ -8027,6 +8032,7 @@ id|dev
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#if CONFIG_8139_RXBUF_IDX == 3
 DECL|function|wrap_copy
 r_static
 id|__inline__
@@ -8053,7 +8059,6 @@ r_int
 id|size
 )paren
 (brace
-macro_line|#ifdef USE_BUF64K
 id|u32
 id|left
 op_assign
@@ -8097,7 +8102,6 @@ id|left
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 id|memcpy
 c_func
 (paren
@@ -8111,6 +8115,7 @@ id|size
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|rtl8139_rx
 r_static
 r_int
@@ -8142,7 +8147,6 @@ id|received
 op_assign
 l_int|0
 suffix:semicolon
-r_const
 r_int
 r_char
 op_star
@@ -8439,6 +8443,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* 16 byte align the IP fields. */
+macro_line|#if CONFIG_8139_RXBUF_IDX == 3
 id|wrap_copy
 c_func
 (paren
@@ -8453,6 +8458,25 @@ comma
 id|pkt_size
 )paren
 suffix:semicolon
+macro_line|#else
+id|eth_copy_and_sum
+(paren
+id|skb
+comma
+op_amp
+id|rx_ring
+(braket
+id|ring_offset
+op_plus
+l_int|4
+)braket
+comma
+id|pkt_size
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
 id|skb_put
 (paren
 id|skb
