@@ -10031,6 +10031,36 @@ id|START_ARRAY
 )paren
 (brace
 multiline_comment|/* START_ARRAY doesn&squot;t need to lock the array as autostart_array&n;&t;&t; * does the locking, and it could even be a different array&n;&t;&t; */
+r_static
+r_int
+id|cnt
+op_assign
+l_int|3
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cnt
+OG
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;md: %s(pid %d) used deprecated START_ARRAY ioctl. &quot;
+l_string|&quot;This will not be supported beyond 2.6&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|current-&gt;pid
+)paren
+suffix:semicolon
+id|cnt
+op_decrement
+suffix:semicolon
+)brace
 id|err
 op_assign
 id|autostart_array
