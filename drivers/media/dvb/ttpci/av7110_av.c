@@ -2389,6 +2389,7 @@ id|av7110
 comma
 r_const
 id|u8
+id|__user
 op_star
 id|buf
 comma
@@ -4573,6 +4574,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -4786,6 +4788,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -4909,6 +4912,7 @@ op_star
 id|av7110
 comma
 id|u8
+id|__user
 op_star
 id|buf
 comma

@@ -126,11 +126,7 @@ id|_IOC_NONE
 suffix:colon
 id|parg
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|arg
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -216,6 +212,7 @@ id|parg
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -300,6 +297,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

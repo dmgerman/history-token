@@ -2060,6 +2060,7 @@ id|fmt2-&gt;fmt.win.clips
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|win-&gt;clips

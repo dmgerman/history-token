@@ -196,6 +196,7 @@ id|video_still_picture
 (brace
 DECL|member|iFrame
 r_char
+id|__user
 op_star
 id|iFrame
 suffix:semicolon

@@ -3441,6 +3441,7 @@ op_star
 id|q
 comma
 r_char
+id|__user
 op_star
 id|data
 comma
@@ -3652,6 +3653,7 @@ op_star
 id|q
 comma
 r_char
+id|__user
 op_star
 id|data
 comma
@@ -4352,6 +4354,7 @@ op_star
 id|q
 comma
 r_char
+id|__user
 op_star
 id|data
 comma
