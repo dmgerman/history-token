@@ -4807,7 +4807,7 @@ id|ANEG_CFG_HD
 )paren
 id|ap-&gt;flags
 op_or_assign
-id|MR_LP_ADV_FULL_DUPLEX
+id|MR_LP_ADV_HALF_DUPLEX
 suffix:semicolon
 r_if
 c_cond
