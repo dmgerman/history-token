@@ -7844,10 +7844,11 @@ dot
 id|base
 )paren
 comma
+(paren
+op_minus
 id|le16_to_cpu
 c_func
 (paren
-op_minus
 id|lp-&gt;rx_ring
 (braket
 id|i
@@ -7855,6 +7856,9 @@ id|i
 dot
 id|buf_length
 )paren
+)paren
+op_amp
+l_int|0xffff
 comma
 id|le32_to_cpu
 c_func
@@ -7870,9 +7874,6 @@ comma
 id|le16_to_cpu
 c_func
 (paren
-(paren
-r_int
-)paren
 id|lp-&gt;rx_ring
 (braket
 id|i
@@ -7921,10 +7922,11 @@ dot
 id|base
 )paren
 comma
+(paren
+op_minus
 id|le16_to_cpu
 c_func
 (paren
-op_minus
 id|lp-&gt;tx_ring
 (braket
 id|i
@@ -7932,6 +7934,9 @@ id|i
 dot
 id|length
 )paren
+)paren
+op_amp
+l_int|0xffff
 comma
 id|le32_to_cpu
 c_func
@@ -7947,9 +7952,6 @@ comma
 id|le16_to_cpu
 c_func
 (paren
-(paren
-r_int
-)paren
 id|lp-&gt;tx_ring
 (braket
 id|i
