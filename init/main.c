@@ -404,14 +404,6 @@ comma
 op_star
 id|panic_param
 suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;profile=&quot;
-comma
-id|profile_setup
-)paren
-suffix:semicolon
 DECL|function|obsolete_checksetup
 r_static
 r_int

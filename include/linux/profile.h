@@ -17,17 +17,6 @@ suffix:semicolon
 r_struct
 id|pt_regs
 suffix:semicolon
-multiline_comment|/* parse command line */
-r_int
-id|__init
-id|profile_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-suffix:semicolon
 multiline_comment|/* init basic kernel profiler */
 r_void
 id|__init
@@ -72,30 +61,6 @@ macro_line|#else
 DECL|macro|create_prof_cpu_mask
 mdefine_line|#define create_prof_cpu_mask(x)&t;&t;&t;do { (void)(x); } while (0)
 macro_line|#endif
-r_extern
-r_int
-r_int
-op_star
-id|prof_buffer
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_len
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_shift
-suffix:semicolon
-r_extern
-r_int
-id|prof_on
-suffix:semicolon
-r_extern
-id|cpumask_t
-id|prof_cpu_mask
-suffix:semicolon
 DECL|enum|profile_type
 r_enum
 id|profile_type
