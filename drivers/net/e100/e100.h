@@ -20,13 +20,12 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#ifdef SIOCETHTOOL
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -72,6 +71,15 @@ DECL|macro|E100_MAX_SCB_WAIT
 mdefine_line|#define E100_MAX_SCB_WAIT&t;100&t;/* Max udelays in wait_scb */
 DECL|macro|E100_MAX_CU_IDLE_WAIT
 mdefine_line|#define E100_MAX_CU_IDLE_WAIT&t;50&t;/* Max udelays in wait_cus_idle */
+multiline_comment|/* HWI feature related constant */
+DECL|macro|HWI_MAX_LOOP
+mdefine_line|#define HWI_MAX_LOOP                    100
+DECL|macro|MAX_SAME_RESULTS
+mdefine_line|#define MAX_SAME_RESULTS&t;&t;3
+DECL|macro|HWI_REGISTER_GRANULARITY
+mdefine_line|#define HWI_REGISTER_GRANULARITY        80&t;/* register granularity = 80 Cm */
+DECL|macro|HWI_NEAR_END_BOUNDARY
+mdefine_line|#define HWI_NEAR_END_BOUNDARY           1000&t;/* Near end is defined as &lt; 10 meters */
 multiline_comment|/* CPUSAVER_BUNDLE_MAX: Sets the maximum number of frames that will be bundled.&n; * In some situations, such as the TCP windowing algorithm, it may be&n; * better to limit the growth of the bundle size than let it go as&n; * high as it can, because that could cause too much added latency.&n; * The default is six, because this is the number of packets in the&n; * default TCP window size.  A value of 1 would make CPUSaver indicate&n; * an interrupt for every frame received.  If you do not want to put&n; * a limit on the bundle size, set this value to xFFFF.&n; */
 DECL|macro|E100_DEFAULT_CPUSAVER_BUNDLE_MAX
 mdefine_line|#define E100_DEFAULT_CPUSAVER_BUNDLE_MAX&t;6
@@ -651,6 +659,8 @@ DECL|macro|DF_SPEED_FORCED
 mdefine_line|#define DF_SPEED_FORCED    0x00000040&t;/* set if speed is forced */
 DECL|macro|LED_IS_ON
 mdefine_line|#define LED_IS_ON&t;   0x00000080&t;/* LED is turned ON by the driver */
+DECL|macro|DF_LINK_FC_TX_ONLY
+mdefine_line|#define DF_LINK_FC_TX_ONLY 0x00000100&t;/* Received PAUSE frames are honored*/
 DECL|typedef|net_dev_stats_t
 r_typedef
 r_struct
@@ -1612,17 +1622,8 @@ id|__packed__
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef MAX_SKB_FRAGS
-DECL|macro|E100_ZEROCOPY
-mdefine_line|#define E100_ZEROCOPY
-macro_line|#endif
-macro_line|#ifdef E100_ZEROCOPY
 DECL|macro|E100_TBD_ARRAY_SIZE
 mdefine_line|#define E100_TBD_ARRAY_SIZE (2+MAX_SKB_FRAGS)
-macro_line|#else
-DECL|macro|E100_TBD_ARRAY_SIZE
-mdefine_line|#define E100_TBD_ARRAY_SIZE 2
-macro_line|#endif /*E100_ZEROCOPY */
 multiline_comment|/* Transmit Command Block (TCB)*/
 DECL|struct|_tcb_t
 r_struct
@@ -1675,7 +1676,6 @@ id|tbd_t
 op_star
 id|tbd_ptr
 suffix:semicolon
-macro_line|#ifdef E100_ZEROCOPY
 DECL|member|tcb_tbd_dflt_ptr
 id|u32
 id|tcb_tbd_dflt_ptr
@@ -1686,7 +1686,6 @@ id|u32
 id|tcb_tbd_expand_ptr
 suffix:semicolon
 multiline_comment|/* TBD address for segmented packet */
-macro_line|#endif&t;&t;&t;&t;/*E100_ZEROCOPY */
 DECL|member|tcb_skb
 r_struct
 id|sk_buff
@@ -1707,7 +1706,6 @@ id|__packed__
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef _TCB_T_
 DECL|macro|_TCB_T_
 mdefine_line|#define _TCB_T_
 DECL|typedef|tcb_t
@@ -1716,7 +1714,6 @@ r_struct
 id|_tcb_t
 id|tcb_t
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Receive Frame Descriptor (RFD) - will be using the simple model*/
 DECL|struct|_rfd_t
 r_struct
@@ -1790,7 +1787,6 @@ id|__packed__
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef _RFD_T_
 DECL|macro|_RFD_T_
 mdefine_line|#define _RFD_T_
 DECL|typedef|rfd_t
@@ -1799,7 +1795,6 @@ r_struct
 id|_rfd_t
 id|rfd_t
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Receive Buffer Descriptor (RBD)*/
 DECL|struct|_rbd_t
 r_typedef
@@ -2022,7 +2017,6 @@ id|b_params
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef ETHTOOL_TEST 
 DECL|struct|ethtool_lpbk_data
 r_struct
 id|ethtool_lpbk_data
@@ -2043,7 +2037,6 @@ id|rfd
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|struct|e100_private
 r_struct
 id|e100_private
@@ -2349,6 +2342,53 @@ DECL|member|driver_isolated
 r_int
 id|driver_isolated
 suffix:semicolon
+DECL|member|id_string
+r_char
+op_star
+id|id_string
+suffix:semicolon
+DECL|member|cable_status
+r_char
+op_star
+id|cable_status
+suffix:semicolon
+DECL|member|mdix_status
+r_char
+op_star
+id|mdix_status
+suffix:semicolon
+multiline_comment|/* Variables for HWI */
+DECL|member|saved_open_circut
+r_int
+id|saved_open_circut
+suffix:semicolon
+DECL|member|saved_short_circut
+r_int
+id|saved_short_circut
+suffix:semicolon
+DECL|member|saved_distance
+r_int
+id|saved_distance
+suffix:semicolon
+DECL|member|saved_i
+r_int
+id|saved_i
+suffix:semicolon
+DECL|member|saved_same
+r_int
+id|saved_same
+suffix:semicolon
+DECL|member|hwi_started
+r_int
+r_char
+id|hwi_started
+suffix:semicolon
+DECL|member|hwi_timer
+r_struct
+id|timer_list
+id|hwi_timer
+suffix:semicolon
+multiline_comment|/* hwi timer id */
 DECL|member|speed_duplex_caps
 id|u32
 id|speed_duplex_caps
@@ -2359,7 +2399,6 @@ r_struct
 id|tasklet_struct
 id|polling_tasklet
 suffix:semicolon
-macro_line|#ifdef ETHTOOL_GWOL
 multiline_comment|/* WOL params for ethtool */
 DECL|member|wolsupported
 id|u32
@@ -2373,22 +2412,17 @@ DECL|member|ip_lbytes
 id|u16
 id|ip_lbytes
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_TEST 
 DECL|member|loopback
 r_struct
 id|ethtool_lpbk_data
 id|loopback
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_PHYS_ID
 DECL|member|blink_timer
 r_struct
 id|timer_list
 id|blink_timer
 suffix:semicolon
 multiline_comment|/* led blink timer id */
-macro_line|#endif
 macro_line|#ifdef CONFIG_PM
 DECL|member|pci_state
 id|u32
@@ -2570,7 +2604,6 @@ id|u32
 id|reset_cmd
 )paren
 suffix:semicolon
-macro_line|#ifdef ETHTOOL_TEST
 DECL|macro|ROM_TEST_FAIL
 mdefine_line|#define ROM_TEST_FAIL&t;&t;0x01
 DECL|macro|REGISTER_TEST_FAIL
@@ -2610,6 +2643,5 @@ DECL|enumerator|E100_MAX_TEST_RES
 id|E100_MAX_TEST_RES
 )brace
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 eof

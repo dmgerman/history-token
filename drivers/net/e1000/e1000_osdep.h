@@ -12,7 +12,7 @@ DECL|macro|usec_delay
 mdefine_line|#define usec_delay(x) udelay(x)
 macro_line|#ifndef msec_delay
 DECL|macro|msec_delay
-mdefine_line|#define msec_delay(x)&t;do { if(in_interrupt()) { &bslash;&n;&t;                &t;mdelay(x); &bslash;&n;&t;&t;&t;} else { &bslash;&n;&t;&t;&t;&t;set_current_state(TASK_UNINTERRUPTIBLE); &bslash;&n;&t;&t;&t;&t;schedule_timeout((x * HZ)/1000); &bslash;&n;&t;&t;&t;} } while(0)
+mdefine_line|#define msec_delay(x)&t;do { if(in_interrupt()) { &bslash;&n;&t;&t;&t;&t;/* Don&squot;t mdelay in interrupt context! */ &bslash;&n;&t;                &t;BUG(); &bslash;&n;&t;&t;&t;} else { &bslash;&n;&t;&t;&t;&t;set_current_state(TASK_UNINTERRUPTIBLE); &bslash;&n;&t;&t;&t;&t;schedule_timeout((x * HZ)/1000); &bslash;&n;&t;&t;&t;} } while(0)
 macro_line|#endif
 DECL|macro|PCI_COMMAND_REGISTER
 mdefine_line|#define PCI_COMMAND_REGISTER   PCI_COMMAND
@@ -65,5 +65,7 @@ DECL|macro|E1000_WRITE_REG_ARRAY
 mdefine_line|#define E1000_WRITE_REG_ARRAY(a, reg, offset, value) ( &bslash;&n;    ((a)-&gt;mac_type &gt;= e1000_82543) ? &bslash;&n;        writel((value), ((a)-&gt;hw_addr + E1000_##reg + ((offset) &lt;&lt; 2))) : &bslash;&n;        writel((value), ((a)-&gt;hw_addr + E1000_82542_##reg + ((offset) &lt;&lt; 2))))
 DECL|macro|E1000_READ_REG_ARRAY
 mdefine_line|#define E1000_READ_REG_ARRAY(a, reg, offset) ( &bslash;&n;    ((a)-&gt;mac_type &gt;= e1000_82543) ? &bslash;&n;        readl((a)-&gt;hw_addr + E1000_##reg + ((offset) &lt;&lt; 2)) : &bslash;&n;        readl((a)-&gt;hw_addr + E1000_82542_##reg + ((offset) &lt;&lt; 2)))
+DECL|macro|E1000_WRITE_FLUSH
+mdefine_line|#define E1000_WRITE_FLUSH(a) E1000_READ_REG(a, STATUS);
 macro_line|#endif /* _E1000_OSDEP_H_ */
 eof

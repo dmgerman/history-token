@@ -37,6 +37,13 @@ suffix:semicolon
 id|u32
 id|temp_val
 suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|bdp-&gt;mdi_access_lock
+)paren
+suffix:semicolon
 id|temp_val
 op_assign
 (paren
@@ -73,6 +80,13 @@ id|temp_val
 comma
 op_amp
 id|bdp-&gt;scb-&gt;scb_mdi_cntrl
+)paren
+suffix:semicolon
+id|readw
+c_func
+(paren
+op_amp
+id|bdp-&gt;scb-&gt;scb_status
 )paren
 suffix:semicolon
 multiline_comment|/* wait 20usec before checking status */
@@ -119,6 +133,13 @@ id|e100_retry
 op_decrement
 suffix:semicolon
 )brace
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|bdp-&gt;mdi_access_lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* &n; * Procedure:&t;e100_mdi_read&n; *&n; * Description: This routine will read a value from the specified MII register&n; *&t;&t;of an external MDI compliant device (e.g. PHY 100), and return&n; *&t;&t;it to the calling routine.  The command will execute in polled&n; *&t;&t;mode.&n; *&n; * Arguments:&n; *&t;bdp - Ptr to this card&squot;s e100_bdconfig structure&n; *&t;reg_addr - The MII register that we are reading from&n; *&t;phy_addr - The MDI address of the Phy component.&n; *&n; * Results:&n; *&t;data - The value that we read from the MII register.&n; *&n; * Returns:&n; *&t;NOTHING&n; */
 r_void
@@ -147,6 +168,13 @@ id|e100_retry
 suffix:semicolon
 id|u32
 id|temp_val
+suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|bdp-&gt;mdi_access_lock
+)paren
 suffix:semicolon
 multiline_comment|/* Issue the read command to the MDI control register. */
 id|temp_val
@@ -178,6 +206,13 @@ id|temp_val
 comma
 op_amp
 id|bdp-&gt;scb-&gt;scb_mdi_cntrl
+)paren
+suffix:semicolon
+id|readw
+c_func
+(paren
+op_amp
+id|bdp-&gt;scb-&gt;scb_status
 )paren
 suffix:semicolon
 multiline_comment|/* wait 20usec before checking status */
@@ -236,6 +271,13 @@ c_func
 (paren
 op_amp
 id|bdp-&gt;scb-&gt;scb_mdi_cntrl
+)paren
+suffix:semicolon
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|bdp-&gt;mdi_access_lock
 )paren
 suffix:semicolon
 )brace
@@ -694,7 +736,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;503 serial component detected which &quot;
+l_string|&quot;e100: 503 serial component detected which &quot;
 l_string|&quot;cannot autonegotiate&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -702,7 +744,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;speed/duplex forced to 10Mbps / Half duplex&bslash;n&quot;
+l_string|&quot;e100: speed/duplex forced to &quot;
+l_string|&quot;10Mbps / Half duplex&bslash;n&quot;
 )paren
 suffix:semicolon
 id|bdp-&gt;params.e100_speed_duplex
@@ -721,16 +764,16 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;503 serial component detected which does not &quot;
-l_string|&quot;support 100Mbps&bslash;n&quot;
+l_string|&quot;e100: 503 serial component detected &quot;
+l_string|&quot;which does not support 100Mbps&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Change the forced speed/duplex to a supported &quot;
-l_string|&quot;setting&bslash;n&quot;
+l_string|&quot;e100: Change the forced speed/duplex &quot;
+l_string|&quot;to a supported setting&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -788,7 +831,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;NC3133 NIC can only run &quot;
+l_string|&quot;e100: NC3133 NIC can only run &quot;
 l_string|&quot;at 100Mbps full duplex&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1870,15 +1913,6 @@ id|bdp-&gt;flags
 op_or_assign
 id|DF_SPEED_FORCED
 suffix:semicolon
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-(paren
-id|bdp-&gt;mdi_access_lock
-)paren
-)paren
-suffix:semicolon
 id|e100_mdi_read
 c_func
 (paren
@@ -2039,27 +2073,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-(paren
-id|bdp-&gt;mdi_access_lock
-)paren
-)paren
-suffix:semicolon
 id|yield
 c_func
 (paren
-)paren
-suffix:semicolon
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-(paren
-id|bdp-&gt;mdi_access_lock
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2068,15 +2084,6 @@ r_while
 c_loop
 (paren
 l_bool|true
-)paren
-suffix:semicolon
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-(paren
-id|bdp-&gt;mdi_access_lock
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2208,10 +2215,14 @@ op_or_assign
 id|DF_LINK_FC_CAP
 suffix:semicolon
 r_else
+multiline_comment|/* If link partner is capable of autoneg, but  */
+multiline_comment|/* not capable of flow control, Received PAUSE */
+multiline_comment|/* frames are still honored, i.e.,             */
+multiline_comment|/* transmitted frames would be paused */
+multiline_comment|/* by incoming PAUSE frames           */
 id|bdp-&gt;flags
-op_and_assign
-op_complement
-id|DF_LINK_FC_CAP
+op_or_assign
+id|DF_LINK_FC_TX_ONLY
 suffix:semicolon
 )brace
 r_else
@@ -2381,15 +2392,6 @@ op_and_assign
 op_complement
 id|DF_SPEED_FORCED
 suffix:semicolon
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-(paren
-id|bdp-&gt;mdi_access_lock
-)paren
-)paren
-suffix:semicolon
 id|e100_mdi_read
 c_func
 (paren
@@ -2528,27 +2530,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-(paren
-id|bdp-&gt;mdi_access_lock
-)paren
-)paren
-suffix:semicolon
 id|yield
 c_func
 (paren
-)paren
-suffix:semicolon
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-(paren
-id|bdp-&gt;mdi_access_lock
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2566,15 +2550,6 @@ id|e100_find_speed_duplex
 c_func
 (paren
 id|bdp
-)paren
-suffix:semicolon
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-(paren
-id|bdp-&gt;mdi_access_lock
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2601,6 +2576,26 @@ op_eq
 id|E100_AUTONEG
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|bdp-&gt;rev_id
+op_ge
+id|D102_REV_ID
+)paren
+multiline_comment|/* Enable MDI/MDI-X auto switching */
+id|e100_mdi_write
+c_func
+(paren
+id|bdp
+comma
+id|MII_NCONFIG
+comma
+id|bdp-&gt;phy_addr
+comma
+id|MDI_MDIX_AUTO_SWITCH_ENABLE
+)paren
+suffix:semicolon
 id|e100_auto_neg
 c_func
 (paren
@@ -2612,6 +2607,26 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|bdp-&gt;rev_id
+op_ge
+id|D102_REV_ID
+)paren
+multiline_comment|/* Disable MDI/MDI-X auto switching */
+id|e100_mdi_write
+c_func
+(paren
+id|bdp
+comma
+id|MII_NCONFIG
+comma
+id|bdp-&gt;phy_addr
+comma
+id|MDI_MDIX_RESET_ALL_MASK
+)paren
+suffix:semicolon
 id|e100_force_speed_duplex
 c_func
 (paren

@@ -594,6 +594,32 @@ id|hw
 )paren
 suffix:semicolon
 r_int32
+id|e1000_update_eeprom_checksum
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+)paren
+suffix:semicolon
+r_int32
+id|e1000_write_eeprom
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+r_uint16
+id|reg
+comma
+r_uint16
+id|data
+)paren
+suffix:semicolon
+r_int32
 id|e1000_read_part_num
 c_func
 (paren
@@ -824,6 +850,26 @@ id|hw
 )paren
 suffix:semicolon
 r_void
+id|e1000_pci_set_mwi
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+)paren
+suffix:semicolon
+r_void
+id|e1000_pci_clear_mwi
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+)paren
+suffix:semicolon
+r_void
 id|e1000_read_pci_cfg
 c_func
 (paren
@@ -857,6 +903,69 @@ op_star
 id|value
 )paren
 suffix:semicolon
+multiline_comment|/* Port I/O is only supported on 82544 and newer */
+r_uint32
+id|e1000_io_read
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+r_uint32
+id|port
+)paren
+suffix:semicolon
+r_uint32
+id|e1000_read_reg_io
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+r_uint32
+id|offset
+)paren
+suffix:semicolon
+r_void
+id|e1000_io_write
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+r_uint32
+id|port
+comma
+r_uint32
+id|value
+)paren
+suffix:semicolon
+r_void
+id|e1000_write_reg_io
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+r_uint32
+id|offset
+comma
+r_uint32
+id|value
+)paren
+suffix:semicolon
+DECL|macro|E1000_READ_REG_IO
+mdefine_line|#define E1000_READ_REG_IO(a, reg) &bslash;&n;    e1000_read_reg_io((a), E1000_##reg)
+DECL|macro|E1000_WRITE_REG_IO
+mdefine_line|#define E1000_WRITE_REG_IO(a, reg, val) &bslash;&n;    e1000_write_reg_io((a), E1000_##reg, val)
 multiline_comment|/* PCI Device IDs */
 DECL|macro|E1000_DEV_ID_82542
 mdefine_line|#define E1000_DEV_ID_82542          0x1000
@@ -2218,6 +2327,10 @@ DECL|member|bus_type
 id|e1000_bus_type
 id|bus_type
 suffix:semicolon
+DECL|member|io_base
+r_uint32
+id|io_base
+suffix:semicolon
 DECL|member|phy_id
 r_uint32
 id|phy_id
@@ -3121,6 +3234,8 @@ mdefine_line|#define EEPROM_EWEN_OPCODE  0x13 /* EERPOM erase/write enable */
 DECL|macro|EEPROM_EWDS_OPCODE
 mdefine_line|#define EEPROM_EWDS_OPCODE  0x10 /* EERPOM erast/write disable */
 multiline_comment|/* EEPROM Word Offsets */
+DECL|macro|EEPROM_COMPAT
+mdefine_line|#define EEPROM_COMPAT              0x0003
 DECL|macro|EEPROM_ID_LED_SETTINGS
 mdefine_line|#define EEPROM_ID_LED_SETTINGS     0x0004
 DECL|macro|EEPROM_INIT_CONTROL1_REG
@@ -3137,7 +3252,7 @@ mdefine_line|#define ID_LED_RESERVED_0000 0x0000
 DECL|macro|ID_LED_RESERVED_FFFF
 mdefine_line|#define ID_LED_RESERVED_FFFF 0xFFFF
 DECL|macro|ID_LED_DEFAULT
-mdefine_line|#define ID_LED_DEFAULT       ((ID_LED_OFF1_ON2 &lt;&lt; 12) | &bslash;&n;&t;&t;              (ID_LED_OFF1_OFF2 &lt;&lt; 8) | &bslash;&n;&t;&t;              (ID_LED_DEF1_DEF2 &lt;&lt; 4) | &bslash;&n;&t;&t;&t;      (ID_LED_DEF1_DEF2))
+mdefine_line|#define ID_LED_DEFAULT       ((ID_LED_OFF1_ON2 &lt;&lt; 12) | &bslash;&n;                              (ID_LED_OFF1_OFF2 &lt;&lt; 8) | &bslash;&n;                              (ID_LED_DEF1_DEF2 &lt;&lt; 4) | &bslash;&n;                              (ID_LED_DEF1_DEF2))
 DECL|macro|ID_LED_DEF1_DEF2
 mdefine_line|#define ID_LED_DEF1_DEF2     0x1
 DECL|macro|ID_LED_DEF1_ON2
@@ -3156,6 +3271,11 @@ DECL|macro|ID_LED_OFF1_ON2
 mdefine_line|#define ID_LED_OFF1_ON2      0x8
 DECL|macro|ID_LED_OFF1_OFF2
 mdefine_line|#define ID_LED_OFF1_OFF2     0x9
+multiline_comment|/* Mask bits for fields in Word 0x03 of the EEPROM */
+DECL|macro|EEPROM_COMPAT_SERVER
+mdefine_line|#define EEPROM_COMPAT_SERVER 0x0400
+DECL|macro|EEPROM_COMPAT_CLIENT
+mdefine_line|#define EEPROM_COMPAT_CLIENT 0x0200
 multiline_comment|/* Mask bits for fields in Word 0x0a of the EEPROM */
 DECL|macro|EEPROM_WORD0A_ILOS
 mdefine_line|#define EEPROM_WORD0A_ILOS   0x0010
