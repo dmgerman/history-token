@@ -5027,9 +5027,10 @@ comma
 id|gbuffers
 comma
 id|gbufsize
+comma
+id|V4L2_MEMORY_MMAP
 )paren
 suffix:semicolon
-singleline_comment|// ,V4L2_MEMORY_MMAP);
 r_if
 c_cond
 (paren
@@ -5530,6 +5531,8 @@ id|dev-&gt;pci
 comma
 op_amp
 id|buf-&gt;vb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
