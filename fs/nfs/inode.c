@@ -3066,6 +3066,14 @@ c_func
 id|new_mtime
 )paren
 suffix:semicolon
+id|NFS_MTIME_UPDATE
+c_func
+(paren
+id|inode
+)paren
+op_assign
+id|jiffies
+suffix:semicolon
 id|NFS_CACHE_ISIZE
 c_func
 (paren
@@ -4595,6 +4603,11 @@ op_ne
 id|new_mtime
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|invalid
+)paren
 id|NFS_MTIME_UPDATE
 c_func
 (paren

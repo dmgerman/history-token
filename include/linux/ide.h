@@ -351,6 +351,10 @@ suffix:semicolon
 macro_line|#include &lt;asm/ide.h&gt;
 multiline_comment|/* Currently only m68k, apus and m8xx need it */
 macro_line|#ifdef ATA_ARCH_ACK_INTR
+r_extern
+r_int
+id|ide_irq_lock
+suffix:semicolon
 DECL|macro|ide_ack_intr
 macro_line|# define ide_ack_intr(hwif) (hwif-&gt;hw.ack_intr ? hwif-&gt;hw.ack_intr(hwif) : 1)
 macro_line|#else
@@ -2005,10 +2009,9 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is used on exit from the driver, to designate the next irq handler&n; * and also to start the safety timer.&n; */
 r_extern
 r_void
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 r_struct

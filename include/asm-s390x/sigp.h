@@ -103,15 +103,6 @@ id|ec_schedule
 op_assign
 l_int|0
 comma
-DECL|enumerator|ec_restart
-id|ec_restart
-comma
-DECL|enumerator|ec_halt
-id|ec_halt
-comma
-DECL|enumerator|ec_power_off
-id|ec_power_off
-comma
 DECL|enumerator|ec_call_function
 id|ec_call_function
 comma
@@ -323,5 +314,5 @@ r_return
 id|ccode
 suffix:semicolon
 )brace
-macro_line|#endif __SIGP__
+macro_line|#endif /* __SIGP__ */
 eof

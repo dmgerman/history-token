@@ -340,12 +340,14 @@ id|dasd_fba_characteristics_t
 suffix:semicolon
 r_int
 id|dasd_fba_init
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 r_void
 id|dasd_fba_cleanup
+c_func
 (paren
 r_void
 )paren

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1227,6 +1228,80 @@ id|KERN_ERR
 l_string|&quot;Trying to vfree() nonexistent vm area (%p)&bslash;n&quot;
 comma
 id|addr
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *&t;Allocate any pages&n; */
+DECL|function|vmalloc
+r_void
+op_star
+id|vmalloc
+(paren
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+id|__vmalloc
+c_func
+(paren
+id|size
+comma
+id|GFP_KERNEL
+op_or
+id|__GFP_HIGHMEM
+comma
+id|PAGE_KERNEL
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *&t;Allocate ISA addressable pages for broke crap&n; */
+DECL|function|vmalloc_dma
+r_void
+op_star
+id|vmalloc_dma
+(paren
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+id|__vmalloc
+c_func
+(paren
+id|size
+comma
+id|GFP_KERNEL
+op_or
+id|GFP_DMA
+comma
+id|PAGE_KERNEL
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *&t;vmalloc 32bit PA addressable pages - eg for PCI 32bit devices&n; */
+DECL|function|vmalloc_32
+r_void
+op_star
+id|vmalloc_32
+c_func
+(paren
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+id|__vmalloc
+c_func
+(paren
+id|size
+comma
+id|GFP_KERNEL
+comma
+id|PAGE_KERNEL
 )paren
 suffix:semicolon
 )brace

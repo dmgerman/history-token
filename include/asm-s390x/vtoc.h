@@ -15,8 +15,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/dasd.h&gt;
 macro_line|#endif
-DECL|macro|DASD_API_VERSION
-mdefine_line|#define DASD_API_VERSION 0
 DECL|macro|LINE_LENGTH
 mdefine_line|#define LINE_LENGTH 80
 DECL|macro|VTOC_START_CC

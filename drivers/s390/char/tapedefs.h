@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,2,17))
 DECL|macro|TAPE_DEBUG
 mdefine_line|#define TAPE_DEBUG               

@@ -83,7 +83,6 @@ mdefine_line|#define PCI_DEVICE_ID_AMD53C974 &t;PCI_DEVICE_ID_AMD_SCSI
 multiline_comment|/* Locking */
 multiline_comment|/* Note: Starting from 2.1.9x, the mid-level scsi code issues a &n; * spinlock_irqsave (&amp;io_request_lock) before calling the driver&squot;s &n; * routines, so we don&squot;t need to lock, except in the IRQ handler.&n; * The policy 3, let the midlevel scsi code do the io_request_locks&n; * and us locking on a driver specific lock, shouldn&squot;t hurt anybody; it&n; * just causes a minor performance degradation for setting the locks.&n; */
 multiline_comment|/* spinlock things&n; * level 3: lock on both adapter specific locks and (global) io_request_lock&n; * level 2: lock on adapter specific locks only&n; * level 1: rely on the locking of the mid level code (io_request_lock)&n; * undef  : traditional save_flags; cli; restore_flags;&n; */
-singleline_comment|//#define DEBUG_SPINLOCKS 2&t;/* Set to 0, 1 or 2 in include/linux/spinlock.h */
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,30)
 macro_line|# include &lt;linux/init.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,30)
@@ -151,7 +150,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef USE_SPINLOCKS
 macro_line|# if USE_SPINLOCKS == 3 /* both */
-macro_line|#  if defined (CONFIG_SMP) || DEBUG_SPINLOCKS &gt; 0
+macro_line|#  if defined (CONFIG_SMP)
 DECL|macro|DC390_LOCKA_INIT
 macro_line|#   define DC390_LOCKA_INIT { spinlock_t __unlocked = SPIN_LOCK_UNLOCKED; pACB-&gt;lock = __unlocked; };
 macro_line|#  else
@@ -193,7 +192,7 @@ macro_line|#  define DC390_UNLOCK_ACB_NI spin_unlock (&amp;(pACB-&gt;lock))
 singleline_comment|//#  define DC390_LOCKA_INIT spin_lock_init (&amp;(pACB-&gt;lock))
 macro_line|# else
 macro_line|#  if USE_SPINLOCKS == 2 /* adapter specific locks */
-macro_line|#   if defined (CONFIG_SMP) || DEBUG_SPINLOCKS &gt; 0
+macro_line|#   if defined (CONFIG_SMP)
 DECL|macro|DC390_LOCKA_INIT
 macro_line|#    define DC390_LOCKA_INIT { spinlock_t __unlocked = SPIN_LOCK_UNLOCKED; pACB-&gt;lock = __unlocked; };
 macro_line|#   else

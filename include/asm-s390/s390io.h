@@ -19,6 +19,12 @@ id|spinlock_t
 id|irq_lock
 suffix:semicolon
 multiline_comment|/* irq lock */
+DECL|member|private_data
+r_void
+op_star
+id|private_data
+suffix:semicolon
+multiline_comment|/* pointer to private data */
 DECL|member|prev
 r_struct
 id|_ioinfo
@@ -31,6 +37,11 @@ id|_ioinfo
 op_star
 id|next
 suffix:semicolon
+DECL|member|st
+id|__u8
+id|st
+suffix:semicolon
+multiline_comment|/* subchannel type */
 r_union
 (brace
 DECL|member|info
@@ -212,14 +223,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* don&squot;t call IRQ handler on interrupt */
-DECL|member|newreq
-r_int
-r_int
-id|newreq
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* new register interface */
 DECL|member|dval
 r_int
 r_int
@@ -250,7 +253,7 @@ r_int
 op_star
 l_int|8
 op_minus
-l_int|24
+l_int|23
 )paren
 suffix:semicolon
 multiline_comment|/* unused */
@@ -366,6 +369,11 @@ id|__u8
 id|qlpm
 suffix:semicolon
 multiline_comment|/* queued logical path mask */
+DECL|member|ssd_info
+id|ssd_info_t
+id|ssd_info
+suffix:semicolon
+multiline_comment|/* subchannel description */
 DECL|typedef|ioinfo_t
 )brace
 id|__attribute__
@@ -405,5 +413,32 @@ id|ioinfo
 (braket
 )braket
 suffix:semicolon
+r_int
+id|s390_set_private_data
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
+r_void
+op_star
+id|s390_get_private_data
+c_func
+(paren
+r_int
+id|irq
+)paren
+suffix:semicolon
+DECL|macro|CHSC_SEI_ACC_CHPID
+mdefine_line|#define CHSC_SEI_ACC_CHPID        1
+DECL|macro|CHSC_SEI_ACC_LINKADDR
+mdefine_line|#define CHSC_SEI_ACC_LINKADDR     2
+DECL|macro|CHSC_SEI_ACC_FULLLINKADDR
+mdefine_line|#define CHSC_SEI_ACC_FULLLINKADDR 3
 macro_line|#endif  /* __s390io_h */
 eof
