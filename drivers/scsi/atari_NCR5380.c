@@ -63,12 +63,12 @@ r_typedef
 r_struct
 (brace
 DECL|member|allocated
-r_char
+r_int
 id|allocated
 (braket
 id|MAX_TAGS
 op_div
-l_int|8
+l_int|32
 )braket
 suffix:semicolon
 DECL|member|nr_allocated
