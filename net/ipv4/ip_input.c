@@ -329,10 +329,15 @@ l_int|1
 suffix:semicolon
 id|raw_sk
 op_assign
+id|sk_head
+c_func
+(paren
+op_amp
 id|raw_v4_htable
 (braket
 id|hash
 )braket
+)paren
 suffix:semicolon
 multiline_comment|/* If there maybe a raw socket we must check - if not we&n;&t;&t; * don&squot;t care less&n;&t;&t; */
 r_if

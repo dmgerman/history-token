@@ -1226,8 +1226,7 @@ DECL|macro|X25_SKB_CB
 mdefine_line|#define X25_SKB_CB(s) ((struct x25_skb_cb *) ((s)-&gt;cb))
 r_extern
 r_struct
-id|sock
-op_star
+id|hlist_head
 id|x25_list
 suffix:semicolon
 r_extern

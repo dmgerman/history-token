@@ -4,6 +4,7 @@ DECL|macro|_UDP_H
 mdefine_line|#define _UDP_H
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -12,8 +13,7 @@ mdefine_line|#define UDP_HTABLE_SIZE&t;&t;128
 multiline_comment|/* udp.c: This needs to be shared by v4 and v6 because the lookup&n; *        and hashing code needs to work with different AF&squot;s yet&n; *        the port space is shared.&n; */
 r_extern
 r_struct
-id|sock
-op_star
+id|hlist_head
 id|udp_hash
 (braket
 id|UDP_HTABLE_SIZE
@@ -42,7 +42,20 @@ r_struct
 id|sock
 op_star
 id|sk
-op_assign
+suffix:semicolon
+r_struct
+id|hlist_node
+op_star
+id|node
+suffix:semicolon
+id|sk_for_each
+c_func
+(paren
+id|sk
+comma
+id|node
+comma
+op_amp
 id|udp_hash
 (braket
 id|num
@@ -53,16 +66,6 @@ op_minus
 l_int|1
 )paren
 )braket
-suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-id|sk
-suffix:semicolon
-id|sk
-op_assign
-id|sk-&gt;sk_next
 )paren
 r_if
 c_cond

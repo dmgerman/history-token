@@ -68,8 +68,7 @@ id|lock
 suffix:semicolon
 DECL|member|list
 r_struct
-id|sock
-op_star
+id|hlist_head
 id|list
 suffix:semicolon
 DECL|member|sk_list

@@ -10,6 +10,7 @@ multiline_comment|/* Cancel timers, when they are not required. */
 DECL|macro|TCP_CLEAR_TIMERS
 macro_line|#undef TCP_CLEAR_TIMERS
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
@@ -32,8 +33,7 @@ id|lock
 suffix:semicolon
 DECL|member|chain
 r_struct
-id|sock
-op_star
+id|hlist_head
 id|chain
 suffix:semicolon
 )brace
@@ -73,18 +73,17 @@ id|tcp_bind_bucket
 op_star
 id|next
 suffix:semicolon
-DECL|member|owners
-r_struct
-id|sock
-op_star
-id|owners
-suffix:semicolon
 DECL|member|pprev
 r_struct
 id|tcp_bind_bucket
 op_star
 op_star
 id|pprev
+suffix:semicolon
+DECL|member|owners
+r_struct
+id|hlist_head
+id|owners
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -134,8 +133,7 @@ suffix:semicolon
 multiline_comment|/* All sockets in TCP_LISTEN state will be in here.  This is the only&n;&t; * table where wildcard&squot;d TCP sockets can exist.  Hash function here&n;&t; * is just local port number.&n;&t; */
 DECL|member|__tcp_listening_hash
 r_struct
-id|sock
-op_star
+id|hlist_head
 id|__tcp_listening_hash
 (braket
 id|TCP_LHTABLE_SIZE
@@ -322,14 +320,10 @@ DECL|macro|tw_reuse
 mdefine_line|#define tw_reuse&t;&t;__tw_common.skc_reuse
 DECL|macro|tw_bound_dev_if
 mdefine_line|#define tw_bound_dev_if&t;&t;__tw_common.skc_bound_dev_if
-DECL|macro|tw_next
-mdefine_line|#define tw_next&t;&t;&t;__tw_common.skc_next
-DECL|macro|tw_pprev
-mdefine_line|#define tw_pprev&t;&t;__tw_common.skc_pprev
-DECL|macro|tw_bind_next
-mdefine_line|#define tw_bind_next&t;&t;__tw_common.skc_bind_next
-DECL|macro|tw_bind_pprev
-mdefine_line|#define tw_bind_pprev&t;&t;__tw_common.skc_bind_pprev
+DECL|macro|tw_node
+mdefine_line|#define tw_node&t;&t;&t;__tw_common.skc_node
+DECL|macro|tw_bind_node
+mdefine_line|#define tw_bind_node&t;&t;__tw_common.skc_bind_node
 DECL|macro|tw_refcnt
 mdefine_line|#define tw_refcnt&t;&t;__tw_common.skc_refcnt
 DECL|member|tw_substate
@@ -443,6 +437,64 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
+DECL|function|tw_add_node
+r_static
+id|__inline__
+r_void
+id|tw_add_node
+c_func
+(paren
+r_struct
+id|tcp_tw_bucket
+op_star
+id|tw
+comma
+r_struct
+id|hlist_head
+op_star
+id|list
+)paren
+(brace
+id|hlist_add_head
+c_func
+(paren
+op_amp
+id|tw-&gt;tw_node
+comma
+id|list
+)paren
+suffix:semicolon
+)brace
+DECL|function|tw_add_bind_node
+r_static
+id|__inline__
+r_void
+id|tw_add_bind_node
+c_func
+(paren
+r_struct
+id|tcp_tw_bucket
+op_star
+id|tw
+comma
+r_struct
+id|hlist_head
+op_star
+id|list
+)paren
+(brace
+id|hlist_add_head
+c_func
+(paren
+op_amp
+id|tw-&gt;tw_bind_node
+comma
+id|list
+)paren
+suffix:semicolon
+)brace
+DECL|macro|tw_for_each
+mdefine_line|#define tw_for_each(tw, node, head) &bslash;&n;&t;hlist_for_each_entry(tw, node, head, tw_node)
 DECL|macro|tcptw_sk
 mdefine_line|#define tcptw_sk(__sk)&t;((struct tcp_tw_bucket *)(__sk))
 r_extern
