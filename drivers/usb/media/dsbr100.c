@@ -278,14 +278,6 @@ id|disconnect
 suffix:colon
 id|usb_dsbr100_disconnect
 comma
-id|fops
-suffix:colon
-l_int|NULL
-comma
-id|minor
-suffix:colon
-l_int|0
-comma
 id|id_table
 suffix:colon
 id|usb_dsbr100_table

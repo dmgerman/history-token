@@ -4459,6 +4459,10 @@ id|minor
 suffix:colon
 id|USBLP_MINOR_BASE
 comma
+id|num_minors
+suffix:colon
+id|USBLP_MINORS
+comma
 id|id_table
 suffix:colon
 id|usblp_ids

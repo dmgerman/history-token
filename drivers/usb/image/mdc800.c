@@ -2806,6 +2806,10 @@ id|minor
 suffix:colon
 id|MDC800_DEVICE_MINOR_BASE
 comma
+id|num_minors
+suffix:colon
+l_int|1
+comma
 id|id_table
 suffix:colon
 id|mdc800_table
