@@ -5629,7 +5629,6 @@ id|iface
 suffix:semicolon
 id|iface
 op_assign
-op_amp
 id|config-&gt;interface
 (braket
 id|fmt-&gt;iface
