@@ -81,7 +81,7 @@ id|COMMAND_LINE_SIZE
 id|printf
 c_func
 (paren
-l_string|&quot;add_arg: Too much command line!&bslash;n&quot;
+l_string|&quot;add_arg: Too many command line arguments!&bslash;n&quot;
 )paren
 suffix:semicolon
 m_exit
