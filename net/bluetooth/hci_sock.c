@@ -2069,7 +2069,7 @@ l_int|1
 op_assign
 id|uf.event_mask
 (braket
-l_int|0
+l_int|1
 )braket
 suffix:semicolon
 )brace
@@ -2285,7 +2285,7 @@ l_int|0
 suffix:semicolon
 id|uf.event_mask
 (braket
-l_int|0
+l_int|1
 )braket
 op_assign
 op_star
