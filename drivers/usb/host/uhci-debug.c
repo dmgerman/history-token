@@ -1912,7 +1912,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|urbp-&gt;status
+id|urbp-&gt;urb-&gt;status
 op_ne
 op_minus
 id|EINPROGRESS
@@ -1926,7 +1926,7 @@ id|out
 comma
 l_string|&quot;Status=%d &quot;
 comma
-id|urbp-&gt;status
+id|urbp-&gt;urb-&gt;status
 )paren
 suffix:semicolon
 singleline_comment|//out += sprintf(out, &quot;Inserttime=%lx &quot;,urbp-&gt;inserttime);

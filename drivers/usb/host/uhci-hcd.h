@@ -726,11 +726,6 @@ suffix:semicolon
 multiline_comment|/* If we get a short packet during */
 multiline_comment|/*  a control transfer, retrigger */
 multiline_comment|/*  the status phase */
-DECL|member|status
-r_int
-id|status
-suffix:semicolon
-multiline_comment|/* Final status */
 DECL|member|inserttime
 r_int
 r_int
