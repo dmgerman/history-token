@@ -1614,7 +1614,7 @@ op_amp
 id|gmch_ctrl
 )paren
 suffix:semicolon
-multiline_comment|/* We obtain the size of the GTT, which is also stored (for some&n;&t; * reason) at the top of stolen memory. Then we add 4KB to that&n; &t; * for the video BIOS popup, which is also stored in there. */
+multiline_comment|/* We obtain the size of the GTT, which is also stored (for some&n;&t; * reason) at the top of stolen memory. Then we add 4KB to that&n;&t; * for the video BIOS popup, which is also stored in there. */
 id|size
 op_assign
 id|agp_bridge-&gt;driver
@@ -7728,7 +7728,7 @@ id|agp_intel_pci_table
 op_assign
 (brace
 DECL|macro|ID
-mdefine_line|#define ID(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ &t;&t;&t;&t;&t;&t;&bslash;&n;&t;.class&t;&t;= (PCI_CLASS_BRIDGE_HOST &lt;&lt; 8),&t;&bslash;&n;&t;.class_mask&t;= ~0,&t;&t;&t;&t;&bslash;&n;&t;.vendor&t;&t;= PCI_VENDOR_ID_INTEL,&t;&t;&bslash;&n;&t;.device&t;&t;= x,&t;&t;&t;&t;&bslash;&n;&t;.subvendor&t;= PCI_ANY_ID,&t;&t;&t;&bslash;&n;&t;.subdevice&t;= PCI_ANY_ID,&t;&t;&t;&bslash;&n;&t;}
+mdefine_line|#define ID(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.class&t;&t;= (PCI_CLASS_BRIDGE_HOST &lt;&lt; 8),&t;&bslash;&n;&t;.class_mask&t;= ~0,&t;&t;&t;&t;&bslash;&n;&t;.vendor&t;&t;= PCI_VENDOR_ID_INTEL,&t;&t;&bslash;&n;&t;.device&t;&t;= x,&t;&t;&t;&t;&bslash;&n;&t;.subvendor&t;= PCI_ANY_ID,&t;&t;&t;&bslash;&n;&t;.subdevice&t;= PCI_ANY_ID,&t;&t;&t;&bslash;&n;&t;}
 id|ID
 c_func
 (paren
