@@ -1416,6 +1416,13 @@ id|head
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mapping-&gt;private_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1487,13 +1494,6 @@ id|I_DIRTY_PAGES
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mapping-&gt;private_lock
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 r_return
