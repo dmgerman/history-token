@@ -872,6 +872,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/* matching kunmap in nfs_do_filldir */
 id|status
 op_assign
 id|find_dirent
@@ -1400,6 +1401,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/* matching kunmap in nfs_do_filldir */
 r_if
 c_cond
 (paren
@@ -3007,10 +3009,12 @@ id|page
 (brace
 id|desc.ptr
 op_assign
-id|kmap
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 id|res
@@ -3026,10 +3030,12 @@ comma
 id|dentry
 )paren
 suffix:semicolon
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
-id|page
+id|desc.ptr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 )brace
