@@ -57,12 +57,6 @@ l_int|1
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* Placeholder to make UML link until the vsyscall stuff is actually&n; * implemented&n; */
-DECL|variable|__kernel_vsyscall
-r_void
-op_star
-id|__kernel_vsyscall
-suffix:semicolon
 DECL|function|thread_saved_pc
 r_int
 r_int

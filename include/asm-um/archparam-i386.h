@@ -4,8 +4,13 @@ DECL|macro|__UM_ARCHPARAM_I386_H
 mdefine_line|#define __UM_ARCHPARAM_I386_H
 multiline_comment|/********* Bits for asm-um/elf.h ************/
 macro_line|#include &quot;user.h&quot;
+r_extern
+r_char
+op_star
+id|elf_aux_platform
+suffix:semicolon
 DECL|macro|ELF_PLATFORM
-mdefine_line|#define ELF_PLATFORM &quot;i586&quot;
+mdefine_line|#define ELF_PLATFORM (elf_aux_platform)
 DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE (2 * TASK_SIZE / 3)
 DECL|typedef|elf_fpregset_t
@@ -39,28 +44,29 @@ mdefine_line|#define ELF_PLAT_INIT(regs, load_addr) do { &bslash;&n;&t;PT_REGS_E
 multiline_comment|/* Shamelessly stolen from include/asm-i386/elf.h */
 DECL|macro|ELF_CORE_COPY_REGS
 mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs) do {&t;&bslash;&n;&t;pr_reg[0] = PT_REGS_EBX(regs);&t;&t;&bslash;&n;&t;pr_reg[1] = PT_REGS_ECX(regs);&t;&t;&bslash;&n;&t;pr_reg[2] = PT_REGS_EDX(regs);&t;&t;&bslash;&n;&t;pr_reg[3] = PT_REGS_ESI(regs);&t;&t;&bslash;&n;&t;pr_reg[4] = PT_REGS_EDI(regs);&t;&t;&bslash;&n;&t;pr_reg[5] = PT_REGS_EBP(regs);&t;&t;&bslash;&n;&t;pr_reg[6] = PT_REGS_EAX(regs);&t;&t;&bslash;&n;&t;pr_reg[7] = PT_REGS_DS(regs);&t;&t;&bslash;&n;&t;pr_reg[8] = PT_REGS_ES(regs);&t;&t;&bslash;&n;&t;/* fake once used fs and gs selectors? */&t;&bslash;&n;&t;pr_reg[9] = PT_REGS_DS(regs);&t;&t;&bslash;&n;&t;pr_reg[10] = PT_REGS_DS(regs);&t;&t;&bslash;&n;&t;pr_reg[11] = PT_REGS_SYSCALL_NR(regs);&t;&bslash;&n;&t;pr_reg[12] = PT_REGS_IP(regs);&t;&t;&bslash;&n;&t;pr_reg[13] = PT_REGS_CS(regs);&t;&t;&bslash;&n;&t;pr_reg[14] = PT_REGS_EFLAGS(regs);&t;&bslash;&n;&t;pr_reg[15] = PT_REGS_SP(regs);&t;&t;&bslash;&n;&t;pr_reg[16] = PT_REGS_SS(regs);&t;&t;&bslash;&n;} while(0);
-macro_line|#if 0 /* Turn this back on when UML has VSYSCALL working */
-mdefine_line|#define VSYSCALL_BASE&t;(__fix_to_virt(FIX_VSYSCALL))
-macro_line|#else
-DECL|macro|VSYSCALL_BASE
-mdefine_line|#define VSYSCALL_BASE&t;0
-macro_line|#endif
-DECL|macro|VSYSCALL_EHDR
-mdefine_line|#define VSYSCALL_EHDR&t;((const struct elfhdr *) VSYSCALL_BASE)
-DECL|macro|VSYSCALL_ENTRY
-mdefine_line|#define VSYSCALL_ENTRY&t;((unsigned long) &amp;__kernel_vsyscall)
 r_extern
-r_void
-op_star
+r_int
+id|vsyscall_ehdr
+suffix:semicolon
+r_extern
+r_int
+id|vsyscall_end
+suffix:semicolon
+r_extern
+r_int
 id|__kernel_vsyscall
 suffix:semicolon
+DECL|macro|VSYSCALL_BASE
+mdefine_line|#define VSYSCALL_BASE vsyscall_ehdr
+DECL|macro|VSYSCALL_END
+mdefine_line|#define VSYSCALL_END vsyscall_end
 multiline_comment|/*&n; * Architecture-neutral AT_ values in 0-17, leave some room&n; * for more of them, start the x86-specific ones at 32.&n; */
 DECL|macro|AT_SYSINFO
 mdefine_line|#define AT_SYSINFO&t;&t;32
 DECL|macro|AT_SYSINFO_EHDR
 mdefine_line|#define AT_SYSINFO_EHDR&t;&t;33
 DECL|macro|ARCH_DLINFO
-mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO,&t;VSYSCALL_ENTRY);&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, VSYSCALL_BASE);&t;&bslash;&n;} while (0)
+mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( vsyscall_ehdr ) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO,&t;__kernel_vsyscall);&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, vsyscall_ehdr);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * These macros parameterize elf_core_dump in fs/binfmt_elf.c to write out&n; * extra segments containing the vsyscall DSO contents.  Dumping its&n; * contents makes post-mortem fully interpretable later without matching up&n; * the same kernel and hardware config to see what PC values meant.&n; * Dumping its extra ELF program headers includes all the other information&n; * a debugger needs to easily find how the vsyscall DSO was being used.&n; */
 macro_line|#if 0
 mdefine_line|#define ELF_CORE_EXTRA_PHDRS&t;&t;(VSYSCALL_EHDR-&gt;e_phnum)
