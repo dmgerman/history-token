@@ -15070,6 +15070,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|c-&gt;driver
+)paren
+multiline_comment|/* specific driver? */
+id|strcpy
+c_func
+(paren
+id|card-&gt;driver
+comma
+id|c-&gt;driver
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|c-&gt;chip_init
 )paren
 (brace
