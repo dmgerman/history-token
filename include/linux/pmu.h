@@ -266,6 +266,15 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|pmu_poll_adb
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* For use by xmon */
+r_extern
+r_void
 id|pmu_wait_complete
 c_func
 (paren

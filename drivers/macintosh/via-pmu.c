@@ -789,14 +789,6 @@ id|data
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ADB
-r_static
-r_void
-id|pmu_poll_adb
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|via_pmu_driver
 r_struct
 id|adb_driver
@@ -7026,7 +7018,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ADB
 r_void
 id|__openfirmware
 DECL|function|pmu_poll_adb
@@ -7086,7 +7077,6 @@ id|req_awaiting_reply
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ADB */
 r_void
 id|__openfirmware
 DECL|function|pmu_wait_complete
@@ -14459,6 +14449,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pmu_poll
+)paren
+suffix:semicolon
+DECL|variable|pmu_poll_adb
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pmu_poll_adb
 )paren
 suffix:semicolon
 DECL|variable|pmu_wait_complete
