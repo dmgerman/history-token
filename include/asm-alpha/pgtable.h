@@ -1076,7 +1076,7 @@ DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
-mdefine_line|#define pgd_index(address)&t;((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD - 1))
+mdefine_line|#define pgd_index(address)&t;(((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address)&t;((mm)-&gt;pgd+pgd_index(address))
 multiline_comment|/* Find an entry in the second-level page table.. */
