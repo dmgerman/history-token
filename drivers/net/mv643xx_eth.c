@@ -1675,6 +1675,12 @@ l_int|0x20
 )paren
 )paren
 (brace
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|netif_stop_queue
 c_func
 (paren
@@ -1684,6 +1690,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|netif_carrier_on
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|netif_wake_queue
 c_func
 (paren
