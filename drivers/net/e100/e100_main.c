@@ -14016,16 +14016,26 @@ op_logical_or
 (paren
 id|ecmd.data
 OG
+(paren
+id|u32
+)paren
+(paren
 id|MAX_SCHEDULE_TIMEOUT
 op_div
 id|HZ
+)paren
 )paren
 )paren
 id|ecmd.data
 op_assign
+(paren
+id|u32
+)paren
+(paren
 id|MAX_SCHEDULE_TIMEOUT
 op_div
 id|HZ
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -14407,6 +14417,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PM
 r_static
 r_void
 DECL|function|e100_do_wol
@@ -14480,6 +14491,7 @@ l_string|&quot;e100: config WOL failed&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 r_static
 id|u16
 DECL|function|e100_get_ip_lbytes
