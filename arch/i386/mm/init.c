@@ -31,6 +31,15 @@ macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+DECL|variable|__VMALLOC_RESERVE
+r_int
+r_int
+id|__VMALLOC_RESERVE
+op_assign
+l_int|128
+op_lshift
+l_int|20
+suffix:semicolon
 id|DEFINE_PER_CPU
 c_func
 (paren
