@@ -2773,6 +2773,11 @@ id|handler
 op_eq
 l_int|NULL
 )paren
+op_logical_or
+id|irq_dir
+(braket
+id|irq
+)braket
 )paren
 r_return
 suffix:semicolon
