@@ -464,6 +464,7 @@ DECL|macro|__NR_sys_clock_getres
 mdefine_line|#define __NR_sys_clock_getres&t;&t;1255
 DECL|macro|__NR_sys_clock_nanosleep
 mdefine_line|#define __NR_sys_clock_nanosleep&t;1256
+macro_line|#ifdef __KERNEL__
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
@@ -752,9 +753,14 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif /* __KERNEL_SYSCALLS__ */
+macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on all toolchains, so we just do it by hand&n; */
 DECL|macro|cond_syscall
 mdefine_line|#define cond_syscall(x) asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&bslash;t.set&bslash;t&quot; #x &quot;,sys_ni_syscall&quot;);
+multiline_comment|/*&n; * System call handlers that, upon successful completion, need to return a negative value&n; * should call force_successful_syscall_return() right before returning.  On architectures&n; * where the syscall convention provides for a separate error flag (e.g., alpha, ia64,&n; * ppc{,64}, sparc{,64}, possibly others), this macro can be used to ensure that the error&n; * flag will not get set.  On architectures which do not support a separate error flag,&n; * the macro is a no-op and the spurious error condition needs to be filtered out by some&n; * other means (e.g., in user-level, by passing an extra argument to the syscall handler,&n; * or something along those lines).&n; *&n; * On ia64, we can clear the user&squot;s pt_regs-&gt;r8 to force a successful syscall.&n; */
+DECL|macro|force_successful_syscall_return
+mdefine_line|#define force_successful_syscall_return()&t;(ia64_task_regs(current)-&gt;r8 = 0)
 macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_UNISTD_H */
 eof
