@@ -57,5 +57,50 @@ DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|macro|check_apicid_used
 mdefine_line|#define check_apicid_used(bitmap, apicid) (bitmap &amp; (1 &lt;&lt; apicid))
+DECL|function|summit_check
+r_static
+r_inline
+r_void
+id|summit_check
+c_func
+(paren
+r_char
+op_star
+id|oem
+comma
+r_char
+op_star
+id|productid
+)paren
+(brace
+)brace
+DECL|function|clustered_apic_check
+r_static
+r_inline
+r_void
+id|clustered_apic_check
+c_func
+(paren
+r_void
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Enabling APIC mode:  %s.  Using %d I/O APICs&bslash;n&quot;
+comma
+(paren
+id|clustered_apic_mode
+ques
+c_cond
+l_string|&quot;NUMA-Q&quot;
+suffix:colon
+l_string|&quot;Flat&quot;
+)paren
+comma
+id|nr_ioapics
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof
