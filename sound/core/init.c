@@ -2887,8 +2887,7 @@ id|suspend
 id|snd_card_t
 op_star
 comma
-r_int
-r_int
+id|pm_message_t
 )paren
 comma
 r_int
@@ -2899,9 +2898,6 @@ id|resume
 (paren
 id|snd_card_t
 op_star
-comma
-r_int
-r_int
 )paren
 comma
 r_void
@@ -3248,7 +3244,6 @@ id|SNDRV_CTL_POWER_D3hot
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* FIXME: the correct state value? */
 id|card
 op_member_access_from_pointer
 id|pm_suspend
@@ -3256,7 +3251,7 @@ c_func
 (paren
 id|card
 comma
-l_int|0
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 id|snd_power_change_state
@@ -3318,15 +3313,12 @@ id|SNDRV_CTL_POWER_D0
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* FIXME: the correct state value? */
 id|card
 op_member_access_from_pointer
 id|pm_resume
 c_func
 (paren
 id|card
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|snd_power_change_state
@@ -3428,7 +3420,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -3467,7 +3459,6 @@ id|SNDRV_CTL_POWER_D3hot
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* FIXME: correct state value? */
 id|err
 op_assign
 id|card
@@ -3477,7 +3468,7 @@ c_func
 (paren
 id|card
 comma
-l_int|0
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 id|pci_save_state
@@ -3548,15 +3539,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: correct state value? */
 id|card
 op_member_access_from_pointer
 id|pm_resume
 c_func
 (paren
 id|card
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|snd_power_change_state

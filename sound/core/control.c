@@ -4798,15 +4798,12 @@ op_ne
 id|power_state
 )paren
 (brace
-multiline_comment|/* FIXME: pass the correct state value */
 id|card
 op_member_access_from_pointer
 id|pm_resume
 c_func
 (paren
 id|card
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|snd_power_change_state
@@ -4831,7 +4828,6 @@ op_ne
 id|power_state
 )paren
 (brace
-multiline_comment|/* FIXME: pass the correct state value */
 id|card
 op_member_access_from_pointer
 id|pm_suspend
@@ -4839,7 +4835,7 @@ c_func
 (paren
 id|card
 comma
-l_int|0
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 id|snd_power_change_state

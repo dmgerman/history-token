@@ -975,8 +975,7 @@ id|hda_codec
 op_star
 id|codec
 comma
-r_int
-r_int
+id|pm_message_t
 id|state
 )paren
 suffix:semicolon
@@ -991,10 +990,6 @@ r_struct
 id|hda_codec
 op_star
 id|codec
-comma
-r_int
-r_int
-id|state
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1651,8 +1646,7 @@ id|hda_bus
 op_star
 id|bus
 comma
-r_int
-r_int
+id|pm_message_t
 id|state
 )paren
 suffix:semicolon
@@ -1664,10 +1658,6 @@ r_struct
 id|hda_bus
 op_star
 id|bus
-comma
-r_int
-r_int
-id|state
 )paren
 suffix:semicolon
 macro_line|#endif

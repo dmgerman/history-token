@@ -583,8 +583,7 @@ id|snd_card_t
 op_star
 id|card
 comma
-r_int
-r_int
+id|pm_message_t
 id|state
 )paren
 suffix:semicolon
@@ -598,10 +597,6 @@ id|pm_resume
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-r_int
-id|state
 )paren
 suffix:semicolon
 DECL|member|pm_private_data
@@ -769,8 +764,7 @@ id|suspend
 id|snd_card_t
 op_star
 comma
-r_int
-r_int
+id|pm_message_t
 )paren
 comma
 r_int
@@ -781,9 +775,6 @@ id|resume
 (paren
 id|snd_card_t
 op_star
-comma
-r_int
-r_int
 )paren
 comma
 r_void
@@ -808,8 +799,7 @@ id|suspend
 id|snd_card_t
 op_star
 comma
-r_int
-r_int
+id|pm_message_t
 )paren
 comma
 r_int
@@ -820,9 +810,6 @@ id|resume
 (paren
 id|snd_card_t
 op_star
-comma
-r_int
-r_int
 )paren
 comma
 r_void
@@ -844,7 +831,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 suffix:semicolon
