@@ -68,20 +68,17 @@ multiline_comment|/*&n; * Kernel/driver only definitions&n; */
 macro_line|#if __KERNEL__
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
-macro_line|#include &lt;asm/sn/alenlist.h&gt;
 macro_line|#include &lt;asm/sn/ioerror.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
 r_struct
 id|xwidget_hwid_s
 suffix:semicolon
-multiline_comment|/*&n; *    Acceptable flag bits for xtalk service calls&n; *&n; * XTALK_FIXED: require that mappings be established&n; *&t;using fixed sharable resources; address&n; *&t;translation results will be permanently&n; *&t;available. (PIOMAP_FIXED and DMAMAP_FIXED are&n; *&t;the same numeric value and are acceptable).&n; * XTALK_NOSLEEP: if any part of the operation would&n; *&t;sleep waiting for resoruces, return an error&n; *&t;instead. (PIOMAP_NOSLEEP and DMAMAP_NOSLEEP are&n; *&t;the same numeric value and are acceptable).&n; * XTALK_INPLACE: when operating on alenlist structures,&n; *&t;reuse the source alenlist rather than creating a&n; *&t;new one. (PIOMAP_INPLACE and DMAMAP_INPLACE are&n; *&t;the same numeric value and are acceptable).&n; */
+multiline_comment|/*&n; *    Acceptable flag bits for xtalk service calls&n; *&n; * XTALK_FIXED: require that mappings be established&n; *&t;using fixed sharable resources; address&n; *&t;translation results will be permanently&n; *&t;available. (PIOMAP_FIXED and DMAMAP_FIXED are&n; *&t;the same numeric value and are acceptable).&n; * XTALK_NOSLEEP: if any part of the operation would&n; *&t;sleep waiting for resoruces, return an error&n; *&t;instead. (PIOMAP_NOSLEEP and DMAMAP_NOSLEEP are&n; *&t;the same numeric value and are acceptable).&n; */
 DECL|macro|XTALK_FIXED
 mdefine_line|#define&t;XTALK_FIXED&t;&t;DMAMAP_FIXED
 DECL|macro|XTALK_NOSLEEP
 mdefine_line|#define&t;XTALK_NOSLEEP&t;&t;DMAMAP_NOSLEEP
-DECL|macro|XTALK_INPLACE
-mdefine_line|#define&t;XTALK_INPLACE&t;&t;DMAMAP_INPLACE
 multiline_comment|/* PIO MANAGEMENT */
 r_typedef
 id|xtalk_piomap_t
@@ -266,24 +263,6 @@ id|byte_count
 suffix:semicolon
 multiline_comment|/* map this many bytes */
 r_typedef
-id|alenlist_t
-DECL|typedef|xtalk_dmamap_list_f
-id|xtalk_dmamap_list_f
-(paren
-id|xtalk_dmamap_t
-id|dmamap
-comma
-multiline_comment|/* use these mapping resources */
-id|alenlist_t
-id|alenlist
-comma
-multiline_comment|/* map this address/length list */
-r_int
-r_int
-id|flags
-)paren
-suffix:semicolon
-r_typedef
 r_void
 DECL|typedef|xtalk_dmamap_done_f
 id|xtalk_dmamap_done_f
@@ -319,28 +298,6 @@ id|flags
 )paren
 suffix:semicolon
 r_typedef
-id|alenlist_t
-DECL|typedef|xtalk_dmatrans_list_f
-id|xtalk_dmatrans_list_f
-(paren
-id|vertex_hdl_t
-id|dev
-comma
-multiline_comment|/* translate for this device */
-id|device_desc_t
-id|dev_desc
-comma
-multiline_comment|/* device descriptor */
-id|alenlist_t
-id|palenlist
-comma
-multiline_comment|/* system address/length list */
-r_int
-r_int
-id|flags
-)paren
-suffix:semicolon
-r_typedef
 r_void
 DECL|typedef|xtalk_dmamap_drain_f
 id|xtalk_dmamap_drain_f
@@ -368,20 +325,6 @@ id|bytes
 )paren
 suffix:semicolon
 multiline_comment|/* for this many bytes */
-r_typedef
-r_void
-DECL|typedef|xtalk_dmalist_drain_f
-id|xtalk_dmalist_drain_f
-(paren
-id|vertex_hdl_t
-id|vhdl
-comma
-multiline_comment|/* drain channel from this device */
-id|alenlist_t
-id|list
-)paren
-suffix:semicolon
-multiline_comment|/* for this set of physical blocks */
 multiline_comment|/* INTERRUPT MANAGEMENT */
 multiline_comment|/*&n; * A xtalk interrupt resource handle.  When resources are allocated&n; * in order to satisfy a xtalk_intr_alloc request, a xtalk_intr handle&n; * is returned.  xtalk_intr_connect associates a software handler with&n;&n; * these system resources.&n; */
 DECL|typedef|xtalk_intr_t
@@ -591,11 +534,6 @@ id|xtalk_dmamap_addr_f
 op_star
 id|dmamap_addr
 suffix:semicolon
-DECL|member|dmamap_list
-id|xtalk_dmamap_list_f
-op_star
-id|dmamap_list
-suffix:semicolon
 DECL|member|dmamap_done
 id|xtalk_dmamap_done_f
 op_star
@@ -606,11 +544,6 @@ id|xtalk_dmatrans_addr_f
 op_star
 id|dmatrans_addr
 suffix:semicolon
-DECL|member|dmatrans_list
-id|xtalk_dmatrans_list_f
-op_star
-id|dmatrans_list
-suffix:semicolon
 DECL|member|dmamap_drain
 id|xtalk_dmamap_drain_f
 op_star
@@ -620,11 +553,6 @@ DECL|member|dmaaddr_drain
 id|xtalk_dmaaddr_drain_f
 op_star
 id|dmaaddr_drain
-suffix:semicolon
-DECL|member|dmalist_drain
-id|xtalk_dmalist_drain_f
-op_star
-id|dmalist_drain
 suffix:semicolon
 multiline_comment|/* INTERRUPT MANAGEMENT */
 DECL|member|intr_alloc
@@ -701,10 +629,6 @@ id|xtalk_dmamap_addr_f
 id|xtalk_dmamap_addr
 suffix:semicolon
 r_extern
-id|xtalk_dmamap_list_f
-id|xtalk_dmamap_list
-suffix:semicolon
-r_extern
 id|xtalk_dmamap_done_f
 id|xtalk_dmamap_done
 suffix:semicolon
@@ -713,20 +637,12 @@ id|xtalk_dmatrans_addr_f
 id|xtalk_dmatrans_addr
 suffix:semicolon
 r_extern
-id|xtalk_dmatrans_list_f
-id|xtalk_dmatrans_list
-suffix:semicolon
-r_extern
 id|xtalk_dmamap_drain_f
 id|xtalk_dmamap_drain
 suffix:semicolon
 r_extern
 id|xtalk_dmaaddr_drain_f
 id|xtalk_dmaaddr_drain
-suffix:semicolon
-r_extern
-id|xtalk_dmalist_drain_f
-id|xtalk_dmalist_drain
 suffix:semicolon
 r_extern
 id|xtalk_intr_alloc_f

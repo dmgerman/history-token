@@ -1021,32 +1021,6 @@ id|size
 )paren
 suffix:semicolon
 )brace
-r_void
-DECL|function|pciio_dmalist_drain
-id|pciio_dmalist_drain
-c_func
-(paren
-id|vertex_hdl_t
-id|dev
-comma
-id|alenlist_t
-id|list
-)paren
-(brace
-id|DEV_FUNC
-c_func
-(paren
-id|dev
-comma
-id|dmalist_drain
-)paren
-(paren
-id|dev
-comma
-id|list
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* =====================================================================&n; *          INTERRUPT MANAGEMENT&n; *&n; *      Allow crosstalk devices to establish interrupts&n; */
 multiline_comment|/*&n; * Allocate resources required for an interrupt as specified in intr_desc.&n; * Return resource handle in intr_hdl.&n; */
 id|pciio_intr_t
