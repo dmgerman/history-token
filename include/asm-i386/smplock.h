@@ -14,6 +14,8 @@ macro_line|#else
 macro_line|#ifdef CONFIG_PREEMPT
 DECL|macro|kernel_locked
 mdefine_line|#define kernel_locked()&t;&t;preempt_get_count()
+DECL|macro|global_irq_holder
+mdefine_line|#define global_irq_holder&t;0
 macro_line|#else
 DECL|macro|kernel_locked
 mdefine_line|#define kernel_locked()&t;&t;1
