@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * These are the generic versions of the spinlocks and read-write&n; * locks..&n; */
 DECL|macro|spin_lock_irqsave
 mdefine_line|#define spin_lock_irqsave(lock, flags)&t;&t;do { local_irq_save(flags);       spin_lock(lock); } while (0)
