@@ -51,6 +51,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -1201,9 +1202,9 @@ suffix:semicolon
 multiline_comment|/* end elf_kcore_store_hdr() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * read from the ELF header and then kernel memory&n; */
-DECL|function|read_kcore
 r_static
 id|ssize_t
+DECL|function|read_kcore
 id|read_kcore
 c_func
 (paren
@@ -1213,6 +1214,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma
