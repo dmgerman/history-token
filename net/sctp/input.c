@@ -675,14 +675,12 @@ id|ret
 suffix:semicolon
 id|bad_packet
 suffix:colon
-macro_line|#if 0 /* FIXME */
 id|SCTP_INC_STATS
 c_func
 (paren
-id|SctpInErrs
+id|SctpChecksumErrors
 )paren
 suffix:semicolon
-macro_line|#endif /* FIXME*/
 id|discard_it
 suffix:colon
 id|kfree_skb

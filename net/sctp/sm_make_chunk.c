@@ -3033,7 +3033,7 @@ op_logical_neg
 id|retval
 )paren
 (brace
-id|dev_kfree_skb
+id|kfree_skb
 c_func
 (paren
 id|skb
