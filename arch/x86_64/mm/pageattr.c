@@ -264,6 +264,8 @@ id|address
 r_if
 c_cond
 (paren
+l_int|0
+op_logical_and
 id|address
 op_logical_and
 id|cpu_has_clflush

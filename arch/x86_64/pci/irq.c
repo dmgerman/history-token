@@ -496,11 +496,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|pcibios_last_bus
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
+singleline_comment|//pcibios_last_bus = -1;
 )brace
 multiline_comment|/*&n; *  Code for querying and setting of IRQ routes on various interrupt routers.&n; */
 DECL|function|eisa_set_level_irq
@@ -1159,7 +1155,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;AMD: dev %04x:%04x, router pirq : %d get irq : %2d&bslash;n&quot;
+l_string|&quot;AMD756: dev %04x:%04x, router pirq : %d get irq : %2d&bslash;n&quot;
 comma
 id|dev-&gt;vendor
 comma
@@ -1201,7 +1197,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;AMD: dev %04x:%04x, router pirq : %d SET irq : %2d&bslash;n&quot;
+l_string|&quot;AMD756: dev %04x:%04x, router pirq : %d SET irq : %2d&bslash;n&quot;
 comma
 id|dev-&gt;vendor
 comma

@@ -4898,6 +4898,7 @@ id|HZ
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Expect a few ticks at least, to be sure some possible&n;&t; * glue logic does not lock up after one or two first&n;&t; * ticks in a non-ExtINT mode.  Also the local APIC&n;&t; * might have cached one ExtINT interrupt.  Finally, at&n;&t; * least one tick may be lost due to delays.&n;&t; */
+multiline_comment|/* jiffies wrap? */
 r_if
 c_cond
 (paren

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * legacy.c - traditional, old school PCI bus probing&n; */
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/*&n; * Discover remaining PCI buses in case there are peer host bridges.&n; * We use the number of last PCI bus provided by the PCI BIOS.&n; */
 DECL|function|pcibios_fixup_peer_bridges
@@ -17,10 +17,12 @@ id|n
 suffix:semicolon
 r_struct
 id|pci_bus
+op_star
 id|bus
 suffix:semicolon
 r_struct
 id|pci_dev
+op_star
 id|dev
 suffix:semicolon
 id|u16
@@ -34,7 +36,7 @@ op_le
 l_int|0
 op_logical_or
 id|pcibios_last_bus
-OG
+op_ge
 l_int|0xff
 )paren
 r_return
@@ -45,6 +47,57 @@ c_func
 l_string|&quot;PCI: Peer bridge fixup&bslash;n&quot;
 )paren
 suffix:semicolon
+id|bus
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|bus
+)paren
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+id|dev
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|dev
+)paren
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bus
+op_logical_or
+op_logical_neg
+id|dev
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Out of memory in %s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -74,31 +127,30 @@ id|n
 )paren
 r_continue
 suffix:semicolon
-id|bus.number
+id|bus-&gt;number
 op_assign
 id|n
 suffix:semicolon
-id|bus.ops
+id|bus-&gt;ops
 op_assign
 id|pci_root_ops
 suffix:semicolon
-id|dev.bus
+id|dev-&gt;bus
 op_assign
-op_amp
 id|bus
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|dev.devfn
+id|dev-&gt;devfn
 op_assign
 l_int|0
 suffix:semicolon
-id|dev.devfn
+id|dev-&gt;devfn
 OL
 l_int|256
 suffix:semicolon
-id|dev.devfn
+id|dev-&gt;devfn
 op_add_assign
 l_int|8
 )paren
@@ -109,7 +161,6 @@ op_logical_neg
 id|pci_read_config_word
 c_func
 (paren
-op_amp
 id|dev
 comma
 id|PCI_VENDOR_ID
@@ -134,7 +185,7 @@ l_string|&quot;Found device at %02x:%02x [%04x]&bslash;n&quot;
 comma
 id|n
 comma
-id|dev.devfn
+id|dev-&gt;devfn
 comma
 id|l
 )paren
@@ -162,6 +213,20 @@ r_break
 suffix:semicolon
 )brace
 )brace
+m_exit
+suffix:colon
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|bus
+)paren
+suffix:semicolon
 )brace
 DECL|function|pci_legacy_init
 r_static

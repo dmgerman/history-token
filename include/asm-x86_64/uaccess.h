@@ -3,6 +3,7 @@ DECL|macro|__X86_64_UACCESS_H
 mdefine_line|#define __X86_64_UACCESS_H
 multiline_comment|/*&n; * User space memory access functions&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/prefetch.h&gt;
@@ -35,7 +36,7 @@ DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size) (__range_not_ok(addr,size) == 0)
 DECL|function|verify_area
 r_extern
-r_inline
+id|__force_inline
 r_int
 id|verify_area
 c_func
@@ -273,7 +274,7 @@ id|len
 suffix:semicolon
 DECL|function|__copy_from_user
 r_static
-r_inline
+id|__force_inline
 r_int
 id|__copy_from_user
 c_func
@@ -624,7 +625,7 @@ suffix:semicolon
 )brace
 DECL|function|__copy_to_user
 r_static
-r_inline
+id|__force_inline
 r_int
 id|__copy_to_user
 c_func

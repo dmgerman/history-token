@@ -1860,8 +1860,9 @@ c_func
 (paren
 id|__NR_set_thread_area
 comma
-id|sys_set_thread_area
+id|sys_ni_syscall
 )paren
+multiline_comment|/* use arch_prctl */
 DECL|macro|__NR_io_setup
 mdefine_line|#define __NR_io_setup&t;206
 id|__SYSCALL
@@ -1914,8 +1915,9 @@ c_func
 (paren
 id|__NR_get_thread_area
 comma
-id|sys_get_thread_area
+id|sys_ni_syscall
 )paren
+multiline_comment|/* use arch_prctl */
 DECL|macro|__NR_lookup_dcookie
 mdefine_line|#define __NR_lookup_dcookie&t;212
 id|__SYSCALL

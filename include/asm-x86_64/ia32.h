@@ -486,6 +486,56 @@ DECL|macro|IA32_PAGE_OFFSET
 mdefine_line|#define IA32_PAGE_OFFSET 0xffffe000
 DECL|macro|IA32_STACK_TOP
 mdefine_line|#define IA32_STACK_TOP IA32_PAGE_OFFSET
+macro_line|#ifdef __KERNEL__
+r_struct
+id|user_desc
+suffix:semicolon
+r_int
+id|do_get_thread_area
+c_func
+(paren
+r_struct
+id|thread_struct
+op_star
+id|t
+comma
+r_struct
+id|user_desc
+op_star
+id|u_info
+)paren
+suffix:semicolon
+r_int
+id|do_set_thread_area
+c_func
+(paren
+r_struct
+id|thread_struct
+op_star
+id|t
+comma
+r_struct
+id|user_desc
+op_star
+id|u_info
+)paren
+suffix:semicolon
+r_int
+id|ia32_child_tls
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|p
+comma
+r_struct
+id|pt_regs
+op_star
+id|childregs
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */
 macro_line|#endif 
 eof
