@@ -1,7 +1,8 @@
 multiline_comment|/*&n; * kobject.c - library routines for handling generic kernel objects&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG 1
+mdefine_line|#define DEBUG 0
 macro_line|#include &lt;linux/kobject.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 multiline_comment|/**&n; *&t;kobject_populate_dir - populate directory with attributes.&n; *&t;@kobj:&t;object we&squot;re working on.&n; *&n; *&t;Most subsystems have a set of default attributes that &n; *&t;are associated with an object that registers with them.&n; *&t;This is a helper called during object registration that &n; *&t;loops through the default attributes of the subsystem &n; *&t;and creates attributes files for them in sysfs.&n; *&n; */
@@ -231,6 +232,16 @@ id|s-&gt;rwsem
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|strlen
+c_func
+(paren
+id|kobj-&gt;name
+)paren
+)paren
+(brace
 id|error
 op_assign
 id|sysfs_create_dir
@@ -265,6 +276,7 @@ c_func
 id|kobj
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 id|error
