@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsmthdat - control method arguments and local variables&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -16,6 +16,7 @@ r_void
 DECL|function|acpi_ds_method_data_init
 id|acpi_ds_method_data_init
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -181,6 +182,7 @@ r_void
 DECL|function|acpi_ds_method_data_delete_all
 id|acpi_ds_method_data_delete_all
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -316,6 +318,7 @@ id|acpi_status
 DECL|function|acpi_ds_method_data_init_args
 id|acpi_ds_method_data_init_args
 (paren
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -324,6 +327,7 @@ comma
 id|u32
 id|max_param_count
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -452,10 +456,12 @@ comma
 id|u32
 id|index
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 op_star
@@ -594,10 +600,12 @@ comma
 id|u32
 id|index
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|object
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -606,10 +614,12 @@ id|walk_state
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|new_desc
@@ -752,6 +762,7 @@ comma
 id|u32
 id|index
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -760,10 +771,12 @@ id|walk_state
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -848,10 +861,12 @@ comma
 id|u32
 id|index
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -861,10 +876,12 @@ id|dest_desc
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -1026,6 +1043,7 @@ comma
 id|u32
 id|index
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -1034,10 +1052,12 @@ id|walk_state
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -1125,10 +1145,12 @@ comma
 id|u32
 id|index
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -1137,10 +1159,12 @@ id|walk_state
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|current_obj_desc

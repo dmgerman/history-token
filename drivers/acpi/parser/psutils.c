@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: psutils - Parser miscellaneous utilities (Parser only)&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -11,6 +11,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;psutils&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_create_scope_op&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      scope_op&n; *&n; * DESCRIPTION: Create a Scope and associated namepath op with the root name&n; *&n; ******************************************************************************/
+r_union
 id|acpi_parse_object
 op_star
 DECL|function|acpi_ps_create_scope_op
@@ -19,6 +20,7 @@ id|acpi_ps_create_scope_op
 r_void
 )paren
 (brace
+r_union
 id|acpi_parse_object
 op_star
 id|scope_op
@@ -58,6 +60,7 @@ r_void
 DECL|function|acpi_ps_init_op
 id|acpi_ps_init_op
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -102,6 +105,7 @@ id|op-&gt;common.aml_op_name
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_alloc_op&n; *&n; * PARAMETERS:  Opcode          - Opcode that will be stored in the new Op&n; *&n; * RETURN:      Pointer to the new Op.&n; *&n; * DESCRIPTION: Allocate an acpi_op, choose op type (and thus size) based on&n; *              opcode.  A cache of opcodes is available for the pure&n; *              GENERIC_OP, since this is by far the most commonly used.&n; *&n; ******************************************************************************/
+r_union
 id|acpi_parse_object
 op_star
 DECL|function|acpi_ps_alloc_op
@@ -111,6 +115,7 @@ id|u16
 id|opcode
 )paren
 (brace
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -124,6 +129,7 @@ id|u8
 id|flags
 suffix:semicolon
 r_const
+r_struct
 id|acpi_opcode_info
 op_star
 id|op_info
@@ -152,6 +158,7 @@ id|size
 op_assign
 r_sizeof
 (paren
+r_struct
 id|acpi_parse_obj_named
 )paren
 suffix:semicolon
@@ -173,6 +180,7 @@ id|size
 op_assign
 r_sizeof
 (paren
+r_struct
 id|acpi_parse_obj_named
 )paren
 suffix:semicolon
@@ -194,6 +202,7 @@ id|size
 op_assign
 r_sizeof
 (paren
+r_struct
 id|acpi_parse_obj_named
 )paren
 suffix:semicolon
@@ -208,6 +217,7 @@ id|size
 op_assign
 r_sizeof
 (paren
+r_struct
 id|acpi_parse_obj_common
 )paren
 suffix:semicolon
@@ -223,6 +233,7 @@ id|size
 op_eq
 r_sizeof
 (paren
+r_struct
 id|acpi_parse_obj_common
 )paren
 )paren
@@ -276,6 +287,7 @@ r_void
 DECL|function|acpi_ps_free_op
 id|acpi_ps_free_op
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -423,6 +435,7 @@ id|u32
 DECL|function|acpi_ps_get_name
 id|acpi_ps_get_name
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -455,6 +468,7 @@ r_void
 DECL|function|acpi_ps_set_name
 id|acpi_ps_set_name
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op

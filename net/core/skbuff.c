@@ -588,7 +588,6 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Slab constructor for a skb head.&n; */
 DECL|function|skb_headerinit
 r_static
-r_inline
 r_void
 id|skb_headerinit
 c_func

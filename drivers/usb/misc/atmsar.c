@@ -1,13 +1,6 @@
-multiline_comment|/*&n; *  General SAR library for ATM devices. &n; * &n; *  Written By Johan Verrept ( Johan.Verrept@advalvas.be )&n; *&n; *  Copyright (c) 2000, Johan Verrept&n; *&n; *  This code falls under the GNU General Public License, see COPYING for details&n; *&n; *  This package is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *  &n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. &n;&n;Version 0.2.4A:&n;       - Version for inclusion in 2.5 series kernel&n;       - Modifcations by Richard Purdie (rpurdie@rpsys.net)&n; &t;- replaced &quot;sarlib&quot; with &quot;atmsar&quot;&n;       - adaptations for inclusion in kernel tree&n;&n;Version 0.2.4:&n;&t;- Fixed wrong buffer overrun check in atmsar_decode_rawcell()&n;&t;  reported by Stephen Robinson &lt;stephen.robinson@zen.co.uk&gt;&n;&t;- Fixed bug when input skb did not contain a multple of 52/53 bytes.&n;&t;  (would happen when the speedtouch device resynced)&n;&t;  also reported by Stephen Robinson &lt;stephen.robinson@zen.co.uk&gt;&n;&n;Version 0.2.3:&n;&t;- Fixed wrong allocation size. caused memory corruption in some&n;&t;  cases. Reported by Vladimir Dergachev &lt;volodya@mindspring.com&gt;&n;&t;- Added some comments&n;&n;Version 0.2.2:&n;&t;- Fixed CRCASM (patch from Linus Flannagan &lt;linusf@netservices.eng.net&gt;)&n;&t;- Fixed problem when user did NOT use the ATMSAR_USE_53BYTE_CELL flag.&n;          (reported by  Piers Scannell &lt;email@lot105.com&gt; )&n;&t;- No more in-buffer rewriting for cloned buffers.&n;&t;- Removed the PII specific CFLAGS in the Makefile.&n;&n;Version 0.2.1:&n;&t;- removed dependancy on alloc_tx. tis presented problems when using&n;&t;&t;this with the  br2684 code.&n;&n;Version 0.2:&n;        - added AAL0 reassembly&n;        - added alloc_tx support                  &n;        - replaced alloc_skb in decode functions to dev_alloc_skb to allow&n;                 calling from interrupt&n;        - fixed embarassing AAL5 bug. I was setting the pti bit in the wrong&n;                byte...&n;        - fixed another emabrassing bug.. picked up the wrong crc type and&n;                forgot to invert the crc result...&n;        - fixed AAL5 length calculations.&n;        - removed automatic skb freeing from encode functions.&n;                This caused problems because i did kfree_skb it, while it&n;                needed to be popped. I cannot determine though whether it&n;                needs to be popped or not. Figu&squot;e it out ye&squot;self ;-)&n;        - added mru field. This is the buffersize. atmsar_decode_aal0 will&n;                use when it allocates a receive buffer. A stop gap for real&n;&t;&t;buffer management.&n;&n;Version 0.1:&n;&t;- library created.&n;&t;- only contains AAL5, AAL0 can be easily added. ( actually, only&n;&t;&t;AAL0 reassembly is missing)&n;*/
+multiline_comment|/******************************************************************************&n; *  atmsar.c  --  General SAR library for ATM devices.&n; *&n; *  Copyright (C) 2000, Johan Verrept&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the Free&n; *  Software Foundation; either version 2 of the License, or (at your option)&n; *  any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for&n; *  more details.&n; *&n; *  You should have received a copy of the GNU General Public License along with&n; *  this program; if not, write to the Free Software Foundation, Inc., 59&n; *  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Written by Johan Verrept (Johan.Verrept@advalvas.be)&n; *&n; *  0.2.4A:&t;- Version for inclusion in 2.5 series kernel&n; *&t;&t;- Modifications by Richard Purdie (rpurdie@rpsys.net)&n; *&t;&t;- replaced &quot;sarlib&quot; with &quot;atmsar&quot;&n; *&t;&t;- adaptations for inclusion in kernel tree&n; *&n; *  0.2.4:&t;- Fixed wrong buffer overrun check in atmsar_decode_rawcell()&n; *&t;&t;reported by Stephen Robinson &lt;stephen.robinson@zen.co.uk&gt;&n; *&t;&t;- Fixed bug when input skb did not contain a multple of 52/53&n; *&t;&t;bytes (would happen when the speedtouch device resynced)&n; *&t;&t;also reported by Stephen Robinson &lt;stephen.robinson@zen.co.uk&gt;&n; *&n; *  0.2.3:&t;- Fixed wrong allocation size. caused memory corruption in some&n; *&t;&t;cases. Reported by Vladimir Dergachev &lt;volodya@mindspring.com&gt;&n; *&t;&t;- Added some comments&n; *&n; *  0.2.2:&t;- Fixed CRCASM&n; *&t;&t;patch from Linus Flannagan &lt;linusf@netservices.eng.net&gt;&n; *&t;&t;- Fixed problem when user did NOT use the&n; *&t;&t;ATMSAR_USE_53BYTE_CELL flag.&n; *&t;&t;reported by  Piers Scannell &lt;email@lot105.com&gt;&n; *&t;&t;- No more in-buffer rewriting for cloned buffers.&n; *&t;&t;- Removed the PII specific CFLAGS in the Makefile.&n; *&n; *  0.2.1:&t;- removed dependancy on alloc_tx. tis presented problems when&n; *&t;&t;using this with the br2684 code.&n; *&n; *  0.2:&t;- added AAL0 reassembly&n; *&t;&t;- added alloc_tx support&n; *&t;&t;- replaced alloc_skb in decode functions to dev_alloc_skb to&n; *&t;&t;allow calling from interrupt&n; *&t;&t;- fixed embarassing AAL5 bug. I was setting the pti bit in the&n; *&t;&t;wrong byte...&n; *&t;&t;- fixed another emabrassing bug.. picked up the wrong crc type&n; *&t;&t;and forgot to invert the crc result...&n; *&t;&t;- fixed AAL5 length calculations.&n; *&t;&t;- removed automatic skb freeing from encode functions.&n; *&t;&t;This caused problems because i did kfree_skb it, while it&n; *&t;&t;needed to be popped. I cannot determine though whether it&n; *&t;&t;needs to be popped or not. Figu&squot;e it out ye&squot;self ;-)&n; *&t;&t;- added mru field. This is the buffersize. atmsar_decode_aal0&n; *&t;&t;will use when it allocates a receive buffer. A stop gap for&n; *&t;&t;real buffer management.&n; *&n; *  0.1:&t;- library created.&n; *&t;&t;- only contains AAL5, AAL0 can be easily added. (actually, only&n; *&t;&t;AAL0 reassembly is missing)&n; *&n; */
 macro_line|#include &quot;atmsar.h&quot;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR &quot;Johan Verrept, Johan.Verrept@advalvas.be&quot;
-DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC &quot;General SAR library for ATM devices&quot;
-DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;0.2.4A&quot;
 multiline_comment|/***********************&n; **&n; **  things to remember&n; **&n; ***********************/
 multiline_comment|/*&n;  1. the atmsar_vcc_data list pointer MUST be initialized to NULL&n;  2. atmsar_encode_rawcell will drop incomplete cells.&n;  3. ownership of the skb goes to the library !&n;*/
 DECL|macro|ATM_HDR_VPVC_MASK
@@ -686,7 +679,7 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|crc32
 mdefine_line|#define crc32( crc, mem, len) calc_crc(mem, len, crc);
-multiline_comment|/* initialiation routines. not used at the moment &n; * I will avoid these as long as possible !!&n; */
+multiline_comment|/* initialization routines. not used at the moment&n; * I will avoid these as long as possible !!&n; */
 DECL|function|open_atmsar
 r_int
 id|open_atmsar
@@ -1060,7 +1053,7 @@ id|vcc
 op_assign
 id|vcc
 suffix:semicolon
-multiline_comment|/*&n; * This gives problems with the ATM layer alloc_tx().&n; * It is not usable from interrupt context and for&n; * some reason this is used in interurpt context &n; * with br2684.c&n; *&n;  if (vcc-&gt;alloc_tx)&n;    new-&gt;alloc_tx  = vcc-&gt;alloc_tx;&n;  else&n;*/
+multiline_comment|/*&n; * This gives problems with the ATM layer alloc_tx().&n; * It is not usable from interrupt context and for&n; * some reason this is used in interrupt context&n; * with br2684.c&n; *&n;  if (vcc-&gt;alloc_tx)&n;    new-&gt;alloc_tx  = vcc-&gt;alloc_tx;&n;  else&n;*/
 r_new
 op_member_access_from_pointer
 id|alloc_tx
@@ -2461,7 +2454,7 @@ id|dev_alloc_skb
 id|vcc-&gt;mtu
 )paren
 suffix:semicolon
-multiline_comment|/* if alloc fails, we just drop the cell. it is possible that we can still&n;&t;&t;&t;&t; * receive cells on other vcc&squot;s &n;&t;&t;&t;&t; */
+multiline_comment|/* if alloc fails, we just drop the cell. it is possible that we can still&n;&t;&t;&t;&t; * receive cells on other vcc&squot;s&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2901,97 +2894,5 @@ r_return
 id|skb
 suffix:semicolon
 )brace
-suffix:semicolon
-DECL|function|start
-r_static
-r_int
-id|start
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|cleanup
-r_static
-r_void
-id|cleanup
-(paren
-r_void
-)paren
-(brace
-)brace
-DECL|variable|start
-id|module_init
-(paren
-id|start
-)paren
-suffix:semicolon
-DECL|variable|cleanup
-id|module_exit
-(paren
-id|cleanup
-)paren
-suffix:semicolon
-DECL|variable|atmsar_open
-id|EXPORT_SYMBOL
-(paren
-id|atmsar_open
-)paren
-suffix:semicolon
-DECL|variable|atmsar_close
-id|EXPORT_SYMBOL
-(paren
-id|atmsar_close
-)paren
-suffix:semicolon
-DECL|variable|atmsar_encode_rawcell
-id|EXPORT_SYMBOL
-(paren
-id|atmsar_encode_rawcell
-)paren
-suffix:semicolon
-DECL|variable|atmsar_encode_aal5
-id|EXPORT_SYMBOL
-(paren
-id|atmsar_encode_aal5
-)paren
-suffix:semicolon
-DECL|variable|atmsar_decode_rawcell
-id|EXPORT_SYMBOL
-(paren
-id|atmsar_decode_rawcell
-)paren
-suffix:semicolon
-DECL|variable|atmsar_decode_aal5
-id|EXPORT_SYMBOL
-(paren
-id|atmsar_decode_aal5
-)paren
-suffix:semicolon
-DECL|variable|atmsar_alloc_tx
-id|EXPORT_SYMBOL
-(paren
-id|atmsar_alloc_tx
-)paren
-suffix:semicolon
-DECL|variable|DRIVER_AUTHOR
-id|MODULE_AUTHOR
-(paren
-id|DRIVER_AUTHOR
-)paren
-suffix:semicolon
-DECL|variable|DRIVER_DESC
-id|MODULE_DESCRIPTION
-(paren
-id|DRIVER_DESC
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-(paren
-l_string|&quot;GPL&quot;
-)paren
 suffix:semicolon
 eof

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: pswalk - Parser routines to walk parsed op tree(s)&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -14,10 +14,12 @@ id|acpi_status
 DECL|function|acpi_ps_get_next_walk_op
 id|acpi_ps_get_next_walk_op
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -26,14 +28,17 @@ id|acpi_parse_upwards
 id|ascending_callback
 )paren
 (brace
+r_union
 id|acpi_parse_object
 op_star
 id|next
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|parent
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|grand_parent
@@ -302,6 +307,7 @@ id|acpi_status
 DECL|function|acpi_ps_delete_completed_op
 id|acpi_ps_delete_completed_op
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -323,15 +329,18 @@ r_void
 DECL|function|acpi_ps_delete_parse_tree
 id|acpi_ps_delete_parse_tree
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|subtree_root
 )paren
 (brace
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
+r_struct
 id|acpi_thread_state
 op_star
 id|thread
@@ -457,6 +466,7 @@ id|acpi_ut_delete_generic_state
 (paren
 id|ACPI_CAST_PTR
 (paren
+r_union
 id|acpi_generic_state
 comma
 id|thread

@@ -40,8 +40,7 @@ l_int|0
 )paren
 suffix:semicolon
 DECL|function|unix_get_socket
-r_extern
-r_inline
+r_static
 id|unix_socket
 op_star
 id|unix_get_socket
@@ -213,7 +212,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Garbage Collector Support Functions&n; */
 DECL|function|pop_stack
-r_extern
+r_static
 r_inline
 id|unix_socket
 op_star
@@ -244,7 +243,7 @@ id|p
 suffix:semicolon
 )brace
 DECL|function|empty_stack
-r_extern
+r_static
 r_inline
 r_int
 id|empty_stack
@@ -260,8 +259,7 @@ id|GC_HEAD
 suffix:semicolon
 )brace
 DECL|function|maybe_unmark_and_push
-r_extern
-r_inline
+r_static
 r_void
 id|maybe_unmark_and_push
 c_func

@@ -21,6 +21,7 @@ r_struct
 id|acpi_pci_data
 (brace
 DECL|member|id
+r_struct
 id|acpi_pci_id
 id|id
 suffix:semicolon
@@ -71,6 +72,7 @@ id|acpi_os_get_pci_id
 id|acpi_handle
 id|handle
 comma
+r_struct
 id|acpi_pci_id
 op_star
 id|id
@@ -296,6 +298,7 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -745,6 +748,7 @@ id|acpi_device
 op_star
 id|device
 comma
+r_struct
 id|acpi_pci_id
 op_star
 id|id
@@ -782,6 +786,7 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign

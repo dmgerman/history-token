@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: evregion - ACPI address_space (op_region) handler dispatch&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -203,6 +203,7 @@ id|acpi_status
 DECL|function|acpi_ev_execute_reg_method
 id|acpi_ev_execute_reg_method
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|region_obj
@@ -211,6 +212,7 @@ id|u32
 id|function
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|params
@@ -218,6 +220,7 @@ id|params
 l_int|3
 )braket
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|region_obj2
@@ -399,6 +402,7 @@ id|acpi_status
 DECL|function|acpi_ev_address_space_dispatch
 id|acpi_ev_address_space_dispatch
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|region_obj
@@ -429,10 +433,12 @@ suffix:semicolon
 id|acpi_adr_space_setup
 id|region_setup
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|handler_desc
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|region_obj2
@@ -773,6 +779,7 @@ DECL|function|acpi_ev_detach_region
 id|acpi_ev_detach_region
 c_func
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|region_obj
@@ -781,14 +788,17 @@ id|u8
 id|acpi_ns_is_locked
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|handler_obj
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -801,6 +811,7 @@ r_void
 op_star
 id|region_context
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|region_obj2
@@ -1088,10 +1099,12 @@ id|acpi_status
 DECL|function|acpi_ev_attach_region
 id|acpi_ev_attach_region
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|handler_obj
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|region_obj
@@ -1238,18 +1251,22 @@ op_star
 id|return_value
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|handler_obj
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|tmp_obj
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -1265,6 +1282,7 @@ suffix:semicolon
 id|handler_obj
 op_assign
 (paren
+r_union
 id|acpi_operand_object
 op_star
 )paren

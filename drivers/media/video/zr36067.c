@@ -17351,10 +17351,6 @@ id|input
 comma
 id|status
 suffix:semicolon
-r_int
-r_int
-id|timeout
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17523,24 +17519,16 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* sleep 1 second */
-id|timeout
-op_assign
-id|jiffies
-op_plus
-l_int|1
-op_star
-id|HZ
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|jiffies
-OL
-id|timeout
-)paren
-id|schedule
+id|set_current_state
 c_func
 (paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
 )paren
 suffix:semicolon
 multiline_comment|/* Get status of video decoder */

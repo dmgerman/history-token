@@ -1,4 +1,5 @@
-multiline_comment|/*&n; *  Driver Module for Alcatel SpeedTouch USB xDSL modem&n; *  Copyright 2001, Alcatel&n; *  Written by Johan Verrept (Johan.Verrept@advalvas.be)&n; *&n;&n;1.5A:   - Version for inclusion in 2.5 series kernel&n;        - Modifcations by Richard Purdie (rpurdie@rpsys.net)&n;        - made compatible with kernel 2.5.6 onwards by changing&n;&t;  udsl_usb_send_data_context-&gt;urb changed to a pointer &n;&t;  and adding code to alloc and free it&n;        - remove_wait_queue() added to udsl_atm_processqueue_thread() &n;&n;1.5:&t;- fixed memory leak when atmsar_decode_aal5 returned NULL.&n;&t; (reported by stephen.robinson@zen.co.uk)&n;&n;1.4:&t;- changed the spin_lock() under interrupt to spin_lock_irqsave()&n;&t;- unlink all active send urbs of a vcc that is being closed.&n;&n;1.3.1:&t;- added the version number&n;&n;1.3:&t;- Added multiple send urb support&n;&t;- fixed memory leak and vcc-&gt;tx_inuse starvation bug&n;&t;  when not enough memory left in vcc.&n;&n;1.2:&t;- Fixed race condition in udsl_usb_send_data()&n;1.1:&t;- Turned off packet debugging&n; &n; */
+multiline_comment|/******************************************************************************&n; *  speedtouch.c  --  Alcatel SpeedTouch USB xDSL modem driver.&n; *&n; *  Copyright (C) 2001, Alcatel&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the Free&n; *  Software Foundation; either version 2 of the License, or (at your option)&n; *  any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for&n; *  more details.&n; *&n; *  You should have received a copy of the GNU General Public License along with&n; *  this program; if not, write to the Free Software Foundation, Inc., 59&n; *  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Written by Johan Verrept (Johan.Verrept@advalvas.be)&n; *&n; *  1.5A:&t;- Version for inclusion in 2.5 series kernel&n; *&t;&t;- Modifications by Richard Purdie (rpurdie@rpsys.net)&n; *&t;&t;- made compatible with kernel 2.5.6 onwards by changing&n; *&t;&t;udsl_usb_send_data_context-&gt;urb to a pointer and adding code&n; *&t;&t;to alloc and free it&n; *&t;&t;- remove_wait_queue() added to udsl_atm_processqueue_thread()&n; *&n; *  1.5:&t;- fixed memory leak when atmsar_decode_aal5 returned NULL.&n; *&t;&t;(reported by stephen.robinson@zen.co.uk)&n; *&n; *  1.4:&t;- changed the spin_lock() under interrupt to spin_lock_irqsave()&n; *&t;&t;- unlink all active send urbs of a vcc that is being closed.&n; *&n; *  1.3.1:&t;- added the version number&n; *&n; *  1.3:&t;- Added multiple send urb support&n; *&t;&t;- fixed memory leak and vcc-&gt;tx_inuse starvation bug&n; *&t;&t;  when not enough memory left in vcc.&n; *&n; *  1.2:&t;- Fixed race condition in udsl_usb_send_data()&n; *  1.1:&t;- Turned off packet debugging&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -13,14 +14,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &quot;atmsar.h&quot;
-DECL|variable|udsl_version
-r_const
-r_char
-op_star
-id|udsl_version
-op_assign
-l_string|&quot;1.5A&quot;
-suffix:semicolon
 multiline_comment|/*&n;#define DEBUG 1&n;#define DEBUG_PACKET 1&n;*/
 macro_line|#ifdef DEBUG
 DECL|macro|PDEBUG
@@ -2908,7 +2901,7 @@ op_minus
 id|ETIMEDOUT
 suffix:colon
 multiline_comment|/* unplug or timeout */
-multiline_comment|/* &n;&t;&t; * we don&squot;t do anything here and we don&squot;t resubmit&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * we don&squot;t do anything here and we don&squot;t resubmit&n;&t;&t; */
 r_return
 suffix:semicolon
 )brace
@@ -4066,6 +4059,7 @@ multiline_comment|/*************************************************************
 DECL|function|udsl_usb_init
 r_static
 r_int
+id|__init
 id|udsl_usb_init
 (paren
 r_void
@@ -4076,9 +4070,9 @@ id|i
 suffix:semicolon
 id|PDEBUG
 (paren
-l_string|&quot;Initializing SpeedTouch Driver Version %s&bslash;n&quot;
-comma
-id|udsl_version
+l_string|&quot;Initializing SpeedTouch Driver Version &quot;
+id|DRIVER_VERSION
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -4123,6 +4117,7 @@ suffix:semicolon
 DECL|function|udsl_usb_cleanup
 r_static
 r_void
+id|__exit
 id|udsl_usb_cleanup
 (paren
 r_void
@@ -4155,7 +4150,7 @@ id|udsl_usb_cleanup
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_PACKET
-multiline_comment|/*******************************************************************************&n;*&n;* Debug &n;*&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;*&n;* Debug&n;*&n;*******************************************************************************/
 DECL|function|udsl_print_packet
 r_int
 id|udsl_print_packet

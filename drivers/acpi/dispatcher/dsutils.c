@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -19,16 +19,19 @@ id|u8
 DECL|function|acpi_ds_is_result_used
 id|acpi_ds_is_result_used
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
 r_const
+r_struct
 id|acpi_opcode_info
 op_star
 id|parent_info
@@ -303,19 +306,23 @@ r_void
 DECL|function|acpi_ds_delete_result_if_not_used
 id|acpi_ds_delete_result_if_not_used
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|result_obj
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -406,6 +413,7 @@ id|acpi_status
 DECL|function|acpi_ds_resolve_operands
 id|acpi_ds_resolve_operands
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -479,6 +487,7 @@ r_void
 DECL|function|acpi_ds_clear_operands
 id|acpi_ds_clear_operands
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -540,10 +549,12 @@ id|acpi_status
 DECL|function|acpi_ds_create_operand
 id|acpi_ds_create_operand
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|arg
@@ -564,10 +575,12 @@ suffix:semicolon
 id|u32
 id|name_length
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|parent_op
@@ -579,6 +592,7 @@ id|acpi_interpreter_mode
 id|interpreter_mode
 suffix:semicolon
 r_const
+r_struct
 id|acpi_opcode_info
 op_star
 id|op_info
@@ -722,6 +736,7 @@ id|walk_state
 comma
 id|ACPI_CAST_INDIRECT_PTR
 (paren
+r_struct
 id|acpi_namespace_node
 comma
 op_amp
@@ -751,6 +766,7 @@ id|obj_desc
 op_assign
 id|ACPI_CAST_PTR
 (paren
+r_union
 id|acpi_operand_object
 comma
 id|acpi_gbl_root_node
@@ -1083,10 +1099,12 @@ id|acpi_status
 DECL|function|acpi_ds_create_operands
 id|acpi_ds_create_operands
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|first_arg
@@ -1097,6 +1115,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|arg

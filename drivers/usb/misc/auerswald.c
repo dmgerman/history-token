@@ -7107,9 +7107,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* prevent module unloading while sleeping */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* allocate memory for our device and intialize it */
 id|cp
 op_assign
@@ -7668,8 +7665,6 @@ id|auerswald_delete
 id|cp
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -7857,9 +7852,6 @@ id|scp
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* The device releases this module */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 multiline_comment|/* Descriptor for the devices which are served by this driver.&n;   NOTE: this struct is parsed by the usbmanager install scripts.&n;         Don&squot;t change without caution!&n;*/
 DECL|variable|auerswald_ids

@@ -775,6 +775,7 @@ r_void
 DECL|function|decode_acpi_resource
 id|decode_acpi_resource
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|resource
@@ -785,14 +786,17 @@ op_star
 id|bridge
 )paren
 (brace
+r_struct
 id|acpi_resource_address16
 op_star
 id|address16_data
 suffix:semicolon
+r_struct
 id|acpi_resource_address32
 op_star
 id|address32_data
 suffix:semicolon
+r_struct
 id|acpi_resource_address64
 op_star
 id|address64_data
@@ -864,6 +868,7 @@ suffix:colon
 id|address16_data
 op_assign
 (paren
+r_struct
 id|acpi_resource_address16
 op_star
 )paren
@@ -913,6 +918,7 @@ suffix:colon
 id|address32_data
 op_assign
 (paren
+r_struct
 id|acpi_resource_address32
 op_star
 )paren
@@ -962,6 +968,7 @@ suffix:colon
 id|address64_data
 op_assign
 (paren
+r_struct
 id|acpi_resource_address64
 op_star
 )paren
@@ -1023,6 +1030,7 @@ suffix:semicolon
 id|resource
 op_assign
 (paren
+r_struct
 id|acpi_resource
 op_star
 )paren
@@ -1439,6 +1447,7 @@ id|bridge
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -1454,6 +1463,7 @@ op_assign
 l_int|NULL
 )brace
 suffix:semicolon
+r_union
 id|acpi_object
 op_star
 id|package
@@ -1515,6 +1525,7 @@ suffix:semicolon
 id|package
 op_assign
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
@@ -1776,6 +1787,7 @@ id|bus
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -3313,6 +3325,7 @@ id|rv
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_device_info
 id|info
 suffix:semicolon
@@ -3322,6 +3335,7 @@ id|objname
 l_int|5
 )braket
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -3596,9 +3610,11 @@ id|list_head
 op_star
 id|l
 suffix:semicolon
+r_struct
 id|acpi_object_list
 id|arg_list
 suffix:semicolon
+r_union
 id|acpi_object
 id|arg
 suffix:semicolon
@@ -4414,6 +4430,7 @@ id|objname
 l_int|64
 )braket
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -4578,6 +4595,7 @@ id|objname
 l_int|64
 )braket
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign

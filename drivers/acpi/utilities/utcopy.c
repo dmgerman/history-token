@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
@@ -14,10 +14,12 @@ id|acpi_status
 DECL|function|acpi_ut_copy_isimple_to_esimple
 id|acpi_ut_copy_isimple_to_esimple
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|internal_object
 comma
+r_union
 id|acpi_object
 op_star
 id|external_object
@@ -69,6 +71,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 )paren
@@ -273,10 +276,12 @@ id|acpi_ut_copy_ielement_to_eelement
 id|u8
 id|object_type
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|source_object
 comma
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -291,11 +296,13 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_struct
 id|acpi_pkg_info
 op_star
 id|info
 op_assign
 (paren
+r_struct
 id|acpi_pkg_info
 op_star
 )paren
@@ -307,6 +314,7 @@ suffix:semicolon
 id|u32
 id|this_index
 suffix:semicolon
+r_union
 id|acpi_object
 op_star
 id|target_object
@@ -322,12 +330,14 @@ suffix:semicolon
 id|target_object
 op_assign
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
 op_amp
 (paren
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
@@ -398,6 +408,7 @@ id|target_object-&gt;package.elements
 op_assign
 id|ACPI_CAST_PTR
 (paren
+r_union
 id|acpi_object
 comma
 id|info-&gt;free_space
@@ -420,6 +431,7 @@ id|target_object-&gt;package.count
 op_star
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 )paren
@@ -454,6 +466,7 @@ id|acpi_status
 DECL|function|acpi_ut_copy_ipackage_to_epackage
 id|acpi_ut_copy_ipackage_to_epackage
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|internal_object
@@ -467,6 +480,7 @@ op_star
 id|space_used
 )paren
 (brace
+r_union
 id|acpi_object
 op_star
 id|external_object
@@ -474,6 +488,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_pkg_info
 id|info
 suffix:semicolon
@@ -487,6 +502,7 @@ id|external_object
 op_assign
 id|ACPI_CAST_PTR
 (paren
+r_union
 id|acpi_object
 comma
 id|buffer
@@ -499,6 +515,7 @@ id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 )paren
@@ -511,6 +528,7 @@ id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 )paren
@@ -538,6 +556,7 @@ id|external_object-&gt;package.elements
 op_assign
 id|ACPI_CAST_PTR
 (paren
+r_union
 id|acpi_object
 comma
 id|info.free_space
@@ -555,6 +574,7 @@ id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 )paren
@@ -567,6 +587,7 @@ id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 )paren
@@ -601,10 +622,12 @@ id|acpi_status
 DECL|function|acpi_ut_copy_iobject_to_eobject
 id|acpi_ut_copy_iobject_to_eobject
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|internal_object
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|ret_buffer
@@ -653,6 +676,7 @@ id|acpi_ut_copy_isimple_to_esimple
 id|internal_object
 comma
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
@@ -669,6 +693,7 @@ id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 )paren
@@ -683,6 +708,7 @@ id|ret_buffer-&gt;length
 op_add_assign
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 suffix:semicolon
@@ -698,16 +724,19 @@ id|acpi_status
 DECL|function|acpi_ut_copy_esimple_to_isimple
 id|acpi_ut_copy_esimple_to_isimple
 (paren
+r_union
 id|acpi_object
 op_star
 id|external_object
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|ret_internal_object
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|internal_object
@@ -889,6 +918,7 @@ id|acpi_status
 DECL|function|acpi_ut_copy_epackage_to_ipackage
 id|acpi_ut_copy_epackage_to_ipackage
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|internal_object
@@ -906,6 +936,7 @@ id|u8
 op_star
 id|free_space
 suffix:semicolon
+r_union
 id|acpi_object
 op_star
 id|external_object
@@ -923,10 +954,12 @@ id|object_space
 op_assign
 l_int|0
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|this_internal_obj
 suffix:semicolon
+r_union
 id|acpi_object
 op_star
 id|this_external_obj
@@ -940,6 +973,7 @@ multiline_comment|/*&n;&t; * First package at head of the buffer&n;&t; */
 id|external_object
 op_assign
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
@@ -952,6 +986,7 @@ id|buffer
 op_plus
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 suffix:semicolon
@@ -969,6 +1004,7 @@ suffix:semicolon
 id|external_object-&gt;package.elements
 op_assign
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
@@ -981,6 +1017,7 @@ id|external_object-&gt;package.count
 op_star
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 suffix:semicolon
@@ -992,10 +1029,12 @@ id|acpi_status
 DECL|function|acpi_ut_copy_eobject_to_iobject
 id|acpi_ut_copy_eobject_to_iobject
 (paren
+r_union
 id|acpi_object
 op_star
 id|external_object
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -1058,10 +1097,12 @@ id|acpi_status
 DECL|function|acpi_ut_copy_simple_object
 id|acpi_ut_copy_simple_object
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|source_desc
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|dest_desc
@@ -1070,6 +1111,7 @@ id|dest_desc
 id|u16
 id|reference_count
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|next_object
@@ -1100,6 +1142,7 @@ id|source_desc
 comma
 r_sizeof
 (paren
+r_union
 id|acpi_operand_object
 )paren
 )paren
@@ -1261,10 +1304,12 @@ id|acpi_ut_copy_ielement_to_ielement
 id|u8
 id|object_type
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|source_object
 comma
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -1282,11 +1327,13 @@ suffix:semicolon
 id|u32
 id|this_index
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|this_target_ptr
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|target_object
@@ -1302,6 +1349,7 @@ suffix:semicolon
 id|this_target_ptr
 op_assign
 (paren
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -1496,14 +1544,17 @@ id|acpi_status
 DECL|function|acpi_ut_copy_ipackage_to_ipackage
 id|acpi_ut_copy_ipackage_to_ipackage
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|source_obj
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|dest_obj
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -1616,15 +1667,18 @@ id|acpi_status
 DECL|function|acpi_ut_copy_iobject_to_iobject
 id|acpi_ut_copy_iobject_to_iobject
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|source_desc
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|dest_desc
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state

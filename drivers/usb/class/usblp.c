@@ -2400,7 +2400,8 @@ comma
 id|err
 op_assign
 l_int|0
-comma
+suffix:semicolon
+r_int
 id|writecount
 op_assign
 l_int|0

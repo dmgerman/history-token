@@ -34,14 +34,15 @@ op_star
 id|regs
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
+op_amp
+id|u-&gt;dev-&gt;dev
+comma
 l_string|&quot;hid_pid_ctrl_out - Transfer Completed&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|hid_pid_exit
 r_static
@@ -108,10 +109,13 @@ r_int
 id|is_update
 )paren
 (brace
-id|printk
+id|dev_info
 c_func
 (paren
-l_string|&quot;Requested periodic force upload&bslash;n&quot;
+op_amp
+id|pid-&gt;hid-&gt;dev-&gt;dev
+comma
+l_string|&quot;requested periodic force upload&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -138,10 +142,13 @@ r_int
 id|is_update
 )paren
 (brace
-id|printk
+id|dev_info
 c_func
 (paren
-l_string|&quot;Requested constant force upload&bslash;n&quot;
+op_amp
+id|pid-&gt;hid-&gt;dev-&gt;dev
+comma
+l_string|&quot;requested constant force upload&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -168,10 +175,13 @@ r_int
 id|is_update
 )paren
 (brace
-id|printk
+id|dev_info
 c_func
 (paren
-l_string|&quot;Requested Condition force upload&bslash;n&quot;
+op_amp
+id|pid-&gt;hid-&gt;dev-&gt;dev
+comma
+l_string|&quot;requested Condition force upload&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -198,10 +208,13 @@ r_int
 id|is_update
 )paren
 (brace
-id|printk
+id|dev_info
 c_func
 (paren
-l_string|&quot;Request ramp force upload&bslash;n&quot;
+op_amp
+id|pid-&gt;hid-&gt;dev-&gt;dev
+comma
+l_string|&quot;request ramp force upload&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -236,9 +249,12 @@ r_int
 id|value
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
+op_amp
+id|hid-&gt;dev-&gt;dev
+comma
 l_string|&quot;PID event received: type=%d,code=%d,value=%d.&bslash;n&quot;
 comma
 id|type
@@ -248,7 +264,6 @@ comma
 id|value
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -409,10 +424,13 @@ op_logical_neg
 id|ret
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;Couldn&squot;t find report&bslash;n&quot;
+op_amp
+id|hid-&gt;dev-&gt;dev
+comma
+l_string|&quot;couldn&squot;t find report&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -446,10 +464,13 @@ op_logical_neg
 id|field
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;Couldn&squot;t allocate field&bslash;n&quot;
+op_amp
+id|hid-&gt;dev-&gt;dev
+comma
+l_string|&quot;couldn&squot;t allocate field&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -481,10 +502,13 @@ op_logical_neg
 id|ret
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;Couldn&squot;t set field&bslash;n&quot;
+op_amp
+id|hid-&gt;dev-&gt;dev
+comma
+l_string|&quot;couldn&squot;t set field&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -633,9 +657,12 @@ comma
 id|i
 )paren
 )paren
-id|warn
+id|dev_warn
 c_func
 (paren
+op_amp
+id|hid-&gt;dev-&gt;dev
+comma
 l_string|&quot;erase effect %d failed&quot;
 comma
 id|i
@@ -689,16 +716,17 @@ id|flags
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;Upload effect called: effect_type=%x&bslash;n&quot;
+op_amp
+id|pid_private-&gt;hid-&gt;dev-&gt;dev
+comma
+l_string|&quot;upload effect called: effect_type=%x&bslash;n&quot;
 comma
 id|effect-&gt;type
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Check this effect type is supported by this device */
 r_if
 c_cond
@@ -713,14 +741,15 @@ id|dev-&gt;ffbit
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;Invalid kind of effect requested.&bslash;n&quot;
+op_amp
+id|pid_private-&gt;hid-&gt;dev-&gt;dev
+comma
+l_string|&quot;invalid kind of effect requested.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|EINVAL
@@ -788,14 +817,15 @@ id|FF_EFFECTS_MAX
 )paren
 (brace
 singleline_comment|// TEMP - We need to get ff_effects_max correctly first:  || id &gt;= dev-&gt;ff_effects_max) {
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
+op_amp
+id|pid_private-&gt;hid-&gt;dev-&gt;dev
+comma
 l_string|&quot;Not enough device memory&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|ENOMEM
@@ -805,16 +835,17 @@ id|effect-&gt;id
 op_assign
 id|id
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;Effect ID is %d&bslash;n.&quot;
+op_amp
+id|pid_private-&gt;hid-&gt;dev-&gt;dev
+comma
+l_string|&quot;effect ID is %d&bslash;n.&quot;
 comma
 id|id
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pid_private-&gt;effects
 (braket
 id|id
@@ -1002,16 +1033,17 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;Invalid type of effect requested - %x.&bslash;n&quot;
+op_amp
+id|pid_private-&gt;hid-&gt;dev-&gt;dev
+comma
+l_string|&quot;invalid type of effect requested - %x.&bslash;n&quot;
 comma
 id|effect-&gt;type
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|EINVAL

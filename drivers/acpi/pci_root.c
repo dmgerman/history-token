@@ -107,6 +107,7 @@ id|acpi_handle
 id|handle
 suffix:semicolon
 DECL|member|id
+r_struct
 id|acpi_pci_id
 id|id
 suffix:semicolon
@@ -135,6 +136,7 @@ r_void
 DECL|function|acpi_pci_get_translations
 id|acpi_pci_get_translations
 (paren
+r_struct
 id|acpi_pci_id
 op_star
 id|id
@@ -229,6 +231,7 @@ id|u64
 DECL|function|acpi_pci_root_bus_tra
 id|acpi_pci_root_bus_tra
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|resource
@@ -237,14 +240,17 @@ r_int
 id|type
 )paren
 (brace
+r_struct
 id|acpi_resource_address16
 op_star
 id|address16
 suffix:semicolon
+r_struct
 id|acpi_resource_address32
 op_star
 id|address32
 suffix:semicolon
+r_struct
 id|acpi_resource_address64
 op_star
 id|address64
@@ -273,6 +279,7 @@ suffix:colon
 id|address16
 op_assign
 (paren
+r_struct
 id|acpi_resource_address16
 op_star
 )paren
@@ -299,6 +306,7 @@ suffix:colon
 id|address32
 op_assign
 (paren
+r_struct
 id|acpi_resource_address32
 op_star
 )paren
@@ -325,6 +333,7 @@ suffix:colon
 id|address64
 op_assign
 (paren
+r_struct
 id|acpi_resource_address64
 op_star
 )paren
@@ -350,6 +359,7 @@ id|resource
 op_assign
 id|ACPI_PTR_ADD
 (paren
+r_struct
 id|acpi_resource
 comma
 id|resource
@@ -376,6 +386,7 @@ id|root
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -422,6 +433,7 @@ op_assign
 id|acpi_pci_root_bus_tra
 (paren
 (paren
+r_struct
 id|acpi_resource
 op_star
 )paren
@@ -435,6 +447,7 @@ op_assign
 id|acpi_pci_root_bus_tra
 (paren
 (paren
+r_struct
 id|acpi_resource
 op_star
 )paren
