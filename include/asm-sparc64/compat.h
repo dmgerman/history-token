@@ -343,7 +343,7 @@ op_star
 id|compat_ptr
 c_func
 (paren
-id|compat_ptr_t
+id|compat_uptr_t
 id|uptr
 )paren
 (brace
@@ -351,6 +351,10 @@ r_return
 (paren
 r_void
 op_star
+)paren
+(paren
+r_int
+r_int
 )paren
 id|uptr
 suffix:semicolon
