@@ -335,6 +335,10 @@ comma
 l_string|&quot;NFS4 client&quot;
 )paren
 suffix:semicolon
+id|clp-&gt;cl_boot_time
+op_assign
+id|CURRENT_TIME
+suffix:semicolon
 id|clp-&gt;cl_state
 op_assign
 l_int|1

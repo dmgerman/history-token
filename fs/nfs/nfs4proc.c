@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  fs/nfs/nfs4proc.c&n; *&n; *  Client-side procedure declarations for NFSv4.&n; *&n; *  Copyright (c) 2002 The Regents of the University of Michigan.&n; *  All rights reserved.&n; *&n; *  Kendrick Smith &lt;kmsmith@umich.edu&gt;&n; *  Andy Adamson   &lt;andros@umich.edu&gt;&n; *&n; *  Redistribution and use in source and binary forms, with or without&n; *  modification, are permitted provided that the following conditions&n; *  are met:&n; *&n; *  1. Redistributions of source code must retain the above copyright&n; *     notice, this list of conditions and the following disclaimer.&n; *  2. Redistributions in binary form must reproduce the above copyright&n; *     notice, this list of conditions and the following disclaimer in the&n; *     documentation and/or other materials provided with the distribution.&n; *  3. Neither the name of the University nor the names of its&n; *     contributors may be used to endorse or promote products derived&n; *     from this software without specific prior written permission.&n; *&n; *  THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; *  DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE&n; *  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR&n; *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF&n; *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR&n; *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF&n; *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING&n; *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS&n; *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
@@ -10841,13 +10842,8 @@ r_int
 id|port
 )paren
 (brace
-r_static
 id|nfs4_verifier
 id|sc_verifier
-suffix:semicolon
-r_static
-r_int
-id|initialized
 suffix:semicolon
 r_struct
 id|nfs4_setclientid
@@ -10899,28 +10895,17 @@ id|clp-&gt;cl_cred
 comma
 )brace
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|initialized
-)paren
-(brace
-r_struct
-id|timespec
-id|boot_time
-suffix:semicolon
 id|u32
 op_star
 id|p
 suffix:semicolon
-id|initialized
+r_int
+id|loop
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
-id|boot_time
-op_assign
-id|CURRENT_TIME
+r_int
+id|status
 suffix:semicolon
 id|p
 op_assign
@@ -10940,7 +10925,7 @@ c_func
 (paren
 id|u32
 )paren
-id|boot_time.tv_sec
+id|clp-&gt;cl_boot_time.tv_sec
 )paren
 suffix:semicolon
 op_star
@@ -10952,10 +10937,16 @@ c_func
 (paren
 id|u32
 )paren
-id|boot_time.tv_nsec
+id|clp-&gt;cl_boot_time.tv_nsec
 )paren
 suffix:semicolon
-)brace
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
+)paren
+(brace
 id|setclientid.sc_name_len
 op_assign
 id|scnprintf
@@ -10968,7 +10959,7 @@ r_sizeof
 id|setclientid.sc_name
 )paren
 comma
-l_string|&quot;%s/%u.%u.%u.%u&quot;
+l_string|&quot;%s/%u.%u.%u.%u %s %u&quot;
 comma
 id|clp-&gt;cl_ipaddr
 comma
@@ -10977,6 +10968,10 @@ c_func
 (paren
 id|clp-&gt;cl_addr.s_addr
 )paren
+comma
+id|clp-&gt;cl_cred-&gt;cr_ops-&gt;cr_name
+comma
+id|clp-&gt;cl_id_uniquifier
 )paren
 suffix:semicolon
 id|setclientid.sc_netid_len
@@ -11019,7 +11014,8 @@ op_amp
 l_int|255
 )paren
 suffix:semicolon
-r_return
+id|status
+op_assign
 id|rpc_call_sync
 c_func
 (paren
@@ -11030,6 +11026,57 @@ id|msg
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_ne
+op_minus
+id|NFS4ERR_CLID_INUSE
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|signalled
+c_func
+(paren
+)paren
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|loop
+op_increment
+op_amp
+l_int|1
+)paren
+id|ssleep
+c_func
+(paren
+id|clp-&gt;cl_lease_time
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_increment
+id|clp-&gt;cl_id_uniquifier
+op_eq
+l_int|0
+)paren
+r_break
+suffix:semicolon
+)brace
+r_return
+id|status
 suffix:semicolon
 )brace
 r_int

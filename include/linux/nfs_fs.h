@@ -1848,6 +1848,12 @@ r_struct
 id|rpc_wait_queue
 id|cl_rpcwaitq
 suffix:semicolon
+multiline_comment|/* used for the setclientid verifier */
+DECL|member|cl_boot_time
+r_struct
+id|timespec
+id|cl_boot_time
+suffix:semicolon
 multiline_comment|/* idmapper */
 DECL|member|cl_idmap
 r_struct
@@ -1862,6 +1868,11 @@ id|cl_ipaddr
 (braket
 l_int|16
 )braket
+suffix:semicolon
+DECL|member|cl_id_uniquifier
+r_int
+r_char
+id|cl_id_uniquifier
 suffix:semicolon
 )brace
 suffix:semicolon

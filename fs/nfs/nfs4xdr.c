@@ -15359,7 +15359,7 @@ id|len
 suffix:semicolon
 r_return
 op_minus
-id|EEXIST
+id|NFSERR_CLID_INUSE
 suffix:semicolon
 )brace
 r_else
