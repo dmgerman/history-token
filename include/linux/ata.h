@@ -853,6 +853,8 @@ multiline_comment|/* IO operation */
 suffix:semicolon
 DECL|macro|ata_id_is_ata
 mdefine_line|#define ata_id_is_ata(dev)&t;(((dev)-&gt;id[0] &amp; (1 &lt;&lt; 15)) == 0)
+DECL|macro|ata_id_rahead_enabled
+mdefine_line|#define ata_id_rahead_enabled(dev) ((dev)-&gt;id[85] &amp; (1 &lt;&lt; 6))
 DECL|macro|ata_id_wcache_enabled
 mdefine_line|#define ata_id_wcache_enabled(dev) ((dev)-&gt;id[85] &amp; (1 &lt;&lt; 5))
 DECL|macro|ata_id_has_lba48
