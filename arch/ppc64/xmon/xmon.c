@@ -828,11 +828,6 @@ l_string|&quot;sync; isync&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* (Ref: 64-bit PowerPC ELF ABI Spplement; Ian Lance Taylor, Zembu Labs).&n; A PPC stack frame looks like this:&n;&n; High Address&n;    Back Chain&n;    FP reg save area&n;    GP reg save area&n;    Local var space&n;    Parameter save area&t;&t;(SP+48)&n;    TOC save area&t;&t;(SP+40)&n;    link editor doubleword&t;(SP+32)&n;    compiler doubleword&t;&t;(SP+24)&n;    LR save&t;&t;&t;(SP+16)&n;    CR save&t;&t;&t;(SP+8)&n;    Back Chain&t;&t;&t;(SP+0)&n;&n; Note that the LR (ret addr) may not be saved in the current frame if&n; no functions have been called from the current function.&n; */
-multiline_comment|/*&n; * We don&squot;t allow single-stepping an mtmsrd that would clear&n; * MSR_RI, since that would make the exception unrecoverable.&n; * Since we need to single-step to proceed from a breakpoint,&n; * we don&squot;t allow putting a breakpoint on an mtmsrd instruction.&n; * Similarly we don&squot;t allow breakpoints on rfid instructions.&n; * These macros tell us if an instruction is a mtmsrd or rfid.&n; */
-DECL|macro|IS_MTMSRD
-mdefine_line|#define IS_MTMSRD(instr)&t;(((instr) &amp; 0xfc0007fe) == 0x7c000164)
-DECL|macro|IS_RFID
-mdefine_line|#define IS_RFID(instr)&t;&t;(((instr) &amp; 0xfc0007fe) == 0x4c000024)
 multiline_comment|/*&n; * Disable surveillance (the service processor watchdog function)&n; * while we are in xmon.&n; * XXX we should re-enable it when we leave. :)&n; */
 DECL|macro|SURVEILLANCE_TOKEN
 mdefine_line|#define SURVEILLANCE_TOKEN&t;9000
