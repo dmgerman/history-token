@@ -1236,12 +1236,12 @@ id|BMCR_ANENABLE
 )paren
 id|mii_if-&gt;force_media
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 r_else
 id|mii_if-&gt;force_media
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 r_if
 c_cond
