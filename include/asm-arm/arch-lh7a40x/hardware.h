@@ -52,7 +52,7 @@ suffix:semicolon
 id|__regbase16
 suffix:semicolon
 DECL|macro|__REGP16
-macro_line|# define __REGP16(x)&t;((__regbase16 *)((x)&amp;~4095))-&gt;offset[((x)&amp;4095)&gt;&gt;2]
+macro_line|# define __REGP16(x)&t;((__regbase16 *)((x)&amp;~4095))-&gt;offset[((x)&amp;4095)&gt;&gt;1]
 DECL|macro|__REG16
 macro_line|# define __REG16(x)&t;__REGP16(io_p2v(x))
 DECL|member|offset
@@ -71,7 +71,7 @@ suffix:semicolon
 id|__regbase8
 suffix:semicolon
 DECL|macro|__REGP8
-macro_line|# define __REGP8(x)&t;((__regbase8 *)((x)&amp;~4095))-&gt;offset[((x)&amp;4095)&gt;&gt;2]
+macro_line|# define __REGP8(x)&t;((__regbase8 *)((x)&amp;~4095))-&gt;offset[(x)&amp;4095]
 DECL|macro|__REG8
 macro_line|# define __REG8(x)&t;__REGP8(io_p2v(x))
 macro_line|#endif
