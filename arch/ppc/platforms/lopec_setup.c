@@ -1140,7 +1140,7 @@ op_assign
 id|Root_SDA1
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DUMMY_CONSOLE
+macro_line|#ifdef CONFIG_VT
 id|conswitchp
 op_assign
 op_amp
