@@ -1619,7 +1619,6 @@ op_minus
 id|ERESTARTSYS
 suffix:semicolon
 )brace
-multiline_comment|/* MOD_DEC_USE_COUNT; &quot;info-&gt;tty&quot; will cause this? */
 macro_line|#ifdef SERIAL_DO_RESTART
 r_return
 (paren
@@ -1741,7 +1740,6 @@ c_cond
 id|ret
 )paren
 (brace
-multiline_comment|/* MOD_DEC_USE_COUNT; &quot;info-&gt;tty&quot; will cause this? */
 id|IRDA_DEBUG
 c_func
 (paren
