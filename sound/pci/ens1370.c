@@ -3596,6 +3596,26 @@ op_and_assign
 op_complement
 id|ES_DAC1_EN
 suffix:semicolon
+macro_line|#ifdef CHIP1371
+multiline_comment|/* 48k doesn&squot;t need SRC (it breaks AC3-passthru) */
+r_if
+c_cond
+(paren
+id|runtime-&gt;rate
+op_eq
+l_int|48000
+)paren
+id|ensoniq-&gt;ctrl
+op_or_assign
+id|ES_1373_BYPASS_P1
+suffix:semicolon
+r_else
+id|ensoniq-&gt;ctrl
+op_and_assign
+op_complement
+id|ES_1373_BYPASS_P1
+suffix:semicolon
+macro_line|#endif
 id|outl
 c_func
 (paren
