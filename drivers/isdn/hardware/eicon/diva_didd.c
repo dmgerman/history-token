@@ -523,7 +523,6 @@ suffix:semicolon
 DECL|function|remove_proc
 r_static
 r_void
-id|DIVA_EXIT_FUNCTION
 id|remove_proc
 c_func
 (paren
