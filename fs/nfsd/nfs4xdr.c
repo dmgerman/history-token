@@ -3757,7 +3757,7 @@ c_func
 (paren
 r_sizeof
 (paren
-id|delegation_stateid_t
+id|stateid_t
 )paren
 op_plus
 l_int|4
@@ -3771,7 +3771,7 @@ id|open-&gt;op_delegate_stateid
 comma
 r_sizeof
 (paren
-id|delegation_stateid_t
+id|stateid_t
 )paren
 )paren
 suffix:semicolon
@@ -9957,7 +9957,7 @@ l_int|20
 op_plus
 r_sizeof
 (paren
-id|delegation_stateid_t
+id|stateid_t
 )paren
 )paren
 suffix:semicolon
@@ -9969,7 +9969,7 @@ id|open-&gt;op_delegate_stateid
 comma
 r_sizeof
 (paren
-id|delegation_stateid_t
+id|stateid_t
 )paren
 )paren
 suffix:semicolon
@@ -10022,7 +10022,7 @@ l_int|32
 op_plus
 r_sizeof
 (paren
-id|delegation_stateid_t
+id|stateid_t
 )paren
 )paren
 suffix:semicolon
@@ -10034,7 +10034,7 @@ id|open-&gt;op_delegate_stateid
 comma
 r_sizeof
 (paren
-id|delegation_stateid_t
+id|stateid_t
 )paren
 )paren
 suffix:semicolon

@@ -7,40 +7,6 @@ DECL|macro|NFSD4_MAX_TAGLEN
 mdefine_line|#define NFSD4_MAX_TAGLEN&t;128
 DECL|macro|XDR_LEN
 mdefine_line|#define XDR_LEN(n)                     (((n) + 3) &amp; ~3)
-DECL|typedef|delegation_zero_t
-r_typedef
-id|u32
-id|delegation_zero_t
-suffix:semicolon
-DECL|typedef|delegation_boot_t
-r_typedef
-id|u32
-id|delegation_boot_t
-suffix:semicolon
-DECL|typedef|delegation_id_t
-r_typedef
-id|u64
-id|delegation_id_t
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|ds_zero
-id|delegation_zero_t
-id|ds_zero
-suffix:semicolon
-DECL|member|ds_boot
-id|delegation_boot_t
-id|ds_boot
-suffix:semicolon
-DECL|member|ds_id
-id|delegation_id_t
-id|ds_id
-suffix:semicolon
-DECL|typedef|delegation_stateid_t
-)brace
-id|delegation_stateid_t
-suffix:semicolon
 DECL|struct|nfsd4_change_info
 r_struct
 id|nfsd4_change_info
@@ -546,10 +512,10 @@ id|op_delegate_type
 suffix:semicolon
 multiline_comment|/* request - CLAIM_PREV only */
 DECL|member|op_delegate_stateid
-id|delegation_stateid_t
+id|stateid_t
 id|op_delegate_stateid
 suffix:semicolon
-multiline_comment|/* request - CLAIM_DELEGATE_CUR only */
+multiline_comment|/* request - response */
 DECL|member|op_create
 id|u32
 id|op_create
