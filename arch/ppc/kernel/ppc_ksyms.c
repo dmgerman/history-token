@@ -210,6 +210,13 @@ c_func
 id|clear_page
 )paren
 suffix:semicolon
+DECL|variable|clear_user_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|clear_user_page
+)paren
+suffix:semicolon
 DECL|variable|do_signal
 id|EXPORT_SYMBOL
 c_func
