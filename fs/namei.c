@@ -10582,13 +10582,6 @@ c_func
 id|lock_rename
 )paren
 suffix:semicolon
-DECL|variable|lookup_create
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|lookup_create
-)paren
-suffix:semicolon
 DECL|variable|lookup_hash
 id|EXPORT_SYMBOL
 c_func
