@@ -742,11 +742,7 @@ c_cond
 (paren
 id|minor
 op_ge
-(paren
-l_int|1
-op_lshift
-id|KDEV_MINOR_BITS
-)paren
+l_int|256
 )paren
 (brace
 id|write_unlock
