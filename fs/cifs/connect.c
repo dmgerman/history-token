@@ -7332,7 +7332,6 @@ c_func
 (paren
 (paren
 r_int
-r_int
 )paren
 op_amp
 id|SecurityBlob
@@ -7340,7 +7339,6 @@ op_member_access_from_pointer
 id|DomainString
 op_minus
 (paren
-r_int
 r_int
 )paren
 op_amp
