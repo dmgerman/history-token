@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/kernel/cpufreq.c&n; *&n; *  Copyright (C) 2001 Russell King&n; *            (C) 2002 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  $Id: cpufreq.c,v 1.43 2002/09/21 09:05:29 db Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; *  linux/kernel/cpufreq.c&n; *&n; *  Copyright (C) 2001 Russell King&n; *            (C) 2002 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  $Id: cpufreq.c,v 1.45 2002/10/08 14:54:23 db Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,10 +8,8 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_CPU_FREQ_26_API
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#endif
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#endif
@@ -639,7 +637,6 @@ comma
 id|cpufreq_setup
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_26_API
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/**&n; * cpufreq_proc_read - read /proc/cpufreq&n; *&n; * This function prints out the current cpufreq policy.&n; */
 DECL|function|cpufreq_proc_read
@@ -1121,10 +1118,8 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
-macro_line|#endif /* CONFIG_CPU_FREQ_26_API */
 multiline_comment|/*********************************************************************&n; *                        2.4. COMPATIBLE API                        *&n; *********************************************************************/
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-multiline_comment|/* NOTE #1: when you use this API, you may not use any other calls,&n; * except cpufreq_[un]register_notifier, of course.&n; */
 multiline_comment|/** &n; * cpufreq_set - set the CPU frequency&n; * @freq: target frequency in kHz&n; * @cpu: CPU for which the frequency is to be set&n; *&n; * Sets the CPU frequency to freq.&n; */
 DECL|function|cpufreq_set
 r_int
@@ -3069,6 +3064,53 @@ comma
 id|freqs
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_FREQ_24_API
+r_if
+c_cond
+(paren
+id|freqs-&gt;cpu
+op_eq
+id|CPUFREQ_ALL_CPUS
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|cpu_cur_freq
+(braket
+id|i
+)braket
+op_assign
+id|freqs
+op_member_access_from_pointer
+r_new
+suffix:semicolon
+)brace
+r_else
+id|cpu_cur_freq
+(braket
+id|freqs-&gt;cpu
+)braket
+op_assign
+id|freqs
+op_member_access_from_pointer
+r_new
+suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 )brace
@@ -3205,13 +3247,11 @@ op_amp
 id|default_policy
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_26_API
 id|cpufreq_proc_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 id|down
 c_func
@@ -3360,13 +3400,11 @@ op_amp
 id|cpufreq_driver_sem
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_26_API
 id|cpufreq_proc_exit
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 id|cpufreq_sysctl_exit
 c_func
@@ -3507,7 +3545,6 @@ op_amp
 id|cpufreq_driver_sem
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_26_API
 id|cpufreq_set_policy
 c_func
 (paren
@@ -3515,20 +3552,6 @@ op_amp
 id|policy
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-id|cpufreq_set
-c_func
-(paren
-id|cpu_cur_freq
-(braket
-id|i
-)braket
-comma
-id|i
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 l_int|0

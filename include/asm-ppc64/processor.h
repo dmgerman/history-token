@@ -1138,12 +1138,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Return saved PC of a blocked thread. For now, this is the &quot;user&quot; PC&n; */
 DECL|macro|thread_saved_pc
 mdefine_line|#define thread_saved_pc(tsk)    &bslash;&n;        ((tsk)-&gt;thread.regs? (tsk)-&gt;thread.regs-&gt;nip: 0)
-DECL|macro|copy_segments
-mdefine_line|#define copy_segments(tsk, mm)&t;&t;do { } while (0)
-DECL|macro|release_segments
-mdefine_line|#define release_segments(mm)&t;&t;do { } while (0)
-DECL|macro|forget_segments
-mdefine_line|#define forget_segments()&t;&t;do { } while (0)
 r_int
 r_int
 id|get_wchan

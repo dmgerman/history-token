@@ -439,6 +439,7 @@ c_func
 (paren
 (paren
 r_int
+r_int
 )paren
 id|conn
 op_amp
@@ -2267,7 +2268,7 @@ suffix:semicolon
 id|_net
 c_func
 (paren
-l_string|&quot;Sending message type %d of %d bytes to %08x:%d&quot;
+l_string|&quot;Sending message type %d of %Zd bytes to %08x:%d&quot;
 comma
 id|msg-&gt;hdr.type
 comma

@@ -2016,7 +2016,7 @@ suffix:semicolon
 id|_enter
 c_func
 (paren
-l_string|&quot;%p,{fid={%u,%u,%u},sz=%u,of=%lu}&quot;
+l_string|&quot;%p,{fid={%u,%u,%u},sz=%Zu,of=%lu}&quot;
 comma
 id|server
 comma

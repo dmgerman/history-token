@@ -372,10 +372,6 @@ op_star
 id|mm
 )paren
 suffix:semicolon
-DECL|macro|copy_segments
-mdefine_line|#define copy_segments(tsk, mm)  do { &bslash;&n;&t;&t;&t;&t;&t;if (tsk-&gt;personality == PER_HPUX)  &bslash;&n;&t;&t;&t;&t;&t;    map_hpux_gateway_page(tsk,mm); &bslash;&n;&t;&t;&t;&t;} while (0)
-DECL|macro|release_segments
-mdefine_line|#define release_segments(mm)&t;do { } while (0)
 DECL|function|get_wchan
 r_static
 r_inline

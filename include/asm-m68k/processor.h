@@ -316,10 +316,6 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-DECL|macro|copy_segments
-mdefine_line|#define copy_segments(tsk, mm)&t;&t;do { } while (0)
-DECL|macro|release_segments
-mdefine_line|#define release_segments(mm)&t;&t;do { } while (0)
 multiline_comment|/*&n; * Free current thread data structures etc..&n; */
 DECL|function|exit_thread
 r_static

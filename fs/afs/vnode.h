@@ -16,21 +16,12 @@ DECL|struct|afs_vnode
 r_struct
 id|afs_vnode
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 DECL|member|vfs_inode
 r_struct
 id|inode
 id|vfs_inode
 suffix:semicolon
 multiline_comment|/* the VFS&squot;s inode record */
-macro_line|#else
-r_struct
-id|inode
-op_star
-id|inode
-suffix:semicolon
-multiline_comment|/* the VFS&squot;s inode */
-macro_line|#endif
 DECL|member|volume
 id|afs_volume_t
 op_star
@@ -132,9 +123,8 @@ op_star
 id|inode
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 r_return
-id|list_entry
+id|container_of
 c_func
 (paren
 id|inode
@@ -144,11 +134,6 @@ comma
 id|vfs_inode
 )paren
 suffix:semicolon
-macro_line|#else
-r_return
-id|inode-&gt;u.generic_ip
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|AFS_VNODE_TO_I
 r_static
@@ -164,16 +149,10 @@ op_star
 id|vnode
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 r_return
 op_amp
 id|vnode-&gt;vfs_inode
 suffix:semicolon
-macro_line|#else
-r_return
-id|vnode-&gt;inode
-suffix:semicolon
-macro_line|#endif
 )brace
 r_extern
 r_int
