@@ -8953,14 +8953,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|kdev_same
-c_func
-(paren
-id|p_s_bh-&gt;b_dev
-comma
-id|p_s_sb-&gt;s_dev
-)paren
+id|p_s_bh-&gt;b_bdev
+op_ne
+id|p_s_sb-&gt;s_bdev
 op_logical_or
 id|p_s_bh-&gt;b_size
 op_ne
