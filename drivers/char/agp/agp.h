@@ -750,7 +750,7 @@ mdefine_line|#define AMD64_GARTTABLEBASE&t;0x98
 DECL|macro|AMD64_GARTCACHECTL
 mdefine_line|#define AMD64_GARTCACHECTL&t;&t;0x9c
 DECL|macro|AMD64_GARTEN
-mdefine_line|#define AMD64_GARTEN&t;&t;1&lt;&lt;0
+mdefine_line|#define AMD64_GARTEN&t;&t;(1&lt;&lt;0)
 multiline_comment|/* ALi registers */
 DECL|macro|ALI_AGPCTRL
 mdefine_line|#define ALI_AGPCTRL&t;&t;&t;0xb8
