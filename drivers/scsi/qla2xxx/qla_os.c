@@ -6392,12 +6392,10 @@ id|ql2xmaxqdepth
 op_assign
 id|queue_depth
 suffix:semicolon
-id|scsi_adjust_queue_depth
+id|scsi_activate_tcq
 c_func
 (paren
 id|sdev
-comma
-id|MSG_ORDERED_TAG
 comma
 id|queue_depth
 )paren
