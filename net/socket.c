@@ -2653,6 +2653,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; *&t;With an ioctl, arg may well be a user mode pointer, but we don&squot;t know&n; *&t;what to do with it - that&squot;s up to the protocol still.&n; */
 DECL|function|sock_ioctl
+r_static
 r_int
 id|sock_ioctl
 c_func
