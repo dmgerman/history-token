@@ -1030,7 +1030,7 @@ id|gfp_mask
 )paren
 )paren
 r_goto
-id|keep_locked
+id|activate_locked
 suffix:semicolon
 r_if
 c_cond
