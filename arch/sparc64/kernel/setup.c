@@ -2122,7 +2122,7 @@ r_int
 op_amp
 id|irqsz_patchme
 (braket
-l_int|1
+l_int|0
 )braket
 )paren
 suffix:semicolon
