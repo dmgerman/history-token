@@ -341,6 +341,15 @@ id|init_size
 comma
 id|core_size
 suffix:semicolon
+multiline_comment|/* The size of the executable code in each section.  */
+DECL|member|init_text_size
+DECL|member|core_text_size
+r_int
+r_int
+id|init_text_size
+comma
+id|core_text_size
+suffix:semicolon
 multiline_comment|/* Arch-specific module values */
 DECL|member|arch
 r_struct
