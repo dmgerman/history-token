@@ -12768,6 +12768,22 @@ id|q
 r_goto
 id|err_all
 suffix:semicolon
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|queue
+op_assign
+id|q
+suffix:semicolon
+id|q-&gt;queuedata
+op_assign
+id|hba
+(braket
+id|i
+)braket
+suffix:semicolon
 multiline_comment|/* Initialize the pdev driver private data. &n;&t;&t;have it point to hba[i].  */
 id|pci_set_drvdata
 c_func
@@ -12859,13 +12875,6 @@ c_func
 (paren
 id|i
 )paren
-suffix:semicolon
-id|q-&gt;queuedata
-op_assign
-id|hba
-(braket
-id|i
-)braket
 suffix:semicolon
 id|blk_queue_bounce_limit
 c_func
