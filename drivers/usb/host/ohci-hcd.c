@@ -29,7 +29,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; * TO DO:&n; *&n; *&t;- &quot;disabled&quot; and &quot;sleeping&quot; should be in hcd-&gt;state&n; *&t;- bandwidth alloc to generic code&n; *&t;- lots more testing!!&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2002-Sep-03&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2002-Sep-17&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Roman Weissgaerber, David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -755,13 +755,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef DEBUG
-r_int
-id|rescans
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|rescan
 suffix:colon
 multiline_comment|/* free any eds, and dummy tds, still hanging around */
@@ -847,21 +840,23 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-macro_line|#ifdef DEBUG
 id|err
 (paren
-l_string|&quot;illegal ED %d state in free_config, %d&quot;
+l_string|&quot;%s-%s ed %p (#%d) not unlinked; disconnect() bug? %d&quot;
+comma
+id|ohci-&gt;hcd.self.bus_name
+comma
+id|udev-&gt;devpath
+comma
+id|ed
 comma
 id|i
 comma
 id|ed-&gt;state
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* ED_OPER: some driver disconnect() is broken,&n;&t;&t;&t; * it didn&squot;t even start its unlinks much less wait&n;&t;&t;&t; * for their completions.&n;&t;&t;&t; * OTHERWISE:  hcd bug, ed is garbage&n;&t;&t;&t; */
-id|BUG
-(paren
-)paren
+multiline_comment|/* ED_OPER: some driver disconnect() is broken,&n;&t;&t;&t; * it didn&squot;t even start its unlinks much less wait&n;&t;&t;&t; * for their completions.&n;&t;&t;&t; * OTHERWISE:  hcd bug, ed is garbage&n;&t;&t;&t; *&n;&t;&t;&t; * ... we can&squot;t recycle this memory in either case,&n;&t;&t;&t; * so just leak it to avoid oopsing.&n;&t;&t;&t; */
+r_continue
 suffix:semicolon
 )brace
 id|ed_free
@@ -894,14 +889,9 @@ id|in_interrupt
 )paren
 )paren
 (brace
-id|dbg
+id|warn
 (paren
-l_string|&quot;WARNING: spin in interrupt; driver-&gt;disconnect() bug&quot;
-)paren
-suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;dev usb-%s-%s ep 0x%x&quot;
+l_string|&quot;disconnect() bug for dev usb-%s-%s ep 0x%x&quot;
 comma
 id|ohci-&gt;hcd.self.bus_name
 comma
@@ -911,31 +901,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|BUG_ON
-(paren
-op_logical_neg
-(paren
-id|readl
-(paren
-op_amp
-id|ohci-&gt;regs-&gt;intrenable
-)paren
-op_amp
-id|OHCI_INTR_SF
-)paren
-)paren
-suffix:semicolon
-id|BUG_ON
-(paren
-id|rescans
-op_ge
-l_int|2
-)paren
-suffix:semicolon
-multiline_comment|/* HWBUG */
-id|rescans
-op_increment
-suffix:semicolon
 macro_line|#endif
 id|spin_unlock_irqrestore
 (paren
