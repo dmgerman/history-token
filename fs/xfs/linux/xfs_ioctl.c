@@ -598,11 +598,11 @@ id|vnode_t
 op_star
 id|vpp
 suffix:semicolon
+id|xfs_ino_t
+id|ino
+suffix:semicolon
 id|__u32
 id|igen
-suffix:semicolon
-id|ino_t
-id|ino
 suffix:semicolon
 r_int
 id|error
