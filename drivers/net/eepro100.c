@@ -200,6 +200,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
@@ -2521,11 +2522,9 @@ l_int|1
 suffix:semicolon
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
 c_func
 (paren
-l_int|NULL
-comma
 r_sizeof
 (paren
 r_struct
@@ -2617,6 +2616,27 @@ r_else
 id|option
 op_assign
 l_int|0
+suffix:semicolon
+id|rtnl_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev_alloc_name
+c_func
+(paren
+id|dev
+comma
+id|dev-&gt;name
+)paren
+OL
+l_int|0
+)paren
+r_goto
+id|err_free_unlock
 suffix:semicolon
 multiline_comment|/* Read the station address EEPROM before doing the reset.&n;&t;   Nominally his should even be done before accepting the device, but&n;&t;   then we wouldn&squot;t have a device name with which to report the error.&n;&t;   The size test is for 6 bit vs. 8 bit address serial EEPROMs.&n;&t;*/
 (brace
@@ -3772,8 +3792,42 @@ op_assign
 op_amp
 id|speedo_ioctl
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|register_netdevice
+c_func
+(paren
+id|dev
+)paren
+)paren
+r_goto
+id|err_free_unlock
+suffix:semicolon
+id|rtnl_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err_free_unlock
+suffix:colon
+id|rtnl_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|do_slow_command
