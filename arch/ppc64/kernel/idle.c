@@ -471,10 +471,12 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PPC_PSERIES
-DECL|variable|smt_snooze_delay
 id|DECLARE_PER_CPU
 c_func
 (paren
+r_int
+r_int
+comma
 id|smt_snooze_delay
 )paren
 suffix:semicolon
@@ -505,6 +507,18 @@ suffix:semicolon
 r_int
 r_int
 id|start_snooze
+suffix:semicolon
+r_int
+r_int
+op_star
+id|smt_snooze_delay
+op_assign
+op_amp
+id|__get_cpu_var
+c_func
+(paren
+id|smt_snooze_delay
+)paren
 suffix:semicolon
 id|ppaca
 op_assign
@@ -558,7 +572,8 @@ c_func
 (paren
 )paren
 op_plus
-id|naca-&gt;smt_snooze_delay
+op_star
+id|smt_snooze_delay
 op_star
 id|tb_ticks_per_usec
 suffix:semicolon
@@ -576,7 +591,8 @@ multiline_comment|/* need_resched could be 1 or 0 at this &n;&t;&t;&t;&t; * poin
 r_if
 c_cond
 (paren
-id|naca-&gt;smt_snooze_delay
+op_star
+id|smt_snooze_delay
 op_eq
 l_int|0
 op_logical_or
