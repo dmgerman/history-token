@@ -166,7 +166,7 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-r_void
+r_int
 DECL|function|tcf_hash_release
 id|tcf_hash_release
 c_func
@@ -180,6 +180,11 @@ r_int
 id|bind
 )paren
 (brace
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -198,15 +203,6 @@ suffix:semicolon
 )brace
 id|p-&gt;refcnt
 op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|p-&gt;refcnt
-OG
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -226,8 +222,15 @@ c_func
 id|p
 )paren
 suffix:semicolon
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 )brace
+r_return
+id|ret
+suffix:semicolon
 )brace
 r_static
 id|__inline__
@@ -440,12 +443,6 @@ op_ge
 id|TCA_ACT_MAX_PRIO
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;Jamal Dump Exceeded batch limit&bslash;n&quot;
-)paren
-suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
@@ -607,12 +604,11 @@ id|s_p
 op_assign
 id|p-&gt;next
 suffix:semicolon
-id|printk
-c_func
+r_if
+c_cond
 (paren
-l_string|&quot;tcf_del_walker deleting ..&bslash;n&quot;
-)paren
-suffix:semicolon
+id|ACT_P_DELETED
+op_eq
 id|tcf_hash_release
 c_func
 (paren
@@ -620,7 +616,15 @@ id|p
 comma
 l_int|0
 )paren
+)paren
+(brace
+id|module_put
+c_func
+(paren
+id|a-&gt;ops-&gt;owner
+)paren
 suffix:semicolon
+)brace
 id|n_i
 op_increment
 suffix:semicolon
@@ -1095,8 +1099,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|spin_lock_init
 c_func
 (paren

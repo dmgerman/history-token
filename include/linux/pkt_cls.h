@@ -77,39 +77,23 @@ DECL|macro|V_TC_AT
 mdefine_line|#define V_TC_AT(x)       _TC_MAKEVALUE(x,S_TC_AT)
 DECL|macro|SET_TC_AT
 mdefine_line|#define SET_TC_AT(v,n)   ((V_TC_AT(n)) | (v &amp; ~M_TC_AT))
-multiline_comment|/* Action types */
+multiline_comment|/* Action attributes */
 r_enum
 (brace
 DECL|enumerator|TCA_ACT_UNSPEC
 id|TCA_ACT_UNSPEC
-op_assign
-l_int|0
 comma
 DECL|enumerator|TCA_ACT_KIND
 id|TCA_ACT_KIND
-op_assign
-l_int|1
 comma
 DECL|enumerator|TCA_ACT_OPTIONS
 id|TCA_ACT_OPTIONS
-op_assign
-l_int|2
 comma
 DECL|enumerator|TCA_ACT_INDEX
 id|TCA_ACT_INDEX
-op_assign
-l_int|3
 comma
-DECL|enumerator|TCA_ACT_POLICE
-id|TCA_ACT_POLICE
-op_assign
-l_int|4
-comma
-multiline_comment|/* other actions go here */
 DECL|enumerator|__TCA_ACT_MAX
 id|__TCA_ACT_MAX
-op_assign
-l_int|255
 )brace
 suffix:semicolon
 DECL|macro|TCA_ACT_MAX
@@ -152,6 +136,28 @@ DECL|macro|TC_ACT_REPEAT
 mdefine_line|#define TC_ACT_REPEAT&t;&t;6
 DECL|macro|TC_ACT_JUMP
 mdefine_line|#define TC_ACT_JUMP&t;&t;0x10000000
+multiline_comment|/* Action type identifiers*/
+r_enum
+(brace
+DECL|enumerator|TCA_ID_UNSPEC
+id|TCA_ID_UNSPEC
+op_assign
+l_int|0
+comma
+DECL|enumerator|TCA_ID_POLICE
+id|TCA_ID_POLICE
+op_assign
+l_int|1
+comma
+multiline_comment|/* other actions go here */
+DECL|enumerator|__TCA_ID_MAX
+id|__TCA_ID_MAX
+op_assign
+l_int|255
+)brace
+suffix:semicolon
+DECL|macro|TCA_ID_MAX
+mdefine_line|#define TCA_ID_MAX __TCA_ID_MAX
 DECL|struct|tc_police
 r_struct
 id|tc_police
@@ -373,12 +379,14 @@ r_int
 r_char
 id|nkeys
 suffix:semicolon
+macro_line|#ifdef fix_u32_bug
 DECL|member|fshift
 r_int
 r_char
 id|fshift
 suffix:semicolon
 multiline_comment|/* fold shift */
+macro_line|#endif
 DECL|member|offmask
 id|__u16
 id|offmask

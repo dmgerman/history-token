@@ -1044,6 +1044,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_ACT
+DECL|macro|ACT_P_CREATED
+mdefine_line|#define ACT_P_CREATED 1
+DECL|macro|ACT_P_DELETED
+mdefine_line|#define ACT_P_DELETED 1
 DECL|macro|tca_gen
 mdefine_line|#define tca_gen(name) &bslash;&n;struct tcf_##name *next; &bslash;&n;&t;u32 index; &bslash;&n;&t;int refcnt; &bslash;&n;&t;int bindcnt; &bslash;&n;&t;u32 capab; &bslash;&n;&t;int action; &bslash;&n;&t;struct tcf_t tm; &bslash;&n;&t;struct tc_stats stats; &bslash;&n;&t;spinlock_t lock
 DECL|struct|tc_action
@@ -1107,6 +1111,12 @@ id|__u32
 id|capab
 suffix:semicolon
 multiline_comment|/* capabilities includes 4 bit version */
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|act
 r_int
 (paren
@@ -1161,7 +1171,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|cleanup
-r_void
+r_int
 (paren
 op_star
 id|cleanup
@@ -1564,7 +1574,7 @@ suffix:semicolon
 DECL|function|tcf_police_release
 r_static
 r_inline
-r_void
+r_int
 id|tcf_police_release
 c_func
 (paren
@@ -1577,6 +1587,11 @@ r_int
 id|bind
 )paren
 (brace
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_ACT
 r_if
 c_cond
@@ -1601,27 +1616,24 @@ r_if
 c_cond
 (paren
 id|p-&gt;refcnt
-OG
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|p-&gt;refcnt
 op_le
 l_int|0
 op_logical_and
 op_logical_neg
 id|p-&gt;bindcnt
 )paren
+(brace
 id|tcf_police_destroy
 c_func
 (paren
 id|p
 )paren
 suffix:semicolon
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 )brace
 macro_line|#else
 r_if
@@ -1641,6 +1653,9 @@ id|p
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+id|ret
+suffix:semicolon
 )brace
 r_extern
 r_struct

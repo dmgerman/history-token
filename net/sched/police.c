@@ -663,6 +663,11 @@ id|bind
 r_int
 id|h
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 id|rtattr
 op_star
@@ -832,7 +837,7 @@ id|p-&gt;lock
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|ret
 suffix:semicolon
 )brace
 id|p
@@ -874,7 +879,9 @@ id|p
 )paren
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
+id|ret
+op_assign
+l_int|1
 suffix:semicolon
 id|p-&gt;refcnt
 op_assign
@@ -932,9 +939,11 @@ l_int|1
 op_eq
 l_int|NULL
 )paren
+(brace
 r_goto
 id|failure
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -960,9 +969,11 @@ l_int|1
 op_eq
 l_int|NULL
 )paren
+(brace
 r_goto
 id|failure
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -1090,7 +1101,7 @@ id|p-&gt;lock
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|ret
 suffix:semicolon
 )brace
 id|PSCHED_GET_TIME
@@ -1162,8 +1173,6 @@ op_amp
 id|police_lock
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|a-&gt;priv
 op_assign
 (paren
@@ -1173,7 +1182,7 @@ op_star
 id|p
 suffix:semicolon
 r_return
-l_int|1
+id|ret
 suffix:semicolon
 id|failure
 suffix:colon
@@ -1212,7 +1221,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|tcf_act_police_cleanup
-r_void
+r_int
 id|tcf_act_police_cleanup
 c_func
 (paren
@@ -1245,6 +1254,7 @@ l_int|NULL
 op_ne
 id|p
 )paren
+r_return
 id|tcf_police_release
 c_func
 (paren
@@ -1252,6 +1262,9 @@ id|p
 comma
 id|bind
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|tcf_act_police_stats
@@ -1834,9 +1847,11 @@ l_int|NULL
 comma
 l_string|&quot;police&quot;
 comma
-id|TCA_ACT_POLICE
+id|TCA_ID_POLICE
 comma
 id|TCA_CAP_NONE
+comma
+id|THIS_MODULE
 comma
 id|tcf_act_police
 comma
@@ -2020,8 +2035,6 @@ l_int|NULL
 (brace
 id|p-&gt;refcnt
 op_increment
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 id|p
@@ -2322,8 +2335,6 @@ c_func
 op_amp
 id|police_lock
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 id|p
