@@ -17,8 +17,8 @@ macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/jhash.h&gt;
-multiline_comment|/* For ERR_PTR().  Yeah, I know... --RR */
-macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 multiline_comment|/* This rwlock protects the main hash table, protocol/helper/expected&n;   registrations, conntrack timers*/
 DECL|macro|ASSERT_READ_LOCK
 mdefine_line|#define ASSERT_READ_LOCK(x) MUST_BE_READ_LOCKED(&amp;ip_conntrack_lock)
@@ -6063,12 +6063,14 @@ r_static
 r_int
 id|hashsize
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|hashsize
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0400
 )paren
 suffix:semicolon
 DECL|function|ip_conntrack_init

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * This is a module which is used for logging packets.&n; */
 multiline_comment|/* (C) 2001 Jan Rekorajski &lt;baggins@pld.org.pl&gt;&n; * (C) 2002-2004 Netfilter Core Team &lt;coreteam@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -36,12 +37,14 @@ id|nflog
 op_assign
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nflog
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0400
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

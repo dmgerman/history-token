@@ -8,6 +8,7 @@ macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_helper.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_irc.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 DECL|macro|MAX_PORTS
 mdefine_line|#define MAX_PORTS 8
 DECL|variable|ports
@@ -65,18 +66,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|ports
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|MAX_PORTS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+id|ports_c
+comma
+l_int|0400
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -87,12 +86,14 @@ comma
 l_string|&quot;port numbers of IRC servers&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|max_dcc_channels
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0400
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -103,12 +104,14 @@ comma
 l_string|&quot;max number of expected DCC channels per IRC session&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dcc_timeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0400
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1050,16 +1053,14 @@ multiline_comment|/* If no port given, default to standard irc port */
 r_if
 c_cond
 (paren
-id|ports
-(braket
-l_int|0
-)braket
+id|ports_c
 op_eq
 l_int|0
 )paren
 id|ports
 (braket
-l_int|0
+id|ports_c
+op_increment
 )braket
 op_assign
 id|IRC_PORT
@@ -1071,16 +1072,9 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-(paren
 id|i
 OL
-id|MAX_PORTS
-)paren
-op_logical_and
-id|ports
-(braket
-id|i
-)braket
+id|ports_c
 suffix:semicolon
 id|i
 op_increment
@@ -1229,9 +1223,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|ports_c
-op_increment
-suffix:semicolon
 )brace
 r_return
 l_int|0

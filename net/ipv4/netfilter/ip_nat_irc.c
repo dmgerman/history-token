@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_helper.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_rule.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_irc.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_helper.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else
@@ -49,18 +50,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|ports
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|MAX_PORTS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+id|ports_c
+comma
+l_int|0400
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -938,22 +937,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ports
-(braket
-l_int|0
-)braket
+id|ports_c
 op_eq
 l_int|0
 )paren
-(brace
 id|ports
 (braket
-l_int|0
+id|ports_c
+op_increment
 )braket
 op_assign
 id|IRC_PORT
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -961,18 +956,9 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-(paren
 id|i
 OL
-id|MAX_PORTS
-)paren
-op_logical_and
-id|ports
-(braket
-id|i
-)braket
-op_ne
-l_int|0
+id|ports_c
 suffix:semicolon
 id|i
 op_increment
@@ -1114,9 +1100,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|ports_c
-op_increment
-suffix:semicolon
 )brace
 r_return
 id|ret
