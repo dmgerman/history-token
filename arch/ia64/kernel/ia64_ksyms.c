@@ -257,7 +257,6 @@ id|clear_page
 )paren
 suffix:semicolon
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|# ifndef CONFIG_NUMA
 DECL|variable|cpu_info__per_cpu
 id|EXPORT_SYMBOL
 c_func
@@ -265,7 +264,6 @@ c_func
 id|cpu_info__per_cpu
 )paren
 suffix:semicolon
-macro_line|# endif
 DECL|variable|kernel_thread
 id|EXPORT_SYMBOL
 c_func
@@ -623,6 +621,16 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pfm_remove_alternate_syswide_subsystem
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_NUMA
+macro_line|#include &lt;asm/numa.h&gt;
+DECL|variable|cpu_to_node_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_to_node_map
 )paren
 suffix:semicolon
 macro_line|#endif
