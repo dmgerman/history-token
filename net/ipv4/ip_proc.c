@@ -95,7 +95,8 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#ifdef CONFIG_AX25
+macro_line|#if defined(CONFIG_AX25) || defined(CONFIG_AX25_MODULE)
+macro_line|#include &lt;linux/ax25.h&gt;
 multiline_comment|/* ------------------------------------------------------------------------ */
 multiline_comment|/*&n; *&t;ax25 -&gt; ASCII conversion&n; */
 DECL|function|ax2asc2
@@ -243,7 +244,7 @@ r_return
 id|buf
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_AX25 */
+macro_line|#endif /* CONFIG_AX25 || CONFIG_AX25_MODULE */
 DECL|struct|arp_iter_state
 r_struct
 id|arp_iter_state
@@ -897,7 +898,7 @@ id|n-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* Convert hardware address to XX:XX:XX:XX ... form. */
-macro_line|#ifdef CONFIG_AX25
+macro_line|#if defined(CONFIG_AX25) || defined(CONFIG_AX25_MODULE)
 r_if
 c_cond
 (paren
@@ -1002,7 +1003,7 @@ id|k
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_AX25
+macro_line|#if defined(CONFIG_AX25) || defined(CONFIG_AX25_MODULE)
 )brace
 macro_line|#endif
 id|sprintf
