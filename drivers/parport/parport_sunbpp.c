@@ -27,7 +27,7 @@ mdefine_line|#define dprintk(x)
 macro_line|#endif
 DECL|function|parport_sunbpp_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|parport_sunbpp_interrupt
 c_func
 (paren
@@ -58,6 +58,9 @@ id|dev_id
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|parport_sunbpp_disable_irq
@@ -1788,6 +1791,7 @@ op_logical_neg
 id|list_empty
 c_func
 (paren
+op_amp
 id|port_list
 )paren
 )paren
