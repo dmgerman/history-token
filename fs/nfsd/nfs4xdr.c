@@ -8695,8 +8695,6 @@ op_amp
 op_complement
 (paren
 id|FATTR4_WORD0_RDATTR_ERROR
-op_or
-id|FATTR4_WORD0_FILEID
 )paren
 )paren
 op_logical_or
@@ -8951,26 +8949,6 @@ op_assign
 id|nfserr
 suffix:semicolon
 multiline_comment|/* no htonl */
-r_if
-c_cond
-(paren
-id|bmval0
-op_amp
-id|FATTR4_WORD0_FILEID
-)paren
-id|p
-op_assign
-id|xdr_encode_hyper
-c_func
-(paren
-id|p
-comma
-(paren
-id|u64
-)paren
-id|ino
-)paren
-suffix:semicolon
 op_star
 id|attrlenp
 op_assign
