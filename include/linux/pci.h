@@ -663,7 +663,7 @@ DECL|member|name
 r_char
 id|name
 (braket
-l_int|80
+l_int|90
 )braket
 suffix:semicolon
 multiline_comment|/* device name */
