@@ -259,7 +259,7 @@ r_return
 id|new_rl
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_are_rl_mergeable - test if two run lists can be joined together&n; * @dst:&t;original run list&n; * @src:&t;new run list to test for mergeability with @dst&n; *&n; * Test if two run lists can be joined together. For this, their VCNs and LCNs&n; * must be adjacent.&n; *&n; * It is up to the caller to serialize access to the run lists @dst and @src.&n; *&n; * Return: TRUE   Success, the run lists can be merged.&n; *         FALSE  Failure, the run lists cannot be merged.&n; */
+multiline_comment|/**&n; * ntfs_are_rl_mergeable - test if two run lists can be joined together&n; * @dst:&t;original run list&n; * @src:&t;new run list to test for mergeability with @dst&n; *&n; * Test if two run lists can be joined together. For this, their VCNs and LCNs&n; * must be adjacent.&n; *&n; * It is up to the caller to serialize access to the run lists @dst and @src.&n; *&n; * Return: TRUE   Success, the run lists can be merged.&n; *&t;   FALSE  Failure, the run lists cannot be merged.&n; */
 DECL|function|ntfs_are_rl_mergeable
 r_static
 r_inline
@@ -365,7 +365,7 @@ op_add_assign
 id|src-&gt;length
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_rl_merge - test if two run lists can be joined together and merge them&n; * @dst:&t;original, destination run list&n; * @src:&t;new run list to merge with @dst&n; *&n; * Test if two run lists can be joined together. For this, their VCNs and LCNs&n; * must be adjacent. If they can be merged, perform the merge, writing into&n; * the destination run list @dst.&n; *&n; * It is up to the caller to serialize access to the run lists @dst and @src.&n; *&n; * Return: TRUE   Success, the run lists have been merged.&n; *         FALSE  Failure, the run lists cannot be merged and have not been&n; *&t;&t;  modified.&n; */
+multiline_comment|/**&n; * ntfs_rl_merge - test if two run lists can be joined together and merge them&n; * @dst:&t;original, destination run list&n; * @src:&t;new run list to merge with @dst&n; *&n; * Test if two run lists can be joined together. For this, their VCNs and LCNs&n; * must be adjacent. If they can be merged, perform the merge, writing into&n; * the destination run list @dst.&n; *&n; * It is up to the caller to serialize access to the run lists @dst and @src.&n; *&n; * Return: TRUE   Success, the run lists have been merged.&n; *&t;   FALSE  Failure, the run lists cannot be merged and have not been&n; *&t;&t;  modified.&n; */
 DECL|function|ntfs_rl_merge
 r_static
 r_inline
@@ -702,7 +702,7 @@ op_logical_neg
 id|src
 )paren
 suffix:semicolon
-multiline_comment|/* disc =&gt; Discontinuity between the end of @dst and the start of @src.&n;&t; *         This means we might need to insert a hole.&n;&t; * hole =&gt; @dst ends with a hole or an unmapped region which we can&n;&t; *         extend to match the discontinuity. */
+multiline_comment|/* disc =&gt; Discontinuity between the end of @dst and the start of @src.&n;&t; *&t;   This means we might need to insert a hole.&n;&t; * hole =&gt; @dst ends with a hole or an unmapped region which we can&n;&t; *&t;   extend to match the discontinuity. */
 r_if
 c_cond
 (paren
@@ -2821,7 +2821,7 @@ l_string|&quot;NTFS: Cannot continue.&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * decompress_mapping_pairs - convert mapping pairs array to run list&n; * @vol:&t;ntfs volume on which the attribute resides&n; * @attr:&t;attribute record whose mapping pairs array to decompress&n; * @old_rl:&t;optional run list in which to insert @attr&squot;s run list&n; *&n; * It is up to the caller to serialize access to the run list @old_rl.&n; *&n; * Decompress the attribute @attr&squot;s mapping pairs array into a run list. On&n; * success, return the decompressed run list.&n; *&n; * If @old_rl is not NULL, decompressed run list is inserted into the&n; * appropriate place in @old_rl and the resultant, combined run list is&n; * returned. The original @old_rl is deallocated.&n; *&n; * On error, return -errno. @old_rl is left unmodified in that case.&n; *&n; * The following error codes are defined:&n; *&t;-ENOMEM&t;- Not enough memory to allocate run list array.&n; * &t;-EIO&t;- Corrupt run list.&n; * &t;-EINVAL&t;- Invalid parameters were passed in.&n; * &t;-ERANGE&t;- The two run lists overlap.&n; *&n; * FIXME: For now we take the conceptionally simplest approach of creating the&n; * new run list disregarding the already existing one and then splicing the&n; * two into one, if that is possible (we check for overlap and discard the new&n; * run list if overlap present before returning ERR_PTR(-ERANGE)).&n; */
+multiline_comment|/**&n; * decompress_mapping_pairs - convert mapping pairs array to run list&n; * @vol:&t;ntfs volume on which the attribute resides&n; * @attr:&t;attribute record whose mapping pairs array to decompress&n; * @old_rl:&t;optional run list in which to insert @attr&squot;s run list&n; *&n; * It is up to the caller to serialize access to the run list @old_rl.&n; *&n; * Decompress the attribute @attr&squot;s mapping pairs array into a run list. On&n; * success, return the decompressed run list.&n; *&n; * If @old_rl is not NULL, decompressed run list is inserted into the&n; * appropriate place in @old_rl and the resultant, combined run list is&n; * returned. The original @old_rl is deallocated.&n; *&n; * On error, return -errno. @old_rl is left unmodified in that case.&n; *&n; * The following error codes are defined:&n; *&t;-ENOMEM&t;- Not enough memory to allocate run list array.&n; *&t;-EIO&t;- Corrupt run list.&n; *&t;-EINVAL&t;- Invalid parameters were passed in.&n; *&t;-ERANGE&t;- The two run lists overlap.&n; *&n; * FIXME: For now we take the conceptionally simplest approach of creating the&n; * new run list disregarding the already existing one and then splicing the&n; * two into one, if that is possible (we check for overlap and discard the new&n; * run list if overlap present before returning ERR_PTR(-ERANGE)).&n; */
 DECL|function|decompress_mapping_pairs
 id|run_list_element
 op_star
