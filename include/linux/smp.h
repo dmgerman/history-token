@@ -210,10 +210,37 @@ mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;var
 DECL|macro|this_cpu
 mdefine_line|#define this_cpu(var)&t;&t;&t;&t;var
 multiline_comment|/* Need to know about CPUs going up/down? */
-DECL|macro|register_cpu_notifier
-mdefine_line|#define register_cpu_notifier(nb) 0
-DECL|macro|unregister_cpu_notifier
-mdefine_line|#define unregister_cpu_notifier(nb) do { } while(0)
+DECL|function|register_cpu_notifier
+r_static
+r_inline
+r_int
+id|register_cpu_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|unregister_cpu_notifier
+r_static
+r_inline
+r_void
+id|unregister_cpu_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+)brace
 macro_line|#endif /* !SMP */
 DECL|macro|get_cpu
 mdefine_line|#define get_cpu()&t;&t;({ preempt_disable(); smp_processor_id(); })
