@@ -909,6 +909,16 @@ l_int|128
 )braket
 suffix:semicolon
 multiline_comment|/* integer and boolean need conversion */
+macro_line|#ifndef CONFIG_X86_64
+DECL|member|integer64
+id|s64
+id|integer64
+(braket
+l_int|64
+)braket
+suffix:semicolon
+multiline_comment|/* for alignment */
+macro_line|#endif
 DECL|member|data
 r_int
 r_char
