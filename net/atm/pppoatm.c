@@ -1104,12 +1104,14 @@ id|ppp_channel_ops
 id|pppoatm_ops
 op_assign
 (brace
+dot
 id|start_xmit
-suffix:colon
+op_assign
 id|pppoatm_send
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|pppoatm_devppp_ioctl
 comma
 )brace

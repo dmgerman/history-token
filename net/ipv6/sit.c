@@ -64,12 +64,14 @@ id|net_device
 id|ipip6_fb_tunnel_dev
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;sit0&quot;
 comma
+dot
 id|init
-suffix:colon
+op_assign
 id|ipip6_fb_tunnel_init
 )brace
 suffix:semicolon

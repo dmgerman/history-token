@@ -3195,8 +3195,9 @@ id|notifier_block
 id|aarp_notifier
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|aarp_device_event
 comma
 )brace

@@ -123,12 +123,14 @@ id|file_operations
 id|vlan_fops
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|vlan_proc_read
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 l_int|NULL
 comma
 multiline_comment|/* vlan_proc_ioctl */
@@ -142,12 +144,14 @@ id|file_operations
 id|vlandev_fops
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|vlan_proc_read
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 l_int|NULL
 comma
 multiline_comment|/* vlan_proc_ioctl */
