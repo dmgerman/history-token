@@ -181,43 +181,8 @@ id|APIC_ID
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|slow_smp_processor_id
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|function|safe_smp_processor_id
-r_extern
-r_inline
-r_int
-id|safe_smp_processor_id
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|disable_apic
-)paren
-r_return
-id|slow_smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-r_else
-r_return
-id|hard_smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
+DECL|macro|safe_smp_processor_id
+mdefine_line|#define safe_smp_processor_id() (cpuid_ebx(1) &gt;&gt; 24) 
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
 macro_line|#endif /* !ASSEMBLY */

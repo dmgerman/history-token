@@ -565,8 +565,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_char
-op_star
+r_void
 id|bcopy
 c_func
 (paren

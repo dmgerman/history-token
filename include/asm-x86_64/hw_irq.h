@@ -45,14 +45,14 @@ DECL|macro|FIRST_SYSTEM_VECTOR
 mdefine_line|#define FIRST_SYSTEM_VECTOR&t;0xef
 macro_line|#ifndef __ASSEMBLY__
 r_extern
-r_int
+id|u8
 id|irq_vector
 (braket
-id|NR_IRQS
+id|NR_IRQ_VECTORS
 )braket
 suffix:semicolon
 DECL|macro|IO_APIC_VECTOR
-mdefine_line|#define IO_APIC_VECTOR(irq)&t;irq_vector[irq]
+mdefine_line|#define IO_APIC_VECTOR(irq)&t;((int)irq_vector[irq])
 multiline_comment|/*&n; * Various low-level irq details needed by irq.c, process.c,&n; * time.c, io_apic.c and smp.c&n; *&n; * Interrupt entry/exit code at both C and assembly level&n; */
 r_extern
 r_void

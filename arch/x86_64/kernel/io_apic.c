@@ -2223,11 +2223,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* irq_vectors is indexed by the sum of all RTEs in all I/O APICs. */
 DECL|variable|irq_vector
-r_int
+id|u8
 id|irq_vector
 (braket
-id|NR_IRQS
+id|NR_IRQ_VECTORS
 )braket
 op_assign
 (brace
@@ -2256,6 +2257,14 @@ comma
 id|offset
 op_assign
 l_int|0
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|irq
+op_ge
+id|NR_IRQ_VECTORS
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -638,9 +638,9 @@ mdefine_line|#define NMI_STACK 3
 DECL|macro|N_EXCEPTION_STACKS
 mdefine_line|#define N_EXCEPTION_STACKS 3  /* hw limit: 7 */
 DECL|macro|EXCEPTION_STKSZ
-mdefine_line|#define EXCEPTION_STKSZ 1024
-DECL|macro|EXCEPTION_STK_ORDER
-mdefine_line|#define EXCEPTION_STK_ORDER 0
+mdefine_line|#define EXCEPTION_STKSZ (PAGE_SIZE &lt;&lt; EXCEPTION_STACK_ORDER)
+DECL|macro|EXCEPTION_STACK_ORDER
+mdefine_line|#define EXCEPTION_STACK_ORDER 0 
 DECL|macro|start_thread
 mdefine_line|#define start_thread(regs,new_rip,new_rsp) do { &bslash;&n;&t;asm volatile(&quot;movl %0,%%fs; movl %0,%%es; movl %0,%%ds&quot;: :&quot;r&quot; (0));&t; &bslash;&n;&t;load_gs_index(0);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(regs)-&gt;rip = (new_rip);&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;rsp = (new_rsp);&t;&t;&t;&t;&t;&t; &bslash;&n;&t;write_pda(oldrsp, (new_rsp));&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;cs = __USER_CS;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;ss = __USER_DS;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;eflags = 0x200;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&t; &bslash;&n;} while(0) 
 r_struct

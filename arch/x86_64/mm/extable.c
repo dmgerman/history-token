@@ -30,6 +30,24 @@ r_int
 id|value
 )paren
 (brace
+multiline_comment|/* Work around a B stepping K8 bug */
+r_if
+c_cond
+(paren
+(paren
+id|value
+op_rshift
+l_int|32
+)paren
+op_eq
+l_int|0
+)paren
+id|value
+op_or_assign
+l_int|0xffffffffUL
+op_lshift
+l_int|32
+suffix:semicolon
 r_while
 c_loop
 (paren
