@@ -112,6 +112,13 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
+id|s-&gt;s_io
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
 id|s-&gt;s_locked_inodes
 )paren
 suffix:semicolon
@@ -449,7 +456,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;insert_super&t;-&t;put superblock on the lists&n; *&t;@s:&t;superblock in question&n; *&t;@type:&t;filesystem type it will belong to&n; *&n; *&t;Associates superblock with fs type and puts it on per-type and global&n; *&t;superblocks&squot; lists.  Should be called with sb_lock held; drops it.&n; */
+multiline_comment|/**&n; *&t;insert_super&t;-&t;put superblock on the lists&n; *&t;@s:&t;superblock in question&n; *&t;@type:&t;filesystem type it will belong to&n; *&n; *&t;Associates superblock with fs type and puts it on per-type and global&n; *&t;superblocks&squot; lists.  Should be called with sb_lock held; drops it.&n; *&n; *&t;NOTE: the super_blocks ordering here is important: writeback wants&n; *&t;the blockdev superblock to be at super_blocks.next.&n; */
 DECL|function|insert_super
 r_static
 r_void

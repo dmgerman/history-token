@@ -1963,12 +1963,6 @@ r_int
 r_int
 id|s_old_blocksize
 suffix:semicolon
-DECL|member|s_writeback_gen
-r_int
-r_int
-id|s_writeback_gen
-suffix:semicolon
-multiline_comment|/* To avoid writeback livelock */
 DECL|member|s_blocksize_bits
 r_int
 r_char
@@ -2040,6 +2034,10 @@ DECL|member|s_count
 r_int
 id|s_count
 suffix:semicolon
+DECL|member|s_syncing
+r_int
+id|s_syncing
+suffix:semicolon
 DECL|member|s_active
 id|atomic_t
 id|s_active
@@ -2050,6 +2048,12 @@ id|list_head
 id|s_dirty
 suffix:semicolon
 multiline_comment|/* dirty inodes */
+DECL|member|s_io
+r_struct
+id|list_head
+id|s_io
+suffix:semicolon
+multiline_comment|/* parked for writeback */
 DECL|member|s_locked_inodes
 r_struct
 id|list_head
@@ -4957,16 +4961,6 @@ id|inode
 op_star
 comma
 r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sync_inodes_sb
-c_func
-(paren
-r_struct
-id|super_block
-op_star
 )paren
 suffix:semicolon
 r_extern
