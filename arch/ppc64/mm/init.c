@@ -3294,7 +3294,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|vma-&gt;vm_mm-&gt;context
+id|vma-&gt;vm_mm-&gt;context.id
 comma
 id|ea
 )paren

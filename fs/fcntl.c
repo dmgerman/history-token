@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/siginfo.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|set_close_on_exec
 r_void
+id|fastcall
 id|set_close_on_exec
 c_func
 (paren

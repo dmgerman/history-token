@@ -1572,15 +1572,13 @@ multiline_comment|/*&n;&t; * That failed: try linear search for a free inode, ev
 id|group
 op_assign
 id|parent_group
-op_plus
-l_int|1
 suffix:semicolon
 r_for
 c_loop
 (paren
 id|i
 op_assign
-l_int|2
+l_int|0
 suffix:semicolon
 id|i
 OL

@@ -5,20 +5,39 @@ mdefine_line|#define _PPC64_MMU_H_
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/* Default &quot;unsigned long&quot; context */
-DECL|typedef|mm_context_t
+multiline_comment|/* Time to allow for more things here */
+DECL|typedef|mm_context_id_t
 r_typedef
 r_int
 r_int
+id|mm_context_id_t
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|id
+id|mm_context_id_t
+id|id
+suffix:semicolon
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|member|low_hpages
+r_int
+id|low_hpages
+suffix:semicolon
+macro_line|#endif
+DECL|typedef|mm_context_t
+)brace
 id|mm_context_t
 suffix:semicolon
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
-DECL|macro|CONTEXT_LOW_HPAGES
-mdefine_line|#define CONTEXT_LOW_HPAGES&t;(1UL&lt;&lt;63)
+DECL|macro|KERNEL_LOW_HPAGES
+mdefine_line|#define KERNEL_LOW_HPAGES&t;.low_hpages = 0,
 macro_line|#else
-DECL|macro|CONTEXT_LOW_HPAGES
-mdefine_line|#define CONTEXT_LOW_HPAGES&t;0
+DECL|macro|KERNEL_LOW_HPAGES
+mdefine_line|#define KERNEL_LOW_HPAGES
 macro_line|#endif
+DECL|macro|KERNEL_CONTEXT
+mdefine_line|#define KERNEL_CONTEXT(ea) ({ &bslash;&n;&t;&t;mm_context_t ctx = { .id = REGION_ID(ea), KERNEL_LOW_HPAGES}; &bslash;&n;&t;&t;ctx; })
 multiline_comment|/*&n; * Hardware Segment Lookaside Buffer Entry&n; * This structure has been padded out to two 64b doublewords (actual SLBE&squot;s are&n; * 94 bits).  This padding facilites use by the segment management&n; * instructions.&n; */
 r_typedef
 r_struct

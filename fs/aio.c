@@ -1280,6 +1280,7 @@ suffix:semicolon
 multiline_comment|/* wait_on_sync_kiocb:&n; *&t;Waits on the given sync kiocb to complete.&n; */
 DECL|function|wait_on_sync_kiocb
 id|ssize_t
+id|fastcall
 id|wait_on_sync_kiocb
 c_func
 (paren
@@ -1328,6 +1329,7 @@ suffix:semicolon
 multiline_comment|/* exit_aio: called when the last user of mm goes away.  At this point, &n; * there is no way for any new requests to be submited or any of the &n; * io_* syscalls to be called on the context.  However, there may be &n; * outstanding requests which hold references to the context; as they &n; * go away, they will call put_ioctx and release any pinned memory&n; * associated with the request (held via struct page * references).&n; */
 DECL|function|exit_aio
 r_void
+id|fastcall
 id|exit_aio
 c_func
 (paren
@@ -1422,6 +1424,7 @@ suffix:semicolon
 multiline_comment|/* __put_ioctx&n; *&t;Called when the last user of an aio context has gone away,&n; *&t;and the struct needs to be freed.&n; */
 DECL|function|__put_ioctx
 r_void
+id|fastcall
 id|__put_ioctx
 c_func
 (paren
@@ -1514,6 +1517,7 @@ DECL|function|__aio_get_req
 r_static
 r_struct
 id|kiocb
+id|fastcall
 op_star
 id|__aio_get_req
 c_func
@@ -2085,6 +2089,7 @@ suffix:semicolon
 multiline_comment|/* aio_put_req&n; *&t;Returns true if this put was the last user of the kiocb,&n; *&t;false if the request is still in use.&n; */
 DECL|function|aio_put_req
 r_int
+id|fastcall
 id|aio_put_req
 c_func
 (paren
@@ -2470,6 +2475,7 @@ suffix:semicolon
 )brace
 DECL|function|kick_iocb
 r_void
+id|fastcall
 id|kick_iocb
 c_func
 (paren
@@ -2567,6 +2573,7 @@ suffix:semicolon
 multiline_comment|/* aio_complete&n; *&t;Called when the io request on the given iocb is complete.&n; *&t;Returns true if this is the last user of the request.  The &n; *&t;only other user of the request can be the cancellation code.&n; */
 DECL|function|aio_complete
 r_int
+id|fastcall
 id|aio_complete
 c_func
 (paren
@@ -4076,6 +4083,7 @@ suffix:semicolon
 )brace
 DECL|function|io_submit_one
 r_int
+id|fastcall
 id|io_submit_one
 c_func
 (paren
