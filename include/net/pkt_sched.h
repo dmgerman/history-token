@@ -498,12 +498,6 @@ id|Qdisc_ops
 op_star
 id|ops
 suffix:semicolon
-DECL|member|next
-r_struct
-id|Qdisc
-op_star
-id|next
-suffix:semicolon
 DECL|member|handle
 id|u32
 id|handle
@@ -522,6 +516,11 @@ r_struct
 id|net_device
 op_star
 id|dev
+suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|stats
 r_struct
