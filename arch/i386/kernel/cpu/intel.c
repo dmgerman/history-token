@@ -1054,6 +1054,13 @@ comma
 id|l1d
 )paren
 suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
