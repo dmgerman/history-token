@@ -106,6 +106,13 @@ c_func
 id|ip
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ip-&gt;i_d.di_nextents
+OG
+l_int|0
+)paren
 (paren
 r_void
 )paren
