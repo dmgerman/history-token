@@ -4,8 +4,10 @@ DECL|macro|_PPC_IO_H
 mdefine_line|#define _PPC_IO_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/mmu.h&gt;
 DECL|macro|SIO_CONFIG_RA
 mdefine_line|#define SIO_CONFIG_RA&t;0x398
 DECL|macro|SIO_CONFIG_RD
@@ -28,7 +30,7 @@ DECL|macro|PREP_ISA_MEM_BASE
 mdefine_line|#define PREP_ISA_MEM_BASE &t;0xc0000000
 DECL|macro|PREP_PCI_DRAM_OFFSET
 mdefine_line|#define PREP_PCI_DRAM_OFFSET &t;0x80000000
-macro_line|#if defined(CONFIG_40x)
+macro_line|#if defined(CONFIG_4xx)
 macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#elif defined(CONFIG_8xx)
 macro_line|#include &lt;asm/mpc8xx.h&gt;
@@ -396,8 +398,7 @@ op_star
 id|__ioremap
 c_func
 (paren
-r_int
-r_int
+id|phys_addr_t
 id|address
 comma
 r_int
@@ -415,6 +416,22 @@ op_star
 id|ioremap
 c_func
 (paren
+id|phys_addr_t
+id|address
+comma
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_44x
+r_extern
+r_void
+op_star
+id|ioremap64
+c_func
+(paren
+r_int
 r_int
 r_int
 id|address
@@ -424,6 +441,7 @@ r_int
 id|size
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|macro|ioremap_nocache
 mdefine_line|#define ioremap_nocache(addr, size)&t;ioremap((addr), (size))
 r_extern
@@ -473,8 +491,7 @@ r_int
 r_int
 id|virt
 comma
-r_int
-r_int
+id|phys_addr_t
 id|phys
 comma
 r_int
