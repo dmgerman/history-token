@@ -3804,9 +3804,13 @@ DECL|member|rd_curr
 r_int
 id|rd_curr
 suffix:semicolon
-DECL|member|rd_used
+DECL|member|rd_dirty
 r_int
-id|rd_used
+id|rd_dirty
+suffix:semicolon
+DECL|member|rd_filled
+id|u32
+id|rd_filled
 suffix:semicolon
 DECL|member|rd_ring
 r_struct
