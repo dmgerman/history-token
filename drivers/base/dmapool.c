@@ -933,7 +933,7 @@ id|pool
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * dma_pool_alloc - get a block of consistent memory&n; * @pool: dma pool that will produce the block&n; * @mem_flags: SLAB_KERNEL or SLAB_ATOMIC&n; * @handle: pointer to dma address of block&n; *&n; * This returns the kernel virtual address of a currently unused block,&n; * and reports its dma address through the handle.&n; * If such a memory block can&squot;t be allocated, null is returned.&n; */
+multiline_comment|/**&n; * dma_pool_alloc - get a block of consistent memory&n; * @pool: dma pool that will produce the block&n; * @mem_flags: GFP_* bitmask&n; * @handle: pointer to dma address of block&n; *&n; * This returns the kernel virtual address of a currently unused block,&n; * and reports its dma address through the handle.&n; * If such a memory block can&squot;t be allocated, null is returned.&n; */
 r_void
 op_star
 DECL|function|dma_pool_alloc
@@ -1121,8 +1121,8 @@ r_if
 c_cond
 (paren
 id|mem_flags
-op_eq
-id|SLAB_KERNEL
+op_amp
+id|__GFP_WAIT
 )paren
 (brace
 id|DECLARE_WAITQUEUE
@@ -1618,7 +1618,7 @@ op_amp
 id|pool-&gt;waitq
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Resist a temptation to do&n;&t; *    if (!is_page_busy(bpp, page-&gt;bitmap)) pool_free_page(pool, page);&n;&t; * it is not interrupt safe. Better have empty pages hang around.&n;&t; */
+multiline_comment|/*&n;&t; * Resist a temptation to do&n;&t; *    if (!is_page_busy(bpp, page-&gt;bitmap)) pool_free_page(pool, page);&n;&t; * Better have a few empty pages hang around.&n;&t; */
 id|spin_unlock_irqrestore
 (paren
 op_amp
