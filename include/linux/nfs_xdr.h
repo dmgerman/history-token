@@ -2219,17 +2219,24 @@ DECL|struct|nfs4_readlink
 r_struct
 id|nfs4_readlink
 (brace
-DECL|member|rl_count
+DECL|member|fh
+r_const
+r_struct
+id|nfs_fh
+op_star
+id|fh
+suffix:semicolon
+DECL|member|count
 id|u32
-id|rl_count
+id|count
 suffix:semicolon
 multiline_comment|/* zero-copy data */
-DECL|member|rl_pages
+DECL|member|pages
 r_struct
 id|page
 op_star
 op_star
-id|rl_pages
+id|pages
 suffix:semicolon
 multiline_comment|/* zero-copy data */
 )brace

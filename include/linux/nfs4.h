@@ -1018,6 +1018,9 @@ comma
 DECL|enumerator|NFSPROC4_CLNT_STATFS
 id|NFSPROC4_CLNT_STATFS
 comma
+DECL|enumerator|NFSPROC4_CLNT_READLINK
+id|NFSPROC4_CLNT_READLINK
+comma
 )brace
 suffix:semicolon
 macro_line|#endif
