@@ -4392,6 +4392,7 @@ r_char
 op_star
 id|sense_txt
 suffix:semicolon
+r_const
 r_char
 op_star
 id|name
@@ -4401,7 +4402,7 @@ ques
 c_cond
 id|req-&gt;rq_disk-&gt;disk_name
 suffix:colon
-l_string|&quot;?&quot;
+id|devclass
 suffix:semicolon
 id|sense_class
 op_assign
@@ -4647,9 +4648,7 @@ id|sense_txt
 id|printk
 c_func
 (paren
-l_string|&quot;%s%s: sense key %s&bslash;n&quot;
-comma
-id|devclass
+l_string|&quot;%s: sense key %s&bslash;n&quot;
 comma
 id|name
 comma
@@ -4660,9 +4659,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s%s: sense = %2x %2x&bslash;n&quot;
-comma
-id|devclass
+l_string|&quot;%s: sense = %2x %2x&bslash;n&quot;
 comma
 id|name
 comma
@@ -4750,9 +4747,7 @@ id|sense_txt
 id|printk
 c_func
 (paren
-l_string|&quot;%s%s: old sense key %s&bslash;n&quot;
-comma
-id|devclass
+l_string|&quot;%s: old sense key %s&bslash;n&quot;
 comma
 id|name
 comma
@@ -4763,9 +4758,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s%s: sense = %2x %2x&bslash;n&quot;
-comma
-id|devclass
+l_string|&quot;%s: sense = %2x %2x&bslash;n&quot;
 comma
 id|name
 comma
