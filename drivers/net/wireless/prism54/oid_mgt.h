@@ -27,6 +27,7 @@ id|islpci_private
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* I don&squot;t know where to put these 3 */
 r_extern
 r_const
 r_int
@@ -40,6 +41,13 @@ r_int
 id|frequency_list_a
 (braket
 )braket
+suffix:semicolon
+r_int
+id|channel_of_freq
+c_func
+(paren
+r_int
+)paren
 suffix:semicolon
 r_void
 id|mgt_le_to_cpu

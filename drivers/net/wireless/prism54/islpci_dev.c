@@ -2359,6 +2359,10 @@ id|priv-&gt;pdev
 op_assign
 id|pdev
 suffix:semicolon
+id|priv-&gt;monitor_type
+op_assign
+id|ARPHRD_IEEE80211
+suffix:semicolon
 id|priv-&gt;ndev-&gt;type
 op_assign
 (paren
@@ -2368,7 +2372,7 @@ id|IW_MODE_MONITOR
 )paren
 ques
 c_cond
-id|ARPHRD_IEEE80211
+id|priv-&gt;monitor_type
 suffix:colon
 id|ARPHRD_ETHER
 suffix:semicolon

@@ -261,6 +261,11 @@ id|iw_spy_data
 id|spy_data
 suffix:semicolon
 multiline_comment|/* iwspy support */
+DECL|member|monitor_type
+r_int
+id|monitor_type
+suffix:semicolon
+multiline_comment|/* ARPHRD_IEEE80211 or ARPHRD_IEEE80211_PRISM */
 DECL|member|acl
 r_struct
 id|islpci_acl
