@@ -409,6 +409,12 @@ op_assign
 l_int|55
 comma
 multiline_comment|/* int: PID # limit */
+DECL|enumerator|KERN_CORE_PATTERN
+id|KERN_CORE_PATTERN
+op_assign
+l_int|56
+comma
+multiline_comment|/* string: pattern for core-file names */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
