@@ -6,6 +6,7 @@ macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;sys/stat.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;netinet/in.h&gt;
+macro_line|#include &lt;stdint.h&gt;
 multiline_comment|/* This gets tacked on the front of the image.  There are also a few&n; * bytes allocated after the _start label used by the boot rom (see&n; * head.S for details).&n; */
 DECL|struct|boot_block
 r_typedef
@@ -13,44 +14,37 @@ r_struct
 id|boot_block
 (brace
 DECL|member|bb_magic
-r_int
-r_int
+r_uint32
 id|bb_magic
 suffix:semicolon
 multiline_comment|/* 0x0052504F */
 DECL|member|bb_dest
-r_int
-r_int
+r_uint32
 id|bb_dest
 suffix:semicolon
 multiline_comment|/* Target address of the image */
 DECL|member|bb_num_512blocks
-r_int
-r_int
+r_uint32
 id|bb_num_512blocks
 suffix:semicolon
 multiline_comment|/* Size, rounded-up, in 512 byte blks */
 DECL|member|bb_debug_flag
-r_int
-r_int
+r_uint32
 id|bb_debug_flag
 suffix:semicolon
 multiline_comment|/* Run debugger or image after load */
 DECL|member|bb_entry_point
-r_int
-r_int
+r_uint32
 id|bb_entry_point
 suffix:semicolon
 multiline_comment|/* The image address to start */
 DECL|member|bb_checksum
-r_int
-r_int
+r_uint32
 id|bb_checksum
 suffix:semicolon
 multiline_comment|/* 32 bit checksum including header */
 DECL|member|reserved
-r_int
-r_int
+r_uint32
 id|reserved
 (braket
 l_int|2

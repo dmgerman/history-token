@@ -5,8 +5,8 @@ macro_line|#include &lt;linux/xfrm.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
-macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
+macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#ifdef CONFIG_IPV6_XFRM6_TUNNEL_DEBUG
@@ -1309,95 +1309,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|xfrm6_tunnel_free_spi
-)paren
-suffix:semicolon
-DECL|function|xfrm6_tunnel_check_size
-r_int
-id|xfrm6_tunnel_check_size
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-r_int
-id|mtu
-comma
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-r_struct
-id|dst_entry
-op_star
-id|dst
-op_assign
-id|skb-&gt;dst
-suffix:semicolon
-id|mtu
-op_assign
-id|dst_pmtu
-c_func
-(paren
-id|dst
-)paren
-op_minus
-r_sizeof
-(paren
-r_struct
-id|ipv6hdr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mtu
-OL
-id|IPV6_MIN_MTU
-)paren
-id|mtu
-op_assign
-id|IPV6_MIN_MTU
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb-&gt;len
-OG
-id|mtu
-)paren
-(brace
-id|icmpv6_send
-c_func
-(paren
-id|skb
-comma
-id|ICMPV6_PKT_TOOBIG
-comma
-l_int|0
-comma
-id|mtu
-comma
-id|skb-&gt;dev
-)paren
-suffix:semicolon
-id|ret
-op_assign
-op_minus
-id|EMSGSIZE
-suffix:semicolon
-)brace
-r_return
-id|ret
-suffix:semicolon
-)brace
-DECL|variable|xfrm6_tunnel_check_size
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xfrm6_tunnel_check_size
 )paren
 suffix:semicolon
 DECL|function|xfrm6_tunnel_output

@@ -3,7 +3,6 @@ macro_line|#ifndef __PPC_SYSLIB_PPC85XX_SETUP_H
 DECL|macro|__PPC_SYSLIB_PPC85XX_SETUP_H
 mdefine_line|#define __PPC_SYSLIB_PPC85XX_SETUP_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/ppcboot.h&gt;
 r_extern

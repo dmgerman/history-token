@@ -63,7 +63,7 @@ dot
 id|clock
 op_assign
 op_amp
-id|s3c2410_hclk
+id|s3c2410_pclk
 comma
 dot
 id|ucon
@@ -101,7 +101,7 @@ dot
 id|clock
 op_assign
 op_amp
-id|s3c2410_hclk
+id|s3c2410_pclk
 comma
 dot
 id|ucon
@@ -140,7 +140,7 @@ dot
 id|clock
 op_assign
 op_amp
-id|s3c2410_hclk
+id|s3c2410_pclk
 comma
 dot
 id|ucon

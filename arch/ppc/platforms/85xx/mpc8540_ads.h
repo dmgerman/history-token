@@ -3,7 +3,6 @@ macro_line|#ifndef __MACH_MPC8540ADS_H__
 DECL|macro|__MACH_MPC8540ADS_H__
 mdefine_line|#define __MACH_MPC8540ADS_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;syslib/ppc85xx_setup.h&gt;
 macro_line|#include &lt;platforms/85xx/mpc85xx_ads_common.h&gt;
