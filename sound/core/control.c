@@ -2407,11 +2407,11 @@ c_func
 (paren
 id|_control
 comma
-op_amp
 id|control
 comma
 r_sizeof
 (paren
+op_star
 id|control
 )paren
 )paren
@@ -2702,11 +2702,11 @@ c_func
 (paren
 id|_control
 comma
-op_amp
 id|control
 comma
 r_sizeof
 (paren
+op_star
 id|control
 )paren
 )paren
