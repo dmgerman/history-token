@@ -97,6 +97,9 @@ comma
 DECL|enumerator|DIBUSB2_0B
 id|DIBUSB2_0B
 comma
+DECL|enumerator|NOVAT_USB2
+id|NOVAT_USB2
+comma
 DECL|typedef|dibusb_class_t
 )brace
 id|dibusb_class_t
@@ -150,8 +153,9 @@ l_int|0
 comma
 DECL|enumerator|DIBUSB_RC_NEC_PROTOCOL
 id|DIBUSB_RC_NEC_PROTOCOL
-op_assign
-l_int|1
+comma
+DECL|enumerator|DIBUSB_RC_HAUPPAUGE_PROTO
+id|DIBUSB_RC_HAUPPAUGE_PROTO
 comma
 DECL|typedef|dibusb_remote_t
 )brace
@@ -477,10 +481,24 @@ r_struct
 id|work_struct
 id|rc_query_work
 suffix:semicolon
-DECL|member|rc_input_event
+DECL|member|last_event
 r_int
-id|rc_input_event
+id|last_event
 suffix:semicolon
+DECL|member|last_state
+r_int
+id|last_state
+suffix:semicolon
+multiline_comment|/* for Hauppauge RC protocol */
+DECL|member|repeat_key_count
+r_int
+id|repeat_key_count
+suffix:semicolon
+DECL|member|rc_key_repeat_count
+r_int
+id|rc_key_repeat_count
+suffix:semicolon
+multiline_comment|/* module parameter */
 multiline_comment|/* module parameters */
 DECL|member|pid_parse
 r_int
@@ -714,6 +732,11 @@ DECL|macro|DIBUSB_RC_NEC_KEY_PRESSED
 mdefine_line|#define DIBUSB_RC_NEC_KEY_PRESSED&t;&t;0x01
 DECL|macro|DIBUSB_RC_NEC_KEY_REPEATED
 mdefine_line|#define DIBUSB_RC_NEC_KEY_REPEATED&t;&t;0x02
+multiline_comment|/* additional status values for Hauppauge Remote Control Protocol */
+DECL|macro|DIBUSB_RC_HAUPPAUGE_KEY_PRESSED
+mdefine_line|#define DIBUSB_RC_HAUPPAUGE_KEY_PRESSED&t;0x01
+DECL|macro|DIBUSB_RC_HAUPPAUGE_KEY_EMPTY
+mdefine_line|#define DIBUSB_RC_HAUPPAUGE_KEY_EMPTY&t;0x03
 multiline_comment|/* streaming mode:&n; * bulk write: 0x05 mode_byte&n; *&n; * mode_byte is mostly 0x00&n; */
 DECL|macro|DIBUSB_REQ_SET_STREAMING_MODE
 mdefine_line|#define DIBUSB_REQ_SET_STREAMING_MODE&t;0x05

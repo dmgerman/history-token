@@ -492,13 +492,22 @@ l_string|&quot;dibusb-device is going to bed.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* workaround, something is wrong, when dibusb 1.1 device are going to bed too late */
-r_if
+r_switch
 c_cond
 (paren
 id|dib-&gt;dibdev-&gt;dev_cl-&gt;id
-op_ne
-id|DIBUSB1_1
 )paren
+(brace
+r_case
+id|DIBUSB1_1
+suffix:colon
+r_case
+id|NOVAT_USB2
+suffix:colon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|dibusb_ioctl_cmd
 c_func
 (paren
@@ -511,6 +520,9 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -596,6 +608,9 @@ id|DIBUSB2_0
 suffix:colon
 r_case
 id|DIBUSB2_0B
+suffix:colon
+r_case
+id|NOVAT_USB2
 suffix:colon
 r_if
 c_cond
