@@ -39,11 +39,21 @@ r_int
 id|len
 )paren
 suffix:semicolon
+r_extern
+id|u32
+id|bitreverse
+c_func
+(paren
+id|u32
+id|in
+)paren
+suffix:semicolon
 DECL|macro|crc32
 mdefine_line|#define crc32(seed, data, length)  crc32_le(seed, (unsigned char const *)data, length)
+multiline_comment|/*&n; * Helpers for hash table generation of ethernet nics:&n; *&n; * Ethernet sends the least significant bit of a byte first, thus crc32_le&n; * is used. The output of crc32_le is bit reversed [most significant bit&n; * is in bit nr 0], thus it must be reversed before use. Except for&n; * nics that bit swap the result internally...&n; */
+DECL|macro|ether_crc
+mdefine_line|#define ether_crc(length, data)    bitreverse(crc32_le(~0, data, length))
 DECL|macro|ether_crc_le
 mdefine_line|#define ether_crc_le(length, data) crc32_le(~0, data, length)
-DECL|macro|ether_crc
-mdefine_line|#define ether_crc(length, data)    crc32_be(~0, data, length)
 macro_line|#endif /* _LINUX_CRC32_H */
 eof

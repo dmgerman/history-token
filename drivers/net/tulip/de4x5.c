@@ -3642,6 +3642,13 @@ id|spinlock_t
 )paren
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|lp-&gt;timer
+)paren
+suffix:semicolon
 id|de4x5_parse_params
 c_func
 (paren
