@@ -11434,8 +11434,6 @@ id|p.cook.o
 suffix:semicolon
 )brace
 macro_line|#else
-id|lasthash
-op_assign
 id|thishash
 op_assign
 id|INT_GET
