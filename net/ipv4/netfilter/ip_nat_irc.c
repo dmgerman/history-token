@@ -347,7 +347,7 @@ id|iph-&gt;ihl
 op_star
 l_int|4
 suffix:semicolon
-r_int
+id|u_int16_t
 id|port
 suffix:semicolon
 multiline_comment|/* &quot;4294967296 65635 &quot; */

@@ -662,6 +662,8 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|macro|OCF_INQUIRY_CANCEL
+mdefine_line|#define OCF_INQUIRY_CANCEL&t;0x0002
 DECL|macro|OCF_LINK_KEY_REPLY
 mdefine_line|#define OCF_LINK_KEY_REPLY&t;0x000B
 DECL|macro|OCF_LINK_KEY_NEG_REPLY

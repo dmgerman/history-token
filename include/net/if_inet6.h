@@ -3,6 +3,12 @@ macro_line|#ifndef _NET_IF_INET6_H
 DECL|macro|_NET_IF_INET6_H
 mdefine_line|#define _NET_IF_INET6_H
 macro_line|#include &lt;net/snmp.h&gt;
+macro_line|#include &lt;linux/ipv6.h&gt;
+multiline_comment|/* inet6_dev.if_flags */
+DECL|macro|IF_RA_OTHERCONF
+mdefine_line|#define IF_RA_OTHERCONF&t;0x80
+DECL|macro|IF_RA_MANAGED
+mdefine_line|#define IF_RA_MANAGED&t;0x40
 DECL|macro|IF_RA_RCVD
 mdefine_line|#define IF_RA_RCVD&t;0x20
 DECL|macro|IF_RS_SENT
@@ -358,79 +364,6 @@ DECL|macro|IFA_SITE
 mdefine_line|#define&t;IFA_SITE&t;IPV6_ADDR_SITELOCAL
 DECL|macro|IFA_GLOBAL
 mdefine_line|#define&t;IFA_GLOBAL&t;0x0000U
-DECL|struct|ipv6_devconf
-r_struct
-id|ipv6_devconf
-(brace
-DECL|member|forwarding
-r_int
-id|forwarding
-suffix:semicolon
-DECL|member|hop_limit
-r_int
-id|hop_limit
-suffix:semicolon
-DECL|member|mtu6
-r_int
-id|mtu6
-suffix:semicolon
-DECL|member|accept_ra
-r_int
-id|accept_ra
-suffix:semicolon
-DECL|member|accept_redirects
-r_int
-id|accept_redirects
-suffix:semicolon
-DECL|member|autoconf
-r_int
-id|autoconf
-suffix:semicolon
-DECL|member|dad_transmits
-r_int
-id|dad_transmits
-suffix:semicolon
-DECL|member|rtr_solicits
-r_int
-id|rtr_solicits
-suffix:semicolon
-DECL|member|rtr_solicit_interval
-r_int
-id|rtr_solicit_interval
-suffix:semicolon
-DECL|member|rtr_solicit_delay
-r_int
-id|rtr_solicit_delay
-suffix:semicolon
-macro_line|#ifdef CONFIG_IPV6_PRIVACY
-DECL|member|use_tempaddr
-r_int
-id|use_tempaddr
-suffix:semicolon
-DECL|member|temp_valid_lft
-r_int
-id|temp_valid_lft
-suffix:semicolon
-DECL|member|temp_prefered_lft
-r_int
-id|temp_prefered_lft
-suffix:semicolon
-DECL|member|regen_max_retry
-r_int
-id|regen_max_retry
-suffix:semicolon
-DECL|member|max_desync_factor
-r_int
-id|max_desync_factor
-suffix:semicolon
-macro_line|#endif
-DECL|member|sysctl
-r_void
-op_star
-id|sysctl
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|ipv6_devstat
 r_struct
 id|ipv6_devstat
