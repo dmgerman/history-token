@@ -461,6 +461,8 @@ id|os_kill_process
 c_func
 (paren
 id|pid
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1003,6 +1005,8 @@ id|os_kill_process
 c_func
 (paren
 id|dev-&gt;helper_pid
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1019,6 +1023,8 @@ id|os_kill_process
 c_func
 (paren
 id|dev-&gt;telnetd_pid
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1300,6 +1306,8 @@ id|os_kill_process
 c_func
 (paren
 id|dev-&gt;telnetd_pid
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1316,6 +1324,8 @@ id|os_kill_process
 c_func
 (paren
 id|dev-&gt;telnetd_pid
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

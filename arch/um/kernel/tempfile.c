@@ -6,7 +6,9 @@ macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/param.h&gt;
 macro_line|#include &quot;init.h&quot;
+multiline_comment|/* Modified from create_mem_file and start_debugger */
 DECL|variable|tempdir
+r_static
 r_char
 op_star
 id|tempdir
