@@ -3904,7 +3904,7 @@ r_int
 id|timeout
 )paren
 (brace
-id|inet_sock_release
+id|sk_common_release
 c_func
 (paren
 id|sk
