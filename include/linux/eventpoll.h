@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  include/linux/eventpoll.h ( Efficent event polling implementation )&n; *  Copyright (C) 2001,...,2002&t; Davide Libenzi&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  Davide Libenzi &lt;davidel@xmailserver.org&gt;&n; *&n; */
+multiline_comment|/*&n; *  include/linux/eventpoll.h ( Efficent event polling implementation )&n; *  Copyright (C) 2001,...,2003&t; Davide Libenzi&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  Davide Libenzi &lt;davidel@xmailserver.org&gt;&n; *&n; */
 macro_line|#ifndef _LINUX_EVENTPOLL_H
 DECL|macro|_LINUX_EVENTPOLL_H
 mdefine_line|#define _LINUX_EVENTPOLL_H
@@ -9,6 +9,9 @@ DECL|macro|EPOLL_CTL_DEL
 mdefine_line|#define EPOLL_CTL_DEL 2
 DECL|macro|EPOLL_CTL_MOD
 mdefine_line|#define EPOLL_CTL_MOD 3
+multiline_comment|/* Set the Edge Triggered behaviour for the target file descriptor */
+DECL|macro|EPOLLET
+mdefine_line|#define EPOLLET (1 &lt;&lt; 31)
 DECL|struct|epoll_event
 r_struct
 id|epoll_event
