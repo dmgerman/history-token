@@ -633,6 +633,11 @@ r_int
 r_int
 id|mthca_flags
 suffix:semicolon
+DECL|member|device_cap_flags
+r_int
+r_int
+id|device_cap_flags
+suffix:semicolon
 DECL|member|rev_id
 id|u32
 id|rev_id
