@@ -449,12 +449,12 @@ c_func
 id|reactivate_fd
 )paren
 suffix:semicolon
-DECL|variable|irq_spinlock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|irq_spinlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|irq_lock
 r_int

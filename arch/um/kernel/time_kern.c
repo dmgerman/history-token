@@ -605,12 +605,12 @@ id|regs
 suffix:semicolon
 )brace
 )brace
-DECL|variable|timer_spinlock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|timer_spinlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|time_lock
 r_int

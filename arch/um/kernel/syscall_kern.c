@@ -716,10 +716,11 @@ id|r
 suffix:semicolon
 )brace
 DECL|variable|syscall_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|syscall_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|syscall_index
 r_static

@@ -931,12 +931,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|call_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|call_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|scf_started
 r_static

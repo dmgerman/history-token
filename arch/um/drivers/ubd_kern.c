@@ -363,19 +363,19 @@ suffix:semicolon
 multiline_comment|/*End stuff from ubd_user.h*/
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;uml-blkdev&quot;
-DECL|variable|ubd_io_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ubd_io_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
-DECL|variable|ubd_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ubd_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|do_ubd
 r_static
