@@ -43,6 +43,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/mpc10x.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
+macro_line|#include &lt;asm/pci-bridge.h&gt;
 DECL|variable|ucSystemType
 r_int
 r_char
@@ -3612,6 +3613,12 @@ r_void
 r_int
 id|i
 suffix:semicolon
+r_int
+r_int
+id|pci_viddid
+comma
+id|pci_did
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3649,6 +3656,67 @@ op_assign
 op_amp
 id|i8259_pic
 suffix:semicolon
+multiline_comment|/* If we have a Raven PCI bridge or a Hawk PCI bridge / Memory&n;&t; * controller, we poll (as they have a different int-ack address). */
+id|early_read_config_dword
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|PCI_VENDOR_ID
+comma
+op_amp
+id|pci_viddid
+)paren
+suffix:semicolon
+id|pci_did
+op_assign
+(paren
+id|pci_viddid
+op_amp
+l_int|0xffff0000
+)paren
+op_rshift
+l_int|16
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|pci_viddid
+op_amp
+l_int|0xffff
+)paren
+op_eq
+id|PCI_VENDOR_ID_MOTOROLA
+)paren
+op_logical_and
+(paren
+(paren
+id|pci_did
+op_eq
+id|PCI_DEVICE_ID_MOTOROLA_RAVEN
+)paren
+op_logical_or
+(paren
+id|pci_did
+op_eq
+id|PCI_DEVICE_ID_MOTOROLA_HAWK
+)paren
+)paren
+)paren
+id|i8259_init
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_else
+multiline_comment|/* PCI interrupt ack address given in section 6.1.8 of the&n;&t;&t; * PReP specification. */
 id|i8259_init
 c_func
 (paren

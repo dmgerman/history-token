@@ -44,7 +44,6 @@ id|pmac_nvram_NR
 multiline_comment|/* MacOS Name Registry partition */
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 multiline_comment|/* Return partition offset in nvram */
 r_extern
 r_int
@@ -77,7 +76,6 @@ id|u8
 id|data
 )paren
 suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* Some offsets in XPRAM */
 DECL|macro|PMAC_XPRAM_MACHINE_LOC
 mdefine_line|#define PMAC_XPRAM_MACHINE_LOC&t;0xe4

@@ -1193,7 +1193,6 @@ id|x
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __KERNEL__
 DECL|function|__ffs
 r_static
 r_inline
@@ -1286,7 +1285,6 @@ DECL|macro|hweight16
 mdefine_line|#define hweight16(x) generic_hweight16(x)
 DECL|macro|hweight8
 mdefine_line|#define hweight8(x) generic_hweight8(x)
-macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Find the first bit set in a 140-bit bitmap.&n; * The first 100 bits are unlikely to be set.&n; */
 DECL|function|sched_find_first_bit
 r_static
@@ -1826,7 +1824,6 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __KERNEL__
 DECL|macro|ext2_set_bit
 mdefine_line|#define ext2_set_bit(nr, addr)&t;__test_and_set_bit((nr) ^ 0x18, (unsigned long *)(addr))
 DECL|macro|ext2_clear_bit
@@ -2112,7 +2109,6 @@ DECL|macro|minix_test_bit
 mdefine_line|#define minix_test_bit(nr,addr) ext2_test_bit(nr,addr)
 DECL|macro|minix_find_first_zero_bit
 mdefine_line|#define minix_find_first_zero_bit(addr,size) ext2_find_first_zero_bit(addr,size)
-macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif /* _PPC_BITOPS_H */
 macro_line|#endif /* __KERNEL__ */
 eof
