@@ -2106,9 +2106,9 @@ l_string|&quot;Feiya&quot;
 comma
 l_string|&quot;5-in-1 Card Reader&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
