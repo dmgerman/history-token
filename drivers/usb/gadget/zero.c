@@ -18,6 +18,8 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/uts.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -288,13 +290,8 @@ id|out_ep
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef HAVE_DRIVER_MODEL
 DECL|macro|xprintk
-mdefine_line|#define xprintk(dev,level,fmt,args...) &bslash;&n;&t;dev_printk(level , &amp;dev-&gt;gadget-&gt;dev , fmt , ## args)
-macro_line|#else
-DECL|macro|xprintk
-mdefine_line|#define xprintk(dev,level,fmt,args...) &bslash;&n;&t;printk(level &quot;%s %s: &quot; fmt , shortname, dev-&gt;gadget-&gt;dev.bus_id, &bslash;&n;&t;&t;## args)
-macro_line|#endif&t;/* HAVE_DRIVER_MODEL */
+mdefine_line|#define xprintk(d,level,fmt,args...) &bslash;&n;&t;dev_printk(level , &amp;(d)-&gt;gadget-&gt;dev , fmt , ## args)
 macro_line|#ifdef DEBUG
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -332,6 +329,28 @@ id|qlen
 op_assign
 l_int|32
 suffix:semicolon
+id|module_param
+(paren
+id|buflen
+comma
+id|uint
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
+)paren
+suffix:semicolon
+id|module_param
+(paren
+id|qlen
+comma
+id|uint
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Normally the &quot;loopback&quot; configuration is second (index 1) so&n; * it&squot;s not the default.  Here&squot;s where to change that order, to&n; * work better with hosts (like Linux ... for now!) where config&n; * changes are problematic.&n; */
 DECL|variable|loopdefault
 r_static
@@ -340,79 +359,17 @@ id|loopdefault
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef HAVE_DRIVER_MODEL
-macro_line|#include &lt;linux/moduleparam.h&gt;
-id|module_param
-(paren
-id|buflen
-comma
-id|uint
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|module_param
-(paren
-id|qlen
-comma
-id|uint
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|module_param
 (paren
 id|loopdefault
 comma
 r_bool
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
-macro_line|#else
-id|MODULE_PARM
-(paren
-id|buflen
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-(paren
-id|buflen
-comma
-l_string|&quot;size of i/o buffers&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-(paren
-id|qlen
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-(paren
-id|qlen
-comma
-l_string|&quot;depth of loopback buffering&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-(paren
-id|loopdefault
-comma
-l_string|&quot;b&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-(paren
-id|loopdefault
-comma
-l_string|&quot;true to have default config be loopback&quot;
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* HAVE_DRIVER_MODEL */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* Thanks to NetChip Technologies for donating this product ID.&n; *&n; * DO NOT REUSE THESE IDs with any other driver!!  Ever!!&n; * Instead:  allocate your own, using normal USB-IF procedures.&n; */
 DECL|macro|DRIVER_VENDOR_NUM
@@ -2791,17 +2748,14 @@ id|req-&gt;actual
 op_ne
 id|req-&gt;length
 )paren
-(brace
+id|DEBUG
+(paren
+(paren
 r_struct
 id|zero_dev
 op_star
-id|dev
-op_assign
+)paren
 id|ep-&gt;driver_data
-suffix:semicolon
-id|DEBUG
-(paren
-id|dev
 comma
 l_string|&quot;setup complete --&gt; %d, %d/%d&bslash;n&quot;
 comma
@@ -2812,7 +2766,6 @@ comma
 id|req-&gt;length
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * The setup() callback implements all the ep0 functionality that&squot;s&n; * not handled lower down, in hardware or the hardware driver (like&n; * device and endpoint feature flags, and their status).  It&squot;s all&n; * housekeeping for the gadget function we&squot;re implementing.  Most of&n; * the work is in config-specific setup.&n; */
 r_static

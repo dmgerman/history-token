@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;linux/usb_gadget.h&gt;
 multiline_comment|/**&n; * usb_gadget_get_string - fill out a string descriptor &n; * @table: of c strings using iso latin/1 characters&n; * @id: string id, from low byte of wValue in get string descriptor&n; * @buf: at least 256 bytes&n; *&n; * Finds the iso latin/1 string matching the ID, and converts it into a&n; * string descriptor in utf16-le.&n; * Returns length of descriptor (always even) or negative errno&n; *&n; * If your driver needs stings in multiple languages, you&squot;ll need to&n; * to use some alternate solution for languages where the ISO 8859/1&n; * (latin/1) character set can&squot;t be used.  For example, they can&squot;t be&n; * used with Chinese (Big5, GB2312, etc), Japanese, Korean, or many other&n; * languages.  You&squot;d likely &quot;switch (wIndex) { ... }&quot;  in your ep0&n; * string descriptor logic, using this routine in cases where &quot;western&n; * european&quot; characters suffice for the strings being returned.&n; */

@@ -724,11 +724,6 @@ id|param
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,50)
-DECL|macro|HAVE_DRIVER_MODEL
-mdefine_line|#define&t;HAVE_DRIVER_MODEL
-macro_line|#include &lt;linux/device.h&gt;
-macro_line|#endif
 multiline_comment|/**&n; * struct usb_gadget - represents a usb slave device&n; * @ep0: Endpoint zero, used when reading or writing responses to&n; * &t;driver setup() requests&n; * @ep_list: List of other endpoints supported by the device.&n; * @speed: Speed of current connection to USB host.&n; * @name: Identifies the controller hardware type.  Used in diagnostics&n; * &t;and sometimes configuration.&n; *&n; * Gadgets have a mostly-portable &quot;gadget driver&quot; implementing device&n; * functions, handling all usb configurations and interfaces.  They&n; * also have a hardware-specific driver (accessed through ops vectors),&n; * which insulates the gadget driver from hardware details and packages&n; * the hardware endpoints through generic i/o queues.&n; *&n; * Except for the driver data, all fields in this structure are&n; * read-only to the gadget driver.  That driver data is part of the&n; * &quot;driver model&quot; infrastructure in 2.5 (and later) kernels, and for&n; * earlier systems is grouped in a similar structure that&squot;s not known&n; * to the rest of the kernel.&n; */
 DECL|struct|usb_gadget
 r_struct
@@ -765,36 +760,14 @@ r_char
 op_star
 id|name
 suffix:semicolon
-macro_line|#ifdef&t;HAVE_DRIVER_MODEL
-multiline_comment|/* with 2.5 &quot;generic dma&quot; api, use this to allocate dma-coherent&n;&t; * buffers or set up dma mappings.  or print diagnostics, etc.&n;&t; */
+multiline_comment|/* use this to allocate dma-coherent buffers or set up&n;&t; * dma mappings.  or print diagnostics, etc.&n;&t; */
 DECL|member|dev
 r_struct
 id|device
 id|dev
 suffix:semicolon
-macro_line|#else
-DECL|struct|__gadget_device
-r_struct
-id|__gadget_device
-(brace
-DECL|member|bus_id
-r_char
-op_star
-id|bus_id
-suffix:semicolon
-DECL|member|driver_data
-r_void
-op_star
-id|driver_data
-suffix:semicolon
-DECL|member|dev
-)brace
-id|dev
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#ifdef&t;HAVE_DRIVER_MODEL
 DECL|function|set_gadget_data
 r_static
 r_inline
@@ -841,54 +814,9 @@ id|gadget-&gt;dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|set_gadget_data
-r_static
-r_inline
-r_void
-id|set_gadget_data
-(paren
-r_struct
-id|usb_gadget
-op_star
-id|gadget
-comma
-r_void
-op_star
-id|data
-)paren
-(brace
-id|gadget-&gt;dev.driver_data
-op_assign
-id|data
-suffix:semicolon
-)brace
-DECL|function|get_gadget_data
-r_static
-r_inline
-r_void
-op_star
-id|get_gadget_data
-(paren
-r_struct
-id|usb_gadget
-op_star
-id|gadget
-)paren
-(brace
-r_return
-id|gadget-&gt;dev.driver_data
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* iterates the non-control endpoints; &squot;tmp&squot; is a struct usb_ep pointer */
 DECL|macro|gadget_for_each_ep
 mdefine_line|#define gadget_for_each_ep(tmp,gadget) &bslash;&n;&t;list_for_each_entry(tmp, &amp;(gadget)-&gt;ep_list, ep_list)
-macro_line|#ifndef list_for_each_entry
-multiline_comment|/* not available in 2.4.18 */
-DECL|macro|list_for_each_entry
-mdefine_line|#define list_for_each_entry(pos, head, member)&t;&t;&t;&t;&bslash;&n;&t;for (pos = list_entry((head)-&gt;next, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.next);&t;&t;&t;&bslash;&n;&t;     &amp;pos-&gt;member != (head); &t;&t;&t;&t;&t;&bslash;&n;&t;     pos = list_entry(pos-&gt;member.next, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.next))
-macro_line|#endif
 multiline_comment|/**&n; * usb_gadget_frame_number - returns the current frame number&n; * @gadget: controller that reports the frame number&n; *&n; * Returns the usb frame number, normally eleven bits from a SOF packet,&n; * or negative errno if this device doesn&squot;t support this capability.&n; */
 DECL|function|usb_gadget_frame_number
 r_static
@@ -1097,32 +1025,11 @@ op_star
 )paren
 suffix:semicolon
 singleline_comment|// FIXME support safe rmmod
-macro_line|#ifdef&t;HAVE_DRIVER_MODEL
 DECL|member|driver
 r_struct
 id|device_driver
 id|driver
 suffix:semicolon
-macro_line|#else
-DECL|struct|__gadget_driver
-r_struct
-id|__gadget_driver
-(brace
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|driver_data
-r_void
-op_star
-id|driver_data
-suffix:semicolon
-DECL|member|driver
-)brace
-id|driver
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/

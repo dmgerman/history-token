@@ -20,7 +20,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;linux/usb_gadget.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -38,6 +39,8 @@ DECL|macro|EP_DONTUSE
 mdefine_line|#define&t;EP_DONTUSE&t;&t;13&t;/* nonzero */
 DECL|macro|USE_RDK_LEDS
 mdefine_line|#define USE_RDK_LEDS&t;&t;/* GPIO pins control three LEDs */
+DECL|macro|USE_SYSFS_DEBUG_FILES
+mdefine_line|#define USE_SYSFS_DEBUG_FILES
 DECL|variable|driver_name
 r_static
 r_const
@@ -101,8 +104,6 @@ id|use_dma
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef HAVE_DRIVER_MODEL
-macro_line|#include &lt;linux/moduleparam.h&gt;
 multiline_comment|/* &quot;modprobe net2280 use_dma=n&quot; etc */
 id|module_param
 (paren
@@ -115,31 +116,9 @@ op_or
 id|S_IWUSR
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* use zero/nonzero for older versions */
-id|MODULE_PARM
-(paren
-id|use_dma
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-(paren
-id|use_dma
-comma
-l_string|&quot;true to use dma controllers&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#include &quot;net2280.h&quot;
-DECL|macro|valid_bit
-mdefine_line|#define valid_bit&t;cpu_to_le32 (1 &lt;&lt; VALID_BIT)
-DECL|macro|dma_done_ie
-mdefine_line|#define dma_done_ie&t;cpu_to_le32 (1 &lt;&lt; DMA_DONE_INTERRUPT_ENABLE)
-multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|DIR_STRING
 mdefine_line|#define&t;DIR_STRING(bAddress) (((bAddress) &amp; USB_DIR_IN) ? &quot;in&quot; : &quot;out&quot;)
+macro_line|#if defined(USE_SYSFS_DEBUG_FILES) || defined (DEBUG)
 DECL|function|type_string
 r_static
 r_char
@@ -184,6 +163,13 @@ r_return
 l_string|&quot;control&quot;
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#include &quot;net2280.h&quot;
+DECL|macro|valid_bit
+mdefine_line|#define valid_bit&t;cpu_to_le32 (1 &lt;&lt; VALID_BIT)
+DECL|macro|dma_done_ie
+mdefine_line|#define dma_done_ie&t;cpu_to_le32 (1 &lt;&lt; DMA_DONE_INTERRUPT_ENABLE)
+multiline_comment|/*-------------------------------------------------------------------------*/
 r_static
 r_int
 DECL|function|net2280_enable
@@ -5063,7 +5049,7 @@ singleline_comment|// .set_selfpowered = net2280_set_selfpowered,
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef&t;HAVE_DRIVER_MODEL
+macro_line|#ifdef&t;USE_SYSFS_DEBUG_FILES
 multiline_comment|/* &quot;function&quot; sysfs attribute */
 r_static
 id|ssize_t
@@ -7198,13 +7184,11 @@ id|dev-&gt;driver
 op_assign
 id|driver
 suffix:semicolon
-macro_line|#ifdef HAVE_DRIVER_MODEL
 id|dev-&gt;gadget.dev.driver
 op_assign
 op_amp
 id|driver-&gt;driver
 suffix:semicolon
-macro_line|#endif
 id|retval
 op_assign
 id|driver-&gt;bind
@@ -7234,21 +7218,17 @@ id|dev-&gt;driver
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef HAVE_DRIVER_MODEL
 id|dev-&gt;gadget.dev.driver
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 r_return
 id|retval
 suffix:semicolon
 )brace
-macro_line|#ifdef HAVE_DRIVER_MODEL
 singleline_comment|// FIXME
 singleline_comment|// driver_register (&amp;driver-&gt;driver);
 singleline_comment|// device_register (&amp;dev-&gt;gadget.dev);
-macro_line|#endif
 id|device_create_file
 (paren
 op_amp
@@ -10164,7 +10144,6 @@ op_assign
 op_amp
 id|net2280_ops
 suffix:semicolon
-macro_line|#ifdef HAVE_DRIVER_MODEL
 id|strcpy
 (paren
 id|dev-&gt;gadget.dev.bus_id
@@ -10188,12 +10167,6 @@ id|dev-&gt;gadget.dev.dma_mask
 op_assign
 id|pdev-&gt;dev.dma_mask
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;gadget.dev.bus_id
-op_assign
-id|pdev-&gt;slot_name
-suffix:semicolon
-macro_line|#endif
 id|dev-&gt;gadget.name
 op_assign
 id|driver_name
@@ -10652,13 +10625,11 @@ id|pci_set_master
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;HAVE_PCI_SET_MWI
 id|pci_set_mwi
 (paren
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* ... also flushes any posted pci writes */
 id|dev-&gt;chiprev
 op_assign

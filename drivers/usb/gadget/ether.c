@@ -17,6 +17,8 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/uts.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -184,33 +186,17 @@ mdefine_line|#define qlen(gadget) &bslash;&n;&t;(qmult*((gadget-&gt;speed == USB
 multiline_comment|/* defer IRQs on highspeed TX */
 DECL|macro|TX_DELAY
 mdefine_line|#define TX_DELAY&t;8
-macro_line|#ifdef HAVE_DRIVER_MODEL
-macro_line|#include &lt;linux/moduleparam.h&gt;
 id|module_param
 (paren
 id|qmult
 comma
 id|uint
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
-macro_line|#else
-id|MODULE_PARM
-(paren
-id|qmult
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-(paren
-id|qmult
-comma
-l_string|&quot;rx/tx buffering factor&quot;
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* HAVE_DRIVER_MODEL */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* Thanks to NetChip Technologies for donating this product ID.&n; *&n; * DO NOT REUSE THESE IDs with any other driver!!  Ever!!&n; * Instead:  allocate your own, using normal USB-IF procedures.&n; */
 DECL|macro|DRIVER_VENDOR_NUM
@@ -420,13 +406,8 @@ mdefine_line|#define WAKEUP&t;&t;0
 multiline_comment|/* else value must be USB_CONFIG_ATT_WAKEUP */
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef HAVE_DRIVER_MODEL
 DECL|macro|xprintk
-mdefine_line|#define xprintk(dev,level,fmt,args...) &bslash;&n;&t;dev_printk(level , &amp;dev-&gt;gadget-&gt;dev , fmt , ## args)
-macro_line|#else
-DECL|macro|xprintk
-mdefine_line|#define xprintk(dev,level,fmt,args...) &bslash;&n;&t;printk(level &quot;%s %s: &quot; fmt , shortname, dev-&gt;gadget-&gt;dev.bus_id, &bslash;&n;&t;&t;## args)
-macro_line|#endif&t;/* HAVE_DRIVER_MODEL */
+mdefine_line|#define xprintk(d,level,fmt,args...) &bslash;&n;&t;dev_printk(level , &amp;(d)-&gt;gadget-&gt;dev , fmt , ## args)
 macro_line|#ifdef DEBUG
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -2769,17 +2750,14 @@ id|req-&gt;actual
 op_ne
 id|req-&gt;length
 )paren
-(brace
+id|DEBUG
+(paren
+(paren
 r_struct
 id|eth_dev
 op_star
-id|dev
-op_assign
+)paren
 id|ep-&gt;driver_data
-suffix:semicolon
-id|DEBUG
-(paren
-id|dev
 comma
 l_string|&quot;setup complete --&gt; %d, %d/%d&bslash;n&quot;
 comma
@@ -2790,7 +2768,6 @@ comma
 id|req-&gt;length
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* see section 3.8.2 table 10 of the CDC spec for more ethernet&n; * requests, mostly for filters (multicast, pm) and statistics&n; */
 DECL|macro|CDC_SET_ETHERNET_PACKET_FILTER
