@@ -6914,7 +6914,7 @@ l_int|0
 r_goto
 id|out_mm
 suffix:semicolon
-id|bprm.argc
+id|bprm-&gt;argc
 op_assign
 id|compat_count
 c_func
@@ -6943,7 +6943,7 @@ l_int|0
 r_goto
 id|out_mm
 suffix:semicolon
-id|bprm.envc
+id|bprm-&gt;envc
 op_assign
 id|compat_count
 c_func
