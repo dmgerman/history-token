@@ -122,6 +122,16 @@ id|size
 suffix:semicolon
 )brace
 )brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Unknown aperture size from AGP bridge (0x%x)&bslash;n&quot;
+comma
+id|temp
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
