@@ -38714,9 +38714,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|scb-&gt;flags
 op_amp
 id|SCB_ACTIVE
+)paren
 )paren
 (brace
 r_return
@@ -39704,9 +39706,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|scb-&gt;flags
 op_amp
 id|SCB_ACTIVE
+)paren
 )paren
 (brace
 r_return
