@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -214,8 +213,9 @@ r_void
 id|aha152x_release_cs
 c_func
 (paren
-id|u_long
-id|arg
+id|dev_link_t
+op_star
+id|link
 )paren
 suffix:semicolon
 r_static
@@ -345,25 +345,6 @@ suffix:semicolon
 id|link-&gt;priv
 op_assign
 id|info
-suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-)paren
-suffix:semicolon
-id|link-&gt;release.function
-op_assign
-op_amp
-id|aha152x_release_cs
-suffix:semicolon
-id|link-&gt;release.data
-op_assign
-(paren
-id|u_long
-)paren
-id|link
 suffix:semicolon
 id|link-&gt;io.NumPorts1
 op_assign
@@ -605,13 +586,6 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -623,9 +597,6 @@ id|DEV_CONFIG
 id|aha152x_release_cs
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -1124,9 +1095,6 @@ suffix:semicolon
 id|aha152x_release_cs
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -1139,20 +1107,11 @@ r_void
 id|aha152x_release_cs
 c_func
 (paren
-id|u_long
-id|arg
-)paren
-(brace
 id|dev_link_t
 op_star
 id|link
-op_assign
-(paren
-id|dev_link_t
-op_star
 )paren
-id|arg
-suffix:semicolon
+(brace
 id|scsi_info_t
 op_star
 id|info
@@ -1284,17 +1243,10 @@ id|link-&gt;state
 op_amp
 id|DEV_CONFIG
 )paren
-id|mod_timer
+id|aha152x_release_cs
 c_func
 (paren
-op_amp
-id|link-&gt;release
-comma
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|20
+id|link
 )paren
 suffix:semicolon
 r_break

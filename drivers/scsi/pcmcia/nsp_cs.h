@@ -464,8 +464,9 @@ r_void
 id|nsp_cs_release
 c_func
 (paren
-id|u_long
-id|arg
+id|dev_link_t
+op_star
+id|link
 )paren
 suffix:semicolon
 r_static
