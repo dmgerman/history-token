@@ -3050,11 +3050,6 @@ c_cond
 id|ignore_edid
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|rinfo-&gt;mon1_EDID
-)paren
 id|kfree
 c_func
 (paren
@@ -3065,11 +3060,6 @@ id|rinfo-&gt;mon1_EDID
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rinfo-&gt;mon2_EDID
-)paren
 id|kfree
 c_func
 (paren

@@ -17015,11 +17015,6 @@ suffix:semicolon
 id|err_release_io
 suffix:colon
 macro_line|#ifdef __sparc__
-r_if
-c_cond
-(paren
-id|par-&gt;mmap_map
-)paren
 id|kfree
 c_func
 (paren
@@ -17057,7 +17052,6 @@ c_cond
 (paren
 id|par-&gt;aux_start
 )paren
-(brace
 id|release_mem_region
 c_func
 (paren
@@ -17066,7 +17060,6 @@ comma
 id|par-&gt;aux_size
 )paren
 suffix:semicolon
-)brace
 id|release_mem_region
 c_func
 (paren
@@ -17497,11 +17490,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef __sparc__
-r_if
-c_cond
-(paren
-id|par-&gt;mmap_map
-)paren
 id|kfree
 c_func
 (paren

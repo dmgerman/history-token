@@ -3280,11 +3280,6 @@ op_star
 id|modedb
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|modedb
-)paren
 id|kfree
 c_func
 (paren

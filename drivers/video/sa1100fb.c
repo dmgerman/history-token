@@ -5258,11 +5258,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|fbi
-)paren
 id|kfree
 c_func
 (paren

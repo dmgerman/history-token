@@ -10310,11 +10310,6 @@ c_func
 id|par
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|par-&gt;EDID
-)paren
 id|kfree
 c_func
 (paren
