@@ -198,7 +198,7 @@ id|dp
 suffix:semicolon
 r_static
 r_void
-id|release_stateid_lockowner
+id|release_stateid_lockowners
 c_func
 (paren
 r_struct
@@ -633,7 +633,7 @@ c_func
 l_string|&quot;NFSD: release_delegation CLOSE&bslash;n&quot;
 )paren
 suffix:semicolon
-id|release_stateid_lockowner
+id|release_stateid_lockowners
 c_func
 (paren
 id|dp-&gt;dl_stp
@@ -4350,8 +4350,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|release_stateid_lockowner
-id|release_stateid_lockowner
+DECL|function|release_stateid_lockowners
+id|release_stateid_lockowners
 c_func
 (paren
 r_struct
@@ -4788,7 +4788,7 @@ r_return
 suffix:semicolon
 )brace
 )brace
-id|release_stateid_lockowner
+id|release_stateid_lockowners
 c_func
 (paren
 id|stp
