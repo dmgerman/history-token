@@ -35,11 +35,13 @@ id|list
 suffix:semicolon
 DECL|member|suser
 r_int
+r_int
 id|suser
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|writer
+r_int
 r_int
 id|writer
 suffix:colon
@@ -47,11 +49,13 @@ l_int|1
 suffix:semicolon
 DECL|member|reader
 r_int
+r_int
 id|reader
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|suspend_wait
+r_int
 r_int
 id|suspend_wait
 suffix:colon
