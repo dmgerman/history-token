@@ -2029,7 +2029,6 @@ macro_line|#include &lt;linux/hpfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ntfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/msdos_fs_sb.h&gt;
 macro_line|#include &lt;linux/iso_fs_sb.h&gt;
-macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/sysv_fs_sb.h&gt;
 macro_line|#include &lt;linux/affs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ufs_fs_sb.h&gt;
@@ -2212,11 +2211,6 @@ DECL|member|isofs_sb
 r_struct
 id|isofs_sb_info
 id|isofs_sb
-suffix:semicolon
-DECL|member|nfs_sb
-r_struct
-id|nfs_sb_info
-id|nfs_sb
 suffix:semicolon
 DECL|member|sysv_sb
 r_struct

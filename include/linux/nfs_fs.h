@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/sunrpc/debug.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
@@ -217,7 +218,7 @@ id|vfs_inode
 suffix:semicolon
 )brace
 DECL|macro|NFS_SB
-mdefine_line|#define NFS_SB(s)&t;&t;(&amp;s-&gt;u.nfs_sb.s_server)
+mdefine_line|#define NFS_SB(s)&t;&t;((struct nfs_server *)(s-&gt;u.generic_sbp))
 DECL|macro|NFS_FH
 mdefine_line|#define NFS_FH(inode)&t;&t;&t;(&amp;NFS_I(inode)-&gt;fh)
 DECL|macro|NFS_SERVER

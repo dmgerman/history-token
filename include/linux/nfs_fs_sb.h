@@ -117,17 +117,5 @@ id|lru_busy
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * nfs super-block data in memory&n; */
-DECL|struct|nfs_sb_info
-r_struct
-id|nfs_sb_info
-(brace
-DECL|member|s_server
-r_struct
-id|nfs_server
-id|s_server
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#endif
 eof
