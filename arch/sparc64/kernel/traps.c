@@ -544,11 +544,9 @@ id|TSTATE_PRIV
 )paren
 (brace
 multiline_comment|/* Test if this comes from uaccess places. */
-r_const
-r_struct
-id|exception_table_entry
-op_star
-id|entry
+r_int
+r_int
+id|fixup
 suffix:semicolon
 r_int
 r_int
@@ -563,7 +561,7 @@ r_if
 c_cond
 (paren
 (paren
-id|entry
+id|fixup
 op_assign
 id|search_extables_range
 c_func
@@ -594,7 +592,7 @@ l_string|&quot;g2&lt;%016lx&gt;&bslash;n&quot;
 comma
 id|regs-&gt;tpc
 comma
-id|entry-&gt;fixup
+id|fixup
 comma
 id|g2
 )paren
@@ -602,7 +600,7 @@ suffix:semicolon
 macro_line|#endif
 id|regs-&gt;tpc
 op_assign
-id|entry-&gt;fixup
+id|fixup
 suffix:semicolon
 id|regs-&gt;tnpc
 op_assign
@@ -7071,14 +7069,12 @@ multiline_comment|/* Only perform fixup if we still have a&n;&t;&t;&t;&t; * reco
 r_if
 c_cond
 (paren
-id|entry
-op_logical_and
 id|recoverable
 )paren
 (brace
 id|regs-&gt;tpc
 op_assign
-id|entry-&gt;fixup
+id|fixup
 suffix:semicolon
 id|regs-&gt;tnpc
 op_assign

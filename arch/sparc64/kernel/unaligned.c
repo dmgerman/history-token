@@ -1038,7 +1038,8 @@ r_int
 r_int
 id|fixup
 op_assign
-id|search_exception_table
+id|search_extables_range
+c_func
 (paren
 id|regs-&gt;tpc
 comma
