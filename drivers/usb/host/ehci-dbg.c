@@ -3005,7 +3005,17 @@ id|next
 comma
 id|size
 comma
-l_string|&quot; sitd/%p&quot;
+l_string|&quot; sitd%d-%04x/%p&quot;
+comma
+id|p.sitd-&gt;stream-&gt;interval
+comma
+id|le32_to_cpup
+(paren
+op_amp
+id|p.sitd-&gt;hw_uframe
+)paren
+op_amp
+l_int|0x0000ffff
 comma
 id|p.sitd
 )paren

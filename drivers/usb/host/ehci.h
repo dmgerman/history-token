@@ -1199,7 +1199,7 @@ l_int|32
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * EHCI Specification 0.95 Section 3.4 &n; * siTD, aka split-transaction isochronous Transfer Descriptor&n; *       ... describe low/full speed iso xfers through TT in hubs&n; * see Figure 3-5 &quot;Split-transaction Isochronous Transaction Descriptor (siTD)&n; */
+multiline_comment|/*&n; * EHCI Specification 0.95 Section 3.4 &n; * siTD, aka split-transaction isochronous Transfer Descriptor&n; *       ... describe full speed iso xfers through TT in hubs&n; * see Figure 3-5 &quot;Split-transaction Isochronous Transaction Descriptor (siTD)&n; */
 DECL|struct|ehci_sitd
 r_struct
 id|ehci_sitd
@@ -1214,17 +1214,17 @@ DECL|member|hw_fullspeed_ep
 id|u32
 id|hw_fullspeed_ep
 suffix:semicolon
-multiline_comment|/* see EHCI table 3-9 */
+multiline_comment|/* EHCI table 3-9 */
 DECL|member|hw_uframe
 id|u32
 id|hw_uframe
 suffix:semicolon
-multiline_comment|/* see EHCI table 3-10 */
+multiline_comment|/* EHCI table 3-10 */
 DECL|member|hw_results
 id|u32
 id|hw_results
 suffix:semicolon
-multiline_comment|/* see EHCI table 3-11 */
+multiline_comment|/* EHCI table 3-11 */
 DECL|macro|SITD_IOC
 mdefine_line|#define&t;SITD_IOC&t;(1 &lt;&lt; 31)&t;/* interrupt on completion */
 DECL|macro|SITD_PAGE
@@ -1254,12 +1254,12 @@ id|hw_buf
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/* see EHCI table 3-12 */
+multiline_comment|/* EHCI table 3-12 */
 DECL|member|hw_backpointer
 id|u32
 id|hw_backpointer
 suffix:semicolon
-multiline_comment|/* see EHCI table 3-13 */
+multiline_comment|/* EHCI table 3-13 */
 DECL|member|hw_buf_hi
 id|u32
 id|hw_buf_hi
@@ -1356,8 +1356,6 @@ l_int|32
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|macro|SUBMIT_URB
-mdefine_line|#define SUBMIT_URB(urb,mem_flags) usb_submit_urb(urb,mem_flags)
 macro_line|#ifndef DEBUG
 DECL|macro|STUB_DEBUG_FILES
 mdefine_line|#define STUB_DEBUG_FILES

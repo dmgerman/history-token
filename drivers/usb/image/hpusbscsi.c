@@ -130,7 +130,7 @@ id|usb_host_interface
 op_star
 id|altsetting
 op_assign
-id|intf-&gt;altsetting
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 r_struct
 id|hpusbscsi

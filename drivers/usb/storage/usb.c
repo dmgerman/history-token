@@ -1301,7 +1301,7 @@ id|intf
 suffix:semicolon
 id|us-&gt;ifnum
 op_assign
-id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
+id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceNumber
 suffix:semicolon
 multiline_comment|/* Store our private data in the interface and increment the&n;&t; * device&squot;s reference count */
 id|usb_set_intfdata
@@ -1422,12 +1422,7 @@ op_star
 id|idesc
 op_assign
 op_amp
-id|us-&gt;pusb_intf-&gt;altsetting
-(braket
-id|us-&gt;pusb_intf-&gt;act_altsetting
-)braket
-dot
-id|desc
+id|us-&gt;pusb_intf-&gt;cur_altsetting-&gt;desc
 suffix:semicolon
 r_struct
 id|us_unusual_dev
@@ -2209,11 +2204,7 @@ id|usb_host_interface
 op_star
 id|altsetting
 op_assign
-op_amp
-id|us-&gt;pusb_intf-&gt;altsetting
-(braket
-id|us-&gt;pusb_intf-&gt;act_altsetting
-)braket
+id|us-&gt;pusb_intf-&gt;cur_altsetting
 suffix:semicolon
 r_int
 id|i
@@ -2926,9 +2917,9 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;act_altsetting is %d, id_index is %d&bslash;n&quot;
+l_string|&quot;altsetting is %d, id_index is %d&bslash;n&quot;
 comma
-id|intf-&gt;act_altsetting
+id|intf-&gt;cur_altsetting-&gt;desc.bAlternateSetting
 comma
 id|id_index
 )paren
@@ -3232,13 +3223,6 @@ id|scsi_scan_host
 c_func
 (paren
 id|us-&gt;host
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;WARNING: USB Mass Storage data integrity not assured&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
