@@ -338,6 +338,9 @@ id|via
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
+id|rc
+suffix:semicolon
 multiline_comment|/* autodetect if workarounds are required */
 r_while
 c_loop
@@ -391,9 +394,6 @@ op_eq
 l_int|255
 )paren
 r_return
-suffix:semicolon
-r_int
-id|rc
 suffix:semicolon
 multiline_comment|/* fix vortex latency */
 r_if
