@@ -46,7 +46,9 @@ id|atm_vcc
 op_star
 id|vcc
 comma
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon

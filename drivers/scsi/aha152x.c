@@ -1070,13 +1070,13 @@ mdefine_line|#define MSGO_I&t;&t;&t;(HOSTDATA(shpnt)-&gt;msgo_i)
 DECL|macro|MSGOLEN
 mdefine_line|#define MSGOLEN&t;&t;&t;(HOSTDATA(shpnt)-&gt;msgo_len)
 DECL|macro|ADDMSGO
-mdefine_line|#define ADDMSGO(x)&t;&t;(MSGOLEN&lt;256 ? MSGO(MSGOLEN++)=x : aha152x_error(shpnt,&quot;MSGO overflow&quot;))
+mdefine_line|#define ADDMSGO(x)&t;&t;(MSGOLEN&lt;256 ? (void)(MSGO(MSGOLEN++)=x) : aha152x_error(shpnt,&quot;MSGO overflow&quot;))
 DECL|macro|MSGI
 mdefine_line|#define MSGI(i)&t;&t;&t;(HOSTDATA(shpnt)-&gt;msgi[i])
 DECL|macro|MSGILEN
 mdefine_line|#define MSGILEN&t;&t;&t;(HOSTDATA(shpnt)-&gt;msgi_len)
 DECL|macro|ADDMSGI
-mdefine_line|#define ADDMSGI(x)&t;&t;(MSGILEN&lt;256 ? MSGI(MSGILEN++)=x : aha152x_error(shpnt,&quot;MSGI overflow&quot;))
+mdefine_line|#define ADDMSGI(x)&t;&t;(MSGILEN&lt;256 ? (void)(MSGI(MSGILEN++)=x) : aha152x_error(shpnt,&quot;MSGI overflow&quot;))
 DECL|macro|DATA_LEN
 mdefine_line|#define DATA_LEN&t;&t;(HOSTDATA(shpnt)-&gt;data_len)
 DECL|macro|SYNCRATE

@@ -160,6 +160,7 @@ comma
 id|__u16
 comma
 r_char
+id|__user
 op_star
 comma
 r_int

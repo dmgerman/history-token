@@ -565,7 +565,7 @@ l_int|1
 comma
 l_string|&quot;agr&quot;
 )paren
-op_ne
+op_eq
 l_int|0
 suffix:semicolon
 )brace

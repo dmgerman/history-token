@@ -221,6 +221,7 @@ op_star
 id|kinstr
 comma
 r_char
+id|__user
 op_star
 id|instr_data
 comma
@@ -250,6 +251,7 @@ op_star
 id|kinstr
 comma
 r_char
+id|__user
 op_star
 id|instr_data
 comma

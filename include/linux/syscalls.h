@@ -1074,6 +1074,9 @@ id|u32
 id|__user
 op_star
 id|uaddr2
+comma
+r_int
+id|val3
 )paren
 suffix:semicolon
 id|asmlinkage

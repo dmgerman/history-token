@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.121 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.123 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -146,7 +146,7 @@ id|debug_set_level
 (paren
 id|cio_debug_msg_id
 comma
-l_int|6
+l_int|2
 )paren
 suffix:semicolon
 id|cio_debug_trace_id
@@ -183,7 +183,7 @@ id|debug_set_level
 (paren
 id|cio_debug_trace_id
 comma
-l_int|6
+l_int|2
 )paren
 suffix:semicolon
 id|cio_debug_crw_id
@@ -225,7 +225,7 @@ id|debug_set_level
 (paren
 id|cio_debug_crw_id
 comma
-l_int|6
+l_int|2
 )paren
 suffix:semicolon
 id|pr_debug

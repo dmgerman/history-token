@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.57 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.58 $&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
@@ -556,15 +556,9 @@ suffix:semicolon
 r_extern
 r_struct
 id|dasd_discipline
-id|dasd_diag_discipline
+op_star
+id|dasd_diag_discipline_pointer
 suffix:semicolon
-macro_line|#ifdef CONFIG_DASD_DIAG
-DECL|macro|dasd_diag_discipline_pointer
-mdefine_line|#define dasd_diag_discipline_pointer (&amp;dasd_diag_discipline)
-macro_line|#else
-DECL|macro|dasd_diag_discipline_pointer
-mdefine_line|#define dasd_diag_discipline_pointer (0)
-macro_line|#endif
 DECL|struct|dasd_device
 r_struct
 id|dasd_device

@@ -79,6 +79,7 @@ suffix:semicolon
 DECL|member|ci
 r_struct
 id|cmtp_conninfo
+id|__user
 op_star
 id|ci
 suffix:semicolon

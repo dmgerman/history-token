@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 DECL|macro|FUTEX_HASHBITS
 mdefine_line|#define FUTEX_HASHBITS 8
 multiline_comment|/*&n; * Futexes are matched on equal values of this key.&n; * The key type depends on whether it&squot;s a shared or private mapping.&n; * Don&squot;t rearrange members without looking at hash_futex().&n; *&n; * offset is aligned to a multiple of sizeof(u32) (== 4) by definition.&n; * We set bit 0 to indicate if it&squot;s an inode-based key.&n; */
@@ -1059,6 +1060,7 @@ id|curval
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|uaddr1

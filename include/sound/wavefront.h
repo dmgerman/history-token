@@ -1400,12 +1400,14 @@ suffix:semicolon
 multiline_comment|/* size of any data included in &n;&t;&t;&t;&t;  one of the fields in `hdrptr&squot;, or&n;&t;&t;&t;&t;  as `dataptr&squot;.&n;&n;&t;&t;&t;&t;  NOTE: for actual samples, this is&n;&t;&t;&t;&t;  the size of the *SELECTED CHANNEL*&n;&t;&t;&t;&t;  even if more data is actually available.&n;&t;&t;&t;&t;  &n;&t;&t;&t;&t;  So, a stereo sample (2 channels) of&n;&t;&t;&t;&t;  6000 bytes total has `size&squot; = 3000.&n;&n;&t;&t;&t;&t;  See the macros and comments for&n;&t;&t;&t;&t;  WF_{GET,SET}_CHANNEL above.&n;&n;&t;&t;&t;       */
 DECL|member|hdrptr
 id|wavefront_any
+id|__user
 op_star
 id|hdrptr
 suffix:semicolon
 multiline_comment|/* user-space ptr to hdr bytes */
 DECL|member|dataptr
 id|u16
+id|__user
 op_star
 id|dataptr
 suffix:semicolon

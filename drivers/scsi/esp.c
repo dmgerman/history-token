@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;esp.h&quot;
 macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -25,7 +26,12 @@ macro_line|#ifndef __sparc_v9__
 macro_line|#include &lt;asm/machines.h&gt;
 macro_line|#include &lt;asm/idprom.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 DECL|macro|DEBUG_ESP
 mdefine_line|#define DEBUG_ESP
 multiline_comment|/* #define DEBUG_ESP_HME */

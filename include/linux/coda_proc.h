@@ -174,6 +174,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -199,6 +200,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma

@@ -1117,7 +1117,6 @@ comma
 r_return
 )paren
 suffix:semicolon
-r_return
 id|chip-&gt;ops
 op_member_access_from_pointer
 id|out8
@@ -1158,7 +1157,6 @@ comma
 r_return
 )paren
 suffix:semicolon
-r_return
 id|chip-&gt;ops
 op_member_access_from_pointer
 id|out32

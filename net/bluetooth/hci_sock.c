@@ -655,6 +655,11 @@ c_func
 (paren
 id|hdev
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|arg
 )paren
 suffix:semicolon
@@ -713,6 +718,18 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -739,7 +756,7 @@ r_return
 id|hci_get_dev_list
 c_func
 (paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -749,7 +766,7 @@ r_return
 id|hci_get_dev_info
 c_func
 (paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -759,7 +776,7 @@ r_return
 id|hci_get_conn_list
 c_func
 (paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -902,7 +919,7 @@ c_func
 (paren
 id|cmd
 comma
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -912,7 +929,7 @@ r_return
 id|hci_inquiry
 c_func
 (paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_default

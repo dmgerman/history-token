@@ -30,6 +30,7 @@ op_star
 id|wandev
 comma
 id|wandev_conf_t
+id|__user
 op_star
 id|u_conf
 )paren
@@ -45,6 +46,7 @@ op_star
 id|wandev
 comma
 id|wandev_stat_t
+id|__user
 op_star
 id|u_stat
 )paren
@@ -71,6 +73,7 @@ op_star
 id|wandev
 comma
 id|wanif_conf_t
+id|__user
 op_star
 id|u_conf
 )paren
@@ -86,6 +89,7 @@ op_star
 id|wandev
 comma
 r_char
+id|__user
 op_star
 id|u_name
 )paren
@@ -958,6 +962,18 @@ id|wan_device
 op_star
 id|wandev
 suffix:semicolon
+r_void
+id|__user
+op_star
+id|data
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1045,11 +1061,7 @@ c_func
 (paren
 id|wandev
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|data
 )paren
 suffix:semicolon
 r_break
@@ -1077,11 +1089,7 @@ c_func
 (paren
 id|wandev
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|data
 )paren
 suffix:semicolon
 r_break
@@ -1096,11 +1104,7 @@ c_func
 (paren
 id|wandev
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|data
 )paren
 suffix:semicolon
 r_break
@@ -1115,11 +1119,7 @@ c_func
 (paren
 id|wandev
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|data
 )paren
 suffix:semicolon
 r_break
@@ -1189,6 +1189,7 @@ op_star
 id|wandev
 comma
 id|wandev_conf_t
+id|__user
 op_star
 id|u_conf
 )paren
@@ -1607,6 +1608,7 @@ op_star
 id|wandev
 comma
 id|wandev_stat_t
+id|__user
 op_star
 id|u_stat
 )paren
@@ -1695,6 +1697,7 @@ op_star
 id|wandev
 comma
 id|wanif_conf_t
+id|__user
 op_star
 id|u_conf
 )paren
@@ -2264,6 +2267,7 @@ op_star
 id|wandev
 comma
 r_char
+id|__user
 op_star
 id|u_name
 )paren

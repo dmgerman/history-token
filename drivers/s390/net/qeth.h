@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.108 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.109 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -108,8 +108,20 @@ DECL|macro|QETH_DBF_TEXT
 mdefine_line|#define QETH_DBF_TEXT(name,level,text) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_text_event(qeth_dbf_##name,level,text); &bslash;&n;&t;} while (0)
 DECL|macro|QETH_DBF_HEX
 mdefine_line|#define QETH_DBF_HEX(name,level,addr,len) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_event(qeth_dbf_##name,level,(void*)(addr),len); &bslash;&n;&t;} while (0)
+r_extern
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_char
+(braket
+l_int|256
+)braket
+comma
+id|qeth_dbf_txt_buf
+)paren
+suffix:semicolon
 DECL|macro|QETH_DBF_TEXT_
-mdefine_line|#define QETH_DBF_TEXT_(name,level,text...)&t;&t;&t;&t;  &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;sprintf(qeth_dbf_text_buf, text);&t;&t;&t;  &bslash;&n;&t;&t;debug_text_event(qeth_dbf_##name,level,qeth_dbf_text_buf);&bslash;&n;&t;} while (0)
+mdefine_line|#define QETH_DBF_TEXT_(name,level,text...)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;char* dbf_txt_buf = get_cpu_var(qeth_dbf_txt_buf);&t;&bslash;&n;&t;&t;sprintf(dbf_txt_buf, text);&t;&t;&t;  &t;&bslash;&n;&t;&t;debug_text_event(qeth_dbf_##name,level,dbf_txt_buf);&t;&bslash;&n;&t;&t;put_cpu_var(qeth_dbf_txt_buf);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|QETH_DBF_SPRINTF
 mdefine_line|#define QETH_DBF_SPRINTF(name,level,text...) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_sprintf_event(qeth_dbf_trace, level, ##text ); &bslash;&n;&t;&t;debug_sprintf_event(qeth_dbf_trace, level, text ); &bslash;&n;&t;} while (0)
 multiline_comment|/**&n; * some more debug stuff&n; */

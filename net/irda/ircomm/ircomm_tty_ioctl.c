@@ -900,6 +900,7 @@ id|self
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|retinfo
 )paren
@@ -1027,6 +1028,7 @@ id|self
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|new_info
 )paren
@@ -1472,6 +1474,7 @@ comma
 (paren
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -1492,6 +1495,7 @@ comma
 (paren
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -1552,6 +1556,7 @@ op_assign
 (paren
 r_struct
 id|serial_icounter_struct
+id|__user
 op_star
 )paren
 id|arg

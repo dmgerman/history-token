@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/mm/swap_state.c&n; *&n; *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *  Swap reorganised 29.12.95, Stephen Tweedie&n; *&n; *  Rewritten to use page cache, (C) 1998 Stephen Tweedie&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -7,7 +8,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-multiline_comment|/*&n; * swapper_space is a fiction, retained to simplify the path through&n; * vmscan&squot;s shrink_list.  Only those fields initialized below are used.&n; */
+multiline_comment|/*&n; * swapper_space is a fiction, retained to simplify the path through&n; * vmscan&squot;s shrink_list, to make sync_page look nicer, and to allow&n; * future use of radix_tree tags in the swap cache.&n; */
 DECL|variable|swap_aops
 r_static
 r_struct
@@ -79,12 +80,28 @@ op_amp
 id|swap_aops
 comma
 dot
+id|i_mmap_nonlinear
+op_assign
+id|LIST_HEAD_INIT
+c_func
+(paren
+id|swapper_space.i_mmap_nonlinear
+)paren
+comma
+dot
 id|backing_dev_info
 op_assign
 op_amp
 id|swap_backing_dev_info
 comma
 )brace
+suffix:semicolon
+DECL|variable|swapper_space
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|swapper_space
+)paren
 suffix:semicolon
 DECL|macro|INC_CACHE_INFO
 mdefine_line|#define INC_CACHE_INFO(x)&t;do { swap_cache_info.x++; } while (0)

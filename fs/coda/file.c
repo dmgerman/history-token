@@ -31,6 +31,7 @@ op_star
 id|coda_file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -117,6 +118,7 @@ id|coda_file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
+macro_line|#include &lt;asm/arch/mainstone.h&gt;
 macro_line|#include &quot;generic.h&quot;
 DECL|variable|mainstone_irq_enabled
 r_static

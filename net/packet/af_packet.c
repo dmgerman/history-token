@@ -3562,6 +3562,8 @@ op_or
 id|MSG_DONTWAIT
 op_or
 id|MSG_TRUNC
+op_or
+id|MSG_CMSG_COMPAT
 )paren
 )paren
 r_goto

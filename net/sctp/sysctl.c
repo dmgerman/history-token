@@ -893,6 +893,7 @@ id|HZ
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|oldval
@@ -953,6 +954,7 @@ r_new
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|newval

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: q40kbd.c,v 1.12 2002/02/02 22:26:44 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Richard Zidlicky &lt;Richard.Zidlicky@stud.informatik.uni-erlangen.de&gt;&t;&n; */
+multiline_comment|/*&n; * $Id: q40kbd.c,v 1.12 2002/02/02 22:26:44 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Richard Zidlicky &lt;Richard.Zidlicky@stud.informatik.uni-erlangen.de&gt;&n; */
 multiline_comment|/*&n; * Q40 PS/2 keyboard controller driver for Linux/m68k&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/module.h&gt;
@@ -29,35 +29,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|function|q40kbd_open
-r_static
-r_int
-id|q40kbd_open
-c_func
-(paren
-r_struct
-id|serio
-op_star
-id|port
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|q40kbd_close
-r_static
-r_void
-id|q40kbd_close
-c_func
-(paren
-r_struct
-id|serio
-op_star
-id|port
-)paren
-(brace
-)brace
 DECL|variable|q40kbd_port
 r_static
 r_struct
@@ -84,16 +55,6 @@ dot
 id|write
 op_assign
 l_int|NULL
-comma
-dot
-id|open
-op_assign
-id|q40kbd_open
-comma
-dot
-id|close
-op_assign
-id|q40kbd_close
 comma
 )brace
 suffix:semicolon

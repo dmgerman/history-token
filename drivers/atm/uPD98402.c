@@ -62,6 +62,7 @@ id|dev
 comma
 r_struct
 id|sonet_stats
+id|__user
 op_star
 id|arg
 comma
@@ -376,6 +377,7 @@ op_star
 id|dev
 comma
 id|u8
+id|__user
 op_star
 id|arg
 )paren
@@ -676,6 +678,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -698,11 +701,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-r_struct
-id|sonet_stats
-op_star
-)paren
 id|arg
 comma
 id|cmd
@@ -745,6 +743,7 @@ id|framing
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -803,6 +802,7 @@ id|loop_mode
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -829,6 +829,7 @@ id|ATM_LM_RMT_PHY
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg

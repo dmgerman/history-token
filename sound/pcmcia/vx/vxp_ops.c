@@ -534,9 +534,12 @@ id|regRUER
 suffix:semicolon
 r_int
 r_char
+id|__user
 op_star
 id|image
-comma
+suffix:semicolon
+r_int
+r_char
 id|data
 suffix:semicolon
 multiline_comment|/* Switch to programmation mode */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.110 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.111 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -176,12 +176,21 @@ id|state
 OL
 l_int|0
 )paren
-id|new_channel_path
+(brace
+id|need_rescan
+op_assign
+l_int|1
+suffix:semicolon
+id|queue_work
 c_func
 (paren
-id|chp
+id|slow_path_wq
+comma
+op_amp
+id|slow_path_work
 )paren
 suffix:semicolon
+)brace
 r_else
 id|WARN_ON
 c_func
@@ -190,7 +199,6 @@ op_logical_neg
 id|state
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: should notify other subchannels here */
 )brace
 multiline_comment|/* FIXME: this is _always_ called for every subchannel. shouldn&squot;t we&n; *&t;  process more than one at a time? */
 r_static
@@ -1115,13 +1123,26 @@ id|sch-&gt;lpm
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* We can&squot;t block here. */
-id|device_call_nopath_notify
+r_if
+c_cond
+(paren
+id|css_enqueue_subchannel_slow
 c_func
 (paren
-id|sch
+id|sch-&gt;irq
+)paren
+)paren
+(brace
+id|css_clear_subchannel_slow_list
+c_func
+(paren
 )paren
 suffix:semicolon
+id|need_rescan
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1186,6 +1207,25 @@ op_amp
 id|chpid
 comma
 id|s390_subchannel_remove_chpid
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|need_rescan
+op_logical_or
+id|css_slow_subchannels_exist
+c_func
+(paren
+)paren
+)paren
+id|queue_work
+c_func
+(paren
+id|slow_path_wq
+comma
+op_amp
+id|slow_path_work
 )paren
 suffix:semicolon
 )brace
@@ -2896,13 +2936,28 @@ op_logical_and
 op_logical_neg
 id|sch-&gt;lpm
 )paren
-multiline_comment|/* Get over with it now. */
-id|device_call_nopath_notify
+(brace
+r_if
+c_cond
+(paren
+id|css_enqueue_subchannel_slow
 c_func
 (paren
-id|sch
+id|sch-&gt;irq
+)paren
+)paren
+(brace
+id|css_clear_subchannel_slow_list
+c_func
+(paren
 )paren
 suffix:semicolon
+id|need_rescan
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+)brace
 r_else
 r_if
 c_cond
@@ -3029,40 +3084,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|css_trigger_slow_path
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|typedef|workfunc
-r_typedef
-r_void
-(paren
-op_star
-id|workfunc
-)paren
-(paren
-r_void
-op_star
-)paren
-suffix:semicolon
-r_static
-id|DECLARE_WORK
-c_func
-(paren
-id|varyonoff_work
-comma
-(paren
-id|workfunc
-)paren
-id|css_trigger_slow_path
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Function: s390_vary_chpid&n; * Varies the specified chpid online or offline&n; */
 r_static
 r_int
@@ -3206,8 +3227,8 @@ c_cond
 op_logical_neg
 id|on
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* Scan for new devices on varied on path. */
 r_for
@@ -3301,6 +3322,8 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+id|out
+suffix:colon
 r_if
 c_cond
 (paren
@@ -3311,11 +3334,13 @@ c_func
 (paren
 )paren
 )paren
-id|schedule_work
+id|queue_work
 c_func
 (paren
+id|slow_path_wq
+comma
 op_amp
-id|varyonoff_work
+id|slow_path_work
 )paren
 suffix:semicolon
 r_return

@@ -514,16 +514,25 @@ id|pid
 OL
 l_int|0
 )paren
+(brace
 id|sub_info-&gt;retval
 op_assign
 id|pid
 suffix:semicolon
+)brace
 r_else
+(brace
+multiline_comment|/*&n;&t;&t; * Normally it is bogus to call wait4() from in-kernel because&n;&t;&t; * wait4() wants to write the exit code to a userspace address.&n;&t;&t; * But wait_for_helper() always runs as keventd, and put_user()&n;&t;&t; * to a kernel address works OK for kernel threads, due to their&n;&t;&t; * having an mm_segment_t which spans the entire address space.&n;&t;&t; *&n;&t;&t; * Thus the __user pointer cast is valid here.&n;&t;&t; */
 id|sys_wait4
 c_func
 (paren
 id|pid
 comma
+(paren
+r_int
+id|__user
+op_star
+)paren
 op_amp
 id|sub_info-&gt;retval
 comma
@@ -532,6 +541,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+)brace
 id|complete
 c_func
 (paren

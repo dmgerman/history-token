@@ -350,6 +350,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 comma
 id|OSST_buffer
@@ -367,6 +368,7 @@ id|OSST_buffer
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -17169,6 +17171,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -17206,6 +17209,7 @@ l_int|0
 suffix:semicolon
 r_const
 r_char
+id|__user
 op_star
 id|b_point
 suffix:semicolon
@@ -18657,6 +18661,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -27950,6 +27955,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|ubp
 comma
@@ -28156,6 +28162,7 @@ op_star
 id|st_bp
 comma
 r_char
+id|__user
 op_star
 id|ubp
 comma

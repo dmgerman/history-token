@@ -178,7 +178,8 @@ op_amp
 id|data
 comma
 (paren
-r_int
+r_void
+id|__user
 op_star
 )paren
 id|user_data

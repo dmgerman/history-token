@@ -3419,6 +3419,7 @@ suffix:semicolon
 multiline_comment|/* count of GPR controls to add/replace */
 DECL|member|gpr_add_controls
 id|emu10k1_fx8010_control_gpr_t
+id|__user
 op_star
 id|gpr_add_controls
 suffix:semicolon
@@ -3431,6 +3432,7 @@ suffix:semicolon
 multiline_comment|/* count of GPR controls to remove */
 DECL|member|gpr_del_controls
 id|snd_ctl_elem_id_t
+id|__user
 op_star
 id|gpr_del_controls
 suffix:semicolon
@@ -3449,6 +3451,7 @@ suffix:semicolon
 multiline_comment|/* total count of GPR controls */
 DECL|member|gpr_list_controls
 id|emu10k1_fx8010_control_gpr_t
+id|__user
 op_star
 id|gpr_list_controls
 suffix:semicolon

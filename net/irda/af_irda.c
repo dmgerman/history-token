@@ -4114,6 +4114,8 @@ op_complement
 id|MSG_DONTWAIT
 op_or
 id|MSG_EOR
+op_or
+id|MSG_CMSG_COMPAT
 )paren
 )paren
 r_return
@@ -5162,7 +5164,11 @@ c_cond
 id|msg-&gt;msg_flags
 op_amp
 op_complement
+(paren
 id|MSG_DONTWAIT
+op_or
+id|MSG_CMSG_COMPAT
+)paren
 )paren
 r_return
 op_minus
@@ -5456,7 +5462,11 @@ c_cond
 id|msg-&gt;msg_flags
 op_amp
 op_complement
+(paren
 id|MSG_DONTWAIT
+op_or
+id|MSG_CMSG_COMPAT
+)paren
 )paren
 r_return
 op_minus
@@ -6269,6 +6279,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -6328,6 +6339,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg

@@ -285,6 +285,15 @@ op_amp
 id|page-&gt;lru
 )paren
 suffix:semicolon
+id|page
+(braket
+l_int|1
+)braket
+dot
+id|mapping
+op_assign
+l_int|NULL
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -964,6 +973,7 @@ op_star
 id|file
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma

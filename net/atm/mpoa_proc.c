@@ -46,6 +46,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buff
 comma
@@ -69,6 +70,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buff
 comma
@@ -287,6 +289,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buff
 comma
@@ -914,6 +917,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buff
 comma
@@ -940,6 +944,7 @@ id|c
 suffix:semicolon
 r_const
 r_char
+id|__user
 op_star
 id|tmp
 suffix:semicolon

@@ -565,15 +565,6 @@ id|subchannel
 op_star
 )paren
 suffix:semicolon
-r_void
-id|device_call_nopath_notify
-c_func
-(paren
-r_struct
-id|subchannel
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* Helper functions to build lists for the slow path. */
 r_int
 id|css_enqueue_subchannel_slow
@@ -616,6 +607,17 @@ suffix:semicolon
 r_extern
 r_int
 id|need_rescan
+suffix:semicolon
+r_extern
+r_struct
+id|workqueue_struct
+op_star
+id|slow_path_wq
+suffix:semicolon
+r_extern
+r_struct
+id|work_struct
+id|slow_path_work
 suffix:semicolon
 macro_line|#endif
 eof

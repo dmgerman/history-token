@@ -1921,6 +1921,27 @@ id|rc
 r_goto
 id|out_unlock
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|p
+op_minus
+id|scontext2
+)paren
+OL
+id|scontext_len
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|out_unlock
+suffix:semicolon
+)brace
 multiline_comment|/* Check the validity of the new context. */
 r_if
 c_cond

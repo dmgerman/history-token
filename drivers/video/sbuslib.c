@@ -611,6 +611,10 @@ op_assign
 op_amp
 id|blue
 suffix:semicolon
+id|cmap.transp
+op_assign
+l_int|NULL
+suffix:semicolon
 r_for
 c_loop
 (paren

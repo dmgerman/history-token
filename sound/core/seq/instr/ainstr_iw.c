@@ -162,6 +162,7 @@ op_star
 id|ex
 comma
 r_char
+id|__user
 op_star
 op_star
 id|data
@@ -588,6 +589,7 @@ op_star
 id|lp
 comma
 r_char
+id|__user
 op_star
 op_star
 id|data
@@ -1193,6 +1195,7 @@ op_star
 id|instr
 comma
 r_char
+id|__user
 op_star
 id|instr_data
 comma
@@ -1856,6 +1859,7 @@ op_star
 id|ep
 comma
 r_char
+id|__user
 op_star
 op_star
 id|data
@@ -2163,6 +2167,7 @@ op_star
 id|lp
 comma
 r_char
+id|__user
 op_star
 op_star
 id|data
@@ -2531,6 +2536,7 @@ op_star
 id|instr
 comma
 r_char
+id|__user
 op_star
 id|instr_data
 comma
@@ -2569,6 +2575,7 @@ id|iwffff_xlayer_t
 id|lx
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|layer_instr_data
 suffix:semicolon

@@ -1453,10 +1453,13 @@ id|port
 suffix:semicolon
 r_int
 r_char
+id|data
+suffix:semicolon
+r_int
+r_char
+id|__user
 op_star
 id|image
-comma
-id|data
 suffix:semicolon
 multiline_comment|/* XILINX reset (wait at least 1 milisecond between reset on and off). */
 id|vx_outl

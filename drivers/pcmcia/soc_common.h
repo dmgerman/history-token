@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_ARCH_PCMCIA
 DECL|macro|_ASM_ARCH_PCMCIA
 mdefine_line|#define _ASM_ARCH_PCMCIA
 multiline_comment|/* include the world */
+macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -316,6 +317,28 @@ r_char
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_FREQ
+multiline_comment|/*&n;&t; * CPUFREQ support.&n;&t; */
+DECL|member|frequency_change
+r_int
+(paren
+op_star
+id|frequency_change
+)paren
+(paren
+r_struct
+id|soc_pcmcia_socket
+op_star
+comma
+r_int
+r_int
+comma
+r_struct
+id|cpufreq_freqs
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|pcmcia_irqs

@@ -2,17 +2,6 @@ multiline_comment|/* qlogicpti.h: Performance Technologies QlogicISP sbus card d
 macro_line|#ifndef _QLOGICPTI_H
 DECL|macro|_QLOGICPTI_H
 mdefine_line|#define _QLOGICPTI_H
-macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/* #include &quot;scsi.h&quot; */
-macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
-macro_line|#include &lt;scsi/scsi_device.h&gt;
-macro_line|#include &lt;scsi/scsi_eh.h&gt;
-macro_line|#include &lt;scsi/scsi_request.h&gt;
-macro_line|#include &lt;scsi/scsi_tcq.h&gt;
-macro_line|#include &lt;scsi/scsi.h&gt;
-macro_line|#include &lt;scsi/scsi_host.h&gt;
-DECL|macro|scsi_to_sbus_dma_dir
-mdefine_line|#define scsi_to_sbus_dma_dir(scsi_dir)&t;((int)(scsi_dir))
 multiline_comment|/* Qlogic/SBUS controller registers. */
 DECL|macro|SBUS_CFG1
 mdefine_line|#define SBUS_CFG1&t;0x006UL
@@ -731,6 +720,9 @@ id|QUEUE_ENTRY_LEN
 )braket
 suffix:semicolon
 )brace
+suffix:semicolon
+r_struct
+id|scsi_cmnd
 suffix:semicolon
 multiline_comment|/* Software state for the driver. */
 DECL|struct|qlogicpti

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_sys.c ($Revision: 1.30 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to sysfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; * &t;      Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_sys.c ($Revision: 1.32 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to sysfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; * &t;      Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
@@ -11,7 +11,7 @@ r_char
 op_star
 id|VERSION_QETH_SYS_C
 op_assign
-l_string|&quot;$Revision: 1.30 $&quot;
+l_string|&quot;$Revision: 1.32 $&quot;
 suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*                                                                           */
@@ -6952,6 +6952,9 @@ suffix:semicolon
 r_char
 op_star
 id|tmp
+comma
+op_star
+id|tmp2
 suffix:semicolon
 id|tmp
 op_assign
@@ -6973,21 +6976,35 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|strcmp
+id|strncmp
 c_func
 (paren
 id|tmp
 comma
 l_string|&quot;unregister&quot;
+comma
+l_int|10
 )paren
 )paren
 (brace
-r_return
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_assign
 id|qeth_notifier_unregister
 c_func
 (paren
 id|current
 )paren
+)paren
+)paren
+r_return
+id|rc
+suffix:semicolon
+r_return
+id|count
 suffix:semicolon
 )brace
 id|signum
@@ -6995,10 +7012,10 @@ op_assign
 id|simple_strtoul
 c_func
 (paren
-id|buf
+id|tmp
 comma
 op_amp
-id|tmp
+id|tmp2
 comma
 l_int|10
 )paren
@@ -7060,7 +7077,7 @@ c_func
 (paren
 id|notifier_register
 comma
-l_int|0644
+l_int|0200
 comma
 l_int|0
 comma

@@ -87,6 +87,7 @@ id|uid16
 comma
 (paren
 id|uid16_t
+id|__user
 op_star
 )paren
 id|arg
@@ -114,6 +115,7 @@ id|uid32
 comma
 (paren
 id|uid_t
+id|__user
 op_star
 )paren
 id|arg
@@ -187,6 +189,7 @@ id|opt
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

@@ -1405,7 +1405,11 @@ c_cond
 id|msg-&gt;msg_flags
 op_amp
 op_complement
+(paren
 id|MSG_DONTWAIT
+op_or
+id|MSG_CMSG_COMPAT
+)paren
 )paren
 r_return
 op_minus
