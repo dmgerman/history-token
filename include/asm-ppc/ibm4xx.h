@@ -111,6 +111,9 @@ macro_line|#elif CONFIG_44x
 macro_line|#if defined(CONFIG_EBONY)
 macro_line|#include &lt;platforms/4xx/ebony.h&gt;
 macro_line|#endif
+macro_line|#if defined(CONFIG_LUAN)
+macro_line|#include &lt;platforms/4xx/luan.h&gt;
+macro_line|#endif
 macro_line|#if defined(CONFIG_OCOTEA)
 macro_line|#include &lt;platforms/4xx/ocotea.h&gt;
 macro_line|#endif

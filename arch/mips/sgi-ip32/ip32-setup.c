@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * IP32 basic setup&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000 Harald Koerfgen&n; * Copyright (C) 2002, 03 Ilya A. Volynets&n; */
+multiline_comment|/*&n; * IP32 basic setup&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000 Harald Koerfgen&n; * Copyright (C) 2002, 2003, 2005 Ilya A. Volynets&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -301,27 +301,6 @@ c_func
 r_void
 )paren
 (brace
-id|set_io_port_base
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|ioremap
-c_func
-(paren
-id|MACEPCI_LOW_IO
-comma
-l_int|0x2000000
-)paren
-)paren
-suffix:semicolon
-id|crime_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|board_be_init
 op_assign
 id|ip32_be_init

@@ -120,8 +120,6 @@ id|i
 )braket
 dot
 id|theres_more
-op_ne
-l_int|0
 suffix:semicolon
 id|i
 op_increment
@@ -153,8 +151,6 @@ l_int|1
 )braket
 dot
 id|theres_more
-op_ne
-l_int|0
 suffix:semicolon
 id|mitr
 op_increment
@@ -418,7 +414,7 @@ l_int|1
 dot
 id|theres_more
 op_assign
-l_int|0x0
+l_int|NULL
 suffix:semicolon
 id|num_regs
 op_assign
@@ -521,7 +517,7 @@ l_int|1
 dot
 id|theres_more
 op_assign
-l_int|0x0
+l_int|NULL
 suffix:semicolon
 id|node
 op_assign
@@ -633,7 +629,7 @@ l_int|1
 dot
 id|theres_more
 op_assign
-l_int|0x0
+l_int|NULL
 suffix:semicolon
 id|prom_sortmemlist
 c_func

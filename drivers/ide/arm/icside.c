@@ -2443,6 +2443,7 @@ op_star
 id|state
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|idmem
 suffix:semicolon

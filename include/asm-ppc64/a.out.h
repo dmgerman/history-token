@@ -58,12 +58,11 @@ DECL|macro|N_SYMSIZE
 mdefine_line|#define N_SYMSIZE(a)&t;((a).a_syms)
 macro_line|#ifdef __KERNEL__
 DECL|macro|STACK_TOP_USER64
-mdefine_line|#define STACK_TOP_USER64 (TASK_SIZE_USER64)
-multiline_comment|/* Give 32-bit user space a full 4G address space to live in. */
+mdefine_line|#define STACK_TOP_USER64 TASK_SIZE_USER64
 DECL|macro|STACK_TOP_USER32
-mdefine_line|#define STACK_TOP_USER32 (TASK_SIZE_USER32)
+mdefine_line|#define STACK_TOP_USER32 TASK_SIZE_USER32
 DECL|macro|STACK_TOP
-mdefine_line|#define STACK_TOP ((test_thread_flag(TIF_32BIT) || &bslash;&n;&t;&t;(ppcdebugset(PPCDBG_BINFMT_32ADDR))) ? &bslash;&n;&t;&t;STACK_TOP_USER32 : STACK_TOP_USER64)
+mdefine_line|#define STACK_TOP (test_thread_flag(TIF_32BIT) ? &bslash;&n;&t;&t;   STACK_TOP_USER32 : STACK_TOP_USER64)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __PPC64_A_OUT_H__ */
 eof

@@ -2262,9 +2262,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|child-&gt;used_math
-op_assign
-l_int|1
+id|set_stopped_child_used_math
+c_func
+(paren
+id|child
+)paren
 suffix:semicolon
 id|ret
 op_assign

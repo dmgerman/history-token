@@ -553,6 +553,7 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Reported by Markus Demleitner &lt;msdemlei@cl.uni-heidelberg.de&gt; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -561,6 +562,31 @@ comma
 l_int|0x0006
 comma
 l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;SCM Microsystems Inc.&quot;
+comma
+l_string|&quot;eUSB MMC Adapter&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_CB
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+)paren
+comma
+multiline_comment|/* Reported by Daniel Nouri &lt;dpunktnpunkt@web.de&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04e6
+comma
+l_int|0x0006
+comma
+l_int|0x0205
 comma
 l_int|0x0205
 comma

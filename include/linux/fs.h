@@ -3,39 +3,8 @@ DECL|macro|_LINUX_FS_H
 mdefine_line|#define _LINUX_FS_H
 multiline_comment|/*&n; * This file has definitions for some important file table&n; * structures etc.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/limits.h&gt;
-macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#include &lt;linux/dcache.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;linux/prio_tree.h&gt;
-macro_line|#include &lt;linux/kobject.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
-r_struct
-id|iovec
-suffix:semicolon
-r_struct
-id|nameidata
-suffix:semicolon
-r_struct
-id|pipe_inode_info
-suffix:semicolon
-r_struct
-id|poll_table_struct
-suffix:semicolon
-r_struct
-id|kstatfs
-suffix:semicolon
-r_struct
-id|vm_area_struct
-suffix:semicolon
-r_struct
-id|vfsmount
-suffix:semicolon
 multiline_comment|/*&n; * It&squot;s silly to have NR_OPEN bigger than NR_FILE, but you can change&n; * the file limit at runtime and only root can increase the per-process&n; * nr_file rlimit, so it&squot;s safe to set up a ridiculously high absolute&n; * upper limit on files-per-process.&n; *&n; * Some programs (notably those using select()) may have to be &n; * recompiled to take full advantage of the new limits..  &n; */
 multiline_comment|/* Fixed constants first: */
 DECL|macro|NR_OPEN
@@ -304,12 +273,43 @@ mdefine_line|#define FIBMAP&t;   _IO(0x00,1)&t;/* bmap access */
 DECL|macro|FIGETBSZ
 mdefine_line|#define FIGETBSZ   _IO(0x00,2)&t;/* get the block size used for bmap */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
+macro_line|#include &lt;linux/dcache.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
+macro_line|#include &lt;linux/prio_tree.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+r_struct
+id|iovec
+suffix:semicolon
+r_struct
+id|nameidata
+suffix:semicolon
+r_struct
+id|pipe_inode_info
+suffix:semicolon
+r_struct
+id|poll_table_struct
+suffix:semicolon
+r_struct
+id|kstatfs
+suffix:semicolon
+r_struct
+id|vm_area_struct
+suffix:semicolon
+r_struct
+id|vfsmount
+suffix:semicolon
 multiline_comment|/* Used to be a macro which just called the function, now just a function */
 r_extern
 r_void
@@ -780,10 +780,10 @@ id|page_tree
 suffix:semicolon
 multiline_comment|/* radix tree of all pages */
 DECL|member|tree_lock
-id|spinlock_t
+id|rwlock_t
 id|tree_lock
 suffix:semicolon
-multiline_comment|/* and spinlock protecting it */
+multiline_comment|/* and rwlock protecting it */
 DECL|member|i_mmap_writable
 r_int
 r_int
@@ -4761,6 +4761,47 @@ id|context
 suffix:semicolon
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|dentry
+op_star
+id|find_exported_dentry
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_void
+op_star
+id|obj
+comma
+r_void
+op_star
+id|parent
+comma
+r_int
+(paren
+op_star
+id|acceptable
+)paren
+(paren
+r_void
+op_star
+id|context
+comma
+r_struct
+id|dentry
+op_star
+id|de
+)paren
+comma
+r_void
+op_star
+id|context
+)paren
+suffix:semicolon
 DECL|struct|file_system_type
 r_struct
 id|file_system_type
@@ -6054,6 +6095,23 @@ id|mapping
 suffix:semicolon
 r_extern
 r_int
+id|invalidate_inode_pages2_range
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+id|pgoff_t
+id|start
+comma
+id|pgoff_t
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|write_inode_now
 c_func
 (paren
@@ -6103,6 +6161,23 @@ r_struct
 id|address_space
 op_star
 id|mapping
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|filemap_write_and_wait_range
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+id|loff_t
+id|lstart
+comma
+id|loff_t
+id|lend
 )paren
 suffix:semicolon
 r_extern

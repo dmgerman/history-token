@@ -12106,7 +12106,11 @@ op_assign
 id|ParseDeviceNbrFromSlotName
 c_func
 (paren
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -21217,6 +21221,14 @@ l_int|0
 comma
 )brace
 )brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|skge_pci_tbl
+)paren
 suffix:semicolon
 DECL|variable|skge_driver
 r_static

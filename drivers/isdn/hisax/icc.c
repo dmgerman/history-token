@@ -29,6 +29,7 @@ l_string|&quot;2070 V2.4&quot;
 )brace
 suffix:semicolon
 r_void
+id|__init
 DECL|function|ICCVersion
 id|ICCVersion
 c_func

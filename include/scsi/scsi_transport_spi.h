@@ -3,6 +3,7 @@ macro_line|#ifndef SCSI_TRANSPORT_SPI_H
 DECL|macro|SCSI_TRANSPORT_SPI_H
 mdefine_line|#define SCSI_TRANSPORT_SPI_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/transport_class.h&gt;
 r_struct
 id|scsi_transport_template
 suffix:semicolon

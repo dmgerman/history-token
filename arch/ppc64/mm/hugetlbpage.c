@@ -1222,6 +1222,16 @@ id|mm-&gt;context.htlb_segs
 op_or_assign
 id|newsegs
 suffix:semicolon
+multiline_comment|/* update the paca copy of the context struct */
+id|get_paca
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|context
+op_assign
+id|mm-&gt;context
+suffix:semicolon
 multiline_comment|/* the context change must make it to memory before the flush,&n;&t; * so that further SLB misses do the right thing. */
 id|mb
 c_func
@@ -3273,9 +3283,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|cpu_has_feature
+c_func
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
 id|CPU_FTR_16M_PAGE
 )paren
 )paren

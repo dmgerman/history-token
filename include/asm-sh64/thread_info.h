@@ -119,6 +119,8 @@ DECL|macro|TIF_SIGPENDING
 mdefine_line|#define TIF_SIGPENDING&t;&t;2&t;/* signal pending */
 DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;3&t;/* rescheduling necessary */
+DECL|macro|TIF_MEMDIE
+mdefine_line|#define TIF_MEMDIE&t;&t;4
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE&t;16384
 macro_line|#endif /* __KERNEL__ */

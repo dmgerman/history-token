@@ -104,7 +104,7 @@ mdefine_line|#define M41T81REG_SQW&t;0x13&t;&t;/* square wave register */
 DECL|macro|M41T81_CCR_ADDRESS
 mdefine_line|#define M41T81_CCR_ADDRESS&t;0x68
 DECL|macro|SMB_CSR
-mdefine_line|#define SMB_CSR(reg) (IOADDR(A_SMB_REGISTER(1, reg)))
+mdefine_line|#define SMB_CSR(reg) ((u8 *) (IOADDR(A_SMB_REGISTER(1, reg))))
 DECL|function|m41t81_read
 r_static
 r_int
@@ -118,7 +118,7 @@ id|addr
 r_while
 c_loop
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -131,7 +131,7 @@ op_amp
 id|M_SMB_BUSY
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|addr
@@ -145,7 +145,7 @@ id|R_SMB_CMD
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren
@@ -168,7 +168,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -181,7 +181,7 @@ op_amp
 id|M_SMB_BUSY
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren
@@ -204,7 +204,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -220,7 +220,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -234,7 +234,7 @@ id|M_SMB_ERROR
 )paren
 (brace
 multiline_comment|/* Clear error bit by writing a 1 */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|M_SMB_ERROR
@@ -253,7 +253,7 @@ suffix:semicolon
 )brace
 r_return
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -283,7 +283,7 @@ id|b
 r_while
 c_loop
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -296,7 +296,7 @@ op_amp
 id|M_SMB_BUSY
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren
@@ -312,7 +312,7 @@ id|R_SMB_CMD
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren
@@ -328,7 +328,7 @@ id|R_SMB_DATA
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|V_SMB_ADDR
@@ -349,7 +349,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -365,7 +365,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -379,7 +379,7 @@ id|M_SMB_ERROR
 )paren
 (brace
 multiline_comment|/* Clear error bit by writing a 1 */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|M_SMB_ERROR
@@ -397,7 +397,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* read the same byte again to make sure it is written */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|V_SMB_ADDR
@@ -418,7 +418,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR

@@ -2316,7 +2316,7 @@ id|RBTX4927_SW_RESET_DO_SET
 )paren
 suffix:semicolon
 multiline_comment|/* do something passive while waiting for reset */
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -2348,7 +2348,7 @@ id|KERN_NOTICE
 l_string|&quot;System Halted&bslash;n&quot;
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren

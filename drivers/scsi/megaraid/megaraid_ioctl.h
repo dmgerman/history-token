@@ -483,5 +483,12 @@ c_func
 r_uint32
 )paren
 suffix:semicolon
+r_uint32
+id|mraid_mm_adapter_app_handle
+c_func
+(paren
+r_uint32
+)paren
+suffix:semicolon
 macro_line|#endif /* _MEGARAID_IOCTL_H_ */
 eof

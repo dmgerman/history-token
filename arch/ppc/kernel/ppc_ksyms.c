@@ -816,6 +816,13 @@ c_func
 id|flush_tlb_page
 )paren
 suffix:semicolon
+DECL|variable|_tlbie
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_tlbie
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ALTIVEC
 DECL|variable|last_task_used_altivec
 id|EXPORT_SYMBOL
@@ -1493,7 +1500,7 @@ id|cpm_free_handler
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_8xx */
-macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_40x) || defined(CONFIG_85xx)
+macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_40x) || defined(CONFIG_85xx) ||&bslash;&n;&t;defined(CONFIG_83xx)
 DECL|variable|__res
 id|EXPORT_SYMBOL
 c_func

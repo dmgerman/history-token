@@ -131,14 +131,14 @@ id|pg_dir
 )paren
 suffix:semicolon
 r_extern
-id|pmd_t
+id|pte_t
 id|invalid_pte_table
 (braket
 id|PAGE_SIZE
 op_div
 r_sizeof
 (paren
-id|pmd_t
+id|pte_t
 )paren
 )braket
 suffix:semicolon

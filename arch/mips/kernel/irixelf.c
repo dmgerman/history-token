@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * irixelf.c: Code to load IRIX ELF executables which conform to&n; *            the MIPS ABI.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; *&n; * Based upon work which is:&n; * Copyright 1993, 1994: Eric Youngdale (ericy@cais.com).&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * irixelf.c: Code to load IRIX ELF executables conforming to the MIPS ABI.&n; *            Based off of work by Eric Youngdale.&n; *&n; * Copyright (C) 1993 - 1994 Eric Youngdale &lt;ericy@cais.com&gt;&n; * Copyright (C) 1996 - 2004 David S. Miller &lt;dm@engr.sgi.com&gt;&n; * Copyright (C) 2004 Steven J. Hill &lt;sjhill@realitydiluted.com&gt;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
@@ -1023,6 +1023,10 @@ suffix:semicolon
 id|__put_user
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 l_int|NULL
 comma
 id|argv
@@ -1072,6 +1076,10 @@ suffix:semicolon
 id|__put_user
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 l_int|NULL
 comma
 id|envp
@@ -4366,6 +4374,10 @@ c_func
 (paren
 l_string|&quot;irix_mapelf: Success, returning %08lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|user_phdrp-&gt;p_vaddr
 )paren
 suffix:semicolon
@@ -6033,6 +6045,55 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|init_inventory
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+id|asmlinkage
+r_int
+r_int
+id|sys_call_table
+suffix:semicolon
+r_extern
+id|asmlinkage
+r_int
+r_int
+id|sys_call_table_irix5
+suffix:semicolon
+id|init_inventory
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Copy the IRIX5 syscall table (8000 bytes) into the main syscall&n;&t; * table. The IRIX5 calls are located by an offset of 8000 bytes&n;&t; * from the beginning of the main table.&n;&t; */
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|sys_call_table
+op_plus
+l_int|8000
+)paren
+comma
+op_amp
+id|sys_call_table_irix5
+comma
+l_int|8000
+)paren
+suffix:semicolon
 r_return
 id|register_binfmt
 c_func

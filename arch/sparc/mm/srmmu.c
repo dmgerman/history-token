@@ -314,12 +314,10 @@ id|pte
 )paren
 )paren
 (brace
-multiline_comment|/* XXX Anton obviously had something in mind when he did this.&n;&t;&t; * But what?&n;&t;&t; */
-multiline_comment|/* return (struct page *)~0; */
-id|BUG
-c_func
-(paren
-)paren
+multiline_comment|/* Just return something that will cause&n;&t;&t; * pfn_valid() to return false.  This makes&n;&t;&t; * copy_one_pte() to just directly copy to&n;&t;&t; * PTE over.&n;&t;&t; */
+r_return
+op_complement
+l_int|0UL
 suffix:semicolon
 )brace
 r_return
@@ -10797,6 +10795,14 @@ comma
 id|srmmu_get_pgd_fast
 comma
 id|BTFIXUPCALL_NORM
+)paren
+suffix:semicolon
+id|BTFIXUPSET_HALF
+c_func
+(paren
+id|pte_readi
+comma
+id|SRMMU_NOREAD
 )paren
 suffix:semicolon
 id|BTFIXUPSET_HALF

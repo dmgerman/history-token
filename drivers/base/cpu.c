@@ -281,13 +281,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|variable|unregister_cpu
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unregister_cpu
-)paren
-suffix:semicolon
 macro_line|#else /* ... !CONFIG_HOTPLUG_CPU */
 DECL|function|register_cpu_control
 r_static
@@ -400,15 +393,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_HOTPLUG_CPU
-DECL|variable|register_cpu
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_cpu
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|function|cpu_dev_init
 r_int
 id|__init

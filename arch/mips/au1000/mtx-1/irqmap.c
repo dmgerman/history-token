@@ -18,8 +18,7 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
-multiline_comment|/* Need to define this.&n;*/
+macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
 DECL|variable|au1xxx_irq_map
 id|au1xxx_irq_map_t
 id|au1xxx_irq_map
@@ -28,16 +27,59 @@ id|au1xxx_irq_map
 op_assign
 (brace
 (brace
-l_float|0.
-l_float|0.
+id|AU1500_GPIO_204
+comma
+id|INTC_INT_HIGH_LEVEL
+comma
 l_int|0
 )brace
+comma
+(brace
+id|AU1500_GPIO_201
+comma
+id|INTC_INT_LOW_LEVEL
+comma
+l_int|0
+)brace
+comma
+(brace
+id|AU1500_GPIO_202
+comma
+id|INTC_INT_LOW_LEVEL
+comma
+l_int|0
+)brace
+comma
+(brace
+id|AU1500_GPIO_203
+comma
+id|INTC_INT_LOW_LEVEL
+comma
+l_int|0
+)brace
+comma
+(brace
+id|AU1500_GPIO_205
+comma
+id|INTC_INT_LOW_LEVEL
+comma
+l_int|0
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|variable|au1xxx_nr_irqs
 r_int
 id|au1xxx_nr_irqs
 op_assign
-l_int|0
+r_sizeof
+(paren
+id|au1xxx_irq_map
+)paren
+op_div
+r_sizeof
+(paren
+id|au1xxx_irq_map_t
+)paren
 suffix:semicolon
 eof

@@ -1984,20 +1984,13 @@ id|next
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef DEBUG_SPINLOCKS
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|spin_is_locked
+id|assert_spin_locked
 c_func
 (paren
 op_amp
 id|dev-&gt;slock
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 id|dprintk
 c_func
 (paren
@@ -2139,20 +2132,13 @@ r_int
 id|state
 )paren
 (brace
-macro_line|#ifdef DEBUG_SPINLOCKS
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|spin_is_locked
+id|assert_spin_locked
 c_func
 (paren
 op_amp
 id|dev-&gt;slock
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 id|dprintk
 c_func
 (paren
@@ -2211,20 +2197,13 @@ id|next
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef DEBUG_SPINLOCKS
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|spin_is_locked
+id|assert_spin_locked
 c_func
 (paren
 op_amp
 id|dev-&gt;slock
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 id|BUG_ON
 c_func
 (paren
@@ -2505,20 +2484,13 @@ id|ov
 op_assign
 id|V4L2_FIELD_ANY
 suffix:semicolon
-macro_line|#ifdef DEBUG_SPINLOCKS
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|spin_is_locked
+id|assert_spin_locked
 c_func
 (paren
 op_amp
 id|dev-&gt;slock
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* video capture -- dma 0 + video task A */
 r_if
 c_cond

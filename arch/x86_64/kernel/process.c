@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1145,9 +1146,10 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
-id|tsk-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|release_thread
@@ -2226,6 +2228,12 @@ c_func
 id|TIF_IA32
 )paren
 suffix:semicolon
+multiline_comment|/* TBD: overwrites user setup. Should have two bits.&n;&t;   But 64bit processes have always behaved this way,&n;&t;   so it&squot;s not too bad. The main problem is just that&n;   &t;   32bit childs are affected again. */
+id|current-&gt;personality
+op_and_assign
+op_complement
+id|READ_IMPLIES_EXEC
+suffix:semicolon
 )brace
 DECL|function|sys_fork
 id|asmlinkage
@@ -2996,6 +3004,38 @@ id|ptregs
 suffix:semicolon
 r_return
 l_int|1
+suffix:semicolon
+)brace
+DECL|function|arch_align_stack
+r_int
+r_int
+id|arch_align_stack
+c_func
+(paren
+r_int
+r_int
+id|sp
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|randomize_va_space
+)paren
+id|sp
+op_sub_assign
+id|get_random_int
+c_func
+(paren
+)paren
+op_mod
+l_int|8192
+suffix:semicolon
+r_return
+id|sp
+op_amp
+op_complement
+l_int|0xf
 suffix:semicolon
 )brace
 eof

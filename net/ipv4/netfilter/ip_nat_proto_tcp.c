@@ -475,9 +475,7 @@ id|pskb
 op_member_access_from_pointer
 id|data
 op_plus
-id|iph-&gt;ihl
-op_star
-l_int|4
+id|hdroff
 )paren
 suffix:semicolon
 r_if

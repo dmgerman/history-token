@@ -1,9 +1,11 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000 by Ralf Baechle&n; * Copyright (C) 2000 by Silicon Graphics, Inc.&n; * Copyright (C) 2004 by Christoph Hellwig&n; *&n; * On SGI IP27 the ARC memory configuration data is completly bogus but&n; * alternate easier to use mechanisms are available.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000, 05 by Ralf Baechle (ralf@linux-mips.org)&n; * Copyright (C) 2000 by Silicon Graphics, Inc.&n; * Copyright (C) 2004 by Christoph Hellwig&n; *&n; * On SGI IP27 the ARC memory configuration data is completly bogus but&n; * alternate easier to use mechanisms are available.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/page.h&gt;

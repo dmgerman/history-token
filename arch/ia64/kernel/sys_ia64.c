@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file contains various system calls that have different calling&n; * conventions on different platforms.&n; *&n; * Copyright (C) 1999-2000, 2002-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file contains various system calls that have different calling&n; * conventions on different platforms.&n; *&n; * Copyright (C) 1999-2000, 2002-2003, 2005 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -583,32 +583,7 @@ r_int
 DECL|function|sys_pipe
 id|sys_pipe
 (paren
-r_int
-id|arg0
-comma
-r_int
-id|arg1
-comma
-r_int
-id|arg2
-comma
-r_int
-id|arg3
-comma
-r_int
-id|arg4
-comma
-r_int
-id|arg5
-comma
-r_int
-id|arg6
-comma
-r_int
-id|arg7
-comma
-r_int
-id|stack
+r_void
 )paren
 (brace
 r_struct
@@ -616,13 +591,11 @@ id|pt_regs
 op_star
 id|regs
 op_assign
+id|ia64_task_regs
+c_func
 (paren
-r_struct
-id|pt_regs
-op_star
+id|current
 )paren
-op_amp
-id|stack
 suffix:semicolon
 r_int
 id|fd

@@ -1,9 +1,10 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/time.c&n; *&n; * Copyright (C) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks, &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* linux/arch/arm/mach-s3c2410/time.c&n; *&n; * Copyright (C) 2003-2005 Simtec Electronics&n; *&t;Ben Dooks, &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -13,6 +14,7 @@ macro_line|#include &lt;asm/arch/map.h&gt;
 macro_line|#include &lt;asm/arch/regs-timer.h&gt;
 macro_line|#include &lt;asm/arch/regs-irq.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
+macro_line|#include &lt;asm/hardware/clock.h&gt;
 macro_line|#include &quot;clock.h&quot;
 DECL|variable|timer_startval
 r_static
@@ -381,8 +383,63 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_int
+r_int
+id|pclk
+suffix:semicolon
+r_struct
+id|clk
+op_star
+id|clk
+suffix:semicolon
 multiline_comment|/* for the h1940 (and others), we use the pclk from the core&n;&t;&t; * to generate the timer values. since values around 50 to&n;&t;&t; * 70MHz are not values we can directly generate the timer&n;&t;&t; * value from, we need to pre-scale and divide before using it.&n;&t;&t; *&n;&t;&t; * for instance, using 50.7MHz and dividing by 6 gives 8.45MHz&n;&t;&t; * (8.45 ticks per usec)&n;&t;&t; */
 multiline_comment|/* this is used as default if no other timer can be found */
+id|clk
+op_assign
+id|clk_get
+c_func
+(paren
+l_int|NULL
+comma
+l_string|&quot;timers&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|clk
+)paren
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;failed to get clock for system timer&quot;
+)paren
+suffix:semicolon
+id|clk_use
+c_func
+(paren
+id|clk
+)paren
+suffix:semicolon
+id|clk_enable
+c_func
+(paren
+id|clk
+)paren
+suffix:semicolon
+id|pclk
+op_assign
+id|clk_get_rate
+c_func
+(paren
+id|clk
+)paren
+suffix:semicolon
+multiline_comment|/* configure clock tick */
 id|timer_usec_ticks
 op_assign
 id|timer_mask_usec_ticks
@@ -390,7 +447,7 @@ c_func
 (paren
 l_int|6
 comma
-id|s3c24xx_pclk
+id|pclk
 )paren
 suffix:semicolon
 id|tcfg1
@@ -424,7 +481,7 @@ suffix:semicolon
 id|tcnt
 op_assign
 (paren
-id|s3c24xx_pclk
+id|pclk
 op_div
 l_int|6
 )paren

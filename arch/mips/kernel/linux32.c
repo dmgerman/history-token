@@ -224,6 +224,7 @@ r_int
 id|addr
 comma
 r_int
+r_int
 id|len
 comma
 r_int
@@ -6235,6 +6236,9 @@ id|sys_shmget
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 id|third

@@ -7,14 +7,14 @@ DECL|macro|GT64120_BASE
 mdefine_line|#define GT64120_BASE&t;(KSEG1ADDR(0x14000000))
 multiline_comment|/*&n; *   PCI Bus allocation&n; *&n; *   (Guessing ...)&n; */
 DECL|macro|GT_PCI_MEM_BASE
-mdefine_line|#define GT_PCI_MEM_BASE    0x12000000UL
+mdefine_line|#define GT_PCI_MEM_BASE&t;0x12000000UL
 DECL|macro|GT_PCI_MEM_SIZE
-mdefine_line|#define GT_PCI_MEM_SIZE    0x02000000UL
+mdefine_line|#define GT_PCI_MEM_SIZE&t;0x02000000UL
 DECL|macro|GT_PCI_IO_BASE
-mdefine_line|#define GT_PCI_IO_BASE     0x10000000UL
+mdefine_line|#define GT_PCI_IO_BASE&t;0x10000000UL
 DECL|macro|GT_PCI_IO_SIZE
-mdefine_line|#define GT_PCI_IO_SIZE     0x02000000UL
+mdefine_line|#define GT_PCI_IO_SIZE&t;0x02000000UL
 DECL|macro|GT_ISA_IO_BASE
-mdefine_line|#define GT_ISA_IO_BASE     PCI_IO_BASE
+mdefine_line|#define GT_ISA_IO_BASE&t;PCI_IO_BASE
 macro_line|#endif /* _ASM_GT64120_LASAT_GT64120_DEP_H */
 eof

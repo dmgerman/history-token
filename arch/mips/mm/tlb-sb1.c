@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 2001 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 2000, 2001, 2002, 2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
@@ -13,7 +12,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|UNIQUE_ENTRYHI
-mdefine_line|#define UNIQUE_ENTRYHI(idx) (KSEG0 + ((idx) &lt;&lt; (PAGE_SHIFT + 1)))
+mdefine_line|#define UNIQUE_ENTRYHI(idx) (CKSEG0 + ((idx) &lt;&lt; (PAGE_SHIFT + 1)))
 multiline_comment|/* Dump the current entry* and pagemask registers */
 DECL|function|dump_cur_tlb_regs
 r_static

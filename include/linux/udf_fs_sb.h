@@ -2,6 +2,7 @@ multiline_comment|/*&n; * udf_fs_sb.h&n; * &n; * This include file is for the Li
 macro_line|#ifndef _UDF_FS_SB_H
 DECL|macro|_UDF_FS_SB_H
 mdefine_line|#define _UDF_FS_SB_H 1
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#pragma pack(1)
 DECL|macro|UDF_MAX_BLOCK_LOADED
 mdefine_line|#define UDF_MAX_BLOCK_LOADED&t;8
@@ -267,6 +268,11 @@ r_struct
 id|inode
 op_star
 id|s_vat
+suffix:semicolon
+DECL|member|s_alloc_sem
+r_struct
+id|semaphore
+id|s_alloc_sem
 suffix:semicolon
 )brace
 suffix:semicolon

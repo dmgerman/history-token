@@ -1497,6 +1497,12 @@ id|to-&gt;security
 op_assign
 id|from-&gt;security
 suffix:semicolon
+id|dst_release
+c_func
+(paren
+id|to-&gt;dst
+)paren
+suffix:semicolon
 id|to-&gt;dst
 op_assign
 id|dst_clone

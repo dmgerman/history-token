@@ -157,7 +157,7 @@ mdefine_line|#define DMA_TCE_ENABLE     (1&lt;&lt;(8-DMA_CR_OFFSET))
 DECL|macro|SET_DMA_TCE
 mdefine_line|#define SET_DMA_TCE(x)     (((x)&amp;0x1)&lt;&lt;(8-DMA_CR_OFFSET))
 DECL|macro|DMA_DEC
-mdefine_line|#define DMA_DEC            (1&lt;&lt;(2)&t;/* Address Decrement */
+mdefine_line|#define DMA_DEC            (1&lt;&lt;(2))&t;/* Address Decrement */
 DECL|macro|SET_DMA_DEC
 mdefine_line|#define SET_DMA_DEC(x)     (((x)&amp;0x1)&lt;&lt;2)
 DECL|macro|GET_DMA_DEC
@@ -296,6 +296,19 @@ DECL|macro|DMA_SG2
 mdefine_line|#define DMA_SG2            (1&lt;&lt;5)
 DECL|macro|DMA_SG3
 mdefine_line|#define DMA_SG3            (1&lt;&lt;4)
+multiline_comment|/* DMA Channel Count Register */
+DECL|macro|DMA_CTC_BTEN
+mdefine_line|#define DMA_CTC_BTEN     (1&lt;&lt;23)    /* Burst Enable/Disable bit */
+DECL|macro|DMA_CTC_BSIZ_MSK
+mdefine_line|#define DMA_CTC_BSIZ_MSK (3&lt;&lt;21)    /* Mask of the Burst size bits */
+DECL|macro|DMA_CTC_BSIZ_2
+mdefine_line|#define DMA_CTC_BSIZ_2   (0)
+DECL|macro|DMA_CTC_BSIZ_4
+mdefine_line|#define DMA_CTC_BSIZ_4   (1&lt;&lt;21)
+DECL|macro|DMA_CTC_BSIZ_8
+mdefine_line|#define DMA_CTC_BSIZ_8   (2&lt;&lt;21)
+DECL|macro|DMA_CTC_BSIZ_16
+mdefine_line|#define DMA_CTC_BSIZ_16  (3&lt;&lt;21)
 multiline_comment|/*&n; * DMA SG Command Register&n; */
 DECL|macro|SSG_ENABLE
 mdefine_line|#define SSG_ENABLE(chan)   &t;(1&lt;&lt;(31-chan))&t;/* Start Scatter Gather */
@@ -588,6 +601,11 @@ id|td
 suffix:semicolon
 multiline_comment|/* transfer direction */
 macro_line|#endif
+DECL|member|int_on_final_sg
+r_char
+id|int_on_final_sg
+suffix:semicolon
+multiline_comment|/* for scatter/gather - only interrupt on last sg */
 DECL|typedef|ppc_dma_ch_t
 )brace
 id|ppc_dma_ch_t
@@ -871,6 +889,36 @@ id|ppc4xx_get_dma_status
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ppc4xx_enable_burst
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ppc4xx_disable_burst
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ppc4xx_set_burst_size
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 r_extern

@@ -16,8 +16,7 @@ macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/shub_mmr.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
-multiline_comment|/* This is ugly and jbarnes has promised me to fix this later */
-macro_line|#include &quot;../../arch/ia64/sn/include/shubio.h&quot;
+macro_line|#include &lt;asm/sn/shubio.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren

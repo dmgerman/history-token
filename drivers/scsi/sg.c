@@ -1,14 +1,14 @@
-multiline_comment|/*&n; *  History:&n; *  Started: Aug 9 by Lawrence Foard (entropy@world.std.com),&n; *           to allow user process control of SCSI devices.&n; *  Development Sponsored by Killy Corp. NY NY&n; *&n; * Original driver (sg.c):&n; *        Copyright (C) 1992 Lawrence Foard&n; * Version 2 and 3 extensions to driver:&n; *        Copyright (C) 1998 - 2004 Douglas Gilbert&n; *&n; *  Modified  19-JAN-1998  Richard Gooch &lt;rgooch@atnf.csiro.au&gt;  Devfs support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; */
+multiline_comment|/*&n; *  History:&n; *  Started: Aug 9 by Lawrence Foard (entropy@world.std.com),&n; *           to allow user process control of SCSI devices.&n; *  Development Sponsored by Killy Corp. NY NY&n; *&n; * Original driver (sg.c):&n; *        Copyright (C) 1992 Lawrence Foard&n; * Version 2 and 3 extensions to driver:&n; *        Copyright (C) 1998 - 2005 Douglas Gilbert&n; *&n; *  Modified  19-JAN-1998  Richard Gooch &lt;rgooch@atnf.csiro.au&gt;  Devfs support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; */
 DECL|variable|sg_version_num
 r_static
 r_int
 id|sg_version_num
 op_assign
-l_int|30531
+l_int|30532
 suffix:semicolon
 multiline_comment|/* 2 digits for each component */
 DECL|macro|SG_VERSION_STR
-mdefine_line|#define SG_VERSION_STR &quot;3.5.31&quot;
+mdefine_line|#define SG_VERSION_STR &quot;3.5.32&quot;
 multiline_comment|/*&n; *  D. P. Gilbert (dgilbert@interlog.com, dougg@triode.net.au), notes:&n; *      - scsi logging is available via SCSI_LOG_TIMEOUT macros. First&n; *        the kernel/module needs to be built with CONFIG_SCSI_LOGGING&n; *        (otherwise the macros compile to empty statements).&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -44,7 +44,7 @@ r_char
 op_star
 id|sg_version_date
 op_assign
-l_string|&quot;20040516&quot;
+l_string|&quot;20050117&quot;
 suffix:semicolon
 r_static
 r_int
@@ -6886,6 +6886,10 @@ op_ne
 id|SRpnt-&gt;sr_result
 )paren
 (brace
+r_struct
+id|scsi_sense_hdr
+id|sshdr
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -6980,33 +6984,32 @@ id|SRpnt-&gt;sr_result
 op_ne
 l_int|0
 op_logical_and
+id|scsi_command_normalize_sense
+c_func
 (paren
-id|SRpnt-&gt;sr_sense_buffer
-(braket
-l_int|0
-)braket
+id|SCpnt
+comma
 op_amp
-l_int|0x7f
+id|sshdr
 )paren
-op_eq
-l_int|0x70
 op_logical_and
+op_logical_neg
+id|scsi_sense_is_deferred
+c_func
 (paren
-id|SRpnt-&gt;sr_sense_buffer
-(braket
-l_int|2
-)braket
 op_amp
-l_int|0xf
+id|sshdr
 )paren
+op_logical_and
+id|sshdr.sense_key
 op_eq
 id|UNIT_ATTENTION
 op_logical_and
 id|sdp-&gt;device-&gt;removable
 )paren
 (brace
-multiline_comment|/* Detected disc change. Set the bit - this may be used if */
-multiline_comment|/* there are filesystems using this device. */
+multiline_comment|/* Detected possible disc change. Set the bit - this */
+multiline_comment|/* may be used if there are filesystems using this device */
 id|sdp-&gt;device-&gt;changed
 op_assign
 l_int|1
@@ -8419,7 +8422,7 @@ id|def_reserved_size
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
 )paren
 suffix:semicolon
 id|module_param_named
@@ -8431,7 +8434,9 @@ id|sg_allow_dio
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -13823,6 +13828,10 @@ id|order
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef MAINTENANCE_IN_CMD
+DECL|macro|MAINTENANCE_IN_CMD
+mdefine_line|#define MAINTENANCE_IN_CMD 0xa3
+macro_line|#endif
 DECL|variable|allow_ops
 r_static
 r_int
@@ -13848,11 +13857,23 @@ id|READ_10
 comma
 id|READ_12
 comma
+id|READ_16
+comma
 id|MODE_SENSE
 comma
 id|MODE_SENSE_10
 comma
 id|LOG_SENSE
+comma
+id|REPORT_LUNS
+comma
+id|SERVICE_ACTION_IN
+comma
+id|RECEIVE_DIAGNOSTIC
+comma
+id|READ_LONG
+comma
+id|MAINTENANCE_IN_CMD
 )brace
 suffix:semicolon
 r_static

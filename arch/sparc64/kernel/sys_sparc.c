@@ -826,6 +826,7 @@ r_int
 id|first
 comma
 r_int
+r_int
 id|second
 comma
 r_int
@@ -871,6 +872,9 @@ id|first
 comma
 id|ptr
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 l_int|NULL
@@ -891,6 +895,9 @@ id|first
 comma
 id|ptr
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 (paren
@@ -916,6 +923,9 @@ c_func
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 (paren
@@ -982,6 +992,9 @@ c_func
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 op_or
 id|IPC_64
@@ -1037,6 +1050,9 @@ id|first
 comma
 id|ptr
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 (paren
@@ -1060,6 +1076,9 @@ id|first
 comma
 id|ptr
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 id|fifth
@@ -1086,6 +1105,9 @@ id|key_t
 )paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 )paren
 suffix:semicolon
@@ -1102,6 +1124,9 @@ c_func
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 op_or
 id|IPC_64
@@ -1155,6 +1180,9 @@ id|first
 comma
 id|ptr
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 op_amp
@@ -1218,6 +1246,9 @@ c_func
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 (paren
@@ -1239,6 +1270,9 @@ c_func
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 op_or
 id|IPC_64

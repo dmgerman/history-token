@@ -634,7 +634,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|scsi_sysfs_device_initialize
 c_func
 (paren

@@ -1,9 +1,10 @@
-multiline_comment|/*&n;    it87.c - Part of lm_sensors, Linux kernel modules for hardware&n;             monitoring.&n;&n;    Supports: IT8705F  Super I/O chip w/LPC interface&n;              IT8712F  Super I/O chip w/LPC interface &amp; SMbus&n;              Sis950   A clone of the IT8705F&n;&n;    Copyright (C) 2001 Chris Gauthron &lt;chrisg@0-in.com&gt; &n;    Largely inspired by lm78.c of the same package&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    it87.c - Part of lm_sensors, Linux kernel modules for hardware&n;             monitoring.&n;&n;    Supports: IT8705F  Super I/O chip w/LPC interface &amp; SMBus&n;              IT8712F  Super I/O chip w/LPC interface &amp; SMBus&n;              Sis950   A clone of the IT8705F&n;&n;    Copyright (C) 2001 Chris Gauthron &lt;chrisg@0-in.com&gt; &n;    Largely inspired by lm78.c of the same package&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    djg@pdp8.net David Gesswein 7/18/01&n;    Modified to fix bug with not all alarms enabled.&n;    Added ability to read battery voltage and select temperature sensor&n;    type at module load time.&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/i2c-vid.h&gt;
@@ -18,22 +19,6 @@ id|normal_i2c
 )braket
 op_assign
 (brace
-l_int|0x20
-comma
-l_int|0x21
-comma
-l_int|0x22
-comma
-l_int|0x23
-comma
-l_int|0x24
-comma
-l_int|0x25
-comma
-l_int|0x26
-comma
-l_int|0x27
-comma
 l_int|0x28
 comma
 l_int|0x29
@@ -277,6 +262,12 @@ DECL|variable|update_vbat
 r_static
 r_int
 id|update_vbat
+suffix:semicolon
+multiline_comment|/* Not all BIOSes properly configure the PWM registers */
+DECL|variable|fix_pwm_polarity
+r_static
+r_int
+id|fix_pwm_polarity
 suffix:semicolon
 multiline_comment|/* Chip Type */
 DECL|variable|chip_type
@@ -683,6 +674,17 @@ r_struct
 id|device
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_static
+r_int
+id|it87_check_pwm
+c_func
+(paren
+r_struct
+id|i2c_client
+op_star
+id|client
 )paren
 suffix:semicolon
 r_static
@@ -3217,9 +3219,6 @@ suffix:semicolon
 r_int
 id|enable_pwm_interface
 suffix:semicolon
-r_int
-id|tmp
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3697,6 +3696,15 @@ id|new_client
 r_goto
 id|ERROR2
 suffix:semicolon
+multiline_comment|/* Check PWM configuration */
+id|enable_pwm_interface
+op_assign
+id|it87_check_pwm
+c_func
+(paren
+id|new_client
+)paren
+suffix:semicolon
 multiline_comment|/* Initialize the IT87 chip */
 id|it87_init_client
 c_func
@@ -3706,47 +3714,6 @@ comma
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/* Some BIOSes fail to correctly configure the IT87 fans. All fans off&n;&t; * and polarity set to active low is sign that this is the case so we&n;&t; * disable pwm control to protect the user. */
-id|enable_pwm_interface
-op_assign
-l_int|1
-suffix:semicolon
-id|tmp
-op_assign
-id|it87_read_value
-c_func
-(paren
-id|new_client
-comma
-id|IT87_REG_FAN_CTL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|tmp
-op_amp
-l_int|0x87
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|enable_pwm_interface
-op_assign
-l_int|0
-suffix:semicolon
-id|dev_info
-c_func
-(paren
-op_amp
-id|new_client-&gt;dev
-comma
-l_string|&quot;detected broken BIOS defaults, disabling pwm interface&quot;
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Register sysfs hooks */
 id|device_create_file
 c_func
@@ -4600,6 +4567,224 @@ id|value
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Return 1 if and only if the PWM interface is safe to use */
+DECL|function|it87_check_pwm
+r_static
+r_int
+id|it87_check_pwm
+c_func
+(paren
+r_struct
+id|i2c_client
+op_star
+id|client
+)paren
+(brace
+multiline_comment|/* Some BIOSes fail to correctly configure the IT87 fans. All fans off&n;&t; * and polarity set to active low is sign that this is the case so we&n;&t; * disable pwm control to protect the user. */
+r_int
+id|tmp
+op_assign
+id|it87_read_value
+c_func
+(paren
+id|client
+comma
+id|IT87_REG_FAN_CTL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|tmp
+op_amp
+l_int|0x87
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|fix_pwm_polarity
+)paren
+(brace
+multiline_comment|/* The user asks us to attempt a chip reconfiguration.&n;&t;&t;&t; * This means switching to active high polarity and&n;&t;&t;&t; * inverting all fan speed values. */
+r_int
+id|i
+suffix:semicolon
+id|u8
+id|pwm
+(braket
+l_int|3
+)braket
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|3
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|pwm
+(braket
+id|i
+)braket
+op_assign
+id|it87_read_value
+c_func
+(paren
+id|client
+comma
+id|IT87_REG_PWM
+c_func
+(paren
+id|i
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* If any fan is in automatic pwm mode, the polarity&n;&t;&t;&t; * might be correct, as suspicious as it seems, so we&n;&t;&t;&t; * better don&squot;t change anything (but still disable the&n;&t;&t;&t; * PWM interface). */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+(paren
+id|pwm
+(braket
+l_int|0
+)braket
+op_or
+id|pwm
+(braket
+l_int|1
+)braket
+op_or
+id|pwm
+(braket
+l_int|2
+)braket
+)paren
+op_amp
+l_int|0x80
+)paren
+)paren
+(brace
+id|dev_info
+c_func
+(paren
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;Reconfiguring PWM to &quot;
+l_string|&quot;active high polarity&bslash;n&quot;
+)paren
+suffix:semicolon
+id|it87_write_value
+c_func
+(paren
+id|client
+comma
+id|IT87_REG_FAN_CTL
+comma
+id|tmp
+op_or
+l_int|0x87
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|3
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|it87_write_value
+c_func
+(paren
+id|client
+comma
+id|IT87_REG_PWM
+c_func
+(paren
+id|i
+)paren
+comma
+l_int|0x7f
+op_amp
+op_complement
+id|pwm
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|dev_info
+c_func
+(paren
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;PWM configuration is &quot;
+l_string|&quot;too broken to be fixed&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|dev_info
+c_func
+(paren
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;Detected broken BIOS &quot;
+l_string|&quot;defaults, disabling PWM interface&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|fix_pwm_polarity
+)paren
+(brace
+id|dev_info
+c_func
+(paren
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;PWM configuration looks &quot;
+l_string|&quot;sane, won&squot;t touch&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Called when we have found a new IT87. */
 DECL|function|it87_init_client
 r_static
@@ -4920,22 +5105,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_updated
-OG
+op_plus
 id|HZ
 op_plus
 id|HZ
 op_div
 l_int|2
-)paren
-op_logical_or
-(paren
-id|jiffies
-OL
-id|data-&gt;last_updated
 )paren
 op_logical_or
 op_logical_neg
@@ -5423,6 +5604,24 @@ c_func
 id|update_vbat
 comma
 l_string|&quot;Update vbat if set else return powerup value&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|fix_pwm_polarity
+comma
+r_bool
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|fix_pwm_polarity
+comma
+l_string|&quot;Force PWM polarity to active high (DANGEROUS)&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

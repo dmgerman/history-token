@@ -1609,11 +1609,12 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * If Linux enabled the LAPIC against the BIOS default&n; * disable it down before re-entering the BIOS on shutdown.&n; * Otherwise the BIOS may get confused and not power-off.&n; */
-r_void
 DECL|function|lapic_shutdown
+r_void
 id|lapic_shutdown
 c_func
 (paren
+r_void
 )paren
 (brace
 r_if
@@ -3032,7 +3033,6 @@ id|curr_count
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Default initialization for 8254 timers. If we use other timers like HPET,&n; * we override this later&n; */
-DECL|variable|wait_timer_tick
 r_void
 (paren
 op_star
@@ -3041,6 +3041,7 @@ id|wait_timer_tick
 (paren
 r_void
 )paren
+id|__initdata
 op_assign
 id|wait_8254_wraparound
 suffix:semicolon
@@ -3151,6 +3152,7 @@ suffix:semicolon
 DECL|function|setup_APIC_timer
 r_static
 r_void
+id|__init
 id|setup_APIC_timer
 c_func
 (paren

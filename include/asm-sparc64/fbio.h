@@ -261,12 +261,14 @@ suffix:semicolon
 multiline_comment|/* cursor bit map size */
 DECL|member|image
 r_char
+id|__user
 op_star
 id|image
 suffix:semicolon
 multiline_comment|/* cursor image bits */
 DECL|member|mask
 r_char
+id|__user
 op_star
 id|mask
 suffix:semicolon

@@ -3003,12 +3003,31 @@ c_func
 id|hwif
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|hwif_init
 c_func
 (paren
 id|hwif
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: failed to initialize IDE interface&bslash;n&quot;
+comma
+id|hwif-&gt;name
+)paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4654,6 +4673,7 @@ id|old_irq
 comma
 id|unit
 suffix:semicolon
+multiline_comment|/* Return success if no device is connected */
 r_if
 c_cond
 (paren
@@ -4661,7 +4681,7 @@ op_logical_neg
 id|hwif-&gt;present
 )paren
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 r_if
 c_cond

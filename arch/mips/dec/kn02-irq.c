@@ -10,10 +10,11 @@ id|u32
 id|cached_kn02_csr
 suffix:semicolon
 DECL|variable|kn02_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|kn02_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|kn02_irq_base
 r_static

@@ -3907,7 +3907,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|me-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 id|init_fpu
 c_func

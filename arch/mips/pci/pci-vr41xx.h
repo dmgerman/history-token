@@ -99,8 +99,8 @@ DECL|macro|RTRYCNT
 mdefine_line|#define RTRYCNT(reg)&t;&t;((reg) &amp; 0x000000ffU)
 DECL|macro|PCIENREG
 mdefine_line|#define PCIENREG&t;&t;KSEG1ADDR(0x0f000c34)
-DECL|macro|CONFIG_DONE
-mdefine_line|#define CONFIG_DONE&t;&t;0x4U
+DECL|macro|BLOODY_CONFIG_DONE
+mdefine_line|#define BLOODY_CONFIG_DONE&t;0x4U
 DECL|macro|PCICLKSELREG
 mdefine_line|#define PCICLKSELREG&t;&t;KSEG1ADDR(0x0f000c38)
 DECL|macro|EQUAL_VTCLOCK

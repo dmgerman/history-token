@@ -44,8 +44,6 @@ id|memnodemap
 id|NODEMAPSIZE
 )braket
 suffix:semicolon
-DECL|macro|NUMA_NO_NODE
-mdefine_line|#define NUMA_NO_NODE 0xff
 DECL|variable|cpu_to_node
 r_int
 r_char

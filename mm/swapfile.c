@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
-macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -1102,7 +1101,7 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Recheck the page count with the swapcache lock held.. */
-id|spin_lock_irq
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -1124,7 +1123,7 @@ id|retval
 op_assign
 l_int|1
 suffix:semicolon
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -1377,7 +1376,7 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Recheck the page count with the swapcache lock held.. */
-id|spin_lock_irq
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -1422,7 +1421,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -1513,7 +1512,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|spin_lock_irq
+id|read_lock_irq
 c_func
 (paren
 op_amp
@@ -1546,7 +1545,7 @@ id|page
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_unlock_irq
+id|read_unlock_irq
 c_func
 (paren
 op_amp
@@ -1717,16 +1716,6 @@ id|swap_free
 c_func
 (paren
 id|entry
-)paren
-suffix:semicolon
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

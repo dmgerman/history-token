@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb.h&quot;
@@ -1970,6 +1971,13 @@ op_amp
 id|bus-&gt;class_dev
 )paren
 suffix:semicolon
+id|bus-&gt;class_dev
+dot
+r_class
+op_assign
+op_amp
+id|usb_host_class
+suffix:semicolon
 )brace
 DECL|variable|usb_bus_init
 id|EXPORT_SYMBOL
@@ -2137,13 +2145,6 @@ l_string|&quot;usb%d&quot;
 comma
 id|busnum
 )paren
-suffix:semicolon
-id|bus-&gt;class_dev
-dot
-r_class
-op_assign
-op_amp
-id|usb_host_class
 suffix:semicolon
 id|bus-&gt;class_dev.dev
 op_assign

@@ -1596,7 +1596,7 @@ id|stats-&gt;rx_bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|skb-&gt;dev-&gt;last_rx
+id|dev-&gt;last_rx
 op_assign
 id|jiffies
 suffix:semicolon

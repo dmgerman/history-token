@@ -50,14 +50,8 @@ macro_line|#include &lt;asm/ldt.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
-DECL|macro|A
-mdefine_line|#define A(__x)&t;&t;((unsigned long)(__x))
 DECL|macro|AA
 mdefine_line|#define AA(__x)&t;&t;((unsigned long)(__x))
-DECL|macro|ROUND_UP
-mdefine_line|#define ROUND_UP(x,a)&t;((__typeof__(x))(((unsigned long)(x) + ((a) - 1)) &amp; ~((a) - 1)))
-DECL|macro|NAME_OFFSET
-mdefine_line|#define NAME_OFFSET(de) ((int) ((de)-&gt;d_name - (char __user *) (de)))
 DECL|function|cp_compat_stat
 r_int
 id|cp_compat_stat
@@ -1475,10 +1469,11 @@ op_logical_or
 id|__put_user
 c_func
 (paren
+id|ptr_to_compat
+c_func
 (paren
-r_int
-)paren
 id|old_ka.sa.sa_handler
+)paren
 comma
 op_amp
 id|oact-&gt;sa_handler
@@ -1487,10 +1482,11 @@ op_logical_or
 id|__put_user
 c_func
 (paren
+id|ptr_to_compat
+c_func
 (paren
-r_int
-)paren
 id|old_ka.sa.sa_restorer
+)paren
 comma
 op_amp
 id|oact-&gt;sa_restorer
@@ -1709,10 +1705,11 @@ op_logical_or
 id|__put_user
 c_func
 (paren
+id|ptr_to_compat
+c_func
 (paren
-r_int
-)paren
 id|old_ka.sa.sa_handler
+)paren
 comma
 op_amp
 id|oact-&gt;sa_handler
@@ -1721,10 +1718,11 @@ op_logical_or
 id|__put_user
 c_func
 (paren
+id|ptr_to_compat
+c_func
 (paren
-r_int
-)paren
 id|old_ka.sa.sa_restorer
+)paren
 comma
 op_amp
 id|oact-&gt;sa_restorer
@@ -3610,6 +3608,7 @@ id|get_fs
 )paren
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|oldvalp
 comma
@@ -3620,6 +3619,7 @@ r_int
 id|oldlen
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|namep
 suffix:semicolon
@@ -3678,11 +3678,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We need to pre-validate these because we have to disable address checking&n;&t; * before calling do_sysctl() because of OLDLEN but we can&squot;t run the risk of the&n;&t; * user specifying bad addresses here.  Well, since we&squot;re dealing with 32 bit&n;&t; * addresses, we KNOW that access_ok() will always succeed, so this is an&n;&t; * expensive NOP, but so what...&n;&t; */
 id|namep
 op_assign
-(paren
-r_int
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|a32.name
@@ -3690,11 +3686,7 @@ id|a32.name
 suffix:semicolon
 id|oldvalp
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|a32.oldval
@@ -3702,11 +3694,7 @@ id|a32.oldval
 suffix:semicolon
 id|newvalp
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|a32.newval

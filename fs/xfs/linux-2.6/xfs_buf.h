@@ -257,6 +257,24 @@ DECL|macro|PBF_NOT_DONE
 mdefine_line|#define PBF_NOT_DONE(pb) (((pb)-&gt;pb_flags &amp; (PBF_PARTIAL|PBF_NONE)) != 0)
 DECL|macro|PBF_DONE
 mdefine_line|#define PBF_DONE(pb) (((pb)-&gt;pb_flags &amp; (PBF_PARTIAL|PBF_NONE)) == 0)
+DECL|struct|xfs_bufhash
+r_typedef
+r_struct
+id|xfs_bufhash
+(brace
+DECL|member|bh_list
+r_struct
+id|list_head
+id|bh_list
+suffix:semicolon
+DECL|member|bh_lock
+id|spinlock_t
+id|bh_lock
+suffix:semicolon
+DECL|typedef|xfs_bufhash_t
+)brace
+id|xfs_bufhash_t
+suffix:semicolon
 DECL|struct|xfs_buftarg
 r_typedef
 r_struct
@@ -292,14 +310,29 @@ DECL|member|pbr_smask
 r_int
 id|pbr_smask
 suffix:semicolon
+multiline_comment|/* per-device buffer hash table */
+DECL|member|bt_hashmask
+id|uint
+id|bt_hashmask
+suffix:semicolon
+DECL|member|bt_hashshift
+id|uint
+id|bt_hashshift
+suffix:semicolon
+DECL|member|bt_hash
+id|xfs_bufhash_t
+op_star
+id|bt_hash
+suffix:semicolon
 DECL|typedef|xfs_buftarg_t
 )brace
 id|xfs_buftarg_t
 suffix:semicolon
-multiline_comment|/*&n; *&t;xfs_buf_t:  Buffer structure for page cache-based buffers&n; *&n; * This buffer structure is used by the page cache buffer management routines&n; * to refer to an assembly of pages forming a logical buffer.  The actual&n; * I/O is performed with buffer_head or bio structures, as required by drivers,&n; * for drivers which do not understand this structure.  The buffer structure is&n; * used on temporary basis only, and discarded when released.&n; *&n; * The real data storage is recorded in the page cache.  Metadata is&n; * hashed to the inode for the block device on which the file system resides.&n; * File data is hashed to the inode for the file.  Pages which are only&n; * partially filled with data have bits set in their block_map entry&n; * to indicate which disk blocks in the page are not valid.&n; */
+multiline_comment|/*&n; *&t;xfs_buf_t:  Buffer structure for page cache-based buffers&n; *&n; * This buffer structure is used by the page cache buffer management routines&n; * to refer to an assembly of pages forming a logical buffer.  The actual I/O&n; * is performed with buffer_head structures, as required by drivers.&n; * &n; * The buffer structure is used on temporary basis only, and discarded when&n; * released.  The real data storage is recorded in the page cache.  Metadata is&n; * hashed to the block device on which the file system resides.&n; */
 r_struct
 id|xfs_buf
 suffix:semicolon
+multiline_comment|/* call-back function on I/O completion */
 DECL|typedef|page_buf_iodone_t
 r_typedef
 r_void
@@ -327,7 +360,7 @@ id|xfs_buf
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* call-back function on I/O completion */
+multiline_comment|/* pre-write function */
 DECL|typedef|page_buf_bdstrat_t
 r_typedef
 r_int
@@ -342,7 +375,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|PB_PAGES
-mdefine_line|#define PB_PAGES&t;4
+mdefine_line|#define PB_PAGES&t;2
 DECL|struct|xfs_buf
 r_typedef
 r_struct
@@ -385,12 +418,19 @@ r_struct
 id|list_head
 id|pb_hash_list
 suffix:semicolon
+multiline_comment|/* hash table list */
+DECL|member|pb_hash
+id|xfs_bufhash_t
+op_star
+id|pb_hash
+suffix:semicolon
+multiline_comment|/* hash table list start */
 DECL|member|pb_target
 id|xfs_buftarg_t
 op_star
 id|pb_target
 suffix:semicolon
-multiline_comment|/* logical object */
+multiline_comment|/* buffer target (device) */
 DECL|member|pb_hold
 id|atomic_t
 id|pb_hold
@@ -474,6 +514,12 @@ r_int
 id|pb_error
 suffix:semicolon
 multiline_comment|/* error code on I/O */
+DECL|member|pb_locked
+r_int
+r_int
+id|pb_locked
+suffix:semicolon
+multiline_comment|/* page array is locked */
 DECL|member|pb_page_count
 r_int
 r_int
@@ -486,18 +532,6 @@ r_int
 id|pb_offset
 suffix:semicolon
 multiline_comment|/* page offset in first page */
-DECL|member|pb_locked
-r_int
-r_char
-id|pb_locked
-suffix:semicolon
-multiline_comment|/* page array is locked */
-DECL|member|pb_hash_index
-r_int
-r_char
-id|pb_hash_index
-suffix:semicolon
-multiline_comment|/* hash table index&t;*/
 DECL|member|pb_pages
 r_struct
 id|page
@@ -1203,7 +1237,7 @@ mdefine_line|#define XFS_BUF_SET_PTR(bp, val, count)&t;&t;&bslash;&n;&t;&t;&t;&t
 DECL|macro|XFS_BUF_ADDR
 mdefine_line|#define XFS_BUF_ADDR(bp)&t;((bp)-&gt;pb_bn)
 DECL|macro|XFS_BUF_SET_ADDR
-mdefine_line|#define XFS_BUF_SET_ADDR(bp, blk)&t;&t;&bslash;&n;&t;&t;&t;((bp)-&gt;pb_bn = (blk))
+mdefine_line|#define XFS_BUF_SET_ADDR(bp, blk)&t;&t;&bslash;&n;&t;&t;&t;((bp)-&gt;pb_bn = (xfs_daddr_t)(blk))
 DECL|macro|XFS_BUF_OFFSET
 mdefine_line|#define XFS_BUF_OFFSET(bp)&t;((bp)-&gt;pb_file_offset)
 DECL|macro|XFS_BUF_SET_OFFSET
@@ -1469,6 +1503,8 @@ c_func
 r_struct
 id|block_device
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern

@@ -1051,6 +1051,21 @@ id|qh
 suffix:semicolon
 r_static
 r_void
+id|unlink_async
+(paren
+r_struct
+id|ehci_hcd
+op_star
+id|ehci
+comma
+r_struct
+id|ehci_qh
+op_star
+id|qh
+)paren
+suffix:semicolon
+r_static
+r_void
 id|intr_deschedule
 (paren
 r_struct
@@ -1654,7 +1669,7 @@ id|qh
 suffix:semicolon
 )brace
 r_else
-id|start_unlink_async
+id|unlink_async
 (paren
 id|ehci
 comma
@@ -3712,6 +3727,13 @@ op_star
 id|prev
 suffix:semicolon
 macro_line|#ifdef DEBUG
+id|assert_spin_locked
+c_func
+(paren
+op_amp
+id|ehci-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3726,16 +3748,6 @@ id|qh-&gt;qh_state
 op_ne
 id|QH_STATE_UNLINK_WAIT
 )paren
-macro_line|#ifdef CONFIG_SMP
-singleline_comment|// this macro lies except on SMP compiles
-op_logical_or
-op_logical_neg
-id|spin_is_locked
-(paren
-op_amp
-id|ehci-&gt;lock
-)paren
-macro_line|#endif
 )paren
 id|BUG
 (paren

@@ -105,11 +105,16 @@ r_int
 id|arch_id
 )paren
 (brace
-multiline_comment|/*&n;&t; * Coyote only has UART2 connected&n;&t; */
+multiline_comment|/*&n;&t; * Coyote and gtwx5715 only have UART2 connected&n;&t; */
 r_if
 c_cond
 (paren
 id|machine_is_adi_coyote
+c_func
+(paren
+)paren
+op_logical_or
+id|machine_is_gtwx5715
 c_func
 (paren
 )paren

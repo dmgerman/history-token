@@ -3302,16 +3302,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|viocd_numdev
-op_eq
-l_int|0
-)paren
-r_goto
-id|out_undo_vio
-suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -3389,8 +3379,6 @@ comma
 id|unitinfo_dmaaddr
 )paren
 suffix:semicolon
-id|out_undo_vio
-suffix:colon
 id|vio_clearHandler
 c_func
 (paren

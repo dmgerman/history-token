@@ -9419,7 +9419,7 @@ suffix:semicolon
 DECL|function|de_init_one
 r_static
 r_int
-id|__devinit
+id|__init
 id|de_init_one
 (paren
 r_struct
@@ -9552,10 +9552,6 @@ suffix:semicolon
 id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
-suffix:semicolon
-id|dev-&gt;irq
-op_assign
-id|pdev-&gt;irq
 suffix:semicolon
 id|de
 op_assign
@@ -9714,6 +9710,10 @@ r_goto
 id|err_out_res
 suffix:semicolon
 )brace
+id|dev-&gt;irq
+op_assign
+id|pdev-&gt;irq
+suffix:semicolon
 multiline_comment|/* obtain and check validity of PCI I/O address */
 id|pciaddr
 op_assign

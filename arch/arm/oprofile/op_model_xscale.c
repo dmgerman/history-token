@@ -32,6 +32,10 @@ macro_line|#ifdef CONFIG_ARCH_IOP331
 DECL|macro|XSCALE_PMU_IRQ
 mdefine_line|#define XSCALE_PMU_IRQ  IRQ_IOP331_CORE_PMU
 macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_PXA
+DECL|macro|XSCALE_PMU_IRQ
+mdefine_line|#define XSCALE_PMU_IRQ  IRQ_PMU
+macro_line|#endif
 multiline_comment|/*&n; * Different types of events that can be counted by the XScale PMU&n; * as used by Oprofile userspace. Here primarily for documentation&n; * purposes.&n; */
 DECL|macro|EVT_ICACHE_MISS
 mdefine_line|#define EVT_ICACHE_MISS&t;&t;&t;0x00
@@ -1200,32 +1204,15 @@ multiline_comment|/* NOTE: there&squot;s an A stepping errata that states if an 
 multiline_comment|/*       bit already exists and another occurs, the previous     */
 multiline_comment|/*       Overflow bit gets cleared. There&squot;s no workaround.&t; */
 multiline_comment|/*&t; Fixed in B stepping or later&t;&t;&t; &t; */
-id|pmnc
-op_and_assign
-op_complement
-(paren
-id|PMU_ENABLE
-op_or
-id|pmu-&gt;cnt_ovf
-(braket
-id|PMN0
-)braket
-op_or
-id|pmu-&gt;cnt_ovf
-(braket
-id|PMN1
-)braket
-op_or
-id|pmu-&gt;cnt_ovf
-(braket
-id|CCNT
-)braket
-)paren
-suffix:semicolon
+multiline_comment|/* Write the value back to clear the overflow flags. Overflow */
+multiline_comment|/* flags remain in pmnc for use below */
 id|write_pmnc
 c_func
 (paren
 id|pmnc
+op_amp
+op_complement
+id|PMU_ENABLE
 )paren
 suffix:semicolon
 r_for

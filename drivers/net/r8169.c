@@ -1,4 +1,4 @@
-multiline_comment|/*&n;=========================================================================&n; r8169.c: A RealTek RTL-8169 Gigabit Ethernet driver for Linux kernel 2.4.x.&n; --------------------------------------------------------------------&n;&n; History:&n; Feb  4 2002&t;- created initially by ShuChen &lt;shuchen@realtek.com.tw&gt;.&n; May 20 2002&t;- Add link status force-mode and TBI mode support.&n;        2004&t;- Massive updates. See kernel SCM system for details.&n;=========================================================================&n;  1. [DEPRECATED: use ethtool instead] The media can be forced in 5 modes.&n;&t; Command: &squot;insmod r8169 media = SET_MEDIA&squot;&n;&t; Ex:&t;  &squot;insmod r8169 media = 0x04&squot; will force PHY to operate in 100Mpbs Half-duplex.&n;&t;&n;&t; SET_MEDIA can be:&n; &t;&t;_10_Half&t;= 0x01&n; &t;&t;_10_Full&t;= 0x02&n; &t;&t;_100_Half&t;= 0x04&n; &t;&t;_100_Full&t;= 0x08&n; &t;&t;_1000_Full&t;= 0x10&n;  &n;  2. Support TBI mode.&n;=========================================================================&n;VERSION 1.1&t;&lt;2002/10/4&gt;&n;&n;&t;The bit4:0 of MII register 4 is called &quot;selector field&quot;, and have to be&n;&t;00001b to indicate support of IEEE std 802.3 during NWay process of&n;&t;exchanging Link Code Word (FLP). &n;&n;VERSION 1.2&t;&lt;2002/11/30&gt;&n;&n;&t;- Large style cleanup&n;&t;- Use ether_crc in stock kernel (linux/crc32.h)&n;&t;- Copy mc_filter setup code from 8139cp&n;&t;  (includes an optimization, and avoids set_bit use)&n;&n;VERSION 1.6LK&t;&lt;2004/04/14&gt;&n;&n;&t;- Merge of Realtek&squot;s version 1.6&n;&t;- Conversion to DMA API&n;&t;- Suspend/resume&n;&t;- Endianness&n;&t;- Misc Rx/Tx bugs&n;*/
+multiline_comment|/*&n;=========================================================================&n; r8169.c: A RealTek RTL-8169 Gigabit Ethernet driver for Linux kernel 2.4.x.&n; --------------------------------------------------------------------&n;&n; History:&n; Feb  4 2002&t;- created initially by ShuChen &lt;shuchen@realtek.com.tw&gt;.&n; May 20 2002&t;- Add link status force-mode and TBI mode support.&n;        2004&t;- Massive updates. See kernel SCM system for details.&n;=========================================================================&n;  1. [DEPRECATED: use ethtool instead] The media can be forced in 5 modes.&n;&t; Command: &squot;insmod r8169 media = SET_MEDIA&squot;&n;&t; Ex:&t;  &squot;insmod r8169 media = 0x04&squot; will force PHY to operate in 100Mpbs Half-duplex.&n;&t;&n;&t; SET_MEDIA can be:&n; &t;&t;_10_Half&t;= 0x01&n; &t;&t;_10_Full&t;= 0x02&n; &t;&t;_100_Half&t;= 0x04&n; &t;&t;_100_Full&t;= 0x08&n; &t;&t;_1000_Full&t;= 0x10&n;  &n;  2. Support TBI mode.&n;=========================================================================&n;VERSION 1.1&t;&lt;2002/10/4&gt;&n;&n;&t;The bit4:0 of MII register 4 is called &quot;selector field&quot;, and have to be&n;&t;00001b to indicate support of IEEE std 802.3 during NWay process of&n;&t;exchanging Link Code Word (FLP). &n;&n;VERSION 1.2&t;&lt;2002/11/30&gt;&n;&n;&t;- Large style cleanup&n;&t;- Use ether_crc in stock kernel (linux/crc32.h)&n;&t;- Copy mc_filter setup code from 8139cp&n;&t;  (includes an optimization, and avoids set_bit use)&n;&n;VERSION 1.6LK&t;&lt;2004/04/14&gt;&n;&n;&t;- Merge of Realtek&squot;s version 1.6&n;&t;- Conversion to DMA API&n;&t;- Suspend/resume&n;&t;- Endianness&n;&t;- Misc Rx/Tx bugs&n;&n;VERSION 2.2LK&t;&lt;2005/01/25&gt;&n;&n;&t;- RX csum, TX csum/SG, TSO&n;&t;- VLAN&n;&t;- baby (&lt; 7200) Jumbo frames support&n;&t;- Merge of Realtek&squot;s version 2.2 (new phy)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -15,8 +15,9 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|RTL8169_VERSION
-mdefine_line|#define RTL8169_VERSION &quot;1.6LK&quot;
+mdefine_line|#define RTL8169_VERSION &quot;2.2LK&quot;
 DECL|macro|MODULENAME
 mdefine_line|#define MODULENAME &quot;r8169&quot;
 DECL|macro|PFX
@@ -25,7 +26,7 @@ macro_line|#ifdef RTL8169_DEBUG
 DECL|macro|assert
 mdefine_line|#define assert(expr) &bslash;&n;        if(!(expr)) {&t;&t;&t;&t;&t;&bslash;&n;&t;        printk( &quot;Assertion failed! %s,%s,%s,line=%d&bslash;n&quot;,&t;&bslash;&n;        &t;#expr,__FILE__,__FUNCTION__,__LINE__);&t;&t;&bslash;&n;        }
 DECL|macro|dprintk
-mdefine_line|#define dprintk(fmt, args...)&t;do { printk(PFX fmt, ## args) } while (0)
+mdefine_line|#define dprintk(fmt, args...)&t;do { printk(PFX fmt, ## args); } while (0)
 macro_line|#else
 DECL|macro|assert
 mdefine_line|#define assert(expr) do {} while (0)
@@ -101,7 +102,7 @@ id|max_interrupt_work
 op_assign
 l_int|20
 suffix:semicolon
-multiline_comment|/* Maximum number of multicast addresses to filter (vs. Rx-all-multicast).&n;   The RTL chips use a 64 element hash table based on the Ethernet CRC.  */
+multiline_comment|/* Maximum number of multicast addresses to filter (vs. Rx-all-multicast).&n;   The RTL chips use a 64 element hash table based on the Ethernet CRC. */
 DECL|variable|multicast_filter_limit
 r_static
 r_int
@@ -109,13 +110,11 @@ id|multicast_filter_limit
 op_assign
 l_int|32
 suffix:semicolon
-multiline_comment|/* MAC address length*/
+multiline_comment|/* MAC address length */
 DECL|macro|MAC_ADDR_LEN
 mdefine_line|#define MAC_ADDR_LEN&t;6
-DECL|macro|TX_FIFO_THRESH
-mdefine_line|#define TX_FIFO_THRESH 256&t;/* In bytes */
 DECL|macro|RX_FIFO_THRESH
-mdefine_line|#define RX_FIFO_THRESH&t;7&t;/* 7 means NO threshold, Rx buffer level before first PCI xfer.  */
+mdefine_line|#define RX_FIFO_THRESH&t;7&t;/* 7 means NO threshold, Rx buffer level before first PCI xfer. */
 DECL|macro|RX_DMA_BURST
 mdefine_line|#define RX_DMA_BURST&t;6&t;/* Maximum PCI burst, &squot;6&squot; is 1024 */
 DECL|macro|TX_DMA_BURST
@@ -220,6 +219,12 @@ op_assign
 l_int|0x07
 comma
 multiline_comment|/* PHY Reg 0x03 bit0-3 == 0x0002 */
+DECL|enumerator|RTL_GIGA_PHY_VER_H
+id|RTL_GIGA_PHY_VER_H
+op_assign
+l_int|0x08
+comma
+multiline_comment|/* PHY Reg 0x03 bit0-3 == 0x0003 */
 )brace
 suffix:semicolon
 DECL|macro|_R
@@ -279,6 +284,17 @@ id|RTL_GIGA_MAC_VER_E
 comma
 l_int|0xff7e1880
 )paren
+comma
+id|_R
+c_func
+(paren
+l_string|&quot;RTL8169s/8110s&quot;
+comma
+id|RTL_GIGA_MAC_VER_X
+comma
+l_int|0xff7e1880
+)paren
+comma
 )brace
 suffix:semicolon
 DECL|macro|_R
@@ -507,6 +523,11 @@ id|CPlusCmd
 op_assign
 l_int|0xE0
 comma
+DECL|enumerator|IntrMitigate
+id|IntrMitigate
+op_assign
+l_int|0xE2
+comma
 DECL|enumerator|RxDescAddrLow
 id|RxDescAddrLow
 op_assign
@@ -548,7 +569,7 @@ DECL|enum|RTL8169_register_content
 r_enum
 id|RTL8169_register_content
 (brace
-multiline_comment|/*InterruptStatusBits */
+multiline_comment|/* InterruptStatusBits */
 DECL|enumerator|SYSErr
 id|SYSErr
 op_assign
@@ -604,7 +625,7 @@ id|RxOK
 op_assign
 l_int|0x01
 comma
-multiline_comment|/*RxStatusDesc */
+multiline_comment|/* RxStatusDesc */
 DECL|enumerator|RxRES
 id|RxRES
 op_assign
@@ -625,7 +646,7 @@ id|RxRWT
 op_assign
 l_int|0x00400000
 comma
-multiline_comment|/*ChipCmdBits */
+multiline_comment|/* ChipCmdBits */
 DECL|enumerator|CmdReset
 id|CmdReset
 op_assign
@@ -646,7 +667,7 @@ id|RxBufEmpty
 op_assign
 l_int|0x01
 comma
-multiline_comment|/*Cfg9346Bits */
+multiline_comment|/* Cfg9346Bits */
 DECL|enumerator|Cfg9346_Lock
 id|Cfg9346_Lock
 op_assign
@@ -657,7 +678,7 @@ id|Cfg9346_Unlock
 op_assign
 l_int|0xC0
 comma
-multiline_comment|/*rx_mode_bits */
+multiline_comment|/* rx_mode_bits */
 DECL|enumerator|AcceptErr
 id|AcceptErr
 op_assign
@@ -688,7 +709,7 @@ id|AcceptAllPhys
 op_assign
 l_int|0x01
 comma
-multiline_comment|/*RxConfigBits */
+multiline_comment|/* RxConfigBits */
 DECL|enumerator|RxCfgFIFOShift
 id|RxCfgFIFOShift
 op_assign
@@ -699,7 +720,7 @@ id|RxCfgDMAShift
 op_assign
 l_int|8
 comma
-multiline_comment|/*TxConfigBits */
+multiline_comment|/* TxConfigBits */
 DECL|enumerator|TxInterFrameGapShift
 id|TxInterFrameGapShift
 op_assign
@@ -779,7 +800,7 @@ op_lshift
 l_int|3
 )paren
 comma
-multiline_comment|/*rtl8169_PHYstatus */
+multiline_comment|/* rtl8169_PHYstatus */
 DECL|enumerator|TBI_Enable
 id|TBI_Enable
 op_assign
@@ -820,7 +841,7 @@ id|FullDup
 op_assign
 l_int|0x01
 comma
-multiline_comment|/*GIGABIT_PHY_registers */
+multiline_comment|/* GIGABIT_PHY_registers */
 DECL|enumerator|PHY_CTRL_REG
 id|PHY_CTRL_REG
 op_assign
@@ -841,7 +862,7 @@ id|PHY_1000_CTRL_REG
 op_assign
 l_int|9
 comma
-multiline_comment|/*GIGABIT_PHY_REG_BIT */
+multiline_comment|/* GIGABIT_PHY_REG_BIT */
 DECL|enumerator|PHY_Restart_Auto_Nego
 id|PHY_Restart_Auto_Nego
 op_assign
@@ -852,13 +873,13 @@ id|PHY_Enable_Auto_Nego
 op_assign
 l_int|0x1000
 comma
-singleline_comment|//PHY_STAT_REG = 1;
+multiline_comment|/* PHY_STAT_REG = 1 */
 DECL|enumerator|PHY_Auto_Neco_Comp
 id|PHY_Auto_Neco_Comp
 op_assign
 l_int|0x0020
 comma
-singleline_comment|//PHY_AUTO_NEGO_REG = 4;
+multiline_comment|/* PHY_AUTO_NEGO_REG = 4 */
 DECL|enumerator|PHY_Cap_10_Half
 id|PHY_Cap_10_Half
 op_assign
@@ -879,7 +900,7 @@ id|PHY_Cap_100_Full
 op_assign
 l_int|0x0100
 comma
-singleline_comment|//PHY_1000_CTRL_REG = 9;
+multiline_comment|/* PHY_1000_CTRL_REG = 9 */
 DECL|enumerator|PHY_Cap_1000_Full
 id|PHY_Cap_1000_Full
 op_assign
@@ -890,7 +911,7 @@ id|PHY_Cap_Null
 op_assign
 l_int|0x0
 comma
-multiline_comment|/*_MediaType*/
+multiline_comment|/* _MediaType */
 DECL|enumerator|_10_Half
 id|_10_Half
 op_assign
@@ -916,7 +937,7 @@ id|_1000_Full
 op_assign
 l_int|0x10
 comma
-multiline_comment|/*_TBICSRBit*/
+multiline_comment|/* _TBICSRBit */
 DECL|enumerator|TBILinkOK
 id|TBILinkOK
 op_assign
@@ -1189,7 +1210,7 @@ id|pci_dev
 op_star
 id|pci_dev
 suffix:semicolon
-multiline_comment|/* Index of PCI device  */
+multiline_comment|/* Index of PCI device */
 DECL|member|stats
 r_struct
 id|net_device_stats
@@ -1390,7 +1411,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Realtek&quot;
+l_string|&quot;Realtek and the Linux r8169 crew &lt;netdev@oss.sgi.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -1751,7 +1772,7 @@ id|i
 op_decrement
 )paren
 (brace
-singleline_comment|// Check if the RTL8169 has completed writing to the specified MII register
+multiline_comment|/* Check if the RTL8169 has completed writing to the specified MII register */
 r_if
 c_cond
 (paren
@@ -1836,7 +1857,7 @@ id|i
 op_decrement
 )paren
 (brace
-singleline_comment|// Check if the RTL8169 has completed retrieving data from the specified MII register
+multiline_comment|/* Check if the RTL8169 has completed retrieving data from the specified MII register */
 r_if
 c_cond
 (paren
@@ -1876,6 +1897,68 @@ suffix:semicolon
 )brace
 r_return
 id|value
+suffix:semicolon
+)brace
+DECL|function|rtl8169_irq_mask_and_ack
+r_static
+r_void
+id|rtl8169_irq_mask_and_ack
+c_func
+(paren
+r_void
+id|__iomem
+op_star
+id|ioaddr
+)paren
+(brace
+id|RTL_W16
+c_func
+(paren
+id|IntrMask
+comma
+l_int|0x0000
+)paren
+suffix:semicolon
+id|RTL_W16
+c_func
+(paren
+id|IntrStatus
+comma
+l_int|0xffff
+)paren
+suffix:semicolon
+)brace
+DECL|function|rtl8169_asic_down
+r_static
+r_void
+id|rtl8169_asic_down
+c_func
+(paren
+r_void
+id|__iomem
+op_star
+id|ioaddr
+)paren
+(brace
+id|RTL_W8
+c_func
+(paren
+id|ChipCmd
+comma
+l_int|0x00
+)paren
+suffix:semicolon
+id|rtl8169_irq_mask_and_ack
+c_func
+(paren
+id|ioaddr
+)paren
+suffix:semicolon
+id|RTL_R16
+c_func
+(paren
+id|CPlusCmd
+)paren
 suffix:semicolon
 )brace
 DECL|function|rtl8169_tbi_reset_pending
@@ -3042,7 +3125,7 @@ ques
 c_cond
 id|TxVlanTag
 op_or
-id|cpu_to_be16
+id|swab16
 c_func
 (paren
 id|vlan_tx_tag_get
@@ -3233,7 +3316,11 @@ id|skb
 id|u32
 id|opts2
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|desc-&gt;opts2
+)paren
 suffix:semicolon
 r_int
 id|ret
@@ -3257,7 +3344,7 @@ id|skb
 comma
 id|tp-&gt;vlgrp
 comma
-id|be16_to_cpu
+id|swab16
 c_func
 (paren
 id|opts2
@@ -4505,7 +4592,7 @@ c_cond
 (paren
 id|tp-&gt;phy_version
 op_ge
-id|RTL_GIGA_PHY_VER_F
+id|RTL_GIGA_PHY_VER_H
 )paren
 r_return
 suffix:semicolon
@@ -4522,7 +4609,88 @@ l_string|&quot;Do final_reg2.cfg&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Shazam ! */
-singleline_comment|// phy config for RTL8169s mac_version C chip
+r_if
+c_cond
+(paren
+id|tp-&gt;mac_version
+op_eq
+id|RTL_GIGA_MAC_VER_X
+)paren
+(brace
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|31
+comma
+l_int|0x0001
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|9
+comma
+l_int|0x273a
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|14
+comma
+l_int|0x7bfb
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|27
+comma
+l_int|0x841e
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|31
+comma
+l_int|0x0002
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|1
+comma
+l_int|0x90d0
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|31
+comma
+l_int|0x0000
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* phy config for RTL8169s mac_version C chip */
 id|mdio_write
 c_func
 (paren
@@ -4761,7 +4929,7 @@ m_assert
 (paren
 id|tp-&gt;phy_version
 OL
-id|RTL_GIGA_PHY_VER_G
+id|RTL_GIGA_PHY_VER_H
 )paren
 suffix:semicolon
 r_if
@@ -4904,7 +5072,7 @@ op_logical_or
 (paren
 id|tp-&gt;phy_version
 op_ge
-id|RTL_GIGA_PHY_VER_G
+id|RTL_GIGA_PHY_VER_H
 )paren
 )paren
 r_return
@@ -4960,7 +5128,7 @@ op_logical_or
 (paren
 id|tp-&gt;phy_version
 op_ge
-id|RTL_GIGA_PHY_VER_G
+id|RTL_GIGA_PHY_VER_H
 )paren
 )paren
 r_return
@@ -5162,7 +5330,7 @@ op_ne
 l_int|NULL
 )paren
 suffix:semicolon
-singleline_comment|// dev zeroed in alloc_etherdev 
+multiline_comment|/* dev zeroed in alloc_etherdev */
 id|dev
 op_assign
 id|alloc_etherdev
@@ -5218,7 +5386,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-singleline_comment|// enable device (incl. PCI PM wakeup and hotplug setup)
+multiline_comment|/* enable device (incl. PCI PM wakeup and hotplug setup) */
 id|rc
 op_assign
 id|pci_enable_device
@@ -5240,7 +5408,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;%s: enable failure&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -5319,7 +5491,7 @@ r_goto
 id|err_out_mwi
 suffix:semicolon
 )brace
-singleline_comment|// make sure PCI base addr 1 is MMIO
+multiline_comment|/* make sure PCI base addr 1 is MMIO */
 r_if
 c_cond
 (paren
@@ -5354,7 +5526,7 @@ r_goto
 id|err_out_mwi
 suffix:semicolon
 )brace
-singleline_comment|// check for weird/broken PCI region reporting
+multiline_comment|/* check for weird/broken PCI region reporting */
 r_if
 c_cond
 (paren
@@ -5409,7 +5581,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;%s: could not request regions.&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -5494,7 +5670,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-singleline_comment|// ioremap MMIO region 
+multiline_comment|/* ioremap MMIO region */
 id|ioaddr
 op_assign
 id|ioremap
@@ -5536,7 +5712,14 @@ r_goto
 id|err_out_free_res
 suffix:semicolon
 )brace
-singleline_comment|// Soft reset the chip. 
+multiline_comment|/* Unneeded ? Don&squot;t mess with Mrs. Murphy. */
+id|rtl8169_irq_mask_and_ack
+c_func
+(paren
+id|ioaddr
+)paren
+suffix:semicolon
+multiline_comment|/* Soft reset the chip. */
 id|RTL_W8
 c_func
 (paren
@@ -5545,7 +5728,7 @@ comma
 id|CmdReset
 )paren
 suffix:semicolon
-singleline_comment|// Check that the chip has finished the reset.
+multiline_comment|/* Check that the chip has finished the reset. */
 r_for
 c_loop
 (paren
@@ -5585,7 +5768,7 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// Identify chip attached to board
+multiline_comment|/* Identify chip attached to board */
 id|rtl8169_get_mac_version
 c_func
 (paren
@@ -5953,7 +6136,7 @@ op_assign
 id|rtl8169_xmii_link_ok
 suffix:semicolon
 )brace
-singleline_comment|// Get MAC address.  FIXME: read EEPROM
+multiline_comment|/* Get MAC address.  FIXME: read EEPROM */
 r_for
 c_loop
 (paren
@@ -6860,12 +7043,10 @@ id|ioaddr
 )paren
 (brace
 multiline_comment|/* Disable interrupts */
-id|RTL_W16
+id|rtl8169_irq_mask_and_ack
 c_func
 (paren
-id|IntrMask
-comma
-l_int|0x0000
+id|ioaddr
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the chipset */
@@ -6993,7 +7174,7 @@ comma
 id|EarlyTxThld
 )paren
 suffix:semicolon
-singleline_comment|// For gigabit rtl8169, MTU + header + CRC + VLAN
+multiline_comment|/* For gigabit rtl8169, MTU + header + CRC + VLAN */
 id|RTL_W16
 c_func
 (paren
@@ -7002,7 +7183,7 @@ comma
 id|tp-&gt;rx_buf_sz
 )paren
 suffix:semicolon
-singleline_comment|// Set Rx Config register
+multiline_comment|/* Set Rx Config register */
 id|i
 op_assign
 id|rtl8169_rx_config
@@ -7068,9 +7249,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|tp-&gt;mac_version
 op_eq
 id|RTL_GIGA_MAC_VER_D
+)paren
+op_logical_or
+(paren
+id|tp-&gt;mac_version
+op_eq
+id|RTL_GIGA_MAC_VER_E
+)paren
 )paren
 (brace
 id|dprintk
@@ -7101,6 +7290,15 @@ id|tp-&gt;cp_cmd
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Undocumented corner. Supposedly:&n;&t; * (TxTimer &lt;&lt; 12) | (TxPackets &lt;&lt; 8) | (RxTimer &lt;&lt; 4) | RxPackets&n;&t; */
+id|RTL_W16
+c_func
+(paren
+id|IntrMitigate
+comma
+l_int|0x0000
+)paren
+suffix:semicolon
 id|RTL_W32
 c_func
 (paren
@@ -7311,13 +7509,13 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
-id|rtl8169_hw_start
+id|netif_poll_enable
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|netif_poll_enable
+id|rtl8169_hw_start
 c_func
 (paren
 id|dev
@@ -7539,6 +7737,8 @@ id|dev_alloc_skb
 c_func
 (paren
 id|rx_buf_sz
+op_plus
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 r_if
@@ -7555,7 +7755,7 @@ c_func
 (paren
 id|skb
 comma
-l_int|2
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 op_star
@@ -8182,20 +8382,10 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|RTL_W16
+id|rtl8169_irq_mask_and_ack
 c_func
 (paren
-id|IntrMask
-comma
-l_int|0x0000
-)paren
-suffix:semicolon
-id|RTL_W16
-c_func
-(paren
-id|IntrStatus
-comma
-l_int|0xffff
+id|ioaddr
 )paren
 suffix:semicolon
 id|netif_poll_enable
@@ -9107,7 +9297,7 @@ comma
 l_int|0x40
 )paren
 suffix:semicolon
-singleline_comment|//set polling bit
+multiline_comment|/* set polling bit */
 r_if
 c_cond
 (paren
@@ -9587,7 +9777,11 @@ id|desc
 id|u32
 id|opts1
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|desc-&gt;opts1
+)paren
 suffix:semicolon
 id|u32
 id|status
@@ -9705,7 +9899,7 @@ c_func
 (paren
 id|pkt_size
 op_plus
-l_int|2
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 r_if
@@ -9719,7 +9913,7 @@ c_func
 (paren
 id|skb
 comma
-l_int|2
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 id|eth_copy_and_sum
@@ -9789,11 +9983,12 @@ r_int
 id|cur_rx
 comma
 id|rx_left
-comma
-id|count
 suffix:semicolon
 r_int
+r_int
 id|delta
+comma
+id|count
 suffix:semicolon
 m_assert
 (paren
@@ -10141,11 +10336,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|delta
-OL
-l_int|0
+op_logical_and
+id|count
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -10155,11 +10350,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|delta
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 id|tp-&gt;dirty_rx
 op_add_assign
 id|delta
@@ -10244,30 +10434,11 @@ id|tp-&gt;mmio_addr
 suffix:semicolon
 r_int
 id|status
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|handled
 op_assign
 l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-op_logical_neg
-id|netif_running
-c_func
-(paren
-id|dev
-)paren
-)paren
-)paren
-r_goto
-id|out
 suffix:semicolon
 r_do
 (brace
@@ -10298,6 +10469,31 @@ id|handled
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|netif_running
+c_func
+(paren
+id|dev
+)paren
+)paren
+)paren
+(brace
+id|rtl8169_asic_down
+c_func
+(paren
+id|ioaddr
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|status
 op_and_assign
 id|tp-&gt;intr_mask
@@ -10426,7 +10622,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#else
-singleline_comment|// Rx interrupt 
+multiline_comment|/* Rx interrupt */
 r_if
 c_cond
 (paren
@@ -10452,7 +10648,7 @@ id|ioaddr
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// Tx interrupt
+multiline_comment|/* Tx interrupt */
 r_if
 c_cond
 (paren
@@ -10608,18 +10804,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|work_done
 OL
 id|work_to_do
-)paren
-op_logical_or
-op_logical_neg
-id|netif_running
-c_func
-(paren
-id|dev
-)paren
 )paren
 (brace
 id|netif_rx_complete
@@ -10686,6 +10873,12 @@ id|ioaddr
 op_assign
 id|tp-&gt;mmio_addr
 suffix:semicolon
+r_int
+r_int
+id|poll_locked
+op_assign
+l_int|0
+suffix:semicolon
 id|rtl8169_delete_timer
 c_func
 (paren
@@ -10703,6 +10896,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|core_down
+suffix:colon
 id|spin_lock_irq
 c_func
 (paren
@@ -10710,22 +10905,10 @@ op_amp
 id|tp-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* Stop the chip&squot;s Tx and Rx DMA processes. */
-id|RTL_W8
+id|rtl8169_asic_down
 c_func
 (paren
-id|ChipCmd
-comma
-l_int|0x00
-)paren
-suffix:semicolon
-multiline_comment|/* Disable interrupts by clearing the interrupt mask. */
-id|RTL_W16
-c_func
-(paren
-id|IntrMask
-comma
-l_int|0x0000
+id|ioaddr
 )paren
 suffix:semicolon
 multiline_comment|/* Update the error counts. */
@@ -10758,24 +10941,41 @@ c_func
 id|dev-&gt;irq
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|poll_locked
+)paren
+(brace
 id|netif_poll_disable
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+id|poll_locked
+op_increment
+suffix:semicolon
+)brace
 multiline_comment|/* Give a racing hard_start_xmit a few cycles to complete. */
-id|set_current_state
+id|synchronize_kernel
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
-id|schedule_timeout
+multiline_comment|/*&n;&t; * And now for the 50k$ question: are IRQ disabled or not ?&n;&t; *&n;&t; * Two paths lead here:&n;&t; * 1) dev-&gt;close&n;&t; *    -&gt; netif_running() is available to sync the current code and the&n;&t; *       IRQ handler. See rtl8169_interrupt for details.&n;&t; * 2) dev-&gt;change_mtu&n;&t; *    -&gt; rtl8169_poll can not be issued again and re-enable the&n;&t; *       interruptions. Let&squot;s simply issue the IRQ down sequence again.&n;&t; */
+r_if
+c_cond
+(paren
+id|RTL_R16
 c_func
 (paren
-l_int|1
+id|IntrMask
 )paren
+)paren
+r_goto
+id|core_down
 suffix:semicolon
 id|rtl8169_tx_clear
 c_func
@@ -10831,6 +11031,12 @@ c_func
 (paren
 id|dev-&gt;irq
 comma
+id|dev
+)paren
+suffix:semicolon
+id|netif_poll_enable
+c_func
+(paren
 id|dev
 )paren
 suffix:semicolon

@@ -57,6 +57,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|attribute_container_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;driver_init - initialize driver model.&n; *&n; *&t;Call the driver model init functions to initialize their&n; *&t;subsystems. Called early from init/main.c.&n; */
 DECL|function|driver_init
 r_void
@@ -100,6 +108,11 @@ c_func
 )paren
 suffix:semicolon
 id|cpu_dev_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|attribute_container_init
 c_func
 (paren
 )paren

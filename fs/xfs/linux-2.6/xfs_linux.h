@@ -131,8 +131,12 @@ DECL|macro|xfs_inherit_nosymlinks
 mdefine_line|#define xfs_inherit_nosymlinks&t;xfs_params.inherit_nosym.val
 DECL|macro|xfs_rotorstep
 mdefine_line|#define xfs_rotorstep&t;&t;xfs_params.rotorstep.val
+macro_line|#ifndef __smp_processor_id
+DECL|macro|__smp_processor_id
+mdefine_line|#define __smp_processor_id()&t;smp_processor_id()
+macro_line|#endif
 DECL|macro|current_cpu
-mdefine_line|#define current_cpu()&t;&t;smp_processor_id()
+mdefine_line|#define current_cpu()&t;&t;__smp_processor_id()
 DECL|macro|current_pid
 mdefine_line|#define current_pid()&t;&t;(current-&gt;pid)
 DECL|macro|current_fsuid

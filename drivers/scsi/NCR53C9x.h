@@ -1554,7 +1554,7 @@ mdefine_line|#define for_each_esp(esp) &bslash;&n;        for((esp) = espchain; 
 multiline_comment|/* External functions */
 r_extern
 r_void
-id|esp_cmd
+id|esp_bootup_reset
 c_func
 (paren
 r_struct
@@ -1566,9 +1566,6 @@ r_struct
 id|ESP_regs
 op_star
 id|eregs
-comma
-id|unchar
-id|cmd
 )paren
 suffix:semicolon
 r_extern

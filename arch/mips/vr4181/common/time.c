@@ -11,10 +11,11 @@ DECL|macro|COUNTS_PER_JIFFY
 mdefine_line|#define COUNTS_PER_JIFFY ((32768 + HZ/2) / HZ)
 multiline_comment|/*&n; * RTC ops&n; */
 DECL|variable|rtc_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rtc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* per VR41xx docs, bad data can be read if between 2 counts */
 r_static

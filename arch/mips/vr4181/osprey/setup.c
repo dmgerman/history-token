@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * linux/arch/mips/vr4181/setup.c&n; *&n; * VR41xx setup routines&n; *&n; * Copyright (C) 1999 Bradley D. LaRonde&n; * Copyright (C) 1999, 2000 Michael Klar&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * linux/arch/mips/vr4181/setup.c&n; *&n; * VR41xx setup routines&n; *&n; * Copyright (C) 1999 Bradley D. LaRonde&n; * Copyright (C) 1999, 2000 Michael Klar&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; * Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;

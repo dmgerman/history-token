@@ -4,20 +4,20 @@ DECL|macro|_ASM_GT64120_MOMENCO_OCELOT_GT64120_DEP_H
 mdefine_line|#define _ASM_GT64120_MOMENCO_OCELOT_GT64120_DEP_H
 multiline_comment|/*&n; * PCI address allocation&n; */
 DECL|macro|GT_PCI_MEM_BASE
-mdefine_line|#define GT_PCI_MEM_BASE    (0x22000000UL)
+mdefine_line|#define GT_PCI_MEM_BASE&t;(0x22000000UL)
 DECL|macro|GT_PCI_MEM_SIZE
-mdefine_line|#define GT_PCI_MEM_SIZE    GT_DEF_PCI0_MEM0_SIZE
+mdefine_line|#define GT_PCI_MEM_SIZE&t;GT_DEF_PCI0_MEM0_SIZE
 DECL|macro|GT_PCI_IO_BASE
-mdefine_line|#define GT_PCI_IO_BASE     (0x20000000UL)
+mdefine_line|#define GT_PCI_IO_BASE&t;(0x20000000UL)
 DECL|macro|GT_PCI_IO_SIZE
-mdefine_line|#define GT_PCI_IO_SIZE     GT_DEF_PCI0_IO_SIZE
+mdefine_line|#define GT_PCI_IO_SIZE&t;GT_DEF_PCI0_IO_SIZE
 r_extern
 r_int
 r_int
 id|gt64120_base
 suffix:semicolon
 DECL|macro|GT64120_BASE
-mdefine_line|#define GT64120_BASE       (gt64120_base)
+mdefine_line|#define GT64120_BASE&t;(gt64120_base)
 multiline_comment|/*&n; * GT timer irq&n; */
 DECL|macro|GT_TIMER
 mdefine_line|#define&t;GT_TIMER&t;&t;6

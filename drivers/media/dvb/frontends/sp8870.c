@@ -1284,7 +1284,9 @@ multiline_comment|/* request the firmware, this will block until someone uploads
 id|printk
 c_func
 (paren
-l_string|&quot;sp8870: waiting for firmware upload...&bslash;n&quot;
+l_string|&quot;sp8870: waiting for firmware upload (%s)...&bslash;n&quot;
+comma
+id|SP8870_DEFAULT_FIRMWARE
 )paren
 suffix:semicolon
 r_if
@@ -1350,6 +1352,12 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+l_string|&quot;sp8870: firmware upload complete&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* enable TS output and interface pins */
 id|sp8870_writereg
 c_func

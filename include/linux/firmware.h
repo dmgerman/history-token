@@ -20,6 +20,9 @@ id|data
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|device
+suffix:semicolon
 r_int
 id|request_firmware
 c_func

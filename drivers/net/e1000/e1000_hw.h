@@ -4174,6 +4174,10 @@ DECL|macro|PHY_1000T_STATUS
 mdefine_line|#define PHY_1000T_STATUS 0x0A /* 1000Base-T Status Reg */
 DECL|macro|PHY_EXT_STATUS
 mdefine_line|#define PHY_EXT_STATUS   0x0F /* Extended Status Reg */
+DECL|macro|MAX_PHY_REG_ADDRESS
+mdefine_line|#define MAX_PHY_REG_ADDRESS        0x1F  /* 5 bit address bus (0-0x1F) */
+DECL|macro|MAX_PHY_MULTI_PAGE_REG
+mdefine_line|#define MAX_PHY_MULTI_PAGE_REG     0xF   /* Registers equal on all pages */
 multiline_comment|/* M88E1000 Specific Registers */
 DECL|macro|M88E1000_PHY_SPEC_CTRL
 mdefine_line|#define M88E1000_PHY_SPEC_CTRL     0x10  /* PHY Specific Control Register */
@@ -4265,10 +4269,6 @@ DECL|macro|IGP01E1000_PHY_PCS_CTRL_REG
 mdefine_line|#define IGP01E1000_PHY_PCS_CTRL_REG  0x00B5
 DECL|macro|IGP01E1000_ANALOG_REGS_PAGE
 mdefine_line|#define IGP01E1000_ANALOG_REGS_PAGE  0x20C0
-DECL|macro|MAX_PHY_REG_ADDRESS
-mdefine_line|#define MAX_PHY_REG_ADDRESS 0x1F        /* 5 bit address bus (0-0x1F) */
-DECL|macro|MAX_PHY_MULTI_PAGE_REG
-mdefine_line|#define MAX_PHY_MULTI_PAGE_REG  0xF     /*Registers that are equal on all pages*/
 multiline_comment|/* PHY Control Register */
 DECL|macro|MII_CR_SPEED_SELECT_MSB
 mdefine_line|#define MII_CR_SPEED_SELECT_MSB 0x0040  /* bits 6,13: 10=1000, 01=100, 00=10 */
@@ -4715,6 +4715,7 @@ mdefine_line|#define IGP01E1000_ANALOG_FUSE_FINE_1               0x0080
 DECL|macro|IGP01E1000_ANALOG_FUSE_FINE_10
 mdefine_line|#define IGP01E1000_ANALOG_FUSE_FINE_10              0x0500
 multiline_comment|/* Bit definitions for valid PHY IDs. */
+multiline_comment|/* I = Integrated&n; * E = External&n; */
 DECL|macro|M88E1000_E_PHY_ID
 mdefine_line|#define M88E1000_E_PHY_ID  0x01410C50
 DECL|macro|M88E1000_I_PHY_ID

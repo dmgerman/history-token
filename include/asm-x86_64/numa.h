@@ -53,5 +53,7 @@ r_extern
 r_int
 id|numa_off
 suffix:semicolon
+DECL|macro|NUMA_NO_NODE
+mdefine_line|#define NUMA_NO_NODE 0xff
 macro_line|#endif
 eof

@@ -2,6 +2,7 @@ multiline_comment|/*&n;    ds1621.c - Part of lm_sensors, Linux kernel modules f
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &quot;lm75.h&quot;
@@ -83,11 +84,9 @@ suffix:semicolon
 multiline_comment|/* Many DS1621 constants specified below */
 multiline_comment|/* Config register used for detection         */
 multiline_comment|/*  7    6    5    4    3    2    1    0      */
-multiline_comment|/* |Done|THF |TLF |NVB | 1  | 0  |POL |1SHOT| */
-DECL|macro|DS1621_REG_CONFIG_MASK
-mdefine_line|#define DS1621_REG_CONFIG_MASK&t;&t;0x0C
-DECL|macro|DS1621_REG_CONFIG_VAL
-mdefine_line|#define DS1621_REG_CONFIG_VAL&t;&t;0x08
+multiline_comment|/* |Done|THF |TLF |NVB | X  | X  |POL |1SHOT| */
+DECL|macro|DS1621_REG_CONFIG_NVB
+mdefine_line|#define DS1621_REG_CONFIG_NVB&t;&t;0x10
 DECL|macro|DS1621_REG_CONFIG_POLARITY
 mdefine_line|#define DS1621_REG_CONFIG_POLARITY&t;0x02
 DECL|macro|DS1621_REG_CONFIG_1SHOT
@@ -105,6 +104,8 @@ DECL|macro|DS1621_REG_CONF
 mdefine_line|#define DS1621_REG_CONF&t;&t;&t;0xAC /* byte, RW */
 DECL|macro|DS1621_COM_START
 mdefine_line|#define DS1621_COM_START&t;&t;0xEE /* no data */
+DECL|macro|DS1621_COM_STOP
+mdefine_line|#define DS1621_COM_STOP&t;&t;&t;0x22 /* no data */
 multiline_comment|/* The DS1621 configuration register */
 DECL|macro|DS1621_ALARM_TEMP_HIGH
 mdefine_line|#define DS1621_ALARM_TEMP_HIGH&t;&t;0x40
@@ -259,11 +260,6 @@ op_assign
 id|ds1621_detach_client
 comma
 )brace
-suffix:semicolon
-DECL|variable|ds1621_id
-r_static
-r_int
-id|ds1621_id
 suffix:semicolon
 multiline_comment|/* All registers are word-sized, except for the configuration register.&n;   DS1621 uses a high-byte first convention, which is exactly opposite to&n;   the usual practice. */
 DECL|function|ds1621_read_value
@@ -750,6 +746,7 @@ OL
 l_int|0
 )paren
 (brace
+multiline_comment|/* The NVB bit should be low if no EEPROM write has been &n;&t;&t;   requested during the latest 10ms, which is highly &n;&t;&t;   improbable in our case. */
 id|conf
 op_assign
 id|ds1621_read_value
@@ -763,17 +760,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|conf
 op_amp
-id|DS1621_REG_CONFIG_MASK
-)paren
-op_ne
-id|DS1621_REG_CONFIG_VAL
+id|DS1621_REG_CONFIG_NVB
 )paren
 r_goto
 id|exit_free
 suffix:semicolon
+multiline_comment|/* The 7 lowest bits of a temperature should always be 0. */
 id|temp
 op_assign
 id|ds1621_read_value
@@ -857,11 +851,6 @@ l_string|&quot;ds1621&quot;
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|ds1621_id
-op_increment
 suffix:semicolon
 id|data-&gt;valid
 op_assign
@@ -1063,22 +1052,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_updated
-OG
+op_plus
 id|HZ
 op_plus
 id|HZ
 op_div
 l_int|2
-)paren
-op_logical_or
-(paren
-id|jiffies
-OL
-id|data-&gt;last_updated
 )paren
 op_logical_or
 op_logical_neg

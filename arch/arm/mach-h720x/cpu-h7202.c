@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/arm/mach-h720x/cpu-h7202.c&n; *&n; * Copyright (C) 2003 Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *               2003 Robert Schwebel &lt;r.schwebel@pengutronix.de&gt;&n; *               2004 Sascha Hauer    &lt;s.hauer@pengutronix.de&gt;&n; *&n; * processor specific stuff for the Hynix h7201&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; * linux/arch/arm/mach-h720x/cpu-h7202.c&n; *&n; * Copyright (C) 2003 Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *               2003 Robert Schwebel &lt;r.schwebel@pengutronix.de&gt;&n; *               2004 Sascha Hauer    &lt;s.hauer@pengutronix.de&gt;&n; *&n; * processor specific stuff for the Hynix h7202&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -113,6 +113,15 @@ op_assign
 dot
 id|membase
 op_assign
+(paren
+r_void
+op_star
+)paren
+id|SERIAL0_VIRT
+comma
+dot
+id|mapbase
+op_assign
 id|SERIAL0_BASE
 comma
 dot
@@ -150,6 +159,15 @@ comma
 dot
 id|membase
 op_assign
+(paren
+r_void
+op_star
+)paren
+id|SERIAL1_VIRT
+comma
+dot
+id|mapbase
+op_assign
 id|SERIAL1_BASE
 comma
 dot
@@ -183,9 +201,19 @@ id|UPF_SKIP_TEST
 comma
 )brace
 comma
+macro_line|#ifdef CONFIG_H7202_SERIAL23
 (brace
 dot
 id|membase
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|SERIAL2_VIRT
+comma
+dot
+id|mapbase
 op_assign
 id|SERIAL2_BASE
 comma
@@ -224,6 +252,15 @@ comma
 dot
 id|membase
 op_assign
+(paren
+r_void
+op_star
+)paren
+id|SERIAL3_VIRT
+comma
+dot
+id|mapbase
+op_assign
 id|SERIAL3_BASE
 comma
 dot
@@ -257,6 +294,7 @@ id|UPF_SKIP_TEST
 comma
 )brace
 comma
+macro_line|#endif
 (brace
 )brace
 comma
@@ -799,6 +837,57 @@ id|PLL_1_EN
 op_or
 id|PLL_3_MUTE
 suffix:semicolon
+id|CPU_REG
+(paren
+id|SERIAL0_VIRT
+comma
+id|SERIAL_ENABLE
+)paren
+op_assign
+id|SERIAL_ENABLE_EN
+suffix:semicolon
+id|CPU_REG
+(paren
+id|SERIAL1_VIRT
+comma
+id|SERIAL_ENABLE
+)paren
+op_assign
+id|SERIAL_ENABLE_EN
+suffix:semicolon
+macro_line|#ifdef CONFIG_H7202_SERIAL23
+id|CPU_REG
+(paren
+id|SERIAL2_VIRT
+comma
+id|SERIAL_ENABLE
+)paren
+op_assign
+id|SERIAL_ENABLE_EN
+suffix:semicolon
+id|CPU_REG
+(paren
+id|SERIAL3_VIRT
+comma
+id|SERIAL_ENABLE
+)paren
+op_assign
+id|SERIAL_ENABLE_EN
+suffix:semicolon
+id|CPU_IO
+(paren
+id|GPIO_AMULSEL
+)paren
+op_assign
+id|AMULSEL_USIN2
+op_or
+id|AMULSEL_USOUT2
+op_or
+id|AMULSEL_USIN3
+op_or
+id|AMULSEL_USOUT3
+suffix:semicolon
+macro_line|#endif
 (paren
 r_void
 )paren

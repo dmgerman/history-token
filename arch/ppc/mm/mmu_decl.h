@@ -253,14 +253,9 @@ op_ne
 l_int|0
 )paren
 op_logical_and
+id|cpu_has_feature
+c_func
 (paren
-id|cur_cpu_spec
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|cpu_features
-op_amp
 id|CPU_FTR_HPTE_TABLE
 )paren
 )paren

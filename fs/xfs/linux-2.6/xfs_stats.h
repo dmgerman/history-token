@@ -375,13 +375,13 @@ comma
 id|xfsstats
 )paren
 suffix:semicolon
-multiline_comment|/* We don&squot;t disable preempt, not too worried about poking the&n; * wrong cpu&squot;s stat for now */
+multiline_comment|/*&n; * We don&squot;t disable preempt, not too worried about poking the&n; * wrong CPU&squot;s stat for now (also aggregated before reporting).&n; */
 DECL|macro|XFS_STATS_INC
-mdefine_line|#define XFS_STATS_INC(count)&t;&t;(__get_cpu_var(xfsstats).count++)
+mdefine_line|#define XFS_STATS_INC(v)&t;(per_cpu(xfsstats, current_cpu()).v++)
 DECL|macro|XFS_STATS_DEC
-mdefine_line|#define XFS_STATS_DEC(count)&t;&t;(__get_cpu_var(xfsstats).count--)
+mdefine_line|#define XFS_STATS_DEC(v)&t;(per_cpu(xfsstats, current_cpu()).v--)
 DECL|macro|XFS_STATS_ADD
-mdefine_line|#define XFS_STATS_ADD(count, inc)&t;(__get_cpu_var(xfsstats).count += (inc))
+mdefine_line|#define XFS_STATS_ADD(v, inc)&t;(per_cpu(xfsstats, current_cpu()).v += (inc))
 r_extern
 r_void
 id|xfs_init_procfs

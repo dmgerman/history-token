@@ -2534,6 +2534,7 @@ r_int
 id|val
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -2570,6 +2571,7 @@ id|rc
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 id|set_dabr
 c_func
 (paren
@@ -3085,9 +3087,9 @@ c_cond
 (paren
 id|iabr
 op_logical_and
+id|cpu_has_feature
+c_func
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
 id|CPU_FTR_IABR
 )paren
 )paren
@@ -3239,9 +3241,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cpu_has_feature
+c_func
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
 id|CPU_FTR_IABR
 )paren
 )paren
@@ -5089,9 +5091,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|cpu_has_feature
+c_func
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
 id|CPU_FTR_IABR
 )paren
 )paren
@@ -12447,9 +12449,11 @@ r_void
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_SLB
+)paren
 )paren
 id|dump_slb
 c_func

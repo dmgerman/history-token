@@ -3493,6 +3493,10 @@ multiline_comment|/* Check outgoing MTU */
 r_if
 c_cond
 (paren
+id|sk-&gt;sk_type
+op_ne
+id|SOCK_RAW
+op_logical_and
 id|len
 OG
 id|l2cap_pi

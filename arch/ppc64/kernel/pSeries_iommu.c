@@ -1259,6 +1259,11 @@ comma
 op_star
 id|pdn
 suffix:semicolon
+r_struct
+id|iommu_table
+op_star
+id|tbl
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -1296,11 +1301,6 @@ id|dn
 )paren
 )paren
 (brace
-r_struct
-id|iommu_table
-op_star
-id|tbl
-suffix:semicolon
 r_int
 r_int
 op_star
@@ -1406,21 +1406,58 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* 256 MB window by default */
+multiline_comment|/* Do a 128MB table at root. This is used for the IDE&n;&t;&t;&t; * controller on some SMP-mode POWER4 machines. It&n;&t;&t;&t; * doesn&squot;t hurt to allocate it on other machines&n;&t;&t;&t; * -- it&squot;ll just be unused since new tables are&n;&t;&t;&t; * allocated on the EADS level.&n;&t;&t;&t; *&n;&t;&t;&t; * Allocate at offset 128MB to avoid having to deal&n;&t;&t;&t; * with ISA holes; 128MB table for IDE is plenty.&n;&t;&t;&t; */
+id|dn-&gt;phb-&gt;dma_window_size
+op_assign
+l_int|1
+op_lshift
+l_int|27
+suffix:semicolon
+id|dn-&gt;phb-&gt;dma_window_base_cur
+op_assign
+l_int|1
+op_lshift
+l_int|27
+suffix:semicolon
+id|tbl
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|iommu_table
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+id|iommu_table_setparms
+c_func
+(paren
+id|dn-&gt;phb
+comma
+id|dn
+comma
+id|tbl
+)paren
+suffix:semicolon
+id|dn-&gt;iommu_table
+op_assign
+id|iommu_init_table
+c_func
+(paren
+id|tbl
+)paren
+suffix:semicolon
+multiline_comment|/* All child buses have 256MB tables */
 id|dn-&gt;phb-&gt;dma_window_size
 op_assign
 l_int|1
 op_lshift
 l_int|28
 suffix:semicolon
-multiline_comment|/* always skip the first 256MB */
-id|dn-&gt;phb-&gt;dma_window_base_cur
-op_assign
-l_int|1
-op_lshift
-l_int|28
-suffix:semicolon
-multiline_comment|/* No table at PHB level for non-python PHBs */
 )brace
 )brace
 r_else
@@ -1437,7 +1474,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pdn-&gt;iommu_table
+id|bus-&gt;parent-&gt;self
+op_logical_and
+op_logical_neg
+id|is_python
+c_func
+(paren
+id|pdn
+)paren
 )paren
 (brace
 r_struct
@@ -1445,7 +1489,7 @@ id|iommu_table
 op_star
 id|tbl
 suffix:semicolon
-multiline_comment|/* First child, allocate new table (256MB window) */
+multiline_comment|/* First child and not python means this is the EADS&n;&t;&t;&t; * level. Allocate new table for this slot with 256MB&n;&t;&t;&t; * window.&n;&t;&t;&t; */
 id|tbl
 op_assign
 id|kmalloc
@@ -1481,7 +1525,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Lower than first child or under python, copy parent table */
+multiline_comment|/* Lower than first child or under python, use parent table */
 id|dn-&gt;iommu_table
 op_assign
 id|pdn-&gt;iommu_table

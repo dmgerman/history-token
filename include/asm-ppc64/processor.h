@@ -949,9 +949,9 @@ DECL|macro|MM_VM_SIZE
 mdefine_line|#define MM_VM_SIZE(mm)&t;TASK_SIZE_USER64
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE_USER32
-mdefine_line|#define TASK_UNMAPPED_BASE_USER32 (PAGE_ALIGN(STACK_TOP_USER32 / 4))
+mdefine_line|#define TASK_UNMAPPED_BASE_USER32 (PAGE_ALIGN(TASK_SIZE_USER32 / 4))
 DECL|macro|TASK_UNMAPPED_BASE_USER64
-mdefine_line|#define TASK_UNMAPPED_BASE_USER64 (PAGE_ALIGN(STACK_TOP_USER64 / 4))
+mdefine_line|#define TASK_UNMAPPED_BASE_USER64 (PAGE_ALIGN(TASK_SIZE_USER64 / 4))
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE ((test_thread_flag(TIF_32BIT)||(ppcdebugset(PPCDBG_BINFMT_32ADDR))) ? &bslash;&n;&t;&t;TASK_UNMAPPED_BASE_USER32 : TASK_UNMAPPED_BASE_USER64 )
 r_typedef
@@ -1013,15 +1013,24 @@ r_int
 id|fpexc_mode
 suffix:semicolon
 multiline_comment|/* Floating-point exception mode */
-DECL|member|pad
+DECL|member|start_tb
 r_int
 r_int
-id|pad
-(braket
-l_int|3
-)braket
+id|start_tb
 suffix:semicolon
-multiline_comment|/* was saved_msr, saved_softe */
+multiline_comment|/* Start purr when proc switched in */
+DECL|member|accum_tb
+r_int
+r_int
+id|accum_tb
+suffix:semicolon
+multiline_comment|/* Total accumilated purr for process */
+DECL|member|vdso_base
+r_int
+r_int
+id|vdso_base
+suffix:semicolon
+multiline_comment|/* base of the vDSO library */
 macro_line|#ifdef CONFIG_ALTIVEC
 multiline_comment|/* Complete AltiVec register set */
 id|vector128

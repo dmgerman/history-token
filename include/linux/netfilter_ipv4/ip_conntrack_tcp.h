@@ -124,6 +124,11 @@ id|u_int32_t
 id|last_seq
 suffix:semicolon
 multiline_comment|/* Last sequence number seen in dir */
+DECL|member|last_ack
+id|u_int32_t
+id|last_ack
+suffix:semicolon
+multiline_comment|/* Last sequence number seen in opposite dir */
 DECL|member|last_end
 id|u_int32_t
 id|last_end

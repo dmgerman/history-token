@@ -49,11 +49,10 @@ suffix:semicolon
 DECL|macro|swapper_pg_dir
 mdefine_line|#define swapper_pg_dir init_level4_pgt
 r_extern
-r_void
+r_int
 id|nonx_setup
 c_func
 (paren
-r_const
 r_char
 op_star
 id|str
@@ -327,9 +326,9 @@ mdefine_line|#define VMALLOC_START    0xffffc20000000000UL
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END      0xffffe1ffffffffffUL
 DECL|macro|MODULES_VADDR
-mdefine_line|#define MODULES_VADDR    0xffffffff88000000
+mdefine_line|#define MODULES_VADDR    0xffffffff88000000UL
 DECL|macro|MODULES_END
-mdefine_line|#define MODULES_END      0xfffffffffff00000
+mdefine_line|#define MODULES_END      0xfffffffffff00000UL
 DECL|macro|MODULES_LEN
 mdefine_line|#define MODULES_LEN   (MODULES_END - MODULES_VADDR)
 DECL|macro|_PAGE_BIT_PRESENT

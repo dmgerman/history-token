@@ -292,15 +292,15 @@ mdefine_line|#define set_mb(__var, __value)  do { __var = __value; mb(); } while
 DECL|macro|set_wmb
 mdefine_line|#define set_wmb(__var, __value) set_mb(__var, __value)
 DECL|macro|smp_mb
-mdefine_line|#define smp_mb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
+mdefine_line|#define smp_mb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;)
 DECL|macro|smp_rmb
-mdefine_line|#define smp_rmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
+mdefine_line|#define smp_rmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;)
 DECL|macro|smp_wmb
-mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
+mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;)
 DECL|macro|smp_read_barrier_depends
 mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
 DECL|macro|nop
-mdefine_line|#define nop() __asm__ __volatile__ (&quot;nop&quot;);
+mdefine_line|#define nop() __asm__ __volatile__ (&quot;nop&quot;)
 multiline_comment|/* This has special calling conventions */
 macro_line|#ifndef CONFIG_SMP
 id|BTFIXUPDEF_CALL
@@ -520,5 +520,7 @@ id|noreturn
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASSEMBLY__ */
+DECL|macro|arch_align_stack
+mdefine_line|#define arch_align_stack(x) (x)
 macro_line|#endif /* !(__SPARC_SYSTEM_H) */
 eof

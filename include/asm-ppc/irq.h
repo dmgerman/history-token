@@ -174,6 +174,25 @@ r_return
 id|irq
 suffix:semicolon
 )brace
+macro_line|#elif defined(CONFIG_83xx)
+macro_line|#include &lt;asm/mpc83xx.h&gt;
+DECL|function|irq_canonicalize
+r_static
+id|__inline__
+r_int
+id|irq_canonicalize
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+r_return
+id|irq
+suffix:semicolon
+)brace
+DECL|macro|NR_IRQS
+mdefine_line|#define&t;NR_IRQS&t;(NR_IPIC_INTS)
 macro_line|#elif defined(CONFIG_CPM2) &amp;&amp; defined(CONFIG_85xx)
 multiline_comment|/* Now include the board configuration specific associations.&n;*/
 macro_line|#include &lt;asm/mpc85xx.h&gt;

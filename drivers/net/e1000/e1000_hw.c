@@ -8445,7 +8445,7 @@ c_func
 (paren
 id|hw
 comma
-id|IGP01E1000_PHY_PAGE_SELECT
+id|MAX_PHY_REG_ADDRESS
 op_amp
 id|reg_addr
 comma
@@ -8787,7 +8787,7 @@ c_func
 (paren
 id|hw
 comma
-id|IGP01E1000_PHY_PAGE_SELECT
+id|MAX_PHY_REG_ADDRESS
 op_amp
 id|reg_addr
 comma
@@ -10161,12 +10161,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|phy_data
 op_amp
+id|M88E1000_PSSR_SPEED
+)paren
+op_eq
 id|M88E1000_PSSR_1000MBS
 )paren
 (brace
-multiline_comment|/* Cable Length Estimation and Local/Remote Receiver Informatoion&n;         * are only valid at 1000 Mbps&n;         */
+multiline_comment|/* Cable Length Estimation and Local/Remote Receiver Information&n;         * are only valid at 1000 Mbps.&n;         */
 id|phy_info-&gt;cable_length
 op_assign
 (paren
@@ -16489,14 +16493,18 @@ id|hw
 r_uint32
 id|status
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|hw-&gt;mac_type
-OL
-id|e1000_82543
 )paren
 (brace
+r_case
+id|e1000_82542_rev2_0
+suffix:colon
+r_case
+id|e1000_82542_rev2_1
+suffix:colon
 id|hw-&gt;bus_type
 op_assign
 id|e1000_bus_type_unknown
@@ -16509,9 +16517,10 @@ id|hw-&gt;bus_width
 op_assign
 id|e1000_bus_width_unknown
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
-)brace
+r_default
+suffix:colon
 id|status
 op_assign
 id|E1000_READ_REG
@@ -16640,6 +16649,9 @@ id|e1000_bus_width_64
 suffix:colon
 id|e1000_bus_width_32
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/******************************************************************************&n; * Reads a value from one of the devices registers using port I/O (as opposed&n; * memory mapped I/O). Only 82544 and newer devices support port I/O.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * offset - offset to read from&n; *****************************************************************************/
 r_uint32
@@ -16783,6 +16795,9 @@ id|i
 comma
 id|phy_data
 suffix:semicolon
+r_uint16
+id|cable_length
+suffix:semicolon
 id|DEBUGFUNC
 c_func
 (paren
@@ -16829,10 +16844,8 @@ r_return
 id|ret_val
 suffix:semicolon
 )brace
-multiline_comment|/* Convert the enum value to ranged values */
-r_switch
-c_cond
-(paren
+id|cable_length
+op_assign
 (paren
 id|phy_data
 op_amp
@@ -16840,6 +16853,12 @@ id|M88E1000_PSSR_CABLE_LENGTH
 )paren
 op_rshift
 id|M88E1000_PSSR_CABLE_LENGTH_SHIFT
+suffix:semicolon
+multiline_comment|/* Convert the enum value to ranged values */
+r_switch
+c_cond
+(paren
+id|cable_length
 )paren
 (brace
 r_case

@@ -1128,6 +1128,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Setversion ioctl.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_lock structure.&n; * &bslash;return zero on success or negative number on failure.&n; *&n; * Sets the requested interface version&n; */
 DECL|function|drm_setversion
 r_int
 id|drm_setversion
@@ -1159,6 +1160,9 @@ op_star
 )paren
 id|data
 suffix:semicolon
+id|drm_version_t
+id|version
+suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
 c_func
 (paren
@@ -1172,6 +1176,15 @@ id|sv
 )paren
 )paren
 suffix:semicolon
+id|dev-&gt;driver
+op_member_access_from_pointer
+id|version
+c_func
+(paren
+op_amp
+id|version
+)paren
+suffix:semicolon
 id|retv.drm_di_major
 op_assign
 id|DRM_IF_MAJOR
@@ -1182,11 +1195,11 @@ id|DRM_IF_MINOR
 suffix:semicolon
 id|retv.drm_dd_major
 op_assign
-id|DRIVER_MAJOR
+id|version.version_major
 suffix:semicolon
 id|retv.drm_dd_minor
 op_assign
-id|DRIVER_MINOR
+id|version.version_minor
 suffix:semicolon
 id|DRM_COPY_TO_USER_IOCTL
 c_func
@@ -1275,11 +1288,11 @@ c_cond
 (paren
 id|sv.drm_dd_major
 op_ne
-id|DRIVER_MAJOR
+id|version.version_major
 op_logical_or
 id|sv.drm_dd_minor
 template_param
-id|DRIVER_MINOR
+id|version.version_minor
 )paren
 r_return
 id|EINVAL

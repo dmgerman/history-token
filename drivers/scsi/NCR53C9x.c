@@ -1177,6 +1177,7 @@ mdefine_line|#define esp_advance_phase(__s, __newphase) &bslash;&n;&t;(__s)-&gt;
 macro_line|#endif
 macro_line|#ifdef DEBUG_ESP_CMDS
 DECL|function|esp_cmd
+r_static
 r_inline
 r_void
 id|esp_cmd
@@ -2174,7 +2175,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* This places the ESP into a known state at boot time. */
 DECL|function|esp_bootup_reset
-r_static
 r_void
 id|esp_bootup_reset
 c_func

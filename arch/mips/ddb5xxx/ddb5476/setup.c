@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  arch/mips/ddb5476/setup.c -- NEC DDB Vrc-5476 setup routines&n; *&n; *  Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                     Sony Software Development Center Europe (SDCE), Brussels&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kbd_ll.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

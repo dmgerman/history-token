@@ -4,15 +4,6 @@ mdefine_line|#define _PPC64_LMB_H
 multiline_comment|/*&n; * Definitions for talking to the Open Firmware PROM on&n; * Power Macintosh computers.&n; *&n; * Copyright (C) 2001 Peter Bergner, IBM Corp.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
-r_extern
-r_int
-r_int
-id|reloc_offset
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|MAX_LMB_REGIONS
 mdefine_line|#define MAX_LMB_REGIONS 128
 DECL|macro|LMB_ALLOC_ANYWHERE

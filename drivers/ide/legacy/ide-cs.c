@@ -574,6 +574,7 @@ multiline_comment|/*============================================================
 DECL|macro|CS_CHECK
 mdefine_line|#define CS_CHECK(fn, ret) &bslash;&n;do { last_fn = (fn); if ((last_ret = (ret)) != 0) goto cs_failed; } while (0)
 DECL|function|ide_config
+r_static
 r_void
 id|ide_config
 c_func

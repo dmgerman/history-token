@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  drivers/video/tx3912fb.c&n; *&n; *  Copyright (C) 1999 Harald Koerfgen&n; *  Copyright (C) 2001 Steven Hill (sjhill@realitydiluted.com)&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License. See the file COPYING in the main directory of this archive for&n; * more details.&n; *&n; *  Framebuffer for LCD controller in TMPR3912/05 and PR31700 processors&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -43,17 +42,6 @@ id|id
 op_assign
 l_string|&quot;tx3912fb&quot;
 comma
-macro_line|#ifdef CONFIG_NINO_16MB
-dot
-id|smem_len
-op_assign
-(paren
-l_int|240
-op_star
-l_int|320
-)paren
-comma
-macro_line|#else
 dot
 id|smem_len
 op_assign
@@ -67,7 +55,6 @@ op_div
 l_int|2
 )paren
 comma
-macro_line|#endif
 dot
 id|type
 op_assign
@@ -127,47 +114,6 @@ id|yres_virtual
 op_assign
 l_int|320
 comma
-macro_line|#ifdef CONFIG_NINO_16MB
-dot
-id|bits_per_pixel
-op_assign
-l_int|8
-comma
-dot
-id|red
-op_assign
-(brace
-l_int|5
-comma
-l_int|3
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* RGB 332 */
-dot
-id|green
-op_assign
-(brace
-l_int|2
-comma
-l_int|3
-comma
-l_int|0
-)brace
-comma
-dot
-id|blue
-op_assign
-(brace
-l_int|0
-comma
-l_int|2
-comma
-l_int|0
-)brace
-comma
-macro_line|#else
 dot
 id|bits_per_pixel
 op_assign
@@ -207,7 +153,6 @@ comma
 l_int|0
 )brace
 comma
-macro_line|#endif
 dot
 id|activate
 op_assign

@@ -157,6 +157,7 @@ id|filp
 suffix:semicolon
 )brace
 DECL|variable|nfsd_nlm_ops
+r_static
 r_struct
 id|nlmsvc_binding
 id|nfsd_nlm_ops

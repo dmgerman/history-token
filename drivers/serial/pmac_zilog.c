@@ -8358,6 +8358,17 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ZS_IS_ASLEEP
+c_func
+(paren
+id|uap
+)paren
+)paren
+r_return
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren

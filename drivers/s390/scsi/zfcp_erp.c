@@ -2,7 +2,7 @@ multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_erp.c &n; * &n; * 
 DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.85 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.86 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -1505,7 +1505,7 @@ id|adapter
 )paren
 )paren
 suffix:semicolon
-id|del_timer_sync
+id|del_timer
 c_func
 (paren
 id|send_els-&gt;timer
@@ -3481,7 +3481,7 @@ op_amp
 id|ZFCP_STATUS_ERP_TIMEDOUT
 )paren
 )paren
-id|del_timer_sync
+id|del_timer
 c_func
 (paren
 op_amp

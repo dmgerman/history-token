@@ -48,6 +48,9 @@ r_enum
 (brace
 DECL|enumerator|HCI_QUIRK_RESET_ON_INIT
 id|HCI_QUIRK_RESET_ON_INIT
+comma
+DECL|enumerator|HCI_QUIRK_RAW_DEVICE
+id|HCI_QUIRK_RAW_DEVICE
 )brace
 suffix:semicolon
 multiline_comment|/* HCI device flags */
@@ -1635,6 +1638,32 @@ suffix:semicolon
 DECL|member|lmp_subver
 id|__u16
 id|lmp_subver
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|macro|HCI_EV_CLOCK_OFFSET
+mdefine_line|#define HCI_EV_CLOCK_OFFSET&t;0x01C
+DECL|struct|hci_ev_clock_offset
+r_struct
+id|hci_ev_clock_offset
+(brace
+DECL|member|status
+id|__u8
+id|status
+suffix:semicolon
+DECL|member|handle
+id|__u16
+id|handle
+suffix:semicolon
+DECL|member|clock_offset
+id|__u16
+id|clock_offset
 suffix:semicolon
 )brace
 id|__attribute__

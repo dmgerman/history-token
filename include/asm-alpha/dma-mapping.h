@@ -22,6 +22,8 @@ DECL|macro|dma_unmap_sg
 mdefine_line|#define dma_unmap_sg(dev, sg, nents, dir)&t;&t;&bslash;&n;&t;&t;pci_unmap_sg(alpha_gendev_to_pci(dev), sg, nents, dir)
 DECL|macro|dma_supported
 mdefine_line|#define dma_supported(dev, mask)&t;&t;&t;&bslash;&n;&t;&t;pci_dma_supported(alpha_gendev_to_pci(dev), mask)
+DECL|macro|dma_mapping_error
+mdefine_line|#define dma_mapping_error(addr)&t;&t;&t;&t;&bslash;&n;&t;&t;pci_dma_mapping_error(addr)
 macro_line|#else&t;/* no PCI - no IOMMU. */
 r_void
 op_star
@@ -80,6 +82,8 @@ DECL|macro|dma_unmap_page
 mdefine_line|#define dma_unmap_page(dev, addr, size, dir)&t;do { } while (0)
 DECL|macro|dma_unmap_sg
 mdefine_line|#define dma_unmap_sg(dev, sg, nents, dir)&t;do { } while (0)
+DECL|macro|dma_mapping_error
+mdefine_line|#define dma_mapping_error(addr)  (0)
 macro_line|#endif&t;/* !CONFIG_PCI */
 DECL|macro|dma_alloc_noncoherent
 mdefine_line|#define dma_alloc_noncoherent(d, s, h, f)&t;dma_alloc_coherent(d, s, h, f)

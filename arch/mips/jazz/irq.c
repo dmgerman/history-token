@@ -15,12 +15,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|r4030_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|r4030_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|enable_r4030_irq
 r_static

@@ -174,27 +174,6 @@ suffix:semicolon
 multiline_comment|/* messages waiting in queue */
 )brace
 suffix:semicolon
-DECL|struct|audit_login
-r_struct
-id|audit_login
-(brace
-DECL|member|loginuid
-id|__u32
-id|loginuid
-suffix:semicolon
-DECL|member|msglen
-r_int
-id|msglen
-suffix:semicolon
-DECL|member|msg
-r_char
-id|msg
-(braket
-l_int|1024
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|audit_rule
 r_struct
 id|audit_rule
@@ -412,6 +391,17 @@ id|uid_t
 id|loginuid
 )paren
 suffix:semicolon
+r_extern
+id|uid_t
+id|audit_get_loginuid
+c_func
+(paren
+r_struct
+id|audit_context
+op_star
+id|ctx
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|macro|audit_alloc
 mdefine_line|#define audit_alloc(t) ({ 0; })
@@ -427,6 +417,8 @@ DECL|macro|audit_putname
 mdefine_line|#define audit_putname(n) do { ; } while (0)
 DECL|macro|audit_inode
 mdefine_line|#define audit_inode(n,i,d) do { ; } while (0)
+DECL|macro|audit_get_loginuid
+mdefine_line|#define audit_get_loginuid(c) ({ -1; })
 macro_line|#endif
 macro_line|#ifdef CONFIG_AUDIT
 multiline_comment|/* These are defined in audit.c */

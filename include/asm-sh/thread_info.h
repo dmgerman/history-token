@@ -124,6 +124,8 @@ DECL|macro|TIF_USEDFPU
 mdefine_line|#define TIF_USEDFPU&t;&t;16&t;/* FPU was used by this task this quantum (SMP) */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;17&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
+DECL|macro|TIF_MEMDIE
+mdefine_line|#define TIF_MEMDIE&t;&t;18
 DECL|macro|TIF_USERSPACE
 mdefine_line|#define TIF_USERSPACE&t;&t;31&t;/* true if FS sets userspace */
 DECL|macro|_TIF_SYSCALL_TRACE

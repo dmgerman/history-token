@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: platform.h,v 1.37.4.2 2004/08/28 20:03:53 armin Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: platform.h,v 1.37.4.6 2005/01/31 12:22:20 armin Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef&t;__PLATFORM_H__
 DECL|macro|__PLATFORM_H__
 mdefine_line|#define&t;__PLATFORM_H__
@@ -349,19 +349,12 @@ op_star
 id|ptr
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ptr
-)paren
-(brace
 id|vfree
 c_func
 (paren
 id|ptr
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;** use skbuffs for message buffer&n;*/
 DECL|typedef|diva_os_message_buffer_s

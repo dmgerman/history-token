@@ -1963,11 +1963,6 @@ op_star
 id|me
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|me-&gt;arch.syminfo
-)paren
 id|vfree
 c_func
 (paren

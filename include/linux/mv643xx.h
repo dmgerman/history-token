@@ -1562,18 +1562,12 @@ mdefine_line|#define MV64340_WATCHDOG_VALUE_REG                                 
 multiline_comment|/****************************************/
 multiline_comment|/* I2C Registers                        */
 multiline_comment|/****************************************/
-DECL|macro|MV64340_I2C_SLAVE_ADDR
-mdefine_line|#define MV64340_I2C_SLAVE_ADDR                                      0xc000
-DECL|macro|MV64340_I2C_EXTENDED_SLAVE_ADDR
-mdefine_line|#define MV64340_I2C_EXTENDED_SLAVE_ADDR                             0xc010
-DECL|macro|MV64340_I2C_DATA
-mdefine_line|#define MV64340_I2C_DATA                                            0xc004
-DECL|macro|MV64340_I2C_CONTROL
-mdefine_line|#define MV64340_I2C_CONTROL                                         0xc008
-DECL|macro|MV64340_I2C_STATUS_BAUDE_RATE
-mdefine_line|#define MV64340_I2C_STATUS_BAUDE_RATE                               0xc00C
-DECL|macro|MV64340_I2C_SOFT_RESET
-mdefine_line|#define MV64340_I2C_SOFT_RESET                                      0xc01c
+DECL|macro|MV64XXX_I2C_CTLR_NAME
+mdefine_line|#define MV64XXX_I2C_CTLR_NAME&t;&t;&t;&t;&t;&quot;mv64xxx i2c&quot;
+DECL|macro|MV64XXX_I2C_OFFSET
+mdefine_line|#define MV64XXX_I2C_OFFSET                                          0xc000
+DECL|macro|MV64XXX_I2C_REG_BLOCK_SIZE
+mdefine_line|#define MV64XXX_I2C_REG_BLOCK_SIZE                                  0x0020
 multiline_comment|/****************************************/
 multiline_comment|/* GPP Interface Registers              */
 multiline_comment|/****************************************/
@@ -1668,9 +1662,9 @@ DECL|macro|MPSC_ROUTING_REG_BLOCK_SIZE
 mdefine_line|#define MPSC_ROUTING_REG_BLOCK_SIZE&t;0x000c
 DECL|macro|MPSC_SDMA_INTR_REG_BLOCK_SIZE
 mdefine_line|#define MPSC_SDMA_INTR_REG_BLOCK_SIZE&t;0x0084
-DECL|struct|mpsc_shared_pd_dd
+DECL|struct|mpsc_shared_pdata
 r_struct
-id|mpsc_shared_pd_dd
+id|mpsc_shared_pdata
 (brace
 DECL|member|mrr_val
 id|u32
@@ -1709,9 +1703,9 @@ DECL|macro|MPSC_SDMA_REG_BLOCK_SIZE
 mdefine_line|#define MPSC_SDMA_REG_BLOCK_SIZE&t;0x0c18
 DECL|macro|MPSC_BRG_REG_BLOCK_SIZE
 mdefine_line|#define MPSC_BRG_REG_BLOCK_SIZE&t;&t;0x0008
-DECL|struct|mpsc_pd_dd
+DECL|struct|mpsc_pdata
 r_struct
-id|mpsc_pd_dd
+id|mpsc_pdata
 (brace
 DECL|member|mirror_regs
 id|u8
@@ -1772,6 +1766,30 @@ suffix:semicolon
 DECL|member|brg_clk_freq
 id|u32
 id|brg_clk_freq
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* i2c Platform Device, Driver Data */
+DECL|struct|mv64xxx_i2c_pdata
+r_struct
+id|mv64xxx_i2c_pdata
+(brace
+DECL|member|freq_m
+id|u32
+id|freq_m
+suffix:semicolon
+DECL|member|freq_n
+id|u32
+id|freq_n
+suffix:semicolon
+DECL|member|timeout
+id|u32
+id|timeout
+suffix:semicolon
+multiline_comment|/* In milliseconds */
+DECL|member|retries
+id|u32
+id|retries
 suffix:semicolon
 )brace
 suffix:semicolon

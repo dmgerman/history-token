@@ -262,6 +262,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;  Called in order to register new adapter in adapter array&n;  return adapter handle (&gt; 0) on success&n;  return -1 adapter array overflow&n;  -------------------------------------------------------------------------- */
 DECL|function|diva_didd_add_descriptor
+r_static
 r_int
 id|diva_didd_add_descriptor
 (paren
@@ -481,6 +482,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;  Called in order to remove one registered adapter from array&n;  return adapter handle (&gt; 0) on success&n;  return 0 on success&n;  -------------------------------------------------------------------------- */
 DECL|function|diva_didd_remove_descriptor
+r_static
 r_int
 id|diva_didd_remove_descriptor
 (paren
@@ -663,6 +665,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;  Read adapter array&n;  return 1 if not enough space to save all available adapters&n;   -------------------------------------------------------------------------- */
 DECL|function|diva_didd_read_adapter_array
+r_static
 r_int
 id|diva_didd_read_adapter_array
 (paren

@@ -295,21 +295,6 @@ op_star
 id|x
 )paren
 suffix:semicolon
-r_void
-id|esp_bootup_reset
-c_func
-(paren
-r_struct
-id|NCR_ESP
-op_star
-id|esp
-comma
-r_struct
-id|ESP_regs
-op_star
-id|eregs
-)paren
-suffix:semicolon
 macro_line|#ifdef USE_BOTTOM_HALF
 r_static
 r_void

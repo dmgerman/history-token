@@ -139,6 +139,8 @@ DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG      3       /* true if poll_idle() is polling &n;&t;&t;&t;&t;&t; * TIF_NEED_RESCHED &n;&t;&t;&t;&t;&t; */
 DECL|macro|TIF_RESTART_BLOCK
 mdefine_line|#define TIF_RESTART_BLOCK &t;4
+DECL|macro|TIF_MEMDIE
+mdefine_line|#define TIF_MEMDIE&t; &t;5
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1 &lt;&lt; TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_SIGPENDING

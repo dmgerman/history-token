@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
@@ -411,7 +412,11 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|child-&gt;used_math
+id|tsk_used_math
+c_func
+(paren
+id|child
+)paren
 )paren
 (brace
 id|fpureg_t
@@ -779,7 +784,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|child-&gt;used_math
+id|tsk_used_math
+c_func
+(paren
+id|child
+)paren
 )paren
 (brace
 multiline_comment|/* FP not yet used  */
@@ -1141,7 +1150,10 @@ c_func
 (paren
 id|current
 comma
-id|regs-&gt;orig_eax
+id|regs-&gt;regs
+(braket
+l_int|2
+)braket
 comma
 id|regs-&gt;regs
 (braket

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -130,6 +131,7 @@ id|ci
 id|newport_wait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 id|npregs-&gt;set.wrmask
@@ -229,6 +231,7 @@ op_increment
 id|newport_bfwait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 id|newport_cmap_setaddr
@@ -325,6 +328,7 @@ op_increment
 id|newport_bfwait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 id|newport_cmap_setaddr
@@ -366,6 +370,7 @@ suffix:semicolon
 id|newport_wait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 id|npregs-&gt;set.drawmode0
@@ -409,6 +414,7 @@ suffix:semicolon
 id|newport_wait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 r_for
@@ -470,6 +476,7 @@ suffix:semicolon
 id|newport_wait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 id|npregs-&gt;set.wrmask
@@ -597,6 +604,7 @@ suffix:semicolon
 id|newport_wait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 id|treg
@@ -673,6 +681,7 @@ op_increment
 id|newport_bfwait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 r_if
@@ -850,6 +859,7 @@ op_increment
 id|newport_bfwait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 id|linetable
@@ -928,6 +938,7 @@ r_do
 id|newport_bfwait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 id|treg
@@ -970,6 +981,7 @@ l_int|0
 id|newport_bfwait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 id|treg
@@ -1332,10 +1344,17 @@ r_struct
 id|newport_regs
 op_star
 )paren
+multiline_comment|/* ioremap cannot fail */
+id|ioremap
+c_func
 (paren
-id|KSEG1
-op_plus
 id|sgi_gfxaddr
+comma
+r_sizeof
+(paren
+r_struct
+id|newport_regs
+)paren
 )paren
 suffix:semicolon
 id|npregs-&gt;cset.config
@@ -1348,13 +1367,12 @@ c_cond
 id|newport_wait
 c_func
 (paren
+id|npregs
 )paren
 )paren
-(brace
-r_return
-l_int|NULL
+r_goto
+id|out_unmap
 suffix:semicolon
-)brace
 id|npregs-&gt;set.xstarti
 op_assign
 id|TESTVAL
@@ -1370,8 +1388,8 @@ c_func
 id|TESTVAL
 )paren
 )paren
-r_return
-l_int|NULL
+r_goto
+id|out_unmap
 suffix:semicolon
 r_for
 c_loop
@@ -1411,6 +1429,21 @@ c_func
 suffix:semicolon
 r_return
 l_string|&quot;SGI Newport&quot;
+suffix:semicolon
+id|out_unmap
+suffix:colon
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|npregs
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|newport_init
@@ -1730,6 +1763,7 @@ multiline_comment|/* Set the color and drawing mode. */
 id|newport_wait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 id|npregs-&gt;set.colori
@@ -1786,6 +1820,7 @@ suffix:semicolon
 id|newport_wait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 multiline_comment|/* Go, baby, go... */
@@ -1898,6 +1933,7 @@ suffix:semicolon
 id|newport_wait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 multiline_comment|/* Set the color and drawing mode. */
@@ -1965,6 +2001,7 @@ suffix:semicolon
 id|newport_wait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 multiline_comment|/* Set coordinates for bitmap operation. */
@@ -2225,6 +2262,9 @@ id|c
 comma
 r_int
 id|blank
+comma
+r_int
+id|mode_switch
 )paren
 (brace
 r_int
@@ -3556,6 +3596,7 @@ suffix:semicolon
 id|newport_wait
 c_func
 (paren
+id|npregs
 )paren
 suffix:semicolon
 id|npregs-&gt;set.drawmode0
@@ -3762,6 +3803,16 @@ c_func
 (paren
 op_amp
 id|newport_con
+)paren
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|npregs
 )paren
 suffix:semicolon
 )brace

@@ -341,7 +341,7 @@ op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|//&t;&t;&t;if (!(action-&gt;flags &amp; SA_INTERRUPT))
-singleline_comment|//&t;&t;&t;&t;sti();
+singleline_comment|//&t;&t;&t;&t;local_irq_enable();
 r_do
 (brace
 id|status
@@ -384,7 +384,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren

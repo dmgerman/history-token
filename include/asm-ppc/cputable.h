@@ -123,6 +123,30 @@ id|cur_cpu_spec
 (braket
 )braket
 suffix:semicolon
+DECL|function|cpu_has_feature
+r_static
+r_inline
+r_int
+r_int
+id|cpu_has_feature
+c_func
+(paren
+r_int
+r_int
+id|feature
+)paren
+(brace
+r_return
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|feature
+suffix:semicolon
+)brace
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* CPU kernel features */
 DECL|macro|CPU_FTR_SPLIT_ID_CACHE

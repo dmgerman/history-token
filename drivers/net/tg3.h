@@ -2722,6 +2722,10 @@ DECL|macro|NIC_SRAM_DATA_CFG_FIBER_WOL
 mdefine_line|#define  NIC_SRAM_DATA_CFG_FIBER_WOL&t;&t; 0x00004000
 DECL|macro|NIC_SRAM_DATA_CFG_NO_GPIO2
 mdefine_line|#define  NIC_SRAM_DATA_CFG_NO_GPIO2&t;&t; 0x00100000
+DECL|macro|NIC_SRAM_DATA_VER
+mdefine_line|#define NIC_SRAM_DATA_VER&t;&t;&t;0x00000b5c
+DECL|macro|NIC_SRAM_DATA_VER_SHIFT
+mdefine_line|#define  NIC_SRAM_DATA_VER_SHIFT&t;&t; 16
 DECL|macro|NIC_SRAM_DATA_PHY_ID
 mdefine_line|#define NIC_SRAM_DATA_PHY_ID&t;&t;0x00000b74
 DECL|macro|NIC_SRAM_DATA_PHY_ID1_MASK
@@ -4329,6 +4333,8 @@ DECL|macro|TG3_FLG2_FLASH
 mdefine_line|#define TG3_FLG2_FLASH&t;&t;&t;0x00008000
 DECL|macro|TG3_FLG2_HW_TSO
 mdefine_line|#define TG3_FLG2_HW_TSO&t;&t;&t;0x00010000
+DECL|macro|TG3_FLG2_SERDES_PREEMPHASIS
+mdefine_line|#define TG3_FLG2_SERDES_PREEMPHASIS&t;0x00020000
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs

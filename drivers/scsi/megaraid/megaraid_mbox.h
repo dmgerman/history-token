@@ -6,9 +6,9 @@ macro_line|#include &quot;mega_common.h&quot;
 macro_line|#include &quot;mbox_defs.h&quot;
 macro_line|#include &quot;megaraid_ioctl.h&quot;
 DECL|macro|MEGARAID_VERSION
-mdefine_line|#define MEGARAID_VERSION&t;&quot;2.20.4.1&quot;
+mdefine_line|#define MEGARAID_VERSION&t;&quot;2.20.4.5&quot;
 DECL|macro|MEGARAID_EXT_VERSION
-mdefine_line|#define MEGARAID_EXT_VERSION&t;&quot;(Release Date: Thu Nov  4 17:44:59 EST 2004)&quot;
+mdefine_line|#define MEGARAID_EXT_VERSION&t;&quot;(Release Date: Thu Feb 03 12:27:22 EST 2005)&quot;
 multiline_comment|/*&n; * Define some PCI values here until they are put in the kernel&n; */
 DECL|macro|PCI_DEVICE_ID_PERC4_DI_DISCOVERY
 mdefine_line|#define PCI_DEVICE_ID_PERC4_DI_DISCOVERY&t;&t;0x000E
@@ -156,6 +156,10 @@ DECL|macro|PCI_SUBSYS_ID_PERC3_DC
 mdefine_line|#define PCI_SUBSYS_ID_PERC3_DC&t;&t;&t;&t;0x0493
 DECL|macro|PCI_SUBSYS_ID_PERC3_SC
 mdefine_line|#define PCI_SUBSYS_ID_PERC3_SC&t;&t;&t;&t;0x0475
+DECL|macro|PCI_DEVICE_ID_MEGARAID_NEC_ROMB_2E
+mdefine_line|#define PCI_DEVICE_ID_MEGARAID_NEC_ROMB_2E&t;&t;0x0408
+DECL|macro|PCI_SUBSYS_ID_MEGARAID_NEC_ROMB_2E
+mdefine_line|#define PCI_SUBSYS_ID_MEGARAID_NEC_ROMB_2E&t;&t;0x8287
 macro_line|#ifndef PCI_SUBSYS_ID_FSC
 DECL|macro|PCI_SUBSYS_ID_FSC
 mdefine_line|#define PCI_SUBSYS_ID_FSC&t;&t;&t;&t;0x1734
@@ -256,7 +260,9 @@ DECL|typedef|mbox_ccb_t
 )brace
 id|mbox_ccb_t
 suffix:semicolon
-multiline_comment|/**&n; * mraid_device_t - adapter soft state structure for mailbox controllers&n; * @param una_mbox64&t;&t;: 64-bit mbox - unaligned&n; * @param una_mbox64_dma&t;: mbox dma addr - unaligned&n; * @param mbox&t;&t;&t;: 32-bit mbox - aligned&n; * @param mbox64&t;&t;: 64-bit mbox - aligned&n; * @param mbox_dma&t;&t;: mbox dma addr - aligned&n; * @param mailbox_lock&t;&t;: exclusion lock for the mailbox&n; * @param baseport&t;&t;: base port of hba memory&n; * @param baseaddr&t;&t;: mapped addr of hba memory&n; * @param mbox_pool&t;&t;: pool of mailboxes&n; * @param mbox_pool_handle&t;: handle for the mailbox pool memory&n; * @param epthru_pool&t;&t;: a pool for extended passthru commands&n; * @param epthru_pool_handle&t;: handle to the pool above&n; * @param sg_pool&t;&t;: pool of scatter-gather lists for this driver&n; * @param sg_pool_handle&t;: handle to the pool above&n; * @param ccb_list&t;&t;: list of our command control blocks&n; * @param uccb_list&t;&t;: list of cmd control blocks for mgmt module&n; * @param umbox64&t;&t;: array of mailbox for user commands (cmm)&n; * @param pdrv_state&t;&t;: array for state of each physical drive.&n; * @param last_disp&t;&t;: flag used to show device scanning&n; * @param hw_error&t;&t;: set if FW not responding&n; * @param fast_load&t;&t;: If set, skip physical device scanning&n; * @channel_class&t;&t;: channel class, RAID or SCSI&n; *&n; * Initialization structure for mailbox controllers: memory based and IO based&n; * All the fields in this structure are LLD specific and may be discovered at&n; * init() or start() time.&n; *&n; * NOTE: The fields of this structures are placed to minimize cache misses&n; */
+multiline_comment|/**&n; * mraid_device_t - adapter soft state structure for mailbox controllers&n; * @param una_mbox64&t;&t;: 64-bit mbox - unaligned&n; * @param una_mbox64_dma&t;: mbox dma addr - unaligned&n; * @param mbox&t;&t;&t;: 32-bit mbox - aligned&n; * @param mbox64&t;&t;: 64-bit mbox - aligned&n; * @param mbox_dma&t;&t;: mbox dma addr - aligned&n; * @param mailbox_lock&t;&t;: exclusion lock for the mailbox&n; * @param baseport&t;&t;: base port of hba memory&n; * @param baseaddr&t;&t;: mapped addr of hba memory&n; * @param mbox_pool&t;&t;: pool of mailboxes&n; * @param mbox_pool_handle&t;: handle for the mailbox pool memory&n; * @param epthru_pool&t;&t;: a pool for extended passthru commands&n; * @param epthru_pool_handle&t;: handle to the pool above&n; * @param sg_pool&t;&t;: pool of scatter-gather lists for this driver&n; * @param sg_pool_handle&t;: handle to the pool above&n; * @param ccb_list&t;&t;: list of our command control blocks&n; * @param uccb_list&t;&t;: list of cmd control blocks for mgmt module&n; * @param umbox64&t;&t;: array of mailbox for user commands (cmm)&n; * @param pdrv_state&t;&t;: array for state of each physical drive.&n; * @param last_disp&t;&t;: flag used to show device scanning&n; * @param hw_error&t;&t;: set if FW not responding&n; * @param fast_load&t;&t;: If set, skip physical device scanning&n; * @channel_class&t;&t;: channel class, RAID or SCSI&n; * @sysfs_sem&t;&t;&t;: semaphore to serialize access to sysfs res.&n; * @sysfs_uioc&t;&t;&t;: management packet to issue FW calls from sysfs&n; * @sysfs_mbox64&t;&t;: mailbox packet to issue FW calls from sysfs&n; * @sysfs_buffer&t;&t;: data buffer for FW commands issued from sysfs&n; * @sysfs_buffer_dma&t;&t;: DMA buffer for FW commands issued from sysfs&n; * @sysfs_wait_q&t;&t;: wait queue for sysfs operations&n; * @random_del_supported&t;: set if the random deletion is supported&n; * @curr_ldmap&t;&t;&t;: current LDID map&n; *&n; * Initialization structure for mailbox controllers: memory based and IO based&n; * All the fields in this structure are LLD specific and may be discovered at&n; * init() or start() time.&n; *&n; * NOTE: The fields of this structures are placed to minimize cache misses&n; */
+DECL|macro|MAX_LD_EXTENDED64
+mdefine_line|#define MAX_LD_EXTENDED64&t;64
 r_typedef
 r_struct
 (brace
@@ -383,6 +389,44 @@ suffix:semicolon
 DECL|member|channel_class
 r_uint8
 id|channel_class
+suffix:semicolon
+DECL|member|sysfs_sem
+r_struct
+id|semaphore
+id|sysfs_sem
+suffix:semicolon
+DECL|member|sysfs_uioc
+id|uioc_t
+op_star
+id|sysfs_uioc
+suffix:semicolon
+DECL|member|sysfs_mbox64
+id|mbox64_t
+op_star
+id|sysfs_mbox64
+suffix:semicolon
+DECL|member|sysfs_buffer
+id|caddr_t
+id|sysfs_buffer
+suffix:semicolon
+DECL|member|sysfs_buffer_dma
+id|dma_addr_t
+id|sysfs_buffer_dma
+suffix:semicolon
+DECL|member|sysfs_wait_q
+id|wait_queue_head_t
+id|sysfs_wait_q
+suffix:semicolon
+DECL|member|random_del_supported
+r_int
+id|random_del_supported
+suffix:semicolon
+DECL|member|curr_ldmap
+r_uint16
+id|curr_ldmap
+(braket
+id|MAX_LD_EXTENDED64
+)braket
 suffix:semicolon
 DECL|typedef|mraid_device_t
 )brace

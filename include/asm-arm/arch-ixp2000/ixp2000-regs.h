@@ -2,55 +2,45 @@ multiline_comment|/*&n; * include/asm-arm/arch-ixp2000/ixp2000-regs.h&n; *&n; * 
 macro_line|#ifndef _IXP2000_REGS_H_
 DECL|macro|_IXP2000_REGS_H_
 mdefine_line|#define _IXP2000_REGS_H_
-multiline_comment|/* &n; * Static I/O regions. The manual defines each region as being several&n; * MB in size, but all the registers are within the first 4K, so there&squot;s&n; * no purpose in mapping the whole region in.&n; */
-DECL|macro|IXP2000_SLOWPORT_CSR_PHYS_BASE
-mdefine_line|#define&t;IXP2000_SLOWPORT_CSR_PHYS_BASE&t;0xc0080000
+multiline_comment|/* &n; * Static I/O regions.&n; *&n; * Most of the registers are clumped in 4K regions spread throughout&n; * the 0xc000000 -&gt; 0xc0100000 address range, but we just map in&n; * the whole range using a single 1 MB section instead of small&n; * 4K pages.  This has two advantages for us:&n; *&n; * 1) We use only one TLB entry for large number of on-chip I/O devices.&n; *&n; * 2) We can easily set the Section attributes to XCB=101 on the IXP2400&n; *    as required per erratum #66.&n; *&n; * CAP stands for CSR Access Proxy&n; */
+DECL|macro|IXP2000_CAP_PHYS_BASE
+mdefine_line|#define&t;IXP2000_CAP_PHYS_BASE&t;&t;0xc0000000
+DECL|macro|IXP2000_CAP_VIRT_BASE
+mdefine_line|#define&t;IXP2000_CAP_VIRT_BASE&t;&t;0xfef00000
+DECL|macro|IXP2000_CAP_SIZE
+mdefine_line|#define&t;IXP2000_CAP_SIZE&t;&t;0x00100000
+multiline_comment|/*&n; * Addresses for specific on-chip peripherals&n; */
 DECL|macro|IXP2000_SLOWPORT_CSR_VIRT_BASE
-mdefine_line|#define&t;IXP2000_SLOWPORT_CSR_VIRT_BASE&t;0xfefff000
-DECL|macro|IXP2000_SLOWPORT_CSR_SIZE
-mdefine_line|#define&t;IXP2000_SLOWPORT_CSR_SIZE&t;0x1000
-DECL|macro|IXP2000_GLOBAL_REG_PHYS_BASE
-mdefine_line|#define&t;IXP2000_GLOBAL_REG_PHYS_BASE&t;0xc0004000
+mdefine_line|#define&t;IXP2000_SLOWPORT_CSR_VIRT_BASE&t;0xfef80000
 DECL|macro|IXP2000_GLOBAL_REG_VIRT_BASE
-mdefine_line|#define&t;IXP2000_GLOBAL_REG_VIRT_BASE&t;0xfeffe000
-DECL|macro|IXP2000_GLOBAL_REG_SIZE
-mdefine_line|#define&t;IXP2000_GLOBAL_REG_SIZE&t;&t;0x1000
+mdefine_line|#define&t;IXP2000_GLOBAL_REG_VIRT_BASE&t;0xfef04000
 DECL|macro|IXP2000_UART_PHYS_BASE
 mdefine_line|#define&t;IXP2000_UART_PHYS_BASE&t;&t;0xc0030000
 DECL|macro|IXP2000_UART_VIRT_BASE
 mdefine_line|#define&t;IXP2000_UART_VIRT_BASE&t;&t;0xfef30000
-DECL|macro|IXP2000_UART_SIZE
-mdefine_line|#define IXP2000_UART_SIZE&t;&t;0x1000
-DECL|macro|IXP2000_TIMER_PHYS_BASE
-mdefine_line|#define&t;IXP2000_TIMER_PHYS_BASE&t;&t;0xc0020000
 DECL|macro|IXP2000_TIMER_VIRT_BASE
-mdefine_line|#define&t;IXP2000_TIMER_VIRT_BASE&t;&t;0xfeffc000
-DECL|macro|IXP2000_TIMER_SIZE
-mdefine_line|#define&t;IXP2000_TIMER_SIZE&t;&t;0x1000
-DECL|macro|IXP2000_GPIO_PHYS_BASE
-mdefine_line|#define&t;IXP2000_GPIO_PHYS_BASE&t;&t;0xc0010000
+mdefine_line|#define&t;IXP2000_TIMER_VIRT_BASE&t;&t;0xfef20000
 DECL|macro|IXP2000_GPIO_VIRT_BASE
-mdefine_line|#define&t;IXP2000_GPIO_VIRT_BASE&t;&t;0xfeffb000
-DECL|macro|IXP2000_GPIO_SIZE
-mdefine_line|#define&t;IXP2000_GPIO_SIZE&t;&t;0x1000
+mdefine_line|#define&t;IXP2000_GPIO_VIRT_BASE&t;&t;0Xfef10000
+multiline_comment|/*&n; * Devices outside of the 0xc0000000 -&gt; 0xc0100000 range&n; */
 DECL|macro|IXP2000_INTCTL_PHYS_BASE
 mdefine_line|#define IXP2000_INTCTL_PHYS_BASE&t;0xd6000000
 DECL|macro|IXP2000_INTCTL_VIRT_BASE
-mdefine_line|#define&t;IXP2000_INTCTL_VIRT_BASE&t;0xfeffa000
+mdefine_line|#define&t;IXP2000_INTCTL_VIRT_BASE&t;0xfee00000
 DECL|macro|IXP2000_INTCTL_SIZE
-mdefine_line|#define&t;IXP2000_INTCTL_SIZE&t;&t;0x01000
+mdefine_line|#define&t;IXP2000_INTCTL_SIZE&t;&t;0x00100000
 DECL|macro|IXP2000_PCI_CREG_PHYS_BASE
 mdefine_line|#define IXP2000_PCI_CREG_PHYS_BASE&t;0xde000000
 DECL|macro|IXP2000_PCI_CREG_VIRT_BASE
-mdefine_line|#define&t;IXP2000_PCI_CREG_VIRT_BASE&t;0xfeff0000
+mdefine_line|#define&t;IXP2000_PCI_CREG_VIRT_BASE&t;0xfed00000
 DECL|macro|IXP2000_PCI_CREG_SIZE
-mdefine_line|#define&t;IXP2000_PCI_CREG_SIZE&t;&t;0x1000
+mdefine_line|#define&t;IXP2000_PCI_CREG_SIZE&t;&t;0x00100000
 DECL|macro|IXP2000_PCI_CSR_PHYS_BASE
 mdefine_line|#define IXP2000_PCI_CSR_PHYS_BASE&t;0xdf000000
 DECL|macro|IXP2000_PCI_CSR_VIRT_BASE
-mdefine_line|#define&t;IXP2000_PCI_CSR_VIRT_BASE&t;0xfefde000
+mdefine_line|#define&t;IXP2000_PCI_CSR_VIRT_BASE&t;0xfec00000
 DECL|macro|IXP2000_PCI_CSR_SIZE
-mdefine_line|#define&t;IXP2000_PCI_CSR_SIZE&t;&t;0x1000
+mdefine_line|#define&t;IXP2000_PCI_CSR_SIZE&t;&t;0x00100000
 DECL|macro|IXP2000_PCI_IO_PHYS_BASE
 mdefine_line|#define IXP2000_PCI_IO_PHYS_BASE&t;0xd8000000
 DECL|macro|IXP2000_PCI_IO_VIRT_BASE

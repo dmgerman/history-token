@@ -118,10 +118,7 @@ suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#include &lt;asm/sizes.h&gt;
 macro_line|#include &lt;asm/arch/map.h&gt;
-multiline_comment|/* machine specific includes, such as the BAST */
-macro_line|#if defined(CONFIG_ARCH_BAST)
-macro_line|#include &lt;asm/arch/bast-cpld.h&gt;
-macro_line|#endif
+multiline_comment|/* machine specific hardware definitions should go after this */
 multiline_comment|/* currently here until moved into config (todo) */
 DECL|macro|CONFIG_NO_MULTIWORD_IO
 mdefine_line|#define CONFIG_NO_MULTIWORD_IO

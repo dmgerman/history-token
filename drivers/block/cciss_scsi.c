@@ -2932,6 +2932,9 @@ id|Scsi_Host
 op_star
 id|sh
 suffix:semicolon
+r_int
+id|error
+suffix:semicolon
 id|sh
 op_assign
 id|scsi_host_alloc
@@ -2955,8 +2958,8 @@ id|sh
 op_eq
 l_int|NULL
 )paren
-r_return
-l_int|0
+r_goto
+id|fail
 suffix:semicolon
 id|sh-&gt;io_port
 op_assign
@@ -3021,6 +3024,8 @@ id|sh-&gt;unique_id
 op_assign
 id|sh-&gt;irq
 suffix:semicolon
+id|error
+op_assign
 id|scsi_add_host
 c_func
 (paren
@@ -3035,7 +3040,14 @@ op_member_access_from_pointer
 id|pdev-&gt;dev
 )paren
 suffix:semicolon
-multiline_comment|/* XXX handle failure */
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_goto
+id|fail_host_put
+suffix:semicolon
 id|scsi_scan_host
 c_func
 (paren
@@ -3044,6 +3056,19 @@ id|sh
 suffix:semicolon
 r_return
 l_int|1
+suffix:semicolon
+id|fail_host_put
+suffix:colon
+id|scsi_host_put
+c_func
+(paren
+id|sh
+)paren
+suffix:semicolon
+id|fail
+suffix:colon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static

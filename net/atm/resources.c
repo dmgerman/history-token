@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/sonet.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt; /* for barrier */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;net/sock.h&gt;&t; /* for struct sock */
 macro_line|#include &quot;common.h&quot;
 macro_line|#include &quot;resources.h&quot;
@@ -584,16 +585,10 @@ op_ne
 l_int|1
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|4
+l_int|250
 )paren
 suffix:semicolon
 r_if

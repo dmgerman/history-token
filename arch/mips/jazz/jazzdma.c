@@ -22,12 +22,12 @@ r_int
 r_int
 id|vdma_pagetable_start
 suffix:semicolon
-DECL|variable|vdma_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|vdma_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Debug stuff&n; */
 DECL|macro|vdma_debug

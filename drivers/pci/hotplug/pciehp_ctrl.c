@@ -5104,6 +5104,7 @@ id|func
 suffix:semicolon
 )brace
 r_else
+(brace
 id|dbg
 c_func
 (paren
@@ -5124,6 +5125,7 @@ c_func
 id|func
 )paren
 suffix:semicolon
+)brace
 id|func
 op_assign
 id|pciehp_slot_find

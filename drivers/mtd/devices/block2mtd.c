@@ -146,7 +146,7 @@ op_rshift
 id|PAGE_CACHE_SHIFT
 )paren
 suffix:semicolon
-id|spin_lock_irq
+id|read_lock_irq
 c_func
 (paren
 op_amp
@@ -221,7 +221,7 @@ id|page
 )paren
 r_continue
 suffix:semicolon
-id|spin_unlock_irq
+id|read_unlock_irq
 c_func
 (paren
 op_amp
@@ -236,7 +236,7 @@ c_func
 id|mapping
 )paren
 suffix:semicolon
-id|spin_lock_irq
+id|read_lock_irq
 c_func
 (paren
 op_amp
@@ -269,7 +269,7 @@ id|ret
 op_increment
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|read_unlock_irq
 c_func
 (paren
 op_amp
@@ -1898,7 +1898,7 @@ r_char
 op_star
 id|name
 suffix:semicolon
-r_int
+id|u32
 id|erase_size
 op_assign
 id|PAGE_SIZE

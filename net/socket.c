@@ -8422,31 +8422,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Initialize all address (protocol) families. &n;&t; */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NPROTO
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|net_families
-(braket
-id|i
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Initialize sock SLAB cache.&n;&t; */
 id|sk_init
 c_func

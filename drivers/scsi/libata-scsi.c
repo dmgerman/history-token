@@ -617,7 +617,7 @@ comma
 l_int|0xFF
 )brace
 comma
-singleline_comment|// END mark 
+singleline_comment|// END mark
 )brace
 suffix:semicolon
 r_static
@@ -686,7 +686,7 @@ comma
 l_int|0xFF
 )brace
 comma
-singleline_comment|// END mark 
+singleline_comment|// END mark
 )brace
 suffix:semicolon
 r_int
@@ -1113,6 +1113,10 @@ id|err
 )paren
 suffix:semicolon
 )brace
+id|i
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Fall back to interpreting status bits */
 r_while
 c_loop
@@ -1918,6 +1922,10 @@ c_cond
 id|lba48
 )paren
 (brace
+id|tf-&gt;command
+op_assign
+id|ATA_CMD_VERIFY_EXT
+suffix:semicolon
 id|tf-&gt;hob_nsect
 op_assign
 (paren
@@ -1960,6 +1968,11 @@ l_int|0xff
 suffix:semicolon
 )brace
 r_else
+(brace
+id|tf-&gt;command
+op_assign
+id|ATA_CMD_VERIFY
+suffix:semicolon
 id|tf-&gt;device
 op_or_assign
 (paren
@@ -1970,13 +1983,14 @@ l_int|24
 op_amp
 l_int|0xf
 suffix:semicolon
+)brace
 id|tf-&gt;nsect
 op_assign
 id|n_sect
 op_amp
 l_int|0xff
 suffix:semicolon
-id|tf-&gt;hob_lbah
+id|tf-&gt;lbah
 op_assign
 (paren
 id|sect
@@ -1986,7 +2000,7 @@ l_int|16
 op_amp
 l_int|0xff
 suffix:semicolon
-id|tf-&gt;hob_lbam
+id|tf-&gt;lbam
 op_assign
 (paren
 id|sect
@@ -1996,7 +2010,7 @@ l_int|8
 op_amp
 l_int|0xff
 suffix:semicolon
-id|tf-&gt;hob_lbal
+id|tf-&gt;lbal
 op_assign
 id|sect
 op_amp
@@ -2430,7 +2444,7 @@ id|tf-&gt;device
 op_or_assign
 id|scsicmd
 (braket
-l_int|2
+l_int|6
 )braket
 suffix:semicolon
 id|qc-&gt;nsect
@@ -2741,6 +2755,12 @@ r_return
 suffix:semicolon
 id|err_out
 suffix:colon
+id|ata_qc_free
+c_func
+(paren
+id|qc
+)paren
+suffix:semicolon
 id|ata_bad_cdb
 c_func
 (paren

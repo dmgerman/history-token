@@ -1397,7 +1397,7 @@ r_goto
 id|keep_locked
 suffix:semicolon
 multiline_comment|/* truncate got there first */
-id|spin_lock_irq
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -1423,7 +1423,7 @@ id|page
 )paren
 )paren
 (brace
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -1463,7 +1463,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -1494,7 +1494,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -1816,6 +1816,10 @@ suffix:semicolon
 id|zone-&gt;nr_inactive
 op_sub_assign
 id|nr_taken
+suffix:semicolon
+id|zone-&gt;pages_scanned
+op_add_assign
+id|nr_scan
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -3277,28 +3281,6 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
-id|gfp_mask
-op_amp
-id|__GFP_FS
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|gfp_mask
-op_amp
-id|__GFP_NORETRY
-)paren
-)paren
-id|out_of_memory
-c_func
-(paren
-id|gfp_mask
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 r_for

@@ -2256,7 +2256,7 @@ id|readdirres
 comma
 id|none
 comma
-id|RC_REPLBUFF
+id|RC_NOCACHE
 comma
 l_int|0
 )paren

@@ -2345,7 +2345,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;speedtch_upload_firmware: BLOCK1 uploaded (%d bytes)&quot;
+l_string|&quot;speedtch_upload_firmware: BLOCK1 uploaded (%zu bytes)&quot;
 comma
 id|fw1-&gt;size
 )paren
@@ -2499,7 +2499,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;speedtch_upload_firmware: BLOCK3 uploaded (%d bytes)&quot;
+l_string|&quot;speedtch_upload_firmware: BLOCK3 uploaded (%zu bytes)&quot;
 comma
 id|fw2-&gt;size
 )paren

@@ -90,7 +90,7 @@ op_assign
 dot
 r_typename
 op_assign
-l_string|&quot; mv64360_pic &quot;
+l_string|&quot; mv64360  &quot;
 comma
 dot
 id|enable
@@ -355,7 +355,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-l_int|28
+id|MV64x60_IRQ_DOORBELL
 )paren
 )paren
 )paren
@@ -364,7 +364,9 @@ op_minus
 l_int|1
 suffix:semicolon
 r_return
-l_int|28
+id|mv64360_irq_base
+op_plus
+id|MV64x60_IRQ_DOORBELL
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -461,7 +463,7 @@ op_logical_and
 (paren
 id|irq
 OL
-l_int|28
+id|MV64x60_IRQ_DOORBELL
 )paren
 )paren
 (brace
@@ -595,7 +597,7 @@ op_minus
 id|mv64360_irq_base
 )paren
 op_eq
-l_int|28
+id|MV64x60_IRQ_DOORBELL
 )paren
 (brace
 id|mv64x60_set_bits
@@ -609,7 +611,7 @@ comma
 (paren
 l_int|1
 op_lshift
-l_int|28
+id|MV64x60_IRQ_DOORBELL
 )paren
 )paren
 suffix:semicolon
@@ -747,7 +749,7 @@ op_minus
 id|mv64360_irq_base
 )paren
 op_eq
-l_int|28
+id|MV64x60_IRQ_DOORBELL
 )paren
 (brace
 id|mv64x60_clr_bits
@@ -761,7 +763,7 @@ comma
 (paren
 l_int|1
 op_lshift
-l_int|28
+id|MV64x60_IRQ_DOORBELL
 )paren
 )paren
 suffix:semicolon
@@ -1462,7 +1464,18 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-multiline_comment|/* Register CPU interface error interrupt handler */
+multiline_comment|/* Clear old errors and register CPU interface error intr handler */
+id|mv64x60_write
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64x60_CPU_ERR_CAUSE
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1473,6 +1486,8 @@ id|request_irq
 c_func
 (paren
 id|MV64x60_IRQ_CPU_ERR
+op_plus
+id|mv64360_irq_base
 comma
 id|mv64360_cpu_error_int_handler
 comma
@@ -1515,7 +1530,18 @@ comma
 l_int|0x000000ff
 )paren
 suffix:semicolon
-multiline_comment|/* Register internal SRAM error interrupt handler */
+multiline_comment|/* Clear old errors and register internal SRAM error intr handler */
+id|mv64x60_write
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64360_SRAM_ERR_CAUSE
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1526,6 +1552,8 @@ id|request_irq
 c_func
 (paren
 id|MV64360_IRQ_SRAM_PAR_ERR
+op_plus
+id|mv64360_irq_base
 comma
 id|mv64360_sram_error_int_handler
 comma
@@ -1577,7 +1605,18 @@ op_or_assign
 l_int|0x1
 suffix:semicolon
 multiline_comment|/* enable DPErr on 64460 */
-multiline_comment|/* Register PCI 0 error interrupt handler */
+multiline_comment|/* Clear old errors and register PCI 0 error intr handler */
+id|mv64x60_write
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64x60_PCI0_ERR_CAUSE
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1588,6 +1627,8 @@ id|request_irq
 c_func
 (paren
 id|MV64360_IRQ_PCI0
+op_plus
+id|mv64360_irq_base
 comma
 id|mv64360_pci_error_int_handler
 comma
@@ -1634,7 +1675,18 @@ comma
 id|mask
 )paren
 suffix:semicolon
-multiline_comment|/* Register PCI 1 error interrupt handler */
+multiline_comment|/* Clear old errors and register PCI 1 error intr handler */
+id|mv64x60_write
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64x60_PCI1_ERR_CAUSE
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1645,6 +1697,8 @@ id|request_irq
 c_func
 (paren
 id|MV64360_IRQ_PCI1
+op_plus
+id|mv64360_irq_base
 comma
 id|mv64360_pci_error_int_handler
 comma

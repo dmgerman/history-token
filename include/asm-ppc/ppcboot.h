@@ -52,7 +52,7 @@ r_int
 id|bi_sramsize
 suffix:semicolon
 multiline_comment|/* size&t; of SRAM memory */
-macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_CPM2) || defined(CONFIG_85xx)
+macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_CPM2) || defined(CONFIG_85xx) ||&bslash;&n;&t;defined(CONFIG_83xx)
 DECL|member|bi_immr_base
 r_int
 r_int
@@ -207,7 +207,7 @@ id|bi_hymod_conf
 suffix:semicolon
 multiline_comment|/* hymod configuration information */
 macro_line|#endif
-macro_line|#if defined(CONFIG_EVB64260) || defined(CONFIG_44x) || defined(CONFIG_85xx)
+macro_line|#if defined(CONFIG_EVB64260) || defined(CONFIG_44x) || defined(CONFIG_85xx) ||&bslash;&n;&t;defined(CONFIG_83xx)
 multiline_comment|/* second onboard ethernet port */
 DECL|member|bi_enet1addr
 r_int

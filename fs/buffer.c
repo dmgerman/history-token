@@ -1873,6 +1873,14 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|printk_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|buffer_io_error
 c_func
 (paren
@@ -2785,7 +2793,7 @@ id|page
 )paren
 )paren
 (brace
-id|spin_lock_irq
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -2827,7 +2835,7 @@ id|PAGECACHE_TAG_DIRTY
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp

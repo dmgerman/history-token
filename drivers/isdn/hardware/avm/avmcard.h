@@ -241,6 +241,7 @@ suffix:semicolon
 multiline_comment|/* capimsg data part */
 DECL|member|mbase
 r_void
+id|__iomem
 op_star
 id|mbase
 suffix:semicolon

@@ -20,5 +20,14 @@ r_int
 id|irq_base
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|rm9k_cpu_irq_init
+c_func
+(paren
+r_int
+id|irq_base
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_IRQ_CPU_H */
 eof

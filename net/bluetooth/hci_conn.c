@@ -887,6 +887,15 @@ comma
 op_amp
 id|d-&gt;flags
 )paren
+op_logical_or
+id|test_bit
+c_func
+(paren
+id|HCI_RAW
+comma
+op_amp
+id|d-&gt;flags
+)paren
 )paren
 r_continue
 suffix:semicolon

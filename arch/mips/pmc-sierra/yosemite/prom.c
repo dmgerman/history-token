@@ -75,7 +75,7 @@ op_assign
 r_void
 op_star
 )paren
-id|YOSEMITE_NVRAM_BASE_ADDR
+id|YOSEMITE_RTC_BASE
 suffix:semicolon
 multiline_comment|/* Ask the NVRAM/RTC/watchdog chip to assert reset in 1/16 second */
 id|writeb
@@ -260,7 +260,6 @@ id|_machine_power_off
 op_assign
 id|prom_halt
 suffix:semicolon
-macro_line|#ifdef CONFIG_MIPS32
 id|debug_vectors
 op_assign
 id|cv
@@ -335,6 +334,31 @@ l_string|&quot; &quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
+r_if
+c_cond
+(paren
+(paren
+id|strstr
+c_func
+(paren
+id|arcs_cmdline
+comma
+l_string|&quot;console=ttyS&quot;
+)paren
+)paren
+op_eq
+l_int|NULL
+)paren
+id|strcat
+c_func
+(paren
+id|arcs_cmdline
+comma
+l_string|&quot;console=ttyS0,115200&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -424,7 +448,6 @@ id|env
 op_increment
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_MIPS32 */
 id|mips_machgroup
 op_assign
 id|MACH_GROUP_TITAN

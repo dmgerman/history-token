@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 multiline_comment|/* Add your devices here :)) */
 DECL|variable|idepnp_devices
+r_static
 r_struct
 id|pnp_device_id
 id|idepnp_devices

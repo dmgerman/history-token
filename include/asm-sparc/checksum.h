@@ -188,6 +188,7 @@ c_func
 r_const
 r_int
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -454,6 +455,7 @@ id|src
 suffix:semicolon
 r_register
 r_char
+id|__user
 op_star
 id|d
 id|asm

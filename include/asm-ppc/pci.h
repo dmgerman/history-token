@@ -145,33 +145,19 @@ multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 DECL|macro|pci_domain_nr
 mdefine_line|#define pci_domain_nr(bus) ((struct pci_controller *)(bus)-&gt;sysdata)-&gt;index
 multiline_comment|/* Set the name of the bus as it appears in /proc/bus/pci */
-DECL|function|pci_name_bus
+DECL|function|pci_proc_domain
 r_static
 r_inline
 r_int
-id|pci_name_bus
+id|pci_proc_domain
 c_func
 (paren
-r_char
-op_star
-id|name
-comma
 r_struct
 id|pci_bus
 op_star
 id|bus
 )paren
 (brace
-id|sprintf
-c_func
-(paren
-id|name
-comma
-l_string|&quot;%02x&quot;
-comma
-id|bus-&gt;number
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

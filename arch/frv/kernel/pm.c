@@ -39,7 +39,7 @@ c_func
 r_void
 )paren
 (brace
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -63,7 +63,7 @@ c_func
 l_int|0xb2
 )paren
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -189,7 +189,7 @@ c_func
 r_void
 )paren
 (brace
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -240,7 +240,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -559,7 +559,7 @@ l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* now change cmode */
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -599,7 +599,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren

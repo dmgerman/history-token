@@ -11,6 +11,8 @@ mdefine_line|#define __virt_to_bus(x)&t; __virt_to_phys(x)
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)&t; __phys_to_virt(x)
 macro_line|#ifdef CONFIG_DISCONTIGMEM
+DECL|macro|NODES_SHIFT
+mdefine_line|#define NODES_SHIFT&t;4&t;/* Up to 16 nodes */
 multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */
 macro_line|# ifdef CONFIG_LH7A40X_ONE_BANK_PER_NODE
 DECL|macro|KVADDR_TO_NID

@@ -14,12 +14,12 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
+macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;asm/arch/lubbock.h&gt;
 macro_line|#include &lt;asm/arch/udc.h&gt;
 macro_line|#include &lt;asm/arch/pxafb.h&gt;
 macro_line|#include &lt;asm/arch/mmc.h&gt;
-macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &quot;generic.h&quot;
 DECL|macro|LUB_MISC_WR
 mdefine_line|#define LUB_MISC_WR&t;&t;__LUB_REG(LUBBOCK_FPGA_PHYS + 0x080)
@@ -526,6 +526,11 @@ l_int|0
 op_assign
 (brace
 dot
+id|name
+op_assign
+l_string|&quot;smc91x-regs&quot;
+comma
+dot
 id|start
 op_assign
 l_int|0x0c000000
@@ -569,6 +574,11 @@ l_int|2
 )braket
 op_assign
 (brace
+dot
+id|name
+op_assign
+l_string|&quot;smc91x-attrib&quot;
+comma
 dot
 id|start
 op_assign

@@ -1628,6 +1628,7 @@ op_star
 )paren
 )paren
 (brace
+macro_line|#if !defined(CONFIG_IP_NF_NAT) &amp;&amp; !defined(CONFIG_IP_NF_NAT_MODULE)
 multiline_comment|/* Previously seen (loopback)?  Ignore.  Do this before&n;           fragment check. */
 r_if
 c_cond
@@ -1642,6 +1643,7 @@ id|nfct
 r_return
 id|NF_ACCEPT
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Gather fragments. */
 r_if
 c_cond
@@ -1670,6 +1672,15 @@ c_func
 (paren
 op_star
 id|pskb
+comma
+id|hooknum
+op_eq
+id|NF_IP_PRE_ROUTING
+ques
+c_cond
+id|IP_DEFRAG_CONNTRACK_IN
+suffix:colon
+id|IP_DEFRAG_CONNTRACK_OUT
 )paren
 suffix:semicolon
 r_if
@@ -3614,31 +3625,6 @@ id|ip_conntrack_defrag_local_out_ops
 suffix:semicolon
 id|cleanup_defragops
 suffix:colon
-multiline_comment|/* Frag queues may hold fragments with skb-&gt;dst == NULL */
-id|ip_ct_no_defrag
-op_assign
-l_int|1
-suffix:semicolon
-id|synchronize_net
-c_func
-(paren
-)paren
-suffix:semicolon
-id|local_bh_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ipfrag_flush
-c_func
-(paren
-)paren
-suffix:semicolon
-id|local_bh_enable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|nf_unregister_hook
 c_func
 (paren

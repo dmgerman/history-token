@@ -1516,7 +1516,7 @@ id|bio
 r_return
 suffix:semicolon
 multiline_comment|/*&n;&t; * at least one page was bounced, fill in possible non-highmem&n;&t; * pages&n;&t; */
-id|bio_for_each_segment
+id|__bio_for_each_segment
 c_func
 (paren
 id|from
@@ -1525,6 +1525,8 @@ op_star
 id|bio_orig
 comma
 id|i
+comma
+l_int|0
 )paren
 (brace
 id|to

@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
@@ -4374,16 +4373,6 @@ id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 )brace
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|addr
 suffix:semicolon
@@ -5625,16 +5614,6 @@ comma
 id|grow
 )paren
 suffix:semicolon
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6163,7 +6142,11 @@ c_cond
 (paren
 id|last
 OG
-id|TASK_SIZE
+id|MM_VM_SIZE
+c_func
+(paren
+id|mm
+)paren
 op_logical_or
 id|last
 OL
@@ -6171,7 +6154,11 @@ id|end
 )paren
 id|last
 op_assign
-id|TASK_SIZE
+id|MM_VM_SIZE
+c_func
+(paren
+id|mm
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6735,6 +6722,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|is_vm_hugetlb_page
+c_func
+(paren
+id|vma
+)paren
+op_logical_and
+(paren
+id|addr
+op_amp
+op_complement
+id|HPAGE_MASK
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|mm-&gt;map_count
 op_ge
 id|sysctl_max_map_count
@@ -7037,36 +7044,6 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* we have  start &lt; mpnt-&gt;vm_end  */
-r_if
-c_cond
-(paren
-id|is_vm_hugetlb_page
-c_func
-(paren
-id|mpnt
-)paren
-)paren
-(brace
-r_int
-id|ret
-op_assign
-id|is_aligned_hugepage_range
-c_func
-(paren
-id|start
-comma
-id|len
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-r_return
-id|ret
-suffix:semicolon
-)brace
 multiline_comment|/* if it doesn&squot;t overlap, we have nothing.. */
 id|end
 op_assign
@@ -7093,9 +7070,9 @@ OG
 id|mpnt-&gt;vm_start
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_int
+id|error
+op_assign
 id|split_vma
 c_func
 (paren
@@ -7107,10 +7084,14 @@ id|start
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 r_return
-op_minus
-id|ENOMEM
+id|error
 suffix:semicolon
 id|prev
 op_assign
@@ -7138,9 +7119,9 @@ OG
 id|last-&gt;vm_start
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_int
+id|error
+op_assign
 id|split_vma
 c_func
 (paren
@@ -7152,10 +7133,14 @@ id|end
 comma
 l_int|1
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 r_return
-op_minus
-id|ENOMEM
+id|error
 suffix:semicolon
 )brace
 id|mpnt
@@ -7750,16 +7735,6 @@ id|len
 )paren
 suffix:semicolon
 )brace
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|addr
 suffix:semicolon
@@ -7873,15 +7848,11 @@ id|FIRST_USER_PGD_NR
 op_star
 id|PGDIR_SIZE
 comma
+id|MM_VM_SIZE
+c_func
 (paren
-id|TASK_SIZE
-op_plus
-id|PGDIR_SIZE
-op_minus
-l_int|1
+id|mm
 )paren
-op_amp
-id|PGDIR_MASK
 )paren
 suffix:semicolon
 id|tlb_finish_mmu

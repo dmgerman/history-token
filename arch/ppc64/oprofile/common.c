@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/pmc.h&gt;
 macro_line|#include &quot;op_impl.h&quot;
 r_extern
 r_struct
@@ -22,31 +23,6 @@ r_struct
 id|op_ppc64_model
 op_star
 id|model
-suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|perf_irq
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-DECL|variable|save_perf_irq
-r_static
-r_void
-(paren
-op_star
-id|save_perf_irq
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
 suffix:semicolon
 DECL|variable|ctr
 r_static
@@ -95,19 +71,25 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Install our interrupt handler into the existing hook.  */
-id|save_perf_irq
-op_assign
-id|perf_irq
+r_int
+id|err
 suffix:semicolon
-id|perf_irq
+multiline_comment|/* Grab the hardware */
+id|err
 op_assign
-id|op_handle_interrupt
-suffix:semicolon
-id|mb
+id|reserve_pmc_hardware
 c_func
 (paren
+id|op_handle_interrupt
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 multiline_comment|/* Pre-compute the values to stuff in the hardware registers.  */
 id|model
@@ -149,15 +131,10 @@ c_func
 r_void
 )paren
 (brace
-id|mb
+id|release_pmc_hardware
 c_func
 (paren
 )paren
-suffix:semicolon
-multiline_comment|/* Remove our interrupt handler. We may be removing this module. */
-id|perf_irq
-op_assign
-id|save_perf_irq
 suffix:semicolon
 )brace
 DECL|function|op_ppc64_cpu_start

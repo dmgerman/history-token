@@ -81,14 +81,6 @@ r_struct
 id|i2c_client
 id|client_template
 suffix:semicolon
-multiline_comment|/* unique ID allocation */
-DECL|variable|tda9840_id
-r_static
-r_int
-id|tda9840_id
-op_assign
-l_int|0
-suffix:semicolon
 DECL|function|command
 r_static
 r_int
@@ -602,11 +594,6 @@ r_struct
 id|i2c_client
 )paren
 )paren
-suffix:semicolon
-id|client-&gt;id
-op_assign
-id|tda9840_id
-op_increment
 suffix:semicolon
 id|client-&gt;addr
 op_assign

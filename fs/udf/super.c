@@ -7416,6 +7416,13 @@ id|udf_sb_info
 )paren
 )paren
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|sbi-&gt;s_alloc_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

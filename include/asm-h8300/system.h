@@ -254,5 +254,7 @@ suffix:semicolon
 )brace
 DECL|macro|HARD_RESET_NOW
 mdefine_line|#define HARD_RESET_NOW() ({&t;&t;&bslash;&n;        local_irq_disable();&t;&t;&bslash;&n;        asm(&quot;jmp @@0&quot;);&t;&t;&t;&bslash;&n;})
+DECL|macro|arch_align_stack
+mdefine_line|#define arch_align_stack(x) (x)
 macro_line|#endif /* _H8300_SYSTEM_H */
 eof

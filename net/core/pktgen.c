@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Authors:&n; * Copyright 2001, 2002 by Robert Olsson &lt;robert.olsson@its.uu.se&gt;&n; *                             Uppsala University and&n; *                             Swedish University of Agricultural Sciences&n; *&n; * Alexey Kuznetsov  &lt;kuznet@ms2.inr.ac.ru&gt;&n; * Ben Greear &lt;greearb@candelatech.com&gt;&n; * Jens L&#xfffd;&#xfffd;s &lt;jens.laas@data.slu.se&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; *&n; * A tool for loading the network with preconfigurated packets.&n; * The tool is implemented as a linux module.  Parameters are output &n; * device, delay (to hard_xmit), number of packets, and whether&n; * to use multiple SKBs or just the same one.&n; * pktgen uses the installed interface&squot;s output routine.&n; *&n; * Additional hacking by:&n; *&n; * Jens.Laas@data.slu.se&n; * Improved by ANK. 010120.&n; * Improved by ANK even more. 010212.&n; * MAC address typo fixed. 010417 --ro&n; * Integrated.  020301 --DaveM&n; * Added multiskb option 020301 --DaveM&n; * Scaling of results. 020417--sigurdur@linpro.no&n; * Significant re-work of the module:&n; *   *  Convert to threaded model to more efficiently be able to transmit&n; *       and receive on multiple interfaces at once.&n; *   *  Converted many counters to __u64 to allow longer runs.&n; *   *  Allow configuration of ranges, like min/max IP address, MACs,&n; *       and UDP-ports, for both source and destination, and can&n; *       set to use a random distribution or sequentially walk the range.&n; *   *  Can now change most values after starting.&n; *   *  Place 12-byte packet in UDP payload with magic number,&n; *       sequence number, and timestamp.&n; *   *  Add receiver code that detects dropped pkts, re-ordered pkts, and&n; *       latencies (with micro-second) precision.&n; *   *  Add IOCTL interface to easily get counters &amp; configuration.&n; *   --Ben Greear &lt;greearb@candelatech.com&gt;&n; *&n; * Renamed multiskb to clone_skb and cleaned up sending core for two distinct &n; * skb modes. A clone_skb=0 mode for Ben &quot;ranges&quot; work and a clone_skb != 0 &n; * as a &quot;fastpath&quot; with a configurable number of clones after alloc&squot;s.&n; * clone_skb=0 means all packets are allocated this also means ranges time &n; * stamps etc can be used. clone_skb=100 means 1 malloc is followed by 100 &n; * clones.&n; *&n; * Also moved to /proc/net/pktgen/ &n; * --ro&n; *&n; * Sept 10:  Fixed threading/locking.  Lots of bone-headed and more clever&n; *    mistakes.  Also merged in DaveM&squot;s patch in the -pre6 patch.&n; * --Ben Greear &lt;greearb@candelatech.com&gt;&n; *&n; * Integrated to 2.5.x 021029 --Lucio Maciel (luciomaciel@zipmail.com.br)&n; *&n; * &n; * 021124 Finished major redesign and rewrite for new functionality.&n; * See Documentation/networking/pktgen.txt for how to use this.&n; *&n; * The new operation:&n; * For each CPU one thread/process is created at start. This process checks &n; * for running devices in the if_list and sends packets until count is 0 it &n; * also the thread checks the thread-&gt;control which is used for inter-process &n; * communication. controlling process &quot;posts&quot; operations to the threads this &n; * way. The if_lock should be possible to remove when add/rem_device is merged&n; * into this too.&n; *&n; * By design there should only be *one* &quot;controlling&quot; process. In practice &n; * multiple write accesses gives unpredictable result. Understood by &quot;write&quot; &n; * to /proc gives result code thats should be read be the &quot;writer&quot;.&n; * For pratical use this should be no problem.&n; *&n; * Note when adding devices to a specific CPU there good idea to also assign &n; * /proc/irq/XX/smp_affinity so TX-interrupts gets bound to the same CPU. &n; * --ro&n; *&n; * Fix refcount off by one if first packet fails, potential null deref, &n; * memleak 030710- KJP&n; *&n; * First &quot;ranges&quot; functionality for ipv6 030726 --ro&n; *&n; * Included flow support. 030802 ANK.&n; *&n; * Fixed unaligned access on IA-64 Grant Grundler &lt;grundler@parisc-linux.org&gt;&n; * &n; * Remove if fix from added Harald Welte &lt;laforge@netfilter.org&gt; 040419&n; * ia64 compilation fix from  Aron Griffis &lt;aron@hp.com&gt; 040604&n; *&n; * New xmit() return, do_div and misc clean up by Stephen Hemminger &n; * &lt;shemminger@osdl.org&gt; 040923&n; *&n; * Rany Dunlap fixed u64 printk compiler waring &n; *&n; * Remove FCS from BW calculation.  Lennert Buytenhek &lt;buytenh@wantstofly.org&gt;&n; * New time handling. Lennert Buytenhek &lt;buytenh@wantstofly.org&gt; 041213&n; *&n; * Corrections from Nikolai Malykh (nmalykh@bilim.com) &n; * Removed unused flags F_SET_SRCMAC &amp; F_SET_SRCIP 041230&n; *&n; */
+multiline_comment|/*&n; * Authors:&n; * Copyright 2001, 2002 by Robert Olsson &lt;robert.olsson@its.uu.se&gt;&n; *                             Uppsala University and&n; *                             Swedish University of Agricultural Sciences&n; *&n; * Alexey Kuznetsov  &lt;kuznet@ms2.inr.ac.ru&gt;&n; * Ben Greear &lt;greearb@candelatech.com&gt;&n; * Jens L&#xfffd;&#xfffd;s &lt;jens.laas@data.slu.se&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; *&n; * A tool for loading the network with preconfigurated packets.&n; * The tool is implemented as a linux module.  Parameters are output &n; * device, delay (to hard_xmit), number of packets, and whether&n; * to use multiple SKBs or just the same one.&n; * pktgen uses the installed interface&squot;s output routine.&n; *&n; * Additional hacking by:&n; *&n; * Jens.Laas@data.slu.se&n; * Improved by ANK. 010120.&n; * Improved by ANK even more. 010212.&n; * MAC address typo fixed. 010417 --ro&n; * Integrated.  020301 --DaveM&n; * Added multiskb option 020301 --DaveM&n; * Scaling of results. 020417--sigurdur@linpro.no&n; * Significant re-work of the module:&n; *   *  Convert to threaded model to more efficiently be able to transmit&n; *       and receive on multiple interfaces at once.&n; *   *  Converted many counters to __u64 to allow longer runs.&n; *   *  Allow configuration of ranges, like min/max IP address, MACs,&n; *       and UDP-ports, for both source and destination, and can&n; *       set to use a random distribution or sequentially walk the range.&n; *   *  Can now change most values after starting.&n; *   *  Place 12-byte packet in UDP payload with magic number,&n; *       sequence number, and timestamp.&n; *   *  Add receiver code that detects dropped pkts, re-ordered pkts, and&n; *       latencies (with micro-second) precision.&n; *   *  Add IOCTL interface to easily get counters &amp; configuration.&n; *   --Ben Greear &lt;greearb@candelatech.com&gt;&n; *&n; * Renamed multiskb to clone_skb and cleaned up sending core for two distinct &n; * skb modes. A clone_skb=0 mode for Ben &quot;ranges&quot; work and a clone_skb != 0 &n; * as a &quot;fastpath&quot; with a configurable number of clones after alloc&squot;s.&n; * clone_skb=0 means all packets are allocated this also means ranges time &n; * stamps etc can be used. clone_skb=100 means 1 malloc is followed by 100 &n; * clones.&n; *&n; * Also moved to /proc/net/pktgen/ &n; * --ro&n; *&n; * Sept 10:  Fixed threading/locking.  Lots of bone-headed and more clever&n; *    mistakes.  Also merged in DaveM&squot;s patch in the -pre6 patch.&n; * --Ben Greear &lt;greearb@candelatech.com&gt;&n; *&n; * Integrated to 2.5.x 021029 --Lucio Maciel (luciomaciel@zipmail.com.br)&n; *&n; * &n; * 021124 Finished major redesign and rewrite for new functionality.&n; * See Documentation/networking/pktgen.txt for how to use this.&n; *&n; * The new operation:&n; * For each CPU one thread/process is created at start. This process checks &n; * for running devices in the if_list and sends packets until count is 0 it &n; * also the thread checks the thread-&gt;control which is used for inter-process &n; * communication. controlling process &quot;posts&quot; operations to the threads this &n; * way. The if_lock should be possible to remove when add/rem_device is merged&n; * into this too.&n; *&n; * By design there should only be *one* &quot;controlling&quot; process. In practice &n; * multiple write accesses gives unpredictable result. Understood by &quot;write&quot; &n; * to /proc gives result code thats should be read be the &quot;writer&quot;.&n; * For pratical use this should be no problem.&n; *&n; * Note when adding devices to a specific CPU there good idea to also assign &n; * /proc/irq/XX/smp_affinity so TX-interrupts gets bound to the same CPU. &n; * --ro&n; *&n; * Fix refcount off by one if first packet fails, potential null deref, &n; * memleak 030710- KJP&n; *&n; * First &quot;ranges&quot; functionality for ipv6 030726 --ro&n; *&n; * Included flow support. 030802 ANK.&n; *&n; * Fixed unaligned access on IA-64 Grant Grundler &lt;grundler@parisc-linux.org&gt;&n; * &n; * Remove if fix from added Harald Welte &lt;laforge@netfilter.org&gt; 040419&n; * ia64 compilation fix from  Aron Griffis &lt;aron@hp.com&gt; 040604&n; *&n; * New xmit() return, do_div and misc clean up by Stephen Hemminger &n; * &lt;shemminger@osdl.org&gt; 040923&n; *&n; * Rany Dunlap fixed u64 printk compiler waring &n; *&n; * Remove FCS from BW calculation.  Lennert Buytenhek &lt;buytenh@wantstofly.org&gt;&n; * New time handling. Lennert Buytenhek &lt;buytenh@wantstofly.org&gt; 041213&n; *&n; * Corrections from Nikolai Malykh (nmalykh@bilim.com) &n; * Removed unused flags F_SET_SRCMAC &amp; F_SET_SRCIP 041230&n; *&n; * interruptible_sleep_on_timeout() replaced Nishanth Aravamudan &lt;nacc@us.ibm.com&gt; &n; * 050103&n; */
 macro_line|#include &lt;linux/sys.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -29,6 +29,7 @@ macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
@@ -41,7 +42,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt; /* do_div */
 macro_line|#include &lt;asm/timex.h&gt;
 DECL|macro|VERSION
-mdefine_line|#define VERSION  &quot;pktgen v2.54: Packet Generator for packet performance testing.&bslash;n&quot;
+mdefine_line|#define VERSION  &quot;pktgen v2.58: Packet Generator for packet performance testing.&bslash;n&quot;
 multiline_comment|/* #define PG_DEBUG(a) a */
 DECL|macro|PG_DEBUG
 mdefine_line|#define PG_DEBUG(a) 
@@ -67,10 +68,6 @@ DECL|macro|F_TXSIZE_RND
 mdefine_line|#define F_TXSIZE_RND  (1&lt;&lt;6)  /* Transmit size is random */
 DECL|macro|F_IPV6
 mdefine_line|#define F_IPV6        (1&lt;&lt;7)  /* Interface in IPV6 Mode */
-DECL|macro|L_PUSH
-mdefine_line|#define L_PUSH(t, i)              {i-&gt;next = t; t=i;}
-DECL|macro|L_POP
-mdefine_line|#define L_POP(t, i)               {i=t; if(i) t = i-&gt;next;}
 multiline_comment|/* Thread control flag bits */
 DECL|macro|T_TERMINATE
 mdefine_line|#define T_TERMINATE   (1&lt;&lt;0)  
@@ -1065,6 +1062,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1088,6 +1086,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1169,6 +1168,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -1193,6 +1193,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -1471,8 +1472,9 @@ id|notifier_block
 id|pktgen_notifier_block
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|pktgen_device_event
 comma
 )brace
@@ -1526,6 +1528,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1653,6 +1656,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2660,6 +2664,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -2757,6 +2762,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -2859,6 +2865,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -2958,6 +2965,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -3020,6 +3028,12 @@ r_int
 id|tmp
 op_assign
 l_int|0
+suffix:semicolon
+r_char
+id|buf
+(braket
+l_int|128
+)braket
 suffix:semicolon
 id|pg_result
 op_assign
@@ -4756,12 +4770,6 @@ l_string|&quot;dst&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-id|IP_NAME_SZ
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -4917,12 +4925,6 @@ l_string|&quot;dst_max&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-id|IP_NAME_SZ
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -5078,12 +5080,6 @@ l_string|&quot;dst6&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-l_int|128
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -5095,7 +5091,10 @@ id|user_buffer
 id|i
 )braket
 comma
-l_int|128
+r_sizeof
+(paren
+id|buf
+)paren
 op_minus
 l_int|1
 )paren
@@ -5214,12 +5213,6 @@ l_string|&quot;dst6_min&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-l_int|128
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -5231,7 +5224,10 @@ id|user_buffer
 id|i
 )braket
 comma
-l_int|128
+r_sizeof
+(paren
+id|buf
+)paren
 op_minus
 l_int|1
 )paren
@@ -5350,12 +5346,6 @@ l_string|&quot;dst6_max&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-l_int|128
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -5367,7 +5357,10 @@ id|user_buffer
 id|i
 )braket
 comma
-l_int|128
+r_sizeof
+(paren
+id|buf
+)paren
 op_minus
 l_int|1
 )paren
@@ -5476,12 +5469,6 @@ l_string|&quot;src6&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-l_int|128
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -5493,7 +5480,10 @@ id|user_buffer
 id|i
 )braket
 comma
-l_int|128
+r_sizeof
+(paren
+id|buf
+)paren
 op_minus
 l_int|1
 )paren
@@ -5612,12 +5602,6 @@ l_string|&quot;src_min&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-id|IP_NAME_SZ
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -5773,12 +5757,6 @@ l_string|&quot;src_max&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-id|IP_NAME_SZ
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -6736,15 +6714,22 @@ c_func
 id|t
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|pkt_dev
 op_assign
 id|t-&gt;if_list
 suffix:semicolon
-r_while
-c_loop
-(paren
 id|pkt_dev
-op_logical_and
+suffix:semicolon
+id|pkt_dev
+op_assign
+id|pkt_dev-&gt;next
+)paren
+r_if
+c_cond
+(paren
 id|pkt_dev-&gt;running
 )paren
 (brace
@@ -6760,10 +6745,6 @@ comma
 id|pkt_dev-&gt;ifname
 )paren
 suffix:semicolon
-id|pkt_dev
-op_assign
-id|pkt_dev-&gt;next
-suffix:semicolon
 )brace
 id|p
 op_add_assign
@@ -6775,15 +6756,22 @@ comma
 l_string|&quot;&bslash;nStopped: &quot;
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|pkt_dev
 op_assign
 id|t-&gt;if_list
 suffix:semicolon
-r_while
-c_loop
-(paren
 id|pkt_dev
-op_logical_and
+suffix:semicolon
+id|pkt_dev
+op_assign
+id|pkt_dev-&gt;next
+)paren
+r_if
+c_cond
+(paren
 op_logical_neg
 id|pkt_dev-&gt;running
 )paren
@@ -6799,10 +6787,6 @@ l_string|&quot;%s &quot;
 comma
 id|pkt_dev-&gt;ifname
 )paren
-suffix:semicolon
-id|pkt_dev
-op_assign
-id|pkt_dev-&gt;next
 suffix:semicolon
 )brace
 r_if
@@ -6866,6 +6850,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -12280,10 +12265,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|running
+DECL|function|thread_is_running
 r_static
 r_int
-id|running
+id|thread_is_running
 c_func
 (paren
 r_struct
@@ -12346,16 +12331,6 @@ op_star
 id|t
 )paren
 (brace
-id|wait_queue_head_t
-id|queue
-suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|queue
-)paren
-suffix:semicolon
 id|if_lock
 c_func
 (paren
@@ -12365,7 +12340,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|running
+id|thread_is_running
 c_func
 (paren
 id|t
@@ -12378,15 +12353,10 @@ c_func
 id|t
 )paren
 suffix:semicolon
-id|interruptible_sleep_on_timeout
+id|msleep_interruptible
 c_func
 (paren
-op_amp
-id|queue
-comma
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 r_if
@@ -12811,17 +12781,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pkt_dev-&gt;skb
-)paren
-id|kfree_skb
-c_func
-(paren
-id|pkt_dev-&gt;skb
-)paren
-suffix:semicolon
 id|pkt_dev-&gt;stopped_at
 op_assign
 id|getCurUs
@@ -12846,6 +12805,21 @@ id|pkt_dev-&gt;skb
 op_member_access_from_pointer
 id|nr_frags
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pkt_dev-&gt;skb
+)paren
+id|kfree_skb
+c_func
+(paren
+id|pkt_dev-&gt;skb
+)paren
+suffix:semicolon
+id|pkt_dev-&gt;skb
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
@@ -13761,6 +13735,12 @@ op_star
 id|t
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_struct
 id|pktgen_dev
 op_star
@@ -14003,7 +13983,8 @@ suffix:semicolon
 )brace
 )brace
 r_else
-id|interruptible_sleep_on_timeout
+(brace
+id|prepare_to_wait
 c_func
 (paren
 op_amp
@@ -14011,11 +13992,33 @@ op_amp
 id|t-&gt;queue
 )paren
 comma
+op_amp
+id|wait
+comma
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|HZ
 op_div
 l_int|10
 )paren
 suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+(paren
+id|t-&gt;queue
+)paren
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* &n;&t;&t; * Back from sleep, either due to the timeout or signal.&n;&t;&t; * We check if we have any &quot;posted&quot; work for us.&n;&t;&t; */
 r_if
 c_cond
@@ -14228,13 +14231,10 @@ op_eq
 l_int|0
 )paren
 (brace
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 )brace
-id|out
-suffix:colon
 id|if_unlock
 c_func
 (paren
@@ -14309,13 +14309,13 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|L_PUSH
-c_func
-(paren
+id|pkt_dev-&gt;next
+op_assign
 id|t-&gt;if_list
-comma
+suffix:semicolon
+id|t-&gt;if_list
+op_assign
 id|pkt_dev
-)paren
 suffix:semicolon
 id|pkt_dev-&gt;pg_thread
 op_assign
@@ -14589,7 +14589,7 @@ id|pkt_dev-&gt;fname
 comma
 l_int|0600
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -14901,7 +14901,7 @@ id|t-&gt;fname
 comma
 l_int|0600
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -15238,7 +15238,7 @@ id|module_fname
 comma
 l_int|0600
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -15374,24 +15374,20 @@ op_or_assign
 id|T_TERMINATE
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|t
-op_eq
-id|pktgen_threads
-)paren
-(brace
-id|interruptible_sleep_on_timeout
+id|wait_event_interruptible_timeout
 c_func
 (paren
-op_amp
 id|queue
+comma
+(paren
+id|t
+op_ne
+id|pktgen_threads
+)paren
 comma
 id|HZ
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Un-register us from receiving netdevice events */
 id|unregister_netdevice_notifier

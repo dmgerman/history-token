@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright (c) 2003-2004  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * FILE&t;&t;: megaraid_mm.c&n; * Version&t;: v2.20.2.3 (Dec 09 2004)&n; *&n; * Common management module&n; */
+multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright (c) 2003-2004  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * FILE&t;&t;: megaraid_mm.c&n; * Version&t;: v2.20.2.5 (Jan 21 2005)&n; *&n; * Common management module&n; */
 macro_line|#include &quot;megaraid_mm.h&quot;
 singleline_comment|// Entry points for char node driver
 r_static
@@ -286,6 +286,13 @@ c_func
 id|mraid_mm_unregister_adp
 )paren
 suffix:semicolon
+DECL|variable|mraid_mm_adapter_app_handle
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mraid_mm_adapter_app_handle
+)paren
+suffix:semicolon
 DECL|variable|majorno
 r_static
 r_int
@@ -310,6 +317,7 @@ id|list_head
 id|adapters_list_g
 suffix:semicolon
 DECL|variable|wait_q
+r_static
 id|wait_queue_head_t
 id|wait_q
 suffix:semicolon
@@ -3241,6 +3249,66 @@ id|adapter
 suffix:semicolon
 r_return
 id|rval
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * mraid_mm_adapter_app_handle - return the application handle for this adapter&n; *&n; * For the given driver data, locate the adadpter in our global list and&n; * return the corresponding handle, which is also used by applications to&n; * uniquely identify an adapter.&n; *&n; * @param unique_id : adapter unique identifier&n; *&n; * @return adapter handle if found in the list&n; * @return 0 if adapter could not be located, should never happen though&n; */
+r_uint32
+DECL|function|mraid_mm_adapter_app_handle
+id|mraid_mm_adapter_app_handle
+c_func
+(paren
+r_uint32
+id|unique_id
+)paren
+(brace
+id|mraid_mmadp_t
+op_star
+id|adapter
+suffix:semicolon
+id|mraid_mmadp_t
+op_star
+id|tmp
+suffix:semicolon
+r_int
+id|index
+op_assign
+l_int|0
+suffix:semicolon
+id|list_for_each_entry_safe
+c_func
+(paren
+id|adapter
+comma
+id|tmp
+comma
+op_amp
+id|adapters_list_g
+comma
+id|list
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|adapter-&gt;unique_id
+op_eq
+id|unique_id
+)paren
+(brace
+r_return
+id|MKADAP
+c_func
+(paren
+id|index
+)paren
+suffix:semicolon
+)brace
+id|index
+op_increment
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * mraid_mm_setup_dma_pools - Set up dma buffer pools per adapter&n; *&n; * @adp&t;: Adapter softstate&n; *&n; * We maintain a pool of dma buffers per each adapter. Each pool has one&n; * buffer. E.g, we may have 5 dma pools - one each for 4k, 8k ... 64k buffers.&n; * We have just one 4k buffer in 4k pool, one 8k buffer in 8k pool etc. We&n; * dont&squot; want to waste too much memory by allocating more buffers per each&n; * pool.&n; */

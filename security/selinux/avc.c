@@ -500,6 +500,7 @@ id|perm
 op_amp
 id|av
 )paren
+(brace
 id|audit_log_format
 c_func
 (paren
@@ -513,6 +514,12 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|av
+op_and_assign
+op_complement
+id|perm
+suffix:semicolon
+)brace
 id|i
 op_increment
 suffix:semicolon
@@ -600,6 +607,7 @@ c_func
 id|av_perm_to_string
 )paren
 )paren
+(brace
 id|audit_log_format
 c_func
 (paren
@@ -615,6 +623,12 @@ dot
 id|name
 )paren
 suffix:semicolon
+id|av
+op_and_assign
+op_complement
+id|perm
+suffix:semicolon
+)brace
 )brace
 id|i
 op_increment
@@ -624,6 +638,21 @@ op_lshift_assign
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|av
+)paren
+id|audit_log_format
+c_func
+(paren
+id|ab
+comma
+l_string|&quot; 0x%x&quot;
+comma
+id|av
+)paren
+suffix:semicolon
 id|audit_log_format
 c_func
 (paren

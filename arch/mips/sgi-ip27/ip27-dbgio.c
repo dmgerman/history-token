@@ -1,0 +1,126 @@
+multiline_comment|/*&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Copyright 2004 Ralf Baechle &lt;ralf@linux-mips.org&gt;&n; */
+macro_line|#include &lt;asm/sn/addrs.h&gt;
+macro_line|#include &lt;asm/sn/sn0/hub.h&gt;
+macro_line|#include &lt;asm/sn/klconfig.h&gt;
+macro_line|#include &lt;asm/sn/ioc3.h&gt;
+macro_line|#include &lt;asm/sn/sn_private.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/serial_reg.h&gt;
+DECL|macro|IOC3_CLK
+mdefine_line|#define IOC3_CLK        (22000000 / 3)
+DECL|macro|IOC3_FLAGS
+mdefine_line|#define IOC3_FLAGS      (0)
+DECL|function|console_uart
+r_static
+r_inline
+r_struct
+id|ioc3_uartregs
+op_star
+id|console_uart
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|ioc3
+op_star
+id|ioc3
+suffix:semicolon
+id|ioc3
+op_assign
+(paren
+r_struct
+id|ioc3
+op_star
+)paren
+id|KL_CONFIG_CH_CONS_INFO
+c_func
+(paren
+id|get_nasid
+c_func
+(paren
+)paren
+)paren
+op_member_access_from_pointer
+id|memory_base
+suffix:semicolon
+r_return
+op_amp
+id|ioc3-&gt;sregs.uarta
+suffix:semicolon
+)brace
+DECL|function|getDebugChar
+r_int
+r_char
+id|getDebugChar
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|ioc3_uartregs
+op_star
+id|uart
+op_assign
+id|console_uart
+c_func
+(paren
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|uart-&gt;iu_lsr
+op_amp
+id|UART_LSR_DR
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|uart-&gt;iu_rbr
+suffix:semicolon
+)brace
+DECL|function|putDebugChar
+r_void
+id|putDebugChar
+c_func
+(paren
+r_int
+r_char
+id|c
+)paren
+(brace
+r_struct
+id|ioc3_uartregs
+op_star
+id|uart
+op_assign
+id|console_uart
+c_func
+(paren
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|uart-&gt;iu_lsr
+op_amp
+id|UART_LSR_THRE
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+id|uart-&gt;iu_thr
+op_assign
+id|c
+suffix:semicolon
+)brace
+eof

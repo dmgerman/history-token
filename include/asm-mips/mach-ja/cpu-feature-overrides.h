@@ -29,6 +29,8 @@ DECL|macro|cpu_has_dc_aliases
 mdefine_line|#define cpu_has_dc_aliases&t;0
 DECL|macro|cpu_has_ic_fills_f_dc
 mdefine_line|#define cpu_has_ic_fills_f_dc&t;0
+DECL|macro|cpu_icache_snoops_remote_store
+mdefine_line|#define cpu_icache_snoops_remote_store&t;0
 DECL|macro|cpu_has_nofpuex
 mdefine_line|#define cpu_has_nofpuex&t;&t;0
 DECL|macro|cpu_has_64bits

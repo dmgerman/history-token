@@ -974,9 +974,10 @@ id|fp_state
 )paren
 )paren
 suffix:semicolon
-id|current-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|release_thread
@@ -1137,7 +1138,12 @@ suffix:semicolon
 r_int
 id|used_math
 op_assign
-id|current-&gt;used_math
+op_logical_neg
+op_logical_neg
+id|used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

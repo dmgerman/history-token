@@ -622,6 +622,7 @@ dot
 id|write
 op_assign
 id|sb1250_pcibios_write
+comma
 )brace
 suffix:semicolon
 DECL|variable|sb1250_mem_resource
@@ -733,15 +734,24 @@ id|pci_probe_only
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* Avoid ISA compat ranges.  */
+id|PCIBIOS_MIN_IO
+op_assign
+l_int|0x00008000UL
+suffix:semicolon
+id|PCIBIOS_MIN_MEM
+op_assign
+l_int|0x01000000UL
+suffix:semicolon
 multiline_comment|/* Set I/O resource limits.  */
 id|ioport_resource.end
 op_assign
-l_int|0x01ffffff
+l_int|0x01ffffffUL
 suffix:semicolon
 multiline_comment|/* 32MB accessible by sb1250 */
 id|iomem_resource.end
 op_assign
-l_int|0xffffffff
+l_int|0xffffffffUL
 suffix:semicolon
 multiline_comment|/* no HT support yet */
 id|cfg_space

@@ -31,7 +31,7 @@ id|stripes
 suffix:semicolon
 multiline_comment|/* The size of this target / num. stripes */
 DECL|member|stripe_width
-r_uint32
+id|sector_t
 id|stripe_width
 suffix:semicolon
 multiline_comment|/* stripe chunk size */
@@ -711,7 +711,7 @@ suffix:semicolon
 r_uint32
 id|stripe
 op_assign
-id|do_div
+id|sector_div
 c_func
 (paren
 id|chunk

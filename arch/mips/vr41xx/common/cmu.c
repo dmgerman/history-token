@@ -1,16 +1,28 @@
-multiline_comment|/*&n; *  cmu.c, Clock Mask Unit routines for the NEC VR4100 series.&n; *&n; *  Copyright (C) 2001-2002  MontaVista Software Inc.&n; *    Author: Yoichi Yuasa &lt;yyuasa@mvista.com or source@mvista.com&gt;&n; *  Copuright (C) 2003-2004  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  cmu.c, Clock Mask Unit routines for the NEC VR4100 series.&n; *&n; *  Copyright (C) 2001-2002  MontaVista Software Inc.&n; *    Author: Yoichi Yuasa &lt;yyuasa@mvista.com or source@mvista.com&gt;&n; *  Copuright (C) 2003-2005  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * Changes:&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - New creation, NEC VR4122 and VR4131 are supported.&n; *  - Added support for NEC VR4111 and VR4121.&n; *&n; *  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *  - Added support for NEC VR4133.&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
-DECL|macro|CMUCLKMSK_TYPE1
-mdefine_line|#define CMUCLKMSK_TYPE1&t;KSEG1ADDR(0x0b000060)
-DECL|macro|CMUCLKMSK_TYPE2
-mdefine_line|#define CMUCLKMSK_TYPE2&t;KSEG1ADDR(0x0f000060)
+DECL|macro|CMU_TYPE1_BASE
+mdefine_line|#define CMU_TYPE1_BASE&t;0x0b000060UL
+DECL|macro|CMU_TYPE1_SIZE
+mdefine_line|#define CMU_TYPE1_SIZE&t;0x4
+DECL|macro|CMU_TYPE2_BASE
+mdefine_line|#define CMU_TYPE2_BASE&t;0x0f000060UL
+DECL|macro|CMU_TYPE2_SIZE
+mdefine_line|#define CMU_TYPE2_SIZE&t;0x4
+DECL|macro|CMU_TYPE3_BASE
+mdefine_line|#define CMU_TYPE3_BASE&t;0x0f000060UL
+DECL|macro|CMU_TYPE3_SIZE
+mdefine_line|#define CMU_TYPE3_SIZE&t;0x8
+DECL|macro|CMUCLKMSK
+mdefine_line|#define CMUCLKMSK&t;0x0
 DECL|macro|MSKPIU
 mdefine_line|#define MSKPIU&t;&t;0x0001
 DECL|macro|MSKSIU
@@ -38,7 +50,7 @@ mdefine_line|#define MSKSCSI&t;0x1000
 DECL|macro|MSKPPCIU
 mdefine_line|#define MSKPPCIU&t;0x2000
 DECL|macro|CMUCLKMSK2
-mdefine_line|#define CMUCLKMSK2&t;KSEG1ADDR(0x0f000064)
+mdefine_line|#define CMUCLKMSK2&t;0x4
 DECL|macro|MSKCEU
 mdefine_line|#define MSKCEU&t;&t;0x0001
 DECL|macro|MSKMAC0
@@ -47,7 +59,9 @@ DECL|macro|MSKMAC1
 mdefine_line|#define MSKMAC1&t;0x0004
 DECL|variable|cmu_base
 r_static
-r_uint32
+r_void
+id|__iomem
+op_star
 id|cmu_base
 suffix:semicolon
 DECL|variable|cmuclkmsk
@@ -63,14 +77,10 @@ r_static
 id|spinlock_t
 id|cmu_lock
 suffix:semicolon
-DECL|macro|read_cmuclkmsk
-mdefine_line|#define read_cmuclkmsk()&t;readw(cmu_base)
-DECL|macro|read_cmuclkmsk2
-mdefine_line|#define read_cmuclkmsk2()&t;readw(CMUCLKMSK2)
-DECL|macro|write_cmuclkmsk
-mdefine_line|#define write_cmuclkmsk()&t;writew(cmuclkmsk, cmu_base)
-DECL|macro|write_cmuclkmsk2
-mdefine_line|#define write_cmuclkmsk2()&t;writew(cmuclkmsk2, CMUCLKMSK2)
+DECL|macro|cmu_read
+mdefine_line|#define cmu_read(offset)&t;&t;readw(cmu_base + (offset))
+DECL|macro|cmu_write
+mdefine_line|#define cmu_write(offset, value)&t;writew((value), cmu_base + (offset))
 DECL|function|vr41xx_supply_clock
 r_void
 id|vr41xx_supply_clock
@@ -254,15 +264,21 @@ id|clock
 op_eq
 id|ETHER1_CLOCK
 )paren
-id|write_cmuclkmsk2
+id|cmu_write
 c_func
 (paren
+id|CMUCLKMSK2
+comma
+id|cmuclkmsk2
 )paren
 suffix:semicolon
 r_else
-id|write_cmuclkmsk
+id|cmu_write
 c_func
 (paren
+id|CMUCLKMSK
+comma
+id|cmuclkmsk
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -273,6 +289,13 @@ id|cmu_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vr41xx_supply_clock
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|vr41xx_supply_clock
+)paren
+suffix:semicolon
 DECL|function|vr41xx_mask_clock
 r_void
 id|vr41xx_mask_clock
@@ -533,15 +556,21 @@ id|clock
 op_eq
 id|ETHER1_CLOCK
 )paren
-id|write_cmuclkmsk2
+id|cmu_write
 c_func
 (paren
+id|CMUCLKMSK2
+comma
+id|cmuclkmsk2
 )paren
 suffix:semicolon
 r_else
-id|write_cmuclkmsk
+id|cmu_write
 c_func
 (paren
+id|CMUCLKMSK
+comma
+id|cmuclkmsk
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -552,6 +581,13 @@ id|cmu_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vr41xx_mask_clock
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|vr41xx_mask_clock
+)paren
+suffix:semicolon
 DECL|function|vr41xx_cmu_init
 r_static
 r_int
@@ -562,6 +598,12 @@ c_func
 r_void
 )paren
 (brace
+r_int
+r_int
+id|start
+comma
+id|size
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -574,9 +616,13 @@ suffix:colon
 r_case
 id|CPU_VR4121
 suffix:colon
-id|cmu_base
+id|start
 op_assign
-id|CMUCLKMSK_TYPE1
+id|CMU_TYPE1_BASE
+suffix:semicolon
+id|size
+op_assign
+id|CMU_TYPE1_SIZE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -586,25 +632,26 @@ suffix:colon
 r_case
 id|CPU_VR4131
 suffix:colon
-id|cmu_base
+id|start
 op_assign
-id|CMUCLKMSK_TYPE2
+id|CMU_TYPE2_BASE
+suffix:semicolon
+id|size
+op_assign
+id|CMU_TYPE2_SIZE
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|CPU_VR4133
 suffix:colon
-id|cmu_base
+id|start
 op_assign
-id|CMUCLKMSK_TYPE2
+id|CMU_TYPE3_BASE
 suffix:semicolon
-id|cmuclkmsk2
+id|size
 op_assign
-id|read_cmuclkmsk2
-c_func
-(paren
-)paren
+id|CMU_TYPE3_SIZE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -619,11 +666,77 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|cmuclkmsk
-op_assign
-id|read_cmuclkmsk
+r_if
+c_cond
+(paren
+id|request_mem_region
 c_func
 (paren
+id|start
+comma
+id|size
+comma
+l_string|&quot;CMU&quot;
+)paren
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+id|cmu_base
+op_assign
+id|ioremap
+c_func
+(paren
+id|start
+comma
+id|size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmu_base
+op_eq
+l_int|NULL
+)paren
+(brace
+id|release_mem_region
+c_func
+(paren
+id|start
+comma
+id|size
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+id|cmuclkmsk
+op_assign
+id|cmu_read
+c_func
+(paren
+id|CMUCLKMSK
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current_cpu_data.cputype
+op_eq
+id|CPU_VR4133
+)paren
+id|cmuclkmsk2
+op_assign
+id|cmu_read
+c_func
+(paren
+id|CMUCLKMSK2
 )paren
 suffix:semicolon
 id|spin_lock_init
@@ -638,7 +751,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|vr41xx_cmu_init
-id|early_initcall
+id|core_initcall
 c_func
 (paren
 id|vr41xx_cmu_init

@@ -2352,35 +2352,14 @@ l_int|1
 )paren
 )paren
 (brace
-id|addr
+id|page
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|__get_free_pages
+id|alloc_pages
 c_func
 (paren
 id|flags
 comma
 id|cachep-&gt;gfporder
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|addr
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-id|page
-op_assign
-id|virt_to_page
-c_func
-(paren
-id|addr
 )paren
 suffix:semicolon
 )brace
@@ -2398,6 +2377,7 @@ comma
 id|cachep-&gt;gfporder
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2415,7 +2395,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-)brace
 id|i
 op_assign
 (paren
@@ -11144,7 +11123,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot; : tunables &lt;batchcount&gt; &lt;limit&gt; &lt;sharedfactor&gt;&quot;
+l_string|&quot; : tunables &lt;limit&gt; &lt;batchcount&gt; &lt;sharedfactor&gt;&quot;
 )paren
 suffix:semicolon
 id|seq_puts

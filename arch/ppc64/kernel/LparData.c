@@ -81,7 +81,7 @@ multiline_comment|/* 64-bit Naca address */
 dot
 id|xMsNucDataOffset
 op_assign
-l_int|0x6000
+l_int|0x4800
 comma
 multiline_comment|/* offset of LparMap within loadarea (see head.S) */
 dot
@@ -1035,6 +1035,13 @@ DECL|variable|msChunks
 r_struct
 id|msChunks
 id|msChunks
+suffix:semicolon
+DECL|variable|msChunks
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|msChunks
+)paren
 suffix:semicolon
 multiline_comment|/* Depending on whether this is called from iSeries or pSeries setup&n; * code, the location of the msChunks struct may or may not have&n; * to be reloc&squot;d, so we force the caller to do that for us by passing&n; * in a pointer to the structure.&n; */
 r_int

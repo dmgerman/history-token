@@ -24,6 +24,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -373,7 +374,7 @@ op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* External 5: PHY */
+multiline_comment|/* External  5: PHY */
 l_int|0x0
 comma
 multiline_comment|/* External  6: */
@@ -468,6 +469,16 @@ c_func
 (paren
 id|m
 comma
+l_string|&quot;chip&bslash;t&bslash;t: MPC%s&bslash;n&quot;
+comma
+id|cur_ppc_sys_spec-&gt;ppc_sys_name
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
 l_string|&quot;Vendor&bslash;t&bslash;t: Freescale Semiconductor&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -476,7 +487,9 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;Machine&bslash;t&bslash;t: CDS (%x)&bslash;n&quot;
+l_string|&quot;Machine&bslash;t&bslash;t: CDS - MPC%s (%x)&bslash;n&quot;
+comma
+id|cur_ppc_sys_spec-&gt;ppc_sys_name
 comma
 id|cadmus
 (braket
@@ -726,7 +739,7 @@ op_plus
 l_int|0x10000
 )paren
 suffix:semicolon
-multiline_comment|/* we let openpic interrupts starting from an offset, to&n;         * leave space for cascading interrupts underneath.&n;         */
+multiline_comment|/* we let openpic interrupts starting from an offset, to&n;&t; * leave space for cascading interrupts underneath.&n;&t; */
 id|openpic_init
 c_func
 (paren
@@ -1041,9 +1054,13 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|ARCADIA_HOST_BRIDGE_IDSEL
-mdefine_line|#define ARCADIA_HOST_BRIDGE_IDSEL     17
+mdefine_line|#define ARCADIA_HOST_BRIDGE_IDSEL&t;17
 DECL|macro|ARCADIA_2ND_BRIDGE_IDSEL
-mdefine_line|#define ARCADIA_2ND_BRIDGE_IDSEL     3
+mdefine_line|#define ARCADIA_2ND_BRIDGE_IDSEL&t;3
+r_extern
+r_int
+id|mpc85xx_pci1_last_busno
+suffix:semicolon
 r_int
 DECL|function|mpc85xx_exclude_device
 id|mpc85xx_exclude_device
@@ -1075,13 +1092,21 @@ r_return
 id|PCIBIOS_DEVICE_NOT_FOUND
 suffix:semicolon
 macro_line|#ifdef CONFIG_85xx_PCI2
-multiline_comment|/* With the current code we know PCI2 will be bus 2, however this may&n;&t; * not be guarnteed */
+r_if
+c_cond
+(paren
+id|mpc85xx_pci1_last_busno
+)paren
 r_if
 c_cond
 (paren
 id|bus
 op_eq
-l_int|2
+(paren
+id|mpc85xx_pci1_last_busno
+op_plus
+l_int|1
+)paren
 op_logical_and
 id|PCI_SLOT
 c_func
@@ -1134,6 +1159,11 @@ id|PCIBIOS_SUCCESSFUL
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PCI */
+id|TODC_ALLOC
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* ************************************************************************&n; *&n; * Setup the architecture&n; *&n; */
 r_static
 r_void
@@ -1222,7 +1252,28 @@ comma
 id|cds_pci_slot
 )paren
 suffix:semicolon
-multiline_comment|/* Set loops_per_jiffy to a half-way reasonable value,&n;           for use until calibrate_delay gets called. */
+multiline_comment|/* Setup TODC access */
+id|TODC_INIT
+c_func
+(paren
+id|TODC_TYPE_DS1743
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|ioremap
+c_func
+(paren
+id|CDS_RTC_ADDR
+comma
+id|CDS_RTC_SIZE
+)paren
+comma
+l_int|8
+)paren
+suffix:semicolon
+multiline_comment|/* Set loops_per_jiffy to a half-way reasonable value,&n;&t;   for use until calibrate_delay gets called. */
 id|loops_per_jiffy
 op_assign
 id|freq
@@ -1398,7 +1449,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * If we were passed in a board information, copy it into the&n;         * residual data area.&n;         */
+multiline_comment|/*&n;&t; * If we were passed in a board information, copy it into the&n;&t; * residual data area.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1443,6 +1494,10 @@ op_star
 )paren
 id|__res
 suffix:semicolon
+r_struct
+id|uart_port
+id|p
+suffix:semicolon
 multiline_comment|/* Use the last TLB entry to map CCSRBAR to allow access to DUART regs */
 id|settlbcam
 c_func
@@ -1462,10 +1517,92 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|p
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|p
+)paren
+)paren
+suffix:semicolon
+id|p.iotype
+op_assign
+id|SERIAL_IO_MEM
+suffix:semicolon
+id|p.membase
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|binfo-&gt;bi_immr_base
+op_plus
+id|MPC85xx_UART0_OFFSET
+suffix:semicolon
+id|p.uartclk
+op_assign
+id|binfo-&gt;bi_busfreq
+suffix:semicolon
+id|gen550_init
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|p
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|p
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|p
+)paren
+)paren
+suffix:semicolon
+id|p.iotype
+op_assign
+id|SERIAL_IO_MEM
+suffix:semicolon
+id|p.membase
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|binfo-&gt;bi_immr_base
+op_plus
+id|MPC85xx_UART1_OFFSET
+suffix:semicolon
+id|p.uartclk
+op_assign
+id|binfo-&gt;bi_busfreq
+suffix:semicolon
+id|gen550_init
+c_func
+(paren
+l_int|1
+comma
+op_amp
+id|p
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_INITRD)
-multiline_comment|/*&n;         * If the init RAM disk has been configured in, and there&squot;s a valid&n;         * starting address for it, set it up.&n;         */
+multiline_comment|/*&n;&t; * If the init RAM disk has been configured in, and there&squot;s a valid&n;&t; * starting address for it, set it up.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1485,7 +1622,7 @@ op_plus
 id|KERNELBASE
 suffix:semicolon
 )brace
-macro_line|#endif                          /* CONFIG_BLK_DEV_INITRD */
+macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 multiline_comment|/* Copy the kernel command line arguments to a safe place. */
 r_if
 c_cond
@@ -1566,21 +1703,29 @@ id|ppc_md.find_end_of_memory
 op_assign
 id|mpc85xx_find_end_of_memory
 suffix:semicolon
-id|ppc_md.time_init
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ppc_md.set_rtc_time
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ppc_md.get_rtc_time
-op_assign
-l_int|NULL
-suffix:semicolon
 id|ppc_md.calibrate_decr
 op_assign
 id|mpc85xx_calibrate_decr
+suffix:semicolon
+id|ppc_md.time_init
+op_assign
+id|todc_time_init
+suffix:semicolon
+id|ppc_md.set_rtc_time
+op_assign
+id|todc_set_rtc_time
+suffix:semicolon
+id|ppc_md.get_rtc_time
+op_assign
+id|todc_get_rtc_time
+suffix:semicolon
+id|ppc_md.nvram_read_val
+op_assign
+id|todc_direct_read_val
+suffix:semicolon
+id|ppc_md.nvram_write_val
+op_assign
+id|todc_direct_write_val
 suffix:semicolon
 macro_line|#if defined(CONFIG_SERIAL_8250) &amp;&amp; defined(CONFIG_SERIAL_TEXT_DEBUG)
 id|ppc_md.progress

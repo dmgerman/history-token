@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2004 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2004 by Ralf Baechle&n; *&n; * The cpustart method is a PMC-Sierra&squot;s function to start the secondary CPU.&n; * Stock PMON 2000 has the smpfork, semlock and semunlock methods instead.&n; */
 macro_line|#ifndef _ASM_PMON_H
 DECL|macro|_ASM_PMON_H
 mdefine_line|#define _ASM_PMON_H
@@ -21,7 +21,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&t; 0 */
 DECL|member|close
 r_int
 (paren
@@ -32,7 +31,6 @@ id|close
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&t; 4 */
 DECL|member|read
 r_int
 (paren
@@ -48,7 +46,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&t; 8 */
 DECL|member|write
 r_int
 (paren
@@ -64,7 +61,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&t;12 */
 DECL|member|lseek
 id|off_t
 (paren
@@ -79,7 +75,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&t;16 */
 DECL|member|printf
 r_int
 (paren
@@ -96,7 +91,6 @@ dot
 dot
 )paren
 suffix:semicolon
-multiline_comment|/*&t;20 */
 DECL|member|cacheflush
 r_void
 (paren
@@ -107,7 +101,6 @@ id|cacheflush
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&t;24 */
 DECL|member|gets
 r_char
 op_star
@@ -120,7 +113,24 @@ r_char
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&t;28 */
+r_union
+(brace
+DECL|member|smpfork
+r_int
+(paren
+op_star
+id|smpfork
+)paren
+(paren
+r_int
+r_int
+id|cp
+comma
+r_char
+op_star
+id|sp
+)paren
+suffix:semicolon
 DECL|member|cpustart
 r_int
 (paren
@@ -130,15 +140,39 @@ id|cpustart
 (paren
 r_int
 comma
-r_void
-op_star
+r_int
 comma
 r_int
 comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&t;32 */
+DECL|member|_s
+)brace
+id|_s
+suffix:semicolon
+DECL|member|semlock
+r_int
+(paren
+op_star
+id|semlock
+)paren
+(paren
+r_int
+id|sem
+)paren
+suffix:semicolon
+DECL|member|semunlock
+r_void
+(paren
+op_star
+id|semunlock
+)paren
+(paren
+r_int
+id|sem
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -147,5 +181,29 @@ id|callvectors
 op_star
 id|debug_vectors
 suffix:semicolon
+DECL|macro|pmon_open
+mdefine_line|#define pmon_open(name, flags, mode)&t;debug_vectors-&gt;open(name, flage, mode)
+DECL|macro|pmon_close
+mdefine_line|#define pmon_close(fd)&t;&t;&t;debug_vectors-&gt;close(fd)
+DECL|macro|pmon_read
+mdefine_line|#define pmon_read(fd, buf, count)&t;debug_vectors-&gt;read(fd, buf, count)
+DECL|macro|pmon_write
+mdefine_line|#define pmon_write(fd, buf, count)&t;debug_vectors-&gt;write(fd, buf, count)
+DECL|macro|pmon_lseek
+mdefine_line|#define pmon_lseek(fd, off, whence)&t;debug_vectors-&gt;lseek(fd, off, whence)
+DECL|macro|pmon_printf
+mdefine_line|#define pmon_printf(fmt...)&t;&t;debug_vectors-&gt;printf(fmt)
+DECL|macro|pmon_cacheflush
+mdefine_line|#define pmon_cacheflush()&t;&t;debug_vectors-&gt;cacheflush()
+DECL|macro|pmon_gets
+mdefine_line|#define pmon_gets(s)&t;&t;&t;debug_vectors-&gt;gets(s)
+DECL|macro|pmon_cpustart
+mdefine_line|#define pmon_cpustart(n, f, sp, gp)&t;debug_vectors-&gt;_s.cpustart(n, f, sp, gp)
+DECL|macro|pmon_smpfork
+mdefine_line|#define pmon_smpfork(cp, sp)&t;&t;debug_vectors-&gt;_s.smpfork(cp, sp)
+DECL|macro|pmon_semlock
+mdefine_line|#define pmon_semlock(sem)&t;&t;debug_vectors-&gt;semlock(sem)
+DECL|macro|pmon_semunlock
+mdefine_line|#define pmon_semunlock(sem)&t;&t;debug_vectors-&gt;semunlock(sem)
 macro_line|#endif /* _ASM_PMON_H */
 eof

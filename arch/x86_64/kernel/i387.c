@@ -178,9 +178,10 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
-id|current-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|init_fpu
@@ -197,7 +198,11 @@ id|child
 r_if
 c_cond
 (paren
-id|child-&gt;used_math
+id|tsk_used_math
+c_func
+(paren
+id|child
+)paren
 )paren
 (brace
 r_if
@@ -239,9 +244,12 @@ id|child-&gt;thread.i387.fxsave.mxcsr
 op_assign
 l_int|0x1f80
 suffix:semicolon
-id|child-&gt;used_math
-op_assign
-l_int|1
+multiline_comment|/* only the device not available exception or ptrace can call init_fpu */
+id|set_stopped_child_used_math
+c_func
+(paren
+id|child
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Signal frame handlers.&n; */
@@ -321,14 +329,18 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tsk-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 r_return
 l_int|0
 suffix:semicolon
-id|tsk-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* trigger finit */
 r_if
@@ -514,7 +526,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tsk-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 r_return
 l_int|0
@@ -563,7 +578,13 @@ id|fpu
 r_int
 id|fpvalid
 op_assign
-id|tsk-&gt;used_math
+op_logical_neg
+op_logical_neg
+id|tsk_used_math
+c_func
+(paren
+id|tsk
+)paren
 suffix:semicolon
 r_if
 c_cond

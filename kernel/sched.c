@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/kthread.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
+macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/*&n; * Convert user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ MAX_RT_PRIO..MAX_PRIO-1 ],&n; * and back.&n; */
@@ -983,14 +984,14 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|schedstat_inc
-macro_line|# define schedstat_inc(rq, field)&t;rq-&gt;field++;
+macro_line|# define schedstat_inc(rq, field)&t;do { (rq)-&gt;field++; } while (0)
 DECL|macro|schedstat_add
-macro_line|# define schedstat_add(rq, field, amt)&t;rq-&gt;field += amt;
+macro_line|# define schedstat_add(rq, field, amt)&t;do { (rq)-&gt;field += (amt); } while (0)
 macro_line|#else /* !CONFIG_SCHEDSTATS */
 DECL|macro|schedstat_inc
-macro_line|# define schedstat_inc(rq, field)&t;do { } while (0);
+macro_line|# define schedstat_inc(rq, field)&t;do { } while (0)
 DECL|macro|schedstat_add
-macro_line|# define schedstat_add(rq, field, amt)&t;do { } while (0);
+macro_line|# define schedstat_add(rq, field, amt)&t;do { } while (0)
 macro_line|#endif
 multiline_comment|/*&n; * rq_lock - lock a given runqueue and disable interrupts.&n; */
 r_static
@@ -1972,11 +1973,7 @@ id|need_resched
 comma
 id|nrpolling
 suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|spin_is_locked
+id|assert_spin_locked
 c_func
 (paren
 op_amp
@@ -1987,7 +1984,6 @@ id|p
 )paren
 op_member_access_from_pointer
 id|lock
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* minimise the chance of sending an interrupt to poll_idle() */
@@ -2288,6 +2284,14 @@ id|unlikely
 c_func
 (paren
 id|p-&gt;array
+op_logical_or
+id|task_running
+c_func
+(paren
+id|rq
+comma
+id|p
+)paren
 )paren
 )paren
 (brace
@@ -2341,7 +2345,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/***&n; * kick_process - kick a running thread to enter/exit the kernel&n; * @p: the to-be-kicked thread&n; *&n; * Cause a process which is running on another CPU to enter&n; * kernel-mode, without any delay. (to get signals handled.)&n; */
+multiline_comment|/***&n; * kick_process - kick a running thread to enter/exit the kernel&n; * @p: the to-be-kicked thread&n; *&n; * Cause a process which is running on another CPU to enter&n; * kernel-mode, without any delay. (to get signals handled.)&n; *&n; * NOTE: this function doesnt have to take the runqueue lock,&n; * because all it wants to ensure is that the remote task enters&n; * the kernel. If the IPI races and the task has been migrated&n; * to another CPU then no harm is done and the purpose has been&n; * achieved as well.&n; */
 DECL|function|kick_process
 r_void
 id|kick_process
@@ -7604,6 +7608,20 @@ comma
 id|tmp
 )paren
 suffix:semicolon
+multiline_comment|/* Account for system time used */
+id|acct_update_integrals
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+multiline_comment|/* Update rss highwater mark */
+id|update_mem_hiwater
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Account for involuntary wait time.&n; * @p: the process from which the cpu time has been stolen&n; * @steal: the cpu time spent in involuntary wait&n; */
 DECL|function|account_steal_time
@@ -9529,6 +9547,122 @@ c_func
 id|preempt_schedule
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * this is is the entry point to schedule() from kernel preemption&n; * off of irq context.&n; * Note, that this is called and return with irqs disabled. This will&n; * protect us against recursive calling from irq.&n; */
+DECL|function|preempt_schedule_irq
+id|asmlinkage
+r_void
+id|__sched
+id|preempt_schedule_irq
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|thread_info
+op_star
+id|ti
+op_assign
+id|current_thread_info
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT_BKL
+r_struct
+id|task_struct
+op_star
+id|task
+op_assign
+id|current
+suffix:semicolon
+r_int
+id|saved_lock_depth
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Catch callers which need to be fixed*/
+id|BUG_ON
+c_func
+(paren
+id|ti-&gt;preempt_count
+op_logical_or
+op_logical_neg
+id|irqs_disabled
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+id|need_resched
+suffix:colon
+id|add_preempt_count
+c_func
+(paren
+id|PREEMPT_ACTIVE
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We keep the big kernel semaphore locked, but we&n;&t; * clear -&gt;lock_depth so that schedule() doesnt&n;&t; * auto-release the semaphore:&n;&t; */
+macro_line|#ifdef CONFIG_PREEMPT_BKL
+id|saved_lock_depth
+op_assign
+id|task-&gt;lock_depth
+suffix:semicolon
+id|task-&gt;lock_depth
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+macro_line|#endif
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT_BKL
+id|task-&gt;lock_depth
+op_assign
+id|saved_lock_depth
+suffix:semicolon
+macro_line|#endif
+id|sub_preempt_count
+c_func
+(paren
+id|PREEMPT_ACTIVE
+)paren
+suffix:semicolon
+multiline_comment|/* we could miss a preemption opportunity between schedule and now */
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_NEED_RESCHED
+)paren
+)paren
+)paren
+r_goto
+id|need_resched
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_PREEMPT */
 DECL|function|default_wake_function
 r_int
@@ -10194,15 +10328,6 @@ c_func
 id|timeout
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|timeout
-)paren
-r_goto
-id|out
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -10210,6 +10335,27 @@ op_amp
 id|x-&gt;wait.lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timeout
+)paren
+(brace
+id|__remove_wait_queue
+c_func
+(paren
+op_amp
+id|x-&gt;wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -10232,6 +10378,8 @@ suffix:semicolon
 id|x-&gt;done
 op_decrement
 suffix:semicolon
+id|out
+suffix:colon
 id|spin_unlock_irq
 c_func
 (paren
@@ -10239,8 +10387,6 @@ op_amp
 id|x-&gt;wait.lock
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 r_return
 id|timeout
 suffix:semicolon
@@ -10327,6 +10473,16 @@ id|ret
 op_assign
 op_minus
 id|ERESTARTSYS
+suffix:semicolon
+id|__remove_wait_queue
+c_func
+(paren
+op_amp
+id|x-&gt;wait
+comma
+op_amp
+id|wait
+)paren
 suffix:semicolon
 r_goto
 id|out
@@ -10475,8 +10631,18 @@ op_assign
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
+id|__remove_wait_queue
+c_func
+(paren
+op_amp
+id|x-&gt;wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
 r_goto
-id|out_unlock
+id|out
 suffix:semicolon
 )brace
 id|__set_current_state
@@ -10500,15 +10666,6 @@ c_func
 id|timeout
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|timeout
-)paren
-r_goto
-id|out
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -10516,6 +10673,27 @@ op_amp
 id|x-&gt;wait.lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timeout
+)paren
+(brace
+id|__remove_wait_queue
+c_func
+(paren
+op_amp
+id|x-&gt;wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -10538,7 +10716,7 @@ suffix:semicolon
 id|x-&gt;done
 op_decrement
 suffix:semicolon
-id|out_unlock
+id|out
 suffix:colon
 id|spin_unlock_irq
 c_func
@@ -10547,8 +10725,6 @@ op_amp
 id|x-&gt;wait.lock
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 r_return
 id|timeout
 suffix:semicolon

@@ -2323,13 +2323,6 @@ id|inode
 )paren
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|assert_spin_locked
-mdefine_line|#define assert_spin_locked(lock)&t;J_ASSERT(spin_is_locked(lock))
-macro_line|#else
-DECL|macro|assert_spin_locked
-mdefine_line|#define assert_spin_locked(lock)&t;do {} while(0)
-macro_line|#endif
 DECL|macro|buffer_trace_init
 mdefine_line|#define buffer_trace_init(bh)&t;do {} while (0)
 DECL|macro|print_buffer_fields

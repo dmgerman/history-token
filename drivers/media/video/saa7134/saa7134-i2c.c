@@ -964,9 +964,8 @@ id|i2c_adap
 comma
 r_struct
 id|i2c_msg
+op_star
 id|msgs
-(braket
-)braket
 comma
 r_int
 id|num
@@ -1604,12 +1603,6 @@ c_func
 (paren
 l_string|&quot;saa7134 internal&quot;
 )paren
-comma
-dot
-id|id
-op_assign
-op_minus
-l_int|1
 comma
 )brace
 suffix:semicolon

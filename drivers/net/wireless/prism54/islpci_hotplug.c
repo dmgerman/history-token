@@ -483,7 +483,7 @@ id|DRV_NAME
 )paren
 suffix:semicolon
 r_goto
-id|do_pci_disable_device
+id|do_pci_release_regions
 suffix:semicolon
 )brace
 multiline_comment|/* enable PCI bus-mastering */

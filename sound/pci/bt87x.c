@@ -381,6 +381,7 @@ id|pci
 suffix:semicolon
 DECL|member|mmio
 r_void
+id|__iomem
 op_star
 id|mmio
 suffix:semicolon

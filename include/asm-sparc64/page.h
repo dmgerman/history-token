@@ -71,8 +71,9 @@ op_star
 id|topage
 )paren
 suffix:semicolon
-multiline_comment|/* GROSS, defining this makes gcc pass these types as aggregates,&n; * and thus on the stack, turn this crap off... -DaveM&n; */
-multiline_comment|/* #define STRICT_MM_TYPECHECKS */
+multiline_comment|/* Unlike sparc32, sparc64&squot;s parameter passing API is more&n; * sane in that structures which as small enough are passed&n; * in registers instead of on the stack.  Thus, setting&n; * STRICT_MM_TYPECHECKS does not generate worse code so&n; * let&squot;s enable it to get the type checking.&n; */
+DECL|macro|STRICT_MM_TYPECHECKS
+mdefine_line|#define STRICT_MM_TYPECHECKS
 macro_line|#ifdef STRICT_MM_TYPECHECKS
 multiline_comment|/* These are used to make use of C type-checking.. */
 DECL|member|pte
@@ -123,18 +124,6 @@ suffix:semicolon
 )brace
 id|pgd_t
 suffix:semicolon
-DECL|member|ctxd
-DECL|typedef|ctxd_t
-r_typedef
-r_struct
-(brace
-r_int
-r_int
-id|ctxd
-suffix:semicolon
-)brace
-id|ctxd_t
-suffix:semicolon
 DECL|member|pgprot
 DECL|typedef|pgprot_t
 r_typedef
@@ -147,18 +136,6 @@ suffix:semicolon
 )brace
 id|pgprot_t
 suffix:semicolon
-DECL|member|iopgprot
-DECL|typedef|iopgprot_t
-r_typedef
-r_struct
-(brace
-r_int
-r_int
-id|iopgprot
-suffix:semicolon
-)brace
-id|iopgprot_t
-suffix:semicolon
 DECL|macro|pte_val
 mdefine_line|#define pte_val(x)&t;((x).pte)
 DECL|macro|iopte_val
@@ -167,12 +144,8 @@ DECL|macro|pmd_val
 mdefine_line|#define pmd_val(x)      ((x).pmd)
 DECL|macro|pgd_val
 mdefine_line|#define pgd_val(x)&t;((x).pgd)
-DECL|macro|ctxd_val
-mdefine_line|#define ctxd_val(x)&t;((x).ctxd)
 DECL|macro|pgprot_val
 mdefine_line|#define pgprot_val(x)&t;((x).pgprot)
-DECL|macro|iopgprot_val
-mdefine_line|#define iopgprot_val(x)&t;((x).iopgprot)
 DECL|macro|__pte
 mdefine_line|#define __pte(x)&t;((pte_t) { (x) } )
 DECL|macro|__iopte
@@ -181,12 +154,8 @@ DECL|macro|__pmd
 mdefine_line|#define __pmd(x)        ((pmd_t) { (x) } )
 DECL|macro|__pgd
 mdefine_line|#define __pgd(x)&t;((pgd_t) { (x) } )
-DECL|macro|__ctxd
-mdefine_line|#define __ctxd(x)&t;((ctxd_t) { (x) } )
 DECL|macro|__pgprot
 mdefine_line|#define __pgprot(x)&t;((pgprot_t) { (x) } )
-DECL|macro|__iopgprot
-mdefine_line|#define __iopgprot(x)&t;((iopgprot_t) { (x) } )
 macro_line|#else
 multiline_comment|/* .. while these make it easier on the compiler */
 DECL|typedef|pte_t
@@ -213,23 +182,11 @@ r_int
 r_int
 id|pgd_t
 suffix:semicolon
-DECL|typedef|ctxd_t
-r_typedef
-r_int
-r_int
-id|ctxd_t
-suffix:semicolon
 DECL|typedef|pgprot_t
 r_typedef
 r_int
 r_int
 id|pgprot_t
-suffix:semicolon
-DECL|typedef|iopgprot_t
-r_typedef
-r_int
-r_int
-id|iopgprot_t
 suffix:semicolon
 DECL|macro|pte_val
 mdefine_line|#define pte_val(x)&t;(x)
@@ -239,12 +196,8 @@ DECL|macro|pmd_val
 mdefine_line|#define pmd_val(x)      (x)
 DECL|macro|pgd_val
 mdefine_line|#define pgd_val(x)&t;(x)
-DECL|macro|ctxd_val
-mdefine_line|#define ctxd_val(x)&t;(x)
 DECL|macro|pgprot_val
 mdefine_line|#define pgprot_val(x)&t;(x)
-DECL|macro|iopgprot_val
-mdefine_line|#define iopgprot_val(x)&t;(x)
 DECL|macro|__pte
 mdefine_line|#define __pte(x)&t;(x)
 DECL|macro|__iopte
@@ -253,12 +206,8 @@ DECL|macro|__pmd
 mdefine_line|#define __pmd(x)        (x)
 DECL|macro|__pgd
 mdefine_line|#define __pgd(x)&t;(x)
-DECL|macro|__ctxd
-mdefine_line|#define __ctxd(x)&t;(x)
 DECL|macro|__pgprot
 mdefine_line|#define __pgprot(x)&t;(x)
-DECL|macro|__iopgprot
-mdefine_line|#define __iopgprot(x)&t;(x)
 macro_line|#endif /* (STRICT_MM_TYPECHECKS) */
 macro_line|#if defined(CONFIG_HUGETLB_PAGE_SIZE_4MB)
 DECL|macro|HPAGE_SHIFT

@@ -351,7 +351,7 @@ id|systemcfg
 suffix:semicolon
 id|pde-&gt;size
 op_assign
-l_int|4096
+id|PAGE_SIZE
 suffix:semicolon
 id|pde-&gt;proc_fops
 op_assign

@@ -33,7 +33,7 @@ DECL|macro|EEPROM_DATO
 mdefine_line|#define EEPROM_DATO&t;0x08&t;/* Data out */
 DECL|macro|EEPROM_DATI
 mdefine_line|#define EEPROM_DATI&t;0x10&t;/* Data in */
-multiline_comment|/* We need to use this functions early... */
+multiline_comment|/* We need to use these functions early... */
 DECL|macro|delay
 mdefine_line|#define delay()&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int x;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (x=0; x&lt;100000; x++) __asm__ __volatile__(&quot;&quot;); })
 DECL|macro|eeprom_cs_on

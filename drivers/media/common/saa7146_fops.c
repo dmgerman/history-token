@@ -310,20 +310,13 @@ op_star
 id|buf
 )paren
 (brace
-macro_line|#ifdef DEBUG_SPINLOCKS
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|spin_is_locked
+id|assert_spin_locked
 c_func
 (paren
 op_amp
 id|dev-&gt;slock
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 id|DEB_EE
 c_func
 (paren
@@ -430,20 +423,13 @@ r_int
 id|state
 )paren
 (brace
-macro_line|#ifdef DEBUG_SPINLOCKS
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|spin_is_locked
+id|assert_spin_locked
 c_func
 (paren
 op_amp
 id|dev-&gt;slock
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 id|DEB_EE
 c_func
 (paren
@@ -568,20 +554,13 @@ id|vbi
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_SPINLOCKS
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|spin_is_locked
+id|assert_spin_locked
 c_func
 (paren
 op_amp
 id|dev-&gt;slock
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

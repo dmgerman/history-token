@@ -6842,6 +6842,10 @@ id|DRV_NAME
 l_string|&quot;/%u&quot;
 comma
 (paren
+r_int
+r_int
+)paren
+(paren
 id|host-&gt;id
 op_star
 id|CARM_MAX_PORTS

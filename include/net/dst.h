@@ -254,6 +254,11 @@ r_struct
 id|dst_entry
 op_star
 comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
 r_int
 id|how
 )paren
@@ -533,6 +538,11 @@ id|dst-&gt;__refcnt
 )paren
 OL
 l_int|1
+)paren
+suffix:semicolon
+id|smp_mb__before_atomic_dec
+c_func
+(paren
 )paren
 suffix:semicolon
 id|atomic_dec

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/ocotea.h&n; *&n; * Ocotea board definitions&n; *&n; * Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * Copyright 2003 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/ocotea.h&n; *&n; * Ocotea board definitions&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * Copyright 2003-2005 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_OCOTEA_H__
 DECL|macro|__ASM_OCOTEA_H__
@@ -7,16 +7,16 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;platforms/4xx/ibm440gx.h&gt;
 multiline_comment|/* F/W TLB mapping used in bootloader glue to reset EMAC */
 DECL|macro|PPC44x_EMAC0_MR0
-mdefine_line|#define PPC44x_EMAC0_MR0&t;0xE0000800
+mdefine_line|#define PPC44x_EMAC0_MR0&t;0xe0000800
 multiline_comment|/* Location of MAC addresses in PIBS image */
-DECL|macro|OCOTEA_PIBS_FLASH
-mdefine_line|#define OCOTEA_PIBS_FLASH&t;0xfff00000
-DECL|macro|OCOTEA_PIBS_MAC_BASE
-mdefine_line|#define OCOTEA_PIBS_MAC_BASE&t;(OCOTEA_PIBS_FLASH+0xb0500)
-DECL|macro|OCOTEA_PIBS_MAC_SIZE
-mdefine_line|#define OCOTEA_PIBS_MAC_SIZE&t;0x200
-DECL|macro|OCOTEA_PIBS_MAC_OFFSET
-mdefine_line|#define OCOTEA_PIBS_MAC_OFFSET&t;0x100
+DECL|macro|PIBS_FLASH_BASE
+mdefine_line|#define PIBS_FLASH_BASE&t;&t;0xfff00000
+DECL|macro|PIBS_MAC_BASE
+mdefine_line|#define PIBS_MAC_BASE&t;&t;(PIBS_FLASH_BASE+0xb0500)
+DECL|macro|PIBS_MAC_SIZE
+mdefine_line|#define PIBS_MAC_SIZE&t;&t;0x200
+DECL|macro|PIBS_MAC_OFFSET
+mdefine_line|#define PIBS_MAC_OFFSET&t;&t;0x100
 multiline_comment|/* External timer clock frequency */
 DECL|macro|OCOTEA_TMR_CLK
 mdefine_line|#define OCOTEA_TMR_CLK&t;25000000

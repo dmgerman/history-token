@@ -28,6 +28,8 @@ macro_line|#elif defined(CONFIG_SPRUCE)
 macro_line|#include &lt;platforms/spruce.h&gt;
 macro_line|#elif defined(CONFIG_4xx)
 macro_line|#include &lt;asm/ibm4xx.h&gt;
+macro_line|#elif defined(CONFIG_83xx)
+macro_line|#include &lt;asm/mpc83xx.h&gt;
 macro_line|#elif defined(CONFIG_85xx)
 macro_line|#include &lt;asm/mpc85xx.h&gt;
 macro_line|#else

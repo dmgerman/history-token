@@ -1230,7 +1230,7 @@ id|client
 r_if
 c_cond
 (paren
-id|client-&gt;id
+id|client-&gt;driver-&gt;id
 op_eq
 id|I2C_DRIVERID_PCF8583
 op_logical_and

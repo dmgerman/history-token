@@ -14934,10 +14934,12 @@ l_string|&quot;Specifies which CRTC is mapped to which output (string of up to t
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_PMAC
-id|module_param
+id|module_param_named
 c_func
 (paren
 id|vmode
+comma
+id|default_vmode
 comma
 r_int
 comma
@@ -14952,10 +14954,12 @@ comma
 l_string|&quot;Specify the vmode mode number that should be used (640x480 default)&quot;
 )paren
 suffix:semicolon
-id|module_param
+id|module_param_named
 c_func
 (paren
 id|cmode
+comma
+id|default_cmode
 comma
 r_int
 comma

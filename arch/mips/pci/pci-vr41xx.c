@@ -1074,7 +1074,7 @@ suffix:semicolon
 id|writel
 c_func
 (paren
-id|CONFIG_DONE
+id|BLOODY_CONFIG_DONE
 comma
 id|PCIENREG
 )paren
@@ -1132,7 +1132,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|vr41xx_pciu_init
-id|early_initcall
+id|arch_initcall
 c_func
 (paren
 id|vr41xx_pciu_init

@@ -911,7 +911,7 @@ multiline_comment|/*&n; *  probe functions&n; *  These functions should - if pos
 multiline_comment|/*&n; * Read board id and convert to string.&n; * Effectively same code as decode_eisa_sig&n; */
 DECL|function|hp100_read_id
 r_static
-id|__init
+id|__devinit
 r_const
 r_char
 op_star
@@ -1544,7 +1544,7 @@ macro_line|#endif
 DECL|function|hp100_probe1
 r_static
 r_int
-id|__init
+id|__devinit
 id|hp100_probe1
 c_func
 (paren

@@ -534,6 +534,7 @@ suffix:semicolon
 multiline_comment|/* Address of memory mapped buffers */
 DECL|member|shmem
 id|icn_shmem
+id|__iomem
 op_star
 id|shmem
 suffix:semicolon

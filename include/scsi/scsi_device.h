@@ -458,11 +458,6 @@ r_struct
 id|class_device
 id|sdev_classdev
 suffix:semicolon
-DECL|member|transport_classdev
-r_struct
-id|class_device
-id|transport_classdev
-suffix:semicolon
 DECL|member|sdev_state
 r_enum
 id|scsi_device_state
@@ -498,7 +493,7 @@ mdefine_line|#define&t;to_scsi_device(d)&t;&bslash;&n;&t;container_of(d, struct 
 DECL|macro|class_to_sdev
 mdefine_line|#define&t;class_to_sdev(d)&t;&bslash;&n;&t;container_of(d, struct scsi_device, sdev_classdev)
 DECL|macro|transport_class_to_sdev
-mdefine_line|#define transport_class_to_sdev(class_dev) &bslash;&n;&t;container_of(class_dev, struct scsi_device, transport_classdev)
+mdefine_line|#define transport_class_to_sdev(class_dev) &bslash;&n;&t;to_scsi_device(class_dev-&gt;dev)
 multiline_comment|/*&n; * scsi_target: representation of a scsi target, for now, this is only&n; * used for single_lun devices. If no one has active IO to the target,&n; * starget_sdev_user is NULL, else it points to the active sdev.&n; */
 DECL|struct|scsi_target
 r_struct
@@ -526,11 +521,6 @@ r_int
 id|id
 suffix:semicolon
 multiline_comment|/* target id ... replace&n;&t;&t;&t;&t;     * scsi_device.id eventually */
-DECL|member|transport_classdev
-r_struct
-id|class_device
-id|transport_classdev
-suffix:semicolon
 DECL|member|create
 r_int
 r_int
@@ -590,7 +580,7 @@ id|sdev-&gt;sdev_gendev.parent
 suffix:semicolon
 )brace
 DECL|macro|transport_class_to_starget
-mdefine_line|#define transport_class_to_starget(class_dev) &bslash;&n;&t;container_of(class_dev, struct scsi_target, transport_classdev)
+mdefine_line|#define transport_class_to_starget(class_dev) &bslash;&n;&t;to_scsi_target(class_dev-&gt;dev)
 r_extern
 r_struct
 id|scsi_device
@@ -900,6 +890,28 @@ c_func
 (paren
 r_enum
 id|scsi_device_state
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_is_sdev_device
+c_func
+(paren
+r_const
+r_struct
+id|device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_is_target_device
+c_func
+(paren
+r_const
+r_struct
+id|device
+op_star
 )paren
 suffix:semicolon
 DECL|function|scsi_device_online

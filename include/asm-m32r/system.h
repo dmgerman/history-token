@@ -362,5 +362,7 @@ DECL|macro|set_mb
 mdefine_line|#define set_mb(var, value) do { xchg(&amp;var, value); } while (0)
 DECL|macro|set_wmb
 mdefine_line|#define set_wmb(var, value) do { var = value; wmb(); } while (0)
+DECL|macro|arch_align_stack
+mdefine_line|#define arch_align_stack(x) (x)
 macro_line|#endif  /* _ASM_M32R_SYSTEM_H */
 eof

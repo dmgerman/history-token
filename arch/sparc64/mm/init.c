@@ -7225,7 +7225,10 @@ id|swapper_pmd_dir
 )paren
 suffix:semicolon
 multiline_comment|/* Now can init the kernel/bad page tables. */
-id|pgd_set
+id|pud_set
+c_func
+(paren
+id|pud_offset
 c_func
 (paren
 op_amp
@@ -7233,6 +7236,9 @@ id|swapper_pg_dir
 (braket
 l_int|0
 )braket
+comma
+l_int|0
+)paren
 comma
 id|swapper_pmd_dir
 op_plus

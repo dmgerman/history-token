@@ -834,4 +834,69 @@ id|ppc4xx_ide_init_hwif_ports
 suffix:semicolon
 macro_line|#endif /* defined(CONFIG_PCI) &amp;&amp; defined(CONFIG_IDE) */
 )brace
+multiline_comment|/* Called from MachineCheckException */
+DECL|function|platform_machine_check
+r_void
+id|platform_machine_check
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+macro_line|#if defined(DCRN_PLB0_BEAR)
+id|printk
+c_func
+(paren
+l_string|&quot;PLB0: BEAR= 0x%08x ACR=   0x%08x BESR=  0x%08x&bslash;n&quot;
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_PLB0_BEAR
+)paren
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_PLB0_ACR
+)paren
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_PLB0_BESR
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(DCRN_POB0_BEAR)
+id|printk
+c_func
+(paren
+l_string|&quot;PLB0 to OPB: BEAR= 0x%08x BESR0= 0x%08x BESR1= 0x%08x&bslash;n&quot;
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_POB0_BEAR
+)paren
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_POB0_BESR0
+)paren
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_POB0_BESR1
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 eof

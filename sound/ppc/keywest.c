@@ -203,12 +203,6 @@ comma
 id|keywest_ctx-&gt;name
 )paren
 suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|keywest_ctx-&gt;id
-op_increment
-suffix:semicolon
-multiline_comment|/* Automatically unique */
 id|keywest_ctx-&gt;client
 op_assign
 id|new_client

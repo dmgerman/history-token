@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/transport_class.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_transport.h&gt;
@@ -168,17 +169,11 @@ op_amp
 id|shost-&gt;shost_state
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|shost-&gt;transportt-&gt;host_destroy
-)paren
-id|shost-&gt;transportt
-op_member_access_from_pointer
-id|host_destroy
+id|transport_unregister_device
 c_func
 (paren
-id|shost
+op_amp
+id|shost-&gt;shost_gendev
 )paren
 suffix:semicolon
 id|class_device_unregister
@@ -188,36 +183,6 @@ op_amp
 id|shost-&gt;shost_classdev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|shost-&gt;transport_classdev
-dot
-r_class
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|shost-&gt;transportt-&gt;host_statistics
-)paren
-id|sysfs_remove_group
-c_func
-(paren
-op_amp
-id|shost-&gt;transport_classdev.kobj
-comma
-id|shost-&gt;transportt-&gt;host_statistics
-)paren
-suffix:semicolon
-id|class_device_unregister
-c_func
-(paren
-op_amp
-id|shost-&gt;transport_classdev
-)paren
-suffix:semicolon
-)brace
 id|device_del
 c_func
 (paren
@@ -399,19 +364,6 @@ l_int|NULL
 r_goto
 id|out_del_classdev
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|shost-&gt;transportt-&gt;host_setup
-)paren
-id|shost-&gt;transportt
-op_member_access_from_pointer
-id|host_setup
-c_func
-(paren
-id|shost
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|scsi_sysfs_add_host
@@ -439,19 +391,6 @@ id|error
 suffix:semicolon
 id|out_destroy_host
 suffix:colon
-r_if
-c_cond
-(paren
-id|shost-&gt;transportt-&gt;host_destroy
-)paren
-id|shost-&gt;transportt
-op_member_access_from_pointer
-id|host_destroy
-c_func
-(paren
-id|shost
-)paren
-suffix:semicolon
 id|out_del_classdev
 suffix:colon
 id|class_device_del
@@ -1345,4 +1284,29 @@ id|shost_class
 )paren
 suffix:semicolon
 )brace
+DECL|function|scsi_is_host_device
+r_int
+id|scsi_is_host_device
+c_func
+(paren
+r_const
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+r_return
+id|dev-&gt;release
+op_eq
+id|scsi_host_dev_release
+suffix:semicolon
+)brace
+DECL|variable|scsi_is_host_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_is_host_device
+)paren
+suffix:semicolon
 eof

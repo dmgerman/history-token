@@ -1902,8 +1902,6 @@ r_struct
 id|z8530_irqhandler
 op_star
 id|irqs
-op_assign
-id|dev-&gt;chanA.irqs
 suffix:semicolon
 r_if
 c_cond
@@ -1981,6 +1979,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* This holds the IRQ status. On the 8530 you must read it from chan &n;&t;&t;   A even though it applies to the whole chip */
 multiline_comment|/* Now walk the chip and see what it is wanting - it may be&n;&t;&t;   an IRQ for someone else remember */
+id|irqs
+op_assign
+id|dev-&gt;chanA.irqs
+suffix:semicolon
 r_if
 c_cond
 (paren

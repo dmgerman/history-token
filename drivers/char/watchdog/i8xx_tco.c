@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;i8xx_tco 0.06:&t;TCO timer driver for i8xx chipsets&n; *&n; *&t;(c) Copyright 2000 kernel concepts &lt;nils@kernelconcepts.de&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.kernelconcepts.de&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither kernel concepts nor Nils Faerber admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 2000&t;kernel concepts &lt;nils@kernelconcepts.de&gt;&n; *&t;&t;&t;&t;developed for&n; *                              Jentro AG, Haar/Munich (Germany)&n; *&n; *&t;TCO timer driver for i8xx chipsets&n; *&t;based on softdog.c by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;The TCO timer is implemented in the following I/O controller hubs:&n; *&t;(See the intel documentation on http://developer.intel.com.)&n; *&t;82801AA &amp; 82801AB  chip : document number 290655-003, 290677-004,&n; *&t;82801BA &amp; 82801BAM chip : document number 290687-002, 298242-005,&n; *&t;82801CA &amp; 82801CAM chip : document number 290716-001, 290718-001,&n; *&t;82801DB &amp; 82801E   chip : document number 290744-001, 273599-001,&n; *&t;82801EB &amp; 82801ER  chip : document number 252516-001&n; *&n; *  20000710 Nils Faerber&n; *&t;Initial Version 0.01&n; *  20000728 Nils Faerber&n; *&t;0.02 Fix for SMI_EN-&gt;TCO_EN bit, some cleanups&n; *  20011214 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&t;0.03 Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&t;     Didn&squot;t add timeout option as i810_margin already exists.&n; *  20020224 Joel Becker, Wim Van Sebroeck&n; *&t;0.04 Support for 82801CA(M) chipset, timer margin needs to be &gt; 3,&n; *&t;     add support for WDIOC_SETTIMEOUT and WDIOC_GETTIMEOUT.&n; *  20020412 Rob Radez &lt;rob@osinvestor.com&gt;, Wim Van Sebroeck&n; *&t;0.05 Fix possible timer_alive race, add expect close support,&n; *&t;     clean up ioctls (WDIOC_GETSTATUS, WDIOC_GETBOOTSTATUS and&n; *&t;     WDIOC_SETOPTIONS), made i810tco_getdevice __init,&n; *&t;     removed boot_status, removed tco_timer_read,&n; *&t;     added support for 82801DB and 82801E chipset,&n; *&t;     added support for 82801EB and 8280ER chipset,&n; *&t;     general cleanup.&n; *  20030921 Wim Van Sebroeck &lt;wim@iguana.be&gt;&n; *&t;0.06 change i810_margin to heartbeat, use module_param,&n; *&t;     added notify system support, renamed module to i8xx_tco.&n; */
+multiline_comment|/*&n; *&t;i8xx_tco 0.07:&t;TCO timer driver for i8xx chipsets&n; *&n; *&t;(c) Copyright 2000 kernel concepts &lt;nils@kernelconcepts.de&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.kernelconcepts.de&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither kernel concepts nor Nils Faerber admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 2000&t;kernel concepts &lt;nils@kernelconcepts.de&gt;&n; *&t;&t;&t;&t;developed for&n; *                              Jentro AG, Haar/Munich (Germany)&n; *&n; *&t;TCO timer driver for i8xx chipsets&n; *&t;based on softdog.c by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;The TCO timer is implemented in the following I/O controller hubs:&n; *&t;(See the intel documentation on http://developer.intel.com.)&n; *&t;82801AA  (ICH)    : document number 290655-003, 290677-014,&n; *&t;82801AB  (ICHO)   : document number 290655-003, 290677-014,&n; *&t;82801BA  (ICH2)   : document number 290687-002, 298242-027,&n; *&t;82801BAM (ICH2-M) : document number 290687-002, 298242-027,&n; *&t;82801CA  (ICH3-S) : document number 290733-003, 290739-013,&n; *&t;82801CAM (ICH3-M) : document number 290716-001, 290718-007,&n; *&t;82801DB  (ICH4)   : document number 290744-001, 290745-020,&n; *&t;82801DBM (ICH4-M) : document number 252337-001, 252663-005,&n; *&t;82801E   (C-ICH)  : document number 273599-001, 273645-002,&n; *&t;82801EB  (ICH5)   : document number 252516-001, 252517-003,&n; *&t;82801ER  (ICH5R)  : document number 252516-001, 252517-003,&n; *&t;82801FB  (ICH6)   : document number 301473-002, 301474-007,&n; *&t;82801FR  (ICH6R)  : document number 301473-002, 301474-007,&n; *&t;82801FBM (ICH6-M) : document number 301473-002, 301474-007,&n; *&t;82801FW  (ICH6W)  : document number 301473-001, 301474-007,&n; *&t;82801FRW (ICH6RW) : document number 301473-001, 301474-007&n; *&n; *  20000710 Nils Faerber&n; *&t;Initial Version 0.01&n; *  20000728 Nils Faerber&n; *&t;0.02 Fix for SMI_EN-&gt;TCO_EN bit, some cleanups&n; *  20011214 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&t;0.03 Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&t;     Didn&squot;t add timeout option as i810_margin already exists.&n; *  20020224 Joel Becker, Wim Van Sebroeck&n; *&t;0.04 Support for 82801CA(M) chipset, timer margin needs to be &gt; 3,&n; *&t;     add support for WDIOC_SETTIMEOUT and WDIOC_GETTIMEOUT.&n; *  20020412 Rob Radez &lt;rob@osinvestor.com&gt;, Wim Van Sebroeck&n; *&t;0.05 Fix possible timer_alive race, add expect close support,&n; *&t;     clean up ioctls (WDIOC_GETSTATUS, WDIOC_GETBOOTSTATUS and&n; *&t;     WDIOC_SETOPTIONS), made i810tco_getdevice __init,&n; *&t;     removed boot_status, removed tco_timer_read,&n; *&t;     added support for 82801DB and 82801E chipset,&n; *&t;     added support for 82801EB and 8280ER chipset,&n; *&t;     general cleanup.&n; *  20030921 Wim Van Sebroeck &lt;wim@iguana.be&gt;&n; *&t;0.06 change i810_margin to heartbeat, use module_param,&n; *&t;     added notify system support, renamed module to i8xx_tco.&n; *  20050128 Wim Van Sebroeck &lt;wim@iguana.be&gt;&n; *&t;0.07 Added support for the ICH4-M, ICH6, ICH6R, ICH6-M, ICH6W and ICH6RW&n; *&t;     chipsets. Also added support for the &quot;undocumented&quot; ICH7 chipset.&n; */
 multiline_comment|/*&n; *&t;Includes, defines, variables, module parameters, ...&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -16,7 +16,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;i8xx_tco.h&quot;
 multiline_comment|/* Module and version information */
 DECL|macro|TCO_VERSION
-mdefine_line|#define TCO_VERSION &quot;0.06&quot;
+mdefine_line|#define TCO_VERSION &quot;0.07&quot;
 DECL|macro|TCO_MODULE_NAME
 mdefine_line|#define TCO_MODULE_NAME &quot;i8xx TCO timer&quot;
 DECL|macro|TCO_DRIVER_NAME
@@ -1124,6 +1124,17 @@ comma
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
+id|PCI_DEVICE_ID_INTEL_82801DB_12
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
 id|PCI_DEVICE_ID_INTEL_82801E_0
 comma
 id|PCI_ANY_ID
@@ -1136,6 +1147,61 @@ comma
 id|PCI_VENDOR_ID_INTEL
 comma
 id|PCI_DEVICE_ID_INTEL_82801EB_0
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_ICH6_0
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_ICH6_1
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_ICH6_2
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_ICH7_0
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_ICH7_1
 comma
 id|PCI_ANY_ID
 comma

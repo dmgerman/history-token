@@ -18,7 +18,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
-multiline_comment|/*&n; * Including &lt;asm/unistd.h would give use the 64-bit syscall numbers ...&n; */
+macro_line|#include &lt;asm/cpu-features.h&gt;
+macro_line|#include &quot;signal-common.h&quot;
+multiline_comment|/*&n; * Including &lt;asm/unistd.h&gt; would give use the 64-bit syscall numbers ...&n; */
 DECL|macro|__NR_N32_rt_sigreturn
 mdefine_line|#define __NR_N32_rt_sigreturn&t;&t;6211
 DECL|macro|__NR_N32_restart_syscall
@@ -75,6 +77,13 @@ suffix:semicolon
 multiline_comment|/* mask last for extensibility */
 )brace
 suffix:semicolon
+macro_line|#if PLAT_TRAMPOLINE_STUFF_LINE
+DECL|macro|__tramp
+mdefine_line|#define __tramp __attribute__((aligned(PLAT_TRAMPOLINE_STUFF_LINE)))
+macro_line|#else
+DECL|macro|__tramp
+mdefine_line|#define __tramp
+macro_line|#endif
 DECL|struct|rt_sigframe_n32
 r_struct
 id|rt_sigframe_n32
@@ -87,18 +96,20 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* argument save space for o32 */
-DECL|member|rs_code
+DECL|member|__tramp
 id|u32
 id|rs_code
 (braket
 l_int|2
 )braket
+id|__tramp
 suffix:semicolon
 multiline_comment|/* signal trampoline */
-DECL|member|rs_info
+DECL|member|__tramp
 r_struct
 id|siginfo
 id|rs_info
+id|__tramp
 suffix:semicolon
 DECL|member|rs_uc
 r_struct
@@ -107,44 +118,19 @@ id|rs_uc
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-id|restore_sigcontext
+DECL|variable|sysn32_rt_sigreturn
+id|save_static_function
 c_func
 (paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_struct
-id|sigcontext
-op_star
-id|sc
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_inline
-id|setup_sigcontext
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_struct
-id|sigcontext
-op_star
-id|sc
-)paren
-suffix:semicolon
-DECL|function|sysn32_rt_sigreturn
-id|asmlinkage
-r_void
 id|sysn32_rt_sigreturn
+)paren
+suffix:semicolon
+id|__attribute_used__
+id|noinline
+r_static
+r_void
+DECL|function|_sysn32_rt_sigreturn
+id|_sysn32_rt_sigreturn
 c_func
 (paren
 id|nabi_no_regargs
@@ -367,87 +353,6 @@ id|current
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Determine which stack to use..&n; */
-DECL|function|get_sigframe
-r_static
-r_inline
-r_void
-op_star
-id|get_sigframe
-c_func
-(paren
-r_struct
-id|k_sigaction
-op_star
-id|ka
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_int
-id|frame_size
-)paren
-(brace
-r_int
-r_int
-id|sp
-suffix:semicolon
-multiline_comment|/* Default to using normal stack */
-id|sp
-op_assign
-id|regs-&gt;regs
-(braket
-l_int|29
-)braket
-suffix:semicolon
-multiline_comment|/*&n; &t; * FPU emulator may have it&squot;s own trampoline active just&n; &t; * above the user stack, 16-bytes before the next lowest&n; &t; * 16 byte boundary.  Try to avoid trashing it.&n; &t; */
-id|sp
-op_sub_assign
-l_int|32
-suffix:semicolon
-multiline_comment|/* This is the X/Open sanctioned signal stack switching.  */
-r_if
-c_cond
-(paren
-(paren
-id|ka-&gt;sa.sa_flags
-op_amp
-id|SA_ONSTACK
-)paren
-op_logical_and
-(paren
-id|sas_ss_flags
-(paren
-id|sp
-)paren
-op_eq
-l_int|0
-)paren
-)paren
-id|sp
-op_assign
-id|current-&gt;sas_ss_sp
-op_plus
-id|current-&gt;sas_ss_size
-suffix:semicolon
-r_return
-(paren
-r_void
-op_star
-)paren
-(paren
-(paren
-id|sp
-op_minus
-id|frame_size
-)paren
-op_amp
-id|ALMASK
-)paren
-suffix:semicolon
-)brace
 DECL|function|setup_rt_frame_n32
 r_void
 id|setup_rt_frame_n32
@@ -526,6 +431,19 @@ r_goto
 id|give_sigsegv
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set up the return code ...&n;&t; *&n;&t; *         li      v0, __NR_rt_sigreturn&n;&t; *         syscall&n;&t; */
+r_if
+c_cond
+(paren
+id|PLAT_TRAMPOLINE_STUFF_LINE
+)paren
+id|__clear_user
+c_func
+(paren
+id|frame-&gt;rs_code
+comma
+id|PLAT_TRAMPOLINE_STUFF_LINE
+)paren
+suffix:semicolon
 id|err
 op_or_assign
 id|__put_user

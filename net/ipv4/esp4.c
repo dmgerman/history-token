@@ -2121,6 +2121,9 @@ id|esp-&gt;conf.ivlen
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|crypto_cipher_setkey
 c_func
 (paren
@@ -2130,6 +2133,9 @@ id|esp-&gt;conf.key
 comma
 id|esp-&gt;conf.key_len
 )paren
+)paren
+r_goto
+id|error
 suffix:semicolon
 id|x-&gt;props.header_len
 op_assign

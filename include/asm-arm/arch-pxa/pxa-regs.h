@@ -722,7 +722,7 @@ DECL|macro|ISR_BED
 mdefine_line|#define ISR_BED&t;&t;(1 &lt;&lt; 10)&t;   /* bus error no ACK/NAK */
 multiline_comment|/*&n; * Serial Audio Controller&n; */
 multiline_comment|/* FIXME: This clash with SA1111 defines */
-macro_line|#ifndef CONFIG_SA1111
+macro_line|#ifndef _ASM_ARCH_SA1111
 DECL|macro|SACR0
 mdefine_line|#define SACR0&t;&t;__REG(0x40400000)  /* Global Control Register */
 DECL|macro|SACR1
@@ -737,69 +737,57 @@ DECL|macro|SADIV
 mdefine_line|#define SADIV&t;&t;__REG(0x40400060)  /* Audio Clock Divider Register. */
 DECL|macro|SADR
 mdefine_line|#define SADR&t;&t;__REG(0x40400080)  /* Serial Audio Data Register (TX and RX FIFO access Register). */
-macro_line|#endif
 DECL|macro|SACR0_RFTH
-mdefine_line|#define SACR0_RFTH(x)&t;(x &lt;&lt; 12)&t;&t;/* Rx FIFO Interrupt or DMA Trigger Threshold */
+mdefine_line|#define SACR0_RFTH(x)&t;(x &lt;&lt; 12)&t;/* Rx FIFO Interrupt or DMA Trigger Threshold */
 DECL|macro|SACR0_TFTH
-mdefine_line|#define SACR0_TFTH(x)&t;(x &lt;&lt; 8)&t;&t;/* Tx FIFO Interrupt or DMA Trigger Threshold */
+mdefine_line|#define SACR0_TFTH(x)&t;(x &lt;&lt; 8)&t;/* Tx FIFO Interrupt or DMA Trigger Threshold */
 DECL|macro|SACR0_STRF
-mdefine_line|#define SACR0_STRF&t;&t;(1 &lt;&lt; 5)&t;&t;/* FIFO Select for EFWR Special Function */
+mdefine_line|#define SACR0_STRF&t;(1 &lt;&lt; 5)&t;/* FIFO Select for EFWR Special Function */
 DECL|macro|SACR0_EFWR
-mdefine_line|#define SACR0_EFWR&t;&t;(1 &lt;&lt; 4)&t;&t;/* Enable EFWR Function  */
+mdefine_line|#define SACR0_EFWR&t;(1 &lt;&lt; 4)&t;/* Enable EFWR Function  */
 DECL|macro|SACR0_RST
-mdefine_line|#define SACR0_RST&t;&t;(1 &lt;&lt; 3)&t;&t;/* FIFO, i2s Register Reset */
+mdefine_line|#define SACR0_RST&t;(1 &lt;&lt; 3)&t;/* FIFO, i2s Register Reset */
 DECL|macro|SACR0_BCKD
-mdefine_line|#define SACR0_BCKD&t;&t;(1 &lt;&lt; 2) &t;&t;/* Bit Clock Direction */
+mdefine_line|#define SACR0_BCKD&t;(1 &lt;&lt; 2) &t;/* Bit Clock Direction */
 DECL|macro|SACR0_ENB
-mdefine_line|#define SACR0_ENB&t;&t;(1 &lt;&lt; 0)&t;&t;/* Enable I2S Link */
+mdefine_line|#define SACR0_ENB&t;(1 &lt;&lt; 0)&t;/* Enable I2S Link */
 DECL|macro|SACR1_ENLBF
-mdefine_line|#define SACR1_ENLBF&t;&t;(1 &lt;&lt; 5)&t;&t;/* Enable Loopback */
+mdefine_line|#define SACR1_ENLBF&t;(1 &lt;&lt; 5)&t;/* Enable Loopback */
 DECL|macro|SACR1_DRPL
-mdefine_line|#define SACR1_DRPL&t;&t;(1 &lt;&lt; 4) &t;&t;/* Disable Replaying Function */
+mdefine_line|#define SACR1_DRPL&t;(1 &lt;&lt; 4) &t;/* Disable Replaying Function */
 DECL|macro|SACR1_DREC
-mdefine_line|#define SACR1_DREC&t;&t;(1 &lt;&lt; 3)&t;&t;/* Disable Recording Function */
+mdefine_line|#define SACR1_DREC&t;(1 &lt;&lt; 3)&t;/* Disable Recording Function */
 DECL|macro|SACR1_AMSL
-mdefine_line|#define SACR1_AMSL&t;&t;(1 &lt;&lt; 1)&t;&t;/* Specify Alternate Mode */
+mdefine_line|#define SACR1_AMSL&t;(1 &lt;&lt; 1)&t;/* Specify Alternate Mode */
 DECL|macro|SASR0_I2SOFF
-mdefine_line|#define SASR0_I2SOFF&t;(1 &lt;&lt; 7)&t;&t;/* Controller Status */
+mdefine_line|#define SASR0_I2SOFF&t;(1 &lt;&lt; 7)&t;/* Controller Status */
 DECL|macro|SASR0_ROR
-mdefine_line|#define SASR0_ROR&t;&t;(1 &lt;&lt; 6)&t;&t;/* Rx FIFO Overrun */
+mdefine_line|#define SASR0_ROR&t;(1 &lt;&lt; 6)&t;/* Rx FIFO Overrun */
 DECL|macro|SASR0_TUR
-mdefine_line|#define SASR0_TUR&t;&t;(1 &lt;&lt; 5)&t;&t;/* Tx FIFO Underrun */
+mdefine_line|#define SASR0_TUR&t;(1 &lt;&lt; 5)&t;/* Tx FIFO Underrun */
 DECL|macro|SASR0_RFS
-mdefine_line|#define SASR0_RFS&t;&t;(1 &lt;&lt; 4)&t;&t;/* Rx FIFO Service Request */
+mdefine_line|#define SASR0_RFS&t;(1 &lt;&lt; 4)&t;/* Rx FIFO Service Request */
 DECL|macro|SASR0_TFS
-mdefine_line|#define SASR0_TFS&t;&t;(1 &lt;&lt; 3)&t;&t;/* Tx FIFO Service Request */
+mdefine_line|#define SASR0_TFS&t;(1 &lt;&lt; 3)&t;/* Tx FIFO Service Request */
 DECL|macro|SASR0_BSY
-mdefine_line|#define SASR0_BSY&t;&t;(1 &lt;&lt; 2)&t;&t;/* I2S Busy */
+mdefine_line|#define SASR0_BSY&t;(1 &lt;&lt; 2)&t;/* I2S Busy */
 DECL|macro|SASR0_RNE
-mdefine_line|#define SASR0_RNE&t;&t;(1 &lt;&lt; 1)&t;&t;/* Rx FIFO Not Empty */
+mdefine_line|#define SASR0_RNE&t;(1 &lt;&lt; 1)&t;/* Rx FIFO Not Empty */
 DECL|macro|SASR0_TNF
-mdefine_line|#define SASR0_TNF&t;&t;(1 &lt;&lt; 0) &t;&t;/* Tx FIFO Not Empty */
-DECL|macro|SADIV_3_058M
-mdefine_line|#define SADIV_3_058M&t;0x0c&t;&t;&t;/* Serial Clock Divider 3.058MHz */
-DECL|macro|SADIV_2_836M
-mdefine_line|#define SADIV_2_836M&t;0x0d&t;&t;&t;/* 2.836 MHz */
-DECL|macro|SADIV_1_405M
-mdefine_line|#define SADIV_1_405M&t;0x1a&t;&t;&t;/* 1.405 MHz */
-DECL|macro|SADIV_1_026M
-mdefine_line|#define SADIV_1_026M&t;0x24&t;&t;&t;/* 1.026 MHz */
-DECL|macro|SADIV_702K
-mdefine_line|#define SADIV_702K&t;&t;0x34&t;&t;&t;/* 702 kHz */
-DECL|macro|SADIV_513K
-mdefine_line|#define SADIV_513K&t;&t;0x48&t;&t;&t;/* 513 kHz */
+mdefine_line|#define SASR0_TNF&t;(1 &lt;&lt; 0) &t;/* Tx FIFO Not Empty */
 DECL|macro|SAICR_ROR
-mdefine_line|#define SAICR_ROR&t;&t;(1 &lt;&lt; 6)&t;&t;/* Clear Rx FIFO Overrun Interrupt */
+mdefine_line|#define SAICR_ROR&t;(1 &lt;&lt; 6)&t;/* Clear Rx FIFO Overrun Interrupt */
 DECL|macro|SAICR_TUR
-mdefine_line|#define SAICR_TUR&t;&t;(1 &lt;&lt; 5)&t;&t;/* Clear Tx FIFO Underrun Interrupt */
+mdefine_line|#define SAICR_TUR&t;(1 &lt;&lt; 5)&t;/* Clear Tx FIFO Underrun Interrupt */
 DECL|macro|SAIMR_ROR
-mdefine_line|#define SAIMR_ROR&t;&t;(1 &lt;&lt; 6)&t;&t;/* Enable Rx FIFO Overrun Condition Interrupt */
+mdefine_line|#define SAIMR_ROR&t;(1 &lt;&lt; 6)&t;/* Enable Rx FIFO Overrun Condition Interrupt */
 DECL|macro|SAIMR_TUR
-mdefine_line|#define SAIMR_TUR&t;&t;(1 &lt;&lt; 5)&t;&t;/* Enable Tx FIFO Underrun Condition Interrupt */
+mdefine_line|#define SAIMR_TUR&t;(1 &lt;&lt; 5)&t;/* Enable Tx FIFO Underrun Condition Interrupt */
 DECL|macro|SAIMR_RFS
-mdefine_line|#define SAIMR_RFS&t;&t;(1 &lt;&lt; 4)&t;&t;/* Enable Rx FIFO Service Interrupt */
+mdefine_line|#define SAIMR_RFS&t;(1 &lt;&lt; 4)&t;/* Enable Rx FIFO Service Interrupt */
 DECL|macro|SAIMR_TFS
-mdefine_line|#define SAIMR_TFS&t;&t;(1 &lt;&lt; 3)&t;&t;/* Enable Tx FIFO Service Interrupt */
+mdefine_line|#define SAIMR_TFS&t;(1 &lt;&lt; 3)&t;/* Enable Tx FIFO Service Interrupt */
+macro_line|#endif
 multiline_comment|/*&n; * AC97 Controller registers&n; */
 DECL|macro|POCR
 mdefine_line|#define POCR&t;&t;__REG(0x40500000)  /* PCM Out Control Register */
@@ -2175,8 +2163,8 @@ DECL|macro|GPIO19_DREQ1_MD
 mdefine_line|#define GPIO19_DREQ1_MD&t;&t;(19 | GPIO_ALT_FN_1_IN)
 DECL|macro|GPIO20_DREQ0_MD
 mdefine_line|#define GPIO20_DREQ0_MD&t;&t;(20 | GPIO_ALT_FN_1_IN)
-DECL|macro|GPIO23_SCLK_md
-mdefine_line|#define GPIO23_SCLK_md&t;&t;(23 | GPIO_ALT_FN_2_OUT)
+DECL|macro|GPIO23_SCLK_MD
+mdefine_line|#define GPIO23_SCLK_MD&t;&t;(23 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO24_SFRM_MD
 mdefine_line|#define GPIO24_SFRM_MD&t;&t;(24 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO25_STXD_MD

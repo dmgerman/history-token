@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/it8172/it8172_int.h&gt;
-macro_line|#include &quot;it8172.h&quot;
 multiline_comment|/*&n; * Prototypes&n; */
 DECL|function|it8172_ratemask
 r_static
@@ -61,6 +60,7 @@ r_int
 id|is_slave
 op_assign
 (paren
+op_amp
 id|hwif-&gt;drives
 (braket
 l_int|1
@@ -190,6 +190,7 @@ id|ide_lock
 comma
 id|flags
 )paren
+suffix:semicolon
 )brace
 DECL|function|it8172_dma_2_pio
 r_static
@@ -951,6 +952,71 @@ op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
 )brace
+DECL|variable|__devinitdata
+r_static
+id|ide_pci_device_t
+id|it8172_chipsets
+(braket
+)braket
+id|__devinitdata
+op_assign
+(brace
+(brace
+multiline_comment|/* 0 */
+dot
+id|name
+op_assign
+l_string|&quot;IT8172G&quot;
+comma
+dot
+id|init_chipset
+op_assign
+id|init_chipset_it8172
+comma
+dot
+id|init_hwif
+op_assign
+id|init_hwif_it8172
+comma
+dot
+id|channels
+op_assign
+l_int|2
+comma
+dot
+id|autodma
+op_assign
+id|AUTODMA
+comma
+dot
+id|enablebits
+op_assign
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x40
+comma
+l_int|0x00
+comma
+l_int|0x01
+)brace
+)brace
+comma
+dot
+id|bootable
+op_assign
+id|ON_BOARD
+comma
+)brace
+)brace
+suffix:semicolon
 DECL|function|it8172_init_one
 r_static
 r_int

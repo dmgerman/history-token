@@ -735,39 +735,6 @@ c_func
 id|default_hwif_mmiops
 )paren
 suffix:semicolon
-DECL|function|default_hwif_transport
-r_void
-id|default_hwif_transport
-(paren
-id|ide_hwif_t
-op_star
-id|hwif
-)paren
-(brace
-id|hwif-&gt;ata_input_data
-op_assign
-id|ata_input_data
-suffix:semicolon
-id|hwif-&gt;ata_output_data
-op_assign
-id|ata_output_data
-suffix:semicolon
-id|hwif-&gt;atapi_input_bytes
-op_assign
-id|atapi_input_bytes
-suffix:semicolon
-id|hwif-&gt;atapi_output_bytes
-op_assign
-id|atapi_output_bytes
-suffix:semicolon
-)brace
-DECL|variable|default_hwif_transport
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|default_hwif_transport
-)paren
-suffix:semicolon
 DECL|function|ide_read_24
 id|u32
 id|ide_read_24
@@ -838,13 +805,6 @@ op_or
 id|sect
 suffix:semicolon
 )brace
-DECL|variable|ide_read_24
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_read_24
-)paren
-suffix:semicolon
 DECL|function|SELECT_DRIVE
 r_void
 id|SELECT_DRIVE
@@ -1024,8 +984,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Some localbus EIDE interfaces require a special access sequence&n; * when using 32-bit I/O instructions to transfer data.  We call this&n; * the &quot;vlb_sync&quot; sequence, which consists of three successive reads&n; * of the sector count register location, with interrupts disabled&n; * to ensure that the reads all happen together.&n; */
 DECL|function|ata_vlb_sync
+r_static
 r_void
 id|ata_vlb_sync
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1084,8 +1046,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is used for most PIO data transfers *from* the IDE interface&n; */
 DECL|function|ata_input_data
+r_static
 r_void
 id|ata_input_data
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1199,8 +1163,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is used for most PIO data transfers *to* the IDE interface&n; */
 DECL|function|ata_output_data
+r_static
 r_void
 id|ata_output_data
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1314,8 +1280,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The following routines are mainly used by the ATAPI drivers.&n; *&n; * These routines will round up any request for an odd number of bytes,&n; * so if an odd bytecount is specified, be sure that there&squot;s at least one&n; * extra byte allocated for the buffer.&n; */
 DECL|function|atapi_input_bytes
+r_static
 r_void
 id|atapi_input_bytes
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1419,16 +1387,11 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|variable|atapi_input_bytes
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|atapi_input_bytes
-)paren
-suffix:semicolon
 DECL|function|atapi_output_bytes
+r_static
 r_void
 id|atapi_output_bytes
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1532,11 +1495,38 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|variable|atapi_output_bytes
+DECL|function|default_hwif_transport
+r_void
+id|default_hwif_transport
+c_func
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+)paren
+(brace
+id|hwif-&gt;ata_input_data
+op_assign
+id|ata_input_data
+suffix:semicolon
+id|hwif-&gt;ata_output_data
+op_assign
+id|ata_output_data
+suffix:semicolon
+id|hwif-&gt;atapi_input_bytes
+op_assign
+id|atapi_input_bytes
+suffix:semicolon
+id|hwif-&gt;atapi_output_bytes
+op_assign
+id|atapi_output_bytes
+suffix:semicolon
+)brace
+DECL|variable|default_hwif_transport
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|atapi_output_bytes
+id|default_hwif_transport
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Beginning of Taskfile OPCODE Library and feature sets.&n; */
@@ -2404,6 +2394,7 @@ macro_line|#  error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|# endif
 macro_line|#endif
 )brace
+multiline_comment|/* FIXME: exported for use by the USB storage (isd200.c) code only */
 DECL|variable|ide_fix_driveid
 id|EXPORT_SYMBOL
 c_func
@@ -4830,7 +4821,7 @@ id|ide_started
 suffix:semicolon
 )brace
 multiline_comment|/* end of polling */
-id|hwgroup-&gt;poll_timeout
+id|hwgroup-&gt;polling
 op_assign
 l_int|0
 suffix:semicolon
@@ -4856,7 +4847,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* done polling */
-id|hwgroup-&gt;poll_timeout
+id|hwgroup-&gt;polling
 op_assign
 l_int|0
 suffix:semicolon
@@ -5166,7 +5157,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-id|hwgroup-&gt;poll_timeout
+id|hwgroup-&gt;polling
 op_assign
 l_int|0
 suffix:semicolon
@@ -5256,8 +5247,10 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|pre_reset
+r_static
 r_void
 id|pre_reset
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -5462,6 +5455,10 @@ id|jiffies
 op_plus
 id|WAIT_WORSTCASE
 suffix:semicolon
+id|hwgroup-&gt;polling
+op_assign
+l_int|1
+suffix:semicolon
 id|__ide_set_handler
 c_func
 (paren
@@ -5611,6 +5608,10 @@ op_assign
 id|jiffies
 op_plus
 id|WAIT_WORSTCASE
+suffix:semicolon
+id|hwgroup-&gt;polling
+op_assign
+l_int|1
 suffix:semicolon
 id|__ide_set_handler
 c_func

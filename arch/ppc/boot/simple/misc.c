@@ -27,7 +27,7 @@ DECL|macro|HAS_KEYB
 mdefine_line|#define HAS_KEYB 0
 macro_line|#endif
 multiline_comment|/* Will / Can the user give input?&n; * Val Henson has requested that Gemini doesn&squot;t wait for the&n; * user to edit the cmdline or not.&n; */
-macro_line|#if (defined(CONFIG_SERIAL_8250_CONSOLE) &bslash;&n;&t;|| defined(CONFIG_VGA_CONSOLE) &bslash;&n;&t;|| defined(CONFIG_SERIAL_MPC52xx_CONSOLE)) &bslash;&n;&t;&amp;&amp; !defined(CONFIG_GEMINI)
+macro_line|#if (defined(CONFIG_SERIAL_8250_CONSOLE) &bslash;&n;&t;|| defined(CONFIG_VGA_CONSOLE) &bslash;&n;&t;|| defined(CONFIG_SERIAL_MPC52xx_CONSOLE) &bslash;&n;&t;|| defined(CONFIG_SERIAL_MPSC_CONSOLE)) &bslash;&n;&t;&amp;&amp; !defined(CONFIG_GEMINI)
 DECL|macro|INTERACTIVE_CONSOLE
 mdefine_line|#define INTERACTIVE_CONSOLE&t;1
 macro_line|#endif
@@ -241,7 +241,7 @@ id|TotalMemory
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
+macro_line|#if defined(CONFIG_SERIAL_8250_CONSOLE) || defined(CONFIG_SERIAL_MPSC_CONSOLE)
 id|com_port
 op_assign
 id|serial_init

@@ -144,7 +144,11 @@ id|KERN_ERR
 l_string|&quot;PCI: Error while updating region &quot;
 l_string|&quot;%s/%d (%08x != %08x)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|resource
 comma
@@ -360,7 +364,11 @@ l_string|&quot;PCI: Cannot allocate resource region %d of bridge %s&bslash;n&quo
 comma
 id|idx
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -1,6 +1,7 @@
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -26,10 +27,11 @@ r_int
 id|machreg_t
 suffix:semicolon
 DECL|variable|nmi_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|nmi_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Lets see what else we need to do here. Set up sp, gp?&n; */
 DECL|function|nmi_dump

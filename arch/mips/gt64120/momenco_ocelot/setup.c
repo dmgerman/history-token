@@ -1186,7 +1186,7 @@ multiline_comment|/* Fix up the DiskOnChip mapping */
 id|GT_WRITE
 c_func
 (paren
-l_int|0x468
+id|GT_DEV_B3_OFS
 comma
 l_int|0xfef73
 )paren
@@ -1238,13 +1238,13 @@ op_assign
 id|GT_READ
 c_func
 (paren
-l_int|0
+id|GT_CPU_OFS
 )paren
 suffix:semicolon
 id|GT_WRITE
 c_func
 (paren
-l_int|0
+id|GT_CPU_OFS
 comma
 id|tmp
 op_or

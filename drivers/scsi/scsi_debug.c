@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/kernel/scsi_debug.c&n; * vvvvvvvvvvvvvvvvvvvvvvv Original vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv&n; *  Copyright (C) 1992  Eric Youngdale&n; *  Simulate a host adapter with 2 disks attached.  Do a lot of checking&n; *  to make sure that we are not getting blocks mixed up, and PANIC if&n; *  anything out of the ordinary is seen.&n; * ^^^^^^^^^^^^^^^^^^^^^^^ Original ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; *&n; *  This version is more generic, simulating a variable number of disk&n; *  (or disk like devices) sharing a common amount of RAM&n; *&n; *&n; *  For documentation see http://www.torque.net/sg/sdebug25.html&n; *&n; *   D. Gilbert (dpg) work for Magneto-Optical device test [20010421]&n; *   dpg: work for devfs large number of disks [20010809]&n; *        forked for lk 2.5 series [20011216, 20020101]&n; *        use vmalloc() more inquiry+mode_sense [20020302]&n; *        add timers for delayed responses [20020721]&n; *   Patrick Mansfield &lt;patmans@us.ibm.com&gt; max_luns+scsi_level [20021031]&n; *   Mike Anderson &lt;andmike@us.ibm.com&gt; sysfs work [20021118]&n; *   dpg: change style of boot options to &quot;scsi_debug.num_tgts=2&quot; and&n; *        module options to &quot;modprobe scsi_debug num_tgts=2&quot; [20021221]&n; */
+multiline_comment|/*&n; *  linux/kernel/scsi_debug.c&n; * vvvvvvvvvvvvvvvvvvvvvvv Original vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv&n; *  Copyright (C) 1992  Eric Youngdale&n; *  Simulate a host adapter with 2 disks attached.  Do a lot of checking&n; *  to make sure that we are not getting blocks mixed up, and PANIC if&n; *  anything out of the ordinary is seen.&n; * ^^^^^^^^^^^^^^^^^^^^^^^ Original ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; *&n; *  This version is more generic, simulating a variable number of disk&n; *  (or disk like devices) sharing a common amount of RAM&n; *&n; *&n; *  For documentation see http://www.torque.net/sg/sdebug26.html&n; *&n; *   D. Gilbert (dpg) work for Magneto-Optical device test [20010421]&n; *   dpg: work for devfs large number of disks [20010809]&n; *        forked for lk 2.5 series [20011216, 20020101]&n; *        use vmalloc() more inquiry+mode_sense [20020302]&n; *        add timers for delayed responses [20020721]&n; *   Patrick Mansfield &lt;patmans@us.ibm.com&gt; max_luns+scsi_level [20021031]&n; *   Mike Anderson &lt;andmike@us.ibm.com&gt; sysfs work [20021118]&n; *   dpg: change style of boot options to &quot;scsi_debug.num_tgts=2&quot; and&n; *        module options to &quot;modprobe scsi_debug num_tgts=2&quot; [20021221]&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -33,7 +33,7 @@ r_char
 op_star
 id|scsi_debug_version_date
 op_assign
-l_string|&quot;20041023&quot;
+l_string|&quot;20050113&quot;
 suffix:semicolon
 multiline_comment|/* Additional Sense Code (ASC) used */
 DECL|macro|NO_ADDED_SENSE
@@ -9893,6 +9893,16 @@ op_amp
 id|sdebug_driverfs_driver
 comma
 op_amp
+id|driver_attr_dsense
+)paren
+suffix:semicolon
+id|driver_create_file
+c_func
+(paren
+op_amp
+id|sdebug_driverfs_driver
+comma
+op_amp
 id|driver_attr_every_nth
 )paren
 suffix:semicolon
@@ -10034,6 +10044,16 @@ id|sdebug_driverfs_driver
 comma
 op_amp
 id|driver_attr_every_nth
+)paren
+suffix:semicolon
+id|driver_remove_file
+c_func
+(paren
+op_amp
+id|sdebug_driverfs_driver
+comma
+op_amp
+id|driver_attr_dsense
 )paren
 suffix:semicolon
 id|driver_remove_file

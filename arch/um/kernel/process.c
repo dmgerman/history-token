@@ -9,6 +9,8 @@ macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
+multiline_comment|/*Userspace header, must be after sys/ptrace.h, and both must be included. */
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -1672,7 +1674,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_SETOPTIONS
+id|PTRACE_OLDSETOPTIONS
 comma
 id|pid
 comma
@@ -1687,7 +1689,6 @@ id|PTRACE_O_TRACESYSGOOD
 OL
 l_int|0
 )paren
-(brace
 id|panic
 c_func
 (paren
@@ -1696,7 +1697,6 @@ comma
 id|errno
 )paren
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -2212,5 +2212,4 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof
