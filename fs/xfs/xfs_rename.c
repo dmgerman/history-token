@@ -20,7 +20,7 @@ macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#include &quot;xfs_bmap.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_quota.h&quot;
-macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_refcache.h&quot;
 macro_line|#include &quot;xfs_utils.h&quot;
 macro_line|#include &quot;xfs_trans_space.h&quot;
 macro_line|#include &quot;xfs_da_btree.h&quot;
@@ -2047,6 +2047,12 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|xfs_refcache_purge_ip
+c_func
+(paren
+id|target_ip
+)paren
+suffix:semicolon
 id|IRELE
 c_func
 (paren

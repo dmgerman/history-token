@@ -27,6 +27,7 @@ macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_bmap.h&quot;
 macro_line|#include &quot;xfs_da_btree.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_refcache.h&quot;
 macro_line|#include &quot;xfs_buf_item.h&quot;
 macro_line|#include &quot;xfs_extfree_item.h&quot;
 macro_line|#include &quot;xfs_quota.h&quot;
@@ -475,6 +476,11 @@ c_func
 )paren
 suffix:semicolon
 id|xfs_sysctl_unregister
+c_func
+(paren
+)paren
+suffix:semicolon
+id|xfs_refcache_destroy
 c_func
 (paren
 )paren
@@ -1896,6 +1902,13 @@ suffix:colon
 id|DM_FLAGS_UNWANTED
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * First blow any referenced inode from this file system&n;&t; * out of the reference cache, and delete the timer.&n;&t; */
+id|xfs_refcache_purge_mp
+c_func
+(paren
+id|mp
+)paren
+suffix:semicolon
 id|XFS_bflush
 c_func
 (paren
@@ -2147,6 +2160,12 @@ op_amp
 id|MS_RDONLY
 )paren
 (brace
+id|xfs_refcache_purge_mp
+c_func
+(paren
+id|mp
+)paren
+suffix:semicolon
 id|pagebuf_delwri_flush
 c_func
 (paren
@@ -4667,6 +4686,22 @@ op_assign
 id|error
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/*&n;&t; * If this is the periodic sync, then kick some entries out of&n;&t; * the reference cache.  This ensures that idle entries are&n;&t; * eventually kicked out of the cache.&n;&t; */
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|SYNC_REFCACHE
+)paren
+(brace
+id|xfs_refcache_purge_some
+c_func
+(paren
+id|mp
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Now check to see if the log needs a &quot;dummy&quot; transaction.&n;&t; */
 r_if

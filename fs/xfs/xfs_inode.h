@@ -608,6 +608,23 @@ id|wait_queue_head_t
 id|i_ipin_wait
 suffix:semicolon
 multiline_comment|/* inode pinning wait queue */
+macro_line|#ifdef HAVE_REFCACHE
+DECL|member|i_refcache
+r_struct
+id|xfs_inode
+op_star
+op_star
+id|i_refcache
+suffix:semicolon
+multiline_comment|/* ptr to entry in ref cache */
+DECL|member|i_release
+r_struct
+id|xfs_inode
+op_star
+id|i_release
+suffix:semicolon
+multiline_comment|/* inode to unref */
+macro_line|#endif
 multiline_comment|/* I/O state */
 DECL|member|i_iocore
 id|xfs_iocore_t

@@ -28,6 +28,7 @@ macro_line|#include &quot;xfs_bmap.h&quot;
 macro_line|#include &quot;xfs_da_btree.h&quot;
 macro_line|#include &quot;xfs_attr.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_refcache.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_bit.h&quot;
 macro_line|#include &quot;xfs_rtalloc.h&quot;
@@ -5894,6 +5895,17 @@ id|VFS_RDONLY
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#ifdef HAVE_REFCACHE
+multiline_comment|/* If we are in the NFS reference cache then don&squot;t do this now */
+r_if
+c_cond
+(paren
+id|ip-&gt;i_refcache
+)paren
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
 id|mp
 op_assign
 id|ip-&gt;i_mount
@@ -9443,6 +9455,13 @@ r_goto
 id|std_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Before we drop our extra reference to the inode, purge it&n;&t; * from the refcache if it is there.  By waiting until afterwards&n;&t; * to do the IRELE, we ensure that we won&squot;t go inactive in the&n;&t; * xfs_refcache_purge_ip routine (although that would be OK).&n;&t; */
+id|xfs_refcache_purge_ip
+c_func
+(paren
+id|ip
+)paren
+suffix:semicolon
 id|vn_trace_exit
 c_func
 (paren
@@ -9578,6 +9597,13 @@ c_func
 id|tp
 comma
 id|cancel_flags
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Before we drop our extra reference to the inode, purge it&n;&t; * from the refcache if it is there.  By waiting until afterwards&n;&t; * to do the IRELE, we ensure that we won&squot;t go inactive in the&n;&t; * xfs_refcache_purge_ip routine (although that would be OK).&n;&t; */
+id|xfs_refcache_purge_ip
+c_func
+(paren
+id|ip
 )paren
 suffix:semicolon
 id|IRELE
@@ -14040,7 +14066,9 @@ op_eq
 id|VRWLOCK_WRITE
 )paren
 (brace
-id|xfs_iunlock
+multiline_comment|/*&n;&t;&t; * In the write case, we may have added a new entry to&n;&t;&t; * the reference cache.  This might store a pointer to&n;&t;&t; * an inode to be released in this inode.  If it is there,&n;&t;&t; * clear the pointer and release the inode after unlocking&n;&t;&t; * this one.&n;&t;&t; */
+id|xfs_refcache_iunlock
+c_func
 (paren
 id|ip
 comma
