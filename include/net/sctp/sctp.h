@@ -1083,6 +1083,36 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/* Tests if the list has one and only one entry. */
+DECL|function|sctp_list_single_entry
+r_static
+r_inline
+r_int
+id|sctp_list_single_entry
+c_func
+(paren
+r_struct
+id|list_head
+op_star
+id|head
+)paren
+(brace
+r_return
+(paren
+(paren
+id|head-&gt;next
+op_ne
+id|head
+)paren
+op_logical_and
+(paren
+id|head-&gt;next
+op_eq
+id|head-&gt;prev
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Calculate the size (in bytes) occupied by the data of an iovec.  */
 DECL|function|get_user_iov_size
 r_static
