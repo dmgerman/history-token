@@ -9323,6 +9323,24 @@ op_assign
 dot
 id|vendor
 op_assign
+l_int|0x1005
+comma
+dot
+id|device
+op_assign
+l_int|0x4710
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* Avance Logic Mobo */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1019
 comma
 dot
