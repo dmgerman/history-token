@@ -2146,7 +2146,7 @@ op_sub_assign
 r_sizeof
 (paren
 r_struct
-id|reg_property
+id|isa_reg_property
 )paren
 )paren
 op_ge
