@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-sa1100/pci-sa1111.c&n; *&n; *  Special pci_map/unmap_single routines for SA-1111.   These functions&n; *  compensate for a bug in the SA-1111 hardware which don&squot;t allow DMA&n; *  to/from addresses above 1MB.&n; *&n; *  Brad Parker (brad@heeltoe.com)&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License version 2 as&n; *  published by the Free Software Foundation.&n; *&n; *  06/13/2001 - created.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
