@@ -1192,6 +1192,11 @@ op_amp
 id|flow_flush_sem
 )paren
 suffix:semicolon
+id|local_bh_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|smp_call_function
 c_func
 (paren
@@ -1203,11 +1208,6 @@ comma
 l_int|1
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|local_bh_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 id|flow_cache_flush_per_cpu
