@@ -351,13 +351,25 @@ id|open
 r_int
 id|status
 suffix:semicolon
-id|dprintk
+multiline_comment|/* Only reclaims from previously confirmed clients are valid */
+r_if
+c_cond
+(paren
+(paren
+id|status
+op_assign
+id|nfs4_check_open_reclaim
 c_func
 (paren
-l_string|&quot;NFSD: do_open_fhandle&bslash;n&quot;
+op_amp
+id|open-&gt;op_clientid
 )paren
+)paren
+)paren
+r_return
+id|status
 suffix:semicolon
-multiline_comment|/* we don&squot;t know the target directory, and therefore can not&n;&t;* set the change info&n;&t;*/
+multiline_comment|/* We don&squot;t know the target directory, and therefore can not&n;&t;* set the change info&n;&t;*/
 id|memset
 c_func
 (paren
@@ -476,7 +488,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|nfs4_in_no_grace
+op_logical_neg
+id|nfs4_in_grace
 c_func
 (paren
 )paren
