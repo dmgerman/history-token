@@ -1256,12 +1256,15 @@ id|cs-&gt;hw.teles0.cfg_reg
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|cs-&gt;hw.teles0.cfg_reg
 comma
 l_int|8
+comma
+l_string|&quot;teles cfg&quot;
 )paren
 )paren
 (brace
@@ -1286,19 +1289,6 @@ suffix:semicolon
 r_return
 (paren
 l_int|0
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|request_region
-c_func
-(paren
-id|cs-&gt;hw.teles0.cfg_reg
-comma
-l_int|8
-comma
-l_string|&quot;teles cfg&quot;
 )paren
 suffix:semicolon
 )brace

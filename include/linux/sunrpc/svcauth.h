@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_SUNRPC_SVCAUTH_H_
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/sunrpc/msg_prot.h&gt;
 macro_line|#include &lt;linux/sunrpc/cache.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 DECL|struct|svc_cred
 r_struct
 id|svc_cred
@@ -292,7 +293,25 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|name_hash
+id|hash_mem
+c_func
+(paren
+r_char
+op_star
+id|buf
+comma
+r_int
+id|len
+comma
+r_int
+id|bits
+)paren
+suffix:semicolon
+DECL|function|hash_str
+r_static
+r_inline
+r_int
+id|hash_str
 c_func
 (paren
 r_char
@@ -300,9 +319,25 @@ op_star
 id|name
 comma
 r_int
-id|size
+id|bits
+)paren
+(brace
+r_return
+id|hash_mem
+c_func
+(paren
+id|name
+comma
+id|strlen
+c_func
+(paren
+id|name
+)paren
+comma
+id|bits
 )paren
 suffix:semicolon
+)brace
 r_extern
 r_struct
 id|cache_detail

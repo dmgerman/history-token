@@ -3077,13 +3077,11 @@ c_func
 suffix:semicolon
 )brace
 )brace
-macro_line|#if CONFIG_DEBUG_HIGHMEM
 id|check_highmem_ptes
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|need_resched
 suffix:colon
 id|preempt_disable

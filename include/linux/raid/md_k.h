@@ -24,6 +24,8 @@ DECL|macro|LEVEL_MULTIPATH
 mdefine_line|#define&t;LEVEL_MULTIPATH&t;&t;(-4)
 DECL|macro|LEVEL_LINEAR
 mdefine_line|#define&t;LEVEL_LINEAR&t;&t;(-1)
+DECL|macro|MaxSector
+mdefine_line|#define MaxSector (~(sector_t)0)
 DECL|function|pers_to_level
 r_static
 r_inline
@@ -617,11 +619,6 @@ DECL|member|max_disks
 r_int
 id|max_disks
 suffix:semicolon
-DECL|member|state
-r_int
-r_int
-id|state
-suffix:semicolon
 DECL|member|size
 id|sector_t
 id|size
@@ -668,6 +665,11 @@ DECL|member|recovery_running
 r_int
 id|recovery_running
 suffix:semicolon
+DECL|member|recovery_error
+r_int
+id|recovery_error
+suffix:semicolon
+multiline_comment|/* error from recovery write */
 DECL|member|in_sync
 r_int
 id|in_sync
@@ -699,6 +701,10 @@ multiline_comment|/* blocks scheduled, but not written */
 DECL|member|recovery_wait
 id|wait_queue_head_t
 id|recovery_wait
+suffix:semicolon
+DECL|member|recovery_cp
+id|sector_t
+id|recovery_cp
 suffix:semicolon
 DECL|member|queue
 id|request_queue_t

@@ -2,6 +2,7 @@ multiline_comment|/* $Id: unaligned.c,v 1.24 2002/02/09 19:49:31 davem Exp $&n; 
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/pstate.h&gt;

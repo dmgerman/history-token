@@ -2306,6 +2306,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|retval
+suffix:semicolon
 multiline_comment|/* Determine correct processor interface to use */
 id|bitmask_array
 op_assign
@@ -2378,6 +2381,35 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|retval
+op_assign
+id|misc_register
+c_func
+(paren
+op_amp
+id|perf_dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Performance monitoring counters: &quot;
+l_string|&quot;cannot register misc device.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
 multiline_comment|/* Patch the images to match the system */
 id|perf_patch_images
 c_func
@@ -2389,13 +2421,6 @@ c_func
 (paren
 op_amp
 id|perf_lock
-)paren
-suffix:semicolon
-id|misc_register
-c_func
-(paren
-op_amp
-id|perf_dev
 )paren
 suffix:semicolon
 multiline_comment|/* TODO: this only lets us access the first cpu.. what to do for SMP? */

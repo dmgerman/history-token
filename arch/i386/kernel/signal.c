@@ -2962,5 +2962,11 @@ comma
 id|oldset
 )paren
 suffix:semicolon
+id|clear_thread_flag
+c_func
+(paren
+id|TIF_IRET
+)paren
+suffix:semicolon
 )brace
 eof

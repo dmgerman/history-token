@@ -670,6 +670,9 @@ comma
 DECL|enumerator|CH_3C450
 id|CH_3C450
 comma
+DECL|enumerator|CH_3C920
+id|CH_3C920
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* note: this array directly indexed by above enums, and MUST&n; * be kept in sync with both the enums above, and the PCI device&n; * table below&n; */
@@ -1263,6 +1266,23 @@ comma
 )brace
 comma
 (brace
+l_string|&quot;3c920 Tornado&quot;
+comma
+id|PCI_USES_IO
+op_or
+id|PCI_USES_MASTER
+comma
+id|IS_TORNADO
+op_or
+id|HAS_NWAY
+op_or
+id|HAS_HWCKSM
+comma
+l_int|128
+comma
+)brace
+comma
+(brace
 l_int|0
 comma
 )brace
@@ -1790,6 +1810,22 @@ comma
 l_int|0
 comma
 id|CH_3C450
+)brace
+comma
+(brace
+l_int|0x10B7
+comma
+l_int|0x9201
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|CH_3C920
 )brace
 comma
 (brace

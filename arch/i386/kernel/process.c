@@ -2021,7 +2021,7 @@ multiline_comment|/* Make sure we don&squot;t return using sysenter.. */
 id|set_thread_flag
 c_func
 (paren
-id|TIF_SIGPENDING
+id|TIF_IRET
 )paren
 suffix:semicolon
 )brace

@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/rmap-locking.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -1052,6 +1053,11 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
+r_struct
+id|pte_chain
+op_star
+id|pte_chain
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1082,6 +1088,14 @@ c_func
 id|tsk-&gt;mm
 comma
 id|address
+)paren
+suffix:semicolon
+id|pte_chain
+op_assign
+id|pte_chain_alloc
+c_func
+(paren
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|spin_lock
@@ -1195,12 +1209,16 @@ id|PAGE_COPY
 )paren
 )paren
 suffix:semicolon
+id|pte_chain
+op_assign
 id|page_add_rmap
 c_func
 (paren
 id|page
 comma
 id|pte
+comma
+id|pte_chain
 )paren
 suffix:semicolon
 id|pte_unmap
@@ -1220,6 +1238,12 @@ id|tsk-&gt;mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 multiline_comment|/* no need for flush_tlb */
+id|pte_chain_free
+c_func
+(paren
+id|pte_chain
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 id|out
@@ -1243,6 +1267,12 @@ c_func
 id|SIGKILL
 comma
 id|tsk
+)paren
+suffix:semicolon
+id|pte_chain_free
+c_func
+(paren
+id|pte_chain
 )paren
 suffix:semicolon
 r_return

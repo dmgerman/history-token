@@ -3918,6 +3918,8 @@ comma
 id|mapping
 comma
 id|idx
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 )paren

@@ -75,19 +75,20 @@ id|fixup
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Returns 0 if exception not found and fixup otherwise.  */
-r_extern
+multiline_comment|/* Special exable search, which handles ranges.  Returns fixup */
 r_int
 r_int
-id|search_exception_table
+id|search_extables_range
 c_func
 (paren
 r_int
 r_int
+id|addr
 comma
 r_int
 r_int
 op_star
+id|g2
 )paren
 suffix:semicolon
 r_extern

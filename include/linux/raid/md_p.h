@@ -250,6 +250,16 @@ id|__u32
 id|events_lo
 suffix:semicolon
 multiline_comment|/*  8 low-order of superblock update count    */
+DECL|member|cp_events_hi
+id|__u32
+id|cp_events_hi
+suffix:semicolon
+multiline_comment|/*  9 high-order of checkpoint update count   */
+DECL|member|cp_events_lo
+id|__u32
+id|cp_events_lo
+suffix:semicolon
+multiline_comment|/* 10 low-order of checkpoint update count    */
 macro_line|#else
 DECL|member|events_lo
 id|__u32
@@ -261,14 +271,29 @@ id|__u32
 id|events_hi
 suffix:semicolon
 multiline_comment|/*  8 high-order of superblock update count   */
+DECL|member|cp_events_lo
+id|__u32
+id|cp_events_lo
+suffix:semicolon
+multiline_comment|/*  9 low-order of checkpoint update count    */
+DECL|member|cp_events_hi
+id|__u32
+id|cp_events_hi
+suffix:semicolon
+multiline_comment|/* 10 high-order of checkpoint update count   */
 macro_line|#endif
+DECL|member|recovery_cp
+id|__u32
+id|recovery_cp
+suffix:semicolon
+multiline_comment|/* 11 recovery checkpoint sector count&t;      */
 DECL|member|gstate_sreserved
 id|__u32
 id|gstate_sreserved
 (braket
 id|MD_SB_GENERIC_STATE_WORDS
 op_minus
-l_int|9
+l_int|12
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * Personality information&n;&t; */

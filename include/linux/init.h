@@ -101,7 +101,7 @@ multiline_comment|/* OBSOLETE: see moduleparam.h for the right way. */
 DECL|macro|__setup
 mdefine_line|#define __setup(str, fn)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static char __setup_str_##fn[] __initdata = str;&t;&t;&bslash;&n;&t;static struct obs_kernel_param __setup_##fn&t;&t;&t;&bslash;&n;&t;&t; __attribute__((unused,__section__ (&quot;.init.setup&quot;)))&t;&bslash;&n;&t;&t;= { __setup_str_##fn, fn }
 macro_line|#endif /* __ASSEMBLY__ */
-multiline_comment|/**&n; * module_init() - driver initialization entry point&n; * @x: function to be run at kernel boot time or module insertion&n; * &n; * module_init() will either be called during do_initcalls (if&n; * builtin) or at module insertion time (if a module).  There can only&n; * be one per module. */
+multiline_comment|/**&n; * module_init() - driver initialization entry point&n; * @x: function to be run at kernel boot time or module insertion&n; * &n; * module_init() will either be called during do_initcalls (if&n; * builtin) or at module insertion time (if a module).  There can only&n; * be one per module.&n; */
 DECL|macro|module_init
 mdefine_line|#define module_init(x)&t;__initcall(x);
 multiline_comment|/**&n; * module_exit() - driver exit entry point&n; * @x: function to be run when driver is removed&n; * &n; * module_exit() will wrap the driver clean-up code&n; * with cleanup_module() when used with rmmod when&n; * the driver is a module.  If the driver is statically&n; * compiled into the kernel, module_exit() has no effect.&n; * There can only be one per module.&n; */

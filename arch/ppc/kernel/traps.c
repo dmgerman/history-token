@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -447,9 +448,11 @@ id|regs
 )paren
 (brace
 macro_line|#ifdef CONFIG_ALL_PPC
-r_int
-r_int
-id|fixup
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|entry
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALL_PPC */
 r_int
@@ -543,16 +546,16 @@ l_int|0x40000
 )paren
 op_logical_and
 (paren
-id|fixup
+id|entry
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|regs-&gt;nip
 )paren
 )paren
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Check that it&squot;s a sync instruction, or somewhere&n;&t;&t; * in the twi; isync; nop sequence that inb/inw/inl uses.&n;&t;&t; * As the address is in the exception table&n;&t;&t; * we should be able to read the instr there.&n;&t;&t; * For the debug message, we look at the preceding&n;&t;&t; * load or store.&n;&t;&t; */
