@@ -35,11 +35,18 @@ id|__up_wakeup
 )paren
 suffix:semicolon
 multiline_comment|/* Networking helper routines. */
-DECL|variable|csum_partial_copy_generic
+DECL|variable|csum_partial_copy_from
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|csum_partial_copy_generic
+id|csum_partial_copy_from
+)paren
+suffix:semicolon
+DECL|variable|csum_partial_copy_to
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial_copy_to
 )paren
 suffix:semicolon
 eof
