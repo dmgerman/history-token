@@ -1,4 +1,8 @@
-multiline_comment|/*&n; * arch/ia64/boot/bootloader.c&n; *&n; * Loads an ELF kernel.&n; *&n; * Copyright (C) 1998, 1999, 2001 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999, 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1998, 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 01/07/99 S.Eranian modified to pass command line arguments to kernel&n; */
+multiline_comment|/*&n; * arch/ia64/boot/bootloader.c&n; *&n; * Loads an ELF kernel.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 01/07/99 S.Eranian modified to pass command line arguments to kernel&n; */
+r_struct
+id|task_struct
+suffix:semicolon
+multiline_comment|/* forward declaration for elf.h */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -73,6 +77,16 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#include &quot;../kernel/fw-emu.c&quot;
+multiline_comment|/*&n; * Set a break point on this function so that symbols are available to set breakpoints in&n; * the kernel being debugged.&n; */
+r_static
+r_void
+DECL|function|debug_break
+id|debug_break
+(paren
+r_void
+)paren
+(brace
+)brace
 r_static
 r_void
 DECL|function|cons_write
@@ -826,6 +840,11 @@ comma
 l_int|0
 comma
 id|SSC_LOAD_SYMBOLS
+)paren
+suffix:semicolon
+id|debug_break
+c_func
+(paren
 )paren
 suffix:semicolon
 id|asm

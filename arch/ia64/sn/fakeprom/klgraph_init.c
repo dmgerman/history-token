@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: klgraph_init.c,v 1.2 2001/12/05 16:58:41 jh Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
+multiline_comment|/* $Id: klgraph_init.c,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 multiline_comment|/*&n; * This is a temporary file that statically initializes the expected &n; * initial klgraph information that is normally provided by prom.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -47,10 +47,12 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 id|u64
 op_star
 id|temp
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Initialize some hub/xbow registers that allows access to &n;&t; * Xbridge etc.  These are normally done in PROM.&n;&t; */
 multiline_comment|/* Write IOERR clear to clear the CRAZY bit in the status */
 macro_line|#ifdef CONFIG_IA64_SGI_SN1
@@ -264,6 +266,7 @@ multiline_comment|/* set default read response buffers in bridge */
 singleline_comment|// [PI]       *(volatile u32 *)0xc00000080f000280L = 0xba98;
 singleline_comment|// [PI]       *(volatile u32 *)0xc00000080f000288L = 0xba98;
 macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 multiline_comment|/*&n;&t; * kldir entries initialization - mankato&n;&t; */
 id|convert
 c_func
@@ -1878,5 +1881,6 @@ comma
 l_int|0x0000000000000000
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 eof

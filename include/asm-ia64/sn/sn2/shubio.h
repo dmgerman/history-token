@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id: shubio.h,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SN2_SHUBIO_H
 DECL|macro|_ASM_IA64_SN_SN2_SHUBIO_H
 mdefine_line|#define _ASM_IA64_SN_SN2_SHUBIO_H
@@ -943,13 +943,13 @@ DECL|member|i_int_sent
 id|shubreg_t
 id|i_int_sent
 suffix:colon
-l_int|1
+l_int|2
 suffix:semicolon
 DECL|member|i_rsvd_1
 id|shubreg_t
 id|i_rsvd_1
 suffix:colon
-l_int|3
+l_int|2
 suffix:semicolon
 DECL|member|i_pi0_forward_int
 id|shubreg_t
@@ -6450,15 +6450,15 @@ DECL|macro|IIO_ICRB_ADDR_SHFT
 mdefine_line|#define IIO_ICRB_ADDR_SHFT&t;2&t;/* Shift to get proper address */
 multiline_comment|/* XXX - This is now tuneable:&n;        #define IIO_FIRST_PC_ENTRY 12&n; */
 DECL|macro|IIO_ICRB_A
-mdefine_line|#define IIO_ICRB_A(_x)  (IIO_ICRB_0 + (6 * IIO_ICRB_OFFSET * (_x)))
+mdefine_line|#define IIO_ICRB_A(_x)  ((u64)(IIO_ICRB_0 + (6 * IIO_ICRB_OFFSET * (_x))))
 DECL|macro|IIO_ICRB_B
-mdefine_line|#define IIO_ICRB_B(_x)  (IIO_ICRB_A(_x) + 1*IIO_ICRB_OFFSET)
+mdefine_line|#define IIO_ICRB_B(_x)  ((u64)((char *)IIO_ICRB_A(_x) + 1*IIO_ICRB_OFFSET))
 DECL|macro|IIO_ICRB_C
-mdefine_line|#define IIO_ICRB_C(_x)  (IIO_ICRB_A(_x) + 2*IIO_ICRB_OFFSET)
+mdefine_line|#define IIO_ICRB_C(_x)  ((u64)((char *)IIO_ICRB_A(_x) + 2*IIO_ICRB_OFFSET))
 DECL|macro|IIO_ICRB_D
-mdefine_line|#define IIO_ICRB_D(_x)  (IIO_ICRB_A(_x) + 3*IIO_ICRB_OFFSET)
+mdefine_line|#define IIO_ICRB_D(_x)  ((u64)((char *)IIO_ICRB_A(_x) + 3*IIO_ICRB_OFFSET))
 DECL|macro|IIO_ICRB_E
-mdefine_line|#define IIO_ICRB_E(_x)  (IIO_ICRB_A(_x) + 4*IIO_ICRB_OFFSET)
+mdefine_line|#define IIO_ICRB_E(_x)  ((u64)((char *)IIO_ICRB_A(_x) + 4*IIO_ICRB_OFFSET))
 DECL|macro|TNUM_TO_WIDGET_DEV
 mdefine_line|#define TNUM_TO_WIDGET_DEV(_tnum)&t;(_tnum &amp; 0x7)
 multiline_comment|/*&n; * values for &quot;ecode&quot; field&n; */
@@ -6644,18 +6644,12 @@ DECL|macro|IIO_ICCR_CMD_FLUSH
 mdefine_line|#define&t;IIO_ICCR_CMD_FLUSH&t;(0x800)
 multiline_comment|/*&n; *&n; * CRB Register description.&n; *&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; *&n; * Many of the fields in CRB are status bits used by hardware&n; * for implementation of the protocol. It&squot;s very dangerous to&n; * mess around with the CRB registers.&n; *&n; * It&squot;s OK to read the CRB registers and try to make sense out of the&n; * fields in CRB.&n; *&n; * Updating CRB requires all activities in Hub IIO to be quiesced.&n; * otherwise, a write to CRB could corrupt other CRB entries.&n; * CRBs are here only as a back door peek to shub IIO&squot;s status.&n; * Quiescing implies  no dmas no PIOs&n; * either directly from the cpu or from sn0net.&n; * this is not something that can be done easily. So, AVOID updating&n; * CRBs.&n; */
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n; * Easy access macros for CRBs, all 4 registers (A-D)&n; */
+multiline_comment|/*&n; * Easy access macros for CRBs, all 5 registers (A-E)&n; */
 DECL|typedef|icrba_t
 r_typedef
 id|ii_icrb0_a_u_t
 id|icrba_t
 suffix:semicolon
-DECL|macro|a_lnetuce
-mdefine_line|#define a_lnetuce       ii_icrb0_a_fld_s.ia_ln_uce
-DECL|macro|a_mark
-mdefine_line|#define a_mark          ii_icrb0_a_fld_s.ia_mark
-DECL|macro|a_xerr
-mdefine_line|#define a_xerr          ii_icrb0_a_fld_s.ia_xt_err
 DECL|macro|a_sidn
 mdefine_line|#define a_sidn          ii_icrb0_a_fld_s.ia_sidn
 DECL|macro|a_tnum
@@ -6673,22 +6667,46 @@ r_typedef
 id|ii_icrb0_b_u_t
 id|icrbb_t
 suffix:semicolon
-DECL|macro|b_error
-mdefine_line|#define b_error         ii_icrb0_b_fld_s.ib_error
-DECL|macro|b_ecode
-mdefine_line|#define b_ecode         ii_icrb0_b_fld_s.ib_errcode
-DECL|macro|b_cohtrans
-mdefine_line|#define b_cohtrans      ii_icrb0_b_fld_s.ib_ct
-DECL|macro|b_xtsize
-mdefine_line|#define b_xtsize        ii_icrb0_b_fld_s.ib_size
-DECL|macro|b_source
-mdefine_line|#define b_source        ii_icrb0_b_fld_s.ib_source
+DECL|macro|b_use_old
+mdefine_line|#define b_use_old       ii_icrb0_b_fld_s.ib_use_old
 DECL|macro|b_imsgtype
 mdefine_line|#define b_imsgtype      ii_icrb0_b_fld_s.ib_imsgtype
 DECL|macro|b_imsg
 mdefine_line|#define b_imsg          ii_icrb0_b_fld_s.ib_imsg
 DECL|macro|b_initiator
 mdefine_line|#define b_initiator     ii_icrb0_b_fld_s.ib_init
+DECL|macro|b_exc
+mdefine_line|#define b_exc           ii_icrb0_b_fld_s.ib_exc
+DECL|macro|b_ackcnt
+mdefine_line|#define b_ackcnt        ii_icrb0_b_fld_s.ib_ack_cnt
+DECL|macro|b_resp
+mdefine_line|#define b_resp          ii_icrb0_b_fld_s.ib_resp
+DECL|macro|b_ack
+mdefine_line|#define b_ack           ii_icrb0_b_fld_s.ib_ack
+DECL|macro|b_hold
+mdefine_line|#define b_hold          ii_icrb0_b_fld_s.ib_hold
+DECL|macro|b_wb
+mdefine_line|#define b_wb            ii_icrb0_b_fld_s.ib_wb
+DECL|macro|b_intvn
+mdefine_line|#define b_intvn         ii_icrb0_b_fld_s.ib_intvn
+DECL|macro|b_stall_ib
+mdefine_line|#define b_stall_ib      ii_icrb0_b_fld_s.ib_stall_ib
+DECL|macro|b_stall_int
+mdefine_line|#define b_stall_int     ii_icrb0_b_fld_s.ib_stall__intr
+DECL|macro|b_stall_bte_0
+mdefine_line|#define b_stall_bte_0   ii_icrb0_b_fld_s.ib_stall__bte_0
+DECL|macro|b_stall_bte_1
+mdefine_line|#define b_stall_bte_1   ii_icrb0_b_fld_s.ib_stall__bte_1
+DECL|macro|b_error
+mdefine_line|#define b_error         ii_icrb0_b_fld_s.ib_error
+DECL|macro|b_ecode
+mdefine_line|#define b_ecode         ii_icrb0_b_fld_s.ib_errcode
+DECL|macro|b_lnetuce
+mdefine_line|#define b_lnetuce       ii_icrb0_b_fld_s.ib_ln_uce
+DECL|macro|b_mark
+mdefine_line|#define b_mark          ii_icrb0_b_fld_s.ib_mark
+DECL|macro|b_xerr
+mdefine_line|#define b_xerr          ii_icrb0_b_fld_s.ib_xt_err
 DECL|macro|b_regvalue
 mdefine_line|#define b_regvalue&t;ii_icrb0_b_regval
 DECL|typedef|icrbc_t
@@ -6696,16 +6714,6 @@ r_typedef
 id|ii_icrb0_c_u_t
 id|icrbc_t
 suffix:semicolon
-DECL|macro|c_btenum
-mdefine_line|#define c_btenum        ii_icrb0_c_fld_s.ic_bte_num
-DECL|macro|c_pricnt
-mdefine_line|#define c_pricnt        ii_icrb0_c_fld_s.ic_pr_cnt
-DECL|macro|c_pripsc
-mdefine_line|#define c_pripsc        ii_icrb0_c_fld_s.ic_pr_psc
-DECL|macro|c_bteaddr
-mdefine_line|#define c_bteaddr       ii_icrb0_c_fld_s.ic_pa_be /* ic_pa_be fld has 2 names*/
-DECL|macro|c_benable
-mdefine_line|#define c_benable       ii_icrb0_c_fld_s.ic_pa_be /* ic_pa_be fld has 2 names*/
 DECL|macro|c_suppl
 mdefine_line|#define c_suppl         ii_icrb0_c_fld_s.ic_suppl
 DECL|macro|c_barrop
@@ -6714,6 +6722,14 @@ DECL|macro|c_doresp
 mdefine_line|#define c_doresp        ii_icrb0_c_fld_s.ic_resprqd
 DECL|macro|c_gbr
 mdefine_line|#define c_gbr           ii_icrb0_c_fld_s.ic_gbr
+DECL|macro|c_btenum
+mdefine_line|#define c_btenum        ii_icrb0_c_fld_s.ic_bte_num
+DECL|macro|c_cohtrans
+mdefine_line|#define c_cohtrans      ii_icrb0_c_fld_s.ic_ct
+DECL|macro|c_xtsize
+mdefine_line|#define c_xtsize        ii_icrb0_c_fld_s.ic_size
+DECL|macro|c_source
+mdefine_line|#define c_source        ii_icrb0_c_fld_s.ic_source
 DECL|macro|c_regvalue
 mdefine_line|#define c_regvalue&t;ii_icrb0_c_regval
 DECL|typedef|icrbd_t
@@ -6721,16 +6737,35 @@ r_typedef
 id|ii_icrb0_d_u_t
 id|icrbd_t
 suffix:semicolon
+DECL|macro|d_sleep
+mdefine_line|#define d_sleep         ii_icrb0_d_fld_s.id_sleep
+DECL|macro|d_pricnt
+mdefine_line|#define d_pricnt        ii_icrb0_d_fld_s.id_pr_cnt
+DECL|macro|d_pripsc
+mdefine_line|#define d_pripsc        ii_icrb0_d_fld_s.id_pr_psc
 DECL|macro|d_bteop
 mdefine_line|#define d_bteop         ii_icrb0_d_fld_s.id_bte_op
-DECL|macro|icrbd_ctxtvld
-mdefine_line|#define icrbd_ctxtvld   ii_icrb0_d_fld_s.id_cvld
-DECL|macro|icrbd_toutvld
-mdefine_line|#define icrbd_toutvld   ii_icrb0_d_fld_s.id_tvld
-DECL|macro|icrbd_context
-mdefine_line|#define icrbd_context   ii_icrb0_d_fld_s.id_context
+DECL|macro|d_bteaddr
+mdefine_line|#define d_bteaddr       ii_icrb0_d_fld_s.id_pa_be /* ic_pa_be fld has 2 names*/
+DECL|macro|d_benable
+mdefine_line|#define d_benable       ii_icrb0_d_fld_s.id_pa_be /* ic_pa_be fld has 2 names*/
 DECL|macro|d_regvalue
 mdefine_line|#define d_regvalue&t;ii_icrb0_d_regval
+DECL|typedef|icrbe_t
+r_typedef
+id|ii_icrb0_e_u_t
+id|icrbe_t
+suffix:semicolon
+DECL|macro|icrbe_ctxtvld
+mdefine_line|#define icrbe_ctxtvld   ii_icrb0_e_fld_s.ie_cvld
+DECL|macro|icrbe_toutvld
+mdefine_line|#define icrbe_toutvld   ii_icrb0_e_fld_s.ie_tvld
+DECL|macro|icrbe_context
+mdefine_line|#define icrbe_context   ii_icrb0_e_fld_s.ie_context
+DECL|macro|icrbe_timeout
+mdefine_line|#define icrbe_timeout   ii_icrb0_e_fld_s.ie_timeout
+DECL|macro|e_regvalue
+mdefine_line|#define e_regvalue&t;ii_icrb0_e_regval
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* Number of widgets supported by shub */
 DECL|macro|HUB_NUM_WIDGET
@@ -6806,23 +6841,23 @@ multiline_comment|/* IO Interrupt Destination Register */
 DECL|macro|IIO_IIDSR_SENT_SHIFT
 mdefine_line|#define IIO_IIDSR_SENT_SHIFT    28
 DECL|macro|IIO_IIDSR_SENT_MASK
-mdefine_line|#define IIO_IIDSR_SENT_MASK     0x10000000
+mdefine_line|#define IIO_IIDSR_SENT_MASK     0x30000000
 DECL|macro|IIO_IIDSR_ENB_SHIFT
 mdefine_line|#define IIO_IIDSR_ENB_SHIFT     24
 DECL|macro|IIO_IIDSR_ENB_MASK
 mdefine_line|#define IIO_IIDSR_ENB_MASK      0x01000000
 DECL|macro|IIO_IIDSR_NODE_SHIFT
-mdefine_line|#define IIO_IIDSR_NODE_SHIFT    8
+mdefine_line|#define IIO_IIDSR_NODE_SHIFT    9
 DECL|macro|IIO_IIDSR_NODE_MASK
-mdefine_line|#define IIO_IIDSR_NODE_MASK     0x0000ff00
+mdefine_line|#define IIO_IIDSR_NODE_MASK     0x000ff700
 DECL|macro|IIO_IIDSR_PI_ID_SHIFT
 mdefine_line|#define IIO_IIDSR_PI_ID_SHIFT   8
 DECL|macro|IIO_IIDSR_PI_ID_MASK
-mdefine_line|#define IIO_IIDSR_PI_ID_MASK    0x00000010
+mdefine_line|#define IIO_IIDSR_PI_ID_MASK    0x00000100
 DECL|macro|IIO_IIDSR_LVL_SHIFT
 mdefine_line|#define IIO_IIDSR_LVL_SHIFT     0
 DECL|macro|IIO_IIDSR_LVL_MASK
-mdefine_line|#define IIO_IIDSR_LVL_MASK      0x0000007f
+mdefine_line|#define IIO_IIDSR_LVL_MASK      0x000000ff
 multiline_comment|/* Xtalk timeout threshhold register (IIO_IXTT) */
 DECL|macro|IXTT_RRSP_TO_SHFT
 mdefine_line|#define IXTT_RRSP_TO_SHFT&t;55&t;   /* read response timeout */
@@ -7381,6 +7416,15 @@ id|hub_intr_t
 id|intr_hdl
 comma
 multiline_comment|/* xtalk intr resource hndl */
+id|intr_func_t
+id|intr_func
+comma
+multiline_comment|/* xtalk intr handler */
+r_void
+op_star
+id|intr_arg
+comma
+multiline_comment|/* arg to intr handler */
 id|xtalk_intr_setfunc_t
 id|setfunc
 comma

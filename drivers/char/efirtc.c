@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|EFI_RTC_VERSION
-mdefine_line|#define EFI_RTC_VERSION&t;&t;&quot;0.3&quot;
+mdefine_line|#define EFI_RTC_VERSION&t;&t;&quot;0.4&quot;
 DECL|macro|EFI_ISDST
 mdefine_line|#define EFI_ISDST (EFI_TIME_ADJUST_DAYLIGHT|EFI_TIME_IN_DAYLIGHT)
 multiline_comment|/*&n; * EFI Epoch is 1/1/1998&n; */
@@ -1117,9 +1117,9 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Time          : %u:%u:%u.%09u&bslash;n&quot;
-l_string|&quot;Date          : %u-%u-%u&bslash;n&quot;
-l_string|&quot;Daylight      : %u&bslash;n&quot;
+l_string|&quot;Time           : %u:%u:%u.%09u&bslash;n&quot;
+l_string|&quot;Date           : %u-%u-%u&bslash;n&quot;
+l_string|&quot;Daylight       : %u&bslash;n&quot;
 comma
 id|eft.hour
 comma
@@ -1375,8 +1375,11 @@ r_void
 (brace
 r_int
 id|ret
-op_assign
-l_int|0
+suffix:semicolon
+r_struct
+id|proc_dir_entry
+op_star
+id|dir
 suffix:semicolon
 id|printk
 c_func
@@ -1406,7 +1409,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;driver/efirtc: can&squot;t misc_register on minor=%d&bslash;n&quot;
+l_string|&quot;efirtc: can&squot;t misc_register on minor=%d&bslash;n&quot;
 comma
 id|EFI_RTC_MINOR
 )paren
@@ -1415,6 +1418,8 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+id|dir
+op_assign
 id|create_proc_read_entry
 (paren
 l_string|&quot;driver/efirtc&quot;
@@ -1428,6 +1433,33 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dir
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;efirtc: can&squot;t create /proc/driver/efirtc.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|misc_deregister
+c_func
+(paren
+op_amp
+id|efi_rtc_dev
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

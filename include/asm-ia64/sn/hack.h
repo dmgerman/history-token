@@ -2,6 +2,8 @@ multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions 
 macro_line|#ifndef _ASM_IA64_SN_HACK_H
 DECL|macro|_ASM_IA64_SN_HACK_H
 mdefine_line|#define _ASM_IA64_SN_HACK_H
+macro_line|#include &lt;linux/mmzone.h&gt;
+macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* for copy_??_user */
 multiline_comment|/******************************************&n; * Definitions that do not exist in linux *&n; ******************************************/
@@ -21,10 +23,6 @@ id|x
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|mrlock
-mdefine_line|#define mrlock(_s, _t, _u)
-DECL|macro|mrunlock
-mdefine_line|#define mrunlock(_s)
 multiline_comment|/*&n; * Hardware Graph routines that are currently stubbed!&n; */
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|DELAY
@@ -118,14 +116,16 @@ id|snia_kmem_zone_alloc
 c_func
 (paren
 r_register
-id|zone_t
+r_struct
+id|zone
 op_star
 comma
 r_int
 )paren
 suffix:semicolon
 r_extern
-id|zone_t
+r_struct
+id|zone
 op_star
 id|snia_kmem_zone_init
 c_func
@@ -143,7 +143,8 @@ id|snia_kmem_zone_free
 c_func
 (paren
 r_register
-id|zone_t
+r_struct
+id|zone
 op_star
 comma
 r_void

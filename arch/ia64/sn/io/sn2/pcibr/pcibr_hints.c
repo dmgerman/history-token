@@ -268,18 +268,19 @@ id|hint-&gt;ph_rrb_fixed
 op_assign
 id|mask
 suffix:semicolon
-macro_line|#if DEBUG
 r_else
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;pcibr_hints_fix_rrbs: pcibr_hints_get failed at&bslash;n&quot;
-l_string|&quot;&bslash;t%p&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_HINTS
 comma
 id|xconn_vhdl
+comma
+l_string|&quot;pcibr_hints_fix_rrbs: pcibr_hints_get failed&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_void
 DECL|function|pcibr_hints_fix_rrbs
@@ -339,18 +340,19 @@ id|host
 op_plus
 l_int|1
 suffix:semicolon
-macro_line|#if DEBUG
 r_else
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;pcibr_hints_dualslot: pcibr_hints_get failed at&bslash;n&quot;
-l_string|&quot;&bslash;t%p&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_HINTS
 comma
 id|xconn_vhdl
+comma
+l_string|&quot;pcibr_hints_dualslot: pcibr_hints_get failed&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_void
 DECL|function|pcibr_hints_intr_bits
@@ -385,18 +387,19 @@ id|hint-&gt;ph_intr_bits
 op_assign
 id|xxx_intr_bits
 suffix:semicolon
-macro_line|#if DEBUG
 r_else
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;pcibr_hints_intr_bits: pcibr_hints_get failed at&bslash;n&quot;
-l_string|&quot;&bslash;t%p&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_HINTS
 comma
 id|xconn_vhdl
+comma
+l_string|&quot;pcibr_hints_intr_bits: pcibr_hints_get failed&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_void
 DECL|function|pcibr_set_rrb_callback
@@ -460,18 +463,19 @@ id|hint-&gt;ph_hands_off
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if DEBUG
 r_else
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;pcibr_hints_handsoff: pcibr_hints_get failed at&bslash;n&quot;
-l_string|&quot;&bslash;t%p&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_HINTS
 comma
 id|xconn_vhdl
+comma
+l_string|&quot;pcibr_hints_handsoff: pcibr_hints_get failed&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_void
 DECL|function|pcibr_hints_subdevs
@@ -509,7 +513,9 @@ c_func
 (paren
 id|sdname
 comma
-l_string|&quot;pci/%d&quot;
+l_string|&quot;%s/%d&quot;
+comma
+id|EDGE_LBL_PCI
 comma
 id|slot
 )paren
@@ -536,19 +542,18 @@ op_eq
 id|GRAPH_VERTEX_NONE
 )paren
 (brace
-macro_line|#if DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;pcibr_hints_subdevs: hwgraph_path_create failed at&bslash;n&quot;
-l_string|&quot;&bslash;t%p (seeking %s)&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_HINTS
 comma
 id|xconn_vhdl
 comma
-id|sdname
+l_string|&quot;pcibr_hints_subdevs: hwgraph_path_create failed&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -588,17 +593,18 @@ op_logical_neg
 id|subdevp
 )paren
 (brace
-macro_line|#if DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;pcibr_hints_subdevs: subdev ptr alloc failed at&bslash;n&quot;
-l_string|&quot;&bslash;t%p&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_HINTS
 comma
-id|pconn_vhdl
+id|xconn_vhdl
+comma
+l_string|&quot;pcibr_hints_subdevs: subdev ptr alloc failed&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -660,31 +666,33 @@ id|arbitrary_info_t
 l_int|NULL
 )paren
 (brace
-macro_line|#if DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;pcibr_hints_subdevs: null subdevs ptr at&bslash;n&quot;
-l_string|&quot;&bslash;t%p&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_HINTS
 comma
-id|pconn_vhdl
+id|xconn_vhdl
+comma
+l_string|&quot;pcibr_hints_subdevs: null subdevs ptr&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
-macro_line|#if DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;pcibr_subdevs_get: dup subdev add_LBL at&bslash;n&quot;
-l_string|&quot;&bslash;t%p&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_HINTS
 comma
-id|pconn_vhdl
+id|xconn_vhdl
+comma
+l_string|&quot;pcibr_subdevs_get: dup subdev add_LBL&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 op_star
 (paren

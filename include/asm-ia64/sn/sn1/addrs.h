@@ -6,8 +6,10 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_IA64_SGI_SN1
 multiline_comment|/*&n; * SN1 (on a TRex) Address map&n; *&n; * This file contains a set of definitions and macros which are used&n; * to reference into the major address spaces (CAC, HSPEC, IO, MSPEC,&n; * and UNCAC) used by the SN1 architecture.  It also contains addresses&n; * for &quot;major&quot; statically locatable PROM/Kernel data structures, such as&n; * the partition table, the configuration data structure, etc.&n; * We make an implicit assumption that the processor using this file&n; * follows the R12K&squot;s provisions for specifying uncached attributes;&n; * should this change, the base registers may very well become processor-&n; * dependent.&n; *&n; * For more information on the address spaces, see the &quot;Local Resources&quot;&n; * chapter of the Hub specification.&n; *&n; * NOTE: This header file is included both by C and by assembler source&n; *&t; files.  Please bracket any language-dependent definitions&n; *&t; appropriately.&n; */
 multiline_comment|/*&n; * Some of the macros here need to be casted to appropriate types when used&n; * from C.  They definitely must not be casted from assembly language so we&n; * use some new ANSI preprocessor stuff to paste these on where needed.&n; */
+DECL|macro|CACHEABLE_MEM_SPACE
+mdefine_line|#define CACHEABLE_MEM_SPACE     0xe000000000000000
 DECL|macro|CAC_BASE
-mdefine_line|#define CAC_BASE                0xe000000000000000
+mdefine_line|#define CAC_BASE&t;&t;CACHEABLE_MEM_SPACE
 DECL|macro|HSPEC_BASE
 mdefine_line|#define HSPEC_BASE              0xc0000b0000000000
 DECL|macro|HSPEC_SWIZ_BASE

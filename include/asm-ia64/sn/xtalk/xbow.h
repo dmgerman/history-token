@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_SN_SN_XTALK_XBOW_H
 DECL|macro|_ASM_SN_SN_XTALK_XBOW_H
 mdefine_line|#define _ASM_SN_SN_XTALK_XBOW_H
 multiline_comment|/*&n; * xbow.h - header file for crossbow chip and xbow section of xbridge&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xswitch.h&gt;
@@ -38,6 +39,12 @@ DECL|macro|MAX_PORT_NUM
 mdefine_line|#define MAX_PORT_NUM&t;0x10&t;/* maximum port number + 1 */
 DECL|macro|XBOW_WIDGET_ID
 mdefine_line|#define XBOW_WIDGET_ID&t;0&t;/* xbow is itself widget 0 */
+DECL|macro|XBOW_HUBLINK_LOW
+mdefine_line|#define XBOW_HUBLINK_LOW  0xa
+DECL|macro|XBOW_HUBLINK_HIGH
+mdefine_line|#define XBOW_HUBLINK_HIGH 0xb
+DECL|macro|XBOW_PEER_LINK
+mdefine_line|#define XBOW_PEER_LINK(link) (link == XBOW_HUBLINK_LOW) ? &bslash;&n;                                XBOW_HUBLINK_HIGH : XBOW_HUBLINK_LOW
 DECL|macro|XBOW_CREDIT
 mdefine_line|#define&t;XBOW_CREDIT&t;4
 DECL|macro|MAX_XBOW_NAME
@@ -843,6 +850,8 @@ DECL|macro|XBOW_WIDGET_MFGR_NUM
 mdefine_line|#define&t;XBOW_WIDGET_MFGR_NUM&t;0x0
 DECL|macro|XXBOW_WIDGET_MFGR_NUM
 mdefine_line|#define&t;XXBOW_WIDGET_MFGR_NUM&t;0x0
+DECL|macro|PXBOW_WIDGET_PART_NUM
+mdefine_line|#define PXBOW_WIDGET_PART_NUM   0xd100          /* PIC */
 DECL|macro|XBOW_REV_1_0
 mdefine_line|#define&t;XBOW_REV_1_0&t;&t;0x1&t;/* xbow rev 1.0 is &quot;1&quot; */
 DECL|macro|XBOW_REV_1_1
@@ -860,8 +869,20 @@ mdefine_line|#define XXBOW_PART_REV_2_0&t;&t;(XXBOW_WIDGET_PART_NUM &lt;&lt; 4 |
 multiline_comment|/* XBOW_WID_ARB_RELOAD */
 DECL|macro|XBOW_WID_ARB_RELOAD_INT
 mdefine_line|#define&t;XBOW_WID_ARB_RELOAD_INT&t;0x3f&t;/* GBR reload interval */
+macro_line|#ifdef&t;CONFIG_IA64_SGI_SN1
 DECL|macro|nasid_has_xbridge
-mdefine_line|#define nasid_has_xbridge(nasid)&t;&bslash;&n;&t;(XWIDGET_PART_NUM(XWIDGET_ID_READ(nasid, 0)) == XXBOW_WIDGET_PART_NUM)
+mdefine_line|#define nasid_has_xbridge(nasid)        &bslash;&n;        (XWIDGET_PART_NUM(XWIDGET_ID_READ(nasid, 0)) == XXBOW_WIDGET_PART_NUM)
+macro_line|#endif
+DECL|macro|IS_XBRIDGE_XBOW
+mdefine_line|#define IS_XBRIDGE_XBOW(wid) &bslash;&n;        (XWIDGET_PART_NUM(wid) == XXBOW_WIDGET_PART_NUM &amp;&amp; &bslash;&n;                        XWIDGET_MFG_NUM(wid) == XXBOW_WIDGET_MFGR_NUM)
+DECL|macro|IS_PIC_XBOW
+mdefine_line|#define IS_PIC_XBOW(wid) &bslash;&n;        (XWIDGET_PART_NUM(wid) == PXBOW_WIDGET_PART_NUM &amp;&amp; &bslash;&n;                        XWIDGET_MFG_NUM(wid) == XXBOW_WIDGET_MFGR_NUM)
+DECL|macro|XBOW_WAR_ENABLED
+mdefine_line|#define XBOW_WAR_ENABLED(pv, widid) ((1 &lt;&lt; XWIDGET_REV_NUM(widid)) &amp; pv)
+DECL|macro|PV854827
+mdefine_line|#define PV854827 (~0)     /* PIC: fake widget 0xf presence bit. permanent */
+DECL|macro|PV863579
+mdefine_line|#define PV863579 (1 &lt;&lt; 1) /* PIC: PIO to PIC register */
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * XBOW Widget 0 Register formats.&n; * Format for many of these registers are similar to the standard&n; * widget register format described as part of xtalk specification&n; * Standard widget register field format description is available in&n; * xwidget.h&n; * Following structures define the format for xbow widget 0 registers&n; */
 multiline_comment|/*&n; * Xbow Widget 0 Command error word&n; */

@@ -100,9 +100,9 @@ mdefine_line|#define&t;xtalk_intr_arg(xt)&t;((xt)-&gt;xi_sfarg)
 DECL|macro|xwidget_hwid_is_sn0_xswitch
 mdefine_line|#define&t;xwidget_hwid_is_sn0_xswitch(_hwid)&t;&bslash;&n;&t;&t;(((_hwid)-&gt;part_num == XBOW_WIDGET_PART_NUM ) &amp;&amp;  &t;&bslash;&n;&t;&t; ((_hwid)-&gt;mfg_num == XBOW_WIDGET_MFGR_NUM ))
 DECL|macro|xwidget_hwid_is_sn1_xswitch
-mdefine_line|#define&t;xwidget_hwid_is_sn1_xswitch(_hwid)&t;&bslash;&n;&t;&t;(((_hwid)-&gt;part_num == XXBOW_WIDGET_PART_NUM ) &amp;&amp;  &t;&bslash;&n;&t;&t; ((_hwid)-&gt;mfg_num == XXBOW_WIDGET_MFGR_NUM ))
+mdefine_line|#define&t;xwidget_hwid_is_sn1_xswitch(_hwid)&t;&bslash;&n;&t;&t;(((_hwid)-&gt;part_num == XXBOW_WIDGET_PART_NUM ||&t;&t;&bslash;&n;&t;&t;  (_hwid)-&gt;part_num == PXBOW_WIDGET_PART_NUM) &amp;&amp;  &t;&bslash;&n;&t;&t; ((_hwid)-&gt;mfg_num == XXBOW_WIDGET_MFGR_NUM ))
 DECL|macro|xwidget_hwid_is_xswitch
-mdefine_line|#define&t;xwidget_hwid_is_xswitch(_hwid)&t;&bslash;&n;&t;&t;(xwidget_hwid_is_sn0_xswitch(_hwid) ||&t;&t;&t;&bslash;&n;&t;&t;&t;xwidget_hwid_is_sn1_xswitch(_hwid))
+mdefine_line|#define&t;xwidget_hwid_is_xswitch(_hwid)&t;&bslash;&n;&t;&t;&t;xwidget_hwid_is_sn1_xswitch(_hwid)
 multiline_comment|/* common iograph info for all widgets,&n; * stashed in FASTINFO of widget connection points.&n; */
 DECL|struct|xwidget_info_s
 r_struct

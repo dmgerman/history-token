@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; *  hcl - SGI&squot;s Hardware Graph compatibility layer.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; *  hcl - SGI&squot;s Hardware Graph compatibility layer.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -372,7 +372,7 @@ c_func
 (paren
 l_int|NULL
 comma
-l_string|&quot;hw&quot;
+id|EDGE_LBL_HW
 comma
 op_amp
 id|hwgraph_root
@@ -460,7 +460,7 @@ c_func
 (paren
 id|hwgraph_root
 comma
-l_string|&quot;linux/busnum&quot;
+id|EDGE_LBL_LINUX_BUS
 comma
 op_amp
 id|linux_busnum
@@ -477,7 +477,9 @@ l_int|NULL
 id|panic
 c_func
 (paren
-l_string|&quot;HCL: Unable to create hw/linux/busnum&bslash;n&quot;
+l_string|&quot;HCL: Unable to create %s&bslash;n&quot;
+comma
+id|EDGE_LBL_LINUX_BUS
 )paren
 suffix:semicolon
 r_return
@@ -1868,13 +1870,6 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Yes traverse symbolic links */
-id|devfs_put
-c_func
-(paren
-id|target_handle
-)paren
-suffix:semicolon
-multiline_comment|/* Assume we&squot;re the owner */
 r_if
 c_cond
 (paren
@@ -2697,14 +2692,6 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* traverse symlinks */
-id|devfs_put
-c_func
-(paren
-op_star
-id|vertex_handle_ptr
-)paren
-suffix:semicolon
-multiline_comment|/* Assume we&squot;re the owner */
 r_if
 c_cond
 (paren
@@ -2722,14 +2709,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * hwgraph_traverse - Find and return the devfs handle starting from dir.&n; *&n; */
+multiline_comment|/*&n; * hwgraph_traverse - Find and return the devfs handle starting from de.&n; *&n; */
 id|graph_error_t
 DECL|function|hwgraph_traverse
 id|hwgraph_traverse
 c_func
 (paren
 id|devfs_handle_t
-id|dir
+id|de
 comma
 r_char
 op_star
@@ -2747,7 +2734,7 @@ op_assign
 id|devfs_get_handle
 c_func
 (paren
-id|dir
+id|de
 comma
 multiline_comment|/* start dir */
 id|path
@@ -2757,14 +2744,6 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* traverse symlinks */
-id|devfs_put
-c_func
-(paren
-op_star
-id|found
-)paren
-suffix:semicolon
-multiline_comment|/* Assume we&squot;re the owner */
 r_if
 c_cond
 (paren
@@ -2792,11 +2771,7 @@ op_star
 id|path
 )paren
 (brace
-id|devfs_handle_t
-id|de
-suffix:semicolon
-id|de
-op_assign
+r_return
 id|devfs_get_handle
 c_func
 (paren
@@ -2809,16 +2784,7 @@ multiline_comment|/* path */
 l_int|1
 )paren
 suffix:semicolon
-id|devfs_put
-c_func
-(paren
-id|de
-)paren
-suffix:semicolon
-multiline_comment|/* Assume we&squot;re the owner */
-r_return
-id|de
-suffix:semicolon
+multiline_comment|/* traverse symlinks */
 )brace
 multiline_comment|/*&n; * hwgraph_path_to_dev - Returns the devfs_handle_t of the given path ..&n; *&t;We only deal with devfs handle and not devfs_handle_t.&n;*/
 id|devfs_handle_t
@@ -2846,25 +2812,21 @@ r_return
 id|de
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * hwgraph_block_device_get - return the handle of the block device file.&n; *&t;The assumption here is that dir is a directory.&n;*/
+multiline_comment|/*&n; * hwgraph_block_device_get - return the handle of the block device file.&n; *&t;The assumption here is that de is a directory.&n;*/
 id|devfs_handle_t
 DECL|function|hwgraph_block_device_get
 id|hwgraph_block_device_get
 c_func
 (paren
 id|devfs_handle_t
-id|dir
+id|de
 )paren
 (brace
-id|devfs_handle_t
-id|de
-suffix:semicolon
-id|de
-op_assign
+r_return
 id|devfs_get_handle
 c_func
 (paren
-id|dir
+id|de
 comma
 multiline_comment|/* start dir */
 l_string|&quot;block&quot;
@@ -2874,36 +2836,22 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* traverse symlinks */
-id|devfs_put
-c_func
-(paren
-id|de
-)paren
-suffix:semicolon
-multiline_comment|/* Assume we&squot;re the owner */
-r_return
-id|de
-suffix:semicolon
 )brace
-multiline_comment|/*&n; * hwgraph_char_device_get - return the handle of the char device file.&n; *      The assumption here is that dir is a directory.&n;*/
+multiline_comment|/*&n; * hwgraph_char_device_get - return the handle of the char device file.&n; *      The assumption here is that de is a directory.&n;*/
 id|devfs_handle_t
 DECL|function|hwgraph_char_device_get
 id|hwgraph_char_device_get
 c_func
 (paren
 id|devfs_handle_t
-id|dir
+id|de
 )paren
 (brace
-id|devfs_handle_t
-id|de
-suffix:semicolon
-id|de
-op_assign
+r_return
 id|devfs_get_handle
 c_func
 (paren
-id|dir
+id|de
 comma
 multiline_comment|/* start dir */
 l_string|&quot;char&quot;
@@ -2913,16 +2861,6 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* traverse symlinks */
-id|devfs_put
-c_func
-(paren
-id|de
-)paren
-suffix:semicolon
-multiline_comment|/* Assume we&squot;re the owner */
-r_return
-id|de
-suffix:semicolon
 )brace
 multiline_comment|/*&n;** Inventory is now associated with a vertex in the graph.  For items that&n;** belong in the inventory but have no vertex &n;** (e.g. old non-graph-aware drivers), we create a bogus vertex under the &n;** INFO_LBL_INVENT name.&n;**&n;** For historical reasons, we prevent exact duplicate entries from being added&n;** to a single vertex.&n;*/
 multiline_comment|/*&n; * hwgraph_inventory_add - Adds an inventory entry into de.&n; */

@@ -120,6 +120,8 @@ r_int
 id|paddr
 )paren
 suffix:semicolon
+DECL|macro|local_nodeid
+mdefine_line|#define local_nodeid (cpu_to_node_map[smp_processor_id()])
 macro_line|#endif /* CONFIG_NUMA */
 macro_line|#endif /* _ASM_IA64_NUMA_H */
 eof

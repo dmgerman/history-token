@@ -317,7 +317,7 @@ l_int|0
 )paren
 (brace
 r_case
-l_int|1
+id|VM_FAULT_MINOR
 suffix:colon
 op_increment
 id|current-&gt;min_flt
@@ -325,7 +325,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|2
+id|VM_FAULT_MAJOR
 suffix:colon
 op_increment
 id|current-&gt;maj_flt
@@ -333,7 +333,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0
+id|VM_FAULT_SIGBUS
 suffix:colon
 multiline_comment|/*&n;&t;&t; * We ran out of memory, or some other thing happened&n;&t;&t; * to us that made us unable to handle the page fault&n;&t;&t; * gracefully.&n;&t;&t; */
 id|signal
@@ -343,10 +343,18 @@ suffix:semicolon
 r_goto
 id|bad_area
 suffix:semicolon
-r_default
+r_case
+id|VM_FAULT_OOM
 suffix:colon
 r_goto
 id|out_of_memory
+suffix:semicolon
+r_default
+suffix:colon
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 id|up_read

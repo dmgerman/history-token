@@ -884,6 +884,10 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* bit 45 is enable */
 id|modesel
 op_or_assign
@@ -1083,11 +1087,13 @@ id|p-&gt;modesel
 op_assign
 id|modesel
 suffix:semicolon
-id|spin_lock_irq
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|npdap-&gt;synergy_perf_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1123,11 +1129,13 @@ op_assign
 id|p
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|npdap-&gt;synergy_perf_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace

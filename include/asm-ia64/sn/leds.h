@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_SN_LEDS_H
 DECL|macro|_ASM_IA64_SN_LEDS_H
 mdefine_line|#define _ASM_IA64_SN_LEDS_H
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; * Copyright (C) 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; * Copyright (C) 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
@@ -9,7 +9,7 @@ macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#ifdef CONFIG_IA64_SGI_SN1
 DECL|macro|LED0
-mdefine_line|#define LED0&t;&t;0xc0000b00100000c0LL&t;/* ZZZ fixme */
+mdefine_line|#define LED0&t;&t;0xc0000b00100000c0LL
 DECL|macro|LED_CPU_SHIFT
 mdefine_line|#define LED_CPU_SHIFT&t;3
 macro_line|#else
@@ -23,8 +23,17 @@ DECL|macro|LED_CPU_HEARTBEAT
 mdefine_line|#define LED_CPU_HEARTBEAT&t;0x01
 DECL|macro|LED_CPU_ACTIVITY
 mdefine_line|#define LED_CPU_ACTIVITY&t;0x02
+macro_line|#ifdef LED_WAR
+DECL|macro|LED_ALWAYS_SET
+mdefine_line|#define LED_ALWAYS_SET&t;&t;0x64&t;/* SN2 hw workaround: always set 0x60 */
+DECL|macro|LED_MASK_AUTOTEST
+mdefine_line|#define LED_MASK_AUTOTEST&t;0x9e
+macro_line|#else /* LED_WAR */
+DECL|macro|LED_ALWAYS_SET
+mdefine_line|#define LED_ALWAYS_SET&t;&t;0x00
 DECL|macro|LED_MASK_AUTOTEST
 mdefine_line|#define LED_MASK_AUTOTEST&t;0xfe
+macro_line|#endif /* LED_WAR */
 multiline_comment|/*&n; * Basic macros for flashing the LEDS on an SGI, SN1.&n; */
 r_static
 id|__inline__
@@ -40,6 +49,7 @@ id|u8
 id|mask
 )paren
 (brace
+macro_line|#if 0
 id|pda.led_state
 op_assign
 (paren
@@ -55,6 +65,7 @@ op_amp
 id|mask
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 op_star
 id|pda.led_address
 op_assign
@@ -63,6 +74,17 @@ r_int
 )paren
 id|pda.led_state
 suffix:semicolon
+macro_line|#else
+op_star
+id|pda.led_address
+op_assign
+(paren
+r_int
+)paren
+id|pda.led_state
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
 )brace
 macro_line|#endif /* _ASM_IA64_SN_LEDS_H */
 eof

@@ -2,6 +2,7 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_IA64_SN_EEPROM_H
 DECL|macro|_ASM_IA64_SN_EEPROM_H
 mdefine_line|#define _ASM_IA64_SN_EEPROM_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/vector.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
@@ -733,6 +734,7 @@ mdefine_line|#define SUBORD_MASK&t;0xf0  /* AND with component specification; if
 DECL|macro|COMPT_MASK
 mdefine_line|#define COMPT_MASK&t;0xf   /* if there&squot;s more than one instance of a&n;&t;&t;&t;&t; particular type of subordinate board, this &n;&t;&t;&t;&t; masks out which one we&squot;re talking about */
 multiline_comment|/* functions &amp; macros for obtaining &quot;NIC-like&quot; strings from EEPROMs&n; */
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 r_int
 id|eeprom_str
 c_func
@@ -774,6 +776,7 @@ DECL|macro|RBRICK_EEPROM_STR
 mdefine_line|#define RBRICK_EEPROM_STR(s,n,p)  vector_eeprom_str((s),(n),R_BRICK,p)
 DECL|macro|VECTOR_EEPROM_STR
 mdefine_line|#define VECTOR_EEPROM_STR(s,n,p)  vector_eeprom_str((s),(n),VECTOR,p)
+macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
 multiline_comment|/* functions for obtaining formatted records from EEPROMs&n; */
 r_int
 id|cbrick_eeprom_read
@@ -821,46 +824,6 @@ id|path
 comma
 r_int
 id|component
-)paren
-suffix:semicolon
-multiline_comment|/* functions providing unique id&squot;s for duplonet and i/o discovery&n; */
-r_int
-id|cbrick_uid_get
-c_func
-(paren
-id|nasid_t
-id|nasid
-comma
-r_uint64
-op_star
-id|uid
-)paren
-suffix:semicolon
-r_int
-id|rbrick_uid_get
-c_func
-(paren
-id|nasid_t
-id|nasid
-comma
-id|net_vec_t
-id|path
-comma
-r_uint64
-op_star
-id|uid
-)paren
-suffix:semicolon
-r_int
-id|iobrick_uid_get
-c_func
-(paren
-id|nasid_t
-id|nasid
-comma
-r_uint64
-op_star
-id|uid
 )paren
 suffix:semicolon
 multiline_comment|/* retrieve the ethernet MAC address for an I-brick&n; */
@@ -935,11 +898,5 @@ DECL|macro|HUB_VERTEX_MFG_INFO
 mdefine_line|#define HUB_VERTEX_MFG_INFO(v) &bslash;&n;    eeprom_vertex_info_set( C_BRICK, get_nasid(), (v), 0 )
 DECL|macro|BRIDGE_VERTEX_MFG_INFO
 mdefine_line|#define BRIDGE_VERTEX_MFG_INFO(v, r) &bslash;&n;    ( IS_IOBRICK((r)) ? eeprom_vertex_info_set &bslash;&n;&t;&t;          ( IO_BRICK, NASID_GET((r)), (v), 0 ) &bslash;&n;&t;&t;      : nic_bridge_vertex_info((v), (r)) )
-DECL|macro|HUB_UID_GET
-mdefine_line|#define HUB_UID_GET(n,v,p)&t;cbrick_uid_get((n),(p))
-DECL|macro|ROUTER_UID_GET
-mdefine_line|#define ROUTER_UID_GET(d,p)&t;rbrick_uid_get(get_nasid(),(d),(p))
-DECL|macro|XBOW_UID_GET
-mdefine_line|#define XBOW_UID_GET(n,p)&t;iobrick_uid_get((n),(p))
 macro_line|#endif /* _ASM_IA64_SN_EEPROM_H */
 eof

@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_SN_PCI_PCIIO_H
 DECL|macro|_ASM_SN_PCI_PCIIO_H
 mdefine_line|#define _ASM_SN_PCI_PCIIO_H
 multiline_comment|/*&n; * pciio.h -- platform-independent PCI interface&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/ioerror.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
@@ -193,6 +194,27 @@ r_struct
 id|pciio_piospace_s
 op_star
 id|pciio_piospace_t
+suffix:semicolon
+DECL|typedef|pciio_win_info_t
+r_typedef
+r_struct
+id|pciio_win_info_s
+op_star
+id|pciio_win_info_t
+suffix:semicolon
+DECL|typedef|pciio_win_map_t
+r_typedef
+r_struct
+id|pciio_win_map_s
+op_star
+id|pciio_win_map_t
+suffix:semicolon
+DECL|typedef|pciio_win_alloc_t
+r_typedef
+r_struct
+id|pciio_win_alloc_s
+op_star
+id|pciio_win_alloc_t
 suffix:semicolon
 multiline_comment|/* PIO MANAGEMENT */
 multiline_comment|/*&n; *    A NOTE ON PCI PIO ADDRESSES&n; *&n; *      PCI supports three different address spaces: CFG&n; *      space, MEM space and I/O space. Further, each&n; *      card always accepts CFG accesses at an address&n; *      based on which slot it is attached to, but can&n; *      decode up to six address ranges.&n; *&n; *      Assignment of the base address registers for all&n; *      PCI devices is handled centrally; most commonly,&n; *      device drivers will want to talk to offsets&n; *      within one or another of the address ranges. In&n; *      order to do this, which of these &quot;address&n; *      spaces&quot; the PIO is directed into must be encoded&n; *      in the flag word.&n; *&n; *      We reserve the right to defer allocation of PCI&n; *      address space for a device window until the&n; *      driver makes a piomap_alloc or piotrans_addr&n; *      request.&n; *&n; *      If a device driver mucks with its device&squot;s base&n; *      registers through a PIO mapping to CFG space,&n; *      results of further PIO through the corresponding&n; *      window are UNDEFINED.&n; *&n; *      Windows are named by the index in the base&n; *      address register set for the device of the&n; *      desired register; IN THE CASE OF 64 BIT base&n; *      registers, the index should be to the word of&n; *      the register that contains the mapping type&n; *      bits; since the PCI CFG space is natively&n; *      organized little-endian fashion, this is the&n; *      first of the two words.&n; *&n; *      AT THE MOMENT, any required corrections for&n; *      endianness are the responsibility of the device&n; *      driver; not all platforms support control in&n; *      hardware of byteswapping hardware. We anticipate&n; *      providing flag bits to the PIO and DMA&n; *      management interfaces to request different&n; *      configurations of byteswapping hardware.&n; *&n; *      PIO Accesses to CFG space via the &quot;Bridge&quot; ASIC&n; *      used in IP30 platforms preserve the native byte&n; *      significance within the 32-bit word; byte&n; *      addresses for single byte accesses need to be&n; *      XORed with 3, and addresses for 16-bit accesses&n; *      need to be XORed with 2.&n; *&n; *      The IOC3 used on IP30, and other SGI PCI devices&n; *      as well, require use of 32-bit accesses to their&n; *      configuration space registers. Any potential PCI&n; *      bus providers need to be aware of this requirement.&n; */
@@ -576,6 +598,7 @@ id|pciio_intr_t
 id|intr_hdl
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 r_typedef
 r_int
 DECL|typedef|pciio_intr_connect_f
@@ -586,6 +609,24 @@ id|intr_hdl
 )paren
 suffix:semicolon
 multiline_comment|/* pciio intr resource handle */
+macro_line|#else
+r_typedef
+r_int
+DECL|typedef|pciio_intr_connect_f
+id|pciio_intr_connect_f
+(paren
+id|pciio_intr_t
+id|intr_hdl
+comma
+id|intr_func_t
+id|intr_func
+comma
+id|intr_arg_t
+id|intr_arg
+)paren
+suffix:semicolon
+multiline_comment|/* pciio intr resource handle */
+macro_line|#endif
 r_typedef
 r_void
 DECL|typedef|pciio_intr_disconnect_f
@@ -1347,6 +1388,118 @@ r_int
 id|drv_flags
 )paren
 suffix:semicolon
+multiline_comment|/* create and initialize empty window mapping resource */
+r_extern
+id|pciio_win_map_t
+id|pciio_device_win_map_new
+c_func
+(paren
+id|pciio_win_map_t
+id|win_map
+comma
+multiline_comment|/* preallocated win map structure */
+r_int
+id|region_size
+comma
+multiline_comment|/* size of region to be tracked */
+r_int
+id|page_size
+)paren
+suffix:semicolon
+multiline_comment|/* allocation page size */
+multiline_comment|/* destroy window mapping resource freeing up ancillary resources */
+r_extern
+r_void
+id|pciio_device_win_map_free
+c_func
+(paren
+id|pciio_win_map_t
+id|win_map
+)paren
+suffix:semicolon
+multiline_comment|/* preallocated win map structure */
+multiline_comment|/* populate window mapping with free range of addresses */
+r_extern
+r_void
+id|pciio_device_win_populate
+c_func
+(paren
+id|pciio_win_map_t
+id|win_map
+comma
+multiline_comment|/* win map */
+id|iopaddr_t
+id|ioaddr
+comma
+multiline_comment|/* base address of free range */
+r_int
+id|size
+)paren
+suffix:semicolon
+multiline_comment|/* size of free range */
+multiline_comment|/* allocate window from mapping resource */
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
+r_extern
+id|iopaddr_t
+id|pciio_device_win_alloc
+c_func
+(paren
+id|pciio_win_map_t
+id|win_map
+comma
+multiline_comment|/* win map */
+id|pciio_win_alloc_t
+id|win_alloc
+comma
+multiline_comment|/* opaque allocation cookie */
+r_int
+id|size
+comma
+multiline_comment|/* size of allocation */
+r_int
+id|align
+)paren
+suffix:semicolon
+multiline_comment|/* alignment of allocation */
+macro_line|#else
+r_extern
+id|iopaddr_t
+id|pciio_device_win_alloc
+c_func
+(paren
+id|pciio_win_map_t
+id|win_map
+comma
+multiline_comment|/* win map */
+id|pciio_win_alloc_t
+id|win_alloc
+comma
+multiline_comment|/* opaque allocation cookie */
+r_int
+id|start
+comma
+multiline_comment|/* start unit, or 0 */
+r_int
+id|size
+comma
+multiline_comment|/* size of allocation */
+r_int
+id|align
+)paren
+suffix:semicolon
+multiline_comment|/* alignment of allocation */
+macro_line|#endif
+multiline_comment|/* free previously allocated window */
+r_extern
+r_void
+id|pciio_device_win_free
+c_func
+(paren
+id|pciio_win_alloc_t
+id|win_alloc
+)paren
+suffix:semicolon
+multiline_comment|/* opaque allocation cookie */
 multiline_comment|/*&n; * Generic PCI interface, for use with all PCI providers&n; * and all PCI devices.&n; */
 multiline_comment|/* Generic PCI interrupt interfaces */
 r_extern
@@ -1422,263 +1575,6 @@ id|pciio_piomap_t
 id|pciio_piomap
 )paren
 suffix:semicolon
-macro_line|#ifdef LATER
-macro_line|#ifdef USE_PCI_PIO
-r_extern
-r_uint8
-id|pciio_pio_read8
-c_func
-(paren
-r_volatile
-r_uint8
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_uint16
-id|pciio_pio_read16
-c_func
-(paren
-r_volatile
-r_uint16
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_uint32
-id|pciio_pio_read32
-c_func
-(paren
-r_volatile
-r_uint32
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_uint64
-id|pciio_pio_read64
-c_func
-(paren
-r_volatile
-r_uint64
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pciio_pio_write8
-c_func
-(paren
-r_uint8
-id|val
-comma
-r_volatile
-r_uint8
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pciio_pio_write16
-c_func
-(paren
-r_uint16
-id|val
-comma
-r_volatile
-r_uint16
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pciio_pio_write32
-c_func
-(paren
-r_uint32
-id|val
-comma
-r_volatile
-r_uint32
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pciio_pio_write64
-c_func
-(paren
-r_uint64
-id|val
-comma
-r_volatile
-r_uint64
-op_star
-id|addr
-)paren
-suffix:semicolon
-macro_line|#else /* !USE_PCI_PIO */
-DECL|function|pciio_pio_read8
-id|__inline
-r_uint8
-id|pciio_pio_read8
-c_func
-(paren
-r_volatile
-r_uint8
-op_star
-id|addr
-)paren
-(brace
-r_return
-op_star
-id|addr
-suffix:semicolon
-)brace
-DECL|function|pciio_pio_read16
-id|__inline
-r_uint16
-id|pciio_pio_read16
-c_func
-(paren
-r_volatile
-r_uint16
-op_star
-id|addr
-)paren
-(brace
-r_return
-op_star
-id|addr
-suffix:semicolon
-)brace
-DECL|function|pciio_pio_read32
-id|__inline
-r_uint32
-id|pciio_pio_read32
-c_func
-(paren
-r_volatile
-r_uint32
-op_star
-id|addr
-)paren
-(brace
-r_return
-op_star
-id|addr
-suffix:semicolon
-)brace
-DECL|function|pciio_pio_read64
-id|__inline
-r_uint64
-id|pciio_pio_read64
-c_func
-(paren
-r_volatile
-r_uint64
-op_star
-id|addr
-)paren
-(brace
-r_return
-op_star
-id|addr
-suffix:semicolon
-)brace
-DECL|function|pciio_pio_write8
-id|__inline
-r_void
-id|pciio_pio_write8
-c_func
-(paren
-r_uint8
-id|val
-comma
-r_volatile
-r_uint8
-op_star
-id|addr
-)paren
-(brace
-op_star
-id|addr
-op_assign
-id|val
-suffix:semicolon
-)brace
-DECL|function|pciio_pio_write16
-id|__inline
-r_void
-id|pciio_pio_write16
-c_func
-(paren
-r_uint16
-id|val
-comma
-r_volatile
-r_uint16
-op_star
-id|addr
-)paren
-(brace
-op_star
-id|addr
-op_assign
-id|val
-suffix:semicolon
-)brace
-DECL|function|pciio_pio_write32
-id|__inline
-r_void
-id|pciio_pio_write32
-c_func
-(paren
-r_uint32
-id|val
-comma
-r_volatile
-r_uint32
-op_star
-id|addr
-)paren
-(brace
-op_star
-id|addr
-op_assign
-id|val
-suffix:semicolon
-)brace
-DECL|function|pciio_pio_write64
-id|__inline
-r_void
-id|pciio_pio_write64
-c_func
-(paren
-r_uint64
-id|val
-comma
-r_volatile
-r_uint64
-op_star
-id|addr
-)paren
-(brace
-op_star
-id|addr
-op_assign
-id|val
-suffix:semicolon
-)brace
-macro_line|#endif /* USE_PCI_PIO */
-macro_line|#endif&t;/* LATER */
 multiline_comment|/* Generic PCI dma interfaces */
 r_extern
 id|devfs_handle_t
@@ -1742,6 +1638,15 @@ id|vhdl
 )paren
 suffix:semicolon
 r_extern
+id|pciio_info_t
+id|pciio_hostinfo_get
+c_func
+(paren
+id|devfs_handle_t
+id|vhdl
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|pciio_info_set
 c_func
@@ -1756,6 +1661,15 @@ suffix:semicolon
 r_extern
 id|devfs_handle_t
 id|pciio_info_dev_get
+c_func
+(paren
+id|pciio_info_t
+id|pciio_info
+)paren
+suffix:semicolon
+r_extern
+id|devfs_handle_t
+id|pciio_info_hostdev_get
 c_func
 (paren
 id|pciio_info_t
@@ -1894,6 +1808,14 @@ suffix:semicolon
 r_extern
 r_int
 id|pciio_info_rom_size_get
+c_func
+(paren
+id|pciio_info_t
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pciio_info_type1_get
 c_func
 (paren
 id|pciio_info_t

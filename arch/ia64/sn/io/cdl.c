@@ -1,4 +1,5 @@
 multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -19,6 +20,14 @@ suffix:semicolon
 r_extern
 r_int
 id|xbow_attach
+c_func
+(paren
+id|devfs_handle_t
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pic_attach
 c_func
 (paren
 id|devfs_handle_t
@@ -51,9 +60,15 @@ DECL|variable|dummy_reg
 )brace
 id|dummy_reg
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 DECL|macro|MAX_SGI_IO_INFRA_DRVR
 mdefine_line|#define MAX_SGI_IO_INFRA_DRVR 4
+macro_line|#else
+DECL|macro|MAX_SGI_IO_INFRA_DRVR
+mdefine_line|#define MAX_SGI_IO_INFRA_DRVR 7
+macro_line|#endif
 DECL|variable|sgi_infrastructure_drivers
+r_static
 r_struct
 id|cdl
 id|sgi_infrastructure_drivers
@@ -80,6 +95,26 @@ id|pcibr_attach
 multiline_comment|/* &amp;pcibr_fops */
 )brace
 comma
+macro_line|#ifndef CONFIG_IA64_SGI_SN1
+(brace
+id|PIC_WIDGET_PART_NUM_BUS0
+comma
+id|PIC_WIDGET_MFGR_NUM
+comma
+id|pic_attach
+multiline_comment|/* &amp;pic_fops */
+)brace
+comma
+(brace
+id|PIC_WIDGET_PART_NUM_BUS1
+comma
+id|PIC_WIDGET_MFGR_NUM
+comma
+id|pic_attach
+multiline_comment|/* &amp;pic_fops */
+)brace
+comma
+macro_line|#endif
 (brace
 id|XXBOW_WIDGET_PART_NUM
 comma
@@ -98,6 +133,17 @@ id|xbow_attach
 multiline_comment|/* &amp;xbow_fops */
 )brace
 comma
+macro_line|#ifndef CONFIG_IA64_SGI_SN1
+(brace
+id|PXBOW_WIDGET_PART_NUM
+comma
+id|XXBOW_WIDGET_MFGR_NUM
+comma
+id|xbow_attach
+multiline_comment|/* &amp;xbow_fops */
+)brace
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * cdl_new:  Called by pciio and xtalk.&n; */

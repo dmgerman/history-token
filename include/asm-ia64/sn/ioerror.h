@@ -73,7 +73,7 @@ r_typedef
 r_struct
 id|io_error_s
 (brace
-multiline_comment|/* Bit fields indicating which sturcture fields are valid */
+multiline_comment|/* Bit fields indicating which structure fields are valid */
 r_union
 (brace
 r_struct
@@ -162,6 +162,12 @@ id|ievb_ef
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|ievb_tnum
+r_int
+id|ievb_tnum
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|iev_b
 )brace
 id|iev_b
@@ -244,6 +250,11 @@ id|caddr_t
 id|ie_ef
 suffix:semicolon
 multiline_comment|/* eframe when error reported&t; */
+DECL|member|ie_tnum
+r_int
+id|ie_tnum
+suffix:semicolon
+multiline_comment|/* Xtalk TNUM field */
 DECL|typedef|ioerror_t
 )brace
 id|ioerror_t
@@ -253,9 +264,11 @@ mdefine_line|#define&t;IOERROR_INIT(e)&t;&t;do { (e)-&gt;ie_v.iev_a = 0; } while
 DECL|macro|IOERROR_SETVALUE
 mdefine_line|#define&t;IOERROR_SETVALUE(e,f,v)&t;do { (e)-&gt;ie_ ## f = (v); (e)-&gt;ie_v.iev_b.ievb_ ## f = 1; } while (0)
 DECL|macro|IOERROR_FIELDVALID
-mdefine_line|#define&t;IOERROR_FIELDVALID(e,f)&t;(((e)-&gt;ie_v.iev_b.ievb_ ## f) != 0)
+mdefine_line|#define&t;IOERROR_FIELDVALID(e,f)&t;((unsigned long long)((e)-&gt;ie_v.iev_b.ievb_ ## f) != (unsigned long long) 0)
+DECL|macro|IOERROR_NOGETVALUE
+mdefine_line|#define&t;IOERROR_NOGETVALUE(e,f)&t;(ASSERT(IOERROR_FIELDVALID(e,f)), ((e)-&gt;ie_ ## f))
 DECL|macro|IOERROR_GETVALUE
-mdefine_line|#define&t;IOERROR_GETVALUE(e,f)&t;(ASSERT(IOERROR_FIELDVALID(e,f)),((e)-&gt;ie_ ## f))
+mdefine_line|#define&t;IOERROR_GETVALUE(p,e,f)&t;ASSERT(IOERROR_FIELDVALID(e,f)); p=((e)-&gt;ie_ ## f)
 multiline_comment|/* hub code likes to call the SysAD address &quot;hubaddr&quot; ... */
 DECL|macro|ie_hubaddr
 mdefine_line|#define&t;ie_hubaddr&t;ie_sysioaddr
