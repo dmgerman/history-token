@@ -3222,7 +3222,7 @@ r_int
 id|I82586_NULL
 )paren
 (brace
-id|ether1_outw
+id|ether1_writew
 c_func
 (paren
 id|dev
@@ -4168,7 +4168,7 @@ c_cond
 id|status
 )paren
 (brace
-id|ether1_outw
+id|ether1_writew
 c_func
 (paren
 id|dev
