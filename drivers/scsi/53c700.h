@@ -612,6 +612,13 @@ id|NCR_700_command_slot
 op_star
 id|free_list
 suffix:semicolon
+multiline_comment|/* Completion for waited for ops, like reset, abort or&n;&t; * device reset.&n;&t; *&n;&t; * NOTE: relies on single threading in the error handler to&n;&t; * have only one outstanding at once */
+DECL|member|eh_complete
+r_struct
+id|completion
+op_star
+id|eh_complete
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;53C700 Register Interface - the offset from the Selected base&n; *&t;I/O address */
