@@ -5666,11 +5666,9 @@ op_assign
 id|hdev-&gt;children
 (braket
 id|port
-op_minus
-l_int|1
 )braket
 suffix:semicolon
-singleline_comment|// dev_dbg(hubdev(hdev), &quot;suspend port %d&bslash;n&quot;, port);
+singleline_comment|// dev_dbg(hubdev(hdev), &quot;suspend port %d&bslash;n&quot;, port + 1);
 multiline_comment|/* enable remote wakeup when appropriate; this lets the device&n;&t; * wake up the upstream hub (including maybe the root hub).&n;&t; *&n;&t; * NOTE:  OTG devices may issue remote wakeup (or SRP) even when&n;&t; * we don&squot;t explicitly enable it here.&n;&t; */
 r_if
 c_cond
@@ -5744,6 +5742,8 @@ c_func
 id|hdev
 comma
 id|port
+op_plus
+l_int|1
 comma
 id|USB_PORT_FEAT_SUSPEND
 )paren
@@ -5766,6 +5766,8 @@ comma
 l_string|&quot;can&squot;t suspend port %d, status %d&bslash;n&quot;
 comma
 id|port
+op_plus
+l_int|1
 comma
 id|status
 )paren
@@ -6117,8 +6119,6 @@ c_func
 id|udev-&gt;parent
 comma
 id|port
-op_plus
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -6499,11 +6499,9 @@ op_assign
 id|hdev-&gt;children
 (braket
 id|port
-op_minus
-l_int|1
 )braket
 suffix:semicolon
-singleline_comment|// dev_dbg(hubdev(hdev), &quot;resume port %d&bslash;n&quot;, port);
+singleline_comment|// dev_dbg(hubdev(hdev), &quot;resume port %d&bslash;n&quot;, port + 1);
 multiline_comment|/* see 7.1.7.7; affects power usage, but not budgeting */
 id|status
 op_assign
@@ -6513,6 +6511,8 @@ c_func
 id|hdev
 comma
 id|port
+op_plus
+l_int|1
 comma
 id|USB_PORT_FEAT_SUSPEND
 )paren
@@ -6537,6 +6537,8 @@ comma
 l_string|&quot;can&squot;t resume port %d, status %d&bslash;n&quot;
 comma
 id|port
+op_plus
+l_int|1
 comma
 id|status
 )paren
@@ -6583,8 +6585,6 @@ c_func
 id|hdev
 comma
 id|port
-op_minus
-l_int|1
 comma
 op_amp
 id|devstatus
@@ -6631,6 +6631,8 @@ comma
 l_string|&quot;port %d status %04x.%04x after resume, %d&bslash;n&quot;
 comma
 id|port
+op_plus
+l_int|1
 comma
 id|portchange
 comma
@@ -6672,8 +6674,6 @@ c_func
 id|hdev
 comma
 id|port
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -6806,8 +6806,6 @@ c_func
 id|udev-&gt;parent
 comma
 id|port
-op_plus
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -7218,8 +7216,6 @@ c_func
 id|hdev
 comma
 id|port
-op_plus
-l_int|1
 )paren
 suffix:semicolon
 r_else
