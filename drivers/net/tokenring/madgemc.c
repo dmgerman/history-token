@@ -864,21 +864,10 @@ r_goto
 id|getout
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-id|MADGEMC_IO_EXTENT
-comma
-l_string|&quot;madgemc&quot;
-)paren
-suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* why is this not working? */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -909,7 +898,6 @@ r_goto
 id|getout
 suffix:semicolon
 )brace
-macro_line|#endif
 id|dev-&gt;base_addr
 op_add_assign
 id|MADGEMC_SIF_OFFSET

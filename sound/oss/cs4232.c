@@ -1454,6 +1454,12 @@ id|KERN_ERR
 l_string|&quot;cs4232: ISA PnP card found, but not detected?&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|isapnpcfg
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -1465,9 +1471,13 @@ c_func
 id|isapnpcfg
 )paren
 suffix:semicolon
-id|dev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|dev
+comma
 id|isapnpcfg
+)paren
 suffix:semicolon
 r_return
 l_int|0

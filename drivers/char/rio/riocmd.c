@@ -1744,27 +1744,8 @@ id|rio_dprintk
 (paren
 id|RIO_DEBUG_CMD
 comma
-"&quot;"
-id|COMMAND
-id|information
-suffix:colon
-id|Host
-id|Port
-id|Number
-l_int|0
-id|x
-op_mod
-id|x
-comma
-id|Command
-id|Code
-l_int|0
-id|x
-op_mod
-id|x
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;COMMAND information: Host Port Number 0x%x, &quot;
+l_string|&quot;Command Code 0x%x&bslash;n&quot;
 comma
 id|PktCmdP-&gt;PhbNum
 comma

@@ -35,6 +35,10 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH3
 DECL|macro|PCI_DEVICE_ID_INTEL_ICH3
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH3&t;0x2485
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH4
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH4
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH4&t;0x24c5
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_440MX
 DECL|macro|PCI_DEVICE_ID_INTEL_440MX
 mdefine_line|#define PCI_DEVICE_ID_INTEL_440MX&t;0x7195
@@ -46,6 +50,10 @@ macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP1_AUDIO
 DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP1_AUDIO
 mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP1_AUDIO&t;0x01b1
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_AMD_768_AUDIO
+DECL|macro|PCI_DEVICE_ID_AMD_768_AUDIO
+mdefine_line|#define PCI_DEVICE_ID_AMD_768_AUDIO&t;0x7445
 macro_line|#endif
 DECL|variable|ftsodell
 r_static
@@ -324,11 +332,20 @@ comma
 DECL|enumerator|INTELICH3
 id|INTELICH3
 comma
+DECL|enumerator|INTELICH4
+id|INTELICH4
+comma
 DECL|enumerator|SI7012
 id|SI7012
 comma
 DECL|enumerator|NVIDIA_NFORCE
 id|NVIDIA_NFORCE
+comma
+DECL|enumerator|AMD768
+id|AMD768
+comma
+DECL|enumerator|AMD8111
+id|AMD8111
 )brace
 suffix:semicolon
 DECL|variable|card_names
@@ -350,9 +367,15 @@ l_string|&quot;Intel ICH2&quot;
 comma
 l_string|&quot;Intel ICH3&quot;
 comma
+l_string|&quot;Intel ICH4&quot;
+comma
 l_string|&quot;SiS 7012&quot;
 comma
 l_string|&quot;NVIDIA nForce Audio&quot;
+comma
+l_string|&quot;AMD 768&quot;
+comma
+l_string|&quot;AMD-8111 IOHub&quot;
 )brace
 suffix:semicolon
 DECL|variable|__initdata
@@ -446,6 +469,22 @@ id|INTELICH3
 )brace
 comma
 (brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_ICH4
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|INTELICH4
+)brace
+comma
+(brace
 id|PCI_VENDOR_ID_SI
 comma
 id|PCI_DEVICE_ID_SI_7012
@@ -475,6 +514,38 @@ comma
 l_int|0
 comma
 id|NVIDIA_NFORCE
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_AMD
+comma
+id|PCI_DEVICE_ID_AMD_768_AUDIO
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|AMD768
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_AMD
+comma
+id|PCI_DEVICE_ID_AMD_8111_AUDIO
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|AMD8111
 )brace
 comma
 (brace
@@ -11748,6 +11819,50 @@ id|codec
 )paren
 suffix:semicolon
 r_break
+suffix:semicolon
+)brace
+id|codec
+op_member_access_from_pointer
+id|codec_write
+c_func
+(paren
+id|codec
+comma
+id|AC97_EXTENDED_MODEM_ID
+comma
+l_int|0L
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|codec
+op_member_access_from_pointer
+id|codec_read
+c_func
+(paren
+id|codec
+comma
+id|AC97_EXTENDED_MODEM_ID
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;i810_audio: codec %d is a softmodem - skipping.&bslash;n&quot;
+comma
+id|num_ac97
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|codec
+)paren
+suffix:semicolon
+r_continue
 suffix:semicolon
 )brace
 id|card-&gt;ac97_features

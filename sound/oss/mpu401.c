@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * sound/mpu401.c&n; *&n; * The low level driver for Roland MPU-401 compatible Midi cards.&n; */
-multiline_comment|/*&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; *&n; * Thomas Sailer&t;ioctl code reworked (vmalloc/vfree removed)&n; * Alan Cox&t;&t;modularisation, use normal request_irq, use dev_id&n; * Bartlomiej Zolnierkiewicz&t;removed some __init to allow using many drivers&n; * Chris Rankin&t;&t;Update the module-usage counter for the coprocessor&n; */
+multiline_comment|/*&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; *&n; * Thomas Sailer&t;ioctl code reworked (vmalloc/vfree removed)&n; * Alan Cox&t;&t;modularisation, use normal request_irq, use dev_id&n; * Bartlomiej Zolnierkiewicz&t;removed some __init to allow using many drivers&n; * Chris Rankin&t;&t;Update the module-usage counter for the coprocessor&n; * Zwane Mwaikambo&t;Changed attach/unload resource freeing&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -174,6 +174,7 @@ id|dev
 suffix:semicolon
 DECL|function|mpu401_status
 r_static
+r_inline
 r_int
 id|mpu401_status
 c_func
@@ -202,6 +203,7 @@ DECL|macro|output_ready
 mdefine_line|#define output_ready(devc)&t;&t;(!(mpu401_status(devc)&amp;OUTPUT_READY))
 DECL|function|write_command
 r_static
+r_inline
 r_void
 id|write_command
 c_func
@@ -231,6 +233,7 @@ suffix:semicolon
 )brace
 DECL|function|read_data
 r_static
+r_inline
 r_int
 id|read_data
 c_func
@@ -255,6 +258,7 @@ suffix:semicolon
 )brace
 DECL|function|write_data
 r_static
+r_inline
 r_void
 id|write_data
 c_func
@@ -3587,7 +3591,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|attach_mpu401
-r_void
+r_int
 id|attach_mpu401
 c_func
 (paren
@@ -3611,6 +3615,8 @@ id|revision_char
 suffix:semicolon
 r_int
 id|m
+comma
+id|ret
 suffix:semicolon
 r_struct
 id|mpu_config
@@ -3648,7 +3654,13 @@ id|KERN_WARNING
 l_string|&quot;MPU-401: Too many midi devices detected&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 id|devc
@@ -3766,13 +3778,13 @@ id|KERN_WARNING
 l_string|&quot;mpu401: Device didn&squot;t respond&bslash;n&quot;
 )paren
 suffix:semicolon
-id|sound_unload_mididev
-c_func
-(paren
-id|m
-)paren
+id|ret
+op_assign
+op_minus
+id|ENODEV
 suffix:semicolon
-r_return
+r_goto
+id|out_mididev
 suffix:semicolon
 )brace
 r_if
@@ -3815,13 +3827,13 @@ comma
 id|devc-&gt;irq
 )paren
 suffix:semicolon
-id|sound_unload_mididev
-c_func
-(paren
-id|m
-)paren
+id|ret
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
-r_return
+r_goto
+id|out_mididev
 suffix:semicolon
 )brace
 )brace
@@ -3867,6 +3879,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -3876,7 +3892,17 @@ l_int|2
 comma
 l_string|&quot;mpu401&quot;
 )paren
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
+r_goto
+id|out_irq
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3954,12 +3980,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|sound_unload_mididev
-c_func
-(paren
-id|m
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3967,7 +3987,13 @@ id|KERN_ERR
 l_string|&quot;mpu401: Can&squot;t allocate memory&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out_resource
 suffix:semicolon
 )brace
 r_if
@@ -4392,6 +4418,46 @@ id|sequencer_init
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+id|out_resource
+suffix:colon
+id|release_region
+c_func
+(paren
+id|hw_config-&gt;io_base
+comma
+l_int|2
+)paren
+suffix:semicolon
+id|out_irq
+suffix:colon
+id|free_irq
+c_func
+(paren
+id|devc-&gt;irq
+comma
+(paren
+r_void
+op_star
+)paren
+id|m
+)paren
+suffix:semicolon
+id|out_mididev
+suffix:colon
+id|sound_unload_mididev
+c_func
+(paren
+id|m
+)paren
+suffix:semicolon
+id|out_err
+suffix:colon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|reset_mpu401
@@ -4838,6 +4904,15 @@ id|hw_config-&gt;slots
 l_int|1
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
 id|release_region
 c_func
 (paren
@@ -4903,6 +4978,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*****************************************************&n; *      Timer stuff&n; ****************************************************/
@@ -7100,6 +7176,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 multiline_comment|/* Can be loaded either for module use or to provide functions&n;&t;   to others */
 r_if
 c_cond
@@ -7139,6 +7218,12 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ret
+op_assign
 id|attach_mpu401
 c_func
 (paren
@@ -7147,6 +7232,10 @@ id|cfg
 comma
 id|THIS_MODULE
 )paren
+)paren
+)paren
+r_return
+id|ret
 suffix:semicolon
 )brace
 r_return

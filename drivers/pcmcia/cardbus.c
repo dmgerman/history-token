@@ -922,6 +922,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_enable_device
+c_func
+(paren
+id|dev
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -1002,13 +1013,6 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-id|pci_enable_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* XXX check return */
 id|device_register
 c_func
 (paren

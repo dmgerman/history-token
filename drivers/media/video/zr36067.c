@@ -5363,8 +5363,7 @@ l_int|2
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -15868,7 +15867,7 @@ r_if
 c_cond
 (paren
 id|vw.clipcount
-OG
+template_param
 l_int|2048
 )paren
 r_return

@@ -42,6 +42,8 @@ DECL|macro|CARD_BUS
 mdefine_line|#define&t;&t;CARD_BUS(type)&t;&t;((type&gt;&gt;4)&amp;0xF)
 DECL|macro|CARD_PHASE
 mdefine_line|#define&t;&t;CARD_PHASE(type)&t;(type&amp;0xF)
+DECL|macro|TYPE_SI1_ISA
+mdefine_line|#define&t;&t;TYPE_SI1_ISA&t;&t;CARD_TYPE(BUS_ISA,SI1_Z280)
 DECL|macro|TYPE_SI2_ISA
 mdefine_line|#define&t;&t;TYPE_SI2_ISA&t;&t;CARD_TYPE(BUS_ISA,SI2_Z280)
 DECL|macro|TYPE_SI2_EISA
@@ -52,6 +54,29 @@ DECL|macro|TYPE_SX_ISA
 mdefine_line|#define&t;&t;TYPE_SX_ISA&t;&t;CARD_TYPE(BUS_ISA,SI3_T225)
 DECL|macro|TYPE_SX_PCI
 mdefine_line|#define&t;&t;TYPE_SX_PCI&t;&t;CARD_TYPE(BUS_PCI,SI3_T225)
+multiline_comment|/*****************************************************************************&n;******************************                  ******************************&n;******************************   Phase 1 Z280   ******************************&n;******************************                  ******************************&n;*****************************************************************************/
+multiline_comment|/* ISA board details... */
+DECL|macro|SI1_ISA_WINDOW_LEN
+mdefine_line|#define&t;&t;SI1_ISA_WINDOW_LEN&t;0x10000&t;&t;/* 64 Kbyte shared memory window */
+singleline_comment|//#define &t;SI1_ISA_MEMORY_LEN&t;0x8000&t;&t;/* Usable memory  - unused define*/
+singleline_comment|//#define&t;&t;SI1_ISA_ADDR_LOW&t;0x0A0000&t;/* Lowest address = 640 Kbyte */
+singleline_comment|//#define&t;&t;SI1_ISA_ADDR_HIGH&t;0xFF8000&t;/* Highest address = 16Mbyte - 32Kbyte */
+singleline_comment|//#define&t;&t;SI2_ISA_ADDR_STEP&t;SI2_ISA_WINDOW_LEN/* ISA board address step */
+singleline_comment|//#define&t;&t;SI2_ISA_IRQ_MASK&t;0x9800&t;&t;/* IRQs 15,12,11 */
+multiline_comment|/* ISA board, register definitions... */
+singleline_comment|//#define&t;&t;SI2_ISA_ID_BASE&t;&t;0x7FF8&t;&t;&t;/* READ:  Board ID string */
+DECL|macro|SI1_ISA_RESET
+mdefine_line|#define&t;&t;SI1_ISA_RESET&t;&t;0x8000&t;&t;/* WRITE: Host Reset */
+DECL|macro|SI1_ISA_RESET_CLEAR
+mdefine_line|#define&t;&t;SI1_ISA_RESET_CLEAR&t;0xc000&t;&t;/* WRITE: Host Reset clear*/
+DECL|macro|SI1_ISA_WAIT
+mdefine_line|#define&t;&t;SI1_ISA_WAIT&t;        0x9000&t;&t;/* WRITE: Host wait */
+DECL|macro|SI1_ISA_WAIT_CLEAR
+mdefine_line|#define&t;&t;SI1_ISA_WAIT_CLEAR&t;0xd000&t;&t;/* WRITE: Host wait clear */
+DECL|macro|SI1_ISA_INTCL
+mdefine_line|#define&t;&t;SI1_ISA_INTCL        &t;0xa000&t;&t;/* WRITE: Host Reset */
+DECL|macro|SI1_ISA_INTCL_CLEAR
+mdefine_line|#define&t;&t;SI1_ISA_INTCL_CLEAR&t;0xe000&t;&t;/* WRITE: Host Reset */
 multiline_comment|/*****************************************************************************&n;******************************                  ******************************&n;******************************   Phase 2 Z280   ******************************&n;******************************                  ******************************&n;*****************************************************************************/
 multiline_comment|/* ISA board details... */
 DECL|macro|SI2_ISA_WINDOW_LEN

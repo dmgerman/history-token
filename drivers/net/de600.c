@@ -1701,6 +1701,10 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -1710,7 +1714,22 @@ l_int|3
 comma
 l_string|&quot;de600&quot;
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;DE600: port 0x%x busy&bslash;n&quot;
+comma
+id|DE600_IO
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren

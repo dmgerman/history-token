@@ -17,8 +17,6 @@ macro_line|#include &lt;asm/delay.h&gt;
 multiline_comment|/* Bus types */
 DECL|macro|EISA_bus
 mdefine_line|#define EISA_bus 0
-DECL|macro|EISA_bus__is_a_macro
-mdefine_line|#define EISA_bus__is_a_macro /* for versions in ksyms.c */
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 DECL|macro|MCA_bus__is_a_macro

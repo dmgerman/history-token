@@ -458,6 +458,10 @@ l_string|&quot;.text&bslash;n&quot;
 l_string|&quot;.align 4&bslash;n&quot;
 l_string|&quot;.globl __down_failed&bslash;n&quot;
 l_string|&quot;__down_failed:&bslash;n&bslash;t&quot;
+macro_line|#if defined(CONFIG_FRAME_POINTER)
+l_string|&quot;pushl %ebp&bslash;n&bslash;t&quot;
+l_string|&quot;movl  %esp,%ebp&bslash;n&bslash;t&quot;
+macro_line|#endif
 l_string|&quot;pushl %eax&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %edx&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %ecx&bslash;n&bslash;t&quot;
@@ -465,6 +469,10 @@ l_string|&quot;call __down&bslash;n&bslash;t&quot;
 l_string|&quot;popl %ecx&bslash;n&bslash;t&quot;
 l_string|&quot;popl %edx&bslash;n&bslash;t&quot;
 l_string|&quot;popl %eax&bslash;n&bslash;t&quot;
+macro_line|#if defined(CONFIG_FRAME_POINTER)
+l_string|&quot;movl %ebp,%esp&bslash;n&bslash;t&quot;
+l_string|&quot;popl %ebp&bslash;n&bslash;t&quot;
+macro_line|#endif
 l_string|&quot;ret&quot;
 )paren
 suffix:semicolon
@@ -475,11 +483,19 @@ l_string|&quot;.text&bslash;n&quot;
 l_string|&quot;.align 4&bslash;n&quot;
 l_string|&quot;.globl __down_failed_interruptible&bslash;n&quot;
 l_string|&quot;__down_failed_interruptible:&bslash;n&bslash;t&quot;
+macro_line|#if defined(CONFIG_FRAME_POINTER)
+l_string|&quot;pushl %ebp&bslash;n&bslash;t&quot;
+l_string|&quot;movl  %esp,%ebp&bslash;n&bslash;t&quot;
+macro_line|#endif
 l_string|&quot;pushl %edx&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %ecx&bslash;n&bslash;t&quot;
 l_string|&quot;call __down_interruptible&bslash;n&bslash;t&quot;
 l_string|&quot;popl %ecx&bslash;n&bslash;t&quot;
 l_string|&quot;popl %edx&bslash;n&bslash;t&quot;
+macro_line|#if defined(CONFIG_FRAME_POINTER)
+l_string|&quot;movl %ebp,%esp&bslash;n&bslash;t&quot;
+l_string|&quot;popl %ebp&bslash;n&bslash;t&quot;
+macro_line|#endif
 l_string|&quot;ret&quot;
 )paren
 suffix:semicolon
@@ -490,11 +506,19 @@ l_string|&quot;.text&bslash;n&quot;
 l_string|&quot;.align 4&bslash;n&quot;
 l_string|&quot;.globl __down_failed_trylock&bslash;n&quot;
 l_string|&quot;__down_failed_trylock:&bslash;n&bslash;t&quot;
+macro_line|#if defined(CONFIG_FRAME_POINTER)
+l_string|&quot;pushl %ebp&bslash;n&bslash;t&quot;
+l_string|&quot;movl  %esp,%ebp&bslash;n&bslash;t&quot;
+macro_line|#endif
 l_string|&quot;pushl %edx&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %ecx&bslash;n&bslash;t&quot;
 l_string|&quot;call __down_trylock&bslash;n&bslash;t&quot;
 l_string|&quot;popl %ecx&bslash;n&bslash;t&quot;
 l_string|&quot;popl %edx&bslash;n&bslash;t&quot;
+macro_line|#if defined(CONFIG_FRAME_POINTER)
+l_string|&quot;movl %ebp,%esp&bslash;n&bslash;t&quot;
+l_string|&quot;popl %ebp&bslash;n&bslash;t&quot;
+macro_line|#endif
 l_string|&quot;ret&quot;
 )paren
 suffix:semicolon

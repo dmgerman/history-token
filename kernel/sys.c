@@ -1244,6 +1244,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|do_exit
 c_func
 (paren
@@ -1283,6 +1288,11 @@ l_string|&quot;Power down.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|machine_power_off
+c_func
+(paren
+)paren
+suffix:semicolon
+id|unlock_kernel
 c_func
 (paren
 )paren

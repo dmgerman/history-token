@@ -1225,19 +1225,21 @@ id|i2o_handler
 id|i2o_scsi_handler
 op_assign
 (brace
+dot
+id|reply
+op_assign
 id|i2o_scsi_reply
 comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
+dot
+id|name
+op_assign
 l_string|&quot;I2O SCSI OSM&quot;
 comma
-l_int|0
-comma
+dot
+r_class
+op_assign
 id|I2O_CLASS_SCSI_PERIPHERAL
+comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; *&t;i2o_find_lun&t;&t;-&t;report the lun of an i2o device&n; *&t;@c: i2o controller owning the device&n; *&t;@d: i2o disk device&n; *&t;@target: filled in with target id&n; *&t;@lun: filled in with target lun&n; *&n; *&t;Query an I2O device to find out its SCSI lun and target numbering. We&n; *&t;don&squot;t currently handle some of the fancy SCSI-3 stuff although our&n; *&t;querying is sufficient to do so.&n; */

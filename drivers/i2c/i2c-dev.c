@@ -355,6 +355,19 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+OG
+l_int|8192
+)paren
+(brace
+id|count
+op_assign
+l_int|8192
+suffix:semicolon
+)brace
 multiline_comment|/* copy user space data to kernel space. */
 id|tmp
 op_assign
@@ -491,6 +504,19 @@ op_assign
 id|file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
 macro_line|#endif /* DEBUG */
+r_if
+c_cond
+(paren
+id|count
+OG
+l_int|8192
+)paren
+(brace
+id|count
+op_assign
+l_int|8192
+suffix:semicolon
+)brace
 multiline_comment|/* copy user space data to kernel space. */
 id|tmp
 op_assign
