@@ -1860,28 +1860,18 @@ l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;i2o_scsi_notify - Retrieve notifications of controller added or removed&n; *&t;@notify: the notification event which occurs&n; *&t;@data: pointer to additional data&n; *&n; *&t;If a I2O controller is added, we catch the notification to add a&n; *&t;corresponding Scsi_Host. On removal also remove the Scsi_Host.&n; */
-DECL|function|i2o_scsi_notify
+multiline_comment|/**&n; *&t;i2o_scsi_notify_controller_add - Retrieve notifications of added&n; *&t;&t;&t;&t;&t; controllers&n; *&t;@c: the controller which was added&n; *&n; *&t;If a I2O controller is added, we catch the notification to add a&n; *&t;corresponding Scsi_Host.&n; */
+DECL|function|i2o_scsi_notify_controller_add
 r_void
-id|i2o_scsi_notify
+id|i2o_scsi_notify_controller_add
 c_func
 (paren
-r_enum
-id|i2o_driver_notify
-id|notify
-comma
-r_void
-op_star
-id|data
-)paren
-(brace
 r_struct
 id|i2o_controller
 op_star
 id|c
-op_assign
-id|data
-suffix:semicolon
+)paren
+(brace
 r_struct
 id|i2o_scsi_host
 op_star
@@ -1890,15 +1880,6 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|notify
-)paren
-(brace
-r_case
-id|I2O_DRIVER_NOTIFY_CONTROLLER_ADD
-suffix:colon
 id|i2o_shost
 op_assign
 id|i2o_scsi_host_alloc
@@ -1975,11 +1956,25 @@ c_func
 l_string|&quot;new I2O SCSI host added&bslash;n&quot;
 )paren
 suffix:semicolon
-r_break
+)brace
 suffix:semicolon
-r_case
-id|I2O_DRIVER_NOTIFY_CONTROLLER_REMOVE
-suffix:colon
+multiline_comment|/**&n; *&t;i2o_scsi_notify_controller_remove - Retrieve notifications of removed&n; *&t;&t;&t;&t;&t;    controllers&n; *&t;@c: the controller which was removed&n; *&n; *&t;If a I2O controller is removed, we catch the notification to remove the&n; *&t;corresponding Scsi_Host.&n; */
+DECL|function|i2o_scsi_notify_controller_remove
+r_void
+id|i2o_scsi_notify_controller_remove
+c_func
+(paren
+r_struct
+id|i2o_controller
+op_star
+id|c
+)paren
+(brace
+r_struct
+id|i2o_scsi_host
+op_star
+id|i2o_shost
+suffix:semicolon
 id|i2o_shost
 op_assign
 id|i2o_scsi_get_host
@@ -2021,13 +2016,6 @@ c_func
 l_string|&quot;I2O SCSI host removed&bslash;n&quot;
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
-)brace
 )brace
 suffix:semicolon
 multiline_comment|/* SCSI OSM driver struct */
@@ -2054,9 +2042,14 @@ op_assign
 id|i2o_scsi_class_id
 comma
 dot
-id|notify
+id|notify_controller_add
 op_assign
-id|i2o_scsi_notify
+id|i2o_scsi_notify_controller_add
+comma
+dot
+id|notify_controller_remove
+op_assign
+id|i2o_scsi_notify_controller_remove
 comma
 dot
 id|driver

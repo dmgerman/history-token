@@ -682,6 +682,12 @@ op_amp
 id|dev-&gt;classdev
 )paren
 suffix:semicolon
+id|i2o_driver_notify_device_add_all
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -707,6 +713,12 @@ op_star
 id|i2o_dev
 )paren
 (brace
+id|i2o_driver_notify_device_remove_all
+c_func
+(paren
+id|i2o_dev
+)paren
+suffix:semicolon
 id|class_device_unregister
 c_func
 (paren

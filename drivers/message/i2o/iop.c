@@ -3025,11 +3025,9 @@ comma
 id|c-&gt;name
 )paren
 suffix:semicolon
-id|i2o_driver_notify_all
+id|i2o_driver_notify_controller_remove_all
 c_func
 (paren
-id|I2O_DRIVER_NOTIFY_CONTROLLER_REMOVE
-comma
 id|c
 )paren
 suffix:semicolon
@@ -4298,11 +4296,9 @@ op_amp
 id|i2o_controllers
 )paren
 suffix:semicolon
-id|i2o_driver_notify_all
+id|i2o_driver_notify_controller_add_all
 c_func
 (paren
-id|I2O_DRIVER_NOTIFY_CONTROLLER_ADD
-comma
 id|c
 )paren
 suffix:semicolon
