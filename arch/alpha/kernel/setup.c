@@ -1839,6 +1839,35 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Pre-process the system type to make sure it will be valid.&n;&t; *&n;&t; * This may restore real CABRIO and EB66+ family names, ie&n;&t; * EB64+ and EB66.&n;&t; *&n;&t; * Oh, and &quot;white box&quot; AS800 (aka DIGITAL Server 3000 series)&n;&t; * and AS1200 (DIGITAL Server 5000 series) have the type as&n;&t; * the negative of the real one.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+r_int
+)paren
+id|hwrpb-&gt;sys_type
+OL
+l_int|0
+)paren
+(brace
+id|hwrpb-&gt;sys_type
+op_assign
+op_minus
+(paren
+(paren
+r_int
+)paren
+id|hwrpb-&gt;sys_type
+)paren
+suffix:semicolon
+id|hwrpb_update_checksum
+c_func
+(paren
+id|hwrpb
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Register a call for panic conditions. */
 id|notifier_chain_register
 c_func
