@@ -361,9 +361,9 @@ id|swim_state
 id|state
 suffix:semicolon
 DECL|member|swim3
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|swim3
 suffix:semicolon
@@ -371,6 +371,7 @@ multiline_comment|/* hardware registers */
 DECL|member|dma
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dma
 suffix:semicolon
@@ -968,9 +969,9 @@ r_int
 id|sel
 )paren
 (brace
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -1038,9 +1039,9 @@ r_int
 id|action
 )paren
 (brace
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -1111,9 +1112,9 @@ r_int
 id|bit
 )paren
 (brace
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -1586,9 +1587,9 @@ op_star
 id|fs
 )paren
 (brace
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -1664,9 +1665,9 @@ r_int
 id|n
 )paren
 (brace
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -1852,9 +1853,9 @@ id|fs
 r_int
 id|n
 suffix:semicolon
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -1869,6 +1870,7 @@ id|fs-&gt;dma_cmd
 suffix:semicolon
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dr
 op_assign
@@ -1973,7 +1975,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|st_le32
+id|out_le32
 c_func
 (paren
 op_amp
@@ -2442,9 +2444,9 @@ op_star
 )paren
 id|data
 suffix:semicolon
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -2552,9 +2554,9 @@ op_star
 )paren
 id|data
 suffix:semicolon
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -2640,9 +2642,9 @@ op_star
 )paren
 id|data
 suffix:semicolon
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -2770,9 +2772,9 @@ op_star
 )paren
 id|data
 suffix:semicolon
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -2780,6 +2782,7 @@ id|fs-&gt;swim3
 suffix:semicolon
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dr
 op_assign
@@ -2803,7 +2806,7 @@ id|fs-&gt;timeout_pending
 op_assign
 l_int|0
 suffix:semicolon
-id|st_le32
+id|out_le32
 c_func
 (paren
 op_amp
@@ -3010,9 +3013,9 @@ op_star
 )paren
 id|dev_id
 suffix:semicolon
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -3032,6 +3035,7 @@ id|resid
 suffix:semicolon
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dr
 suffix:semicolon
@@ -4313,9 +4317,9 @@ id|fs
 op_assign
 id|inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data
 suffix:semicolon
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -4738,9 +4742,9 @@ id|fs
 op_assign
 id|inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data
 suffix:semicolon
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 op_assign
@@ -4831,9 +4835,9 @@ id|fs
 op_assign
 id|disk-&gt;private_data
 suffix:semicolon
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 id|sw
 suffix:semicolon
@@ -5549,9 +5553,9 @@ suffix:semicolon
 id|fs-&gt;swim3
 op_assign
 (paren
-r_volatile
 r_struct
 id|swim3
+id|__iomem
 op_star
 )paren
 id|ioremap
@@ -5572,6 +5576,7 @@ op_assign
 (paren
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 )paren
 id|ioremap
