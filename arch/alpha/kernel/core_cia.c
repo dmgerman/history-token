@@ -4859,7 +4859,7 @@ id|mask
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_VERBOSE_MCHECK */
 r_static
 r_int
 DECL|function|cia_decode_mchk
@@ -4916,6 +4916,15 @@ r_return
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_VERBOSE_MCHECK
+r_if
+c_cond
+(paren
+op_logical_neg
+id|alpha_verbose_mcheck
+)paren
+r_return
+l_int|1
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -5262,7 +5271,7 @@ l_string|&quot;CIA lost machine check: &quot;
 l_string|&quot;I/O timeout&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_VERBOSE_MCHECK */
 r_return
 l_int|1
 suffix:semicolon

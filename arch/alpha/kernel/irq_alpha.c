@@ -383,7 +383,15 @@ op_star
 id|reason
 suffix:semicolon
 multiline_comment|/*&n;&t; * See if the machine check is due to a badaddr() and if so,&n;&t; * ignore it.&n;&t; */
-macro_line|#if DEBUG_MCHECK &gt; 0
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
+r_if
+c_cond
+(paren
+id|alpha_verbose_mcheck
+OG
+l_int|1
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -400,6 +408,7 @@ suffix:colon
 l_string|&quot;NOT expected!!!&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_if
 c_cond
@@ -760,7 +769,14 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_MCHECK &gt; 1
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
+r_if
+c_cond
+(paren
+id|alpha_verbose_mcheck
+OG
+l_int|1
+)paren
 (brace
 multiline_comment|/* Dump the logout area to give all info.  */
 r_int
@@ -827,7 +843,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_VERBOSE_MCHECK */
 )brace
 multiline_comment|/*&n; * The special RTC interrupt type.  The interrupt itself was&n; * processed by PALcode, and comes in via entInt vector 1.&n; */
 DECL|function|rtc_enable_disable

@@ -87,6 +87,17 @@ r_int
 r_int
 id|srm_hae
 suffix:semicolon
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
+multiline_comment|/* 0=minimum, 1=verbose, 2=all */
+multiline_comment|/* These can be overridden via the command line, ie &quot;verbose_mcheck=2&quot;) */
+DECL|variable|alpha_verbose_mcheck
+r_int
+r_int
+id|alpha_verbose_mcheck
+op_assign
+id|CONFIG_VERBOSE_MCHECK_ON
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Which processor we booted from.  */
 DECL|variable|boot_cpuid
 r_int
@@ -2121,6 +2132,41 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|p
+comma
+l_string|&quot;verbose_mcheck=&quot;
+comma
+l_int|15
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|alpha_verbose_mcheck
+op_assign
+id|simple_strtol
+c_func
+(paren
+id|p
+op_plus
+l_int|15
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 multiline_comment|/* Replace the command line, now that we&squot;ve killed it with strsep.  */
 id|strcpy
@@ -2333,6 +2379,40 @@ l_string|&quot;SRM&quot;
 suffix:colon
 l_string|&quot;MILO&quot;
 )paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Major Options: &quot;
+macro_line|#ifdef CONFIG_SMP
+l_string|&quot;SMP &quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_ALPHA_EV56
+l_string|&quot;EV56 &quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_ALPHA_EV67
+l_string|&quot;EV67 &quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_ALPHA_LEGACY_START_ADDRESS
+l_string|&quot;LEGACY_START &quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
+l_string|&quot;VERBOSE_MCHECK &quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+l_string|&quot;DISCONTIGMEM &quot;
+macro_line|#ifdef CONFIG_NUMA
+l_string|&quot;NUMA &quot;
+macro_line|#endif
+macro_line|#endif
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
+l_string|&quot;DEBUG_SPINLOCK &quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+l_string|&quot;MAGIC_SYSRQ &quot;
+macro_line|#endif
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk

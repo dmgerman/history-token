@@ -1643,7 +1643,14 @@ id|el.c-&gt;size
 suffix:semicolon
 )brace
 multiline_comment|/* Dump the logout area to give all info.  */
-macro_line|#if DEBUG_MCHECK &gt; 1
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
+r_if
+c_cond
+(paren
+id|alpha_verbose_mcheck
+OG
+l_int|1
+)paren
 (brace
 r_int
 r_int
@@ -1709,7 +1716,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_VERBOSE_MCHECK */
 )brace
 multiline_comment|/*&n; * The following routines are needed to support the SPEED changing&n; * necessary to successfully manage the thermal problem on the AlphaBook1.&n; */
 r_void
