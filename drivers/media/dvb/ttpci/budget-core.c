@@ -2018,11 +2018,6 @@ op_amp
 id|budget-&gt;i2c_adap
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|budget-&gt;grabbing
-)paren
 id|vfree
 c_func
 (paren

@@ -1385,11 +1385,6 @@ op_amp
 id|dmxdevfilter-&gt;dev-&gt;lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|mem
-)paren
 id|vfree
 c_func
 (paren
@@ -5374,12 +5369,6 @@ c_func
 id|dmxdev-&gt;dvr_dvbdev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dmxdev-&gt;filter
-)paren
-(brace
 id|vfree
 c_func
 (paren
@@ -5390,13 +5379,6 @@ id|dmxdev-&gt;filter
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|dmxdev-&gt;dvr
-)paren
-(brace
 id|vfree
 c_func
 (paren
@@ -5407,7 +5389,6 @@ id|dmxdev-&gt;dvr
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 id|dmxdev-&gt;demux
 op_member_access_from_pointer
 id|close

@@ -3238,16 +3238,6 @@ id|slot_state
 op_assign
 id|DVB_CA_SLOTSTATE_NONE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ca-&gt;slot_info
-(braket
-id|slot
-)braket
-dot
-id|rx_buffer.data
-)paren
 id|vfree
 c_func
 (paren
