@@ -3448,6 +3448,7 @@ comma
 id|GFP_ATOMIC
 )paren
 )paren
+)paren
 r_return
 suffix:semicolon
 r_for
