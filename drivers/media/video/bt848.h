@@ -437,6 +437,14 @@ DECL|macro|BT848_GPIO_DMA_CTL_FIFO_ENABLE
 mdefine_line|#define BT848_GPIO_DMA_CTL_FIFO_ENABLE (1&lt;&lt;0)
 DECL|macro|BT848_I2C
 mdefine_line|#define BT848_I2C              0x110
+DECL|macro|BT878_I2C_MODE
+mdefine_line|#define BT878_I2C_MODE         (1&lt;&lt;7)
+DECL|macro|BT878_I2C_RATE
+mdefine_line|#define BT878_I2C_RATE         (1&lt;&lt;6)
+DECL|macro|BT878_I2C_NOSTOP
+mdefine_line|#define BT878_I2C_NOSTOP       (1&lt;&lt;5)
+DECL|macro|BT878_I2C_NOSTART
+mdefine_line|#define BT878_I2C_NOSTART      (1&lt;&lt;4)
 DECL|macro|BT848_I2C_DIV
 mdefine_line|#define BT848_I2C_DIV          (0xf&lt;&lt;4)
 DECL|macro|BT848_I2C_SYNC
