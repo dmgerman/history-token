@@ -652,6 +652,7 @@ r_new
 )paren
 (brace
 r_int
+r_int
 id|prev
 suffix:semicolon
 id|__asm__
@@ -725,6 +726,7 @@ r_int
 r_new
 )paren
 (brace
+r_int
 r_int
 id|prev
 suffix:semicolon
