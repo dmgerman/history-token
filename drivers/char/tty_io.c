@@ -5205,11 +5205,11 @@ suffix:semicolon
 r_extern
 r_struct
 id|tty_driver
+op_star
 id|console_driver
 suffix:semicolon
 id|driver
 op_assign
-op_amp
 id|console_driver
 suffix:semicolon
 id|index
