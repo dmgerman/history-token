@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * This file is part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; * &n; * The SCTP reference implementation  is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * the SCTP reference implementation  is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; *                 ************************&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to one of the following email&n; * addresses:&n; * &n; * La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; * Randall Stewart &lt;randall@stewart.chicago.il.us&gt;&n; * Ken Morneau &lt;kmorneau@cisco.com&gt;&n; * Qiaobing Xie &lt;qxie1@motorola.com&gt;&n; * Xingang Guo &lt;xingang.guo@intel.com&gt;&n; * Sridhar Samudrala &lt;samudrala@us.ibm.com&gt;&n; * Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; * &n; * There are still LOTS of bugs in this code... I always run on the motto&n; * &quot;it is a wonder any code ever works :)&quot;&n; * &n; * &n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This file is part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; *&n; * The SCTP reference implementation  is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * the SCTP reference implementation  is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; *                 ************************&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to one of the following email&n; * addresses:&n; *&n; * La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; * Randall Stewart &lt;randall@stewart.chicago.il.us&gt;&n; * Ken Morneau &lt;kmorneau@cisco.com&gt;&n; * Qiaobing Xie &lt;qxie1@motorola.com&gt;&n; * Xingang Guo &lt;xingang.guo@intel.com&gt;&n; * Sridhar Samudrala &lt;samudrala@us.ibm.com&gt;&n; * Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; *&n; * There are still LOTS of bugs in this code... I always run on the motto&n; * &quot;it is a wonder any code ever works :)&quot;&n; *&n; *&n; */
 macro_line|#ifndef __sctp_constants_h__
 DECL|macro|__sctp_constants_h__
 mdefine_line|#define __sctp_constants_h__
@@ -6,18 +6,31 @@ macro_line|#include &lt;linux/tcp.h&gt;  /* For TCP states used in sctp_sock_sta
 macro_line|#include &lt;linux/sctp.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt; /* For ipv6hdr. */
 macro_line|#include &lt;net/sctp/user.h&gt;
-multiline_comment|/* What a hack!  Jiminy Cricket!  */
+multiline_comment|/* Value used for stream negotiation. */
 DECL|enumerator|SCTP_MAX_STREAM
 r_enum
 (brace
 id|SCTP_MAX_STREAM
 op_assign
+l_int|0xffff
+)brace
+suffix:semicolon
+DECL|enumerator|SCTP_DEFAULT_OUTSTREAMS
+r_enum
+(brace
+id|SCTP_DEFAULT_OUTSTREAMS
+op_assign
 l_int|10
 )brace
 suffix:semicolon
-multiline_comment|/* Define the amount of space to reserve for SCTP, IP, LL.&n; * There is a little bit of waste that we are always allocating&n; * for ipv6 headers, but this seems worth the simplicity.&n; */
-DECL|macro|SCTP_IP_OVERHEAD
-mdefine_line|#define SCTP_IP_OVERHEAD ((sizeof(struct sctphdr)&bslash;&n;                          + sizeof(struct ipv6hdr)&bslash;&n;                          + MAX_HEADER))
+DECL|enumerator|SCTP_DEFAULT_INSTREAMS
+r_enum
+(brace
+id|SCTP_DEFAULT_INSTREAMS
+op_assign
+id|SCTP_MAX_STREAM
+)brace
+suffix:semicolon
 multiline_comment|/* Define the amount of space to reserve for SCTP, IP, LL.&n; * There is a little bit of waste that we are always allocating&n; * for ipv6 headers, but this seems worth the simplicity.&n; */
 DECL|macro|SCTP_IP_OVERHEAD
 mdefine_line|#define SCTP_IP_OVERHEAD ((sizeof(struct sctphdr)&bslash;&n;                          + sizeof(struct ipv6hdr)&bslash;&n;                          + MAX_HEADER))
@@ -76,9 +89,6 @@ comma
 DECL|enumerator|SCTP_EVENT_TIMEOUT_T3_RTX
 id|SCTP_EVENT_TIMEOUT_T3_RTX
 comma
-DECL|enumerator|SCTP_EVENT_TIMEOUT_T4_RTO
-id|SCTP_EVENT_TIMEOUT_T4_RTO
-comma
 DECL|enumerator|SCTP_EVENT_TIMEOUT_T5_SHUTDOWN_GUARD
 id|SCTP_EVENT_TIMEOUT_T5_SHUTDOWN_GUARD
 comma
@@ -91,15 +101,12 @@ comma
 DECL|enumerator|SCTP_EVENT_TIMEOUT_AUTOCLOSE
 id|SCTP_EVENT_TIMEOUT_AUTOCLOSE
 comma
-DECL|enumerator|SCTP_EVENT_TIMEOUT_PMTU_RAISE
-id|SCTP_EVENT_TIMEOUT_PMTU_RAISE
-comma
 DECL|typedef|sctp_event_timeout_t
 )brace
 id|sctp_event_timeout_t
 suffix:semicolon
 DECL|macro|SCTP_EVENT_TIMEOUT_MAX
-mdefine_line|#define SCTP_EVENT_TIMEOUT_MAX&t;&t;SCTP_EVENT_TIMEOUT_PMTU_RAISE
+mdefine_line|#define SCTP_EVENT_TIMEOUT_MAX&t;&t;SCTP_EVENT_TIMEOUT_AUTOCLOSE
 DECL|macro|SCTP_NUM_TIMEOUT_TYPES
 mdefine_line|#define SCTP_NUM_TIMEOUT_TYPES&t;&t;(SCTP_EVENT_TIMEOUT_MAX + 1)
 r_typedef
@@ -110,28 +117,22 @@ id|SCTP_EVENT_NO_PENDING_TSN
 op_assign
 l_int|0
 comma
-DECL|enumerator|SCTP_EVENT_ICMP_UNREACHFRAG
-id|SCTP_EVENT_ICMP_UNREACHFRAG
-comma
 DECL|typedef|sctp_event_other_t
 )brace
 id|sctp_event_other_t
 suffix:semicolon
 DECL|macro|SCTP_EVENT_OTHER_MAX
-mdefine_line|#define SCTP_EVENT_OTHER_MAX&t;&t;SCTP_EVENT_ICMP_UNREACHFRAG
+mdefine_line|#define SCTP_EVENT_OTHER_MAX&t;&t;SCTP_EVENT_NO_PENDING_TSN
 DECL|macro|SCTP_NUM_OTHER_TYPES
 mdefine_line|#define SCTP_NUM_OTHER_TYPES&t;&t;(SCTP_EVENT_OTHER_MAX + 1)
 multiline_comment|/* These are primitive requests from the ULP.  */
 r_typedef
 r_enum
 (brace
-DECL|enumerator|SCTP_PRIMITIVE_INITIALIZE
-id|SCTP_PRIMITIVE_INITIALIZE
-op_assign
-l_int|0
-comma
 DECL|enumerator|SCTP_PRIMITIVE_ASSOCIATE
 id|SCTP_PRIMITIVE_ASSOCIATE
+op_assign
+l_int|0
 comma
 DECL|enumerator|SCTP_PRIMITIVE_SHUTDOWN
 id|SCTP_PRIMITIVE_SHUTDOWN
@@ -142,45 +143,15 @@ comma
 DECL|enumerator|SCTP_PRIMITIVE_SEND
 id|SCTP_PRIMITIVE_SEND
 comma
-DECL|enumerator|SCTP_PRIMITIVE_SETPRIMARY
-id|SCTP_PRIMITIVE_SETPRIMARY
-comma
-DECL|enumerator|SCTP_PRIMITIVE_RECEIVE
-id|SCTP_PRIMITIVE_RECEIVE
-comma
-DECL|enumerator|SCTP_PRIMITIVE_STATUS
-id|SCTP_PRIMITIVE_STATUS
-comma
-DECL|enumerator|SCTP_PRIMITIVE_CHANGEHEARTBEAT
-id|SCTP_PRIMITIVE_CHANGEHEARTBEAT
-comma
 DECL|enumerator|SCTP_PRIMITIVE_REQUESTHEARTBEAT
 id|SCTP_PRIMITIVE_REQUESTHEARTBEAT
-comma
-DECL|enumerator|SCTP_PRIMITIVE_GETSRTTREPORT
-id|SCTP_PRIMITIVE_GETSRTTREPORT
-comma
-DECL|enumerator|SCTP_PRIMITIVE_SETFAILURETHRESHOLD
-id|SCTP_PRIMITIVE_SETFAILURETHRESHOLD
-comma
-DECL|enumerator|SCTP_PRIMITIVE_SETPROTOPARAMETERS
-id|SCTP_PRIMITIVE_SETPROTOPARAMETERS
-comma
-DECL|enumerator|SCTP_PRIMITIVE_RECEIVE_UNSENT
-id|SCTP_PRIMITIVE_RECEIVE_UNSENT
-comma
-DECL|enumerator|SCTP_PRIMITIVE_RECEIVE_UNACKED
-id|SCTP_PRIMITIVE_RECEIVE_UNACKED
-comma
-DECL|enumerator|SCTP_PRIMITIVE_DESTROY
-id|SCTP_PRIMITIVE_DESTROY
 comma
 DECL|typedef|sctp_event_primitive_t
 )brace
 id|sctp_event_primitive_t
 suffix:semicolon
 DECL|macro|SCTP_EVENT_PRIMITIVE_MAX
-mdefine_line|#define SCTP_EVENT_PRIMITIVE_MAX&t;SCTP_PRIMITIVE_DESTROY
+mdefine_line|#define SCTP_EVENT_PRIMITIVE_MAX&t;SCTP_PRIMITIVE_REQUESTHEARTBEAT
 DECL|macro|SCTP_NUM_PRIMITIVE_TYPES
 mdefine_line|#define SCTP_NUM_PRIMITIVE_TYPES&t;(SCTP_EVENT_PRIMITIVE_MAX + 1)
 multiline_comment|/* We define here a utility type for manipulating subtypes.&n; * The subtype constructors all work like this:&n; *&n; * &t;sctp_subtype_t foo = SCTP_ST_CHUNK(SCTP_CID_INIT);&n; */
@@ -468,14 +439,57 @@ DECL|macro|SCTP_ADDR_REACHABLE
 mdefine_line|#define SCTP_ADDR_REACHABLE&t;&t;2
 DECL|macro|SCTP_ADDR_NOT_REACHABLE
 mdefine_line|#define SCTP_ADDR_NOT_REACHABLE&t;&t;1
+multiline_comment|/* Maximum chunk length considering padding requirements. */
+DECL|enumerator|SCTP_MAX_CHUNK_LEN
+r_enum
+(brace
+id|SCTP_MAX_CHUNK_LEN
+op_assign
+(paren
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+op_minus
+r_sizeof
+(paren
+id|__u32
+)paren
+)paren
+)brace
+suffix:semicolon
+multiline_comment|/* Encourage Cookie-Echo bundling by pre-fragmenting chunks a little&n; * harder (until reaching ESTABLISHED state).&n; */
+DECL|enumerator|SCTP_ARBITRARY_COOKIE_ECHO_LEN
+r_enum
+(brace
+id|SCTP_ARBITRARY_COOKIE_ECHO_LEN
+op_assign
+l_int|200
+)brace
+suffix:semicolon
 multiline_comment|/* Guess at how big to make the TSN mapping array.&n; * We guarantee that we can handle at least this big a gap between the&n; * cumulative ACK and the highest TSN.  In practice, we can often&n; * handle up to twice this value.&n; *&n; * NEVER make this more than 32767 (2^15-1).  The Gap Ack Blocks in a&n; * SACK (see  section 3.3.4) are only 16 bits, so 2*SCTP_TSN_MAP_SIZE&n; * must be less than 65535 (2^16 - 1), or we will have overflow&n; * problems creating SACK&squot;s.&n; */
 DECL|macro|SCTP_TSN_MAP_SIZE
 mdefine_line|#define SCTP_TSN_MAP_SIZE 2048
 DECL|macro|SCTP_TSN_MAX_GAP
 mdefine_line|#define SCTP_TSN_MAX_GAP  65535
 multiline_comment|/* We will not record more than this many duplicate TSNs between two&n; * SACKs.  The minimum PMTU is 576.  Remove all the headers and there&n; * is enough room for 131 duplicate reports.  Round down to the&n; * nearest power of 2.&n; */
-DECL|macro|SCTP_MAX_DUP_TSNS
-mdefine_line|#define SCTP_MAX_DUP_TSNS 128
+DECL|enumerator|SCTP_MIN_PMTU
+r_enum
+(brace
+id|SCTP_MIN_PMTU
+op_assign
+l_int|576
+)brace
+suffix:semicolon
+DECL|enumerator|SCTP_MAX_DUP_TSNS
+r_enum
+(brace
+id|SCTP_MAX_DUP_TSNS
+op_assign
+l_int|128
+)brace
+suffix:semicolon
 r_typedef
 r_enum
 (brace
@@ -507,11 +521,6 @@ DECL|macro|SCTP_DEFAULT_TIMEOUT_SACK
 mdefine_line|#define SCTP_DEFAULT_TIMEOUT_SACK&t;((200 * HZ) / 1000)
 DECL|macro|SCTP_DEFAULT_TIMEOUT_SACK_MAX
 mdefine_line|#define SCTP_DEFAULT_TIMEOUT_SACK_MAX&t;((500 * HZ) / 1000) /* 500 ms */
-multiline_comment|/* How long do we wait before attempting to raise the PMTU?  */
-DECL|macro|SCTP_DEFAULT_TIMEOUT_PMTU_RAISE
-mdefine_line|#define SCTP_DEFAULT_TIMEOUT_PMTU_RAISE (10 * 60 * HZ) /* 10 Minutes */
-DECL|macro|SCTP_DEFAULT_TIMEOUT_PMTU_RAISE_MIN
-mdefine_line|#define SCTP_DEFAULT_TIMEOUT_PMTU_RAISE_MIN (10 * 60 * HZ) /* 10 Minutes */
 multiline_comment|/* RTO.Initial              - 3  seconds&n; * RTO.Min                  - 1  second&n; * RTO.Max                  - 60 seconds&n; * RTO.Alpha                - 1/8&n; * RTO.Beta                 - 1/4&n; */
 DECL|macro|SCTP_RTO_INITIAL
 mdefine_line|#define SCTP_RTO_INITIAL&t;(3 * HZ)
@@ -632,6 +641,23 @@ DECL|macro|SCTP_ADDR4_PEERSUPP
 mdefine_line|#define SCTP_ADDR4_PEERSUPP&t;0x00000002&t;/* IPv4 address is supported by&n;&t;&t;&t;&t;&t;&t;   peer */
 DECL|macro|SCTP_ADDR6_PEERSUPP
 mdefine_line|#define SCTP_ADDR6_PEERSUPP&t;0x00000004&t;/* IPv6 address is supported by&n;&t;&t;&t;&t;&t;&t;   peer */
+multiline_comment|/* Reasons to retransmit. */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|SCTP_RETRANSMIT_T3_RTX
+id|SCTP_RETRANSMIT_T3_RTX
+comma
+DECL|enumerator|SCTP_RETRANSMIT_FAST_RTX
+id|SCTP_RETRANSMIT_FAST_RTX
+comma
+DECL|enumerator|SCTP_RETRANSMIT_PMTU_DISCOVERY
+id|SCTP_RETRANSMIT_PMTU_DISCOVERY
+comma
+DECL|typedef|sctp_retransmit_reason_t
+)brace
+id|sctp_retransmit_reason_t
+suffix:semicolon
 multiline_comment|/* Reasons to lower cwnd. */
 r_typedef
 r_enum
