@@ -3426,12 +3426,10 @@ r_void
 id|fill_window
 c_func
 (paren
-id|s
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+)paren
 (brace
 r_register
 r_int
@@ -4820,7 +4818,9 @@ DECL|function|zlib_deflate_workspacesize
 r_extern
 r_int
 id|zlib_deflate_workspacesize
+c_func
 (paren
+r_void
 )paren
 (brace
 r_return
