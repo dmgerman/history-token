@@ -464,16 +464,12 @@ l_int|1
 multiline_comment|/* not closed */
 id|rc
 op_assign
-id|llc_pdu_router
+id|llc_conn_rcv
 c_func
 (paren
-id|llc-&gt;sap
-comma
 id|sk
 comma
 id|skb
-comma
-id|LLC_TYPE_2
 )paren
 suffix:semicolon
 r_else

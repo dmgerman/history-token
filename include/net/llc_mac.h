@@ -1,7 +1,7 @@
 macro_line|#ifndef LLC_MAC_H
 DECL|macro|LLC_MAC_H
 mdefine_line|#define LLC_MAC_H
-multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
+multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001, 2002 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 multiline_comment|/* Defines MAC-layer interface to LLC layer */
 r_extern
 r_int
@@ -56,30 +56,6 @@ id|mac
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|llc_pdu_router
-c_func
-(paren
-r_struct
-id|llc_sap
-op_star
-id|sap
-comma
-r_struct
-id|sock
-op_star
-id|sk
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-id|u8
-id|type
-)paren
-suffix:semicolon
-r_extern
 id|u16
 id|lan_hdrs_init
 c_func
@@ -96,6 +72,22 @@ comma
 id|u8
 op_star
 id|da
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|llc_conn_rcv
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
 )paren
 suffix:semicolon
 DECL|function|llc_set_backlog_type
