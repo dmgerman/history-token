@@ -356,6 +356,10 @@ id|sn_oemdata_size
 op_assign
 id|oemdata_size
 suffix:semicolon
+id|sn_oemdata_bufsize
+op_assign
+l_int|0
+suffix:semicolon
 id|ia64_sn_plat_specific_err_print
 c_func
 (paren
@@ -412,10 +416,6 @@ id|sect_header
 suffix:semicolon
 op_star
 id|oemdata_size
-op_assign
-l_int|0
-suffix:semicolon
-id|sn_oemdata_bufsize
 op_assign
 l_int|0
 suffix:semicolon

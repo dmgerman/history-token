@@ -135,6 +135,10 @@ id|ia64_mv_dma_sync_sg_for_device
 id|sn_dma_sync_sg_for_device
 suffix:semicolon
 r_extern
+id|ia64_mv_dma_mapping_error
+id|sn_dma_mapping_error
+suffix:semicolon
+r_extern
 id|ia64_mv_dma_supported
 id|sn_dma_supported
 suffix:semicolon
@@ -211,6 +215,8 @@ DECL|macro|platform_dma_sync_single_for_device
 mdefine_line|#define platform_dma_sync_single_for_device sn_dma_sync_single_for_device
 DECL|macro|platform_dma_sync_sg_for_device
 mdefine_line|#define platform_dma_sync_sg_for_device&t;sn_dma_sync_sg_for_device
+DECL|macro|platform_dma_mapping_error
+mdefine_line|#define platform_dma_mapping_error&t;&t;sn_dma_mapping_error
 DECL|macro|platform_dma_supported
 mdefine_line|#define platform_dma_supported&t;&t;sn_dma_supported
 macro_line|#include &lt;asm/sn/sn2/io.h&gt;

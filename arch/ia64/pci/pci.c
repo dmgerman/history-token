@@ -466,7 +466,7 @@ r_void
 r_if
 c_cond
 (paren
-id|sal_version
+id|sal_revision
 op_ge
 id|SAL_VERSION_CODE
 c_func
@@ -477,6 +477,12 @@ l_int|2
 )paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;Using SAL 3.2 to access PCI config space&bslash;n&quot;
+)paren
+suffix:semicolon
 id|raw_pci_ops
 op_assign
 op_amp

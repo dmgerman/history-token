@@ -1220,7 +1220,7 @@ c_cond
 op_logical_neg
 id|result
 )paren
-id|sn_debug_printf
+id|DPRINTF
 c_func
 (paren
 l_string|&quot;&bslash;n*** synch_flush_xmit failed to flush&bslash;n&quot;
@@ -1369,7 +1369,7 @@ id|xmit_count
 op_eq
 l_int|0
 )paren
-id|sn_debug_printf
+id|DPRINTF
 c_func
 (paren
 l_string|&quot;&bslash;n*** empty xmit_count&bslash;n&quot;
@@ -1398,7 +1398,7 @@ c_cond
 op_logical_neg
 id|result
 )paren
-id|sn_debug_printf
+id|DPRINTF
 c_func
 (paren
 l_string|&quot;&bslash;n*** error in synchronous sal_puts&bslash;n&quot;
@@ -1624,7 +1624,7 @@ c_cond
 op_logical_neg
 id|result
 )paren
-id|sn_debug_printf
+id|DPRINTF
 c_func
 (paren
 l_string|&quot;`&quot;
@@ -1896,7 +1896,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;sn_serial: console proceeding in polled mode&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3176,7 +3176,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|sn_debug_printf
+id|DPRINTF
 c_func
 (paren
 l_string|&quot;sn_serial: switch to asynchronous console&bslash;n&quot;
@@ -3284,7 +3284,7 @@ r_void
 r_int
 id|irq
 suffix:semicolon
-id|sn_debug_printf
+id|DPRINTF
 c_func
 (paren
 l_string|&quot;sn_serial: switching to interrupt driven console&bslash;n&quot;
@@ -3357,7 +3357,7 @@ r_void
 r_int
 id|retval
 suffix:semicolon
-id|printk
+id|DPRINTF
 c_func
 (paren
 l_string|&quot;sn_serial: sn_sal_module_init&bslash;n&quot;
@@ -3960,7 +3960,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|sn_debug_printf
+id|DPRINTF
 c_func
 (paren
 l_string|&quot;sn_sal_serial_console_init : register console&bslash;n&quot;
