@@ -18,6 +18,8 @@ DECL|macro|EXT3_XATTR_INDEX_POSIX_ACL_DEFAULT
 mdefine_line|#define EXT3_XATTR_INDEX_POSIX_ACL_DEFAULT&t;3
 DECL|macro|EXT3_XATTR_INDEX_TRUSTED
 mdefine_line|#define EXT3_XATTR_INDEX_TRUSTED&t;&t;4
+DECL|macro|EXT3_XATTR_INDEX_SECURITY
+mdefine_line|#define EXT3_XATTR_INDEX_SECURITY&t;        6
 DECL|struct|ext3_xattr_header
 r_struct
 id|ext3_xattr_header
@@ -634,5 +636,10 @@ r_extern
 r_struct
 id|ext3_xattr_handler
 id|ext3_xattr_trusted_handler
+suffix:semicolon
+r_extern
+r_struct
+id|ext3_xattr_handler
+id|ext3_xattr_security_handler
 suffix:semicolon
 eof

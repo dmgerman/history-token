@@ -5304,6 +5304,27 @@ id|err
 r_goto
 id|out
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT3_FS_SECURITY
+id|err
+op_assign
+id|ext3_xattr_register
+c_func
+(paren
+id|EXT3_XATTR_INDEX_SECURITY
+comma
+op_amp
+id|ext3_xattr_security_handler
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out1
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_EXT3_FS_POSIX_ACL
 id|err
 op_assign
@@ -5318,7 +5339,7 @@ c_cond
 id|err
 )paren
 r_goto
-id|out1
+id|out2
 suffix:semicolon
 macro_line|#endif
 id|ext3_xattr_cache
@@ -5360,18 +5381,31 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|out2
+id|out3
 suffix:semicolon
 )brace
 r_return
 l_int|0
 suffix:semicolon
-id|out2
+id|out3
 suffix:colon
 macro_line|#ifdef CONFIG_EXT3_FS_POSIX_ACL
 id|exit_ext3_acl
 c_func
 (paren
+)paren
+suffix:semicolon
+id|out2
+suffix:colon
+macro_line|#endif
+macro_line|#ifdef CONFIG_EXT3_FS_SECURITY
+id|ext3_xattr_unregister
+c_func
+(paren
+id|EXT3_XATTR_INDEX_SECURITY
+comma
+op_amp
+id|ext3_xattr_security_handler
 )paren
 suffix:semicolon
 id|out1
@@ -5428,6 +5462,17 @@ macro_line|#ifdef CONFIG_EXT3_FS_POSIX_ACL
 id|exit_ext3_acl
 c_func
 (paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_EXT3_FS_SECURITY
+id|ext3_xattr_unregister
+c_func
+(paren
+id|EXT3_XATTR_INDEX_SECURITY
+comma
+op_amp
+id|ext3_xattr_security_handler
 )paren
 suffix:semicolon
 macro_line|#endif
