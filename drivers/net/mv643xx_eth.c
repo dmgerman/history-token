@@ -1582,7 +1582,6 @@ id|dev
 suffix:semicolon
 )brace
 macro_line|#else
-(brace
 r_if
 c_cond
 (paren
