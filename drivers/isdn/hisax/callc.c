@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: callc.c,v 2.51.6.1 2001/02/16 16:43:25 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: callc.c,v 2.51.6.2 2001/03/13 16:17:08 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -14,7 +14,7 @@ r_char
 op_star
 id|lli_revision
 op_assign
-l_string|&quot;$Revision: 2.51.6.1 $&quot;
+l_string|&quot;$Revision: 2.51.6.2 $&quot;
 suffix:semicolon
 r_extern
 r_struct

@@ -2083,6 +2083,9 @@ op_assign
 id|pmd_alloc_one_fast
 c_func
 (paren
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -2096,6 +2099,9 @@ op_assign
 id|pmd_alloc_one
 c_func
 (paren
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|pgd_set

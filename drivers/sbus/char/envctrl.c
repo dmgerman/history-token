@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: envctrl.c,v 1.21 2001/02/13 04:07:38 davem Exp $&n; * envctrl.c: Temperature and Fan monitoring on Machines providing it.&n; *&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 2000  Vinh Truong    (vinh.truong@eng.sun.com)&n; * VT - The implementation is to support Sun Microelectronics (SME) platform&n; *      environment monitoring.  SME platforms use pcf8584 as the i2c bus &n; *      controller to access pcf8591 (8-bit A/D and D/A converter) and &n; *      pcf8571 (256 x 8-bit static low-voltage RAM with I2C-bus interface).&n; *      At board level, it follows SME Firmware I2C Specification. Reference:&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8584P&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8574AP&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8591P&n; *&n; * EB - Added support for CP1500 Global Address and PS/Voltage monitoring.&n; * &t;&t;Eric Brower &lt;ebrower@usa.net&gt;&n; */
+multiline_comment|/* $Id: envctrl.c,v 1.22 2001/03/25 09:12:15 davem Exp $&n; * envctrl.c: Temperature and Fan monitoring on Machines providing it.&n; *&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 2000  Vinh Truong    (vinh.truong@eng.sun.com)&n; * VT - The implementation is to support Sun Microelectronics (SME) platform&n; *      environment monitoring.  SME platforms use pcf8584 as the i2c bus &n; *      controller to access pcf8591 (8-bit A/D and D/A converter) and &n; *      pcf8571 (256 x 8-bit static low-voltage RAM with I2C-bus interface).&n; *      At board level, it follows SME Firmware I2C Specification. Reference:&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8584P&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8574AP&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8591P&n; *&n; * EB - Added support for CP1500 Global Address and PS/Voltage monitoring.&n; * &t;&t;Eric Brower &lt;ebrower@usa.net&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -3562,6 +3562,41 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+id|for_each_ebus
+c_func
+(paren
+id|ebus
+)paren
+(brace
+id|for_each_ebusdev
+c_func
+(paren
+id|edev
+comma
+id|ebus
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|edev-&gt;prom_name
+comma
+l_string|&quot;bbc&quot;
+)paren
+)paren
+(brace
+multiline_comment|/* If we find a boot-bus controller node,&n;&t;&t;&t;&t; * then this envctrl driver is not for us.&n;&t;&t;&t;&t; */
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+)brace
+)brace
 multiline_comment|/* Traverse through ebus and ebus device list for i2c device and&n;&t; * adc and gpio nodes.&n;&t; */
 id|for_each_ebus
 c_func

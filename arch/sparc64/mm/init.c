@@ -170,6 +170,8 @@ c_func
 id|pte_alloc_one_fast
 c_func
 (paren
+l_int|NULL
+comma
 l_int|0
 )paren
 )paren
@@ -191,6 +193,8 @@ c_func
 id|pte_alloc_one_fast
 c_func
 (paren
+l_int|NULL
+comma
 l_int|1
 op_lshift
 (paren
@@ -4371,6 +4375,11 @@ op_star
 id|pte_alloc_one
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
 r_int
 r_int
 id|address

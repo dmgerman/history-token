@@ -8893,6 +8893,8 @@ comma
 id|cgc.buffer
 comma
 id|CD_FRAMESIZE_RAW
+op_star
+id|nr
 )paren
 suffix:semicolon
 id|ra.buf

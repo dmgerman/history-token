@@ -829,7 +829,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SMP */
 DECL|macro|pgd_populate
-mdefine_line|#define pgd_populate(PGD, PMD)&t;pgd_set(PGD, PMD)
+mdefine_line|#define pgd_populate(MM, PGD, PMD)&t;pgd_set(PGD, PMD)
 DECL|function|pmd_alloc_one
 r_extern
 id|__inline__
@@ -838,7 +838,14 @@ op_star
 id|pmd_alloc_one
 c_func
 (paren
-r_void
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
 )paren
 (brace
 id|pmd_t
@@ -882,7 +889,14 @@ op_star
 id|pmd_alloc_one_fast
 c_func
 (paren
-r_void
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
 )paren
 (brace
 r_int
@@ -1052,13 +1066,18 @@ id|pmd
 suffix:semicolon
 )brace
 DECL|macro|pmd_populate
-mdefine_line|#define pmd_populate(PMD, PTE)&t;pmd_set(PMD, PTE)
+mdefine_line|#define pmd_populate(MM, PMD, PTE)&t;pmd_set(PMD, PTE)
 r_extern
 id|pte_t
 op_star
 id|pte_alloc_one
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
 r_int
 r_int
 id|address
@@ -1072,6 +1091,11 @@ op_star
 id|pte_alloc_one_fast
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
 r_int
 r_int
 id|address

@@ -14,7 +14,7 @@ mdefine_line|#define pte_quicklist (current_cpu_data.pte_quick)
 DECL|macro|pgtable_cache_size
 mdefine_line|#define pgtable_cache_size (current_cpu_data.pgtable_cache_sz)
 DECL|macro|pmd_populate
-mdefine_line|#define pmd_populate(pmd, pte) &bslash;&n;&t;&t;set_pmd(pmd, __pmd(_PAGE_TABLE + __pa(pte)))
+mdefine_line|#define pmd_populate(mm, pmd, pte) &bslash;&n;&t;&t;set_pmd(pmd, __pmd(_PAGE_TABLE + __pa(pte)))
 multiline_comment|/*&n; * Allocate and free page tables.&n; */
 macro_line|#if CONFIG_X86_PAE
 r_extern
@@ -478,6 +478,11 @@ op_star
 id|pte_alloc_one
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
 r_int
 r_int
 id|address
@@ -522,6 +527,11 @@ op_star
 id|pte_alloc_one_fast
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
 r_int
 r_int
 id|address
@@ -653,9 +663,9 @@ DECL|macro|pgd_alloc
 mdefine_line|#define pgd_alloc()&t;&t;get_pgd_fast()
 multiline_comment|/*&n; * allocating and freeing a pmd is trivial: the 1-entry pmd is&n; * inside the pgd, so has no extra memory associated with it.&n; * (In the PAE case we free the pmds as part of the pgd.)&n; */
 DECL|macro|pmd_alloc_one_fast
-mdefine_line|#define pmd_alloc_one_fast()&t;&t;({ BUG(); ((pmd_t *)1); })
+mdefine_line|#define pmd_alloc_one_fast(mm, addr)&t;({ BUG(); ((pmd_t *)1); })
 DECL|macro|pmd_alloc_one
-mdefine_line|#define pmd_alloc_one()&t;&t;&t;({ BUG(); ((pmd_t *)2); })
+mdefine_line|#define pmd_alloc_one(mm, addr)&t;&t;({ BUG(); ((pmd_t *)2); })
 DECL|macro|pmd_free_slow
 mdefine_line|#define pmd_free_slow(x)&t;&t;do { } while (0)
 DECL|macro|pmd_free_fast
@@ -663,7 +673,7 @@ mdefine_line|#define pmd_free_fast(x)&t;&t;do { } while (0)
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)&t;&t;&t;do { } while (0)
 DECL|macro|pgd_populate
-mdefine_line|#define pgd_populate(pmd, pte)&t;&t;BUG()
+mdefine_line|#define pgd_populate(mm, pmd, pte)&t;BUG()
 r_extern
 r_int
 id|do_check_pgt_cache

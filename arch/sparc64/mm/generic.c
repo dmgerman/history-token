@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: generic.c,v 1.15 2001/03/24 09:36:01 davem Exp $&n; * generic.c: Generic Sparc mm routines that are not dependent upon&n; *            MMU type but are Sparc specific.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: generic.c,v 1.16 2001/03/25 04:40:05 davem Exp $&n; * generic.c: Generic Sparc mm routines that are not dependent upon&n; *            MMU type but are Sparc specific.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -544,13 +544,6 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;page_table_lock
-)paren
-suffix:semicolon
 id|io_remap_pte_range
 c_func
 (paren
@@ -569,13 +562,6 @@ comma
 id|prot
 comma
 id|space
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 id|address
@@ -651,6 +637,13 @@ id|from
 op_plus
 id|size
 suffix:semicolon
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|current-&gt;mm
+suffix:semicolon
 id|prot
 op_assign
 id|__pgprot
@@ -668,7 +661,7 @@ op_assign
 id|pgd_offset
 c_func
 (paren
-id|current-&gt;mm
+id|mm
 comma
 id|from
 )paren
@@ -676,11 +669,18 @@ suffix:semicolon
 id|flush_cache_range
 c_func
 (paren
-id|current-&gt;mm
+id|mm
 comma
 id|beg
 comma
 id|end
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_while
@@ -761,6 +761,13 @@ id|dir
 op_increment
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren

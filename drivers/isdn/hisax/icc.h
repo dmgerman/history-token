@@ -1,4 +1,4 @@
-singleline_comment|// $Id: icc.h,v 1.2.6.1 2001/02/16 16:43:27 kai Exp $
+singleline_comment|// $Id: icc.h,v 1.2.6.2 2001/03/13 16:17:08 kai Exp $
 singleline_comment|//-----------------------------------------------------------------------------
 singleline_comment|//
 singleline_comment|// ICC specific routines

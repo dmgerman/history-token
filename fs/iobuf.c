@@ -231,9 +231,10 @@ c_func
 id|iobuf
 )paren
 suffix:semicolon
-op_star
 id|bufp
-op_increment
+(braket
+id|i
+)braket
 op_assign
 id|iobuf
 suffix:semicolon

@@ -778,6 +778,8 @@ c_func
 id|pte_alloc_one_fast
 c_func
 (paren
+l_int|NULL
+comma
 l_int|0
 )paren
 )paren

@@ -282,13 +282,13 @@ DECL|macro|pgd_alloc
 mdefine_line|#define pgd_alloc()&t;&t;get_pgd_fast()
 multiline_comment|/*&n; * We don&squot;t have any real pmd&squot;s, and this code never triggers because&n; * the pgd will always be present..&n; */
 DECL|macro|pmd_alloc_one_fast
-mdefine_line|#define pmd_alloc_one_fast()            ({ BUG(); ((pmd_t *)1); })
+mdefine_line|#define pmd_alloc_one_fast(mm, address) ({ BUG(); ((pmd_t *)1); })
 DECL|macro|pmd_alloc_one
-mdefine_line|#define pmd_alloc_one()                 ({ BUG(); ((pmd_t *)2); })
+mdefine_line|#define pmd_alloc_one(mm,address)       ({ BUG(); ((pmd_t *)2); })
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)                     do { } while (0)
 DECL|macro|pgd_populate
-mdefine_line|#define pgd_populate(pmd, pte)          BUG()
+mdefine_line|#define pgd_populate(mm, pmd, pte)      BUG()
 DECL|function|pte_alloc_one
 r_static
 r_inline
@@ -297,6 +297,11 @@ op_star
 id|pte_alloc_one
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
 r_int
 r_int
 id|address
@@ -373,6 +378,11 @@ op_star
 id|pte_alloc_one_fast
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
 r_int
 r_int
 id|address
@@ -488,7 +498,7 @@ suffix:semicolon
 DECL|macro|pte_free
 mdefine_line|#define pte_free(pte)    pte_free_slow(pte)
 DECL|macro|pmd_populate
-mdefine_line|#define pmd_populate(pmd, pte)&t;(pmd_val(*(pmd)) = (unsigned long) (pte))
+mdefine_line|#define pmd_populate(mm, pmd, pte)&t;(pmd_val(*(pmd)) = (unsigned long) (pte))
 r_extern
 r_int
 id|do_check_pgt_cache

@@ -23,9 +23,9 @@ macro_line|#include &lt;linux/lp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-multiline_comment|/* if you have more than 3 printers, remember to increase LP_NO */
+multiline_comment|/* if you have more than 8 printers, remember to increase LP_NO */
 DECL|macro|LP_NO
-mdefine_line|#define LP_NO 3
+mdefine_line|#define LP_NO 8
 multiline_comment|/* ROUND_UP macro from fs/select.c */
 DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP(x,y) (((x)+(y)-1)/(y))
@@ -1017,13 +1017,6 @@ dot
 id|dev
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-(brace
 id|retval
 op_assign
 id|parport_read
@@ -1035,54 +1028,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|file-&gt;f_flags
-op_amp
-id|O_NONBLOCK
-)paren
-r_break
-suffix:semicolon
-multiline_comment|/* Wait for an interrupt. */
-id|interruptible_sleep_on_timeout
-(paren
-op_amp
-id|lp_table
-(braket
-id|minor
-)braket
-dot
-id|waitq
-comma
-id|LP_TIMEOUT_POLLED
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|signal_pending
-(paren
-id|current
-)paren
-)paren
-(brace
-id|retval
-op_assign
-op_minus
-id|EINTR
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
 id|parport_release
 (paren
 id|lp_table

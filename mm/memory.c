@@ -5350,6 +5350,9 @@ op_assign
 id|pmd_alloc_one_fast
 c_func
 (paren
+id|mm
+comma
+id|address
 )paren
 suffix:semicolon
 r_if
@@ -5371,6 +5374,9 @@ op_assign
 id|pmd_alloc_one
 c_func
 (paren
+id|mm
+comma
+id|address
 )paren
 suffix:semicolon
 id|spin_lock
@@ -5415,6 +5421,8 @@ suffix:semicolon
 id|pgd_populate
 c_func
 (paren
+id|mm
+comma
 id|pgd
 comma
 r_new
@@ -5475,6 +5483,8 @@ op_assign
 id|pte_alloc_one_fast
 c_func
 (paren
+id|mm
+comma
 id|address
 )paren
 suffix:semicolon
@@ -5497,6 +5507,8 @@ op_assign
 id|pte_alloc_one
 c_func
 (paren
+id|mm
+comma
 id|address
 )paren
 suffix:semicolon
@@ -5542,6 +5554,8 @@ suffix:semicolon
 id|pmd_populate
 c_func
 (paren
+id|mm
+comma
 id|pmd
 comma
 r_new

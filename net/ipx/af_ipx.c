@@ -5869,6 +5869,8 @@ id|sk
 comma
 id|size
 comma
+l_int|0
+comma
 id|noblock
 comma
 op_amp
@@ -10268,10 +10270,6 @@ comma
 id|mmap
 suffix:colon
 id|sock_no_mmap
-comma
-id|sendpage
-suffix:colon
-id|sock_no_sendpage
 comma
 )brace
 suffix:semicolon
