@@ -151,7 +151,6 @@ id|xbox
 id|SNDRV_CARDS
 )braket
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef SUPPORT_MIDI
 DECL|variable|mpu_port
 r_static
