@@ -2419,12 +2419,14 @@ id|val2
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * globals&n; */
+macro_line|#ifndef MODULE
 DECL|variable|mode_option
 r_static
 r_char
 op_star
 id|mode_option
 suffix:semicolon
+macro_line|#endif
 DECL|variable|noaccel
 r_static
 r_char
