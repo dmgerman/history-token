@@ -2,6 +2,7 @@ macro_line|#ifndef LLC_C_EV_H
 DECL|macro|LLC_C_EV_H
 mdefine_line|#define LLC_C_EV_H
 multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology,Inc.&n; *&t;&t; 2001 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
+macro_line|#include &lt;net/sock.h&gt;
 multiline_comment|/* Connection component state transition event qualifiers */
 multiline_comment|/* Types of events (possible values in &squot;ev-&gt;type&squot;) */
 DECL|macro|LLC_CONN_EV_TYPE_SIMPLE
@@ -1655,5 +1656,39 @@ op_star
 id|skb
 )paren
 suffix:semicolon
+DECL|function|llc_conn_space
+r_static
+id|__inline__
+r_int
+id|llc_conn_space
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+id|atomic_read
+c_func
+(paren
+op_amp
+id|sk-&gt;rmem_alloc
+)paren
+op_plus
+id|skb-&gt;truesize
+OL
+(paren
+r_int
+)paren
+id|sk-&gt;rcvbuf
+suffix:semicolon
+)brace
 macro_line|#endif /* LLC_C_EV_H */
 eof
