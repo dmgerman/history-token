@@ -873,6 +873,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 DECL|function|ingress_init
+r_static
 r_int
 id|ingress_init
 c_func

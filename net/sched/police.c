@@ -637,6 +637,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_NET_CLS_ACT
 DECL|function|tcf_act_police_locate
+r_static
 r_int
 id|tcf_act_police_locate
 c_func
@@ -1294,6 +1295,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|tcf_act_police_cleanup
+r_static
 r_int
 id|tcf_act_police_cleanup
 c_func
@@ -1341,6 +1343,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|tcf_act_police
+r_static
 r_int
 id|tcf_act_police
 c_func
@@ -1624,6 +1627,7 @@ id|p-&gt;action
 suffix:semicolon
 )brace
 DECL|function|tcf_act_police_dump
+r_static
 r_int
 id|tcf_act_police_dump
 c_func

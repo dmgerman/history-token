@@ -59,6 +59,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|prio_classify
+r_static
 r_struct
 id|Qdisc
 op_star

@@ -1384,6 +1384,7 @@ id|len
 suffix:semicolon
 )brace
 DECL|function|dsmark_init
+r_static
 r_int
 id|dsmark_init
 c_func
