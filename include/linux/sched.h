@@ -94,10 +94,6 @@ DECL|macro|EXP_15
 mdefine_line|#define EXP_15&t;&t;2037&t;&t;/* 1/exp(5sec/15min) */
 DECL|macro|CALC_LOAD
 mdefine_line|#define CALC_LOAD(load,exp,n) &bslash;&n;&t;load *= exp; &bslash;&n;&t;load += n*(FIXED_1-exp); &bslash;&n;&t;load &gt;&gt;= FSHIFT;
-DECL|macro|CT_TO_SECS
-mdefine_line|#define CT_TO_SECS(x)&t;((x) / HZ)
-DECL|macro|CT_TO_USECS
-mdefine_line|#define CT_TO_USECS(x)&t;(((x) % HZ) * 1000000/HZ)
 r_extern
 r_int
 r_int
