@@ -1141,6 +1141,14 @@ op_member_access_from_pointer
 r_new
 )paren
 suffix:semicolon
+id|set_cyc2ns_scale
+c_func
+(paren
+id|cpu_khz
+op_div
+l_int|1000
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 )brace
