@@ -520,55 +520,6 @@ comma
 id|res_n
 )paren
 suffix:semicolon
-macro_line|#if 1 /* TESTING */
-r_if
-c_cond
-(paren
-id|i
-op_eq
-l_int|1
-)paren
-(brace
-r_volatile
-id|u_short
-op_star
-id|addr
-op_assign
-(paren
-id|u_short
-op_star
-)paren
-id|base
-suffix:semicolon
-id|u_short
-id|data
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;+++ Probing for IDE doubler... &quot;
-)paren
-suffix:semicolon
-op_star
-id|addr
-op_assign
-l_int|0xffff
-suffix:semicolon
-id|data
-op_assign
-op_star
-id|addr
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;probe returned 0x%02x (PLEASE REPORT THIS!!)&bslash;n&quot;
-comma
-id|data
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* TESTING */
 )brace
 )brace
 eof
