@@ -3715,9 +3715,9 @@ l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|udp_sk_cachep
@@ -3737,9 +3737,9 @@ l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|raw4_sk_cachep
@@ -3759,9 +3759,9 @@ l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

@@ -178,7 +178,7 @@ id|task
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_unlock

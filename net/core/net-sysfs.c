@@ -1653,7 +1653,7 @@ id|envp
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|0

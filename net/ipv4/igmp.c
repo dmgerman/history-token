@@ -816,7 +816,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 (brace
 r_struct
@@ -871,7 +871,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -896,7 +896,7 @@ id|rt
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|skb-&gt;dst
@@ -1335,7 +1335,7 @@ op_logical_neg
 id|skb
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pgr
 op_assign
@@ -1451,7 +1451,7 @@ id|igmpv3_grec
 op_star
 id|pgr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|ip_sf_list
@@ -1580,7 +1580,7 @@ id|skb
 suffix:semicolon
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* add_grhead will get a new one */
 )brace
@@ -1616,7 +1616,7 @@ op_star
 )paren
 id|skb-&gt;h.igmph
 suffix:colon
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* EX and TO_EX get a fresh packet, if needed */
 r_if
@@ -1684,7 +1684,7 @@ l_int|0
 suffix:semicolon
 id|psf_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -1985,7 +1985,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|type
@@ -2177,7 +2177,7 @@ id|psf
 suffix:semicolon
 id|psf_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -2263,7 +2263,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|type
@@ -2287,7 +2287,7 @@ suffix:semicolon
 multiline_comment|/* deleted MCA&squot;s */
 id|pmc_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -3111,7 +3111,7 @@ c_func
 (paren
 id|in_dev
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|__in_dev_put
@@ -4406,7 +4406,7 @@ id|im-&gt;tomb
 op_assign
 id|im-&gt;sources
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -4496,7 +4496,7 @@ id|in_dev-&gt;mc_lock
 suffix:semicolon
 id|pmc_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -4632,7 +4632,7 @@ id|in_dev-&gt;mc_tomb
 suffix:semicolon
 id|in_dev-&gt;mc_tomb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|write_unlock_bh
 c_func
@@ -4718,7 +4718,7 @@ id|pmc-&gt;tomb
 suffix:semicolon
 id|pmc-&gt;tomb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_unlock_bh
 c_func
@@ -5075,7 +5075,7 @@ id|MCAST_EXCLUDE
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -5152,11 +5152,11 @@ l_int|1
 suffix:semicolon
 id|im-&gt;sources
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|im-&gt;tomb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|im-&gt;crcount
 op_assign
@@ -5511,7 +5511,7 @@ c_func
 suffix:semicolon
 id|in_dev-&gt;mc_tomb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_MULTICAST
 id|in_dev-&gt;mr_gq_running
@@ -5921,7 +5921,7 @@ l_int|0
 suffix:semicolon
 id|psf_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -6448,7 +6448,7 @@ id|psf_prev
 suffix:semicolon
 id|psf_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -7172,7 +7172,7 @@ suffix:semicolon
 )brace
 id|pmc-&gt;tomb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -7201,7 +7201,7 @@ suffix:semicolon
 )brace
 id|pmc-&gt;sources
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pmc-&gt;sfmode
 op_assign
@@ -7555,7 +7555,7 @@ id|iml-&gt;sfmode
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -7596,7 +7596,7 @@ id|iml-&gt;sflist-&gt;sl_max
 suffix:semicolon
 id|iml-&gt;sflist
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|err
@@ -7853,7 +7853,7 @@ id|in_device
 op_star
 id|in_dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|inet_opt
@@ -8027,7 +8027,7 @@ id|omode
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -8044,7 +8044,7 @@ id|pmc-&gt;sfmode
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -8756,7 +8756,7 @@ suffix:semicolon
 r_else
 id|newpsl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|psl
 op_assign
@@ -8819,7 +8819,7 @@ id|pmc-&gt;sfmode
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
