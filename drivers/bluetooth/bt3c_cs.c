@@ -1136,6 +1136,9 @@ c_cond
 (paren
 op_logical_neg
 id|info
+op_logical_or
+op_logical_neg
+id|info-&gt;hdev
 )paren
 (brace
 id|BT_ERR
@@ -1764,39 +1767,7 @@ id|info-&gt;rx_skb
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Load firmware */
-r_if
-c_cond
-(paren
-(paren
-id|err
-op_assign
-id|bt3c_firmware_load
-c_func
-(paren
-id|info
-)paren
-)paren
-OL
-l_int|0
-)paren
-r_return
-id|err
-suffix:semicolon
-multiline_comment|/* Timeout before it is safe to send the first HCI packet */
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-)paren
-suffix:semicolon
-multiline_comment|/* Initialize and register HCI device */
+multiline_comment|/* Initialize HCI device */
 id|hdev
 op_assign
 id|hci_alloc_dev
@@ -1862,6 +1833,39 @@ id|hdev-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
+multiline_comment|/* Load firmware */
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|bt3c_firmware_load
+c_func
+(paren
+id|info
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+multiline_comment|/* Timeout before it is safe to send the first HCI packet */
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
+multiline_comment|/* Register HCI device */
 r_if
 c_cond
 (paren
