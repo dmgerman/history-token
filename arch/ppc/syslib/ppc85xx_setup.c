@@ -938,6 +938,12 @@ suffix:semicolon
 multiline_comment|/* Enable, Prefetch, Local&n;&t;&t;&t;&t;&t;   Mem, Snoop R/W, 2G */
 )brace
 macro_line|#endif /* CONFIG_85xx_PCI2 */
+DECL|variable|mpc85xx_pci1_last_busno
+r_int
+id|mpc85xx_pci1_last_busno
+op_assign
+l_int|0
+suffix:semicolon
 r_void
 id|__init
 DECL|function|mpc85xx_setup_hose
@@ -1274,6 +1280,11 @@ id|hose_b
 comma
 id|hose_b-&gt;first_busno
 )paren
+suffix:semicolon
+multiline_comment|/* let board code know what the last bus number was on PCI1 */
+id|mpc85xx_pci1_last_busno
+op_assign
+id|hose_a-&gt;last_busno
 suffix:semicolon
 macro_line|#endif
 r_return
