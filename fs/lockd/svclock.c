@@ -1721,12 +1721,6 @@ comma
 id|fl
 )paren
 suffix:semicolon
-id|posix_unblock_lock
-c_func
-(paren
-id|fl
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
