@@ -605,7 +605,7 @@ id|clock_ratio_index
 )paren
 r_return
 suffix:semicolon
-id|oldratio
+id|old_ratio
 op_assign
 id|clock_ratio_index
 suffix:semicolon
