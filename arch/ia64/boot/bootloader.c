@@ -73,6 +73,16 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#include &quot;../kernel/fw-emu.c&quot;
+multiline_comment|/*&n; * Set a break point on this function so that symbols are available to set breakpoints in&n; * the kernel being debugged.&n; */
+r_static
+r_void
+DECL|function|debug_break
+id|debug_break
+(paren
+r_void
+)paren
+(brace
+)brace
 r_static
 r_void
 DECL|function|cons_write
@@ -826,6 +836,11 @@ comma
 l_int|0
 comma
 id|SSC_LOAD_SYMBOLS
+)paren
+suffix:semicolon
+id|debug_break
+c_func
+(paren
 )paren
 suffix:semicolon
 id|asm
