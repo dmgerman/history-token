@@ -2048,6 +2048,11 @@ r_struct
 id|sk_buff_head
 id|chunks
 suffix:semicolon
+multiline_comment|/* This is the overhead of the sctp and ip headers. */
+DECL|member|overhead
+r_int
+id|overhead
+suffix:semicolon
 multiline_comment|/* This is the total size of all chunks INCLUDING padding.  */
 DECL|member|size
 r_int
@@ -2224,6 +2229,27 @@ id|sctp_packet
 op_star
 )paren
 suffix:semicolon
+DECL|function|sctp_packet_empty
+r_static
+r_inline
+r_int
+id|sctp_packet_empty
+c_func
+(paren
+r_struct
+id|sctp_packet
+op_star
+id|packet
+)paren
+(brace
+r_return
+(paren
+id|packet-&gt;size
+op_eq
+id|packet-&gt;overhead
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* This represents a remote transport address.&n; * For local transport addresses, we just use union sctp_addr.&n; *&n; * RFC2960 Section 1.4 Key Terms&n; *&n; *   o&t;Transport address:  A Transport Address is traditionally defined&n; *&t;by Network Layer address, Transport Layer protocol and Transport&n; *&t;Layer port number.  In the case of SCTP running over IP, a&n; *&t;transport address is defined by the combination of an IP address&n; *&t;and an SCTP port number (where SCTP is the Transport protocol).&n; *&n; * RFC2960 Section 7.1 SCTP Differences from TCP Congestion control&n; *&n; *   o&t;The sender keeps a separate congestion control parameter set for&n; *&t;each of the destination addresses it can send to (not each&n; *&t;source-destination pair but for each destination).  The parameters&n; *&t;should decay if the address is not used for a long enough time&n; *&t;period.&n; *&n; */
 DECL|struct|sctp_transport
 r_struct

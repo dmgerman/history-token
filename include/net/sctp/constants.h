@@ -31,9 +31,6 @@ op_assign
 id|SCTP_MAX_STREAM
 )brace
 suffix:semicolon
-multiline_comment|/* Define the amount of space to reserve for SCTP, IP, LL.&n; * There is a little bit of waste that we are always allocating&n; * for ipv6 headers, but this seems worth the simplicity.&n; */
-DECL|macro|SCTP_IP_OVERHEAD
-mdefine_line|#define SCTP_IP_OVERHEAD ((sizeof(struct sctphdr)&bslash;&n;                          + sizeof(struct ipv6hdr)&bslash;&n;                          + MAX_HEADER))
 multiline_comment|/* Since CIDs are sparse, we need all four of the following&n; * symbols.  CIDs are dense through SCTP_CID_BASE_MAX.&n; */
 DECL|macro|SCTP_CID_BASE_MAX
 mdefine_line|#define SCTP_CID_BASE_MAX&t;&t;SCTP_CID_SHUTDOWN_COMPLETE

@@ -1764,6 +1764,14 @@ id|skb
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb-&gt;data_len
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/* Note:  Not clearing the entire event struct as this is just a&n;&t; * fragment of the real event.  However, we still need to do rwnd&n;&t; * accounting.&n;&t; * In general, the skb passed from IP can have only 1 level of&n;&t; * fragments. But we allow multiple levels of fragments. &n;&t; */
 r_for
 c_loop
@@ -1841,6 +1849,15 @@ id|skb
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb-&gt;data_len
+)paren
+r_goto
+id|done
+suffix:semicolon
 multiline_comment|/* Don&squot;t forget the fragments. */
 r_for
 c_loop
@@ -1874,6 +1891,8 @@ id|frag
 )paren
 suffix:semicolon
 )brace
+id|done
+suffix:colon
 id|sctp_ulpevent_release_owner
 c_func
 (paren

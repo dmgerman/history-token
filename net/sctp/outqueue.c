@@ -2820,9 +2820,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|packet-&gt;size
-op_ne
-id|SCTP_IP_OVERHEAD
+op_logical_neg
+id|sctp_packet_empty
+c_func
+(paren
+id|packet
+)paren
 )paren
 id|error
 op_assign
