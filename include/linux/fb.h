@@ -1322,12 +1322,16 @@ DECL|macro|fb_readw
 mdefine_line|#define fb_readw sbus_readw
 DECL|macro|fb_readl
 mdefine_line|#define fb_readl sbus_readl
+DECL|macro|fb_readq
+mdefine_line|#define fb_readq sbus_readq
 DECL|macro|fb_writeb
 mdefine_line|#define fb_writeb sbus_writeb
 DECL|macro|fb_writew
 mdefine_line|#define fb_writew sbus_writew
 DECL|macro|fb_writel
 mdefine_line|#define fb_writel sbus_writel
+DECL|macro|fb_writeq
+mdefine_line|#define fb_writeq sbus_writeq
 DECL|macro|fb_memset
 mdefine_line|#define fb_memset sbus_memset_io
 macro_line|#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__) || defined(__hppa__)
