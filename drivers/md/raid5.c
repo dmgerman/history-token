@@ -3227,7 +3227,7 @@ comma
 op_amp
 id|sh-&gt;dev
 (braket
-id|i
+id|dd_idx
 )braket
 dot
 id|flags
@@ -8109,7 +8109,7 @@ id|mddev
 )paren
 comma
 id|mddev-&gt;raid_disks
-op_assign
+op_minus
 id|mddev-&gt;degraded
 comma
 id|mddev-&gt;raid_disks

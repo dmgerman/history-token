@@ -2169,12 +2169,6 @@ op_amp
 id|rdev-&gt;same_set
 )paren
 suffix:semicolon
-id|unlock_rdev
-c_func
-(paren
-id|rdev
-)paren
-suffix:semicolon
 macro_line|#ifndef MODULE
 id|md_autodetect_dev
 c_func
@@ -2183,6 +2177,12 @@ id|rdev-&gt;bdev-&gt;bd_dev
 )paren
 suffix:semicolon
 macro_line|#endif
+id|unlock_rdev
+c_func
+(paren
+id|rdev
+)paren
+suffix:semicolon
 id|rdev-&gt;faulty
 op_assign
 l_int|0
