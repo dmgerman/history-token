@@ -3451,10 +3451,6 @@ id|inode-&gt;i_gid
 suffix:semicolon
 )brace
 multiline_comment|/* fill in binprm security blob */
-r_if
-c_cond
-(paren
-(paren
 id|retval
 op_assign
 id|security_bprm_set
@@ -3462,7 +3458,11 @@ c_func
 (paren
 id|bprm
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 r_return
 id|retval
@@ -3896,10 +3896,6 @@ multiline_comment|/* should call search_binary_handler recursively here,&n;&t;&t
 )brace
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-(paren
 id|retval
 op_assign
 id|security_bprm_check
@@ -3907,7 +3903,11 @@ c_func
 (paren
 id|bprm
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 r_return
 id|retval
@@ -4426,10 +4426,6 @@ l_int|0
 r_goto
 id|out_mm
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|retval
 op_assign
 id|security_bprm_alloc
@@ -4438,7 +4434,11 @@ c_func
 op_amp
 id|bprm
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 r_goto
 id|out
