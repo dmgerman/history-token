@@ -2497,16 +2497,6 @@ l_int|32
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-r_int
-op_star
-id|_get_SP
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|dump_stack
 r_void
 id|dump_stack
