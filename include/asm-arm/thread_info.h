@@ -249,10 +249,10 @@ DECL|macro|TI_CPU_DOMAIN
 mdefine_line|#define TI_CPU_DOMAIN&t;24
 DECL|macro|TI_CPU_SAVE
 mdefine_line|#define TI_CPU_SAVE&t;28
-DECL|macro|TI_USED_MATH
-mdefine_line|#define TI_USED_MATH&t;76
+DECL|macro|TI_USED_CP
+mdefine_line|#define TI_USED_CP&t;76
 DECL|macro|TI_FPSTATE
-mdefine_line|#define TI_FPSTATE&t;(TI_USED_MATH+16)
+mdefine_line|#define TI_FPSTATE&t;(TI_USED_CP+16)
 macro_line|#endif
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;0x04000000
