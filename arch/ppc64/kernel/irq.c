@@ -1169,7 +1169,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#else&t;&t;
+macro_line|#else
 id|seq_printf
 c_func
 (paren
@@ -2634,6 +2634,11 @@ id|new_value
 comma
 id|tmp
 suffix:semicolon
+id|cpumask_t
+id|allcpus
+op_assign
+id|CPU_MASK_ALL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2668,6 +2673,17 @@ id|err
 )paren
 r_return
 id|err
+suffix:semicolon
+multiline_comment|/*&n;&t; * We check for CPU_MASK_ALL in xics to send irqs to all cpus.&n;&t; * In some cases CPU_MASK_ALL is smaller than the cpumask (eg&n;&t; * NR_CPUS == 32 and cpumask is a long), so we mask it here to&n;&t; * be consistent.&n;&t; */
+id|cpus_and
+c_func
+(paren
+id|new_value
+comma
+id|new_value
+comma
+id|allcpus
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Do not allow disabling IRQs completely - it&squot;s a too easy&n;&t; * way to make the system unusable accidentally :-) At least&n;&t; * one online CPU still has to be targeted.&n;&t; */
 id|cpus_and
