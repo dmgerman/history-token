@@ -1396,6 +1396,11 @@ r_struct
 id|ncp_entry_info
 id|finfo
 suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1404,7 +1409,7 @@ op_eq
 l_int|NULL
 )paren
 r_goto
-id|out_no_data
+id|out
 suffix:semicolon
 r_switch
 c_cond
@@ -1564,10 +1569,20 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|error
+op_assign
+op_minus
+id|ECHRNG
+suffix:semicolon
 r_goto
-id|out_bad_mount
+id|out
 suffix:semicolon
 )brace
+id|error
+op_assign
+op_minus
+id|EBADF
+suffix:semicolon
 id|ncp_filp
 op_assign
 id|fget
@@ -1583,7 +1598,12 @@ op_logical_neg
 id|ncp_filp
 )paren
 r_goto
-id|out_bad_file
+id|out
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|ENOTSOCK
 suffix:semicolon
 id|sock_inode
 op_assign
@@ -1600,7 +1620,7 @@ id|sock_inode-&gt;i_mode
 )paren
 )paren
 r_goto
-id|out_bad_file2
+id|out_fput
 suffix:semicolon
 id|sock
 op_assign
@@ -1617,7 +1637,7 @@ op_logical_neg
 id|sock
 )paren
 r_goto
-id|out_bad_file2
+id|out_fput
 suffix:semicolon
 r_if
 c_cond
@@ -1628,12 +1648,16 @@ id|SOCK_STREAM
 )paren
 id|default_bufsize
 op_assign
-l_int|61440
+l_int|0xF000
 suffix:semicolon
 r_else
 id|default_bufsize
 op_assign
 l_int|1024
+suffix:semicolon
+id|sb-&gt;s_maxbytes
+op_assign
+l_int|0xFFFFFFFFU
 suffix:semicolon
 id|sb-&gt;s_blocksize
 op_assign
@@ -1746,13 +1770,7 @@ op_assign
 (paren
 id|server-&gt;m.file_mode
 op_amp
-(paren
-id|S_IRWXU
-op_or
-id|S_IRWXG
-op_or
-id|S_IRWXO
-)paren
+id|S_IRWXUGO
 )paren
 op_or
 id|S_IFREG
@@ -1762,13 +1780,7 @@ op_assign
 (paren
 id|server-&gt;m.dir_mode
 op_amp
-(paren
-id|S_IRWXU
-op_or
-id|S_IRWXG
-op_or
-id|S_IRWXO
-)paren
+id|S_IRWXUGO
 )paren
 op_or
 id|S_IFDIR
@@ -1798,7 +1810,12 @@ multiline_comment|/* no caching */
 DECL|macro|NCP_PACKET_SIZE
 macro_line|#undef NCP_PACKET_SIZE
 DECL|macro|NCP_PACKET_SIZE
-mdefine_line|#define NCP_PACKET_SIZE 65536
+mdefine_line|#define NCP_PACKET_SIZE 131072
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|server-&gt;packet_size
 op_assign
 id|NCP_PACKET_SIZE
@@ -1819,7 +1836,7 @@ op_eq
 l_int|NULL
 )paren
 r_goto
-id|out_no_packet
+id|out_nls
 suffix:semicolon
 id|ncp_lock_server
 c_func
@@ -1849,7 +1866,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|out_no_connect
+id|out_packet
 suffix:semicolon
 id|DPRINTK
 c_func
@@ -1866,6 +1883,12 @@ id|sb
 )paren
 )paren
 suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EMSGSIZE
+suffix:semicolon
+multiline_comment|/* -EREMOTESIDEINCOMPATIBLE */
 macro_line|#ifdef CONFIG_NCPFS_PACKET_SIGNING
 r_if
 c_cond
@@ -1926,7 +1949,7 @@ l_int|0
 )paren
 (brace
 r_goto
-id|out_no_bufsize
+id|out_disconnect
 suffix:semicolon
 )brace
 )brace
@@ -1963,7 +1986,7 @@ op_ne
 l_int|0
 )paren
 r_goto
-id|out_no_bufsize
+id|out_disconnect
 suffix:semicolon
 id|DPRINTK
 c_func
@@ -2066,6 +2089,11 @@ id|finfo.i.volNumber
 op_assign
 id|NW_NS_DOS
 suffix:semicolon
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|root_inode
 op_assign
 id|ncp_iget
@@ -2084,7 +2112,7 @@ op_logical_neg
 id|root_inode
 )paren
 r_goto
-id|out_no_root
+id|out_disconnect
 suffix:semicolon
 id|DPRINTK
 c_func
@@ -2127,29 +2155,10 @@ l_int|0
 suffix:semicolon
 id|out_no_root
 suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ncp_fill_super: get root inode failed&bslash;n&quot;
-)paren
-suffix:semicolon
 id|iput
 c_func
 (paren
 id|root_inode
-)paren
-suffix:semicolon
-r_goto
-id|out_disconnect
-suffix:semicolon
-id|out_no_bufsize
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ncp_fill_super: could not get bufsize&bslash;n&quot;
 )paren
 suffix:semicolon
 id|out_disconnect
@@ -2172,21 +2181,7 @@ c_func
 id|server
 )paren
 suffix:semicolon
-r_goto
-id|out_free_packet
-suffix:semicolon
-id|out_no_connect
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ncp_fill_super: Failed connection, error=%d&bslash;n&quot;
-comma
-id|error
-)paren
-suffix:semicolon
-id|out_free_packet
+id|out_packet
 suffix:colon
 id|vfree
 c_func
@@ -2194,19 +2189,7 @@ c_func
 id|server-&gt;packet
 )paren
 suffix:semicolon
-r_goto
-id|out_free_server
-suffix:semicolon
-id|out_no_packet
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ncp_fill_super: could not alloc packet&bslash;n&quot;
-)paren
-suffix:semicolon
-id|out_free_server
+id|out_nls
 suffix:colon
 macro_line|#ifdef CONFIG_NCPFS_NLS
 id|unload_nls
@@ -2222,6 +2205,8 @@ id|server-&gt;nls_vol
 )paren
 suffix:semicolon
 macro_line|#endif
+id|out_fput
+suffix:colon
 multiline_comment|/* 23/12/1998 Marcin Dalecki &lt;dalecki@cs.net.pl&gt;:&n;&t; * &n;&t; * The previously used put_filp(ncp_filp); was bogous, since&n;&t; * it doesn&squot;t proper unlocking.&n;&t; */
 id|fput
 c_func
@@ -2229,57 +2214,10 @@ c_func
 id|ncp_filp
 )paren
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-id|out_bad_file2
-suffix:colon
-id|fput
-c_func
-(paren
-id|ncp_filp
-)paren
-suffix:semicolon
-id|out_bad_file
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ncp_fill_super: invalid ncp socket&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-id|out_bad_mount
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;ncp_fill_super: kernel requires mount version %d&bslash;n&quot;
-comma
-id|NCP_MOUNT_VERSION
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-id|out_no_data
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ncp_fill_super: missing data argument&bslash;n&quot;
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 r_return
-op_minus
-id|EINVAL
+id|error
 suffix:semicolon
 )brace
 DECL|function|ncp_put_super

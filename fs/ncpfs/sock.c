@@ -444,7 +444,8 @@ comma
 id|result
 )paren
 suffix:semicolon
-r_break
+r_return
+id|result
 suffix:semicolon
 )brace
 id|re_select
