@@ -107,23 +107,12 @@ id|asm
 l_string|&quot;.section &bslash;&quot;__ex_table&bslash;&quot;, &bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t.previous&quot;
 )paren
 suffix:semicolon
-macro_line|#if __GNUC__ &gt;= 3
-DECL|macro|GAS_HAS_LOCAL_TAGS
-macro_line|#  define GAS_HAS_LOCAL_TAGS&t;/* define if gas supports local tags a la [1:] */
-macro_line|#endif
-macro_line|#ifdef GAS_HAS_LOCAL_TAGS
-DECL|macro|_LL
-macro_line|# define _LL&t;&quot;[1:]&quot;
-macro_line|#else
-DECL|macro|_LL
-macro_line|# define _LL&t;&quot;1:&quot;
-macro_line|#endif
 DECL|macro|__get_user_64
-mdefine_line|#define __get_user_64(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n&quot;_LL&quot;&bslash;tld8 %0=%2%P2&bslash;t
+mdefine_line|#define __get_user_64(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n[1:]&bslash;tld8 %0=%2%P2&bslash;t
 singleline_comment|// %0 and %1 get overwritten by exception handler&bslash;n&quot;&t;&bslash;
 l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.+4&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -152,11 +141,11 @@ id|__gu_err
 )paren
 suffix:semicolon
 DECL|macro|__get_user_32
-mdefine_line|#define __get_user_32(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n&quot;_LL&quot;&bslash;tld4 %0=%2%P2&bslash;t
+mdefine_line|#define __get_user_32(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n[1:]&bslash;tld4 %0=%2%P2&bslash;t
 singleline_comment|// %0 and %1 get overwritten by exception handler&bslash;n&quot;&t;&bslash;
 l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.+4&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -185,11 +174,11 @@ id|__gu_err
 )paren
 suffix:semicolon
 DECL|macro|__get_user_16
-mdefine_line|#define __get_user_16(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n&quot;_LL&quot;&bslash;tld2 %0=%2%P2&bslash;t
+mdefine_line|#define __get_user_16(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n[1:]&bslash;tld2 %0=%2%P2&bslash;t
 singleline_comment|// %0 and %1 get overwritten by exception handler&bslash;n&quot;&t;&bslash;
 l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.+4&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -218,11 +207,11 @@ id|__gu_err
 )paren
 suffix:semicolon
 DECL|macro|__get_user_8
-mdefine_line|#define __get_user_8(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n&quot;_LL&quot;&bslash;tld1 %0=%2%P2&bslash;t
+mdefine_line|#define __get_user_8(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n[1:]&bslash;tld1 %0=%2%P2&bslash;t
 singleline_comment|// %0 and %1 get overwritten by exception handler&bslash;n&quot;&t;&bslash;
 l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.+4&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -263,11 +252,11 @@ DECL|macro|__put_user_check
 mdefine_line|#define __put_user_check(x,ptr,size,segment)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register long __pu_err asm (&quot;r8&quot;) = -EFAULT;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) *__pu_addr = (ptr);&t;&t;&t;&bslash;&n;&t;if (__access_ok((long)__pu_addr,size,segment)) {&t;&bslash;&n;&t;&t;__pu_err = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;switch (size) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;  case 1: __put_user_8(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  case 2: __put_user_16(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  case 4: __put_user_32(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  case 8: __put_user_64(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  default: __put_user_unknown(); break;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * The &quot;__put_user_xx()&quot; macros tell gcc they read from memory&n; * instead of writing: this is because they do not write to&n; * any memory gcc knows about, so there are no aliasing issues&n; */
 DECL|macro|__put_user_64
-mdefine_line|#define __put_user_64(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n&quot;_LL&quot;&bslash;tst8 %1=%r2%P1&bslash;t
+mdefine_line|#define __put_user_64(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n[1:]&bslash;tst8 %1=%r2%P1&bslash;t
 singleline_comment|// %0 gets overwritten by exception handler&bslash;n&quot;&t;&bslash;
 l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -295,11 +284,11 @@ id|__pu_err
 )paren
 )paren
 DECL|macro|__put_user_32
-mdefine_line|#define __put_user_32(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n&quot;_LL&quot;&bslash;tst4 %1=%r2%P1&bslash;t
+mdefine_line|#define __put_user_32(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n[1:]&bslash;tst4 %1=%r2%P1&bslash;t
 singleline_comment|// %0 gets overwritten by exception handler&bslash;n&quot;&t;&bslash;
 l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -327,11 +316,11 @@ id|__pu_err
 )paren
 )paren
 DECL|macro|__put_user_16
-mdefine_line|#define __put_user_16(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n&quot;_LL&quot;&bslash;tst2 %1=%r2%P1&bslash;t
+mdefine_line|#define __put_user_16(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n[1:]&bslash;tst2 %1=%r2%P1&bslash;t
 singleline_comment|// %0 gets overwritten by exception handler&bslash;n&quot;&t;&bslash;
 l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -359,11 +348,11 @@ id|__pu_err
 )paren
 )paren
 DECL|macro|__put_user_8
-mdefine_line|#define __put_user_8(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n&quot;_LL&quot;&bslash;tst1 %1=%r2%P1&bslash;t
+mdefine_line|#define __put_user_8(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n[1:]&bslash;tst1 %1=%r2%P1&bslash;t
 singleline_comment|// %0 gets overwritten by exception handler&bslash;n&quot;&t;&bslash;
 l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;

@@ -554,7 +554,7 @@ multiline_comment|/* unknown error (used by GCC for __builtin_abort()) */
 id|die_if_kernel
 c_func
 (paren
-l_string|&quot;bad break&quot;
+l_string|&quot;bugcheck!&quot;
 comma
 id|regs
 comma
