@@ -4221,8 +4221,7 @@ id|cmd_fibcontext
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|aac_write
@@ -4443,8 +4442,7 @@ id|scsicmd
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 id|fib_init
@@ -4823,8 +4821,7 @@ id|cmd_fibcontext
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;aac_scsi_cmd()&t;&t;-&t;Process SCSI command&n; *&t;@scsicmd:&t;&t;SCSI command block&n; *&n; *&t;Emulate a SCSI command and queue the required request for the&n; *&t;aacraid firmware.&n; */
