@@ -2384,6 +2384,7 @@ suffix:semicolon
 id|func_enter
 (paren
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
