@@ -580,6 +580,16 @@ l_int|16
 op_minus
 id|off
 suffix:semicolon
+id|in_row1
+op_assign
+id|min
+c_func
+(paren
+id|in_row1
+comma
+id|count
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
