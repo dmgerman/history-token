@@ -4,71 +4,6 @@ macro_line|#include &quot;cifs_unicode.h&quot;
 macro_line|#include &quot;cifs_uniupr.h&quot;
 macro_line|#include &quot;cifspdu.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
-multiline_comment|/*&n; * NAME:&t;toUpper()&n; *&n; * FUNCTION:&t;Upper case ASCII string (in place) using the current codepage&n; *&n; */
-r_void
-DECL|function|toUpper
-id|toUpper
-c_func
-(paren
-r_const
-r_struct
-id|nls_table
-op_star
-id|n
-comma
-r_char
-op_star
-id|mixed_string
-)paren
-(brace
-r_int
-r_int
-id|i
-suffix:semicolon
-r_char
-id|temp
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|strlen
-c_func
-(paren
-id|mixed_string
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|temp
-op_assign
-id|mixed_string
-(braket
-id|i
-)braket
-suffix:semicolon
-id|mixed_string
-(braket
-id|i
-)braket
-op_assign
-id|n-&gt;charset2upper
-(braket
-(paren
-r_int
-)paren
-id|temp
-)braket
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/*&n; * NAME:&t;cifs_strfromUCS()&n; *&n; * FUNCTION:&t;Convert little-endian unicode string to character string&n; *&n; */
 r_int
 DECL|function|cifs_strfromUCS_le
@@ -327,6 +262,4 @@ r_return
 id|i
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;get_UCSname2()&n; *&n; * FUNCTION:&t;Allocate and translate to unicode string&n; *&n; */
-multiline_comment|/*int&n;get_UCSname2(struct component_name *uniName, struct dentry *dentry,&n;&t;    struct nls_table *nls_tab)&n;{&n;&t;int length = dentry-&gt;d_name.len;&n;&n;&t;if (length &gt; 255)&n;&t;&t;return ENAMETOOLONG;&n;&n;&t;uniName-&gt;name = kmalloc((length + 1) * sizeof (wchar_t), GFP_KERNEL);&n;&n;&t;if (uniName-&gt;name == NULL)&n;&t;&t;return ENOSPC;&n;&n;&t;uniName-&gt;namlen = cifs_strtoUCS(uniName-&gt;name, dentry-&gt;d_name.name,&n;&t;&t;&t;&t;&t;length, nls_tab);&n;&n;&t;return 0;&n;} */
 eof

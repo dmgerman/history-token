@@ -250,7 +250,7 @@ op_amp
 id|GlobalMid_Lock
 )paren
 suffix:semicolon
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|midEntry-&gt;resp_buf

@@ -21,12 +21,8 @@ DECL|macro|CVAL
 mdefine_line|#define CVAL(buf,pos) (((unsigned char *)(buf))[pos])
 DECL|macro|SSVALX
 mdefine_line|#define SSVALX(buf,pos,val) (CVAL(buf,pos)=(val)&amp;0xFF,CVAL(buf,pos+1)=(val)&gt;&gt;8)
-DECL|macro|SIVALX
-mdefine_line|#define SIVALX(buf,pos,val) (SSVALX(buf,pos,val&amp;0xFFFF),SSVALX(buf,pos+2,val&gt;&gt;16))
 DECL|macro|SSVAL
 mdefine_line|#define SSVAL(buf,pos,val) SSVALX((buf),(pos),((__u16)(val)))
-DECL|macro|SIVAL
-mdefine_line|#define SIVAL(buf,pos,val) SIVALX((buf),(pos),((__u32)(val)))
 multiline_comment|/*The following definitions come from  lib/md4.c  */
 r_void
 id|mdfour
@@ -1396,68 +1392,6 @@ id|kr
 comma
 l_int|16
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/***********************************************************&n; encode a password buffer.  The caller gets to figure out &n; what to put in it.&n;************************************************************/
-r_int
-DECL|function|encode_pw_buffer
-id|encode_pw_buffer
-c_func
-(paren
-r_char
-id|buffer
-(braket
-l_int|516
-)braket
-comma
-r_char
-op_star
-id|new_pw
-comma
-r_int
-id|new_pw_length
-)paren
-(brace
-id|get_random_bytes
-c_func
-(paren
-id|buffer
-comma
-r_sizeof
-(paren
-id|buffer
-)paren
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-op_amp
-id|buffer
-(braket
-l_int|512
-op_minus
-id|new_pw_length
-)braket
-comma
-id|new_pw
-comma
-id|new_pw_length
-)paren
-suffix:semicolon
-multiline_comment|/* &n;&t; * The length of the new password is in the last 4 bytes of&n;&t; * the data buffer.&n;&t; */
-id|SIVAL
-c_func
-(paren
-id|buffer
-comma
-l_int|512
-comma
-id|new_pw_length
-)paren
-suffix:semicolon
-r_return
-id|TRUE
 suffix:semicolon
 )brace
 eof

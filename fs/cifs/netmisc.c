@@ -550,8 +550,8 @@ multiline_comment|/* BB add address family, change rc to status flag and return 
 multiline_comment|/* also see inet_pton */
 multiline_comment|/* To identify v4 vs. v6 - 1) check for colon (v6 only) 2) then call inet_pton to parse for bad address  */
 r_int
-DECL|function|inet_addr
-id|inet_addr
+DECL|function|cifs_inet_addr
+id|cifs_inet_addr
 c_func
 (paren
 r_char

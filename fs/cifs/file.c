@@ -825,9 +825,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* Try to reaquire byte range locks that were released when session */
 multiline_comment|/* to server was lost */
-DECL|function|relock_files
+DECL|function|cifs_relock_file
+r_static
 r_int
-id|relock_files
+id|cifs_relock_file
 c_func
 (paren
 r_struct
@@ -841,7 +842,7 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* list all locks open on this file */
+multiline_comment|/* BB list all locks open on this file and relock */
 r_return
 id|rc
 suffix:semicolon
@@ -1332,6 +1333,12 @@ op_assign
 id|FALSE
 suffix:semicolon
 )brace
+id|cifs_relock_file
+c_func
+(paren
+id|pCifsFile
+)paren
+suffix:semicolon
 )brace
 )brace
 r_if
@@ -4825,7 +4832,7 @@ c_cond
 id|smb_read_data
 )paren
 (brace
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|smb_read_data

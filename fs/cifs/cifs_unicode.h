@@ -62,22 +62,6 @@ id|UniLowerRange
 )braket
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* UNIUPR_NOLOWER */
-multiline_comment|/*&n; *      directory entry argument&n; */
-DECL|struct|component_name
-r_struct
-id|component_name
-(brace
-DECL|member|namlen
-r_int
-id|namlen
-suffix:semicolon
-DECL|member|name
-m_wchar_t
-op_star
-id|name
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#ifdef __KERNEL__
 r_int
 id|cifs_strfromUCS_le
@@ -117,40 +101,7 @@ id|nls_table
 op_star
 )paren
 suffix:semicolon
-r_int
-id|cifs_UCSname
-c_func
-(paren
-r_struct
-id|component_name
-op_star
-comma
-r_struct
-id|dentry
-op_star
-comma
-r_const
-r_struct
-id|nls_table
-op_star
-)paren
-suffix:semicolon
-r_void
-id|toUpper
-c_func
-(paren
-r_const
-r_struct
-id|nls_table
-op_star
-comma
-r_char
-op_star
-)paren
-suffix:semicolon
 macro_line|#endif
-DECL|macro|free_UCSname
-mdefine_line|#define free_UCSname(COMP) kfree((COMP)-&gt;name)
 multiline_comment|/*&n; * UniStrcat:  Concatenate the second string to the first&n; *&n; * Returns:&n; *     Address of the first string&n; */
 r_static
 r_inline

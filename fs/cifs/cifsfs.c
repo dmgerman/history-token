@@ -442,6 +442,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|cifs_put_super
 id|cifs_put_super
@@ -546,6 +547,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|cifs_statfs
 id|cifs_statfs
@@ -1548,6 +1550,7 @@ r_return
 id|sb
 suffix:semicolon
 )brace
+r_static
 id|ssize_t
 DECL|function|cifs_read_wrapper
 id|cifs_read_wrapper
@@ -1611,6 +1614,7 @@ id|poffset
 )paren
 suffix:semicolon
 )brace
+r_static
 id|ssize_t
 DECL|function|cifs_write_wrapper
 id|cifs_write_wrapper
@@ -2014,6 +2018,7 @@ id|cifsi-&gt;lockList
 suffix:semicolon
 )brace
 )brace
+r_static
 r_int
 DECL|function|cifs_init_inodecache
 id|cifs_init_inodecache
@@ -2061,6 +2066,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|cifs_destroy_inodecache
 id|cifs_destroy_inodecache
@@ -2086,6 +2092,7 @@ l_string|&quot;cifs_inode_cache: error freeing&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|cifs_init_request_bufs
 id|cifs_init_request_bufs
@@ -2129,6 +2136,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|cifs_destroy_request_bufs
 id|cifs_destroy_request_bufs
@@ -2154,6 +2162,7 @@ l_string|&quot;cifs_destroy_request_cache: error not all structures were freed&b
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|cifs_init_mids
 id|cifs_init_mids
@@ -2240,6 +2249,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|cifs_destroy_mids
 id|cifs_destroy_mids

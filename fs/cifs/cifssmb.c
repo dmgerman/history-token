@@ -47,6 +47,7 @@ l_string|&quot;&bslash;2&quot;
 suffix:semicolon
 multiline_comment|/* Mark as invalid, all open files on tree connections since they&n;   were closed when session to server was lost */
 DECL|function|mark_open_files_invalid
+r_static
 r_void
 id|mark_open_files_invalid
 c_func
@@ -127,6 +128,7 @@ id|GlobalSMBSeslock
 suffix:semicolon
 multiline_comment|/* BB Add call to invalidate_inodes(sb) for all superblocks mounted to this tcon */
 )brace
+r_static
 r_int
 DECL|function|smb_init
 id|smb_init
@@ -282,7 +284,7 @@ id|CifsNeedReconnect
 (brace
 id|rc
 op_assign
-id|setup_session
+id|cifs_setup_session
 c_func
 (paren
 l_int|0
@@ -438,7 +440,7 @@ suffix:semicolon
 op_star
 id|request_buf
 op_assign
-id|buf_get
+id|cifs_buf_get
 c_func
 (paren
 )paren
@@ -1013,7 +1015,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -1252,7 +1254,7 @@ c_cond
 (paren
 id|smb_buffer
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|smb_buffer
@@ -1503,7 +1505,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -1771,7 +1773,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -2028,7 +2030,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -2286,7 +2288,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -2753,7 +2755,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -3103,7 +3105,7 @@ op_star
 id|buf
 )paren
 (brace
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -3425,7 +3427,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -3799,7 +3801,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -3976,7 +3978,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -4365,7 +4367,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -4826,7 +4828,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -5296,7 +5298,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -5776,7 +5778,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -6171,7 +6173,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -6703,7 +6705,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -7171,7 +7173,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -7611,7 +7613,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -8050,7 +8052,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -8460,7 +8462,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -9026,7 +9028,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -9571,7 +9573,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -9742,7 +9744,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -10547,7 +10549,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -10977,7 +10979,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -11343,7 +11345,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -11709,7 +11711,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -12074,7 +12076,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -12560,7 +12562,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -13017,7 +13019,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -13449,7 +13451,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
@@ -13924,7 +13926,7 @@ c_cond
 (paren
 id|pSMB
 )paren
-id|buf_release
+id|cifs_buf_release
 c_func
 (paren
 id|pSMB
