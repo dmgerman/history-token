@@ -30,11 +30,6 @@ DECL|macro|SK_PNMI_READ_U64
 mdefine_line|#define SK_PNMI_READ_U64(p,v)&t;&t;memcpy((char*)&amp;(v),(char*)(p),8)
 DECL|macro|SK_ADDR_EQUAL
 mdefine_line|#define SK_ADDR_EQUAL(a1,a2)&t;&t;(!memcmp(a1,a2,6))
-macro_line|#if !defined(__OPTIMIZE__)  ||  !defined(__KERNEL__)
-macro_line|#warning  You must compile this file with the correct options!
-macro_line|#warning  See the last lines of the source file.
-macro_line|#error You must compile this driver with &quot;-O&quot;.
-macro_line|#endif
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -5838,7 +5838,7 @@ id|ap-&gt;std_refill_busy
 )paren
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -5896,7 +5896,7 @@ id|ap-&gt;mini_refill_busy
 )paren
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -5949,7 +5949,7 @@ id|ap-&gt;jumbo_refill_busy
 )paren
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -8226,7 +8226,7 @@ id|ap-&gt;std_refill_busy
 )paren
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -8301,7 +8301,7 @@ id|ap-&gt;mini_refill_busy
 )paren
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -8372,7 +8372,7 @@ id|ap-&gt;jumbo_refill_busy
 )paren
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren

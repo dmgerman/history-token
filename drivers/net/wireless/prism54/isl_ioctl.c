@@ -2228,7 +2228,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* a little helper that will translate our data into a card independent&n; * format that the Wireless Tools will understand. This was inspired by&n; * the &quot;Aironet driver for 4500 and 4800 series cards&quot; (GPL)&n; */
-r_inline
+r_static
 r_char
 op_star
 DECL|function|prism54_translate_bss
@@ -6671,7 +6671,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Translate a TRAP oid into a wireless event. Called in islpci_mgt_receive. */
 r_static
-r_inline
 r_void
 DECL|function|format_event
 id|format_event
