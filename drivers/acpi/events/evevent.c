@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Even handling and dispatch&n; *              $Revision: 92 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Even handling and dispatch&n; *              $Revision: 95 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -710,6 +710,7 @@ id|block_base_number
 op_assign
 id|acpi_gbl_FADT-&gt;gpe1_base
 suffix:semicolon
+multiline_comment|/* Warn and exit if there are no GPE registers */
 id|acpi_gbl_gpe_register_count
 op_assign
 id|acpi_gbl_gpe_block_info
@@ -736,7 +737,7 @@ id|acpi_gbl_gpe_register_count
 id|ACPI_REPORT_WARNING
 (paren
 (paren
-l_string|&quot;Zero GPEs are defined in the FADT&bslash;n&quot;
+l_string|&quot;There are no GPE blocks defined in the FADT&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -746,7 +747,19 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Determine the maximum GPE number for this machine */
+multiline_comment|/*&n;&t; * Determine the maximum GPE number for this machine.&n;&t; * Note: both GPE0 and GPE1 are optional, and either can exist without&n;&t; * the other&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_gbl_gpe_block_info
+(braket
+l_int|0
+)braket
+dot
+id|register_count
+)paren
+(brace
+multiline_comment|/* GPE block 0 exists */
 id|acpi_gbl_gpe_number_max
 op_assign
 id|ACPI_MUL_8
@@ -761,6 +774,7 @@ id|register_count
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -772,19 +786,51 @@ dot
 id|register_count
 )paren
 (brace
-multiline_comment|/* Check for GPE0/GPE1 overlap */
+multiline_comment|/* GPE block 1 exists */
+multiline_comment|/* Check for GPE0/GPE1 overlap (if both banks exist) */
 r_if
 c_cond
+(paren
+(paren
+id|acpi_gbl_gpe_block_info
+(braket
+l_int|0
+)braket
+dot
+id|register_count
+)paren
+op_logical_and
 (paren
 id|acpi_gbl_gpe_number_max
 op_ge
 id|acpi_gbl_FADT-&gt;gpe1_base
 )paren
+)paren
 (brace
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;GPE0 block overlaps the GPE1 block&bslash;n&quot;
+l_string|&quot;GPE0 block (GPE 0 to %d) overlaps the GPE1 block (GPE %d to %d)&bslash;n&quot;
+comma
+id|acpi_gbl_gpe_number_max
+comma
+id|acpi_gbl_FADT-&gt;gpe1_base
+comma
+id|acpi_gbl_FADT-&gt;gpe1_base
+op_plus
+(paren
+id|ACPI_MUL_8
+(paren
+id|acpi_gbl_gpe_block_info
+(braket
+l_int|1
+)braket
+dot
+id|register_count
+)paren
+op_minus
+l_int|1
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -794,7 +840,7 @@ id|AE_BAD_VALUE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* GPE0 and GPE1 do not have to be contiguous in the GPE number space */
+multiline_comment|/*&n;&t;&t; * GPE0 and GPE1 do not have to be contiguous in the GPE number space,&n;&t;&t; * But, GPE0 always starts at zero.&n;&t;&t; */
 id|acpi_gbl_gpe_number_max
 op_assign
 id|acpi_gbl_FADT-&gt;gpe1_base
@@ -838,7 +884,7 @@ id|AE_BAD_VALUE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Allocate the GPE number-to-index translation table&n;&t; */
+multiline_comment|/* Allocate the GPE number-to-index translation table */
 id|acpi_gbl_gpe_number_to_index
 op_assign
 id|ACPI_MEM_CALLOCATE
@@ -905,7 +951,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Allocate the GPE register information block&n;&t; */
+multiline_comment|/* Allocate the GPE register information block */
 id|acpi_gbl_gpe_register_info
 op_assign
 id|ACPI_MEM_CALLOCATE
@@ -1246,6 +1292,12 @@ id|gpe_register
 op_increment
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|i
+)paren
+(brace
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -1293,12 +1345,10 @@ id|block_address-&gt;address
 )paren
 )paren
 suffix:semicolon
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_INFO
 (paren
 (paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;GPE Block%d Range GPE #%2.2X to GPE #%2.2X&bslash;n&quot;
+l_string|&quot;GPE Block%d defined as GPE%d to GPE%d&bslash;n&quot;
 comma
 (paren
 id|s32
@@ -1336,6 +1386,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 id|return_ACPI_STATUS
 (paren
@@ -2049,7 +2100,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;%s while evaluated GPE%X method&bslash;n&quot;
+l_string|&quot;%s while evaluating GPE%X method&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
@@ -2147,7 +2198,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Invalid event, GPE[%X].&bslash;n&quot;
+l_string|&quot;GPE[%X] is not a valid event&bslash;n&quot;
 comma
 id|gpe_number
 )paren

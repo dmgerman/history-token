@@ -307,6 +307,13 @@ c_func
 id|acpi_get_system_info
 )paren
 suffix:semicolon
+DECL|variable|acpi_get_devices
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_get_devices
+)paren
+suffix:semicolon
 multiline_comment|/* ACPI OS Services Layer (acpi_osl.c) */
 DECL|variable|acpi_os_free
 id|EXPORT_SYMBOL
@@ -376,6 +383,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|acpi_os_wait_semaphore
+)paren
+suffix:semicolon
+DECL|variable|acpi_os_read_pci_configuration
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_read_pci_configuration
 )paren
 suffix:semicolon
 multiline_comment|/* ACPI Utilities (acpi_utils.c) */
@@ -481,4 +495,50 @@ id|acpi_bus_unregister_driver
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_BUS*/
+multiline_comment|/* ACPI PCI Driver (pci_irq.c) */
+macro_line|#ifdef CONFIG_ACPI_PCI
+macro_line|#include &lt;linux/pci.h&gt;
+r_extern
+r_int
+id|acpi_pci_irq_enable
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+DECL|variable|acpi_pci_irq_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_pci_irq_enable
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|acpi_pci_irq_lookup
+(paren
+r_int
+id|segment
+comma
+r_int
+id|bus
+comma
+r_int
+id|device
+comma
+r_int
+id|pin
+)paren
+suffix:semicolon
+DECL|variable|acpi_pci_irq_lookup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_pci_irq_lookup
+)paren
+suffix:semicolon
+macro_line|#endif /*CONFIG_ACPI_PCI */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *              $Revision: 58 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *              $Revision: 59 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -51,7 +51,7 @@ c_cond
 (paren
 id|type_needed
 op_eq
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Allow the AML &quot;Constant&quot; opcodes (Zero, One, etc.) to be reference&n;&t;&t; * objects and thus allow them to be targets.  (As per the ACPI&n;&t;&t; * specification, a store to a constant is a noop.)&n;&t;&t; */
@@ -337,7 +337,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_ex_validate_object_type
+id|acpi_ut_valid_object_type
 (paren
 id|object_type
 )paren
@@ -368,7 +368,7 @@ op_eq
 (paren
 id|u8
 )paren
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * Decode the Reference&n;&t;&t;&t;&t; */
@@ -560,7 +560,7 @@ r_case
 id|ARGI_SIMPLE_TARGET
 suffix:colon
 multiline_comment|/* Name, Local, or Arg - no implicit conversion  */
-multiline_comment|/* Need an operand of type INTERNAL_TYPE_REFERENCE */
+multiline_comment|/* Need an operand of type ACPI_TYPE_LOCAL_REFERENCE */
 r_if
 c_cond
 (paren
@@ -581,7 +581,7 @@ id|status
 op_assign
 id|acpi_ex_check_object_type
 (paren
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|object_type
 comma
@@ -652,7 +652,7 @@ op_star
 id|stack_ptr
 )paren
 op_eq
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 )paren
 op_logical_and
 (paren
@@ -745,17 +745,6 @@ multiline_comment|/* Need an operand of type ACPI_TYPE_REGION */
 id|type_needed
 op_assign
 id|ACPI_TYPE_REGION
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ARGI_IF
-suffix:colon
-multiline_comment|/* If */
-multiline_comment|/* Need an operand of type INTERNAL_TYPE_IF */
-id|type_needed
-op_assign
-id|INTERNAL_TYPE_IF
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1098,7 +1087,7 @@ r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
 r_case
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 suffix:colon
 multiline_comment|/* Valid operand */
 r_break
