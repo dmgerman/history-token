@@ -4769,6 +4769,52 @@ id|handled
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+DECL|function|amd8111e_poll
+r_static
+r_void
+id|amd8111e_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|amd8111e_interrupt
+c_func
+(paren
+l_int|0
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n;This function closes the network interface and updates the statistics so that most recent statistics will be available after the interface is down.&n;*/
 DECL|function|amd8111e_close
 r_static
@@ -8253,6 +8299,12 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|AMD8111E_TX_TIMEOUT
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|amd8111e_poll
+suffix:semicolon
+macro_line|#endif
 macro_line|#if AMD8111E_VLAN_TAG_USED
 id|dev-&gt;features
 op_or_assign
