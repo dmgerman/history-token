@@ -1,4 +1,4 @@
-multiline_comment|/* &n; *  FiberChannel transport specific attributes exported to sysfs.&n; *&n; *  Copyright (c) 2003 Silicon Graphics, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; *  FiberChannel transport specific attributes exported to sysfs.&n; *&n; *  Copyright (c) 2003 Silicon Graphics, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  ========&n; *&n; *  Copyright (C) 2004-2005   James Smart, Emulex Corporation&n; *    Rewrite for host, target, device, and remote port attributes,&n; *    statistics, and service functions...&n; *&n; */
 macro_line|#ifndef SCSI_TRANSPORT_FC_H
 DECL|macro|SCSI_TRANSPORT_FC_H
 mdefine_line|#define SCSI_TRANSPORT_FC_H
@@ -47,6 +47,9 @@ id|fc_port_state
 DECL|enumerator|FC_PORTSTATE_UNKNOWN
 id|FC_PORTSTATE_UNKNOWN
 comma
+DECL|enumerator|FC_PORTSTATE_NOTPRESENT
+id|FC_PORTSTATE_NOTPRESENT
+comma
 DECL|enumerator|FC_PORTSTATE_ONLINE
 id|FC_PORTSTATE_ONLINE
 comma
@@ -54,6 +57,9 @@ DECL|enumerator|FC_PORTSTATE_OFFLINE
 id|FC_PORTSTATE_OFFLINE
 comma
 multiline_comment|/* User has taken Port Offline */
+DECL|enumerator|FC_PORTSTATE_BLOCKED
+id|FC_PORTSTATE_BLOCKED
+comma
 DECL|enumerator|FC_PORTSTATE_BYPASSED
 id|FC_PORTSTATE_BYPASSED
 comma
@@ -102,6 +108,9 @@ DECL|enum|fc_tgtid_binding_type
 r_enum
 id|fc_tgtid_binding_type
 (brace
+DECL|enumerator|FC_TGTID_BIND_NONE
+id|FC_TGTID_BIND_NONE
+comma
 DECL|enumerator|FC_TGTID_BIND_BY_WWPN
 id|FC_TGTID_BIND_BY_WWPN
 comma
@@ -113,16 +122,20 @@ id|FC_TGTID_BIND_BY_ID
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * FC Remote Port (Target) Attributes&n; */
-DECL|struct|fc_starget_attrs
+multiline_comment|/*&n; * FC Remote Port Roles&n; * Note: values are not enumerated, as they can be &quot;or&squot;d&quot; together&n; * for reporting (e.g. report roles). If you alter this list,&n; * you also need to alter scsi_transport_fc.c (for the ascii descriptions).&n; */
+DECL|macro|FC_RPORT_ROLE_UNKNOWN
+mdefine_line|#define FC_RPORT_ROLE_UNKNOWN&t;&t;&t;0x00
+DECL|macro|FC_RPORT_ROLE_FCP_TARGET
+mdefine_line|#define FC_RPORT_ROLE_FCP_TARGET&t;&t;0x01
+DECL|macro|FC_RPORT_ROLE_FCP_INITIATOR
+mdefine_line|#define FC_RPORT_ROLE_FCP_INITIATOR&t;&t;0x02
+DECL|macro|FC_RPORT_ROLE_IP_PORT
+mdefine_line|#define FC_RPORT_ROLE_IP_PORT&t;&t;&t;0x04
+multiline_comment|/*&n; * fc_rport_identifiers: This set of data contains all elements&n; * to uniquely identify a remote FC port. The driver uses this data&n; * to report the existence of a remote FC port in the topology. Internally,&n; * the transport uses this data for attributes and to manage consistent&n; * target id bindings.&n; */
+DECL|struct|fc_rport_identifiers
 r_struct
-id|fc_starget_attrs
+id|fc_rport_identifiers
 (brace
-multiline_comment|/* aka fc_target_attrs */
-DECL|member|port_id
-r_int
-id|port_id
-suffix:semicolon
 DECL|member|node_name
 id|u64
 id|node_name
@@ -131,28 +144,158 @@ DECL|member|port_name
 id|u64
 id|port_name
 suffix:semicolon
+DECL|member|port_id
+id|u32
+id|port_id
+suffix:semicolon
+DECL|member|roles
+id|u32
+id|roles
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Macro for use in defining Remote Port attributes */
+DECL|macro|FC_RPORT_ATTR
+mdefine_line|#define FC_RPORT_ATTR(_name,_mode,_show,_store)&t;&t;&t;&t;&bslash;&n;struct class_device_attribute class_device_attr_rport_##_name = &t;&bslash;&n;&t;__ATTR(_name,_mode,_show,_store)
+multiline_comment|/*&n; * FC Remote Port Attributes&n; *&n; * This structure exists for each remote FC port that a LLDD notifies&n; * the subsystem of.  A remote FC port may or may not be a SCSI Target,&n; * also be a SCSI initiator, IP endpoint, etc. As such, the remote&n; * port is considered a separate entity, independent of &quot;role&quot; (such&n; * as scsi target).&n; *&n; * --&n; *&n; * Attributes are based on HBAAPI V2.0 definitions. Only those&n; * attributes that are determinable by the local port (aka Host)&n; * are contained.&n; *&n; * Fixed attributes are not expected to change. The driver is&n; * expected to set these values after successfully calling&n; * fc_remote_port_add(). The transport fully manages all get functions&n; * w/o driver interaction.&n; *&n; * Dynamic attributes are expected to change. The driver participates&n; * in all get/set operations via functions provided by the driver.&n; *&n; * Private attributes are transport-managed values. They are fully&n; * managed by the transport w/o driver interaction.&n; */
+DECL|struct|fc_rport
+r_struct
+id|fc_rport
+(brace
+multiline_comment|/* aka fc_starget_attrs */
+multiline_comment|/* Fixed Attributes */
+DECL|member|maxframe_size
+id|u32
+id|maxframe_size
+suffix:semicolon
+DECL|member|supported_classes
+id|u32
+id|supported_classes
+suffix:semicolon
+multiline_comment|/* Dynamic Attributes */
 DECL|member|dev_loss_tmo
 id|u32
 id|dev_loss_tmo
 suffix:semicolon
 multiline_comment|/* Remote Port loss timeout in seconds. */
+multiline_comment|/* Private (Transport-managed) Attributes */
+DECL|member|node_name
+id|u64
+id|node_name
+suffix:semicolon
+DECL|member|port_name
+id|u64
+id|port_name
+suffix:semicolon
+DECL|member|port_id
+id|u32
+id|port_id
+suffix:semicolon
+DECL|member|roles
+id|u32
+id|roles
+suffix:semicolon
+DECL|member|port_state
+r_enum
+id|fc_port_state
+id|port_state
+suffix:semicolon
+multiline_comment|/* Will only be ONLINE or UNKNOWN */
+DECL|member|scsi_target_id
+id|u32
+id|scsi_target_id
+suffix:semicolon
+multiline_comment|/* exported data */
+DECL|member|dd_data
+r_void
+op_star
+id|dd_data
+suffix:semicolon
+multiline_comment|/* Used for driver-specific storage */
+multiline_comment|/* internal data */
+DECL|member|channel
+r_int
+r_int
+id|channel
+suffix:semicolon
+DECL|member|number
+id|u32
+id|number
+suffix:semicolon
+DECL|member|peers
+r_struct
+id|list_head
+id|peers
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
 DECL|member|dev_loss_work
 r_struct
 id|work_struct
 id|dev_loss_work
 suffix:semicolon
+DECL|member|scan_work
+r_struct
+id|work_struct
+id|scan_work
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)paren
+)paren
+)paren
+suffix:semicolon
+DECL|macro|dev_to_rport
+mdefine_line|#define&t;dev_to_rport(d)&t;&t;&t;&t;&bslash;&n;&t;container_of(d, struct fc_rport, dev)
+DECL|macro|transport_class_to_rport
+mdefine_line|#define transport_class_to_rport(classdev)&t;&bslash;&n;&t;dev_to_rport(classdev-&gt;dev)
+DECL|macro|rport_to_shost
+mdefine_line|#define rport_to_shost(r)&t;&t;&t;&bslash;&n;&t;dev_to_shost(r-&gt;dev.parent)
+DECL|macro|FC_SCSI_SCAN_DELAY
+mdefine_line|#define FC_SCSI_SCAN_DELAY&t;&t;(1 * HZ)&t;/* 1 second delay */
+multiline_comment|/*&n; * FC SCSI Target Attributes&n; *&n; * The SCSI Target is considered an extention of a remote port (as&n; * a remote port can be more than a SCSI Target). Within the scsi&n; * subsystem, we leave the Target as a separate entity. Doing so&n; * provides backward compatibility with prior FC transport api&squot;s,&n; * and lets remote ports be handled entirely within the FC transport&n; * and independently from the scsi subsystem. The drawback is that&n; * some data will be duplicated.&n; */
+DECL|struct|fc_starget_attrs
+r_struct
+id|fc_starget_attrs
+(brace
+multiline_comment|/* aka fc_target_attrs */
+multiline_comment|/* Dynamic Attributes */
+DECL|member|node_name
+id|u64
+id|node_name
+suffix:semicolon
+DECL|member|port_name
+id|u64
+id|port_name
+suffix:semicolon
+DECL|member|port_id
+id|u32
+id|port_id
+suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|fc_starget_port_id
-mdefine_line|#define fc_starget_port_id(x) &bslash;&n;&t;(((struct fc_starget_attrs *)&amp;(x)-&gt;starget_data)-&gt;port_id)
 DECL|macro|fc_starget_node_name
 mdefine_line|#define fc_starget_node_name(x) &bslash;&n;&t;(((struct fc_starget_attrs *)&amp;(x)-&gt;starget_data)-&gt;node_name)
 DECL|macro|fc_starget_port_name
 mdefine_line|#define fc_starget_port_name(x)&t;&bslash;&n;&t;(((struct fc_starget_attrs *)&amp;(x)-&gt;starget_data)-&gt;port_name)
-DECL|macro|fc_starget_dev_loss_tmo
-mdefine_line|#define fc_starget_dev_loss_tmo(x) &bslash;&n;&t;(((struct fc_starget_attrs *)&amp;(x)-&gt;starget_data)-&gt;dev_loss_tmo)
-DECL|macro|fc_starget_dev_loss_work
-mdefine_line|#define fc_starget_dev_loss_work(x) &bslash;&n;&t;(((struct fc_starget_attrs *)&amp;(x)-&gt;starget_data)-&gt;dev_loss_work)
+DECL|macro|fc_starget_port_id
+mdefine_line|#define fc_starget_port_id(x) &bslash;&n;&t;(((struct fc_starget_attrs *)&amp;(x)-&gt;starget_data)-&gt;port_id)
+DECL|macro|starget_to_rport
+mdefine_line|#define starget_to_rport(s)&t;&t;&t;&bslash;&n;&t;scsi_is_fc_rport(s-&gt;dev.parent) ? dev_to_rport(s-&gt;dev.parent) : NULL
 multiline_comment|/*&n; * FC Local Port (Host) Statistics&n; */
 multiline_comment|/* FC Statistics - Following FC HBAAPI v2.0 guidelines */
 DECL|struct|fc_host_statistics
@@ -328,11 +471,6 @@ DECL|member|fabric_name
 id|u64
 id|fabric_name
 suffix:semicolon
-DECL|member|link_down_tmo
-id|u32
-id|link_down_tmo
-suffix:semicolon
-multiline_comment|/* Link Down timeout in seconds. */
 multiline_comment|/* Private (Transport-managed) Attributes */
 DECL|member|tgtid_bind_type
 r_enum
@@ -340,10 +478,23 @@ id|fc_tgtid_binding_type
 id|tgtid_bind_type
 suffix:semicolon
 multiline_comment|/* internal data */
-DECL|member|link_down_work
+DECL|member|rports
 r_struct
-id|work_struct
-id|link_down_work
+id|list_head
+id|rports
+suffix:semicolon
+DECL|member|rport_bindings
+r_struct
+id|list_head
+id|rport_bindings
+suffix:semicolon
+DECL|member|next_rport_number
+id|u32
+id|next_rport_number
+suffix:semicolon
+DECL|member|next_target_id
+id|u32
+id|next_target_id
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -361,16 +512,8 @@ DECL|macro|fc_host_supported_speeds
 mdefine_line|#define fc_host_supported_speeds(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;supported_speeds)
 DECL|macro|fc_host_maxframe_size
 mdefine_line|#define fc_host_maxframe_size(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;maxframe_size)
-DECL|macro|fc_host_hardware_version
-mdefine_line|#define fc_host_hardware_version(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;hardware_version)
-DECL|macro|fc_host_firmware_version
-mdefine_line|#define fc_host_firmware_version(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;firmware_version)
 DECL|macro|fc_host_serial_number
 mdefine_line|#define fc_host_serial_number(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;serial_number)
-DECL|macro|fc_host_opt_rom_version
-mdefine_line|#define fc_host_opt_rom_version(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;opt_rom_version)
-DECL|macro|fc_host_driver_version
-mdefine_line|#define fc_host_driver_version(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;driver_version)
 DECL|macro|fc_host_port_id
 mdefine_line|#define fc_host_port_id(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;port_id)
 DECL|macro|fc_host_port_type
@@ -383,27 +526,45 @@ DECL|macro|fc_host_speed
 mdefine_line|#define fc_host_speed(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;speed)
 DECL|macro|fc_host_fabric_name
 mdefine_line|#define fc_host_fabric_name(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;fabric_name)
-DECL|macro|fc_host_link_down_tmo
-mdefine_line|#define fc_host_link_down_tmo(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;link_down_tmo)
 DECL|macro|fc_host_tgtid_bind_type
 mdefine_line|#define fc_host_tgtid_bind_type(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;tgtid_bind_type)
-DECL|macro|fc_host_link_down_work
-mdefine_line|#define fc_host_link_down_work(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;link_down_work)
+DECL|macro|fc_host_rports
+mdefine_line|#define fc_host_rports(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;rports)
+DECL|macro|fc_host_rport_bindings
+mdefine_line|#define fc_host_rport_bindings(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;rport_bindings)
+DECL|macro|fc_host_next_rport_number
+mdefine_line|#define fc_host_next_rport_number(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;next_rport_number)
+DECL|macro|fc_host_next_target_id
+mdefine_line|#define fc_host_next_target_id(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;next_target_id)
 multiline_comment|/* The functions by which the transport class and the driver communicate */
 DECL|struct|fc_function_template
 r_struct
 id|fc_function_template
 (brace
-DECL|member|get_starget_port_id
+DECL|member|get_rport_dev_loss_tmo
 r_void
 (paren
 op_star
-id|get_starget_port_id
+id|get_rport_dev_loss_tmo
 )paren
 (paren
 r_struct
-id|scsi_target
+id|fc_rport
 op_star
+)paren
+suffix:semicolon
+DECL|member|set_rport_dev_loss_tmo
+r_void
+(paren
+op_star
+id|set_rport_dev_loss_tmo
+)paren
+(paren
+r_struct
+id|fc_rport
+op_star
+comma
+id|u32
 )paren
 suffix:semicolon
 DECL|member|get_starget_node_name
@@ -430,30 +591,16 @@ id|scsi_target
 op_star
 )paren
 suffix:semicolon
-DECL|member|get_starget_dev_loss_tmo
+DECL|member|get_starget_port_id
 r_void
 (paren
 op_star
-id|get_starget_dev_loss_tmo
+id|get_starget_port_id
 )paren
 (paren
 r_struct
 id|scsi_target
 op_star
-)paren
-suffix:semicolon
-DECL|member|set_starget_dev_loss_tmo
-r_void
-(paren
-op_star
-id|set_starget_dev_loss_tmo
-)paren
-(paren
-r_struct
-id|scsi_target
-op_star
-comma
-id|u32
 )paren
 suffix:semicolon
 DECL|member|get_host_port_id
@@ -528,32 +675,6 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-DECL|member|get_host_link_down_tmo
-r_void
-(paren
-op_star
-id|get_host_link_down_tmo
-)paren
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-DECL|member|set_host_link_down_tmo
-r_void
-(paren
-op_star
-id|set_host_link_down_tmo
-)paren
-(paren
-r_struct
-id|Scsi_Host
-op_star
-comma
-id|u32
-)paren
-suffix:semicolon
 DECL|member|get_fc_host_stats
 r_struct
 id|fc_host_statistics
@@ -580,14 +701,35 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* allocation lengths for host-specific data */
+DECL|member|dd_fcrport_size
+id|u32
+id|dd_fcrport_size
+suffix:semicolon
 multiline_comment|/* &n;&t; * The driver sets these to tell the transport class it&n;&t; * wants the attributes displayed in sysfs.  If the show_ flag&n;&t; * is not set, the attribute will be private to the transport&n;&t; * class &n;&t; */
-DECL|member|show_starget_port_id
+multiline_comment|/* remote port fixed attributes */
+DECL|member|show_rport_maxframe_size
 r_int
 r_int
-id|show_starget_port_id
+id|show_rport_maxframe_size
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|show_rport_supported_classes
+r_int
+r_int
+id|show_rport_supported_classes
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_rport_dev_loss_tmo
+r_int
+r_int
+id|show_rport_dev_loss_tmo
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * target dynamic attributes&n;&t; * These should all be &quot;1&quot; if the driver uses the remote port&n;&t; * add/delete functions (so attributes reflect rport values).&n;&t; */
 DECL|member|show_starget_node_name
 r_int
 r_int
@@ -602,10 +744,10 @@ id|show_starget_port_name
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|show_starget_dev_loss_tmo
+DECL|member|show_starget_port_id
 r_int
 r_int
-id|show_starget_dev_loss_tmo
+id|show_starget_port_id
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -659,38 +801,10 @@ id|show_host_maxframe_size
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|show_host_hardware_version
-r_int
-r_int
-id|show_host_hardware_version
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|show_host_firmware_version
-r_int
-r_int
-id|show_host_firmware_version
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|show_host_serial_number
 r_int
 r_int
 id|show_host_serial_number
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|show_host_opt_rom_version
-r_int
-r_int
-id|show_host_opt_rom_version
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|show_host_driver_version
-r_int
-r_int
-id|show_host_driver_version
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -737,13 +851,6 @@ id|show_host_fabric_name
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|show_host_link_down_tmo
-r_int
-r_int
-id|show_host_link_down_tmo
-suffix:colon
-l_int|1
-suffix:semicolon
 )brace
 suffix:semicolon
 r_struct
@@ -766,44 +873,86 @@ id|scsi_transport_template
 op_star
 )paren
 suffix:semicolon
-r_int
-id|fc_target_block
-c_func
-(paren
-r_struct
-id|scsi_target
-op_star
-id|starget
-)paren
-suffix:semicolon
 r_void
-id|fc_target_unblock
+id|fc_remove_host
 c_func
 (paren
 r_struct
-id|scsi_target
+id|Scsi_Host
 op_star
-id|starget
 )paren
 suffix:semicolon
-r_int
-id|fc_host_block
+r_struct
+id|fc_rport
+op_star
+id|fc_remote_port_add
 c_func
 (paren
 r_struct
 id|Scsi_Host
 op_star
 id|shost
+comma
+r_int
+id|channel
+comma
+r_struct
+id|fc_rport_identifiers
+op_star
+id|ids
 )paren
 suffix:semicolon
 r_void
-id|fc_host_unblock
+id|fc_remote_port_delete
 c_func
 (paren
 r_struct
-id|Scsi_Host
+id|fc_rport
 op_star
-id|shost
+id|rport
+)paren
+suffix:semicolon
+r_void
+id|fc_remote_port_rolechg
+c_func
+(paren
+r_struct
+id|fc_rport
+op_star
+id|rport
+comma
+id|u32
+id|roles
+)paren
+suffix:semicolon
+r_int
+id|fc_remote_port_block
+c_func
+(paren
+r_struct
+id|fc_rport
+op_star
+id|rport
+)paren
+suffix:semicolon
+r_void
+id|fc_remote_port_unblock
+c_func
+(paren
+r_struct
+id|fc_rport
+op_star
+id|rport
+)paren
+suffix:semicolon
+r_int
+id|scsi_is_fc_rport
+c_func
+(paren
+r_const
+r_struct
+id|device
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif /* SCSI_TRANSPORT_FC_H */
