@@ -2527,21 +2527,13 @@ suffix:semicolon
 r_int
 id|idx
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
+id|BUG_ON
 c_func
 (paren
 id|in_interrupt
 c_func
 (paren
 )paren
-)paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#if CONFIG_DEBUG_HIGHMEM
@@ -3995,7 +3987,7 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Valid priorities for SCHED_FIFO and SCHED_RR are&n;&t; * 1..MAX_USER_RT_PRIO, valid priority for SCHED_OTHER is 0.&n;&t; */
+multiline_comment|/*&n;&t; * Valid priorities for SCHED_FIFO and SCHED_RR are&n;&t; * 1..MAX_USER_RT_PRIO-1, valid priority for SCHED_OTHER is 0.&n;&t; */
 id|retval
 op_assign
 op_minus
@@ -6391,7 +6383,7 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The first migration thread is started on CPU #0. This one can migrate&n;&t; * the other migration threads to their destination CPUs.&n;&t; */
+multiline_comment|/*&n;&t; * The first migration thread is started on CPU #0. This one can&n;&t; * migrate the other migration threads to their destination CPUs.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6834,5 +6826,5 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_SMP */
 eof

@@ -34,6 +34,8 @@ DECL|macro|KAWETH_BUF_SIZE
 mdefine_line|#define KAWETH_BUF_SIZE&t;&t;&t;1664
 DECL|macro|KAWETH_TX_TIMEOUT
 mdefine_line|#define KAWETH_TX_TIMEOUT&t;&t;(5 * HZ)
+DECL|macro|KAWETH_SCRATCH_SIZE
+mdefine_line|#define KAWETH_SCRATCH_SIZE&t;&t;32
 DECL|macro|KAWETH_FIRMWARE_BUF_SIZE
 mdefine_line|#define KAWETH_FIRMWARE_BUF_SIZE&t;4096
 DECL|macro|KAWETH_CONTROL_TIMEOUT
@@ -692,9 +694,14 @@ id|irq_urb
 suffix:semicolon
 DECL|member|firmware_buf
 id|__u8
+op_star
 id|firmware_buf
+suffix:semicolon
+DECL|member|scratch
+id|__u8
+id|scratch
 (braket
-id|KAWETH_FIRMWARE_BUF_SIZE
+id|KAWETH_SCRATCH_SIZE
 )braket
 suffix:semicolon
 DECL|member|tx_buf
@@ -1025,7 +1032,7 @@ r_void
 op_star
 )paren
 op_amp
-id|kaweth-&gt;firmware_buf
+id|kaweth-&gt;scratch
 comma
 l_int|0
 comma
@@ -1098,7 +1105,7 @@ r_void
 op_star
 )paren
 op_amp
-id|kaweth-&gt;firmware_buf
+id|kaweth-&gt;scratch
 comma
 l_int|0
 comma
@@ -1171,7 +1178,7 @@ r_void
 op_star
 )paren
 op_amp
-id|kaweth-&gt;firmware_buf
+id|kaweth-&gt;scratch
 comma
 l_int|0
 comma
@@ -1339,7 +1346,6 @@ comma
 r_void
 op_star
 )paren
-op_amp
 id|kaweth-&gt;firmware_buf
 comma
 id|data_len
@@ -1456,7 +1462,6 @@ comma
 r_void
 op_star
 )paren
-op_amp
 id|kaweth-&gt;firmware_buf
 comma
 l_int|8
@@ -2631,7 +2636,7 @@ r_void
 op_star
 )paren
 op_amp
-id|kaweth-&gt;firmware_buf
+id|kaweth-&gt;scratch
 comma
 l_int|0
 comma
@@ -2940,6 +2945,18 @@ c_func
 l_string|&quot;Downloading firmware...&quot;
 )paren
 suffix:semicolon
+id|kaweth-&gt;firmware_buf
+op_assign
+(paren
+id|__u8
+op_star
+)paren
+id|__get_free_page
+c_func
+(paren
+id|GFP_KERNEL
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2970,6 +2987,16 @@ c_func
 l_string|&quot;Error downloading firmware (%d)&quot;
 comma
 id|result
+)paren
+suffix:semicolon
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|kaweth-&gt;firmware_buf
 )paren
 suffix:semicolon
 id|kfree
@@ -3014,6 +3041,16 @@ comma
 id|result
 )paren
 suffix:semicolon
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|kaweth-&gt;firmware_buf
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -3054,6 +3091,16 @@ c_func
 l_string|&quot;Error downloading trigger code (%d)&quot;
 comma
 id|result
+)paren
+suffix:semicolon
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|kaweth-&gt;firmware_buf
 )paren
 suffix:semicolon
 id|kfree
@@ -3098,6 +3145,16 @@ comma
 id|result
 )paren
 suffix:semicolon
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|kaweth-&gt;firmware_buf
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -3134,6 +3191,16 @@ comma
 id|result
 )paren
 suffix:semicolon
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|kaweth-&gt;firmware_buf
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -3149,6 +3216,16 @@ id|kaweth_info
 c_func
 (paren
 l_string|&quot;Firmware loaded.  I&squot;ll be back...&quot;
+)paren
+suffix:semicolon
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|kaweth-&gt;firmware_buf
 )paren
 suffix:semicolon
 id|kfree

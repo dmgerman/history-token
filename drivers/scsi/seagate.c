@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;seagate.h&quot;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;sd.h&quot;
@@ -4494,7 +4493,7 @@ id|status
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;message = %02x&bslash;n&quot;
+l_string|&quot; message = %02x&bslash;n&quot;
 comma
 id|message
 )paren

@@ -29,7 +29,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif

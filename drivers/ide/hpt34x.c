@@ -206,10 +206,6 @@ id|err
 )paren
 suffix:semicolon
 macro_line|#endif
-id|drive-&gt;current_speed
-op_assign
-id|speed
-suffix:semicolon
 r_return
 id|ide_config_drive_speed
 c_func

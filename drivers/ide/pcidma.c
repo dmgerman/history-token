@@ -1650,7 +1650,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Prepare the channel for a DMA startfer. Please note that only the broken&n; * Pacific Digital host chip needs the reques to be passed there to decide&n; * about addressing modes.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|udma_pci_start
-r_int
+r_void
 id|udma_pci_start
 c_func
 (paren

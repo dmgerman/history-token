@@ -15456,7 +15456,7 @@ comma
 id|NIPQUAD
 c_func
 (paren
-id|in_dev-&gt;ida_list-&gt;ifa_mask
+id|in_dev-&gt;ifa_list-&gt;ifa_mask
 )paren
 )paren
 suffix:semicolon
@@ -15471,7 +15471,7 @@ comma
 id|NIPQUAD
 c_func
 (paren
-id|in_dev-&gt;ida_list-&gt;ifa_local
+id|in_dev-&gt;ifa_list-&gt;ifa_local
 )paren
 )paren
 suffix:semicolon

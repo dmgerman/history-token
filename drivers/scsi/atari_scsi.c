@@ -88,7 +88,6 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;atari_scsi.h&quot;
 macro_line|#include &quot;NCR5380.h&quot;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#include &lt;asm/atari_stdma.h&gt;
 macro_line|#include &lt;asm/atari_stram.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

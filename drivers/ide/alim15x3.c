@@ -146,6 +146,7 @@ c_func
 id|pio
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: use generic ata-timing library  --bkz */
 id|s_time
 op_assign
 id|t-&gt;setup
@@ -790,10 +791,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
-id|drive-&gt;current_speed
-op_assign
-id|speed
-suffix:semicolon
 r_return
 id|ide_config_drive_speed
 c_func

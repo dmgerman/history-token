@@ -863,7 +863,6 @@ mdefine_line|#define ov51x_mmx_available (0)
 macro_line|#endif
 DECL|variable|device_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|device_table

@@ -3165,7 +3165,6 @@ DECL|function|vicam_probe
 r_static
 r_void
 op_star
-id|__devinit
 id|vicam_probe
 c_func
 (paren

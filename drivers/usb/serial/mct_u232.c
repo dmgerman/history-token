@@ -195,7 +195,6 @@ suffix:semicolon
 multiline_comment|/*&n; * All of the device info needed for the MCT USB-RS232 converter.&n; */
 DECL|variable|id_table_combined
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_combined
@@ -324,7 +323,7 @@ id|break_ctl
 suffix:colon
 id|mct_u232_break_ctl
 comma
-id|startup
+id|attach
 suffix:colon
 id|mct_u232_startup
 comma

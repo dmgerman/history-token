@@ -535,7 +535,7 @@ comma
 l_string|&quot;major minor  #blocks  name&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* show all non-0 size partitions of this disk */
+multiline_comment|/* show the full disk and all non-0 size partitions of it */
 r_for
 c_loop
 (paren
@@ -555,9 +555,26 @@ id|n
 op_increment
 )paren
 (brace
+r_int
+id|minormask
+op_assign
+(paren
+l_int|1
+op_lshift
+id|sgp-&gt;minor_shift
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|n
+op_amp
+id|minormask
+)paren
+op_logical_and
 id|sgp-&gt;part
 (braket
 id|n

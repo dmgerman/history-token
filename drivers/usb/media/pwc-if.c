@@ -21,7 +21,6 @@ multiline_comment|/* Function prototypes and driver templates */
 multiline_comment|/* hotplug device table support */
 DECL|variable|pwc_device_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|pwc_device_table

@@ -373,7 +373,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CY82C693_DEBUG_LOGS */
+macro_line|#endif
 id|data
 op_assign
 (paren
@@ -423,7 +423,7 @@ comma
 id|single
 )paren
 suffix:semicolon
-macro_line|#endif /* CY82C693_DEBUG_INFO */
+macro_line|#endif
 multiline_comment|/*&n;&t; * note: below we set the value for Bus Master IDE TimeOut Register&n;&t; * I&squot;m not absolutly sure what this does, but it solved my problem&n;&t; * with IDE DMA and sound, so I now can play sound and work with&n;&t; * my IDE driver at the same time :-)&n;&t; *&n;&t; * If you know the correct (best) value for this register please&n;&t; * let me know - ASK&n;&t; */
 id|data
 op_assign
@@ -456,7 +456,7 @@ comma
 id|data
 )paren
 suffix:semicolon
-macro_line|#endif /* CY82C693_DEBUG_INFO */
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * used to set DMA mode for CY82C693 (single and multi modes)&n; */
 DECL|function|cy82c693_udma_setup
@@ -836,7 +836,7 @@ comma
 id|pio
 )paren
 suffix:semicolon
-macro_line|#endif /* CY82C693_DEBUG_INFO */
+macro_line|#endif
 id|compute_clocks
 c_func
 (paren

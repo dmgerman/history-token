@@ -191,7 +191,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|trm290_udma_start
 r_static
-r_int
+r_void
 id|trm290_udma_start
 c_func
 (paren

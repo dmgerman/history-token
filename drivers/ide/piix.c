@@ -989,10 +989,6 @@ comma
 id|umul
 )paren
 suffix:semicolon
-id|drive-&gt;current_speed
-op_assign
-id|speed
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -819,6 +819,9 @@ op_assign
 id|WRITE_BUF_MAX_LEN
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -828,6 +831,10 @@ id|buffer
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|s_blink_op
 (braket

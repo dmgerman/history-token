@@ -52,7 +52,6 @@ DECL|macro|ST_KILOBYTE
 mdefine_line|#define ST_KILOBYTE 1024
 macro_line|#include &quot;st_options.h&quot;
 macro_line|#include &quot;st.h&quot;
-macro_line|#include &quot;constants.h&quot;
 DECL|variable|buffer_kbs
 r_static
 r_int

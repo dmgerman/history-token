@@ -109,6 +109,16 @@ id|IRDA_MCP2120_DONGLE
 op_assign
 l_int|9
 comma
+DECL|enumerator|IRDA_ACT200L_DONGLE
+id|IRDA_ACT200L_DONGLE
+op_assign
+l_int|10
+comma
+DECL|enumerator|IRDA_MA600_DONGLE
+id|IRDA_MA600_DONGLE
+op_assign
+l_int|11
+comma
 DECL|typedef|IRDA_DONGLE
 )brace
 id|IRDA_DONGLE

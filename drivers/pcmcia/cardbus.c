@@ -878,6 +878,15 @@ id|dev-&gt;sysdata
 op_assign
 id|bus-&gt;sysdata
 suffix:semicolon
+id|dev-&gt;dev.parent
+op_assign
+id|bus-&gt;dev
+suffix:semicolon
+id|dev-&gt;dev.bus
+op_assign
+op_amp
+id|pci_bus_type
+suffix:semicolon
 id|dev-&gt;devfn
 op_assign
 id|i
@@ -909,10 +918,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|dev-&gt;dev.parent
-op_assign
-id|bus-&gt;dev
-suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -927,13 +932,6 @@ c_func
 id|dev-&gt;dev.bus_id
 comma
 id|dev-&gt;slot_name
-)paren
-suffix:semicolon
-id|device_register
-c_func
-(paren
-op_amp
-id|dev-&gt;dev
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: Do we need to enable the expansion ROM? */
@@ -1015,6 +1013,13 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* XXX check return */
+id|device_register
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+)paren
+suffix:semicolon
 id|pci_insert_device
 c_func
 (paren

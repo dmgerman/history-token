@@ -149,7 +149,6 @@ id|break_state
 suffix:semicolon
 DECL|variable|id_table_combined
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_combined
@@ -280,7 +279,7 @@ id|break_ctl
 suffix:colon
 id|belkin_sa_break_ctl
 comma
-id|startup
+id|attach
 suffix:colon
 id|belkin_sa_startup
 comma

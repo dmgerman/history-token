@@ -27,7 +27,6 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;&t;/* must follow &quot;hosts.h&quot; */
 macro_line|#include &lt;linux/genhd.h&gt;
 multiline_comment|/* static char sd_version_str[] = &quot;Version: 2.0.3 (20020417)&quot;; */
@@ -103,7 +102,7 @@ id|kdev_t
 )paren
 suffix:semicolon
 r_static
-r_int
+r_void
 id|sd_init_onedisk
 c_func
 (paren
@@ -287,6 +286,11 @@ suffix:semicolon
 r_int
 id|dsk_nr
 suffix:semicolon
+id|kdev_t
+id|retval
+op_assign
+id|NODEV
+suffix:semicolon
 r_int
 r_int
 id|iflags
@@ -332,19 +336,19 @@ op_increment
 id|dsk_nr
 )paren
 (brace
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-(paren
 id|sdkp
 op_assign
 id|sd_dsk_arr
 (braket
 id|dsk_nr
 )braket
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdkp
+op_eq
+l_int|NULL
 )paren
 r_continue
 suffix:semicolon
@@ -370,22 +374,16 @@ id|scsi_id
 )paren
 )paren
 (brace
-id|read_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|sd_dsk_arr_lock
-comma
-id|iflags
-)paren
-suffix:semicolon
-r_return
+id|retval
+op_assign
 id|MKDEV_SD
 c_func
 (paren
 id|dsk_nr
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 )brace
 id|read_unlock_irqrestore
@@ -398,7 +396,7 @@ id|iflags
 )paren
 suffix:semicolon
 r_return
-id|NODEV
+id|retval
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -572,6 +570,7 @@ l_int|0
 op_assign
 l_int|0x40
 suffix:semicolon
+multiline_comment|/* 1 &lt;&lt; 6 */
 id|diskinfo
 (braket
 l_int|1
@@ -579,6 +578,7 @@ l_int|1
 op_assign
 l_int|0x20
 suffix:semicolon
+multiline_comment|/* 1 &lt;&lt; 5 */
 id|diskinfo
 (braket
 l_int|2
@@ -1859,7 +1859,7 @@ c_cond
 (paren
 (paren
 op_logical_neg
-id|sdkp-&gt;ready
+id|sdkp-&gt;media_present
 )paren
 op_logical_and
 op_logical_neg
@@ -1904,7 +1904,7 @@ id|error_out
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * It is possible that the disk changing stuff resulted in the device&n;&t; * being taken offline.  If this is the case, report this to the user,&n;&t; * and don&squot;t pretend that&n;&t; * the open actually succeeded.&n;&t; */
+multiline_comment|/*&n;&t; * It is possible that the disk changing stuff resulted in the device&n;&t; * being taken offline.  If this is the case, report this to the user,&n;&t; * and don&squot;t pretend that the open actually succeeded.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2629,6 +2629,30 @@ id|block_sectors
 )paren
 suffix:semicolon
 )brace
+r_static
+r_void
+DECL|function|sd_set_media_not_present
+id|sd_set_media_not_present
+c_func
+(paren
+id|Scsi_Disk
+op_star
+id|sdkp
+)paren
+(brace
+id|sdkp-&gt;media_present
+op_assign
+l_int|0
+suffix:semicolon
+id|sdkp-&gt;capacity
+op_assign
+l_int|0
+suffix:semicolon
+id|sdkp-&gt;device-&gt;changed
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;check_scsidisk_media_change - self descriptive&n; *&t;@full_dev: kernel device descriptor (kdev_t)&n; *&n; *&t;Returns 0 if not applicable or no change; 1 if change&n; *&n; *&t;Note: this function is invoked from the block subsystem.&n; **/
 DECL|function|check_scsidisk_media_change
 r_static
@@ -2741,13 +2765,11 @@ op_eq
 id|FALSE
 )paren
 (brace
-id|sdkp-&gt;ready
-op_assign
-l_int|0
-suffix:semicolon
-id|sdp-&gt;changed
-op_assign
-l_int|1
+id|sd_set_media_not_present
+c_func
+(paren
+id|sdkp
+)paren
 suffix:semicolon
 r_return
 l_int|1
@@ -2788,25 +2810,22 @@ id|retval
 )paren
 (brace
 multiline_comment|/* Unable to test, unit probably not ready.&n;&t;&t;&t;&t; * This usually means there is no disc in the&n;&t;&t;&t;&t; * drive.  Mark as changed, and we will figure&n;&t;&t;&t;&t; * it out later once the drive is available&n;&t;&t;&t;&t; * again.  */
-id|sdkp-&gt;ready
-op_assign
-l_int|0
-suffix:semicolon
-id|sdp-&gt;changed
-op_assign
-l_int|1
+id|sd_set_media_not_present
+c_func
+(paren
+id|sdkp
+)paren
 suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* This will force a flush, if called from&n;&t;&t;&t;&t; * check_disk_change */
 )brace
-multiline_comment|/*&n;&t; * for removable scsi disk ( FLOPTICAL ) we have to recognise the&n;&t; * presence of disk in the drive. This is kept in the Scsi_Disk&n;&t; * struct and tested at open !  Daniel Roche ( dan@lectra.fr )&n;&t; */
-id|sdkp-&gt;ready
+multiline_comment|/*&n;&t; * For removable scsi disk we have to recognise the presence&n;&t; * of a disk in the drive. This is kept in the Scsi_Disk&n;&t; * struct and tested at open !  Daniel Roche ( dan@lectra.fr )&n;&t; */
+id|sdkp-&gt;media_present
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* FLOPTICAL */
 id|retval
 op_assign
 id|sdp-&gt;changed
@@ -2825,19 +2844,107 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sd_init_onedisk - called the first time a new disk is seen,&n; *&t;performs read_capacity, disk spin up (as required), etc.&n; *&t;@sdkp: pointer to associated Scsi_Disk object&n; *&t;@dsk_nr: disk number within this driver (e.g. 0-&gt;/dev/sda,&n; *&t;1-&gt;/dev/sdb, etc)&n; *&n; *&t;Returns dsk_nr (pointless)&n; *&n; *&t;Note: this function is local to this driver.&n; **/
-DECL|function|sd_init_onedisk
 r_static
 r_int
-id|sd_init_onedisk
+DECL|function|sd_media_not_present
+id|sd_media_not_present
 c_func
 (paren
 id|Scsi_Disk
 op_star
 id|sdkp
 comma
+id|Scsi_Request
+op_star
+id|SRpnt
+)paren
+(brace
 r_int
-id|dsk_nr
+id|the_result
+op_assign
+id|SRpnt-&gt;sr_result
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|the_result
+op_ne
+l_int|0
+op_logical_and
+(paren
+id|driver_byte
+c_func
+(paren
+id|the_result
+)paren
+op_amp
+id|DRIVER_SENSE
+)paren
+op_ne
+l_int|0
+op_logical_and
+(paren
+id|SRpnt-&gt;sr_sense_buffer
+(braket
+l_int|2
+)braket
+op_eq
+id|NOT_READY
+op_logical_or
+id|SRpnt-&gt;sr_sense_buffer
+(braket
+l_int|2
+)braket
+op_eq
+id|UNIT_ATTENTION
+)paren
+op_logical_and
+id|SRpnt-&gt;sr_sense_buffer
+(braket
+l_int|12
+)braket
+op_eq
+l_int|0x3A
+multiline_comment|/* medium not present */
+)paren
+(brace
+id|sd_set_media_not_present
+c_func
+(paren
+id|sdkp
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * spinup disk - called only in sd_init_onedisk()&n; */
+r_static
+r_void
+DECL|function|sd_spinup_disk
+id|sd_spinup_disk
+c_func
+(paren
+id|Scsi_Disk
+op_star
+id|sdkp
+comma
+r_char
+op_star
+id|diskname
+comma
+id|Scsi_Request
+op_star
+id|SRpnt
+comma
+r_int
+r_char
+op_star
+id|buffer
 )paren
 (brace
 r_int
@@ -2847,16 +2954,11 @@ id|cmd
 l_int|10
 )braket
 suffix:semicolon
-r_char
-id|nbuff
-(braket
-l_int|6
-)braket
-suffix:semicolon
-r_int
-r_char
+id|Scsi_Device
 op_star
-id|buffer
+id|sdp
+op_assign
+id|sdkp-&gt;device
 suffix:semicolon
 r_int
 r_int
@@ -2871,118 +2973,6 @@ id|retries
 comma
 id|spintime
 suffix:semicolon
-r_int
-id|sector_size
-suffix:semicolon
-id|Scsi_Device
-op_star
-id|sdp
-suffix:semicolon
-id|Scsi_Request
-op_star
-id|SRpnt
-suffix:semicolon
-id|SCSI_LOG_HLQUEUE
-c_func
-(paren
-l_int|3
-comma
-id|printk
-c_func
-(paren
-l_string|&quot;sd_init_onedisk: dsk_nr=%d&bslash;n&quot;
-comma
-id|dsk_nr
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Get the name of the disk, in case we need to log it somewhere.&n;&t; */
-id|sd_dskname
-c_func
-(paren
-id|dsk_nr
-comma
-id|nbuff
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * If the device is offline, don&squot;t try and read capacity or any&n;&t; * of the other niceties.&n;&t; */
-id|sdp
-op_assign
-id|sdkp-&gt;device
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sdp-&gt;online
-op_eq
-id|FALSE
-)paren
-r_return
-id|dsk_nr
-suffix:semicolon
-multiline_comment|/*&n;&t; * We need to retry the READ_CAPACITY because a UNIT_ATTENTION is&n;&t; * considered a fatal error, and many devices report such an error&n;&t; * just after a scsi bus reset.&n;&t; */
-id|SRpnt
-op_assign
-id|scsi_allocate_request
-c_func
-(paren
-id|sdp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|SRpnt
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;(sd_init_onedisk:) Request allocation &quot;
-l_string|&quot;failure.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|dsk_nr
-suffix:semicolon
-)brace
-id|buffer
-op_assign
-id|kmalloc
-c_func
-(paren
-l_int|512
-comma
-id|GFP_DMA
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;(sd_init_onedisk:) Memory allocation &quot;
-l_string|&quot;failure.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|scsi_release_request
-c_func
-(paren
-id|SRpnt
-)paren
-suffix:semicolon
-r_return
-id|dsk_nr
-suffix:semicolon
-)brace
 id|spintime
 op_assign
 l_int|0
@@ -3126,58 +3116,16 @@ multiline_comment|/*&n;&t;&t; * If the drive has indicated to us that it doesn&s
 r_if
 c_cond
 (paren
-id|the_result
-op_ne
-l_int|0
-op_logical_and
-(paren
-(paren
-id|driver_byte
+id|sd_media_not_present
 c_func
 (paren
-id|the_result
+id|sdkp
+comma
+id|SRpnt
 )paren
-op_amp
-id|DRIVER_SENSE
 )paren
-op_ne
-l_int|0
-)paren
-op_logical_and
-id|SRpnt-&gt;sr_sense_buffer
-(braket
-l_int|2
-)braket
-op_eq
-id|UNIT_ATTENTION
-op_logical_and
-id|SRpnt-&gt;sr_sense_buffer
-(braket
-l_int|12
-)braket
-op_eq
-l_int|0x3A
-)paren
-(brace
-id|sdkp-&gt;capacity
-op_assign
-l_int|0x1fffff
+r_return
 suffix:semicolon
-id|sector_size
-op_assign
-l_int|512
-suffix:semicolon
-id|sdp-&gt;changed
-op_assign
-l_int|1
-suffix:semicolon
-id|sdkp-&gt;ready
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 multiline_comment|/* Look for non-removable devices that return NOT_READY.&n;&t;&t; * Issue command to spin up drive for these cases. */
 r_if
 c_cond
@@ -3212,7 +3160,7 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;%s: Spinning up disk...&quot;
 comma
-id|nbuff
+id|diskname
 )paren
 suffix:semicolon
 id|cmd
@@ -3417,6 +3365,53 @@ l_string|&quot;ready&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/*&n; * read disk capacity - called only in sd_init_onedisk()&n; */
+r_static
+r_void
+DECL|function|sd_read_capacity
+id|sd_read_capacity
+c_func
+(paren
+id|Scsi_Disk
+op_star
+id|sdkp
+comma
+r_char
+op_star
+id|diskname
+comma
+id|Scsi_Request
+op_star
+id|SRpnt
+comma
+r_int
+r_char
+op_star
+id|buffer
+)paren
+(brace
+r_int
+r_char
+id|cmd
+(braket
+l_int|10
+)braket
+suffix:semicolon
+id|Scsi_Device
+op_star
+id|sdp
+op_assign
+id|sdkp-&gt;device
+suffix:semicolon
+r_int
+id|the_result
+comma
+id|retries
+suffix:semicolon
+r_int
+id|sector_size
+suffix:semicolon
 id|retries
 op_assign
 l_int|3
@@ -3532,6 +3527,19 @@ comma
 id|MAX_RETRIES
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sd_media_not_present
+c_func
+(paren
+id|sdkp
+comma
+id|SRpnt
+)paren
+)paren
+r_return
+suffix:semicolon
 id|the_result
 op_assign
 id|SRpnt-&gt;sr_result
@@ -3548,7 +3556,6 @@ op_logical_and
 id|retries
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The SCSI standard says:&n;&t; * &quot;READ CAPACITY is necessary for self configuring software&quot;&n;&t; *  While not mandatory, support of READ CAPACITY is strongly&n;&t; *  encouraged.&n;&t; *  We used to die if we couldn&squot;t successfully do a READ CAPACITY.&n;&t; *  But, now we go on about our way.  The side effects of this are&n;&t; *&n;&t; *  1. We can&squot;t know block size with certainty. I have said&n;&t; *     &quot;512 bytes is it&quot; as this is most common.&n;&t; *&n;&t; *  2. Recovery from when someone attempts to read past the&n;&t; *     end of the raw device will be slower.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3562,9 +3569,9 @@ id|KERN_NOTICE
 l_string|&quot;%s : READ CAPACITY failed.&bslash;n&quot;
 l_string|&quot;%s : status=%x, message=%02x, host=%d, driver=%02x &bslash;n&quot;
 comma
-id|nbuff
+id|diskname
 comma
-id|nbuff
+id|diskname
 comma
 id|status_byte
 c_func
@@ -3616,26 +3623,8 @@ c_func
 (paren
 l_string|&quot;%s : sense not available. &bslash;n&quot;
 comma
-id|nbuff
+id|diskname
 )paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;%s : block size assumed to be 512 &quot;
-l_string|&quot;bytes, disk size 1GB.  &bslash;n&quot;
-comma
-id|nbuff
-)paren
-suffix:semicolon
-id|sdkp-&gt;capacity
-op_assign
-l_int|0x1fffff
-suffix:semicolon
-id|sector_size
-op_assign
-l_int|512
 suffix:semicolon
 multiline_comment|/* Set dirty bit for removable devices if not ready -&n;&t;&t; * sometimes drives will not report this properly. */
 r_if
@@ -3654,14 +3643,16 @@ id|sdp-&gt;changed
 op_assign
 l_int|1
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t; * FLOPTICAL, if read_capa is ok, drive is assumed to be ready&n;&t;&t; */
-id|sdkp-&gt;ready
+multiline_comment|/* Either no media are present but the drive didnt tell us,&n;&t;&t;   or they are present but the read capacity command fails */
+multiline_comment|/* sdkp-&gt;media_present = 0; -- not always correct */
+id|sdkp-&gt;capacity
 op_assign
-l_int|1
+l_int|0x200000
 suffix:semicolon
+multiline_comment|/* 1 GB - random */
+r_return
+suffix:semicolon
+)brace
 id|sdkp-&gt;capacity
 op_assign
 l_int|1
@@ -3753,7 +3744,7 @@ id|KERN_NOTICE
 l_string|&quot;%s : sector size 0 reported, &quot;
 l_string|&quot;assuming 512.&bslash;n&quot;
 comma
-id|nbuff
+id|diskname
 )paren
 suffix:semicolon
 )brace
@@ -3788,19 +3779,19 @@ id|KERN_NOTICE
 l_string|&quot;%s : unsupported sector size &quot;
 l_string|&quot;%d.&bslash;n&quot;
 comma
-id|nbuff
+id|diskname
 comma
 id|sector_size
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * The user might want to re-format the drive with&n;&t;&t;&t; * a supported sectorsize.  Once this happens, it&n;&t;&t;&t; * would be relatively trivial to set the thing up.&n;&t;&t;&t; * For this reason, we leave the thing in the table.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The user might want to re-format the drive with&n;&t;&t; * a supported sectorsize.  Once this happens, it&n;&t;&t; * would be relatively trivial to set the thing up.&n;&t;&t; * For this reason, we leave the thing in the table.&n;&t;&t; */
 id|sdkp-&gt;capacity
 op_assign
 l_int|0
 suffix:semicolon
 )brace
 (brace
-multiline_comment|/*&n;&t;&t;&t; * The msdos fs needs to know the hardware sector size&n;&t;&t;&t; * So I have created this table. See ll_rw_blk.c&n;&t;&t;&t; * Jacques Gelinas (Jacques@solucorp.qc.ca)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The msdos fs needs to know the hardware sector size&n;&t;&t; * So I have created this table. See ll_rw_blk.c&n;&t;&t; * Jacques Gelinas (Jacques@solucorp.qc.ca)&n;&t;&t; */
 r_int
 id|hard_sector
 op_assign
@@ -3839,7 +3830,7 @@ id|KERN_NOTICE
 l_string|&quot;SCSI device %s: &quot;
 l_string|&quot;%d %d-byte hdwr sectors (%d MB)&bslash;n&quot;
 comma
-id|nbuff
+id|diskname
 comma
 id|sdkp-&gt;capacity
 comma
@@ -3906,22 +3897,53 @@ id|sdkp-&gt;capacity
 op_rshift_assign
 l_int|1
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Unless otherwise specified, this is not write protected.&n;&t; */
-id|sdkp-&gt;write_prot
+id|sdkp-&gt;device-&gt;sector_size
 op_assign
-l_int|0
+id|sector_size
 suffix:semicolon
-r_if
-c_cond
+)brace
+multiline_comment|/*&n; * read write protect setting, if possible - called only in sd_init_onedisk()&n; */
+r_static
+r_void
+DECL|function|sd_read_write_protect_flag
+id|sd_read_write_protect_flag
+c_func
 (paren
-id|sdp-&gt;removable
-op_logical_and
-id|sdkp-&gt;ready
+id|Scsi_Disk
+op_star
+id|sdkp
+comma
+r_char
+op_star
+id|diskname
+comma
+id|Scsi_Request
+op_star
+id|SRpnt
+comma
+r_int
+r_char
+op_star
+id|buffer
 )paren
 (brace
-multiline_comment|/* FLOPTICAL */
-multiline_comment|/*&n;&t;&t; * For removable scsi disk ( FLOPTICAL ) we have to recognise&n;&t;&t; * the Write Protect Flag. This flag is kept in the Scsi_Disk&n;&t;&t; * struct and tested at open !&n;&t;&t; * Daniel Roche ( dan@lectra.fr )&n;&t;&t; *&n;&t;&t; * Changed to get all pages (0x3f) rather than page 1 to&n;&t;&t; * get around devices which do not have a page 1.  Since&n;&t;&t; * we&squot;re only interested in the header anyway, this should&n;&t;&t; * be fine.&n;&t;&t; *   -- Matthew Dharm (mdharm-scsi@one-eyed-alien.net)&n;&t;&t; *&n;&t;&t; * As it turns out, some devices return an error for&n;&t;&t; * every MODE_SENSE request except one for page 0.&n;&t;&t; * So, we should also try that. --aeb&n;&t;&t; */
+id|Scsi_Device
+op_star
+id|sdp
+op_assign
+id|sdkp-&gt;device
+suffix:semicolon
+r_int
+r_char
+id|cmd
+(braket
+l_int|8
+)braket
+suffix:semicolon
+r_int
+id|the_result
+suffix:semicolon
+multiline_comment|/*&n;&t; * For removable scsi disks we have to recognise the&n;&t; * Write Protect Flag. This flag is kept in the Scsi_Disk&n;&t; * struct and tested at open !&n;&t; * Daniel Roche ( dan@lectra.fr )&n;&t; *&n;&t; * Changed to get all pages (0x3f) rather than page 1 to&n;&t; * get around devices which do not have a page 1.  Since&n;&t; * we&squot;re only interested in the header anyway, this should&n;&t; * be fine.&n;&t; *   -- Matthew Dharm (mdharm-scsi@one-eyed-alien.net)&n;&t; *&n;&t; * As it turns out, some devices return an error for&n;&t; * every MODE_SENSE request except one for page 0.&n;&t; * So, we should also try that. --aeb&n;&t; */
 id|memset
 c_func
 (paren
@@ -4005,7 +4027,6 @@ l_int|2
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* same code as READCAPA !! */
 id|SRpnt-&gt;sr_data_direction
 op_assign
 id|SCSI_DATA_READ
@@ -4049,7 +4070,7 @@ c_func
 (paren
 l_string|&quot;%s: test WP failed, assume Write Enabled&bslash;n&quot;
 comma
-id|nbuff
+id|diskname
 )paren
 suffix:semicolon
 multiline_comment|/* alternatively, try page 0 */
@@ -4077,7 +4098,7 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;%s: Write Protect is %s&bslash;n&quot;
 comma
-id|nbuff
+id|diskname
 comma
 id|sdkp-&gt;write_prot
 ques
@@ -4089,7 +4110,197 @@ l_string|&quot;off&quot;
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* check for write protect */
+multiline_comment|/**&n; *&t;sd_init_onedisk - called the first time a new disk is seen,&n; *&t;performs disk spin up, read_capacity, etc.&n; *&t;@sdkp: pointer to associated Scsi_Disk object&n; *&t;@dsk_nr: disk number within this driver (e.g. 0-&gt;/dev/sda,&n; *&t;1-&gt;/dev/sdb, etc)&n; *&n; *&t;Note: this function is local to this driver.&n; **/
+r_static
+r_void
+DECL|function|sd_init_onedisk
+id|sd_init_onedisk
+c_func
+(paren
+id|Scsi_Disk
+op_star
+id|sdkp
+comma
+r_int
+id|dsk_nr
+)paren
+(brace
+r_char
+id|diskname
+(braket
+l_int|40
+)braket
+suffix:semicolon
+r_int
+r_char
+op_star
+id|buffer
+suffix:semicolon
+id|Scsi_Device
+op_star
+id|sdp
+suffix:semicolon
+id|Scsi_Request
+op_star
+id|SRpnt
+suffix:semicolon
+id|SCSI_LOG_HLQUEUE
+c_func
+(paren
+l_int|3
+comma
+id|printk
+c_func
+(paren
+l_string|&quot;sd_init_onedisk: dsk_nr=%d&bslash;n&quot;
+comma
+id|dsk_nr
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Get the name of the disk, in case we need to log it somewhere.&n;&t; */
+id|sd_dskname
+c_func
+(paren
+id|dsk_nr
+comma
+id|diskname
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * If the device is offline, don&squot;t try and read capacity or any&n;&t; * of the other niceties.&n;&t; */
+id|sdp
+op_assign
+id|sdkp-&gt;device
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdp-&gt;online
+op_eq
+id|FALSE
+)paren
+r_return
+suffix:semicolon
+id|SRpnt
+op_assign
+id|scsi_allocate_request
+c_func
+(paren
+id|sdp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SRpnt
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;(sd_init_onedisk:) Request allocation &quot;
+l_string|&quot;failure.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|buffer
+op_assign
+id|kmalloc
+c_func
+(paren
+l_int|512
+comma
+id|GFP_DMA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;(sd_init_onedisk:) Memory allocation &quot;
+l_string|&quot;failure.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|leave
+suffix:semicolon
+)brace
+multiline_comment|/* defaults, until the device tells us otherwise */
+id|sdkp-&gt;capacity
+op_assign
+l_int|0
+suffix:semicolon
+id|sdkp-&gt;device-&gt;sector_size
+op_assign
+l_int|512
+suffix:semicolon
+id|sdkp-&gt;media_present
+op_assign
+l_int|1
+suffix:semicolon
+id|sdkp-&gt;write_prot
+op_assign
+l_int|0
+suffix:semicolon
+id|sd_spinup_disk
+c_func
+(paren
+id|sdkp
+comma
+id|diskname
+comma
+id|SRpnt
+comma
+id|buffer
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdkp-&gt;media_present
+)paren
+id|sd_read_capacity
+c_func
+(paren
+id|sdkp
+comma
+id|diskname
+comma
+id|SRpnt
+comma
+id|buffer
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdp-&gt;removable
+op_logical_and
+id|sdkp-&gt;media_present
+)paren
+id|sd_read_write_protect_flag
+c_func
+(paren
+id|sdkp
+comma
+id|diskname
+comma
+id|SRpnt
+comma
+id|buffer
+)paren
+suffix:semicolon
 id|SRpnt-&gt;sr_device-&gt;ten
 op_assign
 l_int|1
@@ -4098,29 +4309,19 @@ id|SRpnt-&gt;sr_device-&gt;remap
 op_assign
 l_int|1
 suffix:semicolon
-id|SRpnt-&gt;sr_device-&gt;sector_size
-op_assign
-id|sector_size
-suffix:semicolon
-multiline_comment|/* Wake up a process waiting for device */
+id|leave
+suffix:colon
 id|scsi_release_request
 c_func
 (paren
 id|SRpnt
 )paren
 suffix:semicolon
-id|SRpnt
-op_assign
-l_int|NULL
-suffix:semicolon
 id|kfree
 c_func
 (paren
 id|buffer
 )paren
-suffix:semicolon
-r_return
-id|dsk_nr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The sd_init() function looks at all SCSI drives present, determines&n; * their size, and reads partition table entries for them.&n; */
@@ -4696,11 +4897,6 @@ suffix:semicolon
 )brace
 id|cleanup_mem
 suffix:colon
-r_if
-c_cond
-(paren
-id|sd_gendisks
-)paren
 id|vfree
 c_func
 (paren
@@ -4711,11 +4907,6 @@ id|sd_gendisks
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sd
-)paren
 id|vfree
 c_func
 (paren
@@ -4726,11 +4917,6 @@ id|sd
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sd_sizes
-)paren
 id|vfree
 c_func
 (paren
@@ -4761,26 +4947,15 @@ suffix:semicolon
 op_increment
 id|k
 )paren
-(brace
-id|sdkp
-op_assign
+id|vfree
+c_func
+(paren
 id|sd_dsk_arr
 (braket
 id|k
 )braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sdkp
-)paren
-id|vfree
-c_func
-(paren
-id|sdkp
 )paren
 suffix:semicolon
-)brace
 id|vfree
 c_func
 (paren
@@ -4827,7 +5002,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sd_finish- called during driver initialization, after all&n; *&t;the sd_attach() calls are finished.&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function is not called after driver initialization has completed.&n; *&t;Specifically later device attachments invoke sd_attach() but not&n; *&t;this function.&n; **/
+multiline_comment|/**&n; *&t;sd_finish - called during driver initialization, after all&n; *&t;the sd_attach() calls are finished.&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function is not called after driver initialization has completed.&n; *&t;Specifically later device attachments invoke sd_attach() but not&n; *&t;this function.&n; **/
 DECL|function|sd_finish
 r_static
 r_void
@@ -4945,7 +5120,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sdkp-&gt;has_part_table
+id|sdkp-&gt;has_been_registered
 )paren
 (brace
 id|sd_sizes
@@ -4983,7 +5158,7 @@ comma
 id|sdkp-&gt;capacity
 )paren
 suffix:semicolon
-id|sdkp-&gt;has_part_table
+id|sdkp-&gt;has_been_registered
 op_assign
 l_int|1
 suffix:semicolon
@@ -4993,7 +5168,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sd_detect- called at the start of driver initialization, once &n; *&t;for each scsi device (not just disks) present.&n; *&n; *&t;Returns 0 if not interested in this scsi device (e.g. scanner);&n; *&t;1 if this device is of interest (e.g. a disk).&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function is called before sd_init() so very little is available.&n; **/
+multiline_comment|/**&n; *&t;sd_detect - called at the start of driver initialization, once &n; *&t;for each scsi device (not just disks) present.&n; *&n; *&t;Returns 0 if not interested in this scsi device (e.g. scanner);&n; *&t;1 if this device is of interest (e.g. a disk).&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function is called before sd_init() so very little is available.&n; **/
 DECL|function|sd_detect
 r_static
 r_int
@@ -5040,7 +5215,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sd_attach- called during driver initialization and whenever a&n; *&t;new scsi device is attached to the system. It is called once&n; *&t;for each scsi device (not just disks) present.&n; *&t;@sdp: pointer to mid level scsi device object&n; *&n; *&t;Returns 0 if successful (or not interested in this scsi device &n; *&t;(e.g. scanner)); 1 when there is an error.&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function sets up the mapping between a given &n; *&t;&lt;host,channel,id,lun&gt; (found in sdp) and new device name &n; *&t;(e.g. /dev/sda). More precisely it is the block device major &n; *&t;and minor number that is chosen here.&n; **/
+multiline_comment|/**&n; *&t;sd_attach - called during driver initialization and whenever a&n; *&t;new scsi device is attached to the system. It is called once&n; *&t;for each scsi device (not just disks) present.&n; *&t;@sdp: pointer to mid level scsi device object&n; *&n; *&t;Returns 0 if successful (or not interested in this scsi device &n; *&t;(e.g. scanner)); 1 when there is an error.&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function sets up the mapping between a given &n; *&t;&lt;host,channel,id,lun&gt; (found in sdp) and new device name &n; *&t;(e.g. /dev/sda). More precisely it is the block device major &n; *&t;and minor number that is chosen here.&n; **/
 DECL|function|sd_attach
 r_static
 r_int
@@ -5064,7 +5239,7 @@ r_int
 id|dsk_nr
 suffix:semicolon
 r_char
-id|nbuff
+id|diskname
 (braket
 l_int|6
 )braket
@@ -5181,13 +5356,22 @@ op_logical_neg
 id|sdkp-&gt;device
 )paren
 (brace
+id|memset
+c_func
+(paren
+id|sdkp
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|Scsi_Disk
+)paren
+)paren
+suffix:semicolon
 id|sdkp-&gt;device
 op_assign
 id|sdp
-suffix:semicolon
-id|sdkp-&gt;has_part_table
-op_assign
-l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -5276,7 +5460,7 @@ c_func
 (paren
 id|dsk_nr
 comma
-id|nbuff
+id|diskname
 )paren
 suffix:semicolon
 id|printk
@@ -5293,7 +5477,7 @@ l_string|&quot;removable &quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
-id|nbuff
+id|diskname
 comma
 id|sdp-&gt;host-&gt;host_no
 comma
@@ -5308,7 +5492,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;revalidate_scsidisk- called to flush all partitions and partition &n; *&t;tables for a changed scsi disk. sd_init_onedisk() is then called&n; *&t;followed by re-reading the new partition table.&n; *      @dev: kernel device descriptor (kdev_t)&n; *      @maxusage: 0 when called from block level, 1 when called from&n; *      sd_ioctl().&n; *&n; *&t;Returns 0 if successful; negated errno value otherwise.&n; */
+multiline_comment|/**&n; *&t;revalidate_scsidisk - called to flush all partitions and partition &n; *&t;tables for a changed scsi disk. sd_init_onedisk() is then called&n; *&t;followed by re-reading the new partition table.&n; *      @dev: kernel device descriptor (kdev_t)&n; *      @maxusage: 0 when called from block level, 1 when called from&n; *      sd_ioctl().&n; *&n; *&t;Returns 0 if successful; negated errno value otherwise.&n; */
 DECL|function|revalidate_scsidisk
 r_int
 id|revalidate_scsidisk
@@ -5491,7 +5675,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sd_detach- called whenever a scsi disk (previously recognized by&n; *&t;sd_attach) is detached from the system. It is called (potentially&n; *&t;multiple times) during sd module unload.&n; *&t;@sdp: pointer to mid level scsi device object&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function potentially frees up a device name (e.g. /dev/sdc)&n; *&t;that could be re-used by a subsequent sd_attach().&n; *&t;This function is not called when the built-in sd driver is &quot;exit-ed&quot;.&n; **/
+multiline_comment|/**&n; *&t;sd_detach - called whenever a scsi disk (previously recognized by&n; *&t;sd_attach) is detached from the system. It is called (potentially&n; *&t;multiple times) during sd module unload.&n; *&t;@sdp: pointer to mid level scsi device object&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function potentially frees up a device name (e.g. /dev/sdc)&n; *&t;that could be re-used by a subsequent sd_attach().&n; *&t;This function is not called when the built-in sd driver is &quot;exit-ed&quot;.&n; **/
 DECL|function|sd_detach
 r_static
 r_void
@@ -5586,7 +5770,7 @@ op_eq
 id|sdp
 )paren
 (brace
-id|sdkp-&gt;has_part_table
+id|sdkp-&gt;has_been_registered
 op_assign
 l_int|0
 suffix:semicolon
@@ -5708,7 +5892,7 @@ id|nr_real
 op_decrement
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;init_sd- entry point for this driver (both when built in or when&n; *&t;a module).&n; *&n; *&t;Note: this function registers this driver with the scsi mid-level.&n; **/
+multiline_comment|/**&n; *&t;init_sd - entry point for this driver (both when built in or when&n; *&t;a module).&n; *&n; *&t;Note: this function registers this driver with the scsi mid-level.&n; **/
 DECL|function|init_sd
 r_static
 r_int
@@ -5744,7 +5928,7 @@ id|sd_template
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;exit_sd- exit point for this driver (when it is&t;a module).&n; *&n; *&t;Note: this function unregisters this driver from the scsi mid-level.&n; **/
+multiline_comment|/**&n; *&t;exit_sd - exit point for this driver (when it is&t;a module).&n; *&n; *&t;Note: this function unregisters this driver from the scsi mid-level.&n; **/
 DECL|function|exit_sd
 r_static
 r_void
@@ -5757,10 +5941,6 @@ r_void
 (brace
 r_int
 id|k
-suffix:semicolon
-id|Scsi_Disk
-op_star
-id|sdkp
 suffix:semicolon
 id|SCSI_LOG_HLQUEUE
 c_func
@@ -5832,26 +6012,15 @@ suffix:semicolon
 op_increment
 id|k
 )paren
-(brace
-id|sdkp
-op_assign
+id|vfree
+c_func
+(paren
 id|sd_dsk_arr
 (braket
 id|k
 )braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sdkp
-)paren
-id|vfree
-c_func
-(paren
-id|sdkp
 )paren
 suffix:semicolon
-)brace
 id|vfree
 c_func
 (paren
@@ -5859,22 +6028,12 @@ id|sd_dsk_arr
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|sd_sizes
-)paren
 id|vfree
 c_func
 (paren
 id|sd_sizes
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sd
-)paren
 id|vfree
 c_func
 (paren

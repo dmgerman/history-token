@@ -1645,7 +1645,10 @@ op_logical_and
 op_logical_neg
 id|card-&gt;wandev.piggyback
 )paren
-(brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -1655,6 +1658,30 @@ id|card-&gt;hw.io_range
 comma
 id|wandev-&gt;name
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;port 0x%04x busy&bslash;n&quot;
+comma
+id|card-&gt;hw.port
+)paren
+suffix:semicolon
+id|release_hw
+c_func
+(paren
+id|card
+)paren
+suffix:semicolon
+id|wandev-&gt;state
+op_assign
+id|WAN_UNCONFIGURED
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
 multiline_comment|/* Only use the polling routine for the X25 protocol */

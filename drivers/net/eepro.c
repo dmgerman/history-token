@@ -2473,6 +2473,10 @@ l_int|9
 suffix:semicolon
 )brace
 multiline_comment|/* Grab the region so we can find another board if autoIRQ fails. */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -2482,7 +2486,21 @@ id|EEPRO_IO_EXTENT
 comma
 id|dev-&gt;name
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;EEPRO: io-port 0x%04x in use &bslash;n&quot;
+comma
+id|ioaddr
+)paren
 suffix:semicolon
+r_goto
+id|freeall
+suffix:semicolon
+)brace
 (paren
 (paren
 r_struct

@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 multiline_comment|/*&n; * This source file contains the symbol table used by scsi loadable&n; * modules.&n; */
@@ -143,6 +142,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|print_status
+)paren
+suffix:semicolon
+DECL|variable|scsi_sense_key_string
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_sense_key_string
+)paren
+suffix:semicolon
+DECL|variable|scsi_extd_sense_format
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_extd_sense_format
 )paren
 suffix:semicolon
 DECL|variable|kernel_scsi_ioctl

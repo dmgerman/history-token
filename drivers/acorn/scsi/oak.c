@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
-macro_line|#include &quot;../../scsi/constants.h&quot;
 DECL|macro|OAKSCSI_PUBLIC_RELEASE
 mdefine_line|#define OAKSCSI_PUBLIC_RELEASE 1
 DECL|macro|NCR5380_read

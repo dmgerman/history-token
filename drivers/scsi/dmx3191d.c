@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;dmx3191d.h&quot;
 multiline_comment|/* play with these values to tune up your system performances */

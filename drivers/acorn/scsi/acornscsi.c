@@ -91,7 +91,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
-macro_line|#include &quot;../../scsi/constants.h&quot;
 macro_line|#include &quot;acornscsi.h&quot;
 macro_line|#include &quot;msgqueue.h&quot;
 macro_line|#include &quot;scsi.h&quot;
