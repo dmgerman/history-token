@@ -18,12 +18,6 @@ DECL|macro|LLC_REJ_TIME
 mdefine_line|#define LLC_REJ_TIME&t;&t; 3
 DECL|macro|LLC_BUSY_TIME
 mdefine_line|#define LLC_BUSY_TIME&t;&t; 3
-DECL|macro|LLC_DEST_INVALID
-mdefine_line|#define LLC_DEST_INVALID&t; 0&t;/* Invalid LLC PDU type */
-DECL|macro|LLC_DEST_SAP
-mdefine_line|#define LLC_DEST_SAP&t;&t; 1&t;/* Type 1 goes here */
-DECL|macro|LLC_DEST_CONN
-mdefine_line|#define LLC_DEST_CONN&t;&t; 2&t;/* Type 2 goes here */
 multiline_comment|/**&n; * struct llc_station - LLC station component&n; *&n; * SAP and connection resource manager, one per adapter.&n; *&n; * @state - state of station&n; * @xid_r_count - XID response PDU counter&n; * @mac_sa - MAC source address&n; * @sap_list - list of related SAPs&n; * @ev_q - events entering state mach.&n; * @mac_pdu_q - PDUs ready to send to MAC&n; */
 DECL|struct|llc_station
 r_struct
