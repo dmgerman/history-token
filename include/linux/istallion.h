@@ -100,26 +100,6 @@ id|tty_struct
 op_star
 id|tty
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
-DECL|member|open_wait
-r_struct
-id|wait_queue
-op_star
-id|open_wait
-suffix:semicolon
-DECL|member|close_wait
-r_struct
-id|wait_queue
-op_star
-id|close_wait
-suffix:semicolon
-DECL|member|raw_wait
-r_struct
-id|wait_queue
-op_star
-id|raw_wait
-suffix:semicolon
-macro_line|#else
 DECL|member|open_wait
 id|wait_queue_head_t
 id|open_wait
@@ -132,7 +112,6 @@ DECL|member|raw_wait
 id|wait_queue_head_t
 id|raw_wait
 suffix:semicolon
-macro_line|#endif
 DECL|member|tqhangup
 r_struct
 id|work_struct
