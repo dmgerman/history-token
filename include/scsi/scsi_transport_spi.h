@@ -21,12 +21,14 @@ id|offset
 suffix:semicolon
 DECL|member|width
 r_int
+r_int
 id|width
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 0 - narrow, 1 - wide */
 DECL|member|iu
+r_int
 r_int
 id|iu
 suffix:colon
@@ -35,12 +37,14 @@ suffix:semicolon
 multiline_comment|/* Information Units enabled */
 DECL|member|dt
 r_int
+r_int
 id|dt
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* DT clocking enabled */
 DECL|member|qas
+r_int
 r_int
 id|qas
 suffix:colon
@@ -49,12 +53,14 @@ suffix:semicolon
 multiline_comment|/* Quick Arbitration and Selection enabled */
 DECL|member|wr_flow
 r_int
+r_int
 id|wr_flow
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Write Flow control enabled */
 DECL|member|rd_strm
+r_int
 r_int
 id|rd_strm
 suffix:colon
@@ -63,12 +69,14 @@ suffix:semicolon
 multiline_comment|/* Read streaming enabled */
 DECL|member|rti
 r_int
+r_int
 id|rti
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Retain Training Information */
 DECL|member|pcomp_en
+r_int
 r_int
 id|pcomp_en
 suffix:colon
@@ -362,6 +370,77 @@ op_star
 comma
 r_int
 )paren
+suffix:semicolon
+multiline_comment|/* The driver sets these to tell the transport class it&n;&t; * wants the attributes displayed in sysfs.  If the show_ flag&n;&t; * is not set, the attribute will be private to the transport&n;&t; * class */
+DECL|member|show_period
+r_int
+r_int
+id|show_period
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_offset
+r_int
+r_int
+id|show_offset
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_width
+r_int
+r_int
+id|show_width
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_iu
+r_int
+r_int
+id|show_iu
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_dt
+r_int
+r_int
+id|show_dt
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_qas
+r_int
+r_int
+id|show_qas
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_wr_flow
+r_int
+r_int
+id|show_wr_flow
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_rd_strm
+r_int
+r_int
+id|show_rd_strm
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_rti
+r_int
+r_int
+id|show_rti
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_pcomp_en
+r_int
+r_int
+id|show_pcomp_en
+suffix:colon
+l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
