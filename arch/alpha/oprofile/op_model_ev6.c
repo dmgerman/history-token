@@ -106,7 +106,7 @@ multiline_comment|/* Select logging options.  */
 multiline_comment|/* ??? Need to come up with some mechanism to trace only&n;&t;   selected processes.  EV6 does not have a mechanism to&n;&t;   select kernel or user mode only.  For now, enable always.  */
 id|reg-&gt;proc_mode
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 multiline_comment|/* EV6 cannot change the width of the counters as with the&n;&t;   other implementations.  But fortunately, we can write to&n;&t;   the counters and set the value such that it will overflow&n;&t;   at the right time.  */
 id|reset
