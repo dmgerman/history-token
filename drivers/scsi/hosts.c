@@ -587,61 +587,31 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_remove_host - check a scsi host for release and release&n; * @shost:&t;a pointer to a scsi host to release&n; *&n; * Return value:&n; * &t;0 on Success / 1 on Failure&n; **/
-DECL|function|scsi_remove_host
+DECL|function|scsi_check_device_busy
+r_static
 r_int
-id|scsi_remove_host
+id|scsi_check_device_busy
 c_func
 (paren
-r_struct
-id|Scsi_Host
-op_star
-id|shost
-)paren
-(brace
 r_struct
 id|scsi_device
 op_star
 id|sdev
+)paren
+(brace
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+op_assign
+id|sdev-&gt;host
 suffix:semicolon
 r_struct
 id|scsi_cmnd
 op_star
 id|scmd
 suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME Do ref counting.  We force all of the devices offline to&n;&t; * help prevent race conditions where other hosts/processors could&n;&t; * try and get in and queue a command.&n;&t; */
-r_for
-c_loop
-(paren
-id|sdev
-op_assign
-id|shost-&gt;host_queue
-suffix:semicolon
-id|sdev
-suffix:semicolon
-id|sdev
-op_assign
-id|sdev-&gt;next
-)paren
-id|sdev-&gt;online
-op_assign
-id|FALSE
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|sdev
-op_assign
-id|shost-&gt;host_queue
-suffix:semicolon
-id|sdev
-suffix:semicolon
-id|sdev
-op_assign
-id|sdev-&gt;next
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Loop over all of the commands associated with the&n;&t;&t; * device.  If any of them are busy, then set the state&n;&t;&t; * back to inactive and bail.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Loop over all of the commands associated with the&n;&t; * device.  If any of them are busy, then set the state&n;&t; * back to inactive and bail.&n;&t; */
 r_for
 c_loop
 (paren
@@ -665,14 +635,35 @@ id|scmd-&gt;request-&gt;rq_status
 op_ne
 id|RQ_INACTIVE
 )paren
-(brace
+r_goto
+id|active
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * No, this device is really free.  Mark it as such, and&n;&t;&t; * continue on.&n;&t;&t; */
+id|scmd-&gt;state
+op_assign
+id|SCSI_STATE_DISCONNECTING
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|scmd-&gt;request
+)paren
+id|scmd-&gt;request-&gt;rq_status
+op_assign
+id|RQ_SCSI_DISCONNECTING
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+id|active
+suffix:colon
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;SCSI device not inactive&quot;
-l_string|&quot;- rq_status=%d, target=%d, pid=%ld,&quot;
-l_string|&quot;state=%d, owner=%d.&bslash;n&quot;
+l_string|&quot;SCSI device not inactive - rq_status=%d, target=%d, &quot;
+l_string|&quot;pid=%ld, state=%d, owner=%d.&bslash;n&quot;
 comma
 id|scmd-&gt;request-&gt;rq_status
 comma
@@ -712,6 +703,7 @@ id|scmd
 op_assign
 id|scmd-&gt;next
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -724,6 +716,7 @@ op_assign
 id|RQ_INACTIVE
 suffix:semicolon
 )brace
+)brace
 id|printk
 c_func
 (paren
@@ -735,23 +728,66 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * No, this device is really free.  Mark it as such, and&n;&t;&t;&t; * continue on.&n;&t;&t;&t; */
-id|scmd-&gt;state
-op_assign
-id|SCSI_STATE_DISCONNECTING
+multiline_comment|/**&n; * scsi_remove_host - check a scsi host for release and release&n; * @shost:&t;a pointer to a scsi host to release&n; *&n; * Return value:&n; * &t;0 on Success / 1 on Failure&n; **/
+DECL|function|scsi_remove_host
+r_int
+id|scsi_remove_host
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+)paren
+(brace
+r_struct
+id|scsi_device
+op_star
+id|sdev
 suffix:semicolon
+multiline_comment|/*&n;&t; * FIXME Do ref counting.  We force all of the devices offline to&n;&t; * help prevent race conditions where other hosts/processors could&n;&t; * try and get in and queue a command.&n;&t; */
+r_for
+c_loop
+(paren
+id|sdev
+op_assign
+id|shost-&gt;host_queue
+suffix:semicolon
+id|sdev
+suffix:semicolon
+id|sdev
+op_assign
+id|sdev-&gt;next
+)paren
+id|sdev-&gt;online
+op_assign
+id|FALSE
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|sdev
+op_assign
+id|shost-&gt;host_queue
+suffix:semicolon
+id|sdev
+suffix:semicolon
+id|sdev
+op_assign
+id|sdev-&gt;next
+)paren
 r_if
 c_cond
 (paren
-id|scmd-&gt;request
+id|scsi_check_device_busy
+c_func
+(paren
+id|sdev
 )paren
-id|scmd-&gt;request-&gt;rq_status
-op_assign
-id|RQ_SCSI_DISCONNECTING
+)paren
+r_return
+l_int|1
 suffix:semicolon
-multiline_comment|/* Mark as&n;&t;&t;&t;&t;&t;&t;&t;&t;   busy */
-)brace
-)brace
 multiline_comment|/*&n;&t; * Next we detach the high level drivers from the Scsi_Device&n;&t; * structures&n;&t; */
 r_for
 c_loop
