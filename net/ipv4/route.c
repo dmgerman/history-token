@@ -1967,7 +1967,7 @@ multiline_comment|/* Entry is expired even if it is in use */
 r_if
 c_cond
 (paren
-id|time_after_eq
+id|time_before_eq
 c_func
 (paren
 id|now
