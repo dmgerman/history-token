@@ -9151,6 +9151,8 @@ id|skb
 comma
 id|adapter-&gt;vlgrp
 comma
+id|le16_to_cpu
+c_func
 (paren
 id|rx_desc-&gt;special
 op_amp
@@ -9188,6 +9190,8 @@ id|skb
 comma
 id|adapter-&gt;vlgrp
 comma
+id|le16_to_cpu
+c_func
 (paren
 id|rx_desc-&gt;special
 op_amp
