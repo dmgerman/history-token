@@ -22,20 +22,20 @@ id|sys_tz
 )paren
 suffix:semicolon
 macro_line|#ifdef __ARCH_WANT_SYS_TIME
-multiline_comment|/*&n; * sys_time() can be implemented in user-level using&n; * sys_gettimeofday().  Is this for backwards compatibility?  If so,&n; * why not move it into the appropriate arch directory (for those&n; * architectures that need it).&n; *&n; * XXX This function is NOT 64-bit clean!&n; */
+multiline_comment|/*&n; * sys_time() can be implemented in user-level using&n; * sys_gettimeofday().  Is this for backwards compatibility?  If so,&n; * why not move it into the appropriate arch directory (for those&n; * architectures that need it).&n; */
 DECL|function|sys_time
 id|asmlinkage
 r_int
 id|sys_time
 c_func
 (paren
-r_int
+id|time_t
 id|__user
 op_star
 id|tloc
 )paren
 (brace
-r_int
+id|time_t
 id|i
 suffix:semicolon
 r_struct
