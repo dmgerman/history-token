@@ -243,7 +243,7 @@ DECL|macro|IXP4XX_OST_ONE_SHOT
 mdefine_line|#define IXP4XX_OST_ONE_SHOT&t;&t;0x00000002
 multiline_comment|/* Low order bits of reload value ignored */
 DECL|macro|IXP4XX_OST_RELOAD_MASK
-mdefine_line|#define IXP4XX_OST_RELOAD_MASK&t;&t;0x00000004
+mdefine_line|#define IXP4XX_OST_RELOAD_MASK&t;&t;0x00000003
 DECL|macro|IXP4XX_OST_DISABLED
 mdefine_line|#define IXP4XX_OST_DISABLED&t;&t;0x00000000
 DECL|macro|IXP4XX_OSST_TIMER_1_PEND
