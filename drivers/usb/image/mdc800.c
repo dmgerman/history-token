@@ -971,6 +971,12 @@ r_struct
 id|usb_driver
 id|mdc800_usb_driver
 suffix:semicolon
+DECL|variable|mdc800_device_ops
+r_static
+r_struct
+id|file_operations
+id|mdc800_device_ops
+suffix:semicolon
 multiline_comment|/*&n; * Callback to search the Mustek MDC800 on the USB Bus&n; */
 DECL|function|mdc800_usb_probe
 r_static
@@ -1269,7 +1275,9 @@ op_assign
 id|usb_register_dev
 (paren
 op_amp
-id|mdc800_usb_driver
+id|mdc800_device_ops
+comma
+id|MDC800_DEVICE_MINOR_BASE
 comma
 l_int|1
 comma
@@ -1443,9 +1451,6 @@ r_return
 suffix:semicolon
 id|usb_deregister_dev
 (paren
-op_amp
-id|mdc800_usb_driver
-comma
 l_int|1
 comma
 id|mdc800-&gt;minor
@@ -2842,6 +2847,10 @@ id|usb_driver
 id|mdc800_usb_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;mdc800&quot;
@@ -2853,19 +2862,6 @@ comma
 id|disconnect
 suffix:colon
 id|mdc800_usb_disconnect
-comma
-id|fops
-suffix:colon
-op_amp
-id|mdc800_device_ops
-comma
-id|minor
-suffix:colon
-id|MDC800_DEVICE_MINOR_BASE
-comma
-id|num_minors
-suffix:colon
-l_int|1
 comma
 id|id_table
 suffix:colon

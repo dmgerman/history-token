@@ -683,9 +683,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|switch_to
+DECL|function|__switch_to
 r_void
-id|switch_to
+id|__switch_to
 c_func
 (paren
 r_struct

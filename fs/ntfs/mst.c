@@ -49,7 +49,7 @@ id|b-&gt;usa_count
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* Size and alignement checks. */
+multiline_comment|/* Size and alignment checks. */
 r_if
 c_cond
 (paren
@@ -296,7 +296,7 @@ id|b-&gt;usa_count
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* Size and alignement checks. */
+multiline_comment|/* Size and alignment checks. */
 r_if
 c_cond
 (paren

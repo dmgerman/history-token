@@ -915,7 +915,7 @@ op_assign
 id|encode_comp_t
 c_func
 (paren
-id|current-&gt;times.tms_utime
+id|current-&gt;utime
 )paren
 suffix:semicolon
 id|ac.ac_stime
@@ -923,7 +923,7 @@ op_assign
 id|encode_comp_t
 c_func
 (paren
-id|current-&gt;times.tms_stime
+id|current-&gt;stime
 )paren
 suffix:semicolon
 id|ac.ac_uid

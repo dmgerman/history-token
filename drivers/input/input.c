@@ -139,23 +139,6 @@ r_static
 id|devfs_handle_t
 id|input_devfs_handle
 suffix:semicolon
-DECL|variable|input_number
-r_static
-r_int
-id|input_number
-suffix:semicolon
-DECL|variable|input_devices
-r_static
-r_int
-id|input_devices
-(braket
-id|NBITS
-c_func
-(paren
-id|INPUT_DEVICES
-)paren
-)braket
-suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|proc_bus_input_dir
 r_static
@@ -1886,47 +1869,6 @@ op_div
 l_int|33
 suffix:semicolon
 multiline_comment|/*&n; * Add the device.&n; */
-r_if
-c_cond
-(paren
-id|input_number
-op_ge
-id|INPUT_DEVICES
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;input: ran out of input device numbers!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dev-&gt;number
-op_assign
-id|input_number
-suffix:semicolon
-)brace
-r_else
-(brace
-id|dev-&gt;number
-op_assign
-id|find_first_zero_bit
-c_func
-(paren
-id|input_devices
-comma
-id|INPUT_DEVICES
-)paren
-suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|dev-&gt;number
-comma
-id|input_devices
-)paren
-suffix:semicolon
-)brace
 id|dev-&gt;next
 op_assign
 id|input_dev
@@ -1934,9 +1876,6 @@ suffix:semicolon
 id|input_dev
 op_assign
 id|dev
-suffix:semicolon
-id|input_number
-op_increment
 suffix:semicolon
 multiline_comment|/*&n; * Notify handlers.&n; */
 r_while
@@ -2120,9 +2059,6 @@ id|dev
 comma
 id|next
 )paren
-suffix:semicolon
-id|input_number
-op_decrement
 suffix:semicolon
 multiline_comment|/*&n; * Notify /proc.&n; */
 macro_line|#ifdef CONFIG_PROC_FS

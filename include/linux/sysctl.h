@@ -9,7 +9,7 @@ r_struct
 id|file
 suffix:semicolon
 DECL|macro|CTL_MAXNAME
-mdefine_line|#define CTL_MAXNAME 10
+mdefine_line|#define CTL_MAXNAME 10&t;&t;/* how many path components do we allow in a&n;&t;&t;&t;&t;   call to sysctl?   In other words, what is&n;&t;&t;&t;&t;   the largest acceptable value for the nlen&n;&t;&t;&t;&t;   member of a struct __sysctl_args to have? */
 DECL|struct|__sysctl_args
 r_struct
 id|__sysctl_args
@@ -498,6 +498,12 @@ op_assign
 l_int|15
 comma
 multiline_comment|/* dirty_expire_centisecs */
+DECL|enumerator|VM_NR_PDFLUSH_THREADS
+id|VM_NR_PDFLUSH_THREADS
+op_assign
+l_int|16
+comma
+multiline_comment|/* nr_pdflush_threads */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

@@ -226,11 +226,11 @@ r_return
 id|udev
 suffix:semicolon
 )brace
-DECL|function|u32_to_kdev_t
+DECL|function|u32_to_dev_t
 r_static
 r_inline
-id|kdev_t
-id|u32_to_kdev_t
+id|dev_t
+id|u32_to_dev_t
 c_func
 (paren
 id|__u32
@@ -284,7 +284,7 @@ l_int|0xf00
 )paren
 suffix:semicolon
 r_return
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|major

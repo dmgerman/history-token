@@ -2,6 +2,8 @@ multiline_comment|/* r128_drv.c -- ATI Rage 128 driver -*- linux-c -*-&n; * Crea
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;r128.h&quot;
 macro_line|#include &quot;drmP.h&quot;
+macro_line|#include &quot;drm.h&quot;
+macro_line|#include &quot;r128_drm.h&quot;
 macro_line|#include &quot;r128_drv.h&quot;
 macro_line|#include &quot;ati_pcigart.h&quot;
 DECL|macro|DRIVER_AUTHOR

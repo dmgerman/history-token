@@ -5,6 +5,7 @@ multiline_comment|/*&n; * &t;genhd.h Copyright (C) 1992 Drew Eckhardt&n; *&t;Gen
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 r_enum
 (brace
 multiline_comment|/* These three have identical behaviour; use the second one if DOS fdisk gets&n;   confused about extended/logical partitions starting past cylinder 1023. */
@@ -207,6 +208,12 @@ r_int
 id|number
 suffix:semicolon
 multiline_comment|/* stupid old code wastes space  */
+DECL|member|hd_driverfs_dev
+r_struct
+id|device
+id|hd_driverfs_dev
+suffix:semicolon
+multiline_comment|/* support driverfs hiearchy     */
 )brace
 suffix:semicolon
 DECL|macro|GENHD_FL_REMOVABLE
@@ -268,6 +275,14 @@ op_star
 id|de_arr
 suffix:semicolon
 multiline_comment|/* one per physical disc */
+DECL|member|driverfs_dev_arr
+r_struct
+id|device
+op_star
+op_star
+id|driverfs_dev_arr
+suffix:semicolon
+multiline_comment|/* support driverfs hierarchy */
 DECL|member|flags
 r_char
 op_star
@@ -900,6 +915,19 @@ id|minor
 comma
 r_int
 id|unregister
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|driverfs_remove_partitions
+(paren
+r_struct
+id|gendisk
+op_star
+id|hd
+comma
+r_int
+id|minor
 )paren
 suffix:semicolon
 DECL|function|disk_index

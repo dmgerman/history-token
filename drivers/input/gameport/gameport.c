@@ -98,6 +98,82 @@ id|gameport_dev
 op_star
 id|gameport_dev
 suffix:semicolon
+macro_line|#ifdef __i386__
+DECL|macro|DELTA
+mdefine_line|#define DELTA(x,y)      ((y)-(x)+((y)&lt;(x)?1193180/HZ:0))
+DECL|macro|GET_TIME
+mdefine_line|#define GET_TIME(x)     do { x = get_time_pit(); } while (0)
+DECL|function|get_time_pit
+r_static
+r_int
+r_int
+id|get_time_pit
+c_func
+(paren
+r_void
+)paren
+(brace
+r_extern
+id|spinlock_t
+id|i8253_lock
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
+id|count
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|i8253_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|outb_p
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0x43
+)paren
+suffix:semicolon
+id|count
+op_assign
+id|inb_p
+c_func
+(paren
+l_int|0x40
+)paren
+suffix:semicolon
+id|count
+op_or_assign
+id|inb_p
+c_func
+(paren
+l_int|0x40
+)paren
+op_lshift
+l_int|8
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|i8253_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|count
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * gameport_measure_speed() measures the gameport i/o speed.&n; */
 DECL|function|gameport_measure_speed
 r_static
@@ -111,11 +187,7 @@ op_star
 id|gameport
 )paren
 (brace
-macro_line|#if defined(__i386__) || defined(__x86_64__)
-DECL|macro|GET_TIME
-mdefine_line|#define GET_TIME(x)     do { outb(0, 0x43); x = inb(0x40); x |= inb(0x40) &lt;&lt; 8; } while (0)
-DECL|macro|DELTA
-mdefine_line|#define DELTA(x,y)      ((y)-(x)+((y)&lt;(x)?1193180L/HZ:0))
+macro_line|#ifdef __i386__
 r_int
 r_int
 id|i

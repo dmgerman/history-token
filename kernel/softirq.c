@@ -957,10 +957,6 @@ id|t-&gt;state
 )paren
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
 r_do
 id|yield
 c_func

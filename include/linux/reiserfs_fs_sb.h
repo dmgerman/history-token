@@ -251,7 +251,7 @@ id|super_block
 op_star
 id|t_super
 suffix:semicolon
-multiline_comment|/* super for this FS when journal_begin was &n;                                   called. saves calls to reiserfs_get_super */
+multiline_comment|/* super for this FS when journal_begin was &n;                                   called. */
 )brace
 suffix:semicolon
 multiline_comment|/*&n;** one of these for each transaction.  The most important part here is the j_realblock.&n;** this list of cnodes is used to hash all the blocks in all the commits, to mark all the&n;** real buffer heads dirty once all the commits hit the disk,&n;** and to make sure every real block in a transaction is on disk before allowing the log area&n;** to be overwritten */

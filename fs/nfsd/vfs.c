@@ -57,7 +57,7 @@ id|ino_t
 id|p_ino
 suffix:semicolon
 DECL|member|p_dev
-id|kdev_t
+id|dev_t
 id|p_dev
 suffix:semicolon
 DECL|member|p_ra
@@ -1908,7 +1908,7 @@ DECL|function|nfsd_get_raparms
 id|nfsd_get_raparms
 c_func
 (paren
-id|kdev_t
+id|dev_t
 id|dev
 comma
 id|ino_t
@@ -1970,13 +1970,9 @@ id|ra-&gt;p_ino
 op_eq
 id|ino
 op_logical_and
-id|kdev_same
-c_func
-(paren
 id|ra-&gt;p_dev
-comma
+op_eq
 id|dev
-)paren
 )paren
 r_goto
 id|found
@@ -2659,15 +2655,14 @@ id|stable
 )paren
 (brace
 r_static
-r_int
-r_int
+id|ino_t
 id|last_ino
 suffix:semicolon
 r_static
-id|kdev_t
+id|dev_t
 id|last_dev
 op_assign
-id|NODEV
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Gathered writes: If another process is currently&n;&t;&t; * writing to the file, there&squot;s a high chance&n;&t;&t; * this is another nfsd (triggered by a bulk write&n;&t;&t; * from a client&squot;s biod). Rather than syncing the&n;&t;&t; * file with each write request, we sleep for 10 msec.&n;&t;&t; *&n;&t;&t; * I don&squot;t know if this roughly approximates&n;&t;&t; * C. Juszak&squot;s idea of gathered writes, but it&squot;s a&n;&t;&t; * nice and simple solution (IMHO), and it seems to&n;&t;&t; * work:-)&n;&t;&t; */
 r_if
@@ -2697,13 +2692,9 @@ id|last_ino
 op_eq
 id|inode-&gt;i_ino
 op_logical_and
-id|kdev_same
-c_func
-(paren
 id|last_dev
-comma
+op_eq
 id|inode-&gt;i_dev
-)paren
 )paren
 )paren
 (brace

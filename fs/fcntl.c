@@ -989,6 +989,25 @@ op_amp
 id|O_DIRECT
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|inode-&gt;i_mapping
+op_logical_and
+id|inode-&gt;i_mapping-&gt;a_ops
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|inode-&gt;i_mapping-&gt;a_ops-&gt;direct_IO
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * alloc_kiovec() can sleep and we are only serialized by&n;&t;&t; * the big kernel lock here, so abuse the i_sem to serialize&n;&t;&t; * this case too. We of course wouldn&squot;t need to go deep down&n;&t;&t; * to the inode layer, we could stay at the file layer, but&n;&t;&t; * we don&squot;t want to pay for the memory of a semaphore in each&n;&t;&t; * file structure too and we use the inode semaphore that we just&n;&t;&t; * pay for anyways.&n;&t;&t; */
 id|error
 op_assign

@@ -2562,8 +2562,11 @@ id|dev-&gt;struct_sem
 suffix:semicolon
 id|queue
 op_assign
-id|gamma_alloc
+id|DRM
 c_func
+(paren
+id|alloc
+)paren
 (paren
 r_sizeof
 (paren

@@ -139,7 +139,7 @@ id|infp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * vxfs_statfs - get filesystem information&n; * @sbp:&t;VFS superblock&n; * @bufp:&t;output buffer&n; *&n; * Description:&n; *   vxfs_statfs fills the statfs buffer @bufp with information&n; *   about the filesystem described by @sbp.&n; *&n; * Returns:&n; *   Zero.&n; *&n; * Locking:&n; *   We are under bkl and @sbp-&gt;s_lock.&n; *&n; * Notes:&n; *   This is everything but complete...&n; */
+multiline_comment|/**&n; * vxfs_statfs - get filesystem information&n; * @sbp:&t;VFS superblock&n; * @bufp:&t;output buffer&n; *&n; * Description:&n; *   vxfs_statfs fills the statfs buffer @bufp with information&n; *   about the filesystem described by @sbp.&n; *&n; * Returns:&n; *   Zero.&n; *&n; * Locking:&n; *   No locks held.&n; *&n; * Notes:&n; *   This is everything but complete...&n; */
 r_static
 r_int
 DECL|function|vxfs_statfs

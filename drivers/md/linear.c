@@ -149,10 +149,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|disk-&gt;dev
-op_assign
-id|rdev-&gt;dev
-suffix:semicolon
 id|disk-&gt;bdev
 op_assign
 id|rdev-&gt;bdev
@@ -633,10 +629,10 @@ l_string|&quot;linear_make_request: Block %ld out of bounds on dev %s size %ld o
 comma
 id|block
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
-id|tmp_dev-&gt;dev
+id|tmp_dev-&gt;bdev
 )paren
 comma
 id|tmp_dev-&gt;size
@@ -745,7 +741,7 @@ id|sz
 comma
 l_string|&quot;[%s&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
 id|conf-&gt;hash_table
@@ -753,7 +749,7 @@ id|conf-&gt;hash_table
 id|j
 )braket
 dot
-id|dev0-&gt;dev
+id|dev0-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -778,7 +774,7 @@ id|sz
 comma
 l_string|&quot;/%s] &quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
 id|conf-&gt;hash_table
@@ -786,7 +782,7 @@ id|conf-&gt;hash_table
 id|j
 )braket
 dot
-id|dev1-&gt;dev
+id|dev1-&gt;bdev
 )paren
 )paren
 suffix:semicolon

@@ -4,7 +4,6 @@ macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;dir.h&quot;
 multiline_comment|/**&n; * The little endian Unicode string $I30 as a global constant.&n; */
 DECL|variable|I30
-r_const
 id|uchar_t
 id|I30
 (braket

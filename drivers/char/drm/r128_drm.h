@@ -317,6 +317,39 @@ DECL|typedef|drm_r128_sarea_t
 id|drm_r128_sarea_t
 suffix:semicolon
 multiline_comment|/* WARNING: If you change any of these defines, make sure to change the&n; * defines in the Xserver file (xf86drmR128.h)&n; */
+multiline_comment|/* Rage 128 specific ioctls&n; * The device specific ioctl range is 0x40 to 0x79.&n; */
+DECL|macro|DRM_IOCTL_R128_INIT
+mdefine_line|#define DRM_IOCTL_R128_INIT&t;&t;DRM_IOW( 0x40, drm_r128_init_t)
+DECL|macro|DRM_IOCTL_R128_CCE_START
+mdefine_line|#define DRM_IOCTL_R128_CCE_START&t;DRM_IO(  0x41)
+DECL|macro|DRM_IOCTL_R128_CCE_STOP
+mdefine_line|#define DRM_IOCTL_R128_CCE_STOP&t;&t;DRM_IOW( 0x42, drm_r128_cce_stop_t)
+DECL|macro|DRM_IOCTL_R128_CCE_RESET
+mdefine_line|#define DRM_IOCTL_R128_CCE_RESET&t;DRM_IO(  0x43)
+DECL|macro|DRM_IOCTL_R128_CCE_IDLE
+mdefine_line|#define DRM_IOCTL_R128_CCE_IDLE&t;&t;DRM_IO(  0x44)
+DECL|macro|DRM_IOCTL_R128_RESET
+mdefine_line|#define DRM_IOCTL_R128_RESET&t;&t;DRM_IO(  0x46)
+DECL|macro|DRM_IOCTL_R128_SWAP
+mdefine_line|#define DRM_IOCTL_R128_SWAP&t;&t;DRM_IO(  0x47)
+DECL|macro|DRM_IOCTL_R128_CLEAR
+mdefine_line|#define DRM_IOCTL_R128_CLEAR&t;&t;DRM_IOW( 0x48, drm_r128_clear_t)
+DECL|macro|DRM_IOCTL_R128_VERTEX
+mdefine_line|#define DRM_IOCTL_R128_VERTEX&t;&t;DRM_IOW( 0x49, drm_r128_vertex_t)
+DECL|macro|DRM_IOCTL_R128_INDICES
+mdefine_line|#define DRM_IOCTL_R128_INDICES&t;&t;DRM_IOW( 0x4a, drm_r128_indices_t)
+DECL|macro|DRM_IOCTL_R128_BLIT
+mdefine_line|#define DRM_IOCTL_R128_BLIT&t;&t;DRM_IOW( 0x4b, drm_r128_blit_t)
+DECL|macro|DRM_IOCTL_R128_DEPTH
+mdefine_line|#define DRM_IOCTL_R128_DEPTH&t;&t;DRM_IOW( 0x4c, drm_r128_depth_t)
+DECL|macro|DRM_IOCTL_R128_STIPPLE
+mdefine_line|#define DRM_IOCTL_R128_STIPPLE&t;&t;DRM_IOW( 0x4d, drm_r128_stipple_t)
+DECL|macro|DRM_IOCTL_R128_INDIRECT
+mdefine_line|#define DRM_IOCTL_R128_INDIRECT&t;&t;DRM_IOWR(0x4f, drm_r128_indirect_t)
+DECL|macro|DRM_IOCTL_R128_FULLSCREEN
+mdefine_line|#define DRM_IOCTL_R128_FULLSCREEN&t;DRM_IOW( 0x50, drm_r128_fullscreen_t)
+DECL|macro|DRM_IOCTL_R128_CLEAR2
+mdefine_line|#define DRM_IOCTL_R128_CLEAR2&t;&t;DRM_IOW( 0x51, drm_r128_clear2_t)
 DECL|struct|drm_r128_init
 r_typedef
 r_struct

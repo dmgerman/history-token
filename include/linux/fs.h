@@ -897,7 +897,7 @@ id|atomic_t
 id|i_count
 suffix:semicolon
 DECL|member|i_dev
-id|kdev_t
+id|dev_t
 id|i_dev
 suffix:semicolon
 DECL|member|i_mode
@@ -2403,7 +2403,7 @@ id|dentry
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * File types&n; */
+multiline_comment|/*&n; * File types&n; *&n; * NOTE! These match bits 12..15 of stat.st_mode&n; * (ie &quot;(i_mode &gt;&gt; 12) &amp; 15&quot;).&n; */
 DECL|macro|DT_UNKNOWN
 mdefine_line|#define DT_UNKNOWN&t;0
 DECL|macro|DT_FIFO
@@ -5636,14 +5636,6 @@ comma
 r_struct
 id|bio
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|is_read_only
-c_func
-(paren
-id|kdev_t
 )paren
 suffix:semicolon
 r_extern

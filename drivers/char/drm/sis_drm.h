@@ -1,6 +1,23 @@
 macro_line|#ifndef _sis_drm_public_h_
 DECL|macro|_sis_drm_public_h_
 mdefine_line|#define _sis_drm_public_h_
+multiline_comment|/* SiS specific ioctls */
+DECL|macro|SIS_IOCTL_FB_ALLOC
+mdefine_line|#define SIS_IOCTL_FB_ALLOC&t;&t;DRM_IOWR(0x44, drm_sis_mem_t)
+DECL|macro|SIS_IOCTL_FB_FREE
+mdefine_line|#define SIS_IOCTL_FB_FREE&t;&t;DRM_IOW( 0x45, drm_sis_mem_t)
+DECL|macro|SIS_IOCTL_AGP_INIT
+mdefine_line|#define SIS_IOCTL_AGP_INIT&t;&t;DRM_IOWR(0x53, drm_sis_agp_t)
+DECL|macro|SIS_IOCTL_AGP_ALLOC
+mdefine_line|#define SIS_IOCTL_AGP_ALLOC&t;&t;DRM_IOWR(0x54, drm_sis_mem_t)
+DECL|macro|SIS_IOCTL_AGP_FREE
+mdefine_line|#define SIS_IOCTL_AGP_FREE&t;&t;DRM_IOW( 0x55, drm_sis_mem_t)
+DECL|macro|SIS_IOCTL_FLIP
+mdefine_line|#define SIS_IOCTL_FLIP&t;&t;&t;DRM_IOW( 0x48, drm_sis_flip_t)
+DECL|macro|SIS_IOCTL_FLIP_INIT
+mdefine_line|#define SIS_IOCTL_FLIP_INIT&t;&t;DRM_IO(  0x49)
+DECL|macro|SIS_IOCTL_FLIP_FINAL
+mdefine_line|#define SIS_IOCTL_FLIP_FINAL&t;&t;DRM_IO(  0x50)
 r_typedef
 r_struct
 (brace
