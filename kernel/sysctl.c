@@ -2656,6 +2656,7 @@ comma
 dot
 id|proc_handler
 op_assign
+op_amp
 id|dirty_writeback_centisecs_handler
 comma
 )brace

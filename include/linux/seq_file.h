@@ -425,6 +425,8 @@ id|file
 op_star
 )paren
 suffix:semicolon
+DECL|macro|SEQ_START_TOKEN
+mdefine_line|#define SEQ_START_TOKEN ((void *)1)
 macro_line|#endif
 macro_line|#endif
 eof

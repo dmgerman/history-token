@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_IA64_SN_HCL_H
 DECL|macro|_ASM_IA64_SN_HCL_H
 mdefine_line|#define _ASM_IA64_SN_HCL_H
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/sn/invent.h&gt;
 r_extern
 id|vertex_hdl_t
 id|hwgraph_root

@@ -18,7 +18,6 @@ macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
 macro_line|#include &lt;asm/sn/prio.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/ioc3.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 r_extern

@@ -1,9 +1,9 @@
 multiline_comment|/*&n; *  linux/fs/ext2/symlink.c&n; *&n; * Only fast symlinks left here - the rest is done by generic code. AV, 1999&n; *&n; * Copyright (C) 1992, 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; *&n; *  from&n; *&n; *  linux/fs/minix/symlink.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  ext2 symlink handling code&n; */
 macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &quot;xattr.h&quot;
-DECL|function|ext2_readlink
 r_static
 r_int
+DECL|function|ext2_readlink
 id|ext2_readlink
 c_func
 (paren
@@ -13,6 +13,7 @@ op_star
 id|dentry
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma

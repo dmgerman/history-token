@@ -167,11 +167,11 @@ id|share_count
 id|NR_IRQS
 )braket
 suffix:semicolon
-DECL|member|current
+DECL|member|curr
 r_struct
 id|pci_dev
 op_star
-id|current
+id|curr
 suffix:semicolon
 )brace
 suffix:semicolon
