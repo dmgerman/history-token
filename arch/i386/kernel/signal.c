@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
@@ -1695,6 +1696,13 @@ l_int|8ul
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* These symbols are defined with the addresses in the vsyscall page.&n;   See vsyscall-sigreturn.S.  */
+r_extern
+r_void
+id|__kernel_sigreturn
+comma
+id|__kernel_rt_sigreturn
+suffix:semicolon
 DECL|function|setup_frame
 r_static
 r_void
@@ -1887,19 +1895,8 @@ id|give_sigsegv
 suffix:semicolon
 id|restorer
 op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-id|fix_to_virt
-c_func
-(paren
-id|FIX_VSYSCALL
-)paren
-op_plus
-l_int|32
-)paren
+op_amp
+id|__kernel_sigreturn
 suffix:semicolon
 r_if
 c_cond
@@ -2345,19 +2342,8 @@ suffix:semicolon
 multiline_comment|/* Set up to return from userspace.  */
 id|restorer
 op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-id|fix_to_virt
-c_func
-(paren
-id|FIX_VSYSCALL
-)paren
-op_plus
-l_int|64
-)paren
+op_amp
+id|__kernel_rt_sigreturn
 suffix:semicolon
 r_if
 c_cond
