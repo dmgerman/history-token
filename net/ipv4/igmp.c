@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/igmp.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/route.h&gt;
