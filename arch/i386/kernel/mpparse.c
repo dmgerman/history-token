@@ -4200,6 +4200,7 @@ l_string|&quot;Max # of irq sources exceeded!&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifndef CONFIG_ACPI_HT_ONLY
 multiline_comment|/* Ensure the ACPI SCI interrupt level is active low, edge-triggered */
 r_extern
 id|FADT_DESCRIPTOR
@@ -4273,6 +4274,10 @@ id|status
 (brace
 id|madt_end
 op_assign
+(paren
+r_void
+op_star
+)paren
 (paren
 r_int
 r_int
@@ -4376,6 +4381,7 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /*CONFIG_ACPI_HT_ONLY*/
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|function|mp_parse_prt
 r_void
