@@ -105,6 +105,7 @@ r_int
 id|value
 comma
 r_int
+id|__user
 op_star
 id|addr
 )paren
@@ -117,11 +118,6 @@ c_func
 (paren
 id|value
 comma
-(paren
-r_int
-id|__user
-op_star
-)paren
 id|addr
 )paren
 )paren
@@ -173,6 +169,7 @@ r_int
 id|val
 comma
 r_int
+id|__user
 op_star
 id|addr
 )paren
@@ -225,6 +222,7 @@ op_star
 id|tsk
 comma
 r_int
+id|__user
 op_star
 id|addr
 )paren
@@ -1538,6 +1536,7 @@ id|tmp
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1570,6 +1569,7 @@ id|child
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|data
