@@ -688,7 +688,8 @@ id|regs-&gt;control
 )paren
 suffix:semicolon
 id|val
-op_or_assign
+op_and_assign
+op_complement
 id|CG3_CR_ENABLE_VIDEO
 suffix:semicolon
 id|sbus_writeb

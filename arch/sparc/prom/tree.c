@@ -642,6 +642,9 @@ op_star
 id|name
 )paren
 (brace
+r_int
+id|error
+suffix:semicolon
 r_static
 r_char
 id|namebuf
@@ -649,6 +652,8 @@ id|namebuf
 l_int|128
 )braket
 suffix:semicolon
+id|error
+op_assign
 id|prom_getproperty
 c_func
 (paren
@@ -663,6 +668,17 @@ r_sizeof
 id|namebuf
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+op_eq
+op_minus
+l_int|1
+)paren
+r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond

@@ -43,6 +43,10 @@ mdefine_line|#define COMPILER_DEPENDENT_UINT64   unsigned long long
 DECL|macro|ACPI_USE_NATIVE_DIVIDE
 mdefine_line|#define ACPI_USE_NATIVE_DIVIDE
 macro_line|#endif
+DECL|macro|__cdecl
+mdefine_line|#define __cdecl
+DECL|macro|ACPI_FLUSH_CPU_CACHE
+mdefine_line|#define ACPI_FLUSH_CPU_CACHE()
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* Linux uses GCC */
 macro_line|#include &quot;acgcc.h&quot;

@@ -3450,6 +3450,10 @@ c_cond
 id|cmd
 )paren
 (brace
+multiline_comment|/* TUNSETIFF is defined as _IOW, it should be _IORW&n;&t;&t; * as the data is copied back to user space, but that&n;&t;&t; * cannot be fixed without breaking all existing apps.&n;&t;&t; */
+r_case
+id|TUNSETIFF
+suffix:colon
 r_case
 id|SIOCGIFFLAGS
 suffix:colon
