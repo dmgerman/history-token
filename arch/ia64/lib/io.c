@@ -208,6 +208,8 @@ DECL|macro|__ia64_writel
 macro_line|#undef __ia64_writel
 DECL|macro|__ia64_writeq
 macro_line|#undef __ia64_writeq
+DECL|macro|__ia64_mmiowb
+macro_line|#undef __ia64_mmiowb
 r_int
 r_int
 DECL|function|__ia64_inb
@@ -469,6 +471,20 @@ r_return
 id|___ia64_readq
 (paren
 id|addr
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|__ia64_mmiowb
+id|__ia64_mmiowb
+c_func
+(paren
+r_void
+)paren
+(brace
+id|___ia64_mmiowb
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

@@ -3430,11 +3430,15 @@ l_int|NULL
 )paren
 multiline_comment|/* We have a cascade on OpenPIC IRQ 0, Linux IRQ 16 */
 id|openpic_hookup_cascade
+c_func
 (paren
 id|NUM_8259_INTERRUPTS
 comma
 l_string|&quot;82c59 cascade&quot;
 comma
+id|i8259_irq
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

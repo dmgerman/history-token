@@ -6582,8 +6582,17 @@ c_cond
 (paren
 id|hi-&gt;kill_me
 )paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|nodemgr_serialize
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 multiline_comment|/* Pause for 1/4 second in 1/16 second intervals,&n;&t;&t; * to make sure things settle down. */
 r_for
 c_loop
@@ -6658,9 +6667,18 @@ c_cond
 (paren
 id|hi-&gt;kill_me
 )paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|nodemgr_serialize
+)paren
+suffix:semicolon
 r_goto
 id|caught_signal
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond

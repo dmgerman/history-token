@@ -48,6 +48,10 @@ DECL|macro|APIC_ALL_CPUS
 mdefine_line|#define&t;&t;&t;APIC_ALL_CPUS&t;&t;0xFFu
 DECL|macro|APIC_DFR
 mdefine_line|#define&t;&t;APIC_DFR&t;0xE0
+DECL|macro|APIC_DFR_CLUSTER
+mdefine_line|#define&t;&t;&t;APIC_DFR_CLUSTER&t;&t;0x0FFFFFFFul
+DECL|macro|APIC_DFR_FLAT
+mdefine_line|#define&t;&t;&t;APIC_DFR_FLAT&t;&t;&t;0xFFFFFFFFul
 DECL|macro|APIC_SPIV
 mdefine_line|#define&t;&t;APIC_SPIV&t;0xF0
 DECL|macro|APIC_SPIV_FOCUS_DISABLED
@@ -158,6 +162,8 @@ DECL|macro|APIC_INPUT_POLARITY
 mdefine_line|#define&t;&t;&t;APIC_INPUT_POLARITY&t;&t;(1&lt;&lt;13)
 DECL|macro|APIC_SEND_PENDING
 mdefine_line|#define&t;&t;&t;APIC_SEND_PENDING&t;&t;(1&lt;&lt;12)
+DECL|macro|APIC_MODE_MASK
+mdefine_line|#define&t;&t;&t;APIC_MODE_MASK&t;&t;&t;0x700
 DECL|macro|GET_APIC_DELIVERY_MODE
 mdefine_line|#define&t;&t;&t;GET_APIC_DELIVERY_MODE(x)&t;(((x)&gt;&gt;8)&amp;0x7)
 DECL|macro|SET_APIC_DELIVERY_MODE
