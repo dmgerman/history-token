@@ -1778,17 +1778,6 @@ id|PAGE_SIZE
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* clear the zero-page */
-id|memset
-c_func
-(paren
-id|empty_zero_page
-comma
-l_int|0
-comma
-id|PAGE_SIZE
-)paren
-suffix:semicolon
 multiline_comment|/* this will put all low memory onto the freelists */
 id|totalram_pages
 op_add_assign

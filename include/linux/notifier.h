@@ -139,8 +139,6 @@ DECL|macro|CPU_UP_PREPARE
 mdefine_line|#define CPU_UP_PREPARE&t;0x0003 /* CPU (unsigned)v coming up */
 DECL|macro|CPU_UP_CANCELED
 mdefine_line|#define CPU_UP_CANCELED&t;0x0004 /* CPU (unsigned)v NOT coming up */
-DECL|macro|CPU_OFFLINE
-mdefine_line|#define CPU_OFFLINE&t;0x0005 /* CPU (unsigned)v offline (still scheduling) */
 DECL|macro|CPU_DEAD
 mdefine_line|#define CPU_DEAD&t;0x0006 /* CPU (unsigned)v dead */
 macro_line|#endif /* __KERNEL__ */

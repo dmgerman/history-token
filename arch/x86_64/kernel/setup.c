@@ -926,7 +926,7 @@ id|from
 comma
 l_string|&quot;apic&quot;
 comma
-l_int|6
+l_int|4
 )paren
 )paren
 (brace
@@ -1883,13 +1883,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
-multiline_comment|/* Temporary hack: disable the IO-APIC for UP Nvidia and &n;&t;   This is until we sort out the ACPI problems. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_disabled
-)paren
+multiline_comment|/* Temporary hack: disable the IO-APIC for UP Nvidia and VIA. */
 id|check_ioapic
 c_func
 (paren

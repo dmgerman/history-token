@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    Aureal Vortex Soundcard driver.&n;&n;    IO addr collected from asp4core.vxd:&n;    function    address&n;    0005D5A0    13004&n;    00080674    14004&n;    00080AFF    12818&n;&n; */
+multiline_comment|/*&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU Library General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
 macro_line|#ifndef __SOUND_AU88X0_H
 DECL|macro|__SOUND_AU88X0_H
 mdefine_line|#define __SOUND_AU88X0_H
@@ -13,7 +13,22 @@ macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/hwdep.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
-multiline_comment|/*&n;#ifndef&t;PCI_VENDOR_ID_AUREAL&n;#define&t;PCI_VENDOR_ID_AUREAL 0x12eb&n;#endif&n;#ifndef&t;PCI_VENDOR_ID_AUREAL_VORTEX&n;#define&t;PCI_DEVICE_ID_AUREAL_VORTEX 0x0001&n;#endif&n;#ifndef&t;PCI_VENDOR_ID_AUREAL_VORTEX2&n;#define&t;PCI_DEVICE_ID_AUREAL_VORTEX2 0x0002&n;#endif&n;#ifndef&t;PCI_VENDOR_ID_AUREAL_ADVANTAGE&n;#define&t;PCI_DEVICE_ID_AUREAL_ADVANTAGE 0x0003&n;#endif&n;*/
+macro_line|#ifndef&t;PCI_VENDOR_ID_AUREAL
+DECL|macro|PCI_VENDOR_ID_AUREAL
+mdefine_line|#define&t;PCI_VENDOR_ID_AUREAL 0x12eb
+macro_line|#endif
+macro_line|#ifndef&t;PCI_DEVICE_ID_AUREAL_VORTEX
+DECL|macro|PCI_DEVICE_ID_AUREAL_VORTEX
+mdefine_line|#define&t;PCI_DEVICE_ID_AUREAL_VORTEX 0x0001
+macro_line|#endif
+macro_line|#ifndef&t;PCI_DEVICE_ID_AUREAL_VORTEX2
+DECL|macro|PCI_DEVICE_ID_AUREAL_VORTEX2
+mdefine_line|#define&t;PCI_DEVICE_ID_AUREAL_VORTEX2 0x0002
+macro_line|#endif
+macro_line|#ifndef&t;PCI_DEVICE_ID_AUREAL_ADVANTAGE
+DECL|macro|PCI_DEVICE_ID_AUREAL_ADVANTAGE
+mdefine_line|#define&t;PCI_DEVICE_ID_AUREAL_ADVANTAGE 0x0003
+macro_line|#endif
 macro_line|#endif
 macro_line|#ifndef CHIP_AU8820
 macro_line|#include &quot;au88x0_eq.h&quot;
@@ -85,6 +100,9 @@ mdefine_line|#define VORTEX_RESOURCE_LAST&t;0x00000005
 multiline_comment|/* Check for SDAC bit in &quot;Extended audio ID&quot; AC97 register */
 DECL|macro|VORTEX_IS_QUAD
 mdefine_line|#define VORTEX_IS_QUAD(x) ((x-&gt;codec == NULL) ?  0 : (x-&gt;codec-&gt;ext_id|0x80))
+multiline_comment|/* Check if chip has bug. */
+DECL|macro|IS_BAD_CHIP
+mdefine_line|#define IS_BAD_CHIP(x) (&bslash;&n;&t;(x-&gt;rev &lt; 3 &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_VORTEX) || &bslash;&n;&t;(x-&gt;rev &lt; 0xfe &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_VORTEX2) || &bslash;&n;&t;(x-&gt;rev &lt; 0xfe &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_ADVANTAGE))
 multiline_comment|/* PCM devices */
 DECL|macro|VORTEX_PCM_ADB
 mdefine_line|#define VORTEX_PCM_ADB&t;&t;0

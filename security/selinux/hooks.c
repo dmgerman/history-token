@@ -5880,7 +5880,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Check that a process has enough memory to allocate a new virtual&n; * mapping. 0 means there is enough memory for the allocation to&n; * succeed and -ENOMEM implies there is not.&n; *&n; * We currently support three overcommit policies, which are set via the&n; * vm.overcommit_memory sysctl.  See Documentation/vm/overcommit-acounting&n; *&n; * Strict overcommit modes added 2002 Feb 26 by Alan Cox.&n; * Additional code 2002 Jul 20 by Robert Love.&n; */
+multiline_comment|/*&n; * Check that a process has enough memory to allocate a new virtual&n; * mapping. 0 means there is enough memory for the allocation to&n; * succeed and -ENOMEM implies there is not.&n; *&n; * We currently support three overcommit policies, which are set via the&n; * vm.overcommit_memory sysctl.  See Documentation/vm/overcommit-accounting&n; *&n; * Strict overcommit modes added 2002 Feb 26 by Alan Cox.&n; * Additional code 2002 Jul 20 by Robert Love.&n; */
 DECL|function|selinux_vm_enough_memory
 r_static
 r_int

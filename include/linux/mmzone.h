@@ -380,6 +380,12 @@ DECL|member|kswapd_wait
 id|wait_queue_head_t
 id|kswapd_wait
 suffix:semicolon
+DECL|member|kswapd
+r_struct
+id|task_struct
+op_star
+id|kswapd
+suffix:semicolon
 DECL|typedef|pg_data_t
 )brace
 id|pg_data_t

@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * Vortex PCM ALSA driver.&n; *&n; * Supports ADB and WT DMA. Unfortunately, WT routing is still a&n; * mistery. To discover that, we need to disassemble the windoze&n; * driver too.&n; *&n; *&n; */
+multiline_comment|/*&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU Library General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
+multiline_comment|/*&n; * Vortex PCM ALSA driver.&n; *&n; * Supports ADB and WT DMA. Unfortunately, WT channels do not run yet.&n; * It remains stuck,and DMA transfers do not happen.&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
@@ -2018,9 +2019,6 @@ op_amp
 id|snd_vortex_playback_ops
 )paren
 suffix:semicolon
-multiline_comment|/* pre-allocation of linear buffers */
-singleline_comment|//snd_pcm_lib_preallocate_pages_for_all(pcm, SNDRV_DMA_TYPE_DEV,
-singleline_comment|//&t;&t;&t;&t;      snd_dma_pci_data(chip-&gt;pci_dev), 0x10000, 0x10000);
 multiline_comment|/* pre-allocation of Scatter-Gather buffers */
 id|snd_pcm_lib_preallocate_pages_for_all
 c_func
@@ -2040,6 +2038,8 @@ comma
 l_int|0x10000
 )paren
 suffix:semicolon
+singleline_comment|// The above should be used, as soon as ALSA gets updated.
+multiline_comment|/*&n;&t;snd_pcm_lib_preallocate_sg_pages_for_all(chip-&gt;pci_dev, pcm,&n;&t;&t;&t;&t;&t;&t; 0x10000, 0x10000);&n;&t;*/
 r_if
 c_cond
 (paren

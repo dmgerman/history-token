@@ -16,27 +16,6 @@ macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &quot;pci.h&quot;
-multiline_comment|/* Only used to pass OF initialization data set in prom.c into the main &n; * kernel code -- data ultimately copied into regular tce tables.&n; */
-r_extern
-r_struct
-id|_of_tce_table
-id|of_tce_table
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_struct
-id|pci_controller
-op_star
-id|hose_head
-suffix:semicolon
-r_extern
-r_struct
-id|pci_controller
-op_star
-op_star
-id|hose_tail
-suffix:semicolon
 DECL|function|tce_build_pSeries
 r_static
 r_void
@@ -229,6 +208,27 @@ id|first_phb
 op_assign
 l_int|1
 suffix:semicolon
+r_int
+r_int
+id|tcetable_ilog2
+suffix:semicolon
+multiline_comment|/*&n;&t; * We default to a TCE table that maps 2GB (4MB table, 22 bits),&n;&t; * however some machines have a 3GB IO hole and for these we&n;&t; * create a table that maps 1GB (2MB table, 21 bits)&n;&t; */
+r_if
+c_cond
+(paren
+id|io_hole_start
+OL
+l_int|0x80000000UL
+)paren
+id|tcetable_ilog2
+op_assign
+l_int|21
+suffix:semicolon
+r_else
+id|tcetable_ilog2
+op_assign
+l_int|22
+suffix:semicolon
 multiline_comment|/* XXX Should we be using pci_root_buses instead?  -ojn &n;&t; */
 r_for
 c_loop
@@ -307,7 +307,7 @@ op_assign
 l_int|1
 op_lshift
 (paren
-l_int|22
+id|tcetable_ilog2
 op_minus
 id|num_slots_ilog2
 )paren
@@ -492,7 +492,7 @@ r_int
 id|i
 suffix:semicolon
 r_struct
-id|_of_tce_table
+id|of_tce_table
 op_star
 id|oft
 suffix:semicolon

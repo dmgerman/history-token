@@ -407,7 +407,6 @@ multiline_comment|/* Initializes the device - this comes from the AML code in th
 DECL|function|sonypi_type1_srs
 r_static
 r_void
-id|__devinit
 id|sonypi_type1_srs
 c_func
 (paren
@@ -573,7 +572,6 @@ suffix:semicolon
 DECL|function|sonypi_type2_srs
 r_static
 r_void
-id|__devinit
 id|sonypi_type2_srs
 c_func
 (paren

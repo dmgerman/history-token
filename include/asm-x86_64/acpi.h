@@ -210,6 +210,20 @@ suffix:semicolon
 multiline_comment|/* Fixmap pages to reserve for ACPI boot-time tables (see fixmap.h) */
 DECL|macro|FIX_ACPI_PAGES
 mdefine_line|#define FIX_ACPI_PAGES 4
+r_extern
+r_int
+id|acpi_gsi_to_irq
+c_func
+(paren
+id|u32
+id|gsi
+comma
+r_int
+r_int
+op_star
+id|irq
+)paren
+suffix:semicolon
 macro_line|#else&t;/* !CONFIG_ACPI_BOOT */
 DECL|macro|acpi_lapic
 mdefine_line|#define acpi_lapic 0

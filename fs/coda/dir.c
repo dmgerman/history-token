@@ -2409,10 +2409,10 @@ comma
 id|dirent
 )paren
 suffix:semicolon
-id|update_atime
+id|file_accessed
 c_func
 (paren
-id|host_inode
+id|host_file
 )paren
 suffix:semicolon
 )brace

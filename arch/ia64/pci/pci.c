@@ -1638,6 +1638,14 @@ id|window-&gt;offset
 suffix:semicolon
 )brace
 )brace
+id|pci_claim_resource
+c_func
+(paren
+id|dev
+comma
+id|i
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; *  Called after each bus is probed, but before its children are examined.&n; */

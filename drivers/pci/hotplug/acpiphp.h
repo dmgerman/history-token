@@ -555,7 +555,7 @@ id|func
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|acpiphp_unconfigure_function
 (paren
 r_struct

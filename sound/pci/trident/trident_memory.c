@@ -137,9 +137,9 @@ comma
 r_int
 r_int
 )paren
-id|trident-&gt;tlb.silent_page
+id|trident-&gt;tlb.silent_page.area
 comma
-id|trident-&gt;tlb.silent_page_dmaaddr
+id|trident-&gt;tlb.silent_page.addr
 )paren
 suffix:semicolon
 id|__set_tlb_bus
@@ -155,9 +155,9 @@ comma
 r_int
 r_int
 )paren
-id|trident-&gt;tlb.silent_page
+id|trident-&gt;tlb.silent_page.area
 comma
-id|trident-&gt;tlb.silent_page_dmaaddr
+id|trident-&gt;tlb.silent_page.addr
 )paren
 suffix:semicolon
 )brace
@@ -298,9 +298,9 @@ comma
 r_int
 r_int
 )paren
-id|trident-&gt;tlb.silent_page
+id|trident-&gt;tlb.silent_page.area
 comma
-id|trident-&gt;tlb.silent_page_dmaaddr
+id|trident-&gt;tlb.silent_page.addr
 )paren
 suffix:semicolon
 )brace

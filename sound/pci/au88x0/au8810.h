@@ -5,18 +5,6 @@ DECL|macro|CARD_NAME
 mdefine_line|#define CARD_NAME &quot;Aureal Advantage 3D Sound Processor&quot;
 DECL|macro|CARD_NAME_SHORT
 mdefine_line|#define CARD_NAME_SHORT &quot;au8810&quot;
-macro_line|#ifndef PCI_VENDOR_ID_AUREAL
-DECL|macro|PCI_VENDOR_ID_AUREAL
-mdefine_line|#define PCI_VENDOR_ID_AUREAL 0x12eb
-macro_line|#endif
-macro_line|#ifndef PCI_VENDOR_ID_AUREAL_ADVANTAGE
-DECL|macro|PCI_DEVICE_ID_AUREAL_ADVANTAGE
-mdefine_line|#define PCI_DEVICE_ID_AUREAL_ADVANTAGE 0x0003
-macro_line|#endif
-DECL|macro|hwread
-mdefine_line|#define hwread(x,y) readl((x)+((y)&gt;&gt;2))
-DECL|macro|hwwrite
-mdefine_line|#define hwwrite(x,y,z) writel((z),(x)+((y)&gt;&gt;2))
 DECL|macro|NR_ADB
 mdefine_line|#define NR_ADB&t;&t;0x20
 DECL|macro|NR_WT

@@ -167,7 +167,7 @@ mdefine_line|#define&t;__FD_SET(d, set)&t;((set)-&gt;fds_bits[__FDELT(d)] |= __F
 DECL|macro|__FD_CLR
 mdefine_line|#define&t;__FD_CLR(d, set)&t;((set)-&gt;fds_bits[__FDELT(d)] &amp;= ~__FDMASK(d))
 DECL|macro|__FD_ISSET
-mdefine_line|#define&t;__FD_ISSET(d, set)&t;((set)-&gt;fds_bits[__FDELT(d)] &amp; __FDMASK(d))
+mdefine_line|#define&t;__FD_ISSET(d, set)&t;(((set)-&gt;fds_bits[__FDELT(d)] &amp; __FDMASK(d)) != 0)
 DECL|macro|__FD_ZERO
 mdefine_line|#define&t;__FD_ZERO(set)&t;&bslash;&n;  ((void) memset ((__ptr_t) (set), 0, sizeof (__kernel_fd_set)))
 macro_line|#else /* __GNUC__ */

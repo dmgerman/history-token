@@ -2,6 +2,7 @@ multiline_comment|/*&n; * PCI Hot Plug Controller Driver for RPA-compliant PPC64
 macro_line|#ifndef _PPC64PHP_H
 DECL|macro|_PPC64PHP_H
 mdefine_line|#define _PPC64PHP_H
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;pci_hotplug.h&quot;
 DECL|macro|DR_INDICATOR
 mdefine_line|#define DR_INDICATOR 9002
@@ -12,29 +13,31 @@ mdefine_line|#define POWER_ON&t;100
 DECL|macro|POWER_OFF
 mdefine_line|#define POWER_OFF&t;0
 DECL|macro|LED_OFF
-mdefine_line|#define LED_OFF&t;&t;0 
+mdefine_line|#define LED_OFF&t;&t;0
 DECL|macro|LED_ON
-mdefine_line|#define LED_ON&t;&t;1&t;/* continuous on */ 
+mdefine_line|#define LED_ON&t;&t;1&t;/* continuous on */
 DECL|macro|LED_ID
 mdefine_line|#define LED_ID&t;&t;2&t;/* slow blinking */
 DECL|macro|LED_ACTION
 mdefine_line|#define LED_ACTION&t;3&t;/* fast blinking */
-DECL|macro|SLOT_NAME_SIZE
-mdefine_line|#define SLOT_NAME_SIZE 12
 multiline_comment|/* Error status from rtas_get-sensor */
 DECL|macro|NEED_POWER
-mdefine_line|#define NEED_POWER    -9000     /* slot must be power up and unisolated to get state */
+mdefine_line|#define NEED_POWER    -9000&t;/* slot must be power up and unisolated to get state */
 DECL|macro|PWR_ONLY
-mdefine_line|#define PWR_ONLY      -9001     /* slot must be powerd up to get state, leave isolated */
+mdefine_line|#define PWR_ONLY      -9001&t;/* slot must be powerd up to get state, leave isolated */
 DECL|macro|ERR_SENSE_USE
-mdefine_line|#define ERR_SENSE_USE -9002     /* No DR operation will succeed, slot is unusable  */
+mdefine_line|#define ERR_SENSE_USE -9002&t;/* No DR operation will succeed, slot is unusable  */
 multiline_comment|/* Sensor values from rtas_get-sensor */
 DECL|macro|EMPTY
-mdefine_line|#define EMPTY&t;0       /* No card in slot */
+mdefine_line|#define EMPTY           0&t;/* No card in slot */
 DECL|macro|PRESENT
-mdefine_line|#define PRESENT&t;1       /* Card in slot */
+mdefine_line|#define PRESENT         1&t;/* Card in slot */
 DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME &quot;rpaphp&quot;
+r_extern
+r_int
+id|debug
+suffix:semicolon
 DECL|macro|dbg
 mdefine_line|#define dbg(format, arg...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (debug)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_DEBUG &quot;%s: &quot; format,&t;&bslash;&n;&t;&t;&t;&t;MY_NAME , ## arg); &t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|err
@@ -45,6 +48,11 @@ DECL|macro|warn
 mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;%s: &quot; format, MY_NAME , ## arg)
 DECL|macro|SLOT_MAGIC
 mdefine_line|#define SLOT_MAGIC&t;0x67267322
+multiline_comment|/* slot types */
+DECL|macro|VIO_DEV
+mdefine_line|#define VIO_DEV&t;1
+DECL|macro|PCI_DEV
+mdefine_line|#define PCI_DEV&t;2
 multiline_comment|/* slot states */
 DECL|macro|NOT_VALID
 mdefine_line|#define&t;NOT_VALID&t;3
@@ -90,24 +98,42 @@ id|device_node
 op_star
 id|dn
 suffix:semicolon
-multiline_comment|/* slot&squot;s device_node in OFDT&t;&t;*/
-multiline_comment|/* dn has phb info&t;&t;&t;*/
+multiline_comment|/* slot&squot;s device_node in OFDT */
+multiline_comment|/* dn has phb info */
 DECL|member|bridge
 r_struct
 id|pci_dev
 op_star
 id|bridge
 suffix:semicolon
-multiline_comment|/* slot&squot;s pci_dev in pci_devices&t;*/
-DECL|member|dev
+multiline_comment|/* slot&squot;s pci_dev in pci_devices */
+r_union
+(brace
+DECL|member|pci_dev
 r_struct
 id|pci_dev
 op_star
+id|pci_dev
+suffix:semicolon
+multiline_comment|/* pci_dev of device in this slot */
+multiline_comment|/* it will be used for unconfig */
+multiline_comment|/* NULL if slot is empty */
+DECL|member|vio_dev
+r_struct
+id|vio_dev
+op_star
+id|vio_dev
+suffix:semicolon
+multiline_comment|/* vio_dev of the device in this slot */
+DECL|member|dev
+)brace
 id|dev
 suffix:semicolon
-multiline_comment|/* pci_dev of device in this slot &t;*/
-multiline_comment|/* it will be used for unconfig&t;&t;*/
-multiline_comment|/* NULL if slot is empty&t;&t;*/
+DECL|member|dev_type
+id|u8
+id|dev_type
+suffix:semicolon
+multiline_comment|/* VIO or PCI */
 DECL|member|hotplug_slot
 r_struct
 id|hotplug_slot
@@ -123,6 +149,22 @@ suffix:semicolon
 suffix:semicolon
 r_extern
 r_struct
+id|hotplug_slot_ops
+id|rpaphp_hotplug_slot_ops
+suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|rpaphp_slot_head
+suffix:semicolon
+r_extern
+r_int
+id|num_slots
+suffix:semicolon
+multiline_comment|/* function prototypes */
+multiline_comment|/* rpaphp_pci.c */
+r_extern
+r_struct
 id|pci_dev
 op_star
 id|rpaphp_find_pci_dev
@@ -132,27 +174,6 @@ r_struct
 id|device_node
 op_star
 id|dn
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|rpaphp_add_slot
-c_func
-(paren
-r_char
-op_star
-id|slot_name
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|rpaphp_remove_slot
-c_func
-(paren
-r_struct
-id|slot
-op_star
-id|slot
 )paren
 suffix:semicolon
 r_extern
@@ -169,5 +190,206 @@ r_int
 id|resource
 )paren
 suffix:semicolon
-macro_line|#endif /* _PPC64PHP_H */
+r_extern
+r_int
+id|rpaphp_enable_pci_slot
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|register_pci_slot
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|rpaphp_unconfig_pci_adapter
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|rpaphp_get_pci_adapter_status
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+comma
+r_int
+id|is_init
+comma
+id|u8
+op_star
+id|value
+)paren
+suffix:semicolon
+multiline_comment|/* rpaphp_core.c */
+r_extern
+r_int
+id|rpaphp_add_slot
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|dn
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|rpaphp_remove_slot
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+)paren
+suffix:semicolon
+multiline_comment|/* rpaphp_vio.c */
+r_extern
+r_int
+id|rpaphp_get_vio_adapter_status
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+comma
+r_int
+id|is_init
+comma
+id|u8
+op_star
+id|value
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|rpaphp_unconfig_vio_adapter
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|register_vio_slot
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|dn
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|rpaphp_enable_vio_slot
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+)paren
+suffix:semicolon
+multiline_comment|/* rpaphp_slot.c */
+r_extern
+r_void
+id|dealloc_slot_struct
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|slot
+op_star
+id|alloc_slot_struct
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|dn
+comma
+r_int
+id|drc_index
+comma
+r_char
+op_star
+id|drc_name
+comma
+r_int
+id|power_domain
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|register_slot
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|rpaphp_get_power_status
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+comma
+id|u8
+op_star
+id|value
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|rpaphp_set_attention_status
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+comma
+id|u8
+id|status
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;&t;&t;/* _PPC64PHP_H */
 eof

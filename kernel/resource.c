@@ -1514,6 +1514,10 @@ id|parent
 op_assign
 id|next
 suffix:semicolon
+id|result
+op_assign
+l_int|0
+suffix:semicolon
 r_goto
 id|begin
 suffix:semicolon

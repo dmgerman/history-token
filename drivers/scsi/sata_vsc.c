@@ -876,12 +876,6 @@ op_assign
 id|sata_phy_reset
 comma
 dot
-id|phy_config
-op_assign
-id|pata_phy_config
-comma
-multiline_comment|/* not a typo */
-dot
 id|bmdma_start
 op_assign
 id|ata_bmdma_start_mmio
@@ -1154,7 +1148,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xFFFFFFFF
+l_int|0xFFFFFFFFULL
 )paren
 suffix:semicolon
 r_if
@@ -1172,7 +1166,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xFFFFFFFF
+l_int|0xFFFFFFFFULL
 )paren
 suffix:semicolon
 r_if
@@ -1340,7 +1334,7 @@ l_int|0x1f
 suffix:semicolon
 id|probe_ent-&gt;udma_mask
 op_assign
-l_int|0x3f
+l_int|0x7f
 suffix:semicolon
 multiline_comment|/* We have 4 ports per PCI function */
 id|vsc_sata_setup_port

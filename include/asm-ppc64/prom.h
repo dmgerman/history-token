@@ -230,9 +230,9 @@ id|pci64
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|_of_tce_table
+DECL|struct|of_tce_table
 r_struct
-id|_of_tce_table
+id|of_tce_table
 (brace
 DECL|member|node
 id|phandle
@@ -249,6 +249,13 @@ r_int
 id|size
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|of_tce_table
+id|of_tce_table
+(braket
+)braket
 suffix:semicolon
 DECL|struct|reg_property
 r_struct

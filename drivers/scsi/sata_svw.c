@@ -851,12 +851,6 @@ op_assign
 id|sata_phy_reset
 comma
 dot
-id|phy_config
-op_assign
-id|pata_phy_config
-comma
-multiline_comment|/* not a typo */
-dot
 id|bmdma_start
 op_assign
 id|ata_bmdma_start_mmio
@@ -1121,6 +1115,24 @@ id|rc
 r_goto
 id|err_out_regions
 suffix:semicolon
+id|rc
+op_assign
+id|pci_set_consistent_dma_mask
+c_func
+(paren
+id|pdev
+comma
+id|ATA_DMA_MASK
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_goto
+id|err_out_regions
+suffix:semicolon
 id|probe_ent
 op_assign
 id|kmalloc
@@ -1308,7 +1320,7 @@ l_int|0x1f
 suffix:semicolon
 id|probe_ent-&gt;udma_mask
 op_assign
-l_int|0x3f
+l_int|0x7f
 suffix:semicolon
 multiline_comment|/* We have 4 ports per PCI function */
 id|k2_sata_setup_port

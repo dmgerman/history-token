@@ -406,7 +406,7 @@ macro_line|#ifndef get_iface_desc
 DECL|macro|get_iface
 mdefine_line|#define get_iface(cfg, num)&t;((cfg)-&gt;interface[(num)])
 DECL|macro|get_iface_desc
-mdefine_line|#define get_iface_desc(iface)&t;(&amp;iface-&gt;desc)
+mdefine_line|#define get_iface_desc(iface)&t;(&amp;(iface)-&gt;desc)
 DECL|macro|get_endpoint
 mdefine_line|#define get_endpoint(alt,ep)&t;(&amp;(alt)-&gt;endpoint[ep].desc)
 DECL|macro|get_ep_desc
