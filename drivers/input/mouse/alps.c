@@ -1069,8 +1069,8 @@ r_if
 c_cond
 (paren
 id|psmouse-&gt;pktcnt
-OG
-l_int|1
+op_ge
+l_int|2
 op_logical_and
 id|psmouse-&gt;pktcnt
 op_le
@@ -1080,6 +1080,8 @@ op_logical_and
 id|psmouse-&gt;packet
 (braket
 id|psmouse-&gt;pktcnt
+op_minus
+l_int|1
 )braket
 op_amp
 l_int|0x80
