@@ -44568,7 +44568,8 @@ DECL|function|FlashPoint__ProbeHostAdapter
 id|FlashPoint__ProbeHostAdapter
 c_func
 (paren
-id|FlashPoint_Info_T
+r_struct
+id|FlashPoint_Info
 op_star
 id|FlashPointInfo
 )paren
@@ -44591,7 +44592,8 @@ DECL|function|FlashPoint__HardwareResetHostAdapter
 id|FlashPoint__HardwareResetHostAdapter
 c_func
 (paren
-id|FlashPoint_Info_T
+r_struct
+id|FlashPoint_Info
 op_star
 id|FlashPointInfo
 )paren
@@ -44635,7 +44637,8 @@ c_func
 id|FlashPoint_CardHandle_T
 id|CardHandle
 comma
-id|BusLogic_CCB_T
+r_struct
+id|BusLogic_CCB
 op_star
 id|CCB
 )paren
@@ -44662,7 +44665,8 @@ c_func
 id|FlashPoint_CardHandle_T
 id|CardHandle
 comma
-id|BusLogic_CCB_T
+r_struct
+id|BusLogic_CCB
 op_star
 id|CCB
 )paren
@@ -44851,7 +44855,8 @@ r_char
 id|FlashPoint_ProbeHostAdapter
 c_func
 (paren
-id|FlashPoint_Info_T
+r_struct
+id|FlashPoint_Info
 op_star
 )paren
 suffix:semicolon
@@ -44860,7 +44865,8 @@ id|FlashPoint_CardHandle_T
 id|FlashPoint_HardwareResetHostAdapter
 c_func
 (paren
-id|FlashPoint_Info_T
+r_struct
+id|FlashPoint_Info
 op_star
 )paren
 suffix:semicolon
@@ -44871,7 +44877,8 @@ c_func
 (paren
 id|FlashPoint_CardHandle_T
 comma
-id|BusLogic_CCB_T
+r_struct
+id|BusLogic_CCB
 op_star
 )paren
 suffix:semicolon
@@ -44882,7 +44889,8 @@ c_func
 (paren
 id|FlashPoint_CardHandle_T
 comma
-id|BusLogic_CCB_T
+r_struct
+id|BusLogic_CCB
 op_star
 )paren
 suffix:semicolon
