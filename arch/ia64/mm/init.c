@@ -205,9 +205,9 @@ id|vma-&gt;vm_page_prot
 op_assign
 id|protection_map
 (braket
-id|VM_READ
-op_or
-id|VM_WRITE
+id|VM_DATA_DEFAULT_FLAGS
+op_amp
+l_int|0x7
 )braket
 suffix:semicolon
 id|vma-&gt;vm_flags
