@@ -8826,6 +8826,11 @@ id|pbus-&gt;private_free
 op_assign
 id|snd_intel8x0_mixer_free_ac97_bus
 suffix:semicolon
+id|pbus-&gt;shared_type
+op_assign
+id|AC97_SHARED_TYPE_ICH
+suffix:semicolon
+multiline_comment|/* shared with modem driver */
 r_if
 c_cond
 (paren

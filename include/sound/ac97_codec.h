@@ -594,6 +594,22 @@ DECL|macro|AC97_RATES_MIC_ADC
 mdefine_line|#define AC97_RATES_MIC_ADC&t;4
 DECL|macro|AC97_RATES_SPDIF
 mdefine_line|#define AC97_RATES_SPDIF&t;5
+multiline_comment|/* shared controllers */
+r_enum
+(brace
+DECL|enumerator|AC97_SHARED_TYPE_NONE
+id|AC97_SHARED_TYPE_NONE
+comma
+DECL|enumerator|AC97_SHARED_TYPE_ICH
+id|AC97_SHARED_TYPE_ICH
+comma
+DECL|enumerator|AC97_SHARED_TYPE_ATIIXP
+id|AC97_SHARED_TYPE_ATIIXP
+comma
+DECL|enumerator|AC97_SHARED_TYPES
+id|AC97_SHARED_TYPES
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *&n; */
 DECL|typedef|ac97_bus_t
 r_typedef
@@ -977,6 +993,12 @@ id|ac97_pcm
 op_star
 id|pcms
 suffix:semicolon
+DECL|member|shared_type
+r_int
+r_int
+id|shared_type
+suffix:semicolon
+multiline_comment|/* type of shared controller betwen audio and modem */
 DECL|member|codec
 id|ac97_t
 op_star

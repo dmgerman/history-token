@@ -4272,6 +4272,11 @@ id|pbus-&gt;clock
 op_assign
 id|clock
 suffix:semicolon
+id|pbus-&gt;shared_type
+op_assign
+id|AC97_SHARED_TYPE_ATIIXP
+suffix:semicolon
+multiline_comment|/* shared with audio driver */
 id|chip-&gt;ac97_bus
 op_assign
 id|pbus
