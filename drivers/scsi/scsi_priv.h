@@ -474,6 +474,7 @@ DECL|macro|scsi_exit_procfs
 macro_line|# define scsi_exit_procfs()&t;&t;do { } while (0)
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* scsi_scan.c */
+r_extern
 r_int
 id|scsi_scan_host_selected
 c_func
