@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;asm/shmparam.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/unistd.h&gt;
 r_int
 r_int
 DECL|function|arch_get_unmapped_area

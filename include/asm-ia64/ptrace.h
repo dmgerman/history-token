@@ -607,6 +607,9 @@ DECL|macro|user_stack
 macro_line|# define user_stack(task,regs)&t;((long) regs - (long) task == IA64_STK_OFFSET - sizeof(*regs))
 DECL|macro|fsys_mode
 macro_line|# define fsys_mode(task,regs)&t;&t;&t;&t;&t;&bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  struct task_struct *_task = (task);&t;&t;&t;&bslash;&n;&t;  struct pt_regs *_regs = (regs);&t;&t;&t;&bslash;&n;&t;  !user_mode(_regs) &amp;&amp; user_stack(_task, _regs);&t;&bslash;&n;  })
+multiline_comment|/*&n;   * System call handlers that, upon successful completion, need to return a negative value&n;   * should call force_successful_syscall_return() right before returning.  On architectures&n;   * where the syscall convention provides for a separate error flag (e.g., alpha, ia64,&n;   * ppc{,64}, sparc{,64}, possibly others), this macro can be used to ensure that the error&n;   * flag will not get set.  On architectures which do not support a separate error flag,&n;   * the macro is a no-op and the spurious error condition needs to be filtered out by some&n;   * other means (e.g., in user-level, by passing an extra argument to the syscall handler,&n;   * or something along those lines).&n;   *&n;   * On ia64, we can clear the user&squot;s pt_regs-&gt;r8 to force a successful syscall.&n;   */
+DECL|macro|force_successful_syscall_return
+macro_line|# define force_successful_syscall_return()&t;(ia64_task_regs(current)-&gt;r8 = 0)
 r_struct
 id|task_struct
 suffix:semicolon
