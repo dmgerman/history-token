@@ -2461,7 +2461,6 @@ mdefine_line|#define HEX_DIGITS 8
 DECL|function|parse_hex_value
 r_static
 r_int
-r_int
 id|parse_hex_value
 (paren
 r_const
@@ -2684,8 +2683,8 @@ singleline_comment|// = { [0 ... NR_IRQS-1] = 1 };
 DECL|function|set_irq_affinity_info
 r_void
 id|set_irq_affinity_info
-c_func
 (paren
+r_int
 r_int
 id|irq
 comma
@@ -2711,10 +2710,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq
-op_ge
-l_int|0
-op_logical_and
 id|irq
 OL
 id|NR_IRQS
@@ -2796,6 +2791,7 @@ id|irq_redir
 (braket
 (paren
 r_int
+r_int
 )paren
 id|data
 )braket
@@ -2808,6 +2804,7 @@ comma
 id|irq_affinity
 (braket
 (paren
+r_int
 r_int
 )paren
 id|data
@@ -2840,13 +2837,16 @@ id|data
 )paren
 (brace
 r_int
+r_int
 id|irq
 op_assign
 (paren
 r_int
+r_int
 )paren
 id|data
-comma
+suffix:semicolon
+r_int
 id|full_count
 op_assign
 id|count
@@ -2938,6 +2938,14 @@ op_amp
 id|new_value
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
+suffix:semicolon
 multiline_comment|/*&n;&t; * Do not allow disabling IRQs completely - it&squot;s a too easy&n;&t; * way to make the system unusable accidentally :-) At least&n;&t; * one online CPU still has to be targeted.&n;&t; */
 r_if
 c_cond
@@ -2970,11 +2978,7 @@ op_or
 id|redir
 ques
 c_cond
-(paren
-l_int|1
-op_lshift
-l_int|31
-)paren
+id|IA64_IRQ_REDIRECTED
 suffix:colon
 l_int|0
 )paren
@@ -3088,7 +3092,8 @@ r_int
 op_star
 )paren
 id|data
-comma
+suffix:semicolon
+r_int
 id|full_count
 op_assign
 id|count
@@ -3247,6 +3252,7 @@ r_void
 op_star
 )paren
 (paren
+r_int
 r_int
 )paren
 id|irq

@@ -4090,7 +4090,7 @@ id|state-&gt;irq
 (brace
 id|state-&gt;irq
 op_assign
-id|ia64_alloc_irq
+id|ia64_alloc_vector
 c_func
 (paren
 )paren

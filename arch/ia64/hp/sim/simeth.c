@@ -633,7 +633,7 @@ id|mac_addr
 suffix:semicolon
 id|dev-&gt;irq
 op_assign
-id|ia64_alloc_irq
+id|ia64_alloc_vector
 c_func
 (paren
 )paren

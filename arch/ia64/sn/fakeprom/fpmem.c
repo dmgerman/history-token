@@ -1,7 +1,7 @@
 multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2002 Silicon Graphics, Inc.  All rights reserved.&n; */
 multiline_comment|/*&n; * FPROM EFI memory descriptor build routines&n; *&n; * &t;- Routines to build the EFI memory descriptor map&n; * &t;- Should also be usable by the SGI SN1 prom to convert&n; * &t;  klconfig to efi_memmap&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/efi.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &quot;fpmem.h&quot;
 multiline_comment|/*&n; * args points to a layout in memory like this&n; *&n; *&t;&t;32 bit&t;&t;32 bit&n; *&n; * &t;&t;numnodes&t;numcpus&n; *&n; *&t;&t;16 bit   16 bit&t;&t;   32 bit&n; *&t;&t;nasid0&t;cpuconf&t;&t;membankdesc0&n; *&t;&t;nasid1&t;cpuconf&t;&t;membankdesc1&n; *&t;&t;&t;   .&n; *&t;&t;&t;   .&n; *&t;&t;&t;   .&n; *&t;&t;&t;   .&n; *&t;&t;&t;   .&n; */
 DECL|variable|sn_memmap

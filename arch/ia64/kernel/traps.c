@@ -516,16 +516,6 @@ id|sig
 comma
 id|code
 suffix:semicolon
-id|die_if_kernel
-c_func
-(paren
-l_string|&quot;bad break&quot;
-comma
-id|regs
-comma
-id|break_num
-)paren
-suffix:semicolon
 multiline_comment|/* SIGILL, SIGFPE, SIGSEGV, and SIGBUS want these field initialized: */
 id|siginfo.si_addr
 op_assign
@@ -567,7 +557,17 @@ id|break_num
 r_case
 l_int|0
 suffix:colon
-multiline_comment|/* unknown error */
+multiline_comment|/* unknown error (used by GCC for __builtin_abort()) */
+id|die_if_kernel
+c_func
+(paren
+l_string|&quot;bad break&quot;
+comma
+id|regs
+comma
+id|break_num
+)paren
+suffix:semicolon
 id|sig
 op_assign
 id|SIGILL

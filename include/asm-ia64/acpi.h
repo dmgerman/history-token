@@ -70,11 +70,17 @@ id|count
 suffix:semicolon
 r_int
 id|acpi_get_interrupt_model
-c_func
 (paren
 r_int
 op_star
 id|type
+)paren
+suffix:semicolon
+r_int
+id|acpi_irq_to_vector
+(paren
+id|u32
+id|irq
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DISCONTIGMEM

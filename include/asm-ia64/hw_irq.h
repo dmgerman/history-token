@@ -44,6 +44,9 @@ DECL|macro|IA64_IPI_RESCHEDULE
 mdefine_line|#define IA64_IPI_RESCHEDULE&t;&t;0xfd&t;/* SMP reschedule */
 DECL|macro|IA64_IPI_VECTOR
 mdefine_line|#define IA64_IPI_VECTOR&t;&t;&t;0xfe&t;/* inter-processor interrupt vector */
+multiline_comment|/* Used for encoding redirected irqs */
+DECL|macro|IA64_IRQ_REDIRECTED
+mdefine_line|#define IA64_IRQ_REDIRECTED&t;&t;(1 &lt;&lt; 31)
 multiline_comment|/* IA64 inter-cpu interrupt related definitions */
 DECL|macro|IA64_IPI_DEFAULT_BASE_ADDR
 mdefine_line|#define IA64_IPI_DEFAULT_BASE_ADDR&t;0xfee00000
@@ -92,15 +95,6 @@ suffix:semicolon
 DECL|macro|isa_irq_to_vector
 mdefine_line|#define isa_irq_to_vector(x)&t;isa_irq_to_vector_map[(x)]
 r_extern
-id|__u8
-id|gsi_to_vector_map
-(braket
-l_int|255
-)braket
-suffix:semicolon
-DECL|macro|gsi_to_vector
-mdefine_line|#define gsi_to_vector(x)&t;gsi_to_vector_map[(x)]
-r_extern
 r_int
 r_int
 id|ipi_base_addr
@@ -113,12 +107,12 @@ suffix:semicolon
 multiline_comment|/* CPU-internal interrupt controller */
 r_extern
 r_int
-id|ia64_alloc_irq
+id|ia64_alloc_vector
 (paren
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* allocate a free irq */
+multiline_comment|/* allocate a free vector */
 r_extern
 r_void
 id|ia64_send_ipi

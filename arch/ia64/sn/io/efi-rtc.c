@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;asm/efi.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/sn/klclock.h&gt;
 multiline_comment|/*&n; * No locking necessary when this is called from efirtc which protects us&n; * from racing by efi_rtc_lock.&n; */
 DECL|macro|__swizzle

@@ -59,6 +59,7 @@ r_void
 id|set_irq_affinity_info
 (paren
 r_int
+r_int
 id|irq
 comma
 r_int
