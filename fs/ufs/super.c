@@ -4475,6 +4475,11 @@ suffix:semicolon
 r_int
 id|flags
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|UFSD
 c_func
 (paren
@@ -4583,6 +4588,11 @@ c_func
 l_string|&quot;EXIT&bslash;n&quot;
 )paren
 )paren
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|ufs_put_super
 r_void

@@ -1512,6 +1512,11 @@ op_star
 id|sb
 )paren
 (brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1531,6 +1536,11 @@ suffix:semicolon
 id|sb-&gt;s_dirt
 op_assign
 l_int|0
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_static

@@ -79,6 +79,11 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -183,6 +188,11 @@ id|sb-&gt;u.generic_sbp
 op_assign
 l_int|NULL
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -212,6 +222,11 @@ id|AFFS_SB
 c_func
 (paren
 id|sb
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -295,6 +310,11 @@ comma
 id|CURRENT_TIME
 comma
 id|clean
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

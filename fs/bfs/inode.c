@@ -963,6 +963,11 @@ op_star
 id|s
 )paren
 (brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -988,6 +993,11 @@ suffix:semicolon
 id|s-&gt;s_dirt
 op_assign
 l_int|0
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|variable|bfs_inode_cachep
