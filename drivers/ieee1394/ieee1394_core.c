@@ -51,6 +51,33 @@ comma
 l_string|&quot;Disable nodemgr functionality.&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Disable Isochronous Resource Manager functionality */
+DECL|variable|hpsb_disable_irm
+r_int
+id|hpsb_disable_irm
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|disable_irm
+comma
+id|hpsb_disable_irm
+comma
+r_bool
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|disable_irm
+comma
+l_string|&quot;Disable Isochronous Resource Manager functionality.&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* We are GPL, so treat us special */
 id|MODULE_LICENSE
 c_func
@@ -5019,11 +5046,29 @@ id|disable_nodemgr
 id|HPSB_INFO
 c_func
 (paren
-l_string|&quot;nodemgr functionality disabled&quot;
+l_string|&quot;nodemgr and IRM functionality disabled&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* We shouldn&squot;t contend for IRM with nodemgr disabled, since&n;&t;&t;   nodemgr implements functionality required of ieee1394a-2000&n;&t;&t;   IRMs */
+id|hpsb_disable_irm
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|hpsb_disable_irm
+)paren
+(brace
+id|HPSB_INFO
+c_func
+(paren
+l_string|&quot;IRM functionality disabled&quot;
+)paren
 suffix:semicolon
 )brace
 id|ret
@@ -5440,6 +5485,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|hpsb_packet_received
+)paren
+suffix:semicolon
+DECL|variable|hpsb_disable_irm
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|hpsb_disable_irm
 )paren
 suffix:semicolon
 multiline_comment|/** ieee1394_transactions.c **/

@@ -460,6 +460,10 @@ r_return
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_cindex
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|hpsb_disable_irm
+suffix:semicolon
 multiline_comment|/* Our sysfs bus entry */
 r_extern
 r_struct

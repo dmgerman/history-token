@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;ieee1394.h&quot;
+macro_line|#include &quot;ieee1394_core.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394_transactions.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
@@ -6518,6 +6519,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|hpsb_disable_irm
+op_logical_or
 id|host-&gt;is_irm
 )paren
 r_return

@@ -1587,9 +1587,20 @@ id|OHCI1394_BusOptions
 suffix:semicolon
 id|buf
 op_or_assign
-l_int|0xE0000000
+l_int|0x60000000
 suffix:semicolon
-multiline_comment|/* Enable IRMC, CMC and ISC */
+multiline_comment|/* Enable CMC and ISC */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hpsb_disable_irm
+)paren
+id|buf
+op_or_assign
+l_int|0x80000000
+suffix:semicolon
+multiline_comment|/* Enable IRMC */
 id|buf
 op_and_assign
 op_complement
@@ -1645,7 +1656,7 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-multiline_comment|/* Enable cycle timer and cycle master and set the IRM&n;&t; * contender bit in our self ID packets. */
+multiline_comment|/* Enable cycle timer and cycle master and set the IRM&n;&t; * contender bit in our self ID packets if appropriate. */
 id|reg_write
 c_func
 (paren
@@ -1665,7 +1676,16 @@ id|ohci
 comma
 l_int|4
 comma
-l_int|0xc0
+id|PHY_04_LCTRL
+op_or
+(paren
+id|hpsb_disable_irm
+ques
+c_cond
+l_int|0
+suffix:colon
+id|PHY_04_CONTENDER
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Set up self-id dma buffer */
