@@ -2510,6 +2510,42 @@ DECL|macro|RCSR_WDR
 mdefine_line|#define RCSR_WDR&t;(1 &lt;&lt; 1)&t;/* Watchdog Reset */
 DECL|macro|RCSR_HWR
 mdefine_line|#define RCSR_HWR&t;(1 &lt;&lt; 0)&t;/* Hardware Reset */
+DECL|macro|PWER_GPIO
+mdefine_line|#define PWER_GPIO(Nb)&t;(1 &lt;&lt; Nb)&t;/* GPIO [0..15] wake-up enable     */
+DECL|macro|PWER_GPIO0
+mdefine_line|#define PWER_GPIO0&t;PWER_GPIO (0)&t;/* GPIO  [0] wake-up enable        */
+DECL|macro|PWER_GPIO1
+mdefine_line|#define PWER_GPIO1&t;PWER_GPIO (1)&t;/* GPIO  [1] wake-up enable        */
+DECL|macro|PWER_GPIO2
+mdefine_line|#define PWER_GPIO2&t;PWER_GPIO (2)&t;/* GPIO  [2] wake-up enable        */
+DECL|macro|PWER_GPIO3
+mdefine_line|#define PWER_GPIO3&t;PWER_GPIO (3)&t;/* GPIO  [3] wake-up enable        */
+DECL|macro|PWER_GPIO4
+mdefine_line|#define PWER_GPIO4&t;PWER_GPIO (4)&t;/* GPIO  [4] wake-up enable        */
+DECL|macro|PWER_GPIO5
+mdefine_line|#define PWER_GPIO5&t;PWER_GPIO (5)&t;/* GPIO  [5] wake-up enable        */
+DECL|macro|PWER_GPIO6
+mdefine_line|#define PWER_GPIO6&t;PWER_GPIO (6)&t;/* GPIO  [6] wake-up enable        */
+DECL|macro|PWER_GPIO7
+mdefine_line|#define PWER_GPIO7&t;PWER_GPIO (7)&t;/* GPIO  [7] wake-up enable        */
+DECL|macro|PWER_GPIO8
+mdefine_line|#define PWER_GPIO8&t;PWER_GPIO (8)&t;/* GPIO  [8] wake-up enable        */
+DECL|macro|PWER_GPIO9
+mdefine_line|#define PWER_GPIO9&t;PWER_GPIO (9)&t;/* GPIO  [9] wake-up enable        */
+DECL|macro|PWER_GPIO10
+mdefine_line|#define PWER_GPIO10&t;PWER_GPIO (10)&t;/* GPIO [10] wake-up enable        */
+DECL|macro|PWER_GPIO11
+mdefine_line|#define PWER_GPIO11&t;PWER_GPIO (11)&t;/* GPIO [11] wake-up enable        */
+DECL|macro|PWER_GPIO12
+mdefine_line|#define PWER_GPIO12&t;PWER_GPIO (12)&t;/* GPIO [12] wake-up enable        */
+DECL|macro|PWER_GPIO13
+mdefine_line|#define PWER_GPIO13&t;PWER_GPIO (13)&t;/* GPIO [13] wake-up enable        */
+DECL|macro|PWER_GPIO14
+mdefine_line|#define PWER_GPIO14&t;PWER_GPIO (14)&t;/* GPIO [14] wake-up enable        */
+DECL|macro|PWER_GPIO15
+mdefine_line|#define PWER_GPIO15&t;PWER_GPIO (15)&t;/* GPIO [15] wake-up enable        */
+DECL|macro|PWER_RTC
+mdefine_line|#define PWER_RTC&t;0x80000000&t;/* RTC alarm wake-up enable        */
 multiline_comment|/*&n; * SSP Serial Port Registers&n; * PXA250, PXA255, PXA26x and PXA27x SSP controllers are all slightly different.&n; * PXA255, PXA26x and PXA27x have extra ports, registers and bits.&n; */
 multiline_comment|/* Common PXA2xx bits first */
 DECL|macro|SSCR0_DSS
