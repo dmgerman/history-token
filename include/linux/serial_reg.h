@@ -387,5 +387,24 @@ DECL|macro|SERIAL_RSA_BAUD_BASE
 mdefine_line|#define SERIAL_RSA_BAUD_BASE (921600)
 DECL|macro|SERIAL_RSA_BAUD_BASE_LO
 mdefine_line|#define SERIAL_RSA_BAUD_BASE_LO (SERIAL_RSA_BAUD_BASE / 8)
+multiline_comment|/*&n; * Extra serial register definitions for the internal UARTs&n; * in TI OMAP processors.&n; */
+DECL|macro|UART_OMAP_MDR1
+mdefine_line|#define UART_OMAP_MDR1&t;&t;0x08&t;/* Mode definition register */
+DECL|macro|UART_OMAP_MDR2
+mdefine_line|#define UART_OMAP_MDR2&t;&t;0x09&t;/* Mode definition register 2 */
+DECL|macro|UART_OMAP_SCR
+mdefine_line|#define UART_OMAP_SCR&t;&t;0x10&t;/* Supplementary control register */
+DECL|macro|UART_OMAP_SSR
+mdefine_line|#define UART_OMAP_SSR&t;&t;0x11&t;/* Supplementary status register */
+DECL|macro|UART_OMAP_EBLR
+mdefine_line|#define UART_OMAP_EBLR&t;&t;0x12&t;/* BOF length register */
+DECL|macro|UART_OMAP_OSC_12M_SEL
+mdefine_line|#define UART_OMAP_OSC_12M_SEL&t;0x13&t;/* OMAP1510 12MHz osc select */
+DECL|macro|UART_OMAP_MVER
+mdefine_line|#define UART_OMAP_MVER&t;&t;0x14&t;/* Module version register */
+DECL|macro|UART_OMAP_SYSC
+mdefine_line|#define UART_OMAP_SYSC&t;&t;0x15&t;/* System configuration register */
+DECL|macro|UART_OMAP_SYSS
+mdefine_line|#define UART_OMAP_SYSS&t;&t;0x16&t;/* System status register */
 macro_line|#endif /* _LINUX_SERIAL_REG_H */
 eof
