@@ -1375,6 +1375,13 @@ c_func
 id|__secpath_destroy
 )paren
 suffix:semicolon
+DECL|variable|xfrm_get_acqseq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_get_acqseq
+)paren
+suffix:semicolon
 DECL|variable|xfrm_parse_spi
 id|EXPORT_SYMBOL
 c_func
