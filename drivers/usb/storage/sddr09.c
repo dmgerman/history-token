@@ -56,8 +56,8 @@ suffix:semicolon
 multiline_comment|/*&n; * NAND Flash Manufacturer ID Codes&n; */
 DECL|macro|NAND_MFR_AMD
 mdefine_line|#define NAND_MFR_AMD&t;&t;0x01
-DECL|macro|NAND_MFR_NS
-mdefine_line|#define NAND_MFR_NS&t;&t;0x8f
+DECL|macro|NAND_MFR_NATSEMI
+mdefine_line|#define NAND_MFR_NATSEMI&t;0x8f
 DECL|macro|NAND_MFR_TOSHIBA
 mdefine_line|#define NAND_MFR_TOSHIBA&t;0x98
 DECL|macro|NAND_MFR_SAMSUNG
@@ -87,10 +87,10 @@ r_return
 l_string|&quot;AMD&quot;
 suffix:semicolon
 r_case
-id|NAND_MFR_NS
+id|NAND_MFR_NATSEMI
 suffix:colon
 r_return
-l_string|&quot;NS&quot;
+l_string|&quot;NATSEMI&quot;
 suffix:semicolon
 r_case
 id|NAND_MFR_TOSHIBA
@@ -1892,6 +1892,14 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;sddr09_erase: erase address %lu&bslash;n&quot;
+comma
+id|Eaddress
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -3246,7 +3254,6 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/* we never free blocks, so lastpba can only increase */
 r_static
 r_int
 r_int
@@ -3258,6 +3265,10 @@ r_struct
 id|sddr09_card_info
 op_star
 id|info
+comma
+r_int
+r_int
+id|lba
 )paren
 (brace
 r_static
@@ -3268,7 +3279,23 @@ op_assign
 l_int|1
 suffix:semicolon
 r_int
-id|numblocks
+id|zonestart
+comma
+id|end
+comma
+id|i
+suffix:semicolon
+id|zonestart
+op_assign
+(paren
+id|lba
+op_div
+l_int|1000
+)paren
+op_lshift
+l_int|10
+suffix:semicolon
+id|end
 op_assign
 id|info-&gt;capacity
 op_rshift
@@ -3278,8 +3305,20 @@ op_plus
 id|info-&gt;pageshift
 )paren
 suffix:semicolon
-r_int
-id|i
+id|end
+op_sub_assign
+id|zonestart
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|end
+OG
+l_int|1024
+)paren
+id|end
+op_assign
+l_int|1024
 suffix:semicolon
 r_for
 c_loop
@@ -3292,7 +3331,7 @@ l_int|1
 suffix:semicolon
 id|i
 OL
-id|numblocks
+id|end
 suffix:semicolon
 id|i
 op_increment
@@ -3303,6 +3342,8 @@ c_cond
 (paren
 id|info-&gt;pba_to_lba
 (braket
+id|zonestart
+op_plus
 id|i
 )braket
 op_eq
@@ -3314,6 +3355,47 @@ op_assign
 id|i
 suffix:semicolon
 r_return
+id|zonestart
+op_plus
+id|i
+suffix:semicolon
+)brace
+)brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+op_le
+id|lastpba
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|info-&gt;pba_to_lba
+(braket
+id|zonestart
+op_plus
+id|i
+)braket
+op_eq
+id|UNDEF
+)paren
+(brace
+id|lastpba
+op_assign
+id|i
+suffix:semicolon
+r_return
+id|zonestart
+op_plus
 id|i
 suffix:semicolon
 )brace
@@ -3404,14 +3486,16 @@ r_int
 id|i
 comma
 id|result
+comma
+id|isnew
 suffix:semicolon
 id|lbap
 op_assign
 (paren
 (paren
 id|lba
-op_amp
-l_int|0x3ff
+op_mod
+l_int|1000
 )paren
 op_lshift
 l_int|1
@@ -3448,6 +3532,10 @@ id|info-&gt;lba_to_pba
 id|lba
 )braket
 suffix:semicolon
+id|isnew
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3462,6 +3550,8 @@ id|sddr09_find_unused_pba
 c_func
 (paren
 id|info
+comma
+id|lba
 )paren
 suffix:semicolon
 r_if
@@ -3494,6 +3584,10 @@ id|lba
 )braket
 op_assign
 id|pba
+suffix:semicolon
+id|isnew
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -3607,7 +3701,7 @@ id|USB_STOR_TRANSPORT_GOOD
 r_goto
 id|err
 suffix:semicolon
-multiline_comment|/* check old contents */
+multiline_comment|/* check old contents and fill lba */
 r_for
 c_loop
 (paren
@@ -3617,7 +3711,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|info-&gt;blockshift
+id|info-&gt;blocksize
 suffix:semicolon
 id|i
 op_increment
@@ -3731,6 +3825,38 @@ id|ecc
 )paren
 suffix:semicolon
 )brace
+id|cptr
+(braket
+l_int|6
+)braket
+op_assign
+id|cptr
+(braket
+l_int|11
+)braket
+op_assign
+id|MSB_of
+c_func
+(paren
+id|lbap
+)paren
+suffix:semicolon
+id|cptr
+(braket
+l_int|7
+)braket
+op_assign
+id|cptr
+(braket
+l_int|12
+)braket
+op_assign
+id|LSB_of
+c_func
+(paren
+id|lbap
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* copy in new stuff and compute ECC */
 id|xptr
@@ -3822,38 +3948,6 @@ op_plus
 l_int|8
 comma
 id|ecc
-)paren
-suffix:semicolon
-id|cptr
-(braket
-l_int|6
-)braket
-op_assign
-id|cptr
-(braket
-l_int|11
-)braket
-op_assign
-id|MSB_of
-c_func
-(paren
-id|lbap
-)paren
-suffix:semicolon
-id|cptr
-(braket
-l_int|7
-)braket
-op_assign
-id|cptr
-(braket
-l_int|12
-)braket
-op_assign
-id|LSB_of
-c_func
-(paren
-id|lbap
 )paren
 suffix:semicolon
 )brace
@@ -4205,7 +4299,7 @@ id|use_sg
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Read control address %08lX blocks %04X&bslash;n&quot;
+l_string|&quot;Read control address %lu, blocks %d&bslash;n&quot;
 comma
 id|address
 comma
@@ -4422,7 +4516,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;sddr09_get_wp: status %02X&quot;
+l_string|&quot;sddr09_get_wp: status 0x%02X&quot;
 comma
 id|status
 )paren
@@ -4955,9 +5049,22 @@ id|buffer
 op_eq
 l_int|NULL
 )paren
-r_return
-l_int|0
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;sddr09_read_map: out of memory&bslash;n&quot;
+)paren
 suffix:semicolon
+id|result
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
 id|buffer_end
 op_assign
 id|buffer
@@ -5091,9 +5198,19 @@ op_ge
 id|buffer_end
 )paren
 (brace
-id|ptr
+r_int
+r_int
+id|address
+suffix:semicolon
+id|address
 op_assign
-id|buffer
+id|i
+op_lshift
+(paren
+id|info-&gt;pageshift
+op_plus
+id|info-&gt;blockshift
+)paren
 suffix:semicolon
 id|result
 op_assign
@@ -5102,13 +5219,9 @@ c_func
 (paren
 id|us
 comma
-id|i
-op_lshift
-(paren
-id|info-&gt;blockshift
-op_plus
-l_int|8
-)paren
+id|address
+op_rshift
+l_int|1
 comma
 id|min
 c_func
@@ -5142,6 +5255,10 @@ r_goto
 id|done
 suffix:semicolon
 )brace
+id|ptr
+op_assign
+id|buffer
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -5203,7 +5320,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sddr09: PBA %04X has no logical mapping&bslash;n&quot;
+l_string|&quot;sddr09: PBA %d has no logical mapping&bslash;n&quot;
 comma
 id|i
 )paren
@@ -5256,7 +5373,7 @@ l_int|6
 id|printk
 c_func
 (paren
-l_string|&quot;sddr09: PBA %04X has no logical mapping: &quot;
+l_string|&quot;sddr09: PBA %d has no logical mapping: &quot;
 l_string|&quot;reserved area = %02X%02X%02X%02X &quot;
 l_string|&quot;data status %02X block status %02X&bslash;n&quot;
 comma
@@ -5321,7 +5438,7 @@ l_int|0x01
 id|printk
 c_func
 (paren
-l_string|&quot;sddr09: PBA %04X has invalid address field &quot;
+l_string|&quot;sddr09: PBA %d has invalid address field &quot;
 l_string|&quot;%02X%02X/%02X%02X&bslash;n&quot;
 comma
 id|i
@@ -5378,7 +5495,7 @@ l_int|7
 id|printk
 c_func
 (paren
-l_string|&quot;sddr09: Bad parity in LBA for block %04X&quot;
+l_string|&quot;sddr09: Bad parity in LBA for block %d&quot;
 l_string|&quot; (%02X %02X)&bslash;n&quot;
 comma
 id|i
@@ -5439,35 +5556,88 @@ op_ge
 l_int|1000
 )paren
 (brace
-r_int
-r_int
-id|address
-suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sddr09: Bad LBA %04X for block %04X&bslash;n&quot;
+l_string|&quot;sddr09: Bad low LBA %d for block %d&bslash;n&quot;
 comma
 id|lba
 comma
 id|i
 )paren
 suffix:semicolon
+r_goto
+id|possibly_erase
+suffix:semicolon
+)brace
+id|lba
+op_add_assign
+l_int|1000
+op_star
+(paren
+id|i
+op_div
+l_int|0x400
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;lba_to_pba
+(braket
+id|lba
+)braket
+op_ne
+id|UNDEF
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;sddr09: LBA %d seen for PBA %d and %d&bslash;n&quot;
+comma
+id|lba
+comma
+id|info-&gt;lba_to_pba
+(braket
+id|lba
+)braket
+comma
+id|i
+)paren
+suffix:semicolon
+r_goto
+id|possibly_erase
+suffix:semicolon
+)brace
 id|info-&gt;pba_to_lba
 (braket
 id|i
 )braket
 op_assign
-id|UNDEF
-multiline_comment|/* UNUSABLE */
+id|lba
 suffix:semicolon
+id|info-&gt;lba_to_pba
+(braket
+id|lba
+)braket
+op_assign
+id|i
+suffix:semicolon
+r_continue
+suffix:semicolon
+id|possibly_erase
+suffix:colon
 r_if
 c_cond
 (paren
 id|erase_bad_lba_entries
 )paren
 (brace
-multiline_comment|/* some cameras cannot erase a card if it has&n;&t;&t;&t;&t;   bad entries, so we supply this function */
+r_int
+r_int
+id|address
+suffix:semicolon
 id|address
 op_assign
 (paren
@@ -5490,60 +5660,21 @@ op_rshift
 l_int|1
 )paren
 suffix:semicolon
-)brace
-r_continue
-suffix:semicolon
-)brace
-id|lba
-op_add_assign
-l_int|1000
-op_star
-(paren
-id|i
-op_div
-l_int|0x400
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|lba
-OL
-l_int|0x10
-op_logical_or
-(paren
-id|lba
-op_ge
-l_int|0x3E0
-op_logical_and
-id|lba
-OL
-l_int|0x3EF
-)paren
-)paren
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;LBA %04X &lt;-&gt; PBA %04X&bslash;n&quot;
-comma
-id|lba
-comma
-id|i
-)paren
-suffix:semicolon
 id|info-&gt;pba_to_lba
 (braket
 id|i
 )braket
 op_assign
-id|lba
+id|UNDEF
 suffix:semicolon
-id|info-&gt;lba_to_pba
+)brace
+r_else
+id|info-&gt;pba_to_lba
 (braket
-id|lba
+id|i
 )braket
 op_assign
-id|i
+id|UNUSABLE
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Approximate capacity. This is not entirely correct yet,&n;&t; * since a zone with less than 1000 usable pages leads to&n;&t; * missing LBAs. Especially if it is the last zone, some&n;&t; * LBAs can be past capacity.&n;&t; */
@@ -6346,6 +6477,8 @@ id|cardinfo
 )paren
 (brace
 multiline_comment|/* probably no media */
+id|init_error
+suffix:colon
 id|sensekey
 op_assign
 l_int|0x02
@@ -6399,12 +6532,21 @@ op_minus
 l_int|1
 suffix:semicolon
 singleline_comment|// map initialization, must follow get_cardinfo()
+r_if
+c_cond
+(paren
 id|sddr09_read_map
 c_func
 (paren
 id|us
 )paren
+)paren
+(brace
+multiline_comment|/* probably out of memory */
+r_goto
+id|init_error
 suffix:semicolon
+)brace
 singleline_comment|// Report capacity
 id|capacity
 op_assign
@@ -6534,6 +6676,13 @@ l_int|0
 )braket
 op_eq
 id|MODE_SENSE
+op_logical_or
+id|srb-&gt;cmnd
+(braket
+l_int|0
+)braket
+op_eq
+id|MODE_SENSE_10
 )paren
 (brace
 r_int
@@ -6552,6 +6701,7 @@ r_int
 id|len
 suffix:semicolon
 multiline_comment|/* They ask for the Read/Write error recovery page,&n;&t;&t;   or for all pages. Give as much as they have room for. */
+multiline_comment|/* %% We should check DBD %% */
 r_if
 c_cond
 (paren
@@ -6670,32 +6820,9 @@ l_int|0
 op_eq
 id|ALLOW_MEDIUM_REMOVAL
 )paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;SDDR09: %s medium removal. Not that I can do&quot;
-l_string|&quot; anything about it...&bslash;n&quot;
-comma
-(paren
-id|srb-&gt;cmnd
-(braket
-l_int|4
-)braket
-op_amp
-l_int|0x03
-)paren
-ques
-c_cond
-l_string|&quot;Prevent&quot;
-suffix:colon
-l_string|&quot;Allow&quot;
-)paren
-suffix:semicolon
 r_return
 id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
-)brace
 id|havefakesense
 op_assign
 l_int|0
