@@ -22,34 +22,76 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
-multiline_comment|/*&n; * From 0 .. 100.  Higher means more swappy.&n; */
-DECL|variable|vm_swappiness
-r_int
-id|vm_swappiness
-op_assign
-l_int|60
+multiline_comment|/* possible outcome of pageout() */
+r_typedef
+r_enum
+(brace
+multiline_comment|/* failed to write page out, page is locked */
+DECL|enumerator|PAGE_KEEP
+id|PAGE_KEEP
+comma
+multiline_comment|/* move page to the active list, page is locked */
+DECL|enumerator|PAGE_ACTIVATE
+id|PAGE_ACTIVATE
+comma
+multiline_comment|/* page has been sent to the disk successfully, page is unlocked */
+DECL|enumerator|PAGE_SUCCESS
+id|PAGE_SUCCESS
+comma
+multiline_comment|/* page is clean and locked */
+DECL|enumerator|PAGE_CLEAN
+id|PAGE_CLEAN
+comma
+DECL|typedef|pageout_t
+)brace
+id|pageout_t
 suffix:semicolon
-DECL|variable|total_memory
-r_static
+DECL|struct|scan_control
+r_struct
+id|scan_control
+(brace
+multiline_comment|/* Ask refill_inactive_zone, or shrink_cache to scan this many pages */
+DECL|member|nr_to_scan
 r_int
-id|total_memory
+r_int
+id|nr_to_scan
 suffix:semicolon
-DECL|macro|lru_to_page
-mdefine_line|#define lru_to_page(_head) (list_entry((_head)-&gt;prev, struct page, lru))
-macro_line|#ifdef ARCH_HAS_PREFETCH
-DECL|macro|prefetch_prev_lru_page
-mdefine_line|#define prefetch_prev_lru_page(_page, _base, _field)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((_page)-&gt;lru.prev != _base) {&t;&t;&t;&bslash;&n;&t;&t;&t;struct page *prev;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;prev = lru_to_page(&amp;(_page-&gt;lru));&t;&t;&bslash;&n;&t;&t;&t;prefetch(&amp;prev-&gt;_field);&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-macro_line|#else
-DECL|macro|prefetch_prev_lru_page
-mdefine_line|#define prefetch_prev_lru_page(_page, _base, _field) do { } while (0)
-macro_line|#endif
-macro_line|#ifdef ARCH_HAS_PREFETCHW
-DECL|macro|prefetchw_prev_lru_page
-mdefine_line|#define prefetchw_prev_lru_page(_page, _base, _field)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((_page)-&gt;lru.prev != _base) {&t;&t;&t;&bslash;&n;&t;&t;&t;struct page *prev;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;prev = lru_to_page(&amp;(_page-&gt;lru));&t;&t;&t;&bslash;&n;&t;&t;&t;prefetchw(&amp;prev-&gt;_field);&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-macro_line|#else
-DECL|macro|prefetchw_prev_lru_page
-mdefine_line|#define prefetchw_prev_lru_page(_page, _base, _field) do { } while (0)
-macro_line|#endif
+multiline_comment|/* Incremented by the number of inactive pages that were scanned */
+DECL|member|nr_scanned
+r_int
+r_int
+id|nr_scanned
+suffix:semicolon
+multiline_comment|/* Incremented by the number of pages reclaimed */
+DECL|member|nr_reclaimed
+r_int
+r_int
+id|nr_reclaimed
+suffix:semicolon
+DECL|member|nr_mapped
+r_int
+r_int
+id|nr_mapped
+suffix:semicolon
+multiline_comment|/* From page_state */
+multiline_comment|/* Ask shrink_caches, or shrink_zone to scan at this priority */
+DECL|member|priority
+r_int
+r_int
+id|priority
+suffix:semicolon
+multiline_comment|/* This context&squot;s GFP mask */
+DECL|member|gfp_mask
+r_int
+r_int
+id|gfp_mask
+suffix:semicolon
+DECL|member|may_writepage
+r_int
+id|may_writepage
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * The list of shrinker callbacks used by to apply pressure to&n; * ageable caches.&n; */
 DECL|struct|shrinker
 r_struct
@@ -75,6 +117,34 @@ id|nr
 suffix:semicolon
 multiline_comment|/* objs pending delete */
 )brace
+suffix:semicolon
+DECL|macro|lru_to_page
+mdefine_line|#define lru_to_page(_head) (list_entry((_head)-&gt;prev, struct page, lru))
+macro_line|#ifdef ARCH_HAS_PREFETCH
+DECL|macro|prefetch_prev_lru_page
+mdefine_line|#define prefetch_prev_lru_page(_page, _base, _field)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((_page)-&gt;lru.prev != _base) {&t;&t;&t;&bslash;&n;&t;&t;&t;struct page *prev;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;prev = lru_to_page(&amp;(_page-&gt;lru));&t;&t;&bslash;&n;&t;&t;&t;prefetch(&amp;prev-&gt;_field);&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+macro_line|#else
+DECL|macro|prefetch_prev_lru_page
+mdefine_line|#define prefetch_prev_lru_page(_page, _base, _field) do { } while (0)
+macro_line|#endif
+macro_line|#ifdef ARCH_HAS_PREFETCHW
+DECL|macro|prefetchw_prev_lru_page
+mdefine_line|#define prefetchw_prev_lru_page(_page, _base, _field)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((_page)-&gt;lru.prev != _base) {&t;&t;&t;&bslash;&n;&t;&t;&t;struct page *prev;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;prev = lru_to_page(&amp;(_page-&gt;lru));&t;&t;&bslash;&n;&t;&t;&t;prefetchw(&amp;prev-&gt;_field);&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+macro_line|#else
+DECL|macro|prefetchw_prev_lru_page
+mdefine_line|#define prefetchw_prev_lru_page(_page, _base, _field) do { } while (0)
+macro_line|#endif
+multiline_comment|/*&n; * From 0 .. 100.  Higher means more swappy.&n; */
+DECL|variable|vm_swappiness
+r_int
+id|vm_swappiness
+op_assign
+l_int|60
+suffix:semicolon
+DECL|variable|total_memory
+r_static
+r_int
+id|total_memory
 suffix:semicolon
 r_static
 id|LIST_HEAD
@@ -659,30 +729,6 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* possible outcome of pageout() */
-r_typedef
-r_enum
-(brace
-multiline_comment|/* failed to write page out, page is locked */
-DECL|enumerator|PAGE_KEEP
-id|PAGE_KEEP
-comma
-multiline_comment|/* move page to the active list, page is locked */
-DECL|enumerator|PAGE_ACTIVATE
-id|PAGE_ACTIVATE
-comma
-multiline_comment|/* page has been sent to the disk successfully, page is unlocked */
-DECL|enumerator|PAGE_SUCCESS
-id|PAGE_SUCCESS
-comma
-multiline_comment|/* page is clean and locked */
-DECL|enumerator|PAGE_CLEAN
-id|PAGE_CLEAN
-comma
-DECL|typedef|pageout_t
-)brace
-id|pageout_t
-suffix:semicolon
 multiline_comment|/*&n; * pageout is called by shrink_list() for each dirty page. Calls -&gt;writepage().&n; */
 DECL|function|pageout
 r_static
@@ -868,52 +914,6 @@ r_return
 id|PAGE_CLEAN
 suffix:semicolon
 )brace
-DECL|struct|scan_control
-r_struct
-id|scan_control
-(brace
-multiline_comment|/* Ask refill_inactive_zone, or shrink_cache to scan this many pages */
-DECL|member|nr_to_scan
-r_int
-r_int
-id|nr_to_scan
-suffix:semicolon
-multiline_comment|/* Incremented by the number of inactive pages that were scanned */
-DECL|member|nr_scanned
-r_int
-r_int
-id|nr_scanned
-suffix:semicolon
-multiline_comment|/* Incremented by the number of pages reclaimed */
-DECL|member|nr_reclaimed
-r_int
-r_int
-id|nr_reclaimed
-suffix:semicolon
-DECL|member|nr_mapped
-r_int
-r_int
-id|nr_mapped
-suffix:semicolon
-multiline_comment|/* From page_state */
-multiline_comment|/* Ask shrink_caches, or shrink_zone to scan at this priority */
-DECL|member|priority
-r_int
-r_int
-id|priority
-suffix:semicolon
-multiline_comment|/* This context&squot;s GFP mask */
-DECL|member|gfp_mask
-r_int
-r_int
-id|gfp_mask
-suffix:semicolon
-DECL|member|may_writepage
-r_int
-id|may_writepage
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * shrink_list adds the number of reclaimed pages to sc-&gt;nr_reclaimed&n; */
 DECL|function|shrink_list
 r_static
