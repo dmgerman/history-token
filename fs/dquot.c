@@ -6774,6 +6774,8 @@ op_star
 l_int|4
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_RECLAIM_ACCOUNT
 comma
 l_int|NULL
 comma

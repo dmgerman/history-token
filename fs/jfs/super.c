@@ -2025,7 +2025,7 @@ id|jfs_inode_info
 comma
 l_int|0
 comma
-l_int|0
+id|SLAB_RECLAIM_ACCOUNT
 comma
 id|init_once
 comma

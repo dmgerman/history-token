@@ -264,6 +264,8 @@ comma
 l_int|0
 comma
 id|JFFS2_SLAB_POISON
+op_or
+id|SLAB_RECLAIM_ACCOUNT
 comma
 l_int|NULL
 comma
