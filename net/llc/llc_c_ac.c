@@ -7693,7 +7693,7 @@ op_le
 id|c
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_process_tmr_ev - timer backend&n; *&t;@sk: active connection&n; *&t;@skb: occurred event&n; *&n; *&t;This function is called from timer callback functions. When connection&n; *&t;is busy (during sending a data frame) timer expiration event must be&n; *&t;queued. Otherwise this event can be sent to connection state machine.&n; *&t;Queued events will process by process_rxframes_events function after&n; *&t;sending data frame. Returns 0 for success, 1 otherwise.&n; */
+multiline_comment|/**&n; *&t;llc_process_tmr_ev - timer backend&n; *&t;@sk: active connection&n; *&t;@skb: occurred event&n; *&n; *&t;This function is called from timer callback functions. When connection&n; *&t;is busy (during sending a data frame) timer expiration event must be&n; *&t;queued. Otherwise this event can be sent to connection state machine.&n; *&t;Queued events will process by llc_backlog_rcv function after sending&n; *&t;data frame.&n; */
 DECL|function|llc_process_tmr_ev
 r_static
 r_void
@@ -7756,7 +7756,7 @@ c_cond
 op_logical_neg
 id|sk-&gt;lock.users
 )paren
-id|llc_conn_send_ev
+id|llc_conn_state_process
 c_func
 (paren
 id|sk

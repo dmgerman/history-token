@@ -16,7 +16,7 @@ id|skb
 suffix:semicolon
 r_extern
 r_int
-id|mac_indicate
+id|llc_rcv
 c_func
 (paren
 r_struct

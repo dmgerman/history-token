@@ -265,7 +265,7 @@ id|llc_no_rsp_handler
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;llc_sap_open - open interface to the upper layers.&n; *&t;@nw_indicate: pointer to indicate function of upper layer.&n; *&t;@nw_confirm: pointer to confirm function of upper layer.&n; *&t;@lsap: SAP number.&n; *&t;@sap: pointer to allocated SAP (output argument).&n; *&n; *&t;Interface function to upper layer. each one who wants to get a SAP&n; *&t;(for example NetBEUI) should call this function. Returns the opened&n; *&t;SAP for success, NULL for failure.&n; */
+multiline_comment|/**&n; *&t;llc_sap_open - open interface to the upper layers.&n; *&t;@nw_indicate: pointer to indicate function of upper layer.&n; *&t;@nw_confirm: pointer to confirm function of upper layer.&n; *&t;@lsap: SAP number.&n; *&t;@sap: pointer to allocated SAP (output argument).&n; *&n; *&t;Interface function to upper layer. Each one who wants to get a SAP&n; *&t;(for example NetBEUI) should call this function. Returns the opened&n; *&t;SAP for success, NULL for failure.&n; */
 DECL|function|llc_sap_open
 r_struct
 id|llc_sap
@@ -379,7 +379,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_close - close interface for upper layers.&n; *&t;@sap: SAP to be closed.&n; *&n; *&t;Close interface function to upper layer. each one who wants to&n; *&t;close an open SAP (for example NetBEUI) should call this function.&n; */
+multiline_comment|/**&n; *&t;llc_sap_close - close interface for upper layers.&n; *&t;@sap: SAP to be closed.&n; *&n; *&t;Close interface function to upper layer. Each one who wants to&n; *&t;close an open SAP (for example NetBEUI) should call this function.&n; */
 DECL|function|llc_sap_close
 r_void
 id|llc_sap_close
@@ -400,7 +400,7 @@ suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_req - Request interface for upper layers&n; *&t;@prim: pointer to structure that contains service parameters.&n; *&n; *&t;Request interface function to upper layer. each one who wants to&n; *&t;request a service from LLC, must call this function. details of&n; *&t;requested service is defined in input argument(prim).  Returns 0 for&n; *&t;success, 1 otherwise.&n; */
+multiline_comment|/**&n; *&t;llc_sap_req - Request interface for upper layers&n; *&t;@prim: pointer to structure that contains service parameters.&n; *&n; *&t;Request interface function to upper layer. Each one who wants to&n; *&t;request a service from LLC, must call this function. Details of&n; *&t;requested service is defined in input argument(prim). Returns 0 for&n; *&t;success, 1 otherwise.&n; */
 DECL|function|llc_sap_req
 r_static
 r_int
@@ -542,7 +542,7 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|llc_sap_send_ev
+id|llc_sap_state_process
 c_func
 (paren
 id|sap
@@ -628,7 +628,7 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|llc_sap_send_ev
+id|llc_sap_state_process
 c_func
 (paren
 id|sap
@@ -714,7 +714,7 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|llc_sap_send_ev
+id|llc_sap_state_process
 c_func
 (paren
 id|sap
@@ -728,7 +728,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_data_req_handler - Connection data sending for upper layers.&n; *&t;@prim: pointer to structure that contains service parameters&n; *&n; *&t;This function is called when upper layer wants to send data using&n; *&t;connection oriented communication mode. during sending data, connection&n; *&t;will be locked and received frames and expired timers will be queued.&n; *&t;Returns 0 for success, -ECONNABORTED when the connection already&n; *&t;closed. and -EBUSY when sending data is not permitted in this state or&n; *&t;LLC has send an I pdu with p bit set to 1 and is waiting for it&squot;s&n; *&t;response.&n; */
+multiline_comment|/**&n; *&t;llc_data_req_handler - Connection data sending for upper layers.&n; *&t;@prim: pointer to structure that contains service parameters&n; *&n; *&t;This function is called when upper layer wants to send data using&n; *&t;connection oriented communication mode. During sending data, connection&n; *&t;will be locked and received frames and expired timers will be queued.&n; *&t;Returns 0 for success, -ECONNABORTED when the connection already&n; *&t;closed and -EBUSY when sending data is not permitted in this state or&n; *&t;LLC has send an I pdu with p bit set to 1 and is waiting for it&squot;s&n; *&t;response.&n; */
 DECL|function|llc_data_req_handler
 r_static
 r_int
@@ -855,7 +855,7 @@ id|llc-&gt;dev
 suffix:semicolon
 id|rc
 op_assign
-id|llc_conn_send_ev
+id|llc_conn_state_process
 c_func
 (paren
 id|sk
@@ -901,7 +901,7 @@ id|prim
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_conn_req_handler - Called by upper layer to establish a conn&n; *&t;@prim: pointer to structure that contains service parameters.&n; *&n; *&t;Upper layer calls this to establish an LLC connection with a remote&n; *&t;machine. this function packages a proper event and sends it connection&n; *&t;component state machine.  Success or failure of connection&n; *&t;establishment will inform to upper layer via calling it&squot;s confirm&n; *&t;function and passing proper information.&n; */
+multiline_comment|/**&n; *&t;llc_conn_req_handler - Called by upper layer to establish a conn&n; *&t;@prim: pointer to structure that contains service parameters.&n; *&n; *&t;Upper layer calls this to establish an LLC connection with a remote&n; *&t;machine. This function packages a proper event and sends it connection&n; *&t;component state machine. Success or failure of connection&n; *&t;establishment will inform to upper layer via calling it&squot;s confirm&n; *&t;function and passing proper information.&n; */
 DECL|function|llc_conn_req_handler
 r_static
 r_int
@@ -1014,7 +1014,7 @@ id|prim-&gt;data-&gt;conn.daddr.lsap
 suffix:semicolon
 id|sk
 op_assign
-id|llc_find_sock
+id|llc_lookup_established
 c_func
 (paren
 id|sap
@@ -1072,11 +1072,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/*&n;&t;&t; * FIXME: this one will die as soon as core and&n;&t;&t; * llc_sock starts sharing a struct sock.&n;&t;&t; */
 id|sk
 op_assign
 id|llc_sock_alloc
 c_func
 (paren
+id|PF_LLC
 )paren
 suffix:semicolon
 r_if
@@ -1217,7 +1219,7 @@ id|prim
 suffix:semicolon
 id|rc
 op_assign
-id|llc_conn_send_ev
+id|llc_conn_state_process
 c_func
 (paren
 id|sk
@@ -1273,7 +1275,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_disc_req_handler - Called by upper layer to close a connection&n; *&t;@prim: pointer to structure that contains service parameters.&n; *&n; *&t;Upper layer calls this when it wants to close an established LLC&n; *&t;connection with a remote machine. this function packages a proper event&n; *&t;and sends it to connection component state machine. Returns 0 for&n; *&t;success, 1 otherwise.&n; */
+multiline_comment|/**&n; *&t;llc_disc_req_handler - Called by upper layer to close a connection&n; *&t;@prim: pointer to structure that contains service parameters.&n; *&n; *&t;Upper layer calls this when it wants to close an established LLC&n; *&t;connection with a remote machine. This function packages a proper event&n; *&t;and sends it to connection component state machine. Returns 0 for&n; *&t;success, 1 otherwise.&n; */
 DECL|function|llc_disc_req_handler
 r_static
 r_int
@@ -1392,7 +1394,7 @@ id|prim
 suffix:semicolon
 id|rc
 op_assign
-id|llc_conn_send_ev
+id|llc_conn_state_process
 c_func
 (paren
 id|sk
@@ -1418,7 +1420,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_rst_req_handler - Resets an established LLC connection&n; *&t;@prim: pointer to structure that contains service parameters.&n; *&n; *&t;Called when upper layer wants to reset an established LLC connection&n; *&t;with a remote machine. this function packages a proper event and sends&n; *&t;it to connection component state machine. Returns 0 for success, 1&n; *&t;otherwise.&n; */
+multiline_comment|/**&n; *&t;llc_rst_req_handler - Resets an established LLC connection&n; *&t;@prim: pointer to structure that contains service parameters.&n; *&n; *&t;Called when upper layer wants to reset an established LLC connection&n; *&t;with a remote machine. This function packages a proper event and sends&n; *&t;it to connection component state machine. Returns 0 for success, 1&n; *&t;otherwise.&n; */
 DECL|function|llc_rst_req_handler
 r_static
 r_int
@@ -1499,7 +1501,7 @@ id|prim
 suffix:semicolon
 id|rc
 op_assign
-id|llc_conn_send_ev
+id|llc_conn_state_process
 c_func
 (paren
 id|sk
@@ -1535,7 +1537,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_resp - Sends response to peer&n; *&t;@prim: pointer to structure that contains service parameters&n; *&n; *&t;This function is a interface function to upper layer. each one who&n; *&t;wants to response to an indicate can call this function via calling&n; *&t;sap_resp with proper service parameters. Returns 0 for success, 1&n; *&t;otherwise.&n; */
+multiline_comment|/**&n; *&t;llc_sap_resp - Sends response to peer&n; *&t;@prim: pointer to structure that contains service parameters&n; *&n; *&t;This function is a interface function to upper layer. Each one who&n; *&t;wants to response to an indicate can call this function via calling&n; *&t;sap_resp with proper service parameters. Returns 0 for success, 1&n; *&t;otherwise.&n; */
 DECL|function|llc_sap_resp
 r_static
 r_int
@@ -1684,7 +1686,7 @@ id|prim
 suffix:semicolon
 id|rc
 op_assign
-id|llc_conn_send_ev
+id|llc_conn_state_process
 c_func
 (paren
 id|sk

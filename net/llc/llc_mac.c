@@ -126,10 +126,10 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mac_indicate - 802.2 entry point from net lower layers&n; *&t;@skb: received pdu&n; *&t;@dev: device that receive pdu&n; *&t;@pt: packet type&n; *&n; *&t;When the system receives a 802.2 frame this function is called. It&n; *&t;checks SAP and connection of received pdu and passes frame to&n; *&t;llc_pdu_router for sending to proper state machine. If frame is&n; *&t;related to a busy connection (a connection is sending data now),&n; *&t;function queues this frame in connection&squot;s backlog.&n; */
-DECL|function|mac_indicate
+multiline_comment|/**&n; *&t;llc_rcv - 802.2 entry point from net lower layers&n; *&t;@skb: received pdu&n; *&t;@dev: device that receive pdu&n; *&t;@pt: packet type&n; *&n; *&t;When the system receives a 802.2 frame this function is called. It&n; *&t;checks SAP and connection of received pdu and passes frame to&n; *&t;llc_pdu_router for sending to proper state machine. If frame is&n; *&t;related to a busy connection (a connection is sending data now),&n; *&t;function queues this frame in connection&squot;s backlog.&n; */
+DECL|function|llc_rcv
 r_int
-id|mac_indicate
+id|llc_rcv
 c_func
 (paren
 r_struct
@@ -359,7 +359,7 @@ id|daddr.lsap
 suffix:semicolon
 id|sk
 op_assign
-id|llc_find_sock
+id|llc_lookup_established
 c_func
 (paren
 id|sap
@@ -378,12 +378,13 @@ op_logical_neg
 id|sk
 )paren
 (brace
-multiline_comment|/* didn&squot;t find an active connection; allocate a&n;&t;&t;&t;    * connection to use; associate it with this SAP&n;&t;&t;&t;    */
+multiline_comment|/*&n;&t;&t;&t; * FIXME: here we&squot;ll pass the sk-&gt;family of the&n;&t;&t;&t; * listening socket, if found, when&n;&t;&t;&t; * llc_lookup_listener is added in the next patches.&n;&t;&t;&t; */
 id|sk
 op_assign
 id|llc_sock_alloc
 c_func
 (paren
+id|PF_LLC
 )paren
 suffix:semicolon
 r_if
@@ -443,8 +444,6 @@ c_cond
 op_logical_neg
 id|sk-&gt;lock.users
 )paren
-(brace
-multiline_comment|/* FIXME: Check this on SMP as it is now calling&n;&t;&t;&t; * llc_pdu_router _with_ the lock held.&n;&t;&t;&t; * Old comment:&n;&t;&t;&t; * With the current code one can&squot;t call&n;&t;&t;&t; * llc_pdu_router with the socket lock held, cause&n;&t;&t;&t; * it&squot;ll route the pdu to the upper layers and it can&n;&t;&t;&t; * reenter llc and in llc_req_prim will try to grab&n;&t;&t;&t; * the same lock, maybe we should use spin_trylock_bh&n;&t;&t;&t; * in the llc_req_prim (llc_data_req_handler, etc) and&n;&t;&t;&t; * add the request to the backlog, well see...&n;&t;&t;&t; */
 id|rc
 op_assign
 id|llc_pdu_router
@@ -465,7 +464,6 @@ comma
 id|LLC_TYPE_2
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 id|dprintk
@@ -647,7 +645,7 @@ id|data_size
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;llc_pdu_router - routes received pdus to the upper layers&n; *&t;@sap: current sap component structure.&n; *&t;@sk: current connection structure.&n; *&t;@frame: received frame.&n; *&t;@type: type of received frame, that is LLC_TYPE_1 or LLC_TYPE_2&n; *&n; *&t;Queues received PDUs from LLC_MAC PDU receive queue until queue is&n; *&t;empty; examines LLC header to determine the destination of PDU, if DSAP&n; *&t;is NULL then data unit destined for station else frame destined for SAP&n; *&t;or connection; finds a matching open SAP, if one, forwards the packet&n; *&t;to it; if no matching SAP, drops the packet. Returns 0 or the return of&n; *&t;llc_conn_send_ev (that may well result in the connection being&n; *&t;destroyed)&n; */
+multiline_comment|/**&n; *&t;llc_pdu_router - routes received pdus to the upper layers&n; *&t;@sap: current sap component structure.&n; *&t;@sk: current connection structure.&n; *&t;@frame: received frame.&n; *&t;@type: type of received frame, that is LLC_TYPE_1 or LLC_TYPE_2&n; *&n; *&t;Queues received PDUs from LLC_MAC PDU receive queue until queue is&n; *&t;empty; examines LLC header to determine the destination of PDU, if DSAP&n; *&t;is NULL then data unit destined for station else frame destined for SAP&n; *&t;or connection; finds a matching open SAP, if one, forwards the packet&n; *&t;to it; if no matching SAP, drops the packet. Returns 0 or the return of&n; *&t;llc_conn_state_process (that may well result in the connection being&n; *&t;destroyed)&n; */
 DECL|function|llc_pdu_router
 r_int
 id|llc_pdu_router
@@ -724,7 +722,7 @@ id|ev-&gt;data.pdu.reason
 op_assign
 l_int|0
 suffix:semicolon
-id|llc_station_send_ev
+id|llc_station_state_process
 c_func
 (paren
 id|station
@@ -761,7 +759,7 @@ id|ev-&gt;data.pdu.reason
 op_assign
 l_int|0
 suffix:semicolon
-id|llc_sap_send_ev
+id|llc_sap_state_process
 c_func
 (paren
 id|sap
@@ -821,7 +819,7 @@ l_int|0
 suffix:semicolon
 id|rc
 op_assign
-id|llc_conn_send_ev
+id|llc_conn_state_process
 c_func
 (paren
 id|sk

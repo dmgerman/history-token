@@ -196,10 +196,10 @@ id|sap-&gt;sk_list.lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_send_ev - sends event to SAP state machine&n; *&t;@sap: pointer to SAP&n; *&t;@skb: pointer to occurred event&n; *&n; *&t;After executing actions of the event, upper layer will be indicated&n; *&t;if needed(on receiving an UI frame).&n; */
-DECL|function|llc_sap_send_ev
+multiline_comment|/**&n; *&t;llc_sap_state_process - sends event to SAP state machine&n; *&t;@sap: pointer to SAP&n; *&t;@skb: pointer to occurred event&n; *&n; *&t;After executing actions of the event, upper layer will be indicated&n; *&t;if needed(on receiving an UI frame).&n; */
+DECL|function|llc_sap_state_process
 r_void
-id|llc_sap_send_ev
+id|llc_sap_state_process
 c_func
 (paren
 r_struct

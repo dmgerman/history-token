@@ -262,7 +262,8 @@ op_star
 id|__llc_sock_alloc
 c_func
 (paren
-r_void
+r_int
+id|family
 )paren
 suffix:semicolon
 r_extern
@@ -283,7 +284,7 @@ macro_line|#ifdef DEBUG_LLC_CONN_ALLOC
 DECL|macro|dump_stack
 mdefine_line|#define dump_stack() printk(KERN_INFO &quot;call trace: %p, %p, %p&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;&t;__builtin_return_address(0),&t;&t;&bslash;&n;&t;&t;&t;&t;__builtin_return_address(1),&t;&t;&bslash;&n;&t;&t;&t;&t;__builtin_return_address(2));
 DECL|macro|llc_sock_alloc
-mdefine_line|#define llc_sock_alloc()&t;({&t;&t;&t;&t;&t;&bslash;&n;&t;struct sock *__sk = __llc_sock_alloc();&t;&t;&t;&t;&bslash;&n;&t;if (__sk) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;llc_sk(__sk)-&gt;f_alloc = __FUNCTION__;&t;&t;&t;&bslash;&n;&t;&t;llc_sk(__sk)-&gt;l_alloc = __LINE__;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__sk;})
+mdefine_line|#define llc_sock_alloc(family)&t;({&t;&t;&t;&t;&t;&bslash;&n;&t;struct sock *__sk = __llc_sock_alloc(family);&t;&t;&t;&bslash;&n;&t;if (__sk) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;llc_sk(__sk)-&gt;f_alloc = __FUNCTION__;&t;&t;&t;&bslash;&n;&t;&t;llc_sk(__sk)-&gt;l_alloc = __LINE__;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__sk;})
 DECL|macro|__llc_sock_assert
 mdefine_line|#define __llc_sock_assert(__sk)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (llc_sk(__sk)-&gt;f_free) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_ERR&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;%p conn (alloc&squot;d @ %s(%d)) &quot;&t;&t;&t;&bslash;&n;&t;&t;       &quot;already freed @ %s(%d) &quot;&t;&t;&t;&bslash;&n;&t;&t;       &quot;being used again @ %s(%d)&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;       llc_sk(__sk),&t;&t;&t;&t;&t;&bslash;&n;&t;&t;       llc_sk(__sk)-&gt;f_alloc, llc_sk(__sk)-&gt;l_alloc,&t;&bslash;&n;&t;&t;       llc_sk(__sk)-&gt;f_free, llc_sk(__sk)-&gt;l_free,&t;&bslash;&n;&t;&t;       __FUNCTION__, __LINE__);&t;&t;&t;&t;&bslash;&n;&t;&t;dump_stack();
 DECL|macro|llc_sock_free
@@ -294,7 +295,7 @@ DECL|macro|llc_sock_assert_ret
 mdefine_line|#define llc_sock_assert_ret(__sk, __ret)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__llc_sock_assert(__sk);&t;&t;&t;&t;&t;&bslash;&n;&t;return __ret; }&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#else /* DEBUG_LLC_CONN_ALLOC */
 DECL|macro|llc_sock_alloc
-mdefine_line|#define llc_sock_alloc() __llc_sock_alloc()
+mdefine_line|#define llc_sock_alloc(family) __llc_sock_alloc(family)
 DECL|macro|llc_sock_free
 mdefine_line|#define llc_sock_free(__sk) __llc_sock_free(__sk, 1)
 DECL|macro|llc_sock_assert
@@ -327,7 +328,7 @@ suffix:semicolon
 multiline_comment|/* Access to a connection */
 r_extern
 r_int
-id|llc_conn_send_ev
+id|llc_conn_state_process
 c_func
 (paren
 r_struct
@@ -440,7 +441,7 @@ r_extern
 r_struct
 id|sock
 op_star
-id|llc_find_sock
+id|llc_lookup_established
 c_func
 (paren
 r_struct

@@ -408,7 +408,7 @@ r_return
 id|sap
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_backlog_rcv - Processes rx frames and expired timers.&n; *&t;@sk: LLC sock (p8022 connection)&n; *&t;@skb: queued rx frame or event&n; *&n; *&t;This function processes frames that has received and timers that has&n; *&t;expired during sending an I pdu (refer to data_req_handler).  frames&n; *&t;queue by mac_indicate function (llc_mac.c) and timers queue by timer&n; *&t;callback functions(llc_c_ac.c).&n; */
+multiline_comment|/**&n; *&t;llc_backlog_rcv - Processes rx frames and expired timers.&n; *&t;@sk: LLC sock (p8022 connection)&n; *&t;@skb: queued rx frame or event&n; *&n; *&t;This function processes frames that has received and timers that has&n; *&t;expired during sending an I pdu (refer to data_req_handler).  frames&n; *&t;queue by llc_rcv function (llc_mac.c) and timers queue by timer&n; *&t;callback functions(llc_c_ac.c).&n; */
 DECL|function|llc_backlog_rcv
 r_static
 r_int
@@ -508,7 +508,7 @@ l_int|1
 multiline_comment|/* not closed */
 id|rc
 op_assign
-id|llc_conn_send_ev
+id|llc_conn_state_process
 c_func
 (paren
 id|sk
@@ -690,7 +690,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;__llc_sock_alloc - Allocates LLC sock&n; *&n; *&t;Allocates a LLC sock and initializes it. Returns the new LLC sock&n; *&t;or %NULL if there&squot;s no memory available for one&n; */
+multiline_comment|/**&n; *&t;__llc_sock_alloc - Allocates LLC sock&n; *&t;@family: upper layer protocol family&n; *&n; *&t;Allocates a LLC sock and initializes it. Returns the new LLC sock&n; *&t;or %NULL if there&squot;s no memory available for one&n; */
 DECL|function|__llc_sock_alloc
 r_struct
 id|sock
@@ -698,7 +698,8 @@ op_star
 id|__llc_sock_alloc
 c_func
 (paren
-r_void
+r_int
+id|family
 )paren
 (brace
 r_struct
@@ -709,7 +710,7 @@ op_assign
 id|sk_alloc
 c_func
 (paren
-id|PF_LLC
+id|family
 comma
 id|GFP_ATOMIC
 comma
@@ -1112,10 +1113,10 @@ op_amp
 id|llc_main_station
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_station_send_ev: queue event and try to process queue.&n; *&t;@station: Address of the station&n; *&t;@skb: Address of the event&n; *&n; *&t;Queues an event (on the station event queue) for handling by the&n; *&t;station state machine and attempts to process any queued-up events.&n; */
-DECL|function|llc_station_send_ev
+multiline_comment|/**&n; *&t;llc_station_state_process: queue event and try to process queue.&n; *&t;@station: Address of the station&n; *&t;@skb: Address of the event&n; *&n; *&t;Queues an event (on the station event queue) for handling by the&n; *&t;station state machine and attempts to process any queued-up events.&n; */
+DECL|function|llc_station_state_process
 r_void
-id|llc_station_send_ev
+id|llc_station_state_process
 c_func
 (paren
 r_struct
@@ -1950,7 +1951,7 @@ comma
 dot
 id|func
 op_assign
-id|mac_indicate
+id|llc_rcv
 comma
 dot
 id|data
@@ -1982,7 +1983,7 @@ comma
 dot
 id|func
 op_assign
-id|mac_indicate
+id|llc_rcv
 comma
 dot
 id|data

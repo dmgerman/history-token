@@ -584,7 +584,7 @@ id|ev-&gt;data.tmr.timer_specific
 op_assign
 l_int|NULL
 suffix:semicolon
-id|llc_station_send_ev
+id|llc_station_state_process
 c_func
 (paren
 id|station

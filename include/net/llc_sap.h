@@ -127,7 +127,7 @@ id|sk
 suffix:semicolon
 r_extern
 r_void
-id|llc_sap_send_ev
+id|llc_sap_state_process
 c_func
 (paren
 r_struct

@@ -125,7 +125,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;llc_ui_next_link_no - return the next unused link number for a sap&n; *&t;@sap: Address of sap to get link number from.&n; *&n; *&t;Return the next unused link number for a given sap.&n; */
 DECL|function|llc_ui_next_link_no
 r_static
-r_inline
+id|__inline__
 id|u16
 id|llc_ui_next_link_no
 c_func
@@ -145,7 +145,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;llc_ui_mac_match - determines if two mac addresses are the same&n; *&t;@mac1: First mac address to compare.&n; *&t;@mac2: Second mac address to compare.&n; *&n; *&t;Determines if two given mac address are the same.  Returns 0 if there&n; *&t;is not a complete match up to len, 1 if a complete match up to len is&n; *&t;found.&n; */
 DECL|function|llc_ui_mac_match
 r_static
-r_inline
+id|__inline__
 id|u8
 id|llc_ui_mac_match
 c_func
@@ -175,7 +175,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;llc_ui_mac_null - determines if a address is a null mac address&n; *&t;@mac: Mac address to test if null.&n; *&n; *&t;Determines if a given address is a null mac address.  Returns 0 if the&n; *&t;address is not a null mac, 1 if the address is a null mac.&n; */
 DECL|function|llc_ui_mac_null
 r_static
-r_inline
+id|__inline__
 id|u8
 id|llc_ui_mac_null
 c_func
@@ -201,7 +201,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;llc_ui_addr_null - determines if a address structure is null&n; *&t;@addr: Address to test if null.&n; */
 DECL|function|llc_ui_addr_null
 r_static
-r_inline
+id|__inline__
 id|u8
 id|llc_ui_addr_null
 c_func
@@ -233,7 +233,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;llc_ui_protocol_type - return eth protocol for ARP header type&n; *&t;@arphrd: ARP header type.&n; *&n; *&t;Given an ARP header type return the corresponding ethernet protocol.&n; *&t;Returns  0 if ARP header type not supported or the corresponding&n; *&t;ethernet protocol type.&n; */
 DECL|function|llc_ui_protocol_type
 r_static
-r_inline
+id|__inline__
 id|u16
 id|llc_ui_protocol_type
 c_func
@@ -273,7 +273,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;llc_ui_header_len - return length of llc header based on operation&n; *&t;@sk: Socket which contains a valid llc socket type.&n; *&t;@addr: Complete sockaddr_llc structure received from the user.&n; *&n; *&t;Provide the length of the llc header depending on what kind of&n; *&t;operation the user would like to perform and the type of socket.&n; *&t;Returns the correct llc header length.&n; */
 DECL|function|llc_ui_header_len
 r_static
-r_inline
+id|__inline__
 id|u8
 id|llc_ui_header_len
 c_func
@@ -807,7 +807,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;llc_ui_find_sap - returns sap struct that matches sap number specified&n; *&t;@sap: Sap number to search for.&n; *&n; *&t;Search the local socket list and return the first instance of the sap&n; *&t;structure which matches the sap number the user specified.&n; *&t;Returns llc_sap upon match, %NULL otherwise.&n; */
 DECL|function|llc_ui_find_sap
 r_static
-r_inline
+id|__inline__
 r_struct
 id|llc_sap
 op_star
@@ -1322,7 +1322,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;llc_ui_insert_socket - insert socket into list&n; *&t;@sk: Socket to insert.&n; *&n; *&t;Insert a socket into the local llc socket list.&n; */
 DECL|function|llc_ui_insert_socket
 r_static
-r_inline
+id|__inline__
 r_void
 id|llc_ui_insert_socket
 c_func
@@ -1380,7 +1380,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;llc_ui_remove_socket - remove socket from list&n; *&t;@sk: Socket to remove.&n; *&n; *&t;Remove a socket from the local llc socket list.&n; */
 DECL|function|llc_ui_remove_socket
 r_static
-r_inline
+id|__inline__
 r_void
 id|llc_ui_remove_socket
 c_func

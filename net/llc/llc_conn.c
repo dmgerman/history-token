@@ -103,10 +103,10 @@ id|NBR_CONN_STATES
 id|NBR_CONN_EV
 )braket
 suffix:semicolon
-multiline_comment|/**&n; *&t;llc_conn_send_event - sends event to connection state machine&n; *&t;@sk: connection&n; *&t;@skb: occurred event&n; *&n; *&t;Sends an event to connection state machine. after processing event&n; *&t;(executing it&squot;s actions and changing state), upper layer will be&n; *&t;indicated or confirmed, if needed. Returns 0 for success, 1 for&n; *&t;failure. The socket lock has to be held before calling this function.&n; */
-DECL|function|llc_conn_send_ev
+multiline_comment|/**&n; *&t;llc_conn_state_process - sends event to connection state machine&n; *&t;@sk: connection&n; *&t;@skb: occurred event&n; *&n; *&t;Sends an event to connection state machine. after processing event&n; *&t;(executing it&squot;s actions and changing state), upper layer will be&n; *&t;indicated or confirmed, if needed. Returns 0 for success, 1 for&n; *&t;failure. The socket lock has to be held before calling this function.&n; */
+DECL|function|llc_conn_state_process
 r_int
-id|llc_conn_send_ev
+id|llc_conn_state_process
 c_func
 (paren
 r_struct
@@ -351,7 +351,7 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_conn_rtn_pdu - sends received data pdu to upper layer&n; *&t;@sk: Active connection&n; *&t;@skb: Received data frame&n; *&n; *&t;Sends received data pdu to upper layer (by using indicate function).&n; *&t;Prepares service parameters (prim and prim_data). calling indication&n; *&t;function will be done in llc_conn_send_ev.&n; */
+multiline_comment|/**&n; *&t;llc_conn_rtn_pdu - sends received data pdu to upper layer&n; *&t;@sk: Active connection&n; *&t;@skb: Received data frame&n; *&n; *&t;Sends received data pdu to upper layer (by using indicate function).&n; *&t;Prepares service parameters (prim and prim_data). calling indication&n; *&t;function will be done in llc_conn_state_process.&n; */
 DECL|function|llc_conn_rtn_pdu
 r_void
 id|llc_conn_rtn_pdu
@@ -444,7 +444,7 @@ id|ev-&gt;flag
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* saving prepd prim in event for future use in llc_conn_send_ev */
+multiline_comment|/*&n;&t; * Saving prepd prim in event for future use in&n;&t; * llc_conn_state_process&n;&t; */
 id|ev-&gt;ind_prim
 op_assign
 id|prim
@@ -1557,12 +1557,12 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_find_sock - Finds connection in sap for the remote/local sap/mac&n; *&t;@sap: SAP&n; *&t;@daddr: address of remote LLC (MAC + SAP)&n; *&t;@laddr: address of local LLC (MAC + SAP)&n; *&n; *&t;Search connection list of the SAP and finds connection using the remote&n; *&t;mac, remote sap, local mac, and local sap. Returns pointer for&n; *&t;connection found, %NULL otherwise.&n; */
-DECL|function|llc_find_sock
+multiline_comment|/**&n; *&t;llc_lookup_established - Finds connection for the remote/local sap/mac&n; *&t;@sap: SAP&n; *&t;@daddr: address of remote LLC (MAC + SAP)&n; *&t;@laddr: address of local LLC (MAC + SAP)&n; *&n; *&t;Search connection list of the SAP and finds connection using the remote&n; *&t;mac, remote sap, local mac, and local sap. Returns pointer for&n; *&t;connection found, %NULL otherwise.&n; */
+DECL|function|llc_lookup_established
 r_struct
 id|sock
 op_star
-id|llc_find_sock
+id|llc_lookup_established
 c_func
 (paren
 r_struct
