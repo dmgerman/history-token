@@ -578,6 +578,16 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|bus_type
+id|iucv_bus
+suffix:semicolon
+r_extern
+r_struct
+id|device
+id|iucv_root
+suffix:semicolon
 multiline_comment|/*   -prototypes-    */
 multiline_comment|/*                                                                &n; * Name: iucv_register_program                                    &n; * Purpose: Registers an application with IUCV                    &n; * Input: prmname - user identification                           &n; *        userid  - machine identification&n; *        pgmmask - indicates which bits in the prmname and userid combined will be&n; *  &t;&t;    used to determine who is given control&n; *        ops     - address of vector of interrupt handlers       &n; *        pgm_data- application data passed to interrupt handlers &n; * Output: NA                                                     &n; * Return: address of handler                                     &n; *         (0) - Error occurred, registration not completed.&n; * NOTE: Exact cause of failure will be recorded in syslog.                        &n;*/
 id|iucv_handle_t

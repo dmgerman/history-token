@@ -3271,6 +3271,12 @@ id|dev-&gt;addr_len
 op_assign
 l_int|6
 suffix:semicolon
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* Device methods */
 id|dev-&gt;open
 op_assign
@@ -7676,6 +7682,12 @@ id|priv-&gt;phyOnline
 op_assign
 l_int|0
 suffix:semicolon
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/*  1.&t;Assert reset bit. */
 id|data
 op_assign
@@ -8592,6 +8604,12 @@ comma
 id|dev-&gt;base_addr
 op_plus
 id|TLAN_HOST_CMD
+)paren
+suffix:semicolon
+id|netif_carrier_on
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace

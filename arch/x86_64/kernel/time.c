@@ -1307,7 +1307,11 @@ r_void
 r_int
 r_int
 id|a
+op_assign
+l_int|0
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* Don&squot;t do a HPET read here. Using TSC always is much faster&n;&t;   and HPET may not be mapped yet when the scheduler first runs.&n;           Disadvantage is a small drift between CPUs in some configurations,&n;&t;   but that should be tolerable. */
 r_if
 c_cond
 (paren
@@ -1328,6 +1332,8 @@ id|vxtime.quot
 op_rshift
 l_int|32
 suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Could do CPU core sync here. Opteron can execute rdtsc speculatively,&n;&t;   which means it is not completely exact and may not be monotonous between&n;&t;   CPUs. But the errors should be too small to matter for scheduling&n;&t;   purposes. */
 id|rdtscll
 c_func
 (paren

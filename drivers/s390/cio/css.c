@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.43 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.49 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -38,11 +38,6 @@ id|device
 id|css_bus_device
 op_assign
 (brace
-dot
-id|name
-op_assign
-l_string|&quot;Channel Subsystem 0&quot;
-comma
 dot
 id|bus_id
 op_assign
@@ -231,35 +226,6 @@ op_star
 id|sch
 )paren
 (brace
-r_static
-r_const
-r_char
-op_star
-id|subchannel_types
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;I/O Subchannel&quot;
-comma
-l_string|&quot;CHSC Subchannel&quot;
-comma
-l_string|&quot;Message Subchannel&quot;
-comma
-l_string|&quot;ADM Subchannel&quot;
-comma
-l_string|&quot;undefined subchannel type 4&quot;
-comma
-l_string|&quot;undefined subchannel type 5&quot;
-comma
-l_string|&quot;undefined subchannel type 6&quot;
-comma
-l_string|&quot;undefined subchannel type 7&quot;
-comma
-l_string|&quot;undefined subchannel type 8&quot;
-comma
-)brace
-suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -275,25 +241,13 @@ op_amp
 id|css_bus_type
 suffix:semicolon
 multiline_comment|/* Set a name for the subchannel */
-id|strlcpy
-(paren
-id|sch-&gt;dev.name
-comma
-id|subchannel_types
-(braket
-id|sch-&gt;st
-)braket
-comma
-id|DEVICE_NAME_SIZE
-)paren
-suffix:semicolon
 id|snprintf
 (paren
 id|sch-&gt;dev.bus_id
 comma
-id|DEVICE_ID_SIZE
+id|BUS_ID_SIZE
 comma
-l_string|&quot;0:%04x&quot;
+l_string|&quot;0.0.%04x&quot;
 comma
 id|sch-&gt;irq
 )paren

@@ -522,6 +522,10 @@ DECL|member|magic
 r_int
 id|magic
 suffix:semicolon
+DECL|member|opened
+r_int
+id|opened
+suffix:semicolon
 DECL|member|ops
 r_const
 r_struct

@@ -106,7 +106,7 @@ mdefine_line|#define __put_user_asm_1(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&
 DECL|macro|__put_user
 mdefine_line|#define __put_user(x, ptr) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __x = (x);&t;&t;&t;&t;&bslash;&n;&t;int __pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof (*(ptr))) {&t;&t;&t;&t;&bslash;&n;&t;case 1:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__put_user_asm_1(__x, ptr, __pu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 2:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__put_user_asm_2(__x, ptr, __pu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 4:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__put_user_asm_4(__x, ptr, __pu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 8:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__put_user_asm_8(__x, ptr, __pu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__pu_err = __put_user_bad();&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; }&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|put_user
-mdefine_line|#define put_user(x, ptr) __put_user(x, ptr)
+mdefine_line|#define put_user(x, ptr)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__put_user(x, ptr);&t;&t;&t;&t;&t;&bslash;&n;})
 r_extern
 r_int
 id|__put_user_bad
@@ -117,7 +117,7 @@ r_void
 suffix:semicolon
 macro_line|#ifndef __s390x__
 DECL|macro|__get_user_asm_8
-mdefine_line|#define __get_user_asm_8(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) const * __from asm(&quot;2&quot;);&t;&bslash;&n;&t;register __typeof__(x) * __to asm(&quot;4&quot;);&t;&t;&t;&bslash;&n;&t;__from = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__to = &amp;(x);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: mvc&t;  0(8,%1),0(%2)&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err), &quot;=m&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__to),&quot;a&quot; (__from),&quot;K&quot; (-EFAULT),&quot;0&quot; (0)&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __get_user_asm_8(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) const * __from asm(&quot;4&quot;);&t;&bslash;&n;&t;register __typeof__(x) * __to asm(&quot;2&quot;);&t;&t;&t;&bslash;&n;&t;__from = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__to = &amp;(x);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: mvc&t;  0(8,%2),0(%4)&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err), &quot;=m&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__to),&quot;K&quot; (-EFAULT),&quot;a&quot; (__from),&quot;0&quot; (0)&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#else /* __s390x__ */
 DECL|macro|__get_user_asm_8
 mdefine_line|#define __get_user_asm_8(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) const * __ptr asm(&quot;4&quot;);&t;&bslash;&n;&t;__ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: lg&t;  %1,0(%2)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err), &quot;=d&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__ptr), &quot;K&quot; (-EFAULT), &quot;0&quot; (0)&t;&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
@@ -127,11 +127,11 @@ mdefine_line|#define __get_user_asm_4(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&
 DECL|macro|__get_user_asm_2
 mdefine_line|#define __get_user_asm_2(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) const * __ptr asm(&quot;4&quot;);&t;&bslash;&n;&t;__ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: lh&t;  %1,0(%2)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err), &quot;=d&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__ptr), &quot;K&quot; (-EFAULT), &quot;0&quot; (0)&t;&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__get_user_asm_1
-mdefine_line|#define __get_user_asm_1(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) const * __ptr asm(&quot;4&quot;);&t;&bslash;&n;&t;__ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sr&t;  %1,%1&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: ic&t;  %1,0(%2)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err), &quot;=d&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__ptr), &quot;K&quot; (-EFAULT), &quot;0&quot; (0)&t;&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __get_user_asm_1(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register __typeof__(*(ptr)) const * __ptr asm(&quot;4&quot;);&t;&bslash;&n;&t;__ptr = (ptr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sr&t;  %1,%1&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  512&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: ic&t;  %1,0(%2)&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;   sacf  0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;d&quot; (err), &quot;=&amp;d&quot; (x)&t;&t;&t;&bslash;&n;&t;&t;: &quot;a&quot; (__ptr), &quot;K&quot; (-EFAULT), &quot;0&quot; (0)&t;&t;&bslash;&n;&t;&t;: &quot;cc&quot; );&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__get_user
 mdefine_line|#define __get_user(x, ptr)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __x;&t;&t;&t;&t;&t;&bslash;&n;&t;int __gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&t;&bslash;&n;&t;case 1:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_asm_1(__x, ptr, __gu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 2:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_asm_2(__x, ptr, __gu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 4:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_asm_4(__x, ptr, __gu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 8:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_asm_8(__x, ptr, __gu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__x = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__gu_err = __get_user_bad();&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = __x;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|get_user
-mdefine_line|#define get_user(x, ptr) __get_user(x, ptr)
+mdefine_line|#define get_user(x, ptr)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__get_user(x, ptr);&t;&t;&t;&t;&t;&bslash;&n;})
 r_extern
 r_int
 id|__get_user_bad
@@ -163,7 +163,7 @@ suffix:semicolon
 DECL|macro|__copy_to_user
 mdefine_line|#define __copy_to_user(to, from, n)                             &bslash;&n;({                                                              &bslash;&n;        __copy_to_user_asm(from, n, to);                        &bslash;&n;})
 DECL|macro|copy_to_user
-mdefine_line|#define copy_to_user(to, from, n)                               &bslash;&n;({                                                              &bslash;&n;        long err = 0;                                           &bslash;&n;        __typeof__(n) __n = (n);                                &bslash;&n;        if (__access_ok(to,__n)) {                              &bslash;&n;                err = __copy_to_user_asm(from, __n, to);        &bslash;&n;        }                                                       &bslash;&n;        else                                                    &bslash;&n;                err = __n;                                      &bslash;&n;        err;                                                    &bslash;&n;})
+mdefine_line|#define copy_to_user(to, from, n)                               &bslash;&n;({                                                              &bslash;&n;        long err = 0;                                           &bslash;&n;        __typeof__(n) __n = (n);                                &bslash;&n;        might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;        if (__access_ok(to,__n)) {                              &bslash;&n;                err = __copy_to_user_asm(from, __n, to);        &bslash;&n;        }                                                       &bslash;&n;        else                                                    &bslash;&n;                err = __n;                                      &bslash;&n;        err;                                                    &bslash;&n;})
 r_extern
 r_int
 id|__copy_from_user_asm
@@ -185,7 +185,7 @@ suffix:semicolon
 DECL|macro|__copy_from_user
 mdefine_line|#define __copy_from_user(to, from, n)                           &bslash;&n;({                                                              &bslash;&n;        __copy_from_user_asm(to, n, from);                      &bslash;&n;})
 DECL|macro|copy_from_user
-mdefine_line|#define copy_from_user(to, from, n)                             &bslash;&n;({                                                              &bslash;&n;        long err = 0;                                           &bslash;&n;        __typeof__(n) __n = (n);                                &bslash;&n;        if (__access_ok(from,__n)) {                            &bslash;&n;                err = __copy_from_user_asm(to, __n, from);      &bslash;&n;        }                                                       &bslash;&n;        else                                                    &bslash;&n;                err = __n;                                      &bslash;&n;        err;                                                    &bslash;&n;})
+mdefine_line|#define copy_from_user(to, from, n)                             &bslash;&n;({                                                              &bslash;&n;        long err = 0;                                           &bslash;&n;        __typeof__(n) __n = (n);                                &bslash;&n;        might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;        if (__access_ok(from,__n)) {                            &bslash;&n;                err = __copy_from_user_asm(to, __n, from);      &bslash;&n;        }                                                       &bslash;&n;        else                                                    &bslash;&n;                err = __n;                                      &bslash;&n;        err;                                                    &bslash;&n;})
 multiline_comment|/*&n; * Copy a null terminated string from userspace.&n; */
 macro_line|#ifndef __s390x__
 r_static
@@ -397,6 +397,11 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -446,6 +451,11 @@ r_int
 id|n
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
@@ -512,6 +522,11 @@ r_int
 id|n
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#if 0
 id|__asm__
 id|__volatile__
@@ -629,6 +644,11 @@ r_int
 id|n
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

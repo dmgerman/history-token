@@ -5,7 +5,7 @@ macro_line|#include &quot;sis_drm.h&quot;
 macro_line|#include &quot;sis_drv.h&quot;
 macro_line|#include &quot;sis_ds.h&quot;
 macro_line|#if defined(__linux__) &amp;&amp; defined(CONFIG_FB_SIS)
-macro_line|#include &lt;linux/sisfb.h&gt;
+macro_line|#include &lt;video/sisfb.h&gt;
 macro_line|#endif
 DECL|macro|MAX_CONTEXT
 mdefine_line|#define MAX_CONTEXT 100
@@ -452,7 +452,7 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;free fb, offset = %d&bslash;n&quot;
+l_string|&quot;free fb, offset = %lu&bslash;n&quot;
 comma
 id|fb.free
 )paren

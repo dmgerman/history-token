@@ -5,7 +5,6 @@ mdefine_line|#define _TAPE_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtio.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

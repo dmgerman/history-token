@@ -2357,10 +2357,6 @@ DECL|member|beacons_this_sec
 r_int
 id|beacons_this_sec
 suffix:semicolon
-DECL|member|last_beacon_timestamp
-id|u64
-id|last_beacon_timestamp
-suffix:semicolon
 DECL|member|channel
 r_int
 id|channel
@@ -2549,6 +2545,10 @@ id|new_SSID
 (braket
 id|MAX_SSID_LENGTH
 )braket
+suffix:semicolon
+DECL|member|last_beacon_timestamp
+id|u64
+id|last_beacon_timestamp
 suffix:semicolon
 DECL|member|rx_buf
 id|u8

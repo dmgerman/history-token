@@ -534,7 +534,7 @@ id|args
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Enable device.&n; * FIXME: how can we get here if the device is not already enabled?&n; * &t;-arnd&n; */
+multiline_comment|/*&n; * Enable device.&n; * used by dasdfmt after BIODASDDISABLE to retrigger blocksize detection&n; */
 r_static
 r_int
 DECL|function|dasd_ioctl_enable
@@ -591,6 +591,38 @@ id|dasd_enable_device
 c_func
 (paren
 id|device
+)paren
+suffix:semicolon
+multiline_comment|/* Formatting the dasd device can change the capacity. */
+id|down
+c_func
+(paren
+op_amp
+id|bdev-&gt;bd_sem
+)paren
+suffix:semicolon
+id|i_size_write
+c_func
+(paren
+id|bdev-&gt;bd_inode
+comma
+(paren
+id|loff_t
+)paren
+id|get_capacity
+c_func
+(paren
+id|device-&gt;gdp
+)paren
+op_lshift
+l_int|9
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|bdev-&gt;bd_sem
 )paren
 suffix:semicolon
 r_return

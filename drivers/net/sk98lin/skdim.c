@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skdim.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.4 $&n; * Date:&t;$Date: 2003/07/07 09:45:47 $&n; * Purpose:&t;All functions to maintain interrupt moderation&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skdim.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.2 $&n; * Date:&t;$Date: 2003/08/21 12:35:05 $&n; * Purpose:&t;All functions to maintain interrupt moderation&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&t;&n; *&t;$Log: skdim.c,v $&n; *&t;Revision 1.4  2003/07/07 09:45:47  rroesler&n; *&t;Fix: Compiler warnings corrected&n; *&t;&n; *&t;Revision 1.3  2003/06/10 09:16:40  rroesler&n; *&t;Adapt GetCurrentSystemLoad() to NOT access the kernels&n; *&t;kstat-structure in kernel 2.5/2.6. This must be done&n; *&t;due to a not exported symbol. Instead of evaluating the&n; *&t;SystemLoad directly, the nbr of interrupts is used as&n; *&t;a rough basis for the load.&n; *&t;&n; *&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&t;&n; *&t;$Log: skdim.c,v $&n; *&t;Revision 1.2  2003/08/21 12:35:05  mlindner&n; *&t;Fix: Corrected CPU detection and compile errors on single CPU machines&n; *&t;&n; *&t;Revision 1.1  2003/07/18 13:39:55  rroesler&n; *&t;Fix: Re-enter after CVS crash&n; *&t;&n; *&t;Revision 1.4  2003/07/07 09:45:47  rroesler&n; *&t;Fix: Compiler warnings corrected&n; *&t;&n; *&t;Revision 1.3  2003/06/10 09:16:40  rroesler&n; *&t;Adapt GetCurrentSystemLoad() to NOT access the kernels&n; *&t;kstat-structure in kernel 2.5/2.6. This must be done&n; *&t;due to a not exported symbol. Instead of evaluating the&n; *&t;SystemLoad directly, the nbr of interrupts is used as&n; *&t;a rough basis for the load.&n; *&t;&n; *&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; * This module is intended to manage the dynamic interrupt moderation on both   &n; * GEnesis and Yukon adapters.&n; *&n; * Include File Hierarchy:&n; *&n; *&t;&quot;skdrv1st.h&quot;&n; *&t;&quot;skdrv2nd.h&quot;&n; *&n; ******************************************************************************/
 macro_line|#ifndef&t;lint
 DECL|variable|SysKonnectFileId
@@ -11,7 +11,7 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;@(#) $Id: skdim.c,v 1.4 2003/07/07 09:45:47 rroesler Exp $ (C) SysKonnect.&quot;
+l_string|&quot;@(#) $Id: skdim.c,v 1.2 2003/08/21 12:35:05 mlindner Exp $ (C) SysKonnect.&quot;
 suffix:semicolon
 macro_line|#endif
 DECL|macro|__SKADDR_C
@@ -609,6 +609,21 @@ id|SystemLoad
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_int
+r_int
+id|SKNumCpus
+op_assign
+id|smp_num_cpus
+suffix:semicolon
+macro_line|#else
+r_int
+r_int
+id|SKNumCpus
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* unsigned int  NbrCpu      = 0; */
 multiline_comment|/*&n;&t;** The following lines have been commented out, because&n;&t;** from kernel 2.5.44 onwards, the kernel-owned structure&n;&t;**&n;&t;**      struct kernel_stat kstat&n;&t;**&n;&t;** is not marked as an exported symbol in the file&n;&t;**&n;&t;**      kernel/ksyms.c &n;&t;**&n;&t;** As a consequence, using this driver as KLM is not possible&n;&t;** and any access of the structure kernel_stat via the &n;&t;** dedicated macros kstat_cpu(i).cpustat.xxx is to be avoided.&n;&t;**&n;&t;** The kstat-information might be added again in future &n;&t;** versions of the 2.5.xx kernel, but for the time being, &n;&t;** number of interrupts will serve as indication how much &n;&t;** load we currently have... &n;&t;**&n;&t;** for (NbrCpu = 0; NbrCpu &lt; num_online_cpus(); NbrCpu++) {&n;&t;**&t;UserTime   = UserTime   + kstat_cpu(NbrCpu).cpustat.user;&n;&t;**&t;NiceTime   = NiceTime   + kstat_cpu(NbrCpu).cpustat.nice;&n;&t;**&t;SystemTime = SystemTime + kstat_cpu(NbrCpu).cpustat.system;&n;&t;** }&n;&t;*/
 id|SK_U64

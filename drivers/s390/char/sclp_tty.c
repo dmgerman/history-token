@@ -3097,7 +3097,7 @@ l_string|&quot;sclp_line&quot;
 suffix:semicolon
 id|driver-&gt;name
 op_assign
-l_string|&quot;ttyS&quot;
+l_string|&quot;sclp_line&quot;
 suffix:semicolon
 id|driver-&gt;major
 op_assign

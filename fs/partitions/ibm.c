@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/fs/partitions/ibm.c      &n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Volker Sameske &lt;sameske@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n;&n; * History of changes (starts July 2000)&n; * 07/10/00 Fixed detection of CMS formatted disks     &n; * 02/13/00 VTOC partition support added&n; * 12/27/01 fixed PL030593 (CMS reserved minidisk not detected on 64 bit)&n; */
+multiline_comment|/*&n; * File...........: linux/fs/partitions/ibm.c      &n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Volker Sameske &lt;sameske@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n;&n; * History of changes (starts July 2000)&n; * 07/10/00 Fixed detection of CMS formatted disks     &n; * 02/13/00 VTOC partition support added&n; * 12/27/01 fixed PL030593 (CMS reserved minidisk not detected on 64 bit)&n; * 07/24/03 no longer using contents of freed page for CMS label recognition (BZ3611)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
@@ -405,7 +405,7 @@ op_assign
 r_int
 op_star
 )paren
-id|data
+id|vlabel
 suffix:semicolon
 r_if
 c_cond

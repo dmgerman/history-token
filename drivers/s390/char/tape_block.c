@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  drivers/s390/char/tape_block.c&n; *    block device frontend for tape device driver&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001,2002 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *&t;&t; Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&t;&t; Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -211,7 +210,6 @@ op_logical_or
 id|elv_next_request
 c_func
 (paren
-op_amp
 id|device-&gt;blk_data.request_queue
 )paren
 )paren
@@ -276,7 +274,6 @@ r_return
 suffix:semicolon
 id|queue
 op_assign
-op_amp
 id|device-&gt;blk_data.request_queue
 suffix:semicolon
 id|nr_queued
@@ -719,7 +716,6 @@ c_loop
 id|elv_next_request
 c_func
 (paren
-op_amp
 id|device-&gt;blk_data.request_queue
 )paren
 )paren
@@ -867,9 +863,16 @@ c_cond
 op_logical_neg
 id|q
 )paren
+(brace
+id|rc
+op_assign
+op_minus
+id|ENXIO
+suffix:semicolon
 r_goto
 id|put_disk
 suffix:semicolon
+)brace
 id|d-&gt;request_queue
 op_assign
 id|q

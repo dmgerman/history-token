@@ -3768,6 +3768,4 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* MODULE */
-"&f;"
-multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -DKERNEL -Wall -O6 -fomit-frame-pointer -I/usr/src/linux/net/tcp -c ne.c&quot;&n; *  version-control: t&n; *  kept-new-versions: 5&n; * End:&n; */
 eof

@@ -46,7 +46,7 @@ multiline_comment|/*&n; *&t;This magic constant controls our willingness to tran
 DECL|macro|PROC_CHANGE_PENALTY
 mdefine_line|#define PROC_CHANGE_PENALTY&t;20&t;&t;/* Schedule penalty */
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
+mdefine_line|#define smp_processor_id() (S390_lowcore.cpu_data.cpu_nr)
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
 DECL|macro|cpu_possible

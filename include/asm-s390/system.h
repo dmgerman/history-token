@@ -15,7 +15,7 @@ r_extern
 r_struct
 id|task_struct
 op_star
-id|resume
+id|__switch_to
 c_func
 (paren
 r_void
@@ -157,7 +157,7 @@ id|fpregs
 suffix:semicolon
 )brace
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;     &bslash;&n;&t;if (prev == next)&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;save_fp_regs(&amp;prev-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;restore_fp_regs(&amp;next-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;prev = resume(prev,next);&t;&t;&t;&t;&t;     &bslash;&n;} while (0)
+mdefine_line|#define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;     &bslash;&n;&t;if (prev == next)&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;save_fp_regs(&amp;prev-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;restore_fp_regs(&amp;next-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;prev = __switch_to(prev,next);&t;&t;&t;&t;&t;     &bslash;&n;} while (0)
 DECL|macro|nop
 mdefine_line|#define nop() __asm__ __volatile__ (&quot;nop&quot;)
 DECL|macro|xchg

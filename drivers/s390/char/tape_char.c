@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  drivers/s390/char/tape_char.c&n; *    character device frontend for tape device driver&n; *&n; *  S390 and zSeries version&n; *    Copyright (C) 2001,2002 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Carsten Otte &lt;cotte@de.ibm.com&gt;&n; *&t;&t; Michael Holzheu &lt;holzheu@de.ibm.com&gt;&n; *&t;&t; Tuan Ngo-Anh &lt;ngoanh@de.ibm.com&gt;&n; *&t;&t; Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;

@@ -33,7 +33,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Waits for &squot;usecs&squot; microseconds using the tod clock&n; */
+multiline_comment|/*&n; * Waits for &squot;usecs&squot; microseconds using the tod clock, giving up the time slice&n; * of the virtual PU inbetween to avoid congestion.&n; */
 DECL|function|__udelay
 r_void
 id|__udelay
@@ -71,6 +71,11 @@ id|start_cc
 suffix:semicolon
 r_do
 (brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 id|asm
 r_volatile
 (paren
