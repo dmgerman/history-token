@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
@@ -236,7 +237,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|2
 comma
 l_string|&quot;%s()&bslash;n&quot;
 comma
@@ -480,23 +481,15 @@ suffix:semicolon
 multiline_comment|/* Create network device with irlan */
 id|dev
 op_assign
-id|alloc_netdev
+id|alloc_irlandev
 c_func
 (paren
-r_sizeof
-(paren
-op_star
-id|self
-)paren
-comma
 id|eth
 ques
 c_cond
 l_string|&quot;eth%d&quot;
 suffix:colon
 l_string|&quot;irlan%d&quot;
-comma
-id|irlan_eth_setup
 )paren
 suffix:semicolon
 r_if
@@ -534,6 +527,64 @@ id|self-&gt;provider.access_type
 op_assign
 id|access
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|access
+op_eq
+id|ACCESS_DIRECT
+)paren
+(brace
+multiline_comment|/*  &n;&t;&t; * Since we are emulating an IrLAN sever we will have to&n;&t;&t; * give ourself an ethernet address!  &n;&t;&t; */
+id|dev-&gt;dev_addr
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0x40
+suffix:semicolon
+id|dev-&gt;dev_addr
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0x00
+suffix:semicolon
+id|dev-&gt;dev_addr
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0x00
+suffix:semicolon
+id|dev-&gt;dev_addr
+(braket
+l_int|3
+)braket
+op_assign
+l_int|0x00
+suffix:semicolon
+id|get_random_bytes
+c_func
+(paren
+id|dev-&gt;dev_addr
+op_plus
+l_int|4
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|get_random_bytes
+c_func
+(paren
+id|dev-&gt;dev_addr
+op_plus
+l_int|5
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|self-&gt;media
 op_assign
 id|MEDIA_802_3
@@ -694,14 +745,14 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
 id|self-&gt;watchdog_timer
 )paren
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -892,7 +943,9 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;IrLAN, We are now connected!&bslash;n&quot;
+l_string|&quot;%s: We are now connected!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|del_timer
@@ -1043,9 +1096,11 @@ multiline_comment|/* TODO: we could set the MTU depending on the max_sdu_size */
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|2
+l_int|0
 comma
-l_string|&quot;IrLAN, We are now connected!&bslash;n&quot;
+l_string|&quot;%s: We are now connected!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|del_timer
@@ -1465,7 +1520,10 @@ id|notify.connect_confirm
 op_assign
 id|irlan_connect_confirm
 suffix:semicolon
-multiline_comment|/*notify.flow_indication       = irlan_eth_flow_indication;*/
+id|notify.flow_indication
+op_assign
+id|irlan_eth_flow_indication
+suffix:semicolon
 id|notify.disconnect_indication
 op_assign
 id|irlan_disconnect_indication
