@@ -1116,6 +1116,16 @@ id|cpu_present_mask
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
+multiline_comment|/*&n; * NUMA specific symbols&n; */
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+DECL|variable|node_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|node_data
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_DISCONTIGMEM */
 DECL|variable|rtc_lock
 id|EXPORT_SYMBOL
 c_func

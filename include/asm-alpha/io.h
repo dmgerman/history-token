@@ -247,7 +247,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;PAGE_TO_PA(page)
+mdefine_line|#define page_to_phys(page)&t;page_to_pa(page)
 multiline_comment|/* This depends on working iommu.  */
 DECL|macro|BIO_VMERGE_BOUNDARY
 mdefine_line|#define BIO_VMERGE_BOUNDARY&t;(alpha_mv.mv_pci_tbi ? PAGE_SIZE : 0)
