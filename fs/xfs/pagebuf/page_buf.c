@@ -821,7 +821,7 @@ suffix:semicolon
 id|PB_STATS_INC
 c_func
 (paren
-id|pbstats.pb_create
+id|pb_create
 )paren
 suffix:semicolon
 id|PB_TRACE
@@ -1541,7 +1541,7 @@ l_int|0
 id|PB_STATS_INC
 c_func
 (paren
-id|pbstats.pb_page_retries
+id|pb_page_retries
 )paren
 suffix:semicolon
 id|pagebuf_daemon_wakeup
@@ -1579,7 +1579,7 @@ suffix:semicolon
 id|PB_STATS_INC
 c_func
 (paren
-id|pbstats.pb_page_found
+id|pb_page_found
 )paren
 suffix:semicolon
 id|mark_page_accessed
@@ -2198,7 +2198,7 @@ r_else
 id|PB_STATS_INC
 c_func
 (paren
-id|pbstats.pb_miss_locked
+id|pb_miss_locked
 )paren
 suffix:semicolon
 )brace
@@ -2281,7 +2281,7 @@ suffix:semicolon
 id|PB_STATS_INC
 c_func
 (paren
-id|pbstats.pb_get_locked_waited
+id|pb_get_locked_waited
 )paren
 suffix:semicolon
 )brace
@@ -2297,7 +2297,7 @@ suffix:semicolon
 id|PB_STATS_INC
 c_func
 (paren
-id|pbstats.pb_busy_locked
+id|pb_busy_locked
 )paren
 suffix:semicolon
 r_return
@@ -2360,7 +2360,7 @@ suffix:semicolon
 id|PB_STATS_INC
 c_func
 (paren
-id|pbstats.pb_get_locked
+id|pb_get_locked
 )paren
 suffix:semicolon
 r_return
@@ -2520,7 +2520,7 @@ suffix:semicolon
 id|PB_STATS_INC
 c_func
 (paren
-id|pbstats.pb_get
+id|pb_get
 )paren
 suffix:semicolon
 multiline_comment|/* fill in any missing pages */
@@ -2602,7 +2602,7 @@ suffix:semicolon
 id|PB_STATS_INC
 c_func
 (paren
-id|pbstats.pb_get_read
+id|pb_get_read
 )paren
 suffix:semicolon
 id|pagebuf_iostart
