@@ -1619,6 +1619,32 @@ id|real_dev-&gt;ifindex
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|register_netdevice
+c_func
+(paren
+id|new_dev
+)paren
+)paren
+r_goto
+id|out_free_newdev_priv
+suffix:semicolon
+multiline_comment|/* NOTE:  We have a reference to the real device,&n;&t; * so hold on to the reference. May fail if we are being removed&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+r_goto
+id|out_free_unregister
+suffix:semicolon
 multiline_comment|/* So, got the sucker initialized, now lets place&n;&t; * it into our local structure.&n;&t; */
 id|spin_lock_bh
 c_func
@@ -1672,7 +1698,7 @@ op_logical_neg
 id|grp
 )paren
 r_goto
-id|out_free_newdev_priv
+id|out_free_put
 suffix:semicolon
 multiline_comment|/* printk(KERN_ALERT &quot;VLAN REGISTER:  Allocated new group.&bslash;n&quot;); */
 id|memset
@@ -1762,30 +1788,10 @@ comma
 id|VLAN_ID
 )paren
 suffix:semicolon
-id|register_netdevice
-c_func
-(paren
-id|new_dev
-)paren
-suffix:semicolon
 id|rtnl_unlock
 c_func
 (paren
 )paren
-suffix:semicolon
-multiline_comment|/* NOTE:  We have a reference to the real device,&n;&t; * so hold on to the reference.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|try_module_get
-c_func
-(paren
-id|THIS_MODULE
-)paren
-)paren
-r_goto
-id|out_module_dying
 suffix:semicolon
 macro_line|#ifdef VLAN_DEBUG
 id|printk
@@ -1799,14 +1805,17 @@ macro_line|#endif
 r_return
 id|new_dev
 suffix:semicolon
-id|out_module_dying
+id|out_free_put
 suffix:colon
-id|rtnl_lock
+id|module_put
 c_func
 (paren
+id|THIS_MODULE
 )paren
 suffix:semicolon
-id|unregister_netdevice
+id|out_free_unregister
+suffix:colon
+id|unregister_netdev
 c_func
 (paren
 id|new_dev

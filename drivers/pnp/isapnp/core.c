@@ -216,11 +216,6 @@ r_int
 id|isapnp_detected
 suffix:semicolon
 multiline_comment|/* some prototypes */
-r_extern
-r_struct
-id|pnp_protocol
-id|isapnp_protocol
-suffix:semicolon
 DECL|function|write_data
 r_static
 r_inline

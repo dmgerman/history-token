@@ -3180,7 +3180,7 @@ comma
 dot
 id|ifnum
 op_assign
-l_int|9
+l_int|6
 comma
 dot
 id|type

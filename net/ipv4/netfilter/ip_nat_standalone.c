@@ -147,6 +147,31 @@ c_func
 id|hooknum
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: Push down to extensions --RR */
+r_if
+c_cond
+(paren
+id|skb_is_nonlinear
+c_func
+(paren
+op_star
+id|pskb
+)paren
+op_logical_and
+id|skb_linearize
+c_func
+(paren
+op_star
+id|pskb
+comma
+id|GFP_ATOMIC
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+id|NF_DROP
+suffix:semicolon
 multiline_comment|/* We never see fragments: conntrack defrags on pre-routing&n;&t;   and local-out, and ip_nat_out protects post-routing. */
 id|IP_NF_ASSERT
 c_func
@@ -607,6 +632,31 @@ op_star
 )paren
 )paren
 (brace
+multiline_comment|/* FIXME: Push down to extensions --RR */
+r_if
+c_cond
+(paren
+id|skb_is_nonlinear
+c_func
+(paren
+op_star
+id|pskb
+)paren
+op_logical_and
+id|skb_linearize
+c_func
+(paren
+op_star
+id|pskb
+comma
+id|GFP_ATOMIC
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+id|NF_DROP
+suffix:semicolon
 multiline_comment|/* root is playing with raw sockets. */
 r_if
 c_cond
@@ -748,6 +798,31 @@ suffix:semicolon
 r_int
 r_int
 id|ret
+suffix:semicolon
+multiline_comment|/* FIXME: Push down to extensions --RR */
+r_if
+c_cond
+(paren
+id|skb_is_nonlinear
+c_func
+(paren
+op_star
+id|pskb
+)paren
+op_logical_and
+id|skb_linearize
+c_func
+(paren
+op_star
+id|pskb
+comma
+id|GFP_ATOMIC
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+id|NF_DROP
 suffix:semicolon
 multiline_comment|/* root is playing with raw sockets. */
 r_if

@@ -521,11 +521,11 @@ id|snd_dt019x_pnpids
 suffix:semicolon
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME&t;&quot;snd-card-dt019x&quot;
-DECL|function|snd_card_dt019x_isapnp
+DECL|function|snd_card_dt019x_pnp
 r_static
 r_int
-id|__init
-id|snd_card_dt019x_isapnp
+id|__devinit
+id|snd_card_dt019x_pnp
 c_func
 (paren
 r_int
@@ -760,7 +760,7 @@ l_int|0
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -784,7 +784,7 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -951,7 +951,7 @@ l_int|0
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1036,7 +1036,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1120,7 +1120,7 @@ l_int|0
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1187,7 +1187,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1222,7 +1222,7 @@ suffix:semicolon
 DECL|function|snd_card_dt019x_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_card_dt019x_probe
 c_func
 (paren
@@ -1311,7 +1311,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|snd_card_dt019x_isapnp
+id|snd_card_dt019x_pnp
 c_func
 (paren
 id|dev
@@ -1485,7 +1485,7 @@ l_int|NULL
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1541,7 +1541,7 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1709,7 +1709,7 @@ suffix:semicolon
 DECL|function|snd_dt019x_pnp_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_dt019x_pnp_probe
 c_func
 (paren
@@ -1898,7 +1898,7 @@ c_cond
 op_logical_neg
 id|cards
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR

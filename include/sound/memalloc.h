@@ -620,31 +620,5 @@ id|PAGE_SIZE
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PCI */
-multiline_comment|/*&n; * wrappers&n; */
-macro_line|#ifdef CONFIG_PCI
-macro_line|#if defined(__i386__) || defined(__ppc__) || defined(__x86_64__)
-DECL|macro|HACK_PCI_ALLOC_CONSISTENT
-mdefine_line|#define HACK_PCI_ALLOC_CONSISTENT
-multiline_comment|/* a hack for 2.4/5 kernels for better allocation of large buffers */
-r_void
-op_star
-id|snd_pci_hack_alloc_consistent
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|hwdev
-comma
-r_int
-id|size
-comma
-id|dma_addr_t
-op_star
-id|dma_handle
-)paren
-suffix:semicolon
-macro_line|#endif /* arch */
-macro_line|#endif /* CONFIG_PCI */
 macro_line|#endif /* __SOUND_MEMALLOC_H */
 eof

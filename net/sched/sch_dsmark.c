@@ -828,6 +828,7 @@ c_cond
 id|p-&gt;set_tc_index
 )paren
 (brace
+multiline_comment|/* FIXME: Safe with non-linear skbs? --RR */
 r_switch
 c_cond
 (paren

@@ -884,6 +884,12 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|snd_midi_event_reset_encode
+c_func
+(paren
+id|msynth-&gt;parser
+)paren
+suffix:semicolon
 id|runtime-&gt;event
 op_assign
 id|snd_midi_input_event
@@ -1080,6 +1086,12 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|snd_midi_event_reset_decode
+c_func
+(paren
+id|msynth-&gt;parser
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

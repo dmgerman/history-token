@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Philips UDA1341 mixer device driver&n; * Copyright (c) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; * Portions are Copyright (C) 2000 Lernout &amp; Hauspie Speech Products, N.V.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2002-03-13   Tomas Kasparek  initial release - based on uda1341.c from OSS&n; * 2002-03-28   Tomas Kasparek  basic mixer is working (volume, bass, treble)&n; * 2002-03-30   Tomas Kasparek  proc filesystem support, complete mixer and DSP&n; *                              features support&n; * 2002-04-12&t;Tomas Kasparek&t;proc interface update, code cleanup&n; * 2002-05-12   Tomas Kasparek  another code cleanup&n; */
-multiline_comment|/* $Id: uda1341.c,v 1.7 2003/02/13 19:19:19 perex Exp $ */
+multiline_comment|/* $Id: uda1341.c,v 1.8 2003/03/20 16:45:59 perex Exp $ */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
