@@ -4240,6 +4240,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+op_logical_neg
 id|error
 ques
 c_cond
