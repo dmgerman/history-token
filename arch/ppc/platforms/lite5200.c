@@ -146,6 +146,18 @@ r_void
 )paren
 (brace
 r_struct
+id|mpc52xx_cdm
+id|__iomem
+op_star
+id|cdm
+suffix:semicolon
+r_struct
+id|mpc52xx_gpio
+id|__iomem
+op_star
+id|gpio
+suffix:semicolon
+r_struct
 id|mpc52xx_intr
 id|__iomem
 op_star
@@ -158,9 +170,40 @@ op_star
 id|xlb
 suffix:semicolon
 id|u32
+id|port_config
+suffix:semicolon
+id|u32
 id|intr_ctrl
 suffix:semicolon
 multiline_comment|/* Map zones */
+id|cdm
+op_assign
+id|ioremap
+c_func
+(paren
+id|MPC52xx_PA
+c_func
+(paren
+id|MPC52xx_CDM_OFFSET
+)paren
+comma
+id|MPC52xx_CDM_SIZE
+)paren
+suffix:semicolon
+id|gpio
+op_assign
+id|ioremap
+c_func
+(paren
+id|MPC52xx_PA
+c_func
+(paren
+id|MPC52xx_GPIO_OFFSET
+)paren
+comma
+id|MPC52xx_GPIO_SIZE
+)paren
+suffix:semicolon
 id|xlb
 op_assign
 id|ioremap
@@ -193,6 +236,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|cdm
+op_logical_or
+op_logical_neg
+id|gpio
+op_logical_or
+op_logical_neg
 id|xlb
 op_logical_or
 op_logical_neg
@@ -202,7 +251,7 @@ id|intr
 id|printk
 c_func
 (paren
-l_string|&quot;lite5200.c: Error while mapping XLB/INTR during &quot;
+l_string|&quot;lite5200.c: Error while mapping CDM/GPIO/XLB/INTR during&quot;
 l_string|&quot;lite5200_setup_cpu&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -210,6 +259,94 @@ r_goto
 id|unmap_regs
 suffix:semicolon
 )brace
+multiline_comment|/* Use internal 48 Mhz */
+id|out_8
+c_func
+(paren
+op_amp
+id|cdm-&gt;ext_48mhz_en
+comma
+l_int|0x00
+)paren
+suffix:semicolon
+id|out_8
+c_func
+(paren
+op_amp
+id|cdm-&gt;fd_enable
+comma
+l_int|0x01
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_be32
+c_func
+(paren
+op_amp
+id|cdm-&gt;rstcfg
+)paren
+op_amp
+l_int|0x40
+)paren
+multiline_comment|/* Assumes 33Mhz clock */
+id|out_be16
+c_func
+(paren
+op_amp
+id|cdm-&gt;fd_counters
+comma
+l_int|0x0001
+)paren
+suffix:semicolon
+r_else
+id|out_be16
+c_func
+(paren
+op_amp
+id|cdm-&gt;fd_counters
+comma
+l_int|0x5555
+)paren
+suffix:semicolon
+multiline_comment|/* Get port mux config */
+id|port_config
+op_assign
+id|in_be32
+c_func
+(paren
+op_amp
+id|gpio-&gt;port_config
+)paren
+suffix:semicolon
+multiline_comment|/* 48Mhz internal, pin is GPIO */
+id|port_config
+op_and_assign
+op_complement
+l_int|0x00800000
+suffix:semicolon
+multiline_comment|/* USB port */
+id|port_config
+op_and_assign
+op_complement
+l_int|0x00007000
+suffix:semicolon
+multiline_comment|/* Differential mode - USB1 only */
+id|port_config
+op_or_assign
+l_int|0x00001000
+suffix:semicolon
+multiline_comment|/* Commit port config */
+id|out_be32
+c_func
+(paren
+op_amp
+id|gpio-&gt;port_config
+comma
+id|port_config
+)paren
+suffix:semicolon
 multiline_comment|/* Configure the XLB Arbiter */
 id|out_be32
 c_func
@@ -289,6 +426,28 @@ suffix:semicolon
 multiline_comment|/* Unmap reg zone */
 id|unmap_regs
 suffix:colon
+r_if
+c_cond
+(paren
+id|cdm
+)paren
+id|iounmap
+c_func
+(paren
+id|cdm
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|gpio
+)paren
+id|iounmap
+c_func
+(paren
+id|gpio
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -508,11 +667,8 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Powersave */
-id|powersave_nap
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* We allow this platform to NAP */
+multiline_comment|/* This is provided as an example on how to do it. But you&n;&t;   need to be aware that NAP disable bus snoop and that may&n;&t;   be required for some devices to work properly, like USB ... */
+multiline_comment|/* powersave_nap = 1; */
 multiline_comment|/* Setup the ppc_md struct */
 id|ppc_md.setup_arch
 op_assign
