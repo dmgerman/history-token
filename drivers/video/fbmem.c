@@ -4199,6 +4199,10 @@ id|info
 r_return
 l_int|0
 suffix:semicolon
+id|cmap
+op_assign
+id|info-&gt;cmap
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4223,7 +4227,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|black
 )paren
 (brace
@@ -4269,11 +4272,6 @@ id|info-&gt;cmap.len
 suffix:semicolon
 )brace
 )brace
-r_else
-id|cmap
-op_assign
-id|info-&gt;cmap
-suffix:semicolon
 id|err
 op_assign
 id|fb_set_cmap
