@@ -56,6 +56,8 @@ id|sparc_phys_banks
 id|sp_banks
 (braket
 id|SPARC_PHYS_BANKS
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* Cache alias structure.  Entry is valid if context != -1. */

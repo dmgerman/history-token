@@ -3944,8 +3944,8 @@ id|STATION_STATE_READY
 id|priv-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|done
 suffix:semicolon
 )brace
 r_if
@@ -3968,8 +3968,8 @@ id|priv-&gt;card
 id|priv-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|done
 suffix:semicolon
 )brace
 multiline_comment|/* first ensure the timer func cannot run */
@@ -4235,6 +4235,8 @@ op_amp
 id|priv-&gt;timerlock
 )paren
 suffix:semicolon
+id|done
+suffix:colon
 id|dev_kfree_skb
 c_func
 (paren

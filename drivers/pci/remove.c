@@ -25,6 +25,12 @@ id|dev
 r_int
 id|i
 suffix:semicolon
+id|msi_remove_pci_irq_vectors
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren

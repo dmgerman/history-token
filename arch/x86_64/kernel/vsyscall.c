@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|__vsyscall
 mdefine_line|#define __vsyscall(nr) __attribute__ ((unused,__section__(&quot;.vsyscall_&quot; #nr)))
 DECL|macro|force_inline
@@ -170,10 +171,10 @@ id|__vxtime.tsc_quot
 op_rshift
 l_int|32
 suffix:semicolon
+multiline_comment|/* See comment in x86_64 do_gettimeopfday. */
 )brace
 r_else
 (brace
-macro_line|#if 0
 id|usec
 op_add_assign
 (paren
@@ -198,7 +199,6 @@ id|__vxtime.quot
 op_rshift
 l_int|32
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_while

@@ -20,10 +20,6 @@ macro_line|#ifndef bzero
 DECL|macro|bzero
 mdefine_line|#define bzero(d, n)&t;memset((d), 0, (n))
 macro_line|#endif
-macro_line|#ifndef bcmp
-DECL|macro|bcmp
-mdefine_line|#define bcmp(a, b, n)&t;memcmp((a), (b), (n))
-macro_line|#endif
 multiline_comment|/*&n; *  General driver includes.&n; */
 macro_line|#include &quot;sym_misc.h&quot;
 macro_line|#include &quot;sym_conf.h&quot;
@@ -43,8 +39,6 @@ DECL|macro|SYM_OPT_LIMIT_COMMAND_REORDERING
 mdefine_line|#define SYM_OPT_LIMIT_COMMAND_REORDERING
 DECL|macro|SYM_OPT_ANNOUNCE_TRANSFER_RATE
 mdefine_line|#define&t;SYM_OPT_ANNOUNCE_TRANSFER_RATE
-DECL|macro|SYM_OPT_BUS_DMA_ABSTRACTION
-mdefine_line|#define&t;SYM_OPT_BUS_DMA_ABSTRACTION
 multiline_comment|/*&n; *  Print a message with severity.&n; */
 DECL|macro|printf_emerg
 mdefine_line|#define printf_emerg(args...)&t;printk(KERN_EMERG args)

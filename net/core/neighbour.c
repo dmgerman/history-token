@@ -134,7 +134,7 @@ op_minus
 id|ENETDOWN
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * It is random distribution in the interval (1/2)*base...(3/2)*base.&n; * It corresponds to default IPv6 settings and is not overridable,&n; * because it is really reasonbale choice.&n; */
+multiline_comment|/*&n; * It is random distribution in the interval (1/2)*base...(3/2)*base.&n; * It corresponds to default IPv6 settings and is not overridable,&n; * because it is really reasonable choice.&n; */
 DECL|function|neigh_rand_reach_time
 r_int
 r_int
@@ -235,7 +235,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* Neighbour record may be discarded if:&n;&t;&t;&t;   - nobody refers to it.&n;&t;&t;&t;   - it is not premanent&n;&t;&t;&t;   - (NEW and probably wrong)&n;&t;&t;&t;     INCOMPLETE entries are kept at least for&n;&t;&t;&t;     n-&gt;parms-&gt;retrans_time, otherwise we could&n;&t;&t;&t;     flood network with resolution requests.&n;&t;&t;&t;     It is not clear, what is better table overflow&n;&t;&t;&t;     or flooding.&n;&t;&t;&t; */
+multiline_comment|/* Neighbour record may be discarded if:&n;&t;&t;&t;   - nobody refers to it.&n;&t;&t;&t;   - it is not permanent&n;&t;&t;&t;   - (NEW and probably wrong)&n;&t;&t;&t;     INCOMPLETE entries are kept at least for&n;&t;&t;&t;     n-&gt;parms-&gt;retrans_time, otherwise we could&n;&t;&t;&t;     flood network with resolution requests.&n;&t;&t;&t;     It is not clear, what is better table overflow&n;&t;&t;&t;     or flooding.&n;&t;&t;&t; */
 id|write_lock
 c_func
 (paren
@@ -2083,7 +2083,7 @@ suffix:semicolon
 id|NEIGH_PRINTK2
 c_func
 (paren
-l_string|&quot;neigh %p is suspecteded.&bslash;n&quot;
+l_string|&quot;neigh %p is suspected.&bslash;n&quot;
 comma
 id|neigh
 )paren
@@ -2158,7 +2158,7 @@ op_assign
 id|neigh-&gt;ops-&gt;hh_output
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Transitions NUD_STALE &lt;-&gt; NUD_REACHABLE do not occur&n;   when fast path is built: we have no timers assotiated with&n;   these states, we do not have time to check state when sending.&n;   neigh_periodic_timer check periodically neigh-&gt;confirmed&n;   time and moves NUD_REACHABLE -&gt; NUD_STALE.&n;&n;   If a routine wants to know TRUE entry state, it calls&n;   neigh_sync before checking state.&n;&n;   Called with write_locked neigh.&n; */
+multiline_comment|/*&n;   Transitions NUD_STALE &lt;-&gt; NUD_REACHABLE do not occur&n;   when fast path is built: we have no timers associated with&n;   these states, we do not have time to check state when sending.&n;   neigh_periodic_timer check periodically neigh-&gt;confirmed&n;   time and moves NUD_REACHABLE -&gt; NUD_STALE.&n;&n;   If a routine wants to know TRUE entry state, it calls&n;   neigh_sync before checking state.&n;&n;   Called with write_locked neigh.&n; */
 DECL|function|neigh_sync
 r_static
 r_void
@@ -4034,7 +4034,7 @@ id|hh
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* This function can be used in contexts, where only old dev_queue_xmit&n;   worked, f.e. if you want to override normal output path (eql, shaper),&n;   but resoltution is not made yet.&n; */
+multiline_comment|/* This function can be used in contexts, where only old dev_queue_xmit&n;   worked, f.e. if you want to override normal output path (eql, shaper),&n;   but resolution is not made yet.&n; */
 DECL|function|neigh_compat_output
 r_int
 id|neigh_compat_output
@@ -7096,6 +7096,12 @@ op_assign
 op_amp
 id|proc_dointvec_jiffies
 comma
+dot
+id|strategy
+op_assign
+op_amp
+id|sysctl_jiffies
+comma
 )brace
 comma
 (brace
@@ -7128,6 +7134,12 @@ op_assign
 op_amp
 id|proc_dointvec_jiffies
 comma
+dot
+id|strategy
+op_assign
+op_amp
+id|sysctl_jiffies
+comma
 )brace
 comma
 (brace
@@ -7159,6 +7171,12 @@ id|proc_handler
 op_assign
 op_amp
 id|proc_dointvec_jiffies
+comma
+dot
+id|strategy
+op_assign
+op_amp
+id|sysctl_jiffies
 comma
 )brace
 comma
@@ -7351,6 +7369,12 @@ id|proc_handler
 op_assign
 op_amp
 id|proc_dointvec_jiffies
+comma
+dot
+id|strategy
+op_assign
+op_amp
+id|sysctl_jiffies
 comma
 )brace
 comma

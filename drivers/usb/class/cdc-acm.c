@@ -1,5 +1,7 @@
-multiline_comment|/*&n; * acm.c  Version 0.22&n; *&n; * Copyright (c) 1999 Armin Fuerst&t;&lt;fuerst@in.tum.de&gt;&n; * Copyright (c) 1999 Pavel Machek&t;&lt;pavel@suse.cz&gt;&n; * Copyright (c) 1999 Johannes Erdfelt&t;&lt;johannes@erdfelt.com&gt;&n; * Copyright (c) 2000 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; *&n; * USB Abstract Control Model driver for USB modems and ISDN adapters&n; *&n; * Sponsored by SuSE&n; *&n; * ChangeLog:&n; *&t;v0.9  - thorough cleaning, URBification, almost a rewrite&n; *&t;v0.10 - some more cleanups&n; *&t;v0.11 - fixed flow control, read error doesn&squot;t stop reads&n; *&t;v0.12 - added TIOCM ioctls, added break handling, made struct acm kmalloced&n; *&t;v0.13 - added termios, added hangup&n; *&t;v0.14 - sized down struct acm&n; *&t;v0.15 - fixed flow control again - characters could be lost&n; *&t;v0.16 - added code for modems with swapped data and control interfaces&n; *&t;v0.17 - added new style probing&n; *&t;v0.18 - fixed new style probing for devices with more configurations&n; *&t;v0.19 - fixed CLOCAL handling (thanks to Richard Shih-Ping Chan)&n; *&t;v0.20 - switched to probing on interface (rather than device) class&n; *&t;v0.21 - revert to probing on device for devices with multiple configs&n; *&t;v0.22 - probe only the control interface. if usbcore doesn&squot;t choose the&n; *&t;&t;config we want, sysadmin changes bConfigurationValue in sysfs.&n; */
+multiline_comment|/*&n; * cdc-acm.c&n; *&n; * Copyright (c) 1999 Armin Fuerst&t;&lt;fuerst@in.tum.de&gt;&n; * Copyright (c) 1999 Pavel Machek&t;&lt;pavel@suse.cz&gt;&n; * Copyright (c) 1999 Johannes Erdfelt&t;&lt;johannes@erdfelt.com&gt;&n; * Copyright (c) 2000 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; *&n; * USB Abstract Control Model driver for USB modems and ISDN adapters&n; *&n; * Sponsored by SuSE&n; *&n; * ChangeLog:&n; *&t;v0.9  - thorough cleaning, URBification, almost a rewrite&n; *&t;v0.10 - some more cleanups&n; *&t;v0.11 - fixed flow control, read error doesn&squot;t stop reads&n; *&t;v0.12 - added TIOCM ioctls, added break handling, made struct acm kmalloced&n; *&t;v0.13 - added termios, added hangup&n; *&t;v0.14 - sized down struct acm&n; *&t;v0.15 - fixed flow control again - characters could be lost&n; *&t;v0.16 - added code for modems with swapped data and control interfaces&n; *&t;v0.17 - added new style probing&n; *&t;v0.18 - fixed new style probing for devices with more configurations&n; *&t;v0.19 - fixed CLOCAL handling (thanks to Richard Shih-Ping Chan)&n; *&t;v0.20 - switched to probing on interface (rather than device) class&n; *&t;v0.21 - revert to probing on device for devices with multiple configs&n; *&t;v0.22 - probe only the control interface. if usbcore doesn&squot;t choose the&n; *&t;&t;config we want, sysadmin changes bConfigurationValue in sysfs.&n; *&t;v0.23 - use softirq for rx processing, as needed by tty layer&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -10,13 +12,11 @@ macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.21&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.23&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Armin Fuerst, Pavel Machek, Johannes Erdfelt, Vojtech Pavlik&quot;
 DECL|macro|DRIVER_DESC
@@ -166,6 +166,12 @@ id|work_struct
 id|work
 suffix:semicolon
 multiline_comment|/* work queue entry for line discipline waking up */
+DECL|member|bh
+r_struct
+id|tasklet_struct
+id|bh
+suffix:semicolon
+multiline_comment|/* rx processing */
 DECL|member|ctrlin
 r_int
 r_int
@@ -331,7 +337,8 @@ DECL|macro|acm_set_line
 mdefine_line|#define acm_set_line(acm, line)&t;&t;acm_ctrl_msg(acm, ACM_REQ_SET_LINE, 0, line, sizeof(struct acm_line))
 DECL|macro|acm_send_break
 mdefine_line|#define acm_send_break(acm, ms)&t;&t;acm_ctrl_msg(acm, ACM_REQ_SEND_BREAK, ms, NULL, 0)
-multiline_comment|/*&n; * Interrupt handler for various ACM control events&n; */
+multiline_comment|/*&n; * Interrupt handlers for various ACM device responses&n; */
+multiline_comment|/* control interface reports status changes with &quot;interrupt&quot; transfers */
 DECL|function|acm_ctrl_irq
 r_static
 r_void
@@ -649,6 +656,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* data interface returns incoming bytes, or we got unthrottled */
 DECL|function|acm_read_bulk
 r_static
 r_void
@@ -673,6 +681,72 @@ id|acm
 op_assign
 id|urb-&gt;context
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ACM_READY
+c_func
+(paren
+id|acm
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|urb-&gt;status
+)paren
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|acm-&gt;data-&gt;dev
+comma
+l_string|&quot;bulk rx status %d&bslash;n&quot;
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+multiline_comment|/* calling tty_flip_buffer_push() in_irq() isn&squot;t allowed */
+id|tasklet_schedule
+c_func
+(paren
+op_amp
+id|acm-&gt;bh
+)paren
+suffix:semicolon
+)brace
+DECL|function|acm_rx_tasklet
+r_static
+r_void
+id|acm_rx_tasklet
+c_func
+(paren
+r_int
+r_int
+id|_acm
+)paren
+(brace
+r_struct
+id|acm
+op_star
+id|acm
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|_acm
+suffix:semicolon
+r_struct
+id|urb
+op_star
+id|urb
+op_assign
+id|acm-&gt;readurb
+suffix:semicolon
 r_struct
 id|tty_struct
 op_star
@@ -695,33 +769,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ACM_READY
-c_func
-(paren
-id|acm
-)paren
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|urb-&gt;status
-)paren
-id|dbg
-c_func
-(paren
-l_string|&quot;nonzero read bulk status received: %d&quot;
-comma
-id|urb-&gt;status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|urb-&gt;status
+id|urb-&gt;actual_length
+OG
+l_int|0
 op_logical_and
 op_logical_neg
 id|acm-&gt;throttle
@@ -817,9 +867,8 @@ id|urb-&gt;dev
 op_assign
 id|acm-&gt;dev
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|i
+op_assign
 id|usb_submit_urb
 c_func
 (paren
@@ -827,14 +876,25 @@ id|urb
 comma
 id|GFP_ATOMIC
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
 )paren
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;failed resubmitting read urb&quot;
+op_amp
+id|acm-&gt;data-&gt;dev
+comma
+l_string|&quot;bulk rx resubmit %d&bslash;n&quot;
+comma
+id|i
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* data interface wrote those outgoing bytes */
 DECL|function|acm_write_bulk
 r_static
 r_void
@@ -2667,6 +2727,18 @@ suffix:semicolon
 id|acm-&gt;dev
 op_assign
 id|dev
+suffix:semicolon
+id|acm-&gt;bh.func
+op_assign
+id|acm_rx_tasklet
+suffix:semicolon
+id|acm-&gt;bh.data
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|acm
 suffix:semicolon
 id|INIT_WORK
 c_func

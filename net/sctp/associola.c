@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
+macro_line|#include &lt;net/sctp/sm.h&gt;
 multiline_comment|/* Forward declarations for internal functions. */
 r_static
 r_void

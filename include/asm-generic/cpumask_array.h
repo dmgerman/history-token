@@ -24,6 +24,8 @@ DECL|macro|cpus_equal
 mdefine_line|#define cpus_equal(map1, map2)&t;bitmap_equal((map1).mask, (map2).mask, NR_CPUS)
 DECL|macro|cpus_empty
 mdefine_line|#define cpus_empty(map)&t;&t;bitmap_empty(map.mask, NR_CPUS)
+DECL|macro|cpus_addr
+mdefine_line|#define cpus_addr(map)&t;&t;((map).mask)
 DECL|macro|cpus_weight
 mdefine_line|#define cpus_weight(map)&t;&t;bitmap_weight((map).mask, NR_CPUS)
 DECL|macro|cpus_shift_right

@@ -1,6 +1,7 @@
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|task_mem
 r_char
@@ -358,6 +359,32 @@ r_return
 id|size
 suffix:semicolon
 )brace
+macro_line|#ifdef AT_SYSINFO_EHDR
+DECL|variable|gate_vmarea
+r_static
+r_struct
+id|vm_area_struct
+id|gate_vmarea
+op_assign
+(brace
+multiline_comment|/* Do _not_ mark this area as readable, cuz not the entire range may be readable&n;&t;   (e.g., due to execute-only pages or holes) and the tools that read&n;&t;   /proc/PID/maps should read the interesting bits from the gate-DSO file&n;&t;   instead.  */
+dot
+id|vm_start
+op_assign
+id|FIXADDR_USER_START
+comma
+dot
+id|vm_end
+op_assign
+id|FIXADDR_USER_END
+)brace
+suffix:semicolon
+DECL|macro|gate_map
+macro_line|# define gate_map()&t;&amp;gate_vmarea
+macro_line|#else
+DECL|macro|gate_map
+macro_line|# define gate_map()&t;NULL
+macro_line|#endif
 DECL|function|show_map
 r_static
 r_int
@@ -550,7 +577,7 @@ id|file-&gt;f_vfsmnt
 comma
 id|file-&gt;f_dentry
 comma
-l_string|&quot; &bslash;t&bslash;n&bslash;&bslash;&quot;
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 )brace
@@ -666,6 +693,21 @@ c_func
 id|mm
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|l
+op_eq
+op_minus
+l_int|1
+)paren
+id|map
+op_assign
+id|gate_map
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_return
 id|map
@@ -698,6 +740,13 @@ r_if
 c_cond
 (paren
 id|map
+op_logical_and
+id|map
+op_ne
+id|gate_map
+c_func
+(paren
+)paren
 )paren
 (brace
 r_struct
@@ -770,6 +819,22 @@ c_func
 id|m
 comma
 id|v
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|map
+op_ne
+id|gate_map
+c_func
+(paren
+)paren
+)paren
+r_return
+id|gate_map
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

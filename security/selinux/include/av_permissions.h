@@ -844,6 +844,8 @@ DECL|macro|PROCESS__SETFSCREATE
 mdefine_line|#define PROCESS__SETFSCREATE                      0x00040000UL
 DECL|macro|PROCESS__NOATSECURE
 mdefine_line|#define PROCESS__NOATSECURE                       0x00080000UL
+DECL|macro|PROCESS__SIGINH
+mdefine_line|#define PROCESS__SIGINH                           0x00100000UL
 DECL|macro|IPC__SETATTR
 mdefine_line|#define IPC__SETATTR                              0x00000008UL
 DECL|macro|IPC__READ

@@ -335,6 +335,11 @@ c_func
 id|d
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|d-&gt;d_inode
+)paren
 id|simple_rmdir
 c_func
 (paren

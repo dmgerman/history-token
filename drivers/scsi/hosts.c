@@ -293,7 +293,7 @@ c_cond
 id|dev
 suffix:colon
 op_amp
-id|legacy_bus
+id|platform_bus
 suffix:semicolon
 id|error
 op_assign

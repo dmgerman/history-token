@@ -246,6 +246,8 @@ DECL|macro|inc_page_state
 mdefine_line|#define inc_page_state(member)&t;mod_page_state(member, 1UL)
 DECL|macro|dec_page_state
 mdefine_line|#define dec_page_state(member)&t;mod_page_state(member, 0UL - 1)
+DECL|macro|add_page_state
+mdefine_line|#define add_page_state(member,delta) mod_page_state(member, (delta))
 DECL|macro|sub_page_state
 mdefine_line|#define sub_page_state(member,delta) mod_page_state(member, 0UL - (delta))
 multiline_comment|/*&n; * Manipulation of page state flags&n; */

@@ -6403,6 +6403,8 @@ l_int|0
 suffix:semicolon
 r_int
 id|ret
+op_assign
+id|VM_FAULT_MINOR
 suffix:semicolon
 r_if
 c_cond
@@ -6484,7 +6486,8 @@ id|address
 op_amp
 id|PAGE_MASK
 comma
-l_int|0
+op_amp
+id|ret
 )paren
 suffix:semicolon
 multiline_comment|/* no page was available -- either SIGBUS or OOM */
@@ -6775,10 +6778,6 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-id|ret
-op_assign
-id|VM_FAULT_MINOR
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
@@ -6800,10 +6799,6 @@ c_func
 op_amp
 id|mm-&gt;page_table_lock
 )paren
-suffix:semicolon
-id|ret
-op_assign
-id|VM_FAULT_MAJOR
 suffix:semicolon
 r_goto
 id|out

@@ -4,7 +4,6 @@ DECL|macro|_SPARC_WINMACRO_H
 mdefine_line|#define _SPARC_WINMACRO_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/psr.h&gt;
 multiline_comment|/* Store the register window onto the 8-byte aligned area starting&n; * at %reg.  It might be %sp, it might not, we don&squot;t care.&n; */
 DECL|macro|STORE_WINDOW
 mdefine_line|#define STORE_WINDOW(reg) &bslash;&n;&t;std&t;%l0, [%reg + RW_L0]; &bslash;&n;&t;std&t;%l2, [%reg + RW_L2]; &bslash;&n;&t;std&t;%l4, [%reg + RW_L4]; &bslash;&n;&t;std&t;%l6, [%reg + RW_L6]; &bslash;&n;&t;std&t;%i0, [%reg + RW_I0]; &bslash;&n;&t;std&t;%i2, [%reg + RW_I2]; &bslash;&n;&t;std&t;%i4, [%reg + RW_I4]; &bslash;&n;&t;std&t;%i6, [%reg + RW_I6];
@@ -33,7 +32,7 @@ mdefine_line|#define STORE_PT_PRIV(base_reg, pt_psr, pt_pc, pt_npc) &bslash;&n; 
 DECL|macro|STORE_PT_ALL
 mdefine_line|#define STORE_PT_ALL(base_reg, reg_psr, reg_pc, reg_npc, g_scratch) &bslash;&n;        STORE_PT_PRIV(base_reg, reg_psr, reg_pc, reg_npc) &bslash;&n;        STORE_PT_GLOBALS(base_reg) &bslash;&n;        STORE_PT_YREG(base_reg, g_scratch) &bslash;&n;        STORE_PT_INS(base_reg)
 DECL|macro|SAVE_BOLIXED_USER_STACK
-mdefine_line|#define SAVE_BOLIXED_USER_STACK(cur_reg, scratch) &bslash;&n;        ld       [%cur_reg + AOFF_task_thread + AOFF_thread_w_saved], %scratch; &bslash;&n;        sll      %scratch, 2, %scratch; &bslash;&n;        add      %scratch, %cur_reg, %scratch; &bslash;&n;        st       %sp, [%scratch + AOFF_task_thread + AOFF_thread_rwbuf_stkptrs]; &bslash;&n;        sub      %scratch, %cur_reg, %scratch; &bslash;&n;        sll      %scratch, 4, %scratch; &bslash;&n;        add      %scratch, %cur_reg, %scratch; &bslash;&n;        STORE_WINDOW(scratch + AOFF_task_thread + AOFF_thread_reg_window); &bslash;&n;        sub      %scratch, %cur_reg, %scratch; &bslash;&n;        srl      %scratch, 6, %scratch; &bslash;&n;        add      %scratch, 1, %scratch; &bslash;&n;        st       %scratch, [%cur_reg + AOFF_task_thread + AOFF_thread_w_saved];
+mdefine_line|#define SAVE_BOLIXED_USER_STACK(cur_reg, scratch) &bslash;&n;        ld       [%cur_reg + TI_W_SAVED], %scratch; &bslash;&n;        sll      %scratch, 2, %scratch; &bslash;&n;        add      %scratch, %cur_reg, %scratch; &bslash;&n;        st       %sp, [%scratch + TI_RWIN_SPTRS]; &bslash;&n;        sub      %scratch, %cur_reg, %scratch; &bslash;&n;        sll      %scratch, 4, %scratch; &bslash;&n;        add      %scratch, %cur_reg, %scratch; &bslash;&n;        STORE_WINDOW(scratch + TI_REG_WINDOW); &bslash;&n;        sub      %scratch, %cur_reg, %scratch; &bslash;&n;        srl      %scratch, 6, %scratch; &bslash;&n;        add      %scratch, 1, %scratch; &bslash;&n;        st       %scratch, [%cur_reg + TI_W_SAVED];
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|LOAD_CURRENT4M
 mdefine_line|#define LOAD_CURRENT4M(dest_reg, idreg) &bslash;&n;        rd       %tbr, %idreg; &bslash;&n;&t;sethi    %hi(C_LABEL(current_set)), %dest_reg; &bslash;&n;        srl      %idreg, 10, %idreg; &bslash;&n;&t;or       %dest_reg, %lo(C_LABEL(current_set)), %dest_reg; &bslash;&n;&t;and      %idreg, 0xc, %idreg; &bslash;&n;&t;ld       [%idreg + %dest_reg], %dest_reg;

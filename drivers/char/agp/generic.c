@@ -547,10 +547,18 @@ id|memory
 id|i
 )braket
 op_assign
+id|agp_bridge-&gt;driver
+op_member_access_from_pointer
+id|mask_memory
+c_func
+(paren
 id|virt_to_phys
 c_func
 (paren
 id|addr
+)paren
+comma
+id|type
 )paren
 suffix:semicolon
 r_new
@@ -2143,18 +2151,6 @@ suffix:semicolon
 id|command
 op_or_assign
 id|AGPSTAT_AGP_ENABLE
-suffix:semicolon
-id|pci_write_config_dword
-c_func
-(paren
-id|agp_bridge-&gt;dev
-comma
-id|agp_bridge-&gt;capndx
-op_plus
-id|PCI_AGP_COMMAND
-comma
-id|command
-)paren
 suffix:semicolon
 multiline_comment|/* Do AGP version specific frobbing. */
 r_if

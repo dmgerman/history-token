@@ -1,6 +1,6 @@
-macro_line|#ifndef _ASMPARISC_UCONTEXT_H
-DECL|macro|_ASMPARISC_UCONTEXT_H
-mdefine_line|#define _ASMPARISC_UCONTEXT_H
+macro_line|#ifndef _ASM_PARISC_UCONTEXT_H
+DECL|macro|_ASM_PARISC_UCONTEXT_H
+mdefine_line|#define _ASM_PARISC_UCONTEXT_H
 DECL|struct|ucontext
 r_struct
 id|ucontext
@@ -32,5 +32,5 @@ suffix:semicolon
 multiline_comment|/* mask last for extensibility */
 )brace
 suffix:semicolon
-macro_line|#endif /* !_ASMPARISC_UCONTEXT_H */
+macro_line|#endif /* !_ASM_PARISC_UCONTEXT_H */
 eof

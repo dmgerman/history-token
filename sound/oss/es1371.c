@@ -15930,7 +15930,7 @@ suffix:semicolon
 DECL|function|es1371_remove
 r_static
 r_void
-id|__devinit
+id|__devexit
 id|es1371_remove
 c_func
 (paren
@@ -16182,7 +16182,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|es1371_remove
+)paren
 comma
 )brace
 suffix:semicolon

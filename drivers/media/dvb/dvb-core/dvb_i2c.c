@@ -136,6 +136,10 @@ id|client-&gt;owner
 op_assign
 id|dev-&gt;owner
 suffix:semicolon
+id|client-&gt;data
+op_assign
+id|dev-&gt;data
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

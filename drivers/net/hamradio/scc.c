@@ -4263,14 +4263,6 @@ id|scc-&gt;stat.tx_state
 op_assign
 id|TXS_WAIT
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|scc-&gt;kiss.mintime
-op_ne
-id|TIMER_OFF
-)paren
-multiline_comment|/* try it again */
 id|scc_start_tx_timer
 c_func
 (paren
@@ -4281,17 +4273,6 @@ comma
 id|scc-&gt;kiss.mintime
 op_star
 l_int|100
-)paren
-suffix:semicolon
-r_else
-id|scc_start_tx_timer
-c_func
-(paren
-id|scc
-comma
-id|t_dwait
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -4525,9 +4506,8 @@ r_if
 c_cond
 (paren
 id|scc-&gt;kiss.mintime
-op_ne
-id|TIMER_OFF
 )paren
+(brace
 id|scc_start_tx_timer
 c_func
 (paren
@@ -4540,6 +4520,7 @@ op_star
 l_int|100
 )paren
 suffix:semicolon
+)brace
 id|scc-&gt;stat.tx_state
 op_assign
 id|TXS_WAIT

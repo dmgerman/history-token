@@ -1798,13 +1798,27 @@ id|mm
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n;&t; * Serialize with any possible pending coredump:&n;&t; */
+multiline_comment|/*&n;&t; * Serialize with any possible pending coredump.&n;&t; * We must hold mmap_sem around checking core_waiters&n;&t; * and clearing tsk-&gt;mm.  The core-inducing thread&n;&t; * will increment core_waiters for each thread in the&n;&t; * group with -&gt;mm != NULL.&n;&t; */
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|mm-&gt;core_waiters
 )paren
 (brace
+id|up_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 id|down_write
 c_func
 (paren
@@ -1839,6 +1853,13 @@ op_amp
 id|mm-&gt;core_done
 )paren
 suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 )brace
 id|atomic_inc
 c_func
@@ -1869,6 +1890,13 @@ suffix:semicolon
 id|tsk-&gt;mm
 op_assign
 l_int|NULL
+suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
 suffix:semicolon
 id|enter_lazy_tlb
 c_func

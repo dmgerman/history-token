@@ -1635,7 +1635,7 @@ suffix:semicolon
 r_extern
 r_struct
 id|device
-id|legacy_bus
+id|platform_bus
 suffix:semicolon
 multiline_comment|/* drivers/base/power.c */
 r_extern

@@ -4243,10 +4243,7 @@ r_int
 id|xfrm_flush_bundles
 c_func
 (paren
-r_struct
-id|xfrm_state
-op_star
-id|x
+r_void
 )paren
 suffix:semicolon
 r_extern

@@ -81,16 +81,6 @@ c_func
 r_struct
 id|SYM_FWZ_SCR
 )paren
-macro_line|#ifdef SYM_OPT_NO_BUS_MEMORY_MAPPING
-id|SYM_GEN_Z
-c_func
-(paren
-r_struct
-id|SYM_FWZ_SCR
-comma
-id|start_ram
-)paren
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|SYM_FWA_SCR
@@ -181,24 +171,6 @@ c_func
 r_struct
 id|SYM_FWZ_SCR
 )paren
-macro_line|#ifdef SYM_OPT_NO_BUS_MEMORY_MAPPING
-id|SYM_GEN_Z
-c_func
-(paren
-r_struct
-id|SYM_FWZ_SCR
-comma
-id|start_ram
-)paren
-id|SYM_GEN_Z
-c_func
-(paren
-r_struct
-id|SYM_FWZ_SCR
-comma
-id|start_ram64
-)paren
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|SYM_FWA_SCR
@@ -239,20 +211,6 @@ id|sym_fw1b_scr
 op_star
 id|scriptb0
 suffix:semicolon
-macro_line|#ifdef SYM_OPT_NO_BUS_MEMORY_MAPPING
-r_struct
-id|sym_fw1z_scr
-op_star
-id|scriptz0
-op_assign
-(paren
-r_struct
-id|sym_fw1z_scr
-op_star
-)paren
-id|np-&gt;scriptz0
-suffix:semicolon
-macro_line|#endif
 id|scripta0
 op_assign
 (paren
@@ -271,24 +229,6 @@ op_star
 )paren
 id|np-&gt;scriptb0
 suffix:semicolon
-macro_line|#ifdef SYM_OPT_NO_BUS_MEMORY_MAPPING
-multiline_comment|/*&n;&t; *  Set up BUS physical address of SCRIPTS that is to &n;&t; *  be copied to on-chip RAM by the SCRIPTS processor.&n;&t; */
-id|scriptz0-&gt;scripta0_ba
-(braket
-l_int|0
-)braket
-op_assign
-id|cpu_to_scr
-c_func
-(paren
-id|vtobus
-c_func
-(paren
-id|scripta0
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; *  Remove LED support if not needed.&n;&t; */
 r_if
 c_cond
@@ -412,20 +352,6 @@ id|sym_fw2b_scr
 op_star
 id|scriptb0
 suffix:semicolon
-macro_line|#ifdef SYM_OPT_NO_BUS_MEMORY_MAPPING
-r_struct
-id|sym_fw2z_scr
-op_star
-id|scriptz0
-op_assign
-(paren
-r_struct
-id|sym_fw2z_scr
-op_star
-)paren
-id|np-&gt;scriptz0
-suffix:semicolon
-macro_line|#endif
 id|scripta0
 op_assign
 (paren
@@ -444,52 +370,6 @@ op_star
 )paren
 id|np-&gt;scriptb0
 suffix:semicolon
-macro_line|#ifdef SYM_OPT_NO_BUS_MEMORY_MAPPING
-multiline_comment|/*&n;&t; *  Set up BUS physical address of SCRIPTS that is to &n;&t; *  be copied to on-chip RAM by the SCRIPTS processor.&n;&t; */
-id|scriptz0-&gt;scripta0_ba64
-(braket
-l_int|0
-)braket
-op_assign
-multiline_comment|/* Nothing is missing here */
-id|scriptz0-&gt;scripta0_ba
-(braket
-l_int|0
-)braket
-op_assign
-id|cpu_to_scr
-c_func
-(paren
-id|vtobus
-c_func
-(paren
-id|scripta0
-)paren
-)paren
-suffix:semicolon
-id|scriptz0-&gt;scriptb0_ba64
-(braket
-l_int|0
-)braket
-op_assign
-id|cpu_to_scr
-c_func
-(paren
-id|vtobus
-c_func
-(paren
-id|scriptb0
-)paren
-)paren
-suffix:semicolon
-id|scriptz0-&gt;ram_seg64
-(braket
-l_int|0
-)braket
-op_assign
-id|np-&gt;scr_ram_seg
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; *  Remove LED support if not needed.&n;&t; */
 r_if
 c_cond

@@ -524,9 +524,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Convert a name into device number.  We accept the following variants:&n; *&n; *&t;1) device number in hexadecimal&t;represents itself&n; *&t;2) /dev/nfs represents Root_NFS (0xff)&n; *&t;3) /dev/&lt;disk_name&gt; represents the device number of disk&n; *&t;4) /dev/&lt;disk_name&gt;&lt;decimal&gt; represents the device number&n; *         of partition - device number of disk plus the partition number&n; *&t;5) /dev/&lt;disk_name&gt;p&lt;decimal&gt; - same as the above, that form is&n; *&t;   used when disk name of partitioned disk ends on a digit.&n; *&n; *&t;If name doesn&squot;t have fall into the categories above, we return 0.&n; *&t;Driverfs is used to check if something is a disk name - it has&n; *&t;all known disks under bus/block/devices.  If the disk name&n; *&t;contains slashes, name of driverfs node has them replaced with&n; *&t;dots.  try_name() does the actual checks, assuming that driverfs&n; *&t;is mounted on rootfs /sys.&n; */
+multiline_comment|/*&n; *&t;Convert a name into device number.  We accept the following variants:&n; *&n; *&t;1) device number in hexadecimal&t;represents itself&n; *&t;2) /dev/nfs represents Root_NFS (0xff)&n; *&t;3) /dev/&lt;disk_name&gt; represents the device number of disk&n; *&t;4) /dev/&lt;disk_name&gt;&lt;decimal&gt; represents the device number&n; *         of partition - device number of disk plus the partition number&n; *&t;5) /dev/&lt;disk_name&gt;p&lt;decimal&gt; - same as the above, that form is&n; *&t;   used when disk name of partitioned disk ends on a digit.&n; *&n; *&t;If name doesn&squot;t have fall into the categories above, we return 0.&n; *&t;Driverfs is used to check if something is a disk name - it has&n; *&t;all known disks under bus/block/devices.  If the disk name&n; *&t;contains slashes, name of driverfs node has them replaced with&n; *&t;bangs.  try_name() does the actual checks, assuming that driverfs&n; *&t;is mounted on rootfs /sys.&n; */
 DECL|function|name_to_dev_t
 id|dev_t
+id|__init
 id|name_to_dev_t
 c_func
 (paren
@@ -760,7 +761,7 @@ l_char|&squot;/&squot;
 op_star
 id|p
 op_assign
-l_char|&squot;.&squot;
+l_char|&squot;!&squot;
 suffix:semicolon
 id|res
 op_assign

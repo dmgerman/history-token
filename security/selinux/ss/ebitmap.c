@@ -1,4 +1,7 @@
 multiline_comment|/*&n; * Implementation of the extensible bitmap type.&n; *&n; * Author : Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &quot;ebitmap.h&quot;
 macro_line|#include &quot;policydb.h&quot;
 DECL|function|ebitmap_or

@@ -27,105 +27,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
-macro_line|#error So the User Has To Fix the Compilation And Stop Hacking Port 0x43. Does anyone ever use this anyway ??
-multiline_comment|/*&n; * For really screwy hardware (hey, at least it *can* be used with Linux)&n; * we can enforce a minimum delay time between successive operations.&n; */
-DECL|function|read_timer
-r_static
-r_int
-r_int
-id|read_timer
-(paren
-id|ide_hwif_t
-op_star
-id|hwif
-)paren
-(brace
-r_int
-r_int
-id|t
-comma
-id|flags
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-multiline_comment|/* FIXME this is completely unsafe! */
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|t
-op_assign
-id|jiffies
-op_star
-l_int|11932
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-l_int|0
-comma
-l_int|0x43
-)paren
-suffix:semicolon
-id|i
-op_assign
-id|inb_p
-c_func
-(paren
-l_int|0x40
-)paren
-suffix:semicolon
-id|i
-op_or_assign
-id|inb_p
-c_func
-(paren
-l_int|0x40
-)paren
-op_lshift
-l_int|8
-suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_return
-(paren
-id|t
-op_minus
-id|i
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* DISK_RECOVERY_TIME */
-DECL|function|set_recovery_timer
-r_static
-r_inline
-r_void
-id|set_recovery_timer
-(paren
-id|ide_hwif_t
-op_star
-id|hwif
-)paren
-(brace
-macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
-id|hwif-&gt;last_time
-op_assign
-id|read_timer
-c_func
-(paren
-id|hwif
-)paren
-suffix:semicolon
-macro_line|#endif /* DISK_RECOVERY_TIME */
-)brace
 multiline_comment|/**&n; *&t;ide_end_request&t;&t;-&t;complete an IDE I/O&n; *&t;@drive: IDE device for the I/O&n; *&t;@uptodate: &n; *&t;@nr_sectors: number of sectors completed&n; *&n; *&t;This is our end_request wrapper function. We complete the I/O&n; *&t;update random number input and dequeue the request, which if&n; *&t;it was tagged may be out of order.&n; */
 DECL|function|ide_end_request
 r_int
@@ -2755,29 +2656,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* redirect MBR access to EZ-Drive partn table */
-macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
-r_while
-c_loop
-(paren
-(paren
-id|read_timer
-c_func
-(paren
-)paren
-op_minus
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|last_time
-)paren
-OL
-id|DISK_RECOVERY_TIME
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4472,12 +4350,6 @@ id|IDE_STATUS_REG
 )paren
 suffix:semicolon
 )brace
-id|set_recovery_timer
-c_func
-(paren
-id|hwif
-)paren
-suffix:semicolon
 id|drive-&gt;service_time
 op_assign
 id|jiffies
@@ -4940,16 +4812,6 @@ id|ide_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note that handler() may have set things up for another&n;&t; * interrupt to occur soon, but it cannot happen until&n;&t; * we exit from this routine, because it will be the&n;&t; * same irq as is currently being serviced here, and Linux&n;&t; * won&squot;t allow another of the same (on any CPU) until we return.&n;&t; */
-id|set_recovery_timer
-c_func
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-)paren
-suffix:semicolon
 id|drive-&gt;service_time
 op_assign
 id|jiffies

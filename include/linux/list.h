@@ -456,7 +456,7 @@ op_eq
 id|head
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * list_empty_careful - tests whether a list is&n; * empty _and_ checks that no other CPU might be&n; * in the process of still modifying either member&n; * @head: the list to test.&n; */
+multiline_comment|/**&n; * list_empty_careful - tests whether a list is&n; * empty _and_ checks that no other CPU might be&n; * in the process of still modifying either member&n; *&n; * NOTE: using list_empty_careful() without synchronization&n; * can only be safe if the only activity that can happen&n; * to the list entry is list_del_init(). Eg. it cannot be used&n; * if another CPU could re-list_add() it.&n; *&n; * @head: the list to test.&n; */
 DECL|function|list_empty_careful
 r_static
 r_inline

@@ -333,6 +333,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kernel_thread
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kernel_thread
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Free current thread data structures etc..&n; */
 DECL|function|exit_thread
 r_void

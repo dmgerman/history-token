@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/mca.h&gt;
 DECL|macro|EFI_DEBUG
 mdefine_line|#define EFI_DEBUG&t;0
 r_extern
@@ -1002,6 +1003,11 @@ suffix:semicolon
 id|u64
 id|vaddr
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_MCA
+r_int
+id|cpu
+suffix:semicolon
+macro_line|#endif
 id|efi_map_start
 op_assign
 id|__va
@@ -1231,6 +1237,46 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_MCA
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* insert this TR into our list for MCA recovery purposes */
+id|ia64_mca_tlb_list
+(braket
+id|cpu
+)braket
+dot
+id|pal_base
+op_assign
+id|vaddr
+op_amp
+id|mask
+suffix:semicolon
+id|ia64_mca_tlb_list
+(braket
+id|cpu
+)braket
+dot
+id|pal_paddr
+op_assign
+id|pte_val
+c_func
+(paren
+id|mk_pte_phys
+c_func
+(paren
+id|md-&gt;phys_addr
+comma
+id|PAGE_KERNEL
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 r_void

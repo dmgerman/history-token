@@ -3949,12 +3949,31 @@ op_eq
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|conf_write
 c_func
 (paren
 l_int|NULL
 )paren
+)paren
+(brace
+id|fprintf
+c_func
+(paren
+id|stderr
+comma
+l_string|&quot;&bslash;n&bslash;n&quot;
+l_string|&quot;Error during writing of the kernel configuration.&bslash;n&quot;
+l_string|&quot;Your kernel configuration changes were NOT saved.&quot;
+l_string|&quot;&bslash;n&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|printf
 c_func
 (paren
@@ -3966,14 +3985,21 @@ l_string|&quot;&bslash;n&bslash;n&quot;
 suffix:semicolon
 )brace
 r_else
-id|printf
+(brace
+id|fprintf
 c_func
 (paren
+id|stderr
+comma
 l_string|&quot;&bslash;n&bslash;n&quot;
 l_string|&quot;Your kernel configuration changes were NOT saved.&quot;
 l_string|&quot;&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

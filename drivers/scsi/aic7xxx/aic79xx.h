@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.h#90 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.h#95 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifndef _AIC79XX_H_
 DECL|macro|_AIC79XX_H_
 mdefine_line|#define _AIC79XX_H_
@@ -235,6 +235,12 @@ op_assign
 l_int|0x10000
 comma
 multiline_comment|/* SCSIENWRDIS bit */
+DECL|enumerator|AHD_FAST_CDB_DELIVERY
+id|AHD_FAST_CDB_DELIVERY
+op_assign
+l_int|0x20000
+comma
+multiline_comment|/* CDB acks released to Output Sync */
 DECL|enumerator|AHD_REMOVABLE
 id|AHD_REMOVABLE
 op_assign
@@ -243,6 +249,11 @@ comma
 multiline_comment|/* Hot-Swap supported - None so far*/
 DECL|enumerator|AHD_AIC7901_FE
 id|AHD_AIC7901_FE
+op_assign
+id|AHD_FENONE
+comma
+DECL|enumerator|AHD_AIC7901A_FE
+id|AHD_AIC7901A_FE
 op_assign
 id|AHD_FENONE
 comma
@@ -552,6 +563,11 @@ DECL|enumerator|AHD_RUNNING_QOUTFIFO
 id|AHD_RUNNING_QOUTFIFO
 op_assign
 l_int|0x800000
+comma
+DECL|enumerator|AHD_HAD_FIRST_SEL
+id|AHD_HAD_FIRST_SEL
+op_assign
+l_int|0x1000000
 DECL|typedef|ahd_flag
 )brace
 id|ahd_flag
@@ -738,70 +754,70 @@ suffix:semicolon
 multiline_comment|/*&n; * A word about residuals.&n; * The scb is presented to the sequencer with the dataptr and datacnt&n; * fields initialized to the contents of the first S/G element to&n; * transfer.  The sgptr field is initialized to the bus address for&n; * the S/G element that follows the first in the in core S/G array&n; * or&squot;ed with the SG_FULL_RESID flag.  Sgptr may point to an invalid&n; * S/G entry for this transfer (single S/G element transfer with the&n; * first elements address and length preloaded in the dataptr/datacnt&n; * fields).  If no transfer is to occur, sgptr is set to SG_LIST_NULL.&n; * The SG_FULL_RESID flag ensures that the residual will be correctly&n; * noted even if no data transfers occur.  Once the data phase is entered,&n; * the residual sgptr and datacnt are loaded from the sgptr and the&n; * datacnt fields.  After each S/G element&squot;s dataptr and length are&n; * loaded into the hardware, the residual sgptr is advanced.  After&n; * each S/G element is expired, its datacnt field is checked to see&n; * if the LAST_SEG flag is set.  If so, SG_LIST_NULL is set in the&n; * residual sg ptr and the transfer is considered complete.  If the&n; * sequencer determines that there is a residual in the tranfer, or&n; * there is non-zero status, it will set the SG_STATUS_VALID flag in&n; * sgptr and dma the scb back into host memory.  To sumarize:&n; *&n; * Sequencer:&n; *&t;o A residual has occurred if SG_FULL_RESID is set in sgptr,&n; *&t;  or residual_sgptr does not have SG_LIST_NULL set.&n; *&n; *&t;o We are transfering the last segment if residual_datacnt has&n; *&t;  the SG_LAST_SEG flag set.&n; *&n; * Host:&n; *&t;o A residual can only have occurred if a completed scb has the&n; *&t;  SG_STATUS_VALID flag set.  Inspection of the SCSI status field,&n; *&t;  the residual_datacnt, and the residual_sgptr field will tell&n; *&t;  for sure.&n; *&n; *&t;o residual_sgptr and sgptr refer to the &quot;next&quot; sg entry&n; *&t;  and so may point beyond the last valid sg entry for the&n; *&t;  transfer.&n; */
 DECL|macro|SG_PTR_MASK
 mdefine_line|#define SG_PTR_MASK&t;0xFFFFFFF8
-DECL|member|dataptr
+DECL|member|tag
 multiline_comment|/*16*/
-r_uint64
-id|dataptr
+r_uint16
+id|tag
 suffix:semicolon
-DECL|member|datacnt
-multiline_comment|/*24*/
-r_uint32
-id|datacnt
-suffix:semicolon
-multiline_comment|/* Byte 3 is spare. */
-DECL|member|sgptr
-multiline_comment|/*28*/
-r_uint32
-id|sgptr
-suffix:semicolon
-DECL|member|hscb_busaddr
-multiline_comment|/*32*/
-r_uint32
-id|hscb_busaddr
-suffix:semicolon
-DECL|member|next_hscb_busaddr
-multiline_comment|/*36*/
-r_uint32
-id|next_hscb_busaddr
-suffix:semicolon
+multiline_comment|/* Reused by Sequencer. */
 DECL|member|control
-multiline_comment|/*40*/
+multiline_comment|/*18*/
 r_uint8
 id|control
 suffix:semicolon
 multiline_comment|/* See SCB_CONTROL in aic79xx.reg for details */
 DECL|member|scsiid
-multiline_comment|/*41*/
+multiline_comment|/*19*/
 r_uint8
 id|scsiid
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * Selection out Id&n;&t;&t;&t;&t; * Our Id (bits 0-3) Their ID (bits 4-7)&n;&t;&t;&t;&t; */
 DECL|member|lun
-multiline_comment|/*42*/
+multiline_comment|/*20*/
 r_uint8
 id|lun
 suffix:semicolon
 DECL|member|task_attribute
-multiline_comment|/*43*/
+multiline_comment|/*21*/
 r_uint8
 id|task_attribute
 suffix:semicolon
 DECL|member|cdb_len
-multiline_comment|/*44*/
+multiline_comment|/*22*/
 r_uint8
 id|cdb_len
 suffix:semicolon
 DECL|member|task_management
-multiline_comment|/*45*/
+multiline_comment|/*23*/
 r_uint8
 id|task_management
 suffix:semicolon
-DECL|member|tag
-multiline_comment|/*46*/
-r_uint16
-id|tag
+DECL|member|dataptr
+multiline_comment|/*24*/
+r_uint64
+id|dataptr
 suffix:semicolon
-multiline_comment|/* Reused by Sequencer. */
+DECL|member|datacnt
+multiline_comment|/*32*/
+r_uint32
+id|datacnt
+suffix:semicolon
+multiline_comment|/* Byte 3 is spare. */
+DECL|member|sgptr
+multiline_comment|/*36*/
+r_uint32
+id|sgptr
+suffix:semicolon
+DECL|member|hscb_busaddr
+multiline_comment|/*40*/
+r_uint32
+id|hscb_busaddr
+suffix:semicolon
+DECL|member|next_hscb_busaddr
+multiline_comment|/*44*/
+r_uint32
+id|next_hscb_busaddr
+suffix:semicolon
 multiline_comment|/********** Long lun field only downloaded for full 8 byte lun support ********/
 DECL|member|pkt_long_lun
 multiline_comment|/*48*/
@@ -3227,6 +3243,9 @@ r_struct
 id|ahd_softc
 op_star
 id|ahd
+comma
+r_int
+id|reinit
 )paren
 suffix:semicolon
 r_void

@@ -48,9 +48,9 @@ mdefine_line|#define PKT_BUF_SZ&t;&t;1536
 DECL|macro|DRV_MODULE_NAME
 mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;typhoon&quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION &t;&quot;1.5.1&quot;
+mdefine_line|#define DRV_MODULE_VERSION &t;&quot;1.5.2&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;03/06/26&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;03/11/25&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;DRV_MODULE_NAME &quot;: &quot;
 DECL|macro|ERR_PFX
@@ -103,7 +103,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;David Dillow &lt;dillowd@y12.doe.gov&gt;&quot;
+l_string|&quot;David Dillow &lt;dave@thedillows.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -150,15 +150,17 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|TYPHOON_CRYPTO_NONE
-mdefine_line|#define TYPHOON_CRYPTO_NONE&t;&t;0
+mdefine_line|#define TYPHOON_CRYPTO_NONE&t;&t;0x00
 DECL|macro|TYPHOON_CRYPTO_DES
-mdefine_line|#define TYPHOON_CRYPTO_DES&t;&t;1
+mdefine_line|#define TYPHOON_CRYPTO_DES&t;&t;0x01
 DECL|macro|TYPHOON_CRYPTO_3DES
-mdefine_line|#define TYPHOON_CRYPTO_3DES&t;&t;2
+mdefine_line|#define TYPHOON_CRYPTO_3DES&t;&t;0x02
 DECL|macro|TYPHOON_CRYPTO_VARIABLE
-mdefine_line|#define&t;TYPHOON_CRYPTO_VARIABLE&t;&t;4
+mdefine_line|#define&t;TYPHOON_CRYPTO_VARIABLE&t;&t;0x04
 DECL|macro|TYPHOON_FIBER
-mdefine_line|#define TYPHOON_FIBER&t;&t;&t;8
+mdefine_line|#define TYPHOON_FIBER&t;&t;&t;0x08
+DECL|macro|TYPHOON_WAKEUP_NEEDS_RESET
+mdefine_line|#define TYPHOON_WAKEUP_NEEDS_RESET&t;0x10
 DECL|enum|typhoon_cards
 r_enum
 id|typhoon_cards
@@ -839,8 +841,10 @@ mdefine_line|#define typhoon_post_pci_writes(x) &bslash;&n;&t;do { readl(x + TYP
 multiline_comment|/* We&squot;ll wait up to six seconds for a reset, and half a second normally.&n; */
 DECL|macro|TYPHOON_UDELAY
 mdefine_line|#define TYPHOON_UDELAY&t;&t;&t;50
-DECL|macro|TYPHOON_RESET_TIMEOUT
-mdefine_line|#define TYPHOON_RESET_TIMEOUT&t;&t;(6 * HZ)
+DECL|macro|TYPHOON_RESET_TIMEOUT_SLEEP
+mdefine_line|#define TYPHOON_RESET_TIMEOUT_SLEEP&t;(6 * HZ)
+DECL|macro|TYPHOON_RESET_TIMEOUT_NOSLEEP
+mdefine_line|#define TYPHOON_RESET_TIMEOUT_NOSLEEP&t;((6 * 1000000) / TYPHOON_UDELAY)
 DECL|macro|TYPHOON_WAIT_TIMEOUT
 mdefine_line|#define TYPHOON_WAIT_TIMEOUT&t;&t;((1000000 / 2) / TYPHOON_UDELAY)
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 5, 28)
@@ -1083,8 +1087,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|timeout
-op_assign
-id|TYPHOON_RESET_TIMEOUT
 suffix:semicolon
 r_if
 c_cond
@@ -1096,19 +1098,14 @@ id|WaitNoSleep
 (brace
 id|timeout
 op_assign
-(paren
-id|timeout
-op_star
-l_int|1000000
-)paren
-op_div
-(paren
-id|HZ
-op_star
-id|TYPHOON_UDELAY
-)paren
+id|TYPHOON_RESET_TIMEOUT_NOSLEEP
 suffix:semicolon
 )brace
+r_else
+id|timeout
+op_assign
+id|TYPHOON_RESET_TIMEOUT_SLEEP
+suffix:semicolon
 id|writel
 c_func
 (paren
@@ -8031,6 +8028,13 @@ op_minus
 id|ETIMEDOUT
 suffix:semicolon
 )brace
+multiline_comment|/* Since we cannot monitor the status of the link while sleeping,&n;&t; * tell the world it went away.&n;&t; */
+id|netif_carrier_off
+c_func
+(paren
+id|tp-&gt;dev
+)paren
+suffix:semicolon
 id|pci_enable_wake
 c_func
 (paren
@@ -8101,6 +8105,7 @@ comma
 id|tp-&gt;pci_state
 )paren
 suffix:semicolon
+multiline_comment|/* Post 2.x.x versions of the Sleep Image require a reset before&n;&t; * we can download the Runtime Image. But let&squot;s not make users of&n;&t; * the old firmware pay for the reset.&n;&t; */
 id|writel
 c_func
 (paren
@@ -8123,6 +8128,12 @@ id|TYPHOON_STATUS_WAITING_FOR_HOST
 )paren
 OL
 l_int|0
+op_logical_or
+(paren
+id|tp-&gt;capabilities
+op_amp
+id|TYPHOON_WAKEUP_NEEDS_RESET
+)paren
 )paren
 (brace
 r_return
@@ -10041,6 +10052,9 @@ suffix:semicolon
 r_struct
 id|resp_desc
 id|xp_resp
+(braket
+l_int|3
+)braket
 suffix:semicolon
 r_int
 id|i
@@ -10598,7 +10612,6 @@ id|xp_cmd
 comma
 l_int|1
 comma
-op_amp
 id|xp_resp
 )paren
 OL
@@ -10644,7 +10657,12 @@ c_func
 id|le16_to_cpu
 c_func
 (paren
-id|xp_resp.parm1
+id|xp_resp
+(braket
+l_int|0
+)braket
+dot
+id|parm1
 )paren
 )paren
 suffix:semicolon
@@ -10665,7 +10683,12 @@ c_func
 id|le32_to_cpu
 c_func
 (paren
-id|xp_resp.parm2
+id|xp_resp
+(braket
+l_int|0
+)braket
+dot
+id|parm2
 )paren
 )paren
 suffix:semicolon
@@ -10696,6 +10719,82 @@ id|pdev
 suffix:semicolon
 r_goto
 id|error_out_reset
+suffix:semicolon
+)brace
+multiline_comment|/* Read the Sleep Image version last, so the response is valid&n;&t; * later when we print out the version reported.&n;&t; */
+id|INIT_COMMAND_WITH_RESPONSE
+c_func
+(paren
+op_amp
+id|xp_cmd
+comma
+id|TYPHOON_CMD_READ_VERSIONS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|typhoon_issue_command
+c_func
+(paren
+id|tp
+comma
+l_int|1
+comma
+op_amp
+id|xp_cmd
+comma
+l_int|3
+comma
+id|xp_resp
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|ERR_PFX
+l_string|&quot;%s: Could not get Sleep Image version&bslash;n&quot;
+comma
+id|pdev-&gt;slot_name
+)paren
+suffix:semicolon
+r_goto
+id|error_out_reset
+suffix:semicolon
+)brace
+id|tp-&gt;capabilities
+op_assign
+id|typhoon_card_info
+(braket
+id|card_id
+)braket
+dot
+id|capabilities
+suffix:semicolon
+id|tp-&gt;xcvr_select
+op_assign
+id|TYPHOON_XCVR_AUTONEG
+suffix:semicolon
+multiline_comment|/* Typhoon 1.0 Sleep Images return one response descriptor to the&n;&t; * READ_VERSIONS command. Those versions are OK after waking up&n;&t; * from sleep without needing a reset. Typhoon 1.1+ Sleep Images&n;&t; * seem to need a little extra help to get started. Since we don&squot;t&n;&t; * know how to nudge it along, just kick it.&n;&t; */
+r_if
+c_cond
+(paren
+id|xp_resp
+(braket
+l_int|0
+)braket
+dot
+id|numDesc
+op_ne
+l_int|0
+)paren
+(brace
+id|tp-&gt;capabilities
+op_or_assign
+id|TYPHOON_WAKEUP_NEEDS_RESET
 suffix:semicolon
 )brace
 r_if
@@ -10736,19 +10835,6 @@ r_goto
 id|error_out_reset
 suffix:semicolon
 )brace
-id|tp-&gt;capabilities
-op_assign
-id|typhoon_card_info
-(braket
-id|card_id
-)braket
-dot
-id|capabilities
-suffix:semicolon
-id|tp-&gt;xcvr_select
-op_assign
-id|TYPHOON_XCVR_AUTONEG
-suffix:semicolon
 multiline_comment|/* The chip-specific entries in the device structure. */
 id|dev-&gt;open
 op_assign
@@ -10904,6 +10990,156 @@ id|i
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* xp_resp still contains the response to the READ_VERSIONS command.&n;&t; * For debugging, let the user know what version he has.&n;&t; */
+r_if
+c_cond
+(paren
+id|xp_resp
+(braket
+l_int|0
+)braket
+dot
+id|numDesc
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* This is the Typhoon 1.0 type Sleep Image, last 16 bits&n;&t;&t; * of version is Month/Day of build.&n;&t;&t; */
+id|u16
+id|monthday
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|xp_resp
+(braket
+l_int|0
+)braket
+dot
+id|parm2
+)paren
+op_amp
+l_int|0xffff
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Typhoon 1.0 Sleep Image built &quot;
+l_string|&quot;%02u/%02u/2000&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|monthday
+op_rshift
+l_int|8
+comma
+id|monthday
+op_amp
+l_int|0xff
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|xp_resp
+(braket
+l_int|0
+)braket
+dot
+id|numDesc
+op_eq
+l_int|2
+)paren
+(brace
+multiline_comment|/* This is the Typhoon 1.1+ type Sleep Image&n;&t;&t; */
+id|u32
+id|sleep_ver
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|xp_resp
+(braket
+l_int|0
+)braket
+dot
+id|parm2
+)paren
+suffix:semicolon
+id|u8
+op_star
+id|ver_string
+op_assign
+(paren
+id|u8
+op_star
+)paren
+op_amp
+id|xp_resp
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|ver_string
+(braket
+l_int|25
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Typhoon 1.1+ Sleep Image version &quot;
+l_string|&quot;%u.%u.%u.%u %s&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|HIPQUAD
+c_func
+(paren
+id|sleep_ver
+)paren
+comma
+id|ver_string
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Unknown Sleep Image version &quot;
+l_string|&quot;(%u:%04x)&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|xp_resp
+(braket
+l_int|0
+)braket
+dot
+id|numDesc
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|xp_resp
+(braket
+l_int|0
+)braket
+dot
+id|parm2
+)paren
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

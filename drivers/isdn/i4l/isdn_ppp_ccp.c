@@ -2268,6 +2268,8 @@ DECL|variable|ipc_head_lock
 r_static
 id|spinlock_t
 id|ipc_head_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_int
 DECL|function|ippp_ccp_set_compressor

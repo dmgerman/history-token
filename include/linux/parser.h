@@ -1,3 +1,5 @@
+multiline_comment|/*&n; * linux/include/linux/parser.h&n; *&n; * Header for lib/parser.c&n; * Intended use of these functions is parsing filesystem argument lists,&n; * but could potentially be used anywhere else that simple option=arg&n; * parsing is required.&n; */
+multiline_comment|/* associates an integer enumerator with a pattern string. */
 DECL|struct|match_token
 r_struct
 id|match_token
@@ -21,6 +23,7 @@ id|match_table_t
 (braket
 )braket
 suffix:semicolon
+multiline_comment|/* Maximum number of arguments that match_token will find in a pattern */
 DECL|enumerator|MAX_OPT_ARGS
 r_enum
 (brace
@@ -29,6 +32,7 @@ op_assign
 l_int|3
 )brace
 suffix:semicolon
+multiline_comment|/* Describe the location within a string of a substring */
 r_typedef
 r_struct
 (brace
@@ -52,7 +56,6 @@ c_func
 (paren
 r_char
 op_star
-id|s
 comma
 id|match_table_t
 id|table

@@ -9,7 +9,7 @@ mdefine_line|#define R13 16
 DECL|macro|R12
 mdefine_line|#define R12 24
 DECL|macro|RBP
-mdefine_line|#define RBP 36
+mdefine_line|#define RBP 32
 DECL|macro|RBX
 mdefine_line|#define RBX 40
 multiline_comment|/* arguments: interrupts/non tracing syscalls only save upto here*/

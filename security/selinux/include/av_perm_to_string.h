@@ -485,6 +485,14 @@ l_string|&quot;noatsecure&quot;
 )brace
 comma
 (brace
+id|SECCLASS_PROCESS
+comma
+id|PROCESS__SIGINH
+comma
+l_string|&quot;siginh&quot;
+)brace
+comma
+(brace
 id|SECCLASS_MSGQ
 comma
 id|MSGQ__ENQUEUE

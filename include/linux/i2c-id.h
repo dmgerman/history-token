@@ -214,6 +214,8 @@ DECL|macro|I2C_DRIVERID_W83627HF
 mdefine_line|#define I2C_DRIVERID_W83627HF 1038
 DECL|macro|I2C_DRIVERID_LM85
 mdefine_line|#define I2C_DRIVERID_LM85 1039
+DECL|macro|I2C_DRIVERID_LM83
+mdefine_line|#define I2C_DRIVERID_LM83 1040
 multiline_comment|/*&n; * ---- Adapter types ----------------------------------------------------&n; *&n; * First, we distinguish between several algorithms to access the hardware&n; * interface types, as a PCF 8584 needs other care than a bit adapter.&n; */
 DECL|macro|I2C_ALGO_NONE
 mdefine_line|#define I2C_ALGO_NONE&t;0x000000
@@ -367,6 +369,8 @@ DECL|macro|I2C_HW_SMBUS_SCX200
 mdefine_line|#define I2C_HW_SMBUS_SCX200&t;0x0b
 DECL|macro|I2C_HW_SMBUS_NFORCE2
 mdefine_line|#define I2C_HW_SMBUS_NFORCE2&t;0x0c
+DECL|macro|I2C_HW_SMBUS_W9968CF
+mdefine_line|#define I2C_HW_SMBUS_W9968CF&t;0x0d
 multiline_comment|/* --- ISA pseudo-adapter&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_ISA
 mdefine_line|#define I2C_HW_ISA 0x00

@@ -1,15 +1,11 @@
 multiline_comment|/*    $Id: processor.c,v 1.1 2002/07/20 16:27:06 rhirst Exp $&n; *&n; *    Initial setup-routines for HP 9000 based hardware.&n; *&n; *    Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *    Modifications for PA-RISC (C) 1999 Helge Deller &lt;deller@gmx.de&gt;&n; *    Modifications copyright 1999 SuSE GmbH (Philipp Rumpf)&n; *    Modifications copyright 2000 Martin K. Petersen &lt;mkp@mkp.net&gt;&n; *    Modifications copyright 2000 Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *    Modifications copyright 2001 Ryan Bradetich &lt;rbradetich@uswest.net&gt;&n; *&n; *    Initial PA-RISC Version: 04-23-1999 by Helge Deller&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2, or (at your option)&n; *    any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/seq_file.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-DECL|macro|PCI_DEBUG
-mdefine_line|#define PCI_DEBUG
-macro_line|#include &lt;linux/pci.h&gt;
-DECL|macro|PCI_DEBUG
-macro_line|#undef PCI_DEBUG
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;&t;/* for register_parisc_driver() stuff */
 macro_line|#include &lt;asm/processor.h&gt;
@@ -21,6 +17,13 @@ DECL|variable|boot_cpu_data
 r_struct
 id|system_cpuinfo_parisc
 id|boot_cpu_data
+suffix:semicolon
+DECL|variable|boot_cpu_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|boot_cpu_data
+)paren
 suffix:semicolon
 DECL|variable|cpu_data
 r_struct
@@ -135,28 +138,28 @@ op_amp
 id|pa_pdc_cell
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|PDC_OK
-op_eq
+op_ne
 id|status
 )paren
 suffix:semicolon
 multiline_comment|/* verify it&squot;s the same as what do_pat_inventory() found */
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|dev-&gt;mod_info
-op_eq
+op_ne
 id|pa_pdc_cell.mod_info
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|dev-&gt;pmod_loc
-op_eq
+op_ne
 id|pa_pdc_cell.mod_location
 )paren
 suffix:semicolon
@@ -182,11 +185,11 @@ comma
 id|dev-&gt;hpa
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|PDC_OK
-op_eq
+op_ne
 id|status
 )paren
 suffix:semicolon

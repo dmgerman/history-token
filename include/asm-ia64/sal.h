@@ -36,7 +36,7 @@ macro_line|# define SAL_CALL(result,args...) do {&t;&t;&t;&t;&bslash;&n;&t;unsig
 DECL|macro|SAL_CALL_NOLOCK
 macro_line|# define SAL_CALL_NOLOCK(result,args...) do {&t;&t;&bslash;&n;&t;unsigned long __ia64_scn_flags;&t;&t;&t;&bslash;&n;&t;struct ia64_fpreg __ia64_scn_fr[6];&t;&t;&bslash;&n;&t;ia64_save_scratch_fpregs(__ia64_scn_fr);&t;&bslash;&n;&t;local_irq_save(__ia64_scn_flags);&t;&t;&bslash;&n;&t;__SAL_CALL(result, args);&t;&t;&t;&bslash;&n;&t;local_irq_restore(__ia64_scn_flags);&t;&t;&bslash;&n;&t;ia64_load_scratch_fpregs(__ia64_scn_fr);&t;&bslash;&n;} while (0)
 DECL|macro|SAL_CALL_REENTRANT
-macro_line|# define SAL_CALL_REENTRANT(result,args...) do {&t;&bslash;&n;&t;struct ia64_fpreg __ia64_scs_fr[6];&t;&t;&bslash;&n;&t;ia64_save_scratch_fpregs(__ia64_scs_fr);&t;&bslash;&n;&t;__SAL_CALL(result, args);&t;&t;&t;&bslash;&n;&t;ia64_load_scratch_fpregs(__ia64_scs_fr);&t;&bslash;&n;} while (0)
+macro_line|# define SAL_CALL_REENTRANT(result,args...) do {&t;&bslash;&n;&t;struct ia64_fpreg __ia64_scs_fr[6];&t;&t;&bslash;&n;&t;ia64_save_scratch_fpregs(__ia64_scs_fr);&t;&bslash;&n;&t;preempt_disable();&t;&t;&t;&t;&bslash;&n;&t;__SAL_CALL(result, args);&t;&t;&t;&bslash;&n;&t;preempt_enable();&t;&t;&t;&t;&bslash;&n;&t;ia64_load_scratch_fpregs(__ia64_scs_fr);&t;&bslash;&n;} while (0)
 DECL|macro|SAL_SET_VECTORS
 mdefine_line|#define SAL_SET_VECTORS&t;&t;&t;0x01000000
 DECL|macro|SAL_GET_STATE_INFO
@@ -2325,10 +2325,11 @@ r_return
 id|isrv.status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Allow the OS to specify the interrupt number to be used by SAL to interrupt OS during&n; * the machine check rendezvous sequence as well as the mechanism to wake up the&n; * non-monarch processor at the end of machine check processing.&n; */
+multiline_comment|/*&n; * Allow the OS to specify the interrupt number to be used by SAL to interrupt OS during&n; * the machine check rendezvous sequence as well as the mechanism to wake up the&n; * non-monarch processor at the end of machine check processing.&n; * Returns the complete ia64_sal_retval because some calls return more than just a status&n; * value.&n; */
 r_static
 r_inline
-id|s64
+r_struct
+id|ia64_sal_retval
 DECL|function|ia64_sal_mc_set_params
 id|ia64_sal_mc_set_params
 (paren
@@ -2375,7 +2376,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-id|isrv.status
+id|isrv
 suffix:semicolon
 )brace
 multiline_comment|/* Read from PCI configuration space */
@@ -2666,6 +2667,25 @@ r_int
 r_int
 id|sal_platform_features
 suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|salinfo_platform_oemdata
+)paren
+(paren
+r_const
+id|u8
+op_star
+comma
+id|u8
+op_star
+op_star
+comma
+id|u64
+op_star
+)paren
+suffix:semicolon
 DECL|struct|sal_ret_values
 r_struct
 id|sal_ret_values
@@ -2689,5 +2709,5 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
-macro_line|#endif /* _ASM_IA64_PAL_H */
+macro_line|#endif /* _ASM_IA64_SAL_H */
 eof

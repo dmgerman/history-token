@@ -416,8 +416,8 @@ DECL|macro|BUS_NUMBER
 mdefine_line|#define BUS_NUMBER(addr)&t;(0x0000000000FF0000 &amp; (addr))
 r_static
 id|efi_status_t
-DECL|function|efi_get_time
-id|efi_get_time
+DECL|function|fw_efi_get_time
+id|fw_efi_get_time
 (paren
 id|efi_time_t
 op_star
@@ -1369,7 +1369,7 @@ id|__pa
 c_func
 (paren
 op_amp
-id|efi_get_time
+id|fw_efi_get_time
 )paren
 suffix:semicolon
 id|efi_runtime-&gt;set_time

@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * Makes a prep bootable image which can be dd&squot;d onto&n; * a disk device to make a bootdisk.  Will take&n; * as input a elf executable, strip off the header&n; * and write out a boot image as:&n; * 1) default - strips elf header&n; *      suitable as a network boot image&n; * 2) -pbp - strips elf header and writes out prep boot partition image&n; *      cat or dd onto disk for booting&n; * 3) -asm - strips elf header and writes out as asm data&n; *      useful for generating data for a compressed image&n; *                  -- Cort&n; *&n; * Modified for x86 hosted builds by Matt Porter &lt;porter@neta.com&gt;&n; */
+multiline_comment|/*&n; * Makes a prep bootable image which can be dd&squot;d onto&n; * a disk device to make a bootdisk.  Will take&n; * as input a elf executable, strip off the header&n; * and write out a boot image as:&n; * 1) default - strips elf header&n; *      suitable as a network boot image&n; * 2) -pbp - strips elf header and writes out prep boot partition image&n; *      cat or dd onto disk for booting&n; * 3) -asm - strips elf header and writes out as asm data&n; *      useful for generating data for a compressed image&n; *                  -- Cort&n; *&n; * Modified for x86 hosted builds by Matt Porter &lt;porter@neta.com&gt;&n; * Modified for Sparc hosted builds by Peter Wahl &lt;PeterWahl@web.de&gt;&n; */
 macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;string.h&gt;
+macro_line|#include &lt;strings.h&gt;
 macro_line|#include &lt;sys/stat.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 DECL|macro|cpu_to_le32
@@ -533,18 +534,7 @@ l_int|512
 )braket
 suffix:semicolon
 id|partition_entry_t
-op_star
 id|pe
-op_assign
-(paren
-id|partition_entry_t
-op_star
-)paren
-op_amp
-id|block
-(braket
-l_int|0x1BE
-)braket
 suffix:semicolon
 id|dword_t
 op_star
@@ -678,48 +668,48 @@ op_assign
 l_int|0xAA
 suffix:semicolon
 multiline_comment|/*&n;   * Build a &quot;PReP&quot; partition table entry in the boot record&n;   *  - &quot;PReP&quot; may only look at the system_indicator&n;   */
-id|pe-&gt;boot_indicator
+id|pe.boot_indicator
 op_assign
 id|BootActive
 suffix:semicolon
-id|pe-&gt;system_indicator
+id|pe.system_indicator
 op_assign
 id|SystemPrep
 suffix:semicolon
 multiline_comment|/*&n;   * The first block of the diskette is used by this &quot;boot record&quot; which&n;   * actually contains the partition table. (The first block of the&n;   * partition contains the boot image, but I digress...)  We&squot;ll set up&n;   * one partition on the diskette and it shall contain the rest of the&n;   * diskette.&n;   */
-id|pe-&gt;starting_head
+id|pe.starting_head
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* zero-based&t;&t;&t;     */
-id|pe-&gt;starting_sector
+id|pe.starting_sector
 op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* one-based&t;&t;&t;     */
-id|pe-&gt;starting_cylinder
+id|pe.starting_cylinder
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* zero-based&t;&t;&t;     */
-id|pe-&gt;ending_head
+id|pe.ending_head
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* assumes two heads&t;&t;     */
-id|pe-&gt;ending_sector
+id|pe.ending_sector
 op_assign
 l_int|18
 suffix:semicolon
 multiline_comment|/* assumes 18 sectors/track&t;     */
-id|pe-&gt;ending_cylinder
+id|pe.ending_cylinder
 op_assign
 l_int|79
 suffix:semicolon
 multiline_comment|/* assumes 80 cylinders/diskette     */
 multiline_comment|/*&n;   * The &quot;PReP&quot; software ignores the above fields and just looks at&n;   * the next two.&n;   *   - size of the diskette is (assumed to be)&n;   *     (2 tracks/cylinder)(18 sectors/tracks)(80 cylinders/diskette)&n;   *   - unlike the above sector numbers, the beginning sector is zero-based!&n;   */
 macro_line|#if 0
-id|pe-&gt;beginning_sector
+id|pe.beginning_sector
 op_assign
 id|cpu_to_le32
 c_func
@@ -730,12 +720,12 @@ suffix:semicolon
 macro_line|#else
 multiline_comment|/* This has to be 0 on the PowerStack? */
 macro_line|#ifdef __i386__
-id|pe-&gt;beginning_sector
+id|pe.beginning_sector
 op_assign
 l_int|0
 suffix:semicolon
 macro_line|#else
-id|pe-&gt;beginning_sector
+id|pe.beginning_sector
 op_assign
 id|cpu_to_le32
 c_func
@@ -746,7 +736,7 @@ suffix:semicolon
 macro_line|#endif /* __i386__ */
 macro_line|#endif
 macro_line|#ifdef __i386__
-id|pe-&gt;number_of_sectors
+id|pe.number_of_sectors
 op_assign
 l_int|2
 op_star
@@ -757,7 +747,7 @@ op_minus
 l_int|1
 suffix:semicolon
 macro_line|#else
-id|pe-&gt;number_of_sectors
+id|pe.number_of_sectors
 op_assign
 id|cpu_to_le32
 c_func

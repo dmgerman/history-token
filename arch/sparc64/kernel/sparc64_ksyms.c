@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fs_struct.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
@@ -456,6 +457,15 @@ id|prot
 comma
 r_int
 id|space
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sys_close
+c_func
+(paren
+r_int
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -1724,6 +1734,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sparc32_open
+)paren
+suffix:semicolon
+DECL|variable|sys_close
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sys_close
 )paren
 suffix:semicolon
 macro_line|#endif

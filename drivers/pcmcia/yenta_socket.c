@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;yenta_socket.h&quot;
 macro_line|#include &quot;i82365.h&quot;
 macro_line|#if 0
-mdefine_line|#define DEBUG(x,args...)&t;printk(&quot;%s: &quot; x, __FUNCTION__, ##args)
+mdefine_line|#define DEBUG(x,args...)&t;printk(KERN_DEBUG &quot;%s: &quot; x, __FUNCTION__, ##args)
 macro_line|#else
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(x,args...)
@@ -4140,7 +4140,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Yenta: ISA IRQ list %04x, PCI irq%d&bslash;n&quot;
+l_string|&quot;Yenta: ISA IRQ mask 0x%04x, PCI irq %d&bslash;n&quot;
 comma
 id|socket-&gt;socket.irq_mask
 comma
@@ -4471,6 +4471,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;No cardbus resource!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4677,6 +4678,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Socket status: %08x&bslash;n&quot;
 comma
 id|cb_readl

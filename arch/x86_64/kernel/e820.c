@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Handle the memory map.&n; * The functions here do the job until bootmem takes over.&n; * $Id: e820.c,v 1.4 2002/09/19 19:25:32 ak Exp $&n;&n; * AK: some of these functions are not used in 2.5 yet but they will be when&n; * NUMA is completely merged.&n;&n; */
+multiline_comment|/* &n; * Handle the memory map.&n; * The functions here do the job until bootmem takes over.&n; * $Id: e820.c,v 1.4 2002/09/19 19:25:32 ak Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

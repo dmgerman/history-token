@@ -304,7 +304,7 @@ id|u8
 id|val
 )paren
 (brace
-id|outb_p
+id|outl_p
 c_func
 (paren
 (paren
@@ -342,7 +342,7 @@ id|u16
 id|reg
 )paren
 (brace
-id|outb_p
+id|outl_p
 c_func
 (paren
 (paren

@@ -699,4 +699,23 @@ c_func
 id|ttpci_eeprom_parse_mac
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Ralph Metzler, Marcus Metzler, others&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Decode dvb_net MAC address from EEPROM of PCI DVB cards &quot;
+l_string|&quot;made by Siemens, Technotrend, Hauppauge&quot;
+)paren
+suffix:semicolon
 eof

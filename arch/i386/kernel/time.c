@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -115,10 +116,6 @@ suffix:semicolon
 r_int
 r_int
 id|max_ntp_tick
-op_assign
-id|tick_usec
-op_minus
-id|tickadj
 suffix:semicolon
 r_do
 (brace
@@ -163,6 +160,16 @@ l_int|0
 )paren
 )paren
 (brace
+id|max_ntp_tick
+op_assign
+(paren
+id|USEC_PER_SEC
+op_div
+id|HZ
+)paren
+op_minus
+id|tickadj
+suffix:semicolon
 id|usec
 op_assign
 id|min
@@ -199,7 +206,11 @@ id|usec
 op_add_assign
 id|lost
 op_star
-id|tick_usec
+(paren
+id|USEC_PER_SEC
+op_div
+id|HZ
+)paren
 suffix:semicolon
 id|sec
 op_assign
@@ -432,6 +443,20 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+id|retval
+op_assign
+id|efi_set_rtc_mmss
+c_func
+(paren
+id|nowtime
+)paren
+suffix:semicolon
+r_else
 id|retval
 op_assign
 id|mach_set_rtc_mmss
@@ -607,6 +632,37 @@ op_div
 l_int|2
 )paren
 (brace
+multiline_comment|/* horrible...FIXME */
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|efi_set_rtc_mmss
+c_func
+(paren
+id|xtime.tv_sec
+)paren
+op_eq
+l_int|0
+)paren
+id|last_rtc_update
+op_assign
+id|xtime.tv_sec
+suffix:semicolon
+r_else
+id|last_rtc_update
+op_assign
+id|xtime.tv_sec
+op_minus
+l_int|600
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -738,6 +794,19 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+id|retval
+op_assign
+id|efi_get_time
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
 id|retval
 op_assign
 id|mach_get_cmos_time
@@ -914,6 +983,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Using %s for high-res timesource&bslash;n&quot;
+comma
+id|cur_timer-&gt;name
+)paren
+suffix:semicolon
 id|time_init_hook
 c_func
 (paren
@@ -985,6 +1063,15 @@ op_assign
 id|select_timer
 c_func
 (paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Using %s for high-res timesource&bslash;n&quot;
+comma
+id|cur_timer-&gt;name
 )paren
 suffix:semicolon
 id|time_init_hook

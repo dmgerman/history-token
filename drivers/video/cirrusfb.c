@@ -10878,8 +10878,8 @@ id|pdev
 (brace
 id|printk
 (paren
-id|KERN_ERR
-l_string|&quot; Couldn&squot;t find PCI device&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;cirrusfb: couldn&squot;t find Cirrus Logic PCI device&bslash;n&quot;
 )paren
 suffix:semicolon
 id|DPRINTK

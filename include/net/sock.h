@@ -1744,10 +1744,28 @@ id|sk
 suffix:semicolon
 DECL|macro|sock_owned_by_user
 mdefine_line|#define sock_owned_by_user(sk)&t;((sk)-&gt;sk_lock.owner)
-DECL|macro|lock_sock
-mdefine_line|#define lock_sock(__sk) &bslash;&n;do {&t;might_sleep(); &bslash;&n;&t;spin_lock_bh(&amp;((__sk)-&gt;sk_lock.slock)); &bslash;&n;&t;if ((__sk)-&gt;sk_lock.owner) &bslash;&n;&t;&t;__lock_sock(__sk); &bslash;&n;&t;(__sk)-&gt;sk_lock.owner = (void *)1; &bslash;&n;&t;spin_unlock_bh(&amp;((__sk)-&gt;sk_lock.slock)); &bslash;&n;} while(0)
-DECL|macro|release_sock
-mdefine_line|#define release_sock(__sk) &bslash;&n;do {&t;spin_lock_bh(&amp;((__sk)-&gt;sk_lock.slock)); &bslash;&n;&t;if ((__sk)-&gt;sk_backlog.tail) &bslash;&n;&t;&t;__release_sock(__sk); &bslash;&n;&t;(__sk)-&gt;sk_lock.owner = NULL; &bslash;&n;        if (waitqueue_active(&amp;((__sk)-&gt;sk_lock.wq))) &bslash;&n;&t;&t;wake_up(&amp;((__sk)-&gt;sk_lock.wq)); &bslash;&n;&t;spin_unlock_bh(&amp;((__sk)-&gt;sk_lock.slock)); &bslash;&n;} while(0)
+r_extern
+r_void
+id|lock_sock
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|release_sock
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+suffix:semicolon
 multiline_comment|/* BH context may only use the following locking interface. */
 DECL|macro|bh_lock_sock
 mdefine_line|#define bh_lock_sock(__sk)&t;spin_lock(&amp;((__sk)-&gt;sk_lock.slock))

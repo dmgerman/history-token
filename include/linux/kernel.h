@@ -472,6 +472,15 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
+r_int
+r_int
+id|int_sqrt
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
 DECL|function|console_silent
 r_static
 r_inline

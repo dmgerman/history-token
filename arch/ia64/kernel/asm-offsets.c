@@ -5,6 +5,7 @@ macro_line|#include &lt;asm-ia64/processor.h&gt;
 macro_line|#include &lt;asm-ia64/ptrace.h&gt;
 macro_line|#include &lt;asm-ia64/siginfo.h&gt;
 macro_line|#include &lt;asm-ia64/sigcontext.h&gt;
+macro_line|#include &lt;asm-ia64/mca.h&gt;
 macro_line|#include &quot;../kernel/sigframe.h&quot;
 DECL|macro|DEFINE
 mdefine_line|#define DEFINE(sym, val) &bslash;&n;        asm volatile(&quot;&bslash;n-&gt;&quot; #sym &quot; %0 &quot; #val : : &quot;i&quot; (val))
@@ -2019,5 +2020,22 @@ suffix:semicolon
 macro_line|#if CLONE_SETTLS != (1&lt;&lt;19)
 macro_line|# error &quot;CLONE_SETTLS_BIT incorrect, please fix&quot;
 macro_line|#endif
+id|BLANK
+c_func
+(paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|IA64_MCA_TLB_INFO_SIZE
+comma
+r_sizeof
+(paren
+r_struct
+id|ia64_mca_tlb_info
+)paren
+)paren
+suffix:semicolon
 )brace
 eof

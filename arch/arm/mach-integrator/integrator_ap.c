@@ -391,7 +391,7 @@ l_int|1
 op_lshift
 id|i
 )paren
-op_logical_and
+op_amp
 id|INTEGRATOR_SC_VALID_INT
 )paren
 op_ne

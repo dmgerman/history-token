@@ -68309,7 +68309,7 @@ r_if
 c_cond
 (paren
 id|temp
-op_assign
+op_eq
 l_int|0xFFFF
 )paren
 (brace

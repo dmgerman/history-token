@@ -86,6 +86,9 @@ id|pes
 comma
 r_int
 id|len
+comma
+r_int
+id|payload_start
 )paren
 suffix:semicolon
 DECL|macro|PROG_STREAM_MAP

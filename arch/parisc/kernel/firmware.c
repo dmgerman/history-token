@@ -1656,7 +1656,7 @@ id|pdc_lock
 suffix:semicolon
 multiline_comment|/* BCJ-XXXX series boxes. E.G. &quot;9000/785/C3000&quot; */
 DECL|macro|IS_SPROCKETS
-mdefine_line|#define IS_SPROCKETS() (strlen(boot_cpu_data.pdc.sys_model_name) == 14 &amp;&amp; &bslash;&n;&t;strncmp(boot_cpu_data.pdc.sys_model_name, &quot;9000/785&quot;, 9) == 0)
+mdefine_line|#define IS_SPROCKETS() (strlen(boot_cpu_data.pdc.sys_model_name) == 14 &amp;&amp; &bslash;&n;&t;strncmp(boot_cpu_data.pdc.sys_model_name, &quot;9000/785&quot;, 8) == 0)
 id|retval
 op_assign
 id|mem_pdc_call
@@ -1683,10 +1683,12 @@ r_if
 c_cond
 (paren
 id|retval
-op_ge
+OL
 id|PDC_OK
 )paren
-(brace
+r_goto
+id|fail
+suffix:semicolon
 op_star
 id|scsi_id
 op_assign
@@ -1709,7 +1711,7 @@ l_int|1
 )braket
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;** case  0:   driver determines rate&n;&t;&t;** case -1:   Settings are uninitialized.&n;&t;&t;*/
+multiline_comment|/*&n;&t;&t; * case  0:   driver determines rate&n;&t;&t; * case -1:   Settings are uninitialized.&n;&t;&t; */
 r_case
 l_int|5
 suffix:colon
@@ -1756,7 +1758,7 @@ multiline_comment|/* Do nothing */
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t;** pdc_result[2]&t;PDC suggested SCSI id&n;&t;&t;** pdc_result[3]&t;PDC suggested SCSI rate&n;&t;&t;*/
+multiline_comment|/* &n;&t; * pdc_result[2]&t;PDC suggested SCSI id&n;&t; * pdc_result[3]&t;PDC suggested SCSI rate&n;&t; */
 r_if
 c_cond
 (paren
@@ -1766,7 +1768,7 @@ c_func
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;** Revisit: PAT PDC do the same thing?&n;&t;&t;&t;** A500 also exports 50-pin SE SCSI.&n;&t;&t;&t;**&t;0 == 8-bit&n;&t;&t;&t;**&t;1 == 16-bit&n;&t;&t;&t;*/
+multiline_comment|/* 0 == 8-bit, 1 == 16-bit */
 op_star
 id|width
 op_assign
@@ -1778,7 +1780,7 @@ id|pdc_result
 l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* ...in case someone needs it in the future.&n;&t;&t;&t;** sym53c8xx.c comments say it can&squot;t autodetect&n;&t;&t;&t;** for 825/825A/875 chips.&n;&t;&t;&t;**&t;0 == SE, 1 == HVD, 2 == LVD&n;&t;&t;&t;*/
+multiline_comment|/* ...in case someone needs it in the future.&n;&t;&t; * sym53c8xx.c comments say it can&squot;t autodetect&n;&t;&t; * for 825/825A/875 chips.&n;&t;&t; *&t;0 == SE, 1 == HVD, 2 == LVD&n;&t;&t; */
 op_star
 id|mode
 op_assign
@@ -1791,7 +1793,8 @@ l_int|5
 )braket
 suffix:semicolon
 )brace
-)brace
+id|fail
+suffix:colon
 id|spin_unlock_irq
 c_func
 (paren
@@ -1800,9 +1803,11 @@ id|pdc_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 id|retval
 op_ge
 id|PDC_OK
+)paren
 suffix:semicolon
 )brace
 DECL|variable|pdc_get_initiator

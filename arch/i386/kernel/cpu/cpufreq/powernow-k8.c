@@ -2787,6 +2787,12 @@ comma
 id|j
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ppst
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -2816,6 +2822,12 @@ id|BFX
 l_string|&quot;maxvid exceeded with pstate %d&bslash;n&quot;
 comma
 id|j
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ppst
 )paren
 suffix:semicolon
 r_return
@@ -2896,9 +2908,7 @@ id|currvid
 )paren
 )paren
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 id|printk
 c_func
@@ -3999,7 +4009,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#warning pol-&gt;policy is in undefined state here
 id|res
 op_assign
 id|find_match
@@ -4014,14 +4023,7 @@ comma
 op_amp
 id|max
 comma
-id|pol-&gt;policy
-op_eq
-id|CPUFREQ_POLICY_POWERSAVE
-ques
-c_cond
 id|SEARCH_DOWN
-suffix:colon
-id|SEARCH_UP
 comma
 l_int|0
 comma
@@ -4091,9 +4093,10 @@ id|pol-&gt;governor
 op_assign
 id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
-multiline_comment|/* Take a crude guess here. */
+multiline_comment|/* Take a crude guess here. &n;&t; * That guess was in microseconds, so multply with 1000 */
 id|pol-&gt;cpuinfo.transition_latency
 op_assign
+(paren
 (paren
 (paren
 id|rvo
@@ -4117,6 +4120,9 @@ id|irt
 op_star
 l_int|10
 )paren
+)paren
+op_star
+l_int|1000
 suffix:semicolon
 r_if
 c_cond

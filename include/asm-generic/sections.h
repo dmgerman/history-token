@@ -35,6 +35,10 @@ r_char
 id|__bss_start
 (braket
 )braket
+comma
+id|__bss_stop
+(braket
+)braket
 suffix:semicolon
 r_extern
 r_char

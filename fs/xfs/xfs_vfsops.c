@@ -5192,9 +5192,11 @@ mdefine_line|#define MNTOPT_NOLOGFLUSH   &quot;nologflush&quot;   /* don&squot;t
 DECL|macro|MNTOPT_OSYNCISOSYNC
 mdefine_line|#define MNTOPT_OSYNCISOSYNC &quot;osyncisosync&quot; /* o_sync is REALLY o_sync */
 DECL|macro|MNTOPT_64BITINODE
-mdefine_line|#define MNTOPT_64BITINODE   &quot;inode64&quot;  /* inodes can be allocated anywhere */
+mdefine_line|#define MNTOPT_64BITINODE   &quot;inode64&quot;&t;/* inodes can be allocated anywhere */
 DECL|macro|MNTOPT_IKEEP
-mdefine_line|#define MNTOPT_IKEEP&t;&quot;ikeep&quot;&t;&t;/* free empty inode clusters */
+mdefine_line|#define MNTOPT_IKEEP&t;&quot;ikeep&quot;&t;&t;/* do not free empty inode clusters */
+DECL|macro|MNTOPT_NOIKEEP
+mdefine_line|#define MNTOPT_NOIKEEP&t;&quot;noikeep&quot;&t;/* free empty inode clusters */
 r_int
 DECL|function|xfs_parseargs
 id|xfs_parseargs
@@ -5251,11 +5253,13 @@ suffix:semicolon
 r_int
 id|iosize
 suffix:semicolon
+macro_line|#if 0&t;/* XXX: off by default, until some remaining issues ironed out */
 id|args-&gt;flags
 op_or_assign
 id|XFSMNT_IDELETE
 suffix:semicolon
 multiline_comment|/* default to on */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5989,6 +5993,25 @@ id|MNTOPT_IKEEP
 id|args-&gt;flags
 op_and_assign
 op_complement
+id|XFSMNT_IDELETE
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|this_char
+comma
+id|MNTOPT_NOIKEEP
+)paren
+)paren
+(brace
+id|args-&gt;flags
+op_or_assign
 id|XFSMNT_IDELETE
 suffix:semicolon
 )brace

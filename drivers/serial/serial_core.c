@@ -6934,6 +6934,16 @@ id|termios.c_cflag
 op_or_assign
 id|CRTSCTS
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|port-&gt;ops
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* &quot;console=&quot; on ia64 */
 id|port-&gt;ops
 op_member_access_from_pointer
 id|set_termios

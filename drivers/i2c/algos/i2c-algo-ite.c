@@ -31,18 +31,7 @@ mdefine_line|#define DEBPROTO(x) if (i2c_debug&gt;=9) x;
 multiline_comment|/* debug the protocol by showing transferred bits */
 DECL|macro|DEF_TIMEOUT
 mdefine_line|#define DEF_TIMEOUT 16
-multiline_comment|/* debugging - slow down transfer to have a look at the data .. &t;*/
-multiline_comment|/* I use this with two leds&amp;resistors, each one connected to sda,scl &t;*/
-multiline_comment|/* respectively. This makes sure that the algorithm works. Some chips   */
-multiline_comment|/* might not like this, as they have an internal timeout of some mils&t;*/
-multiline_comment|/*&n;#define SLO_IO      jif=jiffies;while(jiffies&lt;=jif+i2c_table[minor].veryslow)&bslash;&n;                        cond_resched();&n;*/
 multiline_comment|/* ----- global variables ---------------------------------------------&t;*/
-macro_line|#ifdef SLO_IO
-DECL|variable|jif
-r_int
-id|jif
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* module parameters:&n; */
 DECL|variable|i2c_debug
 r_static
@@ -59,14 +48,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* see if the line-setting functions work&t;*/
-DECL|variable|iic_scan
-r_static
-r_int
-id|iic_scan
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* have a look at what&squot;s hanging &squot;round&t;&t;*/
 multiline_comment|/* --- setting states on the bus with the right timing: ---------------&t;*/
 DECL|macro|get_clock
 mdefine_line|#define get_clock(adap) adap-&gt;getclock(adap-&gt;data)
@@ -3305,12 +3286,6 @@ op_star
 id|adap
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
-r_int
-id|status
-suffix:semicolon
 r_struct
 id|i2c_algo_iic_data
 op_star
@@ -3395,118 +3370,6 @@ c_func
 id|iic_adap
 )paren
 suffix:semicolon
-multiline_comment|/* scan bus */
-multiline_comment|/* By default scanning the bus is turned off. */
-r_if
-c_cond
-(paren
-id|iic_scan
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot; i2c-algo-ite: scanning bus %s.&bslash;n&quot;
-comma
-id|adap-&gt;name
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0x00
-suffix:semicolon
-id|i
-OL
-l_int|0xff
-suffix:semicolon
-id|i
-op_add_assign
-l_int|2
-)paren
-(brace
-id|iic_outw
-c_func
-(paren
-id|iic_adap
-comma
-id|ITE_I2CSAR
-comma
-id|i
-)paren
-suffix:semicolon
-id|iic_start
-c_func
-(paren
-id|iic_adap
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|wait_for_pin
-c_func
-(paren
-id|iic_adap
-comma
-op_amp
-id|status
-)paren
-op_eq
-l_int|0
-)paren
-op_logical_and
-(paren
-(paren
-id|status
-op_amp
-id|ITE_I2CHSR_DNE
-)paren
-op_eq
-l_int|0
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;&bslash;n(%02x)&bslash;n&quot;
-comma
-id|i
-op_rshift
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;.&quot;
-)paren
-suffix:semicolon
-id|iic_reset
-c_func
-(paren
-id|iic_adap
-)paren
-suffix:semicolon
-)brace
-id|udelay
-c_func
-(paren
-id|iic_adap-&gt;udelay
-)paren
-suffix:semicolon
-)brace
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -3633,14 +3496,6 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|iic_scan
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
 id|i2c_debug
 comma
 l_string|&quot;i&quot;
@@ -3652,14 +3507,6 @@ c_func
 id|iic_test
 comma
 l_string|&quot;Test if the I2C bus is available&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|iic_scan
-comma
-l_string|&quot;Scan for active chips on the bus&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -5,10 +5,22 @@ multiline_comment|/*&n; *&t;linux/include/asm/irq.h&n; *&n; *&t;(C) 1992, 1993 L
 DECL|macro|TIMER_IRQ
 mdefine_line|#define TIMER_IRQ 0
 multiline_comment|/*&n; * 16 8259A IRQ&squot;s, 208 potential APIC interrupt sources.&n; * Right now the APIC is mostly only used for SMP.&n; * 256 vectors is an architectural limit. (we can have&n; * more than 256 devices theoretically, but they will&n; * have to use shared interrupts)&n; * Since vectors 0x00-0x1f are used/reserved for the CPU,&n; * the usable vector space is 0x20-0xff (224 vectors)&n; */
+multiline_comment|/*&n; * The maximum number of vectors supported by x86_64 processors&n; * is limited to 256. For processors other than x86_64, NR_VECTORS&n; * should be changed accordingly.&n; */
+DECL|macro|NR_VECTORS
+mdefine_line|#define NR_VECTORS 256
+DECL|macro|FIRST_SYSTEM_VECTOR
+mdefine_line|#define FIRST_SYSTEM_VECTOR&t;0xef   /* duplicated in hw_irq.h */
+macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+DECL|macro|NR_IRQS
+mdefine_line|#define NR_IRQS FIRST_SYSTEM_VECTOR
+DECL|macro|NR_IRQ_VECTORS
+mdefine_line|#define NR_IRQ_VECTORS NR_IRQS
+macro_line|#else
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS 224
 DECL|macro|NR_IRQ_VECTORS
 mdefine_line|#define NR_IRQ_VECTORS NR_IRQS
+macro_line|#endif
 DECL|function|irq_canonicalize
 r_static
 id|__inline__
@@ -60,6 +72,19 @@ c_func
 (paren
 r_int
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|can_request_irq
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+id|flags
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC

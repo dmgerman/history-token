@@ -1,7 +1,7 @@
 macro_line|#ifndef __X8664_A_OUT_H__
 DECL|macro|__X8664_A_OUT_H__
 mdefine_line|#define __X8664_A_OUT_H__
-multiline_comment|/* Note: a.out is not supported in 64bit mode. This is just here to &n;   still let some old things compile. */
+multiline_comment|/* 32bit a.out */
 DECL|struct|exec
 r_struct
 id|exec
@@ -57,7 +57,7 @@ DECL|macro|N_SYMSIZE
 mdefine_line|#define N_SYMSIZE(a)&t;((a).a_syms)
 macro_line|#ifdef __KERNEL__
 DECL|macro|STACK_TOP
-mdefine_line|#define STACK_TOP&t;TASK_SIZE
+mdefine_line|#define STACK_TOP&t;0xc0000000
 macro_line|#endif
 macro_line|#endif /* __A_OUT_GNU_H__ */
 eof

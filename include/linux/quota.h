@@ -656,11 +656,11 @@ id|iattr
 op_star
 )paren
 suffix:semicolon
-DECL|member|sync_dquot
+DECL|member|write_dquot
 r_int
 (paren
 op_star
-id|sync_dquot
+id|write_dquot
 )paren
 (paren
 r_struct

@@ -1998,6 +1998,12 @@ id|input_device_id
 op_star
 id|id_table
 suffix:semicolon
+DECL|member|blacklist
+r_struct
+id|input_device_id
+op_star
+id|blacklist
+suffix:semicolon
 DECL|member|h_list
 r_struct
 id|list_head

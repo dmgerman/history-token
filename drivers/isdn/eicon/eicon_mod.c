@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#ifdef CONFIG_MCA
 macro_line|#include &lt;linux/mca.h&gt;
+macro_line|#include &lt;linux/mca-legacy.h&gt;
 macro_line|#endif /* CONFIG_MCA */
 macro_line|#include &quot;eicon.h&quot;
 macro_line|#include &lt;linux/isdn/capicmd.h&gt;

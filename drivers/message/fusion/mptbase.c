@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.c&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      This is the Fusion MPT base driver which supports multiple&n; *      (SCSI + LAN) specialized protocol drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      There are lots of people not mentioned below that deserve credit&n; *      and thanks but won&squot;t get it here - sorry in advance that you&n; *      got overlooked.&n; *&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Noah Romer (LSI Logic) for tons of work&n; *      and tough debugging on the LAN driver, especially early on;-)&n; *      And to Roger Hickerson (LSI Logic) for tirelessly supporting&n; *      this driver project.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      All manner of help from Stephen Shirron (LSI Logic):&n; *      low-level FC analysis, debug + various fixes in FCxx firmware,&n; *      initial port to alpha platform, various driver code optimizations,&n; *      being a faithful sounding board on all sorts of issues &amp; ideas,&n; *      etc.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      Special thanks goes to the I2O LAN driver people at the&n; *      University of Helsinki, who, unbeknownst to them, provided&n; *      the inspiration and initial structure for this driver.&n; *&n; *      A really huge debt of gratitude is owed to Eddie C. Dost&n; *      for gobs of hard work fixing and optimizing LAN code.&n; *      THANK YOU!&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.c,v 1.126 2002/12/16 15:28:45 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.c&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      This is the Fusion MPT base driver which supports multiple&n; *      (SCSI + LAN) specialized protocol drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      There are lots of people not mentioned below that deserve credit&n; *      and thanks but won&squot;t get it here - sorry in advance that you&n; *      got overlooked.&n; *&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Noah Romer (LSI Logic) for tons of work&n; *      and tough debugging on the LAN driver, especially early on;-)&n; *      And to Roger Hickerson (LSI Logic) for tirelessly supporting&n; *      this driver project.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      All manner of help from Stephen Shirron (LSI Logic):&n; *      low-level FC analysis, debug + various fixes in FCxx firmware,&n; *      initial port to alpha platform, various driver code optimizations,&n; *      being a faithful sounding board on all sorts of issues &amp; ideas,&n; *      etc.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      Special thanks goes to the I2O LAN driver people at the&n; *      University of Helsinki, who, unbeknownst to them, provided&n; *      the inspiration and initial structure for this driver.&n; *&n; *      A really huge debt of gratitude is owed to Eddie C. Dost&n; *      for gobs of hard work fixing and optimizing LAN code.&n; *      THANK YOU!&n; *&n; *  Copyright (c) 1999-2003 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:mpt_linux_developer@lsil.com)&n; *&n; *  $Id: mptbase.c,v 1.126 2002/12/16 15:28:45 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -11923,6 +11923,8 @@ id|u32
 id|ioc_state
 suffix:semicolon
 r_int
+id|cntdn
+comma
 id|cnt
 op_assign
 l_int|0
@@ -12021,6 +12023,24 @@ id|ioc-&gt;name
 )paren
 )paren
 suffix:semicolon
+id|cntdn
+op_assign
+(paren
+(paren
+id|sleepFlag
+op_eq
+id|CAN_SLEEP
+)paren
+ques
+c_cond
+id|HZ
+suffix:colon
+l_int|1000
+)paren
+op_star
+l_int|20
+suffix:semicolon
+multiline_comment|/* 20 seconds */
 r_for
 c_loop
 (paren
@@ -12030,9 +12050,7 @@ l_int|0
 suffix:semicolon
 id|cnt
 OL
-id|HZ
-op_star
-l_int|20
+id|cntdn
 suffix:semicolon
 id|cnt
 op_increment

@@ -3215,6 +3215,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/* The USB spec says configuration 0 means unconfigured.&n;&t; * But if a device includes a configuration numbered 0,&n;&t; * we will accept it as a correctly configured state.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3299,7 +3300,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|configuration
+id|cp
 )paren
 id|dev-&gt;state
 op_assign

@@ -60,6 +60,14 @@ id|prof_counter
 op_assign
 l_int|1
 suffix:semicolon
+r_static
+r_void
+id|apic_pm_activate
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|enable_NMI_through_LVT0
 r_void
 id|enable_NMI_through_LVT0
@@ -1378,6 +1386,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|apic_pm_activate
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
 r_static
@@ -1966,7 +1979,6 @@ suffix:semicolon
 macro_line|#else&t;/* CONFIG_PM */
 DECL|function|apic_pm_activate
 r_static
-r_inline
 r_void
 id|apic_pm_activate
 c_func
@@ -2023,11 +2035,6 @@ id|NMI_NONE
 id|nmi_watchdog
 op_assign
 id|NMI_LOCAL_APIC
-suffix:semicolon
-id|apic_pm_activate
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 l_int|0

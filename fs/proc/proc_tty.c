@@ -1186,12 +1186,17 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * /proc/tty/driver/serial reveals the exact character counts for&n;&t; * serial links which is just too easy to abuse for inferring&n;&t; * password lengths and inter-keystroke timings during password&n;&t; * entry.&n;&t; */
 id|proc_tty_driver
 op_assign
-id|proc_mkdir
+id|proc_mkdir_mode
 c_func
 (paren
 l_string|&quot;tty/driver&quot;
+comma
+id|S_IRUSR
+op_or
+id|S_IXUSR
 comma
 l_int|0
 )paren

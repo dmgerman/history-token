@@ -130,8 +130,9 @@ id|r1_bio
 )paren
 suffix:semicolon
 )brace
+singleline_comment|//#define RESYNC_BLOCK_SIZE (64*1024)
 DECL|macro|RESYNC_BLOCK_SIZE
-mdefine_line|#define RESYNC_BLOCK_SIZE (64*1024)
+mdefine_line|#define RESYNC_BLOCK_SIZE PAGE_SIZE
 DECL|macro|RESYNC_SECTORS
 mdefine_line|#define RESYNC_SECTORS (RESYNC_BLOCK_SIZE &gt;&gt; 9)
 DECL|macro|RESYNC_PAGES
@@ -2793,6 +2794,28 @@ comma
 id|rdev-&gt;bdev-&gt;bd_disk-&gt;queue
 )paren
 suffix:semicolon
+multiline_comment|/* as we don&squot;t honour merge_bvec_fn, we must never risk&n;&t;&t;&t; * violating it, so limit -&gt;max_sector to one PAGE, as&n;&t;&t;&t; * a one page request is never in violation.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|rdev-&gt;bdev-&gt;bd_disk-&gt;queue-&gt;merge_bvec_fn
+op_logical_and
+id|mddev-&gt;queue-&gt;max_sectors
+OG
+(paren
+id|PAGE_SIZE
+op_rshift
+l_int|9
+)paren
+)paren
+id|mddev-&gt;queue-&gt;max_sectors
+op_assign
+(paren
+id|PAGE_SIZE
+op_rshift
+l_int|9
+)paren
+suffix:semicolon
 id|p-&gt;head_position
 op_assign
 l_int|0
@@ -4588,6 +4611,28 @@ c_func
 id|mddev-&gt;queue
 comma
 id|rdev-&gt;bdev-&gt;bd_disk-&gt;queue
+)paren
+suffix:semicolon
+multiline_comment|/* as we don&squot;t honour merge_bvec_fn, we must never risk&n;&t;&t; * violating it, so limit -&gt;max_sector to one PAGE, as&n;&t;&t; * a one page request is never in violation.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|rdev-&gt;bdev-&gt;bd_disk-&gt;queue-&gt;merge_bvec_fn
+op_logical_and
+id|mddev-&gt;queue-&gt;max_sectors
+OG
+(paren
+id|PAGE_SIZE
+op_rshift
+l_int|9
+)paren
+)paren
+id|mddev-&gt;queue-&gt;max_sectors
+op_assign
+(paren
+id|PAGE_SIZE
+op_rshift
+l_int|9
 )paren
 suffix:semicolon
 id|disk-&gt;head_position

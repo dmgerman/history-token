@@ -377,6 +377,8 @@ r_int
 r_int
 op_star
 id|e
+comma
+id|entry_size
 suffix:semicolon
 r_int
 r_int
@@ -463,7 +465,7 @@ id|ovfl_notify
 op_assign
 id|arg-&gt;ovfl_notify
 suffix:semicolon
-multiline_comment|/*&n;&t; * check for space against largest possibly entry.&n;&t; * We may waste space at the end of the buffer.&n;&t; */
+multiline_comment|/*&n;&t; * precheck for sanity&n;&t; */
 r_if
 c_cond
 (paren
@@ -501,6 +503,20 @@ id|prefetch
 c_func
 (paren
 id|arg-&gt;smpl_pmds_values
+)paren
+suffix:semicolon
+id|entry_size
+op_assign
+r_sizeof
+(paren
+op_star
+id|ent
+)paren
+op_plus
+(paren
+id|npmds
+op_lshift
+l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* position for first pmd */
@@ -632,17 +648,26 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * update position for next entry&n;&t; */
 id|hdr-&gt;hdr_cur_offs
 op_add_assign
-r_sizeof
+id|entry_size
+suffix:semicolon
+id|cur
+op_add_assign
+id|entry_size
+suffix:semicolon
+multiline_comment|/*&n;&t; * post check to avoid losing the last sample&n;&t; */
+r_if
+c_cond
 (paren
-op_star
-id|ent
-)paren
-op_plus
 (paren
-id|npmds
-op_lshift
-l_int|3
+id|last
+op_minus
+id|cur
 )paren
+OL
+id|PFM_DEFAULT_MAX_ENTRY_SIZE
+)paren
+r_goto
+id|full
 suffix:semicolon
 multiline_comment|/*&n;&t; * keep same ovfl_pmds, ovfl_notify&n;&t; */
 id|arg-&gt;ovfl_ctrl.bits.notify_user

@@ -7,7 +7,7 @@ mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_FLAT)
 DECL|function|target_cpus
 r_static
 r_inline
-id|cpumask_t
+id|cpumask_const_t
 id|target_cpus
 c_func
 (paren
@@ -16,14 +16,22 @@ r_void
 (brace
 macro_line|#ifdef CONFIG_SMP
 r_return
+id|mk_cpumask_const
+c_func
+(paren
 id|cpu_online_map
+)paren
 suffix:semicolon
 macro_line|#else
 r_return
+id|mk_cpumask_const
+c_func
+(paren
 id|cpumask_of_cpu
 c_func
 (paren
 l_int|0
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -69,6 +69,12 @@ id|NF_IP_PRI_FIRST
 op_assign
 id|INT_MIN
 comma
+DECL|enumerator|NF_IP_PRI_SELINUX_FIRST
+id|NF_IP_PRI_SELINUX_FIRST
+op_assign
+op_minus
+l_int|225
+comma
 DECL|enumerator|NF_IP_PRI_CONNTRACK
 id|NF_IP_PRI_CONNTRACK
 op_assign
@@ -108,6 +114,11 @@ DECL|enumerator|NF_IP_PRI_NAT_SRC
 id|NF_IP_PRI_NAT_SRC
 op_assign
 l_int|100
+comma
+DECL|enumerator|NF_IP_PRI_SELINUX_LAST
+id|NF_IP_PRI_SELINUX_LAST
+op_assign
+l_int|225
 comma
 DECL|enumerator|NF_IP_PRI_LAST
 id|NF_IP_PRI_LAST

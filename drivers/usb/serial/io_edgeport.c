@@ -4895,6 +4895,15 @@ comma
 id|edge_port
 )paren
 suffix:semicolon
+multiline_comment|/* decrement the number of credits we have by the number we just sent */
+id|edge_port-&gt;txCredits
+op_sub_assign
+id|count
+suffix:semicolon
+id|edge_port-&gt;icount.tx
+op_add_assign
+id|count
+suffix:semicolon
 id|urb-&gt;dev
 op_assign
 id|edge_serial-&gt;serial-&gt;dev
@@ -4928,16 +4937,13 @@ id|edge_port-&gt;write_in_progress
 op_assign
 id|FALSE
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* decrement the number of credits we have by the number we just sent */
+multiline_comment|/* revert the credits as something bad happened. */
 id|edge_port-&gt;txCredits
-op_sub_assign
+op_add_assign
 id|count
 suffix:semicolon
 id|edge_port-&gt;icount.tx
-op_add_assign
+op_sub_assign
 id|count
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/scsi3.h&n; *      SCSI-3 definitions and macros.&n; *      (Ultimately) SCSI-3 definitions; for now, inheriting&n; *      SCSI-2 definitions.&n; *&n; *  Copyright (c) 1996-2002 Steven J. Ralston&n; *  Written By: Steven J. Ralston (19960517)&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: scsi3.h,v 1.9 2002/02/27 18:45:02 sralston Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/scsi3.h&n; *      SCSI-3 definitions and macros.&n; *      (Ultimately) SCSI-3 definitions; for now, inheriting&n; *      SCSI-2 definitions.&n; *&n; *  Copyright (c) 1996-2003 Steven J. Ralston&n; *  Written By: Steven J. Ralston (19960517)&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:mpt_linux_developer@lsil.com)&n; *&n; *  $Id: scsi3.h,v 1.9 2002/02/27 18:45:02 sralston Exp $&n; */
 macro_line|#ifndef SCSI3_H_INCLUDED
 DECL|macro|SCSI3_H_INCLUDED
 mdefine_line|#define SCSI3_H_INCLUDED

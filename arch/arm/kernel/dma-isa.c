@@ -321,6 +321,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|direction
+op_assign
+id|PCI_DMA_NONE
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace

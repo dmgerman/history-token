@@ -68,6 +68,10 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|timespec
+id|tv
+suffix:semicolon
 r_int
 r_int
 id|syscon
@@ -109,12 +113,23 @@ id|TC2D
 )paren
 suffix:semicolon
 multiline_comment|/* 512kHz / 100Hz - 1 */
-id|xtime.tv_sec
+id|tv.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|tv.tv_sec
 op_assign
 id|clps_readl
 c_func
 (paren
 id|RTCDR
+)paren
+suffix:semicolon
+id|do_settimeofday
+c_func
+(paren
+op_amp
+id|tv
 )paren
 suffix:semicolon
 )brace

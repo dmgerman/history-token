@@ -1,5 +1,5 @@
 multiline_comment|/*&n;    piix4.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;    Copyright (c) 1998 - 2002 Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Philip Edelbrock &lt;phil@netroedge.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-multiline_comment|/*&n;   Supports:&n;&t;Intel PIIX4, 440MX&n;&t;Serverworks OSB4, CSB5&n;&t;SMSC Victory66&n;&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
+multiline_comment|/*&n;   Supports:&n;&t;Intel PIIX4, 440MX&n;&t;Serverworks OSB4, CSB5, CSB6&n;&t;SMSC Victory66&n;&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
 multiline_comment|/* #define DEBUG 1 */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -144,6 +144,30 @@ id|force_addr
 comma
 l_string|&quot;Forcibly enable the PIIX4 at the given address. &quot;
 l_string|&quot;EXTREMELY DANGEROUS!&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* If fix_hstcfg is set to anything different from 0, we reset one of the&n;   registers to be a valid value. */
+DECL|variable|fix_hstcfg
+r_static
+r_int
+id|fix_hstcfg
+op_assign
+l_int|0
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|fix_hstcfg
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|fix_hstcfg
+comma
+l_string|&quot;Fix config register. Needed on some boards (Force CPCI735).&quot;
 )paren
 suffix:semicolon
 r_static
@@ -394,19 +418,24 @@ op_amp
 l_int|0x02
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|fix_hstcfg
+)paren
+(brace
 id|dev_info
 c_func
 (paren
 op_amp
 id|PIIX4_dev-&gt;dev
 comma
-l_string|&quot;Worked around buggy BIOS (I2C)&bslash;n&quot;
+l_string|&quot;Working around buggy BIOS &quot;
+l_string|&quot;(I2C)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|temp
-op_assign
-id|temp
-op_amp
+op_and_assign
 l_int|0xfd
 suffix:semicolon
 id|pci_write_config_byte
@@ -419,6 +448,30 @@ comma
 id|temp
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|dev_info
+c_func
+(paren
+op_amp
+id|PIIX4_dev-&gt;dev
+comma
+l_string|&quot;Unusual config register &quot;
+l_string|&quot;value&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dev_info
+c_func
+(paren
+op_amp
+id|PIIX4_dev-&gt;dev
+comma
+l_string|&quot;Try using fix_hstcfg=1 if &quot;
+l_string|&quot;you experience problems&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* If force_addr is set, we program the new address here. Just to make&n;&t;   sure, we disable the PIIX4 first. */
 r_if
@@ -1721,6 +1774,34 @@ dot
 id|device
 op_assign
 id|PCI_DEVICE_ID_SERVERWORKS_CSB5
+comma
+dot
+id|subvendor
+op_assign
+id|PCI_ANY_ID
+comma
+dot
+id|subdevice
+op_assign
+id|PCI_ANY_ID
+comma
+dot
+id|driver_data
+op_assign
+l_int|0
+comma
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+id|PCI_VENDOR_ID_SERVERWORKS
+comma
+dot
+id|device
+op_assign
+id|PCI_DEVICE_ID_SERVERWORKS_CSB6
 comma
 dot
 id|subvendor

@@ -39,6 +39,8 @@ macro_line|#else
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS 16
 macro_line|#endif
+DECL|macro|NR_VECTORS
+mdefine_line|#define NR_VECTORS 256
 DECL|macro|NR_IRQ_VECTORS
 mdefine_line|#define NR_IRQ_VECTORS NR_IRQS
 DECL|macro|FPU_IRQ

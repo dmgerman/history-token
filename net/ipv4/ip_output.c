@@ -1663,6 +1663,12 @@ id|to-&gt;nfct
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
+id|nf_bridge_put
+c_func
+(paren
+id|to-&gt;nf_bridge
+)paren
+suffix:semicolon
 id|to-&gt;nf_bridge
 op_assign
 id|from-&gt;nf_bridge

@@ -204,9 +204,13 @@ DECL|macro|_PAGE_KERNEL_TABLE
 mdefine_line|#define _PAGE_KERNEL_TABLE&t;(PMD_TYPE_TABLE | PMD_BIT4 | PMD_DOMAIN(DOMAIN_KERNEL))
 multiline_comment|/*&n; * The following macros handle the cache and bufferable bits...&n; */
 DECL|macro|_L_PTE_DEFAULT
-mdefine_line|#define _L_PTE_DEFAULT&t;L_PTE_PRESENT | L_PTE_YOUNG
+mdefine_line|#define _L_PTE_DEFAULT&t;L_PTE_PRESENT | L_PTE_YOUNG | L_PTE_CACHEABLE | L_PTE_BUFFERABLE
 DECL|macro|_L_PTE_READ
-mdefine_line|#define _L_PTE_READ&t;L_PTE_USER | L_PTE_EXEC | L_PTE_CACHEABLE | L_PTE_BUFFERABLE
+mdefine_line|#define _L_PTE_READ&t;L_PTE_USER | L_PTE_EXEC
+r_extern
+id|pgprot_t
+id|pgprot_kernel
+suffix:semicolon
 DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE       __pgprot(_L_PTE_DEFAULT)
 DECL|macro|PAGE_COPY
@@ -216,9 +220,7 @@ mdefine_line|#define PAGE_SHARED     __pgprot(_L_PTE_DEFAULT | _L_PTE_READ | L_P
 DECL|macro|PAGE_READONLY
 mdefine_line|#define PAGE_READONLY   __pgprot(_L_PTE_DEFAULT | _L_PTE_READ)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL     __pgprot(_L_PTE_DEFAULT | L_PTE_CACHEABLE | L_PTE_BUFFERABLE | L_PTE_DIRTY | L_PTE_WRITE | L_PTE_EXEC)
-DECL|macro|_PAGE_CHG_MASK
-mdefine_line|#define _PAGE_CHG_MASK&t;(PAGE_MASK | L_PTE_DIRTY | L_PTE_YOUNG)
+mdefine_line|#define PAGE_KERNEL&t;pgprot_kernel
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * The table below defines the page protection levels that we insert into our&n; * Linux page table version.  These get translated into the best that the&n; * architecture can perform.  Note that on most ARM hardware:&n; *  1) We cannot do execute protection&n; *  2) If we could do execute protection, then read is implied&n; *  3) write implies read permissions&n; */
 DECL|macro|__P000
@@ -508,6 +510,17 @@ id|pgprot_t
 id|newprot
 )paren
 (brace
+r_const
+r_int
+r_int
+id|mask
+op_assign
+id|L_PTE_EXEC
+op_or
+id|L_PTE_WRITE
+op_or
+id|L_PTE_USER
+suffix:semicolon
 id|pte_val
 c_func
 (paren
@@ -521,13 +534,18 @@ c_func
 id|pte
 )paren
 op_amp
-id|_PAGE_CHG_MASK
+op_complement
+id|mask
 )paren
 op_or
+(paren
 id|pgprot_val
 c_func
 (paren
 id|newprot
+)paren
+op_amp
+id|mask
 )paren
 suffix:semicolon
 r_return

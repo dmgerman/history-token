@@ -385,6 +385,8 @@ DECL|macro|VENDOR_MOBILITY
 mdefine_line|#define&t;VENDOR_MOBILITY&t;&t;0x1342
 DECL|macro|VENDOR_NETGEAR
 mdefine_line|#define&t;VENDOR_NETGEAR&t;&t;0x0846
+DECL|macro|VENDOR_OCT
+mdefine_line|#define&t;VENDOR_OCT&t;&t;0x0b39
 DECL|macro|VENDOR_SMARTBRIDGES
 mdefine_line|#define&t;VENDOR_SMARTBRIDGES&t;0x08d1
 DECL|macro|VENDOR_SMC
@@ -571,6 +573,8 @@ comma
 id|DEFAULT_GPIO_RESET
 op_or
 id|PEGASUS_II
+op_or
+id|HAS_HOME_PNA
 )paren
 id|PEGASUS_DEV
 c_func
@@ -1083,6 +1087,19 @@ comma
 id|VENDOR_NETGEAR
 comma
 l_int|0x1020
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;OCT Inc.&quot;
+comma
+id|VENDOR_OCT
+comma
+l_int|0x0109
 comma
 id|DEFAULT_GPIO_RESET
 op_or

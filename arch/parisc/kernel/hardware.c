@@ -8813,6 +8813,18 @@ comma
 (brace
 id|HPHW_FIO
 comma
+l_int|0x015
+comma
+l_int|0x0007B
+comma
+l_int|0x0
+comma
+l_string|&quot;KittyHawk GSY Core Audio&quot;
+)brace
+comma
+(brace
+id|HPHW_FIO
+comma
 l_int|0x016
 comma
 l_int|0x0007B
@@ -9432,6 +9444,18 @@ comma
 l_int|0x0
 comma
 l_string|&quot;Fast Pace Core HPIB&quot;
+)brace
+comma
+(brace
+id|HPHW_FIO
+comma
+l_int|0x015
+comma
+l_int|0x00082
+comma
+l_int|0x0
+comma
+l_string|&quot;KittyHawk GSY Core SCSI&quot;
 )brace
 comma
 (brace

@@ -70,7 +70,7 @@ macro_line|#ifdef CONFIG_IA64_DEBUG_CMPXCHG
 DECL|macro|CMPXCHG_BUGCHECK_DECL
 macro_line|# define CMPXCHG_BUGCHECK_DECL&t;int _cmpxchg_bugcheck_count = 128;
 DECL|macro|CMPXCHG_BUGCHECK
-macro_line|# define CMPXCHG_BUGCHECK(v)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_cmpxchg_bugcheck_count-- &lt;= 0) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;void *ip;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;extern int printk(const char *fmt, ...);&t;&t;&t;&bslash;&n;&t;&t;ip = ia64_getreg(_IA64_REG_IP);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;CMPXCHG_BUGCHECK: stuck at %p on word %p&bslash;n&quot;, ip, (v));&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
+macro_line|# define CMPXCHG_BUGCHECK(v)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_cmpxchg_bugcheck_count-- &lt;= 0) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;void *ip;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;extern int printk(const char *fmt, ...);&t;&t;&t;&bslash;&n;&t;&t;ip = (void *) ia64_getreg(_IA64_REG_IP);&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;CMPXCHG_BUGCHECK: stuck at %p on word %p&bslash;n&quot;, ip, (v));&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
 macro_line|#else /* !CONFIG_IA64_DEBUG_CMPXCHG */
 DECL|macro|CMPXCHG_BUGCHECK_DECL
 macro_line|# define CMPXCHG_BUGCHECK_DECL

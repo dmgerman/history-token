@@ -144,10 +144,10 @@ DECL|macro|_PAGE_SZHUGE
 mdefine_line|#define _PAGE_SZHUGE&t;_PAGE_SZ4MB
 macro_line|#elif defined(CONFIG_HUGETLB_PAGE_SIZE_512K)
 DECL|macro|_PAGE_SZHUGE
-mdefine_line|#define _PAGE_SZHUGE&t;_PAGE_512K
+mdefine_line|#define _PAGE_SZHUGE&t;_PAGE_SZ512K
 macro_line|#elif defined(CONFIG_HUGETLB_PAGE_SIZE_64K)
 DECL|macro|_PAGE_SZHUGE
-mdefine_line|#define _PAGE_SZHUGE&t;_PAGE_64K
+mdefine_line|#define _PAGE_SZHUGE&t;_PAGE_SZ64K
 macro_line|#endif
 DECL|macro|_PAGE_CACHE
 mdefine_line|#define _PAGE_CACHE&t;(_PAGE_CP | _PAGE_CV)

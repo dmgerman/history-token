@@ -1,56 +1,9 @@
 macro_line|#ifndef __LINUX_CPUMASK_H
 DECL|macro|__LINUX_CPUMASK_H
 mdefine_line|#define __LINUX_CPUMASK_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/bitmap.h&gt;
-macro_line|#if NR_CPUS &gt; BITS_PER_LONG &amp;&amp; NR_CPUS != 1
-DECL|macro|CPU_ARRAY_SIZE
-mdefine_line|#define CPU_ARRAY_SIZE&t;&t;BITS_TO_LONGS(NR_CPUS)
-DECL|struct|cpumask
-r_struct
-id|cpumask
-(brace
-DECL|member|mask
-r_int
-r_int
-id|mask
-(braket
-id|CPU_ARRAY_SIZE
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|typedef|cpumask_t
-r_typedef
-r_struct
-id|cpumask
-id|cpumask_t
-suffix:semicolon
-macro_line|#else
-DECL|typedef|cpumask_t
-r_typedef
-r_int
-r_int
-id|cpumask_t
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
-macro_line|#if NR_CPUS &gt; BITS_PER_LONG
-macro_line|#include &lt;asm-generic/cpumask_array.h&gt;
-macro_line|#else
-macro_line|#include &lt;asm-generic/cpumask_arith.h&gt;
-macro_line|#endif
-macro_line|#else
-macro_line|#include &lt;asm-generic/cpumask_up.h&gt;
-macro_line|#endif
-macro_line|#if NR_CPUS &lt;= 4*BITS_PER_LONG
-macro_line|#include &lt;asm-generic/cpumask_const_value.h&gt;
-macro_line|#else
-macro_line|#include &lt;asm-generic/cpumask_const_reference.h&gt;
-macro_line|#endif
+macro_line|#include &lt;asm/cpumask.h&gt;
+macro_line|#include &lt;asm/bug.h&gt;
 macro_line|#ifdef CONFIG_SMP
 r_extern
 id|cpumask_t
@@ -90,7 +43,11 @@ c_func
 (paren
 id|cpu
 comma
+id|mk_cpumask_const
+c_func
+(paren
 id|map
+)paren
 )paren
 suffix:semicolon
 r_while
@@ -113,8 +70,61 @@ id|cpu
 suffix:semicolon
 )brace
 DECL|macro|for_each_cpu
-mdefine_line|#define for_each_cpu(cpu, map)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (cpu = first_cpu_const(map);&t;&t;&t;&t;&bslash;&n;&t;&t;cpu &lt; NR_CPUS;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cpu = next_cpu_const(cpu,map))
+mdefine_line|#define for_each_cpu(cpu, map)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (cpu = first_cpu_const(mk_cpumask_const(map));&t;&t;&bslash;&n;&t;&t;cpu &lt; NR_CPUS;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cpu = next_cpu_const(cpu,mk_cpumask_const(map)))
 DECL|macro|for_each_online_cpu
-mdefine_line|#define for_each_online_cpu(cpu, map)&t;&t;&t;&t;&t;&bslash;&n;&t;for (cpu = first_cpu_const(map);&t;&t;&t;&t;&bslash;&n;&t;&t;cpu &lt; NR_CPUS;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cpu = next_online_cpu(cpu,map))
+mdefine_line|#define for_each_online_cpu(cpu, map)&t;&t;&t;&t;&t;&bslash;&n;&t;for (cpu = first_cpu_const(mk_cpumask_const(map));&t;&t;&bslash;&n;&t;&t;cpu &lt; NR_CPUS;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cpu = next_online_cpu(cpu,map))
+r_extern
+r_int
+id|__mask_snprintf_len
+c_func
+(paren
+r_char
+op_star
+id|buf
+comma
+r_int
+r_int
+id|buflen
+comma
+r_const
+r_int
+r_int
+op_star
+id|maskp
+comma
+r_int
+r_int
+id|maskbytes
+)paren
+suffix:semicolon
+DECL|macro|cpumask_snprintf
+mdefine_line|#define cpumask_snprintf(buf, buflen, map)&t;&t;&t;&t;&bslash;&n;&t;__mask_snprintf_len(buf, buflen, cpus_addr(map), sizeof(map))
+r_extern
+r_int
+id|__mask_parse_len
+c_func
+(paren
+r_const
+r_char
+id|__user
+op_star
+id|ubuf
+comma
+r_int
+r_int
+id|ubuflen
+comma
+r_int
+r_int
+op_star
+id|maskp
+comma
+r_int
+r_int
+id|maskbytes
+)paren
+suffix:semicolon
+DECL|macro|cpumask_parse
+mdefine_line|#define cpumask_parse(buf, buflen, map)&t;&t;&t;&t;&t;&bslash;&n;&t;__mask_parse_len(buf, buflen, cpus_addr(map), sizeof(map))
 macro_line|#endif /* __LINUX_CPUMASK_H */
 eof

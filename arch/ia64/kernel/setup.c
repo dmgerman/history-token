@@ -33,6 +33,14 @@ macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#if defined(CONFIG_SMP) &amp;&amp; (IA64_CPU_SIZE &gt; PAGE_SIZE)
 macro_line|# error &quot;struct cpuinfo_ia64 too big!&quot;
 macro_line|#endif
+macro_line|#ifdef CONFIG_EFI
+DECL|variable|efi_enabled
+r_int
+id|efi_enabled
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|__per_cpu_offset
 r_int

@@ -184,6 +184,16 @@ r_int
 id|default_blksize
 suffix:semicolon
 multiline_comment|/* Forced blocksize, -1 = no value */
+DECL|member|cdevs
+r_struct
+id|cdev
+op_star
+id|cdevs
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* Auto-rewind and non-rewind devices */
 DECL|typedef|ST_mode
 )brace
 id|ST_mode
@@ -197,7 +207,9 @@ mdefine_line|#define ST_MODE_SHIFT (7 - ST_NBR_MODE_BITS)
 DECL|macro|ST_MODE_MASK
 mdefine_line|#define ST_MODE_MASK ((ST_NBR_MODES - 1) &lt;&lt; ST_MODE_SHIFT)
 DECL|macro|ST_MAX_TAPES
-mdefine_line|#define ST_MAX_TAPES (1 &lt;&lt; ST_MODE_SHIFT)
+mdefine_line|#define ST_MAX_TAPES 128
+DECL|macro|ST_MAX_TAPE_ENTRIES
+mdefine_line|#define ST_MAX_TAPE_ENTRIES  (ST_MAX_TAPES &lt;&lt; (ST_NBR_MODE_BITS + 1))
 multiline_comment|/* The status related to each partition */
 r_typedef
 r_struct

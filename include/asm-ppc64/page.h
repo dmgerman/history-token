@@ -40,6 +40,8 @@ DECL|macro|ARCH_HAS_HUGEPAGE_ONLY_RANGE
 mdefine_line|#define ARCH_HAS_HUGEPAGE_ONLY_RANGE
 DECL|macro|is_hugepage_only_range
 mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;( ((addr &gt; (TASK_HPAGE_BASE-len)) &amp;&amp; (addr &lt; TASK_HPAGE_END)) || &bslash;&n;&t;  ((current-&gt;mm-&gt;context &amp; CONTEXT_LOW_HPAGES) &amp;&amp; &bslash;&n;&t;   (addr &gt; (TASK_HPAGE_BASE_32-len)) &amp;&amp; (addr &lt; TASK_HPAGE_END_32)) )
+DECL|macro|hugetlb_free_pgtables
+mdefine_line|#define hugetlb_free_pgtables free_pgtables
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 DECL|macro|in_hugepage_area

@@ -229,7 +229,7 @@ id|RTC_IRQP_SET32
 suffix:colon
 id|cmd
 op_assign
-id|RTC_EPOCH_SET
+id|RTC_IRQP_SET
 suffix:semicolon
 r_break
 suffix:semicolon

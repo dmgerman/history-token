@@ -32,7 +32,8 @@ r_int
 id|address
 comma
 r_int
-id|write_access
+op_star
+id|type
 )paren
 (brace
 r_struct
@@ -308,6 +309,23 @@ id|kunmap
 c_func
 (paren
 id|page
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * If I understand ncp_read_kernel() properly, the above always&n;&t; * fetches from the network, here the analogue of disk.&n;&t; * -- wli&n;&t; */
+r_if
+c_cond
+(paren
+id|type
+)paren
+op_star
+id|type
+op_assign
+id|VM_FAULT_MAJOR
+suffix:semicolon
+id|inc_page_state
+c_func
+(paren
+id|pgmajfault
 )paren
 suffix:semicolon
 r_return

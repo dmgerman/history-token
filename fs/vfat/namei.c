@@ -7,29 +7,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
-DECL|macro|DEBUG_LEVEL
-mdefine_line|#define DEBUG_LEVEL 0
-macro_line|#if (DEBUG_LEVEL &gt;= 1)
-DECL|macro|PRINTK1
-macro_line|#  define PRINTK1(x) printk x
-macro_line|#else
-DECL|macro|PRINTK1
-macro_line|#  define PRINTK1(x)
-macro_line|#endif
-macro_line|#if (DEBUG_LEVEL &gt;= 2)
-DECL|macro|PRINTK2
-macro_line|#  define PRINTK2(x) printk x
-macro_line|#else
-DECL|macro|PRINTK2
-macro_line|#  define PRINTK2(x)
-macro_line|#endif
-macro_line|#if (DEBUG_LEVEL &gt;= 3)
-DECL|macro|PRINTK3
-macro_line|#  define PRINTK3(x) printk x
-macro_line|#else
-DECL|macro|PRINTK3
-macro_line|#  define PRINTK3(x)
-macro_line|#endif
 r_static
 r_int
 id|vfat_hashi
@@ -2573,6 +2550,15 @@ c_cond
 id|utf8
 )paren
 (brace
+r_int
+id|name_len
+op_assign
+id|strlen
+c_func
+(paren
+id|name
+)paren
+suffix:semicolon
 op_star
 id|outlen
 op_assign
@@ -2590,22 +2576,15 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|name
-(braket
-id|len
-op_minus
-l_int|1
-)braket
-op_eq
-l_char|&squot;.&squot;
-)paren
+multiline_comment|/*&n;&t;&t; * We stripped &squot;.&squot;s before and set len appropriately,&n;&t;&t; * but utf8_mbstowcs doesn&squot;t care about len&n;&t;&t; */
 op_star
 id|outlen
 op_sub_assign
-l_int|2
+(paren
+id|name_len
+op_minus
+id|len
+)paren
 suffix:semicolon
 id|op
 op_assign
@@ -2624,21 +2603,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_if
-c_cond
-(paren
-id|name
-(braket
-id|len
-op_minus
-l_int|1
-)braket
-op_eq
-l_char|&squot;.&squot;
-)paren
-id|len
-op_decrement
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3360,17 +3324,6 @@ id|i
 )braket
 suffix:semicolon
 )brace
-id|PRINTK3
-c_func
-(paren
-(paren
-l_string|&quot;vfat_fill_slots 3: slots=%d&bslash;n&quot;
-comma
-op_star
-id|slots
-)paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3485,14 +3438,6 @@ id|ps
 suffix:semicolon
 id|shortname
 suffix:colon
-id|PRINTK3
-c_func
-(paren
-(paren
-l_string|&quot;vfat_fill_slots 9&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* build the entry of 8.3 alias name */
 (paren
 op_star
@@ -3609,12 +3554,15 @@ id|loff_t
 id|offset
 suffix:semicolon
 r_int
+id|res
+comma
 id|slots
 comma
 id|slot
 suffix:semicolon
 r_int
-id|res
+r_int
+id|len
 suffix:semicolon
 r_struct
 id|msdos_dir_entry
@@ -3629,13 +3577,27 @@ suffix:semicolon
 id|loff_t
 id|dummy_i_pos
 suffix:semicolon
+id|len
+op_assign
+id|vfat_striptail_len
+c_func
+(paren
+id|qname
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|ENOENT
+suffix:semicolon
 id|dir_slots
 op_assign
-(paren
-r_struct
-id|msdos_dir_slot
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -3670,11 +3632,7 @@ id|dir
 comma
 id|qname-&gt;name
 comma
-id|vfat_striptail_len
-c_func
-(paren
-id|qname
-)paren
+id|len
 comma
 id|dir_slots
 comma
@@ -3972,7 +3930,30 @@ id|loff_t
 id|offset
 suffix:semicolon
 r_int
+r_int
+id|len
+suffix:semicolon
+r_int
 id|res
+suffix:semicolon
+id|len
+op_assign
+id|vfat_striptail_len
+c_func
+(paren
+id|qname
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|ENOENT
 suffix:semicolon
 id|res
 op_assign
@@ -3983,11 +3964,7 @@ id|dir
 comma
 id|qname-&gt;name
 comma
-id|vfat_striptail_len
-c_func
-(paren
-id|qname
-)paren
+id|len
 comma
 (paren
 id|MSDOS_SB
@@ -4116,18 +4093,6 @@ id|de
 suffix:semicolon
 r_int
 id|table
-suffix:semicolon
-id|PRINTK2
-c_func
-(paren
-(paren
-l_string|&quot;vfat_lookup: name=%s, len=%d&bslash;n&quot;
-comma
-id|dentry-&gt;d_name.name
-comma
-id|dentry-&gt;d_name.len
-)paren
-)paren
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -4841,16 +4806,6 @@ id|msdos_dir_entry
 op_star
 id|de
 suffix:semicolon
-id|PRINTK1
-c_func
-(paren
-(paren
-l_string|&quot;vfat_unlink: %s&bslash;n&quot;
-comma
-id|dentry-&gt;d_name.name
-)paren
-)paren
-suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -5303,14 +5258,6 @@ op_amp
 id|old_de
 )paren
 suffix:semicolon
-id|PRINTK3
-c_func
-(paren
-(paren
-l_string|&quot;vfat_rename 2&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5333,10 +5280,11 @@ r_if
 c_cond
 (paren
 id|is_dir
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
 (paren
-id|res
-op_assign
 id|fat_scan
 c_func
 (paren
@@ -5353,13 +5301,20 @@ comma
 op_amp
 id|dotdot_i_pos
 )paren
-)paren
 OL
 l_int|0
 )paren
+(brace
+id|res
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_goto
 id|rename_done
 suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren

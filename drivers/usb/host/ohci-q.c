@@ -1630,10 +1630,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* request unlinking of an endpoint from an operational HC.&n; * put the ep on the rm_list&n; * real work is done at the next start frame (SF) hardware interrupt&n; */
-DECL|function|start_urb_unlink
+DECL|function|start_ed_unlink
 r_static
 r_void
-id|start_urb_unlink
+id|start_ed_unlink
 (paren
 r_struct
 id|ohci_hcd
@@ -1664,9 +1664,10 @@ suffix:semicolon
 multiline_comment|/* SF interrupt might get delayed; record the frame counter value that&n;&t; * indicates when the HC isn&squot;t looking at it, so concurrent unlinks&n;&t; * behave.  frame_no wraps every 2^16 msec, and changes right before&n;&t; * SF is triggered.&n;&t; */
 id|ed-&gt;tick
 op_assign
-id|le16_to_cpu
+id|OHCI_FRAME_NO
+c_func
 (paren
-id|ohci-&gt;hcca-&gt;frame_no
+id|ohci-&gt;hcca
 )paren
 op_plus
 l_int|1
@@ -1778,7 +1779,7 @@ r_int
 id|hash
 suffix:semicolon
 singleline_comment|// ASSERT (index &lt; urb_priv-&gt;length);
-multiline_comment|/* aim for only one interrupt per urb.  mostly applies to control&n;&t; * and iso; other urbs rarely need more than one TD per urb.&n;&t; * this way, only final tds (or ones with an error) cause IRQs.&n;&t; * at least immediately; use DI=6 in case any control request is&n;&t; * tempted to die part way through.&n;&t; *&n;&t; * NOTE: could delay interrupts even for the last TD, and get fewer&n;&t; * interrupts ... increasing per-urb latency by sharing interrupts.&n;&t; * Drivers that queue bulk urbs may request that behavior.&n;&t; */
+multiline_comment|/* aim for only one interrupt per urb.  mostly applies to control&n;&t; * and iso; other urbs rarely need more than one TD per urb.&n;&t; * this way, only final tds (or ones with an error) cause IRQs.&n;&t; * at least immediately; use DI=6 in case any control request is&n;&t; * tempted to die part way through.  (and to force the hc to flush&n;&t; * its donelist soonish, even on unlink paths.)&n;&t; *&n;&t; * NOTE: could delay interrupts even for the last TD, and get fewer&n;&t; * interrupts ... increasing per-urb latency by sharing interrupts.&n;&t; * Drivers that queue bulk urbs may request that behavior.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3320,7 +3321,20 @@ id|u32
 op_star
 id|prev
 suffix:semicolon
-multiline_comment|/* only take off EDs that the HC isn&squot;t using, accounting for&n;&t;&t; * frame counter wraps.&n;&t;&t; */
+multiline_comment|/* only take off EDs that the HC isn&squot;t using, accounting for&n;&t;&t; * frame counter wraps and EDs with partially retired TDs&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|likely
+(paren
+id|HCD_IS_RUNNING
+c_func
+(paren
+id|ohci-&gt;hcd.state
+)paren
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -3330,14 +3344,10 @@ id|tick
 comma
 id|ed-&gt;tick
 )paren
-op_logical_and
-id|HCD_IS_RUNNING
-c_func
-(paren
-id|ohci-&gt;hcd.state
-)paren
 )paren
 (brace
+id|skip_ed
+suffix:colon
 id|last
 op_assign
 op_amp
@@ -3345,6 +3355,59 @@ id|ed-&gt;ed_next
 suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+(paren
+op_amp
+id|ed-&gt;td_list
+)paren
+)paren
+(brace
+r_struct
+id|td
+op_star
+id|td
+suffix:semicolon
+id|u32
+id|head
+suffix:semicolon
+id|td
+op_assign
+id|list_entry
+(paren
+id|ed-&gt;td_list.next
+comma
+r_struct
+id|td
+comma
+id|td_list
+)paren
+suffix:semicolon
+id|head
+op_assign
+id|cpu_to_le32
+(paren
+id|ed-&gt;hwHeadP
+)paren
+op_amp
+id|TD_MASK
+suffix:semicolon
+multiline_comment|/* INTR_WDH may need to clean up first */
+r_if
+c_cond
+(paren
+id|td-&gt;td_dma
+op_ne
+id|head
+)paren
+r_goto
+id|skip_ed
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* reentrancy:  if we drop the schedule lock, someone might&n;&t;&t; * have modified this list.  normally it&squot;s just prepending&n;&t;&t; * entries (which we&squot;d ignore), but paranoia won&squot;t hurt.&n;&t;&t; */
 op_star

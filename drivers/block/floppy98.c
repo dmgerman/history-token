@@ -10199,7 +10199,7 @@ c_func
 id|COMMAND
 )paren
 op_eq
-id|FD_READ
+id|FD_WRITE
 )paren
 id|printk
 c_func
@@ -11796,7 +11796,7 @@ c_func
 id|COMMAND
 )paren
 op_eq
-id|FD_READ
+id|FD_WRITE
 )paren
 id|printk
 c_func

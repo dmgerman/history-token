@@ -2,12 +2,7 @@ macro_line|#ifndef _LINUX_MSDOS_FS_H
 DECL|macro|_LINUX_MSDOS_FS_H
 mdefine_line|#define _LINUX_MSDOS_FS_H
 multiline_comment|/*&n; * The MS-DOS filesystem constants/structures&n; */
-macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-r_struct
-id|statfs
-suffix:semicolon
 DECL|macro|SECTOR_SIZE
 mdefine_line|#define SECTOR_SIZE&t;512&t;&t;/* sector size (bytes) */
 DECL|macro|SECTOR_BITS
@@ -20,6 +15,8 @@ DECL|macro|MSDOS_DPS
 mdefine_line|#define MSDOS_DPS&t;(SECTOR_SIZE / sizeof(struct msdos_dir_entry))
 DECL|macro|MSDOS_DPS_BITS
 mdefine_line|#define MSDOS_DPS_BITS&t;4&t;&t;/* log2(MSDOS_DPS) */
+DECL|macro|MSDOS_SUPER_MAGIC
+mdefine_line|#define MSDOS_SUPER_MAGIC 0x4d44 /* MD */
 DECL|macro|MSDOS_ROOT_INO
 mdefine_line|#define MSDOS_ROOT_INO&t;1&t;/* == MINIX_ROOT_INO */
 DECL|macro|MSDOS_DIR_BITS
@@ -29,8 +26,6 @@ DECL|macro|FAT_MAX_DIR_ENTRIES
 mdefine_line|#define FAT_MAX_DIR_ENTRIES&t;(65536)
 DECL|macro|FAT_MAX_DIR_SIZE
 mdefine_line|#define FAT_MAX_DIR_SIZE&t;(FAT_MAX_DIR_ENTRIES &lt;&lt; MSDOS_DIR_BITS)
-DECL|macro|MSDOS_SUPER_MAGIC
-mdefine_line|#define MSDOS_SUPER_MAGIC 0x4d44 /* MD */
 DECL|macro|ATTR_NONE
 mdefine_line|#define ATTR_NONE    0 /* no attribute bits */
 DECL|macro|ATTR_RO
@@ -45,12 +40,12 @@ DECL|macro|ATTR_DIR
 mdefine_line|#define ATTR_DIR     16 /* directory */
 DECL|macro|ATTR_ARCH
 mdefine_line|#define ATTR_ARCH    32 /* archived */
+multiline_comment|/* attribute bits that are copied &quot;as is&quot; */
 DECL|macro|ATTR_UNUSED
 mdefine_line|#define ATTR_UNUSED  (ATTR_VOLUME | ATTR_ARCH | ATTR_SYS | ATTR_HIDDEN)
-multiline_comment|/* attribute bits that are copied &quot;as is&quot; */
+multiline_comment|/* bits that are used by the Windows 95/Windows NT extended FAT */
 DECL|macro|ATTR_EXT
 mdefine_line|#define ATTR_EXT     (ATTR_RO | ATTR_HIDDEN | ATTR_SYS | ATTR_VOLUME)
-multiline_comment|/* bits that are used by the Windows 95/Windows NT extended FAT */
 DECL|macro|CASE_LOWER_BASE
 mdefine_line|#define CASE_LOWER_BASE 8&t;/* base is lower case */
 DECL|macro|CASE_LOWER_EXT
@@ -59,9 +54,15 @@ DECL|macro|DELETED_FLAG
 mdefine_line|#define DELETED_FLAG 0xe5 /* marks file as deleted when in name[0] */
 DECL|macro|IS_FREE
 mdefine_line|#define IS_FREE(n) (!*(n) || *(n) == DELETED_FLAG)
+multiline_comment|/* valid file mode bits */
 DECL|macro|MSDOS_VALID_MODE
 mdefine_line|#define MSDOS_VALID_MODE (S_IFREG | S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO)
-multiline_comment|/* valid file mode bits */
+multiline_comment|/* Convert attribute bits and a mask to the UNIX mode. */
+DECL|macro|MSDOS_MKMODE
+mdefine_line|#define MSDOS_MKMODE(a, m) (m &amp; (a &amp; ATTR_RO ? S_IRUGO|S_IXUGO : S_IRWXUGO))
+multiline_comment|/* Convert the UNIX mode to MS-DOS attribute bits. */
+DECL|macro|MSDOS_MKATTR
+mdefine_line|#define MSDOS_MKATTR(m) ((m &amp; S_IWUGO) ? ATTR_NONE : ATTR_RO)
 DECL|macro|MSDOS_NAME
 mdefine_line|#define MSDOS_NAME 11 /* maximum name length */
 DECL|macro|MSDOS_LONGNAME
@@ -72,20 +73,27 @@ DECL|macro|MSDOS_DOT
 mdefine_line|#define MSDOS_DOT    &quot;.          &quot; /* &quot;.&quot;, padded to MSDOS_NAME chars */
 DECL|macro|MSDOS_DOTDOT
 mdefine_line|#define MSDOS_DOTDOT &quot;..         &quot; /* &quot;..&quot;, padded to MSDOS_NAME chars */
-DECL|macro|MSDOS_FAT12
-mdefine_line|#define MSDOS_FAT12 4084 /* maximum number of clusters in a 12 bit FAT */
 multiline_comment|/* media of boot sector */
 DECL|macro|FAT_VALID_MEDIA
 mdefine_line|#define FAT_VALID_MEDIA(x)&t;((0xF8 &lt;= (x) &amp;&amp; (x) &lt;= 0xFF) || (x) == 0xF0)
 DECL|macro|FAT_FIRST_ENT
 mdefine_line|#define FAT_FIRST_ENT(s, x)&t;((MSDOS_SB(s)-&gt;fat_bits == 32 ? 0x0FFFFF00 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? 0xFF00 : 0xF00) | (x))
+multiline_comment|/* maximum number of clusters */
+DECL|macro|MAX_FAT12
+mdefine_line|#define MAX_FAT12 0xFF4
+DECL|macro|MAX_FAT16
+mdefine_line|#define MAX_FAT16 0xFFF4
+DECL|macro|MAX_FAT32
+mdefine_line|#define MAX_FAT32 0x0FFFFFF6
+DECL|macro|MAX_FAT
+mdefine_line|#define MAX_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? MAX_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? MAX_FAT16 : MAX_FAT12)
 multiline_comment|/* bad cluster mark */
 DECL|macro|BAD_FAT12
 mdefine_line|#define BAD_FAT12 0xFF7
 DECL|macro|BAD_FAT16
 mdefine_line|#define BAD_FAT16 0xFFF7
 DECL|macro|BAD_FAT32
-mdefine_line|#define BAD_FAT32 0xFFFFFF7
+mdefine_line|#define BAD_FAT32 0x0FFFFFF7
 DECL|macro|BAD_FAT
 mdefine_line|#define BAD_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? BAD_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? BAD_FAT16 : BAD_FAT12)
 multiline_comment|/* standard EOF */
@@ -94,7 +102,7 @@ mdefine_line|#define EOF_FAT12 0xFFF
 DECL|macro|EOF_FAT16
 mdefine_line|#define EOF_FAT16 0xFFFF
 DECL|macro|EOF_FAT32
-mdefine_line|#define EOF_FAT32 0xFFFFFFF
+mdefine_line|#define EOF_FAT32 0x0FFFFFFF
 DECL|macro|EOF_FAT
 mdefine_line|#define EOF_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? EOF_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? EOF_FAT16 : EOF_FAT12)
 DECL|macro|FAT_ENT_FREE
@@ -104,9 +112,9 @@ mdefine_line|#define FAT_ENT_BAD&t;(BAD_FAT32)
 DECL|macro|FAT_ENT_EOF
 mdefine_line|#define FAT_ENT_EOF&t;(EOF_FAT32)
 DECL|macro|FAT_FSINFO_SIG1
-mdefine_line|#define FAT_FSINFO_SIG1&t;&t;0x41615252
+mdefine_line|#define FAT_FSINFO_SIG1&t;0x41615252
 DECL|macro|FAT_FSINFO_SIG2
-mdefine_line|#define FAT_FSINFO_SIG2&t;&t;0x61417272
+mdefine_line|#define FAT_FSINFO_SIG2&t;0x61417272
 DECL|macro|IS_FSINFO
 mdefine_line|#define IS_FSINFO(x)&t;(CF_LE_L((x)-&gt;signature1) == FAT_FSINFO_SIG1&t;&bslash;&n;&t;&t;&t; &amp;&amp; CF_LE_L((x)-&gt;signature2) == FAT_FSINFO_SIG2)
 multiline_comment|/*&n; * ioctl commands&n; */
@@ -456,13 +464,9 @@ suffix:semicolon
 multiline_comment|/* on-disk position of directory entry */
 )brace
 suffix:semicolon
-multiline_comment|/* Convert attribute bits and a mask to the UNIX mode. */
-DECL|macro|MSDOS_MKMODE
-mdefine_line|#define MSDOS_MKMODE(a,m) (m &amp; (a &amp; ATTR_RO ? S_IRUGO|S_IXUGO : S_IRWXUGO))
-multiline_comment|/* Convert the UNIX mode to MS-DOS attribute bits. */
-DECL|macro|MSDOS_MKATTR
-mdefine_line|#define MSDOS_MKATTR(m) ((m &amp; S_IWUGO) ? ATTR_NONE : ATTR_RO)
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
 macro_line|#include &lt;linux/msdos_fs_i.h&gt;
 macro_line|#include &lt;linux/msdos_fs_sb.h&gt;

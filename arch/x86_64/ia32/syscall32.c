@@ -57,6 +57,10 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
+id|pmd_t
+op_star
+id|pmd
+suffix:semicolon
 r_int
 id|err
 op_assign
@@ -76,8 +80,6 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-id|pmd_t
-op_star
 id|pmd
 op_assign
 id|pmd_alloc

@@ -1543,6 +1543,29 @@ id|hwif
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;ide_hwif_setup_dma&t;-&t;configure DMA interface&n; *&t;@dev: PCI device&n; *&t;@d: IDE pci data&n; *&t;@hwif: Hardware interface we are configuring&n; *&n; *&t;Set up the DMA base for the interface. Enable the master bits as&n; *&t;necessary and attempt to bring the device DMA into a ready to use&n; *&t;state&n; */
+macro_line|#ifndef CONFIG_BLK_DEV_IDEDMA_PCI
+DECL|function|ide_hwif_setup_dma
+r_static
+r_void
+id|ide_hwif_setup_dma
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|ide_pci_device_t
+op_star
+id|d
+comma
+id|ide_hwif_t
+op_star
+id|hwif
+)paren
+(brace
+)brace
+macro_line|#else
 DECL|function|ide_hwif_setup_dma
 r_static
 r_void
@@ -1763,6 +1786,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI*/
 multiline_comment|/**&n; *&t;ide_setup_pci_controller&t;-&t;set up IDE PCI&n; *&t;@dev: PCI device&n; *&t;@d: IDE PCI data&n; *&t;@noisy: verbose flag&n; *&t;@config: returned as 1 if we configured the hardware&n; *&n; *&t;Set up the PCI and controller side of the IDE interface. This brings&n; *&t;up the PCI side of the device, checks that the device is enabled&n; *&t;and enables it if need be&n; */
 DECL|function|ide_setup_pci_controller
 r_static

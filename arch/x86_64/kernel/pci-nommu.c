@@ -3,6 +3,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+DECL|variable|iommu_merge
+r_int
+id|iommu_merge
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* &n; * Dummy IO MMU functions&n; */
 DECL|function|pci_alloc_consistent
 r_void

@@ -1,4 +1,10 @@
 multiline_comment|/*&n; * Implementation of the SID table type.&n; *&n; * Author : Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &quot;flask.h&quot;
+macro_line|#include &quot;security.h&quot;
 macro_line|#include &quot;sidtab.h&quot;
 DECL|macro|SIDTAB_HASH
 mdefine_line|#define SIDTAB_HASH(sid) &bslash;&n;(sid &amp; SIDTAB_HASH_MASK)

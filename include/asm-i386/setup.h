@@ -34,6 +34,16 @@ DECL|macro|DRIVE_INFO
 mdefine_line|#define DRIVE_INFO (*(struct drive_info_struct *) (PARAM+0x80))
 DECL|macro|SYS_DESC_TABLE
 mdefine_line|#define SYS_DESC_TABLE (*(struct sys_desc_table_struct*)(PARAM+0xa0))
+DECL|macro|EFI_SYSTAB
+mdefine_line|#define EFI_SYSTAB ((efi_system_table_t *) *((unsigned long *)(PARAM+0x1c4)))
+DECL|macro|EFI_MEMDESC_SIZE
+mdefine_line|#define EFI_MEMDESC_SIZE (*((unsigned long *) (PARAM+0x1c8)))
+DECL|macro|EFI_MEMDESC_VERSION
+mdefine_line|#define EFI_MEMDESC_VERSION (*((unsigned long *) (PARAM+0x1cc)))
+DECL|macro|EFI_MEMMAP
+mdefine_line|#define EFI_MEMMAP ((efi_memory_desc_t *) *((unsigned long *)(PARAM+0x1d0)))
+DECL|macro|EFI_MEMMAP_SIZE
+mdefine_line|#define EFI_MEMMAP_SIZE (*((unsigned long *) (PARAM+0x1d4)))
 DECL|macro|MOUNT_ROOT_RDONLY
 mdefine_line|#define MOUNT_ROOT_RDONLY (*(unsigned short *) (PARAM+0x1F2))
 DECL|macro|RAMDISK_FLAGS

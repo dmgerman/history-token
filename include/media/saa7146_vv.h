@@ -404,8 +404,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* flags */
-DECL|macro|SAA7146_EXT_SWAP_ODD_EVEN
-mdefine_line|#define SAA7146_EXT_SWAP_ODD_EVEN       0x1     /* needs odd/even fields swapped */
+singleline_comment|// #define SAA7146_EXT_SWAP_ODD_EVEN&t;0x1     /* needs odd/even fields swapped */
 DECL|macro|SAA7146_USE_PORT_B_FOR_VBI
 mdefine_line|#define SAA7146_USE_PORT_B_FOR_VBI&t;0x2     /* use input port b for vbi hardware bug workaround */
 DECL|struct|saa7146_ext_vv
@@ -516,7 +515,7 @@ id|saa7146_dev
 op_star
 comma
 r_struct
-id|saa7146_fh
+id|file
 op_star
 )paren
 suffix:semicolon
@@ -529,10 +528,6 @@ id|release
 (paren
 r_struct
 id|saa7146_dev
-op_star
-comma
-r_struct
-id|saa7146_fh
 op_star
 comma
 r_struct
@@ -573,30 +568,6 @@ comma
 r_int
 comma
 id|loff_t
-op_star
-)paren
-suffix:semicolon
-DECL|member|capture_begin
-r_int
-(paren
-op_star
-id|capture_begin
-)paren
-(paren
-r_struct
-id|saa7146_fh
-op_star
-)paren
-suffix:semicolon
-DECL|member|capture_end
-r_int
-(paren
-op_star
-id|capture_end
-)paren
-(paren
-r_struct
-id|saa7146_fh
 op_star
 )paren
 suffix:semicolon

@@ -343,7 +343,6 @@ suffix:semicolon
 r_static
 r_int
 r_char
-id|__devinit
 DECL|function|e100_phy_valid
 id|e100_phy_valid
 c_func
@@ -436,7 +435,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__devinit
 DECL|function|e100_phy_address_detect
 id|e100_phy_address_detect
 c_func
@@ -552,7 +550,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__devinit
 DECL|function|e100_phy_id_detect
 id|e100_phy_id_detect
 c_func
@@ -660,7 +657,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__devinit
 DECL|function|e100_phy_isolate
 id|e100_phy_isolate
 c_func
@@ -759,7 +755,6 @@ suffix:semicolon
 r_static
 r_int
 r_char
-id|__devinit
 DECL|function|e100_phy_specific_setup
 id|e100_phy_specific_setup
 c_func
@@ -1192,7 +1187,6 @@ suffix:semicolon
 multiline_comment|/* &n; * Procedure:&t;e100_fix_polarity&n; *&n; * Description:&n; *&t;Fix for 82555 auto-polarity toggle problem. With a short cable &n; *&t;connecting an 82555 with an 840A link partner, if the medium is noisy,&n; *&t;the 82555 sometime thinks that the polarity might be wrong and so &n; *&t;toggles polarity. This happens repeatedly and results in a high bit &n; *&t;error rate.&n; *&t;NOTE: This happens only at 10 Mbps&n; *&n; * Arguments:&n; *&t;bdp - Ptr to this card&squot;s e100_bdconfig structure&n; *&n; * Returns:&n; *&t;NOTHING&n; */
 r_static
 r_void
-id|__devinit
 DECL|function|e100_fix_polarity
 id|e100_fix_polarity
 c_func
@@ -2941,7 +2935,6 @@ suffix:semicolon
 )brace
 r_int
 r_char
-id|__devinit
 DECL|function|e100_phy_init
 id|e100_phy_init
 c_func

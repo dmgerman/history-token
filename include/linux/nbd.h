@@ -45,6 +45,8 @@ mdefine_line|#define MAX_NBD 128
 multiline_comment|/* Define PARANOIA to include extra sanity checking code in here &amp; driver */
 DECL|macro|PARANOIA
 mdefine_line|#define PARANOIA
+multiline_comment|/* userspace doesn&squot;t need the nbd_device structure */
+macro_line|#ifdef __KERNEL__
 DECL|struct|nbd_device
 r_struct
 id|nbd_device
@@ -113,6 +115,7 @@ id|bytesize
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* This now IS in some kind of include file...&t;*/
 multiline_comment|/* These are send over network in request/reply magic field */
 DECL|macro|NBD_REQUEST_MAGIC

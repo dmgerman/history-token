@@ -259,6 +259,9 @@ DECL|macro|pte_pfn
 mdefine_line|#define pte_pfn(_pte)&t;&t;((pte_val(_pte) &amp; _PFN_MASK) &gt;&gt; PAGE_SHIFT)
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))
+multiline_comment|/* This takes a physical page address that is used by the remapping functions */
+DECL|macro|mk_pte_phys
+mdefine_line|#define mk_pte_phys(physpage, pgprot) &bslash;&n;({ pte_t __pte; pte_val(__pte) = physpage + pgprot_val(pgprot); __pte; })
 DECL|macro|pte_modify
 mdefine_line|#define pte_modify(_pte, newprot) &bslash;&n;&t;(__pte((pte_val(_pte) &amp; ~_PAGE_CHG_MASK) | (pgprot_val(newprot) &amp; _PAGE_CHG_MASK)))
 DECL|macro|page_pte_prot
@@ -816,6 +819,41 @@ mdefine_line|#define ZERO_PAGE(vaddr) (zero_page_memmap_ptr)
 multiline_comment|/* We provide our own get_unmapped_area to cope with VA holes for userland */
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|macro|HUGETLB_PGDIR_SHIFT
+mdefine_line|#define HUGETLB_PGDIR_SHIFT&t;(HPAGE_SHIFT + 2*(PAGE_SHIFT-3))
+DECL|macro|HUGETLB_PGDIR_SIZE
+mdefine_line|#define HUGETLB_PGDIR_SIZE&t;(__IA64_UL(1) &lt;&lt; HUGETLB_PGDIR_SHIFT)
+DECL|macro|HUGETLB_PGDIR_MASK
+mdefine_line|#define HUGETLB_PGDIR_MASK&t;(~(HUGETLB_PGDIR_SIZE-1))
+r_struct
+id|mmu_gather
+suffix:semicolon
+r_extern
+r_void
+id|hugetlb_free_pgtables
+c_func
+(paren
+r_struct
+id|mmu_gather
+op_star
+id|tlb
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|prev
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|pte_addr_t
 r_typedef
 id|pte_t

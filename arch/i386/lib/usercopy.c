@@ -883,8 +883,17 @@ id|retval
 op_ne
 l_int|1
 )paren
+(brace
+id|up_read
+c_func
+(paren
+op_amp
+id|current-&gt;mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 id|maddr
 op_assign
 id|kmap_atomic

@@ -30,7 +30,9 @@ DECL|macro|FIRST_SYSTEM_VECTOR
 mdefine_line|#define FIRST_SYSTEM_VECTOR&t;0xef
 DECL|macro|TIMER_IRQ
 mdefine_line|#define TIMER_IRQ 0
-multiline_comment|/*&n; * &n; */
+multiline_comment|/*&n; * IRQ definitions&n; */
+DECL|macro|NR_VECTORS
+mdefine_line|#define NR_VECTORS 256
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS 224
 DECL|macro|NR_IRQ_VECTORS

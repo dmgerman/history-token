@@ -1737,7 +1737,7 @@ c_func
 (paren
 id|tss
 comma
-id|next-&gt;esp0
+id|next
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Load the per-thread Thread-Local Storage descriptor.&n;&t; */

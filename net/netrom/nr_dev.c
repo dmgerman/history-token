@@ -766,10 +766,6 @@ id|dev-&gt;stop
 op_assign
 id|nr_close
 suffix:semicolon
-id|dev-&gt;destructor
-op_assign
-id|free_netdev
-suffix:semicolon
 id|dev-&gt;hard_header
 op_assign
 id|nr_header

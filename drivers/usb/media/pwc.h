@@ -2,15 +2,17 @@ multiline_comment|/* (C) 1999-2003 Nemosoft Unv. (webcam@smcc.demon.nl)&n;&n;   
 macro_line|#ifndef PWC_H
 DECL|macro|PWC_H
 mdefine_line|#define PWC_H
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
+macro_line|#include &quot;pwc-ioctl.h&quot;
 multiline_comment|/* Defines and structures for the Philips webcam */
 multiline_comment|/* Used for checking memory corruption/pointer validation */
 DECL|macro|PWC_MAGIC
@@ -52,13 +54,15 @@ DECL|macro|TOUCAM_HEADER_SIZE
 mdefine_line|#define TOUCAM_HEADER_SIZE&t;&t;8
 DECL|macro|TOUCAM_TRAILER_SIZE
 mdefine_line|#define TOUCAM_TRAILER_SIZE&t;&t;4
+DECL|macro|FEATURE_MOTOR_PANTILT
+mdefine_line|#define FEATURE_MOTOR_PANTILT&t;&t;0x0001
 multiline_comment|/* Version block */
 DECL|macro|PWC_MAJOR
 mdefine_line|#define PWC_MAJOR&t;8
 DECL|macro|PWC_MINOR
-mdefine_line|#define PWC_MINOR&t;11
+mdefine_line|#define PWC_MINOR&t;12
 DECL|macro|PWC_VERSION
-mdefine_line|#define PWC_VERSION &t;&quot;8.11&quot;
+mdefine_line|#define PWC_VERSION &t;&quot;8.12&quot;
 DECL|macro|PWC_NAME
 mdefine_line|#define PWC_NAME &t;&quot;pwc&quot;
 multiline_comment|/* Turn certain features on/off */
@@ -188,12 +192,17 @@ DECL|member|type
 r_int
 id|type
 suffix:semicolon
-multiline_comment|/* type of cam (645, 646, 675, 680, 690) */
+multiline_comment|/* type of cam (645, 646, 675, 680, 690, 720, 730, 740, 750) */
 DECL|member|release
 r_int
 id|release
 suffix:semicolon
 multiline_comment|/* release number */
+DECL|member|features
+r_int
+id|features
+suffix:semicolon
+multiline_comment|/* feature bits */
 DECL|member|error_status
 r_int
 id|error_status
@@ -462,6 +471,22 @@ id|spinlock_t
 id|ptrlock
 suffix:semicolon
 multiline_comment|/* for manipulating the buffer pointers */
+multiline_comment|/*** motorized pan/tilt feature */
+DECL|member|angle_range
+r_struct
+id|pwc_mpt_range
+id|angle_range
+suffix:semicolon
+DECL|member|pan_angle
+r_int
+id|pan_angle
+suffix:semicolon
+multiline_comment|/* in degrees * 100 */
+DECL|member|tilt_angle
+r_int
+id|tilt_angle
+suffix:semicolon
+multiline_comment|/* absolute angle; 0,0 is home position */
 multiline_comment|/*** Misc. data ***/
 DECL|member|frameq
 id|wait_queue_head_t

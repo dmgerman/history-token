@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/rtc.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|EFI_SUCCESS
@@ -118,25 +120,26 @@ DECL|macro|EFI_MAX_MEMORY_TYPE
 mdefine_line|#define EFI_MAX_MEMORY_TYPE&t;&t;14
 multiline_comment|/* Attribute values: */
 DECL|macro|EFI_MEMORY_UC
-mdefine_line|#define EFI_MEMORY_UC&t;&t;0x0000000000000001&t;/* uncached */
+mdefine_line|#define EFI_MEMORY_UC&t;&t;((u64)0x0000000000000001ULL)&t;/* uncached */
 DECL|macro|EFI_MEMORY_WC
-mdefine_line|#define EFI_MEMORY_WC&t;&t;0x0000000000000002&t;/* write-coalescing */
+mdefine_line|#define EFI_MEMORY_WC&t;&t;((u64)0x0000000000000002ULL)&t;/* write-coalescing */
 DECL|macro|EFI_MEMORY_WT
-mdefine_line|#define EFI_MEMORY_WT&t;&t;0x0000000000000004&t;/* write-through */
+mdefine_line|#define EFI_MEMORY_WT&t;&t;((u64)0x0000000000000004ULL)&t;/* write-through */
 DECL|macro|EFI_MEMORY_WB
-mdefine_line|#define EFI_MEMORY_WB&t;&t;0x0000000000000008&t;/* write-back */
+mdefine_line|#define EFI_MEMORY_WB&t;&t;((u64)0x0000000000000008ULL)&t;/* write-back */
 DECL|macro|EFI_MEMORY_WP
-mdefine_line|#define EFI_MEMORY_WP&t;&t;0x0000000000001000&t;/* write-protect */
+mdefine_line|#define EFI_MEMORY_WP&t;&t;((u64)0x0000000000001000ULL)&t;/* write-protect */
 DECL|macro|EFI_MEMORY_RP
-mdefine_line|#define EFI_MEMORY_RP&t;&t;0x0000000000002000&t;/* read-protect */
+mdefine_line|#define EFI_MEMORY_RP&t;&t;((u64)0x0000000000002000ULL)&t;/* read-protect */
 DECL|macro|EFI_MEMORY_XP
-mdefine_line|#define EFI_MEMORY_XP&t;&t;0x0000000000004000&t;/* execute-protect */
+mdefine_line|#define EFI_MEMORY_XP&t;&t;((u64)0x0000000000004000ULL)&t;/* execute-protect */
 DECL|macro|EFI_MEMORY_RUNTIME
-mdefine_line|#define EFI_MEMORY_RUNTIME&t;0x8000000000000000&t;/* range requires runtime mapping */
+mdefine_line|#define EFI_MEMORY_RUNTIME&t;((u64)0x8000000000000000ULL)&t;/* range requires runtime mapping */
 DECL|macro|EFI_MEMORY_DESCRIPTOR_VERSION
 mdefine_line|#define EFI_MEMORY_DESCRIPTOR_VERSION&t;1
 DECL|macro|EFI_PAGE_SHIFT
 mdefine_line|#define EFI_PAGE_SHIFT&t;&t;12
+multiline_comment|/*&n; * For current x86 implementations of EFI, there is&n; * additional padding in the mem descriptors.  This is not&n; * the case in ia64.  Need to have this fixed in the f/w.&n; */
 r_typedef
 r_struct
 (brace
@@ -164,6 +167,12 @@ DECL|member|attribute
 id|u64
 id|attribute
 suffix:semicolon
+macro_line|#if defined (__i386__)
+DECL|member|pad1
+id|u64
+id|pad1
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|efi_memory_desc_t
 )brace
 id|efi_memory_desc_t
@@ -268,9 +277,11 @@ DECL|macro|EFI_RESET_COLD
 mdefine_line|#define EFI_RESET_COLD 0
 DECL|macro|EFI_RESET_WARM
 mdefine_line|#define EFI_RESET_WARM 1
+DECL|macro|EFI_RESET_SHUTDOWN
+mdefine_line|#define EFI_RESET_SHUTDOWN 2
 multiline_comment|/*&n; * EFI Runtime Services table&n; */
 DECL|macro|EFI_RUNTIME_SERVICES_SIGNATURE
-mdefine_line|#define EFI_RUNTIME_SERVICES_SIGNATURE 0x5652453544e5552
+mdefine_line|#define EFI_RUNTIME_SERVICES_SIGNATURE ((u64)0x5652453544e5552ULL)
 DECL|macro|EFI_RUNTIME_SERVICES_REVISION
 mdefine_line|#define EFI_RUNTIME_SERVICES_REVISION  0x00010000
 r_typedef
@@ -496,6 +507,27 @@ op_star
 id|data
 )paren
 suffix:semicolon
+DECL|typedef|efi_set_virtual_address_map_t
+r_typedef
+id|efi_status_t
+id|efi_set_virtual_address_map_t
+(paren
+r_int
+r_int
+id|memory_map_size
+comma
+r_int
+r_int
+id|descriptor_size
+comma
+id|u32
+id|descriptor_version
+comma
+id|efi_memory_desc_t
+op_star
+id|virtual_map
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *  EFI Configuration Table and GUID definitions&n; */
 DECL|macro|NULL_GUID
 mdefine_line|#define NULL_GUID &bslash;&n;    EFI_GUID(  0x00000000, 0x0000, 0x0000, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 )
@@ -511,6 +543,8 @@ DECL|macro|SAL_SYSTEM_TABLE_GUID
 mdefine_line|#define SAL_SYSTEM_TABLE_GUID    &bslash;&n;    EFI_GUID(  0xeb9d2d32, 0x2d88, 0x11d3, 0x9a, 0x16, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d )
 DECL|macro|HCDP_TABLE_GUID
 mdefine_line|#define HCDP_TABLE_GUID&t;&bslash;&n;    EFI_GUID(  0xf951938d, 0x620b, 0x42ef, 0x82, 0x79, 0xa8, 0x4b, 0x79, 0x61, 0x78, 0x98 )
+DECL|macro|UGA_IO_PROTOCOL_GUID
+mdefine_line|#define UGA_IO_PROTOCOL_GUID &bslash;&n;    EFI_GUID(  0x61a4d49e, 0x6f68, 0x4f1b, 0xb9, 0x22, 0xa8, 0x6e, 0xed, 0xb, 0x7, 0xa2 )
 r_typedef
 r_struct
 (brace
@@ -528,7 +562,7 @@ DECL|typedef|efi_config_table_t
 id|efi_config_table_t
 suffix:semicolon
 DECL|macro|EFI_SYSTEM_TABLE_SIGNATURE
-mdefine_line|#define EFI_SYSTEM_TABLE_SIGNATURE 0x5453595320494249
+mdefine_line|#define EFI_SYSTEM_TABLE_SIGNATURE ((u64)0x5453595320494249ULL)
 DECL|macro|EFI_SYSTEM_TABLE_REVISION
 mdefine_line|#define EFI_SYSTEM_TABLE_REVISION  ((1 &lt;&lt; 16) | 00)
 r_typedef
@@ -602,6 +636,31 @@ DECL|typedef|efi_system_table_t
 )brace
 id|efi_system_table_t
 suffix:semicolon
+DECL|struct|efi_memory_map
+r_struct
+id|efi_memory_map
+(brace
+DECL|member|phys_map
+id|efi_memory_desc_t
+op_star
+id|phys_map
+suffix:semicolon
+DECL|member|map
+id|efi_memory_desc_t
+op_star
+id|map
+suffix:semicolon
+DECL|member|nr_map
+r_int
+id|nr_map
+suffix:semicolon
+DECL|member|desc_version
+r_int
+r_int
+id|desc_version
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * All runtime access to EFI goes through this structure:&n; */
 DECL|struct|efi
 r_extern
@@ -656,6 +715,12 @@ op_star
 id|hcdp
 suffix:semicolon
 multiline_comment|/* HCDP table */
+DECL|member|uga
+r_void
+op_star
+id|uga
+suffix:semicolon
+multiline_comment|/* UGA table */
 DECL|member|get_time
 id|efi_get_time_t
 op_star
@@ -700,6 +765,11 @@ DECL|member|reset_system
 id|efi_reset_system_t
 op_star
 id|reset_system
+suffix:semicolon
+DECL|member|set_virtual_address_map
+id|efi_set_virtual_address_map_t
+op_star
+id|set_virtual_address_map
 suffix:semicolon
 )brace
 id|efi
@@ -859,6 +929,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|efi_map_memmap
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|efi_memmap_walk
 (paren
 id|efi_freemem_callback_t
@@ -912,6 +990,73 @@ r_int
 id|phys_addr
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|efi_initialize_iomem_resources
+c_func
+(paren
+r_struct
+id|resource
+op_star
+id|code_resource
+comma
+r_struct
+id|resource
+op_star
+id|data_resource
+)paren
+suffix:semicolon
+r_extern
+id|efi_status_t
+id|phys_efi_get_time
+c_func
+(paren
+id|efi_time_t
+op_star
+id|tm
+comma
+id|efi_time_cap_t
+op_star
+id|tc
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+r_inline
+id|__init
+id|efi_get_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_inline
+id|__init
+id|efi_set_rtc_mmss
+c_func
+(paren
+r_int
+r_int
+id|nowtime
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|efi_memory_map
+id|memmap
+suffix:semicolon
+macro_line|#ifdef CONFIG_EFI
+r_extern
+r_int
+id|efi_enabled
+suffix:semicolon
+macro_line|#else
+DECL|macro|efi_enabled
+mdefine_line|#define efi_enabled 0
+macro_line|#endif
 multiline_comment|/*&n; * Variable Attributes&n; */
 DECL|macro|EFI_VARIABLE_NON_VOLATILE
 mdefine_line|#define EFI_VARIABLE_NON_VOLATILE       0x0000000000000001

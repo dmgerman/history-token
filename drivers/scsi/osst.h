@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Header: /home/cvsroot/Driver/osst.h,v 1.12 2001/10/11 00:30:15 riede Exp $&n; */
+multiline_comment|/*&n; *&t;$Header: /cvsroot/osst/Driver/osst.h,v 1.14 2003/12/14 14:34:38 wriede Exp $&n; */
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;

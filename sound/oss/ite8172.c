@@ -9931,7 +9931,7 @@ suffix:semicolon
 DECL|function|it8172_remove
 r_static
 r_void
-id|__devinit
+id|__devexit
 id|it8172_remove
 c_func
 (paren
@@ -10104,7 +10104,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|it8172_remove
+)paren
 )brace
 suffix:semicolon
 DECL|function|init_it8172

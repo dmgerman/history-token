@@ -348,7 +348,7 @@ id|hpet_last
 op_div
 id|hpet_tick
 suffix:semicolon
-id|jiffies
+id|jiffies_64
 op_add_assign
 id|lost_ticks
 suffix:semicolon
@@ -643,6 +643,11 @@ id|timer_opts
 id|timer_hpet
 op_assign
 (brace
+dot
+id|name
+op_assign
+l_string|&quot;hpet&quot;
+comma
 dot
 id|init
 op_assign

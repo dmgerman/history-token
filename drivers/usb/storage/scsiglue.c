@@ -965,6 +965,8 @@ op_assign
 (paren
 id|BLIST_MS_SKIP_PAGE_08
 op_or
+id|BLIST_MS_SKIP_PAGE_3F
+op_or
 id|BLIST_USE_10_BYTE_MS
 )paren
 comma

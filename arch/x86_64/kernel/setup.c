@@ -942,6 +942,24 @@ l_int|6
 suffix:semicolon
 )brace
 macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;oops=panic&quot;
+comma
+l_int|10
+)paren
+)paren
+id|panic_on_oops
+op_assign
+l_int|1
+suffix:semicolon
 id|next_char
 suffix:colon
 id|c
@@ -1417,6 +1435,10 @@ r_int
 r_int
 id|low_mem_size
 suffix:semicolon
+r_int
+r_int
+id|kernel_end
+suffix:semicolon
 id|ROOT_DEV
 op_assign
 id|old_decode_dev
@@ -1622,10 +1644,6 @@ id|PAGE_SHIFT
 )paren
 suffix:semicolon
 multiline_comment|/* reserve kernel */
-r_int
-r_int
-id|kernel_end
-suffix:semicolon
 id|kernel_end
 op_assign
 id|round_up

@@ -549,10 +549,18 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: unable to fixup &quot;
-l_string|&quot;relocation: out of range&bslash;n&quot;
+l_string|&quot;%s: relocation out of range, section &quot;
+l_string|&quot;%d reloc %d sym &squot;%s&squot;&bslash;n&quot;
 comma
 id|module-&gt;name
+comma
+id|relindex
+comma
+id|i
+comma
+id|strtab
+op_plus
+id|sym-&gt;st_name
 )paren
 suffix:semicolon
 r_return

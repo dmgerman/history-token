@@ -137,7 +137,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* The struct ccw device is our replacement for the globally accessible&n; * ioinfo array. ioinfo will mutate into a subchannel device later.&n; *&n; * Reference: Documentation/driver-model.txt */
+multiline_comment|/* The struct ccw device is our replacement for the globally accessible&n; * ioinfo array. ioinfo will mutate into a subchannel device later.&n; *&n; * Reference: Documentation/s390/driver-model.txt */
 DECL|struct|ccw_device
 r_struct
 id|ccw_device

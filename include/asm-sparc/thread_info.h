@@ -5,7 +5,10 @@ mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/btfixup.h&gt;
-multiline_comment|/*&n; * Low level task data.&n; *&n; * If you change this, change the TI_* offsets below to match. XXX check_asm.&n; *&n; * The uwinmask is a first class citizen among w_saved and friends.&n; * XXX Is this a good idea? wof.S/wuf.S have to use w_saved anyway,&n; *     so they waste a register on current, and an ld on fetching it.&n; */
+macro_line|#include &lt;asm/ptrace.h&gt;
+multiline_comment|/*&n; * Low level task data.&n; *&n; * If you change this, change the TI_* offsets below to match.&n; */
+DECL|macro|NSWINS
+mdefine_line|#define NSWINS 8
 DECL|struct|thread_info
 r_struct
 id|thread_info
@@ -73,6 +76,29 @@ DECL|member|kwim
 r_int
 r_int
 id|kwim
+suffix:semicolon
+multiline_comment|/* A place to store user windows and stack pointers&n;&t; * when the stack needs inspection.&n;&t; */
+DECL|member|reg_window
+r_struct
+id|reg_window
+id|reg_window
+(braket
+id|NSWINS
+)braket
+suffix:semicolon
+multiline_comment|/* align for ldd! */
+DECL|member|rwbuf_stkptrs
+r_int
+r_int
+id|rwbuf_stkptrs
+(braket
+id|NSWINS
+)braket
+suffix:semicolon
+DECL|member|w_saved
+r_int
+r_int
+id|w_saved
 suffix:semicolon
 DECL|member|restart_block
 r_struct
@@ -144,7 +170,7 @@ macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * Size of kernel stack for each process.&n; * Observe the order of get_free_pages() in alloc_thread_info().&n; * The sun4 has 8K stack too, because it&squot;s short on memory, and 16K is a waste.&n; *&n; * XXX Watch how INIT_THREAD_SIZE evolves in linux/sched.h and elsewhere.&n; *     On 2.5.24 it happens to match 8192 magically.&n; */
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE&t;&t;8192
-multiline_comment|/*&n; * Offsets in thread_info structure, used in assembly code&n; */
+multiline_comment|/*&n; * Offsets in thread_info structure, used in assembly code&n; * The &quot;#define REGWIN_SZ 0x40&quot; was abolished, so no multiplications.&n; */
 DECL|macro|TI_UWINMASK
 mdefine_line|#define TI_UWINMASK&t;0x00&t;/* uwinmask */
 DECL|macro|TI_TASK
@@ -169,8 +195,14 @@ DECL|macro|TI_KPSR
 mdefine_line|#define TI_KPSR&t;&t;0x28&t;/* kpsr */
 DECL|macro|TI_KWIM
 mdefine_line|#define TI_KWIM&t;&t;0x2c&t;/* kwim (ldd&squot;ed with kpsr) */
-DECL|macro|TI_RESTART_BLOCK
-mdefine_line|#define TI_RESTART_BLOCK 0x30
+DECL|macro|TI_REG_WINDOW
+mdefine_line|#define TI_REG_WINDOW&t;0x30
+DECL|macro|TI_RWIN_SPTRS
+mdefine_line|#define TI_RWIN_SPTRS&t;0x230
+DECL|macro|TI_W_SAVED
+mdefine_line|#define TI_W_SAVED&t;0x250
+multiline_comment|/* #define TI_RESTART_BLOCK 0x25n */
+multiline_comment|/* Nobody cares */
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * thread information flag bit numbers&n; */

@@ -1,4 +1,15 @@
 multiline_comment|/*&n; * Implementation of the security services.&n; *&n; * Authors : Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; *           James Morris &lt;jmorris@redhat.com&gt;&n; *&n; *  Copyright (C) 2003 Red Hat, Inc., James Morris &lt;jmorris@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License version 2,&n; *      as published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &quot;flask.h&quot;
+macro_line|#include &quot;avc.h&quot;
+macro_line|#include &quot;avc_ss.h&quot;
+macro_line|#include &quot;security.h&quot;
 macro_line|#include &quot;context.h&quot;
 macro_line|#include &quot;policydb.h&quot;
 macro_line|#include &quot;sidtab.h&quot;

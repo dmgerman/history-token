@@ -2,16 +2,16 @@ multiline_comment|/*&n; * platform.c - platform &squot;psuedo&squot; bus for leg
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-DECL|variable|legacy_bus
+DECL|variable|platform_bus
 r_struct
 id|device
-id|legacy_bus
+id|platform_bus
 op_assign
 (brace
 dot
 id|bus_id
 op_assign
-l_string|&quot;legacy&quot;
+l_string|&quot;platform&quot;
 comma
 )brace
 suffix:semicolon
@@ -46,7 +46,7 @@ id|pdev-&gt;dev.parent
 id|pdev-&gt;dev.parent
 op_assign
 op_amp
-id|legacy_bus
+id|platform_bus
 suffix:semicolon
 id|pdev-&gt;dev.bus
 op_assign
@@ -370,7 +370,7 @@ id|device_register
 c_func
 (paren
 op_amp
-id|legacy_bus
+id|platform_bus
 )paren
 suffix:semicolon
 r_return
@@ -382,11 +382,11 @@ id|platform_bus_type
 )paren
 suffix:semicolon
 )brace
-DECL|variable|legacy_bus
+DECL|variable|platform_bus
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|legacy_bus
+id|platform_bus
 )paren
 suffix:semicolon
 DECL|variable|platform_bus_type

@@ -1,5 +1,5 @@
 multiline_comment|/*&n;    i2c-viapro.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;    Copyright (c) 1998 - 2002  Frodo Looijaard &lt;frodol@dds.nl&gt;, &n;    Philip Edelbrock &lt;phil@netroedge.com&gt;, Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt;,&n;    Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-multiline_comment|/*&n;   Supports Via devices:&n;&t;82C596A/B (0x3050)&n;&t;82C596B (0x3051)&n;&t;82C686A/B&n;&t;8231&n;&t;8233&n;&t;8233A (0x3147 and 0x3177)&n;&t;8235&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
+multiline_comment|/*&n;   Supports Via devices:&n;&t;82C596A/B (0x3050)&n;&t;82C596B (0x3051)&n;&t;82C686A/B&n;&t;8231&n;&t;8233&n;&t;8233A (0x3147 and 0x3177)&n;&t;8235&n;&t;8237&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1771,6 +1771,33 @@ dot
 id|device
 op_assign
 id|PCI_DEVICE_ID_VIA_8235
+comma
+dot
+id|subvendor
+op_assign
+id|PCI_ANY_ID
+comma
+dot
+id|subdevice
+op_assign
+id|PCI_ANY_ID
+comma
+dot
+id|driver_data
+op_assign
+id|SMBBA3
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+id|PCI_VENDOR_ID_VIA
+comma
+dot
+id|device
+op_assign
+id|PCI_DEVICE_ID_VIA_8237
 comma
 dot
 id|subvendor

@@ -385,16 +385,14 @@ id|NUM_INTS
 )braket
 suffix:semicolon
 multiline_comment|/* periodic schedule */
+multiline_comment|/* &n;&t; * OHCI defines u16 frame_no, followed by u16 zero pad.&n;&t; * Since some processors can&squot;t do 16 bit bus accesses,&n;&t; * portable access must be a 32 bit byteswapped access.&n;&t; */
 DECL|member|frame_no
-id|__u16
+id|u32
 id|frame_no
 suffix:semicolon
 multiline_comment|/* current frame number */
-DECL|member|pad1
-id|__u16
-id|pad1
-suffix:semicolon
-multiline_comment|/* set to 0 on each frame_no change */
+DECL|macro|OHCI_FRAME_NO
+mdefine_line|#define OHCI_FRAME_NO(hccap) ((u16)le32_to_cpup(&amp;(hccap)-&gt;frame_no))
 DECL|member|done_head
 id|__u32
 id|done_head

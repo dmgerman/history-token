@@ -2182,6 +2182,31 @@ l_int|12
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* /proc/sys/net/bridge */
+r_enum
+(brace
+DECL|enumerator|NET_BRIDGE_NF_CALL_ARPTABLES
+id|NET_BRIDGE_NF_CALL_ARPTABLES
+op_assign
+l_int|1
+comma
+DECL|enumerator|NET_BRIDGE_NF_CALL_IPTABLES
+id|NET_BRIDGE_NF_CALL_IPTABLES
+op_assign
+l_int|2
+comma
+DECL|enumerator|NET_BRIDGE_NF_CALL_IP6TABLES
+id|NET_BRIDGE_NF_CALL_IP6TABLES
+op_assign
+l_int|3
+comma
+DECL|enumerator|NET_BRIDGE_NF_FILTER_VLAN_TAGGED
+id|NET_BRIDGE_NF_FILTER_VLAN_TAGGED
+op_assign
+l_int|4
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* CTL_PROC names: */
 multiline_comment|/* CTL_FS names: */
 r_enum

@@ -671,6 +671,7 @@ id|which
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* Switch */
@@ -930,6 +931,7 @@ id|smp_call_struct
 id|data
 suffix:semicolon
 r_int
+r_int
 id|timeout
 suffix:semicolon
 r_static
@@ -1132,6 +1134,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|smp_call_function
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_call_function
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Setup routine for controlling SMP activation&n; *&n; *&t;Command-line option of &quot;nosmp&quot; or &quot;maxcpus=0&quot; will disable SMP&n; *&t;activation entirely (the MPS table probe still happens, though).&n; *&n; *&t;Command-line option of &quot;maxcpus=&lt;NUM&gt;&quot;, where &lt;NUM&gt; is an integer&n; *&t;greater than 0, limits the maximum number of CPUs activated in&n; *&t;SMP mode to &lt;NUM&gt;.&n; */
 DECL|function|nosmp
 r_static

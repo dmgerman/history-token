@@ -1,4 +1,4 @@
-multiline_comment|/*&n;   The compile-time configurable defaults for the Linux SCSI tape driver.&n;&n;   Copyright 1995 Kai Makisara.&n;   &n;   Last modified: Wed Sep  2 21:24:07 1998 by root@home&n;   &n;   Changed (and renamed) for OnStream SCSI drives garloff@suse.de&n;   2000-06-21&n;&n;   $Header: /home/cvsroot/Driver/osst_options.h,v 1.5 2001/01/07 22:19:15 riede Exp $&n;*/
+multiline_comment|/*&n;   The compile-time configurable defaults for the Linux SCSI tape driver.&n;&n;   Copyright 1995 Kai Makisara.&n;   &n;   Last modified: Wed Sep  2 21:24:07 1998 by root@home&n;   &n;   Changed (and renamed) for OnStream SCSI drives garloff@suse.de&n;   2000-06-21&n;&n;   $Header: /cvsroot/osst/Driver/osst_options.h,v 1.6 2003/12/23 14:22:12 wriede Exp $&n;*/
 macro_line|#ifndef _OSST_OPTIONS_H
 DECL|macro|_OSST_OPTIONS_H
 mdefine_line|#define _OSST_OPTIONS_H

@@ -52,5 +52,7 @@ suffix:semicolon
 multiline_comment|/* number of i2c_msgs */
 )brace
 suffix:semicolon
+DECL|macro|I2C_RDRW_IOCTL_MAX_MSGS
+mdefine_line|#define  I2C_RDRW_IOCTL_MAX_MSGS&t;42
 macro_line|#endif /* _LINUX_I2C_DEV_H */
 eof

@@ -14282,7 +14282,7 @@ suffix:semicolon
 DECL|function|solo1_remove
 r_static
 r_void
-id|__devinit
+id|__devexit
 id|solo1_remove
 c_func
 (paren
@@ -14528,7 +14528,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|solo1_remove
+)paren
 comma
 dot
 id|suspend

@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *&t;Adaptec AAC series RAID controller driver&n; *&t;(c) Copyright 2001 Red Hat Inc.&t;&lt;alan@redhat.com&gt;&n; *&n; * based on the old aacraid driver that is..&n; * Adaptec aacraid device driver for Linux.&n; * Copyright (c) 2000 Adaptec, Inc. (aacraid@adaptec.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; *&t;Adaptec AAC series RAID controller driver&n; *&t;(c) Copyright 2001 Red Hat Inc.&t;&lt;alan@redhat.com&gt;&n; *&n; * based on the old aacraid driver that is..&n; * Adaptec aacraid device driver for Linux.&n; *&n; * Copyright (c) 2000 Adaptec, Inc. (aacraid@adaptec.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -8,11 +7,13 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;aacraid.h&quot;
 multiline_comment|/* values for inqd_pdt: Peripheral device type in plain English */
 DECL|macro|INQD_PDT_DA
@@ -400,7 +401,8 @@ r_int
 id|aac_build_sg
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 comma
@@ -416,7 +418,8 @@ r_int
 id|aac_build_sg64
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 comma
@@ -431,7 +434,8 @@ r_int
 id|aac_send_srb_fib
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 )paren
@@ -1557,7 +1561,8 @@ r_void
 id|aac_io_done
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 )paren
@@ -1604,7 +1609,8 @@ r_void
 id|__aac_io_done
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 )paren
@@ -2041,7 +2047,8 @@ id|aac_read_reply
 op_star
 id|readreply
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 suffix:semicolon
@@ -2054,7 +2061,8 @@ suffix:semicolon
 id|scsicmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|context
@@ -2157,11 +2165,7 @@ id|scsicmd-&gt;buffer
 comma
 id|scsicmd-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|scsicmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2187,11 +2191,7 @@ id|scsicmd-&gt;SCp.ptr
 comma
 id|scsicmd-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|scsicmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2328,7 +2328,8 @@ id|aac_write_reply
 op_star
 id|writereply
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 suffix:semicolon
@@ -2341,7 +2342,8 @@ suffix:semicolon
 id|scsicmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|context
@@ -2444,11 +2446,7 @@ id|scsicmd-&gt;buffer
 comma
 id|scsicmd-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|scsicmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2474,11 +2472,7 @@ id|scsicmd-&gt;SCp.ptr
 comma
 id|scsicmd-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|scsicmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2594,7 +2588,8 @@ r_int
 id|aac_read
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 comma
@@ -3189,7 +3184,8 @@ r_int
 id|aac_write
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 comma
@@ -3782,7 +3778,8 @@ r_int
 id|aac_scsi_cmd
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 )paren
@@ -5442,14 +5439,16 @@ id|aac_srb_reply
 op_star
 id|srbreply
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 suffix:semicolon
 id|scsicmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|context
@@ -5523,11 +5522,7 @@ id|scsicmd-&gt;buffer
 comma
 id|scsicmd-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|scsicmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -5550,11 +5545,7 @@ id|scsicmd-&gt;SCp.ptr
 comma
 id|scsicmd-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|scsicmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -6292,7 +6283,8 @@ r_int
 id|aac_send_srb_fib
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 )paren
@@ -6368,7 +6360,7 @@ id|scsicmd-&gt;sc_data_direction
 )paren
 (brace
 r_case
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:colon
 id|flag
 op_assign
@@ -6377,7 +6369,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 suffix:colon
 id|flag
 op_assign
@@ -6388,7 +6380,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:colon
 id|flag
 op_assign
@@ -6397,9 +6389,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_NONE
-suffix:colon
-r_default
+id|DMA_NONE
 suffix:colon
 id|flag
 op_assign
@@ -6835,7 +6825,8 @@ r_int
 id|aac_build_sg
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 comma
@@ -6937,11 +6928,7 @@ id|sg
 comma
 id|scsicmd-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|scsicmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|psg-&gt;count
@@ -7093,11 +7080,7 @@ id|scsicmd-&gt;request_buffer
 comma
 id|scsicmd-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|scsicmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|psg-&gt;count
@@ -7161,7 +7144,8 @@ r_int
 id|aac_build_sg64
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 comma
@@ -7285,11 +7269,7 @@ id|sg
 comma
 id|scsicmd-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|scsicmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|psg-&gt;count
@@ -7474,11 +7454,7 @@ id|scsicmd-&gt;request_buffer
 comma
 id|scsicmd-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|scsicmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|psg-&gt;count

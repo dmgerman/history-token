@@ -29,7 +29,6 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;net/sctp/structs.h&gt;
 macro_line|#include &lt;net/sctp/constants.h&gt;
-macro_line|#include &lt;net/sctp/sm.h&gt;
 multiline_comment|/* Set SCTP_DEBUG flag via config if not already set. */
 macro_line|#ifndef SCTP_DEBUG
 macro_line|#ifdef CONFIG_SCTP_DBG_MSG

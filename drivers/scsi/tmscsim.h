@@ -23,6 +23,8 @@ DECL|macro|SEL_TIMEOUT
 mdefine_line|#define SEL_TIMEOUT&t;&t;153&t;/* 250 ms selection timeout (@ 40 MHz) */
 DECL|macro|END_SCAN
 mdefine_line|#define END_SCAN&t;&t;2
+DECL|macro|pci_dma_lo32
+mdefine_line|#define pci_dma_lo32(a)&t;&t;&t;(a &amp; 0xffffffff)
 DECL|typedef|UCHAR
 r_typedef
 id|u8
@@ -566,13 +568,10 @@ DECL|member|QueryCnt
 id|ULONG
 id|QueryCnt
 suffix:semicolon
-DECL|member|pQueryHead
-id|PSCSICMD
-id|pQueryHead
-suffix:semicolon
-DECL|member|pQueryTail
-id|PSCSICMD
-id|pQueryTail
+DECL|member|cmdq
+r_struct
+id|list_head
+id|cmdq
 suffix:semicolon
 multiline_comment|/* 0x38: */
 DECL|member|msgin123
@@ -926,6 +925,46 @@ multiline_comment|/* see scsi/scsi.h */
 multiline_comment|/* One is missing ! */
 DECL|macro|ABORT_TAG
 mdefine_line|#define ABORT_TAG&t;0x0d
+multiline_comment|/*&n; *&t;SISC query queue&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|saved_dma_handle
+id|dma_addr_t
+id|saved_dma_handle
+suffix:semicolon
+DECL|typedef|dc390_cmd_scp_t
+)brace
+id|dc390_cmd_scp_t
+suffix:semicolon
+DECL|struct|scsi_cmnd_list
+r_struct
+id|scsi_cmnd_list
+(brace
+DECL|member|dummy
+r_char
+id|dummy
+(braket
+m_offsetof
+(paren
+r_struct
+id|scsi_cmnd
+comma
+id|SCp
+)paren
+)braket
+suffix:semicolon
+DECL|member|scp
+id|dc390_cmd_scp_t
+id|scp
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n;**  Inquiry Data format&n;*/
 DECL|struct|_SCSIInqData
 r_typedef

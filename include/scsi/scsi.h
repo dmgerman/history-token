@@ -501,6 +501,8 @@ DECL|macro|SOFT_ERROR
 mdefine_line|#define SOFT_ERROR      0x2005
 DECL|macro|ADD_TO_MLQUEUE
 mdefine_line|#define ADD_TO_MLQUEUE  0x2006
+DECL|macro|TIMEOUT
+mdefine_line|#define TIMEOUT         0x2007
 multiline_comment|/*&n; * Midlevel queue return values.&n; */
 DECL|macro|SCSI_MLQUEUE_HOST_BUSY
 mdefine_line|#define SCSI_MLQUEUE_HOST_BUSY   0x1055

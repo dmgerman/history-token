@@ -72,7 +72,6 @@ l_int|0x05
 suffix:semicolon
 multiline_comment|/**&n; * e100_config_init_82557 - config the 82557 adapter&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This routine will initialize the 82557 configure block.&n; * All other init functions will only set values that are&n; * different from the 82557 default.&n; */
 r_void
-id|__devinit
 DECL|function|e100_config_init_82557
 id|e100_config_init_82557
 c_func
@@ -206,7 +205,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__devinit
 DECL|function|e100_config_init_82558
 id|e100_config_init_82558
 c_func
@@ -330,7 +328,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__devinit
 DECL|function|e100_config_init_82550
 id|e100_config_init_82550
 c_func
@@ -382,7 +379,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Initialize the adapter&squot;s configure block */
 r_void
-id|__devinit
 DECL|function|e100_config_init
 id|e100_config_init
 c_func

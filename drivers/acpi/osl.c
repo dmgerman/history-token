@@ -14,16 +14,7 @@ macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_ACPI_EFI
 macro_line|#include &lt;linux/efi.h&gt;
-id|u64
-id|efi_mem_attributes
-(paren
-id|u64
-id|phys_addr
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_OS_SERVICES
 id|ACPI_MODULE_NAME
@@ -308,7 +299,12 @@ op_star
 id|addr
 )paren
 (brace
-macro_line|#ifdef CONFIG_ACPI_EFI
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+(brace
 id|addr-&gt;pointer_type
 op_assign
 id|ACPI_PHYSICAL_POINTER
@@ -360,7 +356,9 @@ r_return
 id|AE_NOT_FOUND
 suffix:semicolon
 )brace
-macro_line|#else
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -389,7 +387,7 @@ r_return
 id|AE_NOT_FOUND
 suffix:semicolon
 )brace
-macro_line|#endif /*CONFIG_ACPI_EFI*/
+)brace
 r_return
 id|AE_OK
 suffix:semicolon
@@ -411,7 +409,12 @@ op_star
 id|virt
 )paren
 (brace
-macro_line|#ifdef CONFIG_ACPI_EFI
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -448,7 +451,9 @@ id|size
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -469,7 +474,7 @@ r_return
 id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * ioremap checks to ensure this is in reserved space&n;&t; */
+multiline_comment|/*&n;&t; &t; * ioremap checks to ensure this is in reserved space&n;&t; &t; */
 op_star
 id|virt
 op_assign
@@ -485,7 +490,7 @@ comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 r_if
 c_cond
 (paren
@@ -1137,12 +1142,17 @@ r_void
 op_star
 id|virt_addr
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_EFI
 r_int
 id|iomem
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1181,7 +1191,8 @@ id|width
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
+)brace
+r_else
 id|virt_addr
 op_assign
 id|phys_to_virt
@@ -1190,7 +1201,6 @@ c_func
 id|phys_addr
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1273,7 +1283,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI_EFI
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1285,7 +1300,7 @@ c_func
 id|virt_addr
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 r_return
 id|AE_OK
 suffix:semicolon
@@ -1309,12 +1324,17 @@ r_void
 op_star
 id|virt_addr
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_EFI
 r_int
 id|iomem
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1353,7 +1373,8 @@ id|width
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
+)brace
+r_else
 id|virt_addr
 op_assign
 id|phys_to_virt
@@ -1362,7 +1383,6 @@ c_func
 id|phys_addr
 )paren
 suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -1419,7 +1439,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI_EFI
 r_if
 c_cond
 (paren
@@ -1431,7 +1450,6 @@ c_func
 id|virt_addr
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|AE_OK
 suffix:semicolon

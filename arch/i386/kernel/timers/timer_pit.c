@@ -333,6 +333,11 @@ id|timer_pit
 op_assign
 (brace
 dot
+id|name
+op_assign
+l_string|&quot;pit&quot;
+comma
+dot
 id|init
 op_assign
 id|init_pit

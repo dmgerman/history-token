@@ -18104,4 +18104,10 @@ comma
 )brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -339,7 +339,7 @@ op_assign
 id|pdev-&gt;name
 suffix:semicolon
 )brace
-id|pdev-&gt;phys
+id|pdev-&gt;map.phys
 op_assign
 id|edev-&gt;resource
 (braket
@@ -348,7 +348,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|pdev-&gt;virt
+id|pdev-&gt;map.virt
 op_assign
 (paren
 r_int

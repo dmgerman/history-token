@@ -1,4 +1,8 @@
 multiline_comment|/*&n; * Implementation of the multi-level security (MLS) policy.&n; *&n; * Author : Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &quot;mls.h&quot;
 macro_line|#include &quot;policydb.h&quot;
 macro_line|#include &quot;services.h&quot;

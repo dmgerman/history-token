@@ -54,7 +54,7 @@ op_assign
 op_amp
 id|lock-&gt;lock
 suffix:semicolon
-macro_line|#if __GNUC__ &lt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 4)
+macro_line|#if __GNUC__ &lt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 3)
 macro_line|# ifdef CONFIG_ITANIUM
 multiline_comment|/* don&squot;t use brl on Itanium... */
 id|asm

@@ -2,12 +2,10 @@ multiline_comment|/*&n; * Device driver for the SYMBIOS/LSILOGIC 53C8XX and 53C1
 macro_line|#ifndef SYM_HIPD_H
 DECL|macro|SYM_HIPD_H
 mdefine_line|#define SYM_HIPD_H
-multiline_comment|/*&n; *  Generic driver options.&n; *&n; *  They may be defined in platform specific headers, if they &n; *  are useful.&n; *&n; *    SYM_OPT_NO_BUS_MEMORY_MAPPING&n; *        When this option is set, the driver will not load the &n; *        on-chip RAM using MMIO, but let the SCRIPTS processor &n; *        do the work using MOVE MEMORY instructions.&n; *        (set for Linux/PPC)&n; *&n; *    SYM_OPT_HANDLE_DIR_UNKNOWN&n; *        When this option is set, the SCRIPTS used by the driver &n; *        are able to handle SCSI transfers with direction not &n; *        supplied by user.&n; *        (set for Linux-2.0.X)&n; *&n; *    SYM_OPT_HANDLE_DEVICE_QUEUEING&n; *        When this option is set, the driver will use a queue per &n; *        device and handle QUEUE FULL status requeuing internally.&n; *&n; *    SYM_OPT_BUS_DMA_ABSTRACTION&n; *        When this option is set, the driver allocator is responsible &n; *        of maintaining bus physical addresses and so provides virtual &n; *        to bus physical address translation of driver data structures.&n; *        (set for FreeBSD-4 and Linux 2.3)&n; *&n; *    SYM_OPT_SNIFF_INQUIRY&n; *        When this option is set, the driver sniff out successful &n; *        INQUIRY response and performs negotiations accordingly.&n; *        (set for Linux)&n; *&n; *    SYM_OPT_LIMIT_COMMAND_REORDERING&n; *        When this option is set, the driver tries to limit tagged &n; *        command reordering to some reasonnable value.&n; *        (set for Linux)&n; */
+multiline_comment|/*&n; *  Generic driver options.&n; *&n; *  They may be defined in platform specific headers, if they &n; *  are useful.&n; *&n; *    SYM_OPT_HANDLE_DIR_UNKNOWN&n; *        When this option is set, the SCRIPTS used by the driver &n; *        are able to handle SCSI transfers with direction not &n; *        supplied by user.&n; *        (set for Linux-2.0.X)&n; *&n; *    SYM_OPT_HANDLE_DEVICE_QUEUEING&n; *        When this option is set, the driver will use a queue per &n; *        device and handle QUEUE FULL status requeuing internally.&n; *&n; *    SYM_OPT_SNIFF_INQUIRY&n; *        When this option is set, the driver sniff out successful &n; *        INQUIRY response and performs negotiations accordingly.&n; *        (set for Linux)&n; *&n; *    SYM_OPT_LIMIT_COMMAND_REORDERING&n; *        When this option is set, the driver tries to limit tagged &n; *        command reordering to some reasonnable value.&n; *        (set for Linux)&n; */
 macro_line|#if 0
-mdefine_line|#define SYM_OPT_NO_BUS_MEMORY_MAPPING
 mdefine_line|#define SYM_OPT_HANDLE_DIR_UNKNOWN
 mdefine_line|#define SYM_OPT_HANDLE_DEVICE_QUEUEING
-mdefine_line|#define SYM_OPT_BUS_DMA_ABSTRACTION
 mdefine_line|#define SYM_OPT_SNIFF_INQUIRY
 mdefine_line|#define SYM_OPT_LIMIT_COMMAND_REORDERING
 macro_line|#endif
@@ -1269,12 +1267,10 @@ id|u32
 id|targtbl_ba
 suffix:semicolon
 multiline_comment|/*&n;&t; *  DMA pool handle for this HBA.&n;&t; */
-macro_line|#ifdef&t;SYM_OPT_BUS_DMA_ABSTRACTION
 DECL|member|bus_dmat
 id|m_pool_ident_t
 id|bus_dmat
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; *  O/S specific data structure&n;&t; */
 DECL|member|s
 r_struct
@@ -1686,6 +1682,7 @@ suffix:semicolon
 DECL|macro|HCB_BA
 mdefine_line|#define HCB_BA(np, lbl)&t;(np-&gt;hcb_ba + offsetof(struct sym_hcb, lbl))
 multiline_comment|/*&n; *  NVRAM reading (sym_nvram.c).&n; */
+macro_line|#if SYM_CONF_NVRAM_SUPPORT
 r_void
 id|sym_nvram_setup_host
 (paren
@@ -1725,6 +1722,66 @@ op_star
 id|nvp
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|sym_nvram_setup_host
+r_static
+r_inline
+r_void
+id|sym_nvram_setup_host
+c_func
+(paren
+id|hcb_p
+id|np
+comma
+r_struct
+id|sym_nvram
+op_star
+id|nvram
+)paren
+(brace
+)brace
+DECL|function|sym_nvram_setup_target
+r_static
+r_inline
+r_void
+id|sym_nvram_setup_target
+c_func
+(paren
+id|hcb_p
+id|np
+comma
+r_struct
+id|sym_nvram
+op_star
+id|nvram
+)paren
+(brace
+)brace
+DECL|function|sym_read_nvram
+r_static
+r_inline
+r_int
+id|sym_read_nvram
+c_func
+(paren
+id|sdev_p
+id|np
+comma
+r_struct
+id|sym_nvram
+op_star
+id|nvp
+)paren
+(brace
+id|nvp-&gt;type
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; *  FIRMWARES (sym_fw.c)&n; */
 r_struct
 id|sym_fw
@@ -2515,7 +2572,6 @@ op_star
 id|m_link_p
 suffix:semicolon
 multiline_comment|/*&n; *  Virtual to bus physical translation for a given cluster.&n; *  Such a structure is only useful with DMA abstraction.&n; */
-macro_line|#ifdef&t;SYM_OPT_BUS_DMA_ABSTRACTION
 DECL|struct|sym_m_vtob
 r_typedef
 r_struct
@@ -2560,14 +2616,12 @@ DECL|macro|VTOB_HASH_MASK
 mdefine_line|#define VTOB_HASH_MASK&t;&t;(VTOB_HASH_SIZE-1)
 DECL|macro|VTOB_HASH_CODE
 mdefine_line|#define VTOB_HASH_CODE(m)&t;&bslash;&n;&t;((((m_addr_t) (m)) &gt;&gt; SYM_MEM_CLUSTER_SHIFT) &amp; VTOB_HASH_MASK)
-macro_line|#endif&t;/* SYM_OPT_BUS_DMA_ABSTRACTION */
 multiline_comment|/*&n; *  Memory pool of a given kind.&n; *  Ideally, we want to use:&n; *  1) 1 pool for memory we donnot need to involve in DMA.&n; *  2) The same pool for controllers that require same DMA &n; *     constraints and features.&n; *     The OS specific m_pool_id_t thing and the sym_m_pool_match() &n; *     method are expected to tell the driver about.&n; */
 DECL|struct|sym_m_pool
 r_typedef
 r_struct
 id|sym_m_pool
 (brace
-macro_line|#ifdef&t;SYM_OPT_BUS_DMA_ABSTRACTION
 DECL|member|dev_dmat
 id|m_pool_ident_t
 id|dev_dmat
@@ -2630,10 +2684,6 @@ id|sym_m_pool
 op_star
 id|next
 suffix:semicolon
-macro_line|#else
-mdefine_line|#define M_GET_MEM_CLUSTER()&t;&t;sym_get_mem_cluster()
-mdefine_line|#define M_FREE_MEM_CLUSTER(p)&t;&t;sym_free_mem_cluster(p)
-macro_line|#endif&t;/* SYM_OPT_BUS_DMA_ABSTRACTION */
 DECL|member|h
 r_struct
 id|sym_m_link
@@ -2682,7 +2732,6 @@ id|name
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  Alloc, free and translate addresses to bus physical &n; *  for DMAable memory.&n; */
-macro_line|#ifdef&t;SYM_OPT_BUS_DMA_ABSTRACTION
 r_void
 op_star
 id|__sym_calloc_dma_unlocked
@@ -2730,7 +2779,6 @@ op_star
 id|m
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Verbs used by the driver code for DMAable memory handling.&n; * The _uvptv_ macro avoids a nasty warning about pointer to volatile &n; * being discarded.&n; */
 DECL|macro|_uvptv_
 mdefine_line|#define _uvptv_(p) ((void *)((u_long)(p)))

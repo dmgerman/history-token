@@ -4523,6 +4523,10 @@ r_if
 c_cond
 (paren
 id|skb-&gt;dev-&gt;br_port
+op_logical_and
+id|skb-&gt;pkt_type
+op_ne
+id|PACKET_LOOPBACK
 )paren
 (brace
 op_star

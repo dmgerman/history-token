@@ -100,6 +100,11 @@ id|timer_none
 op_assign
 (brace
 dot
+id|name
+op_assign
+l_string|&quot;none&quot;
+comma
+dot
 id|init
 op_assign
 id|init_none

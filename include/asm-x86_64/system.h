@@ -733,6 +733,56 @@ suffix:semicolon
 )brace
 DECL|macro|cmpxchg
 mdefine_line|#define cmpxchg(ptr,o,n)&bslash;&n;&t;((__typeof__(*(ptr)))__cmpxchg((ptr),(unsigned long)(o),&bslash;&n;&t;&t;&t;&t;&t;(unsigned long)(n),sizeof(*(ptr))))
+DECL|function|cmpxchg4_locked
+r_static
+r_inline
+id|__u32
+id|cmpxchg4_locked
+c_func
+(paren
+id|__u32
+op_star
+id|ptr
+comma
+id|__u32
+id|old
+comma
+id|__u32
+r_new
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;lock ; cmpxchgl %k1,%2&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+r_new
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|old
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+(paren
+id|__u32
+op_star
+)paren
+id|ptr
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+r_new
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()&t;mb()
@@ -778,8 +828,9 @@ mdefine_line|#define local_irq_disable() &t;__asm__ __volatile__(&quot;cli&quot;
 DECL|macro|local_irq_enable
 mdefine_line|#define local_irq_enable()&t;__asm__ __volatile__(&quot;sti&quot;: : :&quot;memory&quot;)
 multiline_comment|/* used in the idle loop; sti takes one instruction cycle to complete */
+multiline_comment|/* Work around BIOS that don&squot;t have K8 Errata #93 fixed. */
 DECL|macro|safe_halt
-mdefine_line|#define safe_halt()&t;&t;__asm__ __volatile__(&quot;sti; hlt&quot;: : :&quot;memory&quot;)
+mdefine_line|#define safe_halt()&t;      &bslash;&n;&t;asm volatile(&quot;   sti&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;1: hlt&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;     &quot;3: call idle_warning&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;     &quot;   jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;     &quot;.align 8&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.quad 1b,3b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.previous&quot; ::: &quot;memory&quot;)
 DECL|macro|irqs_disabled
 mdefine_line|#define irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&bslash;&n;&t;!(flags &amp; (1&lt;&lt;9));&t;&t;&bslash;&n;})
 multiline_comment|/* For spinlocks etc */

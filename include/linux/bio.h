@@ -246,7 +246,7 @@ multiline_comment|/*&n; * merge helpers etc&n; */
 DECL|macro|__BVEC_END
 mdefine_line|#define __BVEC_END(bio)&t;&t;bio_iovec_idx((bio), (bio)-&gt;bi_vcnt - 1)
 DECL|macro|__BVEC_START
-mdefine_line|#define __BVEC_START(bio)&t;bio_iovec_idx((bio), 0)
+mdefine_line|#define __BVEC_START(bio)&t;bio_iovec_idx((bio), (bio)-&gt;bi_idx)
 DECL|macro|BIOVEC_PHYS_MERGEABLE
 mdefine_line|#define BIOVEC_PHYS_MERGEABLE(vec1, vec2)&t;&bslash;&n;&t;((bvec_to_phys((vec1)) + (vec1)-&gt;bv_len) == bvec_to_phys((vec2)))
 DECL|macro|BIOVEC_VIRT_MERGEABLE

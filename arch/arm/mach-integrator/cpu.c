@@ -621,7 +621,7 @@ l_int|12000
 suffix:semicolon
 id|policy-&gt;cpuinfo.transition_latency
 op_assign
-l_int|1000
+l_int|1000000
 suffix:semicolon
 multiline_comment|/* 1 ms, assumed */
 id|policy-&gt;cur

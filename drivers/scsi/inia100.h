@@ -2,71 +2,6 @@ multiline_comment|/*************************************************************
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-r_static
-r_int
-id|inia100_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|inia100_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|inia100_queue
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_static
-r_int
-id|inia100_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|inia100_device_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|inia100_bus_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
 DECL|macro|inia100_REVID
 mdefine_line|#define inia100_REVID &quot;Initio INI-A100U2W SCSI device driver; Revision: 1.02d&quot;
 DECL|macro|ULONG
@@ -139,32 +74,6 @@ multiline_comment|/* Data Length */
 DECL|typedef|ORC_SG
 )brace
 id|ORC_SG
-suffix:semicolon
-DECL|struct|inia100_Adpt_Struc
-r_typedef
-r_struct
-id|inia100_Adpt_Struc
-(brace
-DECL|member|ADPT_BIOS
-id|UWORD
-id|ADPT_BIOS
-suffix:semicolon
-multiline_comment|/* 0 */
-DECL|member|ADPT_BASE
-id|UWORD
-id|ADPT_BASE
-suffix:semicolon
-multiline_comment|/* 1 */
-DECL|member|ADPT_pdev
-r_struct
-id|pci_dev
-op_star
-id|ADPT_pdev
-suffix:semicolon
-multiline_comment|/* 2 */
-DECL|typedef|INIA100_ADPT_STRUCT
-)brace
-id|INIA100_ADPT_STRUCT
 suffix:semicolon
 multiline_comment|/* SCSI related definition                                              */
 DECL|macro|DISC_NOT_ALLOW
@@ -327,7 +236,8 @@ id|TOTAL_SG_ENTRY
 suffix:semicolon
 multiline_comment|/*0 Start of SG list              */
 DECL|member|SCB_Srb
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCB_Srb
 suffix:semicolon
@@ -724,12 +634,14 @@ id|spinlock_t
 id|BitAllocFlagLock
 suffix:semicolon
 DECL|member|pSRB_head
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|pSRB_head
 suffix:semicolon
 DECL|member|pSRB_tail
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|pSRB_tail
 suffix:semicolon

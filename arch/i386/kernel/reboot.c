@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &quot;mach_reboot.h&quot;
@@ -815,6 +816,47 @@ op_logical_neg
 id|reboot_thru_bios
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+(brace
+id|efi
+dot
+id|reset_system
+c_func
+(paren
+id|EFI_RESET_COLD
+comma
+id|EFI_SUCCESS
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;lidt %0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;m&quot;
+(paren
+id|no_idt
+)paren
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;int3&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* rebooting needs to touch the page at absolute addr 0 */
 op_star
 (paren
@@ -867,6 +909,25 @@ l_string|&quot;int3&quot;
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+id|efi
+dot
+id|reset_system
+c_func
+(paren
+id|EFI_RESET_WARM
+comma
+id|EFI_SUCCESS
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|machine_real_restart
 c_func
 (paren
@@ -910,6 +971,25 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+id|efi
+dot
+id|reset_system
+c_func
+(paren
+id|EFI_RESET_SHUTDOWN
+comma
+id|EFI_SUCCESS
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

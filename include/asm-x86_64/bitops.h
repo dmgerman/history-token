@@ -3,7 +3,6 @@ DECL|macro|_X86_64_BITOPS_H
 mdefine_line|#define _X86_64_BITOPS_H
 multiline_comment|/*&n; * Copyright 1992, Linus Torvalds.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; * These have to be done with inline assembly: that way the bit-setting&n; * is guaranteed to be atomic. All bit operations return 0 if the bit&n; * was cleared before the operation and != 0 if it was not.&n; *&n; * bit 0 is the LSB of addr; bit 32 is the LSB of (addr+1).&n; */
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|LOCK_PREFIX
 mdefine_line|#define LOCK_PREFIX &quot;lock ; &quot;
@@ -994,26 +993,21 @@ r_int
 id|offset
 )paren
 (brace
+r_const
 r_int
 r_int
 op_star
 id|p
 op_assign
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
 id|addr
-)paren
 op_plus
 (paren
 id|offset
 op_rshift
-l_int|5
+l_int|6
 )paren
 suffix:semicolon
+r_int
 r_int
 id|set
 op_assign
@@ -1023,7 +1017,7 @@ id|bit
 op_assign
 id|offset
 op_amp
-l_int|31
+l_int|63
 comma
 id|res
 suffix:semicolon
@@ -1033,12 +1027,12 @@ c_cond
 id|bit
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Look for nonzero in the first 32 bits:&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Look for nonzero in the first 64 bits:&n;&t;&t; */
 id|__asm__
 c_func
 (paren
-l_string|&quot;bsfl %1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;cmovel %2,%0&bslash;n&bslash;t&quot;
+l_string|&quot;bsfq %1,%0&bslash;n&bslash;t&quot;
+l_string|&quot;cmoveq %2,%0&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -1055,7 +1049,7 @@ id|bit
 comma
 l_string|&quot;r&quot;
 (paren
-l_int|32
+l_int|64L
 )paren
 )paren
 suffix:semicolon
@@ -1065,7 +1059,7 @@ c_cond
 id|set
 OL
 (paren
-l_int|32
+l_int|64
 op_minus
 id|bit
 )paren
@@ -1077,7 +1071,7 @@ id|offset
 suffix:semicolon
 id|set
 op_assign
-l_int|32
+l_int|64
 op_minus
 id|bit
 suffix:semicolon
@@ -1090,26 +1084,15 @@ id|res
 op_assign
 id|find_first_bit
 (paren
-(paren
-r_const
-r_int
-r_int
-op_star
-)paren
 id|p
 comma
 id|size
 op_minus
-l_int|32
+l_int|64
 op_star
 (paren
 id|p
 op_minus
-(paren
-r_int
-r_int
-op_star
-)paren
 id|addr
 )paren
 )paren

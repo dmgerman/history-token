@@ -1,8 +1,6 @@
 macro_line|#ifndef _AV7110_H_
 DECL|macro|_AV7110_H_
 mdefine_line|#define _AV7110_H_
-DECL|macro|DVB_FIRM_PATH
-mdefine_line|#define DVB_FIRM_PATH &quot;/lib/DVB/&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -410,6 +408,9 @@ id|SetDescr
 comma
 DECL|enumerator|SetIR
 id|SetIR
+comma
+DECL|enumerator|FlushTSQueue
+id|FlushTSQueue
 )brace
 suffix:semicolon
 DECL|enum|av7110_mpeg_command
@@ -1363,6 +1364,45 @@ suffix:semicolon
 DECL|member|ir_config
 id|u32
 id|ir_config
+suffix:semicolon
+multiline_comment|/* firmware stuff */
+DECL|member|device_initialized
+r_int
+r_int
+id|device_initialized
+suffix:semicolon
+DECL|member|bin_fw
+r_int
+r_char
+op_star
+id|bin_fw
+suffix:semicolon
+DECL|member|size_fw
+r_int
+r_int
+id|size_fw
+suffix:semicolon
+DECL|member|bin_dpram
+r_int
+r_char
+op_star
+id|bin_dpram
+suffix:semicolon
+DECL|member|size_dpram
+r_int
+r_int
+id|size_dpram
+suffix:semicolon
+DECL|member|bin_root
+r_int
+r_char
+op_star
+id|bin_root
+suffix:semicolon
+DECL|member|size_root
+r_int
+r_int
+id|size_root
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/sock.h&gt;&t;  /* For skb_set_owner_w */
 macro_line|#include &lt;net/sctp/sctp.h&gt;
+macro_line|#include &lt;net/sctp/sm.h&gt;
 multiline_comment|/* Declare internal functions here.  */
 r_static
 r_int

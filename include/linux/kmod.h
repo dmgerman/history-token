@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#ifdef CONFIG_KMOD
+multiline_comment|/* modprobe exit status on success, -ve on error.  Return value&n; * usually useless though. */
 r_extern
 r_int
 id|request_module

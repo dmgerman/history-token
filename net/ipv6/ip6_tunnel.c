@@ -3390,6 +3390,10 @@ op_and_assign
 op_complement
 id|IFF_POINTOPOINT
 suffix:semicolon
+id|dev-&gt;iflink
+op_assign
+id|p-&gt;link
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3432,10 +3436,6 @@ c_cond
 id|rt-&gt;rt6i_dev
 )paren
 (brace
-id|dev-&gt;iflink
-op_assign
-id|rt-&gt;rt6i_dev-&gt;ifindex
-suffix:semicolon
 id|dev-&gt;hard_header_len
 op_assign
 id|rt-&gt;rt6i_dev-&gt;hard_header_len
@@ -4170,10 +4170,6 @@ suffix:semicolon
 id|dev-&gt;flags
 op_or_assign
 id|IFF_NOARP
-suffix:semicolon
-id|dev-&gt;iflink
-op_assign
-l_int|0
 suffix:semicolon
 id|dev-&gt;addr_len
 op_assign

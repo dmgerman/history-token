@@ -1,4 +1,7 @@
 multiline_comment|/*&n; * Implementation of the hash table type.&n; *&n; * Author : Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &quot;hashtab.h&quot;
 DECL|function|hashtab_create
 r_struct

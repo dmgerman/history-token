@@ -930,7 +930,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|__bio_for_each_segment
+id|bio_for_each_segment
 c_func
 (paren
 id|tovec
@@ -938,8 +938,6 @@ comma
 id|to
 comma
 id|i
-comma
-l_int|0
 )paren
 (brace
 id|fromvec
@@ -1038,7 +1036,7 @@ id|bio_orig-&gt;bi_flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * free up bounce indirect pages used&n;&t; */
-id|__bio_for_each_segment
+id|bio_for_each_segment
 c_func
 (paren
 id|bvec
@@ -1046,8 +1044,6 @@ comma
 id|bio
 comma
 id|i
-comma
-l_int|0
 )paren
 (brace
 id|org_vec
@@ -1580,7 +1576,12 @@ id|bi_vcnt
 suffix:semicolon
 id|bio-&gt;bi_idx
 op_assign
-l_int|0
+(paren
+op_star
+id|bio_orig
+)paren
+op_member_access_from_pointer
+id|bi_idx
 suffix:semicolon
 id|bio-&gt;bi_size
 op_assign

@@ -71,7 +71,7 @@ op_assign
 l_string|&quot;loop input to output&quot;
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * hardware-specific configuration, controlled by which device&n; * controller driver was configured.&n; *&n; * CHIP ... hardware identifier&n; * DRIVER_VERSION_NUM ... alerts the host side driver to differences&n; * EP0_MAXPACKET ... controls packetization of control requests&n; * EP_*_NAME ... which endpoints do we use for which purpose?&n; * EP_*_NUM ... numbers for them (often limited by hardware)&n; * HIGHSPEED ... define if ep0 and descriptors need high speed support&n; * MAX_USB_POWER ... define if we use other than 100 mA bus current&n; * SELFPOWER ... unless we can run on bus power, USB_CONFIG_ATT_SELFPOWER&n; * WAKEUP ... if hardware supports remote wakeup AND we will issue the&n; * &t;usb_gadget_wakeup() call to initiate it, USB_CONFIG_ATT_WAKEUP&n; *&n; * hw_optimize(gadget) ... for any hardware tweaks we want to kick in&n; * &t;before we enable our endpoints&n; *&n; * add other defines for other portability issues, like hardware that&n; * for some reason doesn&squot;t handle full speed bulk maxpacket of 64.&n; */
+multiline_comment|/*&n; * hardware-specific configuration, controlled by which device&n; * controller driver was configured.&n; *&n; * CHIP ... hardware identifier&n; * DRIVER_VERSION_NUM ... alerts the host side driver to differences&n; * EP_*_NAME ... which endpoints do we use for which purpose?&n; * EP_*_NUM ... numbers for them (often limited by hardware)&n; * HIGHSPEED ... define if ep0 and descriptors need high speed support&n; * MAX_USB_POWER ... define if we use other than 100 mA bus current&n; * SELFPOWER ... if we can run on bus power, zero&n; * WAKEUP ... if hardware supports remote wakeup AND we will issue the&n; * &t;usb_gadget_wakeup() call to initiate it, USB_CONFIG_ATT_WAKEUP&n; *&n; * add other defines for other portability issues, like hardware that&n; * for some reason doesn&squot;t handle full speed bulk maxpacket of 64.&n; */
 multiline_comment|/*&n; * DRIVER_VERSION_NUM 0x0000 (?):  Martin Diehl&squot;s ezusb an21/fx code&n; */
 multiline_comment|/*&n; * NetChip 2280, PCI based.&n; *&n; * This has half a dozen configurable endpoints, four with dedicated&n; * DMA channels to manage their FIFOs.  It supports high speed.&n; * Those endpoints can be arranged in any desired configuration.&n; */
 macro_line|#ifdef&t;CONFIG_USB_ZERO_NET2280
@@ -79,8 +79,6 @@ DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;net2280&quot;
 DECL|macro|DRIVER_VERSION_NUM
 mdefine_line|#define DRIVER_VERSION_NUM&t;0x0101
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;64
 DECL|variable|EP_OUT_NAME
 r_static
 r_const
@@ -108,43 +106,7 @@ mdefine_line|#define EP_IN_NUM&t;2
 DECL|macro|HIGHSPEED
 mdefine_line|#define HIGHSPEED
 multiline_comment|/* specific hardware configs could be bus-powered */
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER USB_CONFIG_ATT_SELFPOWER
 multiline_comment|/* supports remote wakeup, but this driver doesn&squot;t */
-r_extern
-r_int
-id|net2280_set_fifo_mode
-(paren
-r_struct
-id|usb_gadget
-op_star
-id|gadget
-comma
-r_int
-id|mode
-)paren
-suffix:semicolon
-DECL|function|hw_optimize
-r_static
-r_inline
-r_void
-id|hw_optimize
-(paren
-r_struct
-id|usb_gadget
-op_star
-id|gadget
-)paren
-(brace
-multiline_comment|/* we can have bigger ep-a/ep-b fifos (2KB each, 4 packets&n;&t; * for highspeed bulk) because we&squot;re not using ep-c/ep-d.&n;&t; */
-id|net2280_set_fifo_mode
-(paren
-id|gadget
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif
 multiline_comment|/*&n; * PXA-2xx UDC:  widely used in second gen Linux-capable PDAs.&n; *&n; * This has fifteen fixed-function full speed endpoints, and it&n; * can support all USB transfer types.&n; *&n; * These supports three or four configurations, with fixed numbers.&n; * The hardware interprets SET_INTERFACE, net effect is that you&n; * can&squot;t use altsettings or reset the interfaces independently.&n; * So stick to a single interface.&n; */
 macro_line|#ifdef&t;CONFIG_USB_ZERO_PXA2XX
@@ -152,8 +114,6 @@ DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;pxa2xx&quot;
 DECL|macro|DRIVER_VERSION_NUM
 mdefine_line|#define DRIVER_VERSION_NUM&t;0x0103
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;16
 DECL|variable|EP_OUT_NAME
 r_static
 r_const
@@ -179,12 +139,7 @@ suffix:semicolon
 DECL|macro|EP_IN_NUM
 mdefine_line|#define EP_IN_NUM&t;11
 multiline_comment|/* doesn&squot;t support bus-powered operation */
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER USB_CONFIG_ATT_SELFPOWER
 multiline_comment|/* supports remote wakeup, but this driver doesn&squot;t */
-multiline_comment|/* no hw optimizations to apply */
-DECL|macro|hw_optimize
-mdefine_line|#define hw_optimize(g) do {} while (0);
 macro_line|#endif
 multiline_comment|/*&n; * SA-1100 UDC:  widely used in first gen Linux-capable PDAs.&n; *&n; * This has only two fixed function endpoints, which can only&n; * be used for bulk (or interrupt) transfers.  (Plus control.)&n; *&n; * Since it can&squot;t flush its TX fifos without disabling the UDC,&n; * the current configuration or altsettings can&squot;t change except&n; * in special situations.  So this is a case of &quot;choose it right&n; * during enumeration&quot; ...&n; */
 macro_line|#ifdef&t;CONFIG_USB_ZERO_SA1100
@@ -192,8 +147,6 @@ DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;sa1100&quot;
 DECL|macro|DRIVER_VERSION_NUM
 mdefine_line|#define DRIVER_VERSION_NUM&t;0x0105
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;8
 DECL|variable|EP_OUT_NAME
 r_static
 r_const
@@ -219,23 +172,50 @@ suffix:semicolon
 DECL|macro|EP_IN_NUM
 mdefine_line|#define EP_IN_NUM&t;2
 multiline_comment|/* doesn&squot;t support bus-powered operation */
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER USB_CONFIG_ATT_SELFPOWER
 multiline_comment|/* doesn&squot;t support remote wakeup? */
-multiline_comment|/* no hw optimizations to apply */
-DECL|macro|hw_optimize
-mdefine_line|#define hw_optimize(g) do {} while (0);
+macro_line|#endif
+multiline_comment|/*&n; * Toshiba TC86C001 (&quot;Goku-S&quot;) UDC&n; *&n; * This has three semi-configurable full speed bulk/interrupt endpoints.&n; */
+macro_line|#ifdef&t;CONFIG_USB_ZERO_GOKU
+DECL|macro|CHIP
+mdefine_line|#define CHIP&t;&t;&t;&quot;goku&quot;
+DECL|macro|DRIVER_VERSION_NUM
+mdefine_line|#define DRIVER_VERSION_NUM&t;0x0106
+DECL|variable|EP_OUT_NAME
+r_static
+r_const
+r_char
+id|EP_OUT_NAME
+(braket
+)braket
+op_assign
+l_string|&quot;ep1-bulk&quot;
+suffix:semicolon
+DECL|macro|EP_OUT_NUM
+mdefine_line|#define EP_OUT_NUM&t;1
+DECL|variable|EP_IN_NAME
+r_static
+r_const
+r_char
+id|EP_IN_NAME
+(braket
+)braket
+op_assign
+l_string|&quot;ep2-bulk&quot;
+suffix:semicolon
+DECL|macro|EP_IN_NUM
+mdefine_line|#define EP_IN_NUM&t;2
+multiline_comment|/* doesn&squot;t support remote wakeup */
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifndef EP0_MAXPACKET
+macro_line|#ifndef EP_OUT_NUM
 macro_line|#&t;error Configure some USB peripheral controller driver!
 macro_line|#endif
 multiline_comment|/* power usage is config specific.&n; * hardware that supports remote wakeup defaults to disabling it.&n; */
 macro_line|#ifndef&t;SELFPOWER
-multiline_comment|/* default: say we rely on bus power */
+multiline_comment|/* default: say we&squot;re self-powered */
 DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER&t;0
-multiline_comment|/* else:&n; * - SELFPOWER value must be USB_CONFIG_ATT_SELFPOWER&n; * - MAX_USB_POWER may be nonzero.&n; */
+mdefine_line|#define SELFPOWER USB_CONFIG_ATT_SELFPOWER
+multiline_comment|/* else:&n; * - SELFPOWER value must be zero&n; * - MAX_USB_POWER may be nonzero.&n; */
 macro_line|#endif
 macro_line|#ifndef&t;MAX_USB_POWER
 multiline_comment|/* any hub supports this steady state bus power consumption */
@@ -412,7 +392,6 @@ mdefine_line|#define&t;CONFIG_SOURCE_SINK&t;3
 DECL|macro|CONFIG_LOOPBACK
 mdefine_line|#define&t;CONFIG_LOOPBACK&t;&t;2
 r_static
-r_const
 r_struct
 id|usb_device_descriptor
 DECL|variable|device_desc
@@ -442,11 +421,6 @@ dot
 id|bDeviceClass
 op_assign
 id|USB_CLASS_VENDOR_SPEC
-comma
-dot
-id|bMaxPacketSize0
-op_assign
-id|EP0_MAXPACKET
 comma
 dot
 id|idVendor
@@ -841,7 +815,6 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_const
 r_struct
 id|usb_qualifier_descriptor
 DECL|variable|dev_qualifier
@@ -871,12 +844,6 @@ dot
 id|bDeviceClass
 op_assign
 id|USB_CLASS_VENDOR_SPEC
-comma
-multiline_comment|/* assumes ep0 uses the same value for both speeds ... */
-dot
-id|bMaxPacketSize0
-op_assign
-id|EP0_MAXPACKET
 comma
 dot
 id|bNumConfigurations
@@ -2719,11 +2686,6 @@ id|zero_reset_config
 id|dev
 )paren
 suffix:semicolon
-id|hw_optimize
-(paren
-id|gadget
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2984,7 +2946,8 @@ id|ctrl-&gt;bRequestType
 op_ne
 id|USB_DIR_IN
 )paren
-r_break
+r_goto
+id|unknown
 suffix:semicolon
 r_switch
 c_cond
@@ -3150,7 +3113,8 @@ id|ctrl-&gt;bRequestType
 op_ne
 l_int|0
 )paren
-r_break
+r_goto
+id|unknown
 suffix:semicolon
 id|spin_lock
 (paren
@@ -3187,7 +3151,8 @@ id|ctrl-&gt;bRequestType
 op_ne
 id|USB_DIR_IN
 )paren
-r_break
+r_goto
+id|unknown
 suffix:semicolon
 op_star
 (paren
@@ -3223,7 +3188,8 @@ id|ctrl-&gt;bRequestType
 op_ne
 id|USB_RECIP_INTERFACE
 )paren
-r_break
+r_goto
+id|unknown
 suffix:semicolon
 id|spin_lock
 (paren
@@ -3292,7 +3258,8 @@ op_or
 id|USB_RECIP_INTERFACE
 )paren
 )paren
-r_break
+r_goto
+id|unknown
 suffix:semicolon
 r_if
 c_cond
@@ -3341,7 +3308,100 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/*&n;&t; * These are the same vendor-specific requests supported by&n;&t; * Intel&squot;s USB 2.0 compliance test devices.  We exceed that&n;&t; * device spec by allowing multiple-packet requests.&n;&t; */
+r_case
+l_int|0x5b
+suffix:colon
+multiline_comment|/* control WRITE test -- fill the buffer */
+r_if
+c_cond
+(paren
+id|ctrl-&gt;bRequestType
+op_ne
+(paren
+id|USB_DIR_OUT
+op_or
+id|USB_TYPE_VENDOR
+)paren
+)paren
+r_goto
+id|unknown
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctrl-&gt;wValue
+op_logical_or
+id|ctrl-&gt;wIndex
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* just read that many bytes into the buffer */
+r_if
+c_cond
+(paren
+id|ctrl-&gt;wLength
+OG
+id|USB_BUFSIZ
+)paren
+r_break
+suffix:semicolon
+id|value
+op_assign
+id|ctrl-&gt;wLength
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x5c
+suffix:colon
+multiline_comment|/* control READ test -- return the buffer */
+r_if
+c_cond
+(paren
+id|ctrl-&gt;bRequestType
+op_ne
+(paren
+id|USB_DIR_IN
+op_or
+id|USB_TYPE_VENDOR
+)paren
+)paren
+r_goto
+id|unknown
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctrl-&gt;wValue
+op_logical_or
+id|ctrl-&gt;wIndex
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* expect those bytes are still in the buffer; send back */
+r_if
+c_cond
+(paren
+id|ctrl-&gt;wLength
+OG
+id|USB_BUFSIZ
+op_logical_or
+id|ctrl-&gt;wLength
+op_ne
+id|req-&gt;length
+)paren
+r_break
+suffix:semicolon
+id|value
+op_assign
+id|ctrl-&gt;wLength
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
+suffix:colon
+id|unknown
 suffix:colon
 id|VDEBUG
 (paren
@@ -3635,6 +3695,17 @@ id|dev-&gt;req-&gt;complete
 op_assign
 id|zero_setup_complete
 suffix:semicolon
+id|device_desc.bMaxPacketSize0
+op_assign
+id|gadget-&gt;ep0-&gt;maxpacket
+suffix:semicolon
+macro_line|#ifdef HIGHSPEED
+multiline_comment|/* assume ep0 uses the same value for both speeds ... */
+id|dev_qualifier.bMaxPacketSize0
+op_assign
+id|device_desc.bMaxPacketSize0
+suffix:semicolon
+macro_line|#endif
 id|gadget-&gt;ep0-&gt;driver_data
 op_assign
 id|dev

@@ -1,6 +1,5 @@
 multiline_comment|/***********************************************************************&n; *&t;FILE NAME : SCSIIOM.C&t;&t;&t;&t;&t;       *&n; *&t;     BY   : C.L. Huang,    ching@tekram.com.tw&t;&t;       *&n; *&t;Description: Device Driver for Tekram DC-390 (T) PCI SCSI      *&n; *&t;&t;     Bus Master Host Adapter&t;&t;&t;       *&n; ***********************************************************************/
 multiline_comment|/* $Id: scsiiom.c,v 2.55.2.17 2000/12/20 00:39:37 garloff Exp $ */
-macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 r_static
 r_void
 id|__inline__
@@ -112,12 +111,20 @@ id|printk
 (paren
 l_string|&quot;DC390: We were just reset and don&squot;t accept commands yet!&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* KG: Moved pci mapping here */
+id|dc390_pci_map
+c_func
+(paren
+id|pSRB
+)paren
+suffix:semicolon
+multiline_comment|/* TODO: error handling */
 id|DC390_write8
 (paren
 id|Scsi_Dest_ID
@@ -184,8 +191,8 @@ l_int|0
 comma
 id|pDCB-&gt;SyncMode
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|disc_allowed
 op_assign
 id|pDCB-&gt;DevMode
@@ -402,8 +409,8 @@ id|pSRB
 comma
 id|tag_no
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|cmd
 op_assign
 id|SEL_W_ATN3
@@ -434,8 +441,8 @@ id|pSRB-&gt;pcmd-&gt;pid
 comma
 id|pSRB
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 )brace
 suffix:semicolon
 id|pSRB-&gt;SRBState
@@ -465,8 +472,8 @@ id|pDCB-&gt;TargetID
 comma
 id|pDCB-&gt;TargetLUN
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|pSRB-&gt;MsgOutBuf
 (braket
 l_int|0
@@ -603,8 +610,8 @@ id|printk
 id|KERN_DEBUG
 l_string|&quot;DC390: AutoReqSense !&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 )brace
 r_else
 multiline_comment|/* write cmnd to bus */
@@ -663,8 +670,8 @@ id|printk
 id|KERN_WARNING
 l_string|&quot;DC390: ActiveDCB != 0&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DEBUG0
 c_func
 (paren
@@ -678,8 +685,8 @@ id|printk
 id|KERN_WARNING
 l_string|&quot;DC390: ActiveSRB != 0&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 singleline_comment|//DC390_write8 (DMA_Cmd, DMA_IDLE_CMD);
 r_if
 c_cond
@@ -708,12 +715,12 @@ l_string|&quot;DC390: Interrupt during Start SCSI (pid %li, target %02i-%02i)&bs
 comma
 id|pSRB-&gt;pcmd-&gt;pid
 comma
-id|pSRB-&gt;pcmd-&gt;target
+id|pSRB-&gt;pcmd-&gt;device-&gt;id
 comma
-id|pSRB-&gt;pcmd-&gt;lun
+id|pSRB-&gt;pcmd-&gt;device-&gt;lun
+)paren
 )paren
 suffix:semicolon
-)paren
 id|pSRB-&gt;SRBState
 op_assign
 id|SRB_READY
@@ -781,14 +788,14 @@ id|USHORT
 id|pstate
 suffix:semicolon
 id|PDEVDECL1
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DEBUG0
 c_func
 (paren
 id|PDEVSET1
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DEBUG0
 c_func
 (paren
@@ -801,8 +808,8 @@ comma
 op_amp
 id|pstate
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DEBUG0
 c_func
 (paren
@@ -842,8 +849,8 @@ id|PCI_STATUS_DETECTED_PARITY
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 )paren
+suffix:semicolon
 id|dstate
 op_assign
 id|DC390_read8
@@ -939,8 +946,8 @@ id|printk
 id|KERN_DEBUG
 l_string|&quot;DC390: read residual bytes ... &bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|dstate
 op_assign
 id|DC390_read8
@@ -1081,9 +1088,9 @@ r_return
 id|dstate
 suffix:semicolon
 )brace
-suffix:semicolon
 macro_line|#endif
-r_void
+r_static
+id|irqreturn_t
 id|__inline__
 DECL|function|DC390_Interrupt
 id|DC390_Interrupt
@@ -1146,6 +1153,7 @@ suffix:semicolon
 macro_line|#endif
 id|DC390_AFLAGS
 id|DC390_IFLAGS
+suffix:semicolon
 singleline_comment|//DC390_DFLAGS
 id|pACB
 op_assign
@@ -1189,6 +1197,7 @@ id|pACB
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 singleline_comment|//DC390_LOCK_DRV;
@@ -1212,6 +1221,7 @@ id|INTERRUPT
 (brace
 multiline_comment|/*DC390_UNLOCK_DRV;*/
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1225,10 +1235,14 @@ l_string|&quot;sstatus=%02x,&quot;
 comma
 id|sstatus
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 macro_line|#if DMA_INT
 id|DC390_LOCK_IO
+c_func
+(paren
+id|pACB-&gt;pScsiHost
+)paren
 suffix:semicolon
 id|DC390_LOCK_ACB
 suffix:semicolon
@@ -1242,6 +1256,10 @@ suffix:semicolon
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|pACB-&gt;pScsiHost
+)paren
 suffix:semicolon
 id|DEBUG1
 c_func
@@ -1253,8 +1271,8 @@ l_string|&quot;dstatus=%02x,&quot;
 comma
 id|dstatus
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1274,10 +1292,11 @@ id|printk
 id|KERN_WARNING
 l_string|&quot;DC390 Int w/o SCSI actions (only DMA?)&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 singleline_comment|//DC390_UNLOCK_DRV;
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1287,6 +1306,10 @@ singleline_comment|//dstatus = DC390_read8 (DMA_Status);
 singleline_comment|//DC390_write32 (DMA_ScsiBusCtrl, EN_INT_ON_PCI_ABORT);
 macro_line|#endif
 id|DC390_LOCK_IO
+c_func
+(paren
+id|pACB-&gt;pScsiHost
+)paren
 suffix:semicolon
 id|DC390_LOCK_ACB
 suffix:semicolon
@@ -1316,8 +1339,8 @@ l_string|&quot;Istatus(Res,Inv,Dis,Serv,Succ,ReS,SelA,Sel)=%02x,&quot;
 comma
 id|istatus
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|dc390_laststatus
 op_and_assign
 op_complement
@@ -1539,8 +1562,8 @@ id|phase
 comma
 id|sstatus
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|stateV
 op_assign
 (paren
@@ -1597,8 +1620,8 @@ id|phase
 comma
 id|sstatus
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|stateV
 op_assign
 (paren
@@ -1633,11 +1656,18 @@ singleline_comment|//DC390_LOCK_DRV_NI;
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|pACB-&gt;pScsiHost
+)paren
 suffix:semicolon
 singleline_comment|//DC390_UNLOCK_DRV; /* Restore initial flags */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
-r_void
 DECL|function|do_DC390_Interrupt
+id|irqreturn_t
 id|do_DC390_Interrupt
 c_func
 (paren
@@ -1654,6 +1684,9 @@ op_star
 id|regs
 )paren
 (brace
+id|irqreturn_t
+id|ret
+suffix:semicolon
 id|DEBUG1
 c_func
 (paren
@@ -1664,9 +1697,11 @@ l_string|&quot;DC390: Irq (%i) caught: &quot;
 comma
 id|irq
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 multiline_comment|/* Locking is done in DC390_Interrupt */
+id|ret
+op_assign
 id|DC390_Interrupt
 c_func
 (paren
@@ -1684,8 +1719,11 @@ id|printk
 (paren
 l_string|&quot;.. IRQ returned&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 r_void
 DECL|function|dc390_DataOut_0
@@ -1842,18 +1880,31 @@ id|pSRB-&gt;pSegmentList
 suffix:semicolon
 id|pSRB-&gt;SGBusAddr
 op_assign
-id|virt_to_bus
+id|cpu_to_le32
 c_func
 (paren
-id|psgl-&gt;address
+id|pci_dma_lo32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|psgl
+)paren
+)paren
 )paren
 suffix:semicolon
 id|pSRB-&gt;SGToBeXferLen
 op_assign
+id|cpu_to_le32
+c_func
 (paren
-id|ULONG
+id|sg_dma_len
+c_func
+(paren
+id|psgl
 )paren
-id|psgl-&gt;length
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -2157,8 +2208,8 @@ id|DC390_read8
 id|CtcReg_Low
 )paren
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DEBUG1
 c_func
 (paren
@@ -2171,8 +2222,8 @@ id|ResidCnt
 comma
 id|pSRB-&gt;SGToBeXferLen
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DC390_write8
 (paren
 id|DMA_Cmd
@@ -2207,18 +2258,31 @@ id|pSRB-&gt;pSegmentList
 suffix:semicolon
 id|pSRB-&gt;SGBusAddr
 op_assign
-id|virt_to_bus
+id|cpu_to_le32
 c_func
 (paren
-id|psgl-&gt;address
+id|pci_dma_lo32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|psgl
+)paren
+)paren
 )paren
 suffix:semicolon
 id|pSRB-&gt;SGToBeXferLen
 op_assign
+id|cpu_to_le32
+c_func
 (paren
-id|ULONG
+id|sg_dma_len
+c_func
+(paren
+id|psgl
 )paren
-id|psgl-&gt;length
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -2257,8 +2321,8 @@ id|printk
 id|KERN_DEBUG
 l_string|&quot;Check for residuals,&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2417,8 +2481,8 @@ id|i
 comma
 id|bval
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|ResidCnt
 op_assign
 (paren
@@ -2533,8 +2597,8 @@ id|pSRB-&gt;TotalXferredLen
 comma
 id|pSRB-&gt;SGToBeXferLen
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 )brace
 )brace
 r_if
@@ -2816,8 +2880,8 @@ id|printk
 id|KERN_INFO
 l_string|&quot;DC390: Reject message&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 )brace
 multiline_comment|/* abort command */
 r_static
@@ -3464,6 +3528,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* handle RESTORE_PTR */
+multiline_comment|/* I presume, this command is already mapped, so, have to remap. */
 r_static
 r_void
 DECL|function|dc390_restore_ptr
@@ -3476,6 +3541,12 @@ id|PSRB
 id|pSRB
 )paren
 (brace
+id|Scsi_Cmnd
+op_star
+id|pcmd
+op_assign
+id|pSRB-&gt;pcmd
+suffix:semicolon
 id|PSGL
 id|psgl
 suffix:semicolon
@@ -3490,27 +3561,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pSRB-&gt;pcmd-&gt;use_sg
+id|pcmd-&gt;use_sg
 )paren
 (brace
-id|pSRB-&gt;SGcount
-op_assign
-(paren
-id|UCHAR
-)paren
-id|pSRB-&gt;pcmd-&gt;use_sg
-suffix:semicolon
 id|pSRB-&gt;pSegmentList
 op_assign
 (paren
 id|PSGL
 )paren
-id|pSRB-&gt;pcmd-&gt;request_buffer
+id|pcmd-&gt;request_buffer
 suffix:semicolon
 id|psgl
 op_assign
 id|pSRB-&gt;pSegmentList
 suffix:semicolon
+singleline_comment|//dc390_pci_sync(pSRB);
 r_while
 c_loop
 (paren
@@ -3551,18 +3616,31 @@ id|pSRB-&gt;pSegmentList
 suffix:semicolon
 id|pSRB-&gt;SGBusAddr
 op_assign
-id|virt_to_bus
+id|cpu_to_le32
 c_func
 (paren
-id|psgl-&gt;address
+id|pci_dma_lo32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|psgl
+)paren
+)paren
 )paren
 suffix:semicolon
 id|pSRB-&gt;SGToBeXferLen
 op_assign
+id|cpu_to_le32
+c_func
 (paren
-id|ULONG
+id|sg_dma_len
+c_func
+(paren
+id|psgl
 )paren
-id|psgl-&gt;length
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -3604,9 +3682,16 @@ r_else
 r_if
 c_cond
 (paren
-id|pSRB-&gt;pcmd-&gt;request_buffer
+id|pcmd-&gt;request_buffer
 )paren
 (brace
+singleline_comment|//dc390_pci_sync(pSRB);
+id|pSRB-&gt;Segmentx.length
+op_assign
+id|pcmd-&gt;request_bufflen
+op_minus
+id|pSRB-&gt;Saved_Ptr
+suffix:semicolon
 id|pSRB-&gt;SGcount
 op_assign
 l_int|1
@@ -3618,31 +3703,6 @@ id|PSGL
 )paren
 op_amp
 id|pSRB-&gt;Segmentx
-suffix:semicolon
-id|pSRB-&gt;Segmentx.address
-op_assign
-(paren
-id|PUCHAR
-)paren
-id|pSRB-&gt;pcmd-&gt;request_buffer
-op_plus
-id|pSRB-&gt;Saved_Ptr
-suffix:semicolon
-id|pSRB-&gt;Segmentx.length
-op_assign
-id|pSRB-&gt;pcmd-&gt;request_bufflen
-op_minus
-id|pSRB-&gt;Saved_Ptr
-suffix:semicolon
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;DC390: Pointer restored. Total %li, Bus %p&bslash;n&quot;
-comma
-id|pSRB-&gt;Saved_Ptr
-comma
-id|pSRB-&gt;Segmentx.address
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -3658,14 +3718,13 @@ l_string|&quot;DC390: RESTORE_PTR message for Transfer without Scatter-Gather ??
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|pSRB-&gt;TotalXferredLen
 op_assign
 id|pSRB-&gt;Saved_Ptr
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* According to the docs, the AM53C974 reads the message and &n; * generates a Succesful Operation IRQ before asserting ACK for&n; * the last byte (how does it know whether it&squot;s the last ?) */
+multiline_comment|/* According to the docs, the AM53C974 reads the message and &n; * generates a Successful Operation IRQ before asserting ACK for&n; * the last byte (how does it know whether it&squot;s the last ?) */
 multiline_comment|/* The old code handled it in another way, indicating, that on&n; * every message byte an IRQ is generated and every byte has to&n; * be manually ACKed. Hmmm ?  (KG, 98/11/28) */
 multiline_comment|/* The old implementation was correct. Sigh! */
 multiline_comment|/* Check if the message is complete */
@@ -3807,8 +3866,8 @@ id|pSRB-&gt;MsgInBuf
 comma
 id|pACB-&gt;MsgLen
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 multiline_comment|/* Now eval the msg */
 r_switch
 c_cond
@@ -3978,8 +4037,8 @@ id|printk
 (paren
 l_string|&quot;DC390: RESTORE POINTER message received ... try to handle&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|dc390_restore_ptr
 (paren
 id|pACB
@@ -4011,7 +4070,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-suffix:semicolon
 op_star
 id|psstatus
 op_assign
@@ -4132,18 +4190,31 @@ id|pSRB-&gt;pSegmentList
 suffix:semicolon
 id|pSRB-&gt;SGBusAddr
 op_assign
-id|virt_to_bus
+id|cpu_to_le32
 c_func
 (paren
-id|psgl-&gt;address
+id|pci_dma_lo32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|psgl
+)paren
+)paren
 )paren
 suffix:semicolon
 id|pSRB-&gt;SGToBeXferLen
 op_assign
+id|cpu_to_le32
+c_func
 (paren
-id|ULONG
+id|sg_dma_len
+c_func
+(paren
+id|psgl
 )paren
-id|psgl-&gt;length
+)paren
 suffix:semicolon
 id|DEBUG1
 c_func
@@ -4153,8 +4224,8 @@ id|printk
 id|KERN_DEBUG
 l_string|&quot; DC390: Next SG segment.&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 )brace
 id|lval
 op_assign
@@ -4172,8 +4243,8 @@ id|lval
 comma
 id|pSRB-&gt;SGBusAddr
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DC390_write8
 (paren
 id|CtcReg_Low
@@ -4251,9 +4322,9 @@ op_or
 id|DMA_INT
 )paren
 suffix:semicolon
-singleline_comment|//DEBUG1(DC390_write32 (DMA_ScsiBusCtrl, WRT_ERASE_DMA_STAT | EN_INT_ON_PCI_ABORT);)
-singleline_comment|//DEBUG1(printk (KERN_DEBUG &quot;DC390: DMA_Status: %02x&bslash;n&quot;, DC390_read8 (DMA_Status));)
-singleline_comment|//DEBUG1(DC390_write32 (DMA_ScsiBusCtrl, EN_INT_ON_PCI_ABORT);)
+singleline_comment|//DEBUG1(DC390_write32 (DMA_ScsiBusCtrl, WRT_ERASE_DMA_STAT | EN_INT_ON_PCI_ABORT));
+singleline_comment|//DEBUG1(printk (KERN_DEBUG &quot;DC390: DMA_Status: %02x&bslash;n&quot;, DC390_read8 (DMA_Status)));
+singleline_comment|//DEBUG1(DC390_write32 (DMA_ScsiBusCtrl, EN_INT_ON_PCI_ABORT));
 )brace
 r_else
 multiline_comment|/* xfer pad */
@@ -4280,8 +4351,8 @@ id|printk
 id|KERN_WARNING
 l_string|&quot; DC390: Overrun -&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 )brace
 id|DEBUG0
 c_func
@@ -4291,8 +4362,8 @@ id|printk
 id|KERN_WARNING
 l_string|&quot; Clear transfer pad &bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DC390_write8
 (paren
 id|CtcReg_Low
@@ -4542,8 +4613,8 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;DC390: AutoReqSense (CmndPhase)!&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 )brace
 id|pSRB-&gt;SRBState
 op_assign
@@ -5082,8 +5153,8 @@ c_func
 id|KERN_INFO
 l_string|&quot;DISC,&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5135,8 +5206,8 @@ id|pACB-&gt;IOPortBase
 comma
 id|pACB-&gt;IRQLevel
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -5440,8 +5511,8 @@ c_func
 id|KERN_INFO
 l_string|&quot;RSEL,&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|pACB-&gt;Connected
 op_assign
 l_int|1
@@ -5464,8 +5535,8 @@ id|printk
 (paren
 l_string|&quot;DC390: (ActiveDCB != 0: Arb. lost but resel. won)!&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|pSRB
 op_assign
 id|pDCB-&gt;pActiveSRB
@@ -5525,8 +5596,8 @@ l_string|&quot;Dev %02x,&quot;
 comma
 id|lun
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5610,8 +5681,8 @@ id|id
 comma
 id|lun
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|pDCB
 op_assign
 id|dc390_findDCB
@@ -5767,8 +5838,8 @@ id|pSRB
 comma
 id|pSRB-&gt;TagNumber
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|pSRB-&gt;ScsiPhase
 op_assign
 id|SCSI_NOP0
@@ -5870,8 +5941,8 @@ id|pDCB
 comma
 id|pDCB-&gt;GoingSRBCnt
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -5964,8 +6035,8 @@ id|pDCB-&gt;TargetLUN
 comma
 id|pDCB
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6229,6 +6300,13 @@ id|pcmd
 op_assign
 id|pSRB-&gt;pcmd
 suffix:semicolon
+multiline_comment|/* KG: Moved pci_unmap here */
+id|dc390_pci_unmap
+c_func
+(paren
+id|pSRB
+)paren
+suffix:semicolon
 id|DCB_removed
 op_assign
 l_int|0
@@ -6257,15 +6335,13 @@ op_assign
 (paren
 id|PSCSI_INQDATA
 )paren
-(paren
+id|sg_dma_address
+c_func
 (paren
 (paren
 id|PSGL
 )paren
 id|ptr
-)paren
-op_member_access_from_pointer
-id|address
 )paren
 suffix:semicolon
 )brace
@@ -6285,8 +6361,8 @@ id|pSRB
 comma
 id|pcmd-&gt;pid
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6552,8 +6628,8 @@ id|UINT
 )paren
 id|pSRB-&gt;TotalXferredLen
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_goto
 id|ckc_e
 suffix:semicolon
@@ -6626,8 +6702,8 @@ id|UINT
 )paren
 id|pSRB-&gt;TotalXferredLen
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_goto
 id|ckc_e
 suffix:semicolon
@@ -6640,11 +6716,8 @@ comma
 id|DRIVER_SENSE
 )paren
 suffix:semicolon
-id|pSRB-&gt;SGcount
+id|pcmd-&gt;use_sg
 op_assign
-(paren
-id|UCHAR
-)paren
 id|pSRB-&gt;SavedSGCount
 suffix:semicolon
 singleline_comment|//pSRB-&gt;ScsiCmdLen&t; = (UCHAR) (pSRB-&gt;Segment1[0] &gt;&gt; 8);
@@ -6661,12 +6734,12 @@ id|pcmd-&gt;cmnd
 l_int|0
 )braket
 comma
-id|pcmd-&gt;target
+id|pcmd-&gt;device-&gt;id
 comma
-id|pcmd-&gt;lun
+id|pcmd-&gt;device-&gt;lun
+)paren
 )paren
 suffix:semicolon
-)paren
 id|pSRB-&gt;SGIndex
 op_assign
 l_int|0
@@ -6679,47 +6752,6 @@ id|pSRB-&gt;SGToBeXferLen
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pcmd-&gt;use_sg
-)paren
-(brace
-id|pSRB-&gt;pSegmentList
-op_assign
-(paren
-id|PSGL
-)paren
-id|pcmd-&gt;request_buffer
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|pcmd-&gt;request_buffer
-)paren
-(brace
-id|pSRB-&gt;pSegmentList
-op_assign
-(paren
-id|PSGL
-)paren
-op_amp
-id|pSRB-&gt;Segmentx
-suffix:semicolon
-id|pSRB-&gt;Segmentx.address
-op_assign
-(paren
-id|PUCHAR
-)paren
-id|pcmd-&gt;request_buffer
-suffix:semicolon
-id|pSRB-&gt;Segmentx.length
-op_assign
-id|pcmd-&gt;request_bufflen
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6791,8 +6823,8 @@ id|pDCB-&gt;TargetID
 comma
 id|pDCB-&gt;TargetLUN
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6866,8 +6898,8 @@ id|UINT
 )paren
 id|swlval
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 )brace
 id|dc390_RequestSense
 c_func
@@ -7065,47 +7097,6 @@ id|pSRB-&gt;SGToBeXferLen
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pcmd-&gt;use_sg
-)paren
-(brace
-id|pSRB-&gt;pSegmentList
-op_assign
-(paren
-id|PSGL
-)paren
-id|pcmd-&gt;request_buffer
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|pcmd-&gt;request_buffer
-)paren
-(brace
-id|pSRB-&gt;pSegmentList
-op_assign
-(paren
-id|PSGL
-)paren
-op_amp
-id|pSRB-&gt;Segmentx
-suffix:semicolon
-id|pSRB-&gt;Segmentx.address
-op_assign
-(paren
-id|PUCHAR
-)paren
-id|pcmd-&gt;request_buffer
-suffix:semicolon
-id|pSRB-&gt;Segmentx.length
-op_assign
-id|pcmd-&gt;request_bufflen
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7696,8 +7687,8 @@ l_string|&quot;DC390: SRBdone: done pid %li&bslash;n&quot;
 comma
 id|pcmd-&gt;pid
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DC390_UNLOCK_ACB_NI
 suffix:semicolon
 id|pcmd-&gt;scsi_done
@@ -7850,8 +7841,8 @@ l_string|&quot;DC390: DoingSRB_Done: done pid %li&bslash;n&quot;
 comma
 id|pcmd-&gt;pid
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DC390_UNLOCK_ACB_NI
 suffix:semicolon
 id|pcmd
@@ -7962,7 +7953,7 @@ comma
 id|dc390_laststatus
 )paren
 suffix:semicolon
-singleline_comment|//DEBUG0(printk(KERN_INFO &quot;RST_DETECT,&quot;);)
+singleline_comment|//DEBUG0(printk(KERN_INFO &quot;RST_DETECT,&quot;));
 r_if
 c_cond
 (paren
@@ -8096,6 +8087,10 @@ id|pSRB
 id|PSCSICMD
 id|pcmd
 suffix:semicolon
+id|pcmd
+op_assign
+id|pSRB-&gt;pcmd
+suffix:semicolon
 id|REMOVABLEDEBUG
 c_func
 (paren
@@ -8105,7 +8100,7 @@ id|KERN_INFO
 l_string|&quot;DC390: RequestSense (Cmd %02x, Id %02x, LUN %02x)&bslash;n&quot;
 comma
 "&bslash;"
-id|pSRB-&gt;pcmd-&gt;cmnd
+id|pcmd-&gt;cmnd
 (braket
 l_int|0
 )braket
@@ -8114,19 +8109,19 @@ id|pDCB-&gt;TargetID
 comma
 id|pDCB-&gt;TargetLUN
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|pSRB-&gt;SRBFlag
 op_or_assign
 id|AUTO_REQSENSE
 suffix:semicolon
 singleline_comment|//pSRB-&gt;Segment0[0] = (UINT) pSRB-&gt;CmdBlock[0];
 singleline_comment|//pSRB-&gt;Segment0[1] = (UINT) pSRB-&gt;CmdBlock[4];
-singleline_comment|//pSRB-&gt;Segment1[0] = ((UINT)(pSRB-&gt;pcmd-&gt;cmd_len) &lt;&lt; 8) + pSRB-&gt;SGcount;
+singleline_comment|//pSRB-&gt;Segment1[0] = ((UINT)(pcmd-&gt;cmd_len) &lt;&lt; 8) + pSRB-&gt;SGcount;
 singleline_comment|//pSRB-&gt;Segment1[1] = pSRB-&gt;TotalXferredLen;
 id|pSRB-&gt;SavedSGCount
 op_assign
-id|pSRB-&gt;SGcount
+id|pcmd-&gt;use_sg
 suffix:semicolon
 id|pSRB-&gt;SavedTotXLen
 op_assign
@@ -8141,36 +8136,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* CHECK_CONDITION&lt;&lt;1; */
-id|pcmd
-op_assign
-id|pSRB-&gt;pcmd
-suffix:semicolon
-id|pSRB-&gt;Segmentx.address
-op_assign
-(paren
-id|PUCHAR
-)paren
-op_amp
-(paren
-id|pcmd-&gt;sense_buffer
-)paren
-suffix:semicolon
-id|pSRB-&gt;Segmentx.length
-op_assign
-r_sizeof
-(paren
-id|pcmd-&gt;sense_buffer
-)paren
-suffix:semicolon
-id|pSRB-&gt;pSegmentList
-op_assign
-op_amp
-id|pSRB-&gt;Segmentx
-suffix:semicolon
-id|pSRB-&gt;SGcount
-op_assign
-l_int|1
-suffix:semicolon
+multiline_comment|/* We are called from SRBdone, original PCI mapping has been removed&n;     * already, new one is set up from StartSCSI */
 id|pSRB-&gt;SGIndex
 op_assign
 l_int|0

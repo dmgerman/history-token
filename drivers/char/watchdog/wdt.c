@@ -743,12 +743,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
 r_return
-l_int|0
+id|count
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;wdt_read:&n; *&t;@file: file handle to the watchdog board&n; *&t;@buf: buffer to write 1 byte into&n; *&t;@count: length of buffer&n; *&t;@ptr: offset (no seek allowed)&n; *&n; *&t;Read reports the temperature in degrees Fahrenheit. The API is in&n; *&t;farenheit. It was designed by an imperial measurement luddite.&n; */

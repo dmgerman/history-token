@@ -348,12 +348,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
 r_return
-l_int|0
+id|len
 suffix:semicolon
 )brace
 DECL|function|indydog_ioctl

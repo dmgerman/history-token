@@ -275,12 +275,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
 r_return
-l_int|0
+id|count
 suffix:semicolon
 )brace
 r_static

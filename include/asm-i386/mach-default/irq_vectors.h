@@ -32,6 +32,15 @@ mdefine_line|#define FIRST_SYSTEM_VECTOR&t;0xef
 DECL|macro|TIMER_IRQ
 mdefine_line|#define TIMER_IRQ 0
 multiline_comment|/*&n; * 16 8259A IRQ&squot;s, 208 potential APIC interrupt sources.&n; * Right now the APIC is mostly only used for SMP.&n; * 256 vectors is an architectural limit. (we can have&n; * more than 256 devices theoretically, but they will&n; * have to use shared interrupts)&n; * Since vectors 0x00-0x1f are used/reserved for the CPU,&n; * the usable vector space is 0x20-0xff (224 vectors)&n; */
+multiline_comment|/*&n; * The maximum number of vectors supported by i386 processors&n; * is limited to 256. For processors other than i386, NR_VECTORS&n; * should be changed accordingly.&n; */
+DECL|macro|NR_VECTORS
+mdefine_line|#define NR_VECTORS 256
+macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+DECL|macro|NR_IRQS
+mdefine_line|#define NR_IRQS FIRST_SYSTEM_VECTOR
+DECL|macro|NR_IRQ_VECTORS
+mdefine_line|#define NR_IRQ_VECTORS NR_IRQS
+macro_line|#else
 macro_line|#ifdef CONFIG_X86_IO_APIC
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS 224
@@ -47,6 +56,7 @@ DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS 16
 DECL|macro|NR_IRQ_VECTORS
 mdefine_line|#define NR_IRQ_VECTORS NR_IRQS
+macro_line|#endif
 macro_line|#endif
 DECL|macro|FPU_IRQ
 mdefine_line|#define FPU_IRQ&t;&t;&t;13

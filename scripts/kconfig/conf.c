@@ -843,7 +843,7 @@ id|line
 l_int|1
 )braket
 op_eq
-l_int|0
+l_char|&squot;&bslash;n&squot;
 )paren
 (brace
 id|help
@@ -2772,12 +2772,28 @@ c_loop
 id|conf_cnt
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|conf_write
 c_func
 (paren
 l_int|NULL
 )paren
+)paren
+(brace
+id|fprintf
+c_func
+(paren
+id|stderr
+comma
+l_string|&quot;&bslash;n*** Error during writing of the kernel configuration.&bslash;n&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

@@ -1,25 +1,7 @@
 multiline_comment|/*&n; *    Unaligned memory access handler&n; *&n; *    Copyright (C) 2001 Randolph Chung &lt;tausq@debian.org&gt;&n; *    Significantly tweaked by LaMont Jones &lt;lamont@debian.org&gt;&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2, or (at your option)&n; *    any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/pdc.h&gt;
 multiline_comment|/* #define DEBUG_UNALIGNED 1 */
 macro_line|#ifdef DEBUG_UNALIGNED
 DECL|macro|DPRINTF
@@ -97,20 +79,28 @@ DECL|macro|OPCODE_STDA
 mdefine_line|#define OPCODE_STDA&t;OPCODE1(0x03,1,0xf)
 DECL|macro|OPCODE_FLDWX
 mdefine_line|#define OPCODE_FLDWX&t;OPCODE1(0x09,0,0x0)
+DECL|macro|OPCODE_FLDWXR
+mdefine_line|#define OPCODE_FLDWXR&t;OPCODE1(0x09,0,0x1)
 DECL|macro|OPCODE_FSTWX
-mdefine_line|#define OPCODE_FSTWX&t;OPCODE1(0x09,0,0x4)
+mdefine_line|#define OPCODE_FSTWX&t;OPCODE1(0x09,0,0x8)
+DECL|macro|OPCODE_FSTWXR
+mdefine_line|#define OPCODE_FSTWXR&t;OPCODE1(0x09,0,0x9)
 DECL|macro|OPCODE_FLDWS
 mdefine_line|#define OPCODE_FLDWS&t;OPCODE1(0x09,1,0x0)
+DECL|macro|OPCODE_FLDWSR
+mdefine_line|#define OPCODE_FLDWSR&t;OPCODE1(0x09,1,0x1)
 DECL|macro|OPCODE_FSTWS
-mdefine_line|#define OPCODE_FSTWS&t;OPCODE1(0x09,1,0x4)
+mdefine_line|#define OPCODE_FSTWS&t;OPCODE1(0x09,1,0x8)
+DECL|macro|OPCODE_FSTWSR
+mdefine_line|#define OPCODE_FSTWSR&t;OPCODE1(0x09,1,0x9)
 DECL|macro|OPCODE_FLDDX
 mdefine_line|#define OPCODE_FLDDX&t;OPCODE1(0x0b,0,0x0)
 DECL|macro|OPCODE_FSTDX
-mdefine_line|#define OPCODE_FSTDX&t;OPCODE1(0x0b,0,0x4)
+mdefine_line|#define OPCODE_FSTDX&t;OPCODE1(0x0b,0,0x8)
 DECL|macro|OPCODE_FLDDS
 mdefine_line|#define OPCODE_FLDDS&t;OPCODE1(0x0b,1,0x0)
 DECL|macro|OPCODE_FSTDS
-mdefine_line|#define OPCODE_FSTDS&t;OPCODE1(0x0b,1,0x4)
+mdefine_line|#define OPCODE_FSTDS&t;OPCODE1(0x0b,1,0x8)
 DECL|macro|OPCODE_LDD_L
 mdefine_line|#define OPCODE_LDD_L&t;OPCODE2(0x14,0)
 DECL|macro|OPCODE_FLDD_L
@@ -157,6 +147,10 @@ DECL|macro|IM5_3
 mdefine_line|#define IM5_3(i) IM((i),5)
 DECL|macro|IM14
 mdefine_line|#define IM14(i) IM((i),14)
+DECL|macro|ERR_NOTHANDLED
+mdefine_line|#define ERR_NOTHANDLED&t;-1
+DECL|macro|ERR_PAGEFAULT
+mdefine_line|#define ERR_PAGEFAULT&t;-2
 DECL|variable|unaligned_enabled
 r_int
 id|unaligned_enabled
@@ -206,6 +200,9 @@ id|val
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 id|DPRINTF
 c_func
 (paren
@@ -225,14 +222,30 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;&t;mtsp&t;%3, %%sr1&bslash;n&quot;
-l_string|&quot;&t;ldbs&t;0(%%sr1,%2), %%r20&bslash;n&quot;
-l_string|&quot;&t;ldbs&t;1(%%sr1,%2), %0&bslash;n&quot;
-l_string|&quot;depw&t;%%r20, 23, 24, %0&bslash;n&quot;
+l_string|&quot;&t;mtsp&t;%4, %%sr1&bslash;n&quot;
+l_string|&quot;1:&t;ldbs&t;0(%%sr1,%3), %%r20&bslash;n&quot;
+l_string|&quot;2:&t;ldbs&t;1(%%sr1,%3), %0&bslash;n&quot;
+l_string|&quot;&t;depw&t;%%r20, 23, 24, %0&bslash;n&quot;
+l_string|&quot;&t;cmpclr,= %%r0, %%r0, %1&bslash;n&quot;
+l_string|&quot;3:&t;ldo&t;-2(%%r0), %1&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+macro_line|#ifdef __LP64__
+l_string|&quot;&t;.dword&t;1b,(3b-1b)&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,(3b-2b)&bslash;n&quot;
+macro_line|#else
+l_string|&quot;&t;.word&t;1b,(3b-1b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,(3b-2b)&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
 id|val
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|ret
 )paren
 suffix:colon
 l_string|&quot;0&quot;
@@ -276,7 +289,7 @@ op_assign
 id|val
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|function|emulate_ldw
@@ -309,6 +322,9 @@ id|val
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 id|DPRINTF
 c_func
 (paren
@@ -328,19 +344,35 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;&t;zdep&t;%2,28,2,%%r19&bslash;n&quot;
+l_string|&quot;&t;zdep&t;%3,28,2,%%r19&bslash;n&quot;
 multiline_comment|/* r19=(ofs&amp;3)*8 */
-l_string|&quot;&t;mtsp&t;%3, %%sr1&bslash;n&quot;
-l_string|&quot;&t;depw&t;%%r0,31,2,%2&bslash;n&quot;
-l_string|&quot;&t;ldw&t;0(%%sr1,%2),%0&bslash;n&quot;
-l_string|&quot;&t;ldw&t;4(%%sr1,%2),%%r20&bslash;n&quot;
+l_string|&quot;&t;mtsp&t;%4, %%sr1&bslash;n&quot;
+l_string|&quot;&t;depw&t;%%r0,31,2,%3&bslash;n&quot;
+l_string|&quot;1:&t;ldw&t;0(%%sr1,%3),%0&bslash;n&quot;
+l_string|&quot;2:&t;ldw&t;4(%%sr1,%3),%%r20&bslash;n&quot;
 l_string|&quot;&t;subi&t;32,%%r19,%%r19&bslash;n&quot;
 l_string|&quot;&t;mtctl&t;%%r19,11&bslash;n&quot;
 l_string|&quot;&t;vshd&t;%0,%%r20,%0&bslash;n&quot;
+l_string|&quot;&t;cmpclr,= %%r0, %%r0, %1&bslash;n&quot;
+l_string|&quot;3:&t;ldo&t;-2(%%r0), %1&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+macro_line|#ifdef __LP64__
+l_string|&quot;&t;.dword&t;1b,(3b-1b)&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,(3b-2b)&bslash;n&quot;
+macro_line|#else
+l_string|&quot;&t;.word&t;1b,(3b-1b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,(3b-2b)&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
 id|val
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|ret
 )paren
 suffix:colon
 l_string|&quot;0&quot;
@@ -407,7 +439,7 @@ op_assign
 id|val
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|function|emulate_ldd
@@ -438,6 +470,9 @@ id|__u64
 id|val
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 id|DPRINTF
 c_func
@@ -471,19 +506,35 @@ macro_line|#endif
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;&t;depd,z&t;%2,60,3,%%r19&bslash;n&quot;
+l_string|&quot;&t;depd,z&t;%3,60,3,%%r19&bslash;n&quot;
 multiline_comment|/* r19=(ofs&amp;7)*8 */
-l_string|&quot;&t;mtsp&t;%3, %%sr1&bslash;n&quot;
-l_string|&quot;&t;depd&t;%%r0,63,3,%2&bslash;n&quot;
-l_string|&quot;&t;ldd&t;0(%%sr1,%2),%0&bslash;n&quot;
-l_string|&quot;&t;ldd&t;8(%%sr1,%2),%%r20&bslash;n&quot;
+l_string|&quot;&t;mtsp&t;%4, %%sr1&bslash;n&quot;
+l_string|&quot;&t;depd&t;%%r0,63,3,%3&bslash;n&quot;
+l_string|&quot;1:&t;ldd&t;0(%%sr1,%3),%0&bslash;n&quot;
+l_string|&quot;2:&t;ldd&t;8(%%sr1,%3),%%r20&bslash;n&quot;
 l_string|&quot;&t;subi&t;64,%%r19,%%r19&bslash;n&quot;
 l_string|&quot;&t;mtsar&t;%%r19&bslash;n&quot;
 l_string|&quot;&t;shrpd&t;%0,%%r20,%%sar,%0&bslash;n&quot;
+l_string|&quot;&t;cmpclr,= %%r0, %%r0, %1&bslash;n&quot;
+l_string|&quot;3:&t;ldo&t;-2(%%r0), %1&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+macro_line|#ifdef __LP64__
+l_string|&quot;&t;.dword&t;1b,(3b-1b)&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,(3b-2b)&bslash;n&quot;
+macro_line|#else
+l_string|&quot;&t;.word&t;1b,(3b-1b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,(3b-2b)&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
 id|val
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|ret
 )paren
 suffix:colon
 l_string|&quot;0&quot;
@@ -521,17 +572,30 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;&t;zdep&t;%4,29,2,%%r19&bslash;n&quot;
+l_string|&quot;&t;zdep&t;%5,29,2,%%r19&bslash;n&quot;
 multiline_comment|/* r19=(ofs&amp;3)*8 */
-l_string|&quot;&t;mtsp&t;%5, %%sr1&bslash;n&quot;
-l_string|&quot;&t;dep&t;%%r0,31,2,%4&bslash;n&quot;
-l_string|&quot;&t;ldw&t;0(%%sr1,%5),%0&bslash;n&quot;
-l_string|&quot;&t;ldw&t;4(%%sr1,%5),%1&bslash;n&quot;
-l_string|&quot;&t;ldw&t;8(%%sr1,%5),%%r20&bslash;n&quot;
+l_string|&quot;&t;mtsp&t;%6, %%sr1&bslash;n&quot;
+l_string|&quot;&t;dep&t;%%r0,31,2,%5&bslash;n&quot;
+l_string|&quot;1:&t;ldw&t;0(%%sr1,%5),%0&bslash;n&quot;
+l_string|&quot;2:&t;ldw&t;4(%%sr1,%5),%1&bslash;n&quot;
+l_string|&quot;3:&t;ldw&t;8(%%sr1,%5),%%r20&bslash;n&quot;
 l_string|&quot;&t;subi&t;32,%%r19,%%r19&bslash;n&quot;
 l_string|&quot;&t;mtsar&t;%%r19&bslash;n&quot;
 l_string|&quot;&t;vshd&t;%0,%1,%0&bslash;n&quot;
 l_string|&quot;&t;vshd&t;%1,%%r20,%1&bslash;n&quot;
+l_string|&quot;&t;cmpclr,= %%r0, %%r0, %2&bslash;n&quot;
+l_string|&quot;4:&t;ldo&t;-2(%%r0), %2&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+macro_line|#ifdef __LP64__
+l_string|&quot;&t;.dword&t;1b,(4b-1b)&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,(4b-2b)&bslash;n&quot;
+l_string|&quot;&t;.dword&t;3b,(4b-3b)&bslash;n&quot;
+macro_line|#else
+l_string|&quot;&t;.word&t;1b,(4b-1b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,(4b-2b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;3b,(4b-3b)&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -541,6 +605,11 @@ comma
 l_string|&quot;=r&quot;
 (paren
 id|vall
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|ret
 )paren
 suffix:colon
 l_string|&quot;0&quot;
@@ -589,9 +658,7 @@ macro_line|#endif
 id|DPRINTF
 c_func
 (paren
-l_string|&quot;val = 0x&quot;
-id|RFMT
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;val = 0xllx&bslash;n&quot;
 comma
 id|val
 )paren
@@ -622,7 +689,7 @@ op_assign
 id|val
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|function|emulate_sth
@@ -648,6 +715,9 @@ id|regs-&gt;gr
 (braket
 id|frreg
 )braket
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 r_if
 c_cond
@@ -682,11 +752,26 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;&t;mtsp %2, %%sr1&bslash;n&quot;
-l_string|&quot;&t;extrw,u %0, 23, 8, %%r19&bslash;n&quot;
-l_string|&quot;&t;stb %0, 1(%%sr1, %1)&bslash;n&quot;
-l_string|&quot;&t;stb %%r19, 0(%%sr1, %1)&bslash;n&quot;
+l_string|&quot;&t;mtsp %3, %%sr1&bslash;n&quot;
+l_string|&quot;&t;extrw,u %1, 23, 8, %%r19&bslash;n&quot;
+l_string|&quot;1:&t;stb %1, 1(%%sr1, %2)&bslash;n&quot;
+l_string|&quot;2:&t;stb %%r19, 0(%%sr1, %2)&bslash;n&quot;
+l_string|&quot;&t;cmpclr,= %%r0, %%r0, %0&bslash;n&quot;
+l_string|&quot;3:&t;ldo&t;-2(%%r0), %0&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+macro_line|#ifdef __LP64__
+l_string|&quot;&t;.dword&t;1b,(3b-1b)&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,(3b-2b)&bslash;n&quot;
+macro_line|#else
+l_string|&quot;&t;.word&t;1b,(3b-1b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,(3b-2b)&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -707,7 +792,7 @@ l_string|&quot;r19&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|function|emulate_stw
@@ -731,6 +816,9 @@ id|flop
 r_int
 r_int
 id|val
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 r_if
 c_cond
@@ -793,22 +881,37 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;&t;mtsp %2, %%sr1&bslash;n&quot;
-l_string|&quot;&t;zdep&t;%1, 28, 2, %%r19&bslash;n&quot;
-l_string|&quot;&t;dep&t;%%r0, 31, 2, %1&bslash;n&quot;
+l_string|&quot;&t;mtsp %3, %%sr1&bslash;n&quot;
+l_string|&quot;&t;zdep&t;%2, 28, 2, %%r19&bslash;n&quot;
+l_string|&quot;&t;dep&t;%%r0, 31, 2, %2&bslash;n&quot;
 l_string|&quot;&t;mtsar&t;%%r19&bslash;n&quot;
 l_string|&quot;&t;depwi,z&t;-2, %%sar, 32, %%r19&bslash;n&quot;
-l_string|&quot;&t;ldw&t;0(%%sr1,%1),%%r20&bslash;n&quot;
-l_string|&quot;&t;ldw&t;4(%%sr1,%1),%%r21&bslash;n&quot;
-l_string|&quot;&t;vshd&t;%%r0, %0, %%r22&bslash;n&quot;
-l_string|&quot;&t;vshd&t;%0, %%r0, %%r1&bslash;n&quot;
+l_string|&quot;1:&t;ldw&t;0(%%sr1,%2),%%r20&bslash;n&quot;
+l_string|&quot;2:&t;ldw&t;4(%%sr1,%2),%%r21&bslash;n&quot;
+l_string|&quot;&t;vshd&t;%%r0, %1, %%r22&bslash;n&quot;
+l_string|&quot;&t;vshd&t;%1, %%r0, %%r1&bslash;n&quot;
 l_string|&quot;&t;and&t;%%r20, %%r19, %%r20&bslash;n&quot;
 l_string|&quot;&t;andcm&t;%%r21, %%r19, %%r21&bslash;n&quot;
 l_string|&quot;&t;or&t;%%r22, %%r20, %%r20&bslash;n&quot;
 l_string|&quot;&t;or&t;%%r1, %%r21, %%r21&bslash;n&quot;
-l_string|&quot;&t;stw&t;%%r20,0(%%sr1,%1)&bslash;n&quot;
-l_string|&quot;&t;stw&t;%%r21,4(%%sr1,%1)&bslash;n&quot;
+l_string|&quot;&t;stw&t;%%r20,0(%%sr1,%2)&bslash;n&quot;
+l_string|&quot;&t;stw&t;%%r21,4(%%sr1,%2)&bslash;n&quot;
+l_string|&quot;&t;cmpclr,= %%r0, %%r0, %0&bslash;n&quot;
+l_string|&quot;3:&t;ldo&t;-2(%%r0), %0&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+macro_line|#ifdef __LP64__
+l_string|&quot;&t;.dword&t;1b,(3b-1b)&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,(3b-2b)&bslash;n&quot;
+macro_line|#else
+l_string|&quot;&t;.word&t;1b,(3b-1b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,(3b-2b)&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -861,6 +964,9 @@ id|flop
 id|__u64
 id|val
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -894,11 +1000,7 @@ suffix:semicolon
 id|DPRINTF
 c_func
 (paren
-l_string|&quot;store r%d (0x&quot;
-op_mod
-l_int|016ll
-id|x
-l_string|&quot;) to &quot;
+l_string|&quot;store r%d (0x%016llx) to &quot;
 id|RFMT
 l_string|&quot;:&quot;
 id|RFMT
@@ -929,22 +1031,41 @@ macro_line|#endif
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;&t;mtsp %2, %%sr1&bslash;n&quot;
-l_string|&quot;&t;depd,z&t;%1, 60, 3, %%r19&bslash;n&quot;
-l_string|&quot;&t;depd&t;%%r0, 63, 3, %1&bslash;n&quot;
+l_string|&quot;&t;mtsp %3, %%sr1&bslash;n&quot;
+l_string|&quot;&t;depd,z&t;%2, 60, 3, %%r19&bslash;n&quot;
+l_string|&quot;&t;depd&t;%%r0, 63, 3, %2&bslash;n&quot;
 l_string|&quot;&t;mtsar&t;%%r19&bslash;n&quot;
 l_string|&quot;&t;depdi,z&t;-2, %%sar, 64, %%r19&bslash;n&quot;
-l_string|&quot;&t;ldd&t;0(%%sr1,%1),%%r20&bslash;n&quot;
-l_string|&quot;&t;ldd&t;8(%%sr1,%1),%%r21&bslash;n&quot;
-l_string|&quot;&t;shrpd&t;%%r0, %0, %%sar, %%r22&bslash;n&quot;
-l_string|&quot;&t;shrpd&t;%0, %%r0, %%sar, %%r1&bslash;n&quot;
+l_string|&quot;1:&t;ldd&t;0(%%sr1,%2),%%r20&bslash;n&quot;
+l_string|&quot;2:&t;ldd&t;8(%%sr1,%2),%%r21&bslash;n&quot;
+l_string|&quot;&t;shrpd&t;%%r0, %1, %%sar, %%r22&bslash;n&quot;
+l_string|&quot;&t;shrpd&t;%1, %%r0, %%sar, %%r1&bslash;n&quot;
 l_string|&quot;&t;and&t;%%r20, %%r19, %%r20&bslash;n&quot;
 l_string|&quot;&t;andcm&t;%%r21, %%r19, %%r21&bslash;n&quot;
 l_string|&quot;&t;or&t;%%r22, %%r20, %%r20&bslash;n&quot;
 l_string|&quot;&t;or&t;%%r1, %%r21, %%r21&bslash;n&quot;
-l_string|&quot;&t;std&t;%%r20,0(%%sr1,%1)&bslash;n&quot;
-l_string|&quot;&t;std&t;%%r21,8(%%sr1,%1)&bslash;n&quot;
+l_string|&quot;3:&t;std&t;%%r20,0(%%sr1,%2)&bslash;n&quot;
+l_string|&quot;4:&t;std&t;%%r21,8(%%sr1,%2)&bslash;n&quot;
+l_string|&quot;&t;cmpclr,= %%r0, %%r0, %0&bslash;n&quot;
+l_string|&quot;5:&t;ldo&t;-2(%%r0), %0&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+macro_line|#ifdef __LP64__
+l_string|&quot;&t;.dword&t;1b,(5b-1b)&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,(5b-2b)&bslash;n&quot;
+l_string|&quot;&t;.dword&t;3b,(5b-3b)&bslash;n&quot;
+l_string|&quot;&t;.dword  4b,(5b-4b)&bslash;n&quot;
+macro_line|#else
+l_string|&quot;&t;.word&t;1b,(5b-1b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,(5b-2b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;3b,(5b-3b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;4b,(5b-4b)&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -995,24 +1116,45 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;&t;mtsp&t;%3, %%sr1&bslash;n&quot;
-l_string|&quot;&t;zdep&t;%1, 29, 2, %%r19&bslash;n&quot;
-l_string|&quot;&t;dep&t;%%r0, 31, 2, %1&bslash;n&quot;
+l_string|&quot;&t;mtsp&t;%4, %%sr1&bslash;n&quot;
+l_string|&quot;&t;zdep&t;%2, 29, 2, %%r19&bslash;n&quot;
+l_string|&quot;&t;dep&t;%%r0, 31, 2, %2&bslash;n&quot;
 l_string|&quot;&t;mtsar&t;%%r19&bslash;n&quot;
 l_string|&quot;&t;zvdepi&t;-2, 32, %%r19&bslash;n&quot;
-l_string|&quot;&t;ldw&t;0(%%sr1,%2),%%r20&bslash;n&quot;
-l_string|&quot;&t;ldw&t;8(%%sr1,%2),%%r21&bslash;n&quot;
-l_string|&quot;&t;vshd&t;%0, %1, %%r1&bslash;n&quot;
-l_string|&quot;&t;vshd&t;%%r0, %0, %0&bslash;n&quot;
-l_string|&quot;&t;vshd&t;%1, %%r0, %1&bslash;n&quot;
+l_string|&quot;1:&t;ldw&t;0(%%sr1,%3),%%r20&bslash;n&quot;
+l_string|&quot;2:&t;ldw&t;8(%%sr1,%3),%%r21&bslash;n&quot;
+l_string|&quot;&t;vshd&t;%1, %2, %%r1&bslash;n&quot;
+l_string|&quot;&t;vshd&t;%%r0, %1, %1&bslash;n&quot;
+l_string|&quot;&t;vshd&t;%2, %%r0, %2&bslash;n&quot;
 l_string|&quot;&t;and&t;%%r20, %%r19, %%r20&bslash;n&quot;
 l_string|&quot;&t;andcm&t;%%r21, %%r19, %%r21&bslash;n&quot;
-l_string|&quot;&t;or&t;%0, %%r20, %0&bslash;n&quot;
-l_string|&quot;&t;or&t;%1, %%r21, %1&bslash;n&quot;
-l_string|&quot;&t;stw&t;%0,0(%%sr1,%2)&bslash;n&quot;
-l_string|&quot;&t;stw&t;%%r1,4(%%sr1,%2)&bslash;n&quot;
-l_string|&quot;&t;stw&t;%1,8(%%sr1,%2)&bslash;n&quot;
+l_string|&quot;&t;or&t;%1, %%r20, %1&bslash;n&quot;
+l_string|&quot;&t;or&t;%2, %%r21, %2&bslash;n&quot;
+l_string|&quot;3:&t;stw&t;%1,0(%%sr1,%1)&bslash;n&quot;
+l_string|&quot;4:&t;stw&t;%%r1,4(%%sr1,%3)&bslash;n&quot;
+l_string|&quot;5:&t;stw&t;%2,8(%%sr1,%3)&bslash;n&quot;
+l_string|&quot;&t;cmpclr,= %%r0, %%r0, %0&bslash;n&quot;
+l_string|&quot;6:&t;ldo&t;-2(%%r0), %0&bslash;n&quot;
+l_string|&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+macro_line|#ifdef __LP64__
+l_string|&quot;&t;.dword&t;1b,(6b-1b)&bslash;n&quot;
+l_string|&quot;&t;.dword  2b,(6b-2b)&bslash;n&quot;
+l_string|&quot;&t;.dword&t;3b,(6b-3b)&bslash;n&quot;
+l_string|&quot;&t;.dword  4b,(6b-4b)&bslash;n&quot;
+l_string|&quot;&t;.dword  5b,(6b-5b)&bslash;n&quot;
+macro_line|#else
+l_string|&quot;&t;.word&t;1b,(6b-1b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;2b,(6b-2b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;3b,(6b-3b)&bslash;n&quot;
+l_string|&quot;&t;.word&t;4b,(6b-4b)&bslash;n&quot;
+l_string|&quot;&t;.word  &t;5b,(6b-5b)&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -1046,7 +1188,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|function|handle_unaligned
@@ -1104,8 +1246,7 @@ suffix:semicolon
 r_int
 id|ret
 op_assign
-op_minus
-l_int|1
+id|ERR_NOTHANDLED
 suffix:semicolon
 r_struct
 id|siginfo
@@ -1118,110 +1259,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* true if this is a flop */
-multiline_comment|/* if the unaligned access is inside the kernel:&n;&t; *   if the access is caused by a syscall, then we fault the calling&n;&t; *     user process&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-(brace
-r_const
-r_struct
-id|exception_table_entry
-op_star
-id|fix
-suffix:semicolon
-multiline_comment|/* see if the offending code have its own&n;&t;&t; * exception handler &n;&t;&t; */
-id|fix
-op_assign
-id|search_exception_tables
-c_func
-(paren
-id|regs-&gt;iaoq
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fix
-)paren
-(brace
-multiline_comment|/* lower bits of fix-&gt;skip are flags&n;&t;&t;&t; * upper bits are the handler addr&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|fix-&gt;skip
-op_amp
-l_int|1
-)paren
-id|regs-&gt;gr
-(braket
-l_int|8
-)braket
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fix-&gt;skip
-op_amp
-l_int|2
-)paren
-id|regs-&gt;gr
-(braket
-l_int|9
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|regs-&gt;iaoq
-(braket
-l_int|0
-)braket
-op_add_assign
-(paren
-(paren
-id|fix-&gt;skip
-)paren
-op_amp
-op_complement
-l_int|3
-)paren
-suffix:semicolon
-id|regs-&gt;iaoq
-(braket
-l_int|1
-)braket
-op_assign
-id|regs-&gt;iaoq
-(braket
-l_int|0
-)braket
-op_plus
-l_int|4
-suffix:semicolon
-id|regs-&gt;gr
-(braket
-l_int|0
-)braket
-op_and_assign
-op_complement
-id|PSW_B
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* log a message with pacing */
 r_if
 c_cond
@@ -1798,6 +1835,12 @@ suffix:colon
 r_case
 id|OPCODE_FLDWS
 suffix:colon
+r_case
+id|OPCODE_FLDWXR
+suffix:colon
+r_case
+id|OPCODE_FLDWSR
+suffix:colon
 id|flop
 op_assign
 l_int|1
@@ -1853,6 +1896,12 @@ id|OPCODE_FSTWX
 suffix:colon
 r_case
 id|OPCODE_FSTWS
+suffix:colon
+r_case
+id|OPCODE_FSTWXR
+suffix:colon
+r_case
+id|OPCODE_FSTWSR
 suffix:colon
 id|flop
 op_assign
@@ -1918,8 +1967,7 @@ id|OPCODE_LDCW_S
 suffix:colon
 id|ret
 op_assign
-op_minus
-l_int|1
+id|ERR_NOTHANDLED
 suffix:semicolon
 multiline_comment|/* &quot;undefined&quot;, but lets kill them. */
 r_break
@@ -2252,8 +2300,8 @@ r_if
 c_cond
 (paren
 id|ret
-OL
-l_int|0
+op_eq
+id|ERR_NOTHANDLED
 )paren
 id|printk
 c_func
@@ -2297,6 +2345,48 @@ comma
 l_int|28
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+id|ERR_PAGEFAULT
+)paren
+(brace
+id|si.si_signo
+op_assign
+id|SIGSEGV
+suffix:semicolon
+id|si.si_errno
+op_assign
+l_int|0
+suffix:semicolon
+id|si.si_code
+op_assign
+id|SEGV_MAPERR
+suffix:semicolon
+id|si.si_addr
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|regs-&gt;ior
+suffix:semicolon
+id|force_sig_info
+c_func
+(paren
+id|SIGSEGV
+comma
+op_amp
+id|si
+comma
+id|current
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|force_sigbus
 suffix:colon
 multiline_comment|/* couldn&squot;t handle it ... */
@@ -2331,6 +2421,7 @@ comma
 id|current
 )paren
 suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 )brace

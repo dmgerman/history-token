@@ -24,7 +24,7 @@ macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
-multiline_comment|/*&t;Simple Token Bucket Filter.&n;&t;=======================================&n;&n;&t;SOURCE.&n;&t;-------&n;&n;&t;None.&n;&n;&t;Description.&n;&t;------------&n;&n;&t;A data flow obeys TBF with rate R and depth B, if for any&n;&t;time interval t_i...t_f the number of transmitted bits&n;&t;does not exceed B + R*(t_f-t_i).&n;&n;&t;Packetized version of this definition:&n;&t;The sequence of packets of sizes s_i served at moments t_i&n;&t;obeys TBF, if for any i&lt;=k:&n;&n;&t;s_i+....+s_k &lt;= B + R*(t_k - t_i)&n;&n;&t;Algorithm.&n;&t;----------&n;&t;&n;&t;Let N(t_i) be B/R initially and N(t) grow continuously with time as:&n;&n;&t;N(t+delta) = min{B/R, N(t) + delta}&n;&n;&t;If the first packet in queue has length S, it may be&n;&t;transmitted only at the time t_* when S/R &lt;= N(t_*),&n;&t;and in this case N(t) jumps:&n;&n;&t;N(t_* + 0) = N(t_* - 0) - S/R.&n;&n;&n;&n;&t;Actually, QoS requires two TBF to be applied to a data stream.&n;&t;One of them controls steady state burst size, another&n;&t;one with rate P (peak rate) and depth M (equal to link MTU)&n;&t;limits bursts at a smaller time scale.&n;&n;&t;It is easy to see that P&gt;R, and B&gt;M. If P is infinity, this double&n;&t;TBF is equivalent to a single one.&n;&n;&t;When TBF works in reshaping mode, latency is estimated as:&n;&n;&t;lat = max ((L-B)/R, (L-M)/P)&n;&n;&n;&t;NOTES.&n;&t;------&n;&n;&t;If TBF throttles, it starts a watchdog timer, which will wake it up&n;&t;when it is ready to transmit.&n;&t;Note that the minimal timer resolution is 1/HZ.&n;&t;If no new packets arrive during this period,&n;&t;or if the device is not awaken by EOI for some previous packet,&n;&t;TBF can stop its activity for 1/HZ.&n;&n;&n;&t;This means, that with depth B, the maximal rate is&n;&n;&t;R_crit = B*HZ&n;&n;&t;F.e. for 10Mbit ethernet and HZ=100 the minimal allowed B is ~10Kbytes.&n;&n;&t;Note that the peak rate TBF is much more tough: with MTU 1500&n;&t;P_crit = 150Kbytes/sec. So, if you need greater peak&n;&t;rates, use alpha with HZ=1000 :-)&n;*/
+multiline_comment|/*&t;Simple Token Bucket Filter.&n;&t;=======================================&n;&n;&t;SOURCE.&n;&t;-------&n;&n;&t;None.&n;&n;&t;Description.&n;&t;------------&n;&n;&t;A data flow obeys TBF with rate R and depth B, if for any&n;&t;time interval t_i...t_f the number of transmitted bits&n;&t;does not exceed B + R*(t_f-t_i).&n;&n;&t;Packetized version of this definition:&n;&t;The sequence of packets of sizes s_i served at moments t_i&n;&t;obeys TBF, if for any i&lt;=k:&n;&n;&t;s_i+....+s_k &lt;= B + R*(t_k - t_i)&n;&n;&t;Algorithm.&n;&t;----------&n;&t;&n;&t;Let N(t_i) be B/R initially and N(t) grow continuously with time as:&n;&n;&t;N(t+delta) = min{B/R, N(t) + delta}&n;&n;&t;If the first packet in queue has length S, it may be&n;&t;transmitted only at the time t_* when S/R &lt;= N(t_*),&n;&t;and in this case N(t) jumps:&n;&n;&t;N(t_* + 0) = N(t_* - 0) - S/R.&n;&n;&n;&n;&t;Actually, QoS requires two TBF to be applied to a data stream.&n;&t;One of them controls steady state burst size, another&n;&t;one with rate P (peak rate) and depth M (equal to link MTU)&n;&t;limits bursts at a smaller time scale.&n;&n;&t;It is easy to see that P&gt;R, and B&gt;M. If P is infinity, this double&n;&t;TBF is equivalent to a single one.&n;&n;&t;When TBF works in reshaping mode, latency is estimated as:&n;&n;&t;lat = max ((L-B)/R, (L-M)/P)&n;&n;&n;&t;NOTES.&n;&t;------&n;&n;&t;If TBF throttles, it starts a watchdog timer, which will wake it up&n;&t;when it is ready to transmit.&n;&t;Note that the minimal timer resolution is 1/HZ.&n;&t;If no new packets arrive during this period,&n;&t;or if the device is not awaken by EOI for some previous packet,&n;&t;TBF can stop its activity for 1/HZ.&n;&n;&n;&t;This means, that with depth B, the maximal rate is&n;&n;&t;R_crit = B*HZ&n;&n;&t;F.e. for 10Mbit ethernet and HZ=100 the minimal allowed B is ~10Kbytes.&n;&n;&t;Note that the peak rate TBF is much more tough: with MTU 1500&n;&t;P_crit = 150Kbytes/sec. So, if you need greater peak&n;&t;rates, use alpha with HZ=1000 :-)&n;&n;&t;With classful TBF, limit is just kept for backwards compatibility.&n;&t;It is passed to the default bfifo qdisc - if the inner qdisc is&n;&t;changed the limit is not effective anymore.&n;*/
 DECL|struct|tbf_sched_data
 r_struct
 id|tbf_sched_data
@@ -133,12 +133,6 @@ c_cond
 id|skb-&gt;len
 OG
 id|q-&gt;max_size
-op_logical_or
-id|sch-&gt;stats.backlog
-op_plus
-id|skb-&gt;len
-OG
-id|q-&gt;limit
 )paren
 (brace
 id|sch-&gt;stats.drops
@@ -203,10 +197,6 @@ suffix:semicolon
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.backlog
-op_add_assign
-id|skb-&gt;len
-suffix:semicolon
 id|sch-&gt;stats.bytes
 op_add_assign
 id|skb-&gt;len
@@ -269,15 +259,9 @@ id|q-&gt;qdisc
 op_eq
 l_int|0
 )paren
-(brace
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.backlog
-op_add_assign
-id|skb-&gt;len
-suffix:semicolon
-)brace
 r_return
 id|ret
 suffix:semicolon
@@ -331,10 +315,6 @@ l_int|0
 (brace
 id|sch-&gt;q.qlen
 op_decrement
-suffix:semicolon
-id|sch-&gt;stats.backlog
-op_sub_assign
-id|len
 suffix:semicolon
 id|sch-&gt;stats.drops
 op_increment
@@ -552,10 +532,6 @@ id|q-&gt;ptokens
 op_assign
 id|ptoks
 suffix:semicolon
-id|sch-&gt;stats.backlog
-op_sub_assign
-id|len
-suffix:semicolon
 id|sch-&gt;q.qlen
 op_decrement
 suffix:semicolon
@@ -642,10 +618,6 @@ multiline_comment|/* When requeue fails skb is dropped */
 id|sch-&gt;q.qlen
 op_decrement
 suffix:semicolon
-id|sch-&gt;stats.backlog
-op_sub_assign
-id|len
-suffix:semicolon
 id|sch-&gt;stats.drops
 op_increment
 suffix:semicolon
@@ -693,10 +665,6 @@ id|q-&gt;qdisc
 )paren
 suffix:semicolon
 id|sch-&gt;q.qlen
-op_assign
-l_int|0
-suffix:semicolon
-id|sch-&gt;stats.backlog
 op_assign
 l_int|0
 suffix:semicolon
@@ -1742,10 +1710,6 @@ id|old
 )paren
 suffix:semicolon
 id|sch-&gt;q.qlen
-op_assign
-l_int|0
-suffix:semicolon
-id|sch-&gt;stats.backlog
 op_assign
 l_int|0
 suffix:semicolon

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *&t;Adaptec AAC series RAID controller driver&n; *&t;(c) Copyright 2001 Red Hat Inc.&t;&lt;alan@redhat.com&gt;&n; *&n; * based on the old aacraid driver that is..&n; * Adaptec aacraid device driver for Linux.&n; *&n; * Copyright (c) 2000 Adaptec, Inc. (aacraid@adaptec.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Module Name:&n; *  comminit.c&n; *&n; * Abstract: This supports the initialization of the host adapter commuication interface.&n; *    This is a platform dependent module for the pci cyclone board.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -11,20 +10,11 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;aacraid.h&quot;
 DECL|variable|aac_config
 r_struct
 id|aac_common
 id|aac_config
-suffix:semicolon
-DECL|variable|devices
-r_static
-r_struct
-id|aac_dev
-op_star
-id|devices
 suffix:semicolon
 DECL|function|aac_alloc_comm
 r_static
@@ -537,7 +527,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;aac_send_shutdown&t;&t;-&t;shutdown an adapter&n; *&t;@dev: Adapter to shutdown&n; *&n; *&t;This routine will send a VM_CloseAll (shutdown) request to the adapter.&n; */
 DECL|function|aac_send_shutdown
-r_static
 r_int
 id|aac_send_shutdown
 c_func
@@ -651,104 +640,6 @@ id|fibctx
 suffix:semicolon
 r_return
 id|status
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;aac_detach&t;-&t;detach adapter&n; *&t;@detach: adapter to disconnect&n; *&n; *&t;Disconnect and shutdown an AAC based adapter, freeing resources&n; *&t;as we go.&n; */
-DECL|function|aac_detach
-r_int
-id|aac_detach
-c_func
-(paren
-r_struct
-id|aac_dev
-op_star
-id|detach
-)paren
-(brace
-r_struct
-id|aac_dev
-op_star
-op_star
-id|dev
-op_assign
-op_amp
-id|devices
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_star
-id|dev
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_star
-id|dev
-op_eq
-id|detach
-)paren
-(brace
-op_star
-id|dev
-op_assign
-id|detach-&gt;next
-suffix:semicolon
-id|aac_send_shutdown
-c_func
-(paren
-id|detach
-)paren
-suffix:semicolon
-id|fib_map_free
-c_func
-(paren
-id|detach
-)paren
-suffix:semicolon
-id|pci_free_consistent
-c_func
-(paren
-id|detach-&gt;pdev
-comma
-id|detach-&gt;comm_size
-comma
-id|detach-&gt;comm_addr
-comma
-id|detach-&gt;comm_phys
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|detach-&gt;queues
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|dev
-op_assign
-op_amp
-(paren
-(paren
-op_star
-id|dev
-)paren
-op_member_access_from_pointer
-id|next
-)paren
-suffix:semicolon
-)brace
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;aac_comm_init&t;-&t;Initialise FSA data structures&n; *&t;@dev:&t;Adapter to initialise&n; *&n; *&t;Initializes the data structures that are required for the FSA commuication&n; *&t;interface to operate. &n; *&t;Returns&n; *&t;&t;1 - if we were able to init the commuication interface.&n; *&t;&t;0 - If there were errors initing. This is a fatal error.&n; */
@@ -1317,15 +1208,6 @@ c_func
 op_amp
 id|dev-&gt;aif_completion
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Add this adapter in to our dev List.&n;&t; */
-id|dev-&gt;next
-op_assign
-id|devices
-suffix:semicolon
-id|devices
-op_assign
-id|dev
 suffix:semicolon
 r_return
 id|dev

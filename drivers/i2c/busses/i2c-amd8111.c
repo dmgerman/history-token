@@ -597,9 +597,9 @@ c_func
 (paren
 id|smbus
 comma
-id|AMD_SMB_DATA
+id|AMD_SMB_CMD
 comma
-id|data-&gt;byte
+id|command
 )paren
 suffix:semicolon
 id|protocol

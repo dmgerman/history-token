@@ -18939,7 +18939,7 @@ id|ret
 suffix:semicolon
 id|this_cpu
 op_assign
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren

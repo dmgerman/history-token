@@ -630,7 +630,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Drop a reference to the resource addressed by a key.&n; * The hash bucket spinlock must not be held.&n; */
 DECL|function|drop_key_refs
 r_static
-r_inline
 r_void
 id|drop_key_refs
 c_func
@@ -678,7 +677,6 @@ suffix:semicolon
 multiline_comment|/*&n; * The hash bucket lock must be held when this is called.&n; * Afterwards, the futex_q must not be accessed.&n; */
 DECL|function|wake_futex
 r_static
-r_inline
 r_void
 id|wake_futex
 c_func
@@ -1213,7 +1211,6 @@ multiline_comment|/*&n; * queue_me and unqueue_me must be called as a pair, each
 multiline_comment|/* The key must be already stored in q-&gt;key. */
 DECL|function|queue_me
 r_static
-r_inline
 r_void
 id|queue_me
 c_func
