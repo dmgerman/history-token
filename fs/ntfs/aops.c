@@ -589,7 +589,7 @@ id|ntfs_volume
 op_star
 id|vol
 suffix:semicolon
-id|run_list_element
+id|runlist_element
 op_star
 id|rl
 suffix:semicolon
@@ -754,7 +754,7 @@ id|unlikely
 c_func
 (paren
 op_logical_neg
-id|ni-&gt;run_list.rl
+id|ni-&gt;runlist.rl
 op_logical_and
 op_logical_neg
 id|ni-&gt;mft_no
@@ -888,12 +888,12 @@ id|down_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 id|rl
 op_assign
-id|ni-&gt;run_list.rl
+id|ni-&gt;runlist.rl
 suffix:semicolon
 )brace
 r_if
@@ -1032,14 +1032,14 @@ id|up_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|map_run_list
+id|map_runlist
 c_func
 (paren
 id|ni
@@ -1184,7 +1184,7 @@ id|up_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 multiline_comment|/* Check we have at least one buffer ready for i/o. */
@@ -1819,7 +1819,7 @@ id|ntfs_volume
 op_star
 id|vol
 suffix:semicolon
-id|run_list_element
+id|runlist_element
 op_star
 id|rl
 suffix:semicolon
@@ -2235,12 +2235,12 @@ id|down_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 id|rl
 op_assign
-id|ni-&gt;run_list.rl
+id|ni-&gt;runlist.rl
 suffix:semicolon
 )brace
 r_if
@@ -2375,12 +2375,12 @@ id|up_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 id|err
 op_assign
-id|map_run_list
+id|map_runlist
 c_func
 (paren
 id|ni
@@ -2483,7 +2483,7 @@ id|up_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 multiline_comment|/* For the error case, need to reset bh to the beginning. */
@@ -4750,7 +4750,7 @@ id|ntfs_volume
 op_star
 id|vol
 suffix:semicolon
-id|run_list_element
+id|runlist_element
 op_star
 id|rl
 suffix:semicolon
@@ -5182,12 +5182,12 @@ id|down_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 id|rl
 op_assign
-id|ni-&gt;run_list.rl
+id|ni-&gt;runlist.rl
 suffix:semicolon
 )brace
 r_if
@@ -5322,12 +5322,12 @@ id|up_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 id|err
 op_assign
-id|map_run_list
+id|map_runlist
 c_func
 (paren
 id|ni
@@ -5665,7 +5665,7 @@ id|up_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 id|rl
@@ -5860,7 +5860,7 @@ id|up_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 r_return

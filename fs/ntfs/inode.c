@@ -1081,11 +1081,11 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|init_run_list
+id|init_runlist
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list
+id|ni-&gt;runlist
 )paren
 suffix:semicolon
 id|init_MUTEX
@@ -1111,7 +1111,7 @@ id|ni-&gt;attr_list
 op_assign
 l_int|NULL
 suffix:semicolon
-id|init_run_list
+id|init_runlist
 c_func
 (paren
 op_amp
@@ -5527,7 +5527,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_read_inode_mount - special read_inode for mount time use only&n; * @vi:&t;&t;inode to read&n; *&n; * Read inode FILE_MFT at mount time, only called with super_block lock&n; * held from within the read_super() code path.&n; *&n; * This function exists because when it is called the page cache for $MFT/$DATA&n; * is not initialized and hence we cannot get at the contents of mft records&n; * by calling map_mft_record*().&n; *&n; * Further it needs to cope with the circular references problem, i.e. can&squot;t&n; * load any attributes other than $ATTRIBUTE_LIST until $DATA is loaded, because&n; * we don&squot;t know where the other extent mft records are yet and again, because&n; * we cannot call map_mft_record*() yet. Obviously this applies only when an&n; * attribute list is actually present in $MFT inode.&n; *&n; * We solve these problems by starting with the $DATA attribute before anything&n; * else and iterating using lookup_attr($DATA) over all extents. As each extent&n; * is found, we decompress_mapping_pairs() including the implied&n; * merge_run_lists(). Each step of the iteration necessarily provides&n; * sufficient information for the next step to complete.&n; *&n; * This should work but there are two possible pit falls (see inline comments&n; * below), but only time will tell if they are real pits or just smoke...&n; */
+multiline_comment|/**&n; * ntfs_read_inode_mount - special read_inode for mount time use only&n; * @vi:&t;&t;inode to read&n; *&n; * Read inode FILE_MFT at mount time, only called with super_block lock&n; * held from within the read_super() code path.&n; *&n; * This function exists because when it is called the page cache for $MFT/$DATA&n; * is not initialized and hence we cannot get at the contents of mft records&n; * by calling map_mft_record*().&n; *&n; * Further it needs to cope with the circular references problem, i.e. can&squot;t&n; * load any attributes other than $ATTRIBUTE_LIST until $DATA is loaded, because&n; * we don&squot;t know where the other extent mft records are yet and again, because&n; * we cannot call map_mft_record*() yet. Obviously this applies only when an&n; * attribute list is actually present in $MFT inode.&n; *&n; * We solve these problems by starting with the $DATA attribute before anything&n; * else and iterating using lookup_attr($DATA) over all extents. As each extent&n; * is found, we decompress_mapping_pairs() including the implied&n; * merge_runlists(). Each step of the iteration necessarily provides&n; * sufficient information for the next step to complete.&n; *&n; * This should work but there are two possible pit falls (see inline comments&n; * below), but only time will tell if they are real pits or just smoke...&n; */
 DECL|function|ntfs_read_inode_mount
 r_int
 id|ntfs_read_inode_mount
@@ -6482,7 +6482,7 @@ id|ctx
 )paren
 )paren
 (brace
-id|run_list_element
+id|runlist_element
 op_star
 id|nrl
 suffix:semicolon
@@ -6556,7 +6556,7 @@ id|vol
 comma
 id|attr
 comma
-id|ni-&gt;run_list.rl
+id|ni-&gt;runlist.rl
 )paren
 suffix:semicolon
 r_if
@@ -6588,7 +6588,7 @@ r_goto
 id|put_err_out
 suffix:semicolon
 )brace
-id|ni-&gt;run_list.rl
+id|ni-&gt;runlist.rl
 op_assign
 id|nrl
 suffix:semicolon
@@ -6698,7 +6698,7 @@ id|vol-&gt;nr_mft_records
 op_assign
 id|ll
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We have got the first extent of the run_list for&n;&t;&t;&t; * $MFT which means it is now relatively safe to call&n;&t;&t;&t; * the normal ntfs_read_inode() function.&n;&t;&t;&t; * Complete reading the inode, this will actually&n;&t;&t;&t; * re-read the mft record for $MFT, this time entering&n;&t;&t;&t; * it into the page cache with which we complete the&n;&t;&t;&t; * kick start of the volume. It should be safe to do&n;&t;&t;&t; * this now as the first extent of $MFT/$DATA is&n;&t;&t;&t; * already known and we would hope that we don&squot;t need&n;&t;&t;&t; * further extents in order to find the other&n;&t;&t;&t; * attributes belonging to $MFT. Only time will tell if&n;&t;&t;&t; * this is really the case. If not we will have to play&n;&t;&t;&t; * magic at this point, possibly duplicating a lot of&n;&t;&t;&t; * ntfs_read_inode() at this point. We will need to&n;&t;&t;&t; * ensure we do enough of its work to be able to call&n;&t;&t;&t; * ntfs_read_inode() on extents of $MFT/$DATA. But lets&n;&t;&t;&t; * hope this never happens...&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We have got the first extent of the runlist for&n;&t;&t;&t; * $MFT which means it is now relatively safe to call&n;&t;&t;&t; * the normal ntfs_read_inode() function.&n;&t;&t;&t; * Complete reading the inode, this will actually&n;&t;&t;&t; * re-read the mft record for $MFT, this time entering&n;&t;&t;&t; * it into the page cache with which we complete the&n;&t;&t;&t; * kick start of the volume. It should be safe to do&n;&t;&t;&t; * this now as the first extent of $MFT/$DATA is&n;&t;&t;&t; * already known and we would hope that we don&squot;t need&n;&t;&t;&t; * further extents in order to find the other&n;&t;&t;&t; * attributes belonging to $MFT. Only time will tell if&n;&t;&t;&t; * this is really the case. If not we will have to play&n;&t;&t;&t; * magic at this point, possibly duplicating a lot of&n;&t;&t;&t; * ntfs_read_inode() at this point. We will need to&n;&t;&t;&t; * ensure we do enough of its work to be able to call&n;&t;&t;&t; * ntfs_read_inode() on extents of $MFT/$DATA. But lets&n;&t;&t;&t; * hope this never happens...&n;&t;&t;&t; */
 id|ntfs_read_locked_inode
 c_func
 (paren
@@ -7114,22 +7114,22 @@ id|down_write
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ni-&gt;run_list.rl
+id|ni-&gt;runlist.rl
 )paren
 (brace
 id|ntfs_free
 c_func
 (paren
-id|ni-&gt;run_list.rl
+id|ni-&gt;runlist.rl
 )paren
 suffix:semicolon
-id|ni-&gt;run_list.rl
+id|ni-&gt;runlist.rl
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -7138,7 +7138,7 @@ id|up_write
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 r_if

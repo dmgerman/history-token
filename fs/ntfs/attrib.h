@@ -6,14 +6,14 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;endian.h&quot;
 macro_line|#include &quot;types.h&quot;
 macro_line|#include &quot;layout.h&quot;
-DECL|function|init_run_list
+DECL|function|init_runlist
 r_static
 r_inline
 r_void
-id|init_run_list
+id|init_runlist
 c_func
 (paren
-id|run_list
+id|runlist
 op_star
 id|rl
 )paren
@@ -110,7 +110,7 @@ DECL|typedef|attr_search_context
 id|attr_search_context
 suffix:semicolon
 r_extern
-id|run_list_element
+id|runlist_element
 op_star
 id|decompress_mapping_pairs
 c_func
@@ -125,14 +125,14 @@ id|ATTR_RECORD
 op_star
 id|attr
 comma
-id|run_list_element
+id|runlist_element
 op_star
 id|old_rl
 )paren
 suffix:semicolon
 r_extern
 r_int
-id|map_run_list
+id|map_runlist
 c_func
 (paren
 id|ntfs_inode
@@ -149,7 +149,7 @@ id|vcn_to_lcn
 c_func
 (paren
 r_const
-id|run_list_element
+id|runlist_element
 op_star
 id|rl
 comma
@@ -242,7 +242,7 @@ id|ntfs_volume
 op_star
 id|vol
 comma
-id|run_list
+id|runlist
 op_star
 id|rl
 comma

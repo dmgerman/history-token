@@ -415,7 +415,7 @@ id|ntfs_debug_dump_runlist
 c_func
 (paren
 r_const
-id|run_list_element
+id|runlist_element
 op_star
 id|rl
 )paren

@@ -1316,7 +1316,7 @@ id|sb
 op_assign
 id|vol-&gt;sb
 suffix:semicolon
-id|run_list_element
+id|runlist_element
 op_star
 id|rl
 suffix:semicolon
@@ -1853,12 +1853,12 @@ id|down_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 id|rl
 op_assign
-id|ni-&gt;run_list.rl
+id|ni-&gt;runlist.rl
 suffix:semicolon
 )brace
 r_if
@@ -1969,14 +1969,14 @@ id|up_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|map_run_list
+id|map_runlist
 c_func
 (paren
 id|ni
@@ -2070,7 +2070,7 @@ id|up_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 multiline_comment|/* Setup and initiate io on all buffer heads. */
@@ -3296,7 +3296,7 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;map_run_list() failed. Cannot read compression &quot;
+l_string|&quot;map_runlist() failed. Cannot read compression &quot;
 l_string|&quot;block.&quot;
 )paren
 suffix:semicolon
@@ -3309,7 +3309,7 @@ id|up_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 id|ntfs_error
@@ -3330,7 +3330,7 @@ id|up_read
 c_func
 (paren
 op_amp
-id|ni-&gt;run_list.lock
+id|ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 id|ntfs_error

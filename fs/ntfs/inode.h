@@ -71,11 +71,11 @@ id|u32
 id|name_len
 suffix:semicolon
 multiline_comment|/* Attribute name length of this fake inode. */
-DECL|member|run_list
-id|run_list
-id|run_list
+DECL|member|runlist
+id|runlist
+id|runlist
 suffix:semicolon
-multiline_comment|/* If state has the NI_NonResident bit set,&n;&t;&t;&t;&t;   the run list of the unnamed data attribute&n;&t;&t;&t;&t;   (if a file) or of the index allocation&n;&t;&t;&t;&t;   attribute (directory) or of the attribute&n;&t;&t;&t;&t;   described by the fake inode (if NInoAttr()).&n;&t;&t;&t;&t;   If run_list.rl is NULL, the run list has not&n;&t;&t;&t;&t;   been read in yet or has been unmapped. If&n;&t;&t;&t;&t;   NI_NonResident is clear, the attribute is&n;&t;&t;&t;&t;   resident (file and fake inode) or there is&n;&t;&t;&t;&t;   no $I30 index allocation attribute&n;&t;&t;&t;&t;   (small directory). In the latter case&n;&t;&t;&t;&t;   run_list.rl is always NULL.*/
+multiline_comment|/* If state has the NI_NonResident bit set,&n;&t;&t;&t;&t;   the run list of the unnamed data attribute&n;&t;&t;&t;&t;   (if a file) or of the index allocation&n;&t;&t;&t;&t;   attribute (directory) or of the attribute&n;&t;&t;&t;&t;   described by the fake inode (if NInoAttr()).&n;&t;&t;&t;&t;   If runlist.rl is NULL, the run list has not&n;&t;&t;&t;&t;   been read in yet or has been unmapped. If&n;&t;&t;&t;&t;   NI_NonResident is clear, the attribute is&n;&t;&t;&t;&t;   resident (file and fake inode) or there is&n;&t;&t;&t;&t;   no $I30 index allocation attribute&n;&t;&t;&t;&t;   (small directory). In the latter case&n;&t;&t;&t;&t;   runlist.rl is always NULL.*/
 multiline_comment|/*&n;&t; * The following fields are only valid for real inodes and extent&n;&t; * inodes.&n;&t; */
 DECL|member|mrec_lock
 r_struct
@@ -108,7 +108,7 @@ id|attr_list
 suffix:semicolon
 multiline_comment|/* Attribute list value itself. */
 DECL|member|attr_list_rl
-id|run_list
+id|runlist
 id|attr_list_rl
 suffix:semicolon
 multiline_comment|/* Run list for the attribute list value. */

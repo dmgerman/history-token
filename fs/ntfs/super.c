@@ -3577,7 +3577,7 @@ comma
 op_star
 id|kmirr
 suffix:semicolon
-id|run_list_element
+id|runlist_element
 op_star
 id|rl
 comma
@@ -4028,12 +4028,12 @@ id|down_read
 c_func
 (paren
 op_amp
-id|mirr_ni-&gt;run_list.lock
+id|mirr_ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 id|rl
 op_assign
-id|mirr_ni-&gt;run_list.rl
+id|mirr_ni-&gt;runlist.rl
 suffix:semicolon
 multiline_comment|/* Compare the two run lists.  They must be identical. */
 id|i
@@ -4101,7 +4101,7 @@ id|up_read
 c_func
 (paren
 op_amp
-id|mirr_ni-&gt;run_list.lock
+id|mirr_ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 r_return
@@ -4125,7 +4125,7 @@ id|up_read
 c_func
 (paren
 op_amp
-id|mirr_ni-&gt;run_list.lock
+id|mirr_ni-&gt;runlist.lock
 )paren
 suffix:semicolon
 id|ntfs_debug
