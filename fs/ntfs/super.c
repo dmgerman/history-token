@@ -10851,6 +10851,13 @@ c_func
 l_string|&quot;NTFS 1.2/3.x driver - Copyright (c) 2001-2004 Anton Altaparmakov&quot;
 )paren
 suffix:semicolon
+DECL|variable|NTFS_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|NTFS_VERSION
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
