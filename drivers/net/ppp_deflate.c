@@ -1270,6 +1270,8 @@ c_func
 )paren
 comma
 id|GFP_KERNEL
+op_or
+id|__GFP_REPEAT
 )paren
 suffix:semicolon
 r_if
