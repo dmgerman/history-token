@@ -1721,7 +1721,7 @@ multiline_comment|/*&n; * Vnode spinlock manipulation.&n; */
 DECL|macro|VN_LOCK
 mdefine_line|#define VN_LOCK(vp)&t;&t;mutex_spinlock(&amp;(vp)-&gt;v_lock)
 DECL|macro|VN_UNLOCK
-mdefine_line|#define VN_UNLOCK(vp, s)&t;mutex_spinunlock(&amp;(vp)-&gt;v_lock)
+mdefine_line|#define VN_UNLOCK(vp, s)&t;mutex_spinunlock(&amp;(vp)-&gt;v_lock, s)
 DECL|macro|VN_FLAGSET
 mdefine_line|#define VN_FLAGSET(vp,b)&t;vn_flagset(vp,b)
 DECL|macro|VN_FLAGCLR
