@@ -1,4 +1,4 @@
-multiline_comment|/* mga_drm.h -- Public header for the Matrox g200/g400 driver -*- linux-c -*-&n; * Created: Tue Jan 25 01:50:01 1999 by jhartmann@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Jeff Hartmann &lt;jhartmann@valinux.com&gt;&n; *    Keith Whitwell &lt;keithw@valinux.com&gt;&n; *&n; * Rewritten by:&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/* mga_drm.h -- Public header for the Matrox g200/g400 driver -*- linux-c -*-&n; * Created: Tue Jan 25 01:50:01 1999 by jhartmann@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Jeff Hartmann &lt;jhartmann@valinux.com&gt;&n; *    Keith Whitwell &lt;keith@tungstengraphics.com&gt;&n; *&n; * Rewritten by:&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
 macro_line|#ifndef __MGA_DRM_H__
 DECL|macro|__MGA_DRM_H__
 mdefine_line|#define __MGA_DRM_H__
@@ -476,6 +476,8 @@ DECL|macro|DRM_IOCTL_MGA_ILOAD
 mdefine_line|#define DRM_IOCTL_MGA_ILOAD&t;&t;DRM_IOW( 0x47, drm_mga_iload_t)
 DECL|macro|DRM_IOCTL_MGA_BLIT
 mdefine_line|#define DRM_IOCTL_MGA_BLIT&t;&t;DRM_IOW( 0x48, drm_mga_blit_t)
+DECL|macro|DRM_IOCTL_MGA_GETPARAM
+mdefine_line|#define DRM_IOCTL_MGA_GETPARAM&t;&t;DRM_IOWR(0x49, drm_mga_getparam_t)
 DECL|struct|_drm_mga_warp_index
 r_typedef
 r_struct
@@ -813,6 +815,27 @@ suffix:semicolon
 DECL|typedef|drm_mga_blit_t
 )brace
 id|drm_mga_blit_t
+suffix:semicolon
+multiline_comment|/* 3.1: An ioctl to get parameters that aren&squot;t available to the 3d&n; * client any other way.  &n; */
+DECL|macro|MGA_PARAM_IRQ_NR
+mdefine_line|#define MGA_PARAM_IRQ_NR            1
+DECL|struct|drm_mga_getparam
+r_typedef
+r_struct
+id|drm_mga_getparam
+(brace
+DECL|member|param
+r_int
+id|param
+suffix:semicolon
+DECL|member|value
+r_int
+op_star
+id|value
+suffix:semicolon
+DECL|typedef|drm_mga_getparam_t
+)brace
+id|drm_mga_getparam_t
 suffix:semicolon
 macro_line|#endif
 eof
