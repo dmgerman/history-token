@@ -1195,6 +1195,31 @@ comma
 l_int|0
 )paren
 comma
+multiline_comment|/* Submitted by Jol Bourquard &lt;numlock@freesurf.ch&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05ab
+comma
+l_int|0x0060
+comma
+l_int|0x1104
+comma
+l_int|0x1110
+comma
+l_string|&quot;In-System&quot;
+comma
+l_string|&quot;PyroGate External CD-ROM Enclosure (FCD-523)&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+comma
 macro_line|#ifdef CONFIG_USB_STORAGE_ISD200
 id|UNUSUAL_DEV
 c_func
