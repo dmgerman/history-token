@@ -2041,7 +2041,7 @@ id|CIFS_MOUNT_DIRECT_IO
 )paren
 (brace
 r_return
-id|cifs_write
+id|cifs_user_write
 c_func
 (paren
 id|file

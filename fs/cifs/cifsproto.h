@@ -1356,6 +1356,12 @@ op_star
 id|buf
 comma
 r_const
+r_char
+id|__user
+op_star
+id|ubuf
+comma
+r_const
 r_int
 id|long_op
 )paren

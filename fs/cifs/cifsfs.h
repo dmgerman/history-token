@@ -324,7 +324,7 @@ id|poffset
 suffix:semicolon
 r_extern
 id|ssize_t
-id|cifs_write
+id|cifs_user_write
 c_func
 (paren
 r_struct
@@ -334,6 +334,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|write_data
 comma
