@@ -23,6 +23,9 @@ suffix:semicolon
 r_struct
 id|mm_struct
 suffix:semicolon
+r_struct
+id|pci_bus
+suffix:semicolon
 DECL|typedef|ia64_mv_setup_t
 r_typedef
 r_void
@@ -130,6 +133,56 @@ r_int
 id|ia64_mv_local_vector_to_irq
 (paren
 id|u8
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_pci_get_legacy_mem_t
+r_typedef
+r_char
+op_star
+id|ia64_mv_pci_get_legacy_mem_t
+(paren
+r_struct
+id|pci_bus
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_pci_legacy_read_t
+r_typedef
+r_int
+id|ia64_mv_pci_legacy_read_t
+(paren
+r_struct
+id|pci_bus
+op_star
+comma
+id|u16
+id|port
+comma
+id|u32
+op_star
+id|val
+comma
+id|u8
+id|size
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_pci_legacy_write_t
+r_typedef
+r_int
+id|ia64_mv_pci_legacy_write_t
+(paren
+r_struct
+id|pci_bus
+op_star
+comma
+id|u16
+id|port
+comma
+id|u32
+id|val
+comma
+id|u8
+id|size
 )paren
 suffix:semicolon
 multiline_comment|/* DMA-mapping interface: */
@@ -606,6 +659,8 @@ macro_line|# elif defined (CONFIG_IA64_DIG)
 macro_line|#  include &lt;asm/machvec_dig.h&gt;
 macro_line|# elif defined (CONFIG_IA64_HP_ZX1)
 macro_line|#  include &lt;asm/machvec_hpzx1.h&gt;
+macro_line|# elif defined (CONFIG_IA64_HP_ZX1_SWIOTLB)
+macro_line|#  include &lt;asm/machvec_hpzx1_swiotlb.h&gt;
 macro_line|# elif defined (CONFIG_IA64_SGI_SN2)
 macro_line|#  include &lt;asm/machvec_sn2.h&gt;
 macro_line|# elif defined (CONFIG_IA64_GENERIC)
@@ -660,6 +715,12 @@ DECL|macro|platform_irq_to_vector
 macro_line|#  define platform_irq_to_vector&t;ia64_mv.irq_to_vector
 DECL|macro|platform_local_vector_to_irq
 macro_line|#  define platform_local_vector_to_irq&t;ia64_mv.local_vector_to_irq
+DECL|macro|platform_pci_get_legacy_mem
+macro_line|#  define platform_pci_get_legacy_mem&t;ia64_mv.pci_get_legacy_mem
+DECL|macro|platform_pci_legacy_read
+macro_line|#  define platform_pci_legacy_read&t;ia64_mv.pci_legacy_read
+DECL|macro|platform_pci_legacy_write
+macro_line|#  define platform_pci_legacy_write&t;ia64_mv.pci_legacy_write
 DECL|macro|platform_inb
 macro_line|#  define platform_inb&t;&t;ia64_mv.inb
 DECL|macro|platform_inw
@@ -817,6 +878,21 @@ id|ia64_mv_local_vector_to_irq
 op_star
 id|local_vector_to_irq
 suffix:semicolon
+DECL|member|pci_get_legacy_mem
+id|ia64_mv_pci_get_legacy_mem_t
+op_star
+id|pci_get_legacy_mem
+suffix:semicolon
+DECL|member|pci_legacy_read
+id|ia64_mv_pci_legacy_read_t
+op_star
+id|pci_legacy_read
+suffix:semicolon
+DECL|member|pci_legacy_write
+id|ia64_mv_pci_legacy_write_t
+op_star
+id|pci_legacy_write
+suffix:semicolon
 DECL|member|inb
 id|ia64_mv_inb_t
 op_star
@@ -907,7 +983,7 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* align attrib? see above comment */
 DECL|macro|MACHVEC_INIT
-mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_timer_interrupt,&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_tlb_migrate_finish,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_cpu,&t;&bslash;&n;&t;platform_dma_sync_sg_for_cpu,&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_device,&t;&bslash;&n;&t;platform_dma_sync_sg_for_device,&t;&bslash;&n;&t;platform_dma_mapping_error,&t;&t;&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_mmiowb,&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;&t;platform_readb_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readw_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readl_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readq_relaxed,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_timer_interrupt,&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_tlb_migrate_finish,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_cpu,&t;&bslash;&n;&t;platform_dma_sync_sg_for_cpu,&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_device,&t;&bslash;&n;&t;platform_dma_sync_sg_for_device,&t;&bslash;&n;&t;platform_dma_mapping_error,&t;&t;&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_pci_get_legacy_mem,&t;&t;&bslash;&n;&t;platform_pci_legacy_read,&t;&t;&bslash;&n;&t;platform_pci_legacy_write,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_mmiowb,&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;&t;platform_readb_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readw_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readl_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readq_relaxed,&t;&t;&t;&bslash;&n;}
 r_extern
 r_struct
 id|ia64_machine_vector
@@ -1071,6 +1147,18 @@ macro_line|#endif
 macro_line|#ifndef platform_local_vector_to_irq
 DECL|macro|platform_local_vector_to_irq
 macro_line|# define platform_local_vector_to_irq&t;__ia64_local_vector_to_irq
+macro_line|#endif
+macro_line|#ifndef platform_pci_get_legacy_mem
+DECL|macro|platform_pci_get_legacy_mem
+macro_line|# define platform_pci_get_legacy_mem&t;ia64_pci_get_legacy_mem
+macro_line|#endif
+macro_line|#ifndef platform_pci_legacy_read
+DECL|macro|platform_pci_legacy_read
+macro_line|# define platform_pci_legacy_read&t;ia64_pci_legacy_read
+macro_line|#endif
+macro_line|#ifndef platform_pci_legacy_write
+DECL|macro|platform_pci_legacy_write
+macro_line|# define platform_pci_legacy_write&t;ia64_pci_legacy_write
 macro_line|#endif
 macro_line|#ifndef platform_inb
 DECL|macro|platform_inb
