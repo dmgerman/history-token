@@ -2,6 +2,7 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef NCR53C8XX_H
 DECL|macro|NCR53C8XX_H
 mdefine_line|#define NCR53C8XX_H
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 DECL|typedef|vm_offset_t
 r_typedef
 id|u_long
@@ -9,17 +10,10 @@ id|vm_offset_t
 suffix:semicolon
 macro_line|#include &quot;sym53c8xx_defs.h&quot;
 multiline_comment|/*==========================================================&n;**&n;**&t;Structures used by the detection routine to transmit &n;**&t;device configuration to the attach function.&n;**&n;**==========================================================&n;*/
-r_typedef
+DECL|struct|ncr_slot
 r_struct
+id|ncr_slot
 (brace
-DECL|member|bus
-r_int
-id|bus
-suffix:semicolon
-DECL|member|device_fn
-id|u_char
-id|device_fn
-suffix:semicolon
 DECL|member|base
 id|u_long
 id|base
@@ -27,10 +21,6 @@ suffix:semicolon
 DECL|member|base_2
 id|u_long
 id|base_2
-suffix:semicolon
-DECL|member|io_port
-id|u_long
-id|io_port
 suffix:semicolon
 DECL|member|base_c
 id|u_long
@@ -53,10 +43,6 @@ r_int
 id|irq
 suffix:semicolon
 multiline_comment|/* port and reg fields to use INB, OUTB macros */
-DECL|member|base_io
-id|u_long
-id|base_io
-suffix:semicolon
 DECL|member|reg
 r_volatile
 r_struct
@@ -64,41 +50,7 @@ id|ncr_reg
 op_star
 id|reg
 suffix:semicolon
-DECL|typedef|ncr_slot
 )brace
-id|ncr_slot
-suffix:semicolon
-multiline_comment|/*==========================================================&n;**&n;**&t;Structure used to store the NVRAM content.&n;**&n;**==========================================================&n;*/
-r_typedef
-r_struct
-(brace
-DECL|member|type
-r_int
-id|type
-suffix:semicolon
-DECL|macro|SCSI_NCR_SYMBIOS_NVRAM
-mdefine_line|#define&t;SCSI_NCR_SYMBIOS_NVRAM&t;(1)
-DECL|macro|SCSI_NCR_TEKRAM_NVRAM
-mdefine_line|#define&t;SCSI_NCR_TEKRAM_NVRAM&t;(2)
-macro_line|#ifdef&t;SCSI_NCR_NVRAM_SUPPORT
-r_union
-(brace
-DECL|member|Symbios
-id|Symbios_nvram
-id|Symbios
-suffix:semicolon
-DECL|member|Tekram
-id|Tekram_nvram
-id|Tekram
-suffix:semicolon
-DECL|member|data
-)brace
-id|data
-suffix:semicolon
-macro_line|#endif
-DECL|typedef|ncr_nvram
-)brace
-id|ncr_nvram
 suffix:semicolon
 multiline_comment|/*==========================================================&n;**&n;**&t;Structure used by detection routine to save data on &n;**&t;each detected board for attach.&n;**&n;**==========================================================&n;*/
 DECL|struct|ncr_device
@@ -112,35 +64,22 @@ op_star
 id|dev
 suffix:semicolon
 DECL|member|slot
+r_struct
 id|ncr_slot
 id|slot
 suffix:semicolon
 DECL|member|chip
+r_struct
 id|ncr_chip
 id|chip
-suffix:semicolon
-DECL|member|nvram
-id|ncr_nvram
-op_star
-id|nvram
 suffix:semicolon
 DECL|member|host_id
 id|u_char
 id|host_id
 suffix:semicolon
-macro_line|#ifdef&t;SCSI_NCR_PQS_PDS_SUPPORT
-DECL|member|pqs_pds
-id|u_char
-id|pqs_pds
-suffix:semicolon
-macro_line|#endif
 DECL|member|differential
-id|__u8
+id|u8
 id|differential
-suffix:semicolon
-DECL|member|attach_done
-r_int
-id|attach_done
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -149,8 +88,10 @@ r_struct
 id|Scsi_Host
 op_star
 id|ncr_attach
+c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 comma

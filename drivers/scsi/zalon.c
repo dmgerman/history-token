@@ -1,23 +1,11 @@
 multiline_comment|/*&n; * Zalon 53c7xx device driver.&n; * By Richard Hirst (rhirst@linuxcare.com)&n; */
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;scsi/scsicam.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;../parisc/gsc.h&quot;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;ncr53c8xx.h&quot;
 id|MODULE_AUTHOR
 c_func
@@ -50,42 +38,33 @@ mdefine_line|#define IO_MODULE_IO_COMMAND&t;(12*4)
 DECL|macro|IO_MODULE_IO_STATUS
 mdefine_line|#define IO_MODULE_IO_STATUS&t;(13*4)
 DECL|macro|IOSTATUS_RY
-mdefine_line|#define IOSTATUS_RY             0x40
+mdefine_line|#define IOSTATUS_RY&t;&t;0x40
 DECL|macro|IOSTATUS_FE
-mdefine_line|#define IOSTATUS_FE             0x80
+mdefine_line|#define IOSTATUS_FE&t;&t;0x80
 DECL|macro|IOIIDATA_SMINT5L
-mdefine_line|#define IOIIDATA_SMINT5L        0x40000000
+mdefine_line|#define IOIIDATA_SMINT5L&t;0x40000000
 DECL|macro|IOIIDATA_MINT5EN
-mdefine_line|#define IOIIDATA_MINT5EN        0x20000000
+mdefine_line|#define IOIIDATA_MINT5EN&t;0x20000000
 DECL|macro|IOIIDATA_PACKEN
-mdefine_line|#define IOIIDATA_PACKEN         0x10000000
+mdefine_line|#define IOIIDATA_PACKEN&t;&t;0x10000000
 DECL|macro|IOIIDATA_PREFETCHEN
-mdefine_line|#define IOIIDATA_PREFETCHEN     0x08000000
+mdefine_line|#define IOIIDATA_PREFETCHEN&t;0x08000000
 DECL|macro|IOIIDATA_IOII
-mdefine_line|#define IOIIDATA_IOII           0x00000020
+mdefine_line|#define IOIIDATA_IOII&t;&t;0x00000020
 DECL|macro|CMD_RESET
 mdefine_line|#define CMD_RESET&t;&t;5
 DECL|variable|__initdata
 r_static
+r_struct
 id|ncr_chip
 id|zalon720_chip
 id|__initdata
 op_assign
 (brace
 dot
-id|device_id
-op_assign
-id|PSEUDO_720_ID
-comma
-dot
 id|revision_id
 op_assign
 l_int|0x0f
-comma
-dot
-id|name
-op_assign
-l_string|&quot;720&quot;
 comma
 dot
 id|burst_max
@@ -246,7 +225,8 @@ suffix:semicolon
 macro_line|#endif
 DECL|variable|zalon7xx_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|zalon7xx_template
 op_assign
 (brace
