@@ -1,15 +1,6 @@
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;pci.h&quot;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|DBG
-mdefine_line|#define DBG(x...) printk(x)
-macro_line|#else
-DECL|macro|DBG
-mdefine_line|#define DBG(x...)
-macro_line|#endif
 DECL|function|pci_free_resources
 r_static
 r_void

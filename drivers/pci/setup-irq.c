@@ -5,15 +5,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-DECL|macro|DEBUG_CONFIG
-mdefine_line|#define DEBUG_CONFIG 0
-macro_line|#if DEBUG_CONFIG
-DECL|macro|DBGC
-macro_line|# define DBGC(args)     printk args
-macro_line|#else
-DECL|macro|DBGC
-macro_line|# define DBGC(args)
-macro_line|#endif
 r_static
 r_void
 id|__init
@@ -136,17 +127,14 @@ id|dev-&gt;irq
 op_assign
 id|irq
 suffix:semicolon
-id|DBGC
+id|pr_debug
 c_func
 (paren
-(paren
-id|KERN_ERR
-l_string|&quot;PCI fixup irq: (%s) got %d&bslash;n&quot;
+l_string|&quot;PCI: fixup irq: (%s) got %d&bslash;n&quot;
 comma
 id|dev-&gt;dev.kobj.name
 comma
 id|dev-&gt;irq
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Always tell the device, so the driver knows what is&n;&t;   the real IRQ to use; the device does not use it. */

@@ -88,16 +88,16 @@ id|mask
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Returns the number of the node containing PCI bus &squot;bus&squot; */
-DECL|function|pcibus_to_cpumask
+multiline_comment|/* Returns the number of the node containing PCI bus number &squot;busnr&squot; */
+DECL|function|__pcibus_to_cpumask
 r_static
 r_inline
 id|cpumask_t
-id|pcibus_to_cpumask
+id|__pcibus_to_cpumask
 c_func
 (paren
 r_int
-id|bus
+id|busnr
 )paren
 (brace
 r_return
@@ -106,11 +106,13 @@ c_func
 (paren
 id|mp_bus_id_to_node
 (braket
-id|bus
+id|busnr
 )braket
 )paren
 suffix:semicolon
 )brace
+DECL|macro|pcibus_to_cpumask
+mdefine_line|#define pcibus_to_cpumask(bus)&t;__pcibus_to_cpumask(bus-&gt;number)
 multiline_comment|/* sched_domains SD_NODE_INIT for NUMAQ machines */
 DECL|macro|SD_NODE_INIT
 mdefine_line|#define SD_NODE_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (10*1000000),&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_LOAD_BALANCE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_IDLE&t;&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}

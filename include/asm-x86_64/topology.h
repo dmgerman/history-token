@@ -93,9 +93,8 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/* broken generic file uses #ifndef later on this */
 DECL|macro|pcibus_to_cpumask
-mdefine_line|#define pcibus_to_cpumask(bus) __pcibus_to_cpumask(bus)
+mdefine_line|#define pcibus_to_cpumask(bus) __pcibus_to_cpumask(bus-&gt;number)
 macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/* sched_domains SD_NODE_INIT for x86_64 machines */
 DECL|macro|SD_NODE_INIT

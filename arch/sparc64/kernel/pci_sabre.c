@@ -4496,7 +4496,7 @@ id|PCI_ROM_ADDRESS_ENABLE
 suffix:semicolon
 id|res-&gt;flags
 op_or_assign
-id|PCI_ROM_ADDRESS_ENABLE
+id|IORESOURCE_ROM_ENABLE
 suffix:semicolon
 )brace
 id|pci_write_config_dword
