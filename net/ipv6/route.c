@@ -8848,11 +8848,13 @@ l_string|&quot;rt6_stats&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_XFRM
 id|xfrm6_fini
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|rt6_ifdown
 c_func
 (paren
