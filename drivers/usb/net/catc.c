@@ -864,7 +864,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 OL
@@ -1149,7 +1149,7 @@ c_func
 (paren
 id|catc-&gt;rx_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 OL
@@ -1226,7 +1226,7 @@ c_func
 (paren
 id|catc-&gt;tx_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 OL
