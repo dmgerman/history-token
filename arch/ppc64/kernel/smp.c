@@ -3485,6 +3485,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_extern
+r_int
+r_int
+id|default_distrib_server
+suffix:semicolon
 multiline_comment|/* Activate a secondary processor. */
 DECL|function|start_secondary
 r_int
@@ -3587,6 +3592,20 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
+multiline_comment|/* Put the calling processor into the GIQ.  This is really only&n;&t; * necessary from a secondary thread as the OF start-cpu interface&n;&t; * performs this function for us on primary threads.&n;&t; */
+multiline_comment|/* TODO: 9005 is #defined in rtas-proc.c -- move to a header */
+id|rtas_set_indicator
+c_func
+(paren
+l_int|9005
+comma
+id|default_distrib_server
+comma
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 id|local_irq_enable
 c_func

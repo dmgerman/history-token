@@ -262,8 +262,8 @@ id|default_server
 op_assign
 l_int|0xFF
 suffix:semicolon
+multiline_comment|/* also referenced in smp.c... */
 DECL|variable|default_distrib_server
-r_static
 r_int
 r_int
 id|default_distrib_server
