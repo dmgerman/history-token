@@ -3287,6 +3287,13 @@ c_cond
 (paren
 op_logical_neg
 id|fatal
+op_logical_and
+op_logical_neg
+id|buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
 )paren
 (brace
 id|memset
