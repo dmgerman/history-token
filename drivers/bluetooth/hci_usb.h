@@ -16,6 +16,8 @@ DECL|macro|HCI_SNIFFER
 mdefine_line|#define HCI_SNIFFER&t;&t;0x08
 DECL|macro|HCI_BROKEN_ISOC
 mdefine_line|#define HCI_BROKEN_ISOC&t;&t;0x10
+DECL|macro|HCI_BCM92035
+mdefine_line|#define HCI_BCM92035&t;&t;0x20
 DECL|macro|HCI_MAX_IFACE_NUM
 mdefine_line|#define HCI_MAX_IFACE_NUM&t;3
 DECL|macro|HCI_MAX_BULK_TX
