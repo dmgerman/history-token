@@ -378,6 +378,23 @@ id|error
 suffix:semicolon
 id|Error
 suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Could not power down device %s: &quot;
+l_string|&quot;error %d&bslash;n&quot;
+comma
+id|kobject_name
+c_func
+(paren
+op_amp
+id|dev-&gt;kobj
+)paren
+comma
+id|error
+)paren
+suffix:semicolon
 id|dpm_power_up
 c_func
 (paren

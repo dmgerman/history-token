@@ -976,7 +976,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_choose_state - Choose the power state of a PCI device&n; * @dev: PCI device to be suspended&n; * @state: target sleep state for the whole system&n; *&n; * Returns PCI power state suitable for given device and given system&n; * message.&n; */
+multiline_comment|/**&n; * pci_choose_state - Choose the power state of a PCI device&n; * @dev: PCI device to be suspended&n; * @state: target sleep state for the whole system. This is the value&n; *&t;that is passed to suspend() function.&n; *&n; * Returns PCI power state suitable for given device and given system&n; * message.&n; */
 DECL|function|pci_choose_state
 id|pci_power_t
 id|pci_choose_state
@@ -987,7 +987,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -1019,12 +1019,6 @@ r_return
 id|PCI_D0
 suffix:semicolon
 r_case
-l_int|2
-suffix:colon
-r_return
-id|PCI_D2
-suffix:semicolon
-r_case
 l_int|3
 suffix:colon
 r_return
@@ -1032,6 +1026,14 @@ id|PCI_D3hot
 suffix:semicolon
 r_default
 suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;They asked me for state %d&bslash;n&quot;
+comma
+id|state
+)paren
+suffix:semicolon
 id|BUG
 c_func
 (paren

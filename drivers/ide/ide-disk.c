@@ -5435,7 +5435,7 @@ c_func
 (paren
 id|dev
 comma
-id|PM_SUSPEND_STANDBY
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 )brace
