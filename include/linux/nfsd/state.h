@@ -104,7 +104,7 @@ id|cb_ident
 suffix:semicolon
 multiline_comment|/* RPC client info */
 DECL|member|cb_set
-id|u32
+id|atomic_t
 id|cb_set
 suffix:semicolon
 multiline_comment|/* successful CB_NULL call */
@@ -203,6 +203,11 @@ id|time_t
 id|cl_first_state
 suffix:semicolon
 multiline_comment|/* first state aquisition*/
+DECL|member|cl_count
+id|atomic_t
+id|cl_count
+suffix:semicolon
+multiline_comment|/* ref count */
 )brace
 suffix:semicolon
 multiline_comment|/* struct nfs4_client_reset&n; * one per old client. Populates reset_str_hashtbl. Filled from conf_id_hashtbl&n; * upon lease reset, or from upcall to state_daemon (to read in state&n; * from non-volitile storage) upon reboot.&n; */
@@ -577,6 +582,17 @@ c_func
 id|clientid_t
 op_star
 id|clid
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|put_nfs4_client
+c_func
+(paren
+r_struct
+id|nfs4_client
+op_star
+id|clp
 )paren
 suffix:semicolon
 r_extern
