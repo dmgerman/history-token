@@ -9600,15 +9600,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * For each attached hard-reset device, clear out&n;&t; * all command structures.  Leave the running&n;&t; * command in place.&n;&t; */
-id|list_for_each_entry
+id|shost_for_each_device
 c_func
 (paren
 id|SDpnt
 comma
-op_amp
-id|info-&gt;host-&gt;my_devices
-comma
-id|siblings
+id|info-&gt;host
 )paren
 (brace
 r_int
@@ -11075,15 +11072,12 @@ comma
 l_string|&quot;Device/Lun TaggedQ       Parity   Sync&bslash;n&quot;
 )paren
 suffix:semicolon
-id|list_for_each_entry
+id|shost_for_each_device
 c_func
 (paren
 id|scd
 comma
-op_amp
-id|info-&gt;host-&gt;my_devices
-comma
-id|siblings
+id|info-&gt;host
 )paren
 (brace
 id|dev

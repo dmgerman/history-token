@@ -310,6 +310,7 @@ op_minus
 id|ETIMEDOUT
 suffix:semicolon
 )brace
+macro_line|#ifdef NDEBUG
 r_static
 r_struct
 (brace
@@ -374,7 +375,6 @@ l_string|&quot;UNKNOWN&quot;
 )brace
 )brace
 suffix:semicolon
-macro_line|#ifdef NDEBUG
 r_static
 r_struct
 (brace

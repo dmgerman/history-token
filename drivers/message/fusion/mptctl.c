@@ -454,42 +454,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-macro_line|#if defined(__sparc__) &amp;&amp; defined(__sparc_v9__)&t;&t;/*{*/
-r_if
-c_cond
-(paren
-op_logical_neg
-id|nonblock
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|down_interruptible
-c_func
-(paren
-op_amp
-id|mptctl_syscall_sem_ioc
-(braket
-id|ioc-&gt;id
-)braket
-)paren
-)paren
-id|rc
-op_assign
-op_minus
-id|ERESTARTSYS
-suffix:semicolon
-)brace
-r_else
-(brace
-id|rc
-op_assign
-op_minus
-id|EPERM
-suffix:semicolon
-)brace
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -536,7 +500,6 @@ op_minus
 id|ERESTARTSYS
 suffix:semicolon
 )brace
-macro_line|#endif
 id|dctlprintk
 c_func
 (paren
@@ -10419,73 +10382,14 @@ id|mptctl_fops
 )brace
 suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-macro_line|#if defined(__sparc__) &amp;&amp; defined(__sparc_v9__)&t;&t;/*{*/
-multiline_comment|/* The dynamic ioctl32 compat. registry only exists in &gt;2.3.x sparc64 kernels */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)&t;&t;/*{*/
-r_extern
-r_int
-id|register_ioctl32_conversion
-c_func
-(paren
-r_int
-r_int
-id|cmd
-comma
-r_int
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_struct
-id|file
-op_star
-)paren
-)paren
-suffix:semicolon
-r_int
-id|unregister_ioctl32_conversion
-c_func
-(paren
-r_int
-r_int
-id|cmd
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
+macro_line|#ifdef CONFIG_COMPAT
+macro_line|#include &lt;linux/ioctl32.h&gt;
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/* sparc32_XXX functions are used to provide a conversion between&n; * pointers and u32&squot;s. If the arg does not contain any pointers, then&n; * a specialized function (sparc32_XXX) is not needed. If the arg&n; * does contain pointer(s), then the specialized function is used&n; * to ensure the structure contents is properly processed by mptctl.&n; */
+multiline_comment|/* compat_XXX functions are used to provide a conversion between&n; * pointers and u32&squot;s. If the arg does not contain any pointers, then&n; * a specialized function (compat_XXX) is not needed. If the arg&n; * does contain pointer(s), then the specialized function is used&n; * to ensure the structure contents is properly processed by mptctl.&n; */
 r_static
 r_int
-DECL|function|sparc32_mptfwxfer_ioctl
-id|sparc32_mptfwxfer_ioctl
+DECL|function|compat_mptfwxfer_ioctl
+id|compat_mptfwxfer_ioctl
 c_func
 (paren
 r_int
@@ -10543,7 +10447,7 @@ c_func
 (paren
 id|KERN_INFO
 id|MYNAM
-l_string|&quot;::sparc32_mptfwxfer_ioctl() called&bslash;n&quot;
+l_string|&quot;::compat_mptfwxfer_ioctl() called&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -10612,7 +10516,7 @@ c_func
 (paren
 id|KERN_ERR
 id|MYNAM
-l_string|&quot;::sparc32_mptfwxfer_ioctl @%d - ioc%d not found!&bslash;n&quot;
+l_string|&quot;::compat_mptfwxfer_ioctl @%d - ioc%d not found!&bslash;n&quot;
 comma
 id|__LINE__
 comma
@@ -10693,8 +10597,8 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|sparc32_mpt_command
-id|sparc32_mpt_command
+DECL|function|compat_mpt_command
+id|compat_mpt_command
 c_func
 (paren
 r_int
@@ -10764,7 +10668,7 @@ c_func
 (paren
 id|KERN_INFO
 id|MYNAM
-l_string|&quot;::sparc32_mpt_command() called&bslash;n&quot;
+l_string|&quot;::compat_mpt_command() called&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -10833,7 +10737,7 @@ c_func
 (paren
 id|KERN_ERR
 id|MYNAM
-l_string|&quot;::sparc32_mpt_command @%d - ioc%d not found!&bslash;n&quot;
+l_string|&quot;::compat_mpt_command @%d - ioc%d not found!&bslash;n&quot;
 comma
 id|__LINE__
 comma
@@ -10978,8 +10882,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;/*} linux &gt;= 2.3.x */
-macro_line|#endif&t;&t;/*} sparc */
+macro_line|#endif
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 DECL|function|mptctl_init
 r_int
@@ -11183,8 +11086,7 @@ id|mptctl_timer_expired
 suffix:semicolon
 )brace
 )brace
-macro_line|#if defined(__sparc__) &amp;&amp; defined(__sparc_v9__)&t;&t;/*{*/
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)&t;&t;/*{*/
+macro_line|#ifdef CONFIG_COMPAT
 id|err
 op_assign
 id|register_ioctl32_conversion
@@ -11360,7 +11262,7 @@ c_func
 (paren
 id|MPTCOMMAND32
 comma
-id|sparc32_mpt_command
+id|compat_mpt_command
 )paren
 suffix:semicolon
 r_if
@@ -11381,7 +11283,7 @@ c_func
 (paren
 id|MPTFWDOWNLOAD32
 comma
-id|sparc32_mptfwxfer_ioctl
+id|compat_mptfwxfer_ioctl
 )paren
 suffix:semicolon
 r_if
@@ -11437,8 +11339,7 @@ id|err
 r_goto
 id|out_fail
 suffix:semicolon
-macro_line|#endif&t;&t;/*} linux &gt;= 2.3.x */
-macro_line|#endif&t;&t;/*} sparc */
+macro_line|#endif
 multiline_comment|/* Register this device */
 id|err
 op_assign
@@ -11573,8 +11474,7 @@ l_int|0
 suffix:semicolon
 id|out_fail
 suffix:colon
-macro_line|#if defined(__sparc__) &amp;&amp; defined(__sparc_v9__)&t;&t;/*{*/
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)&t;&t;/*{*/
+macro_line|#ifdef CONFIG_COMPAT
 id|printk
 c_func
 (paren
@@ -11660,8 +11560,7 @@ c_func
 id|HP_GETTARGETINFO
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;/*} linux &gt;= 2.3.x */
-macro_line|#endif&t;&t;/*} sparc */
+macro_line|#endif
 r_for
 c_loop
 (paren

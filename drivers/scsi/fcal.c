@@ -1639,14 +1639,12 @@ id|Scsi_Device
 op_star
 id|scd
 suffix:semicolon
-id|list_for_each_entry
+id|shost_for_each_device
+c_func
 (paren
 id|scd
 comma
-op_amp
-id|host-&gt;my_devices
-comma
-id|siblings
+id|host
 )paren
 r_if
 c_cond

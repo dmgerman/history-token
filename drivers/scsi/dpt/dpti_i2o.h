@@ -5,6 +5,7 @@ multiline_comment|/* I2O kernel space accessible structures/APIs&n; *&n; * (c) C
 macro_line|#ifdef __KERNEL__       /* This file to be included by kernel only */
 macro_line|#include &lt;linux/i2o-dev.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt; /* Needed for MUTEX init macros */
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -21,11 +22,7 @@ mdefine_line|#define I2O_EVT_SENSOR_STATE_CHANGED&t;&t;0x01
 singleline_comment|//#ifdef __KERNEL__   /* ioctl stuff only thing exported to users */
 DECL|macro|I2O_MAX_MANAGERS
 mdefine_line|#define I2O_MAX_MANAGERS&t;4
-macro_line|#include &lt;asm/semaphore.h&gt; /* Needed for MUTEX init macros */
 multiline_comment|/*&n; *&t;I2O Interface Objects&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/notifier.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0)
 DECL|macro|DECLARE_MUTEX
 mdefine_line|#define DECLARE_MUTEX(name) struct semaphore name=MUTEX

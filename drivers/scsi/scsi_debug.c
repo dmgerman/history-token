@@ -5234,7 +5234,8 @@ id|cmd
 l_int|2
 )braket
 suffix:semicolon
-id|ScsiLun
+r_struct
+id|scsi_lun
 op_star
 id|one_lun
 suffix:semicolon
@@ -5338,7 +5339,8 @@ op_assign
 (paren
 r_sizeof
 (paren
-id|ScsiLun
+r_struct
+id|scsi_lun
 )paren
 op_star
 id|lun_cnt
@@ -5357,7 +5359,8 @@ op_assign
 (paren
 r_sizeof
 (paren
-id|ScsiLun
+r_struct
+id|scsi_lun
 )paren
 op_star
 id|lun_cnt
@@ -5382,7 +5385,8 @@ l_int|8
 op_div
 r_sizeof
 (paren
-id|ScsiLun
+r_struct
+id|scsi_lun
 )paren
 )paren
 comma
@@ -5392,7 +5396,8 @@ suffix:semicolon
 id|one_lun
 op_assign
 (paren
-id|ScsiLun
+r_struct
+id|scsi_lun
 op_star
 )paren
 op_amp
@@ -9267,7 +9272,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|clean1
+id|clean
 suffix:semicolon
 )brace
 id|memset
@@ -9363,7 +9368,7 @@ c_cond
 id|error
 )paren
 r_goto
-id|clean2
+id|clean
 suffix:semicolon
 op_increment
 id|scsi_debug_add_host
@@ -9371,7 +9376,7 @@ suffix:semicolon
 r_return
 id|error
 suffix:semicolon
-id|clean2
+id|clean
 suffix:colon
 id|list_for_each_safe
 c_func
@@ -9411,8 +9416,6 @@ id|sdbg_devinfo
 )paren
 suffix:semicolon
 )brace
-id|clean1
-suffix:colon
 id|kfree
 c_func
 (paren

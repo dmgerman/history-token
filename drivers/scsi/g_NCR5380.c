@@ -3119,14 +3119,12 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|list_for_each_entry
+id|shost_for_each_device
+c_func
 (paren
 id|dev
 comma
-op_amp
-id|scsi_ptr-&gt;my_devices
-comma
-id|siblings
+id|scsi_ptr
 )paren
 (brace
 r_int

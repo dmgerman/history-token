@@ -645,7 +645,6 @@ DECL|macro|PR_TEST
 mdefine_line|#define PR_TEST      1&lt;&lt;6
 DECL|macro|PR_STOP
 mdefine_line|#define PR_STOP      1&lt;&lt;7
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|# include &lt;linux/init.h&gt;
 macro_line|# include &lt;linux/spinlock.h&gt;
 DECL|macro|in2000__INITFUNC

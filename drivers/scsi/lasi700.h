@@ -3,28 +3,6 @@ multiline_comment|/* PARISC LASI driver for the 53c700 chip&n; *&n; * Copyright 
 macro_line|#ifndef _LASI700_H
 DECL|macro|_LASI700_H
 mdefine_line|#define _LASI700_H
-r_static
-r_int
-id|lasi700_driver_callback
-c_func
-(paren
-r_struct
-id|parisc_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_int
-id|lasi700_driver_remove
-c_func
-(paren
-r_struct
-id|parisc_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 DECL|macro|LASI_710_SVERSION
 mdefine_line|#define LASI_710_SVERSION&t;0x082
 DECL|macro|LASI_700_SVERSION

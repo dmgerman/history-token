@@ -11425,15 +11425,12 @@ id|d
 op_assign
 l_int|NULL
 suffix:semicolon
-id|list_for_each_entry
+id|shost_for_each_device
 c_func
 (paren
 id|d
 comma
-op_amp
-id|pHba-&gt;host-&gt;my_devices
-comma
-id|siblings
+id|pHba-&gt;host
 )paren
 (brace
 r_int
