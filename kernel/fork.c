@@ -4484,6 +4484,11 @@ id|p
 suffix:semicolon
 id|bad_fork_cleanup_mm
 suffix:colon
+r_if
+c_cond
+(paren
+id|p-&gt;mm
+)paren
 id|mmput
 c_func
 (paren
