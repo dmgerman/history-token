@@ -296,6 +296,8 @@ DECL|macro|HIDIOCGCOLLECTIONINDEX
 mdefine_line|#define HIDIOCGCOLLECTIONINDEX&t;_IOW(&squot;H&squot;, 0x10, struct hiddev_usage_ref)
 DECL|macro|HIDIOCGCOLLECTIONINFO
 mdefine_line|#define HIDIOCGCOLLECTIONINFO&t;_IOWR(&squot;H&squot;, 0x11, struct hiddev_collection_info)
+DECL|macro|HIDIOCGPHYS
+mdefine_line|#define HIDIOCGPHYS(len)&t;_IOC(_IOC_READ, &squot;H&squot;, 0x12, len)
 multiline_comment|/* &n; * Flags to be used in HIDIOCSFLAG&n; */
 DECL|macro|HIDDEV_FLAG_UREF
 mdefine_line|#define HIDDEV_FLAG_UREF&t;0x1
