@@ -234,6 +234,43 @@ comma
 )brace
 comma
 (brace
+dot
+id|subvendor
+op_assign
+id|VT1720_SUBDEVICE_9CJS
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Chaintech 9CJS&quot;
+comma
+multiline_comment|/* identical with k8x800 */
+dot
+id|chip_init
+op_assign
+id|k8x800_init
+comma
+dot
+id|build_controls
+op_assign
+id|k8x800_add_controls
+comma
+dot
+id|eeprom_size
+op_assign
+r_sizeof
+(paren
+id|k8x800_eeprom
+)paren
+comma
+dot
+id|eeprom_data
+op_assign
+id|k8x800_eeprom
+comma
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* terminator */
 )brace

@@ -21946,7 +21946,11 @@ id|u32
 op_star
 id|src
 op_assign
-id|hdsp-&gt;data
+(paren
+id|u32
+op_star
+)paren
+id|fw-&gt;data
 suffix:semicolon
 r_for
 c_loop

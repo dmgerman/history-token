@@ -2116,6 +2116,22 @@ c_func
 id|snd_ctl_unregister_ioctl
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_COMPAT
+DECL|variable|snd_ctl_register_ioctl_compat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_ctl_register_ioctl_compat
+)paren
+suffix:semicolon
+DECL|variable|snd_ctl_unregister_ioctl_compat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_ctl_unregister_ioctl_compat
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|snd_ctl_elem_read
 id|EXPORT_SYMBOL
 c_func

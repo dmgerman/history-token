@@ -950,7 +950,7 @@ id|idx
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * snd_pcm_lib_malloc_pages - allocate the DMA buffer&n; * @substream: the substream to allocate the DMA buffer to&n; * @size: the requested buffer size in bytes&n; *&n; * Allocates the DMA buffer on the BUS type given by&n; * snd_pcm_lib_preallocate_xxx_pages().&n; *&n; * Returns 1 if the buffer is changed, 0 if not changed, or a negative&n; * code on failure.&n; */
+multiline_comment|/**&n; * snd_pcm_lib_malloc_pages - allocate the DMA buffer&n; * @substream: the substream to allocate the DMA buffer to&n; * @size: the requested buffer size in bytes&n; *&n; * Allocates the DMA buffer on the BUS type given earlier to&n; * snd_pcm_lib_preallocate_xxx_pages().&n; *&n; * Returns 1 if the buffer is changed, 0 if not changed, or a negative&n; * code on failure.&n; */
 DECL|function|snd_pcm_lib_malloc_pages
 r_int
 id|snd_pcm_lib_malloc_pages
