@@ -424,17 +424,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+(paren
 id|node_vroot
+op_eq
+l_int|NULL
+)paren
+op_logical_or
+(paren
+id|node_vroot-&gt;child
+op_eq
+l_int|NULL
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;%s: no /vdevice node&bslash;n&quot;
-comma
-id|__FUNCTION__
+id|KERN_INFO
+l_string|&quot;VIO: missing or empty /vdevice node; no virtual IO&quot;
+l_string|&quot; devices present.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
