@@ -1073,6 +1073,24 @@ comma
 id|ACPI_EXPLICIT_CONVERT_DECIMAL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|return_desc
+op_eq
+id|operand
+(braket
+l_int|0
+)braket
+)paren
+(brace
+multiline_comment|/* No conversion performed, add ref to handle return value */
+id|acpi_ut_add_reference
+(paren
+id|return_desc
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1094,6 +1112,24 @@ comma
 id|ACPI_EXPLICIT_CONVERT_HEX
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|return_desc
+op_eq
+id|operand
+(braket
+l_int|0
+)braket
+)paren
+(brace
+multiline_comment|/* No conversion performed, add ref to handle return value */
+id|acpi_ut_add_reference
+(paren
+id|return_desc
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1113,6 +1149,24 @@ op_amp
 id|return_desc
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|return_desc
+op_eq
+id|operand
+(braket
+l_int|0
+)braket
+)paren
+(brace
+multiline_comment|/* No conversion performed, add ref to handle return value */
+id|acpi_ut_add_reference
+(paren
+id|return_desc
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1134,6 +1188,24 @@ comma
 id|ACPI_ANY_BASE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|return_desc
+op_eq
+id|operand
+(braket
+l_int|0
+)braket
+)paren
+(brace
+multiline_comment|/* No conversion performed, add ref to handle return value */
+id|acpi_ut_add_reference
+(paren
+id|return_desc
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1186,7 +1258,16 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Store the return value computed above into the target object&n;&t; */
+r_if
+c_cond
+(paren
+id|ACPI_SUCCESS
+(paren
+id|status
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Store the return value computed above into the target object&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_store
@@ -1201,6 +1282,7 @@ comma
 id|walk_state
 )paren
 suffix:semicolon
+)brace
 id|cleanup
 suffix:colon
 r_if

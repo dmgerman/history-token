@@ -120,7 +120,7 @@ DECL|macro|ACPI_LV_VERBOSE
 mdefine_line|#define ACPI_LV_VERBOSE             0xF0000000
 multiline_comment|/*&n; * Debug level macros that are used in the DEBUG_PRINT macros&n; */
 DECL|macro|ACPI_DEBUG_LEVEL
-mdefine_line|#define ACPI_DEBUG_LEVEL(dl)        (u32) dl,__LINE__,&amp;_dbg
+mdefine_line|#define ACPI_DEBUG_LEVEL(dl)        (u32) dl,__LINE__,&amp;_debug_info
 multiline_comment|/* Exception level -- used in the global &quot;debug_level&quot; */
 DECL|macro|ACPI_DB_ERROR
 mdefine_line|#define ACPI_DB_ERROR               ACPI_DEBUG_LEVEL (ACPI_LV_ERROR)
