@@ -1266,6 +1266,9 @@ id|vm_flags
 op_assign
 id|vma-&gt;vm_flags
 suffix:semicolon
+r_int
+id|progress
+suffix:semicolon
 id|again
 suffix:colon
 id|dst_pte
@@ -1300,6 +1303,10 @@ comma
 id|addr
 )paren
 suffix:semicolon
+id|progress
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1312,6 +1319,11 @@ r_do
 multiline_comment|/*&n;&t;&t; * We are holding two locks at this point - either of them&n;&t;&t; * could generate latencies in another task on another CPU.&n;&t;&t; */
 r_if
 c_cond
+(paren
+id|progress
+op_ge
+l_int|32
+op_logical_and
 (paren
 id|need_resched
 c_func
@@ -1332,6 +1344,7 @@ op_amp
 id|dst_mm-&gt;page_table_lock
 )paren
 )paren
+)paren
 r_break
 suffix:semicolon
 r_if
@@ -1344,8 +1357,13 @@ op_star
 id|src_pte
 )paren
 )paren
+(brace
+id|progress
+op_increment
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 id|copy_one_pte
 c_func
 (paren
@@ -1361,6 +1379,10 @@ id|vm_flags
 comma
 id|addr
 )paren
+suffix:semicolon
+id|progress
+op_add_assign
+l_int|8
 suffix:semicolon
 )brace
 r_while
