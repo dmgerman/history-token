@@ -1613,8 +1613,12 @@ DECL|member|Remaining
 id|__le16
 id|Remaining
 suffix:semicolon
+DECL|member|CountHigh
+id|__le16
+id|CountHigh
+suffix:semicolon
 DECL|member|Reserved
-id|__le32
+id|__u16
 id|Reserved
 suffix:semicolon
 DECL|member|ByteCount
