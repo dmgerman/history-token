@@ -9,6 +9,10 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/mpc52xx.h&gt;
+r_extern
+r_int
+id|powersave_nap
+suffix:semicolon
 multiline_comment|/* Board data given by U-Boot */
 DECL|variable|__res
 id|bd_t
@@ -386,6 +390,12 @@ id|isa_mem_base
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Powersave */
+id|powersave_nap
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* We allow this platform to NAP */
 multiline_comment|/* Setup the ppc_md struct */
 id|ppc_md.setup_arch
 op_assign
