@@ -3210,7 +3210,7 @@ l_int|1
 comma
 l_string|&quot;tcic: GetStatus(%d) = %#2.2x&bslash;n&quot;
 comma
-id|lsock
+id|psock
 comma
 op_star
 id|value
@@ -3561,7 +3561,7 @@ comma
 l_string|&quot;tcic: GetSocket(%d) = flags %#3.3x, Vcc %d, Vpp %d, &quot;
 l_string|&quot;io_irq %d, csc_mask %#2.2x&bslash;n&quot;
 comma
-id|lsock
+id|psock
 comma
 id|state-&gt;flags
 comma
@@ -3628,7 +3628,7 @@ comma
 l_string|&quot;tcic: SetSocket(%d, flags %#3.3x, Vcc %d, Vpp %d, &quot;
 l_string|&quot;io_irq %d, csc_mask %#2.2x)&bslash;n&quot;
 comma
-id|lsock
+id|psock
 comma
 id|state-&gt;flags
 comma
@@ -4106,7 +4106,7 @@ comma
 l_string|&quot;tcic: SetIOMap(%d, %d, %#2.2x, %d ns, &quot;
 l_string|&quot;%#4.4x-%#4.4x)&bslash;n&quot;
 comma
-id|lsock
+id|psock
 comma
 id|io-&gt;map
 comma
@@ -4388,7 +4388,7 @@ comma
 l_string|&quot;tcic: SetMemMap(%d, %d, %#2.2x, %d ns, &quot;
 l_string|&quot;%#5.5lx-%#5.5lx, %#5.5x)&bslash;n&quot;
 comma
-id|lsock
+id|psock
 comma
 id|mem-&gt;map
 comma
