@@ -8385,6 +8385,9 @@ id|bi-&gt;bi_sector
 op_amp
 op_complement
 (paren
+(paren
+id|sector_t
+)paren
 id|STRIPE_SECTORS
 op_minus
 l_int|1
