@@ -853,6 +853,9 @@ op_star
 id|dev
 comma
 r_int
+id|baseminor
+comma
+r_int
 id|count
 comma
 r_char
@@ -872,7 +875,7 @@ c_func
 (paren
 l_int|0
 comma
-l_int|0
+id|baseminor
 comma
 id|count
 comma
