@@ -1304,7 +1304,12 @@ id|presto_vmemory
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef PRESTO_DEVEL
