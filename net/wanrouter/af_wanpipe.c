@@ -1853,7 +1853,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*============================================================&n; * wanpipe_delayed_tarnsmit&n; *&n; *&t;Transmit bottom half handeler. It dequeues packets&n; *      from sk-&gt;write_queue and passes them to the &n; *      driver.  If the driver is busy, the packet is &n; *      re-enqueued.  &n; *&n; *      Packet Sent counter is decremented on successful&n; *      transmission. &n; *===========================================================*/
+multiline_comment|/*============================================================&n; * wanpipe_delayed_tarnsmit&n; *&n; *&t;Transmit bottom half handler. It dequeues packets&n; *      from sk-&gt;write_queue and passes them to the &n; *      driver.  If the driver is busy, the packet is &n; *      re-enqueued.  &n; *&n; *      Packet Sent counter is decremented on successful&n; *      transmission. &n; *===========================================================*/
 DECL|function|wanpipe_delayed_transmit
 r_static
 r_void

@@ -10339,7 +10339,7 @@ r_case
 id|X25RES_PROTO_VIOLATION
 suffix:colon
 multiline_comment|/* X.25 protocol violation indication */
-multiline_comment|/* Bug Fix: Mar 14 2000&n;                 * The Protocol violation error conditions were  &n;                 * not handeled previously */
+multiline_comment|/* Bug Fix: Mar 14 2000&n;                 * The Protocol violation error conditions were  &n;                 * not handled previously */
 r_switch
 c_cond
 (paren

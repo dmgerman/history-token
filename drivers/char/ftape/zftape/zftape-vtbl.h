@@ -397,7 +397,7 @@ op_star
 id|pos
 )paren
 suffix:semicolon
-multiline_comment|/* this function decrements the zft_seg_pos counter if we are right&n; * at the beginning of a segment. This is to handel fsfm/bsfm -- we&n; * need to position before the eof mark.  NOTE: zft_tape_pos is not&n; * changed &n; */
+multiline_comment|/* this function decrements the zft_seg_pos counter if we are right&n; * at the beginning of a segment. This is to handle fsfm/bsfm -- we&n; * need to position before the eof mark.  NOTE: zft_tape_pos is not&n; * changed &n; */
 DECL|function|zft_position_before_eof
 r_static
 r_inline

@@ -8719,8 +8719,8 @@ id|ch-&gt;fepiflag
 op_assign
 id|iflag
 suffix:semicolon
-multiline_comment|/* ---------------------------------------------------------------&n;&t;&t;&t;Command sets channels iflag structure on the board. Such things &n;&t;&t;&t;as input soft flow control, handeling of parity errors, and&n;&t;&t;&t;break handeling are all set here.&n;&t;&t;------------------------------------------------------------------- */
-multiline_comment|/* break handeling, parity handeling, input stripping, flow control chars */
+multiline_comment|/* ---------------------------------------------------------------&n;&t;&t;&t;Command sets channels iflag structure on the board. Such things &n;&t;&t;&t;as input soft flow control, handling of parity errors, and&n;&t;&t;&t;break handling are all set here.&n;&t;&t;------------------------------------------------------------------- */
+multiline_comment|/* break handling, parity handling, input stripping, flow control chars */
 id|fepcmd
 c_func
 (paren
