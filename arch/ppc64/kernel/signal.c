@@ -1300,6 +1300,11 @@ l_int|2
 )braket
 )paren
 suffix:semicolon
+id|current-&gt;thread.fpscr
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* turn off all fp exceptions */
 multiline_comment|/* Retrieve rt_sigframe from stack and&n;&t;   set up registers for signal handler&n;&t;*/
 id|newsp
 op_sub_assign
@@ -1906,6 +1911,11 @@ l_int|2
 )braket
 )paren
 suffix:semicolon
+id|current-&gt;thread.fpscr
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* turn off all fp exceptions */
 id|newsp
 op_sub_assign
 id|__SIGNAL_FRAMESIZE
