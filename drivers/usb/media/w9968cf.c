@@ -4009,7 +4009,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;Switched from temp. frame to frame #%d&quot;
+l_string|&quot;Switched from temp. frame to frame #%zd&quot;
 comma
 (paren
 op_star
@@ -4246,7 +4246,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;Frame #%d successfully grabbed.&quot;
+l_string|&quot;Frame #%zd successfully grabbed.&quot;
 comma
 (paren
 (paren
@@ -10259,7 +10259,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;Popped frame #%d from the list.&quot;
+l_string|&quot;Popped frame #%zd from the list.&quot;
 comma
 op_star
 id|framep
@@ -13683,7 +13683,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;%d bytes read.&quot;
+l_string|&quot;%zd bytes read.&quot;
 comma
 id|count
 )paren
@@ -16666,7 +16666,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Couldn&squot;t allocate %d bytes of kernel memory.&quot;
+l_string|&quot;Couldn&squot;t allocate %zd bytes of kernel memory.&quot;
 comma
 r_sizeof
 (paren
