@@ -28,6 +28,17 @@ mdefine_line|#define assert(expr) do {} while (0)
 DECL|macro|dprintk
 mdefine_line|#define dprintk(fmt, args...)&t;do {} while (0)
 macro_line|#endif /* RTL8169_DEBUG */
+macro_line|#ifdef CONFIG_R8169_NAPI
+DECL|macro|rtl8169_rx_skb
+mdefine_line|#define rtl8169_rx_skb&t;&t;&t;netif_receive_skb
+DECL|macro|rtl8169_rx_quota
+mdefine_line|#define rtl8169_rx_quota(count, quota)&t;min(count, quota)
+macro_line|#else
+DECL|macro|rtl8169_rx_skb
+mdefine_line|#define rtl8169_rx_skb&t;&t;&t;netif_rx
+DECL|macro|rtl8169_rx_quota
+mdefine_line|#define rtl8169_rx_quota(count, quota)&t;count
+macro_line|#endif
 multiline_comment|/* media options */
 DECL|macro|MAX_UNITS
 mdefine_line|#define MAX_UNITS 8
@@ -101,10 +112,12 @@ DECL|macro|RxPacketMaxSize
 mdefine_line|#define RxPacketMaxSize&t;0x0800&t;/* Maximum size supported is 16K-1 */
 DECL|macro|InterFrameGap
 mdefine_line|#define InterFrameGap&t;0x03&t;/* 3 means InterFrameGap = the shortest one */
+DECL|macro|R8169_NAPI_WEIGHT
+mdefine_line|#define R8169_NAPI_WEIGHT&t;64
 DECL|macro|NUM_TX_DESC
 mdefine_line|#define NUM_TX_DESC&t;64&t;/* Number of Tx descriptor registers */
 DECL|macro|NUM_RX_DESC
-mdefine_line|#define NUM_RX_DESC&t;64&t;/* Number of Rx descriptor registers */
+mdefine_line|#define NUM_RX_DESC&t;256&t;/* Number of Rx descriptor registers */
 DECL|macro|RX_BUF_SIZE
 mdefine_line|#define RX_BUF_SIZE&t;1536&t;/* Rx Buffer size */
 DECL|macro|R8169_TX_RING_BYTES
@@ -1015,6 +1028,10 @@ DECL|member|cp_cmd
 id|u16
 id|cp_cmd
 suffix:semicolon
+DECL|member|intr_mask
+id|u16
+id|intr_mask
+suffix:semicolon
 )brace
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -1170,6 +1187,23 @@ op_star
 id|netdev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_R8169_NAPI
+r_static
+r_int
+id|rtl8169_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+op_star
+id|budget
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|rtl8169_intr_mask
 r_static
 r_const
@@ -1189,6 +1223,24 @@ op_or
 id|RxErr
 op_or
 id|RxOK
+suffix:semicolon
+DECL|variable|rtl8169_napi_event
+r_static
+r_const
+id|u16
+id|rtl8169_napi_event
+op_assign
+id|RxOK
+op_or
+id|RxUnderrun
+op_or
+id|RxOverflow
+op_or
+id|RxFIFOOver
+op_or
+id|TxOK
+op_or
+id|TxErr
 suffix:semicolon
 DECL|variable|rtl8169_rx_config
 r_static
@@ -3588,12 +3640,28 @@ r_int
 )paren
 id|ioaddr
 suffix:semicolon
-singleline_comment|//      dev-&gt;do_ioctl           = mii_ioctl;
-id|tp
+macro_line|#ifdef CONFIG_R8169_NAPI
+id|dev-&gt;poll
 op_assign
-id|dev-&gt;priv
+id|rtl8169_poll
 suffix:semicolon
-singleline_comment|// private data //
+id|dev-&gt;weight
+op_assign
+id|R8169_NAPI_WEIGHT
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;NAPI enabled&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|tp-&gt;intr_mask
+op_assign
+l_int|0xffff
+suffix:semicolon
 id|tp-&gt;pci_dev
 op_assign
 id|pdev
@@ -6343,7 +6411,7 @@ id|ret
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|rtl8169_rx_interrupt
 id|rtl8169_rx_interrupt
 c_func
@@ -6368,6 +6436,8 @@ r_int
 id|cur_rx
 comma
 id|rx_left
+comma
+id|count
 suffix:semicolon
 r_int
 id|delta
@@ -6404,6 +6474,19 @@ op_plus
 id|tp-&gt;dirty_rx
 op_minus
 id|cur_rx
+suffix:semicolon
+id|rx_left
+op_assign
+id|rtl8169_rx_quota
+c_func
+(paren
+id|rx_left
+comma
+(paren
+id|u32
+)paren
+id|dev-&gt;quota
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -6625,7 +6708,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|netif_rx
+id|rtl8169_rx_skb
 c_func
 (paren
 id|skb
@@ -6650,6 +6733,12 @@ id|rx_left
 op_decrement
 suffix:semicolon
 )brace
+id|count
+op_assign
+id|cur_rx
+op_minus
+id|tp-&gt;cur_rx
+suffix:semicolon
 id|tp-&gt;cur_rx
 op_assign
 id|cur_rx
@@ -6672,21 +6761,10 @@ r_if
 c_cond
 (paren
 id|delta
-OG
-l_int|0
-)paren
-id|tp-&gt;dirty_rx
-op_add_assign
-id|delta
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|delta
 OL
 l_int|0
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -6695,6 +6773,15 @@ l_string|&quot;%s: no Rx buffer allocated&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
+suffix:semicolon
+id|delta
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|tp-&gt;dirty_rx
+op_add_assign
+id|delta
 suffix:semicolon
 multiline_comment|/*&n;&t; * FIXME: until there is periodic timer to try and refill the ring,&n;&t; * a temporary shortage may definitely kill the Rx process.&n;&t; * - disable the asic to try and avoid an overflow and kick it again&n;&t; *   after refill ?&n;&t; * - how do others driver handle this condition (Uh oh...).&n;&t; */
 r_if
@@ -6714,6 +6801,9 @@ l_string|&quot;%s: Rx buffers exhausted&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
+suffix:semicolon
+r_return
+id|count
 suffix:semicolon
 )brace
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up after the Tx thread. */
@@ -6806,6 +6896,10 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;if (status &amp; RxUnderrun)&n;&t;&t;&t;link_changed = RTL_R16 (CSCR) &amp; CSCR_LinkChangeBit;&n;*/
+id|status
+op_and_assign
+id|tp-&gt;intr_mask
+suffix:semicolon
 id|RTL_W16
 c_func
 (paren
@@ -6839,6 +6933,59 @@ id|rtl8169_intr_mask
 )paren
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_R8169_NAPI
+id|RTL_W16
+c_func
+(paren
+id|IntrMask
+comma
+id|rtl8169_intr_mask
+op_amp
+op_complement
+id|rtl8169_napi_event
+)paren
+suffix:semicolon
+id|tp-&gt;intr_mask
+op_assign
+op_complement
+id|rtl8169_napi_event
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|netif_rx_schedule_prep
+c_func
+(paren
+id|dev
+)paren
+)paren
+)paren
+id|__netif_rx_schedule
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: interrupt %x taken in poll&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|status
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+macro_line|#else
 singleline_comment|// Rx interrupt 
 r_if
 c_cond
@@ -6905,6 +7052,7 @@ id|tp-&gt;lock
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|boguscnt
 op_decrement
 suffix:semicolon
@@ -6952,6 +7100,137 @@ id|handled
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_R8169_NAPI
+DECL|function|rtl8169_poll
+r_static
+r_int
+id|rtl8169_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+op_star
+id|budget
+)paren
+(brace
+r_int
+r_int
+id|work_done
+comma
+id|work_to_do
+op_assign
+id|min
+c_func
+(paren
+op_star
+id|budget
+comma
+id|dev-&gt;quota
+)paren
+suffix:semicolon
+r_struct
+id|rtl8169_private
+op_star
+id|tp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_void
+op_star
+id|ioaddr
+op_assign
+id|tp-&gt;mmio_addr
+suffix:semicolon
+id|work_done
+op_assign
+id|rtl8169_rx_interrupt
+c_func
+(paren
+id|dev
+comma
+id|tp
+comma
+id|ioaddr
+)paren
+suffix:semicolon
+id|rtl8169_tx_interrupt
+c_func
+(paren
+id|dev
+comma
+id|tp
+comma
+id|ioaddr
+)paren
+suffix:semicolon
+op_star
+id|budget
+op_sub_assign
+id|work_done
+suffix:semicolon
+id|dev-&gt;quota
+op_sub_assign
+id|work_done
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|work_done
+OL
+id|work_to_do
+)paren
+op_logical_or
+op_logical_neg
+id|netif_running
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
+id|netif_rx_complete
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|tp-&gt;intr_mask
+op_assign
+l_int|0xffff
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * 20040426: the barrier is not strictly required but the&n;&t;&t; * behavior of the irq handler could be less predictable&n;&t;&t; * without it. Btw, the lack of flush for the posted pci&n;&t;&t; * write is safe - FR&n;&t;&t; */
+id|smp_wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|RTL_W16
+c_func
+(paren
+id|IntrMask
+comma
+id|rtl8169_intr_mask
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|work_done
+op_ge
+id|work_to_do
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_static
 r_int
 DECL|function|rtl8169_close
