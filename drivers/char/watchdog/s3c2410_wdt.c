@@ -1,4 +1,4 @@
-multiline_comment|/* linux/drivers/char/watchdog/s3c2410_wdt.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 Watchdog Timer Support&n; *&n; * Based on, softdog.c by Alan Cox,&n; *     (c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&t;05-Oct-2004&t;BJD&t;Added semaphore init to stop crashes on open&n; *&t;&t;&t;&t;Fixed tmr_count / wdt_count confusion&n; *&t;&t;&t;&t;Added configurable debug&n;*/
+multiline_comment|/* linux/drivers/char/watchdog/s3c2410_wdt.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 Watchdog Timer Support&n; *&n; * Based on, softdog.c by Alan Cox,&n; *     (c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&t;05-Oct-2004&t;BJD&t;Added semaphore init to stop crashes on open&n; *&t;&t;&t;&t;Fixed tmr_count / wdt_count confusion&n; *&t;&t;&t;&t;Added configurable debug&n; *&n; *&t;10-Mar-2005&t;LCVR&t;Changed S3C2410_VA to S3C24XX_VA&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -16,10 +16,10 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/arch/map.h&gt;
 macro_line|#include &lt;asm/hardware/clock.h&gt;
-DECL|macro|S3C2410_VA_WATCHDOG
-macro_line|#undef S3C2410_VA_WATCHDOG
-DECL|macro|S3C2410_VA_WATCHDOG
-mdefine_line|#define S3C2410_VA_WATCHDOG (0)
+DECL|macro|S3C24XX_VA_WATCHDOG
+macro_line|#undef S3C24XX_VA_WATCHDOG
+DECL|macro|S3C24XX_VA_WATCHDOG
+mdefine_line|#define S3C24XX_VA_WATCHDOG (0)
 macro_line|#include &lt;asm/arch/regs-watchdog.h&gt;
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;s3c2410-wdt: &quot;

@@ -58,11 +58,6 @@ id|u32
 id|h_version
 suffix:semicolon
 multiline_comment|/* interface version */
-DECL|member|h_authflavor
-id|rpc_authflavor_t
-id|h_authflavor
-suffix:semicolon
-multiline_comment|/* RPC authentication type */
 DECL|member|h_proto
 r_int
 r_int
@@ -419,30 +414,6 @@ id|nlmclnt_alloc_call
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_int
-id|nlmclnt_call
-c_func
-(paren
-r_struct
-id|nlm_rqst
-op_star
-comma
-id|u32
-)paren
-suffix:semicolon
-r_int
-id|nlmclnt_async_call
-c_func
-(paren
-r_struct
-id|nlm_rqst
-op_star
-comma
-id|u32
-comma
-id|rpc_action
 )paren
 suffix:semicolon
 r_int

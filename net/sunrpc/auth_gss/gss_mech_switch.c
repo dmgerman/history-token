@@ -428,6 +428,7 @@ DECL|function|gss_mech_get_by_name
 id|gss_mech_get_by_name
 c_func
 (paren
+r_const
 r_char
 op_star
 id|name
@@ -814,15 +815,18 @@ id|gss_mech_put
 )paren
 suffix:semicolon
 multiline_comment|/* The mech could probably be determined from the token instead, but it&squot;s just&n; * as easy for now to pass it in. */
-id|u32
+r_int
 DECL|function|gss_import_sec_context
 id|gss_import_sec_context
 c_func
 (paren
-r_struct
-id|xdr_netobj
+r_const
+r_void
 op_star
 id|input_token
+comma
+r_int
+id|bufsize
 comma
 r_struct
 id|gss_api_mech
@@ -897,6 +901,8 @@ id|gss_import_sec_context
 c_func
 (paren
 id|input_token
+comma
+id|bufsize
 comma
 op_star
 id|ctx_id

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-bast.c&n; *&n; * Copyright (c) 2003-2005 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB power control&n; *     20-Aug-2004 BJD  Added s3c2410_board struct&n; *     18-Aug-2004 BJD  Added platform devices from default set&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     05-Oct-2004 BJD  Power management code&n; *     04-Nov-2004 BJD  Updated serial port clocks&n; *     04-Jan-2005 BJD  New uart init call&n; *     10-Jan-2005 BJD  Removed include of s3c2410.h&n; *     14-Jan-2005 BJD  Add support for muitlple NAND devices&n; *     03-Mar-2005 BJD  Ensured that bast-cpld.h is included&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-bast.c&n; *&n; * Copyright (c) 2003-2005 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB power control&n; *     20-Aug-2004 BJD  Added s3c2410_board struct&n; *     18-Aug-2004 BJD  Added platform devices from default set&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     05-Oct-2004 BJD  Power management code&n; *     04-Nov-2004 BJD  Updated serial port clocks&n; *     04-Jan-2005 BJD  New uart init call&n; *     10-Jan-2005 BJD  Removed include of s3c2410.h&n; *     14-Jan-2005 BJD  Add support for muitlple NAND devices&n; *     03-Mar-2005 BJD  Ensured that bast-cpld.h is included&n; *     10-Mar-2005 LCVR Changed S3C2410_VA to S3C24XX_VA&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -62,7 +62,7 @@ op_assign
 (brace
 multiline_comment|/* ISA IO areas */
 (brace
-id|S3C2410_VA_ISA_BYTE
+id|S3C24XX_VA_ISA_BYTE
 comma
 id|PA_CS2
 c_func
@@ -76,7 +76,7 @@ id|MT_DEVICE
 )brace
 comma
 (brace
-id|S3C2410_VA_ISA_WORD
+id|S3C24XX_VA_ISA_WORD
 comma
 id|PA_CS3
 c_func
@@ -1902,7 +1902,7 @@ id|S3C2410_SDRAM_PA
 comma
 id|S3C2410_PA_UART
 comma
-id|S3C2410_VA_UART
+id|S3C24XX_VA_UART
 )paren
 id|BOOT_PARAMS
 c_func

@@ -35,6 +35,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|variable|mnt_program
+r_static
 r_struct
 id|rpc_program
 id|mnt_program
@@ -714,6 +715,7 @@ id|rpc_stat
 id|mnt_stats
 suffix:semicolon
 DECL|variable|mnt_program
+r_static
 r_struct
 id|rpc_program
 id|mnt_program

@@ -1,9 +1,9 @@
-multiline_comment|/* linux/include/asm/arch-s3c2410/regs-timer.h&n; *&n; * Copyright (c) 2003 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 Timer configuration&n; *&n; *  Changelog:&n; *    05-06-2003     BJD     Created file&n; *    26-06-2003     BJD     Added more timer definitions to mux / control&n; *    12-03-2004     BJD     Updated include protection&n; *    10-02-2005     BJD     Added S3C2410_TCFG1_MUX4_SHIFT (Guillaume Gourat)&n;*/
+multiline_comment|/* linux/include/asm/arch-s3c2410/regs-timer.h&n; *&n; * Copyright (c) 2003 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 Timer configuration&n; *&n; *  Changelog:&n; *    05-06-2003     BJD     Created file&n; *    26-06-2003     BJD     Added more timer definitions to mux / control&n; *    12-03-2004     BJD     Updated include protection&n; *    10-02-2005     BJD     Added S3C2410_TCFG1_MUX4_SHIFT (Guillaume Gourat)&n; *    10-03-2005     LCVR    Changed S3C2410_VA to S3C24XX_VA&n;*/
 macro_line|#ifndef __ASM_ARCH_REGS_TIMER_H
 DECL|macro|__ASM_ARCH_REGS_TIMER_H
 mdefine_line|#define __ASM_ARCH_REGS_TIMER_H &quot;$Id: timer.h,v 1.4 2003/05/06 19:30:50 ben Exp $&quot;
 DECL|macro|S3C2410_TIMERREG
-mdefine_line|#define S3C2410_TIMERREG(x) (S3C2410_VA_TIMER + (x))
+mdefine_line|#define S3C2410_TIMERREG(x) (S3C24XX_VA_TIMER + (x))
 DECL|macro|S3C2410_TIMERREG2
 mdefine_line|#define S3C2410_TIMERREG2(tmr,reg) S3C2410_TIMERREG((reg)+0x0c+((tmr)*0x0c))
 DECL|macro|S3C2410_TCFG0

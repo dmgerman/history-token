@@ -173,9 +173,6 @@ id|Opt_udp
 comma
 id|Opt_tcp
 comma
-DECL|enumerator|Opt_broken_suid
-id|Opt_broken_suid
-comma
 multiline_comment|/* Error token */
 DECL|enumerator|Opt_err
 id|Opt_err
@@ -360,12 +357,6 @@ comma
 id|Opt_tcp
 comma
 l_string|&quot;tcp&quot;
-)brace
-comma
-(brace
-id|Opt_broken_suid
-comma
-l_string|&quot;broken_suid&quot;
 )brace
 comma
 (brace
@@ -761,15 +752,6 @@ id|NFS_MOUNT_TCP
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|Opt_broken_suid
-suffix:colon
-id|nfs_data.flags
-op_or_assign
-id|NFS_MOUNT_BROKEN_SUID
-suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 r_return
@@ -1060,6 +1042,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|root_nfs_init
+r_static
 r_int
 id|__init
 id|root_nfs_init
@@ -1110,6 +1093,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Parse NFS server and directory information passed on the kernel&n; *  command line.&n; */
 DECL|function|nfs_root_setup
+r_static
 r_int
 id|__init
 id|nfs_root_setup
@@ -1183,11 +1167,12 @@ c_func
 id|line
 )paren
 op_plus
-id|strlen
-c_func
+r_sizeof
 (paren
 id|NFS_ROOT
 )paren
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -1206,13 +1191,12 @@ r_sizeof
 id|nfs_root_name
 )paren
 op_minus
-id|strlen
-c_func
+r_sizeof
 (paren
 id|NFS_ROOT
 )paren
 op_minus
-l_int|1
+l_int|2
 )braket
 op_assign
 l_char|&squot;&bslash;0&squot;
