@@ -1,7 +1,6 @@
 macro_line|#ifndef _LINUX_LOOP_H
 DECL|macro|_LINUX_LOOP_H
 mdefine_line|#define _LINUX_LOOP_H
-macro_line|#include &lt;linux/kdev_t.h&gt;
 multiline_comment|/*&n; * include/linux/loop.h&n; *&n; * Written by Theodore Ts&squot;o, 3/29/93.&n; *&n; * Copyright 1993 by Theodore Ts&squot;o.  Redistribution of this file is&n; * permitted under the GNU General Public License.&n; */
 DECL|macro|LO_NAME_SIZE
 mdefine_line|#define LO_NAME_SIZE&t;64
@@ -240,11 +239,9 @@ DECL|macro|LO_FLAGS_READ_ONLY
 mdefine_line|#define LO_FLAGS_READ_ONLY&t;2
 DECL|macro|LO_FLAGS_BH_REMAP
 mdefine_line|#define LO_FLAGS_BH_REMAP&t;4
-multiline_comment|/* &n; * Note that this structure gets the wrong offsets when directly used&n; * from a glibc program, because glibc has a 32bit dev_t.&n; * Prevent people from shooting in their own foot.  &n; */
-macro_line|#if __GLIBC__ &gt;= 2 &amp;&amp; !defined(dev_t)
-macro_line|#error &quot;Wrong dev_t in loop.h&quot;
-macro_line|#endif 
-multiline_comment|/*&n; *&t;This uses kdev_t because glibc currently has no appropiate&n; *&t;conversion version for the loop ioctls. &n; * &t;The situation is very unpleasant&t;&n; */
+macro_line|#include &lt;asm/posix_types.h&gt;&t;/* for __kernel_old_dev_t */
+macro_line|#include &lt;asm/types.h&gt;&t;&t;/* for __u64 */
+multiline_comment|/* Backwards compatibility version */
 DECL|struct|loop_info
 r_struct
 id|loop_info
@@ -255,7 +252,7 @@ id|lo_number
 suffix:semicolon
 multiline_comment|/* ioctl r/o */
 DECL|member|lo_device
-id|dev_t
+id|__kernel_old_dev_t
 id|lo_device
 suffix:semicolon
 multiline_comment|/* ioctl r/o */
@@ -266,7 +263,7 @@ id|lo_inode
 suffix:semicolon
 multiline_comment|/* ioctl r/o */
 DECL|member|lo_rdevice
-id|dev_t
+id|__kernel_old_dev_t
 id|lo_rdevice
 suffix:semicolon
 multiline_comment|/* ioctl r/o */
@@ -317,6 +314,72 @@ r_char
 id|reserved
 (braket
 l_int|4
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|loop_info64
+r_struct
+id|loop_info64
+(brace
+DECL|member|lo_device
+id|__u64
+id|lo_device
+suffix:semicolon
+multiline_comment|/* ioctl r/o */
+DECL|member|lo_inode
+id|__u64
+id|lo_inode
+suffix:semicolon
+multiline_comment|/* ioctl r/o */
+DECL|member|lo_rdevice
+id|__u64
+id|lo_rdevice
+suffix:semicolon
+multiline_comment|/* ioctl r/o */
+DECL|member|lo_offset
+id|__u64
+id|lo_offset
+suffix:semicolon
+DECL|member|lo_number
+id|__u32
+id|lo_number
+suffix:semicolon
+multiline_comment|/* ioctl r/o */
+DECL|member|lo_encrypt_type
+id|__u32
+id|lo_encrypt_type
+suffix:semicolon
+DECL|member|lo_encrypt_key_size
+id|__u32
+id|lo_encrypt_key_size
+suffix:semicolon
+multiline_comment|/* ioctl w/o */
+DECL|member|lo_flags
+id|__u32
+id|lo_flags
+suffix:semicolon
+multiline_comment|/* ioctl r/o */
+DECL|member|lo_name
+id|__u8
+id|lo_name
+(braket
+id|LO_NAME_SIZE
+)braket
+suffix:semicolon
+DECL|member|lo_encrypt_key
+id|__u8
+id|lo_encrypt_key
+(braket
+id|LO_KEY_SIZE
+)braket
+suffix:semicolon
+multiline_comment|/* ioctl w/o */
+DECL|member|lo_init
+id|__u64
+id|lo_init
+(braket
+l_int|2
 )braket
 suffix:semicolon
 )brace
@@ -394,8 +457,9 @@ r_struct
 id|loop_device
 op_star
 comma
+r_const
 r_struct
-id|loop_info
+id|loop_info64
 op_star
 )paren
 suffix:semicolon
@@ -479,12 +543,16 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * IOCTL commands --- we will commandeer 0x4C (&squot;L&squot;)&n; */
 DECL|macro|LOOP_SET_FD
-mdefine_line|#define LOOP_SET_FD&t;0x4C00
+mdefine_line|#define LOOP_SET_FD&t;&t;0x4C00
 DECL|macro|LOOP_CLR_FD
-mdefine_line|#define LOOP_CLR_FD&t;0x4C01
+mdefine_line|#define LOOP_CLR_FD&t;&t;0x4C01
 DECL|macro|LOOP_SET_STATUS
-mdefine_line|#define LOOP_SET_STATUS&t;0x4C02
+mdefine_line|#define LOOP_SET_STATUS&t;&t;0x4C02
 DECL|macro|LOOP_GET_STATUS
-mdefine_line|#define LOOP_GET_STATUS&t;0x4C03
+mdefine_line|#define LOOP_GET_STATUS&t;&t;0x4C03
+DECL|macro|LOOP_SET_STATUS64
+mdefine_line|#define LOOP_SET_STATUS64&t;0x4C04
+DECL|macro|LOOP_GET_STATUS64
+mdefine_line|#define LOOP_GET_STATUS64&t;0x4C05
 macro_line|#endif
 eof

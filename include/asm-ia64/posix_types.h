@@ -164,6 +164,12 @@ r_typedef
 id|__kernel_gid_t
 id|__kernel_gid32_t
 suffix:semicolon
+DECL|typedef|__kernel_old_dev_t
+r_typedef
+r_int
+r_int
+id|__kernel_old_dev_t
+suffix:semicolon
 macro_line|# ifdef __KERNEL__
 macro_line|#  ifndef __GNUC__
 DECL|macro|__FD_SET

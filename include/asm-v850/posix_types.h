@@ -149,6 +149,12 @@ r_typedef
 id|__kernel_uid_t
 id|__kernel_old_uid_t
 suffix:semicolon
+DECL|typedef|__kernel_old_dev_t
+r_typedef
+r_int
+r_int
+id|__kernel_old_dev_t
+suffix:semicolon
 r_typedef
 r_struct
 (brace
