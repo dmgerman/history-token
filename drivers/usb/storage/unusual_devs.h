@@ -1907,6 +1907,31 @@ comma
 id|US_FL_FIX_CAPACITY
 )paren
 comma
+multiline_comment|/* Submitted by Hartmut Wahl &lt;hwahl@hwahl.de&gt;*/
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0839
+comma
+l_int|0x000a
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Samsung&quot;
+comma
+l_string|&quot;Digimax 410&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
