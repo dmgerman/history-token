@@ -77,7 +77,6 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|corgiscoop_device
-r_static
 r_struct
 id|platform_device
 id|corgiscoop_device

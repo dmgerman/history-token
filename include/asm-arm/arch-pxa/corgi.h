@@ -221,6 +221,12 @@ id|phadadj
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Shared data structures&n; */
+r_extern
+r_struct
+id|platform_device
+id|corgiscoop_device
+suffix:semicolon
 multiline_comment|/*&n; * External Functions&n; */
 r_extern
 r_int
