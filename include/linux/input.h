@@ -1745,6 +1745,12 @@ id|input_handle
 op_star
 id|grab
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+op_star
+id|dev
+suffix:semicolon
 DECL|member|h_list
 r_struct
 id|list_head
@@ -2205,7 +2211,8 @@ DECL|macro|input_sync
 mdefine_line|#define input_sync(a)&t;&t;do { input_event(a, EV_SYN, SYN_REPORT, 0); (a)-&gt;regs = NULL; } while (0)
 r_extern
 r_struct
-r_class
+id|class_simple
+op_star
 id|input_class
 suffix:semicolon
 macro_line|#endif
