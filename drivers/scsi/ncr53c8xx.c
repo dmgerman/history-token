@@ -23206,14 +23206,14 @@ id|phys
 )paren
 )paren
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
 op_amp
-id|cp-&gt;start
+id|cp-&gt;restart
 comma
 op_amp
-id|cp-&gt;restart
+id|cp-&gt;start
 comma
 r_sizeof
 (paren

@@ -87,5 +87,5 @@ DECL|macro|z_ioremap
 mdefine_line|#define z_ioremap ioremap
 DECL|macro|z_iounmap
 mdefine_line|#define z_iounmap iounmap
-macro_line|#endif /* _ASM_ZORRO_H */
+macro_line|#endif /* _ASM_PPC_ZORRO_H */
 eof

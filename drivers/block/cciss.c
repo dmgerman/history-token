@@ -2970,6 +2970,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#if 0 /* &squot;buf_size&squot; member is 16-bits, and always smaller than kmalloc limit */
 multiline_comment|/* Check kmalloc limits */
 r_if
 c_cond
@@ -2984,6 +2985,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren

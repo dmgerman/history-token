@@ -127,7 +127,7 @@ multiline_comment|/*&n;&t; * We calculate the load of each dest server as follow
 id|list_for_each_entry
 c_func
 (paren
-id|least
+id|dest
 comma
 op_amp
 id|svc-&gt;destinations
@@ -140,7 +140,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|least-&gt;flags
+id|dest-&gt;flags
 op_amp
 id|IP_VS_DEST_F_OVERLOAD
 )paren
@@ -149,12 +149,16 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|least-&gt;weight
+id|dest-&gt;weight
 )paren
 OG
 l_int|0
 )paren
 (brace
+id|least
+op_assign
+id|dest
+suffix:semicolon
 id|loh
 op_assign
 id|ip_vs_sed_dest_overhead
@@ -174,7 +178,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *    Find the destination with the least load.&n;&t; */
 id|nextstage
 suffix:colon
-id|list_for_each_entry
+id|list_for_each_entry_continue
 c_func
 (paren
 id|dest

@@ -3708,10 +3708,6 @@ id|netif_stop_queue
 id|dev
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
 id|IFDEBUG
 c_func
 (paren
@@ -3727,6 +3723,10 @@ id|tailStarts
 comma
 id|headEnds
 )paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 id|priv-&gt;out_bytes
@@ -9228,6 +9228,13 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef  MODULE
+DECL|variable|probe
+r_static
+r_int
+id|probe
+op_assign
+id|probeUNKNOWN
+suffix:semicolon
 DECL|function|arlan_find_devices
 r_static
 r_int

@@ -22,6 +22,7 @@ suffix:semicolon
 multiline_comment|/* Handle unconfigured int18 (should never happen) */
 DECL|function|unexpected_machine_check
 r_static
+id|asmlinkage
 r_void
 id|unexpected_machine_check
 c_func
@@ -51,6 +52,7 @@ suffix:semicolon
 multiline_comment|/* Call the installed machine check handler for this CPU setup. */
 DECL|variable|machine_check_vector
 r_void
+id|asmlinkage
 (paren
 op_star
 id|machine_check_vector
@@ -66,30 +68,6 @@ id|error_code
 op_assign
 id|unexpected_machine_check
 suffix:semicolon
-DECL|function|do_machine_check
-id|asmlinkage
-r_void
-id|do_machine_check
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_int
-id|error_code
-)paren
-(brace
-id|machine_check_vector
-c_func
-(paren
-id|regs
-comma
-id|error_code
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* This has to be run for each processor */
 DECL|function|mcheck_init
 r_void
