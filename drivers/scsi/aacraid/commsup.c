@@ -2574,7 +2574,7 @@ c_cond
 (paren
 id|level
 op_eq
-id|LOG_HIGH_ERROR
+id|LOG_AAC_HIGH_ERROR
 )paren
 id|printk
 c_func
