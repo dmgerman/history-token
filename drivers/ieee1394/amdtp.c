@@ -4873,6 +4873,10 @@ id|amdtp_highlevel
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_COMPAT
+(brace
+r_int
+id|ret
+suffix:semicolon
 id|ret
 op_assign
 id|register_ioctl32_conversion
@@ -4924,6 +4928,7 @@ c_func
 l_string|&quot;amdtp: Error registering ioctl32 translations&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|HPSB_INFO
 c_func

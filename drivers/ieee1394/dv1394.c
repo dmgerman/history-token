@@ -10148,6 +10148,10 @@ id|dv1394_driver
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_COMPAT
+(brace
+r_int
+id|ret
+suffix:semicolon
 multiline_comment|/* First compatible ones */
 id|ret
 op_assign
@@ -10232,6 +10236,7 @@ id|KERN_ERR
 l_string|&quot;dv1394: Error registering ioctl32 translations&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 l_int|0

@@ -7310,6 +7310,10 @@ id|video1394_driver
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_COMPAT
+(brace
+r_int
+id|ret
+suffix:semicolon
 multiline_comment|/* First the compatible ones */
 id|ret
 op_assign
@@ -7415,6 +7419,7 @@ comma
 l_string|&quot;Error registering ioctl32 translations&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|PRINT_G
 c_func
