@@ -190,6 +190,11 @@ op_amp
 id|inet_proto_lock
 )paren
 suffix:semicolon
+id|synchronize_net
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
