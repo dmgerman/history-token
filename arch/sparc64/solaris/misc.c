@@ -4167,8 +4167,6 @@ c_func
 l_string|&quot;Solaris binary emulation module&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 macro_line|#ifdef __sparc_v9__
 r_extern
 id|u32

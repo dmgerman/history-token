@@ -37,8 +37,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|macro|MICRO_DEBUG
 mdefine_line|#define MICRO_DEBUG 0
 macro_line|#if MICRO_DEBUG

@@ -837,8 +837,6 @@ c_func
 id|rtc_exit
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/*&n; *&t;Info exported via &quot;/proc/rtc&quot;.&n; */
 DECL|function|rtc_get_status
 r_static
