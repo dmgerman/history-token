@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;pci_hotplug.h&quot;
 macro_line|#include &quot;cpci_hotplug.h&quot;
 DECL|macro|DRIVER_VERSION
@@ -2073,23 +2074,13 @@ id|rc
 OG
 l_int|0
 )paren
-(brace
 multiline_comment|/* Give userspace a chance to handle extraction */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+l_int|500
 )paren
 suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|2
-)paren
-suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -2303,18 +2294,10 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Give userspace a chance to handle extraction */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|2
+l_int|500
 )paren
 suffix:semicolon
 )brace
@@ -2406,18 +2389,10 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace

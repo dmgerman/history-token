@@ -787,11 +787,10 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|long_delay
+id|msleep
+c_func
 (paren
-l_int|3
-op_star
-id|HZ
+l_int|3000
 )paren
 suffix:semicolon
 multiline_comment|/* For ServeRAID cards, and some 66 PCI */
@@ -3735,11 +3734,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* This is for x440, once Brandon fixes the firmware, &n;&t;will not need this delay */
-id|long_delay
+id|msleep
+c_func
 (paren
-l_int|1
-op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 id|debug
