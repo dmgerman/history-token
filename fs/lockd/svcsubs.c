@@ -715,8 +715,6 @@ id|file-&gt;f_file
 comma
 op_amp
 id|lock
-comma
-l_int|0
 )paren
 OL
 l_int|0

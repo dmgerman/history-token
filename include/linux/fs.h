@@ -1574,14 +1574,14 @@ DECL|macro|FL_POSIX
 mdefine_line|#define FL_POSIX&t;1
 DECL|macro|FL_FLOCK
 mdefine_line|#define FL_FLOCK&t;2
-DECL|macro|FL_BROKEN
-mdefine_line|#define FL_BROKEN&t;4&t;/* broken flock() emulation */
 DECL|macro|FL_ACCESS
-mdefine_line|#define FL_ACCESS&t;8&t;/* for processes suspended by mandatory locking */
+mdefine_line|#define FL_ACCESS&t;8&t;/* not trying to lock, just looking */
 DECL|macro|FL_LOCKD
 mdefine_line|#define FL_LOCKD&t;16&t;/* lock held by rpc.lockd */
 DECL|macro|FL_LEASE
 mdefine_line|#define FL_LEASE&t;32&t;/* lease held on this file */
+DECL|macro|FL_SLEEP
+mdefine_line|#define FL_SLEEP&t;128&t;/* A blocking lock */
 multiline_comment|/*&n; * The POSIX file lock owner is determined by&n; * the &quot;struct files_struct&quot; in the thread group&n; * (or NULL for no owner - BSD locks).&n; *&n; * Lockd stuffs a &quot;host&quot; pointer into this.&n; */
 DECL|typedef|fl_owner_t
 r_typedef
@@ -1869,9 +1869,6 @@ comma
 r_struct
 id|file_lock
 op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -1893,6 +1890,10 @@ r_void
 id|posix_unblock_lock
 c_func
 (paren
+r_struct
+id|file
+op_star
+comma
 r_struct
 id|file_lock
 op_star
