@@ -794,6 +794,33 @@ op_or
 id|US_FL_MODE_XLATE
 )paren
 comma
+multiline_comment|/* This entry is needed because the device reports Sub=ff */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x0010
+comma
+l_int|0x0500
+comma
+l_int|0x0500
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;DSC-T1&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+op_or
+id|US_FL_MODE_XLATE
+)paren
+comma
 multiline_comment|/* Reported by wim@geeks.nl */
 id|UNUSUAL_DEV
 c_func
