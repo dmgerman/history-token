@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/nfs2.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
 macro_line|#include &lt;linux/nfs4.h&gt;
 macro_line|#include &lt;linux/nfs_xdr.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 multiline_comment|/*&n; * Enable debugging support for nfs client.&n; * Requires RPC_DEBUG.&n; */
 macro_line|#ifdef RPC_DEBUG
 DECL|macro|NFS_DEBUG
@@ -1484,6 +1485,27 @@ id|rpc_cred
 op_star
 id|cl_cred
 suffix:semicolon
+DECL|member|cl_superblocks
+r_struct
+id|list_head
+id|cl_superblocks
+suffix:semicolon
+multiline_comment|/* List of nfs_server structs */
+DECL|member|cl_lease_time
+r_int
+r_int
+id|cl_lease_time
+suffix:semicolon
+DECL|member|cl_last_renewal
+r_int
+r_int
+id|cl_last_renewal
+suffix:semicolon
+DECL|member|cl_renewd
+r_struct
+id|work_struct
+id|cl_renewd
+suffix:semicolon
 multiline_comment|/* Our own IP address, as a null-terminated string.&n;&t; * This is used to generate the clientid, and the callback address.&n;&t; */
 DECL|member|cl_ipaddr
 r_char
@@ -1608,12 +1630,7 @@ id|nfs4_proc_async_renew
 c_func
 (paren
 r_struct
-id|nfs_server
-op_star
-id|server
-comma
-r_struct
-id|rpc_cred
+id|nfs4_client
 op_star
 )paren
 suffix:semicolon
@@ -1633,17 +1650,56 @@ op_star
 suffix:semicolon
 multiline_comment|/* nfs4renewd.c */
 r_extern
-r_int
-id|nfs4_init_renewd
+r_void
+id|nfs4_schedule_state_renewal
+c_func
+(paren
+r_struct
+id|nfs4_client
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs4_renewd_prepare_shutdown
 c_func
 (paren
 r_struct
 id|nfs_server
 op_star
-id|server
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs4_kill_renewd
+c_func
+(paren
+r_struct
+id|nfs4_client
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* nfs4state.c */
+r_extern
+r_void
+id|init_nfsv4_state
+c_func
+(paren
+r_struct
+id|nfs_server
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|destroy_nfsv4_state
+c_func
+(paren
+r_struct
+id|nfs_server
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|nfs4_client
@@ -1736,63 +1792,17 @@ suffix:semicolon
 r_struct
 id|nfs4_mount_data
 suffix:semicolon
-r_static
-r_inline
-r_void
-DECL|function|destroy_nfsv4_state
-id|destroy_nfsv4_state
-c_func
-(paren
-r_struct
-id|nfs_server
-op_star
-id|server
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|server-&gt;mnt_path
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|server-&gt;mnt_path
-)paren
-suffix:semicolon
-id|server-&gt;mnt_path
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|server-&gt;nfs4_state
-)paren
-(brace
-id|nfs4_put_client
-c_func
-(paren
-id|server-&gt;nfs4_state
-)paren
-suffix:semicolon
-id|server-&gt;nfs4_state
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
 macro_line|#else
-DECL|macro|create_nfsv4_state
-mdefine_line|#define create_nfsv4_state(server, data)  0
+DECL|macro|init_nfsv4_state
+mdefine_line|#define init_nfsv4_state(server)  do { } while (0)
 DECL|macro|destroy_nfsv4_state
 mdefine_line|#define destroy_nfsv4_state(server)       do { } while (0)
 DECL|macro|nfs4_put_state_owner
 mdefine_line|#define nfs4_put_state_owner(inode, owner) do { } while (0)
 DECL|macro|nfs4_put_open_state
 mdefine_line|#define nfs4_put_open_state(state) do { } while (0)
+DECL|macro|nfs4_renewd_prepare_shutdown
+mdefine_line|#define nfs4_renewd_prepare_shutdown(server) do { } while (0)
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * NFS debug flags&n; */

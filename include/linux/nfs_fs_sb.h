@@ -144,18 +144,12 @@ op_star
 id|nfs4_state
 suffix:semicolon
 multiline_comment|/* all NFSv4 state starts here */
-DECL|member|lease_time
-r_int
-r_int
-id|lease_time
+DECL|member|nfs4_siblings
+r_struct
+id|list_head
+id|nfs4_siblings
 suffix:semicolon
-multiline_comment|/* in jiffies */
-DECL|member|last_renewal
-r_int
-r_int
-id|last_renewal
-suffix:semicolon
-multiline_comment|/* in jiffies */
+multiline_comment|/* List of other nfs_server structs&n;&t;&t;&t;&t;&t;&t; * that share the same clientid&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|idmap
 r_void
 op_star
