@@ -219,13 +219,6 @@ c_func
 id|fl6_sock_lookup
 )paren
 suffix:semicolon
-DECL|variable|ipv6_ext_hdr
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ipv6_ext_hdr
-)paren
-suffix:semicolon
 DECL|variable|ip6_append_data
 id|EXPORT_SYMBOL
 c_func
@@ -252,13 +245,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ipv6_push_nfrag_opts
-)paren
-suffix:semicolon
-DECL|variable|ipv6_skip_exthdr
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ipv6_skip_exthdr
 )paren
 suffix:semicolon
 eof
