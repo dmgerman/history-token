@@ -474,7 +474,11 @@ l_string|&quot;PCI: Bus %d, bridge: %s&bslash;n&quot;
 comma
 id|bus-&gt;number
 comma
-id|bridge-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|bridge
+)paren
 )paren
 )paren
 suffix:semicolon

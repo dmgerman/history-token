@@ -2208,14 +2208,37 @@ op_rshift
 l_int|16
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI_NAMES
 id|seq_printf
 c_func
 (paren
 id|m
 comma
-l_string|&quot;: %s (rev %d).&bslash;n&quot;
+l_string|&quot;: %s&quot;
 comma
-id|dev-&gt;dev.name
+id|dev-&gt;pretty_name
+)paren
+suffix:semicolon
+macro_line|#else
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;: PCI device %04x:%04x&quot;
+comma
+id|dev-&gt;vendor
+comma
+id|dev-&gt;device
+)paren
+suffix:semicolon
+macro_line|#endif
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot; (rev %d).&bslash;n&quot;
 comma
 id|class_rev
 op_amp
