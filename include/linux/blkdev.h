@@ -1051,6 +1051,8 @@ DECL|macro|blk_queue_plugged
 mdefine_line|#define blk_queue_plugged(q)&t;!list_empty(&amp;(q)-&gt;plug_list)
 DECL|macro|blk_queue_tagged
 mdefine_line|#define blk_queue_tagged(q)&t;test_bit(QUEUE_FLAG_QUEUED, &amp;(q)-&gt;queue_flags)
+DECL|macro|blk_queue_stopped
+mdefine_line|#define blk_queue_stopped(q)&t;test_bit(QUEUE_FLAG_STOPPED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_fs_request
 mdefine_line|#define blk_fs_request(rq)&t;((rq)-&gt;flags &amp; REQ_CMD)
 DECL|macro|blk_pc_request
