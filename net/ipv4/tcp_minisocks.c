@@ -1436,6 +1436,11 @@ r_int
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* TIME_WAIT reaping mechanism. */
+DECL|macro|TCP_TWKILL_SLOTS
+mdefine_line|#define TCP_TWKILL_SLOTS&t;8&t;/* Please keep this a power of 2. */
+DECL|macro|TCP_TWKILL_PERIOD
+mdefine_line|#define TCP_TWKILL_PERIOD&t;(TCP_TIMEWAIT_LEN/TCP_TWKILL_SLOTS)
 DECL|variable|tcp_tw_death_row
 r_static
 r_struct
