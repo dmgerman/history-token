@@ -7666,7 +7666,7 @@ comma
 suffix:semicolon
 DECL|function|mcfrs_console_init
 r_static
-r_void
+r_int
 id|__init
 id|mcfrs_console_init
 c_func
@@ -7680,6 +7680,9 @@ c_func
 op_amp
 id|mcfrs_console
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|mcfrs_console_init
