@@ -2876,6 +2876,7 @@ id|SLAB_DEBUG_INITIAL
 suffix:semicolon
 )brace
 macro_line|#if FORCED_DEBUG
+multiline_comment|/*&n;&t; * Enable redzoning and last user accounting, except&n;&t; * - for caches with forced alignment: redzoning would violate the&n;&t; *   alignment&n;&t; * - for caches with large objects, if the increased size would&n;&t; *   increase the object size above the next power of two: caches&n;&t; *   with object sizes just above a power of two have a significant&n;&t; *   amount of internal fragmentation&n;&t; */
 r_if
 c_cond
 (paren
@@ -2887,6 +2888,26 @@ id|PAGE_SIZE
 op_rshift
 l_int|3
 )paren
+op_logical_or
+id|fls
+c_func
+(paren
+id|size
+op_minus
+l_int|1
+)paren
+op_eq
+id|fls
+c_func
+(paren
+id|size
+op_minus
+l_int|1
+op_plus
+l_int|3
+op_star
+id|BYTES_PER_WORD
+)paren
 )paren
 op_logical_and
 op_logical_neg
@@ -2896,13 +2917,14 @@ op_amp
 id|SLAB_MUST_HWCACHE_ALIGN
 )paren
 )paren
-multiline_comment|/*&n;&t;&t; * do not red zone large object, causes severe&n;&t;&t; * fragmentation.&n;&t;&t; */
+(brace
 id|flags
 op_or_assign
 id|SLAB_RED_ZONE
 op_or
 id|SLAB_STORE_USER
 suffix:semicolon
+)brace
 id|flags
 op_or_assign
 id|SLAB_POISON
@@ -6562,6 +6584,14 @@ id|slabp-&gt;s_mem
 op_div
 id|cachep-&gt;objsize
 suffix:semicolon
+id|check_slabp
+c_func
+(paren
+id|cachep
+comma
+id|slabp
+)paren
+suffix:semicolon
 id|slab_bufctl
 c_func
 (paren
@@ -6585,6 +6615,14 @@ id|cachep
 suffix:semicolon
 id|slabp-&gt;inuse
 op_decrement
+suffix:semicolon
+id|check_slabp
+c_func
+(paren
+id|cachep
+comma
+id|slabp
+)paren
 suffix:semicolon
 multiline_comment|/* fixup slab chains */
 r_if
