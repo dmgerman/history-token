@@ -40,11 +40,13 @@ r_int
 r_int
 id|seq
 suffix:semicolon
+macro_line|#ifndef __s390x__
 DECL|member|__pad2
 r_int
 r_int
 id|__pad2
 suffix:semicolon
+macro_line|#endif /* ! __s390x__ */
 DECL|member|__unused1
 r_int
 r_int

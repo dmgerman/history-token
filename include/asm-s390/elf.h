@@ -16,8 +16,13 @@ id|s390_regs
 id|elf_gregset_t
 suffix:semicolon
 multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
+macro_line|#ifndef __s390x__
 DECL|macro|ELF_CLASS
 mdefine_line|#define ELF_CLASS&t;ELFCLASS32
+macro_line|#else /* __s390x__ */
+DECL|macro|ELF_CLASS
+mdefine_line|#define ELF_CLASS&t;ELFCLASS64
+macro_line|#endif /* __s390x__ */
 DECL|macro|ELF_DATA
 mdefine_line|#define ELF_DATA&t;ELFDATA2MSB
 DECL|macro|ELF_ARCH
@@ -26,15 +31,25 @@ multiline_comment|/*&n; * This is used to ensure we don&squot;t load something f
 DECL|macro|elf_check_arch
 mdefine_line|#define elf_check_arch(x) &bslash;&n;&t;(((x)-&gt;e_machine == EM_S390 || (x)-&gt;e_machine == EM_S390_OLD) &bslash;&n;         &amp;&amp; (x)-&gt;e_ident[EI_CLASS] == ELF_CLASS) 
 multiline_comment|/* For SVR4/S390 the function pointer to be registered with `atexit` is&n;   passed in R14. */
+macro_line|#ifndef __s390x__
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r, load_addr) &bslash;&n;&t;_r-&gt;gprs[14] = 0
+macro_line|#else /* __s390x__ */
+DECL|macro|ELF_PLAT_INIT
+mdefine_line|#define ELF_PLAT_INIT(_r, load_addr) &bslash;&n;&t;do { &bslash;&n;&t;_r-&gt;gprs[14] = 0; &bslash;&n;&t;clear_thread_flag(TIF_31BIT); &bslash;&n;&t;} while(0)
+macro_line|#endif /* __s390x__ */
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE
 mdefine_line|#define ELF_EXEC_PAGESIZE&t;4096
 multiline_comment|/* This is the location that an ET_DYN program is loaded if exec&squot;ed.  Typical&n;   use of this is to invoke &quot;./ld.so someprog&quot; to test out a new version of&n;   the loader.  We need to make sure that it is out of the way of the program&n;   that it will &quot;exec&quot;, and that there is sufficient room for the brk.  */
+macro_line|#ifndef __s390x__
 DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE         ((TASK_SIZE &amp; 0x80000000) &bslash;&n;                                ? TASK_SIZE / 3 * 2 &bslash;&n;                                : 2 * TASK_SIZE / 3)
+macro_line|#else /* __s390x__ */
+DECL|macro|ELF_ET_DYN_BASE
+mdefine_line|#define ELF_ET_DYN_BASE         (TASK_SIZE / 3 * 2)
+macro_line|#endif /* __s390x__ */
 multiline_comment|/* Wow, the &quot;main&quot; arch needs arch dependent functions too.. :) */
 multiline_comment|/* regs is struct pt_regs, pr_reg is elf_gregset_t (which is&n;   now struct_user_regs, they are different) */
 DECL|macro|ELF_CORE_COPY_REGS
@@ -46,8 +61,13 @@ multiline_comment|/* This yields a string that ld.so will use to load implementa
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM (NULL)
 macro_line|#ifdef __KERNEL__
+macro_line|#ifndef __s390x__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)
+macro_line|#else /* __s390x__ */
+DECL|macro|SET_PERSONALITY
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ibcs2)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_personality(PER_SVR4);&t;&t;&bslash;&n;&t;else if (current-&gt;personality != PER_LINUX32)&t;&bslash;&n;&t;&t;set_personality(PER_LINUX);&t;&t;&bslash;&n;&t;clear_thread_flag(TIF_31BIT);&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#endif /* __s390x__ */
 macro_line|#endif
 macro_line|#endif
 eof

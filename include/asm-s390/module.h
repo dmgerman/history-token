@@ -68,7 +68,7 @@ id|syminfo
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_ARCH_S390X
+macro_line|#ifdef __s390x__
 DECL|macro|ElfW
 mdefine_line|#define ElfW(x) Elf64_ ## x
 DECL|macro|ELFW
@@ -79,12 +79,18 @@ mdefine_line|#define ElfW(x) Elf32_ ## x
 DECL|macro|ELFW
 mdefine_line|#define ELFW(x) ELF32_ ## x
 macro_line|#endif
+DECL|macro|Elf_Addr
+mdefine_line|#define Elf_Addr ElfW(Addr)
+DECL|macro|Elf_Rela
+mdefine_line|#define Elf_Rela ElfW(Rela)
 DECL|macro|Elf_Shdr
 mdefine_line|#define Elf_Shdr ElfW(Shdr)
 DECL|macro|Elf_Sym
 mdefine_line|#define Elf_Sym ElfW(Sym)
 DECL|macro|Elf_Ehdr
 mdefine_line|#define Elf_Ehdr ElfW(Ehdr)
+DECL|macro|ELF_R_SYM
+mdefine_line|#define ELF_R_SYM ELFW(R_SYM)
 DECL|macro|ELF_R_TYPE
 mdefine_line|#define ELF_R_TYPE ELFW(R_TYPE)
 macro_line|#endif /* _ASM_S390_MODULE_H */

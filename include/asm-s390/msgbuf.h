@@ -16,31 +16,37 @@ id|__kernel_time_t
 id|msg_stime
 suffix:semicolon
 multiline_comment|/* last msgsnd time */
+macro_line|#ifndef __s390x__
 DECL|member|__unused1
 r_int
 r_int
 id|__unused1
 suffix:semicolon
+macro_line|#endif /* ! __s390x__ */
 DECL|member|msg_rtime
 id|__kernel_time_t
 id|msg_rtime
 suffix:semicolon
 multiline_comment|/* last msgrcv time */
+macro_line|#ifndef __s390x__
 DECL|member|__unused2
 r_int
 r_int
 id|__unused2
 suffix:semicolon
+macro_line|#endif /* ! __s390x__ */
 DECL|member|msg_ctime
 id|__kernel_time_t
 id|msg_ctime
 suffix:semicolon
 multiline_comment|/* last change time */
+macro_line|#ifndef __s390x__
 DECL|member|__unused3
 r_int
 r_int
 id|__unused3
 suffix:semicolon
+macro_line|#endif /* ! __s390x__ */
 DECL|member|msg_cbytes
 r_int
 r_int

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/cio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_ARCH_S390X
+macro_line|#ifdef __s390x__
 DECL|macro|IDA_SIZE_LOG
 mdefine_line|#define IDA_SIZE_LOG 12 /* 11 for 2k , 12 for 4k */
 macro_line|#else
@@ -35,7 +35,7 @@ r_int
 id|length
 )paren
 (brace
-macro_line|#if defined(CONFIG_ARCH_S390X)
+macro_line|#ifdef __s390x__
 r_return
 (paren
 (paren
@@ -77,7 +77,7 @@ r_int
 id|length
 )paren
 (brace
-macro_line|#if defined(CONFIG_ARCH_S390X)
+macro_line|#ifdef __s390x__
 r_if
 c_cond
 (paren
@@ -145,7 +145,7 @@ r_int
 id|length
 )paren
 (brace
-macro_line|#if defined(CONFIG_ARCH_S390X)
+macro_line|#ifdef __s390x__
 r_int
 r_int
 id|paddr
@@ -240,7 +240,7 @@ op_star
 id|vaddr
 )paren
 (brace
-macro_line|#if defined (CONFIG_ARCH_S390X)
+macro_line|#ifdef __s390x__
 r_int
 r_int
 id|nridaws
@@ -357,7 +357,7 @@ op_star
 id|ccw
 )paren
 (brace
-macro_line|#if defined(CONFIG_ARCH_S390X)
+macro_line|#ifdef __s390x__
 r_if
 c_cond
 (paren
@@ -732,7 +732,7 @@ op_star
 id|ib
 )paren
 (brace
-macro_line|#ifdef CONFIG_ARCH_S390X
+macro_line|#ifdef __s390x__
 r_return
 id|ib-&gt;size
 OG

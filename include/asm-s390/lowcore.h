@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  include/asm-s390/lowcore.h&n; *&n; *  S390 version&n;
 macro_line|#ifndef _ASM_S390_LOWCORE_H
 DECL|macro|_ASM_S390_LOWCORE_H
 mdefine_line|#define _ASM_S390_LOWCORE_H
+macro_line|#ifndef __s390x__
 DECL|macro|__LC_EXT_OLD_PSW
 mdefine_line|#define __LC_EXT_OLD_PSW                0x018
 DECL|macro|__LC_SVC_OLD_PSW
@@ -22,20 +23,42 @@ DECL|macro|__LC_MCK_NEW_PSW
 mdefine_line|#define __LC_MCK_NEW_PSW                0x070
 DECL|macro|__LC_IO_NEW_PSW
 mdefine_line|#define __LC_IO_NEW_PSW                 0x078
+macro_line|#else /* !__s390x__ */
+DECL|macro|__LC_EXT_OLD_PSW
+mdefine_line|#define __LC_EXT_OLD_PSW                0x0130
+DECL|macro|__LC_SVC_OLD_PSW
+mdefine_line|#define __LC_SVC_OLD_PSW                0x0140
+DECL|macro|__LC_PGM_OLD_PSW
+mdefine_line|#define __LC_PGM_OLD_PSW                0x0150
+DECL|macro|__LC_MCK_OLD_PSW
+mdefine_line|#define __LC_MCK_OLD_PSW                0x0160
+DECL|macro|__LC_IO_OLD_PSW
+mdefine_line|#define __LC_IO_OLD_PSW                 0x0170
+DECL|macro|__LC_EXT_NEW_PSW
+mdefine_line|#define __LC_EXT_NEW_PSW                0x01b0
+DECL|macro|__LC_SVC_NEW_PSW
+mdefine_line|#define __LC_SVC_NEW_PSW                0x01c0
+DECL|macro|__LC_PGM_NEW_PSW
+mdefine_line|#define __LC_PGM_NEW_PSW                0x01d0
+DECL|macro|__LC_MCK_NEW_PSW
+mdefine_line|#define __LC_MCK_NEW_PSW                0x01e0
+DECL|macro|__LC_IO_NEW_PSW
+mdefine_line|#define __LC_IO_NEW_PSW                 0x01f0
+macro_line|#endif /* !__s390x__ */
 DECL|macro|__LC_EXT_PARAMS
 mdefine_line|#define __LC_EXT_PARAMS                 0x080
 DECL|macro|__LC_CPU_ADDRESS
 mdefine_line|#define __LC_CPU_ADDRESS                0x084
 DECL|macro|__LC_EXT_INT_CODE
 mdefine_line|#define __LC_EXT_INT_CODE               0x086
+DECL|macro|__LC_SVC_ILC
+mdefine_line|#define __LC_SVC_ILC                    0x088
 DECL|macro|__LC_SVC_INT_CODE
-mdefine_line|#define __LC_SVC_INT_CODE               0x08B
+mdefine_line|#define __LC_SVC_INT_CODE               0x08A
 DECL|macro|__LC_PGM_ILC
 mdefine_line|#define __LC_PGM_ILC                    0x08C
 DECL|macro|__LC_PGM_INT_CODE
 mdefine_line|#define __LC_PGM_INT_CODE               0x08E
-DECL|macro|__LC_TRANS_EXC_ADDR
-mdefine_line|#define __LC_TRANS_EXC_ADDR             0x090
 DECL|macro|__LC_SUBCHANNEL_ID
 mdefine_line|#define __LC_SUBCHANNEL_ID              0x0B8
 DECL|macro|__LC_SUBCHANNEL_NR
@@ -46,16 +69,15 @@ DECL|macro|__LC_IO_INT_WORD
 mdefine_line|#define __LC_IO_INT_WORD                0x0C0
 DECL|macro|__LC_MCCK_CODE
 mdefine_line|#define __LC_MCCK_CODE                  0x0E8
-DECL|macro|__LC_AREGS_SAVE_AREA
-mdefine_line|#define __LC_AREGS_SAVE_AREA            0x120
-DECL|macro|__LC_CREGS_SAVE_AREA
-mdefine_line|#define __LC_CREGS_SAVE_AREA            0x1C0
 DECL|macro|__LC_RETURN_PSW
 mdefine_line|#define __LC_RETURN_PSW                 0x200
 DECL|macro|__LC_IRB
-mdefine_line|#define __LC_IRB&t;&t;&t;0x208
+mdefine_line|#define __LC_IRB&t;&t;&t;0x210
+DECL|macro|__LC_DIAG44_OPCODE
+mdefine_line|#define __LC_DIAG44_OPCODE&t;&t;0x250
 DECL|macro|__LC_SAVE_AREA
 mdefine_line|#define __LC_SAVE_AREA                  0xC00
+macro_line|#ifndef __s390x__
 DECL|macro|__LC_KERNEL_STACK
 mdefine_line|#define __LC_KERNEL_STACK               0xC40
 DECL|macro|__LC_ASYNC_STACK
@@ -68,15 +90,42 @@ DECL|macro|__LC_IPLDEV
 mdefine_line|#define __LC_IPLDEV                     0xC7C
 DECL|macro|__LC_JIFFY_TIMER
 mdefine_line|#define __LC_JIFFY_TIMER&t;&t;0xC80
+macro_line|#else /* __s390x__ */
+DECL|macro|__LC_KERNEL_STACK
+mdefine_line|#define __LC_KERNEL_STACK               0xD40
+DECL|macro|__LC_ASYNC_STACK
+mdefine_line|#define __LC_ASYNC_STACK                0xD48
+DECL|macro|__LC_CPUID
+mdefine_line|#define __LC_CPUID                      0xD90
+DECL|macro|__LC_CPUADDR
+mdefine_line|#define __LC_CPUADDR                    0xD98
+DECL|macro|__LC_IPLDEV
+mdefine_line|#define __LC_IPLDEV                     0xDB8
+DECL|macro|__LC_JIFFY_TIMER
+mdefine_line|#define __LC_JIFFY_TIMER&t;&t;0xDC0
+macro_line|#endif /* __s390x__ */
 DECL|macro|__LC_PANIC_MAGIC
 mdefine_line|#define __LC_PANIC_MAGIC                0xE00
+macro_line|#ifndef __s390x__
 DECL|macro|__LC_PFAULT_INTPARM
 mdefine_line|#define __LC_PFAULT_INTPARM             0x080
+DECL|macro|__LC_AREGS_SAVE_AREA
+mdefine_line|#define __LC_AREGS_SAVE_AREA            0x120
+DECL|macro|__LC_CREGS_SAVE_AREA
+mdefine_line|#define __LC_CREGS_SAVE_AREA            0x1C0
+macro_line|#else /* __s390x__ */
+DECL|macro|__LC_PFAULT_INTPARM
+mdefine_line|#define __LC_PFAULT_INTPARM             0x11B8
+DECL|macro|__LC_AREGS_SAVE_AREA
+mdefine_line|#define __LC_AREGS_SAVE_AREA            0x1340
+DECL|macro|__LC_CREGS_SAVE_AREA
+mdefine_line|#define __LC_CREGS_SAVE_AREA            0x1380
+macro_line|#endif /* __s390x__ */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sigp.h&gt;
 r_void
 id|restart_int_handler
@@ -124,6 +173,7 @@ DECL|struct|_lowcore
 r_struct
 id|_lowcore
 (brace
+macro_line|#ifndef __s390x__
 multiline_comment|/* prefix area: defined by architecture */
 DECL|member|restart_psw
 id|psw_t
@@ -516,6 +566,442 @@ l_int|0xe04
 )braket
 suffix:semicolon
 multiline_comment|/* 0xe04 */
+macro_line|#else /* !__s390x__ */
+multiline_comment|/* prefix area: defined by architecture */
+id|__u32
+id|ccw1
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 0x000 */
+id|__u32
+id|ccw2
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* 0x008 */
+id|__u8
+id|pad1
+(braket
+l_int|0x80
+op_minus
+l_int|0x18
+)braket
+suffix:semicolon
+multiline_comment|/* 0x018 */
+id|__u32
+id|ext_params
+suffix:semicolon
+multiline_comment|/* 0x080 */
+id|__u16
+id|cpu_addr
+suffix:semicolon
+multiline_comment|/* 0x084 */
+id|__u16
+id|ext_int_code
+suffix:semicolon
+multiline_comment|/* 0x086 */
+id|__u16
+id|svc_ilc
+suffix:semicolon
+multiline_comment|/* 0x088 */
+id|__u16
+id|svc_code
+suffix:semicolon
+multiline_comment|/* 0x08a */
+id|__u16
+id|pgm_ilc
+suffix:semicolon
+multiline_comment|/* 0x08c */
+id|__u16
+id|pgm_code
+suffix:semicolon
+multiline_comment|/* 0x08e */
+id|__u32
+id|data_exc_code
+suffix:semicolon
+multiline_comment|/* 0x090 */
+id|__u16
+id|mon_class_num
+suffix:semicolon
+multiline_comment|/* 0x094 */
+id|__u16
+id|per_perc_atmid
+suffix:semicolon
+multiline_comment|/* 0x096 */
+id|addr_t
+id|per_address
+suffix:semicolon
+multiline_comment|/* 0x098 */
+id|__u8
+id|exc_access_id
+suffix:semicolon
+multiline_comment|/* 0x0a0 */
+id|__u8
+id|per_access_id
+suffix:semicolon
+multiline_comment|/* 0x0a1 */
+id|__u8
+id|op_access_id
+suffix:semicolon
+multiline_comment|/* 0x0a2 */
+id|__u8
+id|ar_access_id
+suffix:semicolon
+multiline_comment|/* 0x0a3 */
+id|__u8
+id|pad2
+(braket
+l_int|0xA8
+op_minus
+l_int|0xA4
+)braket
+suffix:semicolon
+multiline_comment|/* 0x0a4 */
+id|addr_t
+id|trans_exc_code
+suffix:semicolon
+multiline_comment|/* 0x0A0 */
+id|addr_t
+id|monitor_code
+suffix:semicolon
+multiline_comment|/* 0x09c */
+id|__u16
+id|subchannel_id
+suffix:semicolon
+multiline_comment|/* 0x0b8 */
+id|__u16
+id|subchannel_nr
+suffix:semicolon
+multiline_comment|/* 0x0ba */
+id|__u32
+id|io_int_parm
+suffix:semicolon
+multiline_comment|/* 0x0bc */
+id|__u32
+id|io_int_word
+suffix:semicolon
+multiline_comment|/* 0x0c0 */
+id|__u8
+id|pad3
+(braket
+l_int|0xc8
+op_minus
+l_int|0xc4
+)braket
+suffix:semicolon
+multiline_comment|/* 0x0c4 */
+id|__u32
+id|stfl_fac_list
+suffix:semicolon
+multiline_comment|/* 0x0c8 */
+id|__u8
+id|pad4
+(braket
+l_int|0xe8
+op_minus
+l_int|0xcc
+)braket
+suffix:semicolon
+multiline_comment|/* 0x0cc */
+id|__u32
+id|mcck_interruption_code
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 0x0e8 */
+id|__u8
+id|pad5
+(braket
+l_int|0xf4
+op_minus
+l_int|0xf0
+)braket
+suffix:semicolon
+multiline_comment|/* 0x0f0 */
+id|__u32
+id|external_damage_code
+suffix:semicolon
+multiline_comment|/* 0x0f4 */
+id|addr_t
+id|failing_storage_address
+suffix:semicolon
+multiline_comment|/* 0x0f8 */
+id|__u8
+id|pad6
+(braket
+l_int|0x120
+op_minus
+l_int|0x100
+)braket
+suffix:semicolon
+multiline_comment|/* 0x100 */
+id|psw_t
+id|restart_old_psw
+suffix:semicolon
+multiline_comment|/* 0x120 */
+id|psw_t
+id|external_old_psw
+suffix:semicolon
+multiline_comment|/* 0x130 */
+id|psw_t
+id|svc_old_psw
+suffix:semicolon
+multiline_comment|/* 0x140 */
+id|psw_t
+id|program_old_psw
+suffix:semicolon
+multiline_comment|/* 0x150 */
+id|psw_t
+id|mcck_old_psw
+suffix:semicolon
+multiline_comment|/* 0x160 */
+id|psw_t
+id|io_old_psw
+suffix:semicolon
+multiline_comment|/* 0x170 */
+id|__u8
+id|pad7
+(braket
+l_int|0x1a0
+op_minus
+l_int|0x180
+)braket
+suffix:semicolon
+multiline_comment|/* 0x180 */
+id|psw_t
+id|restart_psw
+suffix:semicolon
+multiline_comment|/* 0x1a0 */
+id|psw_t
+id|external_new_psw
+suffix:semicolon
+multiline_comment|/* 0x1b0 */
+id|psw_t
+id|svc_new_psw
+suffix:semicolon
+multiline_comment|/* 0x1c0 */
+id|psw_t
+id|program_new_psw
+suffix:semicolon
+multiline_comment|/* 0x1d0 */
+id|psw_t
+id|mcck_new_psw
+suffix:semicolon
+multiline_comment|/* 0x1e0 */
+id|psw_t
+id|io_new_psw
+suffix:semicolon
+multiline_comment|/* 0x1f0 */
+id|psw_t
+id|return_psw
+suffix:semicolon
+multiline_comment|/* 0x200 */
+id|__u8
+id|irb
+(braket
+l_int|64
+)braket
+suffix:semicolon
+multiline_comment|/* 0x210 */
+id|__u32
+id|diag44_opcode
+suffix:semicolon
+multiline_comment|/* 0x250 */
+id|__u8
+id|pad8
+(braket
+l_int|0xc00
+op_minus
+l_int|0x254
+)braket
+suffix:semicolon
+multiline_comment|/* 0x254 */
+multiline_comment|/* System info area */
+id|__u64
+id|save_area
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 0xc00 */
+id|__u8
+id|pad9
+(braket
+l_int|0xd40
+op_minus
+l_int|0xc80
+)braket
+suffix:semicolon
+multiline_comment|/* 0xc80 */
+id|__u64
+id|kernel_stack
+suffix:semicolon
+multiline_comment|/* 0xd40 */
+id|__u64
+id|async_stack
+suffix:semicolon
+multiline_comment|/* 0xd48 */
+multiline_comment|/* entry.S sensitive area start */
+id|__u8
+id|pad10
+(braket
+l_int|0xd80
+op_minus
+l_int|0xd50
+)braket
+suffix:semicolon
+multiline_comment|/* 0xd64 */
+r_struct
+id|cpuinfo_S390
+id|cpu_data
+suffix:semicolon
+multiline_comment|/* 0xd80 */
+id|__u32
+id|ipl_device
+suffix:semicolon
+multiline_comment|/* 0xdb8 */
+id|__u32
+id|pad11
+suffix:semicolon
+multiline_comment|/* 0xdbc */
+multiline_comment|/* entry.S sensitive area end */
+multiline_comment|/* SMP info area: defined by DJB */
+id|__u64
+id|jiffy_timer
+suffix:semicolon
+multiline_comment|/* 0xdc0 */
+id|__u64
+id|ext_call_fast
+suffix:semicolon
+multiline_comment|/* 0xdc8 */
+id|__u8
+id|pad12
+(braket
+l_int|0xe00
+op_minus
+l_int|0xdd0
+)braket
+suffix:semicolon
+multiline_comment|/* 0xdd0 */
+multiline_comment|/* 0xe00 is used as indicator for dump tools */
+multiline_comment|/* whether the kernel died with panic() or not */
+id|__u32
+id|panic_magic
+suffix:semicolon
+multiline_comment|/* 0xe00 */
+id|__u8
+id|pad13
+(braket
+l_int|0x1200
+op_minus
+l_int|0xe04
+)braket
+suffix:semicolon
+multiline_comment|/* 0xe04 */
+multiline_comment|/* System info area */
+id|__u64
+id|floating_pt_save_area
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1200 */
+id|__u64
+id|gpregs_save_area
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1280 */
+id|__u32
+id|st_status_fixed_logout
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1300 */
+id|__u8
+id|pad14
+(braket
+l_int|0x1318
+op_minus
+l_int|0x1310
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1310 */
+id|__u32
+id|prefixreg_save_area
+suffix:semicolon
+multiline_comment|/* 0x1318 */
+id|__u32
+id|fpt_creg_save_area
+suffix:semicolon
+multiline_comment|/* 0x131c */
+id|__u8
+id|pad15
+(braket
+l_int|0x1324
+op_minus
+l_int|0x1320
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1320 */
+id|__u32
+id|tod_progreg_save_area
+suffix:semicolon
+multiline_comment|/* 0x1324 */
+id|__u32
+id|cpu_timer_save_area
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1328 */
+id|__u32
+id|clock_comp_save_area
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1330 */
+id|__u8
+id|pad16
+(braket
+l_int|0x1340
+op_minus
+l_int|0x1338
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1338 */
+id|__u32
+id|access_regs_save_area
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1340 */
+id|__u64
+id|cregs_save_area
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1380 */
+multiline_comment|/* align to the top of the prefix area */
+id|__u8
+id|pad17
+(braket
+l_int|0x2000
+op_minus
+l_int|0x1400
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1400 */
+macro_line|#endif /* !__s390x__ */
 )brace
 id|__attribute__
 c_func

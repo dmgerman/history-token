@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  include/asm-s390/bugs.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Hartmut Penner (hp@de.ibm.com)&n; *               Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *  Derived from &quot;include/asm-i386/pgalloc.h&quot;&n; *    Copyright (C) 1994  Linus Torvalds&n; */
+multiline_comment|/*&n; *  include/asm-s390/pgalloc.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Hartmut Penner (hp@de.ibm.com)&n; *               Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *  Derived from &quot;include/asm-i386/pgalloc.h&quot;&n; *    Copyright (C) 1994  Linus Torvalds&n; */
 macro_line|#ifndef _S390_PGALLOC_H
 DECL|macro|_S390_PGALLOC_H
 mdefine_line|#define _S390_PGALLOC_H
@@ -31,6 +31,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifndef __s390x__
 id|pgd
 op_assign
 (paren
@@ -82,6 +83,51 @@ id|PGDIR_SIZE
 )paren
 )paren
 suffix:semicolon
+macro_line|#else /* __s390x__ */
+id|pgd
+op_assign
+(paren
+id|pgd_t
+op_star
+)paren
+id|__get_free_pages
+c_func
+(paren
+id|GFP_KERNEL
+comma
+l_int|2
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pgd
+op_ne
+l_int|NULL
+)paren
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|PTRS_PER_PGD
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|pgd_clear
+c_func
+(paren
+id|pgd
+op_plus
+id|i
+)paren
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 r_return
 id|pgd
 suffix:semicolon
@@ -98,6 +144,7 @@ op_star
 id|pgd
 )paren
 (brace
+macro_line|#ifndef __s390x__
 id|free_pages
 c_func
 (paren
@@ -110,8 +157,23 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#else /* __s390x__ */
+id|free_pages
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|pgd
+comma
+l_int|2
+)paren
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 )brace
-multiline_comment|/*&n; * page middle directory allocation/free routines.&n; * We don&squot;t use pmd cache, so these are dummy routines. This&n; * code never triggers because the pgd will always be present.&n; */
+macro_line|#ifndef __s390x__
+multiline_comment|/*&n; * page middle directory allocation/free routines.&n; * We use pmd cache only on s390x, so these are dummy routines. This&n; * code never triggers because the pgd will always be present.&n; */
 DECL|macro|pmd_alloc_one
 mdefine_line|#define pmd_alloc_one(mm,address)       ({ BUG(); ((pmd_t *)2); })
 DECL|macro|pmd_free
@@ -120,6 +182,145 @@ DECL|macro|__pmd_free_tlb
 mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
 DECL|macro|pgd_populate
 mdefine_line|#define pgd_populate(mm, pmd, pte)      BUG()
+macro_line|#else /* __s390x__ */
+DECL|function|pmd_alloc_one
+r_static
+r_inline
+id|pmd_t
+op_star
+id|pmd_alloc_one
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|vmaddr
+)paren
+(brace
+id|pmd_t
+op_star
+id|pmd
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|pmd
+op_assign
+(paren
+id|pmd_t
+op_star
+)paren
+id|__get_free_pages
+c_func
+(paren
+id|GFP_KERNEL
+comma
+l_int|2
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pmd
+op_ne
+l_int|NULL
+)paren
+(brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|PTRS_PER_PMD
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|pmd_clear
+c_func
+(paren
+id|pmd
+op_plus
+id|i
+)paren
+suffix:semicolon
+)brace
+r_return
+id|pmd
+suffix:semicolon
+)brace
+DECL|function|pmd_free
+r_static
+r_inline
+r_void
+id|pmd_free
+(paren
+id|pmd_t
+op_star
+id|pmd
+)paren
+(brace
+id|free_pages
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|pmd
+comma
+l_int|2
+)paren
+suffix:semicolon
+)brace
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb,pmd) pmd_free(pmd)
+DECL|function|pgd_populate
+r_static
+r_inline
+r_void
+id|pgd_populate
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+id|pgd_t
+op_star
+id|pgd
+comma
+id|pmd_t
+op_star
+id|pmd
+)paren
+(brace
+id|pgd_val
+c_func
+(paren
+op_star
+id|pgd
+)paren
+op_assign
+id|_PGD_ENTRY
+op_or
+id|__pa
+c_func
+(paren
+id|pmd
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* __s390x__ */
 r_static
 r_inline
 r_void
@@ -141,6 +342,7 @@ op_star
 id|pte
 )paren
 (brace
+macro_line|#ifndef __s390x__
 id|pmd_val
 c_func
 (paren
@@ -215,6 +417,40 @@ op_plus
 l_int|768
 )paren
 suffix:semicolon
+macro_line|#else /* __s390x__ */
+id|pmd_val
+c_func
+(paren
+op_star
+id|pmd
+)paren
+op_assign
+id|_PMD_ENTRY
+op_plus
+id|__pa
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
+id|pmd_val1
+c_func
+(paren
+op_star
+id|pmd
+)paren
+op_assign
+id|_PMD_ENTRY
+op_plus
+id|__pa
+c_func
+(paren
+id|pte
+op_plus
+l_int|256
+)paren
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 )brace
 r_static
 r_inline
@@ -479,6 +715,7 @@ op_assign
 op_star
 id|ptep
 suffix:semicolon
+macro_line|#ifndef __s390x__
 r_if
 c_cond
 (paren
@@ -533,6 +770,39 @@ id|address
 )paren
 suffix:semicolon
 )brace
+macro_line|#else /* __s390x__ */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_INVALID
+)paren
+)paren
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;ipte %0,%1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|ptep
+)paren
+comma
+l_string|&quot;a&quot;
+(paren
+id|address
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 id|pte_clear
 c_func
 (paren

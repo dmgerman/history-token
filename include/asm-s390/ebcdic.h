@@ -49,8 +49,8 @@ suffix:semicolon
 multiline_comment|/* EBCDIC -&gt; uppercase */
 r_extern
 id|__inline__
-DECL|function|codepage_convert
 r_void
+DECL|function|codepage_convert
 id|codepage_convert
 c_func
 (paren
@@ -64,6 +64,7 @@ id|__u8
 op_star
 id|addr
 comma
+r_int
 r_int
 id|nr
 )paren

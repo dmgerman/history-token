@@ -61,12 +61,14 @@ DECL|macro|F_SETSIG
 mdefine_line|#define F_SETSIG&t;10&t;/*  for sockets. */
 DECL|macro|F_GETSIG
 mdefine_line|#define F_GETSIG&t;11&t;/*  for sockets. */
+macro_line|#ifndef __s390x__
 DECL|macro|F_GETLK64
 mdefine_line|#define F_GETLK64&t;12&t;/*  using &squot;struct flock64&squot; */
 DECL|macro|F_SETLK64
 mdefine_line|#define F_SETLK64&t;13
 DECL|macro|F_SETLKW64
 mdefine_line|#define F_SETLKW64&t;14
+macro_line|#endif /* ! __s390x__ */
 multiline_comment|/* for F_[GET|SET]FL */
 DECL|macro|FD_CLOEXEC
 mdefine_line|#define FD_CLOEXEC&t;1&t;/* actually anything with low bit set goes */
@@ -128,6 +130,7 @@ id|l_pid
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifndef __s390x__
 DECL|struct|flock64
 r_struct
 id|flock64
@@ -154,6 +157,7 @@ id|l_pid
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|macro|F_LINUX_SPECIFIC_BASE
 mdefine_line|#define F_LINUX_SPECIFIC_BASE&t;1024
 macro_line|#endif

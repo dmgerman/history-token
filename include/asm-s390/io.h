@@ -30,9 +30,15 @@ id|real_address
 suffix:semicolon
 id|__asm__
 (paren
+macro_line|#ifndef __s390x__
 l_string|&quot;   lra    %0,0(%1)&bslash;n&quot;
 l_string|&quot;   jz     0f&bslash;n&quot;
 l_string|&quot;   sr     %0,%0&bslash;n&quot;
+macro_line|#else /* __s390x__ */
+l_string|&quot;   lrag   %0,0(%1)&bslash;n&quot;
+l_string|&quot;   jz     0f&bslash;n&quot;
+l_string|&quot;   slgr   %0,%0&bslash;n&quot;
+macro_line|#endif /* __s390x__ */
 l_string|&quot;0:&quot;
 suffix:colon
 l_string|&quot;=a&quot;
