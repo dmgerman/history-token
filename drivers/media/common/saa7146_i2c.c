@@ -978,7 +978,7 @@ id|dev-&gt;i2c_op
 op_assign
 l_int|1
 suffix:semicolon
-id|IER_ENABLE
+id|SAA7146_IER_ENABLE
 c_func
 (paren
 id|dev

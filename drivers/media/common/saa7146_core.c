@@ -1310,7 +1310,7 @@ l_int|0x1
 )paren
 )paren
 (brace
-id|IER_DISABLE
+id|SAA7146_IER_DISABLE
 c_func
 (paren
 id|dev
@@ -1456,7 +1456,7 @@ l_string|&quot;disabling interrupt source(s)!&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|IER_DISABLE
+id|SAA7146_IER_DISABLE
 c_func
 (paren
 id|dev

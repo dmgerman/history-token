@@ -2189,7 +2189,7 @@ id|DST_TYPE_IS_TERR
 suffix:colon
 id|otype
 op_assign
-l_string|&quot;terrestial TV&quot;
+l_string|&quot;terrestrial&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2198,7 +2198,7 @@ id|DST_TYPE_IS_CABLE
 suffix:colon
 id|otype
 op_assign
-l_string|&quot;terrestial TV&quot;
+l_string|&quot;cable&quot;
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -3611,7 +3611,7 @@ id|MASK_27
 )paren
 suffix:semicolon
 multiline_comment|/* enable rps0 irqs */
-id|IER_ENABLE
+id|SAA7146_IER_ENABLE
 c_func
 (paren
 id|dev
@@ -3819,7 +3819,7 @@ id|MASK_28
 )paren
 suffix:semicolon
 multiline_comment|/* disable rps0 irqs */
-id|IER_DISABLE
+id|SAA7146_IER_DISABLE
 c_func
 (paren
 id|dev

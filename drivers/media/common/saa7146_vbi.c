@@ -525,7 +525,7 @@ id|MASK_20
 )paren
 suffix:semicolon
 multiline_comment|/* enable rps1 irqs */
-id|IER_ENABLE
+id|SAA7146_IER_ENABLE
 c_func
 (paren
 id|dev
@@ -603,7 +603,7 @@ op_assign
 id|TASK_RUNNING
 suffix:semicolon
 multiline_comment|/* disable rps1 irqs */
-id|IER_DISABLE
+id|SAA7146_IER_DISABLE
 c_func
 (paren
 id|dev
@@ -929,7 +929,7 @@ id|CMD_STOP
 )paren
 suffix:semicolon
 multiline_comment|/* enable rps1 irqs */
-id|IER_ENABLE
+id|SAA7146_IER_ENABLE
 c_func
 (paren
 id|dev
@@ -1615,7 +1615,7 @@ id|MASK_29
 )paren
 suffix:semicolon
 multiline_comment|/* disable rps1 irqs */
-id|IER_DISABLE
+id|SAA7146_IER_DISABLE
 c_func
 (paren
 id|dev
