@@ -1,4 +1,4 @@
-multiline_comment|/**&n; * inode.c - NTFS kernel inode handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/**&n; * inode.c - NTFS kernel inode handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -8,35 +8,9 @@ macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;dir.h&quot;
 macro_line|#include &quot;inode.h&quot;
 macro_line|#include &quot;attrib.h&quot;
-multiline_comment|/**&n; * ntfs_attr - ntfs in memory attribute structure&n; * @mft_no:&t;mft record number of the base mft record of this attribute&n; * @name:&t;Unicode name of the attribute (NULL if unnamed)&n; * @name_len:&t;length of @name in Unicode characters (0 if unnamed)&n; * @type:&t;attribute type (see layout.h)&n; *&n; * This structure exists only to provide a small structure for the&n; * ntfs_{attr_}iget()/ntfs_test_inode()/ntfs_init_locked_inode() mechanism.&n; *&n; * NOTE: Elements are ordered by size to make the structure as compact as&n; * possible on all architectures.&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|mft_no
-r_int
-r_int
-id|mft_no
-suffix:semicolon
-DECL|member|name
-id|uchar_t
-op_star
-id|name
-suffix:semicolon
-DECL|member|name_len
-id|u32
-id|name_len
-suffix:semicolon
-DECL|member|type
-id|ATTR_TYPES
-id|type
-suffix:semicolon
-DECL|typedef|ntfs_attr
-)brace
-id|ntfs_attr
-suffix:semicolon
+macro_line|#include &quot;time.h&quot;
 multiline_comment|/**&n; * ntfs_test_inode - compare two (possibly fake) inodes for equality&n; * @vi:&t;&t;vfs inode which to test&n; * @na:&t;&t;ntfs attribute which is being tested with&n; *&n; * Compare the ntfs attribute embedded in the ntfs specific part of the vfs&n; * inode @vi for equality with the ntfs attribute @na.&n; *&n; * If searching for the normal file/directory inode, set @na-&gt;type to AT_UNUSED.&n; * @na-&gt;name and @na-&gt;name_len are then ignored.&n; *&n; * Return 1 if the attributes match and 0 if not.&n; *&n; * NOTE: This function runs with the inode_lock spin lock held so it is not&n; * allowed to sleep.&n; */
 DECL|function|ntfs_test_inode
-r_static
 r_int
 id|ntfs_test_inode
 c_func
@@ -316,22 +290,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|typedef|test_t
-r_typedef
-r_int
-(paren
-op_star
-id|test_t
-)paren
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
 DECL|typedef|set_t
 r_typedef
 r_int
@@ -1149,7 +1107,7 @@ r_return
 id|ni
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_is_extended_system_file - check if a file is in the $Extend directory&n; * @ctx:&t;initialized attribute search context&n; *&n; * Search all file name attributes in the inode described by the attribute&n; * search context @ctx and check if any of the names are in the $Extend system&n; * directory.&n; * &n; * Return values:&n; *&t;   1: file is in $Extend directory&n; *&t;   0: file is not in $Extend directory&n; *&t;-EIO: file is corrupt&n; */
+multiline_comment|/**&n; * ntfs_is_extended_system_file - check if a file is in the $Extend directory&n; * @ctx:&t;initialized attribute search context&n; *&n; * Search all file name attributes in the inode described by the attribute&n; * search context @ctx and check if any of the names are in the $Extend system&n; * directory.&n; *&n; * Return values:&n; *&t;   1: file is in $Extend directory&n; *&t;   0: file is not in $Extend directory&n; *&t;-EIO: file is corrupt&n; */
 DECL|function|ntfs_is_extended_system_file
 r_static
 r_int
@@ -1738,7 +1696,7 @@ suffix:semicolon
 multiline_comment|/* Transfer information from the standard information into vfs_ino. */
 multiline_comment|/*&n;&t; * Note: The i_?times do not quite map perfectly onto the NTFS times,&n;&t; * but they are close enough, and in the end it doesn&squot;t really matter&n;&t; * that much...&n;&t; */
 multiline_comment|/*&n;&t; * mtime is the last change of the data within the file. Not changed&n;&t; * when only metadata is changed, e.g. a rename doesn&squot;t affect mtime.&n;&t; */
-id|vi-&gt;i_mtime.tv_sec
+id|vi-&gt;i_mtime
 op_assign
 id|ntfs2utc
 c_func
@@ -1746,12 +1704,8 @@ c_func
 id|si-&gt;last_data_change_time
 )paren
 suffix:semicolon
-id|vi-&gt;i_mtime.tv_nsec
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t; * ctime is the last change of the metadata of the file. This obviously&n;&t; * always changes, when mtime is changed. ctime can be changed on its&n;&t; * own, mtime is then not changed, e.g. when a file is renamed.&n;&t; */
-id|vi-&gt;i_ctime.tv_sec
+id|vi-&gt;i_ctime
 op_assign
 id|ntfs2utc
 c_func
@@ -1759,22 +1713,14 @@ c_func
 id|si-&gt;last_mft_change_time
 )paren
 suffix:semicolon
-id|vi-&gt;i_ctime.tv_nsec
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t; * Last access to the data within the file. Not changed during a rename&n;&t; * for example but changed whenever the file is written to.&n;&t; */
-id|vi-&gt;i_atime.tv_sec
+id|vi-&gt;i_atime
 op_assign
 id|ntfs2utc
 c_func
 (paren
 id|si-&gt;last_access_time
 )paren
-suffix:semicolon
-id|vi-&gt;i_atime.tv_nsec
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Find the attribute list attribute if present. */
 id|reinit_attr_search_ctx
@@ -5803,39 +5749,6 @@ id|vi
 suffix:semicolon
 r_goto
 id|out_now
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * ntfs_dirty_inode - mark the inode&squot;s metadata dirty&n; * @vi:&t;&t;inode to mark dirty&n; *&n; * This is called from fs/inode.c::__mark_inode_dirty(), when the inode itself&n; * is being marked dirty. An example is when update_atime() is invoked.&n; *&n; * We mark the inode dirty by setting both the page in which the mft record&n; * resides and the buffer heads in that page which correspond to the mft record&n; * dirty. This ensures that the changes will eventually be propagated to disk&n; * when the inode is set dirty.&n; *&n; * FIXME: Can we do that with the buffer heads? I am not too sure. Because if we&n; * do that we need to make sure that the kernel will not write out those buffer&n; * heads or we are screwed as it will write corrupt data to disk. The only way&n; * a mft record can be written correctly is by mst protecting it, writting it&n; * synchronously and fast mst deprotecting it. During this period, obviously,&n; * the mft record must be marked as not uptodate, be locked for writing or&n; * whatever, so that nobody attempts anything stupid.&n; *&n; * FIXME: Do we need to check that the fs is not mounted read only? And what&n; * about the inode? Anything else?&n; *&n; * FIXME: As we are only a read only driver it is safe to just return here for&n; * the moment.&n; */
-DECL|function|ntfs_dirty_inode
-r_void
-id|ntfs_dirty_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|vi
-)paren
-(brace
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Entering for inode 0x%lx.&quot;
-comma
-id|vi-&gt;i_ino
-)paren
-suffix:semicolon
-id|NInoSetDirty
-c_func
-(paren
-id|NTFS_I
-c_func
-(paren
-id|vi
-)paren
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ntfs_commit_inode - write out a dirty inode&n; * @ni:&t;&t;inode to write out&n; *&n; */

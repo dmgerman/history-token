@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * inode.h - Defines for inode structures NTFS Linux kernel driver. Part of&n; *&t;     the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * inode.h - Defines for inode structures NTFS Linux kernel driver. Part of&n; *&t;     the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _LINUX_NTFS_INODE_H
 DECL|macro|_LINUX_NTFS_INODE_H
 mdefine_line|#define _LINUX_NTFS_INODE_H
@@ -266,8 +266,16 @@ multiline_comment|/*&n; * NOTE: We should be adding dirty mft records to a list 
 multiline_comment|/*&n; * Macro tricks to expand the NInoFoo(), NInoSetFoo(), and NInoClearFoo()&n; * functions.&n; */
 DECL|macro|NINO_FNS
 mdefine_line|#define NINO_FNS(flag)&t;&t;&t;&t;&t;&bslash;&n;static inline int NIno##flag(ntfs_inode *ni)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_bit(NI_##flag, &amp;(ni)-&gt;state);&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void NInoSet##flag(ntfs_inode *ni)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_bit(NI_##flag, &amp;(ni)-&gt;state);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void NInoClear##flag(ntfs_inode *ni)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_bit(NI_##flag, &amp;(ni)-&gt;state);&t;&t;&bslash;&n;}
+multiline_comment|/*&n; * As above for NInoTestSetFoo() and NInoTestClearFoo().&n; */
+DECL|macro|TAS_NINO_FNS
+mdefine_line|#define TAS_NINO_FNS(flag)&t;&t;&t;&t;&t;&bslash;&n;static inline int NInoTestSet##flag(ntfs_inode *ni)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_and_set_bit(NI_##flag, &amp;(ni)-&gt;state);&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline int NInoTestClear##flag(ntfs_inode *ni)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_and_clear_bit(NI_##flag, &amp;(ni)-&gt;state);&t;&bslash;&n;}
 multiline_comment|/* Emit the ntfs inode bitops functions. */
 id|NINO_FNS
+c_func
+(paren
+id|Dirty
+)paren
+id|TAS_NINO_FNS
 c_func
 (paren
 id|Dirty
@@ -393,6 +401,63 @@ op_member_access_from_pointer
 id|vfs_inode
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * ntfs_attr - ntfs in memory attribute structure&n; * @mft_no:&t;mft record number of the base mft record of this attribute&n; * @name:&t;Unicode name of the attribute (NULL if unnamed)&n; * @name_len:&t;length of @name in Unicode characters (0 if unnamed)&n; * @type:&t;attribute type (see layout.h)&n; *&n; * This structure exists only to provide a small structure for the&n; * ntfs_{attr_}iget()/ntfs_test_inode()/ntfs_init_locked_inode() mechanism.&n; *&n; * NOTE: Elements are ordered by size to make the structure as compact as&n; * possible on all architectures.&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|mft_no
+r_int
+r_int
+id|mft_no
+suffix:semicolon
+DECL|member|name
+id|uchar_t
+op_star
+id|name
+suffix:semicolon
+DECL|member|name_len
+id|u32
+id|name_len
+suffix:semicolon
+DECL|member|type
+id|ATTR_TYPES
+id|type
+suffix:semicolon
+DECL|typedef|ntfs_attr
+)brace
+id|ntfs_attr
+suffix:semicolon
+DECL|typedef|test_t
+r_typedef
+r_int
+(paren
+op_star
+id|test_t
+)paren
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ntfs_test_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|vi
+comma
+id|ntfs_attr
+op_star
+id|na
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|inode
@@ -507,17 +572,6 @@ id|vi
 suffix:semicolon
 r_extern
 r_void
-id|ntfs_dirty_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|vi
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|ntfs_put_inode
 c_func
 (paren
@@ -571,6 +625,6 @@ op_star
 id|attr
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif /* _LINUX_NTFS_FS_INODE_H */
+macro_line|#endif /* NTFS_RW */
+macro_line|#endif /* _LINUX_NTFS_INODE_H */
 eof
