@@ -2063,6 +2063,31 @@ comma
 id|US_FL_MODE_XLATE
 )paren
 comma
+multiline_comment|/* Trumpion Microelectronics MP3 player (felipe_alfaro@linuxmail.org) */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x090a
+comma
+l_int|0x1200
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Trumpion&quot;
+comma
+l_string|&quot;MP3 player&quot;
+comma
+id|US_SC_RBC
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+)paren
+comma
 multiline_comment|/* aeb */
 id|UNUSUAL_DEV
 c_func
