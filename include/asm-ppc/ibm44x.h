@@ -46,9 +46,6 @@ DECL|macro|PPC44x_PCIMEM_HI
 mdefine_line|#define PPC44x_PCIMEM_HI&t;0xffffffff
 multiline_comment|/*&n; * The &quot;residual&quot; board information structure the boot loader passes&n; * into the kernel.&n; */
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n; * SPRN definitions&n; */
-DECL|macro|SPRN_CPC0_GPIO
-mdefine_line|#define SPRN_CPC0_GPIO&t;&t;0xe5/BEARLRL
 multiline_comment|/*&n; * DCRN definitions&n; */
 macro_line|#ifdef CONFIG_440GX
 multiline_comment|/* CPRs */
