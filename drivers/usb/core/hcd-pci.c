@@ -707,12 +707,6 @@ op_amp
 id|hcd-&gt;rh_timer
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
-(paren
-op_amp
-id|hcd-&gt;dev_list
-)paren
-suffix:semicolon
 id|usb_register_bus
 (paren
 op_amp

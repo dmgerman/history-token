@@ -797,12 +797,6 @@ id|hcd-&gt;product_desc
 op_assign
 l_string|&quot;PXA27x OHCI&quot;
 suffix:semicolon
-id|INIT_LIST_HEAD
-(paren
-op_amp
-id|hcd-&gt;dev_list
-)paren
-suffix:semicolon
 id|usb_register_bus
 (paren
 op_amp
