@@ -1855,6 +1855,13 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+(paren
+id|pci
+comma
+id|vt596_ids
+)paren
+suffix:semicolon
 DECL|variable|vt596_driver
 r_static
 r_struct

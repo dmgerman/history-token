@@ -1903,6 +1903,13 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+(paren
+id|pci
+comma
+id|piix4_ids
+)paren
+suffix:semicolon
 DECL|function|piix4_probe
 r_static
 r_int

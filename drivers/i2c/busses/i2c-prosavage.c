@@ -951,6 +951,13 @@ comma
 comma
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+(paren
+id|pci
+comma
+id|prosavage_pci_tbl
+)paren
+suffix:semicolon
 DECL|variable|prosavage_driver
 r_static
 r_struct
