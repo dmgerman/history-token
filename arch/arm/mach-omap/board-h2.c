@@ -10,37 +10,23 @@ macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/usb.h&gt;
+macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &quot;common.h&quot;
-DECL|variable|__initdata
+DECL|variable|h2_serial_ports
 r_static
-r_struct
-id|map_desc
-id|h2_io_desc
-(braket
-)braket
+r_int
 id|__initdata
+id|h2_serial_ports
+(braket
+id|OMAP_MAX_NR_PORTS
+)braket
 op_assign
 (brace
-(brace
-id|OMAP1610_ETHR_BASE
+l_int|1
 comma
-id|OMAP1610_ETHR_START
+l_int|1
 comma
-id|OMAP1610_ETHR_SIZE
-comma
-id|MT_DEVICE
-)brace
-comma
-(brace
-id|OMAP1610_NOR_FLASH_BASE
-comma
-id|OMAP1610_NOR_FLASH_START
-comma
-id|OMAP1610_NOR_FLASH_SIZE
-comma
-id|MT_DEVICE
-)brace
-comma
+l_int|1
 )brace
 suffix:semicolon
 DECL|variable|h2_smc91x_resources
@@ -188,7 +174,7 @@ comma
 singleline_comment|// 0:host(off) 1:dev|otg 2:disabled
 singleline_comment|// .hmc_mode&t;= 21,&t;// 0:host(off) 1:dev(loopback) 2:host(loopback)
 macro_line|#elif&t;defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
-multiline_comment|/* NONSTANDARD CABLE NEEDED (B-to-Mini-B) */
+multiline_comment|/* needs OTG cable, or NONSTANDARD (B-to-MiniB) */
 dot
 id|hmc_mode
 op_assign
@@ -206,6 +192,37 @@ l_int|3
 comma
 )brace
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_struct
+id|omap_mmc_config
+id|h2_mmc_config
+id|__initdata
+op_assign
+(brace
+dot
+id|mmc_blocks
+op_assign
+l_int|1
+comma
+dot
+id|mmc1_power_pin
+op_assign
+op_minus
+l_int|1
+comma
+multiline_comment|/* tps65010 gpio3 */
+dot
+id|mmc1_switch_pin
+op_assign
+id|OMAP_MPUIO
+c_func
+(paren
+l_int|1
+)paren
+comma
+)brace
+suffix:semicolon
 DECL|variable|h2_config
 r_static
 r_struct
@@ -220,6 +237,13 @@ id|OMAP_TAG_USB
 comma
 op_amp
 id|h2_usb_config
+)brace
+comma
+(brace
+id|OMAP_TAG_MMC
+comma
+op_amp
+id|h2_mmc_config
 )brace
 comma
 )brace
@@ -274,16 +298,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|iotable_init
+id|omap_serial_init
 c_func
 (paren
-id|h2_io_desc
-comma
-id|ARRAY_SIZE
-c_func
-(paren
-id|h2_io_desc
-)paren
+id|h2_serial_ports
 )paren
 suffix:semicolon
 )brace

@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/fpga.h&gt;
 macro_line|#include &lt;asm/arch/usb.h&gt;
+macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &quot;common.h&quot;
 macro_line|#ifdef CONFIG_ARCH_OMAP1510
 r_extern
@@ -42,6 +43,23 @@ comma
 id|MT_DEVICE
 )brace
 comma
+)brace
+suffix:semicolon
+DECL|variable|innovator_serial_ports
+r_static
+r_int
+id|__initdata
+id|innovator_serial_ports
+(braket
+id|OMAP_MAX_NR_PORTS
+)braket
+op_assign
+(brace
+l_int|1
+comma
+l_int|1
+comma
+l_int|1
 )brace
 suffix:semicolon
 DECL|variable|innovator1510_smc91x_resources
@@ -152,39 +170,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_ARCH_OMAP1510 */
-macro_line|#ifdef CONFIG_ARCH_OMAP1610
-DECL|variable|__initdata
-r_static
-r_struct
-id|map_desc
-id|innovator1610_io_desc
-(braket
-)braket
-id|__initdata
-op_assign
-(brace
-(brace
-id|OMAP1610_ETHR_BASE
-comma
-id|OMAP1610_ETHR_START
-comma
-id|OMAP1610_ETHR_SIZE
-comma
-id|MT_DEVICE
-)brace
-comma
-(brace
-id|OMAP1610_NOR_FLASH_BASE
-comma
-id|OMAP1610_NOR_FLASH_START
-comma
-id|OMAP1610_NOR_FLASH_SIZE
-comma
-id|MT_DEVICE
-)brace
-comma
-)brace
-suffix:semicolon
+macro_line|#ifdef CONFIG_ARCH_OMAP16XX
 DECL|variable|innovator1610_smc91x_resources
 r_static
 r_struct
@@ -202,13 +188,13 @@ op_assign
 dot
 id|start
 op_assign
-id|OMAP1610_ETHR_START
+id|INNOVATOR1610_ETHR_START
 comma
 multiline_comment|/* Physical */
 dot
 id|end
 op_assign
-id|OMAP1610_ETHR_START
+id|INNOVATOR1610_ETHR_START
 op_plus
 id|SZ_4K
 comma
@@ -293,7 +279,7 @@ id|innovator1610_smc91x_device
 comma
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_ARCH_OMAP1610 */
+macro_line|#endif /* CONFIG_ARCH_OMAP16XX */
 DECL|function|innovator_init_irq
 r_void
 id|innovator_init_irq
@@ -339,22 +325,38 @@ id|innovator1510_usb_config
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* has usb host and device, but no Mini-AB port */
+multiline_comment|/* for bundled non-standard host and peripheral cables */
+dot
+id|hmc_mode
+op_assign
+l_int|4
+comma
 dot
 id|register_host
 op_assign
 l_int|1
 comma
 dot
+id|pins
+(braket
+l_int|1
+)braket
+op_assign
+l_int|6
+comma
+dot
+id|pins
+(braket
+l_int|2
+)braket
+op_assign
+l_int|6
+comma
+multiline_comment|/* Conflicts with UART2 */
+dot
 id|register_dev
 op_assign
 l_int|1
-comma
-multiline_comment|/* Assume bad Innovator wiring; Use internal host only with custom cable */
-dot
-id|hmc_mode
-op_assign
-l_int|16
 comma
 dot
 id|pins
@@ -367,7 +369,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_OMAP1610
+macro_line|#ifdef CONFIG_ARCH_OMAP16XX
 DECL|variable|__initdata
 r_static
 r_struct
@@ -461,7 +463,7 @@ id|innovator1510_devices
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_OMAP1610
+macro_line|#ifdef CONFIG_ARCH_OMAP16XX
 r_if
 c_cond
 (paren
@@ -506,7 +508,7 @@ op_amp
 id|innovator1510_usb_config
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_OMAP1610
+macro_line|#ifdef CONFIG_ARCH_OMAP16XX
 r_if
 c_cond
 (paren
@@ -610,31 +612,12 @@ id|OMAP1510_FPGA_BOARD_REV
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_OMAP1610
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cpu_is_omap1510
+id|omap_serial_init
 c_func
 (paren
-)paren
-)paren
-(brace
-id|iotable_init
-c_func
-(paren
-id|innovator1610_io_desc
-comma
-id|ARRAY_SIZE
-c_func
-(paren
-id|innovator1610_io_desc
-)paren
+id|innovator_serial_ports
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 id|MACHINE_START
 c_func

@@ -12,7 +12,15 @@ mdefine_line|#define OMAP_TAG_MMC&t;&t;0x4f02
 DECL|macro|OMAP_TAG_UART
 mdefine_line|#define OMAP_TAG_UART&t;&t;0x4f03
 DECL|macro|OMAP_TAG_USB
-mdefine_line|#define OMAP_TAG_USB            0x4f04
+mdefine_line|#define OMAP_TAG_USB&t;&t;0x4f04
+DECL|macro|OMAP_TAG_LCD
+mdefine_line|#define OMAP_TAG_LCD&t;&t;0x4f05
+DECL|macro|OMAP_TAG_GPIO_SWITCH
+mdefine_line|#define OMAP_TAG_GPIO_SWITCH&t;0x4f06
+DECL|macro|OMAP_TAG_BOOT_REASON
+mdefine_line|#define OMAP_TAG_BOOT_REASON    0x4f80
+DECL|macro|OMAP_TAG_FLASH_PART
+mdefine_line|#define OMAP_TAG_FLASH_PART&t;0x4f81
 DECL|struct|omap_clock_config
 r_struct
 id|omap_clock_config
@@ -34,14 +42,14 @@ id|mmc_blocks
 suffix:semicolon
 DECL|member|mmc1_power_pin
 DECL|member|mmc2_power_pin
-id|s8
+id|s16
 id|mmc1_power_pin
 comma
 id|mmc2_power_pin
 suffix:semicolon
 DECL|member|mmc1_switch_pin
 DECL|member|mmc2_switch_pin
-id|s8
+id|s16
 id|mmc1_switch_pin
 comma
 id|mmc2_switch_pin
@@ -103,6 +111,95 @@ l_int|3
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|omap_lcd_config
+r_struct
+id|omap_lcd_config
+(brace
+DECL|member|panel_name
+r_char
+id|panel_name
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|ctrl_name
+r_char
+id|ctrl_name
+(braket
+l_int|16
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Cover:&n; *      high -&gt; closed&n; *      low  -&gt; open&n; * Connection:&n; *      high -&gt; connected&n; *      low  -&gt; disconnected&n; */
+DECL|macro|OMAP_GPIO_SWITCH_TYPE_COVER
+mdefine_line|#define OMAP_GPIO_SWITCH_TYPE_COVER&t;&t;0x0000
+DECL|macro|OMAP_GPIO_SWITCH_TYPE_CONNECTION
+mdefine_line|#define OMAP_GPIO_SWITCH_TYPE_CONNECTION&t;0x0001
+DECL|macro|OMAP_GPIO_SWITCH_FLAG_INVERTED
+mdefine_line|#define OMAP_GPIO_SWITCH_FLAG_INVERTED          0x0001
+DECL|struct|omap_gpio_switch_config
+r_struct
+id|omap_gpio_switch_config
+(brace
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|12
+)braket
+suffix:semicolon
+DECL|member|gpio
+id|u16
+id|gpio
+suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
+suffix:colon
+l_int|4
+suffix:semicolon
+DECL|member|type
+r_int
+id|type
+suffix:colon
+l_int|4
+suffix:semicolon
+DECL|member|key_code
+r_int
+id|key_code
+suffix:colon
+l_int|24
+suffix:semicolon
+multiline_comment|/* Linux key code */
+)brace
+suffix:semicolon
+DECL|struct|omap_flash_part_config
+r_struct
+id|omap_flash_part_config
+(brace
+DECL|member|part_table
+r_char
+id|part_table
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|omap_boot_reason_config
+r_struct
+id|omap_boot_reason_config
+(brace
+DECL|member|reason_str
+r_char
+id|reason_str
+(braket
+l_int|12
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|omap_board_config_entry
 r_struct
 id|omap_board_config_entry
@@ -152,10 +249,30 @@ id|tag
 comma
 r_int
 id|len
+comma
+r_int
+id|nr
 )paren
 suffix:semicolon
 DECL|macro|omap_get_config
-mdefine_line|#define omap_get_config(tag, type) &bslash;&n;&t;((const type *) __omap_get_config((tag), sizeof(type)))
+mdefine_line|#define omap_get_config(tag, type) &bslash;&n;&t;((const type *) __omap_get_config((tag), sizeof(type), 0))
+DECL|macro|omap_get_nr_config
+mdefine_line|#define omap_get_nr_config(tag, type, nr) &bslash;&n;&t;((const type *) __omap_get_config((tag), sizeof(type), (nr)))
+r_extern
+r_const
+r_void
+op_star
+id|omap_get_var_config
+c_func
+(paren
+id|u16
+id|tag
+comma
+r_int
+op_star
+id|len
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|omap_board_config_kernel
