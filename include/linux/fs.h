@@ -799,7 +799,7 @@ r_struct
 id|prio_tree_root
 id|i_mmap
 suffix:semicolon
-multiline_comment|/* tree of private mappings */
+multiline_comment|/* tree of private and shared mappings */
 DECL|member|i_mmap_nonlinear
 r_struct
 id|list_head
