@@ -355,17 +355,19 @@ r_int
 r_int
 id|cache_decay_ticks
 suffix:semicolon
+multiline_comment|/* Attach to any functions which should be ignored in wchan output. */
+DECL|macro|__sched
+mdefine_line|#define __sched&t;&t;__attribute__((__section__(&quot;.sched.text&quot;)))
+multiline_comment|/* Is this address in the __sched functions? */
 r_extern
-r_const
+r_int
+id|in_sched_functions
+c_func
+(paren
 r_int
 r_int
-id|scheduling_functions_start_here
-suffix:semicolon
-r_extern
-r_const
-r_int
-r_int
-id|scheduling_functions_end_here
+id|addr
+)paren
 suffix:semicolon
 DECL|macro|MAX_SCHEDULE_TIMEOUT
 mdefine_line|#define&t;MAX_SCHEDULE_TIMEOUT&t;LONG_MAX

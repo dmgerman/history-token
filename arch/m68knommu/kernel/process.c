@@ -1835,11 +1835,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * These bracket the sleeping functions..&n; */
-DECL|macro|first_sched
-mdefine_line|#define first_sched&t;((unsigned long) scheduling_functions_start_here)
-DECL|macro|last_sched
-mdefine_line|#define last_sched&t;((unsigned long) scheduling_functions_end_here)
 DECL|function|get_wchan
 r_int
 r_int
@@ -1946,13 +1941,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|in_sched_functions
+c_func
+(paren
 id|pc
-OL
-id|first_sched
-op_logical_or
-id|pc
-op_ge
-id|last_sched
+)paren
 )paren
 r_return
 id|pc
@@ -2010,21 +2004,11 @@ multiline_comment|/* Check whether the thread is blocked in resume() */
 r_if
 c_cond
 (paren
-id|sw-&gt;retpc
-OG
+id|in_sched_functions
+c_func
 (paren
-r_int
-r_int
-)paren
-id|scheduling_functions_start_here
-op_logical_and
 id|sw-&gt;retpc
-OL
-(paren
-r_int
-r_int
 )paren
-id|scheduling_functions_end_here
 )paren
 r_return
 (paren

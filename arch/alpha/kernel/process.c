@@ -1906,11 +1906,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * These bracket the sleeping functions..&n; */
-DECL|macro|first_sched
-mdefine_line|#define first_sched&t;((unsigned long) scheduling_functions_start_here)
-DECL|macro|last_sched
-mdefine_line|#define last_sched&t;((unsigned long) scheduling_functions_end_here)
 r_int
 r_int
 DECL|function|get_wchan
@@ -1960,13 +1955,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|in_sched_functions
+c_func
+(paren
 id|pc
-op_ge
-id|first_sched
-op_logical_and
-id|pc
-OL
-id|last_sched
+)paren
 )paren
 (brace
 id|schedule_frame

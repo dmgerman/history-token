@@ -1019,11 +1019,6 @@ id|schedule_frame.pc_offset
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * These bracket the sleeping functions..&n; */
-DECL|macro|first_sched
-mdefine_line|#define first_sched&t;((unsigned long) scheduling_functions_start_here)
-DECL|macro|last_sched
-mdefine_line|#define last_sched&t;((unsigned long) scheduling_functions_end_here)
 multiline_comment|/* get_wchan - a maintenance nightmare^W^Wpain in the ass ...  */
 DECL|function|get_wchan
 r_int
@@ -1080,13 +1075,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|in_sched_functions
+c_func
+(paren
 id|pc
-OL
-id|first_sched
-op_logical_or
-id|pc
-op_ge
-id|last_sched
+)paren
 )paren
 r_goto
 id|out
@@ -1258,13 +1252,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|in_sched_functions
+c_func
+(paren
 id|pc
-op_ge
-id|first_sched
-op_logical_and
-id|pc
-OL
-id|last_sched
+)paren
 )paren
 (brace
 multiline_comment|/* schedule_timeout called by [interruptible_]sleep_on_timeout */

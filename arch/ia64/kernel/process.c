@@ -2888,11 +2888,6 @@ id|count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * These bracket the sleeping functions..&n;&t; */
-DECL|macro|first_sched
-macro_line|#&t;define first_sched&t;((unsigned long) scheduling_functions_start_here)
-DECL|macro|last_sched
-macro_line|#&t;define last_sched&t;((unsigned long) scheduling_functions_end_here)
 multiline_comment|/*&n;&t; * Note: p may not be a blocked task (it could be current or&n;&t; * another process running on some other CPU.  Rather than&n;&t; * trying to determine if p is really blocked, we just assume&n;&t; * it&squot;s blocked and rely on the unwind routines to fail&n;&t; * gracefully if the process wasn&squot;t really blocked after all.&n;&t; * --davidm 99/12/15&n;&t; */
 id|unw_init_from_blocked_task
 c_func
@@ -2933,13 +2928,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|in_sched_functions
+c_func
+(paren
 id|ip
-OL
-id|first_sched
-op_logical_or
-id|ip
-op_ge
-id|last_sched
+)paren
 )paren
 r_return
 id|ip
@@ -2957,10 +2951,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-DECL|macro|first_sched
-macro_line|#&t;undef first_sched
-DECL|macro|last_sched
-macro_line|#&t;undef last_sched
 )brace
 r_void
 DECL|function|cpu_halt
