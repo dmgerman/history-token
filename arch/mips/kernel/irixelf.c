@@ -3145,6 +3145,8 @@ id|setup_arg_pages
 c_func
 (paren
 id|bprm
+comma
+id|EXSTACK_DEFAULT
 )paren
 suffix:semicolon
 id|current-&gt;mm-&gt;start_stack

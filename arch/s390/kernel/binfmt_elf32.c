@@ -173,6 +173,9 @@ r_struct
 id|linux_binprm
 op_star
 id|bprm
+comma
+r_int
+id|executable_stack
 )paren
 suffix:semicolon
 DECL|macro|elf_prstatus
@@ -342,7 +345,7 @@ macro_line|#undef start_thread
 DECL|macro|start_thread
 mdefine_line|#define start_thread                    start_thread31 
 DECL|macro|setup_arg_pages
-mdefine_line|#define setup_arg_pages(bprm)           setup_arg_pages32(bprm)
+mdefine_line|#define setup_arg_pages(bprm, exec)     setup_arg_pages32(bprm, exec)
 DECL|macro|elf_map
 mdefine_line|#define elf_map&t;&t;&t;&t;elf_map32
 id|MODULE_DESCRIPTION

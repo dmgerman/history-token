@@ -626,7 +626,7 @@ mdefine_line|#define load_elf_binary load_elf32_binary
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(r, load_addr)&t;elf32_init(r)
 DECL|macro|setup_arg_pages
-mdefine_line|#define setup_arg_pages(bprm)&t;&t;ia32_setup_arg_pages(bprm)
+mdefine_line|#define setup_arg_pages(bprm, exec_stack)&t;ia32_setup_arg_pages(bprm, exec_stack)
 r_int
 id|ia32_setup_arg_pages
 c_func
@@ -635,6 +635,9 @@ r_struct
 id|linux_binprm
 op_star
 id|bprm
+comma
+r_int
+id|executable_stack
 )paren
 suffix:semicolon
 DECL|macro|start_thread
@@ -772,6 +775,9 @@ r_struct
 id|linux_binprm
 op_star
 id|bprm
+comma
+r_int
+id|executable_stack
 )paren
 (brace
 r_int
@@ -907,6 +913,35 @@ id|mpnt-&gt;vm_end
 op_assign
 id|IA32_STACK_TOP
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|executable_stack
+op_eq
+id|EXSTACK_ENABLE_X
+)paren
+id|mpnt-&gt;vm_flags
+op_assign
+id|vm_stack_flags32
+op_or
+id|VM_EXEC
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|executable_stack
+op_eq
+id|EXSTACK_DISABLE_X
+)paren
+id|mpnt-&gt;vm_flags
+op_assign
+id|vm_stack_flags32
+op_amp
+op_complement
+id|VM_EXEC
+suffix:semicolon
+r_else
 id|mpnt-&gt;vm_flags
 op_assign
 id|vm_stack_flags32
@@ -1017,7 +1052,7 @@ id|page
 comma
 id|stack_base
 comma
-id|PAGE_COPY_EXEC
+id|mpnt-&gt;vm_page_prot
 )paren
 suffix:semicolon
 )brace

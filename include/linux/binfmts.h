@@ -246,6 +246,13 @@ op_star
 id|bprm
 )paren
 suffix:semicolon
+multiline_comment|/* Stack area protections */
+DECL|macro|EXSTACK_DEFAULT
+mdefine_line|#define EXSTACK_DEFAULT   0&t;/* Whatever the arch defaults to */
+DECL|macro|EXSTACK_DISABLE_X
+mdefine_line|#define EXSTACK_DISABLE_X 1&t;/* Disable executable stacks */
+DECL|macro|EXSTACK_ENABLE_X
+mdefine_line|#define EXSTACK_ENABLE_X  2&t;/* Enable executable stacks */
 r_extern
 r_int
 id|setup_arg_pages
@@ -255,6 +262,9 @@ r_struct
 id|linux_binprm
 op_star
 id|bprm
+comma
+r_int
+id|executable_stack
 )paren
 suffix:semicolon
 r_extern

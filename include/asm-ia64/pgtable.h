@@ -142,7 +142,9 @@ mdefine_line|#define PAGE_SHARED&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_A
 DECL|macro|PAGE_READONLY
 mdefine_line|#define PAGE_READONLY&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_R)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RX)
+mdefine_line|#define PAGE_COPY&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_R)
+DECL|macro|PAGE_COPY_EXEC
+mdefine_line|#define PAGE_COPY_EXEC&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RX)
 DECL|macro|PAGE_GATE
 mdefine_line|#define PAGE_GATE&t;__pgprot(__ACCESS_BITS | _PAGE_PL_0 | _PAGE_AR_X_RX)
 DECL|macro|PAGE_KERNEL
