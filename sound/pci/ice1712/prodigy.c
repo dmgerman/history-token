@@ -453,10 +453,6 @@ op_star
 id|uinfo
 )paren
 (brace
-id|uinfo-&gt;type
-op_assign
-id|SNDRV_CTL_ELEM_TYPE_INTEGER
-suffix:semicolon
 r_static
 r_char
 op_star
