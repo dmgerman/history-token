@@ -1395,14 +1395,27 @@ comma
 id|agino
 )paren
 suffix:semicolon
-multiline_comment|/* Clear the mount flag if no inode can overflow 32 bits&n;&t; * on this filesystem.&n;&t; */
+multiline_comment|/* Clear the mount flag if no inode can overflow 32 bits&n;&t; * on this filesystem, or if specifically requested..&n;&t; */
 r_if
 c_cond
 (paren
+(paren
+id|mp-&gt;m_flags
+op_amp
+id|XFS_MOUNT_32BITINOOPT
+)paren
+op_logical_and
 id|ino
-op_le
+OG
 id|max_inum
 )paren
+(brace
+id|mp-&gt;m_flags
+op_or_assign
+id|XFS_MOUNT_32BITINODES
+suffix:semicolon
+)brace
+r_else
 (brace
 id|mp-&gt;m_flags
 op_and_assign

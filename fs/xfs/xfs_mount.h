@@ -1616,12 +1616,14 @@ mdefine_line|#define XFS_MOUNT_DFLT_IOSIZE&t;0x00001000&t;/* set default i/o siz
 DECL|macro|XFS_MOUNT_OSYNCISOSYNC
 mdefine_line|#define XFS_MOUNT_OSYNCISOSYNC&t;0x00002000&t;/* o_sync is REALLY o_sync */
 multiline_comment|/* osyncisdsync is now default*/
-DECL|macro|XFS_MOUNT_NOUUID
-mdefine_line|#define XFS_MOUNT_NOUUID&t;0x00004000&t;/* ignore uuid during mount */
 DECL|macro|XFS_MOUNT_32BITINODES
-mdefine_line|#define XFS_MOUNT_32BITINODES&t;0x00008000&t;/* do not create inodes above&n;&t;&t;&t;&t;&t;&t; * 32 bits in size */
+mdefine_line|#define XFS_MOUNT_32BITINODES&t;0x00004000&t;/* do not create inodes above&n;&t;&t;&t;&t;&t;&t; * 32 bits in size */
+DECL|macro|XFS_MOUNT_32BITINOOPT
+mdefine_line|#define XFS_MOUNT_32BITINOOPT&t;0x00008000&t;/* saved mount option state */
+DECL|macro|XFS_MOUNT_NOUUID
+mdefine_line|#define XFS_MOUNT_NOUUID&t;0x00010000&t;/* ignore uuid during mount */
 DECL|macro|XFS_MOUNT_NOLOGFLUSH
-mdefine_line|#define XFS_MOUNT_NOLOGFLUSH&t;0x00010000
+mdefine_line|#define XFS_MOUNT_NOLOGFLUSH&t;0x00020000
 multiline_comment|/*&n; * Default minimum read and write sizes.&n; */
 DECL|macro|XFS_READIO_LOG_LARGE
 mdefine_line|#define XFS_READIO_LOG_LARGE&t;16

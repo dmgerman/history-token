@@ -901,7 +901,11 @@ id|XFSMNT_32BITINODES
 )paren
 id|mp-&gt;m_flags
 op_or_assign
+(paren
 id|XFS_MOUNT_32BITINODES
+op_or
+id|XFS_MOUNT_32BITINOOPT
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5142,6 +5146,8 @@ DECL|macro|MNTOPT_NOLOGFLUSH
 mdefine_line|#define MNTOPT_NOLOGFLUSH   &quot;nologflush&quot;   /* don&squot;t hard flush on log writes */
 DECL|macro|MNTOPT_OSYNCISOSYNC
 mdefine_line|#define MNTOPT_OSYNCISOSYNC &quot;osyncisosync&quot; /* o_sync is REALLY o_sync */
+DECL|macro|MNTOPT_64BITINODE
+mdefine_line|#define MNTOPT_64BITINODE   &quot;inode64&quot;  /* inodes can be allocated anywhere */
 r_int
 DECL|function|xfs_parseargs
 id|xfs_parseargs
@@ -5842,6 +5848,39 @@ comma
 l_int|10
 )paren
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|this_char
+comma
+id|MNTOPT_64BITINODE
+)paren
+)paren
+(brace
+id|args-&gt;flags
+op_and_assign
+op_complement
+id|XFSMNT_32BITINODES
+suffix:semicolon
+macro_line|#ifndef XFS_BIG_FILESYSTEMS
+id|printk
+c_func
+(paren
+l_string|&quot;XFS: %s option not allowed on this system&bslash;n&quot;
+comma
+id|MNTOPT_64BITINODE
+)paren
+suffix:semicolon
+r_return
+id|EINVAL
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 r_if
