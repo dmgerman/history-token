@@ -871,7 +871,7 @@ DECL|macro|PVR_REV
 mdefine_line|#define&t;PVR_REV(pvr)  (((pvr) &gt;&gt;   0) &amp; 0xFFFF)&t;/* Revison field */
 multiline_comment|/* Processor Version Numbers */
 DECL|macro|PV_NORTHSTAR
-mdefine_line|#define PV_NORTHSTAR&t;0x0033
+mdefine_line|#define&t;PV_NORTHSTAR&t;0x0033
 DECL|macro|PV_PULSAR
 mdefine_line|#define&t;PV_PULSAR&t;0x0034
 DECL|macro|PV_POWER4

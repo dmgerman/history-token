@@ -1199,6 +1199,14 @@ id|indx
 op_assign
 l_int|0
 suffix:semicolon
+id|ppc64_boot_msg
+c_func
+(paren
+l_int|0x20
+comma
+l_string|&quot;XICS Init&quot;
+)paren
+suffix:semicolon
 id|ibm_get_xive
 op_assign
 id|rtas_token
@@ -1936,6 +1944,14 @@ op_or_assign
 id|IRQ_PER_CPU
 suffix:semicolon
 macro_line|#endif
+id|ppc64_boot_msg
+c_func
+(paren
+l_int|0x21
+comma
+l_string|&quot;XICS Done&quot;
+)paren
+suffix:semicolon
 )brace
 DECL|function|xics_isa_init
 r_void
