@@ -13916,6 +13916,13 @@ id|CifsGood
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+)paren
+(brace
 id|pSesInfo-&gt;capabilities
 op_assign
 id|pSesInfo-&gt;server-&gt;capabilities
@@ -13940,13 +13947,6 @@ id|pSesInfo-&gt;sequence_number
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rc
-)paren
-(brace
 id|cFYI
 c_func
 (paren
