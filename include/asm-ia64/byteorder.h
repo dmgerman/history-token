@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_BYTEORDER_H
 DECL|macro|_ASM_IA64_BYTEORDER_H
 mdefine_line|#define _ASM_IA64_BYTEORDER_H
-multiline_comment|/*&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Modified 1998, 1999&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;, Hewlett-Packard Co.&n; */
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
 r_static

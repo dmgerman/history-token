@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_IOCTL_H
 DECL|macro|_ASM_IA64_IOCTL_H
 mdefine_line|#define _ASM_IA64_IOCTL_H
-multiline_comment|/*&n; * This is mostly derived from the Linux/x86 version.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Based on &lt;asm-i386/ioctl.h&gt;.&n; *&n; * Modified 1998, 1999&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;, Hewlett-Packard Co&n; */
 multiline_comment|/* ioctl command encoding: 32 bits total, command in lower 16 bits,&n; * size of the parameter structure in the lower 14 bits of the&n; * upper 16 bits.&n; * Encoding the size of the parameter structure in the ioctl request&n; * is useful for catching programs compiled with old versions&n; * and to avoid overwriting user space outside the user buffer area.&n; * The highest 2 bits are reserved for indicating the ``access mode&squot;&squot;.&n; * NOTE: This limits the max parameter size to 16kB -1 !&n; */
 multiline_comment|/*&n; * The following is for compatibility across the various Linux&n; * platforms.  The ia64 ioctl numbering scheme doesn&squot;t really enforce&n; * a type field.  De facto, however, the top 8 bits of the lower 16&n; * bits are indeed used as a type field, so we might just as well make&n; * this explicit here.  Please be sure to use the decoding macros&n; * below from now on.&n; */
 DECL|macro|_IOC_NRBITS
