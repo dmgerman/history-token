@@ -972,8 +972,14 @@ id|amd_8151_masks
 op_assign
 (brace
 (brace
+dot
+id|mask
+op_assign
 l_int|0x00000001
 comma
+dot
+id|type
+op_assign
 l_int|0
 )brace
 )brace
