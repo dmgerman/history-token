@@ -2333,7 +2333,7 @@ comma
 id|fhandle
 comma
 op_amp
-id|info
+id|fsinfo
 comma
 l_int|0
 )paren

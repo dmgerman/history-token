@@ -733,6 +733,25 @@ id|clientid_t
 id|se_clientid
 suffix:semicolon
 multiline_comment|/* response */
+DECL|member|se_confirm
+id|nfs4_verifier
+id|se_confirm
+suffix:semicolon
+multiline_comment|/* response */
+)brace
+suffix:semicolon
+DECL|struct|nfsd4_setclientid_confirm
+r_struct
+id|nfsd4_setclientid_confirm
+(brace
+DECL|member|sc_clientid
+id|clientid_t
+id|sc_clientid
+suffix:semicolon
+DECL|member|sc_confirm
+id|nfs4_verifier
+id|sc_confirm
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* also used for NVERIFY */
@@ -918,7 +937,8 @@ id|nfsd4_setclientid
 id|setclientid
 suffix:semicolon
 DECL|member|setclientid_confirm
-id|clientid_t
+r_struct
+id|nfsd4_setclientid_confirm
 id|setclientid_confirm
 suffix:semicolon
 DECL|member|verify
@@ -1017,7 +1037,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|NFS4_SVC_XDRSIZE
 mdefine_line|#define NFS4_SVC_XDRSIZE&t;&t;sizeof(struct nfsd4_compoundargs)
-macro_line|#if CONFIG_NFSD_V3
 r_static
 r_inline
 r_void
@@ -1067,7 +1086,6 @@ op_assign
 id|fhp-&gt;fh_post_ctime
 suffix:semicolon
 )brace
-macro_line|#endif
 r_int
 id|nfs4svc_encode_voidres
 c_func

@@ -321,8 +321,60 @@ op_star
 id|mc_list
 suffix:semicolon
 multiline_comment|/* Group array */
+DECL|member|sndmsg_page
+r_struct
+id|page
+op_star
+id|sndmsg_page
+suffix:semicolon
+multiline_comment|/* Cached page for sendmsg */
+DECL|member|sndmsg_off
+id|u32
+id|sndmsg_off
+suffix:semicolon
+multiline_comment|/* Cached offset for sendmsg */
+multiline_comment|/*&n;&t; * Following members are used to retain the infomation to build&n;&t; * an ip header on each ip fragmentation while the socket is corked.&n;&t; */
+r_struct
+(brace
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+DECL|member|fragsize
+r_int
+r_int
+id|fragsize
+suffix:semicolon
+DECL|member|opt
+r_struct
+id|ip_options
+op_star
+id|opt
+suffix:semicolon
+DECL|member|rt
+r_struct
+id|rtable
+op_star
+id|rt
+suffix:semicolon
+DECL|member|length
+r_int
+id|length
+suffix:semicolon
+multiline_comment|/* Total length of all frames */
+DECL|member|addr
+id|u32
+id|addr
+suffix:semicolon
+DECL|member|cork
+)brace
+id|cork
+suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|IPCORK_OPT
+mdefine_line|#define IPCORK_OPT&t;1&t;/* ip-options has been held in ipcork.opt */
 r_struct
 id|ipv6_pinfo
 suffix:semicolon

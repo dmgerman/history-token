@@ -140,30 +140,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * These are the old (and unsafe) way of doing checksums, a warning message will be&n; * printed if they are used and an exeption occurs.&n; *&n; * these functions should go away after some time.&n; */
-DECL|macro|csum_partial_copy_fromuser
-mdefine_line|#define csum_partial_copy_fromuser csum_partial_copy
-r_int
-r_int
-id|csum_partial_copy
-c_func
-(paren
-r_const
-r_char
-op_star
-id|src
-comma
-r_char
-op_star
-id|dst
-comma
-r_int
-id|len
-comma
-r_int
-id|sum
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *&t;Fold a partial checksum&n; */
 DECL|function|csum_fold
 r_static

@@ -295,14 +295,6 @@ c_func
 id|__strnlen_user_asm
 )paren
 suffix:semicolon
-multiline_comment|/* Networking helper routines. */
-DECL|variable|csum_partial_copy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|csum_partial_copy
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Functions to control caches.&n; */
 DECL|variable|_flush_page_to_ram
 id|EXPORT_SYMBOL

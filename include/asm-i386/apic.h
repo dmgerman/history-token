@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/apicdef.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|macro|APIC_DEBUG
 mdefine_line|#define APIC_DEBUG 0
 macro_line|#if APIC_DEBUG
@@ -16,6 +15,7 @@ macro_line|#else
 DECL|macro|Dprintk
 mdefine_line|#define Dprintk(x...)
 macro_line|#endif
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/*&n; * Basic functions accessing APICs.&n; */
 DECL|function|apic_write
 r_static

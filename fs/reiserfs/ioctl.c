@@ -249,13 +249,6 @@ id|i_flags
 op_or_assign
 id|i_nopack_mask
 suffix:semicolon
-id|kunmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-multiline_comment|/* mapped by prepare_write */
 id|out_unlock
 suffix:colon
 id|unlock_page

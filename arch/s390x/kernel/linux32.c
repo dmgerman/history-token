@@ -12309,42 +12309,6 @@ suffix:semicolon
 multiline_comment|/* XXX This really belongs in some header file... -DaveM */
 DECL|macro|MAX_SOCK_ADDR
 mdefine_line|#define MAX_SOCK_ADDR&t;128&t;&t;/* 108 for Unix domain - &n;&t;&t;&t;&t;&t;   16 for IP, 16 for IPX,&n;&t;&t;&t;&t;&t;   24 for IPv6,&n;&t;&t;&t;&t;&t;   about 80 for AX.25 */
-r_extern
-r_struct
-id|socket
-op_star
-id|sockfd_lookup
-c_func
-(paren
-r_int
-id|fd
-comma
-r_int
-op_star
-id|err
-)paren
-suffix:semicolon
-multiline_comment|/* XXX This as well... */
-DECL|function|sockfd_put
-r_extern
-id|__inline__
-r_void
-id|sockfd_put
-c_func
-(paren
-r_struct
-id|socket
-op_star
-id|sock
-)paren
-(brace
-id|fput
-c_func
-(paren
-id|sock-&gt;file
-)paren
-suffix:semicolon
-)brace
 DECL|struct|msghdr32
 r_struct
 id|msghdr32

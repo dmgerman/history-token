@@ -5,10 +5,10 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * copy while checksumming, otherwise like csum_partial&n; */
-DECL|function|csum_partial_copy
+DECL|function|csum_partial_copy_nocheck
 r_int
 r_int
-id|csum_partial_copy
+id|csum_partial_copy_nocheck
 c_func
 (paren
 r_const

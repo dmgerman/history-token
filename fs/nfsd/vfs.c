@@ -2,7 +2,6 @@ DECL|macro|MSNFS
 mdefine_line|#define MSNFS&t;/* HACK HACK */
 multiline_comment|/*&n; * linux/fs/nfsd/vfs.c&n; *&n; * File operations used by nfsd. Some of these have been ripped from&n; * other parts of the kernel because they weren&squot;t in ksyms.c, others&n; * are partial duplicates with added or changed functionality.&n; *&n; * Note that several functions dget() the dentry upon which they want&n; * to act, most notably those that create directory entries. Response&n; * dentry&squot;s are dput()&squot;d if necessary in the release callback.&n; * So if you notice code paths that apparently fail to dput() the&n; * dentry, don&squot;t worry--they have been taken care of.&n; *&n; * Copyright (C) 1995-1999 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -16,8 +15,6 @@ macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
@@ -2209,15 +2206,6 @@ id|err
 op_assign
 id|nfserr_perm
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|file.f_op-&gt;read
-)paren
-r_goto
-id|out_close
-suffix:semicolon
 id|inode
 op_assign
 id|file.f_dentry-&gt;d_inode
@@ -2270,10 +2258,6 @@ id|file.f_ra
 op_assign
 id|ra-&gt;p_ra
 suffix:semicolon
-id|file.f_pos
-op_assign
-id|offset
-suffix:semicolon
 id|oldfs
 op_assign
 id|get_fs
@@ -2289,9 +2273,7 @@ id|KERNEL_DS
 suffix:semicolon
 id|err
 op_assign
-id|file.f_op
-op_member_access_from_pointer
-id|read
+id|vfs_read
 c_func
 (paren
 op_amp
@@ -2303,7 +2285,7 @@ op_star
 id|count
 comma
 op_amp
-id|file.f_pos
+id|offset
 )paren
 suffix:semicolon
 id|set_fs
@@ -2471,15 +2453,6 @@ id|err
 op_assign
 id|nfserr_perm
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|file.f_op-&gt;write
-)paren
-r_goto
-id|out_close
-suffix:semicolon
 macro_line|#ifdef MSNFS
 r_if
 c_cond
@@ -2570,11 +2543,6 @@ id|file.f_flags
 op_or_assign
 id|O_SYNC
 suffix:semicolon
-id|file.f_pos
-op_assign
-id|offset
-suffix:semicolon
-multiline_comment|/* set write offset */
 multiline_comment|/* Write the data. */
 id|oldfs
 op_assign
@@ -2591,9 +2559,7 @@ id|KERNEL_DS
 suffix:semicolon
 id|err
 op_assign
-id|file.f_op
-op_member_access_from_pointer
-id|write
+id|vfs_write
 c_func
 (paren
 op_amp
@@ -2604,7 +2570,7 @@ comma
 id|cnt
 comma
 op_amp
-id|file.f_pos
+id|offset
 )paren
 suffix:semicolon
 r_if

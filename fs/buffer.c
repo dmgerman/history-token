@@ -404,7 +404,6 @@ id|wait
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
 DECL|function|__set_page_buffers
 id|__set_page_buffers
@@ -459,7 +458,6 @@ id|head
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
 DECL|function|__clear_page_buffers
 id|__clear_page_buffers
@@ -1956,7 +1954,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * If a page&squot;s buffers are under async readin (end_buffer_async_read&n; * completion) then there is a possibility that another thread of&n; * control could lock one of the buffers after it has completed&n; * but while some of the other buffers have not completed.  This&n; * locked buffer would confuse end_buffer_async_read() into not unlocking&n; * the page.  So the absence of BH_Async_Read tells end_buffer_async_read()&n; * that this buffer is not under async I/O.&n; *&n; * The page comes unlocked when it has no locked buffer_async buffers&n; * left.&n; *&n; * PageLocked prevents anyone starting new async I/O reads any of&n; * the buffers.&n; *&n; * PageWriteback is used to prevent simultaneous writeout of the same&n; * page.&n; *&n; * PageLocked prevents anyone from starting writeback of a page which is&n; * under read I/O (PageWriteback is only ever set against a locked page).&n; */
 DECL|function|mark_buffer_async_read
-r_inline
 r_void
 id|mark_buffer_async_read
 c_func
@@ -1986,7 +1983,6 @@ id|mark_buffer_async_read
 )paren
 suffix:semicolon
 DECL|function|mark_buffer_async_write
-r_inline
 r_void
 id|mark_buffer_async_write
 c_func
@@ -3041,7 +3037,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialise the state of a blockdev page&squot;s buffers.&n; */
 r_static
-multiline_comment|/*inline*/
 r_void
 DECL|function|init_page_buffers
 id|init_page_buffers
@@ -3166,7 +3161,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Create the page-cache page that contains the requested block.&n; *&n; * This is user purely for blockdev mappings.&n; */
 r_static
-multiline_comment|/*inline*/
 r_struct
 id|page
 op_star
@@ -4756,7 +4750,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Called when truncating a buffer on a page completely.&n; */
 DECL|function|discard_buffer
 r_static
-multiline_comment|/* inline */
+r_inline
 r_void
 id|discard_buffer
 c_func
@@ -9182,7 +9176,6 @@ id|BH_Lock
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_int
 DECL|function|drop_buffers
 id|drop_buffers

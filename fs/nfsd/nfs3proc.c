@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -2580,6 +2579,7 @@ mdefine_line|#define pAT (1+AT)&t;/* post attributes - conditional */
 DECL|macro|WC
 mdefine_line|#define WC (7+pAT)&t;/* WCC attributes */
 DECL|variable|nfsd_procedures3
+r_static
 r_struct
 id|svc_procedure
 id|nfsd_procedures3
@@ -3043,6 +3043,39 @@ id|WC
 op_plus
 l_int|2
 )paren
+comma
+)brace
+suffix:semicolon
+DECL|variable|nfsd_version3
+r_struct
+id|svc_version
+id|nfsd_version3
+op_assign
+(brace
+dot
+id|vs_vers
+op_assign
+l_int|3
+comma
+dot
+id|vs_nproc
+op_assign
+l_int|22
+comma
+dot
+id|vs_proc
+op_assign
+id|nfsd_procedures3
+comma
+dot
+id|vs_dispatch
+op_assign
+id|nfsd_dispatch
+comma
+dot
+id|vs_xdrsize
+op_assign
+id|NFS3_SVC_XDRSIZE
 comma
 )brace
 suffix:semicolon

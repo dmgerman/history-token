@@ -2755,16 +2755,13 @@ macro_line|#if CONFIG_BLK_DEV_MD
 r_if
 c_cond
 (paren
-op_logical_neg
 id|state-&gt;parts
 (braket
-id|j
+id|p
 )braket
 dot
 id|flags
 )paren
-r_continue
-suffix:semicolon
 id|md_autodetect_dev
 c_func
 (paren

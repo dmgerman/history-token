@@ -6118,6 +6118,7 @@ c_cond
 id|copy_from_user
 c_func
 (paren
+op_amp
 id|authflavour
 comma
 id|data-&gt;auth_flavours

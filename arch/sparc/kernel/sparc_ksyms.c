@@ -1067,6 +1067,13 @@ c_func
 id|bcopy
 )paren
 suffix:semicolon
+DECL|variable|memchr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memchr
+)paren
+suffix:semicolon
 DECL|variable|memscan
 id|EXPORT_SYMBOL_NOVERS
 c_func

@@ -5383,6 +5383,19 @@ op_amp
 id|to-&gt;si_addr
 )paren
 suffix:semicolon
+macro_line|#ifdef __ARCH_SI_TRAPNO
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|from-&gt;si_trapno
+comma
+op_amp
+id|to-&gt;si_trapno
+)paren
+suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case

@@ -1739,6 +1739,13 @@ c_func
 id|__memmove
 )paren
 suffix:semicolon
+DECL|variable|memchr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memchr
+)paren
+suffix:semicolon
 DECL|variable|csum_partial_copy_sparc64
 id|EXPORT_SYMBOL
 c_func

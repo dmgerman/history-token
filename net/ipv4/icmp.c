@@ -847,6 +847,11 @@ comma
 r_int
 r_int
 id|fraglen
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
 )paren
 (brace
 r_struct
@@ -869,6 +874,10 @@ suffix:semicolon
 r_int
 r_int
 id|csum
+suffix:semicolon
+id|skb-&gt;ip_summed
+op_assign
+id|CHECKSUM_NONE
 suffix:semicolon
 r_if
 c_cond
