@@ -122,5 +122,12 @@ id|timer_opts
 id|timer_cyclone
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_HPET_TIMER
+r_extern
+r_struct
+id|timer_opts
+id|timer_hpet
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 eof
