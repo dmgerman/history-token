@@ -538,6 +538,17 @@ id|ent
 suffix:semicolon
 r_static
 r_void
+id|pdc20621_dma_setup
+c_func
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+suffix:semicolon
+r_static
+r_void
 id|pdc20621_dma_start
 c_func
 (paren
@@ -911,6 +922,11 @@ dot
 id|phy_reset
 op_assign
 id|pdc_20621_phy_reset
+comma
+dot
+id|bmdma_setup
+op_assign
+id|pdc20621_dma_setup
 comma
 dot
 id|bmdma_start
@@ -2840,6 +2856,20 @@ id|qc
 (brace
 )brace
 macro_line|#endif /* ATA_VERBOSE_DEBUG */
+DECL|function|pdc20621_dma_setup
+r_static
+r_void
+id|pdc20621_dma_setup
+c_func
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+(brace
+multiline_comment|/* nothing for now.  later, we will call standard&n;&t; * code in libata-core for ATAPI here */
+)brace
 DECL|function|pdc20621_dma_start
 r_static
 r_void

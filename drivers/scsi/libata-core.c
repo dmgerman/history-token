@@ -8366,6 +8366,15 @@ suffix:semicolon
 multiline_comment|/* load tf registers */
 id|ap-&gt;ops
 op_member_access_from_pointer
+id|bmdma_setup
+c_func
+(paren
+id|qc
+)paren
+suffix:semicolon
+multiline_comment|/* initiate bmdma */
+id|ap-&gt;ops
+op_member_access_from_pointer
 id|bmdma_start
 c_func
 (paren
@@ -8429,10 +8438,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_bmdma_start_mmio -&n; *&t;@qc:&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
-DECL|function|ata_bmdma_start_mmio
+multiline_comment|/**&n; *&t;ata_bmdma_setup_mmio - Set up PCI IDE BMDMA transaction (MMIO)&n; *&t;@qc: Info associated with this ATA transaction.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+DECL|function|ata_bmdma_setup_mmio
 r_void
-id|ata_bmdma_start_mmio
+id|ata_bmdma_setup_mmio
 (paren
 r_struct
 id|ata_queued_cmd
@@ -8566,7 +8575,49 @@ op_amp
 id|qc-&gt;tf
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;ata_bmdma_start_mmio - Start a PCI IDE BMDMA transaction (MMIO)&n; *&t;@qc: Info associated with this ATA transaction.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+DECL|function|ata_bmdma_start_mmio
+r_void
+id|ata_bmdma_start_mmio
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+(brace
+r_struct
+id|ata_port
+op_star
+id|ap
+op_assign
+id|qc-&gt;ap
+suffix:semicolon
+r_void
+op_star
+id|mmio
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|ap-&gt;ioaddr.bmdma_addr
+suffix:semicolon
+id|u8
+id|dmactl
+suffix:semicolon
 multiline_comment|/* start host DMA transaction */
+id|dmactl
+op_assign
+id|readb
+c_func
+(paren
+id|mmio
+op_plus
+id|ATA_DMA_CMD
+)paren
+suffix:semicolon
 id|writeb
 c_func
 (paren
@@ -8581,10 +8632,10 @@ id|ATA_DMA_CMD
 suffix:semicolon
 multiline_comment|/* Strictly, one may wish to issue a readb() here, to&n;&t; * flush the mmio write.  However, control also passes&n;&t; * to the hardware at this point, and it will interrupt&n;&t; * us when we are to resume control.  So, in effect,&n;&t; * we don&squot;t care when the mmio write flushes.&n;&t; * Further, a read of the DMA status register _immediately_&n;&t; * following the write may not be what certain flaky hardware&n;&t; * is expected, so I think it is best to not add a readb()&n;&t; * without first all the MMIO ATA cards/mobos.&n;&t; * Or maybe I&squot;m just being paranoid.&n;&t; */
 )brace
-multiline_comment|/**&n; *&t;ata_bmdma_start_pio -&n; *&t;@qc:&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
-DECL|function|ata_bmdma_start_pio
+multiline_comment|/**&n; *&t;ata_bmdma_setup_pio - Set up PCI IDE BMDMA transaction (PIO)&n; *&t;@qc: Info associated with this ATA transaction.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+DECL|function|ata_bmdma_setup_pio
 r_void
-id|ata_bmdma_start_pio
+id|ata_bmdma_setup_pio
 (paren
 r_struct
 id|ata_queued_cmd
@@ -8702,7 +8753,39 @@ op_amp
 id|qc-&gt;tf
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;ata_bmdma_start_pio - Start a PCI IDE BMDMA transaction (PIO)&n; *&t;@qc: Info associated with this ATA transaction.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+DECL|function|ata_bmdma_start_pio
+r_void
+id|ata_bmdma_start_pio
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+(brace
+r_struct
+id|ata_port
+op_star
+id|ap
+op_assign
+id|qc-&gt;ap
+suffix:semicolon
+id|u8
+id|dmactl
+suffix:semicolon
 multiline_comment|/* start host DMA transaction */
+id|dmactl
+op_assign
+id|inb
+c_func
+(paren
+id|ap-&gt;ioaddr.bmdma_addr
+op_plus
+id|ATA_DMA_CMD
+)paren
+suffix:semicolon
 id|outb
 c_func
 (paren
@@ -12375,11 +12458,25 @@ c_func
 id|ata_fill_sg
 )paren
 suffix:semicolon
+DECL|variable|ata_bmdma_setup_pio
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ata_bmdma_setup_pio
+)paren
+suffix:semicolon
 DECL|variable|ata_bmdma_start_pio
 id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|ata_bmdma_start_pio
+)paren
+suffix:semicolon
+DECL|variable|ata_bmdma_setup_mmio
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ata_bmdma_setup_mmio
 )paren
 suffix:semicolon
 DECL|variable|ata_bmdma_start_mmio

@@ -851,6 +851,11 @@ op_assign
 id|sata_phy_reset
 comma
 dot
+id|bmdma_setup
+op_assign
+id|ata_bmdma_setup_mmio
+comma
+dot
 id|bmdma_start
 op_assign
 id|ata_bmdma_start_mmio
