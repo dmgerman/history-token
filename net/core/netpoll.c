@@ -876,11 +876,18 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* avoid -&gt;poll recursion */
+multiline_comment|/* avoid recursion */
 r_if
 c_cond
 (paren
 id|np-&gt;poll_owner
+op_eq
+id|__smp_processor_id
+c_func
+(paren
+)paren
+op_logical_or
+id|np-&gt;dev-&gt;xmit_lock_owner
 op_eq
 id|__smp_processor_id
 c_func
