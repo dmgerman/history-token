@@ -185,6 +185,10 @@ c_func
 op_amp
 id|sb
 comma
+(paren
+r_void
+op_star
+)paren
 id|tptr
 comma
 r_sizeof

@@ -11,8 +11,21 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * possibly do the LDT unload here?&n; */
 DECL|macro|destroy_context
 mdefine_line|#define destroy_context(mm)&t;&t;do { } while(0)
-DECL|macro|init_new_context
-mdefine_line|#define init_new_context(tsk,mm)&t;0
+r_int
+id|init_new_context
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|function|enter_lazy_tlb
 r_static
@@ -131,24 +144,6 @@ op_amp
 id|prev-&gt;cpu_vm_mask
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Re-load LDT if necessary&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|prev-&gt;context.segments
-op_ne
-id|next-&gt;context.segments
-)paren
-)paren
-id|load_LDT
-c_func
-(paren
-id|next
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|cpu_tlbstate
 (braket
@@ -178,15 +173,6 @@ op_amp
 id|next-&gt;cpu_vm_mask
 )paren
 suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|cpu
-comma
-op_amp
-id|next-&gt;context.cpuvalid
-)paren
-suffix:semicolon
 multiline_comment|/* Re-load page tables */
 op_star
 id|read_pda
@@ -206,6 +192,20 @@ suffix:semicolon
 id|__flush_tlb
 c_func
 (paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|next-&gt;context.size
+op_plus
+id|prev-&gt;context.size
+)paren
+id|load_LDT
+c_func
+(paren
+op_amp
+id|next-&gt;context
 )paren
 suffix:semicolon
 )brace
@@ -260,26 +260,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|test_and_set_bit
-c_func
-(paren
-id|cpu
-comma
-op_amp
-id|next-&gt;context.cpuvalid
-)paren
-)paren
 id|load_LDT
 c_func
 (paren
-id|next
+op_amp
+id|next-&gt;context
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 )brace

@@ -1516,6 +1516,27 @@ r_void
 id|FASTCALL
 c_func
 (paren
+id|__wake_up_sync
+c_func
+(paren
+id|wait_queue_head_t
+op_star
+id|q
+comma
+r_int
+r_int
+id|mode
+comma
+r_int
+id|nr
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
 id|sleep_on
 c_func
 (paren
@@ -1631,6 +1652,13 @@ DECL|macro|wake_up_interruptible_nr
 mdefine_line|#define wake_up_interruptible_nr(x, nr)&t;__wake_up((x),TASK_INTERRUPTIBLE, nr)
 DECL|macro|wake_up_interruptible_all
 mdefine_line|#define wake_up_interruptible_all(x)&t;__wake_up((x),TASK_INTERRUPTIBLE, 0)
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|wake_up_interruptible_sync
+mdefine_line|#define wake_up_interruptible_sync(x)   __wake_up_sync((x),TASK_INTERRUPTIBLE, 1)
+macro_line|#else
+DECL|macro|wake_up_interruptible_sync
+mdefine_line|#define wake_up_interruptible_sync(x)   __wake_up((x),TASK_INTERRUPTIBLE, 1)
+macro_line|#endif
 id|asmlinkage
 r_int
 id|sys_wait4

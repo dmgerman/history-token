@@ -330,6 +330,9 @@ c_func
 suffix:semicolon
 r_return
 (paren
+id|dma_addr_t
+)paren
+(paren
 id|page
 op_minus
 id|mem_map

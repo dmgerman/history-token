@@ -213,7 +213,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* lba_capacity value may be bad */
 )brace
-multiline_comment|/*&n; * Handler for command with PIO data-in phase&n; */
+multiline_comment|/*&n; * Handler for command with PIO data-in phase.&n; */
 DECL|function|task_in_intr
 r_static
 id|ide_startstop_t
@@ -242,11 +242,16 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-r_char
-op_star
-id|buf
-op_assign
-l_int|NULL
+r_int
+id|ret
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -274,6 +279,15 @@ op_or
 id|DRQ_STAT
 )paren
 )paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ata_error
 c_func
@@ -285,6 +299,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -296,23 +311,7 @@ id|BUSY_STAT
 )paren
 )paren
 (brace
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;task_in_intr to Soon wait for next interrupt&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t;&t; * file access too.&n;&t;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
+singleline_comment|//&t;&t;&t;printk(&quot;task_in_intr to Soon wait for next interrupt&bslash;n&quot;);
 id|ata_set_handler
 c_func
 (paren
@@ -338,6 +337,16 @@ id|ide_started
 suffix:semicolon
 )brace
 )brace
+singleline_comment|//&t;printk(&quot;Read: %p, rq-&gt;current_nr_sectors: %d&bslash;n&quot;, buf, (int) rq-&gt;current_nr_sectors);
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_char
+op_star
+id|buf
+suffix:semicolon
 id|buf
 op_assign
 id|ide_map_rq
@@ -349,21 +358,6 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;Read: %p, rq-&gt;current_nr_sectors: %d&bslash;n&quot;
-comma
-id|buf
-comma
-(paren
-r_int
-)paren
-id|rq-&gt;current_nr_sectors
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ata_read
 c_func
 (paren
@@ -385,7 +379,8 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* First segment of the request is complete. note that this does not&n;&t; * necessarily mean that the entire request is done!! this is only true&n;&t; * if ide_end_request() returns 0.&n;&t; */
+)brace
+multiline_comment|/* First segment of the request is complete. note that this does not&n;&t; * necessarily mean that the entire request is done!! this is only true&n;&t; * if ata_end_request() returns 0.&n;&t; */
 r_if
 c_cond
 (paren
@@ -393,23 +388,9 @@ op_decrement
 id|rq-&gt;current_nr_sectors
 op_le
 l_int|0
-)paren
-(brace
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;Request Ended stat: %02x&bslash;n&quot;
-comma
-id|drive-&gt;status
-)paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
+op_logical_and
 op_logical_neg
-id|ide_end_request
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -417,21 +398,19 @@ comma
 id|rq
 comma
 l_int|1
+comma
+l_int|0
 )paren
 )paren
-r_return
+(brace
+singleline_comment|//&t;&t;printk(&quot;Request Ended stat: %02x&bslash;n&quot;, drive-&gt;status);
+id|ret
+op_assign
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
+r_else
+(brace
 multiline_comment|/* still data left to transfer */
 id|ata_set_handler
 c_func
@@ -445,6 +424,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|ret
+op_assign
+id|ide_started
+suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -454,10 +438,10 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|ide_started
+id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Handler for command with PIO data-out phase&n; */
+multiline_comment|/*&n; * Handler for command with PIO data-out phase.&n; */
 DECL|function|task_out_intr
 r_static
 id|ide_startstop_t
@@ -486,11 +470,16 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-r_char
-op_star
-id|buf
-op_assign
-l_int|NULL
+r_int
+id|ret
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -506,6 +495,15 @@ comma
 id|drive-&gt;bad_wstat
 )paren
 )paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ata_error
 c_func
@@ -517,17 +515,15 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 op_logical_neg
 id|rq-&gt;current_nr_sectors
-)paren
-r_if
-c_cond
-(paren
+op_logical_and
 op_logical_neg
-id|ide_end_request
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -535,11 +531,18 @@ comma
 id|rq
 comma
 l_int|1
+comma
+l_int|0
 )paren
 )paren
-r_return
+(brace
+id|ret
+op_assign
 id|ide_stopped
 suffix:semicolon
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -556,6 +559,15 @@ id|DRQ_STAT
 )paren
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_char
+op_star
+id|buf
+suffix:semicolon
+singleline_comment|//&t;&t;&t;printk(&quot;write: %p, rq-&gt;current_nr_sectors: %d&bslash;n&quot;, buf, (int) rq-&gt;current_nr_sectors);
 id|buf
 op_assign
 id|ide_map_rq
@@ -567,21 +579,6 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;write: %p, rq-&gt;current_nr_sectors: %d&bslash;n&quot;
-comma
-id|buf
-comma
-(paren
-r_int
-)paren
-id|rq-&gt;current_nr_sectors
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ata_write
 c_func
 (paren
@@ -607,19 +604,10 @@ id|rq-&gt;errors
 op_assign
 l_int|0
 suffix:semicolon
-id|rq-&gt;current_nr_sectors
 op_decrement
+id|rq-&gt;current_nr_sectors
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ata_set_handler
 c_func
 (paren
@@ -632,6 +620,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|ret
+op_assign
+id|ide_started
+suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -641,7 +634,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|ide_started
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Handler for command with Read Multiple&n; */
@@ -673,19 +666,16 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-r_char
-op_star
-id|buf
-op_assign
-l_int|NULL
+r_int
+id|ret
 suffix:semicolon
-r_int
-r_int
-id|msect
-suffix:semicolon
-r_int
-r_int
-id|nsect
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -713,6 +703,15 @@ op_or
 id|DRQ_STAT
 )paren
 )paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ata_error
 c_func
@@ -724,15 +723,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t; * file access too.&n;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
+)brace
 multiline_comment|/* no data yet, so wait for another interrupt */
 id|ata_set_handler
 c_func
@@ -746,18 +737,17 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
+id|ret
+op_assign
 id|ide_started
 suffix:semicolon
 )brace
+r_else
+(brace
+r_int
+r_int
+id|msect
+suffix:semicolon
 multiline_comment|/* (ks/hs): Fixed Multi-Sector transfer */
 id|msect
 op_assign
@@ -765,6 +755,10 @@ id|drive-&gt;mult_count
 suffix:semicolon
 r_do
 (brace
+r_int
+r_int
+id|nsect
+suffix:semicolon
 id|nsect
 op_assign
 id|rq-&gt;current_nr_sectors
@@ -780,17 +774,6 @@ id|nsect
 op_assign
 id|msect
 suffix:semicolon
-id|buf
-op_assign
-id|ide_map_rq
-c_func
-(paren
-id|rq
-comma
-op_amp
-id|flags
-)paren
-suffix:semicolon
 macro_line|#if 0
 id|printk
 c_func
@@ -805,6 +788,26 @@ id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 macro_line|#endif
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_char
+op_star
+id|buf
+suffix:semicolon
+id|buf
+op_assign
+id|ide_map_rq
+c_func
+(paren
+id|rq
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
 id|ata_read
 c_func
 (paren
@@ -828,6 +831,7 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
+)brace
 id|rq-&gt;errors
 op_assign
 l_int|0
@@ -840,6 +844,7 @@ id|msect
 op_sub_assign
 id|nsect
 suffix:semicolon
+multiline_comment|/* FIXME: this seems buggy */
 r_if
 c_cond
 (paren
@@ -851,7 +856,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ide_end_request
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -859,11 +864,23 @@ comma
 id|rq
 comma
 l_int|1
+comma
+l_int|0
 )paren
 )paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ide_stopped
 suffix:semicolon
+)brace
 )brace
 )brace
 r_while
@@ -872,16 +889,7 @@ c_loop
 id|msect
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * more data left&n;&t; */
+multiline_comment|/* more data left */
 id|ata_set_handler
 c_func
 (paren
@@ -894,6 +902,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|ret
+op_assign
+id|ide_started
+suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -903,7 +916,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|ide_started
+id|ret
 suffix:semicolon
 )brace
 DECL|function|task_mulout_intr
@@ -938,12 +951,15 @@ r_int
 id|ok
 suffix:semicolon
 r_int
-id|mcount
-op_assign
-id|drive-&gt;mult_count
+id|ret
 suffix:semicolon
-id|ide_startstop_t
-id|startstop
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * FIXME: the drive-&gt;status checks here seem to be messy.&n;&t; *&n;&t; * (ks/hs): Handle last IRQ on multi-sector transfer,&n;&t; * occurs after all data was sent in this chunk&n;&t; */
 id|ok
@@ -980,8 +996,15 @@ id|DRQ_STAT
 )paren
 )paren
 (brace
-id|startstop
-op_assign
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
 id|ata_error
 c_func
 (paren
@@ -992,9 +1015,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
-id|startstop
-suffix:semicolon
 )brace
 )brace
 r_if
@@ -1004,7 +1024,7 @@ op_logical_neg
 id|rq-&gt;nr_sectors
 )paren
 (brace
-id|__ide_end_request
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -1020,10 +1040,12 @@ id|rq-&gt;bio
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|ide_stopped
 suffix:semicolon
 )brace
+r_else
 r_if
 c_cond
 (paren
@@ -1038,16 +1060,6 @@ c_cond
 op_logical_neg
 id|ch-&gt;handler
 )paren
-(brace
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t;&t; * file access too.&n;&t;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ata_set_handler
 c_func
 (paren
@@ -1060,24 +1072,23 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
-r_return
+id|ret
+op_assign
 id|ide_started
 suffix:semicolon
 )brace
+r_else
+(brace
+r_int
+id|mcount
+op_assign
+id|drive-&gt;mult_count
+suffix:semicolon
 r_do
 (brace
 r_char
 op_star
-id|buffer
+id|buf
 suffix:semicolon
 r_int
 id|nsect
@@ -1103,7 +1114,7 @@ id|mcount
 op_sub_assign
 id|nsect
 suffix:semicolon
-id|buffer
+id|buf
 op_assign
 id|bio_kmap_irq
 c_func
@@ -1181,13 +1192,13 @@ l_int|9
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * Ok, we&squot;re all setup for the interrupt re-entering us on the&n;&t;&t; * last transfer.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Ok, we&squot;re all setup for the interrupt re-entering us on the&n;&t;&t;&t; * last transfer.&n;&t;&t;&t; */
 id|ata_write
 c_func
 (paren
 id|drive
 comma
-id|buffer
+id|buf
 comma
 id|nsect
 op_star
@@ -1220,16 +1231,6 @@ c_cond
 op_logical_neg
 id|ch-&gt;handler
 )paren
-(brace
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t; * file access too.&n;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ata_set_handler
 c_func
 (paren
@@ -1242,6 +1243,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|ret
+op_assign
+id|ide_started
+suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1250,7 +1256,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-)brace
 r_return
 id|ide_started
 suffix:semicolon
@@ -2297,7 +2302,21 @@ id|sector_t
 id|block
 )paren
 (brace
-multiline_comment|/*&n;&t; * Wait until all request have bin finished.&n;&t; */
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+multiline_comment|/* make sure all request have bin finished&n;&t; * FIXME: this check doesn&squot;t make sense go! */
 r_while
 c_loop
 (paren
@@ -2317,6 +2336,16 @@ l_string|&quot;ide: Request while drive blocked?&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: Move this lock entiery upstream. */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME: this check doesn&squot;t make sense */
 r_if
 c_cond
 (paren
@@ -2336,7 +2365,7 @@ comma
 l_string|&quot;idedisk_do_request - bad command&quot;
 )paren
 suffix:semicolon
-id|ide_end_request
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -2344,6 +2373,16 @@ comma
 id|rq
 comma
 l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -2372,6 +2411,14 @@ comma
 id|sector_t
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|drive-&gt;channel-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|promise_do_request
 c_func
@@ -2392,19 +2439,7 @@ id|drive-&gt;using_tcq
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|ret
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|drive-&gt;channel-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|ret
 op_assign
@@ -2455,14 +2490,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|drive-&gt;channel-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2480,12 +2507,19 @@ id|drive
 )paren
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ide_started
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* 48-bit LBA */
 r_if
 c_cond
 (paren
@@ -2499,7 +2533,8 @@ op_logical_and
 id|drive-&gt;addressing
 )paren
 )paren
-r_return
+id|ret
+op_assign
 id|lba48_do_request
 c_func
 (paren
@@ -2510,13 +2545,14 @@ comma
 id|block
 )paren
 suffix:semicolon
-multiline_comment|/* 28-bit LBA */
+r_else
 r_if
 c_cond
 (paren
 id|drive-&gt;select.b.lba
 )paren
-r_return
+id|ret
+op_assign
 id|lba28_do_request
 c_func
 (paren
@@ -2527,8 +2563,9 @@ comma
 id|block
 )paren
 suffix:semicolon
-multiline_comment|/* 28-bit CHS */
-r_return
+r_else
+id|ret
+op_assign
 id|chs_do_request
 c_func
 (paren
@@ -2539,11 +2576,23 @@ comma
 id|block
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|function|idedisk_open
 r_static
 r_int
 id|idedisk_open
+c_func
 (paren
 r_struct
 id|inode
@@ -2630,10 +2679,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|idedisk_flushcache
+DECL|function|flush_cache
 r_static
 r_int
-id|idedisk_flushcache
+id|flush_cache
 c_func
 (paren
 r_struct
@@ -2787,7 +2836,7 @@ id|drive-&gt;wcache
 r_if
 c_cond
 (paren
-id|idedisk_flushcache
+id|flush_cache
 c_func
 (paren
 id|drive
@@ -4977,6 +5026,9 @@ op_star
 id|drive
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4985,13 +5037,6 @@ id|drive
 )paren
 r_return
 l_int|0
-suffix:semicolon
-id|put_device
-c_func
-(paren
-op_amp
-id|drive-&gt;device
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5004,10 +5049,11 @@ l_int|0x3000
 op_logical_and
 id|drive-&gt;wcache
 )paren
+(brace
 r_if
 c_cond
 (paren
-id|idedisk_flushcache
+id|flush_cache
 c_func
 (paren
 id|drive
@@ -5021,12 +5067,27 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-r_return
+)brace
+id|ret
+op_assign
 id|ide_unregister_subdriver
 c_func
 (paren
 id|drive
 )paren
+suffix:semicolon
+multiline_comment|/* FIXME: This is killing the kernel with BUG 185 at asm/spinlocks.h&n;&t; * horribly.  Check whatever we did REGISTER the device properly&n;&t; * in front?&n;&t; */
+macro_line|#if 0
+id|put_device
+c_func
+(paren
+op_amp
+id|drive-&gt;device
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|idedisk_ioctl

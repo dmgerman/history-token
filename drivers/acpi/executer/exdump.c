@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *              $Revision: 153 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *              $Revision: 155 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -167,7 +167,10 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 )paren
 (brace
 r_case
@@ -179,46 +182,6 @@ c_cond
 id|obj_desc-&gt;reference.opcode
 )paren
 (brace
-r_case
-id|AML_ZERO_OP
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;Reference: Zero&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_ONE_OP
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;Reference: One&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_ONES_OP
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;Reference: Ones&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_REVISION_OP
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;Reference: Revision&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|AML_DEBUG_OP
 suffix:colon
@@ -277,9 +240,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_INTEGER
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 op_eq
-id|obj_desc-&gt;common.type
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 multiline_comment|/* Value is a Number */
@@ -321,9 +287,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_INTEGER
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 op_eq
-id|obj_desc-&gt;common.type
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 multiline_comment|/* Value is a Number */
@@ -369,7 +338,7 @@ suffix:colon
 multiline_comment|/*  unknown opcode  */
 id|acpi_os_printf
 (paren
-l_string|&quot;Unknown opcode=%X&bslash;n&quot;
+l_string|&quot;Unknown Reference opcode=%X&bslash;n&quot;
 comma
 id|obj_desc-&gt;reference.opcode
 )paren
@@ -759,9 +728,12 @@ r_else
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_BUFFER
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc-&gt;buffer_field.buffer_obj
+)paren
 op_ne
-id|obj_desc-&gt;buffer_field.buffer_obj-&gt;common.type
+id|ACPI_TYPE_BUFFER
 )paren
 (brace
 id|acpi_os_printf
@@ -858,12 +830,15 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* Unknown Obj_desc-&gt;Common.Type value */
+multiline_comment|/* Unknown Type */
 id|acpi_os_printf
 (paren
 l_string|&quot;Unknown Type %X&bslash;n&quot;
 comma
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -1329,9 +1304,9 @@ id|acpi_ex_out_string
 (paren
 l_string|&quot;Type&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|obj_desc-&gt;common.type
+id|obj_desc
 )paren
 )paren
 suffix:semicolon
@@ -1353,7 +1328,10 @@ multiline_comment|/* Object-specific Fields */
 r_switch
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 )paren
 (brace
 r_case
@@ -1494,16 +1472,12 @@ id|acpi_os_printf
 (paren
 l_string|&quot; %s&quot;
 comma
-id|acpi_ut_get_type_name
-(paren
+id|acpi_ut_get_object_type_name
 (paren
 id|obj_desc-&gt;package.elements
 (braket
 id|i
 )braket
-)paren
-op_member_access_from_pointer
-id|common.type
 )paren
 )paren
 suffix:semicolon
@@ -1869,7 +1843,10 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 )paren
 (brace
 r_case
@@ -2102,22 +2079,16 @@ suffix:colon
 r_case
 id|INTERNAL_TYPE_DATA
 suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;Ex_dump_object_descriptor: Display not implemented for object type %X&bslash;n&quot;
-comma
-id|obj_desc-&gt;common.type
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Ex_dump_object_descriptor: Unknown object type %X&bslash;n&quot;
+l_string|&quot;Ex_dump_object_descriptor: Display not implemented for object type %s&bslash;n&quot;
 comma
-id|obj_desc-&gt;common.type
+id|acpi_ut_get_object_type_name
+(paren
+id|obj_desc
+)paren
 )paren
 suffix:semicolon
 r_break

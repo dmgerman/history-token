@@ -344,6 +344,9 @@ op_star
 id|serial
 )paren
 (brace
+r_int
+id|result
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -351,6 +354,8 @@ l_string|&quot; request_unthrottle&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* ask the device to tell us when the tx buffer becomes&n;&t;   sufficiently empty */
+id|result
+op_assign
 id|usb_control_msg
 c_func
 (paren
@@ -386,6 +391,23 @@ comma
 l_int|2
 op_star
 id|HZ
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+OL
+l_int|0
+)paren
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - error %d from usb_control_msg&quot;
+comma
+id|__FUNCTION__
+comma
+id|result
 )paren
 suffix:semicolon
 )brace
@@ -899,6 +921,9 @@ suffix:semicolon
 r_int
 id|value
 suffix:semicolon
+r_int
+id|result
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -918,6 +943,8 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* clear break */
+id|result
+op_assign
 id|usb_control_msg
 c_func
 (paren
@@ -951,6 +978,23 @@ comma
 l_int|2
 op_star
 id|HZ
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+OL
+l_int|0
+)paren
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - error %d from usb_control_msg&quot;
+comma
+id|__FUNCTION__
+comma
+id|result
 )paren
 suffix:semicolon
 multiline_comment|/* there is something funky about this.. the TCSBRK that &squot;cu&squot; performs&n;&t;   ought to translate into a break_ctl(-1),break_ctl(0) pair HZ/4&n;&t;   seconds apart, but it feels like the break sent isn&squot;t as long as it&n;&t;   is on /dev/ttyS0 */

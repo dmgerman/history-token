@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/cpufeature.h&gt;
 multiline_comment|/* Note: &quot;err&quot; is handled in a funny way below.  Otherwise one version&n;   of gcc or another breaks. */
 DECL|function|wrmsr_eio
 r_static
@@ -47,7 +48,7 @@ l_string|&quot;3:&t;movl %4,%0&bslash;n&quot;
 l_string|&quot;&t;jmp 2b&bslash;n&quot;
 l_string|&quot;.previous&bslash;n&quot;
 l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
-l_string|&quot;&t;.align 4&bslash;n&quot;
+l_string|&quot;&t;.align 8&bslash;n&quot;
 l_string|&quot;&t;.quad 1b,3b&bslash;n&quot;
 l_string|&quot;.previous&quot;
 suffix:colon
@@ -977,13 +978,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_has
 c_func
 (paren
-id|X86_FEATURE_MSR
+id|c
 comma
-op_amp
-id|c-&gt;x86_capability
+id|X86_FEATURE_MSR
 )paren
 )paren
 r_return

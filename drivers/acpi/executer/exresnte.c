@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresnte - AML Interpreter object resolution&n; *              $Revision: 53 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresnte - AML Interpreter object resolution&n; *              $Revision: 56 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -47,9 +47,6 @@ id|node
 suffix:semicolon
 id|acpi_object_type
 id|entry_type
-suffix:semicolon
-id|acpi_integer
-id|temp_val
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -156,9 +153,12 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_PACKAGE
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 op_ne
-id|source_desc-&gt;common.type
+id|ACPI_TYPE_PACKAGE
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -168,9 +168,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Object not a Package, type %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|source_desc-&gt;common.type
+id|source_desc
 )paren
 )paren
 )paren
@@ -216,9 +216,12 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_BUFFER
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 op_ne
-id|source_desc-&gt;common.type
+id|ACPI_TYPE_BUFFER
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -228,9 +231,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Object not a Buffer, type %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|source_desc-&gt;common.type
+id|source_desc
 )paren
 )paren
 )paren
@@ -276,9 +279,12 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_STRING
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 op_ne
-id|source_desc-&gt;common.type
+id|ACPI_TYPE_STRING
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -288,9 +294,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Object not a String, type %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|source_desc-&gt;common.type
+id|source_desc
 )paren
 )paren
 )paren
@@ -319,9 +325,12 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_INTEGER
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 op_ne
-id|source_desc-&gt;common.type
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -331,9 +340,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Object not a Integer, type %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|source_desc-&gt;common.type
+id|source_desc
 )paren
 )paren
 )paren
@@ -452,54 +461,10 @@ id|AE_AML_OPERAND_TYPE
 )paren
 suffix:semicolon
 multiline_comment|/* Cannot be AE_TYPE */
-multiline_comment|/*&n;&t; * The only named references allowed are named constants&n;&t; *   e.g. -- Name (&bslash;OSFL, Ones)&n;&t; */
 r_case
 id|INTERNAL_TYPE_REFERENCE
 suffix:colon
-r_switch
-c_cond
-(paren
-id|source_desc-&gt;reference.opcode
-)paren
-(brace
-r_case
-id|AML_ZERO_OP
-suffix:colon
-id|temp_val
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_ONE_OP
-suffix:colon
-id|temp_val
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_ONES_OP
-suffix:colon
-id|temp_val
-op_assign
-id|ACPI_INTEGER_MAX
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_REVISION_OP
-suffix:colon
-id|temp_val
-op_assign
-id|ACPI_CA_SUPPORT_LEVEL
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
+multiline_comment|/* No named references are allowed here */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -513,51 +478,8 @@ id|source_desc-&gt;reference.opcode
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_AML_BAD_OPCODE
+id|AE_AML_OPERAND_TYPE
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/* Create object for result */
-id|obj_desc
-op_assign
-id|acpi_ut_create_internal_object
-(paren
-id|ACPI_TYPE_INTEGER
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|obj_desc
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_MEMORY
-)paren
-suffix:semicolon
-)brace
-id|obj_desc-&gt;integer.value
-op_assign
-id|temp_val
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Truncate value if we are executing from a 32-bit ACPI table&n;&t;&t; * AND actually executing AML code.  If we are resolving&n;&t;&t; * an object in the namespace via an external call to the&n;&t;&t; * subsystem, we will have a null Walk_state&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|walk_state
-)paren
-(brace
-id|acpi_ex_truncate_for32bit_table
-(paren
-id|obj_desc
-comma
-id|walk_state
-)paren
-suffix:semicolon
-)brace
-r_break
 suffix:semicolon
 multiline_comment|/* Default case is for unknown types */
 r_default

@@ -47,7 +47,6 @@ c_func
 l_string|&quot;#define ASM_OFFSET_H 1&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|// task struct entries needed by entry.S
 DECL|macro|ENTRY
 mdefine_line|#define ENTRY(entry) outconst(&quot;#define tsk_&quot; #entry &quot; %0&quot;, offsetof(struct task_struct, entry))
 id|ENTRY
@@ -136,84 +135,8 @@ c_func
 id|irqstackptr
 )paren
 suffix:semicolon
-id|ENTRY
-c_func
-(paren
-id|__softirq_pending
-)paren
-suffix:semicolon
-id|ENTRY
-c_func
-(paren
-id|__local_irq_count
-)paren
-suffix:semicolon
-id|ENTRY
-c_func
-(paren
-id|__local_bh_count
-)paren
-suffix:semicolon
-id|ENTRY
-c_func
-(paren
-id|__ksoftirqd_task
-)paren
-suffix:semicolon
-id|ENTRY
-c_func
-(paren
-id|level4_pgt
-)paren
-suffix:semicolon
-id|ENTRY
-c_func
-(paren
-id|me
-)paren
-suffix:semicolon
 DECL|macro|ENTRY
 macro_line|#undef ENTRY
-id|output
-c_func
-(paren
-l_string|&quot;#ifdef __ASSEMBLY__&quot;
-)paren
-suffix:semicolon
-DECL|macro|CONST
-mdefine_line|#define CONST(t) outconst(&quot;#define &quot; #t &quot; %0&quot;, t)
-id|CONST
-c_func
-(paren
-id|TASK_SIZE
-)paren
-suffix:semicolon
-id|CONST
-c_func
-(paren
-id|SIGCHLD
-)paren
-suffix:semicolon
-id|CONST
-c_func
-(paren
-id|CLONE_VFORK
-)paren
-suffix:semicolon
-id|CONST
-c_func
-(paren
-id|CLONE_VM
-)paren
-suffix:semicolon
-DECL|macro|CONST
-macro_line|#undef CONST
-id|output
-c_func
-(paren
-l_string|&quot;#endif&quot;
-)paren
-suffix:semicolon
 id|output
 c_func
 (paren

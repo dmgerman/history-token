@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 94 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 95 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACENV_H__
 DECL|macro|__ACENV_H__
@@ -39,13 +39,6 @@ multiline_comment|/* #define ENABLE_DEBUGGER */
 DECL|macro|ACPI_USE_SYSTEM_CLIBRARY
 mdefine_line|#define ACPI_USE_SYSTEM_CLIBRARY
 macro_line|#endif
-multiline_comment|/*&n; * Memory allocation tracking.  Used only if&n; * 1) This is the debug version&n; * 2) This is NOT a 16-bit version of the code (not enough real-mode memory)&n; */
-macro_line|#ifdef ACPI_DEBUG
-macro_line|#if ACPI_MACHINE_WIDTH != 16
-DECL|macro|ACPI_DBG_TRACK_ALLOCATIONS
-mdefine_line|#define ACPI_DBG_TRACK_ALLOCATIONS
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/*&n; * Environment configuration.  The purpose of this file is to interface to the&n; * local generation environment.&n; *&n; * 1) ACPI_USE_SYSTEM_CLIBRARY - Define this if linking to an actual C library.&n; *      Otherwise, local versions of string/memory functions will be used.&n; * 2) ACPI_USE_STANDARD_HEADERS - Define this if linking to a C library and&n; *      the standard header files may be used.&n; *&n; * The ACPI subsystem only uses low level C library functions that do not call&n; * operating system services and may therefore be inlined in the code.&n; *&n; * It may be necessary to tailor these include files to the target&n; * generation environment.&n; *&n; *&n; * Functions and constants used from each header:&n; *&n; * string.h:    memcpy&n; *              memset&n; *              strcat&n; *              strcmp&n; *              strcpy&n; *              strlen&n; *              strncmp&n; *              strncat&n; *              strncpy&n; *&n; * stdlib.h:    strtoul&n; *&n; * stdarg.h:    va_list&n; *              va_arg&n; *              va_start&n; *              va_end&n; *&n; */
 multiline_comment|/*! [Begin] no source code translation */
 macro_line|#if defined(_LINUX)
@@ -79,7 +72,26 @@ multiline_comment|/* This macro is used to tag functions as &quot;printf-like&qu
 DECL|macro|ACPI_PRINTF_LIKE_FUNC
 mdefine_line|#define ACPI_PRINTF_LIKE_FUNC
 macro_line|#endif
+multiline_comment|/*&n; * Memory allocation tracking.  Used only if&n; * 1) This is the debug version&n; * 2) This is NOT a 16-bit version of the code (not enough real-mode memory)&n; */
+macro_line|#ifdef ACPI_DEBUG
+macro_line|#if ACPI_MACHINE_WIDTH != 16
+DECL|macro|ACPI_DBG_TRACK_ALLOCATIONS
+mdefine_line|#define ACPI_DBG_TRACK_ALLOCATIONS
+macro_line|#endif
+macro_line|#endif
 multiline_comment|/*! [End] no source code translation !*/
+multiline_comment|/*&n; * Debugger threading model&n; * Use single threaded if the entire subsystem is contained in an application&n; * Use multiple threaded when the subsystem is running in the kernel.&n; *&n; * By default the model is single threaded if ACPI_APPLICATION is set,&n; * multi-threaded if ACPI_APPLICATION is not set.&n; */
+DECL|macro|DEBUGGER_SINGLE_THREADED
+mdefine_line|#define DEBUGGER_SINGLE_THREADED    0
+DECL|macro|DEBUGGER_MULTI_THREADED
+mdefine_line|#define DEBUGGER_MULTI_THREADED     1
+macro_line|#ifdef ACPI_APPLICATION
+DECL|macro|DEBUGGER_THREADING
+mdefine_line|#define DEBUGGER_THREADING          DEBUGGER_SINGLE_THREADED
+macro_line|#else
+DECL|macro|DEBUGGER_THREADING
+mdefine_line|#define DEBUGGER_THREADING          DEBUGGER_MULTI_THREADED
+macro_line|#endif
 multiline_comment|/******************************************************************************&n; *&n; * C library configuration&n; *&n; *****************************************************************************/
 macro_line|#ifdef ACPI_USE_SYSTEM_CLIBRARY
 multiline_comment|/*&n; * Use the standard C library headers.&n; * We want to keep these to a minimum.&n; *&n; */

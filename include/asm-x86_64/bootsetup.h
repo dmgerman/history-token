@@ -31,6 +31,8 @@ DECL|macro|MOUNT_ROOT_RDONLY
 mdefine_line|#define MOUNT_ROOT_RDONLY (*(unsigned short *) (PARAM+0x1F2))
 DECL|macro|RAMDISK_FLAGS
 mdefine_line|#define RAMDISK_FLAGS (*(unsigned short *) (PARAM+0x1F8))
+DECL|macro|SAVED_VIDEO_MODE
+mdefine_line|#define SAVED_VIDEO_MODE (*(unsigned short *) (PARAM+0x1FA))
 DECL|macro|ORIG_ROOT_DEV
 mdefine_line|#define ORIG_ROOT_DEV (*(unsigned short *) (PARAM+0x1FC))
 DECL|macro|AUX_DEVICE_INFO

@@ -91,7 +91,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|page-&gt;pprev_hash
+id|page-&gt;lru.prev
 )paren
 (brace
 (paren
@@ -99,7 +99,7 @@ r_int
 r_int
 op_star
 )paren
-id|page-&gt;next_hash
+id|page-&gt;lru.next
 op_assign
 id|pgd_quicklist
 suffix:semicolon
@@ -117,7 +117,7 @@ suffix:semicolon
 r_int
 r_int
 )paren
-id|page-&gt;pprev_hash
+id|page-&gt;lru.prev
 op_or_assign
 (paren
 (paren
@@ -195,7 +195,7 @@ op_assign
 r_int
 r_int
 )paren
-id|ret-&gt;pprev_hash
+id|ret-&gt;lru.prev
 suffix:semicolon
 r_int
 r_int
@@ -233,7 +233,7 @@ suffix:semicolon
 r_int
 r_int
 )paren
-id|ret-&gt;pprev_hash
+id|ret-&gt;lru.prev
 op_assign
 id|mask
 suffix:semicolon
@@ -250,7 +250,7 @@ r_int
 r_int
 op_star
 )paren
-id|ret-&gt;next_hash
+id|ret-&gt;lru.next
 suffix:semicolon
 id|ret
 op_assign
@@ -327,7 +327,7 @@ suffix:semicolon
 r_int
 r_int
 )paren
-id|page-&gt;pprev_hash
+id|page-&gt;lru.prev
 op_assign
 l_int|2
 suffix:semicolon
@@ -341,7 +341,7 @@ r_int
 r_int
 op_star
 )paren
-id|page-&gt;next_hash
+id|page-&gt;lru.next
 op_assign
 id|pgd_quicklist
 suffix:semicolon

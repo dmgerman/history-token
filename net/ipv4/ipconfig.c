@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/ipconfig.h&gt;
@@ -4550,7 +4551,7 @@ id|INADDR_NONE
 op_logical_or
 macro_line|#ifdef CONFIG_ROOT_NFS
 (paren
-id|major
+id|MAJOR
 c_func
 (paren
 id|ROOT_DEV
@@ -4598,19 +4599,9 @@ macro_line|#ifdef CONFIG_ROOT_NFS
 r_if
 c_cond
 (paren
-id|kdev_same
-c_func
-(paren
 id|ROOT_DEV
-comma
-id|mk_kdev
-c_func
-(paren
-id|UNNAMED_MAJOR
-comma
-l_int|255
-)paren
-)paren
+op_eq
+id|Root_NFS
 )paren
 (brace
 id|printk

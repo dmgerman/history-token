@@ -1,9 +1,9 @@
 multiline_comment|/* -*- mode: c; c-basic-offset: 8 -*- */
 multiline_comment|/* NCR (or Symbios) 53c700 and 53c700-66 Driver&n; *&n; * Copyright (C) 2001 by James.Bottomley@HansenPartnership.com&n;**-----------------------------------------------------------------------------&n;**  &n;**  This program is free software; you can redistribute it and/or modify&n;**  it under the terms of the GNU General Public License as published by&n;**  the Free Software Foundation; either version 2 of the License, or&n;**  (at your option) any later version.&n;**&n;**  This program is distributed in the hope that it will be useful,&n;**  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;**  GNU General Public License for more details.&n;**&n;**  You should have received a copy of the GNU General Public License&n;**  along with this program; if not, write to the Free Software&n;**  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;**&n;**-----------------------------------------------------------------------------&n; */
 multiline_comment|/* Notes:&n; *&n; * This driver is designed exclusively for these chips (virtually the&n; * earliest of the scripts engine chips).  They need their own drivers&n; * because they are missing so many of the scripts and snazzy register&n; * features of their elder brothers (the 710, 720 and 770).&n; *&n; * The 700 is the lowliest of the line, it can only do async SCSI.&n; * The 700-66 can at least do synchronous SCSI up to 10MHz.&n; * &n; * The 700 chip has no host bus interface logic of its own.  However,&n; * it is usually mapped to a location with well defined register&n; * offsets.  Therefore, if you can determine the base address and the&n; * irq your board incorporating this chip uses, you can probably use&n; * this driver to run it (although you&squot;ll probably have to write a&n; * minimal wrapper for the purpose---see the NCR_D700 driver for&n; * details about how to do this).&n; *&n; *&n; * TODO List:&n; *&n; * 1. Better statistics in the proc fs&n; *&n; * 2. Implement message queue (queues SCSI messages like commands) and make&n; *    the abort and device reset functions use them.&n; * */
-multiline_comment|/* CHANGELOG&n; *&n; * Version 2.7&n; *&n; * Fixed scripts problem which caused certain devices (notably CDRWs)&n; * to hang on initial INQUIRY.  Updated NCR_700_readl/writel to use&n; * __raw_readl/writel for parisc compatibility (Thomas&n; * Bogendoerfer). Added missing SCp-&gt;request_bufflen initialisation&n; * for sense requests (Ryan Bradetich).&n; *&n; * Version 2.6&n; *&n; * Following test of the 64 bit parisc kernel by Richard Hirst,&n; * several problems have now been corrected.  Also adds support for&n; * consistent memory allocation.&n; *&n; * Version 2.5&n; * &n; * More Compatibility changes for 710 (now actually works).  Enhanced&n; * support for odd clock speeds which constrain SDTR negotiations.&n; * correct cacheline separation for scsi messages and status for&n; * incoherent architectures.  Use of the pci mapping functions on&n; * buffers to begin support for 64 bit drivers.&n; *&n; * Version 2.4&n; *&n; * Added support for the 53c710 chip (in 53c700 emulation mode only---no &n; * special 53c710 instructions or registers are used).&n; *&n; * Version 2.3&n; *&n; * More endianness/cache coherency changes.&n; *&n; * Better bad device handling (handles devices lying about tag&n; * queueing support and devices which fail to provide sense data on&n; * contingent allegiance conditions)&n; *&n; * Many thanks to Richard Hirst &lt;rhirst@linuxcare.com&gt; for patiently&n; * debugging this driver on the parisc architecture and suggesting&n; * many improvements and bug fixes.&n; *&n; * Thanks also go to Linuxcare Inc. for providing several PARISC&n; * machines for me to debug the driver on.&n; *&n; * Version 2.2&n; *&n; * Made the driver mem or io mapped; added endian invariance; added&n; * dma cache flushing operations for architectures which need it;&n; * added support for more varied clocking speeds.&n; *&n; * Version 2.1&n; *&n; * Initial modularisation from the D700.  See NCR_D700.c for the rest of&n; * the changelog.&n; * */
+multiline_comment|/* CHANGELOG&n; *&n; * Version 2.8&n; *&n; * Fixed bad bug affecting tag starvation processing (previously the&n; * driver would hang the system if too many tags starved.  Also fixed&n; * bad bug having to do with 10 byte command processing and REQUEST&n; * SENSE (the command would loop forever getting a transfer length&n; * mismatch in the CMD phase).&n; *&n; * Version 2.7&n; *&n; * Fixed scripts problem which caused certain devices (notably CDRWs)&n; * to hang on initial INQUIRY.  Updated NCR_700_readl/writel to use&n; * __raw_readl/writel for parisc compatibility (Thomas&n; * Bogendoerfer). Added missing SCp-&gt;request_bufflen initialisation&n; * for sense requests (Ryan Bradetich).&n; *&n; * Version 2.6&n; *&n; * Following test of the 64 bit parisc kernel by Richard Hirst,&n; * several problems have now been corrected.  Also adds support for&n; * consistent memory allocation.&n; *&n; * Version 2.5&n; * &n; * More Compatibility changes for 710 (now actually works).  Enhanced&n; * support for odd clock speeds which constrain SDTR negotiations.&n; * correct cacheline separation for scsi messages and status for&n; * incoherent architectures.  Use of the pci mapping functions on&n; * buffers to begin support for 64 bit drivers.&n; *&n; * Version 2.4&n; *&n; * Added support for the 53c710 chip (in 53c700 emulation mode only---no &n; * special 53c710 instructions or registers are used).&n; *&n; * Version 2.3&n; *&n; * More endianness/cache coherency changes.&n; *&n; * Better bad device handling (handles devices lying about tag&n; * queueing support and devices which fail to provide sense data on&n; * contingent allegiance conditions)&n; *&n; * Many thanks to Richard Hirst &lt;rhirst@linuxcare.com&gt; for patiently&n; * debugging this driver on the parisc architecture and suggesting&n; * many improvements and bug fixes.&n; *&n; * Thanks also go to Linuxcare Inc. for providing several PARISC&n; * machines for me to debug the driver on.&n; *&n; * Version 2.2&n; *&n; * Made the driver mem or io mapped; added endian invariance; added&n; * dma cache flushing operations for architectures which need it;&n; * added support for more varied clocking speeds.&n; *&n; * Version 2.1&n; *&n; * Initial modularisation from the D700.  See NCR_D700.c for the rest of&n; * the changelog.&n; * */
 DECL|macro|NCR_700_VERSION
-mdefine_line|#define NCR_700_VERSION &quot;2.7&quot;
+mdefine_line|#define NCR_700_VERSION &quot;2.8&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2482,13 +2482,7 @@ id|SCp
 )paren
 suffix:semicolon
 macro_line|#endif
-id|SCp-&gt;use_sg
-op_assign
-id|SCp-&gt;cmnd
-(braket
-l_int|8
-)braket
-suffix:semicolon
+multiline_comment|/* restore the old result if the request sense was&n;&t;&t;&t; * successful */
 r_if
 c_cond
 (paren
@@ -2505,6 +2499,52 @@ l_int|7
 )braket
 suffix:semicolon
 )brace
+multiline_comment|/* now restore the original command */
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|SCp-&gt;cmnd
+comma
+(paren
+r_void
+op_star
+)paren
+id|SCp-&gt;data_cmnd
+comma
+r_sizeof
+(paren
+id|SCp-&gt;data_cmnd
+)paren
+)paren
+suffix:semicolon
+id|SCp-&gt;request_buffer
+op_assign
+id|SCp-&gt;buffer
+suffix:semicolon
+id|SCp-&gt;request_bufflen
+op_assign
+id|SCp-&gt;bufflen
+suffix:semicolon
+id|SCp-&gt;use_sg
+op_assign
+id|SCp-&gt;old_use_sg
+suffix:semicolon
+id|SCp-&gt;cmd_len
+op_assign
+id|SCp-&gt;old_cmd_len
+suffix:semicolon
+id|SCp-&gt;sc_data_direction
+op_assign
+id|SCp-&gt;sc_old_data_direction
+suffix:semicolon
+id|SCp-&gt;underflow
+op_assign
+id|SCp-&gt;old_underflow
+suffix:semicolon
 )brace
 id|free_slot
 c_func
@@ -2514,22 +2554,7 @@ comma
 id|hostdata
 )paren
 suffix:semicolon
-id|SCp-&gt;host_scribble
-op_assign
-l_int|NULL
-suffix:semicolon
-id|SCp-&gt;result
-op_assign
-id|result
-suffix:semicolon
-id|SCp
-op_member_access_from_pointer
-id|scsi_done
-c_func
-(paren
-id|SCp
-)paren
-suffix:semicolon
+macro_line|#ifdef NCR_700_DEBUG
 r_if
 c_cond
 (paren
@@ -2564,6 +2589,7 @@ id|SCp-&gt;device
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* NCR_700_DEBUG */
 id|NCR_700_set_depth
 c_func
 (paren
@@ -2576,6 +2602,22 @@ id|SCp-&gt;device
 )paren
 op_minus
 l_int|1
+)paren
+suffix:semicolon
+id|SCp-&gt;host_scribble
+op_assign
+l_int|NULL
+suffix:semicolon
+id|SCp-&gt;result
+op_assign
+id|result
+suffix:semicolon
+id|SCp
+op_member_access_from_pointer
+id|scsi_done
+c_func
+(paren
+id|SCp
 )paren
 suffix:semicolon
 )brace
@@ -4417,13 +4459,6 @@ id|hostdata-&gt;status
 (braket
 l_int|0
 )braket
-suffix:semicolon
-id|SCp-&gt;cmnd
-(braket
-l_int|8
-)braket
-op_assign
-id|SCp-&gt;use_sg
 suffix:semicolon
 id|SCp-&gt;use_sg
 op_assign
@@ -8752,6 +8787,29 @@ id|NCR_700_DEV_TAG_STARVATION_WARNED
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Release the slot and ajust the depth before refusing&n;&t;&t;&t; * the command */
+id|free_slot
+c_func
+(paren
+id|slot
+comma
+id|hostdata
+)paren
+suffix:semicolon
+id|NCR_700_set_depth
+c_func
+(paren
+id|SCp-&gt;device
+comma
+id|NCR_700_get_depth
+c_func
+(paren
+id|SCp-&gt;device
+)paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

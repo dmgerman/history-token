@@ -5354,10 +5354,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|is_read_only
+id|bdev_read_only
 c_func
 (paren
-id|s-&gt;s_dev
+id|s-&gt;s_bdev
 )paren
 op_logical_and
 op_logical_neg

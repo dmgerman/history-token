@@ -13,12 +13,6 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-multiline_comment|/* Set if we find a B stepping CPU&t;&t;&t;*/
-DECL|variable|smp_b_stepping
-r_static
-r_int
-id|smp_b_stepping
-suffix:semicolon
 multiline_comment|/* Setup configured maximum number of CPUs to activate */
 DECL|variable|max_cpus
 r_static
@@ -289,35 +283,6 @@ c_func
 (paren
 id|c
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Mask B, Pentium, but not Pentium MMX&n;&t; */
-r_if
-c_cond
-(paren
-id|c-&gt;x86_vendor
-op_eq
-id|X86_VENDOR_INTEL
-op_logical_and
-id|c-&gt;x86
-op_eq
-l_int|5
-op_logical_and
-id|c-&gt;x86_mask
-op_ge
-l_int|1
-op_logical_and
-id|c-&gt;x86_mask
-op_le
-l_int|4
-op_logical_and
-id|c-&gt;x86_model
-op_le
-l_int|3
-)paren
-multiline_comment|/*&n;&t;&t; * Remember we have B step Pentia with bugs&n;&t;&t; */
-id|smp_b_stepping
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Architecture specific routine called by the kernel just before init is&n; * fired off. This allows the BP to have everything in order [we hope].&n; * At the end of this all the APs will hit the system scheduling and off&n; * we go. Each AP will load the system gdt&squot;s and jump through the kernel&n; * init into idle(). At this point the scheduler will one day take over&n; * and give them jobs to do. smp_callin is a standard routine&n; * we use to track CPUs as they power up.&n; */
@@ -2533,7 +2498,7 @@ r_int
 r_int
 id|bandwidth
 op_assign
-l_int|350
+l_int|1000
 suffix:semicolon
 multiline_comment|/* MB/s */
 multiline_comment|/*&n;&t; * Rough estimation for SMP scheduling, this is the number of&n;&t; * cycles it takes for a fully memory-limited process to flush&n;&t; * the SMP-local cache.&n;&t; *&n;&t; * (For a P5 this pretty much means we will choose another idle&n;&t; *  CPU almost always at wakeup time (this is due to the small&n;&t; *  L1 cache), on PIIs it&squot;s around 50-100 usecs, depending on&n;&t; *  the cache size)&n;&t; */
@@ -2913,13 +2878,7 @@ id|boot_cpu_id
 )paren
 op_logical_and
 op_logical_neg
-id|test_bit
-c_func
-(paren
-id|X86_FEATURE_APIC
-comma
-id|boot_cpu_data.x86_capability
-)paren
+id|cpu_has_apic
 )paren
 (brace
 id|printk
@@ -3187,8 +3146,8 @@ id|cpucount
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;Error: only one processor found.&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Only one processor found.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3277,18 +3236,6 @@ op_assign
 id|cpucount
 op_plus
 l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|smp_b_stepping
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;WARNING: SMP operation may be unreliable with B stepping processors.&bslash;n&quot;
-)paren
 suffix:semicolon
 id|Dprintk
 c_func

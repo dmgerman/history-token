@@ -48,6 +48,10 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR COMPAQ_SMART2_MAJOR
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;ida&quot;
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 4)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;

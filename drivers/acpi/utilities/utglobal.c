@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 161 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 162 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
@@ -1386,6 +1386,41 @@ id|acpi_gbl_ns_type_names
 (braket
 id|type
 )braket
+)paren
+suffix:semicolon
+)brace
+id|NATIVE_CHAR
+op_star
+DECL|function|acpi_ut_get_object_type_name
+id|acpi_ut_get_object_type_name
+(paren
+id|acpi_operand_object
+op_star
+id|obj_desc
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|obj_desc
+)paren
+(brace
+r_return
+(paren
+l_string|&quot;[NULL Object Descriptor]&quot;
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|acpi_ut_get_type_name
+(paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
+)paren
 )paren
 suffix:semicolon
 )brace

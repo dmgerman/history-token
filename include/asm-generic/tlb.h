@@ -9,7 +9,7 @@ macro_line|#ifdef CONFIG_SMP
 DECL|macro|FREE_PTE_NR
 mdefine_line|#define FREE_PTE_NR&t;507
 DECL|macro|tlb_fast_mode
-mdefine_line|#define tlb_fast_mode(tlb) ((tlb)-&gt;nr == ~0UL) 
+mdefine_line|#define tlb_fast_mode(tlb) ((tlb)-&gt;nr == ~0U)
 macro_line|#else
 DECL|macro|FREE_PTE_NR
 mdefine_line|#define FREE_PTE_NR&t;1
@@ -33,7 +33,13 @@ r_int
 r_int
 id|nr
 suffix:semicolon
-multiline_comment|/* set to ~0UL means fast mode */
+multiline_comment|/* set to ~0U means fast mode */
+DECL|member|fullmm
+r_int
+r_int
+id|fullmm
+suffix:semicolon
+multiline_comment|/* non-zero means full mm flush */
 DECL|member|freed
 r_int
 r_int
@@ -73,6 +79,10 @@ r_struct
 id|mm_struct
 op_star
 id|mm
+comma
+r_int
+r_int
+id|full_mm_flush
 )paren
 (brace
 id|mmu_gather_t
@@ -92,10 +102,6 @@ id|tlb-&gt;mm
 op_assign
 id|mm
 suffix:semicolon
-id|tlb-&gt;freed
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Use fast mode if only one CPU is online */
 id|tlb-&gt;nr
 op_assign
@@ -108,6 +114,14 @@ l_int|0UL
 suffix:colon
 op_complement
 l_int|0UL
+suffix:semicolon
+id|tlb-&gt;fullmm
+op_assign
+id|full_mm_flush
+suffix:semicolon
+id|tlb-&gt;freed
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|tlb

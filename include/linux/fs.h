@@ -136,12 +136,6 @@ mdefine_line|#define SEL_EX&t;&t;4
 multiline_comment|/* public flags for file_system_type */
 DECL|macro|FS_REQUIRES_DEV
 mdefine_line|#define FS_REQUIRES_DEV 1 
-DECL|macro|FS_NO_DCACHE
-mdefine_line|#define FS_NO_DCACHE&t;2 /* Only dcache the necessary things. */
-DECL|macro|FS_NO_PRELIM
-mdefine_line|#define FS_NO_PRELIM&t;4 /* prevent preloading of dentries, even if&n;&t;&t;&t;   * FS_NO_DCACHE is not set.&n;&t;&t;&t;   */
-DECL|macro|FS_NOMOUNT
-mdefine_line|#define FS_NOMOUNT&t;16 /* Never mount from userland */
 DECL|macro|FS_ODD_RENAME
 mdefine_line|#define FS_ODD_RENAME&t;32768&t;/* Temporary stuff; will go away as soon&n;&t;&t;&t;&t;  * as nfs_rename() will be cleaned up&n;&t;&t;&t;&t;  */
 multiline_comment|/*&n; * These are the fs-independent mount-flags: up to 32 flags are supported&n; */
@@ -2030,9 +2024,10 @@ id|s_list
 suffix:semicolon
 multiline_comment|/* Keep this first */
 DECL|member|s_dev
-id|kdev_t
+id|dev_t
 id|s_dev
 suffix:semicolon
+multiline_comment|/* search index; _not_ kdev_t */
 DECL|member|s_blocksize
 r_int
 r_int
@@ -4019,6 +4014,28 @@ op_star
 id|data
 )paren
 suffix:semicolon
+r_struct
+id|super_block
+op_star
+id|get_sb_pseudo
+c_func
+(paren
+r_struct
+id|file_system_type
+op_star
+comma
+r_char
+op_star
+comma
+r_struct
+id|super_operations
+op_star
+id|ops
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* Alas, no aliases. Too much hassle with bringing module.h everywhere */
 DECL|macro|fops_get
 mdefine_line|#define fops_get(fops) &bslash;&n;&t;(((fops) &amp;&amp; (fops)-&gt;owner)&t;&bslash;&n;&t;&t;? ( try_inc_mod_count((fops)-&gt;owner) ? (fops) : NULL ) &bslash;&n;&t;&t;: (fops))
@@ -5625,6 +5642,16 @@ id|kdev_t
 suffix:semicolon
 r_extern
 r_int
+id|bdev_read_only
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|set_blocksize
 c_func
 (paren
@@ -5940,6 +5967,24 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|vfs_getattr
+c_func
+(paren
+r_struct
+id|vfsmount
+op_star
+comma
+r_struct
+id|dentry
+op_star
+comma
+r_struct
+id|kstat
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|vfs_readdir
 c_func
 (paren
@@ -6012,7 +6057,19 @@ op_star
 id|get_super
 c_func
 (paren
-id|kdev_t
+r_struct
+id|block_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|super_block
+op_star
+id|user_get_super
+c_func
+(paren
+id|dev_t
 )paren
 suffix:semicolon
 r_extern
@@ -6025,16 +6082,6 @@ id|super_block
 op_star
 id|sb
 )paren
-suffix:semicolon
-r_extern
-id|kdev_t
-id|ROOT_DEV
-suffix:semicolon
-r_extern
-r_char
-id|root_device_name
-(braket
-)braket
 suffix:semicolon
 r_extern
 r_int

@@ -1796,14 +1796,7 @@ op_eq
 id|pkt-&gt;len
 )paren
 (brace
-id|list_del
-c_func
-(paren
-op_amp
-id|pkt-&gt;list
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp

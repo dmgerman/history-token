@@ -1038,9 +1038,6 @@ suffix:semicolon
 r_int
 id|res
 suffix:semicolon
-id|hpusbscsi-&gt;use_count
-op_increment
-suffix:semicolon
 multiline_comment|/* we don&squot;t answer for anything but our single device on any faked host controller */
 r_if
 c_cond
@@ -1277,9 +1274,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|hpusbscsi-&gt;use_count
-op_decrement
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

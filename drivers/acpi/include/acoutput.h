@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 86 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 87 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACOUTPUT_H__
 DECL|macro|__ACOUTPUT_H__
@@ -105,6 +105,17 @@ DECL|macro|ACPI_LV_INTERRUPTS
 mdefine_line|#define ACPI_LV_INTERRUPTS          0x08000000
 DECL|macro|ACPI_LV_VERBOSITY3
 mdefine_line|#define ACPI_LV_VERBOSITY3          0x0F000000 | ACPI_LV_VERBOSITY2
+multiline_comment|/* Exceptionally verbose output -- also used in the global &quot;Debug_level&quot; */
+DECL|macro|ACPI_LV_AML_DISASSEMBLE
+mdefine_line|#define ACPI_LV_AML_DISASSEMBLE     0x10000000
+DECL|macro|ACPI_LV_VERBOSE_INFO
+mdefine_line|#define ACPI_LV_VERBOSE_INFO        0x20000000
+DECL|macro|ACPI_LV_FULL_TABLES
+mdefine_line|#define ACPI_LV_FULL_TABLES         0x40000000
+DECL|macro|ACPI_LV_EVENTS
+mdefine_line|#define ACPI_LV_EVENTS              0x80000000
+DECL|macro|ACPI_LV_VERBOSE
+mdefine_line|#define ACPI_LV_VERBOSE             0xF0000000
 multiline_comment|/*&n; * Debug level macros that are used in the DEBUG_PRINT macros&n; */
 DECL|macro|ACPI_DEBUG_LEVEL
 mdefine_line|#define ACPI_DEBUG_LEVEL(dl)       dl,__LINE__,&amp;_dbg
@@ -165,18 +176,7 @@ mdefine_line|#define ACPI_DB_MUTEX               ACPI_DEBUG_LEVEL (ACPI_LV_MUTEX
 DECL|macro|ACPI_DB_INIT
 mdefine_line|#define ACPI_DB_INIT                ACPI_DEBUG_LEVEL (ACPI_LV_INIT)
 DECL|macro|ACPI_DB_ALL
-mdefine_line|#define ACPI_DB_ALL                 ACPI_DEBUG_LEVEL (0x0FFFFF80)
-multiline_comment|/* Exceptionally verbose output -- also used in the global &quot;Debug_level&quot; */
-DECL|macro|ACPI_DB_AML_DISASSEMBLE
-mdefine_line|#define ACPI_DB_AML_DISASSEMBLE     0x10000000
-DECL|macro|ACPI_DB_VERBOSE_INFO
-mdefine_line|#define ACPI_DB_VERBOSE_INFO        0x20000000
-DECL|macro|ACPI_DB_FULL_TABLES
-mdefine_line|#define ACPI_DB_FULL_TABLES         0x40000000
-DECL|macro|ACPI_DB_EVENTS
-mdefine_line|#define ACPI_DB_EVENTS              0x80000000
-DECL|macro|ACPI_DB_VERBOSE
-mdefine_line|#define ACPI_DB_VERBOSE             0xF0000000
+mdefine_line|#define ACPI_DB_ALL                 ACPI_DEBUG_LEVEL (ACPI_LV_ALL)
 multiline_comment|/* Defaults for Debug_level, debug and normal */
 DECL|macro|DEBUG_DEFAULT
 mdefine_line|#define DEBUG_DEFAULT               (ACPI_LV_OK | ACPI_LV_WARN | ACPI_LV_ERROR | ACPI_LV_DEBUG_OBJECT)

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 98 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 101 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -32,9 +32,6 @@ op_star
 id|buffer_space_used
 )paren
 (brace
-id|acpi_buffer
-id|buffer
-suffix:semicolon
 id|acpi_status
 id|status
 op_assign
@@ -50,7 +47,7 @@ id|buffer_space_used
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check for NULL object case (could be an uninitialized&n;&t; * package element&n;&t; */
+multiline_comment|/*&n;&t; * Check for NULL object case (could be an uninitialized&n;&t; * package element)&n;&t; */
 r_if
 c_cond
 (paren
@@ -80,13 +77,19 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * In general, the external object will be the same type as&n;&t; * the internal object&n;&t; */
 id|external_object-&gt;type
 op_assign
-id|internal_object-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|internal_object
+)paren
 suffix:semicolon
 multiline_comment|/* However, only a limited number of external types are supported */
 r_switch
 c_cond
 (paren
-id|internal_object-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|internal_object
+)paren
 )paren
 (brace
 r_case
@@ -199,112 +202,9 @@ id|internal_object-&gt;reference.opcode
 )paren
 (brace
 r_case
-id|AML_ZERO_OP
-suffix:colon
-id|external_object-&gt;type
-op_assign
-id|ACPI_TYPE_INTEGER
-suffix:semicolon
-id|external_object-&gt;integer.value
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_ONE_OP
-suffix:colon
-id|external_object-&gt;type
-op_assign
-id|ACPI_TYPE_INTEGER
-suffix:semicolon
-id|external_object-&gt;integer.value
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_ONES_OP
-suffix:colon
-id|external_object-&gt;type
-op_assign
-id|ACPI_TYPE_INTEGER
-suffix:semicolon
-id|external_object-&gt;integer.value
-op_assign
-id|ACPI_INTEGER_MAX
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_REVISION_OP
-suffix:colon
-id|external_object-&gt;type
-op_assign
-id|ACPI_TYPE_INTEGER
-suffix:semicolon
-id|external_object-&gt;integer.value
-op_assign
-id|ACPI_CA_SUPPORT_LEVEL
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|AML_INT_NAMEPATH_OP
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * This is a named reference, get the string.  We already know that&n;&t;&t;&t; * we have room for it, use max length&n;&t;&t;&t; */
-id|external_object-&gt;type
-op_assign
-id|ACPI_TYPE_STRING
-suffix:semicolon
-id|external_object-&gt;string.pointer
-op_assign
-(paren
-id|NATIVE_CHAR
-op_star
-)paren
-id|data_space
-suffix:semicolon
-id|buffer.length
-op_assign
-id|MAX_STRING_LENGTH
-suffix:semicolon
-id|buffer.pointer
-op_assign
-id|data_space
-suffix:semicolon
-id|status
-op_assign
-id|acpi_ns_handle_to_pathname
-(paren
-(paren
-id|acpi_handle
-)paren
-id|internal_object-&gt;reference.node
-comma
-op_amp
-id|buffer
-)paren
-suffix:semicolon
-multiline_comment|/* Converted (external) string length is returned from above */
-id|external_object-&gt;string.length
-op_assign
-(paren
-id|u32
-)paren
-id|buffer.length
-suffix:semicolon
-op_star
-id|buffer_space_used
-op_assign
-id|ACPI_ROUND_UP_TO_NATIVE_WORD
-(paren
-id|buffer.length
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
+multiline_comment|/* For namepath, return the object handle (&quot;reference&quot;) */
 r_default
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Use the object type of &quot;Any&quot; to indicate a reference&n;&t;&t;&t; * to object containing a handle to an ACPI named object.&n;&t;&t;&t; */
@@ -620,7 +520,10 @@ id|acpi_object
 suffix:semicolon
 id|external_object-&gt;type
 op_assign
-id|internal_object-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|internal_object
+)paren
 suffix:semicolon
 id|external_object-&gt;package.count
 op_assign
@@ -698,7 +601,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|internal_object-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|internal_object
+)paren
 op_eq
 id|ACPI_TYPE_PACKAGE
 )paren
@@ -1031,7 +937,10 @@ id|acpi_object
 suffix:semicolon
 id|external_object-&gt;type
 op_assign
-id|internal_object-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|internal_object
+)paren
 suffix:semicolon
 id|external_object-&gt;package.count
 op_assign
@@ -1188,7 +1097,10 @@ multiline_comment|/* Handle the objects with extra data */
 r_switch
 c_cond
 (paren
-id|dest_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|dest_desc
+)paren
 )paren
 (brace
 r_case
@@ -1342,7 +1254,10 @@ id|target_object
 op_assign
 id|acpi_ut_create_internal_object
 (paren
-id|source_object-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_object
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1478,7 +1393,10 @@ l_string|&quot;Ut_copy_ipackage_to_ipackage&quot;
 suffix:semicolon
 id|dest_obj-&gt;common.type
 op_assign
-id|source_obj-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_obj
+)paren
 suffix:semicolon
 id|dest_obj-&gt;common.flags
 op_assign
@@ -1600,7 +1518,10 @@ id|dest_desc
 op_assign
 id|acpi_ut_create_internal_object
 (paren
-id|source_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1621,7 +1542,10 @@ multiline_comment|/* Copy the object and possible subobjects */
 r_if
 c_cond
 (paren
-id|source_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 op_eq
 id|ACPI_TYPE_PACKAGE
 )paren

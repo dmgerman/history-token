@@ -6362,10 +6362,10 @@ id|really_read_only
 suffix:semicolon
 id|really_read_only
 op_assign
-id|is_read_only
+id|bdev_read_only
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb-&gt;s_bdev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Are we loading a blank journal or performing recovery after a&n;&t; * crash?  For recovery, we need to check in advance whether we&n;&t; * can get read-write access to the device.&n;&t; */

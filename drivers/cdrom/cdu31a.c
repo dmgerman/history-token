@@ -23,6 +23,8 @@ macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &quot;cdu31a.h&quot;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR CDU31A_CDROM_MAJOR
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|CDU31A_READAHEAD
 mdefine_line|#define CDU31A_READAHEAD 4&t;/* 128 sector, 64kB, 32 reads read-ahead */
@@ -5113,13 +5115,9 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_goto
 id|end_do_cdu31a_request
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5157,6 +5155,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5206,6 +5206,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5237,6 +5239,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5275,6 +5279,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5311,6 +5317,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5361,6 +5369,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5393,6 +5403,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5438,6 +5450,8 @@ id|MAX_CDU31A_RETRIES
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5505,6 +5519,8 @@ r_else
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -5517,6 +5533,8 @@ suffix:colon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon

@@ -13,26 +13,37 @@ mdefine_line|#define PAGE_SIZE&t;(1UL &lt;&lt; PAGE_SHIFT)
 macro_line|#endif
 DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
+DECL|macro|PHYSICAL_PAGE_MASK
+mdefine_line|#define PHYSICAL_PAGE_MASK&t;(~(PAGE_SIZE-1) &amp; (__PHYSICAL_MASK &lt;&lt; PAGE_SHIFT))
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
 DECL|macro|CURRENT_MASK
 mdefine_line|#define CURRENT_MASK (~(THREAD_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#if 0 
-macro_line|#include &lt;asm/mmx.h&gt;
-mdefine_line|#define clear_page(page)&t;mmx_clear_page((void *)(page))
-mdefine_line|#define copy_page(to,from)&t;mmx_copy_page(to,from)
-macro_line|#else
-DECL|macro|clear_page
-mdefine_line|#define clear_page(page)&t;memset((void *)(page), 0, PAGE_SIZE)
-DECL|macro|copy_page
-mdefine_line|#define copy_page(to,from)&t;memcpy((void *)(to), (void *)(from), PAGE_SIZE)
-macro_line|#endif
+r_void
+id|clear_page
+c_func
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+r_void
+id|copy_page
+c_func
+(paren
+r_void
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
 DECL|macro|clear_user_page
-mdefine_line|#define clear_user_page(page, vaddr)&t;clear_page(page)
+mdefine_line|#define clear_user_page(page, vaddr, pg)&t;clear_page(page)
 DECL|macro|copy_user_page
-mdefine_line|#define copy_user_page(to, from, vaddr)&t;copy_page(to, from)
+mdefine_line|#define copy_user_page(to, from, vaddr, pg)&t;copy_page(to, from)
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
 DECL|member|pte
 DECL|typedef|pte_t
@@ -83,7 +94,7 @@ suffix:semicolon
 id|pml4_t
 suffix:semicolon
 DECL|macro|PTE_MASK
-mdefine_line|#define PTE_MASK&t;PAGE_MASK
+mdefine_line|#define PTE_MASK&t;PHYSICAL_PAGE_MASK
 DECL|member|pgprot
 DECL|typedef|pgprot_t
 r_typedef
@@ -127,7 +138,10 @@ DECL|macro|__START_KERNEL_map
 mdefine_line|#define __START_KERNEL_map&t;0xffffffff80000000
 DECL|macro|__PAGE_OFFSET
 mdefine_line|#define __PAGE_OFFSET           0x0000010000000000
+DECL|macro|__PHYSICAL_MASK
+mdefine_line|#define __PHYSICAL_MASK&t;&t;0x000000ffffffffff
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/stringify.h&gt;
 multiline_comment|/*&n; * Tell the user there is some problem.  The exception handler decodes this frame.&n; */
 DECL|struct|bug_frame
 r_struct
@@ -162,7 +176,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|macro|BUG
-mdefine_line|#define BUG() asm volatile(&quot;ud2 ; .quad %c1 ; .short %c0&quot; :: &quot;i&quot;(__LINE__), &quot;i&quot; (__FILE__))
+mdefine_line|#define BUG() &bslash;&n;&t;asm volatile(&quot;ud2 ; .quad %c1 ; .short %c0&quot; :: &bslash;&n;&t;&t;     &quot;i&quot;(__LINE__), &quot;i&quot; (__stringify(KBUILD_BASENAME)))
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) BUG()
 r_void
@@ -238,10 +252,16 @@ DECL|macro|__pa_symbol
 mdefine_line|#define __pa_symbol(x)&t;&t;&bslash;&n;&t;({unsigned long v;  &bslash;&n;&t;  asm(&quot;&quot; : &quot;=r&quot; (v) : &quot;0&quot; (x)); &bslash;&n;&t;  __pa(v); })
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long)(x)+PAGE_OFFSET))
+DECL|macro|pfn_to_page
+mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
+DECL|macro|page_to_pfn
+mdefine_line|#define page_to_pfn(page)&t;((unsigned long)((page) - mem_map))
 DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;(mem_map + (__pa(kaddr) &gt;&gt; PAGE_SHIFT))
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
+mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pfn_valid
+mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
+DECL|macro|virt_addr_valid
+mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS  (VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;                                VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* __KERNEL__ */

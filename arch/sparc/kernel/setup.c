@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1470,11 +1471,7 @@ id|MS_RDONLY
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|root_dev
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 id|rd_image_start

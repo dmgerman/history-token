@@ -119,7 +119,11 @@ id|silent
 id|kdev_t
 id|dev
 op_assign
+id|to_kdev_t
+c_func
+(paren
 id|sb-&gt;s_dev
+)paren
 suffix:semicolon
 r_struct
 id|inode

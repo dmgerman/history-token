@@ -18,6 +18,8 @@ multiline_comment|/* #include &lt;linux/ucdrom.h&gt; */
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR CM206_CDROM_MAJOR
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -3021,12 +3023,8 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3048,6 +3046,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3244,6 +3244,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 op_logical_neg
 id|error
 )paren

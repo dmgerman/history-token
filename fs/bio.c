@@ -1197,15 +1197,6 @@ id|bio
 op_star
 id|bio
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 id|err
 op_assign
 l_int|0
@@ -1219,10 +1210,10 @@ op_amp
 id|WRITE
 )paren
 op_logical_and
-id|is_read_only
+id|bdev_read_only
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 )paren
 (brace
@@ -1231,10 +1222,10 @@ c_func
 (paren
 l_string|&quot;ll_rw_bio: WRITE to ro device %s&bslash;n&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 )paren
 suffix:semicolon

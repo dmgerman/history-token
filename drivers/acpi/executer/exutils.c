@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exutils - interpreter/scanner utilities&n; *              $Revision: 98 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exutils - interpreter/scanner utilities&n; *              $Revision: 100 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * DEFINE_AML_GLOBALS is tested in amlcode.h&n; * to determine whether certain global names should be &quot;defined&quot; or only&n; * &quot;declared&quot; in the current compilation.  This enhances maintainability&n; * by enabling a single header file to embody all knowledge of the names&n; * in question.&n; *&n; * Exactly one module of any executable should #define DEFINE_GLOBALS&n; * before #including the header files which use this convention.  The&n; * names in question will be defined and initialized in that module,&n; * and declared as extern in all other modules which #include those&n; * header files.&n; */
 DECL|macro|DEFINE_AML_GLOBALS
@@ -147,7 +147,7 @@ id|TRUE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_truncate_for32bit_table&n; *&n; * PARAMETERS:  Obj_desc        - Object to be truncated&n; *              Walk_state      - Current walk state&n; *                                (A method must be executing)&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Truncate a number to 32-bits if the currently executing method&n; *              belongs to a 32-bit ACPI table.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_truncate_for32bit_table&n; *&n; * PARAMETERS:  Obj_desc        - Object to be truncated&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Truncate a number to 32-bits if the currently executing method&n; *              belongs to a 32-bit ACPI table.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_truncate_for32bit_table
 id|acpi_ex_truncate_for32bit_table
@@ -155,10 +155,6 @@ id|acpi_ex_truncate_for32bit_table
 id|acpi_operand_object
 op_star
 id|obj_desc
-comma
-id|acpi_walk_state
-op_star
-id|walk_state
 )paren
 (brace
 id|ACPI_FUNCTION_ENTRY
@@ -175,14 +171,12 @@ id|obj_desc
 )paren
 op_logical_or
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 op_ne
 id|ACPI_TYPE_INTEGER
-)paren
-op_logical_or
-(paren
-op_logical_neg
-id|walk_state-&gt;method_node
 )paren
 )paren
 (brace
