@@ -89,7 +89,6 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/*&n; * URB goes back to driver, and isn&squot;t reissued.&n; * It&squot;s completely gone from HC data structures.&n; * PRECONDITION:  ohci lock held, irqs blocked.&n; */
 r_static
 r_void
-DECL|function|finish_urb
 id|finish_urb
 (paren
 r_struct
@@ -106,6 +105,16 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+)paren
+id|__releases
+c_func
+(paren
+id|ohci-&gt;lock
+)paren
+id|__acquires
+c_func
+(paren
+id|ohci-&gt;lock
 )paren
 (brace
 singleline_comment|// ASSERT (urb-&gt;hcpriv != 0);

@@ -618,7 +618,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|ehci_urb_done
 id|ehci_urb_done
 (paren
 r_struct
@@ -635,6 +634,16 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+)paren
+id|__releases
+c_func
+(paren
+id|ehci-&gt;lock
+)paren
+id|__acquires
+c_func
+(paren
+id|ehci-&gt;lock
 )paren
 (brace
 r_if
