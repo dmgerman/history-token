@@ -40,7 +40,7 @@ id|pnp_resources
 op_star
 id|res
 op_assign
-id|dev-&gt;res-&gt;dep
+id|dev-&gt;possible-&gt;dep
 suffix:semicolon
 multiline_comment|/*&n;&t; * Unfortunately the isapnp_add_port_resource is too tightly bound&n;&t; * into the PnP discovery sequence, and cannot be used. Link in the&n;&t; * two extra ports (at offset 0x400 and 0x800 from the one given) by&n;&t; * hand.&n;&t; */
 r_for
@@ -171,7 +171,7 @@ id|pnp_resources
 op_star
 id|res
 op_assign
-id|dev-&gt;res-&gt;dep
+id|dev-&gt;possible-&gt;dep
 suffix:semicolon
 r_for
 c_loop
@@ -277,7 +277,7 @@ id|pnp_resources
 op_star
 id|res
 op_assign
-id|dev-&gt;res-&gt;dep
+id|dev-&gt;possible-&gt;dep
 suffix:semicolon
 r_int
 id|changed
@@ -402,7 +402,7 @@ id|max
 suffix:semicolon
 id|res
 op_assign
-id|dev-&gt;res
+id|dev-&gt;possible
 suffix:semicolon
 id|max
 op_assign
