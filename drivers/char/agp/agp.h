@@ -537,7 +537,7 @@ mdefine_line|#define PGE_EMPTY(b, p)&t;(!(p) || (p) == (unsigned long) (b)-&gt;s
 multiline_comment|/* Chipset independant registers (from AGP Spec) */
 DECL|macro|AGP_APBASE
 mdefine_line|#define AGP_APBASE&t;0x10
-multiline_comment|/* intel register */
+multiline_comment|/* Intel registers */
 DECL|macro|INTEL_APSIZE
 mdefine_line|#define INTEL_APSIZE&t;0xb4
 DECL|macro|INTEL_ATTBASE
@@ -561,7 +561,7 @@ DECL|macro|INTEL_I460_GATT_VALID
 mdefine_line|#define INTEL_I460_GATT_VALID&t;&t;(1UL &lt;&lt; 24)
 DECL|macro|INTEL_I460_GATT_COHERENT
 mdefine_line|#define INTEL_I460_GATT_COHERENT&t;(1UL &lt;&lt; 25)
-multiline_comment|/* intel i830 registers */
+multiline_comment|/* Intel i830 registers */
 DECL|macro|I830_GMCH_CTRL
 mdefine_line|#define I830_GMCH_CTRL&t;&t;&t;0x52
 DECL|macro|I830_GMCH_ENABLED
@@ -620,37 +620,37 @@ DECL|macro|I852_GME
 mdefine_line|#define I852_GME&t;&t;&t;0x2
 DECL|macro|I852_GM
 mdefine_line|#define I852_GM&t;&t;&t;&t;0x5
-multiline_comment|/* intel 815 register */
+multiline_comment|/* Intel 815 register */
 DECL|macro|INTEL_815_APCONT
 mdefine_line|#define INTEL_815_APCONT&t;0x51
 DECL|macro|INTEL_815_ATTBASE_MASK
 mdefine_line|#define INTEL_815_ATTBASE_MASK&t;~0x1FFFFFFF
-multiline_comment|/* intel i820 registers */
+multiline_comment|/* Intel i820 registers */
 DECL|macro|INTEL_I820_RDCR
 mdefine_line|#define INTEL_I820_RDCR&t;&t;0x51
 DECL|macro|INTEL_I820_ERRSTS
 mdefine_line|#define INTEL_I820_ERRSTS&t;0xc8
-multiline_comment|/* intel i840 registers */
+multiline_comment|/* Intel i840 registers */
 DECL|macro|INTEL_I840_MCHCFG
 mdefine_line|#define INTEL_I840_MCHCFG&t;0x50
 DECL|macro|INTEL_I840_ERRSTS
 mdefine_line|#define INTEL_I840_ERRSTS&t;0xc8
-multiline_comment|/* intel i845 registers */
+multiline_comment|/* Intel i845 registers */
 DECL|macro|INTEL_I845_AGPM
 mdefine_line|#define INTEL_I845_AGPM&t;&t;0x51
 DECL|macro|INTEL_I845_ERRSTS
 mdefine_line|#define INTEL_I845_ERRSTS&t;0xc8
-multiline_comment|/* intel i850 registers */
+multiline_comment|/* Intel i850 registers */
 DECL|macro|INTEL_I850_MCHCFG
 mdefine_line|#define INTEL_I850_MCHCFG&t;0x50
 DECL|macro|INTEL_I850_ERRSTS
 mdefine_line|#define INTEL_I850_ERRSTS&t;0xc8
-multiline_comment|/* intel i860 registers */
+multiline_comment|/* Intel i860 registers */
 DECL|macro|INTEL_I860_MCHCFG
 mdefine_line|#define INTEL_I860_MCHCFG&t;0x50
 DECL|macro|INTEL_I860_ERRSTS
 mdefine_line|#define INTEL_I860_ERRSTS&t;0xc8
-multiline_comment|/* intel i810 registers */
+multiline_comment|/* Intel i810 registers */
 DECL|macro|I810_GMADDR
 mdefine_line|#define I810_GMADDR&t;&t;0x10
 DECL|macro|I810_MMADDR
@@ -842,6 +842,23 @@ DECL|macro|HP_ZX1_PDIR_BASE
 mdefine_line|#define HP_ZX1_PDIR_BASE&t;0x320
 DECL|macro|HP_ZX1_CACHE_FLUSH
 mdefine_line|#define HP_ZX1_CACHE_FLUSH&t;0x428
+multiline_comment|/* NVIDIA registers */
+DECL|macro|NVIDIA_0_APSIZE
+mdefine_line|#define NVIDIA_0_APSIZE     0x80
+DECL|macro|NVIDIA_1_WBC
+mdefine_line|#define NVIDIA_1_WBC        0xf0
+DECL|macro|NVIDIA_2_GARTCTRL
+mdefine_line|#define NVIDIA_2_GARTCTRL   0xd0
+DECL|macro|NVIDIA_2_APBASE
+mdefine_line|#define NVIDIA_2_APBASE     0xd8
+DECL|macro|NVIDIA_2_APLIMIT
+mdefine_line|#define NVIDIA_2_APLIMIT    0xdc
+DECL|macro|NVIDIA_2_ATTBASE
+mdefine_line|#define NVIDIA_2_ATTBASE(i) (0xe0 + (i) * 4)
+DECL|macro|NVIDIA_3_APBASE
+mdefine_line|#define NVIDIA_3_APBASE     0x50
+DECL|macro|NVIDIA_3_APLIMIT
+mdefine_line|#define NVIDIA_3_APLIMIT    0x54
 DECL|struct|agp_device_ids
 r_struct
 id|agp_device_ids
