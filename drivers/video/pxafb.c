@@ -5234,10 +5234,6 @@ op_star
 id|inf
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|ret
 suffix:semicolon
 id|dev_dbg
@@ -5550,20 +5546,12 @@ id|failed
 suffix:semicolon
 )brace
 multiline_comment|/* enable LCD controller clock */
-id|local_irq_save
+id|pxa_set_cken
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|CKEN
-op_or_assign
 id|CKEN16_LCD
-suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|ret
