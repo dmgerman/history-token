@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * AGPGART module&n; * Copyright (C) 2002 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
+multiline_comment|/*&n; * AGPGART&n; * Copyright (C) 2002 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
 macro_line|#ifndef _AGP_BACKEND_PRIV_H
 DECL|macro|_AGP_BACKEND_PRIV_H
 mdefine_line|#define _AGP_BACKEND_PRIV_H 1
@@ -904,42 +904,6 @@ suffix:semicolon
 multiline_comment|/* used to override generic */
 )brace
 suffix:semicolon
-DECL|struct|agp_bridge_info
-r_struct
-id|agp_bridge_info
-(brace
-DECL|member|vendor_id
-r_int
-r_int
-id|vendor_id
-suffix:semicolon
-DECL|member|vendor_name
-r_const
-r_char
-op_star
-id|vendor_name
-suffix:semicolon
-DECL|member|chipset_setup
-r_int
-(paren
-op_star
-id|chipset_setup
-)paren
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-suffix:semicolon
-DECL|member|ids
-r_struct
-id|agp_device_ids
-op_star
-id|ids
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|agp_driver
 r_struct
 id|agp_driver
@@ -957,41 +921,6 @@ op_star
 id|dev
 suffix:semicolon
 )brace
-suffix:semicolon
-r_extern
-r_struct
-id|agp_bridge_info
-id|ali_agp_bridge_info
-suffix:semicolon
-r_extern
-r_struct
-id|agp_bridge_info
-id|amd_k8_agp_bridge_info
-suffix:semicolon
-r_extern
-r_struct
-id|agp_bridge_info
-id|amd_agp_bridge_info
-suffix:semicolon
-r_extern
-r_struct
-id|agp_bridge_info
-id|intel_agp_bridge_info
-suffix:semicolon
-r_extern
-r_struct
-id|agp_bridge_info
-id|sis_agp_bridge_info
-suffix:semicolon
-r_extern
-r_struct
-id|agp_bridge_info
-id|via_agp_bridge_info
-suffix:semicolon
-r_extern
-r_struct
-id|agp_bridge_info
-id|hp_agp_bridge_info
 suffix:semicolon
 multiline_comment|/* Generic routines. */
 r_void
