@@ -425,26 +425,6 @@ macro_line|#else
 DECL|macro|EMAC_IS_BAD_RX_PACKET
 mdefine_line|#define EMAC_IS_BAD_RX_PACKET(desc) &bslash;&n;&t; (desc &amp; EMAC_BAD_RX_PACKET)
 macro_line|#endif
-multiline_comment|/* Revision specific EMAC register defaults */
-macro_line|#ifdef CONFIG_IBM_EMAC4
-DECL|macro|EMAC_M1_DEFAULT
-mdefine_line|#define EMAC_M1_DEFAULT&t;&t;&t;(EMAC_M1_BASE | &bslash;&n;&t;&t;&t;&t;&t;EMAC_M1_OPB_CLK_83 | &bslash;&n;&t;&t;&t;&t;&t;EMAC_M1_TX_MWSW)
-DECL|macro|EMAC_RMR_DEFAULT
-mdefine_line|#define EMAC_RMR_DEFAULT&t;&t;(EMAC_RMR_BASE | &bslash;&n;&t;&t;&t;&t;&t;EMAC_RMR_RFAF_128_2048)
-DECL|macro|EMAC_TMR0_XMIT
-mdefine_line|#define EMAC_TMR0_XMIT&t;&t;&t;(EMAC_TMR0_GNP0 | &bslash;&n;&t;&t;&t;&t;&t;EMAC_TMR0_TFAE_128_2048)
-DECL|macro|EMAC_TRTR_DEFAULT
-mdefine_line|#define EMAC_TRTR_DEFAULT&t;&t;EMAC_TRTR_1024
-macro_line|#else&t;&t;&t;&t;/* !CONFIG_IBM_EMAC4 */
-DECL|macro|EMAC_M1_DEFAULT
-mdefine_line|#define EMAC_M1_DEFAULT&t;&t;&t;EMAC_M1_BASE
-DECL|macro|EMAC_RMR_DEFAULT
-mdefine_line|#define EMAC_RMR_DEFAULT&t;&t;EMAC_RMR_BASE
-DECL|macro|EMAC_TMR0_XMIT
-mdefine_line|#define EMAC_TMR0_XMIT&t;&t;&t;EMAC_TMR0_GNP0
-DECL|macro|EMAC_TRTR_DEFAULT
-mdefine_line|#define EMAC_TRTR_DEFAULT&t;&t;EMAC_TRTR_1600
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_IBM_EMAC4 */
 multiline_comment|/* SoC implementation specific EMAC register defaults */
 macro_line|#if defined(CONFIG_440GP)
 DECL|macro|EMAC_RWMR_DEFAULT
@@ -457,9 +437,9 @@ macro_line|#elif defined(CONFIG_440GX)
 DECL|macro|EMAC_RWMR_DEFAULT
 mdefine_line|#define EMAC_RWMR_DEFAULT&t;&t;0x1000a200
 DECL|macro|EMAC_TMR0_DEFAULT
-mdefine_line|#define EMAC_TMR0_DEFAULT&t;&t;EMAC_TMR0_TFAE_128_2048
+mdefine_line|#define EMAC_TMR0_DEFAULT&t;&t;EMAC_TMR0_TFAE_2_32
 DECL|macro|EMAC_TMR1_DEFAULT
-mdefine_line|#define EMAC_TMR1_DEFAULT&t;&t;0x88810000
+mdefine_line|#define EMAC_TMR1_DEFAULT&t;&t;0xa00f0000
 macro_line|#else
 DECL|macro|EMAC_RWMR_DEFAULT
 mdefine_line|#define EMAC_RWMR_DEFAULT&t;&t;0x0f002000
@@ -468,5 +448,25 @@ mdefine_line|#define EMAC_TMR0_DEFAULT&t;&t;0x00000000
 DECL|macro|EMAC_TMR1_DEFAULT
 mdefine_line|#define EMAC_TMR1_DEFAULT&t;&t;0x380f0000
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_440GP */
+multiline_comment|/* Revision specific EMAC register defaults */
+macro_line|#ifdef CONFIG_IBM_EMAC4
+DECL|macro|EMAC_M1_DEFAULT
+mdefine_line|#define EMAC_M1_DEFAULT&t;&t;&t;(EMAC_M1_BASE | &bslash;&n;&t;&t;&t;&t;&t;EMAC_M1_OPB_CLK_83 | &bslash;&n;&t;&t;&t;&t;&t;EMAC_M1_TX_MWSW)
+DECL|macro|EMAC_RMR_DEFAULT
+mdefine_line|#define EMAC_RMR_DEFAULT&t;&t;(EMAC_RMR_BASE | &bslash;&n;&t;&t;&t;&t;&t;EMAC_RMR_RFAF_128_2048)
+DECL|macro|EMAC_TMR0_XMIT
+mdefine_line|#define EMAC_TMR0_XMIT&t;&t;&t;(EMAC_TMR0_GNP0 | &bslash;&n;&t;&t;&t;&t;&t;EMAC_TMR0_DEFAULT)
+DECL|macro|EMAC_TRTR_DEFAULT
+mdefine_line|#define EMAC_TRTR_DEFAULT&t;&t;EMAC_TRTR_1024
+macro_line|#else&t;&t;&t;&t;/* !CONFIG_IBM_EMAC4 */
+DECL|macro|EMAC_M1_DEFAULT
+mdefine_line|#define EMAC_M1_DEFAULT&t;&t;&t;EMAC_M1_BASE
+DECL|macro|EMAC_RMR_DEFAULT
+mdefine_line|#define EMAC_RMR_DEFAULT&t;&t;EMAC_RMR_BASE
+DECL|macro|EMAC_TMR0_XMIT
+mdefine_line|#define EMAC_TMR0_XMIT&t;&t;&t;EMAC_TMR0_GNP0
+DECL|macro|EMAC_TRTR_DEFAULT
+mdefine_line|#define EMAC_TRTR_DEFAULT&t;&t;EMAC_TRTR_1600
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_IBM_EMAC4 */
 macro_line|#endif
 eof

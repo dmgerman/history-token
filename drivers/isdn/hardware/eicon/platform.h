@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: platform.h,v 1.37.4.1 2004/07/28 14:47:21 armin Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: platform.h,v 1.37.4.2 2004/08/28 20:03:53 armin Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef&t;__PLATFORM_H__
 DECL|macro|__PLATFORM_H__
 mdefine_line|#define&t;__PLATFORM_H__
@@ -715,94 +715,6 @@ id|a
 )paren
 suffix:semicolon
 )brace
-DECL|function|diva_os_enter_spin_lock_hard
-r_static
-id|__inline__
-r_void
-id|diva_os_enter_spin_lock_hard
-(paren
-id|diva_os_spin_lock_t
-op_star
-id|a
-comma
-"&bslash;"
-id|diva_os_spin_lock_magic_t
-op_star
-id|old_irql
-comma
-"&bslash;"
-r_void
-op_star
-id|dbg
-)paren
-(brace
-"&bslash;"
-r_int
-r_int
-id|flags
-suffix:semicolon
-"&bslash;"
-id|spin_lock_irqsave
-(paren
-id|a
-comma
-id|flags
-)paren
-suffix:semicolon
-"&bslash;"
-op_star
-id|old_irql
-op_assign
-(paren
-id|diva_os_spin_lock_magic_t
-)paren
-id|flags
-suffix:semicolon
-"&bslash;"
-)brace
-DECL|function|diva_os_leave_spin_lock_hard
-r_static
-id|__inline__
-r_void
-id|diva_os_leave_spin_lock_hard
-(paren
-id|diva_os_spin_lock_t
-op_star
-id|a
-comma
-"&bslash;"
-id|diva_os_spin_lock_magic_t
-op_star
-id|old_irql
-comma
-"&bslash;"
-r_void
-op_star
-id|dbg
-)paren
-(brace
-"&bslash;"
-r_int
-r_int
-id|flags
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_star
-id|old_irql
-suffix:semicolon
-"&bslash;"
-id|spin_unlock_irqrestore
-(paren
-id|a
-comma
-id|flags
-)paren
-suffix:semicolon
-"&bslash;"
-)brace
 DECL|macro|diva_os_destroy_spin_lock
 mdefine_line|#define diva_os_destroy_spin_lock(a,b) do { } while(0)
 multiline_comment|/*&n;**  Deffered processing framework&n;*/
@@ -1006,6 +918,7 @@ DECL|macro|IMPLEMENT_MARKED_OK_AFTER_FC
 mdefine_line|#define IMPLEMENT_MARKED_OK_AFTER_FC 1
 DECL|macro|DIVA_IDI_RX_DMA
 mdefine_line|#define DIVA_IDI_RX_DMA 1
+multiline_comment|/*&n;** endian macros&n;*/
 DECL|macro|READ_WORD
 mdefine_line|#define READ_WORD(addr)   readw(addr)
 DECL|macro|READ_DWORD
@@ -1014,6 +927,7 @@ DECL|macro|WRITE_WORD
 mdefine_line|#define WRITE_WORD(addr,v)  writew(v,addr)
 DECL|macro|WRITE_DWORD
 mdefine_line|#define WRITE_DWORD(addr,v) writel(v,addr)
+multiline_comment|/*&n;** 32/64 bit macors&n;*/
 macro_line|#ifdef BITS_PER_LONG
 macro_line|#if BITS_PER_LONG &gt; 32 
 DECL|macro|PLATFORM_GT_32BIT
@@ -1022,11 +936,22 @@ DECL|macro|ULongToPtr
 mdefine_line|#define ULongToPtr(x) (void *)(unsigned long)(x)
 macro_line|#endif
 macro_line|#endif
+multiline_comment|/*&n;** undef os definitions of macros we use&n;*/
 DECL|macro|ID_MASK
 macro_line|#undef ID_MASK
 DECL|macro|N_DATA
 macro_line|#undef N_DATA
 DECL|macro|ADDR
 macro_line|#undef ADDR
+multiline_comment|/*&n;** dump file&n;*/
+DECL|macro|diva_os_dump_file_t
+mdefine_line|#define diva_os_dump_file_t char
+DECL|macro|diva_os_board_trace_t
+mdefine_line|#define diva_os_board_trace_t char
+DECL|macro|diva_os_dump_file
+mdefine_line|#define diva_os_dump_file(__x__) do { } while(0)
+multiline_comment|/*&n;** size of internal arrays&n;*/
+DECL|macro|MAX_DESCRIPTORS
+mdefine_line|#define MAX_DESCRIPTORS 64
 macro_line|#endif&t;/* __PLATFORM_H__ */
 eof

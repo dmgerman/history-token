@@ -262,6 +262,16 @@ id|MIX
 )brace
 comma
 (brace
+l_string|&quot;NS 83847 PHY&quot;
+comma
+l_int|0x2000
+comma
+l_int|0x5C30
+comma
+id|MIX
+)brace
+comma
+(brace
 l_string|&quot;Realtek RTL8201 PHY&quot;
 comma
 l_int|0x0000

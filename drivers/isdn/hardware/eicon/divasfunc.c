@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasfunc.c,v 1.23 2004/04/08 01:17:57 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasfunc.c,v 1.23.4.2 2004/08/28 20:03:53 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;pc.h&quot;
@@ -34,8 +34,6 @@ id|IoAdapters
 id|MAX_ADAPTER
 )braket
 suffix:semicolon
-DECL|macro|MAX_DESCRIPTORS
-mdefine_line|#define MAX_DESCRIPTORS  32
 r_extern
 r_char
 op_star

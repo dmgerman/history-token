@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: idifunc.c,v 1.14.4.2 2004/05/09 16:42:20 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * User Mode IDI Interface &n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: idifunc.c,v 1.14.4.4 2004/08/28 20:03:53 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * User Mode IDI Interface &n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;divasync.h&quot;
@@ -44,8 +44,6 @@ c_func
 r_int
 )paren
 suffix:semicolon
-DECL|macro|MAX_DESCRIPTORS
-mdefine_line|#define MAX_DESCRIPTORS  32
 DECL|variable|notify_handle
 r_static
 id|dword

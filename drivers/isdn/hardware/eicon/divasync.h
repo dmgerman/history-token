@@ -14,7 +14,6 @@ DECL|macro|IDI_SYNC_REQ_GET_XLOG
 mdefine_line|#define IDI_SYNC_REQ_GET_XLOG           0x04
 DECL|macro|IDI_SYNC_REQ_GET_FEATURES
 mdefine_line|#define IDI_SYNC_REQ_GET_FEATURES       0x05
-multiline_comment|/* Added for DIVA USB support */
 DECL|macro|IDI_SYNC_REQ_USB_REGISTER
 mdefine_line|#define IDI_SYNC_REQ_USB_REGISTER       0x06
 DECL|macro|IDI_SYNC_REQ_USB_RELEASE
@@ -27,13 +26,10 @@ DECL|macro|IDI_SYNC_REQ_USB_STOP_DEVICE
 mdefine_line|#define IDI_SYNC_REQ_USB_STOP_DEVICE    0x0A
 DECL|macro|IDI_SYNC_REQ_USB_REMOVE_DEVICE
 mdefine_line|#define IDI_SYNC_REQ_USB_REMOVE_DEVICE  0x0B
-multiline_comment|/* Added for Diva Server Monitor */
 DECL|macro|IDI_SYNC_REQ_GET_CARDTYPE
 mdefine_line|#define IDI_SYNC_REQ_GET_CARDTYPE       0x0C
 DECL|macro|IDI_SYNC_REQ_GET_DBG_XLOG
 mdefine_line|#define IDI_SYNC_REQ_GET_DBG_XLOG       0x0D
-DECL|macro|IDI_SYNC_REQ_GET_LINE_IDX
-mdefine_line|#define IDI_SYNC_REQ_GET_LINE_IDX   0x0E
 DECL|macro|DIVA_USB
 mdefine_line|#define DIVA_USB
 DECL|macro|DIVA_USB_REQ
@@ -44,7 +40,6 @@ DECL|macro|DIVA_USB_ADD_ADAPTER
 mdefine_line|#define DIVA_USB_ADD_ADAPTER            0xAC
 DECL|macro|DIVA_USB_REMOVE_ADAPTER
 mdefine_line|#define DIVA_USB_REMOVE_ADAPTER         0xAD
-multiline_comment|/******************************************************************************/
 DECL|macro|IDI_SYNC_REQ_SERIAL_HOOK
 mdefine_line|#define IDI_SYNC_REQ_SERIAL_HOOK        0x80
 DECL|macro|IDI_SYNC_REQ_XCHANGE_STATUS
@@ -54,17 +49,21 @@ mdefine_line|#define IDI_SYNC_REQ_USB_HOOK           0x82
 DECL|macro|IDI_SYNC_REQ_PORTDRV_HOOK
 mdefine_line|#define IDI_SYNC_REQ_PORTDRV_HOOK       0x83
 DECL|macro|IDI_SYNC_REQ_SLI
-mdefine_line|#define IDI_SYNC_REQ_SLI           (0x84)   /*  SLI request from 3signal modem drivers */
+mdefine_line|#define IDI_SYNC_REQ_SLI                0x84   /*  SLI request from 3signal modem drivers */
 DECL|macro|IDI_SYNC_REQ_RECONFIGURE
 mdefine_line|#define IDI_SYNC_REQ_RECONFIGURE        0x85
 DECL|macro|IDI_SYNC_REQ_RESET
 mdefine_line|#define IDI_SYNC_REQ_RESET              0x86
+DECL|macro|IDI_SYNC_REQ_GET_85X_DEVICE_DATA
+mdefine_line|#define IDI_SYNC_REQ_GET_85X_DEVICE_DATA     0x87
 DECL|macro|IDI_SYNC_REQ_LOCK_85X
 mdefine_line|#define IDI_SYNC_REQ_LOCK_85X                   0x88
+DECL|macro|IDI_SYNC_REQ_DIVA_85X_USB_DATA_EXCHANGE
+mdefine_line|#define IDI_SYNC_REQ_DIVA_85X_USB_DATA_EXCHANGE 0x99
+DECL|macro|IDI_SYNC_REQ_DIPORT_EXCHANGE_REQ
+mdefine_line|#define IDI_SYNC_REQ_DIPORT_EXCHANGE_REQ   0x98
 DECL|macro|IDI_SYNC_REQ_GET_85X_EXT_PORT_TYPE
 mdefine_line|#define IDI_SYNC_REQ_GET_85X_EXT_PORT_TYPE      0xA0
-DECL|macro|IDI_SYNC_REQ_DIPORT_GET_85X_TX_CTRL_FN
-mdefine_line|#define IDI_SYNC_REQ_DIPORT_GET_85X_TX_CTRL_FN  0x98
 multiline_comment|/******************************************************************************/
 DECL|macro|IDI_SYNC_REQ_XDI_GET_EXTENDED_FEATURES
 mdefine_line|#define IDI_SYNC_REQ_XDI_GET_EXTENDED_FEATURES  0x92
@@ -100,6 +99,10 @@ DECL|macro|DIVA_XDI_EXTENDED_FEATURE_NO_CANCEL_RC
 mdefine_line|#define DIVA_XDI_EXTENDED_FEATURE_NO_CANCEL_RC    0x10
 DECL|macro|DIVA_XDI_EXTENDED_FEATURE_RX_DMA
 mdefine_line|#define DIVA_XDI_EXTENDED_FEATURE_RX_DMA          0x20
+DECL|macro|DIVA_XDI_EXTENDED_FEATURE_MANAGEMENT_DMA
+mdefine_line|#define DIVA_XDI_EXTENDED_FEATURE_MANAGEMENT_DMA  0x40
+DECL|macro|DIVA_XDI_EXTENDED_FEATURE_WIDE_ID
+mdefine_line|#define DIVA_XDI_EXTENDED_FEATURE_WIDE_ID         0x80
 DECL|macro|DIVA_XDI_EXTENDED_FEATURES_MAX_SZ
 mdefine_line|#define DIVA_XDI_EXTENDED_FEATURES_MAX_SZ    1
 multiline_comment|/******************************************************************************/
@@ -160,6 +163,10 @@ DECL|member|controller
 id|dword
 id|controller
 suffix:semicolon
+DECL|member|total_controllers
+id|dword
+id|total_controllers
+suffix:semicolon
 DECL|typedef|diva_xdi_get_logical_adapter_number_s_t
 )brace
 id|diva_xdi_get_logical_adapter_number_s_t
@@ -211,6 +218,8 @@ DECL|macro|IDI_SYNC_REQ_DIDD_REMOVE_ADAPTER
 mdefine_line|#define IDI_SYNC_REQ_DIDD_REMOVE_ADAPTER            0x04
 DECL|macro|IDI_SYNC_REQ_DIDD_READ_ADAPTER_ARRAY
 mdefine_line|#define IDI_SYNC_REQ_DIDD_READ_ADAPTER_ARRAY        0x05
+DECL|macro|IDI_SYNC_REQ_DIDD_GET_CFG_LIB_IFC
+mdefine_line|#define IDI_SYNC_REQ_DIDD_GET_CFG_LIB_IFC           0x10
 DECL|struct|_diva_didd_adapter_notify
 r_typedef
 r_struct
@@ -279,6 +288,20 @@ suffix:semicolon
 DECL|typedef|diva_didd_read_adapter_array_t
 )brace
 id|diva_didd_read_adapter_array_t
+suffix:semicolon
+DECL|struct|_diva_didd_get_cfg_lib_ifc
+r_typedef
+r_struct
+id|_diva_didd_get_cfg_lib_ifc
+(brace
+DECL|member|ifc
+r_void
+op_star
+id|ifc
+suffix:semicolon
+DECL|typedef|diva_didd_get_cfg_lib_ifc_t
+)brace
+id|diva_didd_get_cfg_lib_ifc_t
 suffix:semicolon
 multiline_comment|/******************************************************************************/
 DECL|macro|IDI_SYNC_REQ_XDI_GET_STREAM
@@ -1531,6 +1554,20 @@ suffix:semicolon
 DECL|member|didd_read_adapter_array
 )brace
 id|didd_read_adapter_array
+suffix:semicolon
+r_struct
+(brace
+DECL|member|e
+id|ENTITY
+id|e
+suffix:semicolon
+DECL|member|info
+id|diva_didd_get_cfg_lib_ifc_t
+id|info
+suffix:semicolon
+DECL|member|didd_get_cfg_lib_ifc
+)brace
+id|didd_get_cfg_lib_ifc
 suffix:semicolon
 r_struct
 (brace
