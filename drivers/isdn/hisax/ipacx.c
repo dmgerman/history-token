@@ -2,6 +2,7 @@ multiline_comment|/* &n; *&n; * IPACX specific routines&n; *&n; * Author       J
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;hisax_if.h&quot;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isdnl1.h&quot;
@@ -2737,6 +2738,8 @@ r_void
 op_star
 )paren
 id|dch_bh
+comma
+id|cs
 )paren
 suffix:semicolon
 id|cs-&gt;setstack_d

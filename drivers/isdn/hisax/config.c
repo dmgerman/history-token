@@ -4226,10 +4226,6 @@ id|cs-&gt;event
 op_assign
 l_int|0
 suffix:semicolon
-id|cs-&gt;tqueue.sync
-op_assign
-l_int|0
-suffix:semicolon
 id|cs-&gt;tqueue.data
 op_assign
 id|cs

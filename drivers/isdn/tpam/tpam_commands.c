@@ -2,7 +2,6 @@ multiline_comment|/* $Id: tpam_commands.c,v 1.1.2.4 2001/11/06 20:58:30 kai Exp 
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/isdn/tpam.h&gt;
