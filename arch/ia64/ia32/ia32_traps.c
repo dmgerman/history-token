@@ -34,7 +34,7 @@ l_int|0
 suffix:colon
 multiline_comment|/* Instruction intercept fault */
 r_case
-l_int|3
+l_int|4
 suffix:colon
 multiline_comment|/* Locked Data reference fault */
 r_case
