@@ -1902,6 +1902,11 @@ id|probe
 op_assign
 id|agp_via_probe
 comma
+dot
+id|remove
+op_assign
+id|agp_via_remove
+comma
 )brace
 suffix:semicolon
 DECL|function|agp_via_init
@@ -1933,13 +1938,6 @@ c_func
 r_void
 )paren
 (brace
-id|agp_unregister_driver
-c_func
-(paren
-op_amp
-id|via_agp_driver
-)paren
-suffix:semicolon
 id|pci_unregister_driver
 c_func
 (paren
