@@ -3823,12 +3823,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|interface-&gt;dev.driver
-)paren
-(brace
-r_if
-c_cond
-(paren
 (paren
 id|ret
 op_assign
@@ -3844,7 +3838,6 @@ id|ret
 r_return
 id|ret
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
