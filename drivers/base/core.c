@@ -874,7 +874,7 @@ id|dev
 suffix:semicolon
 id|PMError
 suffix:colon
-id|kobject_unregister
+id|kobject_del
 c_func
 (paren
 op_amp
