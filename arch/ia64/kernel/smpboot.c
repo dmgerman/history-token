@@ -93,10 +93,6 @@ r_int
 r_int
 id|ia64_iobase
 suffix:semicolon
-DECL|variable|cpucount
-r_int
-id|cpucount
-suffix:semicolon
 DECL|variable|task_for_booting_cpu
 id|task_t
 op_star
