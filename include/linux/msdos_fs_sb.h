@@ -1,7 +1,6 @@
 macro_line|#ifndef _MSDOS_FS_SB
 DECL|macro|_MSDOS_FS_SB
 mdefine_line|#define _MSDOS_FS_SB
-macro_line|#include&lt;linux/fat_cvf.h&gt;
 multiline_comment|/*&n; * MS-DOS file system in-core superblock data&n; */
 DECL|struct|fat_mount_options
 r_struct
@@ -217,23 +216,12 @@ op_star
 id|nls_io
 suffix:semicolon
 multiline_comment|/* Charset used for input and display */
-DECL|member|cvf_format
-r_struct
-id|cvf_format
-op_star
-id|cvf_format
-suffix:semicolon
 DECL|member|dir_ops
 r_void
 op_star
 id|dir_ops
 suffix:semicolon
 multiline_comment|/* Opaque; default directory operations */
-DECL|member|private_data
-r_void
-op_star
-id|private_data
-suffix:semicolon
 DECL|member|dir_per_block
 r_int
 id|dir_per_block
