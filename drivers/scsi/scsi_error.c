@@ -3658,7 +3658,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;%s: request allocate failed,&quot;
-l_string|&quot;prevent media removal cmd not sent&quot;
+l_string|&quot;prevent media removal cmd not sent&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
