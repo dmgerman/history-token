@@ -628,6 +628,11 @@ op_amp
 id|sdev-&gt;list_lock
 )paren
 suffix:semicolon
+multiline_comment|/* if the device needs this changing, it may do so in the&n;&t; * slave_configure function */
+id|sdev-&gt;max_device_blocked
+op_assign
+id|SCSI_DEFAULT_DEVICE_BLOCKED
+suffix:semicolon
 multiline_comment|/*&n;&t; * Some low level driver could use device-&gt;type&n;&t; */
 id|sdev-&gt;type
 op_assign
@@ -2046,11 +2051,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* if the device needs this changing, it may do so in the detect&n;&t; * function */
-id|sdev-&gt;max_device_blocked
-op_assign
-id|SCSI_DEFAULT_DEVICE_BLOCKED
-suffix:semicolon
 id|sdev-&gt;use_10_for_rw
 op_assign
 l_int|1
