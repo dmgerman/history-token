@@ -1677,6 +1677,10 @@ suffix:semicolon
 id|tmp_ax-&gt;rx_packets
 op_increment
 suffix:semicolon
+id|tmp_ax-&gt;rx_bytes
+op_add_assign
+id|count
+suffix:semicolon
 )brace
 multiline_comment|/* Encapsulate one AX.25 packet and stuff into a TTY queue. */
 DECL|function|ax_encaps
@@ -1878,6 +1882,10 @@ suffix:semicolon
 id|ax-&gt;tx_packets
 op_increment
 suffix:semicolon
+id|ax-&gt;tx_bytes
+op_add_assign
+id|actual
+suffix:semicolon
 id|ax-&gt;dev-&gt;trans_start
 op_assign
 id|jiffies
@@ -1940,6 +1948,10 @@ id|count
 suffix:semicolon
 id|ax-&gt;tx_packets
 op_increment
+suffix:semicolon
+id|ax-&gt;tx_bytes
+op_add_assign
+id|actual
 suffix:semicolon
 id|ax-&gt;mkiss-&gt;dev-&gt;trans_start
 op_assign
@@ -3183,6 +3195,14 @@ id|stats.tx_packets
 op_assign
 id|ax-&gt;tx_packets
 suffix:semicolon
+id|stats.rx_bytes
+op_assign
+id|ax-&gt;rx_bytes
+suffix:semicolon
+id|stats.tx_bytes
+op_assign
+id|ax-&gt;tx_bytes
+suffix:semicolon
 id|stats.rx_dropped
 op_assign
 id|ax-&gt;rx_dropped
@@ -4167,7 +4187,9 @@ suffix:semicolon
 multiline_comment|/* New-style flags. */
 id|dev-&gt;flags
 op_assign
-l_int|0
+id|IFF_BROADCAST
+op_or
+id|IFF_MULTICAST
 suffix:semicolon
 r_return
 l_int|0
