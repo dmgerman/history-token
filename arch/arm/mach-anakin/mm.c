@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-anakin/mm.c&n; *&n; *  Copyright (C) 2001 Aleph One Ltd. for Acunia N.V.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Changelog:&n; *   09-Apr-2001 W/TTC&t;Created&n; */
-macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -21,15 +21,7 @@ id|IO_START
 comma
 id|IO_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -39,15 +31,7 @@ id|FLASH_START
 comma
 id|FLASH_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -57,18 +41,8 @@ id|VGA_START
 comma
 id|VGA_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
-id|LAST_DESC
 )brace
 suffix:semicolon
 r_void
@@ -84,6 +58,12 @@ id|iotable_init
 c_func
 (paren
 id|anakin_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|anakin_io_desc
+)paren
 )paren
 suffix:semicolon
 )brace

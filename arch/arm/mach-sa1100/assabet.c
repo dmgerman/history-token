@@ -436,60 +436,6 @@ l_string|&quot;Neponset expansion board detected&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__initdata
-r_static
-r_struct
-id|map_desc
-id|assabet_io_desc
-(braket
-)braket
-id|__initdata
-op_assign
-(brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
-(brace
-l_int|0xf1000000
-comma
-l_int|0x12000000
-comma
-l_int|0x00100000
-comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Board Control Register */
-(brace
-l_int|0xf2800000
-comma
-l_int|0x4b800000
-comma
-l_int|0x00800000
-comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* MQ200 */
-multiline_comment|/*  f3000000 - neponset system registers */
-multiline_comment|/*  f4000000 - neponset SA1111 registers */
-id|LAST_DESC
-)brace
-suffix:semicolon
 DECL|function|assabet_uart_pm
 r_static
 r_void
@@ -783,6 +729,40 @@ id|assabet_uart_pm
 comma
 )brace
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_struct
+id|map_desc
+id|assabet_io_desc
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+multiline_comment|/* virtual     physical    length      type */
+(brace
+l_int|0xf1000000
+comma
+l_int|0x12000000
+comma
+l_int|0x00100000
+comma
+id|MT_DEVICE
+)brace
+comma
+multiline_comment|/* Board Control Register */
+(brace
+l_int|0xf2800000
+comma
+l_int|0x4b800000
+comma
+l_int|0x00800000
+comma
+id|MT_DEVICE
+)brace
+multiline_comment|/* MQ200 */
+)brace
+suffix:semicolon
 DECL|function|assabet_map_io
 r_static
 r_void
@@ -810,6 +790,12 @@ id|iotable_init
 c_func
 (paren
 id|assabet_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|assabet_io_desc
+)paren
 )paren
 suffix:semicolon
 r_if

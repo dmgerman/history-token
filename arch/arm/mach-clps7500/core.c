@@ -1,4 +1,5 @@
-multiline_comment|/*&n; *  linux/arch/arm/mm/mm-cl7500.c&n; *&n; *  Copyright (C) 1998 Russell King&n; *  Copyright (C) 1999 Nexus Electronics Ltd&n; *&n; * Extra MM routines for CL7500 architecture&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mach-clps7500/core.c&n; *&n; *  Copyright (C) 1998 Russell King&n; *  Copyright (C) 1999 Nexus Electronics Ltd&n; *&n; * Extra MM routines for CL7500 architecture&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
@@ -1093,11 +1094,7 @@ id|IO_START
 comma
 id|IO_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* IO space&t;*/
@@ -1108,11 +1105,7 @@ id|ISA_START
 comma
 id|ISA_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* ISA space&t;*/
@@ -1123,11 +1116,7 @@ id|FLASH_START
 comma
 id|FLASH_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* Flash&t;*/
@@ -1138,15 +1127,9 @@ id|LED_START
 comma
 id|LED_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* LED&t;&t;*/
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|clps7500_map_io
@@ -1163,6 +1146,12 @@ id|iotable_init
 c_func
 (paren
 id|cl7500_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|cl7500_io_desc
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/simpad.c&n; *&n; */
+multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/simpad.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -89,7 +89,7 @@ id|simpad_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual&t;physical    length&t;domain&t;   r  w  c  b */
+multiline_comment|/* virtual&t;physical    length&t;type */
 (brace
 l_int|0xf2800000
 comma
@@ -97,15 +97,7 @@ l_int|0x4b800000
 comma
 l_int|0x00800000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* MQ200 */
@@ -116,19 +108,9 @@ l_int|0x18000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* Paules CS3, write only */
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|simpad_uart_pm
@@ -214,6 +196,12 @@ id|iotable_init
 c_func
 (paren
 id|simpad_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|simpad_io_desc
+)paren
 )paren
 suffix:semicolon
 id|PSPR

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-pxa/lubbock.c&n; *&n; *  Support for the Intel DBPXA250 Development Platform.&n; *&n; *  Author:&t;Nicolas Pitre&n; *  Created:&t;Jun 15, 2001&n; *  Copyright:&t;MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License version 2 as&n; *  published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -424,7 +425,7 @@ id|lubbock_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
+multiline_comment|/* virtual     physical    length      type */
 (brace
 l_int|0xf0000000
 comma
@@ -432,15 +433,7 @@ l_int|0x08000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* CPLD */
@@ -451,15 +444,7 @@ l_int|0x0c000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* LAN91C96 IO */
@@ -470,15 +455,7 @@ l_int|0x0e000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* LAN91C96 Attr */
@@ -489,19 +466,9 @@ l_int|0x10000000
 comma
 l_int|0x00400000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* SA1111 */
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|lubbock_map_io
@@ -523,6 +490,12 @@ id|iotable_init
 c_func
 (paren
 id|lubbock_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|lubbock_io_desc
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* This enables the BTUART */
