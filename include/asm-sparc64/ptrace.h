@@ -308,14 +308,10 @@ DECL|macro|TRACEREG_SZ
 mdefine_line|#define TRACEREG_SZ&t;sizeof(struct pt_regs)
 DECL|macro|STACKFRAME_SZ
 mdefine_line|#define STACKFRAME_SZ&t;sizeof(struct sparc_stackf)
-DECL|macro|REGWIN_SZ
-mdefine_line|#define REGWIN_SZ&t;sizeof(struct reg_window)
 DECL|macro|TRACEREG32_SZ
 mdefine_line|#define TRACEREG32_SZ&t;sizeof(struct pt_regs32)
 DECL|macro|STACKFRAME32_SZ
 mdefine_line|#define STACKFRAME32_SZ&t;sizeof(struct sparc_stackf32)
-DECL|macro|REGWIN32_SZ
-mdefine_line|#define REGWIN32_SZ&t;sizeof(struct reg_window32)
 macro_line|#ifdef __KERNEL__
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (!((regs)-&gt;tstate &amp; TSTATE_PRIV))
@@ -338,14 +334,10 @@ DECL|macro|TRACEREG_SZ
 mdefine_line|#define TRACEREG_SZ&t;&t;0xa0
 DECL|macro|STACKFRAME_SZ
 mdefine_line|#define STACKFRAME_SZ&t;&t;0xc0
-DECL|macro|REGWIN_SZ
-mdefine_line|#define REGWIN_SZ&t;&t;0x80
 DECL|macro|TRACEREG32_SZ
 mdefine_line|#define TRACEREG32_SZ&t;&t;0x50
 DECL|macro|STACKFRAME32_SZ
 mdefine_line|#define STACKFRAME32_SZ&t;&t;0x60
-DECL|macro|REGWIN32_SZ
-mdefine_line|#define REGWIN32_SZ&t;&t;0x40
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 DECL|macro|STACK_BIAS
