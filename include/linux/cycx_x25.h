@@ -1,7 +1,7 @@
-multiline_comment|/*&n;* cycx_x25.h&t;Cyclom X.25 firmware API definitions.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2000 Arnaldo Carvalho de Melo&n;*&n;* Based on sdla_x25.h by Gene Kozin &lt;74604.152@compuserve.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 2000/04/02&t;acme&t;&t;dprintk and cycx_debug&n;* 1999/01/03&t;acme&t;&t;judicious use of data types&n;* 1999/01/02&t;acme&t;&t;#define X25_ACK_N3&t;0x4411&n;* 1998/12/28&t;acme&t;&t;cleanup: lot&squot;o&squot;things removed&n;*&t;&t;&t;&t;&t; commands listed,&n;*&t;&t;&t;&t;&t; TX25Cmd &amp; TX25Config structs&n;*&t;&t;&t;&t;&t; typedef&squot;ed&n;*/
 macro_line|#ifndef&t;_CYCX_X25_H
 DECL|macro|_CYCX_X25_H
 mdefine_line|#define&t;_CYCX_X25_H
+multiline_comment|/*&n;* cycx_x25.h&t;Cyclom X.25 firmware API definitions.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2003 Arnaldo Carvalho de Melo&n;*&n;* Based on sdla_x25.h by Gene Kozin &lt;74604.152@compuserve.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 2000/04/02&t;acme&t;&t;dprintk and cycx_debug&n;* 1999/01/03&t;acme&t;&t;judicious use of data types&n;* 1999/01/02&t;acme&t;&t;#define X25_ACK_N3&t;0x4411&n;* 1998/12/28&t;acme&t;&t;cleanup: lot&squot;o&squot;things removed&n;*&t;&t;&t;&t;&t; commands listed,&n;*&t;&t;&t;&t;&t; TX25Cmd &amp; TX25Config structs&n;*&t;&t;&t;&t;&t; typedef&squot;ed&n;*/
 macro_line|#ifndef PACKED
 DECL|macro|PACKED
 mdefine_line|#define PACKED __attribute__((packed))
@@ -21,10 +21,9 @@ id|cycx_debug
 suffix:semicolon
 multiline_comment|/* Data Structures */
 multiline_comment|/* X.25 Command Block. */
-DECL|struct|X25Cmd
-r_typedef
+DECL|struct|cycx_x25_cmd
 r_struct
-id|X25Cmd
+id|cycx_x25_cmd
 (brace
 DECL|member|PACKED
 id|u16
@@ -48,9 +47,7 @@ id|u32
 id|buf
 id|PACKED
 suffix:semicolon
-DECL|typedef|TX25Cmd
 )brace
-id|TX25Cmd
 suffix:semicolon
 multiline_comment|/* Defines for the &squot;command&squot; field. */
 DECL|macro|X25_CONNECT_REQUEST
@@ -105,115 +102,96 @@ DECL|macro|X25_N2TRACEXC
 mdefine_line|#define X25_N2TRACEXC                   0x4702
 DECL|macro|X25_N3TRACEXC
 mdefine_line|#define X25_N3TRACEXC                   0x4703
-DECL|struct|X25Config
-r_typedef
+multiline_comment|/**&n; *&t;struct cycx_x25_config - cyclom2x x25 firmware configuration&n; *&t;@link - link number&n; *&t;@speed - line speed&n; *&t;@clock - internal/external&n; *&t;@n2 - # of level 2 retransm.(values: 1 thru FF)&n; *&t;@n2win - level 2 window (values: 1 thru 7)&n; *&t;@n3win - level 3 window (values: 1 thru 7)&n; *&t;@nvc - # of logical channels (values: 1 thru 64)&n; *&t;@pktlen - level 3 packet lenght - log base 2 of size&n; *&t;@locaddr - my address&n; *&t;@remaddr - remote address&n; *&t;@t1 - time, in seconds&n; *&t;@t2 - time, in seconds&n; *&t;@t21 - time, in seconds&n; *&t;@npvc - # of permanent virt. circuits (1 thru nvc)&n; *&t;@t23 - time, in seconds&n; *&t;@flags - see dosx25.doc, in portuguese, for details&n; */
+DECL|struct|cycx_x25_config
 r_struct
-id|X25Config
+id|cycx_x25_config
 (brace
 DECL|member|PACKED
 id|u8
 id|link
 id|PACKED
 suffix:semicolon
-multiline_comment|/* link number */
 DECL|member|PACKED
 id|u8
 id|speed
 id|PACKED
 suffix:semicolon
-multiline_comment|/* line speed */
 DECL|member|PACKED
 id|u8
 id|clock
 id|PACKED
 suffix:semicolon
-multiline_comment|/* internal/external */
 DECL|member|PACKED
 id|u8
 id|n2
 id|PACKED
 suffix:semicolon
-multiline_comment|/* # of level 2 retransm.(values: 1 thru FF) */
 DECL|member|PACKED
 id|u8
 id|n2win
 id|PACKED
 suffix:semicolon
-multiline_comment|/* level 2 window (values: 1 thru 7) */
 DECL|member|PACKED
 id|u8
 id|n3win
 id|PACKED
 suffix:semicolon
-multiline_comment|/* level 3 window (values: 1 thru 7) */
 DECL|member|PACKED
 id|u8
 id|nvc
 id|PACKED
 suffix:semicolon
-multiline_comment|/* # of logical channels (values: 1 thru 64) */
 DECL|member|PACKED
 id|u8
 id|pktlen
 id|PACKED
 suffix:semicolon
-multiline_comment|/* level 3 packet lenght - log base 2 of size */
 DECL|member|PACKED
 id|u8
 id|locaddr
 id|PACKED
 suffix:semicolon
-multiline_comment|/* my address */
 DECL|member|PACKED
 id|u8
 id|remaddr
 id|PACKED
 suffix:semicolon
-multiline_comment|/* remote address */
 DECL|member|PACKED
 id|u16
 id|t1
 id|PACKED
 suffix:semicolon
-multiline_comment|/* time, in seconds */
 DECL|member|PACKED
 id|u16
 id|t2
 id|PACKED
 suffix:semicolon
-multiline_comment|/* time, in seconds */
 DECL|member|PACKED
 id|u8
 id|t21
 id|PACKED
 suffix:semicolon
-multiline_comment|/* time, in seconds */
 DECL|member|PACKED
 id|u8
 id|npvc
 id|PACKED
 suffix:semicolon
-multiline_comment|/* # of permanent virt. circuits (1 thru nvc) */
 DECL|member|PACKED
 id|u8
 id|t23
 id|PACKED
 suffix:semicolon
-multiline_comment|/* time, in seconds */
 DECL|member|PACKED
 id|u8
 id|flags
 id|PACKED
 suffix:semicolon
-multiline_comment|/* see dosx25.doc, in portuguese, for details */
-DECL|typedef|TX25Config
 )brace
-id|TX25Config
 suffix:semicolon
-DECL|struct|X25Stats
-r_typedef
+DECL|struct|cycx_x25_stats
 r_struct
-id|X25Stats
+id|cycx_x25_stats
 (brace
 DECL|member|PACKED
 id|u16
@@ -265,9 +243,7 @@ id|u16
 id|rx_aborts
 id|PACKED
 suffix:semicolon
-DECL|typedef|TX25Stats
 )brace
-id|TX25Stats
 suffix:semicolon
 macro_line|#endif&t;/* _CYCX_X25_H */
 eof
