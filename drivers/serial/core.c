@@ -7822,12 +7822,10 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Register the port whether it&squot;s detected or not.  This allows&n;&t; * setserial to be used to alter this ports parameters.&n;&t; */
-id|tty_register_devfs
+id|tty_register_device
 c_func
 (paren
 id|drv-&gt;tty_driver
-comma
-l_int|0
 comma
 id|drv-&gt;minor
 op_plus
@@ -8008,7 +8006,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Remove the devices from devfs&n;&t; */
-id|tty_unregister_devfs
+id|tty_unregister_device
 c_func
 (paren
 id|drv-&gt;tty_driver

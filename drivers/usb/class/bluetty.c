@@ -4740,12 +4740,10 @@ id|endpoint-&gt;bInterval
 )paren
 suffix:semicolon
 multiline_comment|/* initialize the devfs nodes for this device and let the user know what bluetooths we are bound to */
-id|tty_register_devfs
+id|tty_register_device
 (paren
 op_amp
 id|bluetooth_tty_driver
-comma
-l_int|0
 comma
 id|minor
 )paren
@@ -5060,7 +5058,7 @@ id|kfree
 id|bluetooth-&gt;interrupt_in_buffer
 )paren
 suffix:semicolon
-id|tty_unregister_devfs
+id|tty_unregister_device
 (paren
 op_amp
 id|bluetooth_tty_driver

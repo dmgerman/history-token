@@ -220,12 +220,10 @@ id|minor
 op_assign
 id|port-&gt;number
 suffix:semicolon
-id|tty_register_devfs
+id|tty_register_device
 (paren
 op_amp
 id|usb_serial_tty_driver
-comma
-l_int|0
 comma
 id|minor
 )paren
@@ -352,7 +350,7 @@ id|minor
 op_assign
 id|port-&gt;number
 suffix:semicolon
-id|tty_unregister_devfs
+id|tty_unregister_device
 (paren
 op_amp
 id|usb_serial_tty_driver
