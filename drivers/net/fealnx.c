@@ -8430,7 +8430,11 @@ id|fealnx_init_one
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|fealnx_remove_one
+)paren
 comma
 )brace
 suffix:semicolon

@@ -760,7 +760,11 @@ id|probe_st5481
 comma
 id|disconnect
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|disconnect_st5481
+)paren
 comma
 id|id_table
 suffix:colon

@@ -15350,10 +15350,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; *&t;Scan for a Bt848 card, request the irq and map the io memory &n; */
+multiline_comment|/* Can&squot;t be marked __devexit with a reference from bttv_probe.  */
 DECL|function|bttv_remove
 r_static
 r_void
-id|__devexit
 id|bttv_remove
 c_func
 (paren

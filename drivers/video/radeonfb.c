@@ -2248,7 +2248,11 @@ id|radeonfb_pci_register
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|radeonfb_pci_unregister
+)paren
 comma
 )brace
 suffix:semicolon
