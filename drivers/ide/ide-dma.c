@@ -1947,8 +1947,10 @@ id|__ide_dma_end
 suffix:semicolon
 multiline_comment|/* returns 1 if dma irq issued, 0 otherwise */
 DECL|function|__ide_dma_test_irq
+r_static
 r_int
 id|__ide_dma_test_irq
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2046,13 +2048,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__ide_dma_test_irq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__ide_dma_test_irq
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI */
 DECL|function|__ide_dma_bad_drive
 r_int
@@ -2695,8 +2690,10 @@ id|__ide_dma_timeout
 suffix:semicolon
 multiline_comment|/*&n; * Needed for allowing full modular support of ide-driver&n; */
 DECL|function|ide_release_dma_engine
+r_static
 r_int
 id|ide_release_dma_engine
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -2733,8 +2730,10 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|ide_release_iomio_dma
+r_static
 r_int
 id|ide_release_iomio_dma
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -2836,8 +2835,10 @@ id|hwif
 suffix:semicolon
 )brace
 DECL|function|ide_allocate_dma_engine
+r_static
 r_int
 id|ide_allocate_dma_engine
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -2898,8 +2899,10 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|ide_mapped_mmio_dma
+r_static
 r_int
 id|ide_mapped_mmio_dma
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -2968,8 +2971,10 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ide_iomio_dma
+r_static
 r_int
 id|ide_iomio_dma
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -3128,10 +3133,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * &n; */
 DECL|function|ide_dma_iobase
+r_static
 r_int
 id|ide_dma_iobase
+c_func
 (paren
 id|ide_hwif_t
 op_star

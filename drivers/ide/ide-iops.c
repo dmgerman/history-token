@@ -984,8 +984,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Some localbus EIDE interfaces require a special access sequence&n; * when using 32-bit I/O instructions to transfer data.  We call this&n; * the &quot;vlb_sync&quot; sequence, which consists of three successive reads&n; * of the sector count register location, with interrupts disabled&n; * to ensure that the reads all happen together.&n; */
 DECL|function|ata_vlb_sync
+r_static
 r_void
 id|ata_vlb_sync
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1044,8 +1046,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is used for most PIO data transfers *from* the IDE interface&n; */
 DECL|function|ata_input_data
+r_static
 r_void
 id|ata_input_data
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1159,8 +1163,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is used for most PIO data transfers *to* the IDE interface&n; */
 DECL|function|ata_output_data
+r_static
 r_void
 id|ata_output_data
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -5241,8 +5247,10 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|pre_reset
+r_static
 r_void
 id|pre_reset
+c_func
 (paren
 id|ide_drive_t
 op_star
