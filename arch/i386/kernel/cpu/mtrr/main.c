@@ -3,8 +3,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-DECL|macro|MTRR_NEED_STRINGS
-mdefine_line|#define MTRR_NEED_STRINGS
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -393,46 +391,6 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef USERSPACE_INTERFACE
-r_if
-c_cond
-(paren
-(paren
-id|ascii_buffer
-op_assign
-id|kmalloc
-c_func
-(paren
-id|max
-op_star
-id|LINE_SIZE
-comma
-id|GFP_KERNEL
-)paren
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;mtrr: could not allocate&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|ascii_buf_bytes
-op_assign
-l_int|0
-suffix:semicolon
-id|compute_ascii
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|struct|set_mtrr_data
 r_struct
@@ -534,7 +492,7 @@ c_cond
 id|data-&gt;smp_reg
 op_ne
 op_complement
-l_int|0UL
+l_int|0U
 )paren
 id|mtrr_if
 op_member_access_from_pointer
@@ -750,7 +708,7 @@ c_cond
 id|reg
 op_ne
 op_complement
-l_int|0UL
+l_int|0U
 )paren
 id|mtrr_if
 op_member_access_from_pointer
@@ -836,7 +794,9 @@ suffix:semicolon
 r_int
 r_int
 id|lbase
-comma
+suffix:semicolon
+r_int
+r_int
 id|lsize
 suffix:semicolon
 r_int
@@ -1048,7 +1008,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;mtrr: 0x%lx000,0x%lx000 overlaps existing&quot;
-l_string|&quot; 0x%lx000,0x%lx000&bslash;n&quot;
+l_string|&quot; 0x%lx000,0x%x000&bslash;n&quot;
 comma
 id|base
 comma
@@ -1117,11 +1077,6 @@ id|usage_table
 id|i
 )braket
 suffix:semicolon
-id|compute_ascii
-c_func
-(paren
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|i
@@ -1169,11 +1124,6 @@ id|i
 )braket
 op_assign
 l_int|1
-suffix:semicolon
-id|compute_ascii
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -1314,7 +1264,9 @@ suffix:semicolon
 r_int
 r_int
 id|lbase
-comma
+suffix:semicolon
+r_int
+r_int
 id|lsize
 suffix:semicolon
 r_int
@@ -1570,11 +1522,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|compute_ascii
-c_func
-(paren
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|reg
@@ -1763,7 +1710,7 @@ id|set_mtrr
 c_func
 (paren
 op_complement
-l_int|0UL
+l_int|0U
 comma
 l_int|0
 comma
@@ -1843,7 +1790,7 @@ r_if
 c_cond
 (paren
 id|boot_cpu_data.x86
-op_eq
+op_ge
 l_int|7
 op_logical_and
 (paren
@@ -2067,6 +2014,38 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|mtrr_strings
+r_char
+op_star
+id|mtrr_strings
+(braket
+id|MTRR_NUM_TYPES
+)braket
+op_assign
+(brace
+l_string|&quot;uncachable&quot;
+comma
+multiline_comment|/* 0 */
+l_string|&quot;write-combining&quot;
+comma
+multiline_comment|/* 1 */
+l_string|&quot;?&quot;
+comma
+multiline_comment|/* 2 */
+l_string|&quot;?&quot;
+comma
+multiline_comment|/* 3 */
+l_string|&quot;write-through&quot;
+comma
+multiline_comment|/* 4 */
+l_string|&quot;write-protect&quot;
+comma
+multiline_comment|/* 5 */
+l_string|&quot;write-back&quot;
+comma
+multiline_comment|/* 6 */
+)brace
+suffix:semicolon
 DECL|variable|mtrr_init
 id|core_initcall
 c_func

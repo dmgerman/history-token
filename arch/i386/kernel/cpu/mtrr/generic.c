@@ -1,3 +1,4 @@
+multiline_comment|/* This only handles 32bit MTRR on 32bit hosts. This is strictly wrong&n;   because MTRRs can span upto 40 bits (36bits on most modern x86) */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -242,7 +243,6 @@ op_star
 id|vrs
 suffix:semicolon
 r_int
-r_int
 id|lo
 comma
 id|dummy
@@ -463,7 +463,8 @@ suffix:semicolon
 r_int
 r_int
 id|lbase
-comma
+suffix:semicolon
+r_int
 id|lsize
 suffix:semicolon
 id|max
@@ -1191,7 +1192,8 @@ suffix:semicolon
 )brace
 DECL|variable|cr4
 r_static
-id|u32
+r_int
+r_int
 id|cr4
 op_assign
 l_int|0
@@ -1220,7 +1222,8 @@ c_func
 r_void
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|cr0
 suffix:semicolon
 multiline_comment|/*  Note that this is not ideal, since the cache is only flushed/disabled&n;&t;   for this CPU while the MTRRs are changed, but changing this requires&n;&t;   more invasive changes to the way the kernel boots  */

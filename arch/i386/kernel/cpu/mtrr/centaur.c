@@ -62,7 +62,9 @@ suffix:semicolon
 r_int
 r_int
 id|lbase
-comma
+suffix:semicolon
+r_int
+r_int
 id|lsize
 suffix:semicolon
 id|max
