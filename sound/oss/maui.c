@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * sound/maui.c&n; *&n; * The low level driver for Turtle Beach Maui and Tropez.&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; *&t;Changes:&n; *&t;&t;Alan Cox&t;&t;General clean up, use kernel IRQ &n; *&t;&t;&t;&t;&t;system&n; *&t;&t;Christoph Hellwig&t;Adapted to module_init/module_exit&n; *&t;&t;Bartlomiej Zolnierkiewicz&n; *&t;&t;&t;&t;&t;Added __init to download_code()&n; *&n; *&t;Status:&n; *&t;&t;Andrew J. Kroll&t;&t;Tested 06/01/1999 with:&n; *&t;&t;&t;&t;&t;* OSWF.MOT File Version: 1.15&n; *&t;&t;&t;&t;&t;* OSWF.MOT File Dated: 09/12/94&n; *&t;&t;&t;&t;&t;* Older versions will cause problems.&n; */
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
