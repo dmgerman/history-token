@@ -440,6 +440,9 @@ suffix:semicolon
 r_struct
 id|region_t
 suffix:semicolon
+r_struct
+id|pcmcia_callback
+suffix:semicolon
 DECL|struct|pcmcia_socket
 r_struct
 id|pcmcia_socket
@@ -646,6 +649,12 @@ r_struct
 id|pcmcia_bus_socket
 op_star
 id|pcmcia
+suffix:semicolon
+DECL|member|callback
+r_struct
+id|pcmcia_callback
+op_star
+id|callback
 suffix:semicolon
 multiline_comment|/* cardbus (32-bit) */
 macro_line|#ifdef CONFIG_CARDBUS
