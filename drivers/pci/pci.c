@@ -140,7 +140,7 @@ r_return
 id|max
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_find_capability - query for devices&squot; capabilities &n; * @dev: PCI device to query&n; * @cap: capability code&n; *&n; * Tell if a device supports a given PCI capability.&n; * Returns the address of the requested capability structure within the&n; * device&squot;s PCI configuration space or 0 in case the device does not&n; * support it.  Possible values for @cap:&n; *&n; *  %PCI_CAP_ID_PM           Power Management &n; *&n; *  %PCI_CAP_ID_AGP          Accelerated Graphics Port &n; *&n; *  %PCI_CAP_ID_VPD          Vital Product Data &n; *&n; *  %PCI_CAP_ID_SLOTID       Slot Identification &n; *&n; *  %PCI_CAP_ID_MSI          Message Signalled Interrupts&n; *&n; *  %PCI_CAP_ID_CHSWP        CompactPCI HotSwap &n; */
+multiline_comment|/**&n; * pci_find_capability - query for devices&squot; capabilities &n; * @dev: PCI device to query&n; * @cap: capability code&n; *&n; * Tell if a device supports a given PCI capability.&n; * Returns the address of the requested capability structure within the&n; * device&squot;s PCI configuration space or 0 in case the device does not&n; * support it.  Possible values for @cap:&n; *&n; *  %PCI_CAP_ID_PM           Power Management &n; *&n; *  %PCI_CAP_ID_AGP          Accelerated Graphics Port &n; *&n; *  %PCI_CAP_ID_VPD          Vital Product Data &n; *&n; *  %PCI_CAP_ID_SLOTID       Slot Identification &n; *&n; *  %PCI_CAP_ID_MSI          Message Signalled Interrupts&n; *&n; *  %PCI_CAP_ID_CHSWP        CompactPCI HotSwap &n; *&n; *  %PCI_CAP_ID_PCIX         PCI-X&n; */
 r_int
 DECL|function|pci_find_capability
 id|pci_find_capability

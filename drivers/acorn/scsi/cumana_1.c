@@ -1670,6 +1670,9 @@ id|scsi_add_host
 c_func
 (paren
 id|host
+comma
+op_amp
+id|ec-&gt;dev
 )paren
 suffix:semicolon
 r_if

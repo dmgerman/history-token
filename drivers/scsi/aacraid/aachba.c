@@ -4943,7 +4943,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fsa_dev_ptr-&gt;devno
+id|fsa_dev_ptr-&gt;devname
 (braket
 id|qd.cnum
 )braket
@@ -4965,7 +4965,7 @@ suffix:semicolon
 id|strncpy
 c_func
 (paren
-id|dq.name
+id|qd.name
 comma
 id|fsa_dev_ptr-&gt;devname
 (braket
@@ -5174,7 +5174,7 @@ id|dd.cnum
 op_assign
 l_int|0
 suffix:semicolon
-id|fsa_dev_ptr-&gt;devno
+id|fsa_dev_ptr-&gt;devname
 (braket
 id|dd.cnum
 )braket

@@ -1333,6 +1333,17 @@ op_star
 id|tty
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|tty_termios_baud_rate
+c_func
+(paren
+r_struct
+id|termios
+op_star
+id|termios
+)paren
+suffix:semicolon
 multiline_comment|/* n_tty.c */
 r_extern
 r_struct

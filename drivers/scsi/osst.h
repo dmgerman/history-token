@@ -1894,7 +1894,7 @@ mdefine_line|#define OS_DATA_SIZE    (32 * 1024)
 DECL|macro|OS_AUX_SIZE
 mdefine_line|#define OS_AUX_SIZE     (512)
 singleline_comment|//#define OSST_MAX_SG      2
-multiline_comment|/* The tape buffer descriptor. */
+multiline_comment|/* The OnStream tape buffer descriptor. */
 r_typedef
 r_struct
 (brace
@@ -1953,25 +1953,25 @@ id|os_aux_t
 op_star
 id|aux
 suffix:semicolon
-multiline_comment|/* onstream AUX structure at end of each block */
+multiline_comment|/* onstream AUX structure at end of each block     */
 DECL|member|use_sg
 r_int
 r_int
 id|use_sg
 suffix:semicolon
-multiline_comment|/* zero or number of segments for this adapter */
+multiline_comment|/* zero or number of s/g segments for this adapter */
 DECL|member|sg_segs
 r_int
 r_int
 id|sg_segs
 suffix:semicolon
-multiline_comment|/* total number of allocated segments */
+multiline_comment|/* number of segments in s/g list                  */
 DECL|member|orig_sg_segs
 r_int
 r_int
 id|orig_sg_segs
 suffix:semicolon
-multiline_comment|/* number of segments allocated at first try */
+multiline_comment|/* number of segments allocated at first try       */
 DECL|member|sg
 r_struct
 id|scatterlist
@@ -1980,12 +1980,12 @@ id|sg
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* MUST BE last item */
+multiline_comment|/* MUST BE last item                               */
 DECL|typedef|OSST_buffer
 )brace
 id|OSST_buffer
 suffix:semicolon
-multiline_comment|/* The tape drive descriptor */
+multiline_comment|/* The OnStream tape drive descriptor */
 r_typedef
 r_struct
 (brace
@@ -2068,6 +2068,12 @@ r_char
 id|default_drvbuffer
 suffix:semicolon
 multiline_comment|/* 0xff = don&squot;t touch, value 3 bits */
+DECL|member|pos_unknown
+r_int
+r_char
+id|pos_unknown
+suffix:semicolon
+multiline_comment|/* after reset position unknown */
 DECL|member|write_threshold
 r_int
 id|write_threshold
@@ -2094,7 +2100,6 @@ DECL|member|current_mode
 r_int
 id|current_mode
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
 DECL|member|de_r
 id|devfs_handle_t
 id|de_r
@@ -2111,7 +2116,22 @@ id|ST_NBR_MODES
 )braket
 suffix:semicolon
 multiline_comment|/*  No-rewind entries  */
-macro_line|#endif
+DECL|member|driverfs_dev_r
+r_struct
+id|device
+id|driverfs_dev_r
+(braket
+id|ST_NBR_MODES
+)braket
+suffix:semicolon
+DECL|member|driverfs_dev_n
+r_struct
+id|device
+id|driverfs_dev_n
+(braket
+id|ST_NBR_MODES
+)braket
+suffix:semicolon
 multiline_comment|/* Status variables */
 DECL|member|partition
 r_int
@@ -2412,11 +2432,11 @@ l_int|16
 )braket
 suffix:semicolon
 macro_line|#endif
-DECL|member|disk
+DECL|member|drive
 r_struct
 id|gendisk
 op_star
-id|disk
+id|drive
 suffix:semicolon
 DECL|typedef|OS_Scsi_Tape
 )brace

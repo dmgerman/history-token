@@ -14,10 +14,10 @@ DECL|member|fs_gid
 id|gid_t
 id|fs_gid
 suffix:semicolon
-DECL|member|fs_umask
+DECL|member|fs_fmask
 r_int
 r_int
-id|fs_umask
+id|fs_fmask
 suffix:semicolon
 DECL|member|fs_dmask
 r_int
