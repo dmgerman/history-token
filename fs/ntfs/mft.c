@@ -2480,7 +2480,7 @@ id|page
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If the ntfs_inode is clean no need to do anything.  If it is dirty,&n;&t; * mark it as clean now so that it can be redirtied later on if needed.&n;&t; * There is no danger of races as as long as the caller is holding the&n;&t; * locks for the mft record @m and the page it is in.&n;&t; */
+multiline_comment|/*&n;&t; * If the ntfs_inode is clean no need to do anything.  If it is dirty,&n;&t; * mark it as clean now so that it can be redirtied later on if needed.&n;&t; * There is no danger of races since the caller is holding the locks&n;&t; * for the mft record @m and the page it is in.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3183,6 +3183,17 @@ id|BOOL
 id|is_dirty
 op_assign
 id|FALSE
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|PageLocked
+c_func
+(paren
+id|page
+)paren
+)paren
 suffix:semicolon
 id|BUG_ON
 c_func
