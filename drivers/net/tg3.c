@@ -36277,13 +36277,9 @@ op_amp
 id|TG3_FLG2_PCI_EXPRESS
 )paren
 op_logical_and
-id|GET_ASIC_REV
-c_func
-(paren
 id|tp-&gt;pci_chip_rev_id
-)paren
 op_eq
-id|ASIC_REV_5750
+id|CHIPREV_ID_5750_A0
 )paren
 )paren
 id|tp-&gt;tg3_flags
