@@ -1088,5 +1088,9 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|macro|DEFINE_SPINLOCK
+mdefine_line|#define DEFINE_SPINLOCK(x) spinlock_t x = SPIN_LOCK_UNLOCKED
+DECL|macro|DEFINE_RWLOCK
+mdefine_line|#define DEFINE_RWLOCK(x) rwlock_t x = RW_LOCK_UNLOCKED
 macro_line|#endif /* __LINUX_SPINLOCK_H */
 eof
