@@ -445,9 +445,5 @@ op_star
 id|port
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|gs_debug
-suffix:semicolon
 macro_line|#endif
 eof
