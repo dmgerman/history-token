@@ -1,159 +1,12 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/suspend.c&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; *  This is the common support code for suspending an ARM machine.&n; *  pm_do_suspend() is responsible for actually putting the CPU to&n; *  sleep.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/sysdev.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;asm/leds.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-multiline_comment|/*&n; * Tell the linker that pm_do_suspend may not be present.&n; */
-r_extern
-r_int
-id|pm_do_suspend
-c_func
-(paren
-r_void
-)paren
-id|__attribute__
-c_func
-(paren
-(paren
-id|weak
-)paren
-)paren
-suffix:semicolon
-DECL|function|suspend
-r_int
-id|suspend
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|ret
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pm_do_suspend
-)paren
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-multiline_comment|/*&n;&t; * Suspend &quot;legacy&quot; devices.&n;&t; */
-id|ret
-op_assign
-id|pm_send_all
-c_func
-(paren
-id|PM_SUSPEND
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|3
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-l_int|0
-)paren
-r_goto
-id|out
-suffix:semicolon
-id|ret
-op_assign
-id|device_suspend
-c_func
-(paren
-l_int|3
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-r_goto
-id|resume_legacy
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|leds_event
-c_func
-(paren
-id|led_stop
-)paren
-suffix:semicolon
-id|sysdev_suspend
-c_func
-(paren
-l_int|3
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|pm_do_suspend
-c_func
-(paren
-)paren
-suffix:semicolon
-id|sysdev_resume
-c_func
-(paren
-)paren
-suffix:semicolon
-id|leds_event
-c_func
-(paren
-id|led_start
-)paren
-suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|device_resume
-c_func
-(paren
-)paren
-suffix:semicolon
-id|resume_legacy
-suffix:colon
-id|pm_send_all
-c_func
-(paren
-id|PM_RESUME
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|0
-)paren
-suffix:semicolon
-id|out
-suffix:colon
-r_return
-id|ret
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_SYSCTL
-multiline_comment|/*&n; * We really want this to die.  It&squot;s a disgusting hack using unallocated&n; * sysctl numbers.  We should be using a real interface.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#ifdef CONFIG_SYSCTL
+multiline_comment|/*&n; * We really want this to die.  It&squot;s a disgusting hack using unallocated&n; * sysctl numbers.  We should be using a real interface.&n; */
 r_static
 r_int
 DECL|function|pm_sysctl_proc_handler
@@ -204,9 +57,10 @@ id|write
 )paren
 id|ret
 op_assign
-id|suspend
+id|pm_suspend
 c_func
 (paren
+id|PM_SUSPEND_MEM
 )paren
 suffix:semicolon
 r_return
