@@ -32,7 +32,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|agp_3_0_dev_list_insert
 r_static
-r_int
+r_void
 id|agp_3_0_dev_list_insert
 c_func
 (paren
@@ -112,13 +112,10 @@ comma
 id|pos
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|agp_3_0_dev_list_sort
 r_static
-r_int
+r_void
 id|agp_3_0_dev_list_sort
 c_func
 (paren
@@ -240,9 +237,6 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/* &n; * Initialize all isochronous transfer parameters for an AGP 3.0 &n; * node (i.e. a host bridge in combination with the adapters &n; * lying behind it...)&n; */
 DECL|function|agp_3_0_isochronous_node_enable
@@ -411,12 +405,6 @@ id|get_out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Sort the device list by maxbw.  We need to do this because the&n;&t; * spec suggests that the devices with the smallest requirements&n;&t; * have their resources allocated first, with all remaining resources&n;&t; * falling to the device with the largest requirement.&n;&t; *&n;&t; * We don&squot;t exactly do this, we divide target resources by ndevs&n;&t; * and split them amongst the AGP 3.0 devices.  The remainder of such&n;&t; * division operations are dropped on the last device, sort of like&n;&t; * the spec mentions it should be done.&n;&t; *&n;&t; * We can&squot;t do this sort when we initially construct the dev_list&n;&t; * because we don&squot;t know until this function whether isochronous&n;&t; * transfers are enabled and consequently whether maxbw will mean&n;&t; * anything.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|ret
-op_assign
 id|agp_3_0_dev_list_sort
 c_func
 (paren
@@ -424,15 +412,7 @@ id|dev_list
 comma
 id|ndevs
 )paren
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-r_goto
-id|free_and_exit
 suffix:semicolon
-)brace
 id|pci_read_config_dword
 c_func
 (paren
@@ -1196,7 +1176,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This function basically allocates request queue slots among the&n; * AGP 3.0 systems in nonisochronous nodes.  The algorithm is&n; * pretty stupid, divide the total number of RQ slots provided by the&n; * target by ndevs.  Distribute this many slots to each AGP 3.0 device,&n; * giving any left over slots to the last device in dev_list.&n; */
 DECL|function|agp_3_0_nonisochronous_node_enable
 r_static
-r_int
+r_void
 id|agp_3_0_nonisochronous_node_enable
 c_func
 (paren
@@ -1369,9 +1349,6 @@ id|mcmd
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Fully configure and enable an AGP 3.0 host bridge and all the devices&n; * lying behind it.&n; */
 DECL|function|agp_3_0_node_enable
@@ -2064,12 +2041,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|ret
-op_assign
 id|agp_3_0_nonisochronous_node_enable
 c_func
 (paren
@@ -2077,15 +2048,7 @@ id|dev_list
 comma
 id|ndevs
 )paren
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-r_goto
-id|free_and_exit
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; * Set the calculated minimum supported cal_cycle and minimum&n;&t; * supported transfer rate in the target&squot;s AGPCMD register.&n;&t; * Also set the AGP_ENABLE bit, effectively &squot;turning on&squot; the&n;&t; * target (this has to be done _before_ turning on the masters).&n;&t; */
 id|pci_read_config_dword
