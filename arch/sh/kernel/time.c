@@ -917,11 +917,6 @@ multiline_comment|/* Profiling definitions */
 r_extern
 r_int
 r_int
-id|prof_cpu_mask
-suffix:semicolon
-r_extern
-r_int
-r_int
 op_star
 id|prof_buffer
 suffix:semicolon

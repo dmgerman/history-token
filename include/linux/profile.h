@@ -5,7 +5,11 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
+r_struct
+id|proc_dir_entry
+suffix:semicolon
 multiline_comment|/* parse command line */
 r_int
 id|__init
@@ -24,6 +28,15 @@ id|profile_init
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_void
+id|create_prof_cpu_mask
+c_func
+(paren
+r_struct
+id|proc_dir_entry
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -45,6 +58,10 @@ suffix:semicolon
 r_extern
 r_int
 id|prof_on
+suffix:semicolon
+r_extern
+id|cpumask_t
+id|prof_cpu_mask
 suffix:semicolon
 DECL|enum|profile_type
 r_enum

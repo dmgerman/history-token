@@ -84,13 +84,6 @@ id|regs-&gt;iaoq
 l_int|0
 )braket
 suffix:semicolon
-macro_line|#if 0
-r_extern
-r_int
-r_int
-id|prof_cpu_mask
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_char
 id|_stext
@@ -126,16 +119,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|cpu_isset
+c_func
 (paren
-(paren
-l_int|1
-op_lshift
 id|smp_processor_id
 c_func
 (paren
 )paren
-)paren
-op_amp
+comma
 id|prof_cpu_mask
 )paren
 )paren

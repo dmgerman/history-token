@@ -494,10 +494,6 @@ id|ip
 comma
 id|slot
 suffix:semicolon
-r_extern
-id|cpumask_t
-id|prof_cpu_mask
-suffix:semicolon
 id|profile_hook
 c_func
 (paren

@@ -530,10 +530,6 @@ r_int
 r_int
 id|eip
 suffix:semicolon
-r_extern
-id|cpumask_t
-id|prof_cpu_mask
-suffix:semicolon
 id|profile_hook
 c_func
 (paren
