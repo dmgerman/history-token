@@ -25,6 +25,7 @@ mdefine_line|#define ASSERT_READ_LOCK(x) MUST_BE_LOCKED(&amp;redir_lock)
 DECL|macro|ASSERT_WRITE_LOCK
 mdefine_line|#define ASSERT_WRITE_LOCK(x) MUST_BE_LOCKED(&amp;redir_lock)
 macro_line|#include &lt;linux/netfilter_ipv4/listhelp.h&gt;
+macro_line|#include &quot;ip_fw_compat.h&quot;
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else
