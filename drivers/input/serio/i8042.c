@@ -1151,11 +1151,21 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i8042.c: Can&squot;t get irq %d for %s&bslash;n&quot;
+l_string|&quot;i8042.c: Can&squot;t get irq %d for %s, unregistering the port.&bslash;n&quot;
 comma
 id|values-&gt;irq
 comma
 id|values-&gt;name
+)paren
+suffix:semicolon
+id|values-&gt;exists
+op_assign
+l_int|0
+suffix:semicolon
+id|serio_unregister_port
+c_func
+(paren
+id|port
 )paren
 suffix:semicolon
 r_return
