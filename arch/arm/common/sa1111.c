@@ -16,6 +16,15 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
+r_extern
+r_void
+id|__init
+id|sa1110_mb_enable
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * We keep the following data for the overall SA1111.  Note that the&n; * struct device and struct resource are &quot;fake&quot;; they should be supplied&n; * by the bus above us.  However, in the interests of getting all SA1111&n; * drivers converted over to the device model, we provide this as an&n; * anchor point for all the other drivers.&n; */
 DECL|struct|sa1111
 r_struct
@@ -2164,6 +2173,23 @@ op_assign
 id|sachip-&gt;base
 op_plus
 id|info-&gt;offset
+suffix:semicolon
+id|dev-&gt;skpcr_mask
+op_assign
+id|info-&gt;skpcr_mask
+suffix:semicolon
+id|memmove
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|info-&gt;irq
+comma
+r_sizeof
+(paren
+id|dev-&gt;irq
+)paren
+)paren
 suffix:semicolon
 id|ret
 op_assign
