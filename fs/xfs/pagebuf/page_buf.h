@@ -1135,34 +1135,6 @@ suffix:semicolon
 multiline_comment|/* check if pagebuf is pinned&t;*/
 multiline_comment|/* Reading and writing pages */
 r_extern
-r_int
-id|pagebuf_write_full_page
-c_func
-(paren
-multiline_comment|/* write a page via pagebuf&t;*/
-r_struct
-id|page
-op_star
-comma
-multiline_comment|/* page to write&t;&t;*/
-r_int
-id|delalloc
-)paren
-suffix:semicolon
-multiline_comment|/* delalloc bh present&t;&t;*/
-r_extern
-r_int
-id|pagebuf_release_page
-c_func
-(paren
-multiline_comment|/* Attempt to convert a delalloc page */
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* page to release&t;&t;*/
-r_extern
 r_void
 id|pagebuf_delwri_queue
 c_func
