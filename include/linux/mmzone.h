@@ -339,12 +339,6 @@ id|page
 op_star
 id|node_mem_map
 suffix:semicolon
-DECL|member|valid_addr_bitmap
-r_int
-r_int
-op_star
-id|valid_addr_bitmap
-suffix:semicolon
 DECL|member|bdata
 r_struct
 id|bootmem_data
