@@ -453,6 +453,7 @@ id|node
 suffix:semicolon
 r_struct
 id|acpi_device_info
+op_star
 id|info
 suffix:semicolon
 r_struct
@@ -509,6 +510,30 @@ id|status
 )paren
 suffix:semicolon
 )brace
+id|info
+op_assign
+id|ACPI_MEM_CALLOCATE
+(paren
+r_sizeof
+(paren
+r_struct
+id|acpi_device_info
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|info
+)paren
+(brace
+r_return
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
 id|status
 op_assign
 id|acpi_ut_acquire_mutex
@@ -525,10 +550,8 @@ id|status
 )paren
 )paren
 (brace
-r_return
-(paren
-id|status
-)paren
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 id|node
@@ -553,10 +576,8 @@ id|acpi_ut_release_mutex
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
-r_return
-(paren
-id|AE_BAD_PARAMETER
-)paren
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 multiline_comment|/* Init return structure */
@@ -568,25 +589,15 @@ r_struct
 id|acpi_device_info
 )paren
 suffix:semicolon
-id|ACPI_MEMSET
-(paren
-op_amp
-id|info
-comma
-l_int|0
-comma
-id|size
-)paren
-suffix:semicolon
-id|info.type
+id|info-&gt;type
 op_assign
 id|node-&gt;type
 suffix:semicolon
-id|info.name
+id|info-&gt;name
 op_assign
 id|node-&gt;name.integer
 suffix:semicolon
-id|info.valid
+id|info-&gt;valid
 op_assign
 l_int|0
 suffix:semicolon
@@ -606,22 +617,20 @@ id|status
 )paren
 )paren
 (brace
-r_return
-(paren
-id|status
-)paren
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 multiline_comment|/* If not a device, we are all done */
 r_if
 c_cond
 (paren
-id|info.type
+id|info-&gt;type
 op_eq
 id|ACPI_TYPE_DEVICE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Get extra info for ACPI Devices objects only:&n;&t;&t; * Run the Device _HID, _UID, _CID, _STA, _ADR and _sx_d methods.&n;&t;&t; *&n;&t;&t; * Note: none of these methods are required, so they may or may&n;&t;&t; * not be present for this device.  The Info.Valid bitfield is used&n;&t;&t; * to indicate which methods were found and ran successfully.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Get extra info for ACPI Devices objects only:&n;&t;&t; * Run the Device _HID, _UID, _CID, _STA, _ADR and _sx_d methods.&n;&t;&t; *&n;&t;&t; * Note: none of these methods are required, so they may or may&n;&t;&t; * not be present for this device.  The Info-&gt;Valid bitfield is used&n;&t;&t; * to indicate which methods were found and ran successfully.&n;&t;&t; */
 multiline_comment|/* Execute the Device._HID method */
 id|status
 op_assign
@@ -630,7 +639,7 @@ id|acpi_ut_execute_HID
 id|node
 comma
 op_amp
-id|info.hardware_id
+id|info-&gt;hardware_id
 )paren
 suffix:semicolon
 r_if
@@ -642,7 +651,7 @@ id|status
 )paren
 )paren
 (brace
-id|info.valid
+id|info-&gt;valid
 op_or_assign
 id|ACPI_VALID_HID
 suffix:semicolon
@@ -655,7 +664,7 @@ id|acpi_ut_execute_UID
 id|node
 comma
 op_amp
-id|info.unique_id
+id|info-&gt;unique_id
 )paren
 suffix:semicolon
 r_if
@@ -667,7 +676,7 @@ id|status
 )paren
 )paren
 (brace
-id|info.valid
+id|info-&gt;valid
 op_or_assign
 id|ACPI_VALID_UID
 suffix:semicolon
@@ -709,7 +718,7 @@ r_struct
 id|acpi_compatible_id
 )paren
 suffix:semicolon
-id|info.valid
+id|info-&gt;valid
 op_or_assign
 id|ACPI_VALID_CID
 suffix:semicolon
@@ -722,7 +731,7 @@ id|acpi_ut_execute_STA
 id|node
 comma
 op_amp
-id|info.current_status
+id|info-&gt;current_status
 )paren
 suffix:semicolon
 r_if
@@ -734,7 +743,7 @@ id|status
 )paren
 )paren
 (brace
-id|info.valid
+id|info-&gt;valid
 op_or_assign
 id|ACPI_VALID_STA
 suffix:semicolon
@@ -749,7 +758,7 @@ comma
 id|node
 comma
 op_amp
-id|info.address
+id|info-&gt;address
 )paren
 suffix:semicolon
 r_if
@@ -761,7 +770,7 @@ id|status
 )paren
 )paren
 (brace
-id|info.valid
+id|info-&gt;valid
 op_or_assign
 id|ACPI_VALID_ADR
 suffix:semicolon
@@ -773,7 +782,7 @@ id|acpi_ut_execute_sxds
 (paren
 id|node
 comma
-id|info.highest_dstates
+id|info-&gt;highest_dstates
 )paren
 suffix:semicolon
 r_if
@@ -785,15 +794,11 @@ id|status
 )paren
 )paren
 (brace
-id|info.valid
+id|info-&gt;valid
 op_or_assign
 id|ACPI_VALID_SXDS
 suffix:semicolon
 )brace
-id|status
-op_assign
-id|AE_OK
-suffix:semicolon
 )brace
 multiline_comment|/* Validate/Allocate/Clear caller buffer */
 id|status
@@ -827,7 +832,6 @@ id|ACPI_MEMCPY
 (paren
 id|return_info
 comma
-op_amp
 id|info
 comma
 r_sizeof
@@ -856,6 +860,11 @@ suffix:semicolon
 )brace
 id|cleanup
 suffix:colon
+id|ACPI_MEM_FREE
+(paren
+id|info
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

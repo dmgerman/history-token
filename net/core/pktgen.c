@@ -41,7 +41,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt; /* do_div */
 macro_line|#include &lt;asm/timex.h&gt;
 DECL|macro|VERSION
-mdefine_line|#define VERSION  &quot;pktgen v2.54: Packet Generator for packet performance testing.&bslash;n&quot;
+mdefine_line|#define VERSION  &quot;pktgen v2.56: Packet Generator for packet performance testing.&bslash;n&quot;
 multiline_comment|/* #define PG_DEBUG(a) a */
 DECL|macro|PG_DEBUG
 mdefine_line|#define PG_DEBUG(a) 
@@ -67,10 +67,6 @@ DECL|macro|F_TXSIZE_RND
 mdefine_line|#define F_TXSIZE_RND  (1&lt;&lt;6)  /* Transmit size is random */
 DECL|macro|F_IPV6
 mdefine_line|#define F_IPV6        (1&lt;&lt;7)  /* Interface in IPV6 Mode */
-DECL|macro|L_PUSH
-mdefine_line|#define L_PUSH(t, i)              {i-&gt;next = t; t=i;}
-DECL|macro|L_POP
-mdefine_line|#define L_POP(t, i)               {i=t; if(i) t = i-&gt;next;}
 multiline_comment|/* Thread control flag bits */
 DECL|macro|T_TERMINATE
 mdefine_line|#define T_TERMINATE   (1&lt;&lt;0)  
@@ -6747,15 +6743,22 @@ c_func
 id|t
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|pkt_dev
 op_assign
 id|t-&gt;if_list
 suffix:semicolon
-r_while
-c_loop
-(paren
 id|pkt_dev
-op_logical_and
+suffix:semicolon
+id|pkt_dev
+op_assign
+id|pkt_dev-&gt;next
+)paren
+r_if
+c_cond
+(paren
 id|pkt_dev-&gt;running
 )paren
 (brace
@@ -6771,10 +6774,6 @@ comma
 id|pkt_dev-&gt;ifname
 )paren
 suffix:semicolon
-id|pkt_dev
-op_assign
-id|pkt_dev-&gt;next
-suffix:semicolon
 )brace
 id|p
 op_add_assign
@@ -6786,15 +6785,22 @@ comma
 l_string|&quot;&bslash;nStopped: &quot;
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|pkt_dev
 op_assign
 id|t-&gt;if_list
 suffix:semicolon
-r_while
-c_loop
-(paren
 id|pkt_dev
-op_logical_and
+suffix:semicolon
+id|pkt_dev
+op_assign
+id|pkt_dev-&gt;next
+)paren
+r_if
+c_cond
+(paren
 op_logical_neg
 id|pkt_dev-&gt;running
 )paren
@@ -6810,10 +6816,6 @@ l_string|&quot;%s &quot;
 comma
 id|pkt_dev-&gt;ifname
 )paren
-suffix:semicolon
-id|pkt_dev
-op_assign
-id|pkt_dev-&gt;next
 suffix:semicolon
 )brace
 r_if
@@ -12292,10 +12294,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|running
+DECL|function|thread_is_running
 r_static
 r_int
-id|running
+id|thread_is_running
 c_func
 (paren
 r_struct
@@ -12377,7 +12379,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|running
+id|thread_is_running
 c_func
 (paren
 id|t
@@ -12823,17 +12825,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pkt_dev-&gt;skb
-)paren
-id|kfree_skb
-c_func
-(paren
-id|pkt_dev-&gt;skb
-)paren
-suffix:semicolon
 id|pkt_dev-&gt;stopped_at
 op_assign
 id|getCurUs
@@ -12858,6 +12849,21 @@ id|pkt_dev-&gt;skb
 op_member_access_from_pointer
 id|nr_frags
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pkt_dev-&gt;skb
+)paren
+id|kfree_skb
+c_func
+(paren
+id|pkt_dev-&gt;skb
+)paren
+suffix:semicolon
+id|pkt_dev-&gt;skb
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
@@ -14240,13 +14246,10 @@ op_eq
 l_int|0
 )paren
 (brace
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 )brace
-id|out
-suffix:colon
 id|if_unlock
 c_func
 (paren
@@ -14321,13 +14324,13 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|L_PUSH
-c_func
-(paren
+id|pkt_dev-&gt;next
+op_assign
 id|t-&gt;if_list
-comma
+suffix:semicolon
+id|t-&gt;if_list
+op_assign
 id|pkt_dev
-)paren
 suffix:semicolon
 id|pkt_dev-&gt;pg_thread
 op_assign

@@ -2969,14 +2969,6 @@ multiline_comment|/* drivers/video/modedb.c */
 DECL|macro|VESA_MODEDB_SIZE
 mdefine_line|#define VESA_MODEDB_SIZE 34
 r_extern
-r_const
-r_struct
-id|fb_videomode
-id|vesa_modes
-(braket
-)braket
-suffix:semicolon
-r_extern
 r_void
 id|fb_var_to_videomode
 c_func
@@ -3299,6 +3291,14 @@ id|u32
 id|flag
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_const
+r_struct
+id|fb_videomode
+id|vesa_modes
+(braket
+)braket
 suffix:semicolon
 DECL|struct|fb_modelist
 r_struct

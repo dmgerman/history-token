@@ -56,10 +56,6 @@ DECL|macro|ENET_HEADER_SIZE
 mdefine_line|#define ENET_HEADER_SIZE&t;14
 DECL|macro|ENET_FCS_SIZE
 mdefine_line|#define ENET_FCS_SIZE&t;&t;4
-DECL|macro|ENET_DEF_MTU_SIZE
-mdefine_line|#define ENET_DEF_MTU_SIZE&t;1500
-DECL|macro|ENET_DEF_BUF_SIZE
-mdefine_line|#define ENET_DEF_BUF_SIZE&t;(ENET_DEF_MTU_SIZE + ENET_HEADER_SIZE + ENET_FCS_SIZE)
 DECL|macro|EMAC_MIN_FRAME
 mdefine_line|#define EMAC_MIN_FRAME&t;&t;64
 DECL|macro|EMAC_MAX_FRAME

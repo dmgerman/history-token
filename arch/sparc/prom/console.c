@@ -387,6 +387,9 @@ r_char
 op_star
 id|p
 suffix:semicolon
+r_int
+id|propl
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -581,6 +584,8 @@ id|PROMDEV_I_UNK
 suffix:semicolon
 )brace
 )brace
+id|propl
+op_assign
 id|prom_getproperty
 c_func
 (paren
@@ -596,6 +601,14 @@ id|propb
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|propl
+OG
+l_int|2
+)paren
+(brace
 id|p
 op_assign
 id|propb
@@ -656,6 +669,7 @@ l_char|&squot;b&squot;
 r_return
 id|PROMDEV_ITTYB
 suffix:semicolon
+)brace
 )brace
 )brace
 r_return
@@ -795,10 +809,6 @@ r_if
 c_cond
 (paren
 id|propl
-op_ge
-l_int|0
-op_logical_and
-id|propl
 op_eq
 r_sizeof
 (paren
@@ -860,6 +870,8 @@ r_return
 id|PROMDEV_O_UNK
 suffix:semicolon
 )brace
+id|propl
+op_assign
 id|prom_getproperty
 c_func
 (paren
@@ -878,6 +890,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|propl
+op_eq
+id|CON_SIZE_JMC
+op_logical_and
 id|strncmp
 c_func
 (paren
@@ -895,6 +911,14 @@ r_return
 id|PROMDEV_OTTYA
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|propl
+OG
+l_int|2
+)paren
+(brace
 id|p
 op_assign
 id|propb
@@ -955,6 +979,7 @@ l_char|&squot;b&squot;
 r_return
 id|PROMDEV_OTTYB
 suffix:semicolon
+)brace
 )brace
 )brace
 )brace

@@ -1033,8 +1033,7 @@ c_cond
 id|sparc_cpu_model
 op_eq
 id|sun4m
-)paren
-(brace
+op_logical_and
 id|prom_getproperty
 c_func
 (paren
@@ -1049,7 +1048,11 @@ r_sizeof
 id|state
 )paren
 )paren
-suffix:semicolon
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
 r_if
 c_cond
 (paren

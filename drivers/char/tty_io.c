@@ -3761,10 +3761,10 @@ op_minus
 id|ERESTARTSYS
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We chunk up writes into a temporary buffer. This&n;&t; * simplifies low-level drivers immensely, since they&n;&t; * don&squot;t have locking issues and user mode accesses.&n;&t; *&n;&t; * But if TTY_NO_WRITE_SPLIT is set, we should use a&n;&t; * big chunk-size..&n;&t; */
+multiline_comment|/*&n;&t; * We chunk up writes into a temporary buffer. This&n;&t; * simplifies low-level drivers immensely, since they&n;&t; * don&squot;t have locking issues and user mode accesses.&n;&t; *&n;&t; * But if TTY_NO_WRITE_SPLIT is set, we should use a&n;&t; * big chunk-size..&n;&t; *&n;&t; * The default chunk-size is 2kB, because the NTTY&n;&t; * layer has problems with bigger chunks. It will&n;&t; * claim to be able to handle more characters than&n;&t; * it actually does.&n;&t; */
 id|chunk
 op_assign
-l_int|4096
+l_int|2048
 suffix:semicolon
 r_if
 c_cond
