@@ -986,10 +986,10 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/*&n;   Return value is changed to int to prevent illegal usage in future.&n;   It is still legal to use to check for device existence.&n;&n;   User should understand, that the result returned by this function&n;   is meaningless, if it was not issued under rtnl semaphore.&n; */
-multiline_comment|/**&n; *&t;dev_get&t;-&t;test if a device exists&n; *&t;@name:&t;name to test for&n; *&n; *&t;Test if a name exists. Returns true if the name is found. In order&n; *&t;to be sure the name is not allocated or removed during the test the&n; *&t;caller must hold the rtnl semaphore.&n; *&n; *&t;This function primarily exists for back compatibility with older&n; *&t;drivers.&n; */
-DECL|function|dev_get
+multiline_comment|/**&n; *&t;dev_get&t;-&t;test if a device exists&n; *&t;@name:&t;name to test for&n; *&n; *&t;Test if a name exists. Returns true if the name is found. In order&n; *&t;to be sure the name is not allocated or removed during the test the&n; *&t;caller must hold the rtnl semaphore.&n; *&n; *&t;This function exists only for back compatibility with older&n; *&t;drivers.&n; */
+DECL|function|__dev_get
 r_int
-id|dev_get
+id|__dev_get
 c_func
 (paren
 r_const
@@ -1598,15 +1598,37 @@ op_star
 id|name
 )paren
 (brace
-r_if
-c_cond
+r_struct
+id|net_device
+op_star
+id|dev
+suffix:semicolon
+id|read_lock
+c_func
 (paren
-op_logical_neg
-id|dev_get
+op_amp
+id|dev_base_lock
+)paren
+suffix:semicolon
+id|dev
+op_assign
+id|__dev_get_by_name
 c_func
 (paren
 id|name
 )paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|dev_base_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
 op_logical_and
 id|capable
 c_func
