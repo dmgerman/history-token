@@ -1126,6 +1126,13 @@ op_assign
 op_star
 id|vma
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|new_vma-&gt;shared
+)paren
+suffix:semicolon
 id|new_vma-&gt;vm_start
 op_assign
 id|new_addr

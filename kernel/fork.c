@@ -998,6 +998,13 @@ id|file
 op_assign
 id|tmp-&gt;vm_file
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|tmp-&gt;shared
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
