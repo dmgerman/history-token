@@ -3339,8 +3339,6 @@ op_star
 op_amp
 id|data
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/*&n;&t; * in SMP mode, we may need to call another CPU to get correct&n;&t; * information. PAL, by definition, is processor specific&n;&t; */
 r_if
 c_cond
@@ -3424,8 +3422,6 @@ l_int|0
 id|len
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|len
@@ -3568,9 +3564,9 @@ id|j
 suffix:semicolon
 op_star
 id|pdir
-op_increment
 op_assign
 id|create_proc_read_entry
+c_func
 (paren
 id|palinfo_entries
 (braket
@@ -3591,6 +3587,24 @@ op_star
 )paren
 id|f.value
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|pdir
+)paren
+(paren
+op_star
+id|pdir
+)paren
+op_member_access_from_pointer
+id|owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+id|pdir
+op_increment
 suffix:semicolon
 )brace
 op_star

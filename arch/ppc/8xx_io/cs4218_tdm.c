@@ -8801,8 +8801,6 @@ op_star
 id|file
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|mixer.busy
 op_assign
 l_int|1
@@ -8830,8 +8828,6 @@ id|file
 id|mixer.busy
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -10612,8 +10608,6 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10958,8 +10952,6 @@ suffix:semicolon
 )brace
 id|err_out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -11133,8 +11125,6 @@ id|sq_release_buffers
 c_func
 (paren
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -11916,8 +11906,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|state.ptr
 op_assign
 l_int|0
@@ -12236,8 +12224,6 @@ id|file
 id|state.busy
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
