@@ -544,8 +544,6 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -631,8 +629,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon

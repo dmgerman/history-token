@@ -6919,8 +6919,6 @@ id|ll_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7063,8 +7061,6 @@ c_func
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon

@@ -827,7 +827,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;hiax_st5481: ST5481 USB ISDN driver v0.1.0&bslash;n&quot;
+l_string|&quot;hisax_st5481: ST5481 USB ISDN driver v0.1.0&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -897,6 +897,11 @@ c_func
 (paren
 op_amp
 id|st5481_usb_driver
+)paren
+suffix:semicolon
+id|st5481_d_exit
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
