@@ -1092,7 +1092,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/* This is our function to submit interrupt URBs with enough control&n; * to make aborts/resets/timeouts work&n; *&n; * This routine always uses us-&gt;recv_intr_pipe as the pipe and&n; * us-&gt;ep_int-&gt;bInterval as the interrupt interval.&n; */
+multiline_comment|/* This is our function to submit interrupt URBs with enough control&n; * to make aborts/resets/timeouts work&n; *&n; * This routine always uses us-&gt;recv_intr_pipe as the pipe and&n; * us-&gt;ep_bInterval as the interrupt interval.&n; */
 DECL|function|usb_stor_interrupt_msg
 r_int
 id|usb_stor_interrupt_msg
@@ -1176,7 +1176,7 @@ id|usb_stor_blocking_completion
 comma
 l_int|NULL
 comma
-id|us-&gt;ep_int-&gt;bInterval
+id|us-&gt;ep_bInterval
 )paren
 suffix:semicolon
 id|status

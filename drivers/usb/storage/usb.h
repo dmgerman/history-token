@@ -408,12 +408,15 @@ id|ep_out
 suffix:semicolon
 multiline_comment|/* bulk out endpoint  */
 DECL|member|ep_int
-r_struct
-id|usb_endpoint_descriptor
-op_star
+id|u8
 id|ep_int
 suffix:semicolon
 multiline_comment|/* interrupt endpoint */
+DECL|member|ep_bInterval
+id|u8
+id|ep_bInterval
+suffix:semicolon
+multiline_comment|/* interrupt interval */
 multiline_comment|/* function pointers for this device */
 DECL|member|transport
 id|trans_cmnd

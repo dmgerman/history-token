@@ -1682,26 +1682,6 @@ id|ss
 )paren
 (brace
 multiline_comment|/* calculate and store the pipe values */
-id|ss-&gt;send_bulk_pipe
-op_assign
-id|usb_sndbulkpipe
-c_func
-(paren
-id|ss-&gt;pusb_dev
-comma
-id|ss-&gt;ep_out
-)paren
-suffix:semicolon
-id|ss-&gt;recv_bulk_pipe
-op_assign
-id|usb_rcvbulkpipe
-c_func
-(paren
-id|ss-&gt;pusb_dev
-comma
-id|ss-&gt;ep_in
-)paren
-suffix:semicolon
 id|ss-&gt;send_ctrl_pipe
 op_assign
 id|usb_sndctrlpipe
@@ -1722,6 +1702,26 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|ss-&gt;send_bulk_pipe
+op_assign
+id|usb_sndbulkpipe
+c_func
+(paren
+id|ss-&gt;pusb_dev
+comma
+id|ss-&gt;ep_out
+)paren
+suffix:semicolon
+id|ss-&gt;recv_bulk_pipe
+op_assign
+id|usb_rcvbulkpipe
+c_func
+(paren
+id|ss-&gt;pusb_dev
+comma
+id|ss-&gt;ep_in
+)paren
+suffix:semicolon
 id|ss-&gt;recv_intr_pipe
 op_assign
 id|usb_rcvintpipe
@@ -1729,9 +1729,7 @@ c_func
 (paren
 id|ss-&gt;pusb_dev
 comma
-id|ss-&gt;ep_int-&gt;bEndpointAddress
-op_amp
-id|USB_ENDPOINT_NUMBER_MASK
+id|ss-&gt;ep_int
 )paren
 suffix:semicolon
 multiline_comment|/* allocate the usb_ctrlrequest for control packets */
@@ -2690,7 +2688,13 @@ id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
 id|ss-&gt;ep_int
 op_assign
-id|ep_int
+id|ep_int-&gt;bEndpointAddress
+op_amp
+id|USB_ENDPOINT_NUMBER_MASK
+suffix:semicolon
+id|ss-&gt;ep_bInterval
+op_assign
+id|ep_int-&gt;bInterval
 suffix:semicolon
 multiline_comment|/* allocate the URB, the usb_ctrlrequest, and the IRQ URB */
 r_if
@@ -2865,7 +2869,13 @@ id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
 id|ss-&gt;ep_int
 op_assign
-id|ep_int
+id|ep_int-&gt;bEndpointAddress
+op_amp
+id|USB_ENDPOINT_NUMBER_MASK
+suffix:semicolon
+id|ss-&gt;ep_bInterval
+op_assign
+id|ep_int-&gt;bInterval
 suffix:semicolon
 multiline_comment|/* establish the connection to the new device */
 id|ss-&gt;ifnum
