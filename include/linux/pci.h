@@ -3061,24 +3061,8 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|pci_dev_present
-r_static
-r_inline
-r_int
-id|pci_dev_present
-c_func
-(paren
-r_const
-r_struct
-id|pci_device_id
-op_star
-id|ids
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
+DECL|macro|pci_dev_present
+mdefine_line|#define pci_dev_present(ids)&t;(0)
 DECL|function|pci_set_master
 r_static
 r_inline
