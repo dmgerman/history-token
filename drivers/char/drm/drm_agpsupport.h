@@ -652,6 +652,8 @@ r_int
 r_int
 )paren
 id|memory-&gt;key
+op_plus
+l_int|1
 suffix:semicolon
 id|entry-&gt;memory
 op_assign
