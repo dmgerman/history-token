@@ -1585,6 +1585,12 @@ op_increment
 )paren
 (brace
 multiline_comment|/* The software reset acknowledge needs about 220 msec here.&n;&t;&t; * Be conservative and wait for up to one second. */
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|remaining
 op_assign
 id|schedule_timeout
@@ -1613,7 +1619,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: reset problem: no &squot;reset complete&squot; IRQ seen&bslash;n&quot;
+l_string|&quot;%s: no &squot;reset complete&squot; IRQ seen - retrying&bslash;n&quot;
 comma
 id|priv-&gt;ndev-&gt;name
 )paren
@@ -1639,7 +1645,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: islpci_reset_if: failure&bslash;n&quot;
+l_string|&quot;%s: interface reset failure&bslash;n&quot;
 comma
 id|priv-&gt;ndev-&gt;name
 )paren
