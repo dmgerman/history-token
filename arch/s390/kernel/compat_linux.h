@@ -130,16 +130,26 @@ suffix:semicolon
 multiline_comment|/* POSIX.1b timers */
 r_struct
 (brace
-DECL|member|_timer1
-r_int
-r_int
-id|_timer1
+DECL|member|_tid
+id|timer_t
+id|_tid
 suffix:semicolon
-DECL|member|_timer2
+multiline_comment|/* timer id */
+DECL|member|_overrun
 r_int
-r_int
-id|_timer2
+id|_overrun
 suffix:semicolon
+multiline_comment|/* overrun count */
+DECL|member|_sigval
+id|sigval_t
+id|_sigval
+suffix:semicolon
+multiline_comment|/* same as below */
+DECL|member|_sys_private
+r_int
+id|_sys_private
+suffix:semicolon
+multiline_comment|/* not to be passed to user */
 DECL|member|_timer
 )brace
 id|_timer
@@ -254,6 +264,10 @@ DECL|macro|si_band
 mdefine_line|#define si_band&t;&t;_sifields._sigpoll._band
 DECL|macro|si_fd
 mdefine_line|#define si_fd&t;&t;_sifields._sigpoll._fd    
+DECL|macro|si_tid
+mdefine_line|#define si_tid&t;&t;_sifields._timer._tid
+DECL|macro|si_overrun
+mdefine_line|#define si_overrun&t;_sifields._timer._overrun
 multiline_comment|/* asm/sigcontext.h */
 r_typedef
 r_union
