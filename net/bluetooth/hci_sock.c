@@ -276,7 +276,7 @@ op_logical_and
 (paren
 id|evt
 op_eq
-id|EVT_CMD_COMPLETE
+id|HCI_EV_CMD_COMPLETE
 op_logical_and
 id|flt-&gt;opcode
 op_ne
@@ -295,7 +295,7 @@ op_logical_or
 (paren
 id|evt
 op_eq
-id|EVT_CMD_STATUS
+id|HCI_EV_CMD_STATUS
 op_logical_and
 id|flt-&gt;opcode
 op_ne
@@ -1666,7 +1666,7 @@ suffix:semicolon
 id|u16
 id|ogf
 op_assign
-id|cmd_opcode_ogf
+id|hci_opcode_ogf
 c_func
 (paren
 id|opcode
@@ -1677,7 +1677,7 @@ suffix:semicolon
 id|u16
 id|ocf
 op_assign
-id|cmd_opcode_ocf
+id|hci_opcode_ocf
 c_func
 (paren
 id|opcode
@@ -2577,7 +2577,7 @@ op_star
 id|ptr
 suffix:semicolon
 r_struct
-id|evt_si_device
+id|hci_ev_si_device
 id|ev
 suffix:semicolon
 id|BT_DBG
@@ -2604,7 +2604,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|EVT_SI_DEVICE
+id|HCI_EV_SI_DEVICE
 comma
 r_sizeof
 (paren

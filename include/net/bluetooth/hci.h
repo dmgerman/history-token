@@ -224,9 +224,9 @@ DECL|macro|OGF_INFO_PARAM
 mdefine_line|#define OGF_INFO_PARAM&t;0x04
 DECL|macro|OCF_READ_LOCAL_VERSION
 mdefine_line|#define OCF_READ_LOCAL_VERSION&t;0x0001
-DECL|struct|read_local_version_rp
+DECL|struct|hci_rp_read_loc_version
 r_struct
-id|read_local_version_rp
+id|hci_rp_read_loc_version
 (brace
 DECL|member|status
 id|__u8
@@ -262,9 +262,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_READ_LOCAL_FEATURES
 mdefine_line|#define OCF_READ_LOCAL_FEATURES&t;0x0003
-DECL|struct|read_local_features_rp
+DECL|struct|hci_rp_read_loc_features
 r_struct
-id|read_local_features_rp
+id|hci_rp_read_loc_features
 (brace
 DECL|member|status
 id|__u8
@@ -287,9 +287,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_READ_BUFFER_SIZE
 mdefine_line|#define OCF_READ_BUFFER_SIZE&t;0x0005
-DECL|struct|read_buffer_size_rp
+DECL|struct|hci_rp_read_buffer_size
 r_struct
-id|read_buffer_size_rp
+id|hci_rp_read_buffer_size
 (brace
 DECL|member|status
 id|__u8
@@ -321,9 +321,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_READ_BD_ADDR
 mdefine_line|#define OCF_READ_BD_ADDR&t;0x0009
-DECL|struct|read_bd_addr_rp
+DECL|struct|hci_rp_read_bd_addr
 r_struct
-id|read_bd_addr_rp
+id|hci_rp_read_bd_addr
 (brace
 DECL|member|status
 id|__u8
@@ -378,9 +378,9 @@ DECL|macro|SCAN_PAGE
 mdefine_line|#define SCAN_PAGE&t;&t;0x02
 DECL|macro|OCF_SET_EVENT_FLT
 mdefine_line|#define OCF_SET_EVENT_FLT&t;0x0005
-DECL|struct|set_event_flt_cp
+DECL|struct|hci_cp_set_event_flt
 r_struct
-id|set_event_flt_cp
+id|hci_cp_set_event_flt
 (brace
 DECL|member|flt_type
 id|__u8
@@ -406,29 +406,29 @@ id|packed
 )paren
 suffix:semicolon
 multiline_comment|/* Filter types */
-DECL|macro|FLT_CLEAR_ALL
-mdefine_line|#define FLT_CLEAR_ALL&t;0x00
-DECL|macro|FLT_INQ_RESULT
-mdefine_line|#define FLT_INQ_RESULT&t;0x01
-DECL|macro|FLT_CONN_SETUP
-mdefine_line|#define FLT_CONN_SETUP&t;0x02
+DECL|macro|HCI_FLT_CLEAR_ALL
+mdefine_line|#define HCI_FLT_CLEAR_ALL&t;0x00
+DECL|macro|HCI_FLT_INQ_RESULT
+mdefine_line|#define HCI_FLT_INQ_RESULT&t;0x01
+DECL|macro|HCI_FLT_CONN_SETUP
+mdefine_line|#define HCI_FLT_CONN_SETUP&t;0x02
 multiline_comment|/* CONN_SETUP Condition types */
-DECL|macro|CONN_SETUP_ALLOW_ALL
-mdefine_line|#define CONN_SETUP_ALLOW_ALL&t;0x00
-DECL|macro|CONN_SETUP_ALLOW_CLASS
-mdefine_line|#define CONN_SETUP_ALLOW_CLASS&t;0x01
-DECL|macro|CONN_SETUP_ALLOW_BDADDR
-mdefine_line|#define CONN_SETUP_ALLOW_BDADDR&t;0x02
+DECL|macro|HCI_CONN_SETUP_ALLOW_ALL
+mdefine_line|#define HCI_CONN_SETUP_ALLOW_ALL&t;0x00
+DECL|macro|HCI_CONN_SETUP_ALLOW_CLASS
+mdefine_line|#define HCI_CONN_SETUP_ALLOW_CLASS&t;0x01
+DECL|macro|HCI_CONN_SETUP_ALLOW_BDADDR
+mdefine_line|#define HCI_CONN_SETUP_ALLOW_BDADDR&t;0x02
 multiline_comment|/* CONN_SETUP Conditions */
-DECL|macro|CONN_SETUP_AUTO_OFF
-mdefine_line|#define CONN_SETUP_AUTO_OFF&t;0x01
-DECL|macro|CONN_SETUP_AUTO_ON
-mdefine_line|#define CONN_SETUP_AUTO_ON&t;0x02
+DECL|macro|HCI_CONN_SETUP_AUTO_OFF
+mdefine_line|#define HCI_CONN_SETUP_AUTO_OFF&t;0x01
+DECL|macro|HCI_CONN_SETUP_AUTO_ON
+mdefine_line|#define HCI_CONN_SETUP_AUTO_ON&t;0x02
 DECL|macro|OCF_READ_CLASS_OF_DEV
 mdefine_line|#define OCF_READ_CLASS_OF_DEV&t;0x0023
-DECL|struct|read_class_of_dev_rp
+DECL|struct|hci_rp_read_dev_class
 r_struct
-id|read_class_of_dev_rp
+id|hci_rp_read_dev_class
 (brace
 DECL|member|status
 id|__u8
@@ -451,9 +451,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_WRITE_CLASS_OF_DEV
 mdefine_line|#define OCF_WRITE_CLASS_OF_DEV&t;0x0024
-DECL|struct|write_class_of_dev_cp
+DECL|struct|hci_cp_write_dev_class
 r_struct
-id|write_class_of_dev_cp
+id|hci_cp_write_dev_class
 (brace
 DECL|member|dev_class
 id|__u8
@@ -472,9 +472,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_HOST_BUFFER_SIZE
 mdefine_line|#define OCF_HOST_BUFFER_SIZE&t;0x0033
-DECL|struct|host_buffer_size_cp
+DECL|struct|hci_cp_host_buffer_size
 r_struct
-id|host_buffer_size_cp
+id|hci_cp_host_buffer_size
 (brace
 DECL|member|acl_mtu
 id|__u16
@@ -505,9 +505,9 @@ DECL|macro|OGF_LINK_CTL
 mdefine_line|#define OGF_LINK_CTL&t;0x01 
 DECL|macro|OCF_CREATE_CONN
 mdefine_line|#define OCF_CREATE_CONN&t;&t;0x0005
-DECL|struct|create_conn_cp
+DECL|struct|hci_cp_create_conn
 r_struct
-id|create_conn_cp
+id|hci_cp_create_conn
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -543,9 +543,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_ACCEPT_CONN_REQ
 mdefine_line|#define OCF_ACCEPT_CONN_REQ&t;0x0009
-DECL|struct|accept_conn_req_cp
+DECL|struct|hci_cp_accept_conn_req
 r_struct
-id|accept_conn_req_cp
+id|hci_cp_accept_conn_req
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -565,9 +565,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_REJECT_CONN_REQ
 mdefine_line|#define OCF_REJECT_CONN_REQ&t;0x000a
-DECL|struct|reject_conn_req_cp
+DECL|struct|hci_cp_reject_conn_req
 r_struct
-id|reject_conn_req_cp
+id|hci_cp_reject_conn_req
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -587,9 +587,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_DISCONNECT
 mdefine_line|#define OCF_DISCONNECT&t;0x0006
-DECL|struct|disconnect_cp
+DECL|struct|hci_cp_disconnect
 r_struct
-id|disconnect_cp
+id|hci_cp_disconnect
 (brace
 DECL|member|handle
 id|__u16
@@ -609,9 +609,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_ADD_SCO
 mdefine_line|#define OCF_ADD_SCO&t;0x0007
-DECL|struct|add_sco_cp
+DECL|struct|hci_cp_add_sco
 r_struct
-id|add_sco_cp
+id|hci_cp_add_sco
 (brace
 DECL|member|handle
 id|__u16
@@ -631,9 +631,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_INQUIRY
 mdefine_line|#define OCF_INQUIRY&t;&t;0x0001
-DECL|struct|inquiry_cp
+DECL|struct|hci_cp_inquiry
 r_struct
-id|inquiry_cp
+id|hci_cp_inquiry
 (brace
 DECL|member|lap
 id|__u8
@@ -662,9 +662,9 @@ DECL|macro|OCF_LINK_KEY_REPLY
 mdefine_line|#define OCF_LINK_KEY_REPLY&t;0x000B
 DECL|macro|OCF_LINK_KEY_NEG_REPLY
 mdefine_line|#define OCF_LINK_KEY_NEG_REPLY&t;0x000C
-DECL|struct|link_key_reply_cp
+DECL|struct|hci_cp_link_key_reply
 r_struct
-id|link_key_reply_cp
+id|hci_cp_link_key_reply
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -689,9 +689,9 @@ DECL|macro|OCF_PIN_CODE_REPLY
 mdefine_line|#define OCF_PIN_CODE_REPLY&t;0x000D
 DECL|macro|OCF_PIN_CODE_NEG_REPLY
 mdefine_line|#define OCF_PIN_CODE_NEG_REPLY&t;0x000E
-DECL|struct|pin_code_reply_cp
+DECL|struct|hci_cp_pin_code_reply
 r_struct
-id|pin_code_reply_cp
+id|hci_cp_pin_code_reply
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -718,9 +718,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_CHANGE_CONN_PTYPE
 mdefine_line|#define OCF_CHANGE_CONN_PTYPE&t;0x000F
-DECL|struct|change_conn_ptype_cp
+DECL|struct|hci_cp_change_conn_ptype
 r_struct
-id|change_conn_ptype_cp
+id|hci_cp_change_conn_ptype
 (brace
 DECL|member|handle
 id|__u16
@@ -740,9 +740,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_AUTH_REQUESTED
 mdefine_line|#define OCF_AUTH_REQUESTED&t;0x0011
-DECL|struct|auth_requested_cp
+DECL|struct|hci_cp_auth_requested
 r_struct
-id|auth_requested_cp
+id|hci_cp_auth_requested
 (brace
 DECL|member|handle
 id|__u16
@@ -758,9 +758,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_SET_CONN_ENCRYPT
 mdefine_line|#define OCF_SET_CONN_ENCRYPT&t;0x0013
-DECL|struct|set_conn_encrypt_cp
+DECL|struct|hci_cp_set_conn_encrypt
 r_struct
-id|set_conn_encrypt_cp
+id|hci_cp_set_conn_encrypt
 (brace
 DECL|member|handle
 id|__u16
@@ -780,9 +780,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_READ_REMOTE_FEATURES
 mdefine_line|#define OCF_READ_REMOTE_FEATURES 0x001B
-DECL|struct|read_remote_features_cp
+DECL|struct|hci_cp_read_rmt_features
 r_struct
-id|read_remote_features_cp
+id|hci_cp_read_rmt_features
 (brace
 DECL|member|handle
 id|__u16
@@ -798,9 +798,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_READ_REMOTE_VERSION
 mdefine_line|#define OCF_READ_REMOTE_VERSION 0x001D
-DECL|struct|read_remote_version_cp
+DECL|struct|hci_cp_read_rmt_version
 r_struct
-id|read_remote_version_cp
+id|hci_cp_read_rmt_version
 (brace
 DECL|member|handle
 id|__u16
@@ -819,9 +819,9 @@ DECL|macro|OGF_LINK_POLICY
 mdefine_line|#define OGF_LINK_POLICY&t; 0x02   
 DECL|macro|OCF_ROLE_DISCOVERY
 mdefine_line|#define OCF_ROLE_DISCOVERY&t;0x0009
-DECL|struct|role_discovery_cp
+DECL|struct|hci_cp_role_discovery
 r_struct
-id|role_discovery_cp
+id|hci_cp_role_discovery
 (brace
 DECL|member|handle
 id|__u16
@@ -835,9 +835,9 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|struct|role_discovery_rp
+DECL|struct|hci_rp_role_discovery
 r_struct
-id|role_discovery_rp
+id|hci_rp_role_discovery
 (brace
 DECL|member|status
 id|__u8
@@ -861,9 +861,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_READ_LINK_POLICY
 mdefine_line|#define OCF_READ_LINK_POLICY&t;0x000C
-DECL|struct|read_link_policy_cp
+DECL|struct|hci_cp_read_link_policy
 r_struct
-id|read_link_policy_cp
+id|hci_cp_read_link_policy
 (brace
 DECL|member|handle
 id|__u16
@@ -877,9 +877,9 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|struct|read_link_policy_rp
+DECL|struct|hci_rp_read_link_policy
 r_struct
-id|read_link_policy_rp
+id|hci_rp_read_link_policy
 (brace
 DECL|member|status
 id|__u8
@@ -903,9 +903,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_SWITCH_ROLE
 mdefine_line|#define OCF_SWITCH_ROLE&t;0x000B
-DECL|struct|switch_role_cp
+DECL|struct|hci_cp_switch_role
 r_struct
-id|switch_role_cp
+id|hci_cp_switch_role
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -925,9 +925,9 @@ id|packed
 suffix:semicolon
 DECL|macro|OCF_WRITE_LINK_POLICY
 mdefine_line|#define OCF_WRITE_LINK_POLICY&t;0x000D
-DECL|struct|write_link_policy_cp
+DECL|struct|hci_cp_write_link_policy
 r_struct
-id|write_link_policy_cp
+id|hci_cp_write_link_policy
 (brace
 DECL|member|handle
 id|__u16
@@ -945,9 +945,9 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|struct|write_link_policy_rp
+DECL|struct|hci_rp_write_link_policy
 r_struct
-id|write_link_policy_rp
+id|hci_rp_write_link_policy
 (brace
 DECL|member|status
 id|__u8
@@ -969,10 +969,10 @@ multiline_comment|/* Status params */
 DECL|macro|OGF_STATUS_PARAM
 mdefine_line|#define OGF_STATUS_PARAM &t;0x05
 multiline_comment|/* ---- HCI Events ---- */
-DECL|macro|EVT_INQUIRY_COMPLETE
-mdefine_line|#define EVT_INQUIRY_COMPLETE &t;0x01
-DECL|macro|EVT_INQUIRY_RESULT
-mdefine_line|#define EVT_INQUIRY_RESULT &t;0x02
+DECL|macro|HCI_EV_INQUIRY_COMPLETE
+mdefine_line|#define HCI_EV_INQUIRY_COMPLETE&t;0x01
+DECL|macro|HCI_EV_INQUIRY_RESULT
+mdefine_line|#define HCI_EV_INQUIRY_RESULT&t;0x02
 DECL|struct|inquiry_info
 r_struct
 id|inquiry_info
@@ -1012,11 +1012,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_CONN_COMPLETE
-mdefine_line|#define EVT_CONN_COMPLETE &t;0x03
-DECL|struct|evt_conn_complete
+DECL|macro|HCI_EV_CONN_COMPLETE
+mdefine_line|#define HCI_EV_CONN_COMPLETE &t;0x03
+DECL|struct|hci_ev_conn_complete
 r_struct
-id|evt_conn_complete
+id|hci_ev_conn_complete
 (brace
 DECL|member|status
 id|__u8
@@ -1046,11 +1046,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_CONN_REQUEST
-mdefine_line|#define EVT_CONN_REQUEST&t;0x04
-DECL|struct|evt_conn_request
+DECL|macro|HCI_EV_CONN_REQUEST
+mdefine_line|#define HCI_EV_CONN_REQUEST&t;0x04
+DECL|struct|hci_ev_conn_request
 r_struct
-id|evt_conn_request
+id|hci_ev_conn_request
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -1075,11 +1075,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_DISCONN_COMPLETE
-mdefine_line|#define EVT_DISCONN_COMPLETE&t;0x05
-DECL|struct|evt_disconn_complete
+DECL|macro|HCI_EV_DISCONN_COMPLETE
+mdefine_line|#define HCI_EV_DISCONN_COMPLETE&t;0x05
+DECL|struct|hci_ev_disconn_complete
 r_struct
-id|evt_disconn_complete
+id|hci_ev_disconn_complete
 (brace
 DECL|member|status
 id|__u8
@@ -1101,11 +1101,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_AUTH_COMPLETE
-mdefine_line|#define EVT_AUTH_COMPLETE&t;0x06
-DECL|struct|evt_auth_complete
+DECL|macro|HCI_EV_AUTH_COMPLETE
+mdefine_line|#define HCI_EV_AUTH_COMPLETE&t;0x06
+DECL|struct|hci_ev_auth_complete
 r_struct
-id|evt_auth_complete
+id|hci_ev_auth_complete
 (brace
 DECL|member|status
 id|__u8
@@ -1123,11 +1123,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_ENCRYPT_CHANGE
-mdefine_line|#define EVT_ENCRYPT_CHANGE&t;0x08
-DECL|struct|evt_encrypt_change
+DECL|macro|HCI_EV_ENCRYPT_CHANGE
+mdefine_line|#define HCI_EV_ENCRYPT_CHANGE&t;0x08
+DECL|struct|hci_ev_encrypt_change
 r_struct
-id|evt_encrypt_change
+id|hci_ev_encrypt_change
 (brace
 DECL|member|status
 id|__u8
@@ -1149,8 +1149,8 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_QOS_SETUP_COMPLETE
-mdefine_line|#define EVT_QOS_SETUP_COMPLETE&t;0x0D
+DECL|macro|HCI_EV_QOS_SETUP_COMPLETE
+mdefine_line|#define HCI_EV_QOS_SETUP_COMPLETE&t;0x0D
 DECL|struct|hci_qos
 r_struct
 id|hci_qos
@@ -1183,9 +1183,9 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|struct|evt_qos_setup_complete
+DECL|struct|hci_ev_qos_setup_complete
 r_struct
-id|evt_qos_setup_complete
+id|hci_ev_qos_setup_complete
 (brace
 DECL|member|status
 id|__u8
@@ -1208,11 +1208,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_CMD_COMPLETE
-mdefine_line|#define EVT_CMD_COMPLETE &t;0x0e
-DECL|struct|evt_cmd_complete
+DECL|macro|HCI_EV_CMD_COMPLETE
+mdefine_line|#define HCI_EV_CMD_COMPLETE &t;0x0E
+DECL|struct|hci_ev_cmd_complete
 r_struct
-id|evt_cmd_complete
+id|hci_ev_cmd_complete
 (brace
 DECL|member|ncmd
 id|__u8
@@ -1230,11 +1230,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_CMD_STATUS
-mdefine_line|#define EVT_CMD_STATUS &t;&t;0x0f
-DECL|struct|evt_cmd_status
+DECL|macro|HCI_EV_CMD_STATUS
+mdefine_line|#define HCI_EV_CMD_STATUS &t;0x0F
+DECL|struct|hci_ev_cmd_status
 r_struct
-id|evt_cmd_status
+id|hci_ev_cmd_status
 (brace
 DECL|member|status
 id|__u8
@@ -1256,11 +1256,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_NUM_COMP_PKTS
-mdefine_line|#define EVT_NUM_COMP_PKTS&t;0x13
-DECL|struct|evt_num_comp_pkts
+DECL|macro|HCI_EV_NUM_COMP_PKTS
+mdefine_line|#define HCI_EV_NUM_COMP_PKTS&t;0x13
+DECL|struct|hci_ev_num_comp_pkts
 r_struct
-id|evt_num_comp_pkts
+id|hci_ev_num_comp_pkts
 (brace
 DECL|member|num_hndl
 id|__u8
@@ -1275,11 +1275,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_ROLE_CHANGE
-mdefine_line|#define EVT_ROLE_CHANGE&t;&t;0x12
-DECL|struct|evt_role_change
+DECL|macro|HCI_EV_ROLE_CHANGE
+mdefine_line|#define HCI_EV_ROLE_CHANGE&t;0x12
+DECL|struct|hci_ev_role_change
 r_struct
-id|evt_role_change
+id|hci_ev_role_change
 (brace
 DECL|member|status
 id|__u8
@@ -1301,11 +1301,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_PIN_CODE_REQ
-mdefine_line|#define EVT_PIN_CODE_REQ        0x16
-DECL|struct|evt_pin_code_req
+DECL|macro|HCI_EV_PIN_CODE_REQ
+mdefine_line|#define HCI_EV_PIN_CODE_REQ&t;0x16
+DECL|struct|hci_ev_pin_code_req
 r_struct
-id|evt_pin_code_req
+id|hci_ev_pin_code_req
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -1319,11 +1319,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_LINK_KEY_REQ
-mdefine_line|#define EVT_LINK_KEY_REQ        0x17
-DECL|struct|evt_link_key_req
+DECL|macro|HCI_EV_LINK_KEY_REQ
+mdefine_line|#define HCI_EV_LINK_KEY_REQ&t;0x17
+DECL|struct|hci_ev_link_key_req
 r_struct
-id|evt_link_key_req
+id|hci_ev_link_key_req
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -1337,11 +1337,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_LINK_KEY_NOTIFY
-mdefine_line|#define EVT_LINK_KEY_NOTIFY&t;0x18
-DECL|struct|evt_link_key_notify
+DECL|macro|HCI_EV_LINK_KEY_NOTIFY
+mdefine_line|#define HCI_EV_LINK_KEY_NOTIFY&t;0x18
+DECL|struct|hci_ev_link_key_notify
 r_struct
-id|evt_link_key_notify
+id|hci_ev_link_key_notify
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -1366,11 +1366,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_READ_REMOTE_FEATURES_COMPLETE
-mdefine_line|#define EVT_READ_REMOTE_FEATURES_COMPLETE 0x0B
-DECL|struct|evt_read_remote_features_complete
+DECL|macro|HCI_EV_RMT_FEATURES
+mdefine_line|#define HCI_EV_RMT_FEATURES&t;0x0B
+DECL|struct|hci_ev_rmt_features
 r_struct
-id|evt_read_remote_features_complete
+id|hci_ev_rmt_features
 (brace
 DECL|member|status
 id|__u8
@@ -1395,11 +1395,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_READ_REMOTE_VERSION_COMPLETE
-mdefine_line|#define EVT_READ_REMOTE_VERSION_COMPLETE 0x0C
-DECL|struct|evt_read_remote_version_complete
+DECL|macro|HCI_EV_RMT_VERSION
+mdefine_line|#define HCI_EV_RMT_VERSION&t;0x0C
+DECL|struct|hci_ev_rmt_version
 r_struct
-id|evt_read_remote_version_complete
+id|hci_ev_rmt_version
 (brace
 DECL|member|status
 id|__u8
@@ -1430,11 +1430,11 @@ id|packed
 )paren
 suffix:semicolon
 multiline_comment|/* Internal events generated by Bluetooth stack */
-DECL|macro|EVT_STACK_INTERNAL
-mdefine_line|#define EVT_STACK_INTERNAL&t;0xfd
-DECL|struct|evt_stack_internal
+DECL|macro|HCI_EV_STACK_INTERNAL
+mdefine_line|#define HCI_EV_STACK_INTERNAL&t;0xFD
+DECL|struct|hci_ev_stack_internal
 r_struct
-id|evt_stack_internal
+id|hci_ev_stack_internal
 (brace
 DECL|member|type
 id|__u16
@@ -1455,11 +1455,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_SI_DEVICE
-mdefine_line|#define EVT_SI_DEVICE  &t;0x01
-DECL|struct|evt_si_device
+DECL|macro|HCI_EV_SI_DEVICE
+mdefine_line|#define HCI_EV_SI_DEVICE  &t;0x01
+DECL|struct|hci_ev_si_device
 r_struct
-id|evt_si_device
+id|hci_ev_si_device
 (brace
 DECL|member|event
 id|__u16
@@ -1477,11 +1477,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|EVT_SI_SECURITY
-mdefine_line|#define EVT_SI_SECURITY&t;0x02
-DECL|struct|evt_si_security
+DECL|macro|HCI_EV_SI_SECURITY
+mdefine_line|#define HCI_EV_SI_SECURITY&t;0x02
+DECL|struct|hci_ev_si_security
 r_struct
-id|evt_si_security
+id|hci_ev_si_security
 (brace
 DECL|member|event
 id|__u16
@@ -1599,19 +1599,19 @@ id|packed
 )paren
 suffix:semicolon
 multiline_comment|/* Command opcode pack/unpack */
-DECL|macro|cmd_opcode_pack
-mdefine_line|#define cmd_opcode_pack(ogf, ocf)&t;(__u16)((ocf &amp; 0x03ff)|(ogf &lt;&lt; 10))
-DECL|macro|cmd_opcode_ogf
-mdefine_line|#define cmd_opcode_ogf(op)&t;&t;(op &gt;&gt; 10)
-DECL|macro|cmd_opcode_ocf
-mdefine_line|#define cmd_opcode_ocf(op)&t;&t;(op &amp; 0x03ff)
+DECL|macro|hci_opcode_pack
+mdefine_line|#define hci_opcode_pack(ogf, ocf)&t;(__u16)((ocf &amp; 0x03ff)|(ogf &lt;&lt; 10))
+DECL|macro|hci_opcode_ogf
+mdefine_line|#define hci_opcode_ogf(op)&t;&t;(op &gt;&gt; 10)
+DECL|macro|hci_opcode_ocf
+mdefine_line|#define hci_opcode_ocf(op)&t;&t;(op &amp; 0x03ff)
 multiline_comment|/* ACL handle and flags pack/unpack */
-DECL|macro|acl_handle_pack
-mdefine_line|#define acl_handle_pack(h, f)&t;(__u16)((h &amp; 0x0fff)|(f &lt;&lt; 12))
-DECL|macro|acl_handle
-mdefine_line|#define acl_handle(h)&t;&t;(h &amp; 0x0fff)
-DECL|macro|acl_flags
-mdefine_line|#define acl_flags(h)&t;&t;(h &gt;&gt; 12)
+DECL|macro|hci_handle_pack
+mdefine_line|#define hci_handle_pack(h, f)&t;(__u16)((h &amp; 0x0fff)|(f &lt;&lt; 12))
+DECL|macro|hci_handle
+mdefine_line|#define hci_handle(h)&t;&t;(h &amp; 0x0fff)
+DECL|macro|hci_flags
+mdefine_line|#define hci_flags(h)&t;&t;(h &gt;&gt; 12)
 multiline_comment|/* ---- HCI Sockets ---- */
 multiline_comment|/* Socket options */
 DECL|macro|HCI_DATA_DIR

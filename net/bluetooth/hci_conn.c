@@ -50,7 +50,7 @@ op_star
 id|ie
 suffix:semicolon
 r_struct
-id|create_conn_cp
+id|hci_cp_create_conn
 id|cp
 suffix:semicolon
 id|BT_DBG
@@ -210,7 +210,7 @@ id|reason
 )paren
 (brace
 r_struct
-id|disconnect_cp
+id|hci_cp_disconnect
 id|cp
 suffix:semicolon
 id|BT_DBG
@@ -278,7 +278,7 @@ op_assign
 id|conn-&gt;hdev
 suffix:semicolon
 r_struct
-id|add_sco_cp
+id|hci_cp_add_sco
 id|cp
 suffix:semicolon
 id|BT_DBG
@@ -584,7 +584,7 @@ op_amp
 id|hdev-&gt;tx_task
 )paren
 suffix:semicolon
-id|conn_hash_add
+id|hci_conn_hash_add
 c_func
 (paren
 id|hdev
@@ -703,7 +703,7 @@ op_amp
 id|hdev-&gt;tx_task
 )paren
 suffix:semicolon
-id|conn_hash_del
+id|hci_conn_hash_del
 c_func
 (paren
 id|hdev
@@ -969,7 +969,7 @@ op_logical_neg
 (paren
 id|acl
 op_assign
-id|conn_hash_lookup_ba
+id|hci_conn_hash_lookup_ba
 c_func
 (paren
 id|hdev
@@ -1046,7 +1046,7 @@ op_logical_neg
 (paren
 id|sco
 op_assign
-id|conn_hash_lookup_ba
+id|hci_conn_hash_lookup_ba
 c_func
 (paren
 id|hdev
@@ -1183,7 +1183,7 @@ id|conn-&gt;pend
 )paren
 (brace
 r_struct
-id|auth_requested_cp
+id|hci_cp_auth_requested
 id|cp
 suffix:semicolon
 id|cp.handle
@@ -1273,7 +1273,7 @@ id|conn
 )paren
 (brace
 r_struct
-id|set_conn_encrypt_cp
+id|hci_cp_set_conn_encrypt
 id|cp
 suffix:semicolon
 id|cp.handle
@@ -1324,7 +1324,7 @@ id|hdev
 )paren
 (brace
 r_struct
-id|conn_hash
+id|hci_conn_hash
 op_star
 id|h
 op_assign
@@ -1804,7 +1804,7 @@ id|hdev
 suffix:semicolon
 id|conn
 op_assign
-id|conn_hash_lookup_ba
+id|hci_conn_hash_lookup_ba
 c_func
 (paren
 id|hdev

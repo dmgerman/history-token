@@ -88,13 +88,6 @@ c_func
 id|hci_conn_encrypt
 )paren
 suffix:semicolon
-DECL|variable|hci_recv_frame
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|hci_recv_frame
-)paren
-suffix:semicolon
 DECL|variable|hci_send_acl
 id|EXPORT_SYMBOL
 c_func
