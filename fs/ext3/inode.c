@@ -2721,6 +2721,13 @@ id|EAGAIN
 r_goto
 id|changed
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|ei-&gt;truncate_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2741,9 +2748,18 @@ id|goal
 OL
 l_int|0
 )paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|ei-&gt;truncate_sem
+)paren
+suffix:semicolon
 r_goto
 id|changed
 suffix:semicolon
+)brace
 id|left
 op_assign
 (paren
@@ -2755,13 +2771,6 @@ op_minus
 id|partial
 suffix:semicolon
 multiline_comment|/*&n;&t; * Block out ext3_truncate while we alter the tree&n;&t; */
-id|down_read
-c_func
-(paren
-op_amp
-id|ei-&gt;truncate_sem
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|ext3_alloc_branch
@@ -2811,7 +2820,7 @@ comma
 id|left
 )paren
 suffix:semicolon
-id|up_read
+id|up
 c_func
 (paren
 op_amp
@@ -7928,7 +7937,7 @@ op_assign
 id|inode-&gt;i_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * From here we block out all ext3_get_block() callers who want to&n;&t; * modify the block allocation tree.&n;&t; */
-id|down_write
+id|down
 c_func
 (paren
 op_amp
@@ -8282,7 +8291,7 @@ id|EXT3_TIND_BLOCK
 suffix:colon
 suffix:semicolon
 )brace
-id|up_write
+id|up
 c_func
 (paren
 op_amp

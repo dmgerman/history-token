@@ -5,16 +5,7 @@ mdefine_line|#define _ASM_IA64_NUMA_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#ifdef CONFIG_NUMA
-macro_line|#ifdef CONFIG_DISCONTIGMEM
-macro_line|# include &lt;asm/mmzone.h&gt;
-DECL|macro|NR_MEMBLKS
-macro_line|# define NR_MEMBLKS   (NR_BANKS)
-macro_line|#else
-DECL|macro|NR_NODES
-macro_line|# define NR_NODES     (8)
-DECL|macro|NR_MEMBLKS
-macro_line|# define NR_MEMBLKS   (NR_NODES * 8)
-macro_line|#endif
+macro_line|#include &lt;linux/numa.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 r_extern
 r_volatile
@@ -30,7 +21,7 @@ r_volatile
 id|cpumask_t
 id|node_to_cpu_mask
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 id|__cacheline_aligned
 suffix:semicolon
@@ -104,9 +95,9 @@ r_extern
 id|u8
 id|numa_slit
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 op_star
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|macro|node_distance

@@ -226,7 +226,7 @@ r_struct
 id|kmem_list3
 id|lists
 suffix:semicolon
-multiline_comment|/* NUMA: kmem_3list_t&t;*nodelists[NR_NODES] */
+multiline_comment|/* NUMA: kmem_3list_t&t;*nodelists[MAX_NUMNODES] */
 DECL|member|objsize
 r_int
 r_int
@@ -10614,7 +10614,7 @@ comma
 suffix:semicolon
 DECL|macro|MAX_SLABINFO_WRITE
 mdefine_line|#define MAX_SLABINFO_WRITE 128
-multiline_comment|/**&n; * slabinfo_write - Tuning for the slab allocator&n; * @file: unused&n; * @buffer: user buffer&n; * @count: data len&n; * @data: unused&n; */
+multiline_comment|/**&n; * slabinfo_write - Tuning for the slab allocator&n; * @file: unused&n; * @buffer: user buffer&n; * @count: data length&n; * @ppos: unused&n; */
 DECL|function|slabinfo_write
 id|ssize_t
 id|slabinfo_write

@@ -6586,6 +6586,12 @@ c_func
 id|new_page
 )paren
 suffix:semicolon
+id|pte_chain_free
+c_func
+(paren
+id|pte_chain
+)paren
+suffix:semicolon
 r_goto
 id|retry
 suffix:semicolon

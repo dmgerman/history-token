@@ -1031,7 +1031,7 @@ id|curr
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function _devfs_search_dir  */
-multiline_comment|/**&n; *&t;_devfs_alloc_entry - Allocate a devfs entry.&n; *&t;@name:  The name of the entry.&n; *&t;@namelen:  The number of characters in @name.&n; *&n; *  Allocate a devfs entry and returns a pointer to the entry on success, else&n; *   %NULL.&n; */
+multiline_comment|/**&n; *&t;_devfs_alloc_entry - Allocate a devfs entry.&n; *&t;@name:     the name of the entry&n; *&t;@namelen:  the number of characters in @name&n; *      @mode:     the mode for the entry&n; *&n; *  Allocate a devfs entry and returns a pointer to the entry on success, else&n; *   %NULL.&n; */
 DECL|function|_devfs_alloc_entry
 r_static
 r_struct

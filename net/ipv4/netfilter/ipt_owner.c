@@ -421,7 +421,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;session
+id|process_session
+c_func
+(paren
+id|p
+)paren
 op_ne
 id|sid
 )paren

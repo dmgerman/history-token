@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#if NR_NODES != 4
+macro_line|#if MAX_NUMNODES != 4
 macro_line|#error Fix Me Please
 macro_line|#endif
 multiline_comment|/*&n; * Our node_data structure for discontiguous memory.&n; */
@@ -12,14 +12,14 @@ r_static
 id|bootmem_data_t
 id|node_bootmem_data
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|variable|discontig_node_data
 id|pg_data_t
 id|discontig_node_data
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 op_assign
 (brace

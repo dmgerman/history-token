@@ -115,7 +115,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * truncate_sem is for serialising ext3_truncate() against&n;&t; * ext3_getblock().  In the 2.4 ext2 design, great chunks of inode&squot;s&n;&t; * data tree are chopped off during truncate. We can&squot;t do that in&n;&t; * ext3 because whenever we perform intermediate commits during&n;&t; * truncate, the inode and all the metadata blocks *must* be in a&n;&t; * consistent state which allows truncation of the orphans to restart&n;&t; * during recovery.  Hence we must fix the get_block-vs-truncate race&n;&t; * by other means, so we have truncate_sem.&n;&t; */
 DECL|member|truncate_sem
 r_struct
-id|rw_semaphore
+id|semaphore
 id|truncate_sem
 suffix:semicolon
 DECL|member|vfs_inode
