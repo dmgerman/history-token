@@ -200,10 +200,6 @@ op_amp
 l_int|0x3FF
 suffix:semicolon
 )brace
-macro_line|#ifndef IPPROTO_ESP
-DECL|macro|IPPROTO_ESP
-mdefine_line|#define IPPROTO_ESP 50
-macro_line|#endif
 DECL|function|sfq_hash
 r_static
 r_int
