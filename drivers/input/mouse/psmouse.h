@@ -29,13 +29,6 @@ DECL|macro|PSMOUSE_RET_ACK
 mdefine_line|#define PSMOUSE_RET_ACK&t;&t;0xfa
 DECL|macro|PSMOUSE_RET_NAK
 mdefine_line|#define PSMOUSE_RET_NAK&t;&t;0xfe
-multiline_comment|/* psmouse states */
-DECL|macro|PSMOUSE_CMD_MODE
-mdefine_line|#define PSMOUSE_CMD_MODE&t;0
-DECL|macro|PSMOUSE_ACTIVATED
-mdefine_line|#define PSMOUSE_ACTIVATED&t;1
-DECL|macro|PSMOUSE_IGNORE
-mdefine_line|#define PSMOUSE_IGNORE&t;&t;2
 DECL|macro|PSMOUSE_FLAG_ACK
 mdefine_line|#define PSMOUSE_FLAG_ACK&t;0&t;/* Waiting for ACK/NAK */
 DECL|macro|PSMOUSE_FLAG_CMD
@@ -44,6 +37,24 @@ DECL|macro|PSMOUSE_FLAG_CMD1
 mdefine_line|#define PSMOUSE_FLAG_CMD1&t;2&t;/* First byte of command response */
 DECL|macro|PSMOUSE_FLAG_ID
 mdefine_line|#define PSMOUSE_FLAG_ID&t;&t;3&t;/* First byte is not keyboard ID */
+DECL|enum|psmouse_state
+r_enum
+id|psmouse_state
+(brace
+DECL|enumerator|PSMOUSE_IGNORE
+id|PSMOUSE_IGNORE
+comma
+DECL|enumerator|PSMOUSE_INITIALIZING
+id|PSMOUSE_INITIALIZING
+comma
+DECL|enumerator|PSMOUSE_CMD_MODE
+id|PSMOUSE_CMD_MODE
+comma
+DECL|enumerator|PSMOUSE_ACTIVATED
+id|PSMOUSE_ACTIVATED
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* psmouse protocol handler return codes */
 r_typedef
 r_enum
@@ -137,8 +148,8 @@ r_int
 id|out_of_sync
 suffix:semicolon
 DECL|member|state
-r_int
-r_char
+r_enum
+id|psmouse_state
 id|state
 suffix:semicolon
 DECL|member|nak

@@ -900,6 +900,16 @@ c_cond
 (paren
 id|psmouse-&gt;state
 op_eq
+id|PSMOUSE_INITIALIZING
+)paren
+r_goto
+id|out
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|psmouse-&gt;state
+op_eq
 id|PSMOUSE_ACTIVATED
 op_logical_and
 id|psmouse-&gt;pktcnt
@@ -2692,8 +2702,8 @@ id|psmouse
 op_star
 id|psmouse
 comma
-r_int
-r_char
+r_enum
+id|psmouse_state
 id|new_state
 )paren
 (brace
@@ -3097,7 +3107,7 @@ c_func
 (paren
 id|psmouse
 comma
-id|PSMOUSE_CMD_MODE
+id|PSMOUSE_INITIALIZING
 )paren
 suffix:semicolon
 id|serio
@@ -3279,6 +3289,14 @@ comma
 id|serio-&gt;phys
 )paren
 suffix:semicolon
+id|psmouse_set_state
+c_func
+(paren
+id|psmouse
+comma
+id|PSMOUSE_CMD_MODE
+)paren
+suffix:semicolon
 id|psmouse_initialize
 c_func
 (paren
@@ -3404,7 +3422,7 @@ c_func
 (paren
 id|psmouse
 comma
-id|PSMOUSE_CMD_MODE
+id|PSMOUSE_INITIALIZING
 )paren
 suffix:semicolon
 r_if
@@ -3458,6 +3476,14 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* ok, the device type (and capabilities) match the old one,&n;&t; * we can continue using it, complete intialization&n;&t; */
+id|psmouse_set_state
+c_func
+(paren
+id|psmouse
+comma
+id|PSMOUSE_CMD_MODE
+)paren
+suffix:semicolon
 id|psmouse_initialize
 c_func
 (paren
