@@ -26,6 +26,7 @@ macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;net/sctp/structs.h&gt;
 macro_line|#include &lt;net/sctp/constants.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
@@ -404,6 +405,23 @@ DECL|macro|SCTP_SOCK_SLEEP_PRE
 mdefine_line|#define SCTP_SOCK_SLEEP_PRE(sk) SOCK_SLEEP_PRE(sk)
 DECL|macro|SCTP_SOCK_SLEEP_POST
 mdefine_line|#define SCTP_SOCK_SLEEP_POST(sk) SOCK_SLEEP_POST(sk)
+multiline_comment|/* SCTP SNMP MIB stats handlers */
+r_extern
+r_struct
+id|sctp_mib
+id|sctp_statistics
+(braket
+id|NR_CPUS
+op_star
+l_int|2
+)braket
+suffix:semicolon
+DECL|macro|SCTP_INC_STATS
+mdefine_line|#define SCTP_INC_STATS(field)&t;&t;SNMP_INC_STATS(sctp_statistics, field)
+DECL|macro|SCTP_INC_STATS_BH
+mdefine_line|#define SCTP_INC_STATS_BH(field)&t;SNMP_INC_STATS_BH(sctp_statistics, field)
+DECL|macro|SCTP_INC_STATS_USER
+mdefine_line|#define SCTP_INC_STATS_USER(field)&t;SNMP_INC_STATS_USER(sctp_statistics, field)
 multiline_comment|/* Determine if this is a valid kernel address.  */
 DECL|function|sctp_is_valid_kaddr
 r_static

@@ -88,6 +88,13 @@ comma
 id|sctp_association_t
 op_star
 id|asoc
+comma
+id|sctp_event_t
+id|event_type
+comma
+id|sctp_chunk_t
+op_star
+id|chunk
 )paren
 suffix:semicolon
 r_static
@@ -654,6 +661,8 @@ suffix:semicolon
 id|sctp_chunk_t
 op_star
 id|chunk
+op_assign
+l_int|NULL
 suffix:semicolon
 id|sctp_packet_t
 op_star
@@ -680,6 +689,14 @@ suffix:semicolon
 id|sctp_sackhdr_t
 id|sackh
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|SCTP_EVENT_T_TIMEOUT
+op_ne
+id|event_type
+)paren
+(brace
 id|chunk
 op_assign
 (paren
@@ -688,6 +705,7 @@ op_star
 )paren
 id|event_arg
 suffix:semicolon
+)brace
 multiline_comment|/* Note:  This whole file is a huge candidate for rework.&n;&t; * For example, each command could either have its own handler, so&n;&t; * the loop would look like:&n;&t; *     while (cmds)&n;&t; *         cmd-&gt;handle(x, y, z)&n;&t; * --jgrimm&n;&t; */
 r_while
 c_loop
@@ -1483,6 +1501,10 @@ c_func
 id|commands
 comma
 id|asoc
+comma
+id|event_type
+comma
+id|chunk
 )paren
 suffix:semicolon
 r_break
@@ -1752,7 +1774,7 @@ id|__u32
 id|lowest_tsn
 )paren
 (brace
-multiline_comment|/*&n;&t; * Save the TSN away for comparison when we receive CWR&n;&t; * Note: dp-&gt;TSN is expected in host endian&n;&t; */
+multiline_comment|/* Save the TSN away for comparison when we receive CWR */
 id|asoc-&gt;last_ecne_tsn
 op_assign
 id|lowest_tsn
@@ -1787,12 +1809,25 @@ id|sctp_chunk_t
 op_star
 id|repl
 suffix:semicolon
+multiline_comment|/* Our previously transmitted packet ran into some congestion&n;&t; * so we should take action by reducing cwnd and ssthresh&n;&t; * and then ACK our peer that we we&squot;ve done so by&n;&t; * sending a CWR.&n;&t; */
+multiline_comment|/* First, try to determine if we want to actually lower&n;&t; * our cwnd variables.  Only lower them if the ECNE looks more&n;&t; * recent than the last response.&n;&t; */
+r_if
+c_cond
+(paren
+id|TSN_lt
+c_func
+(paren
+id|asoc-&gt;last_cwr_tsn
+comma
+id|lowest_tsn
+)paren
+)paren
+(brace
 id|sctp_transport_t
 op_star
 id|transport
 suffix:semicolon
-multiline_comment|/* Our previously transmitted packet ran into some congestion&n;&t; * so we should take action by reducing cwnd and ssthresh&n;&t; * and then ACK our peer that we we&squot;ve done so by&n;&t; * sending a CWR.&n;&t; */
-multiline_comment|/* Find which transport&squot;s congestion variables&n;&t; * need to be adjusted.&n;&t; */
+multiline_comment|/* Find which transport&squot;s congestion variables&n;&t;&t; * need to be adjusted.&n;&t;&t; */
 id|transport
 op_assign
 id|sctp_assoc_lookup_tsn
@@ -1817,13 +1852,12 @@ comma
 id|SCTP_LOWER_CWND_ECNE
 )paren
 suffix:semicolon
-multiline_comment|/* Save away a rough idea of when we last sent out a CWR.&n;&t; * We compare against this value (see above) to decide if&n;&t; * this is a fairly new request.&n;&t; * Note that this is not a perfect solution.  We may&n;&t; * have moved beyond the window (several times) by the&n;&t; * next time we get an ECNE.  However, it is cute.  This idea&n;&t; * came from Randy&squot;s reference code.&n;&t; *&n;&t; * Here&squot;s what RFC 2960 has to say about CWR.  This is NOT&n;&t; * what we do.&n;&t; *&n;&t; * RFC 2960 Appendix A&n;&t; *&n;&t; *    CWR:&n;&t; *&n;&t; *    RFC 2481 details a specific bit for a sender to send in&n;&t; *    the header of its next outbound TCP segment to indicate&n;&t; *    to its peer that it has reduced its congestion window.&n;&t; *    This is termed the CWR bit.  For SCTP the same&n;&t; *    indication is made by including the CWR chunk.  This&n;&t; *    chunk contains one data element, i.e. the TSN number&n;&t; *    that was sent in the ECNE chunk.  This element&n;&t; *    represents the lowest TSN number in the datagram that&n;&t; *    was originally marked with the CE bit.&n;&t; */
 id|asoc-&gt;last_cwr_tsn
 op_assign
-id|asoc-&gt;next_tsn
-op_minus
-l_int|1
+id|lowest_tsn
 suffix:semicolon
+)brace
+multiline_comment|/* Always try to quiet the other end.  In case of lost CWR,&n;&t; * resend last_cwr_tsn.  &n;&t; */
 id|repl
 op_assign
 id|sctp_make_cwr
@@ -2919,12 +2953,82 @@ comma
 id|sctp_association_t
 op_star
 id|asoc
+comma
+id|sctp_event_t
+id|event_type
+comma
+id|sctp_chunk_t
+op_star
+id|chunk
 )paren
 (brace
 id|sctp_ulpevent_t
 op_star
 id|event
 suffix:semicolon
+id|__u16
+id|error
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|event_type
+op_eq
+id|SCTP_EVENT_T_PRIMITIVE
+)paren
+id|error
+op_assign
+id|SCTP_ERROR_USER_ABORT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chunk
+op_logical_and
+(paren
+id|SCTP_CID_ABORT
+op_eq
+id|chunk-&gt;chunk_hdr-&gt;type
+)paren
+op_logical_and
+(paren
+id|ntohs
+c_func
+(paren
+id|chunk-&gt;chunk_hdr-&gt;length
+)paren
+op_ge
+(paren
+r_sizeof
+(paren
+r_struct
+id|sctp_chunkhdr
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|sctp_errhdr
+)paren
+)paren
+)paren
+)paren
+(brace
+id|error
+op_assign
+(paren
+(paren
+id|sctp_errhdr_t
+op_star
+)paren
+id|chunk-&gt;skb-&gt;data
+)paren
+op_member_access_from_pointer
+id|cause
+suffix:semicolon
+)brace
 id|event
 op_assign
 id|sctp_ulpevent_make_assoc_change
@@ -2936,7 +3040,7 @@ l_int|0
 comma
 id|SCTP_COMM_LOST
 comma
-l_int|0
+id|error
 comma
 l_int|0
 comma

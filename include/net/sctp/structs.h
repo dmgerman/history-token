@@ -469,17 +469,39 @@ op_star
 id|optlen
 )paren
 suffix:semicolon
-DECL|member|get_dst_mtu
+DECL|member|get_dst
+r_struct
+id|dst_entry
+op_star
+(paren
+op_star
+id|get_dst
+)paren
+(paren
+id|sockaddr_storage_t
+op_star
+id|daddr
+comma
+id|sockaddr_storage_t
+op_star
+id|saddr
+)paren
+suffix:semicolon
+DECL|member|cmp_saddr
 r_int
 (paren
 op_star
-id|get_dst_mtu
+id|cmp_saddr
 )paren
 (paren
-r_const
+r_struct
+id|dst_entry
+op_star
+id|dst
+comma
 id|sockaddr_storage_t
 op_star
-id|address
+id|saddr
 )paren
 suffix:semicolon
 DECL|member|net_header_len
@@ -1027,6 +1049,11 @@ DECL|member|source
 id|sockaddr_storage_t
 id|source
 suffix:semicolon
+multiline_comment|/* Destination address for this chunk. */
+DECL|member|dest
+id|sockaddr_storage_t
+id|dest
+suffix:semicolon
 multiline_comment|/* For an inbound chunk, this tells us where it came from.&n;&t; * For an outbound chunk, it tells us where we&squot;d like it to&n;&t; * go.  It is NULL if we have no preference.&n;&t; */
 DECL|member|transport
 id|sctp_transport_t
@@ -1128,7 +1155,7 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|sctp_init_source
+id|sctp_init_addrs
 c_func
 (paren
 id|sctp_chunk_t
@@ -1445,6 +1472,13 @@ DECL|member|pmtu
 id|__u32
 id|pmtu
 suffix:semicolon
+multiline_comment|/* Destination */
+DECL|member|dst
+r_struct
+id|dst_entry
+op_star
+id|dst
+suffix:semicolon
 multiline_comment|/* When was the last time(in jiffies) that a data packet was sent on&n;&t; * this transport?  This is used to adjust the cwnd when the transport&n;&t; * becomes inactive.&n;&t; */
 DECL|member|last_time_used
 r_int
@@ -1581,6 +1615,18 @@ id|sctp_transport_t
 op_star
 comma
 id|sctp_association_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sctp_transport_route
+c_func
+(paren
+id|sctp_transport_t
+op_star
+comma
+id|sockaddr_storage_t
 op_star
 )paren
 suffix:semicolon
