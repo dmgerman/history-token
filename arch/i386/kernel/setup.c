@@ -62,6 +62,13 @@ id|efi_enabled
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|efi_enabled
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|efi_enabled
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* cpu data as detected by the assembly code in head.S */
 DECL|variable|__initdata
