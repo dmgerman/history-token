@@ -58,7 +58,11 @@ id|reboot_mode
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* reboot=t[riple] | k[bd] [, [w]arm | [c]old]&n;   warm   Don&squot;t set the cold reboot flag&n;   cold   Set the cold reboot flag&n;   triple Force a triple fault (init)&n;   kbd    Use the keyboard controller. cold reset (default)&n; */
+DECL|variable|reboot_force
+r_int
+id|reboot_force
+suffix:semicolon
+multiline_comment|/* reboot=t[riple] | k[bd] [, [w]arm | [c]old]&n;   warm   Don&squot;t set the cold reboot flag&n;   cold   Set the cold reboot flag&n;   triple Force a triple fault (init)&n;   kbd    Use the keyboard controller. cold reset (default)&n;   force  Avoid anything that could hang.&n; */
 DECL|function|reboot_setup
 r_static
 r_int
@@ -116,6 +120,15 @@ id|reboot_type
 op_assign
 op_star
 id|str
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_char|&squot;f&squot;
+suffix:colon
+id|reboot_force
+op_assign
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -181,6 +194,13 @@ r_int
 id|first_entry
 op_assign
 l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reboot_force
+)paren
+r_return
 suffix:semicolon
 r_if
 c_cond
@@ -312,6 +332,12 @@ id|__unused
 r_int
 id|i
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;machine restart&bslash;n&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|smp_halt
 c_func
@@ -319,6 +345,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|reboot_force
+)paren
+(brace
 id|local_irq_disable
 c_func
 (paren
@@ -341,6 +374,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Tell the BIOS if we want cold or warm reboot */
 op_star
 (paren

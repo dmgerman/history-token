@@ -613,6 +613,10 @@ r_int
 id|force_iommu
 suffix:semicolon
 r_extern
+r_int
+id|reboot_force
+suffix:semicolon
+r_extern
 r_void
 id|smp_local_timer_interrupt
 c_func
