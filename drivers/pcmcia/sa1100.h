@@ -162,12 +162,19 @@ mdefine_line|#define SA1100_PCMCIA_3V_MEM_ACCESS  (300)
 multiline_comment|/* The socket driver actually works nicely in interrupt-driven form,&n; * so the (relatively infrequent) polling is &quot;just to be sure.&quot;&n; */
 DECL|macro|SA1100_PCMCIA_POLL_PERIOD
 mdefine_line|#define SA1100_PCMCIA_POLL_PERIOD    (2*HZ)
+r_struct
+id|pcmcia_low_level
+suffix:semicolon
 multiline_comment|/* This structure encapsulates per-socket state which we might need to&n; * use when responding to a Card Services query of some kind.&n; */
 DECL|struct|sa1100_pcmcia_socket
 r_struct
 id|sa1100_pcmcia_socket
 (brace
 multiline_comment|/*&n;   * Core PCMCIA state&n;   */
+DECL|member|nr
+r_int
+id|nr
+suffix:semicolon
 DECL|member|cs_state
 id|socket_state_t
 id|cs_state
@@ -238,6 +245,12 @@ DECL|member|irq
 r_int
 r_int
 id|irq
+suffix:semicolon
+DECL|member|ops
+r_struct
+id|pcmcia_low_level
+op_star
+id|ops
 suffix:semicolon
 )brace
 suffix:semicolon
