@@ -101,6 +101,7 @@ DECL|macro|SCALE_PRIO
 mdefine_line|#define SCALE_PRIO(x, prio) &bslash;&n;&t;max(x * (MAX_PRIO - prio) / (MAX_USER_PRIO/2), MIN_TIMESLICE)
 DECL|function|task_timeslice
 r_static
+r_inline
 r_int
 r_int
 id|task_timeslice
@@ -381,6 +382,7 @@ macro_line|# define task_running(rq, p)&t;&t;((rq)-&gt;curr == (p))
 macro_line|#endif
 multiline_comment|/*&n; * task_rq_lock - lock the runqueue a given task resides on and disable&n; * interrupts.  Note the ordering: we can safely lookup the task_rq without&n; * explicitly disabling preemption.&n; */
 r_static
+r_inline
 id|runqueue_t
 op_star
 id|task_rq_lock
@@ -895,6 +897,7 @@ macro_line|# define schedstat_add(rq, field, amt)&t;do { } while (0)
 macro_line|#endif
 multiline_comment|/*&n; * rq_lock - lock a given runqueue and disable interrupts.&n; */
 r_static
+r_inline
 id|runqueue_t
 op_star
 id|this_rq_lock
@@ -3679,6 +3682,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * finish_task_switch - clean up after a task-switch&n; * @prev: the thread we just switched away from.&n; *&n; * We enter this with the runqueue still locked, and finish_arch_switch()&n; * will unlock it along with doing any other architecture-specific cleanup&n; * actions.&n; *&n; * Note that we may have delayed dropping an mm in context_switch(). If&n; * so, we finish that here outside of the runqueue lock.  (Doing it&n; * with the lock held can cause deadlocks; see schedule() for&n; * details.)&n; */
 r_static
+r_inline
 r_void
 id|finish_task_switch
 c_func
