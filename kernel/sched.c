@@ -3615,7 +3615,7 @@ c_func
 (paren
 id|this_rq
 comma
-l_int|0
+id|idle
 comma
 id|cpu_to_node_mask
 c_func
