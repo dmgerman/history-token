@@ -827,6 +827,13 @@ suffix:semicolon
 id|u32
 id|temp
 suffix:semicolon
+r_int
+id|count
+op_assign
+l_int|256
+op_div
+l_int|4
+suffix:semicolon
 id|spin_lock_init
 (paren
 op_amp
@@ -906,6 +913,9 @@ r_while
 c_loop
 (paren
 id|temp
+op_logical_and
+id|count
+op_decrement
 )paren
 (brace
 id|u32
@@ -969,6 +979,35 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+l_int|0x0a
+suffix:colon
+multiline_comment|/* appendix C */
+id|ehci_dbg
+(paren
+id|ehci
+comma
+l_string|&quot;debug registers, BAR %d offset %d&bslash;n&quot;
+comma
+(paren
+id|cap
+op_rshift
+l_int|29
+)paren
+op_amp
+l_int|0x07
+comma
+(paren
+id|cap
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0x0fff
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 l_int|0
 suffix:colon
 multiline_comment|/* illegal reserved capability */
@@ -999,6 +1038,25 @@ l_int|8
 )paren
 op_amp
 l_int|0xff
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|count
+)paren
+(brace
+id|ehci_err
+(paren
+id|ehci
+comma
+l_string|&quot;bogus capabilities ... PCI problems!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -1763,6 +1821,11 @@ op_amp
 id|ehci-&gt;lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ehci-&gt;async
+)paren
 id|ehci_work
 (paren
 id|ehci

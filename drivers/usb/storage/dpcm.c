@@ -55,7 +55,8 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/*&n;     * LUN 0 corresponds to the CompactFlash card reader.&n;     */
-r_return
+id|ret
+op_assign
 id|usb_stor_CB_transport
 c_func
 (paren
@@ -63,6 +64,8 @@ id|srb
 comma
 id|us
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 macro_line|#ifdef CONFIG_USB_STORAGE_SDDR09
 r_case
@@ -96,8 +99,7 @@ id|us-&gt;srb-&gt;device-&gt;lun
 op_assign
 l_int|1
 suffix:semicolon
-r_return
-id|ret
+r_break
 suffix:semicolon
 macro_line|#endif
 r_default
@@ -110,9 +112,15 @@ comma
 id|srb-&gt;device-&gt;lun
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
+r_return
+id|ret
+suffix:semicolon
 )brace
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* Hey EMACS -*- linux-c -*-&n; *&n; * tiglusb -- Texas Instruments&squot; USB GraphLink (aka SilverLink) driver.&n; * Target: Texas Instruments graphing calculators (http://lpg.ticalc.org).&n; *&n; * Copyright (C) 2001-2002:&n; *   Romain Lievin &lt;roms@lpg.ticalc.org&gt;&n; *   Julien BLACHE &lt;jb@technologeek.org&gt;&n; * under the terms of the GNU General Public License.&n; *&n; * Based on dabusb.c, printer.c &amp; scanner.c&n; *&n; * Please see the file: linux/Documentation/usb/SilverLink.txt&n; * and the website at:  http://lpg.ticalc.org/prj_usb/&n; * for more info.&n; *&n; * History :&n; *   1.0x, Romain &amp; Julien: initial submit.&n; *   1.03, Greg Kroah: modifications.&n; *   1.04, Julien: clean-up &amp; fixes; Romain: 2.4 backport.&n; *   1.05, Randy Dunlap: bug fix with the timeout parameter (divide-by-zero).&n; *   1.06, Romain: synched with 2.5, version/firmware changed (confusing).&n; */
+multiline_comment|/* Hey EMACS -*- linux-c -*-&n; *&n; * tiglusb -- Texas Instruments&squot; USB GraphLink (aka SilverLink) driver.&n; * Target: Texas Instruments graphing calculators (http://lpg.ticalc.org).&n; *&n; * Copyright (C) 2001-2004:&n; *   Romain Lievin &lt;roms@lpg.ticalc.org&gt;&n; *   Julien BLACHE &lt;jb@technologeek.org&gt;&n; * under the terms of the GNU General Public License.&n; *&n; * Based on dabusb.c, printer.c &amp; scanner.c&n; *&n; * Please see the file: linux/Documentation/usb/SilverLink.txt&n; * and the website at:  http://lpg.ticalc.org/prj_usb/&n; * for more info.&n; *&n; * History :&n; *   1.0x, Romain &amp; Julien: initial submit.&n; *   1.03, Greg Kroah: modifications.&n; *   1.04, Julien: clean-up &amp; fixes; Romain: 2.4 backport.&n; *   1.05, Randy Dunlap: bug fix with the timeout parameter (divide-by-zero).&n; *   1.06, Romain: synched with 2.5, version/firmware changed (confusing).&n; *   1.07, Romain: fixed bad use of usb_clear_halt (invalid argument);&n; *          timeout argument checked in ioctl + clean-up.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -12,9 +12,9 @@ macro_line|#include &lt;linux/ticable.h&gt;
 macro_line|#include &quot;tiglusb.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;1.06&quot;
+mdefine_line|#define DRIVER_VERSION &quot;1.07&quot;
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR  &quot;Romain Lievin &lt;roms@lpg.ticalc.org&gt; &amp; Julien Blache &lt;jb@jblache.org&gt;&quot;
+mdefine_line|#define DRIVER_AUTHOR  &quot;Romain Lievin &lt;roms@tilp.info&gt; &amp; Julien Blache &lt;jb@jblache.org&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC    &quot;TI-GRAPH LINK USB (aka SilverLink) driver&quot;
 DECL|macro|DRIVER_LICENSE
@@ -98,39 +98,6 @@ id|usb_sndbulkpipe
 (paren
 id|dev
 comma
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|usb_clear_halt
-(paren
-id|dev
-comma
-id|usb_pipeendpoint
-(paren
-id|pipe
-)paren
-)paren
-)paren
-(brace
-id|err
-(paren
-l_string|&quot;clear_pipe (r), request failed&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-id|pipe
-op_assign
-id|usb_sndbulkpipe
-(paren
-id|dev
-comma
 l_int|2
 )paren
 suffix:semicolon
@@ -141,16 +108,43 @@ id|usb_clear_halt
 (paren
 id|dev
 comma
-id|usb_pipeendpoint
-(paren
 id|pipe
-)paren
 )paren
 )paren
 (brace
 id|err
 (paren
 l_string|&quot;clear_pipe (w), request failed&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|pipe
+op_assign
+id|usb_rcvbulkpipe
+(paren
+id|dev
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_clear_halt
+(paren
+id|dev
+comma
+id|pipe
+)paren
+)paren
+(brace
+id|err
+(paren
+l_string|&quot;clear_pipe (r), request failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -542,11 +536,13 @@ comma
 op_amp
 id|bytes_read
 comma
+(paren
 id|HZ
 op_star
-l_int|10
-op_div
 id|timeout
+)paren
+op_div
+l_int|10
 )paren
 suffix:semicolon
 r_if
@@ -559,27 +555,25 @@ id|ETIMEDOUT
 )paren
 (brace
 multiline_comment|/* NAK */
-id|ret
-op_assign
-id|result
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|bytes_read
 )paren
-(brace
 id|dbg
 (paren
 l_string|&quot;quirk !&quot;
 )paren
 suffix:semicolon
-)brace
 id|warn
 (paren
 l_string|&quot;tiglusb_read, NAK received.&quot;
 )paren
+suffix:semicolon
+id|ret
+op_assign
+id|result
 suffix:semicolon
 r_goto
 id|out
@@ -608,10 +602,7 @@ id|usb_clear_halt
 (paren
 id|s-&gt;dev
 comma
-id|usb_pipeendpoint
-(paren
 id|pipe
-)paren
 )paren
 )paren
 id|err
@@ -862,11 +853,13 @@ comma
 op_amp
 id|bytes_written
 comma
+(paren
 id|HZ
 op_star
-l_int|10
-op_div
 id|timeout
+)paren
+op_div
+l_int|10
 )paren
 suffix:semicolon
 r_if
@@ -915,10 +908,7 @@ id|usb_clear_halt
 (paren
 id|s-&gt;dev
 comma
-id|usb_pipeendpoint
-(paren
 id|pipe
-)paren
 )paren
 )paren
 id|err
@@ -1084,21 +1074,28 @@ id|cmd
 r_case
 id|IOCTL_TIUSB_TIMEOUT
 suffix:colon
+r_if
+c_cond
+(paren
+id|arg
+OG
+l_int|0
+)paren
 id|timeout
 op_assign
 id|arg
 suffix:semicolon
-singleline_comment|// timeout value in tenth of seconds
+r_else
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|IOCTL_TIUSB_RESET_DEVICE
 suffix:colon
-id|dbg
-(paren
-l_string|&quot;IOCTL_TIGLUSB_RESET_DEVICE&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1117,11 +1114,6 @@ suffix:semicolon
 r_case
 id|IOCTL_TIUSB_RESET_PIPES
 suffix:colon
-id|dbg
-(paren
-l_string|&quot;IOCTL_TIGLUSB_RESET_PIPES&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1649,7 +1641,7 @@ comma
 suffix:semicolon
 multiline_comment|/* --- initialisation code ------------------------------------- */
 macro_line|#ifndef MODULE
-multiline_comment|/*&n; * You can use &squot;tiusb=timeout&squot;&n; */
+multiline_comment|/*&n; * You can use &squot;tiusb=timeout&squot; to set timeout.&n; */
 r_static
 r_int
 id|__init
@@ -1692,6 +1684,16 @@ OG
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ints
+(braket
+l_int|1
+)braket
+OG
+l_int|0
+)paren
 id|timeout
 op_assign
 id|ints
@@ -1699,18 +1701,13 @@ id|ints
 l_int|1
 )braket
 suffix:semicolon
-)brace
-r_if
-c_cond
+r_else
+id|info
 (paren
-id|timeout
-op_le
-l_int|0
+l_string|&quot;tiglusb: wrong timeout value (0), using default value.&quot;
 )paren
-id|timeout
-op_assign
-id|TIMAXTIME
 suffix:semicolon
+)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -1867,17 +1864,6 @@ id|DRIVER_DESC
 l_string|&quot;, version &quot;
 id|DRIVER_VERSION
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|timeout
-op_le
-l_int|0
-)paren
-id|timeout
-op_assign
-id|TIMAXTIME
 suffix:semicolon
 r_return
 l_int|0

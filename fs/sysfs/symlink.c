@@ -184,7 +184,11 @@ op_add_assign
 id|strlen
 c_func
 (paren
-id|p-&gt;name
+id|kobject_name
+c_func
+(paren
+id|p
+)paren
 )paren
 op_plus
 l_int|1
@@ -251,7 +255,11 @@ op_assign
 id|strlen
 c_func
 (paren
-id|p-&gt;name
+id|kobject_name
+c_func
+(paren
+id|p
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* back up enough to print this bus id with &squot;/&squot; */
@@ -266,7 +274,11 @@ id|buffer
 op_plus
 id|length
 comma
-id|p-&gt;name
+id|kobject_name
+c_func
+(paren
+id|p
+)paren
 comma
 id|cur
 )paren
