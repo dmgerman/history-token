@@ -768,6 +768,22 @@ DECL|macro|DEVICE_COUNT_COMPATIBLE
 mdefine_line|#define DEVICE_COUNT_COMPATIBLE&t;4
 DECL|macro|DEVICE_COUNT_RESOURCE
 mdefine_line|#define DEVICE_COUNT_RESOURCE&t;12
+DECL|typedef|pci_power_t
+r_typedef
+r_int
+id|__bitwise
+id|pci_power_t
+suffix:semicolon
+DECL|macro|PCI_D0
+mdefine_line|#define PCI_D0&t;((pci_power_t __force) 0)
+DECL|macro|PCI_D1
+mdefine_line|#define PCI_D1&t;((pci_power_t __force) 1)
+DECL|macro|PCI_D2
+mdefine_line|#define PCI_D2&t;((pci_power_t __force) 2)
+DECL|macro|PCI_D3hot
+mdefine_line|#define PCI_D3hot&t;((pci_power_t __force) 3)
+DECL|macro|PCI_D3cold
+mdefine_line|#define PCI_D3cold&t;((pci_power_t __force) 4)
 multiline_comment|/*&n; * The pci_dev structure is used to describe PCI devices.&n; */
 DECL|struct|pci_dev
 r_struct
@@ -867,7 +883,7 @@ id|dma_mask
 suffix:semicolon
 multiline_comment|/* Mask of the bits of bus address this&n;&t;&t;&t;&t;&t;   device implements.  Normally this is&n;&t;&t;&t;&t;&t;   0xffffffff.  You only need to change&n;&t;&t;&t;&t;&t;   this if your device has broken DMA&n;&t;&t;&t;&t;&t;   or supports 64-bit transfers.  */
 DECL|member|current_state
-id|u32
+id|pci_power_t
 id|current_state
 suffix:semicolon
 multiline_comment|/* Current operating state. In ACPI-speak,&n;&t;&t;&t;&t;&t;   this is D0-D3, D0 being fully functional,&n;&t;&t;&t;&t;&t;   and D3 being off. */
@@ -2476,7 +2492,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-r_int
+id|pci_power_t
 id|state
 )paren
 suffix:semicolon
@@ -2489,7 +2505,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|u32
+id|pci_power_t
 id|state
 comma
 r_int

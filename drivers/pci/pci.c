@@ -698,7 +698,7 @@ r_return
 id|best
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_set_power_state - Set the power state of a PCI device&n; * @dev: PCI device to be suspended&n; * @state: Power state we&squot;re entering&n; *&n; * Transition a device to a new power state, using the Power Management &n; * Capabilities in the device&squot;s config space.&n; *&n; * RETURN VALUE: &n; * -EINVAL if trying to enter a lower state than we&squot;re already in.&n; * 0 if we&squot;re already in the requested state.&n; * -EIO if device does not support PCI PM.&n; * 0 if we can successfully change the power state.&n; */
+multiline_comment|/**&n; * pci_set_power_state - Set the power state of a PCI device&n; * @dev: PCI device to be suspended&n; * @state: PCI power state (D0, D1, D2, D3hot, D3cold) we&squot;re entering&n; *&n; * Transition a device to a new power state, using the Power Management &n; * Capabilities in the device&squot;s config space.&n; *&n; * RETURN VALUE: &n; * -EINVAL if trying to enter a lower state than we&squot;re already in.&n; * 0 if we&squot;re already in the requested state.&n; * -EIO if device does not support PCI PM.&n; * 0 if we can successfully change the power state.&n; */
 r_int
 DECL|function|pci_set_power_state
 id|pci_set_power_state
@@ -709,7 +709,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-r_int
+id|pci_power_t
 id|state
 )paren
 (brace
@@ -1097,7 +1097,7 @@ c_func
 (paren
 id|dev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 r_if
@@ -1273,7 +1273,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|u32
+id|pci_power_t
 id|state
 comma
 r_int
