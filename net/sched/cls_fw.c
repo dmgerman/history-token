@@ -75,8 +75,8 @@ id|indev
 id|IFNAMSIZ
 )braket
 suffix:semicolon
-macro_line|#endif
-macro_line|#else
+macro_line|#endif /* CONFIG_NET_CLS_IND */
+macro_line|#else /* CONFIG_NET_CLS_ACT */
 macro_line|#ifdef CONFIG_NET_CLS_POLICE
 DECL|member|police
 r_struct
@@ -84,8 +84,8 @@ id|tcf_police
 op_star
 id|police
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* CONFIG_NET_CLS_POLICE */
+macro_line|#endif /* CONFIG_NET_CLS_ACT */
 )brace
 suffix:semicolon
 DECL|function|fw_hash
@@ -538,7 +538,6 @@ c_cond
 (paren
 id|f-&gt;action
 )paren
-(brace
 id|tcf_action_destroy
 c_func
 (paren
@@ -547,9 +546,13 @@ comma
 id|TCA_ACT_UNBIND
 )paren
 suffix:semicolon
-)brace
-macro_line|#else
+macro_line|#else /* CONFIG_NET_CLS_ACT */
 macro_line|#ifdef CONFIG_NET_CLS_POLICE
+r_if
+c_cond
+(paren
+id|f-&gt;police
+)paren
 id|tcf_police_release
 c_func
 (paren
@@ -558,8 +561,8 @@ comma
 id|TCA_ACT_UNBIND
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* CONFIG_NET_CLS_POLICE */
+macro_line|#endif /* CONFIG_NET_CLS_ACT */
 id|kfree
 c_func
 (paren
@@ -705,7 +708,6 @@ c_cond
 (paren
 id|f-&gt;action
 )paren
-(brace
 id|tcf_action_destroy
 c_func
 (paren
@@ -714,8 +716,7 @@ comma
 id|TCA_ACT_UNBIND
 )paren
 suffix:semicolon
-)brace
-macro_line|#else
+macro_line|#else /* CONFIG_NET_CLS_ACT */
 macro_line|#ifdef CONFIG_NET_CLS_POLICE
 id|tcf_police_release
 c_func
@@ -725,8 +726,8 @@ comma
 id|TCA_ACT_UNBIND
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* CONFIG_NET_CLS_POLICE */
+macro_line|#endif /* CONFIG_NET_CLS_ACT */
 id|kfree
 c_func
 (paren
@@ -1766,7 +1767,7 @@ r_goto
 id|rtattr_failure
 suffix:semicolon
 )brace
-macro_line|#else
+macro_line|#else /* CONFIG_NET_CLS_ACT */
 macro_line|#ifdef CONFIG_NET_CLS_POLICE
 r_if
 c_cond
@@ -1792,8 +1793,8 @@ r_goto
 id|rtattr_failure
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* CONFIG_NET_CLS_POLICE */
+macro_line|#endif /* CONFIG_NET_CLS_ACT */
 r_return
 id|skb-&gt;len
 suffix:semicolon
