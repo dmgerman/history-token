@@ -2775,7 +2775,7 @@ id|hci_sock_family_ops
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t register HCI socket&quot;
+l_string|&quot;HCI socket registration failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2788,6 +2788,12 @@ c_func
 (paren
 op_amp
 id|hci_sock_nblock
+)paren
+suffix:semicolon
+id|BT_INFO
+c_func
+(paren
+l_string|&quot;HCI socket layer initialized&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2814,7 +2820,7 @@ id|BTPROTO_HCI
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t unregister HCI socket&quot;
+l_string|&quot;HCI socket unregistration failed&quot;
 )paren
 suffix:semicolon
 id|hci_unregister_notifier

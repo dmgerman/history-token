@@ -3142,17 +3142,56 @@ c_func
 r_void
 )paren
 (brace
+r_char
+id|flt
+(braket
+l_int|50
+)braket
+op_assign
+l_string|&quot;&quot;
+suffix:semicolon
+macro_line|#ifdef CONFIG_BT_BNEP_PROTO_FILTER
+id|strcat
+c_func
+(paren
+id|flt
+comma
+l_string|&quot;protocol &quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BT_BNEP_MC_FILTER
+id|strcat
+c_func
+(paren
+id|flt
+comma
+l_string|&quot;multicast&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;BNEP: BNEP2 ver %s&bslash;n&quot;
-l_string|&quot;BNEP: Copyright (C) 2002 Inventel&bslash;n&quot;
-l_string|&quot;BNEP: Written 2001,2002 by&bslash;n&quot;
-l_string|&quot;BNEP: &bslash;tClement Moreau &lt;clement.moreau@inventel.fr&gt; &quot;
-l_string|&quot;David Libault &lt;david.libault@inventel.fr&gt;&bslash;n&quot;
-l_string|&quot;BNEP: Copyright (C) 2002 Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&quot;
+l_string|&quot;BNEP (Ethernet Emulation) ver %s&quot;
 comma
 id|VERSION
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|flt
+(braket
+l_int|0
+)braket
+)paren
+id|BT_INFO
+c_func
+(paren
+l_string|&quot;BNEP filters: %s&quot;
+comma
+id|flt
 )paren
 suffix:semicolon
 id|bnep_sock_init
@@ -3197,14 +3236,14 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;BNEP ver &quot;
+l_string|&quot;Bluetooth BNEP ver &quot;
 id|VERSION
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;David Libault &lt;david.libault@inventel.fr&gt; Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&quot;
+l_string|&quot;David Libault &lt;david.libault@inventel.fr&gt;, Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

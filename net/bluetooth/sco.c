@@ -4143,7 +4143,7 @@ id|sco_sock_family_ops
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t register SCO socket layer&quot;
+l_string|&quot;SCO socket registration failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4168,7 +4168,7 @@ id|sco_hci_proto
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t register SCO protocol&quot;
+l_string|&quot;SCO protocol registration failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4192,7 +4192,7 @@ suffix:semicolon
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;Bluetooth SCO ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
+l_string|&quot;SCO (Voice Link) ver %s&quot;
 comma
 id|VERSION
 )paren
@@ -4200,7 +4200,7 @@ suffix:semicolon
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
+l_string|&quot;SCO socket layer initialized&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4243,7 +4243,7 @@ id|BTPROTO_SCO
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t unregister SCO socket layer %d&quot;
+l_string|&quot;SCO socket unregistration failed. %d&quot;
 comma
 id|err
 )paren
@@ -4265,7 +4265,7 @@ id|sco_hci_proto
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t unregister SCO protocol %d&quot;
+l_string|&quot;SCO protocol unregistration failed. %d&quot;
 comma
 id|err
 )paren

@@ -2199,6 +2199,7 @@ suffix:semicolon
 id|dev-&gt;modem_status
 op_assign
 (paren
+(paren
 id|v24_sig
 op_amp
 id|RFCOMM_V24_RTC
@@ -2212,7 +2213,9 @@ id|TIOCM_DTR
 )paren
 suffix:colon
 l_int|0
+)paren
 op_or
+(paren
 (paren
 id|v24_sig
 op_amp
@@ -2227,7 +2230,9 @@ id|TIOCM_CTS
 )paren
 suffix:colon
 l_int|0
+)paren
 op_or
+(paren
 (paren
 id|v24_sig
 op_amp
@@ -2238,7 +2243,9 @@ c_cond
 id|TIOCM_RI
 suffix:colon
 l_int|0
+)paren
 op_or
+(paren
 (paren
 id|v24_sig
 op_amp
@@ -2249,6 +2256,7 @@ c_cond
 id|TIOCM_CD
 suffix:colon
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* ---- TTY functions ---- */
@@ -2553,6 +2561,24 @@ id|BT_CONNECTED
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EINTR
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|schedule
 c_func
 (paren
@@ -4100,6 +4126,12 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|BT_INFO
+c_func
+(paren
+l_string|&quot;RFCOMM TTY layer initialized&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
