@@ -1659,12 +1659,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
-id|CPU_FTR_DABR
-)paren
-op_logical_and
 id|dabr.enabled
 )paren
 id|set_dabr
@@ -1710,15 +1704,6 @@ suffix:semicolon
 r_int
 id|instr
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
-id|CPU_FTR_DABR
-)paren
-)paren
 id|set_dabr
 c_func
 (paren
@@ -3281,26 +3266,6 @@ r_case
 l_char|&squot;d&squot;
 suffix:colon
 multiline_comment|/* bd - hardware data breakpoint */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
-id|CPU_FTR_DABR
-)paren
-)paren
-(brace
-id|printf
-c_func
-(paren
-l_string|&quot;Not implemented on this cpu&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|mode
 op_assign
 l_int|7
