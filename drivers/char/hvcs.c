@@ -18,9 +18,9 @@ macro_line|#include &lt;asm/hvconsole.h&gt;
 macro_line|#include &lt;asm/hvcserver.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/vio.h&gt;
-multiline_comment|/*&n; * 1.3.0 -&gt; 1.3.1 In hvcs_open memset(..,0x00,..) instead of memset(..,0x3F,00).&n; * Removed braces around single statements following conditionals.  Removed &squot;=&n; * 0&squot; after static int declarations since these default to zero.  Removed&n; * list_for_each_safe() and replaced with list_for_each_entry() in&n; * hvcs_get_by_index().  The &squot;safe&squot; version is un-needed now that the driver is&n; * using spinlocks.  Changed spin_lock_irqsave() to spin_lock() when locking&n; * hvcs_structs_lock and hvcs_pi_lock since these are not touched in an int&n; * handler.  Initialized hvcs_structs_lock and hvcs_pi_lock to&n; * SPIN_LOCK_UNLOCKED at declaration time rather than in hvcs_module_init().&n; * Added spin_lock around list_del() in destroy_hvcs_struct() to protect the&n; * list traversals from a deletion.  Removed &squot;= NULL&squot; from pointer declaration&n; * statements since they are initialized NULL by default.  Removed wmb()&n; * instances from hvcs_try_write().  They probably aren&squot;t needed with locking in&n; * place.  Added check and cleanup for hvcs_pi_buff = kmalloc() in&n; * hvcs_module_init().  Exposed hvcs_struct.index via a sysfs attribute so that&n; * the coupling between /dev/hvcs* and a vty-server can be automatically&n; * determined.  Moved kobject_put() in hvcs_open outside of the&n; * spin_unlock_irqrestore().&n; *&n; * 1.3.1 -&gt; 1.3.2 Changed method for determining hvcs_struct-&gt;index and had it&n; * align with how the tty layer always assigns the lowest index available.  This&n; * change resulted in a list of ints that denotes which indexes are available.&n; * Device additions and removals use the new hvcs_get_index() and&n; * hvcs_return_index() helper functions.  The list is created with&n; * hvsc_alloc_index_list() and it is destroyed with hvcs_free_index_list().&n; * Without these fixes hotplug vty-server adapter support goes crazy with this&n; * driver if the user removes a vty-server adapter.  Moved free_irq() outside of&n; * the hvcs_final_close() function in order to get it out of the spinlock.&n; * Rearranged hvcs_close().  Cleaned up some printks and did some housekeeping&n; * on the changelog.  Removed local CLC_LENGTH and used HVCS_CLC_LENGTH from&n; * arch/ppc64/hvcserver.h.&n; */
+multiline_comment|/*&n; * 1.3.0 -&gt; 1.3.1 In hvcs_open memset(..,0x00,..) instead of memset(..,0x3F,00).&n; * Removed braces around single statements following conditionals.  Removed &squot;=&n; * 0&squot; after static int declarations since these default to zero.  Removed&n; * list_for_each_safe() and replaced with list_for_each_entry() in&n; * hvcs_get_by_index().  The &squot;safe&squot; version is un-needed now that the driver is&n; * using spinlocks.  Changed spin_lock_irqsave() to spin_lock() when locking&n; * hvcs_structs_lock and hvcs_pi_lock since these are not touched in an int&n; * handler.  Initialized hvcs_structs_lock and hvcs_pi_lock to&n; * SPIN_LOCK_UNLOCKED at declaration time rather than in hvcs_module_init().&n; * Added spin_lock around list_del() in destroy_hvcs_struct() to protect the&n; * list traversals from a deletion.  Removed &squot;= NULL&squot; from pointer declaration&n; * statements since they are initialized NULL by default.  Removed wmb()&n; * instances from hvcs_try_write().  They probably aren&squot;t needed with locking in&n; * place.  Added check and cleanup for hvcs_pi_buff = kmalloc() in&n; * hvcs_module_init().  Exposed hvcs_struct.index via a sysfs attribute so that&n; * the coupling between /dev/hvcs* and a vty-server can be automatically&n; * determined.  Moved kobject_put() in hvcs_open outside of the&n; * spin_unlock_irqrestore().&n; *&n; * 1.3.1 -&gt; 1.3.2 Changed method for determining hvcs_struct-&gt;index and had it&n; * align with how the tty layer always assigns the lowest index available.  This&n; * change resulted in a list of ints that denotes which indexes are available.&n; * Device additions and removals use the new hvcs_get_index() and&n; * hvcs_return_index() helper functions.  The list is created with&n; * hvsc_alloc_index_list() and it is destroyed with hvcs_free_index_list().&n; * Without these fixes hotplug vty-server adapter support goes crazy with this&n; * driver if the user removes a vty-server adapter.  Moved free_irq() outside of&n; * the hvcs_final_close() function in order to get it out of the spinlock.&n; * Rearranged hvcs_close().  Cleaned up some printks and did some housekeeping&n; * on the changelog.  Removed local CLC_LENGTH and used HVCS_CLC_LENGTH from&n; * arch/ppc64/hvcserver.h.&n; *&n; * 1.3.2 -&gt; 1.3.3 Replaced yield() in hvcs_close() with tty_wait_until_sent() to&n; * prevent possible lockup with realtime scheduling as similarily pointed out by&n; * akpm in hvc_console.  Changed resulted in the removal of hvcs_final_close()&n; * to reorder cleanup operations and prevent discarding of pending data during&n; * an hvcs_close().  Removed spinlock protection of hvcs_struct data members in&n; * hvcs_write_room() and hvcs_chars_in_buffer() because they aren&squot;t needed.&n; */
 DECL|macro|HVCS_DRIVER_VERSION
-mdefine_line|#define HVCS_DRIVER_VERSION &quot;1.3.2&quot;
+mdefine_line|#define HVCS_DRIVER_VERSION &quot;1.3.3&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -46,6 +46,9 @@ c_func
 id|HVCS_DRIVER_VERSION
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Wait this long per iteration while trying to push buffered data to the&n; * hypervisor before allowing the tty to complete a close operation.&n; */
+DECL|macro|HVCS_CLOSE_WAIT
+mdefine_line|#define HVCS_CLOSE_WAIT (HZ/100) /* 1/10 of a second */
 multiline_comment|/*&n; * Since the Linux TTY code does not currently (2-04-2004) support dynamic&n; * addition of tty derived devices and we shouldn&squot;t allocate thousands of&n; * tty_device pointers when the number of vty-server &amp; vty partner connections&n; * will most often be much lower than this, we&squot;ll arbitrarily allocate&n; * HVCS_DEFAULT_SERVER_ADAPTERS tty_structs and cdev&squot;s by default when we&n; * register the tty_driver. This can be overridden using an insmod parameter.&n; */
 DECL|macro|HVCS_DEFAULT_SERVER_ADAPTERS
 mdefine_line|#define HVCS_DEFAULT_SERVER_ADAPTERS&t;64
@@ -485,17 +488,6 @@ r_struct
 id|vio_dev
 op_star
 id|dev
-)paren
-suffix:semicolon
-r_static
-r_void
-id|hvcs_final_close
-c_func
-(paren
-r_struct
-id|hvcs_struct
-op_star
-id|hvcsd
 )paren
 suffix:semicolon
 r_static
@@ -1582,68 +1574,6 @@ c_func
 (paren
 id|hvcsd
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * This function must be called with hvcsd-&gt;lock held.  Do not free the irq in&n; * this function since it is called with the spinlock held.&n; */
-DECL|function|hvcs_final_close
-r_static
-r_void
-id|hvcs_final_close
-c_func
-(paren
-r_struct
-id|hvcs_struct
-op_star
-id|hvcsd
-)paren
-(brace
-id|vio_disable_interrupts
-c_func
-(paren
-id|hvcsd-&gt;vdev
-)paren
-suffix:semicolon
-id|hvcsd-&gt;todo_mask
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* These two may be redundant if the operation was a close. */
-r_if
-c_cond
-(paren
-id|hvcsd-&gt;tty
-)paren
-(brace
-id|hvcsd-&gt;tty-&gt;driver_data
-op_assign
-l_int|NULL
-suffix:semicolon
-id|hvcsd-&gt;tty
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-id|hvcsd-&gt;open_count
-op_assign
-l_int|0
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|hvcsd-&gt;buffer
-(braket
-l_int|0
-)braket
-comma
-l_int|0x00
-comma
-id|HVCS_BUFF_LEN
-)paren
-suffix:semicolon
-id|hvcsd-&gt;chars_in_buffer
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|hvcs_kobj_type
@@ -3264,53 +3194,16 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * This line is important because it tells hvcs_open that this&n;&t;&t; * device needs to be re-configured the next time hvcs_open is&n;&t;&t; * called.&n;&t;&t; */
-id|hvcsd-&gt;tty-&gt;driver_data
-op_assign
-l_int|NULL
+id|vio_disable_interrupts
+c_func
+(paren
+id|hvcsd-&gt;vdev
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * NULL this early so that the kernel_thread doesn&squot;t try to&n;&t;&t; * execute any operations on the TTY even though it is obligated&n;&t;&t; * to deliver any pending I/O to the hypervisor.&n;&t;&t; */
 id|hvcsd-&gt;tty
 op_assign
 l_int|NULL
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Block the close until all the buffered data has been&n;&t;&t; * delivered.&n;&t;&t; */
-r_while
-c_loop
-(paren
-id|hvcsd-&gt;chars_in_buffer
-)paren
-(brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|hvcsd-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Give the kernel thread the hvcs_struct so that it can&n;&t;&t;&t; * try to deliver the remaining data but block the close&n;&t;&t;&t; * operation by spinning in this function so that other&n;&t;&t;&t; * tty operations have to wait.&n;&t;&t;&t; */
-id|yield
-c_func
-(paren
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|hvcsd-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
-id|hvcs_final_close
-c_func
-(paren
-id|hvcsd
-)paren
 suffix:semicolon
 id|irq
 op_assign
@@ -3324,6 +3217,19 @@ id|hvcsd-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+id|tty_wait_until_sent
+c_func
+(paren
+id|tty
+comma
+id|HVCS_CLOSE_WAIT
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * This line is important because it tells hvcs_open that this&n;&t;&t; * device needs to be re-configured the next time hvcs_open is&n;&t;&t; * called.&n;&t;&t; */
+id|tty-&gt;driver_data
+op_assign
+l_int|NULL
 suffix:semicolon
 id|free_irq
 c_func
@@ -3430,18 +3336,53 @@ id|temp_open_count
 op_assign
 id|hvcsd-&gt;open_count
 suffix:semicolon
-multiline_comment|/*&n;&t; * Don&squot;t kobject put inside the spinlock because the destruction&n;&t; * callback may use the spinlock and it may get called before the&n;&t; * spinlock has been released.  Get a pointer to the kobject and&n;&t; * kobject_put on that instead.&n;&t; */
+multiline_comment|/*&n;&t; * Don&squot;t kobject put inside the spinlock because the destruction&n;&t; * callback may use the spinlock and it may get called before the&n;&t; * spinlock has been released.  Get a pointer to the kobject and&n;&t; * kobject_put on that after releasing the spinlock.&n;&t; */
 id|kobjp
 op_assign
 op_amp
 id|hvcsd-&gt;kobj
 suffix:semicolon
-multiline_comment|/* Calling this will drop any buffered data on the floor. */
-id|hvcs_final_close
+id|vio_disable_interrupts
 c_func
 (paren
-id|hvcsd
+id|hvcsd-&gt;vdev
 )paren
+suffix:semicolon
+id|hvcsd-&gt;todo_mask
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* I don&squot;t think the tty needs the hvcs_struct pointer after a hangup */
+id|hvcsd-&gt;tty-&gt;driver_data
+op_assign
+l_int|NULL
+suffix:semicolon
+id|hvcsd-&gt;tty
+op_assign
+l_int|NULL
+suffix:semicolon
+id|hvcsd-&gt;open_count
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* This will drop any buffered data on the floor which is OK in a hangup&n;&t; * scenario. */
+id|memset
+c_func
+(paren
+op_amp
+id|hvcsd-&gt;buffer
+(braket
+l_int|0
+)braket
+comma
+l_int|0x00
+comma
+id|HVCS_BUFF_LEN
+)paren
+suffix:semicolon
+id|hvcsd-&gt;chars_in_buffer
+op_assign
+l_int|0
 suffix:semicolon
 id|irq
 op_assign
@@ -3888,13 +3829,6 @@ id|hvcsd
 op_assign
 id|tty-&gt;driver_data
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
-id|retval
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3908,32 +3842,10 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|hvcsd-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|retval
-op_assign
+r_return
 id|HVCS_BUFF_LEN
 op_minus
 id|hvcsd-&gt;chars_in_buffer
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|hvcsd-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|retval
 suffix:semicolon
 )brace
 DECL|function|hvcs_chars_in_buffer
@@ -3955,37 +3867,8 @@ id|hvcsd
 op_assign
 id|tty-&gt;driver_data
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
-id|retval
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|hvcsd-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|retval
-op_assign
-id|hvcsd-&gt;chars_in_buffer
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|hvcsd-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|retval
+id|hvcsd-&gt;chars_in_buffer
 suffix:semicolon
 )brace
 DECL|variable|hvcs_ops
