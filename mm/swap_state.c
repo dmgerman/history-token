@@ -228,7 +228,7 @@ suffix:semicolon
 )brace
 id|error
 op_assign
-id|add_to_page_cache_unique
+id|add_to_page_cache
 c_func
 (paren
 id|page

@@ -157,7 +157,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|add_to_page_cache_unique
+id|add_to_page_cache
 c_func
 (paren
 id|page
