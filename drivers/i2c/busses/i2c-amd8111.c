@@ -140,11 +140,13 @@ op_logical_neg
 id|timeout
 )paren
 (brace
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2c-amd8111.c: Timeout while waiting for IBF to clear&bslash;n&quot;
+op_amp
+id|smbus-&gt;dev-&gt;dev
+comma
+l_string|&quot;Timeout while waiting for IBF to clear&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -205,11 +207,13 @@ op_logical_neg
 id|timeout
 )paren
 (brace
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2c-amd8111.c: Timeout while waiting for OBF to set&bslash;n&quot;
+op_amp
+id|smbus-&gt;dev-&gt;dev
+comma
+l_string|&quot;Timeout while waiting for OBF to set&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1008,11 +1012,13 @@ suffix:colon
 r_case
 id|I2C_SMBUS_BLOCK_PROC_CALL_PEC
 suffix:colon
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2c-amd8111.c: Unexpected software PEC transaction %d&bslash;n.&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;Unexpected software PEC transaction %d&bslash;n.&quot;
 comma
 id|size
 )paren
@@ -1023,11 +1029,13 @@ l_int|1
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2c-amd8111.c: Unsupported transaction %d&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;Unsupported transaction %d&bslash;n&quot;
 comma
 id|size
 )paren
@@ -1697,7 +1705,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;amd8111 smbus&quot;
+l_string|&quot;amd8111 smbus 2&quot;
 comma
 dot
 id|id_table
