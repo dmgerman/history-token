@@ -554,8 +554,9 @@ id|fs_info
 id|fs_info
 op_assign
 (brace
+dot
 id|devfsd_buffer_lock
-suffix:colon
+op_assign
 id|SPIN_LOCK_UNLOCKED
 )brace
 suffix:semicolon
