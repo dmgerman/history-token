@@ -149,6 +149,8 @@ DECL|macro|SYNC_FSDATA
 mdefine_line|#define SYNC_FSDATA&t;&t;0x0020&t;/* flush fs data (e.g. superblocks) */
 DECL|macro|SYNC_REFCACHE
 mdefine_line|#define SYNC_REFCACHE&t;&t;0x0040  /* prune some of the nfs ref cache */
+DECL|macro|SYNC_REMOUNT
+mdefine_line|#define SYNC_REMOUNT&t;&t;0x0080  /* remount readonly, no dummy LRs */
 DECL|typedef|vfs_mount_t
 r_typedef
 r_int

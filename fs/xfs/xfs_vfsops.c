@@ -2123,6 +2123,8 @@ id|error
 )paren
 suffix:semicolon
 )brace
+DECL|macro|REMOUNT_READONLY_FLAGS
+mdefine_line|#define REMOUNT_READONLY_FLAGS&t;(SYNC_REMOUNT|SYNC_ATTR|SYNC_WAIT)
 id|STATIC
 r_int
 DECL|function|xfs_mntupdate
@@ -2248,9 +2250,7 @@ c_func
 (paren
 id|vfsp
 comma
-id|SYNC_ATTR
-op_or
-id|SYNC_WAIT
+id|REMOUNT_READONLY_FLAGS
 comma
 l_int|NULL
 comma
@@ -4709,6 +4709,13 @@ multiline_comment|/*&n;&t; * Now check to see if the log needs a &quot;dummy&quo
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|SYNC_REMOUNT
+)paren
+op_logical_and
 id|xfs_log_need_covered
 c_func
 (paren
