@@ -3,9 +3,9 @@ multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;Current Ma
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;via-rhine&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.1.19-2.5&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.1.20-2.6&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;July-12-2003&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;May-23-2004&quot;
 multiline_comment|/* A few user-configurable values.&n;   These may be modified when a driver module is loaded. */
 DECL|variable|debug
 r_static
@@ -181,7 +181,7 @@ id|shortname
 op_assign
 id|DRV_NAME
 suffix:semicolon
-multiline_comment|/* This driver was written to use PCI memory space, however most versions&n;   of the Rhine only work correctly with I/O space accesses. */
+multiline_comment|/* This driver was written to use PCI memory space. Some early versions&n;   of the Rhine may only work correctly with I/O space accesses. */
 macro_line|#ifdef CONFIG_VIA_RHINE_MMIO
 DECL|macro|USE_MMIO
 mdefine_line|#define USE_MMIO
@@ -1506,7 +1506,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|u32
 id|intr_status
@@ -2513,7 +2517,11 @@ id|pdev-&gt;irq
 suffix:semicolon
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|spin_lock_init
 c_func
@@ -3096,7 +3104,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_void
 op_star
@@ -3266,7 +3278,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|pci_free_consistent
 c_func
@@ -3339,7 +3355,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|dma_addr_t
 id|next
@@ -3588,7 +3608,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|i
@@ -3692,7 +3716,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|dma_addr_t
 id|next
@@ -3822,7 +3850,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|i
@@ -3960,7 +3992,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -4336,7 +4372,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -4499,7 +4539,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -4711,7 +4755,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -4867,7 +4915,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -5017,7 +5069,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -5175,7 +5231,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|entry
@@ -5842,7 +5902,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|txstatus
@@ -6198,7 +6262,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|entry
@@ -6896,7 +6964,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -7012,7 +7084,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -7414,7 +7490,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -7491,7 +7571,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -7743,7 +7827,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|strcpy
 c_func
@@ -7796,7 +7884,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|rc
@@ -7866,7 +7958,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|rc
@@ -7931,7 +8027,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7973,7 +8073,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8113,7 +8217,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|mii_ioctl_data
@@ -8200,7 +8308,11 @@ id|rhine_private
 op_star
 id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|del_timer_sync
 c_func
