@@ -597,19 +597,6 @@ c_func
 id|cs
 )paren
 suffix:semicolon
-multiline_comment|/* Reenable all IRQ */
-id|cs
-op_member_access_from_pointer
-id|writeisac
-c_func
-(paren
-id|cs
-comma
-id|ISAC_MASK
-comma
-l_int|0
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

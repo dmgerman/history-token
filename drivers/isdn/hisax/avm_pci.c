@@ -4017,16 +4017,6 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-id|WriteISAC
-c_func
-(paren
-id|cs
-comma
-id|ISAC_MASK
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|outb
 c_func
 (paren
@@ -4039,17 +4029,6 @@ comma
 id|cs-&gt;hw.avm.cfg_reg
 op_plus
 l_int|2
-)paren
-suffix:semicolon
-multiline_comment|/* RESET Receiver and Transmitter */
-id|WriteISAC
-c_func
-(paren
-id|cs
-comma
-id|ISAC_CMDR
-comma
-l_int|0x41
 )paren
 suffix:semicolon
 r_return

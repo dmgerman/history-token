@@ -4032,5 +4032,18 @@ comma
 id|D_L1STATECHANGE
 )paren
 suffix:semicolon
+multiline_comment|/* RESET Receiver and Transmitter */
+id|cs
+op_member_access_from_pointer
+id|writeisac
+c_func
+(paren
+id|cs
+comma
+id|ISAC_CMDR
+comma
+l_int|0x41
+)paren
+suffix:semicolon
 )brace
 eof
