@@ -179,6 +179,12 @@ r_int
 id|i8042_start
 suffix:semicolon
 macro_line|#endif
+r_extern
+r_struct
+id|pt_regs
+op_star
+id|kbd_pt_regs
+suffix:semicolon
 DECL|variable|i8042_unxlate_seen
 r_static
 r_int
@@ -1500,6 +1506,12 @@ r_int
 r_int
 id|dfl
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
+id|kbd_pt_regs
+op_assign
+id|regs
+suffix:semicolon
+macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
