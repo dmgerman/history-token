@@ -322,9 +322,6 @@ c_cond
 (paren
 op_logical_neg
 id|buf
-op_logical_or
-op_logical_neg
-id|client
 )paren
 (brace
 id|ret
@@ -414,9 +411,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|client
-op_logical_or
 op_logical_neg
 id|data
 op_logical_or
@@ -1001,9 +995,6 @@ c_cond
 (paren
 op_logical_neg
 id|dt
-op_logical_or
-op_logical_neg
-id|client
 )paren
 r_return
 op_minus
@@ -1226,9 +1217,6 @@ c_cond
 (paren
 op_logical_neg
 id|dt
-op_logical_or
-op_logical_neg
-id|client
 )paren
 r_return
 op_minus
@@ -1483,9 +1471,6 @@ c_cond
 (paren
 op_logical_neg
 id|ctrl
-op_logical_or
-op_logical_neg
-id|client
 )paren
 r_return
 op_minus
@@ -1540,9 +1525,6 @@ c_cond
 (paren
 op_logical_neg
 id|ctrl
-op_logical_or
-op_logical_neg
-id|client
 )paren
 r_return
 op_minus
@@ -1613,9 +1595,6 @@ c_cond
 (paren
 op_logical_neg
 id|mem
-op_logical_or
-op_logical_neg
-id|client
 )paren
 r_return
 op_minus
@@ -1657,9 +1636,6 @@ c_cond
 (paren
 op_logical_neg
 id|mem
-op_logical_or
-op_logical_neg
-id|client
 )paren
 r_return
 op_minus
