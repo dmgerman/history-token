@@ -2927,7 +2927,7 @@ id|dev-&gt;tx_urb-&gt;transfer_flags
 op_or_assign
 id|URB_ASYNC_UNLINK
 suffix:semicolon
-id|usb_kill_urb
+id|usb_unlink_urb
 c_func
 (paren
 id|dev-&gt;tx_urb
