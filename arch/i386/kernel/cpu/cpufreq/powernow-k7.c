@@ -1723,9 +1723,12 @@ id|policy-&gt;governor
 op_assign
 id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
+multiline_comment|/* latency is in 10 ns (look for SGTC above) for each VID&n;&t; * and FID transition, so multiply that value with 20 */
 id|policy-&gt;cpuinfo.transition_latency
 op_assign
 id|latency
+op_star
+l_int|20
 suffix:semicolon
 id|policy-&gt;cur
 op_assign

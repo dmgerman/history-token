@@ -4083,9 +4083,10 @@ id|pol-&gt;governor
 op_assign
 id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
-multiline_comment|/* Take a crude guess here. */
+multiline_comment|/* Take a crude guess here. &n;&t; * That guess was in microseconds, so multply with 1000 */
 id|pol-&gt;cpuinfo.transition_latency
 op_assign
+(paren
 (paren
 (paren
 id|rvo
@@ -4109,6 +4110,9 @@ id|irt
 op_star
 l_int|10
 )paren
+)paren
+op_star
+l_int|1000
 suffix:semicolon
 r_if
 c_cond

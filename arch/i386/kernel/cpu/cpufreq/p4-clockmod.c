@@ -1008,8 +1008,9 @@ id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
 id|policy-&gt;cpuinfo.transition_latency
 op_assign
-l_int|1000
+l_int|1000000
 suffix:semicolon
+multiline_comment|/* assumed */
 id|policy-&gt;cur
 op_assign
 id|stock_freq

@@ -74,7 +74,7 @@ r_int
 r_int
 id|transition_latency
 suffix:semicolon
-multiline_comment|/* in 10^(-9) s */
+multiline_comment|/* in 10^(-9) s = nanoseconds */
 )brace
 suffix:semicolon
 DECL|struct|cpufreq_real_policy
