@@ -435,7 +435,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|maxChild
+id|maxchild
 comma
 id|S_IRUGO
 comma
