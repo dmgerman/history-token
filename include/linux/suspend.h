@@ -54,6 +54,10 @@ DECL|macro|SWAP_FILENAME_MAXLENGTH
 mdefine_line|#define SWAP_FILENAME_MAXLENGTH&t;32
 DECL|macro|SUSPEND_PD_PAGES
 mdefine_line|#define SUSPEND_PD_PAGES(x)     (((x)*sizeof(struct pbe))/PAGE_SIZE+1)
+r_extern
+id|dev_t
+id|swsusp_resume_device
+suffix:semicolon
 multiline_comment|/* mm/vmscan.c */
 r_extern
 r_int
