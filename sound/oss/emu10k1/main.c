@@ -426,10 +426,37 @@ id|ac97_codec
 op_star
 id|codec
 op_assign
-op_amp
-id|card-&gt;ac97
+id|ac97_alloc_codec
+c_func
+(paren
+)paren
 suffix:semicolon
-id|card-&gt;ac97.dev_mixer
+r_if
+c_cond
+(paren
+id|codec
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;emu10k1: cannot allocate mixer&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+id|card-&gt;ac97
+op_assign
+id|codec
+suffix:semicolon
+macro_line|#warning &quot;Initialisation order race. Must register after usable&quot;
+id|card-&gt;ac97-&gt;dev_mixer
 op_assign
 id|register_sound_mixer
 c_func
@@ -444,7 +471,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|card-&gt;ac97.dev_mixer
+id|card-&gt;ac97-&gt;dev_mixer
 OL
 l_int|0
 )paren
@@ -456,12 +483,11 @@ id|KERN_ERR
 l_string|&quot;emu10k1: cannot register mixer device&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EIO
+r_goto
+id|err_codec
 suffix:semicolon
 )brace
-id|card-&gt;ac97.private_data
+id|card-&gt;ac97-&gt;private_data
 op_assign
 id|card
 suffix:semicolon
@@ -472,15 +498,15 @@ op_logical_neg
 id|card-&gt;is_aps
 )paren
 (brace
-id|card-&gt;ac97.id
+id|card-&gt;ac97-&gt;id
 op_assign
 l_int|0
 suffix:semicolon
-id|card-&gt;ac97.codec_read
+id|card-&gt;ac97-&gt;codec_read
 op_assign
 id|emu10k1_ac97_read
 suffix:semicolon
-id|card-&gt;ac97.codec_write
+id|card-&gt;ac97-&gt;codec_write
 op_assign
 id|emu10k1_ac97_write
 suffix:semicolon
@@ -489,7 +515,6 @@ c_cond
 (paren
 id|ac97_probe_codec
 (paren
-op_amp
 id|card-&gt;ac97
 )paren
 op_eq
@@ -559,7 +584,7 @@ l_int|0x0
 suffix:semicolon
 )brace
 singleline_comment|// Force 5bit:&t;&t;    
-singleline_comment|//card-&gt;ac97.bit_resolution=5;
+singleline_comment|//card-&gt;ac97-&gt;bit_resolution=5;
 r_if
 c_cond
 (paren
@@ -642,7 +667,6 @@ l_int|0
 comma
 id|ac97_read_proc
 comma
-op_amp
 id|card-&gt;ac97
 )paren
 )paren
@@ -663,11 +687,11 @@ suffix:semicolon
 multiline_comment|/* these will store the original values and never be modified */
 id|card-&gt;ac97_supported_mixers
 op_assign
-id|card-&gt;ac97.supported_mixers
+id|card-&gt;ac97-&gt;supported_mixers
 suffix:semicolon
 id|card-&gt;ac97_stereo_mixers
 op_assign
-id|card-&gt;ac97.stereo_mixers
+id|card-&gt;ac97-&gt;stereo_mixers
 suffix:semicolon
 )brace
 r_return
@@ -707,7 +731,15 @@ id|err_out
 suffix:colon
 id|unregister_sound_mixer
 (paren
-id|card-&gt;ac97.dev_mixer
+id|card-&gt;ac97-&gt;dev_mixer
+)paren
+suffix:semicolon
+id|err_codec
+suffix:colon
+id|ac97_release_codec
+c_func
+(paren
+id|card-&gt;ac97
 )paren
 suffix:semicolon
 r_return
@@ -788,7 +820,13 @@ suffix:semicolon
 )brace
 id|unregister_sound_mixer
 (paren
-id|card-&gt;ac97.dev_mixer
+id|card-&gt;ac97-&gt;dev_mixer
+)paren
+suffix:semicolon
+id|ac97_release_codec
+c_func
+(paren
+id|card-&gt;ac97
 )paren
 suffix:semicolon
 )brace
@@ -3083,7 +3121,7 @@ l_int|9
 suffix:semicolon
 id|left
 op_assign
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|SOUND_MIXER_VOLUME
 )braket
@@ -3093,7 +3131,7 @@ suffix:semicolon
 id|right
 op_assign
 (paren
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|SOUND_MIXER_VOLUME
 )braket
@@ -3114,7 +3152,7 @@ id|left
 comma
 l_int|1
 op_lshift
-id|card-&gt;ac97.bit_resolution
+id|card-&gt;ac97-&gt;bit_resolution
 )paren
 suffix:semicolon
 id|emu10k1_set_volume_gpr
@@ -3128,7 +3166,7 @@ id|right
 comma
 l_int|1
 op_lshift
-id|card-&gt;ac97.bit_resolution
+id|card-&gt;ac97-&gt;bit_resolution
 )paren
 suffix:semicolon
 singleline_comment|//Rear volume
@@ -3158,7 +3196,7 @@ id|right
 op_assign
 l_int|67
 suffix:semicolon
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|SOUND_MIXER_OGAIN
 )braket
@@ -3171,11 +3209,11 @@ l_int|8
 op_or
 id|left
 suffix:semicolon
-id|card-&gt;ac97.supported_mixers
+id|card-&gt;ac97-&gt;supported_mixers
 op_or_assign
 id|SOUND_MASK_OGAIN
 suffix:semicolon
-id|card-&gt;ac97.stereo_mixers
+id|card-&gt;ac97-&gt;stereo_mixers
 op_or_assign
 id|SOUND_MASK_OGAIN
 suffix:semicolon
@@ -3226,7 +3264,7 @@ l_int|7
 suffix:semicolon
 id|left
 op_assign
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|SOUND_MIXER_PCM
 )braket
@@ -3236,7 +3274,7 @@ suffix:semicolon
 id|right
 op_assign
 (paren
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|SOUND_MIXER_PCM
 )braket
@@ -3297,7 +3335,7 @@ id|right
 op_assign
 l_int|67
 suffix:semicolon
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|SOUND_MIXER_DIGITAL1
 )braket
@@ -3310,11 +3348,11 @@ l_int|8
 op_or
 id|left
 suffix:semicolon
-id|card-&gt;ac97.supported_mixers
+id|card-&gt;ac97-&gt;supported_mixers
 op_or_assign
 id|SOUND_MASK_DIGITAL1
 suffix:semicolon
-id|card-&gt;ac97.stereo_mixers
+id|card-&gt;ac97-&gt;stereo_mixers
 op_or_assign
 id|SOUND_MASK_DIGITAL1
 suffix:semicolon
@@ -3346,7 +3384,6 @@ singleline_comment|//hard wire the ac97&squot;s pcm, we&squot;ll do that in dsp 
 id|emu10k1_ac97_write
 c_func
 (paren
-op_amp
 id|card-&gt;ac97
 comma
 l_int|0x18
@@ -3368,7 +3405,6 @@ singleline_comment|//set Igain to 0dB by default, maybe consider hardwiring it h
 id|emu10k1_ac97_write
 c_func
 (paren
-op_amp
 id|card-&gt;ac97
 comma
 id|AC97_RECORD_GAIN
@@ -3376,7 +3412,7 @@ comma
 l_int|0x0000
 )paren
 suffix:semicolon
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|SOUND_MIXER_IGAIN
 )braket
