@@ -602,6 +602,7 @@ id|qos_info
 op_star
 id|qos
 comma
+r_const
 r_char
 op_star
 id|hw_name
@@ -704,7 +705,7 @@ id|__u32
 id|speed
 )paren
 suffix:semicolon
-r_int
+r_void
 id|irda_device_setup
 c_func
 (paren

@@ -849,7 +849,12 @@ mdefine_line|#define SADB_EALG_NULL&t;&t;&t;11
 DECL|macro|SADB_X_EALG_AESCBC
 mdefine_line|#define SADB_X_EALG_AESCBC&t;&t;12
 DECL|macro|SADB_EALG_MAX
-mdefine_line|#define SADB_EALG_MAX&t;&t;&t;12
+mdefine_line|#define SADB_EALG_MAX                   253 /* last EALG */
+multiline_comment|/* private allocations should use 249-255 (RFC2407) */
+DECL|macro|SADB_X_EALG_SERPENTCBC
+mdefine_line|#define SADB_X_EALG_SERPENTCBC  252     /* draft-ietf-ipsec-ciph-aes-cbc-00 */
+DECL|macro|SADB_X_EALG_TWOFISHCBC
+mdefine_line|#define SADB_X_EALG_TWOFISHCBC  253     /* draft-ietf-ipsec-ciph-aes-cbc-00 */
 multiline_comment|/* Compression algorithms */
 DECL|macro|SADB_X_CALG_NONE
 mdefine_line|#define SADB_X_CALG_NONE&t;&t;0
