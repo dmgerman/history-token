@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;inet6 interface/address list definitions&n; *&t;Linu
 macro_line|#ifndef _NET_IF_INET6_H
 DECL|macro|_NET_IF_INET6_H
 mdefine_line|#define _NET_IF_INET6_H
+macro_line|#include &lt;net/snmp.h&gt;
 DECL|macro|IF_RA_RCVD
 mdefine_line|#define IF_RA_RCVD&t;0x20
 DECL|macro|IF_RS_SENT
@@ -439,6 +440,15 @@ r_struct
 id|proc_dir_entry
 op_star
 id|proc_dir_entry
+suffix:semicolon
+id|DEFINE_SNMP_STAT
+c_func
+(paren
+r_struct
+id|icmpv6_mib
+comma
+id|icmpv6
+)paren
 suffix:semicolon
 )brace
 suffix:semicolon

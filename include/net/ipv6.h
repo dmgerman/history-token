@@ -137,13 +137,13 @@ id|icmpv6_statistics
 )paren
 suffix:semicolon
 DECL|macro|ICMP6_INC_STATS
-mdefine_line|#define ICMP6_INC_STATS(field)&t;&t;SNMP_INC_STATS(icmpv6_statistics, field)
+mdefine_line|#define ICMP6_INC_STATS(idev, field)&t;&t;({&t;&t;&t;&bslash;&n;&t;struct inet6_dev *_idev = (idev);&t;&t;&t;&t;&bslash;&n;&t;if (likely(_idev != NULL))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SNMP_INC_STATS(idev-&gt;stats.icmpv6, field); &t;&t;&bslash;&n;&t;SNMP_INC_STATS(icmpv6_statistics, field);&t;&t;&t;&bslash;&n;})
 DECL|macro|ICMP6_INC_STATS_BH
-mdefine_line|#define ICMP6_INC_STATS_BH(field)&t;SNMP_INC_STATS_BH(icmpv6_statistics, field)
+mdefine_line|#define ICMP6_INC_STATS_BH(idev, field)&t;&t;({&t;&t;&t;&bslash;&n;&t;struct inet6_dev *_idev = (idev);&t;&t;&t;&t;&bslash;&n;&t;if (likely(_idev != NULL))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SNMP_INC_STATS_BH((_idev)-&gt;stats.icmpv6, field);&t;&bslash;&n;&t;SNMP_INC_STATS_BH(icmpv6_statistics, field);&t;&t;&t;&bslash;&n;})
 DECL|macro|ICMP6_INC_STATS_USER
-mdefine_line|#define ICMP6_INC_STATS_USER(field)&t;SNMP_INC_STATS_USER(icmpv6_statistics, field)
+mdefine_line|#define ICMP6_INC_STATS_USER(idev, field) &t;({&t;&t;&t;&bslash;&n;&t;struct inet6_dev *_idev = (idev);&t;&t;&t;&t;&bslash;&n;&t;if (likely(_idev != NULL))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SNMP_INC_STATS_USER(_idev-&gt;stats.icmpv6, field);&t;&bslash;&n;&t;SNMP_INC_STATS_USER(icmpv6_statistics, field);&t;&t;&t;&bslash;&n;})
 DECL|macro|ICMP6_INC_STATS_OFFSET_BH
-mdefine_line|#define ICMP6_INC_STATS_OFFSET_BH(field, offset)&t;&bslash;&n;&t;&t;&t;&t;&t;SNMP_INC_STATS_OFFSET_BH(icmpv6_statistics, field, offset)
+mdefine_line|#define ICMP6_INC_STATS_OFFSET_BH(idev, field, offset)&t;({&t;&t;&t;&bslash;&n;&t;struct inet6_dev *_idev = idev;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(offset) _offset = (offset);&t;&t;&t;&t;&t;&bslash;&n;&t;if (likely(_idev != NULL))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SNMP_INC_STATS_OFFSET_BH(_idev-&gt;stats.icmpv6, field, _offset);&t;&bslash;&n;&t;SNMP_INC_STATS_OFFSET_BH(icmpv6_statistics, field, _offset);    &t;&bslash;&n;})
 id|DECLARE_SNMP_STAT
 c_func
 (paren
