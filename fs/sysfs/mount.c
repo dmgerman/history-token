@@ -4,6 +4,7 @@ mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;sysfs.h&quot;
 multiline_comment|/* Random magic number */
 DECL|macro|SYSFS_MAGIC
