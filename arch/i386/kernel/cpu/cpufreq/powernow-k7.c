@@ -886,11 +886,6 @@ l_int|1000
 )paren
 suffix:semicolon
 )brace
-id|dprintk
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 id|powernow_table
 (braket
 id|number_scales
