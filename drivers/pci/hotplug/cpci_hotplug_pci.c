@@ -1326,14 +1326,12 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|pci_proc_attach_bus
 c_func
 (paren
 id|child
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Update parent bridge&squot;s subordinate field if there were more bridges&n;&t; * behind the bridge that was scanned.&n;&t; */
 r_if
 c_cond

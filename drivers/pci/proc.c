@@ -2731,13 +2731,6 @@ c_func
 id|pci_proc_attach_device
 )paren
 suffix:semicolon
-DECL|variable|pci_proc_detach_device
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_proc_detach_device
-)paren
-suffix:semicolon
 DECL|variable|pci_proc_attach_bus
 id|EXPORT_SYMBOL
 c_func

@@ -242,14 +242,12 @@ op_amp
 id|pci_devices
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|pci_proc_attach_device
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pci_create_sysfs_dev_files
 c_func
 (paren
