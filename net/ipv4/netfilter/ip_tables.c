@@ -6493,14 +6493,16 @@ c_func
 l_string|&quot;tcp_match: finding option&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* If we don&squot;t have the whole header, drop packet. */
-id|BUG_ON
-c_func
+r_if
+c_cond
 (paren
 op_logical_neg
 id|optlen
 )paren
+r_return
+id|invert
 suffix:semicolon
+multiline_comment|/* If we don&squot;t have the whole header, drop packet. */
 id|op
 op_assign
 id|skb_header_pointer
@@ -6842,7 +6844,7 @@ c_cond
 id|th-&gt;doff
 op_star
 l_int|4
-op_le
+OL
 r_sizeof
 (paren
 id|_tcph
