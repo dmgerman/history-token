@@ -2877,16 +2877,12 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-l_int|NULL
-op_ne
-(paren
 id|chunk
 op_assign
 id|sctp_outq_dequeue_data
 c_func
 (paren
 id|q
-)paren
 )paren
 )paren
 (brace
@@ -2935,7 +2931,7 @@ comma
 id|ev
 )paren
 suffix:semicolon
-multiline_comment|/* Free the chunk. This chunk is not on any&n;&t;&t;&t;&t; * list yet, just free it.&n;&t;&t;&t;&t; */
+multiline_comment|/* Free the chunk. */
 id|sctp_free_chunk
 c_func
 (paren

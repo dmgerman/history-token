@@ -1053,7 +1053,7 @@ op_rshift
 l_int|20
 )paren
 suffix:semicolon
-multiline_comment|/* Choose random number from 0 to rto, then move to -50% ~ +50% &n;&t; * of rto. &n;&t; */
+multiline_comment|/* Choose random number from 0 to rto, then move to -50% ~ +50%&n;&t; * of rto.&n;&t; */
 id|ret
 op_assign
 id|sctp_rand
@@ -1068,6 +1068,40 @@ l_int|1
 suffix:semicolon
 r_return
 id|ret
+suffix:semicolon
+)brace
+multiline_comment|/* Break down data chunks at this point.  */
+DECL|function|sctp_frag_point
+r_static
+r_inline
+r_int
+id|sctp_frag_point
+c_func
+(paren
+r_int
+id|pmtu
+)paren
+(brace
+id|pmtu
+op_sub_assign
+id|SCTP_IP_OVERHEAD
+op_plus
+r_sizeof
+(paren
+r_struct
+id|sctp_data_chunk
+)paren
+suffix:semicolon
+id|pmtu
+op_sub_assign
+r_sizeof
+(paren
+r_struct
+id|sctp_sack_chunk
+)paren
+suffix:semicolon
+r_return
+id|pmtu
 suffix:semicolon
 )brace
 multiline_comment|/* Walk through a list of TLV parameters.  Don&squot;t trust the&n; * individual parameter lengths and instead depend on&n; * the chunk length to indicate when to stop.  Make sure&n; * there is room for a param header too.&n; */
