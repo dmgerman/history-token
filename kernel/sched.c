@@ -3918,7 +3918,8 @@ c_func
 id|p
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|spin_lock
@@ -4003,7 +4004,7 @@ id|rq-&gt;active
 suffix:semicolon
 )brace
 r_goto
-id|out
+id|out_unlock
 suffix:semicolon
 )brace
 r_if
@@ -4094,7 +4095,7 @@ id|rq-&gt;active
 )paren
 suffix:semicolon
 )brace
-id|out
+id|out_unlock
 suffix:colon
 id|spin_unlock
 c_func
@@ -4103,6 +4104,8 @@ op_amp
 id|rq-&gt;lock
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|rebalance_tick
 c_func
 (paren
