@@ -369,7 +369,6 @@ id|commit_sem
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace

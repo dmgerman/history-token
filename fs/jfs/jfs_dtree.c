@@ -4575,6 +4575,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 id|jfs_info
