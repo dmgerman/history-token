@@ -25,11 +25,6 @@ id|jfs_symlink_inode_operations
 suffix:semicolon
 r_extern
 r_struct
-id|inode_operations
-id|jfs_special_inode_operations
-suffix:semicolon
-r_extern
-r_struct
 id|file_operations
 id|jfs_dir_operations
 suffix:semicolon
@@ -223,7 +218,7 @@ r_else
 id|inode-&gt;i_op
 op_assign
 op_amp
-id|jfs_special_inode_operations
+id|jfs_file_inode_operations
 suffix:semicolon
 id|init_special_inode
 c_func

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; *&t;jfs_imap.c: inode allocation map manager&n; *&n; * Serialization:&n; *   Each AG has a simple lock which is used to control the serialization of&n; *&t;the AG level lists.  This lock should be taken first whenever an AG&n; *&t;level list will be modified or accessed.&n; *&n; *   Each IAG is locked by obtaining the buffer for the IAG page.&n; *&n; *   There is also a inode lock for the inode map inode.  A read lock needs to&n; *&t;be taken whenever an IAG is read from the map or the global level&n; *&t;information is read.  A write lock needs to be taken whenever the global&n; *&t;level information is modified or an atomic operation needs to be used.&n; *&n; *&t;If more than one IAG is read at one time, the read lock may not&n; *&t;be given up until all of the IAG&squot;s are read.  Otherwise, a deadlock&n; *&t;may occur when trying to obtain the read lock while another thread&n; *&t;holding the read lock is waiting on the IAG already being held.&n; *&n; *   The control page of the inode map is read into memory by diMount().&n; *&t;Thereafter it should only be modified in memory and then it will be&n; *&t;written out when the filesystem is unmounted by diUnmount().&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_dinode.h&quot;
@@ -4244,13 +4245,7 @@ suffix:semicolon
 id|invalidate_pxd_metapages
 c_func
 (paren
-id|JFS_SBI
-c_func
-(paren
-id|ip-&gt;i_sb
-)paren
-op_member_access_from_pointer
-id|direct_inode
+id|ip-&gt;i_sb-&gt;s_bdev-&gt;bd_inode
 comma
 id|freepxd
 )paren
@@ -10311,9 +10306,9 @@ id|rcx
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;duplicateIXtree()&n; *&n; * serialization: IWRITE_LOCK held on entry/exit&n; *&n; * note: shadow page with regular inode (rel.2);&n; */
+DECL|function|duplicateIXtree
 r_static
 r_void
-DECL|function|duplicateIXtree
 id|duplicateIXtree
 c_func
 (paren
@@ -10333,25 +10328,26 @@ op_star
 id|xaddr
 )paren
 (brace
-r_int
-id|rc
+r_struct
+id|jfs_superblock
+op_star
+id|j_sb
 suffix:semicolon
-id|tid_t
-id|tid
+r_struct
+id|buffer_head
+op_star
+id|bh
 suffix:semicolon
 r_struct
 id|inode
 op_star
 id|ip
 suffix:semicolon
-id|metapage_t
-op_star
-id|mpsuper
+id|tid_t
+id|tid
 suffix:semicolon
-r_struct
-id|jfs_superblock
-op_star
-id|j_sb
+r_int
+id|rc
 suffix:semicolon
 multiline_comment|/* if AIT2 ipmap2 is bad, do not try to update it */
 r_if
@@ -10387,7 +10383,7 @@ c_cond
 (paren
 id|ip
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|JFS_SBI
@@ -10412,7 +10408,7 @@ c_func
 id|sb
 comma
 op_amp
-id|mpsuper
+id|bh
 )paren
 )paren
 )paren
@@ -10425,18 +10421,39 @@ r_struct
 id|jfs_superblock
 op_star
 )paren
-(paren
-id|mpsuper-&gt;data
-)paren
+id|bh-&gt;b_data
 suffix:semicolon
 id|j_sb-&gt;s_flag
 op_or_assign
 id|JFS_BAD_SAIT
 suffix:semicolon
-id|write_metapage
+id|mark_buffer_dirty
 c_func
 (paren
-id|mpsuper
+id|bh
+)paren
+suffix:semicolon
+id|ll_rw_block
+c_func
+(paren
+id|WRITE
+comma
+l_int|1
+comma
+op_amp
+id|bh
+)paren
+suffix:semicolon
+id|wait_on_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+id|brelse
+c_func
+(paren
+id|bh
 )paren
 suffix:semicolon
 r_return
