@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * arch/ppc/syslib/ibm440gp_common.c&n; *&n; * PPC440GP system library&n; *&n; * Matt Porter &lt;mporter@mvista.com&gt;&n; * Copyright 2002-2003 MontaVista Software Inc.&n; *&n; * Eugene Surovegin &lt;eugene.surovegin@zultys.com&gt; or &lt;ebs@ebshome.net&gt;&n; * Copyright (c) 2003 Zultys Technologies&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &lt;asm/ibm44x.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 multiline_comment|/*&n; * Calculate 440GP clocks&n; */
