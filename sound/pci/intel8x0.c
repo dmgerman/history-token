@@ -3602,6 +3602,13 @@ comma
 id|status
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;device_type
+op_ne
+id|DEVICE_NFORCE
+)paren
 id|status
 op_xor_assign
 id|igetdword
@@ -3623,6 +3630,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|chip-&gt;device_type
+op_ne
+id|DEVICE_NFORCE
+op_logical_and
 id|status
 op_logical_and
 id|err_count
