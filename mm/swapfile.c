@@ -4772,6 +4772,17 @@ id|flags
 op_amp
 id|SWP_USED
 )paren
+op_logical_or
+(paren
+id|swap_info
+(braket
+id|i
+)braket
+dot
+id|flags
+op_amp
+id|SWP_WRITEOK
+)paren
 )paren
 r_continue
 suffix:semicolon
