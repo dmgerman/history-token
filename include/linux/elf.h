@@ -161,6 +161,9 @@ mdefine_line|#define EM_V850&t;&t;87&t;/* NEC v850 */
 multiline_comment|/*&n; * This is an interim value that we will use until the committee comes&n; * up with a final number.&n; */
 DECL|macro|EM_ALPHA
 mdefine_line|#define EM_ALPHA&t;0x9026
+multiline_comment|/* Bogus old v850 magic number, used by old tools.  */
+DECL|macro|EM_CYGNUS_V850
+mdefine_line|#define EM_CYGNUS_V850&t;0x9080
 multiline_comment|/*&n; * This is the old interim value for S/390 architecture&n; */
 DECL|macro|EM_S390_OLD
 mdefine_line|#define EM_S390_OLD     0xA390

@@ -30,6 +30,43 @@ suffix:semicolon
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
 DECL|macro|elf_check_arch
 mdefine_line|#define elf_check_arch(x)  &bslash;&n;  ((x)-&gt;e_machine == EM_V850 || (x)-&gt;e_machine == EM_CYGNUS_V850)
+multiline_comment|/* v850 relocation types.  */
+DECL|macro|R_V850_NONE
+mdefine_line|#define R_V850_NONE&t;&t;0
+DECL|macro|R_V850_9_PCREL
+mdefine_line|#define R_V850_9_PCREL&t;&t;1
+DECL|macro|R_V850_22_PCREL
+mdefine_line|#define R_V850_22_PCREL&t;&t;2
+DECL|macro|R_V850_HI16_S
+mdefine_line|#define R_V850_HI16_S&t;&t;3
+DECL|macro|R_V850_HI16
+mdefine_line|#define R_V850_HI16&t;&t;4
+DECL|macro|R_V850_LO16
+mdefine_line|#define R_V850_LO16&t;&t;5
+DECL|macro|R_V850_32
+mdefine_line|#define R_V850_32&t;&t;6
+DECL|macro|R_V850_16
+mdefine_line|#define R_V850_16&t;&t;7
+DECL|macro|R_V850_8
+mdefine_line|#define R_V850_8&t;&t;8
+DECL|macro|R_V850_SDA_16_16_OFFSET
+mdefine_line|#define R_V850_SDA_16_16_OFFSET&t;9&t;/* For ld.b, st.b, set1, clr1,&n;&t;&t;&t;&t;&t;   not1, tst1, movea, movhi */
+DECL|macro|R_V850_SDA_15_16_OFFSET
+mdefine_line|#define R_V850_SDA_15_16_OFFSET&t;10&t;/* For ld.w, ld.h, ld.hu, st.w, st.h */
+DECL|macro|R_V850_ZDA_16_16_OFFSET
+mdefine_line|#define R_V850_ZDA_16_16_OFFSET&t;11&t;/* For ld.b, st.b, set1, clr1,&n;&t;&t;&t;&t;&t;   not1, tst1, movea, movhi */
+DECL|macro|R_V850_ZDA_15_16_OFFSET
+mdefine_line|#define R_V850_ZDA_15_16_OFFSET&t;12&t;/* For ld.w, ld.h, ld.hu, st.w, st.h */
+DECL|macro|R_V850_TDA_6_8_OFFSET
+mdefine_line|#define R_V850_TDA_6_8_OFFSET&t;13&t;/* For sst.w, sld.w */
+DECL|macro|R_V850_TDA_7_8_OFFSET
+mdefine_line|#define R_V850_TDA_7_8_OFFSET&t;14&t;/* For sst.h, sld.h */
+DECL|macro|R_V850_TDA_7_7_OFFSET
+mdefine_line|#define R_V850_TDA_7_7_OFFSET&t;15&t;/* For sst.b, sld.b */
+DECL|macro|R_V850_TDA_16_16_OFFSET
+mdefine_line|#define R_V850_TDA_16_16_OFFSET&t;16&t;/* For set1, clr1, not1, tst1,&n;&t;&t;&t;&t;&t;   movea, movhi */
+DECL|macro|R_V850_NUM
+mdefine_line|#define R_V850_NUM&t;&t;17
 multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
 DECL|macro|ELF_CLASS
 mdefine_line|#define ELF_CLASS&t;ELFCLASS32
