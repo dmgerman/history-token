@@ -1804,6 +1804,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 0=default, 1=ide-scsi emulation */
+DECL|member|sleeping
+r_int
+id|sleeping
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1=sleeping &amp; sleep field valid */
 DECL|member|quirk_list
 id|u8
 id|quirk_list
