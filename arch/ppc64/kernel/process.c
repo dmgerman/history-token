@@ -362,14 +362,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Last syscall: %ld &quot;
-comma
-id|current-&gt;thread.last_syscall
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
 l_string|&quot;&bslash;nlast math %p &quot;
 comma
 id|last_task_used_math
@@ -769,11 +761,6 @@ suffix:semicolon
 id|p-&gt;thread.fpscr
 op_assign
 id|current-&gt;thread.fpscr
-suffix:semicolon
-id|p-&gt;thread.last_syscall
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 r_return
 l_int|0
