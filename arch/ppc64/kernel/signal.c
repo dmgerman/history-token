@@ -241,10 +241,7 @@ id|regs
 )paren
 )paren
 r_return
-id|regs-&gt;gpr
-(braket
-l_int|3
-)braket
+l_int|0
 suffix:semicolon
 )brace
 )brace

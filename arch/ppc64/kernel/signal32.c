@@ -1040,12 +1040,9 @@ comma
 id|regs
 )paren
 )paren
-multiline_comment|/*&n;&t;&t;&t; * If a signal handler needs to be called,&n;&t;&t;&t; * do_signal32() has set R3 to the signal number (the&n;&t;&t;&t; * first argument of the signal handler), so don&squot;t&n;&t;&t;&t; * overwrite that with EINTR !&n;&t;&t;&t; * In the other cases, do_signal32() doesn&squot;t touch &n;&t;&t;&t; * R3, so it&squot;s still set to -EINTR (see above).&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Returning 0 means we return to userspace via&n;&t;&t;&t; * ret_from_except and thus restore all user&n;&t;&t;&t; * registers from *regs.  This is what we need&n;&t;&t;&t; * to do when a signal has been delivered.&n;&t;&t;&t; */
 r_return
-id|regs-&gt;gpr
-(braket
-l_int|3
-)braket
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -2542,12 +2539,9 @@ comma
 id|regs
 )paren
 )paren
-multiline_comment|/*&n;&t;&t;&t; * If a signal handler needs to be called,&n;&t;&t;&t; * do_signal32() has set R3 to the signal number (the&n;&t;&t;&t; * first argument of the signal handler), so don&squot;t&n;&t;&t;&t; * overwrite that with EINTR !&n;&t;&t;&t; * In the other cases, do_signal32() doesn&squot;t touch &n;&t;&t;&t; * R3, so it&squot;s still set to -EINTR (see above).&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Returning 0 means we return to userspace via&n;&t;&t;&t; * ret_from_except and thus restore all user&n;&t;&t;&t; * registers from *regs.  This is what we need&n;&t;&t;&t; * to do when a signal has been delivered.&n;&t;&t;&t; */
 r_return
-id|regs-&gt;gpr
-(braket
-l_int|3
-)braket
+l_int|0
 suffix:semicolon
 )brace
 )brace
