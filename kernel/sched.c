@@ -1262,15 +1262,13 @@ id|oldmm
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Here we just switch the register state and the stack. There are&n;&t; * 3 processes affected by a context switch:&n;&t; *&n;&t; * prev ==&gt; .... ==&gt; (last =&gt; next)&n;&t; *&n;&t; * It&squot;s the &squot;much more previous&squot; &squot;prev&squot; that is on next&squot;s stack,&n;&t; * but prev is set to (the just run) &squot;last&squot; process by switch_to().&n;&t; * This might sound slightly confusing but makes tons of sense.&n;&t; */
+multiline_comment|/* Here we just switch the register state and the stack. */
 id|switch_to
 c_func
 (paren
 id|prev
 comma
 id|next
-comma
-id|prev
 )paren
 suffix:semicolon
 )brace
