@@ -561,14 +561,7 @@ op_assign
 id|mp-&gt;lsn
 suffix:semicolon
 multiline_comment|/* move tblock after page on logsynclist */
-id|list_del
-c_func
-(paren
-op_amp
-id|tblk-&gt;synclist
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp

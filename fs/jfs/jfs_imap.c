@@ -9658,14 +9658,7 @@ c_func
 id|log
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|mp-&gt;synclist
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp
