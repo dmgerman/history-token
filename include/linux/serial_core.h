@@ -532,6 +532,8 @@ id|flags
 suffix:semicolon
 DECL|macro|UPF_HUP_NOTIFY
 mdefine_line|#define UPF_HUP_NOTIFY&t;&t;(1 &lt;&lt; 0)
+DECL|macro|UPF_FOURPORT
+mdefine_line|#define UPF_FOURPORT&t;&t;(1 &lt;&lt; 1)
 DECL|macro|UPF_SAK
 mdefine_line|#define UPF_SAK&t;&t;&t;(1 &lt;&lt; 2)
 DECL|macro|UPF_SPD_MASK
@@ -558,6 +560,12 @@ DECL|macro|UPF_BUGGY_UART
 mdefine_line|#define UPF_BUGGY_UART&t;&t;(1 &lt;&lt; 14)
 DECL|macro|UPF_AUTOPROBE
 mdefine_line|#define UPF_AUTOPROBE&t;&t;(1 &lt;&lt; 15)
+DECL|macro|UPF_BOOT_ONLYMCA
+mdefine_line|#define UPF_BOOT_ONLYMCA&t;(1 &lt;&lt; 22)
+DECL|macro|UPF_CONS_FLOW
+mdefine_line|#define UPF_CONS_FLOW&t;&t;(1 &lt;&lt; 23)
+DECL|macro|UPF_SHARE_IRQ
+mdefine_line|#define UPF_SHARE_IRQ&t;&t;(1 &lt;&lt; 24)
 DECL|macro|UPF_BOOT_AUTOCONF
 mdefine_line|#define UPF_BOOT_AUTOCONF&t;(1 &lt;&lt; 28)
 DECL|macro|UPF_RESOURCES
