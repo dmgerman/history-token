@@ -70,6 +70,9 @@ c_cond
 (paren
 id|a
 op_eq
+(paren
+id|u16
+)paren
 op_minus
 l_int|32768
 )paren
