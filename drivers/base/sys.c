@@ -90,7 +90,7 @@ op_logical_neg
 id|error
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|root-&gt;sysdev.bus_id
@@ -100,7 +100,7 @@ comma
 id|BUS_ID_SIZE
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|root-&gt;sysdev.name

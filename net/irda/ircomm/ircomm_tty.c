@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      ircomm_tty.c&n; * Version:       1.0&n; * Description:   IrCOMM serial TTY driver&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Jun  6 21:00:56 1999&n; * Modified at:   Wed Feb 23 00:09:02 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Sources:       serial.c and previous IrCOMM work by Takahide Higuchi&n; * &n; *     Copyright (c) 1999-2000 Dag Brattli, All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      ircomm_tty.c&n; * Version:       1.0&n; * Description:   IrCOMM serial TTY driver&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Jun  6 21:00:56 1999&n; * Modified at:   Wed Feb 23 00:09:02 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Sources:       serial.c and previous IrCOMM work by Takahide Higuchi&n; * &n; *     Copyright (c) 1999-2000 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -2411,11 +2411,16 @@ r_if
 c_cond
 (paren
 id|ctrl_skb
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|self-&gt;flow
 op_eq
 id|FLOW_START
 )paren
+(brace
 id|ircomm_control_request
 c_func
 (paren
@@ -2424,6 +2429,15 @@ comma
 id|ctrl_skb
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* Drop reference count - see ircomm_ttp_data_request(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|ctrl_skb
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2464,6 +2478,7 @@ c_cond
 (paren
 id|skb
 )paren
+(brace
 id|ircomm_tty_do_event
 c_func
 (paren
@@ -2476,6 +2491,14 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/* Drop reference count - see ircomm_ttp_data_request(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Check if user (still) wants to be waken up */
 r_if
 c_cond
@@ -4189,12 +4212,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4261,12 +4278,7 @@ comma
 id|skb-&gt;len
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+multiline_comment|/* No need to kfree_skb - see ircomm_ttp_data_indication() */
 r_return
 l_int|0
 suffix:semicolon
@@ -4386,12 +4398,7 @@ op_amp
 id|ircomm_param_info
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+multiline_comment|/* No need to kfree_skb - see ircomm_control_indication() */
 r_return
 l_int|0
 suffix:semicolon

@@ -204,7 +204,7 @@ id|xid
 r_goto
 id|__error
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|card-&gt;id
@@ -215,8 +215,6 @@ r_sizeof
 (paren
 id|card-&gt;id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 )brace

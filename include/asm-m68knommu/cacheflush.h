@@ -32,6 +32,7 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_M5407
+multiline_comment|/*&n;&t; *&t;Use cpushl to push and invalidate all cache lines.&n;&t; *&t;Gas doesn&squot;t seem to know how to generate the ColdFire&n;&t; *&t;cpushl instruction... Oh well, bit stuff it for now.&n;&t; */
 id|__asm__
 id|__volatile__
 (paren
@@ -47,11 +48,6 @@ l_string|&quot;blt&t;2b&bslash;n&bslash;t&quot;
 l_string|&quot;addql&t;#1,%%d0&bslash;n&bslash;t&quot;
 l_string|&quot;cmpil&t;#4,%%d0&bslash;n&bslash;t&quot;
 l_string|&quot;bne&t;1b&bslash;n&bslash;t&quot;
-l_string|&quot;movel  #0x01040100,%%d0&bslash;n&bslash;t&quot;
-l_string|&quot;movec  %%d0,%%CACR&bslash;n&bslash;t&quot;
-l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;movel  #0x86088400,%%d0&bslash;n&bslash;t&quot;
-l_string|&quot;movec  %%d0,%%CACR&bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
 suffix:colon

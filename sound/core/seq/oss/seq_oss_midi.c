@@ -624,7 +624,7 @@ id|mdev-&gt;use_lock
 )paren
 suffix:semicolon
 multiline_comment|/* copy and truncate the name of synth device */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|mdev-&gt;name
@@ -636,18 +636,6 @@ r_sizeof
 id|mdev-&gt;name
 )paren
 )paren
-suffix:semicolon
-id|mdev-&gt;name
-(braket
-r_sizeof
-(paren
-id|mdev-&gt;name
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* create MIDI coder */
 r_if
@@ -2660,7 +2648,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME: ?? */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|inf-&gt;name

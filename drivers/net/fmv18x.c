@@ -227,7 +227,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|net_interrupt
 c_func
 (paren
@@ -1795,7 +1795,7 @@ suffix:semicolon
 "&f;"
 multiline_comment|/* The typical workload of the driver:&n;   Handle the network interface interrupts. */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|net_interrupt
 id|net_interrupt
 c_func
@@ -2070,6 +2070,11 @@ suffix:semicolon
 )brace
 )brace
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* We have a good packet(s), get it/them out of the buffers. */

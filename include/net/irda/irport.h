@@ -98,6 +98,11 @@ r_int
 id|index
 suffix:semicolon
 multiline_comment|/* Instance index */
+DECL|member|transmitting
+r_int
+id|transmitting
+suffix:semicolon
+multiline_comment|/* Are we transmitting ? */
 DECL|member|lock
 id|spinlock_t
 id|lock

@@ -3013,7 +3013,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|NODEV
+l_int|0
 suffix:semicolon
 )brace
 r_void

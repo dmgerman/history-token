@@ -943,6 +943,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name

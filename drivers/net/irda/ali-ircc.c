@@ -5463,6 +5463,10 @@ comma
 id|speed
 )paren
 suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5822,6 +5826,10 @@ id|iobase
 comma
 id|BANK0
 )paren
+suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -7531,6 +7539,10 @@ comma
 id|speed
 )paren
 suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -7588,6 +7600,10 @@ id|iobase
 op_plus
 id|UART_IER
 )paren
+suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func

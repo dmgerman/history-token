@@ -3838,6 +3838,7 @@ op_star
 comma
 r_int
 comma
+r_const
 r_char
 op_star
 comma
@@ -3890,6 +3891,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name

@@ -6923,7 +6923,7 @@ id|id
 op_ne
 l_int|NULL
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|rmidi-&gt;id
@@ -6934,8 +6934,6 @@ r_sizeof
 (paren
 id|rmidi-&gt;id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_if

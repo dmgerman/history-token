@@ -6678,6 +6678,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -6689,6 +6690,7 @@ id|data
 (brace
 r_return
 id|get_sb_bdev
+c_func
 (paren
 id|fs_type
 comma
