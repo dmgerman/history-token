@@ -1550,7 +1550,6 @@ id|PLD_IRQ_SIO0_SND
 )paren
 suffix:semicolon
 macro_line|#endif  /* CONFIG_SERIAL_M32R_PLDSIO */
-macro_line|#if defined(CONFIG_M32R_CFC)
 multiline_comment|/* INT#1: CFC IREQ on PLD */
 id|irq_desc
 (braket
@@ -1734,7 +1733,6 @@ c_func
 id|PLD_IRQ_CFC_EJECT
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_M32R_CFC */
 multiline_comment|/*&n;&t; * INT0# is used for LAN, DIO&n;&t; * We enable it here.&n;&t; */
 id|icu_data
 (braket

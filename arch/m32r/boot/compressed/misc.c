@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * arch/m32r/boot/compressed/misc.c&n; *&n; * This is a collection of several routines from gzip-1.0.3&n; * adapted for Linux.&n; *&n; * malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994&n; *&n; * Adapted for SH by Stuart Menefy, Aug 1999&n; *&n; * Modified to use standard LinuxSH BIOS by Greg Banks 7Jul2000&n; *&n; * 2003-02-12:&t;Support M32R by Takeo Takahashi&n; * &t;&t;This is based on arch/sh/boot/compressed/misc.c.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;boot.h&quot;
+macro_line|#include &lt;linux/string.h&gt;
 multiline_comment|/*&n; * gzip declarations&n; */
 DECL|macro|OF
 mdefine_line|#define OF(args)  args
@@ -237,7 +236,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|puts
 c_func
 (paren
@@ -777,11 +776,9 @@ l_int|0
 suffix:semicolon
 id|output_ptr
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|KERNEL_DECOMPRESS_ADDR
+id|CONFIG_MEMORY_START
+op_plus
+l_int|0x2000
 suffix:semicolon
 id|free_mem_ptr
 op_assign

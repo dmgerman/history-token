@@ -15,6 +15,10 @@ DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;2
 macro_line|# endif
 macro_line|#endif
+macro_line|#if defined(CONFIG_PLAT_M32700UT)
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/m32700ut/m32700ut_pld.h&gt;
+macro_line|#endif
 DECL|macro|IDE_ARCH_OBSOLETE_DEFAULTS
 mdefine_line|#define IDE_ARCH_OBSOLETE_DEFAULTS
 DECL|function|ide_default_irq
@@ -35,6 +39,19 @@ c_cond
 id|base
 )paren
 (brace
+macro_line|#if defined(CONFIG_PLAT_M32700UT)
+r_case
+l_int|0x1f0
+suffix:colon
+r_return
+id|PLD_IRQ_CFIREQ
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#else
 r_case
 l_int|0x1f0
 suffix:colon
@@ -76,6 +93,7 @@ suffix:colon
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 DECL|function|ide_default_io_base

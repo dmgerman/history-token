@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_M32R_TYPES_H
 DECL|macro|_ASM_M32R_TYPES_H
 mdefine_line|#define _ASM_M32R_TYPES_H
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* $Id$ */
 multiline_comment|/* orig : i386 2.4.18 */
 DECL|typedef|umode_t
@@ -62,8 +63,12 @@ r_int
 id|__u64
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * These aren&squot;t exported outside the kernel to avoid name space clashes&n; */
 macro_line|#ifdef __KERNEL__
+DECL|macro|BITS_PER_LONG
+mdefine_line|#define BITS_PER_LONG 32
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|s8
 r_typedef
 r_int
@@ -114,8 +119,6 @@ r_int
 r_int
 id|u64
 suffix:semicolon
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define BITS_PER_LONG 32
 multiline_comment|/* DMA addresses are 32-bits wide.  */
 DECL|typedef|dma_addr_t
 r_typedef
@@ -133,6 +136,7 @@ r_int
 r_int
 id|kmem_bufctl_t
 suffix:semicolon
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif  /* _ASM_M32R_TYPES_H */
 eof

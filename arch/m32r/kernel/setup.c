@@ -22,14 +22,6 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/m32r.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
-r_extern
-r_void
-id|init_IRQ
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_MMU
 r_extern
 r_void
@@ -285,7 +277,6 @@ l_int|1
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-multiline_comment|/*&n;&t; * Due to prefetching and similar mechanism the CPU sometimes&n;&t; * generates addresses beyond the end of memory.  We leave the size&n;&t; * of one cache line at the end of memory unused to make shure we&n;&t; * don&squot;t catch this type of bus errors.&n;&t; */
 id|memory_start
 op_assign
 (paren
@@ -305,14 +296,6 @@ r_int
 r_int
 )paren
 id|CONFIG_MEMORY_SIZE
-suffix:semicolon
-id|memory_end
-op_sub_assign
-l_int|128
-suffix:semicolon
-id|memory_end
-op_and_assign
-id|PAGE_MASK
 suffix:semicolon
 r_for
 c_loop
@@ -898,11 +881,6 @@ c_func
 )paren
 suffix:semicolon
 id|paging_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|init_IRQ
 c_func
 (paren
 )paren
