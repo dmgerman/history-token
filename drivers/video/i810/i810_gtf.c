@@ -1,4 +1,4 @@
-multiline_comment|/*-*- linux-c -*-&n; *  linux/drivers/video/i810_main.h -- Intel 810 Nondiscrete Video Timings &n; *                                     (VESA GTF)&n; *&n; *      Copyright (C) 2001 Antonino Daplas&lt;adaplas@pol.net&gt;&n; *      All Rights Reserved      &n; *&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*-*- linux-c -*-&n; *  linux/drivers/video/i810_main.h -- Intel 810 Non-discrete Video Timings &n; *                                     (VESA GTF)&n; *&n; *      Copyright (C) 2001 Antonino Daplas&lt;adaplas@pol.net&gt;&n; *      All Rights Reserved      &n; *&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &quot;i810_regs.h&quot;
 macro_line|#include &quot;i810.h&quot;
@@ -1802,7 +1802,7 @@ id|var
 )paren
 (brace
 )brace
-multiline_comment|/**&n; * i810_get_watermark - gets watermark&n; * @var: pointer to fb_var_screeninfo&n; * @par: pointer to i810fb_par structure&n; *&n; * DESCRIPTION:&n; * Get&squot;s the required watermark based on &n; * pixelclock and RAMBUS frequency.&n; * &n; * RETURNS:&n; * watermark&n; */
+multiline_comment|/**&n; * i810_get_watermark - gets watermark&n; * @var: pointer to fb_var_screeninfo&n; * @par: pointer to i810fb_par structure&n; *&n; * DESCRIPTION:&n; * Gets the required watermark based on &n; * pixelclock and RAMBUS frequency.&n; * &n; * RETURNS:&n; * watermark&n; */
 DECL|function|i810_get_watermark
 id|u32
 id|i810_get_watermark

@@ -171,8 +171,6 @@ DECL|macro|GTT_SIZE
 mdefine_line|#define GTT_SIZE                    (16*1024) 
 DECL|macro|RINGBUFFER_SIZE
 mdefine_line|#define RINGBUFFER_SIZE             (64*1024)
-DECL|macro|PIXMAP_SIZE
-mdefine_line|#define PIXMAP_SIZE                 (4 * 4096)
 DECL|macro|CURSOR_SIZE
 mdefine_line|#define CURSOR_SIZE                 4096 
 DECL|macro|OFF
@@ -658,11 +656,6 @@ r_struct
 id|heap_data
 id|cursor_heap
 suffix:semicolon
-DECL|member|pixmap
-r_struct
-id|heap_data
-id|pixmap
-suffix:semicolon
 DECL|member|state
 r_struct
 id|vgastate
@@ -704,31 +697,6 @@ suffix:semicolon
 DECL|member|cursor_reset
 id|u32
 id|cursor_reset
-suffix:semicolon
-DECL|member|red
-id|u8
-id|red
-(braket
-l_int|64
-)braket
-suffix:semicolon
-DECL|member|green
-id|u8
-id|green
-(braket
-l_int|64
-)braket
-suffix:semicolon
-DECL|member|blue
-id|u8
-id|blue
-(braket
-l_int|64
-)braket
-suffix:semicolon
-DECL|member|pixmap_offset
-id|u32
-id|pixmap_offset
 suffix:semicolon
 DECL|member|pitch
 id|u32
