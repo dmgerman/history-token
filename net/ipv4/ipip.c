@@ -1762,6 +1762,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|secpath_put
+c_func
+(paren
+id|skb-&gt;sp
+)paren
+suffix:semicolon
+id|skb-&gt;sp
+op_assign
+l_int|NULL
+suffix:semicolon
 id|skb-&gt;mac.raw
 op_assign
 id|skb-&gt;nh.raw
