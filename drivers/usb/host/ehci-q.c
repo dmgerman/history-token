@@ -1053,9 +1053,6 @@ r_struct
 id|ehci_qh
 op_star
 id|qh
-comma
-r_int
-id|wait
 )paren
 suffix:semicolon
 r_static
@@ -1622,8 +1619,6 @@ id|intr_deschedule
 id|ehci
 comma
 id|qh
-comma
-l_int|1
 )paren
 suffix:semicolon
 (paren
@@ -2464,7 +2459,6 @@ id|qh-&gt;gap_uf
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* FIXME handle HS periods of less than 1 frame. */
 id|qh-&gt;period
 op_assign
 id|urb-&gt;interval
@@ -2475,10 +2469,15 @@ r_if
 c_cond
 (paren
 id|qh-&gt;period
-OL
+op_eq
+l_int|0
+op_logical_and
+id|urb-&gt;interval
+op_ne
 l_int|1
 )paren
 (brace
+multiline_comment|/* NOTE interval 2 or 4 uframes could work.&n;&t;&t;&t;&t; * But interval 1 scheduling is simpler, and&n;&t;&t;&t;&t; * includes high bandwidth.&n;&t;&t;&t;&t; */
 id|dbg
 (paren
 l_string|&quot;intr period %d uframes, NYET!&quot;

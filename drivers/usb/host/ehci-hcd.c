@@ -34,7 +34,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by Brad Hards, Rory Bolt, and others.&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2004-05-10 Root hub and PCI suspend/resume support; remote wakeup. (db)&n; * 2004-02-24 Replace pci_* with generic dma_* API calls (dsaxena@plexity.net)&n; * 2003-12-29 Rewritten high speed iso transfer support (by Michal Sojka,&n; *&t;&lt;sojkam@centrum.cz&gt;, updates by DB).&n; *&n; * 2002-11-29&t;Correct handling for hw async_next register.&n; * 2002-08-06&t;Handling for bulk and interrupt transfers is mostly shared;&n; *&t;only scheduling is different, no arbitrary limitations.&n; * 2002-07-25&t;Sanity check PCI reads, mostly for better cardbus support,&n; * &t;clean up HC run state handshaking.&n; * 2002-05-24&t;Preliminary FS/LS interrupts, using scheduling shortcuts&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;26 Oct 2004&quot;
+mdefine_line|#define DRIVER_VERSION &quot;10 Dec 2004&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -3416,26 +3416,26 @@ id|qh
 )paren
 r_break
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|qh-&gt;qh_state
-op_eq
-id|QH_STATE_LINKED
 )paren
 (brace
-multiline_comment|/* messy, can spin or block a microframe ... */
+r_case
+id|QH_STATE_LINKED
+suffix:colon
 id|intr_deschedule
 (paren
 id|ehci
 comma
 id|qh
-comma
-l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* qh_state == IDLE */
-)brace
+multiline_comment|/* FALL THROUGH */
+r_case
+id|QH_STATE_IDLE
+suffix:colon
 id|qh_completions
 (paren
 id|ehci
@@ -3445,6 +3445,25 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ehci_dbg
+(paren
+id|ehci
+comma
+l_string|&quot;bogus qh %p state %d&bslash;n&quot;
+comma
+id|qh
+comma
+id|qh-&gt;qh_state
+)paren
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
 multiline_comment|/* reschedule QH iff another request is queued */
 r_if
 c_cond
@@ -3517,6 +3536,8 @@ singleline_comment|// completion irqs can wait up to 1024 msec,
 r_break
 suffix:semicolon
 )brace
+id|done
+suffix:colon
 id|spin_unlock_irqrestore
 (paren
 op_amp
