@@ -589,6 +589,48 @@ op_star
 id|tvp
 )paren
 suffix:semicolon
+DECL|macro|BITS_PER_COMPAT_LONG
+mdefine_line|#define BITS_PER_COMPAT_LONG    (8*sizeof(compat_long_t))
+DECL|macro|BITS_TO_COMPAT_LONGS
+mdefine_line|#define BITS_TO_COMPAT_LONGS(bits) &bslash;&n;&t;(((bits)+BITS_PER_COMPAT_LONG-1)/BITS_PER_COMPAT_LONG)
+r_int
+id|compat_get_bitmap
+c_func
+(paren
+r_int
+r_int
+op_star
+id|mask
+comma
+id|compat_ulong_t
+id|__user
+op_star
+id|umask
+comma
+r_int
+r_int
+id|bitmap_size
+)paren
+suffix:semicolon
+r_int
+id|compat_put_bitmap
+c_func
+(paren
+id|compat_ulong_t
+id|__user
+op_star
+id|umask
+comma
+r_int
+r_int
+op_star
+id|mask
+comma
+r_int
+r_int
+id|bitmap_size
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* _LINUX_COMPAT_H */
 eof
