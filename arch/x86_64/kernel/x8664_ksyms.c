@@ -388,13 +388,6 @@ id|pci_free_consistent
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
-DECL|variable|pcibios_penalize_isa_irq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pcibios_penalize_isa_irq
-)paren
-suffix:semicolon
 DECL|variable|pci_mem_start
 id|EXPORT_SYMBOL
 c_func
