@@ -1745,11 +1745,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|migration_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spawn_ksoftirqd
 c_func
 (paren

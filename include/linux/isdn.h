@@ -931,7 +931,8 @@ id|queue_lock
 suffix:semicolon
 multiline_comment|/* lock to protect queue            */
 DECL|member|next
-r_void
+r_struct
+id|isdn_net_dev_s
 op_star
 id|next
 suffix:semicolon
