@@ -174,7 +174,7 @@ mdefine_line|#define set_mb(var, value)&t;do { (var) = (value); mb(); } while (0
 DECL|macro|set_wmb
 mdefine_line|#define set_wmb(var, value)&t;do { (var) = (value); mb(); } while (0)
 DECL|macro|safe_halt
-mdefine_line|#define safe_halt()         ia64_pal_halt(1)                /* PAL_HALT */
+mdefine_line|#define safe_halt()         ia64_pal_halt_light()    /* PAL_HALT_LIGHT */
 multiline_comment|/*&n; * The group barrier in front of the rsm &amp; ssm are necessary to ensure&n; * that none of the previous instructions in the same group are&n; * affected by the rsm/ssm.&n; */
 multiline_comment|/* For spinlocks etc */
 multiline_comment|/* clearing psr.i is implicitly serialized (visible by next insn) */
