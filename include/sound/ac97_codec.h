@@ -595,6 +595,10 @@ DECL|macro|AC97_STEREO_MUTES
 mdefine_line|#define AC97_STEREO_MUTES&t;(1&lt;&lt;4)&t;/* has stereo mute bits */
 DECL|macro|AC97_DOUBLE_RATE
 mdefine_line|#define AC97_DOUBLE_RATE&t;(1&lt;&lt;5)&t;/* supports double rate playback */
+DECL|macro|AC97_HAS_NO_MASTER_VOL
+mdefine_line|#define AC97_HAS_NO_MASTER_VOL&t;(1&lt;&lt;6)&t;/* no Master volume */
+DECL|macro|AC97_HAS_NO_PCM_VOL
+mdefine_line|#define AC97_HAS_NO_PCM_VOL&t;(1&lt;&lt;7)&t;/* no PCM volume */
 multiline_comment|/* rates indexes */
 DECL|macro|AC97_RATES_FRONT_DAC
 mdefine_line|#define AC97_RATES_FRONT_DAC&t;0
