@@ -868,13 +868,6 @@ id|a-&gt;priv
 op_assign
 id|p
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|p-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -890,13 +883,6 @@ op_add_assign
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|p-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
