@@ -3328,6 +3328,28 @@ r_goto
 id|BadDevice
 suffix:semicolon
 )brace
+multiline_comment|/* set the hostdata to prepare for scanning */
+id|ss-&gt;host-&gt;hostdata
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ss
+suffix:semicolon
+multiline_comment|/* associate this host with our interface */
+id|scsi_set_device
+c_func
+(paren
+id|ss-&gt;host
+comma
+op_amp
+id|intf-&gt;dev
+)paren
+suffix:semicolon
 multiline_comment|/* now add the host */
 id|result
 op_assign
@@ -3384,26 +3406,6 @@ r_goto
 id|BadDevice
 suffix:semicolon
 )brace
-id|ss-&gt;host-&gt;hostdata
-(braket
-l_int|0
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ss
-suffix:semicolon
-id|scsi_set_device
-c_func
-(paren
-id|ss-&gt;host
-comma
-op_amp
-id|intf-&gt;dev
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
