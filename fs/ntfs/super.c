@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; * Copyright (c) 2001,2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2001,2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -5299,6 +5299,59 @@ comma
 multiline_comment|/* Show mount options in proc. */
 )brace
 suffix:semicolon
+multiline_comment|/**&n; * Declarations for NTFS specific export operations (fs/ntfs/namei.c).&n; */
+r_extern
+r_struct
+id|dentry
+op_star
+id|ntfs_get_parent
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|child_dent
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|dentry
+op_star
+id|ntfs_get_dentry
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_void
+op_star
+id|fh
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * Export operations allowing NFS exporting of mounted NTFS partitions.&n; *&n; * We use the default -&gt;decode_fh() and -&gt;encode_fh() for now.  Note that they&n; * use 32 bits to store the inode number which is an unsigned long so on 64-bit&n; * architectures is usually 64 bits so it would all fail horribly on huge&n; * volumes.  I guess we need to define our own encode and decode fh functions&n; * that store 64-bit inode numbers at some point but for now we will ignore the&n; * problem...&n; *&n; * We also use the default -&gt;get_name() helper (used by -&gt;decode_fh() via&n; * fs/exportfs/expfs.c::find_exported_dentry()) as that is completely fs&n; * independent.&n; *&n; * The default -&gt;get_parent() just returns -EACCES so we have to provide our&n; * own and the default -&gt;get_dentry() is incompatible with NTFS due to not&n; * allowing the inode number 0 which is used in NTFS for the system file $MFT&n; * and due to using iget() whereas NTFS needs ntfs_iget().&n; */
+DECL|variable|ntfs_export_ops
+r_static
+r_struct
+id|export_operations
+id|ntfs_export_ops
+op_assign
+(brace
+dot
+id|get_parent
+op_assign
+id|ntfs_get_parent
+comma
+multiline_comment|/* Find the parent of a given&n;&t;&t;&t;&t;&t;&t;   directory. */
+dot
+id|get_dentry
+op_assign
+id|ntfs_get_dentry
+comma
+multiline_comment|/* Find a dentry for the inode&n;&t;&t;&t;&t;&t;&t;   given a file handle&n;&t;&t;&t;&t;&t;&t;   sub-fragment. */
+)brace
+suffix:semicolon
 multiline_comment|/**&n; * ntfs_fill_super - mount an ntfs files system&n; * @sb:&t;&t;super block of ntfs file system to mount&n; * @opt:&t;string containing the mount options&n; * @silent:&t;silence error output&n; *&n; * ntfs_fill_super() is called by the VFS to mount the device described by @sb&n; * with the mount otions in @data with the NTFS file system.&n; *&n; * If @silent is true, remain silent even if errors are detected. This is used&n; * during bootup, when the kernel tries to mount the root file system with all&n; * registered file systems one after the other until one succeeds. This implies&n; * that all file systems except the correct one will quite correctly and&n; * expectedly return an error, but nobody wants to see error messages when in&n; * fact this is what is supposed to happen.&n; *&n; * NOTE: @sb-&gt;s_flags contains the mount options flags.&n; */
 DECL|function|ntfs_fill_super
 r_static
@@ -5937,6 +5990,11 @@ c_func
 op_amp
 id|ntfs_lock
 )paren
+suffix:semicolon
+id|sb-&gt;s_export_op
+op_assign
+op_amp
+id|ntfs_export_ops
 suffix:semicolon
 r_return
 l_int|0
@@ -6909,7 +6967,7 @@ id|KERN_CRIT
 l_string|&quot;NTFS: This causes memory to leak! There is &quot;
 l_string|&quot;probably a BUG in the driver! Please report &quot;
 l_string|&quot;you saw this message to &quot;
-l_string|&quot;linux-ntfs-dev@lists.sf.net&bslash;n&quot;
+l_string|&quot;linux-ntfs-dev@lists.sourceforge.net&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Unregister the ntfs sysctls. */
@@ -6929,7 +6987,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;NTFS 1.2/3.x driver - Copyright (c) 2001-2003 Anton Altaparmakov&quot;
+l_string|&quot;NTFS 1.2/3.x driver - Copyright (c) 2001-2004 Anton Altaparmakov&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
