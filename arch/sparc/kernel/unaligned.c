@@ -539,7 +539,6 @@ suffix:semicolon
 )brace
 DECL|function|compute_effective_address
 r_static
-r_inline
 r_int
 r_int
 id|compute_effective_address
@@ -657,8 +656,6 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|safe_compute_effective_address
-r_static
-r_inline
 r_int
 r_int
 id|safe_compute_effective_address
