@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fs_struct.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;net/compat.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
@@ -48,6 +49,7 @@ macro_line|#endif
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/ns87303.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
 DECL|struct|poll
 r_struct
 id|poll
@@ -700,6 +702,14 @@ r_int
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* Per-CPU information table */
+DECL|variable|__cpu_data
+id|EXPORT_PER_CPU_SYMBOL
+c_func
+(paren
+id|__cpu_data
+)paren
+suffix:semicolon
 multiline_comment|/* used by various drivers */
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
@@ -758,14 +768,6 @@ id|mcount
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Per-CPU information table */
-DECL|variable|cpu_data
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|cpu_data
-)paren
-suffix:semicolon
 multiline_comment|/* CPU online map and active count.  */
 DECL|variable|cpu_online_map
 id|EXPORT_SYMBOL
@@ -1707,13 +1709,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|svr4_setcontext
-)paren
-suffix:semicolon
-DECL|variable|prom_cpu_nodes
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|prom_cpu_nodes
 )paren
 suffix:semicolon
 DECL|variable|sys_ioctl

@@ -438,6 +438,10 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|driver-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|driver-&gt;driver_name
 op_assign
 l_string|&quot;ircomm&quot;
@@ -1311,8 +1315,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|line
 op_assign
 id|tty-&gt;index
@@ -1333,8 +1335,6 @@ id|IRCOMM_TTY_PORTS
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -1390,8 +1390,6 @@ l_string|&quot;%s(), kmalloc failed!&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -1857,8 +1855,6 @@ id|filp
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1948,8 +1944,6 @@ c_cond
 id|self-&gt;open_count
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2092,8 +2086,6 @@ c_func
 op_amp
 id|self-&gt;close_wait
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ircomm_tty_flush_buffer (tty)&n; *&n; *    &n; *&n; */

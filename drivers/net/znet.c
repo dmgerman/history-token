@@ -4032,7 +4032,7 @@ id|unregister_netdev
 id|znet_dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 (paren
 id|znet_dev
 )paren

@@ -10156,7 +10156,7 @@ c_cond
 id|ap-&gt;init_etherdev_alloc
 )paren
 (brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|arlan_device

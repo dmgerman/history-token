@@ -2099,7 +2099,7 @@ c_func
 id|oaknet_dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|priv

@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
 macro_line|#ifdef CONFIG_SMP
 r_static
 r_void
@@ -56,30 +57,31 @@ id|SMP_CACHE_BYTES
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-DECL|variable|__up_workvec
+multiline_comment|/* This has to be in the main kernel image, it cannot be&n; * turned into per-cpu data.  The reason is that the main&n; * kernel image is locked into the TLB and this structure&n; * is accessed from the vectored interrupt trap handler.  If&n; * access to this structure takes a TLB miss it could cause&n; * the 5-level sparc v9 trap stack to overflow.&n; */
+DECL|struct|irq_work_struct
+r_struct
+id|irq_work_struct
+(brace
+DECL|member|irq_worklists
 r_int
 r_int
-id|__up_workvec
+id|irq_worklists
 (braket
 l_int|16
 )braket
-id|__attribute__
-(paren
-(paren
-id|aligned
-(paren
-id|SMP_CACHE_BYTES
-)paren
-)paren
-)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|variable|__irq_work
+r_struct
+id|irq_work_struct
+id|__irq_work
+(braket
+id|NR_CPUS
+)braket
 suffix:semicolon
 DECL|macro|irq_work
-mdefine_line|#define irq_work(__cpu, __pil)&t;&amp;(__up_workvec[(void)(__cpu), (__pil)])
-macro_line|#else
-DECL|macro|irq_work
-mdefine_line|#define irq_work(__cpu, __pil)&t;&amp;(cpu_data[(__cpu)].irq_worklists[(__pil)])
-macro_line|#endif
+mdefine_line|#define irq_work(__cpu, __pil)&t;&amp;(__irq_work[(__cpu)].irq_worklists[(__pil)])
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* This is a table of physical addresses used to deal with IBF_DMA_SYNC.&n; * It is used for PCI only to synchronize DMA transfers with IRQ delivery&n; * for devices behind busses other than APB on Sabre systems.&n; *&n; * Currently these physical addresses are just config space accesses&n; * to the command register for that device.&n; */
 DECL|variable|pci_dma_wsync
@@ -2794,9 +2796,10 @@ r_if
 c_cond
 (paren
 id|cpu_data
-(braket
+c_func
+(paren
 id|buddy
-)braket
+)paren
 dot
 id|idle_volume
 OL
@@ -4438,6 +4441,88 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|init_irqwork_curcpu
+r_void
+id|init_irqwork_curcpu
+c_func
+(paren
+r_void
+)paren
+(brace
+r_register
+r_struct
+id|irq_work_struct
+op_star
+id|workp
+id|asm
+c_func
+(paren
+l_string|&quot;o2&quot;
+)paren
+suffix:semicolon
+r_int
+r_int
+id|tmp
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|__irq_work
+op_plus
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|workp
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Set interrupt globals.  */
+id|workp
+op_assign
+op_amp
+id|__irq_work
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rdpr&t;%%pstate, %0&bslash;n&bslash;t&quot;
+l_string|&quot;wrpr&t;%0, %1, %%pstate&bslash;n&bslash;t&quot;
+l_string|&quot;mov&t;%2, %%g6&bslash;n&bslash;t&quot;
+l_string|&quot;wrpr&t;%0, 0x0, %%pstate&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+id|PSTATE_IG
+op_or
+id|PSTATE_IE
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|workp
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Only invoked on boot processor. */
 DECL|function|init_IRQ
 r_void
@@ -4475,25 +4560,6 @@ id|ivector_table
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-id|memset
-c_func
-(paren
-op_amp
-id|__up_workvec
-(braket
-l_int|0
-)braket
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|__up_workvec
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* We need to clear any IRQ&squot;s pending in the soft interrupt&n;&t; * registers, a spurious one could be left around from the&n;&t; * PROM timer which we just disabled.&n;&t; */
 id|clear_softint
 c_func
