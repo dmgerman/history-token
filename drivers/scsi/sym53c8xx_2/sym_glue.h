@@ -34,8 +34,6 @@ DECL|macro|SYM_OPT_HANDLE_DEVICE_QUEUEING
 mdefine_line|#define SYM_OPT_HANDLE_DEVICE_QUEUEING
 DECL|macro|SYM_OPT_NVRAM_PRE_READ
 mdefine_line|#define SYM_OPT_NVRAM_PRE_READ
-DECL|macro|SYM_OPT_SNIFF_INQUIRY
-mdefine_line|#define SYM_OPT_SNIFF_INQUIRY
 DECL|macro|SYM_OPT_LIMIT_COMMAND_REORDERING
 mdefine_line|#define SYM_OPT_LIMIT_COMMAND_REORDERING
 DECL|macro|SYM_OPT_ANNOUNCE_TRANSFER_RATE
@@ -496,6 +494,19 @@ suffix:semicolon
 DECL|member|host_id
 id|u_char
 id|host_id
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; *  Driver host data structure.&n; */
+DECL|struct|host_data
+r_struct
+id|host_data
+(brace
+DECL|member|ncb
+r_struct
+id|sym_hcb
+op_star
+id|ncb
 suffix:semicolon
 )brace
 suffix:semicolon

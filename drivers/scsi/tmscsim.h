@@ -421,13 +421,6 @@ id|msgin123
 l_int|4
 )braket
 suffix:semicolon
-DECL|member|DCBmap
-id|u8
-id|DCBmap
-(braket
-id|MAX_SCSI_ID
-)braket
-suffix:semicolon
 DECL|member|Connected
 id|u8
 id|Connected

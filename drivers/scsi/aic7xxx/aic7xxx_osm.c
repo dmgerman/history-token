@@ -13,6 +13,7 @@ macro_line|#include &quot;sd.h&quot;&t;&t;&t;/* For geometry detection */
 macro_line|#endif
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* For fetching system memory size */
 macro_line|#include &lt;linux/blkdev.h&gt;&t;&t;/* For block_size() */
+macro_line|#include &lt;linux/delay.h&gt;&t;/* For ssleep/msleep */
 multiline_comment|/*&n; * Lock protecting manipulation of the ahc softc list.&n; */
 DECL|variable|ahc_list_spinlock
 id|spinlock_t
@@ -372,7 +373,6 @@ r_uint32
 id|aic7xxx_periodic_otag
 suffix:semicolon
 multiline_comment|/*&n; * Module information and settable options.&n; */
-macro_line|#ifdef MODULE
 DECL|variable|aic7xxx
 r_static
 r_char
@@ -404,14 +404,19 @@ c_func
 l_string|&quot;Adaptec Aic77XX/78XX SCSI Host Bus Adapter driver&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+DECL|variable|AIC7XXX_DRIVER_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|AIC7XXX_DRIVER_VERSION
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -453,7 +458,6 @@ l_string|&quot;&bslash;n&quot;
 l_string|&quot;&t;options aic7xxx &squot;aic7xxx=probe_eisa_vl.tag_info:{{}.{.10}}.seltime:1&squot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_static
 r_void
 id|ahc_linux_handle_scsi_status
@@ -10393,12 +10397,10 @@ id|status
 op_amp
 id|SSQ_DELAY
 )paren
-id|scsi_sleep
+id|ssleep
 c_func
 (paren
 l_int|1
-op_star
-id|HZ
 )paren
 suffix:semicolon
 r_break
@@ -11082,12 +11084,12 @@ id|SSQ_DELAY
 op_ne
 l_int|0
 )paren
-id|scsi_sleep
+id|msleep
 c_func
 (paren
 id|ahc-&gt;our_id
 op_star
-id|HZ
+l_int|1000
 op_div
 l_int|10
 )paren
@@ -11265,12 +11267,10 @@ id|SSQ_DELAY
 op_ne
 l_int|0
 )paren
-id|scsi_sleep
+id|ssleep
 c_func
 (paren
 l_int|1
-op_star
-id|HZ
 )paren
 suffix:semicolon
 )brace
