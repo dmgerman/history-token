@@ -325,7 +325,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; * Unfortunately, while the GCC optimizer for the i386 understands how&n; * to optimize a static rotate left of x bits, it doesn&squot;t know how to&n; * deal with a variable rotate of x bits.  So we use a bit of asm magic.&n; */
 macro_line|#if (!defined (__i386__))
 DECL|function|rotate_left
-r_extern
+r_static
 r_inline
 id|__u32
 id|rotate_left
@@ -358,7 +358,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|function|rotate_left
-r_extern
+r_static
 r_inline
 id|__u32
 id|rotate_left
@@ -8532,7 +8532,10 @@ id|random_state-&gt;pool
 comma
 id|size
 op_star
-l_int|4
+r_sizeof
+(paren
+id|__u32
+)paren
 )paren
 )paren
 r_return
