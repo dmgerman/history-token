@@ -126,8 +126,6 @@ op_minus
 id|EREMOTE
 )paren
 (brace
-multiline_comment|/* rc = */
-multiline_comment|/* CIFSGetDFSRefer(xid, pTcon-&gt;ses, search_path,&n;&t;&amp;referrals,&n;&t;&amp;num_referrals,&n;&t;cifs_sb-&gt;local_nls); */
 id|tmp_path
 op_assign
 id|kmalloc
@@ -810,9 +808,6 @@ op_minus
 id|EREMOTE
 )paren
 (brace
-multiline_comment|/* BB add call to new func rc = GetDFSReferral(); */
-multiline_comment|/* rc = */
-multiline_comment|/* CIFSGetDFSRefer(xid, pTcon-&gt;ses, search_path,&n;&t;&amp;referrals,&n;&t;&amp;num_referrals,&n;&t;cifs_sb-&gt;local_nls); */
 id|tmp_path
 op_assign
 id|kmalloc
