@@ -1441,7 +1441,7 @@ op_plus
 id|CSR5
 )paren
 suffix:semicolon
-macro_line|#if DEBUG&t;
+macro_line|#ifdef DEBUG&t;
 id|print_binary
 c_func
 (paren

@@ -4096,7 +4096,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;%s(), len=%d&bslash;n&quot;
+l_string|&quot;%s(), len=%zd&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4230,7 +4230,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;%s(), Chopping frame from %d to %d bytes!&bslash;n&quot;
+l_string|&quot;%s(), Chopping frame from %zd to %d bytes!&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4494,7 +4494,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;%s(), Received truncated frame (%d &lt; %d)!&bslash;n&quot;
+l_string|&quot;%s(), Received truncated frame (%zd &lt; %zd)!&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -5151,7 +5151,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;%s(), len=%d&bslash;n&quot;
+l_string|&quot;%s(), len=%zd&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -5244,7 +5244,7 @@ c_func
 l_int|0
 comma
 l_string|&quot;%s(), Warning to much data! &quot;
-l_string|&quot;Chopping frame from %d to %d bytes!&bslash;n&quot;
+l_string|&quot;Chopping frame from %zd to %d bytes!&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -5449,7 +5449,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;%s(), len=%d&bslash;n&quot;
+l_string|&quot;%s(), len=%zd&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -5645,7 +5645,7 @@ c_func
 l_int|0
 comma
 l_string|&quot;%s(), Warning to much data! &quot;
-l_string|&quot;Chopping frame from %d to %d bytes!&bslash;n&quot;
+l_string|&quot;Chopping frame from %zd to %d bytes!&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

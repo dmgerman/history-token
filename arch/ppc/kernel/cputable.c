@@ -283,7 +283,7 @@ mdefine_line|#define CPU_FTR_ALTIVEC_COMP&t;&t;0
 DECL|macro|PPC_FEATURE_ALTIVEC_COMP
 mdefine_line|#define PPC_FEATURE_ALTIVEC_COMP       &t;0
 macro_line|#endif
-multiline_comment|/* We need to mark all pages as being coherent if we&squot;re SMP or we&n; * have a 754x and an MPC107 host bridge. */
+multiline_comment|/* We need to mark all pages as being coherent if we&squot;re SMP or we&n; * have a 754x and an MPC107 host bridge.&n; */
 macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_MPC10X_BRIDGE)
 DECL|macro|CPU_FTR_COMMON
 mdefine_line|#define CPU_FTR_COMMON                  CPU_FTR_NEED_COHERENT
@@ -988,6 +988,8 @@ op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
 id|CPU_FTR_SPEC7450
+op_or
+id|CPU_FTR_NEED_COHERENT
 comma
 id|COMMON_PPC
 op_or
@@ -1029,6 +1031,8 @@ op_or
 id|CPU_FTR_NAP_DISABLE_L2_PR
 op_or
 id|CPU_FTR_L3_DISABLE_NAP
+op_or
+id|CPU_FTR_NEED_COHERENT
 comma
 id|COMMON_PPC
 op_or
@@ -1068,6 +1072,8 @@ op_or
 id|CPU_FTR_SPEC7450
 op_or
 id|CPU_FTR_NAP_DISABLE_L2_PR
+op_or
+id|CPU_FTR_NEED_COHERENT
 comma
 id|COMMON_PPC
 op_or
@@ -1105,6 +1111,8 @@ op_or
 id|CPU_FTR_SPEC7450
 op_or
 id|CPU_FTR_HAS_HIGH_BATS
+op_or
+id|CPU_FTR_NEED_COHERENT
 comma
 id|COMMON_PPC
 op_or
@@ -1146,6 +1154,8 @@ op_or
 id|CPU_FTR_NAP_DISABLE_L2_PR
 op_or
 id|CPU_FTR_L3_DISABLE_NAP
+op_or
+id|CPU_FTR_NEED_COHERENT
 op_or
 id|CPU_FTR_HAS_HIGH_BATS
 comma
@@ -1189,6 +1199,8 @@ op_or
 id|CPU_FTR_NAP_DISABLE_L2_PR
 op_or
 id|CPU_FTR_HAS_HIGH_BATS
+op_or
+id|CPU_FTR_NEED_COHERENT
 comma
 id|COMMON_PPC
 op_or
@@ -1202,12 +1214,12 @@ id|__setup_cpu_745x
 )brace
 comma
 (brace
-multiline_comment|/* 7457 */
-l_int|0xffff0000
+multiline_comment|/* 7447/7457 Rev 1.0 */
+l_int|0xffffffff
 comma
-l_int|0x80020000
+l_int|0x80020100
 comma
-l_string|&quot;7457&quot;
+l_string|&quot;7447/7457&quot;
 comma
 id|CPU_FTR_COMMON
 op_or
@@ -1230,6 +1242,98 @@ op_or
 id|CPU_FTR_NAP_DISABLE_L2_PR
 op_or
 id|CPU_FTR_HAS_HIGH_BATS
+op_or
+id|CPU_FTR_NEED_COHERENT
+op_or
+id|CPU_FTR_NO_BTIC
+comma
+id|COMMON_PPC
+op_or
+id|PPC_FEATURE_ALTIVEC_COMP
+comma
+l_int|32
+comma
+l_int|32
+comma
+id|__setup_cpu_745x
+)brace
+comma
+(brace
+multiline_comment|/* 7447/7457 Rev 1.1 */
+l_int|0xffffffff
+comma
+l_int|0x80020101
+comma
+l_string|&quot;7447/7457&quot;
+comma
+id|CPU_FTR_COMMON
+op_or
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+op_or
+id|CPU_FTR_CAN_NAP
+op_or
+id|CPU_FTR_L2CR
+op_or
+id|CPU_FTR_ALTIVEC_COMP
+op_or
+id|CPU_FTR_L3CR
+op_or
+id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_SPEC7450
+op_or
+id|CPU_FTR_NAP_DISABLE_L2_PR
+op_or
+id|CPU_FTR_HAS_HIGH_BATS
+op_or
+id|CPU_FTR_NEED_COHERENT
+op_or
+id|CPU_FTR_NO_BTIC
+comma
+id|COMMON_PPC
+op_or
+id|PPC_FEATURE_ALTIVEC_COMP
+comma
+l_int|32
+comma
+l_int|32
+comma
+id|__setup_cpu_745x
+)brace
+comma
+(brace
+multiline_comment|/* 7447/7457 Rev 1.2 and later */
+l_int|0xffff0000
+comma
+l_int|0x80020000
+comma
+l_string|&quot;7447/7457&quot;
+comma
+id|CPU_FTR_COMMON
+op_or
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+op_or
+id|CPU_FTR_CAN_NAP
+op_or
+id|CPU_FTR_L2CR
+op_or
+id|CPU_FTR_ALTIVEC_COMP
+op_or
+id|CPU_FTR_L3CR
+op_or
+id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_SPEC7450
+op_or
+id|CPU_FTR_NAP_DISABLE_L2_PR
+op_or
+id|CPU_FTR_HAS_HIGH_BATS
+op_or
+id|CPU_FTR_NEED_COHERENT
 comma
 id|COMMON_PPC
 op_or
@@ -1269,6 +1373,8 @@ op_or
 id|CPU_FTR_NAP_DISABLE_L2_PR
 op_or
 id|CPU_FTR_HAS_HIGH_BATS
+op_or
+id|CPU_FTR_NEED_COHERENT
 comma
 id|COMMON_PPC
 op_or
@@ -1307,12 +1413,12 @@ id|__setup_cpu_603
 )brace
 comma
 (brace
-multiline_comment|/* 8280 is a G2_LE (603e core, plus some) */
+multiline_comment|/* All G2_LE (603e core, plus some) have the same pvr */
 l_int|0x7fff0000
 comma
 l_int|0x00820000
 comma
-l_string|&quot;8280&quot;
+l_string|&quot;G2_LE&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or

@@ -275,7 +275,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPAbortOnTimeout
+id|LINUX_MIB_TCPABORTONTIMEOUT
 )paren
 suffix:semicolon
 )brace
@@ -441,7 +441,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPAbortOnMemory
+id|LINUX_MIB_TCPABORTONMEMORY
 )paren
 suffix:semicolon
 r_return
@@ -724,7 +724,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|DelayedACKLocked
+id|LINUX_MIB_DELAYEDACKLOCKED
 )paren
 suffix:semicolon
 id|sk_reset_timer
@@ -818,7 +818,7 @@ suffix:semicolon
 id|NET_ADD_STATS_BH
 c_func
 (paren
-id|TCPSchedulerFailed
+id|LINUX_MIB_TCPSCHEDULERFAILED
 comma
 id|skb_queue_len
 c_func
@@ -911,7 +911,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|DelayedACKs
+id|LINUX_MIB_DELAYEDACKS
 )paren
 suffix:semicolon
 )brace
@@ -1300,14 +1300,14 @@ id|TCP_CA_Recovery
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPSackRecoveryFail
+id|LINUX_MIB_TCPSACKRECOVERYFAIL
 )paren
 suffix:semicolon
 r_else
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPSackFailures
+id|LINUX_MIB_TCPSACKFAILURES
 )paren
 suffix:semicolon
 )brace
@@ -1323,14 +1323,14 @@ id|TCP_CA_Recovery
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPRenoRecoveryFail
+id|LINUX_MIB_TCPRENORECOVERYFAIL
 )paren
 suffix:semicolon
 r_else
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPRenoFailures
+id|LINUX_MIB_TCPRENOFAILURES
 )paren
 suffix:semicolon
 )brace
@@ -1347,7 +1347,7 @@ id|TCP_CA_Loss
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPLossFailures
+id|LINUX_MIB_TCPLOSSFAILURES
 )paren
 suffix:semicolon
 )brace
@@ -1356,7 +1356,7 @@ r_else
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPTimeouts
+id|LINUX_MIB_TCPTIMEOUTS
 )paren
 suffix:semicolon
 )brace

@@ -1135,12 +1135,6 @@ id|isa_io_base
 op_assign
 id|pci_io_base
 suffix:semicolon
-id|of_node_put
-c_func
-(paren
-id|isa_dn
-)paren
-suffix:semicolon
 id|pci_process_ISA_OF_ranges
 c_func
 (paren
@@ -1149,6 +1143,12 @@ comma
 id|hose-&gt;io_base_phys
 comma
 id|hose-&gt;io_base_virt
+)paren
+suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|isa_dn
 )paren
 suffix:semicolon
 multiline_comment|/* Allow all IO */

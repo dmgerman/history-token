@@ -1065,6 +1065,19 @@ OL
 id|res_end
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * N.B.  REO/Grande defect AR2305 can cause TLB fetch timeouts&n;&t; * if a TLB entry is purged while in use.  sba_mark_invalid()&n;&t; * purges IOTLB entries in power-of-two sizes, so we also&n;&t; * allocate IOVA space in power-of-two sizes.&n;&t; */
+id|bits_wanted
+op_assign
+l_int|1UL
+op_lshift
+id|get_iovp_order
+c_func
+(paren
+id|bits_wanted
+op_lshift
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2034,6 +2047,19 @@ suffix:semicolon
 r_int
 r_int
 id|m
+suffix:semicolon
+multiline_comment|/* Round up to power-of-two size: see AR2305 note above */
+id|bits_not_wanted
+op_assign
+l_int|1UL
+op_lshift
+id|get_iovp_order
+c_func
+(paren
+id|bits_not_wanted
+op_lshift
+id|PAGE_SHIFT
+)paren
 suffix:semicolon
 r_for
 c_loop

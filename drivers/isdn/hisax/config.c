@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: config.c,v 2.84.2.5 2004/02/11 13:21:33 keil Exp $&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              by Kai Germaschewski &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * based on the teles driver from Jan den Ouden&n; *&n; */
+multiline_comment|/* $Id: config.c,v 2.84.2.5 2004/02/11 13:21:33 keil Exp $&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              by Kai Germaschewski &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * Documentation/isdn/HiSax.cert&n; *&n; * based on the teles driver from Jan den Ouden&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -8183,6 +8183,7 @@ id|skb
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;linux/pci.h&gt;
 DECL|variable|__initdata
 r_static
@@ -8601,6 +8602,7 @@ comma
 id|hisax_pci_tbl
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PCI */
 DECL|variable|HiSax_init
 id|module_init
 c_func

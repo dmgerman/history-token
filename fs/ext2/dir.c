@@ -1211,8 +1211,6 @@ id|inode-&gt;i_version
 suffix:semicolon
 r_int
 id|ret
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1228,7 +1226,7 @@ l_int|1
 )paren
 )paren
 r_goto
-id|done
+id|success
 suffix:semicolon
 r_if
 c_cond
@@ -1493,7 +1491,7 @@ id|page
 )paren
 suffix:semicolon
 r_goto
-id|done
+id|success
 suffix:semicolon
 )brace
 )brace
@@ -1505,6 +1503,12 @@ id|page
 )paren
 suffix:semicolon
 )brace
+id|success
+suffix:colon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|done
 suffix:colon
 id|filp-&gt;f_pos
@@ -1522,7 +1526,7 @@ op_assign
 id|inode-&gt;i_version
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;ext2_find_entry()&n; *&n; * finds an entry in the specified directory with the wanted name. It&n; * returns the page in which the entry was found, and the entry itself&n; * (as a parameter - res_dir). Page is returned mapped and unlocked.&n; * Entry is guaranteed to be valid.&n; */

@@ -2296,7 +2296,7 @@ id|card-&gt;seq_mididev
 suffix:semicolon
 id|card-&gt;seq_mididev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

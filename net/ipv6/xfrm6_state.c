@@ -3,7 +3,8 @@ macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
-r_extern
+DECL|variable|xfrm6_state_afinfo
+r_static
 r_struct
 id|xfrm_state_afinfo
 id|xfrm6_state_afinfo
@@ -414,25 +415,11 @@ op_logical_and
 id|x-&gt;km.state
 op_eq
 id|XFRM_STATE_ACQ
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 op_logical_neg
-id|x0
-)paren
-id|x0
-op_assign
-id|x
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|x-&gt;id.spi
 )paren
-r_continue
-suffix:semicolon
+(brace
 id|x0
 op_assign
 id|x

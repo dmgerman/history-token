@@ -436,12 +436,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -522,49 +516,12 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;CPU %d (0x%04x)&quot;
-comma
-id|total_cpus
-comma
-(paren
-id|lsapic-&gt;id
-op_lshift
-l_int|8
-)paren
-op_or
-id|lsapic-&gt;eid
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|lsapic-&gt;flags.enabled
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot; disabled&quot;
-)paren
-suffix:semicolon
-r_else
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot; enabled&quot;
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|smp_boot_data.cpu_phys_id
 (braket
@@ -579,40 +536,11 @@ l_int|8
 op_or
 id|lsapic-&gt;eid
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hard_smp_processor_id
-c_func
-(paren
-)paren
-op_eq
-(paren
-r_int
-r_int
-)paren
-id|smp_boot_data.cpu_phys_id
-(braket
-id|available_cpus
-)braket
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; (BSP)&quot;
-)paren
-suffix:semicolon
 macro_line|#endif
 op_increment
 id|available_cpus
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 id|total_cpus
 op_increment
 suffix:semicolon
@@ -665,12 +593,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
 multiline_comment|/* TBD: Support lapic_nmi entries */
 r_return
 l_int|0
@@ -720,12 +642,6 @@ id|end
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
 suffix:semicolon
 id|iosapic_init
 c_func
@@ -786,12 +702,6 @@ id|end
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get vector assignment for this interrupt, set attributes,&n;&t; * and program the IOSAPIC routing table.&n;&t; */
 id|vector
@@ -888,12 +798,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
 id|iosapic_override_isa_irq
 c_func
 (paren
@@ -973,23 +877,16 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
 multiline_comment|/* TBD: Support nimsrc entries */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Hook from generic ACPI tables.c */
-DECL|function|acpi_madt_oem_check
+r_static
 r_void
 id|__init
+DECL|function|acpi_madt_oem_check
 id|acpi_madt_oem_check
-c_func
 (paren
 r_char
 op_star
@@ -1028,16 +925,14 @@ l_int|6
 )paren
 )paren
 (brace
-multiline_comment|/* Unfortunatly ITC_DRIFT is not yet part of the&n;&t;&t; * official SAL spec, so the ITC_DRIFT bit is not&n;&t;&t; * set by the BIOS on this hardware.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Unfortunately ITC_DRIFT is not yet part of the&n;&t;&t; * official SAL spec, so the ITC_DRIFT bit is not&n;&t;&t; * set by the BIOS on this hardware.&n;&t;&t; */
 id|sal_platform_features
 op_or_assign
 id|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
 suffix:semicolon
-multiline_comment|/*Start cyclone clock*/
 id|cyclone_setup
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 )brace

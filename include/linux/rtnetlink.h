@@ -1593,12 +1593,6 @@ r_struct
 id|semaphore
 id|rtnl_sem
 suffix:semicolon
-DECL|macro|rtnl_exlock
-mdefine_line|#define rtnl_exlock()&t;&t;do { } while(0)
-DECL|macro|rtnl_exunlock
-mdefine_line|#define rtnl_exunlock()&t;&t;do { } while(0)
-DECL|macro|rtnl_exlock_nowait
-mdefine_line|#define rtnl_exlock_nowait()&t;(0)
 DECL|macro|rtnl_shlock
 mdefine_line|#define rtnl_shlock()&t;&t;down(&amp;rtnl_sem)
 DECL|macro|rtnl_shlock_nowait

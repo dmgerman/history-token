@@ -666,7 +666,7 @@ id|useraddr
 comma
 id|regbuf
 comma
-id|reglen
+id|regs.len
 )paren
 )paren
 r_goto

@@ -2834,7 +2834,7 @@ c_cond
 id|psecs
 op_div
 id|HZ
-OG
+op_ge
 id|p-&gt;rlim
 (braket
 id|RLIMIT_CPU
@@ -2871,7 +2871,7 @@ c_cond
 id|psecs
 op_div
 id|HZ
-OG
+op_ge
 id|p-&gt;rlim
 (braket
 id|RLIMIT_CPU

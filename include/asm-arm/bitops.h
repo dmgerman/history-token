@@ -1012,6 +1012,7 @@ r_int
 id|_find_next_bit_be
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star

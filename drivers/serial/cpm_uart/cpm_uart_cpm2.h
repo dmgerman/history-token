@@ -33,7 +33,7 @@ r_int
 id|baud
 )paren
 (brace
-id|cpm2_setbrg
+id|cpm_setbrg
 c_func
 (paren
 id|brg

@@ -16061,6 +16061,17 @@ id|ctx-&gt;ctx_fl_system
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * if context is UNLOADED we are safe to go&n;&t; */
+r_if
+c_cond
+(paren
+id|state
+op_eq
+id|PFM_CTX_UNLOADED
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * no command can operate on a zombie context&n;&t; */
 r_if
 c_cond
@@ -16085,18 +16096,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * if context is UNLOADED, MASKED we are safe to go&n;&t; */
-r_if
-c_cond
-(paren
-id|state
-op_ne
-id|PFM_CTX_LOADED
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/*&n;&t; * context is LOADED, we must make sure the task is stopped&n;&t; * We could lift this restriction for UP but it would mean that&n;&t; * the user has no guarantee the task would not run between&n;&t; * two successive calls to perfmonctl(). That&squot;s probably OK.&n;&t; * If this user wants to ensure the task does not run, then&n;&t; * the task must be stopped.&n;&t; */
+multiline_comment|/*&n;&t; * context is LOADED or MASKED. Some commands may need to have &n;&t; * the task stopped.&n;&t; *&n;&t; * We could lift this restriction for UP but it would mean that&n;&t; * the user has no guarantee the task would not run between&n;&t; * two successive calls to perfmonctl(). That&squot;s probably OK.&n;&t; * If this user wants to ensure the task does not run, then&n;&t; * the task must be stopped.&n;&t; */
 r_if
 c_cond
 (paren

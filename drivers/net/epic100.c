@@ -4618,7 +4618,7 @@ id|ep-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Mark the last entry as wrapping the ring. */
@@ -4756,7 +4756,7 @@ id|ep-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ep-&gt;tx_ring
 (braket
@@ -5485,7 +5485,7 @@ id|ep-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifndef final_version
@@ -6454,7 +6454,7 @@ id|ep-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ep-&gt;rx_ring
 (braket
@@ -6543,7 +6543,7 @@ id|ep-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

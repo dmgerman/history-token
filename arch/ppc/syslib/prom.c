@@ -446,7 +446,7 @@ id|np
 comma
 l_string|&quot;interrupt-parent&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -698,7 +698,7 @@ id|np
 comma
 l_string|&quot;name&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|np-&gt;type
@@ -710,7 +710,7 @@ id|np
 comma
 l_string|&quot;device_type&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -784,7 +784,7 @@ id|np
 comma
 l_string|&quot;#address-cells&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -812,7 +812,7 @@ id|np
 comma
 l_string|&quot;#size-cells&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2436,7 +2436,7 @@ id|np
 comma
 l_string|&quot;#address-cells&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2501,7 +2501,7 @@ id|np
 comma
 l_string|&quot;#size-cells&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -4608,7 +4608,7 @@ suffix:semicolon
 op_star
 id|prevp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|head
@@ -4694,7 +4694,7 @@ suffix:semicolon
 op_star
 id|prevp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|head
@@ -4759,7 +4759,7 @@ suffix:semicolon
 op_star
 id|prevp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|head
@@ -5022,7 +5022,7 @@ suffix:semicolon
 op_star
 id|prevp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|head
@@ -5699,7 +5699,7 @@ id|pp-&gt;value
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Add a property to a node&n; */

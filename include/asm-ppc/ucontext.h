@@ -52,6 +52,7 @@ suffix:semicolon
 DECL|member|uc_link
 r_struct
 id|ucontext
+id|__user
 op_star
 id|uc_link
 suffix:semicolon
@@ -69,6 +70,7 @@ suffix:semicolon
 DECL|member|uc_regs
 r_struct
 id|mcontext
+id|__user
 op_star
 id|uc_regs
 suffix:semicolon

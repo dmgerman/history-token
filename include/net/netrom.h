@@ -351,16 +351,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*********************************************************************&n; *&t;nr_node &amp; nr_neigh lists, refcounting and locking&n; *********************************************************************/
-r_extern
-r_struct
-id|hlist_head
-id|nr_node_list
-suffix:semicolon
-r_extern
-r_struct
-id|hlist_head
-id|nr_neigh_list
-suffix:semicolon
 DECL|macro|nr_node_hold
 mdefine_line|#define nr_node_hold(__nr_node) &bslash;&n;&t;atomic_inc(&amp;((__nr_node)-&gt;refcount))
 DECL|function|nr_node_put

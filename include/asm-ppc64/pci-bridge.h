@@ -119,11 +119,6 @@ r_int
 r_int
 id|pci_mem_offset
 suffix:semicolon
-DECL|member|pci_io_offset
-r_int
-r_int
-id|pci_io_offset
-suffix:semicolon
 DECL|member|ops
 r_struct
 id|pci_ops

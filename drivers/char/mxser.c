@@ -240,6 +240,7 @@ DECL|macro|MOXA_GET_CUMAJOR
 mdefine_line|#define         MOXA_GET_CUMAJOR      (MOXA + 64)
 DECL|macro|MOXA_GETMSTATUS
 mdefine_line|#define         MOXA_GETMSTATUS       (MOXA + 65)
+macro_line|#ifdef CONFIG_PCI
 DECL|variable|mxser_pcibrds
 r_static
 r_struct
@@ -358,6 +359,7 @@ comma
 id|mxser_pcibrds
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PCI */
 DECL|variable|ioaddr
 r_static
 r_int
@@ -836,22 +838,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_int
-id|mxser_get_PCI_conf
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-r_int
-comma
-r_struct
-id|mxser_hwconf
-op_star
-)paren
-suffix:semicolon
-r_static
 r_void
 id|mxser_do_softint
 c_func
@@ -1171,6 +1157,7 @@ op_star
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -1185,6 +1172,7 @@ op_star
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -1199,6 +1187,7 @@ op_star
 comma
 r_int
 r_int
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -1738,6 +1727,7 @@ op_star
 id|hwconf
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
 DECL|function|mxser_get_PCI_conf
 r_static
 r_int
@@ -1872,6 +1862,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PCI */
 DECL|variable|mxser_ops
 r_static
 r_struct
@@ -3409,7 +3400,7 @@ l_int|0
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -4249,13 +4240,25 @@ suffix:semicolon
 multiline_comment|/* kernel counter temps */
 r_struct
 id|serial_icounter_struct
+id|__user
 op_star
 id|p_cuser
 suffix:semicolon
-multiline_comment|/* user space */
 r_int
 r_int
 id|templ
+suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
 suffix:semicolon
 r_if
 c_cond
@@ -4454,9 +4457,10 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -4473,6 +4477,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -4517,38 +4522,24 @@ r_case
 id|TIOCGSERIAL
 suffix:colon
 r_return
-(paren
 id|mxser_get_serial_info
 c_func
 (paren
 id|info
 comma
-(paren
-r_struct
-id|serial_struct
-op_star
-)paren
-id|arg
-)paren
+id|argp
 )paren
 suffix:semicolon
 r_case
 id|TIOCSSERIAL
 suffix:colon
 r_return
-(paren
 id|mxser_set_serial_info
 c_func
 (paren
 id|info
 comma
-(paren
-r_struct
-id|serial_struct
-op_star
-)paren
-id|arg
-)paren
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -4556,19 +4547,12 @@ id|TIOCSERGETLSR
 suffix:colon
 multiline_comment|/* Get line status register */
 r_return
-(paren
 id|mxser_get_lsr_info
 c_func
 (paren
 id|info
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
-id|arg
-)paren
+id|argp
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Wait for any of the 4 modem inputs (DCD,RI,DSR,CTS) to change&n;&t;&t; * - mask passed in arg for lines of interest&n;&t;&t; *   (use |&squot;ed TIOCM_RNG/DSR/CD/CTS for masking)&n;&t;&t; * Caller should use TIOCGICOUNT to see which one it was&n;&t;&t; */
@@ -4773,12 +4757,7 @@ id|flags
 suffix:semicolon
 id|p_cuser
 op_assign
-(paren
-r_struct
-id|serial_icounter_struct
-op_star
-)paren
-id|arg
+id|argp
 suffix:semicolon
 r_if
 c_cond
@@ -4862,9 +4841,10 @@ l_int|0
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_default
@@ -4904,6 +4884,18 @@ id|result
 comma
 id|status
 suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4919,12 +4911,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_struct
-id|mxser_hwconf
-op_star
-)paren
-id|arg
+id|argp
 comma
 id|mxsercfg
 comma
@@ -4955,11 +4942,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|ttymajor
@@ -4992,11 +4975,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|result
@@ -5066,9 +5045,10 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -5080,12 +5060,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_struct
-id|mxser_log
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|mxvar_log
@@ -5096,12 +5071,10 @@ id|mxvar_log
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 (paren
 l_int|0
@@ -5327,12 +5300,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_struct
-id|mxser_mstatus
-op_star
-)paren
-id|arg
+id|argp
 comma
 id|GMStatus
 comma
@@ -5958,7 +5926,7 @@ id|ASYNC_NORMAL_ACTIVE
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|wake_up_interruptible
 c_func
@@ -6024,7 +5992,7 @@ l_int|0
 suffix:semicolon
 id|port
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -7714,7 +7682,7 @@ c_func
 (paren
 id|info
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|info-&gt;flags
@@ -7801,7 +7769,7 @@ id|info-&gt;xmit_buf
 suffix:semicolon
 id|info-&gt;xmit_buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|info-&gt;IER
@@ -9214,6 +9182,7 @@ id|info
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|retinfo
 )paren
@@ -9324,6 +9293,7 @@ id|info
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|new_info
 )paren
@@ -9550,7 +9520,7 @@ c_func
 (paren
 id|info
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -9584,6 +9554,7 @@ id|info
 comma
 r_int
 r_int
+id|__user
 op_star
 id|value
 )paren

@@ -182,6 +182,7 @@ id|length
 suffix:semicolon
 DECL|member|buffer
 r_void
+id|__user
 op_star
 id|buffer
 suffix:semicolon
@@ -195,11 +196,13 @@ r_struct
 id|atm_cirange
 (brace
 DECL|member|vpi_bits
+r_int
 r_char
 id|vpi_bits
 suffix:semicolon
 multiline_comment|/* 1..8, ATM_CI_MAX (-1) for maximum */
 DECL|member|vci_bits
+r_int
 r_char
 id|vci_bits
 suffix:semicolon

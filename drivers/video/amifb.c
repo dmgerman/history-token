@@ -3005,7 +3005,7 @@ r_if
 c_cond
 (paren
 id|par-&gt;vmode
-op_and_assign
+op_amp
 id|FB_VMODE_SMOOTH_XPAN
 )paren
 id|info-&gt;fix.xpanstep
@@ -8161,7 +8161,7 @@ op_assign
 id|DIVUL
 c_func
 (paren
-l_float|200E9
+l_int|200000000000ULL
 comma
 id|amiga_eclock
 )paren

@@ -187,7 +187,7 @@ suffix:semicolon
 multiline_comment|/* Define this to enable Link beat monitoring */
 DECL|macro|MONITOR
 macro_line|#undef MONITOR
-multiline_comment|/* Turn on debugging. See linux/Documentation/networking/tlan.txt for details */
+multiline_comment|/* Turn on debugging. See Documentation/networking/tlan.txt for details */
 DECL|variable|debug
 r_static
 r_int
@@ -257,7 +257,7 @@ l_string|&quot;100baseTx-FD&quot;
 comma
 l_string|&quot;100baseT4&quot;
 comma
-l_int|0
+l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|media_map

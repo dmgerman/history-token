@@ -1168,7 +1168,7 @@ suffix:colon
 id|IP_INC_STATS
 c_func
 (paren
-id|OutDiscards
+id|IPSTATS_MIB_OUTDISCARDS
 )paren
 suffix:semicolon
 r_return
@@ -2232,6 +2232,17 @@ comma
 id|skb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|MSG_TRUNC
+)paren
+id|copied
+op_assign
+id|skb-&gt;len
+suffix:semicolon
 id|done
 suffix:colon
 id|skb_free_datagram
@@ -2248,6 +2259,7 @@ r_return
 id|err
 ques
 c_cond
+id|err
 suffix:colon
 id|copied
 suffix:semicolon
@@ -2844,7 +2856,7 @@ comma
 dot
 id|connect
 op_assign
-id|udp_connect
+id|ip4_datagram_connect
 comma
 dot
 id|disconnect

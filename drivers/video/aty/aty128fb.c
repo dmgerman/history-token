@@ -3971,7 +3971,7 @@ id|par-&gt;constants.ref_clk
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __i386__
+macro_line|#ifdef CONFIG_X86
 DECL|function|aty128_find_mem_vbios
 r_static
 r_void
@@ -4081,7 +4081,7 @@ r_return
 id|rom_base
 suffix:semicolon
 )brace
-macro_line|#endif /* __i386__ */
+macro_line|#endif
 macro_line|#endif /* ndef(__sparc__) */
 multiline_comment|/* fill in known card constants if pll_block is not available */
 DECL|function|aty128_timings
@@ -8795,7 +8795,7 @@ comma
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifdef __i386__
+macro_line|#ifdef CONFIG_X86
 r_if
 c_cond
 (paren
@@ -9694,6 +9694,7 @@ id|value
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 id|arg
@@ -9791,6 +9792,7 @@ id|value
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 id|arg
@@ -10917,8 +10919,6 @@ c_func
 (paren
 op_amp
 id|info-&gt;cmap
-comma
-l_int|1
 comma
 id|info
 )paren

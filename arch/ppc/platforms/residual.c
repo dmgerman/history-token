@@ -3635,7 +3635,7 @@ DECL|macro|Dev
 macro_line|#undef Dev
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|residual_find_device_id
@@ -3766,7 +3766,7 @@ DECL|macro|Dev
 macro_line|#undef Dev
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|PnP_find_packet
@@ -3802,7 +3802,7 @@ id|p
 )paren
 (brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -3911,7 +3911,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* not found */
 )brace
@@ -3994,7 +3994,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* not found */
 )brace
@@ -4077,7 +4077,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* not found */
 )brace

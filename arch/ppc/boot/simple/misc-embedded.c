@@ -240,7 +240,7 @@ op_amp
 id|bp
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_SERIAL_8250_CONSOLE)
+macro_line|#if defined(CONFIG_SERIAL_CPM_CONSOLE) || defined(CONFIG_SERIAL_8250_CONSOLE)
 id|com_port
 op_assign
 id|serial_init
@@ -1298,12 +1298,14 @@ c_func
 l_string|&quot;Now booting the kernel&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_SERIAL_CPM_CONSOLE) || defined(CONFIG_SERIAL_8250_CONSOLE)
 id|serial_close
 c_func
 (paren
 id|com_port
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 r_int

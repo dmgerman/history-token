@@ -1042,7 +1042,7 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|ReasmFails
+id|IPSTATS_MIB_REASMFAILS
 )paren
 suffix:semicolon
 )brace
@@ -1096,13 +1096,13 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|ReasmTimeout
+id|IPSTATS_MIB_REASMTIMEOUT
 )paren
 suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|ReasmFails
+id|IPSTATS_MIB_REASMFAILS
 )paren
 suffix:semicolon
 multiline_comment|/* Send error only if the first segment arrived. */
@@ -1514,7 +1514,7 @@ suffix:colon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|ReasmFails
+id|IPSTATS_MIB_REASMFAILS
 )paren
 suffix:semicolon
 r_return
@@ -1763,7 +1763,7 @@ id|IPV6_MAXPLEN
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InHdrErrors
+id|IPSTATS_MIB_INHDRERRORS
 )paren
 suffix:semicolon
 id|icmpv6_param_prob
@@ -1884,7 +1884,7 @@ multiline_comment|/* RFC2460 says always send parameter problem in&n;&t;&t;&t; *
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InHdrErrors
+id|IPSTATS_MIB_INHDRERRORS
 )paren
 suffix:semicolon
 id|icmpv6_param_prob
@@ -2353,7 +2353,7 @@ suffix:colon
 id|IP6_INC_STATS
 c_func
 (paren
-id|ReasmFails
+id|IPSTATS_MIB_REASMFAILS
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -2848,7 +2848,7 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|ReasmOKs
+id|IPSTATS_MIB_REASMOKS
 )paren
 suffix:semicolon
 id|fq-&gt;fragments
@@ -2907,7 +2907,7 @@ suffix:colon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|ReasmFails
+id|IPSTATS_MIB_REASMFAILS
 )paren
 suffix:semicolon
 r_return
@@ -2970,7 +2970,7 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|ReasmReqds
+id|IPSTATS_MIB_REASMREQDS
 )paren
 suffix:semicolon
 multiline_comment|/* Jumbo payload inhibits frag. header */
@@ -2985,7 +2985,7 @@ l_int|0
 id|IP6_INC_STATS
 c_func
 (paren
-id|InHdrErrors
+id|IPSTATS_MIB_INHDRERRORS
 )paren
 suffix:semicolon
 id|icmpv6_param_prob
@@ -3031,7 +3031,7 @@ id|frag_hdr
 id|IP6_INC_STATS
 c_func
 (paren
-id|InHdrErrors
+id|IPSTATS_MIB_INHDRERRORS
 )paren
 suffix:semicolon
 id|icmpv6_param_prob
@@ -3091,7 +3091,7 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|ReasmOKs
+id|IPSTATS_MIB_REASMOKS
 )paren
 suffix:semicolon
 op_star
@@ -3223,7 +3223,7 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|ReasmFails
+id|IPSTATS_MIB_REASMFAILS
 )paren
 suffix:semicolon
 id|kfree_skb

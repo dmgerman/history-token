@@ -3365,7 +3365,7 @@ id|tp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|tp-&gt;tx_ring
 (braket
@@ -4228,7 +4228,7 @@ id|tp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|tp-&gt;tx_ring
 (braket
@@ -5434,7 +5434,7 @@ id|tp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifndef final_version
@@ -6520,7 +6520,7 @@ id|tp-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|tp-&gt;rx_ring
 (braket
@@ -6602,7 +6602,7 @@ id|tp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|tp-&gt;open
@@ -8017,7 +8017,7 @@ id|tp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|tp-&gt;tx_ring
 (braket
@@ -8066,7 +8066,7 @@ id|tp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Put the setup frame on the Tx list. */
 r_if

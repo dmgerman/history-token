@@ -1096,6 +1096,17 @@ id|np
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|prom_n_intr_cells
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|np
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|prom_get_irq_senses
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * HP AGPGART routines.&n; *&t;Copyright (C) 2002-2003 Hewlett-Packard Co&n; *&t;&t;Bjorn Helgaas &lt;bjorn_helgaas@hp.com&gt;&n; */
+multiline_comment|/*&n; * HP zx1 AGPGART routines.&n; *&n; * (c) Copyright 2002, 2003 Hewlett-Packard Development Company, L.P.&n; *&t;Bjorn Helgaas &lt;bjorn.helgaas@hp.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

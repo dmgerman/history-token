@@ -3432,7 +3432,7 @@ id|mscp_index
 dot
 id|SCint
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|done
 op_assign
@@ -3450,7 +3450,7 @@ id|mscp_index
 dot
 id|done
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|SCpnt-&gt;result
 op_assign
@@ -3686,7 +3686,7 @@ id|i
 dot
 id|done
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|config.mscp
@@ -3696,7 +3696,7 @@ id|i
 dot
 id|SCint
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -4052,7 +4052,7 @@ id|done
 (brace
 id|mscp-&gt;done
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mscp-&gt;SCint-&gt;result
 op_assign
@@ -4151,7 +4151,7 @@ id|mscp-&gt;done
 suffix:semicolon
 id|mscp-&gt;done
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Let the higher levels know that we&squot;re done */
 r_switch
@@ -4225,7 +4225,7 @@ id|mscp-&gt;target_status
 suffix:semicolon
 id|SCtmp-&gt;host_scribble
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Free up mscp block for next command */
 macro_line|#if ULTRASTOR_MAX_CMDS == 1

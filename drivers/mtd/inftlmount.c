@@ -73,11 +73,8 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: find_boot_record(inftl=0x%x)&bslash;n&quot;
+l_string|&quot;INFTL: find_boot_record(inftl=%p)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 )paren
 suffix:semicolon
@@ -899,7 +896,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;INFTL: allocation of PUtable &quot;
-l_string|&quot;failed (%d bytes)&bslash;n&quot;
+l_string|&quot;failed (%zd bytes)&bslash;n&quot;
 comma
 id|inftl-&gt;nb_blocks
 op_star
@@ -947,7 +944,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;INFTL: allocation of VUtable &quot;
-l_string|&quot;failed (%d bytes)&bslash;n&quot;
+l_string|&quot;failed (%zd bytes)&bslash;n&quot;
 comma
 id|inftl-&gt;nb_blocks
 op_star
@@ -1170,11 +1167,6 @@ r_int
 id|check_oob
 )paren
 (brace
-r_int
-id|i
-comma
-id|retlen
-suffix:semicolon
 id|u8
 id|buf
 (braket
@@ -1183,17 +1175,20 @@ op_plus
 id|inftl-&gt;mbd.mtd-&gt;oobsize
 )braket
 suffix:semicolon
+r_int
+id|retlen
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: check_free_sectors(inftl=0x%x,&quot;
+l_string|&quot;INFTL: check_free_sectors(inftl=%p,&quot;
 l_string|&quot;address=0x%x,len=%d,check_oob=%d)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 comma
 id|address
@@ -1346,12 +1341,9 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: INFTL_formatblock(inftl=0x%x,&quot;
+l_string|&quot;INFTL: INFTL_formatblock(inftl=%p,&quot;
 l_string|&quot;block=%d)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 comma
 id|block
@@ -2035,9 +2027,10 @@ id|inftl_unittail
 id|h1
 suffix:semicolon
 r_int
-id|i
-comma
 id|retlen
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 id|u8
 op_star
@@ -2050,11 +2043,8 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: INFTL_mount(inftl=0x%x)&bslash;n&quot;
+l_string|&quot;INFTL: INFTL_mount(inftl=%p)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|s
 )paren
 suffix:semicolon

@@ -6139,7 +6139,7 @@ id|proc_mkdir
 (paren
 l_string|&quot;driver/forte&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 r_return
@@ -6156,7 +6156,7 @@ l_string|&quot;driver/forte/chip&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|forte_proc_read
 comma
@@ -6187,7 +6187,7 @@ l_string|&quot;driver/forte/ac97&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|ac97_read_proc
 comma

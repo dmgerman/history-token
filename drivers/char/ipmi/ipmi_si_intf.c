@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#ifdef CONFIG_HIGH_RES_TIMERS
 macro_line|#include &lt;linux/hrtime.h&gt;
 macro_line|# if defined(schedule_next_int)
@@ -4309,7 +4309,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* For GPE-type interrupts. */
 DECL|function|ipmi_acpi_gpe
-id|u32
+r_void
 id|ipmi_acpi_gpe
 c_func
 (paren
@@ -4410,9 +4410,6 @@ id|smi_info-&gt;si_lock
 comma
 id|flags
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|acpi_gpe_irq_setup

@@ -617,7 +617,8 @@ r_void
 id|out_of_memory
 c_func
 (paren
-r_void
+r_int
+id|gfp_mask
 )paren
 (brace
 multiline_comment|/*&n;&t; * oom_lock protects out_of_memory()&squot;s static variables.&n;&t; * It&squot;s a global lock; this is not performance-critical.&n;&t; */
@@ -730,6 +731,19 @@ multiline_comment|/*&n;&t; * Ok, really out of memory. Kill something.&n;&t; */
 id|lastkill
 op_assign
 id|now
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;oom-killer: gfp_mask=0x%x&bslash;n&quot;
+comma
+id|gfp_mask
+)paren
+suffix:semicolon
+id|show_free_areas
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* oom_kill() sleeps */
 id|spin_unlock

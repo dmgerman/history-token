@@ -2722,7 +2722,7 @@ id|tty-&gt;disc_data
 suffix:semicolon
 id|tty-&gt;disc_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|write_unlock
 c_func
@@ -2798,6 +2798,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|addr
 )paren
@@ -2889,6 +2890,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2924,6 +2926,7 @@ l_int|0
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2944,6 +2947,7 @@ id|tmp
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2997,6 +3001,7 @@ id|sp-&gt;dev
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

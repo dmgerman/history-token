@@ -168,6 +168,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 id|data
 comma
@@ -332,6 +333,7 @@ id|task
 comma
 r_int
 r_int
+id|__user
 op_star
 id|data
 )paren
@@ -1100,6 +1102,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1235,6 +1238,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1643,6 +1647,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1690,6 +1695,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1724,6 +1730,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1761,6 +1768,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data

@@ -9259,18 +9259,10 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Let the chip settle down a bit, it seems that helps&n;&t; * for sleep mode on some models&n;&t; */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure we aren&squot;t polling PHY status change. We&n;&t; * don&squot;t currently use that feature though&n;&t; */
@@ -9331,18 +9323,10 @@ id|MAC_RXCFG
 )paren
 suffix:semicolon
 multiline_comment|/* Machine sleep will die in strange ways if we&n;&t;&t; * dont wait a bit here, looks like the chip takes&n;&t;&t; * some time to really shut down&n;&t;&t; */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 )brace

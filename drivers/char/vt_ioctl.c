@@ -3951,11 +3951,7 @@ l_int|256
 suffix:semicolon
 id|op.data
 op_assign
-(paren
-r_char
-op_star
-)paren
-id|arg
+id|up
 suffix:semicolon
 r_return
 id|con_font_op
@@ -3994,11 +3990,7 @@ l_int|256
 suffix:semicolon
 id|op.data
 op_assign
-(paren
-r_char
-op_star
-)paren
-id|arg
+id|up
 suffix:semicolon
 r_return
 id|con_font_op

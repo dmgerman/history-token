@@ -46,6 +46,7 @@ macro_line|#include &lt;linux/nfs_mount.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &quot;avc.h&quot;
 macro_line|#include &quot;objsec.h&quot;
 macro_line|#include &quot;netif.h&quot;
@@ -6561,6 +6562,12 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+multiline_comment|/* Clear any possibly unsafe personality bits on exec: */
+id|current-&gt;personality
+op_and_assign
+op_complement
+id|PER_CLEAR_ON_SETID
+suffix:semicolon
 multiline_comment|/* Set the security field to the new SID. */
 id|bsec-&gt;sid
 op_assign
@@ -7478,12 +7485,6 @@ id|current
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Clear any possibly unsafe personality bits on exec: */
-id|current-&gt;personality
-op_and_assign
-op_complement
-id|PER_CLEAR_ON_SETID
-suffix:semicolon
 multiline_comment|/* Close files for which the new task SID is not authorized. */
 id|flush_unauthorized_files
 c_func

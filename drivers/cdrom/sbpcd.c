@@ -578,7 +578,7 @@ op_assign
 l_string|&quot;sbpcd&quot;
 suffix:semicolon
 multiline_comment|/*==========================================================================*/
-macro_line|#if FUTURE
+macro_line|#ifdef FUTURE
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
@@ -1122,7 +1122,7 @@ DECL|member|TocEnt_address
 id|u_int
 id|TocEnt_address
 suffix:semicolon
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 DECL|member|has_data
 r_char
 id|has_data
@@ -15323,7 +15323,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================================*/
-macro_line|#if FUTURE
+macro_line|#ifdef FUTURE
 DECL|function|cc_SubChanInfo
 r_static
 r_int
@@ -19230,7 +19230,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================================*/
-macro_line|#if FUTURE
+macro_line|#ifdef FUTURE
 multiline_comment|/*&n; *  obtain if requested service disturbs current audio state&n; */
 DECL|function|obey_audio_state
 r_static
@@ -20853,7 +20853,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*==========================================================================*/
-macro_line|#if FUTURE
+macro_line|#ifdef FUTURE
 multiline_comment|/*&n; *  called always if driver gets entered&n; *  returns 0 or ERROR2 or ERROR15&n; */
 DECL|function|prepare
 r_static
@@ -21584,7 +21584,7 @@ comma
 l_string|&quot;ioctl: CDROMREADMODE1 requested.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 r_if
 c_cond
 (paren
@@ -21633,7 +21633,7 @@ comma
 l_string|&quot;ioctl: CDROMREADMODE2 requested.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 r_if
 c_cond
 (paren
@@ -21894,7 +21894,7 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 r_if
 c_cond
 (paren
@@ -21935,6 +21935,7 @@ id|read_audio
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -23177,16 +23178,8 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-id|u_char
-op_star
-)paren
 id|read_audio.buf
 comma
-(paren
-id|u_char
-op_star
-)paren
 id|current_drive-&gt;aud_buf
 comma
 id|read_audio.nframes
@@ -23650,7 +23643,7 @@ comma
 l_string|&quot;ioctl: CDROMPLAYMSF entered.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 r_if
 c_cond
 (paren
@@ -23863,7 +23856,7 @@ comma
 l_string|&quot;ioctl: CDROMPLAYTRKIND entered.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 r_if
 c_cond
 (paren
@@ -24334,7 +24327,7 @@ comma
 l_string|&quot;ioctl: CDROMSTOP entered.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 r_if
 c_cond
 (paren
@@ -25411,7 +25404,7 @@ r_goto
 id|request_loop
 suffix:semicolon
 )brace
-macro_line|#if FUTURE
+macro_line|#ifdef FUTURE
 id|i
 op_assign
 id|prepare
@@ -25566,7 +25559,7 @@ op_ne
 l_int|0
 )paren
 (brace
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 id|current_drive-&gt;has_data
 op_assign
 l_int|2
@@ -28169,14 +28162,14 @@ comma
 l_string|&quot;CD contains no data tracks.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 id|current_drive-&gt;has_data
 op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif /* SAFE_MIXED */
 )brace
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 r_else
 r_if
 c_cond
@@ -28332,7 +28325,7 @@ id|p-&gt;open_count
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 id|p-&gt;has_data
 op_assign
 l_int|0
@@ -29472,7 +29465,7 @@ c_func
 (paren
 id|DBG_INF
 comma
-l_string|&quot;You should read linux/Documentation/cdrom/sbpcd&bslash;n&quot;
+l_string|&quot;You should read Documentation/cdrom/sbpcd&bslash;n&quot;
 )paren
 suffix:semicolon
 id|msg
@@ -29976,7 +29969,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 id|p-&gt;has_data
 op_assign
 l_int|0
@@ -30625,7 +30618,7 @@ op_and_assign
 op_complement
 id|cd_size_bit
 suffix:semicolon
-macro_line|#if SAFE_MIXED
+macro_line|#ifdef SAFE_MIXED
 id|current_drive-&gt;has_data
 op_assign
 l_int|0

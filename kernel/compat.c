@@ -2786,6 +2786,8 @@ c_cond
 op_logical_neg
 id|err
 op_logical_and
+id|tp
+op_logical_and
 id|put_compat_timespec
 c_func
 (paren

@@ -422,7 +422,7 @@ multiline_comment|/* watchdog timer */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * macros&n; */
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_GETTIMEOFDAY
+macro_line|#ifdef CONFIG_NET_SCH_CLK_GETTIMEOFDAY
 macro_line|#include &lt;linux/time.h&gt;
 DECL|macro|PSCHED_GET_TIME
 macro_line|#undef PSCHED_GET_TIME
@@ -1204,7 +1204,7 @@ r_return
 id|cl
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * service curve support functions&n; *&n; *  external service curve parameters&n; *&t;m: bps&n; *&t;d: us&n; *  internal service curve parameters&n; *&t;sm: (bytes/psched_us) &lt;&lt; SM_SHIFT&n; *&t;ism: (psched_us/byte) &lt;&lt; ISM_SHIFT&n; *&t;dx: psched_us&n; *&n; * Time source resolution&n; *  PSCHED_JIFFIES: for 48&lt;=HZ&lt;=1534 resolution is between 0.63us and 1.27us.&n; *  PSCHED_CPU: resolution is between 0.5us and 1us.&n; *  PSCHED_GETTIMEOFDAY: resolution is exactly 1us.&n; *&n; * sm and ism are scaled in order to keep effective digits.&n; * SM_SHIFT and ISM_SHIFT are selected to keep at least 4 effective&n; * digits in decimal using the following table.&n; *&n; * Note: We can afford the additional accuracy (altq hfsc keeps at most&n; * 3 effective digits) thanks to the fact that linux clock is bounded&n; * much more tightly.&n; *&n; *  bits/sec      100Kbps     1Mbps     10Mbps     100Mbps    1Gbps&n; *  ------------+-------------------------------------------------------&n; *  bytes/0.5us   6.25e-3    62.5e-3    625e-3     6250e-e    62500e-3&n; *  bytes/us      12.5e-3    125e-3     1250e-3    12500e-3   125000e-3&n; *  bytes/1.27us  15.875e-3  158.75e-3  1587.5e-3  15875e-3   158750e-3&n; *&n; *  0.5us/byte    160        16         1.6        0.16       0.016&n; *  us/byte       80         8          0.8        0.08       0.008&n; *  1.27us/byte   63         6.3        0.63       0.063      0.0063&n; */
+multiline_comment|/*&n; * service curve support functions&n; *&n; *  external service curve parameters&n; *&t;m: bps&n; *&t;d: us&n; *  internal service curve parameters&n; *&t;sm: (bytes/psched_us) &lt;&lt; SM_SHIFT&n; *&t;ism: (psched_us/byte) &lt;&lt; ISM_SHIFT&n; *&t;dx: psched_us&n; *&n; * Clock source resolution (CONFIG_NET_SCH_CLK_*)&n; *  JIFFIES: for 48&lt;=HZ&lt;=1534 resolution is between 0.63us and 1.27us.&n; *  CPU: resolution is between 0.5us and 1us.&n; *  GETTIMEOFDAY: resolution is exactly 1us.&n; *&n; * sm and ism are scaled in order to keep effective digits.&n; * SM_SHIFT and ISM_SHIFT are selected to keep at least 4 effective&n; * digits in decimal using the following table.&n; *&n; * Note: We can afford the additional accuracy (altq hfsc keeps at most&n; * 3 effective digits) thanks to the fact that linux clock is bounded&n; * much more tightly.&n; *&n; *  bits/sec      100Kbps     1Mbps     10Mbps     100Mbps    1Gbps&n; *  ------------+-------------------------------------------------------&n; *  bytes/0.5us   6.25e-3    62.5e-3    625e-3     6250e-e    62500e-3&n; *  bytes/us      12.5e-3    125e-3     1250e-3    12500e-3   125000e-3&n; *  bytes/1.27us  15.875e-3  158.75e-3  1587.5e-3  15875e-3   158750e-3&n; *&n; *  0.5us/byte    160        16         1.6        0.16       0.016&n; *  us/byte       80         8          0.8        0.08       0.008&n; *  1.27us/byte   63         6.3        0.63       0.063      0.0063&n; */
 DECL|macro|SM_SHIFT
 mdefine_line|#define&t;SM_SHIFT&t;20
 DECL|macro|ISM_SHIFT

@@ -2259,8 +2259,6 @@ id|INET_PROTOSW_REUSE
 comma
 )brace
 suffix:semicolon
-DECL|macro|INETSW6_ARRAY_LEN
-mdefine_line|#define INETSW6_ARRAY_LEN (sizeof(inetsw6_array) / sizeof(struct inet_protosw))
 r_void
 DECL|function|inet6_register_protosw
 id|inet6_register_protosw

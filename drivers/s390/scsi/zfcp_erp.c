@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.56 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.60 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -1739,8 +1739,8 @@ l_int|0
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;ELS request timed out, physical port reopen &quot;
-l_string|&quot;of port 0x%016Lx on adapter %s failed&bslash;n&quot;
+l_string|&quot;ELS request timed out, force physical port &quot;
+l_string|&quot;reopen of port 0x%016Lx on adapter %s&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 comma
@@ -7580,7 +7580,6 @@ id|adapter
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * SUGGESTION: substitute by&n;&t;&t; * timeout = ZFCP_TYPE2_RECOVERY_TIME;&n;&t;&t; * __ZFCP_WAIT_EVENT_TIMEOUT(timeout, 0);&n;&t;&t; */
 id|timeout
 op_assign
 id|ZFCP_TYPE2_RECOVERY_TIME

@@ -14040,7 +14040,7 @@ id|request_t
 op_star
 id|pkt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|cnt
@@ -14337,7 +14337,7 @@ id|srb
 op_star
 id|sp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_uint16
 id|mailbox
@@ -14620,7 +14620,7 @@ suffix:semicolon
 r_else
 id|sp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -14634,7 +14634,7 @@ id|ha-&gt;outstanding_cmds
 id|index
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Save ISP completion status */
 id|CMD_RESULT
@@ -15710,7 +15710,7 @@ id|ha-&gt;outstanding_cmds
 id|handle
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|cmd
 op_assign
@@ -16071,7 +16071,7 @@ suffix:semicolon
 r_else
 id|sp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -16085,7 +16085,7 @@ id|ha-&gt;outstanding_cmds
 id|handle
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Bad payload or header */
 r_if

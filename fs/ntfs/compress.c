@@ -425,7 +425,7 @@ suffix:colon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Beginning sub-block at offset = 0x%x in the cb.&quot;
+l_string|&quot;Beginning sub-block at offset = 0x%zx in the cb.&quot;
 comma
 id|cb
 op_minus

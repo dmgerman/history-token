@@ -161,7 +161,7 @@ id|ftape_init
 )paren
 suffix:semicolon
 multiline_comment|/*  Allocate the DMA buffers. They are deallocated at cleanup() time.&n;&t; */
-macro_line|#if TESTING
+macro_line|#ifdef TESTING
 macro_line|#ifdef MODULE
 r_while
 c_loop

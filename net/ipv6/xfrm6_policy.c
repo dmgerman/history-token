@@ -755,7 +755,7 @@ id|rt-&gt;u.dst.input
 suffix:semicolon
 id|dst_prev-&gt;output
 op_assign
-id|dst_prev-&gt;xfrm-&gt;type-&gt;output
+id|xfrm6_output
 suffix:semicolon
 multiline_comment|/* Sheit... I remember I did this right. Apparently,&n;&t;&t; * it was magically lost, so this code needs audit */
 id|x-&gt;u.rt6.rt6i_flags

@@ -3007,7 +3007,7 @@ id|sum
 op_assign
 l_int|0
 suffix:semicolon
-id|for_each_online_cpu
+id|for_each_cpu
 c_func
 (paren
 id|i
@@ -3045,7 +3045,7 @@ id|sum
 op_assign
 l_int|0
 suffix:semicolon
-id|for_each_online_cpu
+id|for_each_cpu
 c_func
 (paren
 id|i
@@ -3081,7 +3081,7 @@ id|sum
 op_assign
 l_int|0
 suffix:semicolon
-id|for_each_online_cpu
+id|for_each_cpu
 c_func
 (paren
 id|i
@@ -13673,6 +13673,10 @@ op_assign
 id|INT_MAX
 suffix:semicolon
 multiline_comment|/* Don&squot;t balance */
+id|sched_domain_init.busy_factor
+op_assign
+l_int|1
+suffix:semicolon
 id|memset
 c_func
 (paren

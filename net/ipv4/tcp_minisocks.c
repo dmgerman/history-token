@@ -798,7 +798,7 @@ id|paws_reject
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|PAWSEstabRejected
+id|LINUX_MIB_PAWSESTABREJECTED
 )paren
 suffix:semicolon
 r_if
@@ -1564,7 +1564,7 @@ suffix:semicolon
 id|NET_ADD_STATS_BH
 c_func
 (paren
-id|TimeWaited
+id|LINUX_MIB_TIMEWAITED
 comma
 id|killed
 )paren
@@ -2501,7 +2501,7 @@ suffix:semicolon
 id|NET_ADD_STATS_BH
 c_func
 (paren
-id|TimeWaitKilled
+id|LINUX_MIB_TIMEWAITKILLED
 comma
 id|killed
 )paren
@@ -2880,16 +2880,6 @@ id|newtp-&gt;snd_cwnd_cnt
 op_assign
 l_int|0
 suffix:semicolon
-id|newtp-&gt;bictcp.cnt
-op_assign
-l_int|0
-suffix:semicolon
-id|newtp-&gt;bictcp.last_max_cwnd
-op_assign
-id|newtp-&gt;bictcp.last_cwnd
-op_assign
-l_int|0
-suffix:semicolon
 id|newtp-&gt;frto_counter
 op_assign
 l_int|0
@@ -3236,7 +3226,7 @@ suffix:semicolon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpPassiveOpens
+id|TCP_MIB_PASSIVEOPENS
 )paren
 suffix:semicolon
 )brace
@@ -3531,7 +3521,7 @@ id|paws_reject
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|PAWSEstabRejected
+id|LINUX_MIB_PAWSESTABREJECTED
 )paren
 suffix:semicolon
 r_return
@@ -3730,7 +3720,7 @@ suffix:colon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|EmbryonicRsts
+id|LINUX_MIB_EMBRYONICRSTS
 )paren
 suffix:semicolon
 r_if

@@ -1207,7 +1207,7 @@ r_sizeof
 id|u16
 )paren
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -1466,7 +1466,7 @@ id|info
 comma
 l_int|65536
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -1641,7 +1641,7 @@ r_struct
 id|pnp_isa_config_struc
 )paren
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -1746,7 +1746,7 @@ r_struct
 id|escd_info_struc
 )paren
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren

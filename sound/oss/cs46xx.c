@@ -11579,7 +11579,7 @@ id|dmabuf
 op_star
 id|dmabuf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -20053,7 +20053,7 @@ id|card-&gt;ac97_codec
 id|num_ac97
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
