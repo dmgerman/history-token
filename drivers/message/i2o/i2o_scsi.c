@@ -919,7 +919,6 @@ comma
 id|le32_to_cpu
 c_func
 (paren
-op_amp
 id|msg-&gt;u.s.tcntxt
 )paren
 )paren
@@ -958,7 +957,6 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-op_amp
 id|msg-&gt;body
 (braket
 l_int|3
@@ -1187,7 +1185,6 @@ id|u8
 id|le32_to_cpu
 c_func
 (paren
-op_amp
 id|msg-&gt;body
 (braket
 l_int|0
@@ -1203,7 +1200,6 @@ id|u8
 id|le32_to_cpu
 c_func
 (paren
-op_amp
 id|msg-&gt;body
 (braket
 l_int|0
@@ -1222,7 +1218,6 @@ id|u8
 id|le32_to_cpu
 c_func
 (paren
-op_amp
 id|msg-&gt;body
 (braket
 l_int|0
@@ -1254,7 +1249,6 @@ comma
 id|le32_to_cpu
 c_func
 (paren
-op_amp
 id|msg-&gt;body
 (braket
 l_int|0
@@ -1308,7 +1302,6 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-op_amp
 id|msg-&gt;body
 (braket
 l_int|1
@@ -1396,7 +1389,6 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-op_amp
 id|msg-&gt;body
 (braket
 l_int|0

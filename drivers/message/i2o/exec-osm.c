@@ -795,7 +795,6 @@ c_cond
 id|le32_to_cpu
 c_func
 (paren
-op_amp
 id|msg-&gt;u.head
 (braket
 l_int|0
@@ -820,7 +819,6 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-op_amp
 id|msg-&gt;body
 (braket
 l_int|3
@@ -868,7 +866,6 @@ c_cond
 id|le32_to_cpu
 c_func
 (paren
-op_amp
 id|msg-&gt;u.s.tcntxt
 )paren
 op_amp
@@ -892,7 +889,6 @@ c_cond
 id|le32_to_cpu
 c_func
 (paren
-op_amp
 id|msg-&gt;u.head
 (braket
 l_int|1
