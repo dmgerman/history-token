@@ -10323,6 +10323,26 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|iadev-&gt;desc_tbl
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|DEV_LABEL
+l_string|&quot; couldn&squot;t get mem&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+)brace
 multiline_comment|/* Communication Queues base address */
 id|i
 op_assign
