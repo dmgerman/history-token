@@ -735,8 +735,7 @@ id|pc
 op_assign
 id|thread_saved_pc
 (paren
-op_amp
-id|p-&gt;thread
+id|p
 )paren
 suffix:semicolon
 multiline_comment|/* This quite disgusting function walks up the stack, following&n;&t;   saved return address, until it something that&squot;s out of bounds&n;&t;   (as defined by `first_sched&squot; and `last_sched&squot;).  It then&n;&t;   returns the last PC that was in-bounds.  */
