@@ -778,10 +778,8 @@ op_logical_neg
 id|intel_i830_private.registers
 )paren
 r_return
-(paren
 op_minus
 id|ENOMEM
-)paren
 suffix:semicolon
 id|temp
 op_assign
@@ -1125,9 +1123,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 DECL|function|intel_i830_cleanup
@@ -1221,10 +1217,8 @@ l_string|&quot;Trying to insert into local/stolen memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -1239,10 +1233,8 @@ OG
 id|num_entries
 )paren
 r_return
-(paren
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
 multiline_comment|/* The i830 can&squot;t check the GTT for entries since its read only,&n;&t; * depend on the caller to make the correct offset decisions.&n;&t; */
 r_if
@@ -1269,10 +1261,8 @@ id|AGP_PHYS_MEMORY
 )paren
 )paren
 r_return
-(paren
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
 id|global_cache_flush
 c_func
@@ -1404,10 +1394,8 @@ l_string|&quot;Trying to disable local/stolen memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
 )brace
 r_for
@@ -1475,9 +1463,7 @@ id|mem
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 DECL|function|intel_i830_alloc_by_type
@@ -2490,10 +2476,8 @@ l_string|&quot;could not assign resource 0&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -2517,10 +2501,8 @@ l_string|&quot;Unable to Enable PCI device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the mode register */

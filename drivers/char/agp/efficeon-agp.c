@@ -1536,10 +1536,8 @@ l_string|&quot;could not assign resource 0&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -1563,10 +1561,8 @@ l_string|&quot;Unable to Enable PCI device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the mode register */

@@ -2237,7 +2237,6 @@ id|type
 (brace
 multiline_comment|/* Make sure the returned address is a valid GATT entry */
 r_return
-(paren
 id|agp_bridge-&gt;driver-&gt;masks
 (braket
 l_int|0
@@ -2266,7 +2265,6 @@ l_int|0xffffff000
 )paren
 op_rshift
 l_int|12
-)paren
 )paren
 suffix:semicolon
 )brace
