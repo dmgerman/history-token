@@ -3190,7 +3190,7 @@ comma
 id|recTime
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 )brace
 r_switch
 c_cond
@@ -4312,7 +4312,7 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDE_PMAC_BLINK
-multiline_comment|/* Note: This code will be called for every hwif, thus we&squot;ll&n;&t; * try several time to stop the LED blinker timer,  but that&n;&t; * should be harmless&n;&t;&t; */
+multiline_comment|/* Note: This code will be called for every hwif, thus we&squot;ll&n;&t; * try several time to stop the LED blinker timer,  but that&n;&t; * should be harmless&n;&t; */
 r_if
 c_cond
 (paren
@@ -4388,7 +4388,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Resume call back, should be called before the child devices&n; * are resumed&n;&t;&t; */
+multiline_comment|/* Resume call back, should be called before the child devices&n; * are resumed&n; */
 r_static
 r_int
 DECL|function|pmac_ide_do_resume
@@ -4742,7 +4742,7 @@ op_eq
 id|controller_ohare
 )paren
 (brace
-multiline_comment|/* The code below is having trouble on some ohare machines&n;&t;&t;&t; * (timing related ?). Until I can put my hand on one of these&n;&t;&t;&t; * units, I keep the old way&n;&t;&t;&t; */
+multiline_comment|/* The code below is having trouble on some ohare machines&n;&t;&t; * (timing related ?). Until I can put my hand on one of these&n;&t;&t; * units, I keep the old way&n;&t;&t; */
 id|ppc_md
 dot
 id|feature_call
@@ -5058,6 +5058,10 @@ suffix:semicolon
 id|hwif-&gt;chipset
 op_assign
 id|ide_unknown
+suffix:semicolon
+id|hwif-&gt;noprobe
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 op_minus
