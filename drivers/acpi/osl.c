@@ -1486,9 +1486,13 @@ id|pci_id-&gt;segment
 comma
 id|pci_id-&gt;bus
 comma
+id|PCI_DEVFN
+c_func
+(paren
 id|pci_id-&gt;device
 comma
 id|pci_id-&gt;function
+)paren
 comma
 id|reg
 comma
@@ -1582,9 +1586,13 @@ id|pci_id-&gt;segment
 comma
 id|pci_id-&gt;bus
 comma
+id|PCI_DEVFN
+c_func
+(paren
 id|pci_id-&gt;device
 comma
 id|pci_id-&gt;function
+)paren
 comma
 id|reg
 comma
