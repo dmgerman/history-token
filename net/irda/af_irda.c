@@ -8576,6 +8576,11 @@ op_assign
 id|PF_IRDA
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|release
 op_assign
 id|irda_release
@@ -8672,6 +8677,11 @@ dot
 id|family
 op_assign
 id|PF_IRDA
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|release
@@ -8772,6 +8782,11 @@ op_assign
 id|PF_IRDA
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|release
 op_assign
 id|irda_release
@@ -8869,6 +8884,11 @@ dot
 id|family
 op_assign
 id|PF_IRDA
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|release
