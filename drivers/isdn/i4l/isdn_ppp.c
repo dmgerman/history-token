@@ -7288,7 +7288,7 @@ l_int|0
 suffix:semicolon
 id|lp-&gt;netdev-&gt;pb-&gt;seq
 op_assign
-id|LONG_MAX
+id|UINT_MAX
 suffix:semicolon
 )brace
 id|lp-&gt;netdev-&gt;pb-&gt;ref_ct
