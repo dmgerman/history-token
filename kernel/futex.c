@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Simple &quot;sleep if unchanged&quot; interface. */
 multiline_comment|/* FIXME: This may be way too small. --RR */
@@ -845,7 +846,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|put_page
+id|page_cache_release
 c_func
 (paren
 id|page
