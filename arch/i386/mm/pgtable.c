@@ -593,7 +593,7 @@ id|page
 op_star
 id|pte
 suffix:semicolon
-macro_line|#if CONFIG_HIGHPTE
+macro_line|#ifdef CONFIG_HIGHPTE
 id|pte
 op_assign
 id|alloc_pages
@@ -637,7 +637,7 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_X86_PAE
+macro_line|#ifdef CONFIG_X86_PAE
 DECL|function|pgd_alloc
 id|pgd_t
 op_star

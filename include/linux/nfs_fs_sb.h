@@ -116,7 +116,7 @@ r_struct
 id|sockaddr_in
 id|addr
 suffix:semicolon
-macro_line|#if CONFIG_NFS_V4
+macro_line|#ifdef CONFIG_NFS_V4
 multiline_comment|/* Our own IP address, as a null-terminated string.&n;&t; * This is used to generate the clientid, and the callback address.&n;&t; */
 DECL|member|ip_addr
 r_char
