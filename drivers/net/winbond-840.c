@@ -1,26 +1,5 @@
 multiline_comment|/* winbond-840.c: A Linux PCI network adapter skeleton device driver. */
 multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/drivers.html&n;&n;&t;Do not remove the copyright infomation.&n;&t;Do not change the version information unless an improvement has been made.&n;&t;Merely removing my name, as Compex has done in the past, does not count&n;&t;as an improvement.&n;&n;&t;Changelog:&n;&t;* ported to 2.4&n;&t;&t;???&n;&t;* spin lock update, memory barriers, new style dma mappings&n;&t;&t;limit each tx buffer to &lt; 1024 bytes&n;&t;&t;remove DescIntr from Rx descriptors (that&squot;s an Tx flag)&n;&t;&t;remove next pointer from Tx descriptors&n;&t;&t;synchronize tx_q_bytes&n;&t;&t;software reset in tx_timeout&n;&t;&t;&t;Copyright (C) 2000 Manfred Spraul&n;&n;&t;TODO:&n;&t;* according to the documentation, the chip supports big endian&n;&t;&t;descriptors. Remove cpu_to_le32, enable BE descriptors.&n;*/
-multiline_comment|/* These identify the driver base version and may not be removed. */
-DECL|variable|version1
-r_static
-r_const
-r_char
-id|version1
-(braket
-)braket
-op_assign
-l_string|&quot;winbond-840.c:v1.01 (2.4 port) 5/15/2000  Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
-suffix:semicolon
-DECL|variable|version2
-r_static
-r_const
-r_char
-id|version2
-(braket
-)braket
-op_assign
-l_string|&quot;  http://www.scyld.com/network/drivers.html&bslash;n&quot;
-suffix:semicolon
 multiline_comment|/* Automatically extracted configuration info:&n;probe-func: winbond840_probe&n;config-in: tristate &squot;Winbond W89c840 Ethernet support&squot; CONFIG_WINBOND_840&n;&n;c-help-name: Winbond W89c840 PCI Ethernet support&n;c-help-symbol: CONFIG_WINBOND_840&n;c-help: This driver is for the Winbond W89c840 chip.  It also works with&n;c-help: the TX9882 chip on the Compex RL100-ATX board.&n;c-help: More specific information and updates are available from &n;c-help: http://www.scyld.com/network/drivers.html&n;*/
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
@@ -171,6 +150,20 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+multiline_comment|/* These identify the driver base version and may not be removed. */
+DECL|variable|__devinitdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__devinitdata
+op_assign
+id|KERN_INFO
+l_string|&quot;winbond-840.c:v1.01 (2.4 port) 5/15/2000  Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;  http://www.scyld.com/network/drivers.html&bslash;n&quot;
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -6855,6 +6848,15 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
+macro_line|#ifdef MODULE
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func

@@ -143,21 +143,14 @@ multiline_comment|/* These identify the driver base version and may not be remov
 DECL|variable|__devinitdata
 r_static
 r_char
-id|version1
+id|version
 (braket
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;via-rhine.c:v1.08b-LK1.1.7  8/9/2000  Written by Donald Becker&bslash;n&quot;
-suffix:semicolon
-DECL|variable|__devinitdata
-r_static
-r_char
-id|version2
-(braket
-)braket
-id|__devinitdata
-op_assign
+id|KERN_INFO
+l_string|&quot;via-rhine.c:v1.08b-LK1.1.8  4/17/2000  Written by Donald Becker&bslash;n&quot;
+id|KERN_INFO
 l_string|&quot;  http://www.scyld.com/network/via-rhine.html&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* This driver was written to use PCI memory space, however most versions&n;   of the Rhine only work correctly with I/O space accesses. */
@@ -1498,10 +1491,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-r_static
-r_int
-id|did_version
-suffix:semicolon
 r_int
 id|ioaddr
 suffix:semicolon
@@ -1511,32 +1500,26 @@ suffix:semicolon
 r_int
 id|pci_flags
 suffix:semicolon
-multiline_comment|/* print version once and once only */
+multiline_comment|/* when built into the kernel, we only print version if device is found */
+macro_line|#ifndef MODULE
+r_static
+r_int
+id|printed_version
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|did_version
+id|printed_version
 op_increment
 )paren
-(brace
 id|printk
+c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s&quot;
-comma
-id|version1
+id|version
 )paren
 suffix:semicolon
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;%s&quot;
-comma
-id|version2
-)paren
-suffix:semicolon
-)brace
+macro_line|#endif
 id|card_idx
 op_increment
 suffix:semicolon
@@ -6780,6 +6763,15 @@ id|via_rhine_init
 r_void
 )paren
 (brace
+multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
+macro_line|#ifdef MODULE
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 (paren

@@ -6,6 +6,9 @@ macro_line|#ifndef _LINUX_RWSEM_H
 macro_line|#error please dont include asm/rwsem.h directly, use linux/rwsem.h instead
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
+r_struct
+id|rwsem_waiter
+suffix:semicolon
 DECL|struct|rw_semaphore
 r_struct
 id|rw_semaphore
@@ -27,18 +30,27 @@ DECL|macro|RWSEM_ACTIVE_READ_BIAS
 mdefine_line|#define RWSEM_ACTIVE_READ_BIAS&t;&t;RWSEM_ACTIVE_BIAS
 DECL|macro|RWSEM_ACTIVE_WRITE_BIAS
 mdefine_line|#define RWSEM_ACTIVE_WRITE_BIAS&t;&t;(RWSEM_WAITING_BIAS + RWSEM_ACTIVE_BIAS)
-DECL|member|wait
-id|wait_queue_head_t
-id|wait
+DECL|member|wait_lock
+id|spinlock_t
+id|wait_lock
 suffix:semicolon
-DECL|macro|RWSEM_WAITING_FOR_READ
-mdefine_line|#define RWSEM_WAITING_FOR_READ&t;WQ_FLAG_CONTEXT_0&t;/* bits to use in wait_queue_t.flags */
-DECL|macro|RWSEM_WAITING_FOR_WRITE
-mdefine_line|#define RWSEM_WAITING_FOR_WRITE&t;WQ_FLAG_CONTEXT_1
+DECL|member|wait_front
+r_struct
+id|rwsem_waiter
+op_star
+id|wait_front
+suffix:semicolon
+DECL|member|wait_back
+r_struct
+id|rwsem_waiter
+op_star
+op_star
+id|wait_back
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|__RWSEM_INITIALIZER
-mdefine_line|#define __RWSEM_INITIALIZER(name) &bslash;&n;{ RWSEM_UNLOCKED_VALUE, __WAIT_QUEUE_HEAD_INITIALIZER((name).wait) }
+mdefine_line|#define __RWSEM_INITIALIZER(name) &bslash;&n;{ RWSEM_UNLOCKED_VALUE, SPIN_LOCK_UNLOCKED, NULL, &amp;(name).wait_front }
 DECL|macro|DECLARE_RWSEM
 mdefine_line|#define DECLARE_RWSEM(name) &bslash;&n;&t;struct rw_semaphore name = __RWSEM_INITIALIZER(name)
 DECL|function|init_rwsem

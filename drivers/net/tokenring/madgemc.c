@@ -3,8 +3,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;madgemc.c: v0.91 23/01/2000 by Adam Fritzler&bslash;n&quot;
 suffix:semicolon

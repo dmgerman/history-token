@@ -91,15 +91,9 @@ op_assign
 id|affs_bread
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb
 comma
 id|inode-&gt;i_ino
-comma
-id|AFFS_I2BSIZE
-c_func
-(paren
-id|inode
-)paren
 )paren
 suffix:semicolon
 id|unlock_kernel

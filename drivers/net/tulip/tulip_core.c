@@ -15,7 +15,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;Linux Tulip driver version 0.9.14d (April 3, 2001)&bslash;n&quot;
+l_string|&quot;Linux Tulip driver version 0.9.14e (April 20, 2001)&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* A few user-configurable values. */
 multiline_comment|/* Maximum events (Rx packets, etc.) to handle at each interrupt. */
@@ -545,6 +545,21 @@ comma
 id|tulip_timer
 )brace
 comma
+multiline_comment|/* CONEXANT */
+(brace
+l_string|&quot;Conexant LANfinity&quot;
+comma
+l_int|0x100
+comma
+l_int|0x0001ebef
+comma
+id|HAS_MII
+op_or
+id|HAS_ACPI
+comma
+id|tulip_timer
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|variable|__devinitdata
@@ -927,9 +942,24 @@ id|COMET
 )brace
 comma
 (brace
+l_int|0x14f1
+comma
+l_int|0x1803
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
 l_int|0
 comma
+l_int|0
+comma
+id|CONEXANT
 )brace
+comma
+(brace
+)brace
+multiline_comment|/* terminate list */
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
@@ -6576,11 +6606,6 @@ op_star
 id|ent
 )paren
 (brace
-r_static
-r_int
-id|did_version
-suffix:semicolon
-multiline_comment|/* Already printed version info. */
 r_struct
 id|tulip_private
 op_star
@@ -6656,9 +6681,22 @@ id|chip_idx
 op_assign
 id|ent-&gt;driver_data
 suffix:semicolon
-id|board_idx
-op_increment
+r_int
+id|t2104x_mode
+op_assign
+l_int|0
 suffix:semicolon
+r_int
+id|eeprom_missing
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#ifndef MODULE
+r_static
+r_int
+id|did_version
+suffix:semicolon
+multiline_comment|/* Already printed version info. */
 r_if
 c_cond
 (paren
@@ -6678,6 +6716,10 @@ l_string|&quot;%s&quot;
 comma
 id|version
 )paren
+suffix:semicolon
+macro_line|#endif
+id|board_idx
+op_increment
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Lan media wire a tulip chip to a wan interface. Needs a very&n;&t; *&t;different driver (lmc driver)&n;&t; */
 r_if
@@ -6831,10 +6873,8 @@ suffix:semicolon
 multiline_comment|/* init_etherdev ensures aligned and zeroed private structures */
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
 (paren
-l_int|NULL
-comma
 r_sizeof
 (paren
 op_star
@@ -6886,7 +6926,7 @@ id|PFX
 l_string|&quot;%s: I/O region (0x%lx@0x%lx) too small, &quot;
 l_string|&quot;aborting&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pdev-&gt;slot_name
 comma
 id|pci_resource_len
 (paren
@@ -6911,107 +6951,16 @@ multiline_comment|/* grab all resources from both PIO and MMIO regions, as we&n;
 r_if
 c_cond
 (paren
-op_logical_neg
-id|request_region
-(paren
-id|pci_resource_start
+id|pci_request_regions
 (paren
 id|pdev
 comma
-l_int|0
-)paren
-comma
-id|pci_resource_len
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-comma
-id|dev-&gt;name
+l_string|&quot;tulip&quot;
 )paren
 )paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;%s: I/O region (0x%lx@0x%lx) unavailable, &quot;
-l_string|&quot;aborting&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|pci_resource_len
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-comma
-id|pci_resource_start
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
 r_goto
 id|err_out_free_netdev
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_mem_region
-(paren
-id|pci_resource_start
-(paren
-id|pdev
-comma
-l_int|1
-)paren
-comma
-id|pci_resource_len
-(paren
-id|pdev
-comma
-l_int|1
-)paren
-comma
-id|dev-&gt;name
-)paren
-)paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;%s: MMIO region (0x%lx@0x%lx) unavailable, &quot;
-l_string|&quot;aborting&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|pci_resource_len
-(paren
-id|pdev
-comma
-l_int|1
-)paren
-comma
-id|pci_resource_start
-(paren
-id|pdev
-comma
-l_int|1
-)paren
-)paren
-suffix:semicolon
-r_goto
-id|err_out_free_pio_res
-suffix:semicolon
-)brace
 id|pci_set_master
 c_func
 (paren
@@ -7028,7 +6977,7 @@ op_amp
 id|chip_rev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * initialize priviate data structure &squot;tp&squot;&n;&t; * it is zeroed and aligned in init_etherdev&n;&t; */
+multiline_comment|/*&n;&t; * initialize private data structure &squot;tp&squot;&n;&t; * it is zeroed and aligned in init_etherdev&n;&t; */
 id|tp
 op_assign
 id|dev-&gt;priv
@@ -7067,7 +7016,7 @@ op_logical_neg
 id|tp-&gt;rx_ring
 )paren
 r_goto
-id|err_out_free_mmio_res
+id|err_out_free_res
 suffix:semicolon
 id|tp-&gt;tx_ring
 op_assign
@@ -7144,34 +7093,6 @@ suffix:semicolon
 id|dev-&gt;irq
 op_assign
 id|irq
-suffix:semicolon
-id|pci_set_drvdata
-c_func
-(paren
-id|pdev
-comma
-id|dev
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: %s rev %d at %#3lx,&quot;
-comma
-id|dev-&gt;name
-comma
-id|tulip_tbl
-(braket
-id|chip_idx
-)braket
-dot
-id|chip_name
-comma
-id|chip_rev
-comma
-id|ioaddr
-)paren
 suffix:semicolon
 multiline_comment|/* bugfix: the ASIX must have a burst limit or horrible things happen. */
 r_if
@@ -7261,24 +7182,20 @@ op_amp
 l_int|0x8000
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot; 21040 compatible mode,&quot;
-)paren
-suffix:semicolon
 id|chip_idx
 op_assign
 id|DC21040
 suffix:semicolon
+id|t2104x_mode
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot; 21041 mode,&quot;
-)paren
+id|t2104x_mode
+op_assign
+l_int|2
 suffix:semicolon
 )brace
 )brace
@@ -7792,11 +7709,9 @@ op_star
 l_int|0xff
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot; EEPROM not present,&quot;
-)paren
+id|eeprom_missing
+op_assign
+l_int|1
 suffix:semicolon
 r_for
 c_loop
@@ -7860,18 +7775,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;%c%2.2X&quot;
-comma
-id|i
-ques
-c_cond
-l_char|&squot;:&squot;
-suffix:colon
-l_char|&squot; &squot;
-comma
 id|last_phys_addr
 (braket
 id|i
@@ -7881,15 +7784,6 @@ id|dev-&gt;dev_addr
 (braket
 id|i
 )braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;, IRQ %d.&bslash;n&quot;
-comma
-id|irq
-)paren
 suffix:semicolon
 id|last_irq
 op_assign
@@ -7993,7 +7887,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Transceiver selection forced to %s.&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pdev-&gt;slot_name
 comma
 id|medianame
 (braket
@@ -8090,7 +7984,6 @@ id|tp-&gt;to_advertise
 op_assign
 l_int|0x01e1
 suffix:semicolon
-multiline_comment|/* This is logically part of _init_one(), but too complex to write inline. */
 r_if
 c_cond
 (paren
@@ -8112,12 +8005,32 @@ id|tp-&gt;eeprom
 )paren
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|dev-&gt;name
+comma
+l_string|&quot;tulip%d&quot;
+comma
+id|board_idx
+)paren
+suffix:semicolon
+multiline_comment|/* hack */
 id|tulip_parse_eeprom
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|dev-&gt;name
+comma
+l_string|&quot;eth%d&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* un-hack */
 )brace
 r_if
 c_cond
@@ -8348,7 +8261,7 @@ id|KERN_INFO
 l_string|&quot;%s:  MII transceiver #%d &quot;
 l_string|&quot;config %4.4x status %4.4x advertising %4.4x.&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pdev-&gt;slot_name
 comma
 id|phy
 comma
@@ -8375,7 +8288,7 @@ id|KERN_DEBUG
 l_string|&quot;%s:  Advertising %4.4x on PHY %d,&quot;
 l_string|&quot; previously advertising %4.4x.&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pdev-&gt;slot_name
 comma
 id|reg4
 comma
@@ -8391,7 +8304,7 @@ id|KERN_DEBUG
 l_string|&quot;%s:  Advertising %4.4x (to advertise&quot;
 l_string|&quot; is %4.4x).&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pdev-&gt;slot_name
 comma
 id|reg4
 comma
@@ -8471,7 +8384,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: ***WARNING***: No MII transceiver found!&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 id|tp-&gt;phys
@@ -8515,6 +8428,124 @@ suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
 id|set_rx_mode
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+)paren
+r_goto
+id|err_out_mtable
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: %s rev %d at %#3lx,&quot;
+comma
+id|dev-&gt;name
+comma
+id|tulip_tbl
+(braket
+id|chip_idx
+)braket
+dot
+id|chip_name
+comma
+id|chip_rev
+comma
+id|ioaddr
+)paren
+suffix:semicolon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t2104x_mode
+op_eq
+l_int|1
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; 21040 compatible mode,&quot;
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|t2104x_mode
+op_eq
+l_int|2
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; 21041 mode,&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|eeprom_missing
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; EEPROM not present,&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|6
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%c%2.2X&quot;
+comma
+id|i
+ques
+c_cond
+l_char|&squot;:&squot;
+suffix:colon
+l_char|&squot; &squot;
+comma
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;, IRQ %d.&bslash;n&quot;
+comma
+id|irq
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8904,42 +8935,23 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|err_out_free_mmio_res
+id|err_out_mtable
 suffix:colon
-id|release_mem_region
+r_if
+c_cond
 (paren
-id|pci_resource_start
-(paren
-id|pdev
-comma
-l_int|1
+id|tp-&gt;mtable
 )paren
-comma
-id|pci_resource_len
+id|kfree
 (paren
-id|pdev
-comma
-l_int|1
-)paren
+id|tp-&gt;mtable
 )paren
 suffix:semicolon
-id|err_out_free_pio_res
+id|err_out_free_res
 suffix:colon
-id|release_region
-(paren
-id|pci_resource_start
+id|pci_release_regions
 (paren
 id|pdev
-comma
-l_int|0
-)paren
-comma
-id|pci_resource_len
-(paren
-id|pdev
-comma
-l_int|0
-)paren
 )paren
 suffix:semicolon
 id|err_out_free_netdev
@@ -8986,6 +8998,11 @@ c_cond
 (paren
 id|dev
 op_logical_and
+id|netif_running
+(paren
+id|dev
+)paren
+op_logical_and
 id|netif_device_present
 (paren
 id|dev
@@ -9028,17 +9045,15 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#if 1
-id|pci_enable_device
-(paren
-id|pdev
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
 id|dev
+op_logical_and
+id|netif_running
+(paren
+id|dev
+)paren
 op_logical_and
 op_logical_neg
 id|netif_device_present
@@ -9047,6 +9062,13 @@ id|dev
 )paren
 )paren
 (brace
+macro_line|#if 1
+id|pci_enable_device
+(paren
+id|pdev
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* pci_power_on(pdev); */
 id|tulip_up
 (paren
@@ -9129,40 +9151,6 @@ id|unregister_netdev
 id|dev
 )paren
 suffix:semicolon
-id|release_mem_region
-(paren
-id|pci_resource_start
-(paren
-id|pdev
-comma
-l_int|1
-)paren
-comma
-id|pci_resource_len
-(paren
-id|pdev
-comma
-l_int|1
-)paren
-)paren
-suffix:semicolon
-id|release_region
-(paren
-id|pci_resource_start
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-comma
-id|pci_resource_len
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9176,6 +9164,11 @@ suffix:semicolon
 id|kfree
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|pci_release_regions
+(paren
+id|pdev
 )paren
 suffix:semicolon
 id|pci_set_drvdata
@@ -9229,6 +9222,16 @@ id|tulip_init
 r_void
 )paren
 (brace
+macro_line|#ifdef MODULE
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;%s&quot;
+comma
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* copy module parms into globals */
 id|tulip_rx_copybreak
 op_assign

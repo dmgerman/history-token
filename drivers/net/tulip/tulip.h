@@ -185,6 +185,9 @@ comma
 DECL|enumerator|DM910X
 id|DM910X
 comma
+DECL|enumerator|CONEXANT
+id|CONEXANT
+comma
 )brace
 suffix:semicolon
 DECL|enum|MediaIs

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&n;&t;drivers/net/pci-skeleton.c&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&n;&t;Original code came from 8139too.c, which in turns was based&n;&t;originally on Donald Becker&squot;s rtl8139.c driver, versions 1.11&n;&t;and older.  This driver was originally based on rtl8139.c&n;&t;version 1.07.  Header of rtl8139.c version 1.11:&n;&n;&t;-----&lt;snip&gt;-----&n;&n;        &t;Written 1997-2000 by Donald Becker.&n;&t;&t;This software may be used and distributed according to the&n;&t;&t;terms of the GNU General Public License (GPL), incorporated&n;&t;&t;herein by reference.  Drivers based on or derived from this&n;&t;&t;code fall under the GPL and must retain the authorship,&n;&t;&t;copyright and license notice.  This file is not a complete&n;&t;&t;program and may only be used when the entire operating&n;&t;&t;system is licensed under the GPL.&n;&n;&t;&t;This driver is for boards based on the RTL8129 and RTL8139&n;&t;&t;PCI ethernet chips.&n;&n;&t;&t;The author may be reached as becker@scyld.com, or C/O Scyld&n;&t;&t;Computing Corporation 410 Severn Ave., Suite 210 Annapolis&n;&t;&t;MD 21403&n;&n;&t;&t;Support and updates available at&n;&t;&t;http://www.scyld.com/network/rtl8139.html&n;&n;&t;&t;Twister-tuning table provided by Kinston&n;&t;&t;&lt;shangh@realtek.com.tw&gt;.&n;&n;&t;-----&lt;snip&gt;-----&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&n;-----------------------------------------------------------------------------&n;&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the RealTek RTL8139 series, the RealTek&n;Fast Ethernet controllers for PCI and CardBus.  This chip is used on many&n;low-end boards, sometimes with its markings changed.&n;&n;&n;II. Board-specific settings&n;&n;PCI bus devices are configured by the system at boot time, so no jumpers&n;need to be set on the board.  The system BIOS will assign the&n;PCI INTA signal to a (preferably otherwise unused) system IRQ line.&n;&n;III. Driver operation&n;&n;IIIa. Rx Ring buffers&n;&n;The receive unit uses a single linear ring buffer rather than the more&n;common (and more efficient) descriptor-based architecture.  Incoming frames&n;are sequentially stored into the Rx region, and the host copies them into&n;skbuffs.&n;&n;Comment: While it is theoretically possible to process many frames in place,&n;any delay in Rx processing would cause us to drop frames.  More importantly,&n;the Linux protocol stack is not designed to operate in this manner.&n;&n;IIIb. Tx operation&n;&n;The RTL8139 uses a fixed set of four Tx descriptors in register space.&n;In a stunningly bad design choice, Tx frames must be 32 bit aligned.  Linux&n;aligns the IP header on word boundaries, and 14 byte ethernet header means&n;that almost all frames will need to be copied to an alignment buffer.&n;&n;IVb. References&n;&n;http://www.realtek.com.tw/cn/cn.html&n;http://www.scyld.com/expert/NWay.html&n;&n;IVc. Errata&n;&n;1) The RTL-8139 has a serious problem with motherboards which do&n;posted MMIO writes to PCI space.  This driver works around the&n;problem by having an MMIO  register write be immediately followed by&n;an MMIO register read.&n;&n;2) The RTL-8129 is only supported in Donald Becker&squot;s rtl8139 driver.&n;&n;*/
+multiline_comment|/*&n;&n;&t;drivers/net/pci-skeleton.c&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&n;&t;Original code came from 8139too.c, which in turns was based&n;&t;originally on Donald Becker&squot;s rtl8139.c driver, versions 1.11&n;&t;and older.  This driver was originally based on rtl8139.c&n;&t;version 1.07.  Header of rtl8139.c version 1.11:&n;&n;&t;-----&lt;snip&gt;-----&n;&n;        &t;Written 1997-2000 by Donald Becker.&n;&t;&t;This software may be used and distributed according to the&n;&t;&t;terms of the GNU General Public License (GPL), incorporated&n;&t;&t;herein by reference.  Drivers based on or derived from this&n;&t;&t;code fall under the GPL and must retain the authorship,&n;&t;&t;copyright and license notice.  This file is not a complete&n;&t;&t;program and may only be used when the entire operating&n;&t;&t;system is licensed under the GPL.&n;&n;&t;&t;This driver is for boards based on the RTL8129 and RTL8139&n;&t;&t;PCI ethernet chips.&n;&n;&t;&t;The author may be reached as becker@scyld.com, or C/O Scyld&n;&t;&t;Computing Corporation 410 Severn Ave., Suite 210 Annapolis&n;&t;&t;MD 21403&n;&n;&t;&t;Support and updates available at&n;&t;&t;http://www.scyld.com/network/rtl8139.html&n;&n;&t;&t;Twister-tuning table provided by Kinston&n;&t;&t;&lt;shangh@realtek.com.tw&gt;.&n;&n;&t;-----&lt;snip&gt;-----&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&n;-----------------------------------------------------------------------------&n;&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the RealTek RTL8139 series, the RealTek&n;Fast Ethernet controllers for PCI and CardBus.  This chip is used on many&n;low-end boards, sometimes with its markings changed.&n;&n;&n;II. Board-specific settings&n;&n;PCI bus devices are configured by the system at boot time, so no jumpers&n;need to be set on the board.  The system BIOS will assign the&n;PCI INTA signal to a (preferably otherwise unused) system IRQ line.&n;&n;III. Driver operation&n;&n;IIIa. Rx Ring buffers&n;&n;The receive unit uses a single linear ring buffer rather than the more&n;common (and more efficient) descriptor-based architecture.  Incoming frames&n;are sequentially stored into the Rx region, and the host copies them into&n;skbuffs.&n;&n;Comment: While it is theoretically possible to process many frames in place,&n;any delay in Rx processing would cause us to drop frames.  More importantly,&n;the Linux protocol stack is not designed to operate in this manner.&n;&n;IIIb. Tx operation&n;&n;The RTL8139 uses a fixed set of four Tx descriptors in register space.&n;In a stunningly bad design choice, Tx frames must be 32 bit aligned.  Linux&n;aligns the IP header on word boundaries, and 14 byte ethernet header means&n;that almost all frames will need to be copied to an alignment buffer.&n;&n;IVb. References&n;&n;http://www.realtek.com.tw/cn/cn.html&n;http://www.scyld.com/expert/NWay.html&n;&n;IVc. Errata&n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -16,6 +16,20 @@ DECL|macro|NETDRV_DRIVER_LOAD_MSG
 mdefine_line|#define NETDRV_DRIVER_LOAD_MSG&t;&quot;MyVendor Fast Ethernet driver &quot; NETDRV_VERSION &quot; loaded&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;MODNAME &quot;: &quot;
+DECL|variable|__devinitdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__devinitdata
+op_assign
+id|KERN_INFO
+id|NETDRV_DRIVER_LOAD_MSG
+l_string|&quot;&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;  Support available from http://foo.com/bar/baz.html&bslash;n&quot;
+suffix:semicolon
 multiline_comment|/* define to 1 to enable PIO instead of MMIO */
 DECL|macro|USE_IO_OPS
 macro_line|#undef USE_IO_OPS
@@ -2508,13 +2522,29 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|u8
+id|tmp
+suffix:semicolon
+multiline_comment|/* when built into the kernel, we only print version if device is found */
+macro_line|#ifndef MODULE
 r_static
 r_int
 id|printed_version
 suffix:semicolon
-id|u8
-id|tmp
+r_if
+c_cond
+(paren
+op_logical_neg
+id|printed_version
+op_increment
+)paren
+id|printk
+c_func
+(paren
+id|version
+)paren
 suffix:semicolon
+macro_line|#endif
 id|DPRINTK
 (paren
 l_string|&quot;ENTER&bslash;n&quot;
@@ -2537,25 +2567,6 @@ suffix:semicolon
 id|board_idx
 op_increment
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|printed_version
-)paren
-(brace
-id|printk
-(paren
-id|KERN_INFO
-id|NETDRV_DRIVER_LOAD_MSG
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printed_version
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 id|i
 op_assign
 id|netdrv_init_board
@@ -7924,6 +7935,15 @@ id|netdrv_init_module
 r_void
 )paren
 (brace
+multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
+macro_line|#ifdef MODULE
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 (paren

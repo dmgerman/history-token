@@ -450,6 +450,9 @@ id|file_operations
 id|ppc_htab_operations
 suffix:semicolon
 multiline_comment|/*&n; * proc_tty.c&n; */
+r_struct
+id|tty_driver
+suffix:semicolon
 r_extern
 r_void
 id|proc_tty_init

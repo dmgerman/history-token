@@ -8,9 +8,12 @@ mdefine_line|#define RWSEM_DEBUG 0
 DECL|macro|RWSEM_DEBUG_MAGIC
 mdefine_line|#define RWSEM_DEBUG_MAGIC 0
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;linux/wait.h&gt;
+r_struct
+id|rw_semaphore
+suffix:semicolon
 multiline_comment|/* defined contention handler functions for the generic case&n; * - these are also used for the exchange-and-add based algorithm&n; */
 macro_line|#if defined(CONFIG_RWSEM_GENERIC_SPINLOCK) || defined(CONFIG_RWSEM_XCHGADD_ALGORITHM)
 multiline_comment|/* we use FASTCALL convention for the helpers */
@@ -73,9 +76,26 @@ macro_line|#include &lt;asm/rwsem.h&gt; /* use an arch-specific implementation *
 macro_line|#endif
 macro_line|#ifndef rwsemtrace
 macro_line|#if RWSEM_DEBUG
-macro_line|#include &lt;asm/current.h&gt;
-DECL|macro|rwsemtrace
-mdefine_line|#define rwsemtrace(SEM,FMT) do { if ((SEM)-&gt;debug) printk(&quot;[%d] &quot;FMT&quot;(count=%08lx)&bslash;n&quot;,current-&gt;pid,(SEM)-&gt;count); } while(0)
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|rwsemtrace
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+comma
+r_const
+r_char
+op_star
+id|str
+)paren
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|macro|rwsemtrace
 mdefine_line|#define rwsemtrace(SEM,FMT)

@@ -292,6 +292,7 @@ c_func
 id|__up_wakeup
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_RWSEM_XCHGADD_ALGORITHM
 DECL|variable|__rwsem_down_write_failed
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -313,6 +314,7 @@ c_func
 id|__rwsem_wake
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Networking helper routines. */
 DECL|variable|csum_partial_copy_generic
 id|EXPORT_SYMBOL

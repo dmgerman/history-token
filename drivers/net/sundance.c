@@ -1,26 +1,5 @@
 multiline_comment|/* sundance.c: A Linux device driver for the Sundance ST201 &quot;Alta&quot;. */
 multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;*/
-multiline_comment|/* These identify the driver base version and may not be removed. */
-DECL|variable|version1
-r_static
-r_const
-r_char
-id|version1
-(braket
-)braket
-op_assign
-l_string|&quot;sundance.c:v1.01 4/09/00  Written by Donald Becker&bslash;n&quot;
-suffix:semicolon
-DECL|variable|version2
-r_static
-r_const
-r_char
-id|version2
-(braket
-)braket
-op_assign
-l_string|&quot;  http://www.scyld.com/network/sundance.html&bslash;n&quot;
-suffix:semicolon
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -169,6 +148,20 @@ macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache ali
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+multiline_comment|/* These identify the driver base version and may not be removed. */
+DECL|variable|__devinitdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__devinitdata
+op_assign
+id|KERN_INFO
+l_string|&quot;sundance.c:v1.01 4/09/00  Written by Donald Becker&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;  http://www.scyld.com/network/sundance.html&bslash;n&quot;
+suffix:semicolon
 multiline_comment|/* Condensed operations for readability. */
 DECL|macro|virt_to_le32desc
 mdefine_line|#define virt_to_le32desc(addr)  cpu_to_le32(virt_to_bus(addr))
@@ -1493,6 +1486,26 @@ suffix:semicolon
 r_int
 id|ioaddr
 suffix:semicolon
+multiline_comment|/* when built into the kernel, we only print version if device is found */
+macro_line|#ifndef MODULE
+r_static
+r_int
+id|printed_version
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|printed_version
+op_increment
+)paren
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1604,7 +1617,7 @@ op_logical_neg
 id|ioaddr
 )paren
 r_goto
-id|err_out_iomem
+id|err_out_res
 suffix:semicolon
 macro_line|#endif
 r_for
@@ -1782,6 +1795,14 @@ suffix:semicolon
 id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
+suffix:semicolon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2079,7 +2100,7 @@ op_star
 id|ioaddr
 )paren
 suffix:semicolon
-id|err_out_iomem
+id|err_out_res
 suffix:colon
 macro_line|#endif
 id|pci_release_regions
@@ -6310,6 +6331,15 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
+macro_line|#ifdef MODULE
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func

@@ -963,6 +963,19 @@ id|USE_BIG_BUF
 )brace
 comma
 (brace
+multiline_comment|/* Socket LP-E CF+ */
+l_int|0x01c0
+comma
+l_int|0x00
+comma
+l_int|0xc0
+comma
+l_int|0x1b
+comma
+l_int|0
+)brace
+comma
+(brace
 multiline_comment|/* SuperSocket RE450T */
 l_int|0x0110
 comma

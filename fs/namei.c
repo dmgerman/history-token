@@ -95,7 +95,9 @@ r_int
 )paren
 id|filename
 OL
-id|PAGE_SIZE
+id|PATH_MAX
+op_plus
+l_int|1
 )paren
 id|len
 op_assign

@@ -1,26 +1,5 @@
 multiline_comment|/* ne2k-pci.c: A NE2000 clone on PCI bus driver for Linux. */
 multiline_comment|/*&n;&t;A Linux device driver for PCI NE2000 clones.&n;&n;&t;Authors and other copyright holders:&n;&t;1992-2000 by Donald Becker, NE2000 core and various modifications.&n;&t;1995-1998 by Paul Gortmaker, core modifications and PCI support.&n;&t;Copyright 1993 assigned to the United States Government as represented&n;&t;by the Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Issues remaining:&n;&t;People are making PCI ne2000 clones! Oh the horror, the horror...&n;&t;Limited full-duplex support.&n;*/
-multiline_comment|/* These identify the driver base version and may not be removed. */
-DECL|variable|version1
-r_static
-r_const
-r_char
-id|version1
-(braket
-)braket
-op_assign
-l_string|&quot;ne2k-pci.c:v1.02 10/19/2000 D. Becker/P. Gortmaker&bslash;n&quot;
-suffix:semicolon
-DECL|variable|version2
-r_static
-r_const
-r_char
-id|version2
-(braket
-)braket
-op_assign
-l_string|&quot;  http://www.scyld.com/network/ne2k-pci.html&bslash;n&quot;
-suffix:semicolon
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -63,6 +42,20 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &quot;8390.h&quot;
+multiline_comment|/* These identify the driver base version and may not be removed. */
+DECL|variable|__devinitdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__devinitdata
+op_assign
+id|KERN_INFO
+l_string|&quot;ne2k-pci.c:v1.02 10/19/2000 D. Becker/P. Gortmaker&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;  http://www.scyld.com/network/ne2k-pci.html&bslash;n&quot;
+suffix:semicolon
 macro_line|#if defined(__powerpc__)
 DECL|macro|inl_le
 mdefine_line|#define inl_le(addr)  le32_to_cpu(inl(addr))
@@ -681,26 +674,28 @@ id|chip_idx
 dot
 id|flags
 suffix:semicolon
+multiline_comment|/* when built into the kernel, we only print version if device is found */
+macro_line|#ifndef MODULE
+r_static
+r_int
+id|printed_version
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|fnd_cnt
+op_logical_neg
+id|printed_version
 op_increment
-op_eq
-l_int|0
 )paren
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s&quot;
-id|KERN_INFO
-l_string|&quot;%s&quot;
-comma
-id|version1
-comma
-id|version2
+id|version
 )paren
+suffix:semicolon
+macro_line|#endif
+id|fnd_cnt
+op_increment
 suffix:semicolon
 id|i
 op_assign
@@ -2794,6 +2789,15 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
+macro_line|#ifdef MODULE
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 (paren

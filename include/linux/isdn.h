@@ -1,8 +1,10 @@
-multiline_comment|/* $Id: isdn.h,v 1.111.6.1 2001/02/07 11:31:31 kai Exp $&n;&n; * Main header for the Linux ISDN subsystem (linklevel).&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
+multiline_comment|/* $Id: isdn.h,v 1.111.6.5 2001/04/20 02:40:48 keil Exp $&n;&n; * Main header for the Linux ISDN subsystem (linklevel).&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
 macro_line|#ifndef isdn_h
 DECL|macro|isdn_h
 mdefine_line|#define isdn_h
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#endif
 macro_line|#include &lt;linux/ioctl.h&gt;
 DECL|macro|ISDN_TTY_MAJOR
 mdefine_line|#define ISDN_TTY_MAJOR    43
@@ -11,10 +13,18 @@ mdefine_line|#define ISDN_TTYAUX_MAJOR 44
 DECL|macro|ISDN_MAJOR
 mdefine_line|#define ISDN_MAJOR        45
 multiline_comment|/* The minor-devicenumbers for Channel 0 and 1 are used as arguments for&n; * physical Channel-Mapping, so they MUST NOT be changed without changing&n; * the correspondent code in isdn.c&n; */
+macro_line|#ifdef USE_MINIMUM_MEM
+multiline_comment|/* Save memory */
+DECL|macro|ISDN_MAX_DRIVERS
+mdefine_line|#define ISDN_MAX_DRIVERS    2
+DECL|macro|ISDN_MAX_CHANNELS
+mdefine_line|#define ISDN_MAX_CHANNELS   8
+macro_line|#else
 DECL|macro|ISDN_MAX_DRIVERS
 mdefine_line|#define ISDN_MAX_DRIVERS    32
 DECL|macro|ISDN_MAX_CHANNELS
 mdefine_line|#define ISDN_MAX_CHANNELS   64
+macro_line|#endif
 DECL|macro|ISDN_MINOR_B
 mdefine_line|#define ISDN_MINOR_B        0
 DECL|macro|ISDN_MINOR_BMAX
@@ -116,6 +126,15 @@ DECL|macro|IIOCDBGVAR
 mdefine_line|#define IIOCDBGVAR  _IO(&squot;I&squot;,127)
 DECL|macro|IIOCDRVCTL
 mdefine_line|#define IIOCDRVCTL  _IO(&squot;I&squot;,128)
+multiline_comment|/* cisco hdlck device private ioctls */
+DECL|macro|SIOCGKEEPPERIOD
+mdefine_line|#define SIOCGKEEPPERIOD&t;(SIOCDEVPRIVATE + 0)
+DECL|macro|SIOCSKEEPPERIOD
+mdefine_line|#define SIOCSKEEPPERIOD&t;(SIOCDEVPRIVATE + 1)
+DECL|macro|SIOCGDEBSERINT
+mdefine_line|#define SIOCGDEBSERINT&t;(SIOCDEVPRIVATE + 2)
+DECL|macro|SIOCSDEBSERINT
+mdefine_line|#define SIOCSDEBSERINT&t;(SIOCDEVPRIVATE + 3)
 multiline_comment|/* Packet encapsulations for net-interfaces */
 DECL|macro|ISDN_NET_ENCAP_ETHER
 mdefine_line|#define ISDN_NET_ENCAP_ETHER      0
@@ -486,11 +505,11 @@ DECL|macro|USG_MODEMORVOICE
 mdefine_line|#define USG_MODEMORVOICE(x) (((x &amp; ISDN_USAGE_MASK)==ISDN_USAGE_MODEM) || &bslash;&n;                             ((x &amp; ISDN_USAGE_MASK)==ISDN_USAGE_VOICE)     )
 multiline_comment|/* Timer-delays and scheduling-flags */
 DECL|macro|ISDN_TIMER_RES
-mdefine_line|#define ISDN_TIMER_RES         3                         /* Main Timer-Resolution   */
+mdefine_line|#define ISDN_TIMER_RES         4                         /* Main Timer-Resolution   */
 DECL|macro|ISDN_TIMER_02SEC
-mdefine_line|#define ISDN_TIMER_02SEC       (HZ/(ISDN_TIMER_RES+1)/5) /* Slow-Timer1 .2 sec      */
+mdefine_line|#define ISDN_TIMER_02SEC       (HZ/ISDN_TIMER_RES/5)     /* Slow-Timer1 .2 sec      */
 DECL|macro|ISDN_TIMER_1SEC
-mdefine_line|#define ISDN_TIMER_1SEC        (HZ/(ISDN_TIMER_RES+1))   /* Slow-Timer2 1 sec       */
+mdefine_line|#define ISDN_TIMER_1SEC        (HZ/ISDN_TIMER_RES)       /* Slow-Timer2 1 sec       */
 DECL|macro|ISDN_TIMER_RINGING
 mdefine_line|#define ISDN_TIMER_RINGING     5 /* tty RINGs = ISDN_TIMER_1SEC * this factor       */
 DECL|macro|ISDN_TIMER_KEEPINT
@@ -507,14 +526,12 @@ DECL|macro|ISDN_TIMER_NETDIAL
 mdefine_line|#define ISDN_TIMER_NETDIAL    16 
 DECL|macro|ISDN_TIMER_NETHANGUP
 mdefine_line|#define ISDN_TIMER_NETHANGUP  32
-DECL|macro|ISDN_TIMER_KEEPALIVE
-mdefine_line|#define ISDN_TIMER_KEEPALIVE 128 /* Cisco-Keepalive */
 DECL|macro|ISDN_TIMER_CARRIER
 mdefine_line|#define ISDN_TIMER_CARRIER   256 /* Wait for Carrier */
 DECL|macro|ISDN_TIMER_FAST
 mdefine_line|#define ISDN_TIMER_FAST      (ISDN_TIMER_MODEMREAD | ISDN_TIMER_MODEMPLUS | &bslash;&n;                              ISDN_TIMER_MODEMXMIT)
 DECL|macro|ISDN_TIMER_SLOW
-mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_MODEMRING | ISDN_TIMER_NETHANGUP | &bslash;&n;                              ISDN_TIMER_NETDIAL | ISDN_TIMER_KEEPALIVE | &bslash;&n;                              ISDN_TIMER_CARRIER)
+mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_MODEMRING | ISDN_TIMER_NETHANGUP | &bslash;&n;                              ISDN_TIMER_NETDIAL | ISDN_TIMER_CARRIER)
 multiline_comment|/* Timeout-Values for isdn_net_dial() */
 DECL|macro|ISDN_TIMER_DTIMEOUT10
 mdefine_line|#define ISDN_TIMER_DTIMEOUT10 (10*HZ/(ISDN_TIMER_02SEC*(ISDN_TIMER_RES+1)))
@@ -909,21 +926,47 @@ id|dops
 suffix:semicolon
 multiline_comment|/* callbacks used by encapsulator   */
 macro_line|#endif
-DECL|member|cisco_loop
-r_int
-id|cisco_loop
-suffix:semicolon
-multiline_comment|/* Loop counter for Cisco-SLARP     */
+multiline_comment|/* use an own struct for that in later versions */
 DECL|member|cisco_myseq
 id|ulong
 id|cisco_myseq
 suffix:semicolon
 multiline_comment|/* Local keepalive seq. for Cisco   */
+DECL|member|cisco_mineseen
+id|ulong
+id|cisco_mineseen
+suffix:semicolon
+multiline_comment|/* returned keepalive seq. from remote */
 DECL|member|cisco_yourseq
 id|ulong
 id|cisco_yourseq
 suffix:semicolon
 multiline_comment|/* Remote keepalive seq. for Cisco  */
+DECL|member|cisco_keepalive_period
+r_int
+id|cisco_keepalive_period
+suffix:semicolon
+multiline_comment|/* keepalive period */
+DECL|member|cisco_last_slarp_in
+id|ulong
+id|cisco_last_slarp_in
+suffix:semicolon
+multiline_comment|/* jiffie of last keepalive packet we received */
+DECL|member|cisco_line_state
+r_char
+id|cisco_line_state
+suffix:semicolon
+multiline_comment|/* state of line according to keepalive packets */
+DECL|member|cisco_debserint
+r_char
+id|cisco_debserint
+suffix:semicolon
+multiline_comment|/* debugging flag of cisco hdlc with slarp */
+DECL|member|cisco_timer
+r_struct
+id|timer_list
+id|cisco_timer
+suffix:semicolon
 DECL|member|tqueue
 r_struct
 id|tq_struct

@@ -1,36 +1,5 @@
 multiline_comment|/* natsemi.c: A Linux PCI Ethernet driver for the NatSemi DP8381x series. */
 multiline_comment|/*&n;&t;Written/copyright 1999-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.  License for under other terms may be&n;&t;available.  Contact the original author for details.&n;&n;&t;The original author may be reached as becker@scyld.com, or at&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support information and updates available at&n;&t;http://www.scyld.com/network/netsemi.html&n;&n;&n;&t;Linux kernel modifications:&n;&n;&t;Version 1.0.1:&n;&t;&t;- Spinlock fixes&n;&t;&t;- Bug fixes and better intr performance (Tjeerd)&n;&t;Version 1.0.2:&n;&t;&t;- Now reads correct MAC address from eeprom&n;&t;Version 1.0.3:&n;&t;&t;- Eliminate redundant priv-&gt;tx_full flag&n;&t;&t;- Call netif_start_queue from dev-&gt;tx_timeout&n;&t;&t;- wmb() in start_tx() to flush data&n;&t;&t;- Update Tx locking&n;&t;&t;- Clean up PCI enable (davej)&n;&t;Version 1.0.4:&n;&t;&t;- Merge Donald Becker&squot;s natsemi.c version 1.07&n;&n;*/
-multiline_comment|/* These identify the driver base version and may not be removed. */
-DECL|variable|version1
-r_static
-r_const
-r_char
-id|version1
-(braket
-)braket
-op_assign
-l_string|&quot;natsemi.c:v1.07 1/9/2001  Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
-suffix:semicolon
-DECL|variable|version2
-r_static
-r_const
-r_char
-id|version2
-(braket
-)braket
-op_assign
-l_string|&quot;  http://www.scyld.com/network/natsemi.html&bslash;n&quot;
-suffix:semicolon
-DECL|variable|version3
-r_static
-r_const
-r_char
-id|version3
-(braket
-)braket
-op_assign
-l_string|&quot;  (unofficial 2.4.x kernel port, version 1.0.4, February 26, 2001 Jeff Garzik, Tjeerd Mulder)&bslash;n&quot;
-suffix:semicolon
 multiline_comment|/* Updated to recommendations in pci-skeleton v2.03. */
 multiline_comment|/* Automatically extracted configuration info:&n;probe-func: natsemi_probe&n;config-in: tristate &squot;National Semiconductor DP8381x series PCI Ethernet support&squot; CONFIG_NATSEMI&n;&n;c-help-name: National Semiconductor DP8381x series PCI Ethernet support&n;c-help-symbol: CONFIG_NATSEMI&n;c-help: This driver is for the National Semiconductor DP8381x series,&n;c-help: including the 83815 chip.&n;c-help: More specific information and updates are available from &n;c-help: http://www.scyld.com/network/natsemi.html&n;*/
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
@@ -178,6 +147,22 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+multiline_comment|/* These identify the driver base version and may not be removed. */
+DECL|variable|__devinitdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__devinitdata
+op_assign
+id|KERN_INFO
+l_string|&quot;natsemi.c:v1.07 1/9/2001  Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;  http://www.scyld.com/network/natsemi.html&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;  (unofficial 2.4.x kernel port, version 1.0.5, April 17, 2001 Jeff Garzik, Tjeerd Mulder)&bslash;n&quot;
+suffix:semicolon
 multiline_comment|/* Condensed operations for readability. */
 DECL|macro|virt_to_le32desc
 mdefine_line|#define virt_to_le32desc(addr)  cpu_to_le32(virt_to_bus(addr))
@@ -1153,10 +1138,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-r_static
-r_int
-id|printed_version
-suffix:semicolon
 r_int
 r_int
 id|ioaddr
@@ -1176,15 +1157,15 @@ suffix:semicolon
 id|u32
 id|tmp
 suffix:semicolon
+multiline_comment|/* when built into the kernel, we only print version if device is found */
+macro_line|#ifndef MODULE
+r_static
+r_int
+id|printed_version
+suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|debug
-op_le
-l_int|1
-)paren
-op_logical_and
 op_logical_neg
 id|printed_version
 op_increment
@@ -1192,20 +1173,10 @@ op_increment
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s&quot;
-id|KERN_INFO
-l_string|&quot;%s&quot;
-id|KERN_INFO
-l_string|&quot;%s&quot;
-comma
-id|version1
-comma
-id|version2
-comma
-id|version3
+id|version
 )paren
 suffix:semicolon
+macro_line|#endif
 id|i
 op_assign
 id|pci_enable_device
@@ -5827,30 +5798,15 @@ id|natsemi_init_mod
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|debug
-OG
-l_int|1
-)paren
+multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
+macro_line|#ifdef MODULE
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s&quot;
-id|KERN_INFO
-l_string|&quot;%s&quot;
-id|KERN_INFO
-l_string|&quot;%s&quot;
-comma
-id|version1
-comma
-id|version2
-comma
-id|version3
+id|version
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 (paren

@@ -10440,6 +10440,11 @@ id|codec-&gt;codec_write
 op_assign
 id|m3_ac97_write
 suffix:semicolon
+multiline_comment|/* someday we should support secondary codecs.. */
+id|codec-&gt;id
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13330,6 +13335,13 @@ c_func
 (paren
 op_amp
 id|m3_pci_driver
+)paren
+suffix:semicolon
+id|unregister_reboot_notifier
+c_func
+(paren
+op_amp
+id|m3_reboot_nb
 )paren
 suffix:semicolon
 r_return

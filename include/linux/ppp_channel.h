@@ -5,7 +5,6 @@ multiline_comment|/*&n; * Definitions for the interface between the generic PPP 
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
 r_struct
 id|ppp_channel
 suffix:semicolon
@@ -183,85 +182,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * SMP locking notes:&n; * The channel code must ensure that when it calls ppp_unregister_channel,&n; * nothing is executing in any of the procedures above, for that&n; * channel.  The generic layer will ensure that nothing is executing&n; * in the start_xmit and ioctl routines for the channel by the time&n; * that ppp_unregister_channel returns.&n; */
-multiline_comment|/* The following are temporary compatibility stuff */
-id|ssize_t
-id|ppp_channel_read
-c_func
-(paren
-r_struct
-id|ppp_channel
-op_star
-id|chan
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
-id|ssize_t
-id|ppp_channel_write
-c_func
-(paren
-r_struct
-id|ppp_channel
-op_star
-id|chan
-comma
-r_const
-r_char
-op_star
-id|buf
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
-r_int
-r_int
-id|ppp_channel_poll
-c_func
-(paren
-r_struct
-id|ppp_channel
-op_star
-id|chan
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-id|poll_table
-op_star
-id|wait
-)paren
-suffix:semicolon
-r_int
-id|ppp_channel_ioctl
-c_func
-(paren
-r_struct
-id|ppp_channel
-op_star
-id|chan
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: icn.h,v 1.30.6.2 2001/02/16 16:43:31 kai Exp $&n;&n; * ISDN lowlevel-module for the ICN active ISDN-Card.&n; *&n; * Copyright 1994 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: icn.h,v 1.30.6.3 2001/04/20 02:42:01 keil Exp $&n;&n; * ISDN lowlevel-module for the ICN active ISDN-Card.&n; *&n; * Copyright 1994 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#ifndef icn_h
 DECL|macro|icn_h
 mdefine_line|#define icn_h
@@ -520,6 +520,12 @@ r_typedef
 r_struct
 id|icn_dev
 (brace
+DECL|member|memaddr
+r_int
+r_int
+id|memaddr
+suffix:semicolon
+multiline_comment|/* Address of memory mapped buffers */
 DECL|member|shmem
 id|icn_shmem
 op_star
@@ -610,6 +616,7 @@ suffix:semicolon
 DECL|variable|membase
 r_static
 r_int
+r_int
 id|membase
 op_assign
 id|ICN_MEMADDR
@@ -658,7 +665,7 @@ c_func
 (paren
 id|membase
 comma
-l_string|&quot;i&quot;
+l_string|&quot;l&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -765,13 +772,6 @@ DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ((a&lt;b)?a:b)
 DECL|macro|MAX
 mdefine_line|#define MAX(a,b) ((a&gt;b)?a:b)
-multiline_comment|/* Hopefully, a separate resource-registration-scheme for shared-memory&n; * will be introduced into the kernel. Until then, we use the normal&n; * routines, designed for port-registration.&n; */
-DECL|macro|check_shmem
-mdefine_line|#define check_shmem   check_region
-DECL|macro|release_shmem
-mdefine_line|#define release_shmem release_region
-DECL|macro|request_shmem
-mdefine_line|#define request_shmem request_region
 macro_line|#endif                          /* defined(__KERNEL__) || defined(__DEBUGVAR__) */
 macro_line|#endif                          /* icn_h */
 eof

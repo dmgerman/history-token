@@ -1,4 +1,4 @@
-multiline_comment|/* Low-level parallel-port routines for 8255-based PC-style hardware.&n; * &n; * Authors: Phil Blundell &lt;Philip.Blundell@pobox.com&gt;&n; *          Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *&t;    Jose Renau &lt;renau@acm.org&gt;&n; *          David Campbell &lt;campbell@torque.net&gt;&n; *          Andrea Arcangeli&n; *&n; * based on work by Grant Guenther &lt;grant@torque.net&gt; and Phil Blundell.&n; *&n; * Cleaned up include files - Russell King &lt;linux@arm.uk.linux.org&gt;&n; * DMA support - Bert De Jonghe &lt;bert@sophis.be&gt;&n; * Many ECP bugs fixed.  Fred Barnes &amp; Jamie Lokier, 1999&n; */
+multiline_comment|/* Low-level parallel-port routines for 8255-based PC-style hardware.&n; * &n; * Authors: Phil Blundell &lt;Philip.Blundell@pobox.com&gt;&n; *          Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *&t;    Jose Renau &lt;renau@acm.org&gt;&n; *          David Campbell &lt;campbell@torque.net&gt;&n; *          Andrea Arcangeli&n; *&n; * based on work by Grant Guenther &lt;grant@torque.net&gt; and Phil Blundell.&n; *&n; * Cleaned up include files - Russell King &lt;linux@arm.uk.linux.org&gt;&n; * DMA support - Bert De Jonghe &lt;bert@sophis.be&gt;&n; * Many ECP bugs fixed.  Fred Barnes &amp; Jamie Lokier, 1999&n; * More PCI support now conditional on CONFIG_PCI, 03/2001, Paul G. &n; */
 multiline_comment|/* This driver should work with any hardware that is broadly compatible&n; * with that in the IBM PC.  This applies to the majority of integrated&n; * I/O chipsets that are commonly available.  The expected register&n; * layout is:&n; *&n; *&t;base+0&t;&t;data&n; *&t;base+1&t;&t;status&n; *&t;base+2&t;&t;control&n; *&n; * In addition, there are some optional registers:&n; *&n; *&t;base+3&t;&t;EPP address&n; *&t;base+4&t;&t;EPP data&n; *&t;base+0x400&t;ECP config A&n; *&t;base+0x401&t;ECP config B&n; *&t;base+0x402&t;ECP control&n; *&n; * All registers are 8 bits wide and read/write.  If your hardware differs&n; * only in register addresses (eg because your registers are on 32-bit&n; * word boundaries) then you can alter the constants in parport_pc.h to&n; * accomodate this.&n; *&n; * Note that the ECP registers may not start at offset 0x400 for PCI cards,&n; * but rather will start at port-&gt;base_hi.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -3811,7 +3811,7 @@ id|schedule
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* At this point, the FIFO may already be full.&n;&t;&t; * Ideally, we&squot;d be able to tell the port to hold on&n;&t;&t; * for a second while we empty the FIFO, and we&squot;d be&n;&t;&t; * able to ensure that no data is lost.  I&squot;m not sure&n;&t;&t; * that&squot;s the case. :-(  It might be that you can play&n;&t;&t; * games with STB, as in the forward case; someone should&n;&t;&t; * look at a datasheet. */
+multiline_comment|/* At this point, the FIFO may already be full. In&n;                 * that case ECP is already holding back the&n;                 * peripheral (assuming proper design) with a delayed&n;                 * handshake.  Work fast to avoid a peripheral&n;                 * timeout.  */
 r_if
 c_cond
 (paren
@@ -3946,6 +3946,7 @@ r_goto
 id|false_alarm
 suffix:semicolon
 )brace
+multiline_comment|/* Depending on how the FIFO threshold was&n;                         * set, how long interrupt service took, and&n;                         * how fast the peripheral is, we might be&n;                         * lucky and have a just filled FIFO. */
 r_continue
 suffix:semicolon
 )brace
@@ -3978,6 +3979,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* FIFO not filled.  We will cycle this loop for a while&n;                 * and either the peripheral will fill it faster,&n;                 * tripping a fast empty with insb, or we empty it. */
 op_star
 id|bufp
 op_increment
@@ -8744,7 +8746,6 @@ DECL|function|parport_pc_probe_port
 r_struct
 id|parport
 op_star
-id|__devinit
 id|parport_pc_probe_port
 (paren
 r_int
@@ -9619,6 +9620,7 @@ r_return
 id|p
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* Via support maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; */
 DECL|function|sio_via_686a_probe
 r_static
@@ -12207,7 +12209,6 @@ r_int
 id|autodma
 )paren
 (brace
-macro_line|#ifdef CONFIG_PCI
 r_const
 r_struct
 id|pci_device_id
@@ -12263,12 +12264,33 @@ id|autodma
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PCI */
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* zero devices found */
 )brace
+macro_line|#else
+DECL|variable|parport_pc_pci_driver
+r_static
+r_struct
+id|pci_driver
+id|parport_pc_pci_driver
+suffix:semicolon
+DECL|function|parport_pc_init_superio
+r_static
+r_int
+id|__init
+id|parport_pc_init_superio
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/* This is called by parport_pc_find_nonpci_ports (in asm/parport.h) */
 r_static
 r_int
@@ -12576,18 +12598,12 @@ id|count
 suffix:semicolon
 )brace
 multiline_comment|/* Exported symbols. */
-macro_line|#ifdef CONFIG_PARPORT_PC_PCMCIA
-multiline_comment|/* parport_cs needs this in order to dyncamically get us to find ports. */
 DECL|variable|parport_pc_probe_port
 id|EXPORT_SYMBOL
 (paren
 id|parport_pc_probe_port
 )paren
 suffix:semicolon
-macro_line|#else
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef MODULE
 DECL|variable|io
 r_static

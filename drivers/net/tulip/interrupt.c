@@ -1593,15 +1593,29 @@ op_amp
 id|SytemError
 )paren
 (brace
+r_int
+id|error
+op_assign
+(paren
+id|csr5
+op_rshift
+l_int|23
+)paren
+op_amp
+l_int|7
+suffix:semicolon
+multiline_comment|/* oops, we hit a PCI error.  The code produced corresponds&n;&t;&t;&t;&t; * to the reason:&n;&t;&t;&t;&t; *  0 - parity error&n;&t;&t;&t;&t; *  1 - master abort&n;&t;&t;&t;&t; *  2 - target abort&n;&t;&t;&t;&t; * Note that on parity error, we should do a software reset&n;&t;&t;&t;&t; * of the chip to get it back into a sane state (according&n;&t;&t;&t;&t; * to the 21142/3 docs that is).&n;&t;&t;&t;&t; *   -- rmk&n;&t;&t;&t;&t; */
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: (%lu) System Error occured&bslash;n&quot;
+l_string|&quot;%s: (%lu) System Error occured (%d)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|tp-&gt;nir
+comma
+id|error
 )paren
 suffix:semicolon
 )brace

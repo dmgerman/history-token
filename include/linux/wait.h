@@ -32,22 +32,6 @@ id|flags
 suffix:semicolon
 DECL|macro|WQ_FLAG_EXCLUSIVE
 mdefine_line|#define WQ_FLAG_EXCLUSIVE&t;0x01
-DECL|macro|WQ_FLAG_CONTEXT_0
-mdefine_line|#define WQ_FLAG_CONTEXT_0&t;8&t;/* context specific flag bit numbers */
-DECL|macro|WQ_FLAG_CONTEXT_1
-mdefine_line|#define WQ_FLAG_CONTEXT_1&t;9
-DECL|macro|WQ_FLAG_CONTEXT_2
-mdefine_line|#define WQ_FLAG_CONTEXT_2&t;10
-DECL|macro|WQ_FLAG_CONTEXT_3
-mdefine_line|#define WQ_FLAG_CONTEXT_3&t;11
-DECL|macro|WQ_FLAG_CONTEXT_4
-mdefine_line|#define WQ_FLAG_CONTEXT_4&t;12
-DECL|macro|WQ_FLAG_CONTEXT_5
-mdefine_line|#define WQ_FLAG_CONTEXT_5&t;13
-DECL|macro|WQ_FLAG_CONTEXT_6
-mdefine_line|#define WQ_FLAG_CONTEXT_6&t;14
-DECL|macro|WQ_FLAG_CONTEXT_7
-mdefine_line|#define WQ_FLAG_CONTEXT_7&t;15
 DECL|member|task
 r_struct
 id|task_struct

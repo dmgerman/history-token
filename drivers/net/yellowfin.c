@@ -1,36 +1,5 @@
 multiline_comment|/* yellowfin.c: A Packet Engines G-NIC ethernet driver for linux. */
 multiline_comment|/*&n;&t;Written 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the Packet Engines G-NIC PCI Gigabit Ethernet adapter.&n;&t;It also supports the Symbios Logic version of the same chip core.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/yellowfin.html&n;&n;&n;&t;Linux kernel changelog:&n;&t;-----------------------&n;&n;&t;LK1.1.1 (jgarzik): Port to 2.4 kernel&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge in becker version 1.05&n;&n;*/
-multiline_comment|/* These identify the driver base version and may not be removed. */
-DECL|variable|version1
-r_static
-r_const
-r_char
-id|version1
-(braket
-)braket
-op_assign
-l_string|&quot;yellowfin.c:v1.05  1/09/2001  Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
-suffix:semicolon
-DECL|variable|version2
-r_static
-r_const
-r_char
-id|version2
-(braket
-)braket
-op_assign
-l_string|&quot;  http://www.scyld.com/network/yellowfin.html&bslash;n&quot;
-suffix:semicolon
-DECL|variable|version3
-r_static
-r_const
-r_char
-id|version3
-(braket
-)braket
-op_assign
-l_string|&quot;  (unofficial 2.4.x port, LK1.1.2, January 11, 2001)&bslash;n&quot;
-suffix:semicolon
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -231,6 +200,22 @@ macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache ali
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+multiline_comment|/* These identify the driver base version and may not be removed. */
+DECL|variable|__devinitdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__devinitdata
+op_assign
+id|KERN_INFO
+l_string|&quot;yellowfin.c:v1.05  1/09/2001  Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;  http://www.scyld.com/network/yellowfin.html&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;  (unofficial 2.4.x port, LK1.1.2, January 11, 2001)&bslash;n&quot;
+suffix:semicolon
 multiline_comment|/* Condensed operations for readability. */
 DECL|macro|virt_to_le32desc
 mdefine_line|#define virt_to_le32desc(addr)  cpu_to_le32(virt_to_bus(addr))
@@ -1468,6 +1453,26 @@ id|chip_idx
 dot
 id|drv_flags
 suffix:semicolon
+multiline_comment|/* when built into the kernel, we only print version if device is found */
+macro_line|#ifndef MODULE
+r_static
+r_int
+id|printed_version
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|printed_version
+op_increment
+)paren
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 id|i
 op_assign
 id|pci_enable_device
@@ -7162,29 +7167,15 @@ id|yellowfin_init
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|debug
-)paren
-multiline_comment|/* Emit version even if no cards detected. */
+multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
+macro_line|#ifdef MODULE
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s&quot;
-id|KERN_INFO
-l_string|&quot;%s&quot;
-id|KERN_INFO
-l_string|&quot;%s&quot;
-comma
-id|version1
-comma
-id|version2
-comma
-id|version3
+id|version
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 (paren

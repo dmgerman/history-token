@@ -7,6 +7,10 @@ macro_line|#error please dont include asm/rwsem-spinlock.h directly, use linux/r
 macro_line|#endif
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/types.h&gt;
+r_struct
+id|rwsem_waiter
+suffix:semicolon
 multiline_comment|/*&n; * the semaphore definition&n; */
 DECL|struct|rw_semaphore
 r_struct
@@ -29,20 +33,23 @@ DECL|macro|RWSEM_ACTIVE_READ_BIAS
 mdefine_line|#define RWSEM_ACTIVE_READ_BIAS&t;&t;RWSEM_ACTIVE_BIAS
 DECL|macro|RWSEM_ACTIVE_WRITE_BIAS
 mdefine_line|#define RWSEM_ACTIVE_WRITE_BIAS&t;&t;(RWSEM_WAITING_BIAS + RWSEM_ACTIVE_BIAS)
-DECL|member|lock
+DECL|member|wait_lock
 id|spinlock_t
-id|lock
+id|wait_lock
 suffix:semicolon
-DECL|macro|RWSEM_SPINLOCK_OFFSET_STR
-mdefine_line|#define RWSEM_SPINLOCK_OFFSET_STR&t;&quot;4&quot; /* byte offset of spinlock */
-DECL|member|wait
-id|wait_queue_head_t
-id|wait
+DECL|member|wait_front
+r_struct
+id|rwsem_waiter
+op_star
+id|wait_front
 suffix:semicolon
-DECL|macro|RWSEM_WAITING_FOR_READ
-mdefine_line|#define RWSEM_WAITING_FOR_READ&t;WQ_FLAG_CONTEXT_0&t;/* bits to use in wait_queue_t.flags */
-DECL|macro|RWSEM_WAITING_FOR_WRITE
-mdefine_line|#define RWSEM_WAITING_FOR_WRITE&t;WQ_FLAG_CONTEXT_1
+DECL|member|wait_back
+r_struct
+id|rwsem_waiter
+op_star
+op_star
+id|wait_back
+suffix:semicolon
 macro_line|#if RWSEM_DEBUG
 DECL|member|debug
 r_int
@@ -81,7 +88,7 @@ DECL|macro|__RWSEM_DEBUG_MINIT
 mdefine_line|#define __RWSEM_DEBUG_MINIT(name)&t;/* */
 macro_line|#endif
 DECL|macro|__RWSEM_INITIALIZER
-mdefine_line|#define __RWSEM_INITIALIZER(name) &bslash;&n;{ RWSEM_UNLOCKED_VALUE, SPIN_LOCK_UNLOCKED, &bslash;&n;&t;__WAIT_QUEUE_HEAD_INITIALIZER((name).wait) &bslash;&n;&t;__RWSEM_DEBUG_INIT __RWSEM_DEBUG_MINIT(name) }
+mdefine_line|#define __RWSEM_INITIALIZER(name) &bslash;&n;{ RWSEM_UNLOCKED_VALUE, SPIN_LOCK_UNLOCKED, NULL, &amp;(name).wait_front &bslash;&n;&t;__RWSEM_DEBUG_INIT __RWSEM_DEBUG_MINIT(name) }
 DECL|macro|DECLARE_RWSEM
 mdefine_line|#define DECLARE_RWSEM(name) &bslash;&n;&t;struct rw_semaphore name = __RWSEM_INITIALIZER(name)
 DECL|function|init_rwsem
@@ -105,15 +112,17 @@ id|spin_lock_init
 c_func
 (paren
 op_amp
-id|sem-&gt;lock
+id|sem-&gt;wait_lock
 )paren
 suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
+id|sem-&gt;wait_front
+op_assign
+l_int|NULL
+suffix:semicolon
+id|sem-&gt;wait_back
+op_assign
 op_amp
-id|sem-&gt;wait
-)paren
+id|sem-&gt;wait_front
 suffix:semicolon
 macro_line|#if RWSEM_DEBUG
 id|sem-&gt;debug
@@ -171,7 +180,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|sem-&gt;lock
+id|sem-&gt;wait_lock
 )paren
 suffix:semicolon
 id|sem-&gt;count
@@ -186,7 +195,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|sem-&gt;lock
+id|sem-&gt;wait_lock
 )paren
 suffix:semicolon
 r_if
@@ -224,7 +233,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|sem-&gt;lock
+id|sem-&gt;wait_lock
 )paren
 suffix:semicolon
 id|count
@@ -239,7 +248,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|sem-&gt;lock
+id|sem-&gt;wait_lock
 )paren
 suffix:semicolon
 r_if
@@ -275,7 +284,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|sem-&gt;lock
+id|sem-&gt;wait_lock
 )paren
 suffix:semicolon
 id|count
@@ -290,7 +299,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|sem-&gt;lock
+id|sem-&gt;wait_lock
 )paren
 suffix:semicolon
 r_if
@@ -339,7 +348,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|sem-&gt;lock
+id|sem-&gt;wait_lock
 )paren
 suffix:semicolon
 id|sem-&gt;count
@@ -354,7 +363,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|sem-&gt;lock
+id|sem-&gt;wait_lock
 )paren
 suffix:semicolon
 r_if
@@ -371,7 +380,7 @@ id|sem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * implement exchange and add functionality&n; */
+multiline_comment|/*&n; * implement exchange and add functionality&n; * - only called when spinlock is already held&n; */
 DECL|function|rwsem_atomic_update
 r_static
 r_inline
@@ -391,13 +400,6 @@ id|sem
 r_int
 id|count
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|sem-&gt;lock
-)paren
-suffix:semicolon
 id|sem-&gt;count
 op_add_assign
 id|delta
@@ -406,18 +408,11 @@ id|count
 op_assign
 id|sem-&gt;count
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|sem-&gt;lock
-)paren
-suffix:semicolon
 r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * implement compare and exchange functionality on the rw-semaphore count LSW&n; */
+multiline_comment|/*&n; * implement compare and exchange functionality on the rw-semaphore count LSW&n; * - only called by __rwsem_do_wake(), so spinlock is already held when called&n; */
 DECL|function|rwsem_cmpxchgw
 r_static
 r_inline
@@ -439,13 +434,6 @@ r_new
 (brace
 id|__u16
 id|prev
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|sem-&gt;lock
-)paren
 suffix:semicolon
 id|prev
 op_assign
@@ -470,13 +458,6 @@ id|RWSEM_ACTIVE_MASK
 )paren
 op_or
 r_new
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|sem-&gt;lock
-)paren
 suffix:semicolon
 r_return
 id|prev

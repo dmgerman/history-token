@@ -2,84 +2,33 @@ macro_line|#ifndef _AFFS_FS_I
 DECL|macro|_AFFS_FS_I
 mdefine_line|#define _AFFS_FS_I
 macro_line|#include &lt;linux/a.out.h&gt;
+singleline_comment|// move this to linux/coda.h!!!
 macro_line|#include &lt;linux/time.h&gt;
+DECL|macro|AFFS_CACHE_SIZE
+mdefine_line|#define AFFS_CACHE_SIZE&t;&t;PAGE_SIZE
+singleline_comment|//#define AFFS_CACHE_SIZE&t;&t;(4*4)
 DECL|macro|AFFS_MAX_PREALLOC
-mdefine_line|#define AFFS_MAX_PREALLOC&t;16&t;/* MUST be a power of 2 */
-DECL|macro|AFFS_KCSIZE
-mdefine_line|#define AFFS_KCSIZE&t;&t;73&t;/* Allows for 1 extension block at 512 byte-blocks */
-DECL|struct|key_cache
+mdefine_line|#define AFFS_MAX_PREALLOC&t;32
+DECL|macro|AFFS_LC_SIZE
+mdefine_line|#define AFFS_LC_SIZE&t;&t;(AFFS_CACHE_SIZE/sizeof(u32)/2)
+DECL|macro|AFFS_AC_SIZE
+mdefine_line|#define AFFS_AC_SIZE&t;&t;(AFFS_CACHE_SIZE/sizeof(struct affs_ext_key)/2)
+DECL|macro|AFFS_AC_MASK
+mdefine_line|#define AFFS_AC_MASK&t;&t;(AFFS_AC_SIZE-1)
+DECL|struct|affs_ext_key
 r_struct
-id|key_cache
+id|affs_ext_key
 (brace
-DECL|member|kc_lru_time
-r_struct
-id|timeval
-id|kc_lru_time
+DECL|member|ext
+id|u32
+id|ext
 suffix:semicolon
-multiline_comment|/* Last time this cache was used */
-DECL|member|kc_first
-id|s32
-id|kc_first
+multiline_comment|/* idx of the extended block */
+DECL|member|key
+id|u32
+id|key
 suffix:semicolon
-multiline_comment|/* First cached key */
-DECL|member|kc_last
-id|s32
-id|kc_last
-suffix:semicolon
-multiline_comment|/* Last cached key */
-DECL|member|kc_this_key
-id|s32
-id|kc_this_key
-suffix:semicolon
-multiline_comment|/* Key of extension block this data block keys are from */
-DECL|member|kc_this_seq
-r_int
-id|kc_this_seq
-suffix:semicolon
-multiline_comment|/* Sequence number of this extension block */
-DECL|member|kc_next_key
-id|s32
-id|kc_next_key
-suffix:semicolon
-multiline_comment|/* Key of next extension block */
-DECL|member|kc_keys
-id|s32
-id|kc_keys
-(braket
-id|AFFS_KCSIZE
-)braket
-suffix:semicolon
-multiline_comment|/* Key cache */
-)brace
-suffix:semicolon
-DECL|macro|EC_SIZE
-mdefine_line|#define EC_SIZE&t;(PAGE_SIZE - 4 * sizeof(struct key_cache) - 4) / 4
-DECL|struct|ext_cache
-r_struct
-id|ext_cache
-(brace
-DECL|member|kc
-r_struct
-id|key_cache
-id|kc
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/* The 4 key caches */
-DECL|member|ec
-id|s32
-id|ec
-(braket
-id|EC_SIZE
-)braket
-suffix:semicolon
-multiline_comment|/* Keys of assorted extension blocks */
-DECL|member|max_ext
-r_int
-id|max_ext
-suffix:semicolon
-multiline_comment|/* Index of last known extension block */
+multiline_comment|/* block number */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * affs fs inode data in memory&n; */
@@ -87,6 +36,71 @@ DECL|struct|affs_inode_info
 r_struct
 id|affs_inode_info
 (brace
+DECL|member|i_opencnt
+id|u32
+id|i_opencnt
+suffix:semicolon
+DECL|member|i_link_lock
+r_struct
+id|semaphore
+id|i_link_lock
+suffix:semicolon
+multiline_comment|/* Protects internal inode access. */
+DECL|member|i_ext_lock
+r_struct
+id|semaphore
+id|i_ext_lock
+suffix:semicolon
+multiline_comment|/* Protects internal inode access. */
+DECL|macro|i_hash_lock
+mdefine_line|#define i_hash_lock i_ext_lock
+DECL|member|i_blkcnt
+id|u32
+id|i_blkcnt
+suffix:semicolon
+multiline_comment|/* block count */
+DECL|member|i_extcnt
+id|u32
+id|i_extcnt
+suffix:semicolon
+multiline_comment|/* extended block count */
+DECL|member|i_lc
+id|u32
+op_star
+id|i_lc
+suffix:semicolon
+multiline_comment|/* linear cache of extended blocks */
+DECL|member|i_lc_size
+id|u32
+id|i_lc_size
+suffix:semicolon
+DECL|member|i_lc_shift
+id|u32
+id|i_lc_shift
+suffix:semicolon
+DECL|member|i_lc_mask
+id|u32
+id|i_lc_mask
+suffix:semicolon
+DECL|member|i_ac
+r_struct
+id|affs_ext_key
+op_star
+id|i_ac
+suffix:semicolon
+multiline_comment|/* associative cache of extended blocks */
+DECL|member|i_ext_last
+id|u32
+id|i_ext_last
+suffix:semicolon
+multiline_comment|/* last accessed extended block */
+DECL|member|i_ext_bh
+r_struct
+id|buffer_head
+op_star
+id|i_ext_bh
+suffix:semicolon
+multiline_comment|/* bh of last extended block */
 DECL|member|mmu_private
 r_int
 r_int
@@ -97,39 +111,9 @@ id|u32
 id|i_protect
 suffix:semicolon
 multiline_comment|/* unused attribute bits */
-DECL|member|i_parent
-id|s32
-id|i_parent
-suffix:semicolon
-multiline_comment|/* parent ino */
-DECL|member|i_original
-id|s32
-id|i_original
-suffix:semicolon
-multiline_comment|/* if != 0, this is the key of the original */
-DECL|member|i_data
-id|s32
-id|i_data
-(braket
-id|AFFS_MAX_PREALLOC
-)braket
-suffix:semicolon
-multiline_comment|/* preallocated blocks */
-DECL|member|i_ec
-r_struct
-id|ext_cache
-op_star
-id|i_ec
-suffix:semicolon
-multiline_comment|/* Cache gets allocated dynamically */
-DECL|member|i_cache_users
-r_int
-id|i_cache_users
-suffix:semicolon
-multiline_comment|/* Cache cannot be freed while &gt; 0 */
-DECL|member|i_lastblock
-r_int
-id|i_lastblock
+DECL|member|i_lastalloc
+id|u32
+id|i_lastalloc
 suffix:semicolon
 multiline_comment|/* last allocated block */
 DECL|member|i_pa_cnt
@@ -137,33 +121,42 @@ r_int
 id|i_pa_cnt
 suffix:semicolon
 multiline_comment|/* number of preallocated blocks */
-DECL|member|i_pa_next
-r_int
-id|i_pa_next
+macro_line|#if 0
+id|s32
+id|i_original
 suffix:semicolon
-multiline_comment|/* Index of next block in i_data[] */
-DECL|member|i_pa_last
-r_int
-id|i_pa_last
+multiline_comment|/* if != 0, this is the key of the original */
+id|u32
+id|i_data
+(braket
+id|AFFS_MAX_PREALLOC
+)braket
 suffix:semicolon
-multiline_comment|/* Index of next free slot in i_data[] */
-DECL|member|i_zone
+multiline_comment|/* preallocated blocks */
 r_int
-id|i_zone
+id|i_cache_users
 suffix:semicolon
-multiline_comment|/* write zone */
-DECL|member|i_hlink
+multiline_comment|/* Cache cannot be freed while &gt; 0 */
 r_int
 r_char
 id|i_hlink
 suffix:semicolon
 multiline_comment|/* This is a fake */
-DECL|member|i_pad
 r_int
 r_char
 id|i_pad
 suffix:semicolon
+id|s32
+id|i_parent
+suffix:semicolon
+multiline_comment|/* parent ino */
+macro_line|#endif
 )brace
 suffix:semicolon
+multiline_comment|/* short cut to get to the affs specific inode data */
+DECL|macro|AFFS_INODE
+mdefine_line|#define AFFS_INODE&t;(&amp;inode-&gt;u.affs_i)
+DECL|macro|AFFS_DIR
+mdefine_line|#define AFFS_DIR&t;(&amp;dir-&gt;u.affs_i)
 macro_line|#endif
 eof

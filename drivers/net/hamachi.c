@@ -1,20 +1,5 @@
 multiline_comment|/* hamachi.c: A Packet Engines GNIC-II Gigabit Ethernet driver for Linux. */
 multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&t;Updates 2000 by Keith Underwood.&n;&n;&t;This software may be used and distributed according to the terms of &n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;This driver is for the Packet Engines GNIC-II PCI Gigabit Ethernet&n;&t;adapter.&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/hamachi.html&n;&t;or&n;&t;http://www.parl.clemson.edu/~keithu/hamachi.html&n;&n;&t;For best viewing, set your tabs to 3.&n;&n;*/
-DECL|variable|version
-r_static
-r_const
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;hamachi.c:v1.01 5/16/2000  Written by Donald Becker&bslash;n&quot;
-l_string|&quot;   Some modifications by Eric kasten &lt;kasten@nscl.msu.edu&gt;&bslash;n&quot;
-l_string|&quot;   Further modifications by Keith Underwood &lt;keithu@parl.clemson.edu&gt;&bslash;n&quot;
-l_string|&quot;   Support by many others&bslash;n&quot;
-l_string|&quot;   http://www.scyld.com/network/hamachi.html&bslash;n&quot;
-l_string|&quot;   or&bslash;n&quot;
-l_string|&quot;   http://www.parl.clemson.edu/~keithu/drivers/hamachi.html&bslash;n&quot;
-suffix:semicolon
 multiline_comment|/* A few user-configurable values. */
 DECL|variable|debug
 r_static
@@ -279,6 +264,21 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+DECL|variable|__initdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;hamachi.c:v1.01 5/16/2000  Written by Donald Becker&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;   Some modifications by Eric kasten &lt;kasten@nscl.msu.edu&gt;&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;   Further modifications by Keith Underwood &lt;keithu@parl.clemson.edu&gt;&bslash;n&quot;
+suffix:semicolon
 multiline_comment|/* IP_MF appears to be only defined in &lt;netinet/ip.h&gt;, however,&n;   we need it for hardware checksumming support.  FYI... some of&n;   the definitions in &lt;netinet/ip.h&gt; conflict/duplicate those in&n;   other linux headers causing many compiler warnings.&n;*/
 macro_line|#ifndef IP_MF
 DECL|macro|IP_MF
@@ -1331,11 +1331,6 @@ op_star
 id|ent
 )paren
 (brace
-r_static
-r_int
-id|did_version
-suffix:semicolon
-multiline_comment|/* Already printed version info. */
 r_struct
 id|hamachi_private
 op_star
@@ -1372,17 +1367,18 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
+multiline_comment|/* when built into the kernel, we only print version if device is found */
+macro_line|#ifndef MODULE
+r_static
+r_int
+id|printed_version
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|hamachi_debug
-OG
-l_int|0
-op_logical_and
-id|did_version
+op_logical_neg
+id|printed_version
 op_increment
-op_eq
-l_int|0
 )paren
 id|printk
 c_func
@@ -1390,6 +1386,7 @@ c_func
 id|version
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8283,6 +8280,15 @@ id|hamachi_init
 r_void
 )paren
 (brace
+multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
+macro_line|#ifdef MODULE
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

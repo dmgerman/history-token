@@ -268,6 +268,20 @@ op_star
 id|sk
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|sk_chk_filter
+c_func
+(paren
+r_struct
+id|sock_filter
+op_star
+id|filter
+comma
+r_int
+id|flen
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __LINUX_FILTER_H__ */
 eof

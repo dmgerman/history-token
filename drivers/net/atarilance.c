@@ -911,8 +911,6 @@ suffix:semicolon
 r_static
 r_int
 id|found
-op_assign
-l_int|0
 suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
@@ -1183,8 +1181,6 @@ suffix:semicolon
 r_static
 r_int
 id|did_version
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_int

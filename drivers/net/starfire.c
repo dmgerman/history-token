@@ -1,36 +1,5 @@
 multiline_comment|/* starfire.c: Linux device driver for the Adaptec Starfire network adapter. */
 multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/starfire.html&n;&n;&t;-----------------------------------------------------------&n;&n;&t;Linux kernel-specific changes:&n;&t;&n;&t;LK1.1.1 (jgarzik):&n;&t;- Use PCI driver interface&n;&t;- Fix MOD_xxx races&n;&t;- softnet fixups&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;- Merge Becker version 0.15&n;&n;&t;LK1.1.3 (Andrew Morton)&n;&t;- Timer cleanups&n;&t;&n;&t;LK1.1.4 (jgarzik):&n;&t;- Merge Becker version 1.03&n;*/
-multiline_comment|/* These identify the driver base version and may not be removed. */
-DECL|variable|version1
-r_static
-r_const
-r_char
-id|version1
-(braket
-)braket
-op_assign
-l_string|&quot;starfire.c:v1.03 7/26/2000  Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
-suffix:semicolon
-DECL|variable|version2
-r_static
-r_const
-r_char
-id|version2
-(braket
-)braket
-op_assign
-l_string|&quot; Updates and info at http://www.scyld.com/network/starfire.html&bslash;n&quot;
-suffix:semicolon
-DECL|variable|version3
-r_static
-r_const
-r_char
-id|version3
-(braket
-)braket
-op_assign
-l_string|&quot; (unofficial 2.4.x kernel port, version 1.1.4, August 10, 2000)&bslash;n&quot;
-suffix:semicolon
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 multiline_comment|/* Used for tuning interrupt latency vs. overhead. */
 DECL|variable|interrupt_mitigation
@@ -191,6 +160,22 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+multiline_comment|/* These identify the driver base version and may not be removed. */
+DECL|variable|__devinitdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__devinitdata
+op_assign
+id|KERN_INFO
+l_string|&quot;starfire.c:v1.03 7/26/2000  Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot; Updates and info at http://www.scyld.com/network/starfire.html&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot; (unofficial 2.4.x kernel port, version 1.1.4a, April 17, 2001)&bslash;n&quot;
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1233,10 +1218,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-r_static
-r_int
-id|printed_version
-suffix:semicolon
 r_int
 id|ioaddr
 suffix:semicolon
@@ -1252,6 +1233,26 @@ id|chip_idx
 dot
 id|io_size
 suffix:semicolon
+multiline_comment|/* when built into the kernel, we only print version if device is found */
+macro_line|#ifndef MODULE
+r_static
+r_int
+id|printed_version
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|printed_version
+op_increment
+)paren
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 id|card_idx
 op_increment
 suffix:semicolon
@@ -1268,30 +1269,6 @@ id|card_idx
 )braket
 suffix:colon
 l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|printed_version
-op_increment
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s&quot;
-id|KERN_INFO
-l_string|&quot;%s&quot;
-id|KERN_INFO
-l_string|&quot;%s&quot;
-comma
-id|version1
-comma
-id|version2
-comma
-id|version3
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6924,6 +6901,15 @@ id|starfire_init
 r_void
 )paren
 (brace
+multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
+macro_line|#ifdef MODULE
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 (paren

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -19,13 +19,15 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;sis900.h&quot;
-DECL|variable|version
+DECL|variable|__devinitdata
 r_static
-r_const
 r_char
-op_star
 id|version
+(braket
+)braket
+id|__devinitdata
 op_assign
+id|KERN_INFO
 l_string|&quot;sis900.c: v1.07.11  4/10/2001&bslash;n&quot;
 suffix:semicolon
 DECL|variable|max_interrupt_work
@@ -1283,6 +1285,26 @@ id|card_names
 id|pci_id-&gt;driver_data
 )braket
 suffix:semicolon
+multiline_comment|/* when built into the kernel, we only print version if device is found */
+macro_line|#ifndef MODULE
+r_static
+r_int
+id|printed_version
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|printed_version
+op_increment
+)paren
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* setup various bits in PCI command register */
 id|ret
 op_assign
@@ -8377,15 +8399,15 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
+macro_line|#ifdef MODULE
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s&quot;
-comma
 id|version
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func

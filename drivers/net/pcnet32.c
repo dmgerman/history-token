@@ -1897,12 +1897,37 @@ c_func
 id|ioaddr
 )paren
 suffix:semicolon
-multiline_comment|/* Important to do the check for dwio mode first. */
+multiline_comment|/* NOTE: 16-bit check is first, otherwise some older PCnet chips fail */
+r_if
+c_cond
+(paren
+id|pcnet32_wio_read_csr
+(paren
+id|ioaddr
+comma
+l_int|0
+)paren
+op_eq
+l_int|4
+op_logical_and
+id|pcnet32_wio_check
+(paren
+id|ioaddr
+)paren
+)paren
+(brace
+id|a
+op_assign
+op_amp
+id|pcnet32_wio
+suffix:semicolon
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
 id|pcnet32_dwio_read_csr
-c_func
 (paren
 id|ioaddr
 comma
@@ -1922,34 +1947,6 @@ id|a
 op_assign
 op_amp
 id|pcnet32_dwio
-suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|pcnet32_wio_read_csr
-c_func
-(paren
-id|ioaddr
-comma
-l_int|0
-)paren
-op_eq
-l_int|4
-op_logical_and
-id|pcnet32_wio_check
-c_func
-(paren
-id|ioaddr
-)paren
-)paren
-(brace
-id|a
-op_assign
-op_amp
-id|pcnet32_wio
 suffix:semicolon
 )brace
 r_else
@@ -2470,9 +2467,30 @@ l_int|6
 id|printk
 c_func
 (paren
-l_string|&quot; warning: PROM address does not match CSR address&quot;
+l_string|&quot; warning PROM address does not match CSR address&quot;
 )paren
 suffix:semicolon
+macro_line|#if defined(__i386__)
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Probably a Compaq, using the PROM address of&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|dev-&gt;dev_addr
+comma
+id|promaddr
+comma
+l_int|6
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 multiline_comment|/* if the ethernet address is not valid, force to 00:00:00:00:00:00 */

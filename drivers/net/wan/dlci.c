@@ -27,8 +27,9 @@ DECL|variable|devname
 r_static
 r_const
 r_char
-op_star
 id|devname
+(braket
+)braket
 op_assign
 l_string|&quot;dlci&quot;
 suffix:semicolon
@@ -36,8 +37,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;DLCI driver v0.35, 4 Jan 1997, mike.mclagan@linux.org&quot;
 suffix:semicolon

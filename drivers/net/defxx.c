@@ -529,12 +529,13 @@ op_star
 id|bp
 suffix:semicolon
 multiline_comment|/* board pointer */
+r_int
+id|err
+suffix:semicolon
+macro_line|#ifndef MODULE
 r_static
 r_int
 id|version_disp
-suffix:semicolon
-r_int
-id|err
 suffix:semicolon
 r_if
 c_cond
@@ -557,6 +558,7 @@ id|version
 suffix:semicolon
 multiline_comment|/* we only display this string ONCE */
 )brace
+macro_line|#endif
 multiline_comment|/*&n;&t; * init_fddidev() allocates a device structure with private data, clears the device structure and private data,&n;&t; * and  calls fddi_setup() and register_netdev(). Not much left to do for us here.&n;&t; */
 id|dev
 op_assign
@@ -7404,6 +7406,15 @@ id|rc_pci
 comma
 id|rc_eisa
 suffix:semicolon
+multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
+macro_line|#ifdef MODULE
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 id|rc_pci
 op_assign
 id|pci_module_init

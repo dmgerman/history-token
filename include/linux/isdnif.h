@@ -2,7 +2,9 @@ multiline_comment|/* $Id: isdnif.h,v 1.37 2000/11/19 17:01:54 kai Exp $&n;&n; * 
 macro_line|#ifndef isdnif_h
 DECL|macro|isdnif_h
 mdefine_line|#define isdnif_h
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#endif
 multiline_comment|/*&n; * Values for general protocol-selection&n; */
 DECL|macro|ISDN_PTYPE_UNKNOWN
 mdefine_line|#define ISDN_PTYPE_UNKNOWN   0   /* Protocol undefined   */

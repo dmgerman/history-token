@@ -6783,9 +6783,9 @@ op_star
 id|bh
 )paren
 (brace
-r_int
-id|ret
-op_assign
+r_if
+c_cond
+(paren
 id|lvm_map
 c_func
 (paren
@@ -6793,14 +6793,12 @@ id|bh
 comma
 id|rw
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
+op_ge
 l_int|0
 )paren
+r_return
+l_int|1
+suffix:semicolon
 id|buffer_IO_error
 c_func
 (paren
@@ -6808,7 +6806,7 @@ id|bh
 )paren
 suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/********************************************************************&n; *&n; * Character device support functions&n; *&n; ********************************************************************/

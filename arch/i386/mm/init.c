@@ -1420,7 +1420,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * Zap initial low-memory mappings.&n;&t; *&n;&t; * Note that &quot;pgd_clear()&quot; doesn&squot;t do it for&n;&t; * us in this case, because pgd_clear() is a&n;&t; * no-op in the 2-level case (pmd_clear() is&n;&t; * the thing that clears the page-tables in&n;&t; * that case).&n;&t; */
+multiline_comment|/*&n;&t; * Zap initial low-memory mappings.&n;&t; *&n;&t; * Note that &quot;pgd_clear()&quot; doesn&squot;t do it for&n;&t; * us, because pgd_clear() is a no-op on i386.&n;&t; */
 r_for
 c_loop
 (paren
@@ -1436,12 +1436,24 @@ id|i
 op_increment
 )paren
 macro_line|#if CONFIG_X86_PAE
-id|pgd_clear
+id|set_pgd
 c_func
 (paren
 id|swapper_pg_dir
 op_plus
 id|i
+comma
+id|__pgd
+c_func
+(paren
+l_int|1
+op_plus
+id|__pa
+c_func
+(paren
+id|empty_zero_page
+)paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#else

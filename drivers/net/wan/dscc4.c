@@ -26,8 +26,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;$Id: dscc4.c,v 1.130 2001/02/25 15:27:34 romieu Exp $&bslash;n&quot;
 suffix:semicolon

@@ -1,6 +1,6 @@
-multiline_comment|/*&n;   dmfe.c: Version 1.30 06/11/2000&n;&n;   A Davicom DM9102(A)/DM9132/DM9801 fast ethernet driver for Linux. &n;   Copyright (C) 1997  Sten Wang&n;   (C)Copyright 1997-1998 DAVICOM Semiconductor,Inc. All Rights Reserved.&n;&n;   This program is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU General Public License&n;   as published by the Free Software Foundation; either version 2&n;   of the License, or (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;&n;   Compiler command:&n;   &quot;gcc -DMODULE -D__KERNEL__ -I/usr/src/linux/net/inet -Wall &n;   -Wstrict-prototypes -O6 -c dmfe.c&quot;&n;   OR&n;   &quot;gcc -DMODULE -D__KERNEL__ -I/usr/src/linux/net -Wall &n;   -Wstrict-prototypes -O6 -c dmfe.c&quot;&n;&n;   The following steps teach you how to active DM9102 board:&n;   1. Used the upper compiler command to compile dmfe.c&n;   2. insert dmfe module into kernel&n;   &quot;insmod dmfe&quot;        ;;Auto Detection Mode&n;   &quot;insmod dmfe mode=0&quot; ;;Force 10M Half Duplex&n;   &quot;insmod dmfe mode=1&quot; ;;Force 100M Half Duplex&n;   &quot;insmod dmfe mode=4&quot; ;;Force 10M Full Duplex&n;   &quot;insmod dmfe mode=5&quot; ;;Force 100M Full Duplex&n;   3. config a dm9102 network interface&n;   &quot;ifconfig eth0 172.22.3.18&quot;&n;   4. active the IP routing table&n;   &quot;route add -net 172.22.3.0 eth0&quot;&n;   5. Well done. Your DM9102 adapter actived now.&n;&n;   Author: Sten Wang, 886-3-5798797-8517, E-mail: sten_wang@davicom.com.tw&n;&n;   Date:   10/28,1998&n;&n;   (C)Copyright 1997-1998 DAVICOM Semiconductor, Inc. All Rights Reserved.&n;&n;   Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : &n;   Made it compile in 2.3 (device to net_device)&n;   &n;   Alan Cox &lt;alan@redhat.com&gt; :&n;   Cleaned up for kernel merge.&n;   Removed the back compatibility support&n;   Reformatted, fixing spelling etc as I went&n;   Removed IRQ 0-15 assumption&n;&n;   Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; :&n;   Updated to use new PCI driver API.&n;   Resource usage cleanups.&n;   Report driver version to user.&n;&n;   TODO&n;&n;   Implement pci_driver::suspend() and pci_driver::resume()&n;   power management methods.&n;&n;   Check and fix on 64bit and big endian boxes.&n;&n;   Test and make sure PCI latency is now correct for all cases.&n;&n; */
+multiline_comment|/*&n;   dmfe.c: Version 1.30 06/11/2000&n;&n;   A Davicom DM9102(A)/DM9132/DM9801 fast ethernet driver for Linux. &n;   Copyright (C) 1997  Sten Wang&n;   (C)Copyright 1997-1998 DAVICOM Semiconductor,Inc. All Rights Reserved.&n;&n;   This program is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU General Public License&n;   as published by the Free Software Foundation; either version 2&n;   of the License, or (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;&n;   Compiler command:&n;   &quot;gcc -DMODULE -D__KERNEL__ -I/usr/src/linux/net/inet -Wall &n;   -Wstrict-prototypes -O6 -c dmfe.c&quot;&n;   OR&n;   &quot;gcc -DMODULE -D__KERNEL__ -I/usr/src/linux/net -Wall &n;   -Wstrict-prototypes -O6 -c dmfe.c&quot;&n;&n;   The following steps teach you how to active DM9102 board:&n;   1. Used the upper compiler command to compile dmfe.c&n;   2. insert dmfe module into kernel&n;   &quot;insmod dmfe&quot;        ;;Auto Detection Mode&n;   &quot;insmod dmfe mode=0&quot; ;;Force 10M Half Duplex&n;   &quot;insmod dmfe mode=1&quot; ;;Force 100M Half Duplex&n;   &quot;insmod dmfe mode=4&quot; ;;Force 10M Full Duplex&n;   &quot;insmod dmfe mode=5&quot; ;;Force 100M Full Duplex&n;   3. config a dm9102 network interface&n;   &quot;ifconfig eth0 172.22.3.18&quot;&n;   4. active the IP routing table&n;   &quot;route add -net 172.22.3.0 eth0&quot;&n;   5. Well done. Your DM9102 adapter actived now.&n;&n;   Author: Sten Wang, 886-3-5798797-8517, E-mail: sten_wang@davicom.com.tw&n;&n;   Date:   10/28,1998&n;&n;   (C)Copyright 1997-1998 DAVICOM Semiconductor, Inc. All Rights Reserved.&n;&n;   Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : &n;   Made it compile in 2.3 (device to net_device)&n;   &n;   Alan Cox &lt;alan@redhat.com&gt; :&n;   Cleaned up for kernel merge.&n;   Removed the back compatibility support&n;   Reformatted, fixing spelling etc as I went&n;   Removed IRQ 0-15 assumption&n;&n;   Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; :&n;   Updated to use new PCI driver API.&n;   Resource usage cleanups.&n;   Report driver version to user.&n;&n;   Tobias Ringstr&#xfffd;m &lt;zajbot@goteborg.utfors.se&gt; :&n;   Added additional proper locking&n;   Rewrote the transmit code to actually use the ring buffer,&n;   and to generate a lot fewer interrupts.&n;&n;   Frank Davis &lt;fdavis112@juno.com&gt;&n;   Added SMP-safe locking mechanisms in addition to Andrew Morton&squot;s work&n;&n;   TODO&n;&n;   Implement pci_driver::suspend() and pci_driver::resume()&n;   power management methods.&n;&n;   Check and fix on 64bit and big endian boxes.&n;&n;   Test and make sure PCI latency is now correct for all cases.&n;&n; */
 DECL|macro|DMFE_VERSION
-mdefine_line|#define DMFE_VERSION &quot;1.30 (June 11, 2000)&quot;
+mdefine_line|#define DMFE_VERSION &quot;1.30p3 (April 17, 2001)&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -18,10 +18,24 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+DECL|variable|__initdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;Davicom DM91xx net driver, version &quot;
+id|DMFE_VERSION
+l_string|&quot;&bslash;n&quot;
+suffix:semicolon
 multiline_comment|/* Board/System/Debug information/definition ---------------- */
 DECL|macro|PCI_DM9132_ID
 mdefine_line|#define PCI_DM9132_ID   0x91321282&t;/* Davicom DM9132 ID */
@@ -43,6 +57,8 @@ DECL|macro|TX_DESC_CNT
 mdefine_line|#define TX_DESC_CNT     0x10&t;/* Allocated Tx descriptors */
 DECL|macro|RX_DESC_CNT
 mdefine_line|#define RX_DESC_CNT     0x10&t;/* Allocated Rx descriptors */
+DECL|macro|TX_IRQ_THR
+mdefine_line|#define TX_IRQ_THR      12
 DECL|macro|DESC_ALL_CNT
 mdefine_line|#define DESC_ALL_CNT    TX_DESC_CNT+RX_DESC_CNT
 DECL|macro|TX_BUF_ALLOC
@@ -202,6 +218,11 @@ op_star
 id|next_dev
 suffix:semicolon
 multiline_comment|/* next device */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* Spinlock */
 DECL|member|net_dev
 r_struct
 id|pci_dev
@@ -294,16 +315,16 @@ op_star
 id|rx_ready_ptr
 suffix:semicolon
 multiline_comment|/* packet come pointer */
-DECL|member|tx_packet_cnt
-id|u32
-id|tx_packet_cnt
+DECL|member|tx_int_pkt_num
+r_int
+id|tx_int_pkt_num
 suffix:semicolon
-multiline_comment|/* transmitted packet count */
-DECL|member|tx_queue_cnt
+multiline_comment|/* number of packets to transmit until&n;&t;&t;&t;&t; * a transmit interrupt is requested */
+DECL|member|tx_live_cnt
 id|u32
-id|tx_queue_cnt
+id|tx_live_cnt
 suffix:semicolon
-multiline_comment|/* wait to send packet count */
+multiline_comment|/* number of used/live tx slots */
 DECL|member|rx_avail_cnt
 id|u32
 id|rx_avail_cnt
@@ -352,7 +373,7 @@ DECL|member|rx_error_cnt
 id|u8
 id|rx_error_cnt
 suffix:semicolon
-multiline_comment|/* recievd abnormal case count */
+multiline_comment|/* recieved abnormal case count */
 DECL|member|dm910x_chk_mode
 id|u8
 id|dm910x_chk_mode
@@ -524,8 +545,6 @@ DECL|variable|dmfe_debug
 r_static
 r_int
 id|dmfe_debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dmfe_media_mode
 r_static
@@ -539,23 +558,17 @@ DECL|variable|dmfe_cr6_user_set
 r_static
 id|u32
 id|dmfe_cr6_user_set
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* For module input parameter */
 DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|cr6set
 r_static
 id|u32
 id|cr6set
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|mode
 r_static
@@ -1447,6 +1460,26 @@ suffix:semicolon
 id|u16
 id|pci_command
 suffix:semicolon
+multiline_comment|/* when built into the kernel, we only print version if device is found */
+macro_line|#ifndef MODULE
+r_static
+r_int
+id|printed_version
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|printed_version
+op_increment
+)paren
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 id|DMFE_DBUG
 c_func
 (paren
@@ -1533,7 +1566,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;dmfe: Interrupt wrong : IRQ=%d&bslash;n&quot;
+l_string|&quot;dmfe(%s): Interrupt wrong : IRQ=%d&bslash;n&quot;
+comma
+id|pdev-&gt;slot_name
 comma
 id|pci_irqline
 )paren
@@ -1549,13 +1584,25 @@ c_cond
 id|pci_iobase
 op_eq
 l_int|0
+op_logical_or
+id|pci_resource_len
+c_func
+(paren
+id|pdev
+comma
+l_int|0
+)paren
+op_eq
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;dmfe: I/O base is zero&bslash;n&quot;
+l_string|&quot;dmfe(%s): I/O base is zero&bslash;n&quot;
+comma
+id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 r_goto
@@ -1591,11 +1638,9 @@ suffix:semicolon
 multiline_comment|/* Init network device */
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
 c_func
 (paren
-l_int|NULL
-comma
 r_sizeof
 (paren
 op_star
@@ -1619,49 +1664,20 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* IO range check */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|request_region
-c_func
-(paren
-id|pci_iobase
-comma
-id|CHK_IO_SIZE
+id|pci_request_regions
 c_func
 (paren
 id|pdev
 comma
-id|dev_rev
-)paren
-comma
-id|dev-&gt;name
+l_string|&quot;dmfe&quot;
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;dmfe: I/O conflict : IO=%lx Range=%x&bslash;n&quot;
-comma
-id|pci_iobase
-comma
-id|CHK_IO_SIZE
-c_func
-(paren
-id|pdev
-comma
-id|dev_rev
-)paren
-)paren
-suffix:semicolon
 r_goto
 id|err_out_netdev
 suffix:semicolon
-)brace
 id|db
 op_assign
 id|dev-&gt;priv
@@ -1672,6 +1688,13 @@ c_func
 id|pdev
 comma
 id|dev
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|db-&gt;lock
 )paren
 suffix:semicolon
 id|db-&gt;chip_id
@@ -1762,6 +1785,21 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Davicom DM%04lx at 0x%lx,&quot;
+comma
+id|dev-&gt;name
+comma
+id|ent-&gt;driver_data
+op_rshift
+l_int|16
+comma
+id|pci_iobase
+)paren
+suffix:semicolon
 multiline_comment|/* Set Node address */
 r_for
 c_loop
@@ -1777,6 +1815,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|dev-&gt;dev_addr
 (braket
 id|i
@@ -1789,17 +1828,62 @@ op_plus
 id|i
 )braket
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-id|err_out_netdev
+id|printk
+c_func
+(paren
+l_string|&quot;%c%02x&quot;
+comma
+id|i
+ques
+c_cond
+l_char|&squot;:&squot;
 suffix:colon
-id|unregister_netdev
+l_char|&squot; &squot;
+comma
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;, IRQ %d&bslash;n&quot;
+comma
+id|pci_irqline
+)paren
+suffix:semicolon
+id|i
+op_assign
+id|register_netdev
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+)paren
+r_goto
+id|err_out_res
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+id|err_out_res
+suffix:colon
+id|pci_release_regions
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|err_out_netdev
+suffix:colon
 id|kfree
 c_func
 (paren
@@ -1861,18 +1945,10 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-id|CHK_IO_SIZE
+id|pci_release_regions
 c_func
 (paren
 id|pdev
-comma
-id|db-&gt;chip_revision
-)paren
 )paren
 suffix:semicolon
 id|kfree
@@ -2110,11 +2186,11 @@ id|CR6_DEFAULT
 op_or
 id|dmfe_cr6_user_set
 suffix:semicolon
-id|db-&gt;tx_packet_cnt
+id|db-&gt;tx_int_pkt_num
 op_assign
-l_int|0
+id|TX_IRQ_THR
 suffix:semicolon
-id|db-&gt;tx_queue_cnt
+id|db-&gt;tx_live_cnt
 op_assign
 l_int|0
 suffix:semicolon
@@ -2495,6 +2571,10 @@ id|tx_desc
 op_star
 id|txptr
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|DMFE_DBUG
 c_func
 (paren
@@ -2505,58 +2585,15 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|netif_stop_queue
+id|spin_lock_irqsave
 c_func
 (paren
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* Too large packet check */
-r_if
-c_cond
-(paren
-id|skb-&gt;len
-OG
-id|MAX_PACKET_SIZE
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: oversized frame (%d bytes) for transmit.&bslash;n&quot;
+op_amp
+id|db-&gt;lock
 comma
-id|dev-&gt;name
-comma
-(paren
-id|u16
-)paren
-id|skb-&gt;len
+id|flags
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* No Tx resource check, it never happen nromally */
-r_if
-c_cond
-(paren
-id|db-&gt;tx_packet_cnt
-op_ge
-id|TX_FREE_DESC_CNT
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* transmit this packet */
 id|txptr
 op_assign
@@ -2580,14 +2617,57 @@ comma
 id|skb-&gt;len
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_decrement
+id|db-&gt;tx_int_pkt_num
+OL
+l_int|0
+)paren
+(brace
 id|txptr-&gt;tdes1
 op_assign
 l_int|0xe1000000
 op_or
 id|skb-&gt;len
 suffix:semicolon
+id|db-&gt;tx_int_pkt_num
+op_assign
+id|TX_IRQ_THR
+suffix:semicolon
+)brace
+r_else
+id|txptr-&gt;tdes1
+op_assign
+l_int|0x61000000
+op_or
+id|skb-&gt;len
+suffix:semicolon
+multiline_comment|/* Transmit Packet Process */
+id|txptr-&gt;tdes0
+op_assign
+l_int|0x80000000
+suffix:semicolon
+multiline_comment|/* set owner bit to DM910X */
+id|outl
+c_func
+(paren
+l_int|0x1
+comma
+id|dev-&gt;base_addr
+op_plus
+id|DCR1
+)paren
+suffix:semicolon
+multiline_comment|/* Issue Tx polling command */
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
+multiline_comment|/* saved the time stamp */
 multiline_comment|/* Point to next transmit free descriptor */
-id|db-&gt;tx_insert_ptr
+id|txptr
 op_assign
 (paren
 r_struct
@@ -2596,66 +2676,33 @@ op_star
 )paren
 id|txptr-&gt;next_tx_desc
 suffix:semicolon
-multiline_comment|/* Transmit Packet Process */
 r_if
 c_cond
 (paren
-id|db-&gt;tx_packet_cnt
-OL
-id|TX_MAX_SEND_CNT
-)paren
-(brace
 id|txptr-&gt;tdes0
-op_assign
+op_amp
 l_int|0x80000000
-suffix:semicolon
-multiline_comment|/* set owner bit to DM910X */
-id|db-&gt;tx_packet_cnt
-op_increment
-suffix:semicolon
-multiline_comment|/* Ready to send count */
-id|outl
-c_func
-(paren
-l_int|0x1
-comma
-id|dev-&gt;base_addr
-op_plus
-id|DCR1
 )paren
-suffix:semicolon
-multiline_comment|/* Issue Tx polling command */
-)brace
-r_else
-(brace
-id|db-&gt;tx_queue_cnt
-op_increment
-suffix:semicolon
-multiline_comment|/* queue the tx packet */
-id|outl
-c_func
-(paren
-l_int|0x1
-comma
-id|dev-&gt;base_addr
-op_plus
-id|DCR1
-)paren
-suffix:semicolon
-multiline_comment|/* Issue Tx polling command */
-)brace
-multiline_comment|/* Tx resource check */
-r_if
-c_cond
-(paren
-id|db-&gt;tx_packet_cnt
-OL
-id|TX_FREE_DESC_CNT
-)paren
-id|netif_wake_queue
+id|netif_stop_queue
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|db-&gt;tx_insert_ptr
+op_assign
+id|txptr
+suffix:semicolon
+id|db-&gt;tx_live_cnt
+op_increment
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|db-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* free this SKB */
@@ -2852,6 +2899,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|db-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* Disable all interrupt in CR7 to solve the interrupt edge problem */
 id|outl
 c_func
@@ -2927,6 +2981,13 @@ id|DCR7
 )paren
 suffix:semicolon
 multiline_comment|/* disable all interrupt */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|db-&gt;lock
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2938,19 +2999,20 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|db-&gt;tx_packet_cnt
-)paren
-(brace
-multiline_comment|/* printk(&quot;tdes0=%x&bslash;n&quot;, txptr-&gt;tdes0); */
-r_if
-c_cond
+id|db-&gt;tx_live_cnt
+OG
+l_int|0
+op_logical_and
 (paren
 id|txptr-&gt;tdes0
 op_amp
 l_int|0x80000000
 )paren
-r_break
-suffix:semicolon
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* printk(&quot;tdes0=%x&bslash;n&quot;, txptr-&gt;tdes0); */
 id|db-&gt;stats.tx_packets
 op_increment
 suffix:semicolon
@@ -3021,7 +3083,7 @@ op_star
 )paren
 id|txptr-&gt;next_tx_desc
 suffix:semicolon
-id|db-&gt;tx_packet_cnt
+id|db-&gt;tx_live_cnt
 op_decrement
 suffix:semicolon
 )brace
@@ -3035,55 +3097,16 @@ op_star
 )paren
 id|txptr
 suffix:semicolon
-multiline_comment|/* Send the Tx packet in queue */
 r_if
 c_cond
 (paren
 (paren
-id|db-&gt;tx_packet_cnt
-OL
-id|TX_MAX_SEND_CNT
-)paren
-op_logical_and
-id|db-&gt;tx_queue_cnt
-)paren
-(brace
-id|txptr-&gt;tdes0
-op_assign
+id|db-&gt;tx_insert_ptr-&gt;tdes0
+op_amp
 l_int|0x80000000
-suffix:semicolon
-multiline_comment|/* set owner bit to DM910X */
-id|db-&gt;tx_packet_cnt
-op_increment
-suffix:semicolon
-multiline_comment|/* Ready to send count */
-id|outl
-c_func
-(paren
-l_int|0x1
-comma
-id|ioaddr
-op_plus
-id|DCR1
 )paren
-suffix:semicolon
-multiline_comment|/* Issue Tx polling command */
-id|dev-&gt;trans_start
-op_assign
-id|jiffies
-suffix:semicolon
-multiline_comment|/* saved the time stamp */
-id|db-&gt;tx_queue_cnt
-op_decrement
-suffix:semicolon
-)brace
-multiline_comment|/* Resource available check */
-r_if
-c_cond
-(paren
-id|db-&gt;tx_packet_cnt
-OL
-id|TX_FREE_DESC_CNT
+op_eq
+l_int|0
 )paren
 id|netif_wake_queue
 c_func
@@ -3170,6 +3193,13 @@ comma
 id|ioaddr
 op_plus
 id|DCR7
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|db-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -3693,6 +3723,7 @@ suffix:semicolon
 multiline_comment|/* DM9102/DM9102A */
 )brace
 multiline_comment|/*&n;   Process the upper socket ioctl command&n; */
+multiline_comment|/* &n; * The following function just returns 0. Shouldn&squot;t it do more? &n; */
 DECL|function|dmfe_do_ioctl
 r_static
 r_int
@@ -3876,9 +3907,11 @@ r_if
 c_cond
 (paren
 id|db-&gt;wait_reset
-op_or
+op_logical_or
 (paren
-id|db-&gt;tx_packet_cnt
+id|db-&gt;tx_live_cnt
+OG
+l_int|0
 op_logical_and
 (paren
 (paren
@@ -3890,7 +3923,7 @@ OG
 id|DMFE_TX_TIMEOUT
 )paren
 )paren
-op_or
+op_logical_or
 (paren
 id|db-&gt;rx_error_cnt
 OG
@@ -3904,9 +3937,9 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;Warn!! Warn!! Tx/Rx moniotr step1&quot;
+l_string|&quot;Warn!! Warn!! Tx/Rx monitor step1&quot;
 comma
-id|db-&gt;tx_packet_cnt
+l_int|0
 )paren
 suffix:semicolon
 id|dmfe_dynamic_reset
@@ -4290,11 +4323,11 @@ id|db
 )paren
 suffix:semicolon
 multiline_comment|/* system variable init */
-id|db-&gt;tx_packet_cnt
+id|db-&gt;tx_int_pkt_num
 op_assign
-l_int|0
+id|TX_IRQ_THR
 suffix:semicolon
-id|db-&gt;tx_queue_cnt
+id|db-&gt;tx_live_cnt
 op_assign
 l_int|0
 suffix:semicolon
@@ -5139,6 +5172,10 @@ id|tx_desc
 op_star
 id|txptr
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|u16
 op_star
 id|addrptr
@@ -5155,9 +5192,18 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;send_filetr_frame()&quot;
+l_string|&quot;send_filter_frame()&quot;
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|db-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|txptr
@@ -5172,6 +5218,35 @@ op_star
 )paren
 id|txptr-&gt;tx_buf_ptr
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|txptr-&gt;tdes0
+op_amp
+l_int|0x80000000
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|db-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Too busy to send filter frame&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* Node address */
 id|addrptr
 op_assign
@@ -5290,6 +5365,9 @@ suffix:semicolon
 r_for
 c_loop
 (paren
+id|i
+op_assign
+l_int|0
 suffix:semicolon
 id|i
 OL
@@ -5298,7 +5376,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 op_star
 id|suptr
 op_increment
@@ -5317,7 +5394,6 @@ op_increment
 op_assign
 l_int|0xffff
 suffix:semicolon
-)brace
 multiline_comment|/* prepare the setup frame */
 id|db-&gt;tx_insert_ptr
 op_assign
@@ -5328,22 +5404,14 @@ op_star
 )paren
 id|txptr-&gt;next_tx_desc
 suffix:semicolon
+id|db-&gt;tx_live_cnt
+op_increment
+suffix:semicolon
 id|txptr-&gt;tdes1
 op_assign
 l_int|0x890000c0
 suffix:semicolon
-multiline_comment|/* Resource Check and Send the setup packet */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|db-&gt;tx_packet_cnt
-)paren
-(brace
-multiline_comment|/* Resource Empty */
-id|db-&gt;tx_packet_cnt
-op_increment
-suffix:semicolon
+multiline_comment|/* Send the setup packet */
 id|txptr-&gt;tdes0
 op_assign
 l_int|0x80000000
@@ -5377,14 +5445,15 @@ comma
 id|dev-&gt;base_addr
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Put into TX queue */
-id|db-&gt;tx_queue_cnt
-op_increment
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|db-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; *&t;Allocate rx buffer,&n; *&t;Allocate as many Rx buffers as possible.&n; */
 DECL|function|allocated_rx_buffer
@@ -6912,6 +6981,15 @@ r_void
 r_int
 id|rc
 suffix:semicolon
+multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
+macro_line|#ifdef MODULE
+id|printk
+c_func
+(paren
+id|version
+)paren
+suffix:semicolon
+macro_line|#endif
 id|DMFE_DBUG
 c_func
 (paren
@@ -6992,14 +7070,6 @@ l_int|0
 )paren
 r_return
 id|rc
-suffix:semicolon
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;Davicom DM91xx net driver loaded, version &quot;
-id|DMFE_VERSION
-l_string|&quot;&bslash;n&quot;
-)paren
 suffix:semicolon
 r_return
 l_int|0
