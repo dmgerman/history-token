@@ -7462,6 +7462,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|bttv_call_i2c_clients
+c_func
+(paren
+id|btv
+comma
+id|cmd
+comma
+id|v
+)paren
+suffix:semicolon
 id|btv-&gt;tvnorm
 op_assign
 id|v-&gt;norm
