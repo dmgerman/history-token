@@ -5035,6 +5035,10 @@ id|current-&gt;exit_code
 op_assign
 id|signr
 suffix:semicolon
+id|current-&gt;last_siginfo
+op_assign
+id|info
+suffix:semicolon
 id|set_current_state
 c_func
 (paren
@@ -5054,6 +5058,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|current-&gt;last_siginfo
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* We&squot;re back.  Did the debugger cancel the sig?  */
 id|signr
 op_assign
@@ -5072,7 +5080,7 @@ id|current-&gt;exit_code
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Update the siginfo structure.  Is this good?  */
+multiline_comment|/* Update the siginfo structure if the signal has&n;&t;&t;&t;   changed.  If the debugger wanted something&n;&t;&t;&t;   specific in the siginfo structure then it should&n;&t;&t;&t;   have updated *info via PTRACE_SETSIGINFO.  */
 r_if
 c_cond
 (paren

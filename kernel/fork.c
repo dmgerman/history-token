@@ -4445,6 +4445,7 @@ id|clone_flags
 op_amp
 id|CLONE_VFORK
 )paren
+(brace
 id|wait_for_completion
 c_func
 (paren
@@ -4452,6 +4453,28 @@ op_amp
 id|vfork
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+(paren
+id|current-&gt;ptrace
+op_amp
+id|PT_TRACE_VFORK_DONE
+)paren
+)paren
+id|ptrace_notify
+(paren
+(paren
+id|PTRACE_EVENT_VFORK_DONE
+op_lshift
+l_int|8
+)paren
+op_or
+id|SIGTRAP
+)paren
+suffix:semicolon
+)brace
 r_else
 multiline_comment|/*&n;&t;&t;&t; * Let the child process run first, to avoid most of the&n;&t;&t;&t; * COW overhead when the child exec()s afterwards.&n;&t;&t;&t; */
 id|set_need_resched
