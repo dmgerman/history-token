@@ -151,7 +151,17 @@ c_func
 (paren
 id|bio
 comma
+id|nsect
+op_lshift
+l_int|9
+comma
 id|uptodate
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EIO
 )paren
 suffix:semicolon
 )brace

@@ -385,6 +385,7 @@ op_star
 id|self
 )paren
 (brace
+multiline_comment|/* we should lock here, but I guess this function is unused...&n;&t; * Jean II */
 r_if
 c_cond
 (paren
@@ -502,15 +503,13 @@ id|IRCOMM_3_WIRE_RAW
 r_return
 l_int|0
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|self-&gt;spinlock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|skb
@@ -539,9 +538,12 @@ op_logical_neg
 id|skb
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|self-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -600,9 +602,12 @@ id|__FUNCTION__
 l_string|&quot;(), no room for parameter!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|self-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -619,9 +624,12 @@ comma
 id|count
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|self-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon

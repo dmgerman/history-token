@@ -300,6 +300,12 @@ id|iobuff_t
 id|rx_buff
 suffix:semicolon
 multiline_comment|/* Receive buffer */
+multiline_comment|/* Note : currently locking is *very* incomplete, but this&n;&t; * will get you started. Check in nsc-ircc.c for a proper&n;&t; * locking strategy. - Jean II */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* For serializing operations */
 DECL|member|flags
 id|__u32
 id|flags

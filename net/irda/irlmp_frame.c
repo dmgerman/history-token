@@ -775,6 +775,10 @@ id|__u8
 op_star
 id|fp
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -906,6 +910,16 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Search the connectionless LSAP */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|irlmp-&gt;unconnected_lsaps-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|lsap
 op_assign
 (paren
@@ -967,6 +981,15 @@ id|irlmp-&gt;unconnected_lsaps
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|irlmp-&gt;unconnected_lsaps-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1287,6 +1310,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Add to main log, cleanup */
 id|irlmp_add_discovery
 c_func
 (paren
@@ -1352,6 +1376,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Add to main log, cleanup */
 id|irlmp_add_discovery_log
 c_func
 (paren
@@ -1389,6 +1414,11 @@ op_star
 id|lsap
 )paren
 (brace
+multiline_comment|/* Prevent concurent read to get garbage */
+id|lap-&gt;cache.valid
+op_assign
+id|FALSE
+suffix:semicolon
 multiline_comment|/* Update cache entry */
 id|lap-&gt;cache.dlsap_sel
 op_assign
@@ -1441,6 +1471,10 @@ id|lsap_cb
 op_star
 id|lsap
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* &n;&t; *  Optimize for the common case. We assume that the last frame&n;&t; *  received is in the same connection as the last one, so check in&n;&t; *  cache first to avoid the linear search&n;&t; */
 macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
 r_if
@@ -1470,6 +1504,15 @@ id|self-&gt;cache.lsap
 suffix:semicolon
 )brace
 macro_line|#endif
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|queue-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|lsap
 op_assign
 (paren
@@ -1514,22 +1557,12 @@ id|LSAP_ANY
 )paren
 )paren
 (brace
+multiline_comment|/* This is where the dest lsap sel is set on incomming&n;&t;&t;&t; * lsaps */
 id|lsap-&gt;dlsap_sel
 op_assign
 id|dlsap_sel
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
-id|irlmp_update_cache
-c_func
-(paren
-id|self
-comma
-id|lsap
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-id|lsap
+r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; *  Check if source LSAP and dest LSAP selectors match.&n;&t;&t; */
@@ -1548,21 +1581,8 @@ op_eq
 id|dlsap_sel
 )paren
 )paren
-(brace
-macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
-id|irlmp_update_cache
-c_func
-(paren
-id|self
-comma
-id|lsap
-)paren
+r_break
 suffix:semicolon
-macro_line|#endif
-r_return
-id|lsap
-suffix:semicolon
-)brace
 id|lsap
 op_assign
 (paren
@@ -1577,9 +1597,35 @@ id|queue
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Sorry not found! */
+macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
+r_if
+c_cond
+(paren
+id|lsap
+)paren
+(brace
+id|irlmp_update_cache
+c_func
+(paren
+id|self
+comma
+id|lsap
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|queue-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Return what we&squot;ve found or NULL */
 r_return
-l_int|NULL
+id|lsap
 suffix:semicolon
 )brace
 eof
