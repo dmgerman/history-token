@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/filter.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1297,6 +1298,24 @@ op_increment
 (brace
 r_int
 id|new_fd
+suffix:semicolon
+id|err
+op_assign
+id|security_file_receive
+c_func
+(paren
+id|fp
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_break
 suffix:semicolon
 id|err
 op_assign

@@ -1957,7 +1957,7 @@ comma
 dot
 id|poll
 op_assign
-id|datagram_poll
+id|udp_poll
 comma
 multiline_comment|/* ok&t;&t;*/
 dot

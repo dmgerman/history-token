@@ -58,6 +58,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * gnet_stats_start_copy_compat - start dumping procedure in compatibility mode&n; * @skb: socket buffer to put statistics TLVs into&n; * @type: TLV type for top level statistic TLV&n; * @tc_stats_type: TLV type for backward compatibility struct tc_stats TLV&n; * @xstats_type: TLV type for backward compatibility xstats TLV&n; * @lock: statistics lock&n; * @d: dumping handle&n; *&n; * Initializes the dumping handle, grabs the statistic lock and appends&n; * an empty TLV header to the socket buffer for use a container for all&n; * other statistic TLVS.&n; *&n; * The dumping handle is marked to be in backward compatibility mode telling&n; * all gnet_stats_copy_XXX() functions to fill a local copy of struct tc_stats.&n; *&n; * Returns 0 on success or -1 if the room in the socket buffer was not sufficient.&n; */
 r_int
 DECL|function|gnet_stats_start_copy_compat
 id|gnet_stats_start_copy_compat
@@ -155,6 +156,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * gnet_stats_start_copy_compat - start dumping procedure in compatibility mode&n; * @skb: socket buffer to put statistics TLVs into&n; * @type: TLV type for top level statistic TLV&n; * @lock: statistics lock&n; * @d: dumping handle&n; *&n; * Initializes the dumping handle, grabs the statistic lock and appends&n; * an empty TLV header to the socket buffer for use a container for all&n; * other statistic TLVS.&n; *&n; * Returns 0 on success or -1 if the room in the socket buffer was not sufficient.&n; */
 r_int
 DECL|function|gnet_stats_start_copy
 id|gnet_stats_start_copy
@@ -196,6 +198,7 @@ id|d
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * gnet_stats_copy_basic - copy basic statistics into statistic TLV&n; * @d: dumping handle&n; * @b: basic statistics&n; *&n; * Appends the basic statistics to the top level TLV created by&n; * gnet_stats_start_copy().&n; *&n; * Returns 0 on success or -1 with the statistic lock released&n; * if the room in the socket buffer was not sufficient.&n; */
 r_int
 DECL|function|gnet_stats_copy_basic
 id|gnet_stats_copy_basic
@@ -245,6 +248,7 @@ id|b
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * gnet_stats_copy_rate_est - copy rate estimator statistics into statistics TLV&n; * @d: dumping handle&n; * @r: rate estimator statistics&n; *&n; * Appends the rate estimator statistics to the top level TLV created by&n; * gnet_stats_start_copy().&n; *&n; * Returns 0 on success or -1 with the statistic lock released&n; * if the room in the socket buffer was not sufficient.&n; */
 r_int
 DECL|function|gnet_stats_copy_rate_est
 id|gnet_stats_copy_rate_est
@@ -294,6 +298,7 @@ id|r
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * gnet_stats_copy_queue - copy queue statistics into statistics TLV&n; * @d: dumping handle&n; * @q: queue statistics&n; *&n; * Appends the queue statistics to the top level TLV created by&n; * gnet_stats_start_copy().&n; *&n; * Returns 0 on success or -1 with the statistic lock released&n; * if the room in the socket buffer was not sufficient.&n; */
 r_int
 DECL|function|gnet_stats_copy_queue
 id|gnet_stats_copy_queue
@@ -351,6 +356,7 @@ id|q
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * gnet_stats_copy_app - copy application specific statistics into statistics TLV&n; * @d: dumping handle&n; * @st: application specific statistics data&n; * @len: length of data&n; *&n; * Appends the application sepecific statistics to the top level TLV created by&n; * gnet_stats_start_copy() and remembers the data for XSTATS if the dumping&n; * handle is in backward compatibility mode.&n; *&n; * Returns 0 on success or -1 with the statistic lock released&n; * if the room in the socket buffer was not sufficient.&n; */
 r_int
 DECL|function|gnet_stats_copy_app
 id|gnet_stats_copy_app
@@ -397,6 +403,7 @@ id|len
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * gnet_stats_finish_copy - finish dumping procedure&n; * @d: dumping handle&n; *&n; * Corrects the length of the top level TLV to include all TLVs added&n; * by gnet_stats_copy_XXX() calls. Adds the backward compatibility TLVs&n; * if gnet_stats_start_copy_compat() was used and releases the statistics&n; * lock.&n; *&n; * Returns 0 on success or -1 with the statistic lock released&n; * if the room in the socket buffer was not sufficient.&n; */
 r_int
 DECL|function|gnet_stats_finish_copy
 id|gnet_stats_finish_copy
