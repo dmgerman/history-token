@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2002, 2004 Hewlett-Packard Co.&n; *&t;Khalid Aziz &lt;khalid_aziz@hp.com&gt;&n; *&t;Bjorn Helgaas &lt;bjorn.helgaas@hp.com&gt;&n; *&n; * Definitions for PCDP-defined console devices&n; *&n; * v1.0a: http://www.dig64.org/specifications/DIG64_HCDPv10a_01.pdf&n; * v2.0:  http://www.dig64.org/specifications/DIG64_HCDPv20_042804.pdf&n; */
+multiline_comment|/*&n; * Definitions for PCDP-defined console devices&n; *&n; * v1.0a: http://www.dig64.org/specifications/DIG64_HCDPv10a_01.pdf&n; * v2.0:  http://www.dig64.org/specifications/DIG64_HCDPv20_042804.pdf&n; *&n; * (c) Copyright 2002, 2004 Hewlett-Packard Development Company, L.P.&n; *&t;Khalid Aziz &lt;khalid.aziz@hp.com&gt;&n; *&t;Bjorn Helgaas &lt;bjorn.helgaas@hp.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 DECL|macro|PCDP_CONSOLE
 mdefine_line|#define PCDP_CONSOLE&t;&t;&t;0
 DECL|macro|PCDP_DEBUG
