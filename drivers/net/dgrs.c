@@ -48,14 +48,13 @@ macro_line|#include &quot;dgrs_i82596.h&quot;
 macro_line|#include &quot;dgrs_ether.h&quot;
 macro_line|#include &quot;dgrs_asstruct.h&quot;
 macro_line|#include &quot;dgrs_bcomm.h&quot;
-DECL|variable|__initdata
+DECL|variable|dgrs_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|dgrs_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

@@ -851,14 +851,13 @@ op_star
 id|smc
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|skfddi_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|skfddi_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

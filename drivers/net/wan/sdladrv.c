@@ -397,14 +397,13 @@ id|hw
 )paren
 suffix:semicolon
 multiline_comment|/****** Global Data **********************************************************&n; * Note: All data must be explicitly initialized!!!&n; */
-DECL|variable|__initdata
+DECL|variable|sdladrv_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|sdladrv_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

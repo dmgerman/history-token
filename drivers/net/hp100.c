@@ -472,14 +472,13 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|HP100_PCI_IDS_SIZE
 mdefine_line|#define HP100_PCI_IDS_SIZE&t;(sizeof(hp100_pci_ids)/sizeof(struct hp100_pci_id))
-DECL|variable|__initdata
+DECL|variable|hp100_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|hp100_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

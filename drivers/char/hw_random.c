@@ -361,14 +361,13 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Data for PCI driver interface&n; *&n; * This data only exists for exporting the supported&n; * PCI ids via MODULE_DEVICE_TABLE.  We do not actually&n; * register a pci_driver, because someone else might one day&n; * want to register another driver on the same PCI id.&n; */
-DECL|variable|__initdata
+DECL|variable|rng_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|rng_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

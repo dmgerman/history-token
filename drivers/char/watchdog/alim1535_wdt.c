@@ -909,14 +909,13 @@ id|NOTIFY_DONE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Data for PCI driver interface&n; *&n; *&t;This data only exists for exporting the supported&n; *&t;PCI ids via MODULE_DEVICE_TABLE.  We do not actually&n; *&t;register a pci_driver, because someone else might one day&n; *&t;want to register another driver on the same PCI id.&n; */
-DECL|variable|__initdata
+DECL|variable|ali_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|ali_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

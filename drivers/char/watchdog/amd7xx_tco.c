@@ -1091,14 +1091,13 @@ op_amp
 id|amdtco_fops
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|amdtco_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|amdtco_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 multiline_comment|/* AMD 766 PCI_IDs here */
