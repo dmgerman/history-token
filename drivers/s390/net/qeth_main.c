@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_main.c ($Revision: 1.203 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Utz Bacher (utz.bacher@de.ibm.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; *    $Revision: 1.203 $&t; $Date: 2005/03/02 15:53:57 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_main.c ($Revision: 1.206 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Utz Bacher (utz.bacher@de.ibm.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; *    $Revision: 1.206 $&t; $Date: 2005/03/24 09:04:18 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/***&n; * eye catcher; just for debugging purposes&n; */
 r_void
 r_volatile
@@ -48,7 +48,7 @@ macro_line|#include &quot;qeth.h&quot;
 macro_line|#include &quot;qeth_mpc.h&quot;
 macro_line|#include &quot;qeth_fs.h&quot;
 DECL|macro|VERSION_QETH_C
-mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.203 $&quot;
+mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.206 $&quot;
 DECL|variable|version
 r_static
 r_const
@@ -19085,6 +19085,20 @@ comma
 l_string|&quot;fillhdr&quot;
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|hdr
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|qeth_hdr
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -20264,6 +20278,38 @@ comma
 id|skb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|cast_type
+op_eq
+id|RTN_BROADCAST
+)paren
+op_logical_and
+(paren
+id|card-&gt;info.broadcast_capable
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+id|card-&gt;stats.tx_dropped
+op_increment
+suffix:semicolon
+id|card-&gt;stats.tx_errors
+op_increment
+suffix:semicolon
+id|dev_kfree_skb_any
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+id|NETDEV_TX_OK
+suffix:semicolon
+)brace
 id|queue
 op_assign
 id|card-&gt;qdio.out_qs
