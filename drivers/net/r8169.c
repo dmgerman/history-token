@@ -5293,12 +5293,6 @@ id|PCIMulRW
 op_or
 id|RxChkSum
 suffix:semicolon
-id|dev-&gt;features
-op_or_assign
-id|NETIF_F_HW_VLAN_TX
-op_or
-id|NETIF_F_HW_VLAN_RX
-suffix:semicolon
 r_if
 c_cond
 (paren
