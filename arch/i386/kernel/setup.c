@@ -2199,6 +2199,45 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#ifdef  CONFIG_SMP
+multiline_comment|/*&n;&t;&t; * If the BIOS enumerates physical processors before logical,&n;&t;&t; * maxcpus=N at enumeration-time can be used to disable HT.&n;&t;&t; */
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;maxcpus=&quot;
+comma
+l_int|8
+)paren
+)paren
+(brace
+r_extern
+r_int
+r_int
+id|maxcpus
+suffix:semicolon
+id|maxcpus
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|from
+op_plus
+l_int|8
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/* &quot;acpi=off&quot; disables both ACPI table parsing and interpreter */
 r_else

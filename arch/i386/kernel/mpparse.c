@@ -23,6 +23,14 @@ DECL|variable|smp_found_config
 r_int
 id|smp_found_config
 suffix:semicolon
+DECL|variable|maxcpus
+r_int
+r_int
+id|__initdata
+id|maxcpus
+op_assign
+id|NR_CPUS
+suffix:semicolon
 multiline_comment|/*&n; * Various Linux-internal data structures created from the&n; * MP-table.&n; */
 DECL|variable|apic_version
 r_int
@@ -690,12 +698,31 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;NR_CPUS limit of %i reached.  Cannot &quot;
-l_string|&quot;boot CPU(apicid 0x%x).&bslash;n&quot;
+l_string|&quot;WARNING: NR_CPUS limit of %i reached.&quot;
+l_string|&quot;  Processor ignored.&bslash;n&quot;
 comma
 id|NR_CPUS
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|num_processors
+op_ge
+id|maxcpus
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;WARNING: maxcpus limit of %i reached.&quot;
+l_string|&quot; Processor ignored.&bslash;n&quot;
 comma
-id|m-&gt;mpc_apicid
+id|maxcpus
 )paren
 suffix:semicolon
 r_return
