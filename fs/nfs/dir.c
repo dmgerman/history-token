@@ -2588,6 +2588,11 @@ op_assign
 id|ATTR_MODE
 suffix:semicolon
 multiline_comment|/*&n;&t; * The 0 argument passed into the create function should one day&n;&t; * contain the O_EXCL flag if requested. This allows NFSv3 to&n;&t; * select the appropriate create strategy. Currently open_namei&n;&t; * does not pass the create flags.&n;&t; */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|nfs_zap_caches
 c_func
 (paren
@@ -2659,6 +2664,11 @@ id|d_drop
 c_func
 (paren
 id|dentry
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -2861,6 +2861,11 @@ id|ntfs_attribute
 op_star
 id|si
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|r
 op_assign
 id|new_inode
@@ -3103,6 +3108,11 @@ op_and_assign
 op_complement
 id|vol-&gt;umask
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|insert_inode_hash
 c_func
 (paren
@@ -3122,6 +3132,11 @@ l_int|0
 suffix:semicolon
 id|fail
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

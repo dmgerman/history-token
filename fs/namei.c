@@ -3934,11 +3934,6 @@ id|mode
 op_or_assign
 id|S_IFREG
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|dir-&gt;i_op
@@ -3951,11 +3946,6 @@ comma
 id|dentry
 comma
 id|mode
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if

@@ -3,6 +3,7 @@ macro_line|#include &quot;hfs.h&quot;
 macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/hfs_fs_i.h&gt;
 macro_line|#include &lt;linux/hfs_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*================ File-local functions ================*/
 multiline_comment|/*&n; * build_key()&n; *&n; * Build a key for a file by the given name in the given directory.&n; * If the name matches one of the reserved names returns 1 otherwise 0.&n; */
 DECL|function|build_key
@@ -567,6 +568,11 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* build the key, checking against reserved names */
 r_if
 c_cond
@@ -584,10 +590,17 @@ comma
 id|dentry-&gt;d_name.len
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EEXIST
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -634,9 +647,16 @@ r_new
 )paren
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
+)brace
 multiline_comment|/* create an inode for the new file. back out if we run&n;&t; * into trouble. */
 r_new
 op_member_access_from_pointer
@@ -683,6 +703,11 @@ id|hfs_cat_put
 c_func
 (paren
 r_new
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -740,6 +765,11 @@ id|mark_inode_dirty
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|d_instantiate

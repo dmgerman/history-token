@@ -2020,6 +2020,11 @@ comma
 id|mode
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|smb_invalid_dir_cache
 c_func
 (paren
@@ -2078,6 +2083,11 @@ id|error
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon

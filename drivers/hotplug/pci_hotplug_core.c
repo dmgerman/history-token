@@ -335,6 +335,7 @@ r_return
 id|inode
 suffix:semicolon
 )brace
+multiline_comment|/* SMP-safe */
 DECL|function|pcihpfs_mknod
 r_static
 r_int

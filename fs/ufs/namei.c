@@ -310,6 +310,11 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|ufs_add_nondir
@@ -318,6 +323,11 @@ c_func
 id|dentry
 comma
 id|inode
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

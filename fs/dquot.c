@@ -4787,6 +4787,11 @@ id|NOWARN
 suffix:semicolon
 )brace
 multiline_comment|/* NOBLOCK Start */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4941,6 +4946,11 @@ id|cnt
 )braket
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -5070,6 +5080,11 @@ op_star
 id|dquot
 suffix:semicolon
 multiline_comment|/* NOBLOCK Start */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5120,6 +5135,11 @@ id|dquot
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* NOBLOCK End */
 )brace
 multiline_comment|/*&n; * Transfer the number of inode and blocks from one diskquota to an other.&n; *&n; * This operation can block, but only after everything is updated&n; */

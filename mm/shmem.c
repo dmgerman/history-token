@@ -3953,6 +3953,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * File creation. Allocate an inode, and we&squot;re done..&n; */
+multiline_comment|/* SMP-safe */
 DECL|function|shmem_mknod
 r_static
 r_int
