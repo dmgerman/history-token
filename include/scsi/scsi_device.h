@@ -406,6 +406,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* issue START_UNIT in error handler */
+DECL|member|no_uld_attach
+r_int
+id|no_uld_attach
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* disable connecting to upper level drivers */
 DECL|member|device_blocked
 r_int
 r_int

@@ -1717,6 +1717,19 @@ l_int|0x80
 suffix:semicolon
 multiline_comment|/* removable */
 )brace
+r_else
+r_if
+c_cond
+(paren
+op_star
+id|bflags
+op_amp
+id|BLIST_NO_ULD_ATTACH
+)paren
+id|sdev-&gt;no_uld_attach
+op_assign
+l_int|1
+suffix:semicolon
 r_switch
 c_cond
 (paren

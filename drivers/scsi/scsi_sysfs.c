@@ -730,6 +730,14 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdp-&gt;no_uld_attach
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_return
 (paren
 id|sdp-&gt;inq_periph_qual

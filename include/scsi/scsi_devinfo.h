@@ -42,5 +42,7 @@ DECL|macro|BLIST_NOREPORTLUN
 mdefine_line|#define BLIST_NOREPORTLUN&t;0x40000&t;/* don&squot;t try REPORT_LUNS scan (SCSI-3 devs) */
 DECL|macro|BLIST_NOT_LOCKABLE
 mdefine_line|#define BLIST_NOT_LOCKABLE&t;0x80000&t;/* don&squot;t use PREVENT-ALLOW commands */
+DECL|macro|BLIST_NO_ULD_ATTACH
+mdefine_line|#define BLIST_NO_ULD_ATTACH&t;0x100000 /* device is actually for RAID config */
 macro_line|#endif
 eof

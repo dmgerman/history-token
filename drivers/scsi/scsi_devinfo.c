@@ -1361,6 +1361,16 @@ id|BLIST_REPORTLUN2
 )brace
 comma
 (brace
+l_string|&quot;SGI&quot;
+comma
+l_string|&quot;Universal Xport&quot;
+comma
+l_string|&quot;*&quot;
+comma
+id|BLIST_NO_ULD_ATTACH
+)brace
+comma
+(brace
 l_string|&quot;SMSC&quot;
 comma
 l_string|&quot;USB 2 HS-CF&quot;
