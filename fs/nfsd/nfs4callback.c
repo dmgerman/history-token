@@ -1543,6 +1543,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|put_rpccred
+c_func
+(paren
+id|msg.rpc_cred
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2085,6 +2091,12 @@ c_func
 l_string|&quot;NFSD: recall_delegation: rpc_call_async failed %d&bslash;n&quot;
 comma
 id|status
+)paren
+suffix:semicolon
+id|put_rpccred
+c_func
+(paren
+id|msg.rpc_cred
 )paren
 suffix:semicolon
 r_return
