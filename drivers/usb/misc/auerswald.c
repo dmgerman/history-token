@@ -1204,7 +1204,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* cancel an urb which is submitted to the chain&n;   the result is 0 if the urb is cancelled, or -EINPROGRESS if&n;   USB_ASYNC_UNLINK is set and the function is successfully started.&n;*/
+multiline_comment|/* cancel an urb which is submitted to the chain&n;   the result is 0 if the urb is cancelled, or -EINPROGRESS if&n;   URB_ASYNC_UNLINK is set and the function is successfully started.&n;*/
 DECL|function|auerchain_unlink_urb
 r_static
 r_int
@@ -1534,7 +1534,7 @@ suffix:semicolon
 id|urbp-&gt;transfer_flags
 op_and_assign
 op_complement
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|dbg
 (paren

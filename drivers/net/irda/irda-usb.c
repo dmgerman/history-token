@@ -1,5 +1,5 @@
 multiline_comment|/*****************************************************************************&n; *&n; * Filename:      irda-usb.c&n; * Version:       0.9b&n; * Description:   IrDA-USB Driver&n; * Status:        Experimental &n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *&t;Copyright (C) 2000, Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; *      Copyright (C) 2001, Dag Brattli &lt;dag@brattli.net&gt;&n; *      Copyright (C) 2001, Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *          &n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *&t;&t;&t;    IMPORTANT NOTE&n; *&t;&t;&t;    --------------&n; *&n; * As of kernel 2.5.20, this is the state of compliance and testing of&n; * this driver (irda-usb) with regards to the USB low level drivers...&n; *&n; * This driver has been tested SUCCESSFULLY with the following drivers :&n; *&t;o usb-uhci-hcd&t;(For Intel/Via USB controllers)&n; *&t;o uhci-hcd&t;(Alternate/JE driver for Intel/Via USB controllers)&n; *&t;o ohci-hcd&t;(For other USB controllers)&n; *&n; * This driver has NOT been tested with the following drivers :&n; *&t;o ehci-hcd&t;(USB 2.0 controllers)&n; *&n; * Note that all HCD drivers do USB_ZERO_PACKET and timeout properly,&n; * so we don&squot;t have to worry about that anymore.&n; * One common problem is the failure to set the address on the dongle,&n; * but this happens before the driver gets loaded...&n; *&n; * Jean II&n; */
+multiline_comment|/*&n; *&t;&t;&t;    IMPORTANT NOTE&n; *&t;&t;&t;    --------------&n; *&n; * As of kernel 2.5.20, this is the state of compliance and testing of&n; * this driver (irda-usb) with regards to the USB low level drivers...&n; *&n; * This driver has been tested SUCCESSFULLY with the following drivers :&n; *&t;o usb-uhci-hcd&t;(For Intel/Via USB controllers)&n; *&t;o uhci-hcd&t;(Alternate/JE driver for Intel/Via USB controllers)&n; *&t;o ohci-hcd&t;(For other USB controllers)&n; *&n; * This driver has NOT been tested with the following drivers :&n; *&t;o ehci-hcd&t;(USB 2.0 controllers)&n; *&n; * Note that all HCD drivers do URB_ZERO_PACKET and timeout properly,&n; * so we don&squot;t have to worry about that anymore.&n; * One common problem is the failure to set the address on the dongle,&n; * but this happens before the driver gets loaded...&n; *&n; * Jean II&n; */
 multiline_comment|/*------------------------------------------------------------------*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -751,7 +751,7 @@ id|USB_IRDA_HEADER
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|urb-&gt;timeout
 op_assign
@@ -1219,12 +1219,12 @@ suffix:semicolon
 multiline_comment|/* Note : unlink *must* be Asynchronous because of the code in &n;&t; * irda_usb_net_timeout() -&gt; call in irq - Jean II */
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
-multiline_comment|/* This flag (USB_ZERO_PACKET) indicates that what we send is not&n;&t; * a continuous stream of data but separate packets.&n;&t; * In this case, the USB layer will insert an empty USB frame (TD)&n;&t; * after each of our packets that is exact multiple of the frame size.&n;&t; * This is how the dongle will detect the end of packet - Jean II */
+multiline_comment|/* This flag (URB_ZERO_PACKET) indicates that what we send is not&n;&t; * a continuous stream of data but separate packets.&n;&t; * In this case, the USB layer will insert an empty USB frame (TD)&n;&t; * after each of our packets that is exact multiple of the frame size.&n;&t; * This is how the dongle will detect the end of packet - Jean II */
 id|urb-&gt;transfer_flags
 op_or_assign
-id|USB_ZERO_PACKET
+id|URB_ZERO_PACKET
 suffix:semicolon
 multiline_comment|/* Timeout need to be shorter than NET watchdog timer */
 id|urb-&gt;timeout
@@ -1954,7 +1954,7 @@ c_func
 id|urb
 )paren
 suffix:semicolon
-multiline_comment|/* Note : above will  *NOT* call netif_wake_queue()&n;&t;&t;&t; * in completion handler, because urb-&gt;status will&n;&t;&t;&t; * be -ENOENT. We will fix that at the next watchdog,&n;&t;&t;&t; * leaving more time to USB to recover...&n;&t;&t;&t; * Also, we are in interrupt, so we need to have&n;&t;&t;&t; * USB_ASYNC_UNLINK to work properly...&n;&t;&t;&t; * Jean II */
+multiline_comment|/* Note : above will  *NOT* call netif_wake_queue()&n;&t;&t;&t; * in completion handler, because urb-&gt;status will&n;&t;&t;&t; * be -ENOENT. We will fix that at the next watchdog,&n;&t;&t;&t; * leaving more time to USB to recover...&n;&t;&t;&t; * Also, we are in interrupt, so we need to have&n;&t;&t;&t; * URB_ASYNC_UNLINK to work properly...&n;&t;&t;&t; * Jean II */
 id|done
 op_assign
 l_int|1
@@ -3032,7 +3032,7 @@ multiline_comment|/* Cancel Tx and speed URB - need to be synchronous to avoid r
 id|self-&gt;tx_urb-&gt;transfer_flags
 op_and_assign
 op_complement
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|usb_unlink_urb
 c_func
@@ -3043,7 +3043,7 @@ suffix:semicolon
 id|self-&gt;speed_urb-&gt;transfer_flags
 op_and_assign
 op_complement
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|usb_unlink_urb
 c_func
@@ -5128,7 +5128,7 @@ multiline_comment|/* Cancel Tx and speed URB.&n;&t;&t; * Toggle flags to make su
 id|self-&gt;tx_urb-&gt;transfer_flags
 op_and_assign
 op_complement
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|usb_unlink_urb
 c_func
@@ -5139,7 +5139,7 @@ suffix:semicolon
 id|self-&gt;speed_urb-&gt;transfer_flags
 op_and_assign
 op_complement
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|usb_unlink_urb
 c_func

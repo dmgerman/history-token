@@ -1525,7 +1525,7 @@ id|context
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 r_for
 c_loop

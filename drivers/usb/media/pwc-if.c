@@ -3130,7 +3130,7 @@ id|pdev-&gt;vendpoint
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;transfer_buffer
 op_assign

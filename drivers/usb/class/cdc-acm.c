@@ -2831,7 +2831,7 @@ id|acm
 suffix:semicolon
 id|acm-&gt;readurb-&gt;transfer_flags
 op_or_assign
-id|USB_NO_FSBR
+id|URB_NO_FSBR
 suffix:semicolon
 id|usb_fill_bulk_urb
 c_func
@@ -2861,7 +2861,7 @@ id|acm
 suffix:semicolon
 id|acm-&gt;writeurb-&gt;transfer_flags
 op_or_assign
-id|USB_NO_FSBR
+id|URB_NO_FSBR
 suffix:semicolon
 id|info
 c_func

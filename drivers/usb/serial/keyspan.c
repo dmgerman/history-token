@@ -1080,7 +1080,7 @@ c_cond
 (paren
 id|this_urb-&gt;transfer_flags
 op_amp
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 )paren
 r_break
 suffix:semicolon
@@ -1102,7 +1102,7 @@ r_break
 suffix:semicolon
 id|this_urb-&gt;transfer_flags
 op_or_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|usb_unlink_urb
 c_func
@@ -1181,7 +1181,7 @@ suffix:semicolon
 id|this_urb-&gt;transfer_flags
 op_and_assign
 op_complement
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|this_urb-&gt;dev
 op_assign
@@ -3789,7 +3789,7 @@ id|EINPROGRESS
 id|urb-&gt;transfer_flags
 op_and_assign
 op_complement
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|usb_unlink_urb
 c_func

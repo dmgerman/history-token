@@ -2735,7 +2735,7 @@ l_int|0
 suffix:semicolon
 id|kaweth-&gt;tx_urb-&gt;transfer_flags
 op_or_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 r_if
 c_cond

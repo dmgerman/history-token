@@ -4850,7 +4850,7 @@ id|u-&gt;datapipe
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;number_of_packets
 op_assign
@@ -4930,7 +4930,7 @@ id|u-&gt;datapipe
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;number_of_packets
 op_assign
@@ -5016,7 +5016,7 @@ id|u-&gt;syncpipe
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;number_of_packets
 op_assign
@@ -5097,7 +5097,7 @@ id|u-&gt;syncpipe
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;number_of_packets
 op_assign
@@ -7231,7 +7231,7 @@ id|u-&gt;datapipe
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;number_of_packets
 op_assign
@@ -7311,7 +7311,7 @@ id|u-&gt;datapipe
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;number_of_packets
 op_assign
@@ -7397,7 +7397,7 @@ id|u-&gt;syncpipe
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;number_of_packets
 op_assign
@@ -7478,7 +7478,7 @@ id|u-&gt;syncpipe
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;number_of_packets
 op_assign

@@ -3872,9 +3872,9 @@ id|USBDEVFS_URB_ISO_ASAP
 op_or
 id|USBDEVFS_URB_SHORT_NOT_OK
 op_or
-id|USB_NO_FSBR
+id|URB_NO_FSBR
 op_or
-id|USB_ZERO_PACKET
+id|URB_ZERO_PACKET
 )paren
 )paren
 r_return

@@ -1042,7 +1042,7 @@ id|nomem
 suffix:semicolon
 id|urb_flags
 op_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 op_or
 id|URB_NO_DMA_MAP
 op_or

@@ -3141,7 +3141,7 @@ id|urb-&gt;hcpriv
 op_logical_or
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_TIMEOUT_KILLED
+id|URB_TIMEOUT_KILLED
 )paren
 (brace
 id|retval
@@ -3392,9 +3392,9 @@ op_logical_neg
 id|urb-&gt;transfer_flags
 op_amp
 (paren
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 op_or
-id|USB_TIMEOUT_KILLED
+id|URB_TIMEOUT_KILLED
 )paren
 )paren
 op_logical_and
@@ -3430,7 +3430,7 @@ c_cond
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 )paren
 op_logical_and
 id|retval

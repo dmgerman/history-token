@@ -655,7 +655,7 @@ suffix:semicolon
 singleline_comment|// Tear the waiting frame off the list
 id|ether_dev-&gt;tx_urb-&gt;transfer_flags
 op_or_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|usb_unlink_urb
 c_func

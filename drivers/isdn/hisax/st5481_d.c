@@ -1291,7 +1291,7 @@ l_int|0
 singleline_comment|// There is another URB queued up
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|SUBMIT_URB
 c_func
@@ -1717,7 +1717,7 @@ id|adapter-&gt;usb_dev
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|DBG_ISO_PACKET
 c_func

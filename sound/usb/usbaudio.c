@@ -286,7 +286,7 @@ multiline_comment|/*&n; * for using ASYNC unlink mode, define the following.&n; 
 multiline_comment|/* #define SND_USE_ASYNC_UNLINK */
 macro_line|#ifdef SND_USB_ASYNC_UNLINK
 DECL|macro|UNLINK_FLAGS
-mdefine_line|#define UNLINK_FLAGS&t;USB_ASYNC_UNLINK
+mdefine_line|#define UNLINK_FLAGS&t;URB_ASYNC_UNLINK
 macro_line|#else
 DECL|macro|UNLINK_FLAGS
 mdefine_line|#define UNLINK_FLAGS&t;0
@@ -3898,7 +3898,7 @@ id|subs-&gt;datapipe
 suffix:semicolon
 id|u-&gt;urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 op_or
 id|UNLINK_FLAGS
 suffix:semicolon
@@ -4013,7 +4013,7 @@ id|subs-&gt;syncpipe
 suffix:semicolon
 id|u-&gt;urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 op_or
 id|UNLINK_FLAGS
 suffix:semicolon

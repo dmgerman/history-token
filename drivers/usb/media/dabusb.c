@@ -988,7 +988,7 @@ id|pipe
 suffix:semicolon
 id|b-&gt;purb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 r_for
 c_loop

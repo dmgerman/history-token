@@ -4894,14 +4894,14 @@ id|skb
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_or_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 macro_line|#if 0
 singleline_comment|// Idle-but-posted reads with UHCI really chew up
 singleline_comment|// PCI bandwidth unless FSBR is disabled
 id|urb-&gt;transfer_flags
 op_or_assign
-id|USB_NO_FSBR
+id|URB_NO_FSBR
 suffix:semicolon
 macro_line|#endif
 id|spin_lock_irqsave
