@@ -2893,6 +2893,45 @@ id|irq
 )paren
 (brace
 )brace
+DECL|function|send_IPI_self
+r_void
+id|send_IPI_self
+c_func
+(paren
+r_int
+id|vector
+)paren
+(brace
+r_int
+r_int
+id|cfg
+suffix:semicolon
+multiline_comment|/*&n;&t; * Wait for idle.&n;&t; */
+id|apic_wait_icr_idle
+c_func
+(paren
+)paren
+suffix:semicolon
+id|cfg
+op_assign
+id|APIC_DM_FIXED
+op_or
+id|APIC_DEST_SELF
+op_or
+id|vector
+op_or
+id|APIC_DEST_LOGICAL
+suffix:semicolon
+multiline_comment|/*&n;&t; * Send the IPI. The write to APIC_ICR fires this off.&n;&t; */
+id|apic_write_around
+c_func
+(paren
+id|APIC_ICR
+comma
+id|cfg
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* defined(CONFIG_SMP) */
 multiline_comment|/*&n; * support for broken MP BIOSs, enables hand-redirection of PIRQ0-7 to&n; * specific CPU-side IRQs.&n; */
 DECL|macro|MAX_PIRQS

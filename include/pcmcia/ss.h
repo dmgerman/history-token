@@ -486,12 +486,6 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|member|ss_entry
-r_struct
-id|pccard_operations
-op_star
-id|ss_entry
-suffix:semicolon
 DECL|member|socket
 id|socket_state_t
 id|socket
@@ -630,6 +624,13 @@ r_struct
 id|pci_dev
 op_star
 id|cb_dev
+suffix:semicolon
+multiline_comment|/* socket operations */
+DECL|member|ops
+r_struct
+id|pccard_operations
+op_star
+id|ops
 suffix:semicolon
 multiline_comment|/* state thread */
 DECL|member|skt_sem

@@ -385,7 +385,7 @@ id|eip
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_SMP)
+macro_line|#if defined(CONFIG_X86_IO_APIC)
 DECL|function|hw_resend_irq
 r_static
 r_inline
