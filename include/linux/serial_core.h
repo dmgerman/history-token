@@ -91,12 +91,15 @@ mdefine_line|#define PORT_CPM        58
 multiline_comment|/* MPC52xx type numbers */
 DECL|macro|PORT_MPC52xx
 mdefine_line|#define PORT_MPC52xx&t;59
-multiline_comment|/*IBM icom*/
+multiline_comment|/* IBM icom */
 DECL|macro|PORT_ICOM
-mdefine_line|#define PORT_ICOM      60
+mdefine_line|#define PORT_ICOM&t;60
 multiline_comment|/* Samsung S3C2440 SoC */
 DECL|macro|PORT_S3C2440
 mdefine_line|#define PORT_S3C2440&t;61
+multiline_comment|/* Motorola i.MX SoC */
+DECL|macro|PORT_IMX
+mdefine_line|#define PORT_IMX&t;62
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
