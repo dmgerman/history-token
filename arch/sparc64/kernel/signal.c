@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: signal.c,v 1.57 2001/12/11 04:55:51 davem Exp $&n; *  arch/sparc64/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1997 Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997,1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: signal.c,v 1.58 2002/01/31 03:30:06 davem Exp $&n; *  arch/sparc64/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1997 Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997,1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -21,7 +21,7 @@ macro_line|#include &lt;asm/siginfo.h&gt;
 macro_line|#include &lt;asm/visasm.h&gt;
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
-id|asmlinkage
+r_static
 r_int
 id|do_signal
 c_func
@@ -4270,7 +4270,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Note that &squot;init&squot; is a special process: it doesn&squot;t get signals it doesn&squot;t&n; * want to handle. Thus you cannot kill init even with a SIGKILL even by&n; * mistake.&n; */
 DECL|function|do_signal
-id|asmlinkage
+r_static
 r_int
 id|do_signal
 c_func
@@ -4325,7 +4325,6 @@ id|SPARC_FLAG_32BIT
 )paren
 (brace
 r_extern
-id|asmlinkage
 r_int
 id|do_signal32
 c_func
@@ -5008,6 +5007,53 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|do_notify_resume
+r_void
+id|do_notify_resume
+c_func
+(paren
+id|sigset_t
+op_star
+id|oldset
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+r_int
+id|orig_i0
+comma
+r_int
+id|restart_syscall
+comma
+r_int
+r_int
+id|work_pending
+)paren
+(brace
+multiline_comment|/* We don&squot;t pass in the task_work struct as a struct because&n;&t; * GCC always bounces that onto the stack due to the&n;&t; * ABI calling conventions.&n;&t; */
+r_if
+c_cond
+(paren
+id|work_pending
+op_amp
+l_int|0x0000ff00
+)paren
+id|do_signal
+c_func
+(paren
+id|oldset
+comma
+id|regs
+comma
+id|orig_i0
+comma
+id|restart_syscall
+)paren
 suffix:semicolon
 )brace
 eof
