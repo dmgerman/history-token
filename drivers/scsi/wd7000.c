@@ -337,9 +337,9 @@ id|UNITS
 )braket
 suffix:semicolon
 DECL|macro|BUS_ON
-mdefine_line|#define BUS_ON    64&t;/* x 125ns = 8000ns (BIOS default) */
+mdefine_line|#define BUS_ON    64&t;&t;/* x 125ns = 8000ns (BIOS default) */
 DECL|macro|BUS_OFF
-mdefine_line|#define BUS_OFF   15&t;/* x 125ns = 1875ns (BIOS default) */
+mdefine_line|#define BUS_OFF   15&t;&t;/* x 125ns = 1875ns (BIOS default) */
 multiline_comment|/*&n; *  Standard Adapter Configurations - used by wd7000_detect&n; */
 r_typedef
 r_struct
@@ -2051,6 +2051,7 @@ r_static
 r_inline
 r_void
 id|any2scsi
+c_func
 (paren
 id|unchar
 op_star
@@ -2114,6 +2115,7 @@ r_static
 r_inline
 r_int
 id|scsi2int
+c_func
 (paren
 id|unchar
 op_star
@@ -2177,6 +2179,7 @@ r_static
 r_inline
 r_void
 id|wd7000_enable_intr
+c_func
 (paren
 id|Adapter
 op_star
@@ -2188,6 +2191,7 @@ op_or_assign
 id|INT_EN
 suffix:semicolon
 id|outb
+c_func
 (paren
 id|host-&gt;control
 comma
@@ -2202,6 +2206,7 @@ r_static
 r_inline
 r_void
 id|wd7000_enable_dma
+c_func
 (paren
 id|Adapter
 op_star
@@ -2217,6 +2222,7 @@ op_or_assign
 id|DMA_EN
 suffix:semicolon
 id|outb
+c_func
 (paren
 id|host-&gt;control
 comma
@@ -2233,6 +2239,7 @@ c_func
 )paren
 suffix:semicolon
 id|set_dma_mode
+c_func
 (paren
 id|host-&gt;dma
 comma
@@ -2240,6 +2247,7 @@ id|DMA_MODE_CASCADE
 )paren
 suffix:semicolon
 id|enable_dma
+c_func
 (paren
 id|host-&gt;dma
 )paren
@@ -2258,6 +2266,7 @@ r_static
 r_inline
 r_int
 id|WAIT
+c_func
 (paren
 r_int
 id|port
@@ -2300,6 +2309,7 @@ id|WAITtimeout
 id|WAITbits
 op_assign
 id|inb
+c_func
 (paren
 id|port
 )paren
@@ -2346,6 +2356,7 @@ r_static
 r_inline
 r_int
 id|command_out
+c_func
 (paren
 id|Adapter
 op_star
@@ -2364,6 +2375,7 @@ c_cond
 (paren
 op_logical_neg
 id|WAIT
+c_func
 (paren
 id|host-&gt;iobase
 op_plus
@@ -2387,6 +2399,7 @@ op_decrement
 r_do
 (brace
 id|outb
+c_func
 (paren
 op_star
 id|cmd
@@ -2397,6 +2410,7 @@ id|ASC_COMMAND
 )paren
 suffix:semicolon
 id|WAIT
+c_func
 (paren
 id|host-&gt;iobase
 op_plus
@@ -2414,6 +2428,7 @@ r_while
 c_loop
 (paren
 id|inb
+c_func
 (paren
 id|host-&gt;iobase
 op_plus
@@ -2573,7 +2588,7 @@ id|timeout
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  If we get here with enough free Scbs, we can take them.&n;&t; *  Otherwise, we timed out and didn&squot;t get enough.&n;&t; */
+multiline_comment|/*&n;&t;&t; *  If we get here with enough free Scbs, we can take them.&n;&t;&t; *  Otherwise, we timed out and didn&squot;t get enough.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2583,6 +2598,7 @@ id|needed
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;wd7000: can&squot;t get enough free SCBs.&bslash;n&quot;
@@ -2688,6 +2704,7 @@ r_static
 r_inline
 r_void
 id|free_scb
+c_func
 (paren
 id|Scb
 op_star
@@ -2709,6 +2726,7 @@ id|flags
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|scb
 comma
@@ -2746,6 +2764,7 @@ r_static
 r_inline
 r_void
 id|init_scbs
+c_func
 (paren
 r_void
 )paren
@@ -2772,6 +2791,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|scbs
 comma
@@ -2854,6 +2874,7 @@ DECL|function|mail_out
 r_static
 r_int
 id|mail_out
+c_func
 (paren
 id|Adapter
 op_star
@@ -2965,6 +2986,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|any2scsi
+c_func
 (paren
 (paren
 id|unchar
@@ -3036,7 +3058,7 @@ op_ge
 id|OGMB_CNT
 )paren
 (brace
-multiline_comment|/*&n;&t; *  Alternatively, we might issue the &quot;interrupt on free OGMB&quot;,&n;&t; *  and sleep, but it must be ensured that it isn&squot;t the init&n;&t; *  task running.  Instead, this version assumes that the caller&n;&t; *  will be persistent, and try again.  Since it&squot;s the adapter&n;&t; *  that marks OGMB&squot;s free, waiting even with interrupts off&n;&t; *  should work, since they are freed very quickly in most cases.&n;&t; */
+multiline_comment|/*&n;&t;&t; *  Alternatively, we might issue the &quot;interrupt on free OGMB&quot;,&n;&t;&t; *  and sleep, but it must be ensured that it isn&squot;t the init&n;&t;&t; *  task running.  Instead, this version assumes that the caller&n;&t;&t; *  will be persistent, and try again.  Since it&squot;s the adapter&n;&t;&t; *  that marks OGMB&squot;s free, waiting even with interrupts off&n;&t;&t; *  should work, since they are freed very quickly in most cases.&n;&t;&t; */
 id|dprintk
 c_func
 (paren
@@ -3050,6 +3072,7 @@ l_int|0
 suffix:semicolon
 )brace
 id|wd7000_enable_intr
+c_func
 (paren
 id|host
 )paren
@@ -3061,6 +3084,7 @@ op_or
 id|ogmb
 suffix:semicolon
 id|command_out
+c_func
 (paren
 id|host
 comma
@@ -3086,6 +3110,7 @@ DECL|function|make_code
 r_static
 r_int
 id|make_code
+c_func
 (paren
 r_int
 id|hosterr
@@ -3256,6 +3281,7 @@ DECL|function|wd7000_scsi_done
 r_static
 r_void
 id|wd7000_scsi_done
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -3284,6 +3310,7 @@ DECL|function|wd7000_intr_handle
 r_static
 r_void
 id|wd7000_intr_handle
+c_func
 (paren
 r_int
 id|irq
@@ -3366,6 +3393,7 @@ suffix:semicolon
 id|flag
 op_assign
 id|inb
+c_func
 (paren
 id|host-&gt;iobase
 op_plus
@@ -3386,6 +3414,7 @@ c_cond
 op_logical_neg
 (paren
 id|inb
+c_func
 (paren
 id|host-&gt;iobase
 op_plus
@@ -3396,7 +3425,7 @@ id|INT_IM
 )paren
 )paren
 (brace
-multiline_comment|/* NB: these are _very_ possible if IRQ 15 is being used, since&n;&t; * it&squot;s the &quot;garbage collector&quot; on the 2nd 8259 PIC.  Specifically,&n;&t; * any interrupt signal into the 8259 which can&squot;t be identified&n;&t; * comes out as 7 from the 8259, which is 15 to the host.  Thus, it&n;&t; * is a good thing the WD7000 has an interrupt status port, so we&n;&t; * can sort these out.  Otherwise, electrical noise and other such&n;&t; * problems would be indistinguishable from valid interrupts...&n;&t; */
+multiline_comment|/* NB: these are _very_ possible if IRQ 15 is being used, since&n;&t;&t; * it&squot;s the &quot;garbage collector&quot; on the 2nd 8259 PIC.  Specifically,&n;&t;&t; * any interrupt signal into the 8259 which can&squot;t be identified&n;&t;&t; * comes out as 7 from the 8259, which is 15 to the host.  Thus, it&n;&t;&t; * is a good thing the WD7000 has an interrupt status port, so we&n;&t;&t; * can sort these out.  Otherwise, electrical noise and other such&n;&t;&t; * problems would be indistinguishable from valid interrupts...&n;&t;&t; */
 id|dprintk
 c_func
 (paren
@@ -3404,6 +3433,7 @@ l_string|&quot;wd7000_intr_handle: phantom interrupt...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|wd7000_intr_ack
+c_func
 (paren
 id|host
 )paren
@@ -3437,8 +3467,9 @@ c_func
 l_string|&quot;wd7000_intr_handle: free outgoing mailbox&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;     * If sleep_on() and the &quot;interrupt on free OGMB&quot; command are&n;&t;     * used in mail_out(), wake_up() should correspondingly be called&n;&t;     * here.  For now, we don&squot;t need to do anything special.&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * If sleep_on() and the &quot;interrupt on free OGMB&quot; command are&n;&t;&t;&t; * used in mail_out(), wake_up() should correspondingly be called&n;&t;&t;&t; * here.  For now, we don&squot;t need to do anything special.&n;&t;&t;&t; */
 id|wd7000_intr_ack
+c_func
 (paren
 id|host
 )paren
@@ -3482,6 +3513,7 @@ id|icmb_status
 )paren
 suffix:semicolon
 id|wd7000_intr_ack
+c_func
 (paren
 id|host
 )paren
@@ -3496,6 +3528,7 @@ id|isa_bus_to_virt
 c_func
 (paren
 id|scsi2int
+c_func
 (paren
 (paren
 id|unchar
@@ -3564,6 +3597,7 @@ suffix:semicolon
 id|errstatus
 op_assign
 id|make_code
+c_func
 (paren
 id|host_error
 comma
@@ -3575,11 +3609,15 @@ op_assign
 id|errstatus
 suffix:semicolon
 id|free_scb
+c_func
 (paren
 id|scb
 )paren
 suffix:semicolon
-id|SCpnt-&gt;scsi_done
+id|SCpnt
+op_member_access_from_pointer
+id|scsi_done
+c_func
 (paren
 id|SCpnt
 )paren
@@ -3610,6 +3648,7 @@ suffix:semicolon
 multiline_comment|/* incoming mailbox */
 )brace
 id|wd7000_intr_ack
+c_func
 (paren
 id|host
 )paren
@@ -3625,6 +3664,7 @@ DECL|function|do_wd7000_intr_handle
 r_static
 r_void
 id|do_wd7000_intr_handle
+c_func
 (paren
 r_int
 id|irq
@@ -3681,6 +3721,7 @@ DECL|function|wd7000_queuecommand
 r_static
 r_int
 id|wd7000_queuecommand
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -3781,6 +3822,7 @@ op_assign
 id|idlun
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|scb-&gt;cdb
 comma
@@ -3841,12 +3883,14 @@ id|SG_NONE
 )paren
 (brace
 id|panic
+c_func
 (paren
 l_string|&quot;wd7000_queuecommand: scatter/gather not supported.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 id|dprintk
+c_func
 (paren
 l_string|&quot;Using scatter/gather with %d elements.&bslash;n&quot;
 comma
@@ -3862,6 +3906,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|any2scsi
+c_func
 (paren
 id|scb-&gt;dataptr
 comma
@@ -3872,6 +3917,7 @@ id|sgb
 )paren
 suffix:semicolon
 id|any2scsi
+c_func
 (paren
 id|scb-&gt;maxlen
 comma
@@ -3899,6 +3945,7 @@ op_increment
 )paren
 (brace
 id|any2scsi
+c_func
 (paren
 id|sgb
 (braket
@@ -3927,6 +3974,7 @@ id|offset
 )paren
 suffix:semicolon
 id|any2scsi
+c_func
 (paren
 id|sgb
 (braket
@@ -3952,6 +4000,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|any2scsi
+c_func
 (paren
 id|scb-&gt;dataptr
 comma
@@ -3963,6 +4012,7 @@ id|SCpnt-&gt;request_buffer
 )paren
 suffix:semicolon
 id|any2scsi
+c_func
 (paren
 id|scb-&gt;maxlen
 comma
@@ -3976,6 +4026,7 @@ c_loop
 (paren
 op_logical_neg
 id|mail_out
+c_func
 (paren
 id|host
 comma
@@ -3996,6 +4047,7 @@ DECL|function|wd7000_command
 r_static
 r_int
 id|wd7000_command
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -4003,6 +4055,7 @@ id|SCpnt
 )paren
 (brace
 id|wd7000_queuecommand
+c_func
 (paren
 id|SCpnt
 comma
@@ -4039,6 +4092,7 @@ DECL|function|wd7000_diagnostics
 r_static
 r_int
 id|wd7000_diagnostics
+c_func
 (paren
 id|Adapter
 op_star
@@ -4072,6 +4126,7 @@ op_assign
 id|code
 suffix:semicolon
 id|any2scsi
+c_func
 (paren
 id|icb.len
 comma
@@ -4082,6 +4137,7 @@ id|buf
 )paren
 suffix:semicolon
 id|any2scsi
+c_func
 (paren
 id|icb.ptr
 comma
@@ -4096,8 +4152,9 @@ id|icb.phase
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;     * This routine is only called at init, so there should be OGMBs&n;     * available.  I&squot;m assuming so here.  If this is going to&n;     * fail, I can just let the timeout catch the failure.&n;     */
+multiline_comment|/*&n;&t; * This routine is only called at init, so there should be OGMBs&n;&t; * available.  I&squot;m assuming so here.  If this is going to&n;&t; * fail, I can just let the timeout catch the failure.&n;&t; */
 id|mail_out
+c_func
 (paren
 id|host
 comma
@@ -4150,6 +4207,7 @@ id|icb.phase
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;wd7000_diagnostics: timed out.&bslash;n&quot;
 )paren
@@ -4164,6 +4222,7 @@ r_if
 c_cond
 (paren
 id|make_code
+c_func
 (paren
 id|icb.vue
 op_or
@@ -4178,6 +4237,7 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;wd7000_diagnostics: failed (0x%02x,0x%02x)&bslash;n&quot;
 comma
@@ -4239,8 +4299,9 @@ suffix:semicolon
 r_int
 id|diag
 suffix:semicolon
-multiline_comment|/*&n;     *  Reset the adapter - only.  The SCSI bus was initialized at power-up,&n;     *  and we need to do this just so we control the mailboxes, etc.&n;     */
+multiline_comment|/*&n;&t; *  Reset the adapter - only.  The SCSI bus was initialized at power-up,&n;&t; *  and we need to do this just so we control the mailboxes, etc.&n;&t; */
 id|outb
+c_func
 (paren
 id|ASC_RES
 comma
@@ -4257,6 +4318,7 @@ l_int|40
 suffix:semicolon
 multiline_comment|/* reset pulse: this is 40us, only need 25us */
 id|outb
+c_func
 (paren
 l_int|0
 comma
@@ -4274,6 +4336,7 @@ r_if
 c_cond
 (paren
 id|WAIT
+c_func
 (paren
 id|host-&gt;iobase
 op_plus
@@ -4288,6 +4351,7 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;wd7000_init: WAIT timed out.&bslash;n&quot;
 )paren
@@ -4305,6 +4369,7 @@ c_cond
 id|diag
 op_assign
 id|inb
+c_func
 (paren
 id|host-&gt;iobase
 op_plus
@@ -4316,6 +4381,7 @@ l_int|1
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;wd7000_init: &quot;
 )paren
@@ -4330,6 +4396,7 @@ r_case
 l_int|2
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;RAM failure.&bslash;n&quot;
 )paren
@@ -4340,6 +4407,7 @@ r_case
 l_int|3
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;FIFO R/W failed&bslash;n&quot;
 )paren
@@ -4350,6 +4418,7 @@ r_case
 l_int|4
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;SBIC register R/W failed&bslash;n&quot;
 )paren
@@ -4360,6 +4429,7 @@ r_case
 l_int|5
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;Initialization D-FF failed.&bslash;n&quot;
 )paren
@@ -4370,6 +4440,7 @@ r_case
 l_int|6
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;Host IRQ D-FF failed.&bslash;n&quot;
 )paren
@@ -4380,6 +4451,7 @@ r_case
 l_int|7
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;ROM checksum error.&bslash;n&quot;
 )paren
@@ -4389,6 +4461,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;diagnostic code 0x%02Xh received.&bslash;n&quot;
 comma
@@ -4403,6 +4476,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Clear mailboxes */
 id|memset
+c_func
 (paren
 op_amp
 (paren
@@ -4419,6 +4493,7 @@ id|host-&gt;mb
 suffix:semicolon
 multiline_comment|/* Execute init command */
 id|any2scsi
+c_func
 (paren
 (paren
 id|unchar
@@ -4443,6 +4518,7 @@ c_cond
 (paren
 op_logical_neg
 id|command_out
+c_func
 (paren
 id|host
 comma
@@ -4461,6 +4537,7 @@ id|init_cmd
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;wd7000_adapter_reset: adapter initialization failed.&bslash;n&quot;
@@ -4475,6 +4552,7 @@ r_if
 c_cond
 (paren
 id|WAIT
+c_func
 (paren
 id|host-&gt;iobase
 op_plus
@@ -4489,6 +4567,7 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;wd7000_adapter_reset: WAIT timed out.&bslash;n&quot;
 )paren
@@ -4506,6 +4585,7 @@ DECL|function|wd7000_init
 r_static
 r_int
 id|wd7000_init
+c_func
 (paren
 id|Adapter
 op_star
@@ -4524,15 +4604,14 @@ op_eq
 op_minus
 l_int|1
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|request_irq
+c_func
 (paren
 id|host-&gt;irq
 comma
@@ -4547,6 +4626,7 @@ id|host
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;wd7000_init: can&squot;t get IRQ %d.&bslash;n&quot;
 comma
@@ -4563,6 +4643,7 @@ r_if
 c_cond
 (paren
 id|request_dma
+c_func
 (paren
 id|host-&gt;dma
 comma
@@ -4571,6 +4652,7 @@ l_string|&quot;wd7000&quot;
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;wd7000_init: can&squot;t get DMA channel %d.&bslash;n&quot;
 comma
@@ -4578,6 +4660,7 @@ id|host-&gt;dma
 )paren
 suffix:semicolon
 id|free_irq
+c_func
 (paren
 id|host-&gt;irq
 comma
@@ -4591,11 +4674,13 @@ l_int|0
 suffix:semicolon
 )brace
 id|wd7000_enable_dma
+c_func
 (paren
 id|host
 )paren
 suffix:semicolon
 id|wd7000_enable_intr
+c_func
 (paren
 id|host
 )paren
@@ -4605,6 +4690,7 @@ c_cond
 (paren
 op_logical_neg
 id|wd7000_diagnostics
+c_func
 (paren
 id|host
 comma
@@ -4613,11 +4699,13 @@ id|ICB_DIAG_FULL
 )paren
 (brace
 id|free_dma
+c_func
 (paren
 id|host-&gt;dma
 )paren
 suffix:semicolon
 id|free_irq
+c_func
 (paren
 id|host-&gt;irq
 comma
@@ -4640,6 +4728,7 @@ DECL|function|wd7000_revision
 r_static
 r_void
 id|wd7000_revision
+c_func
 (paren
 id|Adapter
 op_star
@@ -4658,8 +4747,9 @@ id|icb.phase
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;     * Like diagnostics, this is only done at init time, in fact, from&n;     * wd7000_detect, so there should be OGMBs available.  If it fails,&n;     * the only damage will be that the revision will show up as 0.0,&n;     * which in turn means that scatter/gather will be disabled.&n;     */
+multiline_comment|/*&n;&t; * Like diagnostics, this is only done at init time, in fact, from&n;&t; * wd7000_detect, so there should be OGMBs available.  If it fails,&n;&t; * the only damage will be that the revision will show up as 0.0,&n;&t; * which in turn means that scatter/gather will be disabled.&n;&t; */
 id|mail_out
+c_func
 (paren
 id|host
 comma
@@ -4707,6 +4797,7 @@ DECL|function|wd7000_set_info
 r_static
 r_int
 id|wd7000_set_info
+c_func
 (paren
 r_char
 op_star
@@ -4733,7 +4824,7 @@ comma
 id|length
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Currently this is a no-op&n;     */
+multiline_comment|/*&n;&t; * Currently this is a no-op&n;&t; */
 id|dprintk
 c_func
 (paren
@@ -4750,6 +4841,7 @@ DECL|function|wd7000_proc_info
 r_static
 r_int
 id|wd7000_proc_info
+c_func
 (paren
 r_char
 op_star
@@ -4813,7 +4905,7 @@ r_int
 id|count
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;     * Find the specified host board.&n;     */
+multiline_comment|/*&n;&t; * Find the specified host board.&n;&t; */
 r_for
 c_loop
 (paren
@@ -4858,7 +4950,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Host not found!&n;     */
+multiline_comment|/*&n;&t; * Host not found!&n;&t; */
 r_if
 c_cond
 (paren
@@ -4871,7 +4963,7 @@ op_minus
 id|ESRCH
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Has data been written to the file ?&n;     */
+multiline_comment|/*&n;&t; * Has data been written to the file ?&n;&t; */
 r_if
 c_cond
 (paren
@@ -4880,6 +4972,7 @@ id|inout
 r_return
 (paren
 id|wd7000_set_info
+c_func
 (paren
 id|buffer
 comma
@@ -4906,6 +4999,7 @@ id|flags
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;Host scsi%d: Western Digital WD-7000 (rev %d.%d)&bslash;n&quot;
 comma
@@ -4917,6 +5011,7 @@ id|adapter-&gt;rev2
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;  IO base:      0x%x&bslash;n&quot;
 comma
@@ -4924,6 +5019,7 @@ id|adapter-&gt;iobase
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;  IRQ:          %d&bslash;n&quot;
 comma
@@ -4931,6 +5027,7 @@ id|adapter-&gt;irq
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;  DMA channel:  %d&bslash;n&quot;
 comma
@@ -4938,6 +5035,7 @@ id|adapter-&gt;dma
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;  Interrupts:   %d&bslash;n&quot;
 comma
@@ -4945,6 +5043,7 @@ id|adapter-&gt;int_counter
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;  BUS_ON time:  %d nanoseconds&bslash;n&quot;
 comma
@@ -4954,6 +5053,7 @@ l_int|125
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;  BUS_OFF time: %d nanoseconds&bslash;n&quot;
 comma
@@ -4972,6 +5072,7 @@ op_assign
 id|adapter-&gt;mb.icmb
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;&bslash;nControl port value: 0x%x&bslash;n&quot;
 comma
@@ -4979,11 +5080,13 @@ id|adapter-&gt;control
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;Incoming mailbox:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;  size: %d&bslash;n&quot;
 comma
@@ -4991,6 +5094,7 @@ id|ICMB_CNT
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;  queued messages: &quot;
 )paren
@@ -5026,6 +5130,7 @@ id|count
 op_increment
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;0x%x &quot;
 comma
@@ -5034,6 +5139,7 @@ id|i
 suffix:semicolon
 )brace
 id|SPRINTF
+c_func
 (paren
 id|count
 ques
@@ -5044,11 +5150,13 @@ l_string|&quot;none&bslash;n&quot;
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;Outgoing mailbox:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;  size: %d&bslash;n&quot;
 comma
@@ -5056,6 +5164,7 @@ id|OGMB_CNT
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;  next message: 0x%x&bslash;n&quot;
 comma
@@ -5063,6 +5172,7 @@ id|adapter-&gt;next_ogmb
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;  queued messages: &quot;
 )paren
@@ -5098,6 +5208,7 @@ id|count
 op_increment
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;0x%x &quot;
 comma
@@ -5106,6 +5217,7 @@ id|i
 suffix:semicolon
 )brace
 id|SPRINTF
+c_func
 (paren
 id|count
 ques
@@ -5116,12 +5228,13 @@ l_string|&quot;none&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;     * Display driver information for each device attached to the board.&n;     */
+multiline_comment|/*&n;&t; * Display driver information for each device attached to the board.&n;&t; */
 id|scd
 op_assign
 id|host-&gt;host_queue
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;&bslash;nAttached devices: %s&bslash;n&quot;
 comma
@@ -5152,6 +5265,7 @@ id|hostno
 )paren
 (brace
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;  [Channel: %02d, Id: %02d, Lun: %02d]  &quot;
 comma
@@ -5163,6 +5277,7 @@ id|scd-&gt;lun
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;%s &quot;
 comma
@@ -5210,6 +5325,7 @@ id|i
 op_increment
 )paren
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;%c&quot;
 comma
@@ -5220,6 +5336,7 @@ id|i
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot; &quot;
 )paren
@@ -5250,6 +5367,7 @@ id|i
 op_increment
 )paren
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;%c&quot;
 comma
@@ -5260,12 +5378,14 @@ id|i
 )paren
 suffix:semicolon
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 id|SPRINTF
+c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
@@ -5278,7 +5398,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Calculate start of next buffer, and return value.&n;     */
+multiline_comment|/*&n;&t; * Calculate start of next buffer, and return value.&n;&t; */
 op_star
 id|start
 op_assign
@@ -5337,6 +5457,7 @@ DECL|function|wd7000_detect
 r_static
 r_int
 id|wd7000_detect
+c_func
 (paren
 id|Scsi_Host_Template
 op_star
@@ -5450,8 +5571,9 @@ op_assign
 op_amp
 id|wd7000_proc_info
 suffix:semicolon
-multiline_comment|/*&n;     * Set up SCB free list, which is shared by all adapters&n;     */
+multiline_comment|/*&n;&t; * Set up SCB free list, which is shared by all adapters&n;&t; */
 id|init_scbs
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -5470,7 +5592,7 @@ id|pass
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;&t; * First, search for BIOS SIGNATURE...&n;&t; */
+multiline_comment|/*&n;&t;&t; * First, search for BIOS SIGNATURE...&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -5539,6 +5661,7 @@ op_star
 id|biosaddr
 op_assign
 id|ioremap
+c_func
 (paren
 id|wd7000_biosaddr
 (braket
@@ -5570,10 +5693,10 @@ c_cond
 (paren
 id|biosaddr
 )paren
-(brace
 id|bios_match
 op_assign
 id|memcmp
+c_func
 (paren
 (paren
 r_char
@@ -5596,8 +5719,8 @@ dot
 id|len
 )paren
 suffix:semicolon
-)brace
 id|iounmap
+c_func
 (paren
 id|biosaddr
 )paren
@@ -5615,7 +5738,7 @@ suffix:semicolon
 )brace
 id|bios_matched
 suffix:colon
-multiline_comment|/*&n;&t; * BIOS SIGNATURE has been found.&n;&t; */
+multiline_comment|/*&n;&t;&t; * BIOS SIGNATURE has been found.&n;&t;&t; */
 macro_line|#ifdef WD7000_DEBUG
 id|dprintk
 c_func
@@ -5697,6 +5820,7 @@ r_if
 c_cond
 (paren
 id|request_region
+c_func
 (paren
 id|iobase
 comma
@@ -5714,8 +5838,9 @@ comma
 id|iobase
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;     * ASC reset...&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * ASC reset...&n;&t;&t;&t; */
 id|outb
+c_func
 (paren
 id|ASC_RES
 comma
@@ -5739,6 +5864,7 @@ l_int|100
 )paren
 suffix:semicolon
 id|outb
+c_func
 (paren
 l_int|0
 comma
@@ -5751,6 +5877,7 @@ r_if
 c_cond
 (paren
 id|WAIT
+c_func
 (paren
 id|iobase
 op_plus
@@ -5785,6 +5912,7 @@ r_if
 c_cond
 (paren
 id|inb
+c_func
 (paren
 id|iobase
 op_plus
@@ -5794,10 +5922,11 @@ op_eq
 l_int|1
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  We register here, to get a pointer to the extra space,&n;&t;&t; *  which we&squot;ll use as the Adapter structure (host) for&n;&t;&t; *  this adapter.  It is located just after the registered&n;&t;&t; *  Scsi_Host structure (sh), and is located by the empty&n;&t;&t; *  array hostdata.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; *  We register here, to get a pointer to the extra space,&n;&t;&t;&t;&t; *  which we&squot;ll use as the Adapter structure (host) for&n;&t;&t;&t;&t; *  this adapter.  It is located just after the registered&n;&t;&t;&t;&t; *  Scsi_Host structure (sh), and is located by the empty&n;&t;&t;&t;&t; *  array hostdata.&n;&t;&t;&t;&t; */
 id|sh
 op_assign
 id|scsi_register
+c_func
 (paren
 id|tpnt
 comma
@@ -5814,11 +5943,9 @@ id|sh
 op_eq
 l_int|NULL
 )paren
-(brace
 r_goto
 id|err_release
 suffix:semicolon
-)brace
 id|host
 op_assign
 (paren
@@ -5839,6 +5966,7 @@ id|host
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|host
 comma
@@ -5924,6 +6052,7 @@ c_cond
 (paren
 op_logical_neg
 id|wd7000_init
+c_func
 (paren
 id|host
 )paren
@@ -5932,14 +6061,15 @@ multiline_comment|/* Initialization failed */
 r_goto
 id|err_unregister
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *  OK from here - we&squot;ll use this adapter/configuration.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; *  OK from here - we&squot;ll use this adapter/configuration.&n;&t;&t;&t;&t; */
 id|wd7000_revision
+c_func
 (paren
 id|host
 )paren
 suffix:semicolon
 multiline_comment|/* important for scatter/gather */
-multiline_comment|/*&n;&t;&t; *  For boards before rev 6.0, scatter/gather isn&squot;t supported.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; *  For boards before rev 6.0, scatter/gather isn&squot;t supported.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5970,6 +6100,7 @@ op_assign
 id|biosaddr_ptr
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Western Digital WD-7000 (rev %d.%d) &quot;
@@ -5980,6 +6111,7 @@ id|host-&gt;rev2
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;using IO 0x%x, IRQ %d, DMA %d.&bslash;n&quot;
 comma
@@ -5991,6 +6123,7 @@ id|host-&gt;dma
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;  BUS_ON time: %dns, BUS_OFF time: %dns&bslash;n&quot;
 comma
@@ -6019,6 +6152,7 @@ suffix:semicolon
 id|err_unregister
 suffix:colon
 id|scsi_unregister
+c_func
 (paren
 id|sh
 )paren
@@ -6041,6 +6175,7 @@ op_logical_neg
 id|present
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot;Failed initialization of WD-7000 SCSI card!&bslash;n&quot;
 )paren
@@ -6056,6 +6191,7 @@ DECL|function|wd7000_abort
 r_static
 r_int
 id|wd7000_abort
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -6076,6 +6212,7 @@ r_if
 c_cond
 (paren
 id|inb
+c_func
 (paren
 id|host-&gt;iobase
 op_plus
@@ -6086,11 +6223,13 @@ id|INT_IM
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;wd7000_abort: lost interrupt&bslash;n&quot;
 )paren
 suffix:semicolon
 id|wd7000_intr_handle
+c_func
 (paren
 id|host-&gt;irq
 comma
@@ -6112,6 +6251,7 @@ DECL|function|wd7000_bus_reset
 r_static
 r_int
 id|wd7000_bus_reset
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -6126,6 +6266,7 @@ DECL|function|wd7000_device_reset
 r_static
 r_int
 id|wd7000_device_reset
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -6141,6 +6282,7 @@ DECL|function|wd7000_host_reset
 r_static
 r_int
 id|wd7000_host_reset
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -6168,12 +6310,11 @@ id|host
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|FAILED
 suffix:semicolon
-)brace
 id|wd7000_enable_intr
+c_func
 (paren
 id|host
 )paren
@@ -6187,6 +6328,7 @@ DECL|function|wd7000_biosparam
 r_static
 r_int
 id|wd7000_biosparam
+c_func
 (paren
 id|Disk
 op_star
@@ -6216,7 +6358,7 @@ comma
 id|disk-&gt;capacity
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * try default translation&n;     */
+multiline_comment|/*&n;&t; * try default translation&n;&t; */
 id|ip
 (braket
 l_int|0
@@ -6240,7 +6382,7 @@ id|disk-&gt;capacity
 op_rshift
 l_int|11
 suffix:semicolon
-multiline_comment|/*&n;     * for disks &gt;1GB do some guessing&n;     */
+multiline_comment|/*&n;&t; * for disks &gt;1GB do some guessing&n;&t; */
 r_if
 c_cond
 (paren
@@ -6258,12 +6400,13 @@ id|info
 l_int|3
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * try to figure out the geometry from the partition table&n;&t; */
+multiline_comment|/*&n;&t;&t; * try to figure out the geometry from the partition table&n;&t;&t; */
 r_if
 c_cond
 (paren
 (paren
 id|scsicam_bios_param
+c_func
 (paren
 id|disk
 comma
@@ -6320,6 +6463,7 @@ l_int|63
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;wd7000_biosparam: unable to verify geometry for disk with &gt;1GB.&bslash;n&quot;
 l_string|&quot;                  using extended translation.&bslash;n&quot;
