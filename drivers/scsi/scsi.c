@@ -3090,9 +3090,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|sdev-&gt;sdev_state
-op_assign
+id|scsi_device_set_state
+c_func
+(paren
+id|sdev
+comma
 id|SDEV_CANCEL
+)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
