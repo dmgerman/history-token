@@ -24,7 +24,7 @@ DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(lock)&t;&bslash;&n;do {&t;membar(&quot;#LoadLoad&quot;);&t;&bslash;&n;} while(*((volatile unsigned char *)lock))
 DECL|function|_raw_spin_lock
 r_static
-id|__inline__
+r_inline
 r_void
 id|_raw_spin_lock
 c_func
@@ -34,20 +34,28 @@ op_star
 id|lock
 )paren
 (brace
+r_int
+r_int
+id|tmp
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1: ldstub&t;[%0], %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;brnz,pn&t;%%g7, 2f&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
-l_string|&quot;b 3f&bslash;n&bslash;t&quot;
-l_string|&quot;2: ldub&t;[%0], %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;brnz,pt&t;%%g7, 2b&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#LoadLoad&bslash;n&bslash;t&quot;
-l_string|&quot;ba,a,pt&t;%%xcc, 1b&bslash;n&bslash;t&quot;
-l_string|&quot;3:&bslash;n&bslash;t&quot;
+l_string|&quot;1:&t;ldstub&t;&t;[%1], %0&bslash;n&quot;
+l_string|&quot;&t;brnz,pn&t;&t;%0, 2f&bslash;n&quot;
+l_string|&quot;&t; membar&t;&t;#StoreLoad | #StoreStore&bslash;n&quot;
+l_string|&quot;&t;.subsection&t;2&bslash;n&quot;
+l_string|&quot;2:&t;ldub&t;&t;[%1], %0&bslash;n&quot;
+l_string|&quot;&t;brnz,pt&t;&t;%0, 2b&bslash;n&quot;
+l_string|&quot;&t; membar&t;&t;#LoadLoad&bslash;n&quot;
+l_string|&quot;&t;ba,a,pt&t;&t;%%xcc, 1b&bslash;n&quot;
+l_string|&quot;&t;.previous&quot;
 suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -60,7 +68,7 @@ suffix:semicolon
 )brace
 DECL|function|_raw_spin_trylock
 r_static
-id|__inline__
+r_inline
 r_int
 id|_raw_spin_trylock
 c_func
@@ -78,8 +86,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;ldstub [%1], %0&bslash;n&bslash;t&quot;
-l_string|&quot;membar #StoreLoad | #StoreStore&quot;
+l_string|&quot;&t;ldstub&t;&t;[%1], %0&bslash;n&quot;
+l_string|&quot;&t;membar&t;&t;#StoreLoad | #StoreStore&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -98,13 +106,13 @@ r_return
 (paren
 id|result
 op_eq
-l_int|0
+l_int|0UL
 )paren
 suffix:semicolon
 )brace
 DECL|function|_raw_spin_unlock
 r_static
-id|__inline__
+r_inline
 r_void
 id|_raw_spin_unlock
 c_func
@@ -118,8 +126,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;membar&t;#StoreStore | #LoadStore&bslash;n&bslash;t&quot;
-l_string|&quot;stb&t;%%g0, [%0]&quot;
+l_string|&quot;&t;membar&t;&t;#StoreStore | #LoadStore&bslash;n&quot;
+l_string|&quot;&t;stb&t;&t;%%g0, [%0]&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -134,7 +142,7 @@ suffix:semicolon
 )brace
 DECL|function|_raw_spin_lock_flags
 r_static
-id|__inline__
+r_inline
 r_void
 id|_raw_spin_lock_flags
 c_func
@@ -148,22 +156,38 @@ r_int
 id|flags
 )paren
 (brace
+r_int
+r_int
+id|tmp1
+comma
+id|tmp2
+suffix:semicolon
 id|__asm__
 id|__volatile__
+c_func
 (paren
-l_string|&quot;1:ldstub&t;[%0], %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;brnz,pn&t;%%g7, 2f&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
-l_string|&quot;b 4f&bslash;n&bslash;t&quot;
-l_string|&quot;2: rdpr&t;%%pil, %%g2&t;! Save PIL&bslash;n&bslash;t&quot;
-l_string|&quot;wrpr&t;%1, %%pil&t;! Set previous PIL&bslash;n&bslash;t&quot;
-l_string|&quot;3:ldub&t;[%0], %%g7&t;! Spin on lock set&bslash;n&bslash;t&quot;
-l_string|&quot;brnz,pt&t;%%g7, 3b&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#LoadLoad&bslash;n&bslash;t&quot;
-l_string|&quot;ba,pt&t;%%xcc, 1b&t;! Retry lock acquire&bslash;n&bslash;t&quot;
-l_string|&quot;wrpr&t;%%g2, %%pil&t;! Restore PIL&bslash;n&bslash;t&quot;
-l_string|&quot;4:&bslash;n&bslash;t&quot;
+l_string|&quot;1:&t;ldstub&t;&t;[%2], %0&bslash;n&quot;
+l_string|&quot;&t;brnz,pn&t;&t;%0, 2f&bslash;n&quot;
+l_string|&quot;&t;membar&t;&t;#StoreLoad | #StoreStore&bslash;n&quot;
+l_string|&quot;&t;.subsection&t;2&bslash;n&quot;
+l_string|&quot;2:&t;rdpr&t;&t;%%pil, %1&bslash;n&quot;
+l_string|&quot;&t;wrpr&t;&t;%3, %%pil&bslash;n&quot;
+l_string|&quot;3:&t;ldub&t;&t;[%2], %0&bslash;n&quot;
+l_string|&quot;&t;brnz,pt&t;&t;%0, 3b&bslash;n&quot;
+l_string|&quot;&t;membar&t;&t;#LoadLoad&bslash;n&quot;
+l_string|&quot;&t;ba,pt&t;&t;%%xcc, 1b&bslash;n&quot;
+l_string|&quot;&t;wrpr&t;&t;%1, %%pil&bslash;n&quot;
+l_string|&quot;&t;.previous&quot;
 suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp1
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp2
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -265,7 +289,7 @@ mdefine_line|#define rwlock_is_locked(x) (*(x) != RW_LOCK_UNLOCKED)
 DECL|function|__read_lock
 r_static
 r_void
-id|__inline__
+r_inline
 id|__read_lock
 c_func
 (paren
@@ -274,23 +298,38 @@ op_star
 id|lock
 )paren
 (brace
+r_int
+r_int
+id|tmp1
+comma
+id|tmp2
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;b 1f&bslash;n&bslash;t&quot;
-l_string|&quot;99:&bslash;n&bslash;t&quot;
-l_string|&quot;ldsw&t;[%0], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;brlz,pt&t;%%g5, 99b&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#LoadLoad&bslash;n&bslash;t&quot;
-l_string|&quot;ba,a,pt&t;%%xcc, 4f&bslash;n&bslash;t&quot;
-l_string|&quot;1: ldsw&t;[%0], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;brlz,pn&t;%%g5, 99b&bslash;n&bslash;t&quot;
-l_string|&quot;4:add&t;%%g5, 1, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;%%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;bne,pn&t;%%icc, 1b&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
+l_string|&quot;1:&t;ldsw&t;&t;[%2], %0&bslash;n&quot;
+l_string|&quot;&t;brlz,pn&t;&t;%0, 2f&bslash;n&quot;
+l_string|&quot;4:&t; add&t;&t;%0, 1, %1&bslash;n&quot;
+l_string|&quot;&t;cas&t;&t;[%2], %0, %1&bslash;n&quot;
+l_string|&quot;&t;cmp&t;&t;%0, %1&bslash;n&quot;
+l_string|&quot;&t;bne,pn&t;&t;%%icc, 1b&bslash;n&quot;
+l_string|&quot;&t; membar&t;&t;#StoreLoad | #StoreStore&bslash;n&quot;
+l_string|&quot;&t;.subsection&t;2&bslash;n&quot;
+l_string|&quot;2:&t;ldsw&t;&t;[%2], %0&bslash;n&quot;
+l_string|&quot;&t;brlz,pt&t;&t;%0, 2b&bslash;n&quot;
+l_string|&quot;&t; membar&t;&t;#LoadLoad&bslash;n&quot;
+l_string|&quot;&t;ba,a,pt&t;&t;%%xcc, 4b&bslash;n&quot;
+l_string|&quot;&t;.previous&quot;
 suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp1
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp2
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -304,7 +343,7 @@ suffix:semicolon
 DECL|function|__read_unlock
 r_static
 r_void
-id|__inline__
+r_inline
 id|__read_unlock
 c_func
 (paren
@@ -313,18 +352,32 @@ op_star
 id|lock
 )paren
 (brace
+r_int
+r_int
+id|tmp1
+comma
+id|tmp2
+suffix:semicolon
 id|__asm__
 id|__volatile__
+c_func
 (paren
-l_string|&quot;1: lduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;sub&t;%%g5, 1, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;%%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;be,pt&t;%%xcc, 2f&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
-l_string|&quot;ba,a,pt&t;%%xcc, 1b&bslash;n&bslash;t&quot;
-l_string|&quot;2:&bslash;n&bslash;t&quot;
+l_string|&quot;1:&t;lduw&t;[%2], %0&bslash;n&quot;
+l_string|&quot;&t;sub&t;%0, 1, %1&bslash;n&quot;
+l_string|&quot;&t;cas&t;[%2], %0, %1&bslash;n&quot;
+l_string|&quot;&t;cmp&t;%0, %1&bslash;n&quot;
+l_string|&quot;&t;bne,pn&t;%%xcc, 1b&bslash;n&quot;
+l_string|&quot;&t; membar&t;#StoreLoad | #StoreStore&quot;
 suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp1
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp2
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -338,7 +391,7 @@ suffix:semicolon
 DECL|function|__write_lock
 r_static
 r_void
-id|__inline__
+r_inline
 id|__write_lock
 c_func
 (paren
@@ -347,30 +400,54 @@ op_star
 id|lock
 )paren
 (brace
+r_int
+r_int
+id|mask
+comma
+id|tmp1
+comma
+id|tmp2
+suffix:semicolon
+id|mask
+op_assign
+l_int|0x80000000UL
+suffix:semicolon
 id|__asm__
 id|__volatile__
+c_func
 (paren
-l_string|&quot;sethi&t;%%hi(0x80000000), %%g2&bslash;n&bslash;t&quot;
-l_string|&quot;b 1f&bslash;n&bslash;t&quot;
-l_string|&quot;99:&bslash;n&bslash;t&quot;
-l_string|&quot;lduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;brnz,pt&t;%%g5, 99b&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#LoadLoad&bslash;n&bslash;t&quot;
-l_string|&quot;ba,a,pt&t;%%xcc, 4f&bslash;n&bslash;t&quot;
-l_string|&quot;1: lduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;brnz,pn&t;%%g5, 99b&bslash;n&bslash;t&quot;
-l_string|&quot;4: or&t;%%g5, %%g2, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;%%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;be,pt&t;%%icc, 2f&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
-l_string|&quot;ba,a,pt&t;%%xcc, 1b&bslash;n&bslash;t&quot;
-l_string|&quot;2:&bslash;n&bslash;t&quot;
+l_string|&quot;1:&t;lduw&t;&t;[%2], %0&bslash;n&quot;
+l_string|&quot;&t;brnz,pn&t;&t;%0, 2f&bslash;n&quot;
+l_string|&quot;4:&t; or&t;&t;%0, %3, %1&bslash;n&quot;
+l_string|&quot;&t;cas&t;&t;[%2], %0, %1&bslash;n&quot;
+l_string|&quot;&t;cmp&t;&t;%0, %1&bslash;n&quot;
+l_string|&quot;&t;bne,pn&t;&t;%%icc, 1b&bslash;n&quot;
+l_string|&quot;&t; membar&t;&t;#StoreLoad | #StoreStore&bslash;n&quot;
+l_string|&quot;&t;.subsection&t;2&bslash;n&quot;
+l_string|&quot;2:&t;lduw&t;&t;[%2], %0&bslash;n&quot;
+l_string|&quot;&t;brnz,pt&t;&t;%0, 2b&bslash;n&quot;
+l_string|&quot;&t; membar&t;&t;#LoadLoad&bslash;n&quot;
+l_string|&quot;&t;ba,a,pt&t;&t;%%xcc, 4b&bslash;n&quot;
+l_string|&quot;&t;.previous&quot;
 suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp1
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp2
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|lock
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|mask
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
@@ -380,7 +457,7 @@ suffix:semicolon
 DECL|function|__write_unlock
 r_static
 r_void
-id|__inline__
+r_inline
 id|__write_unlock
 c_func
 (paren
@@ -391,11 +468,12 @@ id|lock
 (brace
 id|__asm__
 id|__volatile__
+c_func
 (paren
-l_string|&quot;membar&t;#LoadStore | #StoreStore&bslash;n&bslash;t&quot;
-l_string|&quot;retl&bslash;n&bslash;t&quot;
-l_string|&quot;stw&t;%%g0, [%0]&bslash;n&bslash;t&quot;
+l_string|&quot;&t;membar&t;&t;#LoadStore | #StoreStore&bslash;n&quot;
+l_string|&quot;&t;stw&t;&t;%%g0, [%0]&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -409,7 +487,7 @@ suffix:semicolon
 DECL|function|__write_trylock
 r_static
 r_int
-id|__inline__
+r_inline
 id|__write_trylock
 c_func
 (paren
@@ -418,40 +496,65 @@ op_star
 id|lock
 )paren
 (brace
+r_int
+r_int
+id|mask
+comma
+id|tmp1
+comma
+id|tmp2
+comma
+id|result
+suffix:semicolon
+id|mask
+op_assign
+l_int|0x80000000UL
+suffix:semicolon
 id|__asm__
 id|__volatile__
+c_func
 (paren
-l_string|&quot;sethi&t;%%hi(0x80000000), %%g2&bslash;n&bslash;t&quot;
-l_string|&quot;1: lduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;brnz,pn&t;%%g5, 100f&bslash;n&bslash;t&quot;
-l_string|&quot;4: or&t;%%g5, %%g2, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;%%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;be,pt&t;%%icc, 99f&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
-l_string|&quot;ba,pt&t;%%xcc, 1b&bslash;n&bslash;t&quot;
-l_string|&quot;99:&bslash;n&bslash;t&quot;
-l_string|&quot;retl&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;1, %0&bslash;n&bslash;t&quot;
-l_string|&quot;100:&bslash;n&bslash;t&quot;
-l_string|&quot;retl&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;0, %0&bslash;n&bslash;t&quot;
+l_string|&quot;&t;mov&t;&t;0, %2&bslash;n&quot;
+l_string|&quot;1:&t;lduw&t;&t;[%3], %0&bslash;n&quot;
+l_string|&quot;&t;brnz,pn&t;&t;%0, 2f&bslash;n&quot;
+l_string|&quot;&t; or&t;&t;%0, %4, %1&bslash;n&quot;
+l_string|&quot;&t;cas&t;&t;[%3], %0, %1&bslash;n&quot;
+l_string|&quot;&t;cmp&t;&t;%0, %1&bslash;n&quot;
+l_string|&quot;&t;bne,pn&t;&t;%%icc, 1b&bslash;n&quot;
+l_string|&quot;&t; membar&t;&t;#StoreLoad | #StoreStore&bslash;n&quot;
+l_string|&quot;&t;mov&t;&t;1, %2&bslash;n&quot;
+l_string|&quot;2:&quot;
 suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp1
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp2
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|result
+)paren
 suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|lock
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|mask
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
-id|rwlock_is_locked
-c_func
-(paren
-id|lock
-)paren
+id|result
 suffix:semicolon
 )brace
 DECL|macro|_raw_read_lock
