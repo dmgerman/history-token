@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Copyright (C) 2004, OGAWA Hirofumi&n; * Released under GPL v2.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 DECL|struct|fatent_operations
@@ -3433,6 +3434,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|fat_free_clusters
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fat_free_clusters
+)paren
+suffix:semicolon
 DECL|function|fat_count_free_clusters
 r_int
 id|fat_count_free_clusters
