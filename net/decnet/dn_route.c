@@ -195,12 +195,15 @@ r_struct
 id|timer_list
 id|dn_rt_flush_timer
 op_assign
-(brace
-dot
-id|function
-op_assign
+id|TIMER_INITIALIZER
+c_func
+(paren
 id|dn_run_flush
-)brace
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
 DECL|variable|decnet_dst_gc_interval
 r_int
@@ -5613,6 +5616,13 @@ id|panic
 c_func
 (paren
 l_string|&quot;DECnet: Failed to allocate dn_dst_cache&bslash;n&quot;
+)paren
+suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|dn_route_timer
 )paren
 suffix:semicolon
 id|dn_route_timer.function

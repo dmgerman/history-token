@@ -1,5 +1,6 @@
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
+macro_line|#include &lt;linux/ipsec.h&gt;
 multiline_comment|/* Each xfrm_state is linked to three tables:&n;&n;   1. Hash table by (spi,daddr,ah/esp) to find SA by SPI. (input,ctl)&n;   2. Hash table by daddr to find what SAs exist for given&n;      destination/tunnel endpoint. (output)&n;   3. (optional, NI) Radix tree by _selector_ for the case,&n;      when we have to find a tunnel mode SA appropriate for given flow,&n;      but do not know tunnel endpoint. At the moment we do&n;      not support this and assume that tunnel endpoint is given&n;      by policy. (output)&n; */
 DECL|variable|xfrm_state_lock
 r_static
@@ -359,8 +360,9 @@ id|bydst
 r_if
 c_cond
 (paren
-op_logical_neg
 id|proto
+op_eq
+id|IPSEC_PROTO_ANY
 op_logical_or
 id|x-&gt;id.proto
 op_eq
@@ -1889,7 +1891,7 @@ c_cond
 (paren
 id|proto
 op_eq
-l_int|255
+id|IPSEC_PROTO_ANY
 op_logical_or
 id|x-&gt;id.proto
 op_eq
@@ -1949,7 +1951,7 @@ c_cond
 (paren
 id|proto
 op_ne
-l_int|255
+id|IPSEC_PROTO_ANY
 op_logical_and
 id|x-&gt;id.proto
 op_ne
