@@ -181,6 +181,8 @@ DECL|macro|SX_CFISA_BOARD
 mdefine_line|#define SX_CFISA_BOARD       0x00000010
 DECL|macro|SI_EISA_BOARD
 mdefine_line|#define SI_EISA_BOARD        0x00000020
+DECL|macro|SI1_ISA_BOARD
+mdefine_line|#define SI1_ISA_BOARD        0x00000040
 DECL|macro|SX_BOARD_PRESENT
 mdefine_line|#define SX_BOARD_PRESENT     0x00001000
 DECL|macro|SX_BOARD_INITIALIZED
@@ -193,6 +195,8 @@ DECL|macro|IS_SX_BOARD
 mdefine_line|#define IS_SX_BOARD(board) (board-&gt;flags &amp; (SX_PCI_BOARD | SX_CFPCI_BOARD | &bslash;&n;                                            SX_ISA_BOARD | SX_CFISA_BOARD))
 DECL|macro|IS_SI_BOARD
 mdefine_line|#define IS_SI_BOARD(board) (board-&gt;flags &amp; SI_ISA_BOARD)
+DECL|macro|IS_SI1_BOARD
+mdefine_line|#define IS_SI1_BOARD(board) (board-&gt;flags &amp; SI1_ISA_BOARD)
 DECL|macro|IS_EISA_BOARD
 mdefine_line|#define IS_EISA_BOARD(board) (board-&gt;flags &amp; SI_EISA_BOARD)
 DECL|macro|IS_CF_BOARD
