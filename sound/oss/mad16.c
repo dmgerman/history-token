@@ -3411,7 +3411,7 @@ r_int
 id|__initdata
 id|joystick
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|MODULE_PARM
 c_func
