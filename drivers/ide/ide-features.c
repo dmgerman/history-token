@@ -1985,6 +1985,8 @@ c_func
 (paren
 id|drive
 comma
+l_int|NULL
+comma
 l_string|&quot;set_drive_speed_status&quot;
 comma
 id|stat

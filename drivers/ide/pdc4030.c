@@ -380,6 +380,8 @@ id|startstop
 comma
 id|drive
 comma
+l_int|NULL
+comma
 id|DATA_READY
 comma
 id|BAD_W_STAT
@@ -1032,7 +1034,7 @@ op_star
 id|rq
 )paren
 (brace
-id|byte
+id|u8
 id|stat
 suffix:semicolon
 r_int
@@ -1079,6 +1081,8 @@ id|ide_error
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;promise_read_intr&quot;
 comma
@@ -1260,7 +1264,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Now the data has been read in, do the following:&n; * &n; * if there are still sectors left in the request, &n; *   if we know there are still sectors available from the interface,&n; *     go back and read the next bit of the request.&n; *   else if DRQ is asserted, there are more sectors available, so&n; *     go back and find out how many, then read them in.&n; *   else if BUSY is asserted, we are going to get an interrupt, so&n; *     set the handler for the interrupt and just return&n; */
+multiline_comment|/*&n;&t; * Now the data has been read in, do the following:&n;&t; *&n;&t; * if there are still sectors left in the request, if we know there are&n;&t; * still sectors available from the interface, go back and read the&n;&t; * next bit of the request.  else if DRQ is asserted, there are more&n;&t; * sectors available, so go back and find out how many, then read them&n;&t; * in.  else if BUSY is asserted, we are going to get an interrupt, so&n;&t; * set the handler for the interrupt and just return&n;&t; */
 r_if
 c_cond
 (paren
@@ -1345,6 +1349,8 @@ id|ide_error
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;promise read intr&quot;
 comma
@@ -1441,6 +1447,8 @@ id|ide_error
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;busy timeout&quot;
 comma
@@ -1729,6 +1737,8 @@ id|ide_error
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;write timeout&quot;
 comma
@@ -2249,6 +2259,8 @@ op_amp
 id|startstop
 comma
 id|drive
+comma
+id|rq
 comma
 id|DATA_READY
 comma

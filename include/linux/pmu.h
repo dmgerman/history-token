@@ -205,18 +205,13 @@ mdefine_line|#define PMU_IOC_HAS_ADB&t;&t;_IOR(&squot;B&squot;, 4, sizeof(__u32*
 multiline_comment|/* out param: u32*&t;can_sleep: 0 or 1 */
 DECL|macro|PMU_IOC_CAN_SLEEP
 mdefine_line|#define PMU_IOC_CAN_SLEEP&t;_IOR(&squot;B&squot;, 5, sizeof(__u32*)) 
+multiline_comment|/* no param */
+DECL|macro|PMU_IOC_GRAB_BACKLIGHT
+mdefine_line|#define PMU_IOC_GRAB_BACKLIGHT&t;_IOR(&squot;B&squot;, 6, 0) 
 macro_line|#ifdef __KERNEL__
 r_extern
 r_int
 id|find_via_pmu
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|via_pmu_start
 c_func
 (paren
 r_void
@@ -368,20 +363,20 @@ mdefine_line|#define PBOOK_SLEEP_REFUSE&t;-1
 multiline_comment|/* priority levels in notifiers */
 DECL|macro|SLEEP_LEVEL_VIDEO
 mdefine_line|#define SLEEP_LEVEL_VIDEO&t;100&t;/* Video driver (first wake) */
-DECL|macro|SLEEP_LEVEL_SOUND
-mdefine_line|#define SLEEP_LEVEL_SOUND&t;90&t;/* Sound driver */
 DECL|macro|SLEEP_LEVEL_MEDIABAY
-mdefine_line|#define SLEEP_LEVEL_MEDIABAY&t;80&t;/* Media bay driver */
+mdefine_line|#define SLEEP_LEVEL_MEDIABAY&t;90&t;/* Media bay driver */
 DECL|macro|SLEEP_LEVEL_BLOCK
-mdefine_line|#define SLEEP_LEVEL_BLOCK&t;70&t;/* IDE, SCSI */
+mdefine_line|#define SLEEP_LEVEL_BLOCK&t;80&t;/* IDE, SCSI */
 DECL|macro|SLEEP_LEVEL_NET
-mdefine_line|#define SLEEP_LEVEL_NET&t;&t;60&t;/* bmac */
-DECL|macro|SLEEP_LEVEL_ADB
-mdefine_line|#define SLEEP_LEVEL_ADB&t;&t;50&t;/* ADB */
+mdefine_line|#define SLEEP_LEVEL_NET&t;&t;70&t;/* bmac, gmac */
 DECL|macro|SLEEP_LEVEL_MISC
-mdefine_line|#define SLEEP_LEVEL_MISC&t;30&t;/* Anything */
-DECL|macro|SLEEP_LEVEL_LAST
-mdefine_line|#define SLEEP_LEVEL_LAST&t;0&t;/* Reserved for apm_emu */
+mdefine_line|#define SLEEP_LEVEL_MISC&t;60&t;/* Anything else */
+DECL|macro|SLEEP_LEVEL_USERLAND
+mdefine_line|#define SLEEP_LEVEL_USERLAND&t;55&t;/* Reserved for apm_emu */
+DECL|macro|SLEEP_LEVEL_ADB
+mdefine_line|#define SLEEP_LEVEL_ADB&t;&t;50&t;/* ADB (async) */
+DECL|macro|SLEEP_LEVEL_SOUND
+mdefine_line|#define SLEEP_LEVEL_SOUND&t;40&t;/* Sound driver (blocking) */
 multiline_comment|/* special register notifier functions */
 r_int
 id|pmu_register_sleep_notifier
@@ -402,6 +397,74 @@ id|pmu_sleep_notifier
 op_star
 id|notifier
 )paren
+suffix:semicolon
+DECL|macro|PMU_MAX_BATTERIES
+mdefine_line|#define PMU_MAX_BATTERIES&t;2
+multiline_comment|/* values for pmu_power_flags */
+DECL|macro|PMU_PWR_AC_PRESENT
+mdefine_line|#define PMU_PWR_AC_PRESENT&t;0x00000001
+multiline_comment|/* values for pmu_battery_info.flags */
+DECL|macro|PMU_BATT_PRESENT
+mdefine_line|#define PMU_BATT_PRESENT&t;0x00000001
+DECL|macro|PMU_BATT_CHARGING
+mdefine_line|#define PMU_BATT_CHARGING&t;0x00000002
+DECL|struct|pmu_battery_info
+r_struct
+id|pmu_battery_info
+(brace
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+DECL|member|charge
+r_int
+r_int
+id|charge
+suffix:semicolon
+multiline_comment|/* current charge */
+DECL|member|max_charge
+r_int
+r_int
+id|max_charge
+suffix:semicolon
+multiline_comment|/* maximum charge */
+DECL|member|current
+r_int
+r_int
+id|current
+suffix:semicolon
+multiline_comment|/* current, positive if charging */
+DECL|member|voltage
+r_int
+r_int
+id|voltage
+suffix:semicolon
+multiline_comment|/* voltage */
+DECL|member|time_remaining
+r_int
+r_int
+id|time_remaining
+suffix:semicolon
+multiline_comment|/* remaining time */
+)brace
+suffix:semicolon
+r_extern
+r_int
+id|pmu_battery_count
+suffix:semicolon
+r_extern
+r_struct
+id|pmu_battery_info
+id|pmu_batteries
+(braket
+id|PMU_MAX_BATTERIES
+)braket
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|pmu_power_flags
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
 macro_line|#endif&t;/* __KERNEL__ */

@@ -1201,6 +1201,8 @@ id|ide_error
 (paren
 id|drive
 comma
+id|rq
+comma
 l_string|&quot;request sense failure&quot;
 comma
 id|stat
@@ -1289,6 +1291,8 @@ id|ide_dump_status
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;packet command error&quot;
 comma
@@ -1450,8 +1454,11 @@ id|DATA_PROTECT
 (brace
 multiline_comment|/* No point in retrying after an illegal&n;&t;&t;&t;   request or data protect error.*/
 id|ide_dump_status
+c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;command error&quot;
 comma
@@ -1480,8 +1487,11 @@ id|MEDIUM_ERROR
 (brace
 multiline_comment|/* No point in re-trying a zillion times on a bad&n;&t;&t;&t; * sector.  The error is not correctable at all.&n;&t;&t;&t; */
 id|ide_dump_status
+c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;media error (bad sector)&quot;
 comma
@@ -1518,8 +1528,11 @@ op_star
 id|startstop
 op_assign
 id|ide_error
+c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 id|__FUNCTION__
 comma
@@ -1704,6 +1717,8 @@ op_amp
 id|startstop
 comma
 id|drive
+comma
+id|rq
 comma
 l_int|0
 comma
@@ -1977,6 +1992,8 @@ op_amp
 id|startstop
 comma
 id|drive
+comma
+id|rq
 comma
 id|DRQ_STAT
 comma
@@ -2442,6 +2459,8 @@ r_return
 id|ide_error
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;dma error&quot;
 comma
@@ -4664,6 +4683,8 @@ id|ide_error
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;dma error&quot;
 comma
@@ -9998,49 +10019,6 @@ r_return
 id|nslots
 suffix:semicolon
 )brace
-DECL|function|ide_cdrom_add_settings
-r_static
-r_void
-id|ide_cdrom_add_settings
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-id|ide_add_setting
-c_func
-(paren
-id|drive
-comma
-l_string|&quot;dsc_overlap&quot;
-comma
-id|SETTING_RW
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-id|TYPE_BYTE
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|1
-comma
-op_amp
-id|drive-&gt;dsc_overlap
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 r_static
 DECL|function|ide_cdrom_setup
 r_int
@@ -10785,12 +10763,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|ide_cdrom_add_settings
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

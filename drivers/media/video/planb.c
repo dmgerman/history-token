@@ -11651,10 +11651,6 @@ id|pb-&gt;suspend
 op_assign
 l_int|0
 suffix:semicolon
-id|pb-&gt;lock
-op_assign
-l_int|0
-suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
