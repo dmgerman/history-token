@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/param.h&gt;&t;/* for HZ */
 macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;asm/compat.h&gt;
+macro_line|#include &lt;asm/siginfo.h&gt;
 DECL|macro|compat_jiffies_to_clock_t
 mdefine_line|#define compat_jiffies_to_clock_t(x)&t;&bslash;&n;&t;&t;(((unsigned long)(x) * COMPAT_USER_HZ) / HZ)
 DECL|struct|compat_itimerspec
@@ -279,6 +280,58 @@ suffix:semicolon
 DECL|typedef|compat_sigval_t
 )brace
 id|compat_sigval_t
+suffix:semicolon
+DECL|struct|compat_sigevent
+r_typedef
+r_struct
+id|compat_sigevent
+(brace
+DECL|member|sigev_value
+id|compat_sigval_t
+id|sigev_value
+suffix:semicolon
+DECL|member|sigev_signo
+id|compat_int_t
+id|sigev_signo
+suffix:semicolon
+DECL|member|sigev_notify
+id|compat_int_t
+id|sigev_notify
+suffix:semicolon
+r_union
+(brace
+DECL|member|_pad
+id|compat_int_t
+id|_pad
+(braket
+id|SIGEV_PAD_SIZE
+)braket
+suffix:semicolon
+DECL|member|_tid
+id|compat_int_t
+id|_tid
+suffix:semicolon
+r_struct
+(brace
+DECL|member|_function
+id|compat_uptr_t
+id|_function
+suffix:semicolon
+DECL|member|_attribute
+id|compat_uptr_t
+id|_attribute
+suffix:semicolon
+DECL|member|_sigev_thread
+)brace
+id|_sigev_thread
+suffix:semicolon
+DECL|member|_sigev_un
+)brace
+id|_sigev_un
+suffix:semicolon
+DECL|typedef|compat_sigevent_t
+)brace
+id|compat_sigevent_t
 suffix:semicolon
 r_int
 id|compat_sys_semctl

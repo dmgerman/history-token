@@ -113,11 +113,6 @@ suffix:semicolon
 r_struct
 id|utimbuf
 suffix:semicolon
-DECL|typedef|mqd_t
-r_typedef
-r_int
-id|mqd_t
-suffix:semicolon
 r_struct
 id|mq_attr
 suffix:semicolon

@@ -78,6 +78,11 @@ r_typedef
 id|__kernel_clockid_t
 id|clockid_t
 suffix:semicolon
+DECL|typedef|mqd_t
+r_typedef
+id|__kernel_mqd_t
+id|mqd_t
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|typedef|uid_t
 r_typedef

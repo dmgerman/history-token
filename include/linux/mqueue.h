@@ -2,13 +2,9 @@ multiline_comment|/* Copyright (C) 2003 Krzysztof Benedyczak &amp; Michal Wronsk
 macro_line|#ifndef _LINUX_MQUEUE_H
 DECL|macro|_LINUX_MQUEUE_H
 mdefine_line|#define _LINUX_MQUEUE_H
+macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|MQ_PRIO_MAX
 mdefine_line|#define MQ_PRIO_MAX &t;32768
-DECL|typedef|mqd_t
-r_typedef
-r_int
-id|mqd_t
-suffix:semicolon
 DECL|struct|mq_attr
 r_struct
 id|mq_attr
