@@ -422,14 +422,12 @@ DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;&t;1232
 DECL|macro|__NR_security
 mdefine_line|#define __NR_security&t;&t;&t;1233
-DECL|macro|__NR_get_large_pages
-mdefine_line|#define __NR_get_large_pages&t;&t;1234
-DECL|macro|__NR_free_large_pages
-mdefine_line|#define __NR_free_large_pages&t;&t;1235
-DECL|macro|__NR_share_large_pages
-mdefine_line|#define __NR_share_large_pages&t;&t;1236
-DECL|macro|__NR_unshare_large_pages
-mdefine_line|#define __NR_unshare_large_pages&t;1237
+DECL|macro|__NR_alloc_hugepages
+mdefine_line|#define __NR_alloc_hugepages&t;&t;1234
+DECL|macro|__NR_free_hugepages
+mdefine_line|#define __NR_free_hugepages&t;&t;1235
+multiline_comment|/* 1236 currently unused */
+multiline_comment|/* 1237 currently unused */
 DECL|macro|__NR_io_setup
 mdefine_line|#define __NR_io_setup&t;&t;&t;1238
 DECL|macro|__NR_io_destroy

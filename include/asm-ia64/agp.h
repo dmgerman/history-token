@@ -11,5 +11,8 @@ DECL|macro|flush_agp_mappings
 mdefine_line|#define flush_agp_mappings()&t;&t;/* nothing */
 DECL|macro|flush_agp_cache
 mdefine_line|#define flush_agp_cache()&t;&t;mb()
+multiline_comment|/* Page-protection value to be used for AGP memory mapped into kernel space.  */
+DECL|macro|PAGE_AGP
+mdefine_line|#define PAGE_AGP&t;&t;&t;PAGE_KERNEL
 macro_line|#endif /* _ASM_IA64_AGP_H */
 eof
