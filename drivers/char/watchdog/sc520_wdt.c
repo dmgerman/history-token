@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;AMD Elan SC520 processor Watchdog Timer driver&n; *&n; *      Based on acquirewdt.c by Alan Cox,&n; *           and sbc60xxwdt.c by Jakob Oestergaard &lt;jakob@unthought.net&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The authors do NOT admit liability nor provide warranty for&n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in&n; *      the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2001    Scott Jennings &lt;linuxdrivers@oro.net&gt;&n; *           9/27 - 2001      [Initial release]&n; *&n; *&t;Additional fixes Alan Cox&n; *&t;-&t;Fixed formatting&n; *&t;-&t;Removed debug printks&n; *&t;-&t;Fixed SMP built kernel deadlock&n; *&t;-&t;Switched to private locks not lock_kernel&n; *&t;-&t;Used ioremap/writew/readw&n; *&t;-&t;Added NOWAYOUT support&n; *&t;4/12 - 2002 Changes by Rob Radez &lt;rob@osinvestor.com&gt;&n; *&t;-&t;Change comments&n; *&t;-&t;Eliminate fop_llseek&n; *&t;-&t;Change CONFIG_WATCHDOG_NOWAYOUT semantics&n; *&t;-&t;Add KERN_* tags to printks&n; *&t;-&t;fix possible wdt_is_open race&n; *&t;-&t;Report proper capabilities in watchdog_info&n; *&t;-&t;Add WDIOC_{GETSTATUS, GETBOOTSTATUS, SETTIMEOUT,&n; *&t;&t;GETTIMEOUT, SETOPTIONS} ioctls&n; *&t;09/8 - 2003 Changes by Wim Van Sebroeck &lt;wim@iguana.be&gt;&n; *&t;-&t;cleanup of trailing spaces&n; *&t;-&t;added extra printk&squot;s for startup problems&n; *&t;-&t;use module_param&n; *&t;-&t;made timeout (the emulated heartbeat) a module_param&n; *&t;-&t;made the keepalive ping an internal subroutine&n; *&t;3/27 - 2004 Changes by Sean Young &lt;sean@mess.org&gt;&n; *&t;-&t;set MMCR_BASE_DEFAULT to 0xfffef000&n; *&n; *  This WDT driver is different from most other Linux WDT&n; *  drivers in that the driver will ping the watchdog by itself,&n; *  because this particular WDT has a very short timeout (1.6&n; *  seconds) and it would be insane to count on any userspace&n; *  daemon always getting scheduled within that time frame.&n; *&n; *  This driver uses memory mapped IO, and spinlock.&n; */
+multiline_comment|/*&n; *&t;AMD Elan SC520 processor Watchdog Timer driver&n; *&n; *      Based on acquirewdt.c by Alan Cox,&n; *           and sbc60xxwdt.c by Jakob Oestergaard &lt;jakob@unthought.net&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The authors do NOT admit liability nor provide warranty for&n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in&n; *      the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2001    Scott Jennings &lt;linuxdrivers@oro.net&gt;&n; *           9/27 - 2001      [Initial release]&n; *&n; *&t;Additional fixes Alan Cox&n; *&t;-&t;Fixed formatting&n; *&t;-&t;Removed debug printks&n; *&t;-&t;Fixed SMP built kernel deadlock&n; *&t;-&t;Switched to private locks not lock_kernel&n; *&t;-&t;Used ioremap/writew/readw&n; *&t;-&t;Added NOWAYOUT support&n; *&t;4/12 - 2002 Changes by Rob Radez &lt;rob@osinvestor.com&gt;&n; *&t;-&t;Change comments&n; *&t;-&t;Eliminate fop_llseek&n; *&t;-&t;Change CONFIG_WATCHDOG_NOWAYOUT semantics&n; *&t;-&t;Add KERN_* tags to printks&n; *&t;-&t;fix possible wdt_is_open race&n; *&t;-&t;Report proper capabilities in watchdog_info&n; *&t;-&t;Add WDIOC_{GETSTATUS, GETBOOTSTATUS, SETTIMEOUT,&n; *&t;&t;GETTIMEOUT, SETOPTIONS} ioctls&n; *&t;09/8 - 2003 Changes by Wim Van Sebroeck &lt;wim@iguana.be&gt;&n; *&t;-&t;cleanup of trailing spaces&n; *&t;-&t;added extra printk&squot;s for startup problems&n; *&t;-&t;use module_param&n; *&t;-&t;made timeout (the emulated heartbeat) a module_param&n; *&t;-&t;made the keepalive ping an internal subroutine&n; *&t;3/27 - 2004 Changes by Sean Young &lt;sean@mess.org&gt;&n; *&t;-&t;set MMCR_BASE to 0xfffef000&n; *&t;-&t;CBAR does not need to be read&n; *&t;-&t;removed debugging printks&n; *&n; *  This WDT driver is different from most other Linux WDT&n; *  drivers in that the driver will ping the watchdog by itself,&n; *  because this particular WDT has a very short timeout (1.6&n; *  seconds) and it would be insane to count on any userspace&n; *  daemon always getting scheduled within that time frame.&n; *&n; *  This driver uses memory mapped IO, and spinlock.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -91,8 +91,8 @@ l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * AMD Elan SC520 - Watchdog Timer Registers&n; */
-DECL|macro|MMCR_BASE_DEFAULT
-mdefine_line|#define MMCR_BASE_DEFAULT&t;0xfffef000&t;/* The default base address */
+DECL|macro|MMCR_BASE
+mdefine_line|#define MMCR_BASE&t;0xfffef000&t;/* The default base address */
 DECL|macro|OFFS_WDTMRCTL
 mdefine_line|#define OFFS_WDTMRCTL&t;0xCB0&t;/* Watchdog Timer Control Register */
 multiline_comment|/* WDT Control Register bit definitions */
@@ -1176,14 +1176,6 @@ op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
-r_int
-r_int
-id|cbar
-suffix:semicolon
-r_int
-r_int
-id|MMCR_BASE
-suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -1232,66 +1224,6 @@ l_string|&quot;timeout value must be 1&lt;=timeout&lt;=3600, using %d&bslash;n&q
 comma
 id|WATCHDOG_TIMEOUT
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/* get the Base Address Register:&n;&t; * If the ENB bit [31] of CBAR is set =&gt; MMCR alias is enabled and MMCR base address is&n;&t; * the contents of CBAR[29-12].&n;&t; * if ENB bit is 0 =&gt; MMCR alias is disabled and the MMCR base address is the default&n;&t; * value. */
-id|cbar
-op_assign
-id|inl_p
-c_func
-(paren
-l_int|0xfffc
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;CBAR: 0x%08lx&bslash;n&quot;
-comma
-id|cbar
-)paren
-suffix:semicolon
-multiline_comment|/* check if MMCR aliasing bit is set */
-r_if
-c_cond
-(paren
-id|cbar
-op_amp
-l_int|0x80000000
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;MMCR Aliasing enabled.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|MMCR_BASE
-op_assign
-(paren
-id|cbar
-op_amp
-l_int|0x3fffffff
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;MMCR Aliasing NOT enabled. Using default value.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|MMCR_BASE
-op_assign
-id|MMCR_BASE_DEFAULT
 suffix:semicolon
 )brace
 id|wdtmrctl
