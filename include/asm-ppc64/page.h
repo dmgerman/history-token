@@ -389,6 +389,11 @@ r_int
 id|pfn
 )paren
 suffix:semicolon
+r_extern
+id|u64
+id|ppc64_pft_size
+suffix:semicolon
+multiline_comment|/* Log 2 of page table size */
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#ifdef MODULE
 DECL|macro|__page_aligned

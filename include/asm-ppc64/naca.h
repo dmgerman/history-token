@@ -59,16 +59,6 @@ id|u64
 id|interrupt_controller
 suffix:semicolon
 multiline_comment|/* Type of int controller    0x40 */
-DECL|member|unused1
-id|u64
-id|unused1
-suffix:semicolon
-multiline_comment|/* was SLB size in entries   0x48 */
-DECL|member|pftSize
-id|u64
-id|pftSize
-suffix:semicolon
-multiline_comment|/* Log 2 of page table size  0x50 */
 )brace
 suffix:semicolon
 r_extern

@@ -4423,7 +4423,7 @@ id|systemcfg-&gt;platform
 op_eq
 id|PLATFORM_PSERIES_LPAR
 op_logical_and
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 op_eq
 l_int|0
 )paren
@@ -4457,7 +4457,7 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* pft_size[0] is the NUMA CEC cookie */
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 op_assign
 id|pft_size
 (braket
@@ -5281,7 +5281,7 @@ op_assign
 id|params
 suffix:semicolon
 multiline_comment|/* By default, hash size is not set */
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 op_assign
 l_int|0
 suffix:semicolon
@@ -5373,7 +5373,7 @@ multiline_comment|/* If hash size wasn&squot;t obtained above, we calculate it n
 r_if
 c_cond
 (paren
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 op_eq
 l_int|0
 )paren
@@ -5419,7 +5419,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 op_assign
 id|__ilog2
 c_func
@@ -5438,7 +5438,7 @@ comma
 (paren
 r_int
 )paren
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 )paren
 suffix:semicolon
 id|DBG

@@ -21,7 +21,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
@@ -374,7 +373,7 @@ id|htab_size_bytes
 op_assign
 l_int|1UL
 op_lshift
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 suffix:semicolon
 id|pteg_count
 op_assign

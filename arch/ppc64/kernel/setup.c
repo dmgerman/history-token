@@ -44,6 +44,7 @@ macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
@@ -217,6 +218,10 @@ suffix:semicolon
 DECL|variable|boot_dev
 id|dev_t
 id|boot_dev
+suffix:semicolon
+DECL|variable|ppc64_pft_size
+id|u64
+id|ppc64_pft_size
 suffix:semicolon
 DECL|variable|ppc64_caches
 r_struct
@@ -1927,9 +1932,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;naca-&gt;pftSize                 = 0x%lx&bslash;n&quot;
+l_string|&quot;ppc64_pft_size                = 0x%lx&bslash;n&quot;
 comma
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 )paren
 suffix:semicolon
 id|printk
