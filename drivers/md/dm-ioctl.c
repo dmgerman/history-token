@@ -3241,7 +3241,7 @@ r_if
 c_cond
 (paren
 id|remaining
-OL
+op_le
 r_sizeof
 (paren
 r_struct
@@ -3308,6 +3308,21 @@ op_minus
 id|outbuf
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|remaining
+op_le
+l_int|0
+)paren
+(brace
+id|param-&gt;flags
+op_or_assign
+id|DM_BUFFER_FULL_FLAG
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/* Get the status/table string from the target driver */
 r_if
 c_cond
