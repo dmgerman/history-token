@@ -9903,10 +9903,6 @@ c_cond
 (paren
 id|sense.ascq
 op_eq
-l_int|0
-op_logical_or
-id|sense.ascq
-op_eq
 l_int|1
 )paren
 r_return
@@ -9916,6 +9912,10 @@ r_else
 r_if
 c_cond
 (paren
+id|sense.ascq
+op_eq
+l_int|0
+op_logical_or
 id|sense.ascq
 op_eq
 l_int|2

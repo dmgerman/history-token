@@ -3657,6 +3657,19 @@ l_string|&quot;the tray is now closed.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* the door should be closed now, check for the disc */
+id|ret
+op_assign
+id|cdo
+op_member_access_from_pointer
+id|drive_status
+c_func
+(paren
+id|cdi
+comma
+id|CDSL_CURRENT
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
