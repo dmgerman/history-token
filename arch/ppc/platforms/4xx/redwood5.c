@@ -13,13 +13,6 @@ c_func
 r_void
 )paren
 (brace
-id|bd_t
-op_star
-id|bip
-op_assign
-op_amp
-id|__res
-suffix:semicolon
 id|ppc4xx_setup_arch
 c_func
 (paren

@@ -4,7 +4,6 @@ macro_line|#ifndef __ASM_IBMSTB4_H__
 DECL|macro|__ASM_IBMSTB4_H__
 mdefine_line|#define __ASM_IBMSTB4_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
 multiline_comment|/* serial port defines */
 DECL|macro|STB04xxx_IO_BASE
 mdefine_line|#define STB04xxx_IO_BASE&t;((uint)0xe0000000)

@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/ibm_ocp_pci.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 DECL|macro|DEBUG
@@ -172,6 +173,14 @@ suffix:semicolon
 id|ppc4xx_setup_arch
 c_func
 (paren
+)paren
+suffix:semicolon
+id|ibm_ocp_set_emac
+c_func
+(paren
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|kb_data

@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
+macro_line|#include &lt;asm/ocp.h&gt;
 DECL|variable|cpci405_nvram
 r_void
 op_star
@@ -153,6 +154,14 @@ r_void
 id|ppc4xx_setup_arch
 c_func
 (paren
+)paren
+suffix:semicolon
+id|ibm_ocp_set_emac
+c_func
+(paren
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|TODC_INIT
