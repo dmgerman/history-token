@@ -3073,8 +3073,6 @@ r_int
 id|size
 op_assign
 id|skb-&gt;len
-op_plus
-id|skb-&gt;data_len
 suffix:semicolon
 r_if
 c_cond
