@@ -4689,6 +4689,9 @@ op_assign
 r_int
 )paren
 (paren
+id|s32
+)paren
+(paren
 id|window_size
 op_minus
 (paren
