@@ -446,8 +446,7 @@ DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;220
 DECL|macro|__NR_fcntl64
 mdefine_line|#define __NR_fcntl64&t;&t;221
-DECL|macro|__NR_security
-mdefine_line|#define __NR_security&t;&t;223&t;/* syscall for security modules */
+multiline_comment|/* 223 is unused */
 DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid&t;&t;224
 DECL|macro|__NR_readahead

@@ -124,9 +124,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|security_ops
-op_member_access_from_pointer
-id|file_alloc_security
+id|security_file_alloc
 c_func
 (paren
 id|f
@@ -481,9 +479,7 @@ comma
 id|file
 )paren
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|file_free_security
+id|security_file_free
 c_func
 (paren
 id|file
@@ -643,9 +639,7 @@ id|file-&gt;f_count
 )paren
 )paren
 (brace
-id|security_ops
-op_member_access_from_pointer
-id|file_free_security
+id|security_file_free
 c_func
 (paren
 id|file

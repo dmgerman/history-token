@@ -2248,16 +2248,9 @@ id|cpu_to_le16
 id|MSDOS_LABEL_MAGIC
 )paren
 )paren
-(brace
-id|ldm_debug
-(paren
-l_string|&quot;No MS-DOS partition table found.&quot;
-)paren
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|p
 op_assign
 (paren
@@ -2313,13 +2306,7 @@ id|result
 )paren
 id|ldm_debug
 (paren
-l_string|&quot;Parsed partition table successfully.&quot;
-)paren
-suffix:semicolon
-r_else
-id|ldm_debug
-(paren
-l_string|&quot;Found an MS-DOS partition table, not a dynamic disk.&quot;
+l_string|&quot;Found W2K dynamic disk partition type.&quot;
 )paren
 suffix:semicolon
 id|out
@@ -2333,7 +2320,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ldm_get_disk_objid - Search a linked list of vblk&squot;s for a given Disk Id&n; * @ldb:  Cache of the database structures&n; *&n; * The LDM Database contains a list of all partitions on all dynamic disks.  The&n; * primary PRIVHEAD, at the beginning of the physical disk, tells us the GUID of&n; * this disk.  This function searches for the GUID in a linked list of vblk&squot;s.&n; *&n; * Return:  Pointer, A matching vblk was found&n; *          NULL,    No match, or an error&n; */
+multiline_comment|/**&n; * ldm_get_disk_objid - Search a linked list of vblk&squot;s for a given Disk Id&n; * @ldb:  Cache of the database structures&n; *&n; * The LDM Database contains a list of all partitions on all dynamic disks.&n; * The primary PRIVHEAD, at the beginning of the physical disk, tells us&n; * the GUID of this disk.  This function searches for the GUID in a linked&n; * list of vblk&squot;s.&n; *&n; * Return:  Pointer, A matching vblk was found&n; *          NULL,    No match, or an error&n; */
 DECL|function|ldm_get_disk_objid
 r_static
 r_struct

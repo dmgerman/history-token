@@ -1771,7 +1771,7 @@ op_eq
 id|PCI_DEVICE_ID_SERVERWORKS_OSB4
 op_logical_and
 id|drive-&gt;media
-op_ne
+op_eq
 id|ide_disk
 op_logical_and
 id|speed

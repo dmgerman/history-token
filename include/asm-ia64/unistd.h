@@ -420,8 +420,7 @@ DECL|macro|__NR_sched_setaffinity
 mdefine_line|#define __NR_sched_setaffinity&t;&t;1231
 DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;&t;1232
-DECL|macro|__NR_security
-mdefine_line|#define __NR_security&t;&t;&t;1233
+multiline_comment|/* 1233 currently unused */
 DECL|macro|__NR_alloc_hugepages
 mdefine_line|#define __NR_alloc_hugepages&t;&t;1234
 DECL|macro|__NR_free_hugepages

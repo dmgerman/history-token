@@ -3234,11 +3234,6 @@ op_amp
 id|bdev-&gt;bd_sem
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -3260,6 +3255,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

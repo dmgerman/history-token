@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 multiline_comment|/*&n; * For hysterical raisins we keep the same inumbers as in the old procfs.&n; * Feel free to change the macro below - just keep the range distinct from&n; * inumbers of the rest of procfs (currently those are in 0x0000--0xffff).&n; * As soon as we&squot;ll get a separate superblock we will be able to forget&n; * about magical ranges too.&n; */
 DECL|macro|fake_ino
 mdefine_line|#define fake_ino(pid,ino) (((pid)&lt;&lt;16)|(ino))
@@ -59,9 +60,6 @@ id|PROC_PID_STATM
 comma
 DECL|enumerator|PROC_PID_MAPS
 id|PROC_PID_MAPS
-comma
-DECL|enumerator|PROC_PID_CPU
-id|PROC_PID_CPU
 comma
 DECL|enumerator|PROC_PID_MOUNTS
 id|PROC_PID_MOUNTS
@@ -185,20 +183,6 @@ op_or
 id|S_IRUGO
 )paren
 comma
-macro_line|#ifdef CONFIG_SMP
-id|E
-c_func
-(paren
-id|PROC_PID_CPU
-comma
-l_string|&quot;cpu&quot;
-comma
-id|S_IFREG
-op_or
-id|S_IRUGO
-)paren
-comma
-macro_line|#endif
 id|E
 c_func
 (paren
@@ -2086,7 +2070,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|MAY_PTRACE
-mdefine_line|#define MAY_PTRACE(p) &bslash;&n;(p==current||(p-&gt;parent==current&amp;&amp;(p-&gt;ptrace &amp; PT_PTRACED)&amp;&amp;p-&gt;state==TASK_STOPPED&amp;&amp;security_ops-&gt;ptrace(current,p)==0))
+mdefine_line|#define MAY_PTRACE(p) &bslash;&n;(p==current||(p-&gt;parent==current&amp;&amp;(p-&gt;ptrace &amp; PT_PTRACED)&amp;&amp;p-&gt;state==TASK_STOPPED&amp;&amp;security_ptrace(current,p)==0))
 DECL|function|mem_open
 r_static
 r_int
@@ -4909,22 +4893,6 @@ id|proc_maps_operations
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-r_case
-id|PROC_PID_CPU
-suffix:colon
-id|inode-&gt;i_fop
-op_assign
-op_amp
-id|proc_info_file_operations
-suffix:semicolon
-id|ei-&gt;op.proc_read
-op_assign
-id|proc_pid_cpu
-suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif
 r_case
 id|PROC_PID_MEM
 suffix:colon

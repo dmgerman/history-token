@@ -440,8 +440,7 @@ mdefine_line|#define __NR_madvise&t;&t;&t;(__NR_SYSCALL_BASE+220)
 DECL|macro|__NR_fcntl64
 mdefine_line|#define __NR_fcntl64&t;&t;&t;(__NR_SYSCALL_BASE+221)
 multiline_comment|/* 222 for tux */
-DECL|macro|__NR_security
-mdefine_line|#define __NR_security&t;&t;&t;(__NR_SYSCALL_BASE+223)
+multiline_comment|/* 223 is unused */
 DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid&t;&t;&t;(__NR_SYSCALL_BASE+224)
 DECL|macro|__NR_readahead

@@ -931,19 +931,6 @@ r_int
 r_int
 id|start_time
 suffix:semicolon
-DECL|member|per_cpu_utime
-DECL|member|per_cpu_stime
-r_int
-id|per_cpu_utime
-(braket
-id|NR_CPUS
-)braket
-comma
-id|per_cpu_stime
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 multiline_comment|/* mm fault and swap info: this can arguably be seen as either mm-specific or thread-specific */
 DECL|member|min_flt
 DECL|member|maj_flt
@@ -1933,9 +1920,19 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* capable prototype and code moved to security.[hc] */
-macro_line|#include &lt;linux/security.h&gt;
-macro_line|#if 0
+macro_line|#ifdef CONFIG_SECURITY
+multiline_comment|/* code is in security.c */
+r_extern
+r_int
+id|capable
+c_func
+(paren
+r_int
+id|cap
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|capable
 r_static
 r_inline
 r_int
@@ -1970,7 +1967,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* if 0 */
+macro_line|#endif
 multiline_comment|/*&n; * Routines for handling mm_structs&n; */
 r_extern
 r_struct

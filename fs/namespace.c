@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
@@ -1546,22 +1547,20 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|retval
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|sb_umount
+id|security_sb_umount
 c_func
 (paren
 id|mnt
 comma
 id|flags
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
+)paren
 )paren
 r_return
 id|retval
@@ -1728,9 +1727,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|sb_umount_close
+id|security_sb_umount_close
 c_func
 (paren
 id|mnt
@@ -1800,9 +1797,7 @@ c_cond
 (paren
 id|retval
 )paren
-id|security_ops
-op_member_access_from_pointer
-id|sb_umount_busy
+id|security_sb_umount_busy
 c_func
 (paren
 id|mnt
@@ -2323,22 +2318,20 @@ id|nd-&gt;dentry-&gt;d_inode
 r_goto
 id|out_unlock
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|err
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|sb_check_sb
+id|security_sb_check_sb
 c_func
 (paren
 id|mnt
 comma
 id|nd
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
+)paren
 )paren
 r_goto
 id|out_unlock
@@ -2435,9 +2428,7 @@ c_cond
 op_logical_neg
 id|err
 )paren
-id|security_ops
-op_member_access_from_pointer
-id|sb_post_addmount
+id|security_sb_post_addmount
 c_func
 (paren
 id|mnt
@@ -2788,9 +2779,7 @@ c_cond
 op_logical_neg
 id|err
 )paren
-id|security_ops
-op_member_access_from_pointer
-id|sb_post_remount
+id|security_sb_post_remount
 c_func
 (paren
 id|nd-&gt;mnt
@@ -3684,11 +3673,13 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|retval
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|sb_mount
+id|security_sb_mount
 c_func
 (paren
 id|dev_name
@@ -3702,11 +3693,7 @@ id|flags
 comma
 id|data_page
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
+)paren
 )paren
 r_goto
 id|dput_out
@@ -4900,11 +4887,13 @@ id|error
 r_goto
 id|out1
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|error
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|sb_pivotroot
+id|security_sb_pivotroot
 c_func
 (paren
 op_amp
@@ -4913,11 +4902,7 @@ comma
 op_amp
 id|new_nd
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
+)paren
 )paren
 (brace
 id|path_release
@@ -5234,9 +5219,7 @@ op_amp
 id|new_nd
 )paren
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|sb_post_pivotroot
+id|security_sb_post_pivotroot
 c_func
 (paren
 op_amp

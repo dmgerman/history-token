@@ -5882,12 +5882,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
-)paren
-suffix:semicolon
+multiline_comment|/* This also frees the co-located &squot;dev-&gt;priv&squot; */
 id|kfree
 c_func
 (paren

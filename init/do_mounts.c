@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
@@ -4471,9 +4472,7 @@ c_func
 l_string|&quot;.&quot;
 )paren
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|sb_post_mountroot
+id|security_sb_post_mountroot
 c_func
 (paren
 )paren
