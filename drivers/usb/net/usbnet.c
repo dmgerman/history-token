@@ -800,6 +800,27 @@ id|status
 suffix:semicolon
 )brace
 "&f;"
+macro_line|#ifdef&t;CONFIG_USB_ALI_M5632
+DECL|macro|HAVE_HARDWARE
+mdefine_line|#define&t;HAVE_HARDWARE
+multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * ALi M5632 driver ... does high speed&n; *&n; *-------------------------------------------------------------------------*/
+DECL|variable|ali_m5632_info
+r_static
+r_const
+r_struct
+id|driver_info
+id|ali_m5632_info
+op_assign
+(brace
+dot
+id|description
+op_assign
+l_string|&quot;ALi M5632&quot;
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
+"&f;"
 macro_line|#ifdef&t;CONFIG_USB_AN2720
 DECL|macro|HAVE_HARDWARE
 mdefine_line|#define&t;HAVE_HARDWARE
@@ -11371,6 +11392,29 @@ id|products
 )braket
 op_assign
 (brace
+macro_line|#ifdef&t;CONFIG_USB_ALI_M5632
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0402
+comma
+l_int|0x5632
+)paren
+comma
+singleline_comment|// ALi defaults
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|ali_m5632_info
+comma
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef&t;CONFIG_USB_AN2720
 (brace
 id|USB_DEVICE
