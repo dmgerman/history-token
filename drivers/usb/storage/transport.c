@@ -1611,7 +1611,7 @@ id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;usb_stor_bulk_transfer_sglist(): xfer %d bytes, &quot;
-l_string|&quot;%d entires&bslash;n&quot;
+l_string|&quot;%d entries&bslash;n&quot;
 comma
 id|length
 comma
@@ -1710,6 +1710,7 @@ id|us-&gt;current_sg
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* wait for the completion of the transfer */
 id|usb_sg_wait
 c_func
 (paren
@@ -1736,7 +1737,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;usb_sg_wait() returned %d xferrerd %d/%d&bslash;n&quot;
+l_string|&quot;usb_sg_wait() returned %d xferred %d/%d&bslash;n&quot;
 comma
 id|result
 comma
@@ -1768,7 +1769,7 @@ id|EPIPE
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;clearing endpoint halt for pipe 0x%x,&quot;
+l_string|&quot;clearing endpoint halt for pipe 0x%x, &quot;
 l_string|&quot;stalled at %d bytes&bslash;n&quot;
 comma
 id|pipe
@@ -1796,7 +1797,7 @@ r_return
 id|USB_STOR_XFER_STALLED
 suffix:semicolon
 )brace
-multiline_comment|/* NAK - that means we&squot;ve tried this a few times already */
+multiline_comment|/* NAK - that means we&squot;ve retried this a few times already */
 r_if
 c_cond
 (paren
@@ -1865,7 +1866,7 @@ r_return
 id|USB_STOR_XFER_SHORT
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Transfer an entire SCSI command&squot;s worth of data payload over the bulk&n; * pipe.&n; *&n; * Nore that this uses the usb_stor_bulk_transfer_buf() and&n; * usb_stor_bulk_transfer_sglist() to achieve its goals --&n; * this function simply determines whether we&squot;re going to use&n; * scatter-gather or not, and acts apropriately.&n; */
+multiline_comment|/*&n; * Transfer an entire SCSI command&squot;s worth of data payload over the bulk&n; * pipe.&n; *&n; * Nore that this uses usb_stor_bulk_transfer_buf() and&n; * usb_stor_bulk_transfer_sglist() to achieve its goals --&n; * this function simply determines whether we&squot;re going to use&n; * scatter-gather or not, and acts appropriately.&n; */
 DECL|function|usb_stor_bulk_transfer_sg
 r_int
 id|usb_stor_bulk_transfer_sg

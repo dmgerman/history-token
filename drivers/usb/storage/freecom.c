@@ -321,7 +321,7 @@ id|USB_STOR_XFER_GOOD
 (brace
 id|US_DEBUGP
 (paren
-l_string|&quot;Freecom readdata xpot failure: r=%d, p=%d&bslash;n&quot;
+l_string|&quot;Freecom readdata xport failure: r=%d, p=%d&bslash;n&quot;
 comma
 id|result
 comma
@@ -499,7 +499,7 @@ id|USB_STOR_XFER_GOOD
 (brace
 id|US_DEBUGP
 (paren
-l_string|&quot;Freecom writedata xpot failure: r=%d, p=%d&bslash;n&quot;
+l_string|&quot;Freecom writedata xport failure: r=%d, p=%d&bslash;n&quot;
 comma
 id|result
 comma
