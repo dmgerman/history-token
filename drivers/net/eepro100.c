@@ -2832,7 +2832,7 @@ suffix:semicolon
 r_else
 id|product
 op_assign
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 suffix:semicolon
 id|printk
 c_func

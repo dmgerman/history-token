@@ -659,14 +659,6 @@ id|irq_resource
 id|DEVICE_COUNT_IRQ
 )braket
 suffix:semicolon
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|90
-)braket
-suffix:semicolon
-multiline_comment|/* device name */
 DECL|member|slot_name
 r_char
 id|slot_name

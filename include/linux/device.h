@@ -2,14 +2,18 @@ multiline_comment|/*&n; * device.h - generic, centralized driver model&n; *&n; *
 macro_line|#ifndef _DEVICE_H_
 DECL|macro|_DEVICE_H_
 mdefine_line|#define _DEVICE_H_
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/kobject.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|DEVICE_NAME_SIZE
-mdefine_line|#define DEVICE_NAME_SIZE&t;80
+mdefine_line|#define DEVICE_NAME_SIZE&t;50
+DECL|macro|DEVICE_NAME_HALF
+mdefine_line|#define DEVICE_NAME_HALF&t;__stringify(20)&t;/* Less than half to accommodate slop */
 DECL|macro|DEVICE_ID_SIZE
 mdefine_line|#define DEVICE_ID_SIZE&t;&t;32
 DECL|macro|BUS_ID_SIZE
