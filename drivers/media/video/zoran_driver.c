@@ -8357,7 +8357,7 @@ c_func
 l_int|3
 comma
 id|KERN_DEBUG
-l_string|&quot;%s: VIDIOCSFBUF - base=0x%x, w=%d, h=%d, depth=%d, bpl=%d&bslash;n&quot;
+l_string|&quot;%s: VIDIOCSFBUF - base=%p, w=%d, h=%d, depth=%d, bpl=%d&bslash;n&quot;
 comma
 id|ZR_DEVNAME
 c_func
@@ -8365,9 +8365,6 @@ c_func
 id|zr
 )paren
 comma
-(paren
-id|u32
-)paren
 id|vbuf-&gt;base
 comma
 id|vbuf-&gt;width

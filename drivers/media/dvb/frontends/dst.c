@@ -5627,28 +5627,15 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: register dst %8.8x bt %8.8x i2c %8.8x&bslash;n&quot;
+l_string|&quot;%s: register dst %p bt %p i2c %p&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-(paren
-id|u32
-)paren
 id|dst
 comma
-(paren
-id|u32
-)paren
-(paren
 id|dst-&gt;bt
-)paren
 comma
-(paren
-id|u32
-)paren
-(paren
 id|dst-&gt;i2c
-)paren
 )paren
 suffix:semicolon
 id|info
@@ -5724,16 +5711,11 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: unregister dst %8.8x&bslash;n&quot;
+l_string|&quot;%s: unregister dst %p&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-(paren
-id|u32
-)paren
-(paren
 id|data
-)paren
 )paren
 suffix:semicolon
 r_if

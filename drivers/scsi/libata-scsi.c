@@ -266,6 +266,7 @@ id|val
 op_assign
 (paren
 r_int
+r_int
 )paren
 id|arg
 suffix:semicolon
