@@ -632,6 +632,12 @@ op_assign
 op_amp
 id|fbcon_accel
 suffix:semicolon
+macro_line|#else
+id|display-&gt;dispsw
+op_assign
+op_amp
+id|fbcon_dummy
+suffix:semicolon
 macro_line|#endif
 r_return
 suffix:semicolon
