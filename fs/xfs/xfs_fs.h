@@ -238,7 +238,7 @@ id|__s32
 id|l_sysid
 suffix:semicolon
 DECL|member|l_pid
-id|pid_t
+id|__u32
 id|l_pid
 suffix:semicolon
 DECL|member|l_pad
