@@ -21,6 +21,13 @@ id|teles3_revision
 op_assign
 l_string|&quot;$Revision: 2.17.6.2 $&quot;
 suffix:semicolon
+DECL|variable|teles3_lock
+r_static
+id|spinlock_t
+id|teles3_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|macro|byteout
 mdefine_line|#define byteout(addr,val) outb(val,addr)
 DECL|macro|bytein
@@ -779,6 +786,7 @@ id|cs
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|u_char
@@ -893,9 +901,12 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|teles3_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -907,11 +918,6 @@ op_plus
 l_int|4
 comma
 id|irqcfg
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
 )paren
 suffix:semicolon
 id|HZDELAY
@@ -946,9 +952,12 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|teles3_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -962,9 +971,12 @@ op_eq
 id|ISDN_CTYPE_COMPAQ_ISA
 )paren
 (brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|teles3_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -996,9 +1008,12 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|teles3_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1006,9 +1021,12 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Reset off for 16.3 PnP , thanks to Georg Acher */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|teles3_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1044,9 +1062,12 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|teles3_lock
+comma
 id|flags
 )paren
 suffix:semicolon

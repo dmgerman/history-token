@@ -18,6 +18,13 @@ id|enternow_pci_rev
 op_assign
 l_string|&quot;$Revision: 1.1.2.1 $&quot;
 suffix:semicolon
+DECL|variable|enternow_pci_lock
+r_static
+id|spinlock_t
+id|enternow_pci_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* *************************** I/O-Interface functions ************************************* */
 multiline_comment|/* cs-&gt;readisac, macro rByteAMD */
 id|BYTE
@@ -731,6 +738,7 @@ comma
 id|ir
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_if
@@ -794,15 +802,13 @@ suffix:semicolon
 )brace
 multiline_comment|/* DMA-Interrupt: B-channel-stuff */
 multiline_comment|/* set bits in sval to indicate which page is free */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|enternow_pci_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* set bits in sval to indicate which page is free */
@@ -892,9 +898,12 @@ id|cs-&gt;HW_Flags
 )paren
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|enternow_pci_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -905,9 +914,12 @@ id|cs-&gt;hw.njet.irqstat0
 op_assign
 id|sval
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|enternow_pci_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -966,9 +978,12 @@ id|cs-&gt;HW_Flags
 suffix:semicolon
 )brace
 r_else
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|enternow_pci_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1012,6 +1027,7 @@ id|tmp
 l_int|64
 )braket
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

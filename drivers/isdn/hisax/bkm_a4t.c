@@ -16,6 +16,13 @@ id|CardType
 (braket
 )braket
 suffix:semicolon
+DECL|variable|bkm_a4t_lock
+r_static
+id|spinlock_t
+id|bkm_a4t_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|variable|bkm_a4t_revision
 r_const
 r_char
@@ -48,6 +55,7 @@ id|u_int
 id|ret
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_int
@@ -63,15 +71,13 @@ op_star
 id|adr
 suffix:semicolon
 multiline_comment|/* Postoffice */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|bkm_a4t_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 op_star
@@ -111,9 +117,12 @@ op_assign
 op_star
 id|po
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|bkm_a4t_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -209,6 +218,7 @@ id|data
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_int
@@ -224,15 +234,13 @@ op_star
 id|adr
 suffix:semicolon
 multiline_comment|/* Postoffice */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|bkm_a4t_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 op_star
@@ -269,9 +277,12 @@ c_func
 id|po
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|bkm_a4t_lock
+comma
 id|flags
 )paren
 suffix:semicolon

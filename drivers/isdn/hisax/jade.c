@@ -5,6 +5,13 @@ macro_line|#include &quot;hscx.h&quot;
 macro_line|#include &quot;jade.h&quot;
 macro_line|#include &quot;isdnl1.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;
+DECL|variable|jade_lock
+r_static
+id|spinlock_t
+id|jade_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 r_int
 id|__init
 DECL|function|JadeVersion
@@ -175,20 +182,19 @@ op_assign
 l_int|50
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|u_char
 id|ret
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|jade_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Write the data */
@@ -277,9 +283,12 @@ op_logical_neg
 id|to
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|jade_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -298,9 +307,12 @@ r_return
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|jade_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -778,6 +790,7 @@ op_assign
 id|arg
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_switch
@@ -793,15 +806,13 @@ op_or
 id|REQUEST
 )paren
 suffix:colon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|jade_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -819,9 +830,12 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|jade_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -845,9 +859,12 @@ id|st-&gt;l1.bcs-&gt;hw.hscx.count
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|jade_lock
+comma
 id|flags
 )paren
 suffix:semicolon

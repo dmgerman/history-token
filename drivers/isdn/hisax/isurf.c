@@ -22,6 +22,13 @@ id|ISurf_revision
 op_assign
 l_string|&quot;$Revision: 1.10.6.2 $&quot;
 suffix:semicolon
+DECL|variable|isurf_lock
+r_static
+id|spinlock_t
+id|isurf_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|macro|byteout
 mdefine_line|#define byteout(addr,val) outb(val,addr)
 DECL|macro|bytein
