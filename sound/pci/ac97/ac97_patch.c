@@ -4674,23 +4674,40 @@ id|ac97
 r_int
 r_int
 id|val
+comma
+id|reg
 suffix:semicolon
 r_int
 id|spdif
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* FIXME: set the below 1 if we can detect the chip rev.E correctly.&n;&t; *        this is used for switching mic and center/lfe, which needs&n;&t; *        resetting GPIO0 level on the older revision.&n;&t; */
 id|ac97-&gt;build_ops
 op_assign
 op_amp
 id|patch_alc650_ops
 suffix:semicolon
+multiline_comment|/* revision E or F */
+multiline_comment|/* FIXME: what about revision D ? */
 id|ac97-&gt;spec.dev_flags
 op_assign
-l_int|0
+(paren
+id|ac97-&gt;id
+op_eq
+l_int|0x414c4722
+op_logical_or
+id|ac97-&gt;id
+op_eq
+l_int|0x414c4723
+)paren
 suffix:semicolon
 multiline_comment|/* check spdif (should be only on rev.E) */
+r_if
+c_cond
+(paren
+id|ac97-&gt;spec.dev_flags
+)paren
+(brace
 id|val
 op_assign
 id|snd_ac97_read
@@ -4712,6 +4729,7 @@ id|spdif
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

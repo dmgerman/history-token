@@ -338,6 +338,8 @@ DECL|macro|AC97_ALC650_LFE_DAC_VOL
 mdefine_line|#define AC97_ALC650_LFE_DAC_VOL&t;&t;0x66
 DECL|macro|AC97_ALC650_MULTICH
 mdefine_line|#define AC97_ALC650_MULTICH&t;0x6a
+DECL|macro|AC97_ALC650_REVISION
+mdefine_line|#define AC97_ALC650_REVISION    0x6e
 DECL|macro|AC97_ALC650_CLOCK
 mdefine_line|#define AC97_ALC650_CLOCK&t;0x7a
 multiline_comment|/* specific - Yamaha YMF753 */
