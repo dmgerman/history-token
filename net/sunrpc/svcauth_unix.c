@@ -431,6 +431,12 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
+id|im-&gt;m_class
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
 id|im
 )paren
 suffix:semicolon
