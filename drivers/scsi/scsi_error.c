@@ -1267,7 +1267,6 @@ op_eq
 id|SUCCESS
 )paren
 (brace
-r_int
 id|rtn
 op_assign
 id|scsi_eh_completed_normally
@@ -1353,26 +1352,15 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|255
+l_int|254
 comma
 l_int|0
 )brace
 suffix:semicolon
 r_int
 r_char
-id|scsi_result0
-(braket
-l_int|256
-)braket
-comma
 op_star
 id|scsi_result
-op_assign
-op_amp
-id|scsi_result0
-(braket
-l_int|0
-)braket
 suffix:semicolon
 r_int
 id|saved_result
@@ -1393,22 +1381,23 @@ id|generic_sense
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|scmd-&gt;device-&gt;host-&gt;hostt-&gt;unchecked_isa_dma
-)paren
-(brace
 id|scsi_result
 op_assign
 id|kmalloc
 c_func
 (paren
-l_int|512
+l_int|254
 comma
 id|GFP_ATOMIC
 op_or
+(paren
+id|scmd-&gt;device-&gt;host-&gt;hostt-&gt;unchecked_isa_dma
+)paren
+ques
+c_cond
 id|__GFP_DMA
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1435,7 +1424,6 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-)brace
 multiline_comment|/*&n;&t; * zero the sense buffer.  some host adapters automatically always&n;&t; * request sense, so it is not a good idea that&n;&t; * scmd-&gt;request_buffer and scmd-&gt;sense_buffer point to the same&n;&t; * address (db).  0 is not a valid sense code. &n;&t; */
 id|memset
 c_func
@@ -1457,7 +1445,7 @@ id|scsi_result
 comma
 l_int|0
 comma
-l_int|256
+l_int|254
 )paren
 suffix:semicolon
 id|saved_result
@@ -1470,7 +1458,7 @@ id|scsi_result
 suffix:semicolon
 id|scmd-&gt;request_bufflen
 op_assign
-l_int|256
+l_int|254
 suffix:semicolon
 id|scmd-&gt;use_sg
 op_assign
@@ -1531,17 +1519,6 @@ id|scmd-&gt;sense_buffer
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|scsi_result
-op_ne
-op_amp
-id|scsi_result0
-(braket
-l_int|0
-)braket
-)paren
 id|kfree
 c_func
 (paren
@@ -1828,14 +1805,12 @@ id|rtn
 op_eq
 id|SUCCESS
 )paren
-id|scsi_eh_finish_cmd
-c_func
-(paren
-id|scmd
-comma
-id|done_q
-)paren
+multiline_comment|/* we don&squot;t want this command reissued, just&n;&t;&t;&t; * finished with the sense data, so set&n;&t;&t;&t; * retries to the max allowed to ensure it&n;&t;&t;&t; * won&squot;t get reissued */
+id|scmd-&gt;retries
+op_assign
+id|scmd-&gt;allowed
 suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -1845,29 +1820,6 @@ id|NEEDS_RETRY
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * we only come in here if we want to retry a&n;&t;&t; * command.  the test to see whether the command&n;&t;&t; * should be retried should be keeping track of the&n;&t;&t; * number of tries, so we don&squot;t end up looping, of&n;&t;&t; * course.&n;&t;&t; */
-id|scmd-&gt;state
-op_assign
-id|NEEDS_RETRY
-suffix:semicolon
-id|rtn
-op_assign
-id|scsi_eh_retry_cmd
-c_func
-(paren
-id|scmd
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rtn
-op_ne
-id|SUCCESS
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * we eventually hand this one back to the top level.&n;&t;&t; */
 id|scsi_eh_finish_cmd
 c_func
 (paren
@@ -3710,10 +3662,9 @@ id|NEEDS_RETRY
 r_goto
 id|maybe_retry
 suffix:semicolon
-multiline_comment|/* if rtn == FAILED, we have no sense information */
-multiline_comment|/* was: return rtn; */
+multiline_comment|/* if rtn == FAILED, we have no sense information;&n;&t;&t; * returning FAILED will wake the error handler thread&n;&t;&t; * to collect the sense and redo the decide&n;&t;&t; * disposition */
 r_return
-id|SUCCESS
+id|rtn
 suffix:semicolon
 r_case
 id|CONDITION_GOOD
