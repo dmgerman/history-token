@@ -410,13 +410,8 @@ id|read
 suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_KCORE_AOUT */
-macro_line|#if VMALLOC_START &lt; PAGE_OFFSET
-DECL|macro|KCORE_BASE
-mdefine_line|#define&t;KCORE_BASE&t;VMALLOC_START
-macro_line|#else
 DECL|macro|KCORE_BASE
 mdefine_line|#define&t;KCORE_BASE&t;PAGE_OFFSET
-macro_line|#endif
 DECL|macro|roundup
 mdefine_line|#define roundup(x, y)  ((((x)+((y)-1))/(y))*(y))
 multiline_comment|/* An ELF note in memory */
