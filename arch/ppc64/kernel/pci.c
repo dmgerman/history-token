@@ -99,15 +99,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|find_floppy
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_void
 id|iSeries_pcibios_init
 c_func
@@ -241,12 +232,12 @@ r_static
 r_int
 id|pci_bus_count
 suffix:semicolon
-multiline_comment|/* Floppy dev for ppc64_fd_dma_setup().  May be null if no floppy in the system. */
-DECL|variable|ppc64_floppy_dev
+multiline_comment|/* Cached ISA bridge dev. */
+DECL|variable|ppc64_isabridge_dev
 r_struct
 id|pci_dev
 op_star
-id|ppc64_floppy_dev
+id|ppc64_isabridge_dev
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1864,11 +1855,28 @@ l_string|&quot;pSeries create_tce_tables()&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ppc64_floppy_dev
+multiline_comment|/* Cache the location of the ISA bridge (if we have one) */
+r_if
+c_cond
+(paren
+id|ppc64_isabridge_dev
 op_assign
-id|find_floppy
+id|pci_find_class
 c_func
 (paren
+id|PCI_CLASS_BRIDGE_ISA
+op_lshift
+l_int|8
+comma
+l_int|NULL
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;ISA bridge at %s&bslash;n&quot;
+comma
+id|ppc64_isabridge_dev-&gt;slot_name
 )paren
 suffix:semicolon
 id|printk

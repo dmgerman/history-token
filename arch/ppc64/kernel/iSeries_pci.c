@@ -1206,29 +1206,6 @@ id|PciBus-&gt;number
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/***********************************************************************&n; * find_floppy(void) &n; *&t;&n; * Finds the default floppy device, if the system has one, and returns &n; * the pci_dev for the isa bridge for the floppy device.  &n; *&n; * Note: On iSeries there will only be a virtual diskette. &n; ***********************************************************************/
-r_struct
-id|pci_dev
-op_star
-DECL|function|find_floppy
-id|find_floppy
-c_func
-(paren
-r_void
-)paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_BUSWALK
-comma
-l_string|&quot;- Find Floppy pci_dev.. None on iSeries.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/***********************************************************************&n; * fixup_resources(struct pci_dev *dev) &n; *&t;&n; ***********************************************************************/
 DECL|function|fixup_resources
 r_void
