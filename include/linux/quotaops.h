@@ -8,12 +8,14 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#if defined(CONFIG_QUOTA)
 multiline_comment|/*&n; * declaration of quota_function calls in kernel.&n; */
 r_extern
-r_int
+r_void
 id|sync_dquots
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 comma
 r_int
 id|type

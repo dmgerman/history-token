@@ -2003,63 +2003,6 @@ id|old_mnt
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|DQUOT_USR_ENABLED
-mdefine_line|#define DQUOT_USR_ENABLED&t;0x01&t;&t;/* User diskquotas enabled */
-DECL|macro|DQUOT_GRP_ENABLED
-mdefine_line|#define DQUOT_GRP_ENABLED&t;0x02&t;&t;/* Group diskquotas enabled */
-DECL|struct|quota_info
-r_struct
-id|quota_info
-(brace
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* Flags for diskquotas on this device */
-DECL|member|dqio_sem
-r_struct
-id|semaphore
-id|dqio_sem
-suffix:semicolon
-multiline_comment|/* lock device while I/O in progress */
-DECL|member|dqoff_sem
-r_struct
-id|semaphore
-id|dqoff_sem
-suffix:semicolon
-multiline_comment|/* serialize quota_off() and quota_on() on device */
-DECL|member|files
-r_struct
-id|file
-op_star
-id|files
-(braket
-id|MAXQUOTAS
-)braket
-suffix:semicolon
-multiline_comment|/* fp&squot;s to quotafiles */
-DECL|member|info
-r_struct
-id|mem_dqinfo
-id|info
-(braket
-id|MAXQUOTAS
-)braket
-suffix:semicolon
-multiline_comment|/* Information for each quota type */
-DECL|member|ops
-r_struct
-id|quota_format_ops
-op_star
-id|ops
-(braket
-id|MAXQUOTAS
-)braket
-suffix:semicolon
-multiline_comment|/* Operations for each type */
-)brace
-suffix:semicolon
 multiline_comment|/*&n; *&t;Umount options&n; */
 DECL|macro|MNT_FORCE
 mdefine_line|#define MNT_FORCE&t;0x00000001&t;/* Attempt to forcibily umount */

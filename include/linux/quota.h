@@ -259,6 +259,8 @@ DECL|macro|DQF_MASK
 mdefine_line|#define DQF_MASK 0xffff&t;&t;/* Mask for format specific flags */
 DECL|macro|DQF_INFO_DIRTY
 mdefine_line|#define DQF_INFO_DIRTY 0x10000  /* Is info dirty? */
+DECL|macro|DQF_ANY_DQUOT_DIRTY
+mdefine_line|#define DQF_ANY_DQUOT_DIRTY 0x20000&t;/* Is any dquot dirty? */
 DECL|function|mark_info_dirty
 r_extern
 r_inline
@@ -279,6 +281,8 @@ suffix:semicolon
 )brace
 DECL|macro|info_dirty
 mdefine_line|#define info_dirty(info) ((info)-&gt;dqi_flags &amp; DQF_INFO_DIRTY)
+DECL|macro|info_any_dirty
+mdefine_line|#define info_any_dirty(info) ((info)-&gt;dqi_flags &amp; DQF_INFO_DIRTY ||&bslash;&n;&t;&t;&t;      (info)-&gt;dqi_flags &amp; DQF_ANY_DQUOT_DIRTY)
 DECL|macro|sb_dqopt
 mdefine_line|#define sb_dqopt(sb) (&amp;(sb)-&gt;s_dquot)
 r_extern
@@ -429,26 +433,6 @@ suffix:semicolon
 multiline_comment|/* Diskquota usage */
 )brace
 suffix:semicolon
-DECL|function|mark_dquot_dirty
-r_extern
-r_inline
-r_void
-id|mark_dquot_dirty
-c_func
-(paren
-r_struct
-id|dquot
-op_star
-id|dquot
-)paren
-(brace
-id|dquot-&gt;dq_flags
-op_or_assign
-id|DQ_MOD
-suffix:semicolon
-)brace
-DECL|macro|dquot_dirty
-mdefine_line|#define dquot_dirty(dquot) ((dquot)-&gt;dq_flags &amp; DQ_MOD)
 DECL|macro|NODQUOT
 mdefine_line|#define NODQUOT (struct dquot *)NULL
 DECL|macro|QUOTA_OK
@@ -903,6 +887,68 @@ id|qf_next
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|DQUOT_USR_ENABLED
+mdefine_line|#define DQUOT_USR_ENABLED&t;0x01&t;&t;/* User diskquotas enabled */
+DECL|macro|DQUOT_GRP_ENABLED
+mdefine_line|#define DQUOT_GRP_ENABLED&t;0x02&t;&t;/* Group diskquotas enabled */
+DECL|struct|quota_info
+r_struct
+id|quota_info
+(brace
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* Flags for diskquotas on this device */
+DECL|member|dqio_sem
+r_struct
+id|semaphore
+id|dqio_sem
+suffix:semicolon
+multiline_comment|/* lock device while I/O in progress */
+DECL|member|dqoff_sem
+r_struct
+id|semaphore
+id|dqoff_sem
+suffix:semicolon
+multiline_comment|/* serialize quota_off() and quota_on() on device */
+DECL|member|files
+r_struct
+id|file
+op_star
+id|files
+(braket
+id|MAXQUOTAS
+)braket
+suffix:semicolon
+multiline_comment|/* fp&squot;s to quotafiles */
+DECL|member|info
+r_struct
+id|mem_dqinfo
+id|info
+(braket
+id|MAXQUOTAS
+)braket
+suffix:semicolon
+multiline_comment|/* Information for each quota type */
+DECL|member|ops
+r_struct
+id|quota_format_ops
+op_star
+id|ops
+(braket
+id|MAXQUOTAS
+)braket
+suffix:semicolon
+multiline_comment|/* Operations for each type */
+)brace
+suffix:semicolon
+multiline_comment|/* Inline would be better but we need to dereference super_block which is not defined yet */
+DECL|macro|mark_dquot_dirty
+mdefine_line|#define mark_dquot_dirty(dquot) do {&bslash;&n;&t;dquot-&gt;dq_flags |= DQ_MOD;&bslash;&n;&t;sb_dqopt(dquot-&gt;dq_sb)-&gt;info[dquot-&gt;dq_type].dqi_flags |= DQF_ANY_DQUOT_DIRTY;&bslash;&n;} while (0)
+DECL|macro|dquot_dirty
+mdefine_line|#define dquot_dirty(dquot) ((dquot)-&gt;dq_flags &amp; DQ_MOD)
 DECL|function|is_enabled
 r_static
 r_inline
