@@ -255,6 +255,14 @@ id|pdu-&gt;dsap
 )paren
 (brace
 multiline_comment|/* NULL DSAP, refer to station */
+id|dprintk
+c_func
+(paren
+l_string|&quot;%s: calling llc_station_rcv!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|llc_station_rcv
 c_func
 (paren
@@ -279,10 +287,22 @@ c_cond
 op_logical_neg
 id|sap
 )paren
+(brace
 multiline_comment|/* unknown SAP */
+id|dprintk
+c_func
+(paren
+l_string|&quot;%s: llc_sap_find(%02X) failed!&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|pdu-&gt;dsap
+)paren
+suffix:semicolon
 r_goto
 id|drop
 suffix:semicolon
+)brace
 id|llc_decode_pdu_type
 c_func
 (paren
@@ -299,7 +319,16 @@ id|dest
 op_eq
 id|LLC_DEST_SAP
 )paren
+(brace
 multiline_comment|/* type 1 services */
+id|dprintk
+c_func
+(paren
+l_string|&quot;%s: calling llc_sap_rcv!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|llc_sap_rcv
 c_func
 (paren
@@ -308,6 +337,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
