@@ -1007,7 +1007,7 @@ c_cond
 id|vma-&gt;vm_pgoff
 OL
 id|kern_size
-op_logical_or
+op_logical_and
 id|user_size
 op_le
 (paren
