@@ -63,15 +63,22 @@ r_extern
 r_struct
 id|workqueue_struct
 op_star
-id|create_workqueue
+id|__create_workqueue
 c_func
 (paren
 r_const
 r_char
 op_star
 id|name
+comma
+r_int
+id|singlethread
 )paren
 suffix:semicolon
+DECL|macro|create_workqueue
+mdefine_line|#define create_workqueue(name) __create_workqueue((name), 0)
+DECL|macro|create_singlethread_workqueue
+mdefine_line|#define create_singlethread_workqueue(name) __create_workqueue((name), 1)
 r_extern
 r_void
 id|destroy_workqueue
