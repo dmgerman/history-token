@@ -4991,6 +4991,11 @@ id|fb_imageblit
 op_assign
 id|vga16fb_imageblit
 comma
+dot
+id|fb_cursor
+op_assign
+id|cfb_cursor
+comma
 )brace
 suffix:semicolon
 DECL|function|vga16fb_setup

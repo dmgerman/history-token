@@ -367,6 +367,11 @@ op_assign
 id|cfb_imageblit
 comma
 dot
+id|fb_cursor
+op_assign
+id|cfb_cursor
+comma
+dot
 id|fb_mmap
 op_assign
 id|sgivwfb_mmap

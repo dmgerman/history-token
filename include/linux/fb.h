@@ -525,6 +525,23 @@ suffix:semicolon
 multiline_comment|/* transparency, can be NULL */
 )brace
 suffix:semicolon
+DECL|struct|fb_index
+r_struct
+id|fb_index
+(brace
+DECL|member|len
+id|__u32
+id|len
+suffix:semicolon
+multiline_comment|/* number of entries */
+DECL|member|entry
+id|__u32
+op_star
+id|entry
+suffix:semicolon
+multiline_comment|/* &quot;pseudopalette&quot; color index entries */
+)brace
+suffix:semicolon
 DECL|struct|fb_con2fbmap
 r_struct
 id|fb_con2fbmap
@@ -644,8 +661,12 @@ DECL|macro|FB_CUR_SETCMAP
 mdefine_line|#define FB_CUR_SETCMAP  0x08
 DECL|macro|FB_CUR_SETSHAPE
 mdefine_line|#define FB_CUR_SETSHAPE 0x10
+DECL|macro|FB_CUR_SETDEST
+mdefine_line|#define FB_CUR_SETDEST&t;0x20
+DECL|macro|FB_CUR_SETSIZE
+mdefine_line|#define FB_CUR_SETSIZE&t;0x40
 DECL|macro|FB_CUR_SETALL
-mdefine_line|#define FB_CUR_SETALL   0x1F
+mdefine_line|#define FB_CUR_SETALL   0xFF
 DECL|struct|fbcurpos
 r_struct
 id|fbcurpos
@@ -673,6 +694,16 @@ id|__u16
 id|enable
 suffix:semicolon
 multiline_comment|/* cursor on/off */
+DECL|member|rop
+id|__u8
+id|rop
+suffix:semicolon
+multiline_comment|/* bitop operation */
+DECL|member|depth
+id|__u8
+id|depth
+suffix:semicolon
+multiline_comment|/* color depth of image */
 DECL|member|pos
 r_struct
 id|fbcurpos
@@ -685,18 +716,24 @@ id|fbcurpos
 id|hot
 suffix:semicolon
 multiline_comment|/* cursor hot spot */
-DECL|member|cmap
-r_struct
-id|fb_cmap
-id|cmap
-suffix:semicolon
-multiline_comment|/* color map info */
 DECL|member|size
 r_struct
 id|fbcurpos
 id|size
 suffix:semicolon
 multiline_comment|/* cursor bit map size */
+DECL|member|cmap
+r_struct
+id|fb_cmap
+id|cmap
+suffix:semicolon
+multiline_comment|/* color map info */
+DECL|member|index
+r_struct
+id|fb_index
+op_star
+id|index
+suffix:semicolon
 DECL|member|image
 r_char
 op_star
@@ -709,6 +746,12 @@ op_star
 id|mask
 suffix:semicolon
 multiline_comment|/* cursor mask bits */
+DECL|member|dest
+r_char
+op_star
+id|dest
+suffix:semicolon
+multiline_comment|/* destination */
 )brace
 suffix:semicolon
 multiline_comment|/* Internal HW accel */
@@ -813,7 +856,7 @@ DECL|member|depth
 id|__u8
 id|depth
 suffix:semicolon
-multiline_comment|/* Dpeth of the image */
+multiline_comment|/* Depth of the image */
 DECL|member|data
 r_char
 op_star
@@ -977,25 +1020,6 @@ op_star
 id|info
 )paren
 suffix:semicolon
-multiline_comment|/* cursor control */
-DECL|member|fb_cursor
-r_int
-(paren
-op_star
-id|fb_cursor
-)paren
-(paren
-r_struct
-id|fb_info
-op_star
-id|info
-comma
-r_struct
-id|fbcursor
-op_star
-id|cursor
-)paren
-suffix:semicolon
 multiline_comment|/* set color register */
 DECL|member|fb_setcolreg
 r_int
@@ -1116,6 +1140,25 @@ r_struct
 id|fb_image
 op_star
 id|image
+)paren
+suffix:semicolon
+multiline_comment|/* Draws cursor */
+DECL|member|fb_cursor
+r_int
+(paren
+op_star
+id|fb_cursor
+)paren
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_struct
+id|fbcursor
+op_star
+id|cursor
 )paren
 suffix:semicolon
 multiline_comment|/* perform polling on fb device */
@@ -1421,6 +1464,22 @@ r_struct
 id|fb_info
 op_star
 id|info
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|cfb_cursor
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_struct
+id|fbcursor
+op_star
+id|cursor
 )paren
 suffix:semicolon
 r_extern

@@ -466,6 +466,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;xxxfb_cursor -&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; */
 multiline_comment|/**&n; *      xxxfb_pan_display - NOT a required function. Pans the display.&n; *      @var: frame buffer variable screen structure&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&n; *&t;Pan (or wrap, depending on the `vmode&squot; field) the display using the&n; *  &t;`xoffset&squot; and `yoffset&squot; fields of the `var&squot; structure.&n; *  &t;If the values don&squot;t fit, return -EINVAL.&n; *&n; *      Returns negative errno on error, or zero on success.&n; *&n; */
 DECL|function|xxxfb_pan_display
 r_static

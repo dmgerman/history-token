@@ -182,7 +182,7 @@ op_star
 id|p
 comma
 r_int
-id|mode
+id|flags
 comma
 r_int
 id|xx
@@ -318,6 +318,11 @@ DECL|member|cursor_y
 r_int
 r_int
 id|cursor_y
+suffix:semicolon
+DECL|member|cursor_pos
+r_int
+r_int
+id|cursor_pos
 suffix:semicolon
 DECL|member|fgcol
 r_int

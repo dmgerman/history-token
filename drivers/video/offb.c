@@ -230,6 +230,11 @@ id|fb_imageblit
 op_assign
 id|cfb_imageblit
 comma
+dot
+id|fb_cursor
+op_assign
+id|cfb_cursor
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n;     *  Set a single color register. The values supplied are already&n;     *  rounded down to the hardware&squot;s capabilities (according to the&n;     *  entries in the var structure). Return != 0 for invalid regno.&n;     */

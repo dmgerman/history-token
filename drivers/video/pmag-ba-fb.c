@@ -315,6 +315,11 @@ id|fb_imageblit
 op_assign
 id|cfb_imageblit
 comma
+dot
+id|fb_cursor
+op_assign
+id|cfb_cursor
+comma
 )brace
 r_int
 id|__init

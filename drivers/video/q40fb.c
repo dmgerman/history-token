@@ -229,6 +229,11 @@ id|fb_imageblit
 op_assign
 id|cfb_imageblit
 comma
+dot
+id|fb_cursor
+op_assign
+id|cfb_cursor
+comma
 )brace
 suffix:semicolon
 DECL|function|q40fb_setcolreg
