@@ -158,6 +158,10 @@ DECL|macro|EM_CRIS
 mdefine_line|#define EM_CRIS         76      /* Axis Communications 32-bit embedded processor */
 DECL|macro|EM_V850
 mdefine_line|#define EM_V850&t;&t;87&t;/* NEC v850 */
+DECL|macro|EM_H8_300H
+mdefine_line|#define EM_H8_300H      47      /* Hitachi H8/300H */
+DECL|macro|EM_H8S
+mdefine_line|#define EM_H8S          48      /* Hitachi H8S     */
 multiline_comment|/*&n; * This is an interim value that we will use until the committee comes&n; * up with a final number.&n; */
 DECL|macro|EM_ALPHA
 mdefine_line|#define EM_ALPHA&t;0x9026
