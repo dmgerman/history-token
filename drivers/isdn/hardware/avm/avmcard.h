@@ -2,6 +2,7 @@ multiline_comment|/* $Id: avmcard.h,v 1.1.4.1.2.1 2001/12/21 15:00:17 kai Exp $&
 macro_line|#ifndef _AVMCARD_H_
 DECL|macro|_AVMCARD_H_
 mdefine_line|#define _AVMCARD_H_
+macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|macro|AVMB1_PORTLEN
 mdefine_line|#define&t;AVMB1_PORTLEN&t;&t;0x1f
 DECL|macro|AVM_MAXVERSION
@@ -122,6 +123,10 @@ id|name
 (braket
 l_int|32
 )braket
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 DECL|member|port
 r_int
