@@ -37,7 +37,7 @@ mdefine_line|#define SN9C102_ALTERNATE_SETTING 8
 DECL|macro|SN9C102_URB_TIMEOUT
 mdefine_line|#define SN9C102_URB_TIMEOUT       msecs_to_jiffies(2 * SN9C102_ISO_PACKETS)
 DECL|macro|SN9C102_CTRL_TIMEOUT
-mdefine_line|#define SN9C102_CTRL_TIMEOUT      msecs_to_jiffies(300)
+mdefine_line|#define SN9C102_CTRL_TIMEOUT      300
 multiline_comment|/*****************************************************************************/
 DECL|macro|SN9C102_MODULE_NAME
 mdefine_line|#define SN9C102_MODULE_NAME     &quot;V4L2 driver for SN9C10x PC Camera Controllers&quot;
