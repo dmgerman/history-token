@@ -5363,8 +5363,7 @@ l_int|2
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 r_return
 l_int|0
