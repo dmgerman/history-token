@@ -5058,6 +5058,12 @@ op_star
 id|retinfo
 )paren
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|set_serial_info
