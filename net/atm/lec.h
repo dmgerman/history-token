@@ -8,6 +8,9 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/atmlec.h&gt;
 macro_line|#if defined (CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
 macro_line|#include &lt;linux/if_bridge.h&gt;
+r_struct
+id|net_bridge
+suffix:semicolon
 r_extern
 r_struct
 id|net_bridge_fdb_entry
