@@ -453,7 +453,7 @@ id|ENOSYS
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROFILING */
-macro_line|#ifdef CONFIG_X86_IO_APIC /*more of this file should probably be ifdefed SMP */
+macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_SMP)
 DECL|function|hw_resend_irq
 r_static
 r_inline
