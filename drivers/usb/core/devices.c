@@ -2479,6 +2479,10 @@ c_func
 id|st
 )paren
 suffix:semicolon
+id|st
+op_assign
+id|file-&gt;private_data
+suffix:semicolon
 r_goto
 id|lost_race
 suffix:semicolon
