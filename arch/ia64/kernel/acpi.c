@@ -18,17 +18,17 @@ DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 id|asm
 (paren
-l_string|&quot;.weak iosapic_register_irq&quot;
+l_string|&quot;.weak iosapic_register_intr&quot;
 )paren
 suffix:semicolon
 id|asm
 (paren
-l_string|&quot;.weak iosapic_register_legacy_irq&quot;
+l_string|&quot;.weak iosapic_override_isa_irq&quot;
 )paren
 suffix:semicolon
 id|asm
 (paren
-l_string|&quot;.weak iosapic_register_platform_irq&quot;
+l_string|&quot;.weak iosapic_register_platform_intr&quot;
 )paren
 suffix:semicolon
 id|asm
@@ -456,14 +456,14 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ACPI */
 macro_line|#ifdef CONFIG_ACPI_BOOT
-DECL|macro|ACPI_MAX_PLATFORM_IRQS
-mdefine_line|#define ACPI_MAX_PLATFORM_IRQS&t;256
+DECL|macro|ACPI_MAX_PLATFORM_INTERRUPTS
+mdefine_line|#define ACPI_MAX_PLATFORM_INTERRUPTS&t;256
 multiline_comment|/* Array to record platform interrupt vectors for generic interrupt routing. */
-DECL|variable|platform_irq_list
+DECL|variable|platform_intr_list
 r_int
-id|platform_irq_list
+id|platform_intr_list
 (braket
-id|ACPI_MAX_PLATFORM_IRQS
+id|ACPI_MAX_PLATFORM_INTERRUPTS
 )braket
 op_assign
 (brace
@@ -472,7 +472,7 @@ l_int|0
 dot
 dot
 dot
-id|ACPI_MAX_PLATFORM_IRQS
+id|ACPI_MAX_PLATFORM_INTERRUPTS
 op_minus
 l_int|1
 )braket
@@ -508,13 +508,13 @@ c_cond
 (paren
 id|int_type
 OL
-id|ACPI_MAX_PLATFORM_IRQS
+id|ACPI_MAX_PLATFORM_INTERRUPTS
 )paren
 (brace
 multiline_comment|/* correctable platform error interrupt */
 id|vector
 op_assign
-id|platform_irq_list
+id|platform_intr_list
 (braket
 id|int_type
 )braket
@@ -572,6 +572,11 @@ id|acpi_table_madt
 op_star
 id|acpi_madt
 id|__initdata
+suffix:semicolon
+DECL|variable|has_8259
+r_static
+id|u8
+id|has_8259
 suffix:semicolon
 r_static
 r_int
@@ -841,11 +846,12 @@ DECL|function|acpi_find_iosapic
 id|acpi_find_iosapic
 (paren
 r_int
-id|global_vector
+r_int
+id|gsi
 comma
 id|u32
 op_star
-id|irq_base
+id|gsi_base
 comma
 r_char
 op_star
@@ -876,7 +882,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|irq_base
+id|gsi_base
 op_logical_or
 op_logical_neg
 id|iosapic_address
@@ -938,7 +944,7 @@ op_star
 id|p
 suffix:semicolon
 op_star
-id|irq_base
+id|gsi_base
 op_assign
 id|iosapic-&gt;global_irq_base
 suffix:semicolon
@@ -976,10 +982,10 @@ r_if
 c_cond
 (paren
 (paren
-id|global_vector
+id|gsi
 op_minus
 op_star
-id|irq_base
+id|gsi_base
 )paren
 op_le
 id|max_pin
@@ -1099,7 +1105,7 @@ r_int
 id|vector
 suffix:semicolon
 id|u32
-id|irq_base
+id|gsi_base
 suffix:semicolon
 r_char
 op_star
@@ -1134,7 +1140,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|iosapic_register_platform_irq
+id|iosapic_register_platform_intr
 )paren
 (brace
 id|printk
@@ -1142,7 +1148,7 @@ c_func
 (paren
 id|KERN_WARNING
 id|PREFIX
-l_string|&quot;No ACPI platform IRQ support&bslash;n&quot;
+l_string|&quot;No ACPI platform interrupt support&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1159,7 +1165,7 @@ c_func
 id|plintsrc-&gt;global_irq
 comma
 op_amp
-id|irq_base
+id|gsi_base
 comma
 op_amp
 id|iosapic_address
@@ -1179,10 +1185,10 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Get vector assignment for this IRQ, set attributes, and program the&n;&t; * IOSAPIC routing table.&n;&t; */
+multiline_comment|/*&n;&t; * Get vector assignment for this interrupt, set attributes,&n;&t; * and program the IOSAPIC routing table.&n;&t; */
 id|vector
 op_assign
-id|iosapic_register_platform_irq
+id|iosapic_register_platform_intr
 c_func
 (paren
 id|plintsrc-&gt;type
@@ -1217,12 +1223,12 @@ l_int|1
 suffix:colon
 l_int|0
 comma
-id|irq_base
+id|gsi_base
 comma
 id|iosapic_address
 )paren
 suffix:semicolon
-id|platform_irq_list
+id|platform_intr_list
 (braket
 id|plintsrc-&gt;type
 )braket
@@ -1279,12 +1285,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|iosapic_register_legacy_irq
+id|iosapic_override_isa_irq
 )paren
 r_return
 l_int|0
 suffix:semicolon
-id|iosapic_register_legacy_irq
+id|iosapic_override_isa_irq
 c_func
 (paren
 id|p-&gt;bus_irq
@@ -1405,6 +1411,11 @@ c_func
 id|phys_addr
 )paren
 suffix:semicolon
+multiline_comment|/* remember the value for reference after free_initmem() */
+id|has_8259
+op_assign
+id|acpi_madt-&gt;flags.pcat_compat
+suffix:semicolon
 multiline_comment|/* Get base address of IPI Message Block */
 r_if
 c_cond
@@ -1462,6 +1473,15 @@ suffix:semicolon
 id|fadt_descriptor_rev2
 op_star
 id|fadt
+suffix:semicolon
+id|u32
+id|sci_irq
+comma
+id|gsi_base
+suffix:semicolon
+r_char
+op_star
+id|iosapic_address
 suffix:semicolon
 r_if
 c_cond
@@ -1522,6 +1542,63 @@ id|BAF_8042_KEYBOARD_CONTROLLER
 id|acpi_kbd_controller_present
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|iosapic_register_intr
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* just ignore the rest */
+id|sci_irq
+op_assign
+id|fadt-&gt;sci_int
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|has_8259
+op_logical_and
+id|sci_irq
+OL
+l_int|16
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* legacy, no setup required */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_find_iosapic
+c_func
+(paren
+id|sci_irq
+comma
+op_amp
+id|gsi_base
+comma
+op_amp
+id|iosapic_address
+)paren
+)paren
+id|iosapic_register_intr
+c_func
+(paren
+id|sci_irq
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|gsi_base
+comma
+id|iosapic_address
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -1596,7 +1673,7 @@ id|spcr
 suffix:semicolon
 r_int
 r_int
-id|global_int
+id|gsi
 suffix:semicolon
 r_if
 c_cond
@@ -1615,7 +1692,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|iosapic_register_irq
+id|iosapic_register_intr
 )paren
 r_return
 op_minus
@@ -1672,7 +1749,7 @@ id|ACPI_SERIAL_INT_SAPIC
 )paren
 (brace
 id|u32
-id|irq_base
+id|gsi_base
 suffix:semicolon
 r_char
 op_star
@@ -1682,7 +1759,7 @@ r_int
 id|vector
 suffix:semicolon
 multiline_comment|/* We have a UART in memory space with an SAPIC interrupt */
-id|global_int
+id|gsi
 op_assign
 (paren
 (paren
@@ -1720,7 +1797,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Which iosapic does this IRQ belong to? */
+multiline_comment|/* Which iosapic does this interrupt belong to? */
 r_if
 c_cond
 (paren
@@ -1728,10 +1805,10 @@ op_logical_neg
 id|acpi_find_iosapic
 c_func
 (paren
-id|global_int
+id|gsi
 comma
 op_amp
-id|irq_base
+id|gsi_base
 comma
 op_amp
 id|iosapic_address
@@ -1739,16 +1816,16 @@ id|iosapic_address
 )paren
 id|vector
 op_assign
-id|iosapic_register_irq
+id|iosapic_register_intr
 c_func
 (paren
-id|global_int
+id|gsi
 comma
 l_int|1
 comma
 l_int|1
 comma
-id|irq_base
+id|gsi_base
 comma
 id|iosapic_address
 )paren
@@ -1968,7 +2045,7 @@ l_string|&quot;Error parsing NMI SRC entry&bslash;n&quot;
 suffix:semicolon
 id|skip_madt
 suffix:colon
-multiline_comment|/* FADT says whether a legacy keyboard controller is present. */
+multiline_comment|/*&n;&t; * FADT says whether a legacy keyboard controller is present.&n;&t; * The FADT also contains an SCI_INT line, by which the system&n;&t; * gets interrupts such as power and sleep buttons.  If it&squot;s not&n;&t; * on a Legacy interrupt, it needs to be setup.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2120,7 +2197,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PREFIX
-l_string|&quot;No PCI IRQ routing entries&bslash;n&quot;
+l_string|&quot;No PCI interrupt routing entries&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2269,6 +2346,38 @@ id|ACPI_IRQ_MODEL_IOSAPIC
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+r_int
+DECL|function|acpi_irq_to_vector
+id|acpi_irq_to_vector
+(paren
+id|u32
+id|irq
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|has_8259
+op_logical_and
+id|irq
+OL
+l_int|16
+)paren
+r_return
+id|isa_irq_to_vector
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+r_return
+id|gsi_to_vector
+c_func
+(paren
+id|irq
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ACPI_BOOT */
