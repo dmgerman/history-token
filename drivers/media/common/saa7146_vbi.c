@@ -2132,11 +2132,4 @@ id|vbi_read
 comma
 )brace
 suffix:semicolon
-DECL|variable|saa7146_vbi_uops
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|saa7146_vbi_uops
-)paren
-suffix:semicolon
 eof

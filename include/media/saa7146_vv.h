@@ -86,26 +86,32 @@ DECL|member|v_offset
 r_int
 id|v_offset
 suffix:semicolon
+multiline_comment|/* number of lines of vertical offset before processing */
 DECL|member|v_field
 r_int
 id|v_field
 suffix:semicolon
+multiline_comment|/* number of lines in a field for HPS to process */
 DECL|member|v_calc
 r_int
 id|v_calc
 suffix:semicolon
+multiline_comment|/* number of vertical active lines */
 DECL|member|h_offset
 r_int
 id|h_offset
 suffix:semicolon
+multiline_comment|/* horizontal offset of processing window */
 DECL|member|h_pixels
 r_int
 id|h_pixels
 suffix:semicolon
+multiline_comment|/* number of horizontal pixels to process */
 DECL|member|h_calc
 r_int
 id|h_calc
 suffix:semicolon
+multiline_comment|/* number of horizontal active pixels */
 DECL|member|v_max_out
 r_int
 id|v_max_out
@@ -339,6 +345,11 @@ r_struct
 id|saa7146_fh
 op_star
 id|streaming
+suffix:semicolon
+DECL|member|last_field
+r_enum
+id|v4l2_field
+id|last_field
 suffix:semicolon
 multiline_comment|/* common: fixme? shouldn&squot;t this be in saa7146_fh?&n;&t;   (this leads to a more complicated question: shall the driver&n;&t;   store the different settings (for example S_INPUT) for every open&n;&t;   and restore it appropriately, or should all settings be common for&n;&t;   all opens? currently, we do the latter, like all other&n;&t;   drivers do... */
 DECL|member|standard
@@ -715,6 +726,11 @@ r_struct
 id|saa7146_dev
 op_star
 id|dev
+comma
+r_struct
+id|saa7146_ext_vv
+op_star
+id|ext_vv
 )paren
 suffix:semicolon
 r_int
@@ -862,47 +878,6 @@ DECL|macro|SAA7146_HPS_SYNC_PORT_A
 mdefine_line|#define SAA7146_HPS_SYNC_PORT_A&t;&t;0x00
 DECL|macro|SAA7146_HPS_SYNC_PORT_B
 mdefine_line|#define SAA7146_HPS_SYNC_PORT_B&t;&t;0x01
-multiline_comment|/* number of vertical active lines */
-DECL|macro|V_ACTIVE_LINES_PAL
-mdefine_line|#define V_ACTIVE_LINES_PAL&t;576
-DECL|macro|V_ACTIVE_LINES_NTSC
-mdefine_line|#define V_ACTIVE_LINES_NTSC&t;480
-DECL|macro|V_ACTIVE_LINES_SECAM
-mdefine_line|#define V_ACTIVE_LINES_SECAM&t;576
-multiline_comment|/* number of lines in a field for HPS to process */
-DECL|macro|V_FIELD_PAL
-mdefine_line|#define V_FIELD_PAL&t;288
-DECL|macro|V_FIELD_NTSC
-mdefine_line|#define V_FIELD_NTSC&t;240
-DECL|macro|V_FIELD_SECAM
-mdefine_line|#define V_FIELD_SECAM&t;288
-multiline_comment|/* number of lines of vertical offset before processing */
-DECL|macro|V_OFFSET_PAL
-mdefine_line|#define V_OFFSET_PAL&t;0x17
-DECL|macro|V_OFFSET_NTSC
-mdefine_line|#define V_OFFSET_NTSC&t;0x16
-DECL|macro|V_OFFSET_SECAM
-mdefine_line|#define V_OFFSET_SECAM&t;0x14
-multiline_comment|/* number of horizontal pixels to process */
-DECL|macro|H_PIXELS_PAL
-mdefine_line|#define H_PIXELS_PAL&t;680
-DECL|macro|H_PIXELS_NTSC
-mdefine_line|#define H_PIXELS_NTSC&t;708
-DECL|macro|H_PIXELS_SECAM
-mdefine_line|#define H_PIXELS_SECAM&t;720
-multiline_comment|/* horizontal offset of processing window */
-DECL|macro|H_OFFSET_PAL
-mdefine_line|#define H_OFFSET_PAL&t;0x14
-DECL|macro|H_OFFSET_NTSC
-mdefine_line|#define H_OFFSET_NTSC&t;0x06
-DECL|macro|H_OFFSET_SECAM
-mdefine_line|#define H_OFFSET_SECAM&t;0x14
-DECL|macro|SAA7146_PAL_VALUES
-mdefine_line|#define SAA7146_PAL_VALUES &t;V_OFFSET_PAL, V_FIELD_PAL, V_ACTIVE_LINES_PAL, H_OFFSET_PAL, H_PIXELS_PAL, H_PIXELS_PAL+1, V_ACTIVE_LINES_PAL, 768
-DECL|macro|SAA7146_NTSC_VALUES
-mdefine_line|#define SAA7146_NTSC_VALUES&t;V_OFFSET_NTSC, V_FIELD_NTSC, V_ACTIVE_LINES_NTSC, H_OFFSET_NTSC, H_PIXELS_NTSC, H_PIXELS_NTSC+1, V_ACTIVE_LINES_NTSC, 640
-DECL|macro|SAA7146_SECAM_VALUES
-mdefine_line|#define SAA7146_SECAM_VALUES&t;V_OFFSET_SECAM, V_FIELD_SECAM, V_ACTIVE_LINES_SECAM, H_OFFSET_SECAM, H_PIXELS_SECAM, H_PIXELS_SECAM+1, V_ACTIVE_LINES_SECAM, 768
 multiline_comment|/* some memory sizes */
 DECL|macro|SAA7146_CLIPPING_MEM
 mdefine_line|#define SAA7146_CLIPPING_MEM&t;(14*PAGE_SIZE)

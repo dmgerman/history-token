@@ -1988,6 +1988,20 @@ id|i2c_adapter
 )paren
 )paren
 suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
+id|strcpy
+c_func
+(paren
+id|i2c_adapter-&gt;name
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|i2c_adapter-&gt;data
+op_assign
+id|dev
+suffix:semicolon
+macro_line|#else
 id|strcpy
 c_func
 (paren
@@ -2004,6 +2018,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 id|i2c_adapter-&gt;algo
 op_assign
 op_amp

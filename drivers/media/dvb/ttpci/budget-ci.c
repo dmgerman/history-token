@@ -1427,11 +1427,6 @@ op_assign
 l_int|0
 comma
 dot
-id|ext_vv_data
-op_assign
-l_int|NULL
-comma
-dot
 id|module
 op_assign
 id|THIS_MODULE
