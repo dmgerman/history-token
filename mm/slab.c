@@ -5944,9 +5944,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|flags
 op_amp
 id|__GFP_WAIT
+)paren
 )paren
 id|ctor_flags
 op_or_assign
