@@ -2621,7 +2621,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_goto
-id|out
+id|out_unlock
 suffix:semicolon
 )brace
 id|error
@@ -2712,6 +2712,8 @@ id|dentry
 )paren
 suffix:semicolon
 )brace
+id|out_unlock
+suffix:colon
 id|unlock_kernel
 c_func
 (paren
