@@ -69,7 +69,7 @@ id|block_sync_page
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * swapper_inode is needed only for for i_bufferlist_lock. This&n; * avoid special-casing in other parts of the kernel.&n; */
+multiline_comment|/*&n; * swapper_inode doesn&squot;t do anything much.  It is really only here to&n; * avoid some special-casing in other parts of the kernel.&n; */
 DECL|variable|swapper_inode
 r_static
 r_struct
@@ -77,10 +77,6 @@ id|inode
 id|swapper_inode
 op_assign
 (brace
-id|i_bufferlist_lock
-suffix:colon
-id|SPIN_LOCK_UNLOCKED
-comma
 id|i_mapping
 suffix:colon
 op_amp
@@ -151,6 +147,18 @@ comma
 id|i_shared_lock
 suffix:colon
 id|SPIN_LOCK_UNLOCKED
+comma
+id|private_lock
+suffix:colon
+id|SPIN_LOCK_UNLOCKED
+comma
+id|private_list
+suffix:colon
+id|LIST_HEAD_INIT
+c_func
+(paren
+id|swapper_space.private_list
+)paren
 comma
 )brace
 suffix:semicolon

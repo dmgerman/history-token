@@ -636,6 +636,13 @@ DECL|struct|address_space
 r_struct
 id|address_space
 (brace
+DECL|member|host
+r_struct
+id|inode
+op_star
+id|host
+suffix:semicolon
+multiline_comment|/* owner: inode, block_device */
 DECL|member|page_tree
 r_struct
 id|radix_tree_root
@@ -684,13 +691,6 @@ op_star
 id|a_ops
 suffix:semicolon
 multiline_comment|/* methods */
-DECL|member|host
-r_struct
-id|inode
-op_star
-id|host
-suffix:semicolon
-multiline_comment|/* owner: inode, block_device */
 DECL|member|i_mmap
 id|list_t
 id|i_mmap
@@ -724,6 +724,24 @@ op_star
 id|ra_pages
 suffix:semicolon
 multiline_comment|/* device readahead */
+DECL|member|private_lock
+id|spinlock_t
+id|private_lock
+suffix:semicolon
+multiline_comment|/* for use by the address_space */
+DECL|member|private_list
+r_struct
+id|list_head
+id|private_list
+suffix:semicolon
+multiline_comment|/* ditto */
+DECL|member|assoc_mapping
+r_struct
+id|address_space
+op_star
+id|assoc_mapping
+suffix:semicolon
+multiline_comment|/* ditto */
 )brace
 suffix:semicolon
 DECL|struct|char_device
@@ -839,16 +857,6 @@ DECL|member|i_dentry
 r_struct
 id|list_head
 id|i_dentry
-suffix:semicolon
-DECL|member|i_dirty_buffers
-r_struct
-id|list_head
-id|i_dirty_buffers
-suffix:semicolon
-multiline_comment|/* uses i_bufferlist_lock */
-DECL|member|i_bufferlist_lock
-id|spinlock_t
-id|i_bufferlist_lock
 suffix:semicolon
 DECL|member|i_ino
 r_int

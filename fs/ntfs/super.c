@@ -6226,6 +6226,25 @@ op_amp
 id|vol-&gt;mftbmp_mapping.i_shared_lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * private_lock and private_list are unused by ntfs.  But they&n;&t; * are available.&n;&t; */
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_mapping.private_lock
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_mapping.private_list
+)paren
+suffix:semicolon
+id|vol-&gt;mftbmp_mapping.assoc_mapping
+op_assign
+l_int|NULL
+suffix:semicolon
 id|vol-&gt;mftbmp_mapping.dirtied_when
 op_assign
 l_int|0

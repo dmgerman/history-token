@@ -3843,7 +3843,7 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We need to pick up the new inode size which generic_commit_write gave us&n; * `file&squot; can be NULL - eg, when called from block_symlink().&n; *&n; * ext3 inode-&gt;i_dirty_buffers policy:  If we&squot;re journalling data we&n; * definitely don&squot;t want them to appear on the inode at all - instead&n; * we need to manage them at the JBD layer and we need to intercept&n; * the relevant sync operations and translate them into journal operations.&n; *&n; * If we&squot;re not journalling data then we can just leave the buffers&n; * on -&gt;i_dirty_buffers.  If someone writes them out for us then thanks.&n; * Otherwise we&squot;ll do it in commit, if we&squot;re using ordered data.&n; */
+multiline_comment|/*&n; * We need to pick up the new inode size which generic_commit_write gave us&n; * `file&squot; can be NULL - eg, when called from block_symlink().&n; *&n; * ext3 never places buffers on inode-&gt;i_mapping-&gt;private_list.  metadata&n; * buffers are managed internally.&n; */
 DECL|function|ext3_commit_write
 r_static
 r_int

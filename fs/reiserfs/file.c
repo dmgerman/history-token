@@ -294,10 +294,10 @@ id|BUG
 suffix:semicolon
 id|n_err
 op_assign
-id|fsync_inode_buffers
+id|sync_mapping_buffers
 c_func
 (paren
-id|p_s_inode
+id|p_s_inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|reiserfs_commit_for_inode
