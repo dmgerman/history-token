@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -54,7 +55,7 @@ r_void
 )paren
 (brace
 r_return
-l_string|&quot;Alchemy Pb1000&quot;
+l_string|&quot;Alchemy Db1000&quot;
 suffix:semicolon
 )brace
 DECL|function|prom_init
@@ -108,8 +109,9 @@ id|MACH_GROUP_ALCHEMY
 suffix:semicolon
 id|mips_machtype
 op_assign
-id|MACH_PB1000
+id|MACH_DB1000
 suffix:semicolon
+multiline_comment|/* set the platform # */
 id|prom_init_cmdline
 c_func
 (paren

@@ -6,32 +6,24 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/au1000.h&gt;
-macro_line|#include &lt;asm/pb1000.h&gt;
+macro_line|#include &lt;asm/pb1500.h&gt;
 macro_line|#ifdef CONFIG_USB_OHCI
 singleline_comment|// Enable the workaround for the OHCI DoneHead
 singleline_comment|// register corruption problem.
 DECL|macro|CONFIG_AU1000_OHCI_FIX
 mdefine_line|#define CONFIG_AU1000_OHCI_FIX
-macro_line|#endif
-macro_line|#if defined(CONFIG_AU1X00_SERIAL_CONSOLE)
-DECL|variable|serial_console
-r_char
-id|serial_console
-(braket
-l_int|20
-)braket
-suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_extern
@@ -63,11 +55,13 @@ op_star
 id|ide_ops
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_RTC
 r_extern
 r_struct
 id|rtc_ops
-id|no_rtc_ops
+id|pb1500_rtc_ops
 suffix:semicolon
+macro_line|#endif
 r_extern
 r_char
 op_star
@@ -76,6 +70,27 @@ id|prom_getcmdline
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__init
+id|au1x_time_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__init
+id|au1x_timer_setup
+c_func
+(paren
+r_struct
+id|irqaction
+op_star
+id|irq
 )paren
 suffix:semicolon
 r_extern
@@ -113,6 +128,34 @@ r_struct
 id|resource
 id|iomem_resource
 suffix:semicolon
+macro_line|#ifdef CONFIG_64BIT_PHYS_ADDR
+r_extern
+id|phys_t
+(paren
+op_star
+id|fixup_bigphys_addr
+)paren
+(paren
+id|phys_t
+id|phys_addr
+comma
+id|phys_t
+id|size
+)paren
+suffix:semicolon
+r_static
+id|phys_t
+id|pb1500_fixup_bigphys_addr
+c_func
+(paren
+id|phys_t
+id|phys_addr
+comma
+id|phys_t
+id|size
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|au1x00_setup
 r_void
 id|__init
@@ -136,14 +179,6 @@ id|sys_freqctrl
 comma
 id|sys_clksrc
 suffix:semicolon
-id|u32
-id|prid
-op_assign
-id|read_c0_prid
-c_func
-(paren
-)paren
-suffix:semicolon
 id|argptr
 op_assign
 id|prom_getcmdline
@@ -151,7 +186,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Various early Au1000 Errata corrected by this */
+multiline_comment|/* NOTE: The memory map is established by YAMON 2.08+ */
+multiline_comment|/* Various early Au1500 Errata corrected by this */
 id|set_c0_config
 c_func
 (paren
@@ -161,7 +197,15 @@ l_int|19
 )paren
 suffix:semicolon
 multiline_comment|/* Config[OD] */
-macro_line|#ifdef CONFIG_AU1X00_SERIAL_CONSOLE
+id|board_time_init
+op_assign
+id|au1x_time_init
+suffix:semicolon
+id|board_timer_setup
+op_assign
+id|au1x_timer_setup
+suffix:semicolon
+macro_line|#ifdef CONFIG_SERIAL_AU1X00_CONSOLE
 r_if
 c_cond
 (paren
@@ -197,11 +241,23 @@ l_string|&quot; console=ttyS0,115200&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-id|rtc_ops
-op_assign
-op_amp
-id|no_rtc_ops
+macro_line|#ifdef CONFIG_SOUND_AU1X00
+id|strcat
+c_func
+(paren
+id|argptr
+comma
+l_string|&quot; au1000_audio=vra&quot;
+)paren
 suffix:semicolon
+id|argptr
+op_assign
+id|prom_getcmdline
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|_machine_restart
 op_assign
 id|au1000_restart
@@ -214,6 +270,12 @@ id|_machine_power_off
 op_assign
 id|au1000_power_off
 suffix:semicolon
+macro_line|#ifdef CONFIG_64BIT_PHYS_ADDR
+id|fixup_bigphys_addr
+op_assign
+id|pb1500_fixup_bigphys_addr
+suffix:semicolon
+macro_line|#endif
 singleline_comment|// IO/MEM resources.
 id|set_io_port_base
 c_func
@@ -223,7 +285,7 @@ l_int|0
 suffix:semicolon
 id|ioport_resource.start
 op_assign
-l_int|0x10000000
+l_int|0x00000000
 suffix:semicolon
 id|ioport_resource.end
 op_assign
@@ -354,6 +416,40 @@ id|usb_args
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* GPIO201 is input for PCMCIA card detect */
+multiline_comment|/* GPIO203 is input for PCMCIA interrupt request */
+id|au_writel
+c_func
+(paren
+id|au_readl
+c_func
+(paren
+id|GPIO2_DIR
+)paren
+op_amp
+(paren
+id|u32
+)paren
+(paren
+op_complement
+(paren
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|3
+)paren
+)paren
+)paren
+comma
+id|GPIO2_DIR
+)paren
+suffix:semicolon
 multiline_comment|/* zero and disable FREQ2 */
 id|sys_freqctrl
 op_assign
@@ -424,87 +520,6 @@ op_and_assign
 op_complement
 l_int|0x00007FE0
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|prid
-op_amp
-l_int|0x000000FF
-)paren
-(brace
-r_case
-l_int|0x00
-suffix:colon
-multiline_comment|/* DA */
-r_case
-l_int|0x01
-suffix:colon
-multiline_comment|/* HA */
-r_case
-l_int|0x02
-suffix:colon
-multiline_comment|/* HB */
-multiline_comment|/* CPU core freq to 48MHz to slow it way down... */
-id|au_writel
-c_func
-(paren
-l_int|4
-comma
-id|SYS_CPUPLL
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Setup 48MHz FREQ2 from CPUPLL for USB Host&n;&t; */
-multiline_comment|/* FRDIV2=3 -&gt; div by 8 of 384MHz -&gt; 48MHz */
-id|sys_freqctrl
-op_or_assign
-(paren
-(paren
-l_int|3
-op_lshift
-l_int|22
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|21
-)paren
-op_or
-(paren
-l_int|0
-op_lshift
-l_int|20
-)paren
-)paren
-suffix:semicolon
-id|au_writel
-c_func
-(paren
-id|sys_freqctrl
-comma
-id|SYS_FREQCTRL0
-)paren
-suffix:semicolon
-multiline_comment|/* CPU core freq to 384MHz */
-id|au_writel
-c_func
-(paren
-l_int|0x20
-comma
-id|SYS_CPUPLL
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Au1000: 48MHz OHCI workaround enabled&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* HC and newer */
 singleline_comment|// FREQ2 = aux/2 = 48 MHz
 id|sys_freqctrl
 op_or_assign
@@ -536,9 +551,6 @@ comma
 id|SYS_FREQCTRL0
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Route 48MHz FREQ2 into USB Host and/or Device&n;&t; */
 macro_line|#ifdef CONFIG_USB_OHCI
 id|sys_clksrc
@@ -596,6 +608,39 @@ comma
 id|SYS_CLKSRC
 )paren
 suffix:semicolon
+id|pin_func
+op_assign
+id|au_readl
+c_func
+(paren
+id|SYS_PINFUNC
+)paren
+op_amp
+(paren
+id|u32
+)paren
+(paren
+op_complement
+l_int|0x8000
+)paren
+suffix:semicolon
+macro_line|#ifndef CONFIG_AU1X00_USB_DEVICE
+singleline_comment|// 2nd USB port is USB host
+id|pin_func
+op_or_assign
+l_int|0x8000
+suffix:semicolon
+macro_line|#endif
+id|au_writel
+c_func
+(paren
+id|pin_func
+comma
+id|SYS_PINFUNC
+)paren
+suffix:semicolon
+macro_line|#endif 
+singleline_comment|// defined (CONFIG_USB_OHCI) || defined (CONFIG_AU1X00_USB_DEVICE)
 macro_line|#ifdef CONFIG_USB_OHCI
 singleline_comment|// enable host controller and wait for reset done
 id|au_writel
@@ -615,7 +660,7 @@ suffix:semicolon
 id|au_writel
 c_func
 (paren
-l_int|0x0E
+l_int|0x0c
 comma
 id|USB_HOST_CONFIG
 )paren
@@ -632,7 +677,6 @@ c_func
 id|USB_HOST_CONFIG
 )paren
 suffix:semicolon
-singleline_comment|// throw away first read
 r_while
 c_loop
 (paren
@@ -647,6 +691,7 @@ op_amp
 l_int|0x10
 )paren
 )paren
+suffix:semicolon
 id|au_readl
 c_func
 (paren
@@ -654,98 +699,6 @@ id|USB_HOST_CONFIG
 )paren
 suffix:semicolon
 macro_line|#endif
-singleline_comment|// configure pins GPIO[14:9] as GPIO
-id|pin_func
-op_assign
-id|au_readl
-c_func
-(paren
-id|SYS_PINFUNC
-)paren
-op_amp
-(paren
-id|u32
-)paren
-(paren
-op_complement
-l_int|0x8080
-)paren
-suffix:semicolon
-macro_line|#ifndef CONFIG_AU1X00_USB_DEVICE
-singleline_comment|// 2nd USB port is USB host
-id|pin_func
-op_or_assign
-l_int|0x8000
-suffix:semicolon
-macro_line|#endif
-id|au_writel
-c_func
-(paren
-id|pin_func
-comma
-id|SYS_PINFUNC
-)paren
-suffix:semicolon
-id|au_writel
-c_func
-(paren
-l_int|0x2800
-comma
-id|SYS_TRIOUTCLR
-)paren
-suffix:semicolon
-id|au_writel
-c_func
-(paren
-l_int|0x0030
-comma
-id|SYS_OUTPUTCLR
-)paren
-suffix:semicolon
-macro_line|#endif 
-singleline_comment|// defined (CONFIG_USB_OHCI) || defined (CONFIG_AU1X00_USB_DEVICE)
-singleline_comment|// make gpio 15 an input (for interrupt line)
-id|pin_func
-op_assign
-id|au_readl
-c_func
-(paren
-id|SYS_PINFUNC
-)paren
-op_amp
-(paren
-id|u32
-)paren
-(paren
-op_complement
-l_int|0x100
-)paren
-suffix:semicolon
-singleline_comment|// we don&squot;t need I2S, so make it available for GPIO[31:29]
-id|pin_func
-op_or_assign
-(paren
-l_int|1
-op_lshift
-l_int|5
-)paren
-suffix:semicolon
-id|au_writel
-c_func
-(paren
-id|pin_func
-comma
-id|SYS_PINFUNC
-)paren
-suffix:semicolon
-id|au_writel
-c_func
-(paren
-l_int|0x8000
-comma
-id|SYS_TRIOUTCLR
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_FB
 id|conswitchp
 op_assign
@@ -753,128 +706,6 @@ op_amp
 id|dummy_con
 suffix:semicolon
 macro_line|#endif
-id|static_cfg0
-op_assign
-id|au_readl
-c_func
-(paren
-id|MEM_STCFG0
-)paren
-op_amp
-(paren
-id|u32
-)paren
-(paren
-op_complement
-l_int|0xc00
-)paren
-suffix:semicolon
-id|au_writel
-c_func
-(paren
-id|static_cfg0
-comma
-id|MEM_STCFG0
-)paren
-suffix:semicolon
-singleline_comment|// configure RCE2* for LCD
-id|au_writel
-c_func
-(paren
-l_int|0x00000004
-comma
-id|MEM_STCFG2
-)paren
-suffix:semicolon
-singleline_comment|// MEM_STTIME2
-id|au_writel
-c_func
-(paren
-l_int|0x09000000
-comma
-id|MEM_STTIME2
-)paren
-suffix:semicolon
-singleline_comment|// Set 32-bit base address decoding for RCE2*
-id|au_writel
-c_func
-(paren
-l_int|0x10003ff0
-comma
-id|MEM_STADDR2
-)paren
-suffix:semicolon
-singleline_comment|// PCI CPLD setup
-singleline_comment|// expand CE0 to cover PCI
-id|au_writel
-c_func
-(paren
-l_int|0x11803e40
-comma
-id|MEM_STADDR1
-)paren
-suffix:semicolon
-singleline_comment|// burst visibility on
-id|au_writel
-c_func
-(paren
-id|au_readl
-c_func
-(paren
-id|MEM_STCFG0
-)paren
-op_or
-l_int|0x1000
-comma
-id|MEM_STCFG0
-)paren
-suffix:semicolon
-id|au_writel
-c_func
-(paren
-l_int|0x83
-comma
-id|MEM_STCFG1
-)paren
-suffix:semicolon
-singleline_comment|// ewait enabled, flash timing
-id|au_writel
-c_func
-(paren
-l_int|0x33030a10
-comma
-id|MEM_STTIME1
-)paren
-suffix:semicolon
-singleline_comment|// slower timing for FPGA
-multiline_comment|/* setup the static bus controller */
-id|au_writel
-c_func
-(paren
-l_int|0x00000002
-comma
-id|MEM_STCFG3
-)paren
-suffix:semicolon
-multiline_comment|/* type = PCMCIA */
-id|au_writel
-c_func
-(paren
-l_int|0x280E3D07
-comma
-id|MEM_STTIME3
-)paren
-suffix:semicolon
-multiline_comment|/* 250ns cycle time */
-id|au_writel
-c_func
-(paren
-l_int|0x10000000
-comma
-id|MEM_STADDR3
-)paren
-suffix:semicolon
-multiline_comment|/* any PCMCIA select */
 macro_line|#ifdef CONFIG_FB_E1356
 r_if
 c_cond
@@ -906,48 +737,48 @@ c_func
 (paren
 id|argptr
 comma
-l_string|&quot; video=e1356fb:system:pb1000,mmunalign:1&quot;
+l_string|&quot; video=e1356fb:system:pb1500&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#elif defined (CONFIG_FB_XPERT98)
+r_if
+c_cond
+(paren
+(paren
+id|argptr
+op_assign
+id|strstr
+c_func
+(paren
+id|argptr
+comma
+l_string|&quot;video=&quot;
+)paren
+)paren
+op_eq
+l_int|NULL
+)paren
+(brace
+id|argptr
+op_assign
+id|prom_getcmdline
+c_func
+(paren
+)paren
+suffix:semicolon
+id|strcat
+c_func
+(paren
+id|argptr
+comma
+l_string|&quot; video=atyfb:1024x768-8@70&quot;
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif 
 singleline_comment|// CONFIG_FB_E1356
-macro_line|#ifdef CONFIG_PCI
-id|au_writel
-c_func
-(paren
-l_int|0
-comma
-id|PCI_BRIDGE_CONFIG
-)paren
-suffix:semicolon
-singleline_comment|// set extend byte to 0
-id|au_writel
-c_func
-(paren
-l_int|0
-comma
-id|SDRAM_MBAR
-)paren
-suffix:semicolon
-singleline_comment|// set mbar to 0
-id|au_writel
-c_func
-(paren
-l_int|0x2
-comma
-id|SDRAM_CMD
-)paren
-suffix:semicolon
-singleline_comment|// enable memory accesses
-id|au_sync_delay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef CONFIG_SERIAL_NONSTANDARD
+macro_line|#ifndef CONFIG_SERIAL_AU1X00_CONSOLE
 multiline_comment|/* don&squot;t touch the default serial console */
 id|au_writel
 c_func
@@ -965,26 +796,6 @@ c_func
 (paren
 l_int|0
 comma
-id|UART1_ADDR
-op_plus
-id|UART_CLK
-)paren
-suffix:semicolon
-id|au_writel
-c_func
-(paren
-l_int|0
-comma
-id|UART2_ADDR
-op_plus
-id|UART_CLK
-)paren
-suffix:semicolon
-id|au_writel
-c_func
-(paren
-l_int|0
-comma
 id|UART3_ADDR
 op_plus
 id|UART_CLK
@@ -997,51 +808,101 @@ op_amp
 id|std_ide_ops
 suffix:semicolon
 macro_line|#endif
-singleline_comment|// setup irda clocks
-singleline_comment|// aux clock, divide by 2, clock from 2/4 divider
+macro_line|#ifdef CONFIG_PCI
+singleline_comment|// Setup PCI bus controller
 id|au_writel
 c_func
 (paren
-id|au_readl
-c_func
-(paren
-id|SYS_CLKSRC
-)paren
-op_or
-l_int|0x7
+l_int|0
 comma
-id|SYS_CLKSRC
+id|Au1500_PCI_CMEM
 )paren
 suffix:semicolon
-id|pin_func
-op_assign
-id|au_readl
+id|au_writel
 c_func
 (paren
-id|SYS_PINFUNC
+l_int|0x00003fff
+comma
+id|Au1500_CFG_BASE
 )paren
-op_amp
+suffix:semicolon
+macro_line|#if defined(__MIPSEB__)
+id|au_writel
+c_func
 (paren
-id|u32
+l_int|0xf
+op_or
+(paren
+l_int|2
+op_lshift
+l_int|6
 )paren
-(paren
-op_complement
+op_or
 (paren
 l_int|1
 op_lshift
-l_int|2
+l_int|4
 )paren
+comma
+id|Au1500_PCI_CFG
 )paren
 suffix:semicolon
-singleline_comment|// clear IRTXD
+macro_line|#else
 id|au_writel
 c_func
 (paren
-id|pin_func
+l_int|0xf
 comma
-id|SYS_PINFUNC
+id|Au1500_PCI_CFG
 )paren
 suffix:semicolon
+macro_line|#endif
+id|au_writel
+c_func
+(paren
+l_int|0xf0000000
+comma
+id|Au1500_PCI_MWMASK_DEV
+)paren
+suffix:semicolon
+id|au_writel
+c_func
+(paren
+l_int|0
+comma
+id|Au1500_PCI_MWBASE_REV_CCL
+)paren
+suffix:semicolon
+id|au_writel
+c_func
+(paren
+l_int|0x02a00356
+comma
+id|Au1500_PCI_STATCMD
+)paren
+suffix:semicolon
+id|au_writel
+c_func
+(paren
+l_int|0x00003c04
+comma
+id|Au1500_PCI_HDRTYPE
+)paren
+suffix:semicolon
+id|au_writel
+c_func
+(paren
+l_int|0x00000008
+comma
+id|Au1500_PCI_MBAR
+)paren
+suffix:semicolon
+id|au_sync
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -1089,32 +950,7 @@ comma
 id|SYS_TOYTRIM
 )paren
 suffix:semicolon
-multiline_comment|/* Enable Au1000 BCLK switching - note: sed1356 must not use&n;&t; * its BCLK (Au1000 LCLK) for any timings */
-r_switch
-c_cond
-(paren
-id|prid
-op_amp
-l_int|0x000000FF
-)paren
-(brace
-r_case
-l_int|0x00
-suffix:colon
-multiline_comment|/* DA */
-r_case
-l_int|0x01
-suffix:colon
-multiline_comment|/* HA */
-r_case
-l_int|0x02
-suffix:colon
-multiline_comment|/* HB */
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* HC and newer */
+multiline_comment|/* Enable BCLK switching */
 id|au_writel
 c_func
 (paren
@@ -1123,8 +959,173 @@ comma
 l_int|0xb190003c
 )paren
 suffix:semicolon
-r_break
+macro_line|#ifdef CONFIG_RTC
+id|rtc_ops
+op_assign
+op_amp
+id|pb1500_rtc_ops
+suffix:semicolon
+singleline_comment|// Enable the RTC if not already enabled
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|au_readl
+c_func
+(paren
+l_int|0xac000028
+)paren
+op_amp
+l_int|0x20
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;enabling clock ...&bslash;n&quot;
+)paren
+suffix:semicolon
+id|au_writel
+c_func
+(paren
+(paren
+id|au_readl
+c_func
+(paren
+l_int|0xac000028
+)paren
+op_or
+l_int|0x20
+)paren
+comma
+l_int|0xac000028
+)paren
 suffix:semicolon
 )brace
+singleline_comment|// Put the clock in BCD mode
+r_if
+c_cond
+(paren
+id|readl
+c_func
+(paren
+l_int|0xac00002C
+)paren
+op_amp
+l_int|0x4
+)paren
+(brace
+multiline_comment|/* reg B */
+id|au_writel
+c_func
+(paren
+id|au_readl
+c_func
+(paren
+l_int|0xac00002c
+)paren
+op_amp
+op_complement
+l_int|0x4
+comma
+l_int|0xac00002c
+)paren
+suffix:semicolon
+id|au_sync
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
+macro_line|#endif
+)brace
+macro_line|#ifdef CONFIG_64BIT_PHYS_ADDR
+DECL|function|pb1500_fixup_bigphys_addr
+r_static
+id|phys_t
+id|pb1500_fixup_bigphys_addr
+c_func
+(paren
+id|phys_t
+id|phys_addr
+comma
+id|phys_t
+id|size
+)paren
+(brace
+id|u32
+id|pci_start
+op_assign
+(paren
+id|u32
+)paren
+id|Au1500_PCI_MEM_START
+suffix:semicolon
+id|u32
+id|pci_end
+op_assign
+(paren
+id|u32
+)paren
+id|Au1500_PCI_MEM_END
+suffix:semicolon
+multiline_comment|/* Don&squot;t fixup 36 bit addresses */
+r_if
+c_cond
+(paren
+(paren
+id|phys_addr
+op_rshift
+l_int|32
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+id|phys_addr
+suffix:semicolon
+multiline_comment|/* check for pci memory window */
+r_if
+c_cond
+(paren
+(paren
+id|phys_addr
+op_ge
+id|pci_start
+)paren
+op_logical_and
+(paren
+(paren
+id|phys_addr
+op_plus
+id|size
+)paren
+OL
+id|pci_end
+)paren
+)paren
+(brace
+r_return
+(paren
+id|phys_t
+)paren
+(paren
+(paren
+id|phys_addr
+op_minus
+id|pci_start
+)paren
+op_plus
+id|Au1500_PCI_MEM_START
+)paren
+suffix:semicolon
+)brace
+r_else
+r_return
+id|phys_addr
+suffix:semicolon
+)brace
+macro_line|#endif
 eof
