@@ -13,15 +13,8 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-macro_line|#ifdef CONFIG_CPU_32
-DECL|macro|TABLE_OFFSET
-mdefine_line|#define TABLE_OFFSET&t;(PTRS_PER_PTE)
-macro_line|#else
-DECL|macro|TABLE_OFFSET
-mdefine_line|#define TABLE_OFFSET&t;0
-macro_line|#endif
 DECL|macro|TABLE_SIZE
-mdefine_line|#define TABLE_SIZE&t;((TABLE_OFFSET + PTRS_PER_PTE) * sizeof(pte_t))
+mdefine_line|#define TABLE_SIZE&t;(2 * PTRS_PER_PTE * sizeof(pte_t))
 id|DEFINE_PER_CPU
 c_func
 (paren
@@ -1066,7 +1059,6 @@ op_amp
 id|_stext
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_32
 multiline_comment|/*&n;&t; * Reserve the page tables.  These are already in use,&n;&t; * and can only be in node 0.&n;&t; */
 id|reserve_bootmem_node
 c_func
@@ -1087,7 +1079,6 @@ id|pgd_t
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * And don&squot;t forget to reserve the allocator bitmap,&n;&t; * which will be freed later.&n;&t; */
 id|reserve_bootmem_node
 c_func
