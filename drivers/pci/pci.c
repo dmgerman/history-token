@@ -2224,6 +2224,8 @@ id|cmd
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifndef HAVE_ARCH_PCI_SET_DMA_MASK
+multiline_comment|/*&n; * These can be overridden by arch-specific implementations&n; */
 r_int
 DECL|function|pci_set_dma_mask
 id|pci_set_dma_mask
@@ -2338,6 +2340,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|pci_init
 r_static
 r_int
