@@ -292,6 +292,11 @@ op_lshift
 l_int|7
 )paren
 suffix:semicolon
+id|temp
+op_and_assign
+op_complement
+l_int|0x7f
+suffix:semicolon
 id|pci_write_config_dword
 c_func
 (paren
@@ -310,6 +315,11 @@ l_int|1
 op_lshift
 l_int|7
 )paren
+suffix:semicolon
+id|temp
+op_and_assign
+op_complement
+l_int|0x7f
 suffix:semicolon
 id|pci_write_config_dword
 c_func
