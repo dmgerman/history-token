@@ -36,18 +36,6 @@ mdefine_line|#define MIN_RESET_PERIOD (15*HZ)
 multiline_comment|/*&n; * Macro to determine the size of SCSI command. This macro takes vendor&n; * unique commands into account. SCSI commands in groups 6 and 7 are&n; * vendor unique and we will depend upon the command length being&n; * supplied correctly in cmd_len.&n; */
 DECL|macro|CDB_SIZE
 mdefine_line|#define CDB_SIZE(cmd)&t;(((((cmd)-&gt;cmnd[0] &gt;&gt; 5) &amp; 7) &lt; 6) ? &bslash;&n;&t;&t;&t;&t;COMMAND_SIZE((cmd)-&gt;cmnd[0]) : (cmd)-&gt;cmd_len)
-multiline_comment|/*&n; * Data declarations.&n; */
-DECL|variable|scsi_pid
-r_int
-r_int
-id|scsi_pid
-suffix:semicolon
-DECL|variable|serial_number
-r_static
-r_int
-r_int
-id|serial_number
-suffix:semicolon
 multiline_comment|/*&n; * Note - the initial logging level can be set here to log events at boot time.&n; * After the system is up, you may enable logging via the /proc interface.&n; */
 DECL|variable|scsi_logging_level
 r_int
@@ -1486,6 +1474,60 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+multiline_comment|/* &n; * Assign a serial number and pid to the request for error recovery&n; * and debugging purposes.  Protected by the Host_Lock of host.&n; */
+DECL|function|scsi_cmd_get_serial
+r_static
+r_inline
+r_void
+id|scsi_cmd_get_serial
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+)paren
+(brace
+id|cmd-&gt;serial_number
+op_assign
+id|host-&gt;cmd_serial_number
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd-&gt;serial_number
+op_eq
+l_int|0
+)paren
+id|cmd-&gt;serial_number
+op_assign
+id|host-&gt;cmd_serial_number
+op_increment
+suffix:semicolon
+id|cmd-&gt;pid
+op_assign
+id|host-&gt;cmd_pid
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd-&gt;pid
+op_eq
+l_int|0
+)paren
+id|cmd-&gt;pid
+op_assign
+id|host-&gt;cmd_pid
+op_increment
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Function:    scsi_dispatch_command&n; *&n; * Purpose:     Dispatch a command to the low-level driver.&n; *&n; * Arguments:   cmd - command block we are dispatching.&n; *&n; * Notes:&n; */
 DECL|function|scsi_dispatch_cmd
 r_int
@@ -1597,29 +1639,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* Assign a unique nonzero serial_number. */
-multiline_comment|/* XXX(hch): this is racy */
-r_if
-c_cond
-(paren
-op_increment
-id|serial_number
-op_eq
-l_int|0
-)paren
-id|serial_number
-op_assign
-l_int|1
-suffix:semicolon
-id|cmd-&gt;serial_number
-op_assign
-id|serial_number
-suffix:semicolon
-id|cmd-&gt;pid
-op_assign
-id|scsi_pid
-op_increment
-suffix:semicolon
 multiline_comment|/* &n;&t; * If SCSI-2 or lower, store the LUN value in cmnd.&n;&t; */
 r_if
 c_cond
@@ -1704,6 +1723,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* &n;&t; * AK: unlikely race here: for some reason the timer could&n;&t; * expire before the serial number is set up below.&n;&t; */
 id|scsi_add_timer
 c_func
 (paren
@@ -1785,6 +1805,14 @@ c_func
 id|host-&gt;host_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|scsi_cmd_get_serial
+c_func
+(paren
+id|host
+comma
+id|cmd
 )paren
 suffix:semicolon
 r_if

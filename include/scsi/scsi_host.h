@@ -700,6 +700,15 @@ r_int
 r_int
 id|dma_boundary
 suffix:semicolon
+multiline_comment|/* &n;&t; * Used to assign serial numbers to the cmds.&n;&t; * Protected by the host lock.&n;&t; */
+DECL|member|cmd_serial_number
+DECL|member|cmd_pid
+r_int
+r_int
+id|cmd_serial_number
+comma
+id|cmd_pid
+suffix:semicolon
 DECL|member|unchecked_isa_dma
 r_int
 id|unchecked_isa_dma
