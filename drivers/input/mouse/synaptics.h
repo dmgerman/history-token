@@ -3,22 +3,6 @@ macro_line|#ifndef _SYNAPTICS_H
 DECL|macro|_SYNAPTICS_H
 mdefine_line|#define _SYNAPTICS_H
 r_extern
-r_void
-id|synaptics_process_byte
-c_func
-(paren
-r_struct
-id|psmouse
-op_star
-id|psmouse
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|synaptics_detect
 c_func
@@ -101,6 +85,8 @@ mdefine_line|#define SYN_MODEL_GEOMETRY(m)&t;&t;((m) &amp; 0x0f)
 multiline_comment|/* synaptics capability bits */
 DECL|macro|SYN_CAP_EXTENDED
 mdefine_line|#define SYN_CAP_EXTENDED(c)&t;&t;((c) &amp; (1 &lt;&lt; 23))
+DECL|macro|SYN_CAP_MIDDLE_BUTTON
+mdefine_line|#define SYN_CAP_MIDDLE_BUTTON(c)&t;((c) &amp; (1 &lt;&lt; 18))
 DECL|macro|SYN_CAP_PASS_THROUGH
 mdefine_line|#define SYN_CAP_PASS_THROUGH(c)&t;&t;((c) &amp; (1 &lt;&lt; 7))
 DECL|macro|SYN_CAP_SLEEP
@@ -114,7 +100,7 @@ mdefine_line|#define SYN_CAP_PALMDETECT(c)&t;&t;((c) &amp; (1 &lt;&lt; 0))
 DECL|macro|SYN_CAP_VALID
 mdefine_line|#define SYN_CAP_VALID(c)&t;&t;((((c) &amp; 0x00ff00) &gt;&gt; 8) == 0x47)
 DECL|macro|SYN_EXT_CAP_REQUESTS
-mdefine_line|#define SYN_EXT_CAP_REQUESTS(c)&t;&t;((((c) &amp; 0x700000) &gt;&gt; 20) == 1)
+mdefine_line|#define SYN_EXT_CAP_REQUESTS(c)&t;&t;(((c) &amp; 0x700000) &gt;&gt; 20)
 DECL|macro|SYN_CAP_MULTI_BUTTON_NO
 mdefine_line|#define SYN_CAP_MULTI_BUTTON_NO(ec)&t;(((ec) &amp; 0x00f000) &gt;&gt; 12)
 multiline_comment|/* synaptics modes query bits */
@@ -176,51 +162,43 @@ id|w
 suffix:semicolon
 DECL|member|left
 r_int
+r_int
 id|left
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|right
 r_int
+r_int
 id|right
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|middle
+r_int
+r_int
+id|middle
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|up
 r_int
+r_int
 id|up
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|down
 r_int
+r_int
 id|down
+suffix:colon
+l_int|1
 suffix:semicolon
-DECL|member|b0
+DECL|member|ext_buttons
 r_int
-id|b0
-suffix:semicolon
-DECL|member|b1
-r_int
-id|b1
-suffix:semicolon
-DECL|member|b2
-r_int
-id|b2
-suffix:semicolon
-DECL|member|b3
-r_int
-id|b3
-suffix:semicolon
-DECL|member|b4
-r_int
-id|b4
-suffix:semicolon
-DECL|member|b5
-r_int
-id|b5
-suffix:semicolon
-DECL|member|b6
-r_int
-id|b6
-suffix:semicolon
-DECL|member|b7
-r_int
-id|b7
+r_char
+id|ext_buttons
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -258,12 +236,6 @@ id|identity
 suffix:semicolon
 multiline_comment|/* Identification */
 multiline_comment|/* Data for normal processing */
-DECL|member|out_of_sync
-r_int
-r_int
-id|out_of_sync
-suffix:semicolon
-multiline_comment|/* # of packets out of sync */
 DECL|member|old_w
 r_int
 id|old_w

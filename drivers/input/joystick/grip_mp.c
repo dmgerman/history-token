@@ -135,7 +135,7 @@ mdefine_line|#define IO_SLOT_CHANGE       0x0800           /* Multiport physical
 DECL|macro|IO_DONE
 mdefine_line|#define IO_DONE              0x1000           /* Multiport is done sending packets      */
 DECL|macro|IO_RETRY
-mdefine_line|#define IO_RETRY             0x4000           /* Try again later to get packet          */ 
+mdefine_line|#define IO_RETRY             0x4000           /* Try again later to get packet          */
 DECL|macro|IO_RESET
 mdefine_line|#define IO_RESET             0x8000           /* Force multiport to resend all packets  */
 multiline_comment|/*&n; * Gamepad configuration data.  Other 9-pin digital joystick devices&n; * may work with the multiport, so this may not be an exhaustive list!&n; * Commodore 64 joystick remains untested.&n; */
@@ -671,7 +671,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Gets a 28-bit packet from the multiport.&n; *&n; * After getting a packet successfully, commands encoded by sendcode may &n; * be sent to the multiport.  &n; *&n; * The multiport clock value is reflected in gameport bit B4.&n; *&n; * Returns a packet status code indicating whether packet is valid, the transfer&n; * mode, and any error conditions.&n; *&n; * sendflags:      current I/O status&n; * sendcode:   data to send to the multiport if sendflags is nonzero&n; */
+multiline_comment|/*&n; * Gets a 28-bit packet from the multiport.&n; *&n; * After getting a packet successfully, commands encoded by sendcode may&n; * be sent to the multiport.&n; *&n; * The multiport clock value is reflected in gameport bit B4.&n; *&n; * Returns a packet status code indicating whether packet is valid, the transfer&n; * mode, and any error conditions.&n; *&n; * sendflags:      current I/O status&n; * sendcode:   data to send to the multiport if sendflags is nonzero&n; */
 DECL|function|mp_io
 r_static
 r_int
@@ -2289,7 +2289,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Get the multiport state.  &n; */
+multiline_comment|/*&n; * Get the multiport state.&n; */
 DECL|function|get_and_report_mp_state
 r_static
 r_void
