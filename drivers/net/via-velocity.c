@@ -11775,6 +11775,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;wol_calc_crc&t;&t;-&t;WOL CRC&n; *&t;@pattern: data pattern&n; *&t;@mask_pattern: mask&n; *&n; *&t;Compute the wake on lan crc hashes for the packet header&n; *&t;we are interested in.&n; */
 DECL|function|wol_calc_crc
+r_static
 id|u16
 id|wol_calc_crc
 c_func
