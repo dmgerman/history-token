@@ -4150,36 +4150,6 @@ id|use_clustering
 op_assign
 id|ENABLE_CLUSTERING
 comma
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,7)
-multiline_comment|/*&n;&t; * We can only map 16MB per-SG&n;&t; * so create a sector limit of&n;&t; * &quot;16MB&quot; in 2K sectors.&n;&t; */
-dot
-id|max_sectors
-op_assign
-l_int|8192
-comma
-macro_line|#endif
-macro_line|#if defined CONFIG_HIGHIO || LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,10)
-multiline_comment|/* Assume RedHat Distribution with its different HIGHIO conventions. */
-dot
-id|can_dma_32
-op_assign
-l_int|1
-comma
-dot
-id|single_sg_okay
-op_assign
-l_int|1
-comma
-macro_line|#else
-dot
-id|highmem_io
-op_assign
-l_int|1
-comma
-macro_line|#endif
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 dot
 id|slave_alloc
 op_assign
@@ -4195,28 +4165,6 @@ id|slave_destroy
 op_assign
 id|ahc_linux_slave_destroy
 comma
-macro_line|#else
-dot
-id|detect
-op_assign
-id|ahc_linux_detect
-comma
-dot
-id|release
-op_assign
-id|ahc_linux_release
-comma
-dot
-id|select_queue_depths
-op_assign
-id|ahc_linux_select_queue_depth
-comma
-dot
-id|use_new_eh_code
-op_assign
-l_int|1
-comma
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/**************************** Tasklet Handler *********************************/

@@ -375,12 +375,6 @@ id|emulated
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|highmem_io
-r_int
-id|highmem_io
-suffix:colon
-l_int|1
-suffix:semicolon
 multiline_comment|/* &n;&t; * True if the driver wishes to use the generic block layer&n;&t; * tag queueing functions&n;&t; */
 DECL|member|use_blk_tcq
 r_int

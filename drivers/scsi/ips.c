@@ -420,13 +420,6 @@ id|use_clustering
 op_assign
 id|ENABLE_CLUSTERING
 comma
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,20) || (defined CONFIG_HIGHIO)
-dot
-id|highmem_io
-op_assign
-l_int|1
-comma
-macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 dot
 id|use_new_eh_code

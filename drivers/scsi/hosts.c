@@ -466,10 +466,6 @@ id|shost-&gt;use_blk_tcq
 op_assign
 id|sht-&gt;use_blk_tcq
 suffix:semicolon
-id|shost-&gt;highmem_io
-op_assign
-id|sht-&gt;highmem_io
-suffix:semicolon
 r_if
 c_cond
 (paren
