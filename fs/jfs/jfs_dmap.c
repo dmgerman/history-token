@@ -1761,6 +1761,8 @@ id|diWriteSpecial
 c_func
 (paren
 id|ipbmap
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -9067,8 +9069,7 @@ id|wbitno
 )paren
 suffix:semicolon
 id|word
-op_add_assign
-l_int|1
+op_increment
 suffix:semicolon
 )brace
 r_else
@@ -9105,6 +9106,10 @@ op_assign
 id|nwords
 op_lshift
 id|L2DBWORD
+suffix:semicolon
+id|word
+op_add_assign
+id|nwords
 suffix:semicolon
 )brace
 )brace
