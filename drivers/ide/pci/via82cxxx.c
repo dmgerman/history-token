@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: via82cxxx.c,v 3.34 2002/02/12 11:26:11 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; */
-multiline_comment|/*&n; * VIA IDE driver for Linux. Supports&n; *&n; *   vt82c576, vt82c586, vt82c586a, vt82c586b, vt82c596a, vt82c596b,&n; *   vt82c686, vt82c686a, vt82c686b, vt8231, vt8233, vt8233c, vt8233a&n; *&n; * southbridges, which can be found in&n; *&n; *  VIA Apollo Master, VP, VP2, VP2/97, VP3, VPX, VPX/97, MVP3, MVP4, P6, Pro,&n; *    ProII, ProPlus, Pro133, Pro133+, Pro133A, Pro133A Dual, Pro133T, Pro133Z,&n; *    PLE133, PLE133T, Pro266, Pro266T, ProP4X266, PM601, PM133, PN133, PL133T,&n; *    PX266, PM266, KX133, KT133, KT133A, KT133E, KLE133, KT266, KX266, KM133,&n; *    KM133A, KL133, KN133, KM266&n; *  PC-Chips VXPro, VXPro+, VXTwo, TXPro-III, TXPro-AGP, AGPPro, ViaGra, BXToo,&n; *    BXTel, BXpert&n; *  AMD 640, 640 AGP, 750 IronGate, 760, 760MP&n; *  ETEQ 6618, 6628, 6629, 6638&n; *  Micron Samurai&n; *&n; * chipsets. Supports&n; *&n; *   PIO 0-5, MWDMA 0-2, SWDMA 0-2 and UDMA 0-6&n; *&n; * (this includes UDMA33, 66, 100 and 133) modes. UDMA66 and higher modes are&n; * autoenabled only in case the BIOS has detected a 80 wire cable. To ignore&n; * the BIOS data and assume the cable is present, use &squot;ide0=ata66&squot; or&n; * &squot;ide1=ata66&squot; on the kernel command line.&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * $Id: via82cxxx.c,v 3.35-ac1 2002/08/19 Alan Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; */
+multiline_comment|/*&n; * Version 3.35&n; *&n; * VIA IDE driver for Linux. Supported southbridges:&n; *&n; *   vt82c576, vt82c586, vt82c586a, vt82c586b, vt82c596a, vt82c596b,&n; *   vt82c686, vt82c686a, vt82c686b, vt8231, vt8233, vt8233c, vt8233a,&n; *   vt8235&n; *&n; * Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; * Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ide-timing.h&quot;
+macro_line|#include &quot;via82cxxx.h&quot;
 DECL|macro|VIA_IDE_ENABLE
 mdefine_line|#define VIA_IDE_ENABLE&t;&t;0x40
 DECL|macro|VIA_IDE_CONFIG
@@ -64,23 +65,19 @@ op_star
 id|name
 suffix:semicolon
 DECL|member|id
-r_int
-r_int
+id|u16
 id|id
 suffix:semicolon
 DECL|member|rev_min
-r_int
-r_char
+id|u8
 id|rev_min
 suffix:semicolon
 DECL|member|rev_max
-r_int
-r_char
+id|u8
 id|rev_max
 suffix:semicolon
 DECL|member|flags
-r_int
-r_int
+id|u16
 id|flags
 suffix:semicolon
 DECL|variable|via_isa_bridges
@@ -103,6 +100,7 @@ comma
 id|VIA_UDMA_133
 )brace
 comma
+macro_line|#endif
 (brace
 l_string|&quot;vt8235&quot;
 comma
@@ -115,7 +113,6 @@ comma
 id|VIA_UDMA_133
 )brace
 comma
-macro_line|#endif
 (brace
 l_string|&quot;vt8233a&quot;
 comma
@@ -385,14 +382,20 @@ l_string|&quot;UDMA133&quot;
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * VIA /proc entry.&n; */
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if defined(DISPLAY_VIA_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|variable|via_proc
-DECL|variable|via_base
-r_int
+r_static
+id|u8
 id|via_proc
-comma
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|via_base
+r_static
+r_int
+r_int
 id|via_base
 suffix:semicolon
 DECL|variable|bmide_dev
@@ -406,26 +409,6 @@ comma
 op_star
 id|isa_dev
 suffix:semicolon
-r_extern
-r_int
-(paren
-op_star
-id|via_display_info
-)paren
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* ide-proc.c */
 DECL|variable|via_control3
 r_static
 r_char
@@ -448,6 +431,7 @@ DECL|macro|via_print
 mdefine_line|#define via_print(format, arg...) p += sprintf(p, format &quot;&bslash;n&quot; , ## arg)
 DECL|macro|via_print_drive
 mdefine_line|#define via_print_drive(name, format, arg...)&bslash;&n;&t;p += sprintf(p, name); for (i = 0; i &lt; 4; i++) p += sprintf(p, format, ## arg); p += sprintf(p, &quot;&bslash;n&quot;);
+multiline_comment|/**&n; *&t;via_get_info&t;&t;-&t;generate via /proc file &n; *&t;@buffer: buffer for data&n; *&t;@addr: set to start of data to use&n; *&t;@offset: current file offset&n; *&t;@count: size of read&n; *&n; *&t;Fills in buffer with the debugging/configuration information for&n; *&t;the VIA chipset tuning and attached drives&n; */
 DECL|function|via_get_info
 r_static
 r_int
@@ -541,14 +525,12 @@ id|u
 comma
 id|i
 suffix:semicolon
-r_int
-r_int
+id|u16
 id|c
 comma
 id|w
 suffix:semicolon
-r_int
-r_char
+id|u8
 id|t
 comma
 id|x
@@ -562,13 +544,14 @@ suffix:semicolon
 id|via_print
 c_func
 (paren
-l_string|&quot;----------VIA BusMastering IDE Configuration----------------&quot;
+l_string|&quot;----------VIA BusMastering IDE Configuration&quot;
+l_string|&quot;----------------&quot;
 )paren
 suffix:semicolon
 id|via_print
 c_func
 (paren
-l_string|&quot;Driver Version:                     3.34&quot;
+l_string|&quot;Driver Version:                     3.35-ac&quot;
 )paren
 suffix:semicolon
 id|via_print
@@ -744,7 +727,8 @@ suffix:semicolon
 id|via_print
 c_func
 (paren
-l_string|&quot;-----------------------Primary IDE-------Secondary IDE------&quot;
+l_string|&quot;-----------------------Primary IDE&quot;
+l_string|&quot;-------Secondary IDE------&quot;
 )paren
 suffix:semicolon
 id|via_print
@@ -911,7 +895,7 @@ l_string|&quot;no&quot;
 suffix:semicolon
 id|c
 op_assign
-id|IN_BYTE
+id|inb
 c_func
 (paren
 id|via_base
@@ -920,7 +904,7 @@ l_int|0x02
 )paren
 op_or
 (paren
-id|IN_BYTE
+id|inb
 c_func
 (paren
 id|via_base
@@ -990,7 +974,8 @@ suffix:semicolon
 id|via_print
 c_func
 (paren
-l_string|&quot;-------------------drive0----drive1----drive2----drive3-----&quot;
+l_string|&quot;-------------------drive0----drive1&quot;
+l_string|&quot;----drive2----drive3-----&quot;
 )paren
 suffix:semicolon
 id|pci_read_config_byte
@@ -1682,15 +1667,15 @@ op_mod
 l_int|10
 )paren
 suffix:semicolon
+multiline_comment|/* hoping it is less than 4K... */
 r_return
 id|p
 op_minus
 id|buffer
 suffix:semicolon
-multiline_comment|/* hoping it is less than 4K... */
 )brace
-macro_line|#endif
-multiline_comment|/*&n; * via_set_speed() writes timing values to the chipset registers&n; */
+macro_line|#endif /* DISPLAY_VIA_TIMINGS &amp;&amp; CONFIG_PROC_FS */
+multiline_comment|/**&n; *&t;via_set_speed&t;&t;&t;-&t;write timing registers&n; *&t;@dev: PCI device&n; *&t;@dn: device&n; *&t;@timing: IDE timing data to use&n; *&n; *&t;via_set_speed writes timing values to the chipset registers&n; */
 DECL|function|via_set_speed
 r_static
 r_void
@@ -1702,8 +1687,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-r_int
-r_char
+id|u8
 id|dn
 comma
 r_struct
@@ -1712,8 +1696,7 @@ op_star
 id|timing
 )paren
 (brace
-r_int
-r_char
+id|u8
 id|t
 suffix:semicolon
 id|pci_read_config_byte
@@ -2030,7 +2013,7 @@ id|t
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * via_set_drive() computes timing values configures the drive and&n; * the chipset to a desired transfer mode. It also can be called&n; * by upper layers.&n; */
+multiline_comment|/**&n; *&t;via_set_drive&t;&t;-&t;configure transfer mode&n; *&t;@drive: Drive to set up&n; *&t;@speed: desired speed&n; *&n; *&t;via_set_drive() computes timing values configures the drive and&n; *&t;the chipset to a desired transfer mode. It also can be called&n; *&t;by upper layers.&n; */
 DECL|function|via_set_drive
 r_static
 r_int
@@ -2041,8 +2024,7 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-r_int
-r_char
+id|u8
 id|speed
 )paren
 (brace
@@ -2103,7 +2085,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ide%d: Drive %d didn&squot;t accept speed setting. Oh, well.&bslash;n&quot;
+l_string|&quot;ide%d: Drive %d didn&squot;t &quot;
+l_string|&quot;accept speed setting. Oh, well.&bslash;n&quot;
 comma
 id|drive-&gt;dn
 op_rshift
@@ -2264,7 +2247,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * via82cxxx_tune_drive() is a callback from upper layers for&n; * PIO-only tuning.&n; */
+multiline_comment|/**&n; *&t;via82cxxx_tune_drive&t;-&t;PIO setup&n; *&t;@drive: drive to set up&n; *&t;@pio: mode to use (255 for &squot;best possible&squot;)&n; *&n; *&t;A callback from the upper layers for PIO-only tuning.&n; */
 DECL|function|via82cxxx_tune_drive
 r_static
 r_void
@@ -2275,8 +2258,7 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-r_int
-r_char
+id|u8
 id|pio
 )paren
 (brace
@@ -2347,29 +2329,18 @@ l_int|5
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-multiline_comment|/*&n; * via82cxxx_dmaproc() is a callback from upper layers that can do&n; * a lot, but we use it for DMA/PIO tuning only, delegating everything&n; * else to the default ide_dmaproc().&n; */
-DECL|function|via82cxxx_dmaproc
+multiline_comment|/**&n; *&t;via82cxxx_ide_dma_check&t;&t;-&t;set up for DMA if possible&n; *&t;@drive: IDE drive to set up&n; *&n; *&t;Set up the drive for the highest supported speed considering the&n; *&t;driver, controller and cable&n; */
+DECL|function|via82cxxx_ide_dma_check
+r_static
 r_int
-id|via82cxxx_dmaproc
-c_func
+id|via82cxxx_ide_dma_check
 (paren
-id|ide_dma_action_t
-id|func
-comma
 id|ide_drive_t
 op_star
 id|drive
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|func
-op_eq
-id|ide_dma_check
-)paren
-(brace
-r_int
+id|u16
 id|w80
 op_assign
 id|HWIF
@@ -2380,7 +2351,7 @@ id|drive
 op_member_access_from_pointer
 id|udma_four
 suffix:semicolon
-r_int
+id|u16
 id|speed
 op_assign
 id|ide_find_best_mode
@@ -2467,16 +2438,10 @@ comma
 id|speed
 )paren
 suffix:semicolon
-id|func
-op_assign
+r_if
+c_cond
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|autodma
+id|drive-&gt;autodma
 op_logical_and
 (paren
 id|speed
@@ -2486,30 +2451,41 @@ id|XFER_MODE
 op_ne
 id|XFER_PIO
 )paren
-ques
-c_cond
-id|ide_dma_on
-suffix:colon
-id|ide_dma_off_quietly
-suffix:semicolon
-)brace
 r_return
-id|ide_dmaproc
+id|HWIF
 c_func
 (paren
-id|func
-comma
+id|drive
+)paren
+op_member_access_from_pointer
+id|ide_dma_on
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
+r_return
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|ide_dma_off_quietly
+c_func
+(paren
 id|drive
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
-multiline_comment|/*&n; * The initialization callback. Here we determine the IDE chip type&n; * and initialize its drive independent registers.&n; */
-DECL|function|pci_init_via82cxxx
+multiline_comment|/**&n; *&t;init_chipset_via82cxxx&t;-&t;initialization handler&n; *&t;@dev: PCI device&n; *&t;@name: Name of interface&n; *&n; *&t;The initialization callback. Here we determine the IDE chip type&n; *&t;and initialize its drive independent registers.&n; */
+DECL|function|init_chipset_via82cxxx
+r_static
 r_int
 r_int
 id|__init
-id|pci_init_via82cxxx
+id|init_chipset_via82cxxx
 c_func
 (paren
 r_struct
@@ -2530,8 +2506,7 @@ id|isa
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
-r_char
+id|u8
 id|t
 comma
 id|v
@@ -2543,7 +2518,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n; * Find the ISA bridge to see how good the IDE is.&n; */
+multiline_comment|/*&n;&t; * Find the ISA bridge to see how good the IDE is.&n;&t; */
 r_for
 c_loop
 (paren
@@ -2618,7 +2593,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;VP_IDE: Unknown VIA SouthBridge, contact Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&bslash;n&quot;
+l_string|&quot;VP_IDE: Unknown VIA SouthBridge, disabling DMA.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2626,7 +2601,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Check 80-wire cable presence and setup Clk66.&n; */
+multiline_comment|/*&n;&t; * Check 80-wire cable presence and setup Clk66.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -2638,6 +2613,7 @@ id|VIA_UDMA
 r_case
 id|VIA_UDMA_66
 suffix:colon
+multiline_comment|/* Enable Clk66 */
 id|pci_read_config_dword
 c_func
 (paren
@@ -2649,7 +2625,6 @@ op_amp
 id|u
 )paren
 suffix:semicolon
-multiline_comment|/* Enable Clk66 */
 id|pci_write_config_dword
 c_func
 (paren
@@ -2718,6 +2693,8 @@ OL
 l_int|2
 )paren
 )paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * 2x PCI clock and&n;&t;&t;&t;&t;&t; * UDMA w/ &lt; 3T/cycle&n;&t;&t;&t;&t;&t; */
 id|via_80w
 op_or_assign
 (paren
@@ -2734,7 +2711,7 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* 2x PCI clock and UDMA w/ &lt; 3T/cycle */
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -2805,6 +2782,8 @@ l_int|4
 )paren
 )paren
 )paren
+(brace
+multiline_comment|/* BIOS 80-wire bit or&n;&t;&t;&t;&t;&t; * UDMA w/ &lt; 60ns/cycle&n;&t;&t;&t;&t;&t; */
 id|via_80w
 op_or_assign
 (paren
@@ -2821,7 +2800,7 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BIOS 80-wire bit or UDMA w/ &lt; 60ns/cycle */
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -2892,6 +2871,8 @@ l_int|8
 )paren
 )paren
 )paren
+(brace
+multiline_comment|/* BIOS 80-wire bit or&n;&t;&t;&t;&t;&t; * UDMA w/ &lt; 60ns/cycle&n;&t;&t;&t;&t;&t; */
 id|via_80w
 op_or_assign
 (paren
@@ -2908,10 +2889,11 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BIOS 80-wire bit or UDMA w/ &lt; 60ns/cycle */
+)brace
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Disable Clk66 */
 r_if
 c_cond
 (paren
@@ -2920,7 +2902,7 @@ op_amp
 id|VIA_BAD_CLK66
 )paren
 (brace
-multiline_comment|/* Disable Clk66 */
+multiline_comment|/* Would cause trouble on 596a and 686 */
 id|pci_read_config_dword
 c_func
 (paren
@@ -2932,7 +2914,6 @@ op_amp
 id|u
 )paren
 suffix:semicolon
-multiline_comment|/* Would cause trouble on 596a and 686 */
 id|pci_write_config_dword
 c_func
 (paren
@@ -2947,7 +2928,7 @@ l_int|0x80008
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Check whether interfaces are enabled.&n; */
+multiline_comment|/*&n;&t; * Check whether interfaces are enabled.&n;&t; */
 id|pci_read_config_byte
 c_func
 (paren
@@ -2987,7 +2968,7 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Set up FIFO sizes and thresholds.&n; */
+multiline_comment|/*&n;&t; * Set up FIFO sizes and thresholds.&n;&t; */
 id|pci_read_config_byte
 c_func
 (paren
@@ -2999,6 +2980,7 @@ op_amp
 id|t
 )paren
 suffix:semicolon
+multiline_comment|/* Disable PREQ# till DDACK# */
 r_if
 c_cond
 (paren
@@ -3006,12 +2988,14 @@ id|via_config-&gt;flags
 op_amp
 id|VIA_BAD_PREQ
 )paren
-multiline_comment|/* Disable PREQ# till DDACK# */
+(brace
+multiline_comment|/* Would crash on 586b rev 41 */
 id|t
 op_and_assign
 l_int|0x7f
 suffix:semicolon
-multiline_comment|/* Would crash on 586b rev 41 */
+)brace
+multiline_comment|/* Fix FIFO split between channels */
 r_if
 c_cond
 (paren
@@ -3020,7 +3004,6 @@ op_amp
 id|VIA_SET_FIFO
 )paren
 (brace
-multiline_comment|/* Fix FIFO split between channels */
 id|t
 op_and_assign
 (paren
@@ -3077,7 +3060,7 @@ comma
 id|t
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Determine system bus clock.&n; */
+multiline_comment|/*&n;&t; * Determine system bus clock.&n;&t; */
 id|via_clock
 op_assign
 id|system_bus_clock
@@ -3133,7 +3116,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;VP_IDE: User given PCI clock speed impossible (%d), using 33 MHz instead.&bslash;n&quot;
+l_string|&quot;VP_IDE: User given PCI clock speed &quot;
+l_string|&quot;impossible (%d), using 33 MHz instead.&bslash;n&quot;
 comma
 id|via_clock
 )paren
@@ -3142,7 +3126,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;VP_IDE: Use ide0=ata66 if you want to assume 80-wire cable.&bslash;n&quot;
+l_string|&quot;VP_IDE: Use ide0=ata66 if you want &quot;
+l_string|&quot;to assume 80-wire cable.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|via_clock
@@ -3150,7 +3135,7 @@ op_assign
 l_int|33333
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Print the boot message.&n; */
+multiline_comment|/*&n;&t; * Print the boot message.&n;&t; */
 id|pci_read_config_byte
 c_func
 (paren
@@ -3166,7 +3151,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;VP_IDE: VIA %s (rev %02x) IDE %s controller on pci%s&bslash;n&quot;
+l_string|&quot;VP_IDE: VIA %s (rev %02x) IDE %s &quot;
+l_string|&quot;controller on pci%s&bslash;n&quot;
 comma
 id|via_config-&gt;name
 comma
@@ -3182,8 +3168,8 @@ comma
 id|dev-&gt;slot_name
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Setup /proc/ide/via entry.&n; */
-macro_line|#ifdef CONFIG_PROC_FS
+multiline_comment|/*&n;&t; * Setup /proc/ide/via entry.&n;&t; */
+macro_line|#if defined(DISPLAY_VIA_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 r_if
 c_cond
 (paren
@@ -3209,51 +3195,31 @@ id|isa_dev
 op_assign
 id|isa
 suffix:semicolon
-id|via_display_info
-op_assign
+id|ide_pci_register_host_proc
+c_func
+(paren
 op_amp
-id|via_get_info
+id|via_procs
+(braket
+l_int|0
+)braket
+)paren
 suffix:semicolon
 id|via_proc
 op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* DISPLAY_VIA_TIMINGS &amp;&amp; CONFIG_PROC_FS */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ata66_via82cxxx
-r_int
-r_int
-id|__init
-id|ata66_via82cxxx
-c_func
-(paren
-id|ide_hwif_t
-op_star
-id|hwif
-)paren
-(brace
-r_return
-(paren
-(paren
-id|via_enabled
-op_amp
-id|via_80w
-)paren
-op_rshift
-id|hwif-&gt;channel
-)paren
-op_amp
-l_int|1
-suffix:semicolon
-)brace
-DECL|function|ide_init_via82cxxx
+DECL|function|init_hwif_via82cxxx
+r_static
 r_void
 id|__init
-id|ide_init_via82cxxx
+id|init_hwif_via82cxxx
 c_func
 (paren
 id|ide_hwif_t
@@ -3264,6 +3230,10 @@ id|hwif
 r_int
 id|i
 suffix:semicolon
+id|hwif-&gt;autodma
+op_assign
+l_int|0
+suffix:semicolon
 id|hwif-&gt;tuneproc
 op_assign
 op_amp
@@ -3273,10 +3243,6 @@ id|hwif-&gt;speedproc
 op_assign
 op_amp
 id|via_set_drive
-suffix:semicolon
-id|hwif-&gt;autodma
-op_assign
-l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -3343,19 +3309,58 @@ op_plus
 id|i
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hwif-&gt;dma_base
+)paren
+r_return
+suffix:semicolon
+id|hwif-&gt;atapi_dma
+op_assign
+l_int|1
+suffix:semicolon
+id|hwif-&gt;ultra_mask
+op_assign
+l_int|0x7f
+suffix:semicolon
+id|hwif-&gt;mwdma_mask
+op_assign
+l_int|0x07
+suffix:semicolon
+id|hwif-&gt;swdma_mask
+op_assign
+l_int|0x07
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
-id|hwif-&gt;dma_base
+op_logical_neg
+(paren
+id|hwif-&gt;udma_four
 )paren
-(brace
-id|hwif-&gt;dmaproc
+)paren
+id|hwif-&gt;udma_four
+op_assign
+(paren
+(paren
+id|via_enabled
+op_amp
+id|via_80w
+)paren
+op_rshift
+id|hwif-&gt;channel
+)paren
+op_amp
+l_int|1
+suffix:semicolon
+id|hwif-&gt;ide_dma_check
 op_assign
 op_amp
-id|via82cxxx_dmaproc
+id|via82cxxx_ide_dma_check
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDEDMA_AUTO
 r_if
 c_cond
 (paren
@@ -3366,15 +3371,32 @@ id|hwif-&gt;autodma
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif
-)brace
+id|hwif-&gt;drives
+(braket
+l_int|0
+)braket
+dot
+id|autodma
+op_assign
+id|hwif-&gt;autodma
+suffix:semicolon
+id|hwif-&gt;drives
+(braket
+l_int|1
+)braket
+dot
+id|autodma
+op_assign
+id|hwif-&gt;autodma
+suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
-multiline_comment|/*&n; * We allow the BM-DMA driver to only work on enabled interfaces.&n; */
-DECL|function|ide_dmacapable_via82cxxx
+multiline_comment|/**&n; *&t;init_dma_via82cxxx&t;-&t;set up for IDE DMA&n; *&t;@hwif: IDE interface&n; *&t;@dmabase: DMA base address&n; *&n; *&t;We allow the BM-DMA driver to only work on enabled interfaces.&n; */
+DECL|function|init_dma_via82cxxx
+r_static
 r_void
 id|__init
-id|ide_dmacapable_via82cxxx
+id|init_dma_via82cxxx
 c_func
 (paren
 id|ide_hwif_t
@@ -3406,6 +3428,129 @@ id|dmabase
 comma
 l_int|8
 )paren
+suffix:semicolon
+)brace
+r_extern
+r_void
+id|ide_setup_pci_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+id|ide_pci_device_t
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/*&n; *&t;FIXME: should not be needed&n; */
+DECL|function|init_setup_via82cxxx
+r_static
+r_void
+id|__init
+id|init_setup_via82cxxx
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|ide_pci_device_t
+op_star
+id|d
+)paren
+(brace
+id|ide_setup_pci_device
+c_func
+(paren
+id|dev
+comma
+id|d
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;via82cxxx_scan_pcidev&t;-&t;set up any via devices&n; *&t;@dev: PCI device we are offered&n; *&n; *&t;Any controller we are offered that we can configure we set up &n; *&t;and return 1. Anything we cannot drive we return 0&n; */
+DECL|function|via82cxxx_scan_pcidev
+r_int
+id|__init
+id|via82cxxx_scan_pcidev
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+id|ide_pci_device_t
+op_star
+id|d
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;vendor
+op_ne
+id|PCI_VENDOR_ID_VIA
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|d
+op_assign
+id|via82cxxx_chipsets
+suffix:semicolon
+id|d
+op_logical_and
+id|d-&gt;vendor
+op_logical_and
+id|d-&gt;device
+suffix:semicolon
+op_increment
+id|d
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|d-&gt;vendor
+op_eq
+id|dev-&gt;vendor
+)paren
+op_logical_and
+(paren
+id|d-&gt;device
+op_eq
+id|dev-&gt;device
+)paren
+)paren
+op_logical_and
+(paren
+id|d-&gt;init_setup
+)paren
+)paren
+(brace
+id|d
+op_member_access_from_pointer
+id|init_setup
+c_func
+(paren
+id|dev
+comma
+id|d
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof
