@@ -54,6 +54,8 @@ DECL|macro|__ATTR_RO
 mdefine_line|#define __ATTR_RO(_name) { &bslash;&n;&t;.attr&t;= { .name = __stringify(_name), .mode = 0444, .owner = THIS_MODULE },&t;&bslash;&n;&t;.show&t;= _name##_show,&t;&bslash;&n;}
 DECL|macro|__ATTR_NULL
 mdefine_line|#define __ATTR_NULL { .attr = { .name = NULL } }
+DECL|macro|attr_name
+mdefine_line|#define attr_name(_attr) (_attr).attr.name
 DECL|struct|bin_attribute
 r_struct
 id|bin_attribute
