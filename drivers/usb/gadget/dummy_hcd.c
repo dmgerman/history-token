@@ -6369,6 +6369,14 @@ r_goto
 id|clean1
 suffix:semicolon
 )brace
+multiline_comment|/* only show a low-power port: just 8mA */
+id|hub_set_power_budget
+(paren
+id|root
+comma
+l_int|8
+)paren
+suffix:semicolon
 id|dum-&gt;started
 op_assign
 l_int|1
