@@ -9,7 +9,11 @@ macro_line|#else
 multiline_comment|/* This is for the underlying xs80200 PMU clock. We run the core @ 733MHz */
 DECL|macro|CLOCK_TICK_RATE
 mdefine_line|#define CLOCK_TICK_RATE&t;733000000
-macro_line|#endif
+macro_line|#endif 
+singleline_comment|// IQ80310
+macro_line|#elif defined(CONFIG_ARCH_IQ80321)
+DECL|macro|CLOCK_TICK_RATE
+mdefine_line|#define CLOCK_TICK_RATE 200000000
 macro_line|#else
 macro_line|#error &quot;No IOP3xx timex information for this architecture&quot;
 macro_line|#endif
