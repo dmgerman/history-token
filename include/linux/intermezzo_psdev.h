@@ -1,42 +1,19 @@
+multiline_comment|/* -*- mode: c; c-basic-offset: 8; indent-tabs-mode: nil; -*-&n; * vim:expandtab:shiftwidth=8:tabstop=8:&n; */
 macro_line|#ifndef __PRESTO_PSDEV_H
 DECL|macro|__PRESTO_PSDEV_H
 mdefine_line|#define __PRESTO_PSDEV_H
-macro_line|#ifdef PRESTO_DEVEL
-DECL|macro|PRESTO_FS_NAME
-macro_line|# define PRESTO_FS_NAME &quot;izofs&quot;
-DECL|macro|PRESTO_PSDEV_NAME
-macro_line|# define PRESTO_PSDEV_NAME &quot;/dev/izo&quot;
-DECL|macro|PRESTO_PSDEV_MAJOR
-macro_line|# define PRESTO_PSDEV_MAJOR 186
-macro_line|#else
-DECL|macro|PRESTO_FS_NAME
-macro_line|# define PRESTO_FS_NAME &quot;InterMezzo&quot;
-DECL|macro|PRESTO_PSDEV_NAME
-macro_line|# define PRESTO_PSDEV_NAME &quot;/dev/intermezzo&quot;
-DECL|macro|PRESTO_PSDEV_MAJOR
-macro_line|# define PRESTO_PSDEV_MAJOR 185
-macro_line|#endif
-DECL|macro|MAX_PRESTODEV
-mdefine_line|#define MAX_PRESTODEV 16
+DECL|macro|MAX_CHANNEL
+mdefine_line|#define MAX_CHANNEL 16
+DECL|macro|PROCNAME_SIZE
+mdefine_line|#define PROCNAME_SIZE 32
+macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
-DECL|macro|wait_queue_head_t
-mdefine_line|#define wait_queue_head_t  struct wait_queue *
-DECL|macro|DECLARE_WAITQUEUE
-mdefine_line|#define DECLARE_WAITQUEUE(name,task) &bslash;&n;        struct wait_queue name = { task, NULL }
-DECL|macro|init_waitqueue_head
-mdefine_line|#define init_waitqueue_head(arg) 
-macro_line|#else
-macro_line|#ifndef __initfunc
-DECL|macro|__initfunc
-mdefine_line|#define __initfunc(arg) arg
-macro_line|#endif
-macro_line|#endif
-multiline_comment|/* represents state of a /dev/presto */
+multiline_comment|/* represents state of an instance reached with /dev/intermezzo */
 multiline_comment|/* communication pending &amp; processing queues */
-DECL|struct|upc_comm
+DECL|struct|upc_channel
 r_struct
-id|upc_comm
+id|upc_channel
 (brace
 DECL|member|uc_seq
 r_int
@@ -57,6 +34,10 @@ DECL|member|uc_processing
 r_struct
 id|list_head
 id|uc_processing
+suffix:semicolon
+DECL|member|uc_lock
+id|spinlock_t
+id|uc_lock
 suffix:semicolon
 DECL|member|uc_pid
 r_int
@@ -99,24 +80,19 @@ DECL|member|uc_minor
 r_int
 id|uc_minor
 suffix:semicolon
-DECL|member|uc_devname
-r_char
-op_star
-id|uc_devname
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|ISLENTO
-mdefine_line|#define ISLENTO(minor) (current-&gt;pid == upc_comms[minor].uc_pid &bslash;&n;                || current-&gt;parent-&gt;pid == upc_comms[minor].uc_pid)
+mdefine_line|#define ISLENTO(minor) (current-&gt;pid == izo_channels[minor].uc_pid &bslash;&n;                || current-&gt;real_parent-&gt;pid == izo_channels[minor].uc_pid &bslash;&n;                || current-&gt;real_parent-&gt;real_parent-&gt;pid == izo_channels[minor].uc_pid)
 r_extern
 r_struct
-id|upc_comm
-id|upc_comms
+id|upc_channel
+id|izo_channels
 (braket
-id|MAX_PRESTODEV
+id|MAX_CHANNEL
 )braket
 suffix:semicolon
-multiline_comment|/* messages between presto filesystem in kernel and Venus */
+multiline_comment|/* message types between presto filesystem in kernel */
 DECL|macro|REQ_READ
 mdefine_line|#define REQ_READ   1
 DECL|macro|REQ_WRITE
@@ -139,19 +115,19 @@ id|caddr_t
 id|rq_data
 suffix:semicolon
 DECL|member|rq_flags
-id|u_short
+r_int
 id|rq_flags
 suffix:semicolon
 DECL|member|rq_bufsize
-id|u_short
+r_int
 id|rq_bufsize
 suffix:semicolon
 DECL|member|rq_rep_size
-id|u_short
+r_int
 id|rq_rep_size
 suffix:semicolon
 DECL|member|rq_opcode
-id|u_short
+r_int
 id|rq_opcode
 suffix:semicolon
 multiline_comment|/* copied from data to save lookup */

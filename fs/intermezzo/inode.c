@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Super block/filesystem wide operations&n; *&n; * Copryright (C) 1996 Peter J. Braam &lt;braam@maths.ox.ac.uk&gt; and&n; * Michael Callahan &lt;callahan@maths.ox.ac.uk&gt;&n; *&n; * Rewritten for Linux 2.1.  Peter Braam &lt;braam@cs.cmu.edu&gt;&n; * Copyright (C) Carnegie Mellon University&n; */
+multiline_comment|/* -*- mode: c; c-basic-offset: 8; indent-tabs-mode: nil; -*-&n; * vim:expandtab:shiftwidth=8:tabstop=8:&n; *&n; *  Copyright (C) 1996 Peter J. Braam &lt;braam@maths.ox.ac.uk&gt; and&n; *    Michael Callahan &lt;callahan@maths.ox.ac.uk&gt;&n; *  Copyright (C) 1999 Carnegie Mellon University&n; *    Rewritten for Linux 2.1.  Peter Braam &lt;braam@cs.cmu.edu&gt;&n; *&n; *   This file is part of InterMezzo, http://www.inter-mezzo.org.&n; *&n; *   InterMezzo is free software; you can redistribute it and/or&n; *   modify it under the terms of version 2 of the GNU General Public&n; *   License as published by the Free Software Foundation.&n; *&n; *   InterMezzo is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with InterMezzo; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Super block/filesystem wide operations&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -7,61 +7,21 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_upcall.h&gt;
 macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
-r_extern
-r_int
-id|presto_remount
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-comma
-r_int
-op_star
-comma
-r_char
-op_star
-)paren
-suffix:semicolon
-DECL|variable|presto_excluded_gid
-r_int
-id|presto_excluded_gid
-op_assign
-id|PRESTO_EXCL_GID
-suffix:semicolon
-r_extern
-r_int
-id|presto_prep
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-comma
-r_struct
-id|presto_cache
-op_star
-op_star
-comma
-r_struct
-id|presto_file_set
-op_star
-op_star
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|presto_free_cache
@@ -93,30 +53,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inode-&gt;i_gid
-op_eq
-id|presto_excluded_gid
-)paren
-(brace
-id|EXIT
-suffix:semicolon
-id|CDEBUG
+op_logical_neg
+id|inode
+op_logical_or
+id|is_bad_inode
 c_func
 (paren
-id|D_INODE
-comma
-l_string|&quot;excluded methods for %ld at %p, %p&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-comma
-id|inode-&gt;i_op
-comma
-id|inode-&gt;i_fop
+id|inode
 )paren
-suffix:semicolon
+)paren
 r_return
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -214,13 +161,13 @@ c_func
 (paren
 id|D_INODE
 comma
-l_string|&quot;set dir methods for %ld to %p lookup %p&bslash;n&quot;
+l_string|&quot;set dir methods for %ld to %p ioctl %p&bslash;n&quot;
 comma
 id|inode-&gt;i_ino
 comma
 id|inode-&gt;i_op
 comma
-id|inode-&gt;i_op-&gt;lookup
+id|inode-&gt;i_fop-&gt;ioctl
 )paren
 suffix:semicolon
 )brace
@@ -324,7 +271,7 @@ op_logical_neg
 id|cache
 )paren
 (brace
-id|printk
+id|CERROR
 c_func
 (paren
 l_string|&quot;PRESTO: BAD, BAD: cannot find cache&bslash;n&quot;
@@ -363,8 +310,6 @@ comma
 id|inode-&gt;i_gid
 )paren
 suffix:semicolon
-singleline_comment|//        if (inode-&gt;i_gid == presto_excluded_gid)
-singleline_comment|//       return;
 id|presto_set_ops
 c_func
 (paren
@@ -376,6 +321,7 @@ suffix:semicolon
 multiline_comment|/* XXX handle special inodes here or not - probably not? */
 )brace
 DECL|function|presto_put_super
+r_static
 r_void
 id|presto_put_super
 c_func
@@ -392,9 +338,9 @@ op_star
 id|cache
 suffix:semicolon
 r_struct
-id|upc_comm
+id|upc_channel
 op_star
-id|psdev
+id|channel
 suffix:semicolon
 r_struct
 id|super_operations
@@ -406,14 +352,21 @@ id|list_head
 op_star
 id|lh
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|ENTRY
 suffix:semicolon
 id|cache
 op_assign
-id|presto_find_cache
+id|presto_cache_find
 c_func
 (paren
-id|sb
+id|to_kdev_t
+c_func
+(paren
+id|sb-&gt;s_dev
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -429,10 +382,10 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
-id|psdev
+id|channel
 op_assign
 op_amp
-id|upc_comms
+id|izo_channels
 (braket
 id|presto_c2m
 c_func
@@ -449,6 +402,82 @@ c_func
 id|cache-&gt;cache_filter
 )paren
 suffix:semicolon
+id|err
+op_assign
+id|izo_clear_all_fsetroots
+c_func
+(paren
+id|cache
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|CERROR
+c_func
+(paren
+l_string|&quot;%s: err %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|err
+)paren
+suffix:semicolon
+)brace
+id|PRESTO_FREE
+c_func
+(paren
+id|cache-&gt;cache_vfsmount
+comma
+r_sizeof
+(paren
+r_struct
+id|vfsmount
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* look at kill_super - fsync_super is not exported GRRR but &n;           probably not needed */
+id|unlock_super
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+id|shrink_dcache_parent
+c_func
+(paren
+id|cache-&gt;cache_root
+)paren
+suffix:semicolon
+id|dput
+c_func
+(paren
+id|cache-&gt;cache_root
+)paren
+suffix:semicolon
+singleline_comment|//fsync_super(sb); 
+id|lock_super
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sops-&gt;write_super
+)paren
+id|sops
+op_member_access_from_pointer
+id|write_super
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -463,9 +492,16 @@ id|sb
 )paren
 suffix:semicolon
 multiline_comment|/* free any remaining async upcalls when the filesystem is unmounted */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|channel-&gt;uc_lock
+)paren
+suffix:semicolon
 id|lh
 op_assign
-id|psdev-&gt;uc_pending.next
+id|channel-&gt;uc_pending.next
 suffix:semicolon
 r_while
 c_loop
@@ -473,7 +509,7 @@ c_loop
 id|lh
 op_ne
 op_amp
-id|psdev-&gt;uc_pending
+id|channel-&gt;uc_pending
 )paren
 (brace
 r_struct
@@ -541,6 +577,20 @@ id|upc_req
 )paren
 suffix:semicolon
 )brace
+id|list_del
+c_func
+(paren
+op_amp
+id|cache-&gt;cache_channel_list
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|channel-&gt;uc_lock
+)paren
+suffix:semicolon
 id|presto_free_cache
 c_func
 (paren
@@ -566,6 +616,24 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|variable|presto_super_ops
+r_struct
+id|super_operations
+id|presto_super_ops
+op_assign
+(brace
+dot
+id|read_inode
+op_assign
+id|presto_read_inode
+comma
+dot
+id|put_super
+op_assign
+id|presto_put_super
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* symlinks can be chowned */
 DECL|variable|presto_sym_iops
 r_struct
@@ -573,8 +641,9 @@ id|inode_operations
 id|presto_sym_iops
 op_assign
 (brace
+dot
 id|setattr
-suffix:colon
+op_assign
 id|presto_setattr
 )brace
 suffix:semicolon
@@ -583,30 +652,5 @@ DECL|variable|presto_sym_fops
 r_struct
 id|file_operations
 id|presto_sym_fops
-suffix:semicolon
-DECL|variable|presto_super_ops
-r_struct
-id|super_operations
-id|presto_super_ops
-op_assign
-(brace
-id|read_inode
-suffix:colon
-id|presto_read_inode
-comma
-id|put_super
-suffix:colon
-id|presto_put_super
-comma
-id|remount_fs
-suffix:colon
-id|presto_remount
-)brace
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
 suffix:semicolon
 eof
