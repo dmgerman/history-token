@@ -169,6 +169,8 @@ DECL|macro|MS_REC
 mdefine_line|#define MS_REC&t;&t;16384
 DECL|macro|MS_VERBOSE
 mdefine_line|#define MS_VERBOSE&t;32768
+DECL|macro|MS_POSIXACL
+mdefine_line|#define MS_POSIXACL&t;(1&lt;&lt;16)&t;/* VFS does not apply the umask */
 DECL|macro|MS_ACTIVE
 mdefine_line|#define MS_ACTIVE&t;(1&lt;&lt;30)
 DECL|macro|MS_NOUSER
@@ -221,6 +223,8 @@ DECL|macro|IS_NOATIME
 mdefine_line|#define IS_NOATIME(inode)&t;(__IS_FLG(inode, MS_NOATIME) || ((inode)-&gt;i_flags &amp; S_NOATIME))
 DECL|macro|IS_NODIRATIME
 mdefine_line|#define IS_NODIRATIME(inode)&t;__IS_FLG(inode, MS_NODIRATIME)
+DECL|macro|IS_POSIXACL
+mdefine_line|#define IS_POSIXACL(inode)&t;__IS_FLG(inode, MS_POSIXACL)
 DECL|macro|IS_DEADDIR
 mdefine_line|#define IS_DEADDIR(inode)&t;((inode)-&gt;i_flags &amp; S_DEAD)
 multiline_comment|/* the read-only stuff doesn&squot;t really belong here, but any other place is&n;   probably as bad and I don&squot;t want to create yet another include file. */
@@ -5227,6 +5231,15 @@ id|sector_t
 suffix:semicolon
 r_extern
 r_int
+id|setattr_mask
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|notify_change
 c_func
 (paren
@@ -5763,6 +5776,16 @@ suffix:semicolon
 r_extern
 r_void
 id|clear_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|destroy_inode
 c_func
 (paren
 r_struct

@@ -79,8 +79,10 @@ DECL|macro|TUNER_TEMIC_4136FY5
 mdefine_line|#define TUNER_TEMIC_4136FY5&t;36&t;/* 4136 FY5 (3X 7708, 7746)*/
 DECL|macro|TUNER_LG_PAL_NEW_TAPC
 mdefine_line|#define TUNER_LG_PAL_NEW_TAPC   37
-DECL|macro|TUNER_PHILIPS_FM1216ME
-mdefine_line|#define TUNER_PHILIPS_FM1216ME  38
+DECL|macro|TUNER_PHILIPS_FM1216ME_MK3
+mdefine_line|#define TUNER_PHILIPS_FM1216ME_MK3  38
+DECL|macro|TUNER_LG_NTSC_NEW_TAPC
+mdefine_line|#define TUNER_LG_NTSC_NEW_TAPC   39
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL
@@ -113,9 +115,9 @@ DECL|macro|TUNER_SET_TYPE
 mdefine_line|#define TUNER_SET_TYPE               _IOW(&squot;t&squot;,1,int)    /* set tuner type */
 DECL|macro|TUNER_SET_TVFREQ
 mdefine_line|#define TUNER_SET_TVFREQ             _IOW(&squot;t&squot;,2,int)    /* set tv freq */
-DECL|macro|TUNER_SET_RADIOFREQ
-mdefine_line|#define TUNER_SET_RADIOFREQ          _IOW(&squot;t&squot;,3,int)    /* set radio freq */
-DECL|macro|TUNER_SET_MODE
-mdefine_line|#define TUNER_SET_MODE               _IOW(&squot;t&squot;,4,int)    /* set tuner mode */
+macro_line|#if 0 /* obsolete */
+macro_line|# define TUNER_SET_RADIOFREQ         _IOW(&squot;t&squot;,3,int)    /* set radio freq */
+macro_line|# define TUNER_SET_MODE              _IOW(&squot;t&squot;,4,int)    /* set tuner mode */
+macro_line|#endif
 macro_line|#endif
 eof

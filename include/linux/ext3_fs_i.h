@@ -76,6 +76,20 @@ DECL|member|i_dir_start_lookup
 id|__u32
 id|i_dir_start_lookup
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT3_FS_POSIX_ACL
+DECL|member|i_acl
+r_struct
+id|posix_acl
+op_star
+id|i_acl
+suffix:semicolon
+DECL|member|i_default_acl
+r_struct
+id|posix_acl
+op_star
+id|i_default_acl
+suffix:semicolon
+macro_line|#endif
 DECL|member|i_orphan
 r_struct
 id|list_head

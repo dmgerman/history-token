@@ -132,7 +132,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Temporary debugging check for pages not lying within a given zone.&n; */
 DECL|function|bad_range
 r_static
-r_inline
 r_int
 id|bad_range
 c_func

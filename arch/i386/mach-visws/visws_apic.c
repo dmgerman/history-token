@@ -880,13 +880,16 @@ id|irq_controller_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * handle this &squot;virtual interrupt&squot; as a Cobalt one now.&n;&t; */
-id|kstat.irqs
-(braket
+id|kstat_cpu
+c_func
+(paren
 id|smp_processor_id
 c_func
 (paren
 )paren
-)braket
+)paren
+dot
+id|irqs
 (braket
 id|irq
 )braket

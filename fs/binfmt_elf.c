@@ -2549,6 +2549,10 @@ id|current-&gt;mm-&gt;rss
 op_assign
 l_int|0
 suffix:semicolon
+id|current-&gt;mm-&gt;free_area_cache
+op_assign
+id|TASK_UNMAPPED_BASE
+suffix:semicolon
 id|retval
 op_assign
 id|setup_arg_pages

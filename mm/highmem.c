@@ -746,7 +746,6 @@ suffix:semicolon
 multiline_comment|/*&n; * highmem version, map in to vec&n; */
 DECL|function|bounce_copy_vec
 r_static
-r_inline
 r_void
 id|bounce_copy_vec
 c_func
@@ -881,7 +880,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Simple bounce buffer support for highmem pages. Depending on the&n; * queue gfp mask set, *to may or may not be a highmem page. kmap it&n; * always, it will do the Right Thing&n; */
 DECL|function|copy_to_high_bio_irq
 r_static
-r_inline
 r_void
 id|copy_to_high_bio_irq
 c_func
@@ -1156,7 +1154,6 @@ suffix:semicolon
 )brace
 DECL|function|__bounce_end_io_read
 r_static
-r_inline
 r_void
 id|__bounce_end_io_read
 c_func

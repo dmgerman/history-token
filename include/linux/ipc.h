@@ -76,6 +76,14 @@ DECL|struct|kern_ipc_perm
 r_struct
 id|kern_ipc_perm
 (brace
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+DECL|member|deleted
+r_int
+id|deleted
+suffix:semicolon
 DECL|member|key
 id|key_t
 id|key

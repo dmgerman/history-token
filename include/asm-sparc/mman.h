@@ -49,6 +49,10 @@ DECL|macro|MCL_CURRENT
 mdefine_line|#define MCL_CURRENT     0x2000          /* lock all currently mapped pages */
 DECL|macro|MCL_FUTURE
 mdefine_line|#define MCL_FUTURE      0x4000          /* lock all additions to address space */
+DECL|macro|MAP_POPULATE
+mdefine_line|#define MAP_POPULATE&t;0x8000&t;&t;/* populate (prefault) pagetables */
+DECL|macro|MAP_NONBLOCK
+mdefine_line|#define MAP_NONBLOCK&t;0x10000&t;&t;/* do not block on IO */
 multiline_comment|/* XXX Need to add flags to SunOS&squot;s mctl, mlockall, and madvise system&n; * XXX calls.&n; */
 multiline_comment|/* SunOS sys_mctl() stuff... */
 DECL|macro|MC_SYNC

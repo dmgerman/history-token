@@ -34,10 +34,6 @@ DECL|macro|EXT3_BAD_INO
 mdefine_line|#define&t;EXT3_BAD_INO&t;&t; 1&t;/* Bad blocks inode */
 DECL|macro|EXT3_ROOT_INO
 mdefine_line|#define EXT3_ROOT_INO&t;&t; 2&t;/* Root inode */
-DECL|macro|EXT3_ACL_IDX_INO
-mdefine_line|#define EXT3_ACL_IDX_INO&t; 3&t;/* ACL inode */
-DECL|macro|EXT3_ACL_DATA_INO
-mdefine_line|#define EXT3_ACL_DATA_INO&t; 4&t;/* ACL inode */
 DECL|macro|EXT3_BOOT_LOADER_INO
 mdefine_line|#define EXT3_BOOT_LOADER_INO&t; 5&t;/* Boot loader inode */
 DECL|macro|EXT3_UNDEL_DIR_INO
@@ -69,8 +65,6 @@ macro_line|#else
 DECL|macro|EXT3_BLOCK_SIZE
 macro_line|# define EXT3_BLOCK_SIZE(s)&t;&t;(EXT3_MIN_BLOCK_SIZE &lt;&lt; (s)-&gt;s_log_block_size)
 macro_line|#endif
-DECL|macro|EXT3_ACLE_PER_BLOCK
-mdefine_line|#define EXT3_ACLE_PER_BLOCK(s)&t;&t;(EXT3_BLOCK_SIZE(s) / sizeof (struct ext3_acl_entry))
 DECL|macro|EXT3_ADDR_PER_BLOCK
 mdefine_line|#define&t;EXT3_ADDR_PER_BLOCK(s)&t;&t;(EXT3_BLOCK_SIZE(s) / sizeof (__u32))
 macro_line|#ifdef __KERNEL__
@@ -111,66 +105,6 @@ macro_line|# define EXT3_FRAG_SIZE(s)&t;&t;(EXT3_MIN_FRAG_SIZE &lt;&lt; (s)-&gt;
 DECL|macro|EXT3_FRAGS_PER_BLOCK
 macro_line|# define EXT3_FRAGS_PER_BLOCK(s)&t;(EXT3_BLOCK_SIZE(s) / EXT3_FRAG_SIZE(s))
 macro_line|#endif
-multiline_comment|/*&n; * ACL structures&n; */
-DECL|struct|ext3_acl_header
-r_struct
-id|ext3_acl_header
-multiline_comment|/* Header of Access Control Lists */
-(brace
-DECL|member|aclh_size
-id|__u32
-id|aclh_size
-suffix:semicolon
-DECL|member|aclh_file_count
-id|__u32
-id|aclh_file_count
-suffix:semicolon
-DECL|member|aclh_acle_count
-id|__u32
-id|aclh_acle_count
-suffix:semicolon
-DECL|member|aclh_first_acle
-id|__u32
-id|aclh_first_acle
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|ext3_acl_entry
-r_struct
-id|ext3_acl_entry
-multiline_comment|/* Access Control List Entry */
-(brace
-DECL|member|acle_size
-id|__u32
-id|acle_size
-suffix:semicolon
-DECL|member|acle_perms
-id|__u16
-id|acle_perms
-suffix:semicolon
-multiline_comment|/* Access permissions */
-DECL|member|acle_type
-id|__u16
-id|acle_type
-suffix:semicolon
-multiline_comment|/* Type of entry */
-DECL|member|acle_tag
-id|__u16
-id|acle_tag
-suffix:semicolon
-multiline_comment|/* User or group identity */
-DECL|member|acle_pad1
-id|__u16
-id|acle_pad1
-suffix:semicolon
-DECL|member|acle_next
-id|__u32
-id|acle_next
-suffix:semicolon
-multiline_comment|/* Pointer on next entry for the */
-multiline_comment|/* same inode or on next free entry */
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * Structure of a blocks group descriptor&n; */
 DECL|struct|ext3_group_desc
 r_struct
@@ -620,6 +554,10 @@ DECL|macro|EXT3_MOUNT_UPDATE_JOURNAL
 mdefine_line|#define EXT3_MOUNT_UPDATE_JOURNAL&t;0x1000&t;/* Update the journal format */
 DECL|macro|EXT3_MOUNT_NO_UID32
 mdefine_line|#define EXT3_MOUNT_NO_UID32&t;&t;0x2000  /* Disable 32-bit UIDs */
+DECL|macro|EXT3_MOUNT_XATTR_USER
+mdefine_line|#define EXT3_MOUNT_XATTR_USER&t;&t;0x4000&t;/* Extended user attributes */
+DECL|macro|EXT3_MOUNT_POSIX_ACL
+mdefine_line|#define EXT3_MOUNT_POSIX_ACL&t;&t;0x8000&t;/* POSIX Access Control Lists */
 multiline_comment|/* Compatibility, for having both ext2_fs.h and ext3_fs.h included at once */
 macro_line|#ifndef _LINUX_EXT2_FS_H
 DECL|macro|clear_opt
@@ -921,11 +859,20 @@ DECL|member|s_reserved_word_pad
 id|__u16
 id|s_reserved_word_pad
 suffix:semicolon
+DECL|member|s_default_mount_opts
+id|__u32
+id|s_default_mount_opts
+suffix:semicolon
+DECL|member|s_first_meta_bg
+id|__u32
+id|s_first_meta_bg
+suffix:semicolon
+multiline_comment|/* First metablock block group */
 DECL|member|s_reserved
 id|__u32
 id|s_reserved
 (braket
-l_int|192
+l_int|190
 )braket
 suffix:semicolon
 multiline_comment|/* Padding to the end of the block */
@@ -1053,8 +1000,12 @@ DECL|macro|EXT3_FEATURE_INCOMPAT_RECOVER
 mdefine_line|#define EXT3_FEATURE_INCOMPAT_RECOVER&t;&t;0x0004 /* Needs recovery */
 DECL|macro|EXT3_FEATURE_INCOMPAT_JOURNAL_DEV
 mdefine_line|#define EXT3_FEATURE_INCOMPAT_JOURNAL_DEV&t;0x0008 /* Journal device */
+DECL|macro|EXT3_FEATURE_INCOMPAT_META_BG
+mdefine_line|#define EXT3_FEATURE_INCOMPAT_META_BG&t;&t;0x0010
 DECL|macro|EXT3_FEATURE_COMPAT_SUPP
-mdefine_line|#define EXT3_FEATURE_COMPAT_SUPP&t;0
+mdefine_line|#define EXT3_FEATURE_COMPAT_SUPP&t;EXT2_FEATURE_COMPAT_EXT_ATTR
+DECL|macro|EXT2_FEATURE_INCOMPAT_SUPP
+mdefine_line|#define EXT2_FEATURE_INCOMPAT_SUPP&t;(EXT2_FEATURE_INCOMPAT_FILETYPE| &bslash;&n;&t;&t;&t;&t;&t; EXT2_FEATURE_INCOMPAT_META_BG)
 DECL|macro|EXT3_FEATURE_INCOMPAT_SUPP
 mdefine_line|#define EXT3_FEATURE_INCOMPAT_SUPP&t;(EXT3_FEATURE_INCOMPAT_FILETYPE| &bslash;&n;&t;&t;&t;&t;&t; EXT3_FEATURE_INCOMPAT_RECOVER)
 DECL|macro|EXT3_FEATURE_RO_COMPAT_SUPP
@@ -1064,6 +1015,25 @@ DECL|macro|EXT3_DEF_RESUID
 mdefine_line|#define&t;EXT3_DEF_RESUID&t;&t;0
 DECL|macro|EXT3_DEF_RESGID
 mdefine_line|#define&t;EXT3_DEF_RESGID&t;&t;0
+multiline_comment|/*&n; * Default mount options&n; */
+DECL|macro|EXT3_DEFM_DEBUG
+mdefine_line|#define EXT3_DEFM_DEBUG&t;&t;0x0001
+DECL|macro|EXT3_DEFM_BSDGROUPS
+mdefine_line|#define EXT3_DEFM_BSDGROUPS&t;0x0002
+DECL|macro|EXT3_DEFM_XATTR_USER
+mdefine_line|#define EXT3_DEFM_XATTR_USER&t;0x0004
+DECL|macro|EXT3_DEFM_ACL
+mdefine_line|#define EXT3_DEFM_ACL&t;&t;0x0008
+DECL|macro|EXT3_DEFM_UID16
+mdefine_line|#define EXT3_DEFM_UID16&t;&t;0x0010
+DECL|macro|EXT3_DEFM_JMODE
+mdefine_line|#define EXT3_DEFM_JMODE&t;&t;0x0060
+DECL|macro|EXT3_DEFM_JMODE_DATA
+mdefine_line|#define EXT3_DEFM_JMODE_DATA&t;0x0020
+DECL|macro|EXT3_DEFM_JMODE_ORDERED
+mdefine_line|#define EXT3_DEFM_JMODE_ORDERED&t;0x0040
+DECL|macro|EXT3_DEFM_JMODE_WBACK
+mdefine_line|#define EXT3_DEFM_JMODE_WBACK&t;0x0060
 multiline_comment|/*&n; * Structure of a directory entry&n; */
 DECL|macro|EXT3_NAME_LEN
 mdefine_line|#define EXT3_NAME_LEN 255
@@ -1565,6 +1535,27 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* inode.c */
+r_extern
+r_int
+id|ext3_forget
+c_func
+(paren
+id|handle_t
+op_star
+comma
+r_int
+comma
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|buffer_head
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|buffer_head
@@ -2078,7 +2069,17 @@ r_struct
 id|inode_operations
 id|ext3_dir_inode_operations
 suffix:semicolon
+r_extern
+r_struct
+id|inode_operations
+id|ext3_special_inode_operations
+suffix:semicolon
 multiline_comment|/* symlink.c */
+r_extern
+r_struct
+id|inode_operations
+id|ext3_symlink_inode_operations
+suffix:semicolon
 r_extern
 r_struct
 id|inode_operations

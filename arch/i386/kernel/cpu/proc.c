@@ -444,6 +444,45 @@ comma
 id|c-&gt;x86_cache_size
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|cpu_has_ht
+)paren
+(brace
+r_extern
+r_int
+id|phys_proc_id
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;physical id&bslash;t: %d&bslash;n&quot;
+comma
+id|phys_proc_id
+(braket
+id|n
+)braket
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;siblings&bslash;t: %d&bslash;n&quot;
+comma
+id|smp_num_siblings
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* We use exception 16 if we have hardware math and we&squot;ve either seen it or the CPU claims it is internal */
 id|fpu_exception
 op_assign

@@ -454,7 +454,7 @@ c_func
 (paren
 id|path
 comma
-l_string|&quot;/sys/bus/block/devices/%s/dev&quot;
+l_string|&quot;/sys/block/%s/dev&quot;
 comma
 id|name
 )paren
@@ -572,7 +572,7 @@ c_func
 (paren
 id|path
 comma
-l_string|&quot;/sys/bus/block/devices/%s/range&quot;
+l_string|&quot;/sys/block/%s/range&quot;
 comma
 id|name
 )paren
@@ -737,11 +737,11 @@ c_cond
 id|sys_mount
 c_func
 (paren
-l_string|&quot;driverfs&quot;
+l_string|&quot;sysfs&quot;
 comma
 l_string|&quot;/sys&quot;
 comma
-l_string|&quot;driverfs&quot;
+l_string|&quot;sysfs&quot;
 comma
 l_int|0
 comma

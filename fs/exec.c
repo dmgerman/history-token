@@ -1157,7 +1157,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|lru_cache_add
+id|lru_cache_add_active
 c_func
 (paren
 id|page

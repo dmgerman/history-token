@@ -359,6 +359,12 @@ op_star
 id|mmap_cache
 suffix:semicolon
 multiline_comment|/* last find_vma result */
+DECL|member|free_area_cache
+r_int
+r_int
+id|free_area_cache
+suffix:semicolon
+multiline_comment|/* first hole */
 DECL|member|pgd
 id|pgd_t
 op_star

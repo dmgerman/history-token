@@ -2,6 +2,29 @@ multiline_comment|/* &n;   Unix SMB/Netbios implementation.&n;   Version 1.9.&n;
 macro_line|#ifndef _NTERR_H
 DECL|macro|_NTERR_H
 mdefine_line|#define _NTERR_H
+DECL|struct|nt_err_code_struct
+r_struct
+id|nt_err_code_struct
+(brace
+DECL|member|nt_errstr
+r_char
+op_star
+id|nt_errstr
+suffix:semicolon
+DECL|member|nt_errcode
+id|__u32
+id|nt_errcode
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_const
+r_struct
+id|nt_err_code_struct
+id|nt_errs
+(braket
+)braket
+suffix:semicolon
 multiline_comment|/* Win32 Status codes. */
 DECL|macro|STATUS_BUFFER_OVERFLOW
 mdefine_line|#define STATUS_BUFFER_OVERFLOW            0x80000005

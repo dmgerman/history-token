@@ -2606,13 +2606,6 @@ id|loops_per_jiffy
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|kstat
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kstat
-)paren
-suffix:semicolon
 multiline_comment|/* misc */
 DECL|variable|panic
 id|EXPORT_SYMBOL

@@ -1396,11 +1396,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* microsecs */
-DECL|variable|kstat
-r_struct
-id|kernel_stat
-id|kstat
-suffix:semicolon
 multiline_comment|/*&n; * phase-lock loop variables&n; */
 multiline_comment|/* TIME_ERROR prevents overwriting the CMOS clock */
 DECL|variable|time_state

@@ -386,6 +386,19 @@ id|mapping
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* Be more reluctant to reclaim swapcache than pagecache */
+r_if
+c_cond
+(paren
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
 multiline_comment|/* File is mmap&squot;d by somebody. */
 r_if
 c_cond
@@ -397,7 +410,13 @@ c_func
 op_amp
 id|mapping-&gt;i_mmap
 )paren
-op_logical_or
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|list_empty
 c_func
@@ -446,7 +465,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * shrink_list returns the number of reclaimed pages&n; */
 r_static
-multiline_comment|/* inline */
 r_int
 DECL|function|shrink_list
 id|shrink_list
@@ -1224,7 +1242,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * zone-&gt;lru_lock is heavily contented.  We relieve it by quickly privatising&n; * a batch of pages and working on them outside the lock.  Any pages which were&n; * not freed will be added back to the LRU.&n; *&n; * shrink_cache() is passed the number of pages to try to free, and returns&n; * the number of pages which were reclaimed.&n; *&n; * For pagecache intensive workloads, the first loop here is the hottest spot&n; * in the kernel (apart from the copy_*_user functions).&n; */
 r_static
-multiline_comment|/* inline */
 r_int
 DECL|function|shrink_cache
 id|shrink_cache
@@ -1661,7 +1678,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This moves pages from the active list to the inactive list.&n; *&n; * We move them the other way if the page is referenced by one or more&n; * processes, from rmap.&n; *&n; * If the pages are mostly unmapped, the processing is fast and it is&n; * appropriate to hold zone-&gt;lru_lock across the whole operation.  But if&n; * the pages are mapped, the processing is slow (page_referenced()) so we&n; * should drop zone-&gt;lru_lock around each page.  It&squot;s impossible to balance&n; * this, so instead we remove the pages from the LRU while processing them.&n; * It is safe to rely on PG_active against the non-LRU pages in here because&n; * nobody will play with that bit on a non-LRU page.&n; *&n; * The downside is that we have to touch page-&gt;count against each page.&n; * But we had to alter page-&gt;flags anyway.&n; */
 r_static
-multiline_comment|/* inline */
 r_void
 DECL|function|refill_inactive_zone
 id|refill_inactive_zone
@@ -2387,7 +2403,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Try to reclaim `nr_pages&squot; from this zone.  Returns the number of reclaimed&n; * pages.  This is a basic per-zone page freer.  Used by both kswapd and&n; * direct reclaim.&n; */
 r_static
-multiline_comment|/* inline */
 r_int
 DECL|function|shrink_zone
 id|shrink_zone

@@ -160,10 +160,13 @@ op_ne
 id|boot_cpuid
 )paren
 (brace
-id|kstat.irqs
-(braket
+id|kstat_cpu
+c_func
+(paren
 id|cpu
-)braket
+)paren
+dot
+id|irqs
 (braket
 id|RTC_IRQ
 )braket

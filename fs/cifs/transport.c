@@ -165,6 +165,13 @@ op_eq
 id|CifsGood
 )paren
 (brace
+id|write_lock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -185,6 +192,13 @@ suffix:semicolon
 id|temp-&gt;midState
 op_assign
 id|MID_REQUEST_ALLOCATED
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -233,15 +247,16 @@ id|midEntry
 )paren
 (brace
 multiline_comment|/* BB add spinlock to protect midq for each session BB */
+id|write_lock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
 id|midEntry-&gt;midState
 op_assign
 id|MID_FREE
-suffix:semicolon
-id|buf_release
-c_func
-(paren
-id|midEntry-&gt;resp_buf
-)paren
 suffix:semicolon
 id|list_del
 c_func
@@ -250,19 +265,32 @@ op_amp
 id|midEntry-&gt;qhead
 )paren
 suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|midCount
+)paren
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
+id|buf_release
+c_func
+(paren
+id|midEntry-&gt;resp_buf
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren
 id|cifs_mid_cachep
 comma
 id|midEntry
-)paren
-suffix:semicolon
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|midCount
 )paren
 suffix:semicolon
 )brace
@@ -616,20 +644,6 @@ id|ses-&gt;server-&gt;sockAddr
 )paren
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;ncifs smb_send rc %d&quot;
-comma
-id|rc
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB remove */
-multiline_comment|/* BB add code to wait for response and copy to out_buf */
 r_if
 c_cond
 (paren
@@ -681,9 +695,7 @@ id|midState
 op_amp
 id|MID_RESPONSE_RECEIVED
 comma
-l_int|15
-op_star
-id|HZ
+id|timeout
 )paren
 suffix:semicolon
 id|cFYI
@@ -979,7 +991,7 @@ c_func
 id|midQ
 )paren
 suffix:semicolon
-multiline_comment|/* BB what if process is killed ? - BB add background daemon to clean up Mid entries from killed processes BB test killing process with active mid */
+multiline_comment|/* BB what if process is killed?&n;&t;&t;&t; - BB add background daemon to clean up Mid entries from&n;&t;&t;&t; killed processes &amp; test killing process with active mid */
 r_return
 id|rc
 suffix:semicolon

@@ -522,10 +522,13 @@ op_amp
 l_int|1
 )paren
 (brace
-id|kstat.irqs
-(braket
+id|kstat_cpu
+c_func
+(paren
 l_int|0
-)braket
+)paren
+dot
+id|irqs
 (braket
 id|irq
 )braket

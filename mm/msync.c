@@ -127,7 +127,6 @@ suffix:semicolon
 )brace
 DECL|function|filemap_sync_pte_range
 r_static
-r_inline
 r_int
 id|filemap_sync_pte_range
 c_func
