@@ -419,7 +419,7 @@ id|EEXIST
 suffix:semicolon
 )brace
 )brace
-id|spin_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -472,7 +472,7 @@ op_assign
 id|ok_push
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp

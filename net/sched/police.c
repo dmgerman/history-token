@@ -1035,7 +1035,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* No failure allowed after this point */
-id|spin_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -1211,7 +1211,7 @@ id|est
 )paren
 suffix:semicolon
 macro_line|#endif
-id|spin_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
