@@ -1030,6 +1030,19 @@ id|DEFAULT_GPIO_RESET
 id|PEGASUS_DEV
 c_func
 (paren
+l_string|&quot;SOHOware NUB110 Ethernet&quot;
+comma
+id|VENDOR_SOHOWARE
+comma
+l_int|0x9110
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
 l_string|&quot;SpeedStream USB 10/100 Ethernet&quot;
 comma
 id|VENDOR_SIEMENS
