@@ -7328,7 +7328,7 @@ suffix:semicolon
 DECL|function|snd_korg1212_proc_init
 r_static
 r_void
-id|__init
+id|__devinit
 id|snd_korg1212_proc_init
 c_func
 (paren
@@ -7446,7 +7446,7 @@ suffix:semicolon
 DECL|function|snd_korg1212_create
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_korg1212_create
 c_func
 (paren

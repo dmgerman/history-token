@@ -303,6 +303,11 @@ DECL|macro|AC97_ALC650_MULTICH
 mdefine_line|#define AC97_ALC650_MULTICH&t;0x6a
 DECL|macro|AC97_ALC650_CLOCK
 mdefine_line|#define AC97_ALC650_CLOCK&t;0x7a
+multiline_comment|/* specific - Yamaha YMF753 */
+DECL|macro|AC97_YMF753_DIT_CTRL2
+mdefine_line|#define AC97_YMF753_DIT_CTRL2&t;0x66&t;/* DIT Control 2 */
+DECL|macro|AC97_YMF753_3D_MODE_SEL
+mdefine_line|#define AC97_YMF753_3D_MODE_SEL&t;0x68&t;/* 3D Mode Select */
 multiline_comment|/* ac97-&gt;scaps */
 DECL|macro|AC97_SCAP_AUDIO
 mdefine_line|#define AC97_SCAP_AUDIO&t;&t;(1&lt;&lt;0)&t;/* audio AC&squot;97 codec */

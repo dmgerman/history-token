@@ -1240,7 +1240,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;EMU10K1/Audigy&quot;
+l_string|&quot;EMU10K1_Audigy&quot;
 comma
 dot
 id|id_table

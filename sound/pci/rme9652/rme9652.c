@@ -7733,7 +7733,7 @@ suffix:semicolon
 DECL|function|snd_rme9652_proc_init
 r_static
 r_void
-id|__init
+id|__devinit
 id|snd_rme9652_proc_init
 c_func
 (paren
@@ -8016,7 +8016,7 @@ suffix:semicolon
 DECL|function|snd_rme9652_initialize_memory
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_rme9652_initialize_memory
 c_func
 (paren
@@ -10959,7 +10959,7 @@ suffix:semicolon
 DECL|function|snd_rme9652_create_pcm
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_rme9652_create_pcm
 c_func
 (paren
@@ -11059,7 +11059,7 @@ suffix:semicolon
 DECL|function|snd_rme9652_create
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_rme9652_create
 c_func
 (paren
