@@ -419,7 +419,7 @@ id|pr
 op_assign
 id|processors
 (braket
-id|smp_processor_id
+id|_smp_processor_id
 c_func
 (paren
 )paren
