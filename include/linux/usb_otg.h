@@ -344,4 +344,19 @@ id|otg
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* for OTG controller drivers (and maybe other stuff) */
+r_extern
+r_int
+id|usb_bus_start_enum
+c_func
+(paren
+r_struct
+id|usb_bus
+op_star
+id|bus
+comma
+r_int
+id|port_num
+)paren
+suffix:semicolon
 eof
