@@ -1050,6 +1050,13 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* add sysfs device files */
+id|pci_create_sysfs_dev_files
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
