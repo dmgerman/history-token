@@ -512,13 +512,6 @@ c_func
 id|iunique
 )paren
 suffix:semicolon
-DECL|variable|iget4
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iget4
-)paren
-suffix:semicolon
 DECL|variable|iput
 id|EXPORT_SYMBOL
 c_func
@@ -2910,11 +2903,11 @@ c_func
 id|new_inode
 )paren
 suffix:semicolon
-DECL|variable|insert_inode_hash
+DECL|variable|__insert_inode_hash
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|insert_inode_hash
+id|__insert_inode_hash
 )paren
 suffix:semicolon
 DECL|variable|remove_inode_hash

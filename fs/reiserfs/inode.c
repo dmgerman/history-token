@@ -75,6 +75,13 @@ multiline_comment|/* The = 0 happens when we abort creating a new inode for some
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|inode-&gt;i_state
+op_amp
+id|I_NEW
+)paren
+op_logical_and
 id|INODE_PKEY
 c_func
 (paren
@@ -3483,7 +3490,7 @@ singleline_comment|// of old type. Version stored in the inode says about body i
 singleline_comment|// in update_stat_data we can not rely on inode, but have to check
 singleline_comment|// item version directly
 singleline_comment|//
-singleline_comment|// called by read_inode
+singleline_comment|// called by read_locked_inode
 DECL|function|init_inode
 r_static
 r_void
@@ -4750,7 +4757,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* reiserfs_read_inode2 is called to read the inode off disk, and it&n;** does a make_bad_inode when things go wrong.  But, we need to make sure&n;** and clear the key in the private portion of the inode, otherwise a&n;** corresponding iput might try to delete whatever object the inode last&n;** represented.&n;*/
+multiline_comment|/* reiserfs_read_locked_inode is called to read the inode off disk, and it&n;** does a make_bad_inode when things go wrong.  But, we need to make sure&n;** and clear the key in the private portion of the inode, otherwise a&n;** corresponding iput might try to delete whatever object the inode last&n;** represented.&n;*/
 DECL|function|reiserfs_make_bad_inode
 r_static
 r_void
@@ -4784,32 +4791,13 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-DECL|function|reiserfs_read_inode
-r_void
-id|reiserfs_read_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-id|reiserfs_make_bad_inode
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
-)brace
 singleline_comment|//
 singleline_comment|// initially this function was derived from minix or ext2&squot;s analog and
 singleline_comment|// evolved as the prototype did
 singleline_comment|//
-multiline_comment|/* looks for stat data in the tree, and fills up the fields of in-core&n;   inode stat data fields */
-DECL|function|reiserfs_read_inode2
-r_void
-id|reiserfs_read_inode2
+DECL|function|reiserfs_init_locked_inode
+r_int
+id|reiserfs_init_locked_inode
 (paren
 r_struct
 id|inode
@@ -4821,6 +4809,56 @@ op_star
 id|p
 )paren
 (brace
+r_struct
+id|reiserfs_iget_args
+op_star
+id|args
+op_assign
+(paren
+r_struct
+id|reiserfs_iget_args
+op_star
+)paren
+id|p
+suffix:semicolon
+id|inode-&gt;i_ino
+op_assign
+id|args-&gt;objectid
+suffix:semicolon
+id|INODE_PKEY
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|k_dir_id
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|args-&gt;dirid
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* looks for stat data in the tree, and fills up the fields of in-core&n;   inode stat data fields */
+DECL|function|reiserfs_read_locked_inode
+r_void
+id|reiserfs_read_locked_inode
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|reiserfs_iget_args
+op_star
+id|args
+)paren
+(brace
 id|INITIALIZE_PATH
 (paren
 id|path_to_sd
@@ -4830,18 +4868,6 @@ r_struct
 id|cpu_key
 id|key
 suffix:semicolon
-r_struct
-id|reiserfs_iget4_args
-op_star
-id|args
-op_assign
-(paren
-r_struct
-id|reiserfs_iget4_args
-op_star
-)paren
-id|p
-suffix:semicolon
 r_int
 r_int
 id|dirino
@@ -4849,25 +4875,9 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|p
-)paren
-(brace
-id|reiserfs_make_bad_inode
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|dirino
 op_assign
-id|args-&gt;objectid
+id|args-&gt;dirid
 suffix:semicolon
 multiline_comment|/* set version 1, version 2 could be used too, because stat data&n;       key is the same in both versions */
 id|key.version
@@ -4914,7 +4924,7 @@ id|IO_ERROR
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-13070: reiserfs_read_inode2: &quot;
+l_string|&quot;vs-13070: reiserfs_read_locked_inode: &quot;
 l_string|&quot;i/o failure occurred trying to find stat data of %K&bslash;n&quot;
 comma
 op_amp
@@ -4994,7 +5004,7 @@ id|s_is_unlinked_ok
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;vs-13075: reiserfs_read_inode2: &quot;
+l_string|&quot;vs-13075: reiserfs_read_locked_inode: &quot;
 l_string|&quot;dead inode read from disk %K. &quot;
 l_string|&quot;This is likely to be race with knfsd. Ignore&bslash;n&quot;
 comma
@@ -5018,9 +5028,8 @@ id|path_to_sd
 suffix:semicolon
 multiline_comment|/* init inode should be relsing */
 )brace
-multiline_comment|/**&n; * reiserfs_find_actor() - &quot;find actor&quot; reiserfs supplies to iget4().&n; *&n; * @inode:    inode from hash table to check&n; * @inode_no: inode number we are looking for&n; * @opaque:   &quot;cookie&quot; passed to iget4(). This is &amp;reiserfs_iget4_args.&n; *&n; * This function is called by iget4() to distinguish reiserfs inodes&n; * having the same inode numbers. Such inodes can only exist due to some&n; * error condition. One of them should be bad. Inodes with identical&n; * inode numbers (objectids) are distinguished by parent directory ids.&n; *&n; */
+multiline_comment|/**&n; * reiserfs_find_actor() - &quot;find actor&quot; reiserfs supplies to iget5_locked().&n; *&n; * @inode:    inode from hash table to check&n; * @opaque:   &quot;cookie&quot; passed to iget5_locked(). This is &amp;reiserfs_iget_args.&n; *&n; * This function is called by iget5_locked() to distinguish reiserfs inodes&n; * having the same inode numbers. Such inodes can only exist due to some&n; * error condition. One of them should be bad. Inodes with identical&n; * inode numbers (objectids) are distinguished by parent directory ids.&n; *&n; */
 DECL|function|reiserfs_find_actor
-r_static
 r_int
 id|reiserfs_find_actor
 c_func
@@ -5030,17 +5039,13 @@ id|inode
 op_star
 id|inode
 comma
-r_int
-r_int
-id|inode_no
-comma
 r_void
 op_star
 id|opaque
 )paren
 (brace
 r_struct
-id|reiserfs_iget4_args
+id|reiserfs_iget_args
 op_star
 id|args
 suffix:semicolon
@@ -5050,6 +5055,13 @@ id|opaque
 suffix:semicolon
 multiline_comment|/* args is already in CPU order */
 r_return
+(paren
+id|inode-&gt;i_ino
+op_eq
+id|args-&gt;objectid
+)paren
+op_logical_and
+(paren
 id|le32_to_cpu
 c_func
 (paren
@@ -5062,9 +5074,8 @@ op_member_access_from_pointer
 id|k_dir_id
 )paren
 op_eq
-id|args
-op_member_access_from_pointer
-id|objectid
+id|args-&gt;dirid
+)paren
 suffix:semicolon
 )brace
 DECL|function|reiserfs_iget
@@ -5091,22 +5102,28 @@ op_star
 id|inode
 suffix:semicolon
 r_struct
-id|reiserfs_iget4_args
+id|reiserfs_iget_args
 id|args
 suffix:semicolon
 id|args.objectid
+op_assign
+id|key-&gt;on_disk_key.k_objectid
+suffix:semicolon
+id|args.dirid
 op_assign
 id|key-&gt;on_disk_key.k_dir_id
 suffix:semicolon
 id|inode
 op_assign
-id|iget4
+id|iget5_locked
 (paren
 id|s
 comma
 id|key-&gt;on_disk_key.k_objectid
 comma
 id|reiserfs_find_actor
+comma
+id|reiserfs_init_locked_inode
 comma
 (paren
 r_void
@@ -5132,6 +5149,30 @@ op_minus
 id|ENOMEM
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode-&gt;i_state
+op_amp
+id|I_NEW
+)paren
+(brace
+id|reiserfs_read_locked_inode
+c_func
+(paren
+id|inode
+comma
+op_amp
+id|args
+)paren
+suffix:semicolon
+id|unlock_new_inode
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
