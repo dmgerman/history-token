@@ -3240,7 +3240,6 @@ multiline_comment|/* We can do this because the generic code knows not to&n;&t;&
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -3257,7 +3256,7 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;NFTL %s request, from sector 0x%04lx for 0x%04lx sectors&bslash;n&quot;
+l_string|&quot;NFTL %s request, from sector 0x%04lx for %d sectors&bslash;n&quot;
 comma
 (paren
 id|req-&gt;cmd
@@ -3541,7 +3540,11 @@ r_else
 r_if
 c_cond
 (paren
-id|req-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|req
+)paren
 op_eq
 id|WRITE
 )paren
@@ -3686,7 +3689,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -4003,6 +4005,13 @@ id|nftlmountrev
 (braket
 )braket
 suffix:semicolon
+DECL|variable|nftl_lock
+r_static
+id|spinlock_t
+id|nftl_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|init_nftl
 r_int
 id|__init
@@ -4012,9 +4021,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 macro_line|#ifdef PRERELEASE 
 id|printk
 c_func
@@ -4067,6 +4073,9 @@ id|MAJOR_NR
 comma
 op_amp
 id|nftl_request
+comma
+op_amp
+id|nftl_lock
 )paren
 suffix:semicolon
 id|add_gendisk
