@@ -3923,7 +3923,7 @@ id|ctrl-&gt;bRequestType
 comma
 id|ctrl-&gt;bRequest
 comma
-id|w_value
+id|ctrl-&gt;wValue
 comma
 id|w_index
 comma
