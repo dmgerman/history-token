@@ -584,7 +584,7 @@ id|DECLARE_SNMP_STAT
 c_func
 (paren
 r_struct
-id|ip_mib
+id|ipstats_mib
 comma
 id|ip_statistics
 )paren

@@ -750,7 +750,7 @@ multiline_comment|/*&n;&t; *&t;If the indicated interface is up and running, sen
 id|IP_INC_STATS
 c_func
 (paren
-id|IpOutRequests
+id|OutRequests
 )paren
 suffix:semicolon
 id|skb-&gt;dev
@@ -965,7 +965,7 @@ id|skb
 id|IP_INC_STATS
 c_func
 (paren
-id|IpOutRequests
+id|OutRequests
 )paren
 suffix:semicolon
 r_if
@@ -1561,7 +1561,7 @@ suffix:colon
 id|IP_INC_STATS
 c_func
 (paren
-id|IpOutNoRoutes
+id|OutNoRoutes
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -2217,7 +2217,7 @@ l_int|0
 id|IP_INC_STATS
 c_func
 (paren
-id|IpFragOKs
+id|FragOKs
 )paren
 suffix:semicolon
 r_return
@@ -2248,7 +2248,7 @@ suffix:semicolon
 id|IP_INC_STATS
 c_func
 (paren
-id|IpFragFails
+id|FragFails
 )paren
 suffix:semicolon
 r_return
@@ -2561,7 +2561,7 @@ multiline_comment|/*&n;&t;&t; *&t;Put this fragment into the sending queue.&n;&t
 id|IP_INC_STATS
 c_func
 (paren
-id|IpFragCreates
+id|FragCreates
 )paren
 suffix:semicolon
 id|iph-&gt;tot_len
@@ -2606,7 +2606,7 @@ suffix:semicolon
 id|IP_INC_STATS
 c_func
 (paren
-id|IpFragOKs
+id|FragOKs
 )paren
 suffix:semicolon
 r_return
@@ -2623,7 +2623,7 @@ suffix:semicolon
 id|IP_INC_STATS
 c_func
 (paren
-id|IpFragFails
+id|FragFails
 )paren
 suffix:semicolon
 r_return
@@ -4021,7 +4021,7 @@ suffix:semicolon
 id|IP_INC_STATS
 c_func
 (paren
-id|IpOutDiscards
+id|OutDiscards
 )paren
 suffix:semicolon
 r_return
@@ -4562,7 +4562,7 @@ suffix:semicolon
 id|IP_INC_STATS
 c_func
 (paren
-id|IpOutDiscards
+id|OutDiscards
 )paren
 suffix:semicolon
 r_return
@@ -5067,7 +5067,7 @@ suffix:colon
 id|IP_INC_STATS
 c_func
 (paren
-id|IpOutDiscards
+id|OutDiscards
 )paren
 suffix:semicolon
 r_goto
