@@ -2510,9 +2510,12 @@ op_amp
 id|atm_vcc-&gt;stats-&gt;rx
 )paren
 suffix:semicolon
+id|do_gettimeofday
+c_func
+(paren
+op_amp
 id|skb-&gt;stamp
-op_assign
-id|xtime
+)paren
 suffix:semicolon
 id|fs_dprintk
 (paren
