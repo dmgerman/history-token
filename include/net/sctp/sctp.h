@@ -52,6 +52,10 @@ macro_line|#ifndef SCTP_STATIC
 DECL|macro|SCTP_STATIC
 mdefine_line|#define SCTP_STATIC static
 macro_line|#endif
+DECL|macro|MSECS_TO_JIFFIES
+mdefine_line|#define MSECS_TO_JIFFIES(msec) (msec * HZ / 1000)
+DECL|macro|JIFFIES_TO_MSECS
+mdefine_line|#define JIFFIES_TO_MSECS(jiff) (jiff * 1000 / HZ)
 multiline_comment|/*&n; * Function declarations.&n; */
 multiline_comment|/*&n; * sctp/protocol.c&n; */
 r_extern
