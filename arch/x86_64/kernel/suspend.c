@@ -20,7 +20,6 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 DECL|variable|saved_context
-r_static
 r_struct
 id|saved_context
 id|saved_context

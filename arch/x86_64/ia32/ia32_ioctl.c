@@ -29,6 +29,7 @@ macro_line|#include &lt;linux/mtio.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/loop.h&gt;
 macro_line|#include &lt;linux/auto_fs.h&gt;
+macro_line|#include &lt;linux/auto_fs4.h&gt;
 macro_line|#include &lt;linux/devfs_fs.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
@@ -50,6 +51,8 @@ macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/if_tun.h&gt;
 macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
+macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 macro_line|#if defined(CONFIG_BLK_DEV_LVM) || defined(CONFIG_BLK_DEV_LVM_MODULE)
 multiline_comment|/* Ugh. This header really is not clean */
 DECL|macro|min
@@ -17834,8 +17837,6 @@ id|ptr
 suffix:semicolon
 r_int
 id|err
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|serial_struct
@@ -17849,12 +17850,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|KERNEL_DS
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17863,11 +17858,6 @@ op_eq
 id|TIOCSSERIAL
 )paren
 (brace
-id|err
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17886,8 +17876,9 @@ id|serial_struct32
 )paren
 )paren
 )paren
-r_goto
-id|out
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|memmove
 c_func
@@ -17936,12 +17927,12 @@ l_int|0xffffffff
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
+id|set_fs
+c_func
 (paren
-op_logical_neg
-id|err
+id|KERNEL_DS
 )paren
+suffix:semicolon
 id|err
 op_assign
 id|sys_ioctl
@@ -17961,6 +17952,12 @@ id|ss
 )paren
 )paren
 suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|oldseg
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17973,9 +17970,6 @@ op_ge
 l_int|0
 )paren
 (brace
-id|__u32
-id|base
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17995,79 +17989,56 @@ id|iomem_base
 )paren
 )paren
 op_logical_or
-id|__copy_to_user
-c_func
-(paren
-op_amp
-id|ss32-&gt;iomem_reg_shift
-comma
-op_amp
-id|ss.iomem_reg_shift
-comma
-r_sizeof
-(paren
-id|SS
-)paren
-op_minus
-m_offsetof
-(paren
-id|SS
-comma
-id|iomem_reg_shift
-)paren
-)paren
-)paren
-id|err
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ss.iomem_base
-OG
-(paren
-r_int
-r_char
-op_star
-)paren
-l_int|0xffffffff
-)paren
-id|base
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-r_else
-id|base
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ss.iomem_base
-suffix:semicolon
-id|err
-op_or_assign
 id|__put_user
 c_func
 (paren
-id|base
+(paren
+r_int
+r_int
+)paren
+id|ss.iomem_base
+op_rshift
+l_int|32
+ques
+c_cond
+l_int|0xffffffff
+suffix:colon
+(paren
+r_int
+)paren
+(paren
+r_int
+r_int
+)paren
+id|ss.iomem_base
 comma
 op_amp
 id|ss32-&gt;iomem_base
 )paren
-suffix:semicolon
-)brace
-id|out
-suffix:colon
-id|set_fs
+op_logical_or
+id|__put_user
 c_func
 (paren
-id|oldseg
+id|ss.iomem_reg_shift
+comma
+op_amp
+id|ss32-&gt;iomem_reg_shift
 )paren
+op_logical_or
+id|__put_user
+c_func
+(paren
+id|ss.port_high
+comma
+op_amp
+id|ss32-&gt;port_high
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_return
 id|err
 suffix:semicolon
@@ -18629,6 +18600,19 @@ id|arg
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Bluetooth ioctls */
+DECL|macro|HCIUARTSETPROTO
+mdefine_line|#define HCIUARTSETPROTO        _IOW(&squot;U&squot;, 200, int)
+DECL|macro|HCIUARTGETPROTO
+mdefine_line|#define HCIUARTGETPROTO        _IOR(&squot;U&squot;, 201, int)
+DECL|macro|BNEPCONNADD
+mdefine_line|#define BNEPCONNADD    _IOW(&squot;B&squot;, 200, int)
+DECL|macro|BNEPCONNDEL
+mdefine_line|#define BNEPCONNDEL    _IOW(&squot;B&squot;, 201, int)
+DECL|macro|BNEPGETCONNLIST
+mdefine_line|#define BNEPGETCONNLIST        _IOR(&squot;B&squot;, 210, int)
+DECL|macro|BNEPGETCONNINFO
+mdefine_line|#define BNEPGETCONNINFO        _IOR(&squot;B&squot;, 211, int)
 DECL|struct|usbdevfs_ctrltransfer32
 r_struct
 id|usbdevfs_ctrltransfer32
@@ -23496,6 +23480,11 @@ c_func
 (paren
 id|AUTOFS_IOC_EXPIRE
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|AUTOFS_IOC_EXPIRE_MULTI
+)paren
 multiline_comment|/* DEVFS */
 id|COMPATIBLE_IOCTL
 c_func
@@ -23958,6 +23947,61 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|HCIINQUIRY
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIUARTSETPROTO
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIUARTGETPROTO
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMCREATEDEV
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMRELEASEDEV
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMGETDEVLIST
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMGETDEVINFO
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMSTEALDLC
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BNEPCONNADD
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BNEPCONNDEL
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BNEPGETCONNLIST
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BNEPGETCONNINFO
 )paren
 multiline_comment|/* Misc. */
 id|COMPATIBLE_IOCTL

@@ -20,9 +20,13 @@ r_void
 id|init_fpu
 c_func
 (paren
-r_void
+r_struct
+id|task_struct
+op_star
+id|child
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|save_i387
 c_func
@@ -62,9 +66,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|me-&gt;thread_info-&gt;flags
+id|me-&gt;thread_info-&gt;status
 op_amp
-id|_TIF_USEDFPU
+id|TS_USEDFPU
 )paren
 r_return
 l_int|0
@@ -77,9 +81,9 @@ multiline_comment|/*&n; * FPU lazy state save handling...&n; */
 DECL|macro|kernel_fpu_end
 mdefine_line|#define kernel_fpu_end() stts()
 DECL|macro|unlazy_fpu
-mdefine_line|#define unlazy_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;flags &amp; _TIF_USEDFPU) &bslash;&n;&t;&t;save_init_fpu(tsk); &bslash;&n;} while (0)
+mdefine_line|#define unlazy_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) &bslash;&n;&t;&t;save_init_fpu(tsk); &bslash;&n;} while (0)
 DECL|macro|clear_fpu
-mdefine_line|#define clear_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;flags &amp; _TIF_USEDFPU) {&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;fwait&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;(tsk)-&gt;thread_info-&gt;flags &amp;= ~_TIF_USEDFPU;&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define clear_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) {&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;fwait&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;(tsk)-&gt;thread_info-&gt;status &amp;= ~TS_USEDFPU;&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|load_mxcsr
 mdefine_line|#define load_mxcsr(val) do { &bslash;&n;&t;&t;unsigned long __mxcsr = ((unsigned long)(val) &amp; 0xffbf); &bslash;&n;&t;&t;asm volatile(&quot;ldmxcsr %0&quot; : : &quot;m&quot; (__mxcsr)); &bslash;&n;} while (0)
 multiline_comment|/*&n; * ptrace request handers...&n; */
@@ -255,42 +259,38 @@ r_void
 )paren
 (brace
 r_struct
-id|task_struct
+id|thread_info
 op_star
 id|me
 op_assign
-id|current
+id|current_thread_info
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_tsk_thread_flag
-c_func
-(paren
-id|me
-comma
-id|TIF_USEDFPU
-)paren
+id|me-&gt;status
+op_amp
+id|TS_USEDFPU
 )paren
 (brace
 id|asm
 r_volatile
 (paren
-l_string|&quot;fxsave %0 ; fnclex&quot;
+l_string|&quot;rex64 ; fxsave %0 ; fnclex&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|me-&gt;thread.i387.fxsave
+id|me-&gt;task-&gt;thread.i387.fxsave
 )paren
 )paren
 suffix:semicolon
-id|clear_tsk_thread_flag
-c_func
-(paren
-id|me
-comma
-id|TIF_USEDFPU
-)paren
+id|me-&gt;status
+op_and_assign
+op_complement
+id|TS_USEDFPU
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -325,10 +325,10 @@ id|tsk-&gt;thread.i387.fxsave
 )paren
 )paren
 suffix:semicolon
-id|tsk-&gt;thread_info-&gt;flags
+id|tsk-&gt;thread_info-&gt;status
 op_and_assign
 op_complement
-id|TIF_USEDFPU
+id|TS_USEDFPU
 suffix:semicolon
 id|stts
 c_func
@@ -361,64 +361,6 @@ op_star
 )paren
 id|buf
 )paren
-suffix:semicolon
-)brace
-DECL|function|empty_fpu
-r_static
-r_inline
-r_void
-id|empty_fpu
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|child
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|child-&gt;used_math
-)paren
-(brace
-multiline_comment|/* Simulate an empty FPU. */
-id|memset
-c_func
-(paren
-op_amp
-id|child-&gt;thread.i387.fxsave
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|i387_fxsave_struct
-)paren
-)paren
-suffix:semicolon
-id|child-&gt;thread.i387.fxsave.cwd
-op_assign
-l_int|0x037f
-suffix:semicolon
-id|child-&gt;thread.i387.fxsave.swd
-op_assign
-l_int|0
-suffix:semicolon
-id|child-&gt;thread.i387.fxsave.twd
-op_assign
-l_int|0
-suffix:semicolon
-id|child-&gt;thread.i387.fxsave.mxcsr
-op_assign
-l_int|0x1f80
-suffix:semicolon
-)brace
-id|child-&gt;used_math
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif /* __ASM_X86_64_I387_H */

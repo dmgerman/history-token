@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/pci-direct.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
 DECL|function|find_northbridge
 r_static
+id|__init
 r_int
 id|find_northbridge
 c_func
@@ -141,13 +142,14 @@ suffix:semicolon
 r_int
 id|nodeid
 comma
-id|numnodes
-comma
-id|maxnode
-comma
 id|i
 comma
 id|nb
+suffix:semicolon
+r_int
+id|found
+op_assign
+l_int|0
 suffix:semicolon
 id|nb
 op_assign
@@ -178,6 +180,10 @@ suffix:semicolon
 id|numnodes
 op_assign
 (paren
+l_int|1
+op_lshift
+(paren
+(paren
 id|read_pci_config
 c_func
 (paren
@@ -194,6 +200,19 @@ l_int|4
 )paren
 op_amp
 l_int|3
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Assuming %d nodes&bslash;n&quot;
+comma
+id|numnodes
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|memset
 c_func
@@ -213,11 +232,6 @@ id|prevbase
 op_assign
 l_int|0
 suffix:semicolon
-id|maxnode
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -227,7 +241,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAXNODE
+id|numnodes
 suffix:semicolon
 id|i
 op_increment
@@ -291,7 +305,7 @@ id|limit
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_ERR
 l_string|&quot;Skipping node entry %d (base %lx)&bslash;n&quot;
 comma
 id|i
@@ -299,7 +313,9 @@ comma
 id|base
 )paren
 suffix:semicolon
-r_continue
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -355,17 +371,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|nodeid
-OG
-id|maxnode
-)paren
-id|maxnode
-op_assign
-id|nodeid
-suffix:semicolon
-r_if
-c_cond
-(paren
 (paren
 l_int|1UL
 op_lshift
@@ -378,6 +383,7 @@ id|nodes_present
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Node %d already present. Skipping&bslash;n&quot;
 comma
 id|nodeid
@@ -466,8 +472,19 @@ id|limit
 op_eq
 id|base
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Empty node %d&bslash;n&quot;
+comma
+id|nodeid
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -479,8 +496,8 @@ id|base
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;Node %d bogus settings %lx-%lx. Ignored.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;Node %d bogus settings %lx-%lx.&bslash;n&quot;
 comma
 id|nodeid
 comma
@@ -489,7 +506,9 @@ comma
 id|limit
 )paren
 suffix:semicolon
-r_continue
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Could sort here, but pun for now. Should not happen anyroads. */
@@ -504,7 +523,7 @@ id|base
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_ERR
 l_string|&quot;Node map not sorted %lx,%lx&bslash;n&quot;
 comma
 id|prevbase
@@ -529,6 +548,9 @@ id|base
 comma
 id|limit
 )paren
+suffix:semicolon
+id|found
+op_increment
 suffix:semicolon
 id|nodes
 (braket
@@ -556,9 +578,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|maxnode
-op_le
-l_int|0
+op_logical_neg
+id|found
 )paren
 r_return
 op_minus
@@ -570,10 +591,6 @@ id|compute_hash_shift
 c_func
 (paren
 id|nodes
-comma
-id|maxnode
-comma
-id|end
 )paren
 suffix:semicolon
 r_if
@@ -605,12 +622,38 @@ comma
 id|memnode_shift
 )paren
 suffix:semicolon
-id|early_for_all_nodes
-c_func
+r_for
+c_loop
 (paren
 id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|numnodes
+suffix:semicolon
+id|i
+op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|nodes
+(braket
+id|i
+)braket
+dot
+id|start
+op_ne
+id|nodes
+(braket
+id|i
+)braket
+dot
+id|end
+)paren
 id|setup_node_bootmem
 c_func
 (paren

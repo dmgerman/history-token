@@ -13,6 +13,8 @@ macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 r_extern
 r_void
 id|default_do_nmi
@@ -44,16 +46,9 @@ r_int
 id|nmi_perfctr_msr
 suffix:semicolon
 multiline_comment|/* the MSR to reset in NMI handler */
-r_extern
-r_void
-id|show_registers
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
+DECL|variable|nmi_watchdog_disabled
+r_int
+id|nmi_watchdog_disabled
 suffix:semicolon
 DECL|macro|K7_EVNTSEL_ENABLE
 mdefine_line|#define K7_EVNTSEL_ENABLE&t;(1 &lt;&lt; 22)
@@ -802,15 +797,24 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+comma
+r_int
+id|reason
 )paren
 (brace
-multiline_comment|/*&n;&t; * Since current_thread_info()-&gt; is always on the stack, and we&n;&t; * always switch the stack NMI-atomically, it&squot;s safe to use&n;&t; * smp_processor_id().&n;&t; */
+r_if
+c_cond
+(paren
+id|nmi_watchdog_disabled
+)paren
+r_return
+suffix:semicolon
 r_int
 id|sum
 comma
 id|cpu
 op_assign
-id|smp_processor_id
+id|safe_smp_processor_id
 c_func
 (paren
 )paren
@@ -854,6 +858,38 @@ op_star
 id|nmi_hz
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_NMI
+comma
+l_string|&quot;nmi&quot;
+comma
+id|regs
+comma
+id|reason
+comma
+l_int|2
+comma
+id|SIGINT
+)paren
+op_eq
+id|NOTIFY_BAD
+)paren
+(brace
+id|alert_counter
+(braket
+id|cpu
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren
