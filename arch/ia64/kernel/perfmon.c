@@ -1928,6 +1928,43 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * partially initialize the vma for the sampling buffer&n;&t; */
+id|vma-&gt;vm_flags
+op_assign
+id|VM_READ
+op_or
+id|VM_MAYREAD
+op_or
+id|VM_RESERVED
+suffix:semicolon
+id|vma-&gt;vm_page_prot
+op_assign
+id|PAGE_READONLY
+suffix:semicolon
+multiline_comment|/* XXX may need to change */
+id|vma-&gt;vm_ops
+op_assign
+op_amp
+id|pfm_vm_ops
+suffix:semicolon
+multiline_comment|/* necesarry to get the close() callback */
+id|vma-&gt;vm_pgoff
+op_assign
+l_int|0
+suffix:semicolon
+id|vma-&gt;vm_file
+op_assign
+l_int|NULL
+suffix:semicolon
+id|vma-&gt;vm_raend
+op_assign
+l_int|0
+suffix:semicolon
+id|vma-&gt;vm_private_data
+op_assign
+id|psb
+suffix:semicolon
+multiline_comment|/* information needed by the pfm_vm_close() function */
+multiline_comment|/*&n;&t; * Now we have everything we need and we can initialize&n;&t; * and connect all the data structures&n;&t; */
 id|psb-&gt;psb_hdr
 op_assign
 id|smpl_buf
