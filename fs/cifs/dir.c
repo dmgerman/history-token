@@ -974,6 +974,8 @@ comma
 id|full_path
 comma
 id|inode-&gt;i_sb
+comma
+id|xid
 )paren
 suffix:semicolon
 r_else
@@ -991,6 +993,8 @@ comma
 id|buf
 comma
 id|inode-&gt;i_sb
+comma
+id|xid
 )paren
 suffix:semicolon
 r_if
@@ -1478,6 +1482,8 @@ comma
 id|full_path
 comma
 id|inode-&gt;i_sb
+comma
+id|xid
 )paren
 suffix:semicolon
 id|direntry-&gt;d_op
@@ -1736,6 +1742,8 @@ comma
 id|full_path
 comma
 id|parent_dir_inode-&gt;i_sb
+comma
+id|xid
 )paren
 suffix:semicolon
 r_else
@@ -1752,6 +1760,8 @@ comma
 l_int|NULL
 comma
 id|parent_dir_inode-&gt;i_sb
+comma
+id|xid
 )paren
 suffix:semicolon
 r_if

@@ -312,6 +312,9 @@ r_struct
 id|super_block
 op_star
 id|sb
+comma
+r_int
+id|xid
 )paren
 suffix:semicolon
 r_extern
@@ -335,6 +338,9 @@ r_struct
 id|super_block
 op_star
 id|sb
+comma
+r_int
+id|xid
 )paren
 suffix:semicolon
 r_extern
