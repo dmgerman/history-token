@@ -545,17 +545,6 @@ DECL|struct|rt_sigframe
 r_struct
 id|rt_sigframe
 (brace
-DECL|member|pinfo
-r_struct
-id|siginfo
-op_star
-id|pinfo
-suffix:semicolon
-DECL|member|puc
-r_void
-op_star
-id|puc
-suffix:semicolon
 DECL|member|info
 r_struct
 id|siginfo
@@ -1947,18 +1936,25 @@ id|err
 r_goto
 id|give_sigsegv
 suffix:semicolon
-multiline_comment|/* Set up registers for signal handler */
+multiline_comment|/* Set up registers for signal handler.  */
+id|regs-&gt;pc
+op_assign
+(paren
+id|v850_reg_t
+)paren
+id|ka-&gt;sa.sa_handler
+suffix:semicolon
 id|regs-&gt;gpr
 (braket
 id|GPR_SP
 )braket
 op_assign
 (paren
-r_int
-r_int
+id|v850_reg_t
 )paren
 id|frame
 suffix:semicolon
+multiline_comment|/* Signal handler args:  */
 id|regs-&gt;gpr
 (braket
 id|GPR_ARG0
@@ -1966,15 +1962,19 @@ id|GPR_ARG0
 op_assign
 id|signal
 suffix:semicolon
-multiline_comment|/* Arg for signal handler */
-id|regs-&gt;pc
+multiline_comment|/* arg 0: signum */
+id|regs-&gt;gpr
+(braket
+id|GPR_ARG1
+)braket
 op_assign
 (paren
-r_int
-r_int
+id|v850_reg_t
 )paren
-id|ka-&gt;sa.sa_handler
+op_amp
+id|frame-&gt;sc
 suffix:semicolon
+multiline_comment|/* arg 1: sigcontext */
 id|set_fs
 c_func
 (paren
@@ -2132,30 +2132,6 @@ id|sig
 )braket
 suffix:colon
 id|sig
-suffix:semicolon
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
-op_amp
-id|frame-&gt;info
-comma
-op_amp
-id|frame-&gt;pinfo
-)paren
-suffix:semicolon
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
-op_amp
-id|frame-&gt;uc
-comma
-op_amp
-id|frame-&gt;puc
-)paren
 suffix:semicolon
 id|err
 op_or_assign
@@ -2352,18 +2328,25 @@ id|err
 r_goto
 id|give_sigsegv
 suffix:semicolon
-multiline_comment|/* Set up registers for signal handler */
+multiline_comment|/* Set up registers for signal handler.  */
+id|regs-&gt;pc
+op_assign
+(paren
+id|v850_reg_t
+)paren
+id|ka-&gt;sa.sa_handler
+suffix:semicolon
 id|regs-&gt;gpr
 (braket
 id|GPR_SP
 )braket
 op_assign
 (paren
-r_int
-r_int
+id|v850_reg_t
 )paren
 id|frame
 suffix:semicolon
+multiline_comment|/* Signal handler args:  */
 id|regs-&gt;gpr
 (braket
 id|GPR_ARG0
@@ -2371,15 +2354,31 @@ id|GPR_ARG0
 op_assign
 id|signal
 suffix:semicolon
-multiline_comment|/* Arg for signal handler */
-id|regs-&gt;pc
+multiline_comment|/* arg 0: signum */
+id|regs-&gt;gpr
+(braket
+id|GPR_ARG1
+)braket
 op_assign
 (paren
-r_int
-r_int
+id|v850_reg_t
 )paren
-id|ka-&gt;sa.sa_handler
+op_amp
+id|frame-&gt;info
 suffix:semicolon
+multiline_comment|/* arg 1: siginfo */
+id|regs-&gt;gpr
+(braket
+id|GPR_ARG2
+)braket
+op_assign
+(paren
+id|v850_reg_t
+)paren
+op_amp
+id|frame-&gt;uc
+suffix:semicolon
+multiline_comment|/* arg 2: ucontext */
 id|set_fs
 c_func
 (paren
