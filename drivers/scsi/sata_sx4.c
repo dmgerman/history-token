@@ -905,6 +905,11 @@ op_assign
 id|pdc_exec_command_mmio
 comma
 dot
+id|dev_select
+op_assign
+id|ata_std_dev_select
+comma
+dot
 id|phy_reset
 op_assign
 id|pdc_20621_phy_reset
@@ -2657,11 +2662,9 @@ multiline_comment|/* MMIO PCI posting flush */
 id|VPRINTK
 c_func
 (paren
-l_string|&quot;ata pkt buf ofs %u, prd size %u, mmio copied&bslash;n&quot;
+l_string|&quot;ata pkt buf ofs %u, mmio copied&bslash;n&quot;
 comma
 id|i
-comma
-id|sgt_len
 )paren
 suffix:semicolon
 )brace

@@ -570,6 +570,11 @@ op_assign
 id|ata_exec_command
 comma
 dot
+id|dev_select
+op_assign
+id|ata_std_dev_select
+comma
+dot
 id|phy_reset
 op_assign
 id|piix_pata_phy_reset
@@ -652,6 +657,11 @@ dot
 id|exec_command
 op_assign
 id|ata_exec_command
+comma
+dot
+id|dev_select
+op_assign
+id|ata_std_dev_select
 comma
 dot
 id|phy_reset
