@@ -5301,7 +5301,6 @@ id|MNTOPT_LOGBUFS
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5360,7 +5359,6 @@ id|MNTOPT_LOGBSIZE
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5461,7 +5459,6 @@ id|MNTOPT_LOGDEV
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5510,7 +5507,6 @@ id|MNTOPT_MTPT
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5559,7 +5555,6 @@ id|MNTOPT_RTDEV
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5608,7 +5603,6 @@ id|MNTOPT_BIOSIZE
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5722,7 +5716,6 @@ id|MNTOPT_INO64
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 macro_line|#endif
@@ -5780,7 +5773,6 @@ id|MNTOPT_SUNIT
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5832,7 +5824,6 @@ id|MNTOPT_SWIDTH
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5942,7 +5933,6 @@ id|this_char
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5974,7 +5964,6 @@ l_string|&quot;XFS: no-recovery mounts must be read-only.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -6002,7 +5991,6 @@ l_string|&quot;XFS: sunit and swidth options incompatible with the noalign optio
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -6031,7 +6019,6 @@ l_string|&quot;XFS: sunit and swidth must be specified together&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -6060,7 +6047,6 @@ id|dsunit
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
