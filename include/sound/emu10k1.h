@@ -8,6 +8,7 @@ macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;sound/hwdep.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
 macro_line|#include &lt;sound/util_mem.h&gt;
+macro_line|#include &lt;sound/pcm-indirect.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef PCI_VENDOR_ID_CREATIVE
@@ -1620,34 +1621,9 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* external TRAM address &amp; data */
-DECL|member|sw_data
-DECL|member|hw_data
-r_int
-r_int
-id|sw_data
-comma
-id|hw_data
-suffix:semicolon
-DECL|member|sw_io
-DECL|member|hw_io
-r_int
-r_int
-id|sw_io
-comma
-id|hw_io
-suffix:semicolon
-DECL|member|sw_ready
-DECL|member|hw_ready
-r_int
-r_int
-id|sw_ready
-comma
-id|hw_ready
-suffix:semicolon
-DECL|member|appl_ptr
-r_int
-r_int
-id|appl_ptr
+DECL|member|pcm_rec
+id|snd_pcm_indirect_t
+id|pcm_rec
 suffix:semicolon
 DECL|member|tram_pos
 r_int
