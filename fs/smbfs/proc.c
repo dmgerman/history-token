@@ -2295,7 +2295,8 @@ DECL|macro|NTFS_TIME_OFFSET
 mdefine_line|#define NTFS_TIME_OFFSET ((u64)(369*365 + 89) * 24 * 3600 * 10000000)
 multiline_comment|/*&n; * Convert the NT UTC (based 1601-01-01, in hundred nanosecond units)&n; * into Unix UTC (based 1970-01-01, in seconds).&n; */
 r_static
-id|time_t
+r_struct
+id|timespec
 DECL|function|smb_ntutc2unixutc
 id|smb_ntutc2unixutc
 c_func
@@ -2304,6 +2305,10 @@ id|u64
 id|ntutc
 )paren
 (brace
+r_struct
+id|timespec
+id|ts
+suffix:semicolon
 multiline_comment|/* FIXME: what about the timezone difference? */
 multiline_comment|/* Subtract the NTFS time offset, then convert to 1s intervals. */
 id|u64
@@ -2313,6 +2318,8 @@ id|ntutc
 op_minus
 id|NTFS_TIME_OFFSET
 suffix:semicolon
+id|ts.tv_nsec
+op_assign
 id|do_div
 c_func
 (paren
@@ -2320,12 +2327,15 @@ id|t
 comma
 l_int|10000000
 )paren
+op_star
+l_int|100
+suffix:semicolon
+id|ts.tv_sec
+op_assign
+id|t
 suffix:semicolon
 r_return
-(paren
-id|time_t
-)paren
-id|t
+id|ts
 suffix:semicolon
 )brace
 multiline_comment|/* Convert the Unix UTC into NT time */
@@ -2335,8 +2345,9 @@ DECL|function|smb_unixutc2ntutc
 id|smb_unixutc2ntutc
 c_func
 (paren
-id|time_t
-id|t
+r_struct
+id|timespec
+id|ts
 )paren
 (brace
 multiline_comment|/* Note: timezone conversion is probably wrong. */
@@ -2346,10 +2357,14 @@ r_return
 (paren
 id|u64
 )paren
-id|t
+id|ts.tv_sec
 )paren
 op_star
 l_int|10000000
+op_plus
+id|ts.tv_nsec
+op_div
+l_int|100
 op_plus
 id|NTFS_TIME_OFFSET
 suffix:semicolon
@@ -5226,23 +5241,35 @@ multiline_comment|/*&n;&t;&t; * Kludge alert: SMB timestamps are accurate only t
 r_if
 c_cond
 (paren
-id|ino-&gt;i_mtime
+id|ino-&gt;i_mtime.tv_sec
 op_amp
 l_int|1
 )paren
-id|ino-&gt;i_mtime
+(brace
+id|ino-&gt;i_mtime.tv_sec
 op_decrement
 suffix:semicolon
+id|ino-&gt;i_mtime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
-id|ino-&gt;i_atime
+id|ino-&gt;i_atime.tv_sec
 op_amp
 l_int|1
 )paren
-id|ino-&gt;i_atime
+(brace
+id|ino-&gt;i_atime.tv_sec
 op_decrement
 suffix:semicolon
+id|ino-&gt;i_atime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * If the file is open with write permissions,&n;&t;&t; * update the time stamps to sync mtime and atime.&n;&t;&t; */
 r_if
 c_cond
@@ -5303,7 +5330,7 @@ id|server
 comma
 id|ei-&gt;fileid
 comma
-id|ino-&gt;i_mtime
+id|ino-&gt;i_mtime.tv_sec
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Force a revalidation after closing ... some servers&n;&t;&t; * don&squot;t post the size until the file has been closed.&n;&t;&t; */
@@ -5417,7 +5444,10 @@ id|server
 comma
 id|fileid
 comma
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -8328,7 +8358,7 @@ op_assign
 op_star
 id|p
 suffix:semicolon
-id|fattr-&gt;f_mtime
+id|fattr-&gt;f_mtime.tv_sec
 op_assign
 id|date_dos2unix
 c_func
@@ -8351,6 +8381,10 @@ comma
 l_int|1
 )paren
 )paren
+suffix:semicolon
+id|fattr-&gt;f_mtime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|fattr-&gt;f_size
 op_assign
@@ -9557,7 +9591,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-id|fattr-&gt;f_ctime
+id|fattr-&gt;f_ctime.tv_sec
 op_assign
 id|date_dos2unix
 c_func
@@ -9568,6 +9602,10 @@ id|date
 comma
 id|time
 )paren
+suffix:semicolon
+id|fattr-&gt;f_ctime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|date
 op_assign
@@ -9589,7 +9627,7 @@ comma
 l_int|6
 )paren
 suffix:semicolon
-id|fattr-&gt;f_atime
+id|fattr-&gt;f_atime.tv_sec
 op_assign
 id|date_dos2unix
 c_func
@@ -9600,6 +9638,10 @@ id|date
 comma
 id|time
 )paren
+suffix:semicolon
+id|fattr-&gt;f_atime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|date
 op_assign
@@ -9621,7 +9663,7 @@ comma
 l_int|10
 )paren
 suffix:semicolon
-id|fattr-&gt;f_mtime
+id|fattr-&gt;f_mtime.tv_sec
 op_assign
 id|date_dos2unix
 c_func
@@ -9632,6 +9674,10 @@ id|date
 comma
 id|time
 )paren
+suffix:semicolon
+id|fattr-&gt;f_mtime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|fattr-&gt;f_size
 op_assign
@@ -11358,7 +11404,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-id|fattr-&gt;f_ctime
+id|fattr-&gt;f_ctime.tv_sec
 op_assign
 id|date_dos2unix
 c_func
@@ -11369,6 +11415,10 @@ id|date
 comma
 id|time
 )paren
+suffix:semicolon
+id|fattr-&gt;f_ctime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|date
 op_assign
@@ -11390,7 +11440,7 @@ comma
 l_int|6
 )paren
 suffix:semicolon
-id|fattr-&gt;f_atime
+id|fattr-&gt;f_atime.tv_sec
 op_assign
 id|date_dos2unix
 c_func
@@ -11401,6 +11451,10 @@ id|date
 comma
 id|time
 )paren
+suffix:semicolon
+id|fattr-&gt;f_atime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|date
 op_assign
@@ -11422,7 +11476,7 @@ comma
 l_int|10
 )paren
 suffix:semicolon
-id|fattr-&gt;f_mtime
+id|fattr-&gt;f_mtime.tv_sec
 op_assign
 id|date_dos2unix
 c_func
@@ -11433,6 +11487,10 @@ id|date
 comma
 id|time
 )paren
+suffix:semicolon
+id|fattr-&gt;f_mtime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|VERBOSE
 c_func
@@ -11626,7 +11684,7 @@ comma
 id|smb_vwv0
 )paren
 suffix:semicolon
-id|fattr-&gt;f_mtime
+id|fattr-&gt;f_mtime.tv_sec
 op_assign
 id|local2utc
 c_func
@@ -11641,6 +11699,10 @@ comma
 id|smb_vwv1
 )paren
 )paren
+suffix:semicolon
+id|fattr-&gt;f_mtime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|fattr-&gt;f_size
 op_assign
@@ -12045,7 +12107,7 @@ comma
 id|off_time
 )paren
 suffix:semicolon
-id|attr-&gt;f_ctime
+id|attr-&gt;f_ctime.tv_sec
 op_assign
 id|date_dos2unix
 c_func
@@ -12056,6 +12118,10 @@ id|date
 comma
 id|time
 )paren
+suffix:semicolon
+id|attr-&gt;f_ctime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|date
 op_assign
@@ -12081,7 +12147,7 @@ op_plus
 id|off_time
 )paren
 suffix:semicolon
-id|attr-&gt;f_atime
+id|attr-&gt;f_atime.tv_sec
 op_assign
 id|date_dos2unix
 c_func
@@ -12092,6 +12158,10 @@ id|date
 comma
 id|time
 )paren
+suffix:semicolon
+id|attr-&gt;f_atime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|date
 op_assign
@@ -12117,7 +12187,7 @@ op_plus
 id|off_time
 )paren
 suffix:semicolon
-id|attr-&gt;f_mtime
+id|attr-&gt;f_mtime.tv_sec
 op_assign
 id|date_dos2unix
 c_func
@@ -12128,6 +12198,10 @@ id|date
 comma
 id|time
 )paren
+suffix:semicolon
+id|attr-&gt;f_mtime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#ifdef SMBFS_DEBUG_TIMESTAMP
 id|printk
@@ -13049,7 +13123,7 @@ c_func
 (paren
 id|server
 comma
-id|fattr-&gt;f_atime
+id|fattr-&gt;f_atime.tv_sec
 comma
 op_amp
 id|date
@@ -13083,7 +13157,7 @@ c_func
 (paren
 id|server
 comma
-id|fattr-&gt;f_mtime
+id|fattr-&gt;f_mtime.tv_sec
 comma
 op_amp
 id|date
@@ -13335,7 +13409,7 @@ c_func
 (paren
 id|server
 comma
-id|fattr-&gt;f_atime
+id|fattr-&gt;f_atime.tv_sec
 comma
 op_amp
 id|date
@@ -13369,7 +13443,7 @@ c_func
 (paren
 id|server
 comma
-id|fattr-&gt;f_mtime
+id|fattr-&gt;f_mtime.tv_sec
 comma
 op_amp
 id|date

@@ -1665,12 +1665,8 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * BEFS&squot;s time is 64 bits, but current VFS is 32 bits...&n;&t; * BEFS don&squot;t have access time. Nor inode change time. VFS&n;&t; * doesn&squot;t have creation time.&n;&t; */
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_assign
-(paren
-id|time_t
-)paren
-(paren
 id|fs64_to_cpu
 c_func
 (paren
@@ -1680,8 +1676,12 @@ id|raw_inode-&gt;last_modified_time
 )paren
 op_rshift
 l_int|16
-)paren
 suffix:semicolon
+id|inode-&gt;i_mtime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* use the lower bits ? */
 id|inode-&gt;i_ctime
 op_assign
 id|inode-&gt;i_mtime

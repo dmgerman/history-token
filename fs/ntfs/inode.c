@@ -1796,7 +1796,7 @@ suffix:semicolon
 multiline_comment|/* Transfer information from the standard information into vfs_ino. */
 multiline_comment|/*&n;&t; * Note: The i_?times do not quite map perfectly onto the NTFS times,&n;&t; * but they are close enough, and in the end it doesn&squot;t really matter&n;&t; * that much...&n;&t; */
 multiline_comment|/*&n;&t; * mtime is the last change of the data within the file. Not changed&n;&t; * when only metadata is changed, e.g. a rename doesn&squot;t affect mtime.&n;&t; */
-id|vi-&gt;i_mtime
+id|vi-&gt;i_mtime.tv_sec
 op_assign
 id|ntfs2utc
 c_func
@@ -1804,8 +1804,12 @@ c_func
 id|si-&gt;last_data_change_time
 )paren
 suffix:semicolon
+id|vi-&gt;i_mtime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * ctime is the last change of the metadata of the file. This obviously&n;&t; * always changes, when mtime is changed. ctime can be changed on its&n;&t; * own, mtime is then not changed, e.g. when a file is renamed.&n;&t; */
-id|vi-&gt;i_ctime
+id|vi-&gt;i_ctime.tv_sec
 op_assign
 id|ntfs2utc
 c_func
@@ -1813,14 +1817,22 @@ c_func
 id|si-&gt;last_mft_change_time
 )paren
 suffix:semicolon
+id|vi-&gt;i_ctime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * Last access to the data within the file. Not changed during a rename&n;&t; * for example but changed whenever the file is written to.&n;&t; */
-id|vi-&gt;i_atime
+id|vi-&gt;i_atime.tv_sec
 op_assign
 id|ntfs2utc
 c_func
 (paren
 id|si-&gt;last_access_time
 )paren
+suffix:semicolon
+id|vi-&gt;i_atime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Find the attribute list attribute if present. */
 id|reinit_attr_search_ctx

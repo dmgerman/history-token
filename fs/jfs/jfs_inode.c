@@ -210,7 +210,7 @@ id|CURRENT_TIME
 suffix:semicolon
 id|jfs_inode-&gt;otime
 op_assign
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 suffix:semicolon
 id|inode-&gt;i_generation
 op_assign

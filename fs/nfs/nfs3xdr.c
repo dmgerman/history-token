@@ -859,7 +859,7 @@ c_func
 (paren
 id|p
 comma
-id|attr-&gt;ia_atime
+id|attr-&gt;ia_atime.tv_sec
 )paren
 suffix:semicolon
 )brace
@@ -909,7 +909,7 @@ c_func
 (paren
 id|p
 comma
-id|attr-&gt;ia_mtime
+id|attr-&gt;ia_mtime.tv_sec
 )paren
 suffix:semicolon
 )brace

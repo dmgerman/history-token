@@ -375,7 +375,10 @@ l_int|0
 suffix:semicolon
 id|msq-&gt;q_ctime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|msq-&gt;q_cbytes
 op_assign
@@ -2403,7 +2406,10 @@ id|setbuf.mode
 suffix:semicolon
 id|msq-&gt;q_ctime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* sleeping receivers might be excluded by&n;&t;&t; * stricter permissions.&n;&t;&t; */
 id|expunge_all
@@ -2685,7 +2691,10 @@ id|msr-&gt;r_tsk-&gt;pid
 suffix:semicolon
 id|msq-&gt;q_rtime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|wake_up_process
 c_func
@@ -3012,7 +3021,10 @@ id|current-&gt;pid
 suffix:semicolon
 id|msq-&gt;q_stime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3441,7 +3453,10 @@ op_decrement
 suffix:semicolon
 id|msq-&gt;q_rtime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|msq-&gt;q_lrpid
 op_assign

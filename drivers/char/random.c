@@ -11549,7 +11549,10 @@ op_assign
 id|check_and_rekey
 c_func
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -11734,7 +11737,10 @@ op_assign
 id|check_and_rekey
 c_func
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Pick a unique starting offset for each IP destination.&n;&t; *  The dest ip address is placed in the starting vector,&n;&t; *  which is then hashed with random data.&n;&t; */

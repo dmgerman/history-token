@@ -1418,7 +1418,10 @@ id|slsize
 suffix:semicolon
 id|sl-&gt;mtime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|ent-&gt;ino
 op_assign

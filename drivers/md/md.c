@@ -3977,7 +3977,10 @@ id|repeat
 suffix:colon
 id|mddev-&gt;utime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|mddev-&gt;events
 op_increment
@@ -8482,7 +8485,10 @@ id|MD_PATCHLEVEL_VERSION
 suffix:semicolon
 id|mddev-&gt;ctime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|mddev-&gt;level
 op_assign

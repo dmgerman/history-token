@@ -6059,7 +6059,10 @@ suffix:semicolon
 multiline_comment|/* SMP: This is fairly trivial. We grab CURRENT_TIME and &n;&t;   stuff it to user space. No side effects */
 id|i
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

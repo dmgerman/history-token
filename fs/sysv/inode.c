@@ -34,7 +34,10 @@ r_int
 r_int
 id|time
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 comma
 id|old_time
 suffix:semicolon
@@ -889,7 +892,7 @@ comma
 id|raw_inode-&gt;i_size
 )paren
 suffix:semicolon
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 op_assign
 id|fs32_to_cpu
 c_func
@@ -899,7 +902,7 @@ comma
 id|raw_inode-&gt;i_atime
 )paren
 suffix:semicolon
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_assign
 id|fs32_to_cpu
 c_func
@@ -909,7 +912,7 @@ comma
 id|raw_inode-&gt;i_mtime
 )paren
 suffix:semicolon
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|fs32_to_cpu
 c_func
@@ -918,6 +921,18 @@ id|sbi
 comma
 id|raw_inode-&gt;i_ctime
 )paren
+suffix:semicolon
+id|inode-&gt;i_ctime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|inode-&gt;i_atime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|inode-&gt;i_mtime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|inode-&gt;i_blocks
 op_assign
@@ -1216,7 +1231,7 @@ c_func
 (paren
 id|sbi
 comma
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 )paren
 suffix:semicolon
 id|raw_inode-&gt;i_mtime
@@ -1226,7 +1241,7 @@ c_func
 (paren
 id|sbi
 comma
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 )paren
 suffix:semicolon
 id|raw_inode-&gt;i_ctime
@@ -1236,7 +1251,7 @@ c_func
 (paren
 id|sbi
 comma
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 )paren
 suffix:semicolon
 id|si

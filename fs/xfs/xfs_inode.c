@@ -12659,7 +12659,7 @@ op_amp
 id|XFS_ICHGTIME_MOD
 )paren
 (brace
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_nsec
 op_assign
 id|ip-&gt;i_d.di_mtime.t_sec
 op_assign
@@ -12668,6 +12668,8 @@ id|__int32_t
 )paren
 id|tv.tv_sec
 suffix:semicolon
+id|inode-&gt;i_mtime.tv_nsec
+op_assign
 id|ip-&gt;i_d.di_mtime.t_nsec
 op_assign
 (paren
@@ -12684,7 +12686,7 @@ op_amp
 id|XFS_ICHGTIME_ACC
 )paren
 (brace
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 op_assign
 id|ip-&gt;i_d.di_atime.t_sec
 op_assign
@@ -12693,6 +12695,8 @@ id|__int32_t
 )paren
 id|tv.tv_sec
 suffix:semicolon
+id|inode-&gt;i_atime.tv_nsec
+op_assign
 id|ip-&gt;i_d.di_atime.t_nsec
 op_assign
 (paren
@@ -12709,7 +12713,7 @@ op_amp
 id|XFS_ICHGTIME_CHG
 )paren
 (brace
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|ip-&gt;i_d.di_ctime.t_sec
 op_assign
@@ -12718,6 +12722,8 @@ id|__int32_t
 )paren
 id|tv.tv_sec
 suffix:semicolon
+id|inode-&gt;i_ctime.tv_nsec
+op_assign
 id|ip-&gt;i_d.di_ctime.t_nsec
 op_assign
 (paren

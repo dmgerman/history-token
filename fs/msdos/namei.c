@@ -1398,7 +1398,7 @@ suffix:semicolon
 id|fat_date_unix2dos
 c_func
 (paren
-id|dir-&gt;i_mtime
+id|dir-&gt;i_mtime.tv_sec
 comma
 op_amp
 (paren
