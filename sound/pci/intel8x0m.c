@@ -40,6 +40,8 @@ l_string|&quot;{Intel,82801BA-ICH2},&quot;
 l_string|&quot;{Intel,82801CA-ICH3},&quot;
 l_string|&quot;{Intel,82801DB-ICH4},&quot;
 l_string|&quot;{Intel,ICH5},&quot;
+l_string|&quot;{Intel,ICH6},&quot;
+l_string|&quot;{Intel,ICH7},&quot;
 l_string|&quot;{Intel,MX440},&quot;
 l_string|&quot;{SiS,7013},&quot;
 l_string|&quot;{NVidia,NForce Modem},&quot;
@@ -230,6 +232,14 @@ macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH5_6
 DECL|macro|PCI_DEVICE_ID_INTEL_ICH5_6
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH5_6&t;0x24d6
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH6_6
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH6_6
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH6_6&t;0x266d
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH7_6
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH7_6
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH7_6&t;0x27dd
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_SI_7013
 DECL|macro|PCI_DEVICE_ID_SI_7013
@@ -772,6 +782,40 @@ id|DEVICE_INTEL
 )brace
 comma
 multiline_comment|/* ICH5 */
+(brace
+l_int|0x8086
+comma
+l_int|0x266d
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_INTEL
+)brace
+comma
+multiline_comment|/* ICH6 */
+(brace
+l_int|0x8086
+comma
+l_int|0x27dd
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_INTEL
+)brace
+comma
+multiline_comment|/* ICH7 */
 (brace
 l_int|0x8086
 comma
@@ -6429,6 +6473,18 @@ comma
 id|PCI_DEVICE_ID_INTEL_ICH5_6
 comma
 l_string|&quot;Intel ICH5&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_INTEL_ICH6_6
+comma
+l_string|&quot;Intel ICH6&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_INTEL_ICH7_6
+comma
+l_string|&quot;Intel ICH7&quot;
 )brace
 comma
 (brace
