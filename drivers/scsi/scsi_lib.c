@@ -4888,6 +4888,9 @@ suffix:colon
 r_case
 id|SDEV_QUIESCE
 suffix:colon
+r_case
+id|SDEV_BLOCK
+suffix:colon
 r_break
 suffix:semicolon
 r_default
