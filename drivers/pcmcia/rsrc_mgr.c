@@ -1324,6 +1324,7 @@ comma
 id|d
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|virt
 suffix:semicolon
