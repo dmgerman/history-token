@@ -2376,16 +2376,7 @@ id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Put the rest back, in the correct order.&n;&t; */
-id|list_splice_init
-c_func
-(paren
-op_amp
-id|mapping-&gt;io_pages
-comma
-id|mapping-&gt;dirty_pages.prev
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Leave any remaining dirty pages on -&gt;io_pages&n;&t; */
 id|write_unlock
 c_func
 (paren

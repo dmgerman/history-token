@@ -2238,12 +2238,6 @@ id|list_head
 id|s_io
 suffix:semicolon
 multiline_comment|/* parked for writeback */
-DECL|member|s_locked_inodes
-r_struct
-id|list_head
-id|s_locked_inodes
-suffix:semicolon
-multiline_comment|/* inodes being synced */
 DECL|member|s_anon
 r_struct
 id|list_head
