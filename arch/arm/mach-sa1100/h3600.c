@@ -5,6 +5,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -12,6 +15,7 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
+macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;asm/arch/h3600.h&gt;
@@ -34,6 +38,286 @@ c_func
 id|ipaq_model_ops
 )paren
 suffix:semicolon
+DECL|variable|h3xxx_partitions
+r_static
+r_struct
+id|mtd_partition
+id|h3xxx_partitions
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;H3XXX boot firmware&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00040000
+comma
+dot
+id|offset
+op_assign
+l_int|0
+comma
+dot
+id|mask_flags
+op_assign
+id|MTD_WRITEABLE
+comma
+multiline_comment|/* force read-only */
+)brace
+comma
+(brace
+macro_line|#ifdef CONFIG_MTD_2PARTS_IPAQ
+dot
+id|name
+op_assign
+l_string|&quot;H3XXX root jffs2&quot;
+comma
+dot
+id|size
+op_assign
+id|MTDPART_SIZ_FULL
+comma
+dot
+id|offset
+op_assign
+l_int|0x00040000
+comma
+macro_line|#else
+dot
+id|name
+op_assign
+l_string|&quot;H3XXX kernel&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00080000
+comma
+dot
+id|offset
+op_assign
+l_int|0x00040000
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;H3XXX params&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00040000
+comma
+dot
+id|offset
+op_assign
+l_int|0x000C0000
+comma
+)brace
+comma
+(brace
+macro_line|#ifdef CONFIG_JFFS2_FS
+dot
+id|name
+op_assign
+l_string|&quot;H3XXX root jffs2&quot;
+comma
+dot
+id|size
+op_assign
+id|MTDPART_SIZ_FULL
+comma
+dot
+id|offset
+op_assign
+l_int|0x00100000
+comma
+macro_line|#else
+dot
+id|name
+op_assign
+l_string|&quot;H3XXX initrd&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00100000
+comma
+dot
+id|offset
+op_assign
+l_int|0x00100000
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;H3XXX root cramfs&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00300000
+comma
+dot
+id|offset
+op_assign
+l_int|0x00200000
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;H3XXX usr cramfs&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00800000
+comma
+dot
+id|offset
+op_assign
+l_int|0x00500000
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;H3XXX usr local&quot;
+comma
+dot
+id|size
+op_assign
+id|MTDPART_SIZ_FULL
+comma
+dot
+id|offset
+op_assign
+l_int|0x00d00000
+comma
+macro_line|#endif
+macro_line|#endif
+)brace
+)brace
+suffix:semicolon
+DECL|function|h3xxx_set_vpp
+r_static
+r_void
+id|h3xxx_set_vpp
+c_func
+(paren
+r_int
+id|vpp
+)paren
+(brace
+id|assign_h3600_egpio
+c_func
+(paren
+id|IPAQ_EGPIO_VPP_ON
+comma
+id|vpp
+)paren
+suffix:semicolon
+)brace
+DECL|variable|h3xxx_flash_data
+r_static
+r_struct
+id|flash_platform_data
+id|h3xxx_flash_data
+op_assign
+(brace
+dot
+id|map_name
+op_assign
+l_string|&quot;cfi_probe&quot;
+comma
+dot
+id|set_vpp
+op_assign
+id|h3xxx_set_vpp
+comma
+dot
+id|parts
+op_assign
+id|h3xxx_partitions
+comma
+dot
+id|nr_parts
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|h3xxx_partitions
+)paren
+comma
+)brace
+suffix:semicolon
+DECL|variable|h3xxx_flash_resource
+r_static
+r_struct
+id|resource
+id|h3xxx_flash_resource
+op_assign
+(brace
+dot
+id|start
+op_assign
+id|SA1100_CS0_PHYS
+comma
+dot
+id|end
+op_assign
+id|SA1100_CS0_PHYS
+op_plus
+id|SZ_32M
+op_minus
+l_int|1
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
+comma
+)brace
+suffix:semicolon
+DECL|function|h3xxx_mach_init
+r_static
+r_void
+id|h3xxx_mach_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|sa11x0_set_flash_data
+c_func
+(paren
+op_amp
+id|h3xxx_flash_data
+comma
+op_amp
+id|h3xxx_flash_resource
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * low-level UART features&n; */
 DECL|function|h3600_uart_set_mctrl
 r_static
@@ -859,6 +1143,11 @@ op_assign
 op_amp
 id|sa1100_timer
 comma
+dot
+id|init_machine
+op_assign
+id|h3xxx_mach_init
+comma
 id|MACHINE_END
 macro_line|#endif /* CONFIG_SA1100_H3100 */
 multiline_comment|/************************* H3600 *************************/
@@ -1238,6 +1527,11 @@ id|timer
 op_assign
 op_amp
 id|sa1100_timer
+comma
+dot
+id|init_machine
+op_assign
+id|h3xxx_mach_init
 comma
 id|MACHINE_END
 macro_line|#endif /* CONFIG_SA1100_H3600 */
@@ -2603,6 +2897,11 @@ id|timer
 op_assign
 op_amp
 id|sa1100_timer
+comma
+dot
+id|init_machine
+op_assign
+id|h3xxx_mach_init
 comma
 id|MACHINE_END
 macro_line|#endif /* CONFIG_SA1100_H3800 */

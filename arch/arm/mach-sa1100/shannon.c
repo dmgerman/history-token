@@ -2,14 +2,156 @@ multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/shannon.c&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
+macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;asm/arch/shannon.h&gt;
 macro_line|#include &quot;generic.h&quot;
+DECL|variable|shannon_partitions
+r_static
+r_struct
+id|mtd_partition
+id|shannon_partitions
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;BLOB boot loader&quot;
+comma
+dot
+id|offset
+op_assign
+l_int|0
+comma
+dot
+id|size
+op_assign
+l_int|0x20000
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;kernel&quot;
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+dot
+id|size
+op_assign
+l_int|0xe0000
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;initrd&quot;
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+dot
+id|size
+op_assign
+id|MTDPART_SIZ_FULL
+)brace
+)brace
+suffix:semicolon
+DECL|variable|shannon_flash_data
+r_static
+r_struct
+id|flash_platform_data
+id|shannon_flash_data
+op_assign
+(brace
+dot
+id|map_name
+op_assign
+l_string|&quot;cfi_probe&quot;
+comma
+dot
+id|parts
+op_assign
+id|shannon_partitions
+comma
+dot
+id|nr_parts
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|shannon_partitions
+)paren
+comma
+)brace
+suffix:semicolon
+DECL|variable|shannon_flash_resource
+r_static
+r_struct
+id|resource
+id|shannon_flash_resource
+op_assign
+(brace
+dot
+id|start
+op_assign
+id|SA1100_CS0_PHYS
+comma
+dot
+id|end
+op_assign
+id|SA1100_CS0_PHYS
+op_plus
+id|SZ_4M
+op_minus
+l_int|1
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
+comma
+)brace
+suffix:semicolon
+DECL|function|shannon_init
+r_static
+r_void
+id|__init
+id|shannon_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|sa11x0_set_flash_data
+c_func
+(paren
+op_amp
+id|shannon_flash_data
+comma
+id|shannon_flash_resource
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 DECL|function|shannon_map_io
 r_static
 r_void
@@ -114,6 +256,11 @@ id|timer
 op_assign
 op_amp
 id|sa1100_timer
+comma
+dot
+id|init_machine
+op_assign
+id|shannon_init
 comma
 id|MACHINE_END
 eof
