@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|DVB_MAJOR
 mdefine_line|#define DVB_MAJOR 250

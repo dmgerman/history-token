@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * TTUSB DVB driver&n; *&n; * Copyright (c) 2002 Holger Waechtler &lt;holger@convergence.de&gt;&n; * Copyright (c) 2003 Felix Domke &lt;tmbinc@gmx.net&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -15,7 +16,6 @@ macro_line|#include &quot;dvb_net.h&quot;
 macro_line|#include &lt;linux/dvb/frontend.h&gt;
 macro_line|#include &lt;linux/dvb/dmx.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;dvb_functions.h&quot;
 multiline_comment|/*&n;  TTUSB_HWSECTIONS:&n;    the DSP supports filtering in hardware, however, since the &quot;muxstream&quot;&n;    is a bit braindead (no matching channel masks or no matching filter mask),&n;    we won&squot;t support this - yet. it doesn&squot;t event support negative filters,&n;    so the best way is maybe to keep TTUSB_HWSECTIONS undef&squot;d and just&n;    parse TS data. USB bandwith will be a problem when having large&n;    datastreams, especially for dvb-net, but hey, that&squot;s not my problem.&n;&t;&n;  TTUSB_DISEQC, TTUSB_TONE:&n;    let the STC do the diseqc/tone stuff. this isn&squot;t supported at least with&n;    my TTUSB, so let it undef&squot;d unless you want to implement another&n;    frontend. never tested.&n;&t;&t;&n;  DEBUG:&n;    define it to &gt; 3 for really hardcore debugging. you probably don&squot;t want&n;    this unless the device doesn&squot;t load at all. &gt; 2 for bandwidth statistics.&n;*/
 DECL|variable|debug

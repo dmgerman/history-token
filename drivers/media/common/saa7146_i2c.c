@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;media/saa7146_vv.h&gt;
 multiline_comment|/* helper function */
 DECL|function|my_wait

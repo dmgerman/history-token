@@ -9,8 +9,6 @@ mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;7
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/sonypi.h&gt;
-macro_line|#include &lt;linux/meye.h&gt;
 multiline_comment|/****************************************************************************/
 multiline_comment|/* Motion JPEG chip registers                                               */
 multiline_comment|/****************************************************************************/
