@@ -373,7 +373,7 @@ op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* External 5: PHY */
+multiline_comment|/* External  5: PHY */
 l_int|0x0
 comma
 multiline_comment|/* External  6: */
@@ -726,7 +726,7 @@ op_plus
 l_int|0x10000
 )paren
 suffix:semicolon
-multiline_comment|/* we let openpic interrupts starting from an offset, to&n;         * leave space for cascading interrupts underneath.&n;         */
+multiline_comment|/* we let openpic interrupts starting from an offset, to&n;&t; * leave space for cascading interrupts underneath.&n;&t; */
 id|openpic_init
 c_func
 (paren
@@ -1041,9 +1041,9 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|ARCADIA_HOST_BRIDGE_IDSEL
-mdefine_line|#define ARCADIA_HOST_BRIDGE_IDSEL     17
+mdefine_line|#define ARCADIA_HOST_BRIDGE_IDSEL&t;17
 DECL|macro|ARCADIA_2ND_BRIDGE_IDSEL
-mdefine_line|#define ARCADIA_2ND_BRIDGE_IDSEL     3
+mdefine_line|#define ARCADIA_2ND_BRIDGE_IDSEL&t;3
 r_extern
 r_int
 id|mpc85xx_pci1_last_busno
@@ -1234,7 +1234,7 @@ comma
 id|cds_pci_slot
 )paren
 suffix:semicolon
-multiline_comment|/* Set loops_per_jiffy to a half-way reasonable value,&n;           for use until calibrate_delay gets called. */
+multiline_comment|/* Set loops_per_jiffy to a half-way reasonable value,&n;&t;   for use until calibrate_delay gets called. */
 id|loops_per_jiffy
 op_assign
 id|freq
@@ -1410,7 +1410,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * If we were passed in a board information, copy it into the&n;         * residual data area.&n;         */
+multiline_comment|/*&n;&t; * If we were passed in a board information, copy it into the&n;&t; * residual data area.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1563,7 +1563,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_INITRD)
-multiline_comment|/*&n;         * If the init RAM disk has been configured in, and there&squot;s a valid&n;         * starting address for it, set it up.&n;         */
+multiline_comment|/*&n;&t; * If the init RAM disk has been configured in, and there&squot;s a valid&n;&t; * starting address for it, set it up.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1583,7 +1583,7 @@ op_plus
 id|KERNELBASE
 suffix:semicolon
 )brace
-macro_line|#endif                          /* CONFIG_BLK_DEV_INITRD */
+macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 multiline_comment|/* Copy the kernel command line arguments to a safe place. */
 r_if
 c_cond
