@@ -8477,6 +8477,12 @@ r_sizeof
 r_struct
 id|ib_mad
 )paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|ib_grh
+)paren
 suffix:semicolon
 id|wc.src_qp
 op_assign
@@ -8486,6 +8492,7 @@ id|wc.wc_flags
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* No GRH */
 id|wc.pkey_index
 op_assign
 l_int|0
