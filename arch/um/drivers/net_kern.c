@@ -23,6 +23,8 @@ macro_line|#include &quot;mconsole_kern.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;irq_kern.h&quot;
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME &quot;uml-netdev&quot;
 DECL|variable|opened_lock
 r_static
 id|spinlock_t
@@ -1020,7 +1022,7 @@ comma
 dot
 id|driver
 op_assign
-l_string|&quot;uml virtual ethernet&quot;
+id|DRIVER_NAME
 comma
 dot
 id|version
@@ -1176,6 +1178,31 @@ c_func
 (paren
 id|devices
 )paren
+suffix:semicolon
+DECL|variable|uml_net_driver
+r_static
+r_struct
+id|device_driver
+id|uml_net_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+id|DRIVER_NAME
+comma
+dot
+id|bus
+op_assign
+op_amp
+id|platform_bus_type
+comma
+)brace
+suffix:semicolon
+DECL|variable|driver_registered
+r_static
+r_int
+id|driver_registered
 suffix:semicolon
 DECL|function|eth_configure
 r_static
@@ -1426,6 +1453,50 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* sysfs register */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|driver_registered
+)paren
+(brace
+id|driver_register
+c_func
+(paren
+op_amp
+id|uml_net_driver
+)paren
+suffix:semicolon
+id|driver_registered
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+id|device-&gt;pdev.id
+op_assign
+id|n
+suffix:semicolon
+id|device-&gt;pdev.name
+op_assign
+id|DRIVER_NAME
+suffix:semicolon
+id|platform_device_register
+c_func
+(paren
+op_amp
+id|device-&gt;pdev
+)paren
+suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|device-&gt;pdev.dev
+)paren
+suffix:semicolon
 multiline_comment|/* If this name ends up conflicting with an existing registered&n;&t; * netdevice, that is OK, register_netdev{,ice}() will notice this&n;&t; * and fail.&n;&t; */
 id|snprintf
 c_func
@@ -2568,7 +2639,7 @@ l_string|&quot;eth[0-9]+=&lt;transport&gt;,&lt;options&gt;&bslash;n&quot;
 l_string|&quot;    Configure a network device.&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-DECL|function|eth_init
+macro_line|#if 0
 r_static
 r_int
 id|eth_init
@@ -2641,13 +2712,13 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|eth_init
 id|__initcall
 c_func
 (paren
 id|eth_init
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|function|net_config
 r_static
 r_int
@@ -2875,6 +2946,13 @@ id|unregister_netdev
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|platform_device_unregister
+c_func
+(paren
+op_amp
+id|device-&gt;pdev
 )paren
 suffix:semicolon
 id|list_del
