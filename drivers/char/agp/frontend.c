@@ -4158,7 +4158,7 @@ op_assign
 (brace
 id|AGPGART_MINOR
 comma
-id|AGPGART_MODULE_NAME
+l_string|&quot;agpgart&quot;
 comma
 op_amp
 id|agp_fops
