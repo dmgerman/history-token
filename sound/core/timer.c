@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Timers abstract layer&n; *  Copyright (c) by Jaroslav
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -8292,10 +8293,11 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_timer_user_ioctl
+DECL|function|_snd_timer_user_ioctl
 r_static
+r_inline
 r_int
-id|snd_timer_user_ioctl
+id|_snd_timer_user_ioctl
 c_func
 (paren
 r_struct
@@ -8541,6 +8543,63 @@ suffix:semicolon
 r_return
 op_minus
 id|ENOTTY
+suffix:semicolon
+)brace
+multiline_comment|/* FIXME: need to unlock BKL to allow preemption */
+DECL|function|snd_timer_user_ioctl
+r_static
+r_int
+id|snd_timer_user_ioctl
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+(brace
+r_int
+id|err
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|_snd_timer_user_ioctl
+c_func
+(paren
+id|inode
+comma
+id|file
+comma
+id|cmd
+comma
+id|arg
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 DECL|function|snd_timer_user_fasync
