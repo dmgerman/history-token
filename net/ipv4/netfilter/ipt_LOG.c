@@ -949,8 +949,6 @@ r_sizeof
 r_struct
 id|iphdr
 )paren
-op_plus
-l_int|8
 comma
 (braket
 id|ICMP_SOURCE_QUENCH
@@ -963,8 +961,6 @@ r_sizeof
 r_struct
 id|iphdr
 )paren
-op_plus
-l_int|8
 comma
 (braket
 id|ICMP_REDIRECT
@@ -977,8 +973,6 @@ r_sizeof
 r_struct
 id|iphdr
 )paren
-op_plus
-l_int|8
 comma
 (braket
 id|ICMP_ECHO
@@ -997,8 +991,6 @@ r_sizeof
 r_struct
 id|iphdr
 )paren
-op_plus
-l_int|8
 comma
 (braket
 id|ICMP_PARAMETERPROB
@@ -1011,8 +1003,6 @@ r_sizeof
 r_struct
 id|iphdr
 )paren
-op_plus
-l_int|8
 comma
 (braket
 id|ICMP_TIMESTAMP
