@@ -21,6 +21,8 @@ DECL|macro|B_RCVBUFREADY
 mdefine_line|#define B_RCVBUFREADY 0
 DECL|macro|B_XMTBUFREADY
 mdefine_line|#define B_XMTBUFREADY 1
+DECL|macro|B_CMPLREADY
+mdefine_line|#define B_CMPLREADY   2
 r_extern
 r_void
 id|debugl1

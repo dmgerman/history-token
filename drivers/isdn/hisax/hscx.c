@@ -1080,6 +1080,13 @@ op_amp
 id|bcs-&gt;squeue
 )paren
 suffix:semicolon
+id|skb_queue_purge
+c_func
+(paren
+op_amp
+id|bcs-&gt;cmpl_queue
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1238,6 +1245,13 @@ c_func
 (paren
 op_amp
 id|bcs-&gt;squeue
+)paren
+suffix:semicolon
+id|skb_queue_head_init
+c_func
+(paren
+op_amp
+id|bcs-&gt;cmpl_queue
 )paren
 suffix:semicolon
 )brace

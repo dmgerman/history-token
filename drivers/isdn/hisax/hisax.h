@@ -854,34 +854,6 @@ r_void
 op_star
 id|userdata
 suffix:semicolon
-DECL|member|l1writewakeup
-r_void
-(paren
-op_star
-id|l1writewakeup
-)paren
-(paren
-r_struct
-id|PStack
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|member|l2writewakeup
-r_void
-(paren
-op_star
-id|l2writewakeup
-)paren
-(paren
-r_struct
-id|PStack
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|Management
@@ -1670,13 +1642,19 @@ r_struct
 id|sk_buff_head
 id|rqueue
 suffix:semicolon
-multiline_comment|/* B-Channel receive Queue */
+multiline_comment|/* B-Channel receive queue */
 DECL|member|squeue
 r_struct
 id|sk_buff_head
 id|squeue
 suffix:semicolon
-multiline_comment|/* B-Channel send Queue */
+multiline_comment|/* B-Channel send queue */
+DECL|member|cmpl_queue
+r_struct
+id|sk_buff_head
+id|cmpl_queue
+suffix:semicolon
+multiline_comment|/* B-Channel send complete queue */
 DECL|member|st
 r_struct
 id|PStack
