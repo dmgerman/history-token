@@ -44,6 +44,7 @@ macro_line|#ifndef PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
 DECL|macro|PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
 mdefine_line|#define PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8 0x2000
 macro_line|#endif
+macro_line|#ifdef CONFIG_PCI
 DECL|variable|sx_pci_tbl
 r_static
 r_struct
@@ -76,6 +77,7 @@ comma
 id|sx_pci_tbl
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/* Configurable options: &n;   (Don&squot;t be too sure that it&squot;ll work if you toggle them) */
 multiline_comment|/* Am I paranoid or not ? ;-) */
 DECL|macro|SX_PARANOIA_CHECK
