@@ -168,7 +168,6 @@ id|sc
 suffix:semicolon
 r_extern
 r_int
-r_int
 id|handle_page_fault
 c_func
 (paren

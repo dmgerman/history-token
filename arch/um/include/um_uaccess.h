@@ -221,6 +221,7 @@ r_int
 id|strnlen_user
 c_func
 (paren
+r_const
 r_void
 op_star
 id|str

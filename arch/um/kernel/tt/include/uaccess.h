@@ -467,6 +467,7 @@ r_int
 id|strnlen_user_tt
 c_func
 (paren
+r_const
 r_void
 op_star
 id|str
