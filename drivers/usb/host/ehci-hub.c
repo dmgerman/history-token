@@ -666,7 +666,7 @@ multiline_comment|/* with integrated TT, there&squot;s nobody to hand it to! */
 r_if
 c_cond
 (paren
-id|ehci_is_ARC
+id|ehci_is_TDI
 c_func
 (paren
 id|ehci
@@ -2156,7 +2156,7 @@ op_eq
 id|PORT_CONNECT
 op_logical_and
 op_logical_neg
-id|ehci_is_ARC
+id|ehci_is_TDI
 c_func
 (paren
 id|ehci

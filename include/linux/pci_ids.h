@@ -3634,10 +3634,10 @@ DECL|macro|PCI_VENDOR_ID_INFINICON
 mdefine_line|#define PCI_VENDOR_ID_INFINICON&t;&t;0x1820
 DECL|macro|PCI_VENDOR_ID_TOPSPIN
 mdefine_line|#define PCI_VENDOR_ID_TOPSPIN&t;&t;0x1867
-DECL|macro|PCI_VENDOR_ID_ARC
-mdefine_line|#define PCI_VENDOR_ID_ARC               0x192E
-DECL|macro|PCI_DEVICE_ID_ARC_EHCI
-mdefine_line|#define PCI_DEVICE_ID_ARC_EHCI          0x0101
+DECL|macro|PCI_VENDOR_ID_TDI
+mdefine_line|#define PCI_VENDOR_ID_TDI               0x192E
+DECL|macro|PCI_DEVICE_ID_TDI_EHCI
+mdefine_line|#define PCI_DEVICE_ID_TDI_EHCI          0x0101
 DECL|macro|PCI_VENDOR_ID_SYMPHONY
 mdefine_line|#define PCI_VENDOR_ID_SYMPHONY&t;&t;0x1c1c
 DECL|macro|PCI_DEVICE_ID_SYMPHONY_101
