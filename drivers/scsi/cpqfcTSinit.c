@@ -714,28 +714,6 @@ op_assign
 l_string|&quot;cpqfcTS&quot;
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-op_eq
-l_int|0
-)paren
-singleline_comment|// no PCI busses?
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;  no PCI bus?@#!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|NumberOfAdapters
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
