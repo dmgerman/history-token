@@ -468,6 +468,13 @@ c_func
 id|smp_call_function
 )paren
 suffix:semicolon
+DECL|variable|cpu_callout_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_callout_map
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 DECL|variable|screen_info

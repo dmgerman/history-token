@@ -518,7 +518,33 @@ DECL|macro|__NR_ia32_remap_file_pages
 mdefine_line|#define __NR_ia32_remap_file_pages&t;257
 DECL|macro|__NR_ia32_set_tid_address
 mdefine_line|#define __NR_ia32_set_tid_address&t;258
+DECL|macro|__NR_ia32_timer_create
+mdefine_line|#define __NR_ia32_timer_create&t;&t;259
+DECL|macro|__NR_ia32_timer_settime
+mdefine_line|#define __NR_ia32_timer_settime&t;(__NR_ia32_timer_create+1)
+DECL|macro|__NR_ia32_timer_gettime
+mdefine_line|#define __NR_ia32_timer_gettime&t;(__NR_ia32_timer_create+2)
+DECL|macro|__NR_ia32_timer_getoverrun
+mdefine_line|#define __NR_ia32_timer_getoverrun&t;(__NR_ia32_timer_create+3)
+DECL|macro|__NR_ia32_timer_delete
+mdefine_line|#define __NR_ia32_timer_delete&t;(__NR_ia32_timer_create+4)
+DECL|macro|__NR_ia32_clock_settime
+mdefine_line|#define __NR_ia32_clock_settime&t;(__NR_ia32_timer_create+5)
+DECL|macro|__NR_ia32_clock_gettime
+mdefine_line|#define __NR_ia32_clock_gettime&t;(__NR_ia32_timer_create+6)
+DECL|macro|__NR_ia32_clock_getres
+mdefine_line|#define __NR_ia32_clock_getres&t;(__NR_ia32_timer_create+7)
+DECL|macro|__NR_ia32_clock_nanosleep
+mdefine_line|#define __NR_ia32_clock_nanosleep&t;(__NR_ia32_timer_create+8)
+DECL|macro|__NR_ia32_statfs64
+mdefine_line|#define __NR_ia32_statfs64&t;&t;268
+DECL|macro|__NR_ia32_fstatfs64
+mdefine_line|#define __NR_ia32_fstatfs64&t;&t;269
+DECL|macro|__NR_ia32_tgkill
+mdefine_line|#define __NR_ia32_tgkill&t;&t;270
+DECL|macro|__NR_ia32_utimes
+mdefine_line|#define __NR_ia32_utimes&t;&t;271
 DECL|macro|IA32_NR_syscalls
-mdefine_line|#define IA32_NR_syscalls 265&t;/* must be &gt; than biggest syscall! */&t;
+mdefine_line|#define IA32_NR_syscalls 275&t;/* must be &gt; than biggest syscall! */&t;
 macro_line|#endif /* _ASM_X86_64_IA32_UNISTD_H_ */
 eof

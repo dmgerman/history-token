@@ -536,6 +536,13 @@ DECL|macro|dma_cache_wback_inv
 mdefine_line|#define dma_cache_wback_inv(_start,_size)&t;do { } while (0)
 DECL|macro|flush_write_buffers
 mdefine_line|#define flush_write_buffers() 
+multiline_comment|/* Disable vmerge for now. Need to fix the block layer code&n;   to check for non iommu addresses first.&n;   When the IOMMU is force it is safe to enable. */
+r_extern
+r_int
+id|force_iommu
+suffix:semicolon
+DECL|macro|BIO_VERMGE_BOUNDARY
+mdefine_line|#define BIO_VERMGE_BOUNDARY (force_iommu ? 4096 : 0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

@@ -5,10 +5,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/mm.h&gt; /* for struct page */
-r_extern
-id|dma_addr_t
-id|bad_dma_address
-suffix:semicolon
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
 macro_line|#ifdef CONFIG_PCI
 r_extern
@@ -24,6 +20,12 @@ macro_line|#else
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;0
 macro_line|#endif
+r_extern
+r_int
+id|no_iommu
+comma
+id|force_iommu
+suffix:semicolon
 r_extern
 r_int
 r_int
@@ -171,6 +173,12 @@ op_star
 id|opt
 )paren
 suffix:semicolon
+r_extern
+id|dma_addr_t
+id|bad_dma_address
+suffix:semicolon
+DECL|macro|pci_dma_error
+mdefine_line|#define pci_dma_error(x) ((x) == bad_dma_address)
 multiline_comment|/* Allocate and map kernel buffer using consistent mode DMA for a device.&n; * hwdev should be valid struct pci_dev pointer for PCI devices,&n; * NULL for PCI-like buses (ISA, EISA).&n; * Returns non-NULL cpu-view pointer to the buffer if successful and&n; * sets *dma_addrp to the pci side dma address as well, else *dma_addrp&n; * is undefined.&n; */
 r_extern
 r_void
@@ -334,9 +342,12 @@ id|PCI_DMA_NONE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* The PCI address space does equal the physical memory&n; * address space.  The networking and block device layers use&n; * this boolean for bounce buffer decisions.&n; */
+multiline_comment|/* The PCI address space does equal the physical memory&n; * address space.  The networking and block device layers use&n; * this boolean for bounce buffer decisions&n; *&n; * On AMD64 it mostly equals, but we set it to zero to tell some subsystems&n; * that an IOMMU is available.&n; */
 DECL|macro|PCI_DMA_BUS_IS_PHYS
-mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(0)
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(no_iommu ? 1 : 0) 
+multiline_comment|/* We lie slightly when the IOMMU is forced to get the device to &n;   use SAC instead of DAC. */
+DECL|macro|pci_dac_dma_supported
+mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;(force_iommu ? 0 : 1)
 macro_line|#else
 DECL|function|pci_map_single
 r_static
@@ -617,6 +628,8 @@ suffix:semicolon
 )brace
 DECL|macro|PCI_DMA_BUS_IS_PHYS
 mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;1
+DECL|macro|pci_dac_dma_supported
+mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;1
 macro_line|#endif
 r_extern
 r_int
@@ -665,9 +678,7 @@ suffix:semicolon
 DECL|macro|pci_unmap_page
 mdefine_line|#define pci_unmap_page pci_unmap_single
 multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
-DECL|function|pci_dma_supported
-r_static
-r_inline
+r_extern
 r_int
 id|pci_dma_supported
 c_func
@@ -680,27 +691,7 @@ comma
 id|u64
 id|mask
 )paren
-(brace
-multiline_comment|/*&n;         * we fall back to GFP_DMA when the mask isn&squot;t all 1s,&n;         * so we can&squot;t guarantee allocations that must be&n;         * within a tighter range than GFP_DMA..&n;         */
-r_if
-c_cond
-(paren
-id|mask
-OL
-l_int|0x00ffffff
-)paren
-(brace
-r_return
-l_int|0
 suffix:semicolon
-)brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* This is always fine. */
-DECL|macro|pci_dac_dma_supported
-mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;(1)
 r_static
 id|__inline__
 id|dma64_addr_t
