@@ -10966,7 +10966,6 @@ multiline_comment|/* tear down the binding between this driver and the pci devic
 DECL|function|net2280_remove
 r_static
 r_void
-id|__exit
 id|net2280_remove
 (paren
 r_struct
@@ -11970,11 +11969,7 @@ comma
 dot
 id|remove
 op_assign
-id|__exit_p
-c_func
-(paren
 id|net2280_remove
-)paren
 comma
 multiline_comment|/* FIXME add power management support */
 )brace
