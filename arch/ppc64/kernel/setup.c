@@ -29,6 +29,7 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/nvram.h&gt;
 r_extern
 r_int
 r_int
@@ -854,6 +855,18 @@ op_star
 id|cmd
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ppc_md.nvram_sync
+)paren
+id|ppc_md
+dot
+id|nvram_sync
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ppc_md
 dot
 id|restart
@@ -878,6 +891,18 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ppc_md.nvram_sync
+)paren
+id|ppc_md
+dot
+id|nvram_sync
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ppc_md
 dot
 id|power_off
@@ -901,6 +926,18 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ppc_md.nvram_sync
+)paren
+id|ppc_md
+dot
+id|nvram_sync
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ppc_md
 dot
 id|halt

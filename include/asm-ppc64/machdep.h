@@ -530,6 +530,26 @@ op_star
 id|index
 )paren
 suffix:semicolon
+DECL|member|nvram_size
+id|ssize_t
+(paren
+op_star
+id|nvram_size
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|member|nvram_sync
+r_int
+(paren
+op_star
+id|nvram_sync
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* functions for dealing with other cpus */
 DECL|member|smp_ops

@@ -540,6 +540,13 @@ op_amp
 id|dummy_con
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_PSERIES
+id|pSeries_nvram_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_void
 id|__init
@@ -863,14 +870,6 @@ suffix:semicolon
 id|ppc_md.progress
 op_assign
 id|chrp_progress
-suffix:semicolon
-id|ppc_md.nvram_read
-op_assign
-id|pSeries_nvram_read
-suffix:semicolon
-id|ppc_md.nvram_write
-op_assign
-id|pSeries_nvram_write
 suffix:semicolon
 multiline_comment|/* Build up the firmware_features bitmask field&n;         * using contents of device-tree/ibm,hypertas-functions.&n;         * Ultimately this functionality may be moved into prom.c prom_init().&n;         */
 id|dn
