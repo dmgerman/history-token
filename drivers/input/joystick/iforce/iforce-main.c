@@ -1558,10 +1558,45 @@ op_assign
 l_int|10
 suffix:semicolon
 multiline_comment|/*&n; * Input device fields.&n; */
+r_switch
+c_cond
+(paren
+id|iforce-&gt;bus
+)paren
+(brace
+macro_line|#ifdef CONFIG_JOYSTICK_IFORCE_USB
+r_case
+id|IFORCE_USB
+suffix:colon
 id|iforce-&gt;dev.id.bustype
 op_assign
 id|BUS_USB
 suffix:semicolon
+id|iforce-&gt;dev.dev
+op_assign
+op_amp
+id|iforce-&gt;usbdev-&gt;dev
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_JOYSTICK_IFORCE_232
+r_case
+id|IFORCE_232
+suffix:colon
+id|iforce-&gt;dev.id.bustype
+op_assign
+id|BUS_RS232
+suffix:semicolon
+id|iforce-&gt;dev.dev
+op_assign
+op_amp
+id|iforce-&gt;serio-&gt;dev
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+)brace
 id|iforce-&gt;dev
 dot
 r_private

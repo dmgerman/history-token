@@ -3016,6 +3016,11 @@ r_private
 op_assign
 id|psmouse
 suffix:semicolon
+id|psmouse-&gt;dev.dev
+op_assign
+op_amp
+id|serio-&gt;dev
+suffix:semicolon
 id|psmouse_set_state
 c_func
 (paren

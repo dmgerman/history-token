@@ -2536,6 +2536,11 @@ id|lk-&gt;dev.id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
+id|lk-&gt;dev.dev
+op_assign
+op_amp
+id|serio-&gt;dev
+suffix:semicolon
 id|input_register_device
 (paren
 op_amp

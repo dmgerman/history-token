@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -2128,17 +2127,6 @@ op_logical_neg
 id|dev
 )paren
 r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;pm_dev
-)paren
-id|pm_unregister
-c_func
-(paren
-id|dev-&gt;pm_dev
-)paren
 suffix:semicolon
 id|del_timer_sync
 c_func

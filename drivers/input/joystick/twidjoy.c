@@ -746,6 +746,11 @@ id|twidjoy-&gt;dev.id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
+id|twidjoy-&gt;dev.dev
+op_assign
+op_amp
+id|serio-&gt;dev
+suffix:semicolon
 id|twidjoy-&gt;dev.evbit
 (braket
 l_int|0

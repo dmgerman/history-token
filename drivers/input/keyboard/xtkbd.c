@@ -674,6 +674,11 @@ id|xtkbd-&gt;dev.id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
+id|xtkbd-&gt;dev.dev
+op_assign
+op_amp
+id|serio-&gt;dev
+suffix:semicolon
 id|input_register_device
 c_func
 (paren
