@@ -525,6 +525,13 @@ c_func
 id|llc_sap_list
 )paren
 suffix:semicolon
+DECL|variable|llc_sap_list_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|llc_sap_list_lock
+)paren
+suffix:semicolon
 DECL|variable|llc_sap_find
 id|EXPORT_SYMBOL
 c_func
