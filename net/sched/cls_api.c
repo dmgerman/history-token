@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
+macro_line|#include &lt;net/pkt_cls.h&gt;
 macro_line|#if 0 /* control */
 mdefine_line|#define DPRINTK(format,args...) printk(KERN_DEBUG format,##args)
 macro_line|#else
@@ -1348,57 +1349,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|tcf_set_class
-r_int
-r_int
-id|tcf_set_class
-c_func
-(paren
-r_struct
-id|tcf_proto
-op_star
-id|tp
-comma
-r_int
-r_int
-op_star
-id|clp
-comma
-r_int
-r_int
-id|cl
-)paren
-(brace
-r_int
-r_int
-id|old_cl
-suffix:semicolon
-id|tcf_tree_lock
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
-id|old_cl
-op_assign
-id|__cls_set_class
-c_func
-(paren
-id|clp
-comma
-id|cl
-)paren
-suffix:semicolon
-id|tcf_tree_unlock
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
-r_return
-id|old_cl
-suffix:semicolon
-)brace
 r_static
 r_int
 DECL|function|tcf_fill_node
@@ -2369,13 +2319,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|unregister_tcf_proto_ops
-)paren
-suffix:semicolon
-DECL|variable|tcf_set_class
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcf_set_class
 )paren
 suffix:semicolon
 eof

@@ -59,22 +59,6 @@ c_func
 l_string|&quot;FBDev driver for S3 Savage PCI/AGP Chips&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|disabled
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|disabled
-comma
-l_string|&quot;Disable this driver&squot;s initialization.&quot;
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|vgaHWSeqReset
@@ -7429,6 +7413,7 @@ id|par-&gt;bci_base
 op_assign
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 (paren
@@ -7495,6 +7480,7 @@ id|iounmap
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|par-&gt;mmio.vbase
@@ -7639,16 +7625,6 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Clear framebuffer, it&squot;s all white in memory after boot */
-id|memset
-(paren
-id|par-&gt;video.vbase
-comma
-l_int|0
-comma
-id|par-&gt;video.len
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

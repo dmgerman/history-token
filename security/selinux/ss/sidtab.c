@@ -12,9 +12,9 @@ mdefine_line|#define SIDTAB_HASH(sid) &bslash;&n;(sid &amp; SIDTAB_HASH_MASK)
 DECL|macro|INIT_SIDTAB_LOCK
 mdefine_line|#define INIT_SIDTAB_LOCK(s) spin_lock_init(&amp;s-&gt;lock)
 DECL|macro|SIDTAB_LOCK
-mdefine_line|#define SIDTAB_LOCK(s) spin_lock_irq(&amp;s-&gt;lock)
+mdefine_line|#define SIDTAB_LOCK(s, x) spin_lock_irqsave(&amp;s-&gt;lock, x)
 DECL|macro|SIDTAB_UNLOCK
-mdefine_line|#define SIDTAB_UNLOCK(s) spin_unlock_irq(&amp;s-&gt;lock)
+mdefine_line|#define SIDTAB_UNLOCK(s, x) spin_unlock_irqrestore(&amp;s-&gt;lock, x)
 DECL|function|sidtab_init
 r_int
 id|sidtab_init
@@ -1015,6 +1015,10 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 op_star
 id|out_sid
 op_assign
@@ -1041,6 +1045,8 @@ id|SIDTAB_LOCK
 c_func
 (paren
 id|s
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Rescan now that we hold the lock. */
@@ -1113,6 +1119,8 @@ id|SIDTAB_UNLOCK
 c_func
 (paren
 id|s
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1376,10 +1384,16 @@ op_star
 id|src
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|SIDTAB_LOCK
 c_func
 (paren
 id|src
+comma
+id|flags
 )paren
 suffix:semicolon
 id|dst-&gt;htable
@@ -1402,6 +1416,8 @@ id|SIDTAB_UNLOCK
 c_func
 (paren
 id|src
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1416,10 +1432,16 @@ op_star
 id|s
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|SIDTAB_LOCK
 c_func
 (paren
 id|s
+comma
+id|flags
 )paren
 suffix:semicolon
 id|s-&gt;shutdown
@@ -1430,6 +1452,8 @@ id|SIDTAB_UNLOCK
 c_func
 (paren
 id|s
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace

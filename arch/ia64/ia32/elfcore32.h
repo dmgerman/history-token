@@ -3,6 +3,7 @@ macro_line|#ifndef _ELFCORE32_H_
 DECL|macro|_ELFCORE32_H_
 mdefine_line|#define _ELFCORE32_H_
 macro_line|#include &lt;asm/intrinsics.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP 1
 multiline_comment|/* Override elfcore.h */

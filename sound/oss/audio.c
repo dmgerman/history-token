@@ -11,6 +11,7 @@ DECL|macro|NEUTRAL8
 mdefine_line|#define NEUTRAL8&t;0x80
 DECL|macro|NEUTRAL16
 mdefine_line|#define NEUTRAL16&t;0x00
+r_static
 r_int
 id|dma_ioctl
 c_func
@@ -3378,6 +3379,7 @@ l_int|16
 suffix:semicolon
 )brace
 DECL|function|dma_ioctl
+r_static
 r_int
 id|dma_ioctl
 c_func

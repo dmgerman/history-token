@@ -147,7 +147,6 @@ op_star
 )paren
 id|p2t-&gt;priv
 suffix:semicolon
-singleline_comment|//&t;DEB_EE((&quot;struct dvb_filter_pes2ts:%p&bslash;n&quot;, p2t));
 r_if
 c_cond
 (paren
@@ -254,7 +253,6 @@ op_star
 )paren
 id|priv
 suffix:semicolon
-singleline_comment|//&t;DEB_EE((&quot;dvb_demux_feed:%p&bslash;n&quot;, dvbdmxfeed));
 id|dvbdmxfeed-&gt;cb
 dot
 id|ts
@@ -304,16 +302,16 @@ id|dvbdmx
 op_assign
 id|dvbdmxfeed-&gt;demux
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p, dvb_demux_feed:%p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, , dvb_demux_feed:%p&bslash;n&quot;
 comma
 id|av7110
 comma
 id|dvbdmxfeed
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -551,14 +549,14 @@ r_int
 id|av
 )paren
 (brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -722,14 +720,14 @@ r_int
 id|av
 )paren
 (brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -926,16 +924,6 @@ id|sync
 suffix:semicolon
 id|u16
 id|blen
-suffix:semicolon
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;dvb_ring_buffer_t: %p&bslash;n&quot;
-comma
-id|buf
-)paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1137,10 +1125,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|DEB_S
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;pread=0x%08lx, pwrite=0x%08lx&bslash;n&quot;
 comma
 (paren
@@ -1154,7 +1143,6 @@ r_int
 r_int
 )paren
 id|buf-&gt;pwrite
-)paren
 )paren
 suffix:semicolon
 id|wake_up
@@ -1196,14 +1184,14 @@ id|balance
 op_assign
 l_int|0
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|av7110-&gt;mixer.volume_left
@@ -1455,14 +1443,14 @@ r_int
 id|mode
 )paren
 (brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|av7110_fw_cmd
@@ -1605,14 +1593,14 @@ id|u8
 op_star
 id|p
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1746,18 +1734,18 @@ id|sw
 )braket
 )paren
 suffix:semicolon
-id|DEB_S
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;dvb: playback %dx%d fr=%d&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;playback %dx%d fr=%d&bslash;n&quot;
 comma
 id|hsize
 comma
 id|vsize
 comma
 id|sw
-)paren
 )paren
 suffix:semicolon
 id|av7110-&gt;sinfo
@@ -1919,14 +1907,14 @@ op_star
 )paren
 id|priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2009,14 +1997,14 @@ op_star
 )paren
 id|priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|aux_ring_buffer_write
@@ -2069,14 +2057,14 @@ id|count
 comma
 id|n
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2252,14 +2240,14 @@ id|count
 comma
 id|n
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2413,14 +2401,14 @@ id|count
 comma
 id|n
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -4007,14 +3995,14 @@ id|av7110-&gt;ipack
 id|feed-&gt;pes_type
 )braket
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -4186,14 +4174,6 @@ suffix:semicolon
 r_int
 id|wp
 suffix:semicolon
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|spin_lock_bh
 c_func
 (paren
@@ -4298,14 +4278,6 @@ id|events
 op_assign
 op_amp
 id|av7110-&gt;video_events
-suffix:semicolon
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4461,14 +4433,14 @@ id|mask
 op_assign
 l_int|0
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -4611,14 +4583,14 @@ op_star
 )paren
 id|dvbdev-&gt;priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -4712,14 +4684,14 @@ id|mask
 op_assign
 l_int|0
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|poll_wait
@@ -4825,14 +4797,14 @@ op_star
 )paren
 id|dvbdev-&gt;priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -4930,14 +4902,14 @@ id|i
 comma
 id|n
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -5102,14 +5074,14 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -6001,14 +5973,14 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -6469,14 +6441,14 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -6590,14 +6562,14 @@ op_star
 )paren
 id|dvbdev-&gt;priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -6683,14 +6655,14 @@ comma
 id|file
 )paren
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -6759,14 +6731,14 @@ op_star
 )paren
 id|dvbdev-&gt;priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;av7110:%p, &bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|av7110_av_stop

@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;ahci&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.11&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.00&quot;
 r_enum
 (brace
 DECL|enumerator|AHCI_PCI_BAR
@@ -271,6 +271,12 @@ op_assign
 l_int|0x30
 comma
 multiline_comment|/* SATA phy register: SError */
+DECL|enumerator|PORT_SCR_ACT
+id|PORT_SCR_ACT
+op_assign
+l_int|0x34
+comma
+multiline_comment|/* SATA phy register: SActive */
 multiline_comment|/* PORT_IRQ_{STAT,MASK} bits */
 DECL|enumerator|PORT_IRQ_COLD_PRES
 id|PORT_IRQ_COLD_PRES
@@ -459,6 +465,18 @@ op_assign
 id|PORT_IRQ_FATAL
 op_or
 id|PORT_IRQ_PHYRDY
+op_or
+id|PORT_IRQ_CONNECT
+op_or
+id|PORT_IRQ_SG_DONE
+op_or
+id|PORT_IRQ_UNK_FIS
+op_or
+id|PORT_IRQ_SDB_FIS
+op_or
+id|PORT_IRQ_DMAS_FIS
+op_or
+id|PORT_IRQ_PIOS_FIS
 op_or
 id|PORT_IRQ_D2H_REG_FIS
 comma
@@ -1508,7 +1526,7 @@ l_int|0xffffffff
 comma
 id|port_mmio
 op_plus
-id|PORT_LST_ADDR
+id|PORT_FIS_ADDR
 )paren
 suffix:semicolon
 id|readl
@@ -1516,7 +1534,7 @@ c_func
 (paren
 id|port_mmio
 op_plus
-id|PORT_LST_ADDR
+id|PORT_FIS_ADDR
 )paren
 suffix:semicolon
 multiline_comment|/* flush */
@@ -1656,22 +1674,10 @@ id|PORT_CMD
 suffix:semicolon
 multiline_comment|/* flush */
 multiline_comment|/* spec says 500 msecs for each PORT_CMD_{START,FIS_RX} bit, so&n;&t; * this is slightly incorrect.&n;&t; */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|HZ
-op_div
-l_int|2
-)paren
-op_plus
-l_int|1
+l_int|500
 )paren
 suffix:semicolon
 id|ap-&gt;private_data
@@ -3145,7 +3151,7 @@ id|qc-&gt;ap
 suffix:semicolon
 r_void
 op_star
-id|mmio
+id|port_mmio
 op_assign
 (paren
 r_void
@@ -3158,7 +3164,26 @@ c_func
 (paren
 l_int|1
 comma
-id|mmio
+id|port_mmio
+op_plus
+id|PORT_SCR_ACT
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
+id|port_mmio
+op_plus
+id|PORT_SCR_ACT
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
+id|writel
+c_func
+(paren
+l_int|1
+comma
+id|port_mmio
 op_plus
 id|PORT_CMD_ISSUE
 )paren
@@ -3166,7 +3191,7 @@ suffix:semicolon
 id|readl
 c_func
 (paren
-id|mmio
+id|port_mmio
 op_plus
 id|PORT_CMD_ISSUE
 )paren
@@ -3378,17 +3403,9 @@ suffix:semicolon
 multiline_comment|/* flush */
 )brace
 multiline_comment|/* reset must complete within 1 second, or&n;&t; * the hardware should be considered fried.&n;&t; */
-id|set_current_state
+id|ssleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_plus
 l_int|1
 )paren
 suffix:semicolon
@@ -3715,6 +3732,7 @@ id|i
 op_increment
 )paren
 (brace
+macro_line|#if 0 /* BIOSen initialize this incorrectly */
 r_if
 c_cond
 (paren
@@ -3731,6 +3749,7 @@ id|i
 )paren
 r_continue
 suffix:semicolon
+macro_line|#endif
 id|port_mmio
 op_assign
 id|ahci_port_base
@@ -3837,22 +3856,10 @@ id|PORT_CMD
 suffix:semicolon
 multiline_comment|/* flush */
 multiline_comment|/* spec says 500 msecs for each bit, so&n;&t;&t;&t; * this is slightly incorrect.&n;&t;&t;&t; */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|HZ
-op_div
-l_int|2
-)paren
-op_plus
-l_int|1
+l_int|500
 )paren
 suffix:semicolon
 )brace
@@ -4153,6 +4160,14 @@ r_char
 op_star
 id|speed_s
 suffix:semicolon
+id|u16
+id|cc
+suffix:semicolon
+r_const
+r_char
+op_star
+id|scc_s
+suffix:semicolon
 id|vers
 op_assign
 id|readl
@@ -4209,13 +4224,64 @@ id|speed_s
 op_assign
 l_string|&quot;?&quot;
 suffix:semicolon
+id|pci_read_config_word
+c_func
+(paren
+id|pdev
+comma
+l_int|0x0a
+comma
+op_amp
+id|cc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cc
+op_eq
+l_int|0x0101
+)paren
+id|scc_s
+op_assign
+l_string|&quot;IDE&quot;
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|cc
+op_eq
+l_int|0x0106
+)paren
+id|scc_s
+op_assign
+l_string|&quot;SATA&quot;
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|cc
+op_eq
+l_int|0x0104
+)paren
+id|scc_s
+op_assign
+l_string|&quot;RAID&quot;
+suffix:semicolon
+r_else
+id|scc_s
+op_assign
+l_string|&quot;unknown&quot;
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;(%s) AHCI %02x%02x.%02x%02x &quot;
-l_string|&quot;%u slots %u ports %s Gbps 0x%x impl&bslash;n&quot;
+l_string|&quot;%u slots %u ports %s Gbps 0x%x impl %s mode&bslash;n&quot;
 comma
 id|pci_name
 c_func
@@ -4274,6 +4340,8 @@ comma
 id|speed_s
 comma
 id|impl
+comma
+id|scc_s
 )paren
 suffix:semicolon
 id|printk

@@ -205,13 +205,6 @@ c_func
 id|dump_fpu
 )paren
 suffix:semicolon
-DECL|variable|dump_extended_fpu
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dump_extended_fpu
-)paren
-suffix:semicolon
 DECL|variable|kernel_fpu_begin
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -671,11 +664,11 @@ id|register_die_notifier
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HAVE_DEC_LOCK
-DECL|variable|atomic_dec_and_lock
+DECL|variable|_atomic_dec_and_lock
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|atomic_dec_and_lock
+id|_atomic_dec_and_lock
 )paren
 suffix:semicolon
 macro_line|#endif

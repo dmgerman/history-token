@@ -15,7 +15,7 @@ multiline_comment|/*&n; * Must define these before including other files, inline
 DECL|macro|LOCK_SECTION_NAME
 mdefine_line|#define LOCK_SECTION_NAME                       &bslash;&n;        &quot;.text.lock.&quot; __stringify(KBUILD_BASENAME)
 DECL|macro|LOCK_SECTION_START
-mdefine_line|#define LOCK_SECTION_START(extra)               &bslash;&n;        &quot;.subsection 1&bslash;n&bslash;t&quot;                     &bslash;&n;        extra                                   &bslash;&n;        &quot;.ifndef &quot; LOCK_SECTION_NAME &quot;&bslash;n&bslash;t&quot;     &bslash;&n;        LOCK_SECTION_NAME &quot;:&bslash;n&bslash;t&quot;               &bslash;&n;        &quot;.endif&bslash;n&bslash;t&quot;
+mdefine_line|#define LOCK_SECTION_START(extra)               &bslash;&n;        &quot;.subsection 1&bslash;n&bslash;t&quot;                     &bslash;&n;        extra                                   &bslash;&n;        &quot;.ifndef &quot; LOCK_SECTION_NAME &quot;&bslash;n&bslash;t&quot;     &bslash;&n;        LOCK_SECTION_NAME &quot;:&bslash;n&bslash;t&quot;               &bslash;&n;        &quot;.endif&bslash;n&quot;
 DECL|macro|LOCK_SECTION_END
 mdefine_line|#define LOCK_SECTION_END                        &bslash;&n;        &quot;.previous&bslash;n&bslash;t&quot;
 DECL|macro|__lockfunc
@@ -465,8 +465,8 @@ macro_line|#else
 DECL|macro|in_lock_functions
 mdefine_line|#define in_lock_functions(ADDR) 0
 macro_line|#if !defined(CONFIG_PREEMPT) &amp;&amp; !defined(CONFIG_DEBUG_SPINLOCK)
-DECL|macro|atomic_dec_and_lock
-macro_line|# define atomic_dec_and_lock(atomic,lock) atomic_dec_and_test(atomic)
+DECL|macro|_atomic_dec_and_lock
+macro_line|# define _atomic_dec_and_lock(atomic,lock) atomic_dec_and_test(atomic)
 DECL|macro|ATOMIC_DEC_AND_LOCK
 macro_line|# define ATOMIC_DEC_AND_LOCK
 macro_line|#endif
@@ -616,61 +616,59 @@ mdefine_line|#define _write_trylock(lock)&t;({preempt_disable(); _raw_write_tryl
 DECL|macro|_spin_trylock_bh
 mdefine_line|#define _spin_trylock_bh(lock)&t;({preempt_disable(); local_bh_disable(); &bslash;&n;&t;&t;&t;&t;_raw_spin_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); local_bh_enable(); 0;});})
 DECL|macro|_spin_lock
-mdefine_line|#define _spin_lock(lock)&t;&bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while(0)
+mdefine_line|#define _spin_lock(lock)&t;&bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;&t;__acquire(lock); &bslash;&n;} while(0)
 DECL|macro|_write_lock
-mdefine_line|#define _write_lock(lock) &bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_write_lock(lock); &bslash;&n;} while(0)
+mdefine_line|#define _write_lock(lock) &bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_write_lock(lock); &bslash;&n;&t;__acquire(lock); &bslash;&n;} while(0)
 DECL|macro|_read_lock
-mdefine_line|#define _read_lock(lock)&t;&bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_read_lock(lock); &bslash;&n;} while(0)
+mdefine_line|#define _read_lock(lock)&t;&bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_read_lock(lock); &bslash;&n;&t;__acquire(lock); &bslash;&n;} while(0)
 DECL|macro|_spin_unlock
-mdefine_line|#define _spin_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while (0)
+mdefine_line|#define _spin_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;&t;__release(lock); &bslash;&n;} while (0)
 DECL|macro|_write_unlock
-mdefine_line|#define _write_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_write_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while(0)
+mdefine_line|#define _write_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_write_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;&t;__release(lock); &bslash;&n;} while(0)
 DECL|macro|_read_unlock
-mdefine_line|#define _read_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_read_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while(0)
+mdefine_line|#define _read_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_read_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;&t;__release(lock); &bslash;&n;} while(0)
 DECL|macro|_spin_lock_irqsave
-mdefine_line|#define _spin_lock_irqsave(lock, flags) &bslash;&n;do {&t;&bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while (0)
+mdefine_line|#define _spin_lock_irqsave(lock, flags) &bslash;&n;do {&t;&bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;&t;__acquire(lock); &bslash;&n;} while (0)
 DECL|macro|_spin_lock_irq
-mdefine_line|#define _spin_lock_irq(lock) &bslash;&n;do { &bslash;&n;&t;local_irq_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while (0)
+mdefine_line|#define _spin_lock_irq(lock) &bslash;&n;do { &bslash;&n;&t;local_irq_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;&t;__acquire(lock); &bslash;&n;} while (0)
 DECL|macro|_spin_lock_bh
-mdefine_line|#define _spin_lock_bh(lock) &bslash;&n;do { &bslash;&n;&t;local_bh_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while (0)
+mdefine_line|#define _spin_lock_bh(lock) &bslash;&n;do { &bslash;&n;&t;local_bh_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;&t;__acquire(lock); &bslash;&n;} while (0)
 DECL|macro|_read_lock_irqsave
-mdefine_line|#define _read_lock_irqsave(lock, flags) &bslash;&n;do {&t;&bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_read_lock(lock); &bslash;&n;} while (0)
+mdefine_line|#define _read_lock_irqsave(lock, flags) &bslash;&n;do {&t;&bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_read_lock(lock); &bslash;&n;&t;__acquire(lock); &bslash;&n;} while (0)
 DECL|macro|_read_lock_irq
-mdefine_line|#define _read_lock_irq(lock) &bslash;&n;do { &bslash;&n;&t;local_irq_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_read_lock(lock); &bslash;&n;} while (0)
+mdefine_line|#define _read_lock_irq(lock) &bslash;&n;do { &bslash;&n;&t;local_irq_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_read_lock(lock); &bslash;&n;&t;__acquire(lock); &bslash;&n;} while (0)
 DECL|macro|_read_lock_bh
-mdefine_line|#define _read_lock_bh(lock) &bslash;&n;do { &bslash;&n;&t;local_bh_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_read_lock(lock); &bslash;&n;} while (0)
+mdefine_line|#define _read_lock_bh(lock) &bslash;&n;do { &bslash;&n;&t;local_bh_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_read_lock(lock); &bslash;&n;&t;__acquire(lock); &bslash;&n;} while (0)
 DECL|macro|_write_lock_irqsave
-mdefine_line|#define _write_lock_irqsave(lock, flags) &bslash;&n;do {&t;&bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_write_lock(lock); &bslash;&n;} while (0)
+mdefine_line|#define _write_lock_irqsave(lock, flags) &bslash;&n;do {&t;&bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_write_lock(lock); &bslash;&n;&t;__acquire(lock); &bslash;&n;} while (0)
 DECL|macro|_write_lock_irq
-mdefine_line|#define _write_lock_irq(lock) &bslash;&n;do { &bslash;&n;&t;local_irq_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_write_lock(lock); &bslash;&n;} while (0)
+mdefine_line|#define _write_lock_irq(lock) &bslash;&n;do { &bslash;&n;&t;local_irq_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_write_lock(lock); &bslash;&n;&t;__acquire(lock); &bslash;&n;} while (0)
 DECL|macro|_write_lock_bh
-mdefine_line|#define _write_lock_bh(lock) &bslash;&n;do { &bslash;&n;&t;local_bh_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_write_lock(lock); &bslash;&n;} while (0)
+mdefine_line|#define _write_lock_bh(lock) &bslash;&n;do { &bslash;&n;&t;local_bh_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_write_lock(lock); &bslash;&n;&t;__acquire(lock); &bslash;&n;} while (0)
 DECL|macro|_spin_unlock_irqrestore
-mdefine_line|#define _spin_unlock_irqrestore(lock, flags) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while (0)
-DECL|macro|_raw_spin_unlock_irqrestore
-mdefine_line|#define _raw_spin_unlock_irqrestore(lock, flags) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while (0)
+mdefine_line|#define _spin_unlock_irqrestore(lock, flags) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;&t;preempt_enable(); &bslash;&n;&t;__release(lock); &bslash;&n;} while (0)
 DECL|macro|_spin_unlock_irq
-mdefine_line|#define _spin_unlock_irq(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;local_irq_enable(); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while (0)
+mdefine_line|#define _spin_unlock_irq(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;local_irq_enable(); &bslash;&n;&t;preempt_enable(); &bslash;&n;&t;__release(lock); &bslash;&n;} while (0)
 DECL|macro|_spin_unlock_bh
-mdefine_line|#define _spin_unlock_bh(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;&t;local_bh_enable(); &bslash;&n;} while (0)
+mdefine_line|#define _spin_unlock_bh(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;&t;local_bh_enable(); &bslash;&n;&t;__release(lock); &bslash;&n;} while (0)
 DECL|macro|_write_unlock_bh
-mdefine_line|#define _write_unlock_bh(lock) &bslash;&n;do { &bslash;&n;&t;_raw_write_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;&t;local_bh_enable(); &bslash;&n;} while (0)
+mdefine_line|#define _write_unlock_bh(lock) &bslash;&n;do { &bslash;&n;&t;_raw_write_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;&t;local_bh_enable(); &bslash;&n;&t;__release(lock); &bslash;&n;} while (0)
 DECL|macro|_read_unlock_irqrestore
-mdefine_line|#define _read_unlock_irqrestore(lock, flags) &bslash;&n;do { &bslash;&n;&t;_raw_read_unlock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while (0)
+mdefine_line|#define _read_unlock_irqrestore(lock, flags) &bslash;&n;do { &bslash;&n;&t;_raw_read_unlock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;&t;preempt_enable(); &bslash;&n;&t;__release(lock); &bslash;&n;} while (0)
 DECL|macro|_write_unlock_irqrestore
-mdefine_line|#define _write_unlock_irqrestore(lock, flags) &bslash;&n;do { &bslash;&n;&t;_raw_write_unlock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while (0)
+mdefine_line|#define _write_unlock_irqrestore(lock, flags) &bslash;&n;do { &bslash;&n;&t;_raw_write_unlock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;&t;preempt_enable(); &bslash;&n;&t;__release(lock); &bslash;&n;} while (0)
 DECL|macro|_read_unlock_irq
-mdefine_line|#define _read_unlock_irq(lock)&t;&bslash;&n;do { &bslash;&n;&t;_raw_read_unlock(lock);&t;&bslash;&n;&t;local_irq_enable();&t;&bslash;&n;&t;preempt_enable();&t;&bslash;&n;} while (0)
+mdefine_line|#define _read_unlock_irq(lock)&t;&bslash;&n;do { &bslash;&n;&t;_raw_read_unlock(lock);&t;&bslash;&n;&t;local_irq_enable();&t;&bslash;&n;&t;preempt_enable();&t;&bslash;&n;&t;__release(lock); &bslash;&n;} while (0)
 DECL|macro|_read_unlock_bh
-mdefine_line|#define _read_unlock_bh(lock)&t;&bslash;&n;do { &bslash;&n;&t;_raw_read_unlock(lock);&t;&bslash;&n;&t;local_bh_enable();&t;&bslash;&n;&t;preempt_enable();&t;&bslash;&n;} while (0)
+mdefine_line|#define _read_unlock_bh(lock)&t;&bslash;&n;do { &bslash;&n;&t;_raw_read_unlock(lock);&t;&bslash;&n;&t;local_bh_enable();&t;&bslash;&n;&t;preempt_enable();&t;&bslash;&n;&t;__release(lock); &bslash;&n;} while (0)
 DECL|macro|_write_unlock_irq
-mdefine_line|#define _write_unlock_irq(lock)&t;&bslash;&n;do { &bslash;&n;&t;_raw_write_unlock(lock);&t;&bslash;&n;&t;local_irq_enable();&t;&bslash;&n;&t;preempt_enable();&t;&bslash;&n;} while (0)
+mdefine_line|#define _write_unlock_irq(lock)&t;&bslash;&n;do { &bslash;&n;&t;_raw_write_unlock(lock);&t;&bslash;&n;&t;local_irq_enable();&t;&bslash;&n;&t;preempt_enable();&t;&bslash;&n;&t;__release(lock); &bslash;&n;} while (0)
 macro_line|#endif /* !SMP */
 multiline_comment|/*&n; * Define the various spin_lock and rw_lock methods.  Note we define these&n; * regardless of whether CONFIG_SMP or CONFIG_PREEMPT are set. The various&n; * methods are defined as nops in the case they are not required.&n; */
 DECL|macro|spin_trylock
-mdefine_line|#define spin_trylock(lock)&t;_spin_trylock(lock)
+mdefine_line|#define spin_trylock(lock)&t;__cond_lock(_spin_trylock(lock))
 DECL|macro|write_trylock
-mdefine_line|#define write_trylock(lock)&t;_write_trylock(lock)
+mdefine_line|#define write_trylock(lock)&t;__cond_lock(_write_trylock(lock))
 multiline_comment|/* Where&squot;s read_trylock? */
 DECL|macro|spin_lock
 mdefine_line|#define spin_lock(lock)&t;&t;_spin_lock(lock)
@@ -730,7 +728,7 @@ mdefine_line|#define write_unlock_irq(lock)&t;&t;&t;_write_unlock_irq(lock)
 DECL|macro|write_unlock_bh
 mdefine_line|#define write_unlock_bh(lock)&t;&t;&t;_write_unlock_bh(lock)
 DECL|macro|spin_trylock_bh
-mdefine_line|#define spin_trylock_bh(lock)&t;&t;&t;_spin_trylock_bh(lock)
+mdefine_line|#define spin_trylock_bh(lock)&t;&t;&t;__cond_lock(_spin_trylock_bh(lock))
 macro_line|#ifdef CONFIG_LOCKMETER
 r_extern
 r_void
@@ -812,7 +810,7 @@ macro_line|#ifndef ATOMIC_DEC_AND_LOCK
 macro_line|#include &lt;asm/atomic.h&gt;
 r_extern
 r_int
-id|atomic_dec_and_lock
+id|_atomic_dec_and_lock
 c_func
 (paren
 id|atomic_t
@@ -825,6 +823,8 @@ id|lock
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|macro|atomic_dec_and_lock
+mdefine_line|#define atomic_dec_and_lock(atomic,lock) __cond_lock(_atomic_dec_and_lock(atomic,lock))
 multiline_comment|/*&n; *  bit-based spin_lock()&n; *&n; * Don&squot;t use this unless you really need to: spin_lock() and spin_unlock()&n; * are significantly faster.&n; */
 DECL|function|bit_spin_lock
 r_static
@@ -879,6 +879,12 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
+id|__acquire
+c_func
+(paren
+id|bitlock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return true if it was acquired&n; */
 DECL|function|bit_spin_trylock
@@ -897,18 +903,15 @@ op_star
 id|addr
 )paren
 (brace
-macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_DEBUG_SPINLOCK)
-r_int
-id|ret
-suffix:semicolon
 id|preempt_disable
 c_func
 (paren
 )paren
 suffix:semicolon
-id|ret
-op_assign
-op_logical_neg
+macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_DEBUG_SPINLOCK)
+r_if
+c_cond
+(paren
 id|test_and_set_bit
 c_func
 (paren
@@ -916,31 +919,27 @@ id|bitnum
 comma
 id|addr
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ret
 )paren
+(brace
 id|preempt_enable
 c_func
 (paren
 )paren
 suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
-macro_line|#else
-id|preempt_disable
+)brace
+macro_line|#endif
+id|__acquire
 c_func
 (paren
+id|bitlock
 )paren
 suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; *  bit-based spin_unlock()&n; */
 DECL|function|bit_spin_unlock
@@ -990,6 +989,12 @@ macro_line|#endif
 id|preempt_enable
 c_func
 (paren
+)paren
+suffix:semicolon
+id|__release
+c_func
+(paren
+id|bitlock
 )paren
 suffix:semicolon
 )brace

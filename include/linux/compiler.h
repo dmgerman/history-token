@@ -21,6 +21,8 @@ DECL|macro|__acquire
 macro_line|# define __acquire(x)&t;__context__(1)
 DECL|macro|__release
 macro_line|# define __release(x)&t;__context__(-1)
+DECL|macro|__cond_lock
+macro_line|# define __cond_lock(x)&t;((x) ? ({ __context__(1); 1; }) : 0)
 r_extern
 r_void
 id|__chk_user_ptr
@@ -66,6 +68,8 @@ DECL|macro|__acquire
 macro_line|# define __acquire(x) (void)0
 DECL|macro|__release
 macro_line|# define __release(x) (void)0
+DECL|macro|__cond_lock
+macro_line|# define __cond_lock(x) (x)
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#if __GNUC__ &gt; 3

@@ -23,6 +23,7 @@ mdefine_line|#define DPRINTK(stuff...)
 macro_line|#endif
 multiline_comment|/* Make parport_wait_peripheral wake up.&n; * It will be useful to call this from an interrupt handler. */
 DECL|function|parport_ieee1284_wakeup
+r_static
 r_void
 id|parport_ieee1284_wakeup
 (paren
@@ -2154,25 +2155,11 @@ c_func
 id|parport_read
 )paren
 suffix:semicolon
-DECL|variable|parport_ieee1284_wakeup
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|parport_ieee1284_wakeup
-)paren
-suffix:semicolon
 DECL|variable|parport_wait_peripheral
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|parport_wait_peripheral
-)paren
-suffix:semicolon
-DECL|variable|parport_poll_peripheral
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|parport_poll_peripheral
 )paren
 suffix:semicolon
 DECL|variable|parport_wait_event

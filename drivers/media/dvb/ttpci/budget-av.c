@@ -514,12 +514,12 @@ op_ne
 l_int|1
 )paren
 (brace
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;saa7113: not found on KNC card&bslash;n&quot;
-)paren
+l_int|1
+comma
+l_string|&quot;saa7113 not found on KNC card&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -527,12 +527,12 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|INFO
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;saa7113: detected and initializing&bslash;n&quot;
-)paren
+l_int|1
+comma
+l_string|&quot;saa7113 detected and initializing&bslash;n&quot;
 )paren
 suffix:semicolon
 r_while
@@ -568,11 +568,12 @@ op_add_assign
 l_int|2
 suffix:semicolon
 )brace
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;saa7113: status=%02x&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;saa7113  status=%02x&bslash;n&quot;
 comma
 id|i2c_readreg
 c_func
@@ -583,7 +584,6 @@ comma
 l_int|0x4a
 comma
 l_int|0x1f
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -734,14 +734,14 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;dev: %p&bslash;n&quot;
 comma
 id|dev
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -835,14 +835,14 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;dev: %p&bslash;n&quot;
 comma
 id|dev
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1338,14 +1338,14 @@ id|i
 op_assign
 id|arg
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|1
+comma
 l_string|&quot;VIDIOC_ENUMINPUT %d.&bslash;n&quot;
 comma
 id|i-&gt;index
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1406,15 +1406,15 @@ id|input
 op_assign
 id|budget_av-&gt;cur_input
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|1
+comma
 l_string|&quot;VIDIOC_G_INPUT %d.&bslash;n&quot;
 comma
 op_star
 id|input
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1435,14 +1435,14 @@ op_star
 )paren
 id|arg
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|1
+comma
 l_string|&quot;VIDIOC_S_INPUT %d.&bslash;n&quot;
 comma
 id|input
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1456,7 +1456,6 @@ suffix:semicolon
 )brace
 r_default
 suffix:colon
-multiline_comment|/*&n;&t;&t;DEB2(printk(&quot;does not handle this ioctl.&bslash;n&quot;));&n;*/
 r_return
 op_minus
 id|ENOIOCTLCMD
@@ -1749,30 +1748,13 @@ c_func
 r_void
 )paren
 (brace
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+r_return
 id|saa7146_register_extension
 c_func
 (paren
 op_amp
 id|budget_extension
 )paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|budget_av_exit
@@ -1785,14 +1767,6 @@ c_func
 r_void
 )paren
 (brace
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|saa7146_unregister_extension
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm/arch-s3c2410/regs-udc.h&n; *&n; * Copyright (C) 2004 Herbert Poetzl &lt;herbert@13thfloor.at&gt;&n; *&n; * This include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of&n; * the License, or (at your option) any later version.&n; *&n; *  Changelog:&n; *    01-08-2004&t;initial creation&n; *    12-09-2004&t;cleanup for submission&n; */
+multiline_comment|/* linux/include/asm/arch-s3c2410/regs-udc.h&n; *&n; * Copyright (C) 2004 Herbert Poetzl &lt;herbert@13thfloor.at&gt;&n; *&n; * This include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of&n; * the License, or (at your option) any later version.&n; *&n; *  Changelog:&n; *    01-08-2004&t;Initial creation&n; *    12-09-2004&t;Cleanup for submission&n; *    24-10-2004&t;Fixed S3C2410_UDC_MAXP_REG definition&n; */
 macro_line|#ifndef __ASM_ARCH_REGS_UDC_H
 DECL|macro|__ASM_ARCH_REGS_UDC_H
 mdefine_line|#define __ASM_ARCH_REGS_UDC_H
@@ -82,7 +82,7 @@ DECL|macro|S3C2410_UDC_INDEX_REG
 mdefine_line|#define S3C2410_UDC_INDEX_REG&t;&t;S3C2410_USBDREG(0x0178)
 multiline_comment|/* indexed registers */
 DECL|macro|S3C2410_UDC_MAXP_REG
-mdefine_line|#define S3C2410_UDC_MAXP_REG&t;&t;S3C2410_USBDREG(0x018c)
+mdefine_line|#define S3C2410_UDC_MAXP_REG&t;&t;S3C2410_USBDREG(0x0180)
 DECL|macro|S3C2410_UDC_EP0_CSR_REG
 mdefine_line|#define S3C2410_UDC_EP0_CSR_REG&t;&t;S3C2410_USBDREG(0x0184)
 DECL|macro|S3C2410_UDC_IN_CSR1_REG

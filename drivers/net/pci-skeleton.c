@@ -2776,9 +2776,12 @@ id|tp-&gt;mmio_addr
 op_assign
 id|ioaddr
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|tp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|pci_set_drvdata
 c_func

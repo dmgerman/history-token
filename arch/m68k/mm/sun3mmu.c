@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/arch/m68k/mm/sun3mmu.c&n; *&n; * Implementations of mm routines specific to the sun3 MMU.&n; *&n; * Moved here 8/20/1999 Sam Creasey&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

@@ -67,7 +67,7 @@ comma
 dot
 id|action_msg
 op_assign
-l_string|&quot;Entering xmon&bslash;n&quot;
+l_string|&quot;Entering xmon&quot;
 comma
 )brace
 suffix:semicolon

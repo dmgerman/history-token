@@ -1291,7 +1291,7 @@ suffix:semicolon
 multiline_comment|/* Creates a dma map for the scatter-gather list entries */
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|ide_dma_sgiioc4
 id|ide_dma_sgiioc4
 c_func
@@ -2161,7 +2161,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|ide_init_sgiioc4
 id|ide_init_sgiioc4
 c_func
@@ -2310,7 +2310,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|sgiioc4_ide_setup_pci_device
 id|sgiioc4_ide_setup_pci_device
 c_func
@@ -2615,7 +2615,7 @@ suffix:semicolon
 r_static
 r_int
 r_int
-id|__init
+id|__devinit
 DECL|function|pci_init_sgiioc4
 id|pci_init_sgiioc4
 c_func
@@ -2852,6 +2852,7 @@ DECL|variable|driver
 r_static
 r_struct
 id|pci_driver
+id|__devinitdata
 id|driver
 op_assign
 (brace
@@ -2874,6 +2875,7 @@ comma
 suffix:semicolon
 r_static
 r_int
+id|__devinit
 DECL|function|sgiioc4_ide_init
 id|sgiioc4_ide_init
 c_func

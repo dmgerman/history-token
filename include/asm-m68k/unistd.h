@@ -468,8 +468,94 @@ DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;234
 DECL|macro|__NR_futex
 mdefine_line|#define __NR_futex&t;&t;235
+DECL|macro|__NR_sendfile64
+mdefine_line|#define __NR_sendfile64&t;&t;236
+DECL|macro|__NR_mincore
+mdefine_line|#define __NR_mincore&t;&t;237
+DECL|macro|__NR_madvise
+mdefine_line|#define __NR_madvise&t;&t;238
+DECL|macro|__NR_fcntl64
+mdefine_line|#define __NR_fcntl64&t;&t;239
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead&t;&t;240
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;241
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;242
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;243
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;244
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;245
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64&t;&t;246
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;247
+DECL|macro|__NR_lookup_dcookie
+mdefine_line|#define __NR_lookup_dcookie&t;248
+DECL|macro|__NR_epoll_create
+mdefine_line|#define __NR_epoll_create&t;249
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl&t;&t;250
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait&t;&t;251
+DECL|macro|__NR_remap_file_pages
+mdefine_line|#define __NR_remap_file_pages&t;252
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address&t;253
+DECL|macro|__NR_timer_create
+mdefine_line|#define __NR_timer_create&t;254
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;255
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;256
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;257
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;258
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;259
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;260
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;261
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;262
+DECL|macro|__NR_statfs64
+mdefine_line|#define __NR_statfs64&t;&t;263
+DECL|macro|__NR_fstatfs64
+mdefine_line|#define __NR_fstatfs64&t;&t;264
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;265
+DECL|macro|__NR_utimes
+mdefine_line|#define __NR_utimes&t;&t;266
+DECL|macro|__NR_fadvise64_64
+mdefine_line|#define __NR_fadvise64_64&t;267
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;268
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;269
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;270
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open&t;&t;271
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;272
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;273
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;274
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;275
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;276
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;277
+DECL|macro|__NR_vserver
+mdefine_line|#define __NR_vserver&t;&t;278
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls&t;&t;236
+mdefine_line|#define NR_syscalls&t;&t;279
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see&n;   &lt;asm-m68k/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;/* avoid using res which is declared to be in register d0; &bslash;&n;&t;   errno might expand to a function call and clobber it.  */ &bslash;&n;&t;&t;int __err = -(res); &bslash;&n;&t;&t;errno = __err; &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

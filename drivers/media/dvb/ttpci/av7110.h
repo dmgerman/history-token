@@ -22,6 +22,12 @@ macro_line|#include &quot;dvb_filter.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
 macro_line|#include &quot;dvb_ringbuffer.h&quot;
 macro_line|#include &lt;media/saa7146_vv.h&gt;
+r_extern
+r_int
+id|av7110_debug
+suffix:semicolon
+DECL|macro|dprintk
+mdefine_line|#define dprintk(level,args...) &bslash;&n;&t;    do { if ((av7110_debug &amp; level)) { printk(&quot;dvb-ttpci: %s(): &quot;, __FUNCTION__); printk(args); } } while (0)
 DECL|macro|MAXFILT
 mdefine_line|#define MAXFILT 32
 DECL|enumerator|AV_PES_STREAM

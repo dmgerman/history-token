@@ -2383,11 +2383,4 @@ c_func
 id|register_firmware
 )paren
 suffix:semicolon
-DECL|variable|firmware_class
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|firmware_class
-)paren
-suffix:semicolon
 eof

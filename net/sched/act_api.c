@@ -19,7 +19,8 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;net/pkt_sched.h&gt;
+macro_line|#include &lt;net/sch_generic.h&gt;
+macro_line|#include &lt;net/act_api.h&gt;
 macro_line|#if 1 /* control */
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(format,args...) printk(KERN_DEBUG format,##args)

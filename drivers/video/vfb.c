@@ -1484,6 +1484,11 @@ id|err
 suffix:semicolon
 id|info-&gt;screen_base
 op_assign
+(paren
+r_char
+id|__iomem
+op_star
+)paren
 id|videomemory
 suffix:semicolon
 id|info-&gt;fbops

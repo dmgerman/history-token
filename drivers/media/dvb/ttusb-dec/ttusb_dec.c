@@ -5923,6 +5923,9 @@ suffix:semicolon
 r_case
 l_int|0x00070009
 suffix:colon
+r_case
+l_int|0x00070013
+suffix:colon
 id|ttusb_dec_set_model
 c_func
 (paren

@@ -2,6 +2,7 @@ multiline_comment|/* &n; * This file is subject to the terms and conditions of t
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;

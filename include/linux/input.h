@@ -857,6 +857,48 @@ DECL|macro|KEY_INS_LINE
 mdefine_line|#define KEY_INS_LINE&t;&t;0x1c2
 DECL|macro|KEY_DEL_LINE
 mdefine_line|#define KEY_DEL_LINE&t;&t;0x1c3
+DECL|macro|KEY_FN
+mdefine_line|#define KEY_FN&t;&t;&t;0x1d0
+DECL|macro|KEY_FN_ESC
+mdefine_line|#define KEY_FN_ESC&t;&t;0x1d1
+DECL|macro|KEY_FN_F1
+mdefine_line|#define KEY_FN_F1&t;&t;0x1d2
+DECL|macro|KEY_FN_F2
+mdefine_line|#define KEY_FN_F2&t;&t;0x1d3
+DECL|macro|KEY_FN_F3
+mdefine_line|#define KEY_FN_F3&t;&t;0x1d4
+DECL|macro|KEY_FN_F4
+mdefine_line|#define KEY_FN_F4&t;&t;0x1d5
+DECL|macro|KEY_FN_F5
+mdefine_line|#define KEY_FN_F5&t;&t;0x1d6
+DECL|macro|KEY_FN_F6
+mdefine_line|#define KEY_FN_F6&t;&t;0x1d7
+DECL|macro|KEY_FN_F7
+mdefine_line|#define KEY_FN_F7&t;&t;0x1d8
+DECL|macro|KEY_FN_F8
+mdefine_line|#define KEY_FN_F8&t;&t;0x1d9
+DECL|macro|KEY_FN_F9
+mdefine_line|#define KEY_FN_F9&t;&t;0x1da
+DECL|macro|KEY_FN_F10
+mdefine_line|#define KEY_FN_F10&t;&t;0x1db
+DECL|macro|KEY_FN_F11
+mdefine_line|#define KEY_FN_F11&t;&t;0x1dc
+DECL|macro|KEY_FN_F12
+mdefine_line|#define KEY_FN_F12&t;&t;0x1dd
+DECL|macro|KEY_FN_1
+mdefine_line|#define KEY_FN_1&t;&t;0x1de
+DECL|macro|KEY_FN_2
+mdefine_line|#define KEY_FN_2&t;&t;0x1df
+DECL|macro|KEY_FN_D
+mdefine_line|#define KEY_FN_D&t;&t;0x1e0
+DECL|macro|KEY_FN_E
+mdefine_line|#define KEY_FN_E&t;&t;0x1e1
+DECL|macro|KEY_FN_F
+mdefine_line|#define KEY_FN_F&t;&t;0x1e2
+DECL|macro|KEY_FN_S
+mdefine_line|#define KEY_FN_S&t;&t;0x1e3
+DECL|macro|KEY_FN_B
+mdefine_line|#define KEY_FN_B&t;&t;0x1e4
 DECL|macro|KEY_MAX
 mdefine_line|#define KEY_MAX&t;&t;&t;0x1ff
 multiline_comment|/*&n; * Relative axes&n; */

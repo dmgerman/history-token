@@ -1,6 +1,7 @@
 macro_line|#ifndef _M68K_TLBFLUSH_H
 DECL|macro|_M68K_TLBFLUSH_H
 mdefine_line|#define _M68K_TLBFLUSH_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef CONFIG_SUN3
 macro_line|#include &lt;asm/current.h&gt;
 DECL|function|flush_tlb_kernel_page

@@ -133,8 +133,15 @@ r_struct
 id|request
 op_star
 id|req
+id|__attribute__
+c_func
+(paren
+(paren
+id|deprecated
+)paren
+)paren
 suffix:semicolon
-multiline_comment|/* request structure */
+multiline_comment|/* request structure (use the sg list instead) */
 DECL|member|error
 r_int
 r_int
@@ -171,6 +178,19 @@ op_star
 id|mrq
 suffix:semicolon
 multiline_comment|/* assoicated request */
+DECL|member|sg_len
+r_int
+r_int
+id|sg_len
+suffix:semicolon
+multiline_comment|/* size of scatter list */
+DECL|member|sg
+r_struct
+id|scatterlist
+op_star
+id|sg
+suffix:semicolon
+multiline_comment|/* I/O scatter list */
 )brace
 suffix:semicolon
 DECL|struct|mmc_request

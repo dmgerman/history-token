@@ -582,6 +582,14 @@ op_amp
 id|lp-&gt;lock
 )paren
 suffix:semicolon
+id|free_irq_by_irq_and_dev
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+)paren
+suffix:semicolon
 id|free_irq
 c_func
 (paren

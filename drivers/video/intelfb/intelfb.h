@@ -104,9 +104,9 @@ DECL|macro|GET_DINFO
 mdefine_line|#define GET_DINFO(info)&t;&t;(info)-&gt;par
 multiline_comment|/* module parameters */
 DECL|macro|INTELFB_INT_PARAM
-mdefine_line|#define INTELFB_INT_PARAM(name, default, desc)&t;&t;&t;&t;&bslash;&n;&t;static int name = default;&t;&t;&t;&t;&t;&bslash;&n;&t;MODULE_PARM(name, &quot;i&quot;);&t;&t;&t;&t;&t;        &bslash;&n;&t;MODULE_PARM_DESC(name, desc);
+mdefine_line|#define INTELFB_INT_PARAM(name, default, desc)&t;&t;&t;&t;&bslash;&n;&t;static int name = default;&t;&t;&t;&t;&t;&bslash;&n;&t;module_param(name, int, default);&t;&t;&t;        &bslash;&n;&t;MODULE_PARM_DESC(name, desc);
 DECL|macro|INTELFB_STR_PARAM
-mdefine_line|#define INTELFB_STR_PARAM(name, default, desc)&t;&t;&t;&t;&bslash;&n;&t;static const char *name = default;&t;&t;&t;&t;&bslash;&n;&t;MODULE_PARM(name, &quot;s&quot;);&t;&t;&t;&t;                &bslash;&n;&t;MODULE_PARM_DESC(name, desc);
+mdefine_line|#define INTELFB_STR_PARAM(name, default, desc)&t;&t;&t;&t;&bslash;&n;&t;static char *name = (char *) default;&t;&t;&t;&t;&bslash;&n;&t;module_param(name, charp, default);&t;&t;                &bslash;&n;&t;MODULE_PARM_DESC(name, desc);
 multiline_comment|/* misc macros */
 DECL|macro|TEXT_ACCEL
 mdefine_line|#define TEXT_ACCEL(d, v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((d)-&gt;accel &amp;&amp; (d)-&gt;ring_active &amp;&amp;&t;&t;&t;&t;&bslash;&n;&t; ((v)-&gt;accel_flags &amp; FB_ACCELF_TEXT))
@@ -438,6 +438,8 @@ id|physical
 suffix:semicolon
 DECL|member|virtual
 id|u32
+id|__iomem
+op_star
 r_virtual
 suffix:semicolon
 DECL|member|offset
@@ -538,6 +540,8 @@ id|mmio_base_phys
 suffix:semicolon
 DECL|member|mmio_base
 id|u32
+id|__iomem
+op_star
 id|mmio_base
 suffix:semicolon
 multiline_comment|/* fb start offset (in bytes) */
@@ -548,6 +552,8 @@ suffix:semicolon
 multiline_comment|/* ring buffer */
 DECL|member|ring_head
 id|u32
+id|__iomem
+op_star
 id|ring_head
 suffix:semicolon
 DECL|member|ring_tail

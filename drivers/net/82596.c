@@ -5359,9 +5359,12 @@ id|lp-&gt;scb.rfd
 op_assign
 id|I596_NULL
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|lp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|err
 op_assign

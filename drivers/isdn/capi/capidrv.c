@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/capi.h&gt;
 macro_line|#include &lt;linux/kernelcapi.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/isdn/capiutil.h&gt;
 macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 macro_line|#include &quot;capidrv.h&quot;
@@ -55,12 +56,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debugmode
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* -------- type definitions ----------------------------------------- */

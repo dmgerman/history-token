@@ -14,14 +14,14 @@ DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x)&t;__virt_to_phys(x)
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)&t;__phys_to_virt(x)
-multiline_comment|/*&n; * OMAP-1510 bus address is translated into a Local Bus address if the&n; * OMAP bus type is lbus. We do the address translation based on the&n; * device overriding the defaults used in the dma-mapping API.&n; */
+multiline_comment|/*&n; * OMAP-1510 bus address is translated into a Local Bus address if the&n; * OMAP bus type is lbus. We do the address translation based on the&n; * device overriding the defaults used in the dma-mapping API.&n; * Note that the is_lbus_device() test is not very efficient on 1510&n; * because of the strncmp().&n; */
 macro_line|#ifdef CONFIG_ARCH_OMAP1510
 DECL|macro|virt_to_lbus
 mdefine_line|#define virt_to_lbus(x)&t;&t;((x) - PAGE_OFFSET + OMAP1510_LB_OFFSET)
 DECL|macro|lbus_to_virt
 mdefine_line|#define lbus_to_virt(x)&t;&t;((x) - OMAP1510_LB_OFFSET + PAGE_OFFSET)
 DECL|macro|is_lbus_device
-mdefine_line|#define is_lbus_device(dev)&t;(cpu_is_omap1510() &amp;&amp; dev &amp;&amp; dev-&gt;coherent_dma_mask == 0x0fffffff)
+mdefine_line|#define is_lbus_device(dev)&t;(cpu_is_omap1510() &amp;&amp; dev &amp;&amp; (strncmp(dev-&gt;bus_id, &quot;ohci&quot;, 4) == 0))
 DECL|macro|__arch_page_to_dma
 mdefine_line|#define __arch_page_to_dma(dev, page)&t;({is_lbus_device(dev) ? &bslash;&n;&t;&t;&t;&t;&t;(dma_addr_t)virt_to_lbus(page_address(page)) : &bslash;&n;&t;&t;&t;&t;&t;(dma_addr_t)__virt_to_bus(page_address(page));})
 DECL|macro|__arch_dma_to_virt

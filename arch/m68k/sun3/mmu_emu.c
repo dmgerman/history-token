@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -51,6 +52,13 @@ DECL|variable|vmalloc_end
 r_int
 r_int
 id|vmalloc_end
+suffix:semicolon
+DECL|variable|vmalloc_end
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmalloc_end
+)paren
 suffix:semicolon
 DECL|variable|pmeg_vaddr
 r_int

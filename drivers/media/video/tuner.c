@@ -1,4 +1,6 @@
+multiline_comment|/*&n; * $Id: tuner.c,v 1.27 2004/10/20 09:43:34 kraxel Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -13,7 +15,9 @@ macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
-multiline_comment|/* Addresses to scan */
+DECL|macro|UNSET
+mdefine_line|#define UNSET (-1U)
+multiline_comment|/* standard i2c insmod options */
 DECL|variable|normal_i2c
 r_static
 r_int
@@ -44,17 +48,7 @@ id|I2C_CLIENT_END
 suffix:semicolon
 id|I2C_CLIENT_INSMOD
 suffix:semicolon
-DECL|macro|UNSET
-mdefine_line|#define UNSET (-1U)
-multiline_comment|/* insmod options */
-DECL|variable|debug
-r_static
-r_int
-r_int
-id|debug
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/* insmod options used at init time =&gt; read/only */
 DECL|variable|type
 r_static
 r_int
@@ -70,6 +64,99 @@ r_int
 id|addr
 op_assign
 l_int|0
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|type
+comma
+r_int
+comma
+l_int|444
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|addr
+comma
+r_int
+comma
+l_int|444
+)paren
+suffix:semicolon
+multiline_comment|/* insmod options used at runtime =&gt; read/write */
+DECL|variable|debug
+r_static
+r_int
+r_int
+id|debug
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|tv_antenna
+r_static
+r_int
+r_int
+id|tv_antenna
+op_assign
+l_int|1
+suffix:semicolon
+DECL|variable|radio_antenna
+r_static
+r_int
+r_int
+id|radio_antenna
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|optimize_vco
+r_static
+r_int
+r_int
+id|optimize_vco
+op_assign
+l_int|1
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|debug
+comma
+r_int
+comma
+l_int|644
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|tv_antenna
+comma
+r_int
+comma
+l_int|644
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|radio_antenna
+comma
+r_int
+comma
+l_int|644
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|optimize_vco
+comma
+r_int
+comma
+l_int|644
+)paren
 suffix:semicolon
 DECL|variable|tv_range
 r_static
@@ -101,80 +188,30 @@ comma
 l_int|108
 )brace
 suffix:semicolon
-DECL|variable|tv_antenna
-r_static
-r_int
-r_int
-id|tv_antenna
-op_assign
-l_int|1
-suffix:semicolon
-DECL|variable|radio_antenna
-r_static
-r_int
-r_int
-id|radio_antenna
-op_assign
-l_int|0
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|type
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|addr
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|tv_range
 comma
-l_string|&quot;2i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|644
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|radio_range
 comma
-l_string|&quot;2i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|tv_antenna
+r_int
 comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|radio_antenna
+l_int|NULL
 comma
-l_string|&quot;i&quot;
+l_int|644
 )paren
 suffix:semicolon
-DECL|macro|optimize_vco
-mdefine_line|#define optimize_vco 1
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -294,7 +331,7 @@ id|i2c_client
 id|client_template
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------------------- */
-multiline_comment|/* tv standard selection for Temic 4046 FM5&n;   this value takes the low bits of control byte 2&n;   from datasheet Rev.01, Feb.00 &n;     standard     BG      I       L       L2      D&n;     picture IF   38.9    38.9    38.9    33.95   38.9&n;     sound 1      33.4    32.9    32.4    40.45   32.4&n;     sound 2      33.16   &n;     NICAM        33.05   32.348  33.05           33.05&n; */
+multiline_comment|/* tv standard selection for Temic 4046 FM5&n;   this value takes the low bits of control byte 2&n;   from datasheet Rev.01, Feb.00&n;     standard     BG      I       L       L2      D&n;     picture IF   38.9    38.9    38.9    33.95   38.9&n;     sound 1      33.4    32.9    32.4    40.45   32.4&n;     sound 2      33.16&n;     NICAM        33.05   32.348  33.05           33.05&n; */
 DECL|macro|TEMIC_SET_PAL_I
 mdefine_line|#define TEMIC_SET_PAL_I         0x05
 DECL|macro|TEMIC_SET_PAL_DK
@@ -315,7 +352,7 @@ mdefine_line|#define PHILIPS_SET_PAL_BGDK&t;0x09
 DECL|macro|PHILIPS_SET_PAL_L2
 mdefine_line|#define PHILIPS_SET_PAL_L2&t;0x0a
 DECL|macro|PHILIPS_SET_PAL_L
-mdefine_line|#define PHILIPS_SET_PAL_L&t;0x0b&t;
+mdefine_line|#define PHILIPS_SET_PAL_L&t;0x0b
 multiline_comment|/* system switching for Philips FI1216MF MK2&n;   from datasheet &quot;1996 Jul 09&quot;,&n;    standard         BG     L      L&squot;&n;    picture carrier  38.90  38.90  33.95&n;    colour&t;     34.47  34.37  38.38&n;    sound 1          33.40  32.40  40.45&n;    sound 2          33.16  -      -&n;    NICAM            33.05  33.05  39.80&n; */
 DECL|macro|PHILIPS_MF_SET_BG
 mdefine_line|#define PHILIPS_MF_SET_BG&t;0x01 /* Bit 2 must be zero, Bit 3 is system output */
@@ -382,7 +419,7 @@ r_int
 r_int
 id|IFPCoff
 suffix:semicolon
-multiline_comment|/* 622.4=16*38.90 MHz PAL, &n;&t;&t;&t;&t;   732  =16*45.75 NTSCi, &n;&t;&t;&t;&t;   940  =16*58.75 NTSC-Japan&n;&t;&t;&t;&t;   704  =16*44    ATSC */
+multiline_comment|/* 622.4=16*38.90 MHz PAL,&n;&t;&t;&t;&t;   732  =16*45.75 NTSCi,&n;&t;&t;&t;&t;   940  =16*58.75 NTSC-Japan&n;&t;&t;&t;&t;   704  =16*44    ATSC */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;The floats in the tuner struct are computed at compile time&n; *&t;by gcc and cast back to integers. Thus we don&squot;t violate the&n; *&t;&quot;no float in kernel&quot; rule.&n; */
@@ -1637,7 +1674,7 @@ l_int|0x02
 comma
 l_int|0x04
 comma
-l_int|0xc8
+l_int|0x8e
 comma
 l_int|732
 )brace
@@ -1715,7 +1752,7 @@ l_int|0x02
 comma
 l_int|0x08
 comma
-l_int|0x88
+l_int|0x8e
 comma
 l_int|732
 )brace
@@ -2668,7 +2705,7 @@ l_int|6
 op_assign
 l_int|0xf4
 suffix:semicolon
-singleline_comment|// set PKEN per rev 1.2 
+singleline_comment|// set PKEN per rev 1.2
 id|buf
 (braket
 l_int|7
@@ -5104,10 +5141,18 @@ id|freq
 OL
 id|tun-&gt;thresh1
 )paren
+(brace
 id|config
 op_assign
 id|tun-&gt;VHF_L
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;tv: VHF lowrange&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -5116,15 +5161,31 @@ id|freq
 OL
 id|tun-&gt;thresh2
 )paren
+(brace
 id|config
 op_assign
 id|tun-&gt;VHF_H
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;tv: VHF high range&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_else
+(brace
 id|config
 op_assign
 id|tun-&gt;UHF
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;tv: UHF range&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* tv norm specific stuff for multi-norm tuners */
 r_switch
 c_cond
@@ -5292,9 +5353,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|t-&gt;std
 op_amp
 id|V4L2_STD_ATSC
+)paren
 )paren
 id|config
 op_or_assign
@@ -7308,6 +7372,100 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|tuner_suspend
+r_static
+r_int
+id|tuner_suspend
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+id|u32
+id|state
+comma
+id|u32
+id|level
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;tuner: suspend&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME: power down ??? */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|tuner_resume
+r_static
+r_int
+id|tuner_resume
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+id|u32
+id|level
+)paren
+(brace
+r_struct
+id|i2c_client
+op_star
+id|c
+op_assign
+id|container_of
+c_func
+(paren
+id|dev
+comma
+r_struct
+id|i2c_client
+comma
+id|dev
+)paren
+suffix:semicolon
+r_struct
+id|tuner
+op_star
+id|t
+op_assign
+id|i2c_get_clientdata
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;tuner: resume&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t-&gt;freq
+)paren
+id|set_freq
+c_func
+(paren
+id|c
+comma
+id|t-&gt;freq
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* ----------------------------------------------------------------------- */
 DECL|variable|driver
 r_static
@@ -7350,6 +7508,22 @@ dot
 id|command
 op_assign
 id|tuner_command
+comma
+dot
+id|driver
+op_assign
+(brace
+dot
+id|suspend
+op_assign
+id|tuner_suspend
+comma
+dot
+id|resume
+op_assign
+id|tuner_resume
+comma
+)brace
 comma
 )brace
 suffix:semicolon

@@ -41,6 +41,11 @@ DECL|variable|i8259_pic_irq_offset
 r_int
 id|i8259_pic_irq_offset
 suffix:semicolon
+DECL|variable|i8259_present
+r_static
+r_int
+id|i8259_present
+suffix:semicolon
 multiline_comment|/*&n; * Acknowledge the IRQ using either the PCI host bridge&squot;s interrupt&n; * acknowledge feature or poll.  How i8259_init() is called determines&n; * which is called.  It should be noted that polling is broken on some&n; * IBM and Motorola PReP boxes so we must use the int-ack feature on them.&n; */
 r_int
 DECL|function|i8259_irq
@@ -613,6 +618,53 @@ comma
 id|IORESOURCE_BUSY
 )brace
 suffix:semicolon
+r_static
+r_int
+id|__init
+DECL|function|i8259_hook_cascade
+id|i8259_hook_cascade
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|i8259_present
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* reserve our resources */
+id|request_irq
+c_func
+(paren
+id|i8259_pic_irq_offset
+op_plus
+l_int|2
+comma
+id|no_action
+comma
+id|SA_INTERRUPT
+comma
+l_string|&quot;82c59 secondary cascade&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|i8259_hook_cascade
+id|arch_initcall
+c_func
+(paren
+id|i8259_hook_cascade
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * i8259_init()&n; * intack_addr - PCI interrupt acknowledge (real) address which will return&n; *               the active irq from the 8259&n; */
 r_void
 id|__init
@@ -754,23 +806,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* reserve our resources */
-id|request_irq
-c_func
-(paren
-id|i8259_pic_irq_offset
-op_plus
-l_int|2
-comma
-id|no_action
-comma
-id|SA_INTERRUPT
-comma
-l_string|&quot;82c59 secondary cascade&quot;
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 id|request_resource
 c_func
 (paren
@@ -817,6 +852,10 @@ id|intack_addr
 comma
 l_int|1
 )paren
+suffix:semicolon
+id|i8259_present
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 eof

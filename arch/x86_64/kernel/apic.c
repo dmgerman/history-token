@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/mach_apic.h&gt;
 DECL|variable|apic_verbosity
 r_int
 id|apic_verbosity
@@ -1005,23 +1006,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|clustered_apic_mode
-op_logical_and
-op_logical_neg
-id|physid_isset
+id|apic_id_registered
 c_func
 (paren
-id|GET_APIC_ID
-c_func
-(paren
-id|apic_read
-c_func
-(paren
-id|APIC_ID
-)paren
-)paren
-comma
-id|phys_cpu_present_map
 )paren
 )paren
 id|BUG
@@ -1030,60 +1017,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Intel recommends to set DFR, LDR and TPR before enabling&n;&t; * an APIC.  See e.g. &quot;AP-388 82489DX User&squot;s Manual&quot; (Intel&n;&t; * document number 292116).  So here it goes...&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|clustered_apic_mode
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * In clustered apic mode, the firmware does this for us &n;&t;&t; * Put the APIC into flat delivery mode.&n;&t;&t; * Must be &quot;all ones&quot; explicitly for 82489DX.&n;&t;&t; */
-id|apic_write_around
-c_func
-(paren
-id|APIC_DFR
-comma
-l_int|0xffffffff
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Set up the logical destination ID.&n;&t;&t; */
-id|value
-op_assign
-id|apic_read
-c_func
-(paren
-id|APIC_LDR
-)paren
-suffix:semicolon
-id|value
-op_and_assign
-op_complement
-id|APIC_LDR_MASK
-suffix:semicolon
-id|value
-op_or_assign
-(paren
-l_int|1
-op_lshift
-(paren
-id|smp_processor_id
+id|init_apic_ldr
 c_func
 (paren
 )paren
-op_plus
-l_int|24
-)paren
-)paren
 suffix:semicolon
-id|apic_write_around
-c_func
-(paren
-id|APIC_LDR
-comma
-id|value
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Set Task Priority to &squot;accept all&squot;. We never change this&n;&t; * later on.&n;&t; */
 id|value
 op_assign

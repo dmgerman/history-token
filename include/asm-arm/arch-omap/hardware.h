@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/sizes.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLER__
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/arch/cpu.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/arch/io.h&gt;
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Common definitions for all OMAP processors&n; * NOTE: Put all processor or board specific parts to the special header&n; *&t; files.&n; * ---------------------------------------------------------------------------&n; */
@@ -26,6 +27,8 @@ DECL|macro|ARM_RSTCT2
 mdefine_line|#define ARM_RSTCT2&t;&t;(CLKGEN_REG_BASE + 0x14)
 DECL|macro|ARM_SYSST
 mdefine_line|#define ARM_SYSST&t;&t;(CLKGEN_REG_BASE + 0x18)
+DECL|macro|ARM_IDLECT3
+mdefine_line|#define ARM_IDLECT3&t;&t;(CLKGEN_REG_BASE + 0x24)
 DECL|macro|CK_RATEF
 mdefine_line|#define CK_RATEF&t;&t;1
 DECL|macro|CK_IDLEF
@@ -127,17 +130,17 @@ DECL|macro|MPUTIM_AR
 mdefine_line|#define MPUTIM_AR&t;&t;(1&lt;&lt;1)
 DECL|macro|MPUTIM_ST
 mdefine_line|#define MPUTIM_ST&t;&t;(1&lt;&lt;0)
-multiline_comment|/* Watchdog */
-DECL|macro|OMAP_WATCHDOG_BASE
-mdefine_line|#define OMAP_WATCHDOG_BASE&t;(0xfffec800)
+multiline_comment|/* Watchdog timer within the OMAP3.2 gigacell */
+DECL|macro|OMAP_MPU_WATCHDOG_BASE
+mdefine_line|#define OMAP_MPU_WATCHDOG_BASE&t;(0xfffec800)
 DECL|macro|OMAP_WDT_TIMER
-mdefine_line|#define OMAP_WDT_TIMER&t;&t;(OMAP_WATCHDOG_BASE + 0x0)
+mdefine_line|#define OMAP_WDT_TIMER&t;&t;(OMAP_MPU_WATCHDOG_BASE + 0x0)
 DECL|macro|OMAP_WDT_LOAD_TIM
-mdefine_line|#define OMAP_WDT_LOAD_TIM&t;(OMAP_WATCHDOG_BASE + 0x4)
+mdefine_line|#define OMAP_WDT_LOAD_TIM&t;(OMAP_MPU_WATCHDOG_BASE + 0x4)
 DECL|macro|OMAP_WDT_READ_TIM
-mdefine_line|#define OMAP_WDT_READ_TIM&t;(OMAP_WATCHDOG_BASE + 0x4)
+mdefine_line|#define OMAP_WDT_READ_TIM&t;(OMAP_MPU_WATCHDOG_BASE + 0x4)
 DECL|macro|OMAP_WDT_TIMER_MODE
-mdefine_line|#define OMAP_WDT_TIMER_MODE&t;(OMAP_WATCHDOG_BASE + 0x8)
+mdefine_line|#define OMAP_WDT_TIMER_MODE&t;(OMAP_MPU_WATCHDOG_BASE + 0x8)
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Interrupts&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|OMAP_IH1_BASE
 mdefine_line|#define OMAP_IH1_BASE&t;&t;0xfffecb00
@@ -190,38 +193,38 @@ mdefine_line|#define IRQ_GMR_REG_OFFSET&t;0xa0
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Traffic controller memory interface&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|TCMIF_BASE
 mdefine_line|#define TCMIF_BASE&t;&t;0xfffecc00
-DECL|macro|IMIF_PRIO_REG
-mdefine_line|#define IMIF_PRIO_REG&t;&t;__REG32(TCMIF_BASE + 0x00)
-DECL|macro|EMIFS_PRIO_REG
-mdefine_line|#define EMIFS_PRIO_REG&t;&t;__REG32(TCMIF_BASE + 0x04)
-DECL|macro|EMIFF_PRIO_REG
-mdefine_line|#define EMIFF_PRIO_REG&t;&t;__REG32(TCMIF_BASE + 0x08)
-DECL|macro|EMIFS_CONFIG_REG
-mdefine_line|#define EMIFS_CONFIG_REG&t;__REG32(TCMIF_BASE + 0x0c)
-DECL|macro|EMIFS_CS0_CONFIG_REG
-mdefine_line|#define EMIFS_CS0_CONFIG_REG&t;__REG32(TCMIF_BASE + 0x10)
-DECL|macro|EMIFS_CS1_CONFIG_REG
-mdefine_line|#define EMIFS_CS1_CONFIG_REG&t;__REG32(TCMIF_BASE + 0x14)
-DECL|macro|EMIFS_CS2_CONFIG_REG
-mdefine_line|#define EMIFS_CS2_CONFIG_REG&t;__REG32(TCMIF_BASE + 0x18)
-DECL|macro|EMIFS_CS3_CONFIG_REG
-mdefine_line|#define EMIFS_CS3_CONFIG_REG&t;__REG32(TCMIF_BASE + 0x1c)
-DECL|macro|EMIFF_SDRAM_CONFIG_REG
-mdefine_line|#define EMIFF_SDRAM_CONFIG_REG&t;__REG32(TCMIF_BASE + 0x20)
-DECL|macro|EMIFF_MRS_REG
-mdefine_line|#define EMIFF_MRS_REG&t;&t;__REG32(TCMIF_BASE + 0x24)
-DECL|macro|TC_TIMEOUT1_REG
-mdefine_line|#define TC_TIMEOUT1_REG&t;&t;__REG32(TCMIF_BASE + 0x28)
-DECL|macro|TC_TIMEOUT2_REG
-mdefine_line|#define TC_TIMEOUT2_REG&t;&t;__REG32(TCMIF_BASE + 0x2c)
-DECL|macro|TC_TIMEOUT3_REG
-mdefine_line|#define TC_TIMEOUT3_REG&t;&t;__REG32(TCMIF_BASE + 0x30)
-DECL|macro|TC_ENDIANISM_REG
-mdefine_line|#define TC_ENDIANISM_REG&t;__REG32(TCMIF_BASE + 0x34)
-DECL|macro|EMIFF_SDRAM_CONFIG_2_REG
-mdefine_line|#define EMIFF_SDRAM_CONFIG_2_REG __REG32(TCMIF_BASE + 0x3c)
-DECL|macro|EMIF_CFG_DYNAMIC_WS_REG
-mdefine_line|#define EMIF_CFG_DYNAMIC_WS_REG&t;__REG32(TCMIF_BASE + 0x40)
+DECL|macro|IMIF_PRIO
+mdefine_line|#define IMIF_PRIO&t;&t;(TCMIF_BASE + 0x00)
+DECL|macro|EMIFS_PRIO
+mdefine_line|#define EMIFS_PRIO&t;&t;(TCMIF_BASE + 0x04)
+DECL|macro|EMIFF_PRIO
+mdefine_line|#define EMIFF_PRIO&t;&t;(TCMIF_BASE + 0x08)
+DECL|macro|EMIFS_CONFIG
+mdefine_line|#define EMIFS_CONFIG&t;&t;(TCMIF_BASE + 0x0c)
+DECL|macro|EMIFS_CS0_CONFIG
+mdefine_line|#define EMIFS_CS0_CONFIG&t;(TCMIF_BASE + 0x10)
+DECL|macro|EMIFS_CS1_CONFIG
+mdefine_line|#define EMIFS_CS1_CONFIG&t;(TCMIF_BASE + 0x14)
+DECL|macro|EMIFS_CS2_CONFIG
+mdefine_line|#define EMIFS_CS2_CONFIG&t;(TCMIF_BASE + 0x18)
+DECL|macro|EMIFS_CS3_CONFIG
+mdefine_line|#define EMIFS_CS3_CONFIG&t;(TCMIF_BASE + 0x1c)
+DECL|macro|EMIFF_SDRAM_CONFIG
+mdefine_line|#define EMIFF_SDRAM_CONFIG&t;(TCMIF_BASE + 0x20)
+DECL|macro|EMIFF_MRS
+mdefine_line|#define EMIFF_MRS&t;&t;(TCMIF_BASE + 0x24)
+DECL|macro|TC_TIMEOUT1
+mdefine_line|#define TC_TIMEOUT1&t;&t;(TCMIF_BASE + 0x28)
+DECL|macro|TC_TIMEOUT2
+mdefine_line|#define TC_TIMEOUT2&t;&t;(TCMIF_BASE + 0x2c)
+DECL|macro|TC_TIMEOUT3
+mdefine_line|#define TC_TIMEOUT3&t;&t;(TCMIF_BASE + 0x30)
+DECL|macro|TC_ENDIANISM
+mdefine_line|#define TC_ENDIANISM&t;&t;(TCMIF_BASE + 0x34)
+DECL|macro|EMIFF_SDRAM_CONFIG_2
+mdefine_line|#define EMIFF_SDRAM_CONFIG_2&t;(TCMIF_BASE + 0x3c)
+DECL|macro|EMIF_CFG_DYNAMIC_WS
+mdefine_line|#define EMIF_CFG_DYNAMIC_WS&t;(TCMIF_BASE + 0x40)
 multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * System control registers&n; * ----------------------------------------------------------------------------&n; */
 DECL|macro|MOD_CONF_CTRL_0
 mdefine_line|#define MOD_CONF_CTRL_0&t;&t;0xfffe1080
@@ -266,6 +269,8 @@ DECL|macro|PULL_DWN_CTRL_2
 mdefine_line|#define PULL_DWN_CTRL_2&t;&t;0xfffe1048
 DECL|macro|PULL_DWN_CTRL_3
 mdefine_line|#define PULL_DWN_CTRL_3&t;&t;0xfffe104c
+DECL|macro|PULL_DWN_CTRL_4
+mdefine_line|#define PULL_DWN_CTRL_4&t;&t;0xfffe10ac
 multiline_comment|/* OMAP-1610 specific multiplexing registers */
 DECL|macro|FUNC_MUX_CTRL_E
 mdefine_line|#define FUNC_MUX_CTRL_E&t;&t;0xfffe1090
@@ -287,6 +292,9 @@ DECL|macro|PU_PD_SEL_3
 mdefine_line|#define PU_PD_SEL_3&t;&t;0xfffe10c0
 DECL|macro|PU_PD_SEL_4
 mdefine_line|#define PU_PD_SEL_4&t;&t;0xfffe10c4
+multiline_comment|/* Timer32K for 1610 and 1710*/
+DECL|macro|OMAP_TIMER32K_BASE
+mdefine_line|#define OMAP_TIMER32K_BASE&t;0xFFFBC400
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * TIPB bus interface&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|TIPB_PUBLIC_CNTL_BASE
 mdefine_line|#define TIPB_PUBLIC_CNTL_BASE&t;&t;0xfffed300
@@ -316,69 +324,17 @@ mdefine_line|#define MPUI_DSP_BOOT_CONFIG&t;&t;(MPUI_BASE + 0x18)
 DECL|macro|MPUI_DSP_API_CONFIG
 mdefine_line|#define MPUI_DSP_API_CONFIG&t;&t;(MPUI_BASE + 0x1c)
 macro_line|#ifndef __ASSEMBLER__
-multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Processor differentiation&n; * ---------------------------------------------------------------------------&n; */
-DECL|macro|OMAP_ID_BASE
-mdefine_line|#define OMAP_ID_BASE&t;&t;(0xfffed400)
-DECL|macro|OMAP_ID_REG
-mdefine_line|#define OMAP_ID_REG&t;&t;__REG32(OMAP_ID_BASE +  0x04)
-DECL|macro|ID_SHIFT
-mdefine_line|#define ID_SHIFT&t;&t;12
-DECL|macro|ID_MASK
-mdefine_line|#define ID_MASK&t;&t;&t;0x7fff
-multiline_comment|/* See also uncompress.h */
-DECL|macro|OMAP_ID_730
-mdefine_line|#define OMAP_ID_730&t;&t;0x355F
-DECL|macro|OMAP_ID_1510
-mdefine_line|#define OMAP_ID_1510&t;&t;0x3470
-DECL|macro|OMAP_ID_1610
-mdefine_line|#define OMAP_ID_1610&t;&t;0x3576
-DECL|macro|OMAP_ID_1710
-mdefine_line|#define OMAP_ID_1710&t;&t;0x35F7
-DECL|macro|OMAP_ID_5912
-mdefine_line|#define OMAP_ID_5912&t;&t;0x358C
-DECL|macro|OMAP_ID_1611
-mdefine_line|#define OMAP_ID_1611            0x358C
+multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Processor specific defines&n; * ---------------------------------------------------------------------------&n; */
 macro_line|#ifdef CONFIG_ARCH_OMAP730
 macro_line|#include &quot;omap730.h&quot;
-DECL|macro|cpu_is_omap730
-mdefine_line|#define cpu_is_omap730()&t;(((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_730)
-macro_line|#else
-DECL|macro|cpu_is_omap730
-mdefine_line|#define cpu_is_omap730()&t;0
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_OMAP1510
 macro_line|#include &quot;omap1510.h&quot;
-DECL|macro|cpu_is_omap1510
-mdefine_line|#define cpu_is_omap1510()&t;(((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_1510)
-macro_line|#else
-DECL|macro|cpu_is_omap1510
-mdefine_line|#define cpu_is_omap1510()&t;0
 macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_OMAP1610
-macro_line|#include &quot;omap1610.h&quot;
-DECL|macro|cpu_is_omap1610
-mdefine_line|#define cpu_is_omap1610()&t;(((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_1610) || &bslash;&n;&t;&t;&t;&t;(((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_1611)
-macro_line|#else
-DECL|macro|cpu_is_omap1610
-mdefine_line|#define cpu_is_omap1610()&t;0
+macro_line|#ifdef CONFIG_ARCH_OMAP16XX
+macro_line|#include &quot;omap16xx.h&quot;
 macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_OMAP1710
-macro_line|#include &quot;omap1610.h&quot;
-DECL|macro|cpu_is_omap1710
-mdefine_line|#define cpu_is_omap1710()       (((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_1710)
-macro_line|#else
-DECL|macro|cpu_is_omap1710
-mdefine_line|#define cpu_is_omap1710()&t;0
-macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_OMAP5912
-macro_line|#include &quot;omap5912.h&quot;
-DECL|macro|cpu_is_omap5912
-mdefine_line|#define cpu_is_omap5912()&t;(((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_5912)
-macro_line|#else
-DECL|macro|cpu_is_omap5912
-mdefine_line|#define cpu_is_omap5912()&t;0
-macro_line|#endif
-multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Board differentiation&n; * ---------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Board specific defines&n; * ---------------------------------------------------------------------------&n; */
 macro_line|#ifdef CONFIG_MACH_OMAP_INNOVATOR
 macro_line|#include &quot;board-innovator.h&quot;
 macro_line|#endif

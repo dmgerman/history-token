@@ -11,7 +11,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
-macro_line|#include &lt;asm/shglcore.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * cache_clear() semantics: Clear any cache entries for the area in question,&n; * without writing back dirty entries first. This is useful if the data will&n; * be overwritten anyway, e.g. by DMA to memory. The range is defined by a&n; * _physical_ address.&n; */
 DECL|function|cache_clear

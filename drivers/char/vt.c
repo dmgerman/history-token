@@ -10292,12 +10292,6 @@ id|printing
 )paren
 r_return
 suffix:semicolon
-id|pm_access
-c_func
-(paren
-id|pm_con
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11116,12 +11110,6 @@ id|count
 r_int
 id|retval
 suffix:semicolon
-id|pm_access
-c_func
-(paren
-id|pm_con
-)paren
-suffix:semicolon
 id|retval
 op_assign
 id|do_con_write
@@ -11171,12 +11159,6 @@ c_func
 r_return
 suffix:semicolon
 multiline_comment|/* n_r3964 calls put_char() from interrupt context */
-id|pm_access
-c_func
-(paren
-id|pm_con
-)paren
-suffix:semicolon
 id|do_con_write
 c_func
 (paren
@@ -11411,12 +11393,6 @@ c_func
 )paren
 multiline_comment|/* from flush_to_ldisc */
 r_return
-suffix:semicolon
-id|pm_access
-c_func
-(paren
-id|pm_con
-)paren
 suffix:semicolon
 multiline_comment|/* if we race with con_close(), vt may be null */
 id|acquire_console_sem
@@ -15144,13 +15120,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|default_blu
-)paren
-suffix:semicolon
-DECL|variable|vc_cons_allocated
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|vc_cons_allocated
 )paren
 suffix:semicolon
 DECL|variable|update_region

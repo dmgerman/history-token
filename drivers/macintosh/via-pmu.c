@@ -357,13 +357,13 @@ r_static
 r_int
 id|can_sleep
 suffix:semicolon
+macro_line|#endif /* CONFIG_PMAC_PBOOK */
 DECL|variable|async_req_locks
 r_static
 r_int
 r_int
 id|async_req_locks
 suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_PBOOK */
 DECL|variable|pmu_irq_stats
 r_static
 r_int

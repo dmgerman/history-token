@@ -9537,12 +9537,14 @@ id|i810fb_driver
 )paren
 suffix:semicolon
 )brace
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vram
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|4
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9554,12 +9556,14 @@ l_string|&quot;System RAM to allocate to framebuffer in MiB&quot;
 l_string|&quot; (default=4)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|voffset
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9571,12 +9575,14 @@ l_string|&quot;at what offset to place start of framebuffer &quot;
 l_string|&quot;memory (0 to maximum aperture size), in MiB (default = 48)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|bpp
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|8
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9588,12 +9594,14 @@ l_string|&quot;Color depth for display in bits per pixel&quot;
 l_string|&quot; (default = 8)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|xres
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|640
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9604,12 +9612,14 @@ comma
 l_string|&quot;Horizontal resolution in pixels (default = 640)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|yres
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|480
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9620,12 +9630,14 @@ comma
 l_string|&quot;Vertical resolution in scanlines (default = 480)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vyres
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|480
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9637,12 +9649,14 @@ l_string|&quot;Virtual vertical resolution in scanlines&quot;
 l_string|&quot; (default = 480)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|hsync1
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9654,12 +9668,14 @@ l_string|&quot;Minimum horizontal frequency of monitor in KHz&quot;
 l_string|&quot; (default = 31)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|hsync2
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9671,12 +9687,14 @@ l_string|&quot;Maximum horizontal frequency of monitor in KHz&quot;
 l_string|&quot; (default = 31)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vsync1
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9688,12 +9706,14 @@ l_string|&quot;Minimum vertical frequency of monitor in Hz&quot;
 l_string|&quot; (default = 50)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vsync2
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9705,12 +9725,14 @@ l_string|&quot;Maximum vertical frequency of monitor in Hz&quot;
 l_string|&quot; (default = 60)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|accel
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9721,12 +9743,14 @@ comma
 l_string|&quot;Use Acceleration (BLIT) engine (default = 0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mtrr
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9737,12 +9761,14 @@ comma
 l_string|&quot;Use MTRR (default = 0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ext_vga
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9753,12 +9779,14 @@ comma
 l_string|&quot;Enable external VGA connector (default = 0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|sync
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9770,12 +9798,14 @@ l_string|&quot;wait for accel engine to finish drawing&quot;
 l_string|&quot; (default = 0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dcolor
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

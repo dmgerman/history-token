@@ -364,7 +364,7 @@ c_func
 (paren
 id|mode
 comma
-l_int|NULL
+l_int|0
 comma
 l_string|&quot;Initial video mode &bslash;&quot;&lt;xres&gt;x&lt;yres&gt;[-&lt;depth&gt;][@&lt;refresh&gt;]&bslash;&quot;&quot;
 )paren
@@ -1190,6 +1190,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|dinfo-&gt;mmio_base
@@ -1207,6 +1208,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|dinfo-&gt;aperture
@@ -1637,6 +1639,8 @@ r_virtual
 op_assign
 (paren
 id|u32
+id|__iomem
+op_star
 )paren
 id|ioremap_nocache
 (paren
@@ -1675,6 +1679,8 @@ id|dinfo-&gt;mmio_base
 op_assign
 (paren
 id|u32
+id|__iomem
+op_star
 )paren
 id|ioremap_nocache
 c_func
@@ -2283,6 +2289,10 @@ id|dinfo-&gt;fb.offset
 comma
 id|dinfo-&gt;fb.size
 comma
+(paren
+id|u32
+id|__iomem
+)paren
 id|dinfo-&gt;fb
 dot
 r_virtual
@@ -2297,6 +2307,10 @@ id|dinfo-&gt;mmio_base_phys
 comma
 id|INTEL_REG_SIZE
 comma
+(paren
+id|u32
+id|__iomem
+)paren
 id|dinfo-&gt;mmio_base
 )paren
 suffix:semicolon
@@ -2309,6 +2323,10 @@ id|dinfo-&gt;ring.physical
 comma
 id|dinfo-&gt;ring.size
 comma
+(paren
+id|u32
+id|__iomem
+)paren
 id|dinfo-&gt;ring
 dot
 r_virtual
@@ -2323,6 +2341,10 @@ id|dinfo-&gt;cursor.physical
 comma
 id|dinfo-&gt;cursor.size
 comma
+(paren
+id|u32
+id|__iomem
+)paren
 id|dinfo-&gt;cursor
 dot
 r_virtual
@@ -4444,6 +4466,7 @@ id|dinfo-&gt;info-&gt;screen_base
 op_assign
 (paren
 r_char
+id|__iomem
 op_star
 )paren
 id|dinfo-&gt;fb
@@ -6297,7 +6320,11 @@ c_cond
 (paren
 id|cursor-&gt;set
 op_amp
+(paren
 id|FB_CUR_SETSHAPE
+op_amp
+id|FB_CUR_SETIMAGE
+)paren
 )paren
 (brace
 id|u32

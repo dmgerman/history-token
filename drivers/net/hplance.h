@@ -1,32 +1,10 @@
 multiline_comment|/* Random defines and structures for the HP Lance driver.&n; * Copyright (C) 05/1998 Peter Maydell &lt;pmaydell@chiark.greenend.org.uk&gt;&n; * Based on the Sun Lance driver and the NetBSD HP Lance driver&n; */
 multiline_comment|/* Registers */
-DECL|struct|hplance_reg
-r_struct
-id|hplance_reg
-(brace
-DECL|member|pad0
-id|u_char
-id|pad0
-suffix:semicolon
-DECL|member|id
-r_volatile
-id|u_char
-id|id
-suffix:semicolon
-multiline_comment|/* DIO register: ID byte */
-DECL|member|pad1
-id|u_char
-id|pad1
-suffix:semicolon
-DECL|member|status
-r_volatile
-id|u_char
-id|status
-suffix:semicolon
-multiline_comment|/* DIO register: interrupt enable */
-)brace
-suffix:semicolon
-multiline_comment|/* Control and status bits for the hplance-&gt;status register */
+DECL|macro|HPLANCE_ID
+mdefine_line|#define HPLANCE_ID&t;&t;0x01&t;&t;/* DIO register: ID byte */
+DECL|macro|HPLANCE_STATUS
+mdefine_line|#define HPLANCE_STATUS&t;&t;0x03&t;&t;/* DIO register: interrupt enable/status */
+multiline_comment|/* Control and status bits for the status register */
 DECL|macro|LE_IE
 mdefine_line|#define LE_IE 0x80                                /* interrupt enable */
 DECL|macro|LE_IR
@@ -40,9 +18,9 @@ mdefine_line|#define LE_JAB 0x02                               /* loss of tx clo
 multiline_comment|/* We can also extract the IPL from the status register with the standard&n; * DIO_IPL(hplance) macro, or using dio_scodetoipl()&n; */
 multiline_comment|/* These are the offsets for the DIO regs (hplance_reg), lance_ioreg,&n; * memory and NVRAM:&n; */
 DECL|macro|HPLANCE_IDOFF
-mdefine_line|#define HPLANCE_IDOFF 0                           /* board baseaddr, struct hplance_reg */
+mdefine_line|#define HPLANCE_IDOFF 0                           /* board baseaddr */
 DECL|macro|HPLANCE_REGOFF
-mdefine_line|#define HPLANCE_REGOFF 0x4000                     /* struct lance_regs */
+mdefine_line|#define HPLANCE_REGOFF 0x4000                     /* lance registers */
 DECL|macro|HPLANCE_MEMOFF
 mdefine_line|#define HPLANCE_MEMOFF 0x8000                     /* struct lance_init_block */
 DECL|macro|HPLANCE_NVRAMOFF

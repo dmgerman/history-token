@@ -1140,23 +1140,6 @@ c_func
 id|s
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|s-&gt;fake_cis
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|s-&gt;fake_cis
-)paren
-suffix:semicolon
-id|s-&gt;fake_cis
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_CARDBUS
 id|cb_free
 c_func
@@ -2217,6 +2200,16 @@ op_ne
 l_int|0
 )paren
 (brace
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|4
+comma
+l_string|&quot;cis mismatch - different card&bslash;n&quot;
+)paren
+suffix:semicolon
 id|socket_remove_drivers
 c_func
 (paren
@@ -2227,6 +2220,13 @@ id|destroy_cis_cache
 c_func
 (paren
 id|skt
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Workaround: give DS time to schedule removal.&n;&t;&t;&t; * Remove me once the 100ms delay is eliminated&n;&t;&t;&t; * in ds.c&n;&t;&t;&t; */
+id|msleep
+c_func
+(paren
+l_int|200
 )paren
 suffix:semicolon
 id|send_event
@@ -2242,6 +2242,16 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|4
+comma
+l_string|&quot;cis matches cache&bslash;n&quot;
+)paren
+suffix:semicolon
 id|send_event
 c_func
 (paren

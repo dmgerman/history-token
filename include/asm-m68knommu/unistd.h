@@ -2,6 +2,8 @@ macro_line|#ifndef _ASM_M68K_UNISTD_H_
 DECL|macro|_ASM_M68K_UNISTD_H_
 mdefine_line|#define _ASM_M68K_UNISTD_H_
 multiline_comment|/*&n; * This file contains the system call numbers.&n; */
+DECL|macro|__NR_restart_syscall
+mdefine_line|#define __NR_restart_syscall      0
 DECL|macro|__NR_exit
 mdefine_line|#define __NR_exit&t;&t;  1
 DECL|macro|__NR_fork
@@ -152,8 +154,8 @@ DECL|macro|__NR_sethostname
 mdefine_line|#define __NR_sethostname&t; 74
 DECL|macro|__NR_setrlimit
 mdefine_line|#define __NR_setrlimit&t;&t; 75
-DECL|macro|__NR_old_getrlimit
-mdefine_line|#define __NR_old_getrlimit&t; 76
+DECL|macro|__NR_getrlimit
+mdefine_line|#define __NR_getrlimit&t;&t; 76
 DECL|macro|__NR_getrusage
 mdefine_line|#define __NR_getrusage&t;&t; 77
 DECL|macro|__NR_gettimeofday
@@ -332,6 +334,8 @@ DECL|macro|__NR_setresuid
 mdefine_line|#define __NR_setresuid&t;&t;164
 DECL|macro|__NR_getresuid
 mdefine_line|#define __NR_getresuid&t;&t;165
+DECL|macro|__NR_getpagesize
+mdefine_line|#define __NR_getpagesize&t;166
 DECL|macro|__NR_query_module
 mdefine_line|#define __NR_query_module&t;167
 DECL|macro|__NR_poll
@@ -380,8 +384,8 @@ DECL|macro|__NR_putpmsg
 mdefine_line|#define __NR_putpmsg&t;&t;189&t;/* some people actually want streams */
 DECL|macro|__NR_vfork
 mdefine_line|#define __NR_vfork&t;&t;190
-DECL|macro|__NR_getrlimit
-mdefine_line|#define __NR_getrlimit&t;&t;191
+DECL|macro|__NR_ugetrlimit
+mdefine_line|#define __NR_ugetrlimit&t;&t;191
 DECL|macro|__NR_mmap2
 mdefine_line|#define __NR_mmap2&t;&t;192
 DECL|macro|__NR_truncate64
@@ -432,8 +436,134 @@ DECL|macro|__NR_setfsuid32
 mdefine_line|#define __NR_setfsuid32&t;&t;215
 DECL|macro|__NR_setfsgid32
 mdefine_line|#define __NR_setfsgid32&t;&t;216
+DECL|macro|__NR_pivot_root
+mdefine_line|#define __NR_pivot_root&t;&t;217
+DECL|macro|__NR_getdents64
+mdefine_line|#define __NR_getdents64&t;&t;220
+DECL|macro|__NR_gettid
+mdefine_line|#define __NR_gettid&t;&t;221
+DECL|macro|__NR_tkill
+mdefine_line|#define __NR_tkill&t;&t;222
+DECL|macro|__NR_setxattr
+mdefine_line|#define __NR_setxattr&t;&t;223
+DECL|macro|__NR_lsetxattr
+mdefine_line|#define __NR_lsetxattr&t;&t;224
+DECL|macro|__NR_fsetxattr
+mdefine_line|#define __NR_fsetxattr&t;&t;225
+DECL|macro|__NR_getxattr
+mdefine_line|#define __NR_getxattr&t;&t;226
+DECL|macro|__NR_lgetxattr
+mdefine_line|#define __NR_lgetxattr&t;&t;227
+DECL|macro|__NR_fgetxattr
+mdefine_line|#define __NR_fgetxattr&t;&t;228
+DECL|macro|__NR_listxattr
+mdefine_line|#define __NR_listxattr&t;&t;229
+DECL|macro|__NR_llistxattr
+mdefine_line|#define __NR_llistxattr&t;&t;230
+DECL|macro|__NR_flistxattr
+mdefine_line|#define __NR_flistxattr&t;&t;231
+DECL|macro|__NR_removexattr
+mdefine_line|#define __NR_removexattr&t;232
+DECL|macro|__NR_lremovexattr
+mdefine_line|#define __NR_lremovexattr&t;233
+DECL|macro|__NR_fremovexattr
+mdefine_line|#define __NR_fremovexattr&t;234
+DECL|macro|__NR_futex
+mdefine_line|#define __NR_futex&t;&t;235
+DECL|macro|__NR_sendfile64
+mdefine_line|#define __NR_sendfile64&t;&t;236
+DECL|macro|__NR_mincore
+mdefine_line|#define __NR_mincore&t;&t;237
+DECL|macro|__NR_madvise
+mdefine_line|#define __NR_madvise&t;&t;238
+DECL|macro|__NR_fcntl64
+mdefine_line|#define __NR_fcntl64&t;&t;239
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead&t;&t;240
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;241
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;242
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;243
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;244
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;245
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64&t;&t;246
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;247
+DECL|macro|__NR_lookup_dcookie
+mdefine_line|#define __NR_lookup_dcookie&t;248
+DECL|macro|__NR_epoll_create
+mdefine_line|#define __NR_epoll_create&t;249
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl&t;&t;250
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait&t;&t;251
+DECL|macro|__NR_remap_file_pages
+mdefine_line|#define __NR_remap_file_pages&t;252
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address&t;253
+DECL|macro|__NR_timer_create
+mdefine_line|#define __NR_timer_create&t;254
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;255
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;256
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;257
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;258
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;259
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;260
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;261
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;262
+DECL|macro|__NR_statfs64
+mdefine_line|#define __NR_statfs64&t;&t;263
+DECL|macro|__NR_fstatfs64
+mdefine_line|#define __NR_fstatfs64&t;&t;264
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;265
+DECL|macro|__NR_utimes
+mdefine_line|#define __NR_utimes&t;&t;266
+DECL|macro|__NR_fadvise64_64
+mdefine_line|#define __NR_fadvise64_64&t;267
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;268
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;269
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;270
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open&t;&t;271
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;272
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;273
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;274
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;275
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;276
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;277
+DECL|macro|__NR_sys_setaltroot
+mdefine_line|#define __NR_sys_setaltroot&t;278
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key&t;&t;279
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key&t;280
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl&t;&t;281
 DECL|macro|NR_syscalls
-mdefine_line|#define&t;NR_syscalls&t;&t;256
+mdefine_line|#define NR_syscalls&t;&t;282
 multiline_comment|/* user-visible error numbers are in the range -1 - -122: see&n;   &lt;asm-m68k/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;/* avoid using res which is declared to be in register d0; &bslash;&n;&t;   errno might expand to a function call and clobber it.  */ &bslash;&n;&t;&t;int __err = -(res); &bslash;&n;&t;&t;errno = __err; &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

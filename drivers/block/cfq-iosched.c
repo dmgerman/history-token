@@ -6115,12 +6115,6 @@ id|q
 op_assign
 id|cfqd-&gt;queue
 suffix:semicolon
-id|elevator_t
-op_star
-id|e
-op_assign
-id|q-&gt;elevator
-suffix:semicolon
 r_struct
 id|cfq_queue
 op_star
@@ -6181,10 +6175,6 @@ c_func
 (paren
 id|q
 )paren
-suffix:semicolon
-id|e-&gt;elevator_data
-op_assign
-l_int|NULL
 suffix:semicolon
 id|mempool_destroy
 c_func

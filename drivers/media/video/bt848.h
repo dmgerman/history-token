@@ -1,14 +1,14 @@
-multiline_comment|/* &n;    bt848.h - Bt848 register offsets&n;&n;    Copyright (C) 1996,97,98 Ralph Metzler (rjkm@thp.uni-koeln.de)&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    bt848.h - Bt848 register offsets&n;&n;    Copyright (C) 1996,97,98 Ralph Metzler (rjkm@thp.uni-koeln.de)&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#ifndef _BT848_H_
 DECL|macro|_BT848_H_
 mdefine_line|#define _BT848_H_
 macro_line|#ifndef PCI_VENDOR_ID_BROOKTREE
 DECL|macro|PCI_VENDOR_ID_BROOKTREE
-mdefine_line|#define PCI_VENDOR_ID_BROOKTREE 0x109e 
+mdefine_line|#define PCI_VENDOR_ID_BROOKTREE 0x109e
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_BT848
 DECL|macro|PCI_DEVICE_ID_BT848
-mdefine_line|#define PCI_DEVICE_ID_BT848     0x350&t;
+mdefine_line|#define PCI_DEVICE_ID_BT848     0x350
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_BT849
 DECL|macro|PCI_DEVICE_ID_BT849
@@ -42,7 +42,7 @@ mdefine_line|#define BT848_DSTATUS_LOF      (1&lt;&lt;1)
 DECL|macro|BT848_DSTATUS_COF
 mdefine_line|#define BT848_DSTATUS_COF      (1&lt;&lt;0)
 DECL|macro|BT848_IFORM
-mdefine_line|#define BT848_IFORM            0x004  
+mdefine_line|#define BT848_IFORM            0x004
 DECL|macro|BT848_IFORM_HACTIVE
 mdefine_line|#define BT848_IFORM_HACTIVE    (1&lt;&lt;7)
 DECL|macro|BT848_IFORM_MUXSEL
@@ -82,7 +82,7 @@ mdefine_line|#define BT848_IFORM_AUTO       0
 DECL|macro|BT848_IFORM_NORM
 mdefine_line|#define BT848_IFORM_NORM       7
 DECL|macro|BT848_TDEC
-mdefine_line|#define BT848_TDEC             0x008  
+mdefine_line|#define BT848_TDEC             0x008
 DECL|macro|BT848_TDEC_DEC_FIELD
 mdefine_line|#define BT848_TDEC_DEC_FIELD   (1&lt;&lt;7)
 DECL|macro|BT848_TDEC_FLDALIGN
