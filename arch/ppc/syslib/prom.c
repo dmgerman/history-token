@@ -6935,12 +6935,12 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-DECL|variable|rtas_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rtas_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* this can be called after setup -- Cort */
 r_int

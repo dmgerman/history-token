@@ -84,10 +84,11 @@ r_int
 id|time_offset
 suffix:semicolon
 DECL|variable|rtc_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rtc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|rtc_lock
 id|EXPORT_SYMBOL
