@@ -492,10 +492,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT&t;
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

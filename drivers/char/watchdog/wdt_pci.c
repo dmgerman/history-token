@@ -1058,15 +1058,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|nowayout
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t;&t; *&t;Activate &n;&t;&t;&t; */
 id|spin_lock_irqsave
 c_func

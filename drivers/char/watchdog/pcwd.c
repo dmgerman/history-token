@@ -1441,8 +1441,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/*  Enable the port  */
 r_if
 c_cond
