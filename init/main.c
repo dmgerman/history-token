@@ -981,6 +981,14 @@ comma
 id|SMP_CACHE_BYTES
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|size
+)paren
+r_return
+suffix:semicolon
 id|ptr
 op_assign
 id|alloc_bootmem
