@@ -13,14 +13,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &quot;agp.h&quot;
-singleline_comment|//#define DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|DBG
-mdefine_line|#define DBG(x,y...) printk (KERN_DEBUG &quot;agpgart: %s: &quot; x &quot;&bslash;n&quot;, __FUNCTION__ , ## y)
-macro_line|#else
-DECL|macro|DBG
-mdefine_line|#define DBG(x,y...) do { } while (0)
-macro_line|#endif
 DECL|variable|agp_fe
 r_static
 r_struct

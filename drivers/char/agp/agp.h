@@ -3,14 +3,22 @@ macro_line|#ifndef _AGP_BACKEND_PRIV_H
 DECL|macro|_AGP_BACKEND_PRIV_H
 mdefine_line|#define _AGP_BACKEND_PRIV_H 1
 macro_line|#include &lt;asm/agp.h&gt;&t;/* for flush_agp_cache() */
+DECL|macro|PFX
+mdefine_line|#define PFX &quot;agpgart: &quot;
+singleline_comment|//#define AGP_DEBUG 1
+macro_line|#ifdef AGP_DEBUG
+DECL|macro|DBG
+mdefine_line|#define DBG(x,y...) printk (KERN_DEBUG PFX &quot;: %s: &quot; x &quot;&bslash;n&quot;, __FUNCTION__ , ## y)
+macro_line|#else
+DECL|macro|DBG
+mdefine_line|#define DBG(x,y...) do { } while (0)
+macro_line|#endif
 r_extern
 r_struct
 id|agp_bridge_data
 op_star
 id|agp_bridge
 suffix:semicolon
-DECL|macro|PFX
-mdefine_line|#define PFX &quot;agpgart: &quot;
 DECL|enum|aper_size_type
 r_enum
 id|aper_size_type
