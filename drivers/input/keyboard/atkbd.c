@@ -1731,6 +1731,12 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|input_report_key
 c_func
 (paren
@@ -2333,6 +2339,13 @@ l_int|0x7f
 )paren
 suffix:semicolon
 )brace
+id|input_sync
+c_func
+(paren
+op_amp
+id|atkbd-&gt;dev
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
