@@ -3524,7 +3524,6 @@ r_int
 )paren
 )paren
 )paren
-suffix:semicolon
 r_return
 op_minus
 id|EFAULT
