@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
+macro_line|#include &lt;asm/sn/simulator.h&gt;
 r_extern
 r_int
 id|bridge_rev_b_data_check_disable
@@ -3477,6 +3478,11 @@ id|ia64_platform_is
 c_func
 (paren
 l_string|&quot;sn2&quot;
+)paren
+op_logical_or
+id|IS_RUNNING_ON_SIMULATOR
+c_func
+(paren
 )paren
 )paren
 r_return
