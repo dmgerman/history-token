@@ -1530,8 +1530,9 @@ suffix:semicolon
 r_case
 id|FDGETPRM
 suffix:colon
-id|err
-op_assign
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1554,9 +1555,13 @@ r_struct
 id|floppy_struct
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
-id|err
+l_int|0
 suffix:semicolon
 )brace
 r_return

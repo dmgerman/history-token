@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/jffs.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;

@@ -219,6 +219,9 @@ suffix:semicolon
 multiline_comment|/* next entry on swap list */
 )brace
 suffix:semicolon
+r_struct
+id|inode
+suffix:semicolon
 r_extern
 r_int
 id|nr_swap_pages

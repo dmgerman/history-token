@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 DECL|macro|REISERFS_OLD_BLOCKSIZE
@@ -2060,14 +2059,6 @@ comma
 id|destroy_inode
 suffix:colon
 id|reiserfs_destroy_inode
-comma
-id|read_inode
-suffix:colon
-id|reiserfs_read_inode
-comma
-id|read_inode2
-suffix:colon
-id|reiserfs_read_inode2
 comma
 id|write_inode
 suffix:colon
@@ -4905,7 +4896,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_struct
-id|reiserfs_iget4_args
+id|reiserfs_iget_args
 id|args
 suffix:semicolon
 r_struct
@@ -5204,17 +5195,23 @@ suffix:semicolon
 )brace
 id|args.objectid
 op_assign
+id|REISERFS_ROOT_OBJECTID
+suffix:semicolon
+id|args.dirid
+op_assign
 id|REISERFS_ROOT_PARENT_OBJECTID
 suffix:semicolon
 id|root_inode
 op_assign
-id|iget4
+id|iget5_locked
 (paren
 id|s
 comma
 id|REISERFS_ROOT_OBJECTID
 comma
-l_int|0
+id|reiserfs_find_actor
+comma
+id|reiserfs_init_locked_inode
 comma
 (paren
 r_void
@@ -5240,6 +5237,30 @@ l_string|&quot;reiserfs_fill_super: get root inode failed&bslash;n&quot;
 suffix:semicolon
 r_goto
 id|error
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|root_inode-&gt;i_state
+op_amp
+id|I_NEW
+)paren
+(brace
+id|reiserfs_read_locked_inode
+c_func
+(paren
+id|root_inode
+comma
+op_amp
+id|args
+)paren
+suffix:semicolon
+id|unlock_new_inode
+c_func
+(paren
+id|root_inode
+)paren
 suffix:semicolon
 )brace
 id|s-&gt;s_root

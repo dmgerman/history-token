@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/amigaffs.h&gt;
 multiline_comment|/* This is, of course, shamelessly stolen from fs/minix */

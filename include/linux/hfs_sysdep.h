@@ -4,8 +4,8 @@ DECL|macro|_HFS_SYSDEP_H
 mdefine_line|#define _HFS_SYSDEP_H
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 r_extern

@@ -2991,7 +2991,10 @@ id|CM_CH_PLAY
 dot
 id|ac3_shift
 )paren
-r_return
+(brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -3015,7 +3018,15 @@ comma
 id|count
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

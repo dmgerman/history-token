@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -15,6 +14,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
@@ -142,12 +142,12 @@ dot
 id|request_queue
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * blk_get_ra_pages - get the address of a queue&squot;s readahead tunable&n; * @dev:&t;device&n; *&n; * Locates the passed device&squot;s request queue and returns the address of its&n; * readahead setting.&n; *&n; * Will return NULL if the request queue cannot be located.&n; */
-DECL|function|blk_get_ra_pages
-r_int
-r_int
+multiline_comment|/**&n; * blk_get_backing_dev_info - get the address of a queue&squot;s backing_dev_info&n; * @dev:&t;device&n; *&n; * Locates the passed device&squot;s request queue and returns the address of its&n; * backing_dev_info&n; *&n; * Will return NULL if the request queue cannot be located.&n; */
+DECL|function|blk_get_backing_dev_info
+r_struct
+id|backing_dev_info
 op_star
-id|blk_get_ra_pages
+id|blk_get_backing_dev_info
 c_func
 (paren
 r_struct
@@ -156,8 +156,8 @@ op_star
 id|bdev
 )paren
 (brace
-r_int
-r_int
+r_struct
+id|backing_dev_info
 op_star
 id|ret
 op_assign
@@ -185,7 +185,7 @@ id|q
 id|ret
 op_assign
 op_amp
-id|q-&gt;ra_pages
+id|q-&gt;backing_dev_info
 suffix:semicolon
 r_return
 id|ret
@@ -238,7 +238,7 @@ id|q-&gt;make_request_fn
 op_assign
 id|mfn
 suffix:semicolon
-id|q-&gt;ra_pages
+id|q-&gt;backing_dev_info.ra_pages
 op_assign
 (paren
 id|VM_MAX_READAHEAD
@@ -247,6 +247,10 @@ l_int|1024
 )paren
 op_div
 id|PAGE_CACHE_SIZE
+suffix:semicolon
+id|q-&gt;backing_dev_info.state
+op_assign
+l_int|0
 suffix:semicolon
 id|blk_queue_max_sectors
 c_func

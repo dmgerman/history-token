@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
@@ -510,13 +509,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|iunique
-)paren
-suffix:semicolon
-DECL|variable|iget4
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iget4
 )paren
 suffix:semicolon
 DECL|variable|iput
@@ -2910,11 +2902,11 @@ c_func
 id|new_inode
 )paren
 suffix:semicolon
-DECL|variable|insert_inode_hash
+DECL|variable|__insert_inode_hash
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|insert_inode_hash
+id|__insert_inode_hash
 )paren
 suffix:semicolon
 DECL|variable|remove_inode_hash

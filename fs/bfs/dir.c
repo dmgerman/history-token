@@ -2,7 +2,6 @@ multiline_comment|/*&n; *&t;fs/bfs/dir.c&n; *&t;BFS directory operations.&n; *&t
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/bfs_fs.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;bfs_defs.h&quot;
 DECL|macro|DEBUG

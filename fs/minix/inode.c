@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  linux/fs/minix/inode.c&n; *&n; *  Copyright (C) 1991,
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;minix.h&quot;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 r_static

@@ -3,8 +3,8 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 multiline_comment|/*&n;** reiserfs_ioctl - handler for ioctl for inode&n;** supported commands:&n;**  1) REISERFS_IOC_UNPACK - try to unpack tail from direct item into indirect&n;**                           and prevent packing file (argument arg has to be non-zero)&n;**  2) That&squot;s all for a while ...&n;*/
 DECL|function|reiserfs_ioctl
 r_int

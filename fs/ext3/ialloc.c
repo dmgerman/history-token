@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/ext3_fs.h&gt;
 macro_line|#include &lt;linux/ext3_jbd.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;

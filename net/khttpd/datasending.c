@@ -3,7 +3,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n;&n;Purpose:&n;&n;DataSending does the actual sending of file-data to the socket.&n;&n;Note: Since asynchronous reads do not -yet- exists, this might block!&n;&n;Return value:&n;&t;The number of requests that changed status (ie: made some progress)&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

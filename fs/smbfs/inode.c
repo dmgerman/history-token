@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/file.h&gt;

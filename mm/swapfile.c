@@ -1262,6 +1262,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * NOTE: if/when swap gets buffer/page coherency&n;&t;&t;&t; * like other mappings, we&squot;ll need to mark the buffers&n;&t;&t;&t; * dirty here too.  set_page_dirty().&n;&t;&t;&t; */
 id|SetPageDirty
 c_func
 (paren

@@ -181,6 +181,7 @@ suffix:semicolon
 id|nr_pdflush_threads
 op_increment
 suffix:semicolon
+singleline_comment|//&t;printk(&quot;pdflush %d [%d] starts&bslash;n&quot;, nr_pdflush_threads, current-&gt;pid);
 r_for
 c_loop
 (paren
@@ -268,7 +269,7 @@ id|pdflush_list
 )paren
 )paren
 (brace
-multiline_comment|/* unlocked nr_pdflush_threads test is OK here */
+multiline_comment|/* unlocked test is OK here */
 r_if
 c_cond
 (paren
@@ -350,6 +351,7 @@ multiline_comment|/* exeunt */
 id|nr_pdflush_threads
 op_decrement
 suffix:semicolon
+singleline_comment|//&t;printk(&quot;pdflush %d [%d] ends&bslash;n&quot;, nr_pdflush_threads, current-&gt;pid);
 id|spin_unlock_irq
 c_func
 (paren

@@ -243,6 +243,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* Sync a reiserfs file. */
+multiline_comment|/*&n; * FIXME: sync_mapping_buffers() never has anything to sync.  Can&n; * be removed...&n; */
 DECL|function|reiserfs_sync_file
 r_static
 r_int
@@ -294,10 +295,10 @@ id|BUG
 suffix:semicolon
 id|n_err
 op_assign
-id|fsync_inode_buffers
+id|sync_mapping_buffers
 c_func
 (paren
-id|p_s_inode
+id|p_s_inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|reiserfs_commit_for_inode

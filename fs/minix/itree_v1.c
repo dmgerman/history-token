@@ -1,5 +1,4 @@
 macro_line|#include &quot;minix.h&quot;
-macro_line|#include &lt;linux/locks.h&gt;
 DECL|enumerator|DEPTH
 DECL|enumerator|DIRECT
 r_enum

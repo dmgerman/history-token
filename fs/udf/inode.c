@@ -1,9 +1,9 @@
 multiline_comment|/*&n; * inode.c&n; *&n; * PURPOSE&n; *  Inode handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *  E-mail regarding any portion of the Linux UDF file system should be&n; *  directed to the development team mailing list (run by majordomo):&n; *    linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *  This file is distributed under the terms of the GNU General Public&n; *  License (GPL). Copies of the GPL can be obtained from:&n; *    ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *  Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998 Dave Boynton&n; *  (C) 1998-2001 Ben Fennema&n; *  (C) 1999-2000 Stelias Computing Inc&n; *&n; * HISTORY&n; *&n; *  10/04/98 dgb  Added rudimentary directory functions&n; *  10/07/98      Fully working udf_block_map! It works!&n; *  11/25/98      bmap altered to better support extents&n; *  12/06/98 blf  partition support in udf_iget, udf_block_map and udf_read_inode&n; *  12/12/98      rewrote udf_block_map to handle next extents and descs across&n; *                block boundaries (which is not actually allowed)&n; *  12/20/98      added support for strategy 4096&n; *  03/07/99      rewrote udf_block_map (again)&n; *                New funcs, inode_bmap, udf_next_aext&n; *  04/19/99      Support for writing device EA&squot;s for major/minor #&n; */
 macro_line|#include &quot;udfdecl.h&quot;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &quot;udf_i.h&quot;
 macro_line|#include &quot;udf_sb.h&quot;
 id|MODULE_AUTHOR
