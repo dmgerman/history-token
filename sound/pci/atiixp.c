@@ -553,6 +553,7 @@ multiline_comment|/*&n; * stream enum&n; */
 DECL|enumerator|ATI_DMA_PLAYBACK
 DECL|enumerator|ATI_DMA_CAPTURE
 DECL|enumerator|ATI_DMA_SPDIF
+DECL|enumerator|NUM_ATI_DMAS
 r_enum
 (brace
 id|ATI_DMA_PLAYBACK
@@ -560,8 +561,42 @@ comma
 id|ATI_DMA_CAPTURE
 comma
 id|ATI_DMA_SPDIF
+comma
+id|NUM_ATI_DMAS
 )brace
 suffix:semicolon
+multiline_comment|/* DMAs */
+DECL|enumerator|ATI_PCM_OUT
+DECL|enumerator|ATI_PCM_IN
+DECL|enumerator|ATI_PCM_SPDIF
+DECL|enumerator|NUM_ATI_PCMS
+r_enum
+(brace
+id|ATI_PCM_OUT
+comma
+id|ATI_PCM_IN
+comma
+id|ATI_PCM_SPDIF
+comma
+id|NUM_ATI_PCMS
+)brace
+suffix:semicolon
+multiline_comment|/* AC97 pcm slots */
+DECL|enumerator|ATI_PCMDEV_ANALOG
+DECL|enumerator|ATI_PCMDEV_DIGITAL
+DECL|enumerator|NUM_ATI_PCMDEVS
+r_enum
+(brace
+id|ATI_PCMDEV_ANALOG
+comma
+id|ATI_PCMDEV_DIGITAL
+comma
+id|NUM_ATI_PCMDEVS
+)brace
+suffix:semicolon
+multiline_comment|/* pcm devices */
+DECL|macro|NUM_ATI_CODECS
+mdefine_line|#define NUM_ATI_CODECS&t;3
 multiline_comment|/*&n; * constants and callbacks for each DMA type&n; */
 DECL|struct|snd_atiixp_dma_ops
 r_struct
@@ -578,6 +613,12 @@ r_int
 id|llp_offset
 suffix:semicolon
 multiline_comment|/* LINKPTR offset */
+DECL|member|dt_cur
+r_int
+r_int
+id|dt_cur
+suffix:semicolon
+multiline_comment|/* DT_CUR offset */
 DECL|member|enable_dma
 r_void
 (paren
@@ -735,10 +776,9 @@ id|ac97_t
 op_star
 id|ac97
 (braket
-l_int|3
+id|NUM_ATI_CODECS
 )braket
 suffix:semicolon
-multiline_comment|/* IXP can have up to 3 codecs */
 DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock
@@ -751,29 +791,26 @@ DECL|member|dmas
 id|atiixp_dma_t
 id|dmas
 (braket
-l_int|3
+id|NUM_ATI_DMAS
 )braket
 suffix:semicolon
-multiline_comment|/* playback, capture, spdif */
 DECL|member|pcms
 r_struct
 id|ac97_pcm
 op_star
 id|pcms
 (braket
-l_int|3
+id|NUM_ATI_PCMS
 )braket
 suffix:semicolon
-multiline_comment|/* playback, capture, spdif */
 DECL|member|pcmdevs
 id|snd_pcm_t
 op_star
 id|pcmdevs
 (braket
-l_int|2
+id|NUM_ATI_PCMDEVS
 )braket
 suffix:semicolon
-multiline_comment|/* PCM devices: analog i/o, spdif */
 DECL|member|max_channels
 r_int
 id|max_channels
@@ -1915,24 +1952,8 @@ op_star
 id|chip
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|atiixp_read
-c_func
-(paren
-id|chip
-comma
-id|MODEM_MIRROR
-)paren
-op_amp
-l_int|0x1
-)paren
-multiline_comment|/* modem running, too? */
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
+singleline_comment|// if (atiixp_read(chip, MODEM_MIRROR) &amp; 0x1) /* modem running, too? */
+singleline_comment|//&t;return -EBUSY;
 id|atiixp_update
 c_func
 (paren
@@ -2270,12 +2291,9 @@ c_func
 (paren
 id|chip-&gt;remap_addr
 op_plus
-id|dma-&gt;ops-&gt;llp_offset
-op_plus
-l_int|12
+id|dma-&gt;ops-&gt;dt_cur
 )paren
 suffix:semicolon
-multiline_comment|/* XXX_DMA_DT_CUR */
 r_if
 c_cond
 (paren
@@ -4768,6 +4786,11 @@ op_assign
 id|ATI_REG_OUT_DMA_LINKPTR
 comma
 dot
+id|dt_cur
+op_assign
+id|ATI_REG_OUT_DMA_DT_CUR
+comma
+dot
 id|enable_dma
 op_assign
 id|atiixp_out_enable_dma
@@ -4801,6 +4824,11 @@ op_assign
 id|ATI_REG_IN_DMA_LINKPTR
 comma
 dot
+id|dt_cur
+op_assign
+id|ATI_REG_IN_DMA_DT_CUR
+comma
+dot
 id|enable_dma
 op_assign
 id|atiixp_in_enable_dma
@@ -4832,6 +4860,11 @@ dot
 id|llp_offset
 op_assign
 id|ATI_REG_SPDF_DMA_LINKPTR
+comma
+dot
+id|dt_cur
+op_assign
+id|ATI_REG_SPDF_DMA_DT_CUR
 comma
 dot
 id|enable_dma
@@ -4987,7 +5020,7 @@ c_cond
 (paren
 id|pbus-&gt;pcms
 (braket
-l_int|0
+id|ATI_PCM_OUT
 )braket
 dot
 id|r
@@ -5009,7 +5042,7 @@ c_cond
 (paren
 id|pbus-&gt;pcms
 (braket
-l_int|0
+id|ATI_PCM_OUT
 )braket
 dot
 id|r
@@ -5045,7 +5078,7 @@ id|chip-&gt;card
 comma
 l_string|&quot;ATI IXP AC97&quot;
 comma
-l_int|0
+id|ATI_PCMDEV_ANALOG
 comma
 l_int|1
 comma
@@ -5101,7 +5134,7 @@ l_string|&quot;ATI IXP AC97&quot;
 suffix:semicolon
 id|chip-&gt;pcmdevs
 (braket
-l_int|0
+id|ATI_PCMDEV_ANALOG
 )braket
 op_assign
 id|pcm
@@ -5134,13 +5167,13 @@ c_cond
 (paren
 id|chip-&gt;pcms
 (braket
-l_int|2
+id|ATI_PCM_SPDIF
 )braket
 op_logical_and
 op_logical_neg
 id|chip-&gt;pcms
 (braket
-l_int|2
+id|ATI_PCM_SPDIF
 )braket
 op_member_access_from_pointer
 id|rates
@@ -5154,12 +5187,12 @@ c_cond
 (paren
 id|chip-&gt;pcms
 (braket
-l_int|2
+id|ATI_PCM_SPDIF
 )braket
 )paren
 id|chip-&gt;pcms
 (braket
-l_int|2
+id|ATI_PCM_SPDIF
 )braket
 op_member_access_from_pointer
 id|rates
@@ -5176,7 +5209,7 @@ id|chip-&gt;card
 comma
 l_string|&quot;ATI IXP IEC958&quot;
 comma
-l_int|1
+id|ATI_PCMDEV_DIGITAL
 comma
 l_int|1
 comma
@@ -5235,7 +5268,7 @@ l_string|&quot;ATI IXP IEC958 (Direct)&quot;
 suffix:semicolon
 id|chip-&gt;pcmdevs
 (braket
-l_int|1
+id|ATI_PCMDEV_DIGITAL
 )braket
 op_assign
 id|pcm
@@ -5272,7 +5305,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|3
+id|NUM_ATI_CODECS
 suffix:semicolon
 id|i
 op_increment
@@ -5598,7 +5631,7 @@ r_int
 r_int
 id|codec_skip
 (braket
-l_int|3
+id|NUM_ATI_CODECS
 )braket
 op_assign
 (brace
@@ -5696,7 +5729,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|3
+id|NUM_ATI_CODECS
 suffix:semicolon
 id|i
 op_increment
@@ -5739,6 +5772,10 @@ suffix:semicolon
 id|ac97.num
 op_assign
 id|i
+suffix:semicolon
+id|ac97.scaps
+op_assign
+id|AC97_SCAP_SKIP_MODEM
 suffix:semicolon
 r_if
 c_cond
@@ -5870,7 +5907,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|2
+id|NUM_ATI_PCMDEVS
 suffix:semicolon
 id|i
 op_increment
@@ -5901,7 +5938,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|3
+id|NUM_ATI_CODECS
 suffix:semicolon
 id|i
 op_increment
@@ -6046,7 +6083,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|3
+id|NUM_ATI_CODECS
 suffix:semicolon
 id|i
 op_increment
@@ -6476,6 +6513,7 @@ l_int|NULL
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to grab I/O memory 0x%lx&bslash;n&quot;
 comma
 id|chip-&gt;addr
@@ -6517,6 +6555,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;AC&squot;97 space ioremap problem&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6558,6 +6597,7 @@ id|chip
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to grab IRQ %d&bslash;n&quot;
 comma
 id|pci-&gt;irq
