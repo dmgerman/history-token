@@ -1716,11 +1716,6 @@ r_int
 r_int
 id|address
 comma
-r_int
-r_int
-op_star
-id|mapcount
-comma
 r_struct
 id|vm_area_struct
 op_star
@@ -1852,12 +1847,6 @@ id|pte
 )paren
 r_goto
 id|out_unmap
-suffix:semicolon
-(paren
-op_star
-id|mapcount
-)paren
-op_decrement
 suffix:semicolon
 r_if
 c_cond
@@ -2445,12 +2434,6 @@ op_star
 id|page
 )paren
 (brace
-r_int
-r_int
-id|mapcount
-op_assign
-id|page-&gt;mapcount
-suffix:semicolon
 r_struct
 id|anonmm
 op_star
@@ -2507,9 +2490,6 @@ id|anonmm-&gt;mm
 comma
 id|page-&gt;index
 comma
-op_amp
-id|mapcount
-comma
 l_int|NULL
 )paren
 suffix:semicolon
@@ -2521,7 +2501,7 @@ op_eq
 id|SWAP_FAIL
 op_logical_or
 op_logical_neg
-id|mapcount
+id|page-&gt;mapcount
 )paren
 r_goto
 id|out
@@ -2565,9 +2545,6 @@ id|anonmm-&gt;mm
 comma
 id|page-&gt;index
 comma
-op_amp
-id|mapcount
-comma
 l_int|NULL
 )paren
 suffix:semicolon
@@ -2579,7 +2556,7 @@ op_eq
 id|SWAP_FAIL
 op_logical_or
 op_logical_neg
-id|mapcount
+id|page-&gt;mapcount
 )paren
 r_goto
 id|out
@@ -2612,12 +2589,6 @@ op_star
 id|page
 )paren
 (brace
-r_int
-r_int
-id|mapcount
-op_assign
-id|page-&gt;mapcount
-suffix:semicolon
 r_struct
 id|address_space
 op_star
@@ -2671,6 +2642,10 @@ r_int
 id|max_nl_size
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|mapcount
 suffix:semicolon
 r_if
 c_cond
@@ -2739,9 +2714,6 @@ id|vma-&gt;vm_mm
 comma
 id|address
 comma
-op_amp
-id|mapcount
-comma
 id|vma
 )paren
 suffix:semicolon
@@ -2753,7 +2725,7 @@ op_eq
 id|SWAP_FAIL
 op_logical_or
 op_logical_neg
-id|mapcount
+id|page-&gt;mapcount
 )paren
 r_goto
 id|out
@@ -2846,6 +2818,10 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/*&n;&t; * We don&squot;t try to search for this page in the nonlinear vmas,&n;&t; * and page_referenced wouldn&squot;t have found it anyway.  Instead&n;&t; * just walk the nonlinear vmas trying to age and unmap some.&n;&t; * The mapcount of the page we came in with is irrelevant,&n;&t; * but even so use it as a guide to how hard we should try?&n;&t; */
+id|mapcount
+op_assign
+id|page-&gt;mapcount
+suffix:semicolon
 id|page_map_unlock
 c_func
 (paren
