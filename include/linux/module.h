@@ -32,6 +32,11 @@ DECL|macro|MODULE_PARM_DESC
 mdefine_line|#define MODULE_PARM_DESC(var,desc)
 DECL|macro|print_modules
 mdefine_line|#define print_modules()
+multiline_comment|/* v850 toolchain uses a `_&squot; prefix for all user symbols */
+macro_line|#ifndef MODULE_SYMBOL_PREFIX
+DECL|macro|MODULE_SYMBOL_PREFIX
+mdefine_line|#define MODULE_SYMBOL_PREFIX &quot;&quot;
+macro_line|#endif
 DECL|macro|MODULE_NAME_LEN
 mdefine_line|#define MODULE_NAME_LEN (64 - sizeof(unsigned long))
 DECL|struct|kernel_symbol
@@ -151,10 +156,10 @@ id|symbol
 )paren
 suffix:semicolon
 DECL|macro|symbol_get
-mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(#x)))
+mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(MODULE_SYMBOL_PREFIX #x)))
 multiline_comment|/* For every exported symbol, place a struct in the __ksymtab section */
 DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, #sym }
+mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, MODULE_SYMBOL_PREFIX #sym }
 DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
 DECL|macro|EXPORT_SYMBOL_GPL
@@ -324,7 +329,7 @@ id|symbol
 )paren
 suffix:semicolon
 DECL|macro|symbol_put
-mdefine_line|#define symbol_put(x) __symbol_put(#x)
+mdefine_line|#define symbol_put(x) __symbol_put(MODULE_SYMBOL_PREFIX #x)
 r_void
 id|symbol_put_addr
 c_func

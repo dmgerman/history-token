@@ -20,6 +20,8 @@ macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(fmt , a...)
 macro_line|#endif
+DECL|macro|symbol_is
+mdefine_line|#define symbol_is(literal, string)&t;&t;&t;&t;&bslash;&n;&t;(strcmp(MODULE_SYMBOL_PREFIX literal, (string)) == 0)
 multiline_comment|/* List of modules, protected by module_mutex */
 r_static
 id|DECLARE_MUTEX
@@ -2669,7 +2671,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|strcmp
+id|symbol_is
 c_func
 (paren
 l_string|&quot;__initfn&quot;
@@ -2683,8 +2685,6 @@ id|i
 dot
 id|st_name
 )paren
-op_eq
-l_int|0
 )paren
 id|mod-&gt;init
 op_assign
@@ -2703,7 +2703,7 @@ macro_line|#ifdef CONFIG_MODULE_UNLOAD
 r_if
 c_cond
 (paren
-id|strcmp
+id|symbol_is
 c_func
 (paren
 l_string|&quot;__exitfn&quot;
@@ -2717,8 +2717,6 @@ id|i
 dot
 id|st_name
 )paren
-op_eq
-l_int|0
 )paren
 id|mod
 op_member_access_from_pointer
@@ -3484,9 +3482,11 @@ multiline_comment|/* We fake up &quot;__this_module&quot; */
 r_if
 c_cond
 (paren
-id|strcmp
+id|symbol_is
 c_func
 (paren
+l_string|&quot;__this_module&quot;
+comma
 id|strtab
 op_plus
 id|sym
@@ -3495,11 +3495,7 @@ id|i
 )braket
 dot
 id|st_name
-comma
-l_string|&quot;__this_module&quot;
 )paren
-op_eq
-l_int|0
 )paren
 id|sym
 (braket
