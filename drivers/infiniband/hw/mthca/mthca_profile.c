@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2004 Topspin Communications.  All rights reserved.&n; *&n; * This software is available to you under a choice of one of two&n; * licenses.  You may choose to be licensed under the terms of the GNU&n; * General Public License (GPL) Version 2, available from the file&n; * COPYING in the main directory of this source tree, or the&n; * OpenIB.org BSD license below:&n; *&n; *     Redistribution and use in source and binary forms, with or&n; *     without modification, are permitted provided that the following&n; *     conditions are met:&n; *&n; *      - Redistributions of source code must retain the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer.&n; *&n; *      - Redistributions in binary form must reproduce the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer in the documentation and/or other materials&n; *        provided with the distribution.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,&n; * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF&n; * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND&n; * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS&n; * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN&n; * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN&n; * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE&n; * SOFTWARE.&n; *&n; * $Id: mthca_profile.c 1349 2004-12-16 21:09:43Z roland $&n; */
+multiline_comment|/*&n; * Copyright (c) 2004, 2005 Topspin Communications.  All rights reserved.&n; *&n; * This software is available to you under a choice of one of two&n; * licenses.  You may choose to be licensed under the terms of the GNU&n; * General Public License (GPL) Version 2, available from the file&n; * COPYING in the main directory of this source tree, or the&n; * OpenIB.org BSD license below:&n; *&n; *     Redistribution and use in source and binary forms, with or&n; *     without modification, are permitted provided that the following&n; *     conditions are met:&n; *&n; *      - Redistributions of source code must retain the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer.&n; *&n; *      - Redistributions in binary form must reproduce the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer in the documentation and/or other materials&n; *        provided with the distribution.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,&n; * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF&n; * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND&n; * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS&n; * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN&n; * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN&n; * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE&n; * SOFTWARE.&n; *&n; * $Id: mthca_profile.c 1349 2004-12-16 21:09:43Z roland $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &quot;mthca_profile.h&quot;
@@ -66,7 +66,7 @@ l_int|15
 )brace
 suffix:semicolon
 DECL|function|mthca_make_profile
-r_int
+id|u64
 id|mthca_make_profile
 c_func
 (paren
@@ -463,6 +463,36 @@ id|i
 )braket
 dot
 id|num
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;hca_type
+op_eq
+id|ARBEL_NATIVE
+)paren
+id|profile
+(braket
+id|i
+)braket
+dot
+id|size
+op_assign
+id|max
+c_func
+(paren
+id|profile
+(braket
+id|i
+)braket
+dot
+id|size
+comma
+(paren
+id|u64
+)paren
+id|PAGE_SIZE
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -1239,6 +1269,38 @@ id|i
 dot
 id|num
 suffix:semicolon
+r_case
+id|MTHCA_RES_UARC
+suffix:colon
+id|init_hca-&gt;uarc_base
+op_assign
+id|profile
+(braket
+id|i
+)braket
+dot
+id|start
+suffix:semicolon
+id|init_hca-&gt;log_uarc_sz
+op_assign
+id|ffs
+c_func
+(paren
+id|request-&gt;uarc_size
+)paren
+op_minus
+l_int|13
+suffix:semicolon
+id|init_hca-&gt;log_uar_sz
+op_assign
+id|ffs
+c_func
+(paren
+id|request-&gt;num_uar
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 r_default
 suffix:colon
 r_break
@@ -1257,7 +1319,7 @@ id|profile
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|total_size
 suffix:semicolon
 )brace
 eof
