@@ -3070,18 +3070,9 @@ c_cond
 op_logical_neg
 id|file
 )paren
-(brace
-id|perror
-c_func
-(paren
-id|fname
-)paren
+multiline_comment|/* No symbol versions, silently ignore */
+r_return
 suffix:semicolon
-m_abort
-(paren
-)paren
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
