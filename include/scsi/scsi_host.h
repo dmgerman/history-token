@@ -421,6 +421,23 @@ id|legacy_hosts
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * shost states&n; */
+r_enum
+(brace
+DECL|enumerator|SHOST_ADD
+id|SHOST_ADD
+comma
+DECL|enumerator|SHOST_DEL
+id|SHOST_DEL
+comma
+DECL|enumerator|SHOST_CANCEL
+id|SHOST_CANCEL
+comma
+DECL|enumerator|SHOST_RECOVERY
+id|SHOST_RECOVERY
+comma
+)brace
+suffix:semicolon
 DECL|struct|Scsi_Host
 r_struct
 id|Scsi_Host
@@ -606,12 +623,6 @@ r_int
 r_int
 id|dma_boundary
 suffix:semicolon
-DECL|member|in_recovery
-r_int
-id|in_recovery
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|unchecked_isa_dma
 r_int
 id|unchecked_isa_dma
@@ -687,6 +698,11 @@ DECL|member|irq
 r_int
 r_int
 id|irq
+suffix:semicolon
+DECL|member|shost_state
+r_int
+r_int
+id|shost_state
 suffix:semicolon
 multiline_comment|/* ldm bits */
 DECL|member|shost_gendev
@@ -773,7 +789,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|scsi_remove_host
 c_func
 (paren
@@ -783,7 +799,9 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_struct
+id|Scsi_Host
+op_star
 id|scsi_host_get
 c_func
 (paren
