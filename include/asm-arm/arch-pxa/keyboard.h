@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  linux/include/asm-arm/arch-pxa/keyboard.h&n; *&n; *  
 macro_line|#ifndef _PXA_KEYBOARD_H
 DECL|macro|_PXA_KEYBOARD_H
 mdefine_line|#define _PXA_KEYBOARD_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 r_extern

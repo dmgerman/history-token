@@ -60,14 +60,6 @@ DECL|macro|SGI_USEMACLONE
 mdefine_line|#define SGI_USEMACLONE&t;     151
 DECL|macro|TUN_MINOR
 mdefine_line|#define TUN_MINOR&t;     200
-r_extern
-r_int
-id|misc_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|struct|miscdevice
 r_struct
 id|miscdevice

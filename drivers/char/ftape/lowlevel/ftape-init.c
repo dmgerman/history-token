@@ -51,8 +51,19 @@ id|__initdata
 op_assign
 l_string|&quot;$Date: 1997/11/06 00:38:08 $&quot;
 suffix:semicolon
+macro_line|#ifndef CONFIG_FT_NO_TRACE_AT_ALL
+DECL|variable|ft_tracing
+r_static
+r_int
+id|ft_tracing
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*  Called by modules package when installing the driver&n; *  or by kernel during the initialization phase&n; */
 DECL|function|ftape_init
+r_static
 r_int
 id|__init
 id|ftape_init
@@ -68,6 +79,22 @@ id|ft_t_flow
 )paren
 suffix:semicolon
 macro_line|#ifdef MODULE
+macro_line|#ifndef CONFIG_FT_NO_TRACE_AT_ALL
+r_if
+c_cond
+(paren
+id|ft_tracing
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+id|ftape_tracing
+op_assign
+id|ft_tracing
+suffix:semicolon
+)brace
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -283,17 +310,6 @@ id|TRACE_EXIT
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-macro_line|#ifndef CONFIG_FT_NO_TRACE_AT_ALL
-DECL|variable|ft_tracing
-r_static
-r_int
-id|ft_tracing
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-macro_line|#endif
 DECL|macro|FT_MOD_PARM
 mdefine_line|#define FT_MOD_PARM(var,type,desc) &bslash;&n;&t;MODULE_PARM(var,type); MODULE_PARM_DESC(var,desc)
 id|FT_MOD_PARM
@@ -396,42 +412,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*  Called by modules package when installing the driver&n; */
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
+DECL|function|ftape_exit
+r_static
 r_void
-)paren
-(brace
-macro_line|#ifndef CONFIG_FT_NO_TRACE_AT_ALL
-r_if
-c_cond
-(paren
-id|ft_tracing
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-id|ftape_tracing
-op_assign
-id|ft_tracing
-suffix:semicolon
-)brace
-macro_line|#endif
-r_return
-id|ftape_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*  Called by modules package when removing the driver&n; */
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+id|__exit
+id|ftape_exit
 c_func
 (paren
 r_void
@@ -469,5 +454,18 @@ suffix:semicolon
 id|TRACE_EXIT
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
+DECL|variable|ftape_init
+id|module_init
+c_func
+(paren
+id|ftape_init
+)paren
+suffix:semicolon
+DECL|variable|ftape_exit
+id|module_exit
+c_func
+(paren
+id|ftape_exit
+)paren
+suffix:semicolon
 eof

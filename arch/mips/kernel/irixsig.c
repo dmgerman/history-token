@@ -3036,7 +3036,11 @@ op_eq
 id|P_PGID
 )paren
 op_logical_and
-id|p-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|p
+)paren
 op_ne
 id|pid
 )paren

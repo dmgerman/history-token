@@ -7662,7 +7662,8 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|rand_initialize
-r_void
+r_static
+r_int
 id|__init
 id|rand_initialize
 c_func
@@ -7685,9 +7686,9 @@ op_amp
 id|random_state
 )paren
 )paren
-r_return
+r_goto
+id|err
 suffix:semicolon
-multiline_comment|/* Error, return */
 r_if
 c_cond
 (paren
@@ -7699,9 +7700,9 @@ comma
 id|random_state
 )paren
 )paren
-r_return
+r_goto
+id|err
 suffix:semicolon
-multiline_comment|/* Error, return */
 r_if
 c_cond
 (paren
@@ -7714,9 +7715,9 @@ op_amp
 id|sec_random_state
 )paren
 )paren
-r_return
+r_goto
+id|err
 suffix:semicolon
-multiline_comment|/* Error, return */
 id|clear_entropy_store
 c_func
 (paren
@@ -7813,7 +7814,23 @@ id|extract_timer_state.dont_count_entropy
 op_assign
 l_int|1
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+id|err
+suffix:colon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 )brace
+DECL|variable|rand_initialize
+id|module_init
+c_func
+(paren
+id|rand_initialize
+)paren
+suffix:semicolon
 DECL|function|rand_initialize_irq
 r_void
 id|rand_initialize_irq

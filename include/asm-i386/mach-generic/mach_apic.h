@@ -6,6 +6,8 @@ DECL|macro|esr_disable
 mdefine_line|#define esr_disable (genapic-&gt;esr_disable)
 DECL|macro|NO_BALANCE_IRQ
 mdefine_line|#define NO_BALANCE_IRQ (genapic-&gt;no_balance_irq)
+DECL|macro|NO_IOAPIC_CHECK
+mdefine_line|#define NO_IOAPIC_CHECK&t;(genapic-&gt;no_ioapic_check)
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID (genapic-&gt;apic_broadcast_id)
 DECL|macro|INT_DELIVERY_MODE

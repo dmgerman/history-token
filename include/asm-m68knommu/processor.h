@@ -99,8 +99,6 @@ multiline_comment|/*&n; * This decides where the kernel will search for a free c
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;0
 multiline_comment|/*&n; * Bus types&n; */
-DECL|macro|EISA_bus
-mdefine_line|#define EISA_bus 0
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 multiline_comment|/* &n; * if you change this structure, you must change the code and offsets&n; * in m68k/machasm.S&n; */

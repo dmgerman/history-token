@@ -9205,15 +9205,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef TWO_ZERO
-DECL|macro|PDEV
-mdefine_line|#define PDEV unsigned char pci_bus, unsigned pci_fun
-DECL|macro|pdev
-mdefine_line|#define pdev pci_bus, pci_fun
-macro_line|#else
-DECL|macro|PDEV
-mdefine_line|#define PDEV   struct pci_dev *pdev
-macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/******************************************************** &n; * Setting bit 17 in the CNTRL register of the PLX 9050  * &n; * chip forces a retry on writes while a read is pending.*&n; * This is to prevent the card locking up on Intel Xeon  *&n; * multiprocessor systems with the NX chipset.    -- NV  *&n; ********************************************************/
 multiline_comment|/* Newer cards are produced with this bit set from the configuration&n;   EEprom.  As the bit is read/write for the CPU, we can fix it here,&n;   if we detect that it isn&squot;t set correctly. -- REW */
@@ -9222,7 +9213,10 @@ r_static
 r_void
 id|fix_sx_pci
 (paren
-id|PDEV
+r_struct
+id|pci_dev
+op_star
+id|pdev
 comma
 r_struct
 id|sx_board
@@ -9349,7 +9343,6 @@ op_star
 id|board
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
-macro_line|#ifndef TWO_ZERO
 r_struct
 id|pci_dev
 op_star
@@ -9357,15 +9350,6 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#else
-r_int
-r_char
-id|pci_bus
-comma
-id|pci_fun
-suffix:semicolon
-multiline_comment|/* in 2.2.x pdev is a pointer defining a PCI device. In 2.0 its the bus/fn */
-macro_line|#endif
 r_int
 r_int
 id|tint
@@ -9455,7 +9439,6 @@ id|EIO
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PCI
-macro_line|#ifndef TWO_ZERO
 r_while
 c_loop
 (paren
@@ -9484,43 +9467,6 @@ id|pdev
 )paren
 r_continue
 suffix:semicolon
-macro_line|#else
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|SX_NBOARDS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pcibios_find_device
-(paren
-id|PCI_VENDOR_ID_SPECIALIX
-comma
-id|PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
-comma
-id|i
-comma
-op_amp
-id|pci_bus
-comma
-op_amp
-id|pci_fun
-)paren
-)paren
-r_break
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Specialix has a whole bunch of cards with&n;&t;&t;   0x2000 as the device ID. They say its because&n;&t;&t;   the standard requires it. Stupid standard. */
 multiline_comment|/* It seems that reading a word doesn&squot;t work reliably on 2.0.&n;&t;&t;   Also, reading a non-aligned dword doesn&squot;t work. So we read the&n;&t;&t;   whole dword at 0x2c and extract the word at 0x2e (SUBSYSTEM_ID)&n;&t;&t;   ourselves */
 multiline_comment|/* I don&squot;t know why the define doesn&squot;t work, constant 0x2c does --REW */

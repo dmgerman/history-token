@@ -9,6 +9,7 @@ op_assign
 l_string|&quot;smc-ultra32.c: 06/97 v1.00&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

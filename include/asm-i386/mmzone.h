@@ -124,14 +124,60 @@ macro_line|#include &lt;asm/numaq.h&gt;
 macro_line|#elif CONFIG_ACPI_SRAT
 macro_line|#include &lt;asm/srat.h&gt;
 macro_line|#elif CONFIG_X86_PC
-DECL|macro|get_memcfg_numa
-mdefine_line|#define get_memcfg_numa get_memcfg_numa_flat
 DECL|macro|get_zholes_size
 mdefine_line|#define get_zholes_size(n) (0)
 macro_line|#else
 DECL|macro|pfn_to_nid
 mdefine_line|#define pfn_to_nid(pfn)&t;&t;(0)
 macro_line|#endif /* CONFIG_X86_NUMAQ */
+r_extern
+r_int
+id|get_memcfg_numa_flat
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * This allows any one NUMA architecture to be compiled&n; * for, and still fall back to the flat function if it&n; * fails.&n; */
+DECL|function|get_memcfg_numa
+r_static
+r_inline
+r_void
+id|get_memcfg_numa
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_X86_NUMAQ
+r_if
+c_cond
+(paren
+id|get_memcfg_numaq
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#elif CONFIG_ACPI_SRAT
+r_if
+c_cond
+(paren
+id|get_memcfg_from_srat
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif
+id|get_memcfg_numa_flat
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#endif /* _ASM_MMZONE_H_ */
 eof

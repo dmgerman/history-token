@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
@@ -1501,8 +1502,6 @@ l_int|2
 r_int
 r_int
 id|irq_mask
-comma
-id|delay
 suffix:semicolon
 id|irq_mask
 op_assign
@@ -1533,24 +1532,10 @@ op_plus
 id|CSR1
 )paren
 suffix:semicolon
-id|delay
-op_assign
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|20
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
+id|mdelay
 c_func
 (paren
-id|jiffies
-comma
-id|delay
-)paren
+l_int|50
 )paren
 suffix:semicolon
 id|irq
@@ -6897,10 +6882,6 @@ id|len
 r_register
 id|u32
 id|_crc
-id|__asm
-(paren
-l_string|&quot;ax&quot;
-)paren
 suffix:semicolon
 id|_crc
 op_assign
@@ -6910,8 +6891,8 @@ id|__asm
 id|__volatile
 (paren
 l_string|&quot;xorl&t;%%ebx, %%ebx&bslash;n&quot;
-l_string|&quot;movl&t;%1, %%esi&bslash;n&quot;
-l_string|&quot;movl&t;%2, %%ecx&bslash;n&quot;
+l_string|&quot;movl&t;%2, %%esi&bslash;n&quot;
+l_string|&quot;movl&t;%3, %%ecx&bslash;n&quot;
 l_string|&quot;movl&t;$crc32tab, %%edi&bslash;n&quot;
 l_string|&quot;shrl&t;$2, %%ecx&bslash;n&quot;
 l_string|&quot;jz&t;1f&bslash;n&quot;
@@ -6941,7 +6922,7 @@ l_string|&quot;xorl&t;(%%edi,%%ebx,4), %%eax&bslash;n&quot;
 l_string|&quot;decl&t;%%ecx&bslash;n&quot;
 l_string|&quot;jnz&t;0b&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;movl&t;%2, %%ecx&bslash;n&quot;
+l_string|&quot;movl&t;%3, %%ecx&bslash;n&quot;
 l_string|&quot;andl&t;$3, %%ecx&bslash;n&quot;
 l_string|&quot;jz&t;2f&bslash;n&quot;
 l_string|&quot;movb&t;%%al, %%bl&bslash;n&quot;
@@ -6962,8 +6943,12 @@ l_string|&quot;xorb&t;2(%%esi), %%bl&bslash;n&quot;
 l_string|&quot;xorl&t;(%%edi,%%ebx,4), %%eax&bslash;n&quot;
 l_string|&quot;2:&bslash;n&quot;
 suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|_crc
+)paren
 suffix:colon
-l_string|&quot;a&quot;
+l_string|&quot;0&quot;
 (paren
 id|_crc
 )paren
@@ -6978,8 +6963,6 @@ l_string|&quot;g&quot;
 id|len
 )paren
 suffix:colon
-l_string|&quot;ax&quot;
-comma
 l_string|&quot;bx&quot;
 comma
 l_string|&quot;cx&quot;
