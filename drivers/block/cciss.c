@@ -5435,6 +5435,9 @@ r_int
 r_int
 id|total_size
 suffix:semicolon
+id|kdev_t
+id|kdev
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6767,7 +6770,6 @@ id|start
 op_plus
 id|i
 suffix:semicolon
-id|kdev_t
 id|kdev
 op_assign
 id|mk_kdev
@@ -6840,10 +6842,24 @@ op_plus
 l_int|1
 suffix:semicolon
 multiline_comment|/* setup partitions per disk */
+id|kdev
+op_assign
+id|mk_kdev
+c_func
+(paren
+id|MAJOR_NR
+op_plus
+id|ctlr
+comma
+id|logvol
+op_lshift
+id|gdev-&gt;minor_shift
+)paren
+suffix:semicolon
 id|grok_partitions
 c_func
 (paren
-id|dev
+id|kdev
 comma
 id|hba
 (braket
