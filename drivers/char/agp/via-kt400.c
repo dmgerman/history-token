@@ -730,8 +730,8 @@ op_lshift
 l_int|1
 )paren
 )paren
-op_eq
-l_int|1
+op_ne
+l_int|0
 )paren
 r_return
 op_minus
