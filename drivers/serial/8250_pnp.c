@@ -1395,8 +1395,6 @@ op_assign
 id|UPF_SKIP_TEST
 op_or
 id|UPF_AUTOPROBE
-op_or
-id|UPF_RESOURCES
 suffix:semicolon
 id|serial_req.baud_base
 op_assign

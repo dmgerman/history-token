@@ -6240,8 +6240,6 @@ id|UPF_SKIP_TEST
 op_or
 id|UPF_AUTOPROBE
 op_or
-id|UPF_RESOURCES
-op_or
 id|UPF_SHARE_IRQ
 suffix:semicolon
 id|serial_req.baud_base
