@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfield - ACPI AML (p-code) execution - field manipulation&n; *              $Revision: 110 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfield - ACPI AML (p-code) execution - field manipulation&n; *              $Revision: 112 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -69,7 +69,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 op_eq
 id|ACPI_TYPE_BUFFER_FIELD
 )paren
@@ -173,6 +176,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Complete the buffer object initialization */
 id|buffer_desc-&gt;common.flags
 op_assign
 id|AOPOBJ_DATA_VALID
@@ -232,7 +236,10 @@ l_string|&quot;Obj=%p Type=%X Buf=%p Len=%X&bslash;n&quot;
 comma
 id|obj_desc
 comma
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 comma
 id|buffer
 comma
@@ -375,7 +382,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 op_eq
 id|ACPI_TYPE_BUFFER_FIELD
 )paren
@@ -420,7 +430,10 @@ multiline_comment|/*&n;&t; * Get a pointer to the data to be written&n;&t; */
 r_switch
 c_cond
 (paren
-id|source_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 )paren
 (brace
 r_case
@@ -551,7 +564,10 @@ l_string|&quot;Obj=%p Type=%X Buf=%p Len=%X&bslash;n&quot;
 comma
 id|obj_desc
 comma
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 comma
 id|buffer
 comma

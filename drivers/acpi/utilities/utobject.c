@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utobject - ACPI object create/delete/size/cache routines&n; *              $Revision: 73 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utobject - ACPI object create/delete/size/cache routines&n; *              $Revision: 76 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utobject&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_create_internal_object_dbg&n; *&n; * PARAMETERS:  Address             - Address of the memory to deallocate&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *              Type                - ACPI Type of the new object&n; *&n; * RETURN:      Object              - The new object.  Null on failure&n; *&n; * DESCRIPTION: Create and initialize a new internal object.&n; *&n; * NOTE:        We always allocate the worst-case object descriptor because&n; *              these objects are cached, and we want them to be&n; *              one-size-satisifies-any-request.  This in itself may not be&n; *              the most memory efficient, but the efficiency of the object&n; *              cache should more than make up for this!&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_create_internal_object_dbg&n; *&n; * PARAMETERS:  Module_name         - Source file name of caller&n; *              Line_number         - Line number of caller&n; *              Component_id        - Component type of caller&n; *              Type                - ACPI Type of the new object&n; *&n; * RETURN:      Object              - The new object.  Null on failure&n; *&n; * DESCRIPTION: Create and initialize a new internal object.&n; *&n; * NOTE:        We always allocate the worst-case object descriptor because&n; *              these objects are cached, and we want them to be&n; *              one-size-satisifies-any-request.  This in itself may not be&n; *              the most memory efficient, but the efficiency of the object&n; *              cache should more than make up for this!&n; *&n; ******************************************************************************/
 id|acpi_operand_object
 op_star
 DECL|function|acpi_ut_create_internal_object_dbg
@@ -155,7 +155,7 @@ id|object
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_valid_internal_object&n; *&n; * PARAMETERS:  Operand             - Object to be validated&n; *&n; * RETURN:      Validate a pointer to be an acpi_operand_object&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_valid_internal_object&n; *&n; * PARAMETERS:  Object              - Object to be validated&n; *&n; * RETURN:      Validate a pointer to be an acpi_operand_object&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ut_valid_internal_object
 id|acpi_ut_valid_internal_object
@@ -266,7 +266,7 @@ id|FALSE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_allocate_object_desc_dbg&n; *&n; * PARAMETERS:  Module_name         - Caller&squot;s module name (for error output)&n; *              Line_number         - Caller&squot;s line number (for error output)&n; *              Component_id        - Caller&squot;s component ID (for error output)&n; *              Message             - Error message to use on failure&n; *&n; * RETURN:      Pointer to newly allocated object descriptor.  Null on error&n; *&n; * DESCRIPTION: Allocate a new object descriptor.  Gracefully handle&n; *              error conditions.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_allocate_object_desc_dbg&n; *&n; * PARAMETERS:  Module_name         - Caller&squot;s module name (for error output)&n; *              Line_number         - Caller&squot;s line number (for error output)&n; *              Component_id        - Caller&squot;s component ID (for error output)&n; *&n; * RETURN:      Pointer to newly allocated object descriptor.  Null on error&n; *&n; * DESCRIPTION: Allocate a new object descriptor.  Gracefully handle&n; *              error conditions.&n; *&n; ******************************************************************************/
 r_void
 op_star
 DECL|function|acpi_ut_allocate_object_desc_dbg
@@ -358,7 +358,7 @@ id|object
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_delete_object_desc&n; *&n; * PARAMETERS:  Object          - Acpi internal object to be deleted&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Free an ACPI object descriptor or add it to the object cache&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_delete_object_desc&n; *&n; * PARAMETERS:  Object          - An Acpi internal object to be deleted&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Free an ACPI object descriptor or add it to the object cache&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_delete_object_desc
 id|acpi_ut_delete_object_desc
@@ -411,7 +411,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_delete_object_cache&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Purge the global state object cache.  Used during subsystem&n; *              termination.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_delete_object_cache&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Purge the global state object cache.  Used during subsystem&n; *              termination.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_delete_object_cache
 id|acpi_ut_delete_object_cache
@@ -432,7 +432,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_simple_object_size&n; *&n; * PARAMETERS:  *Internal_object    - Pointer to the object we are examining&n; *              *Ret_length         - Where the length is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to determine the space required to&n; *              contain a simple object for return to an API user.&n; *&n; *              The length includes the object structure plus any additional&n; *              needed space.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_simple_object_size&n; *&n; * PARAMETERS:  *Internal_object    - Pointer to the object we are examining&n; *              *Obj_length         - Where the length is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to determine the space required to&n; *              contain a simple object for return to an external user.&n; *&n; *              The length includes the object structure plus any additional&n; *              needed space.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_get_simple_object_size
 id|acpi_ut_get_simple_object_size
@@ -518,7 +518,10 @@ multiline_comment|/*&n;&t; * The final length depends on the object type&n;&t; *
 r_switch
 c_cond
 (paren
-id|internal_object-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|internal_object
+)paren
 )paren
 (brace
 r_case
@@ -569,21 +572,6 @@ id|internal_object-&gt;reference.opcode
 )paren
 (brace
 r_case
-id|AML_ZERO_OP
-suffix:colon
-r_case
-id|AML_ONE_OP
-suffix:colon
-r_case
-id|AML_ONES_OP
-suffix:colon
-r_case
-id|AML_REVISION_OP
-suffix:colon
-multiline_comment|/* These Constant opcodes will be resolved to Integers */
-r_break
-suffix:semicolon
-r_case
 id|AML_INT_NAMEPATH_OP
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Get the actual length of the full pathname to this object.&n;&t;&t;&t; * The reference will be converted to the pathname to the object&n;&t;&t;&t; */
@@ -601,7 +589,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * No other reference opcodes are supported.&n;&t;&t;&t; * Notably, Locals and Args are not supported, by this may be&n;&t;&t;&t; * required eventually.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * No other reference opcodes are supported.&n;&t;&t;&t; * Notably, Locals and Args are not supported, but this may be&n;&t;&t;&t; * required eventually.&n;&t;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -633,7 +621,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Unsupported type=%X in object %p&bslash;n&quot;
 comma
-id|internal_object-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|internal_object
+)paren
 comma
 id|internal_object
 )paren
@@ -661,7 +652,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_element_length&n; *&n; * PARAMETERS:  ACPI_PKG_CALLBACK&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: Get the length of one package element.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_element_length&n; *&n; * PARAMETERS:  ACPI_PKG_CALLBACK&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the length of one package element.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_get_element_length
 id|acpi_ut_get_element_length
@@ -769,7 +760,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_package_object_size&n; *&n; * PARAMETERS:  *Internal_object    - Pointer to the object we are examining&n; *              *Ret_length         - Where the length is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to determine the space required to&n; *              contain a package object for return to an API user.&n; *&n; *              This is moderately complex since a package contains other&n; *              objects including packages.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_package_object_size&n; *&n; * PARAMETERS:  *Internal_object    - Pointer to the object we are examining&n; *              *Obj_length         - Where the length is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to determine the space required to&n; *              contain a package object for return to an external user.&n; *&n; *              This is moderately complex since a package contains other&n; *              objects including packages.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_get_package_object_size
 id|acpi_ut_get_package_object_size
@@ -865,7 +856,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_object_size&n; *&n; * PARAMETERS:  *Internal_object    - Pointer to the object we are examining&n; *              *Ret_length         - Where the length will be returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to determine the space required to&n; *              contain an object for return to an API user.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_object_size&n; *&n; * PARAMETERS:  *Internal_object    - Pointer to the object we are examining&n; *              *Obj_length         - Where the length will be returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to determine the space required to&n; *              contain an object for return to an API user.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_get_object_size
 id|acpi_ut_get_object_size
@@ -900,7 +891,10 @@ id|ACPI_DESC_TYPE_OPERAND
 )paren
 op_logical_and
 (paren
-id|internal_object-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|internal_object
+)paren
 op_eq
 id|ACPI_TYPE_PACKAGE
 )paren

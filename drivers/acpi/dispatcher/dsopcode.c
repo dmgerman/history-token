@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsopcode - Dispatcher Op Region support and handling of&n; *                         &quot;control&quot; opcodes&n; *              $Revision: 79 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsopcode - Dispatcher Op Region support and handling of&n; *                         &quot;control&quot; opcodes&n; *              $Revision: 80 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -807,7 +807,10 @@ multiline_comment|/* Host object must be a Buffer */
 r_if
 c_cond
 (paren
-id|buffer_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|buffer_desc
+)paren
 op_ne
 id|ACPI_TYPE_BUFFER
 )paren
@@ -819,9 +822,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Target of Create Field is not a Buffer object - %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|buffer_desc-&gt;common.type
+id|buffer_desc
 )paren
 )paren
 )paren
@@ -2256,14 +2259,13 @@ id|ACPI_DESC_TYPE_OPERAND
 )paren
 op_logical_and
 (paren
+id|ACPI_GET_OBJECT_TYPE
 (paren
 id|walk_state-&gt;results-&gt;results.obj_desc
 (braket
 l_int|0
 )braket
 )paren
-op_member_access_from_pointer
-id|common.type
 op_eq
 id|INTERNAL_TYPE_REFERENCE
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of acpi_operand_object  (Internal object only)&n; *       $Revision: 111 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of acpi_operand_object  (Internal object only)&n; *       $Revision: 112 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACOBJECT_H
 DECL|macro|_ACOBJECT_H
@@ -9,8 +9,8 @@ multiline_comment|/*&n; * Common area for all objects.&n; *&n; * Data_type is us
 DECL|macro|ACPI_OBJECT_COMMON_HEADER
 mdefine_line|#define ACPI_OBJECT_COMMON_HEADER           /* SIZE/ALIGNMENT: 32 bits, one ptr plus trailing 8-bit flag */&bslash;&n;&t;u8                          descriptor;         /* To differentiate various internal objs */&bslash;&n;&t;u8                          type;               /* acpi_object_type */&bslash;&n;&t;u16                         reference_count;    /* For object deletion management */&bslash;&n;&t;union acpi_operand_obj      *next_object;       /* Objects linked to parent NS node */&bslash;&n;&t;u8                          flags; &bslash;&n;
 multiline_comment|/* Values for flag byte above */
-DECL|macro|AOPOBJ_RESERVED
-mdefine_line|#define AOPOBJ_RESERVED             0x01
+DECL|macro|AOPOBJ_AML_CONSTANT
+mdefine_line|#define AOPOBJ_AML_CONSTANT         0x01
 DECL|macro|AOPOBJ_STATIC_POINTER
 mdefine_line|#define AOPOBJ_STATIC_POINTER       0x02
 DECL|macro|AOPOBJ_DATA_VALID

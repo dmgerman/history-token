@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 92 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 94 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -219,7 +219,10 @@ multiline_comment|/*&n;&t; * Result of predicate evaluation currently must&n;&t;
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 op_ne
 id|ACPI_TYPE_INTEGER
 )paren
@@ -235,7 +238,10 @@ id|obj_desc
 comma
 id|walk_state
 comma
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -251,8 +257,6 @@ multiline_comment|/* Truncate the predicate to 32-bits if necessary */
 id|acpi_ex_truncate_for32bit_table
 (paren
 id|obj_desc
-comma
-id|walk_state
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Save the result of the predicate evaluation on&n;&t; * the control stack&n;&t; */
@@ -1427,8 +1431,6 @@ multiline_comment|/*&n;&t; * ACPI 2.0 support for 64-bit integers: Truncate nume
 id|acpi_ex_truncate_for32bit_table
 (paren
 id|walk_state-&gt;result_obj
-comma
-id|walk_state
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check if we just completed the evaluation of a&n;&t; * conditional predicate&n;&t; */

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: excreate - Named object creation&n; *              $Revision: 91 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: excreate - Named object creation&n; *              $Revision: 92 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -12,7 +12,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;excreate&quot;
 )paren
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_alias&n; *&n; * PARAMETERS:  Walk_state           - Current state, contains List of&n; *                                      operands for the opcode&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new named alias&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_alias&n; *&n; * PARAMETERS:  Walk_state           - Current state, contains operands&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new named alias&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_create_alias
 id|acpi_ex_create_alias
@@ -735,7 +735,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_processor&n; *&n; * PARAMETERS:  Op              - Op containing the Processor definition and&n; *                                args&n; *              Processor_node  - Parent Node for the processor object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new processor object and populate the fields&n; *&n; *              Processor (Name[0], Cpu_iD[1], Pblock_addr[2], Pblock_length[3])&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_processor&n; *&n; * PARAMETERS:  Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new processor object and populate the fields&n; *&n; *              Processor (Name[0], Cpu_iD[1], Pblock_addr[2], Pblock_length[3])&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_create_processor
 id|acpi_ex_create_processor
@@ -859,7 +859,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_power_resource&n; *&n; * PARAMETERS:  Op              - Op containing the Power_resource definition&n; *                                and args&n; *              Power_node      - Parent Node for the power object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new Power_resource object and populate the fields&n; *&n; *              Power_resource (Name[0], System_level[1], Resource_order[2])&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_power_resource&n; *&n; * PARAMETERS:  Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new Power_resource object and populate the fields&n; *&n; *              Power_resource (Name[0], System_level[1], Resource_order[2])&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_create_power_resource
 id|acpi_ex_create_power_resource
@@ -971,7 +971,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_method&n; *&n; * PARAMETERS:  Aml_start       - First byte of the method&squot;s AML&n; *              Aml_length      - AML byte count for this method&n; *              Method_flags    - AML method flag byte&n; *              Method          - Method Node&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new method object&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_method&n; *&n; * PARAMETERS:  Aml_start       - First byte of the method&squot;s AML&n; *              Aml_length      - AML byte count for this method&n; *              Walk_state      - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new method object&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_create_method
 id|acpi_ex_create_method
