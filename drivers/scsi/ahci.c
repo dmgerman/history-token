@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;ahci&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.11&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.00&quot;
 r_enum
 (brace
 DECL|enumerator|AHCI_PCI_BAR
