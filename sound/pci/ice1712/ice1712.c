@@ -5031,8 +5031,6 @@ comma
 l_int|96000
 )brace
 suffix:semicolon
-DECL|macro|RATES
-mdefine_line|#define RATES sizeof(rates) / sizeof(rates[0])
 DECL|variable|hw_constraints_rates
 r_static
 id|snd_pcm_hw_constraint_list_t
@@ -5042,7 +5040,11 @@ op_assign
 dot
 id|count
 op_assign
-id|RATES
+id|ARRAY_SIZE
+c_func
+(paren
+id|rates
+)paren
 comma
 dot
 id|list

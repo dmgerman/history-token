@@ -2328,15 +2328,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|lmc
-)paren
-op_div
-r_sizeof
-(paren
-r_int
-r_int
 )paren
 suffix:semicolon
 id|i
@@ -2401,15 +2396,10 @@ c_cond
 (paren
 id|i
 op_ge
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|lmc
-)paren
-op_div
-r_sizeof
-(paren
-r_int
-r_int
 )paren
 op_logical_and
 op_logical_neg
@@ -2976,8 +2966,6 @@ id|dev
 )braket
 suffix:semicolon
 )brace
-DECL|macro|INTERWAVE_CONTROLS
-mdefine_line|#define INTERWAVE_CONTROLS (sizeof(snd_interwave_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_interwave_controls
 r_static
 id|snd_kcontrol_new_t
@@ -3202,7 +3190,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|INTERWAVE_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_interwave_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment

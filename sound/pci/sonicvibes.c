@@ -5897,8 +5897,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|SONICVIBES_CONTROLS
-mdefine_line|#define SONICVIBES_CONTROLS (sizeof(snd_sonicvibes_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|__devinitdata
 r_static
 id|snd_kcontrol_new_t
@@ -6391,7 +6389,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|SONICVIBES_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_sonicvibes_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment
@@ -7984,8 +7986,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  MIDI section&n; */
-DECL|macro|SONICVIBES_MIDI_CONTROLS
-mdefine_line|#define SONICVIBES_MIDI_CONTROLS (sizeof(snd_sonicvibes_midi_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|__devinitdata
 r_static
 id|snd_kcontrol_new_t
@@ -8216,7 +8216,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|SONICVIBES_MIDI_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_sonicvibes_midi_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment

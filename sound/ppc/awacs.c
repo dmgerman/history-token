@@ -3082,8 +3082,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-DECL|macro|num_controls
-mdefine_line|#define num_controls(ary) (sizeof(ary) / sizeof(snd_kcontrol_new_t))
 multiline_comment|/*&n; * add new mixer elements to the card&n; */
 DECL|function|build_mixers
 r_static
@@ -4214,7 +4212,7 @@ c_func
 (paren
 id|chip
 comma
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_awacs_mixers
@@ -4279,7 +4277,7 @@ c_func
 (paren
 id|chip
 comma
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_awacs_amp_vol
@@ -4373,7 +4371,7 @@ c_func
 (paren
 id|chip
 comma
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_awacs_speaker_vol
@@ -4439,7 +4437,7 @@ c_func
 (paren
 id|chip
 comma
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_screamer_mic_boost
@@ -4468,7 +4466,7 @@ c_func
 (paren
 id|chip
 comma
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_awacs_mic_boost

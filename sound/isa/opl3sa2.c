@@ -2524,8 +2524,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|OPL3SA2_CONTROLS
-mdefine_line|#define OPL3SA2_CONTROLS (sizeof(snd_opl3sa2_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_opl3sa2_controls
 r_static
 id|snd_kcontrol_new_t
@@ -2607,8 +2605,6 @@ l_int|1
 )paren
 )brace
 suffix:semicolon
-DECL|macro|OPL3SA2_TONE_CONTROLS
-mdefine_line|#define OPL3SA2_TONE_CONTROLS (sizeof(snd_opl3sa2_tone_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_opl3sa2_tone_controls
 r_static
 id|snd_kcontrol_new_t
@@ -2952,7 +2948,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|OPL3SA2_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_opl3sa2_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment
@@ -3041,7 +3041,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|OPL3SA2_TONE_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_opl3sa2_tone_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment

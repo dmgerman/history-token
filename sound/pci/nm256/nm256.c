@@ -1474,8 +1474,6 @@ l_int|48000
 comma
 )brace
 suffix:semicolon
-DECL|macro|NUM_SAMPLERATES
-mdefine_line|#define NUM_SAMPLERATES (sizeof(samplerates) / sizeof(samplerates[0]))
 DECL|variable|constraints_rates
 r_static
 id|snd_pcm_hw_constraint_list_t
@@ -1485,7 +1483,11 @@ op_assign
 dot
 id|count
 op_assign
-id|NUM_SAMPLERATES
+id|ARRAY_SIZE
+c_func
+(paren
+id|samplerates
+)paren
 comma
 dot
 id|list
@@ -1524,7 +1526,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUM_SAMPLERATES
+id|ARRAY_SIZE
+c_func
+(paren
+id|samplerates
+)paren
 suffix:semicolon
 id|i
 op_increment

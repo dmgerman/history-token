@@ -7845,8 +7845,6 @@ comma
 )brace
 )brace
 suffix:semicolon
-DECL|macro|K1212_CONTROL_ELEMENTS
-mdefine_line|#define K1212_CONTROL_ELEMENTS (sizeof(snd_korg1212_controls) / sizeof(snd_korg1212_controls[0]))
 multiline_comment|/*&n; * proc interface&n; */
 DECL|function|snd_korg1212_proc_read
 r_static
@@ -9487,7 +9485,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|K1212_CONTROL_ELEMENTS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_korg1212_controls
+)paren
 suffix:semicolon
 id|i
 op_increment

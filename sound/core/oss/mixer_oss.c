@@ -7377,15 +7377,10 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|table
-)paren
-op_div
-r_sizeof
-(paren
-r_struct
-id|snd_mixer_oss_assign_table
 )paren
 suffix:semicolon
 id|idx

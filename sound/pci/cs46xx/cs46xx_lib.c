@@ -5053,8 +5053,6 @@ comma
 l_int|2048
 )brace
 suffix:semicolon
-DECL|macro|PERIOD_SIZES
-mdefine_line|#define PERIOD_SIZES sizeof(period_sizes) / sizeof(period_sizes[0])
 DECL|variable|hw_constraints_period_sizes
 r_static
 id|snd_pcm_hw_constraint_list_t
@@ -5064,7 +5062,11 @@ op_assign
 dot
 id|count
 op_assign
-id|PERIOD_SIZES
+id|ARRAY_SIZE
+c_func
+(paren
+id|period_sizes
+)paren
 comma
 dot
 id|list

@@ -12862,10 +12862,6 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-DECL|macro|HDSP_CONTROLS
-mdefine_line|#define HDSP_CONTROLS (sizeof(snd_hdsp_controls)/sizeof(snd_kcontrol_new_t))
-DECL|macro|HDSP_9632_CONTROLS
-mdefine_line|#define HDSP_9632_CONTROLS (sizeof(snd_hdsp_9632_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_hdsp_96xx_aeb
 r_static
 id|snd_kcontrol_new_t
@@ -12920,7 +12916,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|HDSP_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_hdsp_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment
@@ -13091,7 +13091,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|HDSP_9632_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_hdsp_9632_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment
@@ -17462,8 +17466,6 @@ comma
 l_int|8192
 )brace
 suffix:semicolon
-DECL|macro|HDSP_PERIOD_SIZES
-mdefine_line|#define HDSP_PERIOD_SIZES sizeof(hdsp_period_sizes) / sizeof(hdsp_period_sizes[0])
 DECL|variable|hdsp_hw_constraints_period_sizes
 r_static
 id|snd_pcm_hw_constraint_list_t
@@ -17473,7 +17475,11 @@ op_assign
 dot
 id|count
 op_assign
-id|HDSP_PERIOD_SIZES
+id|ARRAY_SIZE
+c_func
+(paren
+id|hdsp_period_sizes
+)paren
 comma
 dot
 id|list
@@ -17514,8 +17520,6 @@ comma
 l_int|192000
 )brace
 suffix:semicolon
-DECL|macro|HDSP_9632_SAMPLE_RATES
-mdefine_line|#define HDSP_9632_SAMPLE_RATES sizeof(hdsp_9632_sample_rates) / sizeof(hdsp_9632_sample_rates[0])
 DECL|variable|hdsp_hw_constraints_9632_sample_rates
 r_static
 id|snd_pcm_hw_constraint_list_t
@@ -17525,7 +17529,11 @@ op_assign
 dot
 id|count
 op_assign
-id|HDSP_9632_SAMPLE_RATES
+id|ARRAY_SIZE
+c_func
+(paren
+id|hdsp_9632_sample_rates
+)paren
 comma
 dot
 id|list

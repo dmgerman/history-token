@@ -5535,8 +5535,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|ES1688_CONTROLS
-mdefine_line|#define ES1688_CONTROLS (sizeof(snd_es1688_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_es1688_controls
 r_static
 id|snd_kcontrol_new_t
@@ -5910,7 +5908,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|ES1688_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_es1688_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment

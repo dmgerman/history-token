@@ -183,7 +183,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|macro|numberof
-mdefine_line|#define numberof(array)  (sizeof(array)/sizeof(array[0]))
+mdefine_line|#define numberof(array) ARRAY_SIZE(array)
 DECL|macro|CVT_sndrv_pcm_hw_params
 mdefine_line|#define CVT_sndrv_pcm_hw_params()&bslash;&n;{&bslash;&n;&t;unsigned int i;&bslash;&n;&t;COPY(flags);&bslash;&n;&t;for (i = 0; i &lt; numberof(dst-&gt;masks); i++)&bslash;&n;&t;&t;COPY(masks[i]);&bslash;&n;&t;for (i = 0; i &lt; numberof(dst-&gt;intervals); i++) {&bslash;&n;&t;&t;COPY(intervals[i].min);&bslash;&n;&t;&t;COPY(intervals[i].max);&bslash;&n;&t;&t;COPY(intervals[i].openmin);&bslash;&n;&t;&t;COPY(intervals[i].openmax);&bslash;&n;&t;&t;COPY(intervals[i].integer);&bslash;&n;&t;&t;COPY(intervals[i].empty);&bslash;&n;&t;}&bslash;&n;&t;COPY(rmask);&bslash;&n;&t;COPY(cmask);&bslash;&n;&t;COPY(info);&bslash;&n;&t;COPY(msbits);&bslash;&n;&t;COPY(rate_num);&bslash;&n;&t;COPY(rate_den);&bslash;&n;&t;COPY(fifo_size);&bslash;&n;}
 DECL|struct|sndrv_pcm_sw_params32
@@ -1123,15 +1123,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|oparams-&gt;masks
-)paren
-op_div
-r_sizeof
-(paren
-r_int
-r_int
 )paren
 suffix:semicolon
 id|i
@@ -1249,15 +1244,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|oparams-&gt;masks
-)paren
-op_div
-r_sizeof
-(paren
-r_int
-r_int
 )paren
 suffix:semicolon
 id|i

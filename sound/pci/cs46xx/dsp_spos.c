@@ -206,14 +206,10 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|wide_opcodes
-)paren
-op_div
-r_sizeof
-(paren
-id|wide_opcode_t
 )paren
 suffix:semicolon
 op_increment

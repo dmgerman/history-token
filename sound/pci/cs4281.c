@@ -8220,8 +8220,6 @@ id|BA0_PPRVC
 comma
 )brace
 suffix:semicolon
-DECL|macro|number_of
-mdefine_line|#define number_of(array)&t;(sizeof(array) / sizeof(array[0]))
 DECL|macro|CLKCR1_CKRA
 mdefine_line|#define CLKCR1_CKRA                             0x00010000L
 DECL|function|cs4281_suspend
@@ -8325,7 +8323,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|saved_regs
@@ -8513,7 +8511,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|number_of
+id|ARRAY_SIZE
 c_func
 (paren
 id|saved_regs

@@ -2012,8 +2012,6 @@ id|oreg
 )paren
 suffix:semicolon
 )brace
-DECL|macro|NUM_CONTROLS
-mdefine_line|#define NUM_CONTROLS(ary) (sizeof(ary) / sizeof(snd_kcontrol_new_t))
 DECL|variable|__devinitdata
 r_static
 id|snd_kcontrol_new_t
@@ -2877,7 +2875,7 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|NUM_CONTROLS
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_azf3328_mixer_controls

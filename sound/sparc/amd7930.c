@@ -1739,8 +1739,6 @@ l_int|0x000f
 multiline_comment|/* 18. dB */
 )brace
 suffix:semicolon
-DECL|macro|NR_GER_COEFFS
-mdefine_line|#define NR_GER_COEFFS (sizeof(ger_coeff) / sizeof(ger_coeff[0]))
 multiline_comment|/* Update amd7930_map settings and program them into the hardware.&n; * The amd-&gt;lock is held and local interrupts are disabled.&n; */
 DECL|function|__amd7930_update_map
 r_static
@@ -1786,7 +1784,11 @@ op_star
 (paren
 l_int|256
 op_plus
-id|NR_GER_COEFFS
+id|ARRAY_SIZE
+c_func
+(paren
+id|ger_coeff
+)paren
 )paren
 )paren
 op_rshift
@@ -3612,8 +3614,6 @@ comma
 comma
 )brace
 suffix:semicolon
-DECL|macro|NUM_AMD7930_CONTROLS
-mdefine_line|#define NUM_AMD7930_CONTROLS (sizeof(amd7930_controls)/sizeof(snd_kcontrol_new_t))
 DECL|function|snd_amd7930_mixer
 r_static
 r_int
@@ -3672,7 +3672,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|NUM_AMD7930_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|amd7930_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment

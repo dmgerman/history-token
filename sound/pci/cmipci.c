@@ -8859,8 +8859,6 @@ id|ucontrol
 )paren
 suffix:semicolon
 )brace
-DECL|macro|num_controls
-mdefine_line|#define num_controls(ary) (sizeof(ary) / sizeof(snd_kcontrol_new_t))
 DECL|variable|__devinitdata
 r_static
 id|snd_kcontrol_new_t
@@ -10493,7 +10491,7 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_cmipci_mixers
@@ -10548,7 +10546,7 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_cmipci_mixer_switches
@@ -10648,7 +10646,7 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_cmipci_8738_mixer_switches
@@ -10815,7 +10813,7 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_cmipci_old_mixer_switches
@@ -10878,7 +10876,7 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_cmipci_extra_mixer_switches
@@ -10933,7 +10931,7 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_cmipci_control_switches

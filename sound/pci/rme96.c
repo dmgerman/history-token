@@ -4415,8 +4415,6 @@ comma
 id|RME96_LARGE_BLOCK_SIZE
 )brace
 suffix:semicolon
-DECL|macro|PERIOD_BYTES
-mdefine_line|#define PERIOD_BYTES sizeof(period_bytes) / sizeof(period_bytes[0])
 DECL|variable|hw_constraints_period_bytes
 r_static
 id|snd_pcm_hw_constraint_list_t
@@ -4426,7 +4424,11 @@ op_assign
 dot
 id|count
 op_assign
-id|PERIOD_BYTES
+id|ARRAY_SIZE
+c_func
+(paren
+id|period_bytes
+)paren
 comma
 dot
 id|list

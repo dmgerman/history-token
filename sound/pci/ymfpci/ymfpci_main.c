@@ -8025,8 +8025,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|YMFPCI_CONTROLS
-mdefine_line|#define YMFPCI_CONTROLS (sizeof(snd_ymfpci_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|__devinitdata
 r_static
 id|snd_kcontrol_new_t
@@ -8928,7 +8926,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|YMFPCI_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_ymfpci_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment

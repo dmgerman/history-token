@@ -8013,8 +8013,6 @@ comma
 l_int|192000
 )brace
 suffix:semicolon
-DECL|macro|RATES
-mdefine_line|#define RATES (sizeof(rates) / sizeof(rates[0]))
 DECL|function|snd_pcm_hw_rule_rate
 r_static
 r_int
@@ -8050,7 +8048,11 @@ comma
 id|rule-&gt;var
 )paren
 comma
-id|RATES
+id|ARRAY_SIZE
+c_func
+(paren
+id|rates
+)paren
 comma
 id|rates
 comma
@@ -15685,15 +15687,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|oparams-&gt;masks
-)paren
-op_div
-r_sizeof
-(paren
-r_int
-r_int
 )paren
 suffix:semicolon
 id|i
@@ -15811,15 +15808,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|oparams-&gt;masks
-)paren
-op_div
-r_sizeof
-(paren
-r_int
-r_int
 )paren
 suffix:semicolon
 id|i

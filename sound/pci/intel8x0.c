@@ -5223,8 +5223,6 @@ l_int|4
 comma
 )brace
 suffix:semicolon
-DECL|macro|CHANNELS4
-mdefine_line|#define CHANNELS4 sizeof(channels4) / sizeof(channels4[0])
 DECL|variable|hw_constraints_channels4
 r_static
 id|snd_pcm_hw_constraint_list_t
@@ -5234,7 +5232,11 @@ op_assign
 dot
 id|count
 op_assign
-id|CHANNELS4
+id|ARRAY_SIZE
+c_func
+(paren
+id|channels4
+)paren
 comma
 dot
 id|list
@@ -5265,8 +5267,6 @@ l_int|6
 comma
 )brace
 suffix:semicolon
-DECL|macro|CHANNELS6
-mdefine_line|#define CHANNELS6 sizeof(channels6) / sizeof(channels6[0])
 DECL|variable|hw_constraints_channels6
 r_static
 id|snd_pcm_hw_constraint_list_t
@@ -5276,7 +5276,11 @@ op_assign
 dot
 id|count
 op_assign
-id|CHANNELS6
+id|ARRAY_SIZE
+c_func
+(paren
+id|channels6
+)paren
 comma
 dot
 id|list
