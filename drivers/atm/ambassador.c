@@ -6257,6 +6257,7 @@ l_int|1
 )brace
 suffix:semicolon
 DECL|variable|command_successes
+r_static
 r_int
 r_int
 id|command_successes
@@ -8158,6 +8159,7 @@ suffix:semicolon
 )brace
 singleline_comment|// swap bits within byte to get Ethernet ordering
 DECL|function|bit_swap
+r_static
 id|u8
 id|bit_swap
 (paren

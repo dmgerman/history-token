@@ -6,14 +6,6 @@ id|__iomem
 op_star
 id|virt_addr_t
 suffix:semicolon
-id|u_int32_t
-id|nicstar_read_eprom_status
-c_func
-(paren
-id|virt_addr_t
-id|base
-)paren
-suffix:semicolon
 r_void
 id|nicstar_init_eprom
 c_func
