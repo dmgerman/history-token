@@ -4298,7 +4298,7 @@ id|Scsi_Host
 op_star
 id|HostAdapter
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|CPQFCHBA
 op_star
@@ -4771,7 +4771,7 @@ id|Scsi_Host
 op_star
 id|HostAdapter
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 singleline_comment|// get the pointer to our Scsi layer HBA buffer  
 id|CPQFCHBA
@@ -5288,7 +5288,7 @@ singleline_comment|// printk(&quot;   ENTERING cpqfcTS_eh_device_reset() &bslash
 id|spin_unlock_irq
 c_func
 (paren
-id|Cmnd-&gt;host-&gt;host_lock
+id|Cmnd-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|retval
@@ -5304,7 +5304,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|Cmnd-&gt;host-&gt;host_lock
+id|Cmnd-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return

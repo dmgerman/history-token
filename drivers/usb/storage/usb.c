@@ -1135,7 +1135,7 @@ suffix:semicolon
 )brace
 id|host
 op_assign
-id|us-&gt;srb-&gt;host
+id|us-&gt;srb-&gt;device-&gt;host
 suffix:semicolon
 multiline_comment|/* lock access to the state */
 id|scsi_lock

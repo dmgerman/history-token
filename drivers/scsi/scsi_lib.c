@@ -997,7 +997,7 @@ suffix:semicolon
 id|ASSERT_LOCK
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;host_lock
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 comma
 l_int|0
 )paren
@@ -1585,7 +1585,7 @@ c_func
 (paren
 l_string|&quot;scsi%d: ERROR on channel %d, id %d, lun %d, CDB: &quot;
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|SCpnt-&gt;device-&gt;host-&gt;host_no
 comma
 (paren
 r_int

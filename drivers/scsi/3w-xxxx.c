@@ -10037,7 +10037,7 @@ op_assign
 id|TW_Device_Extension
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -10430,7 +10430,7 @@ op_assign
 id|TW_Device_Extension
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -11049,7 +11049,7 @@ op_assign
 id|TW_Device_Extension
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond

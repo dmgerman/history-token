@@ -6127,7 +6127,7 @@ op_assign
 id|ips_ha_t
 op_star
 )paren
-id|SC-&gt;host-&gt;hostdata
+id|SC-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -6337,7 +6337,7 @@ op_assign
 id|ips_ha_t
 op_star
 )paren
-id|SC-&gt;host-&gt;hostdata
+id|SC-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -7043,7 +7043,7 @@ op_assign
 id|ips_ha_t
 op_star
 )paren
-id|SC-&gt;host-&gt;hostdata
+id|SC-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond

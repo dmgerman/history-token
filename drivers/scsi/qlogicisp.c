@@ -2664,7 +2664,7 @@ l_string|&quot;isp1020_queuecommand&quot;
 suffix:semicolon
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -4485,7 +4485,7 @@ l_string|&quot;isp1020_abort&quot;
 suffix:semicolon
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -4671,7 +4671,7 @@ l_string|&quot;isp1020_reset&quot;
 suffix:semicolon
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign

@@ -1771,7 +1771,7 @@ suffix:semicolon
 )brace
 id|host
 op_assign
-id|pc-&gt;scsi_cmd-&gt;host
+id|pc-&gt;scsi_cmd-&gt;device-&gt;host
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -4589,7 +4589,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-id|cmd-&gt;host-&gt;host_lock
+id|cmd-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 (paren
@@ -4607,7 +4607,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|cmd-&gt;host-&gt;host_lock
+id|cmd-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return

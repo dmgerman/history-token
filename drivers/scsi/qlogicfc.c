@@ -4555,7 +4555,7 @@ l_string|&quot;isp2x00_queuecommand&quot;
 suffix:semicolon
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -7651,7 +7651,7 @@ l_string|&quot;isp2x00_abort&quot;
 suffix:semicolon
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -7953,7 +7953,7 @@ l_string|&quot;isp2x00_reset&quot;
 suffix:semicolon
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign

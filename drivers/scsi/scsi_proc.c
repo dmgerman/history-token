@@ -1710,7 +1710,7 @@ comma
 id|i
 op_increment
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|SCpnt-&gt;device-&gt;host-&gt;host_no
 comma
 id|SCpnt-&gt;device-&gt;channel
 comma

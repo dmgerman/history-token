@@ -3009,7 +3009,7 @@ id|Scsi_Host
 op_star
 id|instance
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|AM53C974_hostdata
@@ -9772,7 +9772,7 @@ id|Scsi_Host
 op_star
 id|instance
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|AM53C974_hostdata
@@ -10231,7 +10231,7 @@ id|Scsi_Host
 op_star
 id|instance
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|AM53C974_hostdata

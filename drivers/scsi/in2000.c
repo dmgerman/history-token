@@ -726,7 +726,7 @@ id|tmp
 suffix:semicolon
 id|instance
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -915,7 +915,7 @@ multiline_comment|/* We know that there&squot;s at least one command in &squot;i
 id|in2000_execute
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 id|DB
@@ -1951,7 +1951,7 @@ r_struct
 id|IN2000_hostdata
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 multiline_comment|/* Normally, you&squot;d expect &squot;this_residual&squot; to be non-zero here.&n; * In a series of scatter-gather transfers, however, this&n; * routine will usually be called with &squot;this_residual&squot; equal&n; * to 0 and &squot;buffers_residual&squot; non-zero. This means that a&n; * previous transfer completed, clearing &squot;this_residual&squot;, and&n; * now we need to setup the next scatter-gather buffer as the&n; * source or destination for THIS transfer.&n; */
 r_if
@@ -5411,7 +5411,7 @@ id|x
 suffix:semicolon
 id|instance
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -5597,7 +5597,7 @@ id|timeout
 suffix:semicolon
 id|instance
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign

@@ -5538,7 +5538,7 @@ op_logical_and
 (paren
 id|devip-&gt;host
 op_eq
-id|scmd-&gt;host
+id|scmd-&gt;device-&gt;host
 )paren
 )paren
 r_return
@@ -5589,7 +5589,7 @@ id|scmd-&gt;device-&gt;lun
 suffix:semicolon
 id|devip-&gt;host
 op_assign
-id|scmd-&gt;host
+id|scmd-&gt;device-&gt;host
 suffix:semicolon
 id|devip-&gt;reset
 op_assign
@@ -6017,7 +6017,7 @@ op_logical_and
 (paren
 id|hp
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 )paren
 )paren

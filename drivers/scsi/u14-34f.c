@@ -4731,7 +4731,7 @@ r_struct
 id|hostdata
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_member_access_from_pointer
 id|board_number
@@ -5173,7 +5173,7 @@ r_struct
 id|hostdata
 op_star
 )paren
-id|SCarg-&gt;host-&gt;hostdata
+id|SCarg-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_member_access_from_pointer
 id|board_number
@@ -5719,7 +5719,7 @@ r_struct
 id|hostdata
 op_star
 )paren
-id|SCarg-&gt;host-&gt;hostdata
+id|SCarg-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_member_access_from_pointer
 id|board_number

@@ -843,7 +843,7 @@ mdefine_line|#define SYM_UCMD_PTR(cmd)  ((ucmd_p)(&amp;(cmd)-&gt;SCp))
 DECL|macro|SYM_SCMD_PTR
 mdefine_line|#define SYM_SCMD_PTR(ucmd) sym_que_entry(ucmd, Scsi_Cmnd, SCp)
 DECL|macro|SYM_SOFTC_PTR
-mdefine_line|#define SYM_SOFTC_PTR(cmd) (((struct host_data *)cmd-&gt;host-&gt;hostdata)-&gt;ncb)
+mdefine_line|#define SYM_SOFTC_PTR(cmd) (((struct host_data *)cmd-&gt;device-&gt;host-&gt;hostdata)-&gt;ncb)
 multiline_comment|/*&n; *  Deal with DMA mapping/unmapping.&n; */
 macro_line|#ifndef SYM_LINUX_DYNAMIC_DMA_MAPPING
 multiline_comment|/* Linux versions prior to pci bus iommu kernel interface */

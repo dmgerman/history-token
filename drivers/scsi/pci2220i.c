@@ -4307,7 +4307,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|padapter-&gt;SCpnt-&gt;host
+id|padapter-&gt;SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|POUR_DEVICE
 id|pdev
@@ -5077,7 +5077,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|padapter-&gt;SCpnt-&gt;host
+id|padapter-&gt;SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|POUR_DEVICE
 id|pdev
@@ -8554,7 +8554,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 singleline_comment|// Pointer to adapter control structure
@@ -12485,7 +12485,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 singleline_comment|// Pointer to adapter control structure
@@ -12564,7 +12564,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 singleline_comment|// Pointer to adapter control structure

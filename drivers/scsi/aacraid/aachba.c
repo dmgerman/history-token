@@ -1570,7 +1570,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-id|scsicmd-&gt;host-&gt;host_lock
+id|scsicmd-&gt;device-&gt;host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -1586,7 +1586,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|scsicmd-&gt;host-&gt;host_lock
+id|scsicmd-&gt;device-&gt;host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -1998,7 +1998,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;host-&gt;hostdata
+id|scsicmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|cid
 op_assign
@@ -2279,7 +2279,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;host-&gt;hostdata
+id|scsicmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|cid
 op_assign
@@ -2551,7 +2551,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;host-&gt;hostdata
+id|scsicmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Get block address and transfer length&n;&t; */
 r_if
@@ -3146,7 +3146,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;host-&gt;hostdata
+id|scsicmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Get block address and transfer length&n;&t; */
 r_if
@@ -3731,7 +3731,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;host-&gt;hostdata
+id|scsicmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|cardtype
 op_assign
@@ -3741,7 +3741,7 @@ id|fsa_dev_ptr
 op_assign
 id|fsa_dev
 (braket
-id|scsicmd-&gt;host-&gt;unique_id
+id|scsicmd-&gt;device-&gt;host-&gt;unique_id
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;If the bus, target or lun is out of range, return fail&n;&t; *&t;Test does not apply to ID 16, the pseudo id for the controller&n;&t; *&t;itself.&n;&t; */
@@ -3750,7 +3750,7 @@ c_cond
 (paren
 id|scsicmd-&gt;device-&gt;id
 op_ne
-id|scsicmd-&gt;host-&gt;this_id
+id|scsicmd-&gt;device-&gt;host-&gt;this_id
 )paren
 (brace
 r_if
@@ -3838,7 +3838,7 @@ suffix:colon
 id|spin_unlock_irq
 c_func
 (paren
-id|scsicmd-&gt;host-&gt;host_lock
+id|scsicmd-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|probe_container
@@ -3852,7 +3852,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|scsicmd-&gt;host-&gt;host_lock
+id|scsicmd-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_if
@@ -4150,7 +4150,7 @@ c_cond
 (paren
 id|scsicmd-&gt;device-&gt;id
 op_eq
-id|scsicmd-&gt;host-&gt;this_id
+id|scsicmd-&gt;device-&gt;host-&gt;this_id
 )paren
 id|inq_data_ptr-&gt;inqd_pdt
 op_assign
@@ -4619,7 +4619,7 @@ multiline_comment|/*&n;&t;&t;&t; *&t;Hack to keep track of ordinal number of the
 id|spin_unlock_irq
 c_func
 (paren
-id|scsicmd-&gt;host-&gt;host_lock
+id|scsicmd-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_if
@@ -4653,7 +4653,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|scsicmd-&gt;host-&gt;host_lock
+id|scsicmd-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
@@ -4668,7 +4668,7 @@ suffix:colon
 id|spin_unlock_irq
 c_func
 (paren
-id|scsicmd-&gt;host-&gt;host_lock
+id|scsicmd-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|ret
@@ -4684,7 +4684,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|scsicmd-&gt;host-&gt;host_lock
+id|scsicmd-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
@@ -5290,7 +5290,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;host-&gt;hostdata
+id|scsicmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -5998,7 +5998,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;host-&gt;hostdata
+id|scsicmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_switch
 c_cond
@@ -6479,7 +6479,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;host-&gt;hostdata
+id|scsicmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 singleline_comment|// Get rid of old data
 id|psg-&gt;count
@@ -6801,7 +6801,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;host-&gt;hostdata
+id|scsicmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 singleline_comment|// Get rid of old data
 id|psg-&gt;count

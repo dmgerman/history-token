@@ -2823,7 +2823,7 @@ id|US_STATE_ABORTING
 suffix:semicolon
 id|host
 op_assign
-id|us-&gt;srb-&gt;host
+id|us-&gt;srb-&gt;device-&gt;host
 suffix:semicolon
 id|scsi_unlock
 c_func

@@ -4093,7 +4093,7 @@ macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
-id|current_SC-&gt;host-&gt;host_lock
+id|current_SC-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4109,7 +4109,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|current_SC-&gt;host-&gt;host_lock
+id|current_SC-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4224,7 +4224,7 @@ macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
-id|current_SC-&gt;host-&gt;host_lock
+id|current_SC-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4240,7 +4240,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|current_SC-&gt;host-&gt;host_lock
+id|current_SC-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5121,7 +5121,7 @@ macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
-id|current_SC-&gt;host-&gt;host_lock
+id|current_SC-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5155,7 +5155,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|current_SC-&gt;host-&gt;host_lock
+id|current_SC-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5529,7 +5529,10 @@ op_logical_neg
 id|SCpnt
 op_logical_or
 op_logical_neg
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device
+op_logical_or
+op_logical_neg
+id|SCpnt-&gt;device-&gt;host
 )paren
 (brace
 id|printk
@@ -5551,14 +5554,14 @@ comma
 id|fdomain_16x0_info
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 )paren
 suffix:semicolon
 id|print_banner
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_switch

@@ -38384,7 +38384,7 @@ r_struct
 id|aic7xxx_host
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|aic_dev
 op_assign
@@ -38644,7 +38644,7 @@ r_struct
 id|aic7xxx_host
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|aic_dev
 op_assign
@@ -39638,7 +39638,7 @@ r_struct
 id|aic7xxx_host
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|aic_dev
 op_assign
@@ -40724,7 +40724,7 @@ r_struct
 id|aic7xxx_host
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|aic_dev
 op_assign

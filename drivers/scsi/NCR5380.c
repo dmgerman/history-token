@@ -2483,7 +2483,7 @@ c_func
 (paren
 l_string|&quot;scsi%d : destination target %d, lun %d&bslash;n&quot;
 comma
-id|cmd-&gt;host-&gt;host_no
+id|cmd-&gt;device-&gt;host-&gt;host_no
 comma
 id|cmd-&gt;device-&gt;id
 comma
@@ -3179,7 +3179,7 @@ id|Scsi_Host
 op_star
 id|instance
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR5380_hostdata
@@ -9853,7 +9853,7 @@ id|Scsi_Host
 op_star
 id|instance
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR5380_hostdata
@@ -10378,19 +10378,19 @@ suffix:semicolon
 id|NCR5380_setup
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 id|NCR5380_print_status
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 id|do_reset
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_return

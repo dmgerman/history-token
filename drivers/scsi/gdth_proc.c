@@ -8178,7 +8178,7 @@ c_cond
 id|NUMDATA
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|busnum
@@ -8347,7 +8347,7 @@ c_cond
 id|NUMDATA
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|busnum
@@ -8478,7 +8478,7 @@ c_cond
 id|NUMDATA
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|busnum

@@ -512,7 +512,7 @@ op_assign
 (paren
 id|uint
 )paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 suffix:semicolon
 r_do
 (brace
@@ -1198,7 +1198,7 @@ id|cmd
 suffix:semicolon
 id|sh
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 id|base
 op_assign
@@ -1706,7 +1706,7 @@ c_loop
 id|inb
 c_func
 (paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 op_plus
 id|HA_RAUXSTAT
 )paren
@@ -1894,7 +1894,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 id|DBG
 c_func
@@ -1953,7 +1953,7 @@ l_int|0
 suffix:semicolon
 id|x
 OL
-id|cmd-&gt;host-&gt;can_queue
+id|cmd-&gt;device-&gt;host-&gt;can_queue
 suffix:semicolon
 id|x
 op_increment
@@ -2045,7 +2045,7 @@ comma
 (paren
 id|uint
 )paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 op_plus
 id|HA_WCOMMAND
 )paren
@@ -2124,7 +2124,7 @@ l_int|0
 suffix:semicolon
 id|x
 OL
-id|cmd-&gt;host-&gt;can_queue
+id|cmd-&gt;device-&gt;host-&gt;can_queue
 suffix:semicolon
 id|x
 op_increment

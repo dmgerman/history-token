@@ -1964,12 +1964,6 @@ DECL|member|sc_magic
 r_int
 id|sc_magic
 suffix:semicolon
-DECL|member|host
-r_struct
-id|Scsi_Host
-op_star
-id|host
-suffix:semicolon
 DECL|member|device
 r_struct
 id|scsi_device
@@ -2082,6 +2076,8 @@ multiline_comment|/* Use cmd-&gt;device-&gt;{id, channel, lun} instead */
 multiline_comment|/* &t;unsigned int target; */
 multiline_comment|/* &t;unsigned int lun; */
 multiline_comment|/* &t;unsigned int channel; */
+multiline_comment|/* OBSOLETE, use cmd-&gt;device-&gt;host instead */
+multiline_comment|/* &t;struct Scsi_Host   *host; */
 DECL|member|cmd_len
 r_int
 r_char

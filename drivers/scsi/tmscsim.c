@@ -3927,7 +3927,7 @@ op_assign
 (paren
 id|PACB
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|DEBUG0
 c_func
@@ -5382,7 +5382,7 @@ op_assign
 (paren
 id|PACB
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|DC390_LOCK_ACB
 suffix:semicolon
@@ -6179,7 +6179,7 @@ op_assign
 (paren
 id|PACB
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|printk
 c_func
@@ -8297,7 +8297,7 @@ op_assign
 (paren
 id|PACB
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|PDCB
 id|pDCB
@@ -8462,10 +8462,8 @@ id|cmd-&gt;old_cmd_len
 op_assign
 l_int|6
 suffix:semicolon
-id|cmd-&gt;host
-op_assign
-id|pACB-&gt;pScsiHost
-suffix:semicolon
+multiline_comment|/* TODO FIXME */
+multiline_comment|/*    cmd-&gt;host = pACB-&gt;pScsiHost; */
 id|cmd-&gt;device-&gt;id
 op_assign
 id|pDCB-&gt;TargetID
@@ -8685,10 +8683,8 @@ id|cmd-&gt;old_cmd_len
 op_assign
 l_int|6
 suffix:semicolon
-id|cmd-&gt;host
-op_assign
-id|pACB-&gt;pScsiHost
-suffix:semicolon
+multiline_comment|/* TODO FIXME */
+multiline_comment|/*    cmd-&gt;host = pACB-&gt;pScsiHost; */
 id|cmd-&gt;device-&gt;id
 op_assign
 id|pDCB-&gt;TargetID
@@ -10594,10 +10590,8 @@ suffix:colon
 id|Scsi_Cmnd
 id|cmd
 suffix:semicolon
-id|cmd.host
-op_assign
-id|pACB-&gt;pScsiHost
-suffix:semicolon
+multiline_comment|/* TODO FIXME */
+multiline_comment|/* cmd.host = pACB-&gt;pScsiHost; */
 id|printk
 (paren
 id|KERN_WARNING

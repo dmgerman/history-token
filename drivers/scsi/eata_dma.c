@@ -1269,7 +1269,7 @@ op_assign
 (paren
 id|uint
 )paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 suffix:semicolon
 id|hba_stat
 op_assign
@@ -2472,7 +2472,7 @@ id|cmd
 suffix:semicolon
 id|sh
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_if
 c_cond
@@ -3397,7 +3397,7 @@ c_func
 id|u32
 )paren
 (paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 )paren
 op_plus
 id|HA_RAUXSTAT
@@ -3835,7 +3835,7 @@ c_func
 id|u32
 )paren
 (paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 )paren
 op_plus
 id|HA_RAUXSTAT
@@ -3893,7 +3893,7 @@ l_int|0
 suffix:semicolon
 id|x
 OL
-id|cmd-&gt;host-&gt;can_queue
+id|cmd-&gt;device-&gt;host-&gt;can_queue
 suffix:semicolon
 id|x
 op_increment
@@ -4067,7 +4067,7 @@ c_func
 id|u32
 )paren
 (paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 )paren
 op_plus
 id|HA_RSTATUS
@@ -4082,7 +4082,7 @@ comma
 (paren
 id|u32
 )paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 comma
 id|EATA_CMD_RESET
 )paren
@@ -4152,7 +4152,7 @@ l_int|0
 suffix:semicolon
 id|x
 OL
-id|cmd-&gt;host-&gt;can_queue
+id|cmd-&gt;device-&gt;host-&gt;can_queue
 suffix:semicolon
 id|x
 op_increment

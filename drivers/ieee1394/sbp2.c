@@ -1682,7 +1682,7 @@ r_struct
 id|sbp2scsi_host_info
 op_star
 )paren
-id|command-&gt;Current_SCpnt-&gt;host-&gt;hostdata
+id|command-&gt;Current_SCpnt-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -8124,7 +8124,7 @@ r_struct
 id|sbp2scsi_host_info
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -8874,7 +8874,7 @@ r_struct
 id|sbp2scsi_host_info
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -9073,7 +9073,7 @@ r_struct
 id|sbp2scsi_host_info
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket

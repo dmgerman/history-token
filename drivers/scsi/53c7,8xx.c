@@ -6347,7 +6347,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|c-&gt;host
+id|c-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -6758,7 +6758,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|c-&gt;host
+id|c-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -12581,7 +12581,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -12908,7 +12908,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -12969,7 +12969,7 @@ suffix:semicolon
 id|NCR53c7x0_local_setup
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_if
@@ -14454,7 +14454,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -19943,7 +19943,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -20416,7 +20416,7 @@ id|printk
 (paren
 l_string|&quot;scsi%d : DANGER : command running, can not abort.&bslash;n&quot;
 comma
-id|cmd-&gt;host-&gt;host_no
+id|cmd-&gt;device-&gt;host-&gt;host_no
 )paren
 suffix:semicolon
 id|restore_flags
@@ -20593,7 +20593,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|NCR53c7x0_hostdata
@@ -20857,7 +20857,7 @@ r_struct
 id|NCR53c7x0_hostdata
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_struct
 id|NCR53c7x0_cmd
@@ -21156,7 +21156,7 @@ id|ptr
 suffix:semicolon
 id|NCR53c7x0_local_setup
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_for
@@ -21272,7 +21272,7 @@ id|printk
 (paren
 l_string|&quot;scsi%d : %s data pointer at offset %d&bslash;n&quot;
 comma
-id|cmd-&gt;host-&gt;host_no
+id|cmd-&gt;device-&gt;host-&gt;host_no
 comma
 id|where
 comma
@@ -21288,7 +21288,7 @@ id|printk
 (paren
 l_string|&quot;scsi%d : can&squot;t determine %s data pointer offset&bslash;n&quot;
 comma
-id|cmd-&gt;host-&gt;host_no
+id|cmd-&gt;device-&gt;host-&gt;host_no
 comma
 id|where
 )paren
@@ -21303,7 +21303,7 @@ id|size
 op_assign
 id|print_insn
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 comma
 id|bus_to_virt
 c_func
@@ -21322,7 +21322,7 @@ l_int|1
 suffix:semicolon
 id|print_insn
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 comma
 id|bus_to_virt
 c_func

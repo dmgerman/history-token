@@ -11075,7 +11075,7 @@ op_assign
 id|mega_host_config
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|DRIVER_LOCK
 (paren
@@ -11672,7 +11672,7 @@ op_assign
 id|mega_host_config
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|megaCfg-&gt;flag
 op_or_assign
@@ -11941,7 +11941,7 @@ op_assign
 id|mega_host_config
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|megaCfg-&gt;flag
 op_or_assign

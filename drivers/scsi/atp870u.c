@@ -2647,7 +2647,7 @@ suffix:semicolon
 suffix:semicolon
 id|host
 op_assign
-id|req_p-&gt;host
+id|req_p-&gt;device-&gt;host
 suffix:semicolon
 id|dev
 op_assign
@@ -15884,7 +15884,7 @@ id|atp_unit
 op_star
 )paren
 op_amp
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|printk
 c_func

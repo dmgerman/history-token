@@ -12306,7 +12306,7 @@ c_cond
 id|NUMDATA
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|busnum
@@ -12675,7 +12675,7 @@ c_cond
 id|NUMDATA
 c_func
 (paren
-id|nscp-&gt;host
+id|nscp-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|busnum
@@ -18558,7 +18558,7 @@ l_int|1
 id|GDTH_LOCK_SCSI_DONE
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|flags
 )paren
@@ -19014,7 +19014,7 @@ c_cond
 id|NUMDATA
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|busnum
@@ -23870,7 +23870,7 @@ op_assign
 id|NUMDATA
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|hanum
@@ -23883,7 +23883,7 @@ c_cond
 id|NUMDATA
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|busnum
@@ -24477,7 +24477,7 @@ op_assign
 id|NUMDATA
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|hanum

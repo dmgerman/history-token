@@ -1451,7 +1451,7 @@ op_assign
 id|adpt_hba
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -2456,7 +2456,7 @@ op_assign
 id|adpt_hba
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -2690,7 +2690,7 @@ op_assign
 r_void
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -2901,7 +2901,7 @@ op_assign
 id|adpt_hba
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -3059,7 +3059,7 @@ op_assign
 id|adpt_hba
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -10098,7 +10098,7 @@ op_assign
 id|adpt_hba
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket

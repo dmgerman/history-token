@@ -10884,7 +10884,7 @@ op_assign
 id|BusLogic_HostAdapter_T
 op_star
 )paren
-id|Command-&gt;host-&gt;hostdata
+id|Command-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|BusLogic_TargetFlags_T
 op_star
@@ -11725,7 +11725,7 @@ op_assign
 id|BusLogic_HostAdapter_T
 op_star
 )paren
-id|Command-&gt;host-&gt;hostdata
+id|Command-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
 id|TargetID
@@ -13177,7 +13177,7 @@ op_assign
 id|BusLogic_HostAdapter_T
 op_star
 )paren
-id|Command-&gt;host-&gt;hostdata
+id|Command-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
 id|TargetID

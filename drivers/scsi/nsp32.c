@@ -2165,13 +2165,13 @@ r_int
 r_int
 id|host_id
 op_assign
-id|SCpnt-&gt;host-&gt;this_id
+id|SCpnt-&gt;device-&gt;host-&gt;this_id
 suffix:semicolon
 r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
 r_char
@@ -4163,7 +4163,7 @@ op_assign
 id|nsp32_hw_data
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_struct
 id|nsp32_target
@@ -7517,7 +7517,7 @@ op_assign
 id|nsp32_hw_data
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
 r_int
@@ -7610,7 +7610,7 @@ op_assign
 id|nsp32_hw_data
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
 r_int
@@ -7847,7 +7847,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|nsp32_hw_data
 op_star

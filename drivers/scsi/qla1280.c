@@ -3399,7 +3399,7 @@ suffix:semicolon
 multiline_comment|/*ENTER(&quot;qla1280_queuecommand&quot;);&n;&t; */
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 id|ha
 op_assign
@@ -3751,11 +3751,11 @@ r_struct
 id|scsi_qla_host
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 multiline_comment|/* Get the SCSI request ptr */
 id|sp
@@ -4270,7 +4270,7 @@ l_string|&quot;qla1280_abort&quot;
 suffix:semicolon
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 id|ha
 op_assign
@@ -4838,7 +4838,7 @@ r_struct
 id|scsi_qla_host
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|sp
 op_assign

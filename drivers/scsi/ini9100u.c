@@ -2102,7 +2102,7 @@ op_assign
 id|HCS
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;base
+id|SCpnt-&gt;device-&gt;host-&gt;base
 suffix:semicolon
 id|SCpnt-&gt;scsi_done
 op_assign
@@ -2208,7 +2208,7 @@ op_assign
 id|HCS
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;base
+id|SCpnt-&gt;device-&gt;host-&gt;base
 suffix:semicolon
 r_return
 id|tul_abort_srb
@@ -2246,7 +2246,7 @@ op_assign
 id|HCS
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;base
+id|SCpnt-&gt;device-&gt;host-&gt;base
 suffix:semicolon
 r_if
 c_cond

@@ -12661,7 +12661,7 @@ r_struct
 id|host_data
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|PRINT_LUN
 c_func
@@ -42465,7 +42465,7 @@ r_struct
 id|host_data
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_member_access_from_pointer
 id|ncb
@@ -42717,7 +42717,7 @@ id|done_list
 id|NCR_LOCK_SCSI_DONE
 c_func
 (paren
-id|done_list-&gt;host
+id|done_list-&gt;device-&gt;host
 comma
 id|flags
 )paren
@@ -42731,7 +42731,7 @@ suffix:semicolon
 id|NCR_UNLOCK_SCSI_DONE
 c_func
 (paren
-id|done_list-&gt;host
+id|done_list-&gt;device-&gt;host
 comma
 id|flags
 )paren
@@ -42808,7 +42808,7 @@ id|done_list
 id|NCR_LOCK_SCSI_DONE
 c_func
 (paren
-id|done_list-&gt;host
+id|done_list-&gt;device-&gt;host
 comma
 id|flags
 )paren
@@ -42822,7 +42822,7 @@ suffix:semicolon
 id|NCR_UNLOCK_SCSI_DONE
 c_func
 (paren
-id|done_list-&gt;host
+id|done_list-&gt;device-&gt;host
 comma
 id|flags
 )paren
@@ -42864,7 +42864,7 @@ r_struct
 id|host_data
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_member_access_from_pointer
 id|ncb
@@ -43032,7 +43032,7 @@ r_struct
 id|host_data
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_member_access_from_pointer
 id|ncb

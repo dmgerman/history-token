@@ -1273,7 +1273,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 singleline_comment|// Pointer to adapter control structure

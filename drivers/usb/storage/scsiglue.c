@@ -312,7 +312,7 @@ r_struct
 id|us_data
 op_star
 )paren
-id|srb-&gt;host-&gt;hostdata
+id|srb-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -400,7 +400,7 @@ r_struct
 id|us_data
 op_star
 )paren
-id|srb-&gt;host-&gt;hostdata
+id|srb-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -462,7 +462,7 @@ r_struct
 id|us_data
 op_star
 )paren
-id|srb-&gt;host-&gt;hostdata
+id|srb-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -502,7 +502,7 @@ suffix:semicolon
 id|scsi_unlock
 c_func
 (paren
-id|srb-&gt;host
+id|srb-&gt;device-&gt;host
 )paren
 suffix:semicolon
 multiline_comment|/* lock the device pointers */
@@ -554,7 +554,7 @@ multiline_comment|/* lock access to the state and clear it */
 id|scsi_lock
 c_func
 (paren
-id|srb-&gt;host
+id|srb-&gt;device-&gt;host
 )paren
 suffix:semicolon
 id|atomic_set
@@ -593,7 +593,7 @@ r_struct
 id|us_data
 op_star
 )paren
-id|srb-&gt;host-&gt;hostdata
+id|srb-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -619,7 +619,7 @@ suffix:semicolon
 id|scsi_unlock
 c_func
 (paren
-id|srb-&gt;host
+id|srb-&gt;device-&gt;host
 )paren
 suffix:semicolon
 multiline_comment|/* if the device has been removed, this worked */
@@ -657,7 +657,7 @@ suffix:semicolon
 id|scsi_lock
 c_func
 (paren
-id|srb-&gt;host
+id|srb-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_return
@@ -703,7 +703,7 @@ l_int|0
 id|scsi_lock
 c_func
 (paren
-id|srb-&gt;host
+id|srb-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_return
@@ -786,7 +786,7 @@ suffix:semicolon
 id|scsi_lock
 c_func
 (paren
-id|srb-&gt;host
+id|srb-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_return

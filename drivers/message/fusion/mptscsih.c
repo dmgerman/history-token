@@ -5540,11 +5540,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sc-&gt;host
+id|sc-&gt;device
+op_logical_and
+id|sc-&gt;device-&gt;host
 op_ne
 l_int|NULL
 op_logical_and
-id|sc-&gt;host-&gt;hostdata
+id|sc-&gt;device-&gt;host-&gt;hostdata
 op_ne
 l_int|NULL
 )paren
@@ -5555,7 +5557,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|sc-&gt;host-&gt;hostdata
+id|sc-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_member_access_from_pointer
 id|ioc-&gt;name
@@ -9366,7 +9368,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|target
 op_assign
@@ -11442,7 +11444,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_eq
 l_int|NULL
@@ -11749,7 +11751,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_eq
 l_int|NULL
@@ -11910,7 +11912,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_eq
 l_int|NULL
@@ -12079,7 +12081,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_eq
 l_int|NULL
@@ -15506,7 +15508,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|sc-&gt;host-&gt;hostdata
+id|sc-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_for
 c_loop
