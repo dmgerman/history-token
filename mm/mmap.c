@@ -2841,6 +2841,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|__vm_stat_account
 r_void
 id|__vm_stat_account
@@ -2937,6 +2938,7 @@ op_add_assign
 id|pages
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*&n; * The caller must hold down_write(current-&gt;mm-&gt;mmap_sem).&n; */
 DECL|function|do_mmap_pgoff
 r_int

@@ -2843,6 +2843,7 @@ id|pgprot_t
 id|prot
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 r_void
 id|__vm_stat_account
 c_func
@@ -2861,6 +2862,34 @@ comma
 r_int
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|__vm_stat_account
+r_static
+r_inline
+r_void
+id|__vm_stat_account
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|flags
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+id|pages
+)paren
+(brace
+)brace
+macro_line|#endif /* CONFIG_PROC_FS */
 DECL|function|vm_stat_account
 r_static
 r_inline
