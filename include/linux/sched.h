@@ -1089,13 +1089,10 @@ id|sig
 suffix:semicolon
 DECL|member|blocked
 DECL|member|real_blocked
-DECL|member|shared_unblocked
 id|sigset_t
 id|blocked
 comma
 id|real_blocked
-comma
-id|shared_unblocked
 suffix:semicolon
 DECL|member|pending
 r_struct
@@ -1712,11 +1709,6 @@ r_int
 id|dequeue_signal
 c_func
 (paren
-r_struct
-id|sigpending
-op_star
-id|pending
-comma
 id|sigset_t
 op_star
 id|mask
