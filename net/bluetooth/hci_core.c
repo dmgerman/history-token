@@ -1062,7 +1062,7 @@ id|encrypt
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Get HCI device by index. &n; * Device is locked on return. */
+multiline_comment|/* Get HCI device by index. &n; * Device is held on return. */
 DECL|function|hci_dev_get
 r_struct
 id|hci_dev
@@ -1078,6 +1078,8 @@ r_struct
 id|hci_dev
 op_star
 id|hdev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|list_head
@@ -1118,7 +1120,10 @@ op_amp
 id|hci_dev_list
 )paren
 (brace
-id|hdev
+r_struct
+id|hci_dev
+op_star
+id|d
 op_assign
 id|list_entry
 c_func
@@ -1134,28 +1139,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hdev-&gt;id
+id|d-&gt;id
 op_eq
 id|index
 )paren
 (brace
+id|hdev
+op_assign
 id|hci_dev_hold
 c_func
 (paren
-id|hdev
+id|d
 )paren
 suffix:semicolon
-r_goto
-id|done
+r_break
 suffix:semicolon
 )brace
 )brace
-id|hdev
-op_assign
-l_int|NULL
-suffix:semicolon
-id|done
-suffix:colon
 id|read_unlock
 c_func
 (paren
@@ -2110,6 +2110,12 @@ op_logical_neg
 id|ret
 )paren
 (brace
+id|hci_dev_hold
+c_func
+(paren
+id|hdev
+)paren
+suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -2459,6 +2465,12 @@ op_assign
 l_int|0
 suffix:semicolon
 id|hci_req_unlock
+c_func
+(paren
+id|hdev
+)paren
+suffix:semicolon
+id|hci_dev_put
 c_func
 (paren
 id|hdev
@@ -3531,13 +3543,15 @@ suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;%p name %s type %d&quot;
+l_string|&quot;%p name %s type %d owner %p&quot;
 comma
 id|hdev
 comma
 id|hdev-&gt;name
 comma
 id|hdev-&gt;type
+comma
+id|hdev-&gt;owner
 )paren
 suffix:semicolon
 r_if
@@ -3776,8 +3790,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|write_unlock_bh
 c_func
 (paren
@@ -3884,13 +3896,11 @@ comma
 l_string|&quot;unregister&quot;
 )paren
 suffix:semicolon
-id|hci_dev_put
+id|__hci_dev_put
 c_func
 (paren
 id|hdev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
