@@ -4,6 +4,7 @@ macro_line|#include &quot;linux/rbtree.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
 macro_line|#include &quot;linux/vmalloc.h&quot;
 macro_line|#include &quot;linux/bootmem.h&quot;
+macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;asm/types.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
@@ -1058,6 +1059,27 @@ id|desc
 )paren
 suffix:semicolon
 )brace
+DECL|variable|physmem_forget_descriptor
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|physmem_forget_descriptor
+)paren
+suffix:semicolon
+DECL|variable|physmem_remove_mapping
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|physmem_remove_mapping
+)paren
+suffix:semicolon
+DECL|variable|physmem_subst_mapping
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|physmem_subst_mapping
+)paren
+suffix:semicolon
 DECL|function|arch_free_page
 r_void
 id|arch_free_page
