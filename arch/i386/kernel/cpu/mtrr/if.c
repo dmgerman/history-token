@@ -558,20 +558,10 @@ comma
 l_int|5
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;mtrr: no &bslash;&quot;base=&bslash;&quot; in line: &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
-comma
-id|line
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|base
 op_assign
 id|simple_strtoull
@@ -615,20 +605,10 @@ comma
 l_int|5
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;mtrr: no &bslash;&quot;size=&bslash;&quot; in line: &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
-comma
-id|line
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|size
 op_assign
 id|simple_strtoull
@@ -659,28 +639,10 @@ op_amp
 l_int|0xfff
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;mtrr: size: 0x%Lx  base: 0x%Lx&bslash;n&quot;
-comma
-id|size
-comma
-id|base
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -709,20 +671,10 @@ comma
 l_int|5
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;mtrr: no &bslash;&quot;type=&bslash;&quot; in line: &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
-comma
-id|line
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|ptr
 op_add_assign
 l_int|5
@@ -817,14 +769,6 @@ r_return
 id|len
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;mtrr: illegal type: &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
-comma
-id|ptr
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
@@ -1690,9 +1634,6 @@ OG
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
 id|mtrr_del
 c_func
 (paren
@@ -1701,16 +1642,6 @@ comma
 l_int|0
 comma
 l_int|0
-)paren
-OL
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;mtrr: reg %d not used&bslash;n&quot;
-comma
-id|i
 )paren
 suffix:semicolon
 op_decrement
@@ -1821,11 +1752,6 @@ dot
 id|llseek
 op_assign
 id|seq_lseek
-comma
-dot
-id|release
-op_assign
-id|single_release
 comma
 dot
 id|write
