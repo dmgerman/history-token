@@ -884,8 +884,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|out_free
-suffix:colon
 id|kfree
 c_func
 (paren

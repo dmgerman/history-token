@@ -1,5 +1,8 @@
+macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/string.h&quot;
+macro_line|#include &quot;linux/smp_lock.h&quot;
+macro_line|#include &quot;linux/spinlock.h&quot;
 macro_line|#include &quot;asm/current.h&quot;
 macro_line|#include &quot;asm/delay.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
@@ -285,4 +288,49 @@ c_func
 id|sys_wait4
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* required for SMP */
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|__write_lock_failed
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+)paren
+)paren
+suffix:semicolon
+DECL|variable|__write_lock_failed
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__write_lock_failed
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|__read_lock_failed
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+)paren
+)paren
+suffix:semicolon
+DECL|variable|__read_lock_failed
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__read_lock_failed
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

@@ -68,6 +68,11 @@ r_void
 op_star
 id|task
 suffix:semicolon
+DECL|member|idle
+r_void
+op_star
+id|idle
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

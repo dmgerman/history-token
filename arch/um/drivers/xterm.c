@@ -15,6 +15,7 @@ macro_line|#include &quot;helper.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;os.h&quot;
+macro_line|#include &quot;xterm.h&quot;
 DECL|struct|xterm_chan
 r_struct
 id|xterm_chan
@@ -49,6 +50,10 @@ DECL|member|stack
 r_int
 r_int
 id|stack
+suffix:semicolon
+DECL|member|direct_rcv
+r_int
+id|direct_rcv
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -134,6 +139,11 @@ comma
 id|stack
 suffix:colon
 id|opts-&gt;tramp_stack
+comma
+id|direct_rcv
+suffix:colon
+op_logical_neg
+id|opts-&gt;in_kernel
 )brace
 )paren
 suffix:semicolon
@@ -330,6 +340,8 @@ comma
 id|fd
 comma
 r_new
+comma
+id|err
 suffix:semicolon
 r_char
 id|title
@@ -451,12 +463,13 @@ c_func
 (paren
 l_string|&quot;xterm_open : create_unix_socket failed, errno = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|fd
 )paren
 suffix:semicolon
 r_return
 op_minus
-id|errno
+id|fd
 suffix:semicolon
 )brace
 id|sprintf
@@ -499,12 +512,14 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;xterm_open : run_helper failed&bslash;n&quot;
+l_string|&quot;xterm_open : run_helper failed, errno = %d&bslash;n&quot;
+comma
+op_minus
+id|pid
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|pid
 suffix:semicolon
 )brace
 r_if
@@ -524,6 +539,12 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|data-&gt;direct_rcv
+)paren
+(brace
 r_new
 op_assign
 id|os_rcv_fd
@@ -535,6 +556,52 @@ op_amp
 id|data-&gt;helper_pid
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|os_set_fd_block
+c_func
+(paren
+id|fd
+comma
+l_int|0
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;xterm_open : failed to set descriptor &quot;
+l_string|&quot;non-blocking, errno = %d&bslash;n&quot;
+comma
+id|err
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+r_new
+op_assign
+id|xterm_fd
+c_func
+(paren
+id|fd
+comma
+op_amp
+id|data-&gt;helper_pid
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
