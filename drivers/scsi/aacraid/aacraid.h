@@ -5,8 +5,6 @@ macro_line|#endif
 multiline_comment|/*------------------------------------------------------------------------------&n; *              D E F I N E S&n; *----------------------------------------------------------------------------*/
 DECL|macro|MAXIMUM_NUM_CONTAINERS
 mdefine_line|#define MAXIMUM_NUM_CONTAINERS&t;32
-DECL|macro|MAXIMUM_NUM_ADAPTERS
-mdefine_line|#define MAXIMUM_NUM_ADAPTERS&t;8
 DECL|macro|AAC_NUM_FIB
 mdefine_line|#define AAC_NUM_FIB&t;&t;(256 + 64)
 DECL|macro|AAC_NUM_IO_FIB
@@ -1928,11 +1926,10 @@ DECL|struct|aac_dev
 r_struct
 id|aac_dev
 (brace
-DECL|member|next
+DECL|member|entry
 r_struct
-id|aac_dev
-op_star
-id|next
+id|list_head
+id|entry
 suffix:semicolon
 DECL|member|name
 r_const
