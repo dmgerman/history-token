@@ -34,13 +34,6 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-DECL|variable|prom_cpu_nodes
-r_int
-id|prom_cpu_nodes
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 DECL|variable|linux_num_cpus
 r_int
 id|linux_num_cpus
@@ -381,13 +374,6 @@ suffix:semicolon
 id|linux_num_cpus
 op_assign
 id|cpu_ctr
-suffix:semicolon
-id|prom_cpu_nodes
-(braket
-l_int|0
-)braket
-op_assign
-id|prom_node_cpu
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 (brace

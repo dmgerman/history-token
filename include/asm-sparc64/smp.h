@@ -38,14 +38,6 @@ id|linux_cpus
 id|NR_CPUS
 )braket
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|prom_cpu_nodes
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
