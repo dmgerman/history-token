@@ -1611,8 +1611,8 @@ id|tasklist_lock
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * No need to unlock IRQs, we&squot;ll schedule() immediately&n;&t; * anyway. In the preemption case this also makes it&n;&t; * impossible for the task to get runnable again.&n;&t; */
-id|write_unlock
+multiline_comment|/*&n;&t; * No need to unlock IRQs, we&squot;ll schedule() immediately&n;&t; * anyway. In the preemption case this also makes it&n;&t; * impossible for the task to get runnable again (thus&n;&t; * the &quot;_raw_&quot; unlock - to make sure we don&squot;t try to&n;&t; * preempt here).&n;&t; */
+id|_raw_write_unlock
 c_func
 (paren
 op_amp
