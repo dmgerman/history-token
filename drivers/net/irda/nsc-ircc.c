@@ -3754,8 +3754,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s not defined by irda yet&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s not defined by irda yet&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3790,8 +3791,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s is not for IrDA mode&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s is not for IrDA mode&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3826,8 +3828,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), invalid data_rate&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), invalid data_rate&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3886,8 +3889,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), speed=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), speed=%d&bslash;n&quot;
 comma
 id|speed
 )paren
@@ -4082,8 +4086,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), handling baud of 576000&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), handling baud of 576000&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4100,8 +4105,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), handling baud of 1152000&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), handling baud of 1152000&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4118,8 +4124,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), handling baud of 4000000&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), handling baud of 4000000&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4135,8 +4142,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unknown baud rate of %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown baud rate of %d&bslash;n&quot;
 comma
 id|speed
 )paren
@@ -5222,8 +5230,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Save current bank */
@@ -5267,8 +5276,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), warning, FIFO not empty yet!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), warning, FIFO not empty yet!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIFO may still be filled to the Tx interrupt threshold */
@@ -5316,8 +5326,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), fifo_size %d ; %d sent of %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), fifo_size %d ; %d sent of %d&bslash;n&quot;
 comma
 id|fifo_size
 comma
@@ -5370,8 +5381,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -5850,8 +5862,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), window is full!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), window is full!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
@@ -6485,8 +6498,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Changing speed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Changing speed!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;ier
@@ -6781,9 +6795,10 @@ r_else
 id|WARNING
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), potential &quot;
+l_string|&quot;%s(), potential &quot;
 l_string|&quot;Tx queue lockup !&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -7197,8 +7212,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Setup to be a normal IrDA network device driver */
@@ -7248,8 +7264,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -7469,8 +7486,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -7683,8 +7701,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), %s, (cmd=0x%X)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s, (cmd=0x%X)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
