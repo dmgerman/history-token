@@ -136,6 +136,12 @@ op_amp
 id|zone-&gt;inactive_list
 )paren
 suffix:semicolon
+id|inc_page_state
+c_func
+(paren
+id|pgrotated
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond

@@ -2285,12 +2285,6 @@ id|wait
 r_goto
 id|nopage
 suffix:semicolon
-id|inc_page_state
-c_func
-(paren
-id|allocstall
-)paren
-suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_MEMALLOC
@@ -5839,6 +5833,8 @@ comma
 l_string|&quot;pageoutrun&quot;
 comma
 l_string|&quot;allocstall&quot;
+comma
+l_string|&quot;pgrotated&quot;
 comma
 )brace
 suffix:semicolon

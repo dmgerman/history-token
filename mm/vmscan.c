@@ -2813,7 +2813,7 @@ suffix:semicolon
 id|inc_page_state
 c_func
 (paren
-id|pageoutrun
+id|allocstall
 )paren
 suffix:semicolon
 r_for
@@ -2978,6 +2978,12 @@ id|priority
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+id|inc_page_state
+c_func
+(paren
+id|pageoutrun
+)paren
 suffix:semicolon
 r_for
 c_loop
