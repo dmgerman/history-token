@@ -5100,10 +5100,6 @@ id|dev-&gt;mem_start
 op_assign
 id|dev-&gt;mem_end
 op_assign
-id|dev-&gt;rmem_end
-op_assign
-id|dev-&gt;rmem_start
-op_assign
 l_int|0
 suffix:semicolon
 )brace
