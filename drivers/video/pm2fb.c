@@ -9057,8 +9057,9 @@ id|clear_margins
 op_assign
 id|pm2fb_clear_margins8
 comma
+dot
 id|fontwidthmask
-suffix:colon
+op_assign
 id|FONTWIDTH
 c_func
 (paren
