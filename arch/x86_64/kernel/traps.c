@@ -1895,11 +1895,15 @@ suffix:semicolon
 )brace
 multiline_comment|/* kernel trap */
 (brace
-r_int
-r_int
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|fixup
+suffix:semicolon
 id|fixup
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|regs-&gt;rip
@@ -1935,7 +1939,7 @@ id|error_code
 suffix:semicolon
 id|regs-&gt;rip
 op_assign
-id|fixup
+id|fixup-&gt;fixup
 suffix:semicolon
 )brace
 r_else
@@ -2155,15 +2159,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|dump_pagetable
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 DECL|function|do_general_protection
 id|asmlinkage
 r_void
@@ -2299,13 +2294,15 @@ suffix:semicolon
 )brace
 multiline_comment|/* kernel gp */
 (brace
-r_int
-r_int
+r_const
+r_struct
+id|exception_table_entry
+op_star
 id|fixup
 suffix:semicolon
 id|fixup
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|regs-&gt;rip
@@ -2319,12 +2316,11 @@ id|fixup
 (brace
 id|regs-&gt;rip
 op_assign
-id|fixup
+id|fixup-&gt;fixup
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-singleline_comment|//&t;&t;dump_pagetable(regs-&gt;rip); 
 id|die
 c_func
 (paren

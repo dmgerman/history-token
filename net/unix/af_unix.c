@@ -4390,12 +4390,6 @@ r_struct
 id|unix_sock
 op_star
 id|u
-op_assign
-id|unix_sk
-c_func
-(paren
-id|sk
-)paren
 suffix:semicolon
 r_struct
 id|sockaddr_un
@@ -4456,6 +4450,14 @@ id|sk
 )paren
 suffix:semicolon
 )brace
+id|u
+op_assign
+id|unix_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|unix_state_rlock
 c_func
 (paren
