@@ -6505,6 +6505,9 @@ id|name_len
 comma
 id|name_len2
 suffix:semicolon
+id|__u16
+id|count
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -6749,7 +6752,7 @@ op_increment
 suffix:semicolon
 multiline_comment|/* signature byte */
 )brace
-id|pSMB-&gt;ByteCount
+id|count
 op_assign
 l_int|1
 multiline_comment|/* string type byte */
@@ -6760,14 +6763,14 @@ id|name_len2
 suffix:semicolon
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|count
 )paren
 suffix:semicolon
 id|rc

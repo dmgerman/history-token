@@ -2051,21 +2051,21 @@ id|hdr
 suffix:semicolon
 multiline_comment|/* wct = 4 */
 DECL|member|SearchAttributes
-id|__u16
+id|__le16
 id|SearchAttributes
 suffix:semicolon
 multiline_comment|/* target file attributes */
 DECL|member|Flags
-id|__u16
+id|__le16
 id|Flags
 suffix:semicolon
 multiline_comment|/* spec says Information Level */
 DECL|member|ClusterCount
-id|__u32
+id|__le32
 id|ClusterCount
 suffix:semicolon
 DECL|member|ByteCount
-id|__u16
+id|__le16
 id|ByteCount
 suffix:semicolon
 DECL|member|BufferFormat
