@@ -10431,9 +10431,9 @@ op_assign
 (brace
 (brace
 multiline_comment|/* handle any USB UHCI controller */
-dot
-r_class
-op_assign
+id|PCI_DEVICE_CLASS
+c_func
+(paren
 (paren
 (paren
 id|PCI_CLASS_SERIAL_USB
@@ -10444,11 +10444,9 @@ op_or
 l_int|0x00
 )paren
 comma
-dot
-id|class_mask
-op_assign
 op_complement
 l_int|0
+)paren
 comma
 dot
 id|driver_data
@@ -10459,27 +10457,6 @@ r_int
 )paren
 op_amp
 id|uhci_driver
-comma
-multiline_comment|/* no matter who makes it */
-dot
-id|vendor
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|device
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|subvendor
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|subdevice
-op_assign
-id|PCI_ANY_ID
 comma
 )brace
 comma

@@ -1271,6 +1271,8 @@ id|hcd
 suffix:semicolon
 r_int
 id|length
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -1331,6 +1333,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|HCD_IS_SUSPENDED
+(paren
+id|hcd-&gt;state
+)paren
+)paren
 id|length
 op_assign
 id|hcd-&gt;driver-&gt;hub_status_data
