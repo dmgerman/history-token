@@ -1418,6 +1418,10 @@ r_struct
 id|nlmsghdr
 op_star
 id|nlh
+comma
+r_void
+op_star
+id|_rtattr
 )paren
 (brace
 r_struct
@@ -2974,6 +2978,10 @@ r_struct
 id|nlmsghdr
 op_star
 id|nlh
+comma
+r_void
+op_star
+id|_rtattr
 )paren
 (brace
 r_struct
@@ -3224,6 +3232,10 @@ r_struct
 id|nlmsghdr
 op_star
 id|nlh
+comma
+r_void
+op_star
+id|_rtattr
 )paren
 (brace
 r_struct
@@ -3344,6 +3356,8 @@ comma
 id|rtp
 comma
 id|nlh
+comma
+id|_rtattr
 )paren
 suffix:semicolon
 r_return
@@ -3775,6 +3789,8 @@ id|fib6_del
 c_func
 (paren
 id|rt
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
