@@ -274,13 +274,15 @@ id|len
 comma
 l_string|&quot;debug %u&bslash;n&quot;
 comma
-id|defined
-c_func
-(paren
-id|XFSDEBUG
-)paren
+macro_line|#if defined(XFSDEBUG)
+l_int|1
 )paren
 suffix:semicolon
+macro_line|#else
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
