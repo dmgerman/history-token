@@ -739,6 +739,11 @@ id|gfp_flags
 op_assign
 id|GFP_KERNEL
 suffix:semicolon
+id|gfp_flags
+op_or_assign
+id|__GFP_NORETRY
+suffix:semicolon
+multiline_comment|/* don&squot;t trigger OOM-killer */
 r_if
 c_cond
 (paren
