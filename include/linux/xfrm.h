@@ -435,6 +435,10 @@ DECL|member|spi
 id|__u32
 id|spi
 suffix:semicolon
+DECL|member|family
+id|__u16
+id|family
+suffix:semicolon
 DECL|member|proto
 id|__u8
 id|proto
