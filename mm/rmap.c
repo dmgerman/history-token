@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * Something oopsable to put for now in the page-&gt;mapping&n; * of an anonymous page, to test that it is ignored.&n; */
 DECL|macro|ANON_MAPPING_DEBUG
-mdefine_line|#define ANON_MAPPING_DEBUG&t;((struct address_space *) 0xADB)
+mdefine_line|#define ANON_MAPPING_DEBUG&t;((struct address_space *) 0)
 DECL|function|clear_page_anon
 r_static
 r_inline
