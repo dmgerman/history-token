@@ -2703,37 +2703,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* This ensures that we can build this for generic kernels without&n; * having all the SN2 code sync&squot;d and merged.&n; */
-DECL|enum|pciio_endian_e
-r_typedef
-r_enum
-id|pciio_endian_e
-(brace
-DECL|enumerator|PCIDMA_ENDIAN_BIG
-id|PCIDMA_ENDIAN_BIG
-comma
-DECL|enumerator|PCIDMA_ENDIAN_LITTLE
-id|PCIDMA_ENDIAN_LITTLE
-DECL|typedef|pciio_endian_t
-)brace
-id|pciio_endian_t
-suffix:semicolon
-id|pciio_endian_t
-id|snia_pciio_endian_set
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pci_dev
-comma
-id|pciio_endian_t
-id|device_end
-comma
-id|pciio_endian_t
-id|desired_end
-)paren
-suffix:semicolon
 r_static
 r_int
 r_int
@@ -2755,9 +2724,6 @@ id|d
 r_int
 r_int
 id|class_rev
-suffix:semicolon
-id|pciio_endian_t
-id|endian_status
 suffix:semicolon
 r_if
 c_cond
@@ -2834,43 +2800,6 @@ id|KERN_ERR
 l_string|&quot;Skipping %s IDE controller in slot %s: &quot;
 l_string|&quot;firmware is obsolete - please upgrade to revision&quot;
 l_string|&quot;46 or higher&bslash;n&quot;
-comma
-id|d-&gt;name
-comma
-id|dev-&gt;slot_name
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-multiline_comment|/* Enable Byte Swapping in the PIC... */
-id|endian_status
-op_assign
-id|snia_pciio_endian_set
-c_func
-(paren
-id|dev
-comma
-id|PCIDMA_ENDIAN_LITTLE
-comma
-id|PCIDMA_ENDIAN_BIG
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|endian_status
-op_ne
-id|PCIDMA_ENDIAN_BIG
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Failed to set endianness for device %s at slot %s&bslash;n&quot;
 comma
 id|d-&gt;name
 comma

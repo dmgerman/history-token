@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2002-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2002-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SNDRV_H
 DECL|macro|_ASM_IA64_SN_SNDRV_H
 mdefine_line|#define _ASM_IA64_SN_SNDRV_H
@@ -44,27 +44,6 @@ DECL|macro|SNDRV_SYNERGY_ENABLE
 mdefine_line|#define SNDRV_SYNERGY_ENABLE&t;&t;34
 DECL|macro|SNDRV_SYNERGY_FREQ
 mdefine_line|#define SNDRV_SYNERGY_FREQ&t;&t;35
-multiline_comment|/* see shubstats_ioctl() */
-DECL|macro|SNDRV_SHUB_INFOSIZE
-mdefine_line|#define SNDRV_SHUB_INFOSIZE&t;&t;40
-DECL|macro|SNDRV_SHUB_CONFIGURE
-mdefine_line|#define SNDRV_SHUB_CONFIGURE&t;&t;41
-DECL|macro|SNDRV_SHUB_RESETSTATS
-mdefine_line|#define SNDRV_SHUB_RESETSTATS&t;&t;42
-DECL|macro|SNDRV_SHUB_GETSTATS
-mdefine_line|#define SNDRV_SHUB_GETSTATS&t;&t;43
-DECL|macro|SNDRV_SHUB_GETNASID
-mdefine_line|#define SNDRV_SHUB_GETNASID&t;&t;44
-DECL|macro|SNDRV_SHUB_GETMMR32
-mdefine_line|#define SNDRV_SHUB_GETMMR32            45
-DECL|macro|SNDRV_SHUB_GETMMR64
-mdefine_line|#define SNDRV_SHUB_GETMMR64            46
-DECL|macro|SNDRV_SHUB_GETMMR64_IO
-mdefine_line|#define SNDRV_SHUB_GETMMR64_IO         47
-DECL|macro|SNDRV_SHUB_PUTMMR64
-mdefine_line|#define SNDRV_SHUB_PUTMMR64            48
-DECL|macro|SNDRV_SHUB_PUTMMR64_IO
-mdefine_line|#define SNDRV_SHUB_PUTMMR64_IO         49
 multiline_comment|/* Devices */
 DECL|macro|SNDRV_UKNOWN_DEVICE
 mdefine_line|#define SNDRV_UKNOWN_DEVICE&t;&t;-1

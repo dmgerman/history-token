@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;
-macro_line|#include &lt;asm/sn/sn2/sn_private.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 multiline_comment|/* number of characters we can transmit to the SAL console at a time */
 DECL|macro|SN_SAL_MAX_CHARS
@@ -34,12 +33,12 @@ multiline_comment|/* To use dynamic numbers only and not use the assigned major 
 multiline_comment|/* #define USE_DYNAMIC_MINOR 1 */
 multiline_comment|/* use dynamic minor number */
 DECL|macro|USE_DYNAMIC_MINOR
-mdefine_line|#define USE_DYNAMIC_MINOR 0 /* Don&squot;t rely on misc_register dynamic minor */
+mdefine_line|#define USE_DYNAMIC_MINOR 0&t;/* Don&squot;t rely on misc_register dynamic minor */
 multiline_comment|/* Device name we&squot;re using */
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;ttySG&quot;
 DECL|macro|DEVICE_NAME_DYNAMIC
-mdefine_line|#define DEVICE_NAME_DYNAMIC &quot;ttySG0&quot;  /* need full name for misc_register */
+mdefine_line|#define DEVICE_NAME_DYNAMIC &quot;ttySG0&quot;&t;/* need full name for misc_register */
 multiline_comment|/* The major/minor we are using, ignored for USE_DYNAMIC_MINOR */
 DECL|macro|DEVICE_MAJOR
 mdefine_line|#define DEVICE_MAJOR 204
@@ -413,9 +412,9 @@ suffix:semicolon
 multiline_comment|/* the console does output in two distinctly different ways:&n; * synchronous (raw) and asynchronous (buffered).  initally, early_printk&n; * does synchronous output.  any data written goes directly to the SAL&n; * to be output (incidentally, it is internally buffered by the SAL)&n; * after interrupts and timers are initialized and available for use,&n; * the console init code switches to asynchronous output.  this is&n; * also the earliest opportunity to begin polling for console input.&n; * after console initialization, console output and tty (serial port)&n; * output is buffered and sent to the SAL asynchronously (either by&n; * timer callback or by UART interrupt) */
 multiline_comment|/* routines for running the console in polling mode */
 multiline_comment|/**&n; * snt_poll_getc - Get a character from the console in polling mode&n; *&n; */
+DECL|function|snt_poll_getc
 r_static
 r_int
-DECL|function|snt_poll_getc
 id|snt_poll_getc
 c_func
 (paren
@@ -437,9 +436,9 @@ id|ch
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * snt_poll_input_pending - Check if any input is waiting - polling mode.&n; *&n; */
+DECL|function|snt_poll_input_pending
 r_static
 r_int
-DECL|function|snt_poll_input_pending
 id|snt_poll_input_pending
 c_func
 (paren
@@ -469,9 +468,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* routines for running the console on the simulator */
 multiline_comment|/**&n; * snt_sim_puts - send to the console, used in simulator mode&n; * @str: String to send&n; * @count: length of string&n; *&n; */
+DECL|function|snt_sim_puts
 r_static
 r_int
-DECL|function|snt_sim_puts
 id|snt_sim_puts
 c_func
 (paren
@@ -583,9 +582,9 @@ id|count
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * snt_sim_getc - Get character from console in simulator mode&n; *&n; */
+DECL|function|snt_sim_getc
 r_static
 r_int
-DECL|function|snt_sim_getc
 id|snt_sim_getc
 c_func
 (paren
@@ -607,9 +606,9 @@ l_int|3
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * snt_sim_input_pending - Check if there is input pending in simulator mode&n; *&n; */
+DECL|function|snt_sim_input_pending
 r_static
 r_int
-DECL|function|snt_sim_input_pending
 id|snt_sim_input_pending
 c_func
 (paren
@@ -634,9 +633,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* routines for an interrupt driven console (normal) */
 multiline_comment|/**&n; * snt_intr_getc - Get a character from the console, interrupt mode&n; *&n; */
+DECL|function|snt_intr_getc
 r_static
 r_int
-DECL|function|snt_intr_getc
 id|snt_intr_getc
 c_func
 (paren
@@ -651,9 +650,9 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * snt_intr_input_pending - Check if input is pending, interrupt mode&n; *&n; */
+DECL|function|snt_intr_input_pending
 r_static
 r_int
-DECL|function|snt_intr_input_pending
 id|snt_intr_input_pending
 c_func
 (paren
@@ -671,9 +670,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* these functions are polled and interrupt */
 multiline_comment|/**&n; * snt_hw_puts_raw - Send raw string to the console, polled or interrupt mode&n; * @s: String&n; * @len: Length&n; *&n; */
+DECL|function|snt_hw_puts_raw
 r_static
 r_int
-DECL|function|snt_hw_puts_raw
 id|snt_hw_puts_raw
 c_func
 (paren
@@ -698,9 +697,9 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * snt_hw_puts_buffered - Send string to console, polled or interrupt mode&n; * @s: String&n; * @len: Length&n; *&n; */
+DECL|function|snt_hw_puts_buffered
 r_static
 r_int
-DECL|function|snt_hw_puts_buffered
 id|snt_hw_puts_buffered
 c_func
 (paren
@@ -730,11 +729,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* uart interface structs&n; * These functions are associated with the uart_port that the serial core&n; * infrastructure calls.&n; *&n; * Note: Due to how the console works, many routines are no-ops.&n; */
 multiline_comment|/**&n; * snp_type - What type of console are we?&n; * @port: Port to operate with (we ignore since we only have one port)&n; *&n; */
+DECL|function|snp_type
 r_static
 r_const
 r_char
 op_star
-DECL|function|snp_type
 id|snp_type
 c_func
 (paren
@@ -751,10 +750,10 @@ l_string|&quot;SGI SN L1&quot;
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * snp_tx_empty - Is the transmitter empty?  We pretend we&squot;re always empty&n; * @port: Port to operate on (we ignore since we only have one port)&n; *&n; */
+DECL|function|snp_tx_empty
 r_static
 r_int
 r_int
-DECL|function|snp_tx_empty
 id|snp_tx_empty
 c_func
 (paren
@@ -769,9 +768,9 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * snp_stop_tx - stop the transmitter - no-op for us&n; * @port: Port to operat eon - we ignore - no-op function&n; * @tty_stop: Set to 1 if called via uart_stop&n; *&n; */
+DECL|function|snp_stop_tx
 r_static
 r_void
-DECL|function|snp_stop_tx
 id|snp_stop_tx
 c_func
 (paren
@@ -787,9 +786,9 @@ id|tty_stop
 (brace
 )brace
 multiline_comment|/**&n; * snp_release_port - Free i/o and resources for port - no-op for us&n; * @port: Port to operate on - we ignore - no-op function&n; *&n; */
+DECL|function|snp_release_port
 r_static
 r_void
-DECL|function|snp_release_port
 id|snp_release_port
 c_func
 (paren
@@ -801,9 +800,9 @@ id|port
 (brace
 )brace
 multiline_comment|/**&n; * snp_enable_ms - Force modem status interrupts on - no-op for us&n; * @port: Port to operate on - we ignore - no-op function&n; *&n; */
+DECL|function|snp_enable_ms
 r_static
 r_void
-DECL|function|snp_enable_ms
 id|snp_enable_ms
 c_func
 (paren
@@ -815,9 +814,9 @@ id|port
 (brace
 )brace
 multiline_comment|/**&n; * snp_shutdown - shut down the port - free irq and disable - no-op for us&n; * @port: Port to shut down - we ignore&n; *&n; */
+DECL|function|snp_shutdown
 r_static
 r_void
-DECL|function|snp_shutdown
 id|snp_shutdown
 c_func
 (paren
@@ -829,9 +828,9 @@ id|port
 (brace
 )brace
 multiline_comment|/**&n; * snp_set_mctrl - set control lines (dtr, rts, etc) - no-op for our console&n; * @port: Port to operate on - we ignore&n; * @mctrl: Lines to set/unset - we ignore&n; *&n; */
+DECL|function|snp_set_mctrl
 r_static
 r_void
-DECL|function|snp_set_mctrl
 id|snp_set_mctrl
 c_func
 (paren
@@ -847,10 +846,10 @@ id|mctrl
 (brace
 )brace
 multiline_comment|/**&n; * snp_get_mctrl - get contorl line info, we just return a static value&n; * @port: port to operate on - we only have one port so we ignore this&n; *&n; */
+DECL|function|snp_get_mctrl
 r_static
 r_int
 r_int
-DECL|function|snp_get_mctrl
 id|snp_get_mctrl
 c_func
 (paren
@@ -871,9 +870,9 @@ id|TIOCM_CTS
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * snp_stop_rx - Stop the receiver - we ignor ethis&n; * @port: Port to operate on - we ignore&n; *&n; */
+DECL|function|snp_stop_rx
 r_static
 r_void
-DECL|function|snp_stop_rx
 id|snp_stop_rx
 c_func
 (paren
@@ -885,9 +884,9 @@ id|port
 (brace
 )brace
 multiline_comment|/**&n; * snp_start_tx - Start transmitter&n; * @port: Port to operate on&n; * @tty_stop: Set to 1 if called via uart_start&n; *&n; */
+DECL|function|snp_start_tx
 r_static
 r_void
-DECL|function|snp_start_tx
 id|snp_start_tx
 c_func
 (paren
@@ -919,9 +918,9 @@ id|TRANSMIT_BUFFERED
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * snp_break_ctl - handle breaks - ignored by us&n; * @port: Port to operate on&n; * @break_state: Break state&n; *&n; */
+DECL|function|snp_break_ctl
 r_static
 r_void
-DECL|function|snp_break_ctl
 id|snp_break_ctl
 c_func
 (paren
@@ -936,9 +935,9 @@ id|break_state
 (brace
 )brace
 multiline_comment|/**&n; * snp_startup - Start up the serial port - always return 0 (We&squot;re always on)&n; * @port: Port to operate on&n; *&n; */
+DECL|function|snp_startup
 r_static
 r_int
-DECL|function|snp_startup
 id|snp_startup
 c_func
 (paren
@@ -977,9 +976,9 @@ id|old
 (brace
 )brace
 multiline_comment|/**&n; * snp_request_port - allocate resources for port - ignored by us&n; * @port: port to operate on&n; *&n; */
+DECL|function|snp_request_port
 r_static
 r_int
-DECL|function|snp_request_port
 id|snp_request_port
 c_func
 (paren
@@ -994,9 +993,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * snp_config_port - allocate resources, set up - we ignore,  we&squot;re always on&n; * @port: Port to operate on&n; * @flags: flags used for port setup&n; *&n; */
+DECL|function|snp_config_port
 r_static
 r_void
-DECL|function|snp_config_port
 id|snp_config_port
 c_func
 (paren
@@ -1108,9 +1107,9 @@ suffix:semicolon
 multiline_comment|/* End of uart struct functions and defines */
 macro_line|#ifdef DEBUG
 multiline_comment|/**&n; * sn_debug_printf - close to hardware debugging printf&n; * @fmt: printf format&n; *&n; * This is as &quot;close to the metal&quot; as we can get, used when the driver&n; * itself may be broken.&n; *&n; */
+DECL|function|sn_debug_printf
 r_static
 r_int
-DECL|function|sn_debug_printf
 id|sn_debug_printf
 c_func
 (paren
@@ -1214,7 +1213,7 @@ r_return
 id|printed_len
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* DEBUG */
+macro_line|#endif&t;&t;&t;&t;/* DEBUG */
 multiline_comment|/*&n; * Interrupt handling routines.&n; */
 multiline_comment|/**&n; * sn_receive_chars - Grab characters, pass them to tty layer&n; * @port: Port to operate on&n; * @regs: Saved registers (needed by uart_handle_sysrq_char)&n; * @flags: irq flags&n; *&n; * Note: If we&squot;re not registered with the serial core infrastructure yet,&n; * we don&squot;t try to send characters to it...&n; *&n; */
 r_static
@@ -1505,9 +1504,9 @@ id|tty
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * sn_transmit_chars - grab characters from serial core, send off&n; * @port: Port to operate on&n; * @raw: Transmit raw or buffered&n; *&n; * Note: If we&squot;re early, before we&squot;re registered with serial core, the&n; * writes are going through sn_sal_console_write because that&squot;s how&n; * register_console has been set up.  We currently could have asynch&n; * polls calling this function due to sn_sal_switch_to_asynch but we can&n; * ignore them until we register with the serial core stuffs.&n; *&n; */
+DECL|function|sn_transmit_chars
 r_static
 r_void
-DECL|function|sn_transmit_chars
 id|sn_transmit_chars
 c_func
 (paren
@@ -1798,9 +1797,9 @@ suffix:semicolon
 multiline_comment|/* no-op for us */
 )brace
 multiline_comment|/**&n; * sn_sal_interrupt - Handle console interrupts&n; * @irq: irq #, useful for debug statements&n; * @dev_id: our pointer to our port (sn_cons_port which contains the uart port)&n; * @regs: Saved registers, used by sn_receive_chars for uart_handle_sysrq_char&n; *&n; */
+DECL|function|sn_sal_interrupt
 r_static
 id|irqreturn_t
-DECL|function|sn_sal_interrupt
 id|sn_sal_interrupt
 c_func
 (paren
@@ -1909,9 +1908,9 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * sn_sal_connect_interrupt - Request interrupt, handled by sn_sal_interrupt&n; * @port: Our sn_cons_port (which contains the uart port)&n; *&n; * returns the console irq if interrupt is successfully registered, else 0&n; *&n; */
+DECL|function|sn_sal_connect_interrupt
 r_static
 r_int
-DECL|function|sn_sal_connect_interrupt
 id|sn_sal_connect_interrupt
 c_func
 (paren
@@ -1959,9 +1958,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * sn_sal_timer_poll - this function handles polled console mode&n; * @data: A pointer to our sn_cons_port (which contains the uart port)&n; *&n; * data is the pointer that init_timer will store for us.  This function is&n; * associated with init_timer to see if there is any console traffic.&n; * Obviously not used in interrupt mode&n; *&n; */
+DECL|function|sn_sal_timer_poll
 r_static
 r_void
-DECL|function|sn_sal_timer_poll
 id|sn_sal_timer_poll
 c_func
 (paren
@@ -2052,10 +2051,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Boot-time initialization code&n; */
 multiline_comment|/**&n; * sn_sal_switch_to_asynch - Switch to async mode (as opposed to synch)&n; * @port: Our sn_cons_port (which contains the uart port)&n; *&n; * So this is used by sn_sal_serial_console_init (early on, before we&squot;re&n; * registered with serial core).  It&squot;s also used by sn_sal_module_init&n; * right after we&squot;ve registered with serial core.  The later only happens&n; * if we didn&squot;t already come through here via sn_sal_serial_console_init.&n; *&n; */
+DECL|function|sn_sal_switch_to_asynch
 r_static
 r_void
 id|__init
-DECL|function|sn_sal_switch_to_asynch
 id|sn_sal_switch_to_asynch
 c_func
 (paren
@@ -2191,10 +2190,10 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * sn_sal_switch_to_interrupts - Switch to interrupt driven mode&n; * @port: Our sn_cons_port (which contains the uart port)&n; *&n; * In sn_sal_module_init, after we&squot;re registered with serial core and&n; * the port is added, this function is called to switch us to interrupt&n; * mode.  We were previously in asynch/polling mode (using init_timer).&n; *&n; * We attempt to switch to interrupt mode here by calling&n; * sn_sal_connect_interrupt.  If that works out, we enable receive interrupts.&n; */
+DECL|function|sn_sal_switch_to_interrupts
 r_static
 r_void
 id|__init
-DECL|function|sn_sal_switch_to_interrupts
 id|sn_sal_switch_to_interrupts
 c_func
 (paren
@@ -2417,10 +2416,10 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * sn_sal_module_init - When the kernel loads us, get us rolling w/ serial core&n; *&n; * Before this is called, we&squot;ve been printing kernel messages in a special&n; * early mode not making use of the serial core infrastructure.  When our&n; * driver is loaded for real, we register the driver and port with serial&n; * core and try to enable interrupt driven mode.&n; *&n; */
+DECL|function|sn_sal_module_init
 r_static
 r_int
 id|__init
-DECL|function|sn_sal_module_init
 id|sn_sal_module_init
 c_func
 (paren
@@ -2485,7 +2484,6 @@ l_int|0
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;Failed to register console device using misc_register.&bslash;n&quot;
 )paren
@@ -2515,7 +2513,7 @@ op_assign
 id|DEVICE_MINOR
 suffix:semicolon
 )brace
-multiline_comment|/* We register the driver and the port before switching to interrupts&n;    * or async above so the proper uart structures are populated */
+multiline_comment|/* We register the driver and the port before switching to interrupts&n;&t; * or async above so the proper uart structures are populated */
 r_if
 c_cond
 (paren
@@ -2530,7 +2528,6 @@ l_int|0
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;ERROR sn_sal_module_init failed uart_register_driver, line %d&bslash;n&quot;
 comma
@@ -2640,10 +2637,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * sn_sal_module_exit - When we&squot;re unloaded, remove the driver/port&n; *&n; */
+DECL|function|sn_sal_module_exit
 r_static
 r_void
 id|__exit
-DECL|function|sn_sal_module_exit
 id|sn_sal_module_exit
 c_func
 (paren
@@ -2852,7 +2849,7 @@ c_cond
 id|port-&gt;sc_port.info
 )paren
 (brace
-multiline_comment|/* somebody really wants this output, might be an&n;&t; &t;* oops, kdb, panic, etc.  make sure they get it. */
+multiline_comment|/* somebody really wants this output, might be an&n;&t;&t; * oops, kdb, panic, etc.  make sure they get it. */
 macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT)
 r_if
 c_cond
@@ -2882,7 +2879,7 @@ id|got_lock
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; &t; * We attempt to determine if someone has died with the&n;&t;&t; &t; * lock. We wait ~20 secs after the head and tail ptrs&n;&t;&t; &t; * stop moving and assume the lock holder is not functional&n;&t;&t; &t; * and plow ahead. If the lock is freed within the time out&n;&t;&t; &t; * period we re-get the lock and go ahead normally. We also&n;&t;&t; &t; * remember if we have plowed ahead so that we don&squot;t have&n;&t;&t;&t; * to wait out the time out period again - the asumption&n;&t;&t; &t; * is that we will time out again.&n;&t;&t; &t; */
+multiline_comment|/*&n;&t;&t;&t; * We attempt to determine if someone has died with the&n;&t;&t;&t; * lock. We wait ~20 secs after the head and tail ptrs&n;&t;&t;&t; * stop moving and assume the lock holder is not functional&n;&t;&t;&t; * and plow ahead. If the lock is freed within the time out&n;&t;&t;&t; * period we re-get the lock and go ahead normally. We also&n;&t;&t;&t; * remember if we have plowed ahead so that we don&squot;t have&n;&t;&t;&t; * to wait out the time out period again - the asumption&n;&t;&t;&t; * is that we will time out again.&n;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -2929,7 +2926,9 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|port-&gt;sc_port.lock
+id|port
+op_member_access_from_pointer
+id|sc_port.lock
 comma
 id|flags
 )paren
@@ -2957,17 +2956,23 @@ op_logical_or
 (paren
 id|ltail
 op_ne
-id|port-&gt;sc_port.info-&gt;xmit.tail
+id|port-&gt;sc_port.info-&gt;xmit
+dot
+id|tail
 )paren
 )paren
 (brace
 id|lhead
 op_assign
-id|port-&gt;sc_port.info-&gt;xmit.head
+id|port-&gt;sc_port.info-&gt;xmit
+dot
+id|head
 suffix:semicolon
 id|ltail
 op_assign
-id|port-&gt;sc_port.info-&gt;xmit.tail
+id|port-&gt;sc_port.info-&gt;xmit
+dot
+id|tail
 suffix:semicolon
 id|counter
 op_assign
@@ -3087,10 +3092,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * sn_sal_console_setup - Set up console for early printing&n; * @co: Console to work with&n; * @options: Options to set&n; *&n; * Altix console doesn&squot;t do anything with baud rates, etc, anyway.&n; *&n; * This isn&squot;t required since not providing the setup function in the&n; * console struct is ok.  However, other patches like KDB plop something&n; * here so providing it is easier.&n; *&n; */
+DECL|function|sn_sal_console_setup
 r_static
 r_int
 id|__init
-DECL|function|sn_sal_console_setup
 id|sn_sal_console_setup
 c_func
 (paren
@@ -3174,9 +3179,9 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * sn_serial_console_early_setup - Sets up early console output support&n; *&n; * Register a console early on...  This is for output before even&n; * sn_sal_serial_cosnole_init is called.  This function is called from&n; * setup.c.  This allows us to do really early polled writes. When&n; * sn_sal_serial_console_init is called, this console is unregistered&n; * and a new one registered.&n; */
+DECL|function|sn_serial_console_early_setup
 r_int
 id|__init
-DECL|function|sn_serial_console_early_setup
 id|sn_serial_console_early_setup
 c_func
 (paren
@@ -3234,10 +3239,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * sn_sal_serial_console_init - Early console output - set up for register&n; *&n; * This function is called when regular console init happens.  Because we&n; * support even earlier console output with sn_serial_console_early_setup&n; * (called from setup.c directly), this function unregisters the really&n; * early console.&n; *&n; * Note: Even if setup.c doesn&squot;t register sal_console_early, unregistering&n; * it here doesn&squot;t hurt anything.&n; *&n; */
+DECL|function|sn_sal_serial_console_init
 r_static
 r_int
 id|__init
-DECL|function|sn_sal_serial_console_init
 id|sn_sal_serial_console_init
 c_func
 (paren
@@ -3262,6 +3267,7 @@ id|sal_console_port
 )paren
 suffix:semicolon
 id|DPRINTF
+c_func
 (paren
 l_string|&quot;sn_sal_serial_console_init : register console&bslash;n&quot;
 )paren

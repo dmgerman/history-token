@@ -182,6 +182,11 @@ DECL|macro|PCI_CONTROLLER
 mdefine_line|#define PCI_CONTROLLER(busdev) ((struct pci_controller *) busdev-&gt;sysdata)
 DECL|macro|pci_domain_nr
 mdefine_line|#define pci_domain_nr(busdev)    (PCI_CONTROLLER(busdev)-&gt;segment)
+r_extern
+r_struct
+id|pci_ops
+id|pci_root_ops
+suffix:semicolon
 DECL|function|pci_name_bus
 r_static
 r_inline
