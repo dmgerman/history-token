@@ -1776,12 +1776,12 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-id|skt-&gt;ops
+id|s-&gt;ops
 op_member_access_from_pointer
 id|get_status
 c_func
 (paren
-id|skt
+id|s
 comma
 op_amp
 id|status
@@ -1801,7 +1801,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCMCIA: socket %p: *** DANGER *** unable to remove socket power&bslash;n&quot;
 comma
-id|skt
+id|s
 )paren
 suffix:semicolon
 )brace
