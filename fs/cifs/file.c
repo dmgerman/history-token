@@ -2749,7 +2749,7 @@ id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
-multiline_comment|/* figure out which file struct to use &n;&t;if (file-&gt;private_data == NULL) {&n;&t;&t;kunmap(page);&n;&t;&t;FreeXid(xid);&n;&t;&t;return -EBADF;&n;&t;}     &n;&t; */
+multiline_comment|/* figure out which file struct to use &n;&t;if (file-&gt;private_data == NULL) {&n;&t;&t;FreeXid(xid);&n;&t;&t;return -EBADF;&n;&t;}     &n;&t; */
 r_if
 c_cond
 (paren
@@ -4361,6 +4361,13 @@ id|page_list
 )paren
 )paren
 (brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mapping-&gt;page_lock
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
