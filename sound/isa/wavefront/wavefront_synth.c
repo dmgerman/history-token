@@ -1912,7 +1912,7 @@ l_int|0
 suffix:semicolon
 )brace
 "&f;"
-multiline_comment|/***********************************************************************&n;WaveFront data munging   &n;&n;Things here are wierd. All data written to the board cannot &n;have its most significant bit set. Any data item with values &n;potentially &gt; 0x7F (127) must be split across multiple bytes.&n;&n;Sometimes, we need to munge numeric values that are represented on&n;the x86 side as 8-32 bit values. Sometimes, we need to munge data&n;that is represented on the x86 side as an array of bytes. The most&n;efficient approach to handling both cases seems to be to use 2&n;different functions for munging and 2 for de-munging. This avoids&n;wierd casting and worrying about bit-level offsets.&n;&n;**********************************************************************/
+multiline_comment|/***********************************************************************&n;WaveFront data munging   &n;&n;Things here are weird. All data written to the board cannot &n;have its most significant bit set. Any data item with values &n;potentially &gt; 0x7F (127) must be split across multiple bytes.&n;&n;Sometimes, we need to munge numeric values that are represented on&n;the x86 side as 8-32 bit values. Sometimes, we need to munge data&n;that is represented on the x86 side as an array of bytes. The most&n;efficient approach to handling both cases seems to be to use 2&n;different functions for munging and 2 for de-munging. This avoids&n;weird casting and worrying about bit-level offsets.&n;&n;**********************************************************************/
 r_static
 r_int
 r_char
@@ -3807,7 +3807,7 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/* This one is truly wierd. What kind of wierdo decided that in&n;&t;   a system dominated by 16 and 32 bit integers, they would use&n;&t;   a just 12 bits ?&n;&t;*/
+multiline_comment|/* This one is truly weird. What kind of weirdo decided that in&n;&t;   a system dominated by 16 and 32 bit integers, they would use&n;&t;   a just 12 bits ?&n;&t;*/
 id|shptr
 op_assign
 id|munge_int32

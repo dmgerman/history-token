@@ -2691,7 +2691,7 @@ DECL|macro|MII_LXT971_LCR
 mdefine_line|#define MII_LXT971_LCR       20  /* LED Control Register      */
 DECL|macro|MII_LXT971_TCR
 mdefine_line|#define MII_LXT971_TCR       30  /* Transmit Control Register */
-multiline_comment|/* &n; * I had some nice ideas of running the MDIO faster...&n; * The 971 should support 8MHz and I tried it, but things acted really&n; * wierd, so 2.5 MHz ought to be enough for anyone...&n; */
+multiline_comment|/* &n; * I had some nice ideas of running the MDIO faster...&n; * The 971 should support 8MHz and I tried it, but things acted really&n; * weird, so 2.5 MHz ought to be enough for anyone...&n; */
 DECL|function|mii_parse_lxt971_sr2
 r_static
 r_void
