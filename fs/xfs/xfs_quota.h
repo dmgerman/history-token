@@ -380,6 +380,7 @@ DECL|macro|XFS_QMOPT_QUOTALL
 mdefine_line|#define XFS_QMOPT_QUOTALL&t;(XFS_QMOPT_UQUOTA|XFS_QMOPT_GQUOTA)
 DECL|macro|XFS_QMOPT_RESBLK_MASK
 mdefine_line|#define XFS_QMOPT_RESBLK_MASK&t;(XFS_QMOPT_RES_REGBLKS | XFS_QMOPT_RES_RTBLKS)
+macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * This check is done typically without holding the inode lock;&n; * that may seem racey, but it is harmless in the context that it is used.&n; * The inode cannot go inactive as long a reference is kept, and&n; * therefore if dquot(s) were attached, they&squot;ll stay consistent.&n; * If, for example, the ownership of the inode changes while&n; * we didn&squot;t have the inode locked, the appropriate dquot(s) will be&n; * attached atomically.&n; */
 DECL|macro|XFS_NOT_DQATTACHED
 mdefine_line|#define XFS_NOT_DQATTACHED(mp, ip) ((XFS_IS_UQUOTA_ON(mp) &amp;&amp;&bslash;&n;&t;&t;&t;&t;     (ip)-&gt;i_udquot == NULL) || &bslash;&n;&t;&t;&t;&t;    (XFS_IS_GQUOTA_ON(mp) &amp;&amp; &bslash;&n;&t;&t;&t;&t;     (ip)-&gt;i_gdquot == NULL))
@@ -389,8 +390,6 @@ DECL|macro|XFS_MOUNT_QUOTA_ALL
 mdefine_line|#define XFS_MOUNT_QUOTA_ALL&t;(XFS_UQUOTA_ACCT|XFS_UQUOTA_ENFD|&bslash;&n;&t;&t;&t;&t; XFS_UQUOTA_CHKD|XFS_GQUOTA_ACCT|&bslash;&n;&t;&t;&t;&t; XFS_GQUOTA_ENFD|XFS_GQUOTA_CHKD)
 DECL|macro|XFS_MOUNT_QUOTA_MASK
 mdefine_line|#define XFS_MOUNT_QUOTA_MASK&t;(XFS_MOUNT_QUOTA_ALL | XFS_UQUOTA_ACTIVE | &bslash;&n;&t;&t;&t;&t; XFS_GQUOTA_ACTIVE)
-DECL|macro|XFS_IS_REALTIME_INODE
-mdefine_line|#define XFS_IS_REALTIME_INODE(ip) ((ip)-&gt;i_d.di_flags &amp; XFS_DIFLAG_REALTIME)
 multiline_comment|/*&n; * The structure kept inside the xfs_trans_t keep track of dquot changes&n; * within a transaction and apply them later.&n; */
 DECL|struct|xfs_dqtrx
 r_typedef
@@ -701,5 +700,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* __XFS_QUOTA_H__ */
 eof
