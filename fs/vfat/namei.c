@@ -755,79 +755,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* MS-DOS &quot;device special files&quot; */
-DECL|variable|reserved3_names
-r_static
-r_const
-r_int
-r_char
-op_star
-id|reserved3_names
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;con     &quot;
-comma
-l_string|&quot;prn     &quot;
-comma
-l_string|&quot;nul     &quot;
-comma
-l_string|&quot;aux     &quot;
-comma
-l_int|NULL
-)brace
-suffix:semicolon
-DECL|variable|reserved4_names
-r_static
-r_const
-r_int
-r_char
-op_star
-id|reserved4_names
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;com1    &quot;
-comma
-l_string|&quot;com2    &quot;
-comma
-l_string|&quot;com3    &quot;
-comma
-l_string|&quot;com4    &quot;
-comma
-l_string|&quot;com5    &quot;
-comma
-l_string|&quot;com6    &quot;
-comma
-l_string|&quot;com7    &quot;
-comma
-l_string|&quot;com8    &quot;
-comma
-l_string|&quot;com9    &quot;
-comma
-l_string|&quot;lpt1    &quot;
-comma
-l_string|&quot;lpt2    &quot;
-comma
-l_string|&quot;lpt3    &quot;
-comma
-l_string|&quot;lpt4    &quot;
-comma
-l_string|&quot;lpt5    &quot;
-comma
-l_string|&quot;lpt6    &quot;
-comma
-l_string|&quot;lpt7    &quot;
-comma
-l_string|&quot;lpt8    &quot;
-comma
-l_string|&quot;lpt9    &quot;
-comma
-l_int|NULL
-)brace
-suffix:semicolon
 multiline_comment|/* Characters that are undesirable in an MS-DOS file name */
 DECL|variable|bad_chars
 r_static
@@ -1018,8 +945,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Checks the validity of a long MS-DOS filename */
-multiline_comment|/* Returns negative number on error, 0 for a normal&n; * return, and 1 for . or .. */
 DECL|function|vfat_valid_longname
 r_static
 r_int
@@ -1033,25 +958,10 @@ op_star
 id|name
 comma
 r_int
-id|len
-comma
 r_int
-id|xlate
+id|len
 )paren
 (brace
-r_const
-r_int
-r_char
-op_star
-op_star
-id|reserved
-comma
-op_star
-id|walk
-suffix:semicolon
-r_int
-id|baselen
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1067,8 +977,7 @@ op_eq
 l_char|&squot; &squot;
 )paren
 r_return
-op_minus
-id|EINVAL
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1078,68 +987,31 @@ op_ge
 l_int|256
 )paren
 r_return
-op_minus
-id|EINVAL
+l_int|0
 suffix:semicolon
+multiline_comment|/* MS-DOS &quot;device special files&quot; */
 r_if
 c_cond
 (paren
 id|len
-OL
-l_int|3
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|walk
-op_assign
-id|name
-suffix:semicolon
-op_star
-id|walk
-op_ne
-l_int|0
-op_logical_and
-op_star
-id|walk
-op_ne
-l_char|&squot;.&squot;
-suffix:semicolon
-id|walk
-op_increment
-)paren
-suffix:semicolon
-id|baselen
-op_assign
-id|walk
-op_minus
-id|name
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|baselen
 op_eq
 l_int|3
-)paren
-(brace
-r_for
-c_loop
+op_logical_or
 (paren
-id|reserved
-op_assign
-id|reserved3_names
-suffix:semicolon
-op_star
-id|reserved
-suffix:semicolon
-id|reserved
-op_increment
+id|len
+OG
+l_int|3
+op_logical_and
+id|name
+(braket
+l_int|3
+)braket
+op_eq
+l_char|&squot;.&squot;
+)paren
 )paren
 (brace
+multiline_comment|/* basename == 3 */
 r_if
 c_cond
 (paren
@@ -1149,39 +1021,87 @@ c_func
 (paren
 id|name
 comma
-op_star
-id|reserved
+l_string|&quot;aux&quot;
 comma
-id|baselen
+l_int|3
+)paren
+op_logical_or
+op_logical_neg
+id|strnicmp
+c_func
+(paren
+id|name
+comma
+l_string|&quot;con&quot;
+comma
+l_int|3
+)paren
+op_logical_or
+op_logical_neg
+id|strnicmp
+c_func
+(paren
+id|name
+comma
+l_string|&quot;nul&quot;
+comma
+l_int|3
+)paren
+op_logical_or
+op_logical_neg
+id|strnicmp
+c_func
+(paren
+id|name
+comma
+l_string|&quot;prn&quot;
+comma
+l_int|3
 )paren
 )paren
 r_return
-op_minus
-id|EINVAL
+l_int|0
 suffix:semicolon
 )brace
-)brace
-r_else
 r_if
 c_cond
 (paren
-id|baselen
+id|len
 op_eq
 l_int|4
+op_logical_or
+(paren
+id|len
+OG
+l_int|4
+op_logical_and
+id|name
+(braket
+l_int|4
+)braket
+op_eq
+l_char|&squot;.&squot;
+)paren
 )paren
 (brace
-r_for
-c_loop
+multiline_comment|/* basename == 4 */
+multiline_comment|/* &quot;com1&quot;, &quot;com2&quot;, ... */
+r_if
+c_cond
 (paren
-id|reserved
-op_assign
-id|reserved4_names
-suffix:semicolon
-op_star
-id|reserved
-suffix:semicolon
-id|reserved
-op_increment
+l_char|&squot;1&squot;
+op_le
+id|name
+(braket
+l_int|3
+)braket
+op_logical_and
+id|name
+(braket
+l_int|3
+)braket
+op_le
+l_char|&squot;9&squot;
 )paren
 (brace
 r_if
@@ -1193,20 +1113,29 @@ c_func
 (paren
 id|name
 comma
-op_star
-id|reserved
+l_string|&quot;com&quot;
 comma
-id|baselen
+l_int|3
+)paren
+op_logical_or
+op_logical_neg
+id|strnicmp
+c_func
+(paren
+id|name
+comma
+l_string|&quot;lpt&quot;
+comma
+l_int|3
 )paren
 )paren
 r_return
-op_minus
-id|EINVAL
+l_int|0
 suffix:semicolon
 )brace
 )brace
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|vfat_find_form
@@ -3218,27 +3147,21 @@ id|slots
 op_assign
 l_int|0
 suffix:semicolon
-id|res
-op_assign
+r_if
+c_cond
+(paren
+op_logical_neg
 id|vfat_valid_longname
 c_func
 (paren
 id|name
 comma
 id|len
-comma
-id|opts-&gt;unicode_xlate
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|res
-OL
-l_int|0
 )paren
 r_return
-id|res
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
