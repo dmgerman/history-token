@@ -1890,6 +1890,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|bufptr
 comma
