@@ -916,6 +916,13 @@ id|copy
 suffix:semicolon
 )brace
 )brace
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Deferred destroy.&n; */
 r_void
@@ -6468,7 +6475,7 @@ id|ax25_digi
 id|digi
 suffix:semicolon
 id|ax25_address
-id|dest
+id|src
 suffix:semicolon
 id|ax25_addr_parse
 c_func
@@ -6483,10 +6490,10 @@ id|skb-&gt;mac.raw
 op_minus
 l_int|1
 comma
-l_int|NULL
-comma
 op_amp
-id|dest
+id|src
+comma
+l_int|NULL
 comma
 op_amp
 id|digi
@@ -6507,7 +6514,7 @@ id|digi.ndigi
 suffix:semicolon
 id|sax-&gt;sax25_call
 op_assign
-id|dest
+id|src
 suffix:semicolon
 r_if
 c_cond
