@@ -1440,7 +1440,7 @@ op_star
 id|drive
 comma
 id|u8
-id|command
+id|cmd
 )paren
 (brace
 multiline_comment|/* issue cmd to drive */
