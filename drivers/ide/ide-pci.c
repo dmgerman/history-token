@@ -1428,7 +1428,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-multiline_comment|/* no room in ide_hwifs[] */
+multiline_comment|/* no room */
 r_if
 c_cond
 (paren

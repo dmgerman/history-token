@@ -55,28 +55,64 @@ multiline_comment|/*&n; * state flags&n; */
 DECL|macro|DMA_PIO_RETRY
 mdefine_line|#define DMA_PIO_RETRY&t;1&t;/* retrying in PIO */
 multiline_comment|/*&n; * Definitions for accessing IDE controller registers&n; */
-DECL|macro|IDE_NR_PORTS
-mdefine_line|#define IDE_NR_PORTS&t;&t;(10)
-DECL|macro|IDE_DATA_OFFSET
-mdefine_line|#define IDE_DATA_OFFSET&t;&t;(0)
-DECL|macro|IDE_ERROR_OFFSET
-mdefine_line|#define IDE_ERROR_OFFSET&t;(1)
-DECL|macro|IDE_NSECTOR_OFFSET
-mdefine_line|#define IDE_NSECTOR_OFFSET&t;(2)
-DECL|macro|IDE_SECTOR_OFFSET
-mdefine_line|#define IDE_SECTOR_OFFSET&t;(3)
-DECL|macro|IDE_LCYL_OFFSET
-mdefine_line|#define IDE_LCYL_OFFSET&t;&t;(4)
-DECL|macro|IDE_HCYL_OFFSET
-mdefine_line|#define IDE_HCYL_OFFSET&t;&t;(5)
-DECL|macro|IDE_SELECT_OFFSET
-mdefine_line|#define IDE_SELECT_OFFSET&t;(6)
-DECL|macro|IDE_STATUS_OFFSET
-mdefine_line|#define IDE_STATUS_OFFSET&t;(7)
-DECL|macro|IDE_CONTROL_OFFSET
-mdefine_line|#define IDE_CONTROL_OFFSET&t;(8)
-DECL|macro|IDE_IRQ_OFFSET
-mdefine_line|#define IDE_IRQ_OFFSET&t;&t;(9)
+r_enum
+(brace
+DECL|enumerator|IDE_DATA_OFFSET
+id|IDE_DATA_OFFSET
+op_assign
+l_int|0
+comma
+DECL|enumerator|IDE_ERROR_OFFSET
+id|IDE_ERROR_OFFSET
+op_assign
+l_int|1
+comma
+DECL|enumerator|IDE_NSECTOR_OFFSET
+id|IDE_NSECTOR_OFFSET
+op_assign
+l_int|2
+comma
+DECL|enumerator|IDE_SECTOR_OFFSET
+id|IDE_SECTOR_OFFSET
+op_assign
+l_int|3
+comma
+DECL|enumerator|IDE_LCYL_OFFSET
+id|IDE_LCYL_OFFSET
+op_assign
+l_int|4
+comma
+DECL|enumerator|IDE_HCYL_OFFSET
+id|IDE_HCYL_OFFSET
+op_assign
+l_int|5
+comma
+DECL|enumerator|IDE_SELECT_OFFSET
+id|IDE_SELECT_OFFSET
+op_assign
+l_int|6
+comma
+DECL|enumerator|IDE_STATUS_OFFSET
+id|IDE_STATUS_OFFSET
+op_assign
+l_int|7
+comma
+DECL|enumerator|IDE_CONTROL_OFFSET
+id|IDE_CONTROL_OFFSET
+op_assign
+l_int|8
+comma
+DECL|enumerator|IDE_IRQ_OFFSET
+id|IDE_IRQ_OFFSET
+op_assign
+l_int|9
+comma
+DECL|enumerator|IDE_NR_PORTS
+id|IDE_NR_PORTS
+op_assign
+l_int|10
+)brace
+suffix:semicolon
 DECL|macro|IDE_FEATURE_OFFSET
 mdefine_line|#define IDE_FEATURE_OFFSET&t;IDE_ERROR_OFFSET
 DECL|macro|IDE_COMMAND_OFFSET
@@ -1671,12 +1707,6 @@ c_func
 id|hw_regs_t
 op_star
 id|hw
-comma
-r_struct
-id|ata_channel
-op_star
-op_star
-id|hwifp
 )paren
 suffix:semicolon
 r_extern
@@ -2504,13 +2534,6 @@ comma
 r_int
 r_int
 id|arg
-)paren
-suffix:semicolon
-r_void
-id|ide_delay_50ms
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 r_extern

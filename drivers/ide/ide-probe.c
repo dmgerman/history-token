@@ -78,7 +78,6 @@ id|err_kmalloc
 suffix:semicolon
 )brace
 multiline_comment|/* Read 512 bytes of id info.&n;&t; *&n;&t; * Please note that it is well known that some *very* old drives are&n;&t; * able to provide only 256 of them, since this was the amount read by&n;&t; * DOS.&n;&t; *&n;&t; * However let&squot;s try to get away with this...&n;&t; */
-macro_line|#if 1
 id|ata_read
 c_func
 (paren
@@ -89,49 +88,6 @@ comma
 id|SECTOR_WORDS
 )paren
 suffix:semicolon
-macro_line|#else
-(brace
-r_int
-r_int
-op_star
-id|ptr
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-id|id
-suffix:semicolon
-r_int
-r_int
-id|lcount
-op_assign
-l_int|256
-op_div
-l_int|2
-suffix:semicolon
-singleline_comment|// printk(&quot;IDE_DATA_REG = %#lx&quot;,IDE_DATA_REG);
-r_while
-c_loop
-(paren
-id|lcount
-op_decrement
-)paren
-(brace
-op_star
-id|ptr
-op_increment
-op_assign
-id|inl
-c_func
-(paren
-id|IDE_DATA_REG
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|ide__sti
 c_func
 (paren
@@ -818,9 +774,10 @@ id|IDE_CONTROL_REG
 )paren
 (brace
 multiline_comment|/* take a deep breath */
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|a
@@ -881,9 +838,10 @@ multiline_comment|/* use non-intrusive polling */
 )brace
 r_else
 (brace
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|hd_status
@@ -992,9 +950,10 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/* drive timed-out */
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* give drive a breather */
@@ -1011,9 +970,10 @@ op_amp
 id|BUSY_STAT
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* wait for IRQ and DRQ_STAT */
@@ -1243,9 +1203,10 @@ l_string|&quot;ATAPI&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* needed for some systems (e.g. crw9624 as drive0 with disk as slave) */
@@ -1257,9 +1218,10 @@ comma
 id|drive
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 r_if
@@ -1298,9 +1260,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* exit with drive0 selected */
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* allow BUSY_STAT to assert &amp; clear */
@@ -1393,9 +1356,10 @@ c_func
 )paren
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|OUT_BYTE
@@ -1405,9 +1369,10 @@ comma
 id|IDE_SELECT_REG
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|OUT_BYTE
@@ -1444,9 +1409,10 @@ op_plus
 id|WAIT_WORSTCASE
 )paren
 )paren
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|rc
@@ -1517,9 +1483,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* exit with drive0 selected */
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 (paren
@@ -1570,9 +1537,10 @@ comma
 id|drive
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|OUT_BYTE
@@ -1612,9 +1580,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 )brace
@@ -1629,9 +1598,10 @@ op_amp
 id|BUSY_STAT
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 r_if
@@ -2222,9 +2192,10 @@ id|IDE_CONTROL_OFFSET
 suffix:semicolon
 r_do
 (brace
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|stat

@@ -1364,6 +1364,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
+multiline_comment|/* This is apparently supposed to reset the wait timeout for&n;&t;&t; * the interrupt to accur.&n;&t;&t; */
 id|ide_set_handler
 c_func
 (paren
@@ -2439,7 +2440,7 @@ r_return
 id|ide_started
 suffix:semicolon
 )brace
-multiline_comment|/* Called by ioctl to feature out type of command being called */
+multiline_comment|/* Called to figure out the type of command being called.&n; */
 DECL|function|ide_cmd_type_parser
 r_void
 id|ide_cmd_type_parser
