@@ -3494,10 +3494,6 @@ r_if
 c_cond
 (paren
 id|sbi-&gt;nls_disk
-op_logical_and
-id|opts-&gt;codepage
-op_ne
-id|fat_default_codepage
 )paren
 id|seq_printf
 c_func
@@ -3519,14 +3515,6 @@ r_if
 c_cond
 (paren
 id|sbi-&gt;nls_io
-op_logical_and
-id|strcmp
-c_func
-(paren
-id|opts-&gt;iocharset
-comma
-id|fat_default_iocharset
-)paren
 )paren
 id|seq_printf
 c_func
