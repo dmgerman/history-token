@@ -985,15 +985,15 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;XFS: Cannot set_blocksize to %u on device 0x%lx&bslash;n&quot;
+l_string|&quot;XFS: Cannot set_blocksize to %u on device %s&bslash;n&quot;
 comma
 id|sectorsize
 comma
+id|XFS_BUFTARG_NAME
+c_func
 (paren
-r_int
-r_int
+id|btp
 )paren
-id|btp-&gt;pbr_dev
 )paren
 suffix:semicolon
 )brace

@@ -63,8 +63,9 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-id|dev_t
-id|log_dev
+id|xfs_buftarg_t
+op_star
+id|log_target
 comma
 id|xfs_daddr_t
 id|blk_offset
@@ -544,11 +545,10 @@ id|xlog_debug
 op_assign
 l_int|1
 suffix:semicolon
-DECL|variable|xlog_devt
-id|dev_t
-id|xlog_devt
-op_assign
-l_int|0
+DECL|variable|xlog_target
+id|xfs_buftarg_t
+op_star
+id|xlog_target
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(XFS_LOG_TRACE)
@@ -1205,9 +1205,9 @@ c_cond
 op_logical_neg
 id|xlog_debug
 op_logical_and
-id|xlog_devt
+id|xlog_target
 op_eq
-id|log-&gt;l_dev
+id|log-&gt;l_targ
 )paren
 r_return
 l_int|0
@@ -1385,9 +1385,9 @@ c_cond
 op_logical_neg
 id|xlog_debug
 op_logical_and
-id|xlog_devt
+id|xlog_target
 op_eq
-id|log-&gt;l_dev
+id|log-&gt;l_targ
 )paren
 r_return
 l_int|0
@@ -1515,9 +1515,9 @@ c_cond
 op_logical_neg
 id|xlog_debug
 op_logical_and
-id|xlog_devt
+id|xlog_target
 op_eq
-id|log-&gt;l_dev
+id|log-&gt;l_targ
 )paren
 r_return
 l_int|0
@@ -1720,9 +1720,9 @@ c_cond
 op_logical_neg
 id|xlog_debug
 op_logical_and
-id|xlog_devt
+id|xlog_target
 op_eq
-id|log-&gt;l_dev
+id|log-&gt;l_targ
 )paren
 r_return
 l_int|0
@@ -1875,7 +1875,7 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/* xfs_log_reserve */
-multiline_comment|/*&n; * Mount a log filesystem&n; *&n; * mp&t;&t;- ubiquitous xfs mount point structure&n; * log_dev&t;- device number of on-disk log device&n; * blk_offset&t;- Start block # where block size is 512 bytes (BBSIZE)&n; * num_bblocks&t;- Number of BBSIZE blocks in on-disk log&n; *&n; * Return error or zero.&n; */
+multiline_comment|/*&n; * Mount a log filesystem&n; *&n; * mp&t;&t;- ubiquitous xfs mount point structure&n; * log_target&t;- buftarg of on-disk log device&n; * blk_offset&t;- Start block # where block size is 512 bytes (BBSIZE)&n; * num_bblocks&t;- Number of BBSIZE blocks in on-disk log&n; *&n; * Return error or zero.&n; */
 r_int
 DECL|function|xfs_log_mount
 id|xfs_log_mount
@@ -1885,8 +1885,9 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-id|dev_t
-id|log_dev
+id|xfs_buftarg_t
+op_star
+id|log_target
 comma
 id|xfs_daddr_t
 id|blk_offset
@@ -1949,7 +1950,7 @@ c_func
 (paren
 id|mp
 comma
-id|log_dev
+id|log_target
 comma
 id|blk_offset
 comma
@@ -1969,9 +1970,13 @@ c_func
 (paren
 id|CE_NOTE
 comma
-l_string|&quot;log dev: 0x%x&quot;
+l_string|&quot;log dev: %s&quot;
 comma
-id|log_dev
+id|XFS_BUFTARG_NAME
+c_func
+(paren
+id|log_target
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -2257,9 +2262,9 @@ c_cond
 op_logical_neg
 id|xlog_debug
 op_logical_and
-id|xlog_devt
+id|xlog_target
 op_eq
-id|log-&gt;l_dev
+id|log-&gt;l_targ
 )paren
 r_return
 l_int|0
@@ -2755,9 +2760,9 @@ c_cond
 op_logical_neg
 id|xlog_debug
 op_logical_and
-id|xlog_devt
+id|xlog_target
 op_eq
-id|log-&gt;l_dev
+id|log-&gt;l_targ
 )paren
 (brace
 op_star
@@ -2873,9 +2878,9 @@ c_cond
 op_logical_neg
 id|xlog_debug
 op_logical_and
-id|xlog_devt
+id|xlog_target
 op_eq
-id|log-&gt;l_dev
+id|log-&gt;l_targ
 )paren
 r_return
 suffix:semicolon
@@ -3800,7 +3805,7 @@ r_int
 id|xhdrs
 suffix:semicolon
 macro_line|#if defined(DEBUG) || defined(XLOG_NOLOG)
-multiline_comment|/*&n;&t; * When logbufs == 0, someone has disabled the log from the FSTAB&n;&t; * file.  This is not a documented feature.  We need to set xlog_debug&n;&t; * to zero (this deactivates the log) and set xlog_devt to the&n;&t; * appropriate dev_t.  Only one filesystem may be affected as such&n;&t; * since this is just a performance hack to test what we might be able&n;&t; * to get if the log were not present.&n;&t; */
+multiline_comment|/*&n;&t; * When logbufs == 0, someone has disabled the log from the FSTAB&n;&t; * file.  This is not a documented feature.  We need to set xlog_debug&n;&t; * to zero (this deactivates the log) and set xlog_target to the&n;&t; * appropriate dev_t.  Only one filesystem may be affected as such&n;&t; * since this is just a performance hack to test what we might be able&n;&t; * to get if the log were not present.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3813,9 +3818,9 @@ id|xlog_debug
 op_assign
 l_int|0
 suffix:semicolon
-id|xlog_devt
+id|xlog_target
 op_assign
-id|log-&gt;l_dev
+id|log-&gt;l_targ
 suffix:semicolon
 id|log-&gt;l_iclog_bufs
 op_assign
@@ -3898,15 +3903,16 @@ multiline_comment|/* We are reactivating a filesystem after it was active */
 r_if
 c_cond
 (paren
-id|log-&gt;l_dev
+id|log-&gt;l_targ
 op_eq
-id|xlog_devt
+id|xlog_target
 )paren
 (brace
-id|xlog_devt
+id|xlog_target
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* XXX(hch): WTF? */
 id|xlog_debug
 op_assign
 l_int|1
@@ -4157,8 +4163,9 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-id|dev_t
-id|log_dev
+id|xfs_buftarg_t
+op_star
+id|log_target
 comma
 id|xfs_daddr_t
 id|blk_offset
@@ -4220,9 +4227,9 @@ id|log-&gt;l_mp
 op_assign
 id|mp
 suffix:semicolon
-id|log-&gt;l_dev
+id|log-&gt;l_targ
 op_assign
-id|log_dev
+id|log_target
 suffix:semicolon
 id|log-&gt;l_logsize
 op_assign
