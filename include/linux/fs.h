@@ -866,7 +866,22 @@ id|assoc_mapping
 suffix:semicolon
 multiline_comment|/* ditto */
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+r_sizeof
+(paren
+r_int
+)paren
+)paren
+)paren
+)paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * On most architectures that alignment is already the case; but&n;&t; * must be enforced here for CRIS, to let the least signficant bit&n;&t; * of struct page&squot;s &quot;mapping&quot; pointer be used for PAGE_MAPPING_ANON.&n;&t; */
 DECL|struct|block_device
 r_struct
 id|block_device
