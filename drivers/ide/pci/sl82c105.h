@@ -52,16 +52,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_WINBOND
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_WINBOND_82C105
-comma
-dot
 id|name
 op_assign
 l_string|&quot;W82C105&quot;

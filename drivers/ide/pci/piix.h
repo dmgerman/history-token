@@ -47,7 +47,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|DECLARE_PIIX_DEV
-mdefine_line|#define DECLARE_PIIX_DEV(pci_id, name_str) &bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.vendor&t;&t;= PCI_VENDOR_ID_INTEL,&t;&bslash;&n;&t;&t;.device&t;&t;= pci_id,&t;&t;&bslash;&n;&t;&t;.name&t;&t;= name_str,&t;&t;&bslash;&n;&t;&t;.init_setup&t;= init_setup_piix,&t;&bslash;&n;&t;&t;.init_chipset&t;= init_chipset_piix,&t;&bslash;&n;&t;&t;.init_hwif&t;= init_hwif_piix,&t;&bslash;&n;&t;&t;.channels&t;= 2,&t;&t;&t;&bslash;&n;&t;&t;.autodma&t;= AUTODMA,&t;&t;&bslash;&n;&t;&t;.enablebits&t;= {{0x41,0x80,0x80}, {0x43,0x80,0x80}}, &bslash;&n;&t;&t;.bootable&t;= ON_BOARD,&t;&t;&bslash;&n;&t;}
+mdefine_line|#define DECLARE_PIIX_DEV(name_str) &bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.name&t;&t;= name_str,&t;&t;&bslash;&n;&t;&t;.init_setup&t;= init_setup_piix,&t;&bslash;&n;&t;&t;.init_chipset&t;= init_chipset_piix,&t;&bslash;&n;&t;&t;.init_hwif&t;= init_hwif_piix,&t;&bslash;&n;&t;&t;.channels&t;= 2,&t;&t;&t;&bslash;&n;&t;&t;.autodma&t;= AUTODMA,&t;&t;&bslash;&n;&t;&t;.enablebits&t;= {{0x41,0x80,0x80}, {0x43,0x80,0x80}}, &bslash;&n;&t;&t;.bootable&t;= ON_BOARD,&t;&t;&bslash;&n;&t;}
 multiline_comment|/*&n; *&t;Table of the various PIIX capability blocks&n; *&n; */
 DECL|variable|__devinitdata
 r_static
@@ -58,36 +58,22 @@ id|piix_pci_info
 id|__devinitdata
 op_assign
 (brace
-multiline_comment|/* 0  */
+multiline_comment|/*  0 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82371FB_0
-comma
 l_string|&quot;PIIXa&quot;
 )paren
 comma
-multiline_comment|/* 1  */
+multiline_comment|/*  1 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82371FB_1
-comma
 l_string|&quot;PIIXb&quot;
 )paren
 comma
 (brace
 multiline_comment|/* 2 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_INTEL
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_INTEL_82371MX
-comma
 dot
 id|name
 op_assign
@@ -141,66 +127,52 @@ id|ON_BOARD
 comma
 )brace
 comma
-multiline_comment|/* 3  */
+multiline_comment|/*  3 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82371SB_1
-comma
 l_string|&quot;PIIX3&quot;
 )paren
 comma
-multiline_comment|/* 4  */
+multiline_comment|/*  4 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82371AB
-comma
 l_string|&quot;PIIX4&quot;
 )paren
 comma
-multiline_comment|/* 5  */
+multiline_comment|/*  5 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82801AB_1
-comma
 l_string|&quot;ICH0&quot;
 )paren
 comma
-multiline_comment|/* 6  */
+multiline_comment|/*  6 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82443MX_1
-comma
 l_string|&quot;PIIX4&quot;
 )paren
 comma
-multiline_comment|/* 7  */
+multiline_comment|/*  7 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82801AA_1
-comma
 l_string|&quot;ICH&quot;
 )paren
 comma
-multiline_comment|/* 8  */
+multiline_comment|/*  8 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82372FB_1
-comma
 l_string|&quot;PIIX4&quot;
 )paren
 comma
-multiline_comment|/* 9  */
+multiline_comment|/*  9 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82451NX
-comma
 l_string|&quot;PIIX4&quot;
 )paren
 comma
@@ -208,8 +180,6 @@ multiline_comment|/* 10 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82801BA_9
-comma
 l_string|&quot;ICH2&quot;
 )paren
 comma
@@ -217,8 +187,6 @@ multiline_comment|/* 11 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82801BA_8
-comma
 l_string|&quot;ICH2M&quot;
 )paren
 comma
@@ -226,8 +194,6 @@ multiline_comment|/* 12 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82801CA_10
-comma
 l_string|&quot;ICH3M&quot;
 )paren
 comma
@@ -235,8 +201,6 @@ multiline_comment|/* 13 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82801CA_11
-comma
 l_string|&quot;ICH3&quot;
 )paren
 comma
@@ -244,8 +208,6 @@ multiline_comment|/* 14 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82801DB_11
-comma
 l_string|&quot;ICH4&quot;
 )paren
 comma
@@ -253,8 +215,6 @@ multiline_comment|/* 15 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82801EB_11
-comma
 l_string|&quot;ICH5&quot;
 )paren
 comma
@@ -262,8 +222,6 @@ multiline_comment|/* 16 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82801E_11
-comma
 l_string|&quot;C-ICH&quot;
 )paren
 comma
@@ -271,8 +229,6 @@ multiline_comment|/* 17 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82801DB_10
-comma
 l_string|&quot;ICH4&quot;
 )paren
 comma
@@ -280,8 +236,6 @@ multiline_comment|/* 18 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_82801EB_1
-comma
 l_string|&quot;ICH5-SATA&quot;
 )paren
 comma
@@ -289,8 +243,6 @@ multiline_comment|/* 19 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_ESB_2
-comma
 l_string|&quot;ICH5&quot;
 )paren
 comma
@@ -298,8 +250,6 @@ multiline_comment|/* 20 */
 id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|PCI_DEVICE_ID_INTEL_ICH6_19
-comma
 l_string|&quot;ICH6&quot;
 )paren
 )brace

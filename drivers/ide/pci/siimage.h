@@ -67,16 +67,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_CMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_SII_680
-comma
-dot
 id|name
 op_assign
 l_string|&quot;SiI680&quot;
@@ -116,16 +106,6 @@ comma
 (brace
 multiline_comment|/* 1 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_CMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_SII_3112
-comma
-dot
 id|name
 op_assign
 l_string|&quot;SiI3112 Serial ATA&quot;
@@ -164,16 +144,6 @@ comma
 comma
 (brace
 multiline_comment|/* 2 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_CMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_SII_1210SA
-comma
 dot
 id|name
 op_assign

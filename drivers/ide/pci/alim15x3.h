@@ -63,16 +63,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_AL
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_AL_M5229
-comma
-dot
 id|name
 op_assign
 l_string|&quot;ALI15X3&quot;

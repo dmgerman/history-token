@@ -42,16 +42,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_AMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_AMD_COBRA_7401
-comma
-dot
 id|name
 op_assign
 l_string|&quot;AMD7401&quot;
@@ -106,16 +96,6 @@ comma
 comma
 (brace
 multiline_comment|/* 1 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_AMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_AMD_VIPER_7409
-comma
 dot
 id|name
 op_assign
@@ -172,16 +152,6 @@ comma
 (brace
 multiline_comment|/* 2 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_AMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_AMD_VIPER_7411
-comma
-dot
 id|name
 op_assign
 l_string|&quot;AMD7411&quot;
@@ -236,16 +206,6 @@ comma
 comma
 (brace
 multiline_comment|/* 3 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_AMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_AMD_OPUS_7441
-comma
 dot
 id|name
 op_assign
@@ -302,16 +262,6 @@ comma
 (brace
 multiline_comment|/* 4 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_AMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_AMD_8111_IDE
-comma
-dot
 id|name
 op_assign
 l_string|&quot;AMD8111&quot;
@@ -366,16 +316,6 @@ comma
 comma
 (brace
 multiline_comment|/* 5 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_NVIDIA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_NVIDIA_NFORCE_IDE
-comma
 dot
 id|name
 op_assign
@@ -432,16 +372,6 @@ comma
 (brace
 multiline_comment|/* 6 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_NVIDIA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_NVIDIA_NFORCE2_IDE
-comma
-dot
 id|name
 op_assign
 l_string|&quot;NFORCE2&quot;
@@ -496,16 +426,6 @@ comma
 comma
 (brace
 multiline_comment|/* 7 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_NVIDIA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_NVIDIA_NFORCE2S_IDE
-comma
 dot
 id|name
 op_assign
@@ -562,16 +482,6 @@ comma
 (brace
 multiline_comment|/* 8 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_NVIDIA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_NVIDIA_NFORCE2S_SATA
-comma
-dot
 id|name
 op_assign
 l_string|&quot;NFORCE2S-SATA&quot;
@@ -626,16 +536,6 @@ comma
 comma
 (brace
 multiline_comment|/* 9 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_NVIDIA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_NVIDIA_NFORCE3_IDE
-comma
 dot
 id|name
 op_assign
@@ -692,16 +592,6 @@ comma
 (brace
 multiline_comment|/* 10 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_NVIDIA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_NVIDIA_NFORCE3S_IDE
-comma
-dot
 id|name
 op_assign
 l_string|&quot;NFORCE3S&quot;
@@ -757,16 +647,6 @@ comma
 (brace
 multiline_comment|/* 11 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_NVIDIA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_NVIDIA_NFORCE3S_SATA
-comma
-dot
 id|name
 op_assign
 l_string|&quot;NFORCE3S-SATA&quot;
@@ -821,16 +701,6 @@ comma
 comma
 (brace
 multiline_comment|/* 12 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_NVIDIA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_NVIDIA_NFORCE3S_SATA2
-comma
 dot
 id|name
 op_assign

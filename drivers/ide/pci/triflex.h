@@ -41,16 +41,6 @@ op_assign
 (brace
 (brace
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_COMPAQ
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_COMPAQ_TRIFLEX_IDE
-comma
-dot
 id|name
 op_assign
 l_string|&quot;TRIFLEX&quot;

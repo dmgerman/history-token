@@ -132,16 +132,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_CONTAQ
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_CONTAQ_82C693
-comma
-dot
 id|name
 op_assign
 l_string|&quot;CY82C693&quot;
