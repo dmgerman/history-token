@@ -6600,15 +6600,6 @@ c_cond
 (paren
 id|drive-&gt;using_dma
 )paren
-(paren
-r_void
-)paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
 id|ide_dma_verbose
 c_func
 (paren
