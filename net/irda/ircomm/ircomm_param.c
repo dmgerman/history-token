@@ -449,8 +449,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -639,8 +640,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), skb-&gt;len=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), skb-&gt;len=%d&bslash;n&quot;
 comma
 id|skb-&gt;len
 )paren
@@ -769,8 +771,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), No common service type to use!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), No common service type to use!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -783,8 +786,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), services in common=%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), services in common=%02x&bslash;n&quot;
 comma
 id|service_type
 )paren
@@ -842,8 +846,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), resulting service type=0x%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), resulting service type=0x%02x&bslash;n&quot;
 comma
 id|self-&gt;settings.service_type
 )paren
@@ -960,8 +965,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), port type=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), port type=%d&bslash;n&quot;
 comma
 id|self-&gt;settings.port_type
 )paren
@@ -1039,8 +1045,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), not imp!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), not imp!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1051,8 +1058,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), port-name=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), port-name=%s&bslash;n&quot;
 comma
 id|param-&gt;pv.c
 )paren
@@ -1148,8 +1156,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), data rate = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), data rate = %d&bslash;n&quot;
 comma
 id|param-&gt;pv.i
 )paren
@@ -1315,8 +1324,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), flow control = 0x%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), flow control = 0x%02x&bslash;n&quot;
 comma
 (paren
 id|__u8
@@ -1440,8 +1450,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), XON/XOFF = 0x%02x,0x%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), XON/XOFF = 0x%02x,0x%02x&bslash;n&quot;
 comma
 id|param-&gt;pv.i
 op_amp
@@ -1568,8 +1579,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), ENQ/ACK = 0x%02x,0x%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ENQ/ACK = 0x%02x,0x%02x&bslash;n&quot;
 comma
 id|param-&gt;pv.i
 op_amp
@@ -1608,8 +1620,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), not impl.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), not impl.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1806,8 +1819,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), dce = 0x%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dce = 0x%02x&bslash;n&quot;
 comma
 (paren
 id|__u8
@@ -1874,8 +1888,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), CTS &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), CTS &bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

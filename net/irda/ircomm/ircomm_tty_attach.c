@@ -350,8 +350,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -396,8 +397,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), already connected!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), already connected!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -431,8 +433,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), already connected!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), already connected!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -472,8 +475,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -621,8 +625,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -858,8 +863,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), data-rate = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), data-rate = %d&bslash;n&quot;
 comma
 id|self-&gt;settings.data_rate
 )paren
@@ -879,8 +885,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), data-format = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), data-format = %d&bslash;n&quot;
 comma
 id|self-&gt;settings.data_format
 )paren
@@ -901,8 +908,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), flow-control = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), flow-control = %d&bslash;n&quot;
 comma
 id|self-&gt;settings.flow_control
 )paren
@@ -1055,8 +1063,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Important note :&n;&t; * We need to drop all passive discoveries.&n;&t; * The LSAP management of IrComm is deficient and doesn&squot;t deal&n;&t; * with the case of two instance connecting to each other&n;&t; * simultaneously (it will deadlock in LMP).&n;&t; * The proper fix would be to use the same technique as in IrNET,&n;&t; * to have one server socket and separate instances for the&n;&t; * connecting/connected socket.&n;&t; * The workaround is to drop passive discovery, which drastically&n;&t; * reduce the probability of this happening.&n;&t; * Jean II */
@@ -1180,8 +1189,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1277,8 +1287,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1328,8 +1339,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), got NULL value!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), got NULL value!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1349,8 +1361,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), got octet sequence&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), got octet sequence&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irda_param_extract_all
@@ -1389,8 +1402,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), got lsapsel = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), got lsapsel = %d&bslash;n&quot;
 comma
 id|value-&gt;t.integer
 )paren
@@ -1409,8 +1423,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), invalid value!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), invalid value!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1441,8 +1456,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), got IAS_MISSING&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), got IAS_MISSING&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1454,8 +1470,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), got unknown type!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), got unknown type!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1516,8 +1533,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1628,8 +1646,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1739,8 +1758,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1806,8 +1826,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), waiting for CTS ...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), waiting for CTS ...&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1820,8 +1841,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), starting hardware!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), starting hardware!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;tty-&gt;hw_stopped
@@ -1937,8 +1959,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2012,8 +2035,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s: state=%s, event=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: state=%s, event=%s&bslash;n&quot;
 comma
 id|ircomm_tty_state
 (braket
@@ -2195,8 +2219,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), unknown event: %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event: %s&bslash;n&quot;
 comma
 id|ircomm_tty_event
 (braket
@@ -2249,8 +2274,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s: state=%s, event=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: state=%s, event=%s&bslash;n&quot;
 comma
 id|ircomm_tty_state
 (braket
@@ -2456,8 +2482,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), unknown event: %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event: %s&bslash;n&quot;
 comma
 id|ircomm_tty_event
 (braket
@@ -2510,8 +2537,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s: state=%s, event=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: state=%s, event=%s&bslash;n&quot;
 comma
 id|ircomm_tty_state
 (braket
@@ -2673,8 +2701,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), unknown event: %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event: %s&bslash;n&quot;
 comma
 id|ircomm_tty_event
 (braket
@@ -2727,8 +2756,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s: state=%s, event=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: state=%s, event=%s&bslash;n&quot;
 comma
 id|ircomm_tty_state
 (braket
@@ -2862,8 +2892,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), unknown event: %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event: %s&bslash;n&quot;
 comma
 id|ircomm_tty_event
 (braket
@@ -2916,8 +2947,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s: state=%s, event=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: state=%s, event=%s&bslash;n&quot;
 comma
 id|ircomm_tty_state
 (braket
@@ -3043,8 +3075,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), unknown event: %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event: %s&bslash;n&quot;
 comma
 id|ircomm_tty_event
 (braket
@@ -3182,8 +3215,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), hanging up!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), hanging up!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3207,8 +3241,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), unknown event: %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event: %s&bslash;n&quot;
 comma
 id|ircomm_tty_event
 (braket
@@ -3281,8 +3316,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s: state=%s, event=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: state=%s, event=%s&bslash;n&quot;
 comma
 id|ircomm_tty_state
 (braket
@@ -3360,8 +3396,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s: next state=%s, service type=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: next state=%s, service type=%d&bslash;n&quot;
 comma
 id|ircomm_tty_state
 (braket

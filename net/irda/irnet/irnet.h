@@ -118,19 +118,19 @@ mdefine_line|#define DEBUG_ASSERT&t;&t;0&t;/* Verify all assertions */
 multiline_comment|/* &n; * These are the macros we are using to actually print the debug&n; * statements. Don&squot;t look at it, it&squot;s ugly...&n; *&n; * One of the trick is that, as the DEBUG_XXX are constant, the&n; * compiler will optimise away the if() in all cases.&n; */
 multiline_comment|/* All error messages (will show up in the normal logs) */
 DECL|macro|DERROR
-mdefine_line|#define DERROR(dbg, args...) &bslash;&n;&t;{if(DEBUG_##dbg) &bslash;&n;&t;&t;printk(KERN_INFO &quot;irnet: &quot; __FUNCTION__ &quot;(): &quot; args);}
+mdefine_line|#define DERROR(dbg, format, args...) &bslash;&n;&t;{if(DEBUG_##dbg) &bslash;&n;&t;&t;printk(KERN_INFO &quot;irnet: %s(): &quot; format, __FUNCTION__ , ##args);}
 multiline_comment|/* Normal debug message (will show up in /var/log/debug) */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG(dbg, args...) &bslash;&n;&t;{if(DEBUG_##dbg) &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;irnet: &quot; __FUNCTION__ &quot;(): &quot; args);}
+mdefine_line|#define DEBUG(dbg, format, args...) &bslash;&n;&t;{if(DEBUG_##dbg) &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;irnet: %s(): &quot; format, __FUNCTION__ , ##args);}
 multiline_comment|/* Entering a function (trace) */
 DECL|macro|DENTER
-mdefine_line|#define DENTER(dbg, args...) &bslash;&n;&t;{if(DEBUG_##dbg) &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;irnet: -&gt;&quot; __FUNCTION__ args);}
+mdefine_line|#define DENTER(dbg, format, args...) &bslash;&n;&t;{if(DEBUG_##dbg) &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;irnet: -&gt; %s&quot; format, __FUNCTION__ , ##args);}
 multiline_comment|/* Entering and exiting a function in one go (trace) */
 DECL|macro|DPASS
-mdefine_line|#define DPASS(dbg, args...) &bslash;&n;&t;{if(DEBUG_##dbg) &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;irnet: &lt;&gt;&quot; __FUNCTION__ args);}
+mdefine_line|#define DPASS(dbg, format, args...) &bslash;&n;&t;{if(DEBUG_##dbg) &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;irnet: &lt;&gt;%s&quot; format, __FUNCTION__ , ##args);}
 multiline_comment|/* Exiting a function (trace) */
 DECL|macro|DEXIT
-mdefine_line|#define DEXIT(dbg, args...) &bslash;&n;&t;{if(DEBUG_##dbg) &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;irnet: &lt;-&quot; __FUNCTION__ &quot;()&quot; args);}
+mdefine_line|#define DEXIT(dbg, format, args...) &bslash;&n;&t;{if(DEBUG_##dbg) &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;irnet: &lt;-%s()&quot; format, __FUNCTION__ , ##args);}
 multiline_comment|/* Exit a function with debug */
 DECL|macro|DRETURN
 mdefine_line|#define DRETURN(ret, dbg, args...) &bslash;&n;&t;{DEXIT(dbg, &quot;: &quot; args);&bslash;&n;&t;return(ret); }

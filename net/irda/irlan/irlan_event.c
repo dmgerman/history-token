@@ -51,8 +51,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s&bslash;n&quot;
 comma
 id|irlan_state
 (braket
@@ -106,8 +107,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s&bslash;n&quot;
 comma
 id|irlan_state
 (braket
