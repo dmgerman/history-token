@@ -37,16 +37,14 @@ DECL|macro|PG_writeback
 mdefine_line|#define PG_writeback&t;&t;13&t;/* Page is under writeback */
 DECL|macro|PG_nosave
 mdefine_line|#define PG_nosave&t;&t;14&t;/* Used for system suspend/resume */
-DECL|macro|PG_maplock
-mdefine_line|#define PG_maplock&t;&t;15&t;/* Lock bit for rmap to ptes */
+DECL|macro|PG_compound
+mdefine_line|#define PG_compound&t;&t;15&t;/* Part of a compound page */
 DECL|macro|PG_swapcache
 mdefine_line|#define PG_swapcache&t;&t;16&t;/* Swap page: swp_entry_t in private */
 DECL|macro|PG_mappedtodisk
 mdefine_line|#define PG_mappedtodisk&t;&t;17&t;/* Has blocks allocated on-disk */
 DECL|macro|PG_reclaim
 mdefine_line|#define PG_reclaim&t;&t;18&t;/* To be reclaimed asap */
-DECL|macro|PG_compound
-mdefine_line|#define PG_compound&t;&t;19&t;/* Part of a compound page */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; */
 DECL|struct|page_state
 r_struct

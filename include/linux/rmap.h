@@ -6,10 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-DECL|macro|page_map_lock
-mdefine_line|#define page_map_lock(page) &bslash;&n;&t;bit_spin_lock(PG_maplock, (unsigned long *)&amp;(page)-&gt;flags)
-DECL|macro|page_map_unlock
-mdefine_line|#define page_map_unlock(page) &bslash;&n;&t;bit_spin_unlock(PG_maplock, (unsigned long *)&amp;(page)-&gt;flags)
 multiline_comment|/*&n; * The anon_vma heads a list of private &quot;related&quot; vmas, to scan if&n; * an anonymous page pointing to this anon_vma needs to be unmapped:&n; * the vmas on the list will be related by forking, or by splitting.&n; *&n; * Since vmas come and go as they are split and merged (particularly&n; * in mprotect), the mapping field of an anonymous page cannot point&n; * directly to a vma: instead it points to an anon_vma, on whose list&n; * the related vmas can be easily linked or unlinked.&n; *&n; * After unlinking the last vma on the list, we must garbage collect&n; * the anon_vma object itself: we&squot;re guaranteed no page can be&n; * pointing to this anon_vma once its vma list is empty.&n; */
 DECL|struct|anon_vma
 r_struct
@@ -251,19 +247,11 @@ op_star
 id|page
 )paren
 (brace
-id|page_map_lock
+id|atomic_inc
 c_func
 (paren
-id|page
-)paren
-suffix:semicolon
-id|page-&gt;mapcount
-op_increment
-suffix:semicolon
-id|page_map_unlock
-c_func
-(paren
-id|page
+op_amp
+id|page-&gt;_mapcount
 )paren
 suffix:semicolon
 )brace
@@ -275,6 +263,9 @@ c_func
 r_struct
 id|page
 op_star
+comma
+r_int
+id|is_locked
 )paren
 suffix:semicolon
 r_int
@@ -294,7 +285,7 @@ mdefine_line|#define anon_vma_prepare(vma)&t;(0)
 DECL|macro|anon_vma_link
 mdefine_line|#define anon_vma_link(vma)&t;do {} while (0)
 DECL|macro|page_referenced
-mdefine_line|#define page_referenced(page)&t;TestClearPageReferenced(page)
+mdefine_line|#define page_referenced(page,l)&t;TestClearPageReferenced(page)
 DECL|macro|try_to_unmap
 mdefine_line|#define try_to_unmap(page)&t;SWAP_FAIL
 macro_line|#endif&t;/* CONFIG_MMU */
