@@ -2847,6 +2847,29 @@ op_assign
 op_amp
 id|current-&gt;blocked
 suffix:semicolon
+multiline_comment|/*&n;&t; * This only loops in the rare cases of handle_signal() failing, in which case we&n;&t; * need to push through a forced SIGSEGV.&n;&t; */
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
+r_int
+id|signr
+op_assign
+id|get_signal_to_deliver
+c_func
+(paren
+op_amp
+id|info
+comma
+op_amp
+id|scr-&gt;pt
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * get_signal_to_deliver() may have run a debugger (via notify_parent())&n;&t;&t; * and the debugger may have modified the state (e.g., to arrange for an&n;&t;&t; * inferior call), thus it&squot;s important to check for restarting _after_&n;&t;&t; * get_signal_to_deliver().&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2895,31 +2918,10 @@ op_ne
 op_minus
 l_int|1
 )paren
-multiline_comment|/*&n;&t;&t; * A system calls has to be restarted only if one of the error codes&n;&t;&t; * ERESTARTNOHAND, ERESTARTSYS, or ERESTARTNOINTR is returned.  If r10&n;&t;&t; * isn&squot;t -1 then r8 doesn&squot;t hold an error code and we don&squot;t need to&n;&t;&t; * restart the syscall, so we can clear the &quot;restart&quot; flag here.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * A system calls has to be restarted only if one of the error codes&n;&t;&t;&t; * ERESTARTNOHAND, ERESTARTSYS, or ERESTARTNOINTR is returned.  If r10&n;&t;&t;&t; * isn&squot;t -1 then r8 doesn&squot;t hold an error code and we don&squot;t need to&n;&t;&t;&t; * restart the syscall, so we can clear the &quot;restart&quot; flag here.&n;&t;&t;&t; */
 id|restart
 op_assign
 l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-r_int
-id|signr
-op_assign
-id|get_signal_to_deliver
-c_func
-(paren
-op_amp
-id|info
-comma
-op_amp
-id|scr-&gt;pt
-comma
-l_int|NULL
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2943,7 +2945,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|restart
+)paren
 )paren
 (brace
 r_switch
@@ -3027,6 +3033,11 @@ op_amp
 id|scr-&gt;pt
 )paren
 suffix:semicolon
+id|restart
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* don&squot;t restart twice if handle_signal() fails... */
 )brace
 )brace
 multiline_comment|/*&n;&t;&t; * Whee!  Actually deliver the signal.  If the delivery failed, we need to&n;&t;&t; * continue to iterate in this loop so we can deliver the SIGSEGV...&n;&t;&t; */
