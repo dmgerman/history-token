@@ -565,7 +565,7 @@ id|init_isa_beep
 c_func
 (paren
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|isa_dev
 )paren
@@ -636,12 +636,12 @@ l_int|NULL
 suffix:semicolon
 macro_line|#ifdef CONFIG_SPARC64
 r_struct
-id|isa_bridge
+id|sparc_isa_bridge
 op_star
 id|isa_br
 suffix:semicolon
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|isa_dev
 suffix:semicolon

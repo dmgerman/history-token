@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/isa.h&gt;
 DECL|variable|isa_chain
 r_struct
-id|isa_bridge
+id|sparc_isa_bridge
 op_star
 id|isa_chain
 suffix:semicolon
@@ -40,7 +40,7 @@ id|report_dev
 c_func
 (paren
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|isa_dev
 comma
@@ -79,7 +79,7 @@ id|isa_dev_get_resource
 c_func
 (paren
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|isa_dev
 )paren
@@ -277,7 +277,7 @@ id|isa_dev_get_irq
 c_func
 (paren
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|isa_dev
 )paren
@@ -419,7 +419,7 @@ id|isa_fill_children
 c_func
 (paren
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|parent_isa_dev
 )paren
@@ -457,7 +457,7 @@ l_int|0
 )paren
 (brace
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|isa_dev
 suffix:semicolon
@@ -643,7 +643,7 @@ id|isa_fill_devices
 c_func
 (paren
 r_struct
-id|isa_bridge
+id|sparc_isa_bridge
 op_star
 id|isa_br
 )paren
@@ -666,7 +666,7 @@ l_int|0
 )paren
 (brace
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|isa_dev
 suffix:semicolon
@@ -741,7 +741,7 @@ suffix:semicolon
 r_else
 (brace
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|tmp
 op_assign
@@ -956,7 +956,7 @@ op_star
 id|pbm
 suffix:semicolon
 r_struct
-id|isa_bridge
+id|sparc_isa_bridge
 op_star
 id|isa_br
 suffix:semicolon
@@ -1012,7 +1012,7 @@ id|isa_br
 id|fatal_err
 c_func
 (paren
-l_string|&quot;cannot allocate isa_bridge&quot;
+l_string|&quot;cannot allocate sparc_isa_bridge&quot;
 )paren
 suffix:semicolon
 id|prom_halt
