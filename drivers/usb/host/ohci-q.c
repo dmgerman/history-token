@@ -672,6 +672,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|WARN_ON
+(paren
+id|ohci-&gt;hc_control
+op_amp
+id|OHCI_CTRL_CLE
+)paren
+suffix:semicolon
 id|writel
 (paren
 id|ed-&gt;dma
@@ -747,6 +754,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|WARN_ON
+(paren
+id|ohci-&gt;hc_control
+op_amp
+id|OHCI_CTRL_BLE
+)paren
+suffix:semicolon
 id|writel
 (paren
 id|ed-&gt;dma
@@ -1025,7 +1039,7 @@ id|ed-&gt;interval
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* unlink an ed from one of the HC chains. &n; * just the link to the ed is unlinked.&n; * the link from the ed still points to another operational ed or 0&n; * so the HC can eventually finish the processing of the unlinked ed&n; */
+multiline_comment|/* unlink an ed from one of the HC chains. &n; * just the link to the ed is unlinked.&n; * the link from the ed still points to another operational ed or 0&n; * so the HC can eventually finish the processing of the unlinked ed&n; * (assuming it already started that, which needn&squot;t be true).&n; *&n; * ED_UNLINK is a transient state: the HC may still see this ED, but soon&n; * it won&squot;t.  ED_SKIP means the HC will finish its current transaction,&n; * but won&squot;t start anything new.  The TD queue may still grow; device&n; * drivers don&squot;t know about this HCD-internal state.&n; *&n; * When the HC can&squot;t see the ED, something changes ED_UNLINK to one of:&n; *&n; *  - ED_OPER: when there&squot;s any request queued, the ED gets rescheduled&n; *    immediately.  HC should be working on them.&n; *&n; *  - ED_IDLE:  when there&squot;s no TD queue. there&squot;s no reason for the HC&n; *    to care about this ED; safe to disable the endpoint.&n; *&n; * When finish_unlinks() runs later, after SOF interrupt, it will often&n; * complete one or more URB unlinks before making that state change.&n; */
 DECL|function|ed_deschedule
 r_static
 r_void
@@ -1046,6 +1060,15 @@ id|ed-&gt;hwINFO
 op_or_assign
 id|ED_SKIP
 suffix:semicolon
+id|wmb
+(paren
+)paren
+suffix:semicolon
+id|ed-&gt;state
+op_assign
+id|ED_UNLINK
+suffix:semicolon
+multiline_comment|/* To deschedule something from the control or bulk list, just&n;&t; * clear CLE/BLE and wait.  There&squot;s no safe way to scrub out list&n;&t; * head/current registers until later, and &quot;later&quot; isn&squot;t very&n;&t; * tightly specified.  Figure 6-5 and Section 6.4.2.2 show how&n;&t; * the HC is reading the ED queues (while we modify them).&n;&t; *&n;&t; * For now, ed_schedule() is &quot;later&quot;.  It might be good paranoia&n;&t; * to scrub those registers in finish_unlinks(), in case of bugs&n;&t; * that make the HC try to use them.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -1055,6 +1078,7 @@ id|ed-&gt;type
 r_case
 id|PIPE_CONTROL
 suffix:colon
+multiline_comment|/* remove ED from the HC&squot;s list: */
 r_if
 c_cond
 (paren
@@ -1083,25 +1107,9 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-id|writel
-(paren
-l_int|0
-comma
-op_amp
-id|ohci-&gt;regs-&gt;ed_controlcurrent
-)paren
-suffix:semicolon
-singleline_comment|// post those pci writes
-(paren
-r_void
-)paren
-id|readl
-(paren
-op_amp
-id|ohci-&gt;regs-&gt;control
-)paren
-suffix:semicolon
+singleline_comment|// a readl() later syncs CLE with the HC
 )brace
+r_else
 id|writel
 (paren
 id|le32_to_cpup
@@ -1126,6 +1134,7 @@ op_assign
 id|ed-&gt;hwNextED
 suffix:semicolon
 )brace
+multiline_comment|/* remove ED from the HCD&squot;s list: */
 r_if
 c_cond
 (paren
@@ -1165,6 +1174,7 @@ suffix:semicolon
 r_case
 id|PIPE_BULK
 suffix:colon
+multiline_comment|/* remove ED from the HC&squot;s list: */
 r_if
 c_cond
 (paren
@@ -1193,25 +1203,9 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-id|writel
-(paren
-l_int|0
-comma
-op_amp
-id|ohci-&gt;regs-&gt;ed_bulkcurrent
-)paren
-suffix:semicolon
-singleline_comment|// post those pci writes
-(paren
-r_void
-)paren
-id|readl
-(paren
-op_amp
-id|ohci-&gt;regs-&gt;control
-)paren
-suffix:semicolon
+singleline_comment|// a readl() later syncs BLE with the HC
 )brace
+r_else
 id|writel
 (paren
 id|le32_to_cpup
@@ -1236,6 +1230,7 @@ op_assign
 id|ed-&gt;hwNextED
 suffix:semicolon
 )brace
+multiline_comment|/* remove ED from the HCD&squot;s list: */
 r_if
 c_cond
 (paren
@@ -1652,7 +1647,7 @@ id|ed
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* request unlinking of an endpoint from an operational HC.&n; * put the ep on the rm_list&n; * real work is done at the next start frame (SF) hardware interrupt&n; */
+multiline_comment|/* request unlinking of an endpoint from an operational HC.&n; * put the ep on the rm_list&n; * real work is done at the next start frame (SF) hardware interrupt&n; * caller guarantees HCD is running, so hardware access is safe,&n; * and that ed-&gt;state is ED_OPER&n; */
 DECL|function|start_ed_unlink
 r_static
 r_void
@@ -1673,27 +1668,12 @@ id|ed-&gt;hwINFO
 op_or_assign
 id|ED_DEQUEUE
 suffix:semicolon
-id|ed-&gt;state
-op_assign
-id|ED_UNLINK
-suffix:semicolon
 id|ed_deschedule
 (paren
 id|ohci
 comma
 id|ed
 )paren
-suffix:semicolon
-multiline_comment|/* SF interrupt might get delayed; record the frame counter value that&n;&t; * indicates when the HC isn&squot;t looking at it, so concurrent unlinks&n;&t; * behave.  frame_no wraps every 2^16 msec, and changes right before&n;&t; * SF is triggered.&n;&t; */
-id|ed-&gt;tick
-op_assign
-id|OHCI_FRAME_NO
-c_func
-(paren
-id|ohci-&gt;hcca
-)paren
-op_plus
-l_int|1
 suffix:semicolon
 multiline_comment|/* rm_list is just singly linked, for simplicity */
 id|ed-&gt;ed_next
@@ -1709,15 +1689,6 @@ op_assign
 id|ed
 suffix:semicolon
 multiline_comment|/* enable SOF interrupt */
-r_if
-c_cond
-(paren
-id|HCD_IS_RUNNING
-(paren
-id|ohci-&gt;hcd.state
-)paren
-)paren
-(brace
 id|writel
 (paren
 id|OHCI_INTR_SF
@@ -1734,7 +1705,7 @@ op_amp
 id|ohci-&gt;regs-&gt;intrenable
 )paren
 suffix:semicolon
-singleline_comment|// flush those pci writes
+singleline_comment|// flush those writes, and get latest HCCA contents
 (paren
 r_void
 )paren
@@ -1744,7 +1715,17 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* SF interrupt might get delayed; record the frame counter value that&n;&t; * indicates when the HC isn&squot;t looking at it, so concurrent unlinks&n;&t; * behave.  frame_no wraps every 2^16 msec, and changes right before&n;&t; * SF is triggered.&n;&t; */
+id|ed-&gt;tick
+op_assign
+id|OHCI_FRAME_NO
+c_func
+(paren
+id|ohci-&gt;hcca
+)paren
+op_plus
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*&n; * TD handling functions&n; *-------------------------------------------------------------------------*/
 multiline_comment|/* enqueue next TD for this URB (OHCI spec 5.2.8.2) */
@@ -3057,20 +3038,6 @@ id|rev
 op_assign
 id|next
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ed-&gt;hwTailP
-op_eq
-id|cpu_to_le32
-(paren
-id|next-&gt;td_dma
-)paren
-)paren
-id|ed-&gt;hwTailP
-op_assign
-id|next-&gt;hwNextTD
-suffix:semicolon
 id|ed-&gt;hwHeadP
 op_assign
 id|next-&gt;hwNextTD
@@ -3505,7 +3472,7 @@ id|modified
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* unlink urbs as requested, but rescan the list after&n;&t;&t; * we call a completion since it might have unlinked&n;&t;&t; * another (earlier) urb&n;&t;&t; */
+multiline_comment|/* unlink urbs as requested, but rescan the list after&n;&t;&t; * we call a completion since it might have unlinked&n;&t;&t; * another (earlier) urb&n;&t;&t; *&n;&t;&t; * When we get here, the HC doesn&squot;t see this ed.  But it&n;&t;&t; * must not be rescheduled until all completed URBs have&n;&t;&t; * been given back to the driver.&n;&t;&t; */
 id|rescan_this
 suffix:colon
 id|completed
@@ -3581,21 +3548,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* patch pointers hc uses ... tail, if we&squot;re removing&n;&t;&t;&t; * an otherwise active td, and whatever td pointer&n;&t;&t;&t; * points to this td&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|ed-&gt;hwTailP
-op_eq
-id|cpu_to_le32
-(paren
-id|td-&gt;td_dma
-)paren
-)paren
-id|ed-&gt;hwTailP
-op_assign
-id|td-&gt;hwNextTD
-suffix:semicolon
+multiline_comment|/* patch pointer hc uses */
 id|savebits
 op_assign
 op_star
@@ -3673,15 +3626,6 @@ id|ed-&gt;state
 op_assign
 id|ED_IDLE
 suffix:semicolon
-id|ed-&gt;hwINFO
-op_and_assign
-op_complement
-(paren
-id|ED_SKIP
-op_or
-id|ED_DEQUEUE
-)paren
-suffix:semicolon
 id|ed-&gt;hwHeadP
 op_and_assign
 op_complement
@@ -3690,6 +3634,19 @@ suffix:semicolon
 id|ed-&gt;hwNextED
 op_assign
 l_int|0
+suffix:semicolon
+id|wmb
+(paren
+)paren
+suffix:semicolon
+id|ed-&gt;hwINFO
+op_and_assign
+op_complement
+(paren
+id|ED_SKIP
+op_or
+id|ED_DEQUEUE
+)paren
 suffix:semicolon
 multiline_comment|/* but if there&squot;s work queued, reschedule */
 r_if
@@ -3964,6 +3921,10 @@ id|list_empty
 op_amp
 id|ed-&gt;td_list
 )paren
+op_logical_and
+id|ed-&gt;state
+op_eq
+id|ED_OPER
 )paren
 id|start_ed_unlink
 (paren
