@@ -13288,7 +13288,7 @@ c_func
 (paren
 id|component
 comma
-l_string|&quot;USB%#04x:%#04x&quot;
+l_string|&quot;USB%04x:%04x&quot;
 comma
 id|dev-&gt;descriptor.idVendor
 comma
@@ -13312,8 +13312,6 @@ op_logical_and
 id|quirk-&gt;product_name
 )paren
 (brace
-id|len
-op_assign
 id|strlcpy
 c_func
 (paren
@@ -13333,10 +13331,9 @@ r_else
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev-&gt;descriptor.iProduct
-)paren
-id|len
-op_assign
+op_logical_or
 id|usb_string
 c_func
 (paren
@@ -13351,21 +13348,11 @@ r_sizeof
 id|card-&gt;shortname
 )paren
 )paren
-suffix:semicolon
-r_else
-id|len
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|len
 op_le
 l_int|0
 )paren
 (brace
+multiline_comment|/* no name available from anywhere, so use ID */
 id|sprintf
 c_func
 (paren
@@ -13378,6 +13365,7 @@ comma
 id|dev-&gt;descriptor.idProduct
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* retrieve the vendor and device strings as longname */
 r_if
@@ -13433,6 +13421,7 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* we don&squot;t really care if there isn&squot;t any vendor string */
 )brace
 r_if
 c_cond
@@ -13454,27 +13443,12 @@ id|card-&gt;longname
 )paren
 )paren
 suffix:semicolon
-id|len
-op_assign
-id|strlen
-c_func
-(paren
-id|card-&gt;longname
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|quirk
-op_logical_and
-id|quirk-&gt;product_name
-)paren
 id|strlcat
 c_func
 (paren
 id|card-&gt;longname
 comma
-id|quirk-&gt;product_name
+id|card-&gt;shortname
 comma
 r_sizeof
 (paren
