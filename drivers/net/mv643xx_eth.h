@@ -83,11 +83,11 @@ DECL|macro|MV64340_COAL
 macro_line|#undef&t; MV64340_COAL
 multiline_comment|/* &n; * Number of RX / TX descriptors on RX / TX rings.&n; * Note that allocating RX descriptors is done by allocating the RX&n; * ring AND a preallocated RX buffers (skb&squot;s) for each descriptor.&n; * The TX descriptors only allocates the TX descriptors ring,&n; * with no pre allocated TX buffers (skb&squot;s are allocated by higher layers.&n; */
 multiline_comment|/* Default TX ring size is 1000 descriptors */
-DECL|macro|MV64340_TX_QUEUE_SIZE
-mdefine_line|#define MV64340_TX_QUEUE_SIZE 1000
+DECL|macro|MV64340_DEFAULT_TX_QUEUE_SIZE
+mdefine_line|#define MV64340_DEFAULT_TX_QUEUE_SIZE 1000
 multiline_comment|/* Default RX ring size is 400 descriptors */
-DECL|macro|MV64340_RX_QUEUE_SIZE
-mdefine_line|#define MV64340_RX_QUEUE_SIZE 400
+DECL|macro|MV64340_DEFAULT_RX_QUEUE_SIZE
+mdefine_line|#define MV64340_DEFAULT_RX_QUEUE_SIZE 400
 DECL|macro|MV64340_TX_COAL
 mdefine_line|#define MV64340_TX_COAL 100
 macro_line|#ifdef MV64340_COAL
@@ -96,24 +96,6 @@ mdefine_line|#define MV64340_RX_COAL 100
 macro_line|#endif
 multiline_comment|/*&n; * The second part is the low level driver of the gigE ethernet ports.   *&n; */
 multiline_comment|/*&n; * Header File for : MV-643xx network interface header &n; *&n; * DESCRIPTION:&n; *       This header file contains macros typedefs and function declaration for&n; *       the Marvell Gig Bit Ethernet Controller. &n; *&n; * DEPENDENCIES:&n; *       None.&n; *&n; */
-multiline_comment|/* Default port configuration value */
-DECL|macro|PORT_CONFIG_VALUE
-mdefine_line|#define PORT_CONFIG_VALUE                       &bslash;&n;             ETH_UNICAST_NORMAL_MODE&t;&t;|   &bslash;&n;             ETH_DEFAULT_RX_QUEUE_0&t;&t;|   &bslash;&n;             ETH_DEFAULT_RX_ARP_QUEUE_0&t;&t;|   &bslash;&n;             ETH_RECEIVE_BC_IF_NOT_IP_OR_ARP&t;|   &bslash;&n;             ETH_RECEIVE_BC_IF_IP&t;&t;|   &bslash;&n;             ETH_RECEIVE_BC_IF_ARP &t;&t;|   &bslash;&n;             ETH_CAPTURE_TCP_FRAMES_DIS&t;&t;|   &bslash;&n;             ETH_CAPTURE_UDP_FRAMES_DIS&t;&t;|   &bslash;&n;             ETH_DEFAULT_RX_TCP_QUEUE_0&t;&t;|   &bslash;&n;             ETH_DEFAULT_RX_UDP_QUEUE_0&t;&t;|   &bslash;&n;             ETH_DEFAULT_RX_BPDU_QUEUE_0
-multiline_comment|/* Default port extend configuration value */
-DECL|macro|PORT_CONFIG_EXTEND_VALUE
-mdefine_line|#define PORT_CONFIG_EXTEND_VALUE&t;&t;&bslash;&n;             ETH_SPAN_BPDU_PACKETS_AS_NORMAL&t;|   &bslash;&n;             ETH_PARTITION_DISABLE
-multiline_comment|/* Default sdma control value */
-DECL|macro|PORT_SDMA_CONFIG_VALUE
-mdefine_line|#define PORT_SDMA_CONFIG_VALUE&t;&t;&t;&bslash;&n;&t;&t;&t; ETH_RX_BURST_SIZE_16_64BIT &t;|&t;&bslash;&n;&t;&t;&t; GT_ETH_IPG_INT_RX(0) &t;&t;|&t;&bslash;&n;&t;&t;&t; ETH_TX_BURST_SIZE_16_64BIT;
-DECL|macro|GT_ETH_IPG_INT_RX
-mdefine_line|#define GT_ETH_IPG_INT_RX(value)                &bslash;&n;            ((value &amp; 0x3fff) &lt;&lt; 8)
-multiline_comment|/* Default port serial control value */
-DECL|macro|PORT_SERIAL_CONTROL_VALUE
-mdefine_line|#define PORT_SERIAL_CONTROL_VALUE&t;&t;&bslash;&n;&t;&t;&t;ETH_FORCE_LINK_PASS &t;&t;&t;|&t;&bslash;&n;&t;&t;&t;ETH_ENABLE_AUTO_NEG_FOR_DUPLX&t;&t;|&t;&bslash;&n;&t;&t;&t;ETH_DISABLE_AUTO_NEG_FOR_FLOW_CTRL &t;|&t;&bslash;&n;&t;&t;&t;ETH_ADV_SYMMETRIC_FLOW_CTRL &t;&t;|&t;&bslash;&n;&t;&t;&t;ETH_FORCE_FC_MODE_NO_PAUSE_DIS_TX &t;|&t;&bslash;&n;&t;&t;&t;ETH_FORCE_BP_MODE_NO_JAM &t;&t;|&t;&bslash;&n;&t;&t;&t;BIT9 &t;&t;&t;&t;&t;|&t;&bslash;&n;&t;&t;&t;ETH_DO_NOT_FORCE_LINK_FAIL &t;&t;|&t;&bslash;&n;&t;&t;&t;ETH_RETRANSMIT_16_ATTEMPTS &t;&t;|&t;&bslash;&n;&t;&t;&t;ETH_ENABLE_AUTO_NEG_SPEED_GMII&t; &t;|&t;&bslash;&n;&t;&t;&t;ETH_DTE_ADV_0 &t;&t;&t;&t;|&t;&bslash;&n;&t;&t;&t;ETH_DISABLE_AUTO_NEG_BYPASS&t;&t;|&t;&bslash;&n;&t;&t;&t;ETH_AUTO_NEG_NO_CHANGE &t;&t;&t;|&t;&bslash;&n;&t;&t;&t;ETH_MAX_RX_PACKET_9700BYTE &t;&t;|&t;&bslash;&n;&t;&t;&t;ETH_CLR_EXT_LOOPBACK &t;&t;&t;|&t;&bslash;&n;&t;&t;&t;ETH_SET_FULL_DUPLEX_MODE &t;&t;|&t;&bslash;&n;&t;&t;&t;ETH_ENABLE_FLOW_CTRL_TX_RX_IN_FULL_DUPLEX
-DECL|macro|RX_BUFFER_MAX_SIZE
-mdefine_line|#define RX_BUFFER_MAX_SIZE  0x4000000
-DECL|macro|TX_BUFFER_MAX_SIZE
-mdefine_line|#define TX_BUFFER_MAX_SIZE  0x4000000
 multiline_comment|/* MAC accepet/reject macros */
 DECL|macro|ACCEPT_MAC_ADDR
 mdefine_line|#define ACCEPT_MAC_ADDR&t;    0
@@ -229,103 +211,6 @@ DECL|macro|ETH_PORT_TX_FIFO_NOT_EMPTY
 mdefine_line|#define ETH_PORT_TX_FIFO_NOT_EMPTY                      0
 DECL|macro|ETH_PORT_TX_FIFO_EMPTY
 mdefine_line|#define ETH_PORT_TX_FIFO_EMPTY                          BIT10
-multiline_comment|/* These macros describes the Port configuration reg (Px_cR) bits */
-DECL|macro|ETH_UNICAST_NORMAL_MODE
-mdefine_line|#define ETH_UNICAST_NORMAL_MODE                         0
-DECL|macro|ETH_UNICAST_PROMISCUOUS_MODE
-mdefine_line|#define ETH_UNICAST_PROMISCUOUS_MODE                    BIT0
-DECL|macro|ETH_DEFAULT_RX_QUEUE_0
-mdefine_line|#define ETH_DEFAULT_RX_QUEUE_0                          0
-DECL|macro|ETH_DEFAULT_RX_QUEUE_1
-mdefine_line|#define ETH_DEFAULT_RX_QUEUE_1                          BIT1
-DECL|macro|ETH_DEFAULT_RX_QUEUE_2
-mdefine_line|#define ETH_DEFAULT_RX_QUEUE_2                          BIT2
-DECL|macro|ETH_DEFAULT_RX_QUEUE_3
-mdefine_line|#define ETH_DEFAULT_RX_QUEUE_3                          (BIT2 | BIT1)
-DECL|macro|ETH_DEFAULT_RX_QUEUE_4
-mdefine_line|#define ETH_DEFAULT_RX_QUEUE_4                          BIT3
-DECL|macro|ETH_DEFAULT_RX_QUEUE_5
-mdefine_line|#define ETH_DEFAULT_RX_QUEUE_5                          (BIT3 | BIT1)
-DECL|macro|ETH_DEFAULT_RX_QUEUE_6
-mdefine_line|#define ETH_DEFAULT_RX_QUEUE_6                          (BIT3 | BIT2)
-DECL|macro|ETH_DEFAULT_RX_QUEUE_7
-mdefine_line|#define ETH_DEFAULT_RX_QUEUE_7                          (BIT3 | BIT2 | BIT1)
-DECL|macro|ETH_DEFAULT_RX_ARP_QUEUE_0
-mdefine_line|#define ETH_DEFAULT_RX_ARP_QUEUE_0                      0
-DECL|macro|ETH_DEFAULT_RX_ARP_QUEUE_1
-mdefine_line|#define ETH_DEFAULT_RX_ARP_QUEUE_1                      BIT4
-DECL|macro|ETH_DEFAULT_RX_ARP_QUEUE_2
-mdefine_line|#define ETH_DEFAULT_RX_ARP_QUEUE_2                      BIT5
-DECL|macro|ETH_DEFAULT_RX_ARP_QUEUE_3
-mdefine_line|#define ETH_DEFAULT_RX_ARP_QUEUE_3                      (BIT5 | BIT4)
-DECL|macro|ETH_DEFAULT_RX_ARP_QUEUE_4
-mdefine_line|#define ETH_DEFAULT_RX_ARP_QUEUE_4                      BIT6
-DECL|macro|ETH_DEFAULT_RX_ARP_QUEUE_5
-mdefine_line|#define ETH_DEFAULT_RX_ARP_QUEUE_5                      (BIT6 | BIT4)
-DECL|macro|ETH_DEFAULT_RX_ARP_QUEUE_6
-mdefine_line|#define ETH_DEFAULT_RX_ARP_QUEUE_6                      (BIT6 | BIT5)
-DECL|macro|ETH_DEFAULT_RX_ARP_QUEUE_7
-mdefine_line|#define ETH_DEFAULT_RX_ARP_QUEUE_7                      (BIT6 | BIT5 | BIT4)
-DECL|macro|ETH_RECEIVE_BC_IF_NOT_IP_OR_ARP
-mdefine_line|#define ETH_RECEIVE_BC_IF_NOT_IP_OR_ARP                 0
-DECL|macro|ETH_REJECT_BC_IF_NOT_IP_OR_ARP
-mdefine_line|#define ETH_REJECT_BC_IF_NOT_IP_OR_ARP                  BIT7
-DECL|macro|ETH_RECEIVE_BC_IF_IP
-mdefine_line|#define ETH_RECEIVE_BC_IF_IP                            0
-DECL|macro|ETH_REJECT_BC_IF_IP
-mdefine_line|#define ETH_REJECT_BC_IF_IP                             BIT8
-DECL|macro|ETH_RECEIVE_BC_IF_ARP
-mdefine_line|#define ETH_RECEIVE_BC_IF_ARP                           0
-DECL|macro|ETH_REJECT_BC_IF_ARP
-mdefine_line|#define ETH_REJECT_BC_IF_ARP                            BIT9
-DECL|macro|ETH_TX_AM_NO_UPDATE_ERROR_SUMMARY
-mdefine_line|#define ETH_TX_AM_NO_UPDATE_ERROR_SUMMARY               BIT12
-DECL|macro|ETH_CAPTURE_TCP_FRAMES_DIS
-mdefine_line|#define ETH_CAPTURE_TCP_FRAMES_DIS                      0
-DECL|macro|ETH_CAPTURE_TCP_FRAMES_EN
-mdefine_line|#define ETH_CAPTURE_TCP_FRAMES_EN                       BIT14
-DECL|macro|ETH_CAPTURE_UDP_FRAMES_DIS
-mdefine_line|#define ETH_CAPTURE_UDP_FRAMES_DIS                      0
-DECL|macro|ETH_CAPTURE_UDP_FRAMES_EN
-mdefine_line|#define ETH_CAPTURE_UDP_FRAMES_EN                       BIT15
-DECL|macro|ETH_DEFAULT_RX_TCP_QUEUE_0
-mdefine_line|#define ETH_DEFAULT_RX_TCP_QUEUE_0                      0
-DECL|macro|ETH_DEFAULT_RX_TCP_QUEUE_1
-mdefine_line|#define ETH_DEFAULT_RX_TCP_QUEUE_1                      BIT16
-DECL|macro|ETH_DEFAULT_RX_TCP_QUEUE_2
-mdefine_line|#define ETH_DEFAULT_RX_TCP_QUEUE_2                      BIT17
-DECL|macro|ETH_DEFAULT_RX_TCP_QUEUE_3
-mdefine_line|#define ETH_DEFAULT_RX_TCP_QUEUE_3                      (BIT17 | BIT16)
-DECL|macro|ETH_DEFAULT_RX_TCP_QUEUE_4
-mdefine_line|#define ETH_DEFAULT_RX_TCP_QUEUE_4                      BIT18
-DECL|macro|ETH_DEFAULT_RX_TCP_QUEUE_5
-mdefine_line|#define ETH_DEFAULT_RX_TCP_QUEUE_5                      (BIT18 | BIT16)
-DECL|macro|ETH_DEFAULT_RX_TCP_QUEUE_6
-mdefine_line|#define ETH_DEFAULT_RX_TCP_QUEUE_6                      (BIT18 | BIT17)
-DECL|macro|ETH_DEFAULT_RX_TCP_QUEUE_7
-mdefine_line|#define ETH_DEFAULT_RX_TCP_QUEUE_7                      (BIT18 | BIT17 | BIT16)
-DECL|macro|ETH_DEFAULT_RX_UDP_QUEUE_0
-mdefine_line|#define ETH_DEFAULT_RX_UDP_QUEUE_0                      0
-DECL|macro|ETH_DEFAULT_RX_UDP_QUEUE_1
-mdefine_line|#define ETH_DEFAULT_RX_UDP_QUEUE_1                      BIT19
-DECL|macro|ETH_DEFAULT_RX_UDP_QUEUE_2
-mdefine_line|#define ETH_DEFAULT_RX_UDP_QUEUE_2                      BIT20
-DECL|macro|ETH_DEFAULT_RX_UDP_QUEUE_3
-mdefine_line|#define ETH_DEFAULT_RX_UDP_QUEUE_3                      (BIT20 | BIT19)
-DECL|macro|ETH_DEFAULT_RX_UDP_QUEUE_4
-mdefine_line|#define ETH_DEFAULT_RX_UDP_QUEUE_4                      (BIT21
-DECL|macro|ETH_DEFAULT_RX_UDP_QUEUE_5
-mdefine_line|#define ETH_DEFAULT_RX_UDP_QUEUE_5                      (BIT21 | BIT19)
-DECL|macro|ETH_DEFAULT_RX_UDP_QUEUE_6
-mdefine_line|#define ETH_DEFAULT_RX_UDP_QUEUE_6                      (BIT21 | BIT20)
-DECL|macro|ETH_DEFAULT_RX_UDP_QUEUE_7
-mdefine_line|#define ETH_DEFAULT_RX_UDP_QUEUE_7                      (BIT21 | BIT20 | BIT19)
-DECL|macro|ETH_DEFAULT_RX_BPDU_QUEUE_0
-mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_0                      0
-DECL|macro|ETH_DEFAULT_RX_BPDU_QUEUE_1
-mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_1                     BIT22
-DECL|macro|ETH_DEFAULT_RX_BPDU_QUEUE_2
-mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_2                     BIT23
 DECL|macro|ETH_DEFAULT_RX_BPDU_QUEUE_3
 mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_3                     (BIT23 | BIT22)
 DECL|macro|ETH_DEFAULT_RX_BPDU_QUEUE_4
@@ -336,172 +221,6 @@ DECL|macro|ETH_DEFAULT_RX_BPDU_QUEUE_6
 mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_6                     (BIT24 | BIT23)
 DECL|macro|ETH_DEFAULT_RX_BPDU_QUEUE_7
 mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_7                     (BIT24 | BIT23 | BIT22)
-multiline_comment|/* These macros describes the Port configuration extend reg (Px_cXR) bits*/
-DECL|macro|ETH_CLASSIFY_EN
-mdefine_line|#define ETH_CLASSIFY_EN                                 BIT0
-DECL|macro|ETH_SPAN_BPDU_PACKETS_AS_NORMAL
-mdefine_line|#define ETH_SPAN_BPDU_PACKETS_AS_NORMAL                 0
-DECL|macro|ETH_SPAN_BPDU_PACKETS_TO_RX_QUEUE_7
-mdefine_line|#define ETH_SPAN_BPDU_PACKETS_TO_RX_QUEUE_7             BIT1
-DECL|macro|ETH_PARTITION_DISABLE
-mdefine_line|#define ETH_PARTITION_DISABLE                           0
-DECL|macro|ETH_PARTITION_ENABLE
-mdefine_line|#define ETH_PARTITION_ENABLE                            BIT2
-multiline_comment|/* Tx/Rx queue command reg (RQCR/TQCR)*/
-DECL|macro|ETH_QUEUE_0_ENABLE
-mdefine_line|#define ETH_QUEUE_0_ENABLE                              BIT0
-DECL|macro|ETH_QUEUE_1_ENABLE
-mdefine_line|#define ETH_QUEUE_1_ENABLE                              BIT1
-DECL|macro|ETH_QUEUE_2_ENABLE
-mdefine_line|#define ETH_QUEUE_2_ENABLE                              BIT2
-DECL|macro|ETH_QUEUE_3_ENABLE
-mdefine_line|#define ETH_QUEUE_3_ENABLE                              BIT3
-DECL|macro|ETH_QUEUE_4_ENABLE
-mdefine_line|#define ETH_QUEUE_4_ENABLE                              BIT4
-DECL|macro|ETH_QUEUE_5_ENABLE
-mdefine_line|#define ETH_QUEUE_5_ENABLE                              BIT5
-DECL|macro|ETH_QUEUE_6_ENABLE
-mdefine_line|#define ETH_QUEUE_6_ENABLE                              BIT6
-DECL|macro|ETH_QUEUE_7_ENABLE
-mdefine_line|#define ETH_QUEUE_7_ENABLE                              BIT7
-DECL|macro|ETH_QUEUE_0_DISABLE
-mdefine_line|#define ETH_QUEUE_0_DISABLE                             BIT8
-DECL|macro|ETH_QUEUE_1_DISABLE
-mdefine_line|#define ETH_QUEUE_1_DISABLE                             BIT9
-DECL|macro|ETH_QUEUE_2_DISABLE
-mdefine_line|#define ETH_QUEUE_2_DISABLE                             BIT10
-DECL|macro|ETH_QUEUE_3_DISABLE
-mdefine_line|#define ETH_QUEUE_3_DISABLE                             BIT11
-DECL|macro|ETH_QUEUE_4_DISABLE
-mdefine_line|#define ETH_QUEUE_4_DISABLE                             BIT12
-DECL|macro|ETH_QUEUE_5_DISABLE
-mdefine_line|#define ETH_QUEUE_5_DISABLE                             BIT13
-DECL|macro|ETH_QUEUE_6_DISABLE
-mdefine_line|#define ETH_QUEUE_6_DISABLE                             BIT14
-DECL|macro|ETH_QUEUE_7_DISABLE
-mdefine_line|#define ETH_QUEUE_7_DISABLE                             BIT15
-multiline_comment|/* These macros describes the Port Sdma configuration reg (SDCR) bits */
-DECL|macro|ETH_RIFB
-mdefine_line|#define ETH_RIFB                                        BIT0
-DECL|macro|ETH_RX_BURST_SIZE_1_64BIT
-mdefine_line|#define ETH_RX_BURST_SIZE_1_64BIT                       0
-DECL|macro|ETH_RX_BURST_SIZE_2_64BIT
-mdefine_line|#define ETH_RX_BURST_SIZE_2_64BIT                       BIT1
-DECL|macro|ETH_RX_BURST_SIZE_4_64BIT
-mdefine_line|#define ETH_RX_BURST_SIZE_4_64BIT                       BIT2
-DECL|macro|ETH_RX_BURST_SIZE_8_64BIT
-mdefine_line|#define ETH_RX_BURST_SIZE_8_64BIT                       (BIT2 | BIT1)
-DECL|macro|ETH_RX_BURST_SIZE_16_64BIT
-mdefine_line|#define ETH_RX_BURST_SIZE_16_64BIT                      BIT3
-DECL|macro|ETH_BLM_RX_NO_SWAP
-mdefine_line|#define ETH_BLM_RX_NO_SWAP                              BIT4
-DECL|macro|ETH_BLM_RX_BYTE_SWAP
-mdefine_line|#define ETH_BLM_RX_BYTE_SWAP                            0
-DECL|macro|ETH_BLM_TX_NO_SWAP
-mdefine_line|#define ETH_BLM_TX_NO_SWAP                              BIT5
-DECL|macro|ETH_BLM_TX_BYTE_SWAP
-mdefine_line|#define ETH_BLM_TX_BYTE_SWAP                            0
-DECL|macro|ETH_DESCRIPTORS_BYTE_SWAP
-mdefine_line|#define ETH_DESCRIPTORS_BYTE_SWAP                       BIT6
-DECL|macro|ETH_DESCRIPTORS_NO_SWAP
-mdefine_line|#define ETH_DESCRIPTORS_NO_SWAP                         0
-DECL|macro|ETH_TX_BURST_SIZE_1_64BIT
-mdefine_line|#define ETH_TX_BURST_SIZE_1_64BIT                       0
-DECL|macro|ETH_TX_BURST_SIZE_2_64BIT
-mdefine_line|#define ETH_TX_BURST_SIZE_2_64BIT                       BIT22
-DECL|macro|ETH_TX_BURST_SIZE_4_64BIT
-mdefine_line|#define ETH_TX_BURST_SIZE_4_64BIT                       BIT23
-DECL|macro|ETH_TX_BURST_SIZE_8_64BIT
-mdefine_line|#define ETH_TX_BURST_SIZE_8_64BIT                       (BIT23 | BIT22)
-DECL|macro|ETH_TX_BURST_SIZE_16_64BIT
-mdefine_line|#define ETH_TX_BURST_SIZE_16_64BIT                      BIT24
-multiline_comment|/* These macros describes the Port serial control reg (PSCR) bits */
-DECL|macro|ETH_SERIAL_PORT_DISABLE
-mdefine_line|#define ETH_SERIAL_PORT_DISABLE                         0
-DECL|macro|ETH_SERIAL_PORT_ENABLE
-mdefine_line|#define ETH_SERIAL_PORT_ENABLE                          BIT0
-DECL|macro|ETH_FORCE_LINK_PASS
-mdefine_line|#define ETH_FORCE_LINK_PASS                             BIT1
-DECL|macro|ETH_DO_NOT_FORCE_LINK_PASS
-mdefine_line|#define ETH_DO_NOT_FORCE_LINK_PASS                      0
-DECL|macro|ETH_ENABLE_AUTO_NEG_FOR_DUPLX
-mdefine_line|#define ETH_ENABLE_AUTO_NEG_FOR_DUPLX                   0
-DECL|macro|ETH_DISABLE_AUTO_NEG_FOR_DUPLX
-mdefine_line|#define ETH_DISABLE_AUTO_NEG_FOR_DUPLX                  BIT2
-DECL|macro|ETH_ENABLE_AUTO_NEG_FOR_FLOW_CTRL
-mdefine_line|#define ETH_ENABLE_AUTO_NEG_FOR_FLOW_CTRL               0
-DECL|macro|ETH_DISABLE_AUTO_NEG_FOR_FLOW_CTRL
-mdefine_line|#define ETH_DISABLE_AUTO_NEG_FOR_FLOW_CTRL              BIT3
-DECL|macro|ETH_ADV_NO_FLOW_CTRL
-mdefine_line|#define ETH_ADV_NO_FLOW_CTRL                            0
-DECL|macro|ETH_ADV_SYMMETRIC_FLOW_CTRL
-mdefine_line|#define ETH_ADV_SYMMETRIC_FLOW_CTRL                     BIT4
-DECL|macro|ETH_FORCE_FC_MODE_NO_PAUSE_DIS_TX
-mdefine_line|#define ETH_FORCE_FC_MODE_NO_PAUSE_DIS_TX               0
-DECL|macro|ETH_FORCE_FC_MODE_TX_PAUSE_DIS
-mdefine_line|#define ETH_FORCE_FC_MODE_TX_PAUSE_DIS                  BIT5
-DECL|macro|ETH_FORCE_BP_MODE_NO_JAM
-mdefine_line|#define ETH_FORCE_BP_MODE_NO_JAM                        0
-DECL|macro|ETH_FORCE_BP_MODE_JAM_TX
-mdefine_line|#define ETH_FORCE_BP_MODE_JAM_TX                        BIT7
-DECL|macro|ETH_FORCE_BP_MODE_JAM_TX_ON_RX_ERR
-mdefine_line|#define ETH_FORCE_BP_MODE_JAM_TX_ON_RX_ERR              BIT8
-DECL|macro|ETH_FORCE_LINK_FAIL
-mdefine_line|#define ETH_FORCE_LINK_FAIL                             0
-DECL|macro|ETH_DO_NOT_FORCE_LINK_FAIL
-mdefine_line|#define ETH_DO_NOT_FORCE_LINK_FAIL                      BIT10
-DECL|macro|ETH_RETRANSMIT_16_ATTEMPTS
-mdefine_line|#define ETH_RETRANSMIT_16_ATTEMPTS                      0
-DECL|macro|ETH_RETRANSMIT_FOREVER
-mdefine_line|#define ETH_RETRANSMIT_FOREVER                          BIT11
-DECL|macro|ETH_DISABLE_AUTO_NEG_SPEED_GMII
-mdefine_line|#define ETH_DISABLE_AUTO_NEG_SPEED_GMII                 BIT13
-DECL|macro|ETH_ENABLE_AUTO_NEG_SPEED_GMII
-mdefine_line|#define ETH_ENABLE_AUTO_NEG_SPEED_GMII                  0
-DECL|macro|ETH_DTE_ADV_0
-mdefine_line|#define ETH_DTE_ADV_0                                   0
-DECL|macro|ETH_DTE_ADV_1
-mdefine_line|#define ETH_DTE_ADV_1                                   BIT14
-DECL|macro|ETH_DISABLE_AUTO_NEG_BYPASS
-mdefine_line|#define ETH_DISABLE_AUTO_NEG_BYPASS                     0
-DECL|macro|ETH_ENABLE_AUTO_NEG_BYPASS
-mdefine_line|#define ETH_ENABLE_AUTO_NEG_BYPASS                      BIT15
-DECL|macro|ETH_AUTO_NEG_NO_CHANGE
-mdefine_line|#define ETH_AUTO_NEG_NO_CHANGE                          0
-DECL|macro|ETH_RESTART_AUTO_NEG
-mdefine_line|#define ETH_RESTART_AUTO_NEG                            BIT16
-DECL|macro|ETH_MAX_RX_PACKET_1518BYTE
-mdefine_line|#define ETH_MAX_RX_PACKET_1518BYTE                      0
-DECL|macro|ETH_MAX_RX_PACKET_1522BYTE
-mdefine_line|#define ETH_MAX_RX_PACKET_1522BYTE                      BIT17
-DECL|macro|ETH_MAX_RX_PACKET_1552BYTE
-mdefine_line|#define ETH_MAX_RX_PACKET_1552BYTE                      BIT18
-DECL|macro|ETH_MAX_RX_PACKET_9022BYTE
-mdefine_line|#define ETH_MAX_RX_PACKET_9022BYTE                      (BIT18 | BIT17)
-DECL|macro|ETH_MAX_RX_PACKET_9192BYTE
-mdefine_line|#define ETH_MAX_RX_PACKET_9192BYTE                      BIT19
-DECL|macro|ETH_MAX_RX_PACKET_9700BYTE
-mdefine_line|#define ETH_MAX_RX_PACKET_9700BYTE                      (BIT19 | BIT17)
-DECL|macro|ETH_SET_EXT_LOOPBACK
-mdefine_line|#define ETH_SET_EXT_LOOPBACK                            BIT20
-DECL|macro|ETH_CLR_EXT_LOOPBACK
-mdefine_line|#define ETH_CLR_EXT_LOOPBACK                            0
-DECL|macro|ETH_SET_FULL_DUPLEX_MODE
-mdefine_line|#define ETH_SET_FULL_DUPLEX_MODE                        BIT21
-DECL|macro|ETH_SET_HALF_DUPLEX_MODE
-mdefine_line|#define ETH_SET_HALF_DUPLEX_MODE                        0
-DECL|macro|ETH_ENABLE_FLOW_CTRL_TX_RX_IN_FULL_DUPLEX
-mdefine_line|#define ETH_ENABLE_FLOW_CTRL_TX_RX_IN_FULL_DUPLEX       BIT22
-DECL|macro|ETH_DISABLE_FLOW_CTRL_TX_RX_IN_FULL_DUPLEX
-mdefine_line|#define ETH_DISABLE_FLOW_CTRL_TX_RX_IN_FULL_DUPLEX      0
-DECL|macro|ETH_SET_GMII_SPEED_TO_10_100
-mdefine_line|#define ETH_SET_GMII_SPEED_TO_10_100                    0
-DECL|macro|ETH_SET_GMII_SPEED_TO_1000
-mdefine_line|#define ETH_SET_GMII_SPEED_TO_1000                      BIT23
-DECL|macro|ETH_SET_MII_SPEED_TO_10
-mdefine_line|#define ETH_SET_MII_SPEED_TO_10                         0
-DECL|macro|ETH_SET_MII_SPEED_TO_100
-mdefine_line|#define ETH_SET_MII_SPEED_TO_100                        BIT24
 multiline_comment|/* SMI reg */
 DECL|macro|ETH_SMI_BUSY
 mdefine_line|#define ETH_SMI_BUSY        &t;BIT28&t;/* 0 - Write, 1 - Read          */
@@ -862,6 +581,26 @@ id|u32
 id|port_rx_queue_command
 suffix:semicolon
 multiline_comment|/* Port active Rx queues summary */
+DECL|member|rx_sram_addr
+id|u32
+id|rx_sram_addr
+suffix:semicolon
+multiline_comment|/* Base address of rx sram area&t;*/
+DECL|member|rx_sram_size
+id|u32
+id|rx_sram_size
+suffix:semicolon
+multiline_comment|/* Size of rx sram area&t;&t;*/
+DECL|member|tx_sram_addr
+id|u32
+id|tx_sram_addr
+suffix:semicolon
+multiline_comment|/* Base address of tx sram area&t;*/
+DECL|member|tx_sram_size
+id|u32
+id|tx_sram_size
+suffix:semicolon
+multiline_comment|/* Size of tx sram area&t;&t;*/
 DECL|member|rx_resource_err
 r_int
 id|rx_resource_err
@@ -924,10 +663,8 @@ DECL|member|rx_skb
 r_struct
 id|sk_buff
 op_star
+op_star
 id|rx_skb
-(braket
-id|MV64340_RX_QUEUE_SIZE
-)braket
 suffix:semicolon
 DECL|member|p_tx_desc_area
 r_struct
@@ -948,10 +685,8 @@ DECL|member|tx_skb
 r_struct
 id|sk_buff
 op_star
+op_star
 id|tx_skb
-(braket
-id|MV64340_TX_QUEUE_SIZE
-)braket
 suffix:semicolon
 DECL|member|tx_timeout_task
 r_struct
