@@ -1165,12 +1165,6 @@ id|bio-&gt;bi_io_vec
 op_plus
 id|ci-&gt;idx
 suffix:semicolon
-id|DMWARN
-c_func
-(paren
-l_string|&quot;splitting page&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
