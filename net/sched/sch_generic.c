@@ -822,7 +822,7 @@ c_cond
 (paren
 id|list-&gt;qlen
 op_le
-id|skb-&gt;dev-&gt;tx_queue_len
+id|qdisc-&gt;dev-&gt;tx_queue_len
 )paren
 (brace
 id|__skb_queue_tail
