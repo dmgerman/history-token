@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -1146,6 +1147,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* We only show online cpus: disable preempt (overzealous, I&n;&t; * knew) to prevent cpu going down. */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1156,9 +1163,16 @@ c_func
 id|cpu_id
 )paren
 )paren
+(brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_SMP
 id|pvr
 op_assign
@@ -1291,6 +1305,11 @@ comma
 id|maj
 comma
 id|min
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

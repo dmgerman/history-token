@@ -2473,6 +2473,7 @@ id|smp_affinity_entry
 id|NR_IRQS
 )braket
 suffix:semicolon
+multiline_comment|/* Protected by irq descriptor spinlock */
 macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
 DECL|variable|irq_affinity
 id|cpumask_t
@@ -2626,12 +2627,9 @@ op_assign
 r_int
 )paren
 id|data
-comma
-id|full_count
-op_assign
-id|count
-comma
-id|err
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 id|cpumask_t
 id|new_value
@@ -2658,7 +2656,7 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|err
+id|ret
 op_assign
 id|cpumask_parse
 c_func
@@ -2673,10 +2671,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|ret
+op_ne
+l_int|0
 )paren
 r_return
-id|err
+id|ret
 suffix:semicolon
 multiline_comment|/*&n;&t; * We check for CPU_MASK_ALL in xics to send irqs to all cpus.&n;&t; * In some cases CPU_MASK_ALL is smaller than the cpumask (eg&n;&t; * NR_CPUS == 32 and cpumask is a long), so we mask it here to&n;&t; * be consistent.&n;&t; */
 id|cpus_and
@@ -2687,6 +2687,19 @@ comma
 id|new_value
 comma
 id|allcpus
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Grab lock here so cpu_online_map can&squot;t change, and also&n;&t; * protect irq_affinity[].&n;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Do not allow disabling IRQs completely - it&squot;s a too easy&n;&t; * way to make the system unusable accidentally :-) At least&n;&t; * one online CPU still has to be targeted.&n;&t; */
@@ -2709,10 +2722,16 @@ c_func
 id|tmp
 )paren
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|irq_affinity
 (braket
 id|irq
@@ -2735,8 +2754,26 @@ comma
 id|new_value
 )paren
 suffix:semicolon
+id|ret
+op_assign
+id|count
+suffix:semicolon
+id|out
+suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|lock
+)paren
+suffix:semicolon
 r_return
-id|full_count
+id|ret
 suffix:semicolon
 )brace
 DECL|function|prof_cpu_mask_read_proc

@@ -618,6 +618,14 @@ id|rtas_data_buf
 id|RTAS_DATA_BUF_SIZE
 )braket
 suffix:semicolon
+r_extern
+r_void
+id|rtas_stop_self
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* RMO buffer reserved for user-space RTAS use */
 r_extern
 r_int

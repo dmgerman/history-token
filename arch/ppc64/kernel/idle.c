@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -443,12 +444,40 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpu_is_offline
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+op_logical_and
+id|system_state
+op_eq
+id|SYSTEM_RUNNING
+)paren
+id|cpu_die
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PPC_PSERIES
+DECL|variable|smt_snooze_delay
+id|DECLARE_PER_CPU
+c_func
+(paren
+id|smt_snooze_delay
+)paren
+suffix:semicolon
 DECL|function|dedicated_idle
 r_int
 id|dedicated_idle
@@ -677,6 +706,27 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpu_is_offline
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+op_logical_and
+id|system_state
+op_eq
+id|SYSTEM_RUNNING
+)paren
+id|cpu_die
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -706,6 +756,27 @@ c_loop
 l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|cpu_is_offline
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+op_logical_and
+id|system_state
+op_eq
+id|SYSTEM_RUNNING
+)paren
+id|cpu_die
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Indicate to the HV that we are idle.  Now would be&n;&t;&t; * a good time to find other work to dispatch. */
 id|lpaca-&gt;xLpPaca.xIdle
 op_assign
