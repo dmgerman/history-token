@@ -295,7 +295,7 @@ l_int|0
 op_logical_or
 id|j
 op_ge
-id|mddev-&gt;sb-&gt;raid_disks
+id|mddev-&gt;raid_disks
 )paren
 (brace
 id|printk
@@ -363,7 +363,7 @@ c_cond
 (paren
 id|cnt
 op_ne
-id|mddev-&gt;sb-&gt;raid_disks
+id|mddev-&gt;raid_disks
 )paren
 (brace
 id|printk
@@ -373,7 +373,7 @@ l_string|&quot;raid0: too few disks (%d of %d) - aborting!&bslash;n&quot;
 comma
 id|cnt
 comma
-id|mddev-&gt;sb-&gt;raid_disks
+id|mddev-&gt;raid_disks
 )paren
 suffix:semicolon
 r_goto
@@ -1103,7 +1103,7 @@ id|rsect
 suffix:semicolon
 id|chunk_size
 op_assign
-id|mddev-&gt;sb-&gt;chunk_size
+id|mddev-&gt;chunk_size
 op_rshift
 l_int|10
 suffix:semicolon
@@ -1601,7 +1601,7 @@ id|sz
 comma
 l_string|&quot; %dk chunks&quot;
 comma
-id|mddev-&gt;sb-&gt;chunk_size
+id|mddev-&gt;chunk_size
 op_div
 l_int|1024
 )paren

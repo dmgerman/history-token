@@ -4225,7 +4225,7 @@ id|ENOMEM
 suffix:semicolon
 id|max_sector
 op_assign
-id|mddev-&gt;sb-&gt;size
+id|mddev-&gt;size
 op_lshift
 l_int|1
 suffix:semicolon
@@ -4560,12 +4560,6 @@ id|mirror_info_t
 op_star
 id|disk
 suffix:semicolon
-id|mdp_super_t
-op_star
-id|sb
-op_assign
-id|mddev-&gt;sb
-suffix:semicolon
 id|mdk_rdev_t
 op_star
 id|rdev
@@ -4580,7 +4574,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;level
+id|mddev-&gt;level
 op_ne
 l_int|1
 )paren
@@ -4596,7 +4590,7 @@ c_func
 id|mddev
 )paren
 comma
-id|sb-&gt;level
+id|mddev-&gt;level
 )paren
 suffix:semicolon
 r_goto
@@ -4919,7 +4913,7 @@ suffix:semicolon
 )brace
 id|conf-&gt;raid_disks
 op_assign
-id|sb-&gt;raid_disks
+id|mddev-&gt;raid_disks
 suffix:semicolon
 id|conf-&gt;mddev
 op_assign
@@ -5121,11 +5115,11 @@ c_func
 id|mddev
 )paren
 comma
-id|sb-&gt;raid_disks
+id|mddev-&gt;raid_disks
 op_minus
 id|mddev-&gt;degraded
 comma
-id|sb-&gt;raid_disks
+id|mddev-&gt;raid_disks
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, everything is just fine now&n;&t; */

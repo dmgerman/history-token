@@ -1460,7 +1460,7 @@ mdefine_line|#define NONE_OPERATIONAL KERN_ERR &bslash;&n;&quot;multipath: no op
 DECL|macro|SB_DIFFERENCES
 mdefine_line|#define SB_DIFFERENCES KERN_ERR &bslash;&n;&quot;multipath: detected IO path differences!&bslash;n&quot;
 DECL|macro|ARRAY_IS_ACTIVE
-mdefine_line|#define ARRAY_IS_ACTIVE KERN_INFO &bslash;&n;&quot;multipath: array md%d active with %d out of %d IO paths (%d spare IO paths)&bslash;n&quot;
+mdefine_line|#define ARRAY_IS_ACTIVE KERN_INFO &bslash;&n;&quot;multipath: array md%d active with %d out of %d IO paths&bslash;n&quot;
 DECL|macro|THREAD_ERROR
 mdefine_line|#define THREAD_ERROR KERN_ERR &bslash;&n;&quot;multipath: couldn&squot;t allocate thread for md%d&bslash;n&quot;
 DECL|function|multipath_run
@@ -1485,12 +1485,6 @@ id|multipath_info
 op_star
 id|disk
 suffix:semicolon
-id|mdp_super_t
-op_star
-id|sb
-op_assign
-id|mddev-&gt;sb
-suffix:semicolon
 id|mdk_rdev_t
 op_star
 id|rdev
@@ -1510,7 +1504,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;level
+id|mddev-&gt;level
 op_ne
 id|LEVEL_MULTIPATH
 )paren
@@ -1526,7 +1520,7 @@ c_func
 id|mddev
 )paren
 comma
-id|sb-&gt;level
+id|mddev-&gt;level
 )paren
 suffix:semicolon
 r_goto
@@ -1689,7 +1683,7 @@ suffix:semicolon
 )brace
 id|conf-&gt;raid_disks
 op_assign
-id|sb-&gt;raid_disks
+id|mddev-&gt;raid_disks
 op_assign
 id|num_rdevs
 suffix:semicolon
@@ -1821,11 +1815,9 @@ c_func
 id|mddev
 )paren
 comma
-id|sb-&gt;active_disks
+id|conf-&gt;working_disks
 comma
-id|sb-&gt;raid_disks
-comma
-id|sb-&gt;spare_disks
+id|mddev-&gt;raid_disks
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, everything is just fine now&n;&t; */

@@ -134,7 +134,7 @@ c_cond
 (paren
 id|j
 template_param
-id|mddev-&gt;sb-&gt;raid_disks
+id|mddev-&gt;raid_disks
 op_logical_or
 id|disk-&gt;bdev
 )paren
@@ -182,7 +182,7 @@ c_cond
 (paren
 id|cnt
 op_ne
-id|mddev-&gt;sb-&gt;raid_disks
+id|mddev-&gt;raid_disks
 )paren
 (brace
 id|printk
@@ -742,7 +742,7 @@ id|sz
 comma
 l_string|&quot; %dk rounding&quot;
 comma
-id|mddev-&gt;sb-&gt;chunk_size
+id|mddev-&gt;chunk_size
 op_div
 l_int|1024
 )paren
