@@ -31,6 +31,12 @@ DECL|member|info
 id|siginfo_t
 id|info
 suffix:semicolon
+DECL|member|user
+r_struct
+id|user_struct
+op_star
+id|user
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* flags values. */
