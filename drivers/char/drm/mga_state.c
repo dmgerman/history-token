@@ -4,7 +4,6 @@ macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;mga_drm.h&quot;
 macro_line|#include &quot;mga_drv.h&quot;
 DECL|variable|mga_ioctls
-r_static
 id|drm_ioctl_desc_t
 id|mga_ioctls
 (braket
