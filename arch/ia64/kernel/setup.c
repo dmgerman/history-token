@@ -2111,7 +2111,7 @@ r_void
 (brace
 r_extern
 r_void
-id|__init
+id|__devinit
 id|ia64_mmu_init
 (paren
 r_void

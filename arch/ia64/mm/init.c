@@ -989,7 +989,7 @@ c_func
 suffix:semicolon
 )brace
 r_void
-id|__init
+id|__devinit
 DECL|function|ia64_mmu_init
 id|ia64_mmu_init
 (paren
@@ -1008,7 +1008,7 @@ id|impl_va_bits
 suffix:semicolon
 r_extern
 r_void
-id|__init
+id|__devinit
 id|tlb_init
 (paren
 r_void

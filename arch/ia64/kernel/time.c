@@ -940,7 +940,7 @@ id|local_cpu_data-&gt;itm_next
 suffix:semicolon
 )brace
 r_void
-id|__init
+id|__devinit
 DECL|function|ia64_init_itm
 id|ia64_init_itm
 (paren

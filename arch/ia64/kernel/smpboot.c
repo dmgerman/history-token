@@ -73,7 +73,7 @@ DECL|macro|DEBUG_ITC_SYNC
 mdefine_line|#define DEBUG_ITC_SYNC&t;0
 r_extern
 r_void
-id|__init
+id|__devinit
 id|calibrate_delay
 (paren
 r_void
@@ -828,7 +828,7 @@ multiline_comment|/*&n; * Ideally sets up per-cpu profiling hooks.  Doesn&squot;
 r_static
 r_inline
 r_void
-id|__init
+id|__devinit
 DECL|function|smp_setup_percpu_timer
 id|smp_setup_percpu_timer
 (paren
@@ -838,7 +838,7 @@ r_void
 )brace
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|smp_callin
 id|smp_callin
 (paren
@@ -1017,7 +1017,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Activate a secondary processor.  head.S calls this.&n; */
 r_int
-id|__init
+id|__devinit
 DECL|function|start_secondary
 id|start_secondary
 (paren
@@ -1070,7 +1070,7 @@ r_static
 r_struct
 id|task_struct
 op_star
-id|__init
+id|__devinit
 DECL|function|fork_by_hand
 id|fork_by_hand
 (paren
@@ -1100,7 +1100,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|do_boot_cpu
 id|do_boot_cpu
 (paren
