@@ -1031,6 +1031,14 @@ r_char
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|asiliantfb_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_static
 r_struct
 (brace
@@ -1699,6 +1707,16 @@ comma
 id|mc68x328fb_init
 comma
 id|mc68x328fb_setup
+)brace
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_FB_ASILIANT
+(brace
+l_string|&quot;asiliantfb&quot;
+comma
+id|asiliantfb_init
+comma
+l_int|NULL
 )brace
 comma
 macro_line|#endif
