@@ -462,6 +462,8 @@ DECL|macro|SNDRV_PCM_DMA_TYPE_PCI
 mdefine_line|#define SNDRV_PCM_DMA_TYPE_PCI&t;&t;3&t;/* PCI continuous */
 DECL|macro|SNDRV_PCM_DMA_TYPE_SBUS
 mdefine_line|#define SNDRV_PCM_DMA_TYPE_SBUS&t;&t;4&t;/* SBUS continuous */
+DECL|macro|SNDRV_PCM_DMA_TYPE_PCI_SG
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_PCI_SG&t;5&t;/* PCI SG-buffer */
 multiline_comment|/* If you change this don&squot;t forget to change rates[] table in pcm_native.c */
 DECL|macro|SNDRV_PCM_RATE_5512
 mdefine_line|#define SNDRV_PCM_RATE_5512&t;&t;(1&lt;&lt;0)&t;&t;/* 5512Hz */
@@ -3171,6 +3173,29 @@ id|val
 comma
 r_int
 op_star
+id|dir
+)paren
+suffix:semicolon
+r_int
+id|snd_pcm_hw_param_set
+c_func
+(paren
+id|snd_pcm_substream_t
+op_star
+id|pcm
+comma
+id|snd_pcm_hw_params_t
+op_star
+id|params
+comma
+id|snd_pcm_hw_param_t
+id|var
+comma
+r_int
+r_int
+id|val
+comma
+r_int
 id|dir
 )paren
 suffix:semicolon

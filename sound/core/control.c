@@ -864,6 +864,11 @@ id|kctl.id.subdevice
 op_assign
 id|ncontrol-&gt;subdevice
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ncontrol-&gt;name
+)paren
 id|strncpy
 c_func
 (paren

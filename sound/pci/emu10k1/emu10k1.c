@@ -1165,9 +1165,11 @@ c_func
 (paren
 id|card-&gt;longname
 comma
-l_string|&quot;%s at 0x%lx, irq %i&quot;
+l_string|&quot;%s (rev.%d) at 0x%lx, irq %i&quot;
 comma
 id|card-&gt;shortname
+comma
+id|emu-&gt;revision
 comma
 id|emu-&gt;port
 comma

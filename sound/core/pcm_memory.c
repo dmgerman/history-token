@@ -6,6 +6,9 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
+macro_line|#ifdef CONFIG_PCI
+macro_line|#include &lt;sound/pcm_sgbuf.h&gt;
+macro_line|#endif
 DECL|variable|preallocate_dma
 r_static
 r_int
@@ -179,6 +182,32 @@ id|size
 comma
 id|dma_addr
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SNDRV_PCM_DMA_TYPE_PCI_SG
+suffix:colon
+op_star
+id|dma_area
+op_assign
+id|snd_pcm_sgbuf_alloc_pages
+c_func
+(paren
+(paren
+r_struct
+id|snd_sg_buf
+op_star
+)paren
+id|substream-&gt;dma_private
+comma
+id|size
+)paren
+suffix:semicolon
+op_star
+id|dma_addr
+op_assign
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -421,6 +450,24 @@ id|dma_addr
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SNDRV_PCM_DMA_TYPE_PCI_SG
+suffix:colon
+id|snd_pcm_sgbuf_free_pages
+c_func
+(paren
+(paren
+r_struct
+id|snd_sg_buf
+op_star
+)paren
+id|substream-&gt;dma_private
+comma
+id|dma_area
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SBUS
 r_case
@@ -520,6 +567,30 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
+r_if
+c_cond
+(paren
+id|substream-&gt;dma_type
+op_eq
+id|SNDRV_PCM_DMA_TYPE_PCI_SG
+)paren
+id|snd_pcm_sgbuf_delete
+c_func
+(paren
+(paren
+r_struct
+id|snd_sg_buf
+op_star
+)paren
+id|substream-&gt;dma_private
+)paren
+suffix:semicolon
+macro_line|#endif
+id|substream-&gt;dma_type
+op_assign
+id|SNDRV_PCM_DMA_TYPE_UNKNOWN
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   ALSA driver for RME Hammerfall DSP audio interface(s
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
@@ -2932,14 +2933,17 @@ r_int
 id|id
 )paren
 (brace
+r_int
+id|fifo_bytes_used
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|id
 )paren
 (brace
-r_return
-(paren
+id|fifo_bytes_used
+op_assign
 id|hdsp_read
 c_func
 (paren
@@ -2949,15 +2953,12 @@ id|HDSP_midiStatusOut1
 )paren
 op_amp
 l_int|0xff
-)paren
-OL
-l_int|128
 suffix:semicolon
 )brace
 r_else
 (brace
-r_return
-(paren
+id|fifo_bytes_used
+op_assign
 id|hdsp_read
 c_func
 (paren
@@ -2967,9 +2968,26 @@ id|HDSP_midiStatusOut0
 )paren
 op_amp
 l_int|0xff
-)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|fifo_bytes_used
 OL
 l_int|128
+)paren
+(brace
+r_return
+l_int|128
+op_minus
+id|fifo_bytes_used
+suffix:semicolon
+)brace
+r_else
+(brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 )brace

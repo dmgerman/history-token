@@ -780,13 +780,6 @@ comma
 r_return
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SND_CS46XX_NEW_DSP
-r_int
-id|val2
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_int
 id|codec_index
 op_assign
@@ -841,27 +834,16 @@ comma
 r_return
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SND_CS46XX_NEW_DSP
-r_if
-c_cond
-(paren
-id|reg
-op_eq
-id|AC97_CD
-)paren
-id|val2
-op_assign
-id|snd_cs46xx_codec_read
+id|chip
+op_member_access_from_pointer
+id|active_ctrl
 c_func
 (paren
 id|chip
 comma
-id|AC97_CD
-comma
-id|codec_index
+l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 id|snd_cs46xx_codec_write
 c_func
 (paren
@@ -874,87 +856,6 @@ comma
 id|codec_index
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SND_CS46XX_NEW_DSP
-multiline_comment|/* Benny: I&squot;ve not found *one* soundcard where&n;       this code below could do any sense, and&n;       with the HW mixering it&squot;s anyway broken, with&n;       more then 1 PCM stream the amplifier will not&n;       be turned off by unmuting CD channel. So just&n;       lets skip it.&n;    */
-multiline_comment|/*&n;&t; *&t;Adjust power if the mixer is selected/deselected according&n;&t; *&t;to the CD.&n;&t; *&n;&t; *&t;IF the CD is a valid input source (mixer or direct) AND&n;&t; *&t;&t;the CD is not muted THEN power is needed&n;&t; *&n;&t; *&t;We do two things. When record select changes the input to&n;&t; *&t;add/remove the CD we adjust the power count if the CD is&n;&t; *&t;unmuted.&n;&t; *&n;&t; *&t;When the CD mute changes we adjust the power level if the&n;&t; *&t;CD was a valid input.&n;&t; *&n;&t; *      We also check for CD volume != 0, as the CD mute isn&squot;t&n;&t; *      normally tweaked from userspace.&n;&t; */
-multiline_comment|/* CD mute change ? */
-multiline_comment|/* Benny: this hack dont seems to make any sense to me, at least on the Game Theater XP,&n;&t;   Turning of the amplifier just make the PCM sound very distorcionated.&n;&t;   is this really needed ????????????????&n;&t;*/
-r_if
-c_cond
-(paren
-id|reg
-op_eq
-id|AC97_CD
-)paren
-(brace
-multiline_comment|/* Mute bit change ? */
-r_if
-c_cond
-(paren
-(paren
-id|val2
-op_xor
-id|val
-)paren
-op_amp
-l_int|0x8000
-op_logical_or
-(paren
-(paren
-id|val2
-op_eq
-l_int|0x1f1f
-op_logical_or
-id|val
-op_eq
-l_int|0x1f1f
-)paren
-op_logical_and
-id|val2
-op_ne
-id|val
-)paren
-)paren
-(brace
-multiline_comment|/* Mute on */
-r_if
-c_cond
-(paren
-id|val
-op_amp
-l_int|0x8000
-op_logical_or
-id|val
-op_eq
-l_int|0x1f1f
-)paren
-(brace
-id|chip
-op_member_access_from_pointer
-id|amplifier_ctrl
-c_func
-(paren
-id|chip
-comma
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
-multiline_comment|/* Mute off power on */
-id|chip
-op_member_access_from_pointer
-id|amplifier_ctrl
-c_func
-(paren
-id|chip
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
-)brace
 id|chip
 op_member_access_from_pointer
 id|active_ctrl
@@ -966,7 +867,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; *  Chip initialization&n; */
 DECL|function|snd_cs46xx_download
@@ -6052,16 +5952,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|chip
-op_member_access_from_pointer
-id|amplifier_ctrl
-c_func
-(paren
-id|chip
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6317,16 +6207,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|chip
-op_member_access_from_pointer
-id|amplifier_ctrl
-c_func
-(paren
-id|chip
-comma
-l_int|1
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 id|snd_pcm_hw_constraint_list
 c_func
@@ -6467,17 +6347,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|chip
-op_member_access_from_pointer
-id|amplifier_ctrl
-c_func
-(paren
-id|chip
-comma
-op_minus
-l_int|1
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6522,17 +6391,6 @@ suffix:semicolon
 id|chip
 op_member_access_from_pointer
 id|active_ctrl
-c_func
-(paren
-id|chip
-comma
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-id|chip
-op_member_access_from_pointer
-id|amplifier_ctrl
 c_func
 (paren
 id|chip
@@ -14759,17 +14617,6 @@ id|snd_printdd
 l_string|&quot;initializing Voyetra mixer&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* turnon Amplifier and leave it on */
-id|chip
-op_member_access_from_pointer
-id|amplifier_ctrl
-c_func
-(paren
-id|chip
-comma
-l_int|1
-)paren
-suffix:semicolon
 multiline_comment|/* Enable SPDIF out */
 id|snd_cs46xx_pokeBA0
 c_func
@@ -14828,17 +14675,6 @@ l_string|&quot;initializing Hercules mixer&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
-multiline_comment|/* turnon Amplifier and leave it on */
-id|chip
-op_member_access_from_pointer
-id|amplifier_ctrl
-c_func
-(paren
-id|chip
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -15495,6 +15331,9 @@ op_star
 id|chip
 )paren
 (brace
+r_int
+id|amp_saved
+suffix:semicolon
 id|snd_card_t
 op_star
 id|card
@@ -15518,12 +15357,45 @@ id|chip-&gt;pcm
 suffix:semicolon
 singleline_comment|// chip-&gt;ac97_powerdown = snd_cs46xx_codec_read(chip, AC97_POWER_CONTROL);
 singleline_comment|// chip-&gt;ac97_general_purpose = snd_cs46xx_codec_read(chip, BA0_AC97_GENERAL_PURPOSE);
+id|amp_saved
+op_assign
+id|chip-&gt;amplifier
+suffix:semicolon
+multiline_comment|/* turn off amp */
+id|chip
+op_member_access_from_pointer
+id|amplifier_ctrl
+c_func
+(paren
+id|chip
+comma
+op_minus
+id|chip-&gt;amplifier
+)paren
+suffix:semicolon
 id|snd_cs46xx_hw_stop
 c_func
 (paren
 id|chip
 )paren
 suffix:semicolon
+multiline_comment|/* disable CLKRUN */
+id|chip
+op_member_access_from_pointer
+id|active_ctrl
+c_func
+(paren
+id|chip
+comma
+op_minus
+id|chip-&gt;amplifier
+)paren
+suffix:semicolon
+id|chip-&gt;amplifier
+op_assign
+id|amp_saved
+suffix:semicolon
+multiline_comment|/* restore the status */
 id|snd_power_change_state
 c_func
 (paren
@@ -15662,18 +15534,8 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* try to turn on */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|amp_saved
-)paren
-(brace
-id|chip-&gt;amplifier
-op_assign
-l_int|1
-suffix:semicolon
+multiline_comment|/* turn amp on */
+r_else
 id|chip
 op_member_access_from_pointer
 id|active_ctrl
@@ -15685,7 +15547,11 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* disable CLKRUN */
+id|chip-&gt;amplifier
+op_assign
+id|amp_saved
+suffix:semicolon
 id|snd_power_change_state
 c_func
 (paren
@@ -16153,6 +16019,18 @@ comma
 id|cp-&gt;name
 )paren
 suffix:semicolon
+id|chip-&gt;amplifier_ctrl
+op_assign
+id|cp-&gt;amp
+suffix:semicolon
+id|chip-&gt;active_ctrl
+op_assign
+id|cp-&gt;active
+suffix:semicolon
+id|chip-&gt;mixer_init
+op_assign
+id|cp-&gt;mixer_init
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -16165,18 +16043,6 @@ c_func
 (paren
 id|chip
 )paren
-suffix:semicolon
-id|chip-&gt;amplifier_ctrl
-op_assign
-id|cp-&gt;amp
-suffix:semicolon
-id|chip-&gt;active_ctrl
-op_assign
-id|cp-&gt;active
-suffix:semicolon
-id|chip-&gt;mixer_init
-op_assign
-id|cp-&gt;mixer_init
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -16254,6 +16120,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* enable CLKRUN */
 id|pci_set_master
 c_func
 (paren
@@ -16525,6 +16392,17 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/* turn on amplifier */
+id|chip
+op_member_access_from_pointer
+id|amplifier_ctrl
+c_func
+(paren
+id|chip
+comma
+l_int|1
+)paren
+suffix:semicolon
 id|chip
 op_member_access_from_pointer
 id|active_ctrl
@@ -16536,6 +16414,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* disable CLKRUN */
 op_star
 id|rchip
 op_assign

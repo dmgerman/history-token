@@ -12581,6 +12581,13 @@ c_func
 id|snd_pcm_hw_param_near
 )paren
 suffix:semicolon
+DECL|variable|snd_pcm_hw_param_set
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_pcm_hw_param_set
+)paren
+suffix:semicolon
 DECL|variable|snd_pcm_hw_refine
 id|EXPORT_SYMBOL
 c_func

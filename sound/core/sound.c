@@ -287,7 +287,7 @@ l_int|0
 op_logical_or
 id|card
 op_ge
-id|snd_ecards_limit
+id|cards_limit
 )paren
 r_return
 suffix:semicolon

@@ -1,9 +1,7 @@
 multiline_comment|/*&n; * Driver for C-Media CMI8338 and 8738 PCI soundcards.&n; * Copyright (c) 2000 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 multiline_comment|/* Does not work. Warning may block system in capture mode */
 multiline_comment|/* #define USE_VAR48KRATE */
-multiline_comment|/* Define this if you want soft ac3 encoding - it&squot;s still buggy..  */
-multiline_comment|/* #define DO_SOFT_AC3 */
-multiline_comment|/* #define USE_AES_IEC958 */
+multiline_comment|/* Define this if you want soft ac3 encoding */
 DECL|macro|DO_SOFT_AC3
 mdefine_line|#define DO_SOFT_AC3
 DECL|macro|USE_AES_IEC958
@@ -148,6 +146,32 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
+macro_line|#ifdef DO_SOFT_AC3
+DECL|variable|soft_ac3
+r_static
+r_int
+id|soft_ac3
+(braket
+id|SNDRV_CARDS
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|SNDRV_CARDS
+op_minus
+l_int|1
+)paren
+)braket
+op_assign
+l_int|1
+)brace
+suffix:semicolon
+macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren
@@ -300,6 +324,40 @@ id|SNDRV_ENABLED
 l_string|&quot;,allows:{{-1},{0x388},{0x3c8},{0x3e0},{0x3e8}},dialog:list&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef DO_SOFT_AC3
+id|MODULE_PARM
+c_func
+(paren
+id|soft_ac3
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|SNDRV_CARDS
+)paren
+l_string|&quot;l&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|soft_ac3
+comma
+l_string|&quot;Sofware-conversion of raw SPDIF packets (model 033 only).&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|soft_ac3
+comma
+id|SNDRV_ENABLED
+l_string|&quot;,&quot;
+id|SNDRV_BOOLEAN_TRUE_DESC
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_CMEDIA_CM8738
 DECL|macro|PCI_DEVICE_ID_CMEDIA_CM8738
 mdefine_line|#define PCI_DEVICE_ID_CMEDIA_CM8738&t;0x0111
@@ -992,6 +1050,13 @@ DECL|member|can_multi_ch
 r_int
 r_int
 id|can_multi_ch
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|do_soft_ac3
+r_int
+r_int
+id|do_soft_ac3
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -8054,7 +8119,56 @@ id|pointer
 op_assign
 id|snd_cmipci_playback_pointer
 comma
+)brace
+suffix:semicolon
 macro_line|#ifdef DO_SOFT_AC3
+DECL|variable|snd_cmipci_playback_spdif_soft_ops
+r_static
+id|snd_pcm_ops_t
+id|snd_cmipci_playback_spdif_soft_ops
+op_assign
+(brace
+dot
+id|open
+op_assign
+id|snd_cmipci_playback_spdif_open
+comma
+dot
+id|close
+op_assign
+id|snd_cmipci_playback_spdif_close
+comma
+dot
+id|ioctl
+op_assign
+id|snd_pcm_lib_ioctl
+comma
+dot
+id|hw_params
+op_assign
+id|snd_cmipci_hw_params
+comma
+dot
+id|hw_free
+op_assign
+id|snd_cmipci_playback_hw_free
+comma
+dot
+id|prepare
+op_assign
+id|snd_cmipci_playback_spdif_prepare
+comma
+multiline_comment|/* set up rate */
+dot
+id|trigger
+op_assign
+id|snd_cmipci_playback_trigger
+comma
+dot
+id|pointer
+op_assign
+id|snd_cmipci_playback_pointer
+comma
 dot
 id|copy
 op_assign
@@ -8065,9 +8179,9 @@ id|silence
 op_assign
 id|snd_cmipci_ac3_silence
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|variable|snd_cmipci_capture_spdif_ops
 r_static
 id|snd_pcm_ops_t
@@ -8409,6 +8523,12 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+macro_line|#ifdef DO_SOFT_AC3
+r_if
+c_cond
+(paren
+id|cm-&gt;can_ac3_hw
+)paren
 id|snd_pcm_set_ops
 c_func
 (paren
@@ -8420,6 +8540,31 @@ op_amp
 id|snd_cmipci_playback_spdif_ops
 )paren
 suffix:semicolon
+r_else
+id|snd_pcm_set_ops
+c_func
+(paren
+id|pcm
+comma
+id|SNDRV_PCM_STREAM_PLAYBACK
+comma
+op_amp
+id|snd_cmipci_playback_spdif_soft_ops
+)paren
+suffix:semicolon
+macro_line|#else
+id|snd_pcm_set_ops
+c_func
+(paren
+id|pcm
+comma
+id|SNDRV_PCM_STREAM_PLAYBACK
+comma
+op_amp
+id|snd_cmipci_playback_spdif_ops
+)paren
+suffix:semicolon
+macro_line|#endif
 id|snd_pcm_set_ops
 c_func
 (paren
@@ -12516,7 +12661,17 @@ id|cm-&gt;max_channels
 op_assign
 l_int|2
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cm-&gt;do_soft_ac3
+)paren
 id|cm-&gt;can_ac3_sw
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+id|cm-&gt;can_ac3_hw
 op_assign
 l_int|1
 suffix:semicolon
@@ -12835,12 +12990,7 @@ op_star
 id|pci
 comma
 r_int
-r_int
-id|iomidi
-comma
-r_int
-r_int
-id|iosynth
+id|dev
 comma
 id|cmipci_t
 op_star
@@ -12872,6 +13022,24 @@ r_int
 id|val
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|iomidi
+op_assign
+id|mpu_port
+(braket
+id|dev
+)braket
+suffix:semicolon
+r_int
+r_int
+id|iosynth
+op_assign
+id|fm_port
+(braket
+id|dev
+)braket
 suffix:semicolon
 r_int
 id|pcm_index
@@ -13103,6 +13271,15 @@ id|cm-&gt;max_channels
 op_assign
 l_int|2
 suffix:semicolon
+macro_line|#ifdef DO_SOFT_AC3
+id|cm-&gt;do_soft_ac3
+op_assign
+id|soft_ac3
+(braket
+id|dev
+)braket
+suffix:semicolon
+macro_line|#endif
 id|query_chip
 c_func
 (paren
@@ -14008,15 +14185,7 @@ id|card
 comma
 id|pci
 comma
-id|mpu_port
-(braket
 id|dev
-)braket
-comma
-id|fm_port
-(braket
-id|dev
-)braket
 comma
 op_amp
 id|cm

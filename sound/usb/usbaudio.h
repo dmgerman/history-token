@@ -191,6 +191,12 @@ DECL|member|pcm_devs
 r_int
 id|pcm_devs
 suffix:semicolon
+DECL|member|midi_list
+r_struct
+id|list_head
+id|midi_list
+suffix:semicolon
+multiline_comment|/* list of midi interfaces */
 DECL|member|next_midi_device
 r_int
 id|next_midi_device
@@ -206,8 +212,10 @@ DECL|macro|QUIRK_MIDI_YAMAHA
 mdefine_line|#define QUIRK_MIDI_YAMAHA&t;&t;1
 DECL|macro|QUIRK_MIDI_MIDIMAN
 mdefine_line|#define QUIRK_MIDI_MIDIMAN&t;&t;2
-DECL|macro|QUIRK_ROLAND_UA100
-mdefine_line|#define QUIRK_ROLAND_UA100&t;&t;3
+DECL|macro|QUIRK_COMPOSITE
+mdefine_line|#define QUIRK_COMPOSITE&t;&t;&t;3
+DECL|macro|QUIRK_AUDIO_FIXED_ENDPOINT
+mdefine_line|#define QUIRK_AUDIO_FIXED_ENDPOINT&t;4
 DECL|typedef|snd_usb_audio_quirk_t
 r_typedef
 r_struct
@@ -279,7 +287,8 @@ multiline_comment|/* bitmask */
 suffix:semicolon
 multiline_comment|/* for QUIRK_MIDI_YAMAHA, data is NULL */
 multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data points to a snd_usb_midi_endpoint_info&n; * structure (out_cables and in_cables only) */
-multiline_comment|/* for QUIRK_ROLAND_UA100, data is NULL */
+multiline_comment|/* for QUIRK_COMPOSITE, data points to an array of snd_usb_audio_quirk&n; * structures, terminated with .ifnum = -1 */
+multiline_comment|/* for QUIRK_AUDIO_FIXED_ENDPOINT, data points to an audioformat structure */
 multiline_comment|/*&n; */
 DECL|macro|combine_word
 mdefine_line|#define combine_word(s)    ((*s) | ((unsigned int)(s)[1] &lt;&lt; 8))
@@ -390,6 +399,16 @@ r_const
 id|snd_usb_audio_quirk_t
 op_star
 id|quirk
+)paren
+suffix:semicolon
+r_void
+id|snd_usbmidi_disconnect
+c_func
+(paren
+r_struct
+id|list_head
+op_star
+id|p
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * retrieve usb_interface descriptor from the host interface&n; * (conditional for compatibility with the older API)&n; */

@@ -4847,7 +4847,7 @@ id|chip-&gt;spdif_pcm_bits
 op_assign
 id|chip-&gt;spdif_bits
 suffix:semicolon
-id|snd_ymfpci_writel
+id|snd_ymfpci_writew
 c_func
 (paren
 id|chip

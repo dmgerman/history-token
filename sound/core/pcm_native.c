@@ -4989,6 +4989,10 @@ suffix:colon
 r_goto
 id|_end
 suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -5439,6 +5443,10 @@ suffix:semicolon
 r_goto
 id|_xrun_recovery
 suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 id|runtime-&gt;control-&gt;appl_ptr
 op_assign
@@ -5673,6 +5681,10 @@ suffix:semicolon
 r_goto
 id|_xrun_recovery
 suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 id|_end
 suffix:colon
@@ -5851,6 +5863,10 @@ comma
 id|SNDRV_PCM_STATE_SETUP
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 r_break
 suffix:semicolon
 )brace

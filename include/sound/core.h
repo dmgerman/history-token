@@ -1650,24 +1650,9 @@ dot
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_SND_DEBUG) &amp;&amp; !defined(CONFIG_SND_VERBOSE_PRINTK)
-r_void
-id|snd_printd
-c_func
-(paren
-r_const
-r_char
-op_star
-id|format
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* --- */
 macro_line|#ifdef CONFIG_SND_VERBOSE_PRINTK
+multiline_comment|/**&n; * snd_printk - printk wrapper&n; * @fmt: format string&n; *&n; * Works like print() but prints the file and the line of the caller&n; * when configured with CONFIG_SND_VERBOSE_PRINTK.&n; */
 DECL|macro|snd_printk
 mdefine_line|#define snd_printk(fmt, args...) &bslash;&n;&t;snd_verbose_printk(__FILE__, __LINE__, fmt ,##args)
 macro_line|#else
@@ -1678,11 +1663,17 @@ macro_line|#ifdef CONFIG_SND_DEBUG
 DECL|macro|__ASTRING__
 mdefine_line|#define __ASTRING__(x) #x
 macro_line|#ifdef CONFIG_SND_VERBOSE_PRINTK
+multiline_comment|/**&n; * snd_printd - debug printk&n; * @format: format string&n; *&n; * Compiled only when Works like snd_printk() for debugging purpose.&n; * Ignored when CONFIG_SND_DEBUG is not set.&n; */
 DECL|macro|snd_printd
 mdefine_line|#define snd_printd(fmt, args...) &bslash;&n;&t;snd_verbose_printd(__FILE__, __LINE__, fmt ,##args)
+macro_line|#else
+DECL|macro|snd_printd
+mdefine_line|#define snd_printd(fmt, args...) &bslash;&n;&t;printk(fmt ,##args)
 macro_line|#endif
+multiline_comment|/**&n; * snd_assert - run-time assersion macro&n; * @expr: expression&n; * @args...: the action&n; *&n; * This macro checks the expression in run-time and invokes the commands&n; * given in the rest arguments if the assertion is failed.&n; * When CONFIG_SND_DEBUG is not set, the expression is executed but&n; * not checked.&n; */
 DECL|macro|snd_assert
 mdefine_line|#define snd_assert(expr, args...) do {&bslash;&n;&t;if (!(expr)) {&bslash;&n;&t;&t;snd_printk(&quot;BUG? (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
+multiline_comment|/**&n; * snd_runtime_check - run-time assersion macro&n; * @expr: expression&n; * @args...: the action&n; *&n; * This macro checks the expression in run-time and invokes the commands&n; * given in the rest arguments if the assertion is failed.&n; * Unlike snd_assert(), the action commands are executed even if&n; * CONFIG_SND_DEBUG is not set but without any error messages.&n; */
 DECL|macro|snd_runtime_check
 mdefine_line|#define snd_runtime_check(expr, args...) do {&bslash;&n;&t;if (!(expr)) {&bslash;&n;&t;&t;snd_printk(&quot;ERROR (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
 macro_line|#else /* !CONFIG_SND_DEBUG */
@@ -1694,6 +1685,7 @@ DECL|macro|snd_runtime_check
 mdefine_line|#define snd_runtime_check(expr, args...) do { if (!(expr)) { args; } } while (0)
 macro_line|#endif /* CONFIG_SND_DEBUG */
 macro_line|#ifdef CONFIG_SND_DEBUG_DETECT
+multiline_comment|/**&n; * snd_printdd - debug printk&n; * @format: format string&n; *&n; * Compiled only when Works like snd_printk() for debugging purpose.&n; * Ignored when CONFIG_SND_DEBUG_DETECT is not set.&n; */
 DECL|macro|snd_printdd
 mdefine_line|#define snd_printdd(format, args...) snd_printk(format, ##args)
 macro_line|#else

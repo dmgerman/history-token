@@ -17,8 +17,7 @@ DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 multiline_comment|/*&n; */
-DECL|macro|ENABLE_SB_MIXER
-mdefine_line|#define ENABLE_SB_MIXER
+multiline_comment|/* #define ENABLE_SB_MIXER */
 DECL|macro|PLAYBACK_ON_SB
 mdefine_line|#define PLAYBACK_ON_SB
 multiline_comment|/*&n; */
@@ -985,7 +984,7 @@ comma
 id|AD1848_DOUBLE
 c_func
 (paren
-l_string|&quot;CD Capture Switch&quot;
+l_string|&quot;CD Capture Volume&quot;
 comma
 l_int|0
 comma
