@@ -16,10 +16,18 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_int
 id|max_threads
+suffix:semicolon
+DECL|variable|khelper_wq
+r_static
+r_struct
+id|workqueue_struct
+op_star
+id|khelper_wq
 suffix:semicolon
 macro_line|#ifdef CONFIG_KMOD
 multiline_comment|/*&n;&t;modprobe_path is set via /proc/sys.&n;*/
@@ -242,6 +250,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|request_module
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_module
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_KMOD */
 macro_line|#ifdef CONFIG_HOTPLUG
 multiline_comment|/*&n;&t;hotplug path is set via /proc/sys&n;&t;invoked by hotplug-aware bus drivers,&n;&t;with call_usermodehelper&n;&n;&t;argv [0] = hotplug_path;&n;&t;argv [1] = &quot;usb&quot;, &quot;scsi&quot;, &quot;pci&quot;, &quot;network&quot;, etc;&n;&t;... plus optional type-specific parameters&n;&t;argv [n] = 0;&n;&n;&t;envp [*] = HOME, PATH; optional type-specific parameters&n;&n;&t;a hotplug bus should invoke this for device add/remove&n;&t;events.  the command is expected to load drivers when&n;&t;necessary, and may perform additional system setup.&n;*/
@@ -527,7 +542,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is run by keventd.&n; */
+multiline_comment|/* This is run by khelper thread  */
 DECL|function|__call_usermodehelper
 r_static
 r_void
@@ -701,9 +716,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|system_state
-op_ne
-id|SYSTEM_RUNNING
+op_logical_neg
+id|khelper_wq
 )paren
 r_return
 op_minus
@@ -719,32 +733,14 @@ l_int|0
 op_eq
 l_char|&squot;&bslash;0&squot;
 )paren
-r_goto
-id|out
+r_return
+l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current_is_keventd
+id|queue_work
 c_func
 (paren
-)paren
-)paren
-(brace
-multiline_comment|/* We can&squot;t wait on keventd! */
-id|__call_usermodehelper
-c_func
-(paren
-op_amp
-id|sub_info
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|schedule_work
-c_func
-(paren
+id|khelper_wq
+comma
 op_amp
 id|work
 )paren
@@ -756,9 +752,6 @@ op_amp
 id|done
 )paren
 suffix:semicolon
-)brace
-id|out
-suffix:colon
 r_return
 id|sub_info.retval
 suffix:semicolon
@@ -770,13 +763,40 @@ c_func
 id|call_usermodehelper
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_KMOD
-DECL|variable|request_module
-id|EXPORT_SYMBOL
+DECL|function|usermodehelper_init
+r_static
+id|__init
+r_int
+id|usermodehelper_init
 c_func
 (paren
-id|request_module
+r_void
+)paren
+(brace
+id|khelper_wq
+op_assign
+id|create_singlethread_workqueue
+c_func
+(paren
+l_string|&quot;khelper&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|khelper_wq
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|usermodehelper_init
+id|__initcall
+c_func
+(paren
+id|usermodehelper_init
+)paren
+suffix:semicolon
 eof
