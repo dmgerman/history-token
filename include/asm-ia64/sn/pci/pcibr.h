@@ -788,12 +788,28 @@ DECL|macro|PCIBR
 mdefine_line|#define PCIBR&t;&t;&t;&squot;p&squot;
 DECL|macro|_PCIBR
 mdefine_line|#define _PCIBR(x)&t;&t;((PCIBR &lt;&lt; 8) | (x))
-DECL|macro|PCIBR_SLOT_STARTUP
-mdefine_line|#define PCIBR_SLOT_STARTUP&t;_PCIBR(1)
-DECL|macro|PCIBR_SLOT_SHUTDOWN
-mdefine_line|#define PCIBR_SLOT_SHUTDOWN     _PCIBR(2)
-DECL|macro|PCIBR_SLOT_QUERY
-mdefine_line|#define PCIBR_SLOT_QUERY&t;_PCIBR(3)
+multiline_comment|/*&n; * Bit defintions for variable slot_status in struct&n; * pcibr_soft_slot_s.  They are here so that the user&n; * hot-plug utility can interpret the slot&squot;s power&n; * status.&n; */
+macro_line|#ifdef CONFIG_HOTPLUG_PCI_SGI
+DECL|macro|PCI_SLOT_ENABLE_CMPLT
+mdefine_line|#define PCI_SLOT_ENABLE_CMPLT       0x01    
+DECL|macro|PCI_SLOT_ENABLE_INCMPLT
+mdefine_line|#define PCI_SLOT_ENABLE_INCMPLT     0x02    
+DECL|macro|PCI_SLOT_DISABLE_CMPLT
+mdefine_line|#define PCI_SLOT_DISABLE_CMPLT      0x04    
+DECL|macro|PCI_SLOT_DISABLE_INCMPLT
+mdefine_line|#define PCI_SLOT_DISABLE_INCMPLT    0x08    
+DECL|macro|PCI_SLOT_POWER_ON
+mdefine_line|#define PCI_SLOT_POWER_ON           0x10    
+DECL|macro|PCI_SLOT_POWER_OFF
+mdefine_line|#define PCI_SLOT_POWER_OFF          0x20    
+DECL|macro|PCI_SLOT_IS_SYS_CRITICAL
+mdefine_line|#define PCI_SLOT_IS_SYS_CRITICAL    0x40    
+DECL|macro|PCI_SLOT_PCIBA_LOADED
+mdefine_line|#define PCI_SLOT_PCIBA_LOADED       0x80    
+DECL|macro|PCI_SLOT_STATUS_MASK
+mdefine_line|#define PCI_SLOT_STATUS_MASK        (PCI_SLOT_ENABLE_CMPLT | &bslash;&n;&t;&t;&t;&t;     PCI_SLOT_ENABLE_INCMPLT | &bslash;&n;                                     PCI_SLOT_DISABLE_CMPLT | &bslash;&n;&t;&t;&t;&t;     PCI_SLOT_DISABLE_INCMPLT)
+DECL|macro|PCI_SLOT_POWER_MASK
+mdefine_line|#define PCI_SLOT_POWER_MASK         (PCI_SLOT_POWER_ON | PCI_SLOT_POWER_OFF)
 multiline_comment|/*&n; * Bit defintions for variable slot_status in struct&n; * pcibr_soft_slot_s.  They are here so that both&n; * the pcibr driver and the pciconfig command can&n; * reference them.&n; */
 DECL|macro|SLOT_STARTUP_CMPLT
 mdefine_line|#define SLOT_STARTUP_CMPLT      0x01
@@ -818,79 +834,22 @@ DECL|macro|FUNC_IS_VALID
 mdefine_line|#define FUNC_IS_VALID           0x01
 DECL|macro|FUNC_IS_SYS_CRITICAL
 mdefine_line|#define FUNC_IS_SYS_CRITICAL    0x02
-multiline_comment|/*&n; * Structures for requesting PCI bridge information and receiving a response&n; */
-DECL|typedef|pcibr_slot_req_t
-r_typedef
-r_struct
-id|pcibr_slot_req_s
-op_star
-id|pcibr_slot_req_t
-suffix:semicolon
-DECL|typedef|pcibr_slot_up_resp_t
-r_typedef
-r_struct
-id|pcibr_slot_up_resp_s
-op_star
-id|pcibr_slot_up_resp_t
-suffix:semicolon
-DECL|typedef|pcibr_slot_down_resp_t
-r_typedef
-r_struct
-id|pcibr_slot_down_resp_s
-op_star
-id|pcibr_slot_down_resp_t
-suffix:semicolon
-DECL|typedef|pcibr_slot_info_resp_t
-r_typedef
-r_struct
-id|pcibr_slot_info_resp_s
-op_star
-id|pcibr_slot_info_resp_t
-suffix:semicolon
-DECL|typedef|pcibr_slot_func_info_resp_t
-r_typedef
-r_struct
-id|pcibr_slot_func_info_resp_s
-op_star
-id|pcibr_slot_func_info_resp_t
-suffix:semicolon
+multiline_comment|/*&n; * L1 slot power operations for PCI hot-plug&n; */
+DECL|macro|PCI_REQ_SLOT_POWER_ON
+mdefine_line|#define PCI_REQ_SLOT_POWER_ON       1
+DECL|macro|PCI_L1_QSIZE
+mdefine_line|#define PCI_L1_QSIZE                128      /* our L1 message buffer size */
 DECL|macro|L1_QSIZE
 mdefine_line|#define L1_QSIZE                128      /* our L1 message buffer size */
-DECL|struct|pcibr_slot_req_s
-r_struct
-id|pcibr_slot_req_s
+DECL|enum|pcibr_slot_disable_action_e
+r_enum
+id|pcibr_slot_disable_action_e
 (brace
-DECL|member|req_slot
-r_int
-id|req_slot
-suffix:semicolon
-r_union
-(brace
-DECL|member|up
-id|pcibr_slot_up_resp_t
-id|up
-suffix:semicolon
-DECL|member|down
-id|pcibr_slot_down_resp_t
-id|down
-suffix:semicolon
-DECL|member|query
-id|pcibr_slot_info_resp_t
-id|query
-suffix:semicolon
-DECL|member|any
-r_void
-op_star
-id|any
-suffix:semicolon
-DECL|member|req_respp
-)brace
-id|req_respp
-suffix:semicolon
-DECL|member|req_size
-r_int
-id|req_size
-suffix:semicolon
+DECL|enumerator|PCI_REQ_SLOT_ELIGIBLE
+id|PCI_REQ_SLOT_ELIGIBLE
+comma
+DECL|enumerator|PCI_REQ_SLOT_DISABLE
+id|PCI_REQ_SLOT_DISABLE
 )brace
 suffix:semicolon
 DECL|struct|pcibr_slot_up_resp_s
@@ -1171,6 +1130,137 @@ l_int|8
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|pcibr_slot_req_s
+r_struct
+id|pcibr_slot_req_s
+(brace
+DECL|member|req_slot
+r_int
+id|req_slot
+suffix:semicolon
+r_union
+(brace
+DECL|member|up
+r_enum
+id|pcibr_slot_disable_action_e
+id|up
+suffix:semicolon
+DECL|member|down
+r_struct
+id|pcibr_slot_down_resp_s
+op_star
+id|down
+suffix:semicolon
+DECL|member|query
+r_struct
+id|pcibr_slot_info_resp_s
+op_star
+id|query
+suffix:semicolon
+DECL|member|any
+r_void
+op_star
+id|any
+suffix:semicolon
+DECL|member|req_respp
+)brace
+id|req_respp
+suffix:semicolon
+DECL|member|req_size
+r_int
+id|req_size
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pcibr_slot_enable_resp_s
+r_struct
+id|pcibr_slot_enable_resp_s
+(brace
+DECL|member|resp_sub_errno
+r_int
+id|resp_sub_errno
+suffix:semicolon
+DECL|member|resp_l1_msg
+r_char
+id|resp_l1_msg
+(braket
+id|PCI_L1_QSIZE
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pcibr_slot_disable_resp_s
+r_struct
+id|pcibr_slot_disable_resp_s
+(brace
+DECL|member|resp_sub_errno
+r_int
+id|resp_sub_errno
+suffix:semicolon
+DECL|member|resp_l1_msg
+r_char
+id|resp_l1_msg
+(braket
+id|PCI_L1_QSIZE
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pcibr_slot_enable_req_s
+r_struct
+id|pcibr_slot_enable_req_s
+(brace
+DECL|member|req_device
+id|pciio_slot_t
+id|req_device
+suffix:semicolon
+DECL|member|req_resp
+r_struct
+id|pcibr_slot_enable_resp_s
+id|req_resp
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pcibr_slot_disable_req_s
+r_struct
+id|pcibr_slot_disable_req_s
+(brace
+DECL|member|req_device
+id|pciio_slot_t
+id|req_device
+suffix:semicolon
+DECL|member|req_action
+r_enum
+id|pcibr_slot_disable_action_e
+id|req_action
+suffix:semicolon
+DECL|member|req_resp
+r_struct
+id|pcibr_slot_disable_resp_s
+id|req_resp
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pcibr_slot_info_req_s
+r_struct
+id|pcibr_slot_info_req_s
+(brace
+DECL|member|req_device
+id|pciio_slot_t
+id|req_device
+suffix:semicolon
+DECL|member|req_resp
+r_struct
+id|pcibr_slot_info_resp_s
+id|req_resp
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif&t;/* CONFIG_HOTPLUG_PCI_SGI */
 multiline_comment|/*&n; * PCI specific errors, interpreted by pciconfig command&n; */
 multiline_comment|/* EPERM                          1    */
 DECL|macro|PCI_SLOT_ALREADY_UP
