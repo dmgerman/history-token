@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * XFS bit manipulation routines, used in non-realtime code.&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_bit.h&quot;
@@ -1222,32 +1222,43 @@ id|__uint64_t
 id|v
 )paren
 (brace
-r_int
-id|n
-suffix:semicolon
-id|n
+id|__uint32_t
+id|w
 op_assign
-id|ffs
-c_func
 (paren
-(paren
-r_int
+id|__uint32_t
 )paren
 id|v
-)paren
+suffix:semicolon
+r_int
+id|n
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|n
-op_le
-l_int|0
+id|w
 )paren
 (brace
+multiline_comment|/* lower bits */
 id|n
 op_assign
 id|ffs
 c_func
+(paren
+id|w
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* upper bits */
+id|w
+op_assign
+(paren
+id|__uint32_t
+)paren
 (paren
 id|v
 op_rshift
@@ -1257,9 +1268,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|w
+op_logical_and
+(paren
 id|n
-op_ge
-l_int|0
+op_assign
+id|ffs
+c_func
+(paren
+id|w
+)paren
+)paren
 )paren
 id|n
 op_add_assign
@@ -1267,15 +1286,6 @@ l_int|32
 suffix:semicolon
 )brace
 r_return
-(paren
-id|n
-op_le
-l_int|0
-)paren
-ques
-c_cond
-id|n
-suffix:colon
 id|n
 op_minus
 l_int|1
@@ -1294,9 +1304,14 @@ id|v
 id|__uint32_t
 id|h
 op_assign
+(paren
+id|__uint32_t
+)paren
+(paren
 id|v
 op_rshift
 l_int|32
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1317,7 +1332,7 @@ id|xfs_highbit32
 c_func
 (paren
 (paren
-id|__u32
+id|__uint32_t
 )paren
 id|v
 )paren
