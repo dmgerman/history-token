@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else
@@ -383,10 +384,16 @@ id|module
 (brace
 id|module-&gt;arch.core_plt_offset
 op_assign
+id|ALIGN
+c_func
+(paren
 id|module-&gt;core_size
+comma
+l_int|4
+)paren
 suffix:semicolon
 r_return
-id|module-&gt;core_size
+id|module-&gt;arch.core_plt_offset
 op_plus
 id|get_plt_size
 c_func
@@ -429,10 +436,16 @@ id|module
 (brace
 id|module-&gt;arch.init_plt_offset
 op_assign
+id|ALIGN
+c_func
+(paren
 id|module-&gt;init_size
+comma
+l_int|4
+)paren
 suffix:semicolon
 r_return
-id|module-&gt;init_size
+id|module-&gt;arch.init_plt_offset
 op_plus
 id|get_plt_size
 c_func
@@ -573,7 +586,9 @@ suffix:semicolon
 id|DEBUGP
 c_func
 (paren
-l_string|&quot;Doing plt for %u&bslash;n&quot;
+l_string|&quot;Doing plt for call to 0x%x at 0x%x&bslash;n&quot;
+comma
+id|val
 comma
 (paren
 r_int
@@ -689,6 +704,16 @@ op_assign
 l_int|0x4e800420
 suffix:semicolon
 multiline_comment|/* bctr */
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;Initialized plt for 0x%x at %p&bslash;n&quot;
+comma
+id|val
+comma
+id|entry
+)paren
+suffix:semicolon
 r_return
 (paren
 r_uint32
