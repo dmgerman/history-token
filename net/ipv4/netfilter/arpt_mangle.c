@@ -11,13 +11,13 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;David S. Miller &lt;davem@redhat.com&gt;&quot;
+l_string|&quot;Bart De Schuymer &lt;bdschuym@pandora.be&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;arptables mangle table&quot;
+l_string|&quot;arptables arp payload mangle target&quot;
 )paren
 suffix:semicolon
 r_static

@@ -1204,6 +1204,8 @@ op_amp
 id|ehci-&gt;regs-&gt;segment
 )paren
 suffix:semicolon
+macro_line|#if 0
+singleline_comment|// this is deeply broken on almost all architectures
 r_if
 c_cond
 (paren
@@ -1222,6 +1224,7 @@ comma
 l_string|&quot;enabled 64bit PCI DMA&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* help hc dma work well with cachelines */
 id|pci_set_mwi

@@ -109,8 +109,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|PSMOUSE_LOGITECH_SMARTSCROLL
-mdefine_line|#define PSMOUSE_LOGITECH_SMARTSCROLL&t;1
 DECL|variable|psmouse_noext
 r_static
 r_int
@@ -119,17 +117,21 @@ suffix:semicolon
 DECL|variable|psmouse_resolution
 r_int
 id|psmouse_resolution
+op_assign
+l_int|200
 suffix:semicolon
 DECL|variable|psmouse_rate
 r_int
 r_int
 id|psmouse_rate
+op_assign
+l_int|100
 suffix:semicolon
 DECL|variable|psmouse_smartscroll
 r_int
 id|psmouse_smartscroll
 op_assign
-id|PSMOUSE_LOGITECH_SMARTSCROLL
+l_int|1
 suffix:semicolon
 DECL|variable|psmouse_resetafter
 r_int
@@ -1997,24 +1999,20 @@ id|param
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * We set the mouse report rate.&n; */
+multiline_comment|/*&n; * We set the mouse report rate, resolution and scaling.&n; */
 r_if
 c_cond
 (paren
-id|psmouse_rate
+op_logical_neg
+id|psmouse_noext
 )paren
+(brace
 id|psmouse_set_rate
 c_func
 (paren
 id|psmouse
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * We also set the resolution and scaling.&n; */
-r_if
-c_cond
-(paren
-id|psmouse_resolution
-)paren
 id|psmouse_set_resolution
 c_func
 (paren
@@ -2031,6 +2029,7 @@ comma
 id|PSMOUSE_CMD_SETSCALE11
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n; * We set the mouse into streaming mode.&n; */
 id|psmouse_command
 c_func

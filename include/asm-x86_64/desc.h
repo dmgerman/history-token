@@ -612,6 +612,12 @@ l_int|1
 suffix:semicolon
 id|d.limit1
 op_assign
+(paren
+id|size
+op_rshift
+l_int|16
+)paren
+op_amp
 l_int|0xF
 suffix:semicolon
 id|d.base2

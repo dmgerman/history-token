@@ -3607,7 +3607,7 @@ id|r1_bio-&gt;master_bio-&gt;bi_size
 op_rshift
 l_int|9
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 id|put_buf
