@@ -3,6 +3,7 @@ multiline_comment|/*&n; * Modified for 680x0 by Hamish Macdonald&n; * Fixed for 
 multiline_comment|/* bitmap.c contains the code that handles the inode and block bitmaps */
 macro_line|#include &quot;minix.h&quot;
 macro_line|#include &lt;linux/locks.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 DECL|variable|nibblemap
 r_static
@@ -451,6 +452,11 @@ id|sbi-&gt;s_zmap
 id|zone
 )braket
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -471,6 +477,11 @@ comma
 id|sb-&gt;s_id
 comma
 id|block
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|mark_buffer_dirty
@@ -538,6 +549,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|repeat
 suffix:colon
 id|j
@@ -600,9 +616,16 @@ id|j
 op_ge
 l_int|8192
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -625,6 +648,11 @@ r_goto
 id|repeat
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|mark_buffer_dirty
 c_func
 (paren
