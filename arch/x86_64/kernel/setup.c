@@ -2518,13 +2518,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
-r_extern
-r_int
-id|phys_proc_id
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 id|u32
 id|eax
 comma
@@ -4632,13 +4625,6 @@ c_cond
 id|cpu_has_ht
 )paren
 (brace
-r_extern
-r_int
-id|phys_proc_id
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 id|seq_printf
 c_func
 (paren
