@@ -1522,6 +1522,20 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* unable to process commands because&n;&t;&t;&t;&t;   host busy */
+DECL|member|sync
+r_int
+id|sync
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Sync transfer state, managed by host */
+DECL|member|wide
+r_int
+id|wide
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* WIDE transfer state, managed by host */
 DECL|member|device_blocked
 r_int
 r_int
