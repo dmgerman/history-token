@@ -108,6 +108,36 @@ id|task_list
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|wait_bit_key
+r_struct
+id|wait_bit_key
+(brace
+DECL|member|flags
+r_void
+op_star
+id|flags
+suffix:semicolon
+DECL|member|bit_nr
+r_int
+id|bit_nr
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|wait_bit_queue
+r_struct
+id|wait_bit_queue
+(brace
+DECL|member|key
+r_struct
+id|wait_bit_key
+id|key
+suffix:semicolon
+DECL|member|wait
+id|wait_queue_t
+id|wait
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|__wait_queue_head
 r_struct
 id|__wait_queue_head
@@ -138,6 +168,8 @@ DECL|macro|__WAIT_QUEUE_HEAD_INITIALIZER
 mdefine_line|#define __WAIT_QUEUE_HEAD_INITIALIZER(name) {&t;&t;&t;&t;&bslash;&n;&t;.lock&t;&t;= SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;&t;.task_list&t;= { &amp;(name).task_list, &amp;(name).task_list } }
 DECL|macro|DECLARE_WAIT_QUEUE_HEAD
 mdefine_line|#define DECLARE_WAIT_QUEUE_HEAD(name) &bslash;&n;&t;wait_queue_head_t name = __WAIT_QUEUE_HEAD_INITIALIZER(name)
+DECL|macro|__WAIT_BIT_KEY_INITIALIZER
+mdefine_line|#define __WAIT_BIT_KEY_INITIALIZER(word, bit)&t;&t;&t;&t;&bslash;&n;&t;{ .flags = word, .bit_nr = bit, }
 DECL|function|init_waitqueue_head
 r_static
 r_inline
@@ -445,6 +477,23 @@ id|nr
 )paren
 )paren
 suffix:semicolon
+r_void
+id|FASTCALL
+c_func
+(paren
+id|__wake_up_bit
+c_func
+(paren
+id|wait_queue_head_t
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+)paren
+)paren
+suffix:semicolon
 DECL|macro|wake_up
 mdefine_line|#define wake_up(x)&t;&t;&t;__wake_up(x, TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, 1, NULL)
 DECL|macro|wake_up_nr
@@ -681,8 +730,29 @@ op_star
 id|key
 )paren
 suffix:semicolon
+r_int
+id|wake_bit_function
+c_func
+(paren
+id|wait_queue_t
+op_star
+id|wait
+comma
+r_int
+id|mode
+comma
+r_int
+id|sync
+comma
+r_void
+op_star
+id|key
+)paren
+suffix:semicolon
 DECL|macro|DEFINE_WAIT
 mdefine_line|#define DEFINE_WAIT(name)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t name = {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.task&t;&t;= current,&t;&t;&t;&t;&bslash;&n;&t;&t;.func&t;&t;= autoremove_wake_function,&t;&t;&bslash;&n;&t;&t;.task_list&t;= {&t;.next = &amp;name.task_list,&t;&bslash;&n;&t;&t;&t;&t;&t;.prev = &amp;name.task_list,&t;&bslash;&n;&t;&t;&t;&t;},&t;&t;&t;&t;&t;&bslash;&n;&t;}
+DECL|macro|DEFINE_WAIT_BIT
+mdefine_line|#define DEFINE_WAIT_BIT(name, word, bit)&t;&t;&t;&t;&bslash;&n;&t;struct wait_bit_queue name = {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.key = __WAIT_BIT_KEY_INITIALIZER(word, bit),&t;&t;&bslash;&n;&t;&t;.wait&t;= {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;.task&t;&t;= current,&t;&t;&t;&bslash;&n;&t;&t;&t;.func&t;&t;= wake_bit_function,&t;&t;&bslash;&n;&t;&t;&t;.task_list&t;=&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;LIST_HEAD_INIT(name.wait.task_list),&t;&bslash;&n;&t;&t;},&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|macro|init_wait
 mdefine_line|#define init_wait(wait)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;wait-&gt;task = current;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;wait-&gt;func = autoremove_wake_function;&t;&t;&t;&bslash;&n;&t;&t;INIT_LIST_HEAD(&amp;wait-&gt;task_list);&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#endif /* __KERNEL__ */
