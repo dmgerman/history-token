@@ -12215,6 +12215,17 @@ comma
 id|list
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|sp-&gt;flags
+op_amp
+id|SRB_TAPE
+)paren
+)paren
+r_continue
+suffix:semicolon
 multiline_comment|/* &n;&t;&t;&t; * When time expire return request back to OS as BUSY &n;&t;&t;&t; */
 id|__del_from_pending_queue
 c_func

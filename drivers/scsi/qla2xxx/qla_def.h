@@ -421,7 +421,9 @@ mdefine_line|#define SRB_BUSY&t;&t;BIT_8&t;/* Command is in busy retry state */
 DECL|macro|SRB_FO_CANCEL
 mdefine_line|#define SRB_FO_CANCEL&t;&t;BIT_9&t;/* Command don&squot;t need to do failover */
 DECL|macro|SRB_IOCTL
-mdefine_line|#define&t;SRB_IOCTL&t;&t;BIT_10&t;/* IOCTL command. */
+mdefine_line|#define SRB_IOCTL&t;&t;BIT_10&t;/* IOCTL command. */
+DECL|macro|SRB_TAPE
+mdefine_line|#define SRB_TAPE&t;&t;BIT_11&t;/* FCP2 (Tape) command. */
 multiline_comment|/*&n; * SRB state definitions&n; */
 DECL|macro|SRB_FREE_STATE
 mdefine_line|#define SRB_FREE_STATE&t;&t;0&t;/*   returned back */
