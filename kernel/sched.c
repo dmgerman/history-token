@@ -837,6 +837,7 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 r_struct
 id|sched_domain
 op_star
@@ -847,6 +848,7 @@ id|dcnt
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* runqueue-specific stats */
 id|seq_printf
 c_func
@@ -943,6 +945,7 @@ comma
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* domain-specific stats */
 id|for_each_domain
 c_func
@@ -1047,6 +1050,7 @@ id|sd-&gt;ttwu_wake_balance
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 r_return
 l_int|0
