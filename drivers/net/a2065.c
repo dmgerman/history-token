@@ -450,7 +450,9 @@ c_cond
 id|ZERO
 )paren
 id|printk
+c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;TX rings:&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -543,14 +545,13 @@ c_cond
 id|i
 OL
 l_int|3
-)paren
-r_if
-c_cond
-(paren
+op_logical_and
 id|ZERO
 )paren
 id|printk
+c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%d: 0x%8.8x&bslash;n&quot;
 comma
 id|i
@@ -566,7 +567,9 @@ c_cond
 id|ZERO
 )paren
 id|printk
+c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;RX rings:&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -664,7 +667,9 @@ op_logical_and
 id|ZERO
 )paren
 id|printk
+c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%d: 0x%8.8x&bslash;n&quot;
 comma
 id|i
@@ -708,7 +713,9 @@ c_cond
 id|ZERO
 )paren
 id|printk
+c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;RX ptr: %8.8x&bslash;n&quot;
 comma
 id|leptr
@@ -748,7 +755,9 @@ c_cond
 id|ZERO
 )paren
 id|printk
+c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;TX ptr: %8.8x&bslash;n&quot;
 comma
 id|leptr
@@ -850,7 +859,9 @@ id|LE_C0_ERR
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;LANCE unopened after %d ticks, csr0=%4.4x.&bslash;n&quot;
 comma
 id|i
@@ -945,7 +956,9 @@ r_int
 id|i
 suffix:semicolon
 id|printk
+c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;[&quot;
 )paren
 suffix:semicolon
@@ -1013,7 +1026,7 @@ suffix:semicolon
 )brace
 id|printk
 (paren
-l_string|&quot;]&quot;
+l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1167,8 +1180,11 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;%s: Memory squeeze, deferring packet.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;%s: Memory squeeze, &quot;
+l_string|&quot;deferring packet.&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -1453,7 +1469,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Carrier Lost, trying %s&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;%s: Carrier Lost, &quot;
+l_string|&quot;trying %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -1512,8 +1530,11 @@ id|lp-&gt;stats.tx_fifo_errors
 op_increment
 suffix:semicolon
 id|printk
+c_func
 (paren
-l_string|&quot;%s: Tx: ERR_BUF|ERR_UFL, restarting&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;%s: Tx: ERR_BUF|ERR_UFL, &quot;
+l_string|&quot;restarting&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -1800,7 +1821,9 @@ id|LE_C0_MERR
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Bus master arbitration failure, status %4.4x.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;%s: Bus master arbitration failure, status &quot;
+l_string|&quot;%4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2092,7 +2115,9 @@ id|lp
 suffix:semicolon
 macro_line|#ifdef DEBUG_DRIVER
 id|printk
+c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Lance restart=%d&bslash;n&quot;
 comma
 id|status
@@ -2319,8 +2344,10 @@ op_eq
 l_int|0
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot;&bslash;n&quot;
+id|KERN_DEBUG
 )paren
 suffix:semicolon
 id|printk
@@ -2334,6 +2361,12 @@ id|i
 )paren
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 id|entry
@@ -3368,6 +3401,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: A2065 at 0x%08lx, Ethernet Address &quot;
 l_string|&quot;%02x:%02x:%02x:%02x:%02x:%02x&bslash;n&quot;
 comma
