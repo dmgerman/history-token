@@ -91,6 +91,7 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/* Allocate the key transfer structures from the previously allocated pool */
 DECL|function|ehci_qtd_init
 r_static
+r_inline
 r_void
 id|ehci_qtd_init
 (paren
