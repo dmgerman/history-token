@@ -658,12 +658,12 @@ comma
 l_int|NULL
 comma
 (paren
-id|off_t
+id|xfs_off_t
 )paren
 l_int|0
 comma
 (paren
-id|off_t
+id|xfs_off_t
 )paren
 op_minus
 l_int|1
@@ -735,7 +735,7 @@ id|PAGE_CACHE_SIZE
 op_lshift
 l_int|2
 suffix:semicolon
-id|off_t
+id|xfs_off_t
 id|start_offset
 suffix:semicolon
 id|xfs_dirent_t
