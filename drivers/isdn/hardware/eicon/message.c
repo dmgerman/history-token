@@ -21370,7 +21370,7 @@ id|MAX_NCCI
 op_plus
 l_int|1
 suffix:semicolon
-id|i
+id|ncci
 op_increment
 )paren
 (brace

@@ -1,13 +1,10 @@
-multiline_comment|/* $Id: capimain.c,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface&n; * &n; * Copyright 2000-2002 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2002 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: capimain.c,v 1.24 2003/09/09 06:51:05 schindler Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;os_capi.h&quot;
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
@@ -21,7 +18,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.1.2.11 $&quot;
+l_string|&quot;$Revision: 1.24 $&quot;
 suffix:semicolon
 DECL|variable|DRIVERNAME
 r_static
@@ -132,138 +129,6 @@ suffix:semicolon
 r_return
 id|rev
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * sleep for some milliseconds&n; */
-DECL|function|diva_os_sleep
-r_void
-id|diva_os_sleep
-c_func
-(paren
-id|dword
-id|mSec
-)paren
-(brace
-r_int
-r_int
-id|timeout
-op_assign
-id|HZ
-op_star
-id|mSec
-op_div
-l_int|1000
-op_plus
-l_int|1
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|timeout
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * wait for some milliseconds&n; */
-DECL|function|diva_os_wait
-r_void
-id|diva_os_wait
-c_func
-(paren
-id|dword
-id|mSec
-)paren
-(brace
-id|mdelay
-c_func
-(paren
-id|mSec
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * alloc memory&n; */
-DECL|function|diva_os_malloc
-r_void
-op_star
-id|diva_os_malloc
-c_func
-(paren
-r_int
-r_int
-id|flags
-comma
-r_int
-r_int
-id|size
-)paren
-(brace
-r_void
-op_star
-id|ret
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|size
-)paren
-(brace
-id|ret
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|vmalloc
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|size
-)paren
-suffix:semicolon
-)brace
-r_return
-(paren
-id|ret
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * free memory&n; */
-DECL|function|diva_os_free
-r_void
-id|diva_os_free
-c_func
-(paren
-r_int
-r_int
-id|unused
-comma
-r_void
-op_star
-id|ptr
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ptr
-)paren
-(brace
-id|vfree
-c_func
-(paren
-id|ptr
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * alloc a message buffer&n; */
 DECL|function|diva_os_alloc_message_buffer
@@ -547,7 +412,7 @@ suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|DRIVERRELEASE
+id|DRIVERRELEASE_CAPI
 comma
 l_string|&quot;%d.%d%s&quot;
 comma
@@ -575,7 +440,7 @@ l_string|&quot;%s: Rel:%s  Rev:&quot;
 comma
 id|DRIVERLNAME
 comma
-id|DRIVERRELEASE
+id|DRIVERRELEASE_CAPI
 )paren
 suffix:semicolon
 id|strcpy
