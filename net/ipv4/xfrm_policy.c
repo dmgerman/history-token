@@ -5224,8 +5224,8 @@ suffix:colon
 multiline_comment|/* Still not clear... */
 r_default
 suffix:colon
-(brace
-)brace
+multiline_comment|/* nothing */
+suffix:semicolon
 )brace
 id|restart
 suffix:colon
