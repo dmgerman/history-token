@@ -359,6 +359,12 @@ r_while
 c_loop
 (paren
 (paren
+id|index
+op_le
+id|end
+)paren
+op_logical_and
+(paren
 id|nr_pages
 op_assign
 id|pagevec_lookup_tag
@@ -423,6 +429,16 @@ id|pvec.pages
 (braket
 id|i
 )braket
+suffix:semicolon
+multiline_comment|/* until radix tree lookup accepts end_index */
+r_if
+c_cond
+(paren
+id|page-&gt;index
+OG
+id|end
+)paren
+r_continue
 suffix:semicolon
 id|wait_on_page_writeback
 c_func
