@@ -163,7 +163,8 @@ r_void
 id|config_for_pio
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -351,7 +352,8 @@ r_int
 id|config_for_dma
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -438,7 +440,8 @@ r_int
 id|sl82c105_check_drive
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -824,7 +827,8 @@ r_void
 id|sl82c105_lostirq
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -941,7 +945,8 @@ r_void
 id|tune_sl82c105
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma

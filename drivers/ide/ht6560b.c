@@ -40,8 +40,10 @@ DECL|function|ht6560b_selectproc
 r_static
 r_void
 id|ht6560b_selectproc
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -387,7 +389,8 @@ id|byte
 id|ht_pio2timings
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -604,7 +607,8 @@ r_void
 id|ht_set_prefetch
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -699,8 +703,10 @@ DECL|function|tune_ht6560b
 r_static
 r_void
 id|tune_ht6560b
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma

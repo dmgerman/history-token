@@ -316,7 +316,8 @@ multiline_comment|/* Fix breakage in ide-disk.c: drive capacity&t;*/
 multiline_comment|/* is not initialized for drives without a &t;*/
 multiline_comment|/* hardware ID, and we cna&squot;t get that without&t;*/
 multiline_comment|/* probing the drive which freezes a 190.&t;*/
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 op_assign

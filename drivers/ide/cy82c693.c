@@ -277,8 +277,10 @@ DECL|function|cy82c693_dma_enable
 r_static
 r_void
 id|cy82c693_dma_enable
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -604,8 +606,10 @@ DECL|function|cy82c693_tune_drive
 r_static
 r_void
 id|cy82c693_tune_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma

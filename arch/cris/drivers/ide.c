@@ -273,7 +273,8 @@ id|e100_ideproc
 id|ide_ide_action_t
 id|func
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -311,7 +312,8 @@ r_void
 id|tune_e100_ide
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -1222,7 +1224,8 @@ DECL|function|e100_atapi_read
 id|e100_atapi_read
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -1603,7 +1606,8 @@ DECL|function|e100_atapi_write
 id|e100_atapi_write
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -1966,7 +1970,8 @@ r_void
 DECL|function|e100_ide_input_data
 id|e100_ide_input_data
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -1998,7 +2003,8 @@ r_void
 DECL|function|e100_ide_output_data
 id|e100_ide_output_data
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2400,7 +2406,8 @@ r_static
 r_int
 id|config_drive_for_dma
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
