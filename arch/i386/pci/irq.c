@@ -2304,16 +2304,6 @@ id|r-&gt;set
 op_assign
 id|pirq_sis_set
 suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;PCI: Detecting SiS router at %02x:%02x&bslash;n&quot;
-comma
-id|rt-&gt;rtr_bus
-comma
-id|rt-&gt;rtr_devfn
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
