@@ -5176,7 +5176,11 @@ id|cpu
 suffix:semicolon
 id|idle-&gt;thread_info-&gt;preempt_count
 op_assign
+(paren
+id|idle-&gt;lock_depth
+op_ge
 l_int|0
+)paren
 suffix:semicolon
 id|double_rq_unlock
 c_func
