@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
@@ -5606,6 +5607,17 @@ l_string|&quot;ok&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* We have to get every CPU out of OF,&n;&t;&t;&t;&t; * even if we never start it. */
+r_if
+c_cond
+(paren
+id|cpuid
+op_ge
+id|NR_CPUS
+)paren
+r_goto
+id|next
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Set the number of active processors. */
 id|_systemcfg-&gt;processorCount
@@ -5755,6 +5767,8 @@ id|cpu_present_at_boot
 )paren
 suffix:semicolon
 )brace
+id|next
+suffix:colon
 multiline_comment|/* Init paca for secondary threads.   They start later. */
 r_for
 c_loop
@@ -5773,6 +5787,15 @@ op_increment
 (brace
 id|cpuid
 op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpuid
+op_ge
+id|NR_CPUS
+)paren
+r_continue
 suffix:semicolon
 id|_xPaca
 (braket
@@ -6029,6 +6052,29 @@ l_string|&quot;Processor is not HMT capable&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|cpuid
+op_ge
+id|NR_CPUS
+)paren
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;WARNING: maximum CPUs (&quot;
+id|__stringify
+c_func
+(paren
+id|NR_CPUS
+)paren
+l_string|&quot;) exceeded: ignoring extras&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef DEBUG_PROM
 id|prom_print
 c_func
