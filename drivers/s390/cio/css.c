@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.73 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.74 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -824,6 +824,13 @@ r_case
 id|CIO_REVALIDATE
 suffix:colon
 multiline_comment|/* &n;&t;&t; * Revalidation machine check. Sick.&n;&t;&t; * We don&squot;t notify the driver since we have to throw the device&n;&t;&t; * away in any case.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|disc
+)paren
+(brace
 id|device_unregister
 c_func
 (paren
@@ -857,6 +864,21 @@ c_func
 id|irq
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t; * We can&squot;t immediately deregister the disconnected&n;&t;&t;&t; * device since it might block.&n;&t;&t;&t; */
+id|device_trigger_reprobe
+c_func
+(paren
+id|sch
+)paren
+suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
