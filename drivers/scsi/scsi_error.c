@@ -2948,6 +2948,12 @@ op_eq
 id|SUCCESS
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|scmd-&gt;device-&gt;host-&gt;hostt-&gt;skip_settle_delay
+)paren
 id|scsi_sleep
 c_func
 (paren
@@ -3068,6 +3074,12 @@ op_eq
 id|SUCCESS
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|scmd-&gt;device-&gt;host-&gt;hostt-&gt;skip_settle_delay
+)paren
 id|scsi_sleep
 c_func
 (paren

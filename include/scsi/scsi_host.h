@@ -384,6 +384,13 @@ id|emulated
 suffix:colon
 l_int|1
 suffix:semicolon
+multiline_comment|/*&n;&t; * True if the low-level driver performs its own reset-settle delays.&n;&t; */
+DECL|member|skip_settle_delay
+r_int
+id|skip_settle_delay
+suffix:colon
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Countdown for host blocking with no commands outstanding&n;&t; */
 DECL|member|max_host_blocked
 r_int
