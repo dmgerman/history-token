@@ -3205,7 +3205,7 @@ id|de-&gt;time
 op_assign
 l_int|0
 suffix:semicolon
-id|de-&gt;ctime_ms
+id|de-&gt;ctime_cs
 op_assign
 l_int|0
 suffix:semicolon

@@ -68,9 +68,6 @@ mdefine_line|#define MSDOS_VALID_MODE (S_IFREG | S_IFDIR | S_IRWXU | S_IRWXG | S
 multiline_comment|/* Convert attribute bits and a mask to the UNIX mode. */
 DECL|macro|MSDOS_MKMODE
 mdefine_line|#define MSDOS_MKMODE(a, m) (m &amp; (a &amp; ATTR_RO ? S_IRUGO|S_IXUGO : S_IRWXUGO))
-multiline_comment|/* Convert the UNIX mode to MS-DOS attribute bits. */
-DECL|macro|MSDOS_MKATTR
-mdefine_line|#define MSDOS_MKATTR(m)&t;((m &amp; S_IWUGO) ? ATTR_NONE : ATTR_RO)
 DECL|macro|MSDOS_NAME
 mdefine_line|#define MSDOS_NAME&t;11&t;/* maximum name length */
 DECL|macro|MSDOS_LONGNAME
@@ -130,9 +127,14 @@ DECL|macro|IS_FSINFO
 mdefine_line|#define IS_FSINFO(x)&t;(le32_to_cpu((x)-&gt;signature1) == FAT_FSINFO_SIG1 &bslash;&n;&t;&t;&t; &amp;&amp; le32_to_cpu((x)-&gt;signature2) == FAT_FSINFO_SIG2)
 multiline_comment|/*&n; * ioctl commands&n; */
 DECL|macro|VFAT_IOCTL_READDIR_BOTH
-mdefine_line|#define&t;VFAT_IOCTL_READDIR_BOTH&t;&t;_IOR(&squot;r&squot;, 1, struct dirent [2])
+mdefine_line|#define VFAT_IOCTL_READDIR_BOTH&t;&t;_IOR(&squot;r&squot;, 1, struct dirent [2])
 DECL|macro|VFAT_IOCTL_READDIR_SHORT
-mdefine_line|#define&t;VFAT_IOCTL_READDIR_SHORT&t;_IOR(&squot;r&squot;, 2, struct dirent [2])
+mdefine_line|#define VFAT_IOCTL_READDIR_SHORT&t;_IOR(&squot;r&squot;, 2, struct dirent [2])
+multiline_comment|/* &lt;linux/videotext.h&gt; has used 0x72 (&squot;r&squot;) in collision, so skip a few */
+DECL|macro|FAT_IOCTL_GET_ATTRIBUTES
+mdefine_line|#define FAT_IOCTL_GET_ATTRIBUTES&t;_IOR(&squot;r&squot;, 0x10, __u32)
+DECL|macro|FAT_IOCTL_SET_ATTRIBUTES
+mdefine_line|#define FAT_IOCTL_SET_ATTRIBUTES&t;_IOW(&squot;r&squot;, 0x11, __u32)
 multiline_comment|/*&n; * vfat shortname flags&n; */
 DECL|macro|VFAT_SFN_DISPLAY_LOWER
 mdefine_line|#define VFAT_SFN_DISPLAY_LOWER&t;0x0001 /* convert to lowercase for display */
@@ -346,11 +348,11 @@ id|__u8
 id|lcase
 suffix:semicolon
 multiline_comment|/* Case for base and extension */
-DECL|member|ctime_ms
+DECL|member|ctime_cs
 id|__u8
-id|ctime_ms
+id|ctime_cs
 suffix:semicolon
-multiline_comment|/* Creation time, milliseconds */
+multiline_comment|/* Creation time, centiseconds (0-199) */
 DECL|member|ctime
 id|__le16
 id|ctime
@@ -773,11 +775,6 @@ r_int
 id|i_attrs
 suffix:semicolon
 multiline_comment|/* unused attribute bits */
-DECL|member|i_ctime_ms
-r_int
-id|i_ctime_ms
-suffix:semicolon
-multiline_comment|/* unused change time in milliseconds */
 DECL|member|i_pos
 id|loff_t
 id|i_pos
@@ -841,6 +838,56 @@ id|msdos_inode_info
 comma
 id|vfs_inode
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* Return the FAT attribute byte for this inode */
+DECL|function|fat_attr
+r_static
+r_inline
+id|u8
+id|fat_attr
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+(paren
+(paren
+id|inode-&gt;i_mode
+op_amp
+id|S_IWUGO
+)paren
+ques
+c_cond
+id|ATTR_NONE
+suffix:colon
+id|ATTR_RO
+)paren
+op_or
+(paren
+id|S_ISDIR
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+ques
+c_cond
+id|ATTR_DIR
+suffix:colon
+id|ATTR_NONE
+)paren
+op_or
+id|MSDOS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_attrs
 suffix:semicolon
 )brace
 DECL|function|fat_clus_to_blknr
@@ -1226,6 +1273,30 @@ id|i_pos
 )paren
 suffix:semicolon
 multiline_comment|/* fat/file.c */
+r_extern
+r_int
+id|fat_generic_ioctl
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|file_operations
