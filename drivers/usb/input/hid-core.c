@@ -6253,6 +6253,10 @@ DECL|macro|USB_VENDOR_ID_NEC
 mdefine_line|#define USB_VENDOR_ID_NEC&t;&t;0x073e
 DECL|macro|USB_DEVICE_ID_NEC_USB_GAME_PAD
 mdefine_line|#define USB_DEVICE_ID_NEC_USB_GAME_PAD&t;0x0301
+DECL|macro|USB_VENDOR_ID_CHIC
+mdefine_line|#define USB_VENDOR_ID_CHIC&t;&t;0x05fe
+DECL|macro|USB_DEVICE_ID_CHIC_GAMEPAD
+mdefine_line|#define USB_DEVICE_ID_CHIC_GAMEPAD&t;0x0014
 DECL|struct|hid_blacklist
 r_struct
 id|hid_blacklist
@@ -6704,6 +6708,14 @@ comma
 id|USB_VENDOR_ID_ALPS
 comma
 id|USB_DEVICE_ID_IBM_GAMEPAD
+comma
+id|HID_QUIRK_BADPAD
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_CHIC
+comma
+id|USB_DEVICE_ID_CHIC_GAMEPAD
 comma
 id|HID_QUIRK_BADPAD
 )brace
