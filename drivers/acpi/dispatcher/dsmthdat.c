@@ -1,9 +1,10 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsmthdat - control method arguments and local variables&n; *              $Revision: 64 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsmthdat - control method arguments and local variables&n; *              $Revision: 66 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
+macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|ACPI_MODULE_NAME
@@ -582,7 +583,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_set_value&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - Which local_var or argument to get&n; *              Object              - Object to be inserted into the stack entry&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Insert an object onto the method stack at entry Opcode:Index.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_set_value&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - Which local_var or argument to get&n; *              Object              - Object to be inserted into the stack entry&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Insert an object onto the method stack at entry Opcode:Index.&n; *              Note: There is no &quot;implicit conversion&quot; for locals.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_method_data_set_value
 id|acpi_ds_method_data_set_value
@@ -609,9 +610,35 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
+id|acpi_operand_object
+op_star
+id|new_desc
+op_assign
+id|object
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_method_data_set_value&quot;
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;obj %p op %X, ref count = %d [%s]&bslash;n&quot;
+comma
+id|object
+comma
+id|opcode
+comma
+id|object-&gt;common.reference_count
+comma
+id|acpi_ut_get_type_name
+(paren
+id|object-&gt;common.type
+)paren
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Get the namespace node for the arg/local */
@@ -644,20 +671,73 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * If the object has just been created and is not attached to anything,&n;&t; * (the reference count is 1), then we can just store it directly into&n;&t; * the arg/local.  Otherwise, we must copy it.&n;&t; */
+r_if
+c_cond
+(paren
+id|object-&gt;common.reference_count
+OG
+l_int|1
+)paren
+(brace
+id|status
+op_assign
+id|acpi_ut_copy_iobject_to_iobject
+(paren
+id|object
+comma
+op_amp
+id|new_desc
+comma
+id|walk_state
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;Object Copied %p, new %p&bslash;n&quot;
+comma
+id|object
+comma
+id|new_desc
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 multiline_comment|/* Increment ref count so object can&squot;t be deleted while installed */
 id|acpi_ut_add_reference
 (paren
-id|object
+id|new_desc
 )paren
 suffix:semicolon
-multiline_comment|/* Install the object into the stack entry */
+)brace
+multiline_comment|/* Install the object */
 id|node-&gt;object
 op_assign
-id|object
+id|new_desc
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -1234,25 +1314,16 @@ id|current_obj_desc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Detach an existing object from the referenced Node */
-id|acpi_ns_detach_object
-(paren
-id|current_obj_desc-&gt;reference.object
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Store this object into the Node&n;&t;&t;&t;&t; * (perform the indirect store)&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Store this object to the Node&n;&t;&t;&t;&t; * (perform the indirect store)&n;&t;&t;&t;&t; */
 id|status
 op_assign
-id|acpi_ns_attach_object
+id|acpi_ex_store_object_to_node
 (paren
+id|obj_desc
+comma
 id|current_obj_desc-&gt;reference.object
 comma
-id|obj_desc
-comma
-id|ACPI_GET_OBJECT_TYPE
-(paren
-id|obj_desc
-)paren
+id|walk_state
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS

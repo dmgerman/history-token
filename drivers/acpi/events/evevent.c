@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Even handling and dispatch&n; *              $Revision: 96 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Even handling and dispatch&n; *              $Revision: 99 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -629,33 +629,9 @@ id|acpi_gbl_gpe_block_info
 l_int|0
 )braket
 dot
-id|address_space_id
+id|register_count
 op_assign
-id|acpi_gbl_FADT-&gt;Xgpe0_blk.address_space_id
-suffix:semicolon
-id|acpi_gbl_gpe_block_info
-(braket
-l_int|1
-)braket
-dot
-id|address_space_id
-op_assign
-id|acpi_gbl_FADT-&gt;Xgpe1_blk.address_space_id
-suffix:semicolon
-id|acpi_gbl_gpe_block_info
-(braket
 l_int|0
-)braket
-dot
-id|register_count
-op_assign
-(paren
-id|u16
-)paren
-id|ACPI_DIV_16
-(paren
-id|acpi_gbl_FADT-&gt;Xgpe0_blk.register_bit_width
-)paren
 suffix:semicolon
 id|acpi_gbl_gpe_block_info
 (braket
@@ -664,13 +640,7 @@ l_int|1
 dot
 id|register_count
 op_assign
-(paren
-id|u16
-)paren
-id|ACPI_DIV_16
-(paren
-id|acpi_gbl_FADT-&gt;Xgpe1_blk.register_bit_width
-)paren
+l_int|0
 suffix:semicolon
 id|acpi_gbl_gpe_block_info
 (braket
@@ -710,56 +680,34 @@ id|block_base_number
 op_assign
 id|acpi_gbl_FADT-&gt;gpe1_base
 suffix:semicolon
-multiline_comment|/* Warn and exit if there are no GPE registers */
-id|acpi_gbl_gpe_register_count
+multiline_comment|/*&n;&t; * Determine the maximum GPE number for this machine.&n;&t; * Note: both GPE0 and GPE1 are optional, and either can exist without&n;&t; * the other.&n;&t; * If EITHER the register length OR the block address are zero, then that&n;&t; * particular block is not supported.&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_gbl_FADT-&gt;Xgpe0_blk.register_bit_width
+op_logical_and
+id|ACPI_GET_ADDRESS
+(paren
+id|acpi_gbl_FADT-&gt;Xgpe0_blk.address
+)paren
+)paren
+(brace
+multiline_comment|/* GPE block 0 exists (has length and address &gt; 0) */
+id|acpi_gbl_gpe_block_info
+(braket
+l_int|0
+)braket
+dot
+id|register_count
 op_assign
-id|acpi_gbl_gpe_block_info
-(braket
-l_int|0
-)braket
-dot
-id|register_count
-op_plus
-id|acpi_gbl_gpe_block_info
-(braket
-l_int|1
-)braket
-dot
-id|register_count
-suffix:semicolon
-r_if
-c_cond
 (paren
-op_logical_neg
-id|acpi_gbl_gpe_register_count
+id|u16
 )paren
-(brace
-id|ACPI_REPORT_WARNING
+id|ACPI_DIV_16
 (paren
-(paren
-l_string|&quot;There are no GPE blocks defined in the FADT&bslash;n&quot;
-)paren
+id|acpi_gbl_FADT-&gt;Xgpe0_blk.register_bit_width
 )paren
 suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Determine the maximum GPE number for this machine.&n;&t; * Note: both GPE0 and GPE1 are optional, and either can exist without&n;&t; * the other&n;&t; */
-r_if
-c_cond
-(paren
-id|acpi_gbl_gpe_block_info
-(braket
-l_int|0
-)braket
-dot
-id|register_count
-)paren
-(brace
-multiline_comment|/* GPE block 0 exists */
 id|acpi_gbl_gpe_number_max
 op_assign
 id|ACPI_MUL_8
@@ -778,15 +726,30 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|acpi_gbl_FADT-&gt;Xgpe1_blk.register_bit_width
+op_logical_and
+id|ACPI_GET_ADDRESS
+(paren
+id|acpi_gbl_FADT-&gt;Xgpe1_blk.address
+)paren
+)paren
+(brace
+multiline_comment|/* GPE block 1 exists (has length and address &gt; 0) */
 id|acpi_gbl_gpe_block_info
 (braket
 l_int|1
 )braket
 dot
 id|register_count
+op_assign
+(paren
+id|u16
 )paren
-(brace
-multiline_comment|/* GPE block 1 exists */
+id|ACPI_DIV_16
+(paren
+id|acpi_gbl_FADT-&gt;Xgpe1_blk.register_bit_width
+)paren
+suffix:semicolon
 multiline_comment|/* Check for GPE0/GPE1 overlap (if both banks exist) */
 r_if
 c_cond
@@ -857,6 +820,43 @@ id|register_count
 )paren
 op_minus
 l_int|1
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Warn and exit if there are no GPE registers */
+id|acpi_gbl_gpe_register_count
+op_assign
+id|acpi_gbl_gpe_block_info
+(braket
+l_int|0
+)braket
+dot
+id|register_count
+op_plus
+id|acpi_gbl_gpe_block_info
+(braket
+l_int|1
+)braket
+dot
+id|register_count
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_gbl_gpe_register_count
+)paren
+(brace
+id|ACPI_REPORT_WARNING
+(paren
+(paren
+l_string|&quot;There are no GPE blocks defined in the FADT&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
 )paren
 suffix:semicolon
 )brace
@@ -1152,7 +1152,7 @@ id|acpi_gbl_gpe_block_info
 id|gpe_block
 )braket
 dot
-id|address_space_id
+id|block_address-&gt;address_space_id
 suffix:semicolon
 id|gpe_register_info-&gt;enable_address.address_space_id
 op_assign
@@ -1161,7 +1161,7 @@ id|acpi_gbl_gpe_block_info
 id|gpe_block
 )braket
 dot
-id|address_space_id
+id|block_address-&gt;address_space_id
 suffix:semicolon
 id|gpe_register_info-&gt;status_address.register_bit_width
 op_assign
@@ -1621,8 +1621,12 @@ id|acpi_gbl_gpe_number_info
 id|gpe_number_index
 )braket
 dot
-id|method_handle
+id|method_node
 op_assign
+(paren
+id|acpi_namespace_node
+op_star
+)paren
 id|obj_handle
 suffix:semicolon
 multiline_comment|/*&n;&t; * Enable the GPE (SCIs should be disabled at this point)&n;&t; */
@@ -1653,7 +1657,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Registered GPE method %s as GPE number %X&bslash;n&quot;
+l_string|&quot;Registered GPE method %s as GPE number %2.2X&bslash;n&quot;
 comma
 id|name
 comma
@@ -2081,7 +2085,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gpe_info.method_handle
+id|gpe_info.method_node
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Invoke the GPE Method (_Lxx, _Exx):&n;&t;&t; * (Evaluate the _Lxx/_Exx control method that corresponds to this GPE.)&n;&t;&t; */
@@ -2089,7 +2093,7 @@ id|status
 op_assign
 id|acpi_ns_evaluate_by_handle
 (paren
-id|gpe_info.method_handle
+id|gpe_info.method_node
 comma
 l_int|NULL
 comma
@@ -2108,12 +2112,14 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;%s while evaluating GPE%X method&bslash;n&quot;
+l_string|&quot;%s while evaluating method [%4.4s] for GPE[%2.2X]&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
 id|status
 )paren
+comma
+id|gpe_info.method_node-&gt;name.ascii
 comma
 id|gpe_number
 )paren
@@ -2255,7 +2261,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ev_gpe_dispatch: Unable to clear GPE[%X]&bslash;n&quot;
+l_string|&quot;Acpi_ev_gpe_dispatch: Unable to clear GPE[%2.2X]&bslash;n&quot;
 comma
 id|gpe_number
 )paren
@@ -2286,7 +2292,7 @@ r_else
 r_if
 c_cond
 (paren
-id|gpe_info-&gt;method_handle
+id|gpe_info-&gt;method_node
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Disable GPE, so it doesn&squot;t keep firing before the method has a&n;&t;&t; * chance to run.&n;&t;&t; */
@@ -2309,7 +2315,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ev_gpe_dispatch: Unable to disable GPE[%X]&bslash;n&quot;
+l_string|&quot;Acpi_ev_gpe_dispatch: Unable to disable GPE[%2.2X]&bslash;n&quot;
 comma
 id|gpe_number
 )paren
@@ -2344,7 +2350,7 @@ id|gpe_number
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ev_gpe_dispatch: Unable to queue handler for GPE[%X], event is disabled&bslash;n&quot;
+l_string|&quot;Acpi_ev_gpe_dispatch: Unable to queue handler for GPE[%2.2X], event is disabled&bslash;n&quot;
 comma
 id|gpe_number
 )paren
@@ -2358,7 +2364,7 @@ multiline_comment|/* No handler or method to run! */
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ev_gpe_dispatch: No handler or method for GPE[%X], disabling event&bslash;n&quot;
+l_string|&quot;Acpi_ev_gpe_dispatch: No handler or method for GPE[%2.2X], disabling event&bslash;n&quot;
 comma
 id|gpe_number
 )paren
@@ -2384,7 +2390,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ev_gpe_dispatch: Unable to disable GPE[%X]&bslash;n&quot;
+l_string|&quot;Acpi_ev_gpe_dispatch: Unable to disable GPE[%2.2X]&bslash;n&quot;
 comma
 id|gpe_number
 )paren
@@ -2425,7 +2431,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ev_gpe_dispatch: Unable to clear GPE[%X]&bslash;n&quot;
+l_string|&quot;Acpi_ev_gpe_dispatch: Unable to clear GPE[%2.2X]&bslash;n&quot;
 comma
 id|gpe_number
 )paren
