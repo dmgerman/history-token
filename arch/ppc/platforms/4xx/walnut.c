@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;platforms/ibm_ocp.h&gt;
+macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
 macro_line|#ifdef CONFIG_PPC_RTC
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#endif

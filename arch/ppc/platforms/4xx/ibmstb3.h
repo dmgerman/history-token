@@ -4,7 +4,7 @@ macro_line|#ifndef __ASM_IBMSTBX_H__
 DECL|macro|__ASM_IBMSTBX_H__
 mdefine_line|#define __ASM_IBMSTBX_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;platforms/ibm_ocp.h&gt;
+macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
 multiline_comment|/* ibm405.h at bottom of this file */
 multiline_comment|/*&n; * Memory map for the IBM &quot;Redwood-4&quot; STB03xxx evaluation board.&n; *&n; * The  STB03xxx internal i/o addresses don&squot;t work for us 1:1,&n; * so we need to map them at a well know virtual address.&n; *&n; * 4000 000x   uart1           -&gt; 0xe000 000x&n; * 4001 00xx   ppu&n; * 4002 00xx   smart card&n; * 4003 000x   iic&n; * 4004 000x   uart0&n; * 4005 0xxx   timer&n; * 4006 00xx   gpio&n; * 4007 00xx   smart card&n; * 400b 000x   iic&n; * 400c 000x   scp&n; * 400d 000x   modem&n; */
 DECL|macro|STB03xxx_IO_BASE
@@ -330,7 +330,7 @@ mdefine_line|#define DCRN_OCMDSARC&t;(DCRN_OCM0_BASE + 0x2)&t;/* OCM Data Side A
 DECL|macro|DCRN_OCMDSCR
 mdefine_line|#define DCRN_OCMDSCR&t;(DCRN_OCM0_BASE + 0x3)&t;/* OCM Data Side Control */
 macro_line|#endif
-macro_line|#include &lt;platforms/ibm405.h&gt;
+macro_line|#include &lt;asm/ibm405.h&gt;
 macro_line|#endif&t;&t;&t;&t;/* __ASM_IBMSTBX_H__ */
 macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
 eof

@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &quot;cpc700.h&quot;
+macro_line|#include &lt;syslib/cpc700.h&gt;
 macro_line|#include &quot;pal4.h&quot;
 r_extern
 r_void

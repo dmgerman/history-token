@@ -33,6 +33,10 @@ DECL|macro|MAP_DENYWRITE
 mdefine_line|#define MAP_DENYWRITE&t;0x0800&t;&t;/* ETXTBSY */
 DECL|macro|MAP_EXECUTABLE
 mdefine_line|#define MAP_EXECUTABLE&t;0x1000&t;&t;/* mark it as an executable */
+DECL|macro|MAP_POPULATE
+mdefine_line|#define MAP_POPULATE&t;0x8000&t;&t;/* populate (prefault) pagetables */
+DECL|macro|MAP_NONBLOCK
+mdefine_line|#define MAP_NONBLOCK&t;0x10000&t;&t;/* do not block on IO */
 DECL|macro|MS_ASYNC
 mdefine_line|#define MS_ASYNC&t;1&t;&t;/* sync memory asynchronously */
 DECL|macro|MS_INVALIDATE
