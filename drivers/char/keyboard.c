@@ -455,10 +455,6 @@ r_if
 c_cond
 (paren
 id|scancode
-OL
-l_int|0
-op_logical_or
-id|scancode
 op_ge
 id|dev-&gt;keycodemax
 )paren
@@ -502,6 +498,7 @@ id|dev
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
 r_int
 id|i
 comma
@@ -554,10 +551,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|scancode
-OL
-l_int|0
-op_logical_or
 id|scancode
 op_ge
 id|dev-&gt;keycodemax
@@ -1329,6 +1322,7 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|i
 comma
 id|j
@@ -1526,6 +1520,7 @@ id|d
 op_assign
 id|diacr
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon
