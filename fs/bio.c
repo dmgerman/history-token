@@ -1334,7 +1334,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bmd
+id|bmd-&gt;iovecs
 )paren
 r_return
 id|bmd
