@@ -452,6 +452,8 @@ DECL|macro|__NR_security
 mdefine_line|#define __NR_security&t;&t;224
 DECL|macro|__NR_tuxcall
 mdefine_line|#define __NR_tuxcall&t;&t;225
+DECL|macro|__NR_sendfile64
+mdefine_line|#define __NR_sendfile64&t;&t;226
 DECL|macro|__NR
 mdefine_line|#define __NR(n)&t;#n
 DECL|macro|__syscall_return
