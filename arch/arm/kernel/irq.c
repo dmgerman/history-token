@@ -1976,13 +1976,11 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_ERRORS
-id|__backtrace
+id|dump_stack
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -2066,13 +2064,11 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_ERRORS
-id|__backtrace
+id|dump_stack
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace

@@ -730,11 +730,13 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_DEBUG_ERRORS
 id|__backtrace
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * This is called from SysRq-T (show_task) to display the current call&n; * trace for each process.  This version will also display the running&n; * threads call trace (ie, us.)&n; */
 DECL|function|show_trace_task
@@ -2231,7 +2233,7 @@ c_func
 l_string|&quot;Division by zero in kernel.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|__backtrace
+id|dump_stack
 c_func
 (paren
 )paren
