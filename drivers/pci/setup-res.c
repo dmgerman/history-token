@@ -206,7 +206,11 @@ id|KERN_ERR
 l_string|&quot;PCI: Error while updating region &quot;
 l_string|&quot;%s/%d (%08x != %08x)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|resno
 comma
@@ -281,7 +285,11 @@ id|KERN_ERR
 l_string|&quot;PCI: Error updating region &quot;
 l_string|&quot;%s/%d (high %08x != %08x)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|resno
 comma
@@ -393,7 +401,11 @@ id|resource
 comma
 id|dtype
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|res-&gt;start
 comma
@@ -560,7 +572,11 @@ id|res-&gt;start
 comma
 id|res-&gt;end
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 )brace
