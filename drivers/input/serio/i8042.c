@@ -3723,13 +3723,6 @@ id|kbc_sysclass
 )paren
 suffix:semicolon
 )brace
-id|del_timer_sync
-c_func
-(paren
-op_amp
-id|i8042_timer
-)paren
-suffix:semicolon
 id|i8042_controller_cleanup
 c_func
 (paren
@@ -3789,6 +3782,13 @@ c_func
 id|i8042_mux_port
 op_plus
 id|i
+)paren
+suffix:semicolon
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|i8042_timer
 )paren
 suffix:semicolon
 id|tasklet_kill
