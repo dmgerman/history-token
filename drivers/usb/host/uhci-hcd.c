@@ -7917,7 +7917,7 @@ comma
 op_star
 id|head
 suffix:semicolon
-multiline_comment|/*&n;&t; * Read the interrupt status, and write it back to clear the&n;&t; * interrupt cause&n;&t; */
+multiline_comment|/*&n;&t; * Read the interrupt status, and write it back to clear the&n;&t; * interrupt cause.  Contrary to the UHCI specification, the&n;&t; * &quot;HC Halted&quot; status bit is persistent: it is RO, not R/WC.&n;&t; */
 id|status
 op_assign
 id|inw
@@ -7932,7 +7932,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|status
+op_amp
+op_complement
+id|USBSTS_HCH
+)paren
 )paren
 multiline_comment|/* shared interrupt, not mine */
 r_return
