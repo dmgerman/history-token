@@ -1,37 +1,17 @@
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/* i2c-elv.c i2c-hw access for philips style parallel port adapters&t;     */
+multiline_comment|/* i2c-velleman.c i2c-hw access for Velleman K9000 adapters&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/*   Copyright (C) 1995-2000 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
+multiline_comment|/*   Copyright (C) 1995-96, 2000 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and even&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
-multiline_comment|/* $Id: i2c-elv.c,v 1.27 2003/01/21 08:08:16 kmalkki Exp $ */
+multiline_comment|/* $Id: i2c-velleman.c,v 1.29 2003/01/21 08:08:16 kmalkki Exp $ */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|macro|DEFAULT_BASE
-mdefine_line|#define DEFAULT_BASE 0x378
-DECL|variable|base
-r_static
-r_int
-id|base
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|PortData
-r_static
-r_int
-r_char
-id|PortData
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* ----- global defines -----------------------------------------------&t;*/
 DECL|macro|DEB
 mdefine_line|#define DEB(x)&t;&t;/* should be reasonable open, close &amp;c. &t;*/
@@ -39,8 +19,19 @@ DECL|macro|DEB2
 mdefine_line|#define DEB2(x) &t;/* low level debugging - very slow &t;&t;*/
 DECL|macro|DEBE
 mdefine_line|#define DEBE(x)&t;x&t;/* error messages &t;&t;&t;&t;*/
-DECL|macro|DEBINIT
-mdefine_line|#define DEBINIT(x) x&t;/* detection status messages&t;&t;&t;*/
+multiline_comment|/* Pin Port  Inverted&t;name&t;*/
+DECL|macro|I2C_SDA
+mdefine_line|#define I2C_SDA&t;&t;0x02&t;&t;/*  ctrl bit 1 &t;(inv)&t;*/
+DECL|macro|I2C_SCL
+mdefine_line|#define I2C_SCL&t;&t;0x08&t;&t;/*  ctrl bit 3 &t;(inv)&t;*/
+DECL|macro|I2C_SDAIN
+mdefine_line|#define I2C_SDAIN&t;0x10&t;&t;/* stat bit 4&t;&t;*/
+DECL|macro|I2C_SCLIN
+mdefine_line|#define I2C_SCLIN&t;0x08&t;&t;/* ctrl bit 3 (inv)(reads own output)*/
+DECL|macro|I2C_DMASK
+mdefine_line|#define I2C_DMASK&t;0xfd
+DECL|macro|I2C_CMASK
+mdefine_line|#define I2C_CMASK&t;0xf7
 multiline_comment|/* --- Convenience defines for the parallel port:&t;&t;&t;*/
 DECL|macro|BASE
 mdefine_line|#define BASE&t;(unsigned int)(data)
@@ -50,11 +41,20 @@ DECL|macro|STAT
 mdefine_line|#define STAT&t;(BASE+1)&t;&t;/* Centronics status port&t;*/
 DECL|macro|CTRL
 mdefine_line|#define CTRL&t;(BASE+2)&t;&t;/* Centronics control port&t;*/
-multiline_comment|/* ----- local functions ----------------------------------------------&t;*/
-DECL|function|bit_elv_setscl
+DECL|macro|DEFAULT_BASE
+mdefine_line|#define DEFAULT_BASE 0x378
+DECL|variable|base
+r_static
+r_int
+id|base
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* ----- local functions --------------------------------------------------- */
+DECL|function|bit_velle_setscl
 r_static
 r_void
-id|bit_elv_setscl
+id|bit_velle_setscl
 c_func
 (paren
 r_void
@@ -71,31 +71,43 @@ c_cond
 id|state
 )paren
 (brace
-id|PortData
-op_and_assign
-l_int|0xfe
+id|outb
+c_func
+(paren
+id|inb
+c_func
+(paren
+id|CTRL
+)paren
+op_amp
+id|I2C_CMASK
+comma
+id|CTRL
+)paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|PortData
-op_or_assign
-l_int|1
-suffix:semicolon
-)brace
 id|outb
 c_func
 (paren
-id|PortData
+id|inb
+c_func
+(paren
+id|CTRL
+)paren
+op_or
+id|I2C_SCL
 comma
-id|DATA
+id|CTRL
 )paren
 suffix:semicolon
 )brace
-DECL|function|bit_elv_setsda
+)brace
+DECL|function|bit_velle_setsda
 r_static
 r_void
-id|bit_elv_setsda
+id|bit_velle_setsda
 c_func
 (paren
 r_void
@@ -112,31 +124,43 @@ c_cond
 id|state
 )paren
 (brace
-id|PortData
-op_and_assign
-l_int|0xfd
+id|outb
+c_func
+(paren
+id|inb
+c_func
+(paren
+id|CTRL
+)paren
+op_amp
+id|I2C_DMASK
+comma
+id|CTRL
+)paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|PortData
-op_or_assign
-l_int|2
-suffix:semicolon
-)brace
 id|outb
 c_func
 (paren
-id|PortData
+id|inb
+c_func
+(paren
+id|CTRL
+)paren
+op_or
+id|I2C_SDA
 comma
-id|DATA
+id|CTRL
 )paren
 suffix:semicolon
 )brace
-DECL|function|bit_elv_getscl
+)brace
+DECL|function|bit_velle_getscl
 r_static
 r_int
-id|bit_elv_getscl
+id|bit_velle_getscl
 c_func
 (paren
 r_void
@@ -150,22 +174,22 @@ l_int|0
 op_eq
 (paren
 (paren
-id|inb_p
+id|inb
 c_func
 (paren
-id|STAT
+id|CTRL
 )paren
 )paren
 op_amp
-l_int|0x08
+id|I2C_SCLIN
 )paren
 )paren
 suffix:semicolon
 )brace
-DECL|function|bit_elv_getsda
+DECL|function|bit_velle_getsda
 r_static
 r_int
-id|bit_elv_getsda
+id|bit_velle_getsda
 c_func
 (paren
 r_void
@@ -176,25 +200,25 @@ id|data
 r_return
 (paren
 l_int|0
-op_eq
+op_ne
 (paren
 (paren
-id|inb_p
+id|inb
 c_func
 (paren
 id|STAT
 )paren
 )paren
 op_amp
-l_int|0x40
+id|I2C_SDAIN
 )paren
 )paren
 suffix:semicolon
 )brace
-DECL|function|bit_elv_init
+DECL|function|bit_velle_init
 r_static
 r_int
-id|bit_elv_init
+id|bit_velle_init
 c_func
 (paren
 r_void
@@ -220,107 +244,14 @@ l_int|3
 suffix:colon
 l_int|8
 comma
-l_string|&quot;i2c (ELV adapter)&quot;
+l_string|&quot;i2c (Vellemann adapter)&quot;
 )paren
 )paren
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|inb
-c_func
-(paren
-id|base
-op_plus
-l_int|1
-)paren
-op_amp
-l_int|0x80
-)paren
-(brace
-multiline_comment|/* BUSY should be high&t;*/
-id|DEBINIT
-c_func
-(paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-elv.o: Busy was low.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_goto
-id|fail
-suffix:semicolon
-)brace
-id|outb
-c_func
-(paren
-l_int|0x0c
-comma
-id|base
-op_plus
-l_int|2
-)paren
-suffix:semicolon
-multiline_comment|/* SLCT auf low&t;&t;*/
-id|udelay
-c_func
-(paren
-l_int|400
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|inb
-c_func
-(paren
-id|base
-op_plus
-l_int|1
-)paren
-op_logical_and
-l_int|0x10
-)paren
-)paren
-(brace
-id|outb
-c_func
-(paren
-l_int|0x04
-comma
-id|base
-op_plus
-l_int|2
-)paren
-suffix:semicolon
-id|DEBINIT
-c_func
-(paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-elv.o: Select was high.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_goto
-id|fail
-suffix:semicolon
-)brace
-id|PortData
-op_assign
-l_int|0
-suffix:semicolon
-id|bit_elv_setsda
+id|bit_velle_setsda
 c_func
 (paren
 (paren
@@ -332,7 +263,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|bit_elv_setscl
+id|bit_velle_setscl
 c_func
 (paren
 (paren
@@ -346,68 +277,45 @@ l_int|1
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|fail
-suffix:colon
-id|release_region
-c_func
-(paren
-id|base
-comma
-(paren
-id|base
-op_eq
-l_int|0x3bc
-)paren
-ques
-c_cond
-l_int|3
-suffix:colon
-l_int|8
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------------&n; * Encapsulate the above functions in the correct operations structure.&n; * This is only done when more than one hardware adapter is supported.&n; */
-DECL|variable|bit_elv_data
+DECL|variable|bit_velle_data
 r_static
 r_struct
 id|i2c_algo_bit_data
-id|bit_elv_data
+id|bit_velle_data
 op_assign
 (brace
 dot
 id|setsda
 op_assign
-id|bit_elv_setsda
+id|bit_velle_setsda
 comma
 dot
 id|setscl
 op_assign
-id|bit_elv_setscl
+id|bit_velle_setscl
 comma
 dot
 id|getsda
 op_assign
-id|bit_elv_getsda
+id|bit_velle_getsda
 comma
 dot
 id|getscl
 op_assign
-id|bit_elv_getscl
+id|bit_velle_getscl
 comma
 dot
 id|udelay
 op_assign
-l_int|80
+l_int|10
 comma
 dot
 id|mdelay
 op_assign
-l_int|80
+l_int|10
 comma
 dot
 id|timeout
@@ -415,11 +323,11 @@ op_assign
 id|HZ
 )brace
 suffix:semicolon
-DECL|variable|bit_elv_ops
+DECL|variable|bit_velle_ops
 r_static
 r_struct
 id|i2c_adapter
-id|bit_elv_ops
+id|bit_velle_ops
 op_assign
 (brace
 dot
@@ -428,28 +336,23 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|id
-op_assign
-id|I2C_HW_B_ELV
-comma
-dot
 id|algo_data
 op_assign
 op_amp
-id|bit_elv_data
+id|bit_velle_data
 comma
 dot
 id|name
 op_assign
-l_string|&quot;ELV Parallel port adaptor&quot;
+l_string|&quot;Velleman K8000&quot;
 comma
 )brace
 suffix:semicolon
-DECL|function|i2c_bitelv_init
+DECL|function|i2c_bitvelle_init
 r_static
 r_int
 id|__init
-id|i2c_bitelv_init
+id|i2c_bitvelle_init
 c_func
 (paren
 r_void
@@ -459,11 +362,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2c-elv.o: i2c ELV parallel port adapter module version %s (%s)&bslash;n&quot;
-comma
-id|I2C_VERSION
-comma
-id|I2C_DATE
+l_string|&quot;i2c-velleman: i2c Velleman K8000 driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -479,7 +378,7 @@ id|base
 op_assign
 id|DEFAULT_BASE
 suffix:semicolon
-id|bit_elv_data.data
+id|bit_velle_data.data
 op_assign
 (paren
 r_void
@@ -490,7 +389,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bit_elv_init
+id|bit_velle_init
 c_func
 (paren
 )paren
@@ -505,7 +404,7 @@ id|i2c_bit_add_bus
 c_func
 (paren
 op_amp
-id|bit_elv_ops
+id|bit_velle_ops
 )paren
 OL
 l_int|0
@@ -527,23 +426,18 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|i2c_set_adapdata
-c_func
-(paren
-op_amp
-id|bit_elv_ops
-comma
+id|bit_velle_data.data
+op_assign
 (paren
 r_void
 op_star
 )paren
 id|base
-)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|bit_elv_init
+id|bit_velle_init
 c_func
 (paren
 )paren
@@ -558,7 +452,7 @@ id|i2c_bit_add_bus
 c_func
 (paren
 op_amp
-id|bit_elv_ops
+id|bit_velle_ops
 )paren
 OL
 l_int|0
@@ -582,7 +476,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;i2c-elv.o: found device at %#x.&bslash;n&quot;
+l_string|&quot;i2c-velleman: found device at %#x.&bslash;n&quot;
 comma
 id|base
 )paren
@@ -591,11 +485,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|i2c_bitelv_exit
+DECL|function|i2c_bitvelle_exit
 r_static
 r_void
 id|__exit
-id|i2c_bitelv_exit
+id|i2c_bitvelle_exit
 c_func
 (paren
 r_void
@@ -605,7 +499,7 @@ id|i2c_bit_del_bus
 c_func
 (paren
 op_amp
-id|bit_elv_ops
+id|bit_velle_ops
 )paren
 suffix:semicolon
 id|release_region
@@ -635,7 +529,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;I2C-Bus adapter routines for ELV parallel port adapter&quot;
+l_string|&quot;I2C-Bus adapter routines for Velleman K8000 adapter&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -652,18 +546,18 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-DECL|variable|i2c_bitelv_init
+DECL|variable|i2c_bitvelle_init
 id|module_init
 c_func
 (paren
-id|i2c_bitelv_init
+id|i2c_bitvelle_init
 )paren
 suffix:semicolon
-DECL|variable|i2c_bitelv_exit
+DECL|variable|i2c_bitvelle_exit
 id|module_exit
 c_func
 (paren
-id|i2c_bitelv_exit
+id|i2c_bitvelle_exit
 )paren
 suffix:semicolon
 eof

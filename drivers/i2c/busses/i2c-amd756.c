@@ -2,7 +2,6 @@ multiline_comment|/*&n;    amd756.c - Part of lm_sensors, Linux kernel modules f
 multiline_comment|/*&n;    2002-04-08: Added nForce support. (Csaba Halasz)&n;    2002-10-03: Fixed nForce PnP I/O port. (Michael Steil)&n;    2002-12-28: Rewritten into something that resembles a Linux driver (hch)&n;*/
 multiline_comment|/*&n;   Supports AMD756, AMD766, AMD768 and nVidia nForce&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
 multiline_comment|/* #define DEBUG 1 */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1123,13 +1122,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|id
-op_assign
-id|I2C_ALGO_SMBUS
-op_or
-id|I2C_HW_SMBUS_AMD756
-comma
-dot
 r_class
 op_assign
 id|I2C_ADAP_CLASS_SMBUS
@@ -1486,7 +1478,7 @@ c_func
 (paren
 id|amd756_adapter.name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 l_string|&quot;SMBus AMD75x adapter at %04x&quot;
 comma

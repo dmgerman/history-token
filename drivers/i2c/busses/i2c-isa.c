@@ -5,6 +5,17 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
+r_static
+id|u32
+id|isa_func
+c_func
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|adapter
+)paren
+suffix:semicolon
 multiline_comment|/* This is the actual algorithm we define */
 DECL|variable|isa_algorithm
 r_static
@@ -23,6 +34,11 @@ id|id
 op_assign
 id|I2C_ALGO_ISA
 comma
+dot
+id|functionality
+op_assign
+id|isa_func
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* There can only be one... */
@@ -37,13 +53,6 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
-comma
-dot
-id|id
-op_assign
-id|I2C_ALGO_ISA
-op_or
-id|I2C_HW_ISA
 comma
 dot
 r_class
@@ -63,6 +72,23 @@ l_string|&quot;ISA main adapter&quot;
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* We can&squot;t do a thing... */
+DECL|function|isa_func
+r_static
+id|u32
+id|isa_func
+c_func
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|adapter
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|i2c_isa_init
 r_static
 r_int

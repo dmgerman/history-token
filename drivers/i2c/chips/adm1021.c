@@ -696,13 +696,6 @@ id|type_name
 op_assign
 l_string|&quot;&quot;
 suffix:semicolon
-r_const
-r_char
-op_star
-id|client_name
-op_assign
-l_string|&quot;&quot;
-suffix:semicolon
 multiline_comment|/* Make sure we aren&squot;t probing the ISA bus!! This is just a safety check&n;&t;   at this moment; i2c_detect really won&squot;t call us. */
 macro_line|#ifdef DEBUG
 r_if
@@ -1020,10 +1013,6 @@ id|type_name
 op_assign
 l_string|&quot;max1617&quot;
 suffix:semicolon
-id|client_name
-op_assign
-l_string|&quot;MAX1617 chip&quot;
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -1037,10 +1026,6 @@ id|max1617a
 id|type_name
 op_assign
 l_string|&quot;max1617a&quot;
-suffix:semicolon
-id|client_name
-op_assign
-l_string|&quot;MAX1617A chip&quot;
 suffix:semicolon
 )brace
 r_else
@@ -1056,10 +1041,6 @@ id|type_name
 op_assign
 l_string|&quot;adm1021&quot;
 suffix:semicolon
-id|client_name
-op_assign
-l_string|&quot;ADM1021 chip&quot;
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -1073,10 +1054,6 @@ id|adm1023
 id|type_name
 op_assign
 l_string|&quot;adm1023&quot;
-suffix:semicolon
-id|client_name
-op_assign
-l_string|&quot;ADM1023 chip&quot;
 suffix:semicolon
 )brace
 r_else
@@ -1092,10 +1069,6 @@ id|type_name
 op_assign
 l_string|&quot;thmc10&quot;
 suffix:semicolon
-id|client_name
-op_assign
-l_string|&quot;THMC10 chip&quot;
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -1109,10 +1082,6 @@ id|lm84
 id|type_name
 op_assign
 l_string|&quot;lm84&quot;
-suffix:semicolon
-id|client_name
-op_assign
-l_string|&quot;LM84 chip&quot;
 suffix:semicolon
 )brace
 r_else
@@ -1128,10 +1097,6 @@ id|type_name
 op_assign
 l_string|&quot;gl523sm&quot;
 suffix:semicolon
-id|client_name
-op_assign
-l_string|&quot;GL523SM chip&quot;
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -1145,10 +1110,6 @@ id|mc1066
 id|type_name
 op_assign
 l_string|&quot;mc1066&quot;
-suffix:semicolon
-id|client_name
-op_assign
-l_string|&quot;MC1066 chip&quot;
 suffix:semicolon
 )brace
 r_else
@@ -1174,9 +1135,9 @@ c_func
 (paren
 id|new_client-&gt;name
 comma
-id|client_name
+id|type_name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 id|data-&gt;type

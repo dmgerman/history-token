@@ -59,7 +59,7 @@ l_int|2
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-linear: Not enough arguments&quot;
+l_string|&quot;dm-linear: Invalid argument count&quot;
 suffix:semicolon
 r_return
 op_minus
@@ -311,9 +311,9 @@ op_member_access_from_pointer
 r_private
 suffix:semicolon
 r_char
-id|b
+id|buffer
 (braket
-id|BDEVNAME_SIZE
+l_int|32
 )braket
 suffix:semicolon
 r_switch
@@ -337,6 +337,14 @@ suffix:semicolon
 r_case
 id|STATUSTYPE_TABLE
 suffix:colon
+id|format_dev_t
+c_func
+(paren
+id|buffer
+comma
+id|lc-&gt;dev-&gt;bdev-&gt;bd_dev
+)paren
+suffix:semicolon
 id|snprintf
 c_func
 (paren
@@ -347,13 +355,7 @@ comma
 l_string|&quot;%s &quot;
 id|SECTOR_FORMAT
 comma
-id|bdevname
-c_func
-(paren
-id|lc-&gt;dev-&gt;bdev
-comma
-id|b
-)paren
+id|buffer
 comma
 id|lc-&gt;start
 )paren

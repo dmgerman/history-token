@@ -3538,7 +3538,7 @@ suffix:semicolon
 id|mbio-&gt;bi_sector
 op_assign
 id|r1_bio-&gt;sector
-op_or
+op_plus
 id|conf-&gt;mirrors
 (braket
 id|i
@@ -5048,4 +5048,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;md-personality-3&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* RAID1 */
 eof

@@ -4726,7 +4726,7 @@ id|t-&gt;type
 dot
 id|name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 )brace
@@ -4977,7 +4977,7 @@ id|t-&gt;type
 dot
 id|name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 r_if

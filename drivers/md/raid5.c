@@ -9336,4 +9336,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;md-personality-4&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* RAID5 */
 eof
