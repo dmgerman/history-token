@@ -6,7 +6,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/hdreg.h&gt;
 macro_line|#include &lt;asm/psr.h&gt;
 DECL|macro|MAX_HWIFS
 macro_line|#undef  MAX_HWIFS
