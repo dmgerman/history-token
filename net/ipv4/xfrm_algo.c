@@ -1063,6 +1063,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CRYPTO
 r_for
 c_loop
 (paren
@@ -1173,6 +1174,7 @@ op_assign
 id|status
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 DECL|function|xfrm_count_auth_supported
 r_int
