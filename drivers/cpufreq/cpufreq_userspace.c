@@ -419,7 +419,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Access to /proc/sys/cpu/ is deprecated and will be removed from (new) 2.6. kernels soon after 2005-01-01&quot;
+l_string|&quot;Access to /proc/sys/cpu/ is deprecated and &quot;
+l_string|&quot;will be removed from (new) 2.6. kernels soon &quot;
+l_string|&quot;after 2005-01-01&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -643,7 +645,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Access to /proc/sys/cpu/ is deprecated and will be removed from (new) 2.6. kernels soon after 2005-01-01&quot;
+l_string|&quot;Access to /proc/sys/cpu/ is deprecated and &quot;
+l_string|&quot;will be removed from (new) 2.6. kernels soon &quot;
+l_string|&quot;after 2005-01-01&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
