@@ -17,7 +17,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -413,7 +413,7 @@ id|direction
 )paren
 (brace
 r_case
-id|PCI_DMA_NONE
+id|DMA_NONE
 suffix:colon
 id|BUG
 c_func
@@ -421,7 +421,7 @@ c_func
 )paren
 suffix:semicolon
 r_case
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROMDEVICE
 suffix:colon
 multiline_comment|/* invalidate only */
 id|invalidate_dcache_range
@@ -435,7 +435,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PCI_DMA_TODEVICE
+id|DMA_TODEVICE
 suffix:colon
 multiline_comment|/* writeback only */
 id|clean_dcache_range
@@ -449,7 +449,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PCI_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 suffix:colon
 multiline_comment|/* writeback and invalidate */
 id|flush_dcache_range
