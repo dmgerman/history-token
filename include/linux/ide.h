@@ -5510,6 +5510,14 @@ id|u8
 id|rate
 )paren
 suffix:semicolon
+r_void
+id|ide_dump_opcode
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
 r_extern
 id|byte
 id|ide_dump_atapi_status
