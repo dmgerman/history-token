@@ -2181,14 +2181,23 @@ r_struct
 id|nfs4_setclientid
 (brace
 DECL|member|sc_verifier
+r_const
 id|nfs4_verifier
+op_star
 id|sc_verifier
 suffix:semicolon
 multiline_comment|/* request */
+DECL|member|sc_name_len
+r_int
+r_int
+id|sc_name_len
+suffix:semicolon
 DECL|member|sc_name
 r_char
-op_star
 id|sc_name
+(braket
+l_int|32
+)braket
 suffix:semicolon
 multiline_comment|/* request */
 DECL|member|sc_prog
@@ -2196,6 +2205,11 @@ id|u32
 id|sc_prog
 suffix:semicolon
 multiline_comment|/* request */
+DECL|member|sc_netid_len
+r_int
+r_int
+id|sc_netid_len
+suffix:semicolon
 DECL|member|sc_netid
 r_char
 id|sc_netid
@@ -2204,6 +2218,11 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* request */
+DECL|member|sc_uaddr_len
+r_int
+r_int
+id|sc_uaddr_len
+suffix:semicolon
 DECL|member|sc_uaddr
 r_char
 id|sc_uaddr
@@ -2217,13 +2236,6 @@ id|u32
 id|sc_cb_ident
 suffix:semicolon
 multiline_comment|/* request */
-DECL|member|sc_state
-r_struct
-id|nfs4_client
-op_star
-id|sc_state
-suffix:semicolon
-multiline_comment|/* response */
 )brace
 suffix:semicolon
 DECL|struct|nfs4_statfs_arg
