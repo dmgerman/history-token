@@ -2979,7 +2979,7 @@ id|I2C_CLIENT_END
 suffix:semicolon
 id|i
 op_add_assign
-l_int|3
+l_int|2
 )paren
 (brace
 r_if
