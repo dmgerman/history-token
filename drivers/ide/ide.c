@@ -2834,17 +2834,20 @@ id|hw_regs_t
 op_star
 id|hw
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|base
 comma
 r_int
 op_star
 id|offsets
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|ctrl
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|intr
 comma
 id|ide_ack_intr_t
@@ -3257,12 +3260,14 @@ op_amp
 id|hw
 comma
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 )paren
 id|arg1
 comma
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 )paren
 id|arg2
 comma
@@ -3291,9 +3296,24 @@ c_func
 id|ide_register
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;ide_add_setting&t;&t;-&t;attach an IDE setting&n; *&t;drive: drive the setting is for&n; *&t;name: name of setting&n; *&t;rw: set if writable&n; *&t;read_ioctl: read function&n; *&t;write_ioctl: write function&n; *&t;data_type: form expected&n; *&t;min: minimum&n; *&t;max: maximum&n; *&t;mul_factor: multiply by&n; *&t;div_factor: divide by&n; *&t;data: value&n; *&t;set: handling for setting&n; *&n; *&t;Add a setting to the IDE drive. Support automatic removal and allow&n; *&t;all the work to be done by plugged in handlers. This code is also&n; *&t;rather short on locking, but the current plan is to do the locking&n; *&t;internally to the function. &n; */
+multiline_comment|/*&n; *&t;Locks for IDE setting functionality&n; */
+DECL|variable|ide_setting_sem
+id|DECLARE_MUTEX
+c_func
+(paren
+id|ide_setting_sem
+)paren
+suffix:semicolon
+DECL|variable|ide_setting_sem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ide_setting_sem
+)paren
+suffix:semicolon
+multiline_comment|/**&n; *&t;ide_add_setting&t;-&t;add an ide setting option&n; *&t;@drive: drive to use&n; *&t;@name: setting name&n; *&t;@rw: true if the function is read write&n; *&t;@read_ioctl: function to call on read&n; *&t;@write_ioctl: function to call on write&n; *&t;@data_type: type of data&n; *&t;@min: range minimum&n; *&t;@max: range maximum&n; *&t;@mul_factor: multiplication scale&n; *&t;@div_factor: divison scale&n; *&t;@data: private data field&n; *&t;@set: setting&n; *&n; *&t;Removes the setting named from the device if it is present.&n; *&t;The function takes the settings_lock to protect against &n; *&t;parallel changes. This function must not be called from IRQ&n; *&t;context. Returns 0 on success or -1 on failure.&n; *&n; *&t;BUGS: This code is seriously over-engineered. There is also&n; *&t;magic about how the driver specific features are setup. If&n; *&t;a driver is attached we assume the driver settings are auto&n; *&t;remove.&n; */
 DECL|function|ide_add_setting
-r_void
+r_int
 id|ide_add_setting
 (paren
 id|ide_drive_t
@@ -3355,6 +3375,13 @@ op_star
 id|setting
 op_assign
 l_int|NULL
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|ide_setting_sem
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -3522,10 +3549,25 @@ id|p
 op_assign
 id|setting
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ide_setting_sem
+)paren
+suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 m_abort
 suffix:colon
+id|up
+c_func
+(paren
+op_amp
+id|ide_setting_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3537,6 +3579,10 @@ c_func
 id|setting
 )paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 )brace
 DECL|variable|ide_add_setting
 id|EXPORT_SYMBOL
@@ -3545,10 +3591,11 @@ c_func
 id|ide_add_setting
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;ide_remove_setting&t;-&t;remove an ioctl setting&n; *&t;@name:&t;name of the property&n; *&n; *&t;Remove a drive ioctl setting that was created by ide_add_setting.&n; *&t;Again this needs the locking fixed&n; */
-DECL|function|ide_remove_setting
+multiline_comment|/**&n; *&t;__ide_remove_setting&t;-&t;remove an ide setting option&n; *&t;@drive: drive to use&n; *&t;@name: setting name&n; *&n; *&t;Removes the setting named from the device if it is present.&n; *&t;The caller must hold the setting semaphore.&n; */
+DECL|function|__ide_remove_setting
+r_static
 r_void
-id|ide_remove_setting
+id|__ide_remove_setting
 (paren
 id|ide_drive_t
 op_star
@@ -3563,6 +3610,11 @@ id|ide_settings_t
 op_star
 op_star
 id|p
+comma
+op_star
+id|setting
+suffix:semicolon
+id|p
 op_assign
 (paren
 id|ide_settings_t
@@ -3571,9 +3623,6 @@ op_star
 )paren
 op_amp
 id|drive-&gt;settings
-comma
-op_star
-id|setting
 suffix:semicolon
 r_while
 c_loop
@@ -3644,6 +3693,43 @@ id|setting
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ide_remove_setting&t;-&t;remove an ide setting option&n; *&t;@drive: drive to use&n; *&t;@name: setting name&n; *&n; *&t;Removes the setting named from the device if it is present.&n; *&t;The function takes the settings_lock to protect against &n; *&t;parallel changes. This function must not be called from IRQ&n; *&t;context.&n; */
+DECL|function|ide_remove_setting
+r_void
+id|ide_remove_setting
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_char
+op_star
+id|name
+)paren
+(brace
+id|down
+c_func
+(paren
+op_amp
+id|ide_setting_sem
+)paren
+suffix:semicolon
+id|__ide_remove_setting
+c_func
+(paren
+id|drive
+comma
+id|name
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ide_setting_sem
+)paren
+suffix:semicolon
+)brace
 DECL|variable|ide_remove_setting
 id|EXPORT_SYMBOL
 c_func
@@ -3651,7 +3737,7 @@ c_func
 id|ide_remove_setting
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;ide_find_setting_by_ioctl&t;-&t;find a setting handler by its command&n; *&t;@drive: drive to act for&n; *&t;@cmd: ioctl command code&n; *&n; *&t;Scan the drive handlers for an ioctl handler for this function.&n; *&t;The handlers vary by drive and sometimes by drive state. &n; *&t;Needs locking fixes.&n; */
+multiline_comment|/**&n; *&t;ide_find_setting_by_ioctl&t;-&t;find a drive specific ioctl&n; *&t;@drive: drive to scan&n; *&t;@cmd: ioctl command to handle&n; *&n; *&t;Scan&squot;s the device setting table for a matching entry and returns&n; *&t;this or NULL if no entry is found. The caller must hold the&n; *&t;setting semaphore&n; */
 DECL|function|ide_find_setting_by_ioctl
 r_static
 id|ide_settings_t
@@ -3700,7 +3786,7 @@ r_return
 id|setting
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ide_find_setting_by_name&t;-&t;find a setting handler by its name&n; *&t;@drive: drive to act for&n; *&t;@cmd: ioctl command code&n; *&n; *&t;Scan the drive handlers handler matching the name for this function.&n; *&t;The handlers vary by drive and sometimes by drive state. &n; *&t;Needs locking fixes.&n; */
+multiline_comment|/**&n; *&t;ide_find_setting_by_name&t;-&t;find a drive specific setting&n; *&t;@drive: drive to scan&n; *&t;@name: setting name&n; *&n; *&t;Scan&squot;s the device setting table for a matching entry and returns&n; *&t;this or NULL if no entry is found. The caller must hold the&n; *&t;setting semaphore&n; */
 DECL|function|ide_find_setting_by_name
 id|ide_settings_t
 op_star
@@ -3751,7 +3837,7 @@ r_return
 id|setting
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;auto_remove_settings&t;-&t;remove driver settings on a device&n; *&t;@drive: drive to clean&n; *&n; *&t;Called when we change the driver bindings for a device, for &n; *&t;example if the device is hot plugged. We must scrub the driver&n; *&t;bindings that are thus no longer relevant to the device in case&n; *&t;it changes from say a CD-ROM to a disk&n; *&t;Needs locking fixes&n; */
+multiline_comment|/**&n; *&t;auto_remove_settings&t;-&t;remove driver specific settings&n; *&t;@drive: drive&n; *&n; *&t;Automatically remove all the driver specific settings for this&n; *&t;drive. This function may sleep and must not be called from IRQ&n; *&t;context. Takes the settings_lock&n; */
 DECL|function|auto_remove_settings
 r_static
 r_void
@@ -3765,6 +3851,13 @@ id|drive
 id|ide_settings_t
 op_star
 id|setting
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|ide_setting_sem
+)paren
 suffix:semicolon
 id|repeat
 suffix:colon
@@ -3784,7 +3877,7 @@ c_cond
 id|setting-&gt;auto_remove
 )paren
 (brace
-id|ide_remove_setting
+id|__ide_remove_setting
 c_func
 (paren
 id|drive
@@ -3801,7 +3894,15 @@ op_assign
 id|setting-&gt;next
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|ide_setting_sem
+)paren
+suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ide_read_setting&t;-&t;read an IDE setting&n; *&t;@drive: drive to read from&n; *&t;@setting: drive setting&n; *&n; *&t;Read a drive setting and return the value. The caller&n; *&t;must hold the ide_setting_sem when making this call.&n; *&n; *&t;BUGS: the data return and error are the same return value&n; *&t;so an error -EINVAL and true return of the same value cannot&n; *&t;be told apart&n; */
 DECL|function|ide_read_setting
 r_int
 id|ide_read_setting
@@ -4034,7 +4135,7 @@ c_func
 id|ide_spin_wait_hwgroup
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * FIXME:  This should be changed to enqueue a special request&n; * to the driver to change settings, and then wait on a sema for completion.&n; * The current scheme of polling is kludgey, though safe enough.&n; */
+multiline_comment|/**&n; *&t;ide_write_setting&t;-&t;read an IDE setting&n; *&t;@drive: drive to read from&n; *&t;@setting: drive setting&n; *&t;@val: value&n; *&n; *&t;Write a drive setting if it is possible. The caller&n; *&t;must hold the ide_setting_sem when making this call.&n; *&n; *&t;BUGS: the data return and error are the same return value&n; *&t;so an error -EINVAL and true return of the same value cannot&n; *&t;be told apart&n; *&n; *&t;FIXME:  This should be changed to enqueue a special request&n; *&t;to the driver to change settings, and then wait on a sema for completion.&n; *&t;The current scheme of polling is kludgy, though safe enough.&n; */
 DECL|function|ide_write_setting
 r_int
 id|ide_write_setting
@@ -5417,6 +5518,13 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|ide_setting_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5453,6 +5561,13 @@ comma
 id|setting
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ide_setting_sem
+)paren
+suffix:semicolon
 r_return
 id|err
 op_ge
@@ -5483,11 +5598,14 @@ id|bdev
 op_ne
 id|bdev-&gt;bd_contains
 )paren
-r_return
+id|err
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-r_return
+r_else
+id|err
+op_assign
 id|ide_write_setting
 c_func
 (paren
@@ -5498,8 +5616,25 @@ comma
 id|arg
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ide_setting_sem
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
 )brace
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|ide_setting_sem
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -8315,7 +8450,8 @@ op_amp
 id|hwif-&gt;hw
 comma
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 )paren
 id|vals
 (braket
@@ -8323,7 +8459,8 @@ l_int|0
 )braket
 comma
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 )paren
 id|vals
 (braket
