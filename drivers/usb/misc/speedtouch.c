@@ -85,7 +85,7 @@ id|SPEEDTOUCH_PRODUCTID
 comma
 (brace
 )brace
-multiline_comment|/* list terminator */
+multiline_comment|/* Terminating entry */
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
@@ -3458,7 +3458,7 @@ r_void
 (brace
 id|PDEBUG
 (paren
-l_string|&quot;Initializing SpeedTouch Driver Version &quot;
+l_string|&quot;udsl_usb_init: driver version &quot;
 id|DRIVER_VERSION
 l_string|&quot;&bslash;n&quot;
 )paren
@@ -3480,6 +3480,11 @@ id|udsl_usb_cleanup
 r_void
 )paren
 (brace
+id|PDEBUG
+(paren
+l_string|&quot;udsl_usb_cleanup&bslash;n&quot;
+)paren
+suffix:semicolon
 id|usb_deregister
 (paren
 op_amp
@@ -3499,6 +3504,23 @@ id|module_exit
 c_func
 (paren
 id|udsl_usb_cleanup
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
+id|MODULE_AUTHOR
+(paren
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_DESC
+id|MODULE_DESCRIPTION
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_PACKET
@@ -3618,21 +3640,4 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* PACKETDEBUG */
-DECL|variable|DRIVER_AUTHOR
-id|MODULE_AUTHOR
-(paren
-id|DRIVER_AUTHOR
-)paren
-suffix:semicolon
-DECL|variable|DRIVER_DESC
-id|MODULE_DESCRIPTION
-(paren
-id|DRIVER_DESC
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 eof
