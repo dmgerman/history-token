@@ -43,6 +43,13 @@ c_func
 id|serio_register_port
 )paren
 suffix:semicolon
+DECL|variable|serio_register_port_delayed
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|serio_register_port_delayed
+)paren
+suffix:semicolon
 DECL|variable|__serio_register_port
 id|EXPORT_SYMBOL
 c_func
@@ -55,6 +62,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|serio_unregister_port
+)paren
+suffix:semicolon
+DECL|variable|serio_unregister_port_delayed
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|serio_unregister_port_delayed
 )paren
 suffix:semicolon
 DECL|variable|__serio_unregister_port
@@ -213,9 +227,13 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|SERIO_RESCAN
-mdefine_line|#define SERIO_RESCAN&t;1
+mdefine_line|#define SERIO_RESCAN&t;&t;1
 DECL|macro|SERIO_RECONNECT
-mdefine_line|#define SERIO_RECONNECT&t;2
+mdefine_line|#define SERIO_RECONNECT&t;&t;2
+DECL|macro|SERIO_REGISTER_PORT
+mdefine_line|#define SERIO_REGISTER_PORT&t;3
+DECL|macro|SERIO_UNREGISTER_PORT
+mdefine_line|#define SERIO_UNREGISTER_PORT&t;4
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
@@ -337,6 +355,28 @@ c_cond
 id|event-&gt;type
 )paren
 (brace
+r_case
+id|SERIO_REGISTER_PORT
+suffix:colon
+id|__serio_register_port
+c_func
+(paren
+id|event-&gt;serio
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SERIO_UNREGISTER_PORT
+suffix:colon
+id|__serio_unregister_port
+c_func
+(paren
+id|event-&gt;serio
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|SERIO_RECONNECT
 suffix:colon
@@ -731,6 +771,27 @@ id|serio_sem
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Submits register request to kseriod for subsequent execution.&n; * Can be used when it is not obvious whether the serio_sem is&n; * taken or not and when delayed execution is feasible.&n; */
+DECL|function|serio_register_port_delayed
+r_void
+id|serio_register_port_delayed
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+)paren
+(brace
+id|serio_queue_event
+c_func
+(paren
+id|serio
+comma
+id|SERIO_REGISTER_PORT
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Should only be called directly if serio_sem has already been taken,&n; * for example when unregistering a serio from other input device&squot;s&n; * connect() function.&n; */
 DECL|function|__serio_register_port
 r_void
@@ -789,6 +850,27 @@ c_func
 (paren
 op_amp
 id|serio_sem
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Submits unregister request to kseriod for subsequent execution.&n; * Can be used when it is not obvious whether the serio_sem is&n; * taken or not and when delayed execution is feasible.&n; */
+DECL|function|serio_unregister_port_delayed
+r_void
+id|serio_unregister_port_delayed
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+)paren
+(brace
+id|serio_queue_event
+c_func
+(paren
+id|serio
+comma
+id|SERIO_UNREGISTER_PORT
 )paren
 suffix:semicolon
 )brace

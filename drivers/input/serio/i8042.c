@@ -1034,7 +1034,7 @@ id|values-&gt;exists
 op_assign
 l_int|0
 suffix:semicolon
-id|serio_unregister_port
+id|serio_unregister_port_delayed
 c_func
 (paren
 id|port
