@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -9368,10 +9369,10 @@ id|NCR_700_show_active_tags
 comma
 )brace
 suffix:semicolon
-DECL|function|NCR_700_init
 id|STATIC
 r_int
 id|__init
+DECL|function|NCR_700_init
 id|NCR_700_init
 c_func
 (paren
