@@ -171,7 +171,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* TODO: dump the first 768 bytes generated as recommended&n;&t;   by Ilya Mironov (http://eprint.iacr.org/2002/067/) to &n;&t;   increase the statistical strength of the state table */
 r_return
 l_int|0
 suffix:semicolon
