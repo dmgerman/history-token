@@ -1280,7 +1280,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef ARCH_STACK_GROWSUP
+macro_line|#ifdef CONFIG_STACK_GROWSUP
 multiline_comment|/* Move the argument and environment strings to the bottom of the&n;&t; * stack space.&n;&t; */
 r_int
 id|offset
@@ -1597,7 +1597,7 @@ id|mpnt-&gt;vm_mm
 op_assign
 id|mm
 suffix:semicolon
-macro_line|#ifdef ARCH_STACK_GROWSUP
+macro_line|#ifdef CONFIG_STACK_GROWSUP
 id|mpnt-&gt;vm_start
 op_assign
 id|stack_base

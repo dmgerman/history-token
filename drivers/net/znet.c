@@ -1,6 +1,6 @@
 multiline_comment|/* znet.c: An Zenith Z-Note ethernet driver for linux. */
 multiline_comment|/*&n;&t;Written by Donald Becker.&n;&n;&t;The author may be reached as becker@scyld.com.&n;&t;This driver is based on the Linux skeleton driver.  The copyright of the&n;&t;skeleton driver is held by the United States Government, as represented&n;&t;by DIRNSA, and it is released under the GPL.&n;&n;&t;Thanks to Mike Hollick for alpha testing and suggestions.&n;&n;  References:&n;&t;   The Crynwr packet driver.&n;&n;&t;  &quot;82593 CSMA/CD Core LAN Controller&quot; Intel datasheet, 1992&n;&t;  Intel Microcommunications Databook, Vol. 1, 1990.&n;    As usual with Intel, the documentation is incomplete and inaccurate.&n;&t;I had to read the Crynwr packet driver to figure out how to actually&n;&t;use the i82593, and guess at what register bits matched the loosely&n;&t;related i82586.&n;&n;&t;&t;&t;&t;&t;Theory of Operation&n;&n;&t;The i82593 used in the Zenith Z-Note series operates using two(!) slave&n;&t;DMA&t;channels, one interrupt, and one 8-bit I/O port.&n;&n;&t;While there&t;several ways to configure &squot;593 DMA system, I chose the one&n;&t;that seemed commensurate with the highest system performance in the face&n;&t;of moderate interrupt latency: Both DMA channels are configured as&n;&t;recirculating ring buffers, with one channel (#0) dedicated to Rx and&n;&t;the other channel (#1) to Tx and configuration.  (Note that this is&n;&t;different than the Crynwr driver, where the Tx DMA channel is initialized&n;&t;before each operation.  That approach simplifies operation and Tx error&n;&t;recovery, but requires additional I/O in normal operation and precludes&n;&t;transmit buffer&t;chaining.)&n;&n;&t;Both rings are set to 8192 bytes using {TX,RX}_RING_SIZE.  This provides&n;&t;a reasonable ring size for Rx, while simplifying DMA buffer allocation --&n;&t;DMA buffers must not cross a 128K boundary.  (In truth the size selection&n;&t;was influenced by my lack of &squot;593 documentation.  I thus was constrained&n;&t;to use the Crynwr &squot;593 initialization table, which sets the Rx ring size&n;&t;to 8K.)&n;&n;&t;Despite my usual low opinion about Intel-designed parts, I must admit&n;&t;that the bulk data handling of the i82593 is a good design for&n;&t;an integrated system, like a laptop, where using two slave DMA channels&n;&t;doesn&squot;t pose a problem.  I still take issue with using only a single I/O&n;&t;port.  In the same controlled environment there are essentially no&n;&t;limitations on I/O space, and using multiple locations would eliminate&n;&t;the&t;need for multiple operations when looking at status registers,&n;&t;setting the Rx ring boundary, or switching to promiscuous mode.&n;&n;&t;I also question Zenith&squot;s selection of the &squot;593: one of the advertised&n;&t;advantages of earlier Intel parts was that if you figured out the magic&n;&t;initialization incantation you could use the same part on many different&n;&t;network types.  Zenith&squot;s use of the &quot;FriendlyNet&quot; (sic) connector rather&n;&t;than an&t;on-board transceiver leads me to believe that they were planning&n;&t;to take advantage of this.  But, uhmmm, the &squot;593 omits all but ethernet&n;&t;functionality from the serial subsystem.&n; */
-multiline_comment|/* 10/2002&n;&n;   o Resurected for Linux 2.5+ by Marc Zyngier &lt;maz@wild-wind.fr.eu.org&gt; :&n;&n;   - Removed strange DMA snooping in znet_sent_packet, which lead to&n;     TX buffer corruption on my laptop.&n;   - Use init_etherdev stuff.&n;   - Use kmalloc-ed DMA buffers.&n;   - Use as few global variables as possible.&n;   - Use proper resources management.&n;   - Use wireless/i82593.h as much as possible (structure, constants)&n;   - Compiles as module or build-in.&n;&n;   Tested on a vintage Zenith Z-Note 433Lnp+. Probably broken on&n;   anything else. Testers (and detailed bug reports) are welcome :-).&n;&n;   o TODO :&n;&n;   - Properly handle multicast&n;   - Understand why some traffic patterns add a 1s latency...&n; */
+multiline_comment|/* 10/2002&n;&n;   o Resurected for Linux 2.5+ by Marc Zyngier &lt;maz@wild-wind.fr.eu.org&gt; :&n;&n;   - Removed strange DMA snooping in znet_sent_packet, which lead to&n;     TX buffer corruption on my laptop.&n;   - Use init_etherdev stuff.&n;   - Use kmalloc-ed DMA buffers.&n;   - Use as few global variables as possible.&n;   - Use proper resources management.&n;   - Use wireless/i82593.h as much as possible (structure, constants)&n;   - Compiles as module or build-in.&n;   - Now survives unplugging/replugging cable.&n;&n;   Some code was taken from wavelan_cs.&n;   &n;   Tested on a vintage Zenith Z-Note 433Lnp+. Probably broken on&n;   anything else. Testers (and detailed bug reports) are welcome :-).&n;&n;   o TODO :&n;&n;   - Properly handle multicast&n;   - Understand why some traffic patterns add a 1s latency...&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -30,7 +30,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;znet.c:v1.02 9/23/94 becker@cesdis.gsfc.nasa.gov&bslash;n&quot;
+l_string|&quot;znet.c:v1.02 9/23/94 becker@scyld.com&bslash;n&quot;
 suffix:semicolon
 macro_line|#ifndef ZNET_DEBUG
 DECL|macro|ZNET_DEBUG
@@ -885,11 +885,11 @@ multiline_comment|/* CD is recognized immediately */
 multiline_comment|/* Byte 9 */
 id|cfblk-&gt;min_fr_len
 op_assign
-l_int|64
+id|ETH_ZLEN
 op_rshift
 l_int|2
 suffix:semicolon
-multiline_comment|/* Minimum frame length 64 bytes */
+multiline_comment|/* Minimum frame length */
 multiline_comment|/* Byte A */
 id|cfblk-&gt;lng_typ
 op_assign
@@ -1990,12 +1990,36 @@ id|ioaddr
 op_eq
 l_int|0x0010
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|znet_debug
+OG
+l_int|1
+)paren
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;%s : waking up&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
 id|hardware_init
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+id|znet_transceiver_power
+(paren
+id|dev
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2417,10 +2441,26 @@ c_cond
 (paren
 id|status
 op_amp
-l_int|0x0F
+id|SR0_EVENT_MASK
 )paren
 op_eq
 id|SR0_TRANSMIT_DONE
+op_logical_or
+(paren
+id|status
+op_amp
+id|SR0_EVENT_MASK
+)paren
+op_eq
+id|SR0_RETRANSMIT_DONE
+op_logical_or
+(paren
+id|status
+op_amp
+id|SR0_EVENT_MASK
+)paren
+op_eq
+id|SR0_TRANSMIT_NO_CRC_DONE
 )paren
 (brace
 r_int
@@ -2544,6 +2584,21 @@ id|TX_MAX_COL
 )paren
 id|znet-&gt;stats.tx_errors
 op_increment
+suffix:semicolon
+multiline_comment|/* Transceiver may be stuck if cable&n;&t;&t;&t;&t; * was removed while emiting a&n;&t;&t;&t;&t; * packet. Flip it off, then on to&n;&t;&t;&t;&t; * reset it. This is very empirical,&n;&t;&t;&t;&t; * but it seems to work. */
+id|znet_transceiver_power
+(paren
+id|dev
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|znet_transceiver_power
+(paren
+id|dev
+comma
+l_int|1
+)paren
 suffix:semicolon
 )brace
 id|netif_wake_queue

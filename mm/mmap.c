@@ -3242,7 +3242,7 @@ suffix:colon
 id|vma
 suffix:semicolon
 )brace
-macro_line|#ifdef ARCH_STACK_GROWSUP
+macro_line|#ifdef CONFIG_STACK_GROWSUP
 multiline_comment|/*&n; * vma is the first one with address &gt; vma-&gt;vm_end.  Have to extend vma.&n; */
 DECL|function|expand_stack
 r_int
