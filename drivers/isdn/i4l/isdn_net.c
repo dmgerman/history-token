@@ -561,11 +561,6 @@ op_assign
 id|isdn_net_start_xmit
 comma
 dot
-id|hard_header
-op_assign
-id|eth_header
-comma
-dot
 id|receive
 op_assign
 id|isdn_ether_receive
