@@ -13,8 +13,8 @@ macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_unicode.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
-r_int
 DECL|function|cifs_open
+r_int
 id|cifs_open
 c_func
 (paren
@@ -221,7 +221,6 @@ id|file-&gt;f_flags
 op_amp
 id|O_EXCL
 )paren
-(brace
 id|cERROR
 c_func
 (paren
@@ -234,7 +233,6 @@ id|file
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 id|down
@@ -368,12 +366,10 @@ op_or
 id|O_EXCL
 )paren
 )paren
-(brace
 id|disposition
 op_assign
 id|FILE_CREATE
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -394,12 +390,10 @@ op_or
 id|O_TRUNC
 )paren
 )paren
-(brace
 id|disposition
 op_assign
 id|FILE_OVERWRITE_IF
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -412,12 +406,10 @@ id|O_CREAT
 op_eq
 id|O_CREAT
 )paren
-(brace
 id|disposition
 op_assign
 id|FILE_OPEN_IF
 suffix:semicolon
-)brace
 r_else
 id|disposition
 op_assign
@@ -909,12 +901,10 @@ l_int|0xF
 op_eq
 id|OPLOCK_READ
 )paren
-(brace
 id|pCifsInode-&gt;clientCanCacheRead
 op_assign
 id|TRUE
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -949,6 +939,7 @@ id|cifs_sb-&gt;tcon-&gt;ses-&gt;capabilities
 op_amp
 id|CAP_UNIX
 )paren
+(brace
 id|CIFSSMBUnixSetPerms
 c_func
 (paren
@@ -978,11 +969,13 @@ comma
 id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
+)brace
 r_else
 (brace
-multiline_comment|/* BB implement via Windows security descriptors */
-multiline_comment|/* eg CIFSSMBWinSetPerms(xid,pTcon,full_path,mode,-1,-1,local_nls);*/
-multiline_comment|/* in the meantime could set r/o dos attribute when perms are eg:&n;&t;&t;&t;&t;&t;mode &amp; 0222 == 0 */
+multiline_comment|/* BB implement via Windows security descriptors eg */
+multiline_comment|/* CIFSSMBWinSetPerms(xid, pTcon, full_path, mode, -1, -1, local_nls); */
+multiline_comment|/* in the meantime could set r/o dos attribute when perms are eg: */
+multiline_comment|/* mode &amp; 0222 == 0 */
 )brace
 )brace
 )brace
@@ -1120,12 +1113,10 @@ id|inode
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EBADF
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1354,7 +1345,7 @@ op_assign
 id|FALSE
 suffix:semicolon
 multiline_comment|/* Can not refresh inode by passing in file_info buf to be returned&n;&t; by SMBOpen and then calling get_inode_info with returned buf &n;&t; since file might have write behind data that needs to be flushed &n;&t; and server version of file size can be stale. If we &n;&t; knew for sure that inode was not dirty locally we could do this */
-multiline_comment|/*&t;buf = kmalloc(sizeof(FILE_ALL_INFO),GFP_KERNEL);&n;&t;if(buf==0) {&n;&t;&t;up(&amp;pCifsFile-&gt;fh_sem);&n;&t;&t;if (full_path)&n;&t;&t;&t;kfree(full_path);&n;&t;&t;FreeXid(xid);&n;&t;&t;return -ENOMEM;&n;&t;}*/
+multiline_comment|/*&t;buf = kmalloc(sizeof(FILE_ALL_INFO), GFP_KERNEL);&n;&t;if (buf == 0) {&n;&t;&t;up(&amp;pCifsFile-&gt;fh_sem);&n;&t;&t;if (full_path)&n;&t;&t;&t;kfree(full_path);&n;&t;&t;FreeXid(xid);&n;&t;&t;return -ENOMEM;&n;&t;} */
 id|rc
 op_assign
 id|CIFSSMBOpen
@@ -1616,8 +1607,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-r_int
 DECL|function|cifs_close
+r_int
 id|cifs_close
 c_func
 (paren
@@ -1767,14 +1758,12 @@ c_cond
 (paren
 id|pSMBFile-&gt;search_resume_name
 )paren
-(brace
 id|kfree
 c_func
 (paren
 id|pSMBFile-&gt;search_resume_name
 )paren
 suffix:semicolon
-)brace
 id|kfree
 c_func
 (paren
@@ -1862,7 +1851,6 @@ id|inode
 op_member_access_from_pointer
 id|write_behind_rc
 )paren
-(brace
 id|rc
 op_assign
 id|CIFS_I
@@ -1873,7 +1861,6 @@ id|inode
 op_member_access_from_pointer
 id|write_behind_rc
 suffix:semicolon
-)brace
 id|FreeXid
 c_func
 (paren
@@ -1884,8 +1871,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-r_int
 DECL|function|cifs_closedir
+r_int
 id|cifs_closedir
 c_func
 (paren
@@ -2107,8 +2094,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-r_int
 DECL|function|cifs_lock
+r_int
 id|cifs_lock
 c_func
 (paren
@@ -2699,8 +2686,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-id|ssize_t
 DECL|function|cifs_user_write
+id|ssize_t
 id|cifs_user_write
 c_func
 (paren
@@ -2765,12 +2752,10 @@ id|file-&gt;f_dentry
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EBADF
 suffix:semicolon
-)brace
 id|cifs_sb
 op_assign
 id|CIFS_SB
@@ -2786,17 +2771,15 @@ id|cifs_sb
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EBADF
 suffix:semicolon
-)brace
 id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
-multiline_comment|/*cFYI(1,&n;&t;   (&quot; write %d bytes to offset %lld of %s&quot;, write_size,&n;&t;   *poffset, file-&gt;f_dentry-&gt;d_name.name)); */
+multiline_comment|/* cFYI(1,&n;&t;   (&quot; write %d bytes to offset %lld of %s&quot;, write_size,&n;&t;   *poffset, file-&gt;f_dentry-&gt;d_name.name)); */
 r_if
 c_cond
 (paren
@@ -2804,14 +2787,11 @@ id|file-&gt;private_data
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EBADF
 suffix:semicolon
-)brace
 r_else
-(brace
 id|open_file
 op_assign
 (paren
@@ -2821,7 +2801,6 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-)brace
 id|xid
 op_assign
 id|GetXid
@@ -2933,11 +2912,9 @@ c_cond
 (paren
 id|total_written
 )paren
-(brace
 r_return
 id|total_written
 suffix:semicolon
-)brace
 r_else
 r_return
 op_minus
@@ -2996,10 +2973,8 @@ id|rc
 op_ne
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 id|rc
 op_assign
@@ -3195,9 +3170,9 @@ r_return
 id|total_written
 suffix:semicolon
 )brace
+DECL|function|cifs_write
 r_static
 id|ssize_t
-DECL|function|cifs_write
 id|cifs_write
 c_func
 (paren
@@ -3261,12 +3236,10 @@ id|file-&gt;f_dentry
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EBADF
 suffix:semicolon
-)brace
 id|cifs_sb
 op_assign
 id|CIFS_SB
@@ -3282,17 +3255,15 @@ id|cifs_sb
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EBADF
 suffix:semicolon
-)brace
 id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
-multiline_comment|/*cFYI(1,&n;&t;   (&quot; write %d bytes to offset %lld of %s&quot;, write_size,&n;&t;   *poffset, file-&gt;f_dentry-&gt;d_name.name)); */
+multiline_comment|/* cFYI(1,&n;&t;   (&quot; write %d bytes to offset %lld of %s&quot;, write_size,&n;&t;   *poffset, file-&gt;f_dentry-&gt;d_name.name)); */
 r_if
 c_cond
 (paren
@@ -3300,14 +3271,11 @@ id|file-&gt;private_data
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EBADF
 suffix:semicolon
-)brace
 r_else
-(brace
 id|open_file
 op_assign
 (paren
@@ -3317,7 +3285,6 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-)brace
 id|xid
 op_assign
 id|GetXid
@@ -3407,7 +3374,7 @@ c_func
 id|xid
 )paren
 suffix:semicolon
-multiline_comment|/* if we have gotten here we have written some data&n;&t;&t;&t;and blocked, and the file has been freed on us&n;&t;&t;&t;while we blocked so return what we managed to write */
+multiline_comment|/* if we have gotten here we have written some data&n;&t;&t;&t;   and blocked, and the file has been freed on us&n;&t;&t;&t;   while we blocked so return what we managed to write */
 r_return
 id|total_written
 suffix:semicolon
@@ -3429,11 +3396,9 @@ c_cond
 (paren
 id|total_written
 )paren
-(brace
 r_return
 id|total_written
 suffix:semicolon
-)brace
 r_else
 r_return
 op_minus
@@ -3472,7 +3437,7 @@ r_return
 id|total_written
 suffix:semicolon
 )brace
-multiline_comment|/* we could deadlock if we called&n;&t;&t;&t;&t; filemap_fdatawait from here so tell&n;&t;&t;&t;&t;reopen_file not to flush data to server now */
+multiline_comment|/* we could deadlock if we called&n;&t;&t;&t;&t;   filemap_fdatawait from here so tell&n;&t;&t;&t;&t;   reopen_file not to flush data to server now */
 id|rc
 op_assign
 id|cifs_reopen_file
@@ -3492,10 +3457,8 @@ id|rc
 op_ne
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 id|rc
 op_assign
@@ -3680,9 +3643,9 @@ r_return
 id|total_written
 suffix:semicolon
 )brace
+DECL|function|cifs_partialpagewrite
 r_static
 r_int
-DECL|function|cifs_partialpagewrite
 id|cifs_partialpagewrite
 c_func
 (paren
@@ -3773,12 +3736,10 @@ c_cond
 op_logical_neg
 id|mapping
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -3786,12 +3747,10 @@ c_cond
 op_logical_neg
 id|mapping-&gt;host
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|inode
 op_assign
 id|page-&gt;mapping-&gt;host
@@ -3887,7 +3846,6 @@ id|loff_t
 )paren
 id|to
 )paren
-(brace
 id|to
 op_assign
 (paren
@@ -3899,7 +3857,6 @@ op_minus
 id|offset
 )paren
 suffix:semicolon
-)brace
 id|cifsInode
 op_assign
 id|CIFS_I
@@ -3945,10 +3902,8 @@ c_cond
 (paren
 id|open_file-&gt;closePend
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 multiline_comment|/* We check if file is open for writing first */
 r_if
 c_cond
@@ -4164,7 +4119,9 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Find contiguous pages then iterate through repeating */
-multiline_comment|/* call 16K write then Setpageuptodate or if LARGE_WRITE_X&n;support then send larger writes via kevec so as to eliminate&n;a memcpy */
+multiline_comment|/* call 16K write then Setpageuptodate or if LARGE_WRITE_X */
+multiline_comment|/* support then send larger writes via kevec so as to eliminate */
+multiline_comment|/* a memcpy */
 id|FreeXid
 c_func
 (paren
@@ -4176,9 +4133,9 @@ id|rc
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|function|cifs_writepage
 r_static
 r_int
-DECL|function|cifs_writepage
 id|cifs_writepage
 c_func
 (paren
@@ -4279,9 +4236,9 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+DECL|function|cifs_commit_write
 r_static
 r_int
-DECL|function|cifs_commit_write
 id|cifs_commit_write
 c_func
 (paren
@@ -4374,7 +4331,7 @@ comma
 id|position
 )paren
 suffix:semicolon
-multiline_comment|/*if (file-&gt;private_data == NULL) {&n;&t;&t;&t;rc = -EBADF;&n;&t;&t;} else {&n;&t;&t;&t;open_file = (struct cifsFileInfo *)file-&gt;private_data;&n;&t;&t;&t;cifs_sb = CIFS_SB(inode-&gt;i_sb);&n;&t;&t;&t;rc = -EAGAIN;&n;&t;&t;&t;while(rc == -EAGAIN) {&n;&t;&t;&t;&t;if((open_file-&gt;invalidHandle) &amp;&amp; &n;&t;&t;&t;&t;  (!open_file-&gt;closePend)) {&n;&t;&t;&t;&t;&t;rc = cifs_reopen_file(file-&gt;f_dentry-&gt;d_inode,file);&n;&t;&t;&t;&t;&t;if(rc != 0)&n;&t;&t;&t;&t;&t;&t;break;&n;&t;&t;&t;&t;}&n;&t;&t;&t;&t;if(!open_file-&gt;closePend) {&n;&t;&t;&t;&t;&t;rc = CIFSSMBSetFileSize(xid, cifs_sb-&gt;tcon, &n;&t;&t;&t;&t;&t;&t;position, open_file-&gt;netfid,&n;&t;&t;&t;&t;&t;&t;open_file-&gt;pid,FALSE);&n;&t;&t;&t;&t;} else {&n;&t;&t;&t;&t;&t;rc = -EBADF;&n;&t;&t;&t;&t;&t;break;&n;&t;&t;&t;&t;}&n;&t;&t;&t;}&n;&t;&t;&t;cFYI(1,(&quot; SetEOF (commit write) rc = %d&quot;,rc));&n;&t;&t;}*/
+multiline_comment|/* if (file-&gt;private_data == NULL) {&n;&t;&t;&t;rc = -EBADF;&n;&t;&t;} else {&n;&t;&t;&t;open_file = (struct cifsFileInfo *)file-&gt;private_data;&n;&t;&t;&t;cifs_sb = CIFS_SB(inode-&gt;i_sb);&n;&t;&t;&t;rc = -EAGAIN;&n;&t;&t;&t;while (rc == -EAGAIN) {&n;&t;&t;&t;&t;if ((open_file-&gt;invalidHandle) &amp;&amp; &n;&t;&t;&t;&t;    (!open_file-&gt;closePend)) {&n;&t;&t;&t;&t;&t;rc = cifs_reopen_file(file-&gt;f_dentry-&gt;d_inode,file);&n;&t;&t;&t;&t;&t;if (rc != 0)&n;&t;&t;&t;&t;&t;&t;break;&n;&t;&t;&t;&t;}&n;&t;&t;&t;&t;if (!open_file-&gt;closePend) {&n;&t;&t;&t;&t;&t;rc = CIFSSMBSetFileSize(xid, cifs_sb-&gt;tcon, &n;&t;&t;&t;&t;&t;&t;position, open_file-&gt;netfid,&n;&t;&t;&t;&t;&t;&t;open_file-&gt;pid,FALSE);&n;&t;&t;&t;&t;} else {&n;&t;&t;&t;&t;&t;rc = -EBADF;&n;&t;&t;&t;&t;&t;break;&n;&t;&t;&t;&t;}&n;&t;&t;&t;}&n;&t;&t;&t;cFYI(1, (&quot; SetEOF (commit write) rc = %d&quot;, rc));&n;&t;&t;} */
 )brace
 r_if
 c_cond
@@ -4470,12 +4427,10 @@ id|rc
 OG
 l_int|0
 )paren
-(brace
 id|rc
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* else if rc &lt; 0 should we set writebehind rc? */
 id|kunmap
 c_func
@@ -4503,8 +4458,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-r_int
 DECL|function|cifs_fsync
+r_int
 id|cifs_fsync
 c_func
 (paren
@@ -4573,7 +4528,6 @@ id|rc
 op_eq
 l_int|0
 )paren
-(brace
 id|CIFS_I
 c_func
 (paren
@@ -4584,7 +4538,6 @@ id|write_behind_rc
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|FreeXid
 c_func
 (paren
@@ -4595,10 +4548,10 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/* static int&n;cifs_sync_page(struct page *page)&n;{&n;&t;struct address_space *mapping;&n;&t;struct inode *inode;&n;&t;unsigned long index = page-&gt;index;&n;&t;unsigned int rpages = 0;&n;&t;int rc = 0;&n;&n;&t;cFYI(1,(&quot;sync page %p&quot;,page));&n;&t;mapping = page-&gt;mapping;&n;&t;if (!mapping)&n;&t;&t;return 0;&n;&t;inode = mapping-&gt;host;&n;&t;if (!inode)&n;&t;&t;return 0;*/
-multiline_comment|/*&t;fill in rpages then &n;    result = cifs_pagein_inode(inode, index, rpages); */
+multiline_comment|/* static int cifs_sync_page(struct page *page)&n;{&n;&t;struct address_space *mapping;&n;&t;struct inode *inode;&n;&t;unsigned long index = page-&gt;index;&n;&t;unsigned int rpages = 0;&n;&t;int rc = 0;&n;&n;&t;cFYI(1, (&quot;sync page %p&quot;,page));&n;&t;mapping = page-&gt;mapping;&n;&t;if (!mapping)&n;&t;&t;return 0;&n;&t;inode = mapping-&gt;host;&n;&t;if (!inode)&n;&t;&t;return 0; */
+multiline_comment|/*&t;fill in rpages then &n;&t;result = cifs_pagein_inode(inode, index, rpages); */
 multiline_comment|/* BB finish */
-multiline_comment|/*   cFYI(1, (&quot;rpages is %d for sync page of Index %ld &quot;, rpages, index));&n;&n;&t;if (rc &lt; 0)&n;&t;&t;return rc;&n;&t;return 0;&n;} */
+multiline_comment|/*&t;cFYI(1, (&quot;rpages is %d for sync page of Index %ld &quot;, rpages, index));&n;&n;&t;if (rc &lt; 0)&n;&t;&t;return rc;&n;&t;return 0;&n;} */
 multiline_comment|/*&n; * As file closes, flush all cached write data for this inode checking&n; * for write behind errors.&n; *&n; */
 DECL|function|cifs_flush
 r_int
@@ -4646,7 +4599,6 @@ id|rc
 op_eq
 l_int|0
 )paren
-(brace
 multiline_comment|/* reset wb rc if we were able to write out dirty pages */
 id|CIFS_I
 c_func
@@ -4658,7 +4610,6 @@ id|write_behind_rc
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|cFYI
 c_func
 (paren
@@ -4679,8 +4630,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-id|ssize_t
 DECL|function|cifs_user_read
+id|ssize_t
 id|cifs_user_read
 c_func
 (paren
@@ -4915,10 +4866,8 @@ id|rc
 op_ne
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 id|rc
 op_assign
@@ -5088,9 +5037,9 @@ r_return
 id|total_read
 suffix:semicolon
 )brace
+DECL|function|cifs_read
 r_static
 id|ssize_t
-DECL|function|cifs_read
 id|cifs_read
 c_func
 (paren
@@ -5211,7 +5160,6 @@ id|O_ACCMODE
 op_eq
 id|O_WRONLY
 )paren
-(brace
 id|cFYI
 c_func
 (paren
@@ -5222,7 +5170,6 @@ l_string|&quot;attempting read on write only file instance&quot;
 )paren
 )paren
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -5308,10 +5255,8 @@ id|rc
 op_ne
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 id|rc
 op_assign
@@ -5604,10 +5549,8 @@ c_func
 id|pages
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|page
 op_assign
 id|list_entry
@@ -5780,9 +5723,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|function|cifs_readpages
 r_static
 r_int
-DECL|function|cifs_readpages
 id|cifs_readpages
 c_func
 (paren
@@ -5953,10 +5896,8 @@ c_func
 id|page_list
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|page
 op_assign
 id|list_entry
@@ -6025,10 +5966,8 @@ op_increment
 suffix:semicolon
 )brace
 r_else
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -6039,14 +5978,12 @@ id|i
 OG
 id|num_pages
 )paren
-(brace
 id|contig_pages
 op_assign
 id|num_pages
 op_minus
 id|i
 suffix:semicolon
-)brace
 multiline_comment|/* for reads over a certain size could initiate async read ahead */
 id|read_size
 op_assign
@@ -6117,10 +6054,8 @@ id|rc
 op_ne
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 id|rc
 op_assign
@@ -6345,7 +6280,7 @@ suffix:semicolon
 multiline_comment|/* account for partial page */
 multiline_comment|/* server copy of file can have smaller size than client */
 multiline_comment|/* BB do we need to verify this common case ? this case is ok - &n;&t;&t;&t;&t;if we are at server EOF we will hit it on next read */
-multiline_comment|/* while(!list_empty(page_list) &amp;&amp; (i &lt; num_pages)) {&n;&t;&t;&t;&t;&t;page = list_entry(page_list-&gt;prev,struct page, list);&n;&t;&t;&t;&t;&t;list_del(&amp;page-&gt;list);&n;&t;&t;&t;&t;&t;page_cache_release(page);&n;&t;&t;&t;&t;}&n;&t;&t;&t;&t;break; */
+multiline_comment|/* while (!list_empty(page_list) &amp;&amp; (i &lt; num_pages)) {&n;&t;&t;&t;&t;&t;page = list_entry(page_list-&gt;prev, struct page, list);&n;&t;&t;&t;&t;&t;list_del(&amp;page-&gt;list);&n;&t;&t;&t;&t;&t;page_cache_release(page);&n;&t;&t;&t;&t;}&n;&t;&t;&t;&t;break; */
 )brace
 )brace
 r_else
@@ -6538,7 +6473,6 @@ r_goto
 id|io_error
 suffix:semicolon
 r_else
-(brace
 id|cFYI
 c_func
 (paren
@@ -6551,7 +6485,6 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-)brace
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_atime
 op_assign
 id|current_fs_time
@@ -6567,7 +6500,6 @@ id|PAGE_CACHE_SIZE
 OG
 id|rc
 )paren
-(brace
 id|memset
 c_func
 (paren
@@ -6582,7 +6514,6 @@ op_minus
 id|rc
 )paren
 suffix:semicolon
-)brace
 id|flush_dcache_page
 c_func
 (paren
@@ -6617,9 +6548,9 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+DECL|function|cifs_readpage
 r_static
 r_int
-DECL|function|cifs_readpage
 id|cifs_readpage
 c_func
 (paren
@@ -6771,11 +6702,9 @@ id|cifsInode
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 id|rc
 suffix:semicolon
-)brace
 id|read_lock
 c_func
 (paren
@@ -6814,19 +6743,15 @@ id|open_file
 op_eq
 l_int|NULL
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|open_file-&gt;closePend
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 multiline_comment|/* We check if file is open for writing,   &n;&t;BB we could supplement this with a check to see if file size&n;&t;changes have been flushed to server - ie inode metadata dirty */
 r_if
 c_cond
@@ -6974,14 +6899,12 @@ op_eq
 l_int|0
 )paren
 )paren
-(brace
 id|SetPageUptodate
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* might as well read a page, it is fast enough */
 r_if
 c_cond
@@ -7011,8 +6934,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* should we try using another&n;&t;&t;file handle if there is one - how would we lock it&n;&t;&t;to prevent close of that handle racing with this read? */
-multiline_comment|/* In any case this will be written out by commit_write */
+multiline_comment|/* should we try using another&n;&t;&t;   file handle if there is one - how would we lock it&n;&t;&t;   to prevent close of that handle racing with this read?&n;&t;&t;   In any case this will be written out by commit_write */
 )brace
 )brace
 multiline_comment|/* BB should we pass any errors back? e.g. if we do not have read access to the file */
@@ -7057,7 +6979,7 @@ op_assign
 id|__set_page_dirty_nobuffers
 comma
 multiline_comment|/* .sync_page = cifs_sync_page, */
-multiline_comment|/*.direct_IO = */
+multiline_comment|/* .direct_IO = */
 )brace
 suffix:semicolon
 eof

@@ -391,7 +391,7 @@ id|pfindData-&gt;ChangeTime
 suffix:semicolon
 multiline_comment|/* treat dos attribute of read-only as read-only mode bit e.g. 555? */
 multiline_comment|/* 2767 perms - indicate mandatory locking */
-multiline_comment|/* BB fill in uid and gid here? with help from winbind? &n;&t;&t;&t;or retrieve from NTFS stream extended attribute */
+multiline_comment|/* BB fill in uid and gid here? with help from winbind? &n;&t;&t;   or retrieve from NTFS stream extended attribute */
 r_if
 c_cond
 (paren
@@ -468,7 +468,7 @@ op_or_assign
 id|S_IFDIR
 suffix:semicolon
 multiline_comment|/* we no longer mark these because we could not follow them */
-multiline_comment|/*        } else if (attr &amp; ATTR_REPARSE) {&n;                *pobject_type = DT_LNK;&n;                tmp_inode-&gt;i_mode |= S_IFLNK;*/
+multiline_comment|/*        } else if (attr &amp; ATTR_REPARSE) {&n;                *pobject_type = DT_LNK;&n;                tmp_inode-&gt;i_mode |= S_IFLNK; */
 )brace
 r_else
 (brace
@@ -488,7 +488,6 @@ id|attr
 op_amp
 id|ATTR_READONLY
 )paren
-(brace
 id|tmp_inode-&gt;i_mode
 op_and_assign
 op_complement
@@ -496,7 +495,6 @@ op_complement
 id|S_IWUGO
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* could add code here - to validate if device or weird share type? */
 multiline_comment|/* can not fill in nlink here as in qpathinfo version and Unx search */
