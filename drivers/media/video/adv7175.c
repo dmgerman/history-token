@@ -937,10 +937,14 @@ c_func
 id|client
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
 id|i2c_get_clientdata
 c_func
 (paren
 id|client
+)paren
 )paren
 suffix:semicolon
 id|kfree
