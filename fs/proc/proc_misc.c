@@ -2041,7 +2041,7 @@ comma
 id|sum
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ARCH_S390) &amp;&amp; !defined(CONFIG_PPC64)
+macro_line|#if !defined(CONFIG_ARCH_S390) &amp;&amp; !defined(CONFIG_PPC64) &amp;&amp; !defined(CONFIG_ALPHA)
 r_for
 c_loop
 (paren
