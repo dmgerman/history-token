@@ -602,6 +602,8 @@ DECL|macro|SDCFG_VAL
 mdefine_line|#define SDCFG_VAL&t;0x008c&t;/* set voltage thresholds for Signal Detect */
 DECL|macro|DSPCFG_LOCK
 mdefine_line|#define DSPCFG_LOCK&t;0x20&t;/* coefficient lock bit in DSPCFG */
+DECL|macro|DSPCFG_COEF
+mdefine_line|#define DSPCFG_COEF&t;0x1000&t;/* see coefficient (in TSTDAT) bit in DSPCFG */
 DECL|macro|TSTDAT_FIXED
 mdefine_line|#define TSTDAT_FIXED&t;0xe8&t;/* magic number for bad coefficients */
 multiline_comment|/* misc PCI space registers */
@@ -4509,7 +4511,26 @@ id|TSTDAT
 suffix:semicolon
 id|np-&gt;dspcfg
 op_assign
+(paren
+id|np-&gt;srr
+op_le
+id|SRR_DP83815_C
+)paren
+ques
+c_cond
 id|DSPCFG_VAL
+suffix:colon
+(paren
+id|DSPCFG_COEF
+op_or
+id|readw
+c_func
+(paren
+id|ioaddr
+op_plus
+id|DSPCFG
+)paren
+)paren
 suffix:semicolon
 id|writew
 c_func
