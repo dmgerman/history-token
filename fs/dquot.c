@@ -6154,8 +6154,6 @@ op_amp
 id|dqopt-&gt;dqonoff_sem
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 r_return
 l_int|0
 suffix:semicolon
