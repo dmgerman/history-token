@@ -2758,11 +2758,11 @@ id|ret
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* USB 2.0 spec, 7.1.7.3 / fig 7-29:&n; *&n; * Between connect detection and reset signaling there must be a delay&n; * of 100ms at least for debounce and power-settling. The corresponding&n; * timer shall restart whenever the downstream port detects a disconnect.&n; * &n; * Apparently there are some bluetooth and irda-dongles and a number&n; * of low-speed devices which require longer delays of about 200-400ms.&n; * Not covered by the spec - but easy to deal with.&n; *&n; * This implementation uses 400ms minimum debounce timeout and checks&n; * every 10ms for transient disconnects to restart the delay.&n; */
+multiline_comment|/* USB 2.0 spec, 7.1.7.3 / fig 7-29:&n; *&n; * Between connect detection and reset signaling there must be a delay&n; * of 100ms at least for debounce and power-settling. The corresponding&n; * timer shall restart whenever the downstream port detects a disconnect.&n; * &n; * Apparently there are some bluetooth and irda-dongles and a number&n; * of low-speed devices which require longer delays of about 200-400ms.&n; * Not covered by the spec - but easy to deal with.&n; *&n; * This implementation uses 400ms minimum debounce timeout and checks&n; * every 100ms for transient disconnects to restart the delay.&n; */
 DECL|macro|HUB_DEBOUNCE_TIMEOUT
 mdefine_line|#define HUB_DEBOUNCE_TIMEOUT&t;400
 DECL|macro|HUB_DEBOUNCE_STEP
-mdefine_line|#define HUB_DEBOUNCE_STEP&t;10
+mdefine_line|#define HUB_DEBOUNCE_STEP&t;100
 multiline_comment|/* return: -1 on error, 0 on success, 1 on disconnect.  */
 DECL|function|usb_hub_port_debounce
 r_static
