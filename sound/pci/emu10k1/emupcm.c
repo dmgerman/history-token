@@ -4813,7 +4813,7 @@ id|runtime
 comma
 l_int|0
 comma
-id|SNDRV_PCM_HW_PARAM_PERIOD_SIZE
+id|SNDRV_PCM_HW_PARAM_PERIOD_BYTES
 comma
 op_amp
 id|hw_constraints_capture_period_sizes
@@ -5007,7 +5007,7 @@ id|runtime
 comma
 l_int|0
 comma
-id|SNDRV_PCM_HW_PARAM_PERIOD_SIZE
+id|SNDRV_PCM_HW_PARAM_PERIOD_BYTES
 comma
 op_amp
 id|hw_constraints_capture_period_sizes
@@ -5270,7 +5270,7 @@ id|runtime
 comma
 l_int|0
 comma
-id|SNDRV_PCM_HW_PARAM_PERIOD_SIZE
+id|SNDRV_PCM_HW_PARAM_PERIOD_BYTES
 comma
 op_amp
 id|hw_constraints_capture_period_sizes
