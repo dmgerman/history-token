@@ -106,6 +106,8 @@ DECL|macro|LM85_VERSTEP_ADM1027
 mdefine_line|#define&t;LM85_VERSTEP_ADM1027&t;&t;0x60
 DECL|macro|LM85_VERSTEP_ADT7463
 mdefine_line|#define&t;LM85_VERSTEP_ADT7463&t;&t;0x62
+DECL|macro|LM85_VERSTEP_ADT7463C
+mdefine_line|#define&t;LM85_VERSTEP_ADT7463C&t;&t;0x6A
 DECL|macro|LM85_VERSTEP_EMC6D100_A0
 mdefine_line|#define&t;LM85_VERSTEP_EMC6D100_A0        0x60
 DECL|macro|LM85_VERSTEP_EMC6D100_A1
@@ -4600,9 +4602,15 @@ id|company
 op_eq
 id|LM85_COMPANY_ANALOG_DEV
 op_logical_and
+(paren
 id|verstep
 op_eq
 id|LM85_VERSTEP_ADT7463
+op_logical_or
+id|verstep
+op_eq
+id|LM85_VERSTEP_ADT7463C
+)paren
 )paren
 (brace
 id|kind
