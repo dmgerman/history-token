@@ -1166,7 +1166,7 @@ comma
 id|compat_ptr
 c_func
 (paren
-id|third
+id|fifth
 )paren
 )paren
 suffix:semicolon
