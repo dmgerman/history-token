@@ -1636,6 +1636,15 @@ id|bus_id
 op_assign
 l_string|&quot;pcmcia&quot;
 comma
+dot
+id|kobj
+op_assign
+(brace
+dot
+id|k_name
+op_assign
+l_string|&quot;bt3c&quot;
+)brace
 )brace
 suffix:semicolon
 DECL|function|bt3c_load_firmware
