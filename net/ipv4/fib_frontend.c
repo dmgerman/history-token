@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;IPv4 Forwarding Information Base: FIB frontend.&n; *&n; * Version:&t;$Id: fib_frontend.c,v 1.26 2001/10/31 21:55:54 davem Exp $&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -2750,4 +2751,25 @@ id|fib_inetaddr_notifier
 )paren
 suffix:semicolon
 )brace
+DECL|variable|inet_addr_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inet_addr_type
+)paren
+suffix:semicolon
+DECL|variable|ip_dev_find
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_dev_find
+)paren
+suffix:semicolon
+DECL|variable|ip_rt_ioctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_rt_ioctl
+)paren
+suffix:semicolon
 eof

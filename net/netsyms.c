@@ -23,7 +23,6 @@ macro_line|#ifdef CONFIG_INET
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
-macro_line|#include &lt;linux/mroute.h&gt;
 macro_line|#if defined(CONFIG_INET_AH) || defined(CONFIG_INET_AH_MODULE) || defined(CONFIG_INET6_AH) || defined(CONFIG_INET6_AH_MODULE)
 macro_line|#include &lt;net/ah.h&gt;
 macro_line|#endif
@@ -151,20 +150,6 @@ c_func
 id|in_aton
 )paren
 suffix:semicolon
-DECL|variable|inet_addr_type
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inet_addr_type
-)paren
-suffix:semicolon
-DECL|variable|ip_dev_find
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_dev_find
-)paren
-suffix:semicolon
 DECL|variable|ip_defrag
 id|EXPORT_SYMBOL
 c_func
@@ -180,13 +165,6 @@ id|inet_peer_idlock
 )paren
 suffix:semicolon
 multiline_comment|/* Route manipulation */
-DECL|variable|ip_rt_ioctl
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_rt_ioctl
-)paren
-suffix:semicolon
 multiline_comment|/* needed for ip_gre -cw */
 DECL|variable|ip_statistics
 id|EXPORT_SYMBOL
