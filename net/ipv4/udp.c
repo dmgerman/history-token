@@ -3861,6 +3861,8 @@ multiline_comment|/* Must be an IKE packet.. pass it through */
 r_return
 l_int|1
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|UDP_ENCAP_ESPINUDP_NON_IKE
 suffix:colon
@@ -3939,6 +3941,8 @@ r_else
 multiline_comment|/* Must be an IKE packet.. pass it through */
 r_return
 l_int|1
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 multiline_comment|/* At this point we are sure that this is an ESPinUDP packet,&n;&t; * so we need to remove &squot;len&squot; bytes from the packet (the UDP&n;&t; * header and optional ESP marker bytes) and then modify the&n;&t; * protocol to ESP, and then call into the transform receiver.&n;&t; */

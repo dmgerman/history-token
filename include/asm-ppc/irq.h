@@ -189,6 +189,112 @@ r_return
 id|irq
 suffix:semicolon
 )brace
+macro_line|#elif defined(CONFIG_CPM2) &amp;&amp; defined(CONFIG_85xx)
+multiline_comment|/* Now include the board configuration specific associations.&n;*/
+macro_line|#include &lt;asm/mpc85xx.h&gt;
+multiline_comment|/* The MPC8560 openpic has  32 internal interrupts and 12 external&n; * interrupts.&n; *&n; * We are &quot;flattening&quot; the interrupt vectors of the cascaded CPM&n; * so that we can uniquely identify any interrupt source with a&n; * single integer.&n; */
+DECL|macro|NR_CPM_INTS
+mdefine_line|#define NR_CPM_INTS&t;64
+DECL|macro|NR_EPIC_INTS
+mdefine_line|#define NR_EPIC_INTS&t;44
+macro_line|#ifndef NR_8259_INTS
+DECL|macro|NR_8259_INTS
+mdefine_line|#define NR_8259_INTS 0
+macro_line|#endif
+DECL|macro|NUM_8259_INTERRUPTS
+mdefine_line|#define NUM_8259_INTERRUPTS NR_8259_INTS
+macro_line|#ifndef CPM_IRQ_OFFSET
+DECL|macro|CPM_IRQ_OFFSET
+mdefine_line|#define CPM_IRQ_OFFSET&t;0
+macro_line|#endif
+DECL|macro|NR_IRQS
+mdefine_line|#define NR_IRQS&t;(NR_EPIC_INTS + NR_CPM_INTS + NR_8259_INTS)
+multiline_comment|/* These values must be zero-based and map 1:1 with the EPIC configuration.&n; * They are used throughout the 8560 I/O subsystem to generate&n; * interrupt masks, flags, and other control patterns.  This is why the&n; * current kernel assumption of the 8259 as the base controller is such&n; * a pain in the butt.&n; */
+DECL|macro|SIU_INT_ERROR
+mdefine_line|#define&t;SIU_INT_ERROR&t;&t;((uint)0x00+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_I2C
+mdefine_line|#define&t;SIU_INT_I2C&t;&t;((uint)0x01+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_SPI
+mdefine_line|#define&t;SIU_INT_SPI&t;&t;((uint)0x02+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_RISC
+mdefine_line|#define&t;SIU_INT_RISC&t;&t;((uint)0x03+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_SMC1
+mdefine_line|#define&t;SIU_INT_SMC1&t;&t;((uint)0x04+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_SMC2
+mdefine_line|#define&t;SIU_INT_SMC2&t;&t;((uint)0x05+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_TIMER1
+mdefine_line|#define&t;SIU_INT_TIMER1&t;&t;((uint)0x0c+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_TIMER2
+mdefine_line|#define&t;SIU_INT_TIMER2&t;&t;((uint)0x0d+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_TIMER3
+mdefine_line|#define&t;SIU_INT_TIMER3&t;&t;((uint)0x0e+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_TIMER4
+mdefine_line|#define&t;SIU_INT_TIMER4&t;&t;((uint)0x0f+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_FCC1
+mdefine_line|#define&t;SIU_INT_FCC1&t;&t;((uint)0x20+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_FCC2
+mdefine_line|#define&t;SIU_INT_FCC2&t;&t;((uint)0x21+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_FCC3
+mdefine_line|#define&t;SIU_INT_FCC3&t;&t;((uint)0x22+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_MCC1
+mdefine_line|#define&t;SIU_INT_MCC1&t;&t;((uint)0x24+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_MCC2
+mdefine_line|#define&t;SIU_INT_MCC2&t;&t;((uint)0x25+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_SCC1
+mdefine_line|#define&t;SIU_INT_SCC1&t;&t;((uint)0x28+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_SCC2
+mdefine_line|#define&t;SIU_INT_SCC2&t;&t;((uint)0x29+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_SCC3
+mdefine_line|#define&t;SIU_INT_SCC3&t;&t;((uint)0x2a+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_SCC4
+mdefine_line|#define&t;SIU_INT_SCC4&t;&t;((uint)0x2b+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC15
+mdefine_line|#define&t;SIU_INT_PC15&t;&t;((uint)0x30+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC14
+mdefine_line|#define&t;SIU_INT_PC14&t;&t;((uint)0x31+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC13
+mdefine_line|#define&t;SIU_INT_PC13&t;&t;((uint)0x32+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC12
+mdefine_line|#define&t;SIU_INT_PC12&t;&t;((uint)0x33+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC11
+mdefine_line|#define&t;SIU_INT_PC11&t;&t;((uint)0x34+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC10
+mdefine_line|#define&t;SIU_INT_PC10&t;&t;((uint)0x35+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC9
+mdefine_line|#define&t;SIU_INT_PC9&t;&t;((uint)0x36+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC8
+mdefine_line|#define&t;SIU_INT_PC8&t;&t;((uint)0x37+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC7
+mdefine_line|#define&t;SIU_INT_PC7&t;&t;((uint)0x38+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC6
+mdefine_line|#define&t;SIU_INT_PC6&t;&t;((uint)0x39+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC5
+mdefine_line|#define&t;SIU_INT_PC5&t;&t;((uint)0x3a+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC4
+mdefine_line|#define&t;SIU_INT_PC4&t;&t;((uint)0x3b+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC3
+mdefine_line|#define&t;SIU_INT_PC3&t;&t;((uint)0x3c+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC2
+mdefine_line|#define&t;SIU_INT_PC2&t;&t;((uint)0x3d+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC1
+mdefine_line|#define&t;SIU_INT_PC1&t;&t;((uint)0x3e+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_PC0
+mdefine_line|#define&t;SIU_INT_PC0&t;&t;((uint)0x3f+CPM_IRQ_OFFSET)
+DECL|function|irq_canonicalize
+r_static
+id|__inline__
+r_int
+id|irq_canonicalize
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+r_return
+id|irq
+suffix:semicolon
+)brace
 macro_line|#else /* CONFIG_40x + CONFIG_8xx */
 multiline_comment|/*&n; * this is the # irq&squot;s for all ppc arch&squot;s (pmac/chrp/prep)&n; * so it is the max of them all&n; */
 DECL|macro|NR_IRQS

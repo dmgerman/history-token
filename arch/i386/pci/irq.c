@@ -3683,7 +3683,7 @@ id|mask
 )paren
 )paren
 (brace
-macro_line|#ifndef CONFIG_PCI_USE_VECTOR
+macro_line|#ifndef CONFIG_PCI_MSI
 id|printk
 c_func
 (paren
@@ -4617,7 +4617,7 @@ op_ge
 l_int|0
 )paren
 (brace
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+macro_line|#ifdef CONFIG_PCI_MSI
 r_if
 c_cond
 (paren

@@ -233,7 +233,7 @@ id|full_path
 comma
 id|ea_name
 comma
-l_int|0
+l_int|NULL
 comma
 (paren
 id|__u16

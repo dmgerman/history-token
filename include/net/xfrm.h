@@ -3989,6 +3989,18 @@ op_star
 id|saddr
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|xfrm6_output
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+op_star
+id|pskb
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_XFRM
 r_extern
 r_int

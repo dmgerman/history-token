@@ -12966,30 +12966,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NET_FASTROUTE
-DECL|function|bond_accept_fastpath
-r_static
-r_int
-id|bond_accept_fastpath
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|bond_dev
-comma
-r_struct
-id|dst_entry
-op_star
-id|dst
-)paren
-(brace
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*------------------------- Device initialization ---------------------------*/
 multiline_comment|/*&n; * set bond mode specific net device operations&n; */
 DECL|function|bond_set_mode_ops
@@ -13216,12 +13192,6 @@ id|bond_dev-&gt;destructor
 op_assign
 id|free_netdev
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_FASTROUTE
-id|bond_dev-&gt;accept_fastpath
-op_assign
-id|bond_accept_fastpath
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Initialize the device options */
 id|bond_dev-&gt;tx_queue_len
 op_assign

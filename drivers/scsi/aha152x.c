@@ -4938,7 +4938,7 @@ id|KERN_NOTICE
 l_string|&quot;aha152x: unable to verify geometry for disk with &gt;1GB.&bslash;n&quot;
 l_string|&quot;         Using default translation. Please verify yourself.&bslash;n&quot;
 l_string|&quot;         Perhaps you need to enable extended translation in the driver.&bslash;n&quot;
-l_string|&quot;         See /usr/src/linux/Documentation/scsi/aha152x.txt for details.&bslash;n&quot;
+l_string|&quot;         See Documentation/scsi/aha152x.txt for details.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
