@@ -4953,7 +4953,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * kmalloc - allocate memory&n; * @size: how many bytes of memory are required.&n; * @flags: the type of memory to allocate.&n; *&n; * kmalloc is the normal method of allocating memory&n; * in the kernel.  The @flags argument may be one of:&n; *&n; * %GFP_BUFFER - XXX&n; *&n; * %GFP_ATOMIC - allocation will not sleep.  Use inside interrupt handlers.&n; *&n; * %GFP_USER - allocate memory on behalf of user.  May sleep.&n; *&n; * %GFP_KERNEL - allocate normal kernel ram.  May sleep.&n; *&n; * %GFP_NFS - has a slightly lower probability of sleeping than %GFP_KERNEL.&n; * Don&squot;t use unless you&squot;re in the NFS code.&n; *&n; * %GFP_KSWAPD - Don&squot;t use unless you&squot;re modifying kswapd.&n; */
+multiline_comment|/**&n; * kmalloc - allocate memory&n; * @size: how many bytes of memory are required.&n; * @flags: the type of memory to allocate.&n; *&n; * kmalloc is the normal method of allocating memory&n; * in the kernel.&n; *&n; * The @flags argument may be one of:&n; *&n; * %GFP_USER - Allocate memory on behalf of user.  May sleep.&n; *&n; * %GFP_KERNEL - Allocate normal kernel ram.  May sleep.&n; *&n; * %GFP_ATOMIC - Allocation will not sleep.  Use inside interrupt handlers.&n; *&n; * Additionally, the %GFP_DMA flag may be set to indicate the memory&n; * must be suitable for DMA.  This can mean different things on different&n; * platforms.  For example, on i386, it means that the memory must come&n; * from the first 16MB.&n; */
 DECL|function|kmalloc
 r_void
 op_star

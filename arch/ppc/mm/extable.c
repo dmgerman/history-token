@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.extable.c 1.5 05/17/01 18:14:23 cort&n; */
 multiline_comment|/*&n; * linux/arch/ppc/mm/extable.c&n; *&n; * from linux/arch/i386/mm/extable.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;

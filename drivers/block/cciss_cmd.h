@@ -677,6 +677,10 @@ op_star
 id|err_info
 suffix:semicolon
 multiline_comment|/* pointer to the allocated mem */
+DECL|member|ctlr
+r_int
+id|ctlr
+suffix:semicolon
 DECL|member|cmd_type
 r_int
 id|cmd_type

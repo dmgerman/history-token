@@ -1,6 +1,7 @@
 macro_line|#ifndef _ACENIC_H_
 DECL|macro|_ACENIC_H_
 mdefine_line|#define _ACENIC_H_
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Generate TX index update each time, when TX ring is closed.&n; * Normally, this is not useful, because results in more dma (and irqs&n; * without TX_COAL_INTS_ONLY).&n; */
 DECL|macro|USE_TX_COAL_NOW
 mdefine_line|#define USE_TX_COAL_NOW&t; 0

@@ -33,6 +33,13 @@ mdefine_line|#define VERSTR &quot;$Revision: 1.259 $ time &quot; __TIME__ &quot;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb-uhci.h&quot;
 macro_line|#include &quot;usb-uhci-debug.h&quot;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.251&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Georg Acher, Deti Fliegl, Thomas Sailer, Roman Weissgaerber&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB Universal Host Controller Interface driver&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 DECL|macro|dbg
@@ -13147,6 +13154,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PM
 id|_static
 r_void
 DECL|function|uhci_pci_suspend
@@ -13191,6 +13199,7 @@ id|dev-&gt;driver_data
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|alloc_uhci
 id|_static
 r_int
@@ -14021,6 +14030,20 @@ l_string|&quot;urb_priv_kmem remained&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -14072,16 +14095,18 @@ id|module_exit
 id|uhci_hcd_cleanup
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Georg Acher, Deti Fliegl, Thomas Sailer, Roman Weissgaerber&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;USB Universal Host Controller Interface driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 eof

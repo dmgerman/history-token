@@ -471,10 +471,6 @@ l_string|&quot;jffs_put_super(): Successfully waited on thread.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|sb-&gt;s_dev
-op_assign
-l_int|0
-suffix:semicolon
 id|jffs_cleanup_control
 c_func
 (paren

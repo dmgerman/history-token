@@ -2,7 +2,6 @@ multiline_comment|/*&n; *   olympic.c (c) 1999 Peter De Schrijver All Rights Res
 multiline_comment|/* Change OLYMPIC_DEBUG to 1 to get verbose, and I mean really verbose, messages */
 DECL|macro|OLYMPIC_DEBUG
 mdefine_line|#define OLYMPIC_DEBUG 0
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

@@ -926,6 +926,14 @@ c_func
 id|rdev
 )paren
 suffix:semicolon
+id|inode-&gt;i_cdev
+op_assign
+id|cdget
+c_func
+(paren
+id|rdev
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if

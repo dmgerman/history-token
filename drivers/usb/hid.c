@@ -25,6 +25,13 @@ mdefine_line|#define hid_dump_input(a,b)&t;do { } while (0)
 DECL|macro|hid_dump_device
 mdefine_line|#define hid_dump_device(c)&t;do { } while (0)
 macro_line|#endif
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.16&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Andreas Gal, Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB HID support drivers&quot;
 DECL|macro|unk
 mdefine_line|#define unk&t;KEY_UNKNOWN
 DECL|variable|hid_keyboard
@@ -8073,6 +8080,20 @@ op_amp
 id|hid_driver
 )paren
 suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -8109,16 +8130,18 @@ c_func
 id|hid_exit
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Andreas Gal, Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;USB HID support drivers&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 eof

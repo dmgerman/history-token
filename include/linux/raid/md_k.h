@@ -82,6 +82,9 @@ c_func
 l_string|&quot;pers_to_level()&quot;
 )paren
 suffix:semicolon
+r_return
+id|MD_RESERVED
+suffix:semicolon
 )brace
 DECL|function|level_to_pers
 r_extern

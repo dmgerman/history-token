@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * $Id: setup.c,v 1.160 1999/10/08 01:56:38 paulus Exp $&n; * Common prep/pmac/chrp boot and setup code.&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.setup.c 1.23 05/21/01 16:08:53 cort&n; */
+multiline_comment|/*&n; * Common prep/pmac/chrp boot and setup code.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -244,7 +245,7 @@ id|DMA_MODE_READ
 comma
 id|DMA_MODE_WRITE
 suffix:semicolon
-macro_line|#ifndef CONFIG_MACH_SPECIFIC
+macro_line|#ifdef CONFIG_ALL_PPC
 DECL|variable|_machine
 r_int
 id|_machine
@@ -257,7 +258,7 @@ id|have_of
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_MACH_SPECIFIC */
+macro_line|#endif /* CONFIG_ALL_PPC */
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|variable|SYSRQ_KEY
 r_int
@@ -1664,7 +1665,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_MACH_SPECIFIC
+macro_line|#ifdef CONFIG_ALL_PPC
 r_void
 id|__init
 DECL|function|intuit_machine_type
@@ -1774,7 +1775,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* CONFIG_MACH_SPECIFIC */
+macro_line|#endif /* CONFIG_ALL_PPC */
 multiline_comment|/*&n; * Find out what kind of machine we&squot;re on and save any data we need&n; * from the early boot process (devtree is copied on pmac by prom_init() )&n; */
 r_int
 r_int
@@ -1824,8 +1825,7 @@ comma
 l_int|0x100
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_8260)
-macro_line|#ifndef CONFIG_MACH_SPECIFIC
+macro_line|#ifdef CONFIG_ALL_PPC
 multiline_comment|/* if we didn&squot;t get any bootinfo telling us what we are... */
 r_if
 c_cond
@@ -1835,26 +1835,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* boot loader will tell us if we&squot;re APUS */
-r_if
-c_cond
-(paren
-id|r3
-op_eq
-l_int|0x61707573
-)paren
-(brace
-id|_machine
-op_assign
-id|_MACH_apus
-suffix:semicolon
-id|r3
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* prep boot loader tells us if we&squot;re prep or not */
-r_else
 r_if
 c_cond
 (paren
@@ -1884,7 +1865,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_MACH_SPECIFIC */
 r_if
 c_cond
 (paren
@@ -1902,7 +1882,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_MACH_SPECIFIC
 multiline_comment|/* we need to set _machine before calling finish_device_tree */
 r_if
 c_cond
@@ -1916,7 +1895,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_MACH_SPECIFIC */
 id|finish_device_tree
 c_func
 (paren
@@ -2135,6 +2113,14 @@ id|p
 op_ne
 l_int|NULL
 )paren
+(brace
+id|cmd_line
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 id|strncpy
 c_func
 (paren
@@ -2150,6 +2136,7 @@ id|cmd_line
 suffix:semicolon
 )brace
 )brace
+)brace
 id|cmd_line
 (braket
 r_sizeof
@@ -2163,6 +2150,8 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#if defined(CONFIG_ALL_PPC)
 r_switch
 c_cond
 (paren
@@ -2226,10 +2215,16 @@ id|r7
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_APUS
-r_case
-id|_MACH_apus
+r_default
 suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Unknown machine type in identify_machine!&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#elif defined(CONFIG_APUS)
 id|apus_init
 c_func
 (paren
@@ -2244,13 +2239,7 @@ comma
 id|r7
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_GEMINI
-r_case
-id|_MACH_gemini
-suffix:colon
+macro_line|#elif defined(CONFIG_GEMINI)
 id|gemini_init
 c_func
 (paren
@@ -2265,42 +2254,7 @@ comma
 id|r7
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif
-r_default
-suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot;Unknown machine type in identify_machine!&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Check for nobats option (used in mapin_ram). */
-r_if
-c_cond
-(paren
-id|strstr
-c_func
-(paren
-id|cmd_line
-comma
-l_string|&quot;nobats&quot;
-)paren
-)paren
-(brace
-r_extern
-r_int
-id|__map_without_bats
-suffix:semicolon
-id|__map_without_bats
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#else
-macro_line|#if defined(CONFIG_4xx)
+macro_line|#elif defined(CONFIG_4xx)
 id|oak_init
 c_func
 (paren
@@ -2347,8 +2301,31 @@ id|r7
 suffix:semicolon
 macro_line|#else
 macro_line|#error &quot;No board type has been defined for identify_machine()!&quot;
-macro_line|#endif /* CONFIG_4xx */
-macro_line|#endif /* !CONFIG_4xx &amp;&amp; !CONFIG_8xx */
+macro_line|#endif
+macro_line|#if !defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_8260)
+multiline_comment|/* Check for nobats option (used in mapin_ram). */
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|cmd_line
+comma
+l_string|&quot;nobats&quot;
+)paren
+)paren
+(brace
+r_extern
+r_int
+id|__map_without_bats
+suffix:semicolon
+id|__map_without_bats
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif /* !CONFIG_4xx &amp;&amp; !CONFIG_8xx &amp;&amp; !CONFIG_8260 */
 multiline_comment|/* Look for mem= option on command line */
 r_if
 c_cond
@@ -2751,7 +2728,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
-macro_line|#ifndef CONFIG_MACH_SPECIFIC
+macro_line|#ifdef CONFIG_ALL_PPC
 r_case
 id|BI_MACHTYPE
 suffix:colon
@@ -2771,7 +2748,7 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_MACH_SPECIFIC */
+macro_line|#endif /* CONFIG_ALL_PPC */
 )brace
 )brace
 r_return

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.ohare.h 1.5 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; * ohare.h: definitions for using the &quot;O&squot;Hare&quot; I/O controller chip.&n; *&n; * Copyright (C) 1997 Paul Mackerras.&n; * &n; * BenH: Changed to match those of heathrow (but not all of them). Please&n; *       check if I didn&squot;t break anything (especially the media bay).&n; */
 multiline_comment|/* offset from ohare base for feature control register */
 DECL|macro|OHARE_FEATURE_REG

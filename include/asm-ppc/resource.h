@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.resource.h 1.5 05/17/01 18:14:25 cort&n; */
 macro_line|#ifndef _PPC_RESOURCE_H
 DECL|macro|_PPC_RESOURCE_H
 mdefine_line|#define _PPC_RESOURCE_H

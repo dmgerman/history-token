@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.error_log.c 1.6 05/17/01 18:14:21 cort&n; */
 multiline_comment|/*&n; *  arch/ppc/kernel/error_log.c&n; *  &n; *  Copyright (c) 2000 Tilmann Bitterberg&n; *  (tilmann@bitterberg.de)&n; *&n; *  Error processing of errors found by rtas even-scan routine&n; *  which is done with every heartbeat. (chrp_setup.c)&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;

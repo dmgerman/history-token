@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Definitions shared between dma-sa1100.c and dma-sa1111.c&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * DMA channel structure.&n; */
 DECL|typedef|dma_buf_t
 r_typedef

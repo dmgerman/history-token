@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.raven.h 1.7 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; *  asm-ppc/raven.h -- Raven MPIC chip.&n; *&n; *  Copyright (C) 1998 Johnnie Peters&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _ASMPPC_RAVEN_H

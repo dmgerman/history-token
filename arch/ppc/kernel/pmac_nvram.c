@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_nvram.c 1.5 05/17/01 18:14:21 cort&n; */
 multiline_comment|/*&n; * Miscellaneous procedures for dealing with the PowerMac hardware.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

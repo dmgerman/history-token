@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.mmu.h 1.7 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; * PowerPC memory management structures&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_MMU_H_

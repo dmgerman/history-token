@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * Copyright (C) 1999-2000 by David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*&n; * USB driver for Kodak DC-2XX series digital still cameras&n; *&n; * The protocol here is the same as the one going over a serial line, but&n; * it uses USB for speed.  Set up /dev/kodak, get gphoto (www.gphoto.org),&n; * and have fun!&n; *&n; * This should also work for a number of other digital (non-Kodak) cameras,&n; * by adding the vendor and product IDs to the table below.  They&squot;ll need&n; * to be the sort using USB just as a fast bulk data channel.&n; */
-multiline_comment|/*&n; * HISTORY&n; *&n; * 26 August, 1999 -- first release (0.1), works with my DC-240.&n; * &t;The DC-280 (2Mpixel) should also work, but isn&squot;t tested.&n; *&t;If you use gphoto, make sure you have the USB updates.&n; *&t;Lives in a 2.3.14 or so Linux kernel, in drivers/usb.&n; * 31 August, 1999 -- minor update to recognize DC-260 and handle&n; *&t;its endpoints being in a different order.  Note that as&n; *&t;of gPhoto 0.36pre, the USB updates are integrated.&n; * 12 Oct, 1999 -- handle DC-280 interface class (0xff not 0x0);&n; *&t;added timeouts to bulk_msg calls.  Minor updates, docs.&n; * 03 Nov, 1999 -- update for 2.3.25 kernel API changes.&n; * 08 Jan, 2000 .. multiple camera support&n; * 12 Aug, 2000 .. add some real locking, remove an Oops&n; * 10 Oct, 2000 .. usb_device_id table created. &n; * 01 Nov, 2000 .. usb_device_id support added by Adam J. Richter&n; *&n; * Thanks to:  the folk who&squot;ve provided USB product IDs, sent in&n; * patches, and shared their successes!&n; */
+multiline_comment|/*&n; * HISTORY&n; *&n; * 26 August, 1999 -- first release (0.1), works with my DC-240.&n; * &t;The DC-280 (2Mpixel) should also work, but isn&squot;t tested.&n; *&t;If you use gphoto, make sure you have the USB updates.&n; *&t;Lives in a 2.3.14 or so Linux kernel, in drivers/usb.&n; * 31 August, 1999 -- minor update to recognize DC-260 and handle&n; *&t;its endpoints being in a different order.  Note that as&n; *&t;of gPhoto 0.36pre, the USB updates are integrated.&n; * 12 Oct, 1999 -- handle DC-280 interface class (0xff not 0x0);&n; *&t;added timeouts to bulk_msg calls.  Minor updates, docs.&n; * 03 Nov, 1999 -- update for 2.3.25 kernel API changes.&n; * 08 Jan, 2000 .. multiple camera support&n; * 12 Aug, 2000 .. add some real locking, remove an Oops&n; * 10 Oct, 2000 .. usb_device_id table created. &n; * 01 Nov, 2000 .. usb_device_id support added by Adam J. Richter&n; * 08 Apr, 2001 .. Identify version on module load. gb&n; *&n; * Thanks to:  the folk who&squot;ve provided USB product IDs, sent in&n; * patches, and shared their successes!&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -20,6 +20,13 @@ DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell, &lt;dbrownell@users.sourceforge.net&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB Camera Driver for Kodak DC-2xx series cameras&quot;
 multiline_comment|/* current USB framework handles max of 16 USB devices per driver */
 DECL|macro|MAX_CAMERAS
 mdefine_line|#define&t;MAX_CAMERAS&t;&t;16
@@ -1655,6 +1662,20 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1675,18 +1696,6 @@ id|camera_driver
 )paren
 suffix:semicolon
 )brace
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;David Brownell, &lt;dbrownell@users.sourceforge.net&gt;&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;USB Camera Driver for Kodak DC-2xx series cameras&quot;
-)paren
-suffix:semicolon
 DECL|variable|usb_dc2xx_init
 id|module_init
 (paren
@@ -1697,6 +1706,20 @@ DECL|variable|usb_dc2xx_cleanup
 id|module_exit
 (paren
 id|usb_dc2xx_cleanup
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
+id|MODULE_AUTHOR
+c_func
+(paren
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_DESC
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 eof

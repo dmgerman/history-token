@@ -2,6 +2,7 @@ multiline_comment|/*&n;&t;drivers/net/tulip/tulip.h&n;&n;&t;Copyright 2000,2001 
 macro_line|#ifndef __NET_TULIP_H__
 DECL|macro|__NET_TULIP_H__
 mdefine_line|#define __NET_TULIP_H__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;

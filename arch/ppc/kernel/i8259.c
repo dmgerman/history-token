@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.i8259.c 1.7 05/17/01 18:14:21 cort&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

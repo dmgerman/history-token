@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.cpm_8260.h 1.7 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; * MPC8260 Communication Processor Module.&n; * Copyright (c) 1999 Dan Malek (dmalek@jlc.net)&n; *&n; * This file contains structures and information for the communication&n; * processor channels found in the dual port RAM or parameter RAM.&n; * All CPM control and status is available through the MPC8260 internal&n; * memory map.  See immap.h for details.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __CPM_82XX__

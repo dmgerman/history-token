@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.bitops.c 1.7 05/17/01 18:14:21 cort&n; */
 multiline_comment|/*&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;

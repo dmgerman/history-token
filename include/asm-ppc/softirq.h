@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.softirq.h 1.5 05/17/01 18:14:25 cort&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_SOFTIRQ_H
 DECL|macro|__ASM_SOFTIRQ_H

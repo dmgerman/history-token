@@ -5254,6 +5254,9 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -5273,7 +5276,17 @@ id|PAGE_SIZE
 )paren
 )paren
 )paren
+)paren
+(brace
+id|count
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5329,6 +5342,14 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|page
+(braket
+id|count
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Null terminate */
 )brace
 r_else
 (brace

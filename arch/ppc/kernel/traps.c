@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.traps.c 1.11 05/17/01 18:14:22 cort&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/traps.c&n; *&n; *  Copyright (C) 1995-1996  Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  and Paul Mackerras (paulus@cs.anu.edu.au)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of hardware exceptions&n; */
 macro_line|#include &lt;linux/errno.h&gt;

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.single.h 1.5 05/17/01 18:14:23 cort&n; */
 multiline_comment|/*&n; * Definitions for IEEE Single Precision&n; */
 macro_line|#if _FP_W_TYPE_SIZE &lt; 32
 macro_line|#error &quot;Here&squot;s a nickel kid.  Go buy yourself a real computer.&quot;

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.strcase.c 1.5 05/17/01 18:14:22 cort&n; */
 macro_line|#include &lt;linux/ctype.h&gt;
 DECL|function|strcasecmp
 r_int

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * linux/arch/sh/kernel/setup_ec3104.c&n; *  EC3104 companion chip support&n; *&n; * Copyright (C) 2000 Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *&n; */
 multiline_comment|/* EC3104 note:&n; * This code was written without any documentation about the EC3104 chip.  While&n; * I hope I got most of the basic functionality right, the register names I use&n; * are most likely completely different from those in the chip documentation.&n; *&n; * If you have any further information about the EC3104, please tell me&n; * (prumpf@tux.org).&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;

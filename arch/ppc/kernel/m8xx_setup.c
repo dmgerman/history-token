@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * $Id: m8xx_setup.c,v 1.4 1999/09/18 18:40:36 dmalek Exp $&n; *&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx by Dan.&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.m8xx_setup.c 1.17 05/18/01 07:54:04 patch&n; */
+multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx by Dan.&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -202,9 +203,26 @@ l_int|6
 suffix:semicolon
 multiline_comment|/* Make clock cycles and always round up */
 DECL|macro|PCMCIA_MK_CLKS
-mdefine_line|#define PCMCIA_MK_CLKS( t, T ) (( (t) * (T) + 999U ) / 1000U )
+mdefine_line|#define PCMCIA_MK_CLKS( t, T ) (( (t) * ((T)/1000000) + 999U ) / 1000U )
 macro_line|#endif&t;/* CONFIG_BLK_DEV_MPC8xx_IDE */
 macro_line|#endif&t;/* CONFIG_BLK_DEV_IDE || CONFIG_BLK_DEV_IDE_MODULE */
+macro_line|#ifdef CONFIG_BLK_DEV_RAM
+r_extern
+r_int
+id|rd_doload
+suffix:semicolon
+multiline_comment|/* 1 = load ramdisk, 0 = don&squot;t load */
+r_extern
+r_int
+id|rd_prompt
+suffix:semicolon
+multiline_comment|/* 1 = prompt for ramdisk, 0 = don&squot;t prompt */
+r_extern
+r_int
+id|rd_image_start
+suffix:semicolon
+multiline_comment|/* starting block # of image */
+macro_line|#endif
 r_extern
 r_char
 id|saved_command_line
@@ -471,11 +489,7 @@ suffix:semicolon
 multiline_comment|/* Processor frequency is MHz.&n;&t; * The value &squot;fp&squot; is the number of decrementer ticks per second.&n;&t; */
 id|fp
 op_assign
-(paren
 id|binfo-&gt;bi_intfreq
-op_star
-l_int|1000000
-)paren
 op_div
 l_int|16
 suffix:semicolon
@@ -922,14 +936,16 @@ id|len
 op_plus
 id|buffer
 comma
-l_string|&quot;clock&bslash;t&bslash;t: %ldMHz&bslash;n&quot;
-l_string|&quot;bus clock&bslash;t: %ldMHz&bslash;n&quot;
+l_string|&quot;clock&bslash;t&bslash;t: %dMHz&bslash;n&quot;
+l_string|&quot;bus clock&bslash;t: %dMHz&bslash;n&quot;
 comma
 id|bp-&gt;bi_intfreq
-multiline_comment|/*/ 1000000*/
+op_div
+l_int|1000000
 comma
 id|bp-&gt;bi_busfreq
-multiline_comment|/*/ 1000000*/
+op_div
+l_int|1000000
 )paren
 suffix:semicolon
 r_return
@@ -1082,12 +1098,19 @@ id|ns
 )paren
 suffix:semicolon
 macro_line|#else
-id|ide_insw
+id|_insw_ns
 c_func
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
 (paren
 id|port
 op_plus
 id|_IO_BASE
+)paren
 comma
 id|buf
 comma
@@ -1124,12 +1147,19 @@ id|ns
 )paren
 suffix:semicolon
 macro_line|#else
-id|ide_outsw
+id|_outsw_ns
 c_func
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
 (paren
 id|port
 op_plus
 id|_IO_BASE
+)paren
 comma
 id|buf
 comma
@@ -1170,7 +1200,7 @@ id|irq
 suffix:semicolon
 macro_line|#else
 r_return
-l_int|14
+l_int|9
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -1226,7 +1256,6 @@ op_star
 id|dev_id
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_MPC8xx_IDE
 r_return
 id|request_8xxirq
 c_func
@@ -1242,23 +1271,6 @@ comma
 id|dev_id
 )paren
 suffix:semicolon
-macro_line|#else
-r_return
-id|request_irq
-c_func
-(paren
-id|irq
-comma
-id|handler
-comma
-id|flags
-comma
-id|device
-comma
-id|dev_id
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* We can use an external IDE controller&n; * or wire the IDE interface to the internal PCMCIA controller.&n; *&n; * See include/linux/ide.h for definition of hw_regs_t (p, base)&n; */
 DECL|function|m8xx_ide_init_hwif_ports
@@ -1281,16 +1293,16 @@ op_star
 id|irq
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_MPC8xx_IDE
 id|ide_ioreg_t
 op_star
 id|p
 op_assign
 id|hw-&gt;io_ports
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_MPC8xx_IDE
 r_volatile
 id|pcmconf8xx_t
 op_star
@@ -1303,18 +1315,11 @@ id|pcmcia_base
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#else
-id|ide_ioreg_t
-id|port
-op_assign
-id|data_port
-suffix:semicolon
-multiline_comment|/* ??? XXX ??? XXX */
-macro_line|#endif
 r_int
 r_int
 id|base
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_MPC8xx_IDE
 op_star
 id|p
@@ -1667,42 +1672,48 @@ id|irq
 suffix:semicolon
 macro_line|#else&t;/* ! CONFIG_BLK_DEV_MPC8xx_IDE */
 multiline_comment|/* Just a regular IDE drive on some I/O port.&n;&t;*/
-id|i
-op_assign
-l_int|8
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|i
-op_decrement
-)paren
-op_star
-id|p
-op_increment
-op_assign
-id|port
-op_increment
-suffix:semicolon
-op_star
-id|p
-op_increment
-op_assign
-id|base
-op_plus
-l_int|0x206
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq
-op_ne
-l_int|NULL
-)paren
-op_star
-id|irq
-op_assign
+id|data_port
+op_eq
 l_int|0
+)paren
+r_return
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|IDE_DATA_OFFSET
+suffix:semicolon
+id|i
+op_le
+id|IDE_STATUS_OFFSET
+suffix:semicolon
+op_increment
+id|i
+)paren
+id|hw-&gt;io_ports
+(braket
+id|i
+)braket
+op_assign
+id|data_port
+op_plus
+id|i
+op_minus
+id|IDE_DATA_OFFSET
+suffix:semicolon
+id|hw-&gt;io_ports
+(braket
+id|IDE_CONTROL_OFFSET
+)braket
+op_assign
+id|ctrl_port
+suffix:semicolon
+r_return
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_BLK_DEV_MPC8xx_IDE */
 )brace
@@ -2275,7 +2286,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-id|ppc_md.kbd_sysrq_xlate
+id|ppc_md.ppc_kbd_sysrq_xlate
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.op-common.h 1.5 05/17/01 18:14:23 cort&n; */
 DECL|macro|_FP_DECL
 mdefine_line|#define _FP_DECL(wc, X)&t;&t;&t;&bslash;&n;  _FP_I_TYPE X##_c, X##_s, X##_e;&t;&bslash;&n;  _FP_FRAC_DECL_##wc(X)
 multiline_comment|/*&n; * Finish truely unpacking a native fp value by classifying the kind&n; * of fp value and normalizing both the exponent and the fraction.&n; */

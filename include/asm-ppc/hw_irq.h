@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * $Id: irq_control.h,v 1.8 1999/09/15 23:58:48 cort Exp $&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.hw_irq.h 1.10 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_HW_IRQ_H
 DECL|macro|_PPC_HW_IRQ_H

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.cache.h 1.5 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; * include/asm-ppc/cache.h&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ARCH_PPC_CACHE_H

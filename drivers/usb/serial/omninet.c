@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB ZyXEL omni.net LCD PLUS driver&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * Please report both successes and troubles to the author at omninet@kroah.com&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; *&t;Fixed potential race in omninet_write_bulk_callback&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; */
+multiline_comment|/*&n; * USB ZyXEL omni.net LCD PLUS driver&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * Please report both successes and troubles to the author at omninet@kroah.com&n; * &n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; *&t;Fixed potential race in omninet_write_bulk_callback&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -30,6 +30,13 @@ id|debug
 suffix:semicolon
 macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Anonymous&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB ZyXEL omni.net LCD PLUS Driver&quot;
 DECL|macro|ZYXEL_VENDOR_ID
 mdefine_line|#define ZYXEL_VENDOR_ID&t;&t;0x0586
 DECL|macro|ZYXEL_OMNINET_ID
@@ -1396,6 +1403,20 @@ op_amp
 id|zyxel_omninet_device
 )paren
 suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1428,6 +1449,20 @@ id|module_exit
 c_func
 (paren
 id|omninet_exit
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
+id|MODULE_AUTHOR
+c_func
+(paren
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_DESC
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_PARM

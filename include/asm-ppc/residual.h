@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.residual.h 1.5 05/17/01 18:14:25 cort&n; */
 multiline_comment|/* 7/18/95                                                                    */
 multiline_comment|/*----------------------------------------------------------------------------*/
 multiline_comment|/*      Residual Data header definitions and prototypes                       */

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.est8260.h 1.5 05/17/01 18:14:24 cort&n; */
 multiline_comment|/* Board information for the EST8260, which should be generic for&n; * all 8260 boards.  The IMMR is now given to us so the hard define&n; * will soon be removed.  All of the clock values are computed from&n; * the configuration SCMR and the Power-On-Reset word.&n; */
 DECL|macro|IMAP_ADDR
 mdefine_line|#define IMAP_ADDR&t;((uint)0xf0000000)

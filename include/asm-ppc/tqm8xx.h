@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.tqm8xx.h 1.6 05/17/01 18:14:26 cort&n; */
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * the TQ Systems TQM8xx(L) modules.  This was originally created for the&n; * MBX860, and probably needs revisions for other boards (like the 821).&n; * When this file gets out of control, we can split it up into more&n; * meaningful pieces.&n; *&n; * Based on mbx.h, Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * Copyright (c) 1999,2000 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifndef __MACH_TQM8xx_DEFS
 DECL|macro|__MACH_TQM8xx_DEFS

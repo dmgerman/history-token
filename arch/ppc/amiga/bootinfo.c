@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.bootinfo.c 1.5 05/17/01 18:14:20 cort&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/amiga/bootinfo.c&n; *&n; *  Extracted from arch/m68k/kernel/setup.c.&n; *  Should be properly generalized and put somewhere else.&n; *                              Jesper&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

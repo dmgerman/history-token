@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.string.h 1.5 05/17/01 18:14:26 cort&n; */
 macro_line|#ifndef _PPC_STRING_H_
 DECL|macro|_PPC_STRING_H_
 mdefine_line|#define _PPC_STRING_H_

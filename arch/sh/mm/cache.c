@@ -1,4 +1,5 @@
 multiline_comment|/* $Id: cache.c,v 1.10 2000/03/07 11:58:34 gniibe Exp $&n; *&n; *  linux/arch/sh/mm/cache.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

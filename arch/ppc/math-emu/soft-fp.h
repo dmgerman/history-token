@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.soft-fp.h 1.5 05/17/01 18:14:23 cort&n; */
 macro_line|#ifndef SOFT_FP_H
 DECL|macro|SOFT_FP_H
 mdefine_line|#define SOFT_FP_H

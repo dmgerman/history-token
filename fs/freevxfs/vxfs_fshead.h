@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ifndef _VXFS_FSHEAD_H_
 DECL|macro|_VXFS_FSHEAD_H_
 mdefine_line|#define _VXFS_FSHEAD_H_
-macro_line|#ident &quot;$Id: vxfs_fshead.h,v 1.5 2001/04/24 19:28:36 hch Exp hch $&quot;
+macro_line|#ident &quot;$Id: vxfs_fshead.h,v 1.6 2001/04/25 18:11:23 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - fileset header structures.&n; *&n; * This file contains the physical structure of the VxFS&n; * fileset header.&n; */
 multiline_comment|/*&n; * Fileset header &n; */
 DECL|struct|vxfs_fsh
@@ -13,51 +13,62 @@ DECL|member|fsh_version
 id|u_int32_t
 id|fsh_version
 suffix:semicolon
-multiline_comment|/* Fileset header version */
+multiline_comment|/* fileset header version */
 DECL|member|fsh_fsindex
 id|u_int32_t
 id|fsh_fsindex
 suffix:semicolon
+multiline_comment|/* fileset index */
 DECL|member|fsh_time
 id|u_int32_t
 id|fsh_time
 suffix:semicolon
+multiline_comment|/* modification time - sec */
 DECL|member|fsh_utime
 id|u_int32_t
 id|fsh_utime
 suffix:semicolon
+multiline_comment|/* modification time - usec */
 DECL|member|fsh_extop
 id|u_int32_t
 id|fsh_extop
 suffix:semicolon
+multiline_comment|/* extop flags */
 DECL|member|fsh_ninodes
 id|vx_ino_t
 id|fsh_ninodes
 suffix:semicolon
+multiline_comment|/* allocated inodes */
 DECL|member|fsh_nau
 id|u_int32_t
 id|fsh_nau
 suffix:semicolon
+multiline_comment|/* number of IAUs */
 DECL|member|fsh_old_ilesize
 id|u_int32_t
 id|fsh_old_ilesize
 suffix:semicolon
+multiline_comment|/* old size of ilist */
 DECL|member|fsh_dflags
 id|u_int32_t
 id|fsh_dflags
 suffix:semicolon
+multiline_comment|/* flags */
 DECL|member|fsh_quota
 id|u_int32_t
 id|fsh_quota
 suffix:semicolon
+multiline_comment|/* quota limit */
 DECL|member|fsh_maxinode
 id|vx_ino_t
 id|fsh_maxinode
 suffix:semicolon
+multiline_comment|/* maximum inode number */
 DECL|member|fsh_iauino
 id|vx_ino_t
 id|fsh_iauino
 suffix:semicolon
+multiline_comment|/* IAU inode */
 DECL|member|fsh_ilistino
 id|vx_ino_t
 id|fsh_ilistino
@@ -65,10 +76,12 @@ id|fsh_ilistino
 l_int|2
 )braket
 suffix:semicolon
+multiline_comment|/* ilist inodes */
 DECL|member|fsh_lctino
 id|vx_ino_t
 id|fsh_lctino
 suffix:semicolon
+multiline_comment|/* link count table inode */
 multiline_comment|/*&n;&t; * Slightly more fields follow, but they&n;&t; *  a) are not of any interested for us, and&n;&t; *  b) differ much in different vxfs versions/ports&n;&t; */
 )brace
 suffix:semicolon

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.op-1.h 1.5 05/17/01 18:14:23 cort&n; */
 multiline_comment|/*&n; * Basic one-word fraction declaration and manipulation.&n; */
 DECL|macro|_FP_FRAC_DECL_1
 mdefine_line|#define _FP_FRAC_DECL_1(X)&t;_FP_W_TYPE X##_f

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.oak.h 1.7 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; *&n; *    Copyright (c) 1999 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Module name: oak.h&n; *&n; *    Description:&n; *&t;Macros, definitions, and data structures specific to the IBM PowerPC&n; *      403G{A,B,C,CX} &quot;Oak&quot; evaluation board. Anything specific to the pro-&n; *      cessor itself is defined elsewhere.&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef&t;__OAK_H__

@@ -28,6 +28,13 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;uhci.h&quot;
 macro_line|#include &lt;linux/pm.h&gt;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Linus Torvalds, Johannes Erdfelt, Randy Dunlap, Georg Acher, Deti Fliegl, Thomas Sailer, Roman Weissgaerber&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB Universal Host Controller Interface driver&quot;
 multiline_comment|/*&n; * debug = 0, no debugging messages&n; * debug = 1, dump failed URB&squot;s except for stalls&n; * debug = 2, dump all failed URB&squot;s (including stalls)&n; *            show all queues in /proc/uhci/hc*&n; * debug = 3, show all TD&squot;s in URB&squot;s when dumping&n; */
 macro_line|#ifdef DEBUG
 DECL|variable|debug
@@ -12697,6 +12704,7 @@ id|uhci
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PM
 DECL|function|uhci_pci_suspend
 r_static
 r_void
@@ -12756,6 +12764,7 @@ id|dev-&gt;driver_data
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|variable|uhci_pci_ids
 r_static
 r_const
@@ -12969,6 +12978,20 @@ id|retval
 r_goto
 id|init_failed
 suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -13089,16 +13112,18 @@ c_func
 id|uhci_hcd_cleanup
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Linus Torvalds, Johannes Erdfelt, Randy Dunlap, Georg Acher, Deti Fliegl, Thomas Sailer, Roman Weissgaerber&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;USB Universal Host Controller Interface driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB ConnectTech WhiteHEAT driver&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * 2001_Mar_19 gkh&n; *&t;Fixed MOD_INC and MOD_DEC logic, the ability to open a port more &n; *&t;than once, and the got the proper usb_device_id table entries so&n; *&t;the driver works again.&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (10/03/2000) smd&n; *&t;firmware is improved to guard against crap sent to device&n; *&t;firmware now replies CMD_FAILURE on bad things&n; *&t;read_callback fix you provided for private info struct&n; *&t;command_finished now indicates success or fail&n; *&t;setup_port struct now packed to avoid gcc padding&n; *&t;firmware uses 1 based port numbering, driver now handles that&n; *&n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&t;Fixed bug with port-&gt;minor that was found by Al Borchers&n; *&n; * (07/04/2000) gkh&n; *&t;Added support for port settings. Baud rate can now be changed. Line signals&n; *&t;are not transferred to and from the tty layer yet, but things seem to be &n; *&t;working well now.&n; *&n; * (05/04/2000) gkh&n; *&t;First cut at open and close commands. Data can flow through the ports at&n; *&t;default speeds now.&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
+multiline_comment|/*&n; * USB ConnectTech WhiteHEAT driver&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; * &n; * 2001_Mar_19 gkh&n; *&t;Fixed MOD_INC and MOD_DEC logic, the ability to open a port more &n; *&t;than once, and the got the proper usb_device_id table entries so&n; *&t;the driver works again.&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (10/03/2000) smd&n; *&t;firmware is improved to guard against crap sent to device&n; *&t;firmware now replies CMD_FAILURE on bad things&n; *&t;read_callback fix you provided for private info struct&n; *&t;command_finished now indicates success or fail&n; *&t;setup_port struct now packed to avoid gcc padding&n; *&t;firmware uses 1 based port numbering, driver now handles that&n; *&n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&t;Fixed bug with port-&gt;minor that was found by Al Borchers&n; *&n; * (07/04/2000) gkh&n; *&t;Added support for port settings. Baud rate can now be changed. Line signals&n; *&t;are not transferred to and from the tty layer yet, but things seem to be &n; *&t;working well now.&n; *&n; * (05/04/2000) gkh&n; *&t;First cut at open and close commands. Data can flow through the ports at&n; *&t;default speeds now.&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -32,6 +32,13 @@ macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;whiteheat_fw.h&quot;&t;&t;/* firmware for the ConnectTech WhiteHEAT device */
 macro_line|#include &quot;whiteheat.h&quot;&t;&t;&t;/* WhiteHEAT specific commands */
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB ConnectTech WhiteHEAT driver&quot;
 DECL|macro|CONNECT_TECH_VENDOR_ID
 mdefine_line|#define CONNECT_TECH_VENDOR_ID&t;&t;0x0710
 DECL|macro|CONNECT_TECH_FAKE_WHITE_HEAT_ID
@@ -2258,6 +2265,20 @@ op_amp
 id|whiteheat_device
 )paren
 suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2298,16 +2319,18 @@ c_func
 id|whiteheat_exit
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;USB ConnectTech WhiteHEAT driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_PARM

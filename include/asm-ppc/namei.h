@@ -1,4 +1,5 @@
-multiline_comment|/* $Id: namei.h,v 1.4 1998/10/28 08:13:33 jj Exp $&n; * linux/include/asm-ppc/namei.h&n; * Adapted from linux/include/asm-alpha/namei.h&n; *&n; * Included from linux/fs/namei.c&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.namei.h 1.5 05/17/01 18:14:25 cort&n; */
+multiline_comment|/* linux/include/asm-ppc/namei.h&n; * Adapted from linux/include/asm-alpha/namei.h&n; *&n; * Included from linux/fs/namei.c&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_NAMEI_H
 DECL|macro|__PPC_NAMEI_H

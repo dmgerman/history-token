@@ -326,7 +326,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+(paren
 l_int|4096
+op_minus
+l_int|320
+)paren
 op_div
 l_int|64
 suffix:semicolon
@@ -387,6 +391,72 @@ op_add_assign
 l_int|64
 suffix:semicolon
 )brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+(paren
+l_int|4096
+op_minus
+l_int|320
+)paren
+op_div
+l_int|64
+suffix:semicolon
+id|i
+OL
+l_int|4096
+op_div
+l_int|64
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;2: movq (%0), %%mm0&bslash;n&quot;
+l_string|&quot;   movntq %%mm0, (%1)&bslash;n&quot;
+l_string|&quot;   movq 8(%0), %%mm1&bslash;n&quot;
+l_string|&quot;   movntq %%mm1, 8(%1)&bslash;n&quot;
+l_string|&quot;   movq 16(%0), %%mm2&bslash;n&quot;
+l_string|&quot;   movntq %%mm2, 16(%1)&bslash;n&quot;
+l_string|&quot;   movq 24(%0), %%mm3&bslash;n&quot;
+l_string|&quot;   movntq %%mm3, 24(%1)&bslash;n&quot;
+l_string|&quot;   movq 32(%0), %%mm4&bslash;n&quot;
+l_string|&quot;   movntq %%mm4, 32(%1)&bslash;n&quot;
+l_string|&quot;   movq 40(%0), %%mm5&bslash;n&quot;
+l_string|&quot;   movntq %%mm5, 40(%1)&bslash;n&quot;
+l_string|&quot;   movq 48(%0), %%mm6&bslash;n&quot;
+l_string|&quot;   movntq %%mm6, 48(%1)&bslash;n&quot;
+l_string|&quot;   movq 56(%0), %%mm7&bslash;n&quot;
+l_string|&quot;   movntq %%mm7, 56(%1)&bslash;n&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|from
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|to
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+id|from
+op_add_assign
+l_int|64
+suffix:semicolon
+id|to
+op_add_assign
+l_int|64
+suffix:semicolon
+)brace
 multiline_comment|/* since movntq is weakly-ordered, a &quot;sfence&quot; is needed to become&n;&t; * ordered again.&n;&t; */
 id|__asm__
 id|__volatile__
@@ -418,40 +488,11 @@ id|page
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_USEDFPU
-)paren
-)paren
-id|clts
+id|kernel_fpu_begin
 c_func
 (paren
 )paren
 suffix:semicolon
-r_else
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot; fnsave %0; fwait&bslash;n&quot;
-op_scope_resolution
-l_string|&quot;m&quot;
-(paren
-id|current-&gt;thread.i387
-)paren
-)paren
-suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_USEDFPU
-suffix:semicolon
-)brace
 id|__asm__
 id|__volatile__
 (paren
@@ -511,7 +552,7 @@ op_add_assign
 l_int|128
 suffix:semicolon
 )brace
-id|stts
+id|kernel_fpu_end
 c_func
 (paren
 )paren
@@ -535,40 +576,11 @@ id|from
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_USEDFPU
-)paren
-)paren
-id|clts
+id|kernel_fpu_begin
 c_func
 (paren
 )paren
 suffix:semicolon
-r_else
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot; fnsave %0; fwait&bslash;n&quot;
-op_scope_resolution
-l_string|&quot;m&quot;
-(paren
-id|current-&gt;thread.i387
-)paren
-)paren
-suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_USEDFPU
-suffix:semicolon
-)brace
 id|__asm__
 id|__volatile__
 (paren
@@ -665,7 +677,7 @@ op_add_assign
 l_int|64
 suffix:semicolon
 )brace
-id|stts
+id|kernel_fpu_end
 c_func
 (paren
 )paren

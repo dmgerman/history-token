@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_pic.c 1.14 05/17/01 18:14:21 cort&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

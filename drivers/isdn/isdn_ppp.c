@@ -3806,7 +3806,7 @@ c_func
 (paren
 id|ippp_table
 (braket
-id|i
+id|j
 )braket
 )paren
 suffix:semicolon

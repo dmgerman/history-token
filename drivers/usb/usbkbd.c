@@ -6,16 +6,25 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB HID Boot Protocol keyboard driver&quot;
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;USB HID Boot Protocol keyboard driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 DECL|variable|usb_kbd_keycode
@@ -1841,6 +1850,20 @@ c_func
 (paren
 op_amp
 id|usb_kbd_driver
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 r_return

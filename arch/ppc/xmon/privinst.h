@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.privinst.h 1.5 05/17/01 18:14:23 cort&n; */
 multiline_comment|/*&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|GETREG

@@ -9,20 +9,17 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;pegasus.h&quot;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v0.4.18 2001/03/18 (C) 1999-2000&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;petkan@dce.bg&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;ADMtek AN986 Pegasus USB Ethernet driver&quot;
 DECL|macro|PEGASUS_USE_INTR
 mdefine_line|#define&t;PEGASUS_USE_INTR
 DECL|macro|PEGASUS_WRITE_EEPROM
 mdefine_line|#define&t;PEGASUS_WRITE_EEPROM
-DECL|variable|version
-r_static
-r_const
-r_char
-op_star
-id|version
-op_assign
-id|__FILE__
-l_string|&quot;: v0.4.18 2001/03/18 (C) 1999-2000 Petko Manolov (petkan@dce.bg)&quot;
-suffix:semicolon
 DECL|variable|loopback
 r_static
 r_int
@@ -87,16 +84,18 @@ macro_line|#undef&t;PEGASUS_DEV
 )brace
 )brace
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Petko Manolov &lt;petkan@dce.bg&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;ADMtek AN986 Pegasus USB Ethernet driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -4236,9 +4235,15 @@ r_void
 id|info
 c_func
 (paren
-l_string|&quot;%s&quot;
-comma
-id|version
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 r_return

@@ -469,13 +469,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|get_super
+id|is_mounted
 c_func
 (paren
 id|rdev
 )paren
-op_ne
-l_int|NULL
 )paren
 (brace
 r_if

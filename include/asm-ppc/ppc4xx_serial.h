@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc4xx_serial.h 1.3 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; *    Copyright 2000 MontaVista Software Inc.&n; *&t;PPC405GP modifications&n; * &t;Author: MontaVista Software, Inc.&n; *         &t;frank_rowand@mvista.com or source@mvista.com&n; * &t;   &t;debbie_chu@mvista.com&n; *&n; *    Module name: ppc405_serial.h&n; *&n; *    Description:&n; *      Macros, definitions, and data structures specific to the IBM PowerPC&n; *      405 on-chip serial port devices.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASMPPC_PPC4xx_SERIAL_H

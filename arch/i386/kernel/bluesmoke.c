@@ -802,16 +802,10 @@ l_int|0x0
 )paren
 suffix:semicolon
 )brace
-id|__asm__
-id|__volatile__
+id|set_in_cr4
+c_func
 (paren
-l_string|&quot;movl %%cr4, %%eax&bslash;n&bslash;t&quot;
-l_string|&quot;orl $0x40, %%eax&bslash;n&bslash;t&quot;
-l_string|&quot;movl %%eax, %%cr4&bslash;n&bslash;t&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;eax&quot;
+id|X86_CR4_MCE
 )paren
 suffix:semicolon
 id|printk

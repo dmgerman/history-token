@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.bootx.h 1.5 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; * This file describes the structure passed from the BootX application&n; * (for MacOS) when it is used to boot Linux.&n; *&n; * Written by Benjamin Herrenschmidt.&n; */
 macro_line|#ifndef __ASM_BOOTX_H__
 DECL|macro|__ASM_BOOTX_H__

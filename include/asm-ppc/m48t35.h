@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.m48t35.h 1.5 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; *  Registers for the SGS-Thomson M48T35 Timekeeper RAM chip&n; */
 macro_line|#ifndef __PPC_M48T35_H
 DECL|macro|__PPC_M48T35_H

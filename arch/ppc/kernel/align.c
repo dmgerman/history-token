@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.align.c 1.5 05/17/01 18:14:21 cort&n; */
 multiline_comment|/*&n; * align.c - handle alignment exceptions for the Power PC.&n; *&n; * Copyright (c) 1996 Paul Mackerras &lt;paulus@cs.anu.edu.au&gt;&n; * Copyright (c) 1998-1999 TiVo, Inc.&n; *   PowerPC 403GCX modifications.&n; * Copyright (c) 1999 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *   PowerPC 403GCX/405GP modifications.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

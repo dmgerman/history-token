@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.walnut_setup.c 1.5 05/17/01 18:14:22 cort&n; */
 multiline_comment|/*&n; *&n; *    Copyright (c) 1999-2000 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Module name: walnut_setup.c&n; *&n; *    Description:&n; *      Architecture- / platform-specific boot-time initialization code for&n; *      the IBM PowerPC 403GP &quot;Walnut&quot; evaluation board. Adapted from original&n; *      code by Gary Thomas, Cort Dougan &lt;cort@fsmlabs.com&gt;, and Dan Malek&n; *      &lt;dan@net4x.com&gt;.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

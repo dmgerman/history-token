@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.oak_setup.h 1.5 05/17/01 18:14:21 cort&n; */
 multiline_comment|/*&n; *&n; *    Copyright (c) 1999-2000 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Module name: oak_setup.h&n; *&n; *    Description:&n; *      Architecture- / platform-specific boot-time initialization code for&n; *      the IBM PowerPC 403GCX &quot;Oak&quot; evaluation board. Adapted from original&n; *      code by Gary Thomas, Cort Dougan &lt;cort@cs.nmt.edu&gt;, and Dan Malek&n; *      &lt;dan@netx4.com&gt;.&n; *&n; */
 macro_line|#ifndef&t;__OAK_SETUP_H__
 DECL|macro|__OAK_SETUP_H__

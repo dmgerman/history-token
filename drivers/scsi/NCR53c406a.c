@@ -1822,6 +1822,17 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|release_region
+c_func
+(paren
+id|ports
+(braket
+id|i
+)braket
+comma
+l_int|0x10
+)paren
+suffix:semicolon
 )brace
 )brace
 )brace

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&t;$Id: mach_dc.c,v 1.1 2001/04/01 15:02:00 yaegashi Exp $&n; *&t;SEGA Dreamcast machine vector&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/machvec_init.h&gt;

@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * Phase5 CybervisionPPC (TVP4020) definitions for the Permedia2 framebuffer&n; * driver.&n; *&n; * Copyright (c) 1998-1999 Ilario Nardinocchi (nardinoc@CS.UniBO.IT)&n; * --------------------------------------------------------------------------&n; * $Id: cvisionppc.h,v 1.9 1999/03/12 09:45:06 illo Exp $&n; * --------------------------------------------------------------------------&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file README.legal in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.apus_pci.h 1.4 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * Phase5 CybervisionPPC (TVP4020) definitions for the Permedia2 framebuffer&n; * driver.&n; *&n; * Copyright (c) 1998-1999 Ilario Nardinocchi (nardinoc@CS.UniBO.IT)&n; * --------------------------------------------------------------------------&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file README.legal in the main directory of this archive&n; * for more details.&n; */
 macro_line|#ifndef APUS_PCI_H
 DECL|macro|APUS_PCI_H
 mdefine_line|#define APUS_PCI_H

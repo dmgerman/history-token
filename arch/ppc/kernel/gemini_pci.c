@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.gemini_pci.c 1.5 05/17/01 18:14:21 cort&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

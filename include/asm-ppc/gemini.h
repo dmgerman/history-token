@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.gemini.h 1.5 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; *  include/asm-ppc/gemini.h&n; *&n; *&n; *  Onboard registers and descriptions for Synergy Microsystems&squot; &n; *  &quot;Gemini&quot; boards.&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_GEMINI_H

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.heathrow.h 1.7 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; * heathrow.h: definitions for using the &quot;Heathrow&quot; I/O controller chip.&n; *&n; * Grabbed from Open Firmware definitions on a PowerBook G3 Series&n; *&n; * Copyright (C) 1997 Paul Mackerras.&n; */
 multiline_comment|/* Front light color on Yikes/B&amp;W G3. 32 bits */
 DECL|macro|HEATHROW_FRONT_LIGHT

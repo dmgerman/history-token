@@ -768,7 +768,7 @@ id|hwc_tty_init
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_3215
+macro_line|#if defined(CONFIG_3215_CONSOLE) || defined(CONFIG_3270_CONSOLE)
 r_if
 c_cond
 (paren

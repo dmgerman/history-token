@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.sigcontext.h 1.5 05/17/01 18:14:25 cort&n; */
 macro_line|#ifndef _ASM_PPC_SIGCONTEXT_H
 DECL|macro|_ASM_PPC_SIGCONTEXT_H
 mdefine_line|#define _ASM_PPC_SIGCONTEXT_H

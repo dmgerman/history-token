@@ -14,6 +14,13 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;rio500_usb.h&quot;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Cesar Miquel &lt;miquel@df.uba.ar&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB Rio 500 driver&quot;
 DECL|macro|RIO_MINOR
 mdefine_line|#define RIO_MINOR   64
 multiline_comment|/* stall/wait timeout for rio */
@@ -2003,7 +2010,15 @@ suffix:semicolon
 id|info
 c_func
 (paren
-l_string|&quot;USB Rio support registered.&quot;
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 r_return
@@ -2052,16 +2067,18 @@ c_func
 id|usb_rio_cleanup
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Cesar Miquel &lt;miquel@df.uba.ar&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;USB Rio 500 driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 eof

@@ -3214,6 +3214,9 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -3223,7 +3226,17 @@ id|buffer
 comma
 id|count
 )paren
+)paren
+(brace
+id|count
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

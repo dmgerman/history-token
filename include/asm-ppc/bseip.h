@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.bseip.h 1.7 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * the Bright Star Engineering ip-Engine board.  Copied from the MBX stuff.&n; *&n; * Copyright (c) 1998 Dan Malek (dmalek@jlc.net)&n; */
 macro_line|#ifndef __MACH_BSEIP_DEFS
 DECL|macro|__MACH_BSEIP_DEFS

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.commproc.c 1.8 05/18/01 07:54:04 patch&n; */
 multiline_comment|/*&n; * General Purpose functions for the global management of the&n; * Communication Processor Module.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * In addition to the individual control of the communication&n; * channels, there are a few functions that globally affect the&n; * communication processor.&n; *&n; * Buffer descriptors must be allocated from the dual ported memory&n; * space.  The allocator for that is here.  When the communication&n; * process is reset, we reclaim the memory available.  There is&n; * currently no deallocator for this memory.&n; * The amount of space available is platform dependent.  On the&n; * MBX, the EPPC software loads additional microcode into the&n; * communication processor, and uses some of the DP ram for this&n; * purpose.  Current, the first 512 bytes and the last 256 bytes of&n; * memory are used.  Right now I am conservative and only use the&n; * memory that can never be used for microcode.  If there are&n; * applications that require more DP ram, we can expand the boundaries&n; * but then we have to be careful of any downloaded microcode.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -676,7 +677,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Set a baud rate generator.  This needs lots of work.  There are&n; * four BRGs, any of which can be wired to any channel.&n; * The internal baud rate clock is the system clock divided by 16.&n; * This assumes the baudrate is 16x oversampled by the uart.&n; */
 DECL|macro|BRG_INT_CLK
-mdefine_line|#define BRG_INT_CLK&t;&t;(((bd_t *)__res)-&gt;bi_intfreq * 1000000)
+mdefine_line|#define BRG_INT_CLK&t;&t;(((bd_t *)__res)-&gt;bi_intfreq)
 DECL|macro|BRG_UART_CLK
 mdefine_line|#define BRG_UART_CLK&t;&t;(BRG_INT_CLK/16)
 DECL|macro|BRG_UART_CLK_DIV16

@@ -2,9 +2,9 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ifndef _VXFS_DIR_H_
 DECL|macro|_VXFS_DIR_H_
 mdefine_line|#define _VXFS_DIR_H_
-macro_line|#ident &quot;$Id: vxfs_dir.h,v 1.4 2001/04/24 19:28:36 hch Exp hch $&quot;
+macro_line|#ident &quot;$Id: vxfs_dir.h,v 1.7 2001/05/21 15:48:26 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - directory structure.&n; *&n; * This file contains the definition of the vxfs directory format.&n; */
-multiline_comment|/*&n; * VxFS directory block header.&n; */
+multiline_comment|/*&n; * VxFS directory block header.&n; *&n; * This entry is the head of every filesystem block in a directory.&n; * It is used for free space managment and additionally includes&n; * a hash for speeding up directory search (lookup).&n; *&n; * The hash may be empty and in fact we do not use it all in the&n; * Linux driver for now.&n; */
 DECL|struct|vxfs_dirblk
 r_struct
 id|vxfs_dirblk
@@ -13,10 +13,12 @@ DECL|member|d_free
 id|u_int16_t
 id|d_free
 suffix:semicolon
+multiline_comment|/* free space in dirblock */
 DECL|member|d_nhash
 id|u_int16_t
 id|d_nhash
 suffix:semicolon
+multiline_comment|/* no of hash chains */
 DECL|member|d_hash
 id|u_int16_t
 id|d_hash
@@ -24,26 +26,13 @@ id|d_hash
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* hash chain */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Special dirblk for immed inodes:  no hash.&n; */
-DECL|struct|vxfs_immed_dirblk
-r_struct
-id|vxfs_immed_dirblk
-(brace
-DECL|member|d_free
-id|u_int16_t
-id|d_free
-suffix:semicolon
-DECL|member|d_nhash
-id|u_int16_t
-id|d_nhash
-suffix:semicolon
-)brace
-suffix:semicolon
+multiline_comment|/*&n; * VXFS_NAMELEN is the maximum length of the d_name field&n; *&t;of an VxFS directory entry.&n; */
+DECL|macro|VXFS_NAMELEN
+mdefine_line|#define VXFS_NAMELEN&t;256
 multiline_comment|/*&n; * VxFS directory entry.&n; */
-DECL|macro|VXFS_NAME_LEN
-mdefine_line|#define VXFS_NAME_LEN&t;256
 DECL|struct|vxfs_direct
 r_struct
 id|vxfs_direct
@@ -52,26 +41,43 @@ DECL|member|d_ino
 id|vx_ino_t
 id|d_ino
 suffix:semicolon
+multiline_comment|/* inode number */
 DECL|member|d_reclen
 id|u_int16_t
 id|d_reclen
 suffix:semicolon
+multiline_comment|/* record length */
 DECL|member|d_namelen
 id|u_int16_t
 id|d_namelen
 suffix:semicolon
+multiline_comment|/* d_name length */
 DECL|member|d_hashnext
 id|u_int16_t
 id|d_hashnext
 suffix:semicolon
+multiline_comment|/* next hash entry */
 DECL|member|d_name
 r_char
 id|d_name
 (braket
-id|VXFS_NAME_LEN
+id|VXFS_NAMELEN
 )braket
 suffix:semicolon
+multiline_comment|/* name */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * VXFS_DIRPAD defines the directory entry boundaries, is _must_ be&n; *&t;a multiple of four.&n; * VXFS_NAMEMIN is the length of a directory entry with a NULL d_name.&n; * VXFS_DIRROUND is an internal macros that rounds a length to a value&n; *&t;usable for directory sizes.&n; * VXFS_DIRLEN calculates the directory entry size for an entry with&n; *&t;a d_name with size len.&n; */
+DECL|macro|VXFS_DIRPAD
+mdefine_line|#define VXFS_DIRPAD&t;&t;4
+DECL|macro|VXFS_NAMEMIN
+mdefine_line|#define VXFS_NAMEMIN&t;&t;((int)((struct vxfs_direct *)0)-&gt;d_name)
+DECL|macro|VXFS_DIRROUND
+mdefine_line|#define VXFS_DIRROUND(len)&t;((VXFS_DIRPAD + (len) - 1) &amp; ~(VXFS_DIRPAD -1))
+DECL|macro|VXFS_DIRLEN
+mdefine_line|#define VXFS_DIRLEN(len)&t;(VXFS_DIRROUND(VXFS_NAMEMIN + (len)))
+multiline_comment|/*&n; * VXFS_DIRBLKOV is the overhead of a specific dirblock.&n; */
+DECL|macro|VXFS_DIRBLKOV
+mdefine_line|#define VXFS_DIRBLKOV(dbp)&t;((sizeof(short) * dbp-&gt;d_nhash) + 4)
 macro_line|#endif /* _VXFS_DIR_H_ */
 eof

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.31 05/18/01 08:18:10 patch&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -315,29 +316,6 @@ id|kernel_flag
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
-macro_line|#if !defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_8xx)
-DECL|variable|isa_io_base
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|isa_io_base
-)paren
-suffix:semicolon
-DECL|variable|isa_mem_base
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|isa_mem_base
-)paren
-suffix:semicolon
-DECL|variable|pci_dram_offset
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|pci_dram_offset
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|ISA_DMA_THRESHOLD
 id|EXPORT_SYMBOL
 c_func
@@ -359,7 +337,6 @@ c_func
 id|DMA_MODE_WRITE
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_8xx
 macro_line|#if defined(CONFIG_ALL_PPC)
 DECL|variable|_prep_type
 id|EXPORT_SYMBOL
@@ -375,7 +352,6 @@ c_func
 id|ucSystemType
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#if !__INLINE_BITOPS
 DECL|variable|set_bit
@@ -713,6 +689,27 @@ id|chrp_ide_probe
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
+DECL|variable|isa_io_base
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|isa_io_base
+)paren
+suffix:semicolon
+DECL|variable|isa_mem_base
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|isa_mem_base
+)paren
+suffix:semicolon
+DECL|variable|pci_dram_offset
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|pci_dram_offset
+)paren
+suffix:semicolon
 DECL|variable|pci_alloc_consistent
 id|EXPORT_SYMBOL
 c_func
@@ -930,15 +927,6 @@ id|synchronize_irq
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef CONFIG_MACH_SPECIFIC
-DECL|variable|_machine
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_machine
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|ppc_md
 id|EXPORT_SYMBOL
 c_func
@@ -1082,7 +1070,14 @@ id|register_backlight_controller
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
-macro_line|#ifndef CONFIG_MACH_SPECIFIC
+macro_line|#if defined(CONFIG_ALL_PPC)
+DECL|variable|_machine
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_machine
+)paren
+suffix:semicolon
 DECL|variable|have_of
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -1090,8 +1085,6 @@ c_func
 id|have_of
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_MACH_SPECIFIC */
-macro_line|#if defined(CONFIG_ALL_PPC)
 DECL|variable|sys_ctrler
 id|EXPORT_SYMBOL_NOVERS
 c_func

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.pgalloc.h 1.9 05/17/01 18:14:25 cort&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_PGALLOC_H
 DECL|macro|_PPC_PGALLOC_H

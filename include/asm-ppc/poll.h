@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.poll.h 1.5 05/17/01 18:14:25 cort&n; */
 macro_line|#ifndef __PPC_POLL_H
 DECL|macro|__PPC_POLL_H
 mdefine_line|#define __PPC_POLL_H

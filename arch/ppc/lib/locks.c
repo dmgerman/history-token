@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * $Id: locks.c,v 1.25 1999/09/10 10:40:13 davem Exp $&n; *&n; * Locks for smp ppc &n; * &n; * Written by Cort Dougan (cort@cs.nmt.edu)&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.locks.c 1.8 05/17/01 18:14:22 cort&n; */
+multiline_comment|/*&n; * Locks for smp ppc &n; * &n; * Written by Cort Dougan (cort@cs.nmt.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;

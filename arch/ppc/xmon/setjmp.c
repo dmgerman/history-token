@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.setjmp.c 1.5 05/17/01 18:14:23 cort&n; */
 multiline_comment|/*&n; * Copyright (C) 1996 Paul Mackerras.&n; *&n; * NB this file must be compiled with -O2.&n; */
 r_int
 DECL|function|xmon_setjmp

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.types.c 1.5 05/17/01 18:14:23 cort&n; */
 macro_line|#include &quot;soft-fp.h&quot;
 macro_line|#include &quot;double.h&quot;
 macro_line|#include &quot;single.h&quot;

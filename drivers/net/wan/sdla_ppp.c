@@ -21,7 +21,6 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;net/route.h&gt;          /* Adding new route entries : 2.0.X kernels */
 macro_line|#endif
 macro_line|#include &lt;linux/if.h&gt;
-macro_line|#include &lt;linux/wanpipe.h&gt;
 macro_line|#include &lt;linux/sdla_ppp.h&gt;&t;&t;/* PPP firmware API definitions */
 macro_line|#include &lt;linux/sdlasfm.h&gt;&t;&t;/* S514 Type Definition */
 multiline_comment|/****** Defines &amp; Macros ****************************************************/

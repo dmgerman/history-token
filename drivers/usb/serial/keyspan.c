@@ -1,4 +1,4 @@
-multiline_comment|/*&n;  Keyspan USB to Serial Converter driver&n; &n;  (C) Copyright (C) 2000&n;      Hugh Blemings &lt;hugh@linuxcare.com&gt;&n;   &n;  This program is free software; you can redistribute it and/or modify&n;  it under the terms of the GNU General Public License as published by&n;  the Free Software Foundation; either version 2 of the License, or&n;  (at your option) any later version.&n;&n;  See http://www.linuxcare.com.au/hugh/keyspan.html for more&n;  information on this driver.&n;  &n;  Code in this driver inspired by and in a number of places taken&n;  from Brian Warner&squot;s original Keyspan-PDA driver.&n;&n;  This driver has been put together with the support of Innosys, Inc.&n;  and Keyspan, Inc the manufacturers of the Keyspan USB-serial products.&n;  Thanks Guys :)&n;  &n;  Thanks to Paulus for miscellaneous tidy ups, some largish chunks&n;  of much nicer and/or completely new code and (perhaps most uniquely)&n;  having the patience to sit down and explain why and where he&squot;d changed&n;  stuff. &n;  &n;  Tip &squot;o the hat to Linuxcare for supporting staff in their work on&n;  open source projects.&n;&n;  Change History&n;   (11/01/2000) Adam J. Richter&n;&t;usb_device_id table support.&n;   &n;    Tue Oct 10 23:15:33 EST 2000 Hugh&n;      Merged Paul&squot;s changes with my USA-49W mods.  Work in progress&n;      still...&n;  &n;    Wed Jul 19 14:00:42 EST 2000 gkh&n;      Added module_init and module_exit functions to handle the fact that&n;      this driver is a loadable module now.&n; &n;    Tue Jul 18 16:14:52 EST 2000 Hugh&n;      Basic character input/output for USA-19 now mostly works,&n;      fixed at 9600 baud for the moment.&n;&n;    Sat Jul  8 11:11:48 EST 2000 Hugh&n;      First public release - nothing works except the firmware upload.&n;      Tested on PPC and x86 architectures, seems to behave...&n;*/
+multiline_comment|/*&n;  Keyspan USB to Serial Converter driver&n; &n;  (C) Copyright (C) 2000&n;      Hugh Blemings &lt;hugh@linuxcare.com&gt;&n;   &n;  This program is free software; you can redistribute it and/or modify&n;  it under the terms of the GNU General Public License as published by&n;  the Free Software Foundation; either version 2 of the License, or&n;  (at your option) any later version.&n;&n;  See http://www.linuxcare.com.au/hugh/keyspan.html for more&n;  information on this driver.&n;  &n;  Code in this driver inspired by and in a number of places taken&n;  from Brian Warner&squot;s original Keyspan-PDA driver.&n;&n;  This driver has been put together with the support of Innosys, Inc.&n;  and Keyspan, Inc the manufacturers of the Keyspan USB-serial products.&n;  Thanks Guys :)&n;  &n;  Thanks to Paulus for miscellaneous tidy ups, some largish chunks&n;  of much nicer and/or completely new code and (perhaps most uniquely)&n;  having the patience to sit down and explain why and where he&squot;d changed&n;  stuff. &n;  &n;  Tip &squot;o the hat to Linuxcare for supporting staff in their work on&n;  open source projects.&n;&n;  Change History&n;   (04/08/2001) gb&n;&t;Identify version on module load.&n;   &n;   (11/01/2000) Adam J. Richter&n;&t;usb_device_id table support.&n;   &n;    Tue Oct 10 23:15:33 EST 2000 Hugh&n;      Merged Paul&squot;s changes with my USA-49W mods.  Work in progress&n;      still...&n;  &n;    Wed Jul 19 14:00:42 EST 2000 gkh&n;      Added module_init and module_exit functions to handle the fact that&n;      this driver is a loadable module now.&n; &n;    Tue Jul 18 16:14:52 EST 2000 Hugh&n;      Basic character input/output for USA-19 now mostly works,&n;      fixed at 9600 baud for the moment.&n;&n;    Sat Jul  8 11:11:48 EST 2000 Hugh&n;      First public release - nothing works except the firmware upload.&n;      Tested on PPC and x86 architectures, seems to behave...&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -31,6 +31,13 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;keyspan.h&quot;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Hugh Blemings &lt;hugh@linuxcare.com&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;Keyspan USB to Serial Converter Driver&quot;
 DECL|macro|INSTAT_BUFLEN
 mdefine_line|#define INSTAT_BUFLEN&t;32
 DECL|macro|GLOCONT_BUFLEN
@@ -329,6 +336,20 @@ id|usb_serial_register
 (paren
 op_amp
 id|keyspan_usa49w_device
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 r_return
@@ -6994,6 +7015,20 @@ r_private
 suffix:semicolon
 )brace
 )brace
+DECL|variable|DRIVER_AUTHOR
+id|MODULE_AUTHOR
+c_func
+(paren
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_DESC
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren

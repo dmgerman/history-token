@@ -2526,6 +2526,14 @@ l_int|7
 )paren
 r_break
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|qbase
+comma
+l_int|0x10
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.time.c 1.5 05/17/01 18:14:20 cort&n; */
 macro_line|#include &lt;linux/config.h&gt; /* CONFIG_HEARTBEAT */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

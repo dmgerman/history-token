@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Keyspan PDA Converter driver&n; *&n; * Copyright (c) 1999, 2000 Greg Kroah-Hartman&t;&lt;greg@kroah.com&gt;&n; * Copyright (c) 1999, 2000 Brian Warner&t;&lt;warner@lothar.com&gt;&n; * Copyright (c) 2000 Al Borchers&t;&t;&lt;borchers@steinerpoint.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; * &n; * (07/20/2000) borchers&n; *&t;- keyspan_pda_write no longer sleeps if it is called on interrupt time;&n; *&t;  PPP and the line discipline with stty echo on can call write on&n; *&t;  interrupt time and this would cause an oops if write slept&n; *&t;- if keyspan_pda_write is in an interrupt, it will not call&n; *&t;  usb_control_msg (which sleeps) to query the room in the device&n; *&t;  buffer, it simply uses the current room value it has&n; *&t;- if the urb is busy or if it is throttled keyspan_pda_write just&n; *&t;  returns 0, rather than sleeping to wait for this to change; the&n; *&t;  write_chan code in n_tty.c will sleep if needed before calling&n; *&t;  keyspan_pda_write again&n; *&t;- if the device needs to be unthrottled, write now queues up the&n; *&t;  call to usb_control_msg (which sleeps) to unthrottle the device&n; *&t;- the wakeups from keyspan_pda_write_bulk_callback are queued rather&n; *&t;  than done directly from the callback to avoid the race in write_chan&n; *&t;- keyspan_pda_chars_in_buffer also indicates its buffer is full if the&n; *&t;  urb status is -EINPROGRESS, meaning it cannot write at the moment&n; *      &n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
+multiline_comment|/*&n; * USB Keyspan PDA Converter driver&n; *&n; * Copyright (c) 1999, 2000 Greg Kroah-Hartman&t;&lt;greg@kroah.com&gt;&n; * Copyright (c) 1999, 2000 Brian Warner&t;&lt;warner@lothar.com&gt;&n; * Copyright (c) 2000 Al Borchers&t;&t;&lt;borchers@steinerpoint.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; * &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; * &n; * (07/20/2000) borchers&n; *&t;- keyspan_pda_write no longer sleeps if it is called on interrupt time;&n; *&t;  PPP and the line discipline with stty echo on can call write on&n; *&t;  interrupt time and this would cause an oops if write slept&n; *&t;- if keyspan_pda_write is in an interrupt, it will not call&n; *&t;  usb_control_msg (which sleeps) to query the room in the device&n; *&t;  buffer, it simply uses the current room value it has&n; *&t;- if the urb is busy or if it is throttled keyspan_pda_write just&n; *&t;  returns 0, rather than sleeping to wait for this to change; the&n; *&t;  write_chan code in n_tty.c will sleep if needed before calling&n; *&t;  keyspan_pda_write again&n; *&t;- if the device needs to be unthrottled, write now queues up the&n; *&t;  call to usb_control_msg (which sleeps) to unthrottle the device&n; *&t;- the wakeups from keyspan_pda_write_bulk_callback are queued rather&n; *&t;  than done directly from the callback to avoid the race in write_chan&n; *&t;- keyspan_pda_chars_in_buffer also indicates its buffer is full if the&n; *&t;  urb status is -EINPROGRESS, meaning it cannot write at the moment&n; *      &n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -53,6 +53,13 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#include &quot;keyspan_pda_fw.h&quot;
 macro_line|#include &quot;usb-serial.h&quot;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Brian Warner &lt;warner@lothar.com&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB Keyspan PDA Converter driver&quot;
 DECL|struct|keyspan_pda_private
 r_struct
 id|keyspan_pda_private
@@ -3182,6 +3189,20 @@ op_amp
 id|keyspan_pda_device
 )paren
 suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3222,16 +3243,18 @@ c_func
 id|keyspan_pda_exit
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Brian Warner &lt;warner@lothar.com&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;USB Keyspan PDA Converter driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_PARM

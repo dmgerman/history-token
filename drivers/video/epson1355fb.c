@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * linux/drivers/video/epson1355fb.c&n; *&t;-- Support for the Epson SED1355 LCD/CRT controller&n; *&n; * Copyright (C) 2000 Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *&n; * based on linux/drivers/video/skeletonfb.c, which was&n; *  Created 28 Dec 1997 by Geert Uytterhoeven&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 multiline_comment|/* TODO (roughly in order of priority):&n; * 16 bpp support&n; * crt support&n; * hw cursor support&n; * SwivelView&n; */
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;

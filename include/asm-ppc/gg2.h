@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.gg2.h 1.5 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; *  asm-ppc/gg2.h -- VLSI VAS96011/12 `Golden Gate 2&squot; register definitions&n; *&n; *  Copyright (C) 1997 Geert Uytterhoeven&n; *&n; *  This file is based on the following documentation:&n; *&n; *&t;The VAS96011/12 Chipset, Data Book, Edition 1.0&n; *&t;VLSI Technology, Inc.&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; */
 macro_line|#ifndef _ASMPPC_GG2_H
 DECL|macro|_ASMPPC_GG2_H

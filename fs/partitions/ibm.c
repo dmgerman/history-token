@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * File...........: linux/fs/partitions/ibm.c      &n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Volker Sameske &lt;sameske@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n;&n; * History of changes (starts July 2000)&n; * 07/10/00 Fixed detection of CMS formatted disks     &n; * 02/13/00 VTOC partition support added&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;

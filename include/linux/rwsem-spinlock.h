@@ -3,7 +3,7 @@ macro_line|#ifndef _LINUX_RWSEM_SPINLOCK_H
 DECL|macro|_LINUX_RWSEM_SPINLOCK_H
 mdefine_line|#define _LINUX_RWSEM_SPINLOCK_H
 macro_line|#ifndef _LINUX_RWSEM_H
-macro_line|#error please dont include asm/rwsem-spinlock.h directly, use linux/rwsem.h instead
+macro_line|#error please dont include linux/rwsem-spinlock.h directly, use linux/rwsem.h instead
 macro_line|#endif
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;

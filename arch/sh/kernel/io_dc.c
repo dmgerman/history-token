@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *&t;$Id: io_dc.c,v 1.1 2001/04/01 15:02:00 yaegashi Exp $&n; *&t;I/O routines for SEGA Dreamcast&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 DECL|function|dreamcast_isa_port2addr

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.init.h 1.5 05/17/01 18:14:24 cort&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_INIT_H
 DECL|macro|_PPC_INIT_H

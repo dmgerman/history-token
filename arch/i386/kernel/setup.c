@@ -6758,7 +6758,7 @@ c_func
 l_string|&quot;If you have one of these please email davej@suse.de&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Unhide possibly hidden capability flags&n;&t;   The mp6 iDragon family don&squot;t have MSRs.&n;&t;   We switch on extra features with this cpuid wierdness: */
+multiline_comment|/* Unhide possibly hidden capability flags&n;&t;   The mp6 iDragon family don&squot;t have MSRs.&n;&t;   We switch on extra features with this cpuid weirdness: */
 id|__asm__
 (paren
 l_string|&quot;movl $0x6363452a, %%eax&bslash;n&bslash;t&quot;
@@ -9263,7 +9263,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;CPU: After generic, caps: %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;CPU:     After generic, caps: %08x %08x %08x %08x&bslash;n&quot;
 comma
 id|c-&gt;x86_capability
 (braket
@@ -9326,7 +9326,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;CPU: Common caps: %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;CPU:             Common caps: %08x %08x %08x %08x&bslash;n&quot;
 comma
 id|boot_cpu_data.x86_capability
 (braket

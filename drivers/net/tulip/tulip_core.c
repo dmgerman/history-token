@@ -6,6 +6,7 @@ DECL|macro|DRV_VERSION
 mdefine_line|#define DRV_VERSION&t;&quot;0.9.15-pre2&quot;
 DECL|macro|DRV_RELDATE
 mdefine_line|#define DRV_RELDATE&t;&quot;May 16, 2001&quot;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;tulip.h&quot;
 macro_line|#include &lt;linux/pci.h&gt;

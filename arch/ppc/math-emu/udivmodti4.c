@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.udivmodti4.c 1.5 05/17/01 18:14:23 cort&n; */
 multiline_comment|/* This has so very few changes over libgcc2&squot;s __udivmoddi4 it isn&squot;t funny.  */
 macro_line|#include &quot;soft-fp.h&quot;
 DECL|macro|count_leading_zeros

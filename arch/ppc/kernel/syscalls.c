@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.syscalls.c 1.8 05/17/01 18:14:22 cort&n; */
 multiline_comment|/*&n; * linux/arch/ppc/kernel/sys_ppc.c&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; * Derived from &quot;arch/i386/kernel/sys_i386.c&quot;&n; * Adapted from the i386 version by Gary Thomas&n; * Modified by Cort Dougan (cort@cs.nmt.edu)&n; * and Paul Mackerras (paulus@cs.anu.edu.au).&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on the Linux/PPC&n; * platform.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

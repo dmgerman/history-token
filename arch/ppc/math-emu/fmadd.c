@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fmadd.c,v 1.1 1999/08/23 18:59:36 cort Exp $&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.fmadd.c 1.6 05/17/01 18:14:22 cort&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

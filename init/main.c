@@ -146,14 +146,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|bdev_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|init_pcmcia_ds
 c_func
@@ -2361,17 +2353,6 @@ macro_line|#endif
 id|signals_init
 c_func
 (paren
-)paren
-suffix:semicolon
-id|bdev_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|inode_init
-c_func
-(paren
-id|mempages
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS

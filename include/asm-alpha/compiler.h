@@ -43,5 +43,10 @@ mdefine_line|#define __kernel_stb(val,mem) &bslash;&n;  __asm__(&quot;stb %1,%0&
 DECL|macro|__kernel_stw
 mdefine_line|#define __kernel_stw(val,mem) &bslash;&n;  __asm__(&quot;stw %1,%0&quot; : &quot;=m&quot;(mem) : &quot;r&quot;(val))
 macro_line|#endif
+multiline_comment|/* Somewhere in the middle of the GCC 2.96 development cycle, we implemented&n;   a mechanism by which the user can annotate likely branch directions and&n;   expect the blocks to be reordered appropriately.  Define __builtin_expect&n;   to nothing for earlier compilers.  */
+macro_line|#if __GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ &lt; 96
+DECL|macro|__builtin_expect
+mdefine_line|#define __builtin_expect(x, expected_value) (x)
+macro_line|#endif
 macro_line|#endif /* __ALPHA_COMPILER_H */
 eof

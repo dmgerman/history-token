@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.stat.h 1.5 05/17/01 18:14:26 cort&n; */
 macro_line|#ifndef _PPC_STAT_H
 DECL|macro|_PPC_STAT_H
 mdefine_line|#define _PPC_STAT_H

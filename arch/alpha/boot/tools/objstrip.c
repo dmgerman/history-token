@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * arch/alpha/boot/tools/objstrip.c&n; *&n; * Strip the object file headers/trailers from an executable (ELF or ECOFF).&n; *&n; * Copyright (C) 1996 David Mosberger-Tang.&n; */
 multiline_comment|/*&n; * Converts an ECOFF or ELF object file into a bootable file.  The&n; * object file must be a OMAGIC file (i.e., data and bss follow immediatly&n; * behind the text).  See DEC &quot;Assembly Language Programmer&squot;s Guide&quot;&n; * documentation for details.  The SRM boot process is documented in&n; * the Alpha AXP Architecture Reference Manual, Second Edition by&n; * Richard L. Sites and Richard T. Witek.&n; */
 macro_line|#include &lt;stdio.h&gt;
+macro_line|#include &lt;string.h&gt;
+macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;sys/fcntl.h&gt;
 macro_line|#include &lt;sys/stat.h&gt;

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.error_log.h 1.5 05/17/01 18:14:21 cort&n; */
 macro_line|#ifndef __ERROR_LOG_H__
 DECL|macro|__ERROR_LOG_H__
 mdefine_line|#define __ERROR_LOG_H__

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.fec.c 1.12 05/18/01 07:54:04 patch&n; */
 multiline_comment|/*&n; * Fast Ethernet Controller (FEC) driver for Motorola MPC8xx.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * This version of the driver is specific to the FADS implementation,&n; * since the board contains control registers external to the processor&n; * for the control of the LevelOne LXT970 transceiver.  The MPC860T manual&n; * describes connections using the internal parallel port I/O, which&n; * is basically all of Port D.&n; *&n; * Includes support for the following PHYs: QS6612, LXT970, LXT971/2.&n; *&n; * Right now, I am very wasteful with the buffers.  I allocate memory&n; * pages and then divide them into 2K frame buffers.  This way I know I&n; * have buffers large enough to hold one frame within one buffer descriptor.&n; * Once I get this working, I will use 64 or 128 byte CPM buffers, which&n; * will be much more memory efficient and will easily handle lots of&n; * small packets.&n; *&n; * Much better multiple PHY support by Magnus Damm.&n; * Copyright (c) 2000 Ericsson Radio Systems AB.&n; *&n; * Make use of MII for PHY control configurable.&n; * Some fixes.&n; * Copyright (c) 2000 Wolfgang Denk, DENX Software Engineering.&n; */
 multiline_comment|/* List of PHYs we wish to support.&n;*/
 DECL|macro|CONFIG_FEC_LXT970
@@ -5860,11 +5861,7 @@ op_assign
 (paren
 (paren
 (paren
-(paren
 id|bd-&gt;bi_intfreq
-op_star
-l_int|1000000
-)paren
 op_plus
 l_int|500000
 )paren

@@ -4180,7 +4180,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif CONFIG_NET_FC
+macro_line|#endif /* CONFIG_NET_FC */
 multiline_comment|/*&n; * i2o_lan_packet_send(): Send a packet as is, including the MAC header.&n; *&n; * Must be supported by Ethernet/802.3, Token Ring, FDDI, optional for&n; * Fibre Channel&n; */
 DECL|function|i2o_lan_packet_send
 r_static

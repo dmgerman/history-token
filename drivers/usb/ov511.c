@@ -1,14 +1,4 @@
 multiline_comment|/*&n; * OmniVision OV511 Camera-to-USB Bridge Driver&n; *&n; * Copyright (c) 1999-2000 Mark W. McClelland&n; * Many improvements by Bret Wallach &lt;bwallac1@san.rr.com&gt;&n; * Color fixes by by Orion Sky Lawlor &lt;olawlor@acm.org&gt; (2/26/2000)&n; * Snapshot code by Kevin Moore&n; * OV7620 fixes by Charl P. Botha &lt;cpbotha@ieee.org&gt;&n; * Changes by Claudio Matsuoka &lt;claudio@conectiva.com&gt;&n; * &n; * Based on the Linux CPiA driver written by Peter Pregler,&n; * Scott J. Bertin and Johannes Erdfelt.&n; * &n; * Please see the file: linux/Documentation/usb/ov511.txt &n; * and the website at:  http://alpha.dyndns.org/ov511&n; * for more info.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-DECL|variable|version
-r_static
-r_const
-r_char
-id|version
-(braket
-)braket
-op_assign
-l_string|&quot;1.28&quot;
-suffix:semicolon
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -26,6 +16,13 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &quot;ov511.h&quot;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.28&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Mark McClelland &lt;mwm@i.am&gt; &amp; Bret Wallach &amp; Orion Sky Lawlor &lt;olawlor@acm.org&gt; &amp; Kevin Moore &amp; Charl P. Botha &lt;cpbotha@ieee.org&gt; &amp; Claudio Matsuoka &lt;claudio@conectiva.com&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;OV511 USB Camera Driver&quot;
 DECL|macro|OV511_I2C_RETRIES
 mdefine_line|#define OV511_I2C_RETRIES 3
 multiline_comment|/* Video Size 640 x 480 x 3 bytes for RGB */
@@ -44,6 +41,14 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* CCD dynamically changes exposure, etc... */
+DECL|variable|video_nr
+r_static
+r_int
+id|video_nr
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/* 0=no debug messages&n; * 1=init/detection/unload and other significant messages,&n; * 2=some warning messages&n; * 3=config/control function calls&n; * 4=most function calls and data parsing messages&n; * 5=highly repetitive mesgs&n; * NOTE: This should be changed to 0, 1, or 2 for production kernels&n; */
 DECL|variable|debug
 r_static
@@ -397,16 +402,18 @@ comma
 l_string|&quot;Dump raw pixel data, in one of 3 formats. See ov511_dumppix() for details&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Mark McClelland &lt;mwm@i.am&gt; &amp; Bret Wallach &amp; Orion Sky Lawlor &lt;olawlor@acm.org&gt; &amp; Kevin Moore &amp; Charl P. Botha &lt;cpbotha@ieee.org&gt; &amp; Claudio Matsuoka &lt;claudio@conectiva.com&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;OV511 USB Camera Driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 DECL|variable|ov511_driver
@@ -16559,6 +16566,8 @@ op_amp
 id|ov511-&gt;vdev
 comma
 id|VFL_TYPE_GRABBER
+comma
+id|video_nr
 )paren
 OL
 l_int|0
@@ -17761,9 +17770,15 @@ suffix:semicolon
 id|info
 c_func
 (paren
-l_string|&quot;ov511 driver version %s registered&quot;
-comma
-id|version
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 r_return

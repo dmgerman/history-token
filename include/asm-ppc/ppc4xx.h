@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc4xx.h 1.3 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; *&n; *    Copyright (c) 1999 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Module name: ppc4xx.h&n; *&n; *    Description:&n; *&t;A generic include file which pulls in appropriate include files&n; *      for specific board types based on configuration settings.&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC4XX_H__

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.20 05/21/01 09:19:50 trini&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -293,6 +294,39 @@ r_int
 r_int
 id|loops_per_jiffy
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_RAM
+r_extern
+r_int
+id|rd_doload
+suffix:semicolon
+multiline_comment|/* 1 = load ramdisk, 0 = don&squot;t load */
+r_extern
+r_int
+id|rd_prompt
+suffix:semicolon
+multiline_comment|/* 1 = prompt for ramdisk, 0 = don&squot;t prompt */
+r_extern
+r_int
+id|rd_image_start
+suffix:semicolon
+multiline_comment|/* starting block # of image */
+macro_line|#endif
+macro_line|#ifdef CONFIG_SOUND_MODULE
+DECL|variable|ppc_cs4232_dma
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ppc_cs4232_dma
+)paren
+suffix:semicolon
+DECL|variable|ppc_cs4232_dma2
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ppc_cs4232_dma2
+)paren
+suffix:semicolon
+macro_line|#endif
 r_int
 id|__prep
 DECL|function|prep_get_cpuinfo
@@ -1023,6 +1057,36 @@ l_int|0x8000081c
 op_or_assign
 l_int|3
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+r_if
+c_cond
+(paren
+id|initrd_start
+)paren
+id|ROOT_DEV
+op_assign
+id|MKDEV
+c_func
+(paren
+id|RAMDISK_MAJOR
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* /dev/ram */
+r_else
+macro_line|#endif
+macro_line|#ifdef CONFIG_ROOT_NFS
+id|ROOT_DEV
+op_assign
+id|to_kdev_t
+c_func
+(paren
+l_int|0x00ff
+)paren
+suffix:semicolon
+multiline_comment|/* /dev/nfs */
+macro_line|#else
 id|ROOT_DEV
 op_assign
 id|to_kdev_t
@@ -1031,7 +1095,8 @@ c_func
 l_int|0x0802
 )paren
 suffix:semicolon
-multiline_comment|/* sda2 */
+multiline_comment|/* /dev/sda2 */
+macro_line|#endif
 r_break
 suffix:semicolon
 )brace
@@ -1222,7 +1287,7 @@ op_assign
 op_amp
 id|vga_con
 suffix:semicolon
-macro_line|#else
+macro_line|#elif defined(CONFIG_DUMMY_CONSOLE)
 id|conswitchp
 op_assign
 op_amp
@@ -2908,6 +2973,27 @@ id|CpuState
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+r_if
+c_cond
+(paren
+id|r4
+)paren
+(brace
+id|initrd_start
+op_assign
+id|r4
+op_plus
+id|KERNELBASE
+suffix:semicolon
+id|initrd_end
+op_assign
+id|r5
+op_plus
+id|KERNELBASE
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 multiline_comment|/* Copy cmd_line parameters */
 r_if
 c_cond
@@ -3180,20 +3266,4 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_SOUND_MODULE
-DECL|variable|ppc_cs4232_dma
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ppc_cs4232_dma
-)paren
-suffix:semicolon
-DECL|variable|ppc_cs4232_dma2
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ppc_cs4232_dma2
-)paren
-suffix:semicolon
-macro_line|#endif
 eof

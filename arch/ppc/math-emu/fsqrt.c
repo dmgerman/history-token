@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fsqrt.c,v 1.1 1999/08/23 19:00:01 cort Exp $&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.fsqrt.c 1.6 05/17/01 18:14:22 cort&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

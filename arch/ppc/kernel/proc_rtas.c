@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.proc_rtas.c 1.5 05/17/01 18:14:22 cort&n; */
 multiline_comment|/*&n; *   arch/ppc/kernel/proc_rtas.c&n; *   Copyright (C) 2000 Tilmann Bitterberg&n; *   (tilmann@bitterberg.de)&n; *&n; *   RTAS (Runtime Abstraction Services) stuff&n; *   Intention is to provide a clean user interface&n; *   to use the RTAS.&n; *&n; *   TODO:&n; *   Split off a header file and maybe move it to a different&n; *   location. Write Documentation on what the /proc/rtas/ entries&n; *   actually do.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

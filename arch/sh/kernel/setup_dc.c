@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *&t;$Id: setup_dc.c,v 1.1 2001/04/01 15:02:00 yaegashi Exp $&n; *&t;SEGA Dreamcast support&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;

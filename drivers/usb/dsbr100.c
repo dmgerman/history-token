@@ -6,6 +6,13 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v0.24&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Markus Demleitner &lt;msdemlei@tucana.harvard.edu&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;D-Link DSB-R100 USB radio driver&quot;
 DECL|macro|DSB100_VENDOR
 mdefine_line|#define DSB100_VENDOR 0x04b4
 DECL|macro|DSB100_PRODUCT
@@ -173,6 +180,14 @@ r_int
 id|users
 op_assign
 l_int|0
+suffix:semicolon
+DECL|variable|radio_nr
+r_static
+r_int
+id|radio_nr
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 DECL|variable|usb_dsbr100_table
 r_static
@@ -1459,6 +1474,8 @@ op_amp
 id|usb_dsbr100_radio
 comma
 id|VFL_TYPE_RADIO
+comma
+id|radio_nr
 )paren
 op_eq
 op_minus
@@ -1476,6 +1493,20 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1534,16 +1565,18 @@ id|module_exit
 id|dsbr100_exit
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Markus Demleitner &lt;msdemlei@tucana.harvard.edu&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;D-Link DSB-R100 USB radio driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 multiline_comment|/*&n;vi: ts=8&n;Sigh.  Of course, I am one of the ts=2 heretics, but Linus&squot; wish is&n;my command.&n;*/

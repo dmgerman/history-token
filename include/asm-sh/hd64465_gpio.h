@@ -2,7 +2,6 @@ macro_line|#ifndef _ASM_SH_HD64465_GPIO_
 DECL|macro|_ASM_SH_HD64465_GPIO_
 mdefine_line|#define _ASM_SH_HD64465_GPIO_ 1
 multiline_comment|/*&n; * $Id: hd64465_gpio.h,v 1.1 2001/01/02 15:35:22 mjd Exp $&n; *&n; * Hitachi HD64465 companion chip: General Purpose IO pins support.&n; * This layer enables other device drivers to configure GPIO&n; * pins, get and set their values, and register an interrupt&n; * routine for when input pins change in hardware.&n; *&n; * by Greg Banks &lt;gbanks@pocketpenguins.com&gt;&n; * (c) 2000 PocketPenguins Inc.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/hd64465.h&gt;
 multiline_comment|/* Macro to construct a portpin number (used in all&n; * subsequent functions) from a port letter and a pin&n; * number, e.g. HD64465_GPIO_PORTPIN(&squot;A&squot;, 5).&n; */
 DECL|macro|HD64465_GPIO_PORTPIN

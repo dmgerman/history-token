@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_nvram.c 1.9 05/17/01 18:14:22 cort&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/prep_nvram.c&n; *&n; *  Copyright (C) 1998  Corey Minyard&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;

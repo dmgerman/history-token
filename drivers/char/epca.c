@@ -2948,6 +2948,18 @@ id|bytesAvailable
 )paren
 suffix:semicolon
 multiline_comment|/* First we read the data in from the file system into a temp buffer */
+id|memoff
+c_func
+(paren
+id|ch
+)paren
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3001,18 +3013,6 @@ multiline_comment|/* -----------------------------------------------------------
 id|buf
 op_assign
 id|ch-&gt;tmp_buf
-suffix:semicolon
-id|memoff
-c_func
-(paren
-id|ch
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* End from_user */

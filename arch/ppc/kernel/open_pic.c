@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.open_pic.c 1.20 05/17/01 18:14:21 cort&n; */
 multiline_comment|/*&n; *  arch/ppc/kernel/open_pic.c -- OpenPIC Interrupt Handling&n; *&n; *  Copyright (C) 1997 Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

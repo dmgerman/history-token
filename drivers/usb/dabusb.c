@@ -15,6 +15,13 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;dabusb.h&quot;
 macro_line|#include &quot;dabfirmware.h&quot;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.54&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Deti Fliegl, deti@fliegl.de&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;DAB-USB Interface Driver for Linux (c)1999&quot;
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|NRDABUSB
 mdefine_line|#define NRDABUSB 4
@@ -3569,6 +3576,20 @@ c_func
 l_string|&quot;dabusb_init: driver registered&quot;
 )paren
 suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3596,14 +3617,18 @@ id|dabusb_driver
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
+c_func
 (paren
-l_string|&quot;Deti Fliegl, deti@fliegl.de&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
+c_func
 (paren
-l_string|&quot;DAB-USB Interface Driver for Linux (c)1999&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_PARM

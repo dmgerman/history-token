@@ -340,6 +340,8 @@ suffix:semicolon
 multiline_comment|/* LSB is gpio reset value */
 )brace
 suffix:semicolon
+DECL|macro|VENDOR_3COM
+mdefine_line|#define&t;VENDOR_3COM&t;&t;0x0506
 DECL|macro|VENDOR_ACCTON
 mdefine_line|#define VENDOR_ACCTON           0x083a
 DECL|macro|VENDOR_ADMTEK
@@ -360,11 +362,26 @@ DECL|macro|VENDOR_LINKSYS
 mdefine_line|#define VENDOR_LINKSYS          0x066b
 DECL|macro|VENDOR_MELCO
 mdefine_line|#define VENDOR_MELCO            0x0411
+DECL|macro|VENDOR_SMARTBRIDGES
+mdefine_line|#define VENDOR_SMARTBRIDGES&t;0x08d1
 DECL|macro|VENDOR_SMC
 mdefine_line|#define VENDOR_SMC              0x0707
 DECL|macro|VENDOR_SOHOWARE
 mdefine_line|#define VENDOR_SOHOWARE         0x15e8
 macro_line|#else&t;/* PEGASUS_DEV */
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;3Com USB Ethernet 3C460B&quot;
+comma
+id|VENDOR_3COM
+comma
+l_int|0x4601
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
 id|PEGASUS_DEV
 c_func
 (paren
@@ -532,6 +549,19 @@ id|DEFAULT_GPIO_RESET
 id|PEGASUS_DEV
 c_func
 (paren
+l_string|&quot;FiberLine USB&quot;
+comma
+id|VENDOR_DLINK2
+comma
+l_int|0x4102
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
 l_string|&quot;IO DATA USB ET/TX&quot;
 comma
 id|VENDOR_IODATA
@@ -607,6 +637,19 @@ comma
 l_int|0x0001
 comma
 id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;smartNIC 2 PnP Adapter&quot;
+comma
+id|VENDOR_SMARTBRIDGES
+comma
+l_int|0x0003
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
 )paren
 id|PEGASUS_DEV
 c_func

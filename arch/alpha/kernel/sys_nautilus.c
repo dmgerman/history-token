@@ -41,10 +41,6 @@ id|alpha_mv.device_interrupt
 op_assign
 id|srm_device_interrupt
 suffix:semicolon
-id|alpha_mv.kill_arch
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 id|init_i8259a_irqs
 c_func
@@ -113,6 +109,12 @@ id|mode
 r_case
 id|LINUX_REBOOT_CMD_RESTART
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|alpha_using_srm
+)paren
 (brace
 id|u8
 id|t8

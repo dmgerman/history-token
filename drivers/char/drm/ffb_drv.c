@@ -1,6 +1,5 @@
 multiline_comment|/* $Id: ffb_drv.c,v 1.12 2001/04/14 01:12:03 davem Exp $&n; * ffb_drv.c: Creator/Creator3D direct rendering driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &quot;drmP.h&quot;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/shmparam.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MCT (Magic Control Technology Corp.) USB RS232 Converter Driver&n; *&n; *   Copyright (C) 2000 Wolfgang Grandegger (wolfgang@ces.ch)&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; * This program is largely derived from the Belkin USB Serial Adapter Driver&n; * (see belkin_sa.[ch]). All of the information about the device was acquired&n; * by using SniffUSB on Windows98. For technical details see mct_u232.h.&n; *&n; * William G. Greathouse and Greg Kroah-Hartman provided great help on how to&n; * do the reverse engineering and how to write a USB serial device driver.&n; *&n; * TO BE DONE, TO BE CHECKED:&n; *   DTR/RTS signal handling may be incomplete or incorrect. I have mainly&n; *   implemented what I have seen with SniffUSB or found in belkin_sa.c.&n; *   For further TODOs check also belkin_sa.c.&n; *&n; * TEST STATUS:&n; *   Basic tests have been performed with minicom/zmodem transfers and&n; *   modem dialing under Linux 2.4.0-test10 (for me it works fine).&n; *&n; * 06-Jan-2001 Cornel Ciocirlan &n; *   - Added support for Sitecom U232-P25 model (Product Id 0x0230)&n; *   - Added support for D-Link DU-H3SP USB BAY (Product Id 0x0200)&n; *&n; * 29-Nov-2000 Greg Kroah-Hartman&n; *   - Added device id table to fit with 2.4.0-test11 structure.&n; *   - took out DEAL_WITH_TWO_INT_IN_ENDPOINTS #define as it&squot;s not needed&n; *     (lots of things will change if/when the usb-serial core changes to&n; *     handle these issues.&n; *&n; * 27-Nov-2000 Wolfgang Grandegger&n; *   A version for kernel 2.4.0-test10 released to the Linux community &n; *   (via linux-usb-devel).&n; */
+multiline_comment|/*&n; * MCT (Magic Control Technology Corp.) USB RS232 Converter Driver&n; *&n; *   Copyright (C) 2000 Wolfgang Grandegger (wolfgang@ces.ch)&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; * This program is largely derived from the Belkin USB Serial Adapter Driver&n; * (see belkin_sa.[ch]). All of the information about the device was acquired&n; * by using SniffUSB on Windows98. For technical details see mct_u232.h.&n; *&n; * William G. Greathouse and Greg Kroah-Hartman provided great help on how to&n; * do the reverse engineering and how to write a USB serial device driver.&n; *&n; * TO BE DONE, TO BE CHECKED:&n; *   DTR/RTS signal handling may be incomplete or incorrect. I have mainly&n; *   implemented what I have seen with SniffUSB or found in belkin_sa.c.&n; *   For further TODOs check also belkin_sa.c.&n; *&n; * TEST STATUS:&n; *   Basic tests have been performed with minicom/zmodem transfers and&n; *   modem dialing under Linux 2.4.0-test10 (for me it works fine).&n; *&n; * 08-Apr-2001 gb&n; *   - Identify version on module load.&n; *&n; * 06-Jan-2001 Cornel Ciocirlan &n; *   - Added support for Sitecom U232-P25 model (Product Id 0x0230)&n; *   - Added support for D-Link DU-H3SP USB BAY (Product Id 0x0200)&n; *&n; * 29-Nov-2000 Greg Kroah-Hartman&n; *   - Added device id table to fit with 2.4.0-test11 structure.&n; *   - took out DEAL_WITH_TWO_INT_IN_ENDPOINTS #define as it&squot;s not needed&n; *     (lots of things will change if/when the usb-serial core changes to&n; *     handle these issues.&n; *&n; * 27-Nov-2000 Wolfgang Grandegger&n; *   A version for kernel 2.4.0-test10 released to the Linux community &n; *   (via linux-usb-devel).&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -31,6 +31,13 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;mct_u232.h&quot;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Wolfgang Grandegger &lt;wolfgang@ces.ch&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;Magic Control Technology USB-RS232 converter driver&quot;
 multiline_comment|/*&n; * Some not properly written applications do not handle the return code of&n; * write() correctly. This can result in character losses. A work-a-round&n; * can be compiled in with the following definition. This work-a-round&n; * should _NOT_ be part of an &squot;official&squot; kernel release, of course!&n; */
 DECL|macro|FIX_WRITE_RETURN_CODE_PROBLEM
 macro_line|#undef FIX_WRITE_RETURN_CODE_PROBLEM
@@ -3342,6 +3349,20 @@ op_amp
 id|mct_u232_du_h3sp_device
 )paren
 suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3387,16 +3408,18 @@ c_func
 id|mct_u232_exit
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Wolfgang Grandegger &lt;wolfgang@ces.ch&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Magic Control Technology USB-RS232 converter driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 macro_line|#ifdef FIX_WRITE_RETURN_CODE_PROBLEM

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * UHCI-specific debugging code. Invaluable when something&n; * goes wrong, but don&squot;t get in my face.&n; *&n; * Kernel visible pointers are surrounded in []&squot;s and bus&n; * visible pointers are surrounded in ()&squot;s&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999-2001 Johannes Erdfelt&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

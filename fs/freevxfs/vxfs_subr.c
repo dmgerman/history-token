@@ -1,9 +1,10 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
-macro_line|#ident &quot;$Id: vxfs_subr.c,v 1.3 2001/04/24 19:28:36 hch Exp hch $&quot;
+macro_line|#ident &quot;$Id: vxfs_subr.c,v 1.5 2001/04/26 22:49:51 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - shared subroutines.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &quot;vxfs_extern.h&quot;
 r_static
 r_int
@@ -48,7 +49,152 @@ op_assign
 id|vxfs_bmap
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * vxfs_bread - read buffer for a give inode,block tuple&n; * @ip:&t;&t;inode&n; * @block:&t;logical block&n; *&n; * Description:&n; *   The vxfs_bread function performs a bmap operation for&n; *   the given inode and block and reads the result block&n; *   into main memory.&n; *&n; * Returns:&n; *   The resulting &amp;struct buffer_head.&n; */
+multiline_comment|/**&n; * vxfs_get_page - read a page into memory.&n; * @ip:&t;&t;inode to read from&n; * @n:&t;&t;page number&n; *&n; * Description:&n; *   vxfs_get_page reads the @n th page of @ip into the pagecache.&n; *&n; * Returns:&n; *   The wanted page on success, else a NULL pointer.&n; */
+r_struct
+id|page
+op_star
+DECL|function|vxfs_get_page
+id|vxfs_get_page
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|ip
+comma
+id|u_long
+id|n
+)paren
+(brace
+r_struct
+id|address_space
+op_star
+id|mapping
+op_assign
+id|ip-&gt;i_mapping
+suffix:semicolon
+r_struct
+id|page
+op_star
+id|pp
+suffix:semicolon
+id|pp
+op_assign
+id|read_cache_page
+c_func
+(paren
+id|mapping
+comma
+id|n
+comma
+(paren
+id|filler_t
+op_star
+)paren
+id|mapping-&gt;a_ops-&gt;readpage
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
+id|pp
+)paren
+)paren
+(brace
+id|wait_on_page
+c_func
+(paren
+id|pp
+)paren
+suffix:semicolon
+id|kmap
+c_func
+(paren
+id|pp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|Page_Uptodate
+c_func
+(paren
+id|pp
+)paren
+)paren
+r_goto
+id|fail
+suffix:semicolon
+multiline_comment|/** if (!PageChecked(pp)) **/
+multiline_comment|/** vxfs_check_page(pp); **/
+r_if
+c_cond
+(paren
+id|PageError
+c_func
+(paren
+id|pp
+)paren
+)paren
+r_goto
+id|fail
+suffix:semicolon
+)brace
+r_return
+(paren
+id|pp
+)paren
+suffix:semicolon
+id|fail
+suffix:colon
+id|vxfs_put_page
+c_func
+(paren
+id|pp
+)paren
+suffix:semicolon
+r_return
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|EIO
+)paren
+suffix:semicolon
+)brace
+id|__inline__
+r_void
+DECL|function|vxfs_put_page
+id|vxfs_put_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|pp
+)paren
+(brace
+id|kunmap
+c_func
+(paren
+id|pp
+)paren
+suffix:semicolon
+id|page_cache_release
+c_func
+(paren
+id|pp
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * vxfs_bread - read buffer for a give inode,block tuple&n; * @ip:&t;&t;inode&n; * @block:&t;logical block&n; *&n; * Description:&n; *   The vxfs_bread function reads block no @block  of&n; *   @ip into the buffercache.&n; *&n; * Returns:&n; *   The resulting &amp;struct buffer_head.&n; */
 r_struct
 id|buffer_head
 op_star

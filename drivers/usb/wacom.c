@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: wacom.c,v 1.14 2000/11/23 09:34:32 vojtech Exp $&n; *&n; *  Copyright (c) 2000 Vojtech Pavlik&t;&t;&lt;vojtech@suse.cz&gt;&n; *  Copyright (c) 2000 Andreas Bach Aaen&t;&lt;abach@stofanet.dk&gt;&n; *  Copyright (c) 2000 Clifford Wolf&t;&t;&lt;clifford@clifford.at&gt;&n; *  Copyright (c) 2000 Sam Mosel&t;&t;&lt;sam.mosel@computer.org&gt;&n; *  Copyright (c) 2000 James E. Blair&t;&t;&lt;corvus@gnu.org&gt;&n; *  Copyright (c) 2000 Daniel Egger&t;&t;&lt;egger@suse.de&gt;&n; *&n; *  USB Wacom Graphire and Wacom Intuos tablet support&n; *&n; *  Sponsored by SuSE&n; *&n; *  ChangeLog:&n; *      v0.1 (vp)  - Initial release&n; *      v0.2 (aba) - Support for all buttons / combinations&n; *      v0.3 (vp)  - Support for Intuos added&n; *&t;v0.4 (sm)  - Support for more Intuos models, menustrip&n; *&t;&t;&t;relative mode, proximity.&n; *&t;v0.5 (vp)  - Big cleanup, nifty features removed,&n; * &t;&t;&t;they belong in userspace&n; *&t;v1.8 (vp)  - Submit URB only when operating, moved to CVS,&n; *&t;&t;&t;use input_report_key instead of report_btn and&n; *&t;&t;&t;other cleanups&n; *&t;v1.11 (vp) - Add URB -&gt;dev setting for new kernels&n; *&t;v1.11 (jb) - Add support for the 4D Mouse &amp; Lens&n; *&t;v1.12 (de) - Add support for two more inking pen IDs&n; *&t;v1.14 (vp) - Use new USB device id probing scheme.&n; *&t;&t;     Fix Wacom Graphire mouse wheel&n; */
+multiline_comment|/*&n; * $Id: wacom.c,v 1.14 2000/11/23 09:34:32 vojtech Exp $&n; *&n; *  Copyright (c) 2000 Vojtech Pavlik&t;&t;&lt;vojtech@suse.cz&gt;&n; *  Copyright (c) 2000 Andreas Bach Aaen&t;&lt;abach@stofanet.dk&gt;&n; *  Copyright (c) 2000 Clifford Wolf&t;&t;&lt;clifford@clifford.at&gt;&n; *  Copyright (c) 2000 Sam Mosel&t;&t;&lt;sam.mosel@computer.org&gt;&n; *  Copyright (c) 2000 James E. Blair&t;&t;&lt;corvus@gnu.org&gt;&n; *  Copyright (c) 2000 Daniel Egger&t;&t;&lt;egger@suse.de&gt;&n; *&n; *  USB Wacom Graphire and Wacom Intuos tablet support&n; *&n; *  Sponsored by SuSE&n; *&n; *  ChangeLog:&n; *      v0.1 (vp)  - Initial release&n; *      v0.2 (aba) - Support for all buttons / combinations&n; *      v0.3 (vp)  - Support for Intuos added&n; *&t;v0.4 (sm)  - Support for more Intuos models, menustrip&n; *&t;&t;&t;relative mode, proximity.&n; *&t;v0.5 (vp)  - Big cleanup, nifty features removed,&n; * &t;&t;&t;they belong in userspace&n; *&t;v1.8 (vp)  - Submit URB only when operating, moved to CVS,&n; *&t;&t;&t;use input_report_key instead of report_btn and&n; *&t;&t;&t;other cleanups&n; *&t;v1.11 (vp) - Add URB -&gt;dev setting for new kernels&n; *&t;v1.11 (jb) - Add support for the 4D Mouse &amp; Lens&n; *&t;v1.12 (de) - Add support for two more inking pen IDs&n; *&t;v1.14 (vp) - Use new USB device id probing scheme.&n; *&t;&t;     Fix Wacom Graphire mouse wheel&n; *&t;      (gb) - Identify version on module load.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -6,16 +6,25 @@ macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.14&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB Wacom Graphire and Wacom Intuos tablet driver&quot;
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;USB Wacom Graphire and Wacom Intuos tablet driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Wacom Graphire packet:&n; *&n; * byte 0: report ID (2)&n; * byte 1: bit7&t;&t;pointer in range&n; *&t;   bit5-6&t;pointer type 0 - pen, 1 - rubber, 2 - mouse&n; *&t;   bit4&t;&t;1 ?&n; *&t;   bit3&t;&t;0 ?&n; *&t;   bit2&t;&t;mouse middle button / pen button2&n; *&t;   bit1&t;&t;mouse right button / pen button1&n; *&t;   bit0&t;&t;mouse left button / touch&n; * byte 2: X low bits&n; * byte 3: X high bits&n; * byte 4: Y low bits&n; * byte 5: Y high bits&n; * byte 6: pen pressure low bits / mouse wheel&n; * byte 7: pen presure high bits / mouse distance&n; *&n; * There are also two single-byte feature reports (2 and 3).&n; *&n; * Wacom Intuos status packet:&n; *&n; * byte 0: report ID (2)&n; * byte 1: bit7&t;&t;1 - sync bit&n; *&t;   bit6&t;&t;pointer in range&n; *&t;   bit5&t;&t;pointer type report&n; *&t;   bit4&t;&t;0 ?&n; *&t;   bit3&t;&t;mouse packet type&n; *&t;   bit2&t;&t;pen button2&n; *&t;   bit1&t;&t;pen button1&n; *&t;   bit0&t;&t;0 ?&n; * byte 2: X high bits&n; * byte 3: X low bits&n; * byte 4: Y high bits&n; * byte 5: Y low bits&n; *&n; * Pen packet:&n; *&n; * byte 6: bits 0-7: pressure&t;(bits 2-9)&n; * byte 7: bits 6-7: pressure&t;(bits 0-1)&n; * byte 7: bits 0-5: X tilt&t;(bits 1-6)&n; * byte 8: bit    7: X tilt&t;(bit  0)&n; * byte 8: bits 0-6: Y tilt&t;(bits 0-6)&n; * byte 9: bits 4-7: distance&n; *&n; * Mouse packet type 0:&n; *&n; * byte 6: bits 0-7: wheel&t;(bits 2-9)&n; * byte 7: bits 6-7: wheel&t;(bits 0-1)&n; * byte 7: bits 0-5: 0&n; * byte 8: bits 6-7: 0&n; * byte 8: bit    5: left extra button&n; * byte 8: bit    4: right extra button&n; * byte 8: bit    3: wheel      (sign)&n; * byte 8: bit    2: right button&n; * byte 8: bit    1: middle button&n; * byte 8: bit    0: left button&n; * byte 9: bits 4-7: distance&n; *&n; * Mouse packet type 1:&n; *&n; * byte 6: bits 0-7: rotation&t;(bits 2-9)&n; * byte 7: bits 6-7: rotation&t;(bits 0-1)&n; * byte 7: bit    5: rotation&t;(sign)&n; * byte 7: bits 0-4: 0&n; * byte 8: bits 0-7: 0&n; * byte 9: bits 4-7: distance&n; */
@@ -2088,6 +2097,20 @@ c_func
 (paren
 op_amp
 id|wacom_driver
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 r_return

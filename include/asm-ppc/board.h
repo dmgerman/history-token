@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.board.h 1.5 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; *&n; *    Copyright (c) 1999 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Module name: board.h&n; *&n; *    Description:&n; *&t;A generic include file which pulls in appropriate include files&n; *      for specific board types based on configuration settings.&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __BOARD_H__

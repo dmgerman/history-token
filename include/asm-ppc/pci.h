@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.pci.h 1.12 05/21/01 01:31:30 cort&n; */
 macro_line|#ifndef __PPC_PCI_H
 DECL|macro|__PPC_PCI_H
 mdefine_line|#define __PPC_PCI_H

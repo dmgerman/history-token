@@ -56,6 +56,21 @@ DECL|typedef|drv_info_t
 id|drv_info_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+DECL|struct|my_sg
+r_struct
+id|my_sg
+(brace
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+DECL|member|start_addr
+r_char
+op_star
+id|start_addr
+suffix:semicolon
+)brace
+suffix:semicolon
 r_struct
 id|ctlr_info
 suffix:semicolon
@@ -284,6 +299,10 @@ DECL|member|cmd_pool
 id|cmdlist_t
 op_star
 id|cmd_pool
+suffix:semicolon
+DECL|member|cmd_pool_dhandle
+id|dma_addr_t
+id|cmd_pool_dhandle
 suffix:semicolon
 DECL|member|cmd_pool_bits
 id|__u32

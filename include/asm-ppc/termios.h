@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.termios.h 1.8 05/17/01 18:14:26 cort&n; */
 macro_line|#ifndef _PPC_TERMIOS_H
 DECL|macro|_PPC_TERMIOS_H
 mdefine_line|#define _PPC_TERMIOS_H

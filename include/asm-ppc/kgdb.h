@@ -1,4 +1,5 @@
-multiline_comment|/* $Id: kgdb.h,v 1.2 1998/04/11 17:29:07 geert Exp $&n; * kgdb.h: Defines and declarations for serial line source level&n; *         remote debugging of the Linux kernel using gdb.&n; *&n; * PPC Mods (C) 1998 Michael Tesch (tesch@cs.wisc.edu)&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.kgdb.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * kgdb.h: Defines and declarations for serial line source level&n; *         remote debugging of the Linux kernel using gdb.&n; *&n; * PPC Mods (C) 1998 Michael Tesch (tesch@cs.wisc.edu)&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_KGDB_H
 DECL|macro|_PPC_KGDB_H

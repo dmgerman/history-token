@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.subr_prf.c 1.5 05/17/01 18:14:23 cort&n; */
 multiline_comment|/*&n; * Written by Cort Dougan to replace the version originally used&n; * by Paul Mackerras, which came from NetBSD and thus had copyright&n; * conflicts with Linux.&n; *&n; * This file makes liberal use of the standard linux utility&n; * routines to reduce the size of the binary.  We assume we can&n; * trust some parts of Linux inside the debugger.&n; *   -- Cort (cort@cs.nmt.edu)&n; *&n; * Copyright (C) 1999 Cort Dougan.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.ide.h 1.10 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; *  linux/include/asm-ppc/ide.h&n; *&n; *  Copyright (C) 1994-1996 Linus Torvalds &amp; authors */
 multiline_comment|/*&n; *  This file contains the ppc architecture specific IDE code.&n; */
 macro_line|#ifndef __ASMPPC_IDE_H

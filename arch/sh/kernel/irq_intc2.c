@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/arch/sh/kernel/irq_intc2.c&n; *&n; * Copyright (C) 2001 David J. Mckay (david.mckay@st.com)&n; *&n; * May be copied or modified under the terms of the GNU General Public&n; * License.  See linux/COPYING for more information.                            &n; *&n; * Interrupt handling for INTC2-based IRQ.&n; *&n; * These are the &quot;new Hitachi style&quot; interrupts, as present on the &n; * Hitachi 7751 and the STM ST40 STB1.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;

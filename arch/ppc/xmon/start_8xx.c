@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.start_8xx.c 1.7 05/17/01 18:14:23 cort&n; */
 multiline_comment|/*&n; * Copyright (C) 1996 Paul Mackerras.&n; * Copyright (C) 2000 Dan Malek.&n; * Quick hack of Paul&squot;s code to make XMON work on 8xx processors.  Lots&n; * of assumptions, like the SMC1 is used, it has been initialized by the&n; * loader at some point, and we can just stuff and suck bytes.&n; * We rely upon the 8xx uart driver to support us, as the interface&n; * changes between boot up and operational phases of the kernel.&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;

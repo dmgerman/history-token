@@ -13,6 +13,13 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/usb.h&gt;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v0.8&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Michael Gee, Pavel Machek, Vojtech Pavlik, Randy Dunlap&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB Printer Device Class driver&quot;
 DECL|macro|USBLP_BUF_SIZE
 mdefine_line|#define USBLP_BUF_SIZE&t;&t;8192
 DECL|macro|DEVICE_ID_SIZE
@@ -2729,6 +2736,20 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2765,16 +2786,18 @@ c_func
 id|usblp_exit
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Michael Gee, Pavel Machek, Vojtech Pavlik, Randy Dunlap&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;USB Printer Device Class driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 eof

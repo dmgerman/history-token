@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.floppy.h 1.5 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; * Architecture specific parts of the Floppy driver&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_PPC_FLOPPY_H

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.semaphore.h 1.15 05/17/01 18:14:25 cort&n; */
 macro_line|#ifndef _PPC_SEMAPHORE_H
 DECL|macro|_PPC_SEMAPHORE_H
 mdefine_line|#define _PPC_SEMAPHORE_H

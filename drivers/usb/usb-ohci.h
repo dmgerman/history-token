@@ -58,6 +58,7 @@ multiline_comment|/* Not Access */
 id|USB_ST_NORESPONSE
 )brace
 suffix:semicolon
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* ED States */
 DECL|macro|ED_NEW
 mdefine_line|#define ED_NEW &t;&t;0x00

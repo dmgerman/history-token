@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.pci-dma.c 1.5 05/17/01 18:14:21 cort&n; */
 multiline_comment|/*&n; * Copyright (C) 2000   Ani Joshi &lt;ajoshi@unixbox.com&gt;&n; *&n; *&n; * Dynamic DMA mapping support.&n; *&n; * swiped from i386&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

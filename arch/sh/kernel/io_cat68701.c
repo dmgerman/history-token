@@ -1,6 +1,7 @@
 multiline_comment|/* &n; * linux/arch/sh/kernel/io_cat68701.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *               2001  Yutaro Ebihara&n; *&n; * I/O routine and setup routines for A-ONE Corp CAT-68701 SH7708 Board&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 DECL|macro|SH3_PCMCIA_BUG_WORKAROUND
 mdefine_line|#define SH3_PCMCIA_BUG_WORKAROUND 1

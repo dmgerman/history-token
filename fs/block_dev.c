@@ -1998,10 +1998,10 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-DECL|function|bdev_init
+DECL|function|bdev_cache_init
 r_void
 id|__init
-id|bdev_init
+id|bdev_cache_init
 c_func
 (paren
 r_void

@@ -311,9 +311,7 @@ id|mask
 )paren
 suffix:semicolon
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
-DECL|function|pci_controller_num
-r_static
-id|__inline__
+r_extern
 r_int
 id|pci_controller_num
 c_func
@@ -323,29 +321,7 @@ id|pci_dev
 op_star
 id|pdev
 )paren
-(brace
-r_struct
-id|pci_controller
-op_star
-id|hose
-op_assign
-id|pdev-&gt;sysdata
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hose
-op_ne
-l_int|NULL
-)paren
-r_return
-id|hose-&gt;index
-suffix:semicolon
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-)brace
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* Values for the `which&squot; argument to sys_pciconfig_iobase.  */
 DECL|macro|IOBASE_HOSE

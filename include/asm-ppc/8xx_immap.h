@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.8xx_immap.h 1.5 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; * MPC8xx Internal Memory Map&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * The I/O on the MPC860 is comprised of blocks of special registers&n; * and the dual port ram for the Communication Processor Module.&n; * Within this space are functional units such as the SIU, memory&n; * controller, system timers, and other control functions.  It is&n; * a combination that I found difficult to separate into logical&n; * functional files.....but anyone else is welcome to try.  -- Dan&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __IMMAP_8XX__

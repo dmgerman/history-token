@@ -1,11 +1,18 @@
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; *&t;uss720.c  --  USS720 USB Parport Cable.&n; *&n; *&t;Copyright (C) 1999&n; *&t;    Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  Based on parport_pc.c&n; *&n; *  History:&n; *   0.1  04.08.99  Created&n; *   0.2  07.08.99  Some fixes mainly suggested by Tim Waugh&n; *&t;&t;    Interrupt handling currently disabled because&n; *&t;&t;    usb_request_irq crashes somewhere within ohci.c&n; *&t;&t;    for no apparent reason (that is for me, anyway)&n; *&t;&t;    ECP currently untested&n; *   0.3  10.08.99  fixing merge errors&n; *   0.4  13.08.99  Added Vendor/Product ID of Brad Hard&squot;s cable&n; *   0.5  20.09.99  usb_control_msg wrapper used&n; *        Nov01.00  usb_device_table support by Adam J. Richter&n; *&n; */
+multiline_comment|/*&n; *&t;uss720.c  --  USS720 USB Parport Cable.&n; *&n; *&t;Copyright (C) 1999&n; *&t;    Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  Based on parport_pc.c&n; *&n; *  History:&n; *   0.1  04.08.99  Created&n; *   0.2  07.08.99  Some fixes mainly suggested by Tim Waugh&n; *&t;&t;    Interrupt handling currently disabled because&n; *&t;&t;    usb_request_irq crashes somewhere within ohci.c&n; *&t;&t;    for no apparent reason (that is for me, anyway)&n; *&t;&t;    ECP currently untested&n; *   0.3  10.08.99  fixing merge errors&n; *   0.4  13.08.99  Added Vendor/Product ID of Brad Hard&squot;s cable&n; *   0.5  20.09.99  usb_control_msg wrapper used&n; *        Nov01.00  usb_device_table support by Adam J. Richter&n; *        08.04.01  Identify version on module load.  gb&n; *&n; */
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v0.5&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Thomas M. Sailer, sailer@ife.ee.ethz.ch&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB Parport Cable driver for Cables using the Lucent Technologies USS720 Chip&quot;
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|struct|parport_uss720_private
 r_struct
@@ -3197,16 +3204,18 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Thomas M. Sailer, sailer@ife.ee.ethz.ch&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;USB Parport Cable driver for Cables using the Lucent Technologies USS720 Chip&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 DECL|function|uss720_init
@@ -3235,13 +3244,18 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-id|printk
+id|info
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;uss720: USB&lt;-&gt;IEEE1284 cable driver v0.4 registered.&bslash;n&quot;
-id|KERN_INFO
-l_string|&quot;uss720: (C) 1999 by Thomas Sailer, &lt;sailer@ife.ee.ethz.ch&gt;&bslash;n&quot;
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 r_return

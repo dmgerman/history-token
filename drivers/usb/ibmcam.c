@@ -14,6 +14,13 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ibmcam.h&quot;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Johannes Erdfelt, Randy Dunlap&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;IBM/Xirlink C-it USB Camera Driver for Linux (c) 2000&quot;
 DECL|macro|ENABLE_HEXDUMP
 mdefine_line|#define&t;ENABLE_HEXDUMP&t;0&t;/* Enable if you need it */
 DECL|variable|debug
@@ -22,6 +29,14 @@ r_int
 id|debug
 op_assign
 l_int|0
+suffix:semicolon
+DECL|variable|video_nr
+r_static
+r_int
+id|video_nr
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* Completion states of the data parser */
 r_typedef
@@ -480,16 +495,6 @@ c_func
 id|init_model2_yb
 comma
 l_string|&quot;Model2 preconfiguration: 0-255 (default=160)&quot;
-)paren
-suffix:semicolon
-id|MODULE_AUTHOR
-(paren
-l_string|&quot;module author&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-(paren
-l_string|&quot;IBM/Xirlink C-it USB Camera Driver for Linux (c) 2000&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Still mysterious i2c commands */
@@ -14043,6 +14048,8 @@ op_amp
 id|ibmcam-&gt;vdev
 comma
 id|VFL_TYPE_GRABBER
+comma
+id|video_nr
 )paren
 op_eq
 op_minus
@@ -14378,6 +14385,20 @@ id|usb_ibmcam
 )paren
 suffix:semicolon
 )brace
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 id|usb_register
 c_func
@@ -14417,6 +14438,20 @@ id|module_exit
 c_func
 (paren
 id|usb_ibmcam_cleanup
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
+id|MODULE_AUTHOR
+c_func
+(paren
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_DESC
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 eof

@@ -15,6 +15,21 @@ DECL|macro|IO_ERROR
 mdefine_line|#define IO_ERROR&t;1
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR COMPAQ_CISS_MAJOR 
+DECL|struct|my_sg
+r_struct
+id|my_sg
+(brace
+DECL|member|len
+r_int
+id|len
+suffix:semicolon
+DECL|member|start_addr
+r_char
+op_star
+id|start_addr
+suffix:semicolon
+)brace
+suffix:semicolon
 r_struct
 id|ctlr_info
 suffix:semicolon
@@ -166,13 +181,11 @@ l_int|4
 )braket
 suffix:semicolon
 singleline_comment|// Firmware version 
-DECL|member|pci_bus
-id|unchar
-id|pci_bus
-suffix:semicolon
-DECL|member|pci_dev_fn
-id|unchar
-id|pci_dev_fn
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
 suffix:semicolon
 DECL|member|board_id
 id|__u32
@@ -262,10 +275,18 @@ id|CommandList_struct
 op_star
 id|cmd_pool
 suffix:semicolon
+DECL|member|cmd_pool_dhandle
+id|dma_addr_t
+id|cmd_pool_dhandle
+suffix:semicolon
 DECL|member|errinfo_pool
 id|ErrorInfo_struct
 op_star
 id|errinfo_pool
+suffix:semicolon
+DECL|member|errinfo_pool_dhandle
+id|dma_addr_t
+id|errinfo_pool_dhandle
 suffix:semicolon
 DECL|member|cmd_pool_bits
 id|__u32

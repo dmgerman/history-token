@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.ptrace.c 1.5 05/17/01 18:14:22 cort&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/ptrace.c&n; *&n; *  PowerPC version&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Derived from &quot;arch/m68k/kernel/ptrace.c&quot;&n; *  Copyright (C) 1994 by Hamish Macdonald&n; *  Taken from linux/kernel/ptrace.c and modified for M680x0.&n; *  linux/kernel/ptrace.c is by Ross Biro 1/23/92, edited by Linus Torvalds&n; *&n; * Modified by Cort Dougan (cort@hq.fsmlabs.com)&n; * and Paul Mackerras (paulus@linuxcare.com.au).&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file README.legal in the main directory of&n; * this archive for more details.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

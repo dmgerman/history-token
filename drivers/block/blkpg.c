@@ -491,13 +491,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|get_super
+id|is_mounted
 c_func
 (paren
 id|devp
 )paren
 op_logical_or
-multiline_comment|/* mounted? */
 id|is_swap_partition
 c_func
 (paren

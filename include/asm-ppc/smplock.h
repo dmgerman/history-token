@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.smplock.h 1.7 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; * &lt;asm/smplock.h&gt;&n; *&n; * Default SMP lock implementation&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/interrupt.h&gt;

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.unaligned.h 1.5 05/17/01 18:14:26 cort&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_UNALIGNED_H
 DECL|macro|__PPC_UNALIGNED_H

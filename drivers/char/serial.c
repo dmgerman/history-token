@@ -1751,8 +1751,10 @@ id|tty-&gt;flip.char_buf_ptr
 op_increment
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
 id|ignore_char
 suffix:colon
+macro_line|#endif
 op_star
 id|status
 op_assign

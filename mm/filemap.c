@@ -9940,6 +9940,16 @@ r_if
 c_cond
 (paren
 id|pos
+op_ge
+id|inode-&gt;i_sb-&gt;s_maxbytes
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|count
+op_logical_or
+id|pos
 OG
 id|inode-&gt;i_sb-&gt;s_maxbytes
 )paren
@@ -9962,6 +9972,8 @@ suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
+multiline_comment|/* zero-length writes at -&gt;s_maxbytes are OK */
 )brace
 r_if
 c_cond

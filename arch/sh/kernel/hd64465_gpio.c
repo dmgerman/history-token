@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * $Id: hd64465_gpio.c,v 1.1 2001/01/02 15:35:22 mjd Exp $&n; * by Greg Banks &lt;gbanks@pocketpenguins.com&gt;&n; * (c) 2000 PocketPenguins Inc&n; *&n; * GPIO pin support for HD64465 companion chip.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.prom.h 1.11 05/18/01 08:18:10 patch&n; */
 multiline_comment|/*&n; * Definitions for talking to the Open Firmware PROM on&n; * Power Macintosh computers.&n; *&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_PROM_H
@@ -28,7 +29,7 @@ r_int
 r_int
 id|prom_num_displays
 suffix:semicolon
-macro_line|#ifndef CONFIG_MACH_SPECIFIC
+macro_line|#ifdef CONFIG_ALL_PPC
 r_extern
 r_int
 id|have_of

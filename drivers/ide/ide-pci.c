@@ -4558,6 +4558,7 @@ id|d-&gt;devid
 comma
 id|DEVID_CS5530
 )paren
+)paren
 id|hwif-&gt;autodma
 op_assign
 l_int|0

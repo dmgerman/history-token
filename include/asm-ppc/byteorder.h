@@ -1,7 +1,7 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.byteorder.h 1.5 05/17/01 18:14:24 cort&n; */
 macro_line|#ifndef _PPC_BYTEORDER_H
 DECL|macro|_PPC_BYTEORDER_H
 mdefine_line|#define _PPC_BYTEORDER_H
-multiline_comment|/*&n; *  $Id: byteorder.h,v 1.14 1998/08/12 05:07:12 paulus Exp $&n; */
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#ifdef __GNUC__

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.atomic.h 1.8 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; * PowerPC atomic operations&n; */
 macro_line|#ifndef _ASM_PPC_ATOMIC_H_ 
 DECL|macro|_ASM_PPC_ATOMIC_H_

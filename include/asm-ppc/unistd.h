@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.unistd.h 1.7 05/17/01 18:14:26 cort&n; */
 macro_line|#ifndef _ASM_PPC_UNISTD_H_
 DECL|macro|_ASM_PPC_UNISTD_H_
 mdefine_line|#define _ASM_PPC_UNISTD_H_

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.nvram.h 1.5 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; * PreP compliant NVRAM access&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_NVRAM_H

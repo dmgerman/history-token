@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.elf.h 1.10 05/17/01 18:14:24 cort&n; */
 macro_line|#ifndef __PPC_ELF_H
 DECL|macro|__PPC_ELF_H
 mdefine_line|#define __PPC_ELF_H

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.rpxclassic.h 1.8 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * the RPCG RPX-Classic board.  Copied from the RPX-Lite stuff.&n; *&n; * Copyright (c) 1998 Dan Malek (dmalek@jlc.net)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __MACH_RPX_DEFS

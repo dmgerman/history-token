@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.vc_ioctl.h 1.5 05/17/01 18:14:26 cort&n; */
 macro_line|#ifndef _LINUX_VC_IOCTL_H
 DECL|macro|_LINUX_VC_IOCTL_H
 mdefine_line|#define _LINUX_VC_IOCTL_H

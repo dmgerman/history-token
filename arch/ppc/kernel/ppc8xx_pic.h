@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc8xx_pic.h 1.7 05/17/01 18:14:21 cort&n; */
 macro_line|#ifndef _PPC_KERNEL_PPC8xx_H
 DECL|macro|_PPC_KERNEL_PPC8xx_H
 mdefine_line|#define _PPC_KERNEL_PPC8xx_H

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.processor.h 1.19 05/18/01 08:18:10 patch&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_PPC_PROCESSOR_H
 DECL|macro|__ASM_PPC_PROCESSOR_H

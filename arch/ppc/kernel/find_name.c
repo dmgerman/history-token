@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.find_name.c 1.5 05/17/01 18:14:21 cort&n; */
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;

@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * $Id: bitops.h,v 1.12 2000/02/09 03:28:31 davem Exp $&n; * bitops.h: Bit string operations on the ppc&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.bitops.h 1.7 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * bitops.h: Bit string operations on the ppc&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_BITOPS_H
 DECL|macro|_PPC_BITOPS_H

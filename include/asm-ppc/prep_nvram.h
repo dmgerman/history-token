@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_nvram.h 1.7 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; * PreP compliant NVRAM access&n; */
 multiline_comment|/* Corey Minyard (minyard@acm.org) - Stolen from PReP book.   Per the&n;   license I must say:&n;     (C) Copyright (Corey Minyard), (1998).  All rights reserved&n; */
 multiline_comment|/* Structure map for NVRAM on PowerPC Reference Platform */

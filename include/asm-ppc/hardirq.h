@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.hardirq.h 1.7 05/17/01 18:14:24 cort&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_HARDIRQ_H
 DECL|macro|__ASM_HARDIRQ_H

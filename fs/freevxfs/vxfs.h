@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ifndef _VXFS_SUPER_H_
 DECL|macro|_VXFS_SUPER_H_
 mdefine_line|#define _VXFS_SUPER_H_
-macro_line|#ident &quot;$Id: vxfs.h 1.9 2001/04/24 19:28:36 hch Exp hch $&quot;
+macro_line|#ident &quot;$Id: vxfs.h 1.11 2001/05/21 15:40:28 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - superblock structure.&n; *&n; * This file contains the definition of the disk and core&n; * superblocks of the Veritas Filesystem.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; * Data types for use with the VxFS ondisk format.&n; */
@@ -30,17 +30,17 @@ DECL|struct|vxfs_sb
 r_struct
 id|vxfs_sb
 (brace
-multiline_comment|/*&n;&t; * Version 1&n;&t; */
+multiline_comment|/*&n;&t; * Readonly fields for the version 1 superblock.&n;&t; *&n;&t; * Lots of this fields are no more used by version 2&n;&t; * and never filesystems.&n;&t; */
 DECL|member|vs_magic
 id|u_int32_t
 id|vs_magic
 suffix:semicolon
-multiline_comment|/* Magic, VXFS_MAGIC */
+multiline_comment|/* Magic number */
 DECL|member|vs_version
 r_int32
 id|vs_version
 suffix:semicolon
-multiline_comment|/* VxFS version, 1,2,3,4 */
+multiline_comment|/* VxFS version */
 DECL|member|vs_ctime
 id|u_int32_t
 id|vs_ctime
@@ -55,102 +55,102 @@ DECL|member|__unused1
 r_int32
 id|__unused1
 suffix:semicolon
-multiline_comment|/* ??? */
+multiline_comment|/* unused */
 DECL|member|__unused2
 r_int32
 id|__unused2
 suffix:semicolon
-multiline_comment|/* ??? */
+multiline_comment|/* unused */
 DECL|member|vs_old_logstart
 id|vx_daddr_t
 id|vs_old_logstart
 suffix:semicolon
-multiline_comment|/* OLD: addr of first log blk */
+multiline_comment|/* obsolete */
 DECL|member|vs_old_logend
 id|vx_daddr_t
 id|vs_old_logend
 suffix:semicolon
-multiline_comment|/* OLD: addr of last log blk */
+multiline_comment|/* obsolete */
 DECL|member|vs_bsize
 r_int32
 id|vs_bsize
 suffix:semicolon
-multiline_comment|/* Block size */
+multiline_comment|/* block size */
 DECL|member|vs_size
 r_int32
 id|vs_size
 suffix:semicolon
-multiline_comment|/* Number of blocks in FS */
+multiline_comment|/* number of blocks */
 DECL|member|vs_dsize
 r_int32
 id|vs_dsize
 suffix:semicolon
-multiline_comment|/* Number of data blocks */
+multiline_comment|/* number of data blocks */
 DECL|member|vs_old_ninode
 id|u_int32_t
 id|vs_old_ninode
 suffix:semicolon
-multiline_comment|/* OLD: number of inodes */
+multiline_comment|/* obsolete */
 DECL|member|vs_old_nau
 r_int32
 id|vs_old_nau
 suffix:semicolon
-multiline_comment|/* Number of allocation units */
+multiline_comment|/* obsolete */
 DECL|member|__unused3
 r_int32
 id|__unused3
 suffix:semicolon
-multiline_comment|/* ??? */
+multiline_comment|/* unused */
 DECL|member|vs_old_defiextsize
 r_int32
 id|vs_old_defiextsize
 suffix:semicolon
-multiline_comment|/* OLD: dfault indirect ext size */
+multiline_comment|/* obsolete */
 DECL|member|vs_old_ilbsize
 r_int32
 id|vs_old_ilbsize
 suffix:semicolon
-multiline_comment|/* OLD: Ilist block size in bytes */
+multiline_comment|/* obsolete */
 DECL|member|vs_immedlen
 r_int32
 id|vs_immedlen
 suffix:semicolon
-multiline_comment|/* Size of immediate data area */
+multiline_comment|/* size of immediate data area */
 DECL|member|vs_ndaddr
 r_int32
 id|vs_ndaddr
 suffix:semicolon
-multiline_comment|/* Number of direct extentes per inode */
+multiline_comment|/* number of direct extentes */
 DECL|member|vs_firstau
 id|vx_daddr_t
 id|vs_firstau
 suffix:semicolon
-multiline_comment|/* Address of first Allocation Unit */
+multiline_comment|/* address of first AU */
 DECL|member|vs_emap
 id|vx_daddr_t
 id|vs_emap
 suffix:semicolon
-multiline_comment|/* Offset of extent map in AU */
+multiline_comment|/* offset of extent map in AU */
 DECL|member|vs_imap
 id|vx_daddr_t
 id|vs_imap
 suffix:semicolon
-multiline_comment|/* Offset of inode map in AU (V1) */
+multiline_comment|/* offset of inode map in AU */
 DECL|member|vs_iextop
 id|vx_daddr_t
 id|vs_iextop
 suffix:semicolon
-multiline_comment|/* Offset of Ext. Op. map in AU */
+multiline_comment|/* offset of ExtOp. map in AU */
 DECL|member|vs_istart
 id|vx_daddr_t
 id|vs_istart
 suffix:semicolon
-multiline_comment|/* Offset of inode list in AU */
+multiline_comment|/* offset of inode list in AU */
 DECL|member|vs_bstart
 id|vx_daddr_t
 id|vs_bstart
 suffix:semicolon
-multiline_comment|/* Offset of first data block in AU */
+multiline_comment|/* offset of fdblock in AU */
 DECL|member|vs_femap
 id|vx_daddr_t
 id|vs_femap
@@ -180,77 +180,77 @@ DECL|member|vs_nindir
 r_int32
 id|vs_nindir
 suffix:semicolon
-multiline_comment|/* Number of entries in indirect */
+multiline_comment|/* number of entries in indir */
 DECL|member|vs_aulen
 r_int32
 id|vs_aulen
 suffix:semicolon
-multiline_comment|/* Length of AU in blocks */
+multiline_comment|/* length of AU in blocks */
 DECL|member|vs_auimlen
 r_int32
 id|vs_auimlen
 suffix:semicolon
-multiline_comment|/* Length of AU imap in blocks */
+multiline_comment|/* length of imap in blocks */
 DECL|member|vs_auemlen
 r_int32
 id|vs_auemlen
 suffix:semicolon
-multiline_comment|/* Length of AU emap in blocks */
+multiline_comment|/* length of emap in blocks */
 DECL|member|vs_auilen
 r_int32
 id|vs_auilen
 suffix:semicolon
-multiline_comment|/* Length of AU ilist in blocks */
+multiline_comment|/* length of ilist in blocks */
 DECL|member|vs_aupad
 r_int32
 id|vs_aupad
 suffix:semicolon
-multiline_comment|/* Length of AU pad in blocks */
+multiline_comment|/* length of pad in blocks */
 DECL|member|vs_aublocks
 r_int32
 id|vs_aublocks
 suffix:semicolon
-multiline_comment|/* Number of data blocks in AU */
+multiline_comment|/* data blocks in AU */
 DECL|member|vs_maxtier
 r_int32
 id|vs_maxtier
 suffix:semicolon
-multiline_comment|/* Log base 2 of aublocks */
+multiline_comment|/* log base 2 of aublocks */
 DECL|member|vs_inopb
 r_int32
 id|vs_inopb
 suffix:semicolon
-multiline_comment|/* Number of inodes per blk */
+multiline_comment|/* number of inodes per blk */
 DECL|member|vs_old_inopau
 r_int32
 id|vs_old_inopau
 suffix:semicolon
-multiline_comment|/* OLD: Number of inodes per AU */
+multiline_comment|/* obsolete */
 DECL|member|vs_old_inopilb
 r_int32
 id|vs_old_inopilb
 suffix:semicolon
-multiline_comment|/* OLD: Inodes per ilist blocks */
+multiline_comment|/* obsolete */
 DECL|member|vs_old_ndiripau
 r_int32
 id|vs_old_ndiripau
 suffix:semicolon
-multiline_comment|/* OLD: Num of directory inodes per au */
+multiline_comment|/* obsolete */
 DECL|member|vs_iaddrlen
 r_int32
 id|vs_iaddrlen
 suffix:semicolon
-multiline_comment|/* Size of indirect addr ext. */
+multiline_comment|/* size of indirect addr ext. */
 DECL|member|vs_bshift
 r_int32
 id|vs_bshift
 suffix:semicolon
-multiline_comment|/* Log base 2 of bsize */
+multiline_comment|/* log base 2 of bsize */
 DECL|member|vs_inoshift
 r_int32
 id|vs_inoshift
 suffix:semicolon
-multiline_comment|/* Log base 2 of inobp */
+multiline_comment|/* log base 2 of inobp */
 DECL|member|vs_bmask
 r_int32
 id|vs_bmask
@@ -270,18 +270,18 @@ DECL|member|vs_checksum
 r_int32
 id|vs_checksum
 suffix:semicolon
-multiline_comment|/* Checksum of V1 data */
+multiline_comment|/* checksum of V1 data */
 multiline_comment|/*&n;&t; * Version 1, writable&n;&t; */
 DECL|member|vs_free
 r_int32
 id|vs_free
 suffix:semicolon
-multiline_comment|/* Number of free blocks */
+multiline_comment|/* number of free blocks */
 DECL|member|vs_ifree
 r_int32
 id|vs_ifree
 suffix:semicolon
-multiline_comment|/* Number of free inodes */
+multiline_comment|/* number of free inodes */
 DECL|member|vs_efree
 r_int32
 id|vs_efree
@@ -289,42 +289,42 @@ id|vs_efree
 id|VXFS_NEFREE
 )braket
 suffix:semicolon
-multiline_comment|/* Number of free extents by size */
+multiline_comment|/* number of free extents by size */
 DECL|member|vs_flags
 r_int32
 id|vs_flags
 suffix:semicolon
-multiline_comment|/* Flags ?!? */
+multiline_comment|/* flags ?!? */
 DECL|member|vs_mod
 id|u_int8_t
 id|vs_mod
 suffix:semicolon
-multiline_comment|/* Filesystem has been changed */
+multiline_comment|/* filesystem has been changed */
 DECL|member|vs_clean
 id|u_int8_t
 id|vs_clean
 suffix:semicolon
-multiline_comment|/* Clean FS */
+multiline_comment|/* clean FS */
 DECL|member|__unused4
 id|u_int16_t
 id|__unused4
 suffix:semicolon
-multiline_comment|/* ??? */
+multiline_comment|/* unused */
 DECL|member|vs_firstlogid
 id|u_int32_t
 id|vs_firstlogid
 suffix:semicolon
-multiline_comment|/* Mount time log ID */
+multiline_comment|/* mount time log ID */
 DECL|member|vs_wtime
 id|u_int32_t
 id|vs_wtime
 suffix:semicolon
-multiline_comment|/* Last time written - sec */
+multiline_comment|/* last time written - sec */
 DECL|member|vs_wutime
 id|u_int32_t
 id|vs_wutime
 suffix:semicolon
-multiline_comment|/* Last time written - usec */
+multiline_comment|/* last time written - usec */
 DECL|member|vs_fname
 id|u_int8_t
 id|vs_fname
@@ -345,12 +345,12 @@ DECL|member|vs_logversion
 r_int32
 id|vs_logversion
 suffix:semicolon
-multiline_comment|/* Log format version */
+multiline_comment|/* log format version */
 DECL|member|__unused5
 r_int32
 id|__unused5
 suffix:semicolon
-multiline_comment|/* ??? */
+multiline_comment|/* unused */
 multiline_comment|/*&n;&t; * Version 2, Read-only&n;&t; */
 DECL|member|vs_oltext
 id|vx_daddr_t
@@ -369,27 +369,27 @@ DECL|member|vs_iauimlen
 r_int32
 id|vs_iauimlen
 suffix:semicolon
-multiline_comment|/* Size of inode map */
+multiline_comment|/* size of inode map */
 DECL|member|vs_iausize
 r_int32
 id|vs_iausize
 suffix:semicolon
-multiline_comment|/* Size of IAU in blocks */
+multiline_comment|/* size of IAU in blocks */
 DECL|member|vs_dinosize
 r_int32
 id|vs_dinosize
 suffix:semicolon
-multiline_comment|/* Size of inode in bytes */
+multiline_comment|/* size of inode in bytes */
 DECL|member|vs_old_dniaddr
 r_int32
 id|vs_old_dniaddr
 suffix:semicolon
-multiline_comment|/* OLD: Sum of indir levels per inode */
+multiline_comment|/* indir levels per inode */
 DECL|member|vs_checksum2
 r_int32
 id|vs_checksum2
 suffix:semicolon
-multiline_comment|/* Checksum of V2 RO */
+multiline_comment|/* checksum of V2 RO */
 multiline_comment|/*&n;&t; * Actually much more...&n;&t; */
 )brace
 suffix:semicolon
@@ -404,45 +404,45 @@ id|vxfs_sb
 op_star
 id|vsi_raw
 suffix:semicolon
-multiline_comment|/* Raw (on disk) supeblock */
+multiline_comment|/* raw (on disk) supeblock */
 DECL|member|vsi_bp
 r_struct
 id|buffer_head
 op_star
 id|vsi_bp
 suffix:semicolon
-multiline_comment|/* Buffer for raw superblock*/
+multiline_comment|/* buffer for raw superblock*/
 DECL|member|vsi_fship
 r_struct
 id|inode
 op_star
 id|vsi_fship
 suffix:semicolon
-multiline_comment|/* Fileset header inode */
+multiline_comment|/* fileset header inode */
 DECL|member|vsi_ilist
 r_struct
 id|inode
 op_star
 id|vsi_ilist
 suffix:semicolon
-multiline_comment|/* Inode list inode */
+multiline_comment|/* inode list inode */
 DECL|member|vsi_stilist
 r_struct
 id|inode
 op_star
 id|vsi_stilist
 suffix:semicolon
-multiline_comment|/* Structual inode list inode */
+multiline_comment|/* structual inode list inode */
 DECL|member|vsi_iext
 id|u_long
 id|vsi_iext
 suffix:semicolon
-multiline_comment|/* Initial inode list */
+multiline_comment|/* initial inode list */
 DECL|member|vsi_fshino
 id|ino_t
 id|vsi_fshino
 suffix:semicolon
-multiline_comment|/* Fileset header inode */
+multiline_comment|/* fileset header inode */
 DECL|member|vsi_oltext
 id|daddr_t
 id|vsi_oltext
@@ -713,13 +713,13 @@ suffix:semicolon
 DECL|macro|VXFS_IS_ORG
 mdefine_line|#define VXFS_IS_ORG(ip,org)&t;((ip)-&gt;vii_orgtype == (org))
 DECL|macro|VXFS_ISNONE
-mdefine_line|#define VXFS_ISNONE(ip)&t;&t;VXFS_IS_ORG((ip),VXFS_ORG_NONE)
+mdefine_line|#define VXFS_ISNONE(ip)&t;&t;VXFS_IS_ORG((ip), VXFS_ORG_NONE)
 DECL|macro|VXFS_ISEXT4
-mdefine_line|#define VXFS_ISEXT4(ip)&t;&t;VXFS_IS_ORG((ip),VXFS_ORG_EXT4)
+mdefine_line|#define VXFS_ISEXT4(ip)&t;&t;VXFS_IS_ORG((ip), VXFS_ORG_EXT4)
 DECL|macro|VXFS_ISIMMED
-mdefine_line|#define VXFS_ISIMMED(ip)&t;VXFS_IS_ORG((ip),VXFS_ORG_IMMED)
+mdefine_line|#define VXFS_ISIMMED(ip)&t;VXFS_IS_ORG((ip), VXFS_ORG_IMMED)
 DECL|macro|VXFS_ISTYPED
-mdefine_line|#define VXFS_ISTYPED(ip)&t;VXFS_IS_ORG((ip),VXFS_ORG_TYPED)
+mdefine_line|#define VXFS_ISTYPED(ip)&t;VXFS_IS_ORG((ip), VXFS_ORG_TYPED)
 multiline_comment|/*&n; * Get filesystem private data from VFS inode.&n; */
 DECL|macro|VXFS_INO
 mdefine_line|#define VXFS_INO(ip) &bslash;&n;&t;((struct vxfs_inode_info *)(ip)-&gt;u.generic_ip)

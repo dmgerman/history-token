@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.apus_pci.c 1.3 05/17/01 18:14:21 cort&n; */
 multiline_comment|/*&n; * Copyright (C) Michel D&#xfffd;nzer &lt;michdaen@iiic.ethz.ch&gt;&n; *&n; * APUS PCI routines.&n; *&n; * Currently, only B/CVisionPPC cards (Permedia2) are supported.&n; *&n; * Thanks to Geert Uytterhoeven for the idea:&n; * Read values from given config space(s) for the first devices, -1 otherwise&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_AMIGA

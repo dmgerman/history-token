@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.rpxhiox.h 1.3 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; * The Embedded Planet HIOX expansion card definitions.&n; * There were a few different versions of these cards, but only&n; * the one that escaped real production is defined here.&n; *&n; * Copyright (c) 2000 Dan Malek (dmalek@jlc.net)&n; */
 macro_line|#ifndef __MACH_RPX_HIOX_DEFS
 DECL|macro|__MACH_RPX_HIOX_DEFS

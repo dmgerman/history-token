@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.ivms8.h 1.5 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * Speech Design Integrated Voicemail Systems (IVMS8) boards.&n; *&n; * Copyright (c) 2000 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifndef __MACH_IVMS8_DEFS
 DECL|macro|__MACH_IVMS8_DEFS

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB FTDI SIO driver&n; *&n; * &t;Copyright (C) 1999, 2000&n; * &t;    Greg Kroah-Hartman (greg@kroah.com)&n; *          Bill Ryder (bryder@sgi.com)&n; *&n; * &t;This program is free software; you can redistribute it and/or modify&n; * &t;it under the terms of the GNU General Public License as published by&n; * &t;the Free Software Foundation; either version 2 of the License, or&n; * &t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * See http://reality.sgi.com/bryder_wellington/ftdi_sio for upto date testing info&n; *     and extra documentation&n; *       &n; * (12/3/2000) Bill Ryder&n; *     Added support for 8U232AM device.&n; *     Moved PID and VIDs into header file only.&n; *     Turned on low-latency for the tty (device will do high baudrates)&n; *     Added shutdown routine to close files when device removed.&n; *     More debug and error message cleanups.&n; *     &n; *&n; * (11/13/2000) Bill Ryder&n; *     Added spinlock protected open code and close code.&n; *     Multiple opens work (sort of - see webpage mentioned above).&n; *     Cleaned up comments. Removed multiple PID/VID definitions.&n; *     Factorised cts/dtr code&n; *     Made use of __FUNCTION__ in dbg&squot;s&n; *      &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (04/04/2000) Bill Ryder &n; *      Fixed bugs in TCGET/TCSET ioctls (by removing them - they are &n; *        handled elsewhere in the tty io driver chain).&n; *&n; * (03/30/2000) Bill Ryder &n; *      Implemented lots of ioctls&n; * &t;Fixed a race condition in write&n; * &t;Changed some dbg&squot;s to errs&n; *&n; * (03/26/2000) gkh&n; * &t;Split driver up into device specific pieces.&n; *&n; */
+multiline_comment|/*&n; * USB FTDI SIO driver&n; *&n; * &t;Copyright (C) 1999, 2000&n; * &t;    Greg Kroah-Hartman (greg@kroah.com)&n; *          Bill Ryder (bryder@sgi.com)&n; *&n; * &t;This program is free software; you can redistribute it and/or modify&n; * &t;it under the terms of the GNU General Public License as published by&n; * &t;the Free Software Foundation; either version 2 of the License, or&n; * &t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * See http://reality.sgi.com/bryder_wellington/ftdi_sio for upto date testing info&n; *     and extra documentation&n; * &n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *       &n; * (12/3/2000) Bill Ryder&n; *     Added support for 8U232AM device.&n; *     Moved PID and VIDs into header file only.&n; *     Turned on low-latency for the tty (device will do high baudrates)&n; *     Added shutdown routine to close files when device removed.&n; *     More debug and error message cleanups.&n; *     &n; *&n; * (11/13/2000) Bill Ryder&n; *     Added spinlock protected open code and close code.&n; *     Multiple opens work (sort of - see webpage mentioned above).&n; *     Cleaned up comments. Removed multiple PID/VID definitions.&n; *     Factorised cts/dtr code&n; *     Made use of __FUNCTION__ in dbg&squot;s&n; *      &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (04/04/2000) Bill Ryder &n; *      Fixed bugs in TCGET/TCSET ioctls (by removing them - they are &n; *        handled elsewhere in the tty io driver chain).&n; *&n; * (03/30/2000) Bill Ryder &n; *      Implemented lots of ioctls&n; * &t;Fixed a race condition in write&n; * &t;Changed some dbg&squot;s to errs&n; *&n; * (03/26/2000) gkh&n; * &t;Split driver up into device specific pieces.&n; *&n; */
 multiline_comment|/* Bill Ryder - bryder@sgi.com - wrote the FTDI_SIO implementation */
 multiline_comment|/* Thanx to FTDI for so kindly providing details of the protocol required */
 multiline_comment|/*   to talk to the device */
@@ -35,6 +35,13 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;ftdi_sio.h&quot;
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;, Bill Ryder &lt;bryder@sgi.com&gt;&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB FTDI RS232 Converters Driver&quot;
 DECL|variable|id_table_sio
 r_static
 id|__devinitdata
@@ -3763,6 +3770,20 @@ op_amp
 id|ftdi_8U232AM_device
 )paren
 suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3809,16 +3830,18 @@ c_func
 id|ftdi_sio_exit
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;, Bill Ryder &lt;bryder@sgi.com&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;USB FTDI RS232 converters driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_PARM

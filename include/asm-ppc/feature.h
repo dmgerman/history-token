@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.feature.h 1.9 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; * Definitions for accessing the Feature Control Register (FCR)&n; * on Power Macintoshes and similar machines.  The FCR lets us&n; * enable/disable, reset, and power up/down various peripherals.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998 Paul Mackerras &amp;&n; *                    Ben. Herrenschmidt.&n; *&n; * &n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_PPC_FEATURE_H

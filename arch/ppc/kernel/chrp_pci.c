@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.chrp_pci.c 1.16 05/17/01 18:14:21 cort&n; */
 multiline_comment|/*&n; * CHRP pci routines.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

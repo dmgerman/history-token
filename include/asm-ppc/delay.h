@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.delay.h 1.7 05/17/01 18:14:24 cort&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_DELAY_H
 DECL|macro|_PPC_DELAY_H

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.errno.h 1.7 05/17/01 18:14:24 cort&n; */
 macro_line|#ifndef _PPC_ERRNO_H
 DECL|macro|_PPC_ERRNO_H
 mdefine_line|#define _PPC_ERRNO_H

@@ -1097,6 +1097,8 @@ DECL|macro|VID_HARDWARE_W9966
 mdefine_line|#define VID_HARDWARE_W9966&t;29
 DECL|macro|VID_HARDWARE_SE401
 mdefine_line|#define VID_HARDWARE_SE401&t;30&t;/* SE401 USB webcams */
+DECL|macro|VID_HARDWARE_PWC
+mdefine_line|#define VID_HARDWARE_PWC&t;31&t;/* Philips webcams */
 multiline_comment|/*&n; *&t;Initialiser list&n; */
 DECL|struct|video_init
 r_struct

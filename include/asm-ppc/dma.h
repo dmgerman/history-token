@@ -1,4 +1,5 @@
-multiline_comment|/* $Id: dma.h,v 1.3 1997/03/16 06:20:39 cort Exp $&n; * linux/include/asm/dma.h: Defines for using and allocating dma channels.&n; * Written by Hennus Bergman, 1992.&n; * High DMA channel support &amp; info by Hannu Savolainen&n; * and John Boyd, Nov. 1992.&n; * Changes for ppc sound by Christoph Nadig&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.dma.h 1.8 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * linux/include/asm/dma.h: Defines for using and allocating dma channels.&n; * Written by Hennus Bergman, 1992.&n; * High DMA channel support &amp; info by Hannu Savolainen&n; * and John Boyd, Nov. 1992.&n; * Changes for ppc sound by Christoph Nadig&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

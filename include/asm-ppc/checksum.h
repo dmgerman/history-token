@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.checksum.h 1.8 05/17/01 18:14:24 cort&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_CHECKSUM_H
 DECL|macro|_PPC_CHECKSUM_H
@@ -183,53 +184,7 @@ id|sum
 id|__asm__
 c_func
 (paren
-"&quot;"
-id|addc
-op_mod
-l_int|0
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-"&bslash;"
-id|n
-"&bslash;"
-id|adde
-op_mod
-l_int|0
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|2
-"&bslash;"
-id|n
-"&bslash;"
-id|adde
-op_mod
-l_int|0
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|3
-"&bslash;"
-id|n
-"&bslash;"
-id|addze
-op_mod
-l_int|0
-comma
-op_mod
-l_int|0
-"&bslash;"
-id|n
-"&bslash;"
-"&quot;"
+l_string|&quot;&bslash;n&bslash;&n;&t;addc %0,%0,%1 &bslash;n&bslash;&n;&t;adde %0,%0,%2 &bslash;n&bslash;&n;&t;adde %0,%0,%3 &bslash;n&bslash;&n;&t;addze %0,%0 &bslash;n&bslash;&n;&t;&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

@@ -354,6 +354,11 @@ op_star
 id|tmp_buf
 suffix:semicolon
 multiline_comment|/* Temp buffer */
+DECL|member|tmp_buf_sem
+r_struct
+id|semaphore
+id|tmp_buf_sem
+suffix:semicolon
 multiline_comment|/* ---- Termios data ---- */
 DECL|member|c_iflag
 id|ulong

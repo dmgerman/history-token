@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.smp.c 1.23 05/17/01 18:14:22 cort&n; */
 multiline_comment|/*&n; * Smp support for ppc.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) borrowing a great&n; * deal of code from the sparc and intel versions.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; *&n; * Support for PReP (Motorola MTX/MVME) and Macintosh G4 SMP &n; * by Troy Benjegerdes (hozer@drgw.net)&n; *&n; * Support for DayStar quad CPU cards&n; * Copyright (C) XLR8, Inc. 1994-2000&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

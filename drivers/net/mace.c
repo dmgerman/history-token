@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Network device driver for the MACE ethernet controller on&n; * Apple Powermacs.  Assumes it&squot;s under a DBDMA controller.&n; *&n; * Copyright (C) 1996 Paul Mackerras.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

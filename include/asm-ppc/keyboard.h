@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.keyboard.h 1.5 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n; *  linux/include/asm-ppc/keyboard.h&n; *&n; *  Created 3 Nov 1996 by Geert Uytterhoeven&n; *  Modified for Power Macintosh by Paul Mackerras&n; */
 multiline_comment|/*&n; * This file contains the ppc architecture specific keyboard definitions -&n; * like the intel pc for prep systems, different for power macs.&n; */
 macro_line|#ifndef __ASMPPC_KEYBOARD_H

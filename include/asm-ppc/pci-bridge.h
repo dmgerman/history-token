@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.pci-bridge.h 1.11 05/21/01 01:31:30 cort&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _ASM_PCI_BRIDGE_H
 DECL|macro|_ASM_PCI_BRIDGE_H

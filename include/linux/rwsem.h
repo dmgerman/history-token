@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/linkage.h&gt;
 DECL|macro|RWSEM_DEBUG
 mdefine_line|#define RWSEM_DEBUG 0
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/system.h&gt;

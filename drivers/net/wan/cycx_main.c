@@ -1,9 +1,9 @@
-multiline_comment|/*&n;* cycx_main.c&t;Cyclades Cyclom 2X WAN Link Driver. Main module.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2000 Arnaldo Carvalho de Melo&n;*&n;* Based on sdlamain.c by Gene Kozin &lt;genek@compuserve.com&gt; &amp;&n;*&t;&t;&t; Jaspreet Singh&t;&lt;jaspreet@sangoma.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 2000/07/13&t;acme&t;&t;remove useless #ifdef MODULE and crap&n;*&t;&t;&t;&t;&t;&t;&t;#if KERNEL_VERSION &gt; blah&n;* 2000/07/06&t;acme&t;&t;__exit at cyclomx_cleanup&n;* 2000/04/02&t;acme&t;&t;dprintk and cycx_debug&n;* &t;&t;&t;&t;module_init/module_exit&n;* 2000/01/21&t;acme&t;&t;rename cyclomx_open to cyclomx_mod_inc_use_count&n;*&t;&t;&t;&t;and cyclomx_close to cyclomx_mod_dec_use_count&n;* 2000/01/08&t;acme&t;&t;cleanup&n;* 1999/11/06&t;acme&t;&t;cycx_down back to life (it needs to be&n;*&t;&t;&t;&t;called to iounmap the dpmbase)&n;* 1999/08/09&t;acme&t;&t;removed references to enable_tx_int&n;*&t;&t;&t;&t;use spinlocks instead of cli/sti in&n;*&t;&t;&t;&t;cyclomx_set_state&n;* 1999/05/19&t;acme&t;&t;works directly linked into the kernel&n;*&t;&t;&t;&t;init_waitqueue_head for 2.3.* kernel&n;* 1999/05/18&t;acme&t;&t;major cleanup (polling not needed), etc&n;* 1998/08/28&t;acme&t;&t;minor cleanup (ioctls for firmware deleted)&n;*&t;&t;&t;&t;queue_task activated&n;* 1998/08/08&t;acme&t;&t;Initial version.&n;*/
+multiline_comment|/*&n;* cycx_main.c&t;Cyclades Cyclom 2X WAN Link Driver. Main module.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2001 Arnaldo Carvalho de Melo&n;*&n;* Based on sdlamain.c by Gene Kozin &lt;genek@compuserve.com&gt; &amp;&n;*&t;&t;&t; Jaspreet Singh&t;&lt;jaspreet@sangoma.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 2001/05/09&t;acme&t;&t;Fix MODULE_DESC for debug, .bss nitpicks,&n;* &t;&t;&t;&t;some cleanups&n;* 2000/07/13&t;acme&t;&t;remove useless #ifdef MODULE and crap&n;*&t;&t;&t;&t;#if KERNEL_VERSION &gt; blah&n;* 2000/07/06&t;acme&t;&t;__exit at cyclomx_cleanup&n;* 2000/04/02&t;acme&t;&t;dprintk and cycx_debug&n;* &t;&t;&t;&t;module_init/module_exit&n;* 2000/01/21&t;acme&t;&t;rename cyclomx_open to cyclomx_mod_inc_use_count&n;*&t;&t;&t;&t;and cyclomx_close to cyclomx_mod_dec_use_count&n;* 2000/01/08&t;acme&t;&t;cleanup&n;* 1999/11/06&t;acme&t;&t;cycx_down back to life (it needs to be&n;*&t;&t;&t;&t;called to iounmap the dpmbase)&n;* 1999/08/09&t;acme&t;&t;removed references to enable_tx_int&n;*&t;&t;&t;&t;use spinlocks instead of cli/sti in&n;*&t;&t;&t;&t;cyclomx_set_state&n;* 1999/05/19&t;acme&t;&t;works directly linked into the kernel&n;*&t;&t;&t;&t;init_waitqueue_head for 2.3.* kernel&n;* 1999/05/18&t;acme&t;&t;major cleanup (polling not needed), etc&n;* 1998/08/28&t;acme&t;&t;minor cleanup (ioctls for firmware deleted)&n;*&t;&t;&t;&t;queue_task activated&n;* 1998/08/08&t;acme&t;&t;Initial version.&n;*/
 macro_line|#include &lt;linux/config.h&gt;&t;/* OS configuration options */
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
 macro_line|#include &lt;linux/string.h&gt;&t;/* inline memset(), etc. */
-macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
+macro_line|#include &lt;linux/slab.h&gt;&t;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk(), and other useful stuff */
 macro_line|#include &lt;linux/module.h&gt;&t;/* support for loadable modules */
 macro_line|#include &lt;linux/ioport.h&gt;&t;/* request_region(), release_region() */
@@ -17,8 +17,6 @@ DECL|variable|cycx_debug
 r_int
 r_int
 id|cycx_debug
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -35,7 +33,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|debug
+id|cycx_debug
 comma
 l_string|&quot;i&quot;
 )paren
@@ -43,7 +41,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|debug
+id|cycx_debug
 comma
 l_string|&quot;cyclomx debug level&quot;
 )paren
@@ -52,7 +50,7 @@ multiline_comment|/* Defines &amp; Macros */
 DECL|macro|DRV_VERSION
 mdefine_line|#define&t;DRV_VERSION&t;0&t;&t;/* version number */
 DECL|macro|DRV_RELEASE
-mdefine_line|#define&t;DRV_RELEASE&t;9&t;&t;/* release (minor version) number */
+mdefine_line|#define&t;DRV_RELEASE&t;10&t;&t;/* release (minor version) number */
 DECL|macro|MAX_CARDS
 mdefine_line|#define&t;MAX_CARDS&t;1&t;&t;/* max number of adapters */
 DECL|macro|CONFIG_CYCLOMX_CARDS
@@ -142,7 +140,7 @@ id|copyright
 (braket
 )braket
 op_assign
-l_string|&quot;(c) 1998-2000 Arnaldo Carvalho de Melo &quot;
+l_string|&quot;(c) 1998-2001 Arnaldo Carvalho de Melo &quot;
 l_string|&quot;&lt;acme@conectiva.com.br&gt;&quot;
 suffix:semicolon
 DECL|variable|ncards
@@ -157,8 +155,6 @@ r_static
 id|cycx_t
 op_star
 id|card_array
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* adapter data space */
 multiline_comment|/* Kernel Loadable Module Entry Points */
@@ -176,7 +172,8 @@ id|cnt
 comma
 id|err
 op_assign
-l_int|0
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|printk
 c_func
@@ -235,9 +232,8 @@ c_cond
 op_logical_neg
 id|card_array
 )paren
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|out
 suffix:semicolon
 id|memset
 c_func
@@ -317,17 +313,14 @@ id|card
 suffix:semicolon
 id|wandev-&gt;setup
 op_assign
-op_amp
 id|setup
 suffix:semicolon
 id|wandev-&gt;shutdown
 op_assign
-op_amp
 id|shutdown
 suffix:semicolon
 id|wandev-&gt;ioctl
 op_assign
-op_amp
 id|ioctl
 suffix:semicolon
 id|err
@@ -362,17 +355,17 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cnt
 )paren
-id|ncards
-op_assign
-id|cnt
-suffix:semicolon
-multiline_comment|/* adjust actual number of cards */
-r_else
 (brace
 id|kfree
 c_func
@@ -380,12 +373,21 @@ c_func
 id|card_array
 )paren
 suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENODEV
+r_goto
+id|out
 suffix:semicolon
 )brace
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+id|ncards
+op_assign
+id|cnt
+suffix:semicolon
+multiline_comment|/* adjust actual number of cards */
+id|out
+suffix:colon
 r_return
 id|err
 suffix:semicolon
@@ -457,14 +459,15 @@ op_star
 id|conf
 )paren
 (brace
-id|cycx_t
-op_star
-id|card
-suffix:semicolon
 r_int
 id|err
 op_assign
-l_int|0
+op_minus
+id|EFAULT
+suffix:semicolon
+id|cycx_t
+op_star
+id|card
 suffix:semicolon
 r_int
 id|irq
@@ -484,15 +487,19 @@ op_logical_or
 op_logical_neg
 id|conf
 )paren
-r_return
-op_minus
-id|EFAULT
+r_goto
+id|out
 suffix:semicolon
 id|card
 op_assign
 id|wandev
 op_member_access_from_pointer
 r_private
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EBUSY
 suffix:semicolon
 r_if
 c_cond
@@ -501,9 +508,13 @@ id|wandev-&gt;state
 op_ne
 id|WAN_UNCONFIGURED
 )paren
-r_return
+r_goto
+id|out
+suffix:semicolon
+id|err
+op_assign
 op_minus
-id|EBUSY
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -525,9 +536,8 @@ comma
 id|wandev-&gt;name
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -547,9 +557,8 @@ comma
 id|wandev-&gt;name
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate IRQ */
@@ -594,9 +603,8 @@ comma
 id|irq
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Configure hardware, load firmware, etc. */
@@ -659,19 +667,9 @@ c_cond
 (paren
 id|err
 )paren
-(brace
-id|free_irq
-c_func
-(paren
-id|irq
-comma
-id|card
-)paren
+r_goto
+id|out_irq
 suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
 multiline_comment|/* Initialize WAN device data space */
 id|wandev-&gt;irq
 op_assign
@@ -759,6 +757,21 @@ op_amp
 id|card-&gt;hw
 )paren
 suffix:semicolon
+r_goto
+id|out_irq
+suffix:semicolon
+)brace
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|err
+suffix:semicolon
+id|out_irq
+suffix:colon
 id|free_irq
 c_func
 (paren
@@ -767,12 +780,8 @@ comma
 id|card
 )paren
 suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Shut down WAN link driver. &n; * o shut down adapter hardware&n; * o release system resources.&n; *&n; * This function is called by the router when device is being unregistered or&n; * when it handles ROUTER_DOWN IOCTL.&n; */
@@ -786,6 +795,12 @@ op_star
 id|wandev
 )paren
 (brace
+r_int
+id|ret
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 id|cycx_t
 op_star
 id|card
@@ -802,9 +817,12 @@ id|wandev
 op_member_access_from_pointer
 r_private
 )paren
-r_return
-op_minus
-id|EFAULT
+r_goto
+id|out
+suffix:semicolon
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -813,8 +831,8 @@ id|wandev-&gt;state
 op_eq
 id|WAN_UNCONFIGURED
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 id|card
 op_assign
@@ -852,8 +870,10 @@ comma
 id|card
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Driver I/O control. &n; * o verify arguments&n; * o perform requested action&n; *&n; * This function is called when router handles one of the reserved user&n; * IOCTLs.  Note that &squot;arg&squot; still points to user address space.&n; *&n; * no reserved ioctls for the cyclom 2x up to now&n; */
@@ -899,8 +919,16 @@ op_star
 id|regs
 )paren
 (brace
-DECL|macro|card
-mdefine_line|#define&t;card&t;((cycx_t*)dev_id)
+id|cycx_t
+op_star
+id|card
+op_assign
+(paren
+id|cycx_t
+op_star
+)paren
+id|dev_id
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -911,7 +939,8 @@ id|card-&gt;wandev.state
 op_eq
 id|WAN_UNCONFIGURED
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
@@ -930,7 +959,8 @@ comma
 id|card-&gt;wandev.irq
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -946,8 +976,10 @@ c_func
 id|card
 )paren
 suffix:semicolon
-DECL|macro|card
-macro_line|#undef&t;card
+id|out
+suffix:colon
+r_return
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine is called by the protocol-specific modules when network&n; * interface is being open.  The only reason we need this, is because we&n; * have to call MOD_INC_USE_COUNT, but cannot include &squot;module.h&squot; where it&squot;s&n; * defined more than once into the same kernel module.&n; */
 DECL|function|cyclomx_mod_inc_use_count
@@ -996,7 +1028,7 @@ id|state
 (brace
 r_int
 r_int
-id|host_cpu_flags
+id|flags
 suffix:semicolon
 r_char
 op_star
@@ -1010,7 +1042,7 @@ c_func
 op_amp
 id|card-&gt;lock
 comma
-id|host_cpu_flags
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1072,7 +1104,7 @@ c_func
 op_amp
 id|card-&gt;lock
 comma
-id|host_cpu_flags
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1090,5 +1122,4 @@ c_func
 id|cyclomx_cleanup
 )paren
 suffix:semicolon
-multiline_comment|/* End */
 eof

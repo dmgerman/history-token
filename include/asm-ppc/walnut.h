@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.walnut.h 1.7 05/17/01 18:14:26 cort&n; */
 multiline_comment|/*&n; *&n; *    Copyright (c) 1999 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Copyright 2000 MontaVista Software Inc.&n; *&t;PPC405 modifications&n; * &t;Author: MontaVista Software, Inc.&n; *         &t;frank_rowand@mvista.com or source@mvista.com&n; * &t;   &t;debbie_chu@mvista.com&n; *&n; *    Module name: ppc405.h&n; *&n; *    Description:&n; *      Macros, definitions, and data structures specific to the IBM PowerPC&n; *      based boards.&n; *&n; *      This includes:&n; *&n; *         405GP &quot;Walnut&quot; evaluation board&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef&t;__WALNUT_H__

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.start.c 1.12 05/21/01 21:39:13 paulus&n; */
 multiline_comment|/*&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -99,8 +100,6 @@ DECL|variable|via_modem
 r_static
 r_int
 id|via_modem
-op_assign
-l_int|1
 suffix:semicolon
 DECL|variable|xmon_use_sccb
 r_static

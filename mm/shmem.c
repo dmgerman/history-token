@@ -2127,11 +2127,7 @@ l_int|0
 suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
-id|to_kdev_t
-c_func
-(paren
-id|dev
-)paren
+id|NODEV
 suffix:semicolon
 id|inode-&gt;i_mapping-&gt;a_ops
 op_assign

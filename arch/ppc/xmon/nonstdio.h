@@ -1,3 +1,9 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.nonstdio.h 1.5 05/17/01 18:14:23 cort&n; */
+DECL|typedef|FILE
+r_typedef
+r_int
+id|FILE
+suffix:semicolon
 r_extern
 id|FILE
 op_star

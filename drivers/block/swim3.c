@@ -4118,7 +4118,7 @@ suffix:semicolon
 )brace
 r_return
 op_minus
-id|ENOIOCTLCMD
+id|ENOTTY
 suffix:semicolon
 )brace
 DECL|function|floppy_open

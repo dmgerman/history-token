@@ -20,6 +20,13 @@ macro_line|#if (LINUX_VERSION_CODE &lt; 0x020300)
 DECL|macro|dev_kfree_skb_any
 mdefine_line|#define dev_kfree_skb_any dev_kfree_skb
 macro_line|#endif
+multiline_comment|/*&n; * Version Information&n; */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;v0.5.7&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Deti Fliegl, deti@fliegl.de&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;PL-2302 USB Interface Driver for Linux (c)2000&quot;
 multiline_comment|/* Definitions formerly in plusb.h relocated. No need to export them -EZA */
 DECL|macro|_PLUSB_INTPIPE
 mdefine_line|#define _PLUSB_INTPIPE&t;&t;0x1
@@ -2879,6 +2886,20 @@ c_func
 l_string|&quot;plusb_init: driver registered&quot;
 )paren
 suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_VERSION
+l_string|&quot; &quot;
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3015,14 +3036,18 @@ l_string|&quot;plusb_cleanup: finished&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
+c_func
 (paren
-l_string|&quot;Deti Fliegl, deti@fliegl.de&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
+c_func
 (paren
-l_string|&quot;PL-2302 USB Interface Driver for Linux (c)2000&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 DECL|variable|plusb_init

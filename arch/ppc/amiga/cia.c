@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.cia.c 1.7 05/21/01 00:48:24 cort&n; */
 multiline_comment|/*&n; *  linux/arch/m68k/amiga/cia.c - CIA support&n; *&n; *  Copyright (C) 1996 Roman Zippel&n; *&n; *  The concept of some functions bases on the original Amiga OS function&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

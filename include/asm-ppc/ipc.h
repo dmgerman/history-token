@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.ipc.h 1.5 05/17/01 18:14:24 cort&n; */
 macro_line|#ifndef __PPC_IPC_H__
 DECL|macro|__PPC_IPC_H__
 mdefine_line|#define __PPC_IPC_H__

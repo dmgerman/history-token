@@ -1,5 +1,5 @@
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; *      esssolo1.c  --  ESS Technology Solo1 (ES1946) audio driver.&n; *&n; *      Copyright (C) 1998-2001  Thomas Sailer (t.sailer@alumni.ethz.ch)&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Module command line parameters:&n; *   none so far&n; *&n; *  Supported devices:&n; *  /dev/dsp    standard /dev/dsp device, (mostly) OSS compatible&n; *  /dev/mixer  standard /dev/mixer device, (mostly) OSS compatible&n; *  /dev/midi   simple MIDI UART interface, no ioctl&n; *&n; *  Revision history&n; *    10.11.1998   0.1   Initial release (without any hardware)&n; *    22.03.1999   0.2   cinfo.blocks should be reset after GETxPTR ioctl.&n; *                       reported by Johan Maes &lt;joma@telindus.be&gt;&n; *                       return EAGAIN instead of EBUSY when O_NONBLOCK&n; *                       read/write cannot be executed&n; *    07.04.1999   0.3   implemented the following ioctl&squot;s: SOUND_PCM_READ_RATE, &n; *                       SOUND_PCM_READ_CHANNELS, SOUND_PCM_READ_BITS; &n; *                       Alpha fixes reported by Peter Jones &lt;pjones@redhat.com&gt;&n; *    15.06.1999   0.4   Fix bad allocation bug.&n; *                       Thanks to Deti Fliegl &lt;fliegl@in.tum.de&gt;&n; *    28.06.1999   0.5   Add pci_set_master&n; *    12.08.1999   0.6   Fix MIDI UART crashing the driver&n; *                       Changed mixer semantics from OSS documented&n; *                       behaviour to OSS &quot;code behaviour&quot;.&n; *                       Recording might actually work now.&n; *                       The real DDMA controller address register is at PCI config&n; *                       0x60, while the register at 0x18 is used as a placeholder&n; *                       register for BIOS address allocation. This register&n; *                       is supposed to be copied into 0x60, according&n; *                       to the Solo1 datasheet. When I do that, I can access&n; *                       the DDMA registers except the mask bit, which&n; *                       is stuck at 1. When I copy the contents of 0x18 +0x10&n; *                       to the DDMA base register, everything seems to work.&n; *                       The fun part is that the Windows Solo1 driver doesn&squot;t&n; *                       seem to do these tricks.&n; *                       Bugs remaining: plops and clicks when starting/stopping playback&n; *    31.08.1999   0.7   add spin_lock_init&n; *                       replaced current-&gt;state = x with set_current_state(x)&n; *    03.09.1999   0.8   change read semantics for MIDI to match&n; *                       OSS more closely; remove possible wakeup race&n; *    07.10.1999   0.9   Fix initialization; complain if sequencer writes time out&n; *                       Revised resource grabbing for the FM synthesizer&n; *    28.10.1999   0.10  More waitqueue races fixed&n; *    09.12.1999   0.11  Work around stupid Alpha port issue (virt_to_bus(kmalloc(GFP_DMA)) &gt; 16M)&n; *                       Disabling recording on Alpha&n; *    12.01.2000   0.12  Prevent some ioctl&squot;s from returning bad count values on underrun/overrun;&n; *                       Tim Janik&squot;s BSE (Bedevilled Sound Engine) found this&n; *                       Integrated (aka redid 8-)) APM support patch by Zach Brown&n; *    07.02.2000   0.13  Use pci_alloc_consistent and pci_register_driver&n; *    19.02.2000   0.14  Use pci_dma_supported to determine if recording should be disabled&n; *    13.03.2000   0.15  Reintroduce initialization of a couple of PCI config space registers&n; *    21.11.2000   0.16  Initialize dma buffers in poll, otherwise poll may return a bogus mask&n; *    12.12.2000   0.17  More dma buffer initializations, patch from&n; *                       Tjeerd Mulder &lt;tjeerd.mulder@fujitsu-siemens.com&gt;&n; *    31.01.2001   0.18  Register/Unregister gameport, original patch from&n; *                       Nathaniel Daw &lt;daw@cs.cmu.edu&gt;&n; *                       Fix SETTRIGGER non OSS API conformity&n; *    10.03.2001         provide abs function, prevent picking up a bogus kernel macro&n; *                       for abs. Bug report by Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; */
+multiline_comment|/*&n; *      esssolo1.c  --  ESS Technology Solo1 (ES1946) audio driver.&n; *&n; *      Copyright (C) 1998-2001  Thomas Sailer (t.sailer@alumni.ethz.ch)&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Module command line parameters:&n; *   none so far&n; *&n; *  Supported devices:&n; *  /dev/dsp    standard /dev/dsp device, (mostly) OSS compatible&n; *  /dev/mixer  standard /dev/mixer device, (mostly) OSS compatible&n; *  /dev/midi   simple MIDI UART interface, no ioctl&n; *&n; *  Revision history&n; *    10.11.1998   0.1   Initial release (without any hardware)&n; *    22.03.1999   0.2   cinfo.blocks should be reset after GETxPTR ioctl.&n; *                       reported by Johan Maes &lt;joma@telindus.be&gt;&n; *                       return EAGAIN instead of EBUSY when O_NONBLOCK&n; *                       read/write cannot be executed&n; *    07.04.1999   0.3   implemented the following ioctl&squot;s: SOUND_PCM_READ_RATE, &n; *                       SOUND_PCM_READ_CHANNELS, SOUND_PCM_READ_BITS; &n; *                       Alpha fixes reported by Peter Jones &lt;pjones@redhat.com&gt;&n; *    15.06.1999   0.4   Fix bad allocation bug.&n; *                       Thanks to Deti Fliegl &lt;fliegl@in.tum.de&gt;&n; *    28.06.1999   0.5   Add pci_set_master&n; *    12.08.1999   0.6   Fix MIDI UART crashing the driver&n; *                       Changed mixer semantics from OSS documented&n; *                       behaviour to OSS &quot;code behaviour&quot;.&n; *                       Recording might actually work now.&n; *                       The real DDMA controller address register is at PCI config&n; *                       0x60, while the register at 0x18 is used as a placeholder&n; *                       register for BIOS address allocation. This register&n; *                       is supposed to be copied into 0x60, according&n; *                       to the Solo1 datasheet. When I do that, I can access&n; *                       the DDMA registers except the mask bit, which&n; *                       is stuck at 1. When I copy the contents of 0x18 +0x10&n; *                       to the DDMA base register, everything seems to work.&n; *                       The fun part is that the Windows Solo1 driver doesn&squot;t&n; *                       seem to do these tricks.&n; *                       Bugs remaining: plops and clicks when starting/stopping playback&n; *    31.08.1999   0.7   add spin_lock_init&n; *                       replaced current-&gt;state = x with set_current_state(x)&n; *    03.09.1999   0.8   change read semantics for MIDI to match&n; *                       OSS more closely; remove possible wakeup race&n; *    07.10.1999   0.9   Fix initialization; complain if sequencer writes time out&n; *                       Revised resource grabbing for the FM synthesizer&n; *    28.10.1999   0.10  More waitqueue races fixed&n; *    09.12.1999   0.11  Work around stupid Alpha port issue (virt_to_bus(kmalloc(GFP_DMA)) &gt; 16M)&n; *                       Disabling recording on Alpha&n; *    12.01.2000   0.12  Prevent some ioctl&squot;s from returning bad count values on underrun/overrun;&n; *                       Tim Janik&squot;s BSE (Bedevilled Sound Engine) found this&n; *                       Integrated (aka redid 8-)) APM support patch by Zach Brown&n; *    07.02.2000   0.13  Use pci_alloc_consistent and pci_register_driver&n; *    19.02.2000   0.14  Use pci_dma_supported to determine if recording should be disabled&n; *    13.03.2000   0.15  Reintroduce initialization of a couple of PCI config space registers&n; *    21.11.2000   0.16  Initialize dma buffers in poll, otherwise poll may return a bogus mask&n; *    12.12.2000   0.17  More dma buffer initializations, patch from&n; *                       Tjeerd Mulder &lt;tjeerd.mulder@fujitsu-siemens.com&gt;&n; *    31.01.2001   0.18  Register/Unregister gameport, original patch from&n; *                       Nathaniel Daw &lt;daw@cs.cmu.edu&gt;&n; *                       Fix SETTRIGGER non OSS API conformity&n; *    10.03.2001         provide abs function, prevent picking up a bogus kernel macro&n; *                       for abs. Bug report by Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; *    15.05.2001         pci_enable_device moved, return values in probe cleaned&n; *                       up. Marcus Meissner &lt;mm@caldera.de&gt;&n; */
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -72,36 +72,6 @@ macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|OSS_DOCUMENTED_MIXER_SEMANTICS
 macro_line|#undef OSS_DOCUMENTED_MIXER_SEMANTICS
-multiline_comment|/* --------------------------------------------------------------------- */
-multiline_comment|/* prevent picking up a bogus abs macro */
-DECL|macro|abs
-macro_line|#undef abs
-DECL|function|abs
-r_extern
-r_inline
-r_int
-id|abs
-c_func
-(paren
-r_int
-id|x
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|x
-OL
-l_int|0
-)paren
-r_return
-op_minus
-id|x
-suffix:semicolon
-r_return
-id|x
-suffix:semicolon
-)brace
 multiline_comment|/* --------------------------------------------------------------------- */
 macro_line|#ifndef PCI_VENDOR_ID_ESS
 DECL|macro|PCI_VENDOR_ID_ESS
@@ -13407,8 +13377,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|RSRCISIOREGION
-mdefine_line|#define RSRCISIOREGION(dev,num) (pci_resource_start((dev), (num)) != 0 &amp;&amp; &bslash;&n;&t;&t;&t;&t; (pci_resource_flags((dev), (num)) &amp; IORESOURCE_IO))
 DECL|function|solo1_probe
 r_static
 r_int
@@ -13438,48 +13406,83 @@ id|pm_dev
 op_star
 id|pmdev
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ret
+op_assign
+id|pci_enable_device
+c_func
+(paren
+id|pcidev
+)paren
+)paren
+)paren
+r_return
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|RSRCISIOREGION
+(paren
+id|pci_resource_flags
 c_func
 (paren
 id|pcidev
 comma
 l_int|0
 )paren
+op_amp
+id|IORESOURCE_IO
+)paren
 op_logical_or
 op_logical_neg
-id|RSRCISIOREGION
+(paren
+id|pci_resource_flags
 c_func
 (paren
 id|pcidev
 comma
 l_int|1
 )paren
+op_amp
+id|IORESOURCE_IO
+)paren
 op_logical_or
 op_logical_neg
-id|RSRCISIOREGION
+(paren
+id|pci_resource_flags
 c_func
 (paren
 id|pcidev
 comma
 l_int|2
 )paren
+op_amp
+id|IORESOURCE_IO
+)paren
 op_logical_or
 op_logical_neg
-id|RSRCISIOREGION
+(paren
+id|pci_resource_flags
 c_func
 (paren
 id|pcidev
 comma
 l_int|3
 )paren
+op_amp
+id|IORESOURCE_IO
+)paren
 )paren
 r_return
 op_minus
-l_int|1
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -13490,7 +13493,7 @@ l_int|0
 )paren
 r_return
 op_minus
-l_int|1
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* Recording requires 24-bit DMA, so attempt to set dma mask&n;&t; * to 24 bits first, then 32 bits (playback only) if that fails.&n;&t; */
 r_if
@@ -13522,7 +13525,7 @@ l_string|&quot;solo1: architecture does not support 24bit or 32bit PCI busmaster
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
@@ -13555,7 +13558,7 @@ l_string|&quot;solo1: out of memory&bslash;n&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memset
@@ -13698,6 +13701,11 @@ suffix:semicolon
 id|s-&gt;irq
 op_assign
 id|pcidev-&gt;irq
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EBUSY
 suffix:semicolon
 r_if
 c_cond
@@ -13851,6 +13859,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret
+op_assign
 id|request_irq
 c_func
 (paren
@@ -13863,6 +13874,7 @@ comma
 l_string|&quot;ESS Solo1&quot;
 comma
 id|s
+)paren
 )paren
 )paren
 (brace
@@ -13879,18 +13891,6 @@ r_goto
 id|err_irq
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pci_enable_device
-c_func
-(paren
-id|pcidev
-)paren
-)paren
-r_goto
-id|err_irq
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -13922,9 +13922,15 @@ l_int|1
 OL
 l_int|0
 )paren
+(brace
+id|ret
+op_assign
+id|s-&gt;dev_audio
+suffix:semicolon
 r_goto
 id|err_dev1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -13944,9 +13950,15 @@ l_int|1
 OL
 l_int|0
 )paren
+(brace
+id|ret
+op_assign
+id|s-&gt;dev_mixer
+suffix:semicolon
 r_goto
 id|err_dev2
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -13966,9 +13978,15 @@ l_int|1
 OL
 l_int|0
 )paren
+(brace
+id|ret
+op_assign
+id|s-&gt;dev_midi
+suffix:semicolon
 r_goto
 id|err_dev3
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -13988,9 +14006,15 @@ multiline_comment|/* ?? */
 OL
 l_int|0
 )paren
+(brace
+id|ret
+op_assign
+id|s-&gt;dev_dmfm
+suffix:semicolon
 r_goto
 id|err_dev4
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -14000,9 +14024,16 @@ c_func
 id|s
 )paren
 )paren
+(brace
+id|ret
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_goto
 id|err
 suffix:semicolon
+)brace
 multiline_comment|/* register gameport */
 id|gameport_register_port
 c_func
@@ -14174,8 +14205,7 @@ id|s
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|ret
 suffix:semicolon
 )brace
 DECL|function|solo1_remove

@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/pkt_sched.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;net/syncppp.h&gt;
 DECL|macro|MAXALIVECNT
@@ -191,6 +192,8 @@ DECL|variable|spppq_lock
 r_static
 id|spinlock_t
 id|spppq_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_static
 r_void
@@ -3864,6 +3867,62 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_case
+id|SPPPIOCGFLAGS
+suffix:colon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|ifr-&gt;ifr_data
+comma
+op_amp
+id|sp-&gt;pp_flags
+comma
+r_sizeof
+(paren
+id|sp-&gt;pp_flags
+)paren
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|SPPPIOCSFLAGS
+suffix:colon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|sp-&gt;pp_flags
+comma
+id|ifr-&gt;ifr_data
+comma
+r_sizeof
+(paren
+id|sp-&gt;pp_flags
+)paren
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 r_return
@@ -5625,13 +5684,6 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Linux port (c) 1998 Building Number Three Ltd &amp; Jan &bslash;&quot;Yenya&bslash;&quot; Kasprzak.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|spppq_lock
 )paren
 suffix:semicolon
 id|sppp_packet_type.type

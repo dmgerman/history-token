@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.spd8xx.h 1.5 05/17/01 18:14:25 cort&n; */
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * Speech Design SPD8xxTS boards.&n; *&n; * Copyright (c) 2000 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifndef __MACH_SPD8xx_DEFS
 DECL|macro|__MACH_SPD8xx_DEFS

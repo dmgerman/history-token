@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.vga.h 1.5 05/17/01 18:14:26 cort&n; */
 multiline_comment|/*&n; *&t;Access to VGA videoram&n; *&n; *&t;(c) 1998 Martin Mares &lt;mj@ucw.cz&gt;&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _LINUX_ASM_VGA_H_

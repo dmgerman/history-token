@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * BK Id: SCCS/s.amigappc.h 1.5 05/17/01 18:14:24 cort&n; */
 multiline_comment|/*&n;** asm-m68k/amigappc.h -- This header defines some values and pointers for&n;**                        the Phase 5 PowerUp card.&n;**&n;** Copyright 1997, 1998 by Phase5, Germany.&n;**&n;** This file is subject to the terms and conditions of the GNU General Public&n;** License.  See the file COPYING in the main directory of this archive&n;** for more details.&n;**&n;** Created: 7/22/97 by Jesper Skov&n;*/
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _M68K_AMIGAPPC_H
