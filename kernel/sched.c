@@ -487,7 +487,7 @@ DECL|member|cpumask
 id|cpumask_t
 id|cpumask
 suffix:semicolon
-multiline_comment|/*&n;&t; * CPU power of this group, SCHED_LOAD_SCALE being max power for a&n;&t; * single CPU. This should be read only (except for setup). Although&n;&t; * it will need to be written to at cpu hot(un)plug time, perhaps the&n;&t; * cpucontrol semaphore will provide enough exclusion?&n;&t; */
+multiline_comment|/*&n;&t; * CPU power of this group, SCHED_LOAD_SCALE being max power for a&n;&t; * single CPU. This is read only (except for setup, hotplug CPU).&n;&t; */
 DECL|member|cpu_power
 r_int
 r_int
@@ -14407,7 +14407,8 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * To enable disjoint top-level NUMA domains, define SD_NODES_PER_DOMAIN&n; * in arch code. That defines the number of nearby nodes in a node&squot;s top&n; * level scheduling domain.&n; */
-macro_line|#if defined(CONFIG_NUMA) &amp;&amp; defined(SD_NODES_PER_DOMAIN)
+macro_line|#ifdef CONFIG_NUMA
+macro_line|#ifdef SD_NODES_PER_DOMAIN
 multiline_comment|/**&n; * find_next_best_node - find the next node to include in a sched_domain&n; * @node: node whose sched_domain we&squot;re building&n; * @used_nodes: nodes already in the sched_domain&n; *&n; * Find the next node to include in a given scheduling domain.  Simply&n; * finds the closest node not already in the @used_nodes map.&n; *&n; * Should use nodemask_t.&n; */
 DECL|function|find_next_best_node
 r_static
@@ -14525,6 +14526,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * sched_domain_node_span - get a cpumask for a node&squot;s sched_domain&n; * @node: node whose cpumask we&squot;re constructing&n; * @size: number of nodes to include in this span&n; *&n; * Given a node, construct a good cpumask for its sched_domain to span.  It&n; * should be one that prevents unnecessary balancing, but also spreads tasks&n; * out optimally.&n; */
 DECL|function|sched_domain_node_span
+r_static
 id|cpumask_t
 id|__init
 id|sched_domain_node_span
@@ -14614,8 +14616,9 @@ r_return
 id|span
 suffix:semicolon
 )brace
-macro_line|#else /* CONFIG_NUMA &amp;&amp; SD_NODES_PER_DOMAIN */
+macro_line|#else /* SD_NODES_PER_DOMAIN */
 DECL|function|sched_domain_node_span
+r_static
 id|cpumask_t
 id|__init
 id|sched_domain_node_span
@@ -14629,7 +14632,8 @@ r_return
 id|cpu_possible_map
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_NUMA &amp;&amp; SD_NODES_PER_DOMAIN */
+macro_line|#endif /* SD_NODES_PER_DOMAIN */
+macro_line|#endif /* CONFIG_NUMA */
 macro_line|#ifdef CONFIG_SCHED_SMT
 r_static
 id|DEFINE_PER_CPU
