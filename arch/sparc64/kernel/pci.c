@@ -1133,13 +1133,9 @@ comma
 id|node
 )paren
 )paren
-(brace
 id|count
 op_increment
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 )brace
 id|node
 op_assign
