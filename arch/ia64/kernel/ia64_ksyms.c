@@ -288,6 +288,15 @@ c_func
 id|cpu_info__per_cpu
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+DECL|variable|__per_cpu_offset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__per_cpu_offset
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|kernel_thread
 id|EXPORT_SYMBOL
 c_func
@@ -698,6 +707,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|machvec_noop
+)paren
+suffix:semicolon
+DECL|variable|machvec_memory_fence
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machvec_memory_fence
 )paren
 suffix:semicolon
 DECL|variable|zero_page_memmap_ptr
