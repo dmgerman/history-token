@@ -73,8 +73,8 @@ suffix:semicolon
 multiline_comment|/* Flags for I2C */
 DECL|macro|FS_I2C_SEPARATE_DFSRR
 mdefine_line|#define FS_I2C_SEPARATE_DFSRR&t;0x02
-DECL|macro|FS_I2C_32BIT
-mdefine_line|#define FS_I2C_32BIT&t;&t;0x01
+DECL|macro|FS_I2C_CLOCK_5200
+mdefine_line|#define FS_I2C_CLOCK_5200&t;0x01
 macro_line|#endif&t;/* __ASM_FS_OCP_H__ */
 macro_line|#endif&t;/* __KERNEL__ */
 eof
