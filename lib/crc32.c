@@ -177,12 +177,9 @@ id|crc32table_le
 suffix:semicolon
 macro_line|# ifdef __LITTLE_ENDIAN
 DECL|macro|DO_CRC
-macro_line|#  define DO_CRC crc = (crc&gt;&gt;8) ^ tab[ crc &amp; 255 ]
-DECL|macro|ENDIAN_SHIFT
-macro_line|#  define ENDIAN_SHIFT 0
+macro_line|#  define DO_CRC(x) crc = tab[ (crc ^ (x)) &amp; 255 ] ^ (crc&gt;&gt;8)
 macro_line|# else
-macro_line|#  define DO_CRC crc = (crc&lt;&lt;8) ^ tab[ crc &gt;&gt; 24 ]
-macro_line|#  define ENDIAN_SHIFT 24
+macro_line|#  define DO_CRC(x) crc = tab[ ((crc &gt;&gt; 24) ^ (x)) &amp; 255] ^ (crc&lt;&lt;8)
 macro_line|# endif
 id|crc
 op_assign
@@ -214,8 +211,9 @@ id|len
 (brace
 r_do
 (brace
-id|crc
-op_xor_assign
+id|DO_CRC
+c_func
+(paren
 op_star
 (paren
 (paren
@@ -225,10 +223,7 @@ op_star
 id|b
 )paren
 op_increment
-op_lshift
-id|ENDIAN_SHIFT
-suffix:semicolon
-id|DO_CRC
+)paren
 suffix:semicolon
 )brace
 r_while
@@ -289,12 +284,28 @@ op_increment
 id|b
 suffix:semicolon
 id|DO_CRC
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|DO_CRC
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|DO_CRC
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|DO_CRC
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 )brace
 r_while
@@ -322,8 +333,9 @@ id|len
 (brace
 r_do
 (brace
-id|crc
-op_xor_assign
+id|DO_CRC
+c_func
+(paren
 op_star
 (paren
 (paren
@@ -333,10 +345,7 @@ op_star
 id|b
 )paren
 op_increment
-op_lshift
-id|ENDIAN_SHIFT
-suffix:semicolon
-id|DO_CRC
+)paren
 suffix:semicolon
 )brace
 r_while
@@ -621,12 +630,9 @@ id|crc32table_be
 suffix:semicolon
 macro_line|# ifdef __LITTLE_ENDIAN
 DECL|macro|DO_CRC
-macro_line|#  define DO_CRC crc = (crc&gt;&gt;8) ^ tab[ crc &amp; 255 ]
-DECL|macro|ENDIAN_SHIFT
-macro_line|#  define ENDIAN_SHIFT 24
+macro_line|#  define DO_CRC(x) crc = tab[ (crc ^ (x)) &amp; 255 ] ^ (crc&gt;&gt;8)
 macro_line|# else
-macro_line|#  define DO_CRC crc = (crc&lt;&lt;8) ^ tab[ crc &gt;&gt; 24 ]
-macro_line|#  define ENDIAN_SHIFT 0
+macro_line|#  define DO_CRC(x) crc = tab[ ((crc &gt;&gt; 24) ^ (x)) &amp; 255] ^ (crc&lt;&lt;8)
 macro_line|# endif
 id|crc
 op_assign
@@ -658,8 +664,9 @@ id|len
 (brace
 r_do
 (brace
-id|crc
-op_xor_assign
+id|DO_CRC
+c_func
+(paren
 op_star
 (paren
 (paren
@@ -669,10 +676,7 @@ op_star
 id|b
 )paren
 op_increment
-op_lshift
-id|ENDIAN_SHIFT
-suffix:semicolon
-id|DO_CRC
+)paren
 suffix:semicolon
 )brace
 r_while
@@ -733,12 +737,28 @@ op_increment
 id|b
 suffix:semicolon
 id|DO_CRC
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|DO_CRC
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|DO_CRC
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|DO_CRC
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 )brace
 r_while
@@ -766,8 +786,9 @@ id|len
 (brace
 r_do
 (brace
-id|crc
-op_xor_assign
+id|DO_CRC
+c_func
+(paren
 op_star
 (paren
 (paren
@@ -777,10 +798,7 @@ op_star
 id|b
 )paren
 op_increment
-op_lshift
-id|ENDIAN_SHIFT
-suffix:semicolon
-id|DO_CRC
+)paren
 suffix:semicolon
 )brace
 r_while
