@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/video/neofb.c -- NeoMagic Framebuffer Driver&n; *&n; * Copyright (c) 2001  Denis Oliver Kropp &lt;dok@convergence.de&gt;&n; *&n; *&n; * Card specific code is based on XFree86&squot;s neomagic driver.&n; * Framebuffer framework code is based on code of cyber2000fb.&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; *&n; * 0.3.1&n; *  - added module license (dok)&n; *&n; * 0.3&n; *  - hardware accelerated clear and move for 2200 and above (dok)&n; *  - maximum allowed dotclock is handled now (dok)&n; *&n; * 0.2.1&n; *  - correct panning after X usage (dok)&n; *  - added module and kernel parameters (dok)&n; *  - no stretching if external display is enabled (dok)&n; *&n; * 0.2&n; *  - initial version (dok)&n; *&n; *&n; * TODO&n; * - ioctl for internal/external switching&n; * - blanking&n; * - 32bit depth support, maybe impossible&n; * - disable pan-on-sync, need specs&n; *&n; * BUGS&n; * - white margin on bootup like with tdfxfb (colormap problem?)&n; *&n; */
+multiline_comment|/*&n; * linux/drivers/video/neofb.c -- NeoMagic Framebuffer Driver&n; *&n; * Copyright (c) 2001  Denis Oliver Kropp &lt;dok@convergence.de&gt;&n; *&n; *&n; * Card specific code is based on XFree86&squot;s neomagic driver.&n; * Framebuffer framework code is based on code of cyber2000fb.&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; *&n; * 0.3.2&n; *  - got rid of all floating point (dok) &n; *&n; * 0.3.1&n; *  - added module license (dok)&n; *&n; * 0.3&n; *  - hardware accelerated clear and move for 2200 and above (dok)&n; *  - maximum allowed dotclock is handled now (dok)&n; *&n; * 0.2.1&n; *  - correct panning after X usage (dok)&n; *  - added module and kernel parameters (dok)&n; *  - no stretching if external display is enabled (dok)&n; *&n; * 0.2&n; *  - initial version (dok)&n; *&n; *&n; * TODO&n; * - ioctl for internal/external switching&n; * - blanking&n; * - 32bit depth support, maybe impossible&n; * - disable pan-on-sync, need specs&n; *&n; * BUGS&n; * - white margin on bootup like with tdfxfb (colormap problem?)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -26,7 +26,7 @@ macro_line|#include &lt;video/fbcon-cfb24.h&gt;
 macro_line|#include &lt;video/fbcon-cfb32.h&gt;
 macro_line|#include &quot;neofb.h&quot;
 DECL|macro|NEOFB_VERSION
-mdefine_line|#define NEOFB_VERSION &quot;0.3.1&quot;
+mdefine_line|#define NEOFB_VERSION &quot;0.3.2&quot;
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|variable|disabled
 r_static
@@ -3327,7 +3327,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * neoCalcVCLK --&n; *&n; * Determine the closest clock frequency to the one requested.&n; */
 DECL|macro|REF_FREQ
-mdefine_line|#define REF_FREQ 14.31818
+mdefine_line|#define REF_FREQ 0xe517  /* 14.31818 in 20.12 fixed point */
 DECL|macro|MAX_N
 mdefine_line|#define MAX_N 127
 DECL|macro|MAX_D
@@ -3361,12 +3361,6 @@ id|d
 comma
 id|f
 suffix:semicolon
-r_float
-id|f_out
-suffix:semicolon
-r_float
-id|f_diff
-suffix:semicolon
 r_int
 id|n_best
 op_assign
@@ -3380,18 +3374,28 @@ id|f_best
 op_assign
 l_int|0
 suffix:semicolon
-r_float
+r_int
 id|f_best_diff
 op_assign
-l_float|999999.0
+(paren
+l_int|0x7ffff
+op_lshift
+l_int|12
+)paren
 suffix:semicolon
-r_float
+multiline_comment|/* 20.12 */
+r_int
 id|f_target
 op_assign
+(paren
 id|freq
+op_lshift
+l_int|12
+)paren
 op_div
-l_float|1000.0
+l_int|1000
 suffix:semicolon
+multiline_comment|/* 20.12 */
 r_for
 c_loop
 (paren
@@ -3435,19 +3439,33 @@ id|d
 op_increment
 )paren
 (brace
+r_int
+id|f_out
+suffix:semicolon
+multiline_comment|/* 20.12 */
+r_int
+id|f_diff
+suffix:semicolon
+multiline_comment|/* 20.12 */
 id|f_out
 op_assign
 (paren
+(paren
+(paren
+(paren
 id|n
 op_plus
-l_float|1.0
+l_int|1
+)paren
+op_lshift
+l_int|12
 )paren
 op_div
 (paren
 (paren
 id|d
 op_plus
-l_float|1.0
+l_int|1
 )paren
 op_star
 (paren
@@ -3455,6 +3473,10 @@ l_int|1
 op_lshift
 id|f
 )paren
+)paren
+)paren
+op_rshift
+l_int|12
 )paren
 op_star
 id|REF_FREQ
@@ -3547,9 +3569,11 @@ suffix:semicolon
 macro_line|#ifdef NEOFB_DEBUG
 id|printk
 (paren
-l_string|&quot;neoVCLK: f:%f NumLow=%d NumHi=%d Den=%d Df=%f&bslash;n&quot;
+l_string|&quot;neoVCLK: f:%d NumLow=%d NumHi=%d Den=%d Df=%d&bslash;n&quot;
 comma
 id|f_target
+op_rshift
+l_int|12
 comma
 id|par-&gt;VCLK3NumeratorLow
 comma
@@ -3558,6 +3582,8 @@ comma
 id|par-&gt;VCLK3Denominator
 comma
 id|f_best_diff
+op_rshift
+l_int|12
 )paren
 suffix:semicolon
 macro_line|#endif
