@@ -404,6 +404,13 @@ c_func
 id|auth_domain_lookup
 )paren
 suffix:semicolon
+DECL|variable|svc_authenticate
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|svc_authenticate
+)paren
+suffix:semicolon
 multiline_comment|/* RPC statistics */
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|rpc_proc_register
