@@ -3104,15 +3104,9 @@ l_int|52
 op_eq
 l_int|NULL
 )paren
-(brace
-id|skb_trim
-(paren
-id|skb
-comma
-l_int|0
-)paren
+r_return
+l_int|NULL
 suffix:semicolon
-)brace
 )brace
 )brace
 r_return
