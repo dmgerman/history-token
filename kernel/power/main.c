@@ -254,7 +254,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;suspend_finish - Do final work before exiting suspend sequence.&n; *&t;@state:&t;&t;State we&squot;re coming out of.&n; *&n; *&t;Call platform code to clean up, restart processes, and free the &n; *&t;console that we&squot;ve allocated.&n; */
+multiline_comment|/**&n; *&t;suspend_finish - Do final work before exiting suspend sequence.&n; *&t;@state:&t;&t;State we&squot;re coming out of.&n; *&n; *&t;Call platform code to clean up, restart processes, and free the &n; *&t;console that we&squot;ve allocated. This is not called for suspend-to-disk.&n; */
 DECL|function|suspend_finish
 r_static
 r_void
