@@ -256,6 +256,16 @@ id|count
 suffix:semicolon
 r_extern
 r_void
+id|pi_unclaim
+c_func
+(paren
+id|PIA
+op_star
+id|pi
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|pi_connect
 c_func
 (paren
