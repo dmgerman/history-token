@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * drivers/base/cpu.c - basic CPU class support&n; */
-macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
