@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsmem24 - Memory resource descriptors&n; *              $Revision: 17 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsmem24 - Memory resource descriptors&n; *              $Revision: 20 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -42,7 +42,7 @@ op_star
 id|output_struct
 op_assign
 (paren
-id|acpi_resource
+r_void
 op_star
 )paren
 op_star
@@ -91,6 +91,9 @@ suffix:semicolon
 op_star
 id|bytes_consumed
 op_assign
+(paren
+id|ACPI_SIZE
+)paren
 id|temp16
 op_plus
 l_int|3
@@ -182,6 +185,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Length parameter&n;&t; */
 id|output_struct-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|struct_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the final size of the structure&n;&t; */
@@ -389,7 +395,7 @@ op_star
 id|output_struct
 op_assign
 (paren
-id|acpi_resource
+r_void
 op_star
 )paren
 op_star
@@ -438,6 +444,9 @@ suffix:semicolon
 op_star
 id|bytes_consumed
 op_assign
+(paren
+id|ACPI_SIZE
+)paren
 id|temp16
 op_plus
 l_int|3
@@ -514,6 +523,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Length parameter&n;&t; */
 id|output_struct-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|struct_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the final size of the structure&n;&t; */
@@ -562,7 +574,7 @@ op_star
 id|output_struct
 op_assign
 (paren
-id|acpi_resource
+r_void
 op_star
 )paren
 op_star
@@ -611,6 +623,9 @@ suffix:semicolon
 op_star
 id|bytes_consumed
 op_assign
+(paren
+id|ACPI_SIZE
+)paren
 id|temp16
 op_plus
 l_int|3
@@ -660,6 +675,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Length parameter&n;&t; */
 id|output_struct-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|struct_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the final size of the structure&n;&t; */

@@ -1,8 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *              $Revision: 105 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *              $Revision: 109 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
@@ -152,7 +151,7 @@ id|ACPI_NS_LOCAL
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_internal_name_length&n; *&n; * PARAMETERS:  Info            - Info struct initialized with the&n; *                                external name pointer.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Calculate the length of the internal (AML) namestring&n; *              corresponding to the external (ASL) namestring.&n; *&n; ******************************************************************************/
-id|acpi_status
+r_void
 DECL|function|acpi_ns_get_internal_name_length
 id|acpi_ns_get_internal_name_length
 (paren
@@ -291,11 +290,6 @@ id|info-&gt;next_external_char
 op_assign
 id|next_external_char
 suffix:semicolon
-r_return
-(paren
-id|AE_OK
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_build_internal_name&n; *&n; * PARAMETERS:  Info            - Info struct fully initialized&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Construct the internal (AML) namestring&n; *              corresponding to the external (ASL) namestring.&n; *&n; ******************************************************************************/
 id|acpi_status
@@ -330,7 +324,7 @@ id|result
 op_assign
 l_int|NULL
 suffix:semicolon
-id|u32
+id|NATIVE_UINT_MIN32
 id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
@@ -602,6 +596,9 @@ r_char
 )paren
 id|ACPI_TOUPPER
 (paren
+(paren
+r_int
+)paren
 op_star
 id|external_name
 )paren
@@ -848,32 +845,32 @@ op_star
 id|converted_name
 )paren
 (brace
-id|u32
+id|NATIVE_UINT_MIN32
 id|prefix_length
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|NATIVE_UINT_MIN32
 id|names_index
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|NATIVE_UINT_MIN32
 id|num_segments
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|NATIVE_UINT_MIN32
 id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|NATIVE_UINT_MIN32
 id|j
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|NATIVE_UINT_MIN32
 id|required_length
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
@@ -969,6 +966,10 @@ op_assign
 id|i
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 r_break
 suffix:semicolon
 )brace
@@ -1287,6 +1288,9 @@ id|converted_name_length
 op_star
 id|converted_name_length
 op_assign
+(paren
+id|u32
+)paren
 id|required_length
 suffix:semicolon
 )brace
@@ -1759,21 +1763,11 @@ l_string|&quot;Parent of %p [%4.4s] is %p [%4.4s]&bslash;n&quot;
 comma
 id|child_node
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|child_node-&gt;name
+id|child_node-&gt;name.ascii
 comma
 id|parent_node
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|parent_node-&gt;name
+id|parent_node-&gt;name.ascii
 )paren
 )paren
 suffix:semicolon
@@ -1785,6 +1779,9 @@ id|parent_node-&gt;name.integer
 (brace
 id|return_VALUE
 (paren
+(paren
+id|acpi_name
+)paren
 id|parent_node-&gt;name.integer
 )paren
 suffix:semicolon
@@ -1799,12 +1796,7 @@ l_string|&quot;unable to find parent of %p (%4.4s)&bslash;n&quot;
 comma
 id|child_node
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|child_node-&gt;name
+id|child_node-&gt;name.ascii
 )paren
 )paren
 suffix:semicolon

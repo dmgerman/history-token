@@ -1,11 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exregion - ACPI default Op_region (address space) handlers&n; *              $Revision: 74 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exregion - ACPI default Op_region (address space) handlers&n; *              $Revision: 79 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;achware.h&quot;
-macro_line|#include &quot;acevents.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME
@@ -59,9 +55,14 @@ suffix:semicolon
 id|u32
 id|length
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|window_size
 suffix:semicolon
+macro_line|#ifndef _HW_ALIGNMENT_SUPPORT
+id|u32
+id|remainder
+suffix:semicolon
+macro_line|#endif
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_system_memory_space_handler&quot;
@@ -129,6 +130,43 @@ id|AE_AML_OPERAND_VALUE
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef _HW_ALIGNMENT_SUPPORT
+multiline_comment|/*&n;&t; * Hardware does not support non-aligned data transfers, we must verify&n;&t; * the request.&n;&t; */
+(paren
+r_void
+)paren
+id|acpi_ut_short_divide
+(paren
+(paren
+id|acpi_integer
+op_star
+)paren
+op_amp
+id|address
+comma
+id|length
+comma
+l_int|NULL
+comma
+op_amp
+id|remainder
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|remainder
+op_ne
+l_int|0
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_ALIGNMENT
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n;&t; * Does the request fit into the cached memory mapping?&n;&t; * Is 1) Address below the current mapping? OR&n;&t; *    2) Address beyond the current mapping?&n;&t; */
 r_if
 c_cond
@@ -180,7 +218,7 @@ multiline_comment|/*&n;&t;&t; * Don&squot;t attempt to map memory beyond the end
 id|window_size
 op_assign
 (paren
-id|u32
+id|ACPI_SIZE
 )paren
 (paren
 (paren
@@ -232,6 +270,30 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Could not map memory at %8.8X%8.8X, size %X&bslash;n&quot;
+comma
+id|ACPI_HIDWORD
+(paren
+id|address
+)paren
+comma
+id|ACPI_LODWORD
+(paren
+id|address
+)paren
+comma
+(paren
+id|u32
+)paren
+id|window_size
+)paren
+)paren
+suffix:semicolon
 id|mem_info-&gt;mapped_length
 op_assign
 l_int|0
@@ -292,7 +354,7 @@ id|address
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Perform the memory read or write */
+multiline_comment|/*&n;&t;* Perform the memory read or write&n;&t;*&n;&t;* Note: For machines that do not support non-aligned transfers, the target&n;&t;* address was checked for alignment above.  We do not attempt to break the&n;&t;* transfer up into smaller (byte-size) chunks because the AML specifically&n;&t;* asked for a transfer width that the hardware may require.&n;&t;*/
 r_switch
 c_cond
 (paren
@@ -320,24 +382,34 @@ op_star
 id|value
 op_assign
 (paren
-id|u32
+id|acpi_integer
 )paren
 op_star
+(paren
 (paren
 id|u8
 op_star
 )paren
 id|logical_addr_ptr
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|16
 suffix:colon
-id|ACPI_MOVE_UNALIGNED16_TO_16
-(paren
+op_star
 id|value
-comma
+op_assign
+(paren
+id|acpi_integer
+)paren
+op_star
+(paren
+(paren
+id|u16
+op_star
+)paren
 id|logical_addr_ptr
 )paren
 suffix:semicolon
@@ -346,25 +418,48 @@ suffix:semicolon
 r_case
 l_int|32
 suffix:colon
-id|ACPI_MOVE_UNALIGNED32_TO_32
-(paren
+op_star
 id|value
-comma
+op_assign
+(paren
+id|acpi_integer
+)paren
+op_star
+(paren
+(paren
+id|u32
+op_star
+)paren
 id|logical_addr_ptr
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if ACPI_MACHINE_WIDTH != 16
 r_case
 l_int|64
 suffix:colon
-id|ACPI_MOVE_UNALIGNED64_TO_64
-(paren
+op_star
 id|value
-comma
+op_assign
+(paren
+id|acpi_integer
+)paren
+op_star
+(paren
+(paren
+id|u64
+op_star
+)paren
 id|logical_addr_ptr
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_default
+suffix:colon
+multiline_comment|/* Bit_width was already validated */
 r_break
 suffix:semicolon
 )brace
@@ -400,37 +495,62 @@ suffix:semicolon
 r_case
 l_int|16
 suffix:colon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+op_star
 (paren
-id|logical_addr_ptr
-comma
-id|value
+id|u16
+op_star
 )paren
+id|logical_addr_ptr
+op_assign
+(paren
+id|u16
+)paren
+op_star
+id|value
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|32
 suffix:colon
-id|ACPI_MOVE_UNALIGNED32_TO_32
+op_star
 (paren
-id|logical_addr_ptr
-comma
-id|value
+id|u32
+op_star
 )paren
+id|logical_addr_ptr
+op_assign
+(paren
+id|u32
+)paren
+op_star
+id|value
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if ACPI_MACHINE_WIDTH != 16
 r_case
 l_int|64
 suffix:colon
-id|ACPI_MOVE_UNALIGNED64_TO_64
+op_star
 (paren
-id|logical_addr_ptr
-comma
-id|value
+id|u64
+op_star
 )paren
+id|logical_addr_ptr
+op_assign
+(paren
+id|u64
+)paren
+op_star
+id|value
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_default
+suffix:colon
+multiline_comment|/* Bit_width was already validated */
 r_break
 suffix:semicolon
 )brace
@@ -636,7 +756,7 @@ op_assign
 id|u16
 )paren
 (paren
-id|ACPI_SIZE
+id|u32
 )paren
 id|address
 suffix:semicolon
@@ -917,6 +1037,8 @@ r_break
 suffix:semicolon
 r_case
 id|ACPI_WRITE
+suffix:colon
+r_default
 suffix:colon
 id|return_ACPI_STATUS
 (paren

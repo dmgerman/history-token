@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acinterp.h - Interpreter subcomponent prototypes and defines&n; *       $Revision: 133 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acinterp.h - Interpreter subcomponent prototypes and defines&n; *       $Revision: 137 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACINTERP_H__
 DECL|macro|__ACINTERP_H__
@@ -19,6 +19,20 @@ comma
 id|acpi_walk_state
 op_star
 id|walk_state
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ex_check_object_type
+(paren
+id|acpi_object_type
+id|type_needed
+comma
+id|acpi_object_type
+id|this_type
+comma
+r_void
+op_star
+id|object
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * exxface - External interpreter interfaces&n; */
@@ -123,6 +137,20 @@ comma
 id|acpi_walk_state
 op_star
 id|walk_state
+)paren
+suffix:semicolon
+id|u32
+id|acpi_ex_convert_to_ascii
+(paren
+id|acpi_integer
+id|integer
+comma
+id|u32
+id|base
+comma
+id|u8
+op_star
+id|string
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * exfield - ACPI AML (p-code) execution - field manipulation&n; */
@@ -319,6 +347,19 @@ id|acpi_ex_opcode_6A_0T_1R
 id|acpi_walk_state
 op_star
 id|walk_state
+)paren
+suffix:semicolon
+id|u8
+id|acpi_ex_do_match
+(paren
+id|u32
+id|match_op
+comma
+id|acpi_integer
+id|package_value
+comma
+id|acpi_integer
+id|match_value
 )paren
 suffix:semicolon
 id|acpi_status
@@ -571,7 +612,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-id|acpi_status
+r_void
 id|acpi_ex_release_all_mutexes
 (paren
 id|ACPI_THREAD_STATE
@@ -827,20 +868,6 @@ id|walk_state
 suffix:semicolon
 multiline_comment|/*&n; * exdump - Scanner debug output routines&n; */
 r_void
-id|acpi_ex_show_hex_value
-(paren
-id|u32
-id|byte_count
-comma
-id|u8
-op_star
-id|aml_start
-comma
-id|u32
-id|lead_space
-)paren
-suffix:semicolon
-id|acpi_status
 id|acpi_ex_dump_operand
 (paren
 id|acpi_operand_object
@@ -898,6 +925,52 @@ id|node
 comma
 id|u32
 id|flags
+)paren
+suffix:semicolon
+r_void
+id|acpi_ex_out_string
+(paren
+r_char
+op_star
+id|title
+comma
+r_char
+op_star
+id|value
+)paren
+suffix:semicolon
+r_void
+id|acpi_ex_out_pointer
+(paren
+r_char
+op_star
+id|title
+comma
+r_void
+op_star
+id|value
+)paren
+suffix:semicolon
+r_void
+id|acpi_ex_out_integer
+(paren
+r_char
+op_star
+id|title
+comma
+id|u32
+id|value
+)paren
+suffix:semicolon
+r_void
+id|acpi_ex_out_address
+(paren
+r_char
+op_star
+id|title
+comma
+id|ACPI_PHYSICAL_ADDRESS
+id|value
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * exnames - interpreter/scanner name load/execute&n; */
@@ -1161,7 +1234,7 @@ id|u32
 id|rule
 )paren
 suffix:semicolon
-id|acpi_status
+r_void
 id|acpi_ex_release_global_lock
 (paren
 id|u8
@@ -1178,7 +1251,7 @@ id|u32
 id|base
 )paren
 suffix:semicolon
-id|acpi_status
+r_void
 id|acpi_ex_eisa_id_to_string
 (paren
 id|u32
@@ -1189,7 +1262,7 @@ op_star
 id|out_string
 )paren
 suffix:semicolon
-id|acpi_status
+r_void
 id|acpi_ex_unsigned_integer_to_string
 (paren
 id|acpi_integer

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsmethod - Parser/Interpreter interface - control method parsing&n; *              $Revision: 81 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsmethod - Parser/Interpreter interface - control method parsing&n; *              $Revision: 86 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -6,8 +6,6 @@ macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;actables.h&quot;
-macro_line|#include &quot;acdebug.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|ACPI_MODULE_NAME
@@ -74,11 +72,6 @@ comma
 l_string|&quot;**** Parsing [%4.4s] **** Named_obj=%p&bslash;n&quot;
 comma
 (paren
-r_char
-op_star
-)paren
-op_amp
-(paren
 (paren
 id|acpi_namespace_node
 op_star
@@ -86,7 +79,7 @@ op_star
 id|obj_handle
 )paren
 op_member_access_from_pointer
-id|name
+id|name.ascii
 comma
 id|obj_handle
 )paren
@@ -194,7 +187,7 @@ comma
 id|node-&gt;name.integer
 )paren
 suffix:semicolon
-id|op-&gt;node
+id|op-&gt;common.node
 op_assign
 id|node
 suffix:semicolon
@@ -309,11 +302,6 @@ comma
 l_string|&quot;**** [%4.4s] Parsed **** Named_obj=%p Op=%p&bslash;n&quot;
 comma
 (paren
-r_char
-op_star
-)paren
-op_amp
-(paren
 (paren
 id|acpi_namespace_node
 op_star
@@ -321,7 +309,7 @@ op_star
 id|obj_handle
 )paren
 op_member_access_from_pointer
-id|name
+id|name.ascii
 comma
 id|obj_handle
 comma
@@ -789,6 +777,9 @@ suffix:semicolon
 multiline_comment|/* On error, we must delete the new walk state */
 id|cleanup
 suffix:colon
+(paren
+r_void
+)paren
 id|acpi_ds_terminate_control_method
 (paren
 id|next_walk_state
@@ -935,6 +926,19 @@ comma
 id|walk_state
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|walk_state
+)paren
+(brace
+r_return
+(paren
+id|AE_BAD_PARAMETER
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* The current method object was saved in the walk state */
 id|obj_desc
 op_assign
@@ -989,6 +993,8 @@ c_cond
 id|walk_state-&gt;method_desc-&gt;method.semaphore
 )paren
 (brace
+id|status
+op_assign
 id|acpi_os_signal_semaphore
 (paren
 id|walk_state-&gt;method_desc-&gt;method.semaphore
@@ -996,6 +1002,28 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not signal method semaphore&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+multiline_comment|/* Ignore error and continue cleanup */
+)brace
 )brace
 multiline_comment|/* Decrement the thread count on the method parse tree */
 id|walk_state-&gt;method_desc-&gt;method.thread_count

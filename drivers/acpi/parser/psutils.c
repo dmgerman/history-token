@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psutils - Parser miscellaneous utilities (Parser only)&n; *              $Revision: 50 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psutils - Parser miscellaneous utilities (Parser only)&n; *              $Revision: 51 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -26,11 +26,11 @@ id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-id|op-&gt;data_type
+id|op-&gt;common.data_type
 op_assign
 id|ACPI_DESC_TYPE_PARSER
 suffix:semicolon
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_assign
 id|opcode
 suffix:semicolon
@@ -38,7 +38,7 @@ id|ACPI_DEBUG_ONLY_MEMBERS
 (paren
 id|ACPI_STRNCPY
 (paren
-id|op-&gt;op_name
+id|op-&gt;common.aml_op_name
 comma
 (paren
 id|acpi_ps_get_opcode_info
@@ -51,7 +51,7 @@ id|name
 comma
 r_sizeof
 (paren
-id|op-&gt;op_name
+id|op-&gt;common.aml_op_name
 )paren
 )paren
 )paren
@@ -108,7 +108,7 @@ id|size
 op_assign
 r_sizeof
 (paren
-id|acpi_parse2_object
+id|ACPI_PARSE_OBJ_NAMED
 )paren
 suffix:semicolon
 id|flags
@@ -129,7 +129,7 @@ id|size
 op_assign
 r_sizeof
 (paren
-id|acpi_parse2_object
+id|ACPI_PARSE_OBJ_NAMED
 )paren
 suffix:semicolon
 id|flags
@@ -150,7 +150,7 @@ id|size
 op_assign
 r_sizeof
 (paren
-id|acpi_parse2_object
+id|ACPI_PARSE_OBJ_NAMED
 )paren
 suffix:semicolon
 id|flags
@@ -164,7 +164,7 @@ id|size
 op_assign
 r_sizeof
 (paren
-id|acpi_parse_object
+id|ACPI_PARSE_OBJ_COMMON
 )paren
 suffix:semicolon
 id|flags
@@ -179,7 +179,7 @@ id|size
 op_eq
 r_sizeof
 (paren
-id|acpi_parse_object
+id|ACPI_PARSE_OBJ_COMMON
 )paren
 )paren
 (brace
@@ -216,7 +216,7 @@ comma
 id|opcode
 )paren
 suffix:semicolon
-id|op-&gt;flags
+id|op-&gt;common.flags
 op_assign
 id|flags
 suffix:semicolon
@@ -245,7 +245,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_INT_RETURN_VALUE_OP
 )paren
@@ -265,7 +265,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|op-&gt;flags
+id|op-&gt;common.flags
 op_eq
 id|ACPI_PARSEOP_GENERIC
 )paren
@@ -388,7 +388,7 @@ multiline_comment|/* The &quot;generic&quot; object has no name associated with 
 r_if
 c_cond
 (paren
-id|op-&gt;flags
+id|op-&gt;common.flags
 op_amp
 id|ACPI_PARSEOP_GENERIC
 )paren
@@ -402,15 +402,7 @@ suffix:semicolon
 multiline_comment|/* Only the &quot;Extended&quot; parse objects have a name */
 r_return
 (paren
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|name
+id|op-&gt;named.name
 )paren
 suffix:semicolon
 )brace
@@ -431,7 +423,7 @@ multiline_comment|/* The &quot;generic&quot; object has no name associated with 
 r_if
 c_cond
 (paren
-id|op-&gt;flags
+id|op-&gt;common.flags
 op_amp
 id|ACPI_PARSEOP_GENERIC
 )paren
@@ -439,15 +431,7 @@ id|ACPI_PARSEOP_GENERIC
 r_return
 suffix:semicolon
 )brace
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|name
+id|op-&gt;named.name
 op_assign
 id|name
 suffix:semicolon

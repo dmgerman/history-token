@@ -1,10 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exprep - ACPI AML (p-code) execution - field prep utilities&n; *              $Revision: 115 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exprep - ACPI AML (p-code) execution - field prep utilities&n; *              $Revision: 117 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acparser.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME
@@ -32,15 +31,13 @@ id|return_byte_alignment
 id|u32
 id|access
 suffix:semicolon
-id|u32
-id|length
-suffix:semicolon
 id|u8
 id|byte_alignment
 suffix:semicolon
 id|u8
 id|bit_length
 suffix:semicolon
+multiline_comment|/*    u32                     Length; */
 id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ex_decode_field_access&quot;
@@ -53,10 +50,6 @@ id|field_flags
 op_amp
 id|AML_FIELD_ACCESS_TYPE_MASK
 )paren
-suffix:semicolon
-id|length
-op_assign
-id|obj_desc-&gt;common_field.bit_length
 suffix:semicolon
 r_switch
 c_cond
@@ -78,6 +71,10 @@ suffix:semicolon
 macro_line|#if 0
 multiline_comment|/*&n;&t;&t; * TBD: optimize&n;&t;&t; *&n;&t;&t; * Any attempt to optimize the access size to the size of the field&n;&t;&t; * must take into consideration the length of the region and take&n;&t;&t; * care that an access to the field will not attempt to access&n;&t;&t; * beyond the end of the region.&n;&t;&t; */
 multiline_comment|/* Use the length to set the access type */
+id|length
+op_assign
+id|obj_desc-&gt;common_field.bit_length
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -219,7 +216,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown field access type %x&bslash;n&quot;
+l_string|&quot;Unknown field access type %X&bslash;n&quot;
 comma
 id|access
 )paren
@@ -780,6 +777,11 @@ id|obj_desc-&gt;index_field.data_obj
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* No other types should get here */
+r_break
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Store the constructed descriptor (Obj_desc) into the parent Node,&n;&t; * preserving the current type of that Named_obj.&n;&t; */
 id|status
@@ -805,14 +807,7 @@ l_string|&quot;set Named_obj %p (%4.4s) val = %p&bslash;n&quot;
 comma
 id|info-&gt;field_node
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-(paren
-id|info-&gt;field_node-&gt;name
-)paren
+id|info-&gt;field_node-&gt;name.ascii
 comma
 id|obj_desc
 )paren

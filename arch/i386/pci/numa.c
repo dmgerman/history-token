@@ -601,6 +601,15 @@ id|pci_config_write
 op_assign
 id|pci_conf1_write
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pcibios_scanned
+op_increment
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|pci_root_bus
 op_assign
 id|pcibios_scan_root

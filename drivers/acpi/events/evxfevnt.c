@@ -1,11 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *              $Revision: 51 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *              $Revision: 55 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;achware.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|ACPI_MODULE_NAME
@@ -189,6 +185,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Unload the SCI interrupt handler  */
+id|status
+op_assign
 id|acpi_ev_remove_sci_handler
 (paren
 )paren
@@ -219,6 +217,9 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+id|u32
+id|value
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_enable_event&quot;
@@ -240,7 +241,7 @@ c_cond
 (paren
 id|event
 OG
-id|ACPI_NUM_FIXED_EVENTS
+id|ACPI_EVENT_MAX
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -250,7 +251,9 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Enable the requested fixed event (by writing a one to the&n;&t;&t; * enable register bit)&n;&t;&t; */
-id|acpi_hw_bit_register_write
+id|status
+op_assign
+id|acpi_set_register
 (paren
 id|acpi_gbl_fixed_event_info
 (braket
@@ -264,13 +267,25 @@ comma
 id|ACPI_MTX_LOCK
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure that the hardware responded */
 r_if
 c_cond
 (paren
-l_int|1
-op_ne
-id|acpi_hw_bit_register_read
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Make sure that the hardware responded */
+id|status
+op_assign
+id|acpi_get_register
 (paren
 id|acpi_gbl_fixed_event_info
 (braket
@@ -279,8 +294,33 @@ id|event
 dot
 id|enable_register_id
 comma
+op_amp
+id|value
+comma
 id|ACPI_MTX_LOCK
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|value
+op_ne
+l_int|1
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -327,11 +367,28 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/* Enable the requested GPE number */
+id|status
+op_assign
 id|acpi_hw_enable_gpe
 (paren
 id|event
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -381,6 +438,9 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+id|u32
+id|value
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_disable_event&quot;
@@ -402,7 +462,7 @@ c_cond
 (paren
 id|event
 OG
-id|ACPI_NUM_FIXED_EVENTS
+id|ACPI_EVENT_MAX
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -412,7 +472,9 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Disable the requested fixed event (by writing a zero to the&n;&t;&t; * enable register bit)&n;&t;&t; */
-id|acpi_hw_bit_register_write
+id|status
+op_assign
+id|acpi_set_register
 (paren
 id|acpi_gbl_fixed_event_info
 (braket
@@ -429,9 +491,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
-id|acpi_hw_bit_register_read
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|status
+op_assign
+id|acpi_get_register
 (paren
 id|acpi_gbl_fixed_event_info
 (braket
@@ -440,8 +514,33 @@ id|event
 dot
 id|enable_register_id
 comma
+op_amp
+id|value
+comma
 id|ACPI_MTX_LOCK
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|value
+op_ne
+l_int|0
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -504,6 +603,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|status
+op_assign
 id|acpi_hw_disable_gpe
 (paren
 id|event
@@ -563,7 +664,7 @@ c_cond
 (paren
 id|event
 OG
-id|ACPI_NUM_FIXED_EVENTS
+id|ACPI_EVENT_MAX
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -573,7 +674,9 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Clear the requested fixed event (By writing a one to the&n;&t;&t; * status register bit)&n;&t;&t; */
-id|acpi_hw_bit_register_write
+id|status
+op_assign
+id|acpi_set_register
 (paren
 id|acpi_gbl_fixed_event_info
 (braket
@@ -610,6 +713,8 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+id|status
+op_assign
 id|acpi_hw_clear_gpe
 (paren
 id|event
@@ -685,7 +790,7 @@ c_cond
 (paren
 id|event
 OG
-id|ACPI_NUM_FIXED_EVENTS
+id|ACPI_EVENT_MAX
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -695,10 +800,9 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/* Get the status of the requested fixed event */
-op_star
-id|event_status
+id|status
 op_assign
-id|acpi_hw_bit_register_read
+id|acpi_get_register
 (paren
 id|acpi_gbl_fixed_event_info
 (braket
@@ -706,6 +810,8 @@ id|event
 )braket
 dot
 id|status_register_id
+comma
+id|event_status
 comma
 id|ACPI_MTX_LOCK
 )paren
@@ -734,6 +840,8 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/* Obtain status on the requested GPE number */
+id|status
+op_assign
 id|acpi_hw_get_gpe_status
 (paren
 id|event

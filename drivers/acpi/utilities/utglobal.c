@@ -1,12 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 155 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 161 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
 id|ACPI_MODULE_NAME
@@ -347,30 +344,40 @@ op_assign
 l_string|&quot;_GPE&quot;
 comma
 id|INTERNAL_TYPE_DEF_ANY
+comma
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;_PR_&quot;
 comma
 id|INTERNAL_TYPE_DEF_ANY
+comma
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;_SB_&quot;
 comma
 id|ACPI_TYPE_DEVICE
+comma
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;_SI_&quot;
 comma
 id|INTERNAL_TYPE_DEF_ANY
+comma
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;_TZ_&quot;
 comma
 id|INTERNAL_TYPE_DEF_ANY
+comma
+l_int|NULL
 )brace
 comma
 (brace
@@ -401,6 +408,8 @@ comma
 l_int|NULL
 comma
 id|ACPI_TYPE_ANY
+comma
+l_int|NULL
 )brace
 multiline_comment|/* Table terminator */
 )brace
@@ -532,6 +541,7 @@ multiline_comment|/* 36 Invalid          */
 suffix:semicolon
 multiline_comment|/* Hex to ASCII conversion table */
 DECL|variable|acpi_gbl_hex_to_ascii
+r_static
 r_const
 id|NATIVE_CHAR
 id|acpi_gbl_hex_to_ascii
@@ -573,7 +583,7 @@ l_char|&squot;F&squot;
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_hex_to_ascii_char&n; *&n; * PARAMETERS:  Integer             - Contains the hex digit&n; *              Position            - bit position of the digit within the&n; *                                    integer&n; *&n; * RETURN:      Ascii character&n; *&n; * DESCRIPTION: Convert a hex digit to an ascii character&n; *&n; ****************************************************************************/
-id|u8
+r_char
 DECL|function|acpi_ut_hex_to_ascii_char
 id|acpi_ut_hex_to_ascii_char
 (paren
@@ -1027,6 +1037,7 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_region_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a Space ID into a name string (Debug only)&n; *&n; ****************************************************************************/
 multiline_comment|/* Region type decoding */
 DECL|variable|acpi_gbl_region_types
+r_static
 r_const
 id|NATIVE_CHAR
 op_star
@@ -1108,6 +1119,7 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_event_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a Event ID into a name string (Debug only)&n; *&n; ****************************************************************************/
 multiline_comment|/* Event type decoding */
 DECL|variable|acpi_gbl_event_types
+r_static
 r_const
 id|NATIVE_CHAR
 op_star
@@ -1165,7 +1177,7 @@ id|event_id
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#if defined(ACPI_DEBUG) || defined(ENABLE_DEBUGGER)
 multiline_comment|/*&n; * Strings and procedures used for debug only&n; *&n; */
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_mutex_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a mutex ID into a name string (Debug only)&n; *&n; ****************************************************************************/
 id|NATIVE_CHAR
@@ -1377,8 +1389,12 @@ id|type
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Various strings for future use */
+macro_line|#if 0
+macro_line|#include &quot;amlcode.h&quot;
 multiline_comment|/* Data used in keeping track of fields */
 DECL|variable|acpi_gbl_FEnames
+r_static
 r_const
 id|NATIVE_CHAR
 op_star
@@ -1395,6 +1411,7 @@ l_string|&quot;?access?&quot;
 suffix:semicolon
 multiline_comment|/* FE = Field Element */
 DECL|variable|acpi_gbl_match_ops
+r_static
 r_const
 id|NATIVE_CHAR
 op_star
@@ -1421,6 +1438,7 @@ l_string|&quot;MGT&quot;
 suffix:semicolon
 multiline_comment|/* Access type decoding */
 DECL|variable|acpi_gbl_access_types
+r_static
 r_const
 id|NATIVE_CHAR
 op_star
@@ -1446,6 +1464,7 @@ comma
 suffix:semicolon
 multiline_comment|/* Update rule decoding */
 DECL|variable|acpi_gbl_update_rules
+r_static
 r_const
 id|NATIVE_CHAR
 op_star
@@ -1462,6 +1481,7 @@ comma
 l_string|&quot;Write_as_zeros&quot;
 )brace
 suffix:semicolon
+macro_line|#endif /* Future use */
 macro_line|#endif
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_valid_object_type&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      TRUE if valid object type&n; *&n; * DESCRIPTION: Validate an object type&n; *&n; ****************************************************************************/
 id|u8
@@ -1602,6 +1622,10 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 (paren
 r_void
@@ -1698,7 +1722,7 @@ op_star
 l_int|NULL
 )paren
 op_member_access_from_pointer
-id|next
+id|common.next
 )paren
 comma
 l_int|NULL
@@ -1720,13 +1744,13 @@ op_amp
 (paren
 (paren
 (paren
-id|acpi_parse2_object
+id|acpi_parse_object
 op_star
 )paren
 l_int|NULL
 )paren
 op_member_access_from_pointer
-id|next
+id|common.next
 )paren
 comma
 l_int|NULL
@@ -1821,7 +1845,7 @@ id|object_size
 op_assign
 r_sizeof
 (paren
-id|acpi_parse_object
+id|ACPI_PARSE_OBJ_COMMON
 )paren
 suffix:semicolon
 id|acpi_gbl_memory_lists
@@ -1833,7 +1857,7 @@ id|object_size
 op_assign
 r_sizeof
 (paren
-id|acpi_parse2_object
+id|ACPI_PARSE_OBJ_NAMED
 )paren
 suffix:semicolon
 id|acpi_gbl_memory_lists
@@ -2121,6 +2145,10 @@ id|acpi_gbl_drv_notify.handler
 op_assign
 l_int|NULL
 suffix:semicolon
+id|acpi_gbl_init_handler
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Global &quot;typed&quot; ACPI table pointers */
 id|acpi_gbl_RSDP
 op_assign
@@ -2249,7 +2277,7 @@ suffix:semicolon
 macro_line|#ifdef ACPI_DEBUG
 id|acpi_gbl_lowest_stack_pointer
 op_assign
-id|ACPI_UINT32_MAX
+id|ACPI_SIZE_MAX
 suffix:semicolon
 macro_line|#endif
 id|return_VOID

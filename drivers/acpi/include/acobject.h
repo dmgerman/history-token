@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of acpi_operand_object  (Internal object only)&n; *       $Revision: 110 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of acpi_operand_object  (Internal object only)&n; *       $Revision: 111 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACOBJECT_H
 DECL|macro|_ACOBJECT_H
@@ -785,6 +785,65 @@ suffix:semicolon
 DECL|typedef|acpi_operand_object
 )brace
 id|acpi_operand_object
+suffix:semicolon
+multiline_comment|/******************************************************************************&n; *&n; * ACPI_DESCRIPTOR - objects that share a common descriptor identifier&n; *&n; *****************************************************************************/
+multiline_comment|/* Object descriptor types */
+DECL|macro|ACPI_DESC_TYPE_CACHED
+mdefine_line|#define ACPI_DESC_TYPE_CACHED           0x11    /* Used only when object is cached */
+DECL|macro|ACPI_DESC_TYPE_STATE
+mdefine_line|#define ACPI_DESC_TYPE_STATE            0x20
+DECL|macro|ACPI_DESC_TYPE_STATE_UPDATE
+mdefine_line|#define ACPI_DESC_TYPE_STATE_UPDATE     0x21
+DECL|macro|ACPI_DESC_TYPE_STATE_PACKAGE
+mdefine_line|#define ACPI_DESC_TYPE_STATE_PACKAGE    0x22
+DECL|macro|ACPI_DESC_TYPE_STATE_CONTROL
+mdefine_line|#define ACPI_DESC_TYPE_STATE_CONTROL    0x23
+DECL|macro|ACPI_DESC_TYPE_STATE_RPSCOPE
+mdefine_line|#define ACPI_DESC_TYPE_STATE_RPSCOPE    0x24
+DECL|macro|ACPI_DESC_TYPE_STATE_PSCOPE
+mdefine_line|#define ACPI_DESC_TYPE_STATE_PSCOPE     0x25
+DECL|macro|ACPI_DESC_TYPE_STATE_WSCOPE
+mdefine_line|#define ACPI_DESC_TYPE_STATE_WSCOPE     0x26
+DECL|macro|ACPI_DESC_TYPE_STATE_RESULT
+mdefine_line|#define ACPI_DESC_TYPE_STATE_RESULT     0x27
+DECL|macro|ACPI_DESC_TYPE_STATE_NOTIFY
+mdefine_line|#define ACPI_DESC_TYPE_STATE_NOTIFY     0x28
+DECL|macro|ACPI_DESC_TYPE_STATE_THREAD
+mdefine_line|#define ACPI_DESC_TYPE_STATE_THREAD     0x29
+DECL|macro|ACPI_DESC_TYPE_WALK
+mdefine_line|#define ACPI_DESC_TYPE_WALK             0x44
+DECL|macro|ACPI_DESC_TYPE_PARSER
+mdefine_line|#define ACPI_DESC_TYPE_PARSER           0x66
+DECL|macro|ACPI_DESC_TYPE_OPERAND
+mdefine_line|#define ACPI_DESC_TYPE_OPERAND          0x88
+DECL|macro|ACPI_DESC_TYPE_NAMED
+mdefine_line|#define ACPI_DESC_TYPE_NAMED            0xAA
+DECL|union|acpi_desc
+r_typedef
+r_union
+id|acpi_desc
+(brace
+DECL|member|descriptor_id
+id|u8
+id|descriptor_id
+suffix:semicolon
+multiline_comment|/* To differentiate various internal objs */
+"&bslash;"
+DECL|member|object
+id|acpi_operand_object
+id|object
+suffix:semicolon
+DECL|member|node
+id|acpi_namespace_node
+id|node
+suffix:semicolon
+DECL|member|op
+id|acpi_parse_object
+id|op
+suffix:semicolon
+DECL|typedef|ACPI_DESCRIPTOR
+)brace
+id|ACPI_DESCRIPTOR
 suffix:semicolon
 macro_line|#endif /* _ACOBJECT_H */
 eof

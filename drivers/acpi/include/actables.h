@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actables.h - ACPI table management&n; *       $Revision: 36 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actables.h - ACPI table management&n; *       $Revision: 41 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTABLES_H__
 DECL|macro|__ACTABLES_H__
@@ -58,6 +58,26 @@ id|RSDT
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * tbget - Table &quot;get&quot; routines&n; */
+r_void
+id|acpi_tb_table_override
+(paren
+id|acpi_table_desc
+op_star
+id|table_info
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_tb_get_table_with_override
+(paren
+id|ACPI_POINTER
+op_star
+id|address
+comma
+id|acpi_table_desc
+op_star
+id|table_info
+)paren
+suffix:semicolon
 id|acpi_status
 id|acpi_tb_get_table_ptr
 (paren
@@ -119,7 +139,7 @@ comma
 id|u32
 id|flags
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|size
 comma
@@ -135,20 +155,12 @@ id|acpi_tb_get_all_tables
 (paren
 id|u32
 id|number_of_tables
-comma
-id|acpi_table_header
-op_star
-id|buffer_ptr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * tbinstall - Table installation&n; */
 id|acpi_status
 id|acpi_tb_install_table
 (paren
-id|acpi_table_header
-op_star
-id|table_ptr
-comma
 id|acpi_table_desc
 op_star
 id|table_info
@@ -169,10 +181,6 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_recognize_table
 (paren
-id|acpi_table_header
-op_star
-id|table_ptr
-comma
 id|acpi_table_desc
 op_star
 id|table_info
@@ -288,7 +296,7 @@ id|acpi_tb_map_acpi_table
 id|ACPI_PHYSICAL_ADDRESS
 id|physical_address
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|size
 comma

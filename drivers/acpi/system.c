@@ -1,4 +1,6 @@
-multiline_comment|/*&n; *  acpi_system.c - ACPI System Driver ($Revision: 45 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi_system.c - ACPI System Driver ($Revision: 57 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+DECL|macro|ACPI_C
+mdefine_line|#define ACPI_C
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -8,6 +10,9 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/compatmac.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
@@ -309,7 +314,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* flush caches */
-id|wbinvd
+id|ACPI_FLUSH_CPU_CACHE
 c_func
 (paren
 )paren
@@ -428,12 +433,14 @@ id|status
 op_assign
 id|AE_ERROR
 suffix:semicolon
+macro_line|#if 0
 r_int
 r_int
 id|flags
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* this is very broken, so don&squot;t do anything until it&squot;s fixed */
 id|save_flags
 c_func
 (paren
@@ -449,6 +456,25 @@ id|state
 r_case
 id|ACPI_STATE_S1
 suffix:colon
+multiline_comment|/* do nothing */
+r_break
+suffix:semicolon
+r_case
+id|ACPI_STATE_S2
+suffix:colon
+r_case
+id|ACPI_STATE_S3
+suffix:colon
+id|save_processor_context
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* TODO: this is horribly broken, fix it */
+multiline_comment|/* TODO: inline this function in acpi_suspend,or something. */
+r_break
+suffix:semicolon
+)brace
 id|barrier
 c_func
 (paren
@@ -462,24 +488,14 @@ c_func
 id|state
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_STATE_S2
+id|acpi_sleep_done
 suffix:colon
-r_case
-id|ACPI_STATE_S3
-suffix:colon
-id|do_suspend_magic
+id|restore_processor_context
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|acpi_restore_register_state
+id|fix_processor_context
 c_func
 (paren
 )paren
@@ -488,6 +504,13 @@ id|restore_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+macro_line|#endif
+id|printk
+c_func
+(paren
+l_string|&quot;ACPI: ACPI-based suspend currently broken, aborting&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -516,11 +539,6 @@ id|ACPI_STATE_S5
 )paren
 r_return
 id|AE_ERROR
-suffix:semicolon
-id|freeze_processes
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/* do we have a wakeup address for S2 and S3? */
 r_if
@@ -587,7 +605,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|wbinvd
+id|ACPI_FLUSH_CPU_CACHE
 c_func
 (paren
 )paren
@@ -630,19 +648,12 @@ id|ACPI_PHYSICAL_ADDRESS
 l_int|0
 )paren
 suffix:semicolon
-id|thaw_processes
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ACPI_SLEEP */
 multiline_comment|/* --------------------------------------------------------------------------&n;                              FS Interface (/proc)&n;   -------------------------------------------------------------------------- */
-macro_line|#include &lt;linux/compatmac.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 r_static
 r_int
 DECL|function|acpi_system_read_info
@@ -1029,20 +1040,27 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|acpi_bus_event
+id|event
+suffix:semicolon
+r_static
 r_char
-id|outbuf
+id|str
 (braket
 id|ACPI_MAX_STRING
 )braket
 suffix:semicolon
+r_static
 r_int
-id|size
+id|chars_remaining
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|acpi_bus_event
-id|event
+r_static
+r_char
+op_star
+id|ptr
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
@@ -1050,6 +1068,13 @@ c_func
 l_string|&quot;acpi_system_read_event&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chars_remaining
+)paren
+(brace
 id|memset
 c_func
 (paren
@@ -1064,16 +1089,6 @@ r_struct
 id|acpi_bus_event
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|count
-OL
-id|ACPI_MAX_STRING
-)paren
-r_goto
-id|end
 suffix:semicolon
 r_if
 c_cond
@@ -1112,31 +1127,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 (brace
-id|size
-op_assign
-id|sprintf
+id|return_VALUE
 c_func
 (paren
-id|outbuf
-comma
-l_string|&quot;error&bslash;n&quot;
+op_minus
+id|EIO
 )paren
 suffix:semicolon
-r_goto
-id|end
-suffix:semicolon
 )brace
-id|size
+id|chars_remaining
 op_assign
 id|sprintf
 c_func
 (paren
-id|outbuf
+id|str
 comma
 l_string|&quot;%s %s %08x %08x&bslash;n&quot;
 comma
@@ -1159,8 +1166,24 @@ comma
 id|event.data
 )paren
 suffix:semicolon
-id|end
-suffix:colon
+id|ptr
+op_assign
+id|str
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|chars_remaining
+OL
+id|count
+)paren
+(brace
+id|count
+op_assign
+id|chars_remaining
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1169,9 +1192,9 @@ c_func
 (paren
 id|buffer
 comma
-id|outbuf
+id|ptr
 comma
-id|size
+id|count
 )paren
 )paren
 id|return_VALUE
@@ -1184,12 +1207,20 @@ suffix:semicolon
 op_star
 id|ppos
 op_add_assign
-id|size
+id|count
+suffix:semicolon
+id|chars_remaining
+op_sub_assign
+id|count
+suffix:semicolon
+id|ptr
+op_add_assign
+id|count
 suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-id|size
+id|count
 )paren
 suffix:semicolon
 )brace
@@ -2604,6 +2635,15 @@ c_func
 id|yr
 )paren
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* we&squot;re trusting the FADT (see above)*/
+macro_line|#else
+multiline_comment|/* If we&squot;re not trusting the FADT, we should at least make it&n;&t; * right for _this_ century... ehm, what is _this_ century?&n;&t; *&n;&t; * TBD:&n;&t; *  ASAP: find piece of code in the kernel, e.g. star tracker driver,&n;&t; *        which we can trust to determine the century correctly. Atom&n;&t; *        watch driver would be nice, too...&n;&t; *&n;&t; *  if that has not happened, change for first release in 2050:&n; &t; *        if (yr&lt;50)&n;&t; *                yr += 2100;&n;&t; *        else&n;&t; *                yr += 2000;   // current line of code&n;&t; *&n;&t; *  if that has not happened either, please do on 2099/12/31:23:59:59&n;&t; *        s/2000/2100&n;&t; *&n;&t; */
+id|yr
+op_add_assign
+l_int|2000
+suffix:semicolon
+macro_line|#endif
 id|p
 op_add_assign
 id|sprintf
@@ -3671,7 +3711,7 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
-id|acpi_hw_bit_register_write
+id|acpi_set_register
 c_func
 (paren
 id|ACPI_BITREG_RT_CLOCK_ENABLE
@@ -4481,8 +4521,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -4530,7 +4568,7 @@ id|type_b
 suffix:semicolon
 id|status
 op_assign
-id|acpi_hw_get_sleep_type_data
+id|acpi_get_sleep_type_data
 c_func
 (paren
 id|i
@@ -4575,22 +4613,6 @@ c_func
 l_string|&quot;)&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Software suspend =&gt; we can do S4.&quot;
-)paren
-suffix:semicolon
-id|system-&gt;states
-(braket
-l_int|4
-)braket
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PM
 multiline_comment|/* Install the soft-off (S5) handler. */
 r_if
@@ -4615,6 +4637,14 @@ op_amp
 id|sysrq_acpi_poweroff_op
 )paren
 suffix:semicolon
+multiline_comment|/* workaround: some systems don&squot;t claim S4 support, but they&n;                   do support S5 (power-down). That is all we need, so&n;&t;&t;   indicate support. */
+id|system-&gt;states
+(braket
+id|ACPI_STATE_S4
+)braket
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 macro_line|#endif
 id|end
@@ -4622,8 +4652,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|kfree
@@ -4772,9 +4800,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-OG
 id|result
+OL
+l_int|0
 )paren
 id|return_VALUE
 c_func

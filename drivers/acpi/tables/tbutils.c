@@ -1,8 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 51 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 53 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_TABLES
 id|ACPI_MODULE_NAME
@@ -171,7 +170,6 @@ id|ACPI_MOVE_UNALIGNED32_TO_32
 op_amp
 id|signature
 comma
-op_amp
 id|table_header-&gt;signature
 )paren
 suffix:semicolon
@@ -298,7 +296,7 @@ id|acpi_tb_map_acpi_table
 id|ACPI_PHYSICAL_ADDRESS
 id|physical_address
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|size
 comma
@@ -312,7 +310,7 @@ id|acpi_table_header
 op_star
 id|table
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|table_size
 op_assign
 op_star
@@ -379,6 +377,9 @@ suffix:semicolon
 multiline_comment|/* Extract the full table length before we delete the mapping */
 id|table_size
 op_assign
+(paren
+id|ACPI_SIZE
+)paren
 id|table-&gt;length
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Validate the header and delete the mapping.&n;&t;&t; * We will create a mapping for the full table below.&n;&t;&t; */
@@ -528,11 +529,6 @@ l_string|&quot;Invalid checksum (%X) in table %4.4s&bslash;n&quot;
 comma
 id|checksum
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
 id|table_header-&gt;signature
 )paren
 )paren

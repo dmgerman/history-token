@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: pstree - Parser op tree manipulation/traversal/search&n; *              $Revision: 37 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: pstree - Parser op tree manipulation/traversal/search&n; *              $Revision: 39 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -43,7 +43,7 @@ id|op_info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 r_if
@@ -85,7 +85,7 @@ suffix:semicolon
 multiline_comment|/* Get the requested argument object */
 id|arg
 op_assign
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 suffix:semicolon
 r_while
 c_loop
@@ -100,7 +100,7 @@ op_decrement
 suffix:semicolon
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 )brace
 r_return
@@ -151,7 +151,7 @@ id|op_info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 r_if
@@ -170,7 +170,7 @@ id|ACPI_REPORT_ERROR
 (paren
 l_string|&quot;Ps_append_arg: Invalid AML Opcode: 0x%2.2X&bslash;n&quot;
 comma
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 )paren
 suffix:semicolon
@@ -197,26 +197,26 @@ multiline_comment|/* Append the argument to the linked argument list */
 r_if
 c_cond
 (paren
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 )paren
 (brace
 multiline_comment|/* Append to existing argument list */
 id|prev_arg
 op_assign
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 suffix:semicolon
 r_while
 c_loop
 (paren
-id|prev_arg-&gt;next
+id|prev_arg-&gt;common.next
 )paren
 (brace
 id|prev_arg
 op_assign
-id|prev_arg-&gt;next
+id|prev_arg-&gt;common.next
 suffix:semicolon
 )brace
-id|prev_arg-&gt;next
+id|prev_arg-&gt;common.next
 op_assign
 id|arg
 suffix:semicolon
@@ -224,7 +224,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* No argument list, this will be the first argument */
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 op_assign
 id|arg
 suffix:semicolon
@@ -236,13 +236,13 @@ c_loop
 id|arg
 )paren
 (brace
-id|arg-&gt;parent
+id|arg-&gt;common.parent
 op_assign
 id|op
 suffix:semicolon
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 )brace
 )brace
@@ -270,7 +270,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 (brace
 r_case
@@ -362,6 +362,11 @@ l_int|3
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* All others have no children */
+r_break
+suffix:semicolon
 )brace
 r_return
 (paren
@@ -440,7 +445,7 @@ suffix:semicolon
 multiline_comment|/* look for a sibling */
 id|next
 op_assign
-id|op-&gt;next
+id|op-&gt;common.next
 suffix:semicolon
 r_if
 c_cond
@@ -457,7 +462,7 @@ suffix:semicolon
 multiline_comment|/* look for a sibling of parent */
 id|parent
 op_assign
-id|op-&gt;parent
+id|op-&gt;common.parent
 suffix:semicolon
 r_while
 c_loop
@@ -494,7 +499,7 @@ id|op
 (brace
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 )brace
 r_if
@@ -515,13 +520,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|parent-&gt;next
+id|parent-&gt;common.next
 )paren
 (brace
 multiline_comment|/* found sibling of parent */
 r_return
 (paren
-id|parent-&gt;next
+id|parent-&gt;common.next
 )paren
 suffix:semicolon
 )brace
@@ -531,7 +536,7 @@ id|parent
 suffix:semicolon
 id|parent
 op_assign
-id|parent-&gt;parent
+id|parent-&gt;common.parent
 suffix:semicolon
 )brace
 r_return

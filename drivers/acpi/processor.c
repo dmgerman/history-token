@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * acpi_processor.c - ACPI Processor Driver ($Revision: 57 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *  TBD:&n; *&t;1. Make # power/performance states dynamic.&n; *&t;2. Support duty_cycle values that span bit 4.&n; *&t;3. Optimize by having scheduler determine business instead of&n; *&t;   having us try to calculate it here.&n; *&t;4. Need C1 timing -- must modify kernel (IRQ handler) to get this.&n; *&t;5. Convert time values to ticks (initially) to avoid having to do&n; *&t;   the math (acpi_get_timer_duration).&n; */
+multiline_comment|/*&n; * acpi_processor.c - ACPI Processor Driver ($Revision: 66 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *  TBD:&n; *&t;1. Make # power/performance states dynamic.&n; *&t;2. Support duty_cycle values that span bit 4.&n; *&t;3. Optimize by having scheduler determine business instead of&n; *&t;   having us try to calculate it here.&n; *&t;4. Need C1 timing -- must modify kernel (IRQ handler) to get this.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,6 +8,8 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;linux/compatmac.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
 macro_line|#include &quot;acpi_drivers.h&quot;
 DECL|macro|_COMPONENT
@@ -37,6 +39,12 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&t;&quot;ACPI: &quot;
+DECL|macro|US_TO_PM_TIMER_TICKS
+mdefine_line|#define US_TO_PM_TIMER_TICKS(t)&t;&t;((t * (PM_TIMER_FREQUENCY/1000)) / 1000)
+DECL|macro|C2_OVERHEAD
+mdefine_line|#define C2_OVERHEAD&t;&t;&t;4&t;/* 1us (3.579 ticks per us) */
+DECL|macro|C3_OVERHEAD
+mdefine_line|#define C3_OVERHEAD&t;&t;&t;4&t;/* 1us (3.579 ticks per us) */
 DECL|macro|ACPI_PROCESSOR_BUSY_METRIC
 mdefine_line|#define ACPI_PROCESSOR_BUSY_METRIC&t;10
 DECL|macro|ACPI_PROCESSOR_MAX_POWER
@@ -156,6 +164,10 @@ DECL|member|time
 id|u32
 id|time
 suffix:semicolon
+DECL|member|ticks
+id|u32
+id|ticks
+suffix:semicolon
 DECL|member|count
 id|u32
 id|count
@@ -185,6 +197,10 @@ suffix:semicolon
 DECL|member|latency
 id|u32
 id|latency
+suffix:semicolon
+DECL|member|latency_ticks
+id|u32
+id|latency_ticks
 suffix:semicolon
 DECL|member|power
 id|u32
@@ -974,6 +990,68 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                                Power Management&n;   -------------------------------------------------------------------------- */
 r_static
+r_inline
+id|u32
+DECL|function|ticks_elapsed
+id|ticks_elapsed
+(paren
+id|u32
+id|t1
+comma
+id|u32
+id|t2
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|t2
+op_ge
+id|t1
+)paren
+r_return
+(paren
+id|t2
+op_minus
+id|t1
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_fadt.tmr_val_ext
+)paren
+r_return
+(paren
+(paren
+(paren
+l_int|0x00FFFFFF
+op_minus
+id|t1
+)paren
+op_plus
+id|t2
+)paren
+op_amp
+l_int|0x00FFFFFF
+)paren
+suffix:semicolon
+r_else
+r_return
+(paren
+(paren
+l_int|0xFFFFFFFF
+op_minus
+id|t1
+)paren
+op_plus
+id|t2
+)paren
+suffix:semicolon
+)brace
+r_static
 r_void
 DECL|function|acpi_processor_power_activate
 id|acpi_processor_power_activate
@@ -1024,7 +1102,7 @@ r_case
 id|ACPI_STATE_C3
 suffix:colon
 multiline_comment|/* Disable bus master reload */
-id|acpi_hw_bit_register_write
+id|acpi_set_register
 c_func
 (paren
 id|ACPI_BITREG_BUS_MASTER_RLD
@@ -1048,7 +1126,7 @@ r_case
 id|ACPI_STATE_C3
 suffix:colon
 multiline_comment|/* Enable bus master reload */
-id|acpi_hw_bit_register_write
+id|acpi_set_register
 c_func
 (paren
 id|ACPI_BITREG_BUS_MASTER_RLD
@@ -1095,18 +1173,15 @@ id|next_state
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
-id|start_ticks
+r_int
+id|sleep_ticks
 op_assign
 l_int|0
 suffix:semicolon
 id|u32
-id|end_ticks
-op_assign
-l_int|0
-suffix:semicolon
-id|u32
-id|time_elapsed
+id|t1
+comma
+id|t2
 op_assign
 l_int|0
 suffix:semicolon
@@ -1151,30 +1226,36 @@ c_cond
 id|pr-&gt;flags.bm_check
 )paren
 (brace
+id|u32
+id|bm_status
+op_assign
+l_int|0
+suffix:semicolon
 id|pr-&gt;power.bm_activity
 op_lshift_assign
 l_int|1
 suffix:semicolon
-id|pr-&gt;power.bm_activity
-op_and_assign
-l_int|0xFFFFFFFE
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|acpi_hw_bit_register_read
+id|acpi_get_register
 c_func
 (paren
 id|ACPI_BITREG_BUS_MASTER_STATUS
 comma
+op_amp
+id|bm_status
+comma
 id|ACPI_MTX_DO_NOT_LOCK
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bm_status
 )paren
 (brace
 id|pr-&gt;power.bm_activity
 op_increment
 suffix:semicolon
-id|acpi_hw_bit_register_write
+id|acpi_set_register
 c_func
 (paren
 id|ACPI_BITREG_BUS_MASTER_STATUS
@@ -1224,7 +1305,7 @@ id|pr-&gt;power.bm_activity
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Apply bus mastering demotion policy.  Automatically demote&n;&t;&t; * to avoid a faulty transition.  Note that the processor &n;&t;&t; * won&squot;t enter a low-power state during this call (to this &n;&t;&t; * funciton) but should upon the next.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Apply bus mastering demotion policy.  Automatically demote&n;&t;&t; * to avoid a faulty transition.  Note that the processor &n;&t;&t; * won&squot;t enter a low-power state during this call (to this &n;&t;&t; * funciton) but should upon the next.&n;&t;&t; *&n;&t;&t; * TBD: A better policy might be to fallback to the demotion &n;&t;&t; *      state (use it for this quantum only) istead of &n;&t;&t; *      demoting -- and rely on duration as our sole demotion&n;&t;&t; *      qualification.  This may, however, introduce DMA &n;&t;&t; *      issues (e.g. floppy DMA transfer overrun/underrun).&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1267,7 +1348,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;                 * TBD: Can&squot;t get time duration while in C1, as resumes&n;&t;&t; *      go to an ISR rather than here.  Need to instrument&n;&t;&t; *      base interrupt handler.&n;&t;&t; */
-id|time_elapsed
+id|sleep_ticks
 op_assign
 l_int|0xFFFFFFFF
 suffix:semicolon
@@ -1276,8 +1357,8 @@ suffix:semicolon
 r_case
 id|ACPI_STATE_C2
 suffix:colon
-multiline_comment|/* See how long we&squot;re asleep for */
-id|start_ticks
+multiline_comment|/* Get start time (ticks) */
+id|t1
 op_assign
 id|inl
 c_func
@@ -1298,7 +1379,7 @@ id|address
 )paren
 suffix:semicolon
 multiline_comment|/* Dummy op - must do something useless after P_LVL2 read */
-id|end_ticks
+id|t2
 op_assign
 id|inl
 c_func
@@ -1306,8 +1387,8 @@ c_func
 id|acpi_fadt.Xpm_tmr_blk.address
 )paren
 suffix:semicolon
-multiline_comment|/* Compute time elapsed */
-id|end_ticks
+multiline_comment|/* Get end time (ticks) */
+id|t2
 op_assign
 id|inl
 c_func
@@ -1321,17 +1402,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Compute the amount of time asleep (in the Cx state).&n;&t;&t; * TBD: Convert to PM timer ticks initially to avoid having&n;&t;&t; *      to do the math (acpi_get_timer_duration).&n;&t;&t; */
-id|acpi_get_timer_duration
+multiline_comment|/* Compute time (ticks) that we were actually asleep */
+id|sleep_ticks
+op_assign
+id|ticks_elapsed
 c_func
 (paren
-id|start_ticks
+id|t1
 comma
-id|end_ticks
-comma
-op_amp
-id|time_elapsed
+id|t2
 )paren
+op_minus
+id|cx-&gt;latency_ticks
+op_minus
+id|C2_OVERHEAD
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1339,7 +1423,7 @@ r_case
 id|ACPI_STATE_C3
 suffix:colon
 multiline_comment|/* Disable bus master arbitration */
-id|acpi_hw_bit_register_write
+id|acpi_set_register
 c_func
 (paren
 id|ACPI_BITREG_ARB_DISABLE
@@ -1349,8 +1433,8 @@ comma
 id|ACPI_MTX_DO_NOT_LOCK
 )paren
 suffix:semicolon
-multiline_comment|/* See how long we&squot;re asleep for */
-id|start_ticks
+multiline_comment|/* Get start time (ticks) */
+id|t1
 op_assign
 id|inl
 c_func
@@ -1371,7 +1455,7 @@ id|address
 )paren
 suffix:semicolon
 multiline_comment|/* Dummy op - must do something useless after P_LVL3 read */
-id|end_ticks
+id|t2
 op_assign
 id|inl
 c_func
@@ -1379,8 +1463,8 @@ c_func
 id|acpi_fadt.Xpm_tmr_blk.address
 )paren
 suffix:semicolon
-multiline_comment|/* Compute time elapsed */
-id|end_ticks
+multiline_comment|/* Get end time (ticks) */
+id|t2
 op_assign
 id|inl
 c_func
@@ -1389,7 +1473,7 @@ id|acpi_fadt.Xpm_tmr_blk.address
 )paren
 suffix:semicolon
 multiline_comment|/* Enable bus master arbitration */
-id|acpi_hw_bit_register_write
+id|acpi_set_register
 c_func
 (paren
 id|ACPI_BITREG_ARB_DISABLE
@@ -1405,17 +1489,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Compute the amount of time asleep (in the Cx state).&n;&t;&t; * TBD: Convert to PM timer ticks initially to avoid having&n;&t;&t; *      to do the math (acpi_get_timer_duration).&n;&t;&t; */
-id|acpi_get_timer_duration
+multiline_comment|/* Compute time (ticks) that we were actually asleep */
+id|sleep_ticks
+op_assign
+id|ticks_elapsed
 c_func
 (paren
-id|start_ticks
+id|t1
 comma
-id|end_ticks
-comma
-op_amp
-id|time_elapsed
+id|t2
 )paren
+op_minus
+id|cx-&gt;latency_ticks
+op_minus
+id|C3_OVERHEAD
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1443,9 +1530,9 @@ id|cx-&gt;promotion.state
 r_if
 c_cond
 (paren
-id|time_elapsed
-op_ge
-id|cx-&gt;promotion.threshold.time
+id|sleep_ticks
+OG
+id|cx-&gt;promotion.threshold.ticks
 )paren
 (brace
 id|cx-&gt;promotion.count
@@ -1502,7 +1589,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t; * Demotion?&n;&t; * ---------&n;&t; * Track the number of shorts (time asleep is less than time threshold)&n;&t; * and demote when the usage threshold is reached.  Note that bus&n;&t; * mastering demotions are checked prior to state transitions (above).&n;&t; */
+multiline_comment|/*&n;&t; * Demotion?&n;&t; * ---------&n;&t; * Track the number of shorts (time asleep is less than time threshold)&n;&t; * and demote when the usage threshold is reached.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1512,9 +1599,9 @@ id|cx-&gt;demotion.state
 r_if
 c_cond
 (paren
-id|time_elapsed
+id|sleep_ticks
 OL
-id|cx-&gt;demotion.threshold.time
+id|cx-&gt;demotion.threshold.ticks
 )paren
 (brace
 id|cx-&gt;demotion.count
@@ -1603,7 +1690,7 @@ id|pr-&gt;power.default_state
 op_assign
 id|ACPI_STATE_C1
 suffix:semicolon
-multiline_comment|/*&n;&t; * C1/C2&n;&t; * -----&n;&t; * Set the default C1 promotion and C2 demotion policies, where we&n;&t; * promote from C1 to C2 after several (10) successive C1 transitions,&n;&t; * as we cannot (currently) measure the time spent in C1. Demote from&n;&t; * C2 to C1 after experiencing several (3) &squot;shorts&squot; (time spent in C2&n;&t; * is less than the C2 transtional latency).&n;&t; */
+multiline_comment|/*&n;&t; * C1/C2&n;&t; * -----&n;&t; * Set the default C1 promotion and C2 demotion policies, where we&n;&t; * promote from C1 to C2 after several (10) successive C1 transitions,&n;&t; * as we cannot (currently) measure the time spent in C1. Demote from&n;&t; * C2 to C1 after experiencing several (4) &squot;shorts&squot; (time spent in C2&n;&t; * is less than the C2 transtion latency).&n;&t; */
 r_if
 c_cond
 (paren
@@ -1629,14 +1716,14 @@ id|pr-&gt;power.states
 id|ACPI_STATE_C1
 )braket
 dot
-id|promotion.threshold.time
+id|promotion.threshold.ticks
 op_assign
 id|pr-&gt;power.states
 (braket
 id|ACPI_STATE_C2
 )braket
 dot
-id|latency
+id|latency_ticks
 suffix:semicolon
 id|pr-&gt;power.states
 (braket
@@ -1654,21 +1741,21 @@ id|ACPI_STATE_C2
 dot
 id|demotion.threshold.count
 op_assign
-l_int|3
+l_int|4
 suffix:semicolon
 id|pr-&gt;power.states
 (braket
 id|ACPI_STATE_C2
 )braket
 dot
-id|demotion.threshold.time
+id|demotion.threshold.ticks
 op_assign
 id|pr-&gt;power.states
 (braket
 id|ACPI_STATE_C2
 )braket
 dot
-id|latency
+id|latency_ticks
 suffix:semicolon
 id|pr-&gt;power.states
 (braket
@@ -1680,7 +1767,7 @@ op_assign
 id|ACPI_STATE_C1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * C2/C3&n;&t; * -----&n;&t; * Set default C2 promotion and C3 demotion policies, where we promote&n;&t; * from C2 to C3 after 4 cycles (0x0F) of no bus mastering activity&n;&t; * (while maintaining sleep time criteria).  Demote immediately on a&n;&t; * short or whenever bus mastering activity occurs.&n;&t; */
+multiline_comment|/*&n;&t; * C2/C3&n;&t; * -----&n;&t; * Set default C2 promotion and C3 demotion policies, where we promote&n;&t; * from C2 to C3 after several (4) cycles of no bus mastering activity&n;&t; * while maintaining sleep time criteria.  Demote immediately on a&n;&t; * short or whenever bus mastering activity occurs.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1710,21 +1797,21 @@ id|ACPI_STATE_C2
 dot
 id|promotion.threshold.count
 op_assign
-l_int|1
+l_int|4
 suffix:semicolon
 id|pr-&gt;power.states
 (braket
 id|ACPI_STATE_C2
 )braket
 dot
-id|promotion.threshold.time
+id|promotion.threshold.ticks
 op_assign
 id|pr-&gt;power.states
 (braket
 id|ACPI_STATE_C3
 )braket
 dot
-id|latency
+id|latency_ticks
 suffix:semicolon
 id|pr-&gt;power.states
 (braket
@@ -1758,14 +1845,14 @@ id|pr-&gt;power.states
 id|ACPI_STATE_C3
 )braket
 dot
-id|demotion.threshold.time
+id|demotion.threshold.ticks
 op_assign
 id|pr-&gt;power.states
 (braket
 id|ACPI_STATE_C3
 )braket
 dot
-id|latency
+id|latency_ticks
 suffix:semicolon
 id|pr-&gt;power.states
 (braket
@@ -1930,8 +2017,9 @@ l_string|&quot;C2 not supported in SMP mode&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Otherwise we&squot;ve met all of our C2 requirements.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Otherwise we&squot;ve met all of our C2 requirements.&n;&t;&t; * Normalize the C2 latency to expidite policy.&n;&t;&t; */
 r_else
+(brace
 id|pr-&gt;power.states
 (braket
 id|ACPI_STATE_C2
@@ -1941,6 +2029,20 @@ id|valid
 op_assign
 l_int|1
 suffix:semicolon
+id|pr-&gt;power.states
+(braket
+id|ACPI_STATE_C2
+)braket
+dot
+id|latency_ticks
+op_assign
+id|US_TO_PM_TIMER_TICKS
+c_func
+(paren
+id|acpi_fadt.plvl2_lat
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * C3&n;&t; * --&n;&t; * TBD: Investigate use of WBINVD on UP/SMP system in absence of&n;&t; *&t;bm_control.&n;&t; */
 r_if
@@ -2037,7 +2139,7 @@ l_string|&quot;C3 not supported on PIIX4 with Type-F DMA&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Otherwise we&squot;ve met all of our C3 requirements.  Enable&n;&t;&t; * checking of bus mastering status (bm_check) so we can &n;&t;&t; * use this in our C3 policy.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Otherwise we&squot;ve met all of our C3 requirements.  &n;&t;&t; * Normalize the C2 latency to expidite policy.  Enable&n;&t;&t; * checking of bus mastering status (bm_check) so we can &n;&t;&t; * use this in our C3 policy.&n;&t;&t; */
 r_else
 (brace
 id|pr-&gt;power.states
@@ -2048,6 +2150,19 @@ dot
 id|valid
 op_assign
 l_int|1
+suffix:semicolon
+id|pr-&gt;power.states
+(braket
+id|ACPI_STATE_C3
+)braket
+dot
+id|latency_ticks
+op_assign
+id|US_TO_PM_TIMER_TICKS
+c_func
+(paren
+id|acpi_fadt.plvl3_lat
+)paren
 suffix:semicolon
 id|pr-&gt;flags.bm_check
 op_assign
@@ -2067,8 +2182,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -3374,8 +3487,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -3395,8 +3506,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -3416,8 +3525,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -4093,8 +4200,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -4131,8 +4236,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -4144,8 +4247,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|pr-&gt;flags.throttling
@@ -4263,8 +4364,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -4312,8 +4411,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -4349,8 +4446,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|ACPI_DEBUG_PRINT
@@ -4452,8 +4547,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -4702,8 +4795,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|ACPI_DEBUG_PRINT
@@ -4786,8 +4877,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                              FS Interface (/proc)&n;   -------------------------------------------------------------------------- */
-macro_line|#include &lt;linux/compatmac.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|variable|acpi_processor_dir
 r_struct
 id|proc_dir_entry
@@ -5548,7 +5637,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;   %cP%d:                  %d Mhz, %d mW, %d uS&bslash;n&quot;
+l_string|&quot;   %cP%d:                  %d MHz, %d mW, %d uS&bslash;n&quot;
 comma
 (paren
 id|i
@@ -5787,8 +5876,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -6225,8 +6312,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -7538,8 +7623,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|acpi_bus_get_device
 c_func
 (paren
@@ -7571,8 +7654,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
+op_logical_neg
 id|result
 )paren
 id|acpi_processor_apply_limit
@@ -7773,8 +7855,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -7791,8 +7871,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -7961,8 +8039,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 (brace
@@ -8189,9 +8265,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-OG
 id|result
+OL
+l_int|0
 )paren
 id|return_VALUE
 c_func
@@ -8239,8 +8315,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
+op_logical_neg
 id|result
 )paren
 id|remove_proc_entry

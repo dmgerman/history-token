@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acevents.h - Event subcomponent prototypes and defines&n; *       $Revision: 76 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acevents.h - Event subcomponent prototypes and defines&n; *       $Revision: 79 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACEVENTS_H__
 DECL|macro|__ACEVENTS_H__
@@ -52,7 +52,7 @@ id|u32
 id|timeout
 )paren
 suffix:semicolon
-r_void
+id|acpi_status
 id|acpi_ev_release_global_lock
 c_func
 (paren
@@ -127,7 +127,7 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * Evregion - Address Space handling&n; */
 id|acpi_status
-id|acpi_ev_install_default_address_space_handlers
+id|acpi_ev_init_address_spaces
 (paren
 r_void
 )paren
@@ -148,7 +148,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|acpi_integer
+r_void
 op_star
 id|value
 )paren
@@ -172,10 +172,13 @@ op_star
 id|return_value
 )paren
 suffix:semicolon
-r_void
-id|acpi_ev_disassociate_region_from_handler
-c_func
+id|acpi_status
+id|acpi_ev_attach_region
 (paren
+id|acpi_operand_object
+op_star
+id|handler_obj
+comma
 id|acpi_operand_object
 op_star
 id|region_obj
@@ -184,13 +187,9 @@ id|u8
 id|acpi_ns_is_locked
 )paren
 suffix:semicolon
-id|acpi_status
-id|acpi_ev_associate_region_and_handler
+r_void
+id|acpi_ev_detach_region
 (paren
-id|acpi_operand_object
-op_star
-id|handler_obj
-comma
 id|acpi_operand_object
 op_star
 id|region_obj

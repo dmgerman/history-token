@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsirq - IRQ resource descriptors&n; *              $Revision: 24 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsirq - IRQ resource descriptors&n; *              $Revision: 28 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -42,7 +42,7 @@ op_star
 id|output_struct
 op_assign
 (paren
-id|acpi_resource
+r_void
 op_star
 )paren
 op_star
@@ -159,6 +159,21 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* Zero interrupts is invalid! */
+id|return_ACPI_STATUS
+(paren
+id|AE_BAD_DATA
+)paren
+suffix:semicolon
+)brace
 id|output_struct-&gt;data.irq.number_of_interrupts
 op_assign
 id|i
@@ -167,6 +182,9 @@ multiline_comment|/*&n;&t; * Calculate the structure size based upon the number 
 id|struct_size
 op_add_assign
 (paren
+(paren
+id|ACPI_SIZE
+)paren
 id|output_struct-&gt;data.irq.number_of_interrupts
 op_minus
 l_int|1
@@ -271,6 +289,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Length parameter&n;&t; */
 id|output_struct-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|struct_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the final size of the structure&n;&t; */
@@ -536,7 +557,7 @@ op_star
 id|output_struct
 op_assign
 (paren
-id|acpi_resource
+r_void
 op_star
 )paren
 op_star
@@ -552,7 +573,7 @@ id|temp8
 op_assign
 l_int|0
 suffix:semicolon
-id|NATIVE_CHAR
+id|u8
 op_star
 id|temp_ptr
 suffix:semicolon
@@ -694,16 +715,16 @@ id|index
 op_increment
 )paren
 (brace
+id|ACPI_MOVE_UNALIGNED32_TO_32
+(paren
+op_amp
 id|output_struct-&gt;data.extended_irq.interrupts
 (braket
 id|index
 )braket
-op_assign
-(paren
-id|u32
-)paren
-op_star
+comma
 id|buffer
+)paren
 suffix:semicolon
 multiline_comment|/* Point to the next IRQ */
 id|buffer
@@ -719,9 +740,9 @@ op_star
 id|bytes_consumed
 OG
 (paren
-id|u32
-)paren
 (paren
+id|ACPI_SIZE
+)paren
 id|output_struct-&gt;data.extended_irq.number_of_interrupts
 op_star
 l_int|4
@@ -763,6 +784,10 @@ id|struct_size
 suffix:semicolon
 id|temp_ptr
 op_assign
+(paren
+id|u8
+op_star
+)paren
 id|output_struct-&gt;data.extended_irq.resource_source.string_ptr
 suffix:semicolon
 multiline_comment|/* Copy the string into the buffer */
@@ -848,6 +873,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Length parameter&n;&t; */
 id|output_struct-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|struct_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the final size of the structure&n;&t; */
@@ -924,11 +952,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set a pointer to the Length field - to be filled in later&n;&t; */
 id|length_field
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|u16
-op_star
-)paren
+comma
 id|buffer
+)paren
 suffix:semicolon
 id|buffer
 op_add_assign

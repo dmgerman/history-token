@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 130 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 137 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACUTILS_H
 DECL|macro|_ACUTILS_H
@@ -107,7 +107,7 @@ id|acpi_ut_hardware_initialize
 r_void
 )paren
 suffix:semicolon
-id|acpi_status
+r_void
 id|acpi_ut_subsystem_shutdown
 (paren
 r_void
@@ -120,7 +120,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Ut_global - Global data structures and procedures&n; */
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#if defined(ACPI_DEBUG) || defined(ENABLE_DEBUGGER)
 id|NATIVE_CHAR
 op_star
 id|acpi_ut_get_mutex_name
@@ -154,7 +154,7 @@ id|u32
 id|event_id
 )paren
 suffix:semicolon
-id|u8
+r_char
 id|acpi_ut_hex_to_ascii_char
 (paren
 id|acpi_integer
@@ -220,7 +220,7 @@ id|NATIVE_UINT
 id|count
 )paren
 suffix:semicolon
-id|u32
+r_int
 id|acpi_ut_strncmp
 (paren
 r_const
@@ -344,20 +344,57 @@ id|NATIVE_UINT
 id|count
 )paren
 suffix:semicolon
-id|u32
+r_int
 id|acpi_ut_to_upper
 (paren
-id|u32
+r_int
 id|c
 )paren
 suffix:semicolon
-id|u32
+r_int
 id|acpi_ut_to_lower
 (paren
-id|u32
+r_int
 id|c
 )paren
 suffix:semicolon
+r_extern
+r_const
+id|u8
+id|_acpi_ctype
+(braket
+)braket
+suffix:semicolon
+DECL|macro|_ACPI_XA
+mdefine_line|#define _ACPI_XA     0x00    /* extra alphabetic - not supported */
+DECL|macro|_ACPI_XS
+mdefine_line|#define _ACPI_XS     0x40    /* extra space */
+DECL|macro|_ACPI_BB
+mdefine_line|#define _ACPI_BB     0x00    /* BEL, BS, etc. - not supported */
+DECL|macro|_ACPI_CN
+mdefine_line|#define _ACPI_CN     0x20    /* CR, FF, HT, NL, VT */
+DECL|macro|_ACPI_DI
+mdefine_line|#define _ACPI_DI     0x04    /* &squot;0&squot;-&squot;9&squot; */
+DECL|macro|_ACPI_LO
+mdefine_line|#define _ACPI_LO     0x02    /* &squot;a&squot;-&squot;z&squot; */
+DECL|macro|_ACPI_PU
+mdefine_line|#define _ACPI_PU     0x10    /* punctuation */
+DECL|macro|_ACPI_SP
+mdefine_line|#define _ACPI_SP     0x08    /* space */
+DECL|macro|_ACPI_UP
+mdefine_line|#define _ACPI_UP     0x01    /* &squot;A&squot;-&squot;Z&squot; */
+DECL|macro|_ACPI_XD
+mdefine_line|#define _ACPI_XD     0x80    /* &squot;0&squot;-&squot;9&squot;, &squot;A&squot;-&squot;F&squot;, &squot;a&squot;-&squot;f&squot; */
+DECL|macro|ACPI_IS_DIGIT
+mdefine_line|#define ACPI_IS_DIGIT(c)  (_acpi_ctype[(unsigned char)(c)] &amp; (_ACPI_DI))
+DECL|macro|ACPI_IS_SPACE
+mdefine_line|#define ACPI_IS_SPACE(c)  (_acpi_ctype[(unsigned char)(c)] &amp; (_ACPI_SP))
+DECL|macro|ACPI_IS_XDIGIT
+mdefine_line|#define ACPI_IS_XDIGIT(c) (_acpi_ctype[(unsigned char)(c)] &amp; (_ACPI_XD))
+DECL|macro|ACPI_IS_UPPER
+mdefine_line|#define ACPI_IS_UPPER(c)  (_acpi_ctype[(unsigned char)(c)] &amp; (_ACPI_UP))
+DECL|macro|ACPI_IS_LOWER
+mdefine_line|#define ACPI_IS_LOWER(c)  (_acpi_ctype[(unsigned char)(c)] &amp; (_ACPI_LO))
 macro_line|#endif /* ACPI_USE_SYSTEM_CLIBRARY */
 multiline_comment|/*&n; * Ut_copy - Object construction and conversion interfaces&n; */
 id|acpi_status
@@ -395,6 +432,44 @@ comma
 id|u32
 op_star
 id|space_used
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ut_copy_ielement_to_eelement
+(paren
+id|u8
+id|object_type
+comma
+id|acpi_operand_object
+op_star
+id|source_object
+comma
+id|acpi_generic_state
+op_star
+id|state
+comma
+r_void
+op_star
+id|context
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ut_copy_ielement_to_ielement
+(paren
+id|u8
+id|object_type
+comma
+id|acpi_operand_object
+op_star
+id|source_object
+comma
+id|acpi_generic_state
+op_star
+id|state
+comma
+r_void
+op_star
+id|context
 )paren
 suffix:semicolon
 id|acpi_status
@@ -759,7 +834,7 @@ op_star
 id|object
 )paren
 suffix:semicolon
-id|acpi_status
+r_void
 id|acpi_ut_delete_internal_object_list
 (paren
 id|acpi_operand_object
@@ -1002,6 +1077,25 @@ op_star
 id|obj_length
 )paren
 suffix:semicolon
+id|acpi_status
+id|acpi_ut_get_element_length
+(paren
+id|u8
+id|object_type
+comma
+id|acpi_operand_object
+op_star
+id|source_object
+comma
+id|acpi_generic_state
+op_star
+id|state
+comma
+r_void
+op_star
+id|context
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Ut_state - Generic state creation/cache routines&n; */
 r_void
 id|acpi_ut_push_generic_state
@@ -1185,6 +1279,21 @@ id|NATIVE_CHAR
 id|character
 )paren
 suffix:semicolon
+id|acpi_status
+id|acpi_ut_strtoul64
+(paren
+id|NATIVE_CHAR
+op_star
+id|string
+comma
+id|u32
+id|base
+comma
+id|acpi_integer
+op_star
+id|ret_integer
+)paren
+suffix:semicolon
 id|NATIVE_CHAR
 op_star
 id|acpi_ut_strupr
@@ -1200,6 +1309,25 @@ id|acpi_ut_resolve_package_references
 id|acpi_operand_object
 op_star
 id|obj_desc
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ut_resolve_reference
+(paren
+id|u8
+id|object_type
+comma
+id|acpi_operand_object
+op_star
+id|source_object
+comma
+id|acpi_generic_state
+op_star
+id|state
+comma
+r_void
+op_star
+id|context
 )paren
 suffix:semicolon
 id|u8
@@ -1220,6 +1348,20 @@ id|buffer
 comma
 id|u32
 id|length
+)paren
+suffix:semicolon
+id|u32
+id|acpi_ut_dword_byte_swap
+(paren
+id|u32
+id|value
+)paren
+suffix:semicolon
+r_void
+id|acpi_ut_set_integer_width
+(paren
+id|u8
+id|revision
 )paren
 suffix:semicolon
 macro_line|#ifdef ACPI_DEBUG
@@ -1371,6 +1513,18 @@ id|module
 comma
 id|u32
 id|line
+)paren
+suffix:semicolon
+id|acpi_debug_mem_block
+op_star
+id|acpi_ut_find_allocation
+(paren
+id|u32
+id|list_id
+comma
+r_void
+op_star
+id|allocation
 )paren
 suffix:semicolon
 id|acpi_status

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsdump - Functions to display the resource structures.&n; *              $Revision: 29 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsdump - Functions to display the resource structures.&n; *              $Revision: 32 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;rsdump&quot;
 )paren
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#if defined(ACPI_DEBUG) || defined(ENABLE_DEBUGGER)
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_irq&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_irq
@@ -1997,7 +1997,7 @@ id|done
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;Resource structure %x.&bslash;n&quot;
+l_string|&quot;Resource structure %X.&bslash;n&quot;
 comma
 id|count
 op_increment
@@ -2252,11 +2252,12 @@ id|acpi_dbg_layer
 (brace
 id|prt_element
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_pci_routing_table
-op_star
-)paren
+comma
 id|buffer
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -2315,11 +2316,12 @@ id|prt_element-&gt;length
 suffix:semicolon
 id|prt_element
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_pci_routing_table
-op_star
-)paren
+comma
 id|buffer
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsmisc - Miscellaneous resource descriptors&n; *              $Revision: 20 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsmisc - Miscellaneous resource descriptors&n; *              $Revision: 24 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -36,7 +36,7 @@ op_star
 id|output_struct
 op_assign
 (paren
-id|acpi_resource
+r_void
 op_star
 )paren
 op_star
@@ -192,7 +192,7 @@ op_star
 id|output_struct
 op_assign
 (paren
-id|acpi_resource
+r_void
 op_star
 )paren
 op_star
@@ -256,6 +256,9 @@ multiline_comment|/* Calculate bytes consumed */
 op_star
 id|bytes_consumed
 op_assign
+(paren
+id|ACPI_SIZE
+)paren
 id|temp16
 op_plus
 l_int|3
@@ -285,6 +288,9 @@ multiline_comment|/* Calculate bytes consumed */
 op_star
 id|bytes_consumed
 op_assign
+(paren
+id|ACPI_SIZE
+)paren
 id|temp16
 op_plus
 l_int|1
@@ -342,6 +348,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Length parameter&n;&t; */
 id|output_struct-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|struct_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the final size of the structure&n;&t; */
@@ -448,6 +457,9 @@ l_int|0x70
 suffix:semicolon
 id|temp8
 op_or_assign
+(paren
+id|u8
+)paren
 id|linked_list-&gt;data.vendor_specific.length
 suffix:semicolon
 op_star
@@ -545,7 +557,7 @@ op_star
 id|output_struct
 op_assign
 (paren
-id|acpi_resource
+r_void
 op_star
 )paren
 op_star
@@ -626,7 +638,7 @@ id|output_struct-&gt;data.start_dpf.compatibility_priority
 (brace
 id|return_ACPI_STATUS
 (paren
-id|AE_AML_ERROR
+id|AE_AML_BAD_RESOURCE_VALUE
 )paren
 suffix:semicolon
 )brace
@@ -651,7 +663,7 @@ id|output_struct-&gt;data.start_dpf.performance_robustness
 (brace
 id|return_ACPI_STATUS
 (paren
-id|AE_AML_ERROR
+id|AE_AML_BAD_RESOURCE_VALUE
 )paren
 suffix:semicolon
 )brace
@@ -670,6 +682,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Length parameter&n;&t; */
 id|output_struct-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|struct_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the final size of the structure&n;&t; */
@@ -712,7 +727,7 @@ op_star
 id|output_struct
 op_assign
 (paren
-id|acpi_resource
+r_void
 op_star
 )paren
 op_star
@@ -742,6 +757,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Length parameter&n;&t; */
 id|output_struct-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|struct_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the final size of the structure&n;&t; */

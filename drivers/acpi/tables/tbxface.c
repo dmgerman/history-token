@@ -1,8 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *              $Revision: 52 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_TABLES
@@ -148,8 +147,6 @@ op_assign
 id|acpi_tb_get_all_tables
 (paren
 id|number_of_tables
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -320,8 +317,6 @@ id|status
 op_assign
 id|acpi_tb_install_table
 (paren
-l_int|NULL
-comma
 op_amp
 id|table_info
 )paren
@@ -404,6 +399,9 @@ id|status
 )paren
 (brace
 multiline_comment|/* Uninstall table and free the buffer */
+(paren
+r_void
+)paren
 id|acpi_tb_uninstall_table
 (paren
 id|table_info.installed_desc
@@ -672,7 +670,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|table_length
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
@@ -815,6 +813,9 @@ r_else
 (brace
 id|table_length
 op_assign
+(paren
+id|ACPI_SIZE
+)paren
 id|tbl_ptr-&gt;length
 suffix:semicolon
 )brace

@@ -1,7 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 100 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 104 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -52,7 +51,7 @@ id|obj_desc
 )paren
 (brace
 r_case
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 suffix:colon
 r_if
 c_cond
@@ -98,12 +97,12 @@ id|obj_desc-&gt;reference.offset
 comma
 id|walk_state
 comma
+id|ACPI_CAST_INDIRECT_PTR
 (paren
 id|acpi_namespace_node
-op_star
-op_star
-)paren
+comma
 id|return_desc
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -373,9 +372,14 @@ id|new_buf
 suffix:semicolon
 id|return_desc-&gt;buffer.length
 op_assign
+(paren
+id|u32
+)paren
+(paren
 id|length1
 op_plus
 id|length2
+)paren
 suffix:semicolon
 multiline_comment|/* Compute the new checksum */
 id|new_buf
@@ -385,6 +389,9 @@ op_minus
 l_int|1
 )braket
 op_assign
+(paren
+id|NATIVE_CHAR
+)paren
 id|acpi_ut_generate_checksum
 (paren
 id|return_desc-&gt;buffer.pointer
@@ -460,14 +467,6 @@ id|NATIVE_CHAR
 op_star
 id|new_buf
 suffix:semicolon
-id|u32
-id|integer_size
-op_assign
-r_sizeof
-(paren
-id|acpi_integer
-)paren
-suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
@@ -482,24 +481,6 @@ id|obj_desc1-&gt;common.type
 r_case
 id|ACPI_TYPE_INTEGER
 suffix:colon
-multiline_comment|/* Handle both ACPI 1.0 and ACPI 2.0 Integer widths */
-r_if
-c_cond
-(paren
-id|walk_state-&gt;method_node-&gt;flags
-op_amp
-id|ANOBJ_DATA_WIDTH_32
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * We are running a method that exists in a 32-bit ACPI table.&n;&t;&t;&t; * Truncate the value to 32 bits by zeroing out the upper&n;&t;&t;&t; * 32-bit field&n;&t;&t;&t; */
-id|integer_size
-op_assign
-r_sizeof
-(paren
-id|u32
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Result of two integers is a buffer */
 id|return_desc
 op_assign
@@ -524,7 +505,7 @@ suffix:semicolon
 multiline_comment|/* Need enough space for two integers */
 id|return_desc-&gt;buffer.length
 op_assign
-id|integer_size
+id|acpi_gbl_integer_byte_width
 op_star
 l_int|2
 suffix:semicolon
@@ -579,7 +560,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|integer_size
+id|acpi_gbl_integer_byte_width
 suffix:semicolon
 id|i
 op_increment
@@ -591,7 +572,7 @@ id|i
 )braket
 op_assign
 (paren
-id|u8
+id|NATIVE_CHAR
 )paren
 id|this_integer
 suffix:semicolon
@@ -612,9 +593,10 @@ suffix:semicolon
 id|i
 OL
 (paren
-id|integer_size
-op_star
-l_int|2
+id|ACPI_MUL_2
+(paren
+id|acpi_gbl_integer_byte_width
+)paren
 )paren
 suffix:semicolon
 id|i
@@ -627,7 +609,7 @@ id|i
 )braket
 op_assign
 (paren
-id|u8
+id|NATIVE_CHAR
 )paren
 id|this_integer
 suffix:semicolon
@@ -666,8 +648,14 @@ id|new_buf
 op_assign
 id|ACPI_MEM_ALLOCATE
 (paren
+(paren
+id|ACPI_SIZE
+)paren
 id|obj_desc1-&gt;string.length
 op_plus
+(paren
+id|ACPI_SIZE
+)paren
 id|obj_desc2-&gt;string.length
 op_plus
 l_int|1
@@ -752,8 +740,14 @@ id|new_buf
 op_assign
 id|ACPI_MEM_ALLOCATE
 (paren
+(paren
+id|ACPI_SIZE
+)paren
 id|obj_desc1-&gt;buffer.length
 op_plus
+(paren
+id|ACPI_SIZE
+)paren
 id|obj_desc2-&gt;buffer.length
 )paren
 suffix:semicolon
@@ -1115,6 +1109,10 @@ id|TRUE
 )paren
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 r_break
 suffix:semicolon
 )brace
