@@ -795,16 +795,8 @@ c_func
 id|pcmcia_remove
 )paren
 comma
-dot
-id|suspend
-op_assign
-id|pcmcia_socket_dev_suspend
-comma
-dot
-id|resume
-op_assign
-id|pcmcia_socket_dev_resume
-comma
+multiline_comment|/*&t;&t;.suspend &t;= pcmcia_socket_dev_suspend,*/
+multiline_comment|/*&t;&t;.resume &t;= pcmcia_socket_dev_resume,*/
 )brace
 comma
 dot
