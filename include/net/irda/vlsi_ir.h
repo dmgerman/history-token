@@ -1,7 +1,18 @@
-multiline_comment|/*********************************************************************&n; *&n; *&t;vlsi_ir.h:&t;VLSI82C147 PCI IrDA controller driver for Linux&n; *&n; *&t;Version:&t;0.3, Sep 30, 2001&n; *&n; *&t;Copyright (c) 2001 Martin Diehl&n; *&n; *&t;This program is free software; you can redistribute it and/or &n; *&t;modify it under the terms of the GNU General Public License as &n; *&t;published by the Free Software Foundation; either version 2 of &n; *&t;the License, or (at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License &n; *&t;along with this program; if not, write to the Free Software &n; *&t;Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *&t;MA 02111-1307 USA&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; *&t;vlsi_ir.h:&t;VLSI82C147 PCI IrDA controller driver for Linux&n; *&n; *&t;Version:&t;0.4&n; *&n; *&t;Copyright (c) 2001-2002 Martin Diehl&n; *&n; *&t;This program is free software; you can redistribute it and/or &n; *&t;modify it under the terms of the GNU General Public License as &n; *&t;published by the Free Software Foundation; either version 2 of &n; *&t;the License, or (at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License &n; *&t;along with this program; if not, write to the Free Software &n; *&t;Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *&t;MA 02111-1307 USA&n; *&n; ********************************************************************/
 macro_line|#ifndef IRDA_VLSI_FIR_H
 DECL|macro|IRDA_VLSI_FIR_H
 mdefine_line|#define IRDA_VLSI_FIR_H
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,4)
+macro_line|#ifdef CONFIG_PROC_FS
+multiline_comment|/* PDE() introduced in 2.5.4 */
+DECL|macro|PDE
+mdefine_line|#define PDE(inode) ((inode)-&gt;u.generic_ip)
+macro_line|#endif
+macro_line|#endif
+multiline_comment|/*&n; * #if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,xx)&n; *&n; * missing pci-dma api call to give streaming dma buffer back to hw&n; * patch floating on lkml - probably present in 2.5.26 or later&n; * otherwise defining it as noop is ok, since the vlsi-ir is only&n; * used on two oldish x86-based notebooks which are cache-coherent&n; */
+DECL|macro|pci_dma_prep_single
+mdefine_line|#define pci_dma_prep_single(dev, addr, size, direction)&t;/* nothing */
+multiline_comment|/*&n; * #endif&n; */
 multiline_comment|/* ================================================================ */
 multiline_comment|/* non-standard PCI registers */
 DECL|enum|vlsi_pci_regs
@@ -35,12 +46,12 @@ r_enum
 id|vlsi_pci_clkctl
 (brace
 multiline_comment|/* PLL control */
-DECL|enumerator|CLKCTL_NO_PD
-id|CLKCTL_NO_PD
+DECL|enumerator|CLKCTL_PD_INV
+id|CLKCTL_PD_INV
 op_assign
 l_int|0x04
 comma
-multiline_comment|/* PD# (inverted power down) signal,&n;&t;&t;&t;&t;&t;&t; * i.e. PLL is powered, if NO_PD set */
+multiline_comment|/* PD#: inverted power down signal,&n;&t;&t;&t;&t;&t;&t; * i.e. PLL is powered, if PD_INV set */
 DECL|enumerator|CLKCTL_LOCK
 id|CLKCTL_LOCK
 op_assign
@@ -53,13 +64,13 @@ id|CLKCTL_EXTCLK
 op_assign
 l_int|0x20
 comma
-multiline_comment|/* set to select external clock input */
+multiline_comment|/* set to select external clock input, not PLL */
 DECL|enumerator|CLKCTL_XCKSEL
 id|CLKCTL_XCKSEL
 op_assign
 l_int|0x10
 comma
-multiline_comment|/* set to indicate 40MHz EXTCLK, not 48MHz */
+multiline_comment|/* set to indicate EXTCLK is 40MHz, not 48MHz */
 multiline_comment|/* IrDA block control */
 DECL|enumerator|CLKCTL_CLKSTP
 id|CLKCTL_CLKSTP
@@ -71,7 +82,7 @@ DECL|enumerator|CLKCTL_WAKE
 id|CLKCTL_WAKE
 op_assign
 l_int|0x08
-multiline_comment|/* set to enable wakeup feature: whenever IR activity&n;&t;&t;&t;&t;&t;&t; * is detected, NO_PD gets set and CLKSTP cleared */
+multiline_comment|/* set to enable wakeup feature: whenever IR activity&n;&t;&t;&t;&t;&t;&t; * is detected, PD_INV gets set(?) and CLKSTP cleared */
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------ */
@@ -82,7 +93,7 @@ DECL|macro|DMA_MASK_MSTRPAGE
 mdefine_line|#define DMA_MASK_MSTRPAGE&t;0x00ffffff
 DECL|macro|MSTRPAGE_VALUE
 mdefine_line|#define MSTRPAGE_VALUE&t;&t;(DMA_MASK_MSTRPAGE &gt;&gt; 24)
-multiline_comment|/* PCI busmastering is somewhat special for this guy - in short:&n;&t; *&n;&t; * We select to operate using MSTRPAGE=0 fixed, use ISA DMA&n;&t; * address restrictions to make the PCI BM api aware of this,&n;&t; * but ensure the hardware is dealing with real 32bit access.&n;&t; *&n;&t; * In detail:&n;&t; * The chip executes normal 32bit busmaster cycles, i.e.&n;&t; * drives all 32 address lines. These addresses however are&n;&t; * composed of [0:23] taken from various busaddr-pointers&n;&t; * and [24:31] taken from the MSTRPAGE register in the VLSI82C147&n;&t; * config space. Therefore _all_ busmastering must be&n;&t; * targeted to/from one single 16MB (busaddr-) superpage!&n;&t; * The point is to make sure all the allocations for memory&n;&t; * locations with busmaster access (ring descriptors, buffers)&n;&t; * are indeed bus-mappable to the same 16MB range (for x86 this&n;&t; * means they must reside in the same 16MB physical memory address&n;&t; * range). The only constraint we have which supports &quot;several objects&n;&t; * mappable to common 16MB range&quot; paradigma, is the old ISA DMA&n;&t; * restriction to the first 16MB of physical address range.&n;&t; * Hence the approach here is to enable PCI busmaster support using&n;&t; * the correct 32bit dma-mask used by the chip. Afterwards the device&squot;s&n;&t; * dma-mask gets restricted to 24bit, which must be honoured somehow by&n;&t; * all allocations for memory areas to be exposed to the chip ...&n;&t; *&n;&t; * Note:&n;&t; * Don&squot;t be surprised to get &quot;Setting latency timer...&quot; messages every&n;&t; * time when PCI busmastering is enabled for the chip.&n;&t; * The chip has its PCI latency timer RO fixed at 0 - which is not a&n;&t; * problem here, because it is never requesting _burst_ transactions.&n;&t; */
+multiline_comment|/* PCI busmastering is somewhat special for this guy - in short:&n;&t; *&n;&t; * We select to operate using fixed MSTRPAGE=0, use ISA DMA&n;&t; * address restrictions to make the PCI BM api aware of this,&n;&t; * but ensure the hardware is dealing with real 32bit access.&n;&t; *&n;&t; * In detail:&n;&t; * The chip executes normal 32bit busmaster cycles, i.e.&n;&t; * drives all 32 address lines. These addresses however are&n;&t; * composed of [0:23] taken from various busaddr-pointers&n;&t; * and [24:31] taken from the MSTRPAGE register in the VLSI82C147&n;&t; * config space. Therefore _all_ busmastering must be&n;&t; * targeted to/from one single 16MB (busaddr-) superpage!&n;&t; * The point is to make sure all the allocations for memory&n;&t; * locations with busmaster access (ring descriptors, buffers)&n;&t; * are indeed bus-mappable to the same 16MB range (for x86 this&n;&t; * means they must reside in the same 16MB physical memory address&n;&t; * range). The only constraint we have which supports &quot;several objects&n;&t; * mappable to common 16MB range&quot; paradigma, is the old ISA DMA&n;&t; * restriction to the first 16MB of physical address range.&n;&t; * Hence the approach here is to enable PCI busmaster support using&n;&t; * the correct 32bit dma-mask used by the chip. Afterwards the device&squot;s&n;&t; * dma-mask gets restricted to 24bit, which must be honoured somehow by&n;&t; * all allocations for memory areas to be exposed to the chip ...&n;&t; *&n;&t; * Note:&n;&t; * Don&squot;t be surprised to get &quot;Setting latency timer...&quot; messages every&n;&t; * time when PCI busmastering is enabled for the chip.&n;&t; * The chip has its PCI latency timer RO fixed at 0 - which is not a&n;&t; * problem here, because it is never requesting _burst_ transactions.&n;&t; */
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PCIIRMISC: IR Miscellaneous Register (u8, rw) */
 multiline_comment|/* legacy UART emulation - not used by this driver - would require:&n; * (see below for some register-value definitions)&n; *&n; *&t;- IRMISC_UARTEN must be set to enable UART address decoding&n; *&t;- IRMISC_UARTSEL configured&n; *&t;- IRCFG_MASTER must be cleared&n; *&t;- IRCFG_SIR must be set&n; *&t;- IRENABLE_IREN must be asserted 0-&gt;1 (and hence IRENABLE_SIR_ON)&n; */
@@ -463,9 +474,27 @@ multiline_comment|/* VLSI_PIO_PHYCTL: IR Physical Layer Current Control Register
 multiline_comment|/* read-back of the currently applied physical layer status.&n; * applied from VLSI_PIO_NPHYCTL at rising edge of IRENABLE_IREN&n; * contents identical to VLSI_PIO_NPHYCTL (see below)&n; */
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PIO_NPHYCTL: IR Physical Layer Next Control Register (u16, rw) */
-multiline_comment|/* latched during IRENABLE_IREN=0 and applied at 0-1 transition&n; *&n; * consists of BAUD[15:10], PLSWID[9:5] and PREAMB[4:0] bits defined as follows:&n; *&n; * SIR-mode:&t;BAUD = (115.2kHz / baudrate) - 1&n; *&t;&t;PLSWID = (pulsetime * freq / (BAUD+1)) - 1&n; *&t;&t;&t;where pulsetime is the requested IrPHY pulse width&n; *&t;&t;&t;and freq is 8(16)MHz for 40(48)MHz primary input clock&n; *&t;&t;PREAMB: dont care for SIR&n; *&n; *&t;&t;The nominal SIR pulse width is 3/16 bit time so we have PLSWID=12&n; *&t;&t;fixed for all SIR speeds at 40MHz input clock (PLSWID=24 at 48MHz).&n; *&t;&t;IrPHY also allows shorter pulses down to the nominal pulse duration&n; *&t;&t;at 115.2kbaud (minus some tolerance) which is 1.41 usec.&n; *&t;&t;Using the expression PLSWID = 12/(BAUD+1)-1 (multiplied by to for 48MHz)&n; *&t;&t;we get the minimum acceptable PLSWID values according to the VLSI&n; *&t;&t;specification, which provides 1.5 usec pulse width for all speeds (except&n; *&t;&t;for 2.4kbaud getting 6usec). This is well inside IrPHY v1.3 specs and&n; *&t;&t;reduces the transceiver power which drains the battery. At 9.6kbaud for&n; *&t;&t;example this amounts to more than 90% battery power saving!&n; *&n; * MIR-mode:&t;BAUD = 0&n; *&t;&t;PLSWID = 9(10) for 40(48) MHz input clock&n; *&t;&t;&t;to get nominal MIR pulse width&n; *&t;&t;PREAMB = 1&n; *&n; * FIR-mode:&t;BAUD = 0&n; *&t;&t;PLSWID: dont care&n; *&t;&t;PREAMB = 15&n; */
+multiline_comment|/* latched during IRENABLE_IREN=0 and applied at 0-1 transition&n; *&n; * consists of BAUD[15:10], PLSWID[9:5] and PREAMB[4:0] bits defined as follows:&n; *&n; * SIR-mode:&t;BAUD = (115.2kHz / baudrate) - 1&n; *&t;&t;PLSWID = (pulsetime * freq / (BAUD+1)) - 1&n; *&t;&t;&t;where pulsetime is the requested IrPHY pulse width&n; *&t;&t;&t;and freq is 8(16)MHz for 40(48)MHz primary input clock&n; *&t;&t;PREAMB: dont care for SIR&n; *&n; *&t;&t;The nominal SIR pulse width is 3/16 bit time so we have PLSWID=12&n; *&t;&t;fixed for all SIR speeds at 40MHz input clock (PLSWID=24 at 48MHz).&n; *&t;&t;IrPHY also allows shorter pulses down to the nominal pulse duration&n; *&t;&t;at 115.2kbaud (minus some tolerance) which is 1.41 usec.&n; *&t;&t;Using the expression PLSWID = 12/(BAUD+1)-1 (multiplied by two for 48MHz)&n; *&t;&t;we get the minimum acceptable PLSWID values according to the VLSI&n; *&t;&t;specification, which provides 1.5 usec pulse width for all speeds (except&n; *&t;&t;for 2.4kbaud getting 6usec). This is fine with IrPHY v1.3 specs and&n; *&t;&t;reduces the transceiver power which drains the battery. At 9.6kbaud for&n; *&t;&t;example this amounts to more than 90% battery power saving!&n; *&n; * MIR-mode:&t;BAUD = 0&n; *&t;&t;PLSWID = 9(10) for 40(48) MHz input clock&n; *&t;&t;&t;to get nominal MIR pulse width&n; *&t;&t;PREAMB = 1&n; *&n; * FIR-mode:&t;BAUD = 0&n; *&t;&t;PLSWID: dont care&n; *&t;&t;PREAMB = 15&n; */
+DECL|macro|PHYCTL_BAUD_SHIFT
+mdefine_line|#define PHYCTL_BAUD_SHIFT&t;10
+DECL|macro|PHYCTL_BAUD_MASK
+mdefine_line|#define PHYCTL_BAUD_MASK&t;0xfc00
+DECL|macro|PHYCTL_PLSWID_SHIFT
+mdefine_line|#define PHYCTL_PLSWID_SHIFT&t;5
+DECL|macro|PHYCTL_PLSWID_MASK
+mdefine_line|#define PHYCTL_PLSWID_MASK&t;0x03e0
+DECL|macro|PHYCTL_PREAMB_SHIFT
+mdefine_line|#define PHYCTL_PREAMB_SHIFT&t;0
+DECL|macro|PHYCTL_PREAMB_MASK
+mdefine_line|#define PHYCTL_PREAMB_MASK&t;0x001f
+DECL|macro|PHYCTL_TO_BAUD
+mdefine_line|#define PHYCTL_TO_BAUD(bwp)&t;(((bwp)&amp;PHYCTL_BAUD_MASK)&gt;&gt;PHYCTL_BAUD_SHIFT)
+DECL|macro|PHYCTL_TO_PLSWID
+mdefine_line|#define PHYCTL_TO_PLSWID(bwp)&t;(((bwp)&amp;PHYCTL_PLSWID_MASK)&gt;&gt;PHYCTL_PLSWID_SHIFT)
+DECL|macro|PHYCTL_TO_PREAMB
+mdefine_line|#define PHYCTL_TO_PREAMB(bwp)&t;(((bwp)&amp;PHYCTL_PREAMB_MASK)&gt;&gt;PHYCTL_PREAMB_SHIFT)
 DECL|macro|BWP_TO_PHYCTL
-mdefine_line|#define BWP_TO_PHYCTL(B,W,P)&t;((((B)&amp;0x3f)&lt;&lt;10) | (((W)&amp;0x1f)&lt;&lt;5) | (((P)&amp;0x1f)&lt;&lt;0))
+mdefine_line|#define BWP_TO_PHYCTL(b,w,p)&t;((((b)&lt;&lt;PHYCTL_BAUD_SHIFT)&amp;PHYCTL_BAUD_MASK) &bslash;&n;&t;&t;&t;&t; | (((w)&lt;&lt;PHYCTL_PLSWID_SHIFT)&amp;PHYCTL_PLSWID_MASK) &bslash;&n;&t;&t;&t;&t; | (((p)&lt;&lt;PHYCTL_PREAMB_SHIFT)&amp;PHYCTL_PREAMB_MASK))
 DECL|macro|BAUD_BITS
 mdefine_line|#define BAUD_BITS(br)&t;&t;((115200/(br))-1)
 r_static
@@ -554,23 +583,30 @@ mdefine_line|#define PHYCTL_FIR&t;&t;BWP_TO_PHYCTL(0,0,15)
 multiline_comment|/* quite ugly, I know. But implementing these calculations here avoids&n; * having magic numbers in the code and allows some playing with pulsewidths&n; * without risk to violate the standards.&n; * FWIW, here is the table for reference:&n; *&n; * baudrate&t;BAUD&t;min-PLSWID&t;nom-PLSWID&t;PREAMB&n; *     2400&t;  47&t;   0(0)&t;&t;   12(24)&t;   0&n; *     9600&t;  11&t;   0(0)&t;&t;   12(24)&t;   0&n; *    19200&t;   5&t;   1(2)&t;&t;   12(24)&t;   0&n; *    38400&t;   2&t;   3(6)&t;           12(24)&t;   0&n; *    57600&t;   1&t;   5(10)&t;   12(24)&t;   0&n; *   115200&t;   0&t;  11(22)&t;   12(24)&t;   0&n; *&t;MIR&t;   0&t;    -&t;&t;    9(10)&t;   1&n; *&t;FIR&t;   0        -               0&t;&t;  15&n; *&n; * note: x(y) means x-value for 40MHz / y-value for 48MHz primary input clock&n; */
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PIO_MAXPKT: Maximum Packet Length register (u16, rw) */
-multiline_comment|/* specifies the maximum legth (up to 4k - or (4k-1)? - bytes), which a&n; * received frame may have - i.e. the size of the corresponding&n; * receive buffers. For simplicity we use the same length for&n; * receive and submit buffers and increase transfer buffer size&n; * byond IrDA-MTU = 2048 so we have sufficient space left when&n; * packet size increases during wrapping due to XBOFs and CE&squot;s.&n; * Even for receiving unwrapped frames we need &gt;MAX_PACKET_LEN&n; * space since the controller appends FCS/CRC (2 or 4 bytes)&n; * so we use 2*IrDA-MTU for both directions and cover even the&n; * worst case, where all data bytes have to be escaped when wrapping.&n; * well, this wastes some memory - anyway, later we will&n; * either map skb&squot;s directly or use pci_pool allocator...&n; */
-DECL|macro|IRDA_MTU
-mdefine_line|#define IRDA_MTU&t;2048&t;&t;/* seems to be undefined elsewhere */
-DECL|macro|XFER_BUF_SIZE
-mdefine_line|#define XFER_BUF_SIZE&t;&t;(2*IRDA_MTU)
+multiline_comment|/* maximum acceptable length for received packets */
+multiline_comment|/* hw imposed limitation - register uses only [11:0] */
 DECL|macro|MAX_PACKET_LENGTH
-mdefine_line|#define MAX_PACKET_LENGTH&t;(XFER_BUF_SIZE-1) /* register uses only [11:0] */
+mdefine_line|#define MAX_PACKET_LENGTH&t;0x0fff
+multiline_comment|/* IrLAP I-field (apparently not defined elsewhere) */
+DECL|macro|IRDA_MTU
+mdefine_line|#define IRDA_MTU&t;&t;2048
+multiline_comment|/* complete packet consists of A(1)+C(1)+I(&lt;=IRDA_MTU) */
+DECL|macro|IRLAP_SKB_ALLOCSIZE
+mdefine_line|#define IRLAP_SKB_ALLOCSIZE&t;(1+1+IRDA_MTU)
+multiline_comment|/* the buffers we use to exchange frames with the hardware need to be&n; * larger than IRLAP_SKB_ALLOCSIZE because we may have up to 4 bytes FCS&n; * appended and, in SIR mode, a lot of frame wrapping bytes. The worst&n; * case appears to be a SIR packet with I-size==IRDA_MTU and all bytes&n; * requiring to be escaped to provide transparency. Furthermore, the peer&n; * might ask for quite a number of additional XBOFs:&n; *&t;up to 115+48 XBOFS&t;&t; 163&n; *&t;regular BOF&t;&t;&t;   1&n; *&t;A-field&t;&t;&t;&t;   1&n; *&t;C-field&t;&t;&t;&t;   1&n; *&t;I-field, IRDA_MTU, all escaped&t;4096&n; *&t;FCS (16 bit at SIR, escaped)&t;   4&n; *&t;EOF&t;&t;&t;&t;   1&n; * AFAICS nothing in IrLAP guarantees A/C field not to need escaping&n; * (f.e. 0xc0/0xc1 - i.e. BOF/EOF - are legal values there) so in the&n; * worst case we have 4269 bytes total frame size.&n; * However, the VLSI uses 12 bits only for all buffer length values,&n; * which limits the maximum useable buffer size &lt;= 4095.&n; * Note this is not a limitation in the receive case because we use&n; * the SIR filtering mode where the hw unwraps the frame and only the&n; * bare packet+fcs is stored into the buffer - in contrast to the SIR&n; * tx case where we have to pass frame-wrapped packets to the hw.&n; * If this would ever become an issue in real life, the only workaround&n; * I see would be using the legacy UART emulation in SIR mode.&n; */
+DECL|macro|XFER_BUF_SIZE
+mdefine_line|#define XFER_BUF_SIZE&t;&t;MAX_PACKET_LENGTH
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PIO_RCVBCNT: Receive Byte Count Register (u16, ro) */
-multiline_comment|/* recive packet counter gets incremented on every non-filtered&n; * byte which was put in the receive fifo and reset for each&n; * new packet. Used to decide whether we are just in the middle&n; * of receiving&n; */
+multiline_comment|/* receive packet counter gets incremented on every non-filtered&n; * byte which was put in the receive fifo and reset for each&n; * new packet. Used to decide whether we are just in the middle&n; * of receiving&n; */
+multiline_comment|/* better apply the [11:0] mask when reading, as some docs say the&n; * reserved [15:12] would return 1 when reading - which is wrong AFAICS&n; */
 DECL|macro|RCVBCNT_MASK
 mdefine_line|#define RCVBCNT_MASK&t;0x0fff
-multiline_comment|/* ================================================================ */
-multiline_comment|/* descriptors for rx/tx ring&n; *&n; * accessed by hardware - don&squot;t change!&n; *&n; * the descriptor is owned by hardware, when the ACTIVE status bit&n; * is set and nothing (besides reading status to test the bit)&n; * shall be done. The bit gets cleared by hw, when the descriptor&n; * gets closed. Premature reaping of descriptors owned be the chip&n; * can be achieved by disabling IRCFG_MSTR&n; *&n; * Attention: Writing addr overwrites status!&n; *&n; * ### FIXME: we depend on endianess here&n; */
-DECL|struct|ring_descr
+multiline_comment|/******************************************************************/
+multiline_comment|/* descriptors for rx/tx ring&n; *&n; * accessed by hardware - don&squot;t change!&n; *&n; * the descriptor is owned by hardware, when the ACTIVE status bit&n; * is set and nothing (besides reading status to test the bit)&n; * shall be done. The bit gets cleared by hw, when the descriptor&n; * gets closed. Premature reaping of descriptors owned be the chip&n; * can be achieved by disabling IRCFG_MSTR&n; *&n; * Attention: Writing addr overwrites status!&n; *&n; * ### FIXME: depends on endianess (but there ain&squot;t no non-i586 ob800 ;-)&n; */
+DECL|struct|ring_descr_hw
 r_struct
-id|ring_descr
+id|ring_descr_hw
 (brace
 DECL|member|rd_count
 r_volatile
@@ -607,69 +643,335 @@ multiline_comment|/* descriptor status */
 DECL|member|rd_s
 )brace
 id|rd_s
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
-DECL|member|rd_u
 )brace
 id|rd_u
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 )brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 DECL|macro|rd_addr
 mdefine_line|#define rd_addr&t;&t;rd_u.addr
 DECL|macro|rd_status
 mdefine_line|#define rd_status&t;rd_u.rd_s.status
 multiline_comment|/* ring descriptor status bits */
-DECL|macro|RD_STAT_ACTIVE
-mdefine_line|#define RD_STAT_ACTIVE&t;&t;0x80&t;/* descriptor owned by hw (both TX,RX) */
+DECL|macro|RD_ACTIVE
+mdefine_line|#define RD_ACTIVE&t;&t;0x80&t;/* descriptor owned by hw (both TX,RX) */
 multiline_comment|/* TX ring descriptor status */
-DECL|macro|TX_STAT_DISCRC
-mdefine_line|#define&t;TX_STAT_DISCRC&t;&t;0x40&t;/* do not send CRC (for SIR) */
-DECL|macro|TX_STAT_BADCRC
-mdefine_line|#define&t;TX_STAT_BADCRC&t;&t;0x20&t;/* force a bad CRC */
-DECL|macro|TX_STAT_PULSE
-mdefine_line|#define&t;TX_STAT_PULSE&t;&t;0x10&t;/* send indication pulse after this frame (MIR/FIR) */
-DECL|macro|TX_STAT_FRCEUND
-mdefine_line|#define&t;TX_STAT_FRCEUND&t;&t;0x08&t;/* force underrun */
-DECL|macro|TX_STAT_CLRENTX
-mdefine_line|#define&t;TX_STAT_CLRENTX&t;&t;0x04&t;/* clear ENTX after this frame */
-DECL|macro|TX_STAT_UNDRN
-mdefine_line|#define&t;TX_STAT_UNDRN&t;&t;0x01&t;/* TX fifo underrun (probably PCI problem) */
+DECL|macro|RD_TX_DISCRC
+mdefine_line|#define&t;RD_TX_DISCRC&t;&t;0x40&t;/* do not send CRC (for SIR) */
+DECL|macro|RD_TX_BADCRC
+mdefine_line|#define&t;RD_TX_BADCRC&t;&t;0x20&t;/* force a bad CRC */
+DECL|macro|RD_TX_PULSE
+mdefine_line|#define&t;RD_TX_PULSE&t;&t;0x10&t;/* send indication pulse after this frame (MIR/FIR) */
+DECL|macro|RD_TX_FRCEUND
+mdefine_line|#define&t;RD_TX_FRCEUND&t;&t;0x08&t;/* force underrun */
+DECL|macro|RD_TX_CLRENTX
+mdefine_line|#define&t;RD_TX_CLRENTX&t;&t;0x04&t;/* clear ENTX after this frame */
+DECL|macro|RD_TX_UNDRN
+mdefine_line|#define&t;RD_TX_UNDRN&t;&t;0x01&t;/* TX fifo underrun (probably PCI problem) */
 multiline_comment|/* RX ring descriptor status */
-DECL|macro|RX_STAT_PHYERR
-mdefine_line|#define RX_STAT_PHYERR&t;&t;0x40&t;/* physical encoding error */
-DECL|macro|RX_STAT_CRCERR
-mdefine_line|#define RX_STAT_CRCERR&t;&t;0x20&t;/* CRC error (MIR/FIR) */
-DECL|macro|RX_STAT_LENGTH
-mdefine_line|#define RX_STAT_LENGTH&t;&t;0x10&t;/* frame exceeds buffer length */
-DECL|macro|RX_STAT_OVER
-mdefine_line|#define RX_STAT_OVER&t;&t;0x08&t;/* RX fifo overrun (probably PCI problem) */
-DECL|macro|RX_STAT_SIRBAD
-mdefine_line|#define RX_STAT_SIRBAD&t;&t;0x04&t;/* EOF missing: BOF follows BOF (SIR, filtered) */
-DECL|macro|RX_STAT_ERROR
-mdefine_line|#define RX_STAT_ERROR&t;&t;0x7c&t;/* any error in frame */
-multiline_comment|/* ------------------------------------------ */
-multiline_comment|/* contains the objects we&squot;ve put into the ring descriptors&n; * static buffers for now - probably skb&squot;s later&n; */
-DECL|struct|ring_entry
+DECL|macro|RD_RX_PHYERR
+mdefine_line|#define RD_RX_PHYERR&t;&t;0x40&t;/* physical encoding error */
+DECL|macro|RD_RX_CRCERR
+mdefine_line|#define RD_RX_CRCERR&t;&t;0x20&t;/* CRC error (MIR/FIR) */
+DECL|macro|RD_RX_LENGTH
+mdefine_line|#define RD_RX_LENGTH&t;&t;0x10&t;/* frame exceeds buffer length */
+DECL|macro|RD_RX_OVER
+mdefine_line|#define RD_RX_OVER&t;&t;0x08&t;/* RX fifo overrun (probably PCI problem) */
+DECL|macro|RD_RX_SIRBAD
+mdefine_line|#define RD_RX_SIRBAD&t;&t;0x04&t;/* EOF missing: BOF follows BOF (SIR, filtered) */
+DECL|macro|RD_RX_ERROR
+mdefine_line|#define RD_RX_ERROR&t;&t;0x7c&t;/* any error in received frame */
+multiline_comment|/* the memory required to hold the 2 descriptor rings */
+DECL|macro|HW_RING_AREA_SIZE
+mdefine_line|#define HW_RING_AREA_SIZE&t;(2 * MAX_RING_DESCR * sizeof(struct ring_descr_hw))
+multiline_comment|/******************************************************************/
+multiline_comment|/* sw-ring descriptors consists of a bus-mapped transfer buffer with&n; * associated skb and a pointer to the hw entry descriptor&n; */
+DECL|struct|ring_descr
 r_struct
-id|ring_entry
+id|ring_descr
 (brace
+DECL|member|hw
+r_struct
+id|ring_descr_hw
+op_star
+id|hw
+suffix:semicolon
 DECL|member|skb
 r_struct
 id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-DECL|member|data
+DECL|member|buf
 r_void
 op_star
-id|data
+id|buf
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* wrappers for operations on hw-exposed ring descriptors&n; * access to the hw-part of the descriptors must use these.&n; */
+DECL|function|rd_is_active
+r_static
+r_inline
+r_int
+id|rd_is_active
+c_func
+(paren
+r_struct
+id|ring_descr
+op_star
+id|rd
+)paren
+(brace
+r_return
+(paren
+(paren
+id|rd-&gt;hw-&gt;rd_status
+op_amp
+id|RD_ACTIVE
+)paren
+op_ne
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|rd_activate
+r_static
+r_inline
+r_void
+id|rd_activate
+c_func
+(paren
+r_struct
+id|ring_descr
+op_star
+id|rd
+)paren
+(brace
+id|rd-&gt;hw-&gt;rd_status
+op_or_assign
+id|RD_ACTIVE
+suffix:semicolon
+)brace
+DECL|function|rd_set_status
+r_static
+r_inline
+r_void
+id|rd_set_status
+c_func
+(paren
+r_struct
+id|ring_descr
+op_star
+id|rd
+comma
+id|u8
+id|s
+)paren
+(brace
+id|rd-&gt;hw-&gt;rd_status
+op_assign
+id|s
+suffix:semicolon
+multiline_comment|/* may pass ownership to the hardware */
+)brace
+DECL|function|rd_set_addr_status
+r_static
+r_inline
+r_void
+id|rd_set_addr_status
+c_func
+(paren
+r_struct
+id|ring_descr
+op_star
+id|rd
+comma
+id|dma_addr_t
+id|a
+comma
+id|u8
+id|s
+)paren
+(brace
+multiline_comment|/* order is important for two reasons:&n;&t; *  - overlayed: writing addr overwrites status&n;&t; *  - we want to write status last so we have valid address in&n;&t; *    case status has RD_ACTIVE set&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|a
+op_amp
+op_complement
+id|DMA_MASK_MSTRPAGE
+)paren
+op_rshift
+l_int|24
+op_ne
+id|MSTRPAGE_VALUE
+)paren
+(brace
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|a
+op_and_assign
+id|DMA_MASK_MSTRPAGE
+suffix:semicolon
+multiline_comment|/* clear highbyte to make sure we won&squot;t write&n;&t;&t;&t;&t;  * to status - just in case MSTRPAGE_VALUE!=0&n;&t;&t;&t;&t;  */
+id|rd-&gt;hw-&gt;rd_addr
+op_assign
+id|a
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|rd_set_status
+c_func
+(paren
+id|rd
+comma
+id|s
+)paren
+suffix:semicolon
+multiline_comment|/* may pass ownership to the hardware */
+)brace
+DECL|function|rd_set_count
+r_static
+r_inline
+r_void
+id|rd_set_count
+c_func
+(paren
+r_struct
+id|ring_descr
+op_star
+id|rd
+comma
+id|u16
+id|c
+)paren
+(brace
+id|rd-&gt;hw-&gt;rd_count
+op_assign
+id|c
+suffix:semicolon
+)brace
+DECL|function|rd_get_status
+r_static
+r_inline
+id|u8
+id|rd_get_status
+c_func
+(paren
+r_struct
+id|ring_descr
+op_star
+id|rd
+)paren
+(brace
+r_return
+id|rd-&gt;hw-&gt;rd_status
+suffix:semicolon
+)brace
+DECL|function|rd_get_addr
+r_static
+r_inline
+id|dma_addr_t
+id|rd_get_addr
+c_func
+(paren
+r_struct
+id|ring_descr
+op_star
+id|rd
+)paren
+(brace
+id|dma_addr_t
+id|a
+suffix:semicolon
+id|a
+op_assign
+(paren
+id|rd-&gt;hw-&gt;rd_addr
+op_amp
+id|DMA_MASK_MSTRPAGE
+)paren
+op_or
+(paren
+id|MSTRPAGE_VALUE
+op_lshift
+l_int|24
+)paren
+suffix:semicolon
+r_return
+id|a
+suffix:semicolon
+)brace
+DECL|function|rd_get_count
+r_static
+r_inline
+id|u16
+id|rd_get_count
+c_func
+(paren
+r_struct
+id|ring_descr
+op_star
+id|rd
+)paren
+(brace
+r_return
+id|rd-&gt;hw-&gt;rd_count
+suffix:semicolon
+)brace
+multiline_comment|/******************************************************************/
+multiline_comment|/* sw descriptor rings for rx, tx:&n; *&n; * operations follow producer-consumer paradigm, with the hw&n; * in the middle doing the processing.&n; * ring size must be power of two.&n; *&n; * producer advances r-&gt;tail after inserting for processing&n; * consumer advances r-&gt;head after removing processed rd&n; * ring is empty if head==tail / full if (tail+1)==head&n; */
 DECL|struct|vlsi_ring
 r_struct
 id|vlsi_ring
 (brace
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
+DECL|member|dir
+r_int
+id|dir
+suffix:semicolon
+DECL|member|len
+r_int
+id|len
+suffix:semicolon
 DECL|member|size
 r_int
 id|size
@@ -680,28 +982,199 @@ id|mask
 suffix:semicolon
 DECL|member|head
 DECL|member|tail
-r_int
+id|atomic_t
 id|head
 comma
 id|tail
 suffix:semicolon
-DECL|member|hw
+DECL|member|rd
 r_struct
 id|ring_descr
 op_star
-id|hw
-suffix:semicolon
-DECL|member|buf
-r_struct
-id|ring_entry
-id|buf
-(braket
-id|MAX_RING_DESCR
-)braket
+id|rd
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* ------------------------------------------ */
+multiline_comment|/* ring processing helpers */
+DECL|function|ring_last
+r_static
+r_inline
+r_struct
+id|ring_descr
+op_star
+id|ring_last
+c_func
+(paren
+r_struct
+id|vlsi_ring
+op_star
+id|r
+)paren
+(brace
+r_int
+id|t
+suffix:semicolon
+id|t
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|r-&gt;tail
+)paren
+op_amp
+id|r-&gt;mask
+suffix:semicolon
+r_return
+(paren
+(paren
+(paren
+id|t
+op_plus
+l_int|1
+)paren
+op_amp
+id|r-&gt;mask
+)paren
+op_eq
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|r-&gt;head
+)paren
+op_amp
+id|r-&gt;mask
+)paren
+)paren
+ques
+c_cond
+l_int|NULL
+suffix:colon
+op_amp
+id|r-&gt;rd
+(braket
+id|t
+)braket
+suffix:semicolon
+)brace
+DECL|function|ring_put
+r_static
+r_inline
+r_struct
+id|ring_descr
+op_star
+id|ring_put
+c_func
+(paren
+r_struct
+id|vlsi_ring
+op_star
+id|r
+)paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|r-&gt;tail
+)paren
+suffix:semicolon
+r_return
+id|ring_last
+c_func
+(paren
+id|r
+)paren
+suffix:semicolon
+)brace
+DECL|function|ring_first
+r_static
+r_inline
+r_struct
+id|ring_descr
+op_star
+id|ring_first
+c_func
+(paren
+r_struct
+id|vlsi_ring
+op_star
+id|r
+)paren
+(brace
+r_int
+id|h
+suffix:semicolon
+id|h
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|r-&gt;head
+)paren
+op_amp
+id|r-&gt;mask
+suffix:semicolon
+r_return
+(paren
+id|h
+op_eq
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|r-&gt;tail
+)paren
+op_amp
+id|r-&gt;mask
+)paren
+)paren
+ques
+c_cond
+l_int|NULL
+suffix:colon
+op_amp
+id|r-&gt;rd
+(braket
+id|h
+)braket
+suffix:semicolon
+)brace
+DECL|function|ring_get
+r_static
+r_inline
+r_struct
+id|ring_descr
+op_star
+id|ring_get
+c_func
+(paren
+r_struct
+id|vlsi_ring
+op_star
+id|r
+)paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|r-&gt;head
+)paren
+suffix:semicolon
+r_return
+id|ring_first
+c_func
+(paren
+id|r
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/******************************************************************/
 multiline_comment|/* our private compound VLSI-PCI-IRDA device information */
 DECL|struct|vlsi_irda_dev
 r_typedef
@@ -754,8 +1227,10 @@ DECL|member|tx_ring
 DECL|member|rx_ring
 r_struct
 id|vlsi_ring
+op_star
 id|tx_ring
 comma
+op_star
 id|rx_ring
 suffix:semicolon
 DECL|member|last_rx
@@ -767,10 +1242,55 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
+DECL|member|sem
+r_struct
+id|semaphore
+id|sem
+suffix:semicolon
+DECL|member|cfg_space
+id|u32
+id|cfg_space
+(braket
+l_int|64
+op_div
+r_sizeof
+(paren
+id|u32
+)paren
+)braket
+suffix:semicolon
+DECL|member|resume_ok
+id|u8
+id|resume_ok
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|member|proc_entry
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_entry
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|vlsi_irda_dev_t
 )brace
 id|vlsi_irda_dev_t
 suffix:semicolon
+multiline_comment|/********************************************************/
+multiline_comment|/* the remapped error flags we use for returning from frame&n; * post-processing in vlsi_process_tx/rx() after it was completed&n; * by the hardware. These functions either return the &gt;=0 number&n; * of transfered bytes in case of success or the negative (-)&n; * of the or&squot;ed error flags.&n; */
+DECL|macro|VLSI_TX_DROP
+mdefine_line|#define VLSI_TX_DROP&t;&t;0x0001
+DECL|macro|VLSI_TX_FIFO
+mdefine_line|#define VLSI_TX_FIFO&t;&t;0x0002
+DECL|macro|VLSI_RX_DROP
+mdefine_line|#define VLSI_RX_DROP&t;&t;0x0100
+DECL|macro|VLSI_RX_OVER
+mdefine_line|#define VLSI_RX_OVER&t;&t;0x0200
+DECL|macro|VLSI_RX_LENGTH
+mdefine_line|#define VLSI_RX_LENGTH  &t;0x0400
+DECL|macro|VLSI_RX_FRAME
+mdefine_line|#define VLSI_RX_FRAME&t;&t;0x0800
+DECL|macro|VLSI_RX_CRC
+mdefine_line|#define VLSI_RX_CRC&t;&t;0x1000
 multiline_comment|/********************************************************/
 macro_line|#endif /* IRDA_VLSI_FIR_H */
 eof
