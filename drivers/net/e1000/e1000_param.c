@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  This software program is available to you under a choice of one of two&n;  licenses. You may choose to be licensed under either the GNU General Public&n;  License (GPL) Version 2, June 1991, available at&n;  http://www.fsf.org/copyleft/gpl.html, or the Intel BSD + Patent License, the&n;  text of which follows:&n;  &n;  Recipient has requested a license and Intel Corporation (&quot;Intel&quot;) is willing&n;  to grant a license for the software entitled Linux Base Driver for the&n;  Intel(R) PRO/1000 Family of Adapters (e1000) (the &quot;Software&quot;) being provided&n;  by Intel Corporation. The following definitions apply to this license:&n;  &n;  &quot;Licensed Patents&quot; means patent claims licensable by Intel Corporation which&n;  are necessarily infringed by the use of sale of the Software alone or when&n;  combined with the operating system referred to below.&n;  &n;  &quot;Recipient&quot; means the party to whom Intel delivers this Software.&n;  &n;  &quot;Licensee&quot; means Recipient and those third parties that receive a license to&n;  any operating system available under the GNU Public License version 2.0 or&n;  later.&n;  &n;  Copyright (c) 1999 - 2002 Intel Corporation.&n;  All rights reserved.&n;  &n;  The license is provided to Recipient and Recipient&squot;s Licensees under the&n;  following terms.&n;  &n;  Redistribution and use in source and binary forms of the Software, with or&n;  without modification, are permitted provided that the following conditions&n;  are met:&n;  &n;  Redistributions of source code of the Software may retain the above&n;  copyright notice, this list of conditions and the following disclaimer.&n;  &n;  Redistributions in binary form of the Software may reproduce the above&n;  copyright notice, this list of conditions and the following disclaimer in&n;  the documentation and/or materials provided with the distribution.&n;  &n;  Neither the name of Intel Corporation nor the names of its contributors&n;  shall be used to endorse or promote products derived from this Software&n;  without specific prior written permission.&n;  &n;  Intel hereby grants Recipient and Licensees a non-exclusive, worldwide,&n;  royalty-free patent license under Licensed Patents to make, use, sell, offer&n;  to sell, import and otherwise transfer the Software, if any, in source code&n;  and object code form. This license shall include changes to the Software&n;  that are error corrections or other minor changes to the Software that do&n;  not add functionality or features when the Software is incorporated in any&n;  version of an operating system that has been distributed under the GNU&n;  General Public License 2.0 or later. This patent license shall apply to the&n;  combination of the Software and any operating system licensed under the GNU&n;  Public License version 2.0 or later if, at the time Intel provides the&n;  Software to Recipient, such addition of the Software to the then publicly&n;  available versions of such operating systems available under the GNU Public&n;  License version 2.0 or later (whether in gold, beta or alpha form) causes&n;  such combination to be covered by the Licensed Patents. The patent license&n;  shall not apply to any other combinations which include the Software. NO&n;  hardware per se is licensed hereunder.&n;  &n;  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;&n;  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n;  IMPLIED WARRANTIES OF MECHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n;  ARE DISCLAIMED. IN NO EVENT SHALL INTEL OR IT CONTRIBUTORS BE LIABLE FOR ANY&n;  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n;  (INCLUDING, BUT NOT LIMITED, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;&n;  ANY LOSS OF USE; DATA, OR PROFITS; OR BUSINESS INTERUPTION) HOWEVER CAUSED&n;  AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY OR&n;  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE&n;  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n;&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  This software program is available to you under a choice of one of two&n;  licenses. You may choose to be licensed under either the GNU General Public&n;  License 2.0, June 1991, available at http://www.fsf.org/copyleft/gpl.html,&n;  or the Intel BSD + Patent License, the text of which follows:&n;  &n;  Recipient has requested a license and Intel Corporation (&quot;Intel&quot;) is willing&n;  to grant a license for the software entitled Linux Base Driver for the&n;  Intel(R) PRO/1000 Family of Adapters (e1000) (the &quot;Software&quot;) being provided&n;  by Intel Corporation. The following definitions apply to this license:&n;  &n;  &quot;Licensed Patents&quot; means patent claims licensable by Intel Corporation which&n;  are necessarily infringed by the use of sale of the Software alone or when&n;  combined with the operating system referred to below.&n;  &n;  &quot;Recipient&quot; means the party to whom Intel delivers this Software.&n;  &n;  &quot;Licensee&quot; means Recipient and those third parties that receive a license to&n;  any operating system available under the GNU General Public License 2.0 or&n;  later.&n;  &n;  Copyright (c) 1999 - 2002 Intel Corporation.&n;  All rights reserved.&n;  &n;  The license is provided to Recipient and Recipient&squot;s Licensees under the&n;  following terms.&n;  &n;  Redistribution and use in source and binary forms of the Software, with or&n;  without modification, are permitted provided that the following conditions&n;  are met:&n;  &n;  Redistributions of source code of the Software may retain the above&n;  copyright notice, this list of conditions and the following disclaimer.&n;  &n;  Redistributions in binary form of the Software may reproduce the above&n;  copyright notice, this list of conditions and the following disclaimer in&n;  the documentation and/or materials provided with the distribution.&n;  &n;  Neither the name of Intel Corporation nor the names of its contributors&n;  shall be used to endorse or promote products derived from this Software&n;  without specific prior written permission.&n;  &n;  Intel hereby grants Recipient and Licensees a non-exclusive, worldwide,&n;  royalty-free patent license under Licensed Patents to make, use, sell, offer&n;  to sell, import and otherwise transfer the Software, if any, in source code&n;  and object code form. This license shall include changes to the Software&n;  that are error corrections or other minor changes to the Software that do&n;  not add functionality or features when the Software is incorporated in any&n;  version of an operating system that has been distributed under the GNU&n;  General Public License 2.0 or later. This patent license shall apply to the&n;  combination of the Software and any operating system licensed under the GNU&n;  General Public License 2.0 or later if, at the time Intel provides the&n;  Software to Recipient, such addition of the Software to the then publicly&n;  available versions of such operating systems available under the GNU General&n;  Public License 2.0 or later (whether in gold, beta or alpha form) causes&n;  such combination to be covered by the Licensed Patents. The patent license&n;  shall not apply to any other combinations which include the Software. NO&n;  hardware per se is licensed hereunder.&n;  &n;  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;&n;  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n;  IMPLIED WARRANTIES OF MECHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n;  ARE DISCLAIMED. IN NO EVENT SHALL INTEL OR IT CONTRIBUTORS BE LIABLE FOR ANY&n;  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n;  (INCLUDING, BUT NOT LIMITED, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;&n;  ANY LOSS OF USE; DATA, OR PROFITS; OR BUSINESS INTERUPTION) HOWEVER CAUSED&n;  AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY OR&n;  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE&n;  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
 multiline_comment|/* This is the only thing that needs to be changed to adjust the&n; * maximum number of ports that the driver can manage.&n; */
 DECL|macro|E1000_MAX_NIC
@@ -51,7 +51,7 @@ comma
 l_string|&quot;Duplex setting&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Auto-negotiation Advertisement Override&n; *&n; * Valid Range: 0x00-0x0F, 0x20-0x2F&n; *&n; * The AutoNeg value is a bit mask describing which speed and duplex&n; * combinations should be advertised during auto-negotiation.&n; * The supported speed and duplex modes are listed below&n; *&n; * Bit           7     6     5      4      3     2     1      0&n; * Speed (Mbps)  N/A   N/A   1000   N/A    100   100   10     10&n; * Duplex                    Full          Full  Half  Full   Half&n; *&n; * Default Value: 0x2F&n; */
+multiline_comment|/* Auto-negotiation Advertisement Override&n; *&n; * Valid Range: 0x01-0x0F, 0x20-0x2F&n; *&n; * The AutoNeg value is a bit mask describing which speed and duplex&n; * combinations should be advertised during auto-negotiation.&n; * The supported speed and duplex modes are listed below&n; *&n; * Bit           7     6     5      4      3     2     1      0&n; * Speed (Mbps)  N/A   N/A   1000   N/A    100   100   10     10&n; * Duplex                    Full          Full  Half  Full   Half&n; *&n; * Default Value: 0x2F&n; */
 id|E1000_PARAM
 c_func
 (paren
@@ -78,16 +78,7 @@ comma
 l_string|&quot;Disable or enable Receive Checksum offload&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Transmit Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 64&n; */
-id|E1000_PARAM
-c_func
-(paren
-id|TxIntDelay
-comma
-l_string|&quot;Transmit Interrupt Delay&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 64&n; */
+multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 64/128&n; */
 id|E1000_PARAM
 c_func
 (paren
@@ -136,18 +127,14 @@ DECL|macro|MIN_RXD
 mdefine_line|#define MIN_RXD                       80
 DECL|macro|MAX_82544_RXD
 mdefine_line|#define MAX_82544_RXD               4096
-DECL|macro|DEFAULT_TIDV
-mdefine_line|#define DEFAULT_TIDV                  64
-DECL|macro|MAX_TIDV
-mdefine_line|#define MAX_TIDV                  0xFFFF
-DECL|macro|MIN_TIDV
-mdefine_line|#define MIN_TIDV                       0
-DECL|macro|DEFAULT_RIDV
-mdefine_line|#define DEFAULT_RIDV                  64
-DECL|macro|MAX_RIDV
-mdefine_line|#define MAX_RIDV                  0xFFFF
-DECL|macro|MIN_RIDV
-mdefine_line|#define MIN_RIDV                       0
+DECL|macro|DEFAULT_RDTR
+mdefine_line|#define DEFAULT_RDTR                  64
+DECL|macro|DEFAULT_RADV
+mdefine_line|#define DEFAULT_RADV                 128
+DECL|macro|MAX_RXDELAY
+mdefine_line|#define MAX_RXDELAY               0xFFFF
+DECL|macro|MIN_RXDELAY
+mdefine_line|#define MIN_RXDELAY                    0
 DECL|macro|DEFAULT_MDIX
 mdefine_line|#define DEFAULT_MDIX                   0
 DECL|macro|MAX_MDIX
@@ -462,8 +449,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|macro|LIST_LEN
-mdefine_line|#define LIST_LEN(l) (sizeof(l) / sizeof(l[0]))
 r_static
 r_void
 id|e1000_check_fiber_options
@@ -585,7 +570,7 @@ suffix:semicolon
 id|e1000_mac_type
 id|mac_type
 op_assign
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 suffix:semicolon
 id|opt.arg.r.max
 op_assign
@@ -676,7 +661,7 @@ suffix:semicolon
 id|e1000_mac_type
 id|mac_type
 op_assign
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 suffix:semicolon
 id|opt.arg.r.max
 op_assign
@@ -831,7 +816,7 @@ suffix:colon
 (brace
 id|nr
 suffix:colon
-id|LIST_LEN
+id|ARRAY_SIZE
 c_func
 (paren
 id|fc_list
@@ -862,78 +847,37 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.fc
+id|adapter-&gt;hw.fc
 op_assign
-id|adapter-&gt;shared.original_fc
+id|adapter-&gt;hw.original_fc
 op_assign
 id|fc
 suffix:semicolon
 )brace
 (brace
-multiline_comment|/* Transmit Interrupt Delay */
-r_struct
-id|e1000_option
-id|opt
+multiline_comment|/* Receive Interrupt Delay */
+r_char
+op_star
+id|rdtr
 op_assign
-(brace
-id|type
-suffix:colon
-id|range_option
-comma
-id|name
-suffix:colon
-l_string|&quot;Transmit Interrupt Delay&quot;
-comma
-id|err
-suffix:colon
 l_string|&quot;using default of &quot;
 id|__MODULE_STRING
 c_func
 (paren
-id|DEFAULT_TIDV
+id|DEFAULT_RDTR
 )paren
-comma
-id|def
-suffix:colon
-id|DEFAULT_TIDV
-comma
-id|arg
-suffix:colon
-(brace
-id|r
-suffix:colon
-(brace
-id|min
-suffix:colon
-id|MIN_TIDV
-comma
-id|max
-suffix:colon
-id|MAX_TIDV
-)brace
-)brace
-)brace
 suffix:semicolon
-id|adapter-&gt;tx_int_delay
+r_char
+op_star
+id|radv
 op_assign
-id|TxIntDelay
-(braket
-id|bd
-)braket
-suffix:semicolon
-id|e1000_validate_option
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
 c_func
 (paren
-op_amp
-id|adapter-&gt;tx_int_delay
-comma
-op_amp
-id|opt
+id|DEFAULT_RADV
 )paren
 suffix:semicolon
-)brace
-(brace
-multiline_comment|/* Receive Interrupt Delay */
 r_struct
 id|e1000_option
 id|opt
@@ -947,19 +891,6 @@ id|name
 suffix:colon
 l_string|&quot;Receive Interrupt Delay&quot;
 comma
-id|err
-suffix:colon
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_RIDV
-)paren
-comma
-id|def
-suffix:colon
-id|DEFAULT_RIDV
-comma
 id|arg
 suffix:colon
 (brace
@@ -968,14 +899,41 @@ suffix:colon
 (brace
 id|min
 suffix:colon
-id|MIN_RIDV
+id|MIN_RXDELAY
 comma
 id|max
 suffix:colon
-id|MAX_RIDV
+id|MAX_RXDELAY
 )brace
 )brace
 )brace
+suffix:semicolon
+id|e1000_mac_type
+id|mac_type
+op_assign
+id|adapter-&gt;hw.mac_type
+suffix:semicolon
+id|opt.def
+op_assign
+id|mac_type
+OL
+id|e1000_82540
+ques
+c_cond
+id|DEFAULT_RDTR
+suffix:colon
+id|DEFAULT_RADV
+suffix:semicolon
+id|opt.err
+op_assign
+id|mac_type
+OL
+id|e1000_82540
+ques
+c_cond
+id|rdtr
+suffix:colon
+id|radv
 suffix:semicolon
 id|adapter-&gt;rx_int_delay
 op_assign
@@ -998,7 +956,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|adapter-&gt;shared.media_type
+id|adapter-&gt;hw.media_type
 )paren
 (brace
 r_case
@@ -1227,7 +1185,7 @@ suffix:colon
 (brace
 id|nr
 suffix:colon
-id|LIST_LEN
+id|ARRAY_SIZE
 c_func
 (paren
 id|speed_list
@@ -1315,7 +1273,7 @@ suffix:colon
 (brace
 id|nr
 suffix:colon
-id|LIST_LEN
+id|ARRAY_SIZE
 c_func
 (paren
 id|dplx_list
@@ -1375,7 +1333,7 @@ l_string|&quot;AutoNeg specified along with Speed or Duplex, &quot;
 l_string|&quot;parameter ignored&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|AUTONEG_ADV_DEFAULT
 suffix:semicolon
@@ -1390,7 +1348,7 @@ id|an_list
 )braket
 op_assign
 DECL|macro|AA
-mdefine_line|#define AA &quot;Autoneg advertising &quot;
+mdefine_line|#define AA &quot;AutoNeg advertising &quot;
 (brace
 (brace
 l_int|0x01
@@ -1621,7 +1579,7 @@ id|list_option
 comma
 id|name
 suffix:colon
-l_string|&quot;Autoneg&quot;
+l_string|&quot;AutoNeg&quot;
 comma
 id|err
 suffix:colon
@@ -1639,7 +1597,7 @@ suffix:colon
 (brace
 id|nr
 suffix:colon
-id|LIST_LEN
+id|ARRAY_SIZE
 c_func
 (paren
 id|an_list
@@ -1670,7 +1628,7 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|an
 suffix:semicolon
@@ -1686,7 +1644,7 @@ id|dplx
 r_case
 l_int|0
 suffix:colon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
@@ -1735,11 +1693,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at Half Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_10_HALF
 op_or
@@ -1764,11 +1722,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_10_FULL
 op_or
@@ -1795,11 +1753,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at 10 Mbps only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_10_HALF
 op_or
@@ -1819,15 +1777,15 @@ id|KERN_INFO
 l_string|&quot;Forcing to 10 Mbps Half Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|0
 suffix:semicolon
-id|adapter-&gt;shared.forced_speed_duplex
+id|adapter-&gt;hw.forced_speed_duplex
 op_assign
 id|e1000_10_half
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 l_int|0
 suffix:semicolon
@@ -1845,15 +1803,15 @@ id|KERN_INFO
 l_string|&quot;Forcing to 10 Mbps Full Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|0
 suffix:semicolon
-id|adapter-&gt;shared.forced_speed_duplex
+id|adapter-&gt;hw.forced_speed_duplex
 op_assign
 id|e1000_10_full
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 l_int|0
 suffix:semicolon
@@ -1876,11 +1834,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at 100 Mbps only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_100_HALF
 op_or
@@ -1900,15 +1858,15 @@ id|KERN_INFO
 l_string|&quot;Forcing to 100 Mbps Half Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|0
 suffix:semicolon
-id|adapter-&gt;shared.forced_speed_duplex
+id|adapter-&gt;hw.forced_speed_duplex
 op_assign
 id|e1000_100_half
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 l_int|0
 suffix:semicolon
@@ -1926,15 +1884,15 @@ id|KERN_INFO
 l_string|&quot;Forcing to 100 Mbps Full Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|0
 suffix:semicolon
-id|adapter-&gt;shared.forced_speed_duplex
+id|adapter-&gt;hw.forced_speed_duplex
 op_assign
 id|e1000_100_full
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 l_int|0
 suffix:semicolon
@@ -1957,11 +1915,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_1000_FULL
 suffix:semicolon
@@ -1986,11 +1944,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_1000_FULL
 suffix:semicolon
@@ -2008,11 +1966,11 @@ id|KERN_INFO
 l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.autoneg
+id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
 suffix:semicolon
-id|adapter-&gt;shared.autoneg_advertised
+id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|ADVERTISE_1000_FULL
 suffix:semicolon
@@ -2090,7 +2048,7 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.mdix
+id|adapter-&gt;hw.mdix
 op_assign
 id|mdix
 suffix:semicolon
@@ -2139,7 +2097,7 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
-id|adapter-&gt;shared.disable_polarity_correction
+id|adapter-&gt;hw.disable_polarity_correction
 op_assign
 id|dpc
 suffix:semicolon
@@ -2148,15 +2106,16 @@ multiline_comment|/* Speed, AutoNeg and MDI/MDI-X must all play nice */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|e1000_validate_mdi_setting
 c_func
 (paren
 op_amp
 (paren
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 )paren
 )paren
+OL
+l_int|0
 )paren
 (brace
 id|printk

@@ -900,7 +900,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|dev-&gt;last_rx
+id|sp-&gt;dev-&gt;last_rx
 op_assign
 id|jiffies
 suffix:semicolon
@@ -2777,17 +2777,6 @@ id|KERN_INFO
 l_string|&quot;AX.25: 6pack driver, &quot;
 id|SIXPACK_VERSION
 l_string|&quot; (dynamic channels, max=%d)&bslash;n&quot;
-suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_char
-id|msg_invparm
-(braket
-)braket
-id|__initdata
-op_assign
-id|KERN_ERR
-l_string|&quot;6pack: sixpack_maxdev parameter too large.&bslash;n&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static

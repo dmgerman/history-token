@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  This software program is available to you under a choice of one of two&n;  licenses. You may choose to be licensed under either the GNU General Public&n;  License (GPL) Version 2, June 1991, available at&n;  http://www.fsf.org/copyleft/gpl.html, or the Intel BSD + Patent License, the&n;  text of which follows:&n;  &n;  Recipient has requested a license and Intel Corporation (&quot;Intel&quot;) is willing&n;  to grant a license for the software entitled Linux Base Driver for the&n;  Intel(R) PRO/1000 Family of Adapters (e1000) (the &quot;Software&quot;) being provided&n;  by Intel Corporation. The following definitions apply to this license:&n;  &n;  &quot;Licensed Patents&quot; means patent claims licensable by Intel Corporation which&n;  are necessarily infringed by the use of sale of the Software alone or when&n;  combined with the operating system referred to below.&n;  &n;  &quot;Recipient&quot; means the party to whom Intel delivers this Software.&n;  &n;  &quot;Licensee&quot; means Recipient and those third parties that receive a license to&n;  any operating system available under the GNU Public License version 2.0 or&n;  later.&n;  &n;  Copyright (c) 1999 - 2002 Intel Corporation.&n;  All rights reserved.&n;  &n;  The license is provided to Recipient and Recipient&squot;s Licensees under the&n;  following terms.&n;  &n;  Redistribution and use in source and binary forms of the Software, with or&n;  without modification, are permitted provided that the following conditions&n;  are met:&n;  &n;  Redistributions of source code of the Software may retain the above&n;  copyright notice, this list of conditions and the following disclaimer.&n;  &n;  Redistributions in binary form of the Software may reproduce the above&n;  copyright notice, this list of conditions and the following disclaimer in&n;  the documentation and/or materials provided with the distribution.&n;  &n;  Neither the name of Intel Corporation nor the names of its contributors&n;  shall be used to endorse or promote products derived from this Software&n;  without specific prior written permission.&n;  &n;  Intel hereby grants Recipient and Licensees a non-exclusive, worldwide,&n;  royalty-free patent license under Licensed Patents to make, use, sell, offer&n;  to sell, import and otherwise transfer the Software, if any, in source code&n;  and object code form. This license shall include changes to the Software&n;  that are error corrections or other minor changes to the Software that do&n;  not add functionality or features when the Software is incorporated in any&n;  version of an operating system that has been distributed under the GNU&n;  General Public License 2.0 or later. This patent license shall apply to the&n;  combination of the Software and any operating system licensed under the GNU&n;  Public License version 2.0 or later if, at the time Intel provides the&n;  Software to Recipient, such addition of the Software to the then publicly&n;  available versions of such operating systems available under the GNU Public&n;  License version 2.0 or later (whether in gold, beta or alpha form) causes&n;  such combination to be covered by the Licensed Patents. The patent license&n;  shall not apply to any other combinations which include the Software. NO&n;  hardware per se is licensed hereunder.&n;  &n;  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;&n;  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n;  IMPLIED WARRANTIES OF MECHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n;  ARE DISCLAIMED. IN NO EVENT SHALL INTEL OR IT CONTRIBUTORS BE LIABLE FOR ANY&n;  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n;  (INCLUDING, BUT NOT LIMITED, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;&n;  ANY LOSS OF USE; DATA, OR PROFITS; OR BUSINESS INTERUPTION) HOWEVER CAUSED&n;  AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY OR&n;  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE&n;  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n;&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  This software program is available to you under a choice of one of two&n;  licenses. You may choose to be licensed under either the GNU General Public&n;  License 2.0, June 1991, available at http://www.fsf.org/copyleft/gpl.html,&n;  or the Intel BSD + Patent License, the text of which follows:&n;  &n;  Recipient has requested a license and Intel Corporation (&quot;Intel&quot;) is willing&n;  to grant a license for the software entitled Linux Base Driver for the&n;  Intel(R) PRO/1000 Family of Adapters (e1000) (the &quot;Software&quot;) being provided&n;  by Intel Corporation. The following definitions apply to this license:&n;  &n;  &quot;Licensed Patents&quot; means patent claims licensable by Intel Corporation which&n;  are necessarily infringed by the use of sale of the Software alone or when&n;  combined with the operating system referred to below.&n;  &n;  &quot;Recipient&quot; means the party to whom Intel delivers this Software.&n;  &n;  &quot;Licensee&quot; means Recipient and those third parties that receive a license to&n;  any operating system available under the GNU General Public License 2.0 or&n;  later.&n;  &n;  Copyright (c) 1999 - 2002 Intel Corporation.&n;  All rights reserved.&n;  &n;  The license is provided to Recipient and Recipient&squot;s Licensees under the&n;  following terms.&n;  &n;  Redistribution and use in source and binary forms of the Software, with or&n;  without modification, are permitted provided that the following conditions&n;  are met:&n;  &n;  Redistributions of source code of the Software may retain the above&n;  copyright notice, this list of conditions and the following disclaimer.&n;  &n;  Redistributions in binary form of the Software may reproduce the above&n;  copyright notice, this list of conditions and the following disclaimer in&n;  the documentation and/or materials provided with the distribution.&n;  &n;  Neither the name of Intel Corporation nor the names of its contributors&n;  shall be used to endorse or promote products derived from this Software&n;  without specific prior written permission.&n;  &n;  Intel hereby grants Recipient and Licensees a non-exclusive, worldwide,&n;  royalty-free patent license under Licensed Patents to make, use, sell, offer&n;  to sell, import and otherwise transfer the Software, if any, in source code&n;  and object code form. This license shall include changes to the Software&n;  that are error corrections or other minor changes to the Software that do&n;  not add functionality or features when the Software is incorporated in any&n;  version of an operating system that has been distributed under the GNU&n;  General Public License 2.0 or later. This patent license shall apply to the&n;  combination of the Software and any operating system licensed under the GNU&n;  General Public License 2.0 or later if, at the time Intel provides the&n;  Software to Recipient, such addition of the Software to the then publicly&n;  available versions of such operating systems available under the GNU General&n;  Public License 2.0 or later (whether in gold, beta or alpha form) causes&n;  such combination to be covered by the Licensed Patents. The patent license&n;  shall not apply to any other combinations which include the Software. NO&n;  hardware per se is licensed hereunder.&n;  &n;  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;&n;  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n;  IMPLIED WARRANTIES OF MECHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n;  ARE DISCLAIMED. IN NO EVENT SHALL INTEL OR IT CONTRIBUTORS BE LIABLE FOR ANY&n;  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n;  (INCLUDING, BUT NOT LIMITED, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;&n;  ANY LOSS OF USE; DATA, OR PROFITS; OR BUSINESS INTERUPTION) HOWEVER CAUSED&n;  AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY OR&n;  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE&n;  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n;&n;*******************************************************************************/
 multiline_comment|/*&n; * Proc fs support.&n; *&n; * Read-only files created by driver (if CONFIG_PROC_FS):&n; *&n; * /proc/net/PRO_LAN_Adapters/&lt;ethx&gt;.info&n; * /proc/net/PRO_LAN_Adapters/&lt;ethx&gt;/&lt;attribute&gt;&n; *&n; * where &lt;ethx&gt;      is the system device name, i.e eth0.&n; *       &lt;attribute&gt; is the driver attribute name.&n; *&n; * There is one file for each driver attribute, where the contents&n; * of the file is the attribute value.  The ethx.info file contains&n; * a list of all driver attributes in one file.&n; *&n; */
 macro_line|#include &quot;e1000.h&quot;
 macro_line|#ifdef CONFIG_PROC_FS
@@ -6,7 +6,11 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|macro|ADAPTERS_PROC_DIR
 mdefine_line|#define ADAPTERS_PROC_DIR           &quot;PRO_LAN_Adapters&quot;
 DECL|macro|TAG_MAX_LENGTH
-mdefine_line|#define TAG_MAX_LENGTH              36
+mdefine_line|#define TAG_MAX_LENGTH              32
+DECL|macro|LINE_MAX_LENGTH
+mdefine_line|#define LINE_MAX_LENGTH             80
+DECL|macro|FIELD_MAX_LENGTH
+mdefine_line|#define FIELD_MAX_LENGTH            LINE_MAX_LENGTH - TAG_MAX_LENGTH - 3
 r_extern
 r_char
 id|e1000_driver_name
@@ -35,6 +39,8 @@ r_char
 id|tag
 (braket
 id|TAG_MAX_LENGTH
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* attribute name */
@@ -223,7 +229,9 @@ suffix:semicolon
 r_char
 id|buf
 (braket
-l_int|64
+id|FIELD_MAX_LENGTH
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 id|list_for_each
@@ -250,13 +258,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|p
+op_minus
+id|page
+op_plus
+id|LINE_MAX_LENGTH
+op_ge
+id|PAGE_SIZE
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|strlen
 c_func
 (paren
 id|elem-&gt;tag
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|p
@@ -278,9 +298,15 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;%-32s %s&bslash;n&quot;
+l_string|&quot;%-*.*s %.*s&bslash;n&quot;
+comma
+id|TAG_MAX_LENGTH
+comma
+id|TAG_MAX_LENGTH
 comma
 id|elem-&gt;tag
+comma
+id|FIELD_MAX_LENGTH
 comma
 id|elem
 op_member_access_from_pointer
@@ -359,7 +385,9 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;%s&quot;
+l_string|&quot;%.*s&quot;
+comma
+id|FIELD_MAX_LENGTH
 comma
 id|elem
 op_member_access_from_pointer
@@ -458,7 +486,7 @@ id|ADAPTERS_PROC_DIR
 )paren
 )paren
 op_logical_and
-(paren
+op_logical_neg
 id|memcmp
 c_func
 (paren
@@ -471,9 +499,6 @@ c_func
 (paren
 id|ADAPTERS_PROC_DIR
 )paren
-)paren
-op_eq
-l_int|0
 )paren
 )paren
 (brace
@@ -664,8 +689,6 @@ id|proc_net
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 r_static
 r_int
@@ -724,13 +747,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|strlen
 c_func
 (paren
 id|elem-&gt;tag
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 r_continue
@@ -779,12 +801,16 @@ l_int|1
 suffix:semicolon
 )brace
 r_static
-r_int
+r_void
 id|__devinit
 DECL|function|e1000_proc_dirs_create
 id|e1000_proc_dirs_create
 c_func
 (paren
+r_void
+op_star
+id|data
+comma
 r_char
 op_star
 id|name
@@ -849,7 +875,7 @@ id|ADAPTERS_PROC_DIR
 )paren
 )paren
 op_logical_and
-(paren
+op_logical_neg
 id|memcmp
 c_func
 (paren
@@ -862,9 +888,6 @@ c_func
 (paren
 id|ADAPTERS_PROC_DIR
 )paren
-)paren
-op_eq
-l_int|0
 )paren
 )paren
 (brace
@@ -898,7 +921,6 @@ id|proc_net
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -921,7 +943,6 @@ id|intel_proc_dir
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 id|SET_MODULE_OWNER
@@ -944,7 +965,6 @@ id|proc_list_head
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 id|strcpy
@@ -983,7 +1003,6 @@ id|intel_proc_dir
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 id|SET_MODULE_OWNER
@@ -999,9 +1018,6 @@ suffix:semicolon
 id|info_entry-&gt;data
 op_assign
 id|proc_list_head
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 r_static
@@ -1117,8 +1133,6 @@ comma
 id|proc_list_head
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 r_static
 r_void
@@ -1176,8 +1190,6 @@ id|elem
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * General purpose formating functions&n; */
 r_static
@@ -2047,7 +2059,7 @@ c_func
 (paren
 id|buf
 comma
-id|adapter-&gt;shared.media_type
+id|adapter-&gt;hw.media_type
 op_eq
 id|e1000_media_type_copper
 ques
@@ -2314,63 +2326,6 @@ ques
 c_cond
 l_string|&quot;Enabled&quot;
 suffix:colon
-l_string|&quot;Undefined&quot;
-)paren
-suffix:semicolon
-r_return
-id|buf
-suffix:semicolon
-)brace
-r_static
-r_char
-op_star
-DECL|function|e1000_proc_link_reset_enabled
-id|e1000_proc_link_reset_enabled
-c_func
-(paren
-r_void
-op_star
-id|data
-comma
-r_int
-id|len
-comma
-r_char
-op_star
-id|buf
-)paren
-(brace
-r_struct
-id|e1000_adapter
-op_star
-id|adapter
-op_assign
-id|data
-suffix:semicolon
-id|e1000_down_no_idle
-id|link_reset
-op_assign
-id|adapter-&gt;phy_info.link_reset
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|buf
-comma
-id|link_reset
-op_eq
-id|e1000_down_no_idle_no_detect
-ques
-c_cond
-l_string|&quot;Disabled&quot;
-suffix:colon
-id|link_reset
-op_eq
-id|e1000_down_no_idle_detect
-ques
-c_cond
-l_string|&quot;Enabled&quot;
-suffix:colon
 l_string|&quot;Unknown&quot;
 )paren
 suffix:semicolon
@@ -2416,12 +2371,19 @@ id|buf
 comma
 id|mdix_mode
 op_eq
-l_int|0
+id|e1000_auto_x_mode_manual_mdi
 ques
 c_cond
 l_string|&quot;MDI&quot;
 suffix:colon
+id|mdix_mode
+op_eq
+id|e1000_auto_x_mode_manual_mdix
+ques
+c_cond
 l_string|&quot;MDI-X&quot;
+suffix:colon
+l_string|&quot;Unknown&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2508,12 +2470,12 @@ id|adapter
 )paren
 (brace
 r_struct
-id|e1000_shared_adapter
+id|e1000_hw
 op_star
-id|shared
+id|hw
 op_assign
 op_amp
-id|adapter-&gt;shared
+id|adapter-&gt;hw
 suffix:semicolon
 r_struct
 id|list_head
@@ -2570,7 +2532,7 @@ c_func
 l_string|&quot;PCI_Vendor&quot;
 comma
 op_amp
-id|shared-&gt;vendor_id
+id|hw-&gt;vendor_id
 )paren
 suffix:semicolon
 id|LIST_ADD_H
@@ -2579,7 +2541,7 @@ c_func
 l_string|&quot;PCI_Device_ID&quot;
 comma
 op_amp
-id|shared-&gt;device_id
+id|hw-&gt;device_id
 )paren
 suffix:semicolon
 id|LIST_ADD_H
@@ -2588,7 +2550,7 @@ c_func
 l_string|&quot;PCI_Subsystem_Vendor&quot;
 comma
 op_amp
-id|shared-&gt;subsystem_vendor_id
+id|hw-&gt;subsystem_vendor_id
 )paren
 suffix:semicolon
 id|LIST_ADD_H
@@ -2597,7 +2559,7 @@ c_func
 l_string|&quot;PCI_Subsystem_ID&quot;
 comma
 op_amp
-id|shared-&gt;subsystem_id
+id|hw-&gt;subsystem_id
 )paren
 suffix:semicolon
 id|LIST_ADD_H
@@ -2606,7 +2568,7 @@ c_func
 l_string|&quot;PCI_Revision_ID&quot;
 comma
 op_amp
-id|shared-&gt;revision_id
+id|hw-&gt;revision_id
 )paren
 suffix:semicolon
 id|LIST_ADD_U
@@ -2631,7 +2593,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 op_ge
 id|e1000_82543
 )paren
@@ -2642,7 +2604,7 @@ c_func
 l_string|&quot;PCI_Bus_Type&quot;
 comma
 op_amp
-id|shared-&gt;bus_type
+id|hw-&gt;bus_type
 comma
 id|e1000_proc_bus_type
 )paren
@@ -2653,7 +2615,7 @@ c_func
 l_string|&quot;PCI_Bus_Speed&quot;
 comma
 op_amp
-id|shared-&gt;bus_speed
+id|hw-&gt;bus_speed
 comma
 id|e1000_proc_bus_speed
 )paren
@@ -2664,7 +2626,7 @@ c_func
 l_string|&quot;PCI_Bus_Width&quot;
 comma
 op_amp
-id|shared-&gt;bus_width
+id|hw-&gt;bus_width
 comma
 id|e1000_proc_bus_width
 )paren
@@ -2702,7 +2664,7 @@ c_func
 (paren
 l_string|&quot;Permanent_HWaddr&quot;
 comma
-id|adapter-&gt;shared.perm_mac_addr
+id|adapter-&gt;hw.perm_mac_addr
 comma
 id|e1000_proc_hwaddr
 )paren
@@ -3008,7 +2970,7 @@ multiline_comment|/* The 82542 does not have an alignment error count register *
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.mac_type
+id|adapter-&gt;hw.mac_type
 op_ge
 id|e1000_82543
 )paren
@@ -3096,7 +3058,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter-&gt;shared.media_type
+id|adapter-&gt;hw.media_type
 op_eq
 id|e1000_media_type_copper
 )paren
@@ -3150,16 +3112,6 @@ op_amp
 id|adapter-&gt;phy_stats.idle_errors
 )paren
 suffix:semicolon
-id|LIST_ADD_F
-c_func
-(paren
-l_string|&quot;PHY_Link_Reset_Enabled&quot;
-comma
-id|adapter
-comma
-id|e1000_proc_link_reset_enabled
-)paren
-suffix:semicolon
 id|LIST_ADD_U
 c_func
 (paren
@@ -3202,8 +3154,6 @@ id|e1000_proc_rx_status
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * e1000_proc_dev_setup - create proc fs nodes and link list&n; * @adapter: board private structure&n; */
 r_void
@@ -3227,13 +3177,13 @@ suffix:semicolon
 id|e1000_proc_dirs_create
 c_func
 (paren
+id|adapter
+comma
 id|adapter-&gt;netdev-&gt;name
 comma
 op_amp
 id|adapter-&gt;proc_list_head
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * e1000_proc_dev_free - free proc fs nodes and link list&n; * @adapter: board private structure&n; */
@@ -3264,8 +3214,6 @@ c_func
 op_amp
 id|adapter-&gt;proc_list_head
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_PROC_FS */
