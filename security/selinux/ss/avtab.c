@@ -449,7 +449,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|kfree
+id|vfree
 c_func
 (paren
 id|h-&gt;htable
@@ -589,7 +589,7 @@ id|i
 suffix:semicolon
 id|h-&gt;htable
 op_assign
-id|kmalloc
+id|vmalloc
 c_func
 (paren
 r_sizeof
@@ -601,8 +601,6 @@ id|h-&gt;htable
 )paren
 op_star
 id|AVTAB_SIZE
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
