@@ -388,7 +388,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_struct
-id|param_kobject
+id|module_param_attrs
 suffix:semicolon
 DECL|struct|module
 r_struct
@@ -419,11 +419,11 @@ r_struct
 id|module_kobject
 id|mkobj
 suffix:semicolon
-DECL|member|params_kobject
+DECL|member|param_attrs
 r_struct
-id|param_kobject
+id|module_param_attrs
 op_star
-id|params_kobject
+id|param_attrs
 suffix:semicolon
 multiline_comment|/* Exported symbols */
 DECL|member|syms
