@@ -28,12 +28,6 @@ id|next
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|snd_cards_count
-r_int
-id|snd_cards_count
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|snd_cards_lock
 r_int
 r_int
@@ -494,7 +488,7 @@ c_cond
 (paren
 id|err
 op_assign
-id|snd_ctl_register
+id|snd_ctl_create
 c_func
 (paren
 id|card
@@ -565,10 +559,12 @@ id|card
 suffix:semicolon
 id|__error_ctl
 suffix:colon
-id|snd_ctl_unregister
+id|snd_device_free_all
 c_func
 (paren
 id|card
+comma
+id|SNDRV_DEV_CMD_PRE
 )paren
 suffix:semicolon
 id|__error
@@ -827,12 +823,6 @@ id|card-&gt;files_lock
 suffix:semicolon
 multiline_comment|/* phase 3: notify all connected devices about disconnection */
 multiline_comment|/* at this point, they cannot respond to any calls except release() */
-id|snd_ctl_disconnect
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
 r_if
 c_cond
@@ -917,9 +907,6 @@ id|card-&gt;number
 )braket
 op_assign
 l_int|NULL
-suffix:semicolon
-id|snd_cards_count
-op_decrement
 suffix:semicolon
 id|write_unlock
 c_func
@@ -1027,27 +1014,6 @@ l_string|&quot;unable to free all devices (normal)&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Fatal, but this situation should never occur */
-)brace
-r_if
-c_cond
-(paren
-id|snd_ctl_unregister
-c_func
-(paren
-id|card
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|snd_printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;unable to unregister control minors&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Not fatal error */
 )brace
 r_if
 c_cond
@@ -1778,9 +1744,6 @@ id|card-&gt;number
 )braket
 op_assign
 id|card
-suffix:semicolon
-id|snd_cards_count
-op_increment
 suffix:semicolon
 id|write_unlock
 c_func
@@ -2710,17 +2673,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|mfile
 )paren
-(brace
-id|kfree
-c_func
-(paren
-id|mfile
-)paren
-suffix:semicolon
-)brace
-r_else
 (brace
 id|snd_printk
 c_func
@@ -2736,6 +2691,12 @@ op_minus
 id|ENOENT
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|mfile
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2990,6 +2951,15 @@ id|rqst
 r_case
 id|PM_SUSPEND
 suffix:colon
+r_if
+c_cond
+(paren
+id|card-&gt;power_state
+op_eq
+id|SNDRV_CTL_POWER_D3hot
+)paren
+r_break
+suffix:semicolon
 multiline_comment|/* FIXME: the correct state value? */
 id|card
 op_member_access_from_pointer
@@ -3001,11 +2971,28 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|snd_power_change_state
+c_func
+(paren
+id|card
+comma
+id|SNDRV_CTL_POWER_D3hot
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|PM_RESUME
 suffix:colon
+r_if
+c_cond
+(paren
+id|card-&gt;power_state
+op_eq
+id|SNDRV_CTL_POWER_D0
+)paren
+r_break
+suffix:semicolon
 multiline_comment|/* FIXME: the correct state value? */
 id|card
 op_member_access_from_pointer
@@ -3015,6 +3002,14 @@ c_func
 id|card
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|snd_power_change_state
+c_func
+(paren
+id|card
+comma
+id|SNDRV_CTL_POWER_D0
 )paren
 suffix:semicolon
 r_break
@@ -3179,6 +3174,14 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|snd_power_change_state
+c_func
+(paren
+id|card
+comma
+id|SNDRV_CTL_POWER_D3hot
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -3234,7 +3237,6 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: correct state value? */
-r_return
 id|card
 op_member_access_from_pointer
 id|pm_resume
@@ -3244,6 +3246,17 @@ id|card
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|snd_power_change_state
+c_func
+(paren
+id|card
+comma
+id|SNDRV_CTL_POWER_D0
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif

@@ -7,6 +7,7 @@ macro_line|#include &quot;pdaudiocf.h&quot;
 macro_line|#include &lt;sound/initval.h&gt;
 multiline_comment|/*&n; *&n; */
 DECL|function|pdacf_ak4117_read
+r_static
 r_int
 r_char
 id|pdacf_ak4117_read
@@ -199,6 +200,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|pdacf_ak4117_write
+r_static
 r_void
 id|pdacf_ak4117_write
 c_func
@@ -1368,14 +1370,6 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D3hot
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1471,14 +1465,6 @@ id|chip-&gt;chip_status
 op_and_assign
 op_complement
 id|PDAUDIOCF_STAT_IS_SUSPENDED
-suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D0
-)paren
 suffix:semicolon
 r_return
 l_int|0

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  Driver for Philips UDA1341TS on Compaq iPAQ H3600 soundcard&n; *  Copyright (C) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License.&n; * &n; * History:&n; *&n; * 2002-03-13   Tomas Kasparek  initial release - based on h3600-uda1341.c from OSS&n; * 2002-03-20   Tomas Kasparek  playback over ALSA is working&n; * 2002-03-28   Tomas Kasparek  playback over OSS emulation is working&n; * 2002-03-29   Tomas Kasparek  basic capture is working (native ALSA)&n; * 2002-03-29   Tomas Kasparek  capture is working (OSS emulation)&n; * 2002-04-04   Tomas Kasparek  better rates handling (allow non-standard rates)&n; * 2003-02-14   Brian Avery     fixed full duplex mode, other updates&n; * 2003-02-20   Tomas Kasparek  merged updates by Brian (except HAL)&n; * 2003-04-19   Jaroslav Kysela recoded DMA stuff to follow 2.4.18rmk3-hh24 kernel&n; *                              working suspend and resume&n; * 2003-04-28   Tomas Kasparek  updated work by Jaroslav to compile it under 2.5.x again&n; *                              merged HAL layer (patches from Brian)&n; */
-multiline_comment|/* $Id: sa11xx-uda1341.c,v 1.18 2004/07/20 15:54:09 cladisch Exp $ */
+multiline_comment|/* $Id: sa11xx-uda1341.c,v 1.19 2004/12/15 15:26:10 tiwai Exp $ */
 multiline_comment|/***************************************************************************************************&n;*&n;* To understand what Alsa Drivers should be doing look at &quot;Writing an Alsa Driver&quot; by Takashi Iwai&n;* available in the Alsa doc section on the website&t;&t;&n;* &n;* A few notes to make things clearer. The UDA1341 is hooked up to Serial port 4 on the SA1100.&n;* We are using  SSP mode to talk to the UDA1341. The UDA1341 bit &amp; wordselect clocks are generated&n;* by this UART. Unfortunately, the clock only runs if the transmit buffer has something in it.&n;* So, if we are just recording, we feed the transmit DMA stream a bunch of 0x0000 so that the&n;* transmit buffer is full and the clock keeps going. The zeroes come from FLUSH_BASE_PHYS which&n;* is a mem loc that always decodes to 0&squot;s w/ no off chip access.&n;*&n;* Some alsa terminology:&n;*&t;frame =&gt; num_channels * sample_size  e.g stereo 16 bit is 2 * 16 = 32 bytes&n;*&t;period =&gt; the least number of bytes that will generate an interrupt e.g. we have a 1024 byte&n;*             buffer and 4 periods in the runtime structure this means we&squot;ll get an int every 256&n;*             bytes or 4 times per buffer.&n;*             A number of the sizes are in frames rather than bytes, use frames_to_bytes and&n;*             bytes_to_frames to convert.  The easiest way to tell the units is to look at the&n;*             type i.e. runtime-&gt; buffer_size is in frames and its type is snd_pcm_uframes_t&n;*             &n;*&t;Notes about the pointer fxn:&n;*&t;The pointer fxn needs to return the offset into the dma buffer in frames.&n;*&t;Interrupts must be blocked before calling the dma_get_pos fxn to avoid race with interrupts.&n;*&n;*&t;Notes about pause/resume&n;*&t;Implementing this would be complicated so it&squot;s skipped.  The problem case is:&n;*&t;A full duplex connection is going, then play is paused. At this point you need to start xmitting&n;*&t;0&squot;s to keep the record active which means you cant just freeze the dma and resume it later you&squot;d&n;*&t;need to&t;save off the dma info, and restore it properly on a resume.  Yeach!&n;*&n;*&t;Notes about transfer methods:&n;*&t;The async write calls fail.  I probably need to implement something else to support them?&n;* &n;***************************************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;sound/driver.h&gt;
@@ -2951,14 +2951,6 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D3hot
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3026,14 +3018,6 @@ suffix:semicolon
 macro_line|#else
 singleline_comment|//FIXME
 macro_line|#endif
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D0
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

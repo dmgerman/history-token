@@ -8110,7 +8110,7 @@ comma
 dot
 id|iface
 op_assign
-id|SNDRV_CTL_ELEM_IFACE_PCM
+id|SNDRV_CTL_ELEM_IFACE_MIXER
 comma
 dot
 id|name
@@ -8137,7 +8137,7 @@ comma
 dot
 id|iface
 op_assign
-id|SNDRV_CTL_ELEM_IFACE_PCM
+id|SNDRV_CTL_ELEM_IFACE_MIXER
 comma
 dot
 id|name
@@ -8164,7 +8164,7 @@ comma
 dot
 id|iface
 op_assign
-id|SNDRV_CTL_ELEM_IFACE_PCM
+id|SNDRV_CTL_ELEM_IFACE_MIXER
 comma
 dot
 id|name

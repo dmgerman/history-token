@@ -69,6 +69,9 @@ op_star
 id|SNDRV_DEV_TYPE_RANGE_SIZE
 )paren
 comma
+DECL|enumerator|SNDRV_DEV_CONTROL
+id|SNDRV_DEV_CONTROL
+comma
 DECL|enumerator|SNDRV_DEV_LOWLEVEL_PRE
 id|SNDRV_DEV_LOWLEVEL_PRE
 comma
@@ -98,6 +101,12 @@ id|SNDRV_DEV_HWDEP
 comma
 DECL|enumerator|SNDRV_DEV_INFO
 id|SNDRV_DEV_INFO
+comma
+DECL|enumerator|SNDRV_DEV_BUS
+id|SNDRV_DEV_BUS
+comma
+DECL|enumerator|SNDRV_DEV_CODEC
+id|SNDRV_DEV_CODEC
 comma
 DECL|enumerator|SNDRV_DEV_LOWLEVEL
 id|SNDRV_DEV_LOWLEVEL
@@ -486,6 +495,11 @@ r_int
 id|controls_count
 suffix:semicolon
 multiline_comment|/* count of all controls */
+DECL|member|user_ctl_count
+r_int
+id|user_ctl_count
+suffix:semicolon
+multiline_comment|/* count of all user controls */
 DECL|member|controls
 r_struct
 id|list_head
@@ -1228,6 +1242,7 @@ op_star
 id|dst
 comma
 r_const
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1241,6 +1256,7 @@ r_int
 id|copy_from_user_toio
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1257,10 +1273,6 @@ id|count
 )paren
 suffix:semicolon
 multiline_comment|/* init.c */
-r_extern
-r_int
-id|snd_cards_count
-suffix:semicolon
 r_extern
 r_int
 r_int
