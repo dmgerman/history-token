@@ -44,8 +44,6 @@ DECL|macro|LASI700_ID_TABLE
 mdefine_line|#define LASI700_ID_TABLE {&t;&t;&t;&bslash;&n;&t;.hw_type&t;= HPHW_FIO,&t;&t;&bslash;&n;&t;.sversion&t;= LASI_700_SVERSION,&t;&bslash;&n;&t;.hversion&t;= HVERSION_ANY_ID,&t;&bslash;&n;&t;.hversion_rev&t;= HVERSION_REV_ANY_ID,&t;&bslash;&n;}
 DECL|macro|LASI710_ID_TABLE
 mdefine_line|#define LASI710_ID_TABLE {&t;&t;&t;&bslash;&n;&t;.hw_type&t;= HPHW_FIO,&t;&t;&bslash;&n;&t;.sversion&t;= LASI_710_SVERSION,&t;&bslash;&n;&t;.hversion&t;= HVERSION_ANY_ID,&t;&bslash;&n;&t;.hversion_rev&t;= HVERSION_REV_ANY_ID,&t;&bslash;&n;}
-DECL|macro|LASI700_DRIVER
-mdefine_line|#define LASI700_DRIVER {&t;&t;&t;&bslash;&n;&t;.name&t;&t;= &quot;Lasi SCSI&quot;,&t;&t;&bslash;&n;&t;.id_table&t;= lasi700_scsi_tbl,&t;&bslash;&n;&t;.probe&t;&t;= lasi700_driver_callback,&bslash;&n;}
 DECL|macro|LASI700_CLOCK
 mdefine_line|#define LASI700_CLOCK&t;25
 DECL|macro|LASI710_CLOCK

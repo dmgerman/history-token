@@ -20,6 +20,13 @@ macro_line|#include &lt;asm/edd.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &quot;setup_arch_pre.h&quot;
+DECL|variable|__initdata
+r_int
+id|disable_pse
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
 r_static
 r_inline
 r_char
@@ -37,6 +44,36 @@ r_char
 id|ignore_irq13
 suffix:semicolon
 multiline_comment|/* set if exception 16 works */
+multiline_comment|/* cpu data as detected by the assembly code in head.S */
+DECL|variable|__initdata
+r_struct
+id|cpuinfo_x86
+id|new_cpu_data
+id|__initdata
+op_assign
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+op_minus
+l_int|1
+comma
+l_int|1
+comma
+l_int|0
+comma
+l_int|0
+comma
+op_minus
+l_int|1
+)brace
+suffix:semicolon
+multiline_comment|/* common cpu data for all cpus */
 DECL|variable|boot_cpu_data
 r_struct
 id|cpuinfo_x86
@@ -2172,6 +2209,10 @@ comma
 id|boot_cpu_data.x86_capability
 )paren
 suffix:semicolon
+id|disable_pse
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -3463,6 +3504,21 @@ id|cmdline_p
 r_int
 r_int
 id|max_low_pfn
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|boot_cpu_data
+comma
+op_amp
+id|new_cpu_data
+comma
+r_sizeof
+(paren
+id|new_cpu_data
+)paren
+)paren
 suffix:semicolon
 id|pre_setup_arch_hook
 c_func
