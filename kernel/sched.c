@@ -763,8 +763,8 @@ c_func
 id|p
 )paren
 suffix:semicolon
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|unlikely
 c_func
@@ -780,10 +780,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|barrier
+multiline_comment|/*&n;&t;&t; * enable/disable preemption just to make this&n;&t;&t; * a preemption point - we are busy-waiting&n;&t;&t; * anyway.&n;&t;&t; */
+id|preempt_enable
 c_func
 (paren
 )paren
+suffix:semicolon
+r_goto
+id|repeat
 suffix:semicolon
 )brace
 id|rq
