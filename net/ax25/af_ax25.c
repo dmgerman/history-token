@@ -5275,10 +5275,6 @@ id|newsk
 op_assign
 id|skb-&gt;sk
 suffix:semicolon
-id|newsk-&gt;sk_pair
-op_assign
-l_int|NULL
-suffix:semicolon
 id|newsk-&gt;sk_socket
 op_assign
 id|newsock
