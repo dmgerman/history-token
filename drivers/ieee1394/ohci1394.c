@@ -24,7 +24,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -15822,7 +15822,7 @@ id|OHCI1394_REGISTER_SIZE
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 multiline_comment|/* On UniNorth, power down the cable and turn off the chip&n;&t; * clock when the module is removed to save power on&n;&t; * laptops. Turning it back ON is done by the arch code when&n;&t; * pci_enable_device() is called */
 (brace
 r_struct
@@ -15870,7 +15870,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 r_case
 id|OHCI_INIT_ALLOC_HOST
 suffix:colon

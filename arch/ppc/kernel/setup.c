@@ -177,7 +177,7 @@ id|DMA_MODE_READ
 comma
 id|DMA_MODE_WRITE
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 DECL|variable|_machine
 r_int
 id|_machine
@@ -262,7 +262,7 @@ r_int
 id|r7
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|variable|SYSRQ_KEY
 r_int
@@ -1137,7 +1137,7 @@ c_func
 id|offset
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_ALL_PPC)
+macro_line|#if defined(CONFIG_PPC_MULTIPLATFORM)
 id|reloc_got2
 c_func
 (paren
@@ -1212,7 +1212,7 @@ r_return
 id|phys
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 multiline_comment|/*&n; * Assume here that all clock rates are the same in a&n; * smp system.  -- Cort&n; */
 r_int
 id|__openfirmware
@@ -1424,7 +1424,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * The ALL_PPC version of platform_init...&n; */
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
+multiline_comment|/*&n; * The PPC_MULTIPLATFORM version of platform_init...&n; */
 r_void
 id|__init
 DECL|function|platform_init
@@ -1855,7 +1857,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
 DECL|function|find_bootinfo
 r_struct
 id|bi_record
@@ -2102,7 +2104,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 r_case
 id|BI_MACHTYPE
 suffix:colon
@@ -2115,7 +2117,7 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif
 r_case
 id|BI_MEMSIZE
 suffix:colon
@@ -2455,7 +2457,7 @@ l_int|500000000
 op_div
 id|HZ
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 multiline_comment|/* This could be called &quot;early setup arch&quot;, it must be done&n;&t; * now because xmon need it&n;&t; */
 r_if
 c_cond
@@ -2470,7 +2472,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* New cool way */
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif
 macro_line|#ifdef CONFIG_XMON
 id|xmon_map_scc
 c_func

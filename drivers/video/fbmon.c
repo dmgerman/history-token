@@ -2,7 +2,7 @@ multiline_comment|/*&n; * linux/drivers/video/fbmon.c&n; *&n; * Copyright (C) 20
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#endif
@@ -4784,7 +4784,7 @@ l_string|&quot;========================================&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 DECL|function|get_EDID_from_OF
 r_char
 op_star
@@ -6258,7 +6258,7 @@ id|get_EDID_from_BIOS
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 DECL|variable|get_EDID_from_OF
 id|EXPORT_SYMBOL
 c_func

@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;zlib.h&quot;
 macro_line|#include &quot;nonstdio.h&quot;
-multiline_comment|/* If we&squot;re on a ALL_PPC, assume we have a keyboard controller&n; * Also note, if we&squot;re not ALL_PPC, we assume you are a serial&n; * console - Tom */
-macro_line|#if defined(CONFIG_ALL_PPC) &amp;&amp; defined(CONFIG_VGA_CONSOLE)
+multiline_comment|/* If we&squot;re on a PReP, assume we have a keyboard controller&n; * Also note, if we&squot;re not PReP, we assume you are a serial&n; * console - Tom */
+macro_line|#if defined(CONFIG_PPC_PREP) &amp;&amp; defined(CONFIG_VGA_CONSOLE)
 r_extern
 r_void
 id|cursor
