@@ -78,12 +78,11 @@ r_struct
 id|edevs
 (brace
 DECL|member|odev
-r_int
+id|__be16
 id|odev
 suffix:semicolon
 DECL|member|ndev
-r_int
-r_int
+id|__be32
 id|ndev
 suffix:semicolon
 DECL|typedef|efs_devs
@@ -96,52 +95,52 @@ r_struct
 id|efs_dinode
 (brace
 DECL|member|di_mode
-id|u_short
+id|__be16
 id|di_mode
 suffix:semicolon
 multiline_comment|/* mode and type of file */
 DECL|member|di_nlink
-r_int
+id|__be16
 id|di_nlink
 suffix:semicolon
 multiline_comment|/* number of links to file */
 DECL|member|di_uid
-id|u_short
+id|__be16
 id|di_uid
 suffix:semicolon
 multiline_comment|/* owner&squot;s user id */
 DECL|member|di_gid
-id|u_short
+id|__be16
 id|di_gid
 suffix:semicolon
 multiline_comment|/* owner&squot;s group id */
 DECL|member|di_size
-r_int32
+id|__be32
 id|di_size
 suffix:semicolon
 multiline_comment|/* number of bytes in file */
 DECL|member|di_atime
-r_int32
+id|__be32
 id|di_atime
 suffix:semicolon
 multiline_comment|/* time last accessed */
 DECL|member|di_mtime
-r_int32
+id|__be32
 id|di_mtime
 suffix:semicolon
 multiline_comment|/* time last modified */
 DECL|member|di_ctime
-r_int32
+id|__be32
 id|di_ctime
 suffix:semicolon
 multiline_comment|/* time created */
 DECL|member|di_gen
-r_uint32
+id|__be32
 id|di_gen
 suffix:semicolon
 multiline_comment|/* generation number */
 DECL|member|di_numextents
-r_int
+id|__be16
 id|di_numextents
 suffix:semicolon
 multiline_comment|/* # of extents */

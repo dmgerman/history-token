@@ -25,12 +25,12 @@ id|VDNAMESIZE
 suffix:semicolon
 multiline_comment|/* name */
 DECL|member|vd_lbn
-r_int
+id|__be32
 id|vd_lbn
 suffix:semicolon
 multiline_comment|/* logical block number */
 DECL|member|vd_nbytes
-r_int
+id|__be32
 id|vd_nbytes
 suffix:semicolon
 multiline_comment|/* file length in bytes */
@@ -42,17 +42,17 @@ id|partition_table
 (brace
 multiline_comment|/* one per logical partition */
 DECL|member|pt_nblks
-r_int
+id|__be32
 id|pt_nblks
 suffix:semicolon
 multiline_comment|/* # of logical blks in partition */
 DECL|member|pt_firstlbn
-r_int
+id|__be32
 id|pt_firstlbn
 suffix:semicolon
 multiline_comment|/* first lbn of partition */
 DECL|member|pt_type
-r_int
+id|__be32
 id|pt_type
 suffix:semicolon
 multiline_comment|/* use of partition */
@@ -63,17 +63,17 @@ r_struct
 id|volume_header
 (brace
 DECL|member|vh_magic
-r_int
+id|__be32
 id|vh_magic
 suffix:semicolon
 multiline_comment|/* identifies volume header */
 DECL|member|vh_rootpt
-r_int
+id|__be16
 id|vh_rootpt
 suffix:semicolon
 multiline_comment|/* root partition number */
 DECL|member|vh_swappt
-r_int
+id|__be16
 id|vh_swappt
 suffix:semicolon
 multiline_comment|/* swap partition number */
@@ -112,12 +112,12 @@ id|NPARTAB
 suffix:semicolon
 multiline_comment|/* device partition layout */
 DECL|member|vh_csum
-r_int
+id|__be32
 id|vh_csum
 suffix:semicolon
 multiline_comment|/* volume header checksum */
 DECL|member|vh_fill
-r_int
+id|__be32
 id|vh_fill
 suffix:semicolon
 multiline_comment|/* fill out to 512 bytes */
