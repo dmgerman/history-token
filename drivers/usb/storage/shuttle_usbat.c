@@ -2860,6 +2860,10 @@ id|string
 l_int|64
 )braket
 suffix:semicolon
+id|srb-&gt;resid
+op_assign
+l_int|0
+suffix:semicolon
 id|len
 op_assign
 id|srb-&gt;request_bufflen

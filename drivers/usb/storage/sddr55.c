@@ -2919,6 +2919,10 @@ id|sddr55_card_info
 op_star
 id|info
 suffix:semicolon
+id|srb-&gt;resid
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
