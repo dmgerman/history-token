@@ -3870,7 +3870,7 @@ c_func
 id|q
 )paren
 suffix:semicolon
-id|schedule_work
+id|kblockd_schedule_work
 c_func
 (paren
 op_amp
