@@ -4,6 +4,9 @@ DECL|macro|_AX25_H
 mdefine_line|#define _AX25_H 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ax25.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|AX25_T1CLAMPLO
 mdefine_line|#define&t;AX25_T1CLAMPLO  &t;&t;1
 DECL|macro|AX25_T1CLAMPHI
@@ -300,6 +303,10 @@ id|ax25_route
 op_star
 id|next
 suffix:semicolon
+DECL|member|ref
+id|atomic_t
+id|ref
+suffix:semicolon
 DECL|member|callsign
 id|ax25_address
 id|callsign
@@ -318,6 +325,11 @@ suffix:semicolon
 DECL|member|ip_mode
 r_char
 id|ip_mode
+suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
 suffix:semicolon
 DECL|typedef|ax25_route
 )brace
@@ -556,8 +568,11 @@ multiline_comment|/* af_ax25.c */
 r_extern
 id|ax25_cb
 op_star
-r_volatile
 id|ax25_list
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|ax25_list_lock
 suffix:semicolon
 r_extern
 r_void
@@ -842,6 +857,10 @@ r_extern
 id|ax25_dev
 op_star
 id|ax25_dev_list
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|ax25_dev_lock
 suffix:semicolon
 r_extern
 id|ax25_dev
@@ -1421,6 +1440,9 @@ op_star
 id|ax25_rt_find_route
 c_func
 (paren
+id|ax25_route
+op_star
+comma
 id|ax25_address
 op_star
 comma

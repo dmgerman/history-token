@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;AX.25 release 037&n; *&n; *&t;This code REQUIRES 2.1
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
@@ -164,6 +165,10 @@ op_star
 )paren
 id|arg
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|ax25_cb
 op_star
 id|ax25
@@ -200,6 +205,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -253,6 +267,15 @@ id|ETIMEDOUT
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|ax25_dev_dama_off
 c_func
 (paren
@@ -279,7 +302,7 @@ id|ax25-&gt;state
 r_case
 id|AX25_STATE_0
 suffix:colon
-multiline_comment|/* Magic here: If we listen() and a new link dies before it&n;&t;&t;&t;   is accepted() it isn&squot;t &squot;dead&squot; so doesn&squot;t get removed. */
+multiline_comment|/* Magic here: If we listen() and a new link dies before it&n;&t;&t;   is accepted() it isn&squot;t &squot;dead&squot; so doesn&squot;t get removed. */
 r_if
 c_cond
 (paren
@@ -312,7 +335,7 @@ suffix:semicolon
 r_case
 id|AX25_STATE_3
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Check the state of the receive buffer.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check the state of the receive buffer.&n;&t;&t; */
 r_if
 c_cond
 (paren
