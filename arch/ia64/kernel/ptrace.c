@@ -7282,6 +7282,8 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/* &quot;asmlinkage&quot; so the input arguments are preserved... */
+id|asmlinkage
 r_void
 DECL|function|syscall_trace
 id|syscall_trace
