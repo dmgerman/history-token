@@ -357,7 +357,7 @@ suffix:semicolon
 multiline_comment|/* memory sizing is a hack stolen from motorola.c..  hope it works for us */
 id|zones_size
 (braket
-l_int|1
+l_int|0
 )braket
 op_assign
 (paren
@@ -374,25 +374,10 @@ id|PAGE_SHIFT
 suffix:semicolon
 id|zones_size
 (braket
-l_int|0
+l_int|1
 )braket
 op_assign
-id|zones_size
-(braket
-l_int|1
-)braket
-op_div
-l_int|2
-suffix:semicolon
-id|zones_size
-(braket
-l_int|1
-)braket
-op_sub_assign
-id|zones_size
-(braket
 l_int|0
-)braket
 suffix:semicolon
 id|free_area_init
 c_func
