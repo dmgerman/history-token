@@ -2,6 +2,7 @@ macro_line|#ifndef _M68K_IRQ_H_
 DECL|macro|_M68K_IRQ_H_
 mdefine_line|#define _M68K_IRQ_H_
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#ifdef CONFIG_COLDFIRE
 multiline_comment|/*&n; * On the ColdFire we keep track of all vectors. That way drivers&n; * can register whatever vector number they wish, and we can deal&n; * with it.&n; */
@@ -62,7 +63,7 @@ c_func
 r_int
 r_int
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 )paren
@@ -125,7 +126,7 @@ r_struct
 id|irq_node
 (brace
 DECL|member|handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -174,7 +175,7 @@ r_struct
 id|irq_handler
 (brace
 DECL|member|handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
