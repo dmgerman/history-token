@@ -309,13 +309,12 @@ op_assign
 id|page-&gt;lru.next
 suffix:semicolon
 r_else
-(paren
-r_struct
-id|page
-op_star
-)paren
 id|pgd_quicklist
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|page-&gt;lru.next
 suffix:semicolon
 id|pgd_cache_size
