@@ -58,6 +58,13 @@ c_func
 id|__copy_to_user_asm
 )paren
 suffix:semicolon
+DECL|variable|__copy_in_user_asm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__copy_in_user_asm
+)paren
+suffix:semicolon
 DECL|variable|__clear_user_asm
 id|EXPORT_SYMBOL
 c_func
