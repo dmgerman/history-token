@@ -175,7 +175,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* HCI_UART flag bits */
 DECL|macro|HCI_UART_PROTO_SET
-mdefine_line|#define HCI_UART_PROTO_SET&t;&t;0x00
+mdefine_line|#define HCI_UART_PROTO_SET&t;&t;0
 multiline_comment|/* TX states  */
 DECL|macro|HCI_UART_SENDING
 mdefine_line|#define HCI_UART_SENDING&t;&t;1
