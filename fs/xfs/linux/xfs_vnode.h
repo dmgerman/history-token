@@ -336,7 +336,7 @@ id|bhv_desc_t
 op_star
 comma
 r_struct
-id|file
+id|kiocb
 op_star
 comma
 r_const
@@ -367,7 +367,7 @@ id|bhv_desc_t
 op_star
 comma
 r_struct
-id|file
+id|kiocb
 op_star
 comma
 r_const
