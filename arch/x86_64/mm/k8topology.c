@@ -216,7 +216,7 @@ op_rshift
 l_int|4
 )paren
 op_amp
-l_int|7
+l_int|0xF
 )paren
 op_plus
 l_int|1
