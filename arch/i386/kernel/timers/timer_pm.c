@@ -8,6 +8,13 @@ macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
+macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &quot;mach_timer.h&quot;
+multiline_comment|/* Number of PMTMR ticks expected during calibration run */
+DECL|macro|PMTMR_TICKS_PER_SEC
+mdefine_line|#define PMTMR_TICKS_PER_SEC 3579545
+DECL|macro|PMTMR_EXPECTED_RATE
+mdefine_line|#define PMTMR_EXPECTED_RATE &bslash;&n;  ((CALIBRATE_LATCH * (PMTMR_TICKS_PER_SEC &gt;&gt; 10)) / (CLOCK_TICK_RATE&gt;&gt;10))
 multiline_comment|/* The I/O port the PMTMR resides at.&n; * The location is detected during setup_arch(),&n; * in arch/i386/acpi/boot.c */
 DECL|variable|pmtmr_ioport
 id|u32
@@ -133,6 +140,100 @@ r_return
 id|v2
 op_amp
 id|ACPI_PM_MASK
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Some boards have the PMTMR running way too fast. We check&n; * the PMTMR rate against PIT channel 2 to catch these cases.&n; */
+DECL|function|verify_pmtmr_rate
+r_static
+r_int
+id|verify_pmtmr_rate
+c_func
+(paren
+r_void
+)paren
+(brace
+id|u32
+id|value1
+comma
+id|value2
+suffix:semicolon
+r_int
+r_int
+id|count
+comma
+id|delta
+suffix:semicolon
+id|mach_prepare_counter
+c_func
+(paren
+)paren
+suffix:semicolon
+id|value1
+op_assign
+id|read_pmtmr
+c_func
+(paren
+)paren
+suffix:semicolon
+id|mach_countup
+c_func
+(paren
+op_amp
+id|count
+)paren
+suffix:semicolon
+id|value2
+op_assign
+id|read_pmtmr
+c_func
+(paren
+)paren
+suffix:semicolon
+id|delta
+op_assign
+(paren
+id|value2
+op_minus
+id|value1
+)paren
+op_amp
+id|ACPI_PM_MASK
+suffix:semicolon
+multiline_comment|/* Check that the PMTMR delta is within 5% of what we expect */
+r_if
+c_cond
+(paren
+id|delta
+template_param
+(paren
+id|PMTMR_EXPECTED_RATE
+op_star
+l_int|21
+)paren
+op_div
+l_int|20
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;PM-Timer running at invalid rate: %lu%% of normal - aborting.&bslash;n&quot;
+comma
+l_int|100UL
+op_star
+id|delta
+op_div
+id|PMTMR_EXPECTED_RATE
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|init_pmtmr
@@ -298,6 +399,20 @@ id|ENODEV
 suffix:semicolon
 id|pm_good
 suffix:colon
+r_if
+c_cond
+(paren
+id|verify_pmtmr_rate
+c_func
+(paren
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|init_cpu_khz
 c_func
 (paren
