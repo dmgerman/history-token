@@ -106,12 +106,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize Hub Pseudodriver Management */
-id|hubdev_init
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* XXX - Move the meat of this to intr.c ? */
 multiline_comment|/*&n; * Set up the platform-dependent fields in the nodepda.&n; */

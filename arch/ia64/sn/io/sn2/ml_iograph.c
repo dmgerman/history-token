@@ -2259,14 +2259,6 @@ id|c
 op_assign
 l_int|0
 suffix:semicolon
-r_extern
-r_int
-id|hubdev_docallouts
-c_func
-(paren
-id|vertex_hdl_t
-)paren
-suffix:semicolon
 id|npdap
 op_assign
 id|NODEPDA
@@ -2302,12 +2294,6 @@ c_func
 id|hubv
 op_ne
 id|GRAPH_VERTEX_NONE
-)paren
-suffix:semicolon
-id|hubdev_docallouts
-c_func
-(paren
-id|hubv
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Read mfg info on this hub&n;&t; */

@@ -841,7 +841,7 @@ id|EDGE_LBL_XBOW
 comma
 l_int|0
 comma
-id|DEVFS_FL_AUTO_DEVNUM
+l_int|0
 comma
 l_int|0
 comma

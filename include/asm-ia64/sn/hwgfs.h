@@ -2,8 +2,6 @@ macro_line|#ifndef _ASM_IA64_SN_HWGFS_H
 DECL|macro|_ASM_IA64_SN_HWGFS_H
 mdefine_line|#define _ASM_IA64_SN_HWGFS_H
 multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-DECL|macro|DEVFS_FL_AUTO_DEVNUM
-mdefine_line|#define DEVFS_FL_AUTO_DEVNUM 0
 DECL|typedef|hwgfs_handle_t
 r_typedef
 r_struct

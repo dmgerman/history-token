@@ -1319,7 +1319,7 @@ l_string|&quot;.ioconfig_bus&quot;
 comma
 l_int|0
 comma
-id|DEVFS_FL_AUTO_DEVNUM
+l_int|0
 comma
 l_int|0
 comma

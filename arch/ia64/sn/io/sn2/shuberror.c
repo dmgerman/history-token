@@ -42,7 +42,7 @@ id|cnode
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|hubii_eint_handler
 (paren
 r_int
@@ -535,7 +535,7 @@ id|hubio_eint.ii_iidsr_regval
 suffix:semicolon
 )brace
 multiline_comment|/*ARGSUSED*/
-r_void
+id|irqreturn_t
 DECL|function|hubii_eint_handler
 id|hubii_eint_handler
 (paren
@@ -830,6 +830,9 @@ id|hub_v
 comma
 id|hinfo
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Free the hub CRB &quot;crbnum&quot; which encountered an error.&n; * Assumption is, error handling was successfully done,&n; * and we now want to return the CRB back to Hub for normal usage.&n; *&n; * In order to free the CRB, all that&squot;s needed is to de-allocate it&n; *&n; * Assumption:&n; *      No other processor is mucking around with the hub control register.&n; *      So, upper layer has to single thread this.&n; */

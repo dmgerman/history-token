@@ -962,7 +962,7 @@ l_string|&quot;.ifconfig_net&quot;
 comma
 l_int|0
 comma
-id|DEVFS_FL_AUTO_DEVNUM
+l_int|0
 comma
 l_int|0
 comma
