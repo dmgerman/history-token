@@ -2168,6 +2168,7 @@ id|mutex
 )paren
 suffix:semicolon
 )brace
+r_static
 r_struct
 id|ip6t_target
 op_star
@@ -8859,13 +8860,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip6t_do_table
-)paren
-suffix:semicolon
-DECL|variable|ip6t_find_target_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip6t_find_target_lock
 )paren
 suffix:semicolon
 DECL|variable|ip6t_register_match

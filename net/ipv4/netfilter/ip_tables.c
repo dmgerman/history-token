@@ -1895,6 +1895,7 @@ id|mutex
 )paren
 suffix:semicolon
 )brace
+r_static
 r_struct
 id|ipt_target
 op_star
@@ -8509,13 +8510,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ipt_unregister_target
-)paren
-suffix:semicolon
-DECL|variable|ipt_find_target_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ipt_find_target_lock
 )paren
 suffix:semicolon
 DECL|variable|init
