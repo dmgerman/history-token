@@ -9,9 +9,11 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
-multiline_comment|/*&n; * Priority of a process goes from 0 to 139. The 0-99&n; * priority range is allocated to RT tasks, the 100-139&n; * range is for SCHED_OTHER tasks. Priority values are&n; * inverted: lower p-&gt;prio value means higher priority.&n; */
+multiline_comment|/*&n; * Priority of a process goes from 0 to 139. The 0-99&n; * priority range is allocated to RT tasks, the 100-139&n; * range is for SCHED_OTHER tasks. Priority values are&n; * inverted: lower p-&gt;prio value means higher priority.&n; * &n; * MAX_USER_RT_PRIO allows the actual maximum RT priority&n; * to be separate from the value exported to user-space.&n; * NOTE: MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
 DECL|macro|MAX_RT_PRIO
 mdefine_line|#define MAX_RT_PRIO&t;&t;100
+DECL|macro|MAX_USER_RT_PRIO
+mdefine_line|#define MAX_USER_RT_PRIO&t;100
 DECL|macro|MAX_PRIO
 mdefine_line|#define MAX_PRIO&t;&t;(MAX_RT_PRIO + 40)
 multiline_comment|/*&n; * Convert user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ 100 ... 139 (MAX_PRIO-1) ],&n; * and back.&n; */
@@ -3471,7 +3473,7 @@ id|p
 r_return
 id|p-&gt;prio
 op_minus
-l_int|100
+id|MAX_USER_RT_PRIO
 suffix:semicolon
 )brace
 DECL|function|task_nice
@@ -3717,7 +3719,9 @@ c_cond
 (paren
 id|lp.sched_priority
 template_param
-l_int|99
+id|MAX_USER_RT_PRIO
+op_minus
+l_int|1
 )paren
 r_goto
 id|out_unlock
@@ -3835,7 +3839,9 @@ id|SCHED_OTHER
 )paren
 id|p-&gt;prio
 op_assign
-l_int|99
+id|MAX_USER_RT_PRIO
+op_minus
+l_int|1
 op_minus
 id|p-&gt;rt_priority
 suffix:semicolon
@@ -4145,7 +4151,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sys_sched_setaffinity - set the cpu affinity of a process&n; * @pid: pid of the process&n; * @len: length of the bitmask pointed to by user_mask_ptr&n; * @user_mask_ptr: user-space pointer to the new cpu mask&n; */
+multiline_comment|/**&n; * sys_sched_setaffinity - set the cpu affinity of a process&n; * @pid: pid of the process&n; * @len: length in bytes of the bitmask pointed to by user_mask_ptr&n; * @user_mask_ptr: user-space pointer to the new cpu mask&n; */
 DECL|function|sys_sched_setaffinity
 id|asmlinkage
 r_int
@@ -4327,7 +4333,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sys_sched_getaffinity - get the cpu affinity of a process&n; * @pid: pid of the process&n; * @len: length of the bitmask pointed to by user_mask_ptr&n; * @user_mask_ptr: user-space pointer to hold the current cpu mask&n; */
+multiline_comment|/**&n; * sys_sched_getaffinity - get the cpu affinity of a process&n; * @pid: pid of the process&n; * @len: length in bytes of the bitmask pointed to by user_mask_ptr&n; * @user_mask_ptr: user-space pointer to hold the current cpu mask&n; */
 DECL|function|sys_sched_getaffinity
 id|asmlinkage
 r_int
@@ -4641,7 +4647,9 @@ id|SCHED_RR
 suffix:colon
 id|ret
 op_assign
-l_int|99
+id|MAX_USER_RT_PRIO
+op_minus
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -5382,6 +5390,7 @@ id|tasklist_lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * double_rq_lock - safely lock two runqueues&n; *&n; * Note this does not disable interrupts like task_rq_lock,&n; * you need to do so manually before calling.&n; */
 DECL|function|double_rq_lock
 r_static
 r_inline
@@ -5456,6 +5465,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/*&n; * double_rq_unlock - safely unlock two runqueues&n; *&n; * Note this does not restore interrupts like task_rq_unlock,&n; * you need to do so manually after calling.&n; */
 DECL|function|double_rq_unlock
 r_static
 r_inline
@@ -6054,7 +6064,9 @@ op_assign
 (brace
 id|sched_priority
 suffix:colon
-l_int|99
+id|MAX_RT_PRIO
+op_minus
+l_int|1
 )brace
 suffix:semicolon
 id|runqueue_t
