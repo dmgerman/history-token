@@ -942,8 +942,29 @@ op_star
 suffix:semicolon
 multiline_comment|/* buffer to unlock&t;&t;*/
 multiline_comment|/* Buffer Utility Routines */
-DECL|macro|pagebuf_geterror
-mdefine_line|#define pagebuf_geterror(pb)&t;((pb)-&gt;pb_error)
+DECL|function|pagebuf_geterror
+r_static
+r_inline
+r_int
+id|pagebuf_geterror
+c_func
+(paren
+id|page_buf_t
+op_star
+id|pb
+)paren
+(brace
+r_return
+(paren
+id|pb
+ques
+c_cond
+id|pb-&gt;pb_error
+suffix:colon
+id|ENOMEM
+)paren
+suffix:semicolon
+)brace
 r_extern
 r_void
 id|pagebuf_iodone
