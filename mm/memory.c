@@ -5,6 +5,7 @@ multiline_comment|/*&n; * Real VM (paging to/from disk) started 18.12.91. Much m
 multiline_comment|/*&n; * 05.04.94  -  Multi-page memory management added for v1.1.&n; * &t;&t;Idea by Alex Bligh (alex@cconcepts.co.uk)&n; *&n; * 16.07.99  -  Support of BIGMEM added by Gerhard Wichert, Siemens AG&n; *&t;&t;(Gerhard.Wichert@pdb.siemens.de)&n; */
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
@@ -1753,6 +1754,29 @@ id|pgd_t
 op_star
 id|dir
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_vm_hugetlb_page
+c_func
+(paren
+id|vma
+)paren
+)paren
+(brace
+id|unmap_hugepage_range
+c_func
+(paren
+id|vma
+comma
+id|address
+comma
+id|end
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|BUG_ON
 c_func
 (paren
@@ -1882,6 +1906,29 @@ id|end
 comma
 id|block
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_vm_hugetlb_page
+c_func
+(paren
+id|vma
+)paren
+)paren
+(brace
+id|zap_hugepage_range
+c_func
+(paren
+id|vma
+comma
+id|address
+comma
+id|size
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren

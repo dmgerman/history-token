@@ -149,11 +149,44 @@ DECL|macro|BTTV_RV605
 mdefine_line|#define BTTV_RV605          0x4a
 DECL|macro|BTTV_WINDVR
 mdefine_line|#define BTTV_WINDVR         0x4c
+DECL|macro|BTTV_HAUPPAUGEPVR
+mdefine_line|#define BTTV_HAUPPAUGEPVR   0x50
+DECL|macro|BTTV_GVBCTV5PCI
+mdefine_line|#define BTTV_GVBCTV5PCI     0x51
+DECL|macro|BTTV_OSPREY1x0
+mdefine_line|#define BTTV_OSPREY1x0      0x52
+DECL|macro|BTTV_OSPREY1x0_848
+mdefine_line|#define BTTV_OSPREY1x0_848  0x53
+DECL|macro|BTTV_OSPREY101_848
+mdefine_line|#define BTTV_OSPREY101_848  0x54
+DECL|macro|BTTV_OSPREY1x1
+mdefine_line|#define BTTV_OSPREY1x1      0x55
+DECL|macro|BTTV_OSPREY1x1_SVID
+mdefine_line|#define BTTV_OSPREY1x1_SVID 0x56
+DECL|macro|BTTV_OSPREY2xx
+mdefine_line|#define BTTV_OSPREY2xx      0x57
+DECL|macro|BTTV_OSPREY2x0_SVID
+mdefine_line|#define BTTV_OSPREY2x0_SVID 0x58
+DECL|macro|BTTV_OSPREY2x0
+mdefine_line|#define BTTV_OSPREY2x0      0x59
+DECL|macro|BTTV_OSPREY500
+mdefine_line|#define BTTV_OSPREY500      0x5a
+DECL|macro|BTTV_OSPREY540
+mdefine_line|#define BTTV_OSPREY540      0x5b
+DECL|macro|BTTV_OSPREY2000
+mdefine_line|#define BTTV_OSPREY2000     0x5c
+DECL|macro|BTTV_IDS_EAGLE
+mdefine_line|#define BTTV_IDS_EAGLE      0x5d
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
 DECL|macro|I2C_TDA7432
 mdefine_line|#define I2C_TDA7432        0x8a
+DECL|macro|I2C_BT832_ALT1
+mdefine_line|#define I2C_BT832_ALT1&t;   0x88
+DECL|macro|I2C_BT832_ALT2
+mdefine_line|#define I2C_BT832_ALT2&t;   0x8a 
+singleline_comment|// alternate setting
 DECL|macro|I2C_TDA8425
 mdefine_line|#define I2C_TDA8425        0x82
 DECL|macro|I2C_TDA9840
@@ -176,6 +209,8 @@ DECL|macro|I2C_TEA6300
 mdefine_line|#define I2C_TEA6300        0x80
 DECL|macro|I2C_DPL3518
 mdefine_line|#define I2C_DPL3518&t;   0x84
+DECL|macro|I2C_TDA9887
+mdefine_line|#define I2C_TDA9887&t;   0x86
 multiline_comment|/* more card-specific defines */
 DECL|macro|PT2254_L_CHANNEL
 mdefine_line|#define PT2254_L_CHANNEL 0x10
@@ -253,6 +288,12 @@ suffix:semicolon
 DECL|member|no_tda9875
 r_int
 id|no_tda9875
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|no_tda7432
+r_int
+id|no_tda7432
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -457,6 +498,18 @@ op_star
 id|cardid
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|pci_dev
+op_star
+id|bttv_get_pcidev
+c_func
+(paren
+r_int
+r_int
+id|card
+)paren
+suffix:semicolon
 multiline_comment|/* obsolete, use bttv_get_cardinfo instead */
 r_extern
 r_int
@@ -532,6 +585,25 @@ c_func
 r_int
 r_int
 id|card
+)paren
+suffix:semicolon
+multiline_comment|/* call i2c clients&n;*/
+r_extern
+r_void
+id|bttv_i2c_call
+c_func
+(paren
+r_int
+r_int
+id|card
+comma
+r_int
+r_int
+id|cmd
+comma
+r_void
+op_star
+id|arg
 )paren
 suffix:semicolon
 multiline_comment|/* i2c */
