@@ -11,7 +11,7 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &quot;speedstep-lib.h&quot;
 DECL|macro|PFX
-mdefine_line|#define PFX&t;&quot;cpufreq: &quot;
+mdefine_line|#define PFX&t;&quot;p4-clockmod: &quot;
 multiline_comment|/*&n; * Duty Cycle (3bits), note DC_DISABLE is not specified in&n; * intel docs i just use it to mean disable&n; */
 r_enum
 (brace
