@@ -309,8 +309,8 @@ r_int
 id|third
 comma
 r_void
-op_star
 id|__user
+op_star
 id|ptr
 comma
 r_int

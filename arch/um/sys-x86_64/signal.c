@@ -1465,7 +1465,6 @@ id|regs
 (brace
 r_int
 r_int
-id|__user
 id|sp
 op_assign
 id|PT_REGS_SP
