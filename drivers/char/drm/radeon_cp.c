@@ -2211,6 +2211,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|COMMIT_RING
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|radeon_do_wait_for_idle
 c_func
@@ -2281,6 +2286,11 @@ c_func
 )paren
 suffix:semicolon
 id|ADVANCE_RING
+c_func
+(paren
+)paren
+suffix:semicolon
+id|COMMIT_RING
 c_func
 (paren
 )paren
