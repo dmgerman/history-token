@@ -62,12 +62,12 @@ r_static
 r_int
 id|nopciburst
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 op_star
 id|mode_option
-id|__initdata
+id|__devinitdata
 op_assign
 l_int|NULL
 suffix:semicolon
