@@ -1775,6 +1775,12 @@ DECL|member|slab_obj_size
 r_int
 id|slab_obj_size
 suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|name
 r_char
 id|name
