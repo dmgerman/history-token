@@ -536,15 +536,6 @@ op_amp
 id|inode-&gt;i_data.i_mmap_lock
 )paren
 suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|inode-&gt;i_data.truncate_count
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

@@ -812,7 +812,8 @@ id|i_mmap_lock
 suffix:semicolon
 multiline_comment|/* protect tree, count, list */
 DECL|member|truncate_count
-id|atomic_t
+r_int
+r_int
 id|truncate_count
 suffix:semicolon
 multiline_comment|/* Cover race condition with truncate */
