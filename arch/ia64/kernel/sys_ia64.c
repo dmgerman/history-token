@@ -349,14 +349,6 @@ r_int
 id|brk
 )paren
 (brace
-r_extern
-r_int
-id|vm_enough_memory
-(paren
-r_int
-id|pages
-)paren
-suffix:semicolon
 r_int
 r_int
 id|rlim

@@ -170,7 +170,7 @@ c_func
 l_int|0
 )paren
 op_member_access_from_pointer
-id|node_size
+id|node_spanned_pages
 suffix:semicolon
 r_do
 (brace
@@ -1138,7 +1138,7 @@ multiline_comment|/* this will put all unused low memory onto the freelists */
 r_if
 c_cond
 (paren
-id|pgdat-&gt;node_size
+id|pgdat-&gt;node_spanned_pages
 op_ne
 l_int|0
 )paren

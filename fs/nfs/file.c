@@ -381,6 +381,11 @@ comma
 id|inode-&gt;i_ino
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|nfs_wb_file
@@ -407,6 +412,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|status
 suffix:semicolon

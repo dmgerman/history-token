@@ -29,10 +29,8 @@ DECL|macro|alloc_bootmem_pages_node
 mdefine_line|#define alloc_bootmem_pages_node(ignore, x) &bslash;&n;&t;__alloc_bootmem_node(NODE_DATA(0), (x), PAGE_SIZE, __pa(MAX_DMA_ADDRESS))
 DECL|macro|alloc_bootmem_low_pages_node
 mdefine_line|#define alloc_bootmem_low_pages_node(ignore, x) &bslash;&n;&t;__alloc_bootmem_node(NODE_DATA(0), (x), PAGE_SIZE, 0)
-DECL|macro|node_size
-mdefine_line|#define node_size(nid)&t;&t;(node_data[nid]-&gt;node_size)
 DECL|macro|node_localnr
-mdefine_line|#define node_localnr(pfn, nid)&t;((pfn) - node_data[nid]-&gt;node_start_pfn)
+mdefine_line|#define node_localnr(pfn, nid)&t;&t;((pfn) - node_data[nid]-&gt;node_start_pfn)
 multiline_comment|/*&n; * Following are macros that each numa implmentation must define.&n; */
 multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */
 DECL|macro|kvaddr_to_nid
@@ -45,7 +43,7 @@ mdefine_line|#define node_mem_map(nid)&t;(NODE_DATA(nid)-&gt;node_mem_map)
 DECL|macro|node_start_pfn
 mdefine_line|#define node_start_pfn(nid)&t;(NODE_DATA(nid)-&gt;node_start_pfn)
 DECL|macro|node_end_pfn
-mdefine_line|#define node_end_pfn(nid)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pg_data_t *__pgdat = NODE_DATA(nid);&t;&t;&t;&t;&bslash;&n;&t;__pgdat-&gt;node_start_pfn + __pgdat-&gt;node_size;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define node_end_pfn(nid)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pg_data_t *__pgdat = NODE_DATA(nid);&t;&t;&t;&t;&bslash;&n;&t;__pgdat-&gt;node_start_pfn + __pgdat-&gt;node_spanned_pages;&t;&t;&bslash;&n;})
 DECL|macro|local_mapnr
 mdefine_line|#define local_mapnr(kvaddr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __pfn = __pa(kvaddr) &gt;&gt; PAGE_SHIFT;&t;&t;&bslash;&n;&t;(__pfn - node_start_pfn(pfn_to_nid(__pfn)));&t;&t;&t;&bslash;&n;})
 DECL|macro|kern_addr_valid

@@ -2,24 +2,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
-multiline_comment|/* list of externed timers */
-r_extern
-r_struct
-id|timer_opts
-id|timer_pit
-suffix:semicolon
-r_extern
-r_struct
-id|timer_opts
-id|timer_tsc
-suffix:semicolon
-macro_line|#ifdef CONFIG_X86_CYCLONE_TIMER
-r_extern
-r_struct
-id|timer_opts
-id|timer_cyclone
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* list of timers, ordered by preference, NULL terminated */
 DECL|variable|timers
 r_static
@@ -97,6 +79,21 @@ comma
 id|clock_setup
 )paren
 suffix:semicolon
+multiline_comment|/* The chosen timesource has been found to be bad.&n; * Fall back to a known good timesource (the PIT)&n; */
+DECL|function|clock_fallback
+r_void
+id|clock_fallback
+c_func
+(paren
+r_void
+)paren
+(brace
+id|cur_timer
+op_assign
+op_amp
+id|timer_pit
+suffix:semicolon
+)brace
 multiline_comment|/* iterates through the list of timers, returning the first &n; * one that initializes successfully.&n; */
 DECL|function|select_timer
 r_struct

@@ -106,8 +106,6 @@ mdefine_line|#define pfn_to_nid(pfn)&t;&t;pa_to_nid((pfn) &lt;&lt; PAGE_SHIFT)
 multiline_comment|/*&n; * Return a pointer to the node data for node n.&n; */
 DECL|macro|NODE_DATA
 mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;node_data[nid])
-DECL|macro|node_size
-mdefine_line|#define node_size(nid)&t;&t;(NODE_DATA(nid)-&gt;node_size)
 DECL|macro|node_localnr
 mdefine_line|#define node_localnr(pfn, nid)&t;((pfn) - NODE_DATA(nid)-&gt;node_start_pfn)
 multiline_comment|/*&n; * Following are macros that each numa implmentation must define.&n; */

@@ -2461,6 +2461,13 @@ c_func
 id|yield
 )paren
 suffix:semicolon
+DECL|variable|io_schedule
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|io_schedule
+)paren
+suffix:semicolon
 DECL|variable|__cond_resched
 id|EXPORT_SYMBOL
 c_func
@@ -3118,11 +3125,11 @@ c_func
 id|open_softirq
 )paren
 suffix:semicolon
-DECL|variable|cpu_raise_softirq
+DECL|variable|raise_softirq_irqoff
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|cpu_raise_softirq
+id|raise_softirq_irqoff
 )paren
 suffix:semicolon
 DECL|variable|__tasklet_schedule
