@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 multiline_comment|/* userland - kernel ABI version (2003/05/08) */
 DECL|macro|BOND_ABI_VERSION
-mdefine_line|#define BOND_ABI_VERSION 1
+mdefine_line|#define BOND_ABI_VERSION 2
 multiline_comment|/*&n; * We can remove these ioctl definitions in 2.5.  People should use the&n; * SIOC*** versions of them instead&n; */
 DECL|macro|BOND_ENSLAVE_OLD
 mdefine_line|#define BOND_ENSLAVE_OLD&t;&t;(SIOCDEVPRIVATE)
