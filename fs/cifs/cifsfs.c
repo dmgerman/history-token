@@ -124,7 +124,7 @@ id|CIFSMaxBufSize
 comma
 r_int
 comma
-id|CIFS_MAX_MSGSIZE
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -149,7 +149,7 @@ id|cifs_min_rcv
 comma
 r_int
 comma
-id|CIFS_MIN_RCV_POOL
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -174,7 +174,7 @@ id|cifs_min_small
 comma
 r_int
 comma
-l_int|30
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -199,7 +199,7 @@ id|cifs_max_pending
 comma
 r_int
 comma
-id|CIFS_MAX_REQ
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
