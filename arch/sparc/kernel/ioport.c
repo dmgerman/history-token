@@ -34,6 +34,7 @@ r_int
 suffix:semicolon
 r_static
 r_void
+id|__iomem
 op_star
 id|_sparc_ioremap
 c_func
@@ -55,6 +56,7 @@ id|sz
 suffix:semicolon
 r_static
 r_void
+id|__iomem
 op_star
 id|_sparc_alloc_io
 c_func
@@ -243,6 +245,7 @@ suffix:semicolon
 multiline_comment|/*&n; * These are typically used in PCI drivers&n; * which are trying to be cross-platform.&n; *&n; * Bus type is always zero on IIep.&n; */
 DECL|function|ioremap
 r_void
+id|__iomem
 op_star
 id|ioremap
 c_func
@@ -295,7 +298,9 @@ r_void
 id|iounmap
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 r_virtual
 )paren
@@ -409,8 +414,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; */
 DECL|function|sbus_ioremap
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|sbus_ioremap
 c_func
 (paren
@@ -433,10 +439,6 @@ id|name
 )paren
 (brace
 r_return
-(paren
-r_int
-r_int
-)paren
 id|_sparc_alloc_io
 c_func
 (paren
@@ -460,8 +462,10 @@ r_void
 id|sbus_iounmap
 c_func
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_int
@@ -472,10 +476,6 @@ id|size
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|addr
 )paren
 suffix:semicolon
@@ -484,6 +484,7 @@ multiline_comment|/*&n; * Meat of mapping&n; */
 DECL|function|_sparc_alloc_io
 r_static
 r_void
+id|__iomem
 op_star
 id|_sparc_alloc_io
 c_func
@@ -527,6 +528,7 @@ r_int
 id|tlen
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|va
 suffix:semicolon
@@ -694,6 +696,7 @@ suffix:semicolon
 multiline_comment|/*&n; */
 r_static
 r_void
+id|__iomem
 op_star
 DECL|function|_sparc_ioremap
 id|_sparc_ioremap
@@ -815,6 +818,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren

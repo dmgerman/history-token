@@ -2,6 +2,7 @@ multiline_comment|/* $Id divert_init.c,v 1.5.6.2 2001/01/24 22:18:17 kai Exp $&n
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &quot;isdn_divert.h&quot;
 id|MODULE_DESCRIPTION
 c_func
@@ -19,24 +20,6 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-multiline_comment|/********************/
-multiline_comment|/* needed externals */
-multiline_comment|/********************/
-r_extern
-r_int
-id|printk
-c_func
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
 )paren
 suffix:semicolon
 multiline_comment|/****************************************/
@@ -172,15 +155,13 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|divert_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|divert_if.cmd
@@ -214,9 +195,12 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|divert_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -239,18 +223,24 @@ id|KERN_WARNING
 l_string|&quot;dss1_divert: device busy, remove cancelled&bslash;n&quot;
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|divert_lock
+comma
 id|flags
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|divert_lock
+comma
 id|flags
 )paren
 suffix:semicolon

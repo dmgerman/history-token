@@ -76,6 +76,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|qd_read_reg
+r_static
 id|u8
 id|__init
 id|qd_read_reg

@@ -5679,6 +5679,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef&t;CONFIG_USB_GADGET_DEBUG_FILES
 DECL|function|rndis_proc_read
+r_static
 r_int
 id|rndis_proc_read
 (paren
@@ -5878,6 +5879,7 @@ id|len
 suffix:semicolon
 )brace
 DECL|function|rndis_proc_write
+r_static
 r_int
 id|rndis_proc_write
 (paren

@@ -1909,12 +1909,11 @@ op_ne
 l_int|0x00d7
 )paren
 (brace
-suffix:semicolon
-)brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1928,12 +1927,11 @@ op_ne
 l_int|0x0057
 )paren
 (brace
-suffix:semicolon
-)brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 macro_line|#endif
@@ -3031,7 +3029,7 @@ c_func
 l_string|&quot;setting up CRTC&bslash;n&quot;
 )paren
 suffix:semicolon
-id|PRINTKI
+id|DPRINTK
 c_func
 (paren
 l_string|&quot;set primary CRT to %ix%i %c%c composite %c&bslash;n&quot;
@@ -3278,7 +3276,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|PRINTKI
+id|DPRINTK
 c_func
 (paren
 l_string|&quot;set secondary CRT to %ix%i %c%c&bslash;n&quot;
@@ -9109,9 +9107,9 @@ multiline_comment|/* To stop the swapper from even considering these pages. */
 id|vma-&gt;vm_flags
 op_or_assign
 (paren
-id|VM_SHM
+id|VM_IO
 op_or
-id|VM_LOCKED
+id|VM_RESERVED
 )paren
 suffix:semicolon
 r_if
@@ -9372,10 +9370,6 @@ id|map_size
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|vma-&gt;vm_flags
-op_or_assign
-id|VM_IO
 suffix:semicolon
 r_if
 c_cond
@@ -10166,7 +10160,7 @@ l_int|2
 op_logical_or
 id|state
 op_eq
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 )paren
 r_return
 l_int|0
@@ -10266,7 +10260,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_assign
 id|state
 suffix:semicolon
@@ -10312,7 +10306,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_eq
 l_int|0
 )paren
@@ -10327,7 +10321,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_eq
 l_int|2
 )paren
@@ -10377,7 +10371,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_assign
 l_int|0
 suffix:semicolon

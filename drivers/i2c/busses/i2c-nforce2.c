@@ -1,5 +1,5 @@
-multiline_comment|/*&n;    SMBus driver for nVidia nForce2 MCP&n;&n;&t;Ported to 2.5 Patrick Dreker &lt;patrick@dreker.de&gt;,&n;    Copyright (c) 2003  Hans-Frieder Vogt &lt;hfvogt@arcor.de&gt;,&n;    Based on&n;    SMBus 2.0 driver for AMD-8111 IO-Hub&n;    Copyright (c) 2002 Vojtech Pavlik&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-multiline_comment|/*&n;    SUPPORTED DEVICES&t;PCI ID&n;    nForce2 MCP&t;&t;0064&n;&n;    This driver supports the 2 SMBuses that are included in the MCP2 of the&n;    nForce2 chipset.&n;*/
+multiline_comment|/*&n;    SMBus driver for nVidia nForce2 MCP&n;&n;    Added nForce3 Pro 150  Thomas Leibold &lt;thomas@plx.com&gt;,&n;&t;Ported to 2.5 Patrick Dreker &lt;patrick@dreker.de&gt;,&n;    Copyright (c) 2003  Hans-Frieder Vogt &lt;hfvogt@arcor.de&gt;,&n;    Based on&n;    SMBus 2.0 driver for AMD-8111 IO-Hub&n;    Copyright (c) 2002 Vojtech Pavlik&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    SUPPORTED DEVICES&t;PCI ID&n;    nForce2 MCP&t;&t;0064&n;    nForce3 Pro150 MCP&t;00D4&n;&n;    This driver supports the 2 SMBuses that are included in the MCP2 of the&n;    nForce2 chipset.&n;*/
 multiline_comment|/* Note: we assume there can only be one nForce2, with two SMBus interfaces */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -29,10 +29,6 @@ c_func
 l_string|&quot;nForce2 SMBus driver&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_NFORCE2_SMBUS
-DECL|macro|PCI_DEVICE_ID_NVIDIA_NFORCE2_SMBUS
-mdefine_line|#define PCI_DEVICE_ID_NVIDIA_NFORCE2_SMBUS   0x0064
-macro_line|#endif
 DECL|struct|nforce2_smbus
 r_struct
 id|nforce2_smbus
@@ -972,6 +968,22 @@ op_assign
 id|PCI_VENDOR_ID_NVIDIA
 comma
 id|PCI_DEVICE_ID_NVIDIA_NFORCE2_SMBUS
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_NFORCE3_SMBUS
 comma
 id|PCI_ANY_ID
 comma

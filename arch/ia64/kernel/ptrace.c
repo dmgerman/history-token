@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Kernel support for the ptrace() and syscall tracing interfaces.&n; *&n; * Copyright (C) 1999-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Derived from the x86 and Alpha versions.  Most of the code in here&n; * could actually be factored into a common set of routines.&n; */
+multiline_comment|/*&n; * Kernel support for the ptrace() and syscall tracing interfaces.&n; *&n; * Copyright (C) 1999-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Derived from the x86 and Alpha versions.  Most of the code in here&n; * could actually be factored into a common set of routines.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -917,10 +917,6 @@ comma
 op_star
 id|urbs_kargs
 suffix:semicolon
-r_struct
-id|unw_frame_info
-id|info
-suffix:semicolon
 id|pt
 op_assign
 id|ia64_task_regs
@@ -962,37 +958,9 @@ id|pt
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If entered via syscall, don&squot;t allow user to set rnat bits&n;&t;&t; * for syscall args.&n;&t;&t; */
-id|unw_init_from_blocked_task
-c_func
-(paren
-op_amp
-id|info
-comma
-id|task
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unw_unwind_to_user
-c_func
-(paren
-op_amp
-id|info
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|unw_get_cfm
-c_func
-(paren
-op_amp
-id|info
-comma
-op_amp
 id|cfm
-)paren
+op_assign
+id|pt-&gt;cr_ifs
 suffix:semicolon
 id|urbs_kargs
 op_assign
@@ -1009,7 +977,6 @@ l_int|0x7f
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -1864,10 +1831,8 @@ op_star
 id|bspstore
 comma
 id|cfm
-suffix:semicolon
-r_struct
-id|unw_frame_info
-id|info
+op_assign
+id|pt-&gt;cr_ifs
 suffix:semicolon
 r_int
 id|ndirty
@@ -1910,17 +1875,6 @@ l_int|19
 )paren
 )paren
 suffix:semicolon
-id|cfm
-op_assign
-id|pt-&gt;cr_ifs
-op_amp
-op_complement
-(paren
-l_int|1UL
-op_lshift
-l_int|63
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1930,40 +1884,6 @@ c_func
 id|pt
 )paren
 )paren
-(brace
-multiline_comment|/*&n;&t;&t; * If bit 63 of cr.ifs is cleared, the kernel was entered via a system&n;&t;&t; * call and we need to recover the CFM that existed on entry to the&n;&t;&t; * kernel by unwinding the kernel stack.&n;&t;&t; */
-id|unw_init_from_blocked_task
-c_func
-(paren
-op_amp
-id|info
-comma
-id|child
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unw_unwind_to_user
-c_func
-(paren
-op_amp
-id|info
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|unw_get_cfm
-c_func
-(paren
-op_amp
-id|info
-comma
-op_amp
-id|cfm
-)paren
-suffix:semicolon
 id|ndirty
 op_add_assign
 (paren
@@ -1972,8 +1892,17 @@ op_amp
 l_int|0x7f
 )paren
 suffix:semicolon
-)brace
-)brace
+r_else
+id|cfm
+op_and_assign
+op_complement
+(paren
+l_int|1UL
+op_lshift
+l_int|63
+)paren
+suffix:semicolon
+multiline_comment|/* clear valid bit */
 r_if
 c_cond
 (paren

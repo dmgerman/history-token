@@ -97,7 +97,7 @@ id|__u32
 id|version
 suffix:semicolon
 DECL|member|mtime
-id|time_t
+id|__u32
 id|mtime
 suffix:semicolon
 DECL|member|size

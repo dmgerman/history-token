@@ -3,12 +3,13 @@ DECL|macro|DEBUG_DZ
 macro_line|#undef DEBUG_DZ
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/dec/interrupts.h&gt;
 macro_line|#include &lt;asm/dec/kn01.h&gt;
@@ -506,6 +507,8 @@ suffix:semicolon
 r_int
 r_char
 id|ch
+comma
+id|flag
 suffix:semicolon
 multiline_comment|/* this code is going to be a problem...&n;&t;   the call to tty_flip_buffer is going to need&n;&t;   to be rethought...&n;&t; */
 r_do
@@ -543,6 +546,10 @@ id|status
 )paren
 suffix:semicolon
 multiline_comment|/* grab the char */
+id|flag
+op_assign
+id|TTY_NORMAL
+suffix:semicolon
 macro_line|#if 0
 r_if
 c_cond
@@ -588,16 +595,6 @@ op_ge
 id|TTY_FLIPBUF_SIZE
 )paren
 r_break
-suffix:semicolon
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_assign
-id|ch
-suffix:semicolon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
-op_assign
-l_int|0
 suffix:semicolon
 id|icount-&gt;rx
 op_increment
@@ -689,8 +686,7 @@ op_amp
 id|DZ_PERR
 )paren
 (brace
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_PARITY
 suffix:semicolon
@@ -714,8 +710,7 @@ op_amp
 id|DZ_FERR
 )paren
 (brace
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_FRAME
 suffix:semicolon
@@ -748,39 +743,35 @@ l_int|5
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
+id|tty_insert_flip_char
+c_func
 (paren
-id|tty-&gt;flip.count
-OL
-id|TTY_FLIPBUF_SIZE
+id|tty
+comma
+id|ch
+comma
+id|flag
 )paren
-(brace
-id|tty-&gt;flip.count
-op_increment
 suffix:semicolon
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
+id|ch
+op_assign
+l_int|0
 suffix:semicolon
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-suffix:semicolon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_OVERRUN
 suffix:semicolon
 )brace
 )brace
-)brace
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-suffix:semicolon
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-suffix:semicolon
-id|tty-&gt;flip.count
-op_increment
+id|tty_insert_flip_char
+c_func
+(paren
+id|tty
+comma
+id|ch
+comma
+id|flag
+)paren
 suffix:semicolon
 id|ignore_char
 suffix:colon

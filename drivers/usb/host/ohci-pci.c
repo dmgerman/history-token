@@ -259,8 +259,8 @@ id|hcd
 )paren
 suffix:semicolon
 multiline_comment|/* suspend root hub, hoping it keeps power during suspend */
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|time_before
 (paren
@@ -437,8 +437,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* resume root hub */
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|time_before
 (paren
@@ -488,10 +488,6 @@ op_eq
 l_int|0
 )paren
 (brace
-id|hcd-&gt;self.controller-&gt;power.power_state
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 r_if
 c_cond

@@ -8954,7 +8954,7 @@ op_assign
 (paren
 r_int
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|ptr
@@ -8970,7 +8970,7 @@ op_assign
 (paren
 r_int
 )paren
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|ptr
@@ -9063,7 +9063,7 @@ op_assign
 (paren
 id|word
 )paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 id|ptr
@@ -9079,7 +9079,7 @@ op_assign
 (paren
 id|dword
 )paren
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|ptr
@@ -9099,7 +9099,7 @@ op_assign
 (paren
 id|dword
 )paren
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 id|ptr

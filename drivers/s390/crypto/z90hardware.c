@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/s390/misc/z90hardware.c&n; *&n; *  z90crypt 1.3.2&n; *&n; *  Copyright (C)  2001, 2004 IBM Corporation&n; *  Author(s): Robert Burroughs (burrough@us.ibm.com)&n; *             Eric Rossman (edrossma@us.ibm.com)&n; *&n; *  Hotplug &amp; misc device support: Jochen Roehrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *  linux/drivers/s390/crypto/z90hardware.c&n; *&n; *  z90crypt 1.3.2&n; *&n; *  Copyright (C)  2001, 2004 IBM Corporation&n; *  Author(s): Robert Burroughs (burrough@us.ibm.com)&n; *             Eric Rossman (edrossma@us.ibm.com)&n; *&n; *  Hotplug &amp; misc device support: Jochen Roehrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -7,10 +7,10 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;z90crypt.h&quot;
 macro_line|#include &quot;z90common.h&quot;
 DECL|macro|VERSION_Z90HARDWARE_C
-mdefine_line|#define VERSION_Z90HARDWARE_C &quot;$Revision: 1.32 $&quot;
+mdefine_line|#define VERSION_Z90HARDWARE_C &quot;$Revision: 1.33 $&quot;
 DECL|variable|__initdata
 r_char
-id|z90chardware_version
+id|z90hardware_version
 (braket
 )braket
 id|__initdata

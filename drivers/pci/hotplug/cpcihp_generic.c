@@ -764,7 +764,9 @@ id|debug
 comma
 r_bool
 comma
-l_int|0644
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -14,6 +14,10 @@ r_int
 id|boot_cpuid
 suffix:semicolon
 r_extern
+r_int
+id|boot_cpuid_phys
+suffix:semicolon
+r_extern
 r_void
 id|cpu_die
 c_func

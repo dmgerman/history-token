@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;asm/arch/lubbock.h&gt;
 macro_line|#include &lt;asm/arch/udc.h&gt;
 macro_line|#include &lt;asm/arch/pxafb.h&gt;
+macro_line|#include &lt;asm/arch/mmc.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &quot;generic.h&quot;
 DECL|macro|LUB_MISC_WR
@@ -738,6 +739,76 @@ l_int|255
 comma
 )brace
 suffix:semicolon
+DECL|function|lubbock_mci_init
+r_static
+r_int
+id|lubbock_mci_init
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+id|irqreturn_t
+(paren
+op_star
+id|lubbock_detect_int
+)paren
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+multiline_comment|/* setup GPIO for PXA25x MMC controller&t;*/
+id|pxa_gpio_mode
+c_func
+(paren
+id|GPIO6_MMCCLK_MD
+)paren
+suffix:semicolon
+id|pxa_gpio_mode
+c_func
+(paren
+id|GPIO8_MMCCS0_MD
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|lubbock_mci_platform_data
+r_static
+r_struct
+id|pxamci_platform_data
+id|lubbock_mci_platform_data
+op_assign
+(brace
+dot
+id|ocr_mask
+op_assign
+id|MMC_VDD_32_33
+op_or
+id|MMC_VDD_33_34
+comma
+dot
+id|init
+op_assign
+id|lubbock_mci_init
+comma
+)brace
+suffix:semicolon
 DECL|function|lubbock_init
 r_static
 r_void
@@ -760,6 +831,13 @@ c_func
 (paren
 op_amp
 id|sharp_lm8v31
+)paren
+suffix:semicolon
+id|pxa_set_mci_info
+c_func
+(paren
+op_amp
+id|lubbock_mci_platform_data
 )paren
 suffix:semicolon
 (paren

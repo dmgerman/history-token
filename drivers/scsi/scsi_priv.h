@@ -267,6 +267,7 @@ id|model
 suffix:semicolon
 r_extern
 r_int
+id|__init
 id|scsi_init_devinfo
 c_func
 (paren

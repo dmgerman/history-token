@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD map driver for BIOS Flash on Intel SCB2 boards&n; * $Id: scb2_flash.c,v 1.9 2004/09/16 23:27:14 gleixner Exp $&n; * Copyright (C) 2002 Sun Microsystems, Inc.&n; * Tim Hockin &lt;thockin@sun.com&gt;&n; *&n; * A few notes on this MTD map:&n; *&n; * This was developed with a small number of SCB2 boards to test on.&n; * Hopefully, Intel has not introducted too many unaccounted variables in the&n; * making of this board.&n; *&n; * The BIOS marks its own memory region as &squot;reserved&squot; in the e820 map.  We&n; * try to request it here, but if it fails, we carry on anyway.&n; *&n; * This is how the chip is attached, so said the schematic:&n; * * a 4 MiB (32 Mib) 16 bit chip&n; * * a 1 MiB memory region&n; * * A20 and A21 pulled up&n; * * D8-D15 ignored&n; * What this means is that, while we are addressing bytes linearly, we are&n; * really addressing words, and discarding the other byte.  This means that&n; * the chip MUST BE at least 2 MiB.  This also means that every block is&n; * actually half as big as the chip reports.  It also means that accesses of&n; * logical address 0 hit higher-address sections of the chip, not physical 0.&n; * One can only hope that these 4MiB x16 chips were a lot cheaper than 1MiB x8&n; * chips.&n; *&n; * This driver assumes the chip is not write-protected by an external signal.&n; * As of the this writing, that is true, but may change, just to spite me.&n; *&n; * The actual BIOS layout has been mostly reverse engineered.  Intel BIOS&n; * updates for this board include 10 related (*.bio - &amp;.bi9) binary files and&n; * another separate (*.bbo) binary file.  The 10 files are 64k of data + a&n; * small header.  If the headers are stripped off, the 10 64k files can be&n; * concatenated into a 640k image.  This is your BIOS image, proper.  The&n; * separate .bbo file also has a small header.  It is the &squot;Boot Block&squot;&n; * recovery BIOS.  Once the header is stripped, no further prep is needed.&n; * As best I can tell, the BIOS is arranged as such:&n; * offset 0x00000 to 0x4ffff (320k):  unknown - SCSI BIOS, etc?&n; * offset 0x50000 to 0xeffff (640k):  BIOS proper&n; * offset 0xf0000 ty 0xfffff (64k):   Boot Block region&n; *&n; * Intel&squot;s BIOS update program flashes the BIOS and Boot Block in separate&n; * steps.  Probably a wise thing to do.&n; */
+multiline_comment|/*&n; * MTD map driver for BIOS Flash on Intel SCB2 boards&n; * $Id: scb2_flash.c,v 1.10 2004/11/16 18:29:02 dwmw2 Exp $&n; * Copyright (C) 2002 Sun Microsystems, Inc.&n; * Tim Hockin &lt;thockin@sun.com&gt;&n; *&n; * A few notes on this MTD map:&n; *&n; * This was developed with a small number of SCB2 boards to test on.&n; * Hopefully, Intel has not introducted too many unaccounted variables in the&n; * making of this board.&n; *&n; * The BIOS marks its own memory region as &squot;reserved&squot; in the e820 map.  We&n; * try to request it here, but if it fails, we carry on anyway.&n; *&n; * This is how the chip is attached, so said the schematic:&n; * * a 4 MiB (32 Mib) 16 bit chip&n; * * a 1 MiB memory region&n; * * A20 and A21 pulled up&n; * * D8-D15 ignored&n; * What this means is that, while we are addressing bytes linearly, we are&n; * really addressing words, and discarding the other byte.  This means that&n; * the chip MUST BE at least 2 MiB.  This also means that every block is&n; * actually half as big as the chip reports.  It also means that accesses of&n; * logical address 0 hit higher-address sections of the chip, not physical 0.&n; * One can only hope that these 4MiB x16 chips were a lot cheaper than 1MiB x8&n; * chips.&n; *&n; * This driver assumes the chip is not write-protected by an external signal.&n; * As of the this writing, that is true, but may change, just to spite me.&n; *&n; * The actual BIOS layout has been mostly reverse engineered.  Intel BIOS&n; * updates for this board include 10 related (*.bio - &amp;.bi9) binary files and&n; * another separate (*.bbo) binary file.  The 10 files are 64k of data + a&n; * small header.  If the headers are stripped off, the 10 64k files can be&n; * concatenated into a 640k image.  This is your BIOS image, proper.  The&n; * separate .bbo file also has a small header.  It is the &squot;Boot Block&squot;&n; * recovery BIOS.  Once the header is stripped, no further prep is needed.&n; * As best I can tell, the BIOS is arranged as such:&n; * offset 0x00000 to 0x4ffff (320k):  unknown - SCSI BIOS, etc?&n; * offset 0x50000 to 0xeffff (640k):  BIOS proper&n; * offset 0xf0000 ty 0xfffff (64k):   Boot Block region&n; *&n; * Intel&squot;s BIOS update program flashes the BIOS and Boot Block in separate&n; * steps.  Probably a wise thing to do.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -19,6 +19,7 @@ mdefine_line|#define SCB2_WINDOW&t;0x00100000
 DECL|variable|scb2_ioaddr
 r_static
 r_void
+id|__iomem
 op_star
 id|scb2_ioaddr
 suffix:semicolon
@@ -30,6 +31,7 @@ op_star
 id|scb2_mtd
 suffix:semicolon
 DECL|variable|scb2_map
+r_static
 r_struct
 id|map_info
 id|scb2_map
@@ -358,11 +360,6 @@ id|SCB2_ADDR
 suffix:semicolon
 id|scb2_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|scb2_ioaddr
 suffix:semicolon
 id|scb2_map.size

@@ -67,6 +67,12 @@ id|u32
 id|last_comp_version
 suffix:semicolon
 multiline_comment|/* last compatible version */
+multiline_comment|/* version 2 fields below */
+DECL|member|boot_cpuid_phys
+id|u32
+id|boot_cpuid_phys
+suffix:semicolon
+multiline_comment|/* Which physical CPU id we&squot;re booting on */
 )brace
 suffix:semicolon
 DECL|typedef|phandle

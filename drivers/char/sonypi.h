@@ -4,7 +4,7 @@ DECL|macro|_SONYPI_PRIV_H_
 mdefine_line|#define _SONYPI_PRIV_H_
 macro_line|#ifdef __KERNEL__
 DECL|macro|SONYPI_DRIVER_VERSION
-mdefine_line|#define SONYPI_DRIVER_VERSION&t; &quot;1.24&quot;
+mdefine_line|#define SONYPI_DRIVER_VERSION&t; &quot;1.25&quot;
 DECL|macro|SONYPI_DEVICE_MODEL_TYPE1
 mdefine_line|#define SONYPI_DEVICE_MODEL_TYPE1&t;1
 DECL|macro|SONYPI_DEVICE_MODEL_TYPE2

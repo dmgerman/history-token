@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_aux.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_AUX_REVISION
-mdefine_line|#define ZFCP_AUX_REVISION &quot;$Revision: 1.135 $&quot;
+mdefine_line|#define ZFCP_AUX_REVISION &quot;$Revision: 1.145 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 multiline_comment|/* accumulated log level (module parameter) */
 DECL|variable|loglevel
@@ -121,7 +120,7 @@ DECL|macro|ZFCP_CFDC_IOC_MAGIC
 mdefine_line|#define ZFCP_CFDC_IOC_MAGIC                     0xDD
 DECL|macro|ZFCP_CFDC_IOC
 mdefine_line|#define ZFCP_CFDC_IOC &bslash;&n;&t;_IOWR(ZFCP_CFDC_IOC_MAGIC, 0, struct zfcp_cfdc_sense_data)
-macro_line|#ifdef CONFIG_S390_SUPPORT
+macro_line|#ifdef CONFIG_COMPAT
 DECL|variable|zfcp_ioctl_trans
 r_static
 r_struct
@@ -448,11 +447,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|write_lock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|adapter-&gt;cmd_dbf_lock
+id|adapter-&gt;dbf_lock
 comma
 id|flags
 )paren
@@ -605,11 +604,11 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|write_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|adapter-&gt;cmd_dbf_lock
+id|adapter-&gt;dbf_lock
 comma
 id|flags
 )paren
@@ -704,11 +703,11 @@ suffix:colon
 l_int|NULL
 )paren
 suffix:semicolon
-id|write_lock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|adapter-&gt;cmd_dbf_lock
+id|adapter-&gt;dbf_lock
 comma
 id|flags
 )paren
@@ -855,11 +854,11 @@ l_string|&quot;&quot;
 )paren
 suffix:semicolon
 )brace
-id|write_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|adapter-&gt;cmd_dbf_lock
+id|adapter-&gt;dbf_lock
 comma
 id|flags
 )paren
@@ -1239,19 +1238,10 @@ c_func
 id|adapter-&gt;ccw_device
 )paren
 suffix:semicolon
-id|wait_event
+id|zfcp_erp_wait
 c_func
 (paren
-id|unit-&gt;scsi_add_wq
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|unit-&gt;scsi_add_work
-)paren
-op_eq
-l_int|0
+id|adapter
 )paren
 suffix:semicolon
 id|down
@@ -1354,7 +1344,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-macro_line|#ifdef CONFIG_S390_SUPPORT
 id|retval
 op_assign
 id|register_ioctl32_conversion
@@ -1380,10 +1369,9 @@ l_string|&quot;registration of ioctl32 conversion failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|out_ioctl32
+id|out
 suffix:semicolon
 )brace
-macro_line|#endif
 id|retval
 op_assign
 id|misc_register
@@ -1500,16 +1488,12 @@ id|zfcp_cfdc_misc
 suffix:semicolon
 id|out_misc_register
 suffix:colon
-macro_line|#ifdef CONFIG_S390_SUPPORT
 id|unregister_ioctl32_conversion
 c_func
 (paren
 id|zfcp_ioctl_trans.cmd
 )paren
 suffix:semicolon
-id|out_ioctl32
-suffix:colon
-macro_line|#endif
 id|out
 suffix:colon
 r_return
@@ -3347,13 +3331,6 @@ id|zfcp_unit
 )paren
 )paren
 suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|unit-&gt;scsi_add_wq
-)paren
-suffix:semicolon
 multiline_comment|/* initialise reference count stuff */
 id|atomic_set
 c_func
@@ -4008,11 +3985,11 @@ l_int|20
 )braket
 suffix:semicolon
 multiline_comment|/* debug feature area which records SCSI command failures (hostbyte) */
-id|rwlock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
-id|adapter-&gt;cmd_dbf_lock
+id|adapter-&gt;dbf_lock
 )paren
 suffix:semicolon
 id|sprintf
@@ -4108,7 +4085,7 @@ comma
 id|ZFCP_ABORT_DBF_LEVEL
 )paren
 suffix:semicolon
-multiline_comment|/* debug feature area which records SCSI command aborts */
+multiline_comment|/* debug feature area which records incoming ELS commands */
 id|sprintf
 c_func
 (paren
@@ -4205,6 +4182,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|adapter-&gt;cmd_dbf
 op_logical_and
 id|adapter-&gt;abort_dbf
@@ -4213,9 +4192,8 @@ id|adapter-&gt;in_els_dbf
 op_logical_and
 id|adapter-&gt;erp_dbf
 )paren
-r_return
-l_int|0
-suffix:semicolon
+)paren
+(brace
 id|zfcp_adapter_debug_unregister
 c_func
 (paren
@@ -4225,6 +4203,10 @@ suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * zfcp_adapter_debug_unregister - unregisters debug feature for an adapter&n; * @adapter: pointer to adapter for which debug features should be unregistered&n; */
@@ -4242,7 +4224,7 @@ id|adapter
 id|debug_unregister
 c_func
 (paren
-id|adapter-&gt;erp_dbf
+id|adapter-&gt;abort_dbf
 )paren
 suffix:semicolon
 id|debug_unregister
@@ -4254,7 +4236,7 @@ suffix:semicolon
 id|debug_unregister
 c_func
 (paren
-id|adapter-&gt;abort_dbf
+id|adapter-&gt;erp_dbf
 )paren
 suffix:semicolon
 id|debug_unregister
@@ -4262,6 +4244,22 @@ c_func
 (paren
 id|adapter-&gt;in_els_dbf
 )paren
+suffix:semicolon
+id|adapter-&gt;abort_dbf
+op_assign
+l_int|NULL
+suffix:semicolon
+id|adapter-&gt;cmd_dbf
+op_assign
+l_int|NULL
+suffix:semicolon
+id|adapter-&gt;erp_dbf
+op_assign
+l_int|NULL
+suffix:semicolon
+id|adapter-&gt;in_els_dbf
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 r_void

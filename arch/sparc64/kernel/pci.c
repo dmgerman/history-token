@@ -3055,9 +3055,9 @@ id|mmap_state
 id|vma-&gt;vm_flags
 op_or_assign
 (paren
-id|VM_SHM
+id|VM_IO
 op_or
-id|VM_LOCKED
+id|VM_RESERVED
 )paren
 suffix:semicolon
 )brace

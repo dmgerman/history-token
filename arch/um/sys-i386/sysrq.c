@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * Copyright (C) 2001 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;linux/smp.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;

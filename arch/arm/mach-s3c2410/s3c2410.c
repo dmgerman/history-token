@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2410.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to kernel v2.6&n; *     18-Jan-2004 BJD  Added serial port configuration&n; *     21-Aug-2004 BJD  Added new struct s3c2410_board handler&n; *     28-Sep-2004 BJD  Updates for new serial port bits&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2410.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to kernel v2.6&n; *     18-Jan-2004 BJD  Added serial port configuration&n; *     21-Aug-2004 BJD  Added new struct s3c2410_board handler&n; *     28-Sep-2004 BJD  Updates for new serial port bits&n; *     04-Nov-2004 BJD  Updated UART configuration process&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -28,13 +28,6 @@ op_star
 l_int|1000
 suffix:semicolon
 multiline_comment|/* current timers at 12MHz */
-multiline_comment|/* serial port setup */
-DECL|variable|s3c2410_uartcfgs
-r_struct
-id|s3c2410_uartcfg
-op_star
-id|s3c2410_uartcfgs
-suffix:semicolon
 multiline_comment|/* Initial IO mappings */
 DECL|variable|__initdata
 r_static
@@ -419,11 +412,6 @@ suffix:semicolon
 r_int
 id|uart
 suffix:semicolon
-id|s3c2410_uartcfgs
-op_assign
-id|cfg
-suffix:semicolon
-multiline_comment|/* compatibility */
 r_for
 c_loop
 (paren
@@ -449,7 +437,7 @@ id|uart_devices
 id|cfg-&gt;hwport
 )braket
 suffix:semicolon
-id|s3c2410_uart_devices
+id|s3c24xx_uart_devs
 (braket
 id|uart
 )braket
@@ -606,31 +594,20 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|ret
-suffix:semicolon
 id|printk
 c_func
 (paren
 l_string|&quot;S3C2410: Initialising architecture&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 id|platform_add_devices
 c_func
 (paren
-id|uart_devices
+id|s3c24xx_uart_devs
 comma
-id|ARRAY_SIZE
-c_func
-(paren
-id|uart_devices
+id|s3c2410_uart_count
 )paren
-)paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 )brace
 eof

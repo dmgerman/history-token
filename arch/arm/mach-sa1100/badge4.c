@@ -5,12 +5,15 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/arch/irqs.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
+macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
@@ -177,6 +180,124 @@ id|devices
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * 1 x Intel 28F320C3 Advanced+ Boot Block Flash (32 Mi bit)&n; *   Eight 4 KiW Parameter Bottom Blocks (64 KiB)&n; *   Sixty-three 32 KiW Main Blocks (4032 Ki b)&n; *&n; * &lt;or&gt;&n; *&n; * 1 x Intel 28F640C3 Advanced+ Boot Block Flash (64 Mi bit)&n; *   Eight 4 KiW Parameter Bottom Blocks (64 KiB)&n; *   One-hundred-twenty-seven 32 KiW Main Blocks (8128 Ki b)&n; */
+DECL|variable|badge4_partitions
+r_static
+r_struct
+id|mtd_partition
+id|badge4_partitions
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;BLOB boot loader&quot;
+comma
+dot
+id|offset
+op_assign
+l_int|0
+comma
+dot
+id|size
+op_assign
+l_int|0x0000A000
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;params&quot;
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+dot
+id|size
+op_assign
+l_int|0x00006000
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;root&quot;
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+dot
+id|size
+op_assign
+id|MTDPART_SIZ_FULL
+)brace
+)brace
+suffix:semicolon
+DECL|variable|badge4_flash_data
+r_static
+r_struct
+id|flash_platform_data
+id|badge4_flash_data
+op_assign
+(brace
+dot
+id|map_name
+op_assign
+l_string|&quot;cfi_probe&quot;
+comma
+dot
+id|parts
+op_assign
+id|badge4_partitions
+comma
+dot
+id|nr_parts
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|badge4_partitions
+)paren
+comma
+)brace
+suffix:semicolon
+DECL|variable|badge4_flash_resource
+r_static
+r_struct
+id|resource
+id|badge4_flash_resource
+op_assign
+(brace
+dot
+id|start
+op_assign
+id|SA1100_CS0_PHYS
+comma
+dot
+id|end
+op_assign
+id|SA1100_CS0_PHYS
+op_plus
+id|SZ_64M
+op_minus
+l_int|1
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
+comma
+)brace
+suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_int
@@ -475,6 +596,18 @@ c_func
 id|BADGE4_5V_INITIALLY
 comma
 id|five_v_on
+)paren
+suffix:semicolon
+id|sa11x0_set_flash_data
+(paren
+id|badge4_flash_data
+comma
+id|badge4_flash_resources
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|badge4_flash_resources
 )paren
 suffix:semicolon
 r_return

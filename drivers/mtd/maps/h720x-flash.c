@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory access on Hynix GMS30C7201/HMS30C7202 based &n; * evaluation boards&n; * &n; * $Id: h720x-flash.c,v 1.10 2004/09/16 23:27:13 gleixner Exp $&n; *&n; * (C) 2002 Jungjun Kim &lt;jungjun.kim@hynix.com&gt;&n; *     2003 Thomas Gleixner &lt;tglx@linutronix.de&gt;&t;&n; */
+multiline_comment|/*&n; * Flash memory access on Hynix GMS30C7201/HMS30C7202 based &n; * evaluation boards&n; * &n; * $Id: h720x-flash.c,v 1.11 2004/11/04 13:24:14 gleixner Exp $&n; *&n; * (C) 2002 Jungjun Kim &lt;jungjun.kim@hynix.com&gt;&n; *     2003 Thomas Gleixner &lt;tglx@linutronix.de&gt;&t;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -209,11 +209,6 @@ l_int|NULL
 suffix:semicolon
 id|h720x_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren

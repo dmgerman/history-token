@@ -51,7 +51,7 @@ id|c
 suffix:semicolon
 multiline_comment|/* Call the installed machine check handler for this CPU setup. */
 r_extern
-id|asmlinkage
+id|fastcall
 r_void
 (paren
 op_star

@@ -1,25 +1,25 @@
 multiline_comment|/*&n; *  linux/drivers/char/8250.c&n; *&n; *  Driver for 8250/16550-type serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; *  $Id: 8250.c,v 1.90 2002/07/28 10:03:27 rmk Exp $&n; *&n; * A note about mapbase / membase&n; *&n; *  mapbase is the physical address of the IO port.&n; *  membase is an &squot;ioremapped&squot; cookie.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/moduleparam.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/sysrq.h&gt;
-macro_line|#include &lt;linux/serial_reg.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/serial_8250.h&gt;
-macro_line|#include &lt;linux/circ_buf.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#if defined(CONFIG_SERIAL_8250_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
 DECL|macro|SUPPORT_SYSRQ
 mdefine_line|#define SUPPORT_SYSRQ
 macro_line|#endif
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/tty_flip.h&gt;
+macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serial_8250.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;8250.h&quot;
 multiline_comment|/*&n; * Configuration:&n; *   share_irqs - whether we pass SA_SHIRQ to request_irq().  This option&n; *                is unsafe when used on edge-triggered interrupts.&n; */
 DECL|variable|share_irqs
@@ -3871,8 +3871,12 @@ id|max_count
 op_assign
 l_int|256
 suffix:semicolon
+r_char
+id|flag
+suffix:semicolon
 r_do
 (brace
+multiline_comment|/* The following is not allowed by the tty layer and&n;&t;&t;   unsafe. It should be fixed ASAP */
 r_if
 c_cond
 (paren
@@ -3885,28 +3889,20 @@ id|TTY_FLIPBUF_SIZE
 )paren
 )paren
 (brace
-id|tty-&gt;flip.work
-dot
-id|func
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|tty
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;flip.count
-op_ge
-id|TTY_FLIPBUF_SIZE
+id|tty-&gt;low_latency
 )paren
-r_return
+(brace
+id|tty_flip_buffer_push
+c_func
+(paren
+id|tty
+)paren
 suffix:semicolon
-singleline_comment|// if TTY_DONT_FLIP is set
+)brace
+multiline_comment|/* If this failed then we will throw away the&n;&t;&t;&t;   bytes but must do so to clear interrupts */
 )brace
 id|ch
 op_assign
@@ -3918,13 +3914,7 @@ comma
 id|UART_RX
 )paren
 suffix:semicolon
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_assign
-id|ch
-suffix:semicolon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_NORMAL
 suffix:semicolon
@@ -4058,8 +4048,7 @@ c_func
 l_string|&quot;handling break....&quot;
 )paren
 suffix:semicolon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_BREAK
 suffix:semicolon
@@ -4072,8 +4061,7 @@ id|lsr
 op_amp
 id|UART_LSR_PE
 )paren
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_PARITY
 suffix:semicolon
@@ -4085,8 +4073,7 @@ id|lsr
 op_amp
 id|UART_LSR_FE
 )paren
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_FRAME
 suffix:semicolon
@@ -4120,14 +4107,15 @@ op_eq
 l_int|0
 )paren
 (brace
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-suffix:semicolon
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-suffix:semicolon
-id|tty-&gt;flip.count
-op_increment
+id|tty_insert_flip_char
+c_func
+(paren
+id|tty
+comma
+id|ch
+comma
+id|flag
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -4145,19 +4133,15 @@ id|TTY_FLIPBUF_SIZE
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Overrun is special, since it&squot;s reported&n;&t;&t;&t; * immediately, and doesn&squot;t affect the current&n;&t;&t;&t; * character.&n;&t;&t;&t; */
-op_star
-id|tty-&gt;flip.flag_buf_ptr
-op_assign
+id|tty_insert_flip_char
+c_func
+(paren
+id|tty
+comma
+l_int|0
+comma
 id|TTY_OVERRUN
-suffix:semicolon
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-suffix:semicolon
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-suffix:semicolon
-id|tty-&gt;flip.count
-op_increment
+)paren
 suffix:semicolon
 )brace
 id|ignore_char
@@ -8471,7 +8455,6 @@ suffix:semicolon
 DECL|function|serial8250_console_setup
 r_static
 r_int
-id|__init
 id|serial8250_console_setup
 c_func
 (paren
@@ -8709,6 +8692,188 @@ c_func
 id|serial8250_late_console_init
 )paren
 suffix:semicolon
+DECL|function|find_port
+r_static
+r_int
+id|__init
+id|find_port
+c_func
+(paren
+r_struct
+id|uart_port
+op_star
+id|p
+)paren
+(brace
+r_int
+id|line
+suffix:semicolon
+r_struct
+id|uart_port
+op_star
+id|port
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|line
+op_assign
+l_int|0
+suffix:semicolon
+id|line
+OL
+id|UART_NR
+suffix:semicolon
+id|line
+op_increment
+)paren
+(brace
+id|port
+op_assign
+op_amp
+id|serial8250_ports
+(braket
+id|line
+)braket
+dot
+id|port
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;iotype
+op_eq
+id|port-&gt;iotype
+op_logical_and
+id|p-&gt;iobase
+op_eq
+id|port-&gt;iobase
+op_logical_and
+id|p-&gt;membase
+op_eq
+id|port-&gt;membase
+)paren
+r_return
+id|line
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|serial8250_start_console
+r_int
+id|__init
+id|serial8250_start_console
+c_func
+(paren
+r_struct
+id|uart_port
+op_star
+id|port
+comma
+r_char
+op_star
+id|options
+)paren
+(brace
+r_int
+id|line
+suffix:semicolon
+id|line
+op_assign
+id|find_port
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|line
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|add_preferred_console
+c_func
+(paren
+l_string|&quot;ttyS&quot;
+comma
+id|line
+comma
+id|options
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Adding console on ttyS%d at %s 0x%lx (options &squot;%s&squot;)&bslash;n&quot;
+comma
+id|line
+comma
+id|port-&gt;iotype
+op_eq
+id|UPIO_MEM
+ques
+c_cond
+l_string|&quot;MMIO&quot;
+suffix:colon
+l_string|&quot;I/O port&quot;
+comma
+id|port-&gt;iotype
+op_eq
+id|UPIO_MEM
+ques
+c_cond
+(paren
+r_int
+r_int
+)paren
+id|port-&gt;mapbase
+suffix:colon
+(paren
+r_int
+r_int
+)paren
+id|port-&gt;iobase
+comma
+id|options
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|serial8250_console.flags
+op_amp
+id|CON_ENABLED
+)paren
+)paren
+(brace
+id|serial8250_console.flags
+op_and_assign
+op_complement
+id|CON_PRINTBUFFER
+suffix:semicolon
+id|register_console
+c_func
+(paren
+op_amp
+id|serial8250_console
+)paren
+suffix:semicolon
+)brace
+r_return
+id|line
+suffix:semicolon
+)brace
 DECL|macro|SERIAL8250_CONSOLE
 mdefine_line|#define SERIAL8250_CONSOLE&t;&amp;serial8250_console
 macro_line|#else

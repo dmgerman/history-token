@@ -639,7 +639,7 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_return
-id|SCSI_MLQUEUE_HOST_BUSY
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#if 0
@@ -798,7 +798,7 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_return
-id|SCSI_MLQUEUE_DEVICE_BUSY
+l_int|0
 suffix:semicolon
 )brace
 singleline_comment|//nsp_dbg(NSP_DEBUG_QUEUECOMMAND, &quot;out&quot;);

@@ -25,6 +25,7 @@ id|IoAdapter
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|addrHi
 comma
@@ -52,6 +53,7 @@ id|Xdesc
 id|xlogDesc
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|Port
 suffix:semicolon
@@ -156,7 +158,7 @@ multiline_comment|/*&n; * check for trapped MIPS 3xxx CPU, dump only exception f
 r_if
 c_cond
 (paren
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -204,7 +206,7 @@ id|regs
 l_int|0
 )braket
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -225,7 +227,7 @@ id|regs
 l_int|1
 )braket
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -246,7 +248,7 @@ id|regs
 l_int|2
 )braket
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -267,7 +269,7 @@ id|regs
 l_int|3
 )braket
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -541,6 +543,7 @@ id|IoAdapter
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|p
 op_assign
@@ -577,6 +580,7 @@ id|IoAdapter
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|p
 op_assign
@@ -2812,6 +2816,7 @@ id|IoAdapter
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -2900,6 +2905,7 @@ id|IoAdapter
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|p
 suffix:semicolon

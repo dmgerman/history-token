@@ -11,7 +11,7 @@ macro_line|#include &quot;mce.h&quot;
 multiline_comment|/* Machine check handler for WinChip C6 */
 DECL|function|winchip_machine_check
 r_static
-id|asmlinkage
+id|fastcall
 r_void
 id|winchip_machine_check
 c_func

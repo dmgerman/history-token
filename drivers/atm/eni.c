@@ -802,7 +802,7 @@ OG
 id|MID_MAX_BUF_SIZE
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -928,7 +928,7 @@ op_eq
 l_int|65
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|start
 op_assign
@@ -7709,7 +7709,7 @@ id|eni_vcc-&gt;tx
 suffix:semicolon
 id|mem
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* for gcc */
 r_if
@@ -8008,7 +8008,7 @@ id|new_tx
 (brace
 id|tx-&gt;send
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|eni_free_mem
 c_func
@@ -8391,7 +8391,7 @@ l_int|2
 suffix:semicolon
 id|eni_vcc-&gt;tx-&gt;send
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|eni_dev-&gt;tx_bw
 op_add_assign
@@ -8491,7 +8491,7 @@ id|i
 dot
 id|send
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|eni_dev-&gt;tx
 (braket
@@ -9685,6 +9685,7 @@ id|dev
 (brace
 r_struct
 id|midway_eprom
+id|__iomem
 op_star
 id|eprom
 suffix:semicolon
@@ -9919,11 +9920,6 @@ id|eni_dev-&gt;asic
 (brace
 id|eprom
 op_assign
-(paren
-r_struct
-id|midway_eprom
-op_star
-)paren
 (paren
 id|base
 op_plus

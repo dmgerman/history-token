@@ -1858,7 +1858,7 @@ multiline_comment|/* -----------------------------------------------------------
 DECL|function|src_init
 r_static
 r_void
-id|__init
+id|__devinit
 id|src_init
 c_func
 (paren
@@ -14342,12 +14342,12 @@ DECL|member|vol
 r_int
 id|vol
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 )brace
 id|initvol
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace

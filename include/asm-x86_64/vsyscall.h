@@ -36,7 +36,7 @@ mdefine_line|#define __section_sysctl_vsyscall __attribute__ ((unused, __section
 DECL|macro|__section_xtime
 mdefine_line|#define __section_xtime __attribute__ ((unused, __section__ (&quot;.xtime&quot;), aligned(16)))
 DECL|macro|__section_xtime_lock
-mdefine_line|#define __section_xtime_lock __attribute__ ((unused, __section__ (&quot;.xtime_lock&quot;), aligned(L1_CACHE_BYTES)))
+mdefine_line|#define __section_xtime_lock __attribute__ ((unused, __section__ (&quot;.xtime_lock&quot;), aligned(16)))
 DECL|macro|VXTIME_TSC
 mdefine_line|#define VXTIME_TSC&t;1
 DECL|macro|VXTIME_HPET

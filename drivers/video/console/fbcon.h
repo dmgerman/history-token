@@ -290,6 +290,10 @@ DECL|member|cursor_flash
 r_int
 id|cursor_flash
 suffix:semicolon
+DECL|member|cursor_reset
+r_int
+id|cursor_reset
+suffix:semicolon
 DECL|member|cursor_data
 r_char
 op_star

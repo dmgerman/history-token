@@ -51,12 +51,14 @@ suffix:semicolon
 DECL|variable|bbc_regs
 r_static
 r_void
+id|__iomem
 op_star
 id|bbc_regs
 suffix:semicolon
 DECL|variable|riowd_regs
 r_static
 r_void
+id|__iomem
 op_star
 id|riowd_regs
 suffix:semicolon

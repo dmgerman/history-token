@@ -798,7 +798,7 @@ c_func
 (paren
 id|sk
 comma
-id|THIS_MODULE
+id|sk-&gt;sk_prot-&gt;owner
 )paren
 suffix:semicolon
 id|sk-&gt;sk_destruct

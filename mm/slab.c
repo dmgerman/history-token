@@ -849,12 +849,11 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|initarray_generic
 r_static
 r_struct
 id|arraycache_init
 id|initarray_generic
-id|__initdata
 op_assign
 (brace
 (brace

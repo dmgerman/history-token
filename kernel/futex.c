@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Fast Userspace Mutexes (which I call &quot;Futexes!&quot;).&n; *  (C) Rusty Russell, IBM 2002&n; *&n; *  Generalized futexes, futex requeueing, misc fixes by Ingo Molnar&n; *  (C) Copyright 2003 Red Hat Inc, All Rights Reserved&n; *&n; *  Removed page pinning, fix privately mapped COW pages and other cleanups&n; *  (C) Copyright 2003 Jamie Lokier&n; *&n; *  Thanks to Ben LaHaise for yelling &quot;hashed waitqueues&quot; loudly&n; *  enough at me, Linus for the original (flawed) idea, Matthew&n; *  Kirkwood for proof-of-concept implementation.&n; *&n; *  &quot;The futexes are also cursed.&quot;&n; *  &quot;But they come in a choice of three flavours!&quot;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Fast Userspace Mutexes (which I call &quot;Futexes!&quot;).&n; *  (C) Rusty Russell, IBM 2002&n; *&n; *  Generalized futexes, futex requeueing, misc fixes by Ingo Molnar&n; *  (C) Copyright 2003 Red Hat Inc, All Rights Reserved&n; *&n; *  Removed page pinning, fix privately mapped COW pages and other cleanups&n; *  (C) Copyright 2003, 2004 Jamie Lokier&n; *&n; *  Thanks to Ben LaHaise for yelling &quot;hashed waitqueues&quot; loudly&n; *  enough at me, Linus for the original (flawed) idea, Matthew&n; *  Kirkwood for proof-of-concept implementation.&n; *&n; *  &quot;The futexes are also cursed.&quot;&n; *  &quot;But they come in a choice of three flavours!&quot;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -1584,7 +1584,19 @@ l_int|0
 r_goto
 id|out_release_sem
 suffix:semicolon
-multiline_comment|/*&n;&t; * Access the page after the futex is queued.&n;&t; * We hold the mmap semaphore, so the mapping cannot have changed&n;&t; * since we looked it up.&n;&t; */
+id|queue_me
+c_func
+(paren
+op_amp
+id|q
+comma
+op_minus
+l_int|1
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Access the page AFTER the futex is queued.&n;&t; * Order is important:&n;&t; *&n;&t; *   Userspace waiter: val = var; if (cond(val)) futex_wait(&amp;var, val);&n;&t; *   Userspace waker:  if (cond(var)) { var = new; futex_wake(&amp;var); }&n;&t; *&n;&t; * The basic logical guarantee of a futex is that it blocks ONLY&n;&t; * if cond(var) is known to be true at the time of blocking, for&n;&t; * any cond.  If we queued after testing *uaddr, that would open&n;&t; * a race condition where we could block indefinitely with&n;&t; * cond(var) false, which would violate the guarantee.&n;&t; *&n;&t; * A consequence is that futex_wait() can return zero and absorb&n;&t; * a wakeup when *uaddr != val on entry to the syscall.  This is&n;&t; * rare, but normal.&n;&t; *&n;&t; * We hold the mmap semaphore, so the mapping cannot have changed&n;&t; * since we looked it up in get_futex_key.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1610,7 +1622,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 r_goto
-id|out_release_sem
+id|out_unqueue
 suffix:semicolon
 )brace
 r_if
@@ -1627,21 +1639,9 @@ op_minus
 id|EWOULDBLOCK
 suffix:semicolon
 r_goto
-id|out_release_sem
+id|out_unqueue
 suffix:semicolon
 )brace
-id|queue_me
-c_func
-(paren
-op_amp
-id|q
-comma
-op_minus
-l_int|1
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Now the futex is queued and we have checked the data, we&n;&t; * don&squot;t want to hold mmap_sem while we sleep.&n;&t; */
 id|up_read
 c_func
@@ -1725,22 +1725,13 @@ r_return
 op_minus
 id|ETIMEDOUT
 suffix:semicolon
-multiline_comment|/* A spurious wakeup should never happen. */
-id|WARN_ON
-c_func
-(paren
-op_logical_neg
-id|signal_pending
-c_func
-(paren
-id|current
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* We expect signal_pending(current), but another thread may&n;&t; * have handled it for us already. */
 r_return
 op_minus
 id|EINTR
 suffix:semicolon
+id|out_unqueue
+suffix:colon
 multiline_comment|/* If we were woken (and unqueued), we succeeded, whatever. */
 r_if
 c_cond

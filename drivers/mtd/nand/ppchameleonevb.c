@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/ppchameleonevb.c&n; *&n; *  Copyright (C) 2003 DAVE Srl (info@wawnet.biz)&n; *&n; *  Derived from drivers/mtd/nand/edb7312.c&n; *&n; *&n; * $Id: ppchameleonevb.c,v 1.4 2004/10/05 13:50:20 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash devices found on the&n; *   PPChameleon/PPChameleonEVB system.&n; *   PPChameleon options (autodetected):&n; *   - BA model: no NAND&n; *   - ME model: 32MB (Samsung K9F5608U0B)&n; *   - HI model: 128MB (Samsung K9F1G08UOM)&n; *   PPChameleonEVB options:&n; *   - 32MB (Samsung K9F5608U0B)&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/ppchameleonevb.c&n; *&n; *  Copyright (C) 2003 DAVE Srl (info@wawnet.biz)&n; *&n; *  Derived from drivers/mtd/nand/edb7312.c&n; *&n; *&n; * $Id: ppchameleonevb.c,v 1.6 2004/11/05 16:07:16 kalev Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash devices found on the&n; *   PPChameleon/PPChameleonEVB system.&n; *   PPChameleon options (autodetected):&n; *   - BA model: no NAND&n; *   - ME model: 32MB (Samsung K9F5608U0B)&n; *   - HI model: 128MB (Samsung K9F1G08UOM)&n; *   PPChameleonEVB options:&n; *   - 32MB (Samsung K9F5608U0B)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -66,6 +66,7 @@ multiline_comment|/*&n; * Module stuff&n; */
 DECL|variable|ppchameleon_fio_pbase
 r_static
 r_int
+r_int
 id|ppchameleon_fio_pbase
 op_assign
 id|CFG_NAND0_PADDR
@@ -73,33 +74,39 @@ suffix:semicolon
 DECL|variable|ppchameleonevb_fio_pbase
 r_static
 r_int
+r_int
 id|ppchameleonevb_fio_pbase
 op_assign
 id|CFG_NAND1_PADDR
 suffix:semicolon
 macro_line|#ifdef MODULE
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ppchameleon_fio_pbase
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
+id|module_param
+c_func
+(paren
+id|ppchameleonevb_fio_pbase
+comma
+id|ulong
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#else
 id|__setup
 c_func
 (paren
 l_string|&quot;ppchameleon_fio_pbase=&quot;
 comma
 id|ppchameleon_fio_pbase
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|ppchameleonevb_fio_pbase
-comma
-l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 id|__setup
@@ -639,11 +646,6 @@ suffix:semicolon
 multiline_comment|/* map physical address */
 id|ppchameleon_fio_base
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -1108,11 +1110,6 @@ suffix:semicolon
 multiline_comment|/* map physical address */
 id|ppchameleonevb_fio_base
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren

@@ -67,15 +67,10 @@ macro_line|#  define _USER xscale_mc
 macro_line|# endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_COPY_V6
-macro_line|# ifdef _USER
 DECL|macro|MULTI_USER
-macro_line|#  define MULTI_USER 1
-macro_line|# else
-DECL|macro|_USER
-macro_line|#  define _USER v6
-macro_line|# endif
+macro_line|# define MULTI_USER 1
 macro_line|#endif
-macro_line|#ifndef _USER
+macro_line|#if !defined(_USER) &amp;&amp; !defined(MULTI_USER)
 macro_line|#error Unknown user operations model
 macro_line|#endif
 DECL|struct|cpu_user_fns

@@ -1105,6 +1105,7 @@ suffix:semicolon
 DECL|member|bt848_mmio
 r_int
 r_char
+id|__iomem
 op_star
 id|bt848_mmio
 suffix:semicolon
@@ -1494,7 +1495,7 @@ DECL|macro|BTTV_VBISIZE
 mdefine_line|#define BTTV_VBISIZE            _IOR(&squot;v&squot; , BASE_VIDIOCPRIVATE+8, int)
 macro_line|#endif
 DECL|macro|btwrite
-mdefine_line|#define btwrite(dat,adr)    writel((dat), (char *) (btv-&gt;bt848_mmio+(adr)))
+mdefine_line|#define btwrite(dat,adr)    writel((dat), btv-&gt;bt848_mmio+(adr))
 DECL|macro|btread
 mdefine_line|#define btread(adr)         readl(btv-&gt;bt848_mmio+(adr))
 DECL|macro|btand

@@ -234,7 +234,8 @@ op_amp
 id|np-&gt;daddr
 )paren
 op_logical_and
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -260,8 +261,7 @@ id|np-&gt;rcv_saddr
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -2861,8 +2861,7 @@ id|sk-&gt;sk_state
 op_eq
 id|TCP_ESTABLISHED
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|daddr
@@ -3466,8 +3465,7 @@ id|sk
 comma
 id|dst
 comma
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -4449,6 +4447,11 @@ dot
 id|name
 op_assign
 l_string|&quot;RAW&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|close

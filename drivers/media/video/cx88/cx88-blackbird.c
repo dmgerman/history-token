@@ -1757,7 +1757,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;ERROR: Firmware size mismatch (have %ld, expected %d)&bslash;n&quot;
+l_string|&quot;ERROR: Firmware size mismatch (have %zd, expected %d)&bslash;n&quot;
 comma
 id|firmware-&gt;size
 comma
@@ -3615,6 +3615,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|data
 comma

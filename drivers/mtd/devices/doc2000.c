@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver for Disk-On-Chip 2000 and Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2000.c,v 1.62 2004/08/09 14:04:02 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Linux driver for Disk-On-Chip 2000 and Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2000.c,v 1.64 2004/11/16 18:29:01 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -379,8 +379,9 @@ op_star
 id|doc
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|doc-&gt;virtadr
@@ -486,8 +487,9 @@ op_star
 id|doc
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|doc-&gt;virtadr
@@ -567,8 +569,9 @@ r_char
 id|xtraflags
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|doc-&gt;virtadr
@@ -719,12 +722,11 @@ id|xtraflags2
 )paren
 (brace
 r_int
-r_int
-id|docptr
-suffix:semicolon
-r_int
 id|i
 suffix:semicolon
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|doc-&gt;virtadr
@@ -997,16 +999,15 @@ id|modulus
 op_assign
 l_int|0xffff
 suffix:semicolon
-r_int
-r_int
-id|docptr
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|doc-&gt;virtadr
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 r_if
 c_cond
@@ -1127,16 +1128,15 @@ r_int
 id|len
 )paren
 (brace
-r_int
-r_int
-id|docptr
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|doc-&gt;virtadr
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 r_if
 c_cond
@@ -1215,8 +1215,9 @@ r_int
 id|chip
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|doc-&gt;virtadr
@@ -1311,8 +1312,9 @@ r_int
 id|floor
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|doc-&gt;virtadr
@@ -2730,9 +2732,12 @@ op_star
 )paren
 id|mtd-&gt;priv
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
+op_assign
+id|this-&gt;virtadr
 suffix:semicolon
 r_struct
 id|Nand
@@ -2765,10 +2770,6 @@ r_int
 id|left
 op_assign
 id|len
-suffix:semicolon
-id|docptr
-op_assign
-id|this-&gt;virtadr
 suffix:semicolon
 multiline_comment|/* Don&squot;t allow read past end of device */
 r_if
@@ -3510,9 +3511,12 @@ r_int
 id|di
 suffix:semicolon
 multiline_comment|/* Yes, DI is a hangover from when I was disassembling the binary driver */
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
+op_assign
+id|this-&gt;virtadr
 suffix:semicolon
 r_volatile
 r_char
@@ -3535,10 +3539,6 @@ id|len
 suffix:semicolon
 r_int
 id|status
-suffix:semicolon
-id|docptr
-op_assign
-id|this-&gt;virtadr
 suffix:semicolon
 multiline_comment|/* Don&squot;t allow write past end of device */
 r_if
@@ -4701,10 +4701,6 @@ l_int|0
 comma
 id|ret
 suffix:semicolon
-r_int
-r_int
-id|docptr
-suffix:semicolon
 r_struct
 id|Nand
 op_star
@@ -4716,10 +4712,6 @@ c_func
 op_amp
 id|this-&gt;lock
 )paren
-suffix:semicolon
-id|docptr
-op_assign
-id|this-&gt;virtadr
 suffix:semicolon
 id|mychip
 op_assign
@@ -4992,8 +4984,9 @@ id|len256
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|this-&gt;virtadr
@@ -5597,9 +5590,12 @@ r_volatile
 r_int
 id|dummy
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
+op_assign
+id|this-&gt;virtadr
 suffix:semicolon
 r_struct
 id|Nand
@@ -5651,10 +5647,6 @@ suffix:semicolon
 id|instr-&gt;state
 op_assign
 id|MTD_ERASING
-suffix:semicolon
-id|docptr
-op_assign
-id|this-&gt;virtadr
 suffix:semicolon
 multiline_comment|/* FIXME: Do this in the background. Use timers or schedule_task() */
 r_while
@@ -5888,6 +5880,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * Module stuff&n; *&n; ****************************************************************************/
 DECL|function|init_doc2000
+r_static
 r_int
 id|__init
 id|init_doc2000

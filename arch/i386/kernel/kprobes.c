@@ -352,6 +352,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|regs-&gt;eflags
+op_amp
+id|VM_MASK
+)paren
+(brace
+multiline_comment|/* We are in virtual-8086 mode. Return 0 */
+r_goto
+id|no_kprobe
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_star
 id|addr
 op_ne

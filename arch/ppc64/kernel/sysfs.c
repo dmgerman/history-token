@@ -13,7 +13,7 @@ macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 multiline_comment|/* SMT stuff */
-macro_line|#ifndef CONFIG_PPC_ISERIES
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 multiline_comment|/* default to snooze disabled */
 id|DEFINE_PER_CPU
 c_func
@@ -356,21 +356,6 @@ comma
 id|setup_smt_snooze_delay
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* PMC stuff */
-macro_line|#ifdef CONFIG_PPC_ISERIES
-DECL|function|ppc64_enable_pmcs
-r_void
-id|ppc64_enable_pmcs
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* XXX Implement for iseries */
-)brace
-macro_line|#endif
-macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 multiline_comment|/*&n; * Enabling PMCs will slow partition context switch times so we only do&n; * it the first time we write to the PMCs.&n; */
 r_static
 id|DEFINE_PER_CPU
@@ -614,6 +599,18 @@ id|ctrl
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PPC_PSERIES */
+)brace
+macro_line|#else
+multiline_comment|/* PMC stuff */
+DECL|function|ppc64_enable_pmcs
+r_void
+id|ppc64_enable_pmcs
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* XXX Implement for iseries */
 )brace
 macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
 DECL|variable|ppc64_enable_pmcs

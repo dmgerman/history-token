@@ -61,7 +61,7 @@ DECL|macro|MM_VM_SIZE
 mdefine_line|#define MM_VM_SIZE(mm)&t;TASK_SIZE
 macro_line|#endif
 DECL|macro|nth_page
-mdefine_line|#define nth_page(page,n) pfn_to_page(page_to_pfn((page)) + n)
+mdefine_line|#define nth_page(page,n) pfn_to_page(page_to_pfn((page)) + (n))
 multiline_comment|/*&n; * Linux kernel virtual memory manager primitives.&n; * The idea being to have a &quot;virtual&quot; mm in the same way&n; * we have a virtual fs - giving a cleaner interface to the&n; * mm details, and allowing different kinds of memory mappings&n; * (from shared memory to executable loading to arbitrary&n; * mmap() functions).&n; */
 multiline_comment|/*&n; * This struct defines a memory VMM memory area. There is one of these&n; * per VM-area/task.  A VM area is any part of the process virtual memory&n; * space that has a special rule for the page-fault handlers (ie a shared&n; * library, the executable area etc).&n; */
 DECL|struct|vm_area_struct
@@ -2238,7 +2238,7 @@ id|new_below
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|insert_vm_struct
 c_func
 (paren

@@ -745,6 +745,7 @@ suffix:semicolon
 multiline_comment|/* mappings */
 DECL|member|ba0
 r_void
+id|__iomem
 op_star
 id|ba0
 suffix:semicolon
@@ -754,21 +755,25 @@ r_struct
 (brace
 DECL|member|data0
 id|u8
+id|__iomem
 op_star
 id|data0
 suffix:semicolon
 DECL|member|data1
 id|u8
+id|__iomem
 op_star
 id|data1
 suffix:semicolon
 DECL|member|pmem
 id|u8
+id|__iomem
 op_star
 id|pmem
 suffix:semicolon
 DECL|member|reg
 id|u8
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
@@ -778,6 +783,7 @@ id|name
 suffix:semicolon
 DECL|member|idx
 id|u8
+id|__iomem
 op_star
 id|idx
 (braket
@@ -20222,6 +20228,7 @@ id|count
 suffix:semicolon
 r_int
 r_char
+id|__iomem
 op_star
 id|pBA1
 op_assign

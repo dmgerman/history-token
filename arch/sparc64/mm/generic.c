@@ -7,41 +7,6 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-DECL|function|forget_pte
-r_static
-r_inline
-r_void
-id|forget_pte
-c_func
-(paren
-id|pte_t
-id|page
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pte_none
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;forget_pte: old mapping existed!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* Remap IO memory, the same way as remap_pfn_range(), but use&n; * the obio memory space.&n; *&n; * They use a pgprot that sets PAGE_IO and does not check the&n; * mem_map table as this is independent of normal memory.&n; *&n; * As a special hack if the lowest bit of offset is set the&n; * side-effect bit will be turned off.  This is used as a&n; * performance improvement on FFB/AFB. -DaveM&n; */
 DECL|function|io_remap_pte_range
 r_static
@@ -101,9 +66,6 @@ id|PMD_SIZE
 suffix:semicolon
 r_do
 (brace
-id|pte_t
-id|oldpage
-suffix:semicolon
 id|pte_t
 id|entry
 suffix:semicolon
@@ -360,15 +322,16 @@ id|_PAGE_E
 suffix:semicolon
 r_do
 (brace
-id|oldpage
-op_assign
-op_star
-id|pte
-suffix:semicolon
-id|pte_clear
+id|BUG_ON
 c_func
 (paren
+op_logical_neg
+id|pte_none
+c_func
+(paren
+op_star
 id|pte
+)paren
 )paren
 suffix:semicolon
 id|set_pte
@@ -377,12 +340,6 @@ c_func
 id|pte
 comma
 id|entry
-)paren
-suffix:semicolon
-id|forget_pte
-c_func
-(paren
-id|oldpage
 )paren
 suffix:semicolon
 id|address
@@ -725,13 +682,6 @@ id|dir
 op_increment
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
-suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
@@ -740,6 +690,13 @@ comma
 id|beg
 comma
 id|end
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return

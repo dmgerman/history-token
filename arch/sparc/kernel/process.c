@@ -31,7 +31,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/psr.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
-multiline_comment|/* &n; * Power management idle function &n; * Set in pm platform drivers&n; */
+multiline_comment|/* &n; * Power management idle function &n; * Set in pm platform drivers (apc.c and pmc.c)&n; */
 DECL|variable|pm_idle
 r_void
 (paren
@@ -305,7 +305,6 @@ id|pm_idle
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* XXX Huh? On sparc?! */
 )brace
 id|schedule
 c_func

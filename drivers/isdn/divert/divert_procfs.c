@@ -262,6 +262,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -346,12 +347,6 @@ id|inf-&gt;usage_cnt
 op_decrement
 suffix:semicolon
 multiline_comment|/* new usage count */
-(paren
-r_struct
-id|divert_info
-op_star
-op_star
-)paren
 id|file-&gt;private_data
 op_assign
 op_amp
@@ -425,6 +420,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -552,12 +548,6 @@ c_cond
 (paren
 id|divert_info_head
 )paren
-(paren
-r_struct
-id|divert_info
-op_star
-op_star
-)paren
 id|filep-&gt;private_data
 op_assign
 op_amp
@@ -566,12 +556,6 @@ id|divert_info_tail-&gt;next
 )paren
 suffix:semicolon
 r_else
-(paren
-r_struct
-id|divert_info
-op_star
-op_star
-)paren
 id|filep-&gt;private_data
 op_assign
 op_amp
@@ -764,7 +748,8 @@ op_amp
 id|dioctl
 comma
 (paren
-r_char
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -925,15 +910,13 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|divert_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 op_star
@@ -942,9 +925,12 @@ op_assign
 id|dioctl.getsetrule.rule
 suffix:semicolon
 multiline_comment|/* copy data */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|divert_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1097,7 +1083,8 @@ id|copy_to_user
 c_func
 (paren
 (paren
-r_char
+r_void
+id|__user
 op_star
 )paren
 id|arg

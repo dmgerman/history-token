@@ -678,7 +678,7 @@ id|skip_ioapic_setup
 suffix:semicolon
 multiline_comment|/*&n; * If we use the IO-APIC for IRQ routing, disable automatic&n; * assignment of PCI IRQ&squot;s.&n; */
 DECL|macro|io_apic_assign_pci_irqs
-mdefine_line|#define io_apic_assign_pci_irqs (mp_irq_entries &amp;&amp; !skip_ioapic_setup)
+mdefine_line|#define io_apic_assign_pci_irqs (mp_irq_entries &amp;&amp; !skip_ioapic_setup &amp;&amp; io_apic_irqs)
 macro_line|#ifdef CONFIG_ACPI_BOOT
 r_extern
 r_int

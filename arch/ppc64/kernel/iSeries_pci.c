@@ -747,10 +747,21 @@ id|bus
 suffix:semicolon
 id|phb
 op_assign
-id|pci_alloc_pci_controller
+(paren
+r_struct
+id|pci_controller
+op_star
+)paren
+id|kmalloc
 c_func
 (paren
-id|phb_type_hypervisor
+r_sizeof
+(paren
+r_struct
+id|pci_controller
+)paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -762,7 +773,13 @@ l_int|NULL
 )paren
 r_return
 op_minus
-l_int|1
+id|ENOMEM
+suffix:semicolon
+id|pci_setup_pci_controller
+c_func
+(paren
+id|phb
+)paren
 suffix:semicolon
 id|phb-&gt;pci_mem_offset
 op_assign
@@ -860,7 +877,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* pci_assign_all_busses = 0;&t;&t;SFRXXX*/
 id|PPCDBG
 c_func
 (paren

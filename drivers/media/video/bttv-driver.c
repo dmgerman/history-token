@@ -11404,7 +11404,8 @@ suffix:semicolon
 id|buffer_queue
 c_func
 (paren
-id|file-&gt;private_data
+op_amp
+id|fh-&gt;cap
 comma
 op_amp
 id|buf-&gt;vb
@@ -13658,7 +13659,8 @@ op_member_access_from_pointer
 id|buf_prepare
 c_func
 (paren
-id|file-&gt;private_data
+op_amp
+id|fh-&gt;cap
 comma
 id|fh-&gt;cap.read_buf
 comma
@@ -13682,7 +13684,8 @@ op_member_access_from_pointer
 id|buf_queue
 c_func
 (paren
-id|file-&gt;private_data
+op_amp
+id|fh-&gt;cap
 comma
 id|fh-&gt;cap.read_buf
 )paren
@@ -14144,7 +14147,8 @@ id|fh-&gt;cap.read_buf
 id|buffer_release
 c_func
 (paren
-id|file-&gt;private_data
+op_amp
+id|fh-&gt;cap
 comma
 id|fh-&gt;cap.read_buf
 )paren

@@ -25,31 +25,8 @@ id|hcd_to_ehci
 id|hcd
 )paren
 suffix:semicolon
-r_struct
-id|usb_device
-op_star
-id|root
-op_assign
-id|hcd_to_bus
-(paren
-op_amp
-id|ehci-&gt;hcd
-)paren
-op_member_access_from_pointer
-id|root_hub
-suffix:semicolon
 r_int
 id|port
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|root-&gt;dev.power.power_state
-op_ne
-l_int|0
-)paren
-r_return
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -61,9 +38,11 @@ comma
 id|ehci-&gt;next_statechange
 )paren
 )paren
-r_return
-op_minus
-id|EAGAIN
+id|msleep
+c_func
+(paren
+l_int|5
+)paren
 suffix:semicolon
 id|port
 op_assign
@@ -78,15 +57,6 @@ op_amp
 id|ehci-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* for hcd-&gt;state HCD_STATE_SUSPENDED, also stop the non-USB side */
-id|root-&gt;dev.power.power_state
-op_assign
-l_int|3
-suffix:semicolon
-id|root-&gt;state
-op_assign
-id|USB_STATE_SUSPENDED
-suffix:semicolon
 multiline_comment|/* stop schedules, clean any completed work */
 r_if
 c_cond
@@ -97,11 +67,17 @@ c_func
 id|hcd-&gt;state
 )paren
 )paren
+(brace
 id|ehci_quiesce
 (paren
 id|ehci
 )paren
 suffix:semicolon
+id|ehci-&gt;hcd.state
+op_assign
+id|USB_STATE_QUIESCING
+suffix:semicolon
+)brace
 id|ehci-&gt;command
 op_assign
 id|readl
@@ -242,6 +218,10 @@ id|ehci_halt
 id|ehci
 )paren
 suffix:semicolon
+id|ehci-&gt;hcd.state
+op_assign
+id|HCD_STATE_SUSPENDED
+suffix:semicolon
 id|ehci-&gt;next_statechange
 op_assign
 id|jiffies
@@ -284,33 +264,14 @@ id|hcd_to_ehci
 id|hcd
 )paren
 suffix:semicolon
-r_struct
-id|usb_device
-op_star
-id|root
-op_assign
-id|hcd_to_bus
-(paren
-op_amp
-id|ehci-&gt;hcd
-)paren
-op_member_access_from_pointer
-id|root_hub
-suffix:semicolon
 id|u32
 id|temp
 suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|root-&gt;dev.power.power_state
-)paren
-r_return
-l_int|0
+r_int
+id|intr_enable
 suffix:semicolon
 r_if
 c_cond
@@ -322,9 +283,17 @@ comma
 id|ehci-&gt;next_statechange
 )paren
 )paren
-r_return
-op_minus
-id|EAGAIN
+id|msleep
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
+id|spin_lock_irq
+(paren
+op_amp
+id|ehci-&gt;lock
+)paren
 suffix:semicolon
 multiline_comment|/* re-init operational registers in case we lost power */
 r_if
@@ -339,17 +308,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|temp
+multiline_comment|/* at least some APM implementations will try to deliver&n;&t;&t; * IRQs right away, so delay them until we&squot;re ready.&n; &t;&t; */
+id|intr_enable
 op_assign
 l_int|1
-suffix:semicolon
-id|writel
-(paren
-id|INTR_MASK
-comma
-op_amp
-id|ehci-&gt;regs-&gt;intr_enable
-)paren
 suffix:semicolon
 id|writel
 (paren
@@ -378,10 +340,9 @@ op_amp
 id|ehci-&gt;regs-&gt;async_next
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME will this work even if (pci) vAUX was lost? */
 )brace
 r_else
-id|temp
+id|intr_enable
 op_assign
 l_int|0
 suffix:semicolon
@@ -392,7 +353,7 @@ id|ehci
 comma
 l_string|&quot;resume root hub%s&bslash;n&quot;
 comma
-id|temp
+id|intr_enable
 ques
 c_cond
 l_string|&quot; after power loss&quot;
@@ -605,10 +566,6 @@ id|ehci-&gt;regs-&gt;command
 )paren
 suffix:semicolon
 )brace
-id|root-&gt;dev.power.power_state
-op_assign
-l_int|0
-suffix:semicolon
 id|ehci-&gt;next_statechange
 op_assign
 id|jiffies
@@ -622,6 +579,26 @@ suffix:semicolon
 id|ehci-&gt;hcd.state
 op_assign
 id|USB_STATE_RUNNING
+suffix:semicolon
+multiline_comment|/* Now we can safely re-enable irqs */
+r_if
+c_cond
+(paren
+id|intr_enable
+)paren
+id|writel
+(paren
+id|INTR_MASK
+comma
+op_amp
+id|ehci-&gt;regs-&gt;intr_enable
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+(paren
+op_amp
+id|ehci-&gt;lock
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -801,6 +778,20 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+multiline_comment|/* if !USB_SUSPEND, root hub timers won&squot;t get shut down ... */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|HCD_IS_RUNNING
+c_func
+(paren
+id|ehci-&gt;hcd.state
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* init status to no-changes */
 id|buf
@@ -1005,6 +996,7 @@ id|STS_PCD
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* FIXME autosuspend idle root hubs */
 id|spin_unlock_irqrestore
 (paren
 op_amp

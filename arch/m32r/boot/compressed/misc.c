@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/m32r/boot/compressed/misc.c&n; *&n; * This is a collection of several routines from gzip-1.0.3&n; * adapted for Linux.&n; *&n; * malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994&n; *&n; * Adapted for SH by Stuart Menefy, Aug 1999&n; *&n; * Modified to use standard LinuxSH BIOS by Greg Banks 7Jul2000&n; *&n; * 2003-02-12:&t;Support M32R by Takeo Takahashi&n; * &t;&t;This is based on arch/sh/boot/compressed/misc.c.&n; */
+multiline_comment|/*&n; * arch/m32r/boot/compressed/misc.c&n; *&n; * This is a collection of several routines from gzip-1.0.3&n; * adapted for Linux.&n; *&n; * malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994&n; *&n; * Adapted for SH by Stuart Menefy, Aug 1999&n; *&n; * 2003-02-12:&t;Support M32R by Takeo Takahashi&n; * &t;&t;This is based on arch/sh/boot/compressed/misc.c.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 multiline_comment|/*&n; * gzip declarations&n; */
@@ -53,18 +53,24 @@ DECL|variable|insize
 r_static
 r_int
 id|insize
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* valid bytes in inbuf */
 DECL|variable|inptr
 r_static
 r_int
 id|inptr
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* index of next byte to be processed in inbuf */
 DECL|variable|outcnt
 r_static
 r_int
 id|outcnt
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* bytes in output buffer */
 multiline_comment|/* gzip flag byte */
@@ -158,13 +164,15 @@ op_star
 op_star
 )paren
 suffix:semicolon
-r_extern
+DECL|variable|input_data
+r_static
+r_int
 r_char
+op_star
 id|input_data
-(braket
-)braket
 suffix:semicolon
-r_extern
+DECL|variable|input_len
+r_static
 r_int
 id|input_len
 suffix:semicolon
@@ -172,6 +180,8 @@ DECL|variable|bytes_out
 r_static
 r_int
 id|bytes_out
+op_assign
+l_int|0
 suffix:semicolon
 DECL|variable|output_data
 r_static
@@ -184,7 +194,10 @@ r_static
 r_int
 r_int
 id|output_ptr
+op_assign
+l_int|0
 suffix:semicolon
+macro_line|#include &quot;m32r_sio.c&quot;
 r_static
 r_void
 op_star
@@ -204,55 +217,6 @@ r_void
 op_star
 id|where
 )paren
-suffix:semicolon
-r_static
-r_void
-id|error
-c_func
-(paren
-r_char
-op_star
-id|m
-)paren
-suffix:semicolon
-r_static
-r_void
-id|gzip_mark
-c_func
-(paren
-r_void
-op_star
-op_star
-)paren
-suffix:semicolon
-r_static
-r_void
-id|gzip_release
-c_func
-(paren
-r_void
-op_star
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|puts
-c_func
-(paren
-r_const
-r_char
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|_text
-suffix:semicolon
-multiline_comment|/* Defined in vmlinux.lds.S */
-r_extern
-r_int
-id|_end
 suffix:semicolon
 DECL|variable|free_mem_ptr
 r_static
@@ -294,7 +258,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;Malloc error&bslash;n&quot;
+l_string|&quot;Malloc error&quot;
 )paren
 suffix:semicolon
 r_if
@@ -307,7 +271,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;Memory error&bslash;n&quot;
+l_string|&quot;Memory error&quot;
 )paren
 suffix:semicolon
 id|free_mem_ptr
@@ -344,7 +308,7 @@ id|free_mem_end_ptr
 id|error
 c_func
 (paren
-l_string|&quot;&bslash;nOut of memory&bslash;n&quot;
+l_string|&quot;Out of memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -552,7 +516,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;ran out of input data&bslash;n&quot;
+l_string|&quot;ran out of input data&quot;
 )paren
 suffix:semicolon
 )brace
@@ -725,75 +689,66 @@ suffix:semicolon
 )brace
 multiline_comment|/* Halt */
 )brace
-DECL|macro|STACK_SIZE
-mdefine_line|#define STACK_SIZE (4096)
-DECL|variable|user_stack
-r_int
-id|user_stack
-(braket
-id|STACK_SIZE
-)braket
-suffix:semicolon
-DECL|variable|stack_start
-r_int
-op_star
-id|stack_start
-op_assign
-op_amp
-id|user_stack
-(braket
-id|STACK_SIZE
-)braket
-suffix:semicolon
 multiline_comment|/* return decompressed size */
+r_void
 DECL|function|decompress_kernel
-r_int
 id|decompress_kernel
 c_func
 (paren
-r_void
+r_int
+id|mmu_on
+comma
+r_int
+r_char
+op_star
+id|zimage_data
+comma
+r_int
+r_int
+id|zimage_len
+comma
+r_int
+r_int
+id|heap
 )paren
 (brace
-id|insize
-op_assign
-l_int|0
-suffix:semicolon
-id|inptr
-op_assign
-l_int|0
-suffix:semicolon
-id|bytes_out
-op_assign
-l_int|0
-suffix:semicolon
-id|outcnt
-op_assign
-l_int|0
-suffix:semicolon
 id|output_data
-op_assign
-l_int|0
-suffix:semicolon
-id|output_ptr
-op_assign
-id|CONFIG_MEMORY_START
-op_plus
-l_int|0x2000
-suffix:semicolon
-id|free_mem_ptr
 op_assign
 (paren
 r_int
-r_int
+r_char
+op_star
 )paren
-op_amp
-id|_end
+id|CONFIG_MEMORY_START
+op_plus
+l_int|0x2000
+op_plus
+(paren
+id|mmu_on
+ques
+c_cond
+l_int|0x80000000
+suffix:colon
+l_int|0
+)paren
+suffix:semicolon
+id|free_mem_ptr
+op_assign
+id|heap
 suffix:semicolon
 id|free_mem_end_ptr
 op_assign
 id|free_mem_ptr
 op_plus
 id|HEAP_SIZE
+suffix:semicolon
+id|input_data
+op_assign
+id|zimage_data
+suffix:semicolon
+id|input_len
+op_assign
+id|zimage_len
 suffix:semicolon
 id|makecrc
 c_func
@@ -816,9 +771,6 @@ c_func
 (paren
 l_string|&quot;Ok, booting the kernel.&bslash;n&quot;
 )paren
-suffix:semicolon
-r_return
-id|bytes_out
 suffix:semicolon
 )brace
 eof

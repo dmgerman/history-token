@@ -386,18 +386,12 @@ DECL|macro|__NR_ugetrlimit
 mdefine_line|#define __NR_ugetrlimit&t;&t;190&t;/* SuS compliant getrlimit */
 DECL|macro|__NR_readahead
 mdefine_line|#define __NR_readahead&t;&t;191
-DECL|macro|__NR_mmap2
-mdefine_line|#define __NR_mmap2&t;&t;192
-DECL|macro|__NR_truncate64
-mdefine_line|#define __NR_truncate64&t;&t;193
-DECL|macro|__NR_ftruncate64
-mdefine_line|#define __NR_ftruncate64&t;194
-DECL|macro|__NR_stat64
-mdefine_line|#define __NR_stat64&t;&t;195
-DECL|macro|__NR_lstat64
-mdefine_line|#define __NR_lstat64&t;&t;196
-DECL|macro|__NR_fstat64
-mdefine_line|#define __NR_fstat64&t;&t;197
+multiline_comment|/* #define __NR_mmap2&t;&t;192&t;32bit only */
+multiline_comment|/* #define __NR_truncate64&t;193&t;32bit only */
+multiline_comment|/* #define __NR_ftruncate64&t;194&t;32bit only */
+multiline_comment|/* #define __NR_stat64&t;&t;195&t;32bit only */
+multiline_comment|/* #define __NR_lstat64&t;&t;196&t;32bit only */
+multiline_comment|/* #define __NR_fstat64&t;&t;197&t;32bit only */
 DECL|macro|__NR_pciconfig_read
 mdefine_line|#define __NR_pciconfig_read&t;198
 DECL|macro|__NR_pciconfig_write
@@ -410,8 +404,7 @@ DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;202
 DECL|macro|__NR_pivot_root
 mdefine_line|#define __NR_pivot_root&t;&t;203
-DECL|macro|__NR_fcntl64
-mdefine_line|#define __NR_fcntl64&t;&t;204
+multiline_comment|/* #define __NR_fcntl64&t;&t;204&t;32bit only */
 DECL|macro|__NR_madvise
 mdefine_line|#define __NR_madvise&t;&t;205
 DECL|macro|__NR_mincore
@@ -453,8 +446,7 @@ mdefine_line|#define __NR_sched_getaffinity&t;223
 multiline_comment|/* 224 currently unused */
 DECL|macro|__NR_tuxcall
 mdefine_line|#define __NR_tuxcall&t;&t;225
-DECL|macro|__NR_sendfile64
-mdefine_line|#define __NR_sendfile64&t;&t;226
+multiline_comment|/* #define __NR_sendfile64&t;226&t;32bit only */
 DECL|macro|__NR_io_setup
 mdefine_line|#define __NR_io_setup&t;&t;227
 DECL|macro|__NR_io_destroy
@@ -509,8 +501,7 @@ DECL|macro|__NR_statfs64
 mdefine_line|#define __NR_statfs64&t;&t;252
 DECL|macro|__NR_fstatfs64
 mdefine_line|#define __NR_fstatfs64&t;&t;253
-DECL|macro|__NR_fadvise64_64
-mdefine_line|#define __NR_fadvise64_64&t;254
+multiline_comment|/* #define __NR_fadvise64_64&t;254&t;32bit only */
 DECL|macro|__NR_rtas
 mdefine_line|#define __NR_rtas&t;&t;255
 multiline_comment|/* Number 256 is reserved for sys_debug_setcontext */

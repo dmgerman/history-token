@@ -5970,6 +5970,7 @@ id|TCM_SYNC
 suffix:semicolon
 )brace
 DECL|function|is870
+r_static
 r_void
 id|is870
 c_func

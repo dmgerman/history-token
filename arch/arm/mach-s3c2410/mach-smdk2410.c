@@ -35,19 +35,6 @@ DECL|macro|ULCON
 mdefine_line|#define ULCON S3C2410_LCON_CS8 | S3C2410_LCON_PNONE | S3C2410_LCON_STOPB
 DECL|macro|UFCON
 mdefine_line|#define UFCON S3C2410_UFCON_RXTRIG8 | S3C2410_UFCON_FIFOMODE
-multiline_comment|/* base baud rate for all our UARTs */
-DECL|variable|smdk2410_serial_clock
-r_static
-r_int
-r_int
-id|smdk2410_serial_clock
-op_assign
-l_int|24
-op_star
-l_int|1000
-op_star
-l_int|1000
-suffix:semicolon
 DECL|variable|smdk2410_uartcfgs
 r_static
 r_struct
@@ -73,12 +60,6 @@ op_assign
 l_int|0
 comma
 dot
-id|clock
-op_assign
-op_amp
-id|smdk2410_serial_clock
-comma
-dot
 id|ucon
 op_assign
 id|UCON
@@ -111,12 +92,6 @@ op_assign
 l_int|0
 comma
 dot
-id|clock
-op_assign
-op_amp
-id|smdk2410_serial_clock
-comma
-dot
 id|ucon
 op_assign
 id|UCON
@@ -147,12 +122,6 @@ dot
 id|flags
 op_assign
 l_int|0
-comma
-dot
-id|clock
-op_assign
-op_amp
-id|smdk2410_serial_clock
 comma
 dot
 id|ucon

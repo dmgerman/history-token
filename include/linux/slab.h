@@ -11,6 +11,7 @@ id|kmem_cache_t
 suffix:semicolon
 macro_line|#include&t;&lt;linux/config.h&gt;&t;/* kmalloc_sizes.h needs CONFIG_ options */
 macro_line|#include&t;&lt;linux/gfp.h&gt;
+macro_line|#include&t;&lt;linux/init.h&gt;
 macro_line|#include&t;&lt;linux/types.h&gt;
 macro_line|#include&t;&lt;asm/page.h&gt;&t;&t;/* kmalloc_sizes.h needs PAGE_SIZE */
 macro_line|#include&t;&lt;asm/cache.h&gt;&t;&t;/* kmalloc_sizes.h needs L1_CACHE_BYTES */
@@ -66,6 +67,7 @@ mdefine_line|#define&t;SLAB_CTOR_VERIFY&t;0x004UL&t;&t;/* tell constructor it&sq
 multiline_comment|/* prototypes */
 r_extern
 r_void
+id|__init
 id|kmem_cache_init
 c_func
 (paren

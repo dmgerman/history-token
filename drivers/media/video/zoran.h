@@ -1160,6 +1160,7 @@ multiline_comment|/* bus address of IO mem returned by PCI BIOS */
 DECL|member|zr36057_mem
 r_int
 r_char
+id|__iomem
 op_star
 id|zr36057_mem
 suffix:semicolon
@@ -1476,12 +1477,12 @@ suffix:semicolon
 multiline_comment|/*The following should be done in more portable way. It depends on define&n;  of _ALPHA_BUZ in the Makefile.*/
 macro_line|#ifdef _ALPHA_BUZ
 DECL|macro|btwrite
-mdefine_line|#define btwrite(dat,adr)    writel((dat),(char *) (zr-&gt;zr36057_adr+(adr)))
+mdefine_line|#define btwrite(dat,adr)    writel((dat), zr-&gt;zr36057_adr+(adr))
 DECL|macro|btread
 mdefine_line|#define btread(adr)         readl(zr-&gt;zr36057_adr+(adr))
 macro_line|#else
 DECL|macro|btwrite
-mdefine_line|#define btwrite(dat,adr)    writel((dat), (char *) (zr-&gt;zr36057_mem+(adr)))
+mdefine_line|#define btwrite(dat,adr)    writel((dat), zr-&gt;zr36057_mem+(adr))
 DECL|macro|btread
 mdefine_line|#define btread(adr)         readl(zr-&gt;zr36057_mem+(adr))
 macro_line|#endif

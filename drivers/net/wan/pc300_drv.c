@@ -973,15 +973,12 @@ id|i
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n CH%d TX%d: next=0x%lx, ptbuf=0x%lx, ST=0x%x, len=%d&quot;
+l_string|&quot;&bslash;n CH%d TX%d: next=0x%x, ptbuf=0x%x, ST=0x%x, len=%d&quot;
 comma
 id|ch
 comma
 id|i
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -989,9 +986,6 @@ op_amp
 id|ptdescr-&gt;next
 )paren
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -1115,11 +1109,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;TX_CDA=0x%08lx, TX_EDA=0x%08lx&bslash;n&quot;
+l_string|&quot;TX_CDA=0x%08x, TX_EDA=0x%08x&bslash;n&quot;
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -1134,9 +1125,6 @@ id|ch
 )paren
 )paren
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -1184,15 +1172,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n CH%d TX%d: next=0x%lx, ptbuf=0x%lx, ST=0x%x, len=%d&quot;
+l_string|&quot;&bslash;n CH%d TX%d: next=0x%x, ptbuf=0x%x, ST=0x%x, len=%d&quot;
 comma
 id|ch
 comma
 id|i
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -1200,9 +1185,6 @@ op_amp
 id|ptdescr-&gt;next
 )paren
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -1345,15 +1327,12 @@ id|DST_OSB
 )paren
 id|printk
 (paren
-l_string|&quot;&bslash;n CH%d RX%d: next=0x%lx, ptbuf=0x%lx, ST=0x%x, len=%d&quot;
+l_string|&quot;&bslash;n CH%d RX%d: next=0x%x, ptbuf=0x%x, ST=0x%x, len=%d&quot;
 comma
 id|ch
 comma
 id|i
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -1361,9 +1340,6 @@ op_amp
 id|ptdescr-&gt;next
 )paren
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -14770,11 +14746,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;TX_CDA=0x%08lx, TX_EDA=0x%08lx&bslash;n&quot;
+l_string|&quot;TX_CDA=0x%08x, TX_EDA=0x%08x&bslash;n&quot;
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -14789,9 +14762,6 @@ id|ch
 )paren
 )paren
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -14810,11 +14780,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;RX_CDA=0x%08lx, RX_EDA=0x%08lx, BFL=0x%04x&bslash;n&quot;
+l_string|&quot;RX_CDA=0x%08x, RX_EDA=0x%08x, BFL=0x%04x&bslash;n&quot;
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -14829,9 +14796,6 @@ id|ch
 )paren
 )paren
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -15665,11 +15629,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;IER0=0x%08lx&bslash;n&quot;
+l_string|&quot;IER0=0x%08x&bslash;n&quot;
 comma
-(paren
-id|uclong
-)paren
 id|cpc_readl
 c_func
 (paren
@@ -20612,7 +20573,7 @@ suffix:semicolon
 )brace
 id|printk
 (paren
-l_string|&quot; #%d, %ldKB of RAM at 0x%08lx, IRQ%d, channel %d.&bslash;n&quot;
+l_string|&quot; #%d, %dKB of RAM at 0x%08x, IRQ%d, channel %d.&bslash;n&quot;
 comma
 id|board_nbr
 comma
@@ -20637,7 +20598,7 @@ r_else
 (brace
 id|printk
 (paren
-l_string|&quot;Dev%d on card(0x%08lx): unable to allocate i/f name.&bslash;n&quot;
+l_string|&quot;Dev%d on card(0x%08x): unable to allocate i/f name.&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -21009,7 +20970,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;WARNING: couldn&squot;t allocate I/O region for PC300 board &quot;
-l_string|&quot;at 0x%08lx!&bslash;n&quot;
+l_string|&quot;at 0x%08x!&bslash;n&quot;
 comma
 id|card-&gt;hw.ramphys
 )paren
@@ -21077,7 +21038,7 @@ l_string|&quot;PLX Registers&quot;
 id|printk
 c_func
 (paren
-l_string|&quot;PC300 found at RAM 0x%08lx, &quot;
+l_string|&quot;PC300 found at RAM 0x%08x, &quot;
 l_string|&quot;but could not allocate PLX mem region.&bslash;n&quot;
 comma
 id|card-&gt;hw.ramphys
@@ -21110,7 +21071,7 @@ l_string|&quot;On-board RAM&quot;
 id|printk
 c_func
 (paren
-l_string|&quot;PC300 found at RAM 0x%08lx, &quot;
+l_string|&quot;PC300 found at RAM 0x%08x, &quot;
 l_string|&quot;but could not allocate RAM mem region.&bslash;n&quot;
 comma
 id|card-&gt;hw.ramphys
@@ -21143,7 +21104,7 @@ l_string|&quot;SCA-II Registers&quot;
 id|printk
 c_func
 (paren
-l_string|&quot;PC300 found at RAM 0x%08lx, &quot;
+l_string|&quot;PC300 found at RAM 0x%08x, &quot;
 l_string|&quot;but could not allocate SCA mem region.&bslash;n&quot;
 comma
 id|card-&gt;hw.ramphys
@@ -21431,7 +21392,7 @@ id|card
 (brace
 id|printk
 (paren
-l_string|&quot;PC300 found at RAM 0x%08lx, but could not allocate IRQ%d.&bslash;n&quot;
+l_string|&quot;PC300 found at RAM 0x%08x, but could not allocate IRQ%d.&bslash;n&quot;
 comma
 id|card-&gt;hw.ramphys
 comma

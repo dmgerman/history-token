@@ -2807,6 +2807,9 @@ id|d
 OL
 l_int|0
 )paren
+r_goto
+id|errout
+suffix:semicolon
 r_if
 c_cond
 (paren

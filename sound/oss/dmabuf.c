@@ -308,6 +308,8 @@ c_func
 id|GFP_ATOMIC
 op_or
 id|GFP_DMA
+op_or
+id|__GFP_NOWARN
 comma
 id|sz
 )paren

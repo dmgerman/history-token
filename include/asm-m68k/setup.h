@@ -293,7 +293,7 @@ macro_line|#elif defined(CONFIG_M68030) || defined(CONFIG_M68040) || defined(CON
 DECL|macro|CPU_IS_020
 macro_line|#  define CPU_IS_020 (m68k_cputype &amp; CPU_68020)
 DECL|macro|MMU_IS_851
-macro_line|#  define MMU_IS_851 (m68k_cputype &amp; MMU_68851)
+macro_line|#  define MMU_IS_851 (m68k_mmutype &amp; MMU_68851)
 DECL|macro|MMU_IS_SUN3
 macro_line|#  define MMU_IS_SUN3 (0)&t;/* Sun3 not supported with other CPU enabled */
 macro_line|#else

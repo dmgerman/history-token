@@ -17,6 +17,9 @@ macro_line|#include &quot;pci.h&quot;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#endif /* CONFIG_PPC_ISERIES */
+multiline_comment|/*&n; * We can use -&gt;sysdata directly and avoid the extra work in&n; * pci_device_to_OF_node since -&gt;sysdata will have been initialised&n; * in the iommu init code for all devices.&n; */
+DECL|macro|PCI_GET_DN
+mdefine_line|#define PCI_GET_DN(dev) ((struct device_node *)((dev)-&gt;sysdata))
 DECL|function|devnode_table
 r_static
 r_inline

@@ -7557,7 +7557,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Insert vm structure into process list sorted by address&n; * and into the inode&squot;s i_mmap tree.  If vm_file is non-NULL&n; * then i_mmap_lock is taken here.&n; */
 DECL|function|insert_vm_struct
-r_void
+r_int
 id|insert_vm_struct
 c_func
 (paren
@@ -7638,10 +7638,9 @@ id|__vma-&gt;vm_start
 OL
 id|vma-&gt;vm_end
 )paren
-id|BUG
-c_func
-(paren
-)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|vma_link
 c_func
@@ -7656,6 +7655,9 @@ id|rb_link
 comma
 id|rb_parent
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Copy the vma structure to a new location in the same mm,&n; * prior to moving page table entries, to effect an mremap move.&n; */

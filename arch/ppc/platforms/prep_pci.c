@@ -4083,7 +4083,7 @@ c_cond
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_VIA
@@ -4129,7 +4129,7 @@ c_cond
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_VIA
@@ -4169,7 +4169,7 @@ c_cond
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_WINBOND
@@ -4219,6 +4219,12 @@ id|reg
 suffix:semicolon
 )brace
 )brace
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -4226,7 +4232,7 @@ c_cond
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_WINBOND
@@ -4286,6 +4292,12 @@ l_int|0x10ff08a1
 suffix:semicolon
 )brace
 )brace
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -4664,24 +4676,10 @@ id|Motherboard_map_name
 )paren
 suffix:semicolon
 multiline_comment|/* Iterate through all the PCI devices, setting the IRQ */
-r_while
-c_loop
-(paren
-(paren
-id|dev
-op_assign
-id|pci_find_device
+id|for_each_pci_dev
 c_func
 (paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
 id|dev
-)paren
-)paren
-op_ne
-l_int|NULL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If we have residual data, then this is easy: query the&n;&t;&t; * residual data for the IRQ line allocated to the device.&n;&t;&t; * This works the same whether we have an OpenPic or not.&n;&t;&t; */
@@ -4807,7 +4805,7 @@ suffix:semicolon
 multiline_comment|/* If there is a WD 90C, reset the IO BAR to 0x0 (it started that&n;&t; * way, but the PCI layer relocated it because it thought 0x0 was&n;&t; * invalid for a BAR).&n;&t; * If you don&squot;t do this, the card&squot;s VGA base will be &lt;IO BAR&gt;+0xc0000&n;&t; * instead of 0xc0000. vgacon.c (for example) is completely unaware of&n;&t; * this little quirk.&n;&t; */
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_WD
@@ -4855,6 +4853,12 @@ comma
 id|PCI_BASE_ADDRESS_1
 comma
 l_int|0x0
+)paren
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace

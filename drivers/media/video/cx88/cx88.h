@@ -547,11 +547,13 @@ id|pci_slot
 suffix:semicolon
 DECL|member|lmmio
 id|u32
+id|__iomem
 op_star
 id|lmmio
 suffix:semicolon
 DECL|member|bmmio
 id|u8
+id|__iomem
 op_star
 id|bmmio
 suffix:semicolon

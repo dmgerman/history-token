@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium Plus&n; *&n; * (c) 2002-2003 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; * (c) 2002-2003 SnapGear Inc&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001plus.c,v 1.9 2004/08/09 13:19:44 dwmw2 Exp $&n; *&n; * Released under GPL&n; */
+multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium Plus&n; *&n; * (c) 2002-2003 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; * (c) 2002-2003 SnapGear Inc&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001plus.c,v 1.11 2004/11/16 18:29:01 dwmw2 Exp $&n; *&n; * Released under GPL&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -221,8 +221,9 @@ r_void
 id|DoC_Delay
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 comma
 r_int
@@ -268,8 +269,9 @@ r_int
 id|_DoC_WaitReady
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 )paren
 (brace
@@ -341,8 +343,9 @@ r_int
 id|DoC_WaitReady
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 )paren
 (brace
@@ -399,8 +402,9 @@ r_void
 id|DoC_CheckASIC
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 )paren
 (brace
@@ -462,8 +466,9 @@ r_void
 id|DoC_Command
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 comma
 r_int
@@ -535,8 +540,9 @@ r_char
 id|xtraflags2
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|doc-&gt;virtadr
@@ -691,8 +697,9 @@ r_int
 id|DoC_SelectChip
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 comma
 r_int
@@ -711,8 +718,9 @@ r_int
 id|DoC_SelectFloor
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 comma
 r_int
@@ -1083,8 +1091,9 @@ r_void
 id|MemReadDOC
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 comma
 r_int
@@ -1151,8 +1160,9 @@ r_void
 id|MemWriteDOC
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 comma
 r_int
@@ -1244,8 +1254,9 @@ r_volatile
 r_char
 id|dummy
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|doc-&gt;virtadr
@@ -1726,9 +1737,9 @@ suffix:semicolon
 id|WriteDOC
 c_func
 (paren
-id|this-&gt;virtadr
-comma
 id|conf
+comma
+id|this-&gt;virtadr
 comma
 id|Mplus_Configuration
 )paren
@@ -2412,8 +2423,9 @@ op_star
 )paren
 id|mtd-&gt;priv
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|this-&gt;virtadr
@@ -2945,8 +2957,9 @@ op_star
 )paren
 id|mtd-&gt;priv
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|this-&gt;virtadr
@@ -3716,8 +3729,9 @@ op_star
 )paren
 id|mtd-&gt;priv
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|this-&gt;virtadr
@@ -4338,8 +4352,9 @@ op_star
 )paren
 id|mtd-&gt;priv
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|this-&gt;virtadr
@@ -4817,8 +4832,9 @@ op_star
 )paren
 id|mtd-&gt;priv
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|this-&gt;virtadr
@@ -5379,8 +5395,9 @@ id|len
 op_assign
 id|instr-&gt;len
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|docptr
 op_assign
 id|this-&gt;virtadr
@@ -5654,6 +5671,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * Module stuff&n; *&n; ****************************************************************************/
 DECL|function|init_doc2001plus
+r_static
 r_int
 id|__init
 id|init_doc2001plus

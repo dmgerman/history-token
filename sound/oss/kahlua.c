@@ -87,6 +87,7 @@ r_int
 id|base
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mem
 suffix:semicolon

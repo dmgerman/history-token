@@ -239,11 +239,6 @@ id|small_flash_base
 suffix:semicolon
 id|ocotea_small_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap64
 c_func
 (paren
@@ -332,11 +327,6 @@ id|large_flash_base
 suffix:semicolon
 id|ocotea_large_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap64
 c_func
 (paren

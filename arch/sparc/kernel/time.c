@@ -62,11 +62,12 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|mstk48t02_regs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|mstk48t02_regs
 op_assign
-l_int|0UL
+l_int|NULL
 suffix:semicolon
 DECL|variable|mstk48t08_regs
 r_static
@@ -1539,10 +1540,6 @@ l_string|&quot;mk48t08&quot;
 suffix:semicolon
 id|mstk48t02_regs
 op_assign
-(paren
-r_int
-r_int
-)paren
 op_amp
 id|mstk48t08_regs-&gt;regs
 suffix:semicolon
