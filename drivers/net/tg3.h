@@ -2856,7 +2856,7 @@ macro_line|#ifndef LPA_PAUSE_ASYM
 DECL|macro|LPA_PAUSE_ASYM
 mdefine_line|#define LPA_PAUSE_ASYM&t;&t;&t;0x0800
 macro_line|#endif
-multiline_comment|/* There are two ways to manage the TX descriptors on the tigon3.&n; * Either the descriptors are in host DMA&squot;able memory, or they&n; * exist only in the cards on-chip SRAM.  All 16 send bds are under&n; * the same mode, they may not be configured individually.&n; *&n; * The mode we use is controlled by TG3_FLAG_HOST_TXDS in tp-&gt;tg3_flags.&n; *&n; * To use host memory TX descriptors:&n; *&t;1) Set GRC_MODE_HOST_SENDBDS in GRC_MODE register.&n; *&t;   Make sure GRC_MODE_4X_NIC_SEND_RINGS is clear.&n; *&t;2) Allocate DMA&squot;able memory.&n; *&t;3) In NIC_SRAM_SEND_RCB (of desired index) of on-chip SRAM:&n; *&t;   a) Set TG3_BDINFO_HOST_ADDR to DMA address of memory&n; *&t;      obtained in step 2&n; *&t;   b) Set TG3_BDINFO_NIC_ADDR to NIC_SRAM_TX_BUFFER_DESC.&n; *&t;   c) Set len field of TG3_BDINFO_MAXLEN_FLAGS to number&n; *            of TX descriptors.  Leave flags field clear.&n; *&t;4) Access TX descriptors via host memory.  The chip&n; *&t;   will refetch into local SRAM as needed when producer&n; *&t;   index mailboxes are updated.&n; *&n; * To use on-chip TX descriptors:&n; *&t;1) Set GRC_MODE_4X_NIC_SEND_RINGS in GRC_MODE register.&n; *&t;   Make sure GRC_MODE_HOST_SENDBDS is clear.&n; *&t;2) In NIC_SRAM_SEND_RCB (of desired index) of on-chip SRAM:&n; *&t;   a) Set TG3_BDINFO_HOST_ADDR to zero.&n; *&t;   b) Set TG3_BDINFO_NIC_ADDR to NIC_SRAM_TX_BUFFER_DESC&n; *&t;   c) TG3_BDINFO_MAXLEN_FLAGS is don&squot;t care.&n; *&t;3) Access TX descriptors directly in on-chip SRAM&n; *&t;   using normal {read,write}l().  (and not using&n; *         pointer dereferencing of ioremap()&squot;d memory like&n; *&t;   the broken Broadcom driver does)&n; *&n; * Note that BDINFO_FLAGS_DISABLED should be set in the flags field of&n; * TG3_BDINFO_MAXLEN_FLAGS of all unused SEND_RCB indices.&n; */
+multiline_comment|/* There are two ways to manage the TX descriptors on the tigon3.&n; * Either the descriptors are in host DMA&squot;able memory, or they&n; * exist only in the cards on-chip SRAM.  All 16 send bds are under&n; * the same mode, they may not be configured individually.&n; *&n; * This driver always uses host memory TX descriptors.&n; *&n; * To use host memory TX descriptors:&n; *&t;1) Set GRC_MODE_HOST_SENDBDS in GRC_MODE register.&n; *&t;   Make sure GRC_MODE_4X_NIC_SEND_RINGS is clear.&n; *&t;2) Allocate DMA&squot;able memory.&n; *&t;3) In NIC_SRAM_SEND_RCB (of desired index) of on-chip SRAM:&n; *&t;   a) Set TG3_BDINFO_HOST_ADDR to DMA address of memory&n; *&t;      obtained in step 2&n; *&t;   b) Set TG3_BDINFO_NIC_ADDR to NIC_SRAM_TX_BUFFER_DESC.&n; *&t;   c) Set len field of TG3_BDINFO_MAXLEN_FLAGS to number&n; *            of TX descriptors.  Leave flags field clear.&n; *&t;4) Access TX descriptors via host memory.  The chip&n; *&t;   will refetch into local SRAM as needed when producer&n; *&t;   index mailboxes are updated.&n; *&n; * To use on-chip TX descriptors:&n; *&t;1) Set GRC_MODE_4X_NIC_SEND_RINGS in GRC_MODE register.&n; *&t;   Make sure GRC_MODE_HOST_SENDBDS is clear.&n; *&t;2) In NIC_SRAM_SEND_RCB (of desired index) of on-chip SRAM:&n; *&t;   a) Set TG3_BDINFO_HOST_ADDR to zero.&n; *&t;   b) Set TG3_BDINFO_NIC_ADDR to NIC_SRAM_TX_BUFFER_DESC&n; *&t;   c) TG3_BDINFO_MAXLEN_FLAGS is don&squot;t care.&n; *&t;3) Access TX descriptors directly in on-chip SRAM&n; *&t;   using normal {read,write}l().  (and not using&n; *         pointer dereferencing of ioremap()&squot;d memory like&n; *&t;   the broken Broadcom driver does)&n; *&n; * Note that BDINFO_FLAGS_DISABLED should be set in the flags field of&n; * TG3_BDINFO_MAXLEN_FLAGS of all unused SEND_RCB indices.&n; */
 DECL|struct|tg3_tx_buffer_desc
 r_struct
 id|tg3_tx_buffer_desc
@@ -4078,7 +4078,6 @@ DECL|member|tx_lock
 id|spinlock_t
 id|tx_lock
 suffix:semicolon
-multiline_comment|/* TX descs are only used if TG3_FLAG_HOST_TXDS is set. */
 DECL|member|tx_ring
 r_struct
 id|tg3_tx_buffer_desc
@@ -4200,8 +4199,6 @@ DECL|member|tg3_flags
 id|u32
 id|tg3_flags
 suffix:semicolon
-DECL|macro|TG3_FLAG_HOST_TXDS
-mdefine_line|#define TG3_FLAG_HOST_TXDS&t;&t;0x00000001
 DECL|macro|TG3_FLAG_TXD_MBOX_HWBUG
 mdefine_line|#define TG3_FLAG_TXD_MBOX_HWBUG&t;&t;0x00000002
 DECL|macro|TG3_FLAG_RX_CHECKSUMS
