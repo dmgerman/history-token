@@ -17227,7 +17227,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Unable to intialize /proc/hermes/%s/buf&bslash;n&quot;
+l_string|&quot;Unable to initialize /proc/hermes/%s/buf&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren

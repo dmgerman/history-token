@@ -3765,7 +3765,7 @@ id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Unexpected COOKIE-ECHO handler for setup collision (Table 2, action &squot;B&squot;)&n; *&n; * Section 5.2.4&n; *   B) In this case, both sides may be attempting to start an association&n; *      at about the same time but the peer endpoint started its INIT&n; *      after responding to the local endpoint&squot;s INIT&n; */
-multiline_comment|/* This case represents an intialization collision.  */
+multiline_comment|/* This case represents an initialization collision.  */
 DECL|function|sctp_sf_do_dupcook_b
 r_static
 id|sctp_disposition_t

@@ -93,7 +93,7 @@ id|dev-&gt;hw_fib_pa
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;fib_setup&t;-&t;setup the fibs&n; *&t;@dev: Adapter to set up&n; *&n; *&t;Allocate the PCI space for the fibs, map it and then intialise the&n; *&t;fib area, the unmapped fib data and also the free list&n; */
+multiline_comment|/**&n; *&t;fib_setup&t;-&t;setup the fibs&n; *&t;@dev: Adapter to set up&n; *&n; *&t;Allocate the PCI space for the fibs, map it and then initialise the&n; *&t;fib area, the unmapped fib data and also the free list&n; */
 DECL|function|fib_setup
 r_int
 id|fib_setup

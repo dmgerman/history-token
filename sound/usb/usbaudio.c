@@ -8284,7 +8284,7 @@ id|proc_pcm_format_read
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * intialize the substream instance.&n; */
+multiline_comment|/*&n; * initialize the substream instance.&n; */
 DECL|function|init_substream
 r_static
 r_void

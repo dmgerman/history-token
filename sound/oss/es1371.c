@@ -15170,7 +15170,7 @@ r_goto
 id|err_dev4
 suffix:semicolon
 macro_line|#ifdef ES1371_DEBUG
-multiline_comment|/* intialize the debug proc device */
+multiline_comment|/* initialize the debug proc device */
 id|s-&gt;ps
 op_assign
 id|create_proc_read_entry

@@ -9775,7 +9775,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;journal_init_dev: bdev unintialized for &squot;%s&squot;&quot;
+l_string|&quot;journal_init_dev: bdev uninitialized for &squot;%s&squot;&quot;
 comma
 id|jdev_name
 )paren
