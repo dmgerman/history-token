@@ -9003,7 +9003,7 @@ id|sk-&gt;sk_shutdown
 op_or_assign
 id|RCV_SHUTDOWN
 suffix:semicolon
-id|sock_reset_flag
+id|sock_set_flag
 c_func
 (paren
 id|sk
