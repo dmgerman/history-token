@@ -19,6 +19,7 @@ mdefine_line|#define RATELIMIT_PAGES&t;&t;1000
 multiline_comment|/*&n; * When balance_dirty_pages decides that the caller needs to perform some&n; * non-background writeback, this is how many pages it will attempt to write.&n; * It should be somewhat larger than RATELIMIT_PAGES to ensure that reasonably&n; * large amounts of I/O are submitted.&n; */
 DECL|macro|SYNC_WRITEBACK_PAGES
 mdefine_line|#define SYNC_WRITEBACK_PAGES&t;1500
+multiline_comment|/* The following parameters are exported via /proc/sys/vm */
 multiline_comment|/*&n; * Dirty memory thresholds, in percentages&n; */
 multiline_comment|/*&n; * Start background writeback (via pdflush) at this level&n; */
 DECL|variable|dirty_background_ratio
@@ -41,7 +42,7 @@ id|dirty_sync_ratio
 op_assign
 l_int|60
 suffix:semicolon
-multiline_comment|/*&n; * The interval between `kupdate&squot;-style writebacks.&n; */
+multiline_comment|/*&n; * The interval between `kupdate&squot;-style writebacks, in centiseconds&n; * (hundredths of a second)&n; */
 DECL|variable|dirty_writeback_centisecs
 r_int
 id|dirty_writeback_centisecs
@@ -50,7 +51,7 @@ l_int|5
 op_star
 l_int|100
 suffix:semicolon
-multiline_comment|/*&n; * The largest amount of time for which data is allowed to remain dirty&n; */
+multiline_comment|/*&n; * The longest amount of time for which data is allowed to remain dirty&n; */
 DECL|variable|dirty_expire_centisecs
 r_int
 id|dirty_expire_centisecs
@@ -59,6 +60,7 @@ l_int|30
 op_star
 l_int|100
 suffix:semicolon
+multiline_comment|/* End of sysctl-exported parameters */
 r_static
 r_void
 id|background_writeout
@@ -614,6 +616,7 @@ op_plus
 id|HZ
 )paren
 suffix:semicolon
+multiline_comment|/* delay 1 second */
 )brace
 DECL|function|wb_timer_init
 r_static

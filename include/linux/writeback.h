@@ -151,6 +151,7 @@ id|inode
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * mm/page-writeback.c&n; */
+multiline_comment|/* These 5 are exported to sysctl. */
 r_extern
 r_int
 id|dirty_background_ratio
@@ -224,5 +225,11 @@ op_star
 id|nr_to_write
 )paren
 suffix:semicolon
+multiline_comment|/* pdflush.c */
+r_extern
+r_int
+id|nr_pdflush_threads
+suffix:semicolon
+multiline_comment|/* Global so it can be exported to sysctl&n;&t;&t;&t;&t;   read-only. */
 macro_line|#endif&t;&t;/* WRITEBACK_H */
 eof
