@@ -33,9 +33,9 @@ mdefine_line|#define SN9C102_ISO_PACKETS       7
 DECL|macro|SN9C102_ALTERNATE_SETTING
 mdefine_line|#define SN9C102_ALTERNATE_SETTING 8
 DECL|macro|SN9C102_URB_TIMEOUT
-mdefine_line|#define SN9C102_URB_TIMEOUT       msecs_to_jiffies(3)
+mdefine_line|#define SN9C102_URB_TIMEOUT       msecs_to_jiffies(2 * SN9C102_ISO_PACKETS)
 DECL|macro|SN9C102_CTRL_TIMEOUT
-mdefine_line|#define SN9C102_CTRL_TIMEOUT      msecs_to_jiffies(100)
+mdefine_line|#define SN9C102_CTRL_TIMEOUT      msecs_to_jiffies(300)
 multiline_comment|/*****************************************************************************/
 DECL|macro|SN9C102_MODULE_NAME
 mdefine_line|#define SN9C102_MODULE_NAME     &quot;V4L2 driver for SN9C10x PC Camera Controllers&quot;
@@ -46,9 +46,9 @@ mdefine_line|#define SN9C102_AUTHOR_EMAIL    &quot;&lt;luca.risolia@studio.unibo
 DECL|macro|SN9C102_MODULE_LICENSE
 mdefine_line|#define SN9C102_MODULE_LICENSE  &quot;GPL&quot;
 DECL|macro|SN9C102_MODULE_VERSION
-mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.19&quot;
+mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.20&quot;
 DECL|macro|SN9C102_MODULE_VERSION_CODE
-mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 19)
+mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 20)
 DECL|enum|sn9c102_bridge
 r_enum
 id|sn9c102_bridge
@@ -175,6 +175,22 @@ id|STREAM_ON
 comma
 )brace
 suffix:semicolon
+DECL|typedef|sn9c102_sof_header_t
+r_typedef
+r_char
+id|sn9c102_sof_header_t
+(braket
+l_int|12
+)braket
+suffix:semicolon
+DECL|typedef|sn9c102_eof_header_t
+r_typedef
+r_char
+id|sn9c102_eof_header_t
+(braket
+l_int|4
+)braket
+suffix:semicolon
 DECL|struct|sn9c102_sysfs_attr
 r_struct
 id|sn9c102_sysfs_attr
@@ -185,6 +201,10 @@ id|u8
 id|reg
 comma
 id|i2c_reg
+suffix:semicolon
+DECL|member|frame_header
+id|sn9c102_sof_header_t
+id|frame_header
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -305,6 +325,10 @@ DECL|member|sysfs
 r_struct
 id|sn9c102_sysfs_attr
 id|sysfs
+suffix:semicolon
+DECL|member|sof_header
+id|sn9c102_sof_header_t
+id|sof_header
 suffix:semicolon
 DECL|member|reg
 id|u16

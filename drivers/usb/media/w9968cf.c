@@ -16643,7 +16643,11 @@ multiline_comment|/* we are handling device number n */
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idVendor
+)paren
 op_eq
 id|winbond_id_table
 (braket
@@ -16652,7 +16656,11 @@ l_int|0
 dot
 id|idVendor
 op_logical_and
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 op_eq
 id|winbond_id_table
 (braket
@@ -16670,7 +16678,11 @@ r_else
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idVendor
+)paren
 op_eq
 id|winbond_id_table
 (braket
@@ -16679,7 +16691,11 @@ l_int|1
 dot
 id|idVendor
 op_logical_and
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 op_eq
 id|winbond_id_table
 (braket

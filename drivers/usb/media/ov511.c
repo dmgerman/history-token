@@ -17533,12 +17533,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|ov-&gt;rawfbuf
-)paren
-(brace
 id|vfree
 c_func
 (paren
@@ -17549,13 +17543,6 @@ id|ov-&gt;rawfbuf
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ov-&gt;tempfbuf
-)paren
-(brace
 id|vfree
 c_func
 (paren
@@ -17566,7 +17553,6 @@ id|ov-&gt;tempfbuf
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -25710,12 +25696,16 @@ id|alt
 )paren
 id|mxps
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|alt-&gt;endpoint
 (braket
 l_int|0
 )braket
 dot
 id|desc.wMaxPacketSize
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Some OV518s have packet numbering by default, some don&squot;t */
@@ -26886,7 +26876,11 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idProduct
+)paren
 )paren
 (brace
 r_case
@@ -26947,7 +26941,11 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idVendor
+)paren
 op_ne
 id|VEND_MATTEL
 )paren
@@ -26971,7 +26969,11 @@ c_func
 (paren
 l_string|&quot;Unknown product ID 0x%04x&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 r_goto

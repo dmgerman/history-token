@@ -2616,15 +2616,17 @@ c_func
 (paren
 l_string|&quot;product id = 0x%x, vendor id = 0x%x&bslash;n&quot;
 comma
+id|le16_to_cpu
+c_func
 (paren
-r_int
-)paren
 id|dev-&gt;descriptor.idProduct
-comma
-(paren
-r_int
 )paren
+comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idVendor
+)paren
 )paren
 suffix:semicolon
 id|MTS_DEBUG_GOT_HERE
