@@ -1342,6 +1342,13 @@ DECL|macro|cpu_has_tlbiel
 mdefine_line|#define cpu_has_tlbiel()&t;(processor_type() == PV_POWER4 || &bslash;&n;&t;&t;&t;&t; processor_type() == PV_POWER4p)
 DECL|macro|cpu_has_noexecute
 mdefine_line|#define cpu_has_noexecute()&t;(processor_type() == PV_POWER4 || &bslash;&n;&t;&t;&t;&t; processor_type() == PV_POWER4p)
+multiline_comment|/* XXX we have to call HV to set when in LPAR */
+DECL|macro|cpu_has_dabr
+mdefine_line|#define cpu_has_dabr()&t;&t;(1)
+DECL|macro|cpu_has_iabr
+mdefine_line|#define cpu_has_iabr()&t;&t;(processor_type() != PV_POWER4 &amp;&amp; &bslash;&n;&t;&t;&t;&t; processor_type() != PV_POWER4p)
+DECL|macro|cpu_alignexc_sets_dsisr
+mdefine_line|#define cpu_alignexc_sets_dsisr() (processor_type() != PV_POWER4 &amp;&amp; &bslash;&n;&t;&t;&t;&t; processor_type() != PV_POWER4p)
 macro_line|#endif /* ASSEMBLY */
 macro_line|#endif /* __ASM_PPC64_PROCESSOR_H */
 eof
