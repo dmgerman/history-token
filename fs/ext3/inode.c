@@ -8439,6 +8439,11 @@ r_return
 id|error
 suffix:semicolon
 )brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8568,6 +8573,11 @@ c_func
 id|inode-&gt;i_sb
 comma
 id|error
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
