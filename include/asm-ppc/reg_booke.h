@@ -46,10 +46,6 @@ DECL|macro|SPRN_SPRG6R
 mdefine_line|#define SPRN_SPRG6R&t;0x106&t;/* Special Purpose Register General 6 Read */
 DECL|macro|SPRN_SPRG7R
 mdefine_line|#define SPRN_SPRG7R&t;0x107&t;/* Special Purpose Register General 7 Read */
-DECL|macro|SPRN_TBRL
-mdefine_line|#define SPRN_TBRL&t;0x10C&t;/* Time Base Read Lower Register (user, R/O) */
-DECL|macro|SPRN_TBRU
-mdefine_line|#define SPRN_TBRU&t;0x10D&t;/* Time Base Read Upper Register (user, R/O) */
 DECL|macro|SPRN_SPRG4W
 mdefine_line|#define SPRN_SPRG4W&t;0x114&t;/* Special Purpose Register General 4 Write */
 DECL|macro|SPRN_SPRG5W
@@ -58,10 +54,6 @@ DECL|macro|SPRN_SPRG6W
 mdefine_line|#define SPRN_SPRG6W&t;0x116&t;/* Special Purpose Register General 6 Write */
 DECL|macro|SPRN_SPRG7W
 mdefine_line|#define SPRN_SPRG7W&t;0x117&t;/* Special Purpose Register General 7 Write */
-DECL|macro|SPRN_TBWL
-mdefine_line|#define SPRN_TBWL&t;0x11C&t;/* Time Base Lower Register (super, R/W) */
-DECL|macro|SPRN_TBWU
-mdefine_line|#define SPRN_TBWU&t;0x11D&t;/* Time Base Upper Register (super, R/W) */
 DECL|macro|SPRN_DBCR2
 mdefine_line|#define SPRN_DBCR2&t;0x136&t;/* Debug Control Register 2 */
 DECL|macro|SPRN_IAC3
@@ -380,14 +372,6 @@ DECL|macro|SPRG6W
 mdefine_line|#define SPRG6W&t;SPRN_SPRG6W
 DECL|macro|SPRG7W
 mdefine_line|#define SPRG7W&t;SPRN_SPRG7W
-DECL|macro|TBRL
-mdefine_line|#define TBRL&t;SPRN_TBRL&t;/* Time Base Read Lower Register */
-DECL|macro|TBRU
-mdefine_line|#define TBRU&t;SPRN_TBRU&t;/* Time Base Read Upper Register */
-DECL|macro|TBWL
-mdefine_line|#define TBWL&t;SPRN_TBWL&t;/* Time Base Write Lower Register */
-DECL|macro|TBWU
-mdefine_line|#define TBWU&t;SPRN_TBWU&t;/* Time Base Write Upper Register */
 multiline_comment|/*&n; * The IBM-403 is an even more odd special case, as it is much&n; * older than the IBM-405 series.  We put these down here incase someone&n; * wishes to support these machines again.&n; */
 macro_line|#ifdef CONFIG_403GCX
 multiline_comment|/* Special Purpose Registers (SPRNs)*/
