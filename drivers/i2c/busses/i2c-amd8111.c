@@ -1557,18 +1557,12 @@ c_func
 (paren
 id|smbus-&gt;adapter.name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 l_string|&quot;SMBus2 AMD8111 adapter at %04x&quot;
 comma
 id|smbus-&gt;base
 )paren
-suffix:semicolon
-id|smbus-&gt;adapter.id
-op_assign
-id|I2C_ALGO_SMBUS
-op_or
-id|I2C_HW_SMBUS_AMD8111
 suffix:semicolon
 id|smbus-&gt;adapter
 dot

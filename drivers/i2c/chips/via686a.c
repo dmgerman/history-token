@@ -3729,7 +3729,7 @@ c_func
 (paren
 id|new_client-&gt;name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 id|client_name
 )paren
