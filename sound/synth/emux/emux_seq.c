@@ -97,31 +97,6 @@ multiline_comment|/*&n; * type flags for MIDI sequencer port&n; */
 DECL|macro|DEFAULT_MIDI_TYPE
 mdefine_line|#define DEFAULT_MIDI_TYPE&t;(SNDRV_SEQ_PORT_TYPE_MIDI_GENERIC |&bslash;&n;&t;&t;&t;&t; SNDRV_SEQ_PORT_TYPE_MIDI_GM |&bslash;&n;&t;&t;&t;&t; SNDRV_SEQ_PORT_TYPE_MIDI_GS |&bslash;&n;&t;&t;&t;&t; SNDRV_SEQ_PORT_TYPE_MIDI_XG |&bslash;&n;&t;&t;&t;&t; SNDRV_SEQ_PORT_TYPE_DIRECT_SAMPLE)
 multiline_comment|/*&n; */
-DECL|function|dec_mod_count
-r_static
-r_inline
-r_void
-id|dec_mod_count
-c_func
-(paren
-r_struct
-id|module
-op_star
-id|module
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|module
-)paren
-id|__MOD_DEC_USE_COUNT
-c_func
-(paren
-id|module
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Initialise the EMUX Synth by creating a client and registering&n; * a series of ports.&n; * Each of the ports will contain the 16 midi channels.  Applications&n; * can connect to these ports to play midi data.&n; */
 r_int
 DECL|function|snd_emux_init_seq
@@ -921,7 +896,7 @@ id|emu-&gt;card-&gt;module
 )paren
 )paren
 (brace
-id|dec_mod_count
+id|module_put
 c_func
 (paren
 id|emu-&gt;ops.owner
@@ -951,7 +926,7 @@ op_star
 id|emu
 )paren
 (brace
-id|dec_mod_count
+id|module_put
 c_func
 (paren
 id|emu-&gt;ops.owner
@@ -973,7 +948,7 @@ c_func
 id|emu
 )paren
 suffix:semicolon
-id|dec_mod_count
+id|module_put
 c_func
 (paren
 id|emu-&gt;card-&gt;module

@@ -4807,12 +4807,7 @@ id|info-&gt;open_wait
 suffix:semicolon
 id|done
 suffix:colon
-r_if
-c_cond
-(paren
-id|drv-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|drv-&gt;owner
@@ -5987,12 +5982,7 @@ id|retval
 suffix:semicolon
 id|out
 suffix:colon
-r_if
-c_cond
-(paren
-id|drv-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|drv-&gt;owner
