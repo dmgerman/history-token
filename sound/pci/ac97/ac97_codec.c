@@ -7124,10 +7124,10 @@ id|ac97
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * create mute switch(es) for normal stereo controls&n; */
-DECL|function|snd_ac97_cmute_new
+DECL|function|snd_ac97_cmute_new_stereo
 r_static
 r_int
-id|snd_ac97_cmute_new
+id|snd_ac97_cmute_new_stereo
 c_func
 (paren
 id|snd_card_t
@@ -7140,6 +7140,9 @@ id|name
 comma
 r_int
 id|reg
+comma
+r_int
+id|check_stereo
 comma
 id|ac97_t
 op_star
@@ -7193,9 +7196,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|check_stereo
+op_logical_or
+(paren
 id|ac97-&gt;flags
 op_amp
 id|AC97_STEREO_MUTES
+)paren
 )paren
 (brace
 multiline_comment|/* check whether both mute bits work */
@@ -7532,10 +7539,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * create a mute-switch and a volume for normal stereo/mono controls&n; */
-DECL|function|snd_ac97_cmix_new
+DECL|function|snd_ac97_cmix_new_stereo
 r_static
 r_int
-id|snd_ac97_cmix_new
+id|snd_ac97_cmix_new_stereo
 c_func
 (paren
 id|snd_card_t
@@ -7549,6 +7556,9 @@ id|pfx
 comma
 r_int
 id|reg
+comma
+r_int
+id|check_stereo
 comma
 id|ac97_t
 op_star
@@ -7615,7 +7625,7 @@ c_cond
 (paren
 id|err
 op_assign
-id|snd_ac97_cmute_new
+id|snd_ac97_cmute_new_stereo
 c_func
 (paren
 id|card
@@ -7623,6 +7633,8 @@ comma
 id|name
 comma
 id|reg
+comma
+id|check_stereo
 comma
 id|ac97
 )paren
@@ -7697,6 +7709,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|snd_ac97_cmix_new
+mdefine_line|#define snd_ac97_cmix_new(card, pfx, reg, ac97)&t;snd_ac97_cmix_new_stereo(card, pfx, reg, 0, ac97)
+DECL|macro|snd_ac97_cmute_new
+mdefine_line|#define snd_ac97_cmute_new(card, name, reg, ac97)&t;snd_ac97_cmute_new_stereo(card, name, reg, 0, ac97)
 r_static
 r_int
 r_int
@@ -8069,13 +8085,14 @@ id|AC97_SURROUND_MASTER
 )paren
 )paren
 (brace
+multiline_comment|/* Surround Master (0x38) is with stereo mutes */
 r_if
 c_cond
 (paren
 (paren
 id|err
 op_assign
-id|snd_ac97_cmix_new
+id|snd_ac97_cmix_new_stereo
 c_func
 (paren
 id|card
@@ -8083,6 +8100,8 @@ comma
 l_string|&quot;Surround Playback&quot;
 comma
 id|AC97_SURROUND_MASTER
+comma
+l_int|1
 comma
 id|ac97
 )paren
