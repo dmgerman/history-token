@@ -677,7 +677,8 @@ suffix:semicolon
 multiline_comment|/* and wait a while for it to happen */
 r_do
 (brace
-id|wait_ms
+id|msleep
+c_func
 (paren
 l_int|10
 )paren
