@@ -7686,4 +7686,13 @@ c_func
 id|pagebuf_offset
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG
+DECL|variable|pbd_delwrite_queue
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pbd_delwrite_queue
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

@@ -3458,7 +3458,7 @@ id|message
 id|__initdata
 op_assign
 id|KERN_INFO
-l_string|&quot;SGI XFS &quot;
+"&bslash;"
 id|XFS_VERSION_STRING
 l_string|&quot; with &quot;
 id|XFS_BUILD_OPTIONS
@@ -3657,7 +3657,6 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;SGI XFS &quot;
 id|XFS_VERSION_STRING
 l_string|&quot; with &quot;
 id|XFS_BUILD_OPTIONS
