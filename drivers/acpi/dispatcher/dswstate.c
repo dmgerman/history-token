@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 69 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 70 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -859,7 +859,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_result_stack_push&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_result_stack_push&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto the Walk_state result stack.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_stack_push
 id|acpi_ds_result_stack_push
@@ -928,7 +928,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_result_stack_pop&n; *&n; * PARAMETERS:  Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_result_stack_pop&n; *&n; * PARAMETERS:  Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop an object off of the Walk_state result stack.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_stack_pop
 id|acpi_ds_result_stack_pop
