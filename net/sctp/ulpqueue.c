@@ -1096,6 +1096,12 @@ c_func
 id|f_frag
 )paren
 suffix:semicolon
+id|SCTP_INC_STATS
+c_func
+(paren
+id|SctpReasmUsrMsgs
+)paren
+suffix:semicolon
 r_return
 id|event
 suffix:semicolon

@@ -182,6 +182,12 @@ id|cmp
 )paren
 (brace
 multiline_comment|/* CRC failure, dump it. */
+id|SCTP_INC_STATS_BH
+c_func
+(paren
+id|SctpChecksumErrors
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -265,6 +271,12 @@ id|PACKET_HOST
 )paren
 r_goto
 id|discard_it
+suffix:semicolon
+id|SCTP_INC_STATS_BH
+c_func
+(paren
+id|SctpInSCTPPacks
+)paren
 suffix:semicolon
 id|sh
 op_assign
@@ -448,9 +460,17 @@ c_func
 id|skb
 )paren
 )paren
+(brace
+id|SCTP_INC_STATS_BH
+c_func
+(paren
+id|SctpOutOfBlues
+)paren
+suffix:semicolon
 r_goto
 id|discard_release
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Retrieve the common input handling substructure. */
 id|rcvr
