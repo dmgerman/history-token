@@ -2205,6 +2205,11 @@ id|skb
 )paren
 (brace
 multiline_comment|/* we have to copy */
+id|local_bh_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2218,6 +2223,11 @@ id|skb
 )paren
 )paren
 (brace
+id|local_bh_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* checksum error */
 id|skb_free_datagram
 c_func
@@ -2237,6 +2247,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|local_bh_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|skb_free_datagram
 c_func
 (paren
@@ -6002,12 +6017,7 @@ id|svc_deferred_req
 )paren
 op_plus
 (paren
-id|rqstp-&gt;rq_arg.head
-(braket
-l_int|0
-)braket
-dot
-id|iov_len
+id|rqstp-&gt;rq_arg.len
 )paren
 suffix:semicolon
 r_struct
@@ -6041,6 +6051,18 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_int
+id|skip
+op_assign
+id|rqstp-&gt;rq_arg.len
+op_minus
+id|rqstp-&gt;rq_arg.head
+(braket
+l_int|0
+)braket
+dot
+id|iov_len
+suffix:semicolon
 multiline_comment|/* FIXME maybe discard if size too large */
 id|dr
 op_assign
@@ -6076,12 +6098,7 @@ id|rqstp-&gt;rq_addr
 suffix:semicolon
 id|dr-&gt;argslen
 op_assign
-id|rqstp-&gt;rq_arg.head
-(braket
-l_int|0
-)braket
-dot
-id|iov_len
+id|rqstp-&gt;rq_arg.len
 op_rshift
 l_int|2
 suffix:semicolon
@@ -6096,6 +6113,8 @@ l_int|0
 )braket
 dot
 id|iov_base
+op_minus
+id|skip
 comma
 id|dr-&gt;argslen
 op_lshift
