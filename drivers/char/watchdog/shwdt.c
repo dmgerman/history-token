@@ -392,6 +392,15 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nowayout
+)paren
+(brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+)brace
 id|sh_wdt_start
 c_func
 (paren
