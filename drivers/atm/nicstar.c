@@ -20,7 +20,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;nicstar.h&quot;
-macro_line|#include &quot;nicstarmac.h&quot;
 macro_line|#ifdef CONFIG_ATM_NICSTAR_USE_SUNI
 macro_line|#include &quot;suni.h&quot;
 macro_line|#endif /* CONFIG_ATM_NICSTAR_USE_SUNI */

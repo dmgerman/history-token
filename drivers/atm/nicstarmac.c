@@ -1,5 +1,12 @@
 multiline_comment|/*&n; * this file included by nicstar.c&n; */
 multiline_comment|/*&n; * nicstarmac.c&n; * Read this ForeRunner&squot;s MAC address from eprom/eeprom&n; */
+DECL|typedef|virt_addr_t
+r_typedef
+r_void
+id|__iomem
+op_star
+id|virt_addr_t
+suffix:semicolon
 DECL|macro|CYCLE_DELAY
 mdefine_line|#define CYCLE_DELAY 5
 multiline_comment|/* This was the original definition&n;#define osp_MicroDelay(microsec) &bslash;&n;    do { int _i = 4*microsec; while (--_i &gt; 0) { __SLOW_DOWN_IO; }} while (0)&n;*/
@@ -675,6 +682,7 @@ r_return
 id|tempread
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|nicstar_init_eprom
 id|nicstar_init_eprom
@@ -790,6 +798,7 @@ id|CYCLE_DELAY
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine will be the interface to the ReadPromByte function&n; * above.&n; */
+r_static
 r_void
 DECL|function|nicstar_read_eprom
 id|nicstar_read_eprom

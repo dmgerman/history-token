@@ -140,6 +140,8 @@ id|ip_defrag
 c_func
 (paren
 id|skb
+comma
+id|IP_DEFRAG_CALL_RA_CHAIN
 )paren
 suffix:semicolon
 r_if
@@ -536,6 +538,8 @@ id|ip_defrag
 c_func
 (paren
 id|skb
+comma
+id|IP_DEFRAG_LOCAL_DELIVER
 )paren
 suffix:semicolon
 r_if

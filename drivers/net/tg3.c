@@ -49,9 +49,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.18&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.19&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;January 24, 2005&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;January 26, 2005&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -25616,24 +25616,16 @@ c_func
 (paren
 id|tp-&gt;pci_chip_rev_id
 )paren
-op_ne
-id|ASIC_REV_5700
-op_logical_and
+op_eq
+id|ASIC_REV_5703
+op_logical_or
 id|GET_ASIC_REV
 c_func
 (paren
 id|tp-&gt;pci_chip_rev_id
 )paren
-op_ne
-id|ASIC_REV_5701
-op_logical_and
-id|GET_ASIC_REV
-c_func
-(paren
-id|tp-&gt;pci_chip_rev_id
-)paren
-op_ne
-id|ASIC_REV_5705
+op_eq
+id|ASIC_REV_5704
 )paren
 (brace
 r_for
@@ -25882,6 +25874,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|GET_ASIC_REV
 c_func
 (paren
@@ -25889,6 +25882,17 @@ id|tp-&gt;pci_chip_rev_id
 )paren
 op_ne
 id|ASIC_REV_5705
+)paren
+op_logical_and
+(paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_ne
+id|ASIC_REV_5750
+)paren
 )paren
 id|tg3_write_mem
 c_func
@@ -38836,35 +38840,23 @@ r_if
 c_cond
 (paren
 (paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_ne
+id|ASIC_REV_5700
+)paren
+op_logical_and
 (paren
 id|GET_ASIC_REV
 c_func
 (paren
 id|tp-&gt;pci_chip_rev_id
 )paren
-op_eq
-id|ASIC_REV_5703
-)paren
-op_logical_or
-(paren
-id|GET_ASIC_REV
-c_func
-(paren
-id|tp-&gt;pci_chip_rev_id
-)paren
-op_eq
-id|ASIC_REV_5704
-)paren
-op_logical_or
-(paren
-id|GET_ASIC_REV
-c_func
-(paren
-id|tp-&gt;pci_chip_rev_id
-)paren
-op_eq
-id|ASIC_REV_5705
-)paren
+op_ne
+id|ASIC_REV_5701
 )paren
 op_logical_and
 (paren

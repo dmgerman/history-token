@@ -1950,6 +1950,9 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+id|u_int32_t
+id|user
 )paren
 (brace
 id|skb
@@ -1958,6 +1961,8 @@ id|ip_defrag
 c_func
 (paren
 id|skb
+comma
+id|user
 )paren
 suffix:semicolon
 r_if
@@ -2309,6 +2314,8 @@ id|ip_vs_gather_frags
 c_func
 (paren
 id|skb
+comma
+id|IP_DEFRAG_VS_OUT
 )paren
 suffix:semicolon
 r_if
@@ -2930,6 +2937,8 @@ id|ip_vs_gather_frags
 c_func
 (paren
 id|skb
+comma
+id|IP_DEFRAG_VS_OUT
 )paren
 suffix:semicolon
 r_if
@@ -3248,9 +3257,9 @@ id|NF_STOLEN
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Handle ICMP messages in the outside-to-inside direction (incoming).&n; *&t;Find any that might be relevant, check against existing connections,&n; *&t;forward to the right destination host if relevant.&n; *&t;Currently handles error types - unreachable, quench, ttl exceeded.&n; */
-DECL|function|ip_vs_in_icmp
 r_static
 r_int
+DECL|function|ip_vs_in_icmp
 id|ip_vs_in_icmp
 c_func
 (paren
@@ -3263,6 +3272,10 @@ comma
 r_int
 op_star
 id|related
+comma
+r_int
+r_int
+id|hooknum
 )paren
 (brace
 r_struct
@@ -3337,6 +3350,15 @@ id|ip_vs_gather_frags
 c_func
 (paren
 id|skb
+comma
+id|hooknum
+op_eq
+id|NF_IP_LOCAL_IN
+ques
+c_cond
+id|IP_DEFRAG_VS_IN
+suffix:colon
+id|IP_DEFRAG_VS_FWD
 )paren
 suffix:semicolon
 r_if
@@ -3820,6 +3842,8 @@ id|pskb
 comma
 op_amp
 id|related
+comma
+id|hooknum
 )paren
 suffix:semicolon
 r_if
@@ -4197,6 +4221,8 @@ id|pskb
 comma
 op_amp
 id|r
+comma
+id|hooknum
 )paren
 suffix:semicolon
 )brace

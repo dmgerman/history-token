@@ -7202,9 +7202,10 @@ OG
 l_int|0
 )paren
 (brace
-id|schedule
+id|udelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 r_goto
