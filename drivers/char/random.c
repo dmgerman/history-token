@@ -7964,7 +7964,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|file-&gt;f_dentry-&gt;d_inode

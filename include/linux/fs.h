@@ -289,6 +289,7 @@ mdefine_line|#define FIGETBSZ   _IO(0x00,2)&t;/* get the block size used for bma
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+multiline_comment|/* Used to be a macro which just called the function, now just a function */
 r_extern
 r_void
 id|update_atime
@@ -298,8 +299,6 @@ id|inode
 op_star
 )paren
 suffix:semicolon
-DECL|macro|UPDATE_ATIME
-mdefine_line|#define UPDATE_ATIME(inode) update_atime (inode)
 r_extern
 r_void
 id|inode_init

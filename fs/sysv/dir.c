@@ -576,7 +576,7 @@ id|PAGE_CACHE_SHIFT
 op_or
 id|offset
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode

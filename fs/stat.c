@@ -1115,7 +1115,7 @@ op_logical_neg
 id|error
 )paren
 (brace
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode

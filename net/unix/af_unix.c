@@ -2345,7 +2345,7 @@ id|u-&gt;type
 op_eq
 id|type
 )paren
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|nd.dentry-&gt;d_inode
@@ -2429,7 +2429,7 @@ c_cond
 (paren
 id|dentry
 )paren
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|dentry-&gt;d_inode

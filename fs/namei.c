@@ -1156,7 +1156,7 @@ suffix:semicolon
 id|current-&gt;total_link_count
 op_increment
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|dentry-&gt;d_inode
@@ -5245,7 +5245,7 @@ id|error
 r_goto
 id|exit_dput
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|dentry-&gt;d_inode
