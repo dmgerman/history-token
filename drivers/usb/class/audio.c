@@ -22038,7 +22038,6 @@ c_func
 (paren
 id|unitid
 comma
-op_amp
 id|state-&gt;unitbitmap
 )paren
 )paren
@@ -22659,7 +22658,6 @@ id|oterm
 l_int|3
 )braket
 comma
-op_amp
 id|state.unitbitmap
 )paren
 suffix:semicolon

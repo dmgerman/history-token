@@ -5596,7 +5596,6 @@ c_func
 (paren
 id|dev-&gt;devnum
 comma
-op_amp
 id|dev-&gt;bus-&gt;devmap.devicemap
 )paren
 suffix:semicolon
@@ -7730,7 +7729,6 @@ c_func
 (paren
 id|dev-&gt;devnum
 comma
-op_amp
 id|dev-&gt;bus-&gt;devmap.devicemap
 )paren
 suffix:semicolon
@@ -7806,7 +7804,6 @@ c_func
 (paren
 id|dev-&gt;devnum
 comma
-op_amp
 id|dev-&gt;bus-&gt;devmap.devicemap
 )paren
 suffix:semicolon
@@ -7889,7 +7886,6 @@ c_func
 (paren
 id|dev-&gt;devnum
 comma
-op_amp
 id|dev-&gt;bus-&gt;devmap.devicemap
 )paren
 suffix:semicolon
@@ -7933,7 +7929,6 @@ c_func
 (paren
 id|dev-&gt;devnum
 comma
-op_amp
 id|dev-&gt;bus-&gt;devmap.devicemap
 )paren
 suffix:semicolon
@@ -7983,7 +7978,6 @@ c_func
 (paren
 id|dev-&gt;devnum
 comma
-op_amp
 id|dev-&gt;bus-&gt;devmap.devicemap
 )paren
 suffix:semicolon
