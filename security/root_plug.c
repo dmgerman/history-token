@@ -367,7 +367,7 @@ l_string|&quot;Root Plug module removed&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|variable|rootplug_init
-id|module_init
+id|security_initcall
 (paren
 id|rootplug_init
 )paren

@@ -1134,7 +1134,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|variable|capability_init
-id|module_init
+id|security_initcall
 (paren
 id|capability_init
 )paren
