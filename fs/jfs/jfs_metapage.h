@@ -122,6 +122,8 @@ DECL|macro|META_discard
 mdefine_line|#define META_discard&t;5
 DECL|macro|META_forced
 mdefine_line|#define META_forced&t;6
+DECL|macro|META_stale
+mdefine_line|#define META_stale&t;7
 DECL|macro|mark_metapage_dirty
 mdefine_line|#define mark_metapage_dirty(mp) set_bit(META_dirty, &amp;(mp)-&gt;flag)
 multiline_comment|/* function prototypes */
