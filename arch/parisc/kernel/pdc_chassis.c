@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;&t;arch/parisc/kernel/pdc_chassis.c&n; *&n; * &t;&t;Copyright (C) 2002 Laurent Canet &lt;canetl@esiee.fr&gt;&n; *&t;&t;Copyright (C) 2002 Thibaut Varene &lt;varenet@esiee.fr&gt;&n; *&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or modify&n; *&t;&t;it under the terms of the GNU General Public License as published by&n; *&t;&t;the Free Software Foundation; either version 2, or (at your option)&n; *&t;&t;any later version.&n; *      &n; *&t;&t;This program is distributed in the hope that it will be useful,&n; *&t;&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;&t;GNU General Public License for more details.&n; *      &n; *&t;&t;You should have received a copy of the GNU General Public License&n; *&t;&t;along with this program; if not, write to the Free Software&n; *&t;&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&t;&t;arch/parisc/kernel/pdc_chassis.c&n; *&n; * &t;&t;Copyright (C) 2002 Laurent Canet &lt;canetl@esiee.fr&gt;&n; *&t;&t;Copyright (C) 2002-2003 Thibaut Varene &lt;varenet@esiee.fr&gt;&n; *&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or modify&n; *&t;&t;it under the terms of the GNU General Public License as published by&n; *&t;&t;the Free Software Foundation; either version 2, or (at your option)&n; *&t;&t;any later version.&n; *      &n; *&t;&t;This program is distributed in the hope that it will be useful,&n; *&t;&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;&t;GNU General Public License for more details.&n; *      &n; *&t;&t;You should have received a copy of the GNU General Public License&n; *&t;&t;along with this program; if not, write to the Free Software&n; *&t;&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|PDC_CHASSIS_DEBUG
 macro_line|#undef PDC_CHASSIS_DEBUG
 macro_line|#ifdef PDC_CHASSIS_DEBUG
@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;asm/pdc_chassis.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#ifdef CONFIG_PDC_CHASSIS
 DECL|variable|pdc_chassis_old
 r_static
 r_int
@@ -181,6 +182,7 @@ id|INT_MAX
 comma
 )brace
 suffix:semicolon
+macro_line|#endif /* CONFIG_PDC_CHASSIS */
 multiline_comment|/**&n; * parisc_pdc_chassis_init() - Called at boot time.&n; */
 DECL|function|parisc_pdc_chassis_init
 r_void
@@ -191,6 +193,12 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PDC_CHASSIS
+r_int
+id|handle
+op_assign
+l_int|0
+suffix:semicolon
 id|DPRINTK
 c_func
 (paren
@@ -200,6 +208,61 @@ comma
 id|__FILE__
 )paren
 suffix:semicolon
+multiline_comment|/* Let see if we have something to handle... */
+multiline_comment|/* Check for PDC_PAT or old LED Panel */
+id|pdc_chassis_checkold
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_pdc_pat
+c_func
+(paren
+)paren
+)paren
+(brace
+macro_line|#ifdef __LP64__&t;/* see pdc_chassis_send_status() */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Enabling PDC_PAT chassis codes support.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|handle
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif /* __LP64__ */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|pdc_chassis_old
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Enabling old style chassis LED panel support.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|handle
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|handle
+)paren
+(brace
 multiline_comment|/* initialize panic notifier chain */
 id|notifier_chain_register
 c_func
@@ -219,14 +282,10 @@ op_amp
 id|pdc_chassis_reboot_block
 )paren
 suffix:semicolon
-multiline_comment|/* Check for old LED Panel */
-id|pdc_chassis_checkold
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/** &n; * pdc_chassis_send_status() - Sends a predefined message to the chassis,&n; * and changes the front panel LEDs according to the new system state&n; * @retval: PDC call return value.&n; *&n; * Only machines with 64 bits PDC PAT and E-class are supported atm.&n; * &n; * returns 0 if no error, -1 if no supported PDC is present or invalid message,&n; * else returns the appropriate PDC error code.&n; * &n; * For a list of predefined messages, see asm-parisc/pdc_chassis.h&n; */
+macro_line|#endif /* CONFIG_PDC_CHASSIS */
+)brace
+multiline_comment|/** &n; * pdc_chassis_send_status() - Sends a predefined message to the chassis,&n; * and changes the front panel LEDs according to the new system state&n; * @retval: PDC call return value.&n; *&n; * Only machines with 64 bits PDC PAT and those reported in&n; * pdc_chassis_checkold() are supported atm.&n; * &n; * returns 0 if no error, -1 if no supported PDC is present or invalid message,&n; * else returns the appropriate PDC error code.&n; * &n; * For a list of predefined messages, see asm-parisc/pdc_chassis.h&n; */
 DECL|function|pdc_chassis_send_status
 r_int
 id|pdc_chassis_send_status
@@ -242,6 +301,7 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_PDC_CHASSIS
 id|DPRINTK
 c_func
 (paren
@@ -476,7 +536,8 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* __LP64__ */
+macro_line|#endif /* CONFIG_PDC_CHASSIS */
 r_return
 id|retval
 suffix:semicolon

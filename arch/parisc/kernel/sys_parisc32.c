@@ -6852,10 +6852,10 @@ id|origin
 )paren
 suffix:semicolon
 )brace
-DECL|function|sys32_semctl_broken
+DECL|function|sys32_semctl
 id|asmlinkage
 r_int
-id|sys32_semctl_broken
+id|sys32_semctl
 c_func
 (paren
 r_int
@@ -6876,12 +6876,6 @@ r_union
 id|semun
 id|u
 suffix:semicolon
-id|cmd
-op_and_assign
-op_complement
-id|IPC_64
-suffix:semicolon
-multiline_comment|/* should be removed together with the _broken suffix */
 r_if
 c_cond
 (paren

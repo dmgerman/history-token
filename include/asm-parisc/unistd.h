@@ -922,8 +922,8 @@ mdefine_line|#define __NR_HPUX_syscalls&t;&t;512
 multiline_comment|/*&n; * Linux system call numbers.&n; *&n; * Cary Coutant says that we should just use another syscall gateway&n; * page to avoid clashing with the HPUX space, and I think he&squot;s right:&n; * it will would keep a branch out of our syscall entry path, at the&n; * very least.  If we decide to change it later, we can ``just&squot;&squot; tweak&n; * the LINUX_GATEWAY_ADDR define at the bottom and make __NR_Linux be&n; * 1024 or something.  Oh, and recompile libc. =)&n; *&n; * 64-bit HPUX binaries get the syscall gateway address passed in a register&n; * from the kernel at startup, which seems a sane strategy.&n; */
 DECL|macro|__NR_Linux
 mdefine_line|#define __NR_Linux                0
-DECL|macro|__NR_syscall
-mdefine_line|#define __NR_syscall              (__NR_Linux + 0)
+DECL|macro|__NR_restart_syscall
+mdefine_line|#define __NR_restart_syscall      (__NR_Linux + 0)
 DECL|macro|__NR_exit
 mdefine_line|#define __NR_exit                 (__NR_Linux + 1)
 DECL|macro|__NR_fork

@@ -65,13 +65,13 @@ DECL|macro|get_user
 mdefine_line|#define get_user __get_user
 macro_line|#if BITS_PER_LONG == 32
 DECL|macro|LDD_KERNEL
-mdefine_line|#define LDD_KERNEL(ptr) __get_kernel_bad();
+mdefine_line|#define LDD_KERNEL(ptr)&t;&t;__get_kernel_bad();
 DECL|macro|LDD_USER
-mdefine_line|#define LDD_USER(ptr) __get_user_bad();
+mdefine_line|#define LDD_USER(ptr)&t;&t;__get_user_bad();
 DECL|macro|STD_KERNEL
-mdefine_line|#define STD_KERNEL(x, ptr) __put_kernel_asm64((u32)x,ptr)
+mdefine_line|#define STD_KERNEL(x, ptr)&t;__put_kernel_asm64(x,ptr)
 DECL|macro|STD_USER
-mdefine_line|#define STD_USER(x, ptr) __put_user_asm64((u32)x,ptr)
+mdefine_line|#define STD_USER(x, ptr)&t;__put_user_asm64(x,ptr)
 macro_line|#else
 DECL|macro|LDD_KERNEL
 mdefine_line|#define LDD_KERNEL(ptr) __get_kernel_asm(&quot;ldd&quot;,ptr)
@@ -255,6 +255,7 @@ id|lcopy_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 comma
 r_const
@@ -276,6 +277,26 @@ op_star
 comma
 r_const
 r_void
+id|__user
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|lcopy_in_user
+c_func
+(paren
+r_void
+id|__user
+op_star
+comma
+r_const
+r_void
+id|__user
 op_star
 comma
 r_int
@@ -292,6 +313,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -303,6 +325,7 @@ id|lclear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -316,6 +339,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -340,5 +364,9 @@ DECL|macro|copy_to_user
 mdefine_line|#define copy_to_user lcopy_to_user
 DECL|macro|__copy_to_user
 mdefine_line|#define __copy_to_user lcopy_to_user
+DECL|macro|copy_in_user
+mdefine_line|#define copy_in_user lcopy_in_user
+DECL|macro|__copy_in_user
+mdefine_line|#define __copy_in_user lcopy_in_user
 macro_line|#endif /* __PARISC_UACCESS_H */
 eof
