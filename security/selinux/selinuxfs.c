@@ -13,6 +13,10 @@ macro_line|#include &quot;avc.h&quot;
 macro_line|#include &quot;avc_ss.h&quot;
 macro_line|#include &quot;security.h&quot;
 macro_line|#include &quot;objsec.h&quot;
+r_extern
+r_int
+id|selinux_enabled
+suffix:semicolon
 multiline_comment|/* Check whether a task is allowed to use a security operation. */
 DECL|function|task_has_security
 r_int
@@ -3035,12 +3039,17 @@ r_void
 )paren
 (brace
 r_return
+id|selinux_enabled
+ques
+c_cond
 id|register_filesystem
 c_func
 (paren
 op_amp
 id|sel_fs_type
 )paren
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|init_sel_fs
