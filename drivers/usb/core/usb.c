@@ -187,30 +187,6 @@ id|driver-&gt;probe
 r_return
 id|error
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|try_module_get
-c_func
-(paren
-id|driver-&gt;owner
-)paren
-)paren
-(brace
-id|dev_err
-(paren
-id|dev
-comma
-l_string|&quot;Can&squot;t get a module reference for %s&bslash;n&quot;
-comma
-id|driver-&gt;name
-)paren
-suffix:semicolon
-r_return
-id|error
-suffix:semicolon
-)brace
 id|id
 op_assign
 id|usb_match_id
@@ -266,12 +242,6 @@ id|error
 id|intf-&gt;driver
 op_assign
 id|driver
-suffix:semicolon
-id|module_put
-c_func
-(paren
-id|driver-&gt;owner
-)paren
 suffix:semicolon
 r_return
 id|error
@@ -341,33 +311,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|try_module_get
-c_func
-(paren
-id|driver-&gt;owner
-)paren
-)paren
-(brace
-singleline_comment|// FIXME this happens even when we just rmmod
-singleline_comment|// drivers that aren&squot;t in active use...
-id|dev_err
-c_func
-(paren
-id|dev
-comma
-l_string|&quot;Dieing driver still bound to device.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
-multiline_comment|/* if we sleep here on an umanaged driver &n;&t; * the holder of the lock guards against &n;&t; * module unload */
 id|down
 c_func
 (paren
@@ -409,12 +352,6 @@ c_func
 (paren
 op_amp
 id|driver-&gt;serialize
-)paren
-suffix:semicolon
-id|module_put
-c_func
-(paren
-id|driver-&gt;owner
 )paren
 suffix:semicolon
 r_return
