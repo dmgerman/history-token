@@ -1812,16 +1812,6 @@ c_func
 id|qdisc-&gt;dev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|qdisc-&gt;flags
-op_amp
-id|TCQ_F_BUILTIN
-)paren
-)paren
 id|kfree
 c_func
 (paren
@@ -1850,6 +1840,10 @@ id|qdisc
 r_if
 c_cond
 (paren
+id|qdisc-&gt;flags
+op_amp
+id|TCQ_F_BUILTIN
+op_logical_or
 op_logical_neg
 id|atomic_dec_and_test
 c_func
