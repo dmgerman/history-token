@@ -3,6 +3,9 @@ macro_line|#ifndef _IP_CONNTRACK_PROTOCOL_H
 DECL|macro|_IP_CONNTRACK_PROTOCOL_H
 mdefine_line|#define _IP_CONNTRACK_PROTOCOL_H
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack.h&gt;
+multiline_comment|/* length of buffer to which print_tuple/print_conntrack members are&n; * writing */
+DECL|macro|IP_CT_PRINT_BUFLEN
+mdefine_line|#define IP_CT_PRINT_BUFLEN 100
 DECL|struct|ip_conntrack_protocol
 r_struct
 id|ip_conntrack_protocol
