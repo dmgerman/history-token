@@ -5435,7 +5435,7 @@ suffix:semicolon
 id|map
 op_increment
 )paren
-id|cs4x_ClearPageReserved
+id|ClearPageReserved
 c_func
 (paren
 id|map
@@ -5491,7 +5491,7 @@ suffix:semicolon
 id|map
 op_increment
 )paren
-id|cs4x_ClearPageReserved
+id|ClearPageReserved
 c_func
 (paren
 id|map
