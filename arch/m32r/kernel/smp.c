@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -385,6 +386,16 @@ r_int
 id|cpu_id
 )paren
 (brace
+id|WARN_ON
+c_func
+(paren
+id|cpu_is_offline
+c_func
+(paren
+id|cpu_id
+)paren
+)paren
+suffix:semicolon
 id|send_IPI_mask
 c_func
 (paren
@@ -947,9 +958,6 @@ r_int
 id|va
 )paren
 (brace
-id|cpumask_t
-id|tmp
-suffix:semicolon
 r_int
 r_int
 op_star
@@ -994,29 +1002,6 @@ id|cpumask
 )paren
 )paren
 suffix:semicolon
-id|cpus_and
-c_func
-(paren
-id|tmp
-comma
-id|cpumask
-comma
-id|cpu_online_map
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|cpus_equal
-c_func
-(paren
-id|cpumask
-comma
-id|tmp
-)paren
-)paren
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -1038,6 +1023,28 @@ c_func
 op_logical_neg
 id|mm
 )paren
+suffix:semicolon
+multiline_comment|/* If a CPU which we ran on has gone down, OK. */
+id|cpus_and
+c_func
+(paren
+id|cpumask
+comma
+id|cpumask
+comma
+id|cpu_online_map
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpus_empty
+c_func
+(paren
+id|cpumask
+)paren
+)paren
+r_return
 suffix:semicolon
 multiline_comment|/*&n;&t; * i&squot;m not happy about this global shared spinlock in the&n;&t; * MM hot path, but we&squot;ll see how contended it is.&n;&t; * Temporarily this turns IRQs off, so that lockups are&n;&t; * detected by the NMI watchdog.&n;&t; */
 id|spin_lock
@@ -1378,13 +1385,6 @@ id|data
 suffix:semicolon
 r_int
 id|cpus
-op_assign
-id|num_online_cpus
-c_func
-(paren
-)paren
-op_minus
-l_int|1
 suffix:semicolon
 macro_line|#ifdef DEBUG_SMP
 r_int
@@ -1414,15 +1414,41 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif /* DEBUG_SMP */
+multiline_comment|/* Holding any lock stops cpus from going down. */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|call_lock
+)paren
+suffix:semicolon
+id|cpus
+op_assign
+id|num_online_cpus
+c_func
+(paren
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|cpus
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|call_lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 multiline_comment|/* Can deadlock when called with interrupts disabled */
 id|WARN_ON
 c_func
@@ -1466,13 +1492,6 @@ op_amp
 id|data.finished
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|call_lock
 )paren
 suffix:semicolon
 id|call_data

@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/kernel/smpboot.c&n; *    orig : i386 2.4.10&n; *&n; *  MITSUBISHI M32R SMP booting functions&n; *&n; *  Copyright (c) 2001, 2002, 2003  Hitoshi Yamamoto&n; *&n; *  Taken from i386 version.&n; *&t;  (c) 1995 Alan Cox, Building #3 &lt;alan@redhat.com&gt;&n; *&t;  (c) 1998, 1999, 2000 Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; *&t;Much of the core SMP work is based on previous work by Thomas Radke, to&n; *&t;whom a great many thanks are extended.&n; *&n; *&t;Thanks to Intel for making available several different Pentium,&n; *&t;Pentium Pro and Pentium-II/Xeon MP machines.&n; *&t;Original development of Linux SMP code supported by Caldera.&n; *&n; *&t;This code is released under the GNU General Public License version 2 or&n; *&t;later.&n; *&n; *&t;Fixes&n; *&t;&t;Felix Koop&t;:&t;NR_CPUS used properly&n; *&t;&t;Jose Renau&t;:&t;Handle single CPU case.&n; *&t;&t;Alan Cox&t;:&t;By repeated request&n; *&t;&t;&t;&t;&t;8) - Total BogoMIP report.&n; *&t;&t;Greg Wright&t;:&t;Fix for kernel stacks panic.&n; *&t;&t;Erich Boleyn&t;:&t;MP v1.4 and additional changes.&n; *&t;Matthias Sattler&t;:&t;Changes for 2.1 kernel map.&n; *&t;Michel Lespinasse&t;:&t;Changes for 2.1 kernel map.&n; *&t;Michael Chastain&t;:&t;Change trampoline.S to gnu as.&n; *&t;&t;Alan Cox&t;:&t;Dumb bug: &squot;B&squot; step PPro&squot;s are fine&n; *&t;&t;Ingo Molnar&t;:&t;Added APIC timers, based on code&n; *&t;&t;&t;&t;&t;from Jose Renau&n; *&t;&t;Ingo Molnar&t;:&t;various cleanups and rewrites&n; *&t;&t;Tigran Aivazian&t;:&t;fixed &quot;0.00 in /proc/uptime on SMP&quot; bug.&n; *&t;Maciej W. Rozycki&t;:&t;Bits for genuine 82489DX APICs&n; *&t;&t;Martin J. Bligh&t;: &t;Added support for multi-quad systems&n; */
-multiline_comment|/* $Id$ */
+multiline_comment|/*&n; *  linux/arch/m32r/kernel/smpboot.c&n; *    orig : i386 2.4.10&n; *&n; *  M32R SMP booting functions&n; *&n; *  Copyright (c) 2001, 2002, 2003  Hitoshi Yamamoto&n; *&n; *  Taken from i386 version.&n; *&t;  (c) 1995 Alan Cox, Building #3 &lt;alan@redhat.com&gt;&n; *&t;  (c) 1998, 1999, 2000 Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; *&t;Much of the core SMP work is based on previous work by Thomas Radke, to&n; *&t;whom a great many thanks are extended.&n; *&n; *&t;Thanks to Intel for making available several different Pentium,&n; *&t;Pentium Pro and Pentium-II/Xeon MP machines.&n; *&t;Original development of Linux SMP code supported by Caldera.&n; *&n; *&t;This code is released under the GNU General Public License version 2 or&n; *&t;later.&n; *&n; *&t;Fixes&n; *&t;&t;Felix Koop&t;:&t;NR_CPUS used properly&n; *&t;&t;Jose Renau&t;:&t;Handle single CPU case.&n; *&t;&t;Alan Cox&t;:&t;By repeated request&n; *&t;&t;&t;&t;&t;8) - Total BogoMIP report.&n; *&t;&t;Greg Wright&t;:&t;Fix for kernel stacks panic.&n; *&t;&t;Erich Boleyn&t;:&t;MP v1.4 and additional changes.&n; *&t;Matthias Sattler&t;:&t;Changes for 2.1 kernel map.&n; *&t;Michel Lespinasse&t;:&t;Changes for 2.1 kernel map.&n; *&t;Michael Chastain&t;:&t;Change trampoline.S to gnu as.&n; *&t;&t;Alan Cox&t;:&t;Dumb bug: &squot;B&squot; step PPro&squot;s are fine&n; *&t;&t;Ingo Molnar&t;:&t;Added APIC timers, based on code&n; *&t;&t;&t;&t;&t;from Jose Renau&n; *&t;&t;Ingo Molnar&t;:&t;various cleanups and rewrites&n; *&t;&t;Tigran Aivazian&t;:&t;fixed &quot;0.00 in /proc/uptime on SMP&quot; bug.&n; *&t;Maciej W. Rozycki&t;:&t;Bits for genuine 82489DX APICs&n; *&t;&t;Martin J. Bligh&t;: &t;Added support for multi-quad systems&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -199,16 +198,6 @@ c_func
 (paren
 r_int
 r_int
-)paren
-suffix:semicolon
-r_static
-r_struct
-id|task_struct
-op_star
-id|fork_by_hand
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 r_static
@@ -646,49 +635,6 @@ l_string|&quot;Boot done.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * fork_by_hand : This routin executes do_fork for APs idle process.&n; */
-DECL|function|fork_by_hand
-r_static
-r_struct
-id|task_struct
-op_star
-id|__init
-id|fork_by_hand
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|pt_regs
-id|regs
-op_assign
-(brace
-l_int|0
-)brace
-suffix:semicolon
-multiline_comment|/*&n;&t; * don&squot;t care about the eip and regs settings since&n;&t; * we&squot;ll never reschedule the forked task.&n;&t; */
-r_return
-id|copy_process
-c_func
-(paren
-id|CLONE_VM
-op_or
-id|CLONE_IDLETASK
-comma
-l_int|0
-comma
-op_amp
-id|regs
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 DECL|function|smp_tune_scheduling
 r_static
 r_void
@@ -773,9 +719,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We can&squot;t use kernel_thread since we must avoid to&n;&t; * reschedule the child.&n;&t; */
 id|idle
 op_assign
-id|fork_by_hand
+id|fork_idle
 c_func
 (paren
+id|cpu_id
 )paren
 suffix:semicolon
 r_if
@@ -795,21 +742,6 @@ comma
 id|cpu_id
 )paren
 suffix:semicolon
-id|wake_up_forked_process
-c_func
-(paren
-id|idle
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * We remove it from the pidhash and the runqueue&n;&t; * once we got the process:&n;&t; */
-id|init_idle
-c_func
-(paren
-id|idle
-comma
-id|cpu_id
-)paren
-suffix:semicolon
 id|idle-&gt;thread.lr
 op_assign
 (paren
@@ -817,12 +749,6 @@ r_int
 r_int
 )paren
 id|start_secondary
-suffix:semicolon
-id|unhash_process
-c_func
-(paren
-id|idle
-)paren
 suffix:semicolon
 id|map_cpu_to_physid
 c_func
