@@ -2,7 +2,7 @@ multiline_comment|/*&n; *&t;Generate devlist.h and classlist.h from the PCI ID f
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;string.h&gt;
 DECL|macro|MAX_NAME_SIZE
-mdefine_line|#define MAX_NAME_SIZE 79
+mdefine_line|#define MAX_NAME_SIZE 89
 r_static
 r_void
 DECL|function|pq
@@ -17,13 +17,25 @@ r_const
 r_char
 op_star
 id|c
+comma
+r_int
+id|len
 )paren
 (brace
+r_int
+id|i
+op_assign
+l_int|1
+suffix:semicolon
 r_while
 c_loop
 (paren
 op_star
 id|c
+op_logical_and
+id|i
+op_ne
+id|len
 )paren
 (brace
 r_if
@@ -81,6 +93,9 @@ suffix:semicolon
 )brace
 )brace
 id|c
+op_increment
+suffix:semicolon
+id|i
 op_increment
 suffix:semicolon
 )brace
@@ -458,7 +473,7 @@ c_func
 (paren
 id|stderr
 comma
-l_string|&quot;Line %d: Device name too long&bslash;n&quot;
+l_string|&quot;Line %d: Device name too long. Name truncated.&bslash;n&quot;
 comma
 id|lino
 )paren
@@ -473,9 +488,7 @@ comma
 id|c
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
+multiline_comment|/*return 1;*/
 )brace
 )brace
 id|fprintf
@@ -498,6 +511,12 @@ c_func
 id|devf
 comma
 id|c
+comma
+id|MAX_NAME_SIZE
+op_minus
+id|vendor_len
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|fputs
@@ -699,6 +718,8 @@ c_func
 id|devf
 comma
 id|c
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|fputs
