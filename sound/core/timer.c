@@ -22,6 +22,7 @@ DECL|macro|DEFAULT_TIMER_LIMIT
 mdefine_line|#define DEFAULT_TIMER_LIMIT 2
 macro_line|#endif
 DECL|variable|timer_limit
+r_static
 r_int
 id|timer_limit
 op_assign
@@ -9185,13 +9186,58 @@ c_func
 (paren
 id|alsa_timer_exit
 )paren
+macro_line|#ifndef MODULE
+multiline_comment|/* format is: snd-timer=timer_limit */
+DECL|function|alsa_timer_setup
+r_static
+r_int
+id|__init
+id|alsa_timer_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+(paren
+r_void
+)paren
+(paren
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|timer_limit
+)paren
+op_eq
+l_int|2
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;snd-timer=&quot;
+comma
+id|alsa_timer_setup
+)paren
+suffix:semicolon
+macro_line|#endif /* ifndef MODULE */
+DECL|variable|snd_timer_open
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_timer_open
 )paren
 suffix:semicolon
-DECL|variable|EXPORT_SYMBOL
+DECL|variable|snd_timer_close
 id|EXPORT_SYMBOL
 c_func
 (paren

@@ -310,11 +310,6 @@ id|snd_sf_callback_t
 id|callback
 suffix:semicolon
 multiline_comment|/* callback functions */
-DECL|member|sf_locked
-r_char
-id|sf_locked
-suffix:semicolon
-multiline_comment|/* font lock flag */
 DECL|member|presets_mutex
 r_struct
 id|semaphore

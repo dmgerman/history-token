@@ -888,14 +888,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|emu-&gt;APS
-)paren
-(brace
-multiline_comment|/* APS board has not an AC97 mixer */
-r_if
-c_cond
-(paren
 (paren
 id|err
 op_assign
@@ -918,7 +910,6 @@ suffix:semicolon
 r_return
 id|err
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond

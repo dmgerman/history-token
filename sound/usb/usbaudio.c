@@ -11103,6 +11103,25 @@ op_complement
 id|EP_CS_ATTR_SAMPLE_RATE
 suffix:semicolon
 )brace
+multiline_comment|/* workaround for M-Audio Audiophile USB */
+r_if
+c_cond
+(paren
+id|dev-&gt;descriptor.idVendor
+op_eq
+l_int|0x0763
+op_logical_and
+id|dev-&gt;descriptor.idProduct
+op_eq
+l_int|0x2003
+)paren
+(brace
+multiline_comment|/* doesn&squot;t set the sample rate attribute, but supports it */
+id|fp-&gt;attributes
+op_or_assign
+id|EP_CS_ATTR_SAMPLE_RATE
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * plantronics headset and Griffin iMic have set adaptive-in&n;&t;&t; * although it&squot;s really not...&n;&t;&t; */
 r_if
 c_cond

@@ -3132,10 +3132,6 @@ op_star
 l_int|2
 op_star
 l_int|2
-op_star
-l_int|4
-op_star
-l_int|2
 )braket
 op_assign
 (brace

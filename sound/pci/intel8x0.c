@@ -4723,7 +4723,7 @@ l_int|32000
 comma
 l_int|44100
 comma
-l_int|480000
+l_int|48000
 )brace
 suffix:semicolon
 r_int
@@ -7458,6 +7458,16 @@ comma
 l_int|0x2665
 comma
 l_string|&quot;Fujitsu-Siemens Celcius&quot;
+comma
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+l_int|0x110a
+comma
+l_int|0x0056
+comma
+l_string|&quot;Fujitsu-Siemens Scenic&quot;
 comma
 id|AC97_TUNE_HP_ONLY
 )brace

@@ -504,6 +504,11 @@ DECL|member|area
 id|snd_pcm_channel_area_t
 id|area
 suffix:semicolon
+DECL|member|frames
+id|snd_pcm_uframes_t
+id|frames
+suffix:semicolon
+multiline_comment|/* allocated frames */
 DECL|member|enabled
 r_int
 r_int

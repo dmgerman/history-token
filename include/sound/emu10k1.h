@@ -1866,6 +1866,12 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* APS flag */
+DECL|member|no_ac97
+id|no_ac97
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* no AC&squot;97 */
 DECL|member|tos_link
 id|tos_link
 suffix:colon
