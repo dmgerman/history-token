@@ -1,7 +1,6 @@
 multiline_comment|/* align.c - handle alignment exceptions for the Power PC.&n; *&n; * Copyright (c) 1996 Paul Mackerras &lt;paulus@cs.anu.edu.au&gt;&n; * Copyright (c) 1998-1999 TiVo, Inc.&n; *   PowerPC 403GCX modifications.&n; * Copyright (c) 1999 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *   PowerPC 403GCX/405GP modifications.&n; * Copyright (c) 2001-2002 PPC64 team, IBM Corp&n; *   64-bit and Power4 support&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
