@@ -909,11 +909,17 @@ id|irq_desc
 op_plus
 id|irq
 suffix:semicolon
-id|spin_lock
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|desc-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|pending_irq_balance_apicid
@@ -927,11 +933,13 @@ c_func
 id|new_cpu
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|desc-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1777,6 +1785,10 @@ id|irq_desc
 op_plus
 id|selected_irq
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|Dprintk
 c_func
 (paren
@@ -1788,11 +1800,13 @@ id|min_loaded
 )paren
 suffix:semicolon
 multiline_comment|/* mark for change destination */
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|desc-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|pending_irq_balance_apicid
@@ -1806,11 +1820,13 @@ c_func
 id|min_loaded
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|desc-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Since we made a change, come back sooner to &n;&t;&t; * check for more variation.&n;&t;&t; */
