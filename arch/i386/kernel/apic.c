@@ -3767,10 +3767,13 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * the NMI deadlock-detector uses this.&n;&t; */
+id|per_cpu
+c_func
+(paren
 id|irq_stat
-(braket
+comma
 id|cpu
-)braket
+)paren
 dot
 id|apic_timer_irqs
 op_increment
