@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
+macro_line|#include &quot;lm75.h&quot;
 multiline_comment|/* Addresses to scan */
 DECL|variable|normal_i2c
 r_static
@@ -76,11 +77,6 @@ DECL|macro|LM75_REG_TEMP_HYST
 mdefine_line|#define LM75_REG_TEMP_HYST&t;0x02
 DECL|macro|LM75_REG_TEMP_OS
 mdefine_line|#define LM75_REG_TEMP_OS&t;0x03
-multiline_comment|/* Conversions. Rounding and limit checking is only done on the TO_REG&n;   variants. Note that you should be a bit careful with which arguments&n;   these macros are called: arguments may be evaluated more than once.&n;   Fixing this is just not worth it. */
-DECL|macro|TEMP_FROM_REG
-mdefine_line|#define TEMP_FROM_REG(val)&t;((((val &amp; 0x7fff) &gt;&gt; 7) * 5) | ((val &amp; 0x8000)?-256:0))
-DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val)&t;(SENSORS_LIMIT((val&lt;0?(0x200+((val)/5))&lt;&lt;7:(((val) + 2) / 5) &lt;&lt; 7),0,0xffff))
 multiline_comment|/* Each client has this additional data */
 DECL|struct|lm75_data
 r_struct
@@ -257,7 +253,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|macro|show
-mdefine_line|#define show(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct lm75_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;int temp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;lm75_update_client(client);&t;&t;&t;&t;&bslash;&n;&t;temp = TEMP_FROM_REG(data-&gt;value);&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, temp * 100);&t;&t;&bslash;&n;}
+mdefine_line|#define show(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&t;&bslash;&n;&t;struct lm75_data *data = i2c_get_clientdata(client);&t;&t;&bslash;&n;&t;lm75_update_client(client);&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, LM75_TEMP_FROM_REG(data-&gt;value));&t;&bslash;&n;}
 DECL|variable|temp_max
 id|show
 c_func
@@ -280,7 +276,7 @@ id|temp_input
 )paren
 suffix:semicolon
 DECL|macro|set
-mdefine_line|#define set(value, reg)&t;&bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct lm75_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;int temp = simple_strtoul(buf, NULL, 10) / 100;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;data-&gt;value = TEMP_TO_REG(temp);&t;&t;&t;&bslash;&n;&t;lm75_write_value(client, reg, data-&gt;value);&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define set(value, reg)&t;&bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct lm75_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;int temp = simple_strtoul(buf, NULL, 10);&t;&t;&bslash;&n;&t;data-&gt;value = LM75_TEMP_TO_REG(temp);&t;&t;&t;&bslash;&n;&t;lm75_write_value(client, reg, data-&gt;value);&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 id|set
 c_func
 (paren
