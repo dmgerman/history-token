@@ -1702,12 +1702,9 @@ r_int
 id|make_request
 c_func
 (paren
-id|mddev_t
+id|request_queue_t
 op_star
-id|mddev
-comma
-r_int
-id|rw
+id|q
 comma
 r_struct
 id|bio
@@ -1715,6 +1712,12 @@ op_star
 id|bio
 )paren
 (brace
+id|mddev_t
+op_star
+id|mddev
+op_assign
+id|q-&gt;queuedata
+suffix:semicolon
 id|conf_t
 op_star
 id|conf
@@ -1778,18 +1781,7 @@ op_amp
 id|conf-&gt;resync_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * make_request() can abort the operation when READA is being&n;&t; * used and no empty request is available.&n;&t; *&n;&t; * Currently, just replace the command with READ.&n;&t; */
-r_if
-c_cond
-(paren
-id|rw
-op_eq
-id|READA
-)paren
-id|rw
-op_assign
-id|READ
-suffix:semicolon
+multiline_comment|/*&n;&t; * make_request() can abort the operation when READA is being&n;&t; * used and no empty request is available.&n;&t; *&n;&t; */
 id|r1_bio
 op_assign
 id|mempool_alloc
@@ -1814,12 +1806,16 @@ id|bio-&gt;bi_sector
 suffix:semicolon
 id|r1_bio-&gt;cmd
 op_assign
-id|rw
+id|bio_data_dir
+c_func
+(paren
+id|bio
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|rw
+id|r1_bio-&gt;cmd
 op_eq
 id|READ
 )paren
@@ -1877,7 +1873,7 @@ id|end_request
 suffix:semicolon
 id|read_bio-&gt;bi_rw
 op_assign
-id|rw
+id|r1_bio-&gt;cmd
 suffix:semicolon
 id|read_bio-&gt;bi_private
 op_assign
@@ -1988,7 +1984,7 @@ id|end_request
 suffix:semicolon
 id|mbio-&gt;bi_rw
 op_assign
-id|rw
+id|r1_bio-&gt;cmd
 suffix:semicolon
 id|mbio-&gt;bi_private
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;   linear.c : Multiple Devices driver for Linux&n;              Copyright (C) 1994-96 Marc ZYNGIER&n;&t;      &lt;zyngier@ufr-info-p7.ibp.fr&gt; or&n;&t;      &lt;maz@gloups.fdn.fr&gt;&n;&n;   Linear mode management functions.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2, or (at your option)&n;   any later version.&n;   &n;   You should have received a copy of the GNU General Public License&n;   (for example /usr/src/linux/COPYING); if not, write to the Free&n;   Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  &n;*/
+multiline_comment|/*&n;   linear.c : Multiple Devices driver for Linux&n;&t;      Copyright (C) 1994-96 Marc ZYNGIER&n;&t;      &lt;zyngier@ufr-info-p7.ibp.fr&gt; or&n;&t;      &lt;maz@gloups.fdn.fr&gt;&n;&n;   Linear mode management functions.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2, or (at your option)&n;   any later version.&n;   &n;   You should have received a copy of the GNU General Public License&n;   (for example /usr/src/linux/COPYING); if not, write to the Free&n;   Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  &n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/raid/md.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -465,12 +465,9 @@ r_static
 r_int
 id|linear_make_request
 (paren
-id|mddev_t
+id|request_queue_t
 op_star
-id|mddev
-comma
-r_int
-id|rw
+id|q
 comma
 r_struct
 id|bio
@@ -478,6 +475,12 @@ op_star
 id|bio
 )paren
 (brace
+id|mddev_t
+op_star
+id|mddev
+op_assign
+id|q-&gt;queuedata
+suffix:semicolon
 id|linear_conf_t
 op_star
 id|conf

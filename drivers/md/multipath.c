@@ -841,12 +841,9 @@ r_static
 r_int
 id|multipath_make_request
 (paren
-id|mddev_t
+id|request_queue_t
 op_star
-id|mddev
-comma
-r_int
-id|rw
+id|q
 comma
 r_struct
 id|bio
@@ -854,6 +851,12 @@ op_star
 id|bio
 )paren
 (brace
+id|mddev_t
+op_star
+id|mddev
+op_assign
+id|q-&gt;queuedata
+suffix:semicolon
 id|multipath_conf_t
 op_star
 id|conf
@@ -879,18 +882,6 @@ id|multipath_info
 op_star
 id|multipath
 suffix:semicolon
-multiline_comment|/*&n; * make_request() can abort the operation when READA is being&n; * used and no empty request is available.&n; *&n; * Currently, just replace the command with READ/WRITE.&n; */
-r_if
-c_cond
-(paren
-id|rw
-op_eq
-id|READA
-)paren
-id|rw
-op_assign
-id|READ
-suffix:semicolon
 id|mp_bh
 op_assign
 id|multipath_alloc_mpbh
@@ -908,7 +899,11 @@ id|mddev
 suffix:semicolon
 id|mp_bh-&gt;cmd
 op_assign
-id|rw
+id|bio_data_dir
+c_func
+(paren
+id|bio
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * read balancing logic:&n;&t; */
 id|multipath
@@ -937,7 +932,11 @@ id|multipath-&gt;bdev
 suffix:semicolon
 id|real_bio-&gt;bi_rw
 op_assign
-id|rw
+id|bio_data_dir
+c_func
+(paren
+id|bio
+)paren
 suffix:semicolon
 id|real_bio-&gt;bi_end_io
 op_assign

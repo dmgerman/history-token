@@ -870,12 +870,9 @@ r_static
 r_int
 id|raid0_make_request
 (paren
-id|mddev_t
+id|request_queue_t
 op_star
-id|mddev
-comma
-r_int
-id|rw
+id|q
 comma
 r_struct
 id|bio
@@ -883,6 +880,12 @@ op_star
 id|bio
 )paren
 (brace
+id|mddev_t
+op_star
+id|mddev
+op_assign
+id|q-&gt;queuedata
+suffix:semicolon
 r_int
 r_int
 id|sect_in_chunk

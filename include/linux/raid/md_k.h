@@ -755,12 +755,9 @@ op_star
 id|make_request
 )paren
 (paren
-id|mddev_t
+id|request_queue_t
 op_star
-id|mddev
-comma
-r_int
-id|rw
+id|q
 comma
 r_struct
 id|bio
