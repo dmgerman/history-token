@@ -27,6 +27,10 @@ macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/cobalt.h&gt;
 multiline_comment|/*&n; * for x86_do_profile()&n; */
 macro_line|#include &lt;linux/irq.h&gt;
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 DECL|variable|cpu_khz
 r_int
 r_int

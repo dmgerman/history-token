@@ -194,11 +194,7 @@ id|itimerval
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The 64-bit value is not volatile - you MUST NOT read it&n; * without holding read_lock_irq(&amp;xtime_lock).&n; * jiffies is defined in the linker script...&n; */
-DECL|variable|jiffies_64
-id|u64
-id|jiffies_64
-suffix:semicolon
+multiline_comment|/*&n; * The 64-bit jiffies value is not atomic - you MUST NOT read it&n; * without holding read_lock_irq(&amp;xtime_lock).&n; * jiffies is defined in the linker script...&n; */
 DECL|variable|prof_buffer
 r_int
 r_int

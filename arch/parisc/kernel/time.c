@@ -16,6 +16,10 @@ macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/led.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 r_extern
 id|rwlock_t
 id|xtime_lock
