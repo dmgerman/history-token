@@ -4263,6 +4263,13 @@ op_eq
 id|it8712
 )paren
 (brace
+id|data-&gt;vrm
+op_assign
+id|i2c_which_vrm
+c_func
+(paren
+)paren
+suffix:semicolon
 id|device_create_file_vrm
 c_func
 (paren
@@ -4273,13 +4280,6 @@ id|device_create_file_vid
 c_func
 (paren
 id|new_client
-)paren
-suffix:semicolon
-id|data-&gt;vrm
-op_assign
-id|i2c_which_vrm
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
