@@ -133,7 +133,13 @@ id|serio_driver
 op_star
 id|drv
 suffix:semicolon
-multiline_comment|/* accessed from interrupt, must be protected by serio-&gt;lock */
+multiline_comment|/* accessed from interrupt, must be protected by serio-&gt;lock and serio-&gt;sem */
+DECL|member|drv_sem
+r_struct
+id|semaphore
+id|drv_sem
+suffix:semicolon
+multiline_comment|/* protects serio-&gt;drv so attributes can pin driver */
 DECL|member|dev
 r_struct
 id|device
@@ -533,6 +539,50 @@ c_func
 (paren
 op_amp
 id|serio-&gt;lock
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Use the following fucntions to pin serio&squot;s driver in process context&n; */
+DECL|function|serio_pin_driver
+r_static
+id|__inline__
+r_int
+id|serio_pin_driver
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+)paren
+(brace
+r_return
+id|down_interruptible
+c_func
+(paren
+op_amp
+id|serio-&gt;drv_sem
+)paren
+suffix:semicolon
+)brace
+DECL|function|serio_unpin_driver
+r_static
+id|__inline__
+r_void
+id|serio_unpin_driver
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|serio-&gt;drv_sem
 )paren
 suffix:semicolon
 )brace
