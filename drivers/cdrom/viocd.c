@@ -2639,6 +2639,8 @@ suffix:semicolon
 id|gendisk-&gt;flags
 op_assign
 id|GENHD_FL_CD
+op_or
+id|GENHD_FL_REMOVABLE
 suffix:semicolon
 id|set_capacity
 c_func
