@@ -5404,7 +5404,7 @@ c_cond
 (paren
 id|pixmap-&gt;depth
 op_ne
-l_int|1
+l_int|0
 )paren
 (brace
 singleline_comment|//banshee_make_room(par, 6 + ((size + 3) &gt;&gt; 2));

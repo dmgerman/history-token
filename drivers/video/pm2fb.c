@@ -23,7 +23,7 @@ macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &lt;video/fbcon-cfb16.h&gt;
 macro_line|#include &lt;video/fbcon-cfb24.h&gt;
 macro_line|#include &lt;video/fbcon-cfb32.h&gt;
-macro_line|#include &quot;pm2fb.h&quot;
+macro_line|#include &lt;video/pm2fb.h&gt;
 macro_line|#include &quot;cvisionppc.h&quot;
 macro_line|#ifdef __sparc__
 macro_line|#include &lt;asm/pbm.h&gt;

@@ -2528,7 +2528,7 @@ id|height
 suffix:semicolon
 id|cursor.image.depth
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|cursor.image.data
 op_assign
@@ -4206,6 +4206,14 @@ id|cnt
 suffix:semicolon
 r_int
 id|step
+suffix:semicolon
+id|logo_height
+op_assign
+id|fb_prepare_logo
+c_func
+(paren
+id|info
+)paren
 suffix:semicolon
 id|logo_lines
 op_assign
@@ -9533,8 +9541,6 @@ op_assign
 id|fg_console
 suffix:semicolon
 multiline_comment|/* This is protected above by initmem_freed */
-id|logo_height
-op_assign
 id|fb_show_logo
 c_func
 (paren

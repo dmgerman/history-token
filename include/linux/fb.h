@@ -1533,6 +1533,17 @@ id|fb_info
 suffix:semicolon
 r_extern
 r_int
+id|fb_prepare_logo
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|fb_info
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|fb_show_logo
 c_func
 (paren

@@ -23,12 +23,12 @@ macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &lt;video/fbcon-cfb16.h&gt;
 macro_line|#include &lt;video/fbcon-cfb24.h&gt;
 macro_line|#include &lt;video/fbcon-cfb32.h&gt;
+macro_line|#include &lt;video/pm3fb.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_FB_OF
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#endif
-macro_line|#include &quot;pm3fb.h&quot;
 multiline_comment|/* ************************************* */
 multiline_comment|/* ***** The various &quot;global&quot; data ***** */
 multiline_comment|/* ************************************* */

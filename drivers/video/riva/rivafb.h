@@ -216,5 +216,25 @@ id|riva_par
 op_star
 )paren
 suffix:semicolon
+r_int
+r_int
+id|riva_get_memlen
+c_func
+(paren
+r_struct
+id|riva_par
+op_star
+)paren
+suffix:semicolon
+r_int
+r_int
+id|riva_get_maxdclk
+c_func
+(paren
+r_struct
+id|riva_par
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* __RIVAFB_H */
 eof

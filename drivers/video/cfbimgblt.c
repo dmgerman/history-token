@@ -245,6 +245,10 @@ id|u8
 op_star
 id|src
 op_assign
+(paren
+id|u8
+op_star
+)paren
 id|image-&gt;data
 suffix:semicolon
 id|dst2
@@ -604,7 +608,8 @@ l_int|7
 op_div
 l_int|8
 suffix:semicolon
-id|u8
+r_const
+r_char
 op_star
 id|src
 op_assign
@@ -986,6 +991,7 @@ id|eorx
 comma
 id|shift
 suffix:semicolon
+r_const
 r_char
 op_star
 id|s
@@ -1432,7 +1438,7 @@ c_cond
 (paren
 id|image-&gt;depth
 op_eq
-l_int|1
+l_int|0
 )paren
 (brace
 r_if
