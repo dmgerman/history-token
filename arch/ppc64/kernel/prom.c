@@ -1,8 +1,5 @@
 multiline_comment|/*&n; * &n; *&n; * Procedures for interfacing to Open Firmware.&n; *&n; * Paul Mackerras&t;August 1996.&n; * Copyright (C) 1996 Paul Mackerras.&n; * &n; *  Adapted for 64bit PowerPC by Dave Engebretsen and Peter Bergner.&n; *    {engebret|bergner}@us.ibm.com &n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#if 0
-mdefine_line|#define DEBUG_YABOOT
-macro_line|#endif
-macro_line|#if 0
 mdefine_line|#define DEBUG_PROM
 macro_line|#endif
 macro_line|#include &lt;stdarg.h&gt;
@@ -14,13 +11,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#ifdef DEBUG_YABOOT
-DECL|macro|call_yaboot
-mdefine_line|#define call_yaboot(FUNC,...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (FUNC) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;struct prom_t *_prom = PTRRELOC(&amp;prom);&t;&bslash;&n;&t;&t;&t;unsigned long prom_entry = _prom-&gt;entry;&bslash;&n;&t;&t;&t;_prom-&gt;entry = (unsigned long)(FUNC);&t;&bslash;&n;&t;&t;&t;enter_prom(__VA_ARGS__); &t;&t;&bslash;&n;&t;&t;&t;_prom-&gt;entry = prom_entry;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-macro_line|#else
-DECL|macro|call_yaboot
-mdefine_line|#define call_yaboot(FUNC,...) do { ; } while (0)
-macro_line|#endif
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -38,18 +28,12 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
-macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
+macro_line|#include &quot;open_pic.h&quot;
 macro_line|#ifdef CONFIG_FB
 macro_line|#include &lt;asm/linux_logo.h&gt;
 macro_line|#endif
-r_extern
-r_char
-id|_end
-(braket
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * prom_init() is called very early on, before the kernel text&n; * and data have been mapped to KERNELBASE.  At this point the code&n; * is running at whatever address it has been loaded at, so&n; * references to extern and static variables must be relocated&n; * explicitly.  The procedure reloc_offset() returns the address&n; * we&squot;re currently running at minus the address we were linked at.&n; * (Note that strings count as static variables.)&n; *&n; * Because OF may have mapped I/O devices into the area starting at&n; * KERNELBASE, particularly on CHRP machines, we can&squot;t safely call&n; * OF once the kernel has been mapped to KERNELBASE.  Therefore all&n; * OF calls should be done within prom_init(), and prom_init()&n; * and all routines called within it must be careful to relocate&n; * references as necessary.&n; *&n; * Note that the bss is cleared *after* prom_init runs, so we have&n; * to make sure that any static or extern variables it accesses&n; * are put in the data segment.&n; */
 DECL|macro|PROM_BUG
 mdefine_line|#define PROM_BUG() do { &bslash;&n;        prom_print(RELOC(&quot;kernel BUG at &quot;)); &bslash;&n;        prom_print(RELOC(__FILE__)); &bslash;&n;        prom_print(RELOC(&quot;:&quot;)); &bslash;&n;        prom_print_hex(__LINE__); &bslash;&n;        prom_print(RELOC(&quot;!&bslash;n&quot;)); &bslash;&n;        __asm__ __volatile__(&quot;.long &quot; BUG_ILLEGAL_INSTR); &bslash;&n;} while (0)
@@ -132,29 +116,10 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#if 0
+DECL|variable|interpret_pci_props
 r_static
 id|interpret_func
 id|interpret_pci_props
-suffix:semicolon
-macro_line|#endif
-r_static
-r_int
-r_int
-id|interpret_pci_props
-c_func
-(paren
-r_struct
-id|device_node
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-comma
-r_int
-)paren
 suffix:semicolon
 DECL|variable|interpret_isa_props
 r_static
@@ -219,11 +184,6 @@ comma
 multiline_comment|/* encode_phys_size */
 l_int|0
 multiline_comment|/* bi_rec pointer */
-macro_line|#ifdef DEBUG_YABOOT
-comma
-l_int|NULL
-multiline_comment|/* yaboot */
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|__initdata
@@ -6141,10 +6101,6 @@ comma
 r_int
 r_int
 id|r7
-comma
-id|yaboot_debug_t
-op_star
-id|yaboot
 )paren
 (brace
 r_int
@@ -6315,46 +6271,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG_YABOOT
-id|call_yaboot
-c_func
-(paren
-id|yaboot-&gt;dummy
-comma
-id|offset
-op_rshift
-l_int|32
-comma
-id|offset
-op_amp
-l_int|0xffffffff
-)paren
-suffix:semicolon
-id|call_yaboot
-c_func
-(paren
-id|yaboot-&gt;printf
-comma
-id|RELOC
-c_func
-(paren
-l_string|&quot;offset = 0x%08x%08x&bslash;n&quot;
-)paren
-comma
-id|LONG_MSW
-c_func
-(paren
-id|offset
-)paren
-comma
-id|LONG_LSW
-c_func
-(paren
-id|offset
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Default */
 id|phys
 op_assign
@@ -6362,86 +6278,6 @@ id|KERNELBASE
 op_minus
 id|offset
 suffix:semicolon
-macro_line|#ifdef DEBUG_YABOOT
-id|call_yaboot
-c_func
-(paren
-id|yaboot-&gt;printf
-comma
-id|RELOC
-c_func
-(paren
-l_string|&quot;phys = 0x%08x%08x&bslash;n&quot;
-)paren
-comma
-id|LONG_MSW
-c_func
-(paren
-id|phys
-)paren
-comma
-id|LONG_LSW
-c_func
-(paren
-id|phys
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef DEBUG_YABOOT
-id|_prom-&gt;yaboot
-op_assign
-id|yaboot
-suffix:semicolon
-id|call_yaboot
-c_func
-(paren
-id|yaboot-&gt;printf
-comma
-id|RELOC
-c_func
-(paren
-l_string|&quot;pp = 0x%08x%08x&bslash;n&quot;
-)paren
-comma
-id|LONG_MSW
-c_func
-(paren
-id|pp
-)paren
-comma
-id|LONG_LSW
-c_func
-(paren
-id|pp
-)paren
-)paren
-suffix:semicolon
-id|call_yaboot
-c_func
-(paren
-id|yaboot-&gt;printf
-comma
-id|RELOC
-c_func
-(paren
-l_string|&quot;prom = 0x%08x%08x&bslash;n&quot;
-)paren
-comma
-id|LONG_MSW
-c_func
-(paren
-id|_prom-&gt;entry
-)paren
-comma
-id|LONG_LSW
-c_func
-(paren
-id|_prom-&gt;entry
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* First get a handle for the stdout device */
 id|_prom-&gt;chosen
 op_assign
@@ -6468,32 +6304,6 @@ l_string|&quot;/chosen&quot;
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_YABOOT
-id|call_yaboot
-c_func
-(paren
-id|yaboot-&gt;printf
-comma
-id|RELOC
-c_func
-(paren
-l_string|&quot;prom-&gt;chosen = 0x%08x%08x&bslash;n&quot;
-)paren
-comma
-id|LONG_MSW
-c_func
-(paren
-id|_prom-&gt;chosen
-)paren
-comma
-id|LONG_LSW
-c_func
-(paren
-id|_prom-&gt;chosen
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6563,79 +6373,6 @@ r_int
 )paren
 id|getprop_rval
 suffix:semicolon
-macro_line|#ifdef DEBUG_YABOOT
-r_if
-c_cond
-(paren
-id|_prom-&gt;stdout
-op_eq
-l_int|0
-)paren
-(brace
-id|call_yaboot
-c_func
-(paren
-id|yaboot-&gt;printf
-comma
-id|RELOC
-c_func
-(paren
-l_string|&quot;prom-&gt;stdout = 0x%08x%08x&bslash;n&quot;
-)paren
-comma
-id|LONG_MSW
-c_func
-(paren
-id|_prom-&gt;stdout
-)paren
-comma
-id|LONG_LSW
-c_func
-(paren
-id|_prom-&gt;stdout
-)paren
-)paren
-suffix:semicolon
-)brace
-id|call_yaboot
-c_func
-(paren
-id|yaboot-&gt;printf
-comma
-id|RELOC
-c_func
-(paren
-l_string|&quot;prom-&gt;stdout = 0x%08x%08x&bslash;n&quot;
-)paren
-comma
-id|LONG_MSW
-c_func
-(paren
-id|_prom-&gt;stdout
-)paren
-comma
-id|LONG_LSW
-c_func
-(paren
-id|_prom-&gt;stdout
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef DEBUG_YABOOT
-id|call_yaboot
-c_func
-(paren
-id|yaboot-&gt;printf
-comma
-id|RELOC
-c_func
-(paren
-l_string|&quot;Location: 0x11&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|mem
 op_assign
 id|RELOC
@@ -6646,20 +6383,6 @@ id|klimit
 op_minus
 id|offset
 suffix:semicolon
-macro_line|#ifdef DEBUG_YABOOT
-id|call_yaboot
-c_func
-(paren
-id|yaboot-&gt;printf
-comma
-id|RELOC
-c_func
-(paren
-l_string|&quot;Location: 0x11b&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Get the full OF pathname of the stdout device */
 id|p
 op_assign
