@@ -4671,11 +4671,7 @@ DECL|variable|llc_ui_ops
 r_static
 r_struct
 id|proto_ops
-id|SOCKOPS_WRAPPED
-c_func
-(paren
 id|llc_ui_ops
-)paren
 op_assign
 (brace
 dot
@@ -4764,15 +4760,6 @@ op_assign
 id|sock_no_sendpage
 comma
 )brace
-suffix:semicolon
-macro_line|#include &lt;linux/smp_lock.h&gt;
-id|SOCKOPS_WRAP
-c_func
-(paren
-id|llc_ui
-comma
-id|PF_LLC
-)paren
 suffix:semicolon
 DECL|variable|__initdata
 r_static
