@@ -1519,15 +1519,6 @@ op_star
 id|slit
 )paren
 (brace
-r_int
-id|i
-comma
-id|j
-comma
-id|node_from
-comma
-id|node_to
-suffix:semicolon
 id|u32
 id|len
 suffix:semicolon
@@ -1668,13 +1659,6 @@ id|pxm
 op_assign
 id|ma-&gt;proximity_domain
 suffix:semicolon
-multiline_comment|/* record this node in proximity bitmap */
-id|pxm_bit_set
-c_func
-(paren
-id|pxm
-)paren
-suffix:semicolon
 multiline_comment|/* fill node memory chunk structure */
 id|paddr
 op_assign
@@ -1731,6 +1715,22 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Ignore disabled entries */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ma-&gt;flags.enabled
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* record this node in proximity bitmap */
+id|pxm_bit_set
+c_func
+(paren
+id|pxm
+)paren
+suffix:semicolon
 multiline_comment|/* Insertion sort based on base address */
 id|pend
 op_assign
@@ -1831,6 +1831,10 @@ r_int
 id|i
 comma
 id|j
+comma
+id|node_from
+comma
+id|node_to
 suffix:semicolon
 multiline_comment|/* calculate total number of nodes in system from PXM bitmap */
 id|numnodes
