@@ -49,6 +49,10 @@ DECL|macro|MANU_SERPORT
 mdefine_line|#define MANU_SERPORT&t;&t;0x003f
 DECL|macro|PROD_SERPORT_DSPORT
 mdefine_line|#define PROD_SERPORT_DSPORT&t;&t;0x00b9
+DECL|macro|MANU_ARXE
+mdefine_line|#define MANU_ARXE&t;&t;0x0041
+DECL|macro|PROD_ARXE_SCSI
+mdefine_line|#define PROD_ARXE_SCSI&t;&t;&t;0x00be
 DECL|macro|MANU_I3
 mdefine_line|#define MANU_I3&t;&t;&t;0x0046
 DECL|macro|PROD_I3_ETHERLAN500
@@ -132,7 +136,6 @@ DECL|typedef|card_speed_t
 id|card_speed_t
 suffix:semicolon
 DECL|struct|ecard_id
-r_typedef
 r_struct
 id|ecard_id
 (brace
@@ -152,9 +155,7 @@ r_void
 op_star
 id|data
 suffix:semicolon
-DECL|typedef|card_ids
 )brace
-id|card_ids
 suffix:semicolon
 DECL|struct|in_ecid
 r_struct
@@ -514,30 +515,6 @@ mdefine_line|#define ecard_claim(ec) ((ec)-&gt;claimed = 1)
 multiline_comment|/*&n; * ecard_release: release an expansion card entry&n; */
 DECL|macro|ecard_release
 mdefine_line|#define ecard_release(ec) ((ec)-&gt;claimed = 0)
-multiline_comment|/*&n; * Start finding cards from the top of the list&n; */
-r_extern
-r_void
-id|ecard_startfind
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Find an expansion card with the correct cid, product and manufacturer code&n; */
-r_extern
-r_struct
-id|expansion_card
-op_star
-id|ecard_find
-(paren
-r_int
-id|cid
-comma
-r_const
-id|card_ids
-op_star
-id|ids
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Read a chunk from an expansion card&n; * cd : where to put read data&n; * ec : expansion card info struct&n; * id : id number to find&n; * num: (n+1)&squot;th id to find.&n; */
 r_extern
 r_int
