@@ -169,6 +169,7 @@ comma
 (braket
 id|__NR_exit
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -178,6 +179,7 @@ comma
 (braket
 id|__NR_fork
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -228,6 +230,7 @@ comma
 (braket
 id|__NR_creat
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -237,6 +240,7 @@ comma
 (braket
 id|__NR_link
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -246,6 +250,7 @@ comma
 (braket
 id|__NR_unlink
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -266,6 +271,7 @@ multiline_comment|/* declared differently in kern_util.h */
 (braket
 id|__NR_chdir
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -281,6 +287,7 @@ comma
 (braket
 id|__NR_mknod
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -290,6 +297,7 @@ comma
 (braket
 id|__NR_chmod
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -299,6 +307,7 @@ comma
 (braket
 id|__NR_lchown
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -318,6 +327,7 @@ comma
 (braket
 id|__NR_getpid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -333,6 +343,7 @@ comma
 (braket
 id|__NR_setuid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -342,6 +353,7 @@ comma
 (braket
 id|__NR_getuid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -351,6 +363,7 @@ comma
 (braket
 id|__NR_ptrace
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -360,6 +373,7 @@ comma
 (braket
 id|__NR_alarm
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -369,6 +383,7 @@ comma
 (braket
 id|__NR_pause
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -378,6 +393,7 @@ comma
 (braket
 id|__NR_utime
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -387,6 +403,7 @@ comma
 (braket
 id|__NR_access
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -396,6 +413,7 @@ comma
 (braket
 id|__NR_sync
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -405,6 +423,7 @@ comma
 (braket
 id|__NR_kill
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -414,6 +433,7 @@ comma
 (braket
 id|__NR_rename
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -423,6 +443,7 @@ comma
 (braket
 id|__NR_mkdir
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -432,6 +453,7 @@ comma
 (braket
 id|__NR_rmdir
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -452,6 +474,7 @@ comma
 (braket
 id|__NR_pipe
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -461,6 +484,7 @@ comma
 (braket
 id|__NR_times
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -470,6 +494,7 @@ comma
 (braket
 id|__NR_brk
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -479,6 +504,7 @@ comma
 (braket
 id|__NR_setgid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -488,6 +514,7 @@ comma
 (braket
 id|__NR_getgid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -497,6 +524,7 @@ comma
 (braket
 id|__NR_geteuid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -506,6 +534,7 @@ comma
 (braket
 id|__NR_getegid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -515,6 +544,7 @@ comma
 (braket
 id|__NR_acct
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -524,6 +554,7 @@ comma
 (braket
 id|__NR_umount2
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -533,6 +564,7 @@ comma
 (braket
 id|__NR_ioctl
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -542,6 +574,7 @@ comma
 (braket
 id|__NR_fcntl
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -551,6 +584,7 @@ comma
 (braket
 id|__NR_setpgid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -560,6 +594,7 @@ comma
 (braket
 id|__NR_umask
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -569,6 +604,7 @@ comma
 (braket
 id|__NR_chroot
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -578,6 +614,7 @@ comma
 (braket
 id|__NR_ustat
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -587,6 +624,7 @@ comma
 (braket
 id|__NR_dup2
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -596,6 +634,7 @@ comma
 (braket
 id|__NR_getppid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -605,6 +644,7 @@ comma
 (braket
 id|__NR_getpgrp
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -624,6 +664,7 @@ comma
 (braket
 id|__NR_setreuid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -633,6 +674,7 @@ comma
 (braket
 id|__NR_setregid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -642,6 +684,7 @@ comma
 (braket
 id|__NR_sethostname
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -651,6 +694,7 @@ comma
 (braket
 id|__NR_setrlimit
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -660,6 +704,7 @@ comma
 (braket
 id|__NR_getrlimit
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -669,6 +714,7 @@ comma
 (braket
 id|__NR_getrusage
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -678,6 +724,7 @@ comma
 (braket
 id|__NR_gettimeofday
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -687,6 +734,7 @@ comma
 (braket
 id|__NR_settimeofday
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -696,6 +744,7 @@ comma
 (braket
 id|__NR_getgroups
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -705,6 +754,7 @@ comma
 (braket
 id|__NR_setgroups
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -714,6 +764,7 @@ comma
 (braket
 id|__NR_symlink
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -723,6 +774,7 @@ comma
 (braket
 id|__NR_readlink
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -732,6 +784,7 @@ comma
 (braket
 id|__NR_uselib
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -751,6 +804,7 @@ comma
 (braket
 id|__NR_reboot
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -760,6 +814,7 @@ comma
 (braket
 id|__NR_munmap
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -769,6 +824,7 @@ comma
 (braket
 id|__NR_truncate
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -778,6 +834,7 @@ comma
 (braket
 id|__NR_ftruncate
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -787,6 +844,7 @@ comma
 (braket
 id|__NR_fchmod
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -796,6 +854,7 @@ comma
 (braket
 id|__NR_fchown
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -805,6 +864,7 @@ comma
 (braket
 id|__NR_getpriority
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -814,6 +874,7 @@ comma
 (braket
 id|__NR_setpriority
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -823,6 +884,7 @@ comma
 (braket
 id|__NR_statfs
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -832,6 +894,7 @@ comma
 (braket
 id|__NR_fstatfs
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -841,6 +904,7 @@ comma
 (braket
 id|__NR_ioperm
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -850,6 +914,7 @@ comma
 (braket
 id|__NR_syslog
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -859,6 +924,7 @@ comma
 (braket
 id|__NR_setitimer
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -868,6 +934,7 @@ comma
 (braket
 id|__NR_getitimer
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -877,6 +944,7 @@ comma
 (braket
 id|__NR_stat
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -886,6 +954,7 @@ comma
 (braket
 id|__NR_lstat
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -895,6 +964,7 @@ comma
 (braket
 id|__NR_fstat
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -904,6 +974,7 @@ comma
 (braket
 id|__NR_vhangup
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -933,6 +1004,7 @@ comma
 (braket
 id|__NR_sysinfo
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -942,6 +1014,7 @@ comma
 (braket
 id|__NR_fsync
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -951,6 +1024,7 @@ comma
 (braket
 id|__NR_clone
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -960,6 +1034,7 @@ comma
 (braket
 id|__NR_setdomainname
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -969,6 +1044,7 @@ comma
 (braket
 id|__NR_uname
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -978,6 +1054,7 @@ comma
 (braket
 id|__NR_adjtimex
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -987,6 +1064,7 @@ comma
 (braket
 id|__NR_mprotect
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -996,6 +1074,7 @@ comma
 (braket
 id|__NR_create_module
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1005,6 +1084,7 @@ comma
 (braket
 id|__NR_init_module
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1014,6 +1094,7 @@ comma
 (braket
 id|__NR_delete_module
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1023,6 +1104,7 @@ comma
 (braket
 id|__NR_get_kernel_syms
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1032,6 +1114,7 @@ comma
 (braket
 id|__NR_quotactl
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1041,6 +1124,7 @@ comma
 (braket
 id|__NR_getpgid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1050,6 +1134,7 @@ comma
 (braket
 id|__NR_fchdir
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1059,6 +1144,7 @@ comma
 (braket
 id|__NR_sysfs
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1068,6 +1154,7 @@ comma
 (braket
 id|__NR_personality
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1077,6 +1164,7 @@ comma
 (braket
 id|__NR_afs_syscall
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1086,6 +1174,7 @@ comma
 (braket
 id|__NR_setfsuid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1095,6 +1184,7 @@ comma
 (braket
 id|__NR_setfsgid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1104,6 +1194,7 @@ comma
 (braket
 id|__NR_getdents
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1113,6 +1204,7 @@ comma
 (braket
 id|__NR_flock
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1122,6 +1214,7 @@ comma
 (braket
 id|__NR_msync
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1131,6 +1224,7 @@ comma
 (braket
 id|__NR_readv
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1140,6 +1234,7 @@ comma
 (braket
 id|__NR_writev
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1149,6 +1244,7 @@ comma
 (braket
 id|__NR_getsid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1158,6 +1254,7 @@ comma
 (braket
 id|__NR_fdatasync
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1177,6 +1274,7 @@ comma
 (braket
 id|__NR_mlock
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1186,6 +1284,7 @@ comma
 (braket
 id|__NR_munlock
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1195,6 +1294,7 @@ comma
 (braket
 id|__NR_mlockall
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1204,6 +1304,7 @@ comma
 (braket
 id|__NR_munlockall
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1213,6 +1314,7 @@ comma
 (braket
 id|__NR_sched_setparam
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1222,6 +1324,7 @@ comma
 (braket
 id|__NR_sched_getparam
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1231,6 +1334,7 @@ comma
 (braket
 id|__NR_sched_setscheduler
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1240,6 +1344,7 @@ comma
 (braket
 id|__NR_sched_getscheduler
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1259,6 +1364,7 @@ comma
 (braket
 id|__NR_sched_get_priority_max
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1268,6 +1374,7 @@ comma
 (braket
 id|__NR_sched_get_priority_min
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1277,6 +1384,7 @@ comma
 (braket
 id|__NR_sched_rr_get_interval
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1286,6 +1394,7 @@ comma
 (braket
 id|__NR_nanosleep
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1295,6 +1404,7 @@ comma
 (braket
 id|__NR_mremap
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1304,6 +1414,7 @@ comma
 (braket
 id|__NR_setresuid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1313,6 +1424,7 @@ comma
 (braket
 id|__NR_getresuid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1322,6 +1434,7 @@ comma
 (braket
 id|__NR_query_module
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1331,6 +1444,7 @@ comma
 (braket
 id|__NR_poll
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1350,6 +1464,7 @@ comma
 (braket
 id|__NR_setresgid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1359,6 +1474,7 @@ comma
 (braket
 id|__NR_getresgid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1368,6 +1484,7 @@ comma
 (braket
 id|__NR_prctl
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1377,6 +1494,7 @@ comma
 (braket
 id|__NR_rt_sigreturn
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1386,6 +1504,7 @@ comma
 (braket
 id|__NR_rt_sigaction
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1395,6 +1514,7 @@ comma
 (braket
 id|__NR_rt_sigprocmask
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1404,6 +1524,7 @@ comma
 (braket
 id|__NR_rt_sigpending
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1413,6 +1534,7 @@ comma
 (braket
 id|__NR_rt_sigtimedwait
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1422,6 +1544,7 @@ comma
 (braket
 id|__NR_rt_sigqueueinfo
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1431,6 +1554,7 @@ comma
 (braket
 id|__NR_rt_sigsuspend
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1440,6 +1564,7 @@ comma
 (braket
 id|__NR_pread64
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1449,6 +1574,7 @@ comma
 (braket
 id|__NR_pwrite64
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1458,6 +1584,7 @@ comma
 (braket
 id|__NR_chown
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1467,6 +1594,7 @@ comma
 (braket
 id|__NR_getcwd
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1476,6 +1604,7 @@ comma
 (braket
 id|__NR_capget
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1485,6 +1614,7 @@ comma
 (braket
 id|__NR_capset
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1494,6 +1624,7 @@ comma
 (braket
 id|__NR_sigaltstack
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1503,6 +1634,7 @@ comma
 (braket
 id|__NR_sendfile
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1512,6 +1644,7 @@ comma
 (braket
 id|__NR_getpmsg
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1521,6 +1654,7 @@ comma
 (braket
 id|__NR_putpmsg
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1530,6 +1664,7 @@ comma
 (braket
 id|__NR_vfork
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1539,6 +1674,7 @@ comma
 (braket
 id|__NR_getdents64
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1548,6 +1684,7 @@ comma
 (braket
 id|__NR_gettid
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1557,6 +1694,7 @@ comma
 (braket
 id|__NR_readahead
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1566,6 +1704,7 @@ comma
 (braket
 id|__NR_setxattr
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1575,6 +1714,7 @@ comma
 (braket
 id|__NR_lsetxattr
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1584,6 +1724,7 @@ comma
 (braket
 id|__NR_fsetxattr
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1593,6 +1734,7 @@ comma
 (braket
 id|__NR_getxattr
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1602,6 +1744,7 @@ comma
 (braket
 id|__NR_lgetxattr
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1611,6 +1754,7 @@ comma
 (braket
 id|__NR_fgetxattr
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1620,6 +1764,7 @@ comma
 (braket
 id|__NR_listxattr
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1629,6 +1774,7 @@ comma
 (braket
 id|__NR_llistxattr
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1638,6 +1784,7 @@ comma
 (braket
 id|__NR_flistxattr
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1647,6 +1794,7 @@ comma
 (braket
 id|__NR_removexattr
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1656,6 +1804,7 @@ comma
 (braket
 id|__NR_lremovexattr
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1665,6 +1814,7 @@ comma
 (braket
 id|__NR_fremovexattr
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1674,6 +1824,7 @@ comma
 (braket
 id|__NR_tkill
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1683,6 +1834,7 @@ comma
 (braket
 id|__NR_futex
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1692,6 +1844,7 @@ comma
 (braket
 id|__NR_sched_setaffinity
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1701,6 +1854,7 @@ comma
 (braket
 id|__NR_sched_getaffinity
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1710,6 +1864,7 @@ comma
 (braket
 id|__NR_io_setup
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1719,6 +1874,7 @@ comma
 (braket
 id|__NR_io_destroy
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1728,6 +1884,7 @@ comma
 (braket
 id|__NR_io_getevents
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1737,6 +1894,7 @@ comma
 (braket
 id|__NR_io_submit
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1746,6 +1904,7 @@ comma
 (braket
 id|__NR_io_cancel
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1755,6 +1914,7 @@ comma
 (braket
 id|__NR_exit_group
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1764,6 +1924,7 @@ comma
 (braket
 id|__NR_lookup_dcookie
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1773,6 +1934,7 @@ comma
 (braket
 id|__NR_epoll_create
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1782,6 +1944,7 @@ comma
 (braket
 id|__NR_epoll_ctl
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1791,6 +1954,7 @@ comma
 (braket
 id|__NR_epoll_wait
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1800,6 +1964,7 @@ comma
 (braket
 id|__NR_set_tid_address
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1809,6 +1974,7 @@ comma
 (braket
 id|__NR_timer_create
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1818,6 +1984,7 @@ comma
 (braket
 id|__NR_timer_settime
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1827,6 +1994,7 @@ comma
 (braket
 id|__NR_timer_gettime
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1836,6 +2004,7 @@ comma
 (braket
 id|__NR_timer_getoverrun
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1845,6 +2014,7 @@ comma
 (braket
 id|__NR_timer_delete
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1854,6 +2024,7 @@ comma
 (braket
 id|__NR_clock_settime
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1863,6 +2034,7 @@ comma
 (braket
 id|__NR_clock_gettime
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1872,6 +2044,7 @@ comma
 (braket
 id|__NR_clock_getres
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1881,6 +2054,7 @@ comma
 (braket
 id|__NR_clock_nanosleep
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
@@ -1910,6 +2084,7 @@ comma
 (braket
 id|__NR_tgkill
 )braket
+op_assign
 (paren
 id|syscall_handler_t
 op_star
