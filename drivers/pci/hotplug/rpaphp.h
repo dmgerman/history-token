@@ -92,6 +92,11 @@ r_char
 op_star
 id|name
 suffix:semicolon
+DECL|member|location
+r_char
+op_star
+id|location
+suffix:semicolon
 DECL|member|dn
 r_struct
 id|device_node
@@ -389,6 +394,17 @@ id|slot
 comma
 id|u8
 id|status
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|rpaphp_sysfs_remove_attr_location
+c_func
+(paren
+r_struct
+id|hotplug_slot
+op_star
+id|slot
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _PPC64PHP_H */
