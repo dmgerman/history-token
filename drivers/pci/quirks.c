@@ -1103,12 +1103,10 @@ id|dev-&gt;bus-&gt;number
 op_eq
 l_int|0
 )paren
-(brace
-id|apic_sys_bug
+id|sis_apic_bug
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif /* CONFIG_X86_IO_APIC */
 multiline_comment|/*&n; * Via 686A/B:  The PCI_INTERRUPT_LINE register for the on-chip&n; * devices, USB0/1, AC97, MC97, and ACPI, has an unusual feature:&n; * when written, it makes an internal connection to the PIC.&n; * For these devices, this register is defined to be 4 bits wide.&n; * Normally this is fine.  However for IO-APIC motherboards, or&n; * non-x86 architectures (yes Via exists on PPC among other places),&n; * we must mask the PCI_INTERRUPT_LINE value versus 0xf to get&n; * interrupts delivered properly.&n; *&n; * TODO: When we have device-specific interrupt routers,&n; * quirk_via_irqpic will go away from quirks.&n; */
