@@ -1282,7 +1282,7 @@ suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;TraceSMB&quot;
+l_string|&quot;traceSMB&quot;
 comma
 id|proc_fs_cifs
 )paren
