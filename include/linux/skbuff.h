@@ -3094,6 +3094,7 @@ r_int
 id|offset
 comma
 r_char
+id|__user
 op_star
 id|to
 comma
@@ -3139,6 +3140,7 @@ r_int
 id|offset
 comma
 id|u8
+id|__user
 op_star
 id|to
 comma

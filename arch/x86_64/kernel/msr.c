@@ -975,6 +975,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cpu
+op_ge
+id|NR_CPUS
+op_logical_or
 op_logical_neg
 id|cpu_online
 c_func

@@ -6152,6 +6152,7 @@ op_star
 id|dev
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|pos
 suffix:semicolon

@@ -1481,6 +1481,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -1498,6 +1499,7 @@ op_star
 id|table
 comma
 r_int
+id|__user
 op_star
 id|name
 comma
@@ -1505,14 +1507,17 @@ r_int
 id|nlen
 comma
 r_void
+id|__user
 op_star
 id|oldval
 comma
 r_int
+id|__user
 op_star
 id|oldlenp
 comma
 r_void
+id|__user
 op_star
 id|newval
 comma

@@ -548,8 +548,9 @@ id|t
 comma
 r_struct
 id|user_desc
+id|__user
 op_star
-id|u_info
+id|info
 )paren
 suffix:semicolon
 r_int
@@ -563,8 +564,9 @@ id|t
 comma
 r_struct
 id|user_desc
+id|__user
 op_star
-id|u_info
+id|info
 )paren
 suffix:semicolon
 r_int

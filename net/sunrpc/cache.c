@@ -2242,6 +2242,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2705,6 +2706,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3141,6 +3143,7 @@ id|len
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -5386,6 +5389,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -5518,6 +5522,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

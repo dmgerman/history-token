@@ -10,6 +10,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -100,6 +101,7 @@ id|val16
 comma
 (paren
 id|__u16
+id|__user
 op_star
 )paren
 id|src
@@ -152,6 +154,10 @@ op_assign
 id|csum_partial_copy_generic
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|src
 comma
 id|dst
@@ -221,6 +227,7 @@ op_star
 id|src
 comma
 r_char
+id|__user
 op_star
 id|dst
 comma
@@ -329,6 +336,7 @@ id|val16
 comma
 (paren
 id|__u16
+id|__user
 op_star
 )paren
 id|dst
@@ -368,6 +376,10 @@ c_func
 (paren
 id|src
 comma
+(paren
+r_void
+op_star
+)paren
 id|dst
 comma
 id|len

@@ -320,6 +320,7 @@ id|fxsave
 comma
 r_struct
 id|_fpstate_ia32
+id|__user
 op_star
 id|buf
 )paren
@@ -331,6 +332,7 @@ id|to
 suffix:semicolon
 r_struct
 id|_fpreg
+id|__user
 op_star
 id|from
 suffix:semicolon
@@ -346,7 +348,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|macro|G
-mdefine_line|#define G(num,val) err |= __get_user(val, num + (u32 *)buf)
+mdefine_line|#define G(num,val) err |= __get_user(val, num + (u32 __user *)buf)
 id|G
 c_func
 (paren
@@ -499,6 +501,7 @@ c_func
 (paren
 r_struct
 id|_fpstate_ia32
+id|__user
 op_star
 id|buf
 comma
@@ -520,6 +523,7 @@ id|tsk
 (brace
 r_struct
 id|_fpreg
+id|__user
 op_star
 id|to
 suffix:semicolon
@@ -586,7 +590,7 @@ id|regs-&gt;cs
 suffix:semicolon
 )brace
 DECL|macro|P
-mdefine_line|#define P(num,val) err |= __put_user(val, num + (u32 *)buf)
+mdefine_line|#define P(num,val) err |= __put_user(val, num + (u32 __user *)buf)
 id|P
 c_func
 (paren
@@ -762,6 +766,7 @@ id|tsk
 comma
 r_struct
 id|_fpstate_ia32
+id|__user
 op_star
 id|buf
 comma
@@ -840,6 +845,7 @@ id|tsk
 comma
 r_struct
 id|_fpstate_ia32
+id|__user
 op_star
 id|buf
 comma

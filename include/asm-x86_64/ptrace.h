@@ -207,6 +207,7 @@ op_star
 id|regs
 comma
 r_void
+id|__user
 op_star
 id|frame
 comma

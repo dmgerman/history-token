@@ -4041,6 +4041,7 @@ DECL|function|ip_conntrack_expect_alloc
 id|ip_conntrack_expect_alloc
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct

@@ -3887,6 +3887,7 @@ op_star
 comma
 r_struct
 id|timeval
+id|__user
 op_star
 )paren
 suffix:semicolon

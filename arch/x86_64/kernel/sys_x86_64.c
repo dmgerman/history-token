@@ -24,6 +24,7 @@ id|sys_pipe
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|fildes
 )paren
@@ -545,6 +546,7 @@ c_func
 (paren
 r_struct
 id|new_utsname
+id|__user
 op_star
 id|name
 )paren
@@ -627,6 +629,7 @@ r_int
 id|shmid
 comma
 r_char
+id|__user
 op_star
 id|shmaddr
 comma
@@ -667,6 +670,7 @@ id|sys_time64
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|tloc
 )paren

@@ -26,6 +26,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 op_star
 id|ptr
 )paren
@@ -198,6 +199,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -263,6 +265,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -401,12 +404,14 @@ l_int|0
 suffix:semicolon
 r_struct
 id|mtrr_gentry32
+id|__user
 op_star
 id|g32
 op_assign
 (paren
 r_struct
 id|mtrr_gentry32
+id|__user
 op_star
 )paren
 id|arg
@@ -554,12 +559,14 @@ r_else
 (brace
 r_struct
 id|mtrr_sentry32
+id|__user
 op_star
 id|s32
 op_assign
 (paren
 r_struct
 id|mtrr_sentry32
+id|__user
 op_star
 )paren
 id|arg

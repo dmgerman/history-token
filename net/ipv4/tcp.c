@@ -1075,6 +1075,7 @@ id|answ
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -3337,6 +3338,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|from
 comma
@@ -3481,6 +3483,7 @@ op_star
 id|skb
 comma
 r_char
+id|__user
 op_star
 id|from
 comma
@@ -3866,6 +3869,7 @@ id|iov-&gt;iov_len
 suffix:semicolon
 r_int
 r_char
+id|__user
 op_star
 id|from
 op_assign

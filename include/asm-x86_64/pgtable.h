@@ -319,17 +319,17 @@ DECL|macro|BOOT_KERNEL_L4_PTRS
 mdefine_line|#define BOOT_KERNEL_L4_PTRS 511&t;/* But we will do it in 4rd level */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START    0xffffff0000000000
+mdefine_line|#define VMALLOC_START    0xffffff0000000000UL
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END      0xffffff7fffffffff
+mdefine_line|#define VMALLOC_END      0xffffff7fffffffffUL
 DECL|macro|MODULES_VADDR
-mdefine_line|#define MODULES_VADDR    0xffffffffa0000000
+mdefine_line|#define MODULES_VADDR    0xffffffffa0000000UL
 DECL|macro|MODULES_END
-mdefine_line|#define MODULES_END      0xffffffffafffffff
+mdefine_line|#define MODULES_END      0xffffffffafffffffUL
 DECL|macro|MODULES_LEN
 mdefine_line|#define MODULES_LEN   (MODULES_END - MODULES_VADDR)
 DECL|macro|IOMAP_START
-mdefine_line|#define IOMAP_START      0xfffffe8000000000
+mdefine_line|#define IOMAP_START      0xfffffe8000000000UL
 DECL|macro|_PAGE_BIT_PRESENT
 mdefine_line|#define _PAGE_BIT_PRESENT&t;0
 DECL|macro|_PAGE_BIT_RW
@@ -1475,6 +1475,11 @@ DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte) /* NOP */ 
 DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma,address,pte) do { } while (0)
+multiline_comment|/* We only update the dirty/accessed state if we set&n; * the dirty bit by hand in the kernel, since the hardware&n; * will do the accessed bit for us, and we don&squot;t want to&n; * race with other CPU&squot;s that might be updating the dirty&n; * bit at the same time. */
+DECL|macro|__HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+mdefine_line|#define  __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+DECL|macro|ptep_set_access_flags
+mdefine_line|#define ptep_set_access_flags(__vma, __address, __ptep, __entry, __dirty) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;if (__dirty) {&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;&t;set_pte(__ptep, __entry);&t;&t;&t;  &bslash;&n;&t;&t;&t;flush_tlb_page(__vma, __address);&t;&t;  &bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;} while (0)
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|__swp_type
 mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 1) &amp; 0x3f)
