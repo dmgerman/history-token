@@ -9299,10 +9299,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|dev_set_mac_address
+DECL|function|strip_set_mac_address
 r_static
 r_int
-id|dev_set_mac_address
+id|strip_set_mac_address
 c_func
 (paren
 r_struct
@@ -9796,7 +9796,7 @@ id|strip_rebuild_header
 suffix:semicolon
 id|dev-&gt;set_mac_address
 op_assign
-id|dev_set_mac_address
+id|strip_set_mac_address
 suffix:semicolon
 id|dev-&gt;get_stats
 op_assign
