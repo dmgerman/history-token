@@ -14,26 +14,5 @@ macro_line|#ifndef QIC117_TAPE_MAJOR
 DECL|macro|QIC117_TAPE_MAJOR
 mdefine_line|#define QIC117_TAPE_MAJOR 27
 macro_line|#endif
-multiline_comment|/*      ftape-init.c defined global variables.&n; */
-multiline_comment|/*      ftape-init.c defined global functions not defined in ftape.h&n; */
-macro_line|#ifdef MODULE
-id|asmlinkage
-r_extern
-r_int
-id|init_module
-(paren
-r_void
-)paren
-suffix:semicolon
-id|asmlinkage
-r_extern
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 eof
