@@ -238,10 +238,6 @@ r_int
 id|dir_per_block_bits
 suffix:semicolon
 multiline_comment|/* log2(dir_per_block) */
-DECL|member|cache_lock
-id|spinlock_t
-id|cache_lock
-suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

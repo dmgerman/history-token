@@ -7,6 +7,10 @@ DECL|struct|msdos_inode_info
 r_struct
 id|msdos_inode_info
 (brace
+DECL|member|cache_lru_lock
+id|spinlock_t
+id|cache_lru_lock
+suffix:semicolon
 DECL|member|cache_lru
 r_struct
 id|list_head

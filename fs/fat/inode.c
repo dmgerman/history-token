@@ -3471,6 +3471,13 @@ op_eq
 id|SLAB_CTOR_CONSTRUCTOR
 )paren
 (brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|ei-&gt;cache_lru_lock
+)paren
+suffix:semicolon
 id|ei-&gt;nr_caches
 op_assign
 l_int|0
@@ -3853,19 +3860,6 @@ id|error
 )paren
 r_goto
 id|out_fail
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|MSDOS_SB
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|cache_lock
-)paren
 suffix:semicolon
 multiline_comment|/* set up enough so that it can read an inode */
 id|init_MUTEX
