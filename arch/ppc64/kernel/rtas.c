@@ -214,17 +214,14 @@ DECL|function|__log_rtas_error
 id|__log_rtas_error
 c_func
 (paren
-r_struct
-id|rtas_args
-op_star
-id|rtas_args
+r_void
 )paren
 (brace
 r_struct
 id|rtas_args
 id|err_args
 comma
-id|temp_args
+id|save_args
 suffix:semicolon
 id|err_args.token
 op_assign
@@ -284,10 +281,9 @@ l_int|2
 op_assign
 l_int|0
 suffix:semicolon
-id|temp_args
+id|save_args
 op_assign
-op_star
-id|rtas_args
+id|rtas.args
 suffix:semicolon
 id|rtas.args
 op_assign
@@ -333,7 +329,7 @@ id|rtas.args
 suffix:semicolon
 id|rtas.args
 op_assign
-id|temp_args
+id|save_args
 suffix:semicolon
 r_return
 id|err_args.rets
@@ -347,10 +343,7 @@ DECL|function|log_rtas_error
 id|log_rtas_error
 c_func
 (paren
-r_struct
-id|rtas_args
-op_star
-id|rtas_args
+r_void
 )paren
 (brace
 r_int
@@ -374,7 +367,6 @@ op_assign
 id|__log_rtas_error
 c_func
 (paren
-id|rtas_args
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -677,7 +669,6 @@ op_assign
 id|__log_rtas_error
 c_func
 (paren
-id|rtas_args
 )paren
 op_eq
 l_int|0
@@ -2110,8 +2101,6 @@ l_int|1
 id|log_rtas_error
 c_func
 (paren
-op_amp
-id|args
 )paren
 suffix:semicolon
 multiline_comment|/* Copy out args. */
