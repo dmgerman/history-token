@@ -231,7 +231,7 @@ r_return
 id|sr_do_ioctl
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -960,7 +960,7 @@ op_assign
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -977,7 +977,7 @@ c_cond
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1031,7 +1031,7 @@ r_return
 id|sr_do_ioctl
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1071,7 +1071,7 @@ c_func
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1127,7 +1127,7 @@ op_eq
 id|test_unit_ready
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1273,7 +1273,7 @@ c_cond
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1310,7 +1310,7 @@ id|ms_info-&gt;addr.lba
 op_assign
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1323,7 +1323,7 @@ id|ms_info-&gt;xa_flag
 op_assign
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1335,7 +1335,7 @@ op_logical_or
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1397,7 +1397,7 @@ op_assign
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1414,7 +1414,7 @@ c_cond
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1490,7 +1490,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1617,7 +1617,7 @@ op_assign
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1634,7 +1634,7 @@ c_cond
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1679,7 +1679,7 @@ c_cond
 id|sr_do_ioctl
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1741,7 +1741,7 @@ id|result
 comma
 id|target
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -2961,7 +2961,7 @@ id|target
 suffix:semicolon
 id|target
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev

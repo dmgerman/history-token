@@ -2578,17 +2578,9 @@ c_cond
 op_logical_neg
 id|num_args
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;have no arguments&bslash;n&quot;
-)paren
-suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2604,14 +2596,6 @@ l_int|7
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: we know it&squot;s a suspend action&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2835,15 +2819,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;%s: couldn&squot;t find any thing to do&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 id|done
 suffix:colon
 id|put_device

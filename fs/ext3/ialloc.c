@@ -576,8 +576,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|kdev_none
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
 )paren
 (brace
 id|printk

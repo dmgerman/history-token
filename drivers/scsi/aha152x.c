@@ -5719,7 +5719,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|shpnt-&gt;host_lock
 )paren
 suffix:semicolon
 id|mdelay
@@ -5732,7 +5732,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|shpnt-&gt;host_lock
 )paren
 suffix:semicolon
 id|free_irq

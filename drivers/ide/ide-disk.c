@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  linux/drivers/ide/ide-disk.c&t;Version 1.10&t;June 9, 2000&n; *&n; *  Copyright (C) 1994-1998  Linus Torvalds &amp; authors (see below)&n; */
 multiline_comment|/*&n; *  Mostly written by Mark Lord &lt;mlord@pobox.com&gt;&n; *                and Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; *                and Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; * This is the IDE/ATA disk driver, as evolved from hd.c and ide.c.&n; *&n; * Version 1.00&t;&t;move disk only code from ide.c to ide-disk.c&n; *&t;&t;&t;support optional byte-swapping of all data&n; * Version 1.01&t;&t;fix previous byte-swapping code&n; * Version 1.02&t;&t;remove &quot;, LBA&quot; from drive identification msgs&n; * Version 1.03&t;&t;fix display of id-&gt;buf_size for big-endian&n; * Version 1.04&t;&t;add /proc configurable settings and S.M.A.R.T support&n; * Version 1.05&t;&t;add capacity support for ATA3 &gt;= 8GB&n; * Version 1.06&t;&t;get boot-up messages to show full cyl count&n; * Version 1.07&t;&t;disable door-locking if it fails&n; * Version 1.08&t;&t;fixed CHS/LBA translations for ATA4 &gt; 8GB,&n; *&t;&t;&t;process of adding new ATA4 compliance.&n; *&t;&t;&t;fixed problems in allowing fdisk to see&n; *&t;&t;&t;the entire disk.&n; * Version 1.09&t;&t;added increment of rq-&gt;sector in ide_multwrite&n; *&t;&t;&t;added UDMA 3/4 reporting&n; * Version 1.10&t;&t;request queue changes, Ultra DMA 100&n; * Version 1.11&t;&t;Highmem I/O support, Jens Axboe &lt;axboe@suse.de&gt;&n; */
 DECL|macro|IDEDISK_VERSION
-mdefine_line|#define IDEDISK_VERSION&t;&quot;1.10&quot;
+mdefine_line|#define IDEDISK_VERSION&t;&quot;1.11&quot;
 DECL|macro|REALLY_SLOW_IO
 macro_line|#undef REALLY_SLOW_IO&t;&t;/* most systems can safely undef this */
 macro_line|#include &lt;linux/config.h&gt;
@@ -90,7 +90,6 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|idedisk_input_data
-r_static
 r_inline
 r_void
 id|idedisk_input_data

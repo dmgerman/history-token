@@ -6820,7 +6820,7 @@ suffix:semicolon
 id|ret
 op_assign
 op_minus
-id|NODEV
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond

@@ -1107,7 +1107,7 @@ id|filp
 r_int
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -1539,7 +1539,7 @@ c_func
 (paren
 l_string|&quot;sg_release: dev=%d&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|sdp-&gt;i_rdev
@@ -1708,7 +1708,7 @@ c_func
 (paren
 l_string|&quot;sg_read: dev=%d, count=%d&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|sdp-&gt;i_rdev
@@ -2525,7 +2525,7 @@ c_func
 (paren
 l_string|&quot;sg_write: dev=%d, count=%d&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|sdp-&gt;i_rdev
@@ -3844,7 +3844,7 @@ c_func
 (paren
 l_string|&quot;sg_ioctl: dev=%d, cmd=0x%x&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|sdp-&gt;i_rdev
@@ -5713,7 +5713,7 @@ c_func
 (paren
 l_string|&quot;sg_poll: dev=%d, res=0x%x&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|sdp-&gt;i_rdev
@@ -5798,7 +5798,7 @@ c_func
 (paren
 l_string|&quot;sg_fasync: dev=%d, mode=%d&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|sdp-&gt;i_rdev
@@ -5857,7 +5857,7 @@ suffix:semicolon
 r_int
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|SRpnt-&gt;sr_request.rq_dev
@@ -7095,7 +7095,7 @@ l_int|0
 suffix:semicolon
 id|sdp-&gt;i_rdev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|SCSI_GENERIC_MAJOR
@@ -13476,7 +13476,7 @@ l_int|0
 suffix:semicolon
 id|SRpnt-&gt;sr_request.rq_dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 l_int|0
@@ -15349,7 +15349,7 @@ suffix:semicolon
 )brace
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|sdp-&gt;i_rdev

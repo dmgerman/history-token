@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: config.c,v 2.57.6.20 2001/09/23 22:24:47 kai Exp $&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              by Kai Germaschewski &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * based on the teles driver from Jan den Ouden&n; *&n; */
+multiline_comment|/* $Id: config.c,v 1.1.4.2.2.1 2001/12/09 20:18:40 kai Exp $&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              by Kai Germaschewski &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * based on the teles driver from Jan den Ouden&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -546,40 +546,27 @@ id|HiSax_closecard
 suffix:semicolon
 DECL|macro|FIRST_CARD
 mdefine_line|#define FIRST_CARD { &bslash;&n;&t;DEFAULT_CARD, &bslash;&n;&t;DEFAULT_PROTO, &bslash;&n;&t;DEFAULT_CFG, &bslash;&n;&t;NULL, &bslash;&n;}
-DECL|macro|EMPTY_CARD
-mdefine_line|#define EMPTY_CARD&t;{0, DEFAULT_PROTO, {0, 0, 0, 0}, NULL}
 DECL|variable|cards
 r_struct
 id|IsdnCard
 id|cards
 (braket
+id|HISAX_MAX_CARDS
 )braket
 op_assign
 (brace
 id|FIRST_CARD
 comma
-id|EMPTY_CARD
-comma
-id|EMPTY_CARD
-comma
-id|EMPTY_CARD
-comma
-id|EMPTY_CARD
-comma
-id|EMPTY_CARD
-comma
-id|EMPTY_CARD
-comma
-id|EMPTY_CARD
-comma
 )brace
 suffix:semicolon
+DECL|macro|HISAX_IDSIZE
+mdefine_line|#define HISAX_IDSIZE (HISAX_MAX_CARDS*8)
 DECL|variable|__devinitdata
 r_static
 r_char
 id|HiSaxID
 (braket
-l_int|64
+id|HISAX_IDSIZE
 )braket
 id|__devinitdata
 op_assign
@@ -603,7 +590,7 @@ r_static
 r_int
 id|type
 (braket
-l_int|8
+id|HISAX_MAX_CARDS
 )braket
 id|__devinitdata
 op_assign
@@ -617,7 +604,7 @@ r_static
 r_int
 id|protocol
 (braket
-l_int|8
+id|HISAX_MAX_CARDS
 )braket
 id|__devinitdata
 op_assign
@@ -631,7 +618,7 @@ r_static
 r_int
 id|io
 (braket
-l_int|8
+id|HISAX_MAX_CARDS
 )braket
 id|__devinitdata
 op_assign
@@ -658,7 +645,7 @@ r_static
 r_int
 id|io0
 (braket
-l_int|8
+id|HISAX_MAX_CARDS
 )braket
 id|__devinitdata
 op_assign
@@ -672,7 +659,7 @@ r_static
 r_int
 id|io1
 (braket
-l_int|8
+id|HISAX_MAX_CARDS
 )braket
 id|__devinitdata
 op_assign
@@ -687,7 +674,7 @@ r_static
 r_int
 id|irq
 (braket
-l_int|8
+id|HISAX_MAX_CARDS
 )braket
 id|__devinitdata
 op_assign
@@ -701,7 +688,7 @@ r_static
 r_int
 id|mem
 (braket
-l_int|8
+id|HISAX_MAX_CARDS
 )braket
 id|__devinitdata
 op_assign
@@ -719,6 +706,8 @@ id|__devinitdata
 op_assign
 id|HiSaxID
 suffix:semicolon
+DECL|macro|PARM_PARA
+mdefine_line|#define PARM_PARA &quot;1-&quot; __MODULE_STRING(HISAX_MAX_CARDS) &quot;i&quot;
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -742,7 +731,7 @@ c_func
 (paren
 id|type
 comma
-l_string|&quot;1-8i&quot;
+id|PARM_PARA
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -750,7 +739,7 @@ c_func
 (paren
 id|protocol
 comma
-l_string|&quot;1-8i&quot;
+id|PARM_PARA
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -758,7 +747,7 @@ c_func
 (paren
 id|io
 comma
-l_string|&quot;1-8i&quot;
+id|PARM_PARA
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -766,7 +755,7 @@ c_func
 (paren
 id|irq
 comma
-l_string|&quot;1-8i&quot;
+id|PARM_PARA
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -774,7 +763,7 @@ c_func
 (paren
 id|mem
 comma
-l_string|&quot;1-8i&quot;
+id|PARM_PARA
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -791,7 +780,7 @@ c_func
 (paren
 id|io0
 comma
-l_string|&quot;1-8i&quot;
+id|PARM_PARA
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -799,7 +788,7 @@ c_func
 (paren
 id|io1
 comma
-l_string|&quot;1-8i&quot;
+id|PARM_PARA
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1136,6 +1125,15 @@ id|HISAX_MAX_CARDS
 )paren
 )paren
 (brace
+id|cards
+(braket
+id|i
+)braket
+dot
+id|protocol
+op_assign
+id|DEFAULT_PROTO
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1283,6 +1281,17 @@ op_star
 id|str
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|strlen
+c_func
+(paren
+id|str
+)paren
+OL
+id|HISAX_IDSIZE
+)paren
 id|strcpy
 c_func
 (paren
@@ -1291,13 +1300,16 @@ comma
 id|str
 )paren
 suffix:semicolon
-id|HiSax_id
-op_assign
-id|HiSaxID
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;HiSax: ID too long!&quot;
+)paren
 suffix:semicolon
 )brace
 r_else
-(brace
 id|strcpy
 c_func
 (paren
@@ -1310,7 +1322,6 @@ id|HiSax_id
 op_assign
 id|HiSaxID
 suffix:semicolon
-)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -5412,6 +5423,18 @@ id|nzproto
 op_increment
 suffix:semicolon
 )brace
+r_else
+(brace
+id|cards
+(braket
+id|j
+)braket
+dot
+id|protocol
+op_assign
+id|DEFAULT_PROTO
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -5869,6 +5892,15 @@ l_int|0
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* we need to check if further cards can be added */
+r_if
+c_cond
+(paren
+id|j
+OL
+id|HISAX_MAX_CARDS
+)paren
+(brace
 id|cards
 (braket
 id|j
@@ -5903,6 +5935,15 @@ l_int|0
 op_assign
 l_int|2
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|j
+OL
+id|HISAX_MAX_CARDS
+)paren
+(brace
 id|cards
 (braket
 id|j
@@ -5937,6 +5978,15 @@ l_int|0
 op_assign
 l_int|3
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|j
+OL
+id|HISAX_MAX_CARDS
+)paren
+(brace
 id|cards
 (braket
 id|j
@@ -5970,6 +6020,7 @@ l_int|0
 op_assign
 l_int|4
 suffix:semicolon
+)brace
 )brace
 r_break
 suffix:semicolon
@@ -6316,6 +6367,18 @@ id|i
 )braket
 suffix:semicolon
 )brace
+r_else
+(brace
+id|cards
+(braket
+id|i
+)braket
+dot
+id|protocol
+op_assign
+id|DEFAULT_PROTO
+suffix:semicolon
+)brace
 )brace
 id|cards
 (braket
@@ -6564,6 +6627,18 @@ id|protocol
 (braket
 id|i
 )braket
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cards
+(braket
+id|i
+)braket
+dot
+id|protocol
+op_assign
+id|DEFAULT_PROTO
 suffix:semicolon
 )brace
 )brace
@@ -6816,6 +6891,18 @@ id|i
 )braket
 suffix:semicolon
 )brace
+r_else
+(brace
+id|cards
+(braket
+id|i
+)braket
+dot
+id|protocol
+op_assign
+id|DEFAULT_PROTO
+suffix:semicolon
+)brace
 )brace
 id|cards
 (braket
@@ -7064,6 +7151,18 @@ id|protocol
 (braket
 id|i
 )braket
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cards
+(braket
+id|i
+)braket
+dot
+id|protocol
+op_assign
+id|DEFAULT_PROTO
 suffix:semicolon
 )brace
 )brace

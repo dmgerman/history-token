@@ -1506,7 +1506,7 @@ id|handler
 op_assign
 id|input_table
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

@@ -2,6 +2,7 @@ macro_line|#ifndef _BLK_H
 DECL|macro|_BLK_H
 mdefine_line|#define _BLK_H
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/elevator.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -119,9 +120,20 @@ op_amp
 id|req-&gt;queuelist
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|req-&gt;q
+)paren
+id|elv_remove_request
+c_func
+(paren
+id|req-&gt;q
+comma
+id|req
+)paren
+suffix:semicolon
 )brace
-DECL|macro|__elv_next_request
-mdefine_line|#define __elv_next_request(q)&t;(q)-&gt;elevator.elevator_next_req_fn((q))
 DECL|function|elv_next_request
 r_extern
 r_inline
@@ -238,12 +250,12 @@ r_return
 id|rq
 suffix:semicolon
 )brace
-DECL|macro|__elv_add_request_core
-mdefine_line|#define __elv_add_request_core(q, rq, where, plug)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((plug))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;blk_plug_device((q));&t;&t;&t;&t;&bslash;&n;&t;&t;(q)-&gt;elevator.elevator_add_req_fn((q), (rq), (where));&t;&bslash;&n;&t;} while (0)
-DECL|macro|__elv_add_request
-mdefine_line|#define __elv_add_request(q, rq, back, p) do {&t;&t;&t;&t;      &bslash;&n;&t;if ((back))&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;__elv_add_request_core((q), (rq), (q)-&gt;queue_head.prev, (p)); &bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;__elv_add_request_core((q), (rq), &amp;(q)-&gt;queue_head, 0);&t;      &bslash;&n;} while (0)
+DECL|macro|_elv_add_request_core
+mdefine_line|#define _elv_add_request_core(q, rq, where, plug)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((plug))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;blk_plug_device((q));&t;&t;&t;&t;&bslash;&n;&t;&t;(q)-&gt;elevator.elevator_add_req_fn((q), (rq), (where));&t;&bslash;&n;&t;} while (0)
+DECL|macro|_elv_add_request
+mdefine_line|#define _elv_add_request(q, rq, back, p) do {&t;&t;&t;&t;      &bslash;&n;&t;if ((back))&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;_elv_add_request_core((q), (rq), (q)-&gt;queue_head.prev, (p)); &bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;_elv_add_request_core((q), (rq), &amp;(q)-&gt;queue_head, 0);&t;      &bslash;&n;} while (0)
 DECL|macro|elv_add_request
-mdefine_line|#define elv_add_request(q, rq, back) __elv_add_request((q), (rq), (back), 1)
+mdefine_line|#define elv_add_request(q, rq, back) _elv_add_request((q), (rq), (back), 1)
 macro_line|#if defined(MAJOR_NR) || defined(IDE_DRIVER)
 DECL|macro|DEVICE_ON
 macro_line|#undef DEVICE_ON

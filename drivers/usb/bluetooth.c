@@ -1027,7 +1027,7 @@ id|bluetooth
 op_assign
 id|get_bluetooth_by_minor
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

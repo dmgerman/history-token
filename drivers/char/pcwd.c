@@ -1274,7 +1274,7 @@ id|filep
 r_switch
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|ino-&gt;i_rdev
@@ -1410,7 +1410,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
@@ -1492,7 +1492,7 @@ id|filep
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|ino-&gt;i_rdev

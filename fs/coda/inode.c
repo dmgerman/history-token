@@ -208,7 +208,7 @@ c_func
 id|inode-&gt;i_mode
 )paren
 op_logical_or
-id|MAJOR
+id|major
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -243,7 +243,7 @@ suffix:semicolon
 )brace
 id|idx
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

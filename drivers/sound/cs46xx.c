@@ -8423,9 +8423,10 @@ id|file
 )paren
 (brace
 r_int
+r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -15216,9 +15217,10 @@ op_star
 id|entry
 suffix:semicolon
 r_int
+r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -19045,9 +19047,10 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -19322,9 +19325,10 @@ id|file
 )paren
 (brace
 r_int
+r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

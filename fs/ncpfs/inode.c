@@ -773,7 +773,7 @@ id|server-&gt;m.gid
 suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 id|inode-&gt;i_blksize
 op_assign

@@ -776,7 +776,7 @@ suffix:semicolon
 r_int
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

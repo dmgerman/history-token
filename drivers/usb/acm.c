@@ -915,7 +915,7 @@ id|acm
 op_assign
 id|acm_table
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

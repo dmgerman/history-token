@@ -7542,12 +7542,11 @@ suffix:semicolon
 id|u_int32_t
 id|datasize
 suffix:semicolon
-multiline_comment|/* free io_request_lock */
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SC-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 multiline_comment|/* wait for the command to finish */
@@ -7563,7 +7562,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SC-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 multiline_comment|/* command finished -- copy back */
@@ -8081,10 +8080,26 @@ id|regs
 id|ips_ha_t
 op_star
 id|ha
+op_assign
+(paren
+id|ips_ha_t
+op_star
+)paren
+id|dev_id
 suffix:semicolon
 r_int
 r_int
 id|cpu_flags
+suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|ips_sh
+(braket
+id|ha-&gt;host_num
+)braket
 suffix:semicolon
 id|METHOD_TRACE
 c_func
@@ -8094,19 +8109,11 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-id|ha
-op_assign
-(paren
-id|ips_ha_t
-op_star
-)paren
-id|dev_id
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -8128,7 +8135,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -8156,7 +8163,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -8184,7 +8191,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -8213,7 +8220,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -8226,6 +8233,8 @@ id|ha
 comma
 id|IPS_INTR_ON
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
@@ -10262,12 +10271,12 @@ op_star
 op_amp
 id|flash_data
 suffix:semicolon
-multiline_comment|/* Unlock the master lock */
+multiline_comment|/* Unlock the per-board lock */
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SC-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|queue_task
@@ -10294,12 +10303,12 @@ op_amp
 id|ha-&gt;flash_ioctl_sem
 )paren
 suffix:semicolon
-multiline_comment|/* Obtain the master lock */
+multiline_comment|/* Obtain the per-board lock */
 id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SC-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
@@ -10746,12 +10755,12 @@ op_star
 op_amp
 id|flash_data
 suffix:semicolon
-multiline_comment|/* Unlock the master lock */
+multiline_comment|/* Unlock the per-board lock */
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SC-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|queue_task
@@ -10778,12 +10787,12 @@ op_amp
 id|ha-&gt;flash_ioctl_sem
 )paren
 suffix:semicolon
-multiline_comment|/* Obtain the master lock */
+multiline_comment|/* Obtain the per-board lock */
 id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SC-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
@@ -14675,6 +14684,11 @@ r_int
 r_int
 id|cpu_flags2
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
@@ -14691,6 +14705,13 @@ id|ha
 )paren
 r_return
 suffix:semicolon
+id|host
+op_assign
+id|ips_sh
+(braket
+id|ha-&gt;host_num
+)braket
+suffix:semicolon
 multiline_comment|/*&n;    * Block access to the queue function so&n;    * this command won&squot;t time out&n;    */
 r_if
 c_cond
@@ -14704,7 +14725,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|cpu_flags2
 )paren
@@ -14812,7 +14833,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|cpu_flags2
 )paren
@@ -25545,6 +25566,16 @@ op_eq
 id|IPS_INTR_HAL
 )paren
 (brace
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|ips_sh
+(braket
+id|ha-&gt;host_num
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -25570,7 +25601,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 r_while
@@ -25612,7 +25643,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 )brace

@@ -5107,33 +5107,6 @@ r_goto
 id|kill_rq
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
-r_if
-c_cond
-(paren
-id|rq-&gt;bh
-op_logical_and
-op_logical_neg
-id|buffer_locked
-c_func
-(paren
-id|rq-&gt;bh
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: block not locked&bslash;n&quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-r_goto
-id|kill_rq
-suffix:semicolon
-)brace
-macro_line|#endif
 id|block
 op_assign
 id|rq-&gt;sector

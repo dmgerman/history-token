@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hisax.h,v 2.52.6.9 2001/09/23 22:24:48 kai Exp $&n; *&n; * Basic declarations, defines and prototypes&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: hisax.h,v 1.1.4.1.2.1 2001/12/09 20:18:40 kai Exp $&n; *&n; * Basic declarations, defines and prototypes&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -3743,8 +3743,6 @@ DECL|macro|MON0_TX
 mdefine_line|#define  MON0_TX&t;4
 DECL|macro|MON1_TX
 mdefine_line|#define  MON1_TX&t;8
-DECL|macro|HISAX_MAX_CARDS
-mdefine_line|#define&t; HISAX_MAX_CARDS&t;8
 DECL|macro|ISDN_CTYPE_16_0
 mdefine_line|#define  ISDN_CTYPE_16_0&t;1
 DECL|macro|ISDN_CTYPE_8_0

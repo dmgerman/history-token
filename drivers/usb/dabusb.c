@@ -2486,7 +2486,7 @@ id|file
 r_int
 id|devnum
 op_assign
-id|MINOR
+id|minor
 (paren
 id|inode-&gt;i_rdev
 )paren

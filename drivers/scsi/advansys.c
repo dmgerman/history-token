@@ -6776,11 +6776,6 @@ mdefine_line|#define ASC_PRT_NEXT() &bslash;&n;    if (cp) { &bslash;&n;        
 DECL|macro|ASC_MIN
 mdefine_line|#define ASC_MIN(a, b) (((a) &lt; (b)) ? (a) : (b))
 macro_line|#endif /* CONFIG_PROC_FS */
-multiline_comment|/*&n; * XXX - Release and acquire the io_request_lock. These macros are needed&n; * because the 2.4 kernel SCSI mid-level driver holds the &squot;io_request_lock&squot;&n; * on entry to SCSI low-level drivers.&n; *&n; * These definitions and all code that uses code should be removed when the&n; * SCSI mid-level driver no longer holds the &squot;io_request_lock&squot; on entry to&n; * SCSI low-level driver detect, queuecommand, and reset entrypoints.&n; *&n; * The interrupt flags values doesn&squot;t matter in the macros because the&n; * SCSI mid-level will save and restore the flags values before and after&n; * calling advansys_detect, advansys_queuecommand, and advansys_reset where&n; * these macros are used. We do want interrupts enabled after the lock is&n; * released so an explicit sti() is done. The driver only needs interrupts&n; * disabled when it acquires the per board lock.&n; */
-DECL|macro|ASC_UNLOCK_IO_REQUEST_LOCK
-mdefine_line|#define ASC_UNLOCK_IO_REQUEST_LOCK &bslash;&n;    { &bslash;&n;        ulong flags; /* flags value not needed, cf. comment above. */ &bslash;&n;        save_flags(flags); &bslash;&n;        spin_unlock_irqrestore(&amp;io_request_lock, flags); &bslash;&n;        sti(); /* enable interrupts */ &bslash;&n;    }
-DECL|macro|ASC_LOCK_IO_REQUEST_LOCK
-mdefine_line|#define ASC_LOCK_IO_REQUEST_LOCK &bslash;&n;    { &bslash;&n;        ulong flags; /* flags value not needed, cf. comment above. */ &bslash;&n;        spin_lock_irqsave(&amp;io_request_lock, flags); &bslash;&n;    }
 multiline_comment|/* Asc Library return codes */
 DECL|macro|ASC_TRUE
 mdefine_line|#define ASC_TRUE        1
@@ -7459,11 +7454,6 @@ id|ulong
 id|last_reset
 suffix:semicolon
 multiline_comment|/* Saved last reset time */
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
-multiline_comment|/* Board spinlock */
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* /proc/scsi/advansys/[0...] */
 DECL|member|prtbuf
@@ -9640,8 +9630,6 @@ comma
 l_string|&quot;advansys_detect: begin&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * XXX - Remove this comment and the next line when SCSI mid-level&n;     * no longer acquires &squot;io_request_lock&squot; before calling the SCSI&n;     * low-level detect entrypoint.&n;     */
-id|ASC_UNLOCK_IO_REQUEST_LOCK
 macro_line|#if ASC_LINUX_KERNEL24
 id|tpnt-&gt;proc_name
 op_assign
@@ -10488,11 +10476,6 @@ op_assign
 id|asc_board_count
 op_minus
 l_int|1
-suffix:semicolon
-multiline_comment|/* Initialize spinlock. */
-id|boardp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n;             * Handle both narrow and wide boards.&n;             *&n;             * If a Wide board was detected, set the board structure&n;             * wide board flag. Set-up the board structure based on&n;             * the board type.&n;             */
 macro_line|#ifdef CONFIG_PCI
@@ -13251,8 +13234,6 @@ id|shp
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;     * XXX - Remove this comment and the next line when SCSI mid-level&n;     * no longer acquires &squot;io_request_lock&squot; before calling the SCSI&n;     * low-level detect entrypoint.&n;     */
-id|ASC_LOCK_IO_REQUEST_LOCK
 id|ASC_DBG1
 c_func
 (paren
@@ -13870,13 +13851,11 @@ comma
 id|queuecommand
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * XXX - Remove this comment and the next line when SCSI mid-level&n;     * no longer acquires &squot;io_request_lock&squot; before calling the SCSI&n;     * low-level queuecommand entrypoint.&n;     */
-id|ASC_UNLOCK_IO_REQUEST_LOCK
 id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|boardp-&gt;lock
+id|shp-&gt;host_lock
 comma
 id|flags
 )paren
@@ -13927,7 +13906,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|boardp-&gt;lock
+id|shp-&gt;host_lock
 comma
 id|flags
 )paren
@@ -14033,13 +14012,11 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|boardp-&gt;lock
+id|shp-&gt;host_lock
 comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * XXX - Remove this comment and the next line when SCSI mid-level&n;     * no longer acquires &squot;io_request_lock&squot; before calling the SCSI&n;     * low-level queuecommand entrypoint.&n;     */
-id|ASC_LOCK_IO_REQUEST_LOCK
 r_return
 l_int|0
 suffix:semicolon
@@ -14178,7 +14155,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|boardp-&gt;lock
+id|shp-&gt;host_lock
 comma
 id|flags
 )paren
@@ -14195,7 +14172,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|boardp-&gt;lock
+id|shp-&gt;host_lock
 comma
 id|flags
 )paren
@@ -14212,13 +14189,11 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|boardp-&gt;lock
+id|shp-&gt;host_lock
 comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * XXX - Remove this comment and the next line when SCSI mid-level&n;     * no longer acquires &squot;io_request_lock&squot; before calling the SCSI&n;     * low-level reset entrypoint.&n;     */
-id|ASC_UNLOCK_IO_REQUEST_LOCK
 r_if
 c_cond
 (paren
@@ -14316,7 +14291,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|boardp-&gt;lock
+id|shp-&gt;host_lock
 comma
 id|flags
 )paren
@@ -14387,7 +14362,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|boardp-&gt;lock
+id|shp-&gt;host_lock
 comma
 id|flags
 )paren
@@ -14708,7 +14683,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|boardp-&gt;lock
+id|shp-&gt;host_lock
 comma
 id|flags
 )paren
@@ -14729,8 +14704,6 @@ id|done_scp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * XXX - Remove this comment and the next line when SCSI mid-level&n;     * no longer acquires &squot;io_request_lock&squot; before calling the SCSI&n;     * low-level reset entrypoint.&n;     */
-id|ASC_LOCK_IO_REQUEST_LOCK
 id|ASC_DBG1
 c_func
 (paren
@@ -15235,15 +15208,22 @@ id|i
 op_increment
 )paren
 (brace
+r_struct
+id|Scsi_Host
+op_star
+id|shp
+op_assign
+id|asc_host
+(braket
+id|i
+)braket
+suffix:semicolon
 id|boardp
 op_assign
 id|ASC_BOARDP
 c_func
 (paren
-id|asc_host
-(braket
-id|i
-)braket
+id|shp
 )paren
 suffix:semicolon
 id|ASC_DBG2
@@ -15265,7 +15245,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|boardp-&gt;lock
+id|shp-&gt;host_lock
 comma
 id|flags
 )paren
@@ -15502,7 +15482,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|boardp-&gt;lock
+id|shp-&gt;host_lock
 comma
 id|flags
 )paren

@@ -326,6 +326,7 @@ r_int
 id|devsize
 suffix:semicolon
 r_int
+r_int
 id|major
 comma
 id|minor
@@ -443,7 +444,7 @@ l_int|0UL
 suffix:semicolon
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|sb-&gt;s_dev
@@ -451,7 +452,7 @@ id|sb-&gt;s_dev
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|sb-&gt;s_dev

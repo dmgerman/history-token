@@ -196,6 +196,14 @@ r_int
 r_int
 id|data_reg
 suffix:semicolon
+DECL|variable|sonycd535_lock
+r_static
+id|spinlock_t
+id|sonycd535_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+multiline_comment|/* queue lock */
 DECL|variable|initialized
 r_static
 r_int
@@ -2350,16 +2358,28 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|CURRENT-&gt;flags
+op_amp
+id|REQ_CMD
+)paren
+(brace
 r_switch
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 )paren
 (brace
 r_case
 id|READ
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * If the block address is invalid or the request goes beyond the end of&n;&t;&t;&t; * the media, return an error.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * If the block address is invalid or the request goes beyond the end of&n;&t;&t;&t;&t; * the media, return an error.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2414,7 +2434,7 @@ OL
 id|nsect
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * If the requested sector is not currently in the read-ahead buffer,&n;&t;&t;&t;&t; * it must be read in.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * If the requested sector is not currently in the read-ahead buffer,&n;&t;&t;&t;&t;&t; * it must be read in.&n;&t;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2451,7 +2471,7 @@ comma
 id|params
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * If the full read-ahead would go beyond the end of the media, trim&n;&t;&t;&t;&t;&t; * it back to read just till the end of the media.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * If the full read-ahead would go beyond the end of the media, trim&n;&t;&t;&t;&t;&t;&t; * it back to read just till the end of the media.&n;&t;&t;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2520,7 +2540,7 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Read the data.  If the drive was not spinning,&n;&t;&t;&t;&t;&t; * spin it up and try some more.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Read the data.  If the drive was not spinning,&n;&t;&t;&t;&t;&t;&t; * spin it up and try some more.&n;&t;&t;&t;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -2533,9 +2553,9 @@ op_increment
 id|spin_up_retry
 )paren
 (brace
-multiline_comment|/* This loop has been modified to support the Sony&n;&t;&t;&t;&t;&t;&t; * CDU-510/515 series, thanks to Claudio Porfiri &n;&t;&t;&t;&t;&t;&t; * &lt;C.Porfiri@nisms.tei.ericsson.se&gt;.&n;&t;&t;&t;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * This part is to deal with very slow hardware.  We&n;&t;&t;&t;&t;&t;&t; * try at most MAX_SPINUP_RETRY times to read the same&n;&t;&t;&t;&t;&t;&t; * block.  A check for seek_and_read_N_blocks&squot; result is&n;&t;&t;&t;&t;&t;&t; * performed; if the result is wrong, the CDROM&squot;s engine&n;&t;&t;&t;&t;&t;&t; * is restarted and the operation is tried again.&n;&t;&t;&t;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * 1995-06-01: The system got problems when downloading&n;&t;&t;&t;&t;&t;&t; * from Slackware CDROM, the problem seems to be:&n;&t;&t;&t;&t;&t;&t; * seek_and_read_N_blocks returns BAD_STATUS and we&n;&t;&t;&t;&t;&t;&t; * should wait for a while before retrying, so a new&n;&t;&t;&t;&t;&t;&t; * part was added to discriminate the return value from&n;&t;&t;&t;&t;&t;&t; * seek_and_read_N_blocks for the various cases.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* This loop has been modified to support the Sony&n;&t;&t;&t;&t;&t;&t;&t; * CDU-510/515 series, thanks to Claudio Porfiri &n;&t;&t;&t;&t;&t;&t;&t; * &lt;C.Porfiri@nisms.tei.ericsson.se&gt;.&n;&t;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t;&t;&t; * This part is to deal with very slow hardware.  We&n;&t;&t;&t;&t;&t;&t;&t; * try at most MAX_SPINUP_RETRY times to read the same&n;&t;&t;&t;&t;&t;&t;&t; * block.  A check for seek_and_read_N_blocks&squot; result is&n;&t;&t;&t;&t;&t;&t;&t; * performed; if the result is wrong, the CDROM&squot;s engine&n;&t;&t;&t;&t;&t;&t;&t; * is restarted and the operation is tried again.&n;&t;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t;&t;&t; * 1995-06-01: The system got problems when downloading&n;&t;&t;&t;&t;&t;&t;&t; * from Slackware CDROM, the problem seems to be:&n;&t;&t;&t;&t;&t;&t;&t; * seek_and_read_N_blocks returns BAD_STATUS and we&n;&t;&t;&t;&t;&t;&t;&t; * should wait for a while before retrying, so a new&n;&t;&t;&t;&t;&t;&t;&t; * part was added to discriminate the return value from&n;&t;&t;&t;&t;&t;&t;&t; * seek_and_read_N_blocks for the various cases.&n;&t;&t;&t;&t;&t;&t;&t; */
 r_int
 id|readStatus
 op_assign
@@ -2684,7 +2704,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t;&t;&t; * The data is in memory now, copy it to the buffer and advance to the&n;&t;&t;&t;&t; * next block to read.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * The data is in memory now, copy it to the buffer and advance to the&n;&t;&t;&t;&t;&t; * next block to read.&n;&t;&t;&t;&t;&t; */
 id|copyoff
 op_assign
 id|block
@@ -2754,6 +2774,7 @@ c_func
 l_string|&quot;Unknown SONY CD cmd&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 )brace
@@ -6076,6 +6097,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|sonycd535_lock
 )paren
 suffix:semicolon
 id|blksize_size

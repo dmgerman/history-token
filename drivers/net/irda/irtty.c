@@ -642,7 +642,7 @@ l_string|&quot;%s%d&quot;
 comma
 id|tty-&gt;driver.name
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -3249,7 +3249,7 @@ l_string|&quot;%s%d&quot;
 comma
 id|tty-&gt;driver.name
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

@@ -4387,13 +4387,13 @@ c_func
 id|KERN_WARNING
 l_string|&quot;isdn_tty: null info_struct for (%d, %d) in %s&bslash;n&quot;
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|device
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -4420,13 +4420,13 @@ c_func
 id|KERN_WARNING
 l_string|&quot;isdn_tty: bad magic for modem struct (%d, %d) in %s&bslash;n&quot;
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|device
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -7500,7 +7500,7 @@ id|line
 suffix:semicolon
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

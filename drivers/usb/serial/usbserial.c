@@ -487,6 +487,7 @@ op_star
 id|get_serial_by_minor
 (paren
 r_int
+r_int
 id|minor
 )paren
 (brace
@@ -508,6 +509,7 @@ r_int
 id|num_ports
 comma
 r_int
+r_int
 op_star
 id|minor
 )paren
@@ -519,6 +521,7 @@ id|serial
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
 r_int
 id|i
 comma
@@ -1009,6 +1012,7 @@ op_star
 id|port
 suffix:semicolon
 r_int
+r_int
 id|portNumber
 suffix:semicolon
 id|dbg
@@ -1027,7 +1031,7 @@ id|serial
 op_assign
 id|get_serial_by_minor
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -1053,7 +1057,7 @@ suffix:semicolon
 multiline_comment|/* set up our port structure making the tty driver remember our port object, and us it */
 id|portNumber
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

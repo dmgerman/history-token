@@ -89,7 +89,7 @@ id|usb_device
 op_star
 id|dev
 suffix:semicolon
-id|kdev_t
+r_int
 id|scn_minor
 suffix:semicolon
 r_int
@@ -315,7 +315,7 @@ id|scn_usb_data
 op_star
 id|scn
 suffix:semicolon
-id|kdev_t
+r_int
 id|scn_minor
 suffix:semicolon
 id|scn_minor
@@ -454,7 +454,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|kdev_t
+r_int
 id|scn_minor
 suffix:semicolon
 r_int
@@ -839,7 +839,7 @@ multiline_comment|/* Overall count of bytes_read */
 id|ssize_t
 id|ret
 suffix:semicolon
-id|kdev_t
+r_int
 id|scn_minor
 suffix:semicolon
 r_int
@@ -1301,7 +1301,7 @@ id|usb_device
 op_star
 id|dev
 suffix:semicolon
-id|kdev_t
+r_int
 id|scn_minor
 suffix:semicolon
 id|scn_minor
@@ -1949,7 +1949,7 @@ suffix:semicolon
 r_int
 id|ix
 suffix:semicolon
-id|kdev_t
+r_int
 id|scn_minor
 suffix:semicolon
 r_char

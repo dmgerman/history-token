@@ -10996,7 +10996,7 @@ id|cam
 )paren
 r_return
 op_minus
-id|NODEV
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* procedure described in developer&squot;s guide p3-28 */

@@ -1973,7 +1973,11 @@ id|sbi-&gt;mode
 op_or
 id|S_IFCHR
 comma
+id|kdev_t_to_nr
+c_func
+(paren
 id|np-&gt;kdev
+)paren
 )paren
 suffix:semicolon
 )brace

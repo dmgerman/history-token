@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: b1dma.c,v 1.11.6.8 2001/09/23 22:24:33 kai Exp $&n; * &n; * Common module for AVM B1 cards that support dma with AMCC&n; * &n; * Copyright 2000 by Carsten Paeth &lt;calle@calle.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: b1dma.c,v 1.1.4.1.2.1 2001/12/21 15:00:17 kai Exp $&n; * &n; * Common module for AVM B1 cards that support dma with AMCC&n; * &n; * Copyright 2000 by Carsten Paeth &lt;calle@calle.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -26,7 +26,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.11.6.8 $&quot;
+l_string|&quot;$Revision: 1.1.4.1.2.1 $&quot;
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 id|MODULE_DESCRIPTION
@@ -1879,7 +1879,7 @@ id|skb-&gt;data
 suffix:semicolon
 id|p
 op_assign
-id|dma-&gt;sendbuf
+id|dma-&gt;sendbuf.dmabuf
 suffix:semicolon
 r_if
 c_cond
@@ -1973,7 +1973,7 @@ op_minus
 id|__u8
 op_star
 )paren
-id|dma-&gt;sendbuf
+id|dma-&gt;sendbuf.dmabuf
 suffix:semicolon
 macro_line|#ifdef CONFIG_B1DMA_DEBUG
 id|printk
@@ -2039,7 +2039,7 @@ macro_line|#endif
 id|memcpy
 c_func
 (paren
-id|dma-&gt;sendbuf
+id|dma-&gt;sendbuf.dmabuf
 comma
 id|skb-&gt;data
 op_plus
@@ -2069,11 +2069,7 @@ id|card-&gt;mbase
 op_plus
 id|AMCC_TXPTR
 comma
-id|virt_to_phys
-c_func
-(paren
-id|dma-&gt;sendbuf
-)paren
+id|dma-&gt;sendbuf.dmaaddr
 )paren
 suffix:semicolon
 id|b1dmaoutmeml
@@ -2278,7 +2274,7 @@ r_void
 op_star
 id|p
 op_assign
-id|dma-&gt;recvbuf
+id|dma-&gt;recvbuf.dmabuf
 op_plus
 l_int|4
 suffix:semicolon
@@ -3036,11 +3032,12 @@ op_ne
 l_int|0
 )paren
 (brace
-id|__u8
+r_struct
+id|avmcard_dmainfo
 op_star
-id|recvbuf
+id|dma
 op_assign
-id|card-&gt;dma-&gt;recvbuf
+id|card-&gt;dma
 suffix:semicolon
 id|__u32
 id|rxlen
@@ -3053,7 +3050,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|card-&gt;dma-&gt;recvlen
+id|dma-&gt;recvlen
 op_assign
 op_star
 (paren
@@ -3061,13 +3058,13 @@ op_star
 id|__u32
 op_star
 )paren
-id|recvbuf
+id|dma-&gt;recvbuf.dmabuf
 )paren
 suffix:semicolon
 id|rxlen
 op_assign
 (paren
-id|card-&gt;dma-&gt;recvlen
+id|dma-&gt;recvlen
 op_plus
 l_int|3
 )paren
@@ -3082,13 +3079,9 @@ id|card-&gt;mbase
 op_plus
 id|AMCC_RXPTR
 comma
-id|virt_to_phys
-c_func
-(paren
-id|recvbuf
+id|dma-&gt;recvbuf.dmaaddr
 op_plus
 l_int|4
-)paren
 )paren
 suffix:semicolon
 id|b1dmaoutmeml
@@ -3110,7 +3103,7 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|card-&gt;dma-&gt;recvlen
+id|dma-&gt;recvlen
 op_assign
 l_int|0
 suffix:semicolon
@@ -3121,11 +3114,7 @@ id|card-&gt;mbase
 op_plus
 id|AMCC_RXPTR
 comma
-id|virt_to_phys
-c_func
-(paren
-id|recvbuf
-)paren
+id|dma-&gt;recvbuf.dmaaddr
 )paren
 suffix:semicolon
 id|b1dmaoutmeml
@@ -3814,11 +3803,7 @@ id|card-&gt;mbase
 op_plus
 id|AMCC_RXPTR
 comma
-id|virt_to_phys
-c_func
-(paren
-id|card-&gt;dma-&gt;recvbuf
-)paren
+id|card-&gt;dma-&gt;recvbuf.dmaaddr
 )paren
 suffix:semicolon
 id|b1dmaoutmeml
@@ -4419,11 +4404,11 @@ op_star
 id|s
 suffix:semicolon
 id|__u32
-id|txaddr
+id|txoff
 comma
 id|txlen
 comma
-id|rxaddr
+id|rxoff
 comma
 id|rxlen
 comma
@@ -4929,14 +4914,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|txaddr
+id|txoff
 op_assign
 (paren
-id|__u32
+id|dma_addr_t
 )paren
-id|phys_to_virt
-c_func
-(paren
 id|b1dmainmeml
 c_func
 (paren
@@ -4944,14 +4926,8 @@ id|card-&gt;mbase
 op_plus
 l_int|0x2c
 )paren
-)paren
-suffix:semicolon
-id|txaddr
-op_sub_assign
-(paren
-id|__u32
-)paren
-id|card-&gt;dma-&gt;sendbuf
+op_minus
+id|card-&gt;dma-&gt;sendbuf.dmaaddr
 suffix:semicolon
 id|txlen
 op_assign
@@ -4963,14 +4939,11 @@ op_plus
 l_int|0x30
 )paren
 suffix:semicolon
-id|rxaddr
+id|rxoff
 op_assign
 (paren
-id|__u32
+id|dma_addr_t
 )paren
-id|phys_to_virt
-c_func
-(paren
 id|b1dmainmeml
 c_func
 (paren
@@ -4978,14 +4951,8 @@ id|card-&gt;mbase
 op_plus
 l_int|0x24
 )paren
-)paren
-suffix:semicolon
-id|rxaddr
-op_sub_assign
-(paren
-id|__u32
-)paren
-id|card-&gt;dma-&gt;recvbuf
+op_minus
+id|card-&gt;dma-&gt;recvbuf.dmaaddr
 suffix:semicolon
 id|rxlen
 op_assign
@@ -5070,7 +5037,7 @@ comma
 r_int
 r_int
 )paren
-id|txaddr
+id|txoff
 )paren
 suffix:semicolon
 id|len
@@ -5110,7 +5077,7 @@ comma
 r_int
 r_int
 )paren
-id|rxaddr
+id|rxoff
 )paren
 suffix:semicolon
 id|len

@@ -799,7 +799,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|current-&gt;tty-&gt;device
@@ -811,7 +811,7 @@ r_return
 id|fgc
 suffix:semicolon
 r_return
-id|MINOR
+id|minor
 c_func
 (paren
 id|current-&gt;tty-&gt;device

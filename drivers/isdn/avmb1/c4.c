@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: c4.c,v 1.20.6.11 2001/09/23 22:24:33 kai Exp $&n; * &n; * Module for AVM C4 &amp; C2 card.&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: c4.c,v 1.1.4.1.2.1 2001/12/21 15:00:17 kai Exp $&n; * &n; * Module for AVM C4 &amp; C2 card.&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -24,7 +24,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.20.6.11 $&quot;
+l_string|&quot;$Revision: 1.1.4.1.2.1 $&quot;
 suffix:semicolon
 DECL|macro|CONFIG_C4_DEBUG
 macro_line|#undef CONFIG_C4_DEBUG
@@ -2059,7 +2059,7 @@ id|skb-&gt;data
 suffix:semicolon
 id|p
 op_assign
-id|dma-&gt;sendbuf
+id|dma-&gt;sendbuf.dmabuf
 suffix:semicolon
 r_if
 c_cond
@@ -2153,7 +2153,7 @@ op_minus
 id|__u8
 op_star
 )paren
-id|dma-&gt;sendbuf
+id|dma-&gt;sendbuf.dmabuf
 suffix:semicolon
 macro_line|#ifdef CONFIG_C4_DEBUG
 id|printk
@@ -2219,7 +2219,7 @@ macro_line|#endif
 id|memcpy
 c_func
 (paren
-id|dma-&gt;sendbuf
+id|dma-&gt;sendbuf.dmabuf
 comma
 id|skb-&gt;data
 op_plus
@@ -2249,11 +2249,7 @@ id|card-&gt;mbase
 op_plus
 id|MBOX_DOWN_ADDR
 comma
-id|virt_to_phys
-c_func
-(paren
-id|dma-&gt;sendbuf
-)paren
+id|dma-&gt;sendbuf.dmaaddr
 )paren
 suffix:semicolon
 id|c4outmeml
@@ -2444,7 +2440,7 @@ r_void
 op_star
 id|p
 op_assign
-id|dma-&gt;recvbuf
+id|dma-&gt;recvbuf.dmabuf
 suffix:semicolon
 id|__u32
 id|ApplId
@@ -3576,10 +3572,7 @@ id|card-&gt;mbase
 op_plus
 id|MBOX_UP_LEN
 comma
-r_sizeof
-(paren
-id|card-&gt;dma-&gt;recvbuf
-)paren
+id|card-&gt;dma-&gt;recvbuf.size
 )paren
 suffix:semicolon
 id|c4outmeml
@@ -4613,11 +4606,7 @@ id|card-&gt;mbase
 op_plus
 id|MBOX_UP_ADDR
 comma
-id|virt_to_phys
-c_func
-(paren
-id|card-&gt;dma-&gt;recvbuf
-)paren
+id|card-&gt;dma-&gt;recvbuf.dmaaddr
 )paren
 suffix:semicolon
 id|c4outmeml
@@ -4627,10 +4616,7 @@ id|card-&gt;mbase
 op_plus
 id|MBOX_UP_LEN
 comma
-r_sizeof
-(paren
-id|card-&gt;dma-&gt;recvbuf
-)paren
+id|card-&gt;dma-&gt;recvbuf.size
 )paren
 suffix:semicolon
 id|c4outmeml
@@ -4917,7 +4903,7 @@ c_func
 id|card-&gt;ctrlinfo
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -6098,6 +6084,11 @@ id|capicardparams
 op_star
 id|p
 comma
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
 r_int
 id|nr
 )paren
@@ -6173,19 +6164,20 @@ id|avmcard
 suffix:semicolon
 id|card-&gt;dma
 op_assign
-(paren
-id|avmcard_dmainfo
-op_star
-)paren
-id|kmalloc
+id|avmcard_dma_alloc
 c_func
 (paren
-r_sizeof
-(paren
-id|avmcard_dmainfo
-)paren
+id|driver-&gt;name
 comma
-id|GFP_ATOMIC
+id|dev
+comma
+l_int|2048
+op_plus
+l_int|128
+comma
+l_int|2048
+op_plus
+l_int|128
 )paren
 suffix:semicolon
 r_if
@@ -6217,19 +6209,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-id|card-&gt;dma
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|avmcard_dmainfo
-)paren
-)paren
-suffix:semicolon
 id|cinfo
 op_assign
 (paren
@@ -6265,7 +6244,7 @@ comma
 id|driver-&gt;name
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -6399,7 +6378,7 @@ c_func
 id|card-&gt;ctrlinfo
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -6453,7 +6432,7 @@ c_func
 id|card-&gt;ctrlinfo
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -6513,7 +6492,7 @@ c_func
 id|card-&gt;ctrlinfo
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -6601,7 +6580,7 @@ c_func
 id|card-&gt;ctrlinfo
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -6732,7 +6711,7 @@ comma
 id|AVMB1_PORTLEN
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -6769,13 +6748,6 @@ op_assign
 id|cinfo-&gt;capi_ctrl-&gt;cnr
 suffix:semicolon
 )brace
-id|skb_queue_head_init
-c_func
-(paren
-op_amp
-id|card-&gt;dma-&gt;send_queue
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -7204,6 +7176,8 @@ id|driver
 comma
 op_amp
 id|param
+comma
+id|dev
 comma
 id|nr
 )paren

@@ -2811,6 +2811,30 @@ suffix:semicolon
 r_int
 id|max_sectors
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
+r_int
+id|is_pdc4030_chipset
+op_assign
+(paren
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|chipset
+op_eq
+id|ide_pdc4030
+)paren
+suffix:semicolon
+macro_line|#else
+r_const
+r_int
+id|is_pdc4030_chipset
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 id|q-&gt;queuedata
 op_assign
 id|HWGROUP
@@ -2839,17 +2863,17 @@ l_int|0xffff
 )paren
 suffix:semicolon
 multiline_comment|/* IDE can do up to 128K per request, pdc4030 needs smaller limit */
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
 id|max_sectors
 op_assign
+(paren
+id|is_pdc4030_chipset
+ques
+c_cond
 l_int|127
-suffix:semicolon
-macro_line|#else
-id|max_sectors
-op_assign
+suffix:colon
 l_int|255
+)paren
 suffix:semicolon
-macro_line|#endif
 id|blk_queue_max_sectors
 c_func
 (paren

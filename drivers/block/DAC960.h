@@ -8010,11 +8010,11 @@ DECL|macro|DAC960_MaxPartitionsBits
 mdefine_line|#define DAC960_MaxPartitionsBits&t;&t;3
 multiline_comment|/*&n;  Define macros to extract the Controller Number, Logical Drive Number, and&n;  Partition Number from a Kernel Device, and to construct a Major Number, Minor&n;  Number, and Kernel Device from the Controller Number, Logical Drive Number,&n;  and Partition Number.  There is one Major Number assigned to each Controller.&n;  The associated Minor Number is divided into the Logical Drive Number and&n;  Partition Number.&n;*/
 DECL|macro|DAC960_ControllerNumber
-mdefine_line|#define DAC960_ControllerNumber(Device) &bslash;&n;  (MAJOR(Device) - DAC960_MAJOR)
+mdefine_line|#define DAC960_ControllerNumber(Device) &bslash;&n;  (major(Device) - DAC960_MAJOR)
 DECL|macro|DAC960_LogicalDriveNumber
-mdefine_line|#define DAC960_LogicalDriveNumber(Device) &bslash;&n;  (MINOR(Device) &gt;&gt; DAC960_MaxPartitionsBits)
+mdefine_line|#define DAC960_LogicalDriveNumber(Device) &bslash;&n;  (minor(Device) &gt;&gt; DAC960_MaxPartitionsBits)
 DECL|macro|DAC960_PartitionNumber
-mdefine_line|#define DAC960_PartitionNumber(Device) &bslash;&n;  (MINOR(Device) &amp; (DAC960_MaxPartitions - 1))
+mdefine_line|#define DAC960_PartitionNumber(Device) &bslash;&n;  (minor(Device) &amp; (DAC960_MaxPartitions - 1))
 DECL|macro|DAC960_MajorNumber
 mdefine_line|#define DAC960_MajorNumber(ControllerNumber) &bslash;&n;  (DAC960_MAJOR + (ControllerNumber))
 DECL|macro|DAC960_MinorNumber

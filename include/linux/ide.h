@@ -2816,6 +2816,24 @@ r_int
 id|mcount
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * idedisk_input_data() is a wrapper around ide_input_data() which copes&n; * with byte-swapping the input data if required.&n; */
+r_inline
+r_void
+id|idedisk_input_data
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_void
+op_star
+id|buffer
+comma
+r_int
+r_int
+id|wcount
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ide_stall_queue() can be used by a drive to give excess bandwidth back&n; * to the hwgroup by sleeping for timeout jiffies.&n; */
 r_void
 id|ide_stall_queue

@@ -311,27 +311,21 @@ comma
 id|SHpnt-&gt;sg_tablesize
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * When we remove scsi_malloc soonish, this can die too&n;&t; */
-id|blk_queue_max_phys_segments
-c_func
-(paren
-id|q
-comma
-id|PAGE_SIZE
-op_div
-r_sizeof
-(paren
-r_struct
-id|scatterlist
-)paren
-)paren
-suffix:semicolon
 id|blk_queue_max_sectors
 c_func
 (paren
 id|q
 comma
 id|SHpnt-&gt;max_sectors
+)paren
+suffix:semicolon
+multiline_comment|/* scsi_alloc_sgtable max */
+id|blk_queue_max_phys_segments
+c_func
+(paren
+id|q
+comma
+id|MAX_PHYS_SEGMENTS
 )paren
 suffix:semicolon
 r_if

@@ -2362,6 +2362,8 @@ multiline_comment|/* Get the spin_lock and disable further ints, for SMP */
 id|CLISPIN_LOCK
 c_func
 (paren
+id|instance
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2696,6 +2698,8 @@ multiline_comment|/* release the SMP spin_lock and restore irq state */
 id|CLISPIN_UNLOCK
 c_func
 (paren
+id|instance
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2772,6 +2776,8 @@ multiline_comment|/* release the SMP spin_lock and restore irq state */
 id|CLISPIN_UNLOCK
 c_func
 (paren
+id|instance
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4450,6 +4456,8 @@ multiline_comment|/* release the SMP spin_lock and restore irq state */
 id|CLISPIN_UNLOCK
 c_func
 (paren
+id|instance
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -5143,6 +5151,8 @@ multiline_comment|/* release the SMP spin_lock and restore irq state */
 id|CLISPIN_UNLOCK
 c_func
 (paren
+id|instance
+comma
 id|flags
 )paren
 suffix:semicolon

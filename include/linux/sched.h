@@ -640,6 +640,7 @@ multiline_comment|/* Lock depth */
 multiline_comment|/*&n; * offset 32 begins here on 32-bit platforms. We keep&n; * all fields in a single cacheline that are needed for&n; * the goodness() loop in schedule().&n; */
 DECL|member|dyn_prio
 r_int
+r_int
 id|dyn_prio
 suffix:semicolon
 DECL|member|nice
@@ -679,11 +680,6 @@ suffix:semicolon
 DECL|member|time_slice
 r_int
 id|time_slice
-suffix:semicolon
-DECL|member|sleep_time
-r_int
-r_int
-id|sleep_time
 suffix:semicolon
 multiline_comment|/* recalculation loop checkpoint */
 DECL|member|rcl_last
@@ -1169,7 +1165,7 @@ multiline_comment|/*&n; * Limit the stack by to some sane default: root can alwa
 DECL|macro|_STK_LIM
 mdefine_line|#define _STK_LIM&t;(8*1024*1024)
 DECL|macro|MAX_DYNPRIO
-mdefine_line|#define MAX_DYNPRIO&t;100
+mdefine_line|#define MAX_DYNPRIO&t;40
 DECL|macro|DEF_TSLICE
 mdefine_line|#define DEF_TSLICE&t;(6 * HZ / 100)
 DECL|macro|MAX_TSLICE
@@ -2803,10 +2799,6 @@ id|p
 (brace
 id|nr_running
 op_decrement
-suffix:semicolon
-id|p-&gt;sleep_time
-op_assign
-id|jiffies
 suffix:semicolon
 id|list_del
 c_func

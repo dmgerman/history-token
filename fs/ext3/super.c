@@ -1460,9 +1460,19 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;  &quot;
-l_string|&quot;inode 0x%04x:%ld at %p: mode %o, nlink %d, next %d&bslash;n&quot;
+l_string|&quot;inode 0x%04x.0x%04x:%ld at %p: mode %o, nlink %d, next %d&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
 comma
 id|inode-&gt;i_ino
 comma
@@ -1700,9 +1710,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|kdev_same
+c_func
+(paren
 id|j_dev
-op_ne
+comma
 id|sb-&gt;s_dev
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Invalidate the journal device&squot;s buffers.  We don&squot;t want them&n;&t;&t; * floating about in memory - the physical journal device may&n;&t;&t; * hotswapped, and it breaks the `ro-after&squot; testing code.&n;&t;&t; */
@@ -4109,7 +4124,7 @@ l_int|0
 (brace
 id|sb-&gt;s_dev
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 r_goto
 id|out_fail
@@ -5691,8 +5706,8 @@ id|super_block
 op_star
 id|sb
 comma
-r_int
-id|dev
+id|kdev_t
+id|j_dev
 )paren
 (brace
 r_struct
@@ -5723,15 +5738,6 @@ r_int
 r_int
 id|offset
 suffix:semicolon
-id|kdev_t
-id|journal_dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_struct
 id|ext3_super_block
 op_star
@@ -5747,7 +5753,7 @@ op_assign
 id|ext3_blkdev_get
 c_func
 (paren
-id|journal_dev
+id|j_dev
 )paren
 suffix:semicolon
 r_if
@@ -5769,7 +5775,7 @@ op_assign
 id|get_hardsect_size
 c_func
 (paren
-id|journal_dev
+id|j_dev
 )paren
 suffix:semicolon
 r_if
@@ -5806,7 +5812,7 @@ suffix:semicolon
 id|set_blocksize
 c_func
 (paren
-id|dev
+id|j_dev
 comma
 id|blocksize
 )paren
@@ -5821,7 +5827,7 @@ op_assign
 id|bread
 c_func
 (paren
-id|dev
+id|j_dev
 comma
 id|sb_block
 comma
@@ -5967,7 +5973,7 @@ op_assign
 id|journal_init_dev
 c_func
 (paren
-id|journal_dev
+id|j_dev
 comma
 id|sb-&gt;s_dev
 comma
@@ -6128,13 +6134,17 @@ c_func
 id|es-&gt;s_journal_inum
 )paren
 suffix:semicolon
-r_int
+id|kdev_t
 id|journal_dev
 op_assign
+id|to_kdev_t
+c_func
+(paren
 id|le32_to_cpu
 c_func
 (paren
 id|es-&gt;s_journal_dev
+)paren
 )paren
 suffix:semicolon
 r_int
@@ -6215,7 +6225,12 @@ c_cond
 (paren
 id|journal_inum
 op_logical_and
+op_logical_neg
+id|kdev_none
+c_func
+(paren
 id|journal_dev
+)paren
 )paren
 (brace
 id|printk

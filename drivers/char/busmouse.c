@@ -73,7 +73,7 @@ mdefine_line|#define NR_MICE&t;&t;&t;15
 DECL|macro|FIRST_MOUSE
 mdefine_line|#define FIRST_MOUSE&t;&t;0
 DECL|macro|DEV_TO_MOUSE
-mdefine_line|#define DEV_TO_MOUSE(dev)&t;MINOR_TO_MOUSE(MINOR(dev))
+mdefine_line|#define DEV_TO_MOUSE(dev)&t;MINOR_TO_MOUSE(minor(dev))
 DECL|macro|MINOR_TO_MOUSE
 mdefine_line|#define MINOR_TO_MOUSE(minor)&t;((minor) - FIRST_MOUSE)
 multiline_comment|/*&n; *&t;List of mice and guarding semaphore. You must take the semaphore&n; *&t;before you take the misc device semaphore if you need both&n; */

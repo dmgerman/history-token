@@ -467,14 +467,14 @@ id|blocksize
 op_assign
 id|hardsect_size
 (braket
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
 )paren
 )braket
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev

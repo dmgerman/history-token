@@ -3858,11 +3858,7 @@ op_assign
 id|MAJOR
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
 id|rdev
-)paren
 )paren
 op_lshift
 l_int|8
@@ -3871,11 +3867,7 @@ op_or
 id|MINOR
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
 id|rdev
-)paren
 )paren
 suffix:semicolon
 id|devlen

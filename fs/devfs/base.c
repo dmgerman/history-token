@@ -1640,7 +1640,7 @@ r_new
 op_member_access_from_pointer
 id|u.fcb.u.device.major
 op_assign
-id|MAJOR
+id|major
 (paren
 id|devnum
 )paren
@@ -1649,7 +1649,7 @@ r_new
 op_member_access_from_pointer
 id|u.fcb.u.device.minor
 op_assign
-id|MINOR
+id|minor
 (paren
 id|devnum
 )paren
@@ -1709,7 +1709,7 @@ r_new
 op_member_access_from_pointer
 id|u.fcb.u.device.major
 op_assign
-id|MAJOR
+id|major
 (paren
 id|devnum
 )paren
@@ -1718,7 +1718,7 @@ r_new
 op_member_access_from_pointer
 id|u.fcb.u.device.minor
 op_assign
-id|MINOR
+id|minor
 (paren
 id|devnum
 )paren
@@ -3723,14 +3723,14 @@ suffix:semicolon
 )brace
 id|major
 op_assign
-id|MAJOR
+id|major
 (paren
 id|devnum
 )paren
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 (paren
 id|devnum
 )paren

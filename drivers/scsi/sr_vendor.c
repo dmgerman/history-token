@@ -530,7 +530,7 @@ id|minor
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev

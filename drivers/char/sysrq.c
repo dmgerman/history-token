@@ -318,7 +318,7 @@ id|major
 suffix:semicolon
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -774,7 +774,7 @@ c_func
 id|sb-&gt;s_dev
 )paren
 op_logical_and
-id|MAJOR
+id|major
 c_func
 (paren
 id|sb-&gt;s_dev

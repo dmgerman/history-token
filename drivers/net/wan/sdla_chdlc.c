@@ -13300,7 +13300,7 @@ id|port
 suffix:semicolon
 id|port
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

@@ -3064,7 +3064,7 @@ id|rdev
 r_int
 id|fbidx
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|rdev
@@ -3455,7 +3455,7 @@ r_break
 suffix:semicolon
 id|fb_info-&gt;node
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|FB_MAJOR

@@ -655,9 +655,9 @@ macro_line|# define in2000__INIT __init
 DECL|macro|in2000__INITDATA
 macro_line|# define in2000__INITDATA __initdata
 DECL|macro|CLISPIN_LOCK
-macro_line|# define CLISPIN_LOCK(flags)   spin_lock_irqsave(&amp;io_request_lock, flags)
+macro_line|# define CLISPIN_LOCK(host,flags)   spin_lock_irqsave(&amp;host-&gt;host_lock, flags)
 DECL|macro|CLISPIN_UNLOCK
-macro_line|# define CLISPIN_UNLOCK(flags) spin_unlock_irqrestore(&amp;io_request_lock, flags)
+macro_line|# define CLISPIN_UNLOCK(host,flags) spin_unlock_irqrestore(&amp;host-&gt;host_lock, &bslash;&n;&t;&t;&t;&t;&t;&t;&t;   flags)
 r_int
 id|in2000_detect
 c_func

@@ -52,13 +52,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Scheduling quanta.&n; *&n; * NOTE! The unix &quot;nice&quot; value influences how long a process&n; * gets. The nice value ranges from -20 to +19, where a -20&n; * is a &quot;high-priority&quot; task, and a &quot;+10&quot; is a low-priority&n; * task. The default time slice for zero-nice tasks will be 43ms.&n; */
+multiline_comment|/*&n; * Scheduling quanta.&n; *&n; * NOTE! The unix &quot;nice&quot; value influences how long a process&n; * gets. The nice value ranges from -20 to +19, where a -20&n; * is a &quot;high-priority&quot; task, and a &quot;+10&quot; is a low-priority&n; * task. The default time slice for zero-nice tasks will be 37ms.&n; */
 DECL|macro|NICE_RANGE
 mdefine_line|#define NICE_RANGE&t;40
 DECL|macro|MIN_NICE_TSLICE
-mdefine_line|#define MIN_NICE_TSLICE&t;10000
+mdefine_line|#define MIN_NICE_TSLICE&t;5000
 DECL|macro|MAX_NICE_TSLICE
-mdefine_line|#define MAX_NICE_TSLICE&t;80000
+mdefine_line|#define MAX_NICE_TSLICE&t;70000
 DECL|macro|TASK_TIMESLICE
 mdefine_line|#define TASK_TIMESLICE(p)&t;((int) ts_table[19 - (p)-&gt;nice])
 DECL|variable|ts_table
@@ -1395,8 +1395,6 @@ r_if
 c_cond
 (paren
 id|p-&gt;dyn_prio
-OG
-l_int|0
 )paren
 (brace
 id|p-&gt;time_slice
@@ -3237,8 +3235,17 @@ id|current-&gt;time_slice
 op_assign
 l_int|0
 suffix:semicolon
-id|current-&gt;dyn_prio
+r_if
+c_cond
+(paren
 op_increment
+id|current-&gt;dyn_prio
+OG
+id|MAX_DYNPRIO
+)paren
+id|current-&gt;dyn_prio
+op_assign
+id|MAX_DYNPRIO
 suffix:semicolon
 )brace
 r_return
@@ -4310,6 +4317,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|ts_table
 (braket
 id|i
@@ -4326,7 +4334,11 @@ op_minus
 id|MIN_NICE_TSLICE
 )paren
 op_div
+(paren
 id|NICE_RANGE
+op_minus
+l_int|1
+)paren
 )paren
 op_star
 id|i
@@ -4337,6 +4349,23 @@ id|HZ
 op_div
 l_int|1000000
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ts_table
+(braket
+id|i
+)braket
+)paren
+id|ts_table
+(braket
+id|i
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 )brace
 DECL|function|sched_init
 r_void

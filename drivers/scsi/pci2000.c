@@ -663,15 +663,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/*&n;     * Disable interrupts, if they aren&squot;t already disabled and acquire&n;     * the I/O spinlock.&n;     */
-id|spin_lock_irqsave
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|DEB
 c_func
 (paren
@@ -767,9 +758,18 @@ l_string|&quot;&bslash;npci2000: not my interrupt&quot;
 )paren
 suffix:semicolon
 r_goto
-id|irq_return
+id|out
 suffix:semicolon
 )brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|padapter
 op_assign
 id|HOSTDATA
@@ -1224,15 +1224,17 @@ l_int|16
 suffix:semicolon
 id|irq_return
 suffix:colon
-suffix:semicolon
-multiline_comment|/*&n;     * Release the I/O spinlock and restore the original flags&n;     * which will enable interrupts if and only if they were&n;     * enabled on entry.&n;     */
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
-id|io_request_lock
+id|shost-&gt;host_flag
 comma
 id|flags
 )paren
+suffix:semicolon
+id|out
+suffix:colon
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; *&t;Name:&t;Pci2000_QueueCommand&n; *&n; *&t;Description:&t;Process a queued command from the SCSI manager.&n; *&n; *&t;Parameters:&t;&t;SCpnt - Pointer to SCSI command structure.&n; *&t;&t;&t;&t;&t;done  - Pointer to done function to call.&n; *&n; *&t;Returns:&t;&t;Status code.&n; *&n; ****************************************************************/

@@ -4827,9 +4827,19 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS: commit (%x/%Ld %d@%Ld)&quot;
+l_string|&quot;NFS: commit (%02x:%02x/%Ld %d@%Ld)&quot;
 comma
+id|major
+c_func
+(paren
 id|req-&gt;wb_inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|req-&gt;wb_inode-&gt;i_dev
+)paren
 comma
 (paren
 r_int

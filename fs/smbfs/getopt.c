@@ -184,12 +184,13 @@ id|token
 r_if
 c_cond
 (paren
+op_logical_neg
 id|opts
 (braket
 id|i
 )braket
 dot
-id|has_arg
+id|flag
 op_logical_and
 (paren
 op_logical_neg

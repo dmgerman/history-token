@@ -856,7 +856,7 @@ id|state_table_mutex
 suffix:semicolon
 id|subminor
 op_assign
-id|MINOR
+id|minor
 (paren
 id|inode-&gt;i_rdev
 )paren

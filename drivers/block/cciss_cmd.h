@@ -11,7 +11,7 @@ DECL|macro|SENSEINFOBYTES
 mdefine_line|#define SENSEINFOBYTES          32
 singleline_comment|//note that this value may vary between host implementations
 DECL|macro|MAXSGENTRIES
-mdefine_line|#define MAXSGENTRIES            32
+mdefine_line|#define MAXSGENTRIES            31
 DECL|macro|MAXREPLYQS
 mdefine_line|#define MAXREPLYQS              256
 singleline_comment|//Command Status value

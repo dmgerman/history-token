@@ -852,7 +852,7 @@ r_int
 id|rc
 op_assign
 op_minus
-id|NODEV
+id|ENODEV
 suffix:semicolon
 r_int
 id|i

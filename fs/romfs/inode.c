@@ -2146,12 +2146,13 @@ c_func
 id|ri.spec
 )paren
 suffix:semicolon
+multiline_comment|/* convert back and forth for typechecking and&n;&t;&t;&t; * source tagging */
 id|nextfh
 op_assign
 id|kdev_t_to_nr
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|nextfh

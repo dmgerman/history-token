@@ -124,7 +124,7 @@ r_int
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 (paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
@@ -490,7 +490,7 @@ r_int
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 (paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
@@ -1093,7 +1093,7 @@ r_int
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -2412,7 +2412,7 @@ r_int
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 (paren
 id|inode-&gt;i_rdev
 )paren
@@ -2522,7 +2522,7 @@ r_int
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 (paren
 id|inode-&gt;i_rdev
 )paren

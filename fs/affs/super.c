@@ -1397,7 +1397,7 @@ id|blocks
 op_assign
 id|blk_size
 (braket
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -1407,14 +1407,14 @@ ques
 c_cond
 id|blk_size
 (braket
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
 )paren
 )braket
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev

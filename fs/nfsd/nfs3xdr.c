@@ -931,7 +931,7 @@ c_func
 (paren
 id|u32
 )paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -948,7 +948,7 @@ c_func
 (paren
 id|u32
 )paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -965,7 +965,11 @@ comma
 (paren
 id|u64
 )paren
+id|kdev_t_to_nr
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
 )paren
 suffix:semicolon
 id|p
@@ -1210,7 +1214,7 @@ c_func
 (paren
 id|u32
 )paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|fhp-&gt;fh_post_rdev
@@ -1227,7 +1231,7 @@ c_func
 (paren
 id|u32
 )paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|fhp-&gt;fh_post_rdev
@@ -1244,7 +1248,11 @@ comma
 (paren
 id|u64
 )paren
+id|kdev_t_to_nr
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
 )paren
 suffix:semicolon
 id|p

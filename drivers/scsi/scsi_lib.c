@@ -87,10 +87,6 @@ id|rq-&gt;nr_phys_segments
 op_assign
 l_int|0
 suffix:semicolon
-id|rq-&gt;elevator_sequence
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t; * We have the option of inserting the head or the tail of the queue.&n;&t; * Typically we use the tail for new ioctls and so forth.  We use the&n;&t; * head of the queue for things like a QUEUE_FULL message from a&n;&t; * device, or a host that is unable to accept a particular command.&n;&t; */
 id|spin_lock_irqsave
 c_func
@@ -100,7 +96,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|__elv_add_request
+id|_elv_add_request
 c_func
 (paren
 id|q
@@ -405,7 +401,7 @@ op_star
 )paren
 id|SCpnt
 suffix:semicolon
-id|__elv_add_request
+id|_elv_add_request
 c_func
 (paren
 id|q

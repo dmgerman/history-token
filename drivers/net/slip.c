@@ -2676,9 +2676,14 @@ id|slp-&gt;ctrl.leased
 r_if
 c_cond
 (paren
+op_logical_neg
+id|kdev_same
+c_func
+(paren
 id|slp-&gt;ctrl.line
-op_ne
+comma
 id|line
+)paren
 )paren
 r_continue
 suffix:semicolon
@@ -2722,9 +2727,13 @@ id|slp-&gt;ctrl.pid
 r_if
 c_cond
 (paren
+id|kdev_same
+c_func
+(paren
 id|slp-&gt;ctrl.line
-op_eq
+comma
 id|line
+)paren
 op_logical_and
 id|score
 OL
@@ -2765,9 +2774,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|kdev_same
+c_func
+(paren
 id|slp-&gt;ctrl.line
-op_eq
+comma
 id|line
+)paren
 op_logical_and
 id|score
 OL
@@ -3390,7 +3403,7 @@ id|sl-&gt;leased
 )paren
 id|sl-&gt;line
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 multiline_comment|/* VSV = very important to remove timers */
 macro_line|#ifdef CONFIG_SLIP_SMART

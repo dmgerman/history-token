@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: t1pci.c,v 1.13.6.6 2001/09/23 22:24:34 kai Exp $&n; * &n; * Module for AVM T1 PCI-card.&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: t1pci.c,v 1.1.4.1.2.1 2001/12/21 15:00:17 kai Exp $&n; * &n; * Module for AVM T1 PCI-card.&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -21,7 +21,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.13.6.6 $&quot;
+l_string|&quot;$Revision: 1.1.4.1.2.1 $&quot;
 suffix:semicolon
 DECL|macro|CONFIG_T1PCI_DEBUG
 macro_line|#undef CONFIG_T1PCI_DEBUG
@@ -164,7 +164,7 @@ c_func
 id|card-&gt;ctrlinfo
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -195,6 +195,11 @@ r_struct
 id|capicardparams
 op_star
 id|p
+comma
+r_struct
+id|pci_dev
+op_star
+id|dev
 )paren
 (brace
 id|avmcard
@@ -265,19 +270,20 @@ id|avmcard
 suffix:semicolon
 id|card-&gt;dma
 op_assign
-(paren
-id|avmcard_dmainfo
-op_star
-)paren
-id|kmalloc
+id|avmcard_dma_alloc
 c_func
 (paren
-r_sizeof
-(paren
-id|avmcard_dmainfo
-)paren
+id|driver-&gt;name
 comma
-id|GFP_ATOMIC
+id|dev
+comma
+l_int|2048
+op_plus
+l_int|128
+comma
+l_int|2048
+op_plus
+l_int|128
 )paren
 suffix:semicolon
 r_if
@@ -309,19 +315,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-id|card-&gt;dma
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|avmcard_dmainfo
-)paren
-)paren
-suffix:semicolon
 id|cinfo
 op_assign
 (paren
@@ -355,7 +348,7 @@ comma
 id|driver-&gt;name
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -454,7 +447,7 @@ c_func
 id|card-&gt;ctrlinfo
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -507,7 +500,7 @@ c_func
 id|card-&gt;ctrlinfo
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -594,7 +587,7 @@ c_func
 id|card-&gt;ctrlinfo
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -682,7 +675,7 @@ c_func
 id|card-&gt;ctrlinfo
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -759,7 +752,7 @@ c_func
 id|card-&gt;ctrlinfo
 )paren
 suffix:semicolon
-id|kfree
+id|avmcard_dma_free
 c_func
 (paren
 id|card-&gt;dma
@@ -781,13 +774,6 @@ suffix:semicolon
 id|card-&gt;cardnr
 op_assign
 id|cinfo-&gt;capi_ctrl-&gt;cnr
-suffix:semicolon
-id|skb_queue_head_init
-c_func
-(paren
-op_amp
-id|card-&gt;dma-&gt;send_queue
-)paren
 suffix:semicolon
 id|printk
 c_func
@@ -1223,6 +1209,8 @@ id|driver
 comma
 op_amp
 id|param
+comma
+id|dev
 )paren
 suffix:semicolon
 r_if

@@ -227,7 +227,7 @@ c_cond
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -241,7 +241,7 @@ l_int|2048
 id|sr_set_blocklength
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -252,7 +252,7 @@ l_int|2048
 suffix:semicolon
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -267,7 +267,7 @@ c_cond
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -281,7 +281,7 @@ c_func
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -441,7 +441,7 @@ c_func
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -464,7 +464,7 @@ id|retval
 multiline_comment|/* Unable to test, unit probably not ready.  This usually&n;&t;&t; * means there is no disc in the drive.  Mark as changed,&n;&t;&t; * and we will figure it out later once the drive is&n;&t;&t; * available again.  */
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -485,7 +485,7 @@ id|retval
 op_assign
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -496,7 +496,7 @@ id|device-&gt;changed
 suffix:semicolon
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -524,7 +524,7 @@ suffix:semicolon
 multiline_comment|/* &n;&t;&t; * If the disk changed, the capacity will now be different,&n;&t;&t; * so we force a re-read of this information &n;&t;&t; * Force 2048 for the sector size so that filesystems won&squot;t&n;&t;&t; * be trying to use something that is too small if the disc&n;&t;&t; * has changed.&n;&t;&t; */
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -537,7 +537,7 @@ l_int|1
 suffix:semicolon
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -834,7 +834,7 @@ multiline_comment|/*&n;&t; * No such device&n;&t; */
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -845,7 +845,7 @@ op_logical_or
 op_logical_neg
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -861,7 +861,7 @@ r_return
 op_amp
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -897,7 +897,7 @@ id|s_size
 suffix:semicolon
 id|devm
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|SCpnt-&gt;request.rq_dev
@@ -1553,7 +1553,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1564,7 +1564,7 @@ op_logical_or
 op_logical_neg
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1590,7 +1590,7 @@ c_func
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1608,7 +1608,7 @@ suffix:semicolon
 )brace
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1623,7 +1623,7 @@ c_cond
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1637,7 +1637,7 @@ c_func
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1664,7 +1664,7 @@ c_cond
 (paren
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -1676,7 +1676,7 @@ id|needs_sector_size
 id|get_sectorsize
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -3101,7 +3101,7 @@ id|device
 op_assign
 id|scsi_CDs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -3132,7 +3132,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -3613,7 +3613,7 @@ id|i
 dot
 id|cdi.dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -3812,7 +3812,7 @@ multiline_comment|/*&n;&t;&t;&t; * Since the cdrom is read-only, no need to sync
 id|invalidate_device
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR

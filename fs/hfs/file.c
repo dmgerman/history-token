@@ -1042,7 +1042,7 @@ id|blocks
 OL
 id|read_ahead
 (braket
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -1060,7 +1060,7 @@ id|blocks
 op_assign
 id|read_ahead
 (braket
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev

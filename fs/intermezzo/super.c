@@ -655,7 +655,7 @@ suffix:semicolon
 id|kdev_t
 id|devno
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 r_int
 id|error
@@ -749,7 +749,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|devno
@@ -767,7 +767,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|devno
@@ -789,7 +789,7 @@ suffix:colon
 op_star
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|devno

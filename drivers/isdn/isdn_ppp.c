@@ -2861,7 +2861,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;isdn_ppp_poll: minor: %d&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev

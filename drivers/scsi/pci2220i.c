@@ -4301,6 +4301,13 @@ id|PADAPTER2220I
 )paren
 id|data
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|padapter-&gt;SCpnt-&gt;host
+suffix:semicolon
 id|POUR_DEVICE
 id|pdev
 op_assign
@@ -4324,7 +4331,7 @@ multiline_comment|/*&n;     * Disable interrupts, if they aren&squot;t already d
 id|spin_lock_irqsave
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4979,7 +4986,7 @@ multiline_comment|/*&n;     * Release the I/O spinlock and restore the original 
 id|spin_unlock_irqrestore
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5060,6 +5067,18 @@ id|data
 (brace
 id|PADAPTER2220I
 id|padapter
+op_assign
+(paren
+id|PADAPTER2220I
+)paren
+id|data
+suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|padapter-&gt;SCpnt-&gt;host
 suffix:semicolon
 id|POUR_DEVICE
 id|pdev
@@ -5090,19 +5109,13 @@ id|flags
 suffix:semicolon
 multiline_comment|/*&n;     * Disable interrupts, if they aren&squot;t already disabled and acquire&n;     * the I/O spinlock.&n;     */
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
-suffix:semicolon
-id|padapter
-op_assign
-(paren
-id|PADAPTER2220I
-)paren
-id|data
 suffix:semicolon
 r_if
 c_cond
@@ -6196,9 +6209,10 @@ suffix:colon
 suffix:semicolon
 multiline_comment|/*&n;     * Release the I/O spinlock and restore the original flags&n;     * which will enable interrupts if and only if they were&n;     * enabled on entry.&n;     */
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -6266,15 +6280,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-multiline_comment|/*&n;     * Disable interrupts, if they aren&squot;t already disabled and acquire&n;     * the I/O spinlock.&n;     */
-id|spin_lock_irqsave
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 singleline_comment|//&t;DEB (printk (&quot;&bslash;npci2220i received interrupt&bslash;n&quot;));
 r_for
@@ -6361,9 +6366,18 @@ l_string|&quot;&bslash;npci2220i: not my interrupt&quot;
 )paren
 suffix:semicolon
 r_goto
-id|irq_return
+id|out
 suffix:semicolon
 )brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|padapter
 op_assign
 id|HOSTDATA
@@ -8495,15 +8509,17 @@ id|zl
 suffix:semicolon
 id|irq_return
 suffix:colon
-suffix:semicolon
-multiline_comment|/*&n;     * Release the I/O spinlock and restore the original flags&n;     * which will enable interrupts if and only if they were&n;     * enabled on entry.&n;     */
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
-id|io_request_lock
+id|shost-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+id|out
+suffix:colon
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; *&t;Name:&t;Pci2220i_QueueCommand&n; *&n; *&t;Description:&t;Process a queued command from the SCSI manager.&n; *&n; *&t;Parameters:&t;&t;SCpnt - Pointer to SCSI command structure.&n; *&t;&t;&t;&t;&t;done  - Pointer to done function to call.&n; *&n; *&t;Returns:&t;&t;Status code.&n; *&n; ****************************************************************/

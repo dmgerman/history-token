@@ -11,10 +11,6 @@ r_char
 op_star
 id|name
 suffix:semicolon
-DECL|member|has_arg
-r_int
-id|has_arg
-suffix:semicolon
 DECL|member|flag
 r_int
 r_int
