@@ -1620,6 +1620,7 @@ comma
 r_const
 r_int
 r_char
+id|__user
 op_star
 id|data
 comma
@@ -2007,6 +2008,7 @@ id|sscape
 comma
 r_struct
 id|sscape_bootblock
+id|__user
 op_star
 id|bb
 )paren
@@ -2148,6 +2150,7 @@ comma
 r_const
 r_struct
 id|sscape_microcode
+id|__user
 op_star
 id|mc
 )paren
@@ -2157,6 +2160,7 @@ r_int
 id|flags
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|code
 suffix:semicolon
@@ -2465,12 +2469,14 @@ suffix:colon
 r_register
 r_struct
 id|sscape_bootblock
+id|__user
 op_star
 id|bb
 op_assign
 (paren
 r_struct
 id|sscape_bootblock
+id|__user
 op_star
 )paren
 id|arg
@@ -2549,6 +2555,7 @@ r_register
 r_const
 r_struct
 id|sscape_microcode
+id|__user
 op_star
 id|mc
 op_assign
@@ -2556,6 +2563,7 @@ op_assign
 r_const
 r_struct
 id|sscape_microcode
+id|__user
 op_star
 )paren
 id|arg
