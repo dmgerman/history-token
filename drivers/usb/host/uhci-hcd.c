@@ -9481,6 +9481,8 @@ id|uhci-&gt;fl-&gt;frame
 id|i
 )braket
 op_assign
+id|UHCI_PTR_QH
+op_or
 id|cpu_to_le32
 c_func
 (paren
