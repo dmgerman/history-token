@@ -362,7 +362,7 @@ id|sprintf
 (paren
 id|scratch
 comma
-l_string|&quot;DEVICE=%s&quot;
+l_string|&quot;DEVPATH=%s&quot;
 comma
 id|dev_path
 )paren
