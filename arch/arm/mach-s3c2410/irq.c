@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/irq.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&n; *   22-Jul-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *                Fixed compile warnings&n; *&n; *   22-Jul-2004  Roc Wu &lt;cooloney@yahoo.com.cn&gt;&n; *                Fixed s3c_extirq_type&n; *&n; *   21-Jul-2004  Arnaud Patard (Rtp) &lt;arnaud.patard@rtp-net.org&gt;&n; *                Addition of ADC/TC demux&n; *&n; *   04-Oct-2004  Klaus Fetscher &lt;k.fetscher@fetron.de&gt;&n; *&t;&t;  Fix for set_irq_type() on low EINT numbers&n; *&n; *   05-Oct-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&t;&t;  Tidy up KF&squot;s patch and sort out new release&n; *&n; *   05-Oct-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&t;&t;  Add support for power management controls&n; *&n; *   04-Nov-2004  Ben Dooks&n; *&t;&t;  Fix standard IRQ wake for EINT0..4 and RTC&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/irq.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&n; *   22-Jul-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *                Fixed compile warnings&n; *&n; *   22-Jul-2004  Roc Wu &lt;cooloney@yahoo.com.cn&gt;&n; *                Fixed s3c_extirq_type&n; *&n; *   21-Jul-2004  Arnaud Patard (Rtp) &lt;arnaud.patard@rtp-net.org&gt;&n; *                Addition of ADC/TC demux&n; *&n; *   04-Oct-2004  Klaus Fetscher &lt;k.fetscher@fetron.de&gt;&n; *&t;&t;  Fix for set_irq_type() on low EINT numbers&n; *&n; *   05-Oct-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&t;&t;  Tidy up KF&squot;s patch and sort out new release&n; *&n; *   05-Oct-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&t;&t;  Add support for power management controls&n; *&n; *   04-Nov-2004  Ben Dooks&n; *&t;&t;  Fix standard IRQ wake for EINT0..4 and RTC&n; *&n; *   22-Feb-2004  Ben Dooks&n; *&t;&t;  Fixed edge-triggering on ADC IRQ&n;*/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -1454,6 +1454,71 @@ id|S3C2410_INTPND
 suffix:semicolon
 )brace
 )brace
+r_static
+r_inline
+r_void
+DECL|function|s3c_irqsub_ack
+id|s3c_irqsub_ack
+c_func
+(paren
+r_int
+r_int
+id|irqno
+comma
+r_int
+r_int
+id|parentmask
+comma
+r_int
+r_int
+id|group
+)paren
+(brace
+r_int
+r_int
+id|bit
+op_assign
+l_int|1UL
+op_lshift
+(paren
+id|irqno
+op_minus
+id|IRQ_S3CUART_RX0
+)paren
+suffix:semicolon
+id|__raw_writel
+c_func
+(paren
+id|bit
+comma
+id|S3C2410_SUBSRCPND
+)paren
+suffix:semicolon
+multiline_comment|/* only ack parent if we&squot;ve got all the irqs (seems we must&n;&t; * ack, all and hope that the irq system retriggers ok when&n;&t; * the interrupt goes off again)&n;&t; */
+r_if
+c_cond
+(paren
+l_int|1
+)paren
+(brace
+id|__raw_writel
+c_func
+(paren
+id|parentmask
+comma
+id|S3C2410_SRCPND
+)paren
+suffix:semicolon
+id|__raw_writel
+c_func
+(paren
+id|parentmask
+comma
+id|S3C2410_INTPND
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* UART0 */
 r_static
 r_void
@@ -1785,7 +1850,7 @@ r_int
 id|irqno
 )paren
 (brace
-id|s3c_irqsub_maskack
+id|s3c_irqsub_ack
 c_func
 (paren
 id|irqno
