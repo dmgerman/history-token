@@ -212,7 +212,7 @@ comma
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                                                                           *&n; *             Digital Audio (PCM) interface - /dev/snd/pcm??                *&n; *                                                                           *&n; *****************************************************************************/
 DECL|macro|SNDRV_PCM_VERSION
-mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 2)
+mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 3)
 DECL|typedef|sndrv_pcm_uframes_t
 r_typedef
 r_int
@@ -1436,6 +1436,17 @@ comma
 l_int|0x21
 comma
 id|sndrv_pcm_sframes_t
+)paren
+comma
+DECL|enumerator|SNDRV_PCM_IOCTL_HWSYNC
+id|SNDRV_PCM_IOCTL_HWSYNC
+op_assign
+id|_IO
+c_func
+(paren
+l_char|&squot;A&squot;
+comma
+l_int|0x22
 )paren
 comma
 DECL|enumerator|SNDRV_PCM_IOCTL_CHANNEL_INFO

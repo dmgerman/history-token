@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &quot;mach_apic.h&quot;
 DECL|macro|APIC_LOCKUP_DEBUG
 macro_line|#undef APIC_LOCKUP_DEBUG
 DECL|macro|APIC_LOCKUP_DEBUG
@@ -4992,7 +4993,7 @@ id|apic
 dot
 id|mpc_apicid
 op_ge
-l_int|0xf
+id|APIC_BROADCAST_ID
 )paren
 (brace
 id|printk
@@ -5034,11 +5035,11 @@ multiline_comment|/*&n;&t;&t; * Sanity check, is the ID really free? Every APIC 
 r_if
 c_cond
 (paren
-id|phys_id_present_map
-op_amp
+id|check_apicid_used
+c_func
 (paren
-l_int|1
-op_lshift
+id|phys_id_present_map
+comma
 id|mp_ioapics
 (braket
 id|apic

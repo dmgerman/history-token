@@ -20,7 +20,7 @@ suffix:semicolon
 )brace
 id|xfs_dir_ino_t
 suffix:semicolon
-multiline_comment|/*&n; * The parent directory has a dedicated field, and the self-pointer must&n; * be calculated on the fly.&n; *&n; * Entries are packed toward the top as tight as possible.  The header&n; * and the elements much be bcopy()&squot;d out into a work area to get correct&n; * alignment for the inode number fields.&n; */
+multiline_comment|/*&n; * The parent directory has a dedicated field, and the self-pointer must&n; * be calculated on the fly.&n; *&n; * Entries are packed toward the top as tight as possible.  The header&n; * and the elements much be memcpy&squot;d out into a work area to get correct&n; * alignment for the inode number fields.&n; */
 DECL|struct|xfs_dir_shortform
 r_typedef
 r_struct

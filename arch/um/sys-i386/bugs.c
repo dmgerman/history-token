@@ -10,6 +10,7 @@ macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;task.h&quot;
 DECL|macro|MAXTOKEN
 mdefine_line|#define MAXTOKEN 64
+multiline_comment|/* Set during early boot */
 DECL|variable|cpu_has_cmov
 r_int
 id|cpu_has_cmov

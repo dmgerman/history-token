@@ -6705,6 +6705,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
 r_if
 c_cond
 (paren
@@ -6753,6 +6754,7 @@ op_assign
 id|hw
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -980,6 +980,33 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/* This will be in a forthcoming patch. */
+r_if
+c_cond
+(paren
+id|NFS_PROTO
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|version
+op_eq
+l_int|4
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;NFS: file locking over NFSv4 is not yet supported&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* No mandatory locks over NFS */
 r_if
 c_cond

@@ -1179,7 +1179,6 @@ suffix:semicolon
 )brace
 DECL|function|llc_proc_exit
 r_void
-id|__exit
 id|llc_proc_exit
 c_func
 (paren
@@ -1227,7 +1226,6 @@ suffix:semicolon
 )brace
 DECL|function|llc_proc_exit
 r_void
-id|__exit
 id|llc_proc_exit
 c_func
 (paren

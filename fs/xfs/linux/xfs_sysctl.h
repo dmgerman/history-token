@@ -5,7 +5,7 @@ mdefine_line|#define __XFS_SYSCTL_H__
 macro_line|#include &lt;linux/sysctl.h&gt;
 multiline_comment|/*&n; * Tunable xfs parameters&n; */
 DECL|macro|XFS_PARAM
-mdefine_line|#define XFS_PARAM&t;3
+mdefine_line|#define XFS_PARAM&t;(sizeof(struct xfs_param) / sizeof(ulong))
 DECL|struct|xfs_param
 r_typedef
 r_struct
@@ -15,17 +15,33 @@ DECL|member|refcache_size
 id|ulong
 id|refcache_size
 suffix:semicolon
-multiline_comment|/* Size of nfs refcache */
+multiline_comment|/* Size of NFS reference cache.          */
 DECL|member|refcache_purge
 id|ulong
 id|refcache_purge
 suffix:semicolon
-multiline_comment|/* # of entries to purge each time */
+multiline_comment|/* # of entries to purge each time.      */
 DECL|member|stats_clear
 id|ulong
 id|stats_clear
 suffix:semicolon
-multiline_comment|/* reset all xfs stats to 0 */
+multiline_comment|/* Reset all XFS statistics to zero.     */
+DECL|member|restrict_chown
+id|ulong
+id|restrict_chown
+suffix:semicolon
+multiline_comment|/* Root/non-root can give away files.    */
+DECL|member|sgid_inherit
+id|ulong
+id|sgid_inherit
+suffix:semicolon
+multiline_comment|/* Inherit ISGID bit if process&squot; GID is  */
+multiline_comment|/*  not a member of the parent dir GID.  */
+DECL|member|symlink_mode
+id|ulong
+id|symlink_mode
+suffix:semicolon
+multiline_comment|/* Symlink creat mode affected by umask. */
 DECL|typedef|xfs_param_t
 )brace
 id|xfs_param_t
@@ -46,6 +62,21 @@ DECL|enumerator|XFS_STATS_CLEAR
 id|XFS_STATS_CLEAR
 op_assign
 l_int|3
+comma
+DECL|enumerator|XFS_RESTRICT_CHOWN
+id|XFS_RESTRICT_CHOWN
+op_assign
+l_int|4
+comma
+DECL|enumerator|XFS_SGID_INHERIT
+id|XFS_SGID_INHERIT
+op_assign
+l_int|5
+comma
+DECL|enumerator|XFS_SYMLINK_MODE
+id|XFS_SYMLINK_MODE
+op_assign
+l_int|6
 comma
 )brace
 suffix:semicolon

@@ -1,5 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * BlueZ HCI Core.&n; *&n; * $Id: hci_core.c,v 1.6 2002/04/17 17:37:16 maxk Exp $&n; */
+multiline_comment|/*&n; * Bluetooth HCI Core.&n; *&n; * $Id: hci_core.c,v 1.6 2002/04/17 17:37:16 maxk Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -21,7 +21,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci_core.h&gt;
-macro_line|#ifndef HCI_CORE_DEBUG
+macro_line|#ifndef CONFIG_BT_HCI_CORE_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -548,7 +548,7 @@ suffix:colon
 id|err
 op_assign
 op_minus
-id|bterr
+id|bt_err
 c_func
 (paren
 id|hdev-&gt;req_result
@@ -3860,6 +3860,70 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Suspend HCI device */
+DECL|function|hci_suspend_dev
+r_int
+id|hci_suspend_dev
+c_func
+(paren
+r_struct
+id|hci_dev
+op_star
+id|hdev
+)paren
+(brace
+id|hci_notify
+c_func
+(paren
+id|hdev
+comma
+id|HCI_DEV_SUSPEND
+)paren
+suffix:semicolon
+id|hci_run_hotplug
+c_func
+(paren
+id|hdev-&gt;name
+comma
+l_string|&quot;suspend&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Resume HCI device */
+DECL|function|hci_resume_dev
+r_int
+id|hci_resume_dev
+c_func
+(paren
+r_struct
+id|hci_dev
+op_star
+id|hdev
+)paren
+(brace
+id|hci_notify
+c_func
+(paren
+id|hdev
+comma
+id|HCI_DEV_RESUME
+)paren
+suffix:semicolon
+id|hci_run_hotplug
+c_func
+(paren
+id|hdev-&gt;name
+comma
+l_string|&quot;resume&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Receive frame from HCI drivers */
 DECL|function|hci_recv_frame
 r_int
@@ -3937,13 +4001,13 @@ id|skb-&gt;len
 )paren
 suffix:semicolon
 multiline_comment|/* Incomming skb */
-id|bluez_cb
+id|bt_cb
 c_func
 (paren
 id|skb
 )paren
 op_member_access_from_pointer
-id|incomming
+id|incoming
 op_assign
 l_int|1
 suffix:semicolon
@@ -4421,7 +4485,7 @@ op_logical_neg
 (paren
 id|skb
 op_assign
-id|bluez_skb_alloc
+id|bt_skb_alloc
 c_func
 (paren
 id|len
@@ -5640,7 +5704,7 @@ id|hci_task_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* ----- HCI RX task (incomming data proccessing) ----- */
+multiline_comment|/* ----- HCI RX task (incoming data proccessing) ----- */
 multiline_comment|/* ACL data packet */
 DECL|function|hci_acldata_packet
 r_static
@@ -6354,30 +6418,5 @@ id|hdev
 suffix:semicolon
 )brace
 )brace
-)brace
-multiline_comment|/* ---- Initialization ---- */
-DECL|function|hci_core_init
-r_int
-id|hci_core_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|hci_core_cleanup
-r_int
-id|hci_core_cleanup
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 eof

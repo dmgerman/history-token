@@ -18,7 +18,7 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;bnep.h&quot;
-macro_line|#ifndef CONFIG_BLUEZ_BNEP_DEBUG
+macro_line|#ifndef CONFIG_BT_BNEP_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -728,7 +728,7 @@ op_logical_neg
 (paren
 id|sk
 op_assign
-id|bluez_sock_alloc
+id|bt_sock_alloc
 c_func
 (paren
 id|sock
@@ -794,7 +794,7 @@ c_func
 r_void
 )paren
 (brace
-id|bluez_sock_register
+id|bt_sock_register
 c_func
 (paren
 id|BTPROTO_BNEP
@@ -818,7 +818,7 @@ r_void
 r_if
 c_cond
 (paren
-id|bluez_sock_unregister
+id|bt_sock_unregister
 c_func
 (paren
 id|BTPROTO_BNEP

@@ -160,6 +160,13 @@ DECL|struct|nfs_fsinfo
 r_struct
 id|nfs_fsinfo
 (brace
+DECL|member|fattr
+r_struct
+id|nfs_fattr
+op_star
+id|fattr
+suffix:semicolon
+multiline_comment|/* Post-op attributes */
 DECL|member|rtmax
 id|__u32
 id|rtmax
@@ -199,11 +206,24 @@ DECL|member|maxfilesize
 id|__u64
 id|maxfilesize
 suffix:semicolon
-DECL|member|bsize
-id|__u64
-id|bsize
+DECL|member|lease_time
+id|__u32
+id|lease_time
 suffix:semicolon
-multiline_comment|/* block size */
+multiline_comment|/* in seconds */
+)brace
+suffix:semicolon
+DECL|struct|nfs_fsstat
+r_struct
+id|nfs_fsstat
+(brace
+DECL|member|fattr
+r_struct
+id|nfs_fattr
+op_star
+id|fattr
+suffix:semicolon
+multiline_comment|/* Post-op attributes */
 DECL|member|tbytes
 id|__u64
 id|tbytes
@@ -234,21 +254,60 @@ id|__u64
 id|afiles
 suffix:semicolon
 multiline_comment|/* # of files available to user */
-DECL|member|linkmax
+)brace
+suffix:semicolon
+DECL|struct|nfs2_fsstat
+r_struct
+id|nfs2_fsstat
+(brace
+DECL|member|tsize
 id|__u32
-id|linkmax
+id|tsize
+suffix:semicolon
+multiline_comment|/* Server transfer size */
+DECL|member|bsize
+id|__u32
+id|bsize
+suffix:semicolon
+multiline_comment|/* Filesystem block size */
+DECL|member|blocks
+id|__u32
+id|blocks
+suffix:semicolon
+multiline_comment|/* No. of &quot;bsize&quot; blocks on filesystem */
+DECL|member|bfree
+id|__u32
+id|bfree
+suffix:semicolon
+multiline_comment|/* No. of free &quot;bsize&quot; blocks */
+DECL|member|bavail
+id|__u32
+id|bavail
+suffix:semicolon
+multiline_comment|/* No. of available &quot;bsize&quot; blocks */
+)brace
+suffix:semicolon
+DECL|struct|nfs_pathconf
+r_struct
+id|nfs_pathconf
+(brace
+DECL|member|fattr
+r_struct
+id|nfs_fattr
+op_star
+id|fattr
+suffix:semicolon
+multiline_comment|/* Post-op attributes */
+DECL|member|max_link
+id|__u32
+id|max_link
 suffix:semicolon
 multiline_comment|/* max # of hard links */
-DECL|member|namelen
+DECL|member|max_namelen
 id|__u32
-id|namelen
+id|max_namelen
 suffix:semicolon
 multiline_comment|/* max name length */
-DECL|member|lease_time
-id|__u32
-id|lease_time
-suffix:semicolon
-multiline_comment|/* in seconds */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Arguments to the read call.&n; */
@@ -1130,6 +1189,846 @@ id|plus
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_NFS_V4
+DECL|typedef|clientid4
+r_typedef
+id|u64
+id|clientid4
+suffix:semicolon
+DECL|struct|nfs4_change_info
+r_struct
+id|nfs4_change_info
+(brace
+DECL|member|atomic
+id|u32
+id|atomic
+suffix:semicolon
+DECL|member|before
+id|u64
+id|before
+suffix:semicolon
+DECL|member|after
+id|u64
+id|after
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|nfs4_access
+r_struct
+id|nfs4_access
+(brace
+DECL|member|ac_req_access
+id|u32
+id|ac_req_access
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|ac_resp_supported
+id|u32
+op_star
+id|ac_resp_supported
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|ac_resp_access
+id|u32
+op_star
+id|ac_resp_access
+suffix:semicolon
+multiline_comment|/* response */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_close
+r_struct
+id|nfs4_close
+(brace
+DECL|member|cl_stateid
+r_char
+op_star
+id|cl_stateid
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|cl_seqid
+id|u32
+id|cl_seqid
+suffix:semicolon
+multiline_comment|/* request */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_commit
+r_struct
+id|nfs4_commit
+(brace
+DECL|member|co_start
+id|u64
+id|co_start
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|co_len
+id|u32
+id|co_len
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|co_verifier
+r_struct
+id|nfs_writeverf
+op_star
+id|co_verifier
+suffix:semicolon
+multiline_comment|/* response */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_create
+r_struct
+id|nfs4_create
+(brace
+DECL|member|cr_ftype
+id|u32
+id|cr_ftype
+suffix:semicolon
+multiline_comment|/* request */
+r_union
+(brace
+multiline_comment|/* request */
+r_struct
+(brace
+DECL|member|textlen
+id|u32
+id|textlen
+suffix:semicolon
+DECL|member|text
+r_const
+r_char
+op_star
+id|text
+suffix:semicolon
+DECL|member|symlink
+)brace
+id|symlink
+suffix:semicolon
+multiline_comment|/* NF4LNK */
+r_struct
+(brace
+DECL|member|specdata1
+id|u32
+id|specdata1
+suffix:semicolon
+DECL|member|specdata2
+id|u32
+id|specdata2
+suffix:semicolon
+DECL|member|device
+)brace
+id|device
+suffix:semicolon
+multiline_comment|/* NF4BLK, NF4CHR */
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+DECL|member|cr_namelen
+id|u32
+id|cr_namelen
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|cr_name
+r_const
+r_char
+op_star
+id|cr_name
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|cr_attrs
+r_struct
+id|iattr
+op_star
+id|cr_attrs
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|cr_cinfo
+r_struct
+id|nfs4_change_info
+op_star
+id|cr_cinfo
+suffix:semicolon
+multiline_comment|/* response */
+)brace
+suffix:semicolon
+DECL|macro|cr_textlen
+mdefine_line|#define cr_textlen&t;&t;&t;u.symlink.textlen
+DECL|macro|cr_text
+mdefine_line|#define cr_text&t;&t;&t;&t;u.symlink.text
+DECL|macro|cr_specdata1
+mdefine_line|#define cr_specdata1&t;&t;&t;u.device.specdata1
+DECL|macro|cr_specdata2
+mdefine_line|#define cr_specdata2&t;&t;&t;u.device.specdata2
+DECL|struct|nfs4_getattr
+r_struct
+id|nfs4_getattr
+(brace
+DECL|member|gt_bmval
+id|u32
+op_star
+id|gt_bmval
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|gt_attrs
+r_struct
+id|nfs_fattr
+op_star
+id|gt_attrs
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|gt_fsstat
+r_struct
+id|nfs_fsstat
+op_star
+id|gt_fsstat
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|gt_fsinfo
+r_struct
+id|nfs_fsinfo
+op_star
+id|gt_fsinfo
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|gt_pathconf
+r_struct
+id|nfs_pathconf
+op_star
+id|gt_pathconf
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|gt_bmres
+id|u32
+op_star
+id|gt_bmres
+suffix:semicolon
+multiline_comment|/* response */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_getfh
+r_struct
+id|nfs4_getfh
+(brace
+DECL|member|gf_fhandle
+r_struct
+id|nfs_fh
+op_star
+id|gf_fhandle
+suffix:semicolon
+multiline_comment|/* response */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_link
+r_struct
+id|nfs4_link
+(brace
+DECL|member|ln_namelen
+id|u32
+id|ln_namelen
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|ln_name
+r_const
+r_char
+op_star
+id|ln_name
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|ln_cinfo
+r_struct
+id|nfs4_change_info
+op_star
+id|ln_cinfo
+suffix:semicolon
+multiline_comment|/* response */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_lookup
+r_struct
+id|nfs4_lookup
+(brace
+DECL|member|lo_name
+r_struct
+id|qstr
+op_star
+id|lo_name
+suffix:semicolon
+multiline_comment|/* request */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_open
+r_struct
+id|nfs4_open
+(brace
+DECL|member|op_share_access
+id|u32
+id|op_share_access
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|op_opentype
+id|u32
+id|op_opentype
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|op_createmode
+id|u32
+id|op_createmode
+suffix:semicolon
+multiline_comment|/* request */
+r_union
+(brace
+multiline_comment|/* request */
+DECL|member|attrs
+r_struct
+id|iattr
+op_star
+id|attrs
+suffix:semicolon
+multiline_comment|/* UNCHECKED, GUARDED */
+DECL|member|verifier
+id|nfs4_verifier
+id|verifier
+suffix:semicolon
+multiline_comment|/* EXCLUSIVE */
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+DECL|member|op_name
+r_struct
+id|qstr
+op_star
+id|op_name
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|op_stateid
+r_char
+op_star
+id|op_stateid
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|op_cinfo
+r_struct
+id|nfs4_change_info
+op_star
+id|op_cinfo
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|op_rflags
+id|u32
+op_star
+id|op_rflags
+suffix:semicolon
+multiline_comment|/* response */
+)brace
+suffix:semicolon
+DECL|macro|op_attrs
+mdefine_line|#define op_attrs     u.attrs
+DECL|macro|op_verifier
+mdefine_line|#define op_verifier  u.verifier
+DECL|struct|nfs4_open_confirm
+r_struct
+id|nfs4_open_confirm
+(brace
+DECL|member|oc_stateid
+r_char
+op_star
+id|oc_stateid
+suffix:semicolon
+multiline_comment|/* request */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_putfh
+r_struct
+id|nfs4_putfh
+(brace
+DECL|member|pf_fhandle
+r_struct
+id|nfs_fh
+op_star
+id|pf_fhandle
+suffix:semicolon
+multiline_comment|/* request */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_read
+r_struct
+id|nfs4_read
+(brace
+DECL|member|rd_offset
+id|u64
+id|rd_offset
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|rd_length
+id|u32
+id|rd_length
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|rd_eof
+id|u32
+op_star
+id|rd_eof
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|rd_bytes_read
+id|u32
+op_star
+id|rd_bytes_read
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|rd_pages
+r_struct
+id|page
+op_star
+op_star
+id|rd_pages
+suffix:semicolon
+multiline_comment|/* zero-copy data */
+DECL|member|rd_pgbase
+r_int
+r_int
+id|rd_pgbase
+suffix:semicolon
+multiline_comment|/* zero-copy data */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_readdir
+r_struct
+id|nfs4_readdir
+(brace
+DECL|member|rd_cookie
+id|u64
+id|rd_cookie
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|rd_req_verifier
+id|nfs4_verifier
+id|rd_req_verifier
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|rd_count
+id|u32
+id|rd_count
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|rd_bmval
+id|u32
+id|rd_bmval
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|rd_resp_verifier
+id|nfs4_verifier
+id|rd_resp_verifier
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|rd_pages
+r_struct
+id|page
+op_star
+op_star
+id|rd_pages
+suffix:semicolon
+multiline_comment|/* zero-copy data */
+DECL|member|rd_pgbase
+r_int
+r_int
+id|rd_pgbase
+suffix:semicolon
+multiline_comment|/* zero-copy data */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_readlink
+r_struct
+id|nfs4_readlink
+(brace
+DECL|member|rl_count
+id|u32
+id|rl_count
+suffix:semicolon
+multiline_comment|/* zero-copy data */
+DECL|member|rl_pages
+r_struct
+id|page
+op_star
+op_star
+id|rl_pages
+suffix:semicolon
+multiline_comment|/* zero-copy data */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_remove
+r_struct
+id|nfs4_remove
+(brace
+DECL|member|rm_namelen
+id|u32
+id|rm_namelen
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|rm_name
+r_const
+r_char
+op_star
+id|rm_name
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|rm_cinfo
+r_struct
+id|nfs4_change_info
+op_star
+id|rm_cinfo
+suffix:semicolon
+multiline_comment|/* response */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_rename
+r_struct
+id|nfs4_rename
+(brace
+DECL|member|rn_oldnamelen
+id|u32
+id|rn_oldnamelen
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|rn_oldname
+r_const
+r_char
+op_star
+id|rn_oldname
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|rn_newnamelen
+id|u32
+id|rn_newnamelen
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|rn_newname
+r_const
+r_char
+op_star
+id|rn_newname
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|rn_src_cinfo
+r_struct
+id|nfs4_change_info
+op_star
+id|rn_src_cinfo
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|rn_dst_cinfo
+r_struct
+id|nfs4_change_info
+op_star
+id|rn_dst_cinfo
+suffix:semicolon
+multiline_comment|/* response */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_setattr
+r_struct
+id|nfs4_setattr
+(brace
+DECL|member|st_stateid
+r_char
+op_star
+id|st_stateid
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|st_iap
+r_struct
+id|iattr
+op_star
+id|st_iap
+suffix:semicolon
+multiline_comment|/* request */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_setclientid
+r_struct
+id|nfs4_setclientid
+(brace
+DECL|member|sc_verifier
+id|nfs4_verifier
+id|sc_verifier
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|sc_name
+r_char
+op_star
+id|sc_name
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|sc_prog
+id|u32
+id|sc_prog
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|sc_netid
+r_char
+id|sc_netid
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|sc_uaddr
+r_char
+id|sc_uaddr
+(braket
+l_int|24
+)braket
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|sc_cb_ident
+id|u32
+id|sc_cb_ident
+suffix:semicolon
+multiline_comment|/* request */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_write
+r_struct
+id|nfs4_write
+(brace
+DECL|member|wr_offset
+id|u64
+id|wr_offset
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|wr_stable_how
+id|u32
+id|wr_stable_how
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|wr_len
+id|u32
+id|wr_len
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|wr_bytes_written
+id|u32
+op_star
+id|wr_bytes_written
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|wr_verf
+r_struct
+id|nfs_writeverf
+op_star
+id|wr_verf
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|wr_pages
+r_struct
+id|page
+op_star
+op_star
+id|wr_pages
+suffix:semicolon
+multiline_comment|/* zero-copy data */
+DECL|member|wr_pgbase
+r_int
+r_int
+id|wr_pgbase
+suffix:semicolon
+multiline_comment|/* zero-copy data */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_op
+r_struct
+id|nfs4_op
+(brace
+DECL|member|opnum
+id|u32
+id|opnum
+suffix:semicolon
+DECL|member|nfserr
+id|u32
+id|nfserr
+suffix:semicolon
+r_union
+(brace
+DECL|member|access
+r_struct
+id|nfs4_access
+id|access
+suffix:semicolon
+DECL|member|close
+r_struct
+id|nfs4_close
+id|close
+suffix:semicolon
+DECL|member|commit
+r_struct
+id|nfs4_commit
+id|commit
+suffix:semicolon
+DECL|member|create
+r_struct
+id|nfs4_create
+id|create
+suffix:semicolon
+DECL|member|getattr
+r_struct
+id|nfs4_getattr
+id|getattr
+suffix:semicolon
+DECL|member|getfh
+r_struct
+id|nfs4_getfh
+id|getfh
+suffix:semicolon
+DECL|member|link
+r_struct
+id|nfs4_link
+id|link
+suffix:semicolon
+DECL|member|lookup
+r_struct
+id|nfs4_lookup
+id|lookup
+suffix:semicolon
+DECL|member|open
+r_struct
+id|nfs4_open
+id|open
+suffix:semicolon
+DECL|member|open_confirm
+r_struct
+id|nfs4_open_confirm
+id|open_confirm
+suffix:semicolon
+DECL|member|putfh
+r_struct
+id|nfs4_putfh
+id|putfh
+suffix:semicolon
+DECL|member|read
+r_struct
+id|nfs4_read
+id|read
+suffix:semicolon
+DECL|member|readdir
+r_struct
+id|nfs4_readdir
+id|readdir
+suffix:semicolon
+DECL|member|readlink
+r_struct
+id|nfs4_readlink
+id|readlink
+suffix:semicolon
+DECL|member|remove
+r_struct
+id|nfs4_remove
+id|remove
+suffix:semicolon
+DECL|member|rename
+r_struct
+id|nfs4_rename
+id|rename
+suffix:semicolon
+DECL|member|setattr
+r_struct
+id|nfs4_setattr
+id|setattr
+suffix:semicolon
+DECL|member|setclientid
+r_struct
+id|nfs4_setclientid
+id|setclientid
+suffix:semicolon
+DECL|member|write
+r_struct
+id|nfs4_write
+id|write
+suffix:semicolon
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|nfs4_compound
+r_struct
+id|nfs4_compound
+(brace
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* defined below */
+DECL|member|server
+r_struct
+id|nfs_server
+op_star
+id|server
+suffix:semicolon
+multiline_comment|/* RENEW information */
+DECL|member|renew_index
+r_int
+id|renew_index
+suffix:semicolon
+DECL|member|timestamp
+r_int
+r_int
+id|timestamp
+suffix:semicolon
+multiline_comment|/* scratch variables for XDR encode/decode */
+DECL|member|nops
+r_int
+id|nops
+suffix:semicolon
+DECL|member|p
+id|u32
+op_star
+id|p
+suffix:semicolon
+DECL|member|end
+id|u32
+op_star
+id|end
+suffix:semicolon
+multiline_comment|/* the individual COMPOUND operations */
+DECL|member|ops
+r_struct
+id|nfs4_op
+op_star
+id|ops
+suffix:semicolon
+multiline_comment|/* request */
+DECL|member|req_nops
+r_int
+id|req_nops
+suffix:semicolon
+DECL|member|taglen
+id|u32
+id|taglen
+suffix:semicolon
+DECL|member|tag
+r_char
+op_star
+id|tag
+suffix:semicolon
+multiline_comment|/* response */
+DECL|member|resp_nops
+r_int
+id|resp_nops
+suffix:semicolon
+DECL|member|toplevel_status
+r_int
+id|toplevel_status
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_NFS_V4 */
 DECL|struct|nfs_read_data
 r_struct
 id|nfs_read_data
@@ -1192,7 +2091,33 @@ id|v3
 suffix:semicolon
 multiline_comment|/* also v2 */
 macro_line|#ifdef CONFIG_NFS_V4
-multiline_comment|/* NFSv4 data will come here... */
+r_struct
+(brace
+DECL|member|compound
+r_struct
+id|nfs4_compound
+id|compound
+suffix:semicolon
+DECL|member|ops
+r_struct
+id|nfs4_op
+id|ops
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|res_count
+id|u32
+id|res_count
+suffix:semicolon
+DECL|member|res_eof
+id|u32
+id|res_eof
+suffix:semicolon
+DECL|member|v4
+)brace
+id|v4
+suffix:semicolon
 macro_line|#endif
 DECL|member|u
 )brace
@@ -1255,17 +2180,49 @@ r_struct
 id|nfs_writeargs
 id|args
 suffix:semicolon
+multiline_comment|/* argument struct */
 DECL|member|res
 r_struct
 id|nfs_writeres
 id|res
 suffix:semicolon
+multiline_comment|/* result struct */
 DECL|member|v3
 )brace
 id|v3
 suffix:semicolon
 macro_line|#ifdef CONFIG_NFS_V4
-multiline_comment|/* NFSv4 data to come here... */
+r_struct
+(brace
+DECL|member|compound
+r_struct
+id|nfs4_compound
+id|compound
+suffix:semicolon
+DECL|member|ops
+r_struct
+id|nfs4_op
+id|ops
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|arg_count
+id|u32
+id|arg_count
+suffix:semicolon
+DECL|member|arg_stable
+id|u32
+id|arg_stable
+suffix:semicolon
+DECL|member|res_count
+id|u32
+id|res_count
+suffix:semicolon
+DECL|member|v4
+)brace
+id|v4
+suffix:semicolon
 macro_line|#endif
 DECL|member|u
 )brace
@@ -1767,7 +2724,47 @@ id|nfs_fh
 op_star
 comma
 r_struct
+id|nfs_fsstat
+op_star
+)paren
+suffix:semicolon
+DECL|member|fsinfo
+r_int
+(paren
+op_star
+id|fsinfo
+)paren
+(paren
+r_struct
+id|nfs_server
+op_star
+comma
+r_struct
+id|nfs_fh
+op_star
+comma
+r_struct
 id|nfs_fsinfo
+op_star
+)paren
+suffix:semicolon
+DECL|member|pathconf
+r_int
+(paren
+op_star
+id|pathconf
+)paren
+(paren
+r_struct
+id|nfs_server
+op_star
+comma
+r_struct
+id|nfs_fh
+op_star
+comma
+r_struct
+id|nfs_pathconf
 op_star
 )paren
 suffix:semicolon
@@ -1864,6 +2861,11 @@ id|nfs_v3_clientops
 suffix:semicolon
 r_extern
 r_struct
+id|nfs_rpc_ops
+id|nfs_v4_clientops
+suffix:semicolon
+r_extern
+r_struct
 id|rpc_version
 id|nfs_version2
 suffix:semicolon
@@ -1871,6 +2873,11 @@ r_extern
 r_struct
 id|rpc_version
 id|nfs_version3
+suffix:semicolon
+r_extern
+r_struct
+id|rpc_version
+id|nfs_version4
 suffix:semicolon
 r_extern
 r_struct

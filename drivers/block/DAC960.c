@@ -7607,10 +7607,6 @@ id|n
 op_lshift
 id|DAC960_MaxPartitionsBits
 suffix:semicolon
-id|disk-&gt;minor_shift
-op_assign
-id|DAC960_MaxPartitionsBits
-suffix:semicolon
 id|disk-&gt;fops
 op_assign
 op_amp
@@ -8600,6 +8596,9 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
+op_lshift
+id|DAC960_MaxPartitionsBits
 )paren
 suffix:semicolon
 r_if

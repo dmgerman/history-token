@@ -327,7 +327,7 @@ comma
 id|nlink_t
 id|nlink
 comma
-id|dev_t
+id|xfs_dev_t
 id|rdev
 comma
 id|cred_t
@@ -927,7 +927,7 @@ id|ip-&gt;i_d.di_onlink
 op_assign
 l_int|0
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 op_amp
@@ -937,6 +937,8 @@ id|ip-&gt;i_d.di_pad
 l_int|0
 )braket
 )paren
+comma
+l_int|0
 comma
 r_sizeof
 (paren

@@ -3159,7 +3159,7 @@ id|ip_conntrack_lock
 suffix:semicolon
 id|proto
 op_assign
-id|ip_ct_find_proto
+id|__ip_ct_find_proto
 c_func
 (paren
 (paren

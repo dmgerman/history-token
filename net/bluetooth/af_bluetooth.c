@@ -1,5 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * BlueZ Bluetooth address family and sockets.&n; *&n; * $Id: af_bluetooth.c,v 1.3 2002/04/17 17:37:15 maxk Exp $&n; */
+multiline_comment|/*&n; *  Bluetooth address family and sockets.&n; *&n; * $Id: af_bluetooth.c,v 1.3 2002/04/17 17:37:15 maxk Exp $&n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;2.2&quot;
 macro_line|#include &lt;linux/config.h&gt;
@@ -20,34 +20,34 @@ macro_line|#if defined(CONFIG_KMOD)
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
-macro_line|#ifndef AF_BLUETOOTH_DEBUG
+macro_line|#ifndef CONFIG_BT_SOCK_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
 mdefine_line|#define BT_DBG( A... )
 macro_line|#endif
 multiline_comment|/* Bluetooth sockets */
-DECL|macro|BLUEZ_MAX_PROTO
-mdefine_line|#define BLUEZ_MAX_PROTO&t;5
-DECL|variable|bluez_proto
+DECL|macro|BT_MAX_PROTO
+mdefine_line|#define BT_MAX_PROTO&t;5
+DECL|variable|bt_proto
 r_static
 r_struct
 id|net_proto_family
 op_star
-id|bluez_proto
+id|bt_proto
 (braket
-id|BLUEZ_MAX_PROTO
+id|BT_MAX_PROTO
 )braket
 suffix:semicolon
-DECL|variable|bluez_sock_cache
+DECL|variable|bt_sock_cache
 r_static
 id|kmem_cache_t
 op_star
-id|bluez_sock_cache
+id|bt_sock_cache
 suffix:semicolon
-DECL|function|bluez_sock_register
+DECL|function|bt_sock_register
 r_int
-id|bluez_sock_register
+id|bt_sock_register
 c_func
 (paren
 r_int
@@ -64,7 +64,7 @@ c_cond
 (paren
 id|proto
 op_ge
-id|BLUEZ_MAX_PROTO
+id|BT_MAX_PROTO
 )paren
 r_return
 op_minus
@@ -73,7 +73,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bluez_proto
+id|bt_proto
 (braket
 id|proto
 )braket
@@ -82,7 +82,7 @@ r_return
 op_minus
 id|EEXIST
 suffix:semicolon
-id|bluez_proto
+id|bt_proto
 (braket
 id|proto
 )braket
@@ -93,9 +93,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|bluez_sock_unregister
+DECL|function|bt_sock_unregister
 r_int
-id|bluez_sock_unregister
+id|bt_sock_unregister
 c_func
 (paren
 r_int
@@ -107,7 +107,7 @@ c_cond
 (paren
 id|proto
 op_ge
-id|BLUEZ_MAX_PROTO
+id|BT_MAX_PROTO
 )paren
 r_return
 op_minus
@@ -117,7 +117,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluez_proto
+id|bt_proto
 (braket
 id|proto
 )braket
@@ -126,7 +126,7 @@ r_return
 op_minus
 id|ENOENT
 suffix:semicolon
-id|bluez_proto
+id|bt_proto
 (braket
 id|proto
 )braket
@@ -137,10 +137,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|bluez_sock_create
+DECL|function|bt_sock_create
 r_static
 r_int
-id|bluez_sock_create
+id|bt_sock_create
 c_func
 (paren
 r_struct
@@ -157,7 +157,7 @@ c_cond
 (paren
 id|proto
 OG
-id|BLUEZ_MAX_PROTO
+id|BT_MAX_PROTO
 )paren
 r_return
 op_minus
@@ -168,7 +168,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluez_proto
+id|bt_proto
 (braket
 id|proto
 )braket
@@ -202,7 +202,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluez_proto
+id|bt_proto
 (braket
 id|proto
 )braket
@@ -212,7 +212,7 @@ op_minus
 id|ENOENT
 suffix:semicolon
 r_return
-id|bluez_proto
+id|bt_proto
 (braket
 id|proto
 )braket
@@ -226,11 +226,11 @@ id|proto
 )paren
 suffix:semicolon
 )brace
-DECL|function|bluez_sock_alloc
+DECL|function|bt_sock_alloc
 r_struct
 id|sock
 op_star
-id|bluez_sock_alloc
+id|bt_sock_alloc
 c_func
 (paren
 r_struct
@@ -269,10 +269,10 @@ comma
 r_sizeof
 (paren
 r_struct
-id|bluez_sock
+id|bt_sock
 )paren
 comma
-id|bluez_sock_cache
+id|bt_sock_cache
 )paren
 suffix:semicolon
 r_if
@@ -344,7 +344,7 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -369,13 +369,13 @@ r_return
 id|sk
 suffix:semicolon
 )brace
-DECL|function|bluez_sock_link
+DECL|function|bt_sock_link
 r_void
-id|bluez_sock_link
+id|bt_sock_link
 c_func
 (paren
 r_struct
-id|bluez_sock_list
+id|bt_sock_list
 op_star
 id|l
 comma
@@ -414,13 +414,13 @@ id|l-&gt;lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|bluez_sock_unlink
+DECL|function|bt_sock_unlink
 r_void
-id|bluez_sock_unlink
+id|bt_sock_unlink
 c_func
 (paren
 r_struct
-id|bluez_sock_list
+id|bt_sock_list
 op_star
 id|l
 comma
@@ -499,9 +499,9 @@ id|l-&gt;lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|bluez_accept_enqueue
+DECL|function|bt_accept_enqueue
 r_void
-id|bluez_accept_enqueue
+id|bt_accept_enqueue
 c_func
 (paren
 r_struct
@@ -535,7 +535,7 @@ id|list_add_tail
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -544,7 +544,7 @@ op_member_access_from_pointer
 id|accept_q
 comma
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|parent
@@ -553,7 +553,7 @@ op_member_access_from_pointer
 id|accept_q
 )paren
 suffix:semicolon
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -567,10 +567,10 @@ id|parent-&gt;ack_backlog
 op_increment
 suffix:semicolon
 )brace
-DECL|function|bluez_accept_unlink
+DECL|function|bt_accept_unlink
 r_static
 r_void
-id|bluez_accept_unlink
+id|bt_accept_unlink
 c_func
 (paren
 r_struct
@@ -593,7 +593,7 @@ id|list_del_init
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -602,7 +602,7 @@ op_member_access_from_pointer
 id|accept_q
 )paren
 suffix:semicolon
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -611,7 +611,7 @@ op_member_access_from_pointer
 id|parent-&gt;ack_backlog
 op_decrement
 suffix:semicolon
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -628,11 +628,11 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-DECL|function|bluez_accept_dequeue
+DECL|function|bt_accept_dequeue
 r_struct
 id|sock
 op_star
-id|bluez_accept_dequeue
+id|bt_accept_dequeue
 c_func
 (paren
 r_struct
@@ -675,7 +675,7 @@ comma
 id|n
 comma
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|parent
@@ -697,7 +697,7 @@ c_func
 id|p
 comma
 r_struct
-id|bluez_sock
+id|bt_sock
 comma
 id|accept_q
 )paren
@@ -722,7 +722,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|bluez_accept_unlink
+id|bt_accept_unlink
 c_func
 (paren
 id|sk
@@ -742,7 +742,7 @@ op_logical_neg
 id|newsock
 )paren
 (brace
-id|bluez_accept_unlink
+id|bt_accept_unlink
 c_func
 (paren
 id|sk
@@ -782,9 +782,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|bluez_sock_recvmsg
+DECL|function|bt_sock_recvmsg
 r_int
-id|bluez_sock_recvmsg
+id|bt_sock_recvmsg
 c_func
 (paren
 r_struct
@@ -958,10 +958,10 @@ suffix:colon
 id|copied
 suffix:semicolon
 )brace
-DECL|function|bluez_sock_poll
+DECL|function|bt_sock_poll
 r_int
 r_int
-id|bluez_sock_poll
+id|bt_sock_poll
 c_func
 (paren
 r_struct
@@ -1058,7 +1058,7 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -1135,9 +1135,9 @@ r_return
 id|mask
 suffix:semicolon
 )brace
-DECL|function|bluez_sock_w4_connect
+DECL|function|bt_sock_w4_connect
 r_int
-id|bluez_sock_w4_connect
+id|bt_sock_w4_connect
 c_func
 (paren
 r_struct
@@ -1312,22 +1312,38 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|variable|bluez_sock_family_ops
+DECL|variable|bt_sock_family_ops
 r_struct
 id|net_proto_family
-id|bluez_sock_family_ops
+id|bt_sock_family_ops
 op_assign
 (brace
 id|PF_BLUETOOTH
 comma
-id|bluez_sock_create
+id|bt_sock_create
 )brace
 suffix:semicolon
-DECL|function|bluez_init
+r_extern
+r_int
+id|hci_sock_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|hci_sock_cleanup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|function|bt_init
 r_static
 r_int
 id|__init
-id|bluez_init
+id|bt_init
 c_func
 (paren
 r_void
@@ -1336,7 +1352,7 @@ r_void
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;BlueZ Core ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
+l_string|&quot;Bluetooth Core ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
 comma
 id|VERSION
 )paren
@@ -1356,17 +1372,17 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Init socket cache */
-id|bluez_sock_cache
+id|bt_sock_cache
 op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;bluez_sock&quot;
+l_string|&quot;bt_sock&quot;
 comma
 r_sizeof
 (paren
 r_struct
-id|bluez_sock
+id|bt_sock
 )paren
 comma
 l_int|0
@@ -1382,13 +1398,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluez_sock_cache
+id|bt_sock_cache
 )paren
 (brace
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;BlueZ socket cache creation failed&quot;
+l_string|&quot;Bluetooth socket cache creation failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1400,12 +1416,7 @@ id|sock_register
 c_func
 (paren
 op_amp
-id|bluez_sock_family_ops
-)paren
-suffix:semicolon
-id|hci_core_init
-c_func
-(paren
+id|bt_sock_family_ops
 )paren
 suffix:semicolon
 id|hci_sock_init
@@ -1417,22 +1428,17 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|bluez_cleanup
+DECL|function|bt_cleanup
 r_static
 r_void
 id|__exit
-id|bluez_cleanup
+id|bt_cleanup
 c_func
 (paren
 r_void
 )paren
 (brace
 id|hci_sock_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-id|hci_core_cleanup
 c_func
 (paren
 )paren
@@ -1446,7 +1452,7 @@ suffix:semicolon
 id|kmem_cache_destroy
 c_func
 (paren
-id|bluez_sock_cache
+id|bt_sock_cache
 )paren
 suffix:semicolon
 id|remove_proc_entry
@@ -1458,18 +1464,18 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|variable|bluez_init
+DECL|variable|bt_init
 id|subsys_initcall
 c_func
 (paren
-id|bluez_init
+id|bt_init
 )paren
 suffix:semicolon
-DECL|variable|bluez_cleanup
+DECL|variable|bt_cleanup
 id|module_exit
 c_func
 (paren
-id|bluez_cleanup
+id|bt_cleanup
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -1481,7 +1487,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;BlueZ Core ver &quot;
+l_string|&quot;Bluetooth Core ver &quot;
 id|VERSION
 )paren
 suffix:semicolon

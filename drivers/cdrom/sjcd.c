@@ -5838,6 +5838,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -5863,10 +5864,6 @@ op_assign
 id|MAJOR_NR
 comma
 id|sjcd_disk-&gt;first_minor
-op_assign
-l_int|0
-comma
-id|sjcd_disk-&gt;minor_shift
 op_assign
 l_int|0
 comma

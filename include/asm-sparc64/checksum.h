@@ -265,9 +265,7 @@ id|sum
 suffix:semicolon
 )brace
 multiline_comment|/* ihl is always 5 or greater, almost always is 5, and iph is word aligned&n; * the majority of the time.&n; */
-DECL|function|ip_fast_csum
-r_static
-id|__inline__
+r_extern
 r_int
 r_int
 id|ip_fast_csum
@@ -283,74 +281,7 @@ r_int
 r_int
 id|ihl
 )paren
-(brace
-r_int
-r_int
-id|sum
 suffix:semicolon
-multiline_comment|/* Note: We must read %2 before we touch %0 for the first time,&n;&t; *       because GCC can legitimately use the same register for&n;&t; *       both operands.&n;&t; */
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;&t;sub&t;&t;%2, 4, %%g7&t;&t;! IEU0&bslash;n&quot;
-l_string|&quot;&t;lduw&t;&t;[%1 + 0x00], %0&t;&t;! Load&t;Group&bslash;n&quot;
-l_string|&quot;&t;lduw&t;&t;[%1 + 0x04], %%g2&t;! Load&t;Group&bslash;n&quot;
-l_string|&quot;&t;lduw&t;&t;[%1 + 0x08], %%g3&t;! Load&t;Group&bslash;n&quot;
-l_string|&quot;&t;addcc&t;&t;%%g2, %0, %0&t;&t;! IEU1&t;1 Load Bubble + Group&bslash;n&quot;
-l_string|&quot;&t;lduw&t;&t;[%1 + 0x0c], %%g2&t;! Load&bslash;n&quot;
-l_string|&quot;&t;addccc&t;&t;%%g3, %0, %0&t;&t;! Sngle&t;Group no Bubble&bslash;n&quot;
-l_string|&quot;&t;lduw&t;&t;[%1 + 0x10], %%g3&t;! Load&t;Group&bslash;n&quot;
-l_string|&quot;&t;addccc&t;&t;%%g2, %0, %0&t;&t;! Sngle&t;Group no Bubble&bslash;n&quot;
-l_string|&quot;&t;addc&t;&t;%0, %%g0, %0&t;&t;! Sngle Group&bslash;n&quot;
-l_string|&quot;1:&t;addcc&t;&t;%%g3, %0, %0&t;&t;! IEU1&t;Group no Bubble&bslash;n&quot;
-l_string|&quot;&t;add&t;&t;%1, 4, %1&t;&t;! IEU0&bslash;n&quot;
-l_string|&quot;&t;addccc&t;&t;%0, %%g0, %0&t;&t;! Sngle Group no Bubble&bslash;n&quot;
-l_string|&quot;&t;subcc&t;&t;%%g7, 1, %%g7&t;&t;! IEU1&t;Group&bslash;n&quot;
-l_string|&quot;&t;be,a,pt&t;&t;%%icc, 2f&t;&t;! CTI&bslash;n&quot;
-l_string|&quot;&t; sll&t;&t;%0, 16, %%g2&t;&t;! IEU0&bslash;n&quot;
-l_string|&quot;&t;lduw&t;&t;[%1 + 0x10], %%g3&t;! Load&t;Group&bslash;n&quot;
-l_string|&quot;&t;ba,pt&t;&t;%%xcc, 1b&t;&t;! CTI&bslash;n&quot;
-l_string|&quot;&t; nop&t;&t;&t;&t;&t;! IEU0&bslash;n&quot;
-l_string|&quot;2:&t;addcc&t;&t;%0, %%g2, %%g2&t;&t;! IEU1&t;Group&bslash;n&quot;
-l_string|&quot;&t;srl&t;&t;%%g2, 16, %0&t;&t;! IEU0&t;Group regdep&t;XXX Scheisse!&bslash;n&quot;
-l_string|&quot;&t;addc&t;&t;%0, %%g0, %0&t;&t;! Sngle&t;Group&bslash;n&quot;
-l_string|&quot;&t;xnor&t;&t;%%g0, %0, %0&t;&t;! IEU0&t;Group&bslash;n&quot;
-l_string|&quot;&t;srl&t;&t;%0, 0, %0&t;&t;! IEU0&t;Group&t;&t;XXX Scheisse!&bslash;n&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|sum
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|iph
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|ihl
-)paren
-comma
-l_string|&quot;1&quot;
-(paren
-id|iph
-)paren
-suffix:colon
-l_string|&quot;g2&quot;
-comma
-l_string|&quot;g3&quot;
-comma
-l_string|&quot;g7&quot;
-comma
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
-r_return
-id|sum
-suffix:semicolon
-)brace
 multiline_comment|/* Fold a partial checksum without adding pseudo headers. */
 DECL|function|csum_fold
 r_static

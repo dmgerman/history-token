@@ -1535,6 +1535,164 @@ DECL|macro|nfs_wait_event
 mdefine_line|#define nfs_wait_event(clnt, wq, condition)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __retval = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (clnt-&gt;cl_intr) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;sigset_t oldmask;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;rpc_clnt_sigmask(clnt, &amp;oldmask);&t;&t;&t;&bslash;&n;&t;&t;__retval = wait_event_interruptible(wq, condition);&t;&bslash;&n;&t;&t;rpc_clnt_sigunmask(clnt, &amp;oldmask);&t;&t;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;wait_event(wq, condition);&t;&t;&t;&t;&bslash;&n;&t;__retval;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|NFS_JUKEBOX_RETRY_TIME
 mdefine_line|#define NFS_JUKEBOX_RETRY_TIME (5 * HZ)
+macro_line|#ifdef CONFIG_NFS_V4
+DECL|struct|nfs4_client
+r_struct
+id|nfs4_client
+(brace
+DECL|member|cl_count
+id|atomic_t
+id|cl_count
+suffix:semicolon
+multiline_comment|/* refcount */
+DECL|member|cl_clientid
+id|u64
+id|cl_clientid
+suffix:semicolon
+multiline_comment|/* constant */
+DECL|member|cl_confirm
+id|nfs4_verifier
+id|cl_confirm
+suffix:semicolon
+multiline_comment|/*&n;         * Starts a list of lockowners, linked through lo_list.&n;&t; */
+DECL|member|cl_lockowners
+r_struct
+id|list_head
+id|cl_lockowners
+suffix:semicolon
+multiline_comment|/* protected by state_spinlock */
+)brace
+suffix:semicolon
+multiline_comment|/* nfs4proc.c */
+r_extern
+r_int
+id|nfs4_proc_renew
+c_func
+(paren
+r_struct
+id|nfs_server
+op_star
+id|server
+)paren
+suffix:semicolon
+multiline_comment|/* nfs4renewd.c */
+r_extern
+r_int
+id|nfs4_init_renewd
+c_func
+(paren
+r_struct
+id|nfs_server
+op_star
+id|server
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_NFS_V4 */
+macro_line|#ifdef CONFIG_NFS_V4
+r_extern
+r_struct
+id|nfs4_client
+op_star
+id|nfs4_get_client
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs4_put_client
+c_func
+(paren
+r_struct
+id|nfs4_client
+op_star
+id|clp
+)paren
+suffix:semicolon
+r_struct
+id|nfs4_mount_data
+suffix:semicolon
+r_static
+r_inline
+r_int
+DECL|function|create_nfsv4_state
+id|create_nfsv4_state
+c_func
+(paren
+r_struct
+id|nfs_server
+op_star
+id|server
+comma
+r_struct
+id|nfs4_mount_data
+op_star
+id|data
+)paren
+(brace
+id|server-&gt;nfs4_state
+op_assign
+l_int|NULL
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|destroy_nfsv4_state
+id|destroy_nfsv4_state
+c_func
+(paren
+r_struct
+id|nfs_server
+op_star
+id|server
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|server-&gt;mnt_path
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|server-&gt;mnt_path
+)paren
+suffix:semicolon
+id|server-&gt;mnt_path
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|server-&gt;nfs4_state
+)paren
+(brace
+id|nfs4_put_client
+c_func
+(paren
+id|server-&gt;nfs4_state
+)paren
+suffix:semicolon
+id|server-&gt;nfs4_state
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
+macro_line|#else
+DECL|macro|create_nfsv4_state
+mdefine_line|#define create_nfsv4_state(server, data)  0
+DECL|macro|destroy_nfsv4_state
+mdefine_line|#define destroy_nfsv4_state(server)       do { } while (0)
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * NFS debug flags&n; */
 DECL|macro|NFSDBG_VFS

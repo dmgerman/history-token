@@ -8,6 +8,7 @@ macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;initrd.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;os.h&quot;
+multiline_comment|/* Changed by uml_initrd_setup, which is a setup */
 DECL|variable|__initdata
 r_static
 r_char

@@ -529,7 +529,11 @@ c_cond
 id|card
 OL
 id|snd_ecards_limit
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|card_requested
 (braket
@@ -550,6 +554,7 @@ c_func
 id|card
 )paren
 suffix:semicolon
+)brace
 id|snd_seq_device_load_drivers
 c_func
 (paren

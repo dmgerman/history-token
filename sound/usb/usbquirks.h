@@ -5,7 +5,7 @@ mdefine_line|#define USB_DEVICE_VENDOR_SPEC(vend, prod) &bslash;&n;&t;.match_fla
 macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
 multiline_comment|/* Yamaha devices */
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -49,7 +49,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -93,7 +93,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -137,7 +137,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -181,7 +181,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -225,7 +225,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -269,7 +269,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -313,7 +313,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -357,7 +357,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -401,7 +401,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -445,7 +445,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -489,7 +489,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -533,7 +533,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -577,7 +577,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0499
@@ -622,7 +622,7 @@ id|QUIRK_MIDI_YAMAHA
 comma
 multiline_comment|/*&n; * Once upon a time people thought, &quot;Wouldn&squot;t it be nice if there was a&n; * standard for USB MIDI devices, so that device drivers would not be forced&n; * to know about the quirks of specific devices?&quot;  So Roland went ahead and&n; * wrote the USB Device Class Definition for MIDI Devices, and the USB-IF&n; * endorsed it, and now everybody designing USB MIDI devices does so in&n; * agreement with this standard (or at least tries to).&n; *&n; * And if you prefer a happy end, you can imagine that Roland devices set a&n; * good example. Instead of being completely fucked up due to the lack of&n; * class-specific descriptors.&n; */
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -692,7 +692,7 @@ l_int|0x0007
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -762,7 +762,7 @@ l_int|0x000f
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -832,7 +832,7 @@ l_int|0x003f
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -902,7 +902,7 @@ l_int|0x0003
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -972,7 +972,7 @@ l_int|0x0003
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -1042,7 +1042,7 @@ l_int|0x0013
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -1112,7 +1112,7 @@ l_int|0x0001
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -1182,7 +1182,7 @@ l_int|0x0001
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -1252,7 +1252,7 @@ l_int|0x0013
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -1322,7 +1322,7 @@ l_int|0x0007
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -1392,7 +1392,7 @@ l_int|0x0001
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -1462,7 +1462,7 @@ l_int|0x01ff
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -1532,7 +1532,7 @@ l_int|0x000f
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -1602,7 +1602,7 @@ l_int|0x003f
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -1672,7 +1672,7 @@ l_int|0x0007
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -1742,7 +1742,7 @@ l_int|0x000f
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0582
@@ -2078,7 +2078,7 @@ l_int|9
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0763
@@ -2131,7 +2131,7 @@ l_int|1
 )brace
 comma
 (brace
-id|USB_DEVICE_VENDOR_SPEC
+id|USB_DEVICE
 c_func
 (paren
 l_int|0x0763

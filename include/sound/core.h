@@ -822,13 +822,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
-id|snd_oss_cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/* memory.c */
 macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY

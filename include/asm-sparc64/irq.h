@@ -123,7 +123,7 @@ mdefine_line|#define IBF_MULTI&t;0x08&t;/* On PCI, indicates shared bucket.&t;&t
 DECL|macro|IBF_INPROGRESS
 mdefine_line|#define IBF_INPROGRESS&t;0x10&t;/* IRQ is being serviced.&t;&t;&t; */
 DECL|macro|NUM_IVECS
-mdefine_line|#define NUM_IVECS&t;8192
+mdefine_line|#define NUM_IVECS&t;(IMAP_INR + 1)
 r_extern
 r_struct
 id|ino_bucket

@@ -134,6 +134,7 @@ op_assign
 id|kiocb_to_siocb
 c_func
 (paren
+op_amp
 id|iocb
 )paren
 suffix:semicolon
@@ -1259,6 +1260,7 @@ op_assign
 id|kiocb_to_siocb
 c_func
 (paren
+op_amp
 id|iocb
 )paren
 suffix:semicolon
@@ -1335,8 +1337,7 @@ comma
 op_amp
 id|msg
 comma
-op_amp
-id|scm
+id|si-&gt;scm
 comma
 id|flags
 )paren
@@ -1451,8 +1452,13 @@ id|msghdr
 id|msg
 suffix:semicolon
 r_struct
-id|scm_cookie
-id|scm
+id|kiocb
+id|iocb
+suffix:semicolon
+r_struct
+id|sock_iocb
+op_star
+id|si
 suffix:semicolon
 id|mm_segment_t
 id|fs
@@ -1579,6 +1585,7 @@ op_assign
 id|kiocb_to_siocb
 c_func
 (paren
+op_amp
 id|iocb
 )paren
 suffix:semicolon
@@ -1655,8 +1662,7 @@ comma
 op_amp
 id|msg
 comma
-op_amp
-id|scm
+id|si-&gt;scm
 comma
 id|flags
 )paren
@@ -1874,6 +1880,7 @@ op_assign
 id|kiocb_to_siocb
 c_func
 (paren
+op_amp
 id|iocb
 )paren
 suffix:semicolon
@@ -1963,8 +1970,7 @@ id|result
 id|scm_destroy
 c_func
 (paren
-op_amp
-id|scm
+id|si-&gt;scm
 )paren
 suffix:semicolon
 )brace

@@ -6,12 +6,13 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt; 
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt; 
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/smplock.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;user_util.h&quot;
+multiline_comment|/* These are set in mmapper_init, which is called at boot time */
 DECL|variable|mmapper_size
 r_static
 r_int

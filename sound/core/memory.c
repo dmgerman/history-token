@@ -2463,7 +2463,7 @@ r_int
 id|count
 )paren
 (brace
-macro_line|#if defined(__i386_) || defined(CONFIG_SPARC32)
+macro_line|#if defined(__i386__) || defined(CONFIG_SPARC32)
 r_return
 id|copy_to_user
 c_func
@@ -2490,7 +2490,7 @@ macro_line|#else
 r_char
 id|buf
 (braket
-l_int|1024
+l_int|256
 )braket
 suffix:semicolon
 r_while
@@ -2588,7 +2588,7 @@ r_int
 id|count
 )paren
 (brace
-macro_line|#if defined(__i386_) || defined(CONFIG_SPARC32)
+macro_line|#if defined(__i386__) || defined(CONFIG_SPARC32)
 r_return
 id|copy_from_user
 c_func
@@ -2614,7 +2614,7 @@ macro_line|#else
 r_char
 id|buf
 (braket
-l_int|1024
+l_int|256
 )braket
 suffix:semicolon
 r_while

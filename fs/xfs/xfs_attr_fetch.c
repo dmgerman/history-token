@@ -42,7 +42,7 @@ r_return
 id|ENOATTR
 suffix:semicolon
 multiline_comment|/*&n;&t; * Do the argument setup for the xfs_attr routines.&n;&t; */
-id|bzero
+id|memset
 c_func
 (paren
 (paren
@@ -51,6 +51,8 @@ op_star
 )paren
 op_amp
 id|args
+comma
+l_int|0
 comma
 r_sizeof
 (paren

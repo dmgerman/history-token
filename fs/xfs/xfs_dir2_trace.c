@@ -79,12 +79,12 @@ c_cond
 (paren
 id|name
 )paren
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|name
-comma
 id|n
+comma
+id|name
 comma
 id|min
 c_func
@@ -99,7 +99,7 @@ id|namelen
 )paren
 suffix:semicolon
 r_else
-id|bzero
+id|memset
 c_func
 (paren
 (paren
@@ -107,6 +107,8 @@ r_char
 op_star
 )paren
 id|n
+comma
+l_int|0
 comma
 r_sizeof
 (paren

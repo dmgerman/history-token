@@ -150,14 +150,10 @@ DECL|member|num
 r_int
 id|num
 suffix:semicolon
-DECL|member|refcount
-r_int
-id|refcount
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|LINES_INIT
-mdefine_line|#define LINES_INIT(n) &bslash;&n;&t;{  num :&t;&t;n, &bslash;&n;&t;   refcount :&t;&t;0 }
+mdefine_line|#define LINES_INIT(n) {  num :&t;&t;n }
 r_extern
 r_void
 id|line_interrupt

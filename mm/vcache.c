@@ -127,7 +127,7 @@ comma
 id|mm
 )paren
 suffix:semicolon
-id|list_add
+id|list_add_tail
 c_func
 (paren
 op_amp
@@ -137,9 +137,9 @@ id|hash_head
 )paren
 suffix:semicolon
 )brace
-DECL|function|detach_vcache
+DECL|function|__detach_vcache
 r_void
-id|detach_vcache
+id|__detach_vcache
 c_func
 (paren
 id|vcache_t
@@ -147,25 +147,11 @@ op_star
 id|vcache
 )paren
 (brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|vcache_lock
-)paren
-suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
 id|vcache-&gt;hash_entry
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|vcache_lock
 )paren
 suffix:semicolon
 )brace
@@ -215,7 +201,7 @@ comma
 id|mm
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This is safe, because this path is called with the mm&n;&t; * semaphore read-held, and the add/remove path calls with the&n;&t; * mm semaphore write-held. So while other mm&squot;s might add new&n;&t; * entries in parallel, and *this* mm is locked out, so if the&n;&t; * list is empty now then we do not have to take the vcache&n;&t; * lock to see it&squot;s really empty.&n;&t; */
+multiline_comment|/*&n;&t; * This is safe, because this path is called with the pagetable&n;&t; * lock held. So while other mm&squot;s might add new entries in&n;&t; * parallel, *this* mm is locked out, so if the list is empty&n;&t; * now then we do not have to take the vcache lock to see it&squot;s&n;&t; * really empty.&n;&t; */
 r_if
 c_cond
 (paren

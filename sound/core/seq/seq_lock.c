@@ -3,8 +3,8 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;seq_lock.h&quot;
 macro_line|#if defined(__SMP__) || defined(CONFIG_SND_DEBUG)
+macro_line|#if 0 /* NOT USED */
 multiline_comment|/* (interruptible) sleep_on during the specified spinlock */
-DECL|function|snd_seq_sleep_in_lock
 r_void
 id|snd_seq_sleep_in_lock
 c_func
@@ -73,7 +73,6 @@ id|wait
 suffix:semicolon
 )brace
 multiline_comment|/* (interruptible) sleep_on with timeout during the specified spinlock */
-DECL|function|snd_seq_sleep_timeout_in_lock
 r_int
 id|snd_seq_sleep_timeout_in_lock
 c_func
@@ -150,6 +149,7 @@ r_return
 id|timeout
 suffix:semicolon
 )brace
+macro_line|#endif /* NOT USED */
 multiline_comment|/* wait until all locks are released */
 DECL|function|snd_use_lock_sync_helper
 r_void

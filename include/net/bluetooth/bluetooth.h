@@ -14,12 +14,8 @@ DECL|macro|PF_BLUETOOTH
 mdefine_line|#define PF_BLUETOOTH&t;AF_BLUETOOTH
 macro_line|#endif
 multiline_comment|/* Reserv for core and drivers use */
-DECL|macro|BLUEZ_SKB_RESERVE
-mdefine_line|#define BLUEZ_SKB_RESERVE       8
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
+DECL|macro|BT_SKB_RESERVE
+mdefine_line|#define BT_SKB_RESERVE       8
 DECL|macro|BTPROTO_L2CAP
 mdefine_line|#define BTPROTO_L2CAP   0
 DECL|macro|BTPROTO_HCI
@@ -38,41 +34,6 @@ DECL|macro|SOL_SCO
 mdefine_line|#define SOL_SCO     17
 DECL|macro|SOL_RFCOMM
 mdefine_line|#define SOL_RFCOMM  18
-multiline_comment|/* Debugging */
-macro_line|#ifdef CONFIG_BLUEZ_DEBUG
-DECL|macro|HCI_CORE_DEBUG
-mdefine_line|#define HCI_CORE_DEBUG&t;&t;1
-DECL|macro|HCI_SOCK_DEBUG
-mdefine_line|#define HCI_SOCK_DEBUG&t;&t;1
-DECL|macro|HCI_UART_DEBUG
-mdefine_line|#define HCI_UART_DEBUG&t;&t;1
-DECL|macro|HCI_USB_DEBUG
-mdefine_line|#define HCI_USB_DEBUG&t;&t;1
-singleline_comment|//#define HCI_DATA_DUMP&t;&t;1
-DECL|macro|L2CAP_DEBUG
-mdefine_line|#define L2CAP_DEBUG&t;&t;1
-DECL|macro|SCO_DEBUG
-mdefine_line|#define SCO_DEBUG&t;&t;1
-DECL|macro|AF_BLUETOOTH_DEBUG
-mdefine_line|#define AF_BLUETOOTH_DEBUG&t;1
-macro_line|#endif /* CONFIG_BLUEZ_DEBUG */
-r_extern
-r_void
-id|bluez_dump
-c_func
-(paren
-r_char
-op_star
-id|pref
-comma
-id|__u8
-op_star
-id|buf
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
 DECL|macro|BT_INFO
 mdefine_line|#define BT_INFO(fmt, arg...) printk(KERN_INFO fmt &quot;&bslash;n&quot; , ## arg)
 DECL|macro|BT_DBG
@@ -81,7 +42,7 @@ DECL|macro|BT_ERR
 mdefine_line|#define BT_ERR(fmt, arg...)  printk(KERN_ERR  &quot;%s: &quot; fmt &quot;&bslash;n&quot; , __FUNCTION__ , ## arg)
 macro_line|#ifdef HCI_DATA_DUMP
 DECL|macro|BT_DMP
-mdefine_line|#define BT_DMP(buf, len)    bluez_dump(__FUNCTION__, buf, len)
+mdefine_line|#define BT_DMP(buf, len)    bt_dump(__FUNCTION__, buf, len)
 macro_line|#else
 DECL|macro|BT_DMP
 mdefine_line|#define BT_DMP(D...)
@@ -251,11 +212,11 @@ id|str
 )paren
 suffix:semicolon
 multiline_comment|/* Common socket structures and functions */
-DECL|macro|bluez_sk
-mdefine_line|#define bluez_sk(__sk) ((struct bluez_sock *) __sk)
-DECL|struct|bluez_sock
+DECL|macro|bt_sk
+mdefine_line|#define bt_sk(__sk) ((struct bt_sock *) __sk)
+DECL|struct|bt_sock
 r_struct
-id|bluez_sock
+id|bt_sock
 (brace
 DECL|member|sk
 r_struct
@@ -283,9 +244,9 @@ id|parent
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|bluez_sock_list
+DECL|struct|bt_sock_list
 r_struct
-id|bluez_sock_list
+id|bt_sock_list
 (brace
 DECL|member|head
 r_struct
@@ -300,7 +261,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_int
-id|bluez_sock_register
+id|bt_sock_register
 c_func
 (paren
 r_int
@@ -313,7 +274,7 @@ id|ops
 )paren
 suffix:semicolon
 r_int
-id|bluez_sock_unregister
+id|bt_sock_unregister
 c_func
 (paren
 r_int
@@ -323,7 +284,7 @@ suffix:semicolon
 r_struct
 id|sock
 op_star
-id|bluez_sock_alloc
+id|bt_sock_alloc
 c_func
 (paren
 r_struct
@@ -342,11 +303,11 @@ id|prio
 )paren
 suffix:semicolon
 r_void
-id|bluez_sock_link
+id|bt_sock_link
 c_func
 (paren
 r_struct
-id|bluez_sock_list
+id|bt_sock_list
 op_star
 id|l
 comma
@@ -357,11 +318,11 @@ id|s
 )paren
 suffix:semicolon
 r_void
-id|bluez_sock_unlink
+id|bt_sock_unlink
 c_func
 (paren
 r_struct
-id|bluez_sock_list
+id|bt_sock_list
 op_star
 id|l
 comma
@@ -372,7 +333,7 @@ id|s
 )paren
 suffix:semicolon
 r_int
-id|bluez_sock_recvmsg
+id|bt_sock_recvmsg
 c_func
 (paren
 r_struct
@@ -403,7 +364,7 @@ id|scm
 )paren
 suffix:semicolon
 id|uint
-id|bluez_sock_poll
+id|bt_sock_poll
 c_func
 (paren
 r_struct
@@ -422,7 +383,7 @@ id|wait
 )paren
 suffix:semicolon
 r_int
-id|bluez_sock_w4_connect
+id|bt_sock_w4_connect
 c_func
 (paren
 r_struct
@@ -435,7 +396,7 @@ id|flags
 )paren
 suffix:semicolon
 r_void
-id|bluez_accept_enqueue
+id|bt_accept_enqueue
 c_func
 (paren
 r_struct
@@ -452,7 +413,7 @@ suffix:semicolon
 r_struct
 id|sock
 op_star
-id|bluez_accept_dequeue
+id|bt_accept_dequeue
 c_func
 (paren
 r_struct
@@ -467,25 +428,25 @@ id|newsock
 )paren
 suffix:semicolon
 multiline_comment|/* Skb helpers */
-DECL|struct|bluez_skb_cb
+DECL|struct|bt_skb_cb
 r_struct
-id|bluez_skb_cb
+id|bt_skb_cb
 (brace
-DECL|member|incomming
+DECL|member|incoming
 r_int
-id|incomming
+id|incoming
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|bluez_cb
-mdefine_line|#define bluez_cb(skb)&t;((struct bluez_skb_cb *)(skb-&gt;cb)) 
-DECL|function|bluez_skb_alloc
+DECL|macro|bt_cb
+mdefine_line|#define bt_cb(skb) ((struct bt_skb_cb *)(skb-&gt;cb)) 
+DECL|function|bt_skb_alloc
 r_static
 r_inline
 r_struct
 id|sk_buff
 op_star
-id|bluez_skb_alloc
+id|bt_skb_alloc
 c_func
 (paren
 r_int
@@ -512,7 +473,7 @@ c_func
 (paren
 id|len
 op_plus
-id|BLUEZ_SKB_RESERVE
+id|BT_SKB_RESERVE
 comma
 id|how
 )paren
@@ -524,16 +485,16 @@ c_func
 (paren
 id|skb
 comma
-id|BLUEZ_SKB_RESERVE
+id|BT_SKB_RESERVE
 )paren
 suffix:semicolon
-id|bluez_cb
+id|bt_cb
 c_func
 (paren
 id|skb
 )paren
 op_member_access_from_pointer
-id|incomming
+id|incoming
 op_assign
 l_int|0
 suffix:semicolon
@@ -542,13 +503,13 @@ r_return
 id|skb
 suffix:semicolon
 )brace
-DECL|function|bluez_skb_send_alloc
+DECL|function|bt_skb_send_alloc
 r_static
 r_inline
 r_struct
 id|sk_buff
 op_star
-id|bluez_skb_send_alloc
+id|bt_skb_send_alloc
 c_func
 (paren
 r_struct
@@ -586,7 +547,7 @@ id|sk
 comma
 id|len
 op_plus
-id|BLUEZ_SKB_RESERVE
+id|BT_SKB_RESERVE
 comma
 id|nb
 comma
@@ -600,16 +561,16 @@ c_func
 (paren
 id|skb
 comma
-id|BLUEZ_SKB_RESERVE
+id|BT_SKB_RESERVE
 )paren
 suffix:semicolon
-id|bluez_cb
+id|bt_cb
 c_func
 (paren
 id|skb
 )paren
 op_member_access_from_pointer
-id|incomming
+id|incoming
 op_assign
 l_int|0
 suffix:semicolon
@@ -669,36 +630,24 @@ r_return
 id|n
 suffix:semicolon
 )brace
-r_int
-id|hci_core_init
+r_void
+id|bt_dump
 c_func
 (paren
-r_void
+r_char
+op_star
+id|pref
+comma
+id|__u8
+op_star
+id|buf
+comma
+r_int
+id|count
 )paren
 suffix:semicolon
 r_int
-id|hci_core_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|hci_sock_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|hci_sock_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|bterr
+id|bt_err
 c_func
 (paren
 id|__u16

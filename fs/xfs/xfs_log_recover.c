@@ -1739,7 +1739,7 @@ multiline_comment|/* Linux XFS shouldn&squot;t generate totally zeroed logs -&n;
 id|xlog_warn
 c_func
 (paren
-l_string|&quot;XFS: totally zeroed log&bslash;n&quot;
+l_string|&quot;XFS: totally zeroed log&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3074,13 +3074,18 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n;&t; * Make sure that there are no blocks in front of the head&n;&t; * with the same cycle number as the head.  This can happen&n;&t; * because we allow multiple outstanding log writes concurrently,&n;&t; * and the later writes might make it out before earlier ones.&n;&t; *&n;&t; * We use the lsn from before modifying it so that we&squot;ll never&n;&t; * overwrite the unmount record after a clean unmount.&n;&t; *&n;&t; * Do this only if we are going to recover the filesystem&n;&t; */
+multiline_comment|/*&n;&t; * Make sure that there are no blocks in front of the head&n;&t; * with the same cycle number as the head.  This can happen&n;&t; * because we allow multiple outstanding log writes concurrently,&n;&t; * and the later writes might make it out before earlier ones.&n;&t; *&n;&t; * We use the lsn from before modifying it so that we&squot;ll never&n;&t; * overwrite the unmount record after a clean unmount.&n;&t; *&n;&t; * Do this only if we are going to recover the filesystem&n;&t; *&n;&t; * NOTE: This used to say &quot;if (!readonly)&quot;&n;&t; * However on Linux, we can &amp; do recover a read-only filesystem.&n;&t; * We only skip recovery if NORECOVERY is specified on mount,&n;&t; * in which case we would not be here.&n;&t; *&n;&t; * But... if the -device- itself is readonly, just skip this.&n;&t; * We can&squot;t recover this device anyway, so it won&squot;t matter.&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|readonly
+id|bdev_read_only
+c_func
+(paren
+id|log-&gt;l_mp-&gt;m_logdev_targp-&gt;pbr_bdev
 )paren
+)paren
+(brace
 id|error
 op_assign
 id|xlog_clear_stale_blocks
@@ -3091,6 +3096,7 @@ comma
 id|tail_lsn
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|bread_err
 suffix:colon
@@ -4312,17 +4318,17 @@ id|xfs_trans_header_t
 op_minus
 id|len
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|dp
-comma
 id|ptr
+comma
+id|dp
 comma
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/* s, d, l */
+multiline_comment|/* d, s, l */
 r_return
 l_int|0
 suffix:semicolon
@@ -4369,21 +4375,21 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|dp
-comma
 op_amp
 id|ptr
 (braket
 id|old_len
 )braket
 comma
+id|dp
+comma
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/* s, d, l */
+multiline_comment|/* d, s, l */
 id|item-&gt;ri_buf
 (braket
 id|item-&gt;ri_cnt
@@ -4460,12 +4466,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|dp
-comma
 id|ptr
+comma
+id|dp
 comma
 id|len
 )paren
@@ -4520,18 +4526,18 @@ op_amp
 id|trans-&gt;r_itemq
 )paren
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|dp
-comma
 op_amp
 id|trans-&gt;r_theader
+comma
+id|dp
 comma
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/* s, d, l */
+multiline_comment|/* d, s, l */
 r_return
 l_int|0
 suffix:semicolon
@@ -6274,17 +6280,9 @@ c_cond
 op_logical_neg
 id|error
 )paren
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|item-&gt;ri_buf
-(braket
-id|i
-)braket
-dot
-id|i_addr
-comma
-multiline_comment|/* source */
 id|xfs_buf_offset
 c_func
 (paren
@@ -6299,6 +6297,14 @@ id|XFS_BLI_SHIFT
 )paren
 comma
 multiline_comment|/* dest */
+id|item-&gt;ri_buf
+(braket
+id|i
+)braket
+dot
+id|i_addr
+comma
+multiline_comment|/* source */
 id|nbits
 op_lshift
 id|XFS_BLI_SHIFT
@@ -7547,25 +7553,25 @@ id|xfs_dinode_core_t
 )paren
 )paren
 (brace
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|item-&gt;ri_buf
-(braket
-l_int|1
-)braket
-dot
-id|i_addr
+(paren
+id|xfs_caddr_t
+)paren
+id|dip
 op_plus
 r_sizeof
 (paren
 id|xfs_dinode_core_t
 )paren
 comma
-(paren
-id|xfs_caddr_t
-)paren
-id|dip
+id|item-&gt;ri_buf
+(braket
+l_int|1
+)braket
+dot
+id|i_addr
 op_plus
 r_sizeof
 (paren
@@ -7710,13 +7716,13 @@ suffix:colon
 r_case
 id|XFS_ILOG_DEXT
 suffix:colon
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|src
-comma
 op_amp
 id|dip-&gt;di_u
+comma
+id|src
 comma
 id|len
 )paren
@@ -7862,12 +7868,12 @@ id|mp
 )paren
 )paren
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|src
-comma
 id|dest
+comma
+id|src
 comma
 id|len
 )paren
@@ -8446,12 +8452,12 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|recddq
-comma
 id|ddq
+comma
+id|recddq
 comma
 id|item-&gt;ri_buf
 (braket
@@ -8635,15 +8641,9 @@ comma
 id|efi_formatp-&gt;efi_nextents
 )paren
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
-id|efi_formatp
-comma
 (paren
 r_char
 op_star
@@ -8652,6 +8652,12 @@ op_amp
 (paren
 id|efip-&gt;efi_format
 )paren
+comma
+(paren
+r_char
+op_star
+)paren
+id|efi_formatp
 comma
 r_sizeof
 (paren
@@ -11769,7 +11775,7 @@ c_func
 (paren
 id|CE_DEBUG
 comma
-l_string|&quot;XFS: LogR this is a LogV2 filesystem&bslash;n&quot;
+l_string|&quot;XFS: LogR this is a LogV2 filesystem&quot;
 )paren
 suffix:semicolon
 )brace
@@ -12101,10 +12107,12 @@ r_return
 id|ENOMEM
 suffix:semicolon
 )brace
-id|bzero
+id|memset
 c_func
 (paren
 id|rhash
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -13592,13 +13600,7 @@ op_assign
 id|TAIL_BLK
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* There used to be a comment here:&n;&t;&t; *&n;&t;&t; * disallow recovery on read-only mounts.  note -- mount&n;&t;&t; * checks for ENOSPC and turns it into an intelligent&n;&t;&t; * error message.&n;&t;&t; * ...but this is no longer true.  Now, unless you specify&n;&t;&t; * NORECOVERY (in which case this function would never be&n;&t;&t; * called), it enables read-write access long enough to do&n;&t;&t; * recovery.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|readonly
-)paren
-(brace
+multiline_comment|/* There used to be a comment here:&n;&t;&t; *&n;&t;&t; * disallow recovery on read-only mounts.  note -- mount&n;&t;&t; * checks for ENOSPC and turns it into an intelligent&n;&t;&t; * error message.&n;&t;&t; * ...but this is no longer true.  Now, unless you specify&n;&t;&t; * NORECOVERY (in which case this function would never be&n;&t;&t; * called), we just go ahead and recover.  We do this all&n;&t;&t; * under the vfs layer, so we can get away with it unless&n;&t;&t; * the device itself is read-only, in which case we fail.&n;&t;&t; */
 macro_line|#ifdef __KERNEL__
 r_if
 c_cond
@@ -13606,22 +13608,32 @@ c_cond
 (paren
 id|error
 op_assign
-id|xfs_recover_read_only
+id|xfs_dev_is_read_only
 c_func
 (paren
-id|log
+id|log-&gt;l_mp
+comma
+l_string|&quot;recovery required&quot;
 )paren
 )paren
 )paren
+(brace
 r_return
 id|error
 suffix:semicolon
+)brace
 macro_line|#else
+r_if
+c_cond
+(paren
+id|readonly
+)paren
+(brace
 r_return
 id|ENOSPC
 suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#if defined(DEBUG) &amp;&amp; defined(XFS_LOUD_RECOVERY)
 id|cmn_err
@@ -13686,21 +13698,6 @@ suffix:semicolon
 id|log-&gt;l_flags
 op_or_assign
 id|XLOG_RECOVERY_NEEDED
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|readonly
-)paren
-id|XFS_MTOVFS
-c_func
-(paren
-id|log-&gt;l_mp
-)paren
-op_member_access_from_pointer
-id|vfs_flag
-op_or_assign
-id|VFS_RDONLY
 suffix:semicolon
 )brace
 r_return
@@ -13840,7 +13837,7 @@ c_func
 (paren
 id|CE_DEBUG
 comma
-l_string|&quot;!Ending clean XFS mount for filesystem: %s&bslash;n&quot;
+l_string|&quot;!Ending clean XFS mount for filesystem: %s&quot;
 comma
 id|log-&gt;l_mp-&gt;m_fsname
 )paren

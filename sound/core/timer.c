@@ -6564,7 +6564,7 @@ id|snd_info_entry_t
 op_star
 id|entry
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef SNDRV_OSS_INFO_DEV_TIMERS
 id|snd_oss_info_register
 c_func
 (paren
@@ -6782,7 +6782,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef SNDRV_OSS_INFO_DEV_TIMERS
 id|snd_oss_info_unregister
 c_func
 (paren

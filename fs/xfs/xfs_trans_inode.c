@@ -1147,9 +1147,11 @@ comma
 id|KM_SLEEP
 )paren
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
+id|iip-&gt;ili_orig_root
+comma
 (paren
 r_char
 op_star
@@ -1157,8 +1159,6 @@ op_star
 (paren
 id|ip-&gt;i_df.if_broot
 )paren
-comma
-id|iip-&gt;ili_orig_root
 comma
 id|iip-&gt;ili_root_size
 )paren

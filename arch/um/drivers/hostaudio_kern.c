@@ -10,6 +10,7 @@ macro_line|#include &quot;linux/soundcard.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;hostaudio.h&quot;
+multiline_comment|/* Only changed from linux_main at boot time */
 DECL|variable|dsp
 r_char
 op_star

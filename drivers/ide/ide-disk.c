@@ -10312,6 +10312,12 @@ op_member_access_from_pointer
 id|busy
 op_decrement
 suffix:semicolon
+id|g-&gt;minors
+op_assign
+l_int|1
+op_lshift
+id|PARTN_BITS
+suffix:semicolon
 id|g-&gt;minor_shift
 op_assign
 id|PARTN_BITS
@@ -10319,6 +10325,11 @@ suffix:semicolon
 id|g-&gt;de
 op_assign
 id|drive-&gt;de
+suffix:semicolon
+id|g-&gt;driverfs_dev
+op_assign
+op_amp
+id|drive-&gt;gendev
 suffix:semicolon
 id|g-&gt;flags
 op_assign
