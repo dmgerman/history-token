@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: analog.c,v 1.52 2000/06/07 13:07:06 vojtech Exp $&n; *&n; *  Copyright (c) 1996-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: analog.c,v 1.68 2002/01/22 20:18:32 vojtech Exp $&n; *&n; *  Copyright (c) 1996-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * Analog joystick and gamepad driver for Linux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -14,13 +14,13 @@ macro_line|#include &lt;asm/timex.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Analog joystick and gamepad driver for Linux&quot;
+l_string|&quot;Analog joystick and gamepad driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -134,6 +134,8 @@ DECL|macro|ANALOG_FUZZ_MAGIC
 mdefine_line|#define ANALOG_FUZZ_MAGIC&t;36&t;/* 36 u*ms/loop */
 DECL|macro|ANALOG_MAX_NAME_LENGTH
 mdefine_line|#define ANALOG_MAX_NAME_LENGTH  128
+DECL|macro|ANALOG_MAX_PHYS_LENGTH
+mdefine_line|#define ANALOG_MAX_PHYS_LENGTH&t;32
 DECL|variable|analog_axes
 r_static
 r_int
@@ -329,6 +331,13 @@ id|name
 id|ANALOG_MAX_NAME_LENGTH
 )braket
 suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+id|ANALOG_MAX_PHYS_LENGTH
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|analog_port
@@ -420,11 +429,81 @@ macro_line|#ifdef __i386__
 DECL|macro|TSC_PRESENT
 mdefine_line|#define TSC_PRESENT&t;(test_bit(X86_FEATURE_TSC, &amp;boot_cpu_data.x86_capability))
 DECL|macro|GET_TIME
-mdefine_line|#define GET_TIME(x)&t;do { if (TSC_PRESENT) rdtscl(x); else { outb(0, 0x43); x = inb(0x40); x |= inb(0x40) &lt;&lt; 8; } } while (0)
+mdefine_line|#define GET_TIME(x)&t;do { if (TSC_PRESENT) rdtscl(x); else x = get_time_pit(); } while (0)
 DECL|macro|DELTA
 mdefine_line|#define DELTA(x,y)&t;(TSC_PRESENT?((y)-(x)):((x)-(y)+((x)&lt;(y)?1193180L/HZ:0)))
 DECL|macro|TIME_NAME
 mdefine_line|#define TIME_NAME&t;(TSC_PRESENT?&quot;TSC&quot;:&quot;PIT&quot;)
+DECL|function|get_time_pit
+r_static
+r_int
+r_int
+id|get_time_pit
+c_func
+(paren
+r_void
+)paren
+(brace
+r_extern
+id|spinlock_t
+id|i8253_lock
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
+id|count
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|i8253_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|outb_p
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0x43
+)paren
+suffix:semicolon
+id|count
+op_assign
+id|inb_p
+c_func
+(paren
+l_int|0x40
+)paren
+suffix:semicolon
+id|count
+op_or_assign
+id|inb_p
+c_func
+(paren
+l_int|0x40
+)paren
+op_lshift
+l_int|8
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|i8253_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|count
+suffix:semicolon
+)brace
 macro_line|#elif __x86_64__
 DECL|macro|GET_TIME
 mdefine_line|#define GET_TIME(x)&t;rdtscl(x)
@@ -434,7 +513,7 @@ DECL|macro|TIME_NAME
 mdefine_line|#define TIME_NAME&t;&quot;TSC&quot;
 macro_line|#elif __alpha__
 DECL|macro|GET_TIME
-mdefine_line|#define GET_TIME(x)&t;((x) = get_cycles())
+mdefine_line|#define GET_TIME(x)&t;do { x = get_cycles(x); } while (0)
 DECL|macro|DELTA
 mdefine_line|#define DELTA(x,y)&t;((y)-(x))
 DECL|macro|TIME_NAME
@@ -2148,6 +2227,18 @@ c_func
 id|analog
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|analog-&gt;phys
+comma
+l_string|&quot;%s/input%d&quot;
+comma
+id|port-&gt;gameport-&gt;phys
+comma
+id|index
+)paren
+suffix:semicolon
 id|analog-&gt;buttons
 op_assign
 (paren
@@ -2164,6 +2255,10 @@ suffix:semicolon
 id|analog-&gt;dev.name
 op_assign
 id|analog-&gt;name
+suffix:semicolon
+id|analog-&gt;dev.phys
+op_assign
+id|analog-&gt;phys
 suffix:semicolon
 id|analog-&gt;dev.idbus
 op_assign
@@ -2670,15 +2765,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s at gameport%d.%d&quot;
-comma
-id|analog-&gt;dev.number
+l_string|&quot;input: %s at %s&quot;
 comma
 id|analog-&gt;name
 comma
-id|port-&gt;gameport-&gt;number
-comma
-id|index
+id|port-&gt;gameport-&gt;phys
 )paren
 suffix:semicolon
 r_if
@@ -2811,11 +2902,11 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;analog.c: Unknown joystick device found  &quot;
-l_string|&quot;(data=%#x, gameport%d), probably not analog joystick.&bslash;n&quot;
+l_string|&quot;(data=%#x, %s), probably not analog joystick.&bslash;n&quot;
 comma
 id|port-&gt;mask
 comma
-id|port-&gt;gameport-&gt;number
+id|port-&gt;gameport-&gt;phys
 )paren
 suffix:semicolon
 r_return
@@ -2825,18 +2916,12 @@ suffix:semicolon
 )brace
 id|i
 op_assign
-id|port-&gt;gameport-&gt;number
-OL
-id|ANALOG_PORTS
-ques
-c_cond
 id|analog_options
 (braket
-id|port-&gt;gameport-&gt;number
+l_int|0
 )braket
-suffix:colon
-l_int|0xff
 suffix:semicolon
+multiline_comment|/* FIXME !!! - need to specify options for different ports */
 id|analog
 (braket
 l_int|0
@@ -3620,17 +3705,15 @@ id|u
 op_rshift
 l_int|1
 )paren
-op_logical_and
-id|port-&gt;gameport-&gt;number
-OL
-id|ANALOG_PORTS
 )paren
 (brace
+multiline_comment|/* FIXME - more than one port */
 id|analog_options
 (braket
-id|port-&gt;gameport-&gt;number
+l_int|0
 )braket
 op_or_assign
+multiline_comment|/* FIXME - more than one port */
 id|ANALOG_SAITEK
 op_or
 id|ANALOG_BTNS_CHF
@@ -3977,7 +4060,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;analog.c: %d out of %d reads (%d%%) on gameport%d failed&bslash;n&quot;
+l_string|&quot;analog.c: %d out of %d reads (%d%%) on %s failed&bslash;n&quot;
 comma
 id|port-&gt;bads
 comma
@@ -3996,7 +4079,7 @@ id|port-&gt;reads
 suffix:colon
 l_int|0
 comma
-id|port-&gt;gameport-&gt;number
+id|port-&gt;gameport-&gt;phys
 )paren
 suffix:semicolon
 id|kfree

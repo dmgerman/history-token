@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: gameport.c,v 1.5 2000/05/29 10:54:53 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: gameport.c,v 1.18 2002/01/22 20:41:14 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * Generic gameport layer&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -13,7 +13,13 @@ macro_line|#include &lt;linux/delay.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Generic gameport layer&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -91,11 +97,6 @@ r_struct
 id|gameport_dev
 op_star
 id|gameport_dev
-suffix:semicolon
-DECL|variable|gameport_number
-r_static
-r_int
-id|gameport_number
 suffix:semicolon
 multiline_comment|/*&n; * gameport_measure_speed() measures the gameport i/o speed.&n; */
 DECL|function|gameport_measure_speed
@@ -422,11 +423,6 @@ op_star
 id|gameport
 )paren
 (brace
-id|gameport-&gt;number
-op_assign
-id|gameport_number
-op_increment
-suffix:semicolon
 id|gameport-&gt;next
 op_assign
 id|gameport_list
@@ -519,9 +515,6 @@ c_func
 (paren
 id|gameport
 )paren
-suffix:semicolon
-id|gameport_number
-op_decrement
 suffix:semicolon
 )brace
 DECL|function|gameport_register_device

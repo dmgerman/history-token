@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: interact.c,v 1.8 2000/05/29 11:19:51 vojtech Exp $&n; *&n; *  Copyright (c) 2000 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Toby Deshane&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: interact.c,v 1.16 2002/01/22 20:28:25 vojtech Exp $&n; *&n; *  Copyright (c) 2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Toby Deshane&n; */
 multiline_comment|/*&n; * InterAct digital gamepad/joystick driver for Linux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -8,6 +8,24 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;InterAct digital joystick driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|INTERACT_MAX_START
 mdefine_line|#define INTERACT_MAX_START&t;400&t;/* 400 us */
 DECL|macro|INTERACT_MAX_STROBE
@@ -61,6 +79,13 @@ DECL|member|length
 r_int
 r_char
 id|length
+suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|32
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -544,6 +569,7 @@ op_increment
 suffix:semicolon
 )brace
 r_else
+(brace
 r_for
 c_loop
 (paren
@@ -885,6 +911,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+)brace
 id|mod_timer
 c_func
 (paren
@@ -1194,9 +1221,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;interact.c: Unknown joystick on gameport%d. [len %d d0 %08x d1 %08x i2 %08x]&bslash;n&quot;
+l_string|&quot;interact.c: Unknown joystick on %s. [len %d d0 %08x d1 %08x i2 %08x]&bslash;n&quot;
 comma
-id|gameport-&gt;number
+id|gameport-&gt;phys
 comma
 id|i
 comma
@@ -1220,6 +1247,16 @@ r_goto
 id|fail2
 suffix:semicolon
 )brace
+id|sprintf
+c_func
+(paren
+id|interact-&gt;phys
+comma
+l_string|&quot;%s/input0&quot;
+comma
+id|gameport-&gt;phys
+)paren
+suffix:semicolon
 id|interact-&gt;type
 op_assign
 id|i
@@ -1255,6 +1292,10 @@ id|i
 )braket
 dot
 id|name
+suffix:semicolon
+id|interact-&gt;dev.phys
+op_assign
+id|interact-&gt;phys
 suffix:semicolon
 id|interact-&gt;dev.idbus
 op_assign
@@ -1421,9 +1462,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s on gameport%d.0&bslash;n&quot;
-comma
-id|interact-&gt;dev.number
+l_string|&quot;input: %s on %s&bslash;n&quot;
 comma
 id|interact_type
 (braket
@@ -1432,7 +1471,7 @@ id|interact-&gt;type
 dot
 id|name
 comma
-id|gameport-&gt;number
+id|gameport-&gt;phys
 )paren
 suffix:semicolon
 r_return
@@ -1561,12 +1600,6 @@ id|module_exit
 c_func
 (paren
 id|interact_exit
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof
