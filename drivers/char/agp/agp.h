@@ -11,82 +11,6 @@ id|agp_bridge
 suffix:semicolon
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;agpgart: &quot;
-macro_line|#ifdef CONFIG_SMP
-DECL|function|ipi_handler
-r_static
-r_void
-id|ipi_handler
-c_func
-(paren
-r_void
-op_star
-id|null
-)paren
-(brace
-id|flush_agp_cache
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|global_cache_flush
-r_static
-r_void
-id|__attribute__
-c_func
-(paren
-(paren
-id|unused
-)paren
-)paren
-id|global_cache_flush
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|on_each_cpu
-c_func
-(paren
-id|ipi_handler
-comma
-l_int|NULL
-comma
-l_int|1
-comma
-l_int|1
-)paren
-op_ne
-l_int|0
-)paren
-id|panic
-c_func
-(paren
-id|PFX
-l_string|&quot;timed out waiting for the other CPUs!&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|function|global_cache_flush
-r_static
-r_void
-id|global_cache_flush
-c_func
-(paren
-r_void
-)paren
-(brace
-id|flush_agp_cache
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* !CONFIG_SMP */
 DECL|enum|aper_size_type
 r_enum
 id|aper_size_type
@@ -572,8 +496,6 @@ DECL|macro|MB
 mdefine_line|#define MB(x)&t;(KB (KB (x)))
 DECL|macro|GB
 mdefine_line|#define GB(x)&t;(MB (KB (x)))
-DECL|macro|CACHE_FLUSH
-mdefine_line|#define CACHE_FLUSH&t;agp_bridge-&gt;cache_flush
 DECL|macro|A_SIZE_8
 mdefine_line|#define A_SIZE_8(x)&t;((struct aper_size_info_8 *) x)
 DECL|macro|A_SIZE_16
@@ -585,19 +507,15 @@ mdefine_line|#define A_SIZE_LVL2(x)&t;((struct aper_size_info_lvl2 *) x)
 DECL|macro|A_SIZE_FIX
 mdefine_line|#define A_SIZE_FIX(x)&t;((struct aper_size_info_fixed *) x)
 DECL|macro|A_IDX8
-mdefine_line|#define A_IDX8()&t;(A_SIZE_8(agp_bridge-&gt;aperture_sizes) + i)
+mdefine_line|#define A_IDX8(bridge)&t;(A_SIZE_8((bridge)-&gt;aperture_sizes) + i)
 DECL|macro|A_IDX16
-mdefine_line|#define A_IDX16()&t;(A_SIZE_16(agp_bridge-&gt;aperture_sizes) + i)
+mdefine_line|#define A_IDX16(bridge)&t;(A_SIZE_16((bridge)-&gt;aperture_sizes) + i)
 DECL|macro|A_IDX32
-mdefine_line|#define A_IDX32()&t;(A_SIZE_32(agp_bridge-&gt;aperture_sizes) + i)
-DECL|macro|A_IDXLVL2
-mdefine_line|#define A_IDXLVL2()&t;(A_SIZE_LVL2(agp_bridge-&gt;aperture_sizes) + i)
-DECL|macro|A_IDXFIX
-mdefine_line|#define A_IDXFIX()&t;(A_SIZE_FIX(agp_bridge-&gt;aperture_sizes) + i)
+mdefine_line|#define A_IDX32(bridge)&t;(A_SIZE_32((bridge)-&gt;aperture_sizes) + i)
 DECL|macro|MAXKEY
 mdefine_line|#define MAXKEY&t;&t;(4096 * 32)
 DECL|macro|PGE_EMPTY
-mdefine_line|#define PGE_EMPTY(p)&t;(!(p) || (p) == (unsigned long) agp_bridge-&gt;scratch_page)
+mdefine_line|#define PGE_EMPTY(b, p)&t;(!(p) || (p) == (unsigned long) (b)-&gt;scratch_page)
 multiline_comment|/* intel register */
 DECL|macro|INTEL_APBASE
 mdefine_line|#define INTEL_APBASE&t;0x10
@@ -883,6 +801,25 @@ DECL|macro|SVWRKS_POSTFLUSH
 mdefine_line|#define SVWRKS_POSTFLUSH&t;0x14
 DECL|macro|SVWRKS_DIRFLUSH
 mdefine_line|#define SVWRKS_DIRFLUSH&t;&t;0x0c
+multiline_comment|/* NVIDIA registers */
+DECL|macro|NVIDIA_0_APBASE
+mdefine_line|#define NVIDIA_0_APBASE&t;&t;0x10
+DECL|macro|NVIDIA_0_APSIZE
+mdefine_line|#define NVIDIA_0_APSIZE&t;&t;0x80
+DECL|macro|NVIDIA_1_WBC
+mdefine_line|#define NVIDIA_1_WBC&t;&t;0xf0
+DECL|macro|NVIDIA_2_GARTCTRL
+mdefine_line|#define NVIDIA_2_GARTCTRL&t;0xd0
+DECL|macro|NVIDIA_2_APBASE
+mdefine_line|#define NVIDIA_2_APBASE&t;&t;0xd8
+DECL|macro|NVIDIA_2_APLIMIT
+mdefine_line|#define NVIDIA_2_APLIMIT&t;0xdc
+DECL|macro|NVIDIA_2_ATTBASE
+mdefine_line|#define NVIDIA_2_ATTBASE(i)&t;(0xe0 + (i) * 4)
+DECL|macro|NVIDIA_3_APBASE
+mdefine_line|#define NVIDIA_3_APBASE&t;&t;0x50
+DECL|macro|NVIDIA_3_APLIMIT
+mdefine_line|#define NVIDIA_3_APLIMIT&t;0x54
 multiline_comment|/* HP ZX1 SBA registers */
 DECL|macro|HP_ZX1_CTRL
 mdefine_line|#define HP_ZX1_CTRL&t;&t;0x200
@@ -952,6 +889,41 @@ op_star
 id|dev
 suffix:semicolon
 )brace
+suffix:semicolon
+multiline_comment|/* Frontend routines. */
+r_int
+id|agp_frontend_initialize
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|agp_frontend_cleanup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Backend routines. */
+r_int
+id|agp_register_driver
+(paren
+r_struct
+id|agp_driver
+op_star
+id|drv
+)paren
+suffix:semicolon
+r_int
+id|agp_unregister_driver
+c_func
+(paren
+r_struct
+id|agp_driver
+op_star
+id|drv
+)paren
 suffix:semicolon
 multiline_comment|/* Generic routines. */
 r_void
@@ -1082,25 +1054,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_int
-id|agp_register_driver
-(paren
-r_struct
-id|agp_driver
-op_star
-id|drv
-)paren
-suffix:semicolon
-r_int
-id|agp_unregister_driver
-c_func
-(paren
-r_struct
-id|agp_driver
-op_star
-id|drv
-)paren
-suffix:semicolon
 id|u32
 id|agp_collect_device_status
 c_func
@@ -1134,5 +1087,39 @@ id|u32
 id|minor
 )paren
 suffix:semicolon
+r_void
+id|global_cache_flush
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Standard agp registers */
+DECL|macro|AGPSTAT
+mdefine_line|#define AGPSTAT&t;&t;&t;0x4
+DECL|macro|AGPCMD
+mdefine_line|#define AGPCMD&t;&t;&t;0x8
+DECL|macro|AGPNEPG
+mdefine_line|#define AGPNEPG&t;&t;&t;0x16
+DECL|macro|AGP_MAJOR_VERSION_SHIFT
+mdefine_line|#define AGP_MAJOR_VERSION_SHIFT&t;(20)
+DECL|macro|AGP_MINOR_VERSION_SHIFT
+mdefine_line|#define AGP_MINOR_VERSION_SHIFT&t;(16)
+DECL|macro|AGPSTAT_RQ_DEPTH
+mdefine_line|#define AGPSTAT_RQ_DEPTH&t;(0xff000000)
+DECL|macro|AGPSTAT_ARQSZ_SHIFT
+mdefine_line|#define AGPSTAT_ARQSZ_SHIFT&t;13
+DECL|macro|AGPSTAT_AGP_ENABLE
+mdefine_line|#define AGPSTAT_AGP_ENABLE&t;(1&lt;&lt;8)
+DECL|macro|AGPSTAT_SBA
+mdefine_line|#define AGPSTAT_SBA&t;&t;(1&lt;&lt;9)
+DECL|macro|AGPSTAT2_1X
+mdefine_line|#define AGPSTAT2_1X&t;&t;(1&lt;&lt;0)
+DECL|macro|AGPSTAT2_2X
+mdefine_line|#define AGPSTAT2_2X&t;&t;(1&lt;&lt;1)
+DECL|macro|AGPSTAT2_4X
+mdefine_line|#define AGPSTAT2_4X&t;&t;(1&lt;&lt;2)
+DECL|macro|AGPSTAT_FW
+mdefine_line|#define AGPSTAT_FW&t;&t;(1&lt;&lt;4)
 macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_PRIV_H */
 eof
