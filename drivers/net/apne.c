@@ -52,14 +52,15 @@ DECL|macro|NESM_START_PG
 mdefine_line|#define NESM_START_PG&t;0x40&t;/* First page of TX buffer */
 DECL|macro|NESM_STOP_PG
 mdefine_line|#define NESM_STOP_PG&t;0x80&t;/* Last page +1 of RX ring */
-r_int
-id|apne_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
-id|dev
+id|__init
+id|apne_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_static
@@ -316,10 +317,9 @@ suffix:semicolon
 )brace
 id|dev
 op_assign
-id|alloc_etherdev
+id|alloc_ei_netdev
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -335,10 +335,6 @@ c_func
 op_minus
 id|ENOMEM
 )paren
-suffix:semicolon
-id|dev-&gt;priv
-op_assign
-l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -1250,35 +1246,6 @@ id|i
 r_return
 id|i
 suffix:semicolon
-multiline_comment|/* Allocate dev-&gt;priv and fill in 8390 specific dev fields. */
-r_if
-c_cond
-(paren
-id|ethdev_init
-c_func
-(paren
-id|dev
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot; unable to get memory for dev-&gt;priv.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|IRQ_AMIGA_PORTS
-comma
-id|dev
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -2597,9 +2564,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
 id|apne_dev
 op_assign
 id|apne_probe

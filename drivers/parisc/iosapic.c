@@ -1129,9 +1129,9 @@ suffix:semicolon
 r_int
 id|irq_num
 op_assign
-id|vi-&gt;vi_ios-&gt;isi_region-&gt;data.irqbase
+id|vi-&gt;iosapic-&gt;isi_region-&gt;data.irqbase
 op_plus
-id|vi-&gt;vi_irqline
+id|vi-&gt;irqline
 suffix:semicolon
 id|DBG
 c_func
@@ -1140,9 +1140,9 @@ l_string|&quot;iosapic_interrupt(): irq %d line %d eoi %p&bslash;n&quot;
 comma
 id|irq
 comma
-id|vi-&gt;vi_irqline
+id|vi-&gt;irqline
 comma
-id|vi-&gt;vi_eoi_addr
+id|vi-&gt;eoi_addr
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: Need to mask/unmask? processor IRQ is already masked... */
@@ -1150,9 +1150,9 @@ id|do_irq
 c_func
 (paren
 op_amp
-id|vi-&gt;vi_ios-&gt;isi_region-&gt;action
+id|vi-&gt;iosapic-&gt;isi_region-&gt;action
 (braket
-id|vi-&gt;vi_irqline
+id|vi-&gt;irqline
 )braket
 comma
 id|irq_num
@@ -1164,9 +1164,9 @@ multiline_comment|/*&n;&t;** PCI only supports level triggered in order to share
 id|IOSAPIC_EOI
 c_func
 (paren
-id|vi-&gt;vi_eoi_addr
+id|vi-&gt;eoi_addr
 comma
-id|vi-&gt;vi_eoi_data
+id|vi-&gt;eoi_data
 )paren
 suffix:semicolon
 r_return
@@ -1220,17 +1220,6 @@ multiline_comment|/* line used by device */
 r_int
 id|tmp
 suffix:semicolon
-r_int
-id|return_irq
-suffix:semicolon
-macro_line|#ifdef CONFIG_SUPERIO
-r_int
-id|superio_irq
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1259,6 +1248,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SUPERIO
+multiline_comment|/*&n;&t; * HACK ALERT! (non-compliant PCI device support)&n;&t; *&n;&t; * All SuckyIO interrupts are routed through the PIC&squot;s on function 1.&n;&t; * But SuckyIO OHCI USB controller gets an IRT entry anyway because&n;&t; * it advertises INT D for INT_PIN.  Use that IRT entry to get the&n;&t; * SuckyIO interrupt routing for PICs on function 1 (*BLEECCHH*).&n;&t; */
 r_if
 c_cond
 (paren
@@ -1269,7 +1259,8 @@ id|pcidev
 )paren
 )paren
 (brace
-id|superio_irq
+multiline_comment|/* We must call superio_fixup_irq() to register the pdev */
+id|pcidev-&gt;irq
 op_assign
 id|superio_fixup_irq
 c_func
@@ -1277,18 +1268,7 @@ c_func
 id|pcidev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|superio_irq
-op_eq
-op_minus
-l_int|1
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
+multiline_comment|/* Don&squot;t return if need to program the IOSAPIC&squot;s IRT... */
 r_if
 c_cond
 (paren
@@ -1300,16 +1280,9 @@ id|pcidev-&gt;devfn
 op_ne
 id|SUPERIO_USB_FN
 )paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * SuperIO USB controller has an irt entry.&n;&t;&t;&t; * Only let the USB controller hookup the rest&n;&t;&t;&t; * of the interrupt routing when it comes through.&n;&t;&t;&t; * Note that interrupts for all three functions&n;&t;&t;&t; * actually come through the PIC&squot;s on function 1!&n;&t;&t;&t; */
-id|pcidev-&gt;irq
-op_assign
-id|superio_irq
-suffix:semicolon
 r_return
-id|superio_irq
+id|pcidev-&gt;irq
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif /* CONFIG_SUPERIO */
 multiline_comment|/* lookup IRT entry for isi/slot/pin set */
@@ -1331,6 +1304,18 @@ op_eq
 id|irte
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;iosapic: no IRTE for %s (IRQ not connected?)&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pcidev
+)paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -1367,6 +1352,12 @@ id|isi_line
 op_assign
 id|irte-&gt;dest_iosapic_intin
 suffix:semicolon
+id|pcidev-&gt;irq
+op_assign
+id|isi-&gt;isi_region-&gt;data.irqbase
+op_plus
+id|isi_line
+suffix:semicolon
 multiline_comment|/* get vector info for this input line */
 id|ASSERT
 c_func
@@ -1396,12 +1387,21 @@ comma
 id|vi
 )paren
 suffix:semicolon
-id|vi-&gt;vi_irte
+multiline_comment|/* If this IRQ line has already been setup, skip it */
+r_if
+c_cond
+(paren
+id|vi-&gt;irte
+)paren
+r_return
+id|pcidev-&gt;irq
+suffix:semicolon
+id|vi-&gt;irte
 op_assign
 id|irte
 suffix:semicolon
 multiline_comment|/* Allocate processor IRQ */
-id|vi-&gt;vi_txn_irq
+id|vi-&gt;txn_irq
 op_assign
 id|txn_alloc_irq
 c_func
@@ -1412,7 +1412,7 @@ multiline_comment|/* XXX/FIXME The txn_alloc_irq() code and related code should 
 r_if
 c_cond
 (paren
-id|vi-&gt;vi_txn_irq
+id|vi-&gt;txn_irq
 OL
 l_int|0
 )paren
@@ -1423,20 +1423,20 @@ l_string|&quot;I/O sapic: couldn&squot;t get TXN IRQ&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* enable_irq() will use txn_* to program IRdT */
-id|vi-&gt;vi_txn_addr
+id|vi-&gt;txn_addr
 op_assign
 id|txn_alloc_addr
 c_func
 (paren
-id|vi-&gt;vi_txn_irq
+id|vi-&gt;txn_irq
 )paren
 suffix:semicolon
-id|vi-&gt;vi_txn_data
+id|vi-&gt;txn_data
 op_assign
 id|txn_alloc_data
 c_func
 (paren
-id|vi-&gt;vi_txn_irq
+id|vi-&gt;txn_irq
 comma
 l_int|8
 )paren
@@ -1444,7 +1444,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|vi-&gt;vi_txn_data
+id|vi-&gt;txn_data
 OL
 l_int|256
 )paren
@@ -1455,13 +1455,13 @@ op_assign
 id|request_irq
 c_func
 (paren
-id|vi-&gt;vi_txn_irq
+id|vi-&gt;txn_irq
 comma
 id|iosapic_interrupt
 comma
 l_int|0
 comma
-id|vi-&gt;vi_name
+id|vi-&gt;name
 comma
 id|vi
 )paren
@@ -1474,7 +1474,7 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-id|vi-&gt;vi_eoi_addr
+id|vi-&gt;eoi_addr
 op_assign
 (paren
 id|u32
@@ -1486,12 +1486,12 @@ op_plus
 id|IOSAPIC_REG_EOI
 )paren
 suffix:semicolon
-id|vi-&gt;vi_eoi_data
+id|vi-&gt;eoi_data
 op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|vi-&gt;vi_irqline
+id|vi-&gt;irqline
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1501,39 +1501,6 @@ l_int|NULL
 op_ne
 id|isi-&gt;isi_region
 )paren
-suffix:semicolon
-multiline_comment|/* pcidev-&gt;irq still needs to be virtualized.  */
-id|return_irq
-op_assign
-id|isi-&gt;isi_region-&gt;data.irqbase
-op_plus
-id|isi_line
-suffix:semicolon
-macro_line|#ifdef CONFIG_SUPERIO
-r_if
-c_cond
-(paren
-id|superio_irq
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-id|superio_inform_irq
-c_func
-(paren
-id|return_irq
-)paren
-suffix:semicolon
-id|return_irq
-op_assign
-id|superio_irq
-suffix:semicolon
-)brace
-macro_line|#endif
-id|pcidev-&gt;irq
-op_assign
-id|return_irq
 suffix:semicolon
 id|DBG_IRT
 c_func
@@ -1549,7 +1516,7 @@ comma
 id|PCI_FUNC
 c_func
 (paren
-id|pcidev-&gt;devfn
+id|pcidev-&gt;irq
 )paren
 comma
 id|pcidev-&gt;vendor
@@ -1558,11 +1525,11 @@ id|pcidev-&gt;device
 comma
 id|isi_line
 comma
-id|return_irq
+id|pcidev-&gt;irq
 )paren
 suffix:semicolon
 r_return
-id|return_irq
+id|pcidev-&gt;irq
 suffix:semicolon
 )brace
 r_static
@@ -1590,12 +1557,12 @@ id|iosapic_info
 op_star
 id|isp
 op_assign
-id|vi-&gt;vi_ios
+id|vi-&gt;iosapic
 suffix:semicolon
 id|u8
 id|idx
 op_assign
-id|vi-&gt;vi_irqline
+id|vi-&gt;irqline
 suffix:semicolon
 multiline_comment|/* point the window register to the lower word */
 id|WRITE_U32
@@ -1673,7 +1640,7 @@ id|iosapic_info
 op_star
 id|isp
 op_assign
-id|vi-&gt;vi_ios
+id|vi-&gt;iosapic
 suffix:semicolon
 id|ASSERT
 c_func
@@ -1696,7 +1663,7 @@ c_func
 (paren
 l_string|&quot;iosapic_wr_irt_entry(): irq %d hpa %p WINDOW %p  0x%x 0x%x&bslash;n&quot;
 comma
-id|vi-&gt;vi_irqline
+id|vi-&gt;irqline
 comma
 id|isp-&gt;isi_hpa
 comma
@@ -1716,7 +1683,7 @@ c_func
 id|IOSAPIC_IRDT_ENTRY
 c_func
 (paren
-id|vi-&gt;vi_irqline
+id|vi-&gt;irqline
 )paren
 comma
 id|isp-&gt;isi_hpa
@@ -1752,7 +1719,7 @@ c_func
 id|IOSAPIC_IRDT_ENTRY_HI
 c_func
 (paren
-id|vi-&gt;vi_irqline
+id|vi-&gt;irqline
 )paren
 comma
 id|isp-&gt;isi_hpa
@@ -1813,14 +1780,14 @@ id|irt_entry
 op_star
 id|p
 op_assign
-id|vi-&gt;vi_irte
+id|vi-&gt;irte
 suffix:semicolon
 id|ASSERT
 c_func
 (paren
 l_int|NULL
 op_ne
-id|vi-&gt;vi_irte
+id|vi-&gt;irte
 )paren
 suffix:semicolon
 r_if
@@ -1861,7 +1828,7 @@ multiline_comment|/*&n;&t;** IA64 REVISIT&n;&t;** PA doesn&squot;t support EXTIN
 id|ASSERT
 c_func
 (paren
-id|vi-&gt;vi_txn_data
+id|vi-&gt;txn_data
 )paren
 suffix:semicolon
 op_star
@@ -1872,7 +1839,7 @@ op_or
 (paren
 id|u32
 )paren
-id|vi-&gt;vi_txn_data
+id|vi-&gt;txn_data
 suffix:semicolon
 multiline_comment|/*&n;&t;** Extracting id_eid isn&squot;t a real clean way of getting it.&n;&t;** But the encoding is the same for both PA and IA64 platforms.&n;&t;*/
 r_if
@@ -1884,7 +1851,7 @@ c_func
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;** PAT PDC just hands it to us &quot;right&quot;.&n;&t;&t;** vi_txn_addr comes from cpu_data[x].txn_addr.&n;&t;&t;*/
+multiline_comment|/*&n;&t;&t;** PAT PDC just hands it to us &quot;right&quot;.&n;&t;&t;** txn_addr comes from cpu_data[x].txn_addr.&n;&t;&t;*/
 op_star
 id|dp1
 op_assign
@@ -1892,7 +1859,7 @@ op_assign
 id|u32
 )paren
 (paren
-id|vi-&gt;vi_txn_addr
+id|vi-&gt;txn_addr
 )paren
 suffix:semicolon
 )brace
@@ -1907,7 +1874,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|vi-&gt;vi_txn_addr
+id|vi-&gt;txn_addr
 op_amp
 l_int|0x0ff00000
 )paren
@@ -1920,7 +1887,7 @@ op_or
 (paren
 id|u32
 )paren
-id|vi-&gt;vi_txn_addr
+id|vi-&gt;txn_addr
 op_amp
 l_int|0x000ff000
 )paren
@@ -2039,7 +2006,7 @@ multiline_comment|/* disable ISR for parent */
 id|disable_irq
 c_func
 (paren
-id|vi-&gt;vi_txn_irq
+id|vi-&gt;txn_irq
 )paren
 suffix:semicolon
 )brace
@@ -2095,7 +2062,7 @@ c_func
 (paren
 l_int|NULL
 op_ne
-id|vi-&gt;vi_irte
+id|vi-&gt;irte
 )paren
 suffix:semicolon
 multiline_comment|/* data is initialized by fixup_irq */
@@ -2104,7 +2071,7 @@ c_func
 (paren
 l_int|0
 OL
-id|vi-&gt;vi_txn_irq
+id|vi-&gt;txn_irq
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2112,7 +2079,7 @@ c_func
 (paren
 l_int|0UL
 op_ne
-id|vi-&gt;vi_txn_data
+id|vi-&gt;txn_data
 )paren
 suffix:semicolon
 id|iosapic_set_irt_data
@@ -2151,7 +2118,7 @@ op_star
 (paren
 id|ulong
 )paren
-id|vi-&gt;vi_eoi_addr
+id|vi-&gt;eoi_addr
 op_amp
 op_complement
 l_int|0xffUL
@@ -2162,7 +2129,7 @@ c_func
 (paren
 l_string|&quot;iosapic_enable_irq(): regs %p&quot;
 comma
-id|vi-&gt;vi_eoi_addr
+id|vi-&gt;eoi_addr
 )paren
 suffix:semicolon
 r_while
@@ -2170,7 +2137,7 @@ c_loop
 (paren
 id|t
 OL
-id|vi-&gt;vi_eoi_addr
+id|vi-&gt;eoi_addr
 )paren
 id|printk
 c_func
@@ -2204,7 +2171,7 @@ id|iosapic_info
 op_star
 id|isp
 op_assign
-id|vi-&gt;vi_ios
+id|vi-&gt;iosapic
 suffix:semicolon
 r_for
 c_loop
@@ -2264,9 +2231,9 @@ multiline_comment|/*&n;&t;** KLUGE: IRQ should not be asserted when Drivers enab
 id|IOSAPIC_EOI
 c_func
 (paren
-id|vi-&gt;vi_eoi_addr
+id|vi-&gt;eoi_addr
 comma
-id|vi-&gt;vi_eoi_data
+id|vi-&gt;eoi_data
 )paren
 suffix:semicolon
 )brace
@@ -2640,7 +2607,7 @@ id|vip
 op_increment
 )paren
 (brace
-id|vip-&gt;vi_irqline
+id|vip-&gt;irqline
 op_assign
 (paren
 r_int
@@ -2648,14 +2615,14 @@ r_char
 )paren
 id|cnt
 suffix:semicolon
-id|vip-&gt;vi_ios
+id|vip-&gt;iosapic
 op_assign
 id|isi
 suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|vip-&gt;vi_name
+id|vip-&gt;name
 comma
 l_string|&quot;%s-L%d&quot;
 comma
@@ -2828,7 +2795,7 @@ id|KERN_DEBUG
 id|MODULE_NAME
 l_string|&quot;: vector_info[%d] is at %p&bslash;n&quot;
 comma
-id|vi-&gt;vi_irqline
+id|vi-&gt;irqline
 comma
 id|vi
 )paren
@@ -2837,54 +2804,54 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;&bslash;t&bslash;tvi_status:&t; %.4x&bslash;n&quot;
+l_string|&quot;&bslash;t&bslash;tstatus:&t; %.4x&bslash;n&quot;
 comma
-id|vi-&gt;vi_status
+id|vi-&gt;status
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;&bslash;t&bslash;tvi_txn_irq:  %d&bslash;n&quot;
+l_string|&quot;&bslash;t&bslash;ttxn_irq:  %d&bslash;n&quot;
 comma
-id|vi-&gt;vi_txn_irq
+id|vi-&gt;txn_irq
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;&bslash;t&bslash;tvi_txn_addr: %lx&bslash;n&quot;
+l_string|&quot;&bslash;t&bslash;ttxn_addr: %lx&bslash;n&quot;
 comma
-id|vi-&gt;vi_txn_addr
+id|vi-&gt;txn_addr
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;&bslash;t&bslash;tvi_txn_data: %lx&bslash;n&quot;
+l_string|&quot;&bslash;t&bslash;ttxn_data: %lx&bslash;n&quot;
 comma
-id|vi-&gt;vi_txn_data
+id|vi-&gt;txn_data
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;&bslash;t&bslash;tvi_eoi_addr: %p&bslash;n&quot;
+l_string|&quot;&bslash;t&bslash;teoi_addr: %p&bslash;n&quot;
 comma
-id|vi-&gt;vi_eoi_addr
+id|vi-&gt;eoi_addr
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;&bslash;t&bslash;tvi_eoi_data: %x&bslash;n&quot;
+l_string|&quot;&bslash;t&bslash;teoi_data: %x&bslash;n&quot;
 comma
-id|vi-&gt;vi_eoi_data
+id|vi-&gt;eoi_data
 )paren
 suffix:semicolon
 )brace

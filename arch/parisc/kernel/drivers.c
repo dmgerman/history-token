@@ -933,7 +933,7 @@ op_assign
 id|HBA_DATA
 c_func
 (paren
-id|bus-&gt;dev-&gt;platform_data
+id|bus-&gt;bridge-&gt;platform_data
 )paren
 op_member_access_from_pointer
 id|dev

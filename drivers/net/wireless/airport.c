@@ -752,7 +752,7 @@ id|KERN_ERR
 l_string|&quot;airport: can&squot;t request IO resource !&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

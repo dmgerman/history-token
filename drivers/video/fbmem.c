@@ -5920,6 +5920,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|fb_add_class_device
+c_func
+(paren
+id|fb_info
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|fb_info-&gt;pixmap.addr
 op_eq
 l_int|NULL
@@ -6086,6 +6099,13 @@ suffix:semicolon
 id|num_registered_fb
 op_decrement
 suffix:semicolon
+id|class_device_del
+c_func
+(paren
+op_amp
+id|fb_info-&gt;class_dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6143,6 +6163,13 @@ c_func
 l_string|&quot;unable to get major %d for fb devs&bslash;n&quot;
 comma
 id|FB_MAJOR
+)paren
+suffix:semicolon
+id|class_register
+c_func
+(paren
+op_amp
+id|fb_class
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_FB_OF

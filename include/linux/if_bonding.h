@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Bond several ethernet interfaces into a Cisco, running &squot;Etherchannel&squot;.&n; *&n; * &n; * Portions are (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; * BUT, I&squot;m the one who modified it for ethernet, so:&n; * (c) Copyright 1999, Thomas Davis, tadavis@lbl.gov&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; * &n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added support for getting slave&squot;s speed and duplex via ethtool.&n; *&t;  Needed for 802.3ad and other future modes.&n; * &n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Enable support of modes that need to use the unique mac address of&n; *&t;  each slave.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Moved driver&squot;s private data types to bonding.h&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;,&n; *&t;&t;Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for IEEE 802.3ad Dynamic link aggregation mode.&n; *&n; * 2003/05/01 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added ABI version control to restore compatibility between&n; *&t;  new/old ifenslave and new/old bonding.&n; */
+multiline_comment|/*&n; * Bond several ethernet interfaces into a Cisco, running &squot;Etherchannel&squot;.&n; *&n; *&n; * Portions are (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; * BUT, I&squot;m the one who modified it for ethernet, so:&n; * (c) Copyright 1999, Thomas Davis, tadavis@lbl.gov&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added support for getting slave&squot;s speed and duplex via ethtool.&n; *&t;  Needed for 802.3ad and other future modes.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Enable support of modes that need to use the unique mac address of&n; *&t;  each slave.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Moved driver&squot;s private data types to bonding.h&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;,&n; *&t;&t;Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for IEEE 802.3ad Dynamic link aggregation mode.&n; *&n; * 2003/05/01 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added ABI version control to restore compatibility between&n; *&t;  new/old ifenslave and new/old bonding.&n; */
 macro_line|#ifndef _LINUX_IF_BONDING_H
 DECL|macro|_LINUX_IF_BONDING_H
 mdefine_line|#define _LINUX_IF_BONDING_H
@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 multiline_comment|/* userland - kernel ABI version (2003/05/08) */
 DECL|macro|BOND_ABI_VERSION
-mdefine_line|#define BOND_ABI_VERSION 1
+mdefine_line|#define BOND_ABI_VERSION 2
 multiline_comment|/*&n; * We can remove these ioctl definitions in 2.5.  People should use the&n; * SIOC*** versions of them instead&n; */
 DECL|macro|BOND_ENSLAVE_OLD
 mdefine_line|#define BOND_ENSLAVE_OLD&t;&t;(SIOCDEVPRIVATE)
@@ -53,12 +53,6 @@ DECL|macro|BOND_STATE_BACKUP
 mdefine_line|#define BOND_STATE_BACKUP       1   /* link is backup */
 DECL|macro|BOND_DEFAULT_MAX_BONDS
 mdefine_line|#define BOND_DEFAULT_MAX_BONDS  1   /* Default maximum number of devices to support */
-DECL|macro|BOND_MULTICAST_DISABLED
-mdefine_line|#define BOND_MULTICAST_DISABLED 0
-DECL|macro|BOND_MULTICAST_ACTIVE
-mdefine_line|#define BOND_MULTICAST_ACTIVE   1
-DECL|macro|BOND_MULTICAST_ALL
-mdefine_line|#define BOND_MULTICAST_ALL      2
 DECL|struct|ifbond
 r_typedef
 r_struct
@@ -91,18 +85,18 @@ id|slave_id
 suffix:semicolon
 multiline_comment|/* Used as an IN param to the BOND_SLAVE_INFO_QUERY ioctl */
 DECL|member|slave_name
-r_char
+id|__s8
 id|slave_name
 (braket
 id|IFNAMSIZ
 )braket
 suffix:semicolon
 DECL|member|link
-r_char
+id|__s8
 id|link
 suffix:semicolon
 DECL|member|state
-r_char
+id|__s8
 id|state
 suffix:semicolon
 DECL|member|link_failure_count

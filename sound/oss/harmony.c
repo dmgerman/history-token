@@ -1,4 +1,4 @@
-multiline_comment|/*&n; &t;drivers/sound/harmony.c &n;&n;&t;This is a sound driver for ASP&squot;s and Lasi&squot;s Harmony sound chip&n;&t;and is unlikely to be used for anything other than on a HP PA-RISC.&n;&n;&t;Harmony is found in HP 712s, 715/new and many other GSC based machines.&n;&t;On older 715 machines you&squot;ll find the technically identical chip &n;&t;called &squot;Vivace&squot;. Both Harmony and Vicace are supported by this driver.&n;&n;&t;Copyright 2000 (c) Linuxcare Canada, Alex deVries &lt;alex@linuxcare.com&gt;&n;&t;Copyright 2000-2002 (c) Helge Deller &lt;deller@gmx.de&gt;&n;&t;Copyright 2001 (c) Matthieu Delahaye &lt;delahaym@esiee.fr&gt;&n;&t;Copyright 2001 (c) Jean-Christophe Vaugeois &lt;vaugeoij@esiee.fr&gt;&n;&n;&t;&t;&t;&t;&n;TODO:&n;&t;- fix SNDCTL_DSP_GETOSPACE and SNDCTL_DSP_GETISPACE ioctls to&n;&t;&t;return the real values&n;&t;- add private ioctl for selecting line- or microphone input&n;&t;&t;(only one of them is available at the same time)&n;&t;- add module parameters&n;&t;- implement mmap functionality&n;&t;- implement gain meter ?&n;&t;- ...&n;*/
+multiline_comment|/*&n; &t;drivers/sound/harmony.c &n;&n;&t;This is a sound driver for ASP&squot;s and Lasi&squot;s Harmony sound chip&n;&t;and is unlikely to be used for anything other than on a HP PA-RISC.&n;&n;&t;Harmony is found in HP 712s, 715/new and many other GSC based machines.&n;&t;On older 715 machines you&squot;ll find the technically identical chip &n;&t;called &squot;Vivace&squot;. Both Harmony and Vicace are supported by this driver.&n;&n;&t;Copyright 2000 (c) Linuxcare Canada, Alex deVries &lt;alex@linuxcare.com&gt;&n;&t;Copyright 2000-2003 (c) Helge Deller &lt;deller@gmx.de&gt;&n;&t;Copyright 2001 (c) Matthieu Delahaye &lt;delahaym@esiee.fr&gt;&n;&t;Copyright 2001 (c) Jean-Christophe Vaugeois &lt;vaugeoij@esiee.fr&gt;&n;&n;&t;&t;&t;&t;&n;TODO:&n;&t;- fix SNDCTL_DSP_GETOSPACE and SNDCTL_DSP_GETISPACE ioctls to&n;&t;&t;return the real values&n;&t;- add private ioctl for selecting line- or microphone input&n;&t;&t;(only one of them is available at the same time)&n;&t;- add module parameters&n;&t;- implement mmap functionality&n;&t;- implement gain meter ?&n;&t;- ...&n;*/
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -225,20 +225,27 @@ DECL|struct|harmony_dev
 r_struct
 id|harmony_dev
 (brace
-DECL|member|irq
-r_int
-id|irq
-suffix:semicolon
 DECL|member|hpa
 r_struct
 id|harmony_hpa
 op_star
 id|hpa
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|parisc_device
+op_star
+id|dev
+suffix:semicolon
 DECL|member|current_gain
 id|u32
 id|current_gain
 suffix:semicolon
+DECL|member|dac_rate
+id|u32
+id|dac_rate
+suffix:semicolon
+multiline_comment|/* 8000 ... 48000 (Hz) */
 DECL|member|data_format
 id|u8
 id|data_format
@@ -257,27 +264,44 @@ multiline_comment|/* HARMONY_SS_MONO or HARMONY_SS_STEREO */
 DECL|member|format_initialized
 r_int
 id|format_initialized
+suffix:colon
+l_int|1
 suffix:semicolon
-DECL|member|dac_rate
-id|u32
-id|dac_rate
-suffix:semicolon
-multiline_comment|/* 8000 ... 48000 (Hz) */
 DECL|member|suspended_playing
 r_int
 id|suspended_playing
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|suspended_recording
 r_int
 id|suspended_recording
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|blocked_playing
 r_int
 id|blocked_playing
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|blocked_recording
 r_int
 id|blocked_recording
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|audio_open
+r_int
+id|audio_open
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|mixer_open
+r_int
+id|mixer_open
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|wq_play
 DECL|member|wq_record
@@ -307,13 +331,6 @@ DECL|member|nb_filled_record
 r_int
 id|nb_filled_record
 suffix:semicolon
-DECL|member|audio_open
-DECL|member|mixer_open
-r_int
-id|audio_open
-comma
-id|mixer_open
-suffix:semicolon
 DECL|member|dsp_unit
 DECL|member|mixer_unit
 r_int
@@ -321,13 +338,6 @@ id|dsp_unit
 comma
 id|mixer_unit
 suffix:semicolon
-DECL|member|fake_pci_dev
-r_struct
-id|pci_dev
-op_star
-id|fake_pci_dev
-suffix:semicolon
-multiline_comment|/* The fake pci_dev needed for &n;&t;&t;&t;&t;&t;pci_* functions under ccio. */
 )brace
 suffix:semicolon
 DECL|variable|harmony
@@ -351,12 +361,13 @@ DECL|member|dma_handle
 id|dma_addr_t
 id|dma_handle
 suffix:semicolon
-DECL|member|dma_consistent
+DECL|member|dma_coherent
 r_int
-id|dma_consistent
+id|dma_coherent
 suffix:semicolon
-multiline_comment|/* Zero if pci_alloc_consistent() fails */
+multiline_comment|/* Zero if dma_alloc_coherent() fails */
 DECL|member|len
+r_int
 r_int
 id|len
 suffix:semicolon
@@ -379,7 +390,7 @@ comma
 id|graveyard
 suffix:semicolon
 DECL|macro|CHECK_WBACK_INV_OFFSET
-mdefine_line|#define CHECK_WBACK_INV_OFFSET(b,offset,len) &bslash;&n;        do { if (!b.dma_consistent) &bslash;&n;&t;&t;dma_cache_wback_inv((unsigned long)b.addr+offset,len); &bslash;&n;&t;} while (0) 
+mdefine_line|#define CHECK_WBACK_INV_OFFSET(b,offset,len) &bslash;&n;        do { if (!b.dma_coherent) &bslash;&n;&t;&t;dma_cache_wback_inv((unsigned long)b.addr+offset,len); &bslash;&n;&t;} while (0) 
 DECL|function|harmony_alloc_buffer
 r_static
 r_int
@@ -393,6 +404,7 @@ op_star
 id|b
 comma
 r_int
+r_int
 id|buffer_count
 )paren
 (brace
@@ -404,15 +416,20 @@ id|HARMONY_BUF_SIZE
 suffix:semicolon
 id|b-&gt;addr
 op_assign
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 c_func
 (paren
-id|harmony.fake_pci_dev
+op_amp
+id|harmony.dev-&gt;dev
 comma
 id|b-&gt;len
 comma
 op_amp
 id|b-&gt;dma_handle
+comma
+id|GFP_KERNEL
+op_or
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -423,7 +440,7 @@ op_logical_and
 id|b-&gt;dma_handle
 )paren
 (brace
-id|b-&gt;dma_consistent
+id|b-&gt;dma_coherent
 op_assign
 l_int|1
 suffix:semicolon
@@ -432,7 +449,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;consistent memory: 0x%lx, played_buf: 0x%lx&bslash;n&quot;
+l_string|&quot;coherent memory: 0x%lx, played_buf: 0x%lx&bslash;n&quot;
 comma
 (paren
 r_int
@@ -450,7 +467,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|b-&gt;dma_consistent
+id|b-&gt;dma_coherent
 op_assign
 l_int|0
 suffix:semicolon
@@ -522,12 +539,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|b-&gt;dma_consistent
+id|b-&gt;dma_coherent
 )paren
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
-id|harmony.fake_pci_dev
+op_amp
+id|harmony.dev-&gt;dev
 comma
 id|b-&gt;len
 comma
@@ -1044,7 +1062,8 @@ op_minus
 id|EBUSY
 suffix:semicolon
 id|harmony.audio_open
-op_increment
+op_assign
+l_int|1
 suffix:semicolon
 id|harmony.suspended_playing
 op_assign
@@ -1167,7 +1186,8 @@ op_minus
 id|EBUSY
 suffix:semicolon
 id|harmony.audio_open
-op_decrement
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -2964,7 +2984,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|harmony.irq
+id|harmony.dev-&gt;irq
 comma
 id|harmony_interrupt
 comma
@@ -2984,7 +3004,7 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;Error requesting irq %d.&bslash;n&quot;
 comma
-id|harmony.irq
+id|harmony.dev-&gt;irq
 )paren
 suffix:semicolon
 r_return
@@ -3023,7 +3043,7 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|harmony.irq
+id|harmony.dev-&gt;irq
 comma
 op_amp
 id|harmony
@@ -4255,7 +4275,8 @@ op_minus
 id|EBUSY
 suffix:semicolon
 id|harmony.mixer_open
-op_increment
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 l_int|0
@@ -4289,7 +4310,8 @@ op_minus
 id|EBUSY
 suffix:semicolon
 id|harmony.mixer_open
-op_decrement
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -4449,9 +4471,9 @@ suffix:semicolon
 multiline_comment|/* &n; * This is the callback that&squot;s called by the inventory hardware code &n; * if it finds a match to the registered driver. &n; */
 r_static
 r_int
-id|__init
-DECL|function|harmony_driver_callback
-id|harmony_driver_callback
+id|__devinit
+DECL|function|harmony_driver_probe
+id|harmony_driver_probe
 c_func
 (paren
 r_struct
@@ -4492,6 +4514,10 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+id|harmony.dev
+op_assign
+id|dev
+suffix:semicolon
 multiline_comment|/* Set the HPA of harmony */
 id|harmony.hpa
 op_assign
@@ -4502,15 +4528,11 @@ op_star
 )paren
 id|dev-&gt;hpa
 suffix:semicolon
-id|harmony.irq
-op_assign
-id|dev-&gt;irq
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|harmony.irq
+id|harmony.dev-&gt;irq
 )paren
 (brace
 id|printk
@@ -4597,7 +4619,7 @@ id|rev
 comma
 id|dev-&gt;hpa
 comma
-id|harmony.irq
+id|harmony.dev-&gt;irq
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure the control bit isn&squot;t set, although I don&squot;t think it &n;&t;   ever is. */
@@ -4626,15 +4648,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-multiline_comment|/* a fake pci_dev is needed for pci_* functions under ccio */
-id|harmony.fake_pci_dev
-op_assign
-id|ccio_get_fake
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize the memory buffers */
 r_if
 c_cond
@@ -4834,7 +4847,7 @@ comma
 dot
 id|probe
 op_assign
-id|harmony_driver_callback
+id|harmony_driver_probe
 comma
 )brace
 suffix:semicolon
@@ -4870,7 +4883,7 @@ r_void
 id|free_irq
 c_func
 (paren
-id|harmony.irq
+id|harmony.dev-&gt;irq
 comma
 op_amp
 id|harmony

@@ -1615,16 +1615,6 @@ id|status
 op_assign
 id|PDC_OK
 suffix:semicolon
-macro_line|#if defined(CONFIG_IOMMU_SBA) &amp;&amp; defined(CONFIG_SUPERIO)
-multiline_comment|/*&n;&t; * Stop the suckyio usb controller on Astro based systems.&n;&t; * Otherwise the machine might crash during iommu setup.&n;&t; */
-id|pdc_io_reset
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Unfortunately if we reset devices here, serial console&n;&t; * stops working :-(&n;&t; */
-multiline_comment|/* pdc_io_reset_devices(); */
-macro_line|#endif
 r_for
 c_loop
 (paren

@@ -638,11 +638,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|dev-&gt;init
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Must be NULL otherwise we get called twice */
 id|olympic_priv-&gt;olympic_card_name
 op_assign
 id|pci_name

@@ -6666,23 +6666,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * wl3501_init - &quot;initialize&quot; board&n; * @dev - network device&n; *&n; * We never need to do anything when a wl3501 device is &quot;initialized&quot; by the net&n; * software, because we only register already-found cards.&n; */
-DECL|function|wl3501_init
-r_static
-r_int
-id|wl3501_init
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|wl3501_get_stats
 r_struct
 id|net_device_stats
@@ -9583,10 +9566,6 @@ id|dev
 )paren
 r_goto
 id|out_link
-suffix:semicolon
-id|dev-&gt;init
-op_assign
-id|wl3501_init
 suffix:semicolon
 id|dev-&gt;open
 op_assign

@@ -1125,8 +1125,9 @@ r_else
 id|panic
 c_func
 (paren
+l_string|&quot;%s: pcxl_alloc_range() Too many pages to map.&bslash;n&quot;
+comma
 id|__FILE__
-l_string|&quot;: pcxl_alloc_range() Too many pages to map.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1138,8 +1139,9 @@ suffix:semicolon
 id|panic
 c_func
 (paren
+l_string|&quot;%s: pcxl_alloc_range() out of dma mapping resources&bslash;n&quot;
+comma
 id|__FILE__
-l_string|&quot;: pcxl_alloc_range() out of dma mapping resources&bslash;n&quot;
 )paren
 suffix:semicolon
 id|resource_found
@@ -1387,8 +1389,9 @@ r_else
 id|panic
 c_func
 (paren
+l_string|&quot;%s: pcxl_free_range() Too many pages to unmap.&bslash;n&quot;
+comma
 id|__FILE__
-l_string|&quot;: pcxl_free_range() Too many pages to unmap.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

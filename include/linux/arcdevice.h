@@ -754,6 +754,17 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_struct
+id|net_device
+op_star
+id|alloc_arcdev
+c_func
+(paren
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
 r_void
 id|arcnet_rx
 c_func

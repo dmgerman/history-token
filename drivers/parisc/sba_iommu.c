@@ -22,6 +22,11 @@ macro_line|#include &lt;asm/pdc.h&gt;&t;&t;/* for PDC_MODEL_* */
 macro_line|#include &lt;asm/parisc-device.h&gt;
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;SBA&quot;
+macro_line|#ifdef CONFIG_PROC_FS
+multiline_comment|/* depends on proc fs support. But costs CPU performance */
+DECL|macro|SBA_COLLECT_STATS
+macro_line|#undef SBA_COLLECT_STATS
+macro_line|#endif
 multiline_comment|/*&n;** The number of debug flags is a clue - this code is fragile.&n;** Don&squot;t even think about messing with it unless you have&n;** plenty of 710&squot;s to sacrifice to the computer gods. :^)&n;*/
 DECL|macro|DEBUG_SBA_INIT
 macro_line|#undef DEBUG_SBA_INIT
@@ -262,7 +267,7 @@ id|DELAYED_RESOURCE_CNT
 )braket
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef SBA_COLLECT_STATS
 DECL|macro|SBA_SEARCH_SAMPLE
 mdefine_line|#define SBA_SEARCH_SAMPLE&t;0x100
 DECL|member|avg_search
@@ -1495,7 +1500,7 @@ id|size
 op_rshift
 id|IOVP_SHIFT
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef SBA_COLLECT_STATS
 r_int
 r_int
 id|cr_start
@@ -1597,8 +1602,9 @@ l_int|3
 id|panic
 c_func
 (paren
+l_string|&quot;%s: I/O MMU @ %lx is out of mapping resources&bslash;n&quot;
+comma
 id|__FILE__
-l_string|&quot;: I/O MMU @ %lx is out of mapping resources&bslash;n&quot;
 comma
 id|ioc-&gt;ioc_hpa
 )paren
@@ -1675,7 +1681,7 @@ comma
 id|ioc-&gt;res_bitshift
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef SBA_COLLECT_STATS
 (brace
 r_int
 r_int
@@ -1870,7 +1876,7 @@ op_star
 id|res_ptr
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef SBA_COLLECT_STATS
 id|ioc-&gt;used_pages
 op_sub_assign
 id|bits_not_wanted
@@ -2488,7 +2494,7 @@ l_string|&quot;Check before sba_map_single()&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef SBA_COLLECT_STATS
 id|ioc-&gt;msingle_calls
 op_increment
 suffix:semicolon
@@ -2873,7 +2879,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef SBA_COLLECT_STATS
 id|ioc-&gt;usingle_calls
 op_increment
 suffix:semicolon
@@ -3270,7 +3276,7 @@ id|startsg
 comma
 id|cnt
 comma
-id|sg_virt_address
+id|sg_virt_addr
 c_func
 (paren
 id|startsg
@@ -3435,7 +3441,7 @@ comma
 id|IOVP_SIZE
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef SBA_COLLECT_STATS
 id|ioc-&gt;msg_pages
 op_add_assign
 id|cnt
@@ -3987,7 +3993,7 @@ l_string|&quot;Check before sba_map_sg()&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef SBA_COLLECT_STATS
 id|ioc-&gt;msg_calls
 op_increment
 suffix:semicolon
@@ -4148,7 +4154,7 @@ c_func
 id|ioc
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef SBA_COLLECT_STATS
 id|ioc-&gt;usg_calls
 op_increment
 suffix:semicolon
@@ -4214,7 +4220,7 @@ comma
 id|direction
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef SBA_COLLECT_STATS
 id|ioc-&gt;usg_pages
 op_add_assign
 (paren
@@ -5244,6 +5250,24 @@ suffix:semicolon
 id|u64
 id|ioc_ctl
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_pdc_pat
+c_func
+(paren
+)paren
+)paren
+(brace
+multiline_comment|/* Shutdown the USB controller on Astro-based workstations.&n;&t;&t;** Once we reprogram the IOMMU, the next DMA performed by&n;&t;&t;** USB will HPMC the box.&n;&t;&t;*/
+id|pdc_io_reset_devices
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;** XXX May need something more sophisticated to deal&n;&t;&t;**     with DMA from LAN. Maybe use page zero boot device&n;&t;&t;**     as a handle to talk to PDC about which device to&n;&t;&t;**     shutdown. This also needs to work for is_pdc_pat(). &n;&t;&t;*/
+)brace
 id|ioc_ctl
 op_assign
 id|READ_REG
@@ -5748,8 +5772,9 @@ id|res_map
 id|panic
 c_func
 (paren
+l_string|&quot;%s:%s() could not allocate resource map&bslash;n&quot;
+comma
 id|__FILE__
-l_string|&quot;:%s() could not allocate resource map&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -6079,6 +6104,7 @@ l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* 8 bits per byte */
+macro_line|#ifdef SBA_COLLECT_STATS
 r_int
 r_int
 id|i
@@ -6093,6 +6119,7 @@ id|min
 comma
 id|max
 suffix:semicolon
+macro_line|#endif
 id|sprintf
 c_func
 (paren
@@ -6153,6 +6180,24 @@ c_func
 (paren
 id|buf
 comma
+l_string|&quot;%sResource bitmap : %d bytes (%d pages)&bslash;n&quot;
+comma
+id|buf
+comma
+id|ioc-&gt;res_size
+comma
+id|ioc-&gt;res_size
+op_lshift
+l_int|3
+)paren
+suffix:semicolon
+multiline_comment|/* 8 bits per byte */
+macro_line|#ifdef SBA_COLLECT_STATS
+id|sprintf
+c_func
+(paren
+id|buf
+comma
 l_string|&quot;%sIO PDIR entries : %ld free  %ld used (%d%%)&bslash;n&quot;
 comma
 id|buf
@@ -6175,23 +6220,6 @@ id|total_pages
 )paren
 )paren
 suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|buf
-comma
-l_string|&quot;%sResource bitmap : %d bytes (%d pages)&bslash;n&quot;
-comma
-id|buf
-comma
-id|ioc-&gt;res_size
-comma
-id|ioc-&gt;res_size
-op_lshift
-l_int|3
-)paren
-suffix:semicolon
-multiline_comment|/* 8 bits per byte */
 id|min
 op_assign
 id|max
@@ -6397,6 +6425,7 @@ id|ioc-&gt;usg_calls
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|strlen
 c_func
