@@ -32,6 +32,8 @@ DECL|macro|RPCDBG_SVCDSP
 mdefine_line|#define RPCDBG_SVCDSP&t;&t;0x0200
 DECL|macro|RPCDBG_MISC
 mdefine_line|#define RPCDBG_MISC&t;&t;0x0400
+DECL|macro|RPCDBG_CACHE
+mdefine_line|#define RPCDBG_CACHE&t;&t;0x0800
 DECL|macro|RPCDBG_ALL
 mdefine_line|#define RPCDBG_ALL&t;&t;0x7fff
 macro_line|#ifdef __KERNEL__
