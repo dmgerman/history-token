@@ -551,7 +551,7 @@ DECL|macro|IDENTIFY_BASE
 mdefine_line|#define IDENTIFY_BASE       0x80
 DECL|macro|IDENTIFY
 mdefine_line|#define IDENTIFY(can_disconnect, lun)   (IDENTIFY_BASE |&bslash;&n;&t;&t;     ((can_disconnect) ?  0x40 : 0) |&bslash;&n;&t;&t;     ((lun) &amp; 0x07))
-multiline_comment|/*&n; *  SCSI command sets&n; */
+multiline_comment|/*&n; *  struct scsi_device::scsi_level values. For SCSI devices other than those&n; *  prior to SCSI-2 (i.e. over 12 years old) this value is (resp[2] + 1)&n; *  where &quot;resp&quot; is a byte array of the response to an INQUIRY. The scsi_level&n; *  variable is visible to the user via sysfs.&n; */
 DECL|macro|SCSI_UNKNOWN
 mdefine_line|#define SCSI_UNKNOWN    0
 DECL|macro|SCSI_1
@@ -561,7 +561,11 @@ mdefine_line|#define SCSI_1_CCS      2
 DECL|macro|SCSI_2
 mdefine_line|#define SCSI_2          3
 DECL|macro|SCSI_3
-mdefine_line|#define SCSI_3          4
+mdefine_line|#define SCSI_3          4        /* SPC */
+DECL|macro|SCSI_SPC_2
+mdefine_line|#define SCSI_SPC_2      5
+DECL|macro|SCSI_SPC_3
+mdefine_line|#define SCSI_SPC_3      6
 multiline_comment|/*&n; * INQ PERIPHERAL QUALIFIERS&n; */
 DECL|macro|SCSI_INQ_PQ_CON
 mdefine_line|#define SCSI_INQ_PQ_CON         0x00
