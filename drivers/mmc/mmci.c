@@ -995,6 +995,24 @@ c_loop
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If we&squot;re nearing the end of the read, switch to&n;&t; * &quot;any data available&quot; mode.&n;&t; */
+r_if
+c_cond
+(paren
+id|host-&gt;size
+OL
+id|MCI_FIFOSIZE
+)paren
+id|writel
+c_func
+(paren
+id|MCI_RXDATAAVLBLMASK
+comma
+id|base
+op_plus
+id|MMCIMASK1
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
