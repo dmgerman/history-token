@@ -766,6 +766,11 @@ r_int
 id|nrpages
 suffix:semicolon
 multiline_comment|/* number of total pages */
+DECL|member|writeback_index
+id|pgoff_t
+id|writeback_index
+suffix:semicolon
+multiline_comment|/* writeback starts here */
 DECL|member|a_ops
 r_struct
 id|address_space_operations
