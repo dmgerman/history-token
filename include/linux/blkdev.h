@@ -130,6 +130,10 @@ r_int
 r_int
 id|hard_cur_sectors
 suffix:semicolon
+DECL|member|tag
+r_int
+id|tag
+suffix:semicolon
 DECL|member|special
 r_void
 op_star
@@ -202,6 +206,10 @@ DECL|enumerator|__REQ_DONTPREP
 id|__REQ_DONTPREP
 comma
 multiline_comment|/* don&squot;t call prep for this one */
+DECL|enumerator|__REQ_QUEUED
+id|__REQ_QUEUED
+comma
+multiline_comment|/* uses queueing */
 multiline_comment|/*&n;&t; * for ATA/ATAPI devices&n;&t; */
 DECL|enumerator|__REQ_DRIVE_CMD
 id|__REQ_DRIVE_CMD
@@ -245,6 +253,8 @@ DECL|macro|REQ_STARTED
 mdefine_line|#define REQ_STARTED&t;(1 &lt;&lt; __REQ_STARTED)
 DECL|macro|REQ_DONTPREP
 mdefine_line|#define REQ_DONTPREP&t;(1 &lt;&lt; __REQ_DONTPREP)
+DECL|macro|REQ_QUEUED
+mdefine_line|#define REQ_QUEUED&t;(1 &lt;&lt; __REQ_QUEUED)
 DECL|macro|REQ_DRIVE_CMD
 mdefine_line|#define REQ_DRIVE_CMD&t;(1 &lt;&lt; __REQ_DRIVE_CMD)
 DECL|macro|REQ_DRIVE_ACB
@@ -374,6 +384,46 @@ comma
 DECL|enumerator|Queue_up
 id|Queue_up
 comma
+)brace
+suffix:semicolon
+DECL|macro|BLK_TAGS_PER_LONG
+mdefine_line|#define BLK_TAGS_PER_LONG&t;(sizeof(unsigned long) * 8)
+DECL|macro|BLK_TAGS_MASK
+mdefine_line|#define BLK_TAGS_MASK&t;&t;(BLK_TAGS_PER_LONG - 1)
+DECL|struct|blk_queue_tag
+r_struct
+id|blk_queue_tag
+(brace
+DECL|member|tag_index
+r_struct
+id|request
+op_star
+op_star
+id|tag_index
+suffix:semicolon
+multiline_comment|/* map of busy tags */
+DECL|member|tag_map
+r_int
+r_int
+op_star
+id|tag_map
+suffix:semicolon
+multiline_comment|/* bit map of free/busy tags */
+DECL|member|busy_list
+r_struct
+id|list_head
+id|busy_list
+suffix:semicolon
+multiline_comment|/* fifo list of busy tags */
+DECL|member|busy
+r_int
+id|busy
+suffix:semicolon
+multiline_comment|/* current depth */
+DECL|member|max_depth
+r_int
+id|max_depth
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Default nr free requests per queue, ll_rw_blk will scale it down&n; * according to available RAM at init time&n; */
@@ -513,6 +563,12 @@ DECL|member|queue_wait
 id|wait_queue_head_t
 id|queue_wait
 suffix:semicolon
+DECL|member|queue_tags
+r_struct
+id|blk_queue_tag
+op_star
+id|queue_tags
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|RQ_INACTIVE
@@ -529,10 +585,14 @@ DECL|macro|QUEUE_FLAG_PLUGGED
 mdefine_line|#define QUEUE_FLAG_PLUGGED&t;0&t;/* queue is plugged */
 DECL|macro|QUEUE_FLAG_CLUSTER
 mdefine_line|#define QUEUE_FLAG_CLUSTER&t;1&t;/* cluster several segments into 1 */
+DECL|macro|QUEUE_FLAG_QUEUED
+mdefine_line|#define QUEUE_FLAG_QUEUED&t;2&t;/* uses generic tag queueing */
 DECL|macro|blk_queue_plugged
 mdefine_line|#define blk_queue_plugged(q)&t;test_bit(QUEUE_FLAG_PLUGGED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_mark_plugged
 mdefine_line|#define blk_mark_plugged(q)&t;set_bit(QUEUE_FLAG_PLUGGED, &amp;(q)-&gt;queue_flags)
+DECL|macro|blk_queue_tagged
+mdefine_line|#define blk_queue_tagged(q)&t;test_bit(QUEUE_FLAG_QUEUED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_queue_empty
 mdefine_line|#define blk_queue_empty(q)&t;elv_queue_empty(q)
 DECL|macro|list_entry_rq
@@ -1082,6 +1142,70 @@ id|generic_unplug_device
 c_func
 (paren
 r_void
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * tag stuff&n; */
+DECL|macro|blk_queue_tag_request
+mdefine_line|#define blk_queue_tag_request(q, tag)&t;((q)-&gt;queue_tags-&gt;tag_index[(tag)])
+DECL|macro|blk_queue_tag_depth
+mdefine_line|#define blk_queue_tag_depth(q)&t;&t;((q)-&gt;queue_tags-&gt;busy)
+DECL|macro|blk_queue_tag_queue
+mdefine_line|#define blk_queue_tag_queue(q)&t;&t;((q)-&gt;queue_tags-&gt;busy &lt; (q)-&gt;queue_tags-&gt;max_depth)
+DECL|macro|blk_rq_tagged
+mdefine_line|#define blk_rq_tagged(rq)&t;&t;((rq)-&gt;flags &amp; REQ_QUEUED)
+r_extern
+r_int
+id|blk_queue_start_tag
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_queue_end_tag
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|blk_queue_init_tags
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_queue_free_tags
+c_func
+(paren
+id|request_queue_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_queue_invalidate_tags
+c_func
+(paren
+id|request_queue_t
 op_star
 )paren
 suffix:semicolon
