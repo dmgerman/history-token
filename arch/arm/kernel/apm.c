@@ -583,12 +583,6 @@ comma
 id|ret
 op_assign
 l_int|0
-comma
-id|nonblock
-op_assign
-id|fp-&gt;f_flags
-op_amp
-id|O_NONBLOCK
 suffix:semicolon
 r_if
 c_cond
@@ -614,7 +608,9 @@ op_amp
 id|as-&gt;queue
 )paren
 op_logical_and
-id|nonblock
+id|fp-&gt;f_flags
+op_amp
+id|O_NONBLOCK
 )paren
 r_return
 op_minus
