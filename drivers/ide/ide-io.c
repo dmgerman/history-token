@@ -2298,13 +2298,6 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-DECL|variable|ide_error
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_error
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;ide_abort&t;-&t;abort pending IDE operatins&n; *&t;@drive: drive the error occurred on&n; *&t;@msg: message to report&n; *&n; *&t;ide_abort kills and cleans up when we are about to do a &n; *&t;host initiated reset on active commands. Longer term we&n; *&t;want handlers to have sensible abort handling themselves&n; *&n; *&t;This differs fundamentally from ide_error because in &n; *&t;this case the command is doing just fine when we&n; *&t;blow it away.&n; */
 DECL|function|ide_abort
 id|ide_startstop_t
@@ -2443,15 +2436,9 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-DECL|variable|ide_abort
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_abort
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;ide_cmd&t;&t;-&t;issue a simple drive command&n; *&t;@drive: drive the command is for&n; *&t;@cmd: command byte&n; *&t;@nsect: sector byte&n; *&t;@handler: handler for the command completion&n; *&n; *&t;Issue a simple drive command with interrupts.&n; *&t;The drive must be selected beforehand.&n; */
 DECL|function|ide_cmd
+r_static
 r_void
 id|ide_cmd
 (paren
@@ -2529,15 +2516,9 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|variable|ide_cmd
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_cmd
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;drive_cmd_intr&t;&t;- &t;drive command completion interrupt&n; *&t;@drive: drive the completion interrupt occurred on&n; *&n; *&t;drive_cmd_intr() is invoked on completion of a special DRIVE_CMD.&n; *&t;We do any necessary daya reading and then wait for the drive to&n; *&t;go non busy. At that point we may read the error data and complete&n; *&t;the request&n; */
 DECL|function|drive_cmd_intr
+r_static
 id|ide_startstop_t
 id|drive_cmd_intr
 (paren
@@ -2740,15 +2721,9 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-DECL|variable|drive_cmd_intr
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|drive_cmd_intr
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;do_special&t;&t;-&t;issue some special commands&n; *&t;@drive: drive the command is for&n; *&n; *&t;do_special() is used to issue WIN_SPECIFY, WIN_RESTORE, and WIN_SETMULT&n; *&t;commands to a drive.  It used to do much more, but has been scaled&n; *&t;back.&n; */
 DECL|function|do_special
+r_static
 id|ide_startstop_t
 id|do_special
 (paren
@@ -2832,13 +2807,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-DECL|variable|do_special
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|do_special
-)paren
-suffix:semicolon
 DECL|function|ide_map_sg
 r_void
 id|ide_map_sg
@@ -2970,6 +2938,7 @@ id|ide_init_sg_cmd
 suffix:semicolon
 multiline_comment|/**&n; *&t;execute_drive_command&t;-&t;issue special drive command&n; *&t;@drive: the drive to issue th command on&n; *&t;@rq: the request structure holding the command&n; *&n; *&t;execute_drive_cmd() issues a special drive command,  usually &n; *&t;initiated by ioctl() from the external hdparm program. The&n; *&t;command can be a drive command, drive task or taskfile &n; *&t;operation. Weirdly you can call it with NULL to wait for&n; *&t;all commands to finish. Don&squot;t do this as that is due to change&n; */
 DECL|function|execute_drive_cmd
+r_static
 id|ide_startstop_t
 id|execute_drive_cmd
 (paren
@@ -3538,15 +3507,9 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-DECL|variable|execute_drive_cmd
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|execute_drive_cmd
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;start_request&t;-&t;start of I/O and command issuing for IDE&n; *&n; *&t;start_request() initiates handling of a new I/O request. It&n; *&t;accepts commands and I/O (read/write) requests. It also does&n; *&t;the final remapping for weird stuff like EZDrive. Once &n; *&t;device mapper can work sector level the EZDrive stuff can go away&n; *&n; *&t;FIXME: this function needs a rename&n; */
 DECL|function|start_request
+r_static
 id|ide_startstop_t
 id|start_request
 (paren
@@ -3999,13 +3962,6 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-DECL|variable|start_request
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|start_request
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;ide_stall_queue&t;&t;-&t;pause an IDE device&n; *&t;@drive: drive to stall&n; *&t;@timeout: time to stall for (jiffies)&n; *&n; *&t;ide_stall_queue() can be used by a drive to give excess bandwidth back&n; *&t;to the hwgroup by sleeping for timeout jiffies.&n; */
 DECL|function|ide_stall_queue
 r_void
@@ -4344,8 +4300,8 @@ id|best
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Issue a new request to a drive from hwgroup&n; * Caller must have already done spin_lock_irqsave(&amp;ide_lock, ..);&n; *&n; * A hwgroup is a serialized group of IDE interfaces.  Usually there is&n; * exactly one hwif (interface) per hwgroup, but buggy controllers (eg. CMD640)&n; * may have both interfaces in a single hwgroup to &quot;serialize&quot; access.&n; * Or possibly multiple ISA interfaces can share a common IRQ by being grouped&n; * together into one hwgroup for serialized access.&n; *&n; * Note also that several hwgroups can end up sharing a single IRQ,&n; * possibly along with many other devices.  This is especially common in&n; * PCI-based systems with off-board IDE controller cards.&n; *&n; * The IDE driver uses the single global ide_lock spinlock to protect&n; * access to the request queues, and to protect the hwgroup-&gt;busy flag.&n; *&n; * The first thread into the driver for a particular hwgroup sets the&n; * hwgroup-&gt;busy flag to indicate that this hwgroup is now active,&n; * and then initiates processing of the top request from the request queue.&n; *&n; * Other threads attempting entry notice the busy setting, and will simply&n; * queue their new requests and exit immediately.  Note that hwgroup-&gt;busy&n; * remains set even when the driver is merely awaiting the next interrupt.&n; * Thus, the meaning is &quot;this hwgroup is busy processing a request&quot;.&n; *&n; * When processing of a request completes, the completing thread or IRQ-handler&n; * will start the next request from the queue.  If no more work remains,&n; * the driver will clear the hwgroup-&gt;busy flag and exit.&n; *&n; * The ide_lock (spinlock) is used to protect all access to the&n; * hwgroup-&gt;busy flag, but is otherwise not needed for most processing in&n; * the driver.  This makes the driver much more friendlier to shared IRQs&n; * than previous designs, while remaining 100% (?) SMP safe and capable.&n; */
-multiline_comment|/* --BenH: made non-static as ide-pmac.c uses it to kick the hwgroup back&n; *         into life on wakeup from machine sleep.&n; */
 DECL|function|ide_do_request
+r_static
 r_void
 id|ide_do_request
 (paren
@@ -4776,13 +4732,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-DECL|variable|ide_do_request
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_do_request
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Passes the stuff to ide_do_request&n; */
 DECL|function|do_ide_request
 r_void
@@ -5413,13 +5362,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|variable|ide_timer_expiry
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_timer_expiry
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;unexpected_intr&t;&t;-&t;handle an unexpected IDE interrupt&n; *&t;@irq: interrupt line&n; *&t;@hwgroup: hwgroup being processed&n; *&n; *&t;There&squot;s nothing really useful we can do with an unexpected interrupt,&n; *&t;other than reading the status register (to clear it), and logging it.&n; *&t;There should be no way that an irq can happen before we&squot;re ready for it,&n; *&t;so we needn&squot;t worry much about losing an &quot;important&quot; interrupt here.&n; *&n; *&t;On laptops (and &quot;green&quot; PCs), an unexpected interrupt occurs whenever&n; *&t;the drive enters &quot;idle&quot;, &quot;standby&quot;, or &quot;sleep&quot; mode, so if the status&n; *&t;looks &quot;good&quot;, we just ignore the interrupt completely.&n; *&n; *&t;This routine assumes __cli() is in effect when called.&n; *&n; *&t;If an unexpected interrupt happens on irq15 while we are handling irq14&n; *&t;and if the two interfaces are &quot;serialized&quot; (CMD640), then it looks like&n; *&t;we could screw up by interfering with a new request being set up for &n; *&t;irq15.&n; *&n; *&t;In reality, this is a non-issue.  The new command is not sent unless &n; *&t;the drive is ready to accept one, in which case we know the drive is&n; *&t;not trying to interrupt us.  And ide_set_handler() is always invoked&n; *&t;before completing the issuance of any new drive command, so we will not&n; *&t;be accidentally invoked as a result of any valid command completion&n; *&t;interrupt.&n; *&n; *&t;Note that we must walk the entire hwgroup here. We know which hwif&n; *&t;is doing the current command, but we don&squot;t know which hwif burped&n; *&t;mysteriously.&n; */
 DECL|function|unexpected_intr
 r_static
@@ -5888,13 +5830,6 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-DECL|variable|ide_intr
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_intr
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;ide_init_drive_cmd&t;-&t;initialize a drive command request&n; *&t;@rq: request object&n; *&n; *&t;Initialize a request before we fill it in and send it down to&n; *&t;ide_do_drive_cmd. Commands must be set up by this function. Right&n; *&t;now it doesn&squot;t do a lot, but if that changes abusers will have a&n; *&t;nasty suprise.&n; */
 DECL|function|ide_init_drive_cmd
 r_void
