@@ -131,6 +131,7 @@ mdefine_line|#define R_390_NUM&t;61
 multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
+macro_line|#include &lt;asm/system.h&gt;&t;&t;/* for save_access_regs */
 DECL|typedef|elf_fpregset_t
 r_typedef
 id|s390_fp_regs
@@ -210,6 +211,12 @@ id|regs-&gt;gprs
 )paren
 )paren
 suffix:semicolon
+id|save_access_regs
+c_func
+(paren
+id|regs-&gt;acrs
+)paren
+suffix:semicolon
 id|regs-&gt;orig_gpr2
 op_assign
 id|ptregs-&gt;orig_gpr2
@@ -237,16 +244,35 @@ op_star
 id|regs
 )paren
 (brace
-id|dump_regs
-c_func
-(paren
+r_struct
+id|pt_regs
+op_star
+id|ptregs
+op_assign
 id|__KSTK_PTREGS
 c_func
 (paren
 id|tsk
 )paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|regs-&gt;psw
 comma
-id|regs
+op_amp
+id|ptregs-&gt;psw
+comma
+r_sizeof
+(paren
+id|regs-&gt;psw
+)paren
+op_plus
+r_sizeof
+(paren
+id|regs-&gt;gprs
+)paren
 )paren
 suffix:semicolon
 id|memcpy
@@ -261,6 +287,10 @@ r_sizeof
 id|regs-&gt;acrs
 )paren
 )paren
+suffix:semicolon
+id|regs-&gt;orig_gpr2
+op_assign
+id|ptregs-&gt;orig_gpr2
 suffix:semicolon
 r_return
 l_int|1
@@ -285,6 +315,20 @@ op_star
 id|fpregs
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|tsk
+op_eq
+id|current
+)paren
+id|save_fp_regs
+c_func
+(paren
+id|fpregs
+)paren
+suffix:semicolon
+r_else
 id|memcpy
 c_func
 (paren
