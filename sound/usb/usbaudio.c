@@ -5508,7 +5508,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 l_string|&quot;%d:%d:%d: cannot get freq at ep 0x%x&bslash;n&quot;
 comma
 id|dev-&gt;devnum
@@ -5521,8 +5521,9 @@ id|ep
 )paren
 suffix:semicolon
 r_return
-id|err
+l_int|0
 suffix:semicolon
+multiline_comment|/* some devices don&squot;t support reading */
 )brace
 id|crate
 op_assign
@@ -10492,6 +10493,64 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * check if the device uses big-endian samples&n; */
+DECL|function|is_big_endian_format
+r_static
+r_int
+id|is_big_endian_format
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_struct
+id|audioformat
+op_star
+id|fp
+)paren
+(brace
+multiline_comment|/* M-Audio */
+r_if
+c_cond
+(paren
+id|dev-&gt;descriptor.idVendor
+op_eq
+l_int|0x0763
+)paren
+(brace
+multiline_comment|/* Quattro: captured data only */
+r_if
+c_cond
+(paren
+id|dev-&gt;descriptor.idProduct
+op_eq
+l_int|0x2001
+op_logical_and
+id|fp-&gt;endpoint
+op_amp
+id|USB_DIR_IN
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* Audiophile USB */
+r_if
+c_cond
+(paren
+id|dev-&gt;descriptor.idProduct
+op_eq
+l_int|0x2003
+)paren
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * parse the audio format type I descriptor&n; * and returns the corresponding pcm format&n; *&n; * @dev: usb device&n; * @fp: audioformat record&n; * @format: the format tag (wFormatTag)&n; * @fmt: the format type descriptor&n; */
 DECL|function|parse_audio_format_i_type
 r_static
@@ -10623,17 +10682,16 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-multiline_comment|/* M-Audio audiophile USB workaround */
 r_if
 c_cond
 (paren
-id|dev-&gt;descriptor.idVendor
-op_eq
-l_int|0x0763
-op_logical_and
-id|dev-&gt;descriptor.idProduct
-op_eq
-l_int|0x2003
+id|is_big_endian_format
+c_func
+(paren
+id|dev
+comma
+id|fp
+)paren
 )paren
 id|pcm_format
 op_assign
@@ -10650,17 +10708,16 @@ suffix:semicolon
 r_case
 l_int|3
 suffix:colon
-multiline_comment|/* M-Audio audiophile USB workaround */
 r_if
 c_cond
 (paren
-id|dev-&gt;descriptor.idVendor
-op_eq
-l_int|0x0763
-op_logical_and
-id|dev-&gt;descriptor.idProduct
-op_eq
-l_int|0x2003
+id|is_big_endian_format
+c_func
+(paren
+id|dev
+comma
+id|fp
+)paren
 )paren
 id|pcm_format
 op_assign
