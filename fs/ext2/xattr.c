@@ -1,12 +1,12 @@
 multiline_comment|/*&n; * linux/fs/ext2/xattr.c&n; *&n; * Copyright (C) 2001-2003 Andreas Gruenbacher &lt;agruen@suse.de&gt;&n; *&n; * Fix by Harrison Xing &lt;harrison@mountainviewdata.com&gt;.&n; * Extended attributes for symlinks and special files added per&n; *  suggestion of Luka Renko &lt;luka.renko@hermes.si&gt;.&n; */
-multiline_comment|/*&n; * Extended attributes are stored on disk blocks allocated outside of&n; * any inode. The i_file_acl field is then made to point to this allocated&n; * block. If all extended attributes of an inode are identical, these&n; * inodes may share the same extended attribute block. Such situations&n; * are automatically detected by keeping a cache of recent attribute block&n; * numbers and hashes over the block&squot;s contents in memory.&n; *&n; *&n; * Extended attribute block layout:&n; *&n; *   +------------------+&n; *   | header           |&n; *   &#xfffd; entry 1          | |&n; *   | entry 2          | | growing downwards&n; *   | entry 3          | v&n; *   | four null bytes  |&n; *   | . . .            |&n; *   | value 1          | ^&n; *   | value 3          | | growing upwards&n; *   | value 2          | |&n; *   +------------------+&n; *&n; * The block header is followed by multiple entry descriptors. These entry&n; * descriptors are variable in size, and alligned to EXT2_XATTR_PAD&n; * byte boundaries. The entry descriptors are sorted by attribute name,&n; * so that two extended attribute blocks can be compared efficiently.&n; *&n; * Attribute values are aligned to the end of the block, stored in&n; * no specific order. They are also padded to EXT2_XATTR_PAD byte&n; * boundaries. No additional gaps are left between them.&n; *&n; * Locking strategy&n; * ----------------&n; * The VFS already holds the BKL and the inode-&gt;i_sem semaphore when any of&n; * the xattr inode operations are called, so we are guaranteed that only one&n; * processes accesses extended attributes of an inode at any time.&n; *&n; * For writing we also grab the ext2_xattr_sem semaphore. This ensures that&n; * only a single process is modifying an extended attribute block, even&n; * if the block is shared among inodes.&n; */
+multiline_comment|/*&n; * Extended attributes are stored on disk blocks allocated outside of&n; * any inode. The i_file_acl field is then made to point to this allocated&n; * block. If all extended attributes of an inode are identical, these&n; * inodes may share the same extended attribute block. Such situations&n; * are automatically detected by keeping a cache of recent attribute block&n; * numbers and hashes over the block&squot;s contents in memory.&n; *&n; *&n; * Extended attribute block layout:&n; *&n; *   +------------------+&n; *   | header           |&n; *   &#xfffd; entry 1          | |&n; *   | entry 2          | | growing downwards&n; *   | entry 3          | v&n; *   | four null bytes  |&n; *   | . . .            |&n; *   | value 1          | ^&n; *   | value 3          | | growing upwards&n; *   | value 2          | |&n; *   +------------------+&n; *&n; * The block header is followed by multiple entry descriptors. These entry&n; * descriptors are variable in size, and alligned to EXT2_XATTR_PAD&n; * byte boundaries. The entry descriptors are sorted by attribute name,&n; * so that two extended attribute blocks can be compared efficiently.&n; *&n; * Attribute values are aligned to the end of the block, stored in&n; * no specific order. They are also padded to EXT2_XATTR_PAD byte&n; * boundaries. No additional gaps are left between them.&n; *&n; * Locking strategy&n; * ----------------&n; * EXT2_I(inode)-&gt;i_file_acl is protected by EXT2_I(inode)-&gt;xattr_sem.&n; * EA blocks are only changed if they are exclusive to an inode, so&n; * holding xattr_sem also means that nothing but the EA block&squot;s reference&n; * count will change. Multiple writers to an EA block are synchronized&n; * by the bh lock. No more than a single bh lock is held at any time&n; * to avoid deadlocks.&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mbcache.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &quot;xattr.h&quot;
 macro_line|#include &quot;acl.h&quot;
@@ -139,14 +139,6 @@ r_struct
 id|mb_cache
 op_star
 id|ext2_xattr_cache
-suffix:semicolon
-multiline_comment|/*&n; * If a file system does not share extended attributes among inodes,&n; * we should not need the ext2_xattr_sem semaphore. However, the&n; * filesystem may still contain shared blocks, so we always take&n; * the lock.&n; */
-r_static
-id|DECLARE_MUTEX
-c_func
-(paren
-id|ext2_xattr_sem
-)paren
 suffix:semicolon
 DECL|variable|ext2_xattr_handlers
 r_static
@@ -523,7 +515,7 @@ r_return
 id|handler
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Inode operation getxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem down&n; */
+multiline_comment|/*&n; * Inode operation getxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem: don&squot;t care&n; */
 id|ssize_t
 DECL|function|ext2_getxattr
 id|ext2_getxattr
@@ -559,9 +551,6 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
-id|ssize_t
-id|error
-suffix:semicolon
 id|handler
 op_assign
 id|ext2_xattr_resolve_name
@@ -581,15 +570,7 @@ r_return
 op_minus
 id|EOPNOTSUPP
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|inode-&gt;i_sem
-)paren
-suffix:semicolon
-id|error
-op_assign
+r_return
 id|handler
 op_member_access_from_pointer
 id|get
@@ -604,18 +585,8 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|inode-&gt;i_sem
-)paren
-suffix:semicolon
-r_return
-id|error
-suffix:semicolon
 )brace
-multiline_comment|/*&n; * Inode operation listxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem down&n; */
+multiline_comment|/*&n; * Inode operation listxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem: don&squot;t care&n; */
 id|ssize_t
 DECL|function|ext2_listxattr
 id|ext2_listxattr
@@ -634,18 +605,7 @@ r_int
 id|size
 )paren
 (brace
-id|ssize_t
-id|error
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_inode-&gt;i_sem
-)paren
-suffix:semicolon
-id|error
-op_assign
+r_return
 id|ext2_xattr_list
 c_func
 (paren
@@ -656,18 +616,8 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_inode-&gt;i_sem
-)paren
-suffix:semicolon
-r_return
-id|error
-suffix:semicolon
 )brace
-multiline_comment|/*&n; * Inode operation setxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem down&n; */
+multiline_comment|/*&n; * Inode operation setxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem: down&n; */
 r_int
 DECL|function|ext2_setxattr
 id|ext2_setxattr
@@ -756,7 +706,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Inode operation removexattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem down&n; */
+multiline_comment|/*&n; * Inode operation removexattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem: down&n; */
 r_int
 DECL|function|ext2_removexattr
 id|ext2_removexattr
@@ -903,6 +853,24 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|xattr_sem
+)paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|ENODATA
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -915,9 +883,8 @@ id|inode
 op_member_access_from_pointer
 id|i_file_acl
 )paren
-r_return
-op_minus
-id|ENODATA
+r_goto
+id|cleanup
 suffix:semicolon
 id|ea_idebug
 c_func
@@ -951,15 +918,19 @@ op_member_access_from_pointer
 id|i_file_acl
 )paren
 suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|bh
 )paren
-r_return
-op_minus
-id|EIO
+r_goto
+id|cleanup
 suffix:semicolon
 id|ea_bdebug
 c_func
@@ -1334,6 +1305,19 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|xattr_sem
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -1399,6 +1383,23 @@ r_int
 id|buffer_size
 )paren
 suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|xattr_sem
+)paren
+suffix:semicolon
+id|error
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1411,8 +1412,8 @@ id|inode
 op_member_access_from_pointer
 id|i_file_acl
 )paren
-r_return
-l_int|0
+r_goto
+id|cleanup
 suffix:semicolon
 id|ea_idebug
 c_func
@@ -1446,15 +1447,19 @@ op_member_access_from_pointer
 id|i_file_acl
 )paren
 suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|bh
 )paren
-r_return
-op_minus
-id|EIO
+r_goto
+id|cleanup
 suffix:semicolon
 id|ea_bdebug
 c_func
@@ -1771,6 +1776,19 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|xattr_sem
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -2021,11 +2039,17 @@ r_return
 op_minus
 id|ERANGE
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
-id|ext2_xattr_sem
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|xattr_sem
 )paren
 suffix:semicolon
 r_if
@@ -2560,6 +2584,13 @@ c_cond
 id|header
 )paren
 (brace
+multiline_comment|/* assert(header == HDR(bh)); */
+id|lock_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2586,11 +2617,18 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+multiline_comment|/* keep the buffer locked while modifying it. */
 )brace
 r_else
 (brace
 r_int
 id|offset
+suffix:semicolon
+id|unlock_buffer
+c_func
+(paren
+id|bh
+)paren
 suffix:semicolon
 id|ea_bdebug
 c_func
@@ -2766,6 +2804,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Iff we are modifying the block in-place, bh is locked here. */
 r_if
 c_cond
 (paren
@@ -3223,6 +3262,26 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* This block is now empty. */
+r_if
+c_cond
+(paren
+id|bh
+op_logical_and
+id|header
+op_eq
+id|HDR
+c_func
+(paren
+id|bh
+)paren
+)paren
+id|unlock_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+multiline_comment|/* we were modifying in-place. */
 id|error
 op_assign
 id|ext2_xattr_set2
@@ -3246,6 +3305,26 @@ comma
 id|here
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bh
+op_logical_and
+id|header
+op_eq
+id|HDR
+c_func
+(paren
+id|bh
+)paren
+)paren
+id|unlock_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+multiline_comment|/* we were modifying in-place. */
 id|error
 op_assign
 id|ext2_xattr_set2
@@ -3289,11 +3368,17 @@ c_func
 id|header
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
-id|ext2_xattr_sem
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|xattr_sem
 )paren
 suffix:semicolon
 r_return
@@ -3362,7 +3447,7 @@ c_cond
 id|new_bh
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * We found an identical block in the cache.&n;&t;&t;&t; * The old block will be released after updating&n;&t;&t;&t; * the inode.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We found an identical block in the cache. The&n;&t;&t;&t; * block returned is locked. The old block will&n;&t;&t;&t; * be released after updating the inode.&n;&t;&t;&t; */
 id|ea_bdebug
 c_func
 (paren
@@ -3404,9 +3489,17 @@ comma
 l_int|1
 )paren
 )paren
+(brace
+id|unlock_buffer
+c_func
+(paren
+id|new_bh
+)paren
+suffix:semicolon
 r_goto
 id|cleanup
 suffix:semicolon
+)brace
 id|HDR
 c_func
 (paren
@@ -3453,6 +3546,12 @@ id|h_refcount
 )paren
 )paren
 suffix:semicolon
+id|unlock_buffer
+c_func
+(paren
+id|new_bh
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -3469,7 +3568,7 @@ id|old_bh
 )paren
 )paren
 (brace
-multiline_comment|/* Keep this block. */
+multiline_comment|/* Keep this block. No need to lock the block as we&n;&t;&t;&t;   don&squot;t need to change the reference count. */
 id|new_bh
 op_assign
 id|old_bh
@@ -3749,13 +3848,15 @@ op_ne
 id|new_bh
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * If there was an old block, and we are not still using it,&n;&t;&t; * we now release the old block.&n;&t;&t;*/
-r_int
-r_int
-id|refcount
-op_assign
-id|le32_to_cpu
+multiline_comment|/*&n;&t;&t; * If there was an old block and we are no longer using it,&n;&t;&t; * release the old block.&n;&t;&t; */
+id|lock_buffer
 c_func
+(paren
+id|old_bh
+)paren
+suffix:semicolon
+r_if
+c_cond
 (paren
 id|HDR
 c_func
@@ -3764,14 +3865,12 @@ id|old_bh
 )paren
 op_member_access_from_pointer
 id|h_refcount
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|refcount
 op_eq
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 )paren
 (brace
 multiline_comment|/* Free the old block. */
@@ -3810,9 +3909,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Decrement the refcount only. */
-id|refcount
-op_decrement
-suffix:semicolon
 id|HDR
 c_func
 (paren
@@ -3824,7 +3920,19 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|refcount
+id|le32_to_cpu
+c_func
+(paren
+id|HDR
+c_func
+(paren
+id|old_bh
+)paren
+op_member_access_from_pointer
+id|h_refcount
+)paren
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|DQUOT_FREE_BLOCK
@@ -3848,10 +3956,26 @@ id|old_bh
 comma
 l_string|&quot;refcount now=%d&quot;
 comma
-id|refcount
+id|le32_to_cpu
+c_func
+(paren
+id|HDR
+c_func
+(paren
+id|old_bh
+)paren
+op_member_access_from_pointer
+id|h_refcount
+)paren
 )paren
 suffix:semicolon
 )brace
+id|unlock_buffer
+c_func
+(paren
+id|old_bh
+)paren
+suffix:semicolon
 )brace
 id|cleanup
 suffix:colon
@@ -3881,6 +4005,21 @@ r_struct
 id|buffer_head
 op_star
 id|bh
+op_assign
+l_int|NULL
+suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|xattr_sem
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3894,14 +4033,8 @@ id|inode
 op_member_access_from_pointer
 id|i_file_acl
 )paren
-r_return
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|ext2_xattr_sem
-)paren
+r_goto
+id|cleanup
 suffix:semicolon
 id|bh
 op_assign
@@ -4023,26 +4156,10 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-id|ea_bdebug
+id|lock_buffer
 c_func
 (paren
 id|bh
-comma
-l_string|&quot;refcount now=%d&quot;
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|HDR
-c_func
-(paren
-id|bh
-)paren
-op_member_access_from_pointer
-id|h_refcount
-)paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -4156,6 +4273,34 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+id|ea_bdebug
+c_func
+(paren
+id|bh
+comma
+l_string|&quot;refcount now=%d&quot;
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|HDR
+c_func
+(paren
+id|bh
+)paren
+op_member_access_from_pointer
+id|h_refcount
+)paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|unlock_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 id|EXT2_I
 c_func
 (paren
@@ -4174,11 +4319,17 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
-id|ext2_xattr_sem
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|xattr_sem
 )paren
 suffix:semicolon
 )brace
@@ -4533,7 +4684,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ext2_xattr_cache_find()&n; *&n; * Find an identical extended attribute block.&n; *&n; * Returns a pointer to the block found, or NULL if such a block was&n; * not found or an error occurred.&n; */
+multiline_comment|/*&n; * ext2_xattr_cache_find()&n; *&n; * Find an identical extended attribute block.&n; *&n; * Returns a locked buffer head to the block found, or NULL if such&n; * a block was not found or an error occurred.&n; */
 r_static
 r_struct
 id|buffer_head
@@ -4650,6 +4801,13 @@ id|ce-&gt;e_block
 suffix:semicolon
 )brace
 r_else
+(brace
+id|lock_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4742,12 +4900,19 @@ r_return
 id|bh
 suffix:semicolon
 )brace
+id|unlock_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 id|brelse
 c_func
 (paren
 id|bh
 )paren
 suffix:semicolon
+)brace
 id|ce
 op_assign
 id|mb_cache_entry_find_next

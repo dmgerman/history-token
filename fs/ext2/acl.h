@@ -223,17 +223,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|ext2_permission_locked
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|ext2_acl_chmod
 (paren
 r_struct

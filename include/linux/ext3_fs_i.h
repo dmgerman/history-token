@@ -79,6 +79,14 @@ DECL|member|i_dir_start_lookup
 id|__u32
 id|i_dir_start_lookup
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT3_FS_XATTR
+multiline_comment|/*&n;&t; * Extended attributes can be read independently of the main file&n;&t; * data. Taking i_sem even when reading would cause contention&n;&t; * between readers of EAs and writers of regular file data, so&n;&t; * instead we synchronize on xattr_sem when reading or changing&n;&t; * EAs.&n;&t; */
+DECL|member|xattr_sem
+r_struct
+id|rw_semaphore
+id|xattr_sem
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_EXT3_FS_POSIX_ACL
 DECL|member|i_acl
 r_struct
