@@ -5548,6 +5548,19 @@ id|offset
 r_goto
 id|do_expand
 suffix:semicolon
+multiline_comment|/*&n;&t; * truncation of in-use swapfiles is disallowed - it would cause&n;&t; * subsequent swapout to scribble on the now-freed blocks.&n;&t; */
+r_if
+c_cond
+(paren
+id|IS_SWAPFILE
+c_func
+(paren
+id|inode
+)paren
+)paren
+r_goto
+id|out_busy
+suffix:semicolon
 id|i_size_write
 c_func
 (paren
@@ -5616,7 +5629,7 @@ OG
 id|inode-&gt;i_sb-&gt;s_maxbytes
 )paren
 r_goto
-id|out
+id|out_big
 suffix:semicolon
 id|i_size_write
 c_func
@@ -5658,11 +5671,17 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|out
+id|out_big
 suffix:colon
 r_return
 op_minus
 id|EFBIG
+suffix:semicolon
+id|out_busy
+suffix:colon
+r_return
+op_minus
+id|ETXTBSY
 suffix:semicolon
 )brace
 DECL|variable|vmtruncate
