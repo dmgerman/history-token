@@ -882,6 +882,13 @@ c_func
 id|die_chain
 )paren
 suffix:semicolon
+DECL|variable|cpu_sibling_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_sibling_map
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|do_softirq_thunk

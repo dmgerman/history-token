@@ -277,6 +277,10 @@ r_return
 id|edx
 suffix:semicolon
 )brace
+DECL|macro|MSR_IA32_UCODE_WRITE
+mdefine_line|#define MSR_IA32_UCODE_WRITE&t;&t;0x79
+DECL|macro|MSR_IA32_UCODE_REV
+mdefine_line|#define MSR_IA32_UCODE_REV&t;&t;0x8b
 macro_line|#endif
 multiline_comment|/* AMD/K8 specific MSRs */
 DECL|macro|MSR_EFER
@@ -472,5 +476,227 @@ DECL|macro|MSR_IA32_APICBASE_ENABLE
 mdefine_line|#define MSR_IA32_APICBASE_ENABLE        (1&lt;&lt;11)
 DECL|macro|MSR_IA32_APICBASE_BASE
 mdefine_line|#define MSR_IA32_APICBASE_BASE          (0xfffff&lt;&lt;12)
+multiline_comment|/* P4/Xeon+ specific */
+DECL|macro|MSR_IA32_MCG_EAX
+mdefine_line|#define MSR_IA32_MCG_EAX&t;&t;0x180
+DECL|macro|MSR_IA32_MCG_EBX
+mdefine_line|#define MSR_IA32_MCG_EBX&t;&t;0x181
+DECL|macro|MSR_IA32_MCG_ECX
+mdefine_line|#define MSR_IA32_MCG_ECX&t;&t;0x182
+DECL|macro|MSR_IA32_MCG_EDX
+mdefine_line|#define MSR_IA32_MCG_EDX&t;&t;0x183
+DECL|macro|MSR_IA32_MCG_ESI
+mdefine_line|#define MSR_IA32_MCG_ESI&t;&t;0x184
+DECL|macro|MSR_IA32_MCG_EDI
+mdefine_line|#define MSR_IA32_MCG_EDI&t;&t;0x185
+DECL|macro|MSR_IA32_MCG_EBP
+mdefine_line|#define MSR_IA32_MCG_EBP&t;&t;0x186
+DECL|macro|MSR_IA32_MCG_ESP
+mdefine_line|#define MSR_IA32_MCG_ESP&t;&t;0x187
+DECL|macro|MSR_IA32_MCG_EFLAGS
+mdefine_line|#define MSR_IA32_MCG_EFLAGS&t;&t;0x188
+DECL|macro|MSR_IA32_MCG_EIP
+mdefine_line|#define MSR_IA32_MCG_EIP&t;&t;0x189
+DECL|macro|MSR_IA32_MCG_RESERVED
+mdefine_line|#define MSR_IA32_MCG_RESERVED&t;&t;0x18A
+DECL|macro|MSR_P6_EVNTSEL0
+mdefine_line|#define MSR_P6_EVNTSEL0&t;&t;&t;0x186
+DECL|macro|MSR_P6_EVNTSEL1
+mdefine_line|#define MSR_P6_EVNTSEL1&t;&t;&t;0x187
+DECL|macro|MSR_IA32_PERF_STATUS
+mdefine_line|#define MSR_IA32_PERF_STATUS&t;&t;0x198
+DECL|macro|MSR_IA32_PERF_CTL
+mdefine_line|#define MSR_IA32_PERF_CTL&t;&t;0x199
+DECL|macro|MSR_IA32_THERM_CONTROL
+mdefine_line|#define MSR_IA32_THERM_CONTROL&t;&t;0x19a
+DECL|macro|MSR_IA32_THERM_INTERRUPT
+mdefine_line|#define MSR_IA32_THERM_INTERRUPT&t;0x19b
+DECL|macro|MSR_IA32_THERM_STATUS
+mdefine_line|#define MSR_IA32_THERM_STATUS&t;&t;0x19c
+DECL|macro|MSR_IA32_MISC_ENABLE
+mdefine_line|#define MSR_IA32_MISC_ENABLE&t;&t;0x1a0
+DECL|macro|MSR_IA32_DEBUGCTLMSR
+mdefine_line|#define MSR_IA32_DEBUGCTLMSR&t;&t;0x1d9
+DECL|macro|MSR_IA32_LASTBRANCHFROMIP
+mdefine_line|#define MSR_IA32_LASTBRANCHFROMIP&t;0x1db
+DECL|macro|MSR_IA32_LASTBRANCHTOIP
+mdefine_line|#define MSR_IA32_LASTBRANCHTOIP&t;&t;0x1dc
+DECL|macro|MSR_IA32_LASTINTFROMIP
+mdefine_line|#define MSR_IA32_LASTINTFROMIP&t;&t;0x1dd
+DECL|macro|MSR_IA32_LASTINTTOIP
+mdefine_line|#define MSR_IA32_LASTINTTOIP&t;&t;0x1de
+DECL|macro|MSR_IA32_MC0_CTL
+mdefine_line|#define MSR_IA32_MC0_CTL&t;&t;0x400
+DECL|macro|MSR_IA32_MC0_STATUS
+mdefine_line|#define MSR_IA32_MC0_STATUS&t;&t;0x401
+DECL|macro|MSR_IA32_MC0_ADDR
+mdefine_line|#define MSR_IA32_MC0_ADDR&t;&t;0x402
+DECL|macro|MSR_IA32_MC0_MISC
+mdefine_line|#define MSR_IA32_MC0_MISC&t;&t;0x403
+multiline_comment|/* Pentium IV performance counter MSRs */
+DECL|macro|MSR_P4_BPU_PERFCTR0
+mdefine_line|#define MSR_P4_BPU_PERFCTR0 &t;&t;0x300
+DECL|macro|MSR_P4_BPU_PERFCTR1
+mdefine_line|#define MSR_P4_BPU_PERFCTR1 &t;&t;0x301
+DECL|macro|MSR_P4_BPU_PERFCTR2
+mdefine_line|#define MSR_P4_BPU_PERFCTR2 &t;&t;0x302
+DECL|macro|MSR_P4_BPU_PERFCTR3
+mdefine_line|#define MSR_P4_BPU_PERFCTR3 &t;&t;0x303
+DECL|macro|MSR_P4_MS_PERFCTR0
+mdefine_line|#define MSR_P4_MS_PERFCTR0 &t;&t;0x304
+DECL|macro|MSR_P4_MS_PERFCTR1
+mdefine_line|#define MSR_P4_MS_PERFCTR1 &t;&t;0x305
+DECL|macro|MSR_P4_MS_PERFCTR2
+mdefine_line|#define MSR_P4_MS_PERFCTR2 &t;&t;0x306
+DECL|macro|MSR_P4_MS_PERFCTR3
+mdefine_line|#define MSR_P4_MS_PERFCTR3 &t;&t;0x307
+DECL|macro|MSR_P4_FLAME_PERFCTR0
+mdefine_line|#define MSR_P4_FLAME_PERFCTR0 &t;&t;0x308
+DECL|macro|MSR_P4_FLAME_PERFCTR1
+mdefine_line|#define MSR_P4_FLAME_PERFCTR1 &t;&t;0x309
+DECL|macro|MSR_P4_FLAME_PERFCTR2
+mdefine_line|#define MSR_P4_FLAME_PERFCTR2 &t;&t;0x30a
+DECL|macro|MSR_P4_FLAME_PERFCTR3
+mdefine_line|#define MSR_P4_FLAME_PERFCTR3 &t;&t;0x30b
+DECL|macro|MSR_P4_IQ_PERFCTR0
+mdefine_line|#define MSR_P4_IQ_PERFCTR0 &t;&t;0x30c
+DECL|macro|MSR_P4_IQ_PERFCTR1
+mdefine_line|#define MSR_P4_IQ_PERFCTR1 &t;&t;0x30d
+DECL|macro|MSR_P4_IQ_PERFCTR2
+mdefine_line|#define MSR_P4_IQ_PERFCTR2 &t;&t;0x30e
+DECL|macro|MSR_P4_IQ_PERFCTR3
+mdefine_line|#define MSR_P4_IQ_PERFCTR3 &t;&t;0x30f
+DECL|macro|MSR_P4_IQ_PERFCTR4
+mdefine_line|#define MSR_P4_IQ_PERFCTR4 &t;&t;0x310
+DECL|macro|MSR_P4_IQ_PERFCTR5
+mdefine_line|#define MSR_P4_IQ_PERFCTR5 &t;&t;0x311
+DECL|macro|MSR_P4_BPU_CCCR0
+mdefine_line|#define MSR_P4_BPU_CCCR0 &t;&t;0x360
+DECL|macro|MSR_P4_BPU_CCCR1
+mdefine_line|#define MSR_P4_BPU_CCCR1 &t;&t;0x361
+DECL|macro|MSR_P4_BPU_CCCR2
+mdefine_line|#define MSR_P4_BPU_CCCR2 &t;&t;0x362
+DECL|macro|MSR_P4_BPU_CCCR3
+mdefine_line|#define MSR_P4_BPU_CCCR3 &t;&t;0x363
+DECL|macro|MSR_P4_MS_CCCR0
+mdefine_line|#define MSR_P4_MS_CCCR0 &t;&t;0x364
+DECL|macro|MSR_P4_MS_CCCR1
+mdefine_line|#define MSR_P4_MS_CCCR1 &t;&t;0x365
+DECL|macro|MSR_P4_MS_CCCR2
+mdefine_line|#define MSR_P4_MS_CCCR2 &t;&t;0x366
+DECL|macro|MSR_P4_MS_CCCR3
+mdefine_line|#define MSR_P4_MS_CCCR3 &t;&t;0x367
+DECL|macro|MSR_P4_FLAME_CCCR0
+mdefine_line|#define MSR_P4_FLAME_CCCR0 &t;&t;0x368
+DECL|macro|MSR_P4_FLAME_CCCR1
+mdefine_line|#define MSR_P4_FLAME_CCCR1 &t;&t;0x369
+DECL|macro|MSR_P4_FLAME_CCCR2
+mdefine_line|#define MSR_P4_FLAME_CCCR2 &t;&t;0x36a
+DECL|macro|MSR_P4_FLAME_CCCR3
+mdefine_line|#define MSR_P4_FLAME_CCCR3 &t;&t;0x36b
+DECL|macro|MSR_P4_IQ_CCCR0
+mdefine_line|#define MSR_P4_IQ_CCCR0 &t;&t;0x36c
+DECL|macro|MSR_P4_IQ_CCCR1
+mdefine_line|#define MSR_P4_IQ_CCCR1 &t;&t;0x36d
+DECL|macro|MSR_P4_IQ_CCCR2
+mdefine_line|#define MSR_P4_IQ_CCCR2 &t;&t;0x36e
+DECL|macro|MSR_P4_IQ_CCCR3
+mdefine_line|#define MSR_P4_IQ_CCCR3 &t;&t;0x36f
+DECL|macro|MSR_P4_IQ_CCCR4
+mdefine_line|#define MSR_P4_IQ_CCCR4 &t;&t;0x370
+DECL|macro|MSR_P4_IQ_CCCR5
+mdefine_line|#define MSR_P4_IQ_CCCR5 &t;&t;0x371
+DECL|macro|MSR_P4_ALF_ESCR0
+mdefine_line|#define MSR_P4_ALF_ESCR0 &t;&t;0x3ca
+DECL|macro|MSR_P4_ALF_ESCR1
+mdefine_line|#define MSR_P4_ALF_ESCR1 &t;&t;0x3cb
+DECL|macro|MSR_P4_BPU_ESCR0
+mdefine_line|#define MSR_P4_BPU_ESCR0 &t;&t;0x3b2
+DECL|macro|MSR_P4_BPU_ESCR1
+mdefine_line|#define MSR_P4_BPU_ESCR1 &t;&t;0x3b3
+DECL|macro|MSR_P4_BSU_ESCR0
+mdefine_line|#define MSR_P4_BSU_ESCR0 &t;&t;0x3a0
+DECL|macro|MSR_P4_BSU_ESCR1
+mdefine_line|#define MSR_P4_BSU_ESCR1 &t;&t;0x3a1
+DECL|macro|MSR_P4_CRU_ESCR0
+mdefine_line|#define MSR_P4_CRU_ESCR0 &t;&t;0x3b8
+DECL|macro|MSR_P4_CRU_ESCR1
+mdefine_line|#define MSR_P4_CRU_ESCR1 &t;&t;0x3b9
+DECL|macro|MSR_P4_CRU_ESCR2
+mdefine_line|#define MSR_P4_CRU_ESCR2 &t;&t;0x3cc
+DECL|macro|MSR_P4_CRU_ESCR3
+mdefine_line|#define MSR_P4_CRU_ESCR3 &t;&t;0x3cd
+DECL|macro|MSR_P4_CRU_ESCR4
+mdefine_line|#define MSR_P4_CRU_ESCR4 &t;&t;0x3e0
+DECL|macro|MSR_P4_CRU_ESCR5
+mdefine_line|#define MSR_P4_CRU_ESCR5 &t;&t;0x3e1
+DECL|macro|MSR_P4_DAC_ESCR0
+mdefine_line|#define MSR_P4_DAC_ESCR0 &t;&t;0x3a8
+DECL|macro|MSR_P4_DAC_ESCR1
+mdefine_line|#define MSR_P4_DAC_ESCR1 &t;&t;0x3a9
+DECL|macro|MSR_P4_FIRM_ESCR0
+mdefine_line|#define MSR_P4_FIRM_ESCR0 &t;&t;0x3a4
+DECL|macro|MSR_P4_FIRM_ESCR1
+mdefine_line|#define MSR_P4_FIRM_ESCR1 &t;&t;0x3a5
+DECL|macro|MSR_P4_FLAME_ESCR0
+mdefine_line|#define MSR_P4_FLAME_ESCR0 &t;&t;0x3a6
+DECL|macro|MSR_P4_FLAME_ESCR1
+mdefine_line|#define MSR_P4_FLAME_ESCR1 &t;&t;0x3a7
+DECL|macro|MSR_P4_FSB_ESCR0
+mdefine_line|#define MSR_P4_FSB_ESCR0 &t;&t;0x3a2
+DECL|macro|MSR_P4_FSB_ESCR1
+mdefine_line|#define MSR_P4_FSB_ESCR1 &t;&t;0x3a3
+DECL|macro|MSR_P4_IQ_ESCR0
+mdefine_line|#define MSR_P4_IQ_ESCR0 &t;&t;0x3ba
+DECL|macro|MSR_P4_IQ_ESCR1
+mdefine_line|#define MSR_P4_IQ_ESCR1 &t;&t;0x3bb
+DECL|macro|MSR_P4_IS_ESCR0
+mdefine_line|#define MSR_P4_IS_ESCR0 &t;&t;0x3b4
+DECL|macro|MSR_P4_IS_ESCR1
+mdefine_line|#define MSR_P4_IS_ESCR1 &t;&t;0x3b5
+DECL|macro|MSR_P4_ITLB_ESCR0
+mdefine_line|#define MSR_P4_ITLB_ESCR0 &t;&t;0x3b6
+DECL|macro|MSR_P4_ITLB_ESCR1
+mdefine_line|#define MSR_P4_ITLB_ESCR1 &t;&t;0x3b7
+DECL|macro|MSR_P4_IX_ESCR0
+mdefine_line|#define MSR_P4_IX_ESCR0 &t;&t;0x3c8
+DECL|macro|MSR_P4_IX_ESCR1
+mdefine_line|#define MSR_P4_IX_ESCR1 &t;&t;0x3c9
+DECL|macro|MSR_P4_MOB_ESCR0
+mdefine_line|#define MSR_P4_MOB_ESCR0 &t;&t;0x3aa
+DECL|macro|MSR_P4_MOB_ESCR1
+mdefine_line|#define MSR_P4_MOB_ESCR1 &t;&t;0x3ab
+DECL|macro|MSR_P4_MS_ESCR0
+mdefine_line|#define MSR_P4_MS_ESCR0 &t;&t;0x3c0
+DECL|macro|MSR_P4_MS_ESCR1
+mdefine_line|#define MSR_P4_MS_ESCR1 &t;&t;0x3c1
+DECL|macro|MSR_P4_PMH_ESCR0
+mdefine_line|#define MSR_P4_PMH_ESCR0 &t;&t;0x3ac
+DECL|macro|MSR_P4_PMH_ESCR1
+mdefine_line|#define MSR_P4_PMH_ESCR1 &t;&t;0x3ad
+DECL|macro|MSR_P4_RAT_ESCR0
+mdefine_line|#define MSR_P4_RAT_ESCR0 &t;&t;0x3bc
+DECL|macro|MSR_P4_RAT_ESCR1
+mdefine_line|#define MSR_P4_RAT_ESCR1 &t;&t;0x3bd
+DECL|macro|MSR_P4_SAAT_ESCR0
+mdefine_line|#define MSR_P4_SAAT_ESCR0 &t;&t;0x3ae
+DECL|macro|MSR_P4_SAAT_ESCR1
+mdefine_line|#define MSR_P4_SAAT_ESCR1 &t;&t;0x3af
+DECL|macro|MSR_P4_SSU_ESCR0
+mdefine_line|#define MSR_P4_SSU_ESCR0 &t;&t;0x3be
+DECL|macro|MSR_P4_SSU_ESCR1
+mdefine_line|#define MSR_P4_SSU_ESCR1 &t;&t;0x3bf    /* guess: not defined in manual */
+DECL|macro|MSR_P4_TBPU_ESCR0
+mdefine_line|#define MSR_P4_TBPU_ESCR0 &t;&t;0x3c2
+DECL|macro|MSR_P4_TBPU_ESCR1
+mdefine_line|#define MSR_P4_TBPU_ESCR1 &t;&t;0x3c3
+DECL|macro|MSR_P4_TC_ESCR0
+mdefine_line|#define MSR_P4_TC_ESCR0 &t;&t;0x3c4
+DECL|macro|MSR_P4_TC_ESCR1
+mdefine_line|#define MSR_P4_TC_ESCR1 &t;&t;0x3c5
+DECL|macro|MSR_P4_U2L_ESCR0
+mdefine_line|#define MSR_P4_U2L_ESCR0 &t;&t;0x3b0
+DECL|macro|MSR_P4_U2L_ESCR1
+mdefine_line|#define MSR_P4_U2L_ESCR1 &t;&t;0x3b1
 macro_line|#endif
 eof

@@ -12,6 +12,10 @@ macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/pci-direct.h&gt;
+DECL|variable|iommu_aperture
+r_int
+id|iommu_aperture
+suffix:semicolon
 DECL|variable|__initdata
 r_int
 id|fallback_aper_order
@@ -960,6 +964,11 @@ op_ne
 id|NB_ID_3
 )paren
 r_continue
+suffix:semicolon
+id|iommu_aperture
+op_assign
+l_int|1
+suffix:semicolon
 suffix:semicolon
 id|aper_order
 op_assign

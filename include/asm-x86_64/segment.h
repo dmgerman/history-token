@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_SEGMENT_H
 DECL|macro|_ASM_SEGMENT_H
 mdefine_line|#define _ASM_SEGMENT_H
+macro_line|#include &lt;asm/cache.h&gt;
 DECL|macro|__KERNEL_CS
 mdefine_line|#define __KERNEL_CS&t;0x10
 DECL|macro|__KERNEL_DS
@@ -47,7 +48,7 @@ mdefine_line|#define FS_TLS_SEL ((GDT_ENTRY_TLS_MIN+FS_TLS)*8 + 3)
 DECL|macro|IDT_ENTRIES
 mdefine_line|#define IDT_ENTRIES 256
 DECL|macro|GDT_ENTRIES
-mdefine_line|#define GDT_ENTRIES 16
+mdefine_line|#define GDT_ENTRIES (L1_CACHE_BYTES / 8) 
 DECL|macro|GDT_SIZE
 mdefine_line|#define GDT_SIZE (GDT_ENTRIES * 8)
 DECL|macro|TLS_SIZE

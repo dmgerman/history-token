@@ -3,7 +3,7 @@ macro_line|#ifndef __ASM_X8664_CPUFEATURE_H
 DECL|macro|__ASM_X8664_CPUFEATURE_H
 mdefine_line|#define __ASM_X8664_CPUFEATURE_H
 DECL|macro|NCAPINTS
-mdefine_line|#define NCAPINTS&t;4&t;/* Currently we have 4 32-bit words worth of info */
+mdefine_line|#define NCAPINTS&t;5&t;/* Currently we have 4 32-bit words worth of info */
 multiline_comment|/* Intel-defined CPU features, CPUID level 0x00000001, word 0 */
 DECL|macro|X86_FEATURE_FPU
 mdefine_line|#define X86_FEATURE_FPU&t;&t;(0*32+ 0) /* Onboard FPU */
@@ -58,6 +58,8 @@ DECL|macro|X86_FEATURE_XMM2
 mdefine_line|#define X86_FEATURE_XMM2&t;(0*32+26) /* Streaming SIMD Extensions-2 */
 DECL|macro|X86_FEATURE_SELFSNOOP
 mdefine_line|#define X86_FEATURE_SELFSNOOP&t;(0*32+27) /* CPU self snoop */
+DECL|macro|X86_FEATURE_HT
+mdefine_line|#define X86_FEATURE_HT&t;&t;(0*32+28) /* Hyper-Threading */
 DECL|macro|X86_FEATURE_ACC
 mdefine_line|#define X86_FEATURE_ACC&t;&t;(0*32+29) /* Automatic clock control */
 DECL|macro|X86_FEATURE_IA64
@@ -93,6 +95,11 @@ DECL|macro|X86_FEATURE_CENTAUR_MCR
 mdefine_line|#define X86_FEATURE_CENTAUR_MCR&t;(3*32+ 3) /* Centaur MCRs (= MTRRs) */
 DECL|macro|X86_FEATURE_K8_C
 mdefine_line|#define X86_FEATURE_K8_C&t;(3*32+ 4) /* C stepping K8 */
+multiline_comment|/* Intel-defined CPU features, CPUID level 0x00000001 (ecx), word 4 */
+DECL|macro|X86_FEATURE_EST
+mdefine_line|#define X86_FEATURE_EST&t;&t;(4*32+ 7) /* Enhanced SpeedStep */
+DECL|macro|X86_FEATURE_MWAIT
+mdefine_line|#define X86_FEATURE_MWAIT&t;(4*32+ 3) /* Monitor/Mwait support */
 DECL|macro|cpu_has
 mdefine_line|#define cpu_has(c, bit)                test_bit(bit, (c)-&gt;x86_capability)
 DECL|macro|boot_cpu_has
@@ -122,7 +129,7 @@ mdefine_line|#define cpu_has_fxsr           1
 DECL|macro|cpu_has_xmm
 mdefine_line|#define cpu_has_xmm            1
 DECL|macro|cpu_has_ht
-mdefine_line|#define cpu_has_ht             0 /* you need to report the support from i386. sorry */
+mdefine_line|#define cpu_has_ht             boot_cpu_has(X86_FEATURE_HT)
 DECL|macro|cpu_has_mp
 mdefine_line|#define cpu_has_mp             1 /* XXX */
 DECL|macro|cpu_has_k6_mtrr
