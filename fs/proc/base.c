@@ -3172,8 +3172,17 @@ id|DT_LNK
 OL
 l_int|0
 )paren
+(brace
+id|read_lock
+c_func
+(paren
+op_amp
+id|files-&gt;file_lock
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 id|read_lock
 c_func
 (paren

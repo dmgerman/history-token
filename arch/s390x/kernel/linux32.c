@@ -8390,6 +8390,9 @@ op_star
 id|statbuf
 )paren
 (brace
+r_int
+id|err
+suffix:semicolon
 id|err
 op_assign
 id|put_user
