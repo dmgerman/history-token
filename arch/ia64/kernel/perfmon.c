@@ -10322,7 +10322,7 @@ op_ne
 id|PMC_DFL_VAL
 c_func
 (paren
-id|i
+id|cnum
 )paren
 op_logical_and
 id|PFM_CHECK_PMC_PM
