@@ -857,8 +857,7 @@ op_logical_neg
 id|dev-&gt;driver_info-&gt;status
 )paren
 r_return
-op_minus
-id|ENODEV
+l_int|0
 suffix:semicolon
 id|pipe
 op_assign
@@ -12666,6 +12665,19 @@ comma
 id|EVENT_TX_HALT
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* software-driven interface shutdown */
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+singleline_comment|// async unlink
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+singleline_comment|// hardware gone
 r_break
 suffix:semicolon
 singleline_comment|// like rx, tx gets controller i/o faults during khubd delays
