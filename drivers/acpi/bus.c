@@ -2064,8 +2064,26 @@ suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
-l_string|&quot;acpi_bus_init&quot;
+l_string|&quot;acpi_early_init&quot;
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* enable workarounds, unless strict ACPI spec. compliance */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_strict
+)paren
+id|acpi_gbl_enable_interpreter_slack
+op_assign
+id|TRUE
 suffix:semicolon
 id|status
 op_assign
@@ -2523,13 +2541,6 @@ id|PREFIX
 l_string|&quot;Subsystem revision %08x&bslash;n&quot;
 comma
 id|ACPI_CA_VERSION
-)paren
-suffix:semicolon
-multiline_comment|/* Initial core debug level excludes drivers, so include them now */
-id|acpi_set_debug
-c_func
-(paren
-id|ACPI_DEBUG_LOW
 )paren
 suffix:semicolon
 r_if

@@ -224,27 +224,18 @@ suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Static global variable initialization.&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; * We want the debug switches statically initialized so they&n; * are already set when the debugger is entered.&n; */
 multiline_comment|/* Debug switch - level and trace mask */
-macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|variable|acpi_dbg_level
 id|u32
 id|acpi_dbg_level
 op_assign
-id|ACPI_DEBUG_DEFAULT
+l_int|0
 suffix:semicolon
-macro_line|#else
-DECL|variable|acpi_dbg_level
-id|u32
-id|acpi_dbg_level
-op_assign
-id|ACPI_NORMAL_DEFAULT
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Debug switch - layer (component) mask */
 DECL|variable|acpi_dbg_layer
 id|u32
 id|acpi_dbg_layer
 op_assign
-id|ACPI_COMPONENT_DEFAULT
+l_int|0
 suffix:semicolon
 DECL|variable|acpi_gbl_nesting_level
 id|u32
