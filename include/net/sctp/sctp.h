@@ -287,6 +287,24 @@ id|__u32
 id|cksum
 )paren
 suffix:semicolon
+r_extern
+id|__u32
+id|sctp_update_copy_cksum
+c_func
+(paren
+id|__u8
+op_star
+comma
+id|__u8
+op_star
+comma
+id|__u16
+id|count
+comma
+id|__u32
+id|cksum
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * sctp/input.c&n; */
 r_extern
 r_int
