@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/wanpipe.h&gt;&t;/* WANPIPE common user API definit
 macro_line|#include &lt;linux/if_arp.h&gt;&t;/* ARPHRD_* defines */
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
 macro_line|#include &lt;linux/in.h&gt;&t;&t;/* sockaddr_in */
-macro_line|#include &lt;linux/inet.h&gt;&t;&t;/* in_aton(), in_ntoa() prototypes */
 multiline_comment|/* ---- 2.4.X KERNEL SUPPORT -----------------------*/
 macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -8277,11 +8276,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Assigned Lcl. Addr: %s&bslash;n&quot;
+l_string|&quot;%s: Assigned Lcl. Addr: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|ifa-&gt;ifa_local
@@ -8292,11 +8291,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Assigned Rmt. Addr: %s&bslash;n&quot;
+l_string|&quot;%s: Assigned Rmt. Addr: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|ifa-&gt;ifa_address
@@ -8381,11 +8380,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Assigned Lcl. Addr: %s&bslash;n&quot;
+l_string|&quot;%s: Assigned Lcl. Addr: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|dev-&gt;pa_addr
@@ -8396,11 +8395,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Assigned Rmt. Addr: %s&bslash;n&quot;
+l_string|&quot;%s: Assigned Rmt. Addr: %u.%u.%u.%U&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|dev-&gt;pa_dstaddr
@@ -8769,57 +8768,27 @@ id|dev-&gt;pa_dstaddr
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Debugging code used to check that IP addresses&n;                         * obtained from the kernel are correct */
-(brace
-r_char
-id|laddr
-(braket
-l_int|20
-)braket
-suffix:semicolon
-r_char
-id|raddr
-(braket
-l_int|20
-)braket
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|laddr
-comma
-id|in_ntoa
-c_func
-(paren
-id|cfg.ip_local
-)paren
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|raddr
-comma
-id|in_ntoa
-c_func
-(paren
-id|cfg.ip_remote
-)paren
-)paren
-suffix:semicolon
 id|NEX_PRINTK
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Local %s Remote %s Name %s&bslash;n&quot;
+l_string|&quot;Local %u.%u.%u.%u Remote %u.%u.%u.%u Name %s&bslash;n&quot;
 comma
-id|laddr
+id|NIPQUAD
+c_func
+(paren
+id|ip_local
+)paren
 comma
-id|raddr
+id|NIPQUAD
+c_func
+(paren
+id|ip_remote
+)paren
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -8862,56 +8831,26 @@ id|dev-&gt;pa_dstaddr
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Debugging code used to check that IP addresses&n;                         * obtained from the kernel are correct */
-(brace
-r_char
-id|laddr
-(braket
-l_int|20
-)braket
-suffix:semicolon
-r_char
-id|raddr
-(braket
-l_int|20
-)braket
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|laddr
-comma
-id|in_ntoa
-c_func
-(paren
-id|cfg.ip_local
-)paren
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|raddr
-comma
-id|in_ntoa
-c_func
-(paren
-id|cfg.ip_remote
-)paren
-)paren
-suffix:semicolon
 id|NEX_PRINTK
 (paren
 id|KERN_INFO
-l_string|&quot;Local %s Remote %s Name %s&bslash;n&quot;
+l_string|&quot;Local %u.%u.%u.%u Remote %u.%u.%u.%u Name %s&bslash;n&quot;
 comma
-id|laddr
+id|NIPQUAD
+c_func
+(paren
+id|ip_local
+)paren
 comma
-id|raddr
+id|NIPQUAD
+c_func
+(paren
+id|ip_remote
+)paren
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -11155,11 +11094,11 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;%s:&t;Local : %s&bslash;n&quot;
+l_string|&quot;%s:&t;Local : %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|ppp_priv_area-&gt;ip_local
@@ -11169,11 +11108,11 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;%s:&t;Remote: %s&bslash;n&quot;
+l_string|&quot;%s:&t;Remote: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|ppp_priv_area-&gt;ip_remote
@@ -11461,11 +11400,11 @@ r_else
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;%s: PPP Deleting dynamic route %s successfuly&bslash;n&quot;
+l_string|&quot;%s: PPP Deleting dynamic route %u.%u.%u.%u successfuly&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|ip_addr

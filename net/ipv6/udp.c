@@ -2426,10 +2426,12 @@ r_int
 id|csum_fold
 c_func
 (paren
-id|csum_partial
+id|skb_checksum
 c_func
 (paren
-id|skb-&gt;h.raw
+id|skb
+comma
+l_int|0
 comma
 id|skb-&gt;len
 comma

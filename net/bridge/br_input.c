@@ -628,6 +628,13 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|br-&gt;lock
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -635,6 +642,13 @@ id|kfree_skb
 c_func
 (paren
 id|skb
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|br-&gt;lock
 )paren
 suffix:semicolon
 )brace

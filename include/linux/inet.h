@@ -16,16 +16,6 @@ id|pro
 )paren
 suffix:semicolon
 r_extern
-r_char
-op_star
-id|in_ntoa
-c_func
-(paren
-id|__u32
-id|in
-)paren
-suffix:semicolon
-r_extern
 id|__u32
 id|in_aton
 c_func

@@ -141,13 +141,20 @@ l_int|1
 op_lshift
 id|NF_IP6_LOCAL_IN
 )paren
+op_or
+(paren
+l_int|1
+op_lshift
+id|NF_IP6_FORWARD
+)paren
 )paren
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;ip6t_mac: only valid for PRE_ROUTING or LOCAL_IN.&bslash;n&quot;
+l_string|&quot;ip6t_mac: only valid for PRE_ROUTING, LOCAL_IN or&quot;
+l_string|&quot; FORWARD&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -251,6 +258,18 @@ id|module_exit
 c_func
 (paren
 id|fini
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MAC address matching module for IPv6&quot;
 )paren
 suffix:semicolon
 eof

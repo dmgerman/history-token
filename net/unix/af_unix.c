@@ -7885,8 +7885,7 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-id|__FUNCTION__
-l_string|&quot;: Cannot create unix_sock SLAB cache!&bslash;n&quot;
+l_string|&quot;af_unix_init: Cannot create unix_sock SLAB cache!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|sock_register

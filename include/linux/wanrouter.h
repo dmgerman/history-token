@@ -1309,7 +1309,6 @@ macro_line|#ifdef&t;__KERNEL__
 multiline_comment|/****** Kernel Interface ****************************************************/
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* support for device drivers */
 macro_line|#include &lt;linux/proc_fs.h&gt;&t;/* proc filesystem pragmatics */
-macro_line|#include &lt;linux/inet.h&gt;&t;&t;/* in_aton(), in_ntoa() prototypes */
 macro_line|#include &lt;linux/netdevice.h&gt;&t;/* support for network drivers */
 multiline_comment|/*----------------------------------------------------------------------------&n; * WAN device data space.&n; */
 DECL|struct|wan_device

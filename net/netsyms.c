@@ -1892,6 +1892,13 @@ id|secure_ipv6_id
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+DECL|variable|tcp_read_sock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_read_sock
+)paren
+suffix:semicolon
 DECL|variable|netlink_set_err
 id|EXPORT_SYMBOL
 c_func
@@ -2093,13 +2100,6 @@ id|dev_open
 )paren
 suffix:semicolon
 multiline_comment|/* Used by other modules */
-DECL|variable|in_ntoa
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|in_ntoa
-)paren
-suffix:semicolon
 DECL|variable|xrlim_allow
 id|EXPORT_SYMBOL
 c_func

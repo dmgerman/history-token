@@ -8091,7 +8091,7 @@ c_func
 op_amp
 id|ifp-&gt;addr
 comma
-id|ifp-&gt;idev-&gt;dev
+l_int|NULL
 )paren
 )paren
 id|ip6_rt_addr_del

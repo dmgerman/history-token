@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;net/ipconfig.h&gt;
@@ -955,23 +954,23 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|strncpy
+id|snprintf
 c_func
 (paren
 id|nfs_data.hostname
-comma
-id|in_ntoa
-c_func
-(paren
-id|servaddr
-)paren
 comma
 r_sizeof
 (paren
 id|nfs_data.hostname
 )paren
-op_minus
-l_int|1
+comma
+l_string|&quot;%u.%u.%u.%u&quot;
+comma
+id|NIPQUAD
+c_func
+(paren
+id|servaddr
+)paren
 )paren
 suffix:semicolon
 r_return
