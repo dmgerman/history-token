@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
@@ -1102,7 +1103,7 @@ id|num
 suffix:semicolon
 )brace
 DECL|function|br_fdb_insert
-r_void
+r_int
 id|br_fdb_insert
 c_func
 (paren
@@ -1144,6 +1145,25 @@ c_func
 (paren
 id|addr
 )paren
+suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_valid_ether_addr
+c_func
+(paren
+id|addr
+)paren
+)paren
+r_return
+op_minus
+id|EADDRNOTAVAIL
 suffix:semicolon
 id|write_lock_bh
 c_func
@@ -1237,6 +1257,11 @@ comma
 id|source-&gt;dev-&gt;name
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EEXIST
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
@@ -1288,13 +1313,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fdb
 op_eq
 l_int|NULL
 )paren
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren
@@ -1393,6 +1429,9 @@ c_func
 op_amp
 id|br-&gt;hash_lock
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 eof
