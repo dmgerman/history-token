@@ -1295,7 +1295,9 @@ c_func
 id|jiffies_to_AHZ
 c_func
 (paren
-id|current-&gt;utime
+id|current-&gt;signal-&gt;utime
+op_plus
+id|current-&gt;group_leader-&gt;utime
 )paren
 )paren
 suffix:semicolon
@@ -1307,7 +1309,9 @@ c_func
 id|jiffies_to_AHZ
 c_func
 (paren
-id|current-&gt;stime
+id|current-&gt;signal-&gt;stime
+op_plus
+id|current-&gt;group_leader-&gt;stime
 )paren
 )paren
 suffix:semicolon
@@ -1340,11 +1344,11 @@ macro_line|#endif
 macro_line|#if ACCT_VERSION==3
 id|ac.ac_pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|ac.ac_ppid
 op_assign
-id|current-&gt;parent-&gt;pid
+id|current-&gt;parent-&gt;tgid
 suffix:semicolon
 macro_line|#endif
 id|read_lock
@@ -1517,7 +1521,9 @@ op_assign
 id|encode_comp_t
 c_func
 (paren
-id|current-&gt;min_flt
+id|current-&gt;signal-&gt;min_flt
+op_plus
+id|current-&gt;group_leader-&gt;min_flt
 )paren
 suffix:semicolon
 id|ac.ac_majflt
@@ -1525,7 +1531,9 @@ op_assign
 id|encode_comp_t
 c_func
 (paren
-id|current-&gt;maj_flt
+id|current-&gt;signal-&gt;maj_flt
+op_plus
+id|current-&gt;group_leader-&gt;maj_flt
 )paren
 suffix:semicolon
 id|ac.ac_swaps

@@ -3118,6 +3118,16 @@ id|SIGTRAP
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
+id|tsk-&gt;signal-&gt;live
+)paren
+)paren
 id|acct_process
 c_func
 (paren
