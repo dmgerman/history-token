@@ -4,6 +4,7 @@ mdefine_line|#define _IP_CONNTRACK_H
 multiline_comment|/* Connection state tracking for netfilter.  This is separated from,&n;   but required by, the NAT layer; it can also be used by an iptables&n;   extension. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tuple.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|enum|ip_conntrack_info
 r_enum
@@ -84,6 +85,21 @@ op_assign
 l_int|1
 op_lshift
 id|IPS_ASSURED_BIT
+)paren
+comma
+multiline_comment|/* Connection is confirmed: originating packet has left box */
+DECL|enumerator|IPS_CONFIRMED_BIT
+id|IPS_CONFIRMED_BIT
+op_assign
+l_int|3
+comma
+DECL|enumerator|IPS_CONFIRMED
+id|IPS_CONFIRMED
+op_assign
+(paren
+l_int|1
+op_lshift
+id|IPS_CONFIRMED_BIT
 )paren
 comma
 )brace
@@ -294,7 +310,6 @@ id|IP_CT_DIR_MAX
 suffix:semicolon
 multiline_comment|/* Have we seen traffic both ways yet? (bitset) */
 DECL|member|status
-r_volatile
 r_int
 r_int
 id|status
@@ -587,14 +602,14 @@ id|ct
 )paren
 (brace
 r_return
-id|ct-&gt;tuplehash
-(braket
-id|IP_CT_DIR_ORIGINAL
-)braket
-dot
-id|list.next
-op_ne
-l_int|NULL
+id|test_bit
+c_func
+(paren
+id|IPS_CONFIRMED_BIT
+comma
+op_amp
+id|ct-&gt;status
+)paren
 suffix:semicolon
 )brace
 r_extern
