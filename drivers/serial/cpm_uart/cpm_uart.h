@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/serial/cpm_uart.h&n; *&n; *  Driver for CPM (SCC/SMC) serial ports&n; *&n; *  Copyright (C) 2004 Motorola, Inc&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/serial/cpm_uart.h&n; *&n; *  Driver for CPM (SCC/SMC) serial ports&n; *&n; *  Copyright (C) 2004 Freescale Semiconductor, Inc.&n; *&n; */
 macro_line|#ifndef CPM_UART_H
 DECL|macro|CPM_UART_H
 mdefine_line|#define CPM_UART_H
