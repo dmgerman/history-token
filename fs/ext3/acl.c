@@ -1232,17 +1232,6 @@ c_cond
 id|acl
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|acl-&gt;a_count
-OG
-id|EXT3_ACL_MAX_ENTRIES
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 id|value
 op_assign
 id|ext3_acl_to_disk

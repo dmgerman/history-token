@@ -2,8 +2,6 @@ multiline_comment|/*&n;  File: fs/ext3/acl.h&n;&n;  (C) 2001 Andreas Gruenbacher
 macro_line|#include &lt;linux/xattr_acl.h&gt;
 DECL|macro|EXT3_ACL_VERSION
 mdefine_line|#define EXT3_ACL_VERSION&t;0x0001
-DECL|macro|EXT3_ACL_MAX_ENTRIES
-mdefine_line|#define EXT3_ACL_MAX_ENTRIES&t;32
 r_typedef
 r_struct
 (brace
