@@ -7324,6 +7324,11 @@ op_amp
 id|ha-&gt;list_lock
 )paren
 suffix:semicolon
+id|ha-&gt;dpc_pid
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|init_completion
 c_func
 (paren
