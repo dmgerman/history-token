@@ -182,30 +182,6 @@ mdefine_line|#define COLOR_NAME_LEN               10
 DECL|macro|COLOR_COUNT
 mdefine_line|#define COLOR_COUNT                  8
 multiline_comment|/*&n; * Global variables&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|name
-r_char
-id|name
-(braket
-id|COLOR_NAME_LEN
-)braket
-suffix:semicolon
-DECL|member|value
-r_int
-id|value
-suffix:semicolon
-DECL|typedef|color_names_st
-)brace
-id|color_names_st
-suffix:semicolon
-r_extern
-id|color_names_st
-id|color_names
-(braket
-)braket
-suffix:semicolon
 r_extern
 r_int
 id|color_table
