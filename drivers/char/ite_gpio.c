@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * FILE NAME ite_gpio.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; *  API for ITE GPIO device.&n; *  Driver for ITE GPIO device.&n; *&n; *  Author: MontaVista Software, Inc.  &lt;source@mvista.com&gt;&n; *          Hai-Pao Fan &lt;haipao@mvista.com&gt;&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE&t;LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
@@ -879,27 +878,6 @@ op_star
 id|file
 )paren
 (brace
-r_int
-r_int
-id|minor
-op_assign
-id|iminor
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|minor
-op_ne
-id|GPIO_MINOR
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1519,7 +1497,6 @@ id|ite_gpio_release
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* GPIO_MINOR in include/linux/miscdevice.h */
 DECL|variable|ite_gpio_miscdev
 r_static
 r_struct
@@ -1527,7 +1504,7 @@ id|miscdevice
 id|ite_gpio_miscdev
 op_assign
 (brace
-id|GPIO_MINOR
+id|MISC_DYNAMIC_MINOR
 comma
 l_string|&quot;ite_gpio&quot;
 comma
@@ -1704,6 +1681,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ite_gpio_exit
+r_static
 r_void
 id|__exit
 id|ite_gpio_exit
