@@ -4,8 +4,6 @@ mdefine_line|#define SERVERWORKS_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-DECL|macro|SVWKS_DEBUG_DRIVE_INFO
-macro_line|#undef SVWKS_DEBUG_DRIVE_INFO
 DECL|macro|SVWKS_CSB5_REVISION_NEW
 mdefine_line|#define SVWKS_CSB5_REVISION_NEW&t;0x92 /* min PCI_REVISION_ID for UDMA5 (A2.0) */
 DECL|macro|SVWKS_CSB6_REVISION
