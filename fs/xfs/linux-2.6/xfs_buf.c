@@ -2062,24 +2062,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
 id|error
 )paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;pagebuf_get: failed to lookup pages&bslash;n&quot;
-)paren
-suffix:semicolon
 r_goto
 id|no_buffer
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
