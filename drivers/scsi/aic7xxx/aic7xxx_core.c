@@ -15468,7 +15468,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Reset the controller and record some information about it&n; * that is only availabel just after a reset.&n; */
+multiline_comment|/*&n; * Reset the controller and record some information about it&n; * that is only available just after a reset.&n; */
 r_int
 DECL|function|ahc_reset
 id|ahc_reset
