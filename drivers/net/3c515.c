@@ -8365,7 +8365,7 @@ id|dev
 )paren
 (brace
 r_return
-id|debug
+id|corkscrew_debug
 suffix:semicolon
 )brace
 DECL|function|netdev_set_msglevel
@@ -8383,7 +8383,7 @@ id|u32
 id|level
 )paren
 (brace
-id|debug
+id|corkscrew_debug
 op_assign
 id|level
 suffix:semicolon
