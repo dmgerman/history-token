@@ -3135,7 +3135,6 @@ id|busdn
 )paren
 suffix:semicolon
 )brace
-r_else
 id|create_tce_tables_for_busesLP
 c_func
 (paren
