@@ -447,6 +447,7 @@ id|physical
 suffix:semicolon
 DECL|member|virtual
 id|__u8
+id|__iomem
 op_star
 r_virtual
 suffix:semicolon
@@ -693,6 +694,7 @@ id|mmio_start_phys
 suffix:semicolon
 DECL|member|mmio_start_virtual
 id|u8
+id|__iomem
 op_star
 id|mmio_start_virtual
 suffix:semicolon

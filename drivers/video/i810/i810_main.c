@@ -324,6 +324,7 @@ id|i810_screen_off
 c_func
 (paren
 id|u8
+id|__iomem
 op_star
 id|mmio
 comma
@@ -427,6 +428,7 @@ id|i810_dram_off
 c_func
 (paren
 id|u8
+id|__iomem
 op_star
 id|mmio
 comma
@@ -485,6 +487,7 @@ id|i810_protect_regs
 c_func
 (paren
 id|u8
+id|__iomem
 op_star
 id|mmio
 comma
@@ -573,6 +576,7 @@ comma
 id|tmp2
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -681,6 +685,7 @@ id|par
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -982,6 +987,7 @@ id|par
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -1126,7 +1132,9 @@ id|tmp
 suffix:semicolon
 id|u8
 id|tmp8
-comma
+suffix:semicolon
+id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -1233,6 +1241,7 @@ id|i810_hires
 c_func
 (paren
 id|u8
+id|__iomem
 op_star
 id|mmio
 )paren
@@ -1303,7 +1312,9 @@ id|pitch
 suffix:semicolon
 id|u8
 id|val
-comma
+suffix:semicolon
+id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -1465,6 +1476,7 @@ id|par
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -1553,6 +1565,7 @@ id|par
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -1668,6 +1681,7 @@ id|u8
 id|blue
 comma
 id|u8
+id|__iomem
 op_star
 id|mmio
 )paren
@@ -1735,6 +1749,7 @@ op_star
 id|blue
 comma
 id|u8
+id|__iomem
 op_star
 id|mmio
 )paren
@@ -1802,6 +1817,7 @@ comma
 id|tmp2
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -1906,6 +1922,7 @@ comma
 id|tmp2
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -1963,7 +1980,9 @@ id|u8
 id|i
 comma
 id|j
-comma
+suffix:semicolon
+id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -2224,7 +2243,9 @@ id|par
 (brace
 id|u8
 id|i
-comma
+suffix:semicolon
+id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -2337,7 +2358,9 @@ id|par
 (brace
 id|u8
 id|tmp
-comma
+suffix:semicolon
+id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -2411,6 +2434,7 @@ id|u16
 id|tmp_word
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -2587,6 +2611,7 @@ id|par
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -2692,7 +2717,9 @@ id|par
 (brace
 id|u8
 id|i
-comma
+suffix:semicolon
+id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -2889,7 +2916,9 @@ id|par
 (brace
 id|u8
 id|i
-comma
+suffix:semicolon
+id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -3001,6 +3030,7 @@ id|par
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -3516,6 +3546,7 @@ id|i810_enable_cursor
 c_func
 (paren
 id|u8
+id|__iomem
 op_star
 id|mmio
 comma
@@ -3578,6 +3609,7 @@ id|par
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|addr
 op_assign
@@ -3669,6 +3701,7 @@ id|par
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|addr
 op_assign
@@ -3839,12 +3872,11 @@ op_star
 id|info-&gt;par
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
 id|par-&gt;mmio_start_virtual
-comma
-id|temp
 suffix:semicolon
 id|u8
 id|red
@@ -3854,6 +3886,8 @@ comma
 id|blue
 comma
 id|trans
+comma
+id|temp
 suffix:semicolon
 id|i810fb_getcolreg
 c_func
@@ -4002,6 +4036,7 @@ id|par
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -5142,11 +5177,13 @@ op_star
 id|info-&gt;par
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
 id|par-&gt;mmio_start_virtual
-comma
+suffix:semicolon
+id|u8
 id|temp
 suffix:semicolon
 r_if
@@ -5387,9 +5424,6 @@ id|VGA_SAVE_CMAP
 suffix:semicolon
 id|par-&gt;state.vgabase
 op_assign
-(paren
-id|caddr_t
-)paren
 id|par-&gt;mmio_start_virtual
 suffix:semicolon
 id|save_vga
@@ -5540,11 +5574,13 @@ op_star
 id|info-&gt;par
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
 id|par-&gt;mmio_start_virtual
-comma
+suffix:semicolon
+id|u8
 id|temp
 suffix:semicolon
 r_int
@@ -6238,6 +6274,7 @@ op_star
 id|info-&gt;par
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -6603,6 +6640,7 @@ op_star
 id|info-&gt;par
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -8052,7 +8090,9 @@ id|par
 (brace
 id|u8
 id|reg
-comma
+suffix:semicolon
+id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
