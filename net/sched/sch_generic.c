@@ -22,7 +22,7 @@ macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 multiline_comment|/* Main transmission queue. */
-multiline_comment|/* Main qdisc structure lock. &n;&n;   However, modifications&n;   to data, participating in scheduling must be additionally&n;   protected with dev-&gt;queue_lock spinlock.&n;&n;   The idea is the following:&n;   - enqueue, dequeue are serialized via top level device&n;     spinlock dev-&gt;queue_lock.&n;   - tree walking is protected by read_lock(qdisc_tree_lock)&n;     and this lock is used only in process context.&n;   - updates to tree are made only under rtnl semaphore,&n;     hence this lock may be made without local bh disabling.&n;&n;   qdisc_tree_lock must be grabbed BEFORE dev-&gt;queue_lock!&n; */
+multiline_comment|/* Main qdisc structure lock. &n;&n;   However, modifications&n;   to data, participating in scheduling must be additionally&n;   protected with dev-&gt;queue_lock spinlock.&n;&n;   The idea is the following:&n;   - enqueue, dequeue are serialized via top level device&n;     spinlock dev-&gt;queue_lock.&n;   - tree walking is protected by read_lock_bh(qdisc_tree_lock)&n;     and this lock is used only in process context.&n;   - updates to tree are made under rtnl semaphore or&n;     from softirq context (__qdisc_destroy rcu-callback)&n;     hence this lock needs local bh disabling.&n;&n;   qdisc_tree_lock must be grabbed BEFORE dev-&gt;queue_lock!&n; */
 DECL|variable|qdisc_tree_lock
 id|rwlock_t
 id|qdisc_tree_lock
@@ -40,7 +40,7 @@ op_star
 id|dev
 )paren
 (brace
-id|write_lock
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -73,7 +73,7 @@ op_amp
 id|dev-&gt;queue_lock
 )paren
 suffix:semicolon
-id|write_unlock
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -1607,6 +1607,13 @@ id|qdisc-&gt;stats
 )paren
 suffix:semicolon
 macro_line|#endif
+id|write_lock
+c_func
+(paren
+op_amp
+id|qdisc_tree_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1631,6 +1638,13 @@ id|destroy
 c_func
 (paren
 id|qdisc
+)paren
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|qdisc_tree_lock
 )paren
 suffix:semicolon
 id|module_put
@@ -1817,7 +1831,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|write_lock
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -1832,7 +1846,7 @@ id|dev-&gt;qdisc_list
 op_assign
 id|qdisc
 suffix:semicolon
-id|write_unlock
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -1848,7 +1862,7 @@ op_amp
 id|noqueue_qdisc
 suffix:semicolon
 )brace
-id|write_lock
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -1859,7 +1873,7 @@ id|dev-&gt;qdisc_sleeping
 op_assign
 id|qdisc
 suffix:semicolon
-id|write_unlock
+id|write_unlock_bh
 c_func
 (paren
 op_amp

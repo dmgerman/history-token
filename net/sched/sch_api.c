@@ -3520,7 +3520,7 @@ id|s_q_idx
 op_assign
 l_int|0
 suffix:semicolon
-id|read_lock
+id|read_lock_bh
 c_func
 (paren
 op_amp
@@ -3587,7 +3587,7 @@ op_le
 l_int|0
 )paren
 (brace
-id|read_unlock
+id|read_unlock_bh
 c_func
 (paren
 op_amp
@@ -3599,7 +3599,7 @@ id|done
 suffix:semicolon
 )brace
 )brace
-id|read_unlock
+id|read_unlock_bh
 c_func
 (paren
 op_amp
@@ -4591,7 +4591,7 @@ id|cb-&gt;args
 l_int|0
 )braket
 suffix:semicolon
-id|read_lock
+id|read_lock_bh
 c_func
 (paren
 op_amp
@@ -4736,7 +4736,7 @@ id|arg.w.stop
 r_break
 suffix:semicolon
 )brace
-id|read_unlock
+id|read_unlock_bh
 c_func
 (paren
 op_amp
