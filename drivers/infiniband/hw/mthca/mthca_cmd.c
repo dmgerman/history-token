@@ -6087,12 +6087,6 @@ id|cpu_to_be64
 c_func
 (paren
 id|dma_addr
-op_or
-(paren
-id|PAGE_SHIFT
-op_minus
-l_int|12
-)paren
 )paren
 suffix:semicolon
 id|err
