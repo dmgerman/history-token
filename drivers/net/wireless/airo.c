@@ -21442,6 +21442,22 @@ id|StatusRid
 id|status_rid
 suffix:semicolon
 multiline_comment|/* Card status info */
+r_if
+c_cond
+(paren
+(paren
+id|local-&gt;config.opmode
+op_amp
+l_int|0xFF
+)paren
+op_eq
+id|MODE_STA_ESS
+)paren
+id|status_rid.channel
+op_assign
+id|local-&gt;config.channelSet
+suffix:semicolon
+r_else
 id|readStatusRid
 c_func
 (paren
@@ -21451,7 +21467,6 @@ op_amp
 id|status_rid
 )paren
 suffix:semicolon
-multiline_comment|/* Will return zero in infrastructure mode */
 macro_line|#ifdef WEXT_USECHANNELS
 id|fwrq-&gt;m
 op_assign
