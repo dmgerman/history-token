@@ -3774,7 +3774,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_set_device_state - change a device&squot;s current state (usbcore-internal)&n; * @udev: pointer to device whose state should be changed&n; * @new_state: new state value to be stored&n; *&n; * udev-&gt;state is _not_ protected by the device lock.  This&n; * is so that devices can be marked as disconnected as soon as possible,&n; * without having to wait for the semaphore to be released.  Instead,&n; * changes to the state must be protected by the device_state_lock spinlock.&n; *&n; * Once a device has been added to the device tree, all changes to its state&n; * should be made using this routine.  The state should _not_ be set directly.&n; *&n; * If udev-&gt;state is already USB_STATE_NOTATTACHED then no change is made.&n; * Otherwise udev-&gt;state is set to new_state, and if new_state is&n; * USB_STATE_NOTATTACHED then all of udev&squot;s descendant&squot;s states are also set&n; * to USB_STATE_NOTATTACHED.&n; */
+multiline_comment|/**&n; * usb_set_device_state - change a device&squot;s current state (usbcore, hcds)&n; * @udev: pointer to device whose state should be changed&n; * @new_state: new state value to be stored&n; *&n; * udev-&gt;state is _not_ protected by the device lock.  This&n; * is so that devices can be marked as disconnected as soon as possible,&n; * without having to wait for the semaphore to be released.  Instead,&n; * changes to the state must be protected by the device_state_lock spinlock.&n; *&n; * Once a device has been added to the device tree, all changes to its state&n; * should be made using this routine.  The state should _not_ be set directly.&n; *&n; * If udev-&gt;state is already USB_STATE_NOTATTACHED then no change is made.&n; * Otherwise udev-&gt;state is set to new_state, and if new_state is&n; * USB_STATE_NOTATTACHED then all of udev&squot;s descendant&squot;s states are also set&n; * to USB_STATE_NOTATTACHED.&n; */
 DECL|function|usb_set_device_state
 r_void
 id|usb_set_device_state
@@ -3841,6 +3841,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|usb_set_device_state
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_set_device_state
+)paren
+suffix:semicolon
 DECL|function|choose_address
 r_static
 r_void

@@ -171,21 +171,6 @@ r_int
 id|configuration
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|usb_set_device_state
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|udev
-comma
-r_enum
-id|usb_device_state
-id|new_state
-)paren
-suffix:semicolon
 multiline_comment|/* for labeling diagnostics */
 r_extern
 r_const
