@@ -3175,19 +3175,14 @@ suffix:semicolon
 )brace
 DECL|function|vicam_probe
 r_static
-r_void
-op_star
+r_int
 id|vicam_probe
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|udev
-comma
-r_int
-r_int
-id|ifnum
+id|intf
 comma
 r_const
 r_struct
@@ -3196,6 +3191,17 @@ op_star
 id|id
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|udev
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
 r_struct
 id|usb_vicam
 op_star
@@ -3231,7 +3237,8 @@ id|USB_VICAM_PRODUCT_ID
 )paren
 (brace
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|camera_name
@@ -3273,7 +3280,8 @@ l_string|&quot;couldn&squot;t kmalloc vicam struct&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memset
@@ -3314,7 +3322,8 @@ id|vicam
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|vicam-&gt;udev
@@ -3357,7 +3366,8 @@ id|vicam
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memcpy
@@ -3426,7 +3436,8 @@ id|vicam
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|info
@@ -3450,8 +3461,16 @@ op_amp
 id|vicam-&gt;wait
 )paren
 suffix:semicolon
-r_return
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
 id|vicam
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* FIXME - vicam_disconnect - important */
@@ -3462,13 +3481,9 @@ id|vicam_disconnect
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|udev
-comma
-r_void
-op_star
-id|ptr
+id|intf
 )paren
 (brace
 r_struct
@@ -3478,13 +3493,26 @@ id|vicam
 suffix:semicolon
 id|vicam
 op_assign
+id|dev_get_drvdata
 (paren
-r_struct
-id|usb_vicam
-op_star
+op_amp
+id|intf-&gt;dev
 )paren
-id|ptr
 suffix:semicolon
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vicam
+)paren
+(brace
 id|video_unregister_device
 c_func
 (paren
@@ -3496,7 +3524,7 @@ id|vicam-&gt;udev
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t;vicam-&gt;frame[0].grabstate = FRAME_ERROR;&n;&t;vicam-&gt;frame[1].grabstate = FRAME_ERROR;&n;*/
+multiline_comment|/*&n;&t;&t;vicam-&gt;frame[0].grabstate = FRAME_ERROR;&n;&t;&t;vicam-&gt;frame[1].grabstate = FRAME_ERROR;&n;*/
 multiline_comment|/* Free buffers and shit */
 id|info
 c_func
@@ -3536,6 +3564,7 @@ id|vicam
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* usb specific object needed to register this driver with the usb subsystem */

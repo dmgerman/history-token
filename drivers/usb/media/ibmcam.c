@@ -24150,19 +24150,14 @@ suffix:semicolon
 multiline_comment|/*&n; * ibmcam_probe()&n; *&n; * This procedure queries device descriptor and accepts the interface&n; * if it looks like IBM C-it camera.&n; *&n; * History:&n; * 22-Jan-2000 Moved camera init code to ibmcam_open()&n; * 27=Jan-2000 Changed to use static structures, added locking.&n; * 24-May-2000 Corrected to prevent race condition (MOD_xxx_USE_COUNT).&n; * 03-Jul-2000 Fixed endianness bug.&n; * 12-Nov-2000 Reworked to comply with new probe() signature.&n; * 23-Jan-2001 Added compatibility with 2.2.x kernels.&n; */
 DECL|function|ibmcam_probe
 r_static
-r_void
-op_star
+r_int
 id|ibmcam_probe
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_int
-r_int
-id|ifnum
+id|intf
 comma
 r_const
 r_struct
@@ -24171,6 +24166,17 @@ op_star
 id|devid
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|dev
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
 r_struct
 id|uvd
 op_star
@@ -24210,6 +24216,11 @@ id|maxPS
 op_assign
 l_int|0
 suffix:semicolon
+id|__u8
+id|ifnum
+op_assign
+id|intf-&gt;altsetting-&gt;bInterfaceNumber
+suffix:semicolon
 r_int
 r_char
 id|video_ep
@@ -24228,7 +24239,7 @@ c_func
 (paren
 l_string|&quot;ibmcam_probe(%p,%u.)&quot;
 comma
-id|dev
+id|intf
 comma
 id|ifnum
 )paren
@@ -24242,7 +24253,8 @@ op_ne
 l_int|1
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* Is it an IBM camera? */
 r_if
@@ -24253,7 +24265,8 @@ op_ne
 id|IBMCAM_VENDOR_ID
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -24283,7 +24296,8 @@ id|NETCAM_PRODUCT_ID
 )paren
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* Check the version/revision */
 r_switch
@@ -24303,7 +24317,8 @@ op_ne
 l_int|2
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 id|model
 op_assign
@@ -24322,7 +24337,8 @@ op_ne
 l_int|0
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -24361,7 +24377,8 @@ op_ne
 l_int|0
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 id|model
 op_assign
@@ -24380,7 +24397,8 @@ id|dev-&gt;descriptor.bcdDevice
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Print detailed info on what we found so far */
@@ -24497,7 +24515,8 @@ l_string|&quot;Too few alternate settings for this camera!&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Validate all alternate settings */
@@ -24565,7 +24584,8 @@ id|interface-&gt;bNumEndpoints
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|endpoint
@@ -24603,7 +24623,8 @@ l_string|&quot;Alternate settings have different endpoint addresses!&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
@@ -24627,7 +24648,8 @@ id|ifnum
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
@@ -24651,7 +24673,8 @@ id|ifnum
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
@@ -24682,7 +24705,8 @@ l_string|&quot;More than one inactive alt. setting!&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 )brace
@@ -24762,7 +24786,8 @@ l_string|&quot;Failed to recognize the camera!&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Validate options */
@@ -25093,7 +25118,8 @@ id|model
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Code below may sleep, need to lock module while we are here */
@@ -25244,8 +25270,16 @@ suffix:semicolon
 )brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-r_return
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
 id|uvd
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|id_table

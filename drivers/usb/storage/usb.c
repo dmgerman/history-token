@@ -75,19 +75,14 @@ id|semaphore
 id|us_list_semaphore
 suffix:semicolon
 r_static
-r_void
-op_star
+r_int
 id|storage_probe
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_int
-r_int
-id|ifnum
+id|iface
 comma
 r_const
 r_struct
@@ -102,13 +97,9 @@ id|storage_disconnect
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_void
-op_star
-id|ptr
+id|iface
 )paren
 suffix:semicolon
 multiline_comment|/* The entries in this table, except for final ones here&n; * (USB_MASS_STORAGE_CLASS and the empty entry), correspond,&n; * line for line with the entries of us_unsuaul_dev_list[].&n; * For now, we duplicate idVendor and idProduct in us_unsual_dev_list,&n; * just to avoid alignment bugs.&n; */
@@ -865,23 +856,14 @@ op_increment
 id|memset
 c_func
 (paren
-id|page_address
+id|sg_address
 c_func
 (paren
 id|sg
 (braket
 id|i
 )braket
-dot
-id|page
 )paren
-op_plus
-id|sg
-(braket
-id|i
-)braket
-dot
-id|offset
 comma
 l_int|0
 comma
@@ -944,23 +926,14 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|page_address
+id|sg_address
 c_func
 (paren
 id|sg
 (braket
 id|i
 )braket
-dot
-id|page
 )paren
-op_plus
-id|sg
-(braket
-id|i
-)braket
-dot
-id|offset
 comma
 id|data
 op_plus
@@ -2259,19 +2232,14 @@ suffix:semicolon
 multiline_comment|/* Probe to see if a new device is actually a SCSI device */
 DECL|function|storage_probe
 r_static
-r_void
-op_star
+r_int
 id|storage_probe
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_int
-r_int
-id|ifnum
+id|intf
 comma
 r_const
 r_struct
@@ -2280,6 +2248,22 @@ op_star
 id|id
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|dev
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
+r_int
+id|ifnum
+op_assign
+id|intf-&gt;altsetting-&gt;bInterfaceNumber
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -2376,13 +2360,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* the altsetting on the interface we&squot;re probing that matched our&n;&t; * usb_match_id table&n;&t; */
-r_struct
-id|usb_interface
-op_star
-id|intf
-op_assign
-id|dev-&gt;actconfig-&gt;interface
-suffix:semicolon
 r_struct
 id|usb_interface_descriptor
 op_star
@@ -2540,7 +2517,8 @@ suffix:semicolon
 r_else
 multiline_comment|/* no, we can&squot;t support it */
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 multiline_comment|/* At this point, we know we&squot;ve got a live one */
 id|US_DEBUGP
@@ -2718,21 +2696,7 @@ id|EPIPE
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- clearing stall on control interface&bslash;n&quot;
-)paren
-suffix:semicolon
-id|usb_clear_halt
-c_func
-(paren
-id|dev
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
+l_string|&quot;-- stall on control interface&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2753,7 +2717,8 @@ l_string|&quot;-- Unknown error.  Rejecting device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 )brace
@@ -2785,7 +2750,8 @@ l_string|&quot;Endpoint sanity check failed! Rejecting dev.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* At this point, we&squot;ve decided to try to use the device */
@@ -3107,7 +3073,8 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memset
@@ -3153,15 +3120,6 @@ c_func
 op_amp
 (paren
 id|ss-&gt;irq_urb_sem
-)paren
-)paren
-suffix:semicolon
-id|init_MUTEX
-c_func
-(paren
-op_amp
-(paren
-id|ss-&gt;current_urb_sem
 )paren
 )paren
 suffix:semicolon
@@ -3980,9 +3938,17 @@ comma
 id|dev-&gt;devnum
 )paren
 suffix:semicolon
-multiline_comment|/* return a pointer for the disconnect function */
-r_return
+multiline_comment|/* save a pointer to our structure */
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
 id|ss
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* we come here if there are any problems */
 multiline_comment|/* ss-&gt;dev_semaphore must be locked */
@@ -4019,7 +3985,8 @@ id|ss
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* Handle a disconnect event from the USB core */
@@ -4030,13 +3997,9 @@ id|storage_disconnect
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_void
-op_star
-id|ptr
+id|intf
 )paren
 (brace
 r_struct
@@ -4044,12 +4007,24 @@ id|us_data
 op_star
 id|ss
 op_assign
-id|ptr
+id|dev_get_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+)paren
 suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;storage_disconnect() called&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* this is the odd case -- we disconnected but weren&squot;t using it */

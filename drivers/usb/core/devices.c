@@ -105,7 +105,7 @@ op_assign
 multiline_comment|/* E:  Ad=xx(s) Atr=xx(ssss) MxPS=dddd Ivl=D?s */
 l_string|&quot;E:  Ad=%02x(%c) Atr=%02x(%-4s) MxPS=%4d Ivl=%d%cs&bslash;n&quot;
 suffix:semicolon
-multiline_comment|/*&n; * Need access to the driver and USB bus lists.&n; * extern struct list_head usb_driver_list;&n; * extern struct list_head usb_bus_list;&n; * However, these will come from functions that return ptrs to each of them.&n; */
+multiline_comment|/*&n; * Need access to the driver and USB bus lists.&n; * extern struct list_head usb_bus_list;&n; * However, these will come from functions that return ptrs to each of them.&n; */
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
