@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
@@ -47,10 +49,48 @@ comma
 op_star
 id|pwdmnt
 suffix:semicolon
+r_struct
+r_namespace
+op_star
+id|our_ns
+comma
+op_star
+id|init_ns
+suffix:semicolon
 multiline_comment|/*&n;&t; * Make modprobe&squot;s fs context be a copy of init&squot;s.&n;&t; *&n;&t; * We cannot use the user&squot;s fs context, because it&n;&t; * may have a different root than init.&n;&t; * Since init was created with CLONE_FS, we can grab&n;&t; * its fs context from &quot;init_task&quot;.&n;&t; *&n;&t; * The fs context has to be a copy. If it is shared&n;&t; * with init, then any chdir() call in modprobe will&n;&t; * also affect init and the other threads sharing&n;&t; * init_task&squot;s fs context.&n;&t; *&n;&t; * We created the exec_modprobe thread without CLONE_FS,&n;&t; * so we can update the fields in our fs context freely.&n;&t; */
 id|init_fs
 op_assign
 id|init_task.fs
+suffix:semicolon
+id|init_ns
+op_assign
+id|init_task
+dot
+r_namespace
+suffix:semicolon
+id|get_namespace
+c_func
+(paren
+id|init_ns
+)paren
+suffix:semicolon
+id|our_ns
+op_assign
+id|current
+op_member_access_from_pointer
+r_namespace
+suffix:semicolon
+id|current
+op_member_access_from_pointer
+r_namespace
+op_assign
+id|init_ns
+suffix:semicolon
+id|put_namespace
+c_func
+(paren
+id|our_ns
+)paren
 suffix:semicolon
 id|read_lock
 c_func

@@ -10531,10 +10531,6 @@ id|device
 suffix:colon
 id|vt_console_device
 comma
-id|wait_key
-suffix:colon
-id|keyboard_wait_for_keypress
-comma
 id|unblank
 suffix:colon
 id|unblank_screen

@@ -62,10 +62,6 @@ c_func
 id|tq_serial
 )paren
 suffix:semicolon
-r_extern
-id|wait_queue_head_t
-id|keypress_wait
-suffix:semicolon
 DECL|variable|lines
 r_static
 r_struct
@@ -508,13 +504,6 @@ l_int|0
 r_return
 suffix:semicolon
 multiline_comment|/* it&squot;s a break ... */
-id|wake_up
-(paren
-op_amp
-id|keypress_wait
-)paren
-suffix:semicolon
-multiline_comment|/* It is a &squot;keyboard interrupt&squot; ;-) */
 )brace
 macro_line|#endif
 id|tty
@@ -5030,22 +5019,6 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-DECL|function|dz_console_wait_key
-r_static
-r_int
-id|dz_console_wait_key
-c_func
-(paren
-r_struct
-id|console
-op_star
-id|co
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|dz_console_device
 r_static
 id|kdev_t
@@ -5460,10 +5433,6 @@ comma
 id|device
 suffix:colon
 id|dz_console_device
-comma
-id|wait_key
-suffix:colon
-id|dz_console_wait_key
 comma
 id|setup
 suffix:colon

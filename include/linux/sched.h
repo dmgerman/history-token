@@ -49,6 +49,8 @@ DECL|macro|CLONE_PARENT
 mdefine_line|#define CLONE_PARENT&t;0x00008000&t;/* set if we want to have the same parent as the cloner */
 DECL|macro|CLONE_THREAD
 mdefine_line|#define CLONE_THREAD&t;0x00010000&t;/* Same thread group? */
+DECL|macro|CLONE_NEWNS
+mdefine_line|#define CLONE_NEWNS&t;0x00020000&t;/* New namespace group? */
 DECL|macro|CLONE_SIGNAL
 mdefine_line|#define CLONE_SIGNAL&t;(CLONE_SIGHAND | CLONE_THREAD)
 multiline_comment|/*&n; * These are the constant used to fake the fixed-point load-average&n; * counting. Some notes:&n; *  - 11 bit fractions expand to 22 bits by the multiplies: this gives&n; *    a load-average precision of 10 bits integer + 11 bits fractional&n; *  - if you want to count load-averages more often, you need more&n; *    precision, or rounding will get you. With 2-second counting freq,&n; *    the EXP_n values would be 1981, 2034 and 2043 if still using only&n; *    11 bit fractions.&n; */
@@ -293,6 +295,9 @@ suffix:semicolon
 multiline_comment|/*&n; * The default fd array needs to be at least BITS_PER_LONG,&n; * as this is the granularity returned by copy_fdset().&n; */
 DECL|macro|NR_OPEN_DEFAULT
 mdefine_line|#define NR_OPEN_DEFAULT BITS_PER_LONG
+r_struct
+r_namespace
+suffix:semicolon
 multiline_comment|/*&n; * Open file table structure&n; */
 DECL|struct|files_struct
 r_struct
@@ -1020,6 +1025,13 @@ r_struct
 id|files_struct
 op_star
 id|files
+suffix:semicolon
+multiline_comment|/* namespace */
+DECL|member|namespace
+r_struct
+r_namespace
+op_star
+r_namespace
 suffix:semicolon
 multiline_comment|/* signal handlers */
 DECL|member|sigmask_lock

@@ -2083,14 +2083,6 @@ multiline_comment|/* Continue execution... */
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* It is a &squot;keyboard interrupt&squot; ;-) */
-id|wake_up
-c_func
-(paren
-op_amp
-id|keypress_wait
-)paren
-suffix:semicolon
 )brace
 macro_line|#ifndef __sparc_v9__
 multiline_comment|/* Look for kgdb &squot;stop&squot; character, consult the gdb&n;&t;&t; * documentation for remote target debugging and&n;&t;&t; * arch/sparc/kernel/sparc-stub.c to see how all this works.&n;&t;&t; */
@@ -13148,29 +13140,6 @@ id|info
 suffix:semicolon
 macro_line|#endif
 )brace
-r_static
-r_int
-DECL|function|zs_console_wait_key
-id|zs_console_wait_key
-c_func
-(paren
-r_struct
-id|console
-op_star
-id|con
-)paren
-(brace
-id|sleep_on
-c_func
-(paren
-op_amp
-id|keypress_wait
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|zs_console_device
 r_static
 id|kdev_t
@@ -13574,10 +13543,6 @@ comma
 id|device
 suffix:colon
 id|zs_console_device
-comma
-id|wait_key
-suffix:colon
-id|zs_console_wait_key
 comma
 id|setup
 suffix:colon

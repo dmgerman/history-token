@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#ifdef CONFIG_BSD_PROCESS_ACCT
 macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#endif
@@ -1601,6 +1602,12 @@ id|tsk
 )paren
 suffix:semicolon
 id|__exit_fs
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
+id|exit_namespace
 c_func
 (paren
 id|tsk

@@ -1631,11 +1631,6 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|s-&gt;s_dev
-suffix:semicolon
 r_struct
 id|inode
 op_star
@@ -1646,21 +1641,13 @@ r_char
 op_star
 id|errmsg
 suffix:semicolon
-id|set_blocksize
+id|sb_set_blocksize
 c_func
 (paren
-id|dev
+id|s
 comma
 id|QNX4_BLOCK_SIZE
 )paren
-suffix:semicolon
-id|s-&gt;s_blocksize
-op_assign
-id|QNX4_BLOCK_SIZE
-suffix:semicolon
-id|s-&gt;s_blocksize_bits
-op_assign
-id|QNX4_BLOCK_SIZE_BITS
 suffix:semicolon
 multiline_comment|/* Check the boot signature. Since the qnx4 code is&n;&t;   dangerous, we should leave as quickly as possible&n;&t;   if we don&squot;t belong here... */
 id|bh

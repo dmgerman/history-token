@@ -1577,21 +1577,13 @@ id|bail3
 suffix:semicolon
 )brace
 multiline_comment|/* set the device driver to 512-byte blocks */
-id|set_blocksize
+id|sb_set_blocksize
 c_func
 (paren
-id|dev
+id|s
 comma
 id|HFS_SECTOR_SIZE
 )paren
-suffix:semicolon
-id|s-&gt;s_blocksize_bits
-op_assign
-id|HFS_SECTOR_SIZE_BITS
-suffix:semicolon
-id|s-&gt;s_blocksize
-op_assign
-id|HFS_SECTOR_SIZE
 suffix:semicolon
 macro_line|#ifdef CONFIG_MAC_PARTITION
 multiline_comment|/* check to see if we&squot;re in a partition */

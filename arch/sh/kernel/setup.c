@@ -366,24 +366,6 @@ id|count
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Receive character from the serial port&n; */
-DECL|function|sh_console_wait_key
-r_static
-r_int
-id|sh_console_wait_key
-c_func
-(paren
-r_struct
-id|console
-op_star
-id|co
-)paren
-(brace
-multiline_comment|/* Not implemented yet */
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|sh_console_device
 r_static
 id|kdev_t
@@ -465,10 +447,6 @@ comma
 id|device
 suffix:colon
 id|sh_console_device
-comma
-id|wait_key
-suffix:colon
-id|sh_console_wait_key
 comma
 id|setup
 suffix:colon

@@ -3256,16 +3256,13 @@ suffix:semicolon
 )brace
 id|again
 suffix:colon
-id|set_blocksize
+id|sb_set_blocksize
+c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|block_size
 )paren
-suffix:semicolon
-id|sb-&gt;s_blocksize
-op_assign
-id|block_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * read ufs super block from device&n;&t; */
 id|ubh
@@ -3791,26 +3788,6 @@ id|MS_RDONLY
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Read ufs_super_block into internal data structures&n;&t; */
-id|sb-&gt;s_blocksize
-op_assign
-id|fs32_to_cpu
-c_func
-(paren
-id|sb
-comma
-id|usb1-&gt;fs_fsize
-)paren
-suffix:semicolon
-id|sb-&gt;s_blocksize_bits
-op_assign
-id|fs32_to_cpu
-c_func
-(paren
-id|sb
-comma
-id|usb1-&gt;fs_fshift
-)paren
-suffix:semicolon
 id|sb-&gt;s_op
 op_assign
 op_amp

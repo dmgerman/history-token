@@ -60,10 +60,6 @@ id|NR_KEYS
 )braket
 suffix:semicolon
 r_extern
-id|wait_queue_head_t
-id|keypress_wait
-suffix:semicolon
-r_extern
 r_int
 r_char
 id|keyboard_type

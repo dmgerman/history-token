@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -2294,6 +2295,29 @@ r_struct
 id|completion
 id|vfork
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|clone_flags
+op_amp
+(paren
+id|CLONE_NEWNS
+op_or
+id|CLONE_FS
+)paren
+)paren
+op_eq
+(paren
+id|CLONE_NEWNS
+op_or
+id|CLONE_FS
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|retval
 op_assign
 op_minus
@@ -2686,6 +2710,20 @@ id|p
 r_goto
 id|bad_fork_cleanup_sighand
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_namespace
+c_func
+(paren
+id|clone_flags
+comma
+id|p
+)paren
+)paren
+r_goto
+id|bad_fork_cleanup_mm
+suffix:semicolon
 id|retval
 op_assign
 id|copy_thread
@@ -2710,7 +2748,7 @@ c_cond
 id|retval
 )paren
 r_goto
-id|bad_fork_cleanup_mm
+id|bad_fork_cleanup_namespace
 suffix:semicolon
 id|p-&gt;semundo
 op_assign
@@ -2918,6 +2956,14 @@ id|fork_out
 suffix:colon
 r_return
 id|retval
+suffix:semicolon
+id|bad_fork_cleanup_namespace
+suffix:colon
+id|exit_namespace
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 id|bad_fork_cleanup_mm
 suffix:colon

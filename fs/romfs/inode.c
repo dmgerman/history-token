@@ -115,21 +115,13 @@ r_int
 id|sz
 suffix:semicolon
 multiline_comment|/* I would parse the options here, but there are none.. :) */
-id|set_blocksize
+id|sb_set_blocksize
 c_func
 (paren
-id|dev
+id|s
 comma
 id|ROMBSIZE
 )paren
-suffix:semicolon
-id|s-&gt;s_blocksize
-op_assign
-id|ROMBSIZE
-suffix:semicolon
-id|s-&gt;s_blocksize_bits
-op_assign
-id|ROMBSBITS
 suffix:semicolon
 id|s-&gt;u.generic_sbp
 op_assign

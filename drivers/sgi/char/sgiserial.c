@@ -29,10 +29,6 @@ DECL|macro|NUM_SERIAL
 mdefine_line|#define NUM_SERIAL 1     /* One chip on board. */
 DECL|macro|NUM_CHANNELS
 mdefine_line|#define NUM_CHANNELS (NUM_SERIAL * 2)
-r_extern
-id|wait_queue_head_t
-id|keypress_wait
-suffix:semicolon
 DECL|variable|zs_chips
 r_struct
 id|sgi_zslayout
@@ -1683,14 +1679,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* It is a &squot;keyboard interrupt&squot; ;-) */
-id|wake_up
-c_func
-(paren
-op_amp
-id|keypress_wait
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Look for kgdb &squot;stop&squot; character, consult the gdb documentation&n;&t; * for remote target debugging and arch/sparc/kernel/sparc-stub.c&n;&t; * to see how all this works.&n;&t; */
 macro_line|#ifdef CONFIG_REMOTE_DEBUG
@@ -9140,29 +9128,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|zs_console_wait_key
-r_static
-r_int
-id|zs_console_wait_key
-c_func
-(paren
-r_struct
-id|console
-op_star
-id|con
-)paren
-(brace
-id|sleep_on
-c_func
-(paren
-op_amp
-id|keypress_wait
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|zs_console_device
 r_static
 id|kdev_t
@@ -9826,10 +9791,6 @@ comma
 id|device
 suffix:colon
 id|zs_console_device
-comma
-id|wait_key
-suffix:colon
-id|zs_console_wait_key
 comma
 id|setup
 suffix:colon

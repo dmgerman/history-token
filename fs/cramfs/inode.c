@@ -739,21 +739,13 @@ id|retval
 op_assign
 l_int|NULL
 suffix:semicolon
-id|set_blocksize
+id|sb_set_blocksize
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|PAGE_CACHE_SIZE
 )paren
-suffix:semicolon
-id|sb-&gt;s_blocksize
-op_assign
-id|PAGE_CACHE_SIZE
-suffix:semicolon
-id|sb-&gt;s_blocksize_bits
-op_assign
-id|PAGE_CACHE_SHIFT
 suffix:semicolon
 multiline_comment|/* Invalidate the read buffers on mount: think disk change.. */
 r_for

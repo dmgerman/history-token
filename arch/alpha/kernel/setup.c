@@ -1662,23 +1662,6 @@ id|c-&gt;index
 )paren
 suffix:semicolon
 )brace
-DECL|function|srm_console_wait_key
-r_static
-r_int
-id|srm_console_wait_key
-c_func
-(paren
-r_struct
-id|console
-op_star
-id|co
-)paren
-(brace
-multiline_comment|/* Huh? */
-r_return
-l_int|1
-suffix:semicolon
-)brace
 DECL|function|srm_console_setup
 r_static
 r_int
@@ -1718,10 +1701,6 @@ comma
 id|device
 suffix:colon
 id|srm_console_device
-comma
-id|wait_key
-suffix:colon
-id|srm_console_wait_key
 comma
 id|setup
 suffix:colon

@@ -331,9 +331,6 @@ comma
 multiline_comment|/* device */
 l_int|NULL
 comma
-multiline_comment|/* wait_key */
-l_int|NULL
-comma
 multiline_comment|/* unblank */
 l_int|NULL
 comma

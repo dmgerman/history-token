@@ -511,15 +511,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_int
-id|keyboard_wait_for_keypress
-c_func
-(paren
-r_struct
-id|console
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* defkeymap.c */
 r_extern
 r_int

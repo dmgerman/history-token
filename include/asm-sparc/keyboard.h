@@ -108,8 +108,6 @@ DECL|macro|kbd_init
 mdefine_line|#define kbd_init&t;&t;&t;pcikbd_init
 DECL|macro|compute_shiftstate
 mdefine_line|#define compute_shiftstate&t;&t;pci_compute_shiftstate
-DECL|macro|keyboard_wait_for_keypress
-mdefine_line|#define keyboard_wait_for_keypress&t;pci_wait_for_keypress
 DECL|macro|getkeycode
 mdefine_line|#define getkeycode&t;&t;&t;pci_getkeycode
 DECL|macro|setkeycode

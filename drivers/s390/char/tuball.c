@@ -402,9 +402,6 @@ multiline_comment|/* read */
 id|tub3270_con_device
 comma
 multiline_comment|/* device */
-l_int|NULL
-comma
-multiline_comment|/* wait_key */
 id|tub3270_con_unblank
 comma
 multiline_comment|/* unblank */

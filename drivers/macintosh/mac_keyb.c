@@ -2417,10 +2417,6 @@ id|kbd_table
 )braket
 suffix:semicolon
 r_extern
-id|wait_queue_head_t
-id|keypress_wait
-suffix:semicolon
-r_extern
 r_void
 id|handle_scancode
 c_func
@@ -3090,13 +3086,6 @@ id|fg_console
 )braket
 suffix:colon
 l_int|NULL
-suffix:semicolon
-id|wake_up
-c_func
-(paren
-op_amp
-id|keypress_wait
-)paren
 suffix:semicolon
 r_if
 c_cond
