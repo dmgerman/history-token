@@ -731,7 +731,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|UART_XMIT_SIZE
-mdefine_line|#define UART_XMIT_SIZE 1024
+mdefine_line|#define UART_XMIT_SIZE&t;PAGE_SIZE
 multiline_comment|/*&n; * This is the state information which is only valid when the port&n; * is open; it may be freed by the core driver once the device has&n; * been closed.  Either the low level driver or the core can modify&n; * stuff here.&n; */
 DECL|struct|uart_info
 r_struct
@@ -762,17 +762,6 @@ DECL|macro|UIF_NORMAL_ACTIVE
 mdefine_line|#define UIF_NORMAL_ACTIVE&t;(1 &lt;&lt; 29)
 DECL|macro|UIF_INITIALIZED
 mdefine_line|#define UIF_INITIALIZED&t;&t;(1 &lt;&lt; 31)
-DECL|member|tmpbuf
-r_int
-r_char
-op_star
-id|tmpbuf
-suffix:semicolon
-DECL|member|tmpbuf_sem
-r_struct
-id|semaphore
-id|tmpbuf_sem
-suffix:semicolon
 DECL|member|blocked_open
 r_int
 id|blocked_open
