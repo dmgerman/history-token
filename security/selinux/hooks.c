@@ -1645,8 +1645,6 @@ comma
 id|FILESYSTEM__RELABELFROM
 comma
 l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1669,8 +1667,6 @@ comma
 id|SECCLASS_FILESYSTEM
 comma
 id|FILESYSTEM__RELABELTO
-comma
-l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -1772,8 +1768,6 @@ comma
 id|FILESYSTEM__RELABELFROM
 comma
 l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1796,8 +1790,6 @@ comma
 id|SECCLASS_FILESYSTEM
 comma
 id|FILESYSTEM__ASSOCIATE
-comma
-l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -3542,9 +3534,6 @@ id|SECCLASS_PROCESS
 comma
 id|perms
 comma
-op_amp
-id|tsec2-&gt;avcr
-comma
 l_int|NULL
 )paren
 suffix:semicolon
@@ -3610,8 +3599,6 @@ c_func
 id|cap
 )paren
 comma
-l_int|NULL
-comma
 op_amp
 id|ad
 )paren
@@ -3654,12 +3641,10 @@ comma
 id|perms
 comma
 l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Check whether a task has a particular permission to an inode.&n;   The &squot;aeref&squot; parameter is optional and allows other AVC&n;   entry references to be passed (e.g. the one in the struct file).&n;   The &squot;adp&squot; parameter is optional and allows other audit&n;   data to be passed (e.g. the dentry). */
+multiline_comment|/* Check whether a task has a particular permission to an inode.&n;   The &squot;adp&squot; parameter is optional and allows other audit&n;   data to be passed (e.g. the dentry). */
 DECL|function|inode_has_perm
 r_int
 id|inode_has_perm
@@ -3677,11 +3662,6 @@ id|inode
 comma
 id|u32
 id|perms
-comma
-r_struct
-id|avc_entry_ref
-op_star
-id|aeref
 comma
 r_struct
 id|avc_audit_data
@@ -3748,14 +3728,6 @@ comma
 id|isec-&gt;sclass
 comma
 id|perms
-comma
-id|aeref
-ques
-c_cond
-id|aeref
-suffix:colon
-op_amp
-id|isec-&gt;avcr
 comma
 id|adp
 )paren
@@ -3825,8 +3797,6 @@ comma
 id|inode
 comma
 id|av
-comma
-l_int|NULL
 comma
 op_amp
 id|ad
@@ -3936,9 +3906,6 @@ comma
 id|FD__USE
 comma
 op_amp
-id|fsec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -3966,9 +3933,6 @@ comma
 id|inode
 comma
 id|av
-comma
-op_amp
-id|fsec-&gt;inode_avcr
 comma
 op_amp
 id|ad
@@ -4065,9 +4029,6 @@ op_or
 id|DIR__SEARCH
 comma
 op_amp
-id|dsec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -4133,8 +4094,6 @@ id|tclass
 comma
 id|FILE__CREATE
 comma
-l_int|NULL
-comma
 op_amp
 id|ad
 )paren
@@ -4158,8 +4117,6 @@ comma
 id|SECCLASS_FILESYSTEM
 comma
 id|FILESYSTEM__ASSOCIATE
-comma
-l_int|NULL
 comma
 op_amp
 id|ad
@@ -4270,9 +4227,6 @@ comma
 id|av
 comma
 op_amp
-id|dsec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -4344,9 +4298,6 @@ comma
 id|isec-&gt;sclass
 comma
 id|av
-comma
-op_amp
-id|isec-&gt;avcr
 comma
 op_amp
 id|ad
@@ -4471,9 +4422,6 @@ op_or
 id|DIR__SEARCH
 comma
 op_amp
-id|old_dsec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -4497,9 +4445,6 @@ comma
 id|old_isec-&gt;sclass
 comma
 id|FILE__RENAME
-comma
-op_amp
-id|old_isec-&gt;avcr
 comma
 op_amp
 id|ad
@@ -4535,9 +4480,6 @@ comma
 id|old_isec-&gt;sclass
 comma
 id|DIR__REPARENT
-comma
-op_amp
-id|old_isec-&gt;avcr
 comma
 op_amp
 id|ad
@@ -4583,9 +4525,6 @@ comma
 id|SECCLASS_DIR
 comma
 id|av
-comma
-op_amp
-id|new_dsec-&gt;avcr
 comma
 op_amp
 id|ad
@@ -4636,9 +4575,6 @@ id|DIR__RMDIR
 suffix:colon
 id|FILE__UNLINK
 )paren
-comma
-op_amp
-id|new_isec-&gt;avcr
 comma
 op_amp
 id|ad
@@ -4711,8 +4647,6 @@ comma
 id|SECCLASS_FILESYSTEM
 comma
 id|perms
-comma
-l_int|NULL
 comma
 id|ad
 )paren
@@ -5689,8 +5623,6 @@ comma
 id|DIR__SEARCH
 comma
 l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -5739,8 +5671,6 @@ comma
 id|SECCLASS_FILE
 comma
 id|av
-comma
-l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -6125,8 +6055,6 @@ id|CAP_SYS_ADMIN
 )paren
 comma
 l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -6470,9 +6398,6 @@ comma
 id|FILE__EXECUTE_NO_TRANS
 comma
 op_amp
-id|isec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -6501,8 +6426,6 @@ id|SECCLASS_PROCESS
 comma
 id|PROCESS__TRANSITION
 comma
-l_int|NULL
-comma
 op_amp
 id|ad
 )paren
@@ -6527,9 +6450,6 @@ comma
 id|SECCLASS_FILE
 comma
 id|FILE__ENTRYPOINT
-comma
-op_amp
-id|isec-&gt;avcr
 comma
 op_amp
 id|ad
@@ -6628,8 +6548,6 @@ comma
 id|SECCLASS_PROCESS
 comma
 id|PROCESS__NOATSECURE
-comma
-l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -6787,8 +6705,6 @@ comma
 id|FILE__READ
 op_or
 id|FILE__WRITE
-comma
-l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -7184,8 +7100,6 @@ id|SECCLASS_PROCESS
 comma
 id|PROCESS__SHARE
 comma
-l_int|NULL
-comma
 op_amp
 id|avd
 )paren
@@ -7259,8 +7173,6 @@ comma
 id|SECCLASS_PROCESS
 comma
 id|PROCESS__PTRACE
-comma
-l_int|NULL
 comma
 op_amp
 id|avd
@@ -7353,8 +7265,6 @@ comma
 id|SECCLASS_PROCESS
 comma
 id|PROCESS__SIGINH
-comma
-l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -7456,8 +7366,6 @@ comma
 id|SECCLASS_PROCESS
 comma
 id|PROCESS__RLIMITINH
-comma
-l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -8936,8 +8844,6 @@ id|mask
 )paren
 comma
 l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -9240,9 +9146,6 @@ comma
 id|FILE__RELABELFROM
 comma
 op_amp
-id|isec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -9288,8 +9191,6 @@ id|isec-&gt;sclass
 comma
 id|FILE__RELABELTO
 comma
-l_int|NULL
-comma
 op_amp
 id|ad
 )paren
@@ -9313,8 +9214,6 @@ comma
 id|SECCLASS_FILESYSTEM
 comma
 id|FILESYSTEM__ASSOCIATE
-comma
-l_int|NULL
 comma
 op_amp
 id|ad
@@ -10671,8 +10570,6 @@ comma
 id|perm
 comma
 l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -11185,9 +11082,6 @@ comma
 id|SECCLASS_PROCESS
 comma
 id|PROCESS__SETSCHED
-comma
-op_amp
-id|tsec2-&gt;avcr
 comma
 l_int|NULL
 )paren
@@ -12217,9 +12111,6 @@ comma
 id|perms
 comma
 op_amp
-id|isec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -12290,8 +12181,6 @@ id|protocol
 )paren
 comma
 id|SOCKET__CREATE
-comma
-l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -12679,8 +12568,6 @@ id|isec-&gt;sclass
 comma
 id|SOCKET__NAME_BIND
 comma
-l_int|NULL
-comma
 op_amp
 id|ad
 )paren
@@ -12805,8 +12692,6 @@ comma
 id|isec-&gt;sclass
 comma
 id|node_perm
-comma
-l_int|NULL
 comma
 op_amp
 id|ad
@@ -13305,9 +13190,6 @@ comma
 id|UNIX_STREAM_SOCKET__CONNECTTO
 comma
 op_amp
-id|other_isec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -13420,9 +13302,6 @@ comma
 id|isec-&gt;sclass
 comma
 id|SOCKET__SENDTO
-comma
-op_amp
-id|other_isec-&gt;avcr
 comma
 op_amp
 id|ad
@@ -13761,8 +13640,6 @@ id|SECCLASS_NETIF
 comma
 id|netif_perm
 comma
-l_int|NULL
-comma
 op_amp
 id|ad
 )paren
@@ -13811,8 +13688,6 @@ comma
 id|SECCLASS_NODE
 comma
 id|node_perm
-comma
-l_int|NULL
 comma
 op_amp
 id|ad
@@ -13877,8 +13752,6 @@ comma
 id|sock_class
 comma
 id|recv_perm
-comma
-l_int|NULL
 comma
 op_amp
 id|ad
@@ -14537,8 +14410,6 @@ id|SECCLASS_NETIF
 comma
 id|netif_perm
 comma
-l_int|NULL
-comma
 op_amp
 id|ad
 )paren
@@ -14601,8 +14472,6 @@ comma
 id|SECCLASS_NODE
 comma
 id|node_perm
-comma
-l_int|NULL
 comma
 op_amp
 id|ad
@@ -14681,8 +14550,6 @@ comma
 id|isec-&gt;sclass
 comma
 id|send_perm
-comma
-l_int|NULL
 comma
 op_amp
 id|ad
@@ -15291,9 +15158,6 @@ comma
 id|perms
 comma
 op_amp
-id|isec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -15423,9 +15287,6 @@ comma
 id|MSGQ__CREATE
 comma
 op_amp
-id|isec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -15531,9 +15392,6 @@ comma
 id|SECCLASS_MSGQ
 comma
 id|MSGQ__ASSOCIATE
-comma
-op_amp
-id|isec-&gt;avcr
 comma
 op_amp
 id|ad
@@ -15754,9 +15612,6 @@ comma
 id|MSGQ__WRITE
 comma
 op_amp
-id|isec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -15781,9 +15636,6 @@ comma
 id|MSG__SEND
 comma
 op_amp
-id|msec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -15806,9 +15658,6 @@ comma
 id|SECCLASS_MSGQ
 comma
 id|MSGQ__ENQUEUE
-comma
-op_amp
-id|isec-&gt;avcr
 comma
 op_amp
 id|ad
@@ -15907,9 +15756,6 @@ comma
 id|MSGQ__READ
 comma
 op_amp
-id|isec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -15931,9 +15777,6 @@ comma
 id|SECCLASS_MSG
 comma
 id|MSG__RECEIVE
-comma
-op_amp
-id|msec-&gt;avcr
 comma
 op_amp
 id|ad
@@ -16027,9 +15870,6 @@ comma
 id|SECCLASS_SHM
 comma
 id|SHM__CREATE
-comma
-op_amp
-id|isec-&gt;avcr
 comma
 op_amp
 id|ad
@@ -16137,9 +15977,6 @@ comma
 id|SECCLASS_SHM
 comma
 id|SHM__ASSOCIATE
-comma
-op_amp
-id|isec-&gt;avcr
 comma
 op_amp
 id|ad
@@ -16422,9 +16259,6 @@ comma
 id|SEM__CREATE
 comma
 op_amp
-id|isec-&gt;avcr
-comma
-op_amp
 id|ad
 )paren
 suffix:semicolon
@@ -16530,9 +16364,6 @@ comma
 id|SECCLASS_SEM
 comma
 id|SEM__ASSOCIATE
-comma
-op_amp
-id|isec-&gt;avcr
 comma
 op_amp
 id|ad
