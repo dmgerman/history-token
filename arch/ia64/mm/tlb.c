@@ -240,9 +240,17 @@ id|i
 r_if
 c_cond
 (paren
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
+op_logical_and
+(paren
 id|i
 op_ne
 id|cpu
+)paren
 )paren
 id|per_cpu
 c_func
