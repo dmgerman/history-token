@@ -28,7 +28,5 @@ DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|macro|DRIVER_IOCTLS
 mdefine_line|#define DRIVER_IOCTLS &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_SIS_FB_ALLOC)]  = { sis_fb_alloc,&t;1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_SIS_FB_FREE)]   = { sis_fb_free,&t;1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_SIS_AGP_INIT)]  = { sis_ioctl_agp_init,&t;1, 1 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_SIS_AGP_ALLOC)] = { sis_ioctl_agp_alloc, 1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_SIS_AGP_FREE)]&t;= { sis_ioctl_agp_free,&t;1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_SIS_FB_INIT)]&t;= { sis_fb_init,&t;1, 1 }
-DECL|macro|__HAVE_COUNTERS
-mdefine_line|#define __HAVE_COUNTERS&t;&t;5
 macro_line|#endif
 eof
