@@ -2895,7 +2895,7 @@ c_cond
 (paren
 id|drive_fast
 op_amp
-l_int|0x02
+l_int|0x80
 )paren
 id|pci_write_config_byte
 c_func
@@ -2907,7 +2907,7 @@ comma
 id|drive_fast
 op_amp
 op_complement
-l_int|0x20
+l_int|0x80
 )paren
 suffix:semicolon
 id|pci_read_config_dword
