@@ -2292,7 +2292,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if     (defined(CONFIG_FB_VGA16) || defined(CONFIG_FB_VGA_16_MODULE) || &bslash;&n;&t; defined(CONFIG_FB_VESA))
+macro_line|#if     (defined(CONFIG_FB_VGA16) || defined(CONFIG_FB_VGA16_MODULE) || &bslash;&n;&t; defined(CONFIG_FB_VESA))
 id|PPC_DEVICE
 op_star
 id|vgadev
