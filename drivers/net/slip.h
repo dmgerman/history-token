@@ -271,16 +271,5 @@ macro_line|#endif
 suffix:semicolon
 DECL|macro|SLIP_MAGIC
 mdefine_line|#define SLIP_MAGIC 0x5302
-r_extern
-r_int
-id|slip_init
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 macro_line|#endif&t;/* _LINUX_SLIP.H */
 eof

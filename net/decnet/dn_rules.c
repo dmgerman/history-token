@@ -959,7 +959,7 @@ l_int|1
 suffix:semicolon
 id|dev
 op_assign
-id|__dev_get_by_name
+id|dev_get_by_name
 c_func
 (paren
 id|new_r-&gt;r_ifname
@@ -970,10 +970,18 @@ c_cond
 (paren
 id|dev
 )paren
+(brace
 id|new_r-&gt;r_ifindex
 op_assign
 id|dev-&gt;ifindex
 suffix:semicolon
+id|dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 )brace
 id|rp
 op_assign

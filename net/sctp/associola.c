@@ -14,7 +14,8 @@ r_void
 id|sctp_assoc_bh_rcv
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -22,13 +23,15 @@ suffix:semicolon
 multiline_comment|/* 1st Level Abstractions. */
 multiline_comment|/* Allocate and initialize a new association */
 DECL|function|sctp_association_new
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_association_new
 c_func
 (paren
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 comma
@@ -42,10 +45,11 @@ id|sctp_scope_t
 id|scope
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -54,9 +58,10 @@ op_assign
 id|t_new
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -83,7 +88,7 @@ id|sk
 comma
 id|scope
 comma
-id|priority
+id|gfp
 )paren
 )paren
 r_goto
@@ -118,17 +123,20 @@ suffix:semicolon
 )brace
 multiline_comment|/* Initialize a new association from provided memory. */
 DECL|function|sctp_association_init
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_association_init
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 comma
@@ -142,13 +150,23 @@ id|sctp_scope_t
 id|scope
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
 id|sctp_opt
 op_star
 id|sp
+suffix:semicolon
+r_struct
+id|sctp_protocol
+op_star
+id|proto
+op_assign
+id|sctp_get_protocol
+c_func
+(paren
+)paren
 suffix:semicolon
 r_int
 id|i
@@ -177,7 +195,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 )paren
 )paren
 suffix:semicolon
@@ -185,7 +204,8 @@ multiline_comment|/* Discarding const is appropriate here.  */
 id|asoc-&gt;ep
 op_assign
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 id|ep
@@ -287,19 +307,19 @@ suffix:semicolon
 multiline_comment|/* Initialize the default association max_retrans and RTO values.  */
 id|asoc-&gt;max_retrans
 op_assign
-id|ep-&gt;proto-&gt;max_retrans_association
+id|proto-&gt;max_retrans_association
 suffix:semicolon
 id|asoc-&gt;rto_initial
 op_assign
-id|ep-&gt;proto-&gt;rto_initial
+id|proto-&gt;rto_initial
 suffix:semicolon
 id|asoc-&gt;rto_max
 op_assign
-id|ep-&gt;proto-&gt;rto_max
+id|proto-&gt;rto_max
 suffix:semicolon
 id|asoc-&gt;rto_min
 op_assign
-id|ep-&gt;proto-&gt;rto_min
+id|proto-&gt;rto_min
 suffix:semicolon
 id|asoc-&gt;overall_error_threshold
 op_assign
@@ -312,7 +332,7 @@ suffix:semicolon
 multiline_comment|/* Initialize the maximum mumber of new data packets that can be sent&n;&t; * in a burst.&n;&t; */
 id|asoc-&gt;max_burst
 op_assign
-id|ep-&gt;proto-&gt;max_burst
+id|proto-&gt;max_burst
 suffix:semicolon
 multiline_comment|/* Copy things from the endpoint.  */
 r_for
@@ -584,8 +604,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|sctp_ulpq_init
 c_func
 (paren
@@ -620,10 +639,6 @@ suffix:semicolon
 id|asoc-&gt;need_ecne
 op_assign
 l_int|0
-suffix:semicolon
-id|asoc-&gt;debug_name
-op_assign
-l_string|&quot;unnamedasoc&quot;
 suffix:semicolon
 id|asoc-&gt;eyecatcher
 op_assign
@@ -676,7 +691,8 @@ r_void
 id|sctp_association_free
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -715,22 +731,20 @@ multiline_comment|/* Decrement the backlog value for a TCP-style listening socke
 r_if
 c_cond
 (paren
-(paren
-id|SCTP_SOCKET_TCP
-op_eq
-id|sctp_sk
+id|sctp_style
 c_func
 (paren
 id|sk
-)paren
-op_member_access_from_pointer
-id|type
+comma
+id|TCP
 )paren
 op_logical_and
+id|sctp_sstate
+c_func
 (paren
-id|SCTP_SS_LISTENING
-op_eq
-id|sk-&gt;state
+id|sk
+comma
+id|LISTENING
 )paren
 )paren
 id|sk-&gt;ack_backlog
@@ -896,7 +910,8 @@ r_void
 id|sctp_association_destroy
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -991,6 +1006,26 @@ id|asoc-&gt;peer.active_path
 op_assign
 id|transport
 suffix:semicolon
+multiline_comment|/* &n;&t; * SFR-CACC algorithm:&n;&t; * Upon the receipt of a request to change the primary&n;&t; * destination address, on the data structure for the new&n;&t; * primary destination, the sender MUST do the following:&n;&t; *&n;&t; * 1) If CHANGEOVER_ACTIVE is set, then there was a switch&n;&t; * to this destination address earlier. The sender MUST set&n;&t; * CYCLING_CHANGEOVER to indicate that this switch is a&n;&t; * double switch to the same destination address.&n;&t; */
+r_if
+c_cond
+(paren
+id|transport-&gt;cacc.changeover_active
+)paren
+id|transport-&gt;cacc.cycling_changeover
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* 2) The sender MUST set CHANGEOVER_ACTIVE to indicate that&n;&t; * a changeover has occurred.&n;&t; */
+id|transport-&gt;cacc.changeover_active
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* 3) The sender MUST store the next TSN to be sent in&n;&t; * next_tsn_at_change.&n;&t; */
+id|transport-&gt;cacc.next_tsn_at_change
+op_assign
+id|asoc-&gt;next_tsn
+suffix:semicolon
 )brace
 multiline_comment|/* Add a transport address to an association.  */
 DECL|function|sctp_assoc_add_peer
@@ -1012,7 +1047,7 @@ op_star
 id|addr
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -1029,6 +1064,14 @@ r_int
 r_int
 id|port
 suffix:semicolon
+id|sp
+op_assign
+id|sctp_sk
+c_func
+(paren
+id|asoc-&gt;base.sk
+)paren
+suffix:semicolon
 multiline_comment|/* AF_INET and AF_INET6 share common port field. */
 id|port
 op_assign
@@ -1042,12 +1085,10 @@ l_int|0
 op_eq
 id|asoc-&gt;peer.port
 )paren
-(brace
 id|asoc-&gt;peer.port
 op_assign
 id|port
 suffix:semicolon
-)brace
 multiline_comment|/* Check to see if this is a duplicate. */
 id|peer
 op_assign
@@ -1074,7 +1115,7 @@ c_func
 (paren
 id|addr
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -1140,6 +1181,8 @@ op_assign
 id|sctp_frag_point
 c_func
 (paren
+id|sp
+comma
 id|asoc-&gt;pmtu
 )paren
 suffix:semicolon
@@ -1201,14 +1244,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Initialize the peer&squot;s heartbeat interval based on the&n;&t; * sock configured value.&n;&t; */
-id|sp
-op_assign
-id|sctp_sk
-c_func
-(paren
-id|asoc-&gt;base.sk
-)paren
-suffix:semicolon
 id|peer-&gt;hb_interval
 op_assign
 id|sp-&gt;paddrparam.spp_hbinterval
@@ -1230,8 +1265,7 @@ multiline_comment|/* If we do not yet have a primary path, set one.  */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|asoc-&gt;peer.primary_path
 )paren
 (brace
@@ -1272,7 +1306,8 @@ id|sctp_assoc_lookup_paddr
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1342,7 +1377,8 @@ r_void
 id|sctp_assoc_control_transport
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1567,8 +1603,7 @@ multiline_comment|/* If we failed to find a usable transport, just camp on the&n
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|first
 )paren
 (brace
@@ -1597,7 +1632,8 @@ r_void
 id|sctp_association_hold
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -1616,7 +1652,8 @@ r_void
 id|sctp_association_put
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -1644,7 +1681,8 @@ id|__u32
 id|sctp_association_get_next_tsn
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -1671,7 +1709,8 @@ id|__u32
 id|sctp_association_get_tsn_block
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1755,7 +1794,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Return an ecne chunk to get prepended to a packet.&n; * Note:  We are sly and return a shared, prealloced chunk.  FIXME:&n; * No we don&squot;t, but we could/should.&n; */
 DECL|function|sctp_get_ecne_prepend
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_get_ecne_prepend
 c_func
@@ -1798,12 +1838,14 @@ suffix:semicolon
 )brace
 multiline_comment|/* Use this function for the packet prepend callback when no ECNE&n; * packet is desired (e.g. some packets don&squot;t like to be bundled).&n; */
 DECL|function|sctp_get_no_prepend
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_get_no_prepend
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -1820,7 +1862,8 @@ op_star
 id|sctp_assoc_lookup_tsn
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1851,7 +1894,8 @@ id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -1890,7 +1934,8 @@ c_func
 (paren
 id|entry
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
@@ -1960,7 +2005,8 @@ c_func
 (paren
 id|entry
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
@@ -1997,7 +2043,8 @@ op_star
 id|sctp_assoc_is_match
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -2107,16 +2154,19 @@ r_void
 id|sctp_assoc_bh_rcv
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
 (brace
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -2277,7 +2327,8 @@ r_void
 id|sctp_assoc_migrate
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|assoc
 comma
@@ -2317,15 +2368,13 @@ multiline_comment|/* Decrement the backlog value for a TCP-style socket. */
 r_if
 c_cond
 (paren
-id|SCTP_SOCKET_TCP
-op_eq
-id|sctp_sk
+id|sctp_style
 c_func
 (paren
 id|oldsk
+comma
+id|TCP
 )paren
-op_member_access_from_pointer
-id|type
 )paren
 id|oldsk-&gt;ack_backlog
 op_decrement
@@ -2381,11 +2430,13 @@ r_void
 id|sctp_assoc_update
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 r_new
 )paren
@@ -2431,9 +2482,13 @@ multiline_comment|/* If the case is A (association restart), use&n;&t; * initial
 r_if
 c_cond
 (paren
-id|SCTP_STATE_ESTABLISHED
-op_eq
-id|asoc-&gt;state
+id|sctp_state
+c_func
+(paren
+id|asoc
+comma
+id|ESTABLISHED
+)paren
 )paren
 (brace
 id|asoc-&gt;next_tsn
@@ -2493,7 +2548,8 @@ r_void
 id|sctp_assoc_update_retran_path
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -2623,7 +2679,8 @@ op_star
 id|sctp_assoc_choose_shutdown_transport
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -2664,7 +2721,8 @@ r_void
 id|sctp_assoc_sync_pmtu
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -2738,6 +2796,17 @@ c_cond
 id|pmtu
 )paren
 (brace
+r_struct
+id|sctp_opt
+op_star
+id|sp
+op_assign
+id|sctp_sk
+c_func
+(paren
+id|asoc-&gt;base.sk
+)paren
+suffix:semicolon
 id|asoc-&gt;pmtu
 op_assign
 id|pmtu
@@ -2747,6 +2816,8 @@ op_assign
 id|sctp_frag_point
 c_func
 (paren
+id|sp
+comma
 id|pmtu
 )paren
 suffix:semicolon
@@ -2846,7 +2917,8 @@ r_void
 id|sctp_assoc_rwnd_increase
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -2854,7 +2926,8 @@ r_int
 id|len
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sack
 suffix:semicolon
@@ -3021,7 +3094,8 @@ r_void
 id|sctp_assoc_rwnd_decrease
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -3179,7 +3253,8 @@ r_int
 id|sctp_assoc_set_bind_addr_from_cookie
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
