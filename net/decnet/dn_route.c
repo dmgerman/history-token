@@ -1503,9 +1503,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|skb-&gt;dst
-op_member_access_from_pointer
-id|input
+id|dst_input
 c_func
 (paren
 id|skb

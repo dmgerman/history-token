@@ -1048,9 +1048,7 @@ c_cond
 id|skb-&gt;dst-&gt;error
 )paren
 (brace
-id|skb-&gt;dst
-op_member_access_from_pointer
-id|input
+id|dst_input
 c_func
 (paren
 id|skb
@@ -1109,9 +1107,7 @@ r_goto
 id|looped_back
 suffix:semicolon
 )brace
-id|skb-&gt;dst
-op_member_access_from_pointer
-id|input
+id|dst_input
 c_func
 (paren
 id|skb

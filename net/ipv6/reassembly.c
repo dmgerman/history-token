@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *&t;IPv6 fragment reassembly&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: reassembly.c,v 1.26 2001/03/07 22:00:57 davem Exp $&n; *&n; *&t;Based on: net/ipv4/ip_fragment.c&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
-multiline_comment|/* &n; *&t;Fixes:&t;&n; *&t;Andi Kleen&t;Make it work with multiple hosts.&n; *&t;&t;&t;More RFC compliance.&n; *&n; *      Horst von Brand Add missing #include &lt;linux/string.h&gt;&n; *&t;Alexey Kuznetsov&t;SMP races, threading, cleanup.&n; */
+multiline_comment|/* &n; *&t;Fixes:&t;&n; *&t;Andi Kleen&t;Make it work with multiple hosts.&n; *&t;&t;&t;More RFC compliance.&n; *&n; *      Horst von Brand Add missing #include &lt;linux/string.h&gt;&n; *&t;Alexey Kuznetsov&t;SMP races, threading, cleanup.&n; *&t;Patrick McHardy&t;&t;LRU queue of frag heads for evictor.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;
@@ -73,6 +74,12 @@ id|frag_queue
 op_star
 id|next
 suffix:semicolon
+DECL|member|lru_list
+r_struct
+id|list_head
+id|lru_list
+suffix:semicolon
+multiline_comment|/* lru list member&t;*/
 DECL|member|id
 id|__u32
 id|id
@@ -174,6 +181,13 @@ id|ip6_frag_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
+r_static
+id|LIST_HEAD
+c_func
+(paren
+id|ip6_frag_lru_list
+)paren
+suffix:semicolon
 DECL|variable|ip6_frag_nqueues
 r_int
 id|ip6_frag_nqueues
@@ -208,6 +222,13 @@ op_star
 id|fq-&gt;pprev
 op_assign
 id|fq-&gt;next
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|fq-&gt;lru_list
+)paren
 suffix:semicolon
 id|ip6_frag_nqueues
 op_decrement
@@ -617,12 +638,22 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-comma
-id|progress
+r_struct
+id|frag_queue
+op_star
+id|fq
 suffix:semicolon
-r_do
+r_struct
+id|list_head
+op_star
+id|tmp
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
+)paren
 (brace
 r_if
 c_cond
@@ -638,42 +669,6 @@ id|sysctl_ip6frag_low_thresh
 )paren
 r_return
 suffix:semicolon
-id|progress
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|IP6Q_HASHSZ
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_struct
-id|frag_queue
-op_star
-id|fq
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ip6_frag_hash
-(braket
-id|i
-)braket
-op_eq
-l_int|NULL
-)paren
-r_continue
-suffix:semicolon
 id|read_lock
 c_func
 (paren
@@ -684,27 +679,40 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|list_empty
+c_func
 (paren
-id|fq
-op_assign
-id|ip6_frag_hash
-(braket
-id|i
-)braket
+op_amp
+id|ip6_frag_lru_list
 )paren
-op_ne
-l_int|NULL
 )paren
 (brace
-multiline_comment|/* find the oldest queue for this hash bucket */
-r_while
-c_loop
+id|read_unlock
+c_func
 (paren
-id|fq-&gt;next
+op_amp
+id|ip6_frag_lock
 )paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|tmp
+op_assign
+id|ip6_frag_lru_list.next
+suffix:semicolon
 id|fq
 op_assign
-id|fq-&gt;next
+id|list_entry
+c_func
+(paren
+id|tmp
+comma
+r_struct
+id|frag_queue
+comma
+id|lru_list
+)paren
 suffix:semicolon
 id|atomic_inc
 c_func
@@ -762,28 +770,7 @@ c_func
 id|Ip6ReasmFails
 )paren
 suffix:semicolon
-id|progress
-op_assign
-l_int|1
-suffix:semicolon
-r_continue
-suffix:semicolon
 )brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|ip6_frag_lock
-)paren
-suffix:semicolon
-)brace
-)brace
-r_while
-c_loop
-(paren
-id|progress
-)paren
-suffix:semicolon
 )brace
 DECL|function|ip6_frag_expire
 r_static
@@ -1091,6 +1078,23 @@ id|ip6_frag_hash
 (braket
 id|hash
 )braket
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|fq-&gt;lru_list
+)paren
+suffix:semicolon
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|fq-&gt;lru_list
+comma
+op_amp
+id|ip6_frag_lru_list
+)paren
 suffix:semicolon
 id|ip6_frag_nqueues
 op_increment
@@ -2031,6 +2035,30 @@ op_or_assign
 id|FIRST_IN
 suffix:semicolon
 )brace
+id|write_lock
+c_func
+(paren
+op_amp
+id|ip6_frag_lock
+)paren
+suffix:semicolon
+id|list_move_tail
+c_func
+(paren
+op_amp
+id|fq-&gt;lru_list
+comma
+op_amp
+id|ip6_frag_lru_list
+)paren
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ip6_frag_lock
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 id|err
