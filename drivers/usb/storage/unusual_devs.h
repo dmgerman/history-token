@@ -450,6 +450,31 @@ comma
 l_int|0
 )paren
 comma
+multiline_comment|/* Reported by Adriaan Penning &lt;a.penning@luon.net&gt;&n; * Note that these cameras report &quot;Medium not present&quot; after&n; * ALLOW_MEDIUM_REMOVAL, so they also need to be marked&n; * NOT_LOCKABLE in the SCSI blacklist (and the vendor is MATSHITA). */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04da
+comma
+l_int|0x2372
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Panasonic&quot;
+comma
+l_string|&quot;DMC-LCx Camera&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
+)paren
+comma
 multiline_comment|/* Most of the following entries were developed with the help of&n; * Shuttle/SCM directly.&n; */
 id|UNUSUAL_DEV
 c_func
