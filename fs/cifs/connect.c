@@ -11452,6 +11452,8 @@ c_cond
 (paren
 id|smb_buffer_response-&gt;Status.CifsError
 op_eq
+id|cpu_to_le32
+c_func
 (paren
 id|NT_STATUS_MORE_PROCESSING_REQUIRED
 )paren

@@ -389,19 +389,17 @@ id|__u8
 id|Reserved
 suffix:semicolon
 DECL|member|Error
-id|__u16
+id|__le16
 id|Error
 suffix:semicolon
-multiline_comment|/* note: treated as little endian (le) on wire */
 DECL|member|DosError
 )brace
 id|DosError
 suffix:semicolon
 DECL|member|CifsError
-id|__u32
+id|__le32
 id|CifsError
 suffix:semicolon
-multiline_comment|/* note: le */
 DECL|member|Status
 )brace
 id|Status
@@ -416,16 +414,15 @@ id|Flags2
 suffix:semicolon
 multiline_comment|/* note: le */
 DECL|member|PidHigh
-id|__u16
+id|__le16
 id|PidHigh
 suffix:semicolon
-multiline_comment|/* note: le */
 r_union
 (brace
 r_struct
 (brace
 DECL|member|SequenceNumber
-id|__u32
+id|__le32
 id|SequenceNumber
 suffix:semicolon
 multiline_comment|/* le */
@@ -462,10 +459,9 @@ id|__u16
 id|Tid
 suffix:semicolon
 DECL|member|Pid
-id|__u16
+id|__le16
 id|Pid
 suffix:semicolon
-multiline_comment|/* note: le */
 DECL|member|Uid
 id|__u16
 id|Uid
