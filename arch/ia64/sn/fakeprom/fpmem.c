@@ -29,12 +29,12 @@ DECL|macro|PROMRESERVED_SIZE
 mdefine_line|#define PROMRESERVED_SIZE&t;(1*MB)
 macro_line|#ifdef CONFIG_IA64_SGI_SN1
 DECL|macro|PHYS_ADDRESS
-mdefine_line|#define PHYS_ADDRESS(_n, _x)&t;&t;(((long)_n&lt;&lt;33L) | (long)_x)
+mdefine_line|#define PHYS_ADDRESS(_n, _x)&t;&t;(((long)_n&lt;&lt;33) | (long)_x)
 DECL|macro|MD_BANK_SHFT
 mdefine_line|#define MD_BANK_SHFT 30
 macro_line|#else
 DECL|macro|PHYS_ADDRESS
-mdefine_line|#define PHYS_ADDRESS(_n, _x)&t;&t;(((long)_n&lt;&lt;38L) | (long)_x | 0x3000000000UL)
+mdefine_line|#define PHYS_ADDRESS(_n, _x)&t;&t;(((long)_n&lt;&lt;38) | (long)_x | 0x3000000000UL)
 DECL|macro|MD_BANK_SHFT
 mdefine_line|#define MD_BANK_SHFT 34
 macro_line|#endif
@@ -121,7 +121,7 @@ dot
 id|cpuconfig
 op_amp
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 id|cpu
 )paren
@@ -288,25 +288,41 @@ r_case
 l_int|0
 suffix:colon
 r_return
-id|nmemmap.ena0
+id|BankPresent
+c_func
+(paren
+id|nmemmap.b0size
+)paren
 suffix:semicolon
 r_case
 l_int|1
 suffix:colon
 r_return
-id|nmemmap.ena1
+id|BankPresent
+c_func
+(paren
+id|nmemmap.b1size
+)paren
 suffix:semicolon
 r_case
 l_int|2
 suffix:colon
 r_return
-id|nmemmap.ena2
+id|BankPresent
+c_func
+(paren
+id|nmemmap.b2size
+)paren
 suffix:semicolon
 r_case
 l_int|3
 suffix:colon
 r_return
-id|nmemmap.ena3
+id|BankPresent
+c_func
+(paren
+id|nmemmap.b3size
+)paren
 suffix:semicolon
 r_default
 suffix:colon
@@ -328,6 +344,7 @@ id|node_memmap_t
 id|nmemmap
 )paren
 (brace
+multiline_comment|/*&n;&t; * Add 2 because there are 4 dimms per bank.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -338,45 +355,61 @@ r_case
 l_int|0
 suffix:colon
 r_return
+l_int|2
+op_plus
+(paren
 (paren
 r_int
 )paren
 id|nmemmap.b0size
 op_plus
 id|nmemmap.b0dou
+)paren
 suffix:semicolon
 r_case
 l_int|1
 suffix:colon
 r_return
+l_int|2
+op_plus
+(paren
 (paren
 r_int
 )paren
 id|nmemmap.b1size
 op_plus
 id|nmemmap.b1dou
+)paren
 suffix:semicolon
 r_case
 l_int|2
 suffix:colon
 r_return
+l_int|2
+op_plus
+(paren
 (paren
 r_int
 )paren
 id|nmemmap.b2size
 op_plus
 id|nmemmap.b2dou
+)paren
 suffix:semicolon
 r_case
 l_int|3
 suffix:colon
 r_return
+l_int|2
+op_plus
+(paren
 (paren
 r_int
 )paren
 id|nmemmap.b3size
 op_plus
 id|nmemmap.b3dou
+)paren
 suffix:semicolon
 r_default
 suffix:colon
@@ -516,7 +549,7 @@ l_int|0
 suffix:semicolon
 id|bank
 OL
-id|PLAT_CLUMPS_PER_NODE
+id|NR_BANKS_PER_NODE
 suffix:semicolon
 id|bank
 op_increment
@@ -568,6 +601,7 @@ id|bsize
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA64_SGI_SN2
+multiline_comment|/* &n;&t;&t;&t;&t; * Ignore directory.&n;&t;&t;&t;&t; * Shorten memory chunk by 1 page - makes a better&n;&t;&t;&t;&t; * testcase &amp; is more like the real PROM.&n;&t;&t;&t;&t; */
 id|numbytes
 op_assign
 id|numbytes
@@ -577,6 +611,32 @@ op_div
 l_int|32
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t;&t;&t;&t; * Only emulate the memory prom grabs&n;&t;&t;&t;&t; * if we have lots of memory, to allow&n;&t;&t;&t;&t; * us to simulate smaller memory configs than&n;&t;&t;&t;&t; * we can actually run on h/w.  Otherwise,&n;&t;&t;&t;&t; * linux throws away a whole &quot;granule&quot;.&n;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|cnode
+op_eq
+l_int|0
+op_logical_and
+id|bank
+op_eq
+l_int|0
+op_logical_and
+id|numbytes
+OG
+l_int|128
+op_star
+l_int|1024
+op_star
+l_int|1024
+)paren
+(brace
+id|numbytes
+op_sub_assign
+l_int|1000
+suffix:semicolon
+)brace
 multiline_comment|/*&n;                                 * Check for the node 0 hole. Since banks cant&n;                                 * span the hole, we only need to check if the end of&n;                                 * the range is the end of the hole.&n;                                 */
 r_if
 c_cond

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -364,8 +364,10 @@ DECL|typedef|capture_t
 id|capture_t
 suffix:semicolon
 multiline_comment|/*&n; * PORTING NOTE: revisit this statement. On hardware we put mbase at 0 and&n; * the rest of the tables have to start at 1MB to skip PROM tables.&n; */
+DECL|macro|THREADPRIVATESZ
+mdefine_line|#define THREADPRIVATESZ()&t;((sizeof(threadprivate_t)+511)/512*512)
 DECL|macro|THREADPRIVATE
-mdefine_line|#define THREADPRIVATE(t)&t;((threadprivate_t*)(((long)mbase)+1024*1024+t*((sizeof(threadprivate_t)+511)/512*512)))
+mdefine_line|#define THREADPRIVATE(t)&t;((threadprivate_t*)(((long)mbase)+4096+t*THREADPRIVATESZ()))
 DECL|macro|k_capture
 mdefine_line|#define k_capture&t;&t;mbase-&gt;sk_capture
 DECL|macro|k_go
@@ -4563,6 +4565,8 @@ op_assign
 id|state
 suffix:semicolon
 )brace
+DECL|macro|MINBLK
+mdefine_line|#define MINBLK&t;(16*1024*1024)
 r_static
 r_int
 DECL|function|build_mem_map
@@ -4584,6 +4588,8 @@ id|arg
 (brace
 r_int
 id|lstart
+comma
+id|lend
 suffix:semicolon
 r_int
 id|align
@@ -4592,7 +4598,6 @@ l_int|8
 op_star
 id|MB
 suffix:semicolon
-multiline_comment|/*&n;&t; * HACK - skip the kernel on the first node &n;&t; */
 id|printk
 (paren
 l_string|&quot;LLSC memmap: start 0x%lx, end 0x%lx, (0x%lx - 0x%lx)&bslash;n&quot;
@@ -4628,59 +4633,76 @@ c_cond
 id|memmapx
 op_ge
 id|MAPCHUNKS
+op_logical_or
+(paren
+id|end
+op_minus
+id|start
+)paren
+OL
+id|MINBLK
 )paren
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * Start in the middle of the range &amp; find the first non-free page in both directions&n;&t; * from the midpoint. This is likely to be the bigest free block.&n;&t; */
+id|lend
+op_assign
+id|lstart
+op_assign
+id|start
+op_plus
+(paren
+id|end
+op_minus
+id|start
+)paren
+op_div
+l_int|2
+suffix:semicolon
 r_while
 c_loop
 (paren
+id|lend
+OL
 id|end
-OG
-id|start
 op_logical_and
-(paren
+op_logical_neg
 id|PageReserved
 c_func
 (paren
 id|virt_to_page
 c_func
 (paren
-id|end
-op_minus
-id|PAGE_SIZE
+id|lend
 )paren
 )paren
-op_logical_or
+op_logical_and
 id|virt_to_page
 c_func
 (paren
-id|end
-op_minus
-id|PAGE_SIZE
+id|lend
 )paren
 op_member_access_from_pointer
 id|count.counter
-OG
+op_eq
 l_int|0
 )paren
-)paren
-id|end
-op_sub_assign
+id|lend
+op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
-id|lstart
-op_assign
-id|end
+id|lend
+op_sub_assign
+id|PAGE_SIZE
 suffix:semicolon
 r_while
 c_loop
 (paren
 id|lstart
-OG
+op_ge
 id|start
 op_logical_and
-(paren
 op_logical_neg
 id|PageReserved
 c_func
@@ -4689,8 +4711,6 @@ id|virt_to_page
 c_func
 (paren
 id|lstart
-op_minus
-id|PAGE_SIZE
 )paren
 )paren
 op_logical_and
@@ -4698,17 +4718,18 @@ id|virt_to_page
 c_func
 (paren
 id|lstart
-op_minus
-id|PAGE_SIZE
 )paren
 op_member_access_from_pointer
 id|count.counter
 op_eq
 l_int|0
 )paren
-)paren
 id|lstart
 op_sub_assign
+id|PAGE_SIZE
+suffix:semicolon
+id|lstart
+op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 id|lstart
@@ -4790,9 +4811,6 @@ id|llsc_main
 (paren
 r_int
 id|cpuid
-comma
-r_int
-id|mbasex
 )paren
 (brace
 r_int
@@ -4867,6 +4885,42 @@ c_cond
 id|is_master
 )paren
 (brace
+id|mbase
+op_assign
+(paren
+id|control_t
+op_star
+)paren
+id|__get_free_pages
+c_func
+(paren
+id|GFP_KERNEL
+comma
+id|get_order
+c_func
+(paren
+l_int|4096
+op_plus
+id|THREADPRIVATESZ
+c_func
+(paren
+)paren
+op_star
+id|LLSC_MAXCPUS
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;LLSC: mbase 0x%lx&bslash;n&quot;
+comma
+(paren
+r_int
+)paren
+id|mbase
+)paren
+suffix:semicolon
 id|print_params
 c_func
 (paren
@@ -4889,14 +4943,6 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-id|mbase
-op_assign
-(paren
-id|control_t
-op_star
-)paren
-id|mbasex
-suffix:semicolon
 id|k_currentpass
 op_assign
 l_int|0
@@ -5013,6 +5059,11 @@ op_assign
 id|i
 suffix:semicolon
 )brace
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|initialized
 op_assign
 l_int|1
@@ -5459,7 +5510,7 @@ c_loop
 (paren
 id|control_cpu
 op_ne
-id|NR_CPUS
+id|smp_num_cpus
 )paren
 (brace
 r_if
@@ -5467,7 +5518,11 @@ c_cond
 (paren
 id|mycpu
 op_eq
+id|cpu_logical_map
+c_func
+(paren
 id|control_cpu
+)paren
 )paren
 (brace
 r_for
@@ -5479,24 +5534,12 @@ l_int|0
 suffix:semicolon
 id|cpu
 OL
-id|NR_CPUS
+id|smp_num_cpus
 suffix:semicolon
 id|cpu
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cpu_online
-c_func
-(paren
-id|cpu
-)paren
-)paren
-r_continue
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -5504,7 +5547,11 @@ l_string|&quot;Sending interrupt from %d to %d&bslash;n&quot;
 comma
 id|mycpu
 comma
+id|cpu_logical_map
+c_func
+(paren
 id|cpu
+)paren
 )paren
 suffix:semicolon
 id|udelay
@@ -5521,7 +5568,11 @@ suffix:semicolon
 id|smp_send_reschedule
 c_func
 (paren
+id|cpu_logical_map
+c_func
+(paren
 id|cpu
+)paren
 )paren
 suffix:semicolon
 id|udelay
@@ -5538,7 +5589,11 @@ suffix:semicolon
 id|smp_send_reschedule
 c_func
 (paren
+id|cpu_logical_map
+c_func
+(paren
 id|cpu
+)paren
 )paren
 suffix:semicolon
 id|udelay
@@ -5567,9 +5622,13 @@ c_cond
 (paren
 id|mycpu
 op_eq
-id|NR_CPUS
+id|cpu_logical_map
+c_func
+(paren
+id|smp_num_cpus
 op_minus
 l_int|1
+)paren
 )paren
 (brace
 id|printk
@@ -5591,7 +5650,7 @@ suffix:colon
 l_int|1000000
 )paren
 suffix:semicolon
-id|local_irq_disable
+id|__cli
 c_func
 (paren
 )paren

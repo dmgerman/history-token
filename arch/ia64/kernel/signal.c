@@ -1997,17 +1997,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ka-&gt;sa.sa_flags
 op_amp
 id|SA_ONSTACK
 )paren
-(brace
-multiline_comment|/*&n;&t;&t; * We need to check the memory and register stacks separately, because&n;&t;&t; * they&squot;re switched separately (memory stack is switched in the kernel,&n;&t;&t; * register stack is switched in the signal trampoline).&n;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|on_sig_stack
+op_logical_and
+id|sas_ss_flags
 c_func
 (paren
 (paren
@@ -2016,7 +2012,10 @@ r_int
 )paren
 id|frame
 )paren
+op_eq
+l_int|0
 )paren
+(brace
 id|frame
 op_assign
 (paren
@@ -2038,6 +2037,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We need to check for the register stack being on the signal stack&n;&t;&t; * separately, because it&squot;s switched separately (memory stack is switched&n;&t;&t; * in the kernel, register stack is switched in the signal trampoline).&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2401,7 +2401,6 @@ op_star
 id|scr
 )paren
 (brace
-macro_line|#ifdef CONFIG_IA32_SUPPORT
 r_if
 c_cond
 (paren
@@ -2438,7 +2437,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 multiline_comment|/* send signal to IA-64 process */
 r_if
 c_cond
@@ -2567,6 +2565,8 @@ id|errno
 op_assign
 id|scr-&gt;pt.r8
 suffix:semicolon
+DECL|macro|ERR_CODE
+macro_line|#&t;define ERR_CODE(c)&t;(IS_IA32_PROCESS(&amp;scr-&gt;pt) ? -(c) : (c))
 multiline_comment|/*&n;&t; * In the ia64_leave_kernel code path, we want the common case to go fast, which&n;&t; * is why we may in certain cases get here from kernel mode. Just return without&n;&t; * doing anything if so.&n;&t; */
 r_if
 c_cond
@@ -2593,7 +2593,6 @@ op_assign
 op_amp
 id|current-&gt;blocked
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA32_SUPPORT
 r_if
 c_cond
 (paren
@@ -2631,7 +2630,6 @@ suffix:semicolon
 )brace
 )brace
 r_else
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2696,6 +2694,32 @@ id|errno
 )paren
 (brace
 r_case
+id|ERESTART_RESTARTBLOCK
+suffix:colon
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
+r_case
+id|ERESTARTNOHAND
+suffix:colon
+id|scr-&gt;pt.r8
+op_assign
+id|ERR_CODE
+c_func
+(paren
+id|EINTR
+)paren
+suffix:semicolon
+multiline_comment|/* note: scr-&gt;pt.r10 is already -1 */
+r_break
+suffix:semicolon
+r_case
 id|ERESTARTSYS
 suffix:colon
 r_if
@@ -2710,30 +2734,13 @@ op_eq
 l_int|0
 )paren
 (brace
-r_case
-id|ERESTARTNOHAND
-suffix:colon
-macro_line|#ifdef CONFIG_IA32_SUPPORT
-r_if
-c_cond
-(paren
-id|IS_IA32_PROCESS
+id|scr-&gt;pt.r8
+op_assign
+id|ERR_CODE
 c_func
 (paren
-op_amp
-id|scr-&gt;pt
-)paren
-)paren
-id|scr-&gt;pt.r8
-op_assign
-op_minus
 id|EINTR
-suffix:semicolon
-r_else
-macro_line|#endif
-id|scr-&gt;pt.r8
-op_assign
-id|EINTR
+)paren
 suffix:semicolon
 multiline_comment|/* note: scr-&gt;pt.r10 is already -1 */
 r_break
@@ -2742,7 +2749,6 @@ suffix:semicolon
 r_case
 id|ERESTARTNOINTR
 suffix:colon
-macro_line|#ifdef CONFIG_IA32_SUPPORT
 r_if
 c_cond
 (paren
@@ -2764,7 +2770,6 @@ l_int|2
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 id|ia64_decrement_ip
 c_func
 (paren
@@ -2819,9 +2824,12 @@ op_logical_or
 id|errno
 op_eq
 id|ERESTARTNOINTR
+op_logical_or
+id|errno
+op_eq
+id|ERESTART_RESTARTBLOCK
 )paren
 (brace
-macro_line|#ifdef CONFIG_IA32_SUPPORT
 r_if
 c_cond
 (paren
@@ -2841,10 +2849,28 @@ id|scr-&gt;pt.cr_iip
 op_sub_assign
 l_int|2
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|errno
+op_eq
+id|ERESTART_RESTARTBLOCK
+)paren
+(brace
+id|scr-&gt;pt.r8
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* x86 version of __NR_restart_syscall */
+id|scr-&gt;pt.cr_iip
+op_sub_assign
+l_int|2
+suffix:semicolon
+)brace
 )brace
 r_else
-macro_line|#endif
-multiline_comment|/*&n;&t;&t;&t; * Note: the syscall number is in r15 which is saved in pt_regs so&n;&t;&t;&t; * all we need to do here is adjust ip so that the &quot;break&quot;&n;&t;&t;&t; * instruction gets re-executed.&n;&t;&t;&t; */
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Note: the syscall number is in r15 which is saved in&n;&t;&t;&t;&t; * pt_regs so all we need to do here is adjust ip so that&n;&t;&t;&t;&t; * the &quot;break&quot; instruction gets re-executed.&n;&t;&t;&t;&t; */
 id|ia64_decrement_ip
 c_func
 (paren
@@ -2852,6 +2878,18 @@ op_amp
 id|scr-&gt;pt
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|errno
+op_eq
+id|ERESTART_RESTARTBLOCK
+)paren
+id|scr-&gt;pt.r15
+op_assign
+id|__NR_restart_syscall
+suffix:semicolon
+)brace
 )brace
 )brace
 r_return

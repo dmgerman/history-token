@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id: sn_private.h,v 1.1 2002/02/28 17:31:26 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SN2_SN_PRIVATE_H
 DECL|macro|_ASM_IA64_SN_SN2_SN_PRIVATE_H
 mdefine_line|#define _ASM_IA64_SN_SN2_SN_PRIVATE_H
@@ -87,7 +87,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|is_master_nasid_widget
+id|is_master_baseio_nasid_widget
 c_func
 (paren
 id|nasid_t
@@ -245,6 +245,7 @@ c_func
 id|paddr_t
 )paren
 suffix:semicolon
+macro_line|#ifdef LATER
 r_extern
 r_void
 id|get_dir_ent
@@ -266,6 +267,7 @@ op_star
 id|elo
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* intr.c */
 r_extern
 r_int

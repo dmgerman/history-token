@@ -1,4 +1,5 @@
 multiline_comment|/* $Id: io.c,v 1.2 2001/06/26 14:02:43 pfg Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
@@ -31,23 +32,6 @@ id|devfs_handle_t
 id|hubv
 )paren
 suffix:semicolon
-multiline_comment|/*      &n; * hub_device_desc_update               &n; *      Update the passed in device descriptor with the actual the&n; *      target cpu number and interrupt priority level.&n; *      NOTE : These might be the same as the ones passed in thru&n; *      the descriptor.&n; */
-r_void
-DECL|function|hub_device_desc_update
-id|hub_device_desc_update
-c_func
-(paren
-id|device_desc_t
-id|dev_desc
-comma
-id|ilvl_t
-id|intr_swlevel
-comma
-id|cpuid_t
-id|cpu
-)paren
-(brace
-)brace
 multiline_comment|/*&n; * Perform any initializations needed to support hub-based I/O.&n; * Called once during startup.&n; */
 r_void
 DECL|function|hubio_init
@@ -57,22 +41,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef&t;LATER
-multiline_comment|/* This isn&squot;t needed unless we port the entire sio driver ... */
-r_extern
-r_void
-id|early_brl1_port_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|early_brl1_port_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* &n; * Implementation of hub iobus operations.&n; *&n; * Hub provides a crosstalk &quot;iobus&quot; on IP27 systems.  These routines&n; * provide a platform-specific implementation of xtalk used by all xtalk &n; * cards on IP27 systems.&n; *&n; * Called from corresponding xtalk_* routines.&n; */
 multiline_comment|/* PIO MANAGEMENT */
@@ -340,6 +308,14 @@ r_int
 r_int
 id|s
 suffix:semicolon
+id|caddr_t
+id|kvaddr
+suffix:semicolon
+macro_line|#ifdef PIOMAP_UNC_ACC_SPACE
+r_uint64
+id|addr
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* sanity check */
 r_if
 c_cond
@@ -370,7 +346,12 @@ id|byte_count
 op_le
 id|SWIN_SIZE
 )paren
-r_return
+(brace
+id|hub_piomap_t
+id|piomap
+suffix:semicolon
+id|piomap
+op_assign
 id|hubinfo_swin_piomap_get
 c_func
 (paren
@@ -382,6 +363,39 @@ r_int
 id|widget
 )paren
 suffix:semicolon
+macro_line|#ifdef PIOMAP_UNC_ACC_SPACE
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|PIOMAP_UNC_ACC
+)paren
+(brace
+id|addr
+op_assign
+(paren
+r_uint64
+)paren
+id|piomap-&gt;hpio_xtalk_info.xp_kvaddr
+suffix:semicolon
+id|addr
+op_or_assign
+id|PIOMAP_UNC_ACC_SPACE
+suffix:semicolon
+id|piomap-&gt;hpio_xtalk_info.xp_kvaddr
+op_assign
+(paren
+id|caddr_t
+)paren
+id|addr
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+id|piomap
+suffix:semicolon
+)brace
 multiline_comment|/* We need to use a big window mapping.  */
 multiline_comment|/*&n;&t; * TBD: Allow requests that would consume multiple big windows --&n;&t; * split the request up and use multiple mapping entries.&n;&t; * For now, reject requests that span big windows.&n;&t; */
 r_if
@@ -657,7 +671,7 @@ id|bw_piomap-&gt;hpio_xtalk_info.xp_xtalk_addr
 op_assign
 id|xtalk_addr
 suffix:semicolon
-id|bw_piomap-&gt;hpio_xtalk_info.xp_kvaddr
+id|kvaddr
 op_assign
 (paren
 id|caddr_t
@@ -669,6 +683,39 @@ id|nasid
 comma
 id|free_bw_index
 )paren
+suffix:semicolon
+macro_line|#ifdef PIOMAP_UNC_ACC_SPACE
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|PIOMAP_UNC_ACC
+)paren
+(brace
+id|addr
+op_assign
+(paren
+r_uint64
+)paren
+id|kvaddr
+suffix:semicolon
+id|addr
+op_or_assign
+id|PIOMAP_UNC_ACC_SPACE
+suffix:semicolon
+id|kvaddr
+op_assign
+(paren
+id|caddr_t
+)paren
+id|addr
+suffix:semicolon
+)brace
+macro_line|#endif
+id|bw_piomap-&gt;hpio_xtalk_info.xp_kvaddr
+op_assign
+id|kvaddr
 suffix:semicolon
 id|bw_piomap-&gt;hpio_holdcnt
 op_increment
@@ -1004,6 +1051,9 @@ suffix:semicolon
 id|hubinfo_t
 id|hubinfo
 suffix:semicolon
+id|caddr_t
+id|addr
+suffix:semicolon
 id|hubinfo_get
 c_func
 (paren
@@ -1036,7 +1086,8 @@ r_int
 id|widget
 )paren
 suffix:semicolon
-r_return
+id|addr
+op_assign
 id|hub_piomap_addr
 c_func
 (paren
@@ -1047,6 +1098,41 @@ comma
 id|byte_count
 )paren
 suffix:semicolon
+macro_line|#ifdef PIOMAP_UNC_ACC_SPACE
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|PIOMAP_UNC_ACC
+)paren
+(brace
+r_uint64
+id|iaddr
+suffix:semicolon
+id|iaddr
+op_assign
+(paren
+r_uint64
+)paren
+id|addr
+suffix:semicolon
+id|iaddr
+op_or_assign
+id|PIOMAP_UNC_ACC_SPACE
+suffix:semicolon
+id|addr
+op_assign
+(paren
+id|caddr_t
+)paren
+id|iaddr
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+id|addr
+suffix:semicolon
 )brace
 r_else
 r_return
@@ -1055,18 +1141,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* DMA MANAGEMENT */
 multiline_comment|/* Mapping from crosstalk space to system physical space */
-multiline_comment|/* &n; * There&squot;s not really very much to do here, since crosstalk maps&n; * directly to system physical space.  It&squot;s quite possible that this&n; * DMA layer will be bypassed in performance kernels.&n; */
-multiline_comment|/* ARGSUSED */
-r_void
-DECL|function|hub_dma_init
-id|hub_dma_init
-c_func
-(paren
-id|devfs_handle_t
-id|hubv
-)paren
-(brace
-)brace
 multiline_comment|/*&n; * Allocate resources needed to set up DMA mappings up to a specified size&n; * on a specified adapter.&n; * &n; * We don&squot;t actually use the adapter ID for anything.  It&squot;s just the adapter&n; * that the lower level driver plans to use for DMA.&n; */
 multiline_comment|/* ARGSUSED */
 id|hub_dmamap_t
@@ -1279,9 +1353,22 @@ id|HUB_DMAMAP_USED
 suffix:semicolon
 )brace
 multiline_comment|/* There isn&squot;t actually any DMA mapping hardware on the hub. */
+macro_line|#ifdef CONFIG_IA64_SGI_SN2
+r_return
+(paren
+id|PHYS_TO_DMA
+c_func
+(paren
+id|paddr
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* no translation needed */
 r_return
 id|paddr
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Establish a DMA mapping using the resources allocated in a previous dmamap_alloc.&n; * Return an appropriate crosstalk address list that maps to the specified physical &n; * address list.&n; */
 multiline_comment|/* ARGSUSED */
@@ -1478,10 +1565,22 @@ id|flags
 )paren
 multiline_comment|/* defined in dma.h */
 (brace
+macro_line|#ifdef CONFIG_IA64_SGI_SN2
+r_return
+(paren
+id|PHYS_TO_DMA
+c_func
+(paren
+id|paddr
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
 multiline_comment|/* no translation needed */
 r_return
 id|paddr
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Translate a list of IP27 addresses and lengths into a list of crosstalk &n; * addresses and lengths.  No actual hardware mapping takes place; the hub &n; * has no DMA mapping registers -- crosstalk addresses map directly.&n; */
 multiline_comment|/* ARGSUSED */
@@ -1507,6 +1606,11 @@ id|flags
 )paren
 multiline_comment|/* defined in dma.h */
 (brace
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* no translation needed */
 r_return
 id|palenlist
@@ -1570,15 +1674,6 @@ id|hubv
 (brace
 r_extern
 r_void
-id|hub_dma_init
-c_func
-(paren
-id|devfs_handle_t
-id|hubv
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|hub_pio_init
 c_func
 (paren
@@ -1587,12 +1682,6 @@ id|hubv
 )paren
 suffix:semicolon
 id|hub_pio_init
-c_func
-(paren
-id|hubv
-)paren
-suffix:semicolon
-id|hub_dma_init
 c_func
 (paren
 id|hubv
@@ -1888,7 +1977,6 @@ suffix:semicolon
 r_int
 id|prb_offset
 suffix:semicolon
-macro_line|#ifdef LATER
 r_extern
 r_int
 id|force_fire_and_forget
@@ -1917,7 +2005,6 @@ id|conveyor
 op_assign
 id|HUB_PIO_FIRE_N_FORGET
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Get the current register value.&n;&t; */
 id|prb_offset
 op_assign

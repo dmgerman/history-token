@@ -338,11 +338,11 @@ id|ia64_cpu_to_sapicid
 )paren
 suffix:semicolon
 macro_line|#else /* !CONFIG_SMP */
-DECL|variable|__flush_tlb_all
+DECL|variable|local_flush_tlb_all
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__flush_tlb_all
+id|local_flush_tlb_all
 )paren
 suffix:semicolon
 macro_line|#endif /* !CONFIG_SMP */

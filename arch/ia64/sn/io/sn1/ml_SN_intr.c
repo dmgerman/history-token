@@ -1,6 +1,6 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id: ml_SN_intr.c,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 multiline_comment|/*&n; * intr.c-&n; *&t;This file contains all of the routines necessary to set up and&n; *&t;handle interrupts on an IP27 board.&n; */
-macro_line|#ident  &quot;$Revision: 1.167 $&quot;
+macro_line|#ident  &quot;$Revision: 1.1 $&quot;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -3593,24 +3593,12 @@ l_int|0
 suffix:semicolon
 id|cpu
 OL
-id|NR_CPUS
+id|smp_num_cpus
 suffix:semicolon
 id|cpu
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cpu_online
-c_func
-(paren
-id|cpu
-)paren
-)paren
-r_continue
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3632,7 +3620,7 @@ c_cond
 (paren
 id|cpu
 op_eq
-id|NR_CPUS
+id|smp_num_cpus
 )paren
 id|cpu
 op_assign
@@ -3684,7 +3672,7 @@ c_loop
 suffix:semicolon
 id|cpu
 OL
-id|NR_CPUS
+id|smp_num_cpus
 op_logical_and
 id|cpu_enabled
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001 Silicon Graphics, Inc.  All rights reserved.&n; */
+multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001-2002 Silicon Graphics, Inc.  All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SN2_ADDRS_H
 DECL|macro|_ASM_IA64_SN_SN2_ADDRS_H
 mdefine_line|#define _ASM_IA64_SN_SN2_ADDRS_H
@@ -63,10 +63,14 @@ mdefine_line|#define TO_PHYS_MASK&t;&t;0x0001ffcfffffffff&t;/* Note - clear AS b
 multiline_comment|/* Regions determined by AS */
 DECL|macro|LOCAL_MMR_SPACE
 mdefine_line|#define LOCAL_MMR_SPACE&t;&t;0xc000008000000000&t;/* Local MMR space */
+DECL|macro|LOCAL_PHYS_MMR_SPACE
+mdefine_line|#define LOCAL_PHYS_MMR_SPACE&t;0x8000008000000000&t;/* Local PhysicalMMR space */
 DECL|macro|LOCAL_MEM_SPACE
 mdefine_line|#define LOCAL_MEM_SPACE&t;&t;0xc000010000000000&t;/* Local Memory space */
 DECL|macro|GLOBAL_MMR_SPACE
 mdefine_line|#define GLOBAL_MMR_SPACE&t;0xc000000800000000&t;/* Global MMR space */
+DECL|macro|GLOBAL_PHYS_MMR_SPACE
+mdefine_line|#define GLOBAL_PHYS_MMR_SPACE&t;0x0000000800000000&t;/* Global Physical MMR space */
 DECL|macro|GET_SPACE
 mdefine_line|#define GET_SPACE&t;&t;0xc000001000000000&t;/* GET space */
 DECL|macro|AMO_SPACE
@@ -75,17 +79,25 @@ DECL|macro|CACHEABLE_MEM_SPACE
 mdefine_line|#define CACHEABLE_MEM_SPACE&t;0xe000003000000000&t;/* Cacheable memory space */
 DECL|macro|UNCACHED
 mdefine_line|#define UNCACHED                0xc000000000000000      /* UnCacheable memory space */
+DECL|macro|UNCACHED_PHYS
+mdefine_line|#define UNCACHED_PHYS           0x8000000000000000      /* UnCacheable physical memory space */
+DECL|macro|PHYS_MEM_SPACE
+mdefine_line|#define PHYS_MEM_SPACE&t;&t;0x0000003000000000&t;/* physical memory space */
 multiline_comment|/* SN2 address macros */
 DECL|macro|NID_SHFT
 mdefine_line|#define NID_SHFT&t;&t;38
 DECL|macro|LOCAL_MMR_ADDR
 mdefine_line|#define LOCAL_MMR_ADDR(a)&t;(UNCACHED | LOCAL_MMR_SPACE | (a))
+DECL|macro|LOCAL_MMR_PHYS_ADDR
+mdefine_line|#define LOCAL_MMR_PHYS_ADDR(a)&t;(UNCACHED_PHYS | LOCAL_PHYS_MMR_SPACE | (a))
 DECL|macro|LOCAL_MEM_ADDR
 mdefine_line|#define LOCAL_MEM_ADDR(a)&t;(LOCAL_MEM_SPACE | (a))
 DECL|macro|REMOTE_ADDR
 mdefine_line|#define REMOTE_ADDR(n,a)&t;((((unsigned long)(n))&lt;&lt;NID_SHFT) | (a))
 DECL|macro|GLOBAL_MMR_ADDR
 mdefine_line|#define GLOBAL_MMR_ADDR(n,a)&t;(UNCACHED | GLOBAL_MMR_SPACE | REMOTE_ADDR(n,a))
+DECL|macro|GLOBAL_MMR_PHYS_ADDR
+mdefine_line|#define GLOBAL_MMR_PHYS_ADDR(n,a) (UNCACHED_PHYS | GLOBAL_PHYS_MMR_SPACE | REMOTE_ADDR(n,a))
 DECL|macro|GET_ADDR
 mdefine_line|#define GET_ADDR(n,a)&t;&t;(GET_SPACE | REMOTE_ADDR(n,a))
 DECL|macro|AMO_ADDR
@@ -146,8 +158,13 @@ DECL|macro|NASID_MASK
 mdefine_line|#define NASID_MASK              (UINT64_CAST NASID_BITMASK &lt;&lt; NASID_SHFT)
 DECL|macro|NASID_GET
 mdefine_line|#define NASID_GET(_pa)          (int) ((UINT64_CAST (_pa) &gt;&gt;            &bslash;&n;                                        NASID_SHFT) &amp; NASID_BITMASK)
+DECL|macro|PHYS_TO_DMA
+mdefine_line|#define PHYS_TO_DMA(x)          ( ((x &amp; NASID_MASK) &gt;&gt; 2) |             &bslash;&n;                                  (x &amp; (NODE_ADDRSPACE_SIZE - 1)) )
 DECL|macro|CHANGE_NASID
 mdefine_line|#define CHANGE_NASID(n,x)&t;({ia64_sn2_pa_t _v; _v.l = (long) (x); _v.f.nasid = n; _v.p;})
+multiline_comment|/*&n; * Determine if a physical address should be referenced as cached or uncached. &n; * For now, assume all memory is cached and everything else is noncached.&n; * (Later, we may need to special case areas of memory to be reference uncached).&n; */
+DECL|macro|IS_CACHED_ADDRESS
+mdefine_line|#define IS_CACHED_ADDRESS(x)&t;(((x) &amp; PHYS_MEM_SPACE) == PHYS_MEM_SPACE)
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|NODE_SWIN_BASE
 mdefine_line|#define NODE_SWIN_BASE(nasid, widget)                                   &bslash;&n;        ((widget == 0) ? NODE_BWIN_BASE((nasid), SWIN0_BIGWIN)          &bslash;&n;        : RAW_NODE_SWIN_BASE(nasid, widget))

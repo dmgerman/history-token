@@ -205,8 +205,8 @@ DECL|macro|__NR_vhangup
 mdefine_line|#define __NR_vhangup&t;&t;&t;1123
 DECL|macro|__NR_lchown
 mdefine_line|#define __NR_lchown&t;&t;&t;1124
-DECL|macro|__NR_vm86
-mdefine_line|#define __NR_vm86&t;&t;&t;1125
+DECL|macro|__NR_remap_file_pages
+mdefine_line|#define __NR_remap_file_pages&t;&t;1125
 DECL|macro|__NR_wait4
 mdefine_line|#define __NR_wait4&t;&t;&t;1126
 DECL|macro|__NR_sysinfo
@@ -219,16 +219,13 @@ DECL|macro|__NR_uname
 mdefine_line|#define __NR_uname&t;&t;&t;1130
 DECL|macro|__NR_adjtimex
 mdefine_line|#define __NR_adjtimex&t;&t;&t;1131
-DECL|macro|__NR_create_module
-mdefine_line|#define __NR_create_module&t;&t;1132
+multiline_comment|/* 1132 was __NR_create_module */
 DECL|macro|__NR_init_module
 mdefine_line|#define __NR_init_module&t;&t;1133
 DECL|macro|__NR_delete_module
 mdefine_line|#define __NR_delete_module&t;&t;1134
-DECL|macro|__NR_get_kernel_syms
-mdefine_line|#define __NR_get_kernel_syms&t;&t;1135
-DECL|macro|__NR_query_module
-mdefine_line|#define __NR_query_module&t;&t;1136
+multiline_comment|/* 1135 was __NR_get_kernel_syms */
+multiline_comment|/* 1136 was __NR_query_module */
 DECL|macro|__NR_quotactl
 mdefine_line|#define __NR_quotactl&t;&t;&t;1137
 DECL|macro|__NR_bdflush
@@ -420,7 +417,8 @@ DECL|macro|__NR_sched_setaffinity
 mdefine_line|#define __NR_sched_setaffinity&t;&t;1231
 DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;&t;1232
-multiline_comment|/* 1233 currently unused */
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address&t;&t;1233
 DECL|macro|__NR_alloc_hugepages
 mdefine_line|#define __NR_alloc_hugepages&t;&t;1234
 DECL|macro|__NR_free_hugepages
@@ -445,8 +443,10 @@ DECL|macro|__NR_epoll_ctl
 mdefine_line|#define __NR_epoll_ctl&t;&t;&t;1244
 DECL|macro|__NR_epoll_wait
 mdefine_line|#define __NR_epoll_wait&t;&t;&t;1245
+DECL|macro|__NR_restart_syscall
+mdefine_line|#define __NR_restart_syscall&t;&t;1246
 DECL|macro|__NR_semtimedop
-mdefine_line|#define __NR_semtimedop&t;&t;&t;1246
+mdefine_line|#define __NR_semtimedop&t;&t;&t;1247
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int

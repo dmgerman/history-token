@@ -565,6 +565,9 @@ id|p
 comma
 op_star
 id|q
+comma
+op_star
+id|r
 suffix:semicolon
 id|efi_memory_desc_t
 op_star
@@ -764,16 +767,30 @@ id|granule_addr
 r_continue
 suffix:semicolon
 multiline_comment|/* couldn&squot;t find enough contiguous memory */
-)brace
-multiline_comment|/* BUG_ON((md-&gt;phys_addr &gt;&gt; IA64_GRANULE_SHIFT) &lt; first_non_wb_addr); */
+r_for
+c_loop
+(paren
+id|r
+op_assign
+id|p
+suffix:semicolon
+id|r
+OL
+id|q
+suffix:semicolon
+id|r
+op_add_assign
+id|efi_desc_size
+)paren
 id|trim_top
 c_func
 (paren
-id|md
+id|r
 comma
 id|first_non_wb_addr
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -106,21 +106,24 @@ multiline_comment|/* al_flags field */
 DECL|macro|AL_FIXED_SIZE
 mdefine_line|#define AL_FIXED_SIZE&t;0x1&t;/* List is pre-allocated, and of fixed size */
 DECL|variable|alenlist_zone
-id|zone_t
+r_struct
+id|zone
 op_star
 id|alenlist_zone
 op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|alenlist_chunk_zone
-id|zone_t
+r_struct
+id|zone
 op_star
 id|alenlist_chunk_zone
 op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|alenlist_cursor_zone
-id|zone_t
+r_struct
+id|zone
 op_star
 id|alenlist_cursor_zone
 op_assign

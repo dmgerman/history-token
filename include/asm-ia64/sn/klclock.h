@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_IA64_SN_KLCLOCK_H
 DECL|macro|_ASM_IA64_SN_KLCLOCK_H
 mdefine_line|#define _ASM_IA64_SN_KLCLOCK_H
 macro_line|#include &lt;asm/sn/ioc3.h&gt;
+macro_line|#include &lt;asm/sn/ioc4.h&gt;
 DECL|macro|RTC_BASE_ADDR
 mdefine_line|#define RTC_BASE_ADDR&t;&t;(unsigned char *)(nvram_base)
 multiline_comment|/* Defines for the SGS-Thomson M48T35 clock */

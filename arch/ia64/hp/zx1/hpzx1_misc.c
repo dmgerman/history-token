@@ -928,14 +928,6 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|dev-&gt;dev.name
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
 id|dev-&gt;dev.bus_id
 comma
 id|dev-&gt;slot_name
@@ -1696,7 +1688,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 DECL|function|hpzx1_init
 id|hpzx1_init
 (paren
@@ -1718,6 +1710,9 @@ id|sba_init
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|hpzx1_init

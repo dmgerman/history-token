@@ -15,6 +15,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if 0
 macro_line|#ifdef CONFIG_IA64_SGI_AUTOTEST
 (brace
 r_extern
@@ -33,10 +34,6 @@ id|llsc_main
 c_func
 (paren
 r_int
-comma
-r_int
-comma
-r_int
 )paren
 suffix:semicolon
 id|llsc_main
@@ -46,10 +43,6 @@ id|smp_processor_id
 c_func
 (paren
 )paren
-comma
-l_int|0xe000000000000000LL
-comma
-l_int|0xe000000001000000LL
 )paren
 suffix:semicolon
 )brace
@@ -92,6 +85,7 @@ id|pda.idle_flag
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 )brace
 r_static
 id|__inline__
@@ -103,6 +97,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if 0
 multiline_comment|/* &n;&t; * Turn the activity LED on.&n;&t; */
 id|set_led_bits
 c_func
@@ -116,6 +111,7 @@ id|pda.idle_flag
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#endif /* _ASM_IA64_SN_IDLE_H */
 eof
