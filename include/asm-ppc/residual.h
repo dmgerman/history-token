@@ -1201,6 +1201,10 @@ DECL|typedef|RESIDUAL
 )brace
 id|RESIDUAL
 suffix:semicolon
+multiline_comment|/*&n; * Forward declaration - we can&squot;t include &lt;linux/pci.h&gt; because it&n; * breaks the boot loader&n; */
+r_struct
+id|pci_dev
+suffix:semicolon
 r_extern
 id|RESIDUAL
 op_star
@@ -1240,6 +1244,17 @@ id|Interface
 comma
 r_int
 id|n
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|residual_pcidev_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
 )paren
 suffix:semicolon
 r_extern
