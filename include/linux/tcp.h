@@ -1331,6 +1331,28 @@ DECL|member|vegas
 )brace
 id|vegas
 suffix:semicolon
+multiline_comment|/* BI TCP Parameters */
+r_struct
+(brace
+DECL|member|cnt
+id|__u32
+id|cnt
+suffix:semicolon
+multiline_comment|/* increase cwnd by 1 after this number of ACKs */
+DECL|member|last_max_cwnd
+id|__u32
+id|last_max_cwnd
+suffix:semicolon
+multiline_comment|/* last maximium snd_cwnd */
+DECL|member|last_cwnd
+id|__u32
+id|last_cwnd
+suffix:semicolon
+multiline_comment|/* the last snd_cwnd */
+DECL|member|bictcp
+)brace
+id|bictcp
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* WARNING: don&squot;t change the layout of the members in tcp_sock! */

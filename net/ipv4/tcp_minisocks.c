@@ -2876,6 +2876,16 @@ id|newtp-&gt;snd_cwnd_cnt
 op_assign
 l_int|0
 suffix:semicolon
+id|newtp-&gt;bictcp.cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|newtp-&gt;bictcp.last_max_cwnd
+op_assign
+id|newtp-&gt;bictcp.last_cwnd
+op_assign
+l_int|0
+suffix:semicolon
 id|newtp-&gt;frto_counter
 op_assign
 l_int|0

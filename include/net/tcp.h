@@ -1121,6 +1121,14 @@ macro_line|#else
 DECL|macro|TCP_TW_RECYCLE_TICK
 macro_line|# define TCP_TW_RECYCLE_TICK (12+2-TCP_TW_RECYCLE_SLOTS_LOG)
 macro_line|#endif
+DECL|macro|BICTCP_1_OVER_BETA
+mdefine_line|#define BICTCP_1_OVER_BETA&t;8&t;/*&n;&t;&t;&t;&t;&t; * Fast recovery&n;&t;&t;&t;&t;&t; * multiplicative decrease factor&n;&t;&t;&t;&t;&t; */
+DECL|macro|BICTCP_MAX_INCREMENT
+mdefine_line|#define BICTCP_MAX_INCREMENT 32&t;&t;/*&n;&t;&t;&t;&t;&t; * Limit on the amount of&n;&t;&t;&t;&t;&t; * increment allowed during&n;&t;&t;&t;&t;&t; * binary search.&n;&t;&t;&t;&t;&t; */
+DECL|macro|BICTCP_FUNC_OF_MIN_INCR
+mdefine_line|#define BICTCP_FUNC_OF_MIN_INCR 11&t;/*&n;&t;&t;&t;&t;&t; * log(B/Smin)/log(B/(B-1))+1,&n;&t;&t;&t;&t;&t; * Smin:min increment&n;&t;&t;&t;&t;&t; * B:log factor&n;&t;&t;&t;&t;&t; */
+DECL|macro|BICTCP_B
+mdefine_line|#define BICTCP_B&t;&t;4&t; /*&n;&t;&t;&t;&t;&t;  * In binary search,&n;&t;&t;&t;&t;&t;  * go to point (max+min)/N&n;&t;&t;&t;&t;&t;  */
 multiline_comment|/*&n; *&t;TCP option&n; */
 DECL|macro|TCPOPT_NOP
 mdefine_line|#define TCPOPT_NOP&t;&t;1&t;/* Padding */
@@ -1338,6 +1346,18 @@ suffix:semicolon
 r_extern
 r_int
 id|sysctl_tcp_nometrics_save
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_tcp_bic
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_tcp_bic_fast_convergence
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_tcp_bic_low_window
 suffix:semicolon
 r_extern
 id|atomic_t
@@ -3980,7 +4000,7 @@ op_plus
 id|tp-&gt;retrans_out
 suffix:semicolon
 )brace
-multiline_comment|/* Recalculate snd_ssthresh, we want to set it to:&n; *&n; * &t;one half the current congestion window, but no&n; *&t;less than two segments&n; */
+multiline_comment|/* Recalculate snd_ssthresh, we want to set it to:&n; *&n; * Reno:&n; * &t;one half the current congestion window, but no&n; *&t;less than two segments&n; *&n; * BIC:&n; *&t;behave like Reno until low_window is reached,&n; *&t;then increase congestion window slowly&n; */
 DECL|function|tcp_recalc_ssthresh
 r_static
 r_inline
@@ -3994,6 +4014,69 @@ op_star
 id|tp
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|sysctl_tcp_bic
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sysctl_tcp_bic_fast_convergence
+op_logical_and
+id|tp-&gt;snd_cwnd
+OL
+id|tp-&gt;bictcp.last_max_cwnd
+)paren
+id|tp-&gt;bictcp.last_max_cwnd
+op_assign
+(paren
+id|tp-&gt;snd_cwnd
+op_star
+(paren
+l_int|2
+op_star
+id|BICTCP_1_OVER_BETA
+op_minus
+l_int|1
+)paren
+)paren
+op_div
+(paren
+id|BICTCP_1_OVER_BETA
+op_div
+l_int|2
+)paren
+suffix:semicolon
+r_else
+id|tp-&gt;bictcp.last_max_cwnd
+op_assign
+id|tp-&gt;snd_cwnd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tp-&gt;snd_cwnd
+OG
+id|sysctl_tcp_bic_low_window
+)paren
+r_return
+id|max
+c_func
+(paren
+id|tp-&gt;snd_cwnd
+op_minus
+(paren
+id|tp-&gt;snd_cwnd
+op_div
+id|BICTCP_1_OVER_BETA
+)paren
+comma
+l_int|2U
+)paren
+suffix:semicolon
+)brace
 r_return
 id|max
 c_func
