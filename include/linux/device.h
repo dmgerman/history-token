@@ -886,6 +886,11 @@ op_star
 r_class
 suffix:semicolon
 multiline_comment|/* required */
+DECL|member|devt
+id|dev_t
+id|devt
+suffix:semicolon
+multiline_comment|/* dev_t, creates the sysfs &quot;dev&quot; */
 DECL|member|dev
 r_struct
 id|device
