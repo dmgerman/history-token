@@ -4370,10 +4370,10 @@ id|reg
 )paren
 suffix:semicolon
 multiline_comment|/* Magic delay.  Bleah yucky.  */
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -4446,10 +4446,10 @@ comma
 id|val
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* a little delay here seems better.. */

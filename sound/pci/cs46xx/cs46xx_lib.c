@@ -215,7 +215,7 @@ op_or
 id|ACCTL_VFRM
 )paren
 suffix:semicolon
-id|mdelay
+id|msleep
 c_func
 (paren
 l_int|50
