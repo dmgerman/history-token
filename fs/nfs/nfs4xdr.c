@@ -14,9 +14,6 @@ macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs4.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
-multiline_comment|/* Emperically, it seems that the NFS client gets confused if&n; * cookies larger than this are returned -- presumably a&n; * signedness issue?&n; */
-DECL|macro|COOKIE_MAX
-mdefine_line|#define COOKIE_MAX&t;&t;0x7fffffff
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_XDR
 multiline_comment|/* Mapping from NFS error code to &quot;errno&quot; error code. */
@@ -9661,17 +9658,6 @@ c_func
 (paren
 id|entry-&gt;len
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|entry-&gt;cookie
-OG
-id|COOKIE_MAX
-)paren
-id|entry-&gt;cookie
-op_assign
-id|COOKIE_MAX
 suffix:semicolon
 multiline_comment|/*&n;&t; * In case the server doesn&squot;t return an inode number,&n;&t; * we fake one here.  (We don&squot;t use inode number 0,&n;&t; * since glibc seems to choke on it...)&n;&t; */
 id|entry-&gt;ino
