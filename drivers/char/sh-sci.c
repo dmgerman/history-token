@@ -5654,6 +5654,7 @@ r_void
 suffix:semicolon
 macro_line|#endif
 DECL|function|sci_console_init
+r_static
 r_void
 id|__init
 id|sci_console_init
@@ -5678,5 +5679,12 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|variable|sci_console_init
+id|console_initcall
+c_func
+(paren
+id|sci_console_init
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_SERIAL_CONSOLE */
 eof

@@ -1531,6 +1531,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|hvc_console_init
+r_static
 r_int
 id|__init
 id|hvc_console_init
@@ -1550,6 +1551,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hvc_console_init
+id|console_initcall
+c_func
+(paren
+id|hvc_console_init
+)paren
+suffix:semicolon
 DECL|variable|hvc_init
 id|module_init
 c_func

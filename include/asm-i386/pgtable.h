@@ -52,8 +52,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|macro|__beep
-mdefine_line|#define __beep() asm(&quot;movb $0x3,%al; outb %al,$0x61&quot;)
 DECL|macro|PMD_SIZE
 mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
 DECL|macro|PMD_MASK

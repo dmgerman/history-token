@@ -965,7 +965,9 @@ id|CON_PRINTBUFFER
 )paren
 suffix:semicolon
 DECL|function|stdio_console_init
+r_static
 r_void
+id|__init
 id|stdio_console_init
 c_func
 (paren
@@ -1007,6 +1009,13 @@ id|stdiocons
 )paren
 suffix:semicolon
 )brace
+DECL|variable|stdio_console_init
+id|console_initcall
+c_func
+(paren
+id|stdio_console_init
+)paren
+suffix:semicolon
 DECL|function|console_chan_setup
 r_static
 r_int

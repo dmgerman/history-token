@@ -362,7 +362,6 @@ multiline_comment|/*&n; *&t;Main firewall chains definitions and global var&squo
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,0)
 macro_line|#include &lt;linux/init.h&gt;
 r_extern
 r_void
@@ -373,16 +372,6 @@ r_void
 )paren
 id|__init
 suffix:semicolon
-macro_line|#else /* 2.0.x */
-r_extern
-r_void
-id|ip_fw_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* 2.1.x */
 r_extern
 r_int
 id|ip_fw_ctl

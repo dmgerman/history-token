@@ -7665,6 +7665,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|mcfrs_console_init
+r_static
 r_void
 id|__init
 id|mcfrs_console_init
@@ -7681,5 +7682,12 @@ id|mcfrs_console
 )paren
 suffix:semicolon
 )brace
+DECL|variable|mcfrs_console_init
+id|console_initcall
+c_func
+(paren
+id|mcfrs_console_init
+)paren
+suffix:semicolon
 multiline_comment|/****************************************************************************/
 eof

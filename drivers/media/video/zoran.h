@@ -3,15 +3,6 @@ macro_line|#ifndef _BUZ_H_
 DECL|macro|_BUZ_H_
 mdefine_line|#define _BUZ_H_
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212
-DECL|typedef|wait_queue_head_t
-r_typedef
-r_struct
-id|wait_queue
-op_star
-id|wait_queue_head_t
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* The Buz only supports a maximum width of 720, but some V4L&n;   applications (e.g. xawtv are more happy with 768).&n;   If XAWTV_HACK is defined, we try to fake a device with bigger width */
 singleline_comment|//#define XAWTV_HACK
 singleline_comment|//#ifdef XAWTV_HACK

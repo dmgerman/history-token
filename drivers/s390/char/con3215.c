@@ -3580,6 +3580,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * 3215 console initialization code called from console_init().&n; * NOTE: This is called before kmalloc is available.&n; */
+r_static
 r_void
 id|__init
 DECL|function|con3215_init
@@ -4516,6 +4517,13 @@ id|flags
 suffix:semicolon
 )brace
 )brace
+DECL|variable|con3215_init
+id|console_initcall
+c_func
+(paren
+id|con3215_init
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Disable writing to a 3215 tty&n; */
 r_static
 r_void
