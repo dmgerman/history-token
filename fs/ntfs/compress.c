@@ -2131,7 +2131,7 @@ id|tbh-&gt;b_count
 suffix:semicolon
 id|tbh-&gt;b_end_io
 op_assign
-id|end_buffer_io_sync
+id|end_buffer_read_sync
 suffix:semicolon
 id|submit_bh
 c_func

@@ -332,6 +332,10 @@ op_assign
 op_amp
 id|default_backing_dev_info
 suffix:semicolon
+id|mapping-&gt;error
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -847,6 +847,11 @@ op_star
 id|assoc_mapping
 suffix:semicolon
 multiline_comment|/* ditto */
+DECL|member|error
+r_int
+id|error
+suffix:semicolon
+multiline_comment|/* write error for fsync */
 )brace
 suffix:semicolon
 DECL|struct|block_device

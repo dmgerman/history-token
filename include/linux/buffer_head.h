@@ -51,6 +51,10 @@ DECL|enumerator|BH_Boundary
 id|BH_Boundary
 comma
 multiline_comment|/* Block is followed by a discontiguity */
+DECL|enumerator|BH_Write_EIO
+id|BH_Write_EIO
+comma
+multiline_comment|/* I/O error on write */
 DECL|enumerator|BH_PrivateStart
 id|BH_PrivateStart
 comma
@@ -221,6 +225,13 @@ id|Req
 comma
 id|req
 )paren
+id|TAS_BUFFER_FNS
+c_func
+(paren
+id|Req
+comma
+id|req
+)paren
 id|BUFFER_FNS
 c_func
 (paren
@@ -256,13 +267,19 @@ id|Delay
 comma
 id|delay
 )paren
-suffix:semicolon
 id|BUFFER_FNS
 c_func
 (paren
 id|Boundary
 comma
 id|boundary
+)paren
+id|BUFFER_FNS
+c_func
+(paren
+id|Write_EIO
+comma
+id|write_io_error
 )paren
 DECL|macro|bh_offset
 mdefine_line|#define bh_offset(bh)&t;&t;((unsigned long)(bh)-&gt;b_data &amp; ~PAGE_MASK)
@@ -288,7 +305,6 @@ id|bh
 )paren
 )paren
 suffix:semicolon
-DECL|variable|init_buffer
 r_void
 id|init_buffer
 c_func
@@ -304,6 +320,7 @@ r_void
 op_star
 )paren
 suffix:semicolon
+DECL|variable|set_bh_page
 r_void
 id|set_bh_page
 c_func
@@ -349,7 +366,20 @@ id|b_state
 )paren
 suffix:semicolon
 r_void
-id|end_buffer_io_sync
+id|end_buffer_read_sync
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+comma
+r_int
+id|uptodate
+)paren
+suffix:semicolon
+r_void
+id|end_buffer_write_sync
 c_func
 (paren
 r_struct

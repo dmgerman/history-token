@@ -8983,7 +8983,7 @@ id|bh
 suffix:semicolon
 id|bh-&gt;b_end_io
 op_assign
-id|end_buffer_io_sync
+id|end_buffer_read_sync
 suffix:semicolon
 id|submit_bh
 c_func
