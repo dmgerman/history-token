@@ -2469,7 +2469,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|DSP56K_MAJOR
@@ -2546,7 +2546,7 @@ c_func
 r_void
 )paren
 (brace
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|DSP56K_MAJOR

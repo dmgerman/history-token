@@ -226,7 +226,7 @@ r_void
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|USB_MAJOR
@@ -281,7 +281,7 @@ c_func
 id|usb_devfs_handle
 )paren
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|USB_MAJOR

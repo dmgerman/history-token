@@ -4386,7 +4386,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|SD_MAJOR
@@ -4969,7 +4969,7 @@ id|k
 op_increment
 )paren
 (brace
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|SD_MAJOR
@@ -6029,7 +6029,7 @@ suffix:semicolon
 id|k
 op_increment
 )paren
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|SD_MAJOR

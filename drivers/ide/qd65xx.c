@@ -938,23 +938,6 @@ suffix:semicolon
 id|u8
 id|readreg
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 id|savereg
 op_assign
 id|inb_p
@@ -988,13 +971,6 @@ comma
 id|port
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 r_if
 c_cond
 (paren

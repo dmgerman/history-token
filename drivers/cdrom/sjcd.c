@@ -5771,7 +5771,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -6336,7 +6336,7 @@ r_if
 c_cond
 (paren
 (paren
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR

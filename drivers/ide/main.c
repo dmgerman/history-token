@@ -441,9 +441,6 @@ r_int
 r_int
 id|unit
 suffix:semicolon
-id|hw_regs_t
-id|hw
-suffix:semicolon
 multiline_comment|/* bulk initialize channel &amp; drive info with zeros */
 id|memset
 c_func
@@ -459,20 +456,6 @@ id|ata_channel
 )paren
 )paren
 suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|hw
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|hw_regs_t
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* fill in any non-zero initial values */
 id|ch-&gt;index
 op_assign
@@ -482,7 +465,7 @@ id|ide_init_hwif_ports
 c_func
 (paren
 op_amp
-id|hw
+id|ch-&gt;hw
 comma
 id|ide_default_io_base
 c_func
@@ -499,30 +482,31 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-op_amp
-id|ch-&gt;hw
+id|ch-&gt;io_ports
 comma
-op_amp
-id|hw
+id|ch-&gt;hw.io_ports
 comma
 r_sizeof
 (paren
-id|hw
+id|ch-&gt;hw.io_ports
 )paren
 )paren
 suffix:semicolon
-id|memcpy
-c_func
+multiline_comment|/* Most controllers cannot do transfers across 64kB boundaries.&n;&t;   trm290 can do transfers within a 4GB boundary, so it changes&n;&t;   this mask accordingly. */
+id|ch-&gt;seg_boundary_mask
+op_assign
+l_int|0xffff
+suffix:semicolon
+multiline_comment|/* Some chipsets (cs5530, any others?) think a 64kB transfer&n;&t;   is 0 byte transfer, so set the limit one sector smaller.&n;&t;   In the future, we may default to 64kB transfers and let&n;&t;   invidual chipsets with this problem change ch-&gt;max_segment_size. */
+id|ch-&gt;max_segment_size
+op_assign
 (paren
-id|ch-&gt;io_ports
-comma
-id|hw.io_ports
-comma
-r_sizeof
-(paren
-id|hw.io_ports
+l_int|1
+op_lshift
+l_int|16
 )paren
-)paren
+op_minus
+l_int|512
 suffix:semicolon
 id|ch-&gt;noprobe
 op_assign
@@ -2686,10 +2670,6 @@ l_string|&quot;slow&quot;
 comma
 l_string|&quot;flash&quot;
 comma
-l_string|&quot;remap&quot;
-comma
-l_string|&quot;noremap&quot;
-comma
 l_string|&quot;scsi&quot;
 comma
 l_int|NULL
@@ -2998,30 +2978,6 @@ r_case
 op_minus
 l_int|10
 suffix:colon
-multiline_comment|/* &quot;remap&quot; */
-id|drive-&gt;remap_0_to_1
-op_assign
-l_int|1
-suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
-r_case
-op_minus
-l_int|11
-suffix:colon
-multiline_comment|/* &quot;noremap&quot; */
-id|drive-&gt;remap_0_to_1
-op_assign
-l_int|2
-suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
-r_case
-op_minus
-l_int|12
-suffix:colon
 multiline_comment|/* &quot;scsi&quot; */
 macro_line|#if defined(CONFIG_BLK_DEV_IDESCSI) &amp;&amp; defined(CONFIG_SCSI)
 id|drive-&gt;scsi
@@ -3165,7 +3121,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide_setup: ide%s&quot;
+l_string|&quot;ide%s&quot;
 comma
 id|s
 )paren
@@ -3197,7 +3153,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot; : Enabled support for IDE doublers&bslash;n&quot;
+l_string|&quot; : Enabled support for ATA doublers&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ide_doubler
@@ -3694,6 +3650,7 @@ multiline_comment|/* &quot;ali14xx&quot; */
 r_extern
 r_void
 id|init_ali14xx
+c_func
 (paren
 r_void
 )paren
@@ -3718,6 +3675,7 @@ multiline_comment|/* &quot;umc8672&quot; */
 r_extern
 r_void
 id|init_umc8672
+c_func
 (paren
 r_void
 )paren
@@ -3742,6 +3700,7 @@ multiline_comment|/* &quot;dtc2278&quot; */
 r_extern
 r_void
 id|init_dtc2278
+c_func
 (paren
 r_void
 )paren
@@ -3787,6 +3746,7 @@ multiline_comment|/* &quot;ht6560b&quot; */
 r_extern
 r_void
 id|init_ht6560b
+c_func
 (paren
 r_void
 )paren
@@ -3811,6 +3771,7 @@ multiline_comment|/* &quot;qd65xx&quot; */
 r_extern
 r_void
 id|init_qd65xx
+c_func
 (paren
 r_void
 )paren
@@ -4321,7 +4282,7 @@ c_func
 id|register_ata_driver
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Unregister an ATA subdriver for a particular device type.&n; */
+multiline_comment|/*&n; * Unregister an ATA sub-driver for a particular device type.&n; */
 DECL|function|unregister_ata_driver
 r_void
 id|unregister_ata_driver
