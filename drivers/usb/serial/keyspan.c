@@ -4325,10 +4325,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;Required keyspan firmware image (%s) unavailable.&quot;
+id|serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;Required keyspan firmware image (%s) unavailable.&bslash;n&quot;
 comma
 id|fw_name
 )paren
@@ -4393,11 +4395,13 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
+id|serial-&gt;dev-&gt;dev
+comma
 l_string|&quot;ezusb_writememory failed for Keyspan&quot;
-l_string|&quot;firmware (%d %04X %p %d)&quot;
+l_string|&quot;firmware (%d %04X %p %d)&bslash;n&quot;
 comma
 id|response
 comma
@@ -7807,10 +7811,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - unknown product id %x&quot;
+id|serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - unknown product id %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
