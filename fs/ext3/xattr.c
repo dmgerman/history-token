@@ -515,6 +515,9 @@ id|buffer
 comma
 r_int
 id|size
+comma
+r_int
+id|flags
 )paren
 (brace
 r_struct
@@ -561,6 +564,8 @@ comma
 id|buffer
 comma
 id|size
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -581,6 +586,9 @@ id|buffer
 comma
 r_int
 id|size
+comma
+r_int
+id|flags
 )paren
 (brace
 r_return
@@ -592,6 +600,8 @@ comma
 id|buffer
 comma
 id|size
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -699,6 +709,9 @@ r_const
 r_char
 op_star
 id|name
+comma
+r_int
+id|flags
 )paren
 (brace
 r_struct
@@ -746,6 +759,8 @@ l_int|NULL
 comma
 l_int|0
 comma
+id|flags
+op_or
 id|XATTR_REPLACE
 )paren
 suffix:semicolon
@@ -1284,6 +1299,9 @@ id|buffer
 comma
 r_int
 id|buffer_size
+comma
+r_int
+id|flags
 )paren
 (brace
 r_struct
@@ -1569,6 +1587,8 @@ comma
 id|entry-&gt;e_name
 comma
 id|entry-&gt;e_name_len
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1686,6 +1706,8 @@ comma
 id|entry-&gt;e_name
 comma
 id|entry-&gt;e_name_len
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
