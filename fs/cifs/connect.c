@@ -3675,6 +3675,25 @@ c_func
 (paren
 id|data
 comma
+l_string|&quot;credentials&quot;
+comma
+l_int|4
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* ignore */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|strnicmp
+c_func
+(paren
+id|data
+comma
 l_string|&quot;version&quot;
 comma
 l_int|3
