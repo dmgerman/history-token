@@ -9949,6 +9949,10 @@ suffix:semicolon
 r_int
 id|would_hit_hwbug
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|len
 op_assign
 (paren
@@ -9958,11 +9962,13 @@ id|skb-&gt;data_len
 )paren
 suffix:semicolon
 multiline_comment|/* No BH disabling for tx_lock here.  We are running in BH disabled&n;&t; * context and TX reclaim runs via tp-&gt;poll inside of a software&n;&t; * interrupt.  Rejoice!&n;&t; *&n;&t; * Actually, things are not so simple.  If we are to take a hw&n;&t; * IRQ here, we can deadlock, consider:&n;&t; *&n;&t; *       CPU1&t;&t;CPU2&n;&t; *   tg3_start_xmit&n;&t; *   take tp-&gt;tx_lock&n;&t; *&t;&t;&t;tg3_timer&n;&t; *&t;&t;&t;take tp-&gt;lock&n;&t; *   tg3_interrupt&n;&t; *   spin on tp-&gt;lock&n;&t; *&t;&t;&t;spin on tp-&gt;tx_lock&n;&t; *&n;&t; * So we really do need to disable interrupts when taking&n;&t; * tx_lock here.&n;&t; */
-id|spin_lock_irq
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|tp-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* This is a hard error, log it. */
@@ -9998,11 +10004,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|tp-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|printk
@@ -10723,11 +10731,13 @@ id|dev
 suffix:semicolon
 id|out_unlock
 suffix:colon
-id|spin_unlock_irq
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|tp-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|dev-&gt;trans_start
@@ -10774,6 +10784,10 @@ id|base_flags
 comma
 id|mss
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|len
 op_assign
 (paren
@@ -10783,11 +10797,13 @@ id|skb-&gt;data_len
 )paren
 suffix:semicolon
 multiline_comment|/* No BH disabling for tx_lock here.  We are running in BH disabled&n;&t; * context and TX reclaim runs via tp-&gt;poll inside of a software&n;&t; * interrupt.  Rejoice!&n;&t; *&n;&t; * Actually, things are not so simple.  If we are to take a hw&n;&t; * IRQ here, we can deadlock, consider:&n;&t; *&n;&t; *       CPU1&t;&t;CPU2&n;&t; *   tg3_start_xmit&n;&t; *   take tp-&gt;tx_lock&n;&t; *&t;&t;&t;tg3_timer&n;&t; *&t;&t;&t;take tp-&gt;lock&n;&t; *   tg3_interrupt&n;&t; *   spin on tp-&gt;lock&n;&t; *&t;&t;&t;spin on tp-&gt;tx_lock&n;&t; *&n;&t; * So we really do need to disable interrupts when taking&n;&t; * tx_lock here.&n;&t; */
-id|spin_lock_irq
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|tp-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* This is a hard error, log it. */
@@ -10823,11 +10839,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|tp-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|printk
@@ -11313,11 +11331,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|tp-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|dev-&gt;trans_start

@@ -1,19 +1,19 @@
 multiline_comment|/*  $Id$&n; *  1993/03/31&n; *  linux/kernel/aha1740.c&n; *&n; *  Based loosely on aha1542.c which is&n; *  Copyright (C) 1992  Tommy Thorn and&n; *  Modified by Eric Youngdale&n; *&n; *  This file is aha1740.c, written and&n; *  Copyright (C) 1992,1993  Brad McLean&n; *  &n; *  Modifications to makecode and queuecommand&n; *  for proper handling of multiple devices courteously&n; *  provided by Michael Weller, March, 1993&n; *&n; *  Multiple adapter support, extended translation detection,&n; *  update to current scsi subsystem changes, proc fs support,&n; *  working (!) module support based on patches from Andreas Arens,&n; *  by Andreas Degert &lt;ad@papyrus.hamburg.com&gt;, 2/1997&n; *&n; * aha1740_makecode may still need even more work&n; * if it doesn&squot;t work for your devices, take a look.&n; *&n; * Reworked for new_eh and new locking by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n; * is in an open non patent encumbered format. Where cryptographic key signing&n; * forms part of the process of creating an executable the information&n; * including keys needed to generate an equivalently functional executable&n; * are deemed to be part of the source code.&n; */
+macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;aha1740.h&quot;
-macro_line|#include&lt;linux/stat.h&gt;
 multiline_comment|/* IF YOU ARE HAVING PROBLEMS WITH THIS DRIVER, AND WANT TO WATCH&n;   IT WORK, THEN:&n;#define DEBUG&n;*/
 macro_line|#ifdef DEBUG
 DECL|macro|DEB

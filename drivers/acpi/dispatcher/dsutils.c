@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *              $Revision: 96 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *              $Revision: 97 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -472,6 +472,66 @@ id|return_ACPI_STATUS
 (paren
 id|status
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_clear_operands&n; *&n; * PARAMETERS:  Walk_state          - Current walk state with operands on stack&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Clear all operands on the current walk state operand stack.&n; *&n; ******************************************************************************/
+r_void
+DECL|function|acpi_ds_clear_operands
+id|acpi_ds_clear_operands
+(paren
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+(brace
+id|u32
+id|i
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Acpi_ds_clear_operands&quot;
+comma
+id|walk_state
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Remove a reference on each operand on the stack&n;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|walk_state-&gt;num_operands
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Remove a reference to all operands, including both&n;&t;&t; * &quot;Arguments&quot; and &quot;Targets&quot;.&n;&t;&t; */
+id|acpi_ut_remove_reference
+(paren
+id|walk_state-&gt;operands
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|walk_state-&gt;operands
+(braket
+id|i
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+id|walk_state-&gt;num_operands
+op_assign
+l_int|0
+suffix:semicolon
+id|return_VOID
 suffix:semicolon
 )brace
 macro_line|#endif

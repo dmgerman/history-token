@@ -25,25 +25,21 @@ DECL|macro|CONFIG_ISA
 mdefine_line|#define CONFIG_ISA
 macro_line|#endif /* CONFIG_X86 &amp;&amp; !CONFIG_ISA */
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#if ASC_LINUX_KERNEL24
-macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#elif ASC_LINUX_KERNEL22
-macro_line|#include &lt;asm/spinlock.h&gt;
-macro_line|#endif
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;advansys.h&quot;
@@ -11449,16 +11445,6 @@ op_assign
 id|asc_dvc_varp-&gt;cfg-&gt;adapter_info
 (braket
 l_int|5
-)braket
-suffix:semicolon
-id|ep-&gt;adapter_info
-(braket
-l_int|6
-)braket
-op_assign
-id|asc_dvc_varp-&gt;cfg-&gt;adapter_info
-(braket
-l_int|6
 )braket
 suffix:semicolon
 multiline_comment|/*&n;                * Modify board configuration.&n;                */

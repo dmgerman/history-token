@@ -969,72 +969,6 @@ DECL|macro|PVR_MAJ
 mdefine_line|#define&t;PVR_MAJ(pvr)&t;(((pvr) &gt;&gt;  4) &amp; 0xF)&t;/* Major revision field */
 DECL|macro|PVR_MIN
 mdefine_line|#define&t;PVR_MIN(pvr)&t;(((pvr) &gt;&gt;  0) &amp; 0xF)&t;/* Minor revision field */
-multiline_comment|/* Processor Version Numbers */
-DECL|macro|PVR_403GA
-mdefine_line|#define&t;PVR_403GA&t;0x00200000
-DECL|macro|PVR_403GB
-mdefine_line|#define&t;PVR_403GB&t;0x00200100
-DECL|macro|PVR_403GC
-mdefine_line|#define&t;PVR_403GC&t;0x00200200
-DECL|macro|PVR_403GCX
-mdefine_line|#define&t;PVR_403GCX&t;0x00201400
-DECL|macro|PVR_405GP
-mdefine_line|#define&t;PVR_405GP&t;0x40110000
-DECL|macro|PVR_STB03XXX
-mdefine_line|#define&t;PVR_STB03XXX&t;0x40310000
-DECL|macro|PVR_NP405H
-mdefine_line|#define&t;PVR_NP405H&t;0x41410000
-DECL|macro|PVR_NP405L
-mdefine_line|#define&t;PVR_NP405L&t;0x41610000
-DECL|macro|PVR_601
-mdefine_line|#define&t;PVR_601&t;&t;0x00010000
-DECL|macro|PVR_602
-mdefine_line|#define&t;PVR_602&t;&t;0x00050000
-DECL|macro|PVR_603
-mdefine_line|#define&t;PVR_603&t;&t;0x00030000
-DECL|macro|PVR_603e
-mdefine_line|#define&t;PVR_603e&t;0x00060000
-DECL|macro|PVR_603ev
-mdefine_line|#define&t;PVR_603ev&t;0x00070000
-DECL|macro|PVR_603r
-mdefine_line|#define&t;PVR_603r&t;0x00071000
-DECL|macro|PVR_604
-mdefine_line|#define&t;PVR_604&t;&t;0x00040000
-DECL|macro|PVR_604e
-mdefine_line|#define&t;PVR_604e&t;0x00090000
-DECL|macro|PVR_604r
-mdefine_line|#define&t;PVR_604r&t;0x000A0000
-DECL|macro|PVR_620
-mdefine_line|#define&t;PVR_620&t;&t;0x00140000
-DECL|macro|PVR_740
-mdefine_line|#define&t;PVR_740&t;&t;0x00080000
-DECL|macro|PVR_750
-mdefine_line|#define&t;PVR_750&t;&t;PVR_740
-DECL|macro|PVR_740P
-mdefine_line|#define&t;PVR_740P&t;0x10080000
-DECL|macro|PVR_750P
-mdefine_line|#define&t;PVR_750P&t;PVR_740P
-DECL|macro|PVR_7400
-mdefine_line|#define&t;PVR_7400&t;0x000C0000
-DECL|macro|PVR_7410
-mdefine_line|#define&t;PVR_7410&t;0x800C0000
-DECL|macro|PVR_7450
-mdefine_line|#define&t;PVR_7450&t;0x80000000
-multiline_comment|/*&n; * For the 8xx processors, all of them report the same PVR family for&n; * the PowerPC core. The various versions of these processors must be&n; * differentiated by the version number in the Communication Processor&n; * Module (CPM).&n; */
-DECL|macro|PVR_821
-mdefine_line|#define&t;PVR_821&t;&t;0x00500000
-DECL|macro|PVR_823
-mdefine_line|#define&t;PVR_823&t;&t;PVR_821
-DECL|macro|PVR_850
-mdefine_line|#define&t;PVR_850&t;&t;PVR_821
-DECL|macro|PVR_860
-mdefine_line|#define&t;PVR_860&t;&t;PVR_821
-DECL|macro|PVR_8240
-mdefine_line|#define&t;PVR_8240&t;0x00810100
-DECL|macro|PVR_8245
-mdefine_line|#define&t;PVR_8245&t;0x80811014
-DECL|macro|PVR_8260
-mdefine_line|#define&t;PVR_8260&t;PVR_8240
 multiline_comment|/* We only need to define a new _MACH_xxx for machines which are part of&n; * a configuration which supports more than one type of different machine.&n; * This is currently limited to CONFIG_ALL_PPC and CHRP/PReP/PMac. -- Tom&n; */
 DECL|macro|_MACH_prep
 mdefine_line|#define _MACH_prep&t;0x00000001
@@ -1248,13 +1182,8 @@ op_star
 id|last_task_used_altivec
 suffix:semicolon
 multiline_comment|/*&n; * this is the minimum allowable io space due to the location&n; * of the io areas on prep (first one at 0x80000000) but&n; * as soon as I get around to remapping the io areas with the BATs&n; * to match the mac we can raise this. -- Cort&n; */
-macro_line|#ifdef CONFIG_TASK_SIZE_BOOL
 DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;CONFIG_TASK_SIZE
-macro_line|#else
-DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;(0x80000000UL)
-macro_line|#endif
+mdefine_line|#define TASK_SIZE&t;(CONFIG_TASK_SIZE)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(TASK_SIZE / 8 * 3)
@@ -1579,6 +1508,23 @@ suffix:semicolon
 )brace
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
+macro_line|#ifdef CONFIG_XMON
+r_extern
+r_void
+id|xmon
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+DECL|macro|BUG
+mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;xmon(0); &bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|BUG
+mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;__asm__ __volatile__(&quot;.long 0x0&quot;); &bslash;&n;} while (0)
+macro_line|#endif
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __ASM_PPC_PROCESSOR_H */
 macro_line|#endif /* __KERNEL__ */

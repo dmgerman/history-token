@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *  Amiga Linux/m68k and Linux/PPC Ariadne II and X-Surf Ethernet Driver&n; *&n; *  (C) Copyright 1998-2000 by some Elitist 680x0 Users(TM)&n; *&n; *  ---------------------------------------------------------------------------&n; *&n; *  This program is based on all the other NE2000 drivers for Linux&n; *&n; *  ---------------------------------------------------------------------------&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of the Linux&n; *  distribution for more details.&n; *&n; *  ---------------------------------------------------------------------------&n; *&n; *  The Ariadne II and X-Surf are Zorro-II boards containing Realtek RTL8019AS&n; *  Ethernet Controllers.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;

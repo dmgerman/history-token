@@ -1,8 +1,8 @@
 multiline_comment|/*&n; *   ALSA driver for RME Digi32, Digi32/8 and Digi32 PRO audio interfaces&n; *&n; *&t;Copyright (c) 2002 Martin Langer &lt;martin-langer@gmx.de&gt;&n; *&n; *      Thanks to :        Anders Torger &lt;torger@ludd.luth.se&gt;,&n; *                         Henk Hesselink &lt;henk@anda.nl&gt;&n; *                         for writing the digi96-driver &n; *                         and RME for all informations.&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * &n; *   ToDo: full duplex (32, 32/8, 32Pro)&n; */
 macro_line|#include &lt;sound/driver.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
@@ -14,6 +14,7 @@ macro_line|#include &lt;sound/asoundef.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|index
 r_static
 r_int

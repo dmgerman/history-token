@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
@@ -27,10 +26,10 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &quot;pc300.h&quot;
 DECL|macro|CPC_LOCK
 mdefine_line|#define&t;CPC_LOCK(card,flags)&t;&t;&bslash;&n;&t;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock_irqsave(&amp;card-&gt;card_lock, flags);&t;&bslash;&n;&t;&t;} while (0)

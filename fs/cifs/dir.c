@@ -1109,7 +1109,7 @@ id|direntry-&gt;d_inode
 comma
 id|direntry-&gt;d_inode-&gt;i_count.counter
 comma
-id|direntry-&gt;d_inode-&gt;i_atime
+id|direntry-&gt;d_inode-&gt;i_atime.tv_sec
 comma
 id|direntry
 comma

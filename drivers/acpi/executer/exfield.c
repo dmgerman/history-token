@@ -1,10 +1,8 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfield - ACPI AML (p-code) execution - field manipulation&n; *              $Revision: 113 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfield - ACPI AML (p-code) execution - field manipulation&n; *              $Revision: 115 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME
@@ -138,9 +136,9 @@ id|ACPI_ADR_SPACE_SMBUS
 multiline_comment|/*&n;&t;&t; * This is an SMBus read.  We must create a buffer to hold the data&n;&t;&t; * and directly access the region handler.&n;&t;&t; */
 id|buffer_desc
 op_assign
-id|acpi_ut_create_internal_object
+id|acpi_ut_create_buffer_object
 (paren
-id|ACPI_TYPE_BUFFER
+id|ACPI_SMBUS_BUFFER_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -156,45 +154,6 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Create the actual read buffer */
-id|buffer_desc-&gt;buffer.pointer
-op_assign
-id|ACPI_MEM_CALLOCATE
-(paren
-id|ACPI_SMBUS_BUFFER_SIZE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer_desc-&gt;buffer.pointer
-)paren
-(brace
-id|acpi_ut_remove_reference
-(paren
-id|buffer_desc
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_MEMORY
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Complete the buffer object initialization */
-id|buffer_desc-&gt;common.flags
-op_assign
-id|AOPOBJ_DATA_VALID
-suffix:semicolon
-id|buffer_desc-&gt;buffer.length
-op_assign
-id|ACPI_SMBUS_BUFFER_SIZE
-suffix:semicolon
-id|buffer
-op_assign
-id|buffer_desc-&gt;buffer.pointer
-suffix:semicolon
 multiline_comment|/* Lock entire transaction if requested */
 id|locked
 op_assign
@@ -212,11 +171,12 @@ id|obj_desc
 comma
 l_int|0
 comma
+id|ACPI_CAST_PTR
 (paren
 id|acpi_integer
-op_star
-)paren
+comma
 id|buffer_desc-&gt;buffer.pointer
+)paren
 comma
 id|ACPI_READ
 op_or
@@ -255,9 +215,9 @@ id|acpi_gbl_integer_byte_width
 multiline_comment|/* Field is too large for an Integer, create a Buffer instead */
 id|buffer_desc
 op_assign
-id|acpi_ut_create_internal_object
+id|acpi_ut_create_buffer_object
 (paren
-id|ACPI_TYPE_BUFFER
+id|length
 )paren
 suffix:semicolon
 r_if
@@ -273,41 +233,6 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Create the actual read buffer */
-id|buffer_desc-&gt;buffer.pointer
-op_assign
-id|ACPI_MEM_CALLOCATE
-(paren
-id|length
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer_desc-&gt;buffer.pointer
-)paren
-(brace
-id|acpi_ut_remove_reference
-(paren
-id|buffer_desc
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_MEMORY
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Complete the buffer object initialization */
-id|buffer_desc-&gt;common.flags
-op_assign
-id|AOPOBJ_DATA_VALID
-suffix:semicolon
-id|buffer_desc-&gt;buffer.length
-op_assign
-id|length
-suffix:semicolon
 id|buffer
 op_assign
 id|buffer_desc-&gt;buffer.pointer
@@ -637,9 +562,9 @@ suffix:semicolon
 )brace
 id|buffer_desc
 op_assign
-id|acpi_ut_create_internal_object
+id|acpi_ut_create_buffer_object
 (paren
-id|ACPI_TYPE_BUFFER
+id|ACPI_SMBUS_BUFFER_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -655,41 +580,6 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Create the actual read buffer */
-id|buffer_desc-&gt;buffer.pointer
-op_assign
-id|ACPI_MEM_CALLOCATE
-(paren
-id|ACPI_SMBUS_BUFFER_SIZE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer_desc-&gt;buffer.pointer
-)paren
-(brace
-id|acpi_ut_remove_reference
-(paren
-id|buffer_desc
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_MEMORY
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Complete the buffer object initialization */
-id|buffer_desc-&gt;common.flags
-op_assign
-id|AOPOBJ_DATA_VALID
-suffix:semicolon
-id|buffer_desc-&gt;buffer.length
-op_assign
-id|ACPI_SMBUS_BUFFER_SIZE
-suffix:semicolon
 id|buffer
 op_assign
 id|buffer_desc-&gt;buffer.pointer

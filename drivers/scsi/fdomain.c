@@ -4,14 +4,10 @@ macro_line|#ifdef PCMCIA
 DECL|macro|MODULE
 macro_line|#undef MODULE
 macro_line|#endif
+macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_PCI */
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;fdomain.h&quot;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -20,7 +16,11 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_PCI */
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &quot;fdomain.h&quot;
 DECL|macro|VERSION
 mdefine_line|#define VERSION          &quot;$Revision: 5.50 $&quot;
 multiline_comment|/* START OF USER DEFINABLE OPTIONS */

@@ -751,12 +751,14 @@ id|notifier_block
 id|parisc_panic_block
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|parisc_panic_event
 comma
+dot
 id|priority
-suffix:colon
+op_assign
 id|INT_MAX
 comma
 )brace

@@ -1,10 +1,10 @@
 multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Abramo Bagnara &lt;abramo@alsa-project.org&gt;&n; *                   Cirrus Logic, Inc.&n; *  Routines for control of Cirrus Logic CS461x chips&n; *&n; *  KNOWN BUGS:&n; *    - Sometimes the SPDIF input DSP tasks get&squot;s unsynchronized&n; *      and the SPDIF get somewhat &quot;distorcionated&quot;, or/and left right channel&n; *      are swapped. To get around this problem when it happens, mute and unmute &n; *      the SPDIF input mixer controll.&n; *    - On the Hercules Game Theater XP the amplifier are sometimes turned&n; *      off on inadecuate moments which causes distorcions on sound.&n; *&n; *  TODO:&n; *    - Secondary CODEC on some soundcards&n; *    - SPDIF input support for other sample rates then 48khz&n; *    - Posibility to mix the SPDIF output with analog sources.&n; *    - PCM channels for Center and LFE on secondary codec&n; *&n; *  NOTE: with CONFIG_SND_CS46XX_NEW_DSP unset uses old DSP image (which&n; *        is default configuration), no SPDIF, no secondary codec, no&n; *        multi channel PCM.  But known to work.&n; *&n; *  FINALLY: A credit to the developers Tom and Jordan &n; *           at Cirrus for have helping me out with the DSP, however we&n; *           still dont have sufficient documentation and technical&n; *           references to be able to implement all fancy feutures&n; *           supported by the cs46xx DPS&squot;s. &n; *           Benny &lt;benny@hostmobility.com&gt;&n; *                &n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -13,6 +13,7 @@ macro_line|#include &lt;sound/cs46xx.h&gt;
 macro_line|#ifndef LINUX_2_2
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#endif
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;cs46xx_lib.h&quot;
 macro_line|#include &quot;dsp_spos.h&quot;
 DECL|function|snd_cs46xx_codec_read
@@ -1404,6 +1405,8 @@ id|u32
 id|i
 comma
 id|status
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure the previous FIFO write operation has completed.&n;&t; */
 r_for

@@ -8,7 +8,6 @@ multiline_comment|/* This driver may now work with revision 2.x hardware, since 
 multiline_comment|/* The driver is a mess.  I took Craig&squot;s and Juha&squot;s code, and hacked it firstly&n; * to make it more reliable, and secondly to add DMA mode.  Many things could&n; * probably be done better; the concurrency protection is particularly awful.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

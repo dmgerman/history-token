@@ -1476,6 +1476,19 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
+DECL|variable|bad_sock_fops
+r_struct
+id|file_operations
+id|bad_sock_fops
+op_assign
+(brace
+dot
+id|open
+op_assign
+id|sock_no_open
+comma
+)brace
+suffix:semicolon
 multiline_comment|/**&n; *&t;sock_release&t;-&t;close a socket&n; *&t;@sock: socket to close&n; *&n; *&t;The socket is released from the protocol stack if it has a release&n; *&t;callback, and the inode is then released if the socket is bound to&n; *&t;an inode not a file. &n; */
 DECL|function|sock_release
 r_void
@@ -2653,6 +2666,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; *&t;With an ioctl, arg may well be a user mode pointer, but we don&squot;t know&n; *&t;what to do with it - that&squot;s up to the protocol still.&n; */
 DECL|function|sock_ioctl
+r_static
 r_int
 id|sock_ioctl
 c_func

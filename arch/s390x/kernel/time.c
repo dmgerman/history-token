@@ -332,14 +332,6 @@ id|__u16
 id|error_code
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|__u64
 id|tmp
 suffix:semicolon

@@ -1,12 +1,12 @@
 multiline_comment|/*&n; * intf.c - class-specific interface management&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG 1
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
 DECL|macro|to_intf
-mdefine_line|#define to_intf(node) container_of(node,struct device_interface,node)
+mdefine_line|#define to_intf(node) container_of(node,struct device_interface,kobj.entry)
 multiline_comment|/**&n; * intf_dev_link - symlink from interface&squot;s directory to device&squot;s directory&n; *&n; */
 DECL|function|intf_dev_link
 r_static
@@ -108,7 +108,16 @@ id|device_class
 op_star
 id|cls
 op_assign
+id|get_devclass
+c_func
+(paren
 id|intf-&gt;devclass
+)paren
+suffix:semicolon
+r_int
+id|error
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -119,18 +128,11 @@ id|cls
 id|pr_debug
 c_func
 (paren
-l_string|&quot;register interface &squot;%s&squot; with class &squot;%s&bslash;n&quot;
+l_string|&quot;register interface &squot;%s&squot; with class &squot;%s&squot;&bslash;n&quot;
 comma
 id|intf-&gt;name
 comma
 id|cls-&gt;name
-)paren
-suffix:semicolon
-id|kobject_init
-c_func
-(paren
-op_amp
-id|intf-&gt;kobj
 )paren
 suffix:semicolon
 id|strncpy
@@ -155,37 +157,15 @@ op_amp
 id|intf-&gt;kobj
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|device_lock
-)paren
-suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|intf-&gt;node
-comma
-op_amp
-id|cls-&gt;intf_list
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|device_lock
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-r_return
+r_else
+id|error
+op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+r_return
+id|error
 suffix:semicolon
 )brace
 DECL|function|interface_unregister
@@ -214,27 +194,6 @@ c_func
 (paren
 op_amp
 id|intf-&gt;kobj
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|device_lock
-)paren
-suffix:semicolon
-id|list_del_init
-c_func
-(paren
-op_amp
-id|intf-&gt;node
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|device_lock
 )paren
 suffix:semicolon
 )brace
@@ -280,7 +239,7 @@ c_func
 id|node
 comma
 op_amp
-id|cls-&gt;intf_list
+id|cls-&gt;subsys.list
 )paren
 (brace
 r_struct
@@ -371,13 +330,6 @@ comma
 id|cls-&gt;name
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|device_lock
-)paren
-suffix:semicolon
 id|list_for_each_safe
 c_func
 (paren
@@ -412,13 +364,6 @@ op_amp
 id|intf_data-&gt;node
 )paren
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|device_lock
-)paren
-suffix:semicolon
 id|intf_dev_unlink
 c_func
 (paren
@@ -446,21 +391,7 @@ c_func
 id|intf_data
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|device_lock
-)paren
-suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|device_lock
-)paren
-suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -479,11 +410,11 @@ op_star
 id|data
 )paren
 (brace
-id|spin_lock
+id|down_write
 c_func
 (paren
 op_amp
-id|device_lock
+id|data-&gt;intf-&gt;devclass-&gt;subsys.rwsem
 )paren
 suffix:semicolon
 id|list_add_tail
@@ -498,20 +429,20 @@ id|data-&gt;dev-&gt;intf_list
 suffix:semicolon
 id|data-&gt;intf_num
 op_assign
-op_increment
 id|data-&gt;intf-&gt;devnum
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|device_lock
-)paren
+op_increment
 suffix:semicolon
 id|intf_dev_link
 c_func
 (paren
 id|data
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|data-&gt;intf-&gt;devclass-&gt;subsys.rwsem
 )paren
 suffix:semicolon
 r_return

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in the &n; * jffs2 directory.&n; *&n; * $Id: jffs2.h,v 1.24 2002/05/20 14:56:37 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in the &n; * jffs2 directory.&n; *&n; * $Id: jffs2.h,v 1.25 2002/08/20 21:37:27 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __LINUX_JFFS2_H__
 DECL|macro|__LINUX_JFFS2_H__
 mdefine_line|#define __LINUX_JFFS2_H__
@@ -67,26 +67,95 @@ DECL|macro|JFFS2_INO_FLAG_PREREAD
 mdefine_line|#define JFFS2_INO_FLAG_PREREAD&t;  1&t;/* Do read_inode() for this one at &n;&t;&t;&t;&t;&t;   mount time, don&squot;t wait for it to &n;&t;&t;&t;&t;&t;   happen later */
 DECL|macro|JFFS2_INO_FLAG_USERCOMPR
 mdefine_line|#define JFFS2_INO_FLAG_USERCOMPR  2&t;/* User has requested a specific &n;&t;&t;&t;&t;&t;   compression type */
+multiline_comment|/* These can go once we&squot;ve made sure we&squot;ve caught all uses without&n;   byteswapping */
+r_typedef
+r_struct
+(brace
+DECL|member|v32
+r_uint32
+id|v32
+suffix:semicolon
+DECL|typedef|jint32_t
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+id|jint32_t
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|v16
+r_uint16
+id|v16
+suffix:semicolon
+DECL|typedef|jint16_t
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+id|jint16_t
+suffix:semicolon
+DECL|macro|JFFS2_NATIVE_ENDIAN
+mdefine_line|#define JFFS2_NATIVE_ENDIAN
+macro_line|#if defined(JFFS2_NATIVE_ENDIAN)
+DECL|macro|cpu_to_je16
+mdefine_line|#define cpu_to_je16(x) ((jint16_t){x})
+DECL|macro|cpu_to_je32
+mdefine_line|#define cpu_to_je32(x) ((jint32_t){x})
+DECL|macro|je16_to_cpu
+mdefine_line|#define je16_to_cpu(x) ((x).v16)
+DECL|macro|je32_to_cpu
+mdefine_line|#define je32_to_cpu(x) ((x).v32)
+macro_line|#elif defined(JFFS2_BIG_ENDIAN)
+DECL|macro|cpu_to_je16
+mdefine_line|#define cpu_to_je16(x) ((jint16_t){cpu_to_be16(x)})
+DECL|macro|cpu_to_je32
+mdefine_line|#define cpu_to_je32(x) ((jint32_t){cpu_to_be32(x)})
+DECL|macro|je16_to_cpu
+mdefine_line|#define je16_to_cpu(x) (be16_to_cpu(x.v16))
+DECL|macro|je32_to_cpu
+mdefine_line|#define je32_to_cpu(x) (be32_to_cpu(x.v32))
+macro_line|#elif defined(JFFS2_LITTLE_ENDIAN)
+DECL|macro|cpu_to_je16
+mdefine_line|#define cpu_to_je16(x) ((jint16_t){cpu_to_le16(x)})
+DECL|macro|cpu_to_je32
+mdefine_line|#define cpu_to_je32(x) ((jint32_t){cpu_to_le32(x)})
+DECL|macro|je16_to_cpu
+mdefine_line|#define je16_to_cpu(x) (le16_to_cpu(x.v16))
+DECL|macro|je32_to_cpu
+mdefine_line|#define je32_to_cpu(x) (le32_to_cpu(x.v32))
+macro_line|#else 
+macro_line|#error wibble
+macro_line|#endif
 DECL|struct|jffs2_unknown_node
 r_struct
 id|jffs2_unknown_node
 (brace
 multiline_comment|/* All start like this */
 DECL|member|magic
-r_uint16
+id|jint16_t
 id|magic
 suffix:semicolon
 DECL|member|nodetype
-r_uint16
+id|jint16_t
 id|nodetype
 suffix:semicolon
 DECL|member|totlen
-r_uint32
+id|jint32_t
 id|totlen
 suffix:semicolon
 multiline_comment|/* So we can skip over nodes we don&squot;t grok */
 DECL|member|hdr_crc
-r_uint32
+id|jint32_t
 id|hdr_crc
 suffix:semicolon
 )brace
@@ -103,37 +172,37 @@ r_struct
 id|jffs2_raw_dirent
 (brace
 DECL|member|magic
-r_uint16
+id|jint16_t
 id|magic
 suffix:semicolon
 DECL|member|nodetype
-r_uint16
+id|jint16_t
 id|nodetype
 suffix:semicolon
 multiline_comment|/* == JFFS_NODETYPE_DIRENT */
 DECL|member|totlen
-r_uint32
+id|jint32_t
 id|totlen
 suffix:semicolon
 DECL|member|hdr_crc
-r_uint32
+id|jint32_t
 id|hdr_crc
 suffix:semicolon
 DECL|member|pino
-r_uint32
+id|jint32_t
 id|pino
 suffix:semicolon
 DECL|member|version
-r_uint32
+id|jint32_t
 id|version
 suffix:semicolon
 DECL|member|ino
-r_uint32
+id|jint32_t
 id|ino
 suffix:semicolon
 multiline_comment|/* == zero for unlink */
 DECL|member|mctime
-r_uint32
+id|jint32_t
 id|mctime
 suffix:semicolon
 DECL|member|nsize
@@ -152,11 +221,11 @@ l_int|2
 )braket
 suffix:semicolon
 DECL|member|node_crc
-r_uint32
+id|jint32_t
 id|node_crc
 suffix:semicolon
 DECL|member|name_crc
-r_uint32
+id|jint32_t
 id|name_crc
 suffix:semicolon
 DECL|member|name
@@ -182,81 +251,81 @@ r_struct
 id|jffs2_raw_inode
 (brace
 DECL|member|magic
-r_uint16
+id|jint16_t
 id|magic
 suffix:semicolon
 multiline_comment|/* A constant magic number.  */
 DECL|member|nodetype
-r_uint16
+id|jint16_t
 id|nodetype
 suffix:semicolon
 multiline_comment|/* == JFFS_NODETYPE_INODE */
 DECL|member|totlen
-r_uint32
+id|jint32_t
 id|totlen
 suffix:semicolon
 multiline_comment|/* Total length of this node (inc data, etc.) */
 DECL|member|hdr_crc
-r_uint32
+id|jint32_t
 id|hdr_crc
 suffix:semicolon
 DECL|member|ino
-r_uint32
+id|jint32_t
 id|ino
 suffix:semicolon
 multiline_comment|/* Inode number.  */
 DECL|member|version
-r_uint32
+id|jint32_t
 id|version
 suffix:semicolon
 multiline_comment|/* Version number.  */
 DECL|member|mode
-r_uint32
+id|jint32_t
 id|mode
 suffix:semicolon
 multiline_comment|/* The file&squot;s type or mode.  */
 DECL|member|uid
-r_uint16
+id|jint16_t
 id|uid
 suffix:semicolon
 multiline_comment|/* The file&squot;s owner.  */
 DECL|member|gid
-r_uint16
+id|jint16_t
 id|gid
 suffix:semicolon
 multiline_comment|/* The file&squot;s group.  */
 DECL|member|isize
-r_uint32
+id|jint32_t
 id|isize
 suffix:semicolon
 multiline_comment|/* Total resultant size of this inode (used for truncations)  */
 DECL|member|atime
-r_uint32
+id|jint32_t
 id|atime
 suffix:semicolon
 multiline_comment|/* Last access time.  */
 DECL|member|mtime
-r_uint32
+id|jint32_t
 id|mtime
 suffix:semicolon
 multiline_comment|/* Last modification time.  */
 DECL|member|ctime
-r_uint32
+id|jint32_t
 id|ctime
 suffix:semicolon
 multiline_comment|/* Change time.  */
 DECL|member|offset
-r_uint32
+id|jint32_t
 id|offset
 suffix:semicolon
 multiline_comment|/* Where to begin to write.  */
 DECL|member|csize
-r_uint32
+id|jint32_t
 id|csize
 suffix:semicolon
 multiline_comment|/* (Compressed) data size */
 DECL|member|dsize
-r_uint32
+id|jint32_t
 id|dsize
 suffix:semicolon
 multiline_comment|/* Size of the node&squot;s data. (after decompression) */
@@ -271,17 +340,17 @@ id|usercompr
 suffix:semicolon
 multiline_comment|/* Compression algorithm requested by the user */
 DECL|member|flags
-r_uint16
+id|jint16_t
 id|flags
 suffix:semicolon
 multiline_comment|/* See JFFS2_INO_FLAG_* */
 DECL|member|data_crc
-r_uint32
+id|jint32_t
 id|data_crc
 suffix:semicolon
 multiline_comment|/* CRC for the (compressed) data.  */
 DECL|member|node_crc
-r_uint32
+id|jint32_t
 id|node_crc
 suffix:semicolon
 multiline_comment|/* CRC for the raw inode (excluding data)  */

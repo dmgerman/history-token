@@ -2028,11 +2028,6 @@ id|bio
 op_assign
 id|return_bio
 suffix:semicolon
-r_int
-id|bytes
-op_assign
-id|bio-&gt;bi_size
-suffix:semicolon
 id|return_bio
 op_assign
 id|bio-&gt;bi_next

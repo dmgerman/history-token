@@ -2632,7 +2632,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: del %.2x:%.2x:%.2x:%.2x:%.2x:%.2x mcast address from vlan interface&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3024,7 +3024,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: add %.2x:%.2x:%.2x:%.2x:%.2x:%.2x mcast address to master interface&bslash;n&quot;
 comma
 id|vlan_dev-&gt;name
@@ -3113,7 +3113,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: del %.2x:%.2x:%.2x:%.2x:%.2x:%.2x mcast address from master interface&bslash;n&quot;
 comma
 id|vlan_dev-&gt;name

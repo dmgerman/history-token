@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt; /* For struct exception_table_entry */
 multiline_comment|/* Indirect stringification */
@@ -26,14 +27,8 @@ DECL|macro|MODULE_DESCRIPTION
 mdefine_line|#define MODULE_DESCRIPTION(desc)
 DECL|macro|MODULE_SUPPORTED_DEVICE
 mdefine_line|#define MODULE_SUPPORTED_DEVICE(name)
-DECL|macro|MODULE_GENERIC_TABLE
-mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
-DECL|macro|MODULE_DEVICE_TABLE
-mdefine_line|#define MODULE_DEVICE_TABLE(type,name)
 DECL|macro|MODULE_PARM_DESC
 mdefine_line|#define MODULE_PARM_DESC(var,desc)
-DECL|macro|print_symbol
-mdefine_line|#define print_symbol(format, addr)
 DECL|macro|print_modules
 mdefine_line|#define print_modules()
 DECL|macro|MODULE_NAME_LEN
@@ -57,6 +52,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE
+DECL|macro|MODULE_GENERIC_TABLE
+mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&bslash;&n;static const unsigned long __module_##gtype##_size &bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id); &bslash;&n;static const struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused)) = name
 multiline_comment|/* This is magically filled in by the linker, but THIS_MODULE must be&n;   a constant so it works in initializers. */
 r_extern
 r_struct
@@ -65,43 +62,14 @@ id|__this_module
 suffix:semicolon
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE (&amp;__this_module)
-macro_line|#else
+macro_line|#else  /* !MODULE */
+DECL|macro|MODULE_GENERIC_TABLE
+mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE ((struct module *)0)
 macro_line|#endif
-macro_line|#ifdef CONFIG_MODULES
-multiline_comment|/* Get/put a kernel symbol (calls must be symmetric) */
-r_void
-op_star
-id|__symbol_get
-c_func
-(paren
-r_const
-r_char
-op_star
-id|symbol
-)paren
-suffix:semicolon
-r_void
-op_star
-id|__symbol_get_gpl
-c_func
-(paren
-r_const
-r_char
-op_star
-id|symbol
-)paren
-suffix:semicolon
-DECL|macro|symbol_get
-mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(#x)))
-multiline_comment|/* For every exported symbol, place a struct in the __ksymtab section */
-DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, #sym }
-DECL|macro|EXPORT_SYMBOL_NOVERS
-mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
-DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(sym) EXPORT_SYMBOL(sym)
+DECL|macro|MODULE_DEVICE_TABLE
+mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
 DECL|struct|kernel_symbol_group
 r_struct
 id|kernel_symbol_group
@@ -156,6 +124,39 @@ id|entry
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODULES
+multiline_comment|/* Get/put a kernel symbol (calls must be symmetric) */
+r_void
+op_star
+id|__symbol_get
+c_func
+(paren
+r_const
+r_char
+op_star
+id|symbol
+)paren
+suffix:semicolon
+r_void
+op_star
+id|__symbol_get_gpl
+c_func
+(paren
+r_const
+r_char
+op_star
+id|symbol
+)paren
+suffix:semicolon
+DECL|macro|symbol_get
+mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(#x)))
+multiline_comment|/* For every exported symbol, place a struct in the __ksymtab section */
+DECL|macro|EXPORT_SYMBOL
+mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, #sym }
+DECL|macro|EXPORT_SYMBOL_NOVERS
+mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
+DECL|macro|EXPORT_SYMBOL_GPL
+mdefine_line|#define EXPORT_SYMBOL_GPL(sym) EXPORT_SYMBOL(sym)
 DECL|struct|module_ref
 r_struct
 id|module_ref
@@ -279,6 +280,24 @@ m_exit
 (paren
 r_void
 )paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_KALLSYMS
+multiline_comment|/* We keep the symbol and string tables for kallsyms. */
+DECL|member|symtab
+id|Elf_Sym
+op_star
+id|symtab
+suffix:semicolon
+DECL|member|num_syms
+r_int
+r_int
+id|num_syms
+suffix:semicolon
+DECL|member|strtab
+r_char
+op_star
+id|strtab
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* The command line arguments (may be mangled).  People like&n;&t;   keeping pointers to this stuff */
@@ -498,6 +517,33 @@ DECL|macro|module_name
 mdefine_line|#define module_name(mod)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct module *__mod = (mod);&t;&t;&bslash;&n;&t;__mod ? __mod-&gt;name : &quot;kernel&quot;;&t;&t;&bslash;&n;})
 DECL|macro|__unsafe
 mdefine_line|#define __unsafe(mod)&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;if (mod &amp;&amp; !(mod)-&gt;unsafe) {&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;printk(KERN_WARNING&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;       &quot;Module %s cannot be unloaded due to unsafe usage in&quot; &bslash;&n;&t;&t;       &quot; %s:%u&bslash;n&quot;, (mod)-&gt;name, __FILE__, __LINE__);&t;     &bslash;&n;&t;&t;(mod)-&gt;unsafe = 1;&t;&t;&t;&t;&t;     &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;} while(0)
+multiline_comment|/* For kallsyms to ask for address resolution.  NULL means not found. */
+r_const
+r_char
+op_star
+id|module_address_lookup
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+op_star
+id|symbolsize
+comma
+r_int
+r_int
+op_star
+id|offset
+comma
+r_char
+op_star
+op_star
+id|modname
+)paren
+suffix:semicolon
 macro_line|#else /* !CONFIG_MODULES... */
 DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(sym)
@@ -520,6 +566,40 @@ DECL|macro|module_name
 mdefine_line|#define module_name(mod) &quot;kernel&quot;
 DECL|macro|__unsafe
 mdefine_line|#define __unsafe(mod)
+multiline_comment|/* For kallsyms to ask for address resolution.  NULL means not found. */
+DECL|function|module_address_lookup
+r_static
+r_inline
+r_const
+r_char
+op_star
+id|module_address_lookup
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+op_star
+id|symbolsize
+comma
+r_int
+r_int
+op_star
+id|offset
+comma
+r_char
+op_star
+op_star
+id|modname
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_MODULES */
 multiline_comment|/* For archs to search exception tables */
 r_extern
@@ -576,6 +656,21 @@ mdefine_line|#define init_module(voidarg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__initf
 DECL|macro|cleanup_module
 mdefine_line|#define cleanup_module(voidarg) __exitfn(void)
 macro_line|#endif
+multiline_comment|/*&n; * The exception and symbol tables, and the lock&n; * to protect them.&n; */
+r_extern
+id|spinlock_t
+id|modlist_lock
+suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|extables
+suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|symbols
+suffix:semicolon
 multiline_comment|/* Use symbol_get and symbol_put instead.  You&squot;ll thank me. */
 DECL|macro|HAVE_INTER_MODULE
 mdefine_line|#define HAVE_INTER_MODULE

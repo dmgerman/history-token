@@ -1,10 +1,13 @@
 multiline_comment|/* Copyright(c) 2000, Compaq Computer Corporation &n; * Fibre Channel Host Bus Adapter &n; * 64-bit, 66MHz PCI &n; * Originally developed and tested on:&n; * (front): [chip] Tachyon TS HPFC-5166A/1.2  L2C1090 ...&n; *          SP# P225CXCBFIEL6T, Rev XC&n; *          SP# 161290-001, Rev XD&n; * (back): Board No. 010008-001 A/W Rev X5, FAB REV X5&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; * Written by Don Zimmerman&n; * IOCTL and procfs added by Jouke Numan&n; * SMP testing by Chel Van Gennip&n; *&n; * portions copied from:&n; * QLogic CPQFCTS SCSI-FCP&n; * Written by Erik H. Moe, ehm@cris.com&n; * Copyright 1995, Erik H. Moe&n; * Renamed and updated to 1.3.x by Michael Griffith &lt;grif@cs.ucr.edu&gt; &n; * Chris Loveland &lt;cwl@iol.unh.edu&gt; to support the isp2100 and isp2200&n;*/
 DECL|macro|LinuxVersionCode
 mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
+macro_line|#include &lt;linux/config.h&gt;  
+macro_line|#include &lt;linux/interrupt.h&gt;  
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/version.h&gt; 
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -12,11 +15,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;  
 singleline_comment|// request_region() prototype
-macro_line|#include &lt;linux/vmalloc.h&gt; 
-singleline_comment|// ioremap()
-singleline_comment|//#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,7)
 macro_line|#include &lt;linux/completion.h&gt;
-singleline_comment|//#endif
 macro_line|#ifdef __alpha__
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -34,9 +33,6 @@ macro_line|#include &quot;cpqfcTSchip.h&quot;
 macro_line|#include &quot;cpqfcTSstructs.h&quot;
 macro_line|#include &quot;cpqfcTStrigger.h&quot;
 macro_line|#include &quot;cpqfcTS.h&quot;
-macro_line|#include &lt;linux/config.h&gt;  
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt; 
 multiline_comment|/* Embedded module documentation macros - see module.h */
 id|MODULE_AUTHOR
 c_func

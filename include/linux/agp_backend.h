@@ -84,6 +84,9 @@ comma
 DECL|enumerator|VIA_APOLLO_KT133
 id|VIA_APOLLO_KT133
 comma
+DECL|enumerator|VIA_APOLLO_KT400
+id|VIA_APOLLO_KT400
+comma
 DECL|enumerator|SIS_GENERIC
 id|SIS_GENERIC
 comma

@@ -1864,7 +1864,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|__get_lease
+id|__break_lease
 c_func
 (paren
 r_struct
@@ -3163,7 +3163,7 @@ op_star
 comma
 r_int
 comma
-r_int
+id|dev_t
 )paren
 suffix:semicolon
 DECL|member|rename
@@ -4518,11 +4518,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|get_lease
+DECL|function|break_lease
 r_static
 r_inline
 r_int
-id|get_lease
+id|break_lease
 c_func
 (paren
 r_struct
@@ -4539,15 +4539,9 @@ r_if
 c_cond
 (paren
 id|inode-&gt;i_flock
-op_logical_and
-(paren
-id|inode-&gt;i_flock-&gt;fl_flags
-op_amp
-id|FL_LEASE
-)paren
 )paren
 r_return
-id|__get_lease
+id|__break_lease
 c_func
 (paren
 id|inode
@@ -4817,6 +4811,16 @@ suffix:semicolon
 r_extern
 r_struct
 id|file_operations
+id|def_chr_fops
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
+id|bad_sock_fops
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
 id|def_fifo_fops
 suffix:semicolon
 r_extern
@@ -5021,7 +5025,7 @@ op_star
 comma
 id|umode_t
 comma
-r_int
+id|dev_t
 )paren
 suffix:semicolon
 multiline_comment|/* Invalid inode operations -- fs/bad_inode.c */

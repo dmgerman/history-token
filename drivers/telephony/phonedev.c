@@ -450,12 +450,14 @@ id|file_operations
 id|phone_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|phone_open
 comma
 )brace

@@ -10,7 +10,6 @@ multiline_comment|/* NS8390 NIC (network interface controller) clone, 16 or 64K 
 multiline_comment|/* and 10BASE-2 (thin coax) and AUI connectors.                             */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;linux/resource.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -329,7 +330,7 @@ id|ubuf-&gt;st_size
 op_logical_or
 id|__put_user
 (paren
-id|kbuf-&gt;atime
+id|kbuf-&gt;atime.tv_sec
 comma
 op_amp
 id|ubuf-&gt;st_atime.tv_sec
@@ -337,7 +338,7 @@ id|ubuf-&gt;st_atime.tv_sec
 op_logical_or
 id|__put_user
 (paren
-l_int|0
+id|kbuf-&gt;atime.tv_nsec
 comma
 op_amp
 id|ubuf-&gt;st_atime.tv_nsec
@@ -345,7 +346,7 @@ id|ubuf-&gt;st_atime.tv_nsec
 op_logical_or
 id|__put_user
 (paren
-id|kbuf-&gt;mtime
+id|kbuf-&gt;mtime.tv_sec
 comma
 op_amp
 id|ubuf-&gt;st_mtime.tv_sec
@@ -353,7 +354,7 @@ id|ubuf-&gt;st_mtime.tv_sec
 op_logical_or
 id|__put_user
 (paren
-l_int|0
+id|kbuf-&gt;mtime.tv_nsec
 comma
 op_amp
 id|ubuf-&gt;st_mtime.tv_nsec
@@ -361,7 +362,7 @@ id|ubuf-&gt;st_mtime.tv_nsec
 op_logical_or
 id|__put_user
 (paren
-id|kbuf-&gt;ctime
+id|kbuf-&gt;ctime.tv_sec
 comma
 op_amp
 id|ubuf-&gt;st_ctime.tv_sec
@@ -369,7 +370,7 @@ id|ubuf-&gt;st_ctime.tv_sec
 op_logical_or
 id|__put_user
 (paren
-l_int|0
+id|kbuf-&gt;ctime.tv_nsec
 comma
 op_amp
 id|ubuf-&gt;st_ctime.tv_nsec
@@ -505,7 +506,7 @@ id|ubuf-&gt;st_size
 op_logical_or
 id|__put_user
 (paren
-id|kbuf-&gt;atime
+id|kbuf-&gt;atime.tv_sec
 comma
 op_amp
 id|ubuf-&gt;st_atime.tv_sec
@@ -513,7 +514,7 @@ id|ubuf-&gt;st_atime.tv_sec
 op_logical_or
 id|__put_user
 (paren
-l_int|0
+id|kbuf-&gt;atime.tv_nsec
 comma
 op_amp
 id|ubuf-&gt;st_atime.tv_nsec
@@ -521,7 +522,7 @@ id|ubuf-&gt;st_atime.tv_nsec
 op_logical_or
 id|__put_user
 (paren
-id|kbuf-&gt;mtime
+id|kbuf-&gt;mtime.tv_sec
 comma
 op_amp
 id|ubuf-&gt;st_mtime.tv_sec
@@ -529,7 +530,7 @@ id|ubuf-&gt;st_mtime.tv_sec
 op_logical_or
 id|__put_user
 (paren
-l_int|0
+id|kbuf-&gt;mtime.tv_nsec
 comma
 op_amp
 id|ubuf-&gt;st_mtime.tv_nsec
@@ -537,7 +538,7 @@ id|ubuf-&gt;st_mtime.tv_nsec
 op_logical_or
 id|__put_user
 (paren
-id|kbuf-&gt;ctime
+id|kbuf-&gt;ctime.tv_sec
 comma
 op_amp
 id|ubuf-&gt;st_ctime.tv_sec
@@ -545,7 +546,7 @@ id|ubuf-&gt;st_ctime.tv_sec
 op_logical_or
 id|__put_user
 (paren
-l_int|0
+id|kbuf-&gt;ctime.tv_nsec
 comma
 op_amp
 id|ubuf-&gt;st_ctime.tv_nsec

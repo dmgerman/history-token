@@ -1,22 +1,22 @@
 multiline_comment|/* $Id: aha1542.c,v 1.1 1992/07/24 06:27:38 root Exp root $&n; *  linux/kernel/aha1542.c&n; *&n; *  Copyright (C) 1992  Tommy Thorn&n; *  Copyright (C) 1993, 1994, 1995 Eric Youngdale&n; *&n; *  Modified by Eric Youngdale&n; *        Use request_irq and request_dma to help prevent unexpected conflicts&n; *        Set up on-board DMA controller, such that we do not have to&n; *        have the bios enabled to use the aha1542.&n; *  Modified by David Gentzel&n; *        Don&squot;t call request_dma if dma mask is 0 (for BusLogic BT-445S VL-Bus&n; *        controller).&n; *  Modified by Matti Aarnio&n; *        Accept parameters from LILO cmd-line. -- 1-Oct-94&n; *  Modified by Mike McLagan &lt;mike.mclagan@linux.org&gt;&n; *        Recognise extended mode on AHA1542CP, different bit than 1542CF&n; *        1-Jan-97&n; *  Modified by Bjorn L. Thordarson and Einar Thor Einarsson&n; *        Recognize that DMA0 is valid DMA channel -- 13-Jul-98&n; *  Modified by Chris Faulhaber &lt;jedgar@fxp.org&gt;&n; *        Added module command-line options&n; *        19-Jul-99&n; *  Modified by Adam Fritzler &lt;mid@auk.cx&gt;&n; *        Added proper detection of the AHA-1640 (MCA version of AHA-1540)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;aha1542.h&quot;

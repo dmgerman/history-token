@@ -1180,6 +1180,13 @@ id|dlci_ioctl_hook
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|km_waitq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|km_waitq
+)paren
+suffix:semicolon
 DECL|variable|xfrm_cfg_sem
 id|EXPORT_SYMBOL
 c_func

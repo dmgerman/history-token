@@ -1381,27 +1381,32 @@ id|file_operations
 id|dasd_devices_file_ops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|dasd_generic_read
 comma
 multiline_comment|/* read */
+dot
 id|write
-suffix:colon
+op_assign
 id|dasd_devices_write
 comma
 multiline_comment|/* write */
+dot
 id|open
-suffix:colon
+op_assign
 id|dasd_devices_open
 comma
 multiline_comment|/* open */
+dot
 id|release
-suffix:colon
+op_assign
 id|dasd_generic_close
 comma
 multiline_comment|/* close */
@@ -2232,27 +2237,32 @@ id|file_operations
 id|dasd_statistics_file_ops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|dasd_generic_read
 comma
 multiline_comment|/* read */
+dot
 id|write
-suffix:colon
+op_assign
 id|dasd_statistics_write
 comma
 multiline_comment|/* write */
+dot
 id|open
-suffix:colon
+op_assign
 id|dasd_statistics_open
 comma
 multiline_comment|/* open */
+dot
 id|release
-suffix:colon
+op_assign
 id|dasd_generic_close
 comma
 multiline_comment|/* close */

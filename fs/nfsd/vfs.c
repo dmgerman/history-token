@@ -859,7 +859,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If we are changing the size of the file, then&n;&t;&t; * we need to break all leases.&n;&t;&t; */
 id|err
 op_assign
-id|get_lease
+id|break_lease
 c_func
 (paren
 id|inode
@@ -1588,7 +1588,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Check to see if there are any leases on this file.&n;&t; * This may block while leases are broken.&n;&t; */
 id|err
 op_assign
-id|get_lease
+id|break_lease
 c_func
 (paren
 id|inode

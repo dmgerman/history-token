@@ -136,34 +136,40 @@ id|fs3270_fops
 op_assign
 (brace
 macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0))
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
 multiline_comment|/* owner */
 macro_line|#endif
+dot
 id|read
-suffix:colon
+op_assign
 id|fs3270_read
 comma
 multiline_comment|/* read */
+dot
 id|write
-suffix:colon
+op_assign
 id|fs3270_write
 comma
 multiline_comment|/* write */
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|fs3270_ioctl
 comma
 multiline_comment|/* ioctl */
+dot
 id|open
-suffix:colon
+op_assign
 id|fs3270_open
 comma
 multiline_comment|/* open */
+dot
 id|release
-suffix:colon
+op_assign
 id|fs3270_close
 comma
 multiline_comment|/* release */

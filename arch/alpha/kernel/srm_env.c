@@ -478,6 +478,8 @@ r_int
 id|ret1
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 id|free_page
 c_func
 (paren
