@@ -7446,8 +7446,6 @@ c_func
 (paren
 id|delay
 comma
-l_string|&quot;delay&quot;
-comma
 id|S_IRUGO
 op_or
 id|S_IWUSR
@@ -7635,8 +7633,6 @@ c_func
 (paren
 id|opts
 comma
-l_string|&quot;opts&quot;
-comma
 id|S_IRUGO
 op_or
 id|S_IWUSR
@@ -7690,8 +7686,6 @@ id|DRIVER_ATTR
 c_func
 (paren
 id|num_devs
-comma
-l_string|&quot;num_devs&quot;
 comma
 id|S_IRUGO
 comma
