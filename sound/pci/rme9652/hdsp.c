@@ -2100,6 +2100,9 @@ suffix:semicolon
 r_case
 l_int|0x96
 suffix:colon
+r_case
+l_int|0x97
+suffix:colon
 r_return
 (paren
 l_int|32
@@ -2171,6 +2174,9 @@ id|in
 suffix:semicolon
 r_case
 l_int|0x96
+suffix:colon
+r_case
+l_int|0x97
 suffix:colon
 r_return
 (paren
@@ -22835,6 +22841,9 @@ r_break
 suffix:semicolon
 r_case
 l_int|0x96
+suffix:colon
+r_case
+l_int|0x97
 suffix:colon
 id|hdsp-&gt;card_name
 op_assign
