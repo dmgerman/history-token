@@ -3868,9 +3868,9 @@ c_func
 op_amp
 id|tp-&gt;packets_out
 comma
-id|new_factor
-op_minus
 id|old_factor
+op_minus
+id|new_factor
 )paren
 suffix:semicolon
 id|tcp_inc_pcount
