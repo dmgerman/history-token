@@ -1,6 +1,7 @@
 macro_line|#ifndef _MPC_H_
 DECL|macro|_MPC_H_
 mdefine_line|#define _MPC_H_
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/atmmpc.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -231,7 +232,7 @@ r_char
 op_star
 id|page
 comma
-r_int
+id|ssize_t
 op_star
 id|len
 )paren

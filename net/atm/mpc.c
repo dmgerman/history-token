@@ -897,7 +897,7 @@ r_char
 op_star
 id|page
 comma
-r_int
+id|ssize_t
 op_star
 id|len
 )paren
