@@ -3157,6 +3157,11 @@ c_func
 (paren
 id|CAP_SYS_RESOURCE
 )paren
+op_logical_and
+id|p-&gt;user
+op_ne
+op_amp
+id|root_user
 )paren
 r_goto
 id|bad_fork_free
