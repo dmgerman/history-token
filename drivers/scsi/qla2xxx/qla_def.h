@@ -237,7 +237,7 @@ DECL|macro|MAX_OUTSTANDING_COMMANDS
 mdefine_line|#define MAX_OUTSTANDING_COMMANDS&t;1024
 multiline_comment|/* ISP request and response entry counts (37-65535) */
 DECL|macro|REQUEST_ENTRY_CNT
-mdefine_line|#define REQUEST_ENTRY_CNT&t;&t;1024&t;/* Number of request entries. */
+mdefine_line|#define REQUEST_ENTRY_CNT&t;&t;2048&t;/* Number of request entries. */
 DECL|macro|RESPONSE_ENTRY_CNT_2100
 mdefine_line|#define RESPONSE_ENTRY_CNT_2100&t;&t;64&t;/* Number of response entries.*/
 DECL|macro|RESPONSE_ENTRY_CNT_2300

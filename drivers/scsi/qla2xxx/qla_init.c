@@ -2553,6 +2553,20 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* Adjust fw RISC transfer size */
+r_if
+c_cond
+(paren
+id|REQUEST_ENTRY_CNT
+OG
+l_int|1024
+)paren
+id|ha-&gt;fw_transfer_size
+op_assign
+id|REQUEST_ENTRY_SIZE
+op_star
+l_int|1024
+suffix:semicolon
+r_else
 id|ha-&gt;fw_transfer_size
 op_assign
 id|REQUEST_ENTRY_SIZE
