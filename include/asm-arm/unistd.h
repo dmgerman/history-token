@@ -11,6 +11,8 @@ DECL|macro|__NR_SYSCALL_BASE
 mdefine_line|#define __NR_SYSCALL_BASE&t;0x900000
 macro_line|#endif
 multiline_comment|/*&n; * This file contains the system call numbers.&n; */
+DECL|macro|__NR_restart_syscall
+mdefine_line|#define __NR_restart_syscall&t;&t;(__NR_SYSCALL_BASE+  0)
 DECL|macro|__NR_exit
 mdefine_line|#define __NR_exit&t;&t;&t;(__NR_SYSCALL_BASE+  1)
 DECL|macro|__NR_fork
