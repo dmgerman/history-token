@@ -42,6 +42,7 @@ macro_line|#include &lt;linux/personality.h&gt;
 multiline_comment|/* For SOCKET_I */
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/compat.h&gt;
 multiline_comment|/* Use this to get at 32-bit user passed pointers. */
 DECL|macro|A
 mdefine_line|#define A(__x)&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __ret;&t;&t;&bslash;&n;&t;__asm__ (&quot;srl&t;%0, 0, %0&quot;&t;&bslash;&n;&t;&t; : &quot;=r&quot; (__ret)&t;&t;&bslash;&n;&t;&t; : &quot;0&quot; (__x));&t;&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&bslash;&n;})
