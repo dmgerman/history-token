@@ -309,6 +309,8 @@ DECL|macro|__pgprot
 macro_line|# define __pgprot(x)&t;(x)
 macro_line|#endif /* !STRICT_MM_TYPECHECKS */
 DECL|macro|PAGE_OFFSET
-mdefine_line|#define PAGE_OFFSET&t;&t;0xe000000000000000
+mdefine_line|#define PAGE_OFFSET&t;&t;&t;0xe000000000000000
+DECL|macro|VM_DATA_DEFAULT_FLAGS
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;&t;(VM_READ | VM_WRITE |&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC |&t;&t;&bslash;&n;&t;&t;&t;&t;&t; (((current-&gt;thread.flags &amp; IA64_THREAD_XSTACK) != 0)&t;&bslash;&n;&t;&t;&t;&t;&t;  ? VM_EXEC : 0))
 macro_line|#endif /* _ASM_IA64_PAGE_H */
 eof

@@ -177,6 +177,8 @@ id|dram_start
 comma
 id|dram_end
 suffix:semicolon
+DECL|macro|VM_DATA_DEFAULT_FLAGS
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _CRIS_PAGE_H */
 eof

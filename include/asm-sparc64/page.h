@@ -390,6 +390,8 @@ id|order
 suffix:semicolon
 )brace
 macro_line|#endif /* !(__ASSEMBLY__) */
+DECL|macro|VM_DATA_DEFAULT_FLAGS
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* !(__KERNEL__) */
 macro_line|#endif /* !(_SPARC64_PAGE_H) */
 eof

@@ -186,6 +186,8 @@ DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;(mem_map + (__pa(kaddr) &gt;&gt; PAGE_SHIFT))
 DECL|macro|VALID_PAGE
 mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
+DECL|macro|VM_DATA_DEFAULT_FLAGS
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* defined (__KERNEL__) */
 macro_line|#endif /* __ASM_PAGE_H */
 eof

@@ -525,6 +525,8 @@ macro_line|#endif
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
 macro_line|#endif /* __ASSEMBLY__ */
+DECL|macro|VM_DATA_DEFAULT_FLAGS
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _M68K_PAGE_H */
 eof
