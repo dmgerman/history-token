@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_fsf.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_FSF_C_REVISION
-mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.55 $&quot;
+mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.59 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -146,7 +146,7 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-id|zfcp_fsf_req_create_sbal_check
+id|zfcp_fsf_req_sbal_check
 c_func
 (paren
 r_int
@@ -367,25 +367,15 @@ l_int|8
 )braket
 op_assign
 (brace
-(brace
 l_string|&quot;unknown&quot;
-)brace
 comma
-(brace
 l_string|&quot;OS&quot;
-)brace
 comma
-(brace
 l_string|&quot;WWPN&quot;
-)brace
 comma
-(brace
 l_string|&quot;DID&quot;
-)brace
 comma
-(brace
 l_string|&quot;LUN&quot;
-)brace
 )brace
 suffix:semicolon
 multiline_comment|/****************************************************************/
@@ -6902,6 +6892,28 @@ id|fsf_req-&gt;status
 op_or_assign
 id|ZFCP_STATUS_FSFREQ_ERROR
 suffix:semicolon
+id|retval
+op_assign
+id|zfcp_handle_els_rjt
+c_func
+(paren
+id|header-&gt;fsf_status_qual.word
+(braket
+l_int|1
+)braket
+comma
+(paren
+r_struct
+id|zfcp_ls_rjt_par
+op_star
+)paren
+op_amp
+id|header-&gt;fsf_status_qual.word
+(braket
+l_int|2
+)braket
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -7299,12 +7311,6 @@ id|handler
 c_func
 (paren
 id|send_els-&gt;handler_data
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|send_els
 )paren
 suffix:semicolon
 r_return
@@ -15151,46 +15157,6 @@ suffix:semicolon
 )brace
 id|skip_fsfstatus
 suffix:colon
-macro_line|#if 0
-multiline_comment|/*&n;&t; * This nasty chop at the problem is not working anymore&n;&t; * as we do not adjust the retry count anylonger in order&n;&t; * to have a number of retries that avoids I/O errors.&n;&t; * The manipulation of the retry count has been removed&n;&t; * in favour of a safe tape device handling. We must not&n;&t; * sent SCSI commands more than once to a device if no&n;&t; * retries are permitted by the high level driver. Generally&n;&t; * speaking, it was a mess to change retry counts. So it is&n;&t; * fine that this sort of workaround is gone.&n;&t; * Then, we had to face a certain number of immediate retries in case of&n;&t; * busy and queue full conditions (see below).&n;&t; * This is not acceptable&n;&t; * for the latter. Queue full conditions are used&n;&t; * by devices to indicate to a host that the host can rely&n;&t; * on the completion (or timeout) of at least one outstanding&n;&t; * command as a suggested trigger for command retries.&n;&t; * Busy conditions require a different trigger since&n;&t; * no commands are outstanding for that initiator from the&n;&t; * devices perspective.&n;&t; * The drawback of mapping a queue full condition to a&n;&t; * busy condition is the chance of wasting all retries prior&n;&t; * to the time when the device indicates that a command&n;&t; * rejected due to a queue full condition should be re-driven.&n;&t; * This case would lead to unnecessary I/O errors that&n;&t; * have to be considered fatal if for example ext3&squot;s&n;&t; * journaling would be torpedoed by such an avoidable&n;&t; * I/O error.&n;&t; * So, what issues are there with not mapping a queue-full&n;&t; * condition to a busy condition?&n;&t; * Due to the &squot;exclusive LUN&squot;&n;&t; * policy enforced by the zSeries FCP channel, this &n;&t; * Linux instance is the only initiator with regard to&n;&t; * this adapter. It is safe to rely on the information&n;&t; * &squot;don&squot;t disturb me now ... and btw. no other commands&n;&t; * pending for you&squot; (= queue full) sent by the LU,&n;&t; * since no other Linux can use this LUN via this adapter&n;&t; * at the same time. If there is a potential race&n;&t; * introduced by the FCP channel by not inhibiting Linux A&n;&t; * to give up a LU with commands pending while Linux B&n;&t; * grabs this LU and sends commands  - thus providing&n;&t; * an exploit at the &squot;exclusive LUN&squot; policy - then this&n;&t; * issue has to be considered a hardware problem. It should&n;&t; * be tracked as such if it really occurs. Even if the&n;&t; * FCP Channel spec. begs exploiters to wait for the&n;&t; * completion of all request sent to a LU prior to&n;&t; * closing this LU connection.&n;&t; * This spec. statement in conjunction with&n;&t; * the &squot;exclusive LUN&squot; policy is not consistent design.&n;&t; * Another issue is how resource constraints for SCSI commands&n;&t; * might be handled by the FCP channel (just guessing for now).&n;&t; * If the FCP channel would always map resource constraints,&n;&t; * e.g. no free FC exchange ID due to I/O stress caused by&n;&t; * other sharing Linux instances, to faked queue-full&n;&t; * conditions then this would be a misinterpretation and&n;&t; * violation of SCSI standards.&n;&t; * If there are SCSI stack races as indicated below&n;&t; * then they need to be fixed just there.&n;&t; * Providing all issue above are not applicable or will&n;&t; * be fixed appropriately, removing the following hack&n;&t; * is the right thing to do.&n;&t; */
-multiline_comment|/*&n;&t; * Note: This is a rather nasty chop at the problem. We cannot &n;&t; * risk adding to the mlqueue however as this will block the &n;&t; * device. If it is the last outstanding command for this host&n;&t; * it will remain blocked indefinitely. This would be quite possible&n;&t; * on the zSeries FCP adapter.&n;&t; * Also, there exists a race with scsi_insert_special relying on &n;&t; * scsi_request_fn to recalculate some command data which may not &n;&t; * happen when q-&gt;plugged is true in scsi_request_fn&n;&t; */
-r_if
-c_cond
-(paren
-id|status_byte
-c_func
-(paren
-id|scpnt-&gt;result
-)paren
-op_eq
-id|QUEUE_FULL
-)paren
-(brace
-id|ZFCP_LOG_DEBUG
-c_func
-(paren
-l_string|&quot;Changing QUEUE_FULL to BUSY....&bslash;n&quot;
-)paren
-suffix:semicolon
-id|scpnt-&gt;result
-op_and_assign
-op_complement
-(paren
-id|QUEUE_FULL
-op_lshift
-l_int|1
-)paren
-suffix:semicolon
-id|scpnt-&gt;result
-op_or_assign
-(paren
-id|BUSY
-op_lshift
-l_int|1
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
@@ -16553,8 +16519,8 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-DECL|function|zfcp_fsf_req_create_sbal_check
-id|zfcp_fsf_req_create_sbal_check
+DECL|function|zfcp_fsf_req_sbal_check
+id|zfcp_fsf_req_sbal_check
 c_func
 (paren
 r_int
@@ -16680,7 +16646,7 @@ id|fsf_cmd
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * zfcp_fsf_req_sbal_get - try to get one SBAL in the request queue&n; * @adapter: adapter for which request queue is examined&n; * @req_flags: flags indicating whether to wait for needed SBAL or not&n; * @lock_flags: lock_flags is queue_lock is taken&n; *&n; * locking: on success the queue_lock for the request queue of the adapter&n; *&t;is held&n; */
+multiline_comment|/**&n; * zfcp_fsf_req_sbal_get - try to get one SBAL in the request queue&n; * @adapter: adapter for which request queue is examined&n; * @req_flags: flags indicating whether to wait for needed SBAL or not&n; * @lock_flags: lock_flags is queue_lock is taken&n; * Return: 0 on success, otherwise -EIO, or -ERESTARTSYS&n; * Locks: lock adapter-&gt;request_queue-&gt;queue_lock on success&n; */
 r_static
 r_int
 DECL|function|zfcp_fsf_req_sbal_get
@@ -16702,7 +16668,7 @@ id|lock_flags
 )paren
 (brace
 r_int
-id|condition
+id|ret
 suffix:semicolon
 r_struct
 id|zfcp_qdio_queue
@@ -16724,22 +16690,21 @@ id|ZFCP_WAIT_FOR_SBAL
 )paren
 )paren
 (brace
+id|ret
+op_assign
 id|wait_event_interruptible_timeout
 c_func
 (paren
 id|adapter-&gt;request_wq
 comma
-(paren
-id|condition
-op_assign
-id|zfcp_fsf_req_create_sbal_check
+id|zfcp_fsf_req_sbal_check
+c_func
 (paren
 id|lock_flags
 comma
 id|req_queue
 comma
 l_int|1
-)paren
 )paren
 comma
 id|ZFCP_SBAL_TIMEOUT
@@ -16748,22 +16713,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|condition
+id|ret
+OL
+l_int|0
 )paren
-(brace
 r_return
-op_minus
-id|EIO
+id|ret
 suffix:semicolon
-)brace
 )brace
 r_else
 r_if
 c_cond
 (paren
 op_logical_neg
-id|zfcp_fsf_req_create_sbal_check
+id|zfcp_fsf_req_sbal_check
 c_func
 (paren
 id|lock_flags
@@ -16773,12 +16736,10 @@ comma
 l_int|1
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
