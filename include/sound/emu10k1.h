@@ -35,6 +35,9 @@ DECL|macro|NUM_G
 mdefine_line|#define NUM_G           64              /* use all channels */
 DECL|macro|NUM_FXSENDS
 mdefine_line|#define NUM_FXSENDS     4
+DECL|macro|NUM_EFX_PLAYBACK
+mdefine_line|#define NUM_EFX_PLAYBACK    16
+multiline_comment|/* FIXME? - according to the OSS driver the EMU10K1 needs a 29 bit DMA mask */
 DECL|macro|EMU10K1_DMA_MASK
 mdefine_line|#define EMU10K1_DMA_MASK&t;0x7fffffffUL&t;/* 31bit */
 DECL|macro|AUDIGY_DMA_MASK
@@ -68,11 +71,17 @@ DECL|macro|IPR
 mdefine_line|#define IPR&t;&t;&t;0x08&t;&t;/* Global interrupt pending register&t;&t;*/
 multiline_comment|/* Clear pending interrupts by writing a 1 to&t;*/
 multiline_comment|/* the relevant bits and zero to the other bits&t;*/
+DECL|macro|IPR_GPIOMSG
+mdefine_line|#define IPR_GPIOMSG&t;&t;0x20000000&t;/* GPIO message interrupt (RE&squot;d, still not sure &n;&t;&t;&t;&t;&t;&t;   which INTE bits enable it)&t;&t;&t;*/
 multiline_comment|/* The next two interrupts are for the midi port on the Audigy Drive (A_MPU1)&t;&t;&t;*/
 DECL|macro|IPR_A_MIDITRANSBUFEMPTY2
 mdefine_line|#define IPR_A_MIDITRANSBUFEMPTY2 0x10000000&t;/* MIDI UART transmit buffer empty&t;&t;*/
 DECL|macro|IPR_A_MIDIRECVBUFEMPTY2
 mdefine_line|#define IPR_A_MIDIRECVBUFEMPTY2&t;0x08000000&t;/* MIDI UART receive buffer empty&t;&t;*/
+DECL|macro|IPR_SPDIFBUFFULL
+mdefine_line|#define IPR_SPDIFBUFFULL&t;0x04000000&t;/* SPDIF capture related, 10k2 only? (RE)&t;*/
+DECL|macro|IPR_SPDIFBUFHALFFULL
+mdefine_line|#define IPR_SPDIFBUFHALFFULL&t;0x02000000&t;/* SPDIF capture related? (RE)&t;&t;&t;*/
 DECL|macro|IPR_SAMPLERATETRACKER
 mdefine_line|#define IPR_SAMPLERATETRACKER&t;0x01000000&t;/* Sample rate tracker lock status change&t;*/
 DECL|macro|IPR_FXDSP
@@ -110,13 +119,13 @@ mdefine_line|#define IPR_MIDITRANSBUFEMPTY&t;0x00000100&t;/* MIDI UART transmit 
 DECL|macro|IPR_MIDIRECVBUFEMPTY
 mdefine_line|#define IPR_MIDIRECVBUFEMPTY&t;0x00000080&t;/* MIDI UART receive buffer empty&t;&t;*/
 DECL|macro|IPR_CHANNELLOOP
-mdefine_line|#define IPR_CHANNELLOOP&t;&t;0x00000040&t;/* One or more channel loop interrupts pending&t;*/
+mdefine_line|#define IPR_CHANNELLOOP&t;&t;0x00000040&t;/* Channel (half) loop interrupt(s) pending&t;*/
 DECL|macro|IPR_CHANNELNUMBERMASK
 mdefine_line|#define IPR_CHANNELNUMBERMASK&t;0x0000003f&t;/* When IPR_CHANNELLOOP is set, indicates the&t;*/
-multiline_comment|/* Highest set channel in CLIPL or CLIPH.  When&t;*/
-multiline_comment|/* IP is written with CL set, the bit in CLIPL&t;*/
-multiline_comment|/* or CLIPH corresponding to the CIN value &t;*/
-multiline_comment|/* written will be cleared.&t;&t;&t;*/
+multiline_comment|/* highest set channel in CLIPL, CLIPH, HLIPL,  */
+multiline_comment|/* or HLIPH.  When IP is written with CL set,&t;*/
+multiline_comment|/* the bit in H/CLIPL or H/CLIPH corresponding&t;*/
+multiline_comment|/* to the CIN value written will be cleared.&t;*/
 DECL|macro|INTE
 mdefine_line|#define INTE&t;&t;&t;0x0c&t;&t;/* Interrupt enable register&t;&t;&t;*/
 DECL|macro|INTE_VIRTUALSB_MASK
@@ -315,12 +324,33 @@ DECL|macro|A_GPINPUT_MASK
 mdefine_line|#define A_GPINPUT_MASK&t;&t;0xff00
 DECL|macro|A_GPOUTPUT_MASK
 mdefine_line|#define A_GPOUTPUT_MASK&t;&t;0x00ff
+singleline_comment|// Audigy output/GPIO stuff taken from the kX drivers
 DECL|macro|A_IOCFG_GPOUT0
-mdefine_line|#define A_IOCFG_GPOUT0&t;&t;0x0044&t;&t;/* analog/digital? */
+mdefine_line|#define A_IOCFG_GPOUT0&t;&t;0x0044&t;&t;/* analog/digital&t;&t;&t;&t;*/
+DECL|macro|A_IOCFG_DISABLE_ANALOG
+mdefine_line|#define A_IOCFG_DISABLE_ANALOG&t;0x0040&t;&t;/* = &squot;enable&squot; for Audigy2 (chiprev=4)&t;&t;*/
+DECL|macro|A_IOCFG_ENABLE_DIGITAL
+mdefine_line|#define A_IOCFG_ENABLE_DIGITAL&t;0x0004
+DECL|macro|A_IOCFG_UNKNOWN_20
+mdefine_line|#define A_IOCFG_UNKNOWN_20      0x0020
+DECL|macro|A_IOCFG_DISABLE_AC97_FRONT
+mdefine_line|#define A_IOCFG_DISABLE_AC97_FRONT      0x0080  /* turn off ac97 front -&gt; front (10k2.1)&t;*/
 DECL|macro|A_IOCFG_GPOUT1
-mdefine_line|#define A_IOCFG_GPOUT1&t;&t;0x0002&t;&t;/* IR */
+mdefine_line|#define A_IOCFG_GPOUT1&t;&t;0x0002&t;&t;/* IR? drive&squot;s internal bypass (?)&t;&t;*/
 DECL|macro|A_IOCFG_GPOUT2
 mdefine_line|#define A_IOCFG_GPOUT2&t;&t;0x0001&t;&t;/* IR */
+DECL|macro|A_IOCFG_MULTIPURPOSE_JACK
+mdefine_line|#define A_IOCFG_MULTIPURPOSE_JACK&t;0x2000  /* center+lfe+rear_center (a2/a2ex)&t;&t;*/
+multiline_comment|/* + digital for generic 10k2&t;&t;&t;*/
+DECL|macro|A_IOCFG_DIGITAL_JACK
+mdefine_line|#define A_IOCFG_DIGITAL_JACK    0x1000          /* digital for a2 platinum&t;&t;&t;*/
+DECL|macro|A_IOCFG_FRONT_JACK
+mdefine_line|#define A_IOCFG_FRONT_JACK      0x4000
+DECL|macro|A_IOCFG_REAR_JACK
+mdefine_line|#define A_IOCFG_REAR_JACK       0x8000
+DECL|macro|A_IOCFG_PHONES_JACK
+mdefine_line|#define A_IOCFG_PHONES_JACK     0x0100          /* LiveDrive&t;&t;&t;&t;&t;*/
+multiline_comment|/* outputs:&n; *&t;for audigy2 platinum:&t;0xa00&n; *&t;for a2 platinum ex:&t;0x1c00&n; *&t;for a1 platinum:&t;0x0&n; */
 DECL|macro|TIMER
 mdefine_line|#define TIMER&t;&t;&t;0x1a&t;&t;/* Timer terminal count register&t;&t;*/
 multiline_comment|/* NOTE: After the rate is changed, a maximum&t;*/
@@ -639,6 +669,7 @@ DECL|macro|TEMPENV_MASK
 mdefine_line|#define TEMPENV_MASK&t;&t;0x0000ffff&t;/* 16-bit value&t;&t;&t;&t;&t;&t;*/
 multiline_comment|/* NOTE: All channels contain internal variables; do&t;*/
 multiline_comment|/* not write to these locations.&t;&t;&t;*/
+multiline_comment|/* 1f something */
 DECL|macro|CD0
 mdefine_line|#define CD0&t;&t;&t;0x20&t;&t;/* Cache data 0 register&t;&t;&t;&t;*/
 DECL|macro|CD1
@@ -671,6 +702,7 @@ DECL|macro|CDE
 mdefine_line|#define CDE&t;&t;&t;0x2e&t;&t;/* Cache data E register&t;&t;&t;&t;*/
 DECL|macro|CDF
 mdefine_line|#define CDF&t;&t;&t;0x2f&t;&t;/* Cache data F register&t;&t;&t;&t;*/
+multiline_comment|/* 0x30-3f seem to be the same as 0x20-2f */
 DECL|macro|PTB
 mdefine_line|#define PTB&t;&t;&t;0x40&t;&t;/* Page table base register&t;&t;&t;&t;*/
 DECL|macro|PTB_MASK
@@ -720,7 +752,10 @@ mdefine_line|#define A_ADCCR_SAMPLERATE_8&t;0x00000008&t;/* 8kHz sample rate&t;&
 DECL|macro|FXWC
 mdefine_line|#define FXWC&t;&t;&t;0x43&t;&t;/* FX output write channels register&t;&t;&t;*/
 multiline_comment|/* When set, each bit enables the writing of the&t;*/
-multiline_comment|/* corresponding FX output channel into host memory&t;*/
+multiline_comment|/* corresponding FX output channel (internal registers  */
+multiline_comment|/* 0x20-0x3f) to host memory.  This mode of recording   */
+multiline_comment|/* is 16bit, 48KHz only. All 32 channels can be enabled */
+multiline_comment|/* simultaneously.&t;&t;&t;&t;&t;*/
 DECL|macro|FXWC_DEFAULTROUTE_C
 mdefine_line|#define FXWC_DEFAULTROUTE_C     (1&lt;&lt;0)&t;&t;/* left emu out? */
 DECL|macro|FXWC_DEFAULTROUTE_B
@@ -779,12 +814,14 @@ DECL|macro|FXBA
 mdefine_line|#define FXBA&t;&t;&t;0x47&t;&t;/* FX Buffer Address */
 DECL|macro|FXBA_MASK
 mdefine_line|#define FXBA_MASK&t;&t;0xfffff000&t;/* 20 bit base address&t;&t;&t;&t;&t;*/
+multiline_comment|/* 0x48 something - word access, defaults to 3f */
 DECL|macro|MICBS
 mdefine_line|#define MICBS&t;&t;&t;0x49&t;&t;/* Microphone buffer size register&t;&t;&t;*/
 DECL|macro|ADCBS
 mdefine_line|#define ADCBS&t;&t;&t;0x4a&t;&t;/* ADC buffer size register&t;&t;&t;&t;*/
 DECL|macro|FXBS
 mdefine_line|#define FXBS&t;&t;&t;0x4b&t;&t;/* FX buffer size register&t;&t;&t;&t;*/
+multiline_comment|/* register: 0x4c..4f: ffff-ffff current amounts, per-channel */
 multiline_comment|/* The following mask values define the size of the ADC, MIX and FX buffers in bytes */
 DECL|macro|ADCBS_BUFSIZE_NONE
 mdefine_line|#define ADCBS_BUFSIZE_NONE&t;0x00000000
@@ -870,6 +907,7 @@ DECL|macro|A_DBG_SATURATION_OCCURED
 mdefine_line|#define A_DBG_SATURATION_OCCURED 0x20000000
 DECL|macro|A_DBG_SATURATION_ADDR
 mdefine_line|#define A_DBG_SATURATION_ADDR&t; 0x0ffc0000
+singleline_comment|// NOTE: 0x54,55,56: 64-bit
 DECL|macro|SPCS0
 mdefine_line|#define SPCS0&t;&t;&t;0x54&t;&t;/* SPDIF output Channel Status 0 register&t;*/
 DECL|macro|SPCS1
@@ -954,6 +992,7 @@ DECL|macro|AC97SLOT_CNTR
 mdefine_line|#define AC97SLOT_CNTR&t;&t;0x10            /* Center enable */
 DECL|macro|AC97SLOT_LFE
 mdefine_line|#define AC97SLOT_LFE&t;&t;0x20            /* LFE enable */
+singleline_comment|// NOTE: 0x60,61,62: 64-bit
 DECL|macro|CDSRCS
 mdefine_line|#define CDSRCS&t;&t;&t;0x60&t;&t;/* CD-ROM Sample Rate Converter status register&t;*/
 DECL|macro|GPSRCS
@@ -1002,6 +1041,18 @@ DECL|macro|FXIDX_MASK
 mdefine_line|#define FXIDX_MASK&t;&t;0x0000ffff&t;/* 16-bit value&t;&t;&t;&t;&t;*/
 DECL|macro|FXIDX_IDX
 mdefine_line|#define FXIDX_IDX&t;&t;0x10000065
+multiline_comment|/* The 32-bit HLIx and HLIPx registers all have one bit per channel control/status      &t;&t;*/
+DECL|macro|HLIEL
+mdefine_line|#define HLIEL&t;&t;&t;0x66&t;&t;/* Channel half loop interrupt enable low register&t;*/
+DECL|macro|HLIEH
+mdefine_line|#define HLIEH&t;&t;&t;0x67&t;&t;/* Channel half loop interrupt enable high register&t;*/
+DECL|macro|HLIPL
+mdefine_line|#define HLIPL&t;&t;&t;0x68&t;&t;/* Channel half loop interrupt pending low register&t;*/
+DECL|macro|HLIPH
+mdefine_line|#define HLIPH&t;&t;&t;0x69&t;&t;/* Channel half loop interrupt pending high register&t;*/
+singleline_comment|// 0x6a,6b,6c used for some recording
+singleline_comment|// 0x6d unused
+singleline_comment|// 0x6e,6f - tanktable base / offset
 multiline_comment|/* This is the MPU port on the card (via the game port)&t;&t;&t;&t;&t;&t;*/
 DECL|macro|A_MUDATA1
 mdefine_line|#define A_MUDATA1&t;&t;0x70
@@ -1033,6 +1084,8 @@ DECL|macro|A_SPDIF_44100
 mdefine_line|#define A_SPDIF_44100&t;&t;0x00000040
 DECL|macro|A_SPDIF_96000
 mdefine_line|#define A_SPDIF_96000&t;&t;0x00000080
+multiline_comment|/* 0x77,0x78,0x79 &quot;something i2s-related&quot; - default to 0x01080000 on my audigy 2 ZS --rlrevell&t;*/
+multiline_comment|/* 0x7a, 0x7b - lookup tables */
 DECL|macro|A_FXRT2
 mdefine_line|#define A_FXRT2&t;&t;&t;0x7c
 DECL|macro|A_FXRT_CHANNELE
@@ -1053,6 +1106,7 @@ DECL|macro|A_FXSENDAMOUNT_G_MASK
 mdefine_line|#define A_FXSENDAMOUNT_G_MASK&t;0x0000FF00
 DECL|macro|A_FXSENDAMOUNT_H_MASK
 mdefine_line|#define A_FXSENDAMOUNT_H_MASK&t;0x000000FF
+multiline_comment|/* 0x7c, 0x7e &quot;high bit is used for filtering&quot; */
 multiline_comment|/* The send amounts for this one are the same as used with the emu10k1 */
 DECL|macro|A_FXRT1
 mdefine_line|#define A_FXRT1&t;&t;&t;0x7e
@@ -1142,6 +1196,9 @@ suffix:semicolon
 r_typedef
 r_enum
 (brace
+DECL|enumerator|EMU10K1_EFX
+id|EMU10K1_EFX
+comma
 DECL|enumerator|EMU10K1_PCM
 id|EMU10K1_PCM
 comma
@@ -1175,6 +1232,11 @@ l_int|1
 comma
 DECL|member|pcm
 id|pcm
+suffix:colon
+l_int|1
+comma
+DECL|member|efx
+id|efx
 suffix:colon
 l_int|1
 comma
@@ -1217,6 +1279,9 @@ r_enum
 DECL|enumerator|PLAYBACK_EMUVOICE
 id|PLAYBACK_EMUVOICE
 comma
+DECL|enumerator|PLAYBACK_EFX
+id|PLAYBACK_EFX
+comma
 DECL|enumerator|CAPTURE_AC97ADC
 id|CAPTURE_AC97ADC
 comma
@@ -1252,7 +1317,7 @@ id|emu10k1_voice_t
 op_star
 id|voices
 (braket
-l_int|2
+id|NUM_EFX_PLAYBACK
 )braket
 suffix:semicolon
 DECL|member|extra
@@ -2059,7 +2124,7 @@ DECL|member|voices
 id|emu10k1_voice_t
 id|voices
 (braket
-l_int|64
+id|NUM_G
 )braket
 suffix:semicolon
 DECL|member|pcm_mixer
@@ -2067,6 +2132,13 @@ id|emu10k1_pcm_mixer_t
 id|pcm_mixer
 (braket
 l_int|32
+)braket
+suffix:semicolon
+DECL|member|efx_pcm_mixer
+id|emu10k1_pcm_mixer_t
+id|efx_pcm_mixer
+(braket
+id|NUM_EFX_PLAYBACK
 )braket
 suffix:semicolon
 DECL|member|ctl_send_routing
@@ -2083,6 +2155,21 @@ DECL|member|ctl_attn
 id|snd_kcontrol_t
 op_star
 id|ctl_attn
+suffix:semicolon
+DECL|member|ctl_efx_send_routing
+id|snd_kcontrol_t
+op_star
+id|ctl_efx_send_routing
+suffix:semicolon
+DECL|member|ctl_efx_send_volume
+id|snd_kcontrol_t
+op_star
+id|ctl_efx_send_volume
+suffix:semicolon
+DECL|member|ctl_efx_attn
+id|snd_kcontrol_t
+op_star
+id|ctl_efx_attn
 suffix:semicolon
 DECL|member|hwvol_interrupt
 r_void
@@ -2148,18 +2235,6 @@ r_int
 id|status
 )paren
 suffix:semicolon
-DECL|member|timer_interrupt
-r_void
-(paren
-op_star
-id|timer_interrupt
-)paren
-(paren
-id|emu10k1_t
-op_star
-id|emu
-)paren
-suffix:semicolon
 DECL|member|spdif_interrupt
 r_void
 (paren
@@ -2203,6 +2278,11 @@ id|snd_pcm_substream_t
 op_star
 id|pcm_capture_efx_substream
 suffix:semicolon
+DECL|member|pcm_playback_efx_substream
+id|snd_pcm_substream_t
+op_star
+id|pcm_playback_efx_substream
+suffix:semicolon
 DECL|member|timer
 id|snd_timer_t
 op_star
@@ -2224,6 +2304,11 @@ id|efx_voices_mask
 (braket
 l_int|2
 )braket
+suffix:semicolon
+DECL|member|next_free_voice
+r_int
+r_int
+id|next_free_voice
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2296,6 +2381,23 @@ id|rpcm
 suffix:semicolon
 r_int
 id|snd_emu10k1_pcm_efx
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+r_int
+id|device
+comma
+id|snd_pcm_t
+op_star
+op_star
+id|rpcm
+)paren
+suffix:semicolon
+r_int
+id|snd_emu10k1_pcm_multi
 c_func
 (paren
 id|emu10k1_t
@@ -2534,6 +2636,45 @@ id|voicenum
 suffix:semicolon
 r_void
 id|snd_emu10k1_voice_intr_ack
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+r_int
+r_int
+id|voicenum
+)paren
+suffix:semicolon
+r_void
+id|snd_emu10k1_voice_half_loop_intr_enable
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+r_int
+r_int
+id|voicenum
+)paren
+suffix:semicolon
+r_void
+id|snd_emu10k1_voice_half_loop_intr_disable
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+r_int
+r_int
+id|voicenum
+)paren
+suffix:semicolon
+r_void
+id|snd_emu10k1_voice_half_loop_intr_ack
 c_func
 (paren
 id|emu10k1_t
