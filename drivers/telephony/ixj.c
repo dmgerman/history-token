@@ -31389,6 +31389,12 @@ l_string|&quot;Could not copy cadence to kernel&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|lcp
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EFAULT
@@ -31418,6 +31424,12 @@ l_string|&quot;Cadence out of range&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|lcp
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
