@@ -3482,8 +3482,7 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|new_cpu
-suffix:semicolon
-r_int
+comma
 id|this_cpu
 op_assign
 id|get_cpu
@@ -3514,7 +3513,6 @@ id|this_cpu
 comma
 id|sd
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -3526,7 +3524,6 @@ id|best_sd
 op_assign
 id|sd
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5258,7 +5255,6 @@ id|busiest_cpu
 comma
 id|sd
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -5272,7 +5268,6 @@ id|sd-&gt;span
 )paren
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5354,13 +5349,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpus_weight
 c_func
 (paren
 id|tmp
 )paren
-op_eq
-l_int|0
 )paren
 r_goto
 id|next_group
@@ -5567,9 +5561,8 @@ c_cond
 id|unlikely
 c_func
 (paren
+op_logical_neg
 id|interval
-op_eq
-l_int|0
 )paren
 )paren
 id|interval
@@ -12659,9 +12652,8 @@ r_do
 r_if
 c_cond
 (paren
+op_logical_neg
 id|group
-op_eq
-l_int|NULL
 )paren
 (brace
 id|printk
@@ -12676,13 +12668,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpus_weight
 c_func
 (paren
 id|group-&gt;cpumask
 )paren
-op_eq
-l_int|0
 )paren
 id|printk
 c_func
