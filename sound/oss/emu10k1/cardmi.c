@@ -253,6 +253,11 @@ c_func
 (paren
 id|card
 comma
+id|card-&gt;is_audigy
+ques
+c_cond
+id|A_INTE_MIDIRXENABLE
+suffix:colon
 id|INTE_MIDIRXENABLE
 )paren
 suffix:semicolon
@@ -542,6 +547,11 @@ c_func
 (paren
 id|card
 comma
+id|card-&gt;is_audigy
+ques
+c_cond
+id|A_INTE_MIDIRXENABLE
+suffix:colon
 id|INTE_MIDIRXENABLE
 )paren
 suffix:semicolon
@@ -592,6 +602,11 @@ c_func
 (paren
 id|card
 comma
+id|card-&gt;is_audigy
+ques
+c_cond
+id|A_INTE_MIDIRXENABLE
+suffix:colon
 id|INTE_MIDIRXENABLE
 )paren
 suffix:semicolon
@@ -739,6 +754,11 @@ c_func
 (paren
 id|card
 comma
+id|card-&gt;is_audigy
+ques
+c_cond
+id|A_INTE_MIDIRXENABLE
+suffix:colon
 id|INTE_MIDIRXENABLE
 )paren
 suffix:semicolon

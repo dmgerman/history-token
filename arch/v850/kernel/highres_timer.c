@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * arch/v850/kernel/highres_timer.c -- High resolution timing routines&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * arch/v850/kernel/highres_timer.c -- High resolution timing routines&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/nb85e_timer_d.h&gt;
+macro_line|#include &lt;asm/v850e_timer_d.h&gt;
 macro_line|#include &lt;asm/highres_timer.h&gt;
 DECL|macro|HIGHRES_TIMER_USEC_SHIFT
 mdefine_line|#define HIGHRES_TIMER_USEC_SHIFT   12
@@ -62,7 +62,7 @@ id|highres_timer_reset
 r_void
 )paren
 (brace
-id|NB85E_TIMER_D_TMD
+id|V850E_TIMER_D_TMD
 (paren
 id|HIGHRES_TIMER_TIMER_D_UNIT
 )paren
@@ -85,7 +85,7 @@ id|u32
 id|fast_tick_rate
 suffix:semicolon
 multiline_comment|/* Start hardware timer.  */
-id|nb85e_timer_d_configure
+id|v850e_timer_d_configure
 (paren
 id|HIGHRES_TIMER_TIMER_D_UNIT
 comma
@@ -95,9 +95,9 @@ suffix:semicolon
 id|fast_tick_rate
 op_assign
 (paren
-id|NB85E_TIMER_D_BASE_FREQ
+id|V850E_TIMER_D_BASE_FREQ
 op_rshift
-id|NB85E_TIMER_D_DIVLOG2
+id|V850E_TIMER_D_DIVLOG2
 (paren
 id|HIGHRES_TIMER_TIMER_D_UNIT
 )paren
@@ -117,7 +117,7 @@ id|fast_tick_rate
 )paren
 suffix:semicolon
 multiline_comment|/* Enable the interrupt (which is hardwired to this use), and&n;&t;   give it the highest priority.  */
-id|NB85E_INTC_IC
+id|V850E_INTC_IC
 (paren
 id|IRQ_INTCMD
 (paren
@@ -136,15 +136,15 @@ r_void
 )paren
 (brace
 multiline_comment|/* Stop the timer.  */
-id|NB85E_TIMER_D_TMCD
+id|V850E_TIMER_D_TMCD
 (paren
 id|HIGHRES_TIMER_TIMER_D_UNIT
 )paren
 op_assign
-id|NB85E_TIMER_D_TMCD_CAE
+id|V850E_TIMER_D_TMCD_CAE
 suffix:semicolon
 multiline_comment|/* Disable its interrupt, just in case.  */
-id|nb85e_intc_disable_irq
+id|v850e_intc_disable_irq
 (paren
 id|IRQ_INTCMD
 (paren
@@ -184,7 +184,7 @@ id|flags
 suffix:semicolon
 id|fast_ticks_1
 op_assign
-id|NB85E_TIMER_D_TMD
+id|V850E_TIMER_D_TMD
 (paren
 id|HIGHRES_TIMER_TIMER_D_UNIT
 )paren
@@ -195,7 +195,7 @@ id|HIGHRES_TIMER_SLOW_TICKS
 suffix:semicolon
 id|fast_ticks_2
 op_assign
-id|NB85E_TIMER_D_TMD
+id|V850E_TIMER_D_TMD
 (paren
 id|HIGHRES_TIMER_TIMER_D_UNIT
 )paren

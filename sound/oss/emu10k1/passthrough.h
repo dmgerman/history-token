@@ -107,6 +107,12 @@ id|lock
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n;  Passthrough can be done in two methods:&n;&n;  Method 1 : tram&n;     In original emu10k1, we couldn&squot;t bypass the sample rate converters. Even at 48kHz&n;     (the internal sample rate of the emu10k1) the samples would get messed up.&n;     To over come this, samples are copied into the tram and a special dsp patch copies&n;     the samples out and generates interrupts when a block has finnished playing.&n;&n;  Method 2 : Interpolator bypass&n;&n;     Creative fixed the sample rate convert problem in emu10k1 rev 7 and higher&n;     (including the emu10k2 (audigy)). This allows us to use the regular, and much simpler&n;     playback method. &n;&n;&n;  In both methods, dsp code is used to mux audio and passthrough. This ensures that the spdif&n;  doesn&squot;t receive audio and pasthrough data at the same time. The spdif flag SPCS_NOTAUDIODATA&n;  is set to tell &n;&n; */
+singleline_comment|// emu10k1 revs greater than or equal to 7 can use method2
+DECL|macro|USE_PT_METHOD2
+mdefine_line|#define USE_PT_METHOD2  (card-&gt;is_audigy)
+DECL|macro|USE_PT_METHOD1
+mdefine_line|#define USE_PT_METHOD1&t;!USE_PT_METHOD2
 id|ssize_t
 id|emu10k1_pt_write
 c_func
@@ -123,6 +129,16 @@ id|buf
 comma
 r_int
 id|count
+)paren
+suffix:semicolon
+r_int
+id|emu10k1_pt_setup
+c_func
+(paren
+r_struct
+id|emu10k1_wavedevice
+op_star
+id|wave_dev
 )paren
 suffix:semicolon
 r_void

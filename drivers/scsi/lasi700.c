@@ -361,6 +361,13 @@ op_amp
 id|dev-&gt;dev
 )paren
 suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -489,13 +496,6 @@ c_func
 (paren
 op_amp
 id|lasi700_driver
-)paren
-suffix:semicolon
-id|scsi_sysfs_release_attributes
-c_func
-(paren
-op_amp
-id|lasi700_template
 )paren
 suffix:semicolon
 )brace

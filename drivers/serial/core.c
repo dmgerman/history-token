@@ -6036,6 +6036,16 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|capable
+c_func
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
+(brace
 id|status
 op_assign
 id|port-&gt;ops
@@ -6239,6 +6249,11 @@ comma
 id|stat_buf
 )paren
 suffix:semicolon
+)brace
+DECL|macro|STATBIT
+macro_line|#undef STATBIT
+DECL|macro|INFOBIT
+macro_line|#undef INFOBIT
 r_return
 id|ret
 suffix:semicolon

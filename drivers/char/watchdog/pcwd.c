@@ -1442,7 +1442,11 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 multiline_comment|/*  Enable the port  */
 r_if

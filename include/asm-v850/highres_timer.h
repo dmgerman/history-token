@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/highres_timer.h -- High resolution timing routines&n; *&n; *  Copyright (C) 2001  NEC Corporation&n; *  Copyright (C) 2001  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/highres_timer.h -- High resolution timing routines&n; *&n; *  Copyright (C) 2001,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_HIGHRES_TIMER_H__
 DECL|macro|__V850_HIGHRES_TIMER_H__
 mdefine_line|#define __V850_HIGHRES_TIMER_H__
@@ -9,7 +9,7 @@ macro_line|#include &lt;asm/entry.h&gt;
 multiline_comment|/* Frequency of the `slow ticks&squot; (one tick each time the fast-tick&n;   counter overflows).  */
 DECL|macro|HIGHRES_TIMER_SLOW_TICK_RATE
 mdefine_line|#define HIGHRES_TIMER_SLOW_TICK_RATE&t;25
-multiline_comment|/* Which timer in the nb85e `Timer D&squot; we use.  */
+multiline_comment|/* Which timer in the V850E `Timer D&squot; we use.  */
 DECL|macro|HIGHRES_TIMER_TIMER_D_UNIT
 mdefine_line|#define HIGHRES_TIMER_TIMER_D_UNIT&t;3
 macro_line|#ifndef __ASSEMBLY__

@@ -9,11 +9,11 @@ mdefine_line|#define CSR0_CERR&t;0x2000&t;/* Collision Error (RC) */
 DECL|macro|CSR0_MISS
 mdefine_line|#define CSR0_MISS&t;0x1000&t;/* Missed packet (RC) */
 DECL|macro|CSR0_MERR
-mdefine_line|#define CSR0_MERR&t;0x0800&t;/* Memory Error (RC) */ 
+mdefine_line|#define CSR0_MERR&t;0x0800&t;/* Memory Error (RC) */
 DECL|macro|CSR0_RINT
 mdefine_line|#define CSR0_RINT&t;0x0400&t;/* Receiver Interrupt (RC) */
 DECL|macro|CSR0_TINT
-mdefine_line|#define CSR0_TINT       0x0200&t;/* Transmit Interrupt (RC) */ 
+mdefine_line|#define CSR0_TINT       0x0200&t;/* Transmit Interrupt (RC) */
 DECL|macro|CSR0_IDON
 mdefine_line|#define CSR0_IDON&t;0x0100&t;/* Initialization Done (RC) */
 DECL|macro|CSR0_INTR
@@ -23,24 +23,24 @@ mdefine_line|#define CSR0_INEA&t;0x0040&t;/* Interrupt Enable (RW) */
 DECL|macro|CSR0_RXON
 mdefine_line|#define CSR0_RXON&t;0x0020&t;/* Receiver on (R) */
 DECL|macro|CSR0_TXON
-mdefine_line|#define CSR0_TXON&t;0x0010  /* Transmitter on (R) */
+mdefine_line|#define CSR0_TXON&t;0x0010&t;/* Transmitter on (R) */
 DECL|macro|CSR0_TDMD
 mdefine_line|#define CSR0_TDMD&t;0x0008&t;/* Transmit Demand (RS) */
 DECL|macro|CSR0_STOP
-mdefine_line|#define CSR0_STOP&t;0x0004 &t;/* Stop (RS) */
+mdefine_line|#define CSR0_STOP&t;0x0004&t;/* Stop (RS) */
 DECL|macro|CSR0_STRT
 mdefine_line|#define CSR0_STRT&t;0x0002&t;/* Start (RS) */
 DECL|macro|CSR0_INIT
 mdefine_line|#define CSR0_INIT&t;0x0001&t;/* Initialize (RS) */
 DECL|macro|CSR0_CLRALL
-mdefine_line|#define CSR0_CLRALL    0x7f00  /* mask for all clearable bits */
+mdefine_line|#define CSR0_CLRALL    0x7f00&t;/* mask for all clearable bits */
 multiline_comment|/*&n; *&t;Initialization Block  Mode operation Bit Definitions.&n; */
 DECL|macro|M_PROM
 mdefine_line|#define M_PROM&t;&t;0x8000&t;/* Promiscuous Mode */
 DECL|macro|M_INTL
-mdefine_line|#define M_INTL&t;&t;0x0040  /* Internal Loopback */
+mdefine_line|#define M_INTL&t;&t;0x0040&t;/* Internal Loopback */
 DECL|macro|M_DRTY
-mdefine_line|#define M_DRTY&t;&t;0x0020  /* Disable Retry */ 
+mdefine_line|#define M_DRTY&t;&t;0x0020&t;/* Disable Retry */
 DECL|macro|M_COLL
 mdefine_line|#define M_COLL&t;&t;0x0010&t;/* Force Collision */
 DECL|macro|M_DTCR
@@ -48,9 +48,9 @@ mdefine_line|#define M_DTCR&t;&t;0x0008&t;/* Disable Transmit CRC) */
 DECL|macro|M_LOOP
 mdefine_line|#define M_LOOP&t;&t;0x0004&t;/* Loopback */
 DECL|macro|M_DTX
-mdefine_line|#define M_DTX&t;&t;0x0002&t;/* Disable the Transmitter */ 
+mdefine_line|#define M_DTX&t;&t;0x0002&t;/* Disable the Transmitter */
 DECL|macro|M_DRX
-mdefine_line|#define M_DRX&t;&t;0x0001  /* Disable the Receiver */
+mdefine_line|#define M_DRX&t;&t;0x0001&t;/* Disable the Receiver */
 multiline_comment|/*&n; * &t;Receive message descriptor bit definitions.&n; */
 DECL|macro|RCV_OWN
 mdefine_line|#define RCV_OWN&t;&t;0x80&t;/* owner bit 0 = host, 1 = lance */
@@ -61,7 +61,7 @@ mdefine_line|#define RCV_FRAM&t;0x20&t;/* Framing Error */
 DECL|macro|RCV_OFLO
 mdefine_line|#define RCV_OFLO&t;0x10&t;/* Overflow Error */
 DECL|macro|RCV_CRC
-mdefine_line|#define RCV_CRC&t;&t;0x08&t;/* CRC Error */ 
+mdefine_line|#define RCV_CRC&t;&t;0x08&t;/* CRC Error */
 DECL|macro|RCV_BUF_ERR
 mdefine_line|#define RCV_BUF_ERR&t;0x04&t;/* Buffer Error */
 DECL|macro|RCV_START
@@ -72,7 +72,7 @@ multiline_comment|/*&n; *&t;Transmit  message descriptor bit definitions.&n; */
 DECL|macro|XMIT_OWN
 mdefine_line|#define XMIT_OWN&t;0x80&t;/* owner bit 0 = host, 1 = lance */
 DECL|macro|XMIT_ERR
-mdefine_line|#define XMIT_ERR&t;0x40    /* Error Summary */
+mdefine_line|#define XMIT_ERR&t;0x40&t;/* Error Summary */
 DECL|macro|XMIT_RETRY
 mdefine_line|#define XMIT_RETRY&t;0x10&t;/* more the 1 retry needed to Xmit */
 DECL|macro|XMIT_1_RETRY
@@ -85,19 +85,19 @@ DECL|macro|XMIT_END
 mdefine_line|#define XMIT_END&t;0x01&t;/* End of Packet */
 multiline_comment|/*&n; * transmit status (2) (valid if XMIT_ERR == 1)&n; */
 DECL|macro|XMIT_TDRMASK
-mdefine_line|#define XMIT_TDRMASK    0x03ff  /* time-domain-reflectometer-value */
+mdefine_line|#define XMIT_TDRMASK    0x03ff&t;/* time-domain-reflectometer-value */
 DECL|macro|XMIT_RTRY
-mdefine_line|#define XMIT_RTRY &t;0x0400  /* Failed after 16 retransmissions  */
+mdefine_line|#define XMIT_RTRY &t;0x0400&t;/* Failed after 16 retransmissions  */
 DECL|macro|XMIT_LCAR
-mdefine_line|#define XMIT_LCAR &t;0x0800  /* Loss of Carrier */
+mdefine_line|#define XMIT_LCAR &t;0x0800&t;/* Loss of Carrier */
 DECL|macro|XMIT_LCOL
-mdefine_line|#define XMIT_LCOL &t;0x1000  /* Late collision */
+mdefine_line|#define XMIT_LCOL &t;0x1000&t;/* Late collision */
 DECL|macro|XMIT_RESERV
-mdefine_line|#define XMIT_RESERV &t;0x2000  /* Reserved */
+mdefine_line|#define XMIT_RESERV &t;0x2000&t;/* Reserved */
 DECL|macro|XMIT_UFLO
-mdefine_line|#define XMIT_UFLO &t;0x4000  /* Underflow (late memory) */
+mdefine_line|#define XMIT_UFLO &t;0x4000&t;/* Underflow (late memory) */
 DECL|macro|XMIT_BUFF
-mdefine_line|#define XMIT_BUFF &t;0x8000  /* Buffering error (no ENP) */
+mdefine_line|#define XMIT_BUFF &t;0x8000&t;/* Buffering error (no ENP) */
 DECL|struct|init_block
 r_struct
 id|init_block
@@ -140,8 +140,8 @@ suffix:semicolon
 DECL|struct|rmd
 r_struct
 id|rmd
-multiline_comment|/* Receive Message Descriptor */
 (brace
+multiline_comment|/* Receive Message Descriptor */
 r_union
 (brace
 DECL|member|buffer

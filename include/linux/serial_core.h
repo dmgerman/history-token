@@ -49,8 +49,8 @@ mdefine_line|#define PORT_SUNZILOG&t;38
 DECL|macro|PORT_SUNSAB
 mdefine_line|#define PORT_SUNSAB&t;39
 multiline_comment|/* NEC v850.  */
-DECL|macro|PORT_NB85E_UART
-mdefine_line|#define PORT_NB85E_UART&t;40
+DECL|macro|PORT_V850E_UART
+mdefine_line|#define PORT_V850E_UART&t;40
 multiline_comment|/* NEC PC-9800 */
 DECL|macro|PORT_8251_PC98
 mdefine_line|#define PORT_8251_PC98&t;41

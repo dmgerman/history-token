@@ -91,7 +91,6 @@ id|poll_only
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#&t;if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,0)
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -164,7 +163,6 @@ comma
 l_string|&quot;Do not use card interrupts&quot;
 )paren
 suffix:semicolon
-macro_line|#&t;endif&t;/* LINUX_VERSION */
 singleline_comment|//======================================================================
 r_int
 DECL|function|init_module
