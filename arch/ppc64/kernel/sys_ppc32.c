@@ -43,6 +43,7 @@ macro_line|#include &lt;asm/ipc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
