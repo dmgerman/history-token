@@ -535,7 +535,7 @@ l_int|1
 )paren
 id|index
 op_assign
-l_int|4
+l_int|3
 suffix:semicolon
 id|printk
 c_func
