@@ -553,6 +553,12 @@ op_star
 id|conntrack
 )paren
 suffix:semicolon
+multiline_comment|/* Fake conntrack entry for untracked connections */
+r_extern
+r_struct
+id|ip_conntrack
+id|ip_conntrack_untracked
+suffix:semicolon
 multiline_comment|/* Returns new sk_buff, or NULL */
 r_struct
 id|sk_buff

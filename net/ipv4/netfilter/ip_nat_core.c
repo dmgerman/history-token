@@ -4478,6 +4478,21 @@ op_assign
 op_amp
 id|ip_nat_cleanup_conntrack
 suffix:semicolon
+multiline_comment|/* Initialize fake conntrack so that NAT will skip it */
+id|ip_conntrack_untracked.nat.info.initialized
+op_or_assign
+(paren
+l_int|1
+op_lshift
+id|IP_NAT_MANIP_SRC
+)paren
+op_or
+(paren
+l_int|1
+op_lshift
+id|IP_NAT_MANIP_DST
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

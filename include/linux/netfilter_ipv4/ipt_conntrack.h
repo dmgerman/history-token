@@ -10,6 +10,8 @@ DECL|macro|IPT_CONNTRACK_STATE_SNAT
 mdefine_line|#define IPT_CONNTRACK_STATE_SNAT (1 &lt;&lt; (IP_CT_NUMBER + 1))
 DECL|macro|IPT_CONNTRACK_STATE_DNAT
 mdefine_line|#define IPT_CONNTRACK_STATE_DNAT (1 &lt;&lt; (IP_CT_NUMBER + 2))
+DECL|macro|IPT_CONNTRACK_STATE_UNTRACKED
+mdefine_line|#define IPT_CONNTRACK_STATE_UNTRACKED (1 &lt;&lt; (IP_CT_NUMBER + 3))
 multiline_comment|/* flags, invflags: */
 DECL|macro|IPT_CONNTRACK_STATE
 mdefine_line|#define IPT_CONNTRACK_STATE&t;0x01
