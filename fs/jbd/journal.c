@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|variable|journal_start
 id|EXPORT_SYMBOL
