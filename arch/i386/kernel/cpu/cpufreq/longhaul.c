@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: longhaul.c,v 1.72 2002/09/29 23:43:10 db Exp $&n; *&n; *  (C) 2001  Dave Jones. &lt;davej@suse.de&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 3 different versions of Longhaul.&n; *&n; *  +---------------------+----------+---------------------------------+&n; *  | Marketing name      | Codename | longhaul version / features.    |&n; *  +---------------------+----------+---------------------------------+&n; *  |  Samuel/CyrixIII    |   C5A    | v1 : multipliers only           |&n; *  |  Samuel2/C3         | C3E/C5B  | v1 : multiplier only            |&n; *  |  Ezra               |   C5C    | v2 : multipliers &amp; voltage      |&n; *  |  Ezra-T             | C5M/C5N  | v3 : multipliers, voltage &amp; FSB |&n; *  +---------------------+----------+---------------------------------+&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: longhaul.c,v 1.77 2002/10/31 21:17:40 db Exp $&n; *&n; *  (C) 2001  Dave Jones. &lt;davej@suse.de&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 3 different versions of Longhaul.&n; *&n; *  +---------------------+----------+---------------------------------+&n; *  | Marketing name      | Codename | longhaul version / features.    |&n; *  +---------------------+----------+---------------------------------+&n; *  |  Samuel/CyrixIII    |   C5A    | v1 : multipliers only           |&n; *  |  Samuel2/C3         | C3E/C5B  | v1 : multiplier only            |&n; *  |  Ezra               |   C5C    | v2 : multipliers &amp; voltage      |&n; *  |  Ezra-T             | C5M/C5N  | v3 : multipliers, voltage &amp; FSB |&n; *  +---------------------+----------+---------------------------------+&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -1872,13 +1872,23 @@ id|longhaul
 r_case
 l_int|1
 suffix:colon
-multiline_comment|/* Ugh, Longhaul v1 didn&squot;t have the min/max MSRs.&n;&t;&t;   Assume max = whatever we booted at. */
+multiline_comment|/* Ugh, Longhaul v1 didn&squot;t have the min/max MSRs.&n;&t;&t;   Assume min=3.0x &amp; max = whatever we booted at. */
+id|minmult
+op_assign
+l_int|30
+suffix:semicolon
 id|maxmult
 op_assign
 id|longhaul_get_cpu_mult
 c_func
 (paren
 )paren
+suffix:semicolon
+id|minfsb
+op_assign
+id|maxfsb
+op_assign
+id|current_fsb
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2474,7 +2484,7 @@ suffix:semicolon
 )brace
 DECL|function|longhaul_verify
 r_static
-r_void
+r_int
 id|longhaul_verify
 c_func
 (paren
@@ -2523,6 +2533,8 @@ op_logical_neg
 id|longhaul_driver
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|policy-&gt;cpu
 op_assign
@@ -2595,6 +2607,7 @@ c_cond
 id|number_states
 )paren
 r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* get frequency closest above current policy-&gt;max */
 r_if
@@ -2748,10 +2761,13 @@ id|policy-&gt;max
 op_assign
 id|newmax
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|longhaul_setpolicy
 r_static
-r_void
+r_int
 id|longhaul_setpolicy
 (paren
 r_struct
@@ -2802,6 +2818,8 @@ op_logical_neg
 id|longhaul_driver
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -2905,6 +2923,8 @@ op_logical_neg
 id|number_states
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_else
 r_if
@@ -3383,6 +3403,8 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|longhaul_setstate
@@ -3394,6 +3416,7 @@ id|new_fsb
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|longhaul_init
@@ -3813,6 +3836,9 @@ l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 id|driver-&gt;cpu_min_freq
+(braket
+l_int|0
+)braket
 op_assign
 (paren
 r_int
@@ -3895,6 +3921,10 @@ r_int
 )paren
 id|highest_speed
 suffix:semicolon
+id|longhaul_driver
+op_assign
+id|driver
+suffix:semicolon
 id|ret
 op_assign
 id|cpufreq_register
@@ -3909,22 +3939,19 @@ c_cond
 id|ret
 )paren
 (brace
+id|longhaul_driver
+op_assign
+l_int|NULL
+suffix:semicolon
 id|kfree
 c_func
 (paren
 id|driver
 )paren
 suffix:semicolon
+)brace
 r_return
 id|ret
-suffix:semicolon
-)brace
-id|longhaul_driver
-op_assign
-id|driver
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|longhaul_exit

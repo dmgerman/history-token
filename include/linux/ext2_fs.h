@@ -549,6 +549,8 @@ DECL|macro|EXT2_MOUNT_ERRORS_PANIC
 mdefine_line|#define EXT2_MOUNT_ERRORS_PANIC&t;&t;0x0040&t;/* Panic on errors */
 DECL|macro|EXT2_MOUNT_MINIX_DF
 mdefine_line|#define EXT2_MOUNT_MINIX_DF&t;&t;0x0080&t;/* Mimics the Minix statfs */
+DECL|macro|EXT2_MOUNT_NOBH
+mdefine_line|#define EXT2_MOUNT_NOBH&t;&t;&t;0x0100&t;/* No buffer_heads */
 DECL|macro|EXT2_MOUNT_NO_UID32
 mdefine_line|#define EXT2_MOUNT_NO_UID32&t;&t;0x0200  /* Disable 32-bit UIDs */
 DECL|macro|EXT2_MOUNT_XATTR_USER

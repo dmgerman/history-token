@@ -683,6 +683,11 @@ r_struct
 id|address_space_operations
 id|ext2_aops
 suffix:semicolon
+r_extern
+r_struct
+id|address_space_operations
+id|ext2_nobh_aops
+suffix:semicolon
 multiline_comment|/* namei.c */
 r_extern
 r_struct

@@ -685,6 +685,7 @@ id|nhoff
 suffix:semicolon
 )brace
 r_else
+(brace
 id|IP6_INC_STATS_BH
 c_func
 (paren
@@ -697,6 +698,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0

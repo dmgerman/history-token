@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: powernow-k6.c,v 1.33 2002/09/29 23:43:11 db Exp $&n; *  This file was part of Powertweak Linux (http://powertweak.sf.net)&n; *  and is shared with the Linux Kernel module.&n; *&n; *  (C) 2000-2002  Dave Jones, Arjan van de Ven, Janne P&#xfffd;nk&#xfffd;l&#xfffd;, Dominik Brodowski.&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: powernow-k6.c,v 1.36 2002/10/31 21:17:40 db Exp $&n; *  This file was part of Powertweak Linux (http://powertweak.sf.net)&n; *  and is shared with the Linux Kernel module.&n; *&n; *  (C) 2000-2002  Dave Jones, Arjan van de Ven, Janne P&#xfffd;nk&#xfffd;l&#xfffd;, Dominik Brodowski.&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -330,7 +330,7 @@ suffix:semicolon
 multiline_comment|/**&n; * powernow_k6_verify - verifies a new CPUfreq policy&n; * @policy: new policy&n; *&n; * Policy must be within lowest and highest possible CPU Frequency,&n; * and at least one possible state must be within min and max.&n; */
 DECL|function|powernow_k6_verify
 r_static
-r_void
+r_int
 id|powernow_k6_verify
 c_func
 (paren
@@ -362,6 +362,8 @@ op_logical_neg
 id|busfreq
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|policy-&gt;cpu
 op_assign
@@ -437,6 +439,7 @@ c_cond
 id|number_states
 )paren
 r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* no state is available within range -- find next larger state */
 id|j
@@ -499,12 +502,13 @@ op_star
 id|busfreq
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * powernow_k6_setpolicy - sets a new CPUFreq policy&n; * @policy - new policy&n; *&n; * sets a new CPUFreq policy&n; */
 DECL|function|powernow_k6_setpolicy
 r_static
-r_void
+r_int
 id|powernow_k6_setpolicy
 (paren
 r_struct
@@ -534,6 +538,8 @@ op_logical_neg
 id|powernow_driver
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_for
 c_loop
@@ -603,6 +609,7 @@ id|j
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* more than one state within limit */
@@ -751,6 +758,8 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -763,10 +772,9 @@ id|i
 OG
 id|max_multiplier
 )paren
-id|BUG
-c_func
-(paren
-)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|powernow_k6_set_state
 c_func
@@ -775,6 +783,7 @@ id|j
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * powernow_k6_init - initializes the k6 PowerNow! CPUFreq driver&n; *&n; *   Initializes the K6 PowerNow! support. Returns -ENODEV on unsupported&n; * devices, -EINVAL or -ENOMEM on problems during initiatization, and zero&n; * on success.&n; */
@@ -933,6 +942,9 @@ l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 id|driver-&gt;cpu_min_freq
+(braket
+l_int|0
+)braket
 op_assign
 id|busfreq
 op_star
@@ -1009,6 +1021,10 @@ id|busfreq
 op_star
 id|max_multiplier
 suffix:semicolon
+id|powernow_driver
+op_assign
+id|driver
+suffix:semicolon
 id|result
 op_assign
 id|cpufreq_register
@@ -1030,22 +1046,19 @@ comma
 l_int|16
 )paren
 suffix:semicolon
+id|powernow_driver
+op_assign
+l_int|NULL
+suffix:semicolon
 id|kfree
 c_func
 (paren
 id|driver
 )paren
 suffix:semicolon
+)brace
 r_return
 id|result
-suffix:semicolon
-)brace
-id|powernow_driver
-op_assign
-id|driver
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * powernow_k6_exit - unregisters AMD K6-2+/3+ PowerNow! support&n; *&n; *   Unregisters AMD K6-2+ / K6-3+ PowerNow! support.&n; */

@@ -39,6 +39,8 @@ DECL|macro|PG_chainlock
 mdefine_line|#define PG_chainlock&t;&t;15&t;/* lock bit for -&gt;pte_chain */
 DECL|macro|PG_direct
 mdefine_line|#define PG_direct&t;&t;16&t;/* -&gt;pte_chain points directly at pte */
+DECL|macro|PG_mappedtodisk
+mdefine_line|#define PG_mappedtodisk&t;&t;17&t;/* Has blocks allocated on-disk */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; */
 DECL|struct|page_state
 r_struct
@@ -319,6 +321,12 @@ DECL|macro|ClearPageDirect
 mdefine_line|#define ClearPageDirect(page)&t;&t;clear_bit(PG_direct, &amp;(page)-&gt;flags)
 DECL|macro|TestClearPageDirect
 mdefine_line|#define TestClearPageDirect(page)&t;test_and_clear_bit(PG_direct, &amp;(page)-&gt;flags)
+DECL|macro|PageMappedToDisk
+mdefine_line|#define PageMappedToDisk(page)&t;test_bit(PG_mappedtodisk, &amp;(page)-&gt;flags)
+DECL|macro|SetPageMappedToDisk
+mdefine_line|#define SetPageMappedToDisk(page) set_bit(PG_mappedtodisk, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageMappedToDisk
+mdefine_line|#define ClearPageMappedToDisk(page) clear_bit(PG_mappedtodisk, &amp;(page)-&gt;flags)
 multiline_comment|/*&n; * The PageSwapCache predicate doesn&squot;t use a PG_flag at this time,&n; * but it may again do so one day.&n; */
 macro_line|#ifdef CONFIG_SWAP
 r_extern

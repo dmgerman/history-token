@@ -256,7 +256,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
+r_int
 id|io_schedule_timeout
 c_func
 (paren

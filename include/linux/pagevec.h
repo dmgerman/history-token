@@ -81,16 +81,6 @@ id|pvec
 )paren
 suffix:semicolon
 r_void
-id|pagevec_deactivate_inactive
-c_func
-(paren
-r_struct
-id|pagevec
-op_star
-id|pvec
-)paren
-suffix:semicolon
-r_void
 id|pagevec_strip
 c_func
 (paren
