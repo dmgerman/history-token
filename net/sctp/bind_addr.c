@@ -966,7 +966,8 @@ r_int
 id|flags
 )paren
 (brace
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 op_assign

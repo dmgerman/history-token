@@ -26,7 +26,8 @@ op_star
 id|sctp_endpoint_new
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 comma
@@ -120,7 +121,8 @@ id|sctp_endpoint_t
 op_star
 id|ep
 comma
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 comma
@@ -439,6 +441,10 @@ l_string|&quot;Endpoint is not dead&quot;
 comma
 r_return
 )paren
+suffix:semicolon
+id|ep-&gt;base.sk-&gt;state
+op_assign
+id|SCTP_SS_CLOSED
 suffix:semicolon
 multiline_comment|/* Unlink this endpoint, so we can&squot;t find it again! */
 id|sctp_unhash_endpoint

@@ -335,7 +335,7 @@ DECL|macro|SCTP_STATE_MAX
 mdefine_line|#define SCTP_STATE_MAX&t;&t;&t;SCTP_STATE_SHUTDOWN_ACK_SENT
 DECL|macro|SCTP_STATE_NUM_STATES
 mdefine_line|#define SCTP_STATE_NUM_STATES&t;&t;(SCTP_STATE_MAX + 1)
-multiline_comment|/* These are values for sk-&gt;state.&n; * For a UDP-style SCTP socket, the states are defined as follows&n; *   (at this point of time, may change later after more discussions: FIXME)&n; * A socket in SCTP_SS_UNCONNECTED state indicates that it is not willing&n; * to accept new associations, but it can initiate the creation of new&n; * ones.&n; * A socket in SCTP_SS_LISTENING state indicates that it is willing to&n; * accept new  associations and can initiate the creation of new ones.&n; * A socket in SCTP_SS_ESTABLISHED state indicates that it is a peeled off&n; * socket with one association.&n; */
+multiline_comment|/* These are values for sk-&gt;state.&n; * For a UDP-style SCTP socket, the states are defined as follows&n; * - A socket in SCTP_SS_CLOSED state indicates that it is not willing to&n; *   accept new associations, but it can initiate the creation of new ones.&n; * - A socket in SCTP_SS_LISTENING state indicates that it is willing to&n; *   accept new  associations and can initiate the creation of new ones.&n; * - A socket in SCTP_SS_ESTABLISHED state indicates that it is a peeled off&n; *   socket with one association.&n; * For a TCP-style SCTP socket, the states are defined as follows&n; * - A socket in SCTP_SS_CLOSED state indicates that it is not willing to&n; *   accept new associations, but it can initiate the creation of new ones.&n; * - A socket in SCTP_SS_LISTENING state indicates that it is willing to&n; *   accept new associations, but cannot initiate the creation of new ones.&n; * - A socket in SCTP_SS_ESTABLISHED state indicates that it has a single &n; *   association in ESTABLISHED state.&n; */
 r_typedef
 r_enum
 (brace
@@ -578,6 +578,9 @@ id|SCTP_XMIT_RWND_FULL
 comma
 DECL|enumerator|SCTP_XMIT_MUST_FRAG
 id|SCTP_XMIT_MUST_FRAG
+comma
+DECL|enumerator|SCTP_XMIT_NAGLE_DELAY
+id|SCTP_XMIT_NAGLE_DELAY
 comma
 DECL|typedef|sctp_xmit_t
 )brace
