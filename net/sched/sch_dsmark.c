@@ -26,7 +26,7 @@ DECL|macro|D2PRINTK
 mdefine_line|#define D2PRINTK(format,args...)
 macro_line|#endif
 DECL|macro|PRIV
-mdefine_line|#define PRIV(sch) ((struct dsmark_qdisc_data *) (sch)-&gt;data)
+mdefine_line|#define PRIV(sch) qdisc_priv(sch)
 multiline_comment|/*&n; * classid&t;class&t;&t;marking&n; * -------&t;-----&t;&t;-------&n; *   n/a&t;  0&t;&t;n/a&n; *   x:0&t;  1&t;&t;use entry [0]&n; *   ...&t; ...&t;&t;...&n; *   x:y y&gt;0&t; y+1&t;&t;use entry [y]&n; *   ...&t; ...&t;&t;...&n; * x:indices-1&t;indices&t;&t;use entry [indices-1]&n; *   ...&t; ...&t;&t;...&n; *   x:y&t; y+1&t;&t;use entry [y &amp; (indices-1)]&n; *   ...&t; ...&t;&t;...&n; * 0xffff&t;0x10000&t;&t;use entry [indices-1]&n; */
 DECL|macro|NO_DEFAULT_INDEX
 mdefine_line|#define NO_DEFAULT_INDEX&t;(1 &lt;&lt; 16)
