@@ -7,6 +7,12 @@ macro_line|#include &quot;s390mach.h&quot;
 DECL|macro|DBG
 mdefine_line|#define DBG printk
 singleline_comment|// #define DBG(args,...) do {} while (0);
+DECL|variable|s_sem
+r_static
+r_struct
+id|semaphore
+id|s_sem
+suffix:semicolon
 r_extern
 r_void
 id|css_process_crw
@@ -31,6 +37,14 @@ c_func
 r_int
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|css_reiterate_subchannels
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_static
@@ -77,12 +91,14 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Retrieve CRWs and call function to handle event.&n; *&n; * Note : we currently process CRWs for io and chsc subchannels only&n; */
 r_static
-r_void
+r_int
 DECL|function|s390_collect_crw_info
 id|s390_collect_crw_info
 c_func
 (paren
 r_void
+op_star
+id|param
 )paren
 (brace
 r_struct
@@ -91,6 +107,35 @@ id|crw
 suffix:semicolon
 r_int
 id|ccode
+suffix:semicolon
+r_struct
+id|semaphore
+op_star
+id|sem
+suffix:semicolon
+id|sem
+op_assign
+(paren
+r_struct
+id|semaphore
+op_star
+)paren
+id|param
+suffix:semicolon
+multiline_comment|/* Set a nice name. */
+id|daemonize
+c_func
+(paren
+l_string|&quot;kmcheck&quot;
+)paren
+suffix:semicolon
+id|repeat
+suffix:colon
+id|down_interruptible
+c_func
+(paren
+id|sem
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -138,6 +183,29 @@ comma
 id|crw.rsid
 )paren
 suffix:semicolon
+multiline_comment|/* Check for overflows. */
+r_if
+c_cond
+(paren
+id|crw.oflw
+)paren
+(brace
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: crw overflow detected!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|css_reiterate_subchannels
+c_func
+(paren
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -270,6 +338,12 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_goto
+id|repeat
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * machine check handler.&n; */
 r_void
@@ -380,9 +454,11 @@ c_cond
 id|mci-&gt;cp
 )paren
 multiline_comment|/* channel report word pending */
-id|s390_collect_crw_info
+id|up
 c_func
 (paren
+op_amp
+id|s_sem
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MACHCHK_WARNING
@@ -447,6 +523,13 @@ c_func
 r_void
 )paren
 (brace
+id|init_MUTEX_LOCKED
+c_func
+(paren
+op_amp
+id|s_sem
+)paren
+suffix:semicolon
 id|ctl_clear_bit
 c_func
 (paren
@@ -507,6 +590,19 @@ id|machine_check_crw_init
 r_void
 )paren
 (brace
+id|kernel_thread
+c_func
+(paren
+id|s390_collect_crw_info
+comma
+op_amp
+id|s_sem
+comma
+id|CLONE_FS
+op_or
+id|CLONE_FILES
+)paren
+suffix:semicolon
 id|ctl_set_bit
 c_func
 (paren

@@ -177,12 +177,12 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s(%04X) - path(s) %02x are &quot;
+l_string|&quot;%s(%s) - path(s) %02x are &quot;
 l_string|&quot;not operational &bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|sch-&gt;irq
+id|sch-&gt;dev.bus_id
 comma
 id|sch-&gt;schib.pmcw.pnom
 )paren
@@ -963,7 +963,6 @@ id|sch-&gt;sense_ccw.flags
 op_assign
 id|CCW_FLAG_SLI
 suffix:semicolon
-multiline_comment|/* 0xe2C5D5E2 == &quot;SENS&quot; in ebcdic */
 r_return
 id|cio_start
 (paren
@@ -971,8 +970,6 @@ id|sch
 comma
 op_amp
 id|sch-&gt;sense_ccw
-comma
-l_int|0xE2C5D5E2
 comma
 l_int|0xff
 )paren
