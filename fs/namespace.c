@@ -3789,6 +3789,8 @@ op_or
 id|MS_NOEXEC
 op_or
 id|MS_NODEV
+op_or
+id|MS_ACTIVE
 )paren
 suffix:semicolon
 multiline_comment|/* ... and get the mountpoint */
