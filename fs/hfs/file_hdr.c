@@ -74,20 +74,24 @@ id|file_operations
 id|hfs_hdr_operations
 op_assign
 (brace
+dot
 id|llseek
-suffix:colon
+op_assign
 id|hdr_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|hdr_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|hdr_write
 comma
+dot
 id|fsync
-suffix:colon
+op_assign
 id|file_fsync
 comma
 )brace
@@ -98,8 +102,9 @@ id|inode_operations
 id|hfs_hdr_inode_operations
 op_assign
 (brace
+dot
 id|setattr
-suffix:colon
+op_assign
 id|hfs_notify_change_hdr
 comma
 )brace
@@ -111,8 +116,9 @@ id|hfs_hdr_layout
 id|hfs_dbl_fil_hdr_layout
 op_assign
 (brace
+dot
 id|magic
-suffix:colon
+op_assign
 id|__constant_htonl
 c_func
 (paren
@@ -120,8 +126,9 @@ id|HFS_DBL_MAGIC
 )paren
 comma
 multiline_comment|/* magic   */
+dot
 id|version
-suffix:colon
+op_assign
 id|__constant_htonl
 c_func
 (paren
@@ -129,8 +136,9 @@ id|HFS_HDR_VERSION_2
 )paren
 comma
 multiline_comment|/* version */
+dot
 id|entries
-suffix:colon
+op_assign
 l_int|6
 comma
 multiline_comment|/* entries */
@@ -294,8 +302,9 @@ id|hfs_hdr_layout
 id|hfs_dbl_dir_hdr_layout
 op_assign
 (brace
+dot
 id|magic
-suffix:colon
+op_assign
 id|__constant_htonl
 c_func
 (paren
@@ -303,8 +312,9 @@ id|HFS_DBL_MAGIC
 )paren
 comma
 multiline_comment|/* magic   */
+dot
 id|version
-suffix:colon
+op_assign
 id|__constant_htonl
 c_func
 (paren
@@ -312,8 +322,9 @@ id|HFS_HDR_VERSION_2
 )paren
 comma
 multiline_comment|/* version */
+dot
 id|entries
-suffix:colon
+op_assign
 l_int|5
 comma
 multiline_comment|/* entries */
@@ -457,8 +468,9 @@ id|hfs_hdr_layout
 id|hfs_nat2_hdr_layout
 op_assign
 (brace
+dot
 id|magic
-suffix:colon
+op_assign
 id|__constant_htonl
 c_func
 (paren
@@ -466,8 +478,9 @@ id|HFS_DBL_MAGIC
 )paren
 comma
 multiline_comment|/* magic   */
+dot
 id|version
-suffix:colon
+op_assign
 id|__constant_htonl
 c_func
 (paren
@@ -475,8 +488,9 @@ id|HFS_HDR_VERSION_2
 )paren
 comma
 multiline_comment|/* version */
+dot
 id|entries
-suffix:colon
+op_assign
 l_int|9
 comma
 multiline_comment|/* entries */
@@ -716,8 +730,9 @@ id|hfs_hdr_layout
 id|hfs_nat_hdr_layout
 op_assign
 (brace
+dot
 id|magic
-suffix:colon
+op_assign
 id|__constant_htonl
 c_func
 (paren
@@ -725,8 +740,9 @@ id|HFS_DBL_MAGIC
 )paren
 comma
 multiline_comment|/* magic   */
+dot
 id|version
-suffix:colon
+op_assign
 id|__constant_htonl
 c_func
 (paren
@@ -734,8 +750,9 @@ id|HFS_HDR_VERSION_1
 )paren
 comma
 multiline_comment|/* version */
+dot
 id|entries
-suffix:colon
+op_assign
 l_int|5
 comma
 multiline_comment|/* entries */
