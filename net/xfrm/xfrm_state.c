@@ -2,6 +2,7 @@ multiline_comment|/*&n; * xfrm_state.c&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Each xfrm_state may be linked to two tables:&n;&n;   1. Hash table by (spi,daddr,ah/esp) to find SA by SPI. (input,ctl)&n;   2. Hash table by daddr to find what SAs exist for given&n;      destination/tunnel endpoint. (output)&n; */
 DECL|variable|xfrm_state_lock
 r_static
