@@ -854,6 +854,13 @@ c_func
 id|truncate_inode_pages
 )paren
 suffix:semicolon
+DECL|variable|install_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|install_page
+)paren
+suffix:semicolon
 DECL|variable|fsync_bdev
 id|EXPORT_SYMBOL
 c_func
