@@ -3919,4 +3919,11 @@ c_func
 id|nvram_set_checksum
 )paren
 suffix:semicolon
+DECL|variable|NVRAM_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|NVRAM_MINOR
+)paren
+suffix:semicolon
 eof

@@ -11477,4 +11477,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|PPP_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|PPP_MAJOR
+)paren
+suffix:semicolon
 eof

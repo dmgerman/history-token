@@ -4930,4 +4930,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|RTC_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|RTC_MINOR
+)paren
+suffix:semicolon
 eof

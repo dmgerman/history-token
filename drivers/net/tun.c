@@ -2625,4 +2625,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|TUN_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|TUN_MINOR
+)paren
+suffix:semicolon
 eof
