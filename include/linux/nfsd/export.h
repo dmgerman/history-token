@@ -88,8 +88,7 @@ id|cl_umap
 suffix:semicolon
 DECL|member|cl_export
 r_struct
-id|svc_export
-op_star
+id|list_head
 id|cl_export
 (braket
 id|NFSCLNT_EXPMAX
@@ -101,11 +100,10 @@ DECL|struct|svc_export
 r_struct
 id|svc_export
 (brace
-DECL|member|ex_next
+DECL|member|ex_hash
 r_struct
-id|svc_export
-op_star
-id|ex_next
+id|list_head
+id|ex_hash
 suffix:semicolon
 DECL|member|ex_path
 r_char
