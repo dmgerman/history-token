@@ -4138,7 +4138,7 @@ suffix:semicolon
 multiline_comment|/* This is what an interrupt routine should look like. &n; * Small, elegant, clear.&n; */
 DECL|function|sx_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sx_interrupt
 (paren
 r_int
@@ -4338,6 +4338,7 @@ op_logical_neg
 id|sx_initialized
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 r_if
 c_cond
@@ -4350,6 +4351,7 @@ id|SX_BOARD_INITIALIZED
 )paren
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 r_if
 c_cond
@@ -4372,6 +4374,7 @@ id|board-&gt;irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_for
@@ -4482,6 +4485,9 @@ id|board-&gt;irq
 )paren
 suffix:semicolon
 multiline_comment|/*  func_exit ();  */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sx_pollfunc
 r_static

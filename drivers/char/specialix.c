@@ -275,7 +275,7 @@ id|timer_list
 id|missed_irq_timer
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|sx_interrupt
 c_func
 (paren
@@ -3330,7 +3330,7 @@ suffix:semicolon
 multiline_comment|/* The main interrupt processing routine */
 DECL|function|sx_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sx_interrupt
 c_func
 (paren
@@ -3398,6 +3398,7 @@ id|irq
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|saved_reg
@@ -3637,6 +3638,9 @@ id|bp-&gt;base
 op_plus
 id|SX_ADDR_REG
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Routines for open &amp; close processing.&n; */

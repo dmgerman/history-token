@@ -1862,7 +1862,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_ISA */
 multiline_comment|/* The real interrupt service routine is called&n;   whenever the card wants its hand held--chars&n;   received, out buffer empty, modem change, etc.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|cyy_interrupt
 id|cyy_interrupt
 c_func
@@ -1974,6 +1974,7 @@ id|irq
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* spurious interrupt */
 )brace
@@ -4051,6 +4052,9 @@ op_amp
 id|cinfo-&gt;card_lock
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* cyy_interrupt */
 multiline_comment|/***********************************************************/
@@ -5947,7 +5951,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_CYZ_INTR
 r_static
-r_void
+id|irqreturn_t
 DECL|function|cyz_interrupt
 id|cyz_interrupt
 c_func
@@ -5998,6 +6002,7 @@ id|irq
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* spurious interrupt */
 )brace
@@ -6024,6 +6029,7 @@ id|irq
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* Handle the interrupts */
@@ -6034,6 +6040,7 @@ id|cinfo
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* cyz_interrupt */

@@ -1146,7 +1146,7 @@ suffix:semicolon
 )brace
 DECL|function|rio_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|rio_interrupt
 (paren
 r_int
@@ -1314,6 +1314,7 @@ id|HostP-&gt;Ivec
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|RIOServiceHost
@@ -1362,6 +1363,9 @@ suffix:semicolon
 id|func_exit
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|rio_pollfunc

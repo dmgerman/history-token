@@ -510,7 +510,7 @@ id|pB
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ip2_interrupt
 c_func
 (paren
@@ -5132,7 +5132,7 @@ multiline_comment|/*                                                            
 multiline_comment|/*                                                                            */
 multiline_comment|/******************************************************************************/
 r_static
-r_void
+id|irqreturn_t
 DECL|function|ip2_interrupt
 id|ip2_interrupt
 c_func
@@ -5155,6 +5155,11 @@ id|i
 suffix:semicolon
 id|i2eBordStrPtr
 id|pB
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|ip2trace
 (paren
@@ -5206,6 +5211,10 @@ id|irq
 )paren
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#ifdef USE_IQI
 r_if
 c_cond
@@ -5266,6 +5275,13 @@ comma
 id|ITRC_RETURN
 comma
 l_int|0
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

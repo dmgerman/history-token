@@ -5716,7 +5716,7 @@ multiline_comment|/*&n; * Interrupt handling:&n; *&n; * 1) Interrupt is generate
 multiline_comment|/* qic02_tape_interrupt() is called when the tape controller completes &n; * a DMA transfer.&n; * We are not allowed to sleep here! &n; *&n; * Check if the transfer was successful, check if we need to transfer&n; * more. If the buffer contains enough data/is empty enough, signal the&n; * read/write() thread to copy to/from user space.&n; * When we are finished, set flags to indicate end, disable timer.&n; * NOTE: This *must* be fast! &n; */
 DECL|function|qic02_tape_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|qic02_tape_interrupt
 c_func
 (paren
@@ -5818,6 +5818,7 @@ l_int|0
 id|TIMERCONT
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* &quot;Linux with IRQ sharing&quot; */
 )brace
@@ -5877,6 +5878,7 @@ id|qic02_tape_transfer
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* return if tape controller not ready, or&n;&t;&t; * if dma channel hasn&squot;t finished last byte yet.&n;&t;&t; */
@@ -5965,6 +5967,7 @@ c_cond
 id|r
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 multiline_comment|/* finish DMA cycle */
 multiline_comment|/* no errors detected, continue */
@@ -6042,6 +6045,9 @@ id|QIC02_STAT_PORT
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* qic02_tape_interrupt */
 multiline_comment|/* read/write routines:&n; * This code copies between a kernel buffer and a user buffer. The &n; * actual data transfer is done using DMA and interrupts. Time-outs&n; * are also used.&n; *&n; * When a filemark is read, we return &squot;0 bytes read&squot; and continue with the&n; * next file after that.&n; * When EOM is read, we return &squot;0 bytes read&squot; twice.&n; * When the EOT marker is detected on writes, &squot;0 bytes read&squot; should be&n; * returned twice. If user program does a MTNOP after that, 2 additional&n; * blocks may be written.&t;------- FIXME: Implement this correctly  *************************************************&n; *&n; * Only read/writes in multiples of 512 bytes are accepted.&n; * When no bytes are available, we sleep() until they are. The controller will&n; * generate an interrupt, and we (should) get a wake_up() call.&n; *&n; * Simple buffering is used. User program should ensure that a large enough&n; * buffer is used. Usually the drive does some buffering as well (something&n; * like 4k or so).&n; *&n; * Scott S. Bertilson suggested to continue filling the user buffer, rather&n; * than waste time on a context switch, when the kernel buffer fills up.&n; */
