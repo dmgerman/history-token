@@ -145,10 +145,12 @@ id|PGDIR_ORDER
 op_ne
 l_int|NULL
 )paren
-id|clear_page
+id|clear_pages
 c_func
 (paren
 id|ret
+comma
+id|PGDIR_ORDER
 )paren
 suffix:semicolon
 r_return
@@ -165,7 +167,7 @@ op_star
 id|pgd
 )paren
 (brace
-id|free_page
+id|free_pages
 c_func
 (paren
 (paren
@@ -173,6 +175,8 @@ r_int
 r_int
 )paren
 id|pgd
+comma
+id|PGDIR_ORDER
 )paren
 suffix:semicolon
 )brace
