@@ -35,14 +35,6 @@ DECL|macro|PSMOUSE_RET_ACK
 mdefine_line|#define PSMOUSE_RET_ACK&t;&t;0xfa
 DECL|macro|PSMOUSE_RET_NAK
 mdefine_line|#define PSMOUSE_RET_NAK&t;&t;0xfe
-DECL|macro|PSMOUSE_FLAG_ACK
-mdefine_line|#define PSMOUSE_FLAG_ACK&t;0&t;/* Waiting for ACK/NAK */
-DECL|macro|PSMOUSE_FLAG_CMD
-mdefine_line|#define PSMOUSE_FLAG_CMD&t;1&t;/* Waiting for command to finish */
-DECL|macro|PSMOUSE_FLAG_CMD1
-mdefine_line|#define PSMOUSE_FLAG_CMD1&t;2&t;/* Waiting for the first byte of command response */
-DECL|macro|PSMOUSE_FLAG_WAITID
-mdefine_line|#define PSMOUSE_FLAG_WAITID&t;3&t;/* Command execiting is GET ID */
 DECL|enum|psmouse_state
 r_enum
 id|psmouse_state
@@ -91,11 +83,10 @@ r_struct
 id|input_dev
 id|dev
 suffix:semicolon
-DECL|member|serio
+DECL|member|ps2dev
 r_struct
-id|serio
-op_star
-id|serio
+id|ps2dev
+id|ps2dev
 suffix:semicolon
 DECL|member|vendor
 r_char
@@ -107,14 +98,6 @@ r_char
 op_star
 id|name
 suffix:semicolon
-DECL|member|cmdbuf
-r_int
-r_char
-id|cmdbuf
-(braket
-l_int|8
-)braket
-suffix:semicolon
 DECL|member|packet
 r_int
 r_char
@@ -122,11 +105,6 @@ id|packet
 (braket
 l_int|8
 )braket
-suffix:semicolon
-DECL|member|cmdcnt
-r_int
-r_char
-id|cmdcnt
 suffix:semicolon
 DECL|member|pktcnt
 r_int
@@ -158,15 +136,6 @@ r_enum
 id|psmouse_state
 id|state
 suffix:semicolon
-DECL|member|nak
-r_int
-r_char
-id|nak
-suffix:semicolon
-DECL|member|error
-r_char
-id|error
-suffix:semicolon
 DECL|member|devname
 r_char
 id|devname
@@ -180,16 +149,6 @@ id|phys
 (braket
 l_int|32
 )braket
-suffix:semicolon
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* Used to signal completion from interrupt handler */
-DECL|member|wait
-id|wait_queue_head_t
-id|wait
 suffix:semicolon
 DECL|member|protocol_handler
 id|psmouse_ret_t
@@ -298,24 +257,6 @@ DECL|enumerator|PSMOUSE_ALPS
 id|PSMOUSE_ALPS
 comma
 )brace
-suffix:semicolon
-r_int
-id|psmouse_command
-c_func
-(paren
-r_struct
-id|psmouse
-op_star
-id|psmouse
-comma
-r_int
-r_char
-op_star
-id|param
-comma
-r_int
-id|command
-)paren
 suffix:semicolon
 r_int
 id|psmouse_sliced_command

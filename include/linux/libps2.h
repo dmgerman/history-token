@@ -1,0 +1,175 @@
+macro_line|#ifndef _LIBPS2_H
+DECL|macro|_LIBPS2_H
+mdefine_line|#define _LIBPS2_H
+multiline_comment|/*&n; * Copyright (C) 1999-2002 Vojtech Pavlik&n; * Copyright (C) 2004 Dmitry Torokhov&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
+DECL|macro|PS2_CMD_GETID
+mdefine_line|#define PS2_CMD_GETID&t;&t;0x02f2
+DECL|macro|PS2_CMD_RESET_BAT
+mdefine_line|#define PS2_CMD_RESET_BAT&t;0x02ff
+DECL|macro|PS2_RET_BAT
+mdefine_line|#define PS2_RET_BAT&t;&t;0xaa
+DECL|macro|PS2_RET_ID
+mdefine_line|#define PS2_RET_ID&t;&t;0x00
+DECL|macro|PS2_RET_ACK
+mdefine_line|#define PS2_RET_ACK&t;&t;0xfa
+DECL|macro|PS2_RET_NAK
+mdefine_line|#define PS2_RET_NAK&t;&t;0xfe
+DECL|macro|PS2_FLAG_ACK
+mdefine_line|#define PS2_FLAG_ACK&t;&t;1&t;/* Waiting for ACK/NAK */
+DECL|macro|PS2_FLAG_CMD
+mdefine_line|#define PS2_FLAG_CMD&t;&t;2&t;/* Waiting for command to finish */
+DECL|macro|PS2_FLAG_CMD1
+mdefine_line|#define PS2_FLAG_CMD1&t;&t;4&t;/* Waiting for the first byte of command response */
+DECL|macro|PS2_FLAG_WAITID
+mdefine_line|#define PS2_FLAG_WAITID&t;&t;8&t;/* Command execiting is GET ID */
+DECL|struct|ps2dev
+r_struct
+id|ps2dev
+(brace
+DECL|member|serio
+r_struct
+id|serio
+op_star
+id|serio
+suffix:semicolon
+multiline_comment|/* Ensures that only one command is executing at a time */
+DECL|member|cmd_sem
+r_struct
+id|semaphore
+id|cmd_sem
+suffix:semicolon
+multiline_comment|/* Used to signal completion from interrupt handler */
+DECL|member|wait
+id|wait_queue_head_t
+id|wait
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+DECL|member|cmdbuf
+r_int
+r_char
+id|cmdbuf
+(braket
+l_int|6
+)braket
+suffix:semicolon
+DECL|member|cmdcnt
+r_int
+r_char
+id|cmdcnt
+suffix:semicolon
+DECL|member|nak
+r_int
+r_char
+id|nak
+suffix:semicolon
+)brace
+suffix:semicolon
+r_void
+id|ps2_init
+c_func
+(paren
+r_struct
+id|ps2dev
+op_star
+id|ps2dev
+comma
+r_struct
+id|serio
+op_star
+id|serio
+)paren
+suffix:semicolon
+r_int
+id|ps2_sendbyte
+c_func
+(paren
+r_struct
+id|ps2dev
+op_star
+id|ps2dev
+comma
+r_int
+r_char
+id|byte
+)paren
+suffix:semicolon
+r_int
+id|ps2_command
+c_func
+(paren
+r_struct
+id|ps2dev
+op_star
+id|ps2dev
+comma
+r_int
+r_char
+op_star
+id|param
+comma
+r_int
+id|command
+)paren
+suffix:semicolon
+r_int
+id|ps2_schedule_command
+c_func
+(paren
+r_struct
+id|ps2dev
+op_star
+id|ps2dev
+comma
+r_int
+r_char
+op_star
+id|param
+comma
+r_int
+id|command
+)paren
+suffix:semicolon
+r_int
+id|ps2_handle_ack
+c_func
+(paren
+r_struct
+id|ps2dev
+op_star
+id|ps2dev
+comma
+r_int
+r_char
+id|data
+)paren
+suffix:semicolon
+r_int
+id|ps2_handle_response
+c_func
+(paren
+r_struct
+id|ps2dev
+op_star
+id|ps2dev
+comma
+r_int
+r_char
+id|data
+)paren
+suffix:semicolon
+r_void
+id|ps2_cmd_aborted
+c_func
+(paren
+r_struct
+id|ps2dev
+op_star
+id|ps2dev
+)paren
+suffix:semicolon
+macro_line|#endif /* _LIBPS2_H */
+eof

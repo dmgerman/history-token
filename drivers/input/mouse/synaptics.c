@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Synaptics TouchPad PS/2 mouse driver&n; *&n; *   2003 
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
+macro_line|#include &lt;linux/libps2.h&gt;
 macro_line|#include &quot;psmouse.h&quot;
 macro_line|#include &quot;synaptics.h&quot;
 multiline_comment|/*&n; * The x/y limits are taken from the Synaptics TouchPad interfacing Guide,&n; * section 2.3.2, which says that they should be valid regardless of the&n; * actual size of the sensor.&n; */
@@ -54,10 +55,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|psmouse_command
+id|ps2_command
 c_func
 (paren
-id|psmouse
+op_amp
+id|psmouse-&gt;ps2dev
 comma
 id|param
 comma
@@ -121,10 +123,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|psmouse_command
+id|ps2_command
 c_func
 (paren
-id|psmouse
+op_amp
+id|psmouse-&gt;ps2dev
 comma
 id|param
 comma
@@ -956,10 +959,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|psmouse_command
+id|ps2_command
 c_func
 (paren
-id|parent
+op_amp
+id|parent-&gt;ps2dev
 comma
 op_amp
 id|rate_param
@@ -1150,7 +1154,7 @@ id|psmouse
 op_star
 id|child
 op_assign
-id|psmouse-&gt;serio-&gt;child
+id|psmouse-&gt;ps2dev.serio-&gt;child
 op_member_access_from_pointer
 r_private
 suffix:semicolon
@@ -1283,13 +1287,13 @@ id|synaptics_pt_write
 suffix:semicolon
 id|serio-&gt;parent
 op_assign
-id|psmouse-&gt;serio
+id|psmouse-&gt;ps2dev.serio
 suffix:semicolon
 id|psmouse-&gt;pt_activate
 op_assign
 id|synaptics_pt_activate
 suffix:semicolon
-id|psmouse-&gt;serio-&gt;child
+id|psmouse-&gt;ps2dev.serio-&gt;child
 op_assign
 id|serio
 suffix:semicolon
@@ -2683,12 +2687,12 @@ id|psmouse-&gt;packet
 r_if
 c_cond
 (paren
-id|psmouse-&gt;serio-&gt;child
+id|psmouse-&gt;ps2dev.serio-&gt;child
 )paren
 id|synaptics_pass_pt_packet
 c_func
 (paren
-id|psmouse-&gt;serio-&gt;child
+id|psmouse-&gt;ps2dev.serio-&gt;child
 comma
 id|psmouse-&gt;packet
 )paren
@@ -3136,6 +3140,14 @@ op_star
 id|psmouse
 )paren
 (brace
+r_struct
+id|ps2dev
+op_star
+id|ps2dev
+op_assign
+op_amp
+id|psmouse-&gt;ps2dev
+suffix:semicolon
 r_int
 r_char
 id|param
@@ -3150,50 +3162,50 @@ l_int|0
 op_assign
 l_int|0
 suffix:semicolon
-id|psmouse_command
+id|ps2_command
 c_func
 (paren
-id|psmouse
+id|ps2dev
 comma
 id|param
 comma
 id|PSMOUSE_CMD_SETRES
 )paren
 suffix:semicolon
-id|psmouse_command
+id|ps2_command
 c_func
 (paren
-id|psmouse
+id|ps2dev
 comma
 id|param
 comma
 id|PSMOUSE_CMD_SETRES
 )paren
 suffix:semicolon
-id|psmouse_command
+id|ps2_command
 c_func
 (paren
-id|psmouse
+id|ps2dev
 comma
 id|param
 comma
 id|PSMOUSE_CMD_SETRES
 )paren
 suffix:semicolon
-id|psmouse_command
+id|ps2_command
 c_func
 (paren
-id|psmouse
+id|ps2dev
 comma
 id|param
 comma
 id|PSMOUSE_CMD_SETRES
 )paren
 suffix:semicolon
-id|psmouse_command
+id|ps2_command
 c_func
 (paren
-id|psmouse
+id|ps2dev
 comma
 id|param
 comma
