@@ -3246,6 +3246,7 @@ op_amp
 id|GlobalSMBSeslock
 )paren
 suffix:semicolon
+multiline_comment|/* BB we should start at the end */
 id|list_for_each_safe
 c_func
 (paren
