@@ -4854,19 +4854,20 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_HD
+multiline_comment|/* The first &quot;legacy&quot;  HD gets distinguished by the IRQ it is attached&n;&t; * to and the IO port it takes.&n;&t; */
 r_if
 c_cond
 (paren
 id|ch-&gt;irq
 op_eq
-id|HD_IRQ
+l_int|14
 op_logical_and
 id|ch-&gt;io_ports
 (braket
 id|IDE_DATA_OFFSET
 )braket
 op_ne
-id|HD_DATA
+l_int|0x1f0
 )paren
 (brace
 id|printk

@@ -22,9 +22,10 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/atapi.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1987,8 +1988,9 @@ DECL|function|idetape_command_key_verbose
 r_char
 op_star
 id|idetape_command_key_verbose
+c_func
 (paren
-id|byte
+id|u8
 id|idetape_command_key
 )paren
 (brace
@@ -2737,9 +2739,6 @@ comma
 id|idetape_command_key_verbose
 c_func
 (paren
-(paren
-id|byte
-)paren
 id|pc-&gt;c
 (braket
 l_int|0
@@ -5778,7 +5777,7 @@ id|atapi_packet_command
 op_star
 id|pc
 comma
-id|byte
+id|u8
 id|page_code
 )paren
 (brace
@@ -10882,7 +10881,7 @@ r_int
 r_int
 id|block
 comma
-id|byte
+id|u8
 id|partition
 comma
 r_int
@@ -14636,7 +14635,7 @@ op_star
 id|tape-&gt;tape_block_size
 suffix:semicolon
 )brace
-macro_line|#endif /* IDETAPE_DEBUG_BUGS */
+macro_line|#endif
 r_return
 (paren
 id|bytes_read
