@@ -368,7 +368,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Free the outqueue structure and any related pending chunks.&n; * FIXME: Add SEND_FAILED support.&n; */
+multiline_comment|/* Free the outqueue structure and any related pending chunks.&n; */
 DECL|function|sctp_outq_teardown
 r_void
 id|sctp_outq_teardown
@@ -399,6 +399,11 @@ suffix:semicolon
 id|sctp_chunk_t
 op_star
 id|chunk
+suffix:semicolon
+r_struct
+id|sctp_ulpevent
+op_star
+id|ev
 suffix:semicolon
 multiline_comment|/* Throw away unacknowledged chunks. */
 id|list_for_each
@@ -448,6 +453,37 @@ comma
 id|sctp_chunk_t
 comma
 id|transmitted_list
+)paren
+suffix:semicolon
+multiline_comment|/* Generate a SEND FAILED event. */
+id|ev
+op_assign
+id|sctp_ulpevent_make_send_failed
+c_func
+(paren
+id|q-&gt;asoc
+comma
+id|chunk
+comma
+id|SCTP_DATA_SENT
+comma
+id|q-&gt;error
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ev
+)paren
+id|sctp_ulpq_tail_event
+c_func
+(paren
+op_amp
+id|q-&gt;asoc-&gt;ulpq
+comma
+id|ev
 )paren
 suffix:semicolon
 id|sctp_free_chunk
@@ -546,11 +582,48 @@ id|q
 )paren
 )paren
 )paren
+(brace
+multiline_comment|/* Generate a SEND FAILED event. */
+id|ev
+op_assign
+id|sctp_ulpevent_make_send_failed
+c_func
+(paren
+id|q-&gt;asoc
+comma
+id|chunk
+comma
+id|SCTP_DATA_UNSENT
+comma
+id|q-&gt;error
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ev
+)paren
+id|sctp_ulpq_tail_event
+c_func
+(paren
+op_amp
+id|q-&gt;asoc-&gt;ulpq
+comma
+id|ev
+)paren
+suffix:semicolon
 id|sctp_free_chunk
 c_func
 (paren
 id|chunk
 )paren
+suffix:semicolon
+)brace
+id|q-&gt;error
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Throw away any leftover control chunks. */
 r_while
@@ -1146,7 +1219,7 @@ id|reason
 )paren
 (brace
 r_case
-id|SCTP_RETRANSMIT_T3_RTX
+id|SCTP_RTXR_T3_RTX
 suffix:colon
 id|sctp_transport_lower_cwnd
 c_func
@@ -1173,7 +1246,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_RETRANSMIT_FAST_RTX
+id|SCTP_RTXR_FAST_RTX
 suffix:colon
 id|sctp_transport_lower_cwnd
 c_func
@@ -1189,6 +1262,9 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SCTP_RTXR_PMTUD
+suffix:colon
 r_default
 suffix:colon
 r_break
@@ -2877,8 +2953,6 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-l_int|NULL
-op_ne
 (paren
 id|chunk
 op_assign
@@ -2935,7 +3009,7 @@ comma
 id|ev
 )paren
 suffix:semicolon
-multiline_comment|/* Free the chunk. This chunk is not on any&n;&t;&t;&t;&t; * list yet, just free it.&n;&t;&t;&t;&t; */
+multiline_comment|/* Free the chunk. */
 id|sctp_free_chunk
 c_func
 (paren
@@ -4958,7 +5032,7 @@ id|q
 comma
 id|transport
 comma
-id|SCTP_RETRANSMIT_FAST_RTX
+id|SCTP_RTXR_FAST_RTX
 )paren
 suffix:semicolon
 id|SCTP_DEBUG_PRINTK

@@ -443,6 +443,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|oprofile_arch_exit
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|variable|oprofile_init
 id|module_init

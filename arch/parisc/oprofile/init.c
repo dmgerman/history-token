@@ -37,4 +37,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|oprofile_arch_exit
+r_void
+id|__exit
+id|oprofile_arch_exit
+c_func
+(paren
+)paren
+(brace
+)brace
 eof
