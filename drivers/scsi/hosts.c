@@ -970,6 +970,10 @@ op_assign
 op_amp
 id|sem
 suffix:semicolon
+id|shost-&gt;eh_kill
+op_assign
+l_int|1
+suffix:semicolon
 id|up
 c_func
 (paren
