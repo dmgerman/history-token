@@ -3788,7 +3788,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_buffer_alloc - allocate dma-consistent buffer for URB_NO_DMA_MAP&n; * @dev: device the buffer will be used with&n; * @size: requested buffer size&n; * @mem_flags: affect whether allocation may block&n; * @dma: used to return DMA address of buffer&n; *&n; * Return value is either null (indicating no buffer could be allocated), or&n; * the cpu-space pointer to a buffer that may be used to perform DMA to the&n; * specified device.  Such cpu-space buffers are returned along with the DMA&n; * address (through the pointer provided).&n; *&n; * These buffers are used with URB_NO_DMA_MAP set in urb-&gt;transfer_flags to&n; * avoid behaviors like using &quot;DMA bounce buffers&quot;, or tying down I/O mapping&n; * hardware for long idle periods.  The implementation varies between&n; * platforms, depending on details of how DMA will work to this device.&n; * Using these buffers also helps prevent cacheline sharing problems on&n; * architectures where CPU caches are not DMA-coherent.&n; *&n; * When the buffer is no longer used, free it with usb_buffer_free().&n; */
+multiline_comment|/**&n; * usb_buffer_alloc - allocate dma-consistent buffer for URB_NO_xxx_DMA_MAP&n; * @dev: device the buffer will be used with&n; * @size: requested buffer size&n; * @mem_flags: affect whether allocation may block&n; * @dma: used to return DMA address of buffer&n; *&n; * Return value is either null (indicating no buffer could be allocated), or&n; * the cpu-space pointer to a buffer that may be used to perform DMA to the&n; * specified device.  Such cpu-space buffers are returned along with the DMA&n; * address (through the pointer provided).&n; *&n; * These buffers are used with URB_NO_xxx_DMA_MAP set in urb-&gt;transfer_flags&n; * to avoid behaviors like using &quot;DMA bounce buffers&quot;, or tying down I/O&n; * mapping hardware for long idle periods.  The implementation varies between&n; * platforms, depending on details of how DMA will work to this device.&n; * Using these buffers also helps prevent cacheline sharing problems on&n; * architectures where CPU caches are not DMA-coherent.&n; *&n; * When the buffer is no longer used, free it with usb_buffer_free().&n; */
 DECL|function|usb_buffer_alloc
 r_void
 op_star
@@ -3891,7 +3891,7 @@ id|dma
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_buffer_map - create DMA mapping(s) for an urb&n; * @urb: urb whose transfer_buffer will be mapped&n; *&n; * Return value is either null (indicating no buffer could be mapped), or&n; * the parameter.  URB_NO_DMA_MAP is added to urb-&gt;transfer_flags if the&n; * operation succeeds.  If the device is connected to this system through&n; * a non-DMA controller, this operation always succeeds.&n; *&n; * This call would normally be used for an urb which is reused, perhaps&n; * as the target of a large periodic transfer, with usb_buffer_dmasync()&n; * calls to synchronize memory and dma state.  It may not be used for&n; * control requests.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap().&n; */
+multiline_comment|/**&n; * usb_buffer_map - create DMA mapping(s) for an urb&n; * @urb: urb whose transfer_buffer/setup_packet will be mapped&n; *&n; * Return value is either null (indicating no buffer could be mapped), or&n; * the parameter.  URB_NO_TRANSFER_DMA_MAP and URB_NO_SETUP_DMA_MAP are&n; * added to urb-&gt;transfer_flags if the operation succeeds.  If the device&n; * is connected to this system through a non-DMA controller, this operation&n; * always succeeds.&n; *&n; * This call would normally be used for an urb which is reused, perhaps&n; * as the target of a large periodic transfer, with usb_buffer_dmasync()&n; * calls to synchronize memory and dma state.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap().&n; */
 DECL|function|usb_buffer_map
 r_struct
 id|urb
@@ -3919,11 +3919,6 @@ c_cond
 (paren
 op_logical_neg
 id|urb
-op_logical_or
-id|usb_pipecontrol
-(paren
-id|urb-&gt;pipe
-)paren
 op_logical_or
 op_logical_neg
 id|urb-&gt;dev
@@ -3972,6 +3967,31 @@ suffix:colon
 id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_pipecontrol
+(paren
+id|urb-&gt;pipe
+)paren
+)paren
+id|urb-&gt;setup_dma
+op_assign
+id|dma_map_single
+(paren
+id|controller
+comma
+id|urb-&gt;setup_packet
+comma
+r_sizeof
+(paren
+r_struct
+id|usb_ctrlrequest
+)paren
+comma
+id|DMA_TO_DEVICE
+)paren
+suffix:semicolon
 singleline_comment|// FIXME generic api broken like pci, can&squot;t report errors
 singleline_comment|// if (urb-&gt;transfer_dma == DMA_ADDR_INVALID) return 0;
 )brace
@@ -3983,13 +4003,17 @@ l_int|0
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_or_assign
-id|URB_NO_DMA_MAP
+(paren
+id|URB_NO_TRANSFER_DMA_MAP
+op_or
+id|URB_NO_SETUP_DMA_MAP
+)paren
 suffix:semicolon
 r_return
 id|urb
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_buffer_dmasync - synchronize DMA and CPU view of buffer(s)&n; * @urb: urb whose transfer_buffer will be synchronized&n; */
+multiline_comment|/**&n; * usb_buffer_dmasync - synchronize DMA and CPU view of buffer(s)&n; * @urb: urb whose transfer_buffer/setup_packet will be synchronized&n; */
 DECL|function|usb_buffer_dmasync
 r_void
 id|usb_buffer_dmasync
@@ -4020,7 +4044,7 @@ op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 )paren
 op_logical_or
 op_logical_neg
@@ -4047,6 +4071,7 @@ c_cond
 (paren
 id|controller-&gt;dma_mask
 )paren
+(brace
 id|dma_sync_single
 (paren
 id|controller
@@ -4066,6 +4091,30 @@ suffix:colon
 id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_pipecontrol
+(paren
+id|urb-&gt;pipe
+)paren
+)paren
+id|dma_sync_single
+(paren
+id|controller
+comma
+id|urb-&gt;setup_dma
+comma
+r_sizeof
+(paren
+r_struct
+id|usb_ctrlrequest
+)paren
+comma
+id|DMA_TO_DEVICE
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * usb_buffer_unmap - free DMA mapping(s) for an urb&n; * @urb: urb whose transfer_buffer will be unmapped&n; *&n; * Reverses the effect of usb_buffer_map().&n; */
 DECL|function|usb_buffer_unmap
@@ -4098,7 +4147,7 @@ op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 )paren
 op_logical_or
 op_logical_neg
@@ -4125,6 +4174,7 @@ c_cond
 (paren
 id|controller-&gt;dma_mask
 )paren
+(brace
 id|dma_unmap_single
 (paren
 id|controller
@@ -4144,13 +4194,41 @@ suffix:colon
 id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_pipecontrol
+(paren
+id|urb-&gt;pipe
+)paren
+)paren
+id|dma_unmap_single
+(paren
+id|controller
+comma
+id|urb-&gt;setup_dma
+comma
+r_sizeof
+(paren
+r_struct
+id|usb_ctrlrequest
+)paren
+comma
+id|DMA_TO_DEVICE
+)paren
+suffix:semicolon
+)brace
 id|urb-&gt;transfer_flags
 op_and_assign
 op_complement
-id|URB_NO_DMA_MAP
+(paren
+id|URB_NO_TRANSFER_DMA_MAP
+op_or
+id|URB_NO_SETUP_DMA_MAP
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_buffer_map_sg - create scatterlist DMA mapping(s) for an endpoint&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to map&n; * @nents: the number of entries in the scatterlist&n; *&n; * Return value is either &lt; 0 (indicating no buffers could be mapped), or&n; * the number of DMA mapping array entries in the scatterlist.&n; *&n; * The caller is responsible for placing the resulting DMA addresses from&n; * the scatterlist into URB transfer buffer pointers, and for setting the&n; * URB_NO_DMA_MAP transfer flag in each of those URBs.&n; *&n; * Top I/O rates come from queuing URBs, instead of waiting for each one&n; * to complete before starting the next I/O.   This is particularly easy&n; * to do with scatterlists.  Just allocate and submit one URB for each DMA&n; * mapping entry returned, stopping on the first error or when all succeed.&n; * Better yet, use the usb_sg_*() calls, which do that (and more) for you.&n; *&n; * This call would normally be used when translating scatterlist requests,&n; * rather than usb_buffer_map(), since on some hardware (with IOMMUs) it&n; * may be able to coalesce mappings for improved I/O efficiency.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap_sg().&n; */
+multiline_comment|/**&n; * usb_buffer_map_sg - create scatterlist DMA mapping(s) for an endpoint&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to map&n; * @nents: the number of entries in the scatterlist&n; *&n; * Return value is either &lt; 0 (indicating no buffers could be mapped), or&n; * the number of DMA mapping array entries in the scatterlist.&n; *&n; * The caller is responsible for placing the resulting DMA addresses from&n; * the scatterlist into URB transfer buffer pointers, and for setting the&n; * URB_NO_TRANSFER_DMA_MAP transfer flag in each of those URBs.&n; *&n; * Top I/O rates come from queuing URBs, instead of waiting for each one&n; * to complete before starting the next I/O.   This is particularly easy&n; * to do with scatterlists.  Just allocate and submit one URB for each DMA&n; * mapping entry returned, stopping on the first error or when all succeed.&n; * Better yet, use the usb_sg_*() calls, which do that (and more) for you.&n; *&n; * This call would normally be used when translating scatterlist requests,&n; * rather than usb_buffer_map(), since on some hardware (with IOMMUs) it&n; * may be able to coalesce mappings for improved I/O efficiency.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap_sg().&n; */
 DECL|function|usb_buffer_map_sg
 r_int
 id|usb_buffer_map_sg

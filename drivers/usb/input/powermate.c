@@ -613,7 +613,7 @@ id|pm-&gt;configcr_dma
 suffix:semicolon
 id|pm-&gt;config-&gt;transfer_flags
 op_or_assign
-id|URB_NO_DMA_MAP
+id|URB_NO_SETUP_DMA_MAP
 suffix:semicolon
 r_if
 c_cond
@@ -1519,7 +1519,7 @@ id|pm-&gt;data_dma
 suffix:semicolon
 id|pm-&gt;irq-&gt;transfer_flags
 op_or_assign
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 suffix:semicolon
 multiline_comment|/* register our interrupt URB with the USB system */
 r_if

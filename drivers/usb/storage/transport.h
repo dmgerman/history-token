@@ -29,16 +29,18 @@ DECL|macro|US_PR_DPCM_USB
 mdefine_line|#define US_PR_DPCM_USB  0xf0&t;&t;/* Combination CB/SDDR09 */
 macro_line|#ifdef CONFIG_USB_STORAGE_FREECOM
 DECL|macro|US_PR_FREECOM
-mdefine_line|#define US_PR_FREECOM   0xf1&t;    /* Freecom */
+mdefine_line|#define US_PR_FREECOM   0xf1&t;&t;/* Freecom */
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_DATAFAB
 DECL|macro|US_PR_DATAFAB
-mdefine_line|#define US_PR_DATAFAB   0xf2&t;    /* Datafab chipsets */
+mdefine_line|#define US_PR_DATAFAB   0xf2&t;&t;/* Datafab chipsets */
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_JUMPSHOT
 DECL|macro|US_PR_JUMPSHOT
-mdefine_line|#define US_PR_JUMPSHOT  0xf3&t;    /* Lexar Jumpshot */
+mdefine_line|#define US_PR_JUMPSHOT  0xf3&t;&t;/* Lexar Jumpshot */
 macro_line|#endif
+DECL|macro|US_PR_DEVICE
+mdefine_line|#define US_PR_DEVICE&t;0xff&t;&t;/* Use device&squot;s value */
 multiline_comment|/*&n; * Bulk only data structures&n; */
 multiline_comment|/* command block wrapper */
 DECL|struct|bulk_cb_wrap
