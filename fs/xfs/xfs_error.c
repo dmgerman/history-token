@@ -253,7 +253,7 @@ id|fsidp
 comma
 r_sizeof
 (paren
-id|fsid_t
+id|xfs_fsid_t
 )paren
 )paren
 suffix:semicolon
@@ -350,7 +350,7 @@ id|mp-&gt;m_fixedfsid
 comma
 r_sizeof
 (paren
-id|fsid_t
+id|xfs_fsid_t
 )paren
 )paren
 suffix:semicolon
@@ -532,7 +532,7 @@ id|mp-&gt;m_fixedfsid
 comma
 r_sizeof
 (paren
-id|fsid_t
+id|xfs_fsid_t
 )paren
 )paren
 suffix:semicolon
@@ -806,7 +806,7 @@ id|mp-&gt;m_fixedfsid
 comma
 r_sizeof
 (paren
-id|fsid_t
+id|xfs_fsid_t
 )paren
 )paren
 suffix:semicolon
@@ -1046,20 +1046,6 @@ id|va_end
 c_func
 (paren
 id|ap
-)paren
-suffix:semicolon
-)brace
-r_void
-DECL|function|xfs_stack_trace
-id|xfs_stack_trace
-c_func
-(paren
-r_void
-)paren
-(brace
-id|dump_stack
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

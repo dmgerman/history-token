@@ -3,14 +3,6 @@ macro_line|#ifndef __XFS_DIR_H__
 DECL|macro|__XFS_DIR_H__
 mdefine_line|#define&t;__XFS_DIR_H__
 multiline_comment|/*&n; * Large directories are structured around Btrees where all the data&n; * elements are in the leaf nodes.  Filenames are hashed into an int,&n; * then that int is used as the index into the Btree.  Since the hashval&n; * of a filename may not be unique, we may have duplicate keys.  The&n; * internal links in the Btree are logical block offsets into the file.&n; *&n; * Small directories use a different format and are packed as tightly&n; * as possible so as to fit into the literal area of the inode.&n; */
-macro_line|#ifdef XFS_ALL_TRACE
-DECL|macro|XFS_DIR_TRACE
-mdefine_line|#define&t;XFS_DIR_TRACE
-macro_line|#endif
-macro_line|#if !defined(DEBUG)
-DECL|macro|XFS_DIR_TRACE
-macro_line|#undef XFS_DIR_TRACE
-macro_line|#endif
 multiline_comment|/*========================================================================&n; * Function prototypes for the kernel.&n; *========================================================================*/
 r_struct
 id|uio

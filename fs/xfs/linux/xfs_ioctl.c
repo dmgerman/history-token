@@ -4012,6 +4012,8 @@ id|bulkstat_one_pf
 )paren
 id|xfs_bulkstat_one
 comma
+l_int|NULL
+comma
 r_sizeof
 (paren
 id|xfs_bstat_t

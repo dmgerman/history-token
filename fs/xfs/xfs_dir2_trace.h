@@ -3,6 +3,7 @@ macro_line|#ifndef __XFS_DIR2_TRACE_H__
 DECL|macro|__XFS_DIR2_TRACE_H__
 mdefine_line|#define __XFS_DIR2_TRACE_H__
 multiline_comment|/*&n; * Tracing for xfs v2 directories.&n; */
+macro_line|#if defined(XFS_DIR2_TRACE)
 r_struct
 id|ktrace
 suffix:semicolon
@@ -12,18 +13,16 @@ suffix:semicolon
 r_struct
 id|xfs_da_args
 suffix:semicolon
-macro_line|#ifdef XFS_ALL_TRACE
-DECL|macro|XFS_DIR2_TRACE
-mdefine_line|#define XFS_DIR2_TRACE
-macro_line|#endif&t;/* XFS_ALL_TRACE */
-macro_line|#if !defined(DEBUG)
-DECL|macro|XFS_DIR2_TRACE
-macro_line|#undef XFS_DIR2_TRACE
-macro_line|#endif&t;/* !DEBUG */
 DECL|macro|XFS_DIR2_GTRACE_SIZE
 mdefine_line|#define&t;XFS_DIR2_GTRACE_SIZE&t;&t;4096&t;/* global buffer */
 DECL|macro|XFS_DIR2_KTRACE_SIZE
 mdefine_line|#define&t;XFS_DIR2_KTRACE_SIZE&t;&t;32&t;/* per-inode buffer */
+r_extern
+r_struct
+id|ktrace
+op_star
+id|xfs_dir2_trace_buf
+suffix:semicolon
 DECL|macro|XFS_DIR2_KTRACE_ARGS
 mdefine_line|#define&t;XFS_DIR2_KTRACE_ARGS&t;&t;1&t;/* args only */
 DECL|macro|XFS_DIR2_KTRACE_ARGS_B
@@ -40,7 +39,6 @@ DECL|macro|XFS_DIR2_KTRACE_ARGS_SB
 mdefine_line|#define&t;XFS_DIR2_KTRACE_ARGS_SB&t;&t;7&t;/* args, int, buffer */
 DECL|macro|XFS_DIR2_KTRACE_ARGS_BIBII
 mdefine_line|#define&t;XFS_DIR2_KTRACE_ARGS_BIBII&t;8&t;/* args, buf/int/buf/int/int */
-macro_line|#ifdef XFS_DIR2_TRACE
 r_void
 id|xfs_dir2_trace_args
 c_func
@@ -227,11 +225,5 @@ mdefine_line|#define&t;xfs_dir2_trace_args_s(where, args, s)
 DECL|macro|xfs_dir2_trace_args_sb
 mdefine_line|#define&t;xfs_dir2_trace_args_sb(where, args, s, bp)
 macro_line|#endif&t;/* XFS_DIR2_TRACE */
-r_extern
-r_struct
-id|ktrace
-op_star
-id|xfs_dir2_trace_buf
-suffix:semicolon
 macro_line|#endif&t;/* __XFS_DIR2_TRACE_H__ */
 eof
