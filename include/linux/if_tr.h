@@ -68,6 +68,34 @@ suffix:semicolon
 multiline_comment|/* routing registers */
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/skbuff.h&gt;
+DECL|function|tr_hdr
+r_static
+r_inline
+r_struct
+id|trh_hdr
+op_star
+id|tr_hdr
+c_func
+(paren
+r_const
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|trh_hdr
+op_star
+)paren
+id|skb-&gt;mac.raw
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* This is an Token-Ring LLC structure */
 DECL|struct|trllc
 r_struct

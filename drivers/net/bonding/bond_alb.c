@@ -4699,12 +4699,11 @@ id|skb-&gt;data
 suffix:semicolon
 id|eth_data
 op_assign
+id|eth_hdr
+c_func
 (paren
-r_struct
-id|ethhdr
-op_star
+id|skb
 )paren
-id|skb-&gt;data
 suffix:semicolon
 multiline_comment|/* make sure that the curr_active_slave and the slaves list do&n;&t; * not change during tx&n;&t; */
 id|read_lock
