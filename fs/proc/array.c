@@ -324,7 +324,7 @@ op_star
 l_int|100
 op_div
 (paren
-l_int|1000000000
+l_int|1020000000
 op_div
 l_int|1024
 )paren
