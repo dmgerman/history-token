@@ -3,6 +3,7 @@ DECL|macro|__SOUND_AC97_CODEC_H
 mdefine_line|#define __SOUND_AC97_CODEC_H
 multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *  Universal interface for Audio Codec &squot;97&n; *&n; *  For more details look to AC &squot;97 component specification revision 2.1&n; *  by Intel Corporation (http://developer.intel.com).&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &quot;pcm.h&quot;
 macro_line|#include &quot;control.h&quot;
 macro_line|#include &quot;info.h&quot;
 multiline_comment|/*&n; *  AC&squot;97 codec registers&n; */
@@ -194,6 +195,13 @@ DECL|macro|AC97_BC_20BIT_ADC
 mdefine_line|#define AC97_BC_20BIT_ADC&t;0x0200&t;/* 20-bit ADC resolution */
 DECL|macro|AC97_BC_ADC_MASK
 mdefine_line|#define AC97_BC_ADC_MASK&t;0x0300
+multiline_comment|/* general purpose */
+DECL|macro|AC97_GP_DRSS_MASK
+mdefine_line|#define AC97_GP_DRSS_MASK&t;0x0c00&t;/* double rate slot select */
+DECL|macro|AC97_GP_DRSS_1011
+mdefine_line|#define AC97_GP_DRSS_1011&t;0x0000&t;/* LR(C) 10+11(+12) */
+DECL|macro|AC97_GP_DRSS_78
+mdefine_line|#define AC97_GP_DRSS_78&t;&t;0x0400&t;/* LR 7+8 */
 multiline_comment|/* extended audio ID bit defines */
 DECL|macro|AC97_EI_VRA
 mdefine_line|#define AC97_EI_VRA&t;&t;0x0001&t;/* Variable bit rate supported */
@@ -581,6 +589,8 @@ DECL|macro|AC97_CX_SPDIF
 mdefine_line|#define AC97_CX_SPDIF&t;&t;(1&lt;&lt;3)&t;/* Conexant&squot;s spdif interface */
 DECL|macro|AC97_STEREO_MUTES
 mdefine_line|#define AC97_STEREO_MUTES&t;(1&lt;&lt;4)&t;/* has stereo mute bits */
+DECL|macro|AC97_DOUBLE_RATE
+mdefine_line|#define AC97_DOUBLE_RATE&t;(1&lt;&lt;5)&t;/* supports double rate playback */
 multiline_comment|/* rates indexes */
 DECL|macro|AC97_RATES_FRONT_DAC
 mdefine_line|#define AC97_RATES_FRONT_DAC&t;0
@@ -952,6 +962,12 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* bridge doesn&squot;t support VRA */
+DECL|member|dra
+id|dra
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* bridge supports double rate */
 DECL|member|isdin
 id|isdin
 suffix:colon
@@ -1715,6 +1731,15 @@ r_struct
 id|ac97_pcm
 op_star
 id|pcm
+)paren
+suffix:semicolon
+r_int
+id|snd_ac97_pcm_double_rate_rules
+c_func
+(paren
+id|snd_pcm_runtime_t
+op_star
+id|runtime
 )paren
 suffix:semicolon
 macro_line|#endif /* __SOUND_AC97_CODEC_H */
