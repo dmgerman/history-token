@@ -7067,7 +7067,7 @@ op_assign
 id|cyber2000_grphr
 c_func
 (paren
-id|MCLK_MULT
+id|EXT_MCLK_MULT
 comma
 id|cfb
 )paren
@@ -7077,7 +7077,7 @@ op_assign
 id|cyber2000_grphr
 c_func
 (paren
-id|MCLK_DIV
+id|EXT_MCLK_DIV
 comma
 id|cfb
 )paren
