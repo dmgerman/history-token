@@ -1986,7 +1986,7 @@ op_assign
 id|TICK_NSEC
 suffix:semicolon
 multiline_comment|/* ACTHZ period (nsec) */
-multiline_comment|/* &n; * The current time &n; * wall_to_monotonic is what we need to add to xtime (or xtime corrected &n; * for sub jiffie times) to get to monotonic time.  Monotonic is pegged at zero&n; * at zero at system boot time, so wall_to_monotonic will be negative,&n; * however, we will ALWAYS keep the tv_nsec part positive so we can use&n; * the usual normalization.&n; */
+multiline_comment|/* &n; * The current time &n; * wall_to_monotonic is what we need to add to xtime (or xtime corrected &n; * for sub jiffie times) to get to monotonic time.  Monotonic is pegged&n; * at zero at system boot time, so wall_to_monotonic will be negative,&n; * however, we will ALWAYS keep the tv_nsec part positive so we can use&n; * the usual normalization.&n; */
 DECL|variable|xtime
 r_struct
 id|timespec
