@@ -4430,32 +4430,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-DECL|function|irlan_mod_inc_use_count
-r_void
-id|irlan_mod_inc_use_count
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
-)brace
-DECL|function|irlan_mod_dec_use_count
-r_void
-id|irlan_mod_dec_use_count
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
-)brace
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irmod.h&gt;
@@ -80,6 +81,12 @@ suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
 id|irlan_eth_set_multicast_list
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|ether_setup
 c_func
@@ -239,11 +246,6 @@ comma
 id|self-&gt;daddr
 )paren
 suffix:semicolon
-id|irlan_mod_inc_use_count
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Make sure we have a hardware address before we return, so DHCP clients gets happy */
 id|interruptible_sleep_on
 c_func
@@ -300,11 +302,6 @@ id|netif_stop_queue
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|irlan_mod_dec_use_count
-c_func
-(paren
 )paren
 suffix:semicolon
 id|irlan_close_data_channel
