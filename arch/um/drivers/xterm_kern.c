@@ -143,7 +143,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;xterm_fd - failed to allocate semaphore&bslash;n&quot;
+l_string|&quot;xterm_fd : failed to allocate xterm_wait&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -160,8 +160,9 @@ r_struct
 id|xterm_wait
 )paren
 (brace
+dot
 id|sem
-suffix:colon
+op_assign
 id|__SEMAPHORE_INITIALIZER
 c_func
 (paren
@@ -170,17 +171,20 @@ comma
 l_int|0
 )paren
 comma
+dot
 id|fd
-suffix:colon
+op_assign
 id|socket
 comma
+dot
 id|pid
-suffix:colon
+op_assign
 op_minus
 l_int|1
 comma
+dot
 id|new_fd
-suffix:colon
+op_assign
 op_minus
 l_int|1
 )brace
@@ -220,7 +224,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Failed to get IRQ for xterm, err = %d&bslash;n&quot;
+l_string|&quot;xterm_fd : failed to get IRQ for xterm, &quot;
+l_string|&quot;err = %d&bslash;n&quot;
 comma
 id|err
 )paren
