@@ -1306,7 +1306,7 @@ c_func
 (paren
 id|TRACE_MEMORY
 comma
-l_string|&quot;private_data(%d)&bslash;n&quot;
+l_string|&quot;private_data(%Zd)&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -4911,7 +4911,7 @@ c_func
 (paren
 id|TRACE_READ
 comma
-l_string|&quot;video_read(0x%p, %p, %d) called.&bslash;n&quot;
+l_string|&quot;video_read(0x%p, %p, %Zd) called.&bslash;n&quot;
 comma
 id|vdev
 comma
