@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* wake_up() */
 macro_line|#include &lt;asm/semaphore.h&gt;&t;&t;/* struct semaphore */
 macro_line|#include &lt;linux/rwsem.h&gt;&t;&t;/* struct rw_semaphore */
 macro_line|#include &lt;linux/workqueue.h&gt;&t;&t;/* struct workqueue_struct */
+macro_line|#include &lt;linux/pm.h&gt;&t;&t;&t;/* pm_message_t */
 multiline_comment|/* Typedef&squot;s */
 DECL|typedef|snd_timestamp_t
 r_typedef
