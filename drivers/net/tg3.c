@@ -767,9 +767,11 @@ comma
 id|tg3_pci_tbl
 )paren
 suffix:semicolon
+r_static
 r_struct
 (brace
 DECL|member|string
+r_const
 r_char
 id|string
 (braket
@@ -22749,6 +22751,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tg3TsoFwRodata
+r_static
 id|u32
 id|tg3TsoFwRodata
 (braket
@@ -22808,6 +22811,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tg3TsoFwData
+r_static
 id|u32
 id|tg3TsoFwData
 (braket
@@ -24755,6 +24759,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tg3Tso5FwRodata
+r_static
 id|u32
 id|tg3Tso5FwRodata
 (braket
@@ -24813,6 +24818,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tg3Tso5FwData
+r_static
 id|u32
 id|tg3Tso5FwData
 (braket
