@@ -1,17 +1,17 @@
 multiline_comment|/*&n; * sgiseeq.c: Seeq8003 ethernet driver for SGI machines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -41,7 +41,7 @@ id|sgiseeqstr
 op_assign
 l_string|&quot;SGI Seeq8003&quot;
 suffix:semicolon
-multiline_comment|/* If you want speed, you do something silly, it always has worked&n; * for me.  So, with that in mind, I&squot;ve decided to make this driver&n; * look completely like a stupid Lance from a driver architecture&n; * perspective.  Only difference is that here our &quot;ring buffer&quot; looks&n; * and acts like a real Lance one does but is layed out like how the&n; * HPC DMA and the Seeq want it to.  You&squot;d be surprised how a stupid&n; * idea like this can pay off in performance, not to mention making&n; * this driver 2,000 times easier to write. ;-)&n; */
+multiline_comment|/*&n; * If you want speed, you do something silly, it always has worked for me.  So,&n; * with that in mind, I&squot;ve decided to make this driver look completely like a&n; * stupid Lance from a driver architecture perspective.  Only difference is that&n; * here our &quot;ring buffer&quot; looks and acts like a real Lance one does but is&n; * layed out like how the HPC DMA and the Seeq want it to.  You&squot;d be surprised&n; * how a stupid idea like this can pay off in performance, not to mention&n; * making this driver 2,000 times easier to write. ;-)&n; */
 multiline_comment|/* Tune these if we tend to run out often etc. */
 DECL|macro|SEEQ_RX_BUFFERS
 mdefine_line|#define SEEQ_RX_BUFFERS  16
@@ -93,7 +93,7 @@ id|buf_vaddr
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Warning: This structure is layed out in a certain way because&n; *          HPC dma descriptors must be 8-byte aligned.  So don&squot;t&n; *          touch this without some care.&n; */
+multiline_comment|/*&n; * Warning: This structure is layed out in a certain way because HPC dma&n; *          descriptors must be 8-byte aligned.  So don&squot;t touch this without&n; *          some care.&n; */
 DECL|struct|sgiseeq_init_block
 r_struct
 id|sgiseeq_init_block
@@ -208,6 +208,10 @@ id|net_device
 op_star
 id|next_module
 suffix:semicolon
+DECL|member|tx_lock
+id|spinlock_t
+id|tx_lock
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* A list of all installed seeq devices, for removing the driver module. */
@@ -233,11 +237,9 @@ id|hregs
 (brace
 id|hregs-&gt;rx_reset
 op_assign
-(paren
 id|HPC3_ERXRST_CRESET
 op_or
 id|HPC3_ERXRST_CLRIRQ
-)paren
 suffix:semicolon
 id|udelay
 c_func
@@ -511,7 +513,7 @@ id|i
 dot
 id|tdma.pbuf
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 id|buffer
@@ -525,9 +527,7 @@ id|i
 dot
 id|tdma.cntinfo
 op_assign
-(paren
 id|TCNTINFO_INIT
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* And now the rx ring. */
@@ -606,7 +606,7 @@ id|i
 dot
 id|rdma.pbuf
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 id|buffer
@@ -620,9 +620,7 @@ id|i
 dot
 id|rdma.cntinfo
 op_assign
-(paren
 id|RCNTINFO_INIT
-)paren
 suffix:semicolon
 )brace
 id|ib-&gt;rx_desc
@@ -634,9 +632,7 @@ l_int|1
 dot
 id|rdma.cntinfo
 op_or_assign
-(paren
 id|HPCDMA_EOR
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -698,10 +694,8 @@ c_cond
 (paren
 id|once
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|once
 op_increment
 suffix:semicolon
@@ -1010,9 +1004,7 @@ id|sp-&gt;is_edlc
 (brace
 id|sregs-&gt;tstat
 op_assign
-(paren
 id|TSTAT_INIT_EDLC
-)paren
 suffix:semicolon
 id|sregs-&gt;rw.wregs.control
 op_assign
@@ -1027,9 +1019,7 @@ r_else
 (brace
 id|sregs-&gt;tstat
 op_assign
-(paren
 id|TSTAT_INIT_SEEQ
-)paren
 suffix:semicolon
 )brace
 id|hregs-&gt;rx_dconfig
@@ -1038,26 +1028,18 @@ id|RDMACFG_INIT
 suffix:semicolon
 id|hregs-&gt;rx_ndptr
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
-op_amp
 id|sp-&gt;srings.rx_desc
-(braket
-l_int|0
-)braket
 )paren
 suffix:semicolon
 id|hregs-&gt;tx_ndptr
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
-op_amp
 id|sp-&gt;srings.tx_desc
-(braket
-l_int|0
-)braket
 )paren
 suffix:semicolon
 id|seeq_go
@@ -1172,14 +1154,12 @@ id|HPC3_ERXCTRL_ACTIVE
 (brace
 id|hregs-&gt;rx_ndptr
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
-op_amp
 id|sp-&gt;srings.rx_desc
-(braket
+op_plus
 id|sp-&gt;rx_new
-)braket
 )paren
 suffix:semicolon
 id|seeq_go
@@ -1273,7 +1253,6 @@ id|sp
 (brace
 id|len
 op_assign
-(paren
 id|PKT_BUF_SZ
 op_minus
 (paren
@@ -1283,7 +1262,6 @@ id|HPCDMA_BCNT
 )paren
 op_minus
 l_int|3
-)paren
 suffix:semicolon
 id|pkt_pointer
 op_assign
@@ -1423,9 +1401,7 @@ suffix:semicolon
 multiline_comment|/* Return the entry to the ring pool. */
 id|rd-&gt;rdma.cntinfo
 op_assign
-(paren
 id|RCNTINFO_INIT
-)paren
 suffix:semicolon
 id|sp-&gt;rx_new
 op_assign
@@ -1575,7 +1551,7 @@ id|HPCDMA_XIU
 (brace
 id|hregs-&gt;tx_ndptr
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 id|td
@@ -1753,7 +1729,7 @@ id|HPC3_ETXCTRL_ACTIVE
 (brace
 id|hregs-&gt;tx_ndptr
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 id|td
@@ -1845,6 +1821,13 @@ id|sregs
 op_assign
 id|sp-&gt;sregs
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|sp-&gt;tx_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Ack the IRQ and set software state. */
 id|hregs-&gt;rx_reset
 op_assign
@@ -1910,6 +1893,13 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sp-&gt;tx_lock
+)paren
+suffix:semicolon
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
@@ -2148,9 +2138,12 @@ id|len
 comma
 id|entry
 suffix:semicolon
-id|local_irq_save
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|sp-&gt;tx_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2242,7 +2235,6 @@ op_amp
 id|HPCDMA_BCNT
 )paren
 op_or
-(paren
 id|HPCDMA_XIU
 op_or
 id|HPCDMA_EOXP
@@ -2250,7 +2242,6 @@ op_or
 id|HPCDMA_XIE
 op_or
 id|HPCDMA_EOX
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2280,9 +2271,7 @@ suffix:semicolon
 id|backend-&gt;tdma.cntinfo
 op_and_assign
 op_complement
-(paren
 id|HPCDMA_EOX
-)paren
 suffix:semicolon
 )brace
 id|sp-&gt;tx_new
@@ -2343,9 +2332,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|local_irq_restore
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|sp-&gt;tx_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2470,16 +2462,14 @@ id|i
 dot
 id|tdma.pnext
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
-op_amp
 id|buf
-(braket
+op_plus
 id|i
 op_plus
 l_int|1
-)braket
 )paren
 suffix:semicolon
 id|buf
@@ -2502,14 +2492,10 @@ id|i
 dot
 id|tdma.pnext
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
-op_amp
 id|buf
-(braket
-l_int|0
-)braket
 )paren
 suffix:semicolon
 )brace
@@ -2553,16 +2539,14 @@ id|i
 dot
 id|rdma.pnext
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
-op_amp
 id|buf
-(braket
+op_plus
 id|i
 op_plus
 l_int|1
-)braket
 )paren
 suffix:semicolon
 id|buf
@@ -2594,14 +2578,10 @@ id|i
 dot
 id|rdma.pnext
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
-op_amp
 id|buf
-(braket
-l_int|0
-)braket
 )paren
 suffix:semicolon
 )brace
@@ -2633,13 +2613,41 @@ id|sp
 suffix:semicolon
 r_int
 id|err
+comma
+id|i
+suffix:semicolon
+id|dev
+op_assign
+id|alloc_etherdev
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Sgiseeq: Etherdev alloc failed, aborting.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|err
 op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
-r_int
-id|i
+r_goto
+id|err_out
 suffix:semicolon
+)brace
+multiline_comment|/* Make private data page aligned */
 id|sp
 op_assign
 (paren
@@ -2661,39 +2669,19 @@ id|sp
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Seeq8003: Could not allocate private data.&bslash;n&quot;
+l_string|&quot;Sgiseeq: Page alloc failed, aborting.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
-id|dev
-op_assign
-id|alloc_etherdev
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev
-)paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;Seeq8003: Could not allocate memory for device.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_goto
-id|out
+id|err_out_free_dev
 suffix:semicolon
 )brace
 r_if
@@ -2720,7 +2708,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;Seeq8003: Can&squot;t get irq %d&bslash;n&quot;
 comma
-id|irq
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 id|err
@@ -2729,18 +2717,9 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 r_goto
-id|out1
+id|err_out_free_page
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: SGI Seeq8003 &quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
 DECL|macro|EADDR_NVOFS
 mdefine_line|#define EADDR_NVOFS     250
 r_for
@@ -2772,11 +2751,6 @@ op_plus
 id|i
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%2.2x:%2.2x%c&quot;
-comma
 id|dev-&gt;dev_addr
 (braket
 l_int|2
@@ -2787,7 +2761,7 @@ op_assign
 id|tmp
 op_rshift
 l_int|8
-comma
+suffix:semicolon
 id|dev-&gt;dev_addr
 (braket
 l_int|2
@@ -2800,34 +2774,8 @@ op_assign
 id|tmp
 op_amp
 l_int|0xff
-comma
-id|i
-op_eq
-l_int|2
-ques
-c_cond
-l_char|&squot; &squot;
-suffix:colon
-l_char|&squot;:&squot;
-)paren
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|dev-&gt;priv
-op_assign
-id|sp
-suffix:semicolon
 macro_line|#ifdef DEBUG
 id|gpriv
 op_assign
@@ -2867,7 +2815,6 @@ r_struct
 id|sgiseeq_rx_desc
 op_star
 )paren
-(paren
 id|KSEG1ADDR
 c_func
 (paren
@@ -2879,7 +2826,6 @@ id|sp-&gt;srings.rxvector
 (braket
 l_int|0
 )braket
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -2906,7 +2852,6 @@ r_struct
 id|sgiseeq_tx_desc
 op_star
 )paren
-(paren
 id|KSEG1ADDR
 c_func
 (paren
@@ -2918,7 +2863,6 @@ id|sp-&gt;srings.txvector
 (braket
 l_int|0
 )braket
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -2981,7 +2925,6 @@ id|sp-&gt;is_edlc
 )paren
 id|sp-&gt;control
 op_assign
-(paren
 id|SEEQ_CTRL_XCNT
 op_or
 id|SEEQ_CTRL_ACCNT
@@ -2991,7 +2934,6 @@ op_or
 id|SEEQ_CTRL_ESHORT
 op_or
 id|SEEQ_CTRL_ENCARR
-)paren
 suffix:semicolon
 id|dev-&gt;open
 op_assign
@@ -3035,21 +2977,79 @@ id|dev-&gt;dma
 op_assign
 l_int|0
 suffix:semicolon
-id|err
+id|dev-&gt;priv
 op_assign
+id|sp
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|register_netdev
 c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Sgiseeq: Cannot register net device, &quot;
+l_string|&quot;aborting.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
-id|out2
+id|err_out_free_irq
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: SGI Seeq8003 &quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|6
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%2.2x%c&quot;
+comma
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+comma
+id|i
+op_eq
+l_int|5
+ques
+c_cond
+l_char|&squot;&bslash;n&squot;
+suffix:colon
+l_char|&squot;:&squot;
+)paren
 suffix:semicolon
 id|sp-&gt;next_module
 op_assign
@@ -3062,25 +3062,17 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|out2
+id|err_out_free_irq
 suffix:colon
 id|free_irq
 c_func
 (paren
-id|dev-&gt;irq
+id|irq
 comma
 id|dev
 )paren
 suffix:semicolon
-id|out1
-suffix:colon
-id|free_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|out
+id|err_out_free_page
 suffix:colon
 id|free_page
 c_func
@@ -3092,6 +3084,16 @@ r_int
 id|sp
 )paren
 suffix:semicolon
+id|err_out_free_dev
+suffix:colon
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|err_out
+suffix:colon
 r_return
 id|err
 suffix:semicolon
@@ -3134,33 +3136,51 @@ r_void
 )paren
 (brace
 r_struct
-id|sgiseeq_private
-op_star
-id|sp
-suffix:semicolon
-r_struct
 id|net_device
 op_star
 id|next
 comma
 op_star
 id|dev
-op_assign
-id|root_sgiseeq_dev
 suffix:semicolon
-r_while
+r_struct
+id|sgiseeq_private
+op_star
+id|sp
+suffix:semicolon
+r_int
+id|irq
+suffix:semicolon
+r_for
 c_loop
 (paren
 id|dev
+op_assign
+id|root_sgiseeq_dev
+suffix:semicolon
+id|dev
+suffix:semicolon
+id|dev
+op_assign
+id|next
 )paren
 (brace
 id|sp
 op_assign
+(paren
+r_struct
+id|sgiseeq_private
+op_star
+)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|next
 op_assign
 id|sp-&gt;next_module
+suffix:semicolon
+id|irq
+op_assign
+id|dev-&gt;irq
 suffix:semicolon
 id|unregister_netdev
 c_func
@@ -3171,7 +3191,7 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|dev-&gt;irq
+id|irq
 comma
 id|dev
 )paren
@@ -3183,7 +3203,7 @@ c_func
 r_int
 r_int
 )paren
-id|sp
+id|dev-&gt;priv
 )paren
 suffix:semicolon
 id|free_netdev
@@ -3191,10 +3211,6 @@ c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|dev
-op_assign
-id|next
 suffix:semicolon
 )brace
 )brace
