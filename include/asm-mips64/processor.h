@@ -373,6 +373,9 @@ macro_line|#if !defined (_LANGUAGE_ASSEMBLY)
 multiline_comment|/* Free all resources held by a thread. */
 DECL|macro|release_thread
 mdefine_line|#define release_thread(thread) do { } while(0)
+multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */
+DECL|macro|prepare_to_copy
+mdefine_line|#define prepare_to_copy(tsk)&t;do { } while (0)
 r_extern
 r_int
 id|kernel_thread

@@ -826,6 +826,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|prepare_to_copy
+c_func
+(paren
+id|orig
+)paren
+suffix:semicolon
 id|tsk
 op_assign
 id|task_cache

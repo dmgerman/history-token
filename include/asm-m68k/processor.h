@@ -292,6 +292,9 @@ id|dead_task
 )paren
 (brace
 )brace
+multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */
+DECL|macro|prepare_to_copy
+mdefine_line|#define prepare_to_copy(tsk)&t;do { } while (0)
 r_extern
 r_int
 id|kernel_thread
