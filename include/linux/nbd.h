@@ -230,7 +230,7 @@ r_struct
 id|list_head
 id|queue_head
 suffix:semicolon
-multiline_comment|/* Requests are added here...&t;&t;&t;*/
+multiline_comment|/* Requests are added here...&t;*/
 DECL|member|tx_lock
 r_struct
 id|semaphore
@@ -241,6 +241,18 @@ r_struct
 id|gendisk
 op_star
 id|disk
+suffix:semicolon
+DECL|member|blksize
+r_int
+id|blksize
+suffix:semicolon
+DECL|member|blksize_bits
+r_int
+id|blksize_bits
+suffix:semicolon
+DECL|member|bytesize
+id|u64
+id|bytesize
 suffix:semicolon
 )brace
 suffix:semicolon
