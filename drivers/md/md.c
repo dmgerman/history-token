@@ -6068,11 +6068,8 @@ suffix:semicolon
 r_int
 id|unit
 op_assign
-id|MINOR
-c_func
-(paren
-id|dev
-)paren
+op_star
+id|part
 suffix:semicolon
 id|mddev_t
 op_star
@@ -7912,16 +7909,12 @@ op_increment
 id|mdp_disk_t
 op_star
 id|desc
-suffix:semicolon
-id|dev_t
-id|dev
-suffix:semicolon
-id|desc
 op_assign
 id|sb-&gt;disks
 op_plus
 id|i
 suffix:semicolon
+id|dev_t
 id|dev
 op_assign
 id|MKDEV
@@ -8470,8 +8463,6 @@ op_star
 id|rdev
 suffix:semicolon
 id|dev_t
-id|dev
-suffix:semicolon
 id|dev
 op_assign
 id|MKDEV
@@ -9073,11 +9064,8 @@ op_logical_neg
 id|rdev
 )paren
 (brace
-id|MD_BUG
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* MD_BUG(); */
+multiline_comment|/* like hell - it&squot;s not a driver bug */
 r_return
 op_minus
 id|ENXIO
@@ -10042,7 +10030,11 @@ op_assign
 id|autostart_array
 c_func
 (paren
+id|old_decode_dev
+c_func
+(paren
 id|arg
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -10593,7 +10585,11 @@ c_func
 (paren
 id|mddev
 comma
+id|old_decode_dev
+c_func
+(paren
 id|arg
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -10609,7 +10605,11 @@ c_func
 (paren
 id|mddev
 comma
+id|old_decode_dev
+c_func
+(paren
 id|arg
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -10625,7 +10625,11 @@ c_func
 (paren
 id|mddev
 comma
+id|old_decode_dev
+c_func
+(paren
 id|arg
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -10641,7 +10645,11 @@ c_func
 (paren
 id|mddev
 comma
+id|old_decode_dev
+c_func
+(paren
 id|arg
+)paren
 )paren
 suffix:semicolon
 r_goto
