@@ -3205,8 +3205,6 @@ r_int
 id|pos
 comma
 id|temp
-op_assign
-id|dev-&gt;irq
 comma
 id|status
 op_assign
@@ -3227,6 +3225,10 @@ id|dev
 )paren
 r_return
 id|status
+suffix:semicolon
+id|temp
+op_assign
+id|dev-&gt;irq
 suffix:semicolon
 r_if
 c_cond

@@ -1,15 +1,7 @@
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;pci.h&quot;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|DBG
-mdefine_line|#define DBG(x...) printk(x)
-macro_line|#else
-DECL|macro|DBG
-mdefine_line|#define DBG(x...)
-macro_line|#endif
 DECL|function|pci_hotplug
 r_int
 id|pci_hotplug
@@ -345,10 +337,16 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
-l_string|&quot;scanning bus %02x&bslash;n&quot;
+l_string|&quot;PCI: Scanning bus %04x:%02x&bslash;n&quot;
+comma
+id|pci_domain_nr
+c_func
+(paren
+id|wrapped_bus-&gt;bus
+)paren
 comma
 id|wrapped_bus-&gt;bus-&gt;number
 )paren
@@ -502,21 +500,15 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
-l_string|&quot;scanning bridge %02x, %02x&bslash;n&quot;
+l_string|&quot;PCI: Scanning bridge %s&bslash;n&quot;
 comma
-id|PCI_SLOT
+id|pci_name
 c_func
 (paren
-id|wrapped_dev-&gt;dev-&gt;devfn
-)paren
-comma
-id|PCI_FUNC
-c_func
-(paren
-id|wrapped_dev-&gt;dev-&gt;devfn
+id|wrapped_dev-&gt;dev
 )paren
 )paren
 suffix:semicolon
@@ -706,21 +698,15 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DBG
+id|pr_debug
 c_func
 (paren
-l_string|&quot;scanning device %02x, %02x&bslash;n&quot;
+l_string|&quot;PCI: Scanning device %s&bslash;n&quot;
 comma
-id|PCI_SLOT
+id|pci_name
 c_func
 (paren
-id|dev-&gt;devfn
-)paren
-comma
-id|PCI_FUNC
-c_func
-(paren
-id|dev-&gt;devfn
+id|dev
 )paren
 )paren
 suffix:semicolon

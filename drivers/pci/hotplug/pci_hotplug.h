@@ -430,7 +430,7 @@ id|cur_bus_speed
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * struct hotplug_slot - used to register a physical slot with the hotplug pci core&n; * @name: the name of the slot being registered.  This string must&n; * be unique amoung slots registered on this system.&n; * @ops: pointer to the &amp;struct hotplug_slot_ops to be used for this slot&n; * @info: pointer to the &amp;struct hotplug_slot_info for the inital values for&n; * this slot.&n; * @private: used by the hotplug pci controller driver to store whatever it&n; * needs.&n; */
+multiline_comment|/**&n; * struct hotplug_slot - used to register a physical slot with the hotplug pci core&n; * @name: the name of the slot being registered.  This string must&n; * be unique amoung slots registered on this system.&n; * @ops: pointer to the &amp;struct hotplug_slot_ops to be used for this slot&n; * @info: pointer to the &amp;struct hotplug_slot_info for the inital values for&n; * this slot.&n; * @release: called during pci_hp_deregister to free memory allocated in a&n; * hotplug_slot structure.&n; * @private: used by the hotplug pci controller driver to store whatever it&n; * needs.&n; */
 DECL|struct|hotplug_slot
 r_struct
 id|hotplug_slot

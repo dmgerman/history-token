@@ -9,15 +9,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;pci.h&quot;
-DECL|macro|DEBUG_CONFIG
-mdefine_line|#define DEBUG_CONFIG 0
-macro_line|#if DEBUG_CONFIG
-DECL|macro|DBGC
-macro_line|# define DBGC(args)     printk args
-macro_line|#else
-DECL|macro|DBGC
-macro_line|# define DBGC(args)
-macro_line|#endif
 r_static
 r_void
 DECL|function|pci_update_resource
@@ -63,11 +54,9 @@ comma
 id|res
 )paren
 suffix:semicolon
-id|DBGC
+id|pr_debug
 c_func
 (paren
-(paren
-id|KERN_ERR
 l_string|&quot;  got res [%lx:%lx] bus [%lx:%lx] flags %lx for &quot;
 l_string|&quot;BAR %d of %s&bslash;n&quot;
 comma
@@ -87,7 +76,6 @@ id|pci_name
 c_func
 (paren
 id|dev
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -163,11 +151,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Hmm, non-standard resource. */
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 multiline_comment|/* kill uninitialised var warning */
@@ -311,11 +294,9 @@ op_and_assign
 op_complement
 id|IORESOURCE_UNSET
 suffix:semicolon
-id|DBGC
+id|pr_debug
 c_func
 (paren
-(paren
-id|KERN_INFO
 l_string|&quot;PCI: moved device %s resource %d (%lx) to %x&bslash;n&quot;
 comma
 id|pci_name
@@ -332,7 +313,6 @@ r_new
 op_amp
 op_complement
 id|PCI_REGION_FLAG_MASK
-)paren
 )paren
 suffix:semicolon
 )brace

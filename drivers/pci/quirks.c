@@ -5,8 +5,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
 multiline_comment|/* Deal with broken BIOS&squot;es that neglect to enable passive release,&n;   which can cause problems in combination with the 82441FX/PPro MTRRs */
 DECL|function|quirk_passive_release
 r_static
@@ -2737,7 +2735,7 @@ multiline_comment|/*&n; *&t;Serverworks CSB5 IDE does not fully support native m
 DECL|function|quirk_svwks_csb5ide
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_svwks_csb5ide
 c_func
 (paren
@@ -3108,6 +3106,10 @@ r_case
 l_int|0x1751
 suffix:colon
 multiline_comment|/* M2N notebook */
+r_case
+l_int|0x1821
+suffix:colon
+multiline_comment|/* M5N notebook */
 id|asus_hides_smbus
 op_assign
 l_int|1

@@ -76,7 +76,7 @@ id|PCI_ROM_RESOURCE
 (brace
 id|res-&gt;flags
 op_or_assign
-id|PCI_ROM_ADDRESS_ENABLE
+id|IORESOURCE_ROM_ENABLE
 suffix:semicolon
 r_new
 op_or_assign
@@ -611,7 +611,7 @@ c_cond
 (paren
 id|r-&gt;flags
 op_amp
-id|PCI_ROM_ADDRESS_ENABLE
+id|IORESOURCE_ROM_ENABLE
 )paren
 (brace
 multiline_comment|/* Turn the ROM off, leave the resource region, but keep it unregistered. */
@@ -633,7 +633,7 @@ suffix:semicolon
 id|r-&gt;flags
 op_and_assign
 op_complement
-id|PCI_ROM_ADDRESS_ENABLE
+id|IORESOURCE_ROM_ENABLE
 suffix:semicolon
 id|pci_read_config_dword
 c_func

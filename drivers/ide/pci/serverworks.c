@@ -1753,7 +1753,7 @@ DECL|function|init_chipset_svwks
 r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|init_chipset_svwks
 (paren
 r_struct
@@ -2428,7 +2428,7 @@ macro_line|#undef CAN_SW_DMA
 DECL|function|init_hwif_svwks
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_hwif_svwks
 (paren
 id|ide_hwif_t
@@ -2642,7 +2642,7 @@ multiline_comment|/*&n; * We allow the BM-DMA driver to only work on enabled int
 DECL|function|init_dma_svwks
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_dma_svwks
 (paren
 id|ide_hwif_t
@@ -2711,7 +2711,7 @@ suffix:semicolon
 DECL|function|init_setup_svwks
 r_static
 r_int
-id|__init
+id|__devinit
 id|init_setup_svwks
 (paren
 r_struct

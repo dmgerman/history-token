@@ -11,11 +11,11 @@ macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|DEBUG_CONFIG
 mdefine_line|#define DEBUG_CONFIG 1
 macro_line|#if DEBUG_CONFIG
-DECL|macro|DBGC
-macro_line|# define DBGC(args)     printk args
+DECL|macro|DBG
+mdefine_line|#define DBG(x...)     printk(x)
 macro_line|#else
-DECL|macro|DBGC
-macro_line|# define DBGC(args)
+DECL|macro|DBG
+mdefine_line|#define DBG(x...)
 macro_line|#endif
 DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP(x, a)&t;&t;(((x) + (a) - 1) &amp; ~((a) - 1))
@@ -479,20 +479,16 @@ id|l
 comma
 id|io_upper16
 suffix:semicolon
-id|DBGC
+id|DBG
 c_func
 (paren
-(paren
 id|KERN_INFO
-l_string|&quot;PCI: Bus %d, bridge: %s&bslash;n&quot;
-comma
-id|bus-&gt;number
+l_string|&quot;PCI: Bridge: %s&bslash;n&quot;
 comma
 id|pci_name
 c_func
 (paren
 id|bridge
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -570,9 +566,8 @@ op_rshift
 l_int|16
 )paren
 suffix:semicolon
-id|DBGC
+id|DBG
 c_func
-(paren
 (paren
 id|KERN_INFO
 l_string|&quot;  IO window: %04lx-%04lx&bslash;n&quot;
@@ -580,7 +575,6 @@ comma
 id|region.start
 comma
 id|region.end
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -595,13 +589,11 @@ id|l
 op_assign
 l_int|0x00f0
 suffix:semicolon
-id|DBGC
+id|DBG
 c_func
-(paren
 (paren
 id|KERN_INFO
 l_string|&quot;  IO window: disabled.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -682,9 +674,8 @@ id|region.end
 op_amp
 l_int|0xfff00000
 suffix:semicolon
-id|DBGC
+id|DBG
 c_func
-(paren
 (paren
 id|KERN_INFO
 l_string|&quot;  MEM window: %08lx-%08lx&bslash;n&quot;
@@ -692,7 +683,6 @@ comma
 id|region.start
 comma
 id|region.end
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -702,13 +692,11 @@ id|l
 op_assign
 l_int|0x0000fff0
 suffix:semicolon
-id|DBGC
+id|DBG
 c_func
-(paren
 (paren
 id|KERN_INFO
 l_string|&quot;  MEM window: disabled.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -777,9 +765,8 @@ id|region.end
 op_amp
 l_int|0xfff00000
 suffix:semicolon
-id|DBGC
+id|DBG
 c_func
-(paren
 (paren
 id|KERN_INFO
 l_string|&quot;  PREFETCH window: %08lx-%08lx&bslash;n&quot;
@@ -787,7 +774,6 @@ comma
 id|region.start
 comma
 id|region.end
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -797,13 +783,11 @@ id|l
 op_assign
 l_int|0x0000fff0
 suffix:semicolon
-id|DBGC
+id|DBG
 c_func
-(paren
 (paren
 id|KERN_INFO
 l_string|&quot;  PREFETCH window: disabled.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 )brace
