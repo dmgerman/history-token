@@ -28,17 +28,6 @@ id|sysrq_enabled
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Machine specific power off function */
-DECL|variable|sysrq_power_off
-r_void
-(paren
-op_star
-id|sysrq_power_off
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* Loglevel sysrq handler */
 DECL|function|sysrq_handle_loglevel
 r_static
