@@ -64,8 +64,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: skb-&gt;dev == NULL!&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: skb-&gt;dev == NULL!&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -167,8 +168,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+l_string|&quot;%s: PACKET_OTHERHOST&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: PACKET_OTHERHOST&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -217,6 +219,9 @@ id|pdu-&gt;dsap
 )paren
 (brace
 multiline_comment|/* NULL DSAP, refer to station */
+r_if
+c_cond
+(paren
 id|llc_pdu_router
 c_func
 (paren
@@ -228,6 +233,9 @@ id|skb
 comma
 l_int|0
 )paren
+)paren
+r_goto
+id|drop
 suffix:semicolon
 r_goto
 id|out
@@ -267,7 +275,11 @@ id|dest
 op_eq
 id|LLC_DEST_SAP
 )paren
+(brace
 multiline_comment|/* type 1 services */
+r_if
+c_cond
+(paren
 id|llc_pdu_router
 c_func
 (paren
@@ -279,7 +291,11 @@ id|skb
 comma
 id|LLC_TYPE_1
 )paren
+)paren
+r_goto
+id|drop
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -299,6 +315,9 @@ r_struct
 id|sock
 op_star
 id|sk
+suffix:semicolon
+r_int
+id|rc
 suffix:semicolon
 id|llc_pdu_decode_sa
 c_func
@@ -422,6 +441,8 @@ id|sk-&gt;lock.users
 )paren
 (brace
 multiline_comment|/* FIXME: Check this on SMP as it is now calling&n;&t;&t;&t; * llc_pdu_router _with_ the lock held.&n;&t;&t;&t; * Old comment:&n;&t;&t;&t; * With the current code one can&squot;t call&n;&t;&t;&t; * llc_pdu_router with the socket lock held, cause&n;&t;&t;&t; * it&squot;ll route the pdu to the upper layers and it can&n;&t;&t;&t; * reenter llc and in llc_req_prim will try to grab&n;&t;&t;&t; * the same lock, maybe we should use spin_trylock_bh&n;&t;&t;&t; * in the llc_req_prim (llc_data_req_handler, etc) and&n;&t;&t;&t; * add the request to the backlog, well see...&n;&t;&t;&t; */
+id|rc
+op_assign
 id|llc_pdu_router
 c_func
 (paren
@@ -438,12 +459,6 @@ comma
 id|skb
 comma
 id|LLC_TYPE_2
-)paren
-suffix:semicolon
-id|bh_unlock_sock
-c_func
-(paren
-id|sk
 )paren
 suffix:semicolon
 )brace
@@ -464,18 +479,30 @@ comma
 id|skb
 )paren
 suffix:semicolon
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|bh_unlock_sock
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
-)brace
 id|sock_put
 c_func
 (paren
 id|sk
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_goto
+id|drop
 suffix:semicolon
 )brace
 r_else
@@ -704,6 +731,12 @@ id|stat_ev
 )paren
 suffix:semicolon
 )brace
+r_else
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -752,6 +785,12 @@ id|sap_ev
 )paren
 suffix:semicolon
 )brace
+r_else
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -823,7 +862,19 @@ id|conn_ev
 )paren
 suffix:semicolon
 )brace
+r_else
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 )brace
+r_else
+id|rc
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon

@@ -445,8 +445,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: ev-&gt;data.pdu.skb == NULL&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;ev-&gt;data.pdu.skb == NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 id|prim-&gt;data

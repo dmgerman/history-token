@@ -419,10 +419,10 @@ id|eah-&gt;pa_dst_node
 op_assign
 id|a-&gt;target_addr.s_node
 suffix:semicolon
-multiline_comment|/* Add ELAP headers and set target to the AARP multicast */
+multiline_comment|/* Send it */
 id|aarp_dl
 op_member_access_from_pointer
-id|datalink_header
+id|request
 c_func
 (paren
 id|aarp_dl
@@ -430,13 +430,6 @@ comma
 id|skb
 comma
 id|aarp_eth_multicast
-)paren
-suffix:semicolon
-multiline_comment|/* Send it */
-id|dev_queue_xmit
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Update the sending count */
@@ -652,10 +645,10 @@ id|eah-&gt;pa_dst_node
 op_assign
 id|them-&gt;s_node
 suffix:semicolon
-multiline_comment|/* Add ELAP headers and set target to the AARP multicast */
+multiline_comment|/* Send it */
 id|aarp_dl
 op_member_access_from_pointer
-id|datalink_header
+id|request
 c_func
 (paren
 id|aarp_dl
@@ -663,13 +656,6 @@ comma
 id|skb
 comma
 id|sha
-)paren
-suffix:semicolon
-multiline_comment|/* Send it */
-id|dev_queue_xmit
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 )brace
@@ -875,10 +861,10 @@ id|eah-&gt;pa_dst_node
 op_assign
 id|us-&gt;s_node
 suffix:semicolon
-multiline_comment|/* Add ELAP headers and set target to the AARP multicast */
+multiline_comment|/* Send it */
 id|aarp_dl
 op_member_access_from_pointer
-id|datalink_header
+id|request
 c_func
 (paren
 id|aarp_dl
@@ -886,13 +872,6 @@ comma
 id|skb
 comma
 id|aarp_eth_multicast
-)paren
-suffix:semicolon
-multiline_comment|/* Send it */
-id|dev_queue_xmit
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 )brace
@@ -2263,9 +2242,10 @@ op_eq
 id|ATADDR_BCAST
 )paren
 (brace
+multiline_comment|/* Send it */
 id|ddp_dl
 op_member_access_from_pointer
-id|datalink_header
+id|request
 c_func
 (paren
 id|ddp_dl
@@ -2276,7 +2256,7 @@ id|ddp_eth_multicast
 )paren
 suffix:semicolon
 r_goto
-id|sendit
+id|sent
 suffix:semicolon
 )brace
 id|spin_lock_bh
@@ -2320,7 +2300,7 @@ l_int|10
 suffix:semicolon
 id|ddp_dl
 op_member_access_from_pointer
-id|datalink_header
+id|request
 c_func
 (paren
 id|ddp_dl
@@ -2338,7 +2318,7 @@ id|aarp_lock
 )paren
 suffix:semicolon
 r_goto
-id|sendit
+id|sent
 suffix:semicolon
 )brace
 multiline_comment|/* Do we have an unresolved entry: This is the less common path */
@@ -2508,6 +2488,8 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|sent
+suffix:colon
 r_return
 l_int|1
 suffix:semicolon
@@ -2605,7 +2587,7 @@ l_int|10
 suffix:semicolon
 id|ddp_dl
 op_member_access_from_pointer
-id|datalink_header
+id|request
 c_func
 (paren
 id|ddp_dl
@@ -2613,21 +2595,6 @@ comma
 id|skb
 comma
 id|a-&gt;hwaddr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb-&gt;sk
-)paren
-id|skb-&gt;priority
-op_assign
-id|skb-&gt;sk-&gt;priority
-suffix:semicolon
-id|dev_queue_xmit
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 )brace
@@ -4095,7 +4062,7 @@ suffix:semicolon
 id|unregister_snap_client
 c_func
 (paren
-id|aarp_snap_id
+id|aarp_dl
 )paren
 suffix:semicolon
 )brace
