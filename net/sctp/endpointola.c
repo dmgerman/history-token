@@ -270,6 +270,10 @@ id|SCTP_EVENT_TIMEOUT_T2_SHUTDOWN
 )braket
 op_assign
 id|sp-&gt;rtoinfo.srto_initial
+op_star
+id|HZ
+op_div
+l_int|1000
 suffix:semicolon
 id|ep-&gt;timeouts
 (braket
@@ -286,7 +290,13 @@ id|SCTP_EVENT_TIMEOUT_T5_SHUTDOWN_GUARD
 op_assign
 l_int|5
 op_star
+(paren
 id|sp-&gt;rtoinfo.srto_max
+op_star
+id|HZ
+op_div
+l_int|1000
+)paren
 suffix:semicolon
 id|ep-&gt;timeouts
 (braket
