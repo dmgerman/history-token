@@ -781,6 +781,7 @@ id|SNDRV_CARDS
 op_assign
 id|SNDRV_DEFAULT_PTR
 suffix:semicolon
+macro_line|#ifdef CONFIG_PNP
 DECL|variable|snd_sb16_pnpids
 r_static
 r_struct
@@ -1636,6 +1637,7 @@ comma
 id|snd_sb16_pnpids
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PNP */
 macro_line|#ifdef SNDRV_SBAWE_EMU8000
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME&t;&quot;snd-card-sbawe&quot;
