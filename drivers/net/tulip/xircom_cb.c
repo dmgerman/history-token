@@ -518,14 +518,13 @@ op_star
 id|card
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|xircom_pci_table
 r_static
 r_struct
 id|pci_device_id
 id|xircom_pci_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

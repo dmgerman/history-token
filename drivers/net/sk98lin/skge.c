@@ -16202,14 +16202,13 @@ suffix:semicolon
 )brace
 multiline_comment|/* DumpLong */
 macro_line|#endif /* DEBUG */
-DECL|variable|__devinitdata
+DECL|variable|skge_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|skge_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

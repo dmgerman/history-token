@@ -305,14 +305,13 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Notes on the new subsystem numbering scheme:&n; * bits 0-1 indicate crypto capabilites: (0) variable, (1) DES, or (2) 3DES&n; * bit 4 indicates if this card has secured firmware (we don&squot;t support it)&n; * bit 8 indicates if this is a (0) copper or (1) fiber card&n; * bits 12-16 indicate card type: (0) client and (1) server&n; */
-DECL|variable|__devinitdata
+DECL|variable|typhoon_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|typhoon_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

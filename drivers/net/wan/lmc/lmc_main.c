@@ -75,14 +75,13 @@ op_assign
 l_int|1542
 suffix:semicolon
 macro_line|#ifdef MODULE
-DECL|variable|__devinitdata
+DECL|variable|lmc_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|lmc_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

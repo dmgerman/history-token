@@ -95,14 +95,13 @@ DECL|macro|GEM_MODULE_NAME
 mdefine_line|#define GEM_MODULE_NAME&t;&quot;gem&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX GEM_MODULE_NAME &quot;: &quot;
-DECL|variable|__devinitdata
+DECL|variable|gem_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|gem_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

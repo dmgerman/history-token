@@ -435,14 +435,13 @@ comma
 multiline_comment|/* EISA card */
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|tlan_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|tlan_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

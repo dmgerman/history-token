@@ -360,14 +360,13 @@ id|RTL8139_CAPS
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|rtl8139_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|rtl8139_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

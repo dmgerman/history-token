@@ -8856,14 +8856,13 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-DECL|variable|__initdata
+DECL|variable|hamachi_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|hamachi_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

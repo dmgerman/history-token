@@ -3204,14 +3204,13 @@ op_decrement
 id|e100nics
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|e100_id_table
 r_static
 r_struct
 id|pci_device_id
 id|e100_id_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -47,14 +47,13 @@ op_assign
 l_string|&quot;LanStreamer.c v0.4.0 03/08/01 - Mike Sullivan&bslash;n&quot;
 l_string|&quot;              v0.5.3 11/13/02 - Kent Yoder&quot;
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|streamer_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|streamer_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

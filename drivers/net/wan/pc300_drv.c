@@ -45,14 +45,13 @@ DECL|macro|PC300_DEBUG_RX
 macro_line|#undef&t;PC300_DEBUG_RX
 DECL|macro|PC300_DEBUG_OTHER
 macro_line|#undef&t;PC300_DEBUG_OTHER
-DECL|variable|__devinitdata
+DECL|variable|cpc_pci_dev_id
 r_static
 r_struct
 id|pci_device_id
 id|cpc_pci_dev_id
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* PC300/RSV or PC300/X21, 2 chan */

@@ -34,14 +34,13 @@ op_assign
 l_string|&quot;Copyright (c) 1999-2003 Intel Corporation.&quot;
 suffix:semicolon
 multiline_comment|/* e1000_pci_tbl - PCI Device ID Table&n; *&n; * Wildcard entries (PCI_ANY_ID) should come last&n; * Last entry must be all 0s&n; *&n; * { Vendor ID, Device ID, SubVendor ID, SubDevice ID,&n; *   Class, Class Mask, private data (not used) }&n; */
-DECL|variable|__devinitdata
+DECL|variable|e1000_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|e1000_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
