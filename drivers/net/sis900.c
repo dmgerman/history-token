@@ -561,6 +561,7 @@ comma
 l_string|&quot;SiS 900/7016 bitmapped debugging message level&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
 r_static
 r_void
 id|sis900_poll
@@ -572,6 +573,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_int
 id|sis900_open
