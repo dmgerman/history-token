@@ -236,10 +236,13 @@ comma
 DECL|enumerator|TCPDIAG_INFO
 id|TCPDIAG_INFO
 comma
+DECL|enumerator|TCPDIAG_VEGASINFO
+id|TCPDIAG_VEGASINFO
+comma
 )brace
 suffix:semicolon
 DECL|macro|TCPDIAG_MAX
-mdefine_line|#define TCPDIAG_MAX TCPDIAG_INFO
+mdefine_line|#define TCPDIAG_MAX TCPDIAG_VEGASINFO
 multiline_comment|/* TCPDIAG_MEM */
 DECL|struct|tcpdiag_meminfo
 r_struct
@@ -260,6 +263,29 @@ suffix:semicolon
 DECL|member|tcpdiag_tmem
 id|__u32
 id|tcpdiag_tmem
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* TCPDIAG_VEGASINFO */
+DECL|struct|tcpvegas_info
+r_struct
+id|tcpvegas_info
+(brace
+DECL|member|tcpv_enabled
+id|__u32
+id|tcpv_enabled
+suffix:semicolon
+DECL|member|tcpv_rttcnt
+id|__u32
+id|tcpv_rttcnt
+suffix:semicolon
+DECL|member|tcpv_rtt
+id|__u32
+id|tcpv_rtt
+suffix:semicolon
+DECL|member|tcpv_minrtt
+id|__u32
+id|tcpv_minrtt
 suffix:semicolon
 )brace
 suffix:semicolon
