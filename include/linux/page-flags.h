@@ -48,7 +48,7 @@ mdefine_line|#define PG_reclaim&t;&t;18&t;/* To be reclaimed asap */
 DECL|macro|PG_compound
 mdefine_line|#define PG_compound&t;&t;19&t;/* Part of a compound page */
 DECL|macro|PG_anon
-mdefine_line|#define PG_anon&t;&t;&t;20&t;/* Anonymous page: anonmm in mapping */
+mdefine_line|#define PG_anon&t;&t;&t;20&t;/* Anonymous: anon_vma in mapping */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; */
 DECL|struct|page_state
 r_struct

@@ -470,13 +470,6 @@ id|list_head
 id|mmlist
 suffix:semicolon
 multiline_comment|/* List of all active mm&squot;s.  These are globally strung&n;&t;&t;&t;&t;&t;&t; * together off init_mm.mmlist, and are protected&n;&t;&t;&t;&t;&t;&t; * by mmlist_lock&n;&t;&t;&t;&t;&t;&t; */
-DECL|member|anonmm
-r_struct
-id|anonmm
-op_star
-id|anonmm
-suffix:semicolon
-multiline_comment|/* For rmap to track anon mem */
 DECL|member|start_code
 DECL|member|end_code
 DECL|member|start_data

@@ -6205,14 +6205,6 @@ r_if
 c_cond
 (paren
 id|write_access
-op_logical_or
-id|mremap_moved_anon_rmap
-c_func
-(paren
-id|page
-comma
-id|address
-)paren
 )paren
 (brace
 r_if

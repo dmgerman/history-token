@@ -2277,11 +2277,6 @@ id|foundaddr
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t; * Go through process&squot; page directory.&n;&t; */
 id|down_read
 c_func
@@ -2364,29 +2359,6 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|foundaddr
-op_logical_and
-id|mremap_moved_anon_rmap
-c_func
-(paren
-id|page
-comma
-id|foundaddr
-)paren
-)paren
-id|ret
-op_assign
-id|make_page_exclusive
-c_func
-(paren
-id|vma
-comma
-id|foundaddr
-)paren
-suffix:semicolon
 id|up_read
 c_func
 (paren
@@ -2394,8 +2366,9 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Currently unuse_process cannot fail, but leave error handling&n;&t; * at call sites for now, since we change it from time to time.&n;&t; */
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Scan swap_map from current position to next entry still in use.&n; * Recycle to start on reaching the end, returning 0 when empty.&n; */
