@@ -537,7 +537,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure that there are no leases.&n;&t; */
 id|error
 op_assign
-id|get_lease
+id|break_lease
 c_func
 (paren
 id|inode
