@@ -133,7 +133,6 @@ r_struct
 id|timespec
 id|ctime
 suffix:semicolon
-macro_line|#ifdef CONFIG_NFS_V4
 DECL|member|bitmap
 id|__u32
 id|bitmap
@@ -152,7 +151,6 @@ id|__u64
 id|pre_change_attr
 suffix:semicolon
 multiline_comment|/* pre-op NFSv4 change attribute */
-macro_line|#endif
 DECL|member|timestamp
 r_int
 r_int
