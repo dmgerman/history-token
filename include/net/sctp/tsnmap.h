@@ -1,11 +1,10 @@
-multiline_comment|/* SCTP kernel reference Implementation Copyright (C) 1999-2001&n; * Cisco, Motorola, Intel, and International Business Machines Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * These are the definitions needed for the tsnmap type.  The tsnmap is used&n; * to track out of order TSNs received.&n; * &n; * The SCTP reference implementation  is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * the SCTP reference implementation  is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to one of the&n; * following email addresses:&n; * &n; * Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; * La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation Copyright (C) 1999-2001&n; * Cisco, Motorola, Intel, and International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are the definitions needed for the tsnmap type.  The tsnmap is used&n; * to track out of order TSNs received.&n; *&n; * The SCTP reference implementation  is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * the SCTP reference implementation  is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to one of the&n; * following email addresses:&n; *&n; * Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; * La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;net/sctp/constants.h&gt;
 macro_line|#ifndef __sctp_tsnmap_h__
 DECL|macro|__sctp_tsnmap_h__
 mdefine_line|#define __sctp_tsnmap_h__
 multiline_comment|/* RFC 2960 12.2 Parameters necessary per association (i.e. the TCB)&n; * Mapping  An array of bits or bytes indicating which out of&n; * Array    order TSN&squot;s have been received (relative to the&n; *          Last Rcvd TSN). If no gaps exist, i.e. no out of&n; *          order packets have been received, this array&n; *          will be set to all zero. This structure may be&n; *          in the form of a circular buffer or bit array.&n; */
 DECL|struct|sctp_tsnmap
-r_typedef
 r_struct
 id|sctp_tsnmap
 (brace
@@ -46,10 +45,22 @@ DECL|member|max_tsn_seen
 id|__u32
 id|max_tsn_seen
 suffix:semicolon
-multiline_comment|/* No. of data chunks pending receipt. used by SCTP_STATUS sockopt */
+multiline_comment|/* Data chunks pending receipt. used by SCTP_STATUS sockopt */
 DECL|member|pending_data
 id|__u16
 id|pending_data
+suffix:semicolon
+multiline_comment|/* We record duplicate TSNs here.  We clear this after&n;&t; * every SACK.  Store up to SCTP_MAX_DUP_TSNS worth of&n;&t; * information.&n;&t; */
+DECL|member|dup_tsns
+id|__u32
+id|dup_tsns
+(braket
+id|SCTP_MAX_DUP_TSNS
+)braket
+suffix:semicolon
+DECL|member|num_dup_tsns
+id|__u16
+id|num_dup_tsns
 suffix:semicolon
 DECL|member|malloced
 r_int
@@ -62,12 +73,9 @@ id|raw_map
 l_int|0
 )braket
 suffix:semicolon
-DECL|typedef|sctp_tsnmap_t
 )brace
-id|sctp_tsnmap_t
 suffix:semicolon
 DECL|struct|sctp_tsnmap_iter
-r_typedef
 r_struct
 id|sctp_tsnmap_iter
 (brace
@@ -75,12 +83,11 @@ DECL|member|start
 id|__u32
 id|start
 suffix:semicolon
-DECL|typedef|sctp_tsnmap_iter_t
 )brace
-id|sctp_tsnmap_iter_t
 suffix:semicolon
 multiline_comment|/* Create a new tsnmap.  */
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|sctp_tsnmap_new
 c_func
@@ -89,7 +96,7 @@ id|__u16
 id|len
 comma
 id|__u32
-id|initial_tsn
+id|init_tsn
 comma
 r_int
 id|priority
@@ -100,23 +107,24 @@ r_void
 id|sctp_tsnmap_free
 c_func
 (paren
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
-id|map
 )paren
 suffix:semicolon
 multiline_comment|/* This macro assists in creation of external storage for variable length&n; * internal buffers.  We double allocate so the overflow map works.&n; */
 DECL|macro|sctp_tsnmap_storage_size
 mdefine_line|#define sctp_tsnmap_storage_size(count) (sizeof(__u8) * (count) * 2)
 multiline_comment|/* Initialize a block of memory as a tsnmap.  */
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|sctp_tsnmap_init
 c_func
 (paren
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
-id|map
 comma
 id|__u16
 id|len
@@ -131,9 +139,9 @@ id|sctp_tsnmap_check
 c_func
 (paren
 r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
-id|map
 comma
 id|__u32
 id|tsn
@@ -144,9 +152,9 @@ r_void
 id|sctp_tsnmap_mark
 c_func
 (paren
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
-id|map
 comma
 id|__u32
 id|tsn
@@ -158,9 +166,9 @@ id|sctp_tsnmap_get_ctsn
 c_func
 (paren
 r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
-id|map
 )paren
 suffix:semicolon
 multiline_comment|/* Retrieve the highest TSN we&squot;ve seen.  */
@@ -169,20 +177,94 @@ id|sctp_tsnmap_get_max_tsn_seen
 c_func
 (paren
 r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* How many Duplicate TSNs are stored? */
+DECL|function|sctp_tsnmap_num_dups
+r_static
+r_inline
+id|__u16
+id|sctp_tsnmap_num_dups
+c_func
+(paren
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 )paren
+(brace
+r_return
+id|map-&gt;num_dup_tsns
 suffix:semicolon
+)brace
+multiline_comment|/* Return pointer to duplicate tsn array as needed by SACK. */
+DECL|function|sctp_tsnmap_get_dups
+r_static
+r_inline
+id|__u32
+op_star
+id|sctp_tsnmap_get_dups
+c_func
+(paren
+r_struct
+id|sctp_tsnmap
+op_star
+id|map
+)paren
+(brace
+id|map-&gt;num_dup_tsns
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|map-&gt;dup_tsns
+suffix:semicolon
+)brace
+multiline_comment|/* Mark a duplicate TSN.  Note:  we limit how many we are willing to&n; * store and consequently report.&n; */
+DECL|function|sctp_tsnmap_mark_dup
+r_static
+r_inline
+r_void
+id|sctp_tsnmap_mark_dup
+c_func
+(paren
+r_struct
+id|sctp_tsnmap
+op_star
+id|map
+comma
+id|__u32
+id|tsn
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|map-&gt;num_dup_tsns
+OL
+id|SCTP_MAX_DUP_TSNS
+)paren
+id|map-&gt;dup_tsns
+(braket
+id|map-&gt;num_dup_tsns
+op_increment
+)braket
+op_assign
+id|tsn
+suffix:semicolon
+)brace
 multiline_comment|/* Is there a gap in the TSN map? */
 r_int
 id|sctp_tsnmap_has_gap
 c_func
 (paren
 r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
-id|map
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize a gap ack block interator from user-provided memory.  */
@@ -191,13 +273,13 @@ id|sctp_tsnmap_iter_init
 c_func
 (paren
 r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
-id|map
 comma
-id|sctp_tsnmap_iter_t
+r_struct
+id|sctp_tsnmap_iter
 op_star
-id|iter
 )paren
 suffix:semicolon
 multiline_comment|/* Get the next gap ack blocks.  We return 0 if there are no more&n; * gap ack blocks.&n; */
@@ -206,13 +288,13 @@ id|sctp_tsnmap_next_gap_ack
 c_func
 (paren
 r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
-id|map
 comma
-id|sctp_tsnmap_iter_t
+r_struct
+id|sctp_tsnmap_iter
 op_star
-id|iter
 comma
 id|__u16
 op_star
