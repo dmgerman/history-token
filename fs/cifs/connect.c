@@ -8253,10 +8253,13 @@ c_func
 id|capabilities
 )paren
 suffix:semicolon
-multiline_comment|/* pSMB-&gt;req_no_secext.CaseInsensitivePasswordLength =&n;&t;   CIFS_SESSION_KEY_SIZE; */
 id|pSMB-&gt;req_no_secext.CaseInsensitivePasswordLength
 op_assign
-l_int|0
+id|cpu_to_le16
+c_func
+(paren
+id|CIFS_SESSION_KEY_SIZE
+)paren
 suffix:semicolon
 id|pSMB-&gt;req_no_secext.CaseSensitivePasswordLength
 op_assign
@@ -8274,7 +8277,24 @@ c_func
 id|smb_buffer
 )paren
 suffix:semicolon
-multiline_comment|/* memcpy(bcc_ptr, (char *) lm_session_key, CIFS_SESSION_KEY_SIZE);&n;&t;   bcc_ptr += CIFS_SESSION_KEY_SIZE; */
+id|memcpy
+c_func
+(paren
+id|bcc_ptr
+comma
+(paren
+r_char
+op_star
+)paren
+id|session_key
+comma
+id|CIFS_SESSION_KEY_SIZE
+)paren
+suffix:semicolon
+id|bcc_ptr
+op_add_assign
+id|CIFS_SESSION_KEY_SIZE
+suffix:semicolon
 id|memcpy
 c_func
 (paren
