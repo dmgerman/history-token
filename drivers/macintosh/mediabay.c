@@ -3063,7 +3063,7 @@ id|mdev-&gt;ofdev.dev.power_state
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* We re-enable the bay using it&squot;s previous content&n;&t;&t;&t;   only if it did not change. Note those bozo timings,&n;&t;&t;&t;   they seem to help the 3400 get it right.&n;&t;&t;&t; */
+multiline_comment|/* We re-enable the bay using it&squot;s previous content&n;&t;       &t;   only if it did not change. Note those bozo timings,&n;&t;       &t;   they seem to help the 3400 get it right.&n;&t;       &t; */
 multiline_comment|/* Force MB power to 0 */
 id|down
 c_func

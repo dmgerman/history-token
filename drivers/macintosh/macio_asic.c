@@ -892,7 +892,7 @@ op_assign
 op_amp
 id|chip-&gt;lbus.pdev-&gt;dev
 suffix:semicolon
-macro_line|#endif&t;&t;
+macro_line|#endif
 id|pnode
 op_assign
 id|of_node_get
