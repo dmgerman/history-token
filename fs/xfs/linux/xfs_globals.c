@@ -45,25 +45,7 @@ op_assign
 op_amp
 id|sys_cred_val
 suffix:semicolon
-multiline_comment|/*&n; * The global quota manager. There is only one of these for the entire&n; * system, _not_ one per file system. XQM keeps track of the overall&n; * quota functionality, including maintaining the freelist and hash&n; * tables of dquots.&n; */
-DECL|variable|xfs_Gqm
-r_struct
-id|xfs_qm
-op_star
-id|xfs_Gqm
-suffix:semicolon
-DECL|variable|xfs_Gqm_lock
-id|mutex_t
-id|xfs_Gqm_lock
-suffix:semicolon
 multiline_comment|/* Export XFS symbols used by xfsidbg */
-DECL|variable|xfs_Gqm
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xfs_Gqm
-)paren
-suffix:semicolon
 DECL|variable|xfs_next_bit
 id|EXPORT_SYMBOL
 c_func

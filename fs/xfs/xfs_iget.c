@@ -1870,21 +1870,14 @@ id|XFS_IOLOCK_EXCL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Release dquots (and their references) if any. An inode may escape&n;&t; * xfs_inactive and get here via vn_alloc-&gt;vn_reclaim path.&n;&t; */
-r_if
-c_cond
-(paren
-id|ip-&gt;i_udquot
-op_logical_or
-id|ip-&gt;i_gdquot
-)paren
-(brace
-id|xfs_qm_dqdettach_inode
+id|XFS_QM_DQDETACH
 c_func
 (paren
+id|ip-&gt;i_mount
+comma
 id|ip
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Pull our behavior descriptor from the vnode chain.&n;&t; */
 id|vp
 op_assign

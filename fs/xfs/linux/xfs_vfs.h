@@ -671,6 +671,33 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|struct|bhv_vfsops
+r_typedef
+r_struct
+id|bhv_vfsops
+(brace
+DECL|member|bhv_common
+r_struct
+id|vfsops
+id|bhv_common
+suffix:semicolon
+DECL|member|bhv_custom
+r_void
+op_star
+id|bhv_custom
+suffix:semicolon
+DECL|typedef|bhv_vfsops_t
+)brace
+id|bhv_vfsops_t
+suffix:semicolon
+DECL|macro|vfs_bhv_lookup
+mdefine_line|#define vfs_bhv_lookup(v, id)&t;( bhv_lookup_range(&amp;(v)-&gt;vfs_bh, (id), (id)) )
+DECL|macro|vfs_bhv_custom
+mdefine_line|#define vfs_bhv_custom(b)&t;( ((bhv_vfsops_t *)BHV_OPS(b))-&gt;bhv_custom )
+DECL|macro|vfs_bhv_set_custom
+mdefine_line|#define vfs_bhv_set_custom(b,o)&t;( (b)-&gt;bhv_custom = (void *)(o))
+DECL|macro|vfs_bhv_clr_custom
+mdefine_line|#define vfs_bhv_clr_custom(b)&t;( (b)-&gt;bhv_custom = NULL )
 r_extern
 id|vfs_t
 op_star
@@ -697,7 +724,7 @@ c_func
 id|vfs_t
 op_star
 comma
-id|vfsops_t
+id|bhv_vfsops_t
 op_star
 )paren
 suffix:semicolon

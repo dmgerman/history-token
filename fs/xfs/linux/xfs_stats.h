@@ -256,42 +256,8 @@ DECL|member|xs_attr_list
 id|__uint32_t
 id|xs_attr_list
 suffix:semicolon
-DECL|macro|XFSSTAT_END_QUOTA_OPS
-macro_line|# define XFSSTAT_END_QUOTA_OPS&t;&t;(XFSSTAT_END_ATTRIBUTE_OPS+8)
-DECL|member|xs_qm_dqreclaims
-id|__uint32_t
-id|xs_qm_dqreclaims
-suffix:semicolon
-DECL|member|xs_qm_dqreclaim_misses
-id|__uint32_t
-id|xs_qm_dqreclaim_misses
-suffix:semicolon
-DECL|member|xs_qm_dquot_dups
-id|__uint32_t
-id|xs_qm_dquot_dups
-suffix:semicolon
-DECL|member|xs_qm_dqcachemisses
-id|__uint32_t
-id|xs_qm_dqcachemisses
-suffix:semicolon
-DECL|member|xs_qm_dqcachehits
-id|__uint32_t
-id|xs_qm_dqcachehits
-suffix:semicolon
-DECL|member|xs_qm_dqwants
-id|__uint32_t
-id|xs_qm_dqwants
-suffix:semicolon
-DECL|member|xs_qm_dqshake_reclaims
-id|__uint32_t
-id|xs_qm_dqshake_reclaims
-suffix:semicolon
-DECL|member|xs_qm_dqinact_reclaims
-id|__uint32_t
-id|xs_qm_dqinact_reclaims
-suffix:semicolon
 DECL|macro|XFSSTAT_END_INODE_CLUSTER
-macro_line|# define XFSSTAT_END_INODE_CLUSTER&t;(XFSSTAT_END_QUOTA_OPS+3)
+macro_line|# define XFSSTAT_END_INODE_CLUSTER&t;(XFSSTAT_END_ATTRIBUTE_OPS+3)
 DECL|member|xs_iflush_count
 id|__uint32_t
 id|xs_iflush_count

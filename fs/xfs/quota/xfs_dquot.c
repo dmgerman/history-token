@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
-macro_line|#include &lt;xfs_quota_priv.h&gt;
+macro_line|#include &quot;xfs_qm.h&quot;
 multiline_comment|/*&n;   LOCK ORDER&n;&n;   inode lock&t;&t;    (ilock)&n;   dquot hash-chain lock    (hashlock)&n;   xqm dquot freelist lock  (freelistlock&n;   mount&squot;s dquot list lock  (mplistlock)&n;   user dquot lock - lock ordering among dquots is based on the uid or gid&n;   group dquot lock - similar to udquots. Between the two dquots, the udquot&n;&t;&t;      has to be locked first.&n;   pin lock - the dquot lock must be held to take this lock.&n;   flush lock - ditto.&n;*/
 id|STATIC
 r_void
@@ -1309,10 +1309,12 @@ comma
 id|ARCH_CONVERT
 )paren
 )paren
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;--------@@Inode warnings running : %Lu &gt;= %Lu&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;--------@@Inode warnings running : %Lu &gt;= %Lu&quot;
 comma
 id|INT_GET
 c_func
@@ -1342,10 +1344,12 @@ comma
 id|ARCH_CONVERT
 )paren
 )paren
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;--------@@Blks warnings running : %Lu &gt;= %Lu&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;--------@@Blks warnings running : %Lu &gt;= %Lu&quot;
 comma
 id|INT_GET
 c_func
@@ -3406,10 +3410,12 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;Returning error in dqget&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;Returning error in dqget&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3502,10 +3508,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|XFS_STATS_INC
+id|XQM_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_qm_dqcachehits
+id|xqmstats.xs_qm_dqcachehits
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The dquot was found, moved to the front of the chain,&n;&t;&t; * taken off the freelist if it was on it, and locked&n;&t;&t; * at this point. Just unlock the hashchain and return.&n;&t;&t; */
@@ -3549,10 +3555,10 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* success */
 )brace
-id|XFS_STATS_INC
+id|XQM_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_qm_dqcachemisses
+id|xqmstats.xs_qm_dqcachemisses
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Dquot cache miss. We don&squot;t want to keep the inode lock across&n;&t; * a (potential) disk read. Also we don&squot;t want to deal with the lock&n;&t; * ordering between quotainode and this inode. OTOH, dropping the inode&n;&t; * lock here means dealing with a chown that can happen before&n;&t; * we re-acquire the lock.&n;&t; */
@@ -3837,10 +3843,10 @@ c_func
 id|dqp
 )paren
 suffix:semicolon
-id|XFS_STATS_INC
+id|XQM_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_qm_dquot_dups
+id|xqmstats.xs_qm_dquot_dups
 )paren
 suffix:semicolon
 r_goto
@@ -4944,29 +4950,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * A rarely used accessor. This exists because we don&squot;t really want&n; * to expose the internals of a dquot to the outside world.&n; */
-id|xfs_dqid_t
-DECL|function|xfs_qm_dqid
-id|xfs_qm_dqid
-c_func
-(paren
-id|xfs_dquot_t
-op_star
-id|dqp
-)paren
-(brace
-r_return
-(paren
-id|INT_GET
-c_func
-(paren
-id|dqp-&gt;q_core.d_id
-comma
-id|ARCH_CONVERT
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Take a dquot out of the mount&squot;s dqlist as well as the hashlist.&n; * This is called via unmount as well as quotaoff, and the purge&n; * will always succeed unless there are soft (temp) references&n; * outstanding.&n; *&n; * This returns 0 if it was purged, 1 if it wasn&squot;t. It&squot;s not an error code&n; * that we&squot;re returning! XXXsup - not cool.&n; */
 multiline_comment|/* ARGSUSED */
 r_int
@@ -5230,507 +5213,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Do some primitive error checking on ondisk dquot&n; * data structures. Not just for debugging, actually;&n; * this can be useful for detecting data corruption mainly due to&n; * disk failures.&n; */
-multiline_comment|/* ARGSUSED */
-r_int
-DECL|function|xfs_qm_dqcheck
-id|xfs_qm_dqcheck
-c_func
-(paren
-id|xfs_disk_dquot_t
-op_star
-id|ddq
-comma
-id|xfs_dqid_t
-id|id
-comma
-id|uint
-id|type
-comma
-multiline_comment|/* used only when IO_dorepair is true */
-id|uint
-id|flags
-comma
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|errs
-suffix:semicolon
-id|errs
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* ASSERT(flags &amp; (XFS_QMOPT_DQREPAIR|XFS_QMOPT_DOWARN)); */
-multiline_comment|/*&n;&t; * We can encounter an uninitialized dquot buffer for 2 reasons:&n;&t; * 1. If we crash while deleting the quotainode(s), and those blks get used&n;&t; *    for some user data. This is because we take the path of regular&n;&t; *    file deletion; however, the size field of quotainodes is never&n;&t; *    updated, so all the tricks that we play in itruncate_finish&n;&t; *    don&squot;t quite matter.&n;&t; *&n;&t; * 2. We don&squot;t play the quota buffers when there&squot;s a quotaoff logitem.&n;&t; *    But the allocation will be replayed so we&squot;ll end up with an&n;&t; *    uninitialized quota block.&n;&t; *&n;&t; * This is all fine; things are still consistent, and we haven&squot;t lost&n;&t; * any quota information. Just don&squot;t complain about bad dquot blks.&n;&t; */
-r_if
-c_cond
-(paren
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_magic
-comma
-id|ARCH_CONVERT
-)paren
-op_ne
-id|XFS_DQUOT_MAGIC
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|XFS_QMOPT_DOWARN
-)paren
-id|cmn_err
-c_func
-(paren
-id|CE_ALERT
-comma
-l_string|&quot;%s : XFS dquot ID 0x%x, magic 0x%x != 0x%x&quot;
-comma
-id|str
-comma
-id|id
-comma
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_magic
-comma
-id|ARCH_CONVERT
-)paren
-comma
-id|XFS_DQUOT_MAGIC
-)paren
-suffix:semicolon
-id|errs
-op_increment
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_version
-comma
-id|ARCH_CONVERT
-)paren
-op_ne
-id|XFS_DQUOT_VERSION
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|XFS_QMOPT_DOWARN
-)paren
-id|cmn_err
-c_func
-(paren
-id|CE_ALERT
-comma
-l_string|&quot;%s : XFS dquot ID 0x%x, version 0x%x != 0x%x&quot;
-comma
-id|str
-comma
-id|id
-comma
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_magic
-comma
-id|ARCH_CONVERT
-)paren
-comma
-id|XFS_DQUOT_VERSION
-)paren
-suffix:semicolon
-id|errs
-op_increment
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_flags
-comma
-id|ARCH_CONVERT
-)paren
-op_ne
-id|XFS_DQ_USER
-op_logical_and
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_flags
-comma
-id|ARCH_CONVERT
-)paren
-op_ne
-id|XFS_DQ_GROUP
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|XFS_QMOPT_DOWARN
-)paren
-id|cmn_err
-c_func
-(paren
-id|CE_ALERT
-comma
-l_string|&quot;%s : XFS dquot ID 0x%x, unknown flags 0x%x&quot;
-comma
-id|str
-comma
-id|id
-comma
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_flags
-comma
-id|ARCH_CONVERT
-)paren
-)paren
-suffix:semicolon
-id|errs
-op_increment
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|id
-op_ne
-op_minus
-l_int|1
-op_logical_and
-id|id
-op_ne
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_id
-comma
-id|ARCH_CONVERT
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|XFS_QMOPT_DOWARN
-)paren
-id|cmn_err
-c_func
-(paren
-id|CE_ALERT
-comma
-l_string|&quot;%s : ondisk-dquot 0x%x, ID mismatch: &quot;
-l_string|&quot;0x%x expected, found id 0x%x&quot;
-comma
-id|str
-comma
-id|ddq
-comma
-id|id
-comma
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_id
-comma
-id|ARCH_CONVERT
-)paren
-)paren
-suffix:semicolon
-id|errs
-op_increment
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|errs
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_blk_softlimit
-comma
-id|ARCH_CONVERT
-)paren
-op_logical_and
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_bcount
-comma
-id|ARCH_CONVERT
-)paren
-op_ge
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_blk_softlimit
-comma
-id|ARCH_CONVERT
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|INT_ISZERO
-c_func
-(paren
-id|ddq-&gt;d_btimer
-comma
-id|ARCH_CONVERT
-)paren
-op_logical_and
-op_logical_neg
-id|INT_ISZERO
-c_func
-(paren
-id|ddq-&gt;d_id
-comma
-id|ARCH_CONVERT
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|XFS_QMOPT_DOWARN
-)paren
-id|cmn_err
-c_func
-(paren
-id|CE_ALERT
-comma
-l_string|&quot;%s : Dquot ID 0x%x (0x%x) &quot;
-l_string|&quot;BLK TIMER NOT STARTED&quot;
-comma
-id|str
-comma
-(paren
-r_int
-)paren
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_id
-comma
-id|ARCH_CONVERT
-)paren
-comma
-id|ddq
-)paren
-suffix:semicolon
-id|errs
-op_increment
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_ino_softlimit
-comma
-id|ARCH_CONVERT
-)paren
-op_logical_and
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_icount
-comma
-id|ARCH_CONVERT
-)paren
-op_ge
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_ino_softlimit
-comma
-id|ARCH_CONVERT
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|INT_ISZERO
-c_func
-(paren
-id|ddq-&gt;d_itimer
-comma
-id|ARCH_CONVERT
-)paren
-op_logical_and
-op_logical_neg
-id|INT_ISZERO
-c_func
-(paren
-id|ddq-&gt;d_id
-comma
-id|ARCH_CONVERT
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|XFS_QMOPT_DOWARN
-)paren
-id|cmn_err
-c_func
-(paren
-id|CE_ALERT
-comma
-l_string|&quot;%s : Dquot ID 0x%x (0x%x) &quot;
-l_string|&quot;INODE TIMER NOT STARTED&quot;
-comma
-id|str
-comma
-(paren
-r_int
-)paren
-id|INT_GET
-c_func
-(paren
-id|ddq-&gt;d_id
-comma
-id|ARCH_CONVERT
-)paren
-comma
-id|ddq
-)paren
-suffix:semicolon
-id|errs
-op_increment
-suffix:semicolon
-)brace
-)brace
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|errs
-op_logical_or
-op_logical_neg
-(paren
-id|flags
-op_amp
-id|XFS_QMOPT_DQREPAIR
-)paren
-)paren
-r_return
-(paren
-id|errs
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|XFS_QMOPT_DOWARN
-)paren
-id|cmn_err
-c_func
-(paren
-id|CE_NOTE
-comma
-l_string|&quot;Re-initializing dquot ID 0x%x&quot;
-comma
-id|id
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Typically, a repair is only requested by quotacheck.&n;&t; */
-id|ASSERT
-c_func
-(paren
-id|id
-op_ne
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|flags
-op_amp
-id|XFS_QMOPT_DQREPAIR
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|ddq
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|xfs_dqblk_t
-)paren
-)paren
-suffix:semicolon
-id|xfs_qm_dqinit_core
-c_func
-(paren
-id|id
-comma
-id|type
-comma
-(paren
-id|xfs_dqblk_t
-op_star
-)paren
-id|ddq
-)paren
-suffix:semicolon
-r_return
-(paren
-id|errs
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef QUOTADEBUG
 r_void
 DECL|function|xfs_qm_dqprint
@@ -5742,16 +5224,20 @@ op_star
 id|dqp
 )paren
 (brace
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;-----------KERNEL DQUOT----------------&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;-----------KERNEL DQUOT----------------&quot;
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- dquot ID&t;=  %d&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- dquotID =  %d&quot;
 comma
 (paren
 r_int
@@ -5765,10 +5251,12 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- type&t;=  %s&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- type    =  %s&quot;
 comma
 id|XFS_QM_ISUDQ
 c_func
@@ -5782,18 +5270,22 @@ suffix:colon
 l_string|&quot;GRP&quot;
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- fs&t;=  0x%p&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- fs      =  0x%p&quot;
 comma
 id|dqp-&gt;q_mount
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- blkno&t;=  0x%x&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- blkno   =  0x%x&quot;
 comma
 (paren
 r_int
@@ -5801,10 +5293,12 @@ r_int
 id|dqp-&gt;q_blkno
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- boffset&t;=  0x%x&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- boffset =  0x%x&quot;
 comma
 (paren
 r_int
@@ -5812,10 +5306,12 @@ r_int
 id|dqp-&gt;q_bufoffset
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- blkhlimit =  %Lu (0x%x)&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- blkhlimit =  %Lu (0x%x)&quot;
 comma
 id|INT_GET
 c_func
@@ -5837,10 +5333,12 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- blkslimit =  %Lu (0x%x)&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- blkslimit =  %Lu (0x%x)&quot;
 comma
 id|INT_GET
 c_func
@@ -5862,10 +5360,12 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- inohlimit =  %Lu (0x%x)&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- inohlimit =  %Lu (0x%x)&quot;
 comma
 id|INT_GET
 c_func
@@ -5887,10 +5387,12 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- inoslimit =  %Lu (0x%x)&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- inoslimit =  %Lu (0x%x)&quot;
 comma
 id|INT_GET
 c_func
@@ -5912,10 +5414,12 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- bcount&t;=  %Lu (0x%x)&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- bcount  =  %Lu (0x%x)&quot;
 comma
 id|INT_GET
 c_func
@@ -5937,10 +5441,12 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- icount&t;=  %Lu (0x%x)&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- icount  =  %Lu (0x%x)&quot;
 comma
 id|INT_GET
 c_func
@@ -5962,10 +5468,12 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- btimer&t;=  %d&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- btimer  =  %d&quot;
 comma
 (paren
 r_int
@@ -5979,10 +5487,12 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---- itimer&t;=  %d&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---- itimer  =  %d&quot;
 comma
 (paren
 r_int
@@ -5996,10 +5506,12 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;---------------------------&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;---------------------------&quot;
 )paren
 suffix:semicolon
 )brace

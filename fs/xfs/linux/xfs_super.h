@@ -2,6 +2,36 @@ multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef __XFS_SUPER_H__
 DECL|macro|__XFS_SUPER_H__
 mdefine_line|#define __XFS_SUPER_H__
+macro_line|#ifdef CONFIG_XFS_DMAPI
+DECL|macro|vfs_insertdmapi
+macro_line|# define vfs_insertdmapi(vfs)&t;vfs_insertops(vfsp, &amp;xfs_dmops)
+DECL|macro|vfs_initdmapi
+macro_line|# define vfs_initdmapi()&t;xfs_dm_init()
+DECL|macro|vfs_exitdmapi
+macro_line|# define vfs_exitdmapi()&t;xfs_dm_exit()
+macro_line|#else
+DECL|macro|vfs_insertdmapi
+macro_line|# define vfs_insertdmapi(vfs)&t;do { } while (0)
+DECL|macro|vfs_initdmapi
+macro_line|# define vfs_initdmapi()&t;do { } while (0)
+DECL|macro|vfs_exitdmapi
+macro_line|# define vfs_exitdmapi()&t;do { } while (0)
+macro_line|#endif
+macro_line|#ifdef CONFIG_XFS_QUOTA
+DECL|macro|vfs_insertquota
+macro_line|# define vfs_insertquota(vfs)&t;vfs_insertops(vfsp, &amp;xfs_qmops)
+DECL|macro|vfs_initquota
+macro_line|# define vfs_initquota()&t;xfs_qm_init()
+DECL|macro|vfs_exitquota
+macro_line|# define vfs_exitquota()&t;xfs_qm_exit()
+macro_line|#else
+DECL|macro|vfs_insertquota
+macro_line|# define vfs_insertquota(vfs)&t;do { } while (0)
+DECL|macro|vfs_initquota
+macro_line|# define vfs_initquota()&t;do { } while (0)
+DECL|macro|vfs_exitquota
+macro_line|# define vfs_exitquota()&t;do { } while (0)
+macro_line|#endif
 macro_line|#ifdef CONFIG_XFS_POSIX_ACL
 DECL|macro|XFS_ACL_STRING
 macro_line|# define XFS_ACL_STRING&t;&t;&quot;ACLs, &quot;
@@ -13,50 +43,12 @@ macro_line|# define XFS_ACL_STRING
 DECL|macro|set_posix_acl_flag
 macro_line|# define set_posix_acl_flag(sb)&t;do { } while (0)
 macro_line|#endif
-macro_line|#ifdef CONFIG_XFS_DMAPI
-DECL|macro|XFS_DMAPI_STRING
-macro_line|# define XFS_DMAPI_STRING&t;&quot;DMAPI, &quot;
-DECL|macro|vfs_insertdmapi
-macro_line|# define vfs_insertdmapi(vfs)&t;vfs_insertops(vfsp, &amp;xfs_dmops_xfs)
-DECL|macro|vfs_initdmapi
-macro_line|# define vfs_initdmapi()&t;(0)&t;&t;&t;/* temporarily */
-DECL|macro|vfs_exitdmapi
-macro_line|# define vfs_exitdmapi()&t;do { } while (0)&t;/* temporarily */
-macro_line|#else
-DECL|macro|XFS_DMAPI_STRING
-macro_line|# define XFS_DMAPI_STRING
-DECL|macro|vfs_insertdmapi
-macro_line|# define vfs_insertdmapi(vfs)&t;do { } while (0)
-DECL|macro|vfs_initdmapi
-macro_line|# define vfs_initdmapi()&t;(0)
-DECL|macro|vfs_exitdmapi
-macro_line|# define vfs_exitdmapi()&t;do { } while (0)
-macro_line|#endif
-macro_line|#ifdef CONFIG_XFS_QUOTA
-DECL|macro|XFS_QUOTA_STRING
-macro_line|# define XFS_QUOTA_STRING&t;&quot;quota, &quot;
-DECL|macro|vfs_insertquota
-macro_line|# define vfs_insertquota(vfs)&t;vfs_insertops(vfsp, &amp;xfs_qmops_xfs)
-DECL|macro|vfs_initquota
-macro_line|# define vfs_initquota()&t;(0)&t;&t;&t;/* temporarily */
-DECL|macro|vfs_exitquota
-macro_line|# define vfs_exitquota()&t;do { } while (0)&t;/* temporarily */
-macro_line|#else
-DECL|macro|XFS_QUOTA_STRING
-macro_line|# define XFS_QUOTA_STRING
-DECL|macro|vfs_insertquota
-macro_line|# define vfs_insertquota(vfs)&t;do { } while (0)
-DECL|macro|vfs_initquota
-macro_line|# define vfs_initquota()&t;(0)
-DECL|macro|vfs_exitquota
-macro_line|# define vfs_exitquota()&t;do { } while (0)
-macro_line|#endif
 macro_line|#ifdef CONFIG_XFS_RT
-DECL|macro|XFS_RT_STRING
-macro_line|# define XFS_RT_STRING&t;&t;&quot;realtime, &quot;
+DECL|macro|XFS_REALTIME_STRING
+macro_line|# define XFS_REALTIME_STRING&t;&quot;realtime, &quot;
 macro_line|#else
-DECL|macro|XFS_RT_STRING
-macro_line|# define XFS_RT_STRING
+DECL|macro|XFS_REALTIME_STRING
+macro_line|# define XFS_REALTIME_STRING
 macro_line|#endif
 macro_line|#ifdef CONFIG_XFS_VNODE_TRACING
 DECL|macro|XFS_VNTRACE_STRING
@@ -73,7 +65,7 @@ DECL|macro|XFS_DBG_STRING
 macro_line|# define XFS_DBG_STRING&t;&t;&quot;no debug&quot;
 macro_line|#endif
 DECL|macro|XFS_BUILD_OPTIONS
-mdefine_line|#define XFS_BUILD_OPTIONS&t;XFS_ACL_STRING XFS_DMAPI_STRING &bslash;&n;&t;&t;&t;&t;XFS_RT_STRING &bslash;&n;&t;&t;&t;&t;XFS_QUOTA_STRING XFS_VNTRACE_STRING &bslash;&n;&t;&t;&t;&t;XFS_DBG_STRING /* DBG must be last */
+mdefine_line|#define XFS_BUILD_OPTIONS&t;XFS_ACL_STRING &bslash;&n;&t;&t;&t;&t;XFS_REALTIME_STRING &bslash;&n;&t;&t;&t;&t;XFS_VNTRACE_STRING &bslash;&n;&t;&t;&t;&t;XFS_DBG_STRING /* DBG must be last */
 DECL|macro|LINVFS_GET_VFS
 mdefine_line|#define LINVFS_GET_VFS(s) &bslash;&n;&t;(vfs_t *)((s)-&gt;s_fs_info)
 DECL|macro|LINVFS_SET_VFS

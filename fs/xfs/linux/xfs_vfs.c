@@ -1008,7 +1008,7 @@ op_star
 id|vfsp
 comma
 r_struct
-id|vfsops
+id|bhv_vfsops
 op_star
 id|vfsops
 )paren

@@ -19,15 +19,5 @@ id|cred
 op_star
 id|sys_cred
 suffix:semicolon
-r_extern
-r_struct
-id|xfs_qm
-op_star
-id|xfs_Gqm
-suffix:semicolon
-r_extern
-id|mutex_t
-id|xfs_Gqm_lock
-suffix:semicolon
 macro_line|#endif&t;/* __XFS_GLOBALS_H__ */
 eof
