@@ -9699,7 +9699,7 @@ op_star
 id|dev
 comma
 id|sector_t
-id|capacy
+id|capacity
 comma
 r_int
 id|geom
@@ -9726,7 +9726,7 @@ id|geom
 )paren
 (brace
 id|sector_t
-id|capacy
+id|capacity
 op_assign
 id|disk-&gt;capacity
 suffix:semicolon

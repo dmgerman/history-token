@@ -2622,72 +2622,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|function|NCR53c406a_command
-r_static
-r_int
-id|NCR53c406a_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-id|DEB
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;NCR53c406a_command called&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|NCR53c406a_queue
-c_func
-(paren
-id|SCpnt
-comma
-id|internal_done
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq_level
-)paren
-r_while
-c_loop
-(paren
-op_logical_neg
-id|internal_done_flag
-)paren
-id|cpu_relax
-c_func
-(paren
-)paren
-suffix:semicolon
-r_else
-multiline_comment|/* interrupts not supported */
-r_while
-c_loop
-(paren
-op_logical_neg
-id|internal_done_flag
-)paren
-id|wait_intr
-c_func
-(paren
-)paren
-suffix:semicolon
-id|internal_done_flag
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-id|internal_done_errcode
-suffix:semicolon
-)brace
 DECL|function|NCR53c406a_queue
 r_static
 r_int
@@ -2873,6 +2807,72 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|NCR53c406a_command
+r_static
+r_int
+id|NCR53c406a_command
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+(brace
+id|DEB
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;NCR53c406a_command called&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|NCR53c406a_queue
+c_func
+(paren
+id|SCpnt
+comma
+id|internal_done
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq_level
+)paren
+r_while
+c_loop
+(paren
+op_logical_neg
+id|internal_done_flag
+)paren
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+multiline_comment|/* interrupts not supported */
+r_while
+c_loop
+(paren
+op_logical_neg
+id|internal_done_flag
+)paren
+id|wait_intr
+c_func
+(paren
+)paren
+suffix:semicolon
+id|internal_done_flag
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|internal_done_errcode
+suffix:semicolon
+)brace
 DECL|function|NCR53c406a_abort
 r_static
 r_int
@@ -3006,7 +3006,7 @@ id|NCR53c406a_biosparm
 c_func
 (paren
 r_struct
-id|scsi_disk
+id|scsi_device
 op_star
 id|disk
 comma
@@ -4502,13 +4502,98 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Eventually this will go into an include file, but this will be later */
+multiline_comment|/* NOTE:  scatter-gather support only works in PIO mode.&n; * Use SG_NONE if DMA mode is enabled!&n; */
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|NCR53c406a
+(brace
+id|proc_name
+suffix:colon
+l_string|&quot;NCR53c406a&quot;
+multiline_comment|/* proc_name */
+comma
+id|name
+suffix:colon
+l_string|&quot;NCR53c406a&quot;
+multiline_comment|/* name */
+comma
+id|detect
+suffix:colon
+id|NCR53c406a_detect
+multiline_comment|/* detect */
+comma
+id|info
+suffix:colon
+id|NCR53c406a_info
+multiline_comment|/* info */
+comma
+id|command
+suffix:colon
+id|NCR53c406a_command
+multiline_comment|/* command */
+comma
+id|queuecommand
+suffix:colon
+id|NCR53c406a_queue
+multiline_comment|/* queuecommand */
+comma
+id|eh_abort_handler
+suffix:colon
+id|NCR53c406a_abort
+multiline_comment|/* abort */
+comma
+id|eh_bus_reset_handler
+suffix:colon
+id|NCR53c406a_bus_reset
+multiline_comment|/* reset */
+comma
+id|eh_device_reset_handler
+suffix:colon
+id|NCR53c406a_device_reset
+multiline_comment|/* reset */
+comma
+id|eh_host_reset_handler
+suffix:colon
+id|NCR53c406a_host_reset
+multiline_comment|/* reset */
+comma
+id|bios_param
+suffix:colon
+id|NCR53c406a_biosparm
+multiline_comment|/* biosparm */
+comma
+id|can_queue
+suffix:colon
+l_int|1
+multiline_comment|/* can_queue */
+comma
+id|this_id
+suffix:colon
+l_int|7
+multiline_comment|/* SCSI ID of the chip */
+comma
+id|sg_tablesize
+suffix:colon
+l_int|32
+multiline_comment|/*SG_ALL*/
+multiline_comment|/*SG_NONE*/
+comma
+id|cmd_per_lun
+suffix:colon
+l_int|1
+multiline_comment|/* commands per lun */
+comma
+id|unchecked_isa_dma
+suffix:colon
+l_int|1
+multiline_comment|/* unchecked_isa_dma */
+comma
+id|use_clustering
+suffix:colon
+id|ENABLE_CLUSTERING
+)brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 multiline_comment|/*&n; * Overrides for Emacs so that we get a uniform tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
