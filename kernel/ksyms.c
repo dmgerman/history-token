@@ -1161,13 +1161,6 @@ c_func
 id|schedule_timeout
 )paren
 suffix:semicolon
-DECL|variable|idle_cpu
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|idle_cpu
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT)
 DECL|variable|kernel_flag
 id|EXPORT_SYMBOL

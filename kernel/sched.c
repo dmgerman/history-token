@@ -6442,7 +6442,7 @@ id|idle
 suffix:semicolon
 )brace
 DECL|variable|idle_cpu
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|idle_cpu
