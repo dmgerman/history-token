@@ -191,7 +191,9 @@ comma
 suffix:semicolon
 multiline_comment|/* How long to wait (in millesconds) for board to go into simple mode */
 DECL|macro|MAX_CONFIG_WAIT
-mdefine_line|#define MAX_CONFIG_WAIT 1000 
+mdefine_line|#define MAX_CONFIG_WAIT 30000 
+DECL|macro|MAX_IOCTL_CONFIG_WAIT
+mdefine_line|#define MAX_IOCTL_CONFIG_WAIT 1000
 DECL|macro|READ_AHEAD
 mdefine_line|#define READ_AHEAD &t; 128
 DECL|macro|NR_CMDS
@@ -2190,7 +2192,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_CONFIG_WAIT
+id|MAX_IOCTL_CONFIG_WAIT
 suffix:semicolon
 id|i
 op_increment
@@ -2239,11 +2241,11 @@ c_cond
 (paren
 id|i
 op_ge
-id|MAX_CONFIG_WAIT
+id|MAX_IOCTL_CONFIG_WAIT
 )paren
 r_return
 op_minus
-id|EFAULT
+id|EAGAIN
 suffix:semicolon
 r_return
 l_int|0
@@ -2471,7 +2473,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_CONFIG_WAIT
+id|MAX_IOCTL_CONFIG_WAIT
 suffix:semicolon
 id|i
 op_increment
@@ -2520,11 +2522,11 @@ c_cond
 (paren
 id|i
 op_ge
-id|MAX_CONFIG_WAIT
+id|MAX_IOCTL_CONFIG_WAIT
 )paren
 r_return
 op_minus
-id|EFAULT
+id|EAGAIN
 suffix:semicolon
 r_return
 l_int|0
@@ -9643,6 +9645,7 @@ op_plus
 id|SA5_DOORBELL
 )paren
 suffix:semicolon
+multiline_comment|/* under certain very rare conditions, this can take awhile.&n;&t; * (e.g.: hot replace a failed 144GB drive in a RAID 5 set right&n;&t; * as we enter this code.) */
 r_for
 c_loop
 (paren
@@ -9677,10 +9680,16 @@ id|CFGTBL_ChangeReq
 r_break
 suffix:semicolon
 multiline_comment|/* delay and try again */
-id|udelay
+id|set_current_state
 c_func
 (paren
-l_int|1000
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|10
 )paren
 suffix:semicolon
 )brace
