@@ -157,6 +157,7 @@ id|count
 suffix:semicolon
 DECL|member|winptr
 r_int
+id|__user
 op_star
 id|winptr
 (braket
@@ -247,6 +248,7 @@ suffix:semicolon
 multiline_comment|/* registers 0..19 (see top) */
 DECL|member|gwin
 id|svr4_gwindows_t
+id|__user
 op_star
 id|gwin
 suffix:semicolon
@@ -293,6 +295,7 @@ id|svr4_stack_t
 (brace
 DECL|member|sp
 r_char
+id|__user
 op_star
 id|sp
 suffix:semicolon

@@ -115,7 +115,8 @@ r_int
 r_int
 id|value
 comma
-r_int
+r_void
+id|__user
 op_star
 id|addr
 )paren
@@ -230,7 +231,8 @@ r_int
 r_int
 id|val
 comma
-r_int
+r_void
+id|__user
 op_star
 id|addr
 )paren
@@ -989,7 +991,8 @@ comma
 id|tmp64
 comma
 (paren
-r_int
+r_void
+id|__user
 op_star
 )paren
 id|data
