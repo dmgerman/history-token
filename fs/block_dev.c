@@ -507,10 +507,6 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|bh-&gt;b_dev
-op_assign
-id|inode-&gt;i_rdev
-suffix:semicolon
 id|bh-&gt;b_bdev
 op_assign
 id|inode-&gt;i_bdev
@@ -2662,7 +2658,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;VFS: Disk change detected on device %s&bslash;n&quot;
 comma
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|dev
@@ -3611,11 +3607,11 @@ id|blkdev_ioctl
 comma
 )brace
 suffix:semicolon
-DECL|function|bdevname
+DECL|function|__bdevname
 r_const
 r_char
 op_star
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|kdev_t

@@ -5014,12 +5014,16 @@ op_assign
 id|major
 c_func
 (paren
+id|to_kdev_t
+c_func
+(paren
 id|bhs
 (braket
 l_int|0
 )braket
 op_member_access_from_pointer
-id|b_dev
+id|b_bdev-&gt;bd_dev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Determine correct block size for this device. */
@@ -5081,7 +5085,7 @@ id|KERN_NOTICE
 l_string|&quot;ll_rw_block: device %s: &quot;
 l_string|&quot;only %d-char blocks implemented (%u)&bslash;n&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
 id|bhs
@@ -5089,7 +5093,7 @@ id|bhs
 l_int|0
 )braket
 op_member_access_from_pointer
-id|b_dev
+id|b_bdev
 )paren
 comma
 id|correct_size
@@ -5114,12 +5118,16 @@ op_logical_and
 id|is_read_only
 c_func
 (paren
+id|to_kdev_t
+c_func
+(paren
 id|bhs
 (braket
 l_int|0
 )braket
 op_member_access_from_pointer
-id|b_dev
+id|b_bdev-&gt;bd_dev
+)paren
 )paren
 )paren
 (brace
@@ -5129,7 +5137,7 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;Can&squot;t write to read-only device %s&bslash;n&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
 id|bhs
@@ -5137,7 +5145,7 @@ id|bhs
 l_int|0
 )braket
 op_member_access_from_pointer
-id|b_dev
+id|b_bdev
 )paren
 )paren
 suffix:semicolon

@@ -141,11 +141,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
+id|bdev
 )paren
 )paren
 suffix:semicolon
@@ -1283,7 +1279,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;EXT3: failed to open journal device %s: %d&bslash;n&quot;
 comma
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|dev
@@ -3487,17 +3483,13 @@ comma
 id|bdevname
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
 id|EXT3_SB
 c_func
 (paren
 id|sb
 )paren
 op_member_access_from_pointer
-id|s_journal-&gt;j_dev-&gt;bd_dev
-)paren
+id|s_journal-&gt;j_dev
 )paren
 )paren
 suffix:semicolon

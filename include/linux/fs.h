@@ -393,11 +393,6 @@ r_int
 id|b_list
 suffix:semicolon
 multiline_comment|/* List that this buffer appears */
-DECL|member|b_dev
-id|kdev_t
-id|b_dev
-suffix:semicolon
-multiline_comment|/* device (B_FREE = free) */
 DECL|member|b_bdev
 r_struct
 id|block_device
@@ -4971,12 +4966,39 @@ r_extern
 r_const
 r_char
 op_star
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|kdev_t
 )paren
 suffix:semicolon
+DECL|function|bdevname
+r_extern
+r_inline
+r_const
+r_char
+op_star
+id|bdevname
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+id|bdev
+)paren
+(brace
+r_return
+id|__bdevname
+c_func
+(paren
+id|to_kdev_t
+c_func
+(paren
+id|bdev-&gt;bd_dev
+)paren
+)paren
+suffix:semicolon
+)brace
 r_extern
 r_const
 r_char
@@ -6599,7 +6621,7 @@ c_func
 (paren
 l_string|&quot;No block device for %s&bslash;n&quot;
 comma
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|dev
@@ -6704,7 +6726,7 @@ c_func
 (paren
 l_string|&quot;No block device for %s&bslash;n&quot;
 comma
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|dev
@@ -6965,7 +6987,7 @@ c_func
 (paren
 l_string|&quot;No block device for %s&bslash;n&quot;
 comma
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|dev
@@ -7121,10 +7143,6 @@ suffix:semicolon
 id|bh-&gt;b_bdev
 op_assign
 id|sb-&gt;s_bdev
-suffix:semicolon
-id|bh-&gt;b_dev
-op_assign
-id|sb-&gt;s_dev
 suffix:semicolon
 id|bh-&gt;b_blocknr
 op_assign
