@@ -8013,6 +8013,15 @@ comma
 op_amp
 id|access_bmap
 )paren
+op_logical_or
+id|test_bit
+c_func
+(paren
+id|NFS4_SHARE_ACCESS_WRITE
+comma
+op_amp
+id|access_bmap
+)paren
 suffix:semicolon
 )brace
 r_static
