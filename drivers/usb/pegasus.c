@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;pegasus.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.4.22 (2001/12/07)&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.4.23 (2002/02/01)&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;pmanolov@lnxw.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -233,8 +233,9 @@ suffix:colon
 id|warn
 c_func
 (paren
+l_string|&quot;%s: status %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; status %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -472,8 +473,9 @@ id|pegasus-&gt;ctrl_urb
 id|err
 c_func
 (paren
+l_string|&quot;%s: BAD CTRLs %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; BAD CTRLs %d&quot;
 comma
 id|ret
 )paren
@@ -738,8 +740,9 @@ id|pegasus-&gt;ctrl_urb
 id|err
 c_func
 (paren
+l_string|&quot;%s: BAD CTRL %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; BAD CTRL %d&quot;
 comma
 id|ret
 )paren
@@ -997,8 +1000,9 @@ id|pegasus-&gt;ctrl_urb
 id|err
 c_func
 (paren
+l_string|&quot;%s: BAD CTRL %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; BAD CTRL %d&quot;
 comma
 id|ret
 )paren
@@ -1127,8 +1131,9 @@ id|pegasus-&gt;ctrl_urb
 id|err
 c_func
 (paren
+l_string|&quot;%s: BAD CTRL %d, flgs %x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; BAD CTRL %d, flags %x&quot;
 comma
 id|ret
 comma
@@ -1298,8 +1303,9 @@ suffix:semicolon
 id|warn
 c_func
 (paren
+l_string|&quot;%s: failed&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1448,8 +1454,9 @@ suffix:semicolon
 id|warn
 c_func
 (paren
+l_string|&quot;%s: failed&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1587,8 +1594,9 @@ suffix:semicolon
 id|warn
 c_func
 (paren
+l_string|&quot;%s: failed&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1836,8 +1844,9 @@ suffix:semicolon
 id|warn
 c_func
 (paren
+l_string|&quot;%s: failed&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2739,8 +2748,9 @@ id|pegasus-&gt;rx_urb
 id|warn
 c_func
 (paren
+l_string|&quot;%s: failed submint rx_urb %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed submint rx_urb %d&quot;
 comma
 id|res
 )paren
@@ -3432,8 +3442,9 @@ id|pegasus-&gt;rx_urb
 id|warn
 c_func
 (paren
+l_string|&quot;%s: failed rx_urb %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed rx_urb %d&quot;
 comma
 id|res
 )paren
@@ -3484,8 +3495,9 @@ id|pegasus-&gt;intr_urb
 id|warn
 c_func
 (paren
+l_string|&quot;%s: failed intr_urb %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed intr_urb %d&quot;
 comma
 id|res
 )paren
@@ -4249,6 +4261,21 @@ op_logical_neg
 id|net
 )paren
 (brace
+id|usb_free_urb
+(paren
+id|pegasus-&gt;tx_urb
+)paren
+suffix:semicolon
+id|usb_free_urb
+(paren
+id|pegasus-&gt;rx_urb
+)paren
+suffix:semicolon
+id|usb_free_urb
+(paren
+id|pegasus-&gt;ctrl_urb
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -4350,6 +4377,21 @@ id|unregister_netdev
 c_func
 (paren
 id|pegasus-&gt;net
+)paren
+suffix:semicolon
+id|usb_free_urb
+(paren
+id|pegasus-&gt;tx_urb
+)paren
+suffix:semicolon
+id|usb_free_urb
+(paren
+id|pegasus-&gt;rx_urb
+)paren
+suffix:semicolon
+id|usb_free_urb
+(paren
+id|pegasus-&gt;ctrl_urb
 )paren
 suffix:semicolon
 id|kfree
@@ -4500,22 +4542,50 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|usb_unlink_urb
+c_func
+(paren
+id|pegasus-&gt;intr_urb
+)paren
+suffix:semicolon
+id|usb_unlink_urb
+c_func
+(paren
+id|pegasus-&gt;tx_urb
+)paren
+suffix:semicolon
+id|usb_unlink_urb
+c_func
+(paren
+id|pegasus-&gt;rx_urb
+)paren
+suffix:semicolon
+id|usb_unlink_urb
+c_func
+(paren
+id|pegasus-&gt;ctrl_urb
+)paren
+suffix:semicolon
 id|usb_free_urb
+c_func
 (paren
 id|pegasus-&gt;intr_urb
 )paren
 suffix:semicolon
 id|usb_free_urb
+c_func
 (paren
 id|pegasus-&gt;tx_urb
 )paren
 suffix:semicolon
 id|usb_free_urb
+c_func
 (paren
 id|pegasus-&gt;rx_urb
 )paren
 suffix:semicolon
 id|usb_free_urb
+c_func
 (paren
 id|pegasus-&gt;ctrl_urb
 )paren
