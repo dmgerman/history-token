@@ -40,7 +40,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * For 600- and 800-family processors, the error_code parameter is DSISR&n; * for a data fault, SRR1 for an instruction fault.&n; */
+multiline_comment|/*&n; * The error_code parameter is&n; *  - DSISR for a non-SLB data access fault,&n; *  - SRR1 &amp; 0x08000000 for a non-SLB instruction access fault&n; *  - 0 any SLB fault.&n; */
 DECL|function|do_page_fault
 r_void
 id|do_page_fault
@@ -88,31 +88,6 @@ op_assign
 id|error_code
 op_amp
 l_int|0x02000000
-suffix:semicolon
-multiline_comment|/*&n;&t; * Fortunately the bit assignments in SRR1 for an instruction&n;&t; * fault and DSISR for a data fault are mostly the same for the&n;&t; * bits we are interested in.  But there are some bits which&n;&t; * indicate errors in DSISR but can validly be set in SRR1.&n;&t; */
-r_if
-c_cond
-(paren
-id|regs-&gt;trap
-op_eq
-l_int|0x400
-)paren
-id|error_code
-op_and_assign
-l_int|0x48200000
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|regs-&gt;trap
-op_ne
-l_int|0x300
-)paren
-multiline_comment|/* ensure error_code is 0 on SLB miss */
-id|error_code
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
