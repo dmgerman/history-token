@@ -5968,26 +5968,6 @@ c_cond
 (paren
 id|attr
 op_amp
-id|ATTR_REPARSE
-)paren
-(brace
-op_star
-id|pobject_type
-op_assign
-id|DT_LNK
-suffix:semicolon
-multiline_comment|/* BB can this and S_IFREG or S_IFDIR be set as in Windows? */
-id|tmp_inode-&gt;i_mode
-op_or_assign
-id|S_IFLNK
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|attr
-op_amp
 id|ATTR_DIRECTORY
 )paren
 (brace
@@ -6019,6 +5999,8 @@ id|tmp_inode-&gt;i_mode
 op_or_assign
 id|S_IFDIR
 suffix:semicolon
+multiline_comment|/* we no longer mark these because we could not follow them */
+multiline_comment|/*        } else if (attr &amp; ATTR_REPARSE) {&n;                *pobject_type = DT_LNK;&n;                tmp_inode-&gt;i_mode |= S_IFLNK;*/
 )brace
 r_else
 (brace
@@ -6726,8 +6708,10 @@ id|tmp_inode-&gt;i_rdev
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Returns one if new inode created (which therefore needs to be hashed) */
+multiline_comment|/* Might check in the future if inode number changed so we can rehash inode */
 r_static
-r_void
+r_int
 DECL|function|construct_dentry
 id|construct_dentry
 c_func
@@ -6769,6 +6753,11 @@ r_struct
 id|cifsTconInfo
 op_star
 id|pTcon
+suffix:semicolon
+r_int
+id|rc
+op_assign
+l_int|0
 suffix:semicolon
 id|cFYI
 c_func
@@ -6866,20 +6855,18 @@ l_int|NULL
 )paren
 (brace
 r_return
+id|rc
 suffix:semicolon
 )brace
+id|rc
+op_assign
+l_int|1
+suffix:semicolon
 id|d_instantiate
 c_func
 (paren
 id|tmp_dentry
 comma
-op_star
-id|ptmp_inode
-)paren
-suffix:semicolon
-id|insert_inode_hash
-c_func
-(paren
 op_star
 id|ptmp_inode
 )paren
@@ -6922,6 +6909,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_return
+id|rc
 suffix:semicolon
 )brace
 op_star
@@ -6948,8 +6936,13 @@ l_int|NULL
 )paren
 (brace
 r_return
+id|rc
 suffix:semicolon
 )brace
+id|rc
+op_assign
+l_int|1
+suffix:semicolon
 id|d_instantiate
 c_func
 (paren
@@ -6965,13 +6958,6 @@ c_func
 id|tmp_dentry
 )paren
 suffix:semicolon
-id|insert_inode_hash
-c_func
-(paren
-op_star
-id|ptmp_inode
-)paren
-suffix:semicolon
 )brace
 id|tmp_dentry-&gt;d_time
 op_assign
@@ -6981,6 +6967,9 @@ op_star
 id|pnew_dentry
 op_assign
 id|tmp_dentry
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 )brace
 DECL|function|reset_resume_key
@@ -7197,6 +7186,8 @@ op_assign
 id|pfindData-&gt;FileName
 suffix:semicolon
 multiline_comment|/* pqstring-&gt;len is already set by caller */
+id|rc
+op_assign
 id|construct_dentry
 c_func
 (paren
@@ -7243,6 +7234,22 @@ op_amp
 id|object_type
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+multiline_comment|/* We have no reliable way to get inode numbers&n;&t;&t;from servers w/o Unix extensions yet so we can not set&n;&t;&t;i_ino from pfindData yet */
+multiline_comment|/* new inode created, let us hash it */
+id|insert_inode_hash
+c_func
+(paren
+id|tmp_inode
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* else if inode number changed do we rehash it? */
 id|rc
 op_assign
 id|filldir
@@ -7350,6 +7357,8 @@ comma
 id|MAX_PATHCONF
 )paren
 suffix:semicolon
+id|rc
+op_assign
 id|construct_dentry
 c_func
 (paren
@@ -7385,6 +7394,48 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+r_struct
+id|cifs_sb_info
+op_star
+id|cifs_sb
+op_assign
+id|CIFS_SB
+c_func
+(paren
+id|tmp_inode-&gt;i_sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_sb-&gt;mnt_cifs_flags
+op_amp
+id|CIFS_MOUNT_SERVER_INUM
+)paren
+(brace
+id|tmp_inode-&gt;i_ino
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|pUnixFindData-&gt;UniqueId
+suffix:semicolon
+)brace
+id|insert_inode_hash
+c_func
+(paren
+id|tmp_inode
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* else if i_ino has changed should we rehash it? */
 id|unix_fill_in_inode
 c_func
 (paren
