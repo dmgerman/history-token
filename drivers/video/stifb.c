@@ -9,15 +9,12 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &quot;console/fbcon.h&quot;
 macro_line|#include &lt;asm/grfioctl.h&gt;&t;/* for HP-UX compatibility */
 macro_line|#include &quot;sticore.h&quot;
 multiline_comment|/* REGION_BASE(fb_info, index) returns the virtual address for region &lt;index&gt; */
@@ -146,11 +143,6 @@ suffix:semicolon
 DECL|member|deviceSpecificConfig
 r_int
 id|deviceSpecificConfig
-suffix:semicolon
-DECL|member|disp
-r_struct
-id|display
-id|disp
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -3135,6 +3127,18 @@ multiline_comment|/* no. of hw registers */
 r_return
 l_int|1
 suffix:semicolon
+id|red
+op_rshift_assign
+l_int|8
+suffix:semicolon
+id|green
+op_rshift_assign
+l_int|8
+suffix:semicolon
+id|blue
+op_rshift_assign
+l_int|8
+suffix:semicolon
 id|START_IMAGE_COLORMAP_ACCESS
 c_func
 (paren
@@ -3669,11 +3673,6 @@ op_star
 id|var
 suffix:semicolon
 r_struct
-id|display
-op_star
-id|disp
-suffix:semicolon
-r_struct
 id|stifb_info
 op_star
 id|fb
@@ -3760,11 +3759,6 @@ id|var
 op_assign
 op_amp
 id|info-&gt;var
-suffix:semicolon
-id|disp
-op_assign
-op_amp
-id|fb-&gt;disp
 suffix:semicolon
 id|fb-&gt;sti
 op_assign
