@@ -1,9 +1,11 @@
 multiline_comment|/*&n; *  linux/fs/ioctl.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 DECL|function|file_ioctl
@@ -632,4 +634,14 @@ r_return
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Platforms implementing 32 bit compatibility ioctl handlers in&n; * modules need this exported&n; */
+macro_line|#ifdef CONFIG_COMPAT
+DECL|variable|sys_ioctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sys_ioctl
+)paren
+suffix:semicolon
+macro_line|#endif
 eof
