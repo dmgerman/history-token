@@ -34,10 +34,6 @@ op_star
 id|sk_sk
 suffix:semicolon
 multiline_comment|/* INET layer */
-DECL|member|sk_lock
-id|spinlock_t
-id|sk_lock
-suffix:semicolon
 DECL|member|sk_server
 r_struct
 id|svc_serv
@@ -51,49 +47,25 @@ r_char
 id|sk_inuse
 suffix:semicolon
 multiline_comment|/* use count */
-DECL|member|sk_busy
+DECL|member|sk_flags
 r_int
-r_char
-id|sk_busy
+r_int
+id|sk_flags
 suffix:semicolon
-multiline_comment|/* enqueued/receiving */
-DECL|member|sk_conn
-r_int
-r_char
-id|sk_conn
-suffix:semicolon
-multiline_comment|/* conn pending */
-DECL|member|sk_close
-r_int
-r_char
-id|sk_close
-suffix:semicolon
-multiline_comment|/* dead or dying */
-DECL|member|sk_data
-r_int
-id|sk_data
-suffix:semicolon
-multiline_comment|/* data pending */
-DECL|member|sk_temp
-r_int
-r_int
-id|sk_temp
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* temp socket */
-DECL|member|sk_qued
-id|sk_qued
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* on serv-&gt;sk_sockets */
-DECL|member|sk_dead
-id|sk_dead
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* socket closed */
+DECL|macro|SK_BUSY
+mdefine_line|#define&t;SK_BUSY&t;&t;0&t;&t;&t;/* enqueued/receiving */
+DECL|macro|SK_CONN
+mdefine_line|#define&t;SK_CONN&t;&t;1&t;&t;&t;/* conn pending */
+DECL|macro|SK_CLOSE
+mdefine_line|#define&t;SK_CLOSE&t;2&t;&t;&t;/* dead or dying */
+DECL|macro|SK_DATA
+mdefine_line|#define&t;SK_DATA&t;&t;3&t;&t;&t;/* data pending */
+DECL|macro|SK_TEMP
+mdefine_line|#define&t;SK_TEMP&t;&t;4&t;&t;&t;/* temp (TCP) socket */
+DECL|macro|SK_QUED
+mdefine_line|#define&t;SK_QUED&t;&t;5&t;&t;&t;/* on serv-&gt;sk_sockets */
+DECL|macro|SK_DEAD
+mdefine_line|#define&t;SK_DEAD&t;&t;6&t;&t;&t;/* socket closed */
 DECL|member|sk_recvfrom
 r_int
 (paren
@@ -159,13 +131,6 @@ r_int
 id|sk_tcplen
 suffix:semicolon
 multiline_comment|/* current read length */
-multiline_comment|/* Debugging */
-DECL|member|sk_rqstp
-r_struct
-id|svc_rqst
-op_star
-id|sk_rqstp
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Function prototypes.&n; */
