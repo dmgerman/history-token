@@ -2,6 +2,7 @@ multiline_comment|/* &n; * arch/ppc64/kernel/xics.h&n; *&n; * Copyright 2000 IBM
 macro_line|#ifndef _PPC64_KERNEL_XICS_H
 DECL|macro|_PPC64_KERNEL_XICS_H
 mdefine_line|#define _PPC64_KERNEL_XICS_H
+macro_line|#include &lt;linux/cache.h&gt;
 r_void
 id|xics_init_IRQ
 c_func
@@ -17,6 +18,44 @@ r_struct
 id|pt_regs
 op_star
 )paren
+suffix:semicolon
+r_void
+id|xics_setup_cpu
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|xics_cause_IPI
+c_func
+(paren
+r_int
+id|cpu
+)paren
+suffix:semicolon
+DECL|struct|xics_ipi_struct
+r_struct
+id|xics_ipi_struct
+(brace
+DECL|member|value
+r_volatile
+r_int
+r_int
+id|value
+suffix:semicolon
+DECL|variable|____cacheline_aligned
+)brace
+id|____cacheline_aligned
+suffix:semicolon
+r_extern
+r_struct
+id|xics_ipi_struct
+id|xics_ipi_message
+(braket
+id|NR_CPUS
+)braket
+id|__cacheline_aligned
 suffix:semicolon
 macro_line|#endif /* _PPC64_KERNEL_XICS_H */
 eof
