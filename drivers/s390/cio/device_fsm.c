@@ -575,7 +575,7 @@ l_string|&quot;Can&squot;t stop i/o on subchannel.&bslash;n&quot;
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|ccw_device_handle_oper
 id|ccw_device_handle_oper
 c_func
@@ -685,6 +685,7 @@ id|kick_work
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|cdev
@@ -693,6 +694,9 @@ r_private
 op_member_access_from_pointer
 id|flags.donotify
 op_assign
+l_int|1
+suffix:semicolon
+r_return
 l_int|1
 suffix:semicolon
 )brace
@@ -796,6 +800,8 @@ r_int
 id|notify
 comma
 id|old_lpm
+comma
+id|same_dev
 suffix:semicolon
 id|sch
 op_assign
@@ -919,6 +925,11 @@ id|notify
 op_assign
 l_int|0
 suffix:semicolon
+id|same_dev
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Keep the compiler quiet... */
 r_switch
 c_cond
 (paren
@@ -963,6 +974,8 @@ op_eq
 id|DEV_STATE_DISCONNECTED_SENSE_ID
 )paren
 (brace
+id|same_dev
+op_assign
 id|ccw_device_handle_oper
 c_func
 (paren
@@ -1026,7 +1039,6 @@ c_cond
 id|notify
 )paren
 (brace
-multiline_comment|/* Get device online again. */
 id|cdev
 op_member_access_from_pointer
 r_private
@@ -1035,6 +1047,13 @@ id|state
 op_assign
 id|DEV_STATE_OFFLINE
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|same_dev
+)paren
+(brace
+multiline_comment|/* Get device online again. */
 id|ccw_device_online
 c_func
 (paren
@@ -1052,6 +1071,7 @@ op_member_access_from_pointer
 id|wait_q
 )paren
 suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 )brace

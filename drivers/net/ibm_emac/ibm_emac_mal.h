@@ -218,7 +218,7 @@ DECL|macro|SET_MAL1_STANZA
 mdefine_line|#define SET_MAL1_STANZA(dcrn,val)
 macro_line|#endif
 DECL|macro|get_mal_dcrn
-mdefine_line|#define get_mal_dcrn(mal, dcrn) ({ &bslash;&n;&t;u32 x; &bslash;&n;&t;switch ((mal)-&gt;dcrbase) { &bslash;&n;&t;&t;GET_MAL0_STANZA(dcrn) &bslash;&n;&t;&t;GET_MAL1_STANZA(dcrn) &bslash;&n;&t;default: &bslash;&n;&t;&t;BUG(); &bslash;&n;&t;} &bslash;&n;x; })
+mdefine_line|#define get_mal_dcrn(mal, dcrn) ({ &bslash;&n;&t;u32 x; &bslash;&n;&t;switch ((mal)-&gt;dcrbase) { &bslash;&n;&t;&t;GET_MAL0_STANZA(dcrn) &bslash;&n;&t;&t;GET_MAL1_STANZA(dcrn) &bslash;&n;&t;default: &bslash;&n;&t;&t;x = 0; &bslash;&n;&t;&t;BUG(); &bslash;&n;&t;} &bslash;&n;x; })
 DECL|macro|set_mal_dcrn
 mdefine_line|#define set_mal_dcrn(mal, dcrn, val) do { &bslash;&n;&t;switch ((mal)-&gt;dcrbase) { &bslash;&n;&t;&t;SET_MAL0_STANZA(dcrn,val) &bslash;&n;&t;&t;SET_MAL1_STANZA(dcrn,val) &bslash;&n;&t;default: &bslash;&n;&t;&t;BUG(); &bslash;&n;&t;} } while (0)
 DECL|function|mal_enable_tx_channels

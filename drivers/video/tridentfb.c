@@ -53,7 +53,7 @@ id|fb_info
 suffix:semicolon
 DECL|variable|pseudo_pal
 r_static
-r_int
+id|u32
 id|pseudo_pal
 (braket
 l_int|16
@@ -2301,7 +2301,7 @@ id|col
 op_assign
 (paren
 (paren
-id|u16
+id|u32
 op_star
 )paren
 (paren
@@ -5289,7 +5289,7 @@ l_int|16
 multiline_comment|/* RGB 565 */
 (paren
 (paren
-id|u16
+id|u32
 op_star
 )paren
 id|info-&gt;pseudo_palette

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_devmap.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Device mapping and dasd= parameter parsing functions. All devmap&n; * functions may not be called from interrupt context. In particular&n; * dasd_get_device is a no-no from interrupt context.&n; *&n; * $Revision: 1.33 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_devmap.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Device mapping and dasd= parameter parsing functions. All devmap&n; * functions may not be called from interrupt context. In particular&n; * dasd_get_device is a no-no from interrupt context.&n; *&n; * $Revision: 1.34 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,6 +8,18 @@ multiline_comment|/* This is ugly... */
 DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER &quot;dasd_devmap:&quot;
 macro_line|#include &quot;dasd_int.h&quot;
+DECL|variable|dasd_page_cache
+id|kmem_cache_t
+op_star
+id|dasd_page_cache
+suffix:semicolon
+DECL|variable|dasd_page_cache
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dasd_page_cache
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * dasd_devmap_t is used to store the features and the relation&n; * between device number and device index. To find a dasd_devmap_t&n; * that corresponds to a device number of a device index each&n; * dasd_devmap_t is added to two linked lists, one to search by&n; * the device number and one to search by the device index. As&n; * soon as big minor numbers are available the device index list&n; * can be removed since the device number will then be identical&n; * to the device index.&n; */
 DECL|struct|dasd_devmap
 r_struct
@@ -840,6 +852,78 @@ comma
 l_string|&quot;%s&quot;
 comma
 l_string|&quot;turning to probeonly mode&quot;
+)paren
+suffix:semicolon
+r_return
+id|residual_str
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|strncmp
+(paren
+l_string|&quot;fixedbuffers&quot;
+comma
+id|parsestring
+comma
+id|length
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dasd_page_cache
+)paren
+r_return
+id|residual_str
+suffix:semicolon
+id|dasd_page_cache
+op_assign
+id|kmem_cache_create
+c_func
+(paren
+l_string|&quot;dasd_page_cache&quot;
+comma
+id|PAGE_SIZE
+comma
+l_int|0
+comma
+id|SLAB_CACHE_DMA
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dasd_page_cache
+)paren
+id|MESSAGE
+c_func
+(paren
+id|KERN_WARNING
+comma
+l_string|&quot;%s&quot;
+comma
+l_string|&quot;Failed to create slab, &quot;
+l_string|&quot;fixed buffer mode disabled.&quot;
+)paren
+suffix:semicolon
+r_else
+id|MESSAGE
+(paren
+id|KERN_INFO
+comma
+l_string|&quot;%s&quot;
+comma
+l_string|&quot;turning on fixed buffer mode&quot;
 )paren
 suffix:semicolon
 r_return
