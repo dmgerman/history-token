@@ -354,6 +354,16 @@ id|uint
 id|submitted
 suffix:semicolon
 multiline_comment|/* # of pages submitted */
+DECL|member|full_page
+id|uint
+id|full_page
+suffix:semicolon
+multiline_comment|/* # of full pages submitted */
+DECL|member|partial_page
+id|uint
+id|partial_page
+suffix:semicolon
+multiline_comment|/* # of partial pages submitted */
 DECL|variable|lmStat
 )brace
 id|lmStat
@@ -2133,6 +2143,12 @@ comma
 id|cant_write
 )paren
 suffix:semicolon
+id|INCREMENT
+c_func
+(paren
+id|lmStat.full_page
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* page is not yet full */
 r_else
@@ -2178,6 +2194,12 @@ op_or
 id|lbmGC
 comma
 id|cant_write
+)paren
+suffix:semicolon
+id|INCREMENT
+c_func
+(paren
+id|lmStat.partial_page
 )paren
 suffix:semicolon
 )brace
@@ -6948,12 +6970,18 @@ l_string|&quot;================&bslash;n&quot;
 l_string|&quot;commits = %d&bslash;n&quot;
 l_string|&quot;writes submitted = %d&bslash;n&quot;
 l_string|&quot;writes completed = %d&bslash;n&quot;
+l_string|&quot;full pages submitted = %d&bslash;n&quot;
+l_string|&quot;partial pages submitted = %d&bslash;n&quot;
 comma
 id|lmStat.commit
 comma
 id|lmStat.submitted
 comma
 id|lmStat.pagedone
+comma
+id|lmStat.full_page
+comma
+id|lmStat.partial_page
 )paren
 suffix:semicolon
 id|begin

@@ -49,6 +49,11 @@ r_int
 id|tlocksInUse
 suffix:semicolon
 multiline_comment|/* Number of tlocks in use */
+DECL|member|TlocksLow
+r_int
+id|TlocksLow
+suffix:semicolon
+multiline_comment|/* Indicates low number of available tlocks */
 DECL|member|LazyLock
 id|spinlock_t
 id|LazyLock
@@ -85,6 +90,50 @@ DECL|variable|TxAnchor
 )brace
 id|TxAnchor
 suffix:semicolon
+macro_line|#ifdef CONFIG_JFS_STATISTICS
+r_struct
+(brace
+DECL|member|txBegin
+id|uint
+id|txBegin
+suffix:semicolon
+DECL|member|txBegin_barrier
+id|uint
+id|txBegin_barrier
+suffix:semicolon
+DECL|member|txBegin_lockslow
+id|uint
+id|txBegin_lockslow
+suffix:semicolon
+DECL|member|txBegin_freetid
+id|uint
+id|txBegin_freetid
+suffix:semicolon
+DECL|member|txBeginAnon
+id|uint
+id|txBeginAnon
+suffix:semicolon
+DECL|member|txBeginAnon_barrier
+id|uint
+id|txBeginAnon_barrier
+suffix:semicolon
+DECL|member|txBeginAnon_lockslow
+id|uint
+id|txBeginAnon_lockslow
+suffix:semicolon
+DECL|member|txLockAlloc
+id|uint
+id|txLockAlloc
+suffix:semicolon
+DECL|member|txLockAlloc_freelock
+id|uint
+id|txLockAlloc_freelock
+suffix:semicolon
+DECL|variable|TxStat
+)brace
+id|TxStat
+suffix:semicolon
+macro_line|#endif
 DECL|variable|nTxBlock
 r_static
 r_int
@@ -137,14 +186,6 @@ op_star
 id|TxLock
 suffix:semicolon
 multiline_comment|/* transaction lock table */
-DECL|variable|TlocksLow
-r_static
-r_int
-id|TlocksLow
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Indicates low number of available tlocks */
 multiline_comment|/*&n; *      transaction management lock&n; */
 DECL|variable|jfsTxnLock
 r_static
@@ -602,6 +643,26 @@ r_void
 id|lid_t
 id|lid
 suffix:semicolon
+id|INCREMENT
+c_func
+(paren
+id|TxStat.txLockAlloc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|TxAnchor.freelock
+)paren
+(brace
+id|INCREMENT
+c_func
+(paren
+id|TxStat.txLockAlloc_freelock
+)paren
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -647,7 +708,7 @@ id|TxLockHWM
 )paren
 op_logical_and
 (paren
-id|TlocksLow
+id|TxAnchor.TlocksLow
 op_eq
 l_int|0
 )paren
@@ -663,7 +724,7 @@ l_string|&quot;txLockAlloc TlocksLow&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|TlocksLow
+id|TxAnchor.TlocksLow
 op_assign
 l_int|1
 suffix:semicolon
@@ -708,7 +769,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|TlocksLow
+id|TxAnchor.TlocksLow
 op_logical_and
 (paren
 id|TxAnchor.tlocksInUse
@@ -727,7 +788,7 @@ l_string|&quot;txLockFree TlocksLow no more&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|TlocksLow
+id|TxAnchor.TlocksLow
 op_assign
 l_int|0
 suffix:semicolon
@@ -1106,6 +1167,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|INCREMENT
+c_func
+(paren
+id|TxStat.txBegin
+)paren
+suffix:semicolon
 id|retry
 suffix:colon
 r_if
@@ -1142,6 +1209,12 @@ id|log-&gt;flag
 )paren
 )paren
 (brace
+id|INCREMENT
+c_func
+(paren
+id|TxStat.txBegin_barrier
+)paren
+suffix:semicolon
 id|TXN_SLEEP
 c_func
 (paren
@@ -1166,9 +1239,15 @@ multiline_comment|/*&n;&t;&t; * Don&squot;t begin transaction if we&squot;re get
 r_if
 c_cond
 (paren
-id|TlocksLow
+id|TxAnchor.TlocksLow
 )paren
 (brace
+id|INCREMENT
+c_func
+(paren
+id|TxStat.txBegin_lockslow
+)paren
+suffix:semicolon
 id|TXN_SLEEP
 c_func
 (paren
@@ -1202,6 +1281,12 @@ comma
 (paren
 l_string|&quot;txBegin: waiting for free tid&bslash;n&quot;
 )paren
+)paren
+suffix:semicolon
+id|INCREMENT
+c_func
+(paren
+id|TxStat.txBegin_freetid
 )paren
 suffix:semicolon
 id|TXN_SLEEP
@@ -1248,6 +1333,12 @@ comma
 (paren
 l_string|&quot;txBegin: waiting for free tid&bslash;n&quot;
 )paren
+)paren
+suffix:semicolon
+id|INCREMENT
+c_func
+(paren
+id|TxStat.txBegin_freetid
 )paren
 suffix:semicolon
 id|TXN_SLEEP
@@ -1362,6 +1453,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|INCREMENT
+c_func
+(paren
+id|TxStat.txBeginAnon
+)paren
+suffix:semicolon
 id|retry
 suffix:colon
 multiline_comment|/*&n;&t; * synchronize with logsync barrier&n;&t; */
@@ -1387,6 +1484,12 @@ id|log-&gt;flag
 )paren
 )paren
 (brace
+id|INCREMENT
+c_func
+(paren
+id|TxStat.txBeginAnon_barrier
+)paren
+suffix:semicolon
 id|TXN_SLEEP
 c_func
 (paren
@@ -1402,9 +1505,15 @@ multiline_comment|/*&n;&t; * Don&squot;t begin transaction if we&squot;re gettin
 r_if
 c_cond
 (paren
-id|TlocksLow
+id|TxAnchor.TlocksLow
 )paren
 (brace
+id|INCREMENT
+c_func
+(paren
+id|TxStat.txBeginAnon_lockslow
+)paren
+suffix:semicolon
 id|TXN_SLEEP
 c_func
 (paren
@@ -9884,7 +9993,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|TlocksLow
+id|TxAnchor.TlocksLow
 op_logical_and
 op_logical_neg
 id|list_empty
@@ -10226,6 +10335,7 @@ l_string|&quot;freelock = %d&bslash;n&quot;
 l_string|&quot;freelockwait = %s&bslash;n&quot;
 l_string|&quot;lowlockwait = %s&bslash;n&quot;
 l_string|&quot;tlocksInUse = %d&bslash;n&quot;
+l_string|&quot;TlocksLow = %d&bslash;n&quot;
 l_string|&quot;unlock_queue = 0x%p&bslash;n&quot;
 l_string|&quot;unlock_tail = 0x%p&bslash;n&quot;
 comma
@@ -10241,9 +10351,135 @@ id|lowlockwait
 comma
 id|TxAnchor.tlocksInUse
 comma
+id|TxAnchor.TlocksLow
+comma
 id|TxAnchor.unlock_queue
 comma
 id|TxAnchor.unlock_tail
+)paren
+suffix:semicolon
+id|begin
+op_assign
+id|offset
+suffix:semicolon
+op_star
+id|start
+op_assign
+id|buffer
+op_plus
+id|begin
+suffix:semicolon
+id|len
+op_sub_assign
+id|begin
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OG
+id|length
+)paren
+id|len
+op_assign
+id|length
+suffix:semicolon
+r_else
+op_star
+id|eof
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+id|len
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|len
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_JFS_STATISTICS)
+DECL|function|jfs_txstats_read
+r_int
+id|jfs_txstats_read
+c_func
+(paren
+r_char
+op_star
+id|buffer
+comma
+r_char
+op_star
+op_star
+id|start
+comma
+id|off_t
+id|offset
+comma
+r_int
+id|length
+comma
+r_int
+op_star
+id|eof
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_int
+id|len
+op_assign
+l_int|0
+suffix:semicolon
+id|off_t
+id|begin
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;JFS TxStats&bslash;n&quot;
+l_string|&quot;===========&bslash;n&quot;
+l_string|&quot;calls to txBegin = %d&bslash;n&quot;
+l_string|&quot;txBegin blocked by sync barrier = %d&bslash;n&quot;
+l_string|&quot;txBegin blocked by tlocks low = %d&bslash;n&quot;
+l_string|&quot;txBegin blocked by no free tid = %d&bslash;n&quot;
+l_string|&quot;calls to txBeginAnon = %d&bslash;n&quot;
+l_string|&quot;txBeginAnon blocked by sync barrier = %d&bslash;n&quot;
+l_string|&quot;txBeginAnon blocked by tlocks low = %d&bslash;n&quot;
+l_string|&quot;calls to txLockAlloc = %d&bslash;n&quot;
+l_string|&quot;tLockAlloc blocked by no free lock = %d&bslash;n&quot;
+comma
+id|TxStat.txBegin
+comma
+id|TxStat.txBegin_barrier
+comma
+id|TxStat.txBegin_lockslow
+comma
+id|TxStat.txBegin_freetid
+comma
+id|TxStat.txBeginAnon
+comma
+id|TxStat.txBeginAnon_barrier
+comma
+id|TxStat.txBeginAnon_lockslow
+comma
+id|TxStat.txLockAlloc
+comma
+id|TxStat.txLockAlloc_freelock
 )paren
 suffix:semicolon
 id|begin
