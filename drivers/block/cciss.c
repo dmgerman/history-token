@@ -379,7 +379,7 @@ multiline_comment|/*define how many times we will try a command because of bus r
 DECL|macro|MAX_CMD_RETRIES
 mdefine_line|#define MAX_CMD_RETRIES 3
 DECL|macro|READ_AHEAD
-mdefine_line|#define READ_AHEAD &t; 256
+mdefine_line|#define READ_AHEAD &t; 1024
 DECL|macro|NR_CMDS
 mdefine_line|#define NR_CMDS&t;&t; 384 /* #commands that can be outstanding */
 DECL|macro|MAX_CTLR
