@@ -38,10 +38,10 @@ DECL|macro|MSR_IA32_UCODE_WRITE
 mdefine_line|#define MSR_IA32_UCODE_WRITE&t;&t;0x79
 DECL|macro|MSR_IA32_UCODE_REV
 mdefine_line|#define MSR_IA32_UCODE_REV&t;&t;0x8b
-DECL|macro|MSR_IA32_PERFCTR0
-mdefine_line|#define MSR_IA32_PERFCTR0&t;&t;0xc1
-DECL|macro|MSR_IA32_PERFCTR1
-mdefine_line|#define MSR_IA32_PERFCTR1&t;&t;0xc2
+DECL|macro|MSR_P6_PERFCTR0
+mdefine_line|#define MSR_P6_PERFCTR0&t;&t;0xc1
+DECL|macro|MSR_P6_PERFCTR1
+mdefine_line|#define MSR_P6_PERFCTR1&t;&t;0xc2
 DECL|macro|MSR_IA32_BBL_CR_CTL
 mdefine_line|#define MSR_IA32_BBL_CR_CTL&t;&t;0x119
 DECL|macro|MSR_IA32_MCG_CAP
