@@ -1,6 +1,5 @@
 multiline_comment|/*&n;    piix4.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;    Copyright (c) 1998 - 2002 Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Philip Edelbrock &lt;phil@netroedge.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;   Supports:&n;&t;Intel PIIX4, 440MX&n;&t;Serverworks OSB4, CSB5&n;&t;SMSC Victory66&n;&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -172,28 +171,17 @@ id|piix4_smba
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86
 multiline_comment|/*&n; * Get DMI information.&n; */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,34)
-r_void
-id|dmi_scan_mach
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|function|ibm_dmi_probe
 r_static
 r_int
-id|__init
 id|ibm_dmi_probe
 c_func
 (paren
 r_void
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,34)
+macro_line|#ifdef CONFIG_X86
 r_extern
 r_int
 id|is_unsafe_smbus
@@ -202,60 +190,11 @@ r_return
 id|is_unsafe_smbus
 suffix:semicolon
 macro_line|#else
-mdefine_line|#define IBM_SIGNATURE&t;&t;&quot;IBM&quot;
-id|dmi_scan_mach
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dmi_ident
-(braket
-id|DMI_SYS_VENDOR
-)braket
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|strncmp
-c_func
-(paren
-id|dmi_ident
-(braket
-id|DMI_SYS_VENDOR
-)braket
-comma
-id|IBM_SIGNATURE
-comma
-id|strlen
-c_func
-(paren
-id|IBM_SIGNATURE
-)paren
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#endif
 DECL|function|piix4_setup
 r_static
 r_int
@@ -308,7 +247,6 @@ comma
 id|PIIX4_dev-&gt;dev.name
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86
 r_if
 c_cond
 (paren
@@ -339,7 +277,6 @@ r_goto
 id|END
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Determine the address of the SMBus areas */
 r_if
 c_cond
