@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 1999-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 1999-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 multiline_comment|/*&n; * This file implements call frame unwind support for the Linux&n; * kernel.  Parsing and processing the unwind information is&n; * time-consuming, so this implementation translates the unwind&n; * descriptors into unwind scripts.  These scripts are very simple&n; * (basically a sequence of assignments) and efficient to execute.&n; * They are cached for later re-use.  Each script is specific for a&n; * given instruction pointer address and the set of predicate values&n; * that the script depends on (most unwind descriptors are&n; * unconditional and scripts often do not depend on predicates at&n; * all).  This code is based on the unwind conventions described in&n; * the &quot;IA-64 Software Conventions and Runtime Architecture&quot; manual.&n; *&n; * SMP conventions:&n; *&t;o updates to the global unwind data (in structure &quot;unw&quot;) are serialized&n; *&t;  by the unw.lock spinlock&n; *&t;o each unwind script has its own read-write lock; a thread must acquire&n; *&t;  a read lock before executing a script and must acquire a write lock&n; *&t;  before modifying a script&n; *&t;o if both the unw.lock spinlock and a script&squot;s read-write lock must be&n; *&t;  acquired, then the read-write lock must be acquired first.&n; */
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2597,6 +2597,7 @@ id|rs
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unwind: cannot stack reg state!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2651,6 +2652,7 @@ id|rs
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unwind: stack underflow!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2729,7 +2731,9 @@ id|copy
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unwind.dup_state_stack: out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4736,6 +4740,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unwind: failed to find state labeled 0x%lx&bslash;n&quot;
 comma
 id|label
@@ -4779,6 +4784,7 @@ id|ls
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unwind.desc_label_state(): out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5271,7 +5277,7 @@ id|spoff
 suffix:semicolon
 )brace
 DECL|macro|UNW_DEC_BAD_CODE
-mdefine_line|#define UNW_DEC_BAD_CODE(code)&t;&t;&t;printk(&quot;unwind: unknown code 0x%02x&bslash;n&quot;, code);
+mdefine_line|#define UNW_DEC_BAD_CODE(code)&t;&t;&t;printk(KERN_ERR &quot;unwind: unknown code 0x%02x&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;&t;       code);
 multiline_comment|/*&n; * region headers:&n; */
 DECL|macro|UNW_DEC_PROLOGUE_GR
 mdefine_line|#define UNW_DEC_PROLOGUE_GR(fmt,r,m,gr,arg)&t;desc_prologue(0,r,m,gr,arg)
@@ -9831,6 +9837,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unwind: unable to create unwind data for gate page!&bslash;n&quot;
 )paren
 suffix:semicolon

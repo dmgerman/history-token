@@ -1667,6 +1667,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;perfmon: psb is null in [%d]&bslash;n&quot;
 comma
 id|current-&gt;pid
@@ -1794,6 +1795,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;perfmon: invalid context mm=%p&bslash;n&quot;
 comma
 id|task-&gt;mm
@@ -1845,7 +1847,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;perfmon: pid %d unable to unmap sampling buffer @0x%lx size=%ld&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;perfmon: pid %d unable to unmap sampling buffer &quot;
+l_string|&quot;@0x%lx size=%ld&bslash;n&quot;
 comma
 id|task-&gt;pid
 comma
@@ -3152,7 +3156,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;perfmon: invalid release for [%d] sys_use_dbregs=0&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;perfmon: invalid release for [%d] &quot;
+l_string|&quot;sys_use_dbregs=0&bslash;n&quot;
 comma
 id|task-&gt;pid
 )paren
@@ -6325,6 +6331,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;perfmon: invalid release for [%d] ptrace_use_dbregs=0&bslash;n&quot;
 comma
 id|task-&gt;pid
@@ -7143,6 +7150,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;perfmon debugging %s&bslash;n&quot;
 comma
 id|pfm_sysctl.debug
@@ -8217,6 +8225,7 @@ id|task
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;perfmon: pfm_start task [%d] not pmu owner&bslash;n&quot;
 comma
 id|task-&gt;pid
@@ -8291,6 +8300,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;perfmon: pfm_start task flag not set for [%d]&bslash;n&quot;
 comma
 id|task-&gt;pid
@@ -9368,6 +9378,7 @@ id|ctx
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;perfmon: [%d] has no PFM context&bslash;n&quot;
 comma
 id|current-&gt;pid
@@ -9936,7 +9947,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;perfmon: Spurious overflow interrupt: process %d not using perfmon&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;perfmon: Spurious overflow interrupt: process %d not &quot;
+l_string|&quot;using perfmon&bslash;n&quot;
 comma
 id|task-&gt;pid
 )paren
@@ -9961,6 +9974,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;perfmon: pid %d pmc0=0x%lx assumption error for freeze bit&bslash;n&quot;
 comma
 id|task-&gt;pid
@@ -10393,6 +10407,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;send_sig_info(process %d, SIGPROF)=%d&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_notify_task-&gt;pid
@@ -10631,7 +10646,9 @@ id|ctx
 id|printk
 c_func
 (paren
-l_string|&quot;perfmon: Spurious overflow interrupt: process %d has no PFM context&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;perfmon: Spurious overflow interrupt: process %d has &quot;
+l_string|&quot;no PFM context&bslash;n&quot;
 comma
 id|task-&gt;pid
 )paren
@@ -11901,6 +11918,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;perfmon: remote CPU call from %d to %d error %d&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -12817,6 +12835,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;perfmon: [%d] last_cpu=%d&bslash;n&quot;
 comma
 id|task-&gt;pid
@@ -13806,6 +13825,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;perfmon: psb is null in [%d]&bslash;n&quot;
 comma
 id|current-&gt;pid
@@ -14231,7 +14251,9 @@ id|pfm_alternate_intr_handler
 id|printk
 c_func
 (paren
-l_string|&quot;perfmon: install_alternate, intr_handler not NULL after reserve&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;perfmon: install_alternate, intr_handler not NULL &quot;
+l_string|&quot;after reserve&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -14324,6 +14346,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;perfmon: version %u.%u IRQ %u&bslash;n&quot;
 comma
 id|PFM_VERSION_MAJ
@@ -14475,6 +14498,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;perfmon: %u PMCs, %u PMDs, %u counters (%lu bits)&bslash;n&quot;
 comma
 id|pmu_conf.num_pmcs

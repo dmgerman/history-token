@@ -198,6 +198,7 @@ macro_line|#if CONFIG_X86
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unexpected IRQ trap at vector %02x&bslash;n&quot;
 comma
 id|irq
@@ -216,6 +217,7 @@ macro_line|#if CONFIG_IA64
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Unexpected irq vector 0x%x on CPU %u!&bslash;n&quot;
 comma
 id|irq
@@ -971,6 +973,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;enable_irq(%u) unbalanced from %p&bslash;n&quot;
 comma
 id|irq
@@ -1337,6 +1340,7 @@ id|dev_id
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Bad boy: %s called us without a dev_id!&bslash;n&quot;
 comma
 id|devname
@@ -1609,6 +1613,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Trying to free free IRQ%d&bslash;n&quot;
 comma
 id|irq

@@ -899,6 +899,7 @@ id|page
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;put_gate_page: gate page at 0x%p not in reserved memory&bslash;n&quot;
 comma
 id|page_address
@@ -1651,7 +1652,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Memory: %luk/%luk available (%luk code, %luk reserved, %luk data, %luk init)&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Memory: %luk/%luk available (%luk code, %luk reserved, &quot;
+l_string|&quot;%luk data, %luk init)&bslash;n&quot;
 comma
 (paren
 r_int

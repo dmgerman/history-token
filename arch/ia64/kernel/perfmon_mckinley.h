@@ -637,6 +637,7 @@ id|ret
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;perfmon: failure check_case1&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -454,6 +454,7 @@ id|PAGE_OFFSET
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;warning: skipping physical page 0&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1248,6 +1249,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Initial ramdisk at: 0x%lx (%lu bytes)&bslash;n&quot;
 comma
 id|initrd_start
@@ -1484,12 +1486,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;No I/O port range found in EFI memory map, falling back to AR.KR0&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;No I/O port range found in EFI memory map, falling back &quot;
+l_string|&quot;to AR.KR0&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;I/O port base = 0x%lx&bslash;n&quot;
 comma
 id|phys_iobase
@@ -2326,6 +2331,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU %d: %lu virtual and %lu physical address bits&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -2840,6 +2846,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;cpu_init: PAL VM summary failed, assuming 18 RID bits&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  acpi.c - Architecture-Specific Low-Level ACPI Support&n; *&n; *  Copyright (C) 1999 VA Linux Systems&n; *  Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; *  Copyright (C) 2000, 2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *  Copyright (C) 2000 Intel Corp.&n; *  Copyright (C) 2000,2001 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *  Copyright (C) 2001 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2001 Jenna Hall &lt;jenna.s.hall@intel.com&gt;&n; *  Copyright (C) 2001 Takayoshi Kochi &lt;t-kouchi@cq.jp.nec.com&gt;&n; *  Copyright (C) 2002 Erich Focht &lt;efocht@ess.nec.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi.c - Architecture-Specific Low-Level ACPI Support&n; *&n; *  Copyright (C) 1999 VA Linux Systems&n; *  Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; *  Copyright (C) 2000, 2002-2003 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *  Copyright (C) 2000 Intel Corp.&n; *  Copyright (C) 2000,2001 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *  Copyright (C) 2001 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2001 Jenna Hall &lt;jenna.s.hall@intel.com&gt;&n; *  Copyright (C) 2001 Takayoshi Kochi &lt;t-kouchi@cq.jp.nec.com&gt;&n; *  Copyright (C) 2002 Erich Focht &lt;efocht@ess.nec.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -121,6 +121,7 @@ id|rsdp_phys
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ACPI 2.0 RSDP not found, default to &bslash;&quot;dig&bslash;&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -163,6 +164,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ACPI 2.0 RSDP signature incorrect, default to &bslash;&quot;dig&bslash;&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -210,6 +212,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ACPI 2.0 XSDT signature incorrect, default to &bslash;&quot;dig&bslash;&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -539,6 +542,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;acpi_request_vector(): invalid interrupt type&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -713,6 +717,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU %d (0x%04x)&quot;
 comma
 id|total_cpus
@@ -1555,6 +1560,7 @@ id|len
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ACPI 2.0 SLIT: size mismatch: %d expected, %d actual&bslash;n&quot;
 comma
 id|len
@@ -1711,6 +1717,7 @@ id|NR_MEMBLKS
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Too many mem chunks in SRAT. Ignoring %ld MBytes at %lx&bslash;n&quot;
 comma
 id|size
@@ -1837,6 +1844,7 @@ id|size
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Too huge memory hole. Ignoring %ld MBytes at %lx&bslash;n&quot;
 comma
 id|size
@@ -2169,6 +2177,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Number of logical nodes in system = %d&bslash;n&quot;
 comma
 id|numnodes
@@ -2177,6 +2186,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Number of memory chunks in system = %d&bslash;n&quot;
 comma
 id|num_memblks
@@ -2973,6 +2983,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ACPI: Found 0 CPUS; assuming 1&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3003,6 +3014,7 @@ multiline_comment|/* Make boot-up look pretty */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%d CPUs available, %d CPUs total&bslash;n&quot;
 comma
 id|available_cpus

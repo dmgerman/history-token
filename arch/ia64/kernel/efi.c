@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Extensible Firmware Interface&n; *&n; * Based on Extensible Firmware Interface Specification version 0.9 April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999-2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * All EFI Runtime Services are not implemented yet as EFI only&n; * supports physical mode addressing on SoftSDV. This is to be fixed&n; * in a future version.  --drummond 1999-07-20&n; *&n; * Implemented EFI runtime services and virtual mode calls.  --davidm&n; *&n; * Goutham Rao: &lt;goutham.rao@intel.com&gt;&n; *&t;Skip non-WB memory and ignore empty memory ranges.&n; */
+multiline_comment|/*&n; * Extensible Firmware Interface&n; *&n; * Based on Extensible Firmware Interface Specification version 0.9 April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999-2003 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * All EFI Runtime Services are not implemented yet as EFI only&n; * supports physical mode addressing on SoftSDV. This is to be fixed&n; * in a future version.  --drummond 1999-07-20&n; *&n; * Implemented EFI runtime services and virtual mode calls.  --davidm&n; *&n; * Goutham Rao: &lt;goutham.rao@intel.com&gt;&n; *&t;Skip non-WB memory and ignore empty memory ranges.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -872,6 +872,7 @@ id|prev.start
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Oops: EFI memory table not ordered!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1125,6 +1126,7 @@ id|mask
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: no need to install ITR for PAL code&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1164,6 +1166,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU %d: mapping PAL code [0x%lx-0x%lx) into [0x%lx-0x%lx)&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -1393,6 +1396,7 @@ l_int|0UL
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Ignoring memory above %luMB&bslash;n&quot;
 comma
 id|mem_limit
@@ -1451,6 +1455,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Warning: EFI system table major version mismatch: &quot;
 l_string|&quot;got %d.%02d, expected %d.%02d&bslash;n&quot;
 comma
@@ -1534,6 +1539,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;EFI v%u.%.02u by %s:&quot;
 comma
 id|efi.systab-&gt;hdr.revision
@@ -2147,6 +2153,7 @@ macro_line|#else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;EFI_MEMORY_WC mapping&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2201,6 +2208,7 @@ macro_line|#else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;EFI_MEMORY_WT mapping&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2252,7 +2260,9 @@ id|EFI_SUCCESS
 id|printk
 c_func
 (paren
-l_string|&quot;Warning: unable to switch EFI into virtual mode (status=%lu)&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;warning: unable to switch EFI into virtual mode &quot;
+l_string|&quot;(status=%lu)&bslash;n&quot;
 comma
 id|status
 )paren

@@ -229,6 +229,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;fpswa interface at %lx (rev %d.%d)&bslash;n&quot;
 comma
 id|ia64_boot_param-&gt;fpswa
@@ -876,6 +877,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s(%d): &lt;sc%ld(%lx,%lx,%lx,%lx)&gt;&bslash;n&quot;
 comma
 id|current-&gt;comm
@@ -1478,6 +1480,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;handle_fpu_swa: fp_emulate() returned -1&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1601,6 +1604,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;handle_fpu_swa: fp_emulate() returned -1&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2152,9 +2156,21 @@ macro_line|# ifdef CONFIG_IA64_PRINT_HAZARDS
 id|printk
 c_func
 (paren
-l_string|&quot;%016lx:possible hazard, pr = %016lx&bslash;n&quot;
+l_string|&quot;%s[%d]: possible hazard @ ip=%016lx (pr = %016lx)&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|current-&gt;pid
 comma
 id|regs-&gt;cr_iip
+op_plus
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|ri
 comma
 id|regs-&gt;pr
 )paren
@@ -2835,12 +2851,14 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Unexpected IA-32 exception (Trap 45)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;  iip - 0x%lx, ifa - 0x%lx, isr - 0x%lx&bslash;n&quot;
 comma
 id|regs-&gt;cr_iip
@@ -2883,12 +2901,14 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Unexpected IA-32 intercept trap (Trap 46)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;  iip - 0x%lx, ifa - 0x%lx, isr - 0x%lx, iim - 0x%lx&bslash;n&quot;
 comma
 id|regs-&gt;cr_iip
