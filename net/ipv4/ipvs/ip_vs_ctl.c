@@ -28,6 +28,7 @@ id|__ip_vs_mutex
 suffix:semicolon
 multiline_comment|/* lock for service table */
 DECL|variable|__ip_vs_svc_lock
+r_static
 id|rwlock_t
 id|__ip_vs_svc_lock
 op_assign
@@ -7293,6 +7294,7 @@ id|get
 comma
 r_struct
 id|ip_vs_get_services
+id|__user
 op_star
 id|uptr
 )paren
@@ -7507,6 +7509,7 @@ id|get
 comma
 r_struct
 id|ip_vs_get_dests
+id|__user
 op_star
 id|uptr
 )paren
@@ -7871,6 +7874,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|user
 comma
