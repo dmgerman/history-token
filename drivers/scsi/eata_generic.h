@@ -853,7 +853,8 @@ id|status
 suffix:semicolon
 multiline_comment|/* status of this queueslot&t;&t;*/
 DECL|member|cmd
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
