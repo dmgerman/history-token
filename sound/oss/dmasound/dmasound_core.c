@@ -3492,6 +3492,18 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|SOUND_PCM_READ_RATE
+suffix:colon
+r_return
+id|IOCTL_OUT
+c_func
+(paren
+id|arg
+comma
+id|dmasound.soft.speed
+)paren
+suffix:semicolon
+r_case
 id|SNDCTL_DSP_SPEED
 suffix:colon
 multiline_comment|/* changing this on the fly will have weird effects on the sound.&n;&t;&t;   Where there are rate conversions implemented in soft form - it&n;&t;&t;   will cause the _ctx_xxx() functions to be substituted.&n;&t;&t;   However, there doesn&squot;t appear to be any reason to dis-allow it from&n;&t;&t;   a driver pov.&n;&t;&t;*/

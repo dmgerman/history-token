@@ -99,7 +99,7 @@ comma
 suffix:semicolon
 DECL|function|q40kbd_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|q40kbd_interrupt
 c_func
 (paren
@@ -152,6 +152,9 @@ l_int|1
 comma
 id|KEYBOARD_UNLOCK_REG
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|q40kbd_init

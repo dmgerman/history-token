@@ -1874,11 +1874,6 @@ op_star
 id|sp
 )paren
 (brace
-id|sp-&gt;SCp.have_data_in
-op_assign
-(paren
-r_int
-)paren
 id|sp-&gt;SCp.ptr
 op_assign
 id|sp-&gt;request_buffer

@@ -37,6 +37,8 @@ DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;(SUN3_PAGE_VALID)
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;(SUN3_PAGE_ACCESSED)
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS 28
 multiline_comment|/* Compound page protection values. */
 singleline_comment|//todo: work out which ones *should* have SUN3_PAGE_NOCACHE and fix...
 singleline_comment|// is it just PAGE_KERNEL and PAGE_SHARED?
@@ -474,6 +476,27 @@ op_amp
 id|SUN3_PAGE_ACCESSED
 suffix:semicolon
 )brace
+DECL|function|pte_file
+r_extern
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|SUN3_PAGE_ACCESSED
+suffix:semicolon
+)brace
 DECL|function|pte_wrprotect
 r_extern
 r_inline
@@ -761,6 +784,49 @@ id|pmd_t
 op_star
 )paren
 id|pgd
+suffix:semicolon
+)brace
+DECL|function|pte_to_pgoff
+r_static
+r_inline
+r_int
+r_int
+id|pte_to_pgoff
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte.pte
+op_amp
+id|SUN3_PAGE_PGNUM_MASK
+suffix:semicolon
+)brace
+DECL|function|pgoff_to_pte
+r_static
+r_inline
+id|pte_t
+id|pgoff_to_pte
+c_func
+(paren
+r_inline
+r_int
+id|off
+)paren
+(brace
+id|pte_t
+id|pte
+op_assign
+(brace
+id|off
+op_plus
+id|SUN3_PAGE_ACCESSED
+)brace
+suffix:semicolon
+r_return
+id|pte
 suffix:semicolon
 )brace
 multiline_comment|/* Find an entry in the third-level pagetable. */

@@ -4170,8 +4170,6 @@ c_func
 (paren
 id|SLM_BUFFER_SIZE
 comma
-l_int|NULL
-comma
 l_string|&quot;SLM&quot;
 )paren
 )paren
