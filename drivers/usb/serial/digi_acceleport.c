@@ -5315,6 +5315,20 @@ comma
 id|port-&gt;open_count
 )paren
 suffix:semicolon
+multiline_comment|/* if disconnected, just clear flags */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|usb_get_intfdata
+c_func
+(paren
+id|port-&gt;serial-&gt;interface
+)paren
+)paren
+r_goto
+m_exit
+suffix:semicolon
 multiline_comment|/* do cleanup only after final close on this port */
 id|spin_lock_irqsave
 c_func
@@ -5642,6 +5656,8 @@ id|tty-&gt;closing
 op_assign
 l_int|0
 suffix:semicolon
+m_exit
+suffix:colon
 id|spin_lock_irqsave
 c_func
 (paren
