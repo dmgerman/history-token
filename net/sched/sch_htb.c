@@ -3416,8 +3416,18 @@ id|cl-&gt;classid
 comma
 id|diff
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|q-&gt;now
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|cl-&gt;t_c
 comma
 id|jiffies
@@ -3802,8 +3812,18 @@ id|cl-&gt;classid
 comma
 id|diff
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|q-&gt;now
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|cl-&gt;t_c
 comma
 id|jiffies
@@ -5088,11 +5108,8 @@ l_int|0
 comma
 l_int|1
 comma
-l_string|&quot;htb_reset sch=%X, handle=%X&bslash;n&quot;
+l_string|&quot;htb_reset sch=%p, handle=%X&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|sch
 comma
 id|sch-&gt;handle
