@@ -8,20 +8,21 @@ mdefine_line|#define CIFS_PROT   0
 DECL|macro|BAD_PROT
 mdefine_line|#define BAD_PROT    CIFS_PROT+1
 multiline_comment|/* SMB command codes */
+multiline_comment|/* Some commands have minimal (wct=0,bcc=0), or uninteresting, responses&n; (ie which include no useful data other than the SMB error code itself).&n; Knowing this helps avoid response buffer allocations and copy in some cases */
 DECL|macro|SMB_COM_CREATE_DIRECTORY
-mdefine_line|#define SMB_COM_CREATE_DIRECTORY      0x00
+mdefine_line|#define SMB_COM_CREATE_DIRECTORY      0x00 /* trivial response */
 DECL|macro|SMB_COM_DELETE_DIRECTORY
-mdefine_line|#define SMB_COM_DELETE_DIRECTORY      0x01
+mdefine_line|#define SMB_COM_DELETE_DIRECTORY      0x01 /* trivial response */
 DECL|macro|SMB_COM_CLOSE
-mdefine_line|#define SMB_COM_CLOSE                 0x04
+mdefine_line|#define SMB_COM_CLOSE                 0x04 /* trivial rsp, timestamp ignored */
 DECL|macro|SMB_COM_DELETE
-mdefine_line|#define SMB_COM_DELETE                0x06
+mdefine_line|#define SMB_COM_DELETE                0x06 /* trivial response */
 DECL|macro|SMB_COM_RENAME
-mdefine_line|#define SMB_COM_RENAME                0x07
+mdefine_line|#define SMB_COM_RENAME                0x07 /* trivial response */
 DECL|macro|SMB_COM_LOCKING_ANDX
-mdefine_line|#define SMB_COM_LOCKING_ANDX          0x24
+mdefine_line|#define SMB_COM_LOCKING_ANDX          0x24 /* trivial response */
 DECL|macro|SMB_COM_COPY
-mdefine_line|#define SMB_COM_COPY                  0x29
+mdefine_line|#define SMB_COM_COPY                  0x29 /* trivial rsp, fail filename ignrd*/
 DECL|macro|SMB_COM_READ_ANDX
 mdefine_line|#define SMB_COM_READ_ANDX             0x2E
 DECL|macro|SMB_COM_WRITE_ANDX
@@ -31,15 +32,15 @@ mdefine_line|#define SMB_COM_TRANSACTION2          0x32
 DECL|macro|SMB_COM_TRANSACTION2_SECONDARY
 mdefine_line|#define SMB_COM_TRANSACTION2_SECONDARY 0x33
 DECL|macro|SMB_COM_FIND_CLOSE2
-mdefine_line|#define SMB_COM_FIND_CLOSE2           0x34
+mdefine_line|#define SMB_COM_FIND_CLOSE2           0x34 /* trivial response */
 DECL|macro|SMB_COM_TREE_DISCONNECT
-mdefine_line|#define SMB_COM_TREE_DISCONNECT       0x71
+mdefine_line|#define SMB_COM_TREE_DISCONNECT       0x71 /* trivial response */
 DECL|macro|SMB_COM_NEGOTIATE
 mdefine_line|#define SMB_COM_NEGOTIATE             0x72
 DECL|macro|SMB_COM_SESSION_SETUP_ANDX
 mdefine_line|#define SMB_COM_SESSION_SETUP_ANDX    0x73
 DECL|macro|SMB_COM_LOGOFF_ANDX
-mdefine_line|#define SMB_COM_LOGOFF_ANDX           0x74
+mdefine_line|#define SMB_COM_LOGOFF_ANDX           0x74 /* trivial response */
 DECL|macro|SMB_COM_TREE_CONNECT_ANDX
 mdefine_line|#define SMB_COM_TREE_CONNECT_ANDX     0x75
 DECL|macro|SMB_COM_NT_TRANSACT
@@ -49,7 +50,7 @@ mdefine_line|#define SMB_COM_NT_TRANSACT_SECONDARY 0xA1
 DECL|macro|SMB_COM_NT_CREATE_ANDX
 mdefine_line|#define SMB_COM_NT_CREATE_ANDX        0xA2
 DECL|macro|SMB_COM_NT_RENAME
-mdefine_line|#define SMB_COM_NT_RENAME             0xA5
+mdefine_line|#define SMB_COM_NT_RENAME             0xA5 /* trivial response */
 multiline_comment|/* Transact2 subcommand codes */
 DECL|macro|TRANS2_OPEN
 mdefine_line|#define TRANS2_OPEN                   0x00
