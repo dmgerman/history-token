@@ -26,7 +26,7 @@ comma
 suffix:semicolon
 DECL|macro|TCA_STATS_MAX
 mdefine_line|#define TCA_STATS_MAX (__TCA_STATS_MAX - 1)
-multiline_comment|/**&n; * @bytes: number of seen bytes&n; * @packets: number of seen packets&n; */
+multiline_comment|/**&n; * struct gnet_stats_basic - byte/packet throughput statistics&n; * @bytes: number of seen bytes&n; * @packets: number of seen packets&n; */
 DECL|struct|gnet_stats_basic
 r_struct
 id|gnet_stats_basic
@@ -41,7 +41,7 @@ id|packets
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * @bps: current byte rate&n; * @pps: current packet rate&n; */
+multiline_comment|/**&n; * struct gnet_stats_rate_est - rate estimator&n; * @bps: current byte rate&n; * @pps: current packet rate&n; */
 DECL|struct|gnet_stats_rate_est
 r_struct
 id|gnet_stats_rate_est
@@ -56,7 +56,7 @@ id|pps
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * @qlen: queue length&n; * @backlog: backlog size of queue&n; * @drops: number of dropped packets&n; * @requeues: number of requeues&n; */
+multiline_comment|/**&n; * struct gnet_stats_queue - queuing statistics&n; * @qlen: queue length&n; * @backlog: backlog size of queue&n; * @drops: number of dropped packets&n; * @requeues: number of requeues&n; * @overlimits: number of enqueues over the limit&n; */
 DECL|struct|gnet_stats_queue
 r_struct
 id|gnet_stats_queue
@@ -83,7 +83,7 @@ id|overlimits
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * @interval: sampling period&n; * @ewma_log: the log of measurement window weight&n; */
+multiline_comment|/**&n; * struct gnet_estimator - rate estimator configuration&n; * @interval: sampling period&n; * @ewma_log: the log of measurement window weight&n; */
 DECL|struct|gnet_estimator
 r_struct
 id|gnet_estimator
