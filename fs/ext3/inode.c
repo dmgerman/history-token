@@ -8615,7 +8615,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Post the struct inode info into an on-disk inode location in the&n; * buffer-cache.  This gobbles the caller&squot;s reference to the&n; * buffer_head in the inode location struct.  &n; */
+multiline_comment|/*&n; * Post the struct inode info into an on-disk inode location in the&n; * buffer-cache.  This gobbles the caller&squot;s reference to the&n; * buffer_head in the inode location struct.&n; *&n; * The caller must have write access to iloc-&gt;bh.&n; */
 DECL|function|ext3_do_update_inode
 r_static
 r_int
@@ -8671,39 +8671,6 @@ id|rc
 comma
 id|block
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|handle
-)paren
-(brace
-id|BUFFER_TRACE
-c_func
-(paren
-id|bh
-comma
-l_string|&quot;get_write_access&quot;
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|ext3_journal_get_write_access
-c_func
-(paren
-id|handle
-comma
-id|bh
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-r_goto
-id|out_brelse
-suffix:semicolon
-)brace
 multiline_comment|/* For fields not not tracking in the in-memory inode,&n;&t; * initialise them to zero for new inodes. */
 r_if
 c_cond
@@ -9627,8 +9594,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_int
+multiline_comment|/*&n; * The caller must have previously called ext3_reserve_inode_write().&n; * Give this, we know that the caller already has write access to iloc-&gt;bh.&n; */
 DECL|function|ext3_mark_iloc_dirty
+r_int
 id|ext3_mark_iloc_dirty
 c_func
 (paren
@@ -9652,20 +9620,14 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|handle
-)paren
-(brace
 multiline_comment|/* the do_update_inode consumes one bh-&gt;b_count */
-id|atomic_inc
+id|get_bh
 c_func
 (paren
-op_amp
-id|iloc-&gt;bh-&gt;b_count
+id|iloc-&gt;bh
 )paren
 suffix:semicolon
+multiline_comment|/* ext3_do_update_inode() does journal_dirty_metadata */
 id|err
 op_assign
 id|ext3_do_update_inode
@@ -9678,26 +9640,12 @@ comma
 id|iloc
 )paren
 suffix:semicolon
-multiline_comment|/* ext3_do_update_inode() does journal_dirty_metadata */
-id|brelse
+id|put_bh
 c_func
 (paren
 id|iloc-&gt;bh
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_EMERG
-l_string|&quot;%s: called with no handle!&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-)brace
 r_return
 id|err
 suffix:semicolon
