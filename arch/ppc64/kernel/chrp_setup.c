@@ -870,7 +870,7 @@ id|ppc_md.progress
 op_assign
 id|chrp_progress
 suffix:semicolon
-multiline_comment|/* build up the firmware_features bitmask field&n;         * using contents of device-tree/ibm,hypertas-functions.&n;         * Ultimately this functionality may be moved into prom.c prom_init().&n;         */
+multiline_comment|/* Build up the firmware_features bitmask field&n;         * using contents of device-tree/ibm,hypertas-functions.&n;         * Ultimately this functionality may be moved into prom.c prom_init().&n;         */
 id|dn
 op_assign
 id|of_find_node_by_path

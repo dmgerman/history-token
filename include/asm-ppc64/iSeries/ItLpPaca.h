@@ -295,11 +295,21 @@ id|u32
 id|xVirtualDecr
 suffix:semicolon
 singleline_comment|// Virtual DECR for shared procsx78-x7B
+DECL|member|xSLBCount
+id|u16
+id|xSLBCount
+suffix:semicolon
+singleline_comment|// # of SLBs to maintain        x7C-x7D
+DECL|member|xIdle
+id|u8
+id|xIdle
+suffix:semicolon
+singleline_comment|// Indicate OS is idle          x7E
 DECL|member|xRsvd2_2
-id|u32
+id|u8
 id|xRsvd2_2
 suffix:semicolon
-singleline_comment|// Reserved&t;&t;&t;x7C-x7F
+singleline_comment|// Reserved                     x7F
 singleline_comment|//=============================================================================
 singleline_comment|// CACHE_LINE_3 0x0100 - 0x007F: This line is shared with other processors
 singleline_comment|//=============================================================================

@@ -95,11 +95,24 @@ id|u32
 id|iCacheL1LinesPerPage
 suffix:semicolon
 multiline_comment|/* L1 i-cache lines / page   0x6c */
-DECL|member|resv0
+DECL|member|smt_snooze_delay
 id|u64
+id|smt_snooze_delay
+suffix:semicolon
+multiline_comment|/* Delay (in usec) before    0x70 */
+multiline_comment|/* entering ST mode               */
+DECL|member|smt_state
+id|u8
+id|smt_state
+suffix:semicolon
+multiline_comment|/* 0 = SMT off               0x78 */
+multiline_comment|/* 1 = SMT on                     */
+multiline_comment|/* 2 = SMT dynamic                */
+DECL|member|resv0
+id|u8
 id|resv0
 (braket
-l_int|2
+l_int|7
 )braket
 suffix:semicolon
 multiline_comment|/* Reserved           0x70 - 0x7F */

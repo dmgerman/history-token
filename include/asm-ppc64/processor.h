@@ -681,6 +681,8 @@ DECL|macro|PLATFORM_PSERIES_LPAR
 mdefine_line|#define PLATFORM_PSERIES_LPAR 0x0101
 DECL|macro|PLATFORM_ISERIES_LPAR
 mdefine_line|#define PLATFORM_ISERIES_LPAR 0x0201
+DECL|macro|PLATFORM_LPAR
+mdefine_line|#define PLATFORM_LPAR         0x0001
 multiline_comment|/*&n; * List of interrupt controllers.&n; */
 DECL|macro|IC_INVALID
 mdefine_line|#define IC_INVALID    0

@@ -69,32 +69,36 @@ DECL|macro|isync_on_smp
 mdefine_line|#define isync_on_smp()&t;__asm__ __volatile__(&quot;&quot;: : :&quot;memory&quot;)
 macro_line|#endif
 multiline_comment|/* Macros for adjusting thread priority (hardware multi-threading) */
-macro_line|#if defined(CONFIG_PPC_ISERIES) || defined(CONFIG_HMT)
+DECL|macro|HMT_very_low
+mdefine_line|#define HMT_very_low()    asm volatile(&quot;or 31,31,31   # very low priority&quot;)
 DECL|macro|HMT_low
 mdefine_line|#define HMT_low()&t;asm volatile(&quot;or 1,1,1&t;&t;# low priority&quot;)
+DECL|macro|HMT_medium_low
+mdefine_line|#define HMT_medium_low()  asm volatile(&quot;or 6,6,6      # medium low priority&quot;)
 DECL|macro|HMT_medium
 mdefine_line|#define HMT_medium()&t;asm volatile(&quot;or 2,2,2&t;&t;# medium priority&quot;)
+DECL|macro|HMT_medium_high
+mdefine_line|#define HMT_medium_high() asm volatile(&quot;or 5,5,5      # medium high priority&quot;)
 DECL|macro|HMT_high
 mdefine_line|#define HMT_high()&t;asm volatile(&quot;or 3,3,3&t;&t;# high priority&quot;)
+DECL|macro|HMT_VERY_LOW
+mdefine_line|#define HMT_VERY_LOW    &quot;&bslash;tor   31,31,31        # very low priority&bslash;n&quot;
 DECL|macro|HMT_LOW
 mdefine_line|#define HMT_LOW&t;&t;&quot;&bslash;tor&t;1,1,1&t;&t;# low priority&bslash;n&quot;
+DECL|macro|HMT_MEDIUM_LOW
+mdefine_line|#define HMT_MEDIUM_LOW  &quot;&bslash;tor   6,6,6           # medium low priority&bslash;n&quot;
 DECL|macro|HMT_MEDIUM
 mdefine_line|#define HMT_MEDIUM&t;&quot;&bslash;tor&t;2,2,2&t;&t;# medium priority&bslash;n&quot;
+DECL|macro|HMT_MEDIUM_HIGH
+mdefine_line|#define HMT_MEDIUM_HIGH &quot;&bslash;tor   5,5,5           # medium high priority&bslash;n&quot;
 DECL|macro|HMT_HIGH
 mdefine_line|#define HMT_HIGH&t;&quot;&bslash;tor&t;3,3,3&t;&t;# high priority&bslash;n&quot;
-macro_line|#else
-DECL|macro|HMT_low
-mdefine_line|#define HMT_low()&t;do { } while(0)
-DECL|macro|HMT_medium
-mdefine_line|#define HMT_medium()&t;do { } while(0)
-DECL|macro|HMT_high
-mdefine_line|#define HMT_high()&t;do { } while(0)
-DECL|macro|HMT_LOW
-mdefine_line|#define HMT_LOW
-DECL|macro|HMT_MEDIUM
-mdefine_line|#define HMT_MEDIUM
-DECL|macro|HMT_HIGH
-mdefine_line|#define HMT_HIGH
-macro_line|#endif
+multiline_comment|/* &n; * Various operational modes for SMT&n; * Off    : never run threaded&n; * On     : always run threaded&n; * Dynamic: Allow the system to switch modes as needed&n; */
+DECL|macro|SMT_OFF
+mdefine_line|#define SMT_OFF      0
+DECL|macro|SMT_ON
+mdefine_line|#define SMT_ON       1
+DECL|macro|SMT_DYNAMIC
+mdefine_line|#define SMT_DYNAMIC  2
 macro_line|#endif
 eof
