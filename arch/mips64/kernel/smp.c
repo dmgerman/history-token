@@ -122,13 +122,6 @@ macro_line|#endif
 )brace
 macro_line|#endif /* CONFIG_SGI_IP27 */
 multiline_comment|/* The &squot;big kernel lock&squot; */
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|kernel_flag
-id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|variable|smp_threads_ready
 r_int
 id|smp_threads_ready

@@ -140,14 +140,6 @@ c_func
 id|synchronize_irq
 )paren
 suffix:semicolon
-macro_line|#include &lt;asm/smplock.h&gt;
-DECL|variable|kernel_flag
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kernel_flag
-)paren
-suffix:semicolon
 macro_line|#include &lt;asm/system.h&gt;
 DECL|variable|__global_sti
 id|EXPORT_SYMBOL

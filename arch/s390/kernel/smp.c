@@ -81,13 +81,6 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|kernel_flag
-id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|variable|phys_cpu_present_map
 r_volatile
 r_int
@@ -2288,13 +2281,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|lowcore_ptr
-)paren
-suffix:semicolon
-DECL|variable|kernel_flag
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kernel_flag
 )paren
 suffix:semicolon
 DECL|variable|smp_ctl_set_bit

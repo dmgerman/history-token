@@ -1138,13 +1138,4 @@ c_func
 id|get_wchan
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREEMPT
-DECL|variable|kernel_flag
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kernel_flag
-)paren
-suffix:semicolon
-macro_line|#endif
 eof
