@@ -857,6 +857,9 @@ op_star
 id|data
 )paren
 (brace
+r_int
+id|rc
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -871,6 +874,8 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
+id|rc
+op_assign
 id|mf_setVmlinuxChunk
 c_func
 (paren
@@ -885,6 +890,16 @@ id|u64
 )paren
 id|data
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+OL
+l_int|0
+)paren
+r_return
+id|rc
 suffix:semicolon
 id|file-&gt;f_pos
 op_add_assign
