@@ -288,16 +288,5 @@ op_star
 id|cs
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|ipacx_fill_fifo
-c_func
-(paren
-r_struct
-id|BCState
-op_star
-id|bcs
-)paren
-suffix:semicolon
 macro_line|#endif
 eof

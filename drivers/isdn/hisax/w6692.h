@@ -9,8 +9,6 @@ mdefine_line|#define&t;readW6692fifo&t;readisacfifo
 DECL|macro|writeW6692fifo
 mdefine_line|#define&t;writeW6692fifo&t;writeisacfifo
 multiline_comment|/* B-channel FIFO read/write routines */
-DECL|macro|READW6692BFIFO
-mdefine_line|#define READW6692BFIFO(cs,bchan,ptr,count) &bslash;&n;&t;insb(cs-&gt;hw.w6692.iobase+W_B_RFIFO+(bchan?0x40:0),ptr,count)
 DECL|macro|WRITEW6692BFIFO
 mdefine_line|#define WRITEW6692BFIFO(cs,bchan,ptr,count) &bslash;&n;&t;outsb(cs-&gt;hw.w6692.iobase+W_B_XFIFO+(bchan?0x40:0),ptr,count)
 multiline_comment|/* Specifications of W6692 registers */

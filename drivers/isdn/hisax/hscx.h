@@ -99,15 +99,4 @@ id|u8
 id|val
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|hscx_fill_fifo
-c_func
-(paren
-r_struct
-id|BCState
-op_star
-id|bcs
-)paren
-suffix:semicolon
 eof

@@ -1493,14 +1493,6 @@ comma
 id|bcs
 )paren
 suffix:semicolon
-id|bcs-&gt;BC_SetStack
-op_assign
-l_int|NULL
-suffix:semicolon
-id|bcs-&gt;BC_Close
-op_assign
-l_int|NULL
-suffix:semicolon
 id|bcs-&gt;Flag
 op_assign
 l_int|0
