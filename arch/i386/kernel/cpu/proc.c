@@ -21,13 +21,6 @@ id|v
 )paren
 (brace
 multiline_comment|/* &n;&t; * These flag bits must match the definitions in &lt;asm/cpufeature.h&gt;.&n;&t; * NULL means this bit is undefined or reserved; either way it doesn&squot;t&n;&t; * have meaning as far as Linux is concerned.  Note that it&squot;s important&n;&t; * to realize there is a difference between this table and CPUID -- if&n;&t; * applications want to get the raw CPUID data, they should access&n;&t; * /dev/cpu/&lt;cpu_nr&gt;/cpuid instead.&n;&t; */
-r_extern
-r_int
-id|phys_proc_id
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 r_static
 r_char
 op_star
@@ -458,6 +451,13 @@ c_cond
 id|cpu_has_ht
 )paren
 (brace
+r_extern
+r_int
+id|phys_proc_id
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 id|seq_printf
 c_func
 (paren
