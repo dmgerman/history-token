@@ -104,6 +104,7 @@ id|csum_partial_copy_from_user
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -125,6 +126,11 @@ id|err_ptr
 r_return
 id|csum_partial_copy_generic
 (paren
+(paren
+id|__force
+r_char
+op_star
+)paren
 id|src
 comma
 id|dst
@@ -575,6 +581,11 @@ c_func
 (paren
 id|src
 comma
+(paren
+id|__force
+r_char
+op_star
+)paren
 id|dst
 comma
 id|len
