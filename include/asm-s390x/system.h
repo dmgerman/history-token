@@ -61,6 +61,15 @@ r_int
 id|size
 )paren
 (brace
+r_int
+r_int
+id|addr
+comma
+id|old
+suffix:semicolon
+r_int
+id|shift
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -70,50 +79,69 @@ id|size
 r_case
 l_int|1
 suffix:colon
+id|addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ptr
+suffix:semicolon
+id|shift
+op_assign
+(paren
+l_int|3
+op_xor
+(paren
+id|addr
+op_amp
+l_int|3
+)paren
+)paren
+op_lshift
+l_int|3
+suffix:semicolon
+id|addr
+op_xor_assign
+id|addr
+op_amp
+l_int|3
+suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;   lghi  1,3&bslash;n&quot;
-l_string|&quot;   nr    1,%0&bslash;n&quot;
-multiline_comment|/* isolate last 2 bits */
-l_string|&quot;   xr    %0,1&bslash;n&quot;
-multiline_comment|/* align ptr */
-l_string|&quot;   bras  2,0f&bslash;n&quot;
-l_string|&quot;   icm   1,8,7(%1)&bslash;n&quot;
-multiline_comment|/* for ptr&amp;3 == 0 */
-l_string|&quot;   stcm  0,8,7(%1)&bslash;n&quot;
-l_string|&quot;   icm   1,4,7(%1)&bslash;n&quot;
-multiline_comment|/* for ptr&amp;3 == 1 */
-l_string|&quot;   stcm  0,4,7(%1)&bslash;n&quot;
-l_string|&quot;   icm   1,2,7(%1)&bslash;n&quot;
-multiline_comment|/* for ptr&amp;3 == 2 */
-l_string|&quot;   stcm  0,2,7(%1)&bslash;n&quot;
-l_string|&quot;   icm   1,1,7(%1)&bslash;n&quot;
-multiline_comment|/* for ptr&amp;3 == 3 */
-l_string|&quot;   stcm  0,1,7(%1)&bslash;n&quot;
-l_string|&quot;0: sll   1,3&bslash;n&quot;
-l_string|&quot;   la    2,0(1,2)&bslash;n&quot;
-multiline_comment|/* r2 points to an icm */
-l_string|&quot;   l     0,0(%0)&bslash;n&quot;
-multiline_comment|/* get fullword */
-l_string|&quot;1: lr    1,0&bslash;n&quot;
-multiline_comment|/* cs loop */
-l_string|&quot;   ex    0,0(2)&bslash;n&quot;
-multiline_comment|/* insert x */
-l_string|&quot;   cs    0,1,0(%0)&bslash;n&quot;
-l_string|&quot;   jl    1b&bslash;n&quot;
-l_string|&quot;   ex    0,4(2)&quot;
-multiline_comment|/* store *ptr to x */
+l_string|&quot;    l   %0,0(%3)&bslash;n&quot;
+l_string|&quot;0:  lr  0,%0&bslash;n&quot;
+l_string|&quot;    nr  0,%2&bslash;n&quot;
+l_string|&quot;    or  0,%1&bslash;n&quot;
+l_string|&quot;    cs  %0,0,0(%3)&bslash;n&quot;
+l_string|&quot;    jl  0b&bslash;n&quot;
 suffix:colon
-l_string|&quot;+&amp;a&quot;
+l_string|&quot;=&amp;d&quot;
 (paren
-id|ptr
+id|old
 )paren
 suffix:colon
+l_string|&quot;d&quot;
+(paren
+id|x
+op_lshift
+id|shift
+)paren
+comma
+l_string|&quot;d&quot;
+(paren
+op_complement
+(paren
+l_int|255
+op_lshift
+id|shift
+)paren
+)paren
+comma
 l_string|&quot;a&quot;
 (paren
-op_amp
-id|x
+id|addr
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
@@ -121,74 +149,82 @@ comma
 l_string|&quot;cc&quot;
 comma
 l_string|&quot;0&quot;
-comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;2&quot;
 )paren
+suffix:semicolon
+id|x
+op_assign
+id|old
+op_rshift
+id|shift
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-r_if
-c_cond
+id|addr
+op_assign
 (paren
-(paren
-(paren
-id|addr_t
+r_int
+r_int
 )paren
 id|ptr
-)paren
-op_amp
-l_int|1
-)paren
-(brace
-id|__misaligned_u16
-c_func
-(paren
-)paren
 suffix:semicolon
-)brace
+id|shift
+op_assign
+(paren
+l_int|2
+op_xor
+(paren
+id|addr
+op_amp
+l_int|2
+)paren
+)paren
+op_lshift
+l_int|3
+suffix:semicolon
+id|addr
+op_xor_assign
+id|addr
+op_amp
+l_int|2
+suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;   lghi  1,2&bslash;n&quot;
-l_string|&quot;   nr    1,%0&bslash;n&quot;
-multiline_comment|/* isolate bit 2^1 */
-l_string|&quot;   xr    %0,1&bslash;n&quot;
-multiline_comment|/* align ptr */
-l_string|&quot;   bras  2,0f&bslash;n&quot;
-l_string|&quot;   icm   1,12,6(%1)&bslash;n&quot;
-multiline_comment|/* for ptr&amp;2 == 0 */
-l_string|&quot;   stcm  0,12,6(%1)&bslash;n&quot;
-l_string|&quot;   icm   1,3,2(%1)&bslash;n&quot;
-multiline_comment|/* for ptr&amp;2 == 1 */
-l_string|&quot;   stcm  0,3,2(%1)&bslash;n&quot;
-l_string|&quot;0: sll   1,2&bslash;n&quot;
-l_string|&quot;   la    2,0(1,2)&bslash;n&quot;
-multiline_comment|/* r2 points to an icm */
-l_string|&quot;   l     0,0(%0)&bslash;n&quot;
-multiline_comment|/* get fullword */
-l_string|&quot;1: lr    1,0&bslash;n&quot;
-multiline_comment|/* cs loop */
-l_string|&quot;   ex    0,0(2)&bslash;n&quot;
-multiline_comment|/* insert x */
-l_string|&quot;   cs    0,1,0(%0)&bslash;n&quot;
-l_string|&quot;   jl    1b&bslash;n&quot;
-l_string|&quot;   ex    0,4(2)&quot;
-multiline_comment|/* store *ptr to x */
+l_string|&quot;    l   %0,0(%3)&bslash;n&quot;
+l_string|&quot;0:  lr  0,%0&bslash;n&quot;
+l_string|&quot;    nr  0,%2&bslash;n&quot;
+l_string|&quot;    or  0,%1&bslash;n&quot;
+l_string|&quot;    cs  %0,0,0(%3)&bslash;n&quot;
+l_string|&quot;    jl  0b&bslash;n&quot;
 suffix:colon
-l_string|&quot;+&amp;a&quot;
+l_string|&quot;=&amp;d&quot;
 (paren
-id|ptr
+id|old
 )paren
 suffix:colon
+l_string|&quot;d&quot;
+(paren
+id|x
+op_lshift
+id|shift
+)paren
+comma
+l_string|&quot;d&quot;
+(paren
+op_complement
+(paren
+l_int|65535
+op_lshift
+id|shift
+)paren
+)paren
+comma
 l_string|&quot;a&quot;
 (paren
-op_amp
-id|x
+id|addr
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
@@ -196,49 +232,36 @@ comma
 l_string|&quot;cc&quot;
 comma
 l_string|&quot;0&quot;
-comma
-l_string|&quot;1&quot;
-comma
-l_string|&quot;2&quot;
 )paren
+suffix:semicolon
+id|x
+op_assign
+id|old
+op_rshift
+id|shift
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|4
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|addr_t
-)paren
-id|ptr
-)paren
-op_amp
-l_int|3
-)paren
-(brace
-id|__misaligned_u32
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|asm
 r_volatile
 (paren
-l_string|&quot;    l    0,0(%1)&bslash;n&quot;
-l_string|&quot;0:  cs   0,%0,0(%1)&bslash;n&quot;
-l_string|&quot;    jl   0b&bslash;n&quot;
-l_string|&quot;    lgfr %0,0&bslash;n&quot;
+l_string|&quot;    l   %0,0(%2)&bslash;n&quot;
+l_string|&quot;0:  cs  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;    jl  0b&bslash;n&quot;
 suffix:colon
-l_string|&quot;+d&quot;
+l_string|&quot;=&amp;d&quot;
+(paren
+id|old
+)paren
+suffix:colon
+l_string|&quot;d&quot;
 (paren
 id|x
 )paren
-suffix:colon
+comma
 l_string|&quot;a&quot;
 (paren
 id|ptr
@@ -250,44 +273,33 @@ l_string|&quot;cc&quot;
 comma
 l_string|&quot;0&quot;
 )paren
+suffix:semicolon
+id|x
+op_assign
+id|old
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|8
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|addr_t
-)paren
-id|ptr
-)paren
-op_amp
-l_int|7
-)paren
-(brace
-id|__misaligned_u64
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|asm
 r_volatile
 (paren
-l_string|&quot;    lg  0,0(%1)&bslash;n&quot;
-l_string|&quot;0:  csg 0,%0,0(%1)&bslash;n&quot;
+l_string|&quot;    lg  %0,0(%2)&bslash;n&quot;
+l_string|&quot;0:  csg %0,%1,0(%2)&bslash;n&quot;
 l_string|&quot;    jl  0b&bslash;n&quot;
-l_string|&quot;    lgr %0,0&bslash;n&quot;
 suffix:colon
-l_string|&quot;+d&quot;
+l_string|&quot;=&amp;d&quot;
+(paren
+id|old
+)paren
+suffix:colon
+l_string|&quot;d&quot;
 (paren
 id|x
 )paren
-suffix:colon
+comma
 l_string|&quot;a&quot;
 (paren
 id|ptr
@@ -299,6 +311,10 @@ l_string|&quot;cc&quot;
 comma
 l_string|&quot;0&quot;
 )paren
+suffix:semicolon
+id|x
+op_assign
+id|old
 suffix:semicolon
 r_break
 suffix:semicolon
