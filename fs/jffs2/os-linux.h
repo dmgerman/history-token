@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.47 2004/07/14 13:20:23 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.51 2004/11/16 20:36:11 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_OS_LINUX_H__
 DECL|macro|__JFFS2_OS_LINUX_H__
 mdefine_line|#define __JFFS2_OS_LINUX_H__
@@ -155,7 +155,7 @@ macro_line|#endif
 )brace
 DECL|macro|jffs2_is_readonly
 mdefine_line|#define jffs2_is_readonly(c) (OFNI_BS_2SFFJ(c)-&gt;s_flags &amp; MS_RDONLY)
-macro_line|#ifndef CONFIG_JFFS2_FS_NAND
+macro_line|#if (!defined CONFIG_JFFS2_FS_NAND &amp;&amp; !defined CONFIG_JFFS2_FS_NOR_ECC)
 DECL|macro|jffs2_can_mark_obsolete
 mdefine_line|#define jffs2_can_mark_obsolete(c) (1)
 DECL|macro|jffs2_cleanmarker_oob
@@ -184,9 +184,15 @@ DECL|macro|jffs2_wbuf_timeout
 mdefine_line|#define jffs2_wbuf_timeout NULL
 DECL|macro|jffs2_wbuf_process
 mdefine_line|#define jffs2_wbuf_process NULL
-macro_line|#else /* NAND support present */
+DECL|macro|jffs2_nor_ecc
+mdefine_line|#define jffs2_nor_ecc(c) (0)
+DECL|macro|jffs2_nor_ecc_flash_setup
+mdefine_line|#define jffs2_nor_ecc_flash_setup(c) (0)
+DECL|macro|jffs2_nor_ecc_flash_cleanup
+mdefine_line|#define jffs2_nor_ecc_flash_cleanup(c) do {} while (0)
+macro_line|#else /* NAND and/or ECC&squot;d NOR support present */
 DECL|macro|jffs2_can_mark_obsolete
-mdefine_line|#define jffs2_can_mark_obsolete(c) (c-&gt;mtd-&gt;type == MTD_NORFLASH || c-&gt;mtd-&gt;type == MTD_RAM)
+mdefine_line|#define jffs2_can_mark_obsolete(c) ((c-&gt;mtd-&gt;type == MTD_NORFLASH &amp;&amp; !(c-&gt;mtd-&gt;flags &amp; MTD_ECC)) || c-&gt;mtd-&gt;type == MTD_RAM)
 DECL|macro|jffs2_cleanmarker_oob
 mdefine_line|#define jffs2_cleanmarker_oob(c) (c-&gt;mtd-&gt;type == MTD_NANDFLASH)
 DECL|macro|jffs2_flash_write_oob
@@ -360,6 +366,29 @@ id|data
 )paren
 suffix:semicolon
 r_int
+id|jffs2_flush_wbuf_gc
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+comma
+r_uint32
+id|ino
+)paren
+suffix:semicolon
+r_int
+id|jffs2_flush_wbuf_pad
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+suffix:semicolon
+r_int
 id|jffs2_nand_flash_setup
 c_func
 (paren
@@ -379,6 +408,37 @@ op_star
 id|c
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_JFFS2_FS_NOR_ECC
+DECL|macro|jffs2_nor_ecc
+mdefine_line|#define jffs2_nor_ecc(c) (c-&gt;mtd-&gt;type == MTD_NORFLASH &amp;&amp; (c-&gt;mtd-&gt;flags &amp; MTD_ECC))
+r_int
+id|jffs2_nor_ecc_flash_setup
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+suffix:semicolon
+r_void
+id|jffs2_nor_ecc_flash_cleanup
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|jffs2_nor_ecc
+mdefine_line|#define jffs2_nor_ecc(c) (0)
+DECL|macro|jffs2_nor_ecc_flash_setup
+mdefine_line|#define jffs2_nor_ecc_flash_setup(c) (0)
+DECL|macro|jffs2_nor_ecc_flash_cleanup
+mdefine_line|#define jffs2_nor_ecc_flash_cleanup(c) do {} while (0)
+macro_line|#endif /* NOR ECC */
 macro_line|#endif /* NAND */
 multiline_comment|/* erase.c */
 DECL|function|jffs2_erase_pending_trigger

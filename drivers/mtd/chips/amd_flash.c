@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD map driver for AMD compatible flash chips (non-CFI)&n; *&n; * Author: Jonas Holmberg &lt;jonas.holmberg@axis.com&gt;&n; *&n; * $Id: amd_flash.c,v 1.25 2004/08/09 13:19:43 dwmw2 Exp $&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under GPL.&n; *&n; */
+multiline_comment|/*&n; * MTD map driver for AMD compatible flash chips (non-CFI)&n; *&n; * Author: Jonas Holmberg &lt;jonas.holmberg@axis.com&gt;&n; *&n; * $Id: amd_flash.c,v 1.26 2004/11/20 12:49:04 dwmw2 Exp $&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under GPL.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -5953,10 +5953,10 @@ c_func
 id|chip-&gt;mutex
 )paren
 suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 id|spin_lock_bh
