@@ -507,7 +507,7 @@ DECL|macro|LPS_PREC
 mdefine_line|#define LPS_PREC 8
 DECL|function|calibrate_delay
 r_void
-id|__init
+id|__devinit
 id|calibrate_delay
 c_func
 (paren

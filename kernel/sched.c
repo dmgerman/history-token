@@ -10833,7 +10833,7 @@ suffix:semicolon
 )brace
 DECL|function|init_idle
 r_void
-id|__init
+id|__devinit
 id|init_idle
 c_func
 (paren
