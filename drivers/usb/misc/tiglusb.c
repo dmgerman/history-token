@@ -1356,15 +1356,15 @@ suffix:semicolon
 id|devfs_mk_cdev
 c_func
 (paren
-id|MAJOR
+id|MKDEV
 c_func
 (paren
 id|TIUSB_MAJOR
 comma
 id|TIUSB_MINOR
+)paren
 op_plus
 id|s-&gt;minor
-)paren
 comma
 id|S_IFCHR
 op_or
