@@ -646,10 +646,10 @@ suffix:semicolon
 )brace
 id|dev
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
+c_func
 (paren
-op_amp
-id|interface-&gt;dev
+id|interface
 )paren
 suffix:semicolon
 r_if
