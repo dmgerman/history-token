@@ -1235,6 +1235,11 @@ id|enable
 )paren
 suffix:semicolon
 multiline_comment|/* Enable wake event */
+DECL|member|driver
+r_struct
+id|device_driver
+id|driver
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* these external functions are only available when PCI support is enabled */
