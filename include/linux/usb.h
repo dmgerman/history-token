@@ -74,6 +74,12 @@ id|usb_host_endpoint
 op_star
 id|endpoint
 suffix:semicolon
+DECL|member|string
+r_char
+op_star
+id|string
+suffix:semicolon
+multiline_comment|/* iInterface string, if present */
 DECL|member|extra
 r_int
 r_char
