@@ -70,6 +70,16 @@ id|task_struct
 op_star
 id|vfs_sync_task
 suffix:semicolon
+multiline_comment|/* xfssyncd process */
+DECL|member|vfs_sync_seq
+r_int
+id|vfs_sync_seq
+suffix:semicolon
+multiline_comment|/* xfssyncd generation number */
+DECL|member|vfs_wait_single_sync_task
+id|wait_queue_head_t
+id|vfs_wait_single_sync_task
+suffix:semicolon
 DECL|member|vfs_wait_sync_task
 id|wait_queue_head_t
 id|vfs_wait_sync_task

@@ -59,7 +59,7 @@ id|xfs_log_item_t
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef XFSDEBUG
+macro_line|#ifdef DEBUG
 id|STATIC
 r_void
 id|xfs_ail_check
@@ -72,7 +72,7 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_ail_check
 mdefine_line|#define&t;xfs_ail_check(a)
-macro_line|#endif /* XFSDEBUG */
+macro_line|#endif /* DEBUG */
 multiline_comment|/*&n; * This is called by the log manager code to determine the LSN&n; * of the tail of the log.  This is exactly the LSN of the first&n; * item in the AIL.  If the AIL is empty, then this function&n; * returns 0.&n; *&n; * We need the AIL lock in order to get a coherent read of the&n; * lsn of the last item in the AIL.&n; */
 id|xfs_lsn_t
 DECL|function|xfs_trans_tail_ail
@@ -1448,7 +1448,7 @@ r_return
 id|lip-&gt;li_ail.ail_forw
 suffix:semicolon
 )brace
-macro_line|#ifdef XFSDEBUG
+macro_line|#ifdef DEBUG
 multiline_comment|/*&n; * Check that the list is sorted as it should be.&n; */
 id|STATIC
 r_void
@@ -1607,5 +1607,5 @@ id|prev_lip
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* XFSDEBUG */
+macro_line|#endif /* DEBUG */
 eof
