@@ -26,17 +26,15 @@ id|sscape_microcode
 DECL|member|code
 r_int
 r_char
+op_star
 id|code
-(braket
-l_int|65536
-)braket
 suffix:semicolon
+multiline_comment|/* 65536 chars */
 )brace
 suffix:semicolon
 DECL|macro|SND_SSCAPE_LOAD_BOOTB
 mdefine_line|#define SND_SSCAPE_LOAD_BOOTB  _IOWR(&squot;P&squot;, 100, struct sscape_bootblock)
-multiline_comment|/* This ioctl is marked bad because the type is bigger than the IOCTL description */
 DECL|macro|SND_SSCAPE_LOAD_MCODE
-mdefine_line|#define SND_SSCAPE_LOAD_MCODE  _IOW_BAD(&squot;P&squot;, 101, struct sscape_microcode)
+mdefine_line|#define SND_SSCAPE_LOAD_MCODE  _IOW (&squot;P&squot;, 101, struct sscape_microcode)
 macro_line|#endif
 eof
