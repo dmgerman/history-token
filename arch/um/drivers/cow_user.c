@@ -1,6 +1,7 @@
 macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;errno.h&gt;
+multiline_comment|/* _XOPEN_SOURCE is needed for pread, but we define _GNU_SOURCE, which defines&n; * that.&n; */
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;byteswap.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
