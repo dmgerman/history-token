@@ -77,7 +77,7 @@ id|pcmcia_socket
 suffix:semicolon
 DECL|member|tq_task
 r_struct
-id|tq_struct
+id|work_struct
 id|tq_task
 suffix:semicolon
 DECL|member|poll_timer

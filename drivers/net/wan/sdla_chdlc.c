@@ -245,11 +245,11 @@ r_int
 r_char
 id|interface_down
 suffix:semicolon
-multiline_comment|/* Polling task queue. Each interface&n;         * has its own task queue, which is used&n;         * to defer events from the interrupt */
-DECL|member|poll_task
+multiline_comment|/* Polling work queue entry. Each interface&n;         * has its own work queue entry, which is used&n;         * to defer events from the interrupt */
+DECL|member|poll_work
 r_struct
-id|tq_struct
-id|poll_task
+id|work_struct
+id|poll_work
 suffix:semicolon
 DECL|member|poll_delay_timer
 r_struct
@@ -766,7 +766,7 @@ macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 multiline_comment|/* Bottom half handlers */
 r_static
 r_void
-id|chdlc_bh
+id|chdlc_work
 (paren
 id|netdevice_t
 op_star
@@ -774,7 +774,7 @@ op_star
 suffix:semicolon
 r_static
 r_int
-id|chdlc_bh_cleanup
+id|chdlc_work_cleanup
 (paren
 id|netdevice_t
 op_star
@@ -3220,19 +3220,13 @@ id|dev-&gt;priv
 op_assign
 id|chdlc_priv_area
 suffix:semicolon
-multiline_comment|/* Initialize the polling task routine */
-macro_line|#ifndef LINUX_2_4
-id|chdlc_priv_area-&gt;poll_task.next
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
-id|chdlc_priv_area-&gt;poll_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|chdlc_priv_area-&gt;poll_task.routine
-op_assign
+multiline_comment|/* Initialize the polling work routine */
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|chdlc_priv_area-&gt;poll_work
+comma
 (paren
 r_void
 op_star
@@ -3242,10 +3236,9 @@ r_void
 op_star
 )paren
 id|chdlc_poll
-suffix:semicolon
-id|chdlc_priv_area-&gt;poll_task.data
-op_assign
+comma
 id|dev
+)paren
 suffix:semicolon
 multiline_comment|/* Initialize the polling delay timer */
 id|init_timer
@@ -3544,23 +3537,17 @@ op_minus
 id|EBUSY
 suffix:semicolon
 macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
-multiline_comment|/* Initialize the task queue */
+multiline_comment|/* Initialize the work queue entry */
 id|chdlc_priv_area-&gt;tq_working
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifndef LINUX_2_4
-id|chdlc_priv_area-&gt;common.wanpipe_task.next
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
-id|chdlc_priv_area-&gt;common.wanpipe_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|chdlc_priv_area-&gt;common.wanpipe_task.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|chdlc_priv_area-&gt;common.wanpipe_work
+comma
 (paren
 r_void
 op_star
@@ -3569,11 +3556,10 @@ op_star
 r_void
 op_star
 )paren
-id|chdlc_bh
-suffix:semicolon
-id|chdlc_priv_area-&gt;common.wanpipe_task.data
-op_assign
+id|chdlc_work
+comma
 id|dev
+)paren
 suffix:semicolon
 multiline_comment|/* Allocate and initialize BH circular buffer */
 multiline_comment|/* Add 1 to MAX_BH_BUFF so we don&squot;t have test with (MAX_BH_BUFF-1) */
@@ -6246,10 +6232,10 @@ suffix:semicolon
 macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 multiline_comment|/********** Bottom Half Handlers ********************************************/
 multiline_comment|/* NOTE: There is no API, BH support for Kernels lower than 2.2.X.&n; *       DO NOT INSERT ANY CODE HERE, NOTICE THE &n; *       PREPROCESSOR STATEMENT ABOVE, UNLESS YOU KNOW WHAT YOU ARE&n; *       DOING */
-DECL|function|chdlc_bh
+DECL|function|chdlc_work
 r_static
 r_void
-id|chdlc_bh
+id|chdlc_work
 (paren
 id|netdevice_t
 op_star
@@ -6356,7 +6342,7 @@ comma
 id|FREE_READ
 )paren
 suffix:semicolon
-id|chdlc_bh_cleanup
+id|chdlc_work_cleanup
 c_func
 (paren
 id|dev
@@ -6398,7 +6384,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|chdlc_bh_cleanup
+id|chdlc_work_cleanup
 c_func
 (paren
 id|dev
@@ -6408,7 +6394,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|chdlc_bh_cleanup
+id|chdlc_work_cleanup
 c_func
 (paren
 id|dev
@@ -6428,10 +6414,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|chdlc_bh_cleanup
+DECL|function|chdlc_work_cleanup
 r_static
 r_int
-id|chdlc_bh_cleanup
+id|chdlc_work_cleanup
 (paren
 id|netdevice_t
 op_star
@@ -7564,20 +7550,13 @@ op_amp
 id|chdlc_priv_area-&gt;tq_working
 )paren
 )paren
-(brace
-id|wanpipe_queue_tq
+id|wanpipe_queue_work
 c_func
 (paren
 op_amp
-id|chdlc_priv_area-&gt;common.wanpipe_task
+id|chdlc_priv_area-&gt;common.wanpipe_work
 )paren
 suffix:semicolon
-id|wanpipe_mark_bh
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif
 )brace
 r_else
@@ -12740,7 +12719,7 @@ id|card-&gt;wandev.critical
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*============================================================&n; * trigger_chdlc_poll&n; *&n; * Description:&n; * &t;Add a chdlc_poll() task into a tq_scheduler bh handler&n; *      for a specific dlci/interface.  This will kick&n; *      the fr_poll() routine at a later time. &n; *&n; * Usage:&n; * &t;Interrupts use this to defer a taks to &n; *      a polling routine.&n; *&n; */
+multiline_comment|/*============================================================&n; * trigger_chdlc_poll&n; *&n; * Description:&n; * &t;Add a chdlc_poll() work entry into the keventd work queue&n; *      for a specific dlci/interface.  This will kick&n; *      the fr_poll() routine at a later time. &n; *&n; * Usage:&n; * &t;Interrupts use this to defer a taks to &n; *      a polling routine.&n; *&n; */
 DECL|function|trigger_chdlc_poll
 r_static
 r_void
@@ -12816,27 +12795,12 @@ id|card-&gt;wandev.critical
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_4
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|chdlc_priv_area-&gt;poll_task
+id|chdlc_priv_area-&gt;poll_work
 )paren
-suffix:semicolon
-macro_line|#else
-id|queue_task
-c_func
-(paren
-op_amp
-id|chdlc_priv_area-&gt;poll_task
-comma
-op_amp
-id|tq_scheduler
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
 suffix:semicolon
 )brace
 DECL|function|chdlc_poll_delay
@@ -13004,31 +12968,18 @@ op_star
 id|card
 )paren
 (brace
-macro_line|#ifdef LINUX_2_4
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|card-&gt;tty_task_queue
+id|card-&gt;tty_work
 )paren
 suffix:semicolon
-macro_line|#else
-id|queue_task
-c_func
-(paren
-op_amp
-id|card-&gt;tty_task_queue
-comma
-op_amp
-id|tq_scheduler
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
-DECL|function|tty_poll_task
+DECL|function|tty_poll_work
 r_static
 r_void
-id|tty_poll_task
+id|tty_poll_work
 (paren
 r_void
 op_star
@@ -16489,17 +16440,20 @@ id|state-&gt;irq
 op_assign
 id|card-&gt;wandev.irq
 suffix:semicolon
-id|card-&gt;tty_task_queue.routine
-op_assign
-id|tty_poll_task
-suffix:semicolon
-id|card-&gt;tty_task_queue.data
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|card-&gt;tty_work
+comma
+id|tty_poll_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|card
+)paren
 suffix:semicolon
 r_return
 l_int|0

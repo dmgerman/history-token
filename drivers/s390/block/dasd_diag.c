@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;&t;/* HDIO_GETGEO&t;&t;&t;    */
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;asm/dasd.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
@@ -71,66 +72,6 @@ DECL|typedef|dasd_diag_req_t
 )brace
 id|dasd_diag_req_t
 suffix:semicolon
-r_static
-id|__inline__
-r_int
-DECL|function|dia210
-id|dia210
-c_func
-(paren
-r_void
-op_star
-id|devchar
-)paren
-(brace
-r_int
-id|rc
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;&t;  diag&t;%1,0,0x210&bslash;n&quot;
-l_string|&quot;0:  ipm&t;%0&bslash;n&quot;
-l_string|&quot;&t;  srl&t;%0,28&bslash;n&quot;
-l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;2:  lhi&t;%0,3&bslash;n&quot;
-l_string|&quot;&t;  bras&t;1,3f&bslash;n&quot;
-l_string|&quot;&t;  .long 1b&bslash;n&quot;
-l_string|&quot;3:  l&t;1,0(1)&bslash;n&quot;
-l_string|&quot;&t;  br&t;1&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
-l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
-l_string|&quot;&t;  .align 4&bslash;n&quot;
-l_string|&quot;&t;  .long 0b,2b&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
-suffix:colon
-l_string|&quot;=d&quot;
-(paren
-id|rc
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-(paren
-r_void
-op_star
-)paren
-id|__pa
-c_func
-(paren
-id|devchar
-)paren
-)paren
-suffix:colon
-l_string|&quot;1&quot;
-)paren
-suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
-)brace
 r_static
 id|__inline__
 r_int
@@ -448,6 +389,9 @@ op_assign
 (paren
 id|u32
 )paren
+(paren
+id|addr_t
+)paren
 id|cqr
 suffix:semicolon
 r_private
@@ -623,10 +567,6 @@ suffix:semicolon
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -650,10 +590,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -664,6 +600,9 @@ op_assign
 (paren
 id|dasd_ccw_req_t
 op_star
+)paren
+(paren
+id|addr_t
 )paren
 id|ip
 suffix:semicolon
@@ -720,10 +659,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -875,10 +810,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1008,9 +939,13 @@ id|dasd_diag_characteristics_t
 suffix:semicolon
 id|rc
 op_assign
-id|dia210
+id|diag210
 c_func
 (paren
+(paren
+id|diag210_t
+op_star
+)paren
 id|rdc_data
 )paren
 suffix:semicolon

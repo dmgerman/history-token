@@ -1,5 +1,9 @@
 multiline_comment|/*&n; *  The driver for the Cirrus Logic&squot;s Sound Fusion CS46XX based soundcards&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 multiline_comment|/*&n; * 2002-07 Benny Sjostrand benny@hostmobility.com&n; */
+macro_line|#ifdef  CONFIG_SND_CS46XX_NEW_DSP /* hack ... */
+macro_line|#ifndef __DSP_SPOS_H__
+DECL|macro|__DSP_SPOS_H__
+mdefine_line|#define __DSP_SPOS_H__
 DECL|macro|DSP_MAX_SYMBOLS
 mdefine_line|#define DSP_MAX_SYMBOLS 1024
 DECL|macro|DSP_MAX_MODULES
@@ -95,8 +99,8 @@ DECL|macro|SPDIFO_IP_OUTPUT_BUFFER1
 mdefine_line|#define SPDIFO_IP_OUTPUT_BUFFER1 0x1000
 DECL|macro|MIX_SAMPLE_BUF1
 mdefine_line|#define MIX_SAMPLE_BUF1          0x1400
-singleline_comment|// #define SRC_OUTPUT_BUF2          0x1280
-singleline_comment|// #define SRC_DELAY_BUF2           0x1288
+DECL|macro|MIX_SAMPLE_BUF2
+mdefine_line|#define MIX_SAMPLE_BUF2          0x3000
 multiline_comment|/* Task stack address */
 DECL|macro|HFG_STACK
 mdefine_line|#define HFG_STACK                0x066A
@@ -147,6 +151,10 @@ DECL|macro|SEC_CODECOUT_SCB_ADDR
 mdefine_line|#define SEC_CODECOUT_SCB_ADDR    0x140
 DECL|macro|OUTPUTSNOOPII_SCB_ADDR
 mdefine_line|#define OUTPUTSNOOPII_SCB_ADDR   0x150
+DECL|macro|PCMSERIALIN_PCM_SCB_ADDR
+mdefine_line|#define PCMSERIALIN_PCM_SCB_ADDR 0x160
+DECL|macro|RECORD_MIXER_SCB_ADDR
+mdefine_line|#define RECORD_MIXER_SCB_ADDR    0x170
 multiline_comment|/* hyperforground SCB&squot;s*/
 DECL|macro|HFG_TREE_SCB
 mdefine_line|#define HFG_TREE_SCB             0xBA0
@@ -182,31 +190,66 @@ mdefine_line|#define SRCPhiIncr6Int26Frac 0xd
 multiline_comment|/* conf */
 DECL|macro|UseASER1Input
 mdefine_line|#define UseASER1Input 1
-multiline_comment|/* constants */
+multiline_comment|/*&n; * The following defines are for the flags in the rsConfig01/23 registers of&n; * the SP.&n; */
+DECL|macro|RSCONFIG_MODULO_SIZE_MASK
+mdefine_line|#define RSCONFIG_MODULO_SIZE_MASK               0x0000000FL
+DECL|macro|RSCONFIG_MODULO_16
+mdefine_line|#define RSCONFIG_MODULO_16                      0x00000001L
+DECL|macro|RSCONFIG_MODULO_32
+mdefine_line|#define RSCONFIG_MODULO_32                      0x00000002L
+DECL|macro|RSCONFIG_MODULO_64
+mdefine_line|#define RSCONFIG_MODULO_64                      0x00000003L
+DECL|macro|RSCONFIG_MODULO_128
+mdefine_line|#define RSCONFIG_MODULO_128                     0x00000004L
+DECL|macro|RSCONFIG_MODULO_256
+mdefine_line|#define RSCONFIG_MODULO_256                     0x00000005L
+DECL|macro|RSCONFIG_MODULO_512
+mdefine_line|#define RSCONFIG_MODULO_512                     0x00000006L
+DECL|macro|RSCONFIG_MODULO_1024
+mdefine_line|#define RSCONFIG_MODULO_1024                    0x00000007L
+DECL|macro|RSCONFIG_MODULO_4
+mdefine_line|#define RSCONFIG_MODULO_4                       0x00000008L
+DECL|macro|RSCONFIG_MODULO_8
+mdefine_line|#define RSCONFIG_MODULO_8                       0x00000009L
+DECL|macro|RSCONFIG_SAMPLE_SIZE_MASK
+mdefine_line|#define RSCONFIG_SAMPLE_SIZE_MASK               0x000000C0L
+DECL|macro|RSCONFIG_SAMPLE_8MONO
+mdefine_line|#define RSCONFIG_SAMPLE_8MONO                   0x00000000L
+DECL|macro|RSCONFIG_SAMPLE_8STEREO
+mdefine_line|#define RSCONFIG_SAMPLE_8STEREO                 0x00000040L
+DECL|macro|RSCONFIG_SAMPLE_16MONO
+mdefine_line|#define RSCONFIG_SAMPLE_16MONO                  0x00000080L
+DECL|macro|RSCONFIG_SAMPLE_16STEREO
+mdefine_line|#define RSCONFIG_SAMPLE_16STEREO                0x000000C0L
+DECL|macro|RSCONFIG_UNDERRUN_ZERO
+mdefine_line|#define RSCONFIG_UNDERRUN_ZERO                  0x00004000L
+DECL|macro|RSCONFIG_DMA_TO_HOST
+mdefine_line|#define RSCONFIG_DMA_TO_HOST                    0x00008000L
+DECL|macro|RSCONFIG_STREAM_NUM_MASK
+mdefine_line|#define RSCONFIG_STREAM_NUM_MASK                0x00FF0000L
+DECL|macro|RSCONFIG_MAX_DMA_SIZE_MASK
+mdefine_line|#define RSCONFIG_MAX_DMA_SIZE_MASK              0x1F000000L
+DECL|macro|RSCONFIG_DMA_ENABLE
+mdefine_line|#define RSCONFIG_DMA_ENABLE                     0x20000000L
+DECL|macro|RSCONFIG_PRIORITY_MASK
+mdefine_line|#define RSCONFIG_PRIORITY_MASK                  0xC0000000L
+DECL|macro|RSCONFIG_PRIORITY_HIGH
+mdefine_line|#define RSCONFIG_PRIORITY_HIGH                  0x00000000L
+DECL|macro|RSCONFIG_PRIORITY_MEDIUM_HIGH
+mdefine_line|#define RSCONFIG_PRIORITY_MEDIUM_HIGH           0x40000000L
+DECL|macro|RSCONFIG_PRIORITY_MEDIUM_LOW
+mdefine_line|#define RSCONFIG_PRIORITY_MEDIUM_LOW            0x80000000L
+DECL|macro|RSCONFIG_PRIORITY_LOW
+mdefine_line|#define RSCONFIG_PRIORITY_LOW                   0xC0000000L
+DECL|macro|RSCONFIG_STREAM_NUM_SHIFT
+mdefine_line|#define RSCONFIG_STREAM_NUM_SHIFT               16L
+DECL|macro|RSCONFIG_MAX_DMA_SIZE_SHIFT
+mdefine_line|#define RSCONFIG_MAX_DMA_SIZE_SHIFT             24L
+multiline_comment|/* SP constants */
 DECL|macro|FG_INTERVAL_TIMER_PERIOD
 mdefine_line|#define FG_INTERVAL_TIMER_PERIOD                0x0051
 DECL|macro|BG_INTERVAL_TIMER_PERIOD
 mdefine_line|#define BG_INTERVAL_TIMER_PERIOD                0x0100
-DECL|macro|RSCONFIG_MODULO_32
-mdefine_line|#define RSCONFIG_MODULO_32                      0x00000002
-DECL|macro|RSCONFIG_MODULO_64
-mdefine_line|#define RSCONFIG_MODULO_64                      0x00000003
-DECL|macro|RSCONFIG_MODULO_256
-mdefine_line|#define RSCONFIG_MODULO_256                     0x00000005
-DECL|macro|RSCONFIG_MODULO_8
-mdefine_line|#define RSCONFIG_MODULO_8                       0x00000009
-DECL|macro|RSCONFIG_SAMPLE_16STEREO
-mdefine_line|#define RSCONFIG_SAMPLE_16STEREO                0x000000C0
-DECL|macro|RSCONFIG_SAMPLE_16MONO
-mdefine_line|#define RSCONFIG_SAMPLE_16MONO                  0x00000080
-DECL|macro|RSCONFIG_DMA_TO_HOST
-mdefine_line|#define RSCONFIG_DMA_TO_HOST                    0x00008000
-DECL|macro|RSCONFIG_DMA_ENABLE
-mdefine_line|#define RSCONFIG_DMA_ENABLE                     0x20000000
-DECL|macro|RSCONFIG_STREAM_NUM_SHIFT
-mdefine_line|#define RSCONFIG_STREAM_NUM_SHIFT               16
-DECL|macro|RSCONFIG_MAX_DMA_SIZE_SHIFT
-mdefine_line|#define RSCONFIG_MAX_DMA_SIZE_SHIFT             24
 multiline_comment|/* Only SP accesible registers */
 DECL|macro|SP_ASER_COUNTDOWN
 mdefine_line|#define SP_ASER_COUNTDOWN 0x8040
@@ -228,4 +271,6 @@ DECL|macro|SP_SPDOUT_CONTROL
 mdefine_line|#define SP_SPDOUT_CONTROL 0x804D
 DECL|macro|SP_SPDOUT_CSUV
 mdefine_line|#define SP_SPDOUT_CSUV    0x808E
+macro_line|#endif /* __DSP_SPOS_H__ */
+macro_line|#endif /* CONFIG_SND_CS46XX_NEW_DSP  */
 eof

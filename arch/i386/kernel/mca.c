@@ -131,7 +131,7 @@ id|mca_info
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n; * Motherboard register spinlock. Untested on SMP at the moment, but&n; * are there any MCA SMP boxes?&n; */
+multiline_comment|/*&n; * Motherboard register spinlock. Untested on SMP at the moment, but&n; * are there any MCA SMP boxes?&n; *&n; * Yes - Alan&n; */
 DECL|variable|mca_lock
 r_static
 id|spinlock_t

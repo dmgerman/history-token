@@ -64,11 +64,13 @@ op_star
 id|tty
 )paren
 (brace
-id|schedule_task
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
-id|tty-&gt;flip.tqueue
+id|tty-&gt;flip.work
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace

@@ -399,8 +399,11 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|kstat.pswpout
-op_increment
+id|inc_page_state
+c_func
+(paren
+id|pswpout
+)paren
 suffix:semicolon
 id|SetPageWriteback
 c_func
@@ -489,8 +492,11 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|kstat.pswpin
-op_increment
+id|inc_page_state
+c_func
+(paren
+id|pswpin
+)paren
 suffix:semicolon
 id|submit_bio
 c_func

@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *  Routines for Sound Blaster mixer control&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -160,7 +158,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Single channel mixer element&n; */
 DECL|macro|SB_SINGLE
-mdefine_line|#define SB_SINGLE(xname, reg, shift, mask) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, &bslash;&n;  name: xname, &bslash;&n;  info: snd_sbmixer_info_single, &bslash;&n;  get: snd_sbmixer_get_single, put: snd_sbmixer_put_single, &bslash;&n;  private_value: reg | (shift &lt;&lt; 16) | (mask &lt;&lt; 24) }
+mdefine_line|#define SB_SINGLE(xname, reg, shift, mask) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, &bslash;&n;  .name = xname, &bslash;&n;  .info = snd_sbmixer_info_single, &bslash;&n;  .get = snd_sbmixer_get_single, put: snd_sbmixer_put_single, &bslash;&n;  .private_value = reg | (shift &lt;&lt; 16) | (mask &lt;&lt; 24) }
 DECL|function|snd_sbmixer_info_single
 r_static
 r_int
@@ -471,7 +469,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Double channel mixer element&n; */
 DECL|macro|SB_DOUBLE
-mdefine_line|#define SB_DOUBLE(xname, left_reg, right_reg, left_shift, right_shift, mask) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, &bslash;&n;  name: xname, &bslash;&n;  info: snd_sbmixer_info_double, &bslash;&n;  get: snd_sbmixer_get_double, put: snd_sbmixer_put_double, &bslash;&n;  private_value: left_reg | (right_reg &lt;&lt; 8) | (left_shift &lt;&lt; 16) | (right_shift &lt;&lt; 19) | (mask &lt;&lt; 24) }
+mdefine_line|#define SB_DOUBLE(xname, left_reg, right_reg, left_shift, right_shift, mask) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, &bslash;&n;  .name = xname, &bslash;&n;  .info = snd_sbmixer_info_double, &bslash;&n;  .get = snd_sbmixer_get_double, put: snd_sbmixer_put_double, &bslash;&n;  .private_value = left_reg | (right_reg &lt;&lt; 8) | (left_shift &lt;&lt; 16) | (right_shift &lt;&lt; 19) | (mask &lt;&lt; 24) }
 DECL|function|snd_sbmixer_info_double
 r_static
 r_int
@@ -1687,7 +1685,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * SB16 input switch&n; */
 DECL|macro|SB16_INPUT_SW
-mdefine_line|#define SB16_INPUT_SW(xname, reg1, reg2, left_shift, right_shift) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, &bslash;&n;  name: xname, &bslash;&n;  info: snd_sb16mixer_info_input_sw, &bslash;&n;  get: snd_sb16mixer_get_input_sw, put: snd_sb16mixer_put_input_sw, &bslash;&n;  private_value: reg1 | (reg2 &lt;&lt; 8) | (left_shift &lt;&lt; 16) | (right_shift &lt;&lt; 24) }
+mdefine_line|#define SB16_INPUT_SW(xname, reg1, reg2, left_shift, right_shift) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, &bslash;&n;  .name = xname, &bslash;&n;  .info = snd_sb16mixer_info_input_sw, &bslash;&n;  .get = snd_sb16mixer_get_input_sw, put: snd_sb16mixer_put_input_sw, &bslash;&n;  .private_value = reg1 | (reg2 &lt;&lt; 8) | (left_shift &lt;&lt; 16) | (right_shift &lt;&lt; 24) }
 DECL|function|snd_sb16mixer_info_input_sw
 r_static
 r_int
@@ -2345,24 +2343,29 @@ l_int|3
 )paren
 comma
 (brace
+dot
 id|iface
-suffix:colon
+op_assign
 id|SNDRV_CTL_ELEM_IFACE_MIXER
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Capture Source&quot;
 comma
+dot
 id|info
-suffix:colon
+op_assign
 id|snd_sb8mixer_info_mux
 comma
+dot
 id|get
-suffix:colon
+op_assign
 id|snd_sb8mixer_get_mux
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|snd_sb8mixer_put_mux
 comma
 )brace
@@ -3046,24 +3049,29 @@ l_int|1
 )paren
 comma
 (brace
+dot
 id|iface
-suffix:colon
+op_assign
 id|SNDRV_CTL_ELEM_IFACE_MIXER
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Capture Source&quot;
 comma
+dot
 id|info
-suffix:colon
+op_assign
 id|snd_dt019x_input_sw_info
 comma
+dot
 id|get
-suffix:colon
+op_assign
 id|snd_dt019x_input_sw_get
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|snd_dt019x_input_sw_put
 comma
 )brace

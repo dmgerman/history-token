@@ -282,7 +282,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -316,7 +316,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -357,7 +357,7 @@ c_cond
 id|server-&gt;tx.creq
 )paren
 (brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -387,7 +387,7 @@ op_star
 )paren
 id|v
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

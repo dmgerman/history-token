@@ -197,12 +197,12 @@ id|__u8
 id|bulk_out_endpointAddr
 suffix:semicolon
 multiline_comment|/* the address of the bulk out endpoint */
-DECL|member|tqueue
+DECL|member|work
 r_struct
-id|tq_struct
-id|tqueue
+id|work_struct
+id|work
 suffix:semicolon
-multiline_comment|/* task queue for line discipline waking up */
+multiline_comment|/* work queue entry for line discipline waking up */
 DECL|member|open_count
 r_int
 id|open_count

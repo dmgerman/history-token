@@ -716,8 +716,9 @@ l_int|0x7532
 )paren
 comma
 multiline_comment|/* Tropez */
+dot
 id|devs
-suffix:colon
+op_assign
 (brace
 id|ISAPNP_DEVICE_ID
 c_func
@@ -789,8 +790,9 @@ l_int|0x7632
 )paren
 comma
 multiline_comment|/* Tropez+ */
+dot
 id|devs
-suffix:colon
+op_assign
 (brace
 id|ISAPNP_DEVICE_ID
 c_func
@@ -2518,6 +2520,13 @@ id|acard-&gt;wavefront.irq
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|acard-&gt;wavefront.irq_lock
+)paren
 suffix:semicolon
 id|init_waitqueue_head
 c_func

@@ -3018,11 +3018,11 @@ id|u_int
 id|state
 )paren
 suffix:semicolon
-DECL|function|sa1100fb_schedule_task
+DECL|function|sa1100fb_schedule_work
 r_static
 r_inline
 r_void
-id|sa1100fb_schedule_task
+id|sa1100fb_schedule_work
 c_func
 (paren
 r_struct
@@ -3095,7 +3095,7 @@ id|fbi-&gt;task_state
 op_assign
 id|state
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -4303,7 +4303,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|sa1100fb_schedule_task
+id|sa1100fb_schedule_work
 c_func
 (paren
 id|fbi
@@ -4338,7 +4338,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|sa1100fb_schedule_task
+id|sa1100fb_schedule_work
 c_func
 (paren
 id|fbi
@@ -4932,7 +4932,7 @@ op_ne
 id|fbi-&gt;dbar2
 )paren
 )paren
-id|sa1100fb_schedule_task
+id|sa1100fb_schedule_work
 c_func
 (paren
 id|fbi
@@ -6660,7 +6660,7 @@ op_amp
 id|fbi-&gt;ctrlr_wait
 )paren
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp

@@ -2959,18 +2959,10 @@ id|irq_work
 )paren
 (brace
 macro_line|#ifdef FILL_RX_POOLS_IN_BH
-id|queue_task
+id|schedule_work
 (paren
 op_amp
 id|dev-&gt;bh
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 macro_line|#else
@@ -9573,19 +9565,12 @@ id|ATM_OC3_PCR
 suffix:semicolon
 macro_line|#ifdef FILL_RX_POOLS_IN_BH
 singleline_comment|// initialise bottom half
-id|INIT_LIST_HEAD
+id|INIT_WORK
 c_func
 (paren
 op_amp
-id|dev-&gt;bh.list
-)paren
-suffix:semicolon
-id|dev-&gt;bh.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;bh.routine
-op_assign
+id|dev-&gt;bh
+comma
 (paren
 r_void
 (paren
@@ -9597,10 +9582,9 @@ op_star
 )paren
 )paren
 id|fill_rx_pools
-suffix:semicolon
-id|dev-&gt;bh.data
-op_assign
+comma
 id|dev
+)paren
 suffix:semicolon
 macro_line|#endif
 singleline_comment|// semaphore for txer/rxer modifications - we cannot use a

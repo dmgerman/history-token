@@ -120,7 +120,7 @@ DECL|macro|SUSPEND_PD_PAGES
 mdefine_line|#define SUSPEND_PD_PAGES(x)     (((x)*sizeof(struct pbe))/PAGE_SIZE+1)
 r_extern
 r_struct
-id|tq_struct
+id|work_struct
 id|suspend_tq
 suffix:semicolon
 multiline_comment|/* mm/vmscan.c */

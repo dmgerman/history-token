@@ -75,12 +75,12 @@ id|sock
 op_star
 )paren
 suffix:semicolon
-DECL|member|wanpipe_task
+DECL|member|wanpipe_work
 r_struct
-id|tq_struct
-id|wanpipe_task
+id|work_struct
+id|wanpipe_work
 suffix:semicolon
-multiline_comment|/* Immediate BH handler task */
+multiline_comment|/* deferred keventd work */
 DECL|member|rw_bind
 r_int
 r_char

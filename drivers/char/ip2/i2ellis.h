@@ -750,7 +750,7 @@ suffix:semicolon
 singleline_comment|//&t;For queuing interupt bottom half handlers.&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
 DECL|member|tqueue_interrupt
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue_interrupt
 suffix:semicolon
 DECL|member|SendPendingTimer

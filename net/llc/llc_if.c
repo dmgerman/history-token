@@ -14,7 +14,6 @@ macro_line|#include &lt;net/llc_c_ev.h&gt;
 macro_line|#include &lt;net/llc_c_ac.h&gt;
 macro_line|#include &lt;net/llc_c_st.h&gt;
 macro_line|#include &lt;net/llc_main.h&gt;
-macro_line|#include &lt;net/llc_mac.h&gt;
 multiline_comment|/**&n; *&t;llc_sap_open - open interface to the upper layers.&n; *&t;@lsap: SAP number.&n; *&t;@func: rcv func for datalink protos&n; *&n; *&t;Interface function to upper layer. Each one who wants to get a SAP&n; *&t;(for example NetBEUI) should call this function. Returns the opened&n; *&t;SAP for success, NULL for failure.&n; */
 DECL|function|llc_sap_open
 r_struct

@@ -1542,7 +1542,7 @@ id|instance
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * ++roman: New scheme of calling NCR5380_main()&n; * &n; * If we&squot;re not in an interrupt, we can call our main directly, it cannot be&n; * already running. Else, we queue it on a task queue, if not &squot;main_running&squot;&n; * tells us that a lower level is already executing it. This way,&n; * &squot;main_running&squot; needs not be protected in a special way.&n; *&n; * queue_main() is a utility function for putting our main onto the task&n; * queue, if main_running is false. It should be called only from a&n; * interrupt or bottom half.&n; */
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|variable|main_running
 r_static
@@ -1552,21 +1552,12 @@ id|main_running
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|NCR5380_tqueue
 r_static
-r_struct
-id|tq_struct
+id|DECLARE_WORK
+c_func
+(paren
 id|NCR5380_tqueue
-op_assign
-(brace
-singleline_comment|//    NULL,&t;&t;/* next */
-id|sync
-suffix:colon
-l_int|0
 comma
-multiline_comment|/* sync */
-id|routine
-suffix:colon
 (paren
 r_void
 (paren
@@ -1579,12 +1570,8 @@ op_star
 )paren
 id|NCR5380_main
 comma
-multiline_comment|/* routine, must have (void *) arg... */
-id|data
-suffix:colon
 l_int|NULL
-multiline_comment|/* data */
-)brace
+)paren
 suffix:semicolon
 DECL|function|queue_main
 r_static
@@ -1604,20 +1591,11 @@ id|main_running
 )paren
 (brace
 multiline_comment|/* If in interrupt and NCR5380_main() not already running,&n;&t;   queue it on the &squot;immediate&squot; task queue, to be processed&n;&t;   immediately after the current interrupt processing has&n;&t;   finished. */
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|NCR5380_tqueue
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b) (((a)&lt;(b))?(a):(b))
@@ -557,8 +558,6 @@ DECL|variable|initialized
 r_static
 r_int
 id|initialized
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|debug_file_ops
 r_static
@@ -2339,7 +2338,7 @@ c_cond
 op_logical_neg
 id|initialized
 )paren
-id|debug_init
+id|BUG
 c_func
 (paren
 )paren
@@ -3333,7 +3332,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * debug_init:&n; * - is called exactly once to initialize the debug feature&n; */
 DECL|function|debug_init
+r_static
 r_int
+id|__init
 id|debug_init
 c_func
 (paren
@@ -3352,13 +3353,6 @@ op_amp
 id|debug_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|initialized
-)paren
-(brace
 macro_line|#ifdef CONFIG_PROC_FS
 id|debug_proc_root_entry
 op_assign
@@ -3382,7 +3376,6 @@ id|initialized
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 id|up
 c_func
 (paren
@@ -4980,56 +4973,11 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * init_module:&n; */
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
+multiline_comment|/*&n; * clean up module&n; */
+DECL|function|debug_exit
 r_void
-)paren
-(brace
-r_int
-id|rc
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;debug_module_init: &bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-id|rc
-op_assign
-id|debug_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;debug: an error occurred with debug_init&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * cleanup_module:&n; */
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+id|__exit
+id|debug_exit
 c_func
 (paren
 r_void
@@ -5056,7 +5004,27 @@ macro_line|#endif /* CONFIG_PROC_FS */
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;/* MODULE */
+multiline_comment|/*&n; * module definitions&n; */
+DECL|variable|debug_init
+id|core_initcall
+c_func
+(paren
+id|debug_init
+)paren
+suffix:semicolon
+DECL|variable|debug_exit
+id|module_exit
+c_func
+(paren
+id|debug_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|debug_register
 id|EXPORT_SYMBOL
 c_func

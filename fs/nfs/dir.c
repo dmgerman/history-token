@@ -533,7 +533,7 @@ l_int|0
 id|invalidate_inode_pages
 c_func
 (paren
-id|inode
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|unlock_page
@@ -568,7 +568,7 @@ suffix:semicolon
 id|invalidate_inode_pages
 c_func
 (paren
-id|inode
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|desc-&gt;error

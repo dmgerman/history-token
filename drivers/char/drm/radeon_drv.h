@@ -377,17 +377,14 @@ id|mem_block
 op_star
 id|fb_heap
 suffix:semicolon
-DECL|member|irq_queue
+multiline_comment|/* SW interrupt */
+DECL|member|swi_queue
 id|wait_queue_head_t
-id|irq_queue
+id|swi_queue
 suffix:semicolon
-DECL|member|irq_received
+DECL|member|swi_emitted
 id|atomic_t
-id|irq_received
-suffix:semicolon
-DECL|member|irq_emitted
-id|atomic_t
-id|irq_emitted
+id|swi_emitted
 suffix:semicolon
 DECL|typedef|drm_radeon_private_t
 )brace
@@ -671,6 +668,7 @@ op_star
 id|heap
 )paren
 suffix:semicolon
+multiline_comment|/* radeon_irq.c */
 r_extern
 r_int
 id|radeon_irq_emit
@@ -707,7 +705,7 @@ op_star
 id|dev
 comma
 r_int
-id|irq_nr
+id|swi_nr
 )paren
 suffix:semicolon
 r_extern
@@ -836,14 +834,22 @@ DECL|macro|GET_SCRATCH
 mdefine_line|#define GET_SCRATCH( x )&t;(dev_priv-&gt;writeback_works&t;&t;&t;&bslash;&n;&t;&t;&t;&t;? DRM_READ32( &amp;dev_priv-&gt;scratch[(x)] )&t;&t;&bslash;&n;&t;&t;&t;&t;: RADEON_READ( RADEON_SCRATCH_REG0 + 4*(x) ) )
 DECL|macro|RADEON_GEN_INT_CNTL
 mdefine_line|#define RADEON_GEN_INT_CNTL&t;&t;0x0040
+DECL|macro|RADEON_CRTC_VBLANK_MASK
+macro_line|#&t;define RADEON_CRTC_VBLANK_MASK&t;&t;(1 &lt;&lt; 0)
 DECL|macro|RADEON_GUI_IDLE_INT_ENABLE
 macro_line|#&t;define RADEON_GUI_IDLE_INT_ENABLE&t;(1 &lt;&lt; 19)
 DECL|macro|RADEON_SW_INT_ENABLE
 macro_line|#&t;define RADEON_SW_INT_ENABLE&t;&t;(1 &lt;&lt; 25)
 DECL|macro|RADEON_GEN_INT_STATUS
 mdefine_line|#define RADEON_GEN_INT_STATUS&t;&t;0x0044
+DECL|macro|RADEON_CRTC_VBLANK_STAT
+macro_line|#&t;define RADEON_CRTC_VBLANK_STAT&t;&t;(1 &lt;&lt; 0)
+DECL|macro|RADEON_CRTC_VBLANK_STAT_ACK
+macro_line|#&t;define RADEON_CRTC_VBLANK_STAT_ACK   &t;(1 &lt;&lt; 0)
 DECL|macro|RADEON_GUI_IDLE_INT_TEST_ACK
 macro_line|#&t;define RADEON_GUI_IDLE_INT_TEST_ACK     (1 &lt;&lt; 19)
+DECL|macro|RADEON_SW_INT_TEST
+macro_line|#&t;define RADEON_SW_INT_TEST&t;&t;(1 &lt;&lt; 25)
 DECL|macro|RADEON_SW_INT_TEST_ACK
 macro_line|#&t;define RADEON_SW_INT_TEST_ACK   &t;(1 &lt;&lt; 25)
 DECL|macro|RADEON_SW_INT_FIRE
@@ -1497,6 +1503,8 @@ DECL|macro|RADEON_LAST_DISPATCH_REG
 mdefine_line|#define RADEON_LAST_DISPATCH_REG&t;RADEON_SCRATCH_REG1
 DECL|macro|RADEON_LAST_CLEAR_REG
 mdefine_line|#define RADEON_LAST_CLEAR_REG&t;&t;RADEON_SCRATCH_REG2
+DECL|macro|RADEON_LAST_SWI_REG
+mdefine_line|#define RADEON_LAST_SWI_REG&t;&t;RADEON_SCRATCH_REG3
 DECL|macro|RADEON_LAST_DISPATCH
 mdefine_line|#define RADEON_LAST_DISPATCH&t;&t;1
 DECL|macro|RADEON_MAX_VB_AGE

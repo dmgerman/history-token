@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
@@ -66,7 +66,7 @@ suffix:semicolon
 DECL|variable|sa1100_pcmcia_task
 r_static
 r_struct
-id|tq_struct
+id|work_struct
 id|sa1100_pcmcia_task
 suffix:semicolon
 multiline_comment|/*&n; * sa1100_pcmcia_default_mecr_timing&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; *&n; * Calculate MECR clock wait states for given CPU clock&n; * speed and command wait state. This function can be over-&n; * written by a board specific version.&n; *&n; * The default is to simply calculate the BS values as specified in&n; * the INTEL SA1100 development manual&n; * &quot;Expansion Memory (PCMCIA) Configuration Register (MECR)&quot;&n; * that&squot;s section 10.2.5 in _my_ version of the manuial ;)&n; */
@@ -947,17 +947,16 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* sa1100_pcmcia_task_handler() */
-DECL|variable|sa1100_pcmcia_task
 r_static
-r_struct
-id|tq_struct
+id|DECLARE_WORK
+c_func
+(paren
 id|sa1100_pcmcia_task
-op_assign
-(brace
-id|routine
-suffix:colon
+comma
 id|sa1100_pcmcia_task_handler
-)brace
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 multiline_comment|/* sa1100_pcmcia_poll_event()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Let&squot;s poll for events in addition to IRQs since IRQ only is unreliable...&n; */
 DECL|function|sa1100_pcmcia_poll_event
@@ -998,7 +997,7 @@ op_amp
 id|poll_timer
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -1038,7 +1037,7 @@ comma
 id|irq
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -3914,7 +3913,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren

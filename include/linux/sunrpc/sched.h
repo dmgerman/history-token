@@ -3,7 +3,6 @@ macro_line|#ifndef _LINUX_SUNRPC_SCHED_H_
 DECL|macro|_LINUX_SUNRPC_SCHED_H_
 mdefine_line|#define _LINUX_SUNRPC_SCHED_H_
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 multiline_comment|/*&n; * Define this if you want to test the fast scheduler for async calls.&n; * This is still experimental and may not work.&n; */

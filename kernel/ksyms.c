@@ -64,11 +64,6 @@ id|flag
 )paren
 suffix:semicolon
 r_extern
-r_void
-op_star
-id|sys_call_table
-suffix:semicolon
-r_extern
 r_struct
 id|timezone
 id|sys_tz
@@ -445,6 +440,15 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|kmap_pte
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef HASHED_PAGE_VIRTUAL
+DECL|variable|page_address
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|page_address
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2738,15 +2742,6 @@ id|uts_sem
 )paren
 suffix:semicolon
 multiline_comment|/* UTS semaphore */
-macro_line|#ifndef __mips__
-DECL|variable|sys_call_table
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sys_call_table
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|machine_restart
 id|EXPORT_SYMBOL
 c_func

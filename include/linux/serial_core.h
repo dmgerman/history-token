@@ -560,6 +560,10 @@ DECL|macro|UPF_AUTOPROBE
 mdefine_line|#define UPF_AUTOPROBE&t;&t;(1 &lt;&lt; 15)
 DECL|macro|UPF_BOOT_AUTOCONF
 mdefine_line|#define UPF_BOOT_AUTOCONF&t;(1 &lt;&lt; 28)
+DECL|macro|UPF_RESOURCES
+mdefine_line|#define UPF_RESOURCES&t;&t;(1 &lt;&lt; 30)
+DECL|macro|UPF_IOREMAP
+mdefine_line|#define UPF_IOREMAP&t;&t;(1 &lt;&lt; 31)
 DECL|macro|UPF_FLAGS
 mdefine_line|#define UPF_FLAGS&t;&t;(0x7fff)
 DECL|macro|UPF_USR_MASK

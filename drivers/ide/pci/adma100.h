@@ -58,7 +58,7 @@ id|ide_pci_device_t
 id|pdcadma_chipsets
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/processor.h&gt; 
 macro_line|#include &lt;asm/system.h&gt;
@@ -1380,18 +1380,16 @@ id|mce_timer
 )paren
 suffix:semicolon
 )brace
-DECL|variable|mce_task
 r_static
-r_struct
-id|tq_struct
-id|mce_task
-op_assign
-(brace
-dot
-id|routine
-op_assign
+id|DECLARE_WORK
+c_func
+(paren
+id|mce_work
+comma
 id|do_mce_timer
-)brace
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 DECL|function|mce_timerfunc
 r_static
@@ -1415,11 +1413,11 @@ OG
 l_int|1
 )paren
 (brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|mce_task
+id|mce_work
 )paren
 suffix:semicolon
 r_return

@@ -34,7 +34,7 @@ macro_line|#if defined(CONFIG_AGP) || defined(CONFIG_AGP_MODULE)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &quot;drm.h&quot;
@@ -1614,11 +1614,21 @@ r_int
 id|last_switch
 suffix:semicolon
 multiline_comment|/* jiffies at last context switch  */
-DECL|member|tq
+DECL|member|work
 r_struct
-id|tq_struct
-id|tq
+id|work_struct
+id|work
 suffix:semicolon
+macro_line|#if __HAVE_VBL_IRQ
+DECL|member|vbl_queue
+id|wait_queue_head_t
+id|vbl_queue
+suffix:semicolon
+DECL|member|vbl_received
+id|atomic_t
+id|vbl_received
+suffix:semicolon
+macro_line|#endif
 DECL|member|ctx_start
 id|cycles_t
 id|ctx_start
@@ -3749,6 +3759,92 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|DRM
+c_func
+(paren
+id|driver_irq_preinstall
+)paren
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|DRM
+c_func
+(paren
+id|driver_irq_postinstall
+)paren
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|DRM
+c_func
+(paren
+id|driver_irq_uninstall
+)paren
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#if __HAVE_VBL_IRQ
+r_extern
+r_int
+id|DRM
+c_func
+(paren
+id|wait_vblank
+)paren
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|DRM
+c_func
+(paren
+id|vblank_wait
+)paren
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+r_int
+r_int
+op_star
+id|vbl_seq
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if __HAVE_DMA_IRQ_BH
 r_extern
 r_void

@@ -79,10 +79,10 @@ macro_line|#&t;endif
 macro_line|#endif
 macro_line|#ifdef HAVE_TQ_SCHED
 DECL|macro|SCHEDULE_TASK
-mdefine_line|#define SCHEDULE_TASK(x)&t;&t;&bslash;&n;&t;/*MOD_INC_USE_COUNT*/;&t;&t;&bslash;&n;&t;(x)-&gt;next = NULL;&t;&t;&bslash;&n;&t;queue_task(x, &amp;tq_scheduler)
+mdefine_line|#define SCHEDULE_TASK(x)&t;&t;&bslash;&n;&t;/*MOD_INC_USE_COUNT*/;&t;&t;&bslash;&n;&t;schedule_work(x)
 macro_line|#else
 DECL|macro|SCHEDULE_TASK
-mdefine_line|#define SCHEDULE_TASK(x)&t;&t;&bslash;&n;&t;/*MOD_INC_USE_COUNT*/;&t;&t;&bslash;&n;&t;if (schedule_task(x) == 0) {&t;&bslash;&n;&t;&t;/*MOD_DEC_USE_COUNT*/;&t;&bslash;&n;&t;}
+mdefine_line|#define SCHEDULE_TASK(x)&t;&t;&bslash;&n;&t;/*MOD_INC_USE_COUNT*/;&t;&t;&bslash;&n;&t;if (schedule_work(x) == 0) {&t;&bslash;&n;&t;&t;/*MOD_DEC_USE_COUNT*/;&t;&bslash;&n;&t;}
 macro_line|#endif
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 DECL|macro|x_scsi_detect

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -418,48 +419,6 @@ id|u32
 id|port
 )paren
 suffix:semicolon
-DECL|member|OUTBP
-r_void
-(paren
-op_star
-id|OUTBP
-)paren
-(paren
-id|u8
-id|addr
-comma
-id|u32
-id|port
-)paren
-suffix:semicolon
-DECL|member|OUTWP
-r_void
-(paren
-op_star
-id|OUTWP
-)paren
-(paren
-id|u16
-id|addr
-comma
-id|u32
-id|port
-)paren
-suffix:semicolon
-DECL|member|OUTLP
-r_void
-(paren
-op_star
-id|OUTLP
-)paren
-(paren
-id|u32
-id|addr
-comma
-id|u32
-id|port
-)paren
-suffix:semicolon
 DECL|member|OUTSW
 r_void
 (paren
@@ -478,47 +437,11 @@ id|u32
 id|count
 )paren
 suffix:semicolon
-DECL|member|OUTSWP
-r_void
-(paren
-op_star
-id|OUTSWP
-)paren
-(paren
-id|u32
-id|port
-comma
-r_void
-op_star
-id|addr
-comma
-id|u32
-id|count
-)paren
-suffix:semicolon
 DECL|member|OUTSL
 r_void
 (paren
 op_star
 id|OUTSL
-)paren
-(paren
-id|u32
-id|port
-comma
-r_void
-op_star
-id|addr
-comma
-id|u32
-id|count
-)paren
-suffix:semicolon
-DECL|member|OUTSLP
-r_void
-(paren
-op_star
-id|OUTSLP
 )paren
 (paren
 id|u32
@@ -565,39 +488,6 @@ id|u32
 id|port
 )paren
 suffix:semicolon
-DECL|member|INBP
-id|u8
-(paren
-op_star
-id|INBP
-)paren
-(paren
-id|u32
-id|port
-)paren
-suffix:semicolon
-DECL|member|INWP
-id|u16
-(paren
-op_star
-id|INWP
-)paren
-(paren
-id|u32
-id|port
-)paren
-suffix:semicolon
-DECL|member|INLP
-id|u32
-(paren
-op_star
-id|INLP
-)paren
-(paren
-id|u32
-id|port
-)paren
-suffix:semicolon
 DECL|member|INSW
 r_void
 (paren
@@ -616,47 +506,11 @@ id|u32
 id|count
 )paren
 suffix:semicolon
-DECL|member|INSWP
-r_void
-(paren
-op_star
-id|INSWP
-)paren
-(paren
-id|u32
-id|port
-comma
-r_void
-op_star
-id|addr
-comma
-id|u32
-id|count
-)paren
-suffix:semicolon
 DECL|member|INSL
 r_void
 (paren
 op_star
 id|INSL
-)paren
-(paren
-id|u32
-id|port
-comma
-r_void
-op_star
-id|addr
-comma
-id|u32
-id|count
-)paren
-suffix:semicolon
-DECL|member|INSLP
-r_void
-(paren
-op_star
-id|INSLP
 )paren
 (paren
 id|u32
@@ -811,53 +665,6 @@ macro_line|# define ide_release_lock(lock)&t;&t;&t;do {} while (0)
 DECL|macro|ide_get_lock
 macro_line|# define ide_get_lock(lock, hdlr, data)&t;&t;do {} while (0)
 macro_line|#endif /* IDE_ARCH_LOCK */
-multiline_comment|/*&n; * If the arch-dependant ide.h did not declare/define any OUT_BYTE&n; * or IN_BYTE functions, we make some defaults here.&n; */
-macro_line|#ifndef HAVE_ARCH_OUT_BYTE
-macro_line|# ifdef REALLY_FAST_IO
-DECL|macro|OUT_BYTE
-macro_line|#  define OUT_BYTE(b,p)&t;&t;outb((b),(p))
-DECL|macro|OUT_WORD
-macro_line|#  define OUT_WORD(w,p)&t;&t;outw((w),(p))
-DECL|macro|OUT_LONG
-macro_line|#  define OUT_LONG(l,p)&t;&t;outl((l),(p))
-macro_line|# else
-DECL|macro|OUT_BYTE
-macro_line|#  define OUT_BYTE(b,p)&t;&t;outb_p((b),(p))
-DECL|macro|OUT_WORD
-macro_line|#  define OUT_WORD(w,p)&t;&t;outw_p((w),(p))
-DECL|macro|OUT_LONG
-macro_line|#  define OUT_LONG(l,p)&t;&t;outl_p((l),(p))
-macro_line|# endif
-DECL|macro|OUT_BYTE_P
-macro_line|# define OUT_BYTE_P(b,p)&t;outb_p((b),(p))
-DECL|macro|OUT_WORD_P
-macro_line|# define OUT_WORD_P(w,p)&t;outw_p((w),(p))
-DECL|macro|OUT_LONG_P
-macro_line|# define OUT_LONG_P(l,p)&t;outl_p((l),(p))
-macro_line|#endif
-macro_line|#ifndef HAVE_ARCH_IN_BYTE
-macro_line|# ifdef REALLY_FAST_IO
-DECL|macro|IN_BYTE
-macro_line|#  define IN_BYTE(p)&t;&t;(u8) inb(p)
-DECL|macro|IN_WORD
-macro_line|#  define IN_WORD(p)&t;&t;(u16) inw(p)
-DECL|macro|IN_LONG
-macro_line|#  define IN_LONG(p)&t;&t;(u32) inl(p)
-macro_line|# else
-DECL|macro|IN_BYTE
-macro_line|#  define IN_BYTE(p)&t;&t;(u8) inb_p(p)
-DECL|macro|IN_WORD
-macro_line|#  define IN_WORD(p)&t;&t;(u16) inw_p(p)
-DECL|macro|IN_LONG
-macro_line|#  define IN_LONG(p)&t;&t;(u32) inl_p(p)
-macro_line|# endif
-DECL|macro|IN_BYTE_P
-macro_line|# define IN_BYTE_P(p)&t;&t;(u8) inb_p(p)
-DECL|macro|IN_WORD_P
-macro_line|# define IN_WORD_P(p)&t;&t;(u16) inw_p(p)
-DECL|macro|IN_LONG_P
-macro_line|# define IN_LONG_P(p)&t;&t;(u32) inl_p(p)
-macro_line|#endif
 multiline_comment|/*&n; * Now for the data we need to maintain per-drive:  ide_drive_t&n; */
 DECL|macro|ide_scsi
 mdefine_line|#define ide_scsi&t;0x21
@@ -2004,6 +1811,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=present, 0=default */
+DECL|member|blocked
+r_int
+id|blocked
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1=powermanagment told us not to do anything, so sleep nicely */
 DECL|member|addressing
 r_int
 id|addressing
@@ -3229,48 +3043,6 @@ id|u32
 id|port
 )paren
 suffix:semicolon
-DECL|member|OUTBP
-r_void
-(paren
-op_star
-id|OUTBP
-)paren
-(paren
-id|u8
-id|addr
-comma
-id|u32
-id|port
-)paren
-suffix:semicolon
-DECL|member|OUTWP
-r_void
-(paren
-op_star
-id|OUTWP
-)paren
-(paren
-id|u16
-id|addr
-comma
-id|u32
-id|port
-)paren
-suffix:semicolon
-DECL|member|OUTLP
-r_void
-(paren
-op_star
-id|OUTLP
-)paren
-(paren
-id|u32
-id|addr
-comma
-id|u32
-id|port
-)paren
-suffix:semicolon
 DECL|member|OUTSW
 r_void
 (paren
@@ -3289,47 +3061,11 @@ id|u32
 id|count
 )paren
 suffix:semicolon
-DECL|member|OUTSWP
-r_void
-(paren
-op_star
-id|OUTSWP
-)paren
-(paren
-id|u32
-id|port
-comma
-r_void
-op_star
-id|addr
-comma
-id|u32
-id|count
-)paren
-suffix:semicolon
 DECL|member|OUTSL
 r_void
 (paren
 op_star
 id|OUTSL
-)paren
-(paren
-id|u32
-id|port
-comma
-r_void
-op_star
-id|addr
-comma
-id|u32
-id|count
-)paren
-suffix:semicolon
-DECL|member|OUTSLP
-r_void
-(paren
-op_star
-id|OUTSLP
 )paren
 (paren
 id|u32
@@ -3376,39 +3112,6 @@ id|u32
 id|port
 )paren
 suffix:semicolon
-DECL|member|INBP
-id|u8
-(paren
-op_star
-id|INBP
-)paren
-(paren
-id|u32
-id|port
-)paren
-suffix:semicolon
-DECL|member|INWP
-id|u16
-(paren
-op_star
-id|INWP
-)paren
-(paren
-id|u32
-id|port
-)paren
-suffix:semicolon
-DECL|member|INLP
-id|u32
-(paren
-op_star
-id|INLP
-)paren
-(paren
-id|u32
-id|port
-)paren
-suffix:semicolon
 DECL|member|INSW
 r_void
 (paren
@@ -3427,47 +3130,11 @@ id|u32
 id|count
 )paren
 suffix:semicolon
-DECL|member|INSWP
-r_void
-(paren
-op_star
-id|INSWP
-)paren
-(paren
-id|u32
-id|port
-comma
-r_void
-op_star
-id|addr
-comma
-id|u32
-id|count
-)paren
-suffix:semicolon
 DECL|member|INSL
 r_void
 (paren
 op_star
 id|INSL
-)paren
-(paren
-id|u32
-id|port
-comma
-r_void
-op_star
-id|addr
-comma
-id|u32
-id|count
-)paren
-suffix:semicolon
-DECL|member|INSLP
-r_void
-(paren
-op_star
-id|INSLP
 )paren
 (paren
 id|u32

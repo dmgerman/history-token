@@ -5,7 +5,7 @@ mdefine_line|#define _LINUX_SERIALP_H
 multiline_comment|/*&n; * This is our internal structure for each serial port&squot;s state.&n; * &n; * Many fields are paralleled by the structure used by the serial_struct&n; * structure.&n; *&n; * For definitions of the flags field, see tty.h&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#if (LINUX_VERSION_CODE &lt; 0x020300)
@@ -263,10 +263,10 @@ DECL|member|io_type
 r_int
 id|io_type
 suffix:semicolon
-DECL|member|tqueue
+DECL|member|work
 r_struct
-id|tq_struct
-id|tqueue
+id|work_struct
+id|work
 suffix:semicolon
 macro_line|#ifdef DECLARE_WAITQUEUE
 DECL|member|open_wait

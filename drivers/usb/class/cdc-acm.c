@@ -153,12 +153,12 @@ id|acm_line
 id|line
 suffix:semicolon
 multiline_comment|/* line coding (bits, stop, parity) */
-DECL|member|tqueue
+DECL|member|work
 r_struct
-id|tq_struct
-id|tqueue
+id|work_struct
+id|work
 suffix:semicolon
-multiline_comment|/* task queue for line discipline waking up */
+multiline_comment|/* work queue entry for line discipline waking up */
 DECL|member|ctrlin
 r_int
 r_int
@@ -810,11 +810,11 @@ comma
 id|urb-&gt;status
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|acm-&gt;tqueue
+id|acm-&gt;work
 )paren
 suffix:semicolon
 )brace
@@ -2545,13 +2545,16 @@ id|acm-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
-id|acm-&gt;tqueue.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|acm-&gt;work
+comma
 id|acm_softint
-suffix:semicolon
-id|acm-&gt;tqueue.data
-op_assign
+comma
 id|acm
+)paren
 suffix:semicolon
 r_if
 c_cond

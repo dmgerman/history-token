@@ -273,11 +273,11 @@ r_int
 r_int
 id|router_up_time
 suffix:semicolon
-multiline_comment|/* Polling task queue. Each interface&n;         * has its own task queue, which is used&n;         * to defer events from the interrupt */
-DECL|member|poll_task
+multiline_comment|/* Polling work queue entry. Each interface&n;         * has its own work queue entry, which is used&n;         * to defer events from the interrupt */
+DECL|member|poll_work
 r_struct
-id|tq_struct
-id|poll_task
+id|work_struct
+id|poll_work
 suffix:semicolon
 DECL|member|poll_delay_timer
 r_struct
@@ -2152,19 +2152,13 @@ comma
 id|card-&gt;wandev.mtu
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize the polling task routine */
-macro_line|#ifndef LINUX_2_4
-id|ppp_priv_area-&gt;poll_task.next
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
-id|ppp_priv_area-&gt;poll_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|ppp_priv_area-&gt;poll_task.routine
-op_assign
+multiline_comment|/* Initialize the polling work routine */
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|ppp_priv_area-&gt;poll_work
+comma
 (paren
 r_void
 op_star
@@ -2174,10 +2168,9 @@ r_void
 op_star
 )paren
 id|ppp_poll
-suffix:semicolon
-id|ppp_priv_area-&gt;poll_task.data
-op_assign
+comma
 id|dev
+)paren
 suffix:semicolon
 multiline_comment|/* Initialize the polling delay timer */
 id|init_timer
@@ -12983,26 +12976,13 @@ id|card-&gt;wandev.critical
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_4
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|ppp_priv_area-&gt;poll_task
+id|ppp_priv_area-&gt;poll_work
 )paren
 suffix:semicolon
-macro_line|#else
-id|queue_task
-c_func
-(paren
-op_amp
-id|ppp_priv_area-&gt;poll_task
-comma
-op_amp
-id|tq_scheduler
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 suffix:semicolon

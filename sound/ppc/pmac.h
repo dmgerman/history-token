@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#endif
 macro_line|#endif
 macro_line|#include &lt;linux/nvram.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;asm/dbdma.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -226,6 +227,7 @@ DECL|enumerator|PMAC_SCREAMER
 DECL|enumerator|PMAC_BURGUNDY
 DECL|enumerator|PMAC_DACA
 DECL|enumerator|PMAC_TUMBLER
+DECL|enumerator|PMAC_SNAPPER
 id|PMAC_AWACS
 comma
 id|PMAC_SCREAMER
@@ -235,6 +237,8 @@ comma
 id|PMAC_DACA
 comma
 id|PMAC_TUMBLER
+comma
+id|PMAC_SNAPPER
 )brace
 suffix:semicolon
 DECL|struct|snd_pmac

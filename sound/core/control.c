@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  Routines for driver control interface&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -651,15 +649,7 @@ op_star
 id|ev
 )paren
 comma
-id|in_interrupt
-c_func
-(paren
-)paren
-ques
-c_cond
 id|GFP_ATOMIC
-suffix:colon
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -2604,9 +2594,12 @@ OG
 l_int|0
 )paren
 (brace
-id|result
-op_assign
-l_int|0
+id|read_unlock
+c_func
+(paren
+op_amp
+id|card-&gt;control_rwlock
+)paren
 suffix:semicolon
 id|snd_ctl_notify
 c_func
@@ -2619,6 +2612,13 @@ op_amp
 id|kctl-&gt;id
 )paren
 suffix:semicolon
+id|result
+op_assign
+l_int|0
+suffix:semicolon
+r_goto
+id|__unlocked
+suffix:semicolon
 )brace
 )brace
 )brace
@@ -2629,6 +2629,8 @@ op_amp
 id|card-&gt;control_rwlock
 )paren
 suffix:semicolon
+id|__unlocked
+suffix:colon
 r_if
 c_cond
 (paren
@@ -4171,33 +4173,40 @@ id|snd_ctl_f_ops
 op_assign
 (brace
 macro_line|#ifndef LINUX_2_2
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
 macro_line|#endif
+dot
 id|read
-suffix:colon
+op_assign
 id|snd_ctl_read
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|snd_ctl_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|snd_ctl_release
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|snd_ctl_poll
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|snd_ctl_ioctl
 comma
+dot
 id|fasync
-suffix:colon
+op_assign
 id|snd_ctl_fasync
 comma
 )brace
@@ -4208,12 +4217,14 @@ id|snd_minor_t
 id|snd_ctl_reg
 op_assign
 (brace
+dot
 id|comment
-suffix:colon
+op_assign
 l_string|&quot;ctl&quot;
 comma
+dot
 id|f_ops
-suffix:colon
+op_assign
 op_amp
 id|snd_ctl_f_ops
 comma

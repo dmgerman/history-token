@@ -339,22 +339,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|start_context_thread
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|current_is_keventd
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_struct
 r_namespace
 suffix:semicolon
@@ -1105,13 +1089,10 @@ id|sig
 suffix:semicolon
 DECL|member|blocked
 DECL|member|real_blocked
-DECL|member|shared_unblocked
 id|sigset_t
 id|blocked
 comma
 id|real_blocked
-comma
-id|shared_unblocked
 suffix:semicolon
 DECL|member|pending
 r_struct
@@ -1244,6 +1225,8 @@ DECL|macro|PF_SYNC
 mdefine_line|#define PF_SYNC&t;&t;0x00080000&t;/* performing fsync(), etc */
 DECL|macro|PF_FSTRANS
 mdefine_line|#define PF_FSTRANS&t;0x00100000&t;/* inside a filesystem transaction */
+DECL|macro|PF_KSWAPD
+mdefine_line|#define PF_KSWAPD&t;0x00200000&t;/* I am kswapd */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001
@@ -1726,11 +1709,6 @@ r_int
 id|dequeue_signal
 c_func
 (paren
-r_struct
-id|sigpending
-op_star
-id|pending
-comma
 id|sigset_t
 op_star
 id|mask

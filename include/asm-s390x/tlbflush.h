@@ -181,12 +181,6 @@ r_if
 c_cond
 (paren
 (paren
-id|smp_num_cpus
-OG
-l_int|1
-)paren
-op_logical_and
-(paren
 (paren
 id|atomic_read
 c_func

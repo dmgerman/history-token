@@ -2,8 +2,6 @@ multiline_comment|/*&n; *  PCM Plug-In shared (kernel/library) code&n; *  Copyri
 macro_line|#if 0
 mdefine_line|#define PLUGIN_DEBUG
 macro_line|#endif
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;

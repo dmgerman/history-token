@@ -15,6 +15,8 @@ DECL|macro|AC97_ID_AD1886
 mdefine_line|#define AC97_ID_AD1886&t;&t;0x41445361
 DECL|macro|AC97_ID_AD1887
 mdefine_line|#define AC97_ID_AD1887&t;&t;0x41445362
+DECL|macro|AC97_ID_AD1886A
+mdefine_line|#define AC97_ID_AD1886A&t;&t;0x41445363
 DECL|macro|AC97_ID_TR28028
 mdefine_line|#define AC97_ID_TR28028&t;&t;0x54524108
 DECL|macro|AC97_ID_STAC9700

@@ -1975,11 +1975,11 @@ suffix:semicolon
 )brace
 m_exit
 suffix:colon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|port-&gt;tqueue
+id|port-&gt;work
 )paren
 suffix:semicolon
 )brace

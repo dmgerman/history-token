@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2227,6 +2228,26 @@ comma
 l_string|&quot;IDE Controller&quot;
 )paren
 suffix:semicolon
+id|hwif-&gt;gendev.driver_data
+op_assign
+id|hwif
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hwif-&gt;pci_dev
+)paren
+id|hwif-&gt;gendev.parent
+op_assign
+op_amp
+id|hwif-&gt;pci_dev-&gt;dev
+suffix:semicolon
+r_else
+id|hwif-&gt;gendev.parent
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Would like to do = &amp;device_legacy */
 id|device_register
 c_func
 (paren

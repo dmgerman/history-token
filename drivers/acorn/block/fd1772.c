@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/fd.h&gt;
 macro_line|#include &lt;linux/fd1772.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -131,6 +131,7 @@ DECL|variable|disks
 r_static
 r_struct
 id|gendisk
+op_star
 id|disks
 (braket
 id|FD_MAX_UNIT
@@ -448,15 +449,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|fd1772_tq
-r_struct
-id|tq_struct
+id|DECLARE_WORK
+c_func
+(paren
 id|fd1772_tq
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
 comma
 (paren
 r_void
@@ -464,8 +460,8 @@ op_star
 )paren
 id|fd1772_checkint
 comma
-l_int|0
-)brace
+l_int|NULL
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * The driver is trying to determine the correct media format&n; * while Probing is set. fd_rwsec_done() clears it after a&n; * successful access.&n; */
 DECL|variable|Probing
@@ -2966,7 +2962,6 @@ suffix:semicolon
 id|set_capacity
 c_func
 (paren
-op_amp
 id|disks
 (braket
 id|SelectedDrive
@@ -3017,7 +3012,6 @@ suffix:semicolon
 id|set_capacity
 c_func
 (paren
-op_amp
 id|disks
 (braket
 id|SelectedDrive
@@ -4108,7 +4102,6 @@ suffix:semicolon
 id|set_capacity
 c_func
 (paren
-op_amp
 id|disks
 (braket
 id|drive
@@ -4168,7 +4161,6 @@ suffix:semicolon
 id|set_capacity
 c_func
 (paren
-op_amp
 id|disks
 (braket
 id|drive
@@ -4299,20 +4291,11 @@ c_cond
 id|fdc_busy
 )paren
 (brace
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|fd1772_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace
@@ -4396,20 +4379,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|fd1772_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace
@@ -5356,7 +5330,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 r_return
-op_amp
 id|disks
 (braket
 id|drive
@@ -5386,6 +5359,44 @@ c_func
 r_return
 l_int|0
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|FD_MAX_UNITS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|disks
+(braket
+id|i
+)braket
+op_assign
+id|alloc_disk
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|disks
+(braket
+id|i
+)braket
+)paren
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5409,8 +5420,8 @@ comma
 id|MAJOR_NR
 )paren
 suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -5433,8 +5444,16 @@ comma
 id|FLOPPY_DMA
 )paren
 suffix:semicolon
-r_return
-l_int|1
+id|unregister_blkdev
+c_func
+(paren
+id|MAJOR_NR
+comma
+l_string|&quot;fd&quot;
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -5458,14 +5477,22 @@ comma
 id|FIQ_FD1772
 )paren
 suffix:semicolon
+id|unregister_blkdev
+c_func
+(paren
+id|MAJOR_NR
+comma
+l_string|&quot;fd&quot;
+)paren
+suffix:semicolon
 id|free_dma
 c_func
 (paren
 id|FLOPPY_DMA
 )paren
 suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|out
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -5576,7 +5603,7 @@ id|disks
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|major
 op_assign
 id|MAJOR_NR
@@ -5585,7 +5612,7 @@ id|disks
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|first_minor
 op_assign
 l_int|0
@@ -5594,7 +5621,7 @@ id|disks
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|fops
 op_assign
 op_amp
@@ -5607,7 +5634,7 @@ id|disks
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|disk_name
 comma
 l_string|&quot;fd%d&quot;
@@ -5618,7 +5645,6 @@ suffix:semicolon
 id|set_capacity
 c_func
 (paren
-op_amp
 id|disks
 (braket
 id|i
@@ -5656,8 +5682,9 @@ id|add_disk
 c_func
 (paren
 id|disks
-op_plus
+(braket
 id|i
+)braket
 )paren
 suffix:semicolon
 id|config_types
@@ -5667,6 +5694,26 @@ c_func
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|out
+suffix:colon
+r_while
+c_loop
+(paren
+id|i
+op_decrement
+)paren
+id|put_disk
+c_func
+(paren
+id|disks
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 eof

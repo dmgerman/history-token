@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Regular lowlevel cardbus driver (&quot;yenta&quot;)&n;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -2991,7 +2991,7 @@ op_amp
 id|socket-&gt;event_lock
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -3380,9 +3380,16 @@ op_star
 id|data
 suffix:semicolon
 multiline_comment|/* It&squot;s OK to overwrite this now */
-id|socket-&gt;tq_task.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|socket-&gt;tq_task
+comma
 id|yenta_bh
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4765,17 +4772,20 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Get the PCMCIA kernel thread to complete the&n;&t;   initialisation later. We can&squot;t do this here,&n;&t;   because, er, because Linus says so :)&n;&t;*/
-id|socket-&gt;tq_task.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|socket-&gt;tq_task
+comma
 id|yenta_open_bh
-suffix:semicolon
-id|socket-&gt;tq_task.data
-op_assign
+comma
 id|socket
+)paren
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

@@ -6,15 +6,15 @@ DECL|macro|chip_t
 mdefine_line|#define chip_t cs46xx_t
 multiline_comment|/*&n; *  constants&n; */
 DECL|macro|CS46XX_BA0_SIZE
-mdefine_line|#define CS46XX_BA0_SIZE&t;&t;0x1000
+mdefine_line|#define CS46XX_BA0_SIZE&t;&t;  0x1000
 DECL|macro|CS46XX_BA1_DATA0_SIZE
-mdefine_line|#define CS46XX_BA1_DATA0_SIZE&t;0x3000
+mdefine_line|#define CS46XX_BA1_DATA0_SIZE 0x3000
 DECL|macro|CS46XX_BA1_DATA1_SIZE
-mdefine_line|#define CS46XX_BA1_DATA1_SIZE&t;0x3800
+mdefine_line|#define CS46XX_BA1_DATA1_SIZE 0x3800
 DECL|macro|CS46XX_BA1_PRG_SIZE
-mdefine_line|#define CS46XX_BA1_PRG_SIZE&t;0x7000
+mdefine_line|#define CS46XX_BA1_PRG_SIZE&t;  0x7000
 DECL|macro|CS46XX_BA1_REG_SIZE
-mdefine_line|#define CS46XX_BA1_REG_SIZE&t;0x0100
+mdefine_line|#define CS46XX_BA1_REG_SIZE&t;  0x0100
 DECL|macro|CS46XX_PERIOD_SIZE
 mdefine_line|#define CS46XX_PERIOD_SIZE 2048
 DECL|macro|CS46XX_FRAGS
@@ -224,9 +224,9 @@ suffix:semicolon
 r_void
 id|cs46xx_dsp_spos_destroy
 (paren
-id|dsp_spos_instance_t
+id|cs46xx_t
 op_star
-id|instance
+id|chip
 )paren
 suffix:semicolon
 r_int
@@ -375,6 +375,38 @@ id|chip
 suffix:semicolon
 r_int
 id|cs46xx_dsp_disable_spdif_in
+(paren
+id|cs46xx_t
+op_star
+id|chip
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_dsp_enable_pcm_capture
+(paren
+id|cs46xx_t
+op_star
+id|chip
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_dsp_disable_pcm_capture
+(paren
+id|cs46xx_t
+op_star
+id|chip
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_dsp_enable_adc_capture
+(paren
+id|cs46xx_t
+op_star
+id|chip
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_dsp_disable_adc_capture
 (paren
 id|cs46xx_t
 op_star
@@ -947,6 +979,9 @@ comma
 r_void
 op_star
 id|private_data
+comma
+id|u32
+id|hw_dma_addr
 )paren
 suffix:semicolon
 r_void
@@ -999,6 +1034,52 @@ comma
 id|pcm_channel_descriptor_t
 op_star
 id|pcm_channel
+)paren
+suffix:semicolon
+id|dsp_scb_descriptor_t
+op_star
+id|cs46xx_add_record_source
+(paren
+id|cs46xx_t
+op_star
+id|chip
+comma
+id|dsp_scb_descriptor_t
+op_star
+id|source
+comma
+id|u16
+id|addr
+comma
+r_char
+op_star
+id|scb_name
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_src_unlink
+c_func
+(paren
+id|cs46xx_t
+op_star
+id|chip
+comma
+id|dsp_scb_descriptor_t
+op_star
+id|src
+)paren
+suffix:semicolon
+r_int
+id|cs46xx_src_link
+c_func
+(paren
+id|cs46xx_t
+op_star
+id|chip
+comma
+id|dsp_scb_descriptor_t
+op_star
+id|src
 )paren
 suffix:semicolon
 macro_line|#endif /* __CS46XX_LIB_H__ */

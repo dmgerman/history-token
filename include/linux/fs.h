@@ -2103,8 +2103,6 @@ DECL|macro|MNT_FORCE
 mdefine_line|#define MNT_FORCE&t;0x00000001&t;/* Attempt to forcibily umount */
 DECL|macro|MNT_DETACH
 mdefine_line|#define MNT_DETACH&t;0x00000002&t;/* Just detach from the tree */
-macro_line|#include &lt;linux/ext3_fs_sb.h&gt;
-macro_line|#include &lt;linux/hpfs_fs_sb.h&gt;
 r_extern
 r_struct
 id|list_head
@@ -2283,16 +2281,6 @@ suffix:semicolon
 multiline_comment|/* Informational name */
 r_union
 (brace
-DECL|member|ext3_sb
-r_struct
-id|ext3_sb_info
-id|ext3_sb
-suffix:semicolon
-DECL|member|hpfs_sb
-r_struct
-id|hpfs_sb_info
-id|hpfs_sb
-suffix:semicolon
 DECL|member|generic_sbp
 r_void
 op_star
@@ -5115,8 +5103,9 @@ id|invalidate_inode_pages
 c_func
 (paren
 r_struct
-id|inode
+id|address_space
 op_star
+id|mapping
 )paren
 suffix:semicolon
 r_extern

@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 macro_line|#if defined(CONFIG_ARCH_S390)
@@ -1511,6 +1512,11 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+id|page_address_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|mem_init
 c_func
 (paren
@@ -1668,7 +1674,7 @@ id|__initcall_end
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure there is no pending stuff from the initcall sequence */
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren
@@ -1692,21 +1698,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Ok, at this point all CPU&squot;s should be initialized, so&n;&t; * we can start looking into devices..&n;&t; */
-macro_line|#if defined(CONFIG_ARCH_S390)
-id|s390_init_machine_check
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Networking initialization needs a process context */
 id|sock_init
 c_func
 (paren
 )paren
 suffix:semicolon
-id|start_context_thread
+id|init_workqueues
 c_func
 (paren
 )paren
@@ -1839,10 +1837,6 @@ suffix:semicolon
 id|system_running
 op_assign
 l_int|1
-suffix:semicolon
-id|kstat.pgfree
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

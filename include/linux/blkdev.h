@@ -4,7 +4,6 @@ mdefine_line|#define _LINUX_BLKDEV_H
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
@@ -1477,5 +1476,24 @@ id|p.v
 )paren
 suffix:semicolon
 )brace
+r_extern
+id|atomic_t
+id|nr_iowait_tasks
+suffix:semicolon
+r_void
+id|io_schedule
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|io_schedule_timeout
+c_func
+(paren
+r_int
+id|timeout
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

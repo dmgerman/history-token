@@ -18,6 +18,8 @@ DECL|macro|ET_CntlProgOpCmd
 mdefine_line|#define ET_CntlProgOpCmd&t;0x20
 DECL|macro|ET_CntlProgIdent
 mdefine_line|#define ET_CntlProgIdent&t;0x0B
+DECL|macro|ET_SigQuiesce
+mdefine_line|#define ET_SigQuiesce&t;0x1D
 DECL|macro|ET_OpCmd_Mask
 mdefine_line|#define ET_OpCmd_Mask&t;0x80000000
 DECL|macro|ET_Msg_Mask
@@ -30,6 +32,8 @@ DECL|macro|ET_CtlProgOpCmd_Mask
 mdefine_line|#define ET_CtlProgOpCmd_Mask&t;0x00000001
 DECL|macro|ET_CtlProgIdent_Mask
 mdefine_line|#define ET_CtlProgIdent_Mask&t;0x00200000
+DECL|macro|ET_SigQuiesce_Mask
+mdefine_line|#define ET_SigQuiesce_Mask&t;0x00000008
 DECL|macro|GMF_DOM
 mdefine_line|#define GMF_DOM&t;&t;0x8000
 DECL|macro|GMF_SndAlrm
@@ -362,6 +366,8 @@ op_or
 id|ET_PMsgCmd_Mask
 op_or
 id|ET_StateChange_Mask
+op_or
+id|ET_SigQuiesce_Mask
 comma
 id|ET_Msg_Mask
 op_or

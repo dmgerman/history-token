@@ -467,6 +467,10 @@ c_cond
 id|dev
 op_ne
 id|SNDRV_MINOR_SEQUENCER
+op_logical_and
+id|dev
+op_ne
+id|SNDRV_MINOR_TIMER
 )paren
 (brace
 r_if
@@ -620,13 +624,15 @@ id|snd_fops
 op_assign
 (brace
 macro_line|#ifndef LINUX_2_2
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
 macro_line|#endif
+dot
 id|open
-suffix:colon
+op_assign
 id|snd_open
 )brace
 suffix:semicolon
@@ -1589,9 +1595,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_handle_t
-id|master
-suffix:semicolon
 r_char
 id|controlname
 (braket
@@ -1626,38 +1629,6 @@ comma
 id|controlnum
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-id|master
-op_assign
-id|devfs_find_handle
-c_func
-(paren
-l_int|NULL
-comma
-id|controlname
-comma
-id|strlen
-c_func
-(paren
-id|controlname
-)paren
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|DEVFS_SPECIAL_CHR
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|master
-)paren
-suffix:semicolon
-macro_line|#else
 id|devfs_find_and_unregister
 c_func
 (paren
@@ -1674,7 +1645,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_SND_OSSEMUL

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hd64465.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -2704,7 +2704,7 @@ id|irq
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================*/
-multiline_comment|/*&n; * Interrupt handling routine.&n; *&n; * This uses the schedule_task() technique to cause reportable events&n; * such as card insertion and removal to be handled in keventd&squot;s&n; * process context.&n; */
+multiline_comment|/*&n; * Interrupt handling routine.&n; *&n; * This uses the schedule_work() technique to cause reportable events&n; * such as card insertion and removal to be handled in keventd&squot;s&n; * process context.&n; */
 DECL|function|hs_events_bh
 r_static
 r_void
@@ -2788,17 +2788,16 @@ id|events
 suffix:semicolon
 )brace
 )brace
-DECL|variable|hs_events_task
 r_static
-r_struct
-id|tq_struct
+id|DECLARE_WORK
+c_func
+(paren
 id|hs_events_task
-op_assign
-(brace
-id|routine
-suffix:colon
+comma
 id|hs_events_bh
-)brace
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 DECL|function|hs_interrupt
 r_static
@@ -3062,7 +3061,7 @@ op_amp
 id|hs_pending_event_lock
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 singleline_comment|// #define&t;DEBUG&t;&t;&t;// error path messages, extra info
@@ -168,7 +168,7 @@ id|bh
 suffix:semicolon
 DECL|member|kevent
 r_struct
-id|tq_struct
+id|work_struct
 id|kevent
 suffix:semicolon
 DECL|member|flags
@@ -3743,7 +3743,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* some work can&squot;t be done in tasklets, so we use keventd&n; *&n; * NOTE:  annoying asymmetry:  if it&squot;s active, schedule_task() fails,&n; * but tasklet_schedule() doesn&squot;t.  hope the failure is rare.&n; */
+multiline_comment|/* some work can&squot;t be done in tasklets, so we use keventd&n; *&n; * NOTE:  annoying asymmetry:  if it&squot;s active, schedule_work() fails,&n; * but tasklet_schedule() doesn&squot;t.  hope the failure is rare.&n; */
 DECL|function|defer_kevent
 r_static
 r_void
@@ -3770,7 +3770,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|schedule_task
+id|schedule_work
 (paren
 op_amp
 id|dev-&gt;kevent
@@ -6584,7 +6584,7 @@ id|usbnet_mutex
 )paren
 suffix:semicolon
 singleline_comment|// assuming we used keventd, it must quiesce too
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 (paren
 )paren
 suffix:semicolon
@@ -6802,7 +6802,7 @@ r_int
 )paren
 id|dev
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 (paren
 op_amp
 id|dev-&gt;kevent

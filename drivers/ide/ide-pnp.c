@@ -114,6 +114,10 @@ id|enable
 id|hw_regs_t
 id|hw
 suffix:semicolon
+id|ide_hwif_t
+op_star
+id|hwif
+suffix:semicolon
 r_int
 id|index
 suffix:semicolon
@@ -211,7 +215,8 @@ c_func
 op_amp
 id|hw
 comma
-l_int|NULL
+op_amp
+id|hwif
 )paren
 suffix:semicolon
 r_if
@@ -237,6 +242,10 @@ c_func
 id|dev
 )paren
 )paren
+suffix:semicolon
+id|hwif-&gt;pci_dev
+op_assign
+id|dev
 suffix:semicolon
 r_return
 l_int|0

@@ -369,8 +369,9 @@ comma
 l_int|0x0968
 )paren
 comma
+dot
 id|devs
-suffix:colon
+op_assign
 (brace
 id|ISAPNP_DEVICE_ID
 c_func

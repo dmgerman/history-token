@@ -129,6 +129,8 @@ DECL|macro|_SEGMENT_TABLE
 mdefine_line|#define _SEGMENT_TABLE  (_USER_SEG_TABLE_LEN|0x80000000|0x100)
 DECL|macro|_KERNSEG_TABLE
 mdefine_line|#define _KERNSEG_TABLE  (_KERNEL_SEG_TABLE_LEN)
+DECL|macro|USER_STD_MASK
+mdefine_line|#define USER_STD_MASK           0x00000080UL
 multiline_comment|/*&n; * No mapping available&n; */
 DECL|macro|PAGE_INVALID
 mdefine_line|#define PAGE_INVALID&t;  __pgprot(_PAGE_INVALID)

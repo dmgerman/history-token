@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.15 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/06/2002 Cornelia Huck  some cleanups&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.26 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/06/2002 Cornelia Huck  some cleanups&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -166,7 +166,7 @@ id|cio_debug_initialized
 )paren
 id|debug_text_event
 (paren
-id|cio_debug_trace_id
+id|cio_debug_msg_id
 comma
 id|level
 comma
@@ -380,9 +380,6 @@ r_int
 r_int
 id|psw_mask
 suffix:semicolon
-r_int
-id|ccode
-suffix:semicolon
 r_uint64
 id|time_start
 suffix:semicolon
@@ -411,87 +408,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * We shouldn&squot;t perform a TPI loop, waiting for an&n;&t; *  interrupt to occur, but should load a WAIT PSW&n;&t; *  instead. Otherwise we may keep the channel subsystem&n;&t; *  busy, not able to present the interrupt. When our&n;&t; *  sync. interrupt arrived we reset the I/O old PSW to&n;&t; *  its original value.&n;&t; */
-id|ccode
-op_assign
-id|iac
-(paren
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|ccode
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-multiline_comment|/* primary-space */
 id|psw_mask
 op_assign
-id|_IO_PSW_MASK
+id|PSW_KERNEL_BITS
 op_or
-id|_PSW_PRIM_SPACE_MODE
+id|PSW_MASK_IO
 op_or
-id|_PSW_IO_WAIT
+id|PSW_MASK_WAIT
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|1
-suffix:colon
-multiline_comment|/* secondary-space */
-id|psw_mask
-op_assign
-id|_IO_PSW_MASK
-op_or
-id|_PSW_SEC_SPACE_MODE
-op_or
-id|_PSW_IO_WAIT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-multiline_comment|/* access-register */
-id|psw_mask
-op_assign
-id|_IO_PSW_MASK
-op_or
-id|_PSW_ACC_REG_MODE
-op_or
-id|_PSW_IO_WAIT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|3
-suffix:colon
-multiline_comment|/* home-space */
-id|psw_mask
-op_assign
-id|_IO_PSW_MASK
-op_or
-id|_PSW_HOME_SPACE_MODE
-op_or
-id|_PSW_IO_WAIT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|panic
-(paren
-l_string|&quot;start_IO() : unexpected &quot;
-l_string|&quot;address-space-control %d&bslash;n&quot;
-comma
-id|ccode
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Martin didn&squot;t like modifying the new PSW, now we take&n;&t; *  a fast exit in do_IRQ() instead&n;&t; */
 op_star
 (paren
@@ -704,101 +628,19 @@ r_int
 id|psw_mask
 suffix:semicolon
 r_int
-id|ccode
-suffix:semicolon
-r_int
 id|ready
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * For hsch and csch, we don&squot;t do a tpi loop as for ssch,&n;&t; * but load a wait psw if sync processing is requested.&n;&t; *&n;&t; * FIXME: Are there case where we can&squot;t rely on an interrupt&n;&t; *        to occurr? Need to check...&n;&t; */
-id|ccode
-op_assign
-id|iac
-(paren
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|ccode
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-multiline_comment|/* primary-space */
 id|psw_mask
 op_assign
-id|_IO_PSW_MASK
+id|PSW_KERNEL_BITS
 op_or
-id|_PSW_PRIM_SPACE_MODE
+id|PSW_MASK_IO
 op_or
-id|_PSW_IO_WAIT
+id|PSW_MASK_WAIT
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|1
-suffix:colon
-multiline_comment|/* secondary-space */
-id|psw_mask
-op_assign
-id|_IO_PSW_MASK
-op_or
-id|_PSW_SEC_SPACE_MODE
-op_or
-id|_PSW_IO_WAIT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-multiline_comment|/* access-register */
-id|psw_mask
-op_assign
-id|_IO_PSW_MASK
-op_or
-id|_PSW_ACC_REG_MODE
-op_or
-id|_PSW_IO_WAIT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|3
-suffix:colon
-multiline_comment|/* home-space */
-id|psw_mask
-op_assign
-id|_IO_PSW_MASK
-op_or
-id|_PSW_HOME_SPACE_MODE
-op_or
-id|_PSW_IO_WAIT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* FIXME: isn&squot;t ccode only 2 bits anyway? */
-id|panic
-(paren
-id|halt
-ques
-c_cond
-l_string|&quot;halt&quot;
-suffix:colon
-l_string|&quot;clear&quot;
-l_string|&quot;_IO() : unexpected address-space-control %d&bslash;n&quot;
-comma
-id|ccode
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Martin didn&squot;t like modifying the new PSW, now we take&n;&t; *  a fast exit in do_IRQ() instead&n;&t; */
 op_star
 (paren
@@ -1393,6 +1235,14 @@ op_and_assign
 op_complement
 id|lpm
 suffix:semicolon
+id|switch_off_chpids
+c_func
+(paren
+id|irq
+comma
+id|lpm
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1569,11 +1419,6 @@ id|dbf_txt
 l_int|15
 )braket
 suffix:semicolon
-id|SANITY_CHECK
-(paren
-id|irq
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * The flag usage is mutal exclusive ...&n;&t; */
 r_if
 c_cond
@@ -1644,9 +1489,7 @@ c_cond
 id|ret
 )paren
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -2011,9 +1854,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 r_int
@@ -2240,9 +2081,7 @@ id|EBUSY
 suffix:semicolon
 )brace
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * resume suspended I/O operation&n; */
@@ -2400,9 +2239,7 @@ id|ENOTCONN
 suffix:semicolon
 )brace
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note: The &quot;intparm&quot; parameter is not used by the halt_IO() function&n; *       itself, as no ORB is built for the HSCH instruction. However,&n; *       it allows the device interrupt handler to associate the upcoming&n; *       interrupt with the halt_IO() request.&n; */
@@ -2508,9 +2345,7 @@ c_cond
 id|ret
 )paren
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Issue &quot;Halt subchannel&quot; and process condition code&n;&t; */
@@ -2718,9 +2553,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note: The &quot;intparm&quot; parameter is not used by the clear_IO() function&n; *       itself, as no ORB is built for the CSCH instruction. However,&n; *       it allows the device interrupt handler to associate the upcoming&n; *       interrupt with the clear_IO() request.&n; */
@@ -2771,10 +2604,8 @@ op_eq
 id|INVALID_STORAGE_AREA
 )paren
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * we only allow for clear_IO if the device has an I/O handler associated&n;&t; */
 r_if
@@ -2844,9 +2675,7 @@ c_cond
 id|ret
 )paren
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Issue &quot;Clear subchannel&quot; and process condition code&n;&t; */
@@ -3045,9 +2874,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function: cancel_IO&n; * Issues a &quot;Cancel Subchannel&quot; on the specified subchannel&n; * Note: We don&squot;t need any fancy intparms and flags here&n; *       since xsch is executed synchronously.&n; * Only for common I/O internal use as for now.&n; */
@@ -3072,11 +2899,6 @@ r_int
 id|ret
 op_assign
 l_int|0
-suffix:semicolon
-id|SANITY_CHECK
-(paren
-id|irq
-)paren
 suffix:semicolon
 id|sprintf
 (paren
@@ -3199,13 +3021,6 @@ op_star
 id|__LC_SUBCHANNEL_ID
 )paren
 suffix:semicolon
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * take fast exit if CPU is in sync. I/O state&n;&t; *&n;&t; * Note: we have to turn off the WAIT bit and re-disable&n;&t; *       interrupts prior to return as this was the initial&n;&t; *       entry condition to synchronous I/O.&n;&t; */
 r_if
 c_cond
@@ -3222,19 +3037,17 @@ id|regs.psw.mask
 op_and_assign
 op_complement
 (paren
-id|_PSW_WAIT_MASK_BIT
+id|PSW_MASK_WAIT
 op_or
-id|_PSW_IO_MASK_BIT
+id|PSW_MASK_IO
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
 multiline_comment|/* endif */
-macro_line|#ifdef CONFIG_FAST_IRQ
 r_do
 (brace
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_FAST_IRQ */
 multiline_comment|/*&n;&t;&t; * Non I/O-subchannel thin interrupts are processed differently&n;&t;&t; */
 r_if
 c_cond
@@ -3250,10 +3063,6 @@ id|IO_INTERRUPT_TYPE
 (brace
 id|irq_enter
 (paren
-id|cpu
-comma
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|do_adapter_IO
@@ -3263,10 +3072,6 @@ id|tpi_info-&gt;intparm
 suffix:semicolon
 id|irq_exit
 (paren
-id|cpu
-comma
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -3319,9 +3124,6 @@ suffix:semicolon
 )brace
 id|irq_enter
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 id|s390irq_spin_lock
@@ -3341,18 +3143,17 @@ id|irq
 suffix:semicolon
 id|irq_exit
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_FAST_IRQ
-multiline_comment|/*&n;&t;&t; * Are more interrupts pending?&n;&t;&t; * If so, the tpi instruction will update the lowcore &n;&t;&t; * to hold the info for the next interrupt.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Are more interrupts pending?&n;&t;&t; * If so, the tpi instruction will update the lowcore &n;&t;&t; * to hold the info for the next interrupt.&n;&t;&t; * We don&squot;t do this for VM because a tpi drops the cpu&n;&t;&t; * out of the sie which costs more cycles than it saves.&n;&t;&t; */
 )brace
 r_while
 c_loop
 (paren
+op_logical_neg
+id|MACHINE_IS_VM
+op_logical_and
 id|tpi
 (paren
 l_int|NULL
@@ -3361,7 +3162,6 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_FAST_IRQ */
 r_return
 suffix:semicolon
 )brace
@@ -3737,11 +3537,11 @@ c_func
 r_int
 r_int
 id|irq
-comma
-r_int
-id|ending_status
 )paren
 (brace
+r_int
+id|ending_status
+suffix:semicolon
 r_int
 r_int
 id|fctl
@@ -3942,9 +3742,7 @@ op_member_access_from_pointer
 id|ui.flags.ready
 )paren
 r_return
-(paren
 id|ending_status
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check whether we must issue a SENSE CCW ourselves if there is no&n;&t; *  concurrent sense facility installed for the subchannel.&n;&t; *&n;&t; * Note: We should check for ioinfo[irq]-&gt;ui.flags.consns but VM&n;&t; *       violates the ESA/390 architecture and doesn&squot;t present an&n;&t; *       operand exception for virtual devices without concurrent&n;&t; *       sense facility available/supported when enabling the&n;&t; *       concurrent sense facility.&n;&t; */
 r_if
@@ -4416,9 +4214,6 @@ c_func
 r_int
 r_int
 id|irq
-comma
-r_int
-id|ending_status
 )paren
 (brace
 id|devstat_t
@@ -4656,9 +4451,7 @@ op_member_access_from_pointer
 id|ui.flags.ready
 )paren
 r_return
-(paren
-id|ending_status
-)paren
+l_int|0
 suffix:semicolon
 id|memcpy
 (paren
@@ -4704,12 +4497,21 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|ioinfo
 (braket
 id|irq
 )braket
 op_member_access_from_pointer
 id|ui.flags.s_pend
+op_logical_or
+id|ioinfo
+(braket
+id|irq
+)braket
+op_member_access_from_pointer
+id|ui.flags.repnone
+)paren
 )paren
 id|ioinfo
 (braket
@@ -4753,11 +4555,6 @@ id|issense
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|ending_status
-op_assign
-l_int|0
-suffix:semicolon
 id|devstat_t
 op_star
 id|dp
@@ -4796,11 +4593,18 @@ id|cpu
 op_increment
 suffix:semicolon
 )brace
+id|CIO_TRACE_EVENT
+(paren
+l_int|3
+comma
+l_string|&quot;procIRQ&quot;
+)paren
+suffix:semicolon
 id|sprintf
 (paren
 id|dbf_txt
 comma
-l_string|&quot;procIRQ%x&quot;
+l_string|&quot;%x&quot;
 comma
 id|irq
 )paren
@@ -4848,29 +4652,6 @@ id|irq
 comma
 op_amp
 id|p_init_irb
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ioinfo
-(braket
-id|irq
-)braket
-op_member_access_from_pointer
-id|st
-)paren
-(brace
-multiline_comment|/* can&squot;t be */
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -5352,40 +5133,24 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* normal i/o interruption */
-id|ending_status
-op_assign
+r_return
 id|s390_process_IRQ_normal
 c_func
 (paren
 id|irq
-comma
-id|ending_status
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|3
+r_default
 suffix:colon
 multiline_comment|/* device/path not operational */
-id|ending_status
-op_assign
+r_return
 id|s390_process_IRQ_notoper
 c_func
 (paren
 id|irq
-comma
-id|ending_status
 )paren
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
-r_return
-(paren
-id|ending_status
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set the special i/o-interruption subclass 7 for the&n; *  device specified by parameter irq. There can only&n; *  be a single device been operated on this special&n; *  isc. This function is aimed being able to check&n; *  on special device interrupts in disabled state,&n; *  without having to delay I/O processing (by queueing)&n; *  for non-console devices.&n; *&n; * Setting of this isc is done by set_cons_dev(), while&n; *  wait_cons_dev() allows to actively wait on an interrupt&n; *  for this device in disabed state. When the interrupt &n; *  condition is encountered, wait_cons_dev() calls do_IRQ()&n; *  to have the console device driver processing the&n; *  interrupt.&n; */
 r_int
@@ -5409,11 +5174,6 @@ id|dbf_txt
 (braket
 l_int|15
 )braket
-suffix:semicolon
-id|SANITY_CHECK
-(paren
-id|irq
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5540,9 +5300,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-(paren
 id|rc
-)paren
 suffix:semicolon
 )brace
 r_int
@@ -5635,8 +5393,8 @@ op_assign
 id|cr6
 suffix:semicolon
 id|cr6
-op_and_assign
-l_int|0x01FFFFFF
+op_assign
+l_int|0x01000000
 suffix:semicolon
 id|__ctl_load
 (paren
@@ -5727,9 +5485,7 @@ l_int|6
 suffix:semicolon
 )brace
 r_return
-(paren
 id|rc
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * used by {en,dis}able_cpu_sync_isc&n; */
@@ -6122,35 +5878,6 @@ multiline_comment|/* This one spins until it can get the sync_isc lock for irq# 
 r_if
 c_cond
 (paren
-(paren
-id|irq
-op_le
-id|highest_subchannel
-)paren
-op_logical_and
-(paren
-id|ioinfo
-(braket
-id|irq
-)braket
-op_ne
-id|INVALID_STORAGE_AREA
-)paren
-op_logical_and
-(paren
-op_logical_neg
-id|ioinfo
-(braket
-id|irq
-)braket
-op_member_access_from_pointer
-id|st
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|atomic_read
 (paren
 op_amp
@@ -6188,7 +5915,7 @@ l_string|&quot;Too many recursive calls to enable_sync_isc&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * we only run the STSCH/MSCH path for the first enablement&n;&t;&t; */
+multiline_comment|/*&n;&t; * we only run the STSCH/MSCH path for the first enablement&n;&t; */
 r_else
 r_if
 c_cond
@@ -6282,19 +6009,8 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-id|rc
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_return
-(paren
 id|rc
-)paren
 suffix:semicolon
 )brace
 r_int
@@ -6335,36 +6051,7 @@ comma
 id|dbf_txt
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|irq
-op_le
-id|highest_subchannel
-)paren
-op_logical_and
-(paren
-id|ioinfo
-(braket
-id|irq
-)braket
-op_ne
-id|INVALID_STORAGE_AREA
-)paren
-op_logical_and
-(paren
-op_logical_neg
-id|ioinfo
-(braket
-id|irq
-)braket
-op_member_access_from_pointer
-id|st
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * We disable if we&squot;re the top user only, as we may&n;&t;&t; *  run recursively ... &n;&t;&t; * We must not decrease the count immediately; during&n;&t;&t; *  msch() processing we may face another pending&n;&t;&t; *  status we have to process recursively (sync).&n;&t;&t; */
+multiline_comment|/*&n;&t; * We disable if we&squot;re the top user only, as we may&n;&t; *  run recursively ... &n;&t; * We must not decrease the count immediately; during&n;&t; *  msch() processing we may face another pending&n;&t; *  status we have to process recursively (sync).&n;&t; */
 r_if
 c_cond
 (paren
@@ -6454,19 +6141,8 @@ id|sync_isc_cnt
 op_decrement
 suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-id|rc
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_return
-(paren
 id|rc
-)paren
 suffix:semicolon
 )brace
 DECL|variable|halt_IO

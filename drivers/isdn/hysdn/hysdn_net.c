@@ -534,7 +534,7 @@ op_le
 l_int|3
 )paren
 (brace
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -547,15 +547,6 @@ id|dev-&gt;priv
 )paren
 op_member_access_from_pointer
 id|irq_queue
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace

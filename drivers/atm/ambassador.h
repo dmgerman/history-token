@@ -1357,7 +1357,7 @@ suffix:semicolon
 macro_line|#ifdef FILL_RX_POOLS_IN_BH
 DECL|member|bh
 r_struct
-id|tq_struct
+id|work_struct
 id|bh
 suffix:semicolon
 macro_line|#endif

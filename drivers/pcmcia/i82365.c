@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -4790,17 +4790,16 @@ id|events
 suffix:semicolon
 )brace
 )brace
-DECL|variable|pcic_task
 r_static
-r_struct
-id|tq_struct
+id|DECLARE_WORK
+c_func
+(paren
 id|pcic_task
-op_assign
-(brace
-id|routine
-suffix:colon
+comma
 id|pcic_bh
-)brace
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 DECL|variable|last_detect_jiffies
 r_static
@@ -5137,7 +5136,7 @@ op_amp
 id|pending_event_lock
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

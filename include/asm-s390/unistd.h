@@ -439,6 +439,21 @@ DECL|macro|__NR_sched_setaffinity
 mdefine_line|#define __NR_sched_setaffinity&t;239
 DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;240
+DECL|macro|__NR_security
+mdefine_line|#define __NR_security&t;&t;241&t;/* syscall for security modules */
+multiline_comment|/*&n; * Number 242 is reserved for tux&n; */
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;243
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;244
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;245
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;246
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;247
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;248
 multiline_comment|/* user-visible error numbers are in the range -1 - -122: see &lt;asm-s390/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res)                          &bslash;&n;do {                                                         &bslash;&n;        if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;                errno = -(res);                              &bslash;&n;                res = -1;                                    &bslash;&n;        }                                                    &bslash;&n;        return (type) (res);                                 &bslash;&n;} while (0)
@@ -461,33 +476,6 @@ macro_line|#include &lt;asm/stat.h&gt;
 multiline_comment|/*&n; * we need this inline - forking from kernel space will result&n; * in NO COPY ON WRITE (!!!), until an execve is executed. This&n; * is no problem, but for the stack. This is handled by not letting&n; * main() use the stack at all after fork(). Thus, no function&n; * calls - which means inline code for fork too, as otherwise we&n; * would use the stack upon exit from &squot;fork()&squot;.&n; *&n; * Actually only pause and fork are needed inline, so that there&n; * won&squot;t be any messing with the stack from main(), but we define&n; * some others too.&n; */
 DECL|macro|__NR__exit
 mdefine_line|#define __NR__exit __NR_exit
-r_static
-r_inline
-id|_syscall0
-c_func
-(paren
-r_int
-comma
-id|idle
-)paren
-r_static
-r_inline
-id|_syscall0
-c_func
-(paren
-r_int
-comma
-id|pause
-)paren
-r_static
-r_inline
-id|_syscall0
-c_func
-(paren
-r_int
-comma
-id|sync
-)paren
 r_static
 r_inline
 id|_syscall0
@@ -654,21 +642,6 @@ id|exitcode
 )paren
 r_static
 r_inline
-id|_syscall1
-c_func
-(paren
-r_int
-comma
-id|delete_module
-comma
-r_const
-r_char
-op_star
-comma
-id|name
-)paren
-r_static
-r_inline
 id|_syscall2
 c_func
 (paren
@@ -737,31 +710,6 @@ comma
 id|flags
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-)brace
-DECL|function|wait
-r_static
-r_inline
-id|pid_t
-id|wait
-c_func
-(paren
-r_int
-op_star
-id|wait_stat
-)paren
-(brace
-r_return
-id|waitpid
-c_func
-(paren
-op_minus
-l_int|1
-comma
-id|wait_stat
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
