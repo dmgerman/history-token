@@ -13319,7 +13319,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* Register for our PCI devices */
 r_return
-id|pci_register_driver
+id|pci_module_init
 c_func
 (paren
 op_amp
