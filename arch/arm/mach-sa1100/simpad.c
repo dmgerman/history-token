@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;asm/arch/simpad.h&gt;
-macro_line|#include &lt;asm/arch/registry.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -728,11 +727,9 @@ c_func
 r_void
 )paren
 (brace
-id|set_power_off_handler
-c_func
-(paren
+id|pm_power_off
+op_assign
 id|simpad_power_off
-)paren
 suffix:semicolon
 r_return
 l_int|0
