@@ -3,32 +3,10 @@ macro_line|#ifndef SYM_MISC_H
 DECL|macro|SYM_MISC_H
 mdefine_line|#define SYM_MISC_H
 multiline_comment|/*&n; *  A &squot;read barrier&squot; flushes any data that have been prefetched &n; *  by the processor due to out of order execution. Such a barrier &n; *  must notably be inserted prior to looking at data that have &n; *  been DMAed, assuming that program does memory READs in proper &n; *  order and that the device ensured proper ordering of WRITEs.&n; *&n; *  A &squot;write barrier&squot; prevents any previous WRITEs to pass further &n; *  WRITEs. Such barriers must be inserted each time another agent &n; *  relies on ordering of WRITEs.&n; *&n; *  Note that, due to posting of PCI memory writes, we also must &n; *  insert dummy PCI read transactions when some ordering involving &n; *  both directions over the PCI does matter. PCI transactions are &n; *  fully ordered in each direction.&n; *&n; *  IA32 processors insert implicit barriers when the processor &n; *  accesses unchacheable either for reading or writing, and &n; *  donnot reorder WRITEs. As a result, some &squot;read barriers&squot; can &n; *  be avoided (following access to uncacheable), and &squot;write &n; *  barriers&squot; should be useless (preventing compiler optimizations &n; *  should be enough).&n; */
-macro_line|#if&t;defined&t;__i386__
 DECL|macro|__READ_BARRIER
-mdefine_line|#define __READ_BARRIER()&t;&bslash;&n;&t;&t;__asm__ volatile(&quot;lock; addl $0,0(%%esp)&quot;: : :&quot;memory&quot;)
+mdefine_line|#define __READ_BARRIER()&t;rmb()
 DECL|macro|__WRITE_BARRIER
-mdefine_line|#define __WRITE_BARRIER()&t;__asm__ volatile (&quot;&quot;: : :&quot;memory&quot;)
-macro_line|#elif&t;defined&t;__powerpc__
-DECL|macro|__READ_BARRIER
-mdefine_line|#define __READ_BARRIER()&t;__asm__ volatile(&quot;eieio; sync&quot; : : : &quot;memory&quot;)
-DECL|macro|__WRITE_BARRIER
-mdefine_line|#define __WRITE_BARRIER()&t;__asm__ volatile(&quot;eieio; sync&quot; : : : &quot;memory&quot;)
-macro_line|#elif&t;defined&t;__ia64__
-DECL|macro|__READ_BARRIER
-mdefine_line|#define __READ_BARRIER()&t;__asm__ volatile(&quot;mf.a; mf&quot; : : : &quot;memory&quot;)
-DECL|macro|__WRITE_BARRIER
-mdefine_line|#define __WRITE_BARRIER()&t;__asm__ volatile(&quot;mf.a; mf&quot; : : : &quot;memory&quot;)
-macro_line|#elif&t;defined&t;__alpha__
-DECL|macro|__READ_BARRIER
-mdefine_line|#define __READ_BARRIER()&t;__asm__ volatile(&quot;mb&quot;: : :&quot;memory&quot;)
-DECL|macro|__WRITE_BARRIER
-mdefine_line|#define __WRITE_BARRIER()&t;__asm__ volatile(&quot;mb&quot;: : :&quot;memory&quot;)
-macro_line|#else
-DECL|macro|__READ_BARRIER
-mdefine_line|#define __READ_BARRIER()&t;mb()
-DECL|macro|__WRITE_BARRIER
-mdefine_line|#define __WRITE_BARRIER()&t;mb()
-macro_line|#endif
+mdefine_line|#define __WRITE_BARRIER()&t;wmb()
 macro_line|#ifndef MEMORY_READ_BARRIER
 DECL|macro|MEMORY_READ_BARRIER
 mdefine_line|#define MEMORY_READ_BARRIER()&t;__READ_BARRIER()

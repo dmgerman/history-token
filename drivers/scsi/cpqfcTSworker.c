@@ -7633,6 +7633,7 @@ singleline_comment|//&t;printk(&quot;&bslash;n&quot;);
 )brace
 id|Done
 suffix:colon
+suffix:semicolon
 )brace
 r_extern
 r_int
