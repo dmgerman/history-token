@@ -541,9 +541,10 @@ id|pmdp
 r_goto
 id|done
 suffix:semicolon
+multiline_comment|/* Preemption implicitly disabled by virtue of&n;&t;&t;&t; * being called from inside OBP.&n;&t;&t;&t; */
 id|ptep
 op_assign
-id|pte_offset
+id|pte_offset_map
 c_func
 (paren
 id|pmdp
@@ -554,7 +555,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pte_present
 c_func
 (paren
@@ -562,9 +562,7 @@ op_star
 id|ptep
 )paren
 )paren
-r_goto
-id|done
-suffix:semicolon
+(brace
 id|tte
 op_assign
 id|pte_val
@@ -577,6 +575,13 @@ suffix:semicolon
 id|res
 op_assign
 id|PROM_TRUE
+suffix:semicolon
+)brace
+id|pte_unmap
+c_func
+(paren
+id|ptep
+)paren
 suffix:semicolon
 r_goto
 id|done
@@ -783,9 +788,10 @@ id|pmdp
 r_goto
 id|done
 suffix:semicolon
+multiline_comment|/* Preemption implicitly disabled by virtue of&n;&t;&t;&t; * being called from inside OBP.&n;&t;&t;&t; */
 id|ptep
 op_assign
-id|pte_offset
+id|pte_offset_kernel
 c_func
 (paren
 id|pmdp
@@ -796,7 +802,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pte_present
 c_func
 (paren
@@ -804,9 +809,7 @@ op_star
 id|ptep
 )paren
 )paren
-r_goto
-id|done
-suffix:semicolon
+(brace
 id|tte
 op_assign
 id|pte_val
@@ -820,6 +823,7 @@ id|res
 op_assign
 id|PROM_TRUE
 suffix:semicolon
+)brace
 r_goto
 id|done
 suffix:semicolon
@@ -2272,7 +2276,7 @@ c_func
 id|root_dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 id|rd_image_start
 op_assign
 id|ram_flags

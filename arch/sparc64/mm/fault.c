@@ -630,16 +630,7 @@ id|pmdp
 r_goto
 id|outret
 suffix:semicolon
-id|ptep
-op_assign
-id|pte_offset
-c_func
-(paren
-id|pmdp
-comma
-id|tpc
-)paren
-suffix:semicolon
+multiline_comment|/* This disables preemption for us as well. */
 id|__asm__
 id|__volatile__
 c_func
@@ -668,6 +659,16 @@ l_string|&quot;i&quot;
 (paren
 id|PSTATE_IE
 )paren
+)paren
+suffix:semicolon
+id|ptep
+op_assign
+id|pte_offset_map
+c_func
+(paren
+id|pmdp
+comma
+id|tpc
 )paren
 suffix:semicolon
 id|pte
@@ -734,6 +735,12 @@ id|ASI_PHYS_USE_EC
 suffix:semicolon
 id|out
 suffix:colon
+id|pte_unmap
+c_func
+(paren
+id|ptep
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func

@@ -41,6 +41,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/ipc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -6106,14 +6107,23 @@ id|iov_fn_t
 id|fnv
 suffix:semicolon
 multiline_comment|/* First get the &quot;struct iovec&quot; from user memory and&n;&t; * verify all the pointers&n;&t; */
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|count
 )paren
-r_return
-l_int|0
+r_goto
+id|out_nofree
+suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -6134,9 +6144,13 @@ op_star
 id|count
 )paren
 )paren
-r_return
+r_goto
+id|out_nofree
+suffix:semicolon
+id|retval
+op_assign
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -6145,9 +6159,8 @@ id|count
 OG
 id|UIO_MAXIOV
 )paren
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out_nofree
 suffix:semicolon
 r_if
 c_cond
@@ -6157,6 +6170,11 @@ OG
 id|UIO_FASTIOV
 )paren
 (brace
+id|retval
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|iov
 op_assign
 id|kmalloc
@@ -6179,9 +6197,8 @@ c_cond
 op_logical_neg
 id|iov
 )paren
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|out_nofree
 suffix:semicolon
 )brace
 id|tot_len
@@ -6452,6 +6469,41 @@ id|kfree
 c_func
 (paren
 id|iov
+)paren
+suffix:semicolon
+id|out_nofree
+suffix:colon
+multiline_comment|/* VERIFY_WRITE actually means a read, as we write to user space */
+r_if
+c_cond
+(paren
+(paren
+id|retval
+op_plus
+(paren
+id|type
+op_eq
+id|VERIFY_WRITE
+)paren
+)paren
+OG
+l_int|0
+)paren
+id|dnotify_parent
+c_func
+(paren
+id|file-&gt;f_dentry
+comma
+(paren
+id|type
+op_eq
+id|VERIFY_WRITE
+)paren
+ques
+c_cond
+id|DN_MODIFY
+suffix:colon
+id|DN_ACCESS
 )paren
 suffix:semicolon
 r_return
