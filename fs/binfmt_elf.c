@@ -647,6 +647,26 @@ id|u_platform
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|bprm-&gt;interp_flags
+op_amp
+id|BINPRM_FLAGS_EXECFD
+)paren
+(brace
+id|NEW_AUX_ENT
+c_func
+(paren
+id|AT_EXECFD
+comma
+(paren
+id|elf_addr_t
+)paren
+id|bprm-&gt;interp_data
+)paren
+suffix:semicolon
+)brace
 DECL|macro|NEW_AUX_ENT
 macro_line|#undef NEW_AUX_ENT
 multiline_comment|/* AT_NULL is zero; clear the rest too */
