@@ -592,6 +592,11 @@ op_amp
 id|ed-&gt;dma
 )paren
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|ohci-&gt;load
 (braket
@@ -716,6 +721,11 @@ op_logical_neg
 id|ohci-&gt;ed_rm_list
 )paren
 (brace
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ohci-&gt;hc_control
 op_or_assign
 id|OHCI_CTRL_CLE
@@ -798,6 +808,11 @@ op_logical_neg
 id|ohci-&gt;ed_rm_list
 )paren
 (brace
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ohci-&gt;hc_control
 op_or_assign
 id|OHCI_CTRL_BLE
@@ -3182,6 +3197,11 @@ suffix:semicolon
 id|ohci-&gt;hcca-&gt;done_head
 op_assign
 l_int|0
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* get TD from hc&squot;s singly linked list, and&n;&t; * prepend to ours.  ed-&gt;td_list changes later.&n;&t; */
 r_while
