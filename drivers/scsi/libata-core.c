@@ -9133,6 +9133,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|ATA_PROT_ATAPI
+suffix:colon
+r_case
 id|ATA_PROT_NODATA
 suffix:colon
 multiline_comment|/* command completion, but no data xfer */
@@ -9648,7 +9651,6 @@ id|qc-&gt;tf.protocol
 op_eq
 id|ATA_PROT_ATAPI_DMA
 )paren
-(brace
 id|ap-&gt;ops
 op_member_access_from_pointer
 id|bmdma_start
@@ -9658,7 +9660,19 @@ id|qc
 )paren
 suffix:semicolon
 multiline_comment|/* initiate bmdma */
+multiline_comment|/* non-data commands are also handled via irq */
+r_else
+r_if
+c_cond
+(paren
+id|qc-&gt;scsicmd-&gt;sc_data_direction
+op_eq
+id|SCSI_DATA_NONE
+)paren
+(brace
+multiline_comment|/* do nothing */
 )brace
+multiline_comment|/* PIO commands are handled by polling */
 r_else
 (brace
 id|ap-&gt;pio_task_state

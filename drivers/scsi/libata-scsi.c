@@ -58,7 +58,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;ata_std_bios_param - generic bios head/sector/cylinder calculator used by sd.&n; *&t;@sdev: SCSI device for which BIOS geometry is to be determined&n; *&t;@bdev: block device associated with @sdev&n; *&t;@capacity: capacity of SCSI device&n; *&t;@geom: location to which geometry will be output&n; *&n; *&t;Generic bios head/sector/cylinder calculator&n; *&t;used by sd. Most BIOSes nowadays expect a XXX/255/16  (CHS) &n; *&t;mapping. Some situations may arise where the disk is not &n; *&t;bootable if this is not used.&n; *&n; *&t;LOCKING:&n; *&t;Defined by the SCSI layer.  We don&squot;t really care.&n; *&n; *&t;RETURNS:&n; *&t;Zero.&n; */
+multiline_comment|/**&n; *&t;ata_std_bios_param - generic bios head/sector/cylinder calculator used by sd.&n; *&t;@sdev: SCSI device for which BIOS geometry is to be determined&n; *&t;@bdev: block device associated with @sdev&n; *&t;@capacity: capacity of SCSI device&n; *&t;@geom: location to which geometry will be output&n; *&n; *&t;Generic bios head/sector/cylinder calculator&n; *&t;used by sd. Most BIOSes nowadays expect a XXX/255/16  (CHS)&n; *&t;mapping. Some situations may arise where the disk is not&n; *&t;bootable if this is not used.&n; *&n; *&t;LOCKING:&n; *&t;Defined by the SCSI layer.  We don&squot;t really care.&n; *&n; *&t;RETURNS:&n; *&t;Zero.&n; */
 DECL|function|ata_std_bios_param
 r_int
 id|ata_std_bios_param
@@ -1036,33 +1036,6 @@ c_func
 l_string|&quot;ENTER&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|cmd-&gt;request_bufflen
-OL
-l_int|1
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;ata%u(%u): empty request buffer&bslash;n&quot;
-comma
-id|ap-&gt;id
-comma
-id|dev-&gt;devno
-)paren
-suffix:semicolon
-r_goto
-id|err_out
-suffix:semicolon
-)brace
 id|qc
 op_assign
 id|ata_scsi_qc_new
@@ -1096,11 +1069,40 @@ id|cmd-&gt;sc_data_direction
 op_eq
 id|SCSI_DATA_WRITE
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|cmd-&gt;request_bufflen
+OL
+l_int|1
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ata%u(%u): WARNING: zero len r/w req&bslash;n&quot;
+comma
+id|ap-&gt;id
+comma
+id|dev-&gt;devno
+)paren
+suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
 id|qc-&gt;flags
 op_or_assign
 id|ATA_QCFLAG_SG
 suffix:semicolon
 multiline_comment|/* data is present; dma-map it */
+)brace
 r_if
 c_cond
 (paren
@@ -2775,15 +2777,22 @@ id|qc-&gt;tf.command
 op_assign
 id|ATA_CMD_PACKET
 suffix:semicolon
+multiline_comment|/* no data - interrupt-driven */
 r_if
 c_cond
-(paren
 (paren
 id|cmd-&gt;sc_data_direction
 op_eq
 id|SCSI_DATA_NONE
 )paren
-op_logical_or
+id|qc-&gt;tf.protocol
+op_assign
+id|ATA_PROT_ATAPI
+suffix:semicolon
+multiline_comment|/* PIO data xfer - polling */
+r_else
+r_if
+c_cond
 (paren
 (paren
 id|qc-&gt;flags
@@ -2792,7 +2801,6 @@ id|ATA_QCFLAG_DMA
 )paren
 op_eq
 l_int|0
-)paren
 )paren
 (brace
 id|ata_qc_set_polling
@@ -2825,14 +2833,10 @@ l_int|1024
 op_rshift
 l_int|8
 suffix:semicolon
+multiline_comment|/* DMA data xfer - interrupt-driven */
 )brace
 r_else
 (brace
-id|qc-&gt;flags
-op_or_assign
-id|ATA_QCFLAG_SG
-suffix:semicolon
-multiline_comment|/* data is present; dma-map it */
 id|qc-&gt;tf.protocol
 op_assign
 id|ATA_PROT_ATAPI_DMA
@@ -2841,6 +2845,20 @@ id|qc-&gt;tf.feature
 op_or_assign
 id|ATAPI_PKT_DMA
 suffix:semicolon
+macro_line|#ifdef ATAPI_ENABLE_DMADIR
+multiline_comment|/* some SATA bridges need us to indicate data xfer direction */
+r_if
+c_cond
+(paren
+id|cmd-&gt;sc_data_direction
+op_ne
+id|SCSI_DATA_WRITE
+)paren
+id|qc-&gt;tf.feature
+op_or_assign
+id|ATAPI_DMADIR
+suffix:semicolon
+macro_line|#endif
 )brace
 r_return
 l_int|0

@@ -22,6 +22,8 @@ DECL|macro|ATA_ENABLE_ATAPI
 macro_line|#undef ATA_ENABLE_ATAPI&t;&t;/* define to enable ATAPI support */
 DECL|macro|ATA_ENABLE_PATA
 macro_line|#undef ATA_ENABLE_PATA&t;&t;/* define to enable PATA support in some&n;&t;&t;&t;&t; * low-level drivers */
+DECL|macro|ATAPI_ENABLE_DMADIR
+macro_line|#undef ATAPI_ENABLE_DMADIR&t;/* enables ATAPI DMADIR bridge support */
 multiline_comment|/* note: prints function name for you */
 macro_line|#ifdef ATA_DEBUG
 DECL|macro|DPRINTK
