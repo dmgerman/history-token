@@ -1218,6 +1218,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------- */
 DECL|variable|sir_tty_drv
+r_static
 r_struct
 id|sir_driver
 id|sir_tty_drv
