@@ -1117,6 +1117,24 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|sdev-&gt;starved_entry
+)paren
+)paren
+)paren
+multiline_comment|/*&n;&t;&t;&t; * sdev lost a race, and was put back on the&n;&t;&t;&t; * starved list. This is unlikely but without this&n;&t;&t;&t; * in theory we could loop forever.&n;&t;&t;&t; */
+r_break
+suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
 c_func
