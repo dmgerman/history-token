@@ -675,6 +675,13 @@ op_amp
 id|dev-&gt;bus_list
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|dev-&gt;dma_pools
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;device_add - add device to device hierarchy.&n; *&t;@dev:&t;device.&n; *&n; *&t;This is part 2 of device_register(), though may be called &n; *&t;separately _iff_ device_initialize() has been called separately.&n; *&n; *&t;This adds it to the kobject hierarchy via kobject_add(), adds it&n; *&t;to the global and sibling lists for the device, then&n; *&t;adds it to the other relevant subsystems of the driver model.&n; */
 DECL|function|device_add

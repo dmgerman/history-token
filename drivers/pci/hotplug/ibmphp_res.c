@@ -155,7 +155,7 @@ id|flag
 (brace
 id|err
 (paren
-l_string|&quot;NULL pointer passed &bslash;n&quot;
+l_string|&quot;NULL pointer passed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -184,7 +184,7 @@ id|newbus
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -259,7 +259,7 @@ id|curr
 (brace
 id|err
 (paren
-l_string|&quot;NULL passed to allocate &bslash;n&quot;
+l_string|&quot;NULL passed to allocate&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -288,7 +288,7 @@ id|rs
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -409,7 +409,7 @@ id|newbus
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory. &bslash;n&quot;
+l_string|&quot;out of system memory.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -509,7 +509,7 @@ id|newbus
 suffix:semicolon
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2446,7 +2446,7 @@ id|res
 (brace
 id|err
 (paren
-l_string|&quot;NULL passed to add &bslash;n&quot;
+l_string|&quot;NULL passed to add&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2533,7 +2533,7 @@ r_default
 suffix:colon
 id|err
 (paren
-l_string|&quot;cannot read the type of the resource to add... problem &bslash;n&quot;
+l_string|&quot;cannot read the type of the resource to add... problem&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3043,7 +3043,7 @@ id|res
 (brace
 id|err
 (paren
-l_string|&quot;resource to remove is NULL &bslash;n&quot;
+l_string|&quot;resource to remove is NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3129,7 +3129,7 @@ r_default
 suffix:colon
 id|err
 (paren
-l_string|&quot;unknown type for resource to remove &bslash;n&quot;
+l_string|&quot;unknown type for resource to remove&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3633,7 +3633,7 @@ r_default
 suffix:colon
 id|err
 (paren
-l_string|&quot;cannot read resource type in find_range &bslash;n&quot;
+l_string|&quot;cannot read resource type in find_range&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3789,7 +3789,7 @@ id|bus_cur
 multiline_comment|/* didn&squot;t find a bus, smth&squot;s wrong!!! */
 id|debug
 (paren
-l_string|&quot;no bus in the system, either pci_dev&squot;s wrong or allocation failed &bslash;n&quot;
+l_string|&quot;no bus in the system, either pci_dev&squot;s wrong or allocation failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3865,7 +3865,7 @@ r_default
 suffix:colon
 id|err
 (paren
-l_string|&quot;wrong type of resource to check &bslash;n&quot;
+l_string|&quot;wrong type of resource to check&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5902,7 +5902,7 @@ id|bus
 (brace
 id|err
 (paren
-l_string|&quot;The bus passed in NULL to find resource &bslash;n&quot;
+l_string|&quot;The bus passed in NULL to find resource&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5959,7 +5959,7 @@ r_default
 suffix:colon
 id|err
 (paren
-l_string|&quot;wrong type of flag &bslash;n&quot;
+l_string|&quot;wrong type of flag&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6059,7 +6059,7 @@ id|res_cur
 (brace
 id|debug
 (paren
-l_string|&quot;SOS...cannot find %s resource in the bus. &bslash;n&quot;
+l_string|&quot;SOS...cannot find %s resource in the bus.&bslash;n&quot;
 comma
 id|type
 )paren
@@ -6074,7 +6074,7 @@ r_else
 (brace
 id|debug
 (paren
-l_string|&quot;SOS... cannot find %s resource in the bus. &bslash;n&quot;
+l_string|&quot;SOS... cannot find %s resource in the bus.&bslash;n&quot;
 comma
 id|type
 )paren
@@ -6093,7 +6093,7 @@ id|res
 )paren
 id|debug
 (paren
-l_string|&quot;*res-&gt;start = %x &bslash;n&quot;
+l_string|&quot;*res-&gt;start = %x&bslash;n&quot;
 comma
 (paren
 op_star
@@ -6701,7 +6701,7 @@ id|mem
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7037,7 +7037,7 @@ id|bus_list
 suffix:semicolon
 id|debug_pci
 (paren
-l_string|&quot;This is bus # %d.  There are &bslash;n&quot;
+l_string|&quot;This is bus # %d.  There are&bslash;n&quot;
 comma
 id|bus_cur-&gt;busno
 )paren
@@ -7564,7 +7564,7 @@ r_default
 suffix:colon
 id|err
 (paren
-l_string|&quot;wrong type passed to find out if range already exists &bslash;n&quot;
+l_string|&quot;wrong type passed to find out if range already exists&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7707,7 +7707,7 @@ id|bus_cur-&gt;busno
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;inside %s &bslash;n&quot;
+l_string|&quot;inside %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -7990,7 +7990,7 @@ id|range
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8132,7 +8132,7 @@ id|range
 suffix:semicolon
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8286,7 +8286,7 @@ id|range
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8428,7 +8428,7 @@ id|range
 suffix:semicolon
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8630,7 +8630,7 @@ id|range
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8772,7 +8772,7 @@ id|range
 suffix:semicolon
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
