@@ -97,7 +97,7 @@ suffix:semicolon
 id|set_fixmap
 c_func
 (paren
-id|FIX_IO_APIC_BASE_END
+id|FIX_ACPI_END
 comma
 id|phys
 )paren
@@ -107,13 +107,13 @@ op_assign
 id|fix_to_virt
 c_func
 (paren
-id|FIX_IO_APIC_BASE_END
+id|FIX_ACPI_END
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Most cases can be covered by the below.&n;&t; */
 id|idx
 op_assign
-id|FIX_IO_APIC_BASE_END
+id|FIX_ACPI_END
 suffix:semicolon
 r_while
 c_loop
@@ -129,7 +129,7 @@ c_cond
 op_decrement
 id|idx
 OL
-id|FIX_IO_APIC_BASE_0
+id|FIX_ACPI_BEGIN
 )paren
 r_return
 l_int|0
