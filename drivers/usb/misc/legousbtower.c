@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * LEGO USB Tower driver&n; *&n; * Copyright (C) 2003 David Glance &lt;davidgsf@sourceforge.net&gt;&n; *               2001-2004 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.&n; *&n; * derived from USB Skeleton driver - 0.5&n; * Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; * History:&n; *&n; * 2001-10-13 - 0.1 js&n; *   - first version&n; * 2001-11-03 - 0.2 js&n; *   - simplified buffering, one-shot URBs for writing&n; * 2001-11-10 - 0.3 js&n; *   - removed IOCTL (setting power/mode is more complicated, postponed)&n; * 2001-11-28 - 0.4 js&n; *   - added vendor commands for mode of operation and power level in open&n; * 2001-12-04 - 0.5 js&n; *   - set IR mode by default (by oversight 0.4 set VLL mode)&n; * 2002-01-11 - 0.5? pcchan&n; *   - make read buffer reusable and work around bytes_to_write issue between&n; *     uhci and legusbtower&n; * 2002-09-23 - 0.52 david (david@csse.uwa.edu.au)&n; *   - imported into lejos project&n; *   - changed wake_up to wake_up_interruptible&n; *   - changed to use lego0 rather than tower0&n; *   - changed dbg() to use __func__ rather than deprecated __FUNCTION__&n; * 2003-01-12 - 0.53 david (david@csse.uwa.edu.au)&n; *   - changed read and write to write everything or&n; *     timeout (from a patch by Chris Riesen and Brett Thaeler driver)&n; *   - added ioctl functionality to set timeouts&n; * 2003-07-18 - 0.54 davidgsf (david@csse.uwa.edu.au)&n; *   - initial import into LegoUSB project&n; *   - merge of existing LegoUSB.c driver&n; * 2003-07-18 - 0.56 davidgsf (david@csse.uwa.edu.au)&n; *   - port to 2.6 style driver&n; * 2004-02-29 - 0.6 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - fix locking&n; *   - unlink read URBs which are no longer needed&n; *   - allow increased buffer size, eliminates need for timeout on write&n; *   - have read URB running continuously&n; *   - added poll&n; *   - forbid seeking&n; *   - added nonblocking I/O&n; *   - changed back __func__ to __FUNCTION__&n; *   - read and log tower firmware version&n; *   - reset tower on probe, avoids failure of first write&n; * 2004-03-09 - 0.7 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - timeout read now only after inactivity, shorten default accordingly&n; * 2004-03-11 - 0.8 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - log major, minor instead of possibly confusing device filename&n; *   - whitespace cleanup&n; * 2004-03-12 - 0.9 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - normalize whitespace in debug messages&n; *   - take care about endianness in control message responses&n; * 2004-03-13 - 0.91 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - make default intervals longer to accommodate current EHCI driver&n; * 2004-03-19 - 0.92 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - replaced atomic_t by memory barriers&n; * 2004-04-21 - 0.93 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - wait for completion of write urb in release (needed for remotecontrol)&n; *   - corrected poll for write direction (missing negation)&n; * 2004-04-22 - 0.94 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - make device locking interruptible&n; * 2004-04-30 - 0.95 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - check for valid udev on resubmitting and unlinking urbs&n; */
+multiline_comment|/*&n; * LEGO USB Tower driver&n; *&n; * Copyright (C) 2003 David Glance &lt;davidgsf@sourceforge.net&gt;&n; *               2001-2004 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.&n; *&n; * derived from USB Skeleton driver - 0.5&n; * Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; * History:&n; *&n; * 2001-10-13 - 0.1 js&n; *   - first version&n; * 2001-11-03 - 0.2 js&n; *   - simplified buffering, one-shot URBs for writing&n; * 2001-11-10 - 0.3 js&n; *   - removed IOCTL (setting power/mode is more complicated, postponed)&n; * 2001-11-28 - 0.4 js&n; *   - added vendor commands for mode of operation and power level in open&n; * 2001-12-04 - 0.5 js&n; *   - set IR mode by default (by oversight 0.4 set VLL mode)&n; * 2002-01-11 - 0.5? pcchan&n; *   - make read buffer reusable and work around bytes_to_write issue between&n; *     uhci and legusbtower&n; * 2002-09-23 - 0.52 david (david@csse.uwa.edu.au)&n; *   - imported into lejos project&n; *   - changed wake_up to wake_up_interruptible&n; *   - changed to use lego0 rather than tower0&n; *   - changed dbg() to use __func__ rather than deprecated __FUNCTION__&n; * 2003-01-12 - 0.53 david (david@csse.uwa.edu.au)&n; *   - changed read and write to write everything or&n; *     timeout (from a patch by Chris Riesen and Brett Thaeler driver)&n; *   - added ioctl functionality to set timeouts&n; * 2003-07-18 - 0.54 davidgsf (david@csse.uwa.edu.au)&n; *   - initial import into LegoUSB project&n; *   - merge of existing LegoUSB.c driver&n; * 2003-07-18 - 0.56 davidgsf (david@csse.uwa.edu.au)&n; *   - port to 2.6 style driver&n; * 2004-02-29 - 0.6 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - fix locking&n; *   - unlink read URBs which are no longer needed&n; *   - allow increased buffer size, eliminates need for timeout on write&n; *   - have read URB running continuously&n; *   - added poll&n; *   - forbid seeking&n; *   - added nonblocking I/O&n; *   - changed back __func__ to __FUNCTION__&n; *   - read and log tower firmware version&n; *   - reset tower on probe, avoids failure of first write&n; * 2004-03-09 - 0.7 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - timeout read now only after inactivity, shorten default accordingly&n; * 2004-03-11 - 0.8 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - log major, minor instead of possibly confusing device filename&n; *   - whitespace cleanup&n; * 2004-03-12 - 0.9 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - normalize whitespace in debug messages&n; *   - take care about endianness in control message responses&n; * 2004-03-13 - 0.91 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - make default intervals longer to accommodate current EHCI driver&n; * 2004-03-19 - 0.92 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - replaced atomic_t by memory barriers&n; * 2004-04-21 - 0.93 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - wait for completion of write urb in release (needed for remotecontrol)&n; *   - corrected poll for write direction (missing negation)&n; * 2004-04-22 - 0.94 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - make device locking interruptible&n; * 2004-04-30 - 0.95 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - check for valid udev on resubmitting and unlinking urbs&n; * 2004-08-03 - 0.96 Juergen Stuber &lt;starblue@users.sourceforge.net&gt;&n; *   - move reset into open to clean out spurious data&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -34,7 +34,7 @@ DECL|macro|dbg
 mdefine_line|#define dbg(lvl, format, arg...) do { if (debug &gt;= lvl) printk(KERN_DEBUG  __FILE__ &quot;: &quot; format &quot;&bslash;n&quot;, ## arg); } while (0)
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.95&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.96&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Juergen Stuber &lt;starblue@sourceforge.net&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -971,6 +971,13 @@ id|usb_interface
 op_star
 id|interface
 suffix:semicolon
+r_struct
+id|tower_reset_reply
+id|reset_reply
+suffix:semicolon
+r_int
+id|result
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1094,6 +1101,66 @@ id|dev-&gt;open_count
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* reset the tower */
+id|result
+op_assign
+id|usb_control_msg
+(paren
+id|dev-&gt;udev
+comma
+id|usb_rcvctrlpipe
+c_func
+(paren
+id|dev-&gt;udev
+comma
+l_int|0
+)paren
+comma
+id|LEGO_USB_TOWER_REQUEST_RESET
+comma
+id|USB_TYPE_VENDOR
+op_or
+id|USB_DIR_IN
+op_or
+id|USB_RECIP_DEVICE
+comma
+l_int|0
+comma
+l_int|0
+comma
+op_amp
+id|reset_reply
+comma
+r_sizeof
+(paren
+id|reset_reply
+)paren
+comma
+id|HZ
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+OL
+l_int|0
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;LEGO USB Tower reset control request failed&quot;
+)paren
+suffix:semicolon
+id|retval
+op_assign
+id|result
+suffix:semicolon
+r_goto
+id|unlock_exit
+suffix:semicolon
+)brace
 multiline_comment|/* initialize in direction */
 id|dev-&gt;read_buffer_length
 op_assign
@@ -2841,10 +2908,6 @@ op_star
 id|endpoint
 suffix:semicolon
 r_struct
-id|tower_reset_reply
-id|reset_reply
-suffix:semicolon
-r_struct
 id|tower_get_version_reply
 id|get_version_reply
 suffix:semicolon
@@ -3365,66 +3428,6 @@ comma
 id|dev-&gt;minor
 )paren
 suffix:semicolon
-multiline_comment|/* reset the tower */
-id|result
-op_assign
-id|usb_control_msg
-(paren
-id|udev
-comma
-id|usb_rcvctrlpipe
-c_func
-(paren
-id|udev
-comma
-l_int|0
-)paren
-comma
-id|LEGO_USB_TOWER_REQUEST_RESET
-comma
-id|USB_TYPE_VENDOR
-op_or
-id|USB_DIR_IN
-op_or
-id|USB_RECIP_DEVICE
-comma
-l_int|0
-comma
-l_int|0
-comma
-op_amp
-id|reset_reply
-comma
-r_sizeof
-(paren
-id|reset_reply
-)paren
-comma
-id|HZ
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-OL
-l_int|0
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;LEGO USB Tower reset control request failed&quot;
-)paren
-suffix:semicolon
-id|retval
-op_assign
-id|result
-suffix:semicolon
-r_goto
-id|error
-suffix:semicolon
-)brace
 multiline_comment|/* get the firmware version and log it */
 id|result
 op_assign
