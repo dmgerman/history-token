@@ -821,6 +821,17 @@ id|IPR
 suffix:semicolon
 multiline_comment|/* ack all */
 )brace
+r_if
+c_cond
+(paren
+id|emu-&gt;audigy
+op_logical_and
+id|emu-&gt;revision
+op_eq
+l_int|4
+)paren
+(brace
+multiline_comment|/* P16V */
 r_while
 c_loop
 (paren
@@ -912,6 +923,7 @@ id|IPR2
 )paren
 suffix:semicolon
 multiline_comment|/* ack all */
+)brace
 )brace
 r_return
 id|IRQ_RETVAL

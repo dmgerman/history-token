@@ -2731,6 +2731,16 @@ c_func
 id|emu-&gt;pci
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|emu-&gt;audigy
+op_logical_and
+id|emu-&gt;revision
+op_eq
+l_int|4
+)paren
+multiline_comment|/* P16V */
 id|snd_p16v_free
 c_func
 (paren

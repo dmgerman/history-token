@@ -760,6 +760,17 @@ multiline_comment|/* This stores the periods table. */
 r_if
 c_cond
 (paren
+id|emu-&gt;audigy
+op_logical_and
+id|emu-&gt;revision
+op_eq
+l_int|4
+)paren
+(brace
+multiline_comment|/* P16V */
+r_if
+c_cond
+(paren
 id|snd_dma_alloc_pages
 c_func
 (paren
@@ -790,6 +801,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
