@@ -211,6 +211,12 @@ id|u8
 id|rlb_rebalance
 suffix:semicolon
 multiline_comment|/* flag - indicates that the&n;&t;&t;&t;&t;&t;&t; * rx traffic should be&n;&t;&t;&t;&t;&t;&t; * rebalanced&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|current_alb_vlan
+r_struct
+id|vlan_entry
+op_star
+id|current_alb_vlan
+suffix:semicolon
 )brace
 suffix:semicolon
 r_int
@@ -336,6 +342,20 @@ comma
 r_void
 op_star
 id|addr
+)paren
+suffix:semicolon
+r_void
+id|bond_alb_clear_vlan
+c_func
+(paren
+r_struct
+id|bonding
+op_star
+id|bond
+comma
+r_int
+r_int
+id|vlan_id
 )paren
 suffix:semicolon
 macro_line|#endif /* __BOND_ALB_H__ */

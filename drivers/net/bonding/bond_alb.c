@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if_bonding.h&gt;
+macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;net/ipx.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -31,8 +32,8 @@ DECL|macro|TLB_HASH_TABLE_SIZE
 mdefine_line|#define TLB_HASH_TABLE_SIZE 256&t;/* The size of the clients hash table.&n;&t;&t;&t;&t; * Note that this value MUST NOT be smaller&n;&t;&t;&t;&t; * because the key hash table is BYTE wide !&n;&t;&t;&t;&t; */
 DECL|macro|TLB_NULL_INDEX
 mdefine_line|#define TLB_NULL_INDEX&t;&t;0xffffffff
-DECL|macro|MAX_LP_RETRY
-mdefine_line|#define MAX_LP_RETRY&t;&t;3
+DECL|macro|MAX_LP_BURST
+mdefine_line|#define MAX_LP_BURST&t;&t;3
 multiline_comment|/* rlb defs */
 DECL|macro|RLB_HASH_TABLE_SIZE
 mdefine_line|#define RLB_HASH_TABLE_SIZE&t;256
@@ -3057,6 +3058,17 @@ id|mac_addr
 )paren
 (brace
 r_struct
+id|bonding
+op_star
+id|bond
+op_assign
+id|bond_get_bond_by_slave
+c_func
+(paren
+id|slave
+)paren
+suffix:semicolon
+r_struct
 id|learning_pkt
 id|pkt
 suffix:semicolon
@@ -3120,7 +3132,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_LP_RETRY
+id|MAX_LP_BURST
 suffix:semicolon
 id|i
 op_increment
@@ -3196,6 +3208,82 @@ id|skb-&gt;dev
 op_assign
 id|slave-&gt;dev
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|bond-&gt;vlan_list
+)paren
+)paren
+(brace
+r_struct
+id|vlan_entry
+op_star
+id|vlan
+suffix:semicolon
+id|vlan
+op_assign
+id|bond_next_vlan
+c_func
+(paren
+id|bond
+comma
+id|bond-&gt;alb_info.current_alb_vlan
+)paren
+suffix:semicolon
+id|bond-&gt;alb_info.current_alb_vlan
+op_assign
+id|vlan
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vlan
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+id|skb
+op_assign
+id|vlan_put_tag
+c_func
+(paren
+id|skb
+comma
+id|vlan-&gt;vlan_id
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|DRV_NAME
+l_string|&quot;: Error: failed to insert VLAN tag&bslash;n&quot;
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+)brace
 id|dev_queue_xmit
 c_func
 (paren
@@ -5672,5 +5760,38 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
+DECL|function|bond_alb_clear_vlan
+r_void
+id|bond_alb_clear_vlan
+c_func
+(paren
+r_struct
+id|bonding
+op_star
+id|bond
+comma
+r_int
+r_int
+id|vlan_id
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|bond-&gt;alb_info.current_alb_vlan
+op_logical_and
+(paren
+id|bond-&gt;alb_info.current_alb_vlan-&gt;vlan_id
+op_eq
+id|vlan_id
+)paren
+)paren
+(brace
+id|bond-&gt;alb_info.current_alb_vlan
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 )brace
 eof
