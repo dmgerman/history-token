@@ -1252,6 +1252,19 @@ suffix:colon
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
+id|spi_signalling
+c_func
+(paren
+id|host
+)paren
+op_assign
+id|hostdata-&gt;differential
+ques
+c_cond
+id|SPI_SIGNAL_HVD
+suffix:colon
+id|SPI_SIGNAL_SE
+suffix:semicolon
 multiline_comment|/* reset the chip */
 id|NCR_700_chip_reset
 c_func

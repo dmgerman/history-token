@@ -114,6 +114,37 @@ suffix:semicolon
 multiline_comment|/* semaphore to serialise dv */
 )brace
 suffix:semicolon
+DECL|enum|spi_signal_type
+r_enum
+id|spi_signal_type
+(brace
+DECL|enumerator|SPI_SIGNAL_UNKNOWN
+id|SPI_SIGNAL_UNKNOWN
+op_assign
+l_int|1
+comma
+DECL|enumerator|SPI_SIGNAL_SE
+id|SPI_SIGNAL_SE
+comma
+DECL|enumerator|SPI_SIGNAL_LVD
+id|SPI_SIGNAL_LVD
+comma
+DECL|enumerator|SPI_SIGNAL_HVD
+id|SPI_SIGNAL_HVD
+comma
+)brace
+suffix:semicolon
+DECL|struct|spi_host_attrs
+r_struct
+id|spi_host_attrs
+(brace
+DECL|member|signalling
+r_enum
+id|spi_signal_type
+id|signalling
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* accessor functions */
 DECL|macro|spi_period
 mdefine_line|#define spi_period(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;period)
@@ -139,6 +170,8 @@ DECL|macro|spi_initial_dv
 mdefine_line|#define spi_initial_dv(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;initial_dv)
 DECL|macro|spi_flags
 mdefine_line|#define spi_flags(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;flags)
+DECL|macro|spi_signalling
+mdefine_line|#define spi_signalling(h)&t;(((struct spi_host_attrs *)&amp;(h)-&gt;shost_data)-&gt;signalling)
 multiline_comment|/* The functions by which the transport class and the driver communicate */
 DECL|struct|spi_function_template
 r_struct
@@ -402,6 +435,33 @@ id|scsi_target
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+DECL|member|get_signalling
+r_void
+(paren
+op_star
+id|get_signalling
+)paren
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+DECL|member|set_signalling
+r_void
+(paren
+op_star
+id|set_signalling
+)paren
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+r_enum
+id|spi_signal_type
 )paren
 suffix:semicolon
 multiline_comment|/* The driver sets these to tell the transport class it&n;&t; * wants the attributes displayed in sysfs.  If the show_ flag&n;&t; * is not set, the attribute will be private to the transport&n;&t; * class */
