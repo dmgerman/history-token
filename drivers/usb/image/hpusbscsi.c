@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;hpusbscsi.h&quot;
@@ -502,6 +502,15 @@ id|host
 comma
 op_amp
 id|intf-&gt;dev
+)paren
+suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+c_func
+(paren
+r_new
+op_member_access_from_pointer
+id|host
 )paren
 suffix:semicolon
 r_new
@@ -1336,7 +1345,29 @@ c_func
 id|hpusbscsi
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|u-&gt;status
+op_eq
+op_minus
+id|ECONNRESET
+op_logical_or
+id|u-&gt;status
+op_eq
+op_minus
+id|ENOENT
+op_logical_or
+id|u-&gt;status
+op_eq
+op_minus
+id|ESHUTDOWN
+)paren
 r_return
+suffix:semicolon
+r_else
+r_goto
+id|resub
 suffix:semicolon
 )brace
 id|scsi_state
@@ -1478,6 +1509,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|resub
+suffix:colon
+id|usb_submit_urb
+c_func
+(paren
+id|u
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
 )brace
 DECL|function|simple_command_callback
 r_static

@@ -191,11 +191,14 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|wake_up
+id|atmarpd-&gt;sk
+op_member_access_from_pointer
+id|sk_data_ready
 c_func
 (paren
-op_amp
-id|atmarpd-&gt;sleep
+id|atmarpd-&gt;sk
+comma
+id|skb-&gt;len
 )paren
 suffix:semicolon
 r_return

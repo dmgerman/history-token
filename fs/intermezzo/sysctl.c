@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;intermezzo_fs.h&quot;
 macro_line|#include &quot;intermezzo_psdev.h&quot;
 multiline_comment|/* /proc entries */

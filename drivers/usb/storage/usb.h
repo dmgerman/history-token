@@ -3,7 +3,7 @@ macro_line|#ifndef _USB_H_
 DECL|macro|_USB_H_
 mdefine_line|#define _USB_H_
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -60,13 +60,13 @@ multiline_comment|/* Flag definitions: these entries are static */
 DECL|macro|US_FL_SINGLE_LUN
 mdefine_line|#define US_FL_SINGLE_LUN      0x00000001 /* allow access to only LUN 0&t;    */
 DECL|macro|US_FL_MODE_XLATE
-mdefine_line|#define US_FL_MODE_XLATE      0x00000002 /* translate _6 to _10 commands for&n;&t;&t;&t;&t;&t;&t;    Win/MacOS compatibility */
+mdefine_line|#define US_FL_MODE_XLATE      0          /* [no longer used]                */
 DECL|macro|US_FL_IGNORE_SER
 mdefine_line|#define US_FL_IGNORE_SER      0&t;&t; /* [no longer used]&t;&t;    */
 DECL|macro|US_FL_SCM_MULT_TARG
 mdefine_line|#define US_FL_SCM_MULT_TARG   0x00000020 /* supports multiple targets&t;    */
 DECL|macro|US_FL_FIX_INQUIRY
-mdefine_line|#define US_FL_FIX_INQUIRY     0x00000040 /* INQUIRY response needs fixing   */
+mdefine_line|#define US_FL_FIX_INQUIRY     0x00000040 /* INQUIRY response needs faking   */
 DECL|macro|US_FL_FIX_CAPACITY
 mdefine_line|#define US_FL_FIX_CAPACITY    0x00000080 /* READ CAPACITY response too big  */
 multiline_comment|/* Dynamic flag definitions: used in set_bit() etc. */

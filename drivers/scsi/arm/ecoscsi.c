@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;../scsi.h&quot;
@@ -792,6 +792,13 @@ c_func
 id|host
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+c_func
+(paren
+id|host
 )paren
 suffix:semicolon
 r_return

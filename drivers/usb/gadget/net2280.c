@@ -10139,7 +10139,11 @@ id|dev
 comma
 l_string|&quot;unbind from pci %s&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|kfree
@@ -10214,7 +10218,11 @@ id|the_controller
 comma
 l_string|&quot;ignoring %s&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -10281,7 +10289,11 @@ id|strcpy
 (paren
 id|dev-&gt;gadget.dev.bus_id
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|strcpy

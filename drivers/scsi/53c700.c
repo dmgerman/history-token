@@ -21,7 +21,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
@@ -159,14 +159,13 @@ id|SDpnt
 )paren
 suffix:semicolon
 DECL|variable|NCR_700_dev_attrs
-r_static
+id|STATIC
 r_struct
 id|device_attribute
 op_star
-op_star
 id|NCR_700_dev_attrs
-op_assign
-l_int|NULL
+(braket
+)braket
 suffix:semicolon
 DECL|variable|NCR_700_phase
 r_static
@@ -9134,52 +9133,26 @@ id|NCR_700_show_active_tags
 comma
 )brace
 suffix:semicolon
+DECL|variable|NCR_700_dev_attrs
 id|STATIC
-r_int
-id|__init
-DECL|function|NCR_700_init
-id|NCR_700_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|scsi_sysfs_modify_sdev_attribute
-c_func
-(paren
-op_amp
+r_struct
+id|device_attribute
+op_star
 id|NCR_700_dev_attrs
-comma
+(braket
+)braket
+op_assign
+(brace
 op_amp
 id|NCR_700_queue_depth_attr
-)paren
-suffix:semicolon
-id|scsi_sysfs_modify_sdev_attribute
-c_func
-(paren
-op_amp
-id|NCR_700_dev_attrs
 comma
 op_amp
 id|NCR_700_active_tags_attr
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
+comma
+l_int|NULL
+comma
 )brace
-multiline_comment|/* NULL exit routine to keep modutils happy */
-id|STATIC
-r_void
-id|__exit
-DECL|function|NCR_700_exit
-id|NCR_700_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
+suffix:semicolon
 DECL|variable|NCR_700_detect
 id|EXPORT_SYMBOL
 c_func
@@ -9199,20 +9172,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|NCR_700_intr
-)paren
-suffix:semicolon
-DECL|variable|NCR_700_init
-id|module_init
-c_func
-(paren
-id|NCR_700_init
-)paren
-suffix:semicolon
-DECL|variable|NCR_700_exit
-id|module_exit
-c_func
-(paren
-id|NCR_700_exit
 )paren
 suffix:semicolon
 eof

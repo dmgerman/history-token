@@ -11,9 +11,6 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;

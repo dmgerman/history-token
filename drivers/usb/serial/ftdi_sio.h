@@ -134,6 +134,9 @@ DECL|macro|SEALEVEL_2803_7_PID
 mdefine_line|#define SEALEVEL_2803_7_PID&t;0X2873 &t;/* SeaLINK+8 (2803) Port 7 */
 DECL|macro|SEALEVEL_2803_8_PID
 mdefine_line|#define SEALEVEL_2803_8_PID&t;0X2883 &t;/* SeaLINK+8 (2803) Port 8 */
+multiline_comment|/*&n; * DSS-20 Sync Station for Sony Ericsson P800&n; */
+DECL|macro|FTDI_DSS20_PID
+mdefine_line|#define FTDI_DSS20_PID          0xFC82  
 multiline_comment|/*&n; * Home Electronics (www.home-electro.com) USB gadgets&n; */
 DECL|macro|FTDI_HE_TIRA1_PID
 mdefine_line|#define FTDI_HE_TIRA1_PID&t;0xFA78&t;/* Tira-1 IR tranceiver */

@@ -95,7 +95,7 @@ id|__devinitdata
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(CONFIG_PARPORT_PC_FIFO) || defined(CONFIG_PARPORT_PC_SUPERIO)
+macro_line|#if defined(CONFIG_PARPORT_PC_SUPERIO) || &bslash;&n;       (defined(CONFIG_PARPORT_1284) &amp;&amp; defined(CONFIG_PARPORT_PC_FIFO))
 DECL|variable|verbose_probing
 r_static
 r_int
@@ -14986,7 +14986,7 @@ id|PARPORT_PC_MAX_PORTS
 l_string|&quot;s&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_PARPORT_PC_FIFO) || defined(CONFIG_PARPORT_PC_SUPERIO)
+macro_line|#if defined(CONFIG_PARPORT_PC_SUPERIO) || &bslash;&n;       (defined(CONFIG_PARPORT_1284) &amp;&amp; defined(CONFIG_PARPORT_PC_FIFO))
 id|MODULE_PARM_DESC
 c_func
 (paren

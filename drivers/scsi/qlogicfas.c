@@ -56,7 +56,7 @@ DECL|macro|QL_INT_ACTIVE_HIGH
 mdefine_line|#define QL_INT_ACTIVE_HIGH 0
 macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;&t;&t;/* to get disk capacity */
+macro_line|#include &lt;linux/blkdev.h&gt;&t;&t;/* to get disk capacity */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -68,6 +68,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 multiline_comment|/*----------------------------------------------------------------*/

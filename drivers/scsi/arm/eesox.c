@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  linux/drivers/acorn/scsi/eesox.c&n; *&n; *  Copyright (C) 1997-2003 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This driver is based on experimentation.  Hence, it may have made&n; *  assumptions about the particular card that I have available, and&n; *  may not be reliable!&n; *&n; *  Changelog:&n; *   01-10-1997&t;RMK&t;&t;Created, READONLY version&n; *   15-02-1998&t;RMK&t;&t;READ/WRITE version&n; *&t;&t;&t;&t;added DMA support and hardware definitions&n; *   14-03-1998&t;RMK&t;&t;Updated DMA support&n; *&t;&t;&t;&t;Added terminator control&n; *   15-04-1998&t;RMK&t;&t;Only do PIO if FAS216 will allow it.&n; *   27-06-1998&t;RMK&t;&t;Changed asm/delay.h to linux/delay.h&n; *   02-04-2000&t;RMK&t;0.0.3&t;Fixed NO_IRQ/NO_DMA problem, updated for new&n; *&t;&t;&t;&t;error handling code.&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;

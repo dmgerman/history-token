@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;dvbdev.h&quot;
 macro_line|#include &quot;dvb_functions.h&quot;
 DECL|variable|dvbdev_debug

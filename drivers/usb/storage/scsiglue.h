@@ -2,7 +2,7 @@ multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * SCSI Con
 macro_line|#ifndef _SCSIGLUE_H_
 DECL|macro|_SCSIGLUE_H_
 mdefine_line|#define _SCSIGLUE_H_
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 r_extern

@@ -1051,7 +1051,7 @@ comma
 op_amp
 id|i-&gt;tv_sec
 )paren
-op_or
+op_logical_or
 id|__get_user
 c_func
 (paren
@@ -1108,7 +1108,7 @@ comma
 op_amp
 id|o-&gt;tv_sec
 )paren
-op_or
+op_logical_or
 id|__put_user
 c_func
 (paren

@@ -146,7 +146,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;scsi/sg.h&gt;
 macro_line|#include &quot;scsi.h&quot;

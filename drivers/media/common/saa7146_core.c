@@ -1741,6 +1741,17 @@ op_amp
 id|dev-&gt;i2c_wq
 )paren
 suffix:semicolon
+multiline_comment|/* set some default values */
+id|saa7146_write
+c_func
+(paren
+id|dev
+comma
+id|BCS_CTRL
+comma
+l_int|0x80400040
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1837,17 +1848,6 @@ id|saa7146_devices
 suffix:semicolon
 id|saa7146_num
 op_increment
-suffix:semicolon
-multiline_comment|/* set some default values */
-id|saa7146_write
-c_func
-(paren
-id|dev
-comma
-id|BCS_CTRL
-comma
-l_int|0x80400040
-)paren
 suffix:semicolon
 id|err
 op_assign

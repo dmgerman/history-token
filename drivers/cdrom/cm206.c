@@ -18,7 +18,7 @@ multiline_comment|/* #include &lt;linux/ucdrom.h&gt; */
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR CM206_CDROM_MAJOR
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 DECL|macro|STATISTICS

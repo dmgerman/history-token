@@ -3074,6 +3074,13 @@ op_member_access_from_pointer
 id|pdev-&gt;dev
 )paren
 suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+c_func
+(paren
+id|sh
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

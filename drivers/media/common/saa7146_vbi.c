@@ -35,6 +35,11 @@ id|dma_addr_t
 id|dma_addr
 suffix:semicolon
 r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
 id|DECLARE_WAITQUEUE
@@ -2126,12 +2131,5 @@ op_assign
 id|vbi_read
 comma
 )brace
-suffix:semicolon
-DECL|variable|saa7146_vbi_uops
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|saa7146_vbi_uops
-)paren
 suffix:semicolon
 eof

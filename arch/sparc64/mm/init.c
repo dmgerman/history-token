@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 id|DEFINE_PER_CPU
 c_func
 (paren
@@ -70,13 +71,6 @@ r_int
 r_int
 id|pfn_base
 suffix:semicolon
-DECL|variable|tlb_type
-r_enum
-id|ultra_tlb_layout
-id|tlb_type
-op_assign
-id|spitfire
-suffix:semicolon
 multiline_comment|/* get_new_mmu_context() uses &quot;cache + 1&quot;.  */
 DECL|variable|ctx_alloc_lock
 id|spinlock_t
@@ -103,20 +97,16 @@ id|mmu_context_bmap
 id|CTX_BMAP_SLOTS
 )braket
 suffix:semicolon
-multiline_comment|/* References to section boundaries */
+multiline_comment|/* References to special section boundaries */
 r_extern
 r_char
-id|__init_begin
-comma
-id|__init_end
-comma
 id|_start
+(braket
+)braket
 comma
 id|_end
-comma
-id|etext
-comma
-id|edata
+(braket
+)braket
 suffix:semicolon
 multiline_comment|/* Initial ramdisk setup */
 r_extern
@@ -6779,7 +6769,6 @@ c_func
 r_int
 r_int
 )paren
-op_amp
 id|_end
 )paren
 op_minus
@@ -6828,7 +6817,6 @@ op_ge
 r_int
 r_int
 )paren
-op_amp
 id|_end
 op_minus
 l_int|2
@@ -7200,7 +7188,6 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|_end
 suffix:semicolon
 r_if
@@ -8690,7 +8677,6 @@ c_func
 r_int
 r_int
 )paren
-op_amp
 id|_end
 )paren
 op_minus
@@ -8822,8 +8808,7 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
-id|etext
+id|_etext
 )paren
 op_minus
 (paren
@@ -8831,7 +8816,6 @@ op_minus
 r_int
 r_int
 )paren
-op_amp
 id|_start
 )paren
 )paren
@@ -8854,8 +8838,7 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
-id|edata
+id|_edata
 )paren
 op_minus
 (paren
@@ -8863,8 +8846,7 @@ op_minus
 r_int
 r_int
 )paren
-op_amp
-id|etext
+id|_etext
 )paren
 )paren
 suffix:semicolon
@@ -8886,7 +8868,6 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|__init_end
 )paren
 op_minus
@@ -8895,7 +8876,6 @@ op_minus
 r_int
 r_int
 )paren
-op_amp
 id|__init_begin
 )paren
 )paren
@@ -9208,7 +9188,6 @@ r_int
 r_int
 )paren
 (paren
-op_amp
 id|__init_begin
 )paren
 )paren
@@ -9220,7 +9199,6 @@ r_int
 r_int
 )paren
 (paren
-op_amp
 id|__init_end
 )paren
 op_amp

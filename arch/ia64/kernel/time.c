@@ -165,6 +165,11 @@ suffix:semicolon
 r_int
 r_int
 id|now
+op_assign
+id|ia64_get_itc
+c_func
+(paren
+)paren
 comma
 id|last_tick
 suffix:semicolon
@@ -192,13 +197,6 @@ id|TIME_KEEPER_ID
 )paren
 op_member_access_from_pointer
 id|itm_delta
-)paren
-suffix:semicolon
-id|now
-op_assign
-id|ia64_get_itc
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if

@@ -5,12 +5,7 @@ macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-r_extern
-r_char
-id|_stext
-comma
-id|_etext
-suffix:semicolon
+macro_line|#include &lt;asm/sections.h&gt;
 DECL|variable|prof_buffer
 r_int
 r_int
@@ -103,18 +98,8 @@ suffix:semicolon
 multiline_comment|/* only text is profiled */
 id|prof_len
 op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
 id|_etext
 op_minus
-(paren
-r_int
-r_int
-)paren
-op_amp
 id|_stext
 suffix:semicolon
 id|prof_len

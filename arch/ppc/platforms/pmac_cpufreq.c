@@ -603,7 +603,10 @@ id|low_freq
 suffix:semicolon
 id|freqs.cpu
 op_assign
-id|CPUFREQ_ALL_CPUS
+id|smp_processor_id
+c_func
+(paren
+)paren
 suffix:semicolon
 id|cpufreq_notify_transition
 c_func

@@ -430,7 +430,11 @@ c_cond
 (paren
 id|nowayout
 )paren
-id|MOD_INC_USE_COUNT
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 multiline_comment|/* Activate */
 id|acq_is_open

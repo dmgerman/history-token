@@ -292,42 +292,6 @@ DECL|macro|SCSI_MLQUEUE_DEVICE_BUSY
 mdefine_line|#define SCSI_MLQUEUE_DEVICE_BUSY 0x1056
 DECL|macro|SCSI_MLQUEUE_EH_RETRY
 mdefine_line|#define SCSI_MLQUEUE_EH_RETRY    0x1057
-r_extern
-r_int
-id|scsi_sysfs_modify_sdev_attribute
-c_func
-(paren
-r_struct
-id|device_attribute
-op_star
-op_star
-op_star
-id|dev_attrs
-comma
-r_struct
-id|device_attribute
-op_star
-id|attr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_sysfs_modify_shost_attribute
-c_func
-(paren
-r_struct
-id|class_device_attribute
-op_star
-op_star
-op_star
-id|class_attrs
-comma
-r_struct
-id|class_device_attribute
-op_star
-id|attr
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Legacy dma direction interfaces.&n; *&n; * This assumes the pci/sbus dma mapping flags have the same numercial&n; * values as the generic dma-mapping ones.  Currently they have but there&squot;s&n; * no way to check.  Better don&squot;t use these interfaces!&n; */
 DECL|macro|SCSI_DATA_UNKNOWN
 mdefine_line|#define SCSI_DATA_UNKNOWN&t;(DMA_BIDIRECTIONAL)

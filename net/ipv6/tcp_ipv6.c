@@ -4644,11 +4644,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ipv6_addr_is_multicast
+op_logical_neg
+id|ipv6_unicast_destination
 c_func
 (paren
-op_amp
-id|skb-&gt;nh.ipv6h-&gt;daddr
+id|skb
 )paren
 )paren
 r_return
@@ -5788,15 +5788,14 @@ comma
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: do the same check for anycast */
 r_if
 c_cond
 (paren
-id|ipv6_addr_is_multicast
+op_logical_neg
+id|ipv6_unicast_destination
 c_func
 (paren
-op_amp
-id|skb-&gt;nh.ipv6h-&gt;daddr
+id|skb
 )paren
 )paren
 r_goto

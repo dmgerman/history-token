@@ -3,7 +3,6 @@ macro_line|#ifndef _FCP_SCSI_H
 DECL|macro|_FCP_SCSI_H
 mdefine_line|#define _FCP_SCSI_H
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;../scsi/scsi.h&quot;
 macro_line|#include &quot;fc.h&quot;
 macro_line|#include &quot;fcp.h&quot;

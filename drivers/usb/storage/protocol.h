@@ -2,7 +2,7 @@ multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Protocol
 macro_line|#ifndef _PROTOCOL_H_
 DECL|macro|_PROTOCOL_H_
 mdefine_line|#define _PROTOCOL_H_
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;usb.h&quot;
 multiline_comment|/* Sub Classes */

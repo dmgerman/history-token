@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt; /* for SCSI_IOCTL_GET_IDLUN */

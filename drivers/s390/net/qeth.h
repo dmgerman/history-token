@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/qdio.h&gt;
 DECL|macro|QETH_NAME
 mdefine_line|#define QETH_NAME &quot; qeth&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &quot;$Revision: 1.47 $&quot;
+mdefine_line|#define VERSION_QETH_H &quot;$Revision: 1.49 $&quot;
 multiline_comment|/******************** CONFIG STUFF ***********************/
 singleline_comment|//#define QETH_DBF_LIKE_HELL
 macro_line|#ifdef CONFIG_QETH_IPV6
@@ -2476,6 +2476,10 @@ DECL|member|adp_supported
 id|__u32
 id|adp_supported
 suffix:semicolon
+DECL|member|csum_enable_mask
+id|__u32
+id|csum_enable_mask
+suffix:semicolon
 DECL|member|startlan_attempts
 id|atomic_t
 id|startlan_attempts
@@ -2747,7 +2751,7 @@ r_case
 id|QETH_MPC_LINK_TYPE_HSTR
 suffix:colon
 r_return
-id|ARPHRD_IEEE802
+id|ARPHRD_IEEE802_TR
 suffix:semicolon
 r_default
 suffix:colon

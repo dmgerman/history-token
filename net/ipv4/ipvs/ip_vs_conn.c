@@ -1782,8 +1782,18 @@ l_int|1
 )paren
 )paren
 (brace
-multiline_comment|/* make sure that there is no timer on it now */
-id|del_timer_sync
+multiline_comment|/* delete the timer if it is activated by other users */
+r_if
+c_cond
+(paren
+id|timer_pending
+c_func
+(paren
+op_amp
+id|cp-&gt;timer
+)paren
+)paren
+id|del_timer
 c_func
 (paren
 op_amp
@@ -1825,7 +1835,6 @@ c_func
 id|cp
 )paren
 suffix:semicolon
-singleline_comment|//ip_vs_timeout_detach(cp);
 r_if
 c_cond
 (paren

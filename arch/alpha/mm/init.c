@@ -14,9 +14,6 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt; /* max_low_pfn */
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;

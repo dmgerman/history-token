@@ -1,5 +1,5 @@
 macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* for capable() */
-macro_line|#include &lt;linux/blk.h&gt;&t;&t;&t;/* for set_device_ro() */
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -955,31 +955,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|n
-OG
-id|PAGE_SIZE
-op_logical_or
-id|n
-OL
-l_int|512
-op_logical_or
-(paren
-id|n
-op_amp
-(paren
-id|n
-op_minus
-l_int|1
-)paren
-)paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|bd_claim
 c_func
 (paren
@@ -995,6 +970,8 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+id|ret
+op_assign
 id|set_blocksize
 c_func
 (paren
@@ -1010,7 +987,7 @@ id|bdev
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 r_case
 id|BLKPG

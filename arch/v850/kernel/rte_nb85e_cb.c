@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/nb85e.h&gt;
+macro_line|#include &lt;asm/v850e.h&gt;
 macro_line|#include &lt;asm/rte_nb85e_cb.h&gt;
 macro_line|#include &quot;mach.h&quot;
 DECL|function|mach_early_init
@@ -20,13 +20,16 @@ r_void
 )paren
 (brace
 multiline_comment|/* Configure caching; some possible settings:&n;&n;&t;     BHC = 0x0000, DCC = 0x0000&t; -- all caching disabled&n;&t;     BHC = 0x0040, DCC = 0x0000&t; -- SDRAM: icache only&n;&t;     BHC = 0x0080, DCC = 0x0C00&t; -- SDRAM: write-back dcache only&n;&t;     BHC = 0x00C0, DCC = 0x0C00&t; -- SDRAM: icache + write-back dcache&n;&t;     BHC = 0x00C0, DCC = 0x0800&t; -- SDRAM: icache + write-thru dcache&n;&n;&t;   We can only cache SDRAM (we can&squot;t use cache SRAM because it&squot;s in&n;&t;   the same memory region as the on-chip RAM and I/O space).&n;&n;&t;   Unfortunately, the dcache seems to be buggy, so we only use the&n;&t;   icache for now.  */
-id|nb85e_cache_enable
+id|v850e_cache_enable
 (paren
 l_int|0x0040
-multiline_comment|/* BHC */
+multiline_comment|/*BHC*/
+comma
+l_int|0x0003
+multiline_comment|/*ICC*/
 comma
 l_int|0x0000
-multiline_comment|/* DCC */
+multiline_comment|/*DCC*/
 )paren
 suffix:semicolon
 id|rte_cb_early_init

@@ -23,7 +23,6 @@ macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/fcdevice.h&gt; /* had the declarations for init_fcdev among&n;&t;&t;&t;       others + includes if_fcdevice.h */
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;

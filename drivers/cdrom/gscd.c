@@ -30,7 +30,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR GOLDSTAR_CDROM_MAJOR
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 DECL|macro|gscd_port
 mdefine_line|#define gscd_port gscd&t;&t;/* for compatible parameter passing with &quot;insmod&quot; */
 macro_line|#include &quot;gscd.h&quot;

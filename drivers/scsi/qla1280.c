@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -102,7 +102,7 @@ macro_line|#ifdef QLA_64BIT_PTR
 DECL|macro|pci_dma_lo32
 mdefine_line|#define pci_dma_lo32(a)&t;&t;(a &amp; 0xffffffff)
 DECL|macro|pci_dma_hi32
-mdefine_line|#define pci_dma_hi32(a)&t;&t;(a &gt;&gt; 32)
+mdefine_line|#define pci_dma_hi32(a)&t;&t;((a &gt;&gt; 16)&gt;&gt;16)
 macro_line|#else
 DECL|macro|pci_dma_lo32
 mdefine_line|#define pci_dma_lo32(a)&t;&t;(a &amp; 0xffffffff)

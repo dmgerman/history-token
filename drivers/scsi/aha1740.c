@@ -1,5 +1,5 @@
 multiline_comment|/*  $Id$&n; *  1993/03/31&n; *  linux/kernel/aha1740.c&n; *&n; *  Based loosely on aha1542.c which is&n; *  Copyright (C) 1992  Tommy Thorn and&n; *  Modified by Eric Youngdale&n; *&n; *  This file is aha1740.c, written and&n; *  Copyright (C) 1992,1993  Brad McLean&n; *  brad@saturn.gaylord.com or brad@bradpc.gaylord.com.&n; *  &n; *  Modifications to makecode and queuecommand&n; *  for proper handling of multiple devices courteously&n; *  provided by Michael Weller, March, 1993&n; *&n; *  Multiple adapter support, extended translation detection,&n; *  update to current scsi subsystem changes, proc fs support,&n; *  working (!) module support based on patches from Andreas Arens,&n; *  by Andreas Degert &lt;ad@papyrus.hamburg.com&gt;, 2/1997&n; *&n; * aha1740_makecode may still need even more work&n; * if it doesn&squot;t work for your devices, take a look.&n; *&n; * Reworked for new_eh and new locking by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * Converted to EISA and generic DMA APIs by Marc Zyngier&n; * &lt;maz@wild-wind.fr.eu.org&gt;, 4/2003.&n; *&n; * For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n; * is in an open non patent encumbered format. Where cryptographic key signing&n; * forms part of the process of creating an executable the information&n; * including keys needed to generate an equivalently functional executable&n; * are deemed to be part of the source code.&n; */
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1464,7 +1464,6 @@ multiline_comment|/* locate an available ecb */
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -1559,7 +1558,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -2109,7 +2107,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -2278,7 +2275,6 @@ multiline_comment|/* Start it up */
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -2703,7 +2699,7 @@ id|slotbase
 )paren
 )paren
 r_goto
-id|err_release
+id|err_release_region
 suffix:semicolon
 id|aha1740_getconfig
 c_func
@@ -2818,7 +2814,7 @@ l_int|NULL
 )paren
 (brace
 r_goto
-id|err_release
+id|err_release_region
 suffix:semicolon
 )brace
 id|shpnt-&gt;base
@@ -2893,7 +2889,7 @@ id|shpnt
 )paren
 suffix:semicolon
 r_goto
-id|err_release
+id|err_host_put
 suffix:semicolon
 )brace
 id|DEB
@@ -2936,7 +2932,7 @@ id|irq_level
 )paren
 suffix:semicolon
 r_goto
-id|err_release
+id|err_unmap
 suffix:semicolon
 )brace
 id|eisa_set_drvdata
@@ -2953,10 +2949,40 @@ comma
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+(paren
+id|shpnt
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|err_release
+id|err_unmap
+suffix:colon
+id|dma_unmap_single
+(paren
+op_amp
+id|edev-&gt;dev
+comma
+id|host-&gt;ecb_dma_addr
+comma
+r_sizeof
+(paren
+id|host-&gt;ecb
+)paren
+comma
+id|DMA_BIDIRECTIONAL
+)paren
+suffix:semicolon
+id|err_host_put
+suffix:colon
+id|scsi_host_put
+(paren
+id|shpnt
+)paren
+suffix:semicolon
+id|err_release_region
 suffix:colon
 id|release_region
 c_func

@@ -20,7 +20,6 @@ mdefine_line|#define REALLY_SLOW_IO
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
 macro_line|#ifdef __arm__
 DECL|macro|HD_IRQ

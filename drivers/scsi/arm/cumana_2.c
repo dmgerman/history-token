@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  linux/drivers/acorn/scsi/cumana_2.c&n; *&n; *  Copyright (C) 1997-2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Changelog:&n; *   30-08-1997&t;RMK&t;0.0.0&t;Created, READONLY version.&n; *   22-01-1998&t;RMK&t;0.0.1&t;Updated to 2.1.80.&n; *   15-04-1998&t;RMK&t;0.0.1&t;Only do PIO if FAS216 will allow it.&n; *   02-05-1998&t;RMK&t;0.0.2&t;Updated &amp; added DMA support.&n; *   27-06-1998&t;RMK&t;&t;Changed asm/delay.h to linux/delay.h&n; *   18-08-1998&t;RMK&t;0.0.3&t;Fixed synchronous transfer depth.&n; *   02-04-2000&t;RMK&t;0.0.4&t;Updated for new error handling code.&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;

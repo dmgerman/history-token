@@ -21,7 +21,6 @@ DECL|macro|MD_DRIVER
 mdefine_line|#define MD_DRIVER
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
-macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 0
 DECL|macro|dprintk

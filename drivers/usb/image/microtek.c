@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;microtek.h&quot;
@@ -3050,6 +3050,13 @@ c_func
 id|new_desc-&gt;host
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+c_func
+(paren
+id|new_desc-&gt;host
 )paren
 suffix:semicolon
 id|usb_set_intfdata

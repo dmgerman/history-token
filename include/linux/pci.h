@@ -832,25 +832,25 @@ suffix:semicolon
 multiline_comment|/* directory entry in /proc/bus/pci */
 DECL|member|number
 r_int
-r_int
+r_char
 id|number
 suffix:semicolon
 multiline_comment|/* bus number */
 DECL|member|primary
 r_int
-r_int
+r_char
 id|primary
 suffix:semicolon
 multiline_comment|/* number of primary bridge */
 DECL|member|secondary
 r_int
-r_int
+r_char
 id|secondary
 suffix:semicolon
 multiline_comment|/* number of secondary bridge */
 DECL|member|subordinate
 r_int
-r_int
+r_char
 id|subordinate
 suffix:semicolon
 multiline_comment|/* max number of subordinate buses */
@@ -2782,22 +2782,6 @@ op_star
 id|drv
 )paren
 (brace
-)brace
-DECL|function|scsi_to_pci_dma_dir
-r_static
-r_inline
-r_int
-id|scsi_to_pci_dma_dir
-c_func
-(paren
-r_int
-r_char
-id|scsi_dir
-)paren
-(brace
-r_return
-id|scsi_dir
-suffix:semicolon
 )brace
 DECL|function|pci_find_capability
 r_static

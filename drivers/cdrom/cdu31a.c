@@ -23,7 +23,7 @@ macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &quot;cdu31a.h&quot;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR CDU31A_CDROM_MAJOR
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 DECL|macro|CDU31A_READAHEAD
 mdefine_line|#define CDU31A_READAHEAD 4&t;/* 128 sector, 64kB, 32 reads read-ahead */
 DECL|macro|CDU31A_MAX_CONSECUTIVE_ATTENTIONS

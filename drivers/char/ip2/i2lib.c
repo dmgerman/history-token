@@ -3677,11 +3677,11 @@ c_cond
 id|user
 )paren
 (brace
-id|COPY_FROM_USER
+id|rc
+op_assign
+id|copy_from_user
 c_func
 (paren
-id|rc
-comma
 (paren
 r_char
 op_star

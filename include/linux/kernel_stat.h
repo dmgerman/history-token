@@ -47,7 +47,6 @@ r_struct
 id|cpu_usage_stat
 id|cpustat
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ARCH_S390)
 DECL|member|irqs
 r_int
 r_int
@@ -56,7 +55,6 @@ id|irqs
 id|NR_IRQS
 )braket
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 id|DECLARE_PER_CPU
@@ -82,7 +80,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ARCH_S390)
 multiline_comment|/*&n; * Number of interrupts per specific IRQ source, since bootup&n; */
 DECL|function|kstat_irqs
 r_static
@@ -142,6 +139,5 @@ r_return
 id|sum
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#endif /* _LINUX_KERNEL_STAT_H */
 eof

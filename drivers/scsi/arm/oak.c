@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -590,12 +590,21 @@ r_if
 c_cond
 (paren
 id|ret
-op_eq
-l_int|0
 )paren
+r_goto
+id|out_release
+suffix:semicolon
+id|scsi_scan_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+id|out_release
+suffix:colon
 id|release_region
 c_func
 (paren

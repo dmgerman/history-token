@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *&n; *  drivers/scsi/pc980155.c&n; *&n; *  PC-9801-55 SCSI host adapter driver&n; *&n; *  Copyright (C) 1997-2003  Kyoto University Microcomputer Club&n; *&t;&t;&t;     (Linux/98 project)&n; *&t;&t;&t;     Tomoharu Ugawa &lt;ohirune@kmc.gr.jp&gt;&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * xfrm_state.c&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro&n; * &t;&t;IPv6 support&n; * &t;YOSHIFUJI Hideaki @USAGI&n; * &t;&t;Split up af-specific functions&n; *&t;Derek Atkins &lt;derek@ihtfp.com&gt;&n; *&t;&t;Add UDP Encapsulation&n; * &t;&n; */
+multiline_comment|/*&n; * xfrm_state.c&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro &lt;kunihiro@ipinfusion.com&gt;&n; * &t;&t;IPv6 support&n; * &t;YOSHIFUJI Hideaki @USAGI&n; * &t;&t;Split up af-specific functions&n; *&t;Derek Atkins &lt;derek@ihtfp.com&gt;&n; *&t;&t;Add UDP Encapsulation&n; * &t;&n; */
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
@@ -2562,7 +2562,7 @@ c_func
 id|u8
 id|mode
 comma
-id|u16
+id|u32
 id|reqid
 comma
 id|u8

@@ -5309,6 +5309,10 @@ l_string|&quot;usb-bluetooth&quot;
 suffix:semicolon
 id|bluetooth_tty_driver-&gt;name
 op_assign
+l_string|&quot;ttyUB&quot;
+suffix:semicolon
+id|bluetooth_tty_driver-&gt;devfs_name
+op_assign
 l_string|&quot;usb/ttub/&quot;
 suffix:semicolon
 id|bluetooth_tty_driver-&gt;major

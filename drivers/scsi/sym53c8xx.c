@@ -31,7 +31,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,35)
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#endif
@@ -3594,7 +3594,7 @@ DECL|macro|SetScsiAbortResult
 mdefine_line|#define SetScsiAbortResult(cmd) SetScsiResult(cmd, DID_ABORT, 0xff)
 macro_line|#endif
 r_static
-r_void
+id|irqreturn_t
 id|sym53c8xx_intr
 c_func
 (paren
@@ -21837,7 +21837,7 @@ id|cmd
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;illegal scsi phase (4/5).&bslash;n&quot;
+l_string|&quot;invalid scsi phase (4/5).&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -42709,7 +42709,7 @@ suffix:semicolon
 multiline_comment|/*&n;**   Linux entry point of the interrupt handler.&n;**   Since linux versions &gt; 1.3.70, we trust the kernel for &n;**   passing the internal host descriptor as &squot;dev_id&squot;.&n;**   Otherwise, we scan the host list and call the interrupt &n;**   routine for each host that uses this IRQ.&n;*/
 DECL|function|sym53c8xx_intr
 r_static
-r_void
+id|irqreturn_t
 id|sym53c8xx_intr
 c_func
 (paren
@@ -42833,6 +42833,9 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n;**   Linux entry point of the timer handler&n;*/
 DECL|function|sym53c8xx_timeout

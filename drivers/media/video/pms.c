@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Media Vision Pro Movie Studio&n; *&t;&t;&t;or&n; *&t;&quot;all you need is an I2C bus some RAM and a prayer&quot;&n; *&n; *&t;This draws heavily on code&n; *&n; *&t;(c) Wolfgang Koehler,  wolf@first.gmd.de, Dec. 1994&n; *&t;Kiefernring 15&n; *&t;14478 Potsdam, Germany&n; *&n; *&t;Most of this code is directly derived from his userspace driver.&n; *&t;His driver works so send any reports to alan@redhat.com unless the&n; *&t;userspace driver also doesn&squot;t work for you...&n; */
+multiline_comment|/*&n; *&t;Media Vision Pro Movie Studio&n; *&t;&t;&t;or&n; *&t;&quot;all you need is an I2C bus some RAM and a prayer&quot;&n; *&n; *&t;This draws heavily on code&n; *&n; *&t;(c) Wolfgang Koehler,  wolf@first.gmd.de, Dec. 1994&n; *&t;Kiefernring 15&n; *&t;14478 Potsdam, Germany&n; *&n; *&t;Most of this code is directly derived from his userspace driver.&n; *&t;His driver works so send any reports to alan@redhat.com unless the&n; *&t;userspace driver also doesn&squot;t work for you...&n; *      &n; *      Changes:&n; *      08/07/2003        Daniele Bellucci &lt;bellucda@tiscali.it&gt;&n; *                        - pms_capture: report back -EFAULT &n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -3185,6 +3185,9 @@ id|cnt
 op_add_assign
 id|dev-&gt;height
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -3196,6 +3199,10 @@ l_int|32
 comma
 id|dt
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|buf
 op_add_assign

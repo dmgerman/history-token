@@ -77,7 +77,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -11556,12 +11556,21 @@ r_if
 c_cond
 (paren
 id|ret
-op_eq
-l_int|0
 )paren
+r_goto
+id|err_7
+suffix:semicolon
+id|scsi_scan_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+id|err_7
+suffix:colon
 id|free_irq
 c_func
 (paren

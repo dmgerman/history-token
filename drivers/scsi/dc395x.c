@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -23582,6 +23582,13 @@ id|scsi_host
 comma
 op_amp
 id|pdev-&gt;dev
+)paren
+suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+c_func
+(paren
+id|scsi_host
 )paren
 suffix:semicolon
 r_return

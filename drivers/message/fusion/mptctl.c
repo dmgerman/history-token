@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;&t;/* needed for access to Scsi_Host struct */
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;          /* for io_request_lock (spinlock) decl */
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 DECL|macro|COPYRIGHT

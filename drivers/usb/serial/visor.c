@@ -1824,6 +1824,12 @@ op_star
 )paren
 id|urb-&gt;context
 suffix:semicolon
+multiline_comment|/* free up the transfer buffer, as usb_free_urb() does not do this */
+id|kfree
+(paren
+id|urb-&gt;transfer_buffer
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1851,7 +1857,6 @@ c_cond
 (paren
 id|urb-&gt;status
 )paren
-(brace
 id|dbg
 c_func
 (paren
@@ -1860,15 +1865,6 @@ comma
 id|__FUNCTION__
 comma
 id|urb-&gt;status
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* free up the transfer buffer, as usb_free_urb() does not do this */
-id|kfree
-(paren
-id|urb-&gt;transfer_buffer
 )paren
 suffix:semicolon
 id|schedule_work

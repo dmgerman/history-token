@@ -29,7 +29,7 @@ macro_line|#include &lt;linux/slab.h&gt;&t;&t;/* for kmalloc() */
 macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_PCI */
 macro_line|#include &lt;linux/pci.h&gt;&t;&t;/* for PCI support */
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;&t;/* for udelay */
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* for printk */

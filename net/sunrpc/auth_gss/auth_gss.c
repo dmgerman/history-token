@@ -959,8 +959,9 @@ id|RPC_GSS_PROC_DATA
 suffix:semicolon
 id|ctx-&gt;gc_seq
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
+multiline_comment|/* NetApp 6.4R1 doesn&squot;t accept seq. no. 0 */
 id|spin_lock_init
 c_func
 (paren

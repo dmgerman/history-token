@@ -287,8 +287,7 @@ suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -367,8 +366,7 @@ suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -418,8 +416,9 @@ id|vcc-&gt;qos
 op_assign
 id|msg-&gt;qos
 suffix:semicolon
-id|vcc-&gt;reply
+id|vcc-&gt;sk-&gt;sk_err
 op_assign
+op_minus
 id|msg-&gt;result
 suffix:semicolon
 r_switch
@@ -475,8 +474,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 r_return
@@ -651,7 +649,8 @@ r_return
 id|error
 suffix:semicolon
 r_return
-id|vcc-&gt;reply
+op_minus
+id|vcc-&gt;sk-&gt;sk_err
 suffix:semicolon
 )brace
 DECL|function|atmtcp_v_close
@@ -1434,8 +1433,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|walk-&gt;sleep
+id|walk-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 )brace

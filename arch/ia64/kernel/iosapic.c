@@ -2608,6 +2608,10 @@ id|IOSAPIC_LEVEL
 )paren
 suffix:semicolon
 )brace
+id|entry-&gt;irq
+op_assign
+id|vector
+suffix:semicolon
 id|snprintf
 c_func
 (paren

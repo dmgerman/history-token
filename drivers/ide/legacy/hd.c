@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; * This is the low-level hd interrupt support. It traverses the&n; * request-list, using interrupts to jump between functions. As&n; * all the functions are called within interrupts, we may not&n; * sleep. Special care is recommended.&n; *&n; *  modified by Drew Eckhardt to check nr of hd&squot;s from the CMOS.&n; *&n; *  Thanks to Branko Lankester, lankeste@fwi.uva.nl, who found a bug&n; *  in the early extended-partition checks and added DM partitions&n; *&n; *  IRQ-unmask, drive-id, multiple-mode, support for &quot;&gt;16 heads&quot;,&n; *  and general streamlining by Mark Lord.&n; *&n; *  Removed 99% of above. Use Mark&squot;s ide driver for those options.&n; *  This is now a lightweight ST-506 driver. (Paul Gortmaker)&n; *&n; *  Modified 1995 Russell King for ARM processor.&n; *&n; *  Bugfix: max_sectors must be &lt;= 255 or the wheels tend to come&n; *  off in a hurry once you queue things up - Paul G. 02/2001&n; */
 multiline_comment|/* Uncomment the following if you want verbose error reports. */
 multiline_comment|/* #define VERBOSE_ERRORS */
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

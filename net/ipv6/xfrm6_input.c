@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * xfrm6_input.c: based on net/ipv4/xfrm4_input.c&n; *&n; * Authors:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro&n; *&t;YOSHIFUJI Hideaki @USAGI&n; *&t;&t;IPv6 support&n; */
+multiline_comment|/*&n; * xfrm6_input.c: based on net/ipv4/xfrm4_input.c&n; *&n; * Authors:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro &lt;kunihiro@ipinfusion.com&gt;&n; *&t;YOSHIFUJI Hideaki @USAGI&n; *&t;&t;IPv6 support&n; */
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;

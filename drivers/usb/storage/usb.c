@@ -3377,6 +3377,12 @@ r_goto
 id|BadDevice
 suffix:semicolon
 )brace
+id|scsi_scan_host
+c_func
+(paren
+id|us-&gt;host
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

@@ -8046,6 +8046,13 @@ op_amp
 id|ahd-&gt;dev_softc-&gt;dev
 )paren
 suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 macro_line|#endif
 r_return
 (paren

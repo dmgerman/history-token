@@ -16,9 +16,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-macro_line|#include &lt;linux/blk.h&gt;&t;&t;/* for initrd_* */
-macro_line|#endif
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;

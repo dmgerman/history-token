@@ -28,7 +28,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;sbpcd.h&quot;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MATSUSHITA_CDROM_MAJOR
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 multiline_comment|/*==========================================================================*/
 macro_line|#if SBPCD_DIS_IRQ
 DECL|macro|SBPCD_CLI

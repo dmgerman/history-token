@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
@@ -4206,7 +4206,7 @@ l_int|8
 op_or
 id|cmd
 (braket
-l_int|6
+l_int|8
 )braket
 )paren
 suffix:semicolon
@@ -9677,6 +9677,13 @@ id|hpnt
 )paren
 suffix:semicolon
 )brace
+r_else
+id|scsi_scan_host
+c_func
+(paren
+id|hpnt
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon

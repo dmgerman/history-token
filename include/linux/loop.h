@@ -8,7 +8,7 @@ DECL|macro|LO_KEY_SIZE
 mdefine_line|#define LO_KEY_SIZE&t;32
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/bio.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 multiline_comment|/* Possible states of device */
 r_enum

@@ -1519,6 +1519,15 @@ id|rcvsize
 op_plus
 id|RPC_SLACK_SPACE
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|xprt_connected
+c_func
+(paren
+id|xprt
+)paren
+)paren
 id|xprt_sock_setbufsize
 c_func
 (paren

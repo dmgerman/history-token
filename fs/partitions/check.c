@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  fs/partitions/check.c&n; *&n; *  Code extracted from 
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
@@ -1439,6 +1438,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* always add handle for the whole disk */
+id|devfs_add_partitioned
+c_func
+(paren
+id|disk
+)paren
+suffix:semicolon
 multiline_comment|/* No such device (e.g., media were just removed) */
 r_if
 c_cond
@@ -1489,12 +1495,6 @@ c_func
 id|disk
 comma
 id|bdev
-)paren
-suffix:semicolon
-id|devfs_add_partitioned
-c_func
-(paren
-id|disk
 )paren
 suffix:semicolon
 r_if

@@ -4920,6 +4920,15 @@ id|net-&gt;priv
 op_assign
 id|ax_info
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|net
+comma
+op_amp
+id|intf-&gt;dev
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|register_netdev

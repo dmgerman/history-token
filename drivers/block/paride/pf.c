@@ -229,7 +229,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|pf_spin_lock
@@ -459,15 +459,6 @@ DECL|macro|ATAPI_READ_10
 mdefine_line|#define ATAPI_READ_10&t;&t;0x28
 DECL|macro|ATAPI_WRITE_10
 mdefine_line|#define ATAPI_WRITE_10&t;&t;0x2a
-macro_line|#ifdef MODULE
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 r_static
 r_int
 id|pf_open

@@ -128,7 +128,7 @@ r_static
 r_int
 id|major_nr
 suffix:semicolon
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 DECL|struct|cardinfo
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/*=============================================================================&n; *&n; * A  PCMCIA client driver for the Raylink wireless LAN card.&n; * The starting point for this module was the skeleton.c in the&n; * PCMCIA 2.9.12 package written by David Hinds, dahinds@users.sourceforge.net&n; *&n; *&n; * Copyright (c) 1998  Corey Thomas (corey@world.std.com)&n; *&n; * This driver is free software; you can redistribute it and/or modify&n; * it under the terms of version 2 only of the GNU General Public License as &n; * published by the Free Software Foundation.&n; *&n; * It is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 08/08/2000&n; * - reorganize kmallocs in ray_attach, checking all for failure&n; *   and releasing the previous allocations if one fails&n; *&n; * &n;=============================================================================*/
+multiline_comment|/*=============================================================================&n; *&n; * A  PCMCIA client driver for the Raylink wireless LAN card.&n; * The starting point for this module was the skeleton.c in the&n; * PCMCIA 2.9.12 package written by David Hinds, dahinds@users.sourceforge.net&n; *&n; *&n; * Copyright (c) 1998  Corey Thomas (corey@world.std.com)&n; *&n; * This driver is free software; you can redistribute it and/or modify&n; * it under the terms of version 2 only of the GNU General Public License as &n; * published by the Free Software Foundation.&n; *&n; * It is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 08/08/2000&n; * - reorganize kmallocs in ray_attach, checking all for failure&n; *   and releasing the previous allocations if one fails&n; *&n; * Daniele Bellucci &lt;bellucda@tiscali.it&gt; - 07/10/2003&n; * - Audit copy_to_user in ioctl(SIOCGIWESSID)&n; * &n;=============================================================================*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -6351,6 +6351,9 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* active */
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -6363,6 +6366,11 @@ r_sizeof
 id|essid
 )paren
 )paren
+)paren
+id|err
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_break

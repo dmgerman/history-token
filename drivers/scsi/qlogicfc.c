@@ -2,7 +2,7 @@ multiline_comment|/*&n; * QLogic ISP2x00 SCSI-FCP&n; * Written by Erik H. Moe, e
 multiline_comment|/* Renamed and updated to 1.3.x by Michael Griffith &lt;grif@cs.ucr.edu&gt; */
 multiline_comment|/* This is a version of the isp1020 driver which was modified by&n; * Chris Loveland &lt;cwl@iol.unh.edu&gt; to support the isp2100 and isp2200&n; *&n; * Big endian support and dynamic DMA mapping added&n; * by Jakub Jelinek &lt;jakub@redhat.com&gt;.&n; *&n; * Conversion to final pci64 DMA interfaces&n; * by David S. Miller &lt;davem@redhat.com&gt;.&n; */
 multiline_comment|/*&n; * $Date: 1995/09/22 02:23:15 $&n; * $Revision: 0.5 $&n; *&n; * $Log: isp1020.c,v $&n; * Revision 0.5  1995/09/22  02:23:15  root&n; * do auto request sense&n; *&n; * Revision 0.4  1995/08/07  04:44:33  root&n; * supply firmware with driver.&n; * numerous bug fixes/general cleanup of code.&n; *&n; * Revision 0.3  1995/07/16  16:15:39  root&n; * added reset/abort code.&n; *&n; * Revision 0.2  1995/06/29  03:14:19  root&n; * fixed biosparam.&n; * added queue protocol.&n; *&n; * Revision 0.1  1995/06/25  01:55:45  root&n; * Initial release.&n; *&n; */
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;

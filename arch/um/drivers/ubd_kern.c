@@ -6,7 +6,6 @@ DECL|macro|UBD_SHIFT
 mdefine_line|#define UBD_SHIFT 4
 macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
-macro_line|#include &quot;linux/blk.h&quot;
 macro_line|#include &quot;linux/blkdev.h&quot;
 macro_line|#include &quot;linux/hdreg.h&quot;
 macro_line|#include &quot;linux/init.h&quot;

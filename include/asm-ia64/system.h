@@ -8,12 +8,12 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/percpu.h&gt;
 multiline_comment|/* 0xa000000000000000 - 0xa000000000000000+PERCPU_PAGE_SIZE remain unmapped */
-DECL|macro|PERCPU_ADDR
-mdefine_line|#define PERCPU_ADDR&t;&t;(0xa000000000000000 + PERCPU_PAGE_SIZE)
 DECL|macro|GATE_ADDR
-mdefine_line|#define GATE_ADDR&t;&t;(0xa000000000000000 + 2*PERCPU_PAGE_SIZE)
+mdefine_line|#define GATE_ADDR&t;&t;(0xa000000000000000 + PERCPU_PAGE_SIZE)
 DECL|macro|KERNEL_START
 mdefine_line|#define KERNEL_START&t;&t; 0xa000000100000000
+DECL|macro|PERCPU_ADDR
+mdefine_line|#define PERCPU_ADDR&t;&t;(-PERCPU_PAGE_SIZE)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

@@ -14,10 +14,6 @@ r_struct
 id|timezone
 id|sys_tz
 suffix:semicolon
-DECL|macro|offsetof
-macro_line|#undef offsetof
-DECL|macro|offsetof
-mdefine_line|#define offsetof(TYPE, MEMB) ((size_t) &amp;((TYPE *)0)-&gt;MEMB)
 multiline_comment|/* Typedefs for integer types by size and signedness */
 DECL|typedef|hfs_u8
 r_typedef

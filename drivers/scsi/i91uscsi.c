@@ -9,7 +9,7 @@ DECL|macro|INT_DISC
 mdefine_line|#define INT_DISC&t;0
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;i91uscsi.h&quot;
 multiline_comment|/*--- external functions --*/

@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/elevator.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -717,6 +716,51 @@ comma
 id|rq
 comma
 id|next
+)paren
+suffix:semicolon
+)brace
+DECL|function|elv_requeue_request
+r_void
+id|elv_requeue_request
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+r_struct
+id|request
+op_star
+id|rq
+)paren
+(brace
+multiline_comment|/*&n;&t; * if iosched has an explicit requeue hook, then use that. otherwise&n;&t; * just put the request at the front of the queue&n;&t; */
+r_if
+c_cond
+(paren
+id|q-&gt;elevator.elevator_requeue_req_fn
+)paren
+id|q-&gt;elevator
+dot
+id|elevator_requeue_req_fn
+c_func
+(paren
+id|q
+comma
+id|rq
+)paren
+suffix:semicolon
+r_else
+id|__elv_add_request
+c_func
+(paren
+id|q
+comma
+id|rq
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1585,6 +1629,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__elv_add_request
+)paren
+suffix:semicolon
+DECL|variable|elv_requeue_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|elv_requeue_request
 )paren
 suffix:semicolon
 DECL|variable|elv_next_request

@@ -13,9 +13,6 @@ macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
@@ -2120,10 +2117,8 @@ id|KERN_INFO
 l_string|&quot;Freeing unused kernel memory: %dk freed&bslash;n&quot;
 comma
 (paren
-op_amp
 id|__init_end
 op_minus
-op_amp
 id|__init_begin
 )paren
 op_rshift

@@ -2609,7 +2609,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|agp_intel_i460_remove
+)paren
 comma
 )brace
 suffix:semicolon

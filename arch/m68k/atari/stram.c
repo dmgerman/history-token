@@ -28,7 +28,6 @@ DECL|macro|do_z2_request
 mdefine_line|#define do_z2_request do_stram_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#endif
 DECL|macro|DEBUG
 macro_line|#undef DEBUG

@@ -1,4 +1,4 @@
-multiline_comment|/* xfrm_user.c: User interface to configure xfrm engine.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro&n; * &t;&t;IPv6 support&n; * &t;&n; */
+multiline_comment|/* xfrm_user.c: User interface to configure xfrm engine.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro &lt;kunihiro@ipinfusion.com&gt;&n; * &t;&t;IPv6 support&n; * &t;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

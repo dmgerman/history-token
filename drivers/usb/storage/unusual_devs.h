@@ -290,9 +290,9 @@ l_string|&quot;Fujifilm&quot;
 comma
 l_string|&quot;FinePix 1400Zoom&quot;
 comma
-id|US_SC_8070
+id|US_SC_DEVICE
 comma
-id|US_PR_CBI
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -710,7 +710,7 @@ l_string|&quot;DSC-S30/S70/S75/505V/F505/F707/F717/P8&quot;
 comma
 id|US_SC_SCSI
 comma
-id|US_PR_CB
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -1780,9 +1780,9 @@ l_string|&quot;AIPTEK&quot;
 comma
 l_string|&quot;PocketCAM 3Mega&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
