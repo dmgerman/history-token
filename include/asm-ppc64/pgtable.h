@@ -189,11 +189,11 @@ multiline_comment|/* shift to put page number into pte */
 DECL|macro|PTE_SHIFT
 mdefine_line|#define PTE_SHIFT (16)
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; *&n; * mk_pte_phys takes a physical address as input &n; *&n; * mk_pte takes a (struct page *) as input&n; */
-DECL|macro|mk_pte_phys
-mdefine_line|#define mk_pte_phys(physpage,pgprot)                                      &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;pte_val(pte) = (((physpage)&lt;&lt;(PTE_SHIFT-PAGE_SHIFT)) | pgprot_val(pgprot)); &bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;          &bslash;&n;})
+multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; *&n; * mk_pte takes a (struct page *) as input&n; */
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page,pgprot)                                               &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;pte_val(pte) = ((unsigned long)((page) - mem_map) &lt;&lt; PTE_SHIFT) |   &bslash;&n;                        pgprot_val(pgprot);                               &bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;          &bslash;&n;})
+mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn,pgprot)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(pte) = ((unsigned long)(pfn) &lt;&lt; PTE_SHIFT) |   &t;&t;&bslash;&n;                        pgprot_val(pgprot);&t;&t;&t;&t;&bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|pte_modify
 mdefine_line|#define pte_modify(_pte, newprot) &bslash;&n;  (__pte((pte_val(_pte) &amp; _PAGE_CHG_MASK) | pgprot_val(newprot)))
 DECL|macro|pte_none
@@ -201,10 +201,10 @@ mdefine_line|#define pte_none(pte)&t;&t;((pte_val(pte) &amp; ~_PAGE_HPTEFLAGS) =
 DECL|macro|pte_present
 mdefine_line|#define pte_present(pte)&t;(pte_val(pte) &amp; _PAGE_PRESENT)
 multiline_comment|/* pte_clear moved to later in this file */
-DECL|macro|pte_pagenr
-mdefine_line|#define pte_pagenr(x)&t;&t;((unsigned long)((pte_val(x) &gt;&gt; PTE_SHIFT)))
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)((pte_val(x) &gt;&gt; PTE_SHIFT)))
 DECL|macro|pte_page
-mdefine_line|#define pte_page(x)&t;&t;(mem_map+pte_pagenr(x))
+mdefine_line|#define pte_page(x)&t;&t;pfn_to_page(pte_pfn(x))
 DECL|macro|pmd_set
 mdefine_line|#define pmd_set(pmdp, ptep) &t;(pmd_val(*(pmdp)) = (__ba_to_bpn(ptep)))
 DECL|macro|pmd_none

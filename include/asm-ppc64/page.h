@@ -448,12 +448,18 @@ DECL|macro|__a2p
 mdefine_line|#define __a2p(x) ((void *) absolute_to_phys(x))
 DECL|macro|__a2v
 mdefine_line|#define __a2v(x) ((void *) __va(absolute_to_phys(x)))
+DECL|macro|pfn_to_page
+mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
+DECL|macro|page_to_pfn
+mdefine_line|#define page_to_pfn(pfn)&t;((unsigned long)((pfn) - mem_map))
 DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr) (mem_map+(__pa((unsigned long)kaddr) &gt;&gt; PAGE_SHIFT))
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)    ((page - mem_map) &lt; max_mapnr)
+mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pfn_valid
+mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
+DECL|macro|virt_addr_valid
+mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|MAP_NR
-mdefine_line|#define MAP_NR(addr)        (__pa(addr) &gt;&gt; PAGE_SHIFT)
+mdefine_line|#define MAP_NR(addr)&t;&t;(__pa(addr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* __KERNEL__ */

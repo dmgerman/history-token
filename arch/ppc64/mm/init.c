@@ -917,6 +917,13 @@ op_star
 id|mm
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -973,6 +980,13 @@ multiline_comment|/* XXX are there races with checking cpu_vm_mask? - Anton */
 id|mm-&gt;cpu_vm_mask
 op_assign
 l_int|0
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Callers should hold the mm-&gt;page_table_lock&n; */
@@ -2932,7 +2946,7 @@ op_star
 id|ptep
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is called at the end of handling a user page fault, when the&n; * fault has been handled by updating a PTE in the linux page tables.&n; * We use it to preload an HPTE into the hash table corresponding to&n; * the updated linux PTE.&n; */
+multiline_comment|/*&n; * This is called at the end of handling a user page fault, when the&n; * fault has been handled by updating a PTE in the linux page tables.&n; * We use it to preload an HPTE into the hash table corresponding to&n; * the updated linux PTE.&n; * &n; * This must always be called with the mm-&gt;page_table_lock held&n; */
 DECL|function|update_mmu_cache
 r_void
 id|update_mmu_cache
