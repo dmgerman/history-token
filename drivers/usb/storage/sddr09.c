@@ -4769,7 +4769,7 @@ l_string|&quot;sddr09: could not read card info&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|sprintf

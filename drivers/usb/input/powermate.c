@@ -601,7 +601,7 @@ op_star
 )paren
 id|pm-&gt;configcr
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma

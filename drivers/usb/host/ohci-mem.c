@@ -87,7 +87,7 @@ id|ohci-&gt;hcd
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|ohci_hcd_free
@@ -219,7 +219,7 @@ id|ohci-&gt;td_cache
 suffix:semicolon
 id|ohci-&gt;td_cache
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -235,7 +235,7 @@ id|ohci-&gt;ed_cache
 suffix:semicolon
 id|ohci-&gt;ed_cache
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

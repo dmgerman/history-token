@@ -311,8 +311,6 @@ r_struct
 id|mdc800_data
 op_star
 id|mdc800
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/***************************************************************************&n;&t;The USB Part of the driver&n;****************************************************************************/
 DECL|function|mdc800_endpoint_equals
@@ -1506,7 +1504,7 @@ id|mdc800-&gt;download_urb
 suffix:semicolon
 id|mdc800-&gt;dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|usb_set_intfdata
 c_func
@@ -2965,10 +2963,6 @@ suffix:semicolon
 multiline_comment|/************************************************************************&n;&t;Init and Cleanup this driver (Main Functions)&n;*************************************************************************/
 DECL|macro|try
 mdefine_line|#define try(A)           if ((A) == 0) goto cleanup_on_fail;
-DECL|macro|try_free_mem
-mdefine_line|#define try_free_mem(A)  if (A != 0) { kfree (A); A=0; }
-DECL|macro|try_free_urb
-mdefine_line|#define try_free_urb(A)  if (A != 0) { usb_free_urb (A); A=0; }
 DECL|function|usb_mdc800_init
 r_static
 r_int
@@ -3017,7 +3011,7 @@ id|mdc800_data
 suffix:semicolon
 id|mdc800-&gt;dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mdc800-&gt;open
 op_assign
@@ -3179,32 +3173,38 @@ id|err
 l_string|&quot;can&squot;t alloc memory!&quot;
 )paren
 suffix:semicolon
-id|try_free_mem
+id|kfree
+c_func
 (paren
 id|mdc800-&gt;download_urb_buffer
 )paren
 suffix:semicolon
-id|try_free_mem
+id|kfree
+c_func
 (paren
 id|mdc800-&gt;write_urb_buffer
 )paren
 suffix:semicolon
-id|try_free_mem
+id|kfree
+c_func
 (paren
 id|mdc800-&gt;irq_urb_buffer
 )paren
 suffix:semicolon
-id|try_free_urb
+id|usb_free_urb
+c_func
 (paren
 id|mdc800-&gt;write_urb
 )paren
 suffix:semicolon
-id|try_free_urb
+id|usb_free_urb
+c_func
 (paren
 id|mdc800-&gt;download_urb
 )paren
 suffix:semicolon
-id|try_free_urb
+id|usb_free_urb
+c_func
 (paren
 id|mdc800-&gt;irq_urb
 )paren
@@ -3217,7 +3217,7 @@ suffix:semicolon
 )brace
 id|mdc800
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|retval
@@ -3275,7 +3275,7 @@ id|mdc800
 suffix:semicolon
 id|mdc800
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|variable|usb_mdc800_init

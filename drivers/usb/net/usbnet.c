@@ -538,7 +538,7 @@ id|in
 op_assign
 id|out
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|alt
 op_assign
@@ -3734,7 +3734,7 @@ id|info-&gt;data
 suffix:semicolon
 id|info-&gt;data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* and vice versa (just in case) */
@@ -3768,7 +3768,7 @@ id|info-&gt;control
 suffix:semicolon
 id|info-&gt;control
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -5469,7 +5469,7 @@ id|value
 comma
 id|regnum
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -7224,7 +7224,7 @@ id|val
 comma
 id|index
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -8503,7 +8503,7 @@ id|rx_done
 suffix:semicolon
 id|entry-&gt;urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_switch
 c_cond
@@ -8657,7 +8657,7 @@ id|urb
 suffix:semicolon
 id|urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -9036,7 +9036,7 @@ suffix:semicolon
 )brace
 id|dev-&gt;wait
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|remove_wait_queue
 (paren
@@ -9664,7 +9664,7 @@ id|urb
 op_star
 id|urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -9900,7 +9900,7 @@ suffix:semicolon
 )brace
 id|urb-&gt;dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|entry-&gt;state
 op_assign
@@ -9996,7 +9996,7 @@ id|urb
 op_star
 id|urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|skb_data
@@ -10020,14 +10020,14 @@ id|nc_header
 op_star
 id|header
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|nc_trailer
 op_star
 id|trailer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_USB_NET1080 */
 singleline_comment|// some devices want funky USB-level framing, for

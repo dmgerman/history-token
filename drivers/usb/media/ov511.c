@@ -8169,7 +8169,7 @@ id|SEN_SAA7111A
 suffix:colon
 id|val
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|PDEBUG
 c_func

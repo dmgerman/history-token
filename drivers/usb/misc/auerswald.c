@@ -2226,7 +2226,7 @@ comma
 multiline_comment|/* build urb */
 id|auerchain_blocking_completion
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|ret
