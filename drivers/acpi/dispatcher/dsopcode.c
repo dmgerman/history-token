@@ -484,12 +484,10 @@ op_logical_neg
 id|node
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;No pointer back to NS node in buffer %p&bslash;n&quot;
+l_string|&quot;No pointer back to NS node in buffer obj %p&bslash;n&quot;
 comma
 id|obj_desc
 )paren
@@ -582,11 +580,9 @@ op_logical_neg
 id|node
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
-comma
 l_string|&quot;No pointer back to NS node in package %p&bslash;n&quot;
 comma
 id|obj_desc
