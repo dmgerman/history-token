@@ -1557,12 +1557,18 @@ r_int
 r_int
 id|size
 suffix:semicolon
-DECL|member|next_size
+DECL|member|flags
 r_int
 r_int
-id|next_size
+id|flags
 suffix:semicolon
-multiline_comment|/* Next window size */
+multiline_comment|/* ra flags RA_FLAG_xxx*/
+DECL|member|cache_hit
+r_int
+r_int
+id|cache_hit
+suffix:semicolon
+multiline_comment|/* cache hit count*/
 DECL|member|prev_page
 r_int
 r_int
@@ -1580,18 +1586,6 @@ r_int
 r_int
 id|ahead_size
 suffix:semicolon
-DECL|member|currnt_wnd_hit
-r_int
-r_int
-id|currnt_wnd_hit
-suffix:semicolon
-multiline_comment|/* locality in the current window */
-DECL|member|average
-r_int
-r_int
-id|average
-suffix:semicolon
-multiline_comment|/* size of next current window */
 DECL|member|ra_pages
 r_int
 r_int
@@ -1612,6 +1606,10 @@ suffix:semicolon
 multiline_comment|/* Cache miss stat for mmap accesses */
 )brace
 suffix:semicolon
+DECL|macro|RA_FLAG_MISS
+mdefine_line|#define RA_FLAG_MISS 0x01&t;/* a cache miss occured against this file */
+DECL|macro|RA_FLAG_INCACHE
+mdefine_line|#define RA_FLAG_INCACHE 0x02&t;/* file is already in cache */
 DECL|struct|file
 r_struct
 id|file
