@@ -1448,7 +1448,7 @@ id|area.width
 op_assign
 id|width
 op_star
-id|vc-&gt;vc_font.height
+id|vc-&gt;vc_font.width
 suffix:semicolon
 id|info-&gt;fbops
 op_member_access_from_pointer
@@ -4017,6 +4017,17 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* reset wrap/pan */
+multiline_comment|/*&n;&t; * FIXME: need to set this in order for KDFONTOP ioctl&n;&t; *        to work&n;&t; */
+id|p-&gt;fontwidthmask
+op_assign
+id|FONTWIDTHRANGE
+c_func
+(paren
+l_int|1
+comma
+l_int|16
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -9667,12 +9678,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
-(brace
-multiline_comment|/* Tell console.c that it has to restore the screen itself */
 r_return
-l_int|1
-suffix:semicolon
-)brace
 id|fb_blank
 c_func
 (paren
@@ -9680,9 +9686,6 @@ id|blank
 comma
 id|info
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|fbcon_free_font
