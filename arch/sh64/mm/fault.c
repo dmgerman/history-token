@@ -17,7 +17,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/registers.h&gt;&t;&t;/* required by inline asm statements */
 macro_line|#if defined(CONFIG_SH64_PROC_TLB)

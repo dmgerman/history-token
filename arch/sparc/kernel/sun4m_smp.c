@@ -22,7 +22,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/cpudata.h&gt;
 DECL|macro|IRQ_RESCHEDULE
 mdefine_line|#define IRQ_RESCHEDULE&t;&t;13

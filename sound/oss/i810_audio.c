@@ -19,7 +19,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;1.01&quot;
 DECL|macro|MODULOP2

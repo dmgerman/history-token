@@ -16,9 +16,9 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/au1000.h&gt;
 macro_line|#include &lt;asm/au1000_dma.h&gt;
 multiline_comment|/* --------------------------------------------------------------------- */

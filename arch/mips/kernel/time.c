@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/cpu-features.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 multiline_comment|/*&n; * The integer part of the number of usecs per jiffy is taken from tick,&n; * but the fractional part is not recorded, so we calculate it using the&n; * initial value of HZ.  This aids systems where tick isn&squot;t really an&n; * integer (e.g. for HZ = 128).&n; */

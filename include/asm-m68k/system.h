@@ -23,7 +23,7 @@ multiline_comment|/* interrupt control.. */
 macro_line|#if 0
 mdefine_line|#define local_irq_enable() asm volatile (&quot;andiw %0,%%sr&quot;: : &quot;i&quot; (ALLOWINT) : &quot;memory&quot;)
 macro_line|#else
-macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#include &lt;linux/hardirq.h&gt;
 DECL|macro|local_irq_enable
 mdefine_line|#define local_irq_enable() ({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (MACH_IS_Q40 || !hardirq_count())&t;&t;&t;&t;&t;&bslash;&n;&t;&t;asm volatile (&quot;andiw %0,%%sr&quot;: : &quot;i&quot; (ALLOWINT) : &quot;memory&quot;);&t;&bslash;&n;})
 macro_line|#endif

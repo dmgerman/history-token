@@ -42,61 +42,13 @@ DECL|macro|SOFTIRQ_SHIFT
 mdefine_line|#define SOFTIRQ_SHIFT&t;(PREEMPT_SHIFT + PREEMPT_BITS)
 DECL|macro|HARDIRQ_SHIFT
 mdefine_line|#define HARDIRQ_SHIFT&t;(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
-DECL|macro|__MASK
-mdefine_line|#define __MASK(x)&t;((1UL &lt;&lt; (x))-1)
-DECL|macro|PREEMPT_MASK
-mdefine_line|#define PREEMPT_MASK&t;(__MASK(PREEMPT_BITS) &lt;&lt; PREEMPT_SHIFT)
-DECL|macro|HARDIRQ_MASK
-mdefine_line|#define HARDIRQ_MASK&t;(__MASK(HARDIRQ_BITS) &lt;&lt; HARDIRQ_SHIFT)
-DECL|macro|SOFTIRQ_MASK
-mdefine_line|#define SOFTIRQ_MASK&t;(__MASK(SOFTIRQ_BITS) &lt;&lt; SOFTIRQ_SHIFT)
-DECL|macro|hardirq_count
-mdefine_line|#define hardirq_count()&t;(preempt_count() &amp; HARDIRQ_MASK)
-DECL|macro|softirq_count
-mdefine_line|#define softirq_count()&t;(preempt_count() &amp; SOFTIRQ_MASK)
-DECL|macro|irq_count
-mdefine_line|#define irq_count()&t;(preempt_count() &amp; (HARDIRQ_MASK | SOFTIRQ_MASK))
-DECL|macro|PREEMPT_OFFSET
-mdefine_line|#define PREEMPT_OFFSET&t;(1UL &lt;&lt; PREEMPT_SHIFT)
-DECL|macro|SOFTIRQ_OFFSET
-mdefine_line|#define SOFTIRQ_OFFSET&t;(1UL &lt;&lt; SOFTIRQ_SHIFT)
-DECL|macro|HARDIRQ_OFFSET
-mdefine_line|#define HARDIRQ_OFFSET&t;(1UL &lt;&lt; HARDIRQ_SHIFT)
 multiline_comment|/*&n; * The hardirq mask has to be large enough to have&n; * space for potentially all IRQ sources in the system&n; * nesting on a single CPU:&n; */
 macro_line|#if (1 &lt;&lt; HARDIRQ_BITS) &lt; NR_IRQS
 macro_line|# error HARDIRQ_BITS is too low!
 macro_line|#endif
-multiline_comment|/*&n; * Are we doing bottom half or hardware interrupt processing?&n; * Are we in a softirq context? Interrupt context?&n; */
-DECL|macro|in_irq
-mdefine_line|#define in_irq()&t;&t;(hardirq_count())
-DECL|macro|in_softirq
-mdefine_line|#define in_softirq()&t;&t;(softirq_count())
-DECL|macro|in_interrupt
-mdefine_line|#define in_interrupt()&t;&t;(irq_count())
-DECL|macro|hardirq_trylock
-mdefine_line|#define hardirq_trylock()&t;(!in_interrupt())
-DECL|macro|hardirq_endlock
-mdefine_line|#define hardirq_endlock()&t;do { } while (0)
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
-macro_line|#ifdef CONFIG_PREEMPT
-DECL|macro|in_atomic
-macro_line|# define in_atomic()    (preempt_count() != kernel_locked())
-DECL|macro|IRQ_EXIT_OFFSET
-macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
-macro_line|#else
-DECL|macro|in_atomic
-macro_line|# define in_atomic()    (preempt_count() != 0)
-DECL|macro|IRQ_EXIT_OFFSET
-macro_line|# define IRQ_EXIT_OFFSET HARDIRQ_OFFSET
-macro_line|#endif
 DECL|macro|irq_exit
 mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&t;      &bslash;&n;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id()))&t;      &bslash;&n;&t;&t;do_softirq();&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;preempt_enable_no_resched();&t;&t;&t;&t;&t;      &bslash;&n;} while (0)
-macro_line|#ifndef CONFIG_SMP
-DECL|macro|synchronize_irq
-macro_line|# define synchronize_irq(irq)&t;barrier()
-macro_line|#else
-macro_line|# error v850nommu SMP is not available
-macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* __V850_HARDIRQ_H__ */
 eof

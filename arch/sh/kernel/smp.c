@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 multiline_comment|/*&n; * This was written with the Sega Saturn (SMP SH-2 7604) in mind,&n; * but is designed to be usable regardless if there&squot;s an MMU&n; * present or not.&n; */
