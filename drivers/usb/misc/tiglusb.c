@@ -536,12 +536,10 @@ op_amp
 id|bytes_read
 comma
 id|HZ
-op_div
-(paren
-id|timeout
-op_div
+op_star
 l_int|10
-)paren
+op_div
+id|timeout
 )paren
 suffix:semicolon
 r_if
@@ -833,12 +831,10 @@ op_amp
 id|bytes_written
 comma
 id|HZ
-op_div
-(paren
-id|timeout
-op_div
+op_star
 l_int|10
-)paren
+op_div
+id|timeout
 )paren
 suffix:semicolon
 r_if
@@ -1668,6 +1664,16 @@ l_int|1
 )braket
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timeout
+)paren
+id|timeout
+op_assign
+id|TIMAXTIME
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1831,6 +1837,16 @@ l_string|&quot;, &quot;
 id|DRIVER_VERSION
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timeout
+)paren
+id|timeout
+op_assign
+id|TIMAXTIME
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1912,7 +1928,7 @@ id|MODULE_PARM_DESC
 (paren
 id|timeout
 comma
-l_string|&quot;Timeout (default=1.5 seconds)&quot;
+l_string|&quot;Timeout in tenths of seconds (default=1.5 seconds)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */

@@ -189,6 +189,7 @@ suffix:semicolon
 )brace
 DECL|function|class_hotplug
 r_static
+r_inline
 r_int
 id|class_hotplug
 c_func
