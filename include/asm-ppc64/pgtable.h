@@ -3,6 +3,7 @@ DECL|macro|_PPC64_PGTABLE_H
 mdefine_line|#define _PPC64_PGTABLE_H
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the ppc64 hashed page table.&n; */
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* For TASK_SIZE */
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -91,8 +92,9 @@ DECL|macro|_PAGE_DIRTY
 mdefine_line|#define _PAGE_DIRTY&t;0x080UL&t;/* C: page changed */
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;0x100UL&t;/* R: page referenced */
-DECL|macro|_PAGE_HPTENOIX
+macro_line|#if 0
 mdefine_line|#define _PAGE_HPTENOIX&t;0x200UL /* software: pte HPTE slot unknown */
+macro_line|#endif
 DECL|macro|_PAGE_HASHPTE
 mdefine_line|#define _PAGE_HASHPTE&t;0x400UL&t;/* software: pte has an associated HPTE */
 DECL|macro|_PAGE_EXEC
@@ -103,7 +105,7 @@ DECL|macro|_PAGE_GROUP_IX
 mdefine_line|#define _PAGE_GROUP_IX  0x7000UL /* software: HPTE index within group */
 multiline_comment|/* Bits 0x7000 identify the index within an HPT Group */
 DECL|macro|_PAGE_HPTEFLAGS
-mdefine_line|#define _PAGE_HPTEFLAGS (_PAGE_HASHPTE | _PAGE_HPTENOIX | _PAGE_SECONDARY | _PAGE_GROUP_IX)
+mdefine_line|#define _PAGE_HPTEFLAGS (_PAGE_HASHPTE | _PAGE_SECONDARY | _PAGE_GROUP_IX)
 multiline_comment|/* PAGE_MASK gives the right answer below, but only by accident */
 multiline_comment|/* It should be preserving the high 48 bits and then specifically */
 multiline_comment|/* preserving _PAGE_SECONDARY | _PAGE_GROUP_IX */
@@ -1155,9 +1157,27 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Page tables may have changed.  We don&squot;t need to do anything here&n; * as entries are faulted into the hash table by the low-level&n; * data/instruction access exception handlers.&n; */
+macro_line|#if 0
 multiline_comment|/*&n; * We won&squot;t be able to use update_mmu_cache to update the &n; * hardware page table because we need to update the pte&n; * as well, but we don&squot;t get the address of the pte, only&n; * its value.&n; */
-DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma, addr, pte)&t;do { } while (0)
+macro_line|#else
+multiline_comment|/*&n; * This gets called at the end of handling a page fault, when&n; * the kernel has put a new PTE into the page table for the process.&n; * We use it to put a corresponding HPTE into the hash table&n; * ahead of time, instead of waiting for the inevitable extra&n; * hash-table miss exception.&n; */
+r_extern
+r_void
+id|update_mmu_cache
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+comma
+r_int
+r_int
+comma
+id|pte_t
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_void
 id|flush_hash_segments
@@ -1185,7 +1205,55 @@ id|ea
 comma
 id|pte_t
 id|pte
+comma
+r_int
+id|local
 )paren
+suffix:semicolon
+r_void
+id|flush_hash_range
+c_func
+(paren
+r_int
+r_int
+id|context
+comma
+r_int
+r_int
+id|number
+comma
+r_int
+id|local
+)paren
+suffix:semicolon
+multiline_comment|/* TLB flush batching */
+DECL|macro|MAX_BATCH_FLUSH
+mdefine_line|#define MAX_BATCH_FLUSH 128
+DECL|struct|tlb_batch_data
+r_struct
+id|tlb_batch_data
+(brace
+DECL|member|pte
+id|pte_t
+id|pte
+suffix:semicolon
+DECL|member|addr
+r_int
+r_int
+id|addr
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|tlb_batch_data
+id|tlb_batch_array
+(braket
+id|NR_CPUS
+)braket
+(braket
+id|MAX_BATCH_FLUSH
+)braket
 suffix:semicolon
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|SWP_TYPE
