@@ -3070,7 +3070,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Assumes no unreadable holes inbetween */
-id|BOOLEAN
+id|u8
 DECL|function|acpi_os_readable
 id|acpi_os_readable
 c_func
@@ -3079,7 +3079,7 @@ r_void
 op_star
 id|ptr
 comma
-id|u32
+id|acpi_size
 id|len
 )paren
 (brace
@@ -3123,7 +3123,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|BOOLEAN
+id|u8
 DECL|function|acpi_os_writable
 id|acpi_os_writable
 c_func
@@ -3132,7 +3132,7 @@ r_void
 op_star
 id|ptr
 comma
-id|u32
+id|acpi_size
 id|len
 )paren
 (brace

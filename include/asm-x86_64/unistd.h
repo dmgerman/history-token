@@ -1936,23 +1936,23 @@ id|__NR_epoll_create
 comma
 id|sys_epoll_create
 )paren
-DECL|macro|__NR_epoll_ctl
-mdefine_line|#define __NR_epoll_ctl&t;214
+DECL|macro|__NR_epoll_ctl_old
+mdefine_line|#define __NR_epoll_ctl_old&t;214
 id|__SYSCALL
 c_func
 (paren
-id|__NR_epoll_ctl
+id|__NR_epoll_ctl_old
 comma
-id|sys_epoll_ctl
+id|sys_ni_syscall
 )paren
-DECL|macro|__NR_epoll_wait
-mdefine_line|#define __NR_epoll_wait&t;215
+DECL|macro|__NR_epoll_wait_old
+mdefine_line|#define __NR_epoll_wait_old&t;215
 id|__SYSCALL
 c_func
 (paren
-id|__NR_epoll_wait
+id|__NR_epoll_wait_old
 comma
-id|sys_epoll_wait
+id|sys_ni_syscall
 )paren
 DECL|macro|__NR_remap_file_pages
 mdefine_line|#define __NR_remap_file_pages&t;216
@@ -2098,8 +2098,26 @@ id|__NR_exit_group
 comma
 id|sys_exit_group
 )paren
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait&t;&t;232
+id|__SYSCALL
+c_func
+(paren
+id|__NR_epoll_wait
+comma
+id|sys_epoll_wait
+)paren
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl&t;&t;233
+id|__SYSCALL
+c_func
+(paren
+id|__NR_epoll_ctl
+comma
+id|sys_epoll_ctl
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_exit_group
+mdefine_line|#define __NR_syscall_max __NR_epoll_ctl
 macro_line|#ifndef __NO_STUBS
 multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -893,6 +894,11 @@ r_void
 id|show_stack
 c_func
 (paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
 r_int
 r_int
 op_star
@@ -956,7 +962,7 @@ op_minus
 id|IRQSTACKSIZE
 )paren
 suffix:semicolon
-singleline_comment|// debugging aid: &quot;show_stack(NULL);&quot; prints the
+singleline_comment|// debugging aid: &quot;show_stack(NULL, NULL);&quot; prints the
 singleline_comment|// back trace for this cpu.
 r_if
 c_cond
@@ -1229,6 +1235,8 @@ suffix:semicolon
 id|show_stack
 c_func
 (paren
+l_int|NULL
+comma
 (paren
 r_int
 r_int

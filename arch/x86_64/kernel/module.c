@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(fmt...) 
-multiline_comment|/* TODO this should be in vmlist, but we must fix get_vm_area first to &n;   handle out of bounds entries properly. &n;   Also need to fix /proc/kcore, /dev/kmem */
 DECL|variable|mod_vmlist
 r_static
 r_struct
