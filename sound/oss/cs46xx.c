@@ -4934,11 +4934,8 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: start_dac() poke card=0x%.08x tmp=0x%.08x addr=0x%.08x &bslash;n&quot;
+l_string|&quot;cs46xx: start_dac() poke card=%p tmp=0x%.08x addr=%p &bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|card
 comma
 (paren
@@ -4946,9 +4943,6 @@ r_int
 )paren
 id|tmp
 comma
-(paren
-r_int
-)paren
 id|card-&gt;ba1.idx
 (braket
 (paren
@@ -7161,12 +7155,8 @@ id|memset
 c_func
 (paren
 (paren
-r_void
+r_char
 op_star
-)paren
-(paren
-(paren
-r_int
 )paren
 id|dmabuf-&gt;rawbuf
 op_plus
@@ -7175,7 +7165,6 @@ op_plus
 id|hwptr
 op_minus
 id|diff
-)paren
 comma
 (paren
 id|dmabuf-&gt;fmt
@@ -9086,26 +9075,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot; dst=0x%x src=0x%x count=%d fmt=0x%x&bslash;n&quot;
+l_string|&quot; dst=%p src=%p count=%d fmt=0x%x&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|dst
 comma
-(paren
-r_int
-)paren
 id|src
 comma
-(paren
-r_int
-)paren
 id|count
 comma
-(paren
-r_int
-)paren
 id|fmt
 )paren
 )paren
@@ -10075,17 +10052,12 @@ comma
 id|buffer
 comma
 (paren
-r_void
+r_char
 op_star
-)paren
-(paren
-(paren
-r_int
 )paren
 id|dmabuf-&gt;rawbuf
 op_plus
 id|swptr
-)paren
 comma
 id|cnt
 comma
@@ -11239,11 +11211,8 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs_mmap()+ file=0x%x %s %s&bslash;n&quot;
+l_string|&quot;cs46xx: cs_mmap()+ file=%p %s %s&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|file
 comma
 id|vma-&gt;vm_flags
@@ -11410,9 +11379,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
-r_int
-)paren
 id|state
 )paren
 (brace
@@ -15135,11 +15101,8 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs_open()+ file=0x%x %s %s&bslash;n&quot;
+l_string|&quot;cs46xx: cs_open()+ file=%p %s %s&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|file
 comma
 id|file-&gt;f_mode
@@ -16033,11 +15996,8 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs_release()+ file=0x%x %s %s&bslash;n&quot;
+l_string|&quot;cs46xx: cs_release()+ file=%p %s %s&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|file
 comma
 id|file-&gt;f_mode
@@ -17613,16 +17573,13 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs46xx_suspend()+ flags=0x%x s=0x%x&bslash;n&quot;
+l_string|&quot;cs46xx: cs46xx_suspend()+ flags=0x%x s=%p&bslash;n&quot;
 comma
 (paren
 r_int
 )paren
 id|card-&gt;pm.flags
 comma
-(paren
-r_int
-)paren
 id|card
 )paren
 )paren
@@ -20216,7 +20173,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs46xx: cs_ac97_init() ac97_codec[%d] set to 0x%x&bslash;n&quot;
+l_string|&quot;cs46xx: cs_ac97_init() ac97_codec[%d] set to %p&bslash;n&quot;
 comma
 (paren
 r_int
@@ -20224,10 +20181,6 @@ r_int
 )paren
 id|num_ac97
 comma
-(paren
-r_int
-r_int
-)paren
 id|codec
 )paren
 )paren
@@ -24785,16 +24738,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs46xx: card=0x%x card-&gt;ba0=0x%.08x&bslash;n&quot;
+l_string|&quot;cs46xx: card=%p card-&gt;ba0=%p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|card
 comma
-(paren
-r_int
-)paren
 id|card-&gt;ba0
 )paren
 )paren
@@ -24810,26 +24757,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs46xx: card-&gt;ba1=0x%.08x 0x%.08x 0x%.08x 0x%.08x&bslash;n&quot;
+l_string|&quot;cs46xx: card-&gt;ba1=%p %p %p %p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|card-&gt;ba1.name.data0
 comma
-(paren
-r_int
-)paren
 id|card-&gt;ba1.name.data1
 comma
-(paren
-r_int
-)paren
 id|card-&gt;ba1.name.pmem
 comma
-(paren
-r_int
-)paren
 id|card-&gt;ba1.name.reg
 )paren
 )paren
@@ -25245,11 +25180,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs46xx: probe() pm_register() succeeded (0x%x).&bslash;n&quot;
+l_string|&quot;cs46xx: probe() pm_register() succeeded (%p).&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|pmdev
 )paren
 )paren
@@ -25276,11 +25208,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs46xx: probe() pm_register() failed (0x%x).&bslash;n&quot;
+l_string|&quot;cs46xx: probe() pm_register() failed (%p).&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|pmdev
 )paren
 )paren
@@ -25301,16 +25230,13 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs46xx: pm.flags=0x%x card=0x%x&bslash;n&quot;
+l_string|&quot;cs46xx: pm.flags=0x%x card=%p&bslash;n&quot;
 comma
 (paren
 r_int
 )paren
 id|card-&gt;pm.flags
 comma
-(paren
-r_int
-)paren
 id|card
 )paren
 )paren
@@ -26196,11 +26122,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs46xx: cs46xx_pm_callback dev=0x%x rqst=0x%x card=%d&bslash;n&quot;
+l_string|&quot;cs46xx: cs46xx_pm_callback dev=%p rqst=0x%x card=%p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|dev
 comma
 (paren
@@ -26208,9 +26131,6 @@ r_int
 )paren
 id|rqst
 comma
-(paren
-r_int
-)paren
 id|data
 )paren
 )paren
