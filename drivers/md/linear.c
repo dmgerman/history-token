@@ -131,6 +131,17 @@ id|bio-&gt;bi_size
 op_rshift
 l_int|9
 suffix:semicolon
+id|sector_t
+id|sector
+op_assign
+id|bio-&gt;bi_sector
+op_plus
+id|get_start_sect
+c_func
+(paren
+id|bio-&gt;bi_bdev
+)paren
+suffix:semicolon
 id|dev0
 op_assign
 id|which_dev
@@ -138,7 +149,7 @@ c_func
 (paren
 id|mddev
 comma
-id|bio-&gt;bi_sector
+id|sector
 )paren
 suffix:semicolon
 id|maxsectors
@@ -150,7 +161,7 @@ l_int|1
 )paren
 op_minus
 (paren
-id|bio-&gt;bi_sector
+id|sector
 op_minus
 (paren
 id|dev0-&gt;offset

@@ -871,6 +871,12 @@ id|sector_t
 id|sector
 op_assign
 id|bio-&gt;bi_sector
+op_plus
+id|get_start_sect
+c_func
+(paren
+id|bio-&gt;bi_bdev
+)paren
 suffix:semicolon
 r_int
 id|max
