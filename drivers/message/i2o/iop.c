@@ -2448,6 +2448,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: requires private memory resources.&bslash;n&quot;
 comma
 id|c-&gt;name
@@ -2473,6 +2474,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Can&squot;t find parent resource!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2577,6 +2579,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: requires private memory resources.&bslash;n&quot;
 comma
 id|c-&gt;name
@@ -2602,6 +2605,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Can&squot;t find parent resource!&bslash;n&quot;
 )paren
 suffix:semicolon

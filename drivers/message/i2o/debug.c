@@ -331,6 +331,7 @@ singleline_comment|// No status in this reply
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s%s: &quot;
 comma
 id|severity
@@ -375,6 +376,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Cmd = %0#2x, &quot;
 comma
 id|cmd
@@ -436,6 +438,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; / DetailedStatus = %0#4x.&bslash;n&quot;
 comma
 id|detailed_status
@@ -748,6 +751,7 @@ singleline_comment|//sprintf(str, &quot;%-21s&quot;, i2o_get_class_name(d-&gt;lc
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|str
@@ -783,6 +787,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;C&quot;
 )paren
 suffix:semicolon
@@ -801,6 +806,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;U&quot;
 )paren
 suffix:semicolon
@@ -822,6 +828,7 @@ l_int|4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;P&quot;
 )paren
 suffix:semicolon
@@ -843,6 +850,7 @@ l_int|5
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;M&quot;
 )paren
 suffix:semicolon
@@ -850,6 +858,7 @@ singleline_comment|// Mgmt service enabled!
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -927,6 +936,7 @@ id|I2O_FSC_TRANSPORT_UNKNOWN_FAILURE
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;TRANSPORT_UNKNOWN_FAILURE (%0#2x)&bslash;n.&quot;
 comma
 id|req_status
@@ -936,6 +946,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;TRANSPORT_%s.&bslash;n&quot;
 comma
 id|FAIL_STATUS
@@ -1053,6 +1064,7 @@ l_int|16
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;(FormatError), &quot;
 l_string|&quot;this msg can never be delivered/processed.&bslash;n&quot;
 )paren
@@ -1074,6 +1086,7 @@ l_int|17
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;(PathError), &quot;
 l_string|&quot;this msg can no longer be delivered/processed.&bslash;n&quot;
 )paren
@@ -1095,6 +1108,7 @@ l_int|18
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;(PathState), &quot;
 l_string|&quot;the system state does not allow delivery.&bslash;n&quot;
 )paren
@@ -1116,6 +1130,7 @@ l_int|19
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;(Congestion), resources temporarily not available;&quot;
 l_string|&quot;do not retry immediately.&bslash;n&quot;
 )paren
@@ -1178,6 +1193,7 @@ id|REPLY_STATUS
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;RequestStatus = %0#2x&quot;
 comma
 id|req_status
@@ -1187,6 +1203,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s&quot;
 comma
 id|REPLY_STATUS
@@ -1286,6 +1303,7 @@ id|I2O_DSC_DEVICE_NOT_AVAILABLE
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; / DetailedStatus = %0#4x.&bslash;n&quot;
 comma
 id|detailed_status
@@ -1295,6 +1313,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; / %s.&bslash;n&quot;
 comma
 id|COMMON_DSC
@@ -1327,6 +1346,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_NOP, &quot;
 )paren
 suffix:semicolon
@@ -1338,6 +1358,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_ABORT, &quot;
 )paren
 suffix:semicolon
@@ -1349,6 +1370,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_CLAIM, &quot;
 )paren
 suffix:semicolon
@@ -1360,6 +1382,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_CLAIM_RELEASE, &quot;
 )paren
 suffix:semicolon
@@ -1371,6 +1394,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_CONFIG_DIALOG, &quot;
 )paren
 suffix:semicolon
@@ -1382,6 +1406,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_DEVICE_RESERVE, &quot;
 )paren
 suffix:semicolon
@@ -1393,6 +1418,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_DEVICE_RELEASE, &quot;
 )paren
 suffix:semicolon
@@ -1404,6 +1430,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_EVENT_ACKNOWLEDGE, &quot;
 )paren
 suffix:semicolon
@@ -1415,6 +1442,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_EVENT_REGISTER, &quot;
 )paren
 suffix:semicolon
@@ -1426,6 +1454,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_LOCK, &quot;
 )paren
 suffix:semicolon
@@ -1437,6 +1466,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_LOCK_RELEASE, &quot;
 )paren
 suffix:semicolon
@@ -1448,6 +1478,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_PARAMS_GET, &quot;
 )paren
 suffix:semicolon
@@ -1459,6 +1490,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_PARAMS_SET, &quot;
 )paren
 suffix:semicolon
@@ -1470,6 +1502,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;UTIL_REPLY_FAULT_NOTIFY, &quot;
 )paren
 suffix:semicolon
@@ -1480,6 +1513,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Cmd = %0#2x, &quot;
 comma
 id|cmd
@@ -1510,6 +1544,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_ADAPTER_ASSIGN, &quot;
 )paren
 suffix:semicolon
@@ -1521,6 +1556,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_ADAPTER_READ, &quot;
 )paren
 suffix:semicolon
@@ -1532,6 +1568,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_ADAPTER_RELEASE, &quot;
 )paren
 suffix:semicolon
@@ -1543,6 +1580,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_BIOS_INFO_SET, &quot;
 )paren
 suffix:semicolon
@@ -1554,6 +1592,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_BOOT_DEVICE_SET, &quot;
 )paren
 suffix:semicolon
@@ -1565,6 +1604,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_CONFIG_VALIDATE, &quot;
 )paren
 suffix:semicolon
@@ -1576,6 +1616,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_CONN_SETUP, &quot;
 )paren
 suffix:semicolon
@@ -1587,6 +1628,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_DDM_DESTROY, &quot;
 )paren
 suffix:semicolon
@@ -1598,6 +1640,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_DDM_ENABLE, &quot;
 )paren
 suffix:semicolon
@@ -1609,6 +1652,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_DDM_QUIESCE, &quot;
 )paren
 suffix:semicolon
@@ -1620,6 +1664,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_DDM_RESET, &quot;
 )paren
 suffix:semicolon
@@ -1631,6 +1676,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_DDM_SUSPEND, &quot;
 )paren
 suffix:semicolon
@@ -1642,6 +1688,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_DEVICE_ASSIGN, &quot;
 )paren
 suffix:semicolon
@@ -1653,6 +1700,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_DEVICE_RELEASE, &quot;
 )paren
 suffix:semicolon
@@ -1664,6 +1712,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_HRT_GET, &quot;
 )paren
 suffix:semicolon
@@ -1675,6 +1724,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_IOP_CLEAR, &quot;
 )paren
 suffix:semicolon
@@ -1686,6 +1736,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_IOP_CONNECT, &quot;
 )paren
 suffix:semicolon
@@ -1697,6 +1748,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_IOP_RESET, &quot;
 )paren
 suffix:semicolon
@@ -1708,6 +1760,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_LCT_NOTIFY, &quot;
 )paren
 suffix:semicolon
@@ -1719,6 +1772,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_OUTBOUND_INIT, &quot;
 )paren
 suffix:semicolon
@@ -1730,6 +1784,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_PATH_ENABLE, &quot;
 )paren
 suffix:semicolon
@@ -1741,6 +1796,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_PATH_QUIESCE, &quot;
 )paren
 suffix:semicolon
@@ -1752,6 +1808,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_PATH_RESET, &quot;
 )paren
 suffix:semicolon
@@ -1763,6 +1820,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_STATIC_MF_CREATE, &quot;
 )paren
 suffix:semicolon
@@ -1774,6 +1832,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_STATIC_MF_RELEASE, &quot;
 )paren
 suffix:semicolon
@@ -1785,6 +1844,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_STATUS_GET, &quot;
 )paren
 suffix:semicolon
@@ -1796,6 +1856,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_SW_DOWNLOAD, &quot;
 )paren
 suffix:semicolon
@@ -1807,6 +1868,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_SW_UPLOAD, &quot;
 )paren
 suffix:semicolon
@@ -1818,6 +1880,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_SW_REMOVE, &quot;
 )paren
 suffix:semicolon
@@ -1829,6 +1892,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_SYS_ENABLE, &quot;
 )paren
 suffix:semicolon
@@ -1840,6 +1904,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_SYS_MODIFY, &quot;
 )paren
 suffix:semicolon
@@ -1851,6 +1916,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_SYS_QUIESCE, &quot;
 )paren
 suffix:semicolon
@@ -1862,6 +1928,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EXEC_SYS_TAB_SET, &quot;
 )paren
 suffix:semicolon
@@ -1872,6 +1939,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Cmd = %#02x, &quot;
 comma
 id|cmd
@@ -1919,6 +1987,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;INIT&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1930,6 +1999,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;RESET&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1941,6 +2011,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;HOLD&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1952,6 +2023,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;READY&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1963,6 +2035,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;OPERATIONAL&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1974,6 +2047,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;FAILED&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1985,6 +2059,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;FAULTED&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1995,6 +2070,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%x (unknown !!)&bslash;n&quot;
 comma
 (paren
@@ -2269,6 +2345,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;TID %04X:[&quot;
 comma
 id|state
@@ -2294,6 +2371,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;H&quot;
 )paren
 suffix:semicolon
@@ -2313,6 +2391,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;P&quot;
 )paren
 suffix:semicolon
@@ -2331,6 +2410,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;C&quot;
 )paren
 suffix:semicolon
@@ -2346,6 +2426,7 @@ l_int|9
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;*&quot;
 )paren
 suffix:semicolon
@@ -2353,6 +2434,7 @@ multiline_comment|/* Hard */
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;]:&quot;
 )paren
 suffix:semicolon
@@ -2374,6 +2456,7 @@ multiline_comment|/* Adapter private bus - easy */
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Local bus %d: I/O at 0x%04X Mem 0x%08X&quot;
 comma
 id|p
@@ -2414,6 +2497,7 @@ multiline_comment|/* ISA bus */
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;ISA %d: CSN %d I/O at 0x%04X Mem 0x%08X&quot;
 comma
 id|p
@@ -2459,6 +2543,7 @@ multiline_comment|/* EISA bus */
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;EISA %d: Slot %d I/O at 0x%04X Mem 0x%08X&quot;
 comma
 id|p
@@ -2504,6 +2589,7 @@ multiline_comment|/* MCA bus */
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;MCA %d: Slot %d I/O at 0x%04X Mem 0x%08X&quot;
 comma
 id|p
@@ -2549,6 +2635,7 @@ multiline_comment|/* PCI bus */
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;PCI %d: Bus %d Device %d Function %d&quot;
 comma
 id|p
@@ -2583,6 +2670,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Unsupported bus type.&quot;
 )paren
 suffix:semicolon
@@ -2592,6 +2680,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon

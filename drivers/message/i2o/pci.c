@@ -417,12 +417,10 @@ id|c-&gt;base.len
 OG
 l_int|0x400000
 )paren
-(brace
 id|c-&gt;base.len
 op_assign
 l_int|0x400000
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -433,12 +431,10 @@ id|c-&gt;base.len
 OG
 l_int|0x100000
 )paren
-(brace
 id|c-&gt;base.len
 op_assign
 l_int|0x100000
 suffix:semicolon
-)brace
 )brace
 )brace
 r_if
