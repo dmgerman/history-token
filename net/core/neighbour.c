@@ -4742,6 +4742,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|p-&gt;sysctl_table
+op_assign
+l_int|NULL
+suffix:semicolon
 id|write_lock_bh
 c_func
 (paren
