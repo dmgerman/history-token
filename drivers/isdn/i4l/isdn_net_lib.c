@@ -1087,14 +1087,14 @@ l_int|5
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/* Wait 5 secs before Callback */
+multiline_comment|/* Wait 5 secs before call-back  */
 id|mlp-&gt;dialtimeout
 op_assign
 l_int|60
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/* Wait 1 min for connection  */
+multiline_comment|/* Wait 1 min for connection     */
 id|mlp-&gt;dialwait
 op_assign
 l_int|5
