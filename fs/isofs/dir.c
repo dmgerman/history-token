@@ -204,12 +204,17 @@ l_char|&squot;1&squot;
 r_break
 suffix:semicolon
 multiline_comment|/* Convert remaining &squot;;&squot; to &squot;.&squot; */
+multiline_comment|/* Also &squot;/&squot; to &squot;.&squot; (broken Acorn-generated ISO9660 images) */
 r_if
 c_cond
 (paren
 id|c
 op_eq
 l_char|&squot;;&squot;
+op_logical_or
+id|c
+op_eq
+l_char|&squot;/&squot;
 )paren
 id|c
 op_assign
