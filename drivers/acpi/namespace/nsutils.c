@@ -39,7 +39,45 @@ suffix:semicolon
 r_char
 op_star
 id|name
+op_assign
+l_int|NULL
 suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;%8s-%04d: *** Error: Looking up &quot;
+comma
+id|module_name
+comma
+id|line_number
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lookup_status
+op_eq
+id|AE_BAD_CHARACTER
+)paren
+(brace
+multiline_comment|/* There is a non-ascii character in the name */
+id|acpi_os_printf
+(paren
+l_string|&quot;[0x%4.4X] (NON-ASCII)&bslash;n&quot;
+comma
+op_star
+(paren
+id|ACPI_CAST_PTR
+(paren
+id|u32
+comma
+id|internal_name
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 multiline_comment|/* Convert path to external format */
 id|status
 op_assign
@@ -53,15 +91,6 @@ l_int|NULL
 comma
 op_amp
 id|name
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;%8s-%04d: *** Error: Looking up &quot;
-comma
-id|module_name
-comma
-id|line_number
 )paren
 suffix:semicolon
 multiline_comment|/* Print target name */
@@ -90,16 +119,6 @@ l_string|&quot;[COULD NOT EXTERNALIZE NAME]&quot;
 )paren
 suffix:semicolon
 )brace
-id|acpi_os_printf
-(paren
-l_string|&quot; in namespace, %s&bslash;n&quot;
-comma
-id|acpi_format_exception
-(paren
-id|lookup_status
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -112,6 +131,17 @@ id|name
 )paren
 suffix:semicolon
 )brace
+)brace
+id|acpi_os_printf
+(paren
+l_string|&quot; in namespace, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|lookup_status
+)paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_report_method_error&n; *&n; * PARAMETERS:  module_name         - Caller&squot;s module name (for error output)&n; *              line_number         - Caller&squot;s line number (for error output)&n; *              component_id        - Caller&squot;s component ID (for error output)&n; *              Message             - Error message to use on failure&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print warning message with full pathname&n; *&n; ******************************************************************************/
 r_void
@@ -1306,7 +1336,7 @@ suffix:semicolon
 id|num_segments
 op_assign
 (paren
-id|u32
+id|acpi_native_uint
 )paren
 (paren
 id|u8

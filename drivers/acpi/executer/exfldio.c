@@ -1152,11 +1152,10 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_get_buffer_datum&n; *&n; * PARAMETERS:  Datum               - Where the Datum is returned&n; *              Buffer              - Raw field buffer&n; *              byte_granularity    - 1/2/4/8 Granularity of the field&n; *                                    (aka Datum Size)&n; *              Offset              - Datum offset into the buffer&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Get a datum from the buffer according to the buffer field&n; *              byte granularity&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_get_buffer_datum&n; *&n; * PARAMETERS:  Datum               - Where the Datum is returned&n; *              Buffer              - Raw field buffer&n; *              buffer_length       - Entire length (used for big-endian only)&n; *              byte_granularity    - 1/2/4/8 Granularity of the field&n; *                                    (aka Datum Size)&n; *              buffer_offset       - Datum offset into the buffer&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Get a datum from the buffer according to the buffer field&n; *              byte granularity&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_get_buffer_datum
 id|acpi_ex_get_buffer_datum
-c_func
 (paren
 id|acpi_integer
 op_star
@@ -1167,16 +1166,35 @@ op_star
 id|buffer
 comma
 id|u32
+id|buffer_length
+comma
+id|u32
 id|byte_granularity
 comma
 id|u32
-id|offset
+id|buffer_offset
 )paren
 (brace
+id|u32
+id|index
+suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Get proper index into buffer (handles big/little endian) */
+id|index
+op_assign
+id|ACPI_BUFFER_INDEX
+(paren
+id|buffer_length
+comma
+id|buffer_offset
+comma
+id|byte_granularity
+)paren
+suffix:semicolon
+multiline_comment|/* Move the requested number of bytes */
 r_switch
 c_cond
 (paren
@@ -1197,7 +1215,7 @@ op_star
 id|buffer
 )paren
 (braket
-id|offset
+id|index
 )braket
 suffix:semicolon
 r_break
@@ -1205,7 +1223,7 @@ suffix:semicolon
 r_case
 id|ACPI_FIELD_WORD_GRANULARITY
 suffix:colon
-id|ACPI_MOVE_UNALIGNED16_TO_32
+id|ACPI_MOVE_16_TO_64
 (paren
 id|datum
 comma
@@ -1219,7 +1237,7 @@ op_star
 id|buffer
 )paren
 (braket
-id|offset
+id|index
 )braket
 )paren
 )paren
@@ -1229,7 +1247,7 @@ suffix:semicolon
 r_case
 id|ACPI_FIELD_DWORD_GRANULARITY
 suffix:colon
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_64
 (paren
 id|datum
 comma
@@ -1243,7 +1261,7 @@ op_star
 id|buffer
 )paren
 (braket
-id|offset
+id|index
 )braket
 )paren
 )paren
@@ -1253,7 +1271,7 @@ suffix:semicolon
 r_case
 id|ACPI_FIELD_QWORD_GRANULARITY
 suffix:colon
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 id|datum
 comma
@@ -1267,7 +1285,7 @@ op_star
 id|buffer
 )paren
 (braket
-id|offset
+id|index
 )braket
 )paren
 )paren
@@ -1281,7 +1299,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_set_buffer_datum&n; *&n; * PARAMETERS:  merged_datum        - Value to store&n; *              Buffer              - Receiving buffer&n; *              byte_granularity    - 1/2/4/8 Granularity of the field&n; *                                    (aka Datum Size)&n; *              Offset              - Datum offset into the buffer&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Store the merged datum to the buffer according to the&n; *              byte granularity&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_set_buffer_datum&n; *&n; * PARAMETERS:  merged_datum        - Value to store&n; *              Buffer              - Receiving buffer&n; *              buffer_length       - Entire length (used for big-endian only)&n; *              byte_granularity    - 1/2/4/8 Granularity of the field&n; *                                    (aka Datum Size)&n; *              buffer_offset       - Datum offset into the buffer&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Store the merged datum to the buffer according to the&n; *              byte granularity&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_set_buffer_datum
 id|acpi_ex_set_buffer_datum
@@ -1294,16 +1312,35 @@ op_star
 id|buffer
 comma
 id|u32
+id|buffer_length
+comma
+id|u32
 id|byte_granularity
 comma
 id|u32
-id|offset
+id|buffer_offset
 )paren
 (brace
+id|u32
+id|index
+suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Get proper index into buffer (handles big/little endian) */
+id|index
+op_assign
+id|ACPI_BUFFER_INDEX
+(paren
+id|buffer_length
+comma
+id|buffer_offset
+comma
+id|byte_granularity
+)paren
+suffix:semicolon
+multiline_comment|/* Move the requested number of bytes */
 r_switch
 c_cond
 (paren
@@ -1321,7 +1358,7 @@ op_star
 id|buffer
 )paren
 (braket
-id|offset
+id|index
 )braket
 op_assign
 (paren
@@ -1334,7 +1371,7 @@ suffix:semicolon
 r_case
 id|ACPI_FIELD_WORD_GRANULARITY
 suffix:colon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_64_TO_16
 (paren
 op_amp
 (paren
@@ -1346,7 +1383,7 @@ op_star
 id|buffer
 )paren
 (braket
-id|offset
+id|index
 )braket
 )paren
 comma
@@ -1359,7 +1396,7 @@ suffix:semicolon
 r_case
 id|ACPI_FIELD_DWORD_GRANULARITY
 suffix:colon
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_64_TO_32
 (paren
 op_amp
 (paren
@@ -1371,7 +1408,7 @@ op_star
 id|buffer
 )paren
 (braket
-id|offset
+id|index
 )braket
 )paren
 comma
@@ -1384,7 +1421,7 @@ suffix:semicolon
 r_case
 id|ACPI_FIELD_QWORD_GRANULARITY
 suffix:colon
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 op_amp
 (paren
@@ -1396,7 +1433,7 @@ op_star
 id|buffer
 )paren
 (braket
-id|offset
+id|index
 )braket
 )paren
 comma
@@ -1620,6 +1657,8 @@ id|merged_datum
 comma
 id|buffer
 comma
+id|buffer_length
+comma
 id|obj_desc-&gt;common_field.access_byte_width
 comma
 id|datum_offset
@@ -1777,6 +1816,8 @@ id|merged_datum
 comma
 id|buffer
 comma
+id|buffer_length
+comma
 id|obj_desc-&gt;common_field.access_byte_width
 comma
 id|datum_offset
@@ -1924,6 +1965,8 @@ id|previous_raw_datum
 comma
 id|buffer
 comma
+id|buffer_length
+comma
 id|obj_desc-&gt;common_field.access_byte_width
 comma
 id|datum_offset
@@ -2047,6 +2090,8 @@ op_amp
 id|this_raw_datum
 comma
 id|buffer
+comma
+id|buffer_length
 comma
 id|obj_desc-&gt;common_field.access_byte_width
 comma

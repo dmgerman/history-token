@@ -1728,9 +1728,6 @@ id|acpi_os_write_port
 (paren
 id|acpi_gbl_FADT-&gt;smi_cmd
 comma
-(paren
-id|acpi_integer
-)paren
 id|value
 comma
 l_int|8
@@ -2074,9 +2071,6 @@ id|acpi_os_write_memory
 (paren
 id|mem_address
 comma
-(paren
-id|acpi_integer
-)paren
 id|value
 comma
 id|width
@@ -2107,9 +2101,6 @@ id|acpi_os_write_port
 (paren
 id|io_address
 comma
-(paren
-id|acpi_integer
-)paren
 id|value
 comma
 id|width

@@ -3,15 +3,11 @@ multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rig
 macro_line|#ifndef _ACCONFIG_H
 DECL|macro|_ACCONFIG_H
 mdefine_line|#define _ACCONFIG_H
-multiline_comment|/******************************************************************************&n; *&n; * Compile-time options&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Configuration options&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; * ACPI_DEBUG_OUTPUT    - This switch enables all the debug facilities of the&n; *                        ACPI subsystem.  This includes the DEBUG_PRINT output&n; *                        statements.  When disabled, all DEBUG_PRINT&n; *                        statements are compiled out.&n; *&n; * ACPI_APPLICATION     - Use this switch if the subsystem is going to be run&n; *                        at the application level.&n; *&n; */
-multiline_comment|/******************************************************************************&n; *&n; * Subsystem Constants&n; *&n; *****************************************************************************/
 multiline_comment|/* Version string */
 DECL|macro|ACPI_CA_VERSION
-mdefine_line|#define ACPI_CA_VERSION                 0x20030328
-multiline_comment|/* Version of ACPI supported */
-DECL|macro|ACPI_CA_SUPPORT_LEVEL
-mdefine_line|#define ACPI_CA_SUPPORT_LEVEL           2
+mdefine_line|#define ACPI_CA_VERSION                 0x20030418
 multiline_comment|/* Maximum objects in the various object caches */
 DECL|macro|ACPI_MAX_STATE_CACHE_DEPTH
 mdefine_line|#define ACPI_MAX_STATE_CACHE_DEPTH      64          /* State objects for stacks */
@@ -23,6 +19,13 @@ DECL|macro|ACPI_MAX_OBJECT_CACHE_DEPTH
 mdefine_line|#define ACPI_MAX_OBJECT_CACHE_DEPTH     64          /* Interpreter operand objects */
 DECL|macro|ACPI_MAX_WALK_CACHE_DEPTH
 mdefine_line|#define ACPI_MAX_WALK_CACHE_DEPTH       4           /* Objects for parse tree walks */
+multiline_comment|/*&n; * Should the subystem abort the loading of an ACPI table if the&n; * table checksum is incorrect?&n; */
+DECL|macro|ACPI_CHECKSUM_ABORT
+mdefine_line|#define ACPI_CHECKSUM_ABORT             FALSE
+multiline_comment|/******************************************************************************&n; *&n; * Subsystem Constants&n; *&n; *****************************************************************************/
+multiline_comment|/* Version of ACPI supported */
+DECL|macro|ACPI_CA_SUPPORT_LEVEL
+mdefine_line|#define ACPI_CA_SUPPORT_LEVEL           2
 multiline_comment|/* String size constants */
 DECL|macro|ACPI_MAX_STRING_LENGTH
 mdefine_line|#define ACPI_MAX_STRING_LENGTH          512
@@ -37,10 +40,6 @@ mdefine_line|#define ACPI_MAX_REFERENCE_COUNT        0x400
 multiline_comment|/* Size of cached memory mapping for system memory operation region */
 DECL|macro|ACPI_SYSMEM_REGION_WINDOW_SIZE
 mdefine_line|#define ACPI_SYSMEM_REGION_WINDOW_SIZE  4096
-multiline_comment|/******************************************************************************&n; *&n; * Configuration of subsystem behavior&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Should the subystem abort the loading of an ACPI table if the&n; * table checksum is incorrect?&n; */
-DECL|macro|ACPI_CHECKSUM_ABORT
-mdefine_line|#define ACPI_CHECKSUM_ABORT             FALSE
 multiline_comment|/******************************************************************************&n; *&n; * ACPI Specification constants (Do not change unless the specification changes)&n; *&n; *****************************************************************************/
 multiline_comment|/* Number of distinct GPE register blocks and register width */
 DECL|macro|ACPI_MAX_GPE_BLOCKS

@@ -473,7 +473,7 @@ suffix:semicolon
 op_increment
 id|buffer
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -564,7 +564,7 @@ suffix:semicolon
 op_increment
 id|buffer
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -647,7 +647,7 @@ suffix:semicolon
 op_increment
 id|buffer
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -730,7 +730,7 @@ suffix:semicolon
 op_increment
 id|buffer
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -813,7 +813,7 @@ suffix:semicolon
 op_increment
 id|buffer
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -964,7 +964,7 @@ op_increment
 id|buffer
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Look at the number of bits set&n;&t;&t;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
