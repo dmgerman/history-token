@@ -2,6 +2,393 @@ multiline_comment|/*&n; * AGPGART module version 0.99&n; * Copyright (C) 1999 Je
 macro_line|#ifndef _AGP_BACKEND_PRIV_H
 DECL|macro|_AGP_BACKEND_PRIV_H
 mdefine_line|#define _AGP_BACKEND_PRIV_H 1
+macro_line|#include &lt;asm/agp.h&gt;&t;/* for flush_agp_cache() */
+r_extern
+r_struct
+id|agp_bridge_data
+id|agp_bridge
+suffix:semicolon
+multiline_comment|/* Generic routines. */
+r_void
+id|agp_generic_agp_enable
+c_func
+(paren
+id|u32
+id|mode
+)paren
+suffix:semicolon
+r_int
+id|agp_generic_create_gatt_table
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|agp_generic_free_gatt_table
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|agp_memory
+op_star
+id|agp_create_memory
+c_func
+(paren
+r_int
+id|scratch_pages
+)paren
+suffix:semicolon
+r_int
+id|agp_generic_insert_memory
+c_func
+(paren
+id|agp_memory
+op_star
+id|mem
+comma
+id|off_t
+id|pg_start
+comma
+r_int
+id|type
+)paren
+suffix:semicolon
+r_int
+id|agp_generic_remove_memory
+c_func
+(paren
+id|agp_memory
+op_star
+id|mem
+comma
+id|off_t
+id|pg_start
+comma
+r_int
+id|type
+)paren
+suffix:semicolon
+id|agp_memory
+op_star
+id|agp_generic_alloc_by_type
+c_func
+(paren
+r_int
+id|page_count
+comma
+r_int
+id|type
+)paren
+suffix:semicolon
+r_void
+id|agp_generic_free_by_type
+c_func
+(paren
+id|agp_memory
+op_star
+id|curr
+)paren
+suffix:semicolon
+r_void
+op_star
+id|agp_generic_alloc_page
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|agp_generic_destroy_page
+c_func
+(paren
+r_void
+op_star
+id|addr
+)paren
+suffix:semicolon
+r_int
+id|agp_generic_suspend
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|agp_generic_resume
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|agp_free_key
+c_func
+(paren
+r_int
+id|key
+)paren
+suffix:semicolon
+multiline_comment|/* chipset specific init routines. */
+r_int
+id|__init
+id|ali_generic_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|amd_irongate_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|hp_zx1_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|intel_i460_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|intel_generic_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|intel_i810_setup
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|i810_dev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|intel_815_setup
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|intel_i830_setup
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|i830_dev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|intel_820_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|intel_830mp_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|intel_840_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|intel_845_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|intel_850_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|intel_860_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|serverworks_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|sis_generic_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
+id|via_generic_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+DECL|macro|AGPGART_MODULE_NAME
+mdefine_line|#define AGPGART_MODULE_NAME&t;&quot;agpgart&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX&t;&t;&t;AGPGART_MODULE_NAME &quot;: &quot;
+macro_line|#ifdef CONFIG_SMP
+DECL|function|ipi_handler
+r_static
+r_void
+id|ipi_handler
+c_func
+(paren
+r_void
+op_star
+id|null
+)paren
+(brace
+id|flush_agp_cache
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|global_cache_flush
+r_static
+r_void
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
+id|global_cache_flush
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|smp_call_function
+c_func
+(paren
+id|ipi_handler
+comma
+l_int|NULL
+comma
+l_int|1
+comma
+l_int|1
+)paren
+op_ne
+l_int|0
+)paren
+id|panic
+c_func
+(paren
+id|PFX
+l_string|&quot;timed out waiting for the other CPUs!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|flush_agp_cache
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|function|global_cache_flush
+r_static
+r_void
+id|global_cache_flush
+c_func
+(paren
+r_void
+)paren
+(brace
+id|flush_agp_cache
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* !CONFIG_SMP */
 DECL|enum|aper_size_type
 r_enum
 id|aper_size_type
@@ -22,10 +409,9 @@ DECL|enumerator|FIXED_APER_SIZE
 id|FIXED_APER_SIZE
 )brace
 suffix:semicolon
-DECL|struct|_gatt_mask
-r_typedef
+DECL|struct|gatt_mask
 r_struct
-id|_gatt_mask
+id|gatt_mask
 (brace
 DECL|member|mask
 r_int
@@ -37,14 +423,11 @@ id|u32
 id|type
 suffix:semicolon
 multiline_comment|/* totally device specific, for integrated chipsets that &n;&t; * might have different types of memory masks.  For other&n;&t; * devices this will probably be ignored */
-DECL|typedef|gatt_mask
 )brace
-id|gatt_mask
 suffix:semicolon
-DECL|struct|_aper_size_info_8
-r_typedef
+DECL|struct|aper_size_info_8
 r_struct
-id|_aper_size_info_8
+id|aper_size_info_8
 (brace
 DECL|member|size
 r_int
@@ -62,14 +445,11 @@ DECL|member|size_value
 id|u8
 id|size_value
 suffix:semicolon
-DECL|typedef|aper_size_info_8
 )brace
-id|aper_size_info_8
 suffix:semicolon
-DECL|struct|_aper_size_info_16
-r_typedef
+DECL|struct|aper_size_info_16
 r_struct
-id|_aper_size_info_16
+id|aper_size_info_16
 (brace
 DECL|member|size
 r_int
@@ -87,60 +467,11 @@ DECL|member|size_value
 id|u16
 id|size_value
 suffix:semicolon
-DECL|typedef|aper_size_info_16
 )brace
-id|aper_size_info_16
 suffix:semicolon
-DECL|struct|_aper_size_info_32
-r_typedef
+DECL|struct|aper_size_info_32
 r_struct
-id|_aper_size_info_32
-(brace
-DECL|member|size
-r_int
-id|size
-suffix:semicolon
-DECL|member|num_entries
-r_int
-id|num_entries
-suffix:semicolon
-DECL|member|page_order
-r_int
-id|page_order
-suffix:semicolon
-DECL|member|size_value
-id|u32
-id|size_value
-suffix:semicolon
-DECL|typedef|aper_size_info_32
-)brace
 id|aper_size_info_32
-suffix:semicolon
-DECL|struct|_aper_size_info_lvl2
-r_typedef
-r_struct
-id|_aper_size_info_lvl2
-(brace
-DECL|member|size
-r_int
-id|size
-suffix:semicolon
-DECL|member|num_entries
-r_int
-id|num_entries
-suffix:semicolon
-DECL|member|size_value
-id|u32
-id|size_value
-suffix:semicolon
-DECL|typedef|aper_size_info_lvl2
-)brace
-id|aper_size_info_lvl2
-suffix:semicolon
-DECL|struct|_aper_size_info_fixed
-r_typedef
-r_struct
-id|_aper_size_info_fixed
 (brace
 DECL|member|size
 r_int
@@ -154,15 +485,54 @@ DECL|member|page_order
 r_int
 id|page_order
 suffix:semicolon
-DECL|typedef|aper_size_info_fixed
+DECL|member|size_value
+id|u32
+id|size_value
+suffix:semicolon
 )brace
+suffix:semicolon
+DECL|struct|aper_size_info_lvl2
+r_struct
+id|aper_size_info_lvl2
+(brace
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+DECL|member|num_entries
+r_int
+id|num_entries
+suffix:semicolon
+DECL|member|size_value
+id|u32
+id|size_value
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|aper_size_info_fixed
+r_struct
 id|aper_size_info_fixed
+(brace
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+DECL|member|num_entries
+r_int
+id|num_entries
+suffix:semicolon
+DECL|member|page_order
+r_int
+id|page_order
+suffix:semicolon
+)brace
 suffix:semicolon
 DECL|struct|agp_bridge_data
 r_struct
 id|agp_bridge_data
 (brace
 DECL|member|version
+r_struct
 id|agp_version
 op_star
 id|version
@@ -194,6 +564,7 @@ op_star
 id|dev
 suffix:semicolon
 DECL|member|masks
+r_struct
 id|gatt_mask
 op_star
 id|masks
@@ -477,39 +848,39 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|OUTREG64
-mdefine_line|#define OUTREG64(mmap, addr, val)   __raw_writeq((val), (mmap)+(addr))
+mdefine_line|#define OUTREG64(mmap, addr, val)&t;__raw_writeq((val), (mmap)+(addr))
 DECL|macro|OUTREG32
-mdefine_line|#define OUTREG32(mmap, addr, val)   __raw_writel((val), (mmap)+(addr))
+mdefine_line|#define OUTREG32(mmap, addr, val)&t;__raw_writel((val), (mmap)+(addr))
 DECL|macro|OUTREG16
-mdefine_line|#define OUTREG16(mmap, addr, val)   __raw_writew((val), (mmap)+(addr))
+mdefine_line|#define OUTREG16(mmap, addr, val)&t;__raw_writew((val), (mmap)+(addr))
 DECL|macro|OUTREG8
-mdefine_line|#define OUTREG8(mmap, addr, val)   __raw_writeb((val), (mmap)+(addr))
+mdefine_line|#define OUTREG8(mmap, addr, val)&t;__raw_writeb((val), (mmap)+(addr))
 DECL|macro|INREG64
-mdefine_line|#define INREG64(mmap, addr)         __raw_readq((mmap)+(addr))
+mdefine_line|#define INREG64(mmap, addr)&t;&t;__raw_readq((mmap)+(addr))
 DECL|macro|INREG32
-mdefine_line|#define INREG32(mmap, addr)         __raw_readl((mmap)+(addr))
+mdefine_line|#define INREG32(mmap, addr)&t;&t;__raw_readl((mmap)+(addr))
 DECL|macro|INREG16
-mdefine_line|#define INREG16(mmap, addr)         __raw_readw((mmap)+(addr))
+mdefine_line|#define INREG16(mmap, addr)&t;&t;__raw_readw((mmap)+(addr))
 DECL|macro|INREG8
-mdefine_line|#define INREG8(mmap, addr)         __raw_readb((mmap)+(addr))
+mdefine_line|#define INREG8(mmap, addr)&t;&t;__raw_readb((mmap)+(addr))
 DECL|macro|KB
-mdefine_line|#define KB(x) ((x) * 1024)
+mdefine_line|#define KB(x)&t;((x) * 1024)
 DECL|macro|MB
-mdefine_line|#define MB(x) (KB (KB (x)))
+mdefine_line|#define MB(x)&t;(KB (KB (x)))
 DECL|macro|GB
-mdefine_line|#define GB(x) (MB (KB (x)))
+mdefine_line|#define GB(x)&t;(MB (KB (x)))
 DECL|macro|CACHE_FLUSH
 mdefine_line|#define CACHE_FLUSH&t;agp_bridge.cache_flush
 DECL|macro|A_SIZE_8
-mdefine_line|#define A_SIZE_8(x)&t;((aper_size_info_8 *) x)
+mdefine_line|#define A_SIZE_8(x)&t;((struct aper_size_info_8 *) x)
 DECL|macro|A_SIZE_16
-mdefine_line|#define A_SIZE_16(x)&t;((aper_size_info_16 *) x)
+mdefine_line|#define A_SIZE_16(x)&t;((struct aper_size_info_16 *) x)
 DECL|macro|A_SIZE_32
-mdefine_line|#define A_SIZE_32(x)&t;((aper_size_info_32 *) x)
+mdefine_line|#define A_SIZE_32(x)&t;((struct aper_size_info_32 *) x)
 DECL|macro|A_SIZE_LVL2
-mdefine_line|#define A_SIZE_LVL2(x)  ((aper_size_info_lvl2 *) x)
+mdefine_line|#define A_SIZE_LVL2(x)&t;((struct aper_size_info_lvl2 *) x)
 DECL|macro|A_SIZE_FIX
-mdefine_line|#define A_SIZE_FIX(x)&t;((aper_size_info_fixed *) x)
+mdefine_line|#define A_SIZE_FIX(x)&t;((struct aper_size_info_fixed *) x)
 DECL|macro|A_IDX8
 mdefine_line|#define A_IDX8()&t;(A_SIZE_8(agp_bridge.aperture_sizes) + i)
 DECL|macro|A_IDX16
@@ -522,31 +893,27 @@ DECL|macro|A_IDXFIX
 mdefine_line|#define A_IDXFIX()&t;(A_SIZE_FIX(agp_bridge.aperture_sizes) + i)
 DECL|macro|MAXKEY
 mdefine_line|#define MAXKEY&t;&t;(4096 * 32)
-DECL|macro|AGPGART_MODULE_NAME
-mdefine_line|#define AGPGART_MODULE_NAME&t;&quot;agpgart&quot;
-DECL|macro|PFX
-mdefine_line|#define PFX&t;&t;&t;AGPGART_MODULE_NAME &quot;: &quot;
 DECL|macro|PGE_EMPTY
-mdefine_line|#define PGE_EMPTY(p) (!(p) || (p) == (unsigned long) agp_bridge.scratch_page)
+mdefine_line|#define PGE_EMPTY(p)&t;(!(p) || (p) == (unsigned long) agp_bridge.scratch_page)
 macro_line|#ifndef PCI_DEVICE_ID_VIA_82C691_0
 DECL|macro|PCI_DEVICE_ID_VIA_82C691_0
-mdefine_line|#define PCI_DEVICE_ID_VIA_82C691_0      0x0691
+mdefine_line|#define PCI_DEVICE_ID_VIA_82C691_0&t;0x0691
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_VIA_8371_0
 DECL|macro|PCI_DEVICE_ID_VIA_8371_0
-mdefine_line|#define PCI_DEVICE_ID_VIA_8371_0      0x0391
+mdefine_line|#define PCI_DEVICE_ID_VIA_8371_0&t;0x0391
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_VIA_8363_0
 DECL|macro|PCI_DEVICE_ID_VIA_8363_0
-mdefine_line|#define PCI_DEVICE_ID_VIA_8363_0      0x0305
+mdefine_line|#define PCI_DEVICE_ID_VIA_8363_0&t;0x0305
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_VIA_82C694X_0
 DECL|macro|PCI_DEVICE_ID_VIA_82C694X_0
-mdefine_line|#define PCI_DEVICE_ID_VIA_82C694X_0      0x0605
+mdefine_line|#define PCI_DEVICE_ID_VIA_82C694X_0&t;0x0605
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_810_0
 DECL|macro|PCI_DEVICE_ID_INTEL_810_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_810_0       0x7120
+mdefine_line|#define PCI_DEVICE_ID_INTEL_810_0&t;0x7120
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_845_G_0
 DECL|macro|PCI_DEVICE_ID_INTEL_845_G_0
@@ -554,7 +921,7 @@ mdefine_line|#define PCI_DEVICE_ID_INTEL_845_G_0&t;0x2560
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_845_G_1
 DECL|macro|PCI_DEVICE_ID_INTEL_845_G_1
-mdefine_line|#define PCI_DEVICE_ID_INTEL_845_G_1     0x2562
+mdefine_line|#define PCI_DEVICE_ID_INTEL_845_G_1&t;0x2562
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_830_M_0
 DECL|macro|PCI_DEVICE_ID_INTEL_830_M_0
@@ -562,79 +929,79 @@ mdefine_line|#define PCI_DEVICE_ID_INTEL_830_M_0&t;0x3575
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_830_M_1
 DECL|macro|PCI_DEVICE_ID_INTEL_830_M_1
-mdefine_line|#define PCI_DEVICE_ID_INTEL_830_M_1     0x3577
+mdefine_line|#define PCI_DEVICE_ID_INTEL_830_M_1&t;0x3577
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_820_0
 DECL|macro|PCI_DEVICE_ID_INTEL_820_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_820_0       0x2500
+mdefine_line|#define PCI_DEVICE_ID_INTEL_820_0&t;0x2500
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_820_UP_0
 DECL|macro|PCI_DEVICE_ID_INTEL_820_UP_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_820_UP_0    0x2501
+mdefine_line|#define PCI_DEVICE_ID_INTEL_820_UP_0&t;0x2501
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_840_0
 DECL|macro|PCI_DEVICE_ID_INTEL_840_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_840_0&t;&t;0x1a21
+mdefine_line|#define PCI_DEVICE_ID_INTEL_840_0&t;0x1a21
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_845_0
 DECL|macro|PCI_DEVICE_ID_INTEL_845_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_845_0     0x1a30
+mdefine_line|#define PCI_DEVICE_ID_INTEL_845_0&t;0x1a30
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_850_0
 DECL|macro|PCI_DEVICE_ID_INTEL_850_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_850_0     0x2530
+mdefine_line|#define PCI_DEVICE_ID_INTEL_850_0&t;0x2530
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_860_0
 DECL|macro|PCI_DEVICE_ID_INTEL_860_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_860_0     0x2531
+mdefine_line|#define PCI_DEVICE_ID_INTEL_860_0&t;0x2531
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_810_DC100_0
 DECL|macro|PCI_DEVICE_ID_INTEL_810_DC100_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_810_DC100_0 0x7122
+mdefine_line|#define PCI_DEVICE_ID_INTEL_810_DC100_0&t;0x7122
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_810_E_0
 DECL|macro|PCI_DEVICE_ID_INTEL_810_E_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_810_E_0     0x7124
+mdefine_line|#define PCI_DEVICE_ID_INTEL_810_E_0&t;0x7124
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_82443GX_0
 DECL|macro|PCI_DEVICE_ID_INTEL_82443GX_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82443GX_0   0x71a0
+mdefine_line|#define PCI_DEVICE_ID_INTEL_82443GX_0&t;0x71a0
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_810_1
 DECL|macro|PCI_DEVICE_ID_INTEL_810_1
-mdefine_line|#define PCI_DEVICE_ID_INTEL_810_1       0x7121
+mdefine_line|#define PCI_DEVICE_ID_INTEL_810_1&t;0x7121
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_810_DC100_1
 DECL|macro|PCI_DEVICE_ID_INTEL_810_DC100_1
-mdefine_line|#define PCI_DEVICE_ID_INTEL_810_DC100_1 0x7123
+mdefine_line|#define PCI_DEVICE_ID_INTEL_810_DC100_1&t;0x7123
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_810_E_1
 DECL|macro|PCI_DEVICE_ID_INTEL_810_E_1
-mdefine_line|#define PCI_DEVICE_ID_INTEL_810_E_1     0x7125
+mdefine_line|#define PCI_DEVICE_ID_INTEL_810_E_1&t;0x7125
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_815_0
 DECL|macro|PCI_DEVICE_ID_INTEL_815_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_815_0       0x1130
+mdefine_line|#define PCI_DEVICE_ID_INTEL_815_0&t;0x1130
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_815_1
 DECL|macro|PCI_DEVICE_ID_INTEL_815_1
-mdefine_line|#define PCI_DEVICE_ID_INTEL_815_1       0x1132
+mdefine_line|#define PCI_DEVICE_ID_INTEL_815_1&t;0x1132
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_82443GX_1
 DECL|macro|PCI_DEVICE_ID_INTEL_82443GX_1
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82443GX_1   0x71a1
+mdefine_line|#define PCI_DEVICE_ID_INTEL_82443GX_1&t;0x71a1
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_460GX
 DECL|macro|PCI_DEVICE_ID_INTEL_460GX
-mdefine_line|#define PCI_DEVICE_ID_INTEL_460GX&t; 0x84ea
+mdefine_line|#define PCI_DEVICE_ID_INTEL_460GX&t;0x84ea
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_AMD_IRONGATE_0
 DECL|macro|PCI_DEVICE_ID_AMD_IRONGATE_0
-mdefine_line|#define PCI_DEVICE_ID_AMD_IRONGATE_0    0x7006
+mdefine_line|#define PCI_DEVICE_ID_AMD_IRONGATE_0&t;0x7006
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_AMD_761_0
 DECL|macro|PCI_DEVICE_ID_AMD_761_0
-mdefine_line|#define PCI_DEVICE_ID_AMD_761_0         0x700e
+mdefine_line|#define PCI_DEVICE_ID_AMD_761_0&t;&t;0x700e
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_AMD_762_0
 DECL|macro|PCI_DEVICE_ID_AMD_762_0
@@ -678,17 +1045,17 @@ mdefine_line|#define PCI_DEVICE_ID_AL_M1651_0&t;0x1651
 macro_line|#endif
 multiline_comment|/* intel register */
 DECL|macro|INTEL_APBASE
-mdefine_line|#define INTEL_APBASE    0x10
+mdefine_line|#define INTEL_APBASE&t;0x10
 DECL|macro|INTEL_APSIZE
-mdefine_line|#define INTEL_APSIZE    0xb4
+mdefine_line|#define INTEL_APSIZE&t;0xb4
 DECL|macro|INTEL_ATTBASE
-mdefine_line|#define INTEL_ATTBASE   0xb8
+mdefine_line|#define INTEL_ATTBASE&t;0xb8
 DECL|macro|INTEL_AGPCTRL
-mdefine_line|#define INTEL_AGPCTRL   0xb0
+mdefine_line|#define INTEL_AGPCTRL&t;0xb0
 DECL|macro|INTEL_NBXCFG
-mdefine_line|#define INTEL_NBXCFG    0x50
+mdefine_line|#define INTEL_NBXCFG&t;0x50
 DECL|macro|INTEL_ERRSTS
-mdefine_line|#define INTEL_ERRSTS    0x91
+mdefine_line|#define INTEL_ERRSTS&t;0x91
 multiline_comment|/* Intel 460GX Registers */
 DECL|macro|INTEL_I460_APBASE
 mdefine_line|#define INTEL_I460_APBASE&t;&t;0x10
@@ -706,56 +1073,61 @@ DECL|macro|INTEL_I460_GATT_COHERENT
 mdefine_line|#define INTEL_I460_GATT_COHERENT&t;(1UL &lt;&lt; 25)
 multiline_comment|/* intel i830 registers */
 DECL|macro|I830_GMCH_CTRL
-mdefine_line|#define I830_GMCH_CTRL             0x52
+mdefine_line|#define I830_GMCH_CTRL&t;&t;&t;0x52
 DECL|macro|I830_GMCH_ENABLED
-mdefine_line|#define I830_GMCH_ENABLED          0x4
+mdefine_line|#define I830_GMCH_ENABLED&t;&t;0x4
 DECL|macro|I830_GMCH_MEM_MASK
-mdefine_line|#define I830_GMCH_MEM_MASK         0x1
+mdefine_line|#define I830_GMCH_MEM_MASK&t;&t;0x1
 DECL|macro|I830_GMCH_MEM_64M
-mdefine_line|#define I830_GMCH_MEM_64M          0x1
+mdefine_line|#define I830_GMCH_MEM_64M&t;&t;0x1
 DECL|macro|I830_GMCH_MEM_128M
-mdefine_line|#define I830_GMCH_MEM_128M         0
+mdefine_line|#define I830_GMCH_MEM_128M&t;&t;0
 DECL|macro|I830_GMCH_GMS_MASK
-mdefine_line|#define I830_GMCH_GMS_MASK         0x70
+mdefine_line|#define I830_GMCH_GMS_MASK&t;&t;0x70
 DECL|macro|I830_GMCH_GMS_DISABLED
-mdefine_line|#define I830_GMCH_GMS_DISABLED     0x00
+mdefine_line|#define I830_GMCH_GMS_DISABLED&t;&t;0x00
 DECL|macro|I830_GMCH_GMS_LOCAL
-mdefine_line|#define I830_GMCH_GMS_LOCAL        0x10
+mdefine_line|#define I830_GMCH_GMS_LOCAL&t;&t;0x10
 DECL|macro|I830_GMCH_GMS_STOLEN_512
-mdefine_line|#define I830_GMCH_GMS_STOLEN_512   0x20
+mdefine_line|#define I830_GMCH_GMS_STOLEN_512&t;0x20
 DECL|macro|I830_GMCH_GMS_STOLEN_1024
-mdefine_line|#define I830_GMCH_GMS_STOLEN_1024  0x30
+mdefine_line|#define I830_GMCH_GMS_STOLEN_1024&t;0x30
 DECL|macro|I830_GMCH_GMS_STOLEN_8192
-mdefine_line|#define I830_GMCH_GMS_STOLEN_8192  0x40
+mdefine_line|#define I830_GMCH_GMS_STOLEN_8192&t;0x40
 DECL|macro|I830_RDRAM_CHANNEL_TYPE
-mdefine_line|#define I830_RDRAM_CHANNEL_TYPE    0x03010
+mdefine_line|#define I830_RDRAM_CHANNEL_TYPE&t;&t;0x03010
 DECL|macro|I830_RDRAM_ND
-mdefine_line|#define I830_RDRAM_ND(x)           (((x) &amp; 0x20) &gt;&gt; 5)
+mdefine_line|#define I830_RDRAM_ND(x)&t;&t;(((x) &amp; 0x20) &gt;&gt; 5)
 DECL|macro|I830_RDRAM_DDT
-mdefine_line|#define I830_RDRAM_DDT(x)          (((x) &amp; 0x18) &gt;&gt; 3)
+mdefine_line|#define I830_RDRAM_DDT(x)&t;&t;(((x) &amp; 0x18) &gt;&gt; 3)
 multiline_comment|/* This one is for I830MP w. an external graphic card */
 DECL|macro|INTEL_I830_ERRSTS
-mdefine_line|#define INTEL_I830_ERRSTS          0x92
+mdefine_line|#define INTEL_I830_ERRSTS&t;0x92
+multiline_comment|/* intel 815 register */
+DECL|macro|INTEL_815_APCONT
+mdefine_line|#define INTEL_815_APCONT&t;0x51
+DECL|macro|INTEL_815_ATTBASE_MASK
+mdefine_line|#define INTEL_815_ATTBASE_MASK&t;~0x1FFFFFFF
 multiline_comment|/* intel i820 registers */
 DECL|macro|INTEL_I820_RDCR
-mdefine_line|#define INTEL_I820_RDCR     0x51
+mdefine_line|#define INTEL_I820_RDCR&t;&t;0x51
 DECL|macro|INTEL_I820_ERRSTS
-mdefine_line|#define INTEL_I820_ERRSTS   0xc8
+mdefine_line|#define INTEL_I820_ERRSTS&t;0xc8
 multiline_comment|/* intel i840 registers */
 DECL|macro|INTEL_I840_MCHCFG
-mdefine_line|#define INTEL_I840_MCHCFG   0x50
+mdefine_line|#define INTEL_I840_MCHCFG&t;0x50
 DECL|macro|INTEL_I840_ERRSTS
-mdefine_line|#define INTEL_I840_ERRSTS   0xc8
+mdefine_line|#define INTEL_I840_ERRSTS&t;0xc8
 multiline_comment|/* intel i845 registers */
 DECL|macro|INTEL_I845_AGPM
-mdefine_line|#define INTEL_I845_AGPM     0x51
+mdefine_line|#define INTEL_I845_AGPM&t;&t;0x51
 DECL|macro|INTEL_I845_ERRSTS
-mdefine_line|#define INTEL_I845_ERRSTS   0xc8
+mdefine_line|#define INTEL_I845_ERRSTS&t;0xc8
 multiline_comment|/* intel i850 registers */
 DECL|macro|INTEL_I850_MCHCFG
-mdefine_line|#define INTEL_I850_MCHCFG   0x50
+mdefine_line|#define INTEL_I850_MCHCFG&t;0x50
 DECL|macro|INTEL_I850_ERRSTS
-mdefine_line|#define INTEL_I850_ERRSTS   0xc8
+mdefine_line|#define INTEL_I850_ERRSTS&t;0xc8
 multiline_comment|/* intel i860 registers */
 DECL|macro|INTEL_I860_MCHCFG
 mdefine_line|#define INTEL_I860_MCHCFG&t;0x50
@@ -763,120 +1135,120 @@ DECL|macro|INTEL_I860_ERRSTS
 mdefine_line|#define INTEL_I860_ERRSTS&t;0xc8
 multiline_comment|/* intel i810 registers */
 DECL|macro|I810_GMADDR
-mdefine_line|#define I810_GMADDR 0x10
+mdefine_line|#define I810_GMADDR&t;&t;0x10
 DECL|macro|I810_MMADDR
-mdefine_line|#define I810_MMADDR 0x14
+mdefine_line|#define I810_MMADDR&t;&t;0x14
 DECL|macro|I810_PTE_BASE
-mdefine_line|#define I810_PTE_BASE          0x10000
+mdefine_line|#define I810_PTE_BASE&t;&t;0x10000
 DECL|macro|I810_PTE_MAIN_UNCACHED
-mdefine_line|#define I810_PTE_MAIN_UNCACHED 0x00000000
+mdefine_line|#define I810_PTE_MAIN_UNCACHED&t;0x00000000
 DECL|macro|I810_PTE_LOCAL
-mdefine_line|#define I810_PTE_LOCAL         0x00000002
+mdefine_line|#define I810_PTE_LOCAL&t;&t;0x00000002
 DECL|macro|I810_PTE_VALID
-mdefine_line|#define I810_PTE_VALID         0x00000001
+mdefine_line|#define I810_PTE_VALID&t;&t;0x00000001
 DECL|macro|I810_SMRAM_MISCC
-mdefine_line|#define I810_SMRAM_MISCC       0x70
+mdefine_line|#define I810_SMRAM_MISCC&t;0x70
 DECL|macro|I810_GFX_MEM_WIN_SIZE
-mdefine_line|#define I810_GFX_MEM_WIN_SIZE  0x00010000
+mdefine_line|#define I810_GFX_MEM_WIN_SIZE&t;0x00010000
 DECL|macro|I810_GFX_MEM_WIN_32M
-mdefine_line|#define I810_GFX_MEM_WIN_32M   0x00010000
+mdefine_line|#define I810_GFX_MEM_WIN_32M&t;0x00010000
 DECL|macro|I810_GMS
-mdefine_line|#define I810_GMS               0x000000c0
+mdefine_line|#define I810_GMS&t;&t;0x000000c0
 DECL|macro|I810_GMS_DISABLE
-mdefine_line|#define I810_GMS_DISABLE       0x00000000
+mdefine_line|#define I810_GMS_DISABLE&t;0x00000000
 DECL|macro|I810_PGETBL_CTL
-mdefine_line|#define I810_PGETBL_CTL        0x2020
+mdefine_line|#define I810_PGETBL_CTL&t;&t;0x2020
 DECL|macro|I810_PGETBL_ENABLED
-mdefine_line|#define I810_PGETBL_ENABLED    0x00000001
+mdefine_line|#define I810_PGETBL_ENABLED&t;0x00000001
 DECL|macro|I810_DRAM_CTL
-mdefine_line|#define I810_DRAM_CTL          0x3000
+mdefine_line|#define I810_DRAM_CTL&t;&t;0x3000
 DECL|macro|I810_DRAM_ROW_0
-mdefine_line|#define I810_DRAM_ROW_0        0x00000001
+mdefine_line|#define I810_DRAM_ROW_0&t;&t;0x00000001
 DECL|macro|I810_DRAM_ROW_0_SDRAM
-mdefine_line|#define I810_DRAM_ROW_0_SDRAM  0x00000001
+mdefine_line|#define I810_DRAM_ROW_0_SDRAM&t;0x00000001
 multiline_comment|/* VIA register */
 DECL|macro|VIA_APBASE
-mdefine_line|#define VIA_APBASE      0x10
+mdefine_line|#define VIA_APBASE&t;0x10
 DECL|macro|VIA_GARTCTRL
-mdefine_line|#define VIA_GARTCTRL    0x80
+mdefine_line|#define VIA_GARTCTRL&t;0x80
 DECL|macro|VIA_APSIZE
-mdefine_line|#define VIA_APSIZE      0x84
+mdefine_line|#define VIA_APSIZE&t;0x84
 DECL|macro|VIA_ATTBASE
-mdefine_line|#define VIA_ATTBASE     0x88
+mdefine_line|#define VIA_ATTBASE&t;0x88
 multiline_comment|/* SiS registers */
 DECL|macro|SIS_APBASE
-mdefine_line|#define SIS_APBASE      0x10
+mdefine_line|#define SIS_APBASE&t;0x10
 DECL|macro|SIS_ATTBASE
-mdefine_line|#define SIS_ATTBASE     0x90
+mdefine_line|#define SIS_ATTBASE&t;0x90
 DECL|macro|SIS_APSIZE
-mdefine_line|#define SIS_APSIZE      0x94
+mdefine_line|#define SIS_APSIZE&t;0x94
 DECL|macro|SIS_TLBCNTRL
-mdefine_line|#define SIS_TLBCNTRL    0x97
+mdefine_line|#define SIS_TLBCNTRL&t;0x97
 DECL|macro|SIS_TLBFLUSH
-mdefine_line|#define SIS_TLBFLUSH    0x98
+mdefine_line|#define SIS_TLBFLUSH&t;0x98
 multiline_comment|/* AMD registers */
 DECL|macro|AMD_APBASE
-mdefine_line|#define AMD_APBASE      0x10
+mdefine_line|#define AMD_APBASE&t;0x10
 DECL|macro|AMD_MMBASE
-mdefine_line|#define AMD_MMBASE      0x14
+mdefine_line|#define AMD_MMBASE&t;0x14
 DECL|macro|AMD_APSIZE
-mdefine_line|#define AMD_APSIZE      0xac
+mdefine_line|#define AMD_APSIZE&t;0xac
 DECL|macro|AMD_MODECNTL
-mdefine_line|#define AMD_MODECNTL    0xb0
+mdefine_line|#define AMD_MODECNTL&t;0xb0
 DECL|macro|AMD_MODECNTL2
-mdefine_line|#define AMD_MODECNTL2   0xb2
+mdefine_line|#define AMD_MODECNTL2&t;0xb2
 DECL|macro|AMD_GARTENABLE
-mdefine_line|#define AMD_GARTENABLE  0x02&t;/* In mmio region (16-bit register) */
+mdefine_line|#define AMD_GARTENABLE&t;0x02&t;/* In mmio region (16-bit register) */
 DECL|macro|AMD_ATTBASE
-mdefine_line|#define AMD_ATTBASE     0x04&t;/* In mmio region (32-bit register) */
+mdefine_line|#define AMD_ATTBASE&t;0x04&t;/* In mmio region (32-bit register) */
 DECL|macro|AMD_TLBFLUSH
-mdefine_line|#define AMD_TLBFLUSH    0x0c&t;/* In mmio region (32-bit register) */
+mdefine_line|#define AMD_TLBFLUSH&t;0x0c&t;/* In mmio region (32-bit register) */
 DECL|macro|AMD_CACHEENTRY
-mdefine_line|#define AMD_CACHEENTRY  0x10&t;/* In mmio region (32-bit register) */
+mdefine_line|#define AMD_CACHEENTRY&t;0x10&t;/* In mmio region (32-bit register) */
 multiline_comment|/* ALi registers */
 DECL|macro|ALI_APBASE
-mdefine_line|#define ALI_APBASE&t;0x10
+mdefine_line|#define ALI_APBASE&t;&t;&t;0x10
 DECL|macro|ALI_AGPCTRL
-mdefine_line|#define ALI_AGPCTRL&t;0xb8
+mdefine_line|#define ALI_AGPCTRL&t;&t;&t;0xb8
 DECL|macro|ALI_ATTBASE
-mdefine_line|#define ALI_ATTBASE&t;0xbc
+mdefine_line|#define ALI_ATTBASE&t;&t;&t;0xbc
 DECL|macro|ALI_TLBCTRL
-mdefine_line|#define ALI_TLBCTRL&t;0xc0
+mdefine_line|#define ALI_TLBCTRL&t;&t;&t;0xc0
 DECL|macro|ALI_TAGCTRL
-mdefine_line|#define ALI_TAGCTRL&t;0xc4
+mdefine_line|#define ALI_TAGCTRL&t;&t;&t;0xc4
 DECL|macro|ALI_CACHE_FLUSH_CTRL
-mdefine_line|#define ALI_CACHE_FLUSH_CTRL&t;0xD0
+mdefine_line|#define ALI_CACHE_FLUSH_CTRL&t;&t;0xD0
 DECL|macro|ALI_CACHE_FLUSH_ADDR_MASK
 mdefine_line|#define ALI_CACHE_FLUSH_ADDR_MASK&t;0xFFFFF000
 DECL|macro|ALI_CACHE_FLUSH_EN
-mdefine_line|#define ALI_CACHE_FLUSH_EN&t;0x100
+mdefine_line|#define ALI_CACHE_FLUSH_EN&t;&t;0x100
 multiline_comment|/* Serverworks Registers */
 DECL|macro|SVWRKS_APSIZE
-mdefine_line|#define SVWRKS_APSIZE 0x10
+mdefine_line|#define SVWRKS_APSIZE&t;&t;0x10
 DECL|macro|SVWRKS_SIZE_MASK
-mdefine_line|#define SVWRKS_SIZE_MASK 0xfe000000
+mdefine_line|#define SVWRKS_SIZE_MASK&t;0xfe000000
 DECL|macro|SVWRKS_MMBASE
-mdefine_line|#define SVWRKS_MMBASE 0x14
+mdefine_line|#define SVWRKS_MMBASE&t;&t;0x14
 DECL|macro|SVWRKS_CACHING
-mdefine_line|#define SVWRKS_CACHING 0x4b
+mdefine_line|#define SVWRKS_CACHING&t;&t;0x4b
 DECL|macro|SVWRKS_FEATURE
-mdefine_line|#define SVWRKS_FEATURE 0x68
+mdefine_line|#define SVWRKS_FEATURE&t;&t;0x68
 multiline_comment|/* func 1 registers */
 DECL|macro|SVWRKS_AGP_ENABLE
-mdefine_line|#define SVWRKS_AGP_ENABLE 0x60
+mdefine_line|#define SVWRKS_AGP_ENABLE&t;0x60
 DECL|macro|SVWRKS_COMMAND
-mdefine_line|#define SVWRKS_COMMAND 0x04
+mdefine_line|#define SVWRKS_COMMAND&t;&t;0x04
 multiline_comment|/* Memory mapped registers */
 DECL|macro|SVWRKS_GART_CACHE
-mdefine_line|#define SVWRKS_GART_CACHE 0x02
+mdefine_line|#define SVWRKS_GART_CACHE&t;0x02
 DECL|macro|SVWRKS_GATTBASE
-mdefine_line|#define SVWRKS_GATTBASE   0x04
+mdefine_line|#define SVWRKS_GATTBASE&t;&t;0x04
 DECL|macro|SVWRKS_TLBFLUSH
-mdefine_line|#define SVWRKS_TLBFLUSH   0x10
+mdefine_line|#define SVWRKS_TLBFLUSH&t;&t;0x10
 DECL|macro|SVWRKS_POSTFLUSH
-mdefine_line|#define SVWRKS_POSTFLUSH  0x14
+mdefine_line|#define SVWRKS_POSTFLUSH&t;0x14
 DECL|macro|SVWRKS_DIRFLUSH
-mdefine_line|#define SVWRKS_DIRFLUSH   0x0c
+mdefine_line|#define SVWRKS_DIRFLUSH&t;&t;0x0c
 multiline_comment|/* HP ZX1 SBA registers */
 DECL|macro|HP_ZX1_CTRL
 mdefine_line|#define HP_ZX1_CTRL&t;&t;0x200
