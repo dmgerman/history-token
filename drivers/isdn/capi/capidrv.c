@@ -334,9 +334,10 @@ DECL|struct|capidrv_data
 r_struct
 id|capidrv_data
 (brace
-DECL|member|appid
-id|u16
-id|appid
+DECL|member|ap
+r_struct
+id|capi20_appl
+id|ap
 suffix:semicolon
 DECL|member|ncontr
 r_int
@@ -2394,7 +2395,7 @@ suffix:semicolon
 id|capi20_put_message
 c_func
 (paren
-id|global.appid
+id|global.ap.applid
 comma
 id|skb
 )paren
@@ -3206,7 +3207,7 @@ c_func
 op_amp
 id|cmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -4617,7 +4618,7 @@ c_func
 (paren
 id|cmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -5266,7 +5267,7 @@ c_func
 (paren
 id|cmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -5809,7 +5810,7 @@ c_func
 (paren
 id|cmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -5882,7 +5883,7 @@ c_func
 (paren
 id|cmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -6557,7 +6558,7 @@ c_loop
 id|capi20_get_message
 c_func
 (paren
-id|global.appid
+id|global.ap.applid
 comma
 op_amp
 id|skb
@@ -8017,7 +8018,7 @@ c_func
 op_amp
 id|cmdcmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -8237,7 +8238,7 @@ c_func
 op_amp
 id|cmdcmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -8437,7 +8438,7 @@ c_func
 op_amp
 id|cmdcmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -8512,7 +8513,7 @@ c_func
 op_amp
 id|cmdcmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -9162,7 +9163,7 @@ c_func
 op_amp
 id|sendcmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -9321,7 +9322,7 @@ op_assign
 id|capi20_put_message
 c_func
 (paren
-id|global.appid
+id|global.ap.applid
 comma
 id|nskb
 )paren
@@ -9402,7 +9403,7 @@ op_assign
 id|capi20_put_message
 c_func
 (paren
-id|global.appid
+id|global.ap.applid
 comma
 id|skb
 )paren
@@ -9796,7 +9797,7 @@ c_func
 op_amp
 id|cmdcmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -9836,7 +9837,7 @@ c_func
 op_amp
 id|cmdcmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -9886,7 +9887,7 @@ c_func
 op_amp
 id|cmdcmsg
 comma
-id|global.appid
+id|global.ap.applid
 comma
 id|card-&gt;msgid
 op_increment
@@ -11287,10 +11288,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|capi_register_params
-id|rparam
-suffix:semicolon
 id|capi_profile
 id|profile
 suffix:semicolon
@@ -11404,17 +11401,17 @@ comma
 l_string|&quot;1.0&quot;
 )paren
 suffix:semicolon
-id|rparam.level3cnt
+id|global.ap.rparam.level3cnt
 op_assign
 op_minus
 l_int|2
 suffix:semicolon
 multiline_comment|/* number of bchannels twice */
-id|rparam.datablkcnt
+id|global.ap.rparam.datablkcnt
 op_assign
 l_int|16
 suffix:semicolon
-id|rparam.datablklen
+id|global.ap.rparam.datablklen
 op_assign
 l_int|2048
 suffix:semicolon
@@ -11424,10 +11421,7 @@ id|capi20_register
 c_func
 (paren
 op_amp
-id|rparam
-comma
-op_amp
-id|global.appid
+id|global.ap
 )paren
 suffix:semicolon
 r_if
@@ -11446,7 +11440,7 @@ suffix:semicolon
 id|capi20_set_callback
 c_func
 (paren
-id|global.appid
+id|global.ap.applid
 comma
 id|lower_callback
 )paren
@@ -11473,7 +11467,8 @@ id|CAPI_NOERROR
 id|capi20_release
 c_func
 (paren
-id|global.appid
+op_amp
+id|global.ap
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
@@ -11486,7 +11481,7 @@ suffix:semicolon
 id|capi20_set_signal
 c_func
 (paren
-id|global.appid
+id|global.ap.applid
 comma
 id|capidrv_signal
 comma
@@ -11643,7 +11638,8 @@ suffix:semicolon
 id|capi20_release
 c_func
 (paren
-id|global.appid
+op_amp
+id|global.ap
 )paren
 suffix:semicolon
 id|proc_exit
