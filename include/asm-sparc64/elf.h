@@ -88,7 +88,7 @@ DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM&t;(NULL)
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;if ((ex).e_ident[EI_CLASS] == ELFCLASS32)&t;&bslash;&n;&t;&t;set_thread_flag(TIF_32BIT);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;clear_thread_flag(TIF_32BIT);&t;&t;&bslash;&n;&t;/* flush_thread will update pgd cache */&t;&bslash;&n;&t;if (ibcs2)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_personality(PER_SVR4);&t;&t;&bslash;&n;&t;else if (current-&gt;personality != PER_LINUX32)&t;&bslash;&n;&t;&t;set_personality(PER_LINUX);&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;unsigned long new_flags = current_thread_info()-&gt;flags; &bslash;&n;&t;new_flags &amp;= _TIF_32BIT;&t;&t;&t;&bslash;&n;&t;if ((ex).e_ident[EI_CLASS] == ELFCLASS32)&t;&bslash;&n;&t;&t;new_flags |= _TIF_32BIT;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;new_flags &amp;= ~_TIF_32BIT;&t;&t;&bslash;&n;&t;if ((current_thread_info()-&gt;flags &amp; _TIF_32BIT) &bslash;&n;&t;    != new_flags)&t;&t;&t;&t;&bslash;&n;&t;&t;set_thread_flag(TIF_ABI_PENDING);&t;&bslash;&n;&t;/* flush_thread will update pgd cache */&t;&bslash;&n;&t;if (ibcs2)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_personality(PER_SVR4);&t;&t;&bslash;&n;&t;else if (current-&gt;personality != PER_LINUX32)&t;&bslash;&n;&t;&t;set_personality(PER_LINUX);&t;&t;&bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#endif /* !(__ASM_SPARC64_ELF_H) */
 eof
