@@ -1337,9 +1337,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|c-&gt;x86_mask
 op_ne
 l_int|4
+)paren
+op_logical_and
+(paren
+id|c-&gt;x86_mask
+op_ne
+l_int|7
+)paren
 )paren
 r_return
 l_int|0
