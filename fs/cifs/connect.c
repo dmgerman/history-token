@@ -858,7 +858,7 @@ id|cifs_req_poolp
 comma
 id|length
 op_plus
-id|CIFS_MIN_RCV_POOL
+id|cifs_min_rcv
 comma
 id|GFP_KERNEL
 )paren
@@ -2194,7 +2194,7 @@ id|cifs_req_poolp
 comma
 id|length
 op_plus
-id|CIFS_MIN_RCV_POOL
+id|cifs_min_rcv
 comma
 id|GFP_KERNEL
 )paren

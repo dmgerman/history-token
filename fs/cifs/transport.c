@@ -875,7 +875,7 @@ op_amp
 id|ses-&gt;server-&gt;inFlight
 )paren
 op_ge
-id|CIFS_MAX_REQ
+id|cifs_max_pending
 )paren
 (brace
 id|spin_unlock
@@ -897,7 +897,7 @@ op_amp
 id|ses-&gt;server-&gt;inFlight
 )paren
 OL
-id|CIFS_MAX_REQ
+id|cifs_max_pending
 )paren
 suffix:semicolon
 id|spin_lock
@@ -1431,7 +1431,7 @@ op_amp
 id|ses-&gt;server-&gt;inFlight
 )paren
 op_ge
-id|CIFS_MAX_REQ
+id|cifs_max_pending
 )paren
 (brace
 id|spin_unlock
@@ -1453,7 +1453,7 @@ op_amp
 id|ses-&gt;server-&gt;inFlight
 )paren
 OL
-id|CIFS_MAX_REQ
+id|cifs_max_pending
 )paren
 suffix:semicolon
 id|spin_lock

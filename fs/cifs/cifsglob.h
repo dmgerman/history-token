@@ -1193,5 +1193,33 @@ r_int
 r_int
 id|linuxExtEnabled
 suffix:semicolon
-multiline_comment|/* enable Linux/Unix CIFS extensions */
+multiline_comment|/*enable Linux/Unix CIFS extensions*/
+DECL|variable|CIFSMaxBufSize
+id|GLOBAL_EXTERN
+r_int
+r_int
+id|CIFSMaxBufSize
+suffix:semicolon
+multiline_comment|/* max size not including hdr */
+DECL|variable|cifs_min_rcv
+id|GLOBAL_EXTERN
+r_int
+r_int
+id|cifs_min_rcv
+suffix:semicolon
+multiline_comment|/* min size of big ntwrk buf pool */
+DECL|variable|cifs_min_small
+id|GLOBAL_EXTERN
+r_int
+r_int
+id|cifs_min_small
+suffix:semicolon
+multiline_comment|/* min size of small buf pool */
+DECL|variable|cifs_max_pending
+id|GLOBAL_EXTERN
+r_int
+r_int
+id|cifs_max_pending
+suffix:semicolon
+multiline_comment|/* MAX requests at once to server*/
 eof

@@ -301,7 +301,7 @@ id|file
 suffix:semicolon
 r_extern
 id|ssize_t
-id|cifs_read
+id|cifs_user_read
 c_func
 (paren
 r_struct
@@ -310,6 +310,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|read_data
 comma
