@@ -2,8 +2,6 @@ multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt
 macro_line|#include &quot;emu8000_local.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

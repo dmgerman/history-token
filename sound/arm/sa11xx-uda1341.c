@@ -19,8 +19,6 @@ DECL|macro|DEBUG_FUNCTION_NAMES
 macro_line|#undef DEBUG_FUNCTION_NAMES
 macro_line|#include &lt;sound/uda1341.h&gt;
 multiline_comment|/* {{{ Type definitions */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

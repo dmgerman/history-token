@@ -35,10 +35,6 @@ macro_line|#else
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;sb16: &quot;
 macro_line|#endif
-macro_line|#ifndef SNDRV_SBAWE
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
-macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren

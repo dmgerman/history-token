@@ -24,8 +24,6 @@ mdefine_line|#define SND_CS8403
 DECL|macro|SND_CS8404
 mdefine_line|#define SND_CS8404
 macro_line|#include &lt;sound/cs8403.h&gt;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -21,8 +21,6 @@ DECL|macro|CARD_NAME
 mdefine_line|#define CARD_NAME &quot;ESS Maestro1/2&quot;
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;ES1968&quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
