@@ -16,43 +16,9 @@ mdefine_line|#define PAGE_CACHE_MASK&t;&t;PAGE_MASK
 DECL|macro|PAGE_CACHE_ALIGN
 mdefine_line|#define PAGE_CACHE_ALIGN(addr)&t;(((addr)+PAGE_CACHE_SIZE-1)&amp;PAGE_CACHE_MASK)
 DECL|macro|page_cache_get
-mdefine_line|#define page_cache_get(x)&t;get_page(x)
-DECL|function|page_cache_release
-r_static
-r_inline
-r_void
-id|page_cache_release
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|PageReserved
-c_func
-(paren
-id|page
-)paren
-op_logical_and
-id|put_page_testzero
-c_func
-(paren
-id|page
-)paren
-)paren
-id|__page_cache_release
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
+mdefine_line|#define page_cache_get(page)&t;&t;get_page(page)
+DECL|macro|page_cache_release
+mdefine_line|#define page_cache_release(page)&t;put_page(page)
 DECL|function|page_cache_alloc
 r_static
 r_inline
