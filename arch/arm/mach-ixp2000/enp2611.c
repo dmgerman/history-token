@@ -471,6 +471,14 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|machine_is_enp2611
+c_func
+(paren
+)paren
+)paren
 id|pci_common_init
 c_func
 (paren
