@@ -268,14 +268,6 @@ op_star
 id|sn_func
 suffix:semicolon
 multiline_comment|/* Prototypes */
-r_int
-id|__init
-id|sn_sal_serial_console_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_int
 id|snt_hw_puts
@@ -3941,6 +3933,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
+r_static
 r_int
 id|__init
 DECL|function|sn_sal_serial_console_init
