@@ -7667,31 +7667,7 @@ id|pci_dev
 op_star
 id|pci_dev
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: PCI BIOS not present!&bslash;n&quot;
-comma
-id|modname
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#else
+macro_line|#ifndef CONFIG_PCI
 id|printk
 c_func
 (paren
