@@ -541,6 +541,11 @@ r_void
 op_star
 id|crt_ctx
 suffix:semicolon
+DECL|member|crt_work_block
+r_void
+op_star
+id|crt_work_block
+suffix:semicolon
 DECL|member|crt_flags
 id|u32
 id|crt_flags
