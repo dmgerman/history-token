@@ -636,23 +636,6 @@ id|IDE_DATA_OFFSET
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/* OBSOLETE: still needed on arm26 and arm */
-macro_line|#ifdef CONFIG_ARM
-multiline_comment|/* Add default hw interfaces */
-id|initializing
-op_assign
-l_int|1
-suffix:semicolon
-id|ide_init_default_hwifs
-c_func
-(paren
-)paren
-suffix:semicolon
-id|initializing
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_IDE_ARM
 id|ide_arm_init
 c_func
