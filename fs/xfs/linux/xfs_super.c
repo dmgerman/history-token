@@ -229,6 +229,11 @@ id|vol_dswidth
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Default to 32 bit inodes on linux all the time */
+id|args-&gt;flags
+op_or_assign
+id|XFSMNT_32BITINODES
+suffix:semicolon
 multiline_comment|/* Copy the already-parsed mount(2) flags we&squot;re interested in */
 r_if
 c_cond

@@ -975,12 +975,9 @@ id|mp-&gt;m_flags
 op_or_assign
 id|XFS_MOUNT_OSYNCISOSYNC
 suffix:semicolon
-multiline_comment|/* Default on Linux */
 r_if
 c_cond
 (paren
-l_int|1
-op_logical_or
 id|ap-&gt;flags
 op_amp
 id|XFSMNT_32BITINODES
