@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-omap/hardware.h&n; *&n; * Hardware definitions for TI OMAP processors and boards&n; *&n; * NOTE: Please put device driver specific defines into a separate header&n; *&t; file for each driver.&n; *&n; * Copyright (C) 2001 RidgeRun, Inc.&n; * Author: RidgeRun, Inc. Greg Lonnon &lt;glonnon@ridgerun.com&gt;&n; *&n; * Reorganized for Linux-2.6 by Tony Lindgren &lt;tony@atomide.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN&n; * NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF&n; * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-omap/hardware.h&n; *&n; * Hardware definitions for TI OMAP processors and boards&n; *&n; * NOTE: Please put device driver specific defines into a separate header&n; *&t; file for each driver.&n; *&n; * Copyright (C) 2001 RidgeRun, Inc.&n; * Author: RidgeRun, Inc. Greg Lonnon &lt;glonnon@ridgerun.com&gt;&n; *&n; * Reorganized for Linux-2.6 by Tony Lindgren &lt;tony@atomide.com&gt;&n; *                          and Dirk Behme &lt;dirk.behme@de.bosch.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN&n; * NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF&n; * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#ifndef __ASM_ARCH_OMAP_HARDWARE_H
 DECL|macro|__ASM_ARCH_OMAP_HARDWARE_H
 mdefine_line|#define __ASM_ARCH_OMAP_HARDWARE_H
@@ -7,109 +7,25 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLER__
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#endif
-multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * I/O mapping&n; * ----------------------------------------------------------------------------&n; */
-DECL|macro|IO_PHYS
-mdefine_line|#define IO_PHYS&t;&t;&t;0xFFFB0000
-DECL|macro|IO_OFFSET
-mdefine_line|#define IO_OFFSET&t;&t;0x01000000&t;/* Virtual IO = 0xfefb0000 */
-DECL|macro|IO_VIRT
-mdefine_line|#define IO_VIRT&t;&t;&t;(IO_PHYS - IO_OFFSET)
-DECL|macro|IO_SIZE
-mdefine_line|#define IO_SIZE&t;&t;&t;0x40000
-DECL|macro|IO_ADDRESS
-mdefine_line|#define IO_ADDRESS(x)&t;&t;((x) - IO_OFFSET)
-DECL|macro|PCIO_BASE
-mdefine_line|#define PCIO_BASE&t;&t;0
-DECL|macro|io_p2v
-mdefine_line|#define io_p2v(x)               ((x) - IO_OFFSET)
-DECL|macro|io_v2p
-mdefine_line|#define io_v2p(x)               ((x) + IO_OFFSET)
-macro_line|#ifndef __ASSEMBLER__
-multiline_comment|/* 16 bit uses LDRH/STRH, base +/- offset_8 */
-DECL|member|offset
-DECL|typedef|__regbase16
-r_typedef
-r_struct
-(brace
-r_volatile
-id|u16
-id|offset
-(braket
-l_int|256
-)braket
-suffix:semicolon
-)brace
-id|__regbase16
-suffix:semicolon
-DECL|macro|__REGV16
-mdefine_line|#define __REGV16(vaddr)&t;&t;((__regbase16 *)((vaddr)&amp;~0xff)) &bslash;&n;&t;&t;&t;&t;&t;-&gt;offset[((vaddr)&amp;0xff)&gt;&gt;1]
-DECL|macro|__REG16
-mdefine_line|#define __REG16(paddr)          __REGV16(io_p2v(paddr))
-multiline_comment|/* 8/32 bit uses LDR/STR, base +/- offset_12 */
-DECL|member|offset
-DECL|typedef|__regbase8
-r_typedef
-r_struct
-(brace
-r_volatile
-id|u8
-id|offset
-(braket
-l_int|4096
-)braket
-suffix:semicolon
-)brace
-id|__regbase8
-suffix:semicolon
-DECL|macro|__REGV8
-mdefine_line|#define __REGV8(vaddr)&t;&t;((__regbase8  *)((paddr)&amp;~4095)) &bslash;&n;&t;&t;&t;&t;&t;-&gt;offset[((paddr)&amp;4095)&gt;&gt;0]
-DECL|macro|__REG8
-mdefine_line|#define __REG8(paddr)&t;&t;__REGV8(io_p2v(paddr))
-DECL|member|offset
-DECL|typedef|__regbase32
-r_typedef
-r_struct
-(brace
-r_volatile
-id|u32
-id|offset
-(braket
-l_int|4096
-)braket
-suffix:semicolon
-)brace
-id|__regbase32
-suffix:semicolon
-DECL|macro|__REGV32
-mdefine_line|#define __REGV32(vaddr)&t;&t;((__regbase32 *)((vaddr)&amp;~4095)) &bslash;&n;&t;&t;&t;&t;&t;-&gt;offset[((vaddr)&amp;4095)&gt;&gt;2]
-DECL|macro|__REG32
-mdefine_line|#define __REG32(paddr)&t;&t;__REGV32(io_p2v(paddr))
-macro_line|#else
-DECL|macro|__REG8
-mdefine_line|#define __REG8(paddr)&t;&t;io_p2v(paddr)
-DECL|macro|__REG16
-mdefine_line|#define __REG16(paddr)&t;&t;io_p2v(paddr)
-DECL|macro|__REG32
-mdefine_line|#define __REG32(paddr)&t;&t;io_p2v(paddr)
-macro_line|#endif
+macro_line|#include &lt;asm/arch/io.h&gt;
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Common definitions for all OMAP processors&n; * NOTE: Put all processor or board specific parts to the special header&n; *&t; files.&n; * ---------------------------------------------------------------------------&n; */
 multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * Clocks&n; * ----------------------------------------------------------------------------&n; */
-DECL|macro|CLKGEN_RESET_BASE
-mdefine_line|#define CLKGEN_RESET_BASE&t;(0xfffece00)
+DECL|macro|CLKGEN_REG_BASE
+mdefine_line|#define CLKGEN_REG_BASE&t;&t;(0xfffece00)
 DECL|macro|ARM_CKCTL
-mdefine_line|#define ARM_CKCTL&t;&t;(CLKGEN_RESET_BASE + 0x0)
+mdefine_line|#define ARM_CKCTL&t;&t;(CLKGEN_REG_BASE + 0x0)
 DECL|macro|ARM_IDLECT1
-mdefine_line|#define ARM_IDLECT1&t;&t;(CLKGEN_RESET_BASE + 0x4)
+mdefine_line|#define ARM_IDLECT1&t;&t;(CLKGEN_REG_BASE + 0x4)
 DECL|macro|ARM_IDLECT2
-mdefine_line|#define ARM_IDLECT2&t;&t;(CLKGEN_RESET_BASE + 0x8)
+mdefine_line|#define ARM_IDLECT2&t;&t;(CLKGEN_REG_BASE + 0x8)
 DECL|macro|ARM_EWUPCT
-mdefine_line|#define ARM_EWUPCT&t;&t;(CLKGEN_RESET_BASE + 0xC)
+mdefine_line|#define ARM_EWUPCT&t;&t;(CLKGEN_REG_BASE + 0xC)
 DECL|macro|ARM_RSTCT1
-mdefine_line|#define ARM_RSTCT1&t;&t;(CLKGEN_RESET_BASE + 0x10)
+mdefine_line|#define ARM_RSTCT1&t;&t;(CLKGEN_REG_BASE + 0x10)
 DECL|macro|ARM_RSTCT2
-mdefine_line|#define ARM_RSTCT2&t;&t;(CLKGEN_RESET_BASE + 0x14)
+mdefine_line|#define ARM_RSTCT2&t;&t;(CLKGEN_REG_BASE + 0x14)
 DECL|macro|ARM_SYSST
-mdefine_line|#define ARM_SYSST&t;&t;(CLKGEN_RESET_BASE + 0x18)
+mdefine_line|#define ARM_SYSST&t;&t;(CLKGEN_REG_BASE + 0x18)
 DECL|macro|CK_RATEF
 mdefine_line|#define CK_RATEF&t;&t;1
 DECL|macro|CK_IDLEF
@@ -121,29 +37,34 @@ mdefine_line|#define CK_SELECTF&t;&t;8
 DECL|macro|SETARM_IDLE_SHIFT
 mdefine_line|#define SETARM_IDLE_SHIFT
 multiline_comment|/* DPLL control registers */
-DECL|macro|DPLL_CTL_REG
-mdefine_line|#define DPLL_CTL_REG&t;&t;(0xfffecf00)
-DECL|macro|CK_DPLL1
-mdefine_line|#define CK_DPLL1&t;&t;(0xfffecf00)
-multiline_comment|/* ULPD */
+DECL|macro|DPLL_CTL
+mdefine_line|#define DPLL_CTL&t;&t;(0xfffecf00)
+multiline_comment|/* DSP clock control */
+DECL|macro|DSP_CONFIG_REG_BASE
+mdefine_line|#define DSP_CONFIG_REG_BASE     (0xe1008000)
+DECL|macro|DSP_IDLECT1
+mdefine_line|#define DSP_IDLECT1&t;&t;(DSP_CONFIG_REG_BASE + 0x4)
+DECL|macro|DSP_IDLECT2
+mdefine_line|#define DSP_IDLECT2&t;&t;(DSP_CONFIG_REG_BASE + 0x8)
+multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * UPLD&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|ULPD_REG_BASE
 mdefine_line|#define ULPD_REG_BASE&t;&t;(0xfffe0800)
-DECL|macro|ULPD_IT_STATUS_REG
-mdefine_line|#define ULPD_IT_STATUS_REG&t;(ULPD_REG_BASE + 0x14)
-DECL|macro|ULPD_CLOCK_CTRL_REG
-mdefine_line|#define ULPD_CLOCK_CTRL_REG&t;(ULPD_REG_BASE + 0x30)
-DECL|macro|ULPD_SOFT_REQ_REG
-mdefine_line|#define ULPD_SOFT_REQ_REG&t;(ULPD_REG_BASE + 0x34)
-DECL|macro|ULPD_DPLL_CTRL_REG
-mdefine_line|#define ULPD_DPLL_CTRL_REG&t;(ULPD_REG_BASE + 0x3c)
-DECL|macro|ULPD_STATUS_REQ_REG
-mdefine_line|#define ULPD_STATUS_REQ_REG&t;(ULPD_REG_BASE + 0x40)
-DECL|macro|ULPD_APLL_CTRL_REG
-mdefine_line|#define ULPD_APLL_CTRL_REG&t;(ULPD_REG_BASE + 0x4c)
-DECL|macro|ULPD_POWER_CTRL_REG
-mdefine_line|#define ULPD_POWER_CTRL_REG&t;(ULPD_REG_BASE + 0x50)
-DECL|macro|ULPD_CAM_CLK_CTRL_REG
-mdefine_line|#define ULPD_CAM_CLK_CTRL_REG&t;(ULPD_REG_BASE + 0x7c)
+DECL|macro|ULPD_IT_STATUS
+mdefine_line|#define ULPD_IT_STATUS&t;&t;(ULPD_REG_BASE + 0x14)
+DECL|macro|ULPD_CLOCK_CTRL
+mdefine_line|#define ULPD_CLOCK_CTRL&t;&t;(ULPD_REG_BASE + 0x30)
+DECL|macro|ULPD_SOFT_REQ
+mdefine_line|#define ULPD_SOFT_REQ&t;&t;(ULPD_REG_BASE + 0x34)
+DECL|macro|ULPD_DPLL_CTRL
+mdefine_line|#define ULPD_DPLL_CTRL&t;&t;(ULPD_REG_BASE + 0x3c)
+DECL|macro|ULPD_STATUS_REQ
+mdefine_line|#define ULPD_STATUS_REQ&t;&t;(ULPD_REG_BASE + 0x40)
+DECL|macro|ULPD_APLL_CTRL
+mdefine_line|#define ULPD_APLL_CTRL&t;&t;(ULPD_REG_BASE + 0x4c)
+DECL|macro|ULPD_POWER_CTRL
+mdefine_line|#define ULPD_POWER_CTRL&t;&t;(ULPD_REG_BASE + 0x50)
+DECL|macro|ULPD_CAM_CLK_CTRL
+mdefine_line|#define ULPD_CAM_CLK_CTRL&t;(ULPD_REG_BASE + 0x7c)
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Timers&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|OMAP_32kHz_TIMER_BASE
 mdefine_line|#define OMAP_32kHz_TIMER_BASE 0xfffb9000
@@ -164,25 +85,35 @@ mdefine_line|#define TIMER32k_INT&t;&t;(1&lt;&lt;2)
 DECL|macro|TIMER32k_ARL
 mdefine_line|#define TIMER32k_ARL&t;&t;(1&lt;&lt;3)
 multiline_comment|/* MPU Timer base addresses */
-DECL|macro|OMAP_MPUTIMER_BASE
-mdefine_line|#define OMAP_MPUTIMER_BASE&t;0xfffec500
-DECL|macro|OMAP_MPUTIMER_OFF
-mdefine_line|#define OMAP_MPUTIMER_OFF&t;0x00000100
 DECL|macro|OMAP_TIMER1_BASE
-mdefine_line|#define OMAP_TIMER1_BASE&t;0xfffec500
+mdefine_line|#define OMAP_TIMER1_BASE&t;(0xfffec500)
 DECL|macro|OMAP_TIMER2_BASE
-mdefine_line|#define OMAP_TIMER2_BASE&t;0xfffec600
+mdefine_line|#define OMAP_TIMER2_BASE&t;(0xfffec600)
 DECL|macro|OMAP_TIMER3_BASE
-mdefine_line|#define OMAP_TIMER3_BASE&t;0xfffec700
-DECL|macro|OMAP_WATCHDOG_BASE
-mdefine_line|#define OMAP_WATCHDOG_BASE&t;0xfffec800
+mdefine_line|#define OMAP_TIMER3_BASE&t;(0xfffec700)
+DECL|macro|OMAP_MPUTIMER_BASE
+mdefine_line|#define OMAP_MPUTIMER_BASE&t;OMAP_TIMER1_BASE
+DECL|macro|OMAP_MPUTIMER_OFFSET
+mdefine_line|#define OMAP_MPUTIMER_OFFSET&t;0x100
 multiline_comment|/* MPU Timer Registers */
-DECL|macro|CNTL_TIMER
-mdefine_line|#define CNTL_TIMER&t;&t;0
-DECL|macro|LOAD_TIM
-mdefine_line|#define LOAD_TIM&t;&t;4
-DECL|macro|READ_TIM
-mdefine_line|#define READ_TIM&t;&t;8
+DECL|macro|OMAP_TIMER1_CNTL
+mdefine_line|#define OMAP_TIMER1_CNTL&t;(OMAP_TIMER_BASE1 + 0x0)
+DECL|macro|OMAP_TIMER1_LOAD_TIM
+mdefine_line|#define OMAP_TIMER1_LOAD_TIM&t;(OMAP_TIMER_BASE1 + 0x4)
+DECL|macro|OMAP_TIMER1_READ_TIM
+mdefine_line|#define OMAP_TIMER1_READ_TIM&t;(OMAP_TIMER_BASE1 + 0x8)
+DECL|macro|OMAP_TIMER2_CNTL
+mdefine_line|#define OMAP_TIMER2_CNTL&t;(OMAP_TIMER_BASE2 + 0x0)
+DECL|macro|OMAP_TIMER2_LOAD_TIM
+mdefine_line|#define OMAP_TIMER2_LOAD_TIM&t;(OMAP_TIMER_BASE2 + 0x4)
+DECL|macro|OMAP_TIMER2_READ_TIM
+mdefine_line|#define OMAP_TIMER2_READ_TIM&t;(OMAP_TIMER_BASE2 + 0x8)
+DECL|macro|OMAP_TIMER3_CNTL
+mdefine_line|#define OMAP_TIMER3_CNTL&t;(OMAP_TIMER_BASE3 + 0x0)
+DECL|macro|OMAP_TIMER3_LOAD_TIM
+mdefine_line|#define OMAP_TIMER3_LOAD_TIM&t;(OMAP_TIMER_BASE3 + 0x4)
+DECL|macro|OMAP_TIMER3_READ_TIM
+mdefine_line|#define OMAP_TIMER3_READ_TIM&t;(OMAP_TIMER_BASE3 + 0x8)
 multiline_comment|/* CNTL_TIMER register bits */
 DECL|macro|MPUTIM_FREE
 mdefine_line|#define MPUTIM_FREE&t;&t;(1&lt;&lt;6)
@@ -196,49 +127,75 @@ DECL|macro|MPUTIM_AR
 mdefine_line|#define MPUTIM_AR&t;&t;(1&lt;&lt;1)
 DECL|macro|MPUTIM_ST
 mdefine_line|#define MPUTIM_ST&t;&t;(1&lt;&lt;0)
+multiline_comment|/* Watchdog */
+DECL|macro|OMAP_WATCHDOG_BASE
+mdefine_line|#define OMAP_WATCHDOG_BASE&t;(0xfffec800)
+DECL|macro|OMAP_WDT_TIMER
+mdefine_line|#define OMAP_WDT_TIMER&t;&t;(OMAP_WATCHDOG_BASE + 0x0)
+DECL|macro|OMAP_WDT_LOAD_TIM
+mdefine_line|#define OMAP_WDT_LOAD_TIM&t;(OMAP_WATCHDOG_BASE + 0x4)
+DECL|macro|OMAP_WDT_READ_TIM
+mdefine_line|#define OMAP_WDT_READ_TIM&t;(OMAP_WATCHDOG_BASE + 0x4)
+DECL|macro|OMAP_WDT_TIMER_MODE
+mdefine_line|#define OMAP_WDT_TIMER_MODE&t;(OMAP_WATCHDOG_BASE + 0x8)
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Interrupts&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|OMAP_IH1_BASE
 mdefine_line|#define OMAP_IH1_BASE&t;&t;0xfffecb00
 DECL|macro|OMAP_IH2_BASE
 mdefine_line|#define OMAP_IH2_BASE&t;&t;0xfffe0000
-DECL|macro|OMAP_ITR
-mdefine_line|#define OMAP_ITR&t;&t;0x0
-DECL|macro|OMAP_MASK
-mdefine_line|#define OMAP_MASK&t;&t;0x4
-DECL|macro|IRQ_ITR
-mdefine_line|#define IRQ_ITR&t;&t;&t;0x00
-DECL|macro|IRQ_MIR
-mdefine_line|#define IRQ_MIR&t;&t;&t;0x04
-DECL|macro|IRQ_SIR_IRQ
-mdefine_line|#define IRQ_SIR_IRQ&t;&t;0x10
-DECL|macro|IRQ_SIR_FIQ
-mdefine_line|#define IRQ_SIR_FIQ&t;&t;0x14
-DECL|macro|IRQ_CONTROL_REG
-mdefine_line|#define IRQ_CONTROL_REG&t;&t;0x18
-DECL|macro|IRQ_ISR
-mdefine_line|#define IRQ_ISR&t;&t;&t;0x9c
-DECL|macro|IRQ_ILR0
-mdefine_line|#define IRQ_ILR0&t;&t;0x1c
-multiline_comment|/* OMAP-1610 specific interrupt handler registers */
-DECL|macro|OMAP_IH2_SECT1
-mdefine_line|#define OMAP_IH2_SECT1&t;&t;(OMAP_IH2_BASE)
-DECL|macro|OMAP_IH2_SECT2
-mdefine_line|#define OMAP_IH2_SECT2&t;&t;(OMAP_IH2_BASE + 0x100)
-DECL|macro|OMAP_IH2_SECT3
-mdefine_line|#define OMAP_IH2_SECT3&t;&t;(OMAP_IH2_BASE + 0x200)
-DECL|macro|OMAP_IH2_SECT4
-mdefine_line|#define OMAP_IH2_SECT4&t;&t;(OMAP_IH2_BASE + 0x300)
+DECL|macro|OMAP_IH1_ITR
+mdefine_line|#define OMAP_IH1_ITR&t;&t;(OMAP_IH1_BASE + 0x00)
+DECL|macro|OMAP_IH1_MIR
+mdefine_line|#define OMAP_IH1_MIR&t;&t;(OMAP_IH1_BASE + 0x04)
+DECL|macro|OMAP_IH1_SIR_IRQ
+mdefine_line|#define OMAP_IH1_SIR_IRQ&t;(OMAP_IH1_BASE + 0x10)
+DECL|macro|OMAP_IH1_SIR_FIQ
+mdefine_line|#define OMAP_IH1_SIR_FIQ&t;(OMAP_IH1_BASE + 0x14)
+DECL|macro|OMAP_IH1_CONTROL
+mdefine_line|#define OMAP_IH1_CONTROL&t;(OMAP_IH1_BASE + 0x18)
+DECL|macro|OMAP_IH1_ILR0
+mdefine_line|#define OMAP_IH1_ILR0&t;&t;(OMAP_IH1_BASE + 0x1c)
+DECL|macro|OMAP_IH1_ISR
+mdefine_line|#define OMAP_IH1_ISR&t;&t;(OMAP_IH1_BASE + 0x9c)
+DECL|macro|OMAP_IH2_ITR
+mdefine_line|#define OMAP_IH2_ITR&t;&t;(OMAP_IH2_BASE + 0x00)
+DECL|macro|OMAP_IH2_MIR
+mdefine_line|#define OMAP_IH2_MIR&t;&t;(OMAP_IH2_BASE + 0x04)
+DECL|macro|OMAP_IH2_SIR_IRQ
+mdefine_line|#define OMAP_IH2_SIR_IRQ&t;(OMAP_IH2_BASE + 0x10)
+DECL|macro|OMAP_IH2_SIR_FIQ
+mdefine_line|#define OMAP_IH2_SIR_FIQ&t;(OMAP_IH2_BASE + 0x14)
+DECL|macro|OMAP_IH2_CONTROL
+mdefine_line|#define OMAP_IH2_CONTROL&t;(OMAP_IH2_BASE + 0x18)
+DECL|macro|OMAP_IH2_ILR0
+mdefine_line|#define OMAP_IH2_ILR0&t;&t;(OMAP_IH2_BASE + 0x1c)
+DECL|macro|OMAP_IH2_ISR
+mdefine_line|#define OMAP_IH2_ISR&t;&t;(OMAP_IH2_BASE + 0x9c)
+DECL|macro|IRQ_ITR_REG_OFFSET
+mdefine_line|#define IRQ_ITR_REG_OFFSET&t;0x00
+DECL|macro|IRQ_MIR_REG_OFFSET
+mdefine_line|#define IRQ_MIR_REG_OFFSET&t;0x04
+DECL|macro|IRQ_SIR_IRQ_REG_OFFSET
+mdefine_line|#define IRQ_SIR_IRQ_REG_OFFSET&t;0x10
+DECL|macro|IRQ_SIR_FIQ_REG_OFFSET
+mdefine_line|#define IRQ_SIR_FIQ_REG_OFFSET&t;0x14
+DECL|macro|IRQ_CONTROL_REG_OFFSET
+mdefine_line|#define IRQ_CONTROL_REG_OFFSET&t;0x18
+DECL|macro|IRQ_ISR_REG_OFFSET
+mdefine_line|#define IRQ_ISR_REG_OFFSET&t;0x9c
+DECL|macro|IRQ_ILR0_REG_OFFSET
+mdefine_line|#define IRQ_ILR0_REG_OFFSET&t;0x1c
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Traffic controller memory interface&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|TCMIF_BASE
 mdefine_line|#define TCMIF_BASE&t;&t;0xfffecc00
 DECL|macro|IMIF_PRIO
 mdefine_line|#define IMIF_PRIO&t;&t;(TCMIF_BASE + 0x00)
-DECL|macro|EMIFS_PRIO_REG
-mdefine_line|#define EMIFS_PRIO_REG&t;&t;(TCMIF_BASE + 0x04)
-DECL|macro|EMIFF_PRIO_REG
-mdefine_line|#define EMIFF_PRIO_REG&t;&t;(TCMIF_BASE + 0x08)
-DECL|macro|EMIFS_CONFIG_REG
-mdefine_line|#define EMIFS_CONFIG_REG&t;(TCMIF_BASE + 0x0c)
+DECL|macro|EMIFS_PRIO
+mdefine_line|#define EMIFS_PRIO&t;&t;(TCMIF_BASE + 0x04)
+DECL|macro|EMIFF_PRIO
+mdefine_line|#define EMIFF_PRIO&t;&t;(TCMIF_BASE + 0x08)
+DECL|macro|EMIFS_CONFIG
+mdefine_line|#define EMIFS_CONFIG&t;&t;(TCMIF_BASE + 0x0c)
 DECL|macro|EMIFS_CS0_CONFIG
 mdefine_line|#define EMIFS_CS0_CONFIG&t;(TCMIF_BASE + 0x10)
 DECL|macro|EMIFS_CS1_CONFIG
@@ -331,49 +288,56 @@ mdefine_line|#define PU_PD_SEL_4&t;&t;0xfffe10c4
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * TIPB bus interface&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|TIPB_PUBLIC_CNTL_BASE
 mdefine_line|#define TIPB_PUBLIC_CNTL_BASE&t;&t;0xfffed300
-DECL|macro|MPU_PUBLIC_TIPB_CNTL_REG
-mdefine_line|#define MPU_PUBLIC_TIPB_CNTL_REG&t;(TIPB_PUBLIC_CNTL_BASE + 0x8)
+DECL|macro|MPU_PUBLIC_TIPB_CNTL
+mdefine_line|#define MPU_PUBLIC_TIPB_CNTL&t;&t;(TIPB_PUBLIC_CNTL_BASE + 0x8)
 DECL|macro|TIPB_PRIVATE_CNTL_BASE
 mdefine_line|#define TIPB_PRIVATE_CNTL_BASE&t;&t;0xfffeca00
-DECL|macro|MPU_PRIVATE_TIPB_CNTL_REG
-mdefine_line|#define MPU_PRIVATE_TIPB_CNTL_REG&t;(TIPB_PRIVATE_CNTL_BASE + 0x8)
-multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * DSP control registers&n; * ----------------------------------------------------------------------------&n; */
-multiline_comment|/*  MPUI Interface Registers */
-DECL|macro|MPUI_CTRL_REG
-mdefine_line|#define MPUI_CTRL_REG&t;&t;(0xfffec900)
+DECL|macro|MPU_PRIVATE_TIPB_CNTL
+mdefine_line|#define MPU_PRIVATE_TIPB_CNTL&t;&t;(TIPB_PRIVATE_CNTL_BASE + 0x8)
+multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * MPUI interface&n; * ----------------------------------------------------------------------------&n; */
+DECL|macro|MPUI_BASE
+mdefine_line|#define MPUI_BASE&t;&t;&t;(0xfffec900)
+DECL|macro|MPUI_CTRL
+mdefine_line|#define MPUI_CTRL&t;&t;&t;(MPUI_BASE + 0x0)
 DECL|macro|MPUI_DEBUG_ADDR
-mdefine_line|#define MPUI_DEBUG_ADDR&t;&t;(0xfffec904)
+mdefine_line|#define MPUI_DEBUG_ADDR&t;&t;&t;(MPUI_BASE + 0x4)
 DECL|macro|MPUI_DEBUG_DATA
-mdefine_line|#define MPUI_DEBUG_DATA&t;&t;(0xfffec908)
+mdefine_line|#define MPUI_DEBUG_DATA&t;&t;&t;(MPUI_BASE + 0x8)
 DECL|macro|MPUI_DEBUG_FLAG
-mdefine_line|#define MPUI_DEBUG_FLAG&t;&t;(0xfffec90c)
+mdefine_line|#define MPUI_DEBUG_FLAG&t;&t;&t;(MPUI_BASE + 0xc)
 DECL|macro|MPUI_STATUS_REG
-mdefine_line|#define MPUI_STATUS_REG&t;&t;(0xfffec910)
-DECL|macro|MPUI_DSP_STATUS_REG
-mdefine_line|#define MPUI_DSP_STATUS_REG&t;(0xfffec914)
+mdefine_line|#define MPUI_STATUS_REG&t;&t;&t;(MPUI_BASE + 0x10)
+DECL|macro|MPUI_DSP_STATUS
+mdefine_line|#define MPUI_DSP_STATUS&t;&t;&t;(MPUI_BASE + 0x14)
 DECL|macro|MPUI_DSP_BOOT_CONFIG
-mdefine_line|#define MPUI_DSP_BOOT_CONFIG&t;(0xfffec918)
+mdefine_line|#define MPUI_DSP_BOOT_CONFIG&t;&t;(MPUI_BASE + 0x18)
 DECL|macro|MPUI_DSP_API_CONFIG
-mdefine_line|#define MPUI_DSP_API_CONFIG&t;(0xfffec91c)
+mdefine_line|#define MPUI_DSP_API_CONFIG&t;&t;(MPUI_BASE + 0x1c)
 macro_line|#ifndef __ASSEMBLER__
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Processor differentiation&n; * ---------------------------------------------------------------------------&n; */
+DECL|macro|OMAP_ID_BASE
+mdefine_line|#define OMAP_ID_BASE&t;&t;(0xfffed400)
 DECL|macro|OMAP_ID_REG
-mdefine_line|#define OMAP_ID_REG&t;&t;__REG32(0xfffed404)
+mdefine_line|#define OMAP_ID_REG&t;&t;__REG32(OMAP_ID_BASE +  0x04)
+DECL|macro|ID_SHIFT
+mdefine_line|#define ID_SHIFT&t;&t;12
+DECL|macro|ID_MASK
+mdefine_line|#define ID_MASK&t;&t;&t;0x7fff
 multiline_comment|/* See also uncompress.h */
 DECL|macro|OMAP_ID_730
-mdefine_line|#define OMAP_ID_730&t;&t;0xB55F
+mdefine_line|#define OMAP_ID_730&t;&t;0x355F
 DECL|macro|OMAP_ID_1510
-mdefine_line|#define OMAP_ID_1510&t;&t;0xB470
+mdefine_line|#define OMAP_ID_1510&t;&t;0x3470
 DECL|macro|OMAP_ID_1610
-mdefine_line|#define OMAP_ID_1610&t;&t;0xB576
+mdefine_line|#define OMAP_ID_1610&t;&t;0x3576
 DECL|macro|OMAP_ID_1710
-mdefine_line|#define OMAP_ID_1710&t;&t;0xB5F7
+mdefine_line|#define OMAP_ID_1710&t;&t;0x35F7
 DECL|macro|OMAP_ID_5912
-mdefine_line|#define OMAP_ID_5912&t;&t;0xB58C
+mdefine_line|#define OMAP_ID_5912&t;&t;0x358C
 macro_line|#ifdef CONFIG_ARCH_OMAP730
 macro_line|#include &quot;omap730.h&quot;
 DECL|macro|cpu_is_omap730
-mdefine_line|#define cpu_is_omap730()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == OMAP_ID_730)
+mdefine_line|#define cpu_is_omap730()&t;(((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_730)
 macro_line|#else
 DECL|macro|cpu_is_omap730
 mdefine_line|#define cpu_is_omap730()&t;0
@@ -381,7 +345,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_OMAP1510
 macro_line|#include &quot;omap1510.h&quot;
 DECL|macro|cpu_is_omap1510
-mdefine_line|#define cpu_is_omap1510()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == OMAP_ID_1510)
+mdefine_line|#define cpu_is_omap1510()&t;(((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_1510)
 macro_line|#else
 DECL|macro|cpu_is_omap1510
 mdefine_line|#define cpu_is_omap1510()&t;0
@@ -389,10 +353,10 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_OMAP1610
 macro_line|#include &quot;omap1610.h&quot;
 DECL|macro|cpu_is_omap1710
-mdefine_line|#define cpu_is_omap1710()       (((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == OMAP_ID_1710)
+mdefine_line|#define cpu_is_omap1710()       (((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_1710)
 multiline_comment|/* Detect 1710 as 1610 for now */
 DECL|macro|cpu_is_omap1610
-mdefine_line|#define cpu_is_omap1610()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == OMAP_ID_1610 &bslash;&n;&t;&t;&t;&t;|| cpu_is_omap1710())
+mdefine_line|#define cpu_is_omap1610()&t;(((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_1610 &bslash;&n;&t;&t;&t;&t;|| cpu_is_omap1710())
 macro_line|#else
 DECL|macro|cpu_is_omap1610
 mdefine_line|#define cpu_is_omap1610()&t;0
@@ -402,7 +366,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_OMAP5912
 macro_line|#include &quot;omap5912.h&quot;
 DECL|macro|cpu_is_omap5912
-mdefine_line|#define cpu_is_omap5912()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == OMAP_ID_5912)
+mdefine_line|#define cpu_is_omap5912()&t;(((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_5912)
 macro_line|#else
 DECL|macro|cpu_is_omap5912
 mdefine_line|#define cpu_is_omap5912()&t;0

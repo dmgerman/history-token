@@ -40,7 +40,7 @@ DECL|typedef|mputimer_regs_t
 id|mputimer_regs_t
 suffix:semicolon
 DECL|macro|mputimer_base
-mdefine_line|#define mputimer_base(n) &bslash;&n;    ((volatile mputimer_regs_t*)IO_ADDRESS(OMAP_MPUTIMER_BASE + &bslash;&n;&t;&t;&t;&t; (n)*OMAP_MPUTIMER_OFF))
+mdefine_line|#define mputimer_base(n) &bslash;&n;    ((volatile mputimer_regs_t*)IO_ADDRESS(OMAP_MPUTIMER_BASE + &bslash;&n;&t;&t;&t;&t; (n)*OMAP_MPUTIMER_OFFSET))
 DECL|function|timer32k_read
 r_static
 r_inline
