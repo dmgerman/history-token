@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_WORKQUEUE_H
 DECL|macro|_LINUX_WORKQUEUE_H
 mdefine_line|#define _LINUX_WORKQUEUE_H
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 r_struct
 id|workqueue_struct
 suffix:semicolon
