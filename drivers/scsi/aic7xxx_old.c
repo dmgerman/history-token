@@ -36104,12 +36104,14 @@ r_continue
 suffix:semicolon
 id|skip_pci_controller
 suffix:colon
+macro_line|#ifdef CONFIG_PCI
 id|pci_release_regions
 c_func
 (paren
 id|temp_p-&gt;pdev
 )paren
 suffix:semicolon
+macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -41366,6 +41368,7 @@ id|MINREG
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
 r_else
 id|pci_release_regions
 c_func
@@ -41373,6 +41376,7 @@ c_func
 id|p-&gt;pdev
 )paren
 suffix:semicolon
+macro_line|#endif
 id|prev
 op_assign
 l_int|NULL
