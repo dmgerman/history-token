@@ -91,7 +91,7 @@ macro_line|#else
 DECL|macro|ASSERT
 mdefine_line|#define ASSERT(expr)
 macro_line|#endif
-multiline_comment|/*&n;** The number of pdir entries to &quot;free&quot; before issueing&n;** a read to PCOM register to flush out PCOM writes.&n;** Interacts with allocation granularity (ie 4 or 8 entries&n;** allocated and free&squot;d/purged at a time might make this&n;** less interesting).&n;*/
+multiline_comment|/*&n;** The number of pdir entries to &quot;free&quot; before issuing&n;** a read to PCOM register to flush out PCOM writes.&n;** Interacts with allocation granularity (ie 4 or 8 entries&n;** allocated and free&squot;d/purged at a time might make this&n;** less interesting).&n;*/
 DECL|macro|DELAYED_RESOURCE_CNT
 mdefine_line|#define DELAYED_RESOURCE_CNT&t;16
 DECL|macro|DEFAULT_DMA_HINT_REG

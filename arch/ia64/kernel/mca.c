@@ -3368,7 +3368,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  ia64_mca_cpe_poll&n; *&n; *&t;Poll for Corrected Platform Errors (CPEs), dynamically adjust&n; *&t;polling interval based on occurance of an event.&n; *&n; * Inputs   :   dummy(unused)&n; * Outputs  :   None&n; *&n; */
+multiline_comment|/*&n; *  ia64_mca_cpe_poll&n; *&n; *&t;Poll for Corrected Platform Errors (CPEs), dynamically adjust&n; *&t;polling interval based on occurrence of an event.&n; *&n; * Inputs   :   dummy(unused)&n; * Outputs  :   None&n; *&n; */
 r_static
 r_void
 DECL|function|ia64_mca_cpe_poll
