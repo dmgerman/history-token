@@ -9229,18 +9229,26 @@ id|device-&gt;chip.revision_id
 op_assign
 id|revision
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Read additionnal info from the configuration space.&n;&t; */
-id|pci_read_config_word
+r_if
+c_cond
+(paren
+id|pci_enable_device
 c_func
 (paren
 id|pdev
-comma
-id|PCI_COMMAND
-comma
-op_amp
-id|command
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+id|pci_set_master
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; *  Read additionnal info from the configuration space.&n;&t; */
 id|pci_read_config_byte
 c_func
 (paren
@@ -9252,98 +9260,6 @@ op_amp
 id|cache_line_size
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Enable missing capabilities in the PCI COMMAND register.&n;&t; */
-macro_line|#ifdef SYM_CONF_IOMAPPED
-DECL|macro|PCI_COMMAND_BITS_TO_ENABLE
-mdefine_line|#define&t;PCI_COMMAND_BITS_TO_ENABLE (PCI_COMMAND_IO | &bslash;&n;&t;PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER | PCI_COMMAND_PARITY)
-macro_line|#else
-mdefine_line|#define&t;PCI_COMMAND_BITS_TO_ENABLE &bslash;&n;&t;(PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER | PCI_COMMAND_PARITY)
-macro_line|#endif
-r_if
-c_cond
-(paren
-(paren
-id|command
-op_amp
-id|PCI_COMMAND_BITS_TO_ENABLE
-)paren
-op_ne
-id|PCI_COMMAND_BITS_TO_ENABLE
-)paren
-(brace
-id|printf_info
-c_func
-(paren
-l_string|&quot;%s: setting%s%s%s%s...&bslash;n&quot;
-comma
-id|sym_name
-c_func
-(paren
-id|device
-)paren
-comma
-(paren
-id|command
-op_amp
-id|PCI_COMMAND_IO
-)paren
-ques
-c_cond
-l_string|&quot;&quot;
-suffix:colon
-l_string|&quot; PCI_COMMAND_IO&quot;
-comma
-(paren
-id|command
-op_amp
-id|PCI_COMMAND_MEMORY
-)paren
-ques
-c_cond
-l_string|&quot;&quot;
-suffix:colon
-l_string|&quot; PCI_COMMAND_MEMORY&quot;
-comma
-(paren
-id|command
-op_amp
-id|PCI_COMMAND_MASTER
-)paren
-ques
-c_cond
-l_string|&quot;&quot;
-suffix:colon
-l_string|&quot; PCI_COMMAND_MASTER&quot;
-comma
-(paren
-id|command
-op_amp
-id|PCI_COMMAND_PARITY
-)paren
-ques
-c_cond
-l_string|&quot;&quot;
-suffix:colon
-l_string|&quot; PCI_COMMAND_PARITY&quot;
-)paren
-suffix:semicolon
-id|command
-op_or_assign
-id|PCI_COMMAND_BITS_TO_ENABLE
-suffix:semicolon
-id|pci_write_config_word
-c_func
-(paren
-id|pdev
-comma
-id|PCI_COMMAND
-comma
-id|command
-)paren
-suffix:semicolon
-)brace
-DECL|macro|PCI_COMMAND_BITS_TO_ENABLE
-macro_line|#undef&t;PCI_COMMAND_BITS_TO_ENABLE
 multiline_comment|/*&n;&t; *  If cache line size is not configured, suggest&n;&t; *  a value for well known CPUs.&n;&t; */
 macro_line|#if defined(__i386__) &amp;&amp; !defined(MODULE)
 r_if
@@ -9475,6 +9391,17 @@ id|cache_line_size
 )paren
 suffix:semicolon
 )brace
+id|pci_read_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_COMMAND
+comma
+op_amp
+id|command
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
