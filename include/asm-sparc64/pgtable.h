@@ -398,7 +398,7 @@ DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
-mdefine_line|#define pmd_offset(dir, address)&t;&bslash;&n;&t;((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t; ((address &gt;&gt; PMD_SHIFT) &amp; (REAL_PTRS_PER_PMD-1)))
+mdefine_line|#define pmd_offset(dir, address)&t;&bslash;&n;&t;((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t; (((address) &gt;&gt; PMD_SHIFT) &amp; (REAL_PTRS_PER_PMD-1)))
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|pte_index
 mdefine_line|#define pte_index(dir, address)&t;&bslash;&n;&t;((pte_t *) __pmd_page(*(dir)) + &bslash;&n;&t; ((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
