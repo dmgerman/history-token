@@ -1109,10 +1109,6 @@ id|handle
 suffix:semicolon
 r_uint16
 id|cnt
-comma
-id|tot_dsds
-comma
-id|req_cnt
 suffix:semicolon
 id|cmd_entry_t
 op_star
@@ -1189,8 +1185,16 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Calculate number of segments and entries required */
-id|tot_dsds
+multiline_comment|/* Calculate number of segments and entries required. */
+r_if
+c_cond
+(paren
+id|sp-&gt;req_cnt
+op_eq
+l_int|0
+)paren
+(brace
+id|sp-&gt;tot_dsds
 op_assign
 l_int|0
 suffix:semicolon
@@ -1209,7 +1213,7 @@ op_star
 )paren
 id|cmd-&gt;request_buffer
 suffix:semicolon
-id|tot_dsds
+id|sp-&gt;tot_dsds
 op_assign
 id|pci_map_sg
 c_func
@@ -1231,20 +1235,20 @@ c_cond
 id|cmd-&gt;request_bufflen
 )paren
 (brace
-multiline_comment|/* Single segment transfer */
-id|tot_dsds
+id|sp-&gt;tot_dsds
 op_increment
 suffix:semicolon
 )brace
-id|req_cnt
+id|sp-&gt;req_cnt
 op_assign
 (paren
 id|ha-&gt;calc_request_entries
 )paren
 (paren
-id|tot_dsds
+id|sp-&gt;tot_dsds
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Acquire ring specific lock */
 id|spin_lock_irqsave
 c_func
@@ -1261,7 +1265,7 @@ c_cond
 id|ha-&gt;req_q_cnt
 OL
 (paren
-id|req_cnt
+id|sp-&gt;req_cnt
 op_plus
 l_int|2
 )paren
@@ -1314,7 +1318,7 @@ c_cond
 id|ha-&gt;req_q_cnt
 OL
 (paren
-id|req_cnt
+id|sp-&gt;req_cnt
 op_plus
 l_int|2
 )paren
@@ -1335,7 +1339,7 @@ id|ha-&gt;req_ring_index
 comma
 id|ha-&gt;req_q_cnt
 comma
-id|tot_dsds
+id|sp-&gt;tot_dsds
 )paren
 )paren
 suffix:semicolon
@@ -1450,7 +1454,7 @@ id|handle
 suffix:semicolon
 id|ha-&gt;req_q_cnt
 op_sub_assign
-id|req_cnt
+id|sp-&gt;req_cnt
 suffix:semicolon
 id|cmd_pkt
 op_assign
@@ -1492,7 +1496,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|tot_dsds
+id|sp-&gt;tot_dsds
 )paren
 suffix:semicolon
 multiline_comment|/* Set target ID */
@@ -1659,7 +1663,7 @@ id|sp
 comma
 id|cmd_pkt
 comma
-id|tot_dsds
+id|sp-&gt;tot_dsds
 )paren
 suffix:semicolon
 multiline_comment|/* Set total data segment count. */
@@ -1668,7 +1672,7 @@ op_assign
 (paren
 r_uint8
 )paren
-id|req_cnt
+id|sp-&gt;req_cnt
 suffix:semicolon
 multiline_comment|/* Adjust ring index. */
 id|ha-&gt;req_ring_index
@@ -1767,23 +1771,6 @@ op_amp
 id|ha-&gt;hardware_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cmd-&gt;use_sg
-)paren
-id|pci_unmap_sg
-c_func
-(paren
-id|ha-&gt;pdev
-comma
-id|sg
-comma
-id|cmd-&gt;use_sg
-comma
-id|cmd-&gt;sc_data_direction
 )paren
 suffix:semicolon
 r_return

@@ -13076,6 +13076,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|sp-&gt;req_cnt
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_return
 (paren

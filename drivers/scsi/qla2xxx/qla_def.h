@@ -381,6 +381,16 @@ r_uint8
 id|err_id
 suffix:semicolon
 multiline_comment|/* error id */
+multiline_comment|/* Segment/entries counts */
+DECL|member|req_cnt
+r_uint16
+id|req_cnt
+suffix:semicolon
+multiline_comment|/* !0 indicates counts determined */
+DECL|member|tot_dsds
+r_uint16
+id|tot_dsds
+suffix:semicolon
 multiline_comment|/* SRB magic number */
 DECL|member|magic
 r_uint16
