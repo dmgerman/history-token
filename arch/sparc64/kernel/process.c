@@ -2248,11 +2248,17 @@ suffix:semicolon
 )brace
 id|pgd_cache
 op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
 id|pgd_val
 c_func
 (paren
 op_star
 id|pgd0
+)paren
 )paren
 op_lshift
 l_int|11UL
