@@ -4,9 +4,9 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;asm/processor.h&gt; 
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/thread_info.h&gt;
 macro_line|#include &quot;mce.h&quot;
 DECL|variable|__initdata
 r_int
