@@ -4816,7 +4816,7 @@ l_int|1
 comma
 l_string|&quot;usb-irda: set interface %d result %d&bslash;n&quot;
 comma
-id|ifnum
+id|intf-&gt;altsetting-&gt;bInterfaceNumber
 comma
 id|ret
 )paren
