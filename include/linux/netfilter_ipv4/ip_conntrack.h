@@ -107,12 +107,18 @@ comma
 suffix:semicolon
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tcp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_icmp.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_sctp.h&gt;
 multiline_comment|/* per conntrack: protocol private data */
 DECL|union|ip_conntrack_proto
 r_union
 id|ip_conntrack_proto
 (brace
 multiline_comment|/* insert conntrack proto private data here */
+DECL|member|sctp
+r_struct
+id|ip_ct_sctp
+id|sctp
+suffix:semicolon
 DECL|member|tcp
 r_struct
 id|ip_ct_tcp
