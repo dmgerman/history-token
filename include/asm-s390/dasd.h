@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * This file is the interface of the DASD device driver, which is exported to user space&n; * any future changes wrt the API will result in a change of the APIVERSION reported&n; * to userspace by the DASDAPIVER-ioctl&n; *&n; * $Revision: 1.4 $&n; *&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * This file is the interface of the DASD device driver, which is exported to user space&n; * any future changes wrt the API will result in a change of the APIVERSION reported&n; * to userspace by the DASDAPIVER-ioctl&n; *&n; * $Revision: 1.6 $&n; *&n; */
 macro_line|#ifndef DASD_H
 DECL|macro|DASD_H
 mdefine_line|#define DASD_H
@@ -202,11 +202,13 @@ DECL|macro|DASD_FORMAT_LDL
 mdefine_line|#define DASD_FORMAT_LDL  1
 DECL|macro|DASD_FORMAT_CDL
 mdefine_line|#define DASD_FORMAT_CDL  2
-multiline_comment|/*&n; * values to be used for dasd_information_t.features&n; * 0x00: default features&n; * 0x01: readonly (ro)&n; */
+multiline_comment|/*&n; * values to be used for dasd_information_t.features&n; * 0x00: default features&n; * 0x01: readonly (ro)&n; * 0x02: use diag discipline (diag)&n; */
 DECL|macro|DASD_FEATURE_DEFAULT
 mdefine_line|#define DASD_FEATURE_DEFAULT  0
 DECL|macro|DASD_FEATURE_READONLY
 mdefine_line|#define DASD_FEATURE_READONLY 1
+DECL|macro|DASD_FEATURE_USEDIAG
+mdefine_line|#define DASD_FEATURE_USEDIAG  2
 DECL|macro|DASD_PARTN_BITS
 mdefine_line|#define DASD_PARTN_BITS 2
 multiline_comment|/* &n; * struct dasd_information_t&n; * represents any data about the data, which is visible to userspace&n; */
@@ -746,6 +748,9 @@ mdefine_line|#define BIODASDINFO2   _IOR(DASD_IOCTL_LETTER,3,dasd_information2_t
 multiline_comment|/* Performance Statistics Read */
 DECL|macro|BIODASDPSRD
 mdefine_line|#define BIODASDPSRD    _IOR(DASD_IOCTL_LETTER,4,dasd_rssd_perf_stats_t)
+multiline_comment|/* Get Attributes (cache operations) */
+DECL|macro|BIODASDGATTR
+mdefine_line|#define BIODASDGATTR   _IOR(DASD_IOCTL_LETTER,5,attrib_data_t) 
 multiline_comment|/* #define BIODASDFORMAT  _IOW(IOCTL_LETTER,0,format_data_t) , deprecated */
 DECL|macro|BIODASDFMT
 mdefine_line|#define BIODASDFMT     _IOW(DASD_IOCTL_LETTER,1,format_data_t) 

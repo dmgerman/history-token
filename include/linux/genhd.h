@@ -289,7 +289,7 @@ DECL|member|disk_name
 r_char
 id|disk_name
 (braket
-l_int|16
+l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* name of major driver */
