@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
+macro_line|#include &quot;prismcompat.h&quot;
 macro_line|#include &quot;isl_38xx.h&quot;
 macro_line|#include &quot;islpci_eth.h&quot;
 macro_line|#include &quot;islpci_mgt.h&quot;

@@ -7,23 +7,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
 macro_line|#include &lt;net/iw_handler.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,41)
-macro_line|# include &lt;linux/workqueue.h&gt;
-macro_line|#else
-macro_line|# include &lt;linux/tqueue.h&gt;
-DECL|macro|work_struct
-macro_line|# define work_struct tq_struct
-DECL|macro|INIT_WORK
-macro_line|# define INIT_WORK INIT_TQUEUE
-DECL|macro|schedule_work
-macro_line|# define schedule_work schedule_task
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,23)
-DECL|macro|free_netdev
-mdefine_line|#define free_netdev(x) kfree(x) 
-DECL|macro|pci_name
-mdefine_line|#define pci_name(x) x-&gt;slot_name 
-macro_line|#endif
 macro_line|#include &quot;isl_38xx.h&quot;
 macro_line|#include &quot;isl_oid.h&quot;
 macro_line|#include &quot;islpci_mgt.h&quot;
@@ -512,14 +495,6 @@ id|new_state
 suffix:semicolon
 DECL|macro|ISLPCI_TX_TIMEOUT
 mdefine_line|#define ISLPCI_TX_TIMEOUT               (2*HZ)
-macro_line|#if (LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,75))
-DECL|macro|irqreturn_t
-macro_line|# define irqreturn_t void
-DECL|macro|IRQ_HANDLED
-macro_line|# define IRQ_HANDLED
-DECL|macro|IRQ_NONE
-macro_line|# define IRQ_NONE
-macro_line|#endif
 id|irqreturn_t
 id|islpci_interrupt
 c_func

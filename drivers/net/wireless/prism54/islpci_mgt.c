@@ -3,10 +3,10 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
+macro_line|#include &quot;prismcompat.h&quot;
 macro_line|#include &quot;isl_38xx.h&quot;
 macro_line|#include &quot;islpci_mgt.h&quot;
 macro_line|#include &quot;isl_oid.h&quot;&t;&t;/* additional types and defs for isl38xx fw */
@@ -1596,23 +1596,12 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,6,0)
 id|DEFINE_WAIT
 c_func
 (paren
 id|wait
 )paren
 suffix:semicolon
-macro_line|#else
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1627,7 +1616,6 @@ r_return
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,6,0)
 id|prepare_to_wait
 c_func
 (paren
@@ -1640,24 +1628,6 @@ comma
 id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
-macro_line|#else
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|add_wait_queue
-c_func
-(paren
-op_amp
-id|priv-&gt;mgmt_wqueue
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-macro_line|#endif
 id|err
 op_assign
 id|islpci_mgt_transmit
@@ -1788,7 +1758,6 @@ suffix:semicolon
 multiline_comment|/* TODO: we should reset the device here */
 id|out
 suffix:colon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,6,0)
 id|finish_wait
 c_func
 (paren
@@ -1799,24 +1768,6 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-macro_line|#else
-id|remove_wait_queue
-c_func
-(paren
-op_amp
-id|priv-&gt;mgmt_wqueue
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
-macro_line|#endif
 id|up
 c_func
 (paren

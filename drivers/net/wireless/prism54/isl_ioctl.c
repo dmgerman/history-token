@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &quot;prismcompat.h&quot;
 macro_line|#include &quot;isl_ioctl.h&quot;
 macro_line|#include &quot;islpci_mgt.h&quot;
 macro_line|#include &quot;isl_oid.h&quot;&t;&t;/* additional types and defs for isl38xx fw */
