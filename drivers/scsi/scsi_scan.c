@@ -3481,6 +3481,16 @@ r_struct
 id|scsi_driver
 op_star
 id|drv
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;driver
+)paren
+r_return
+suffix:semicolon
+id|drv
 op_assign
 id|to_scsi_driver
 c_func
