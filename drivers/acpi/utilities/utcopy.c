@@ -1177,12 +1177,12 @@ id|dest_desc-&gt;common.flags
 op_assign
 id|source_desc-&gt;common.flags
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Allocate and copy the actual buffer if and only if:&n;&t;&t; * 1) There is a valid buffer (length &gt; 0)&n;&t;&t; * 2) The buffer is not static (not in an ACPI table) (in this case,&n;&t;&t; *    the actual pointer was already copied above)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Allocate and copy the actual buffer if and only if:&n;&t;&t; * 1) There is a valid buffer pointer&n;&t;&t; * 2) The buffer is not static (not in an ACPI table) (in this case,&n;&t;&t; *    the actual pointer was already copied above)&n;&t;&t; */
 r_if
 c_cond
 (paren
 (paren
-id|source_desc-&gt;buffer.length
+id|source_desc-&gt;buffer.pointer
 )paren
 op_logical_and
 (paren
@@ -1230,12 +1230,12 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Allocate and copy the actual string if and only if:&n;&t;&t; * 1) There is a valid string (length &gt; 0)&n;&t;&t; * 2) The string is not static (not in an ACPI table) (in this case,&n;&t;&t; *    the actual pointer was already copied above)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Allocate and copy the actual string if and only if:&n;&t;&t; * 1) There is a valid string pointer&n;&t;&t; * 2) The string is not static (not in an ACPI table) (in this case,&n;&t;&t; *    the actual pointer was already copied above)&n;&t;&t; */
 r_if
 c_cond
 (paren
 (paren
-id|source_desc-&gt;string.length
+id|source_desc-&gt;string.pointer
 )paren
 op_logical_and
 (paren

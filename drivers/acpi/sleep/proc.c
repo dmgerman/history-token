@@ -67,6 +67,7 @@ id|sleep_states
 id|i
 )braket
 )paren
+(brace
 id|seq_printf
 c_func
 (paren
@@ -77,6 +78,24 @@ comma
 id|i
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|ACPI_STATE_S4
+op_logical_and
+id|acpi_gbl_FACS-&gt;S4bios_f
+)paren
+id|seq_printf
+c_func
+(paren
+id|seq
+comma
+l_string|&quot;S4bios &quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 id|seq_puts
 c_func

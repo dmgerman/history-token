@@ -653,6 +653,8 @@ id|DM_DIR
 )paren
 op_plus
 l_int|1
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

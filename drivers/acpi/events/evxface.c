@@ -1074,9 +1074,9 @@ id|acpi_status
 id|status
 suffix:semicolon
 r_struct
-id|acpi_gpe_number_info
+id|acpi_gpe_event_info
 op_star
-id|gpe_number_info
+id|gpe_event_info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -1098,9 +1098,9 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/* Ensure that we have a valid GPE number */
-id|gpe_number_info
+id|gpe_event_info
 op_assign
-id|acpi_ev_get_gpe_number_info
+id|acpi_ev_get_gpe_event_info
 (paren
 id|gpe_number
 )paren
@@ -1109,7 +1109,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|gpe_number_info
+id|gpe_event_info
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -1144,7 +1144,7 @@ multiline_comment|/* Make sure that there isn&squot;t a handler there already */
 r_if
 c_cond
 (paren
-id|gpe_number_info-&gt;handler
+id|gpe_event_info-&gt;handler
 )paren
 (brace
 id|status
@@ -1156,15 +1156,15 @@ id|cleanup
 suffix:semicolon
 )brace
 multiline_comment|/* Install the handler */
-id|gpe_number_info-&gt;handler
+id|gpe_event_info-&gt;handler
 op_assign
 id|handler
 suffix:semicolon
-id|gpe_number_info-&gt;context
+id|gpe_event_info-&gt;context
 op_assign
 id|context
 suffix:semicolon
-id|gpe_number_info-&gt;type
+id|gpe_event_info-&gt;type
 op_assign
 (paren
 id|u8
@@ -1176,7 +1176,7 @@ id|status
 op_assign
 id|acpi_hw_clear_gpe
 (paren
-id|gpe_number
+id|gpe_event_info
 )paren
 suffix:semicolon
 r_if
@@ -1196,7 +1196,7 @@ id|status
 op_assign
 id|acpi_hw_enable_gpe
 (paren
-id|gpe_number
+id|gpe_event_info
 )paren
 suffix:semicolon
 id|cleanup
@@ -1231,9 +1231,9 @@ id|acpi_status
 id|status
 suffix:semicolon
 r_struct
-id|acpi_gpe_number_info
+id|acpi_gpe_event_info
 op_star
-id|gpe_number_info
+id|gpe_event_info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -1255,9 +1255,9 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/* Ensure that we have a valid GPE number */
-id|gpe_number_info
+id|gpe_event_info
 op_assign
-id|acpi_ev_get_gpe_number_info
+id|acpi_ev_get_gpe_event_info
 (paren
 id|gpe_number
 )paren
@@ -1266,7 +1266,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|gpe_number_info
+id|gpe_event_info
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -1280,7 +1280,7 @@ id|status
 op_assign
 id|acpi_hw_disable_gpe
 (paren
-id|gpe_number
+id|gpe_event_info
 )paren
 suffix:semicolon
 r_if
@@ -1324,7 +1324,7 @@ multiline_comment|/* Make sure that the installed handler is the same */
 r_if
 c_cond
 (paren
-id|gpe_number_info-&gt;handler
+id|gpe_event_info-&gt;handler
 op_ne
 id|handler
 )paren
@@ -1334,7 +1334,7 @@ r_void
 )paren
 id|acpi_hw_enable_gpe
 (paren
-id|gpe_number
+id|gpe_event_info
 )paren
 suffix:semicolon
 id|status
@@ -1346,11 +1346,11 @@ id|cleanup
 suffix:semicolon
 )brace
 multiline_comment|/* Remove the handler */
-id|gpe_number_info-&gt;handler
+id|gpe_event_info-&gt;handler
 op_assign
 l_int|NULL
 suffix:semicolon
-id|gpe_number_info-&gt;context
+id|gpe_event_info-&gt;context
 op_assign
 l_int|NULL
 suffix:semicolon

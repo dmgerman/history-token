@@ -2094,10 +2094,6 @@ DECL|macro|usb_sndintpipe
 mdefine_line|#define usb_sndintpipe(dev,endpoint)&t;((PIPE_INTERRUPT &lt;&lt; 30) | __create_pipe(dev,endpoint))
 DECL|macro|usb_rcvintpipe
 mdefine_line|#define usb_rcvintpipe(dev,endpoint)&t;((PIPE_INTERRUPT &lt;&lt; 30) | __create_pipe(dev,endpoint) | USB_DIR_IN)
-DECL|macro|usb_snddefctrl
-mdefine_line|#define usb_snddefctrl(dev)&t;&t;((PIPE_CONTROL &lt;&lt; 30))
-DECL|macro|usb_rcvdefctrl
-mdefine_line|#define usb_rcvdefctrl(dev)&t;&t;((PIPE_CONTROL &lt;&lt; 30) | USB_DIR_IN)
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * Debugging and troubleshooting/diagnostic helpers.&n; */
 r_void

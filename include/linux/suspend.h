@@ -253,6 +253,15 @@ r_int
 id|resume
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|do_suspend_lowlevel_s4bios
+c_func
+(paren
+r_int
+id|resume
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|function|software_suspend
 r_static

@@ -80,10 +80,10 @@ id|urb_priv
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * URB goes back to driver, and isn&squot;t reissued.&n; * It&squot;s completely gone from HC data structures.&n; * PRECONDITION:  no locks held  (Giveback can call into HCD.)&n; */
-DECL|function|finish_urb
+multiline_comment|/*&n; * URB goes back to driver, and isn&squot;t reissued.&n; * It&squot;s completely gone from HC data structures.&n; * PRECONDITION:  no locks held, irqs blocked  (Giveback can call into HCD.)&n; */
 r_static
 r_void
+DECL|function|finish_urb
 id|finish_urb
 (paren
 r_struct
@@ -102,10 +102,6 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 singleline_comment|// ASSERT (urb-&gt;hcpriv != 0);
 id|urb_free_priv
 (paren
@@ -118,12 +114,10 @@ id|urb-&gt;hcpriv
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 (paren
 op_amp
 id|urb-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -141,12 +135,10 @@ id|urb-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 (paren
 op_amp
 id|urb-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 singleline_comment|// what lock protects these?
@@ -162,7 +154,13 @@ id|urb-&gt;pipe
 r_case
 id|PIPE_ISOCHRONOUS
 suffix:colon
-id|ohci-&gt;hcd.self.bandwidth_isoc_reqs
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_isoc_reqs
 op_decrement
 suffix:semicolon
 r_break
@@ -170,7 +168,13 @@ suffix:semicolon
 r_case
 id|PIPE_INTERRUPT
 suffix:colon
-id|ohci-&gt;hcd.self.bandwidth_int_reqs
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_int_reqs
 op_decrement
 suffix:semicolon
 r_break
@@ -346,12 +350,11 @@ id|ed
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef OHCI_VERBOSE_DEBUG
-id|dbg
+id|ohci_vdbg
 (paren
-l_string|&quot;%s: link %sed %p branch %d [%dus.], interval %d&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;link %sed %p branch %d [%dus.], interval %d&bslash;n&quot;
 comma
 (paren
 id|ed-&gt;hwINFO
@@ -373,7 +376,6 @@ comma
 id|ed-&gt;interval
 )paren
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -505,7 +507,13 @@ op_add_assign
 id|ed-&gt;load
 suffix:semicolon
 )brace
-id|ohci-&gt;hcd.self.bandwidth_allocated
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_allocated
 op_add_assign
 id|ed-&gt;load
 op_div
@@ -732,9 +740,9 @@ OL
 l_int|0
 )paren
 (brace
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|ohci-&gt;hcd.controller
+id|ohci
 comma
 l_string|&quot;ERR %d, interval %d msecs, load %d&bslash;n&quot;
 comma
@@ -884,18 +892,23 @@ op_sub_assign
 id|ed-&gt;load
 suffix:semicolon
 )brace
-id|ohci-&gt;hcd.self.bandwidth_allocated
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_allocated
 op_sub_assign
 id|ed-&gt;load
 op_div
 id|ed-&gt;interval
 suffix:semicolon
-macro_line|#ifdef OHCI_VERBOSE_DEBUG
-id|dbg
+id|ohci_vdbg
 (paren
-l_string|&quot;%s: unlink %sed %p branch %d [%dus.], interval %d&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;unlink %sed %p branch %d [%dus.], interval %d&bslash;n&quot;
 comma
 (paren
 id|ed-&gt;hwINFO
@@ -917,7 +930,6 @@ comma
 id|ed-&gt;interval
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* unlink an ed from one of the HC chains. &n; * just the link to the ed is unlinked.&n; * the link from the ed still points to another operational ed or 0&n; * so the HC can eventually finish the processing of the unlinked ed&n; */
 DECL|function|ed_deschedule
@@ -2036,7 +2048,13 @@ r_case
 id|PIPE_INTERRUPT
 suffix:colon
 multiline_comment|/* ... and periodic urbs have extra accounting */
-id|ohci-&gt;hcd.self.bandwidth_int_reqs
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_int_reqs
 op_increment
 suffix:semicolon
 multiline_comment|/* FALLTHROUGH */
@@ -2374,7 +2392,13 @@ id|cnt
 )paren
 suffix:semicolon
 )brace
-id|ohci-&gt;hcd.self.bandwidth_isoc_reqs
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_isoc_reqs
 op_increment
 suffix:semicolon
 r_break
@@ -2529,7 +2553,6 @@ id|cc_to_error
 id|cc
 )braket
 suffix:semicolon
-macro_line|#ifdef VERBOSE_DEBUG
 r_if
 c_cond
 (paren
@@ -2537,9 +2560,11 @@ id|cc
 op_ne
 id|TD_CC_NOERROR
 )paren
-id|dbg
+id|ohci_vdbg
 (paren
-l_string|&quot;  urb %p iso TD %p (%d) len %d CC %d&quot;
+id|ohci
+comma
+l_string|&quot;urb %p iso td %p (%d) len %d cc %d&bslash;n&quot;
 comma
 id|urb
 comma
@@ -2554,7 +2579,6 @@ comma
 id|cc
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* BULK, INT, CONTROL ... drivers see aggregate length/status,&n;&t; * except that &quot;setup&quot; bytes aren&squot;t counted and &quot;short&quot; transfers&n;&t; * might not be reported as errors.&n;&t; */
 )brace
 r_else
@@ -2715,7 +2739,6 @@ op_minus
 id|td-&gt;data_dma
 suffix:semicolon
 )brace
-macro_line|#ifdef VERBOSE_DEBUG
 r_if
 c_cond
 (paren
@@ -2727,9 +2750,11 @@ id|cc
 OL
 l_int|0x0E
 )paren
-id|dbg
+id|ohci_vdbg
 (paren
-l_string|&quot;  urb %p TD %p (%d) CC %d, len=%d/%d&quot;
+id|ohci
+comma
+l_string|&quot;urb %p td %p (%d) cc %d, len=%d/%d&bslash;n&quot;
 comma
 id|urb
 comma
@@ -2746,7 +2771,6 @@ comma
 id|urb-&gt;transfer_buffer_length
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -2915,17 +2939,27 @@ op_or
 id|toggle
 suffix:semicolon
 )brace
-multiline_comment|/* help for troubleshooting: */
-id|dev_dbg
+multiline_comment|/* help for troubleshooting:  report anything that&n;&t; * looks odd ... that doesn&squot;t include protocol stalls&n;&t; * (or maybe some other things)&n;&t; */
+r_if
+c_cond
 (paren
-op_amp
-id|urb-&gt;dev-&gt;dev
+id|cc
+op_ne
+id|TD_CC_STALL
+op_logical_or
+op_logical_neg
+id|usb_pipecontrol
+(paren
+id|urb-&gt;pipe
+)paren
+)paren
+id|ohci_dbg
+(paren
+id|ohci
 comma
-l_string|&quot;urb %p usb-%s-%s ep-%d-%s cc %d --&gt; status %d&bslash;n&quot;
+l_string|&quot;urb %p path %s ep%d%s %08x cc %d --&gt; status %d&bslash;n&quot;
 comma
 id|urb
-comma
-id|urb-&gt;dev-&gt;bus-&gt;bus_name
 comma
 id|urb-&gt;dev-&gt;devpath
 comma
@@ -2940,9 +2974,14 @@ id|urb-&gt;pipe
 )paren
 ques
 c_cond
-l_string|&quot;IN&quot;
+l_string|&quot;in&quot;
 suffix:colon
-l_string|&quot;OUT&quot;
+l_string|&quot;out&quot;
+comma
+id|le32_to_cpu
+(paren
+id|td-&gt;hwINFO
+)paren
 comma
 id|cc
 comma
@@ -3037,11 +3076,11 @@ op_logical_neg
 id|td
 )paren
 (brace
-id|err
+id|ohci_err
 (paren
-l_string|&quot;%s bad entry %8x&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;bad entry %8x&bslash;n&quot;
 comma
 id|td_dma
 )paren
@@ -3128,9 +3167,9 @@ multiline_comment|/* wrap-aware logic stolen from &lt;linux/jiffies.h&gt; */
 DECL|macro|tick_before
 mdefine_line|#define tick_before(t1,t2) ((((s16)(t1))-((s16)(t2))) &lt; 0)
 multiline_comment|/* there are some urbs/eds to unlink; called in_irq(), with HCD locked */
-DECL|function|finish_unlinks
 r_static
 r_void
+DECL|function|finish_unlinks
 id|finish_unlinks
 (paren
 r_struct
@@ -3595,9 +3634,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Process normal completions (error or success) and clean the schedules.&n; *&n; * This is the main path for handing urbs back to drivers.  The only other&n; * path is finish_unlinks(), which unlinks URBs using ed_rm_list, instead of&n; * scanning the (re-reversed) donelist as this does.&n; */
-DECL|function|dl_done_list
 r_static
 r_void
+DECL|function|dl_done_list
 id|dl_done_list
 (paren
 r_struct
@@ -3681,12 +3720,10 @@ op_eq
 id|urb_priv-&gt;length
 )paren
 (brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 (paren
 op_amp
 id|ohci-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|finish_urb
@@ -3698,12 +3735,10 @@ comma
 id|regs
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 (paren
 op_amp
 id|ohci-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace

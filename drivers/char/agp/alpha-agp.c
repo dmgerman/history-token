@@ -734,7 +734,7 @@ id|agp_bridge-&gt;cant_use_aperture
 op_assign
 l_int|1
 suffix:semicolon
-id|agp_bridgevm_ops
+id|agp_bridge-&gt;vm_ops
 op_assign
 op_amp
 id|alpha_core_agp_vm_ops

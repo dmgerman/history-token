@@ -282,8 +282,10 @@ id|mpc_config_processor
 op_star
 id|m
 comma
-r_int
-id|quad
+r_struct
+id|mpc_config_translation
+op_star
+id|translation_record
 )paren
 (brace
 id|printk

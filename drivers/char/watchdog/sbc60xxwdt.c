@@ -409,15 +409,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|nowayout
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
 multiline_comment|/* Good, fire up the show */
 id|wdt_is_open
 op_assign

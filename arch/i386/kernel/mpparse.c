@@ -280,8 +280,6 @@ id|translation_table
 (braket
 id|mpc_record
 )braket
-op_member_access_from_pointer
-id|trans_quad
 )paren
 suffix:semicolon
 r_if

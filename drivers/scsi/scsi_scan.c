@@ -5107,7 +5107,6 @@ id|SCSI_SCAN_LUN_PRESENT
 r_if
 c_cond
 (paren
-op_star
 id|sdevp
 )paren
 op_star

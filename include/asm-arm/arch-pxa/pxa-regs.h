@@ -651,32 +651,16 @@ mdefine_line|#define MSR_DDSR&t;(1 &lt;&lt; 1)&t;/* Delta Data Set Ready */
 DECL|macro|MSR_DCTS
 mdefine_line|#define MSR_DCTS&t;(1 &lt;&lt; 0)&t;/* Delta Clear To Send */
 multiline_comment|/*&n; * IrSR (Infrared Selection Register)&n; */
-DECL|macro|IrSR_OFFSET
-mdefine_line|#define IrSR_OFFSET 0x20
-DECL|macro|IrSR_RXPL_NEG_IS_ZERO
-mdefine_line|#define IrSR_RXPL_NEG_IS_ZERO (1&lt;&lt;4)
-DECL|macro|IrSR_RXPL_POS_IS_ZERO
-mdefine_line|#define IrSR_RXPL_POS_IS_ZERO 0x0
-DECL|macro|IrSR_TXPL_NEG_IS_ZERO
-mdefine_line|#define IrSR_TXPL_NEG_IS_ZERO (1&lt;&lt;3)
-DECL|macro|IrSR_TXPL_POS_IS_ZERO
-mdefine_line|#define IrSR_TXPL_POS_IS_ZERO 0x0
-DECL|macro|IrSR_XMODE_PULSE_1_6
-mdefine_line|#define IrSR_XMODE_PULSE_1_6  (1&lt;&lt;2)
-DECL|macro|IrSR_XMODE_PULSE_3_16
-mdefine_line|#define IrSR_XMODE_PULSE_3_16 0x0
-DECL|macro|IrSR_RCVEIR_IR_MODE
-mdefine_line|#define IrSR_RCVEIR_IR_MODE   (1&lt;&lt;1)
-DECL|macro|IrSR_RCVEIR_UART_MODE
-mdefine_line|#define IrSR_RCVEIR_UART_MODE 0x0
-DECL|macro|IrSR_XMITIR_IR_MODE
-mdefine_line|#define IrSR_XMITIR_IR_MODE   (1&lt;&lt;0)
-DECL|macro|IrSR_XMITIR_UART_MODE
-mdefine_line|#define IrSR_XMITIR_UART_MODE 0x0
-DECL|macro|IrSR_IR_RECEIVE_ON
-mdefine_line|#define IrSR_IR_RECEIVE_ON (&bslash;&n;                IrSR_RXPL_NEG_IS_ZERO | &bslash;&n;                IrSR_TXPL_POS_IS_ZERO | &bslash;&n;                IrSR_XMODE_PULSE_3_16 | &bslash;&n;                IrSR_RCVEIR_IR_MODE   | &bslash;&n;                IrSR_XMITIR_UART_MODE)
-DECL|macro|IrSR_IR_TRANSMIT_ON
-mdefine_line|#define IrSR_IR_TRANSMIT_ON (&bslash;&n;                IrSR_RXPL_NEG_IS_ZERO | &bslash;&n;                IrSR_TXPL_POS_IS_ZERO | &bslash;&n;                IrSR_XMODE_PULSE_3_16 | &bslash;&n;                IrSR_RCVEIR_UART_MODE | &bslash;&n;                IrSR_XMITIR_IR_MODE)
+DECL|macro|STISR_RXPL
+mdefine_line|#define STISR_RXPL      (1 &lt;&lt; 4)        /* Receive Data Polarity */
+DECL|macro|STISR_TXPL
+mdefine_line|#define STISR_TXPL      (1 &lt;&lt; 3)        /* Transmit Data Polarity */
+DECL|macro|STISR_XMODE
+mdefine_line|#define STISR_XMODE     (1 &lt;&lt; 2)        /* Transmit Pulse Width Select */
+DECL|macro|STISR_RCVEIR
+mdefine_line|#define STISR_RCVEIR    (1 &lt;&lt; 1)        /* Receiver SIR Enable */
+DECL|macro|STISR_XMITIR
+mdefine_line|#define STISR_XMITIR    (1 &lt;&lt; 0)        /* Transmitter SIR Enable */
 multiline_comment|/*&n; * I2C registers&n; */
 DECL|macro|IBMR
 mdefine_line|#define IBMR&t;&t;__REG(0x40301680)  /* I2C Bus Monitor Register - IBMR */
@@ -688,69 +672,76 @@ DECL|macro|ISR
 mdefine_line|#define ISR&t;&t;__REG(0x40301698)  /* I2C Status Register - ISR */
 DECL|macro|ISAR
 mdefine_line|#define ISAR&t;&t;__REG(0x403016A0)  /* I2C Slave Address Register - ISAR */
-multiline_comment|/* ----- Control register bits ---------------------------------------- */
 DECL|macro|ICR_START
-mdefine_line|#define ICR_START&t;0x1&t;&t;/* start bit */
+mdefine_line|#define ICR_START&t;(1 &lt;&lt; 0)&t;   /* start bit */
 DECL|macro|ICR_STOP
-mdefine_line|#define ICR_STOP&t;0x2&t;&t;/* stop bit */
+mdefine_line|#define ICR_STOP&t;(1 &lt;&lt; 1)&t;   /* stop bit */
 DECL|macro|ICR_ACKNAK
-mdefine_line|#define ICR_ACKNAK&t;0x4&t;&t;/* send ACK(0) or NAK(1) */
+mdefine_line|#define ICR_ACKNAK&t;(1 &lt;&lt; 2)&t;   /* send ACK(0) or NAK(1) */
 DECL|macro|ICR_TB
-mdefine_line|#define ICR_TB&t;&t;0x8 &t;&t;/* transfer byte bit */
+mdefine_line|#define ICR_TB&t;&t;(1 &lt;&lt; 3)&t;   /* transfer byte bit */
 DECL|macro|ICR_MA
-mdefine_line|#define ICR_MA&t;&t;0x10&t;&t;/* master abort */
+mdefine_line|#define ICR_MA&t;&t;(1 &lt;&lt; 4)&t;   /* master abort */
 DECL|macro|ICR_SCLE
-mdefine_line|#define ICR_SCLE&t;0x20&t;&t;/* master clock enable */
+mdefine_line|#define ICR_SCLE&t;(1 &lt;&lt; 5)&t;   /* master clock enable */
 DECL|macro|ICR_IUE
-mdefine_line|#define ICR_IUE&t;&t;0x40&t;&t;/* unit enable */
+mdefine_line|#define ICR_IUE&t;&t;(1 &lt;&lt; 6)&t;   /* unit enable */
 DECL|macro|ICR_GCD
-mdefine_line|#define ICR_GCD&t;&t;0x80&t;&t;/* general call disable */
+mdefine_line|#define ICR_GCD&t;&t;(1 &lt;&lt; 7)&t;   /* general call disable */
 DECL|macro|ICR_ITEIE
-mdefine_line|#define ICR_ITEIE&t;0x100&t;&t;/* enable tx interrupts */
+mdefine_line|#define ICR_ITEIE&t;(1 &lt;&lt; 8)&t;   /* enable tx interrupts */
 DECL|macro|ICR_IRFIE
-mdefine_line|#define ICR_IRFIE&t;0x200&t;&t;/* enable rx interrupts */
+mdefine_line|#define ICR_IRFIE&t;(1 &lt;&lt; 9)&t;   /* enable rx interrupts */
 DECL|macro|ICR_BEIE
-mdefine_line|#define ICR_BEIE&t;0x400&t;&t;/* enable bus error ints */
+mdefine_line|#define ICR_BEIE&t;(1 &lt;&lt; 10)&t;   /* enable bus error ints */
 DECL|macro|ICR_SSDIE
-mdefine_line|#define ICR_SSDIE&t;0x800&t;&t;/* slave STOP detected int enable */
+mdefine_line|#define ICR_SSDIE&t;(1 &lt;&lt; 11)&t;   /* slave STOP detected int enable */
 DECL|macro|ICR_ALDIE
-mdefine_line|#define ICR_ALDIE&t;0x1000  &t;/* enable arbitration interrupt */
+mdefine_line|#define ICR_ALDIE&t;(1 &lt;&lt; 12)&t;   /* enable arbitration interrupt */
 DECL|macro|ICR_SADIE
-mdefine_line|#define ICR_SADIE&t;0x2000&t;&t;/* slave address detected int enable */
+mdefine_line|#define ICR_SADIE&t;(1 &lt;&lt; 13)&t;   /* slave address detected int enable */
 DECL|macro|ICR_UR
-mdefine_line|#define ICR_UR&t;&t;0x4000&t;&t;/* unit reset */
-multiline_comment|/* ----- Status register bits ----------------------------------------- */
+mdefine_line|#define ICR_UR&t;&t;(1 &lt;&lt; 14)&t;   /* unit reset */
 DECL|macro|ISR_RWM
-mdefine_line|#define ISR_RWM         0x1&t;&t;/* read/write mode */
+mdefine_line|#define ISR_RWM&t;&t;(1 &lt;&lt; 0)&t;   /* read/write mode */
 DECL|macro|ISR_ACKNAK
-mdefine_line|#define ISR_ACKNAK      0x2&t;&t;/* ack/nak status */
+mdefine_line|#define ISR_ACKNAK&t;(1 &lt;&lt; 1)&t;   /* ack/nak status */
 DECL|macro|ISR_UB
-mdefine_line|#define ISR_UB          0x4&t;&t;/* unit busy */
+mdefine_line|#define ISR_UB&t;&t;(1 &lt;&lt; 2)&t;   /* unit busy */
 DECL|macro|ISR_IBB
-mdefine_line|#define ISR_IBB         0x8&t;&t;/* bus busy */
+mdefine_line|#define ISR_IBB&t;&t;(1 &lt;&lt; 3)&t;   /* bus busy */
 DECL|macro|ISR_SSD
-mdefine_line|#define ISR_SSD         0x10&t;&t;/* slave stop detected */
+mdefine_line|#define ISR_SSD&t;&t;(1 &lt;&lt; 4)&t;   /* slave stop detected */
 DECL|macro|ISR_ALD
-mdefine_line|#define ISR_ALD         0x20&t;&t;/* arbitration loss detected */
+mdefine_line|#define ISR_ALD&t;&t;(1 &lt;&lt; 5)&t;   /* arbitration loss detected */
 DECL|macro|ISR_ITE
-mdefine_line|#define ISR_ITE         0x40            /* tx buffer empty */
+mdefine_line|#define ISR_ITE&t;&t;(1 &lt;&lt; 6)&t;   /* tx buffer empty */
 DECL|macro|ISR_IRF
-mdefine_line|#define ISR_IRF         0x80            /* rx buffer full */
+mdefine_line|#define ISR_IRF&t;&t;(1 &lt;&lt; 7)&t;   /* rx buffer full */
 DECL|macro|ISR_GCAD
-mdefine_line|#define ISR_GCAD        0x100&t;&t;/* general call address detected */
+mdefine_line|#define ISR_GCAD&t;(1 &lt;&lt; 8)&t;   /* general call address detected */
 DECL|macro|ISR_SAD
-mdefine_line|#define ISR_SAD         0x200&t;&t;/* slave address detected */
+mdefine_line|#define ISR_SAD&t;&t;(1 &lt;&lt; 9)&t;   /* slave address detected */
 DECL|macro|ISR_BED
-mdefine_line|#define ISR_BED         0x400           /* bus error no ACK/NAK */
+mdefine_line|#define ISR_BED&t;&t;(1 &lt;&lt; 10)&t;   /* bus error no ACK/NAK */
 multiline_comment|/*&n; * Serial Audio Controller&n; */
-multiline_comment|/* FIXME the audio defines collide w/ the SA1111 defines.  I don&squot;t like these&n; * short defines because there is too much chance of namespace collision */
-singleline_comment|//#define SACR0&t;&t;__REG(0x40400000)  /* Global Control Register */
-singleline_comment|//#define SACR1&t;&t;__REG(0x40400004)  /* Serial Audio I 2 S/MSB-Justified Control Register */
-singleline_comment|//#define SASR0&t;&t;__REG(0x4040000C)  /* Serial Audio I 2 S/MSB-Justified Interface and FIFO Status Register */
-singleline_comment|//#define SAIMR&t;&t;__REG(0x40400014)  /* Serial Audio Interrupt Mask Register */
-singleline_comment|//#define SAICR&t;&t;__REG(0x40400018)  /* Serial Audio Interrupt Clear Register */
-singleline_comment|//#define SADIV&t;&t;__REG(0x40400060)  /* Audio Clock Divider Register. */
-singleline_comment|//#define SADR&t;&t;__REG(0x40400080)  /* Serial Audio Data Register (TX and RX FIFO access Register). */
+multiline_comment|/* FIXME: This clash with SA1111 defines */
+macro_line|#ifndef CONFIG_SA1111
+DECL|macro|SACR0
+mdefine_line|#define SACR0&t;&t;__REG(0x40400000)  /* Global Control Register */
+DECL|macro|SACR1
+mdefine_line|#define SACR1&t;&t;__REG(0x40400004)  /* Serial Audio I 2 S/MSB-Justified Control Register */
+DECL|macro|SASR0
+mdefine_line|#define SASR0&t;&t;__REG(0x4040000C)  /* Serial Audio I 2 S/MSB-Justified Interface and FIFO Status Register */
+DECL|macro|SAIMR
+mdefine_line|#define SAIMR&t;&t;__REG(0x40400014)  /* Serial Audio Interrupt Mask Register */
+DECL|macro|SAICR
+mdefine_line|#define SAICR&t;&t;__REG(0x40400018)  /* Serial Audio Interrupt Clear Register */
+DECL|macro|SADIV
+mdefine_line|#define SADIV&t;&t;__REG(0x40400060)  /* Audio Clock Divider Register. */
+DECL|macro|SADR
+mdefine_line|#define SADR&t;&t;__REG(0x40400080)  /* Serial Audio Data Register (TX and RX FIFO access Register). */
+macro_line|#endif
 multiline_comment|/*&n; * AC97 Controller registers&n; */
 DECL|macro|POCR
 mdefine_line|#define POCR&t;&t;__REG(0x40500000)  /* PCM Out Control Register */
@@ -1141,6 +1132,48 @@ DECL|macro|ICSR0
 mdefine_line|#define ICSR0&t;&t;__REG(0x40800014)  /* ICP Status Register 0 */
 DECL|macro|ICSR1
 mdefine_line|#define ICSR1&t;&t;__REG(0x40800018)  /* ICP Status Register 1 */
+DECL|macro|ICCR0_AME
+mdefine_line|#define ICCR0_AME       (1 &lt;&lt; 7)           /* Adress match enable */
+DECL|macro|ICCR0_TIE
+mdefine_line|#define ICCR0_TIE       (1 &lt;&lt; 6)           /* Transmit FIFO interrupt enable */
+DECL|macro|ICCR0_RIE
+mdefine_line|#define ICCR0_RIE       (1 &lt;&lt; 5)           /* Recieve FIFO interrupt enable */
+DECL|macro|ICCR0_RXE
+mdefine_line|#define ICCR0_RXE       (1 &lt;&lt; 4)           /* Receive enable */
+DECL|macro|ICCR0_TXE
+mdefine_line|#define ICCR0_TXE       (1 &lt;&lt; 3)           /* Transmit enable */
+DECL|macro|ICCR0_TUS
+mdefine_line|#define ICCR0_TUS       (1 &lt;&lt; 2)           /* Transmit FIFO underrun select */
+DECL|macro|ICCR0_LBM
+mdefine_line|#define ICCR0_LBM       (1 &lt;&lt; 1)           /* Loopback mode */
+DECL|macro|ICCR0_ITR
+mdefine_line|#define ICCR0_ITR       (1 &lt;&lt; 0)           /* IrDA transmission */
+DECL|macro|ICSR0_FRE
+mdefine_line|#define ICSR0_FRE       (1 &lt;&lt; 5)           /* Framing error */
+DECL|macro|ICSR0_RFS
+mdefine_line|#define ICSR0_RFS       (1 &lt;&lt; 4)           /* Receive FIFO service request */
+DECL|macro|ICSR0_TFS
+mdefine_line|#define ICSR0_TFS       (1 &lt;&lt; 3)           /* Transnit FIFO service request */
+DECL|macro|ICSR0_RAB
+mdefine_line|#define ICSR0_RAB       (1 &lt;&lt; 2)           /* Receiver abort */
+DECL|macro|ICSR0_TUR
+mdefine_line|#define ICSR0_TUR       (1 &lt;&lt; 1)           /* Trunsmit FIFO underun */
+DECL|macro|ICSR0_EIF
+mdefine_line|#define ICSR0_EIF       (1 &lt;&lt; 0)           /* End/Error in FIFO */
+DECL|macro|ICSR1_ROR
+mdefine_line|#define ICSR1_ROR       (1 &lt;&lt; 6)           /* Receiver FIFO underrun  */
+DECL|macro|ICSR1_CRE
+mdefine_line|#define ICSR1_CRE       (1 &lt;&lt; 5)           /* CRC error */
+DECL|macro|ICSR1_EOF
+mdefine_line|#define ICSR1_EOF       (1 &lt;&lt; 4)           /* End of frame */
+DECL|macro|ICSR1_TNF
+mdefine_line|#define ICSR1_TNF       (1 &lt;&lt; 3)           /* Transmit FIFO not full */
+DECL|macro|ICSR1_RNE
+mdefine_line|#define ICSR1_RNE       (1 &lt;&lt; 2)           /* Receive FIFO not empty */
+DECL|macro|ICSR1_TBY
+mdefine_line|#define ICSR1_TBY       (1 &lt;&lt; 1)           /* Tramsmiter busy flag */
+DECL|macro|ICSR1_RSY
+mdefine_line|#define ICSR1_RSY       (1 &lt;&lt; 0)           /* Recevier synchronized flag */
 multiline_comment|/*&n; * Real Time Clock&n; */
 DECL|macro|RCNR
 mdefine_line|#define RCNR&t;&t;__REG(0x40900000)  /* RTC Count Register */
@@ -1888,12 +1921,48 @@ DECL|macro|LCCR0_BM
 mdefine_line|#define LCCR0_BM&t;(1 &lt;&lt; 20) &t;/* Branch mask */
 DECL|macro|LCCR0_OUM
 mdefine_line|#define LCCR0_OUM&t;(1 &lt;&lt; 21)&t;/* Output FIFO underrun mask */
-DECL|macro|LCCR3_PCD
+DECL|macro|LCCR1_PPL
+mdefine_line|#define LCCR1_PPL       Fld (10, 0)      /* Pixels Per Line - 1 */
+DECL|macro|LCCR1_DisWdth
+mdefine_line|#define LCCR1_DisWdth(Pixel)            /* Display Width [1..800 pix.]  */ &bslash;&n;                        (((Pixel) - 1) &lt;&lt; FShft (LCCR1_PPL))
+DECL|macro|LCCR1_HSW
+mdefine_line|#define LCCR1_HSW       Fld (6, 10)     /* Horizontal Synchronization     */
+DECL|macro|LCCR1_HorSnchWdth
+mdefine_line|#define LCCR1_HorSnchWdth(Tpix)         /* Horizontal Synchronization     */ &bslash;&n;                                        /* pulse Width [1..64 Tpix]       */ &bslash;&n;                        (((Tpix) - 1) &lt;&lt; FShft (LCCR1_HSW))
+DECL|macro|LCCR1_ELW
+mdefine_line|#define LCCR1_ELW       Fld (8, 16)     /* End-of-Line pixel clock Wait    */
+multiline_comment|/* count - 1 [Tpix]                */
+DECL|macro|LCCR1_EndLnDel
+mdefine_line|#define LCCR1_EndLnDel(Tpix)            /*  End-of-Line Delay              */ &bslash;&n;                                        /*  [1..256 Tpix]                  */ &bslash;&n;                        (((Tpix) - 1) &lt;&lt; FShft (LCCR1_ELW))
+DECL|macro|LCCR1_BLW
+mdefine_line|#define LCCR1_BLW       Fld (8, 24)     /* Beginning-of-Line pixel clock   */
+multiline_comment|/* Wait count - 1 [Tpix]           */
+DECL|macro|LCCR1_BegLnDel
+mdefine_line|#define LCCR1_BegLnDel(Tpix)            /*  Beginning-of-Line Delay        */ &bslash;&n;                                        /*  [1..256 Tpix]                  */ &bslash;&n;                        (((Tpix) - 1) &lt;&lt; FShft (LCCR1_BLW))
+DECL|macro|LCCR2_LPP
+mdefine_line|#define LCCR2_LPP       Fld (10, 0)     /* Line Per Panel - 1              */
+DECL|macro|LCCR2_DisHght
+mdefine_line|#define LCCR2_DisHght(Line)             /*  Display Height [1..1024 lines] */ &bslash;&n;                        (((Line) - 1) &lt;&lt; FShft (LCCR2_LPP))
+DECL|macro|LCCR2_VSW
+mdefine_line|#define LCCR2_VSW       Fld (6, 10)     /* Vertical Synchronization pulse  */
+multiline_comment|/* Width - 1 [Tln] (L_FCLK)        */
+DECL|macro|LCCR2_VrtSnchWdth
+mdefine_line|#define LCCR2_VrtSnchWdth(Tln)          /*  Vertical Synchronization pulse */ &bslash;&n;                                        /*  Width [1..64 Tln]              */ &bslash;&n;                        (((Tln) - 1) &lt;&lt; FShft (LCCR2_VSW))
+DECL|macro|LCCR2_EFW
+mdefine_line|#define LCCR2_EFW       Fld (8, 16)     /* End-of-Frame line clock Wait    */
+multiline_comment|/* count [Tln]                     */
+DECL|macro|LCCR2_EndFrmDel
+mdefine_line|#define LCCR2_EndFrmDel(Tln)            /*  End-of-Frame Delay             */ &bslash;&n;                                        /*  [0..255 Tln]                   */ &bslash;&n;                        ((Tln) &lt;&lt; FShft (LCCR2_EFW))
+DECL|macro|LCCR2_BFW
+mdefine_line|#define LCCR2_BFW       Fld (8, 24)     /* Beginning-of-Frame line clock   */
+multiline_comment|/* Wait count [Tln]                */
+DECL|macro|LCCR2_BegFrmDel
+mdefine_line|#define LCCR2_BegFrmDel(Tln)            /*  Beginning-of-Frame Delay       */ &bslash;&n;                                        /*  [0..255 Tln]                   */ &bslash;&n;                        ((Tln) &lt;&lt; FShft (LCCR2_BFW))
+macro_line|#if 0
 mdefine_line|#define LCCR3_PCD&t;(0xff)&t;&t;/* Pixel clock divisor */
-DECL|macro|LCCR3_ACB
 mdefine_line|#define LCCR3_ACB&t;(0xff &lt;&lt; 8)&t;/* AC Bias pin frequency */
-DECL|macro|LCCR3_ACB_S
 mdefine_line|#define LCCR3_ACB_S&t;8
+macro_line|#endif
 DECL|macro|LCCR3_API
 mdefine_line|#define LCCR3_API&t;(0xf &lt;&lt; 16)&t;/* AC Bias pin trasitions per interrupt */
 DECL|macro|LCCR3_API_S
@@ -1906,12 +1975,59 @@ DECL|macro|LCCR3_PCP
 mdefine_line|#define LCCR3_PCP&t;(1 &lt;&lt; 22)&t;/* pixel clock polarity */
 DECL|macro|LCCR3_OEP
 mdefine_line|#define LCCR3_OEP&t;(1 &lt;&lt; 23)&t;/* output enable polarity */
-DECL|macro|LCCR3_BPP
+macro_line|#if 0
 mdefine_line|#define LCCR3_BPP&t;(7 &lt;&lt; 24)&t;/* bits per pixel */
-DECL|macro|LCCR3_BPP_S
 mdefine_line|#define LCCR3_BPP_S&t;24
+macro_line|#endif
 DECL|macro|LCCR3_DPC
 mdefine_line|#define LCCR3_DPC&t;(1 &lt;&lt; 27)&t;/* double pixel clock mode */
+DECL|macro|LCCR3_PCD
+mdefine_line|#define LCCR3_PCD       Fld (8, 0)      /* Pixel Clock Divisor */
+DECL|macro|LCCR3_PixClkDiv
+mdefine_line|#define LCCR3_PixClkDiv(Div)            /* Pixel Clock Divisor */ &bslash;&n;                        (((Div) &lt;&lt; FShft (LCCR3_PCD)))
+DECL|macro|LCCR3_BPP
+mdefine_line|#define LCCR3_BPP       Fld (3, 24)     /* Bit Per Pixel */
+DECL|macro|LCCR3_Bpp
+mdefine_line|#define LCCR3_Bpp(Bpp)                  /* Bit Per Pixel */ &bslash;&n;                        (((Bpp) &lt;&lt; FShft (LCCR3_BPP)))
+DECL|macro|LCCR3_ACB
+mdefine_line|#define LCCR3_ACB       Fld (8, 8)      /* AC Bias */
+DECL|macro|LCCR3_Acb
+mdefine_line|#define LCCR3_Acb(Acb)                  /* BAC Bias */ &bslash;&n;                        (((Acb) &lt;&lt; FShft (LCCR3_ACB)))
+DECL|macro|LCCR3_HorSnchH
+mdefine_line|#define LCCR3_HorSnchH  (LCCR3_HSP*0)   /*  Horizontal Synchronization     */
+multiline_comment|/*  pulse active High              */
+DECL|macro|LCCR3_HorSnchL
+mdefine_line|#define LCCR3_HorSnchL  (LCCR3_HSP*1)   /*  Horizontal Synchronization     */
+DECL|macro|LCCR3_VrtSnchH
+mdefine_line|#define LCCR3_VrtSnchH  (LCCR3_VSP*0)   /*  Vertical Synchronization pulse */
+multiline_comment|/*  active High                    */
+DECL|macro|LCCR3_VrtSnchL
+mdefine_line|#define LCCR3_VrtSnchL  (LCCR3_VSP*1)   /*  Vertical Synchronization pulse */
+multiline_comment|/*  active Low                     */
+DECL|macro|LCSR_LDD
+mdefine_line|#define LCSR_LDD&t;(1 &lt;&lt; 0)&t;/* LCD Disable Done */
+DECL|macro|LCSR_SOF
+mdefine_line|#define LCSR_SOF&t;(1 &lt;&lt; 1)&t;/* Start of frame */
+DECL|macro|LCSR_BER
+mdefine_line|#define LCSR_BER&t;(1 &lt;&lt; 2)&t;/* Bus error */
+DECL|macro|LCSR_ABC
+mdefine_line|#define LCSR_ABC&t;(1 &lt;&lt; 3)&t;/* AC Bias count */
+DECL|macro|LCSR_IUL
+mdefine_line|#define LCSR_IUL&t;(1 &lt;&lt; 4)&t;/* input FIFO underrun Lower panel */
+DECL|macro|LCSR_IUU
+mdefine_line|#define LCSR_IUU&t;(1 &lt;&lt; 5)&t;/* input FIFO underrun Upper panel */
+DECL|macro|LCSR_OU
+mdefine_line|#define LCSR_OU&t;&t;(1 &lt;&lt; 6)&t;/* output FIFO underrun */
+DECL|macro|LCSR_QD
+mdefine_line|#define LCSR_QD&t;&t;(1 &lt;&lt; 7)&t;/* quick disable */
+DECL|macro|LCSR_EOF
+mdefine_line|#define LCSR_EOF&t;(1 &lt;&lt; 8)&t;/* end of frame */
+DECL|macro|LCSR_BS
+mdefine_line|#define LCSR_BS&t;&t;(1 &lt;&lt; 9)&t;/* branch status */
+DECL|macro|LCSR_SINT
+mdefine_line|#define LCSR_SINT&t;(1 &lt;&lt; 10)&t;/* subsequent interrupt */
+DECL|macro|LDCMD_PAL
+mdefine_line|#define LDCMD_PAL&t;(1 &lt;&lt; 26)&t;/* instructs DMA to load palette buffer */
 DECL|macro|LCSR_LDD
 mdefine_line|#define LCSR_LDD&t;(1 &lt;&lt; 0)&t;/* LCD Disable Done */
 DECL|macro|LCSR_SOF

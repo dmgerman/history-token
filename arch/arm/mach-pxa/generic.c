@@ -55,7 +55,7 @@ l_int|1
 comma
 l_int|2
 comma
-l_int|0
+l_int|4
 )brace
 suffix:semicolon
 multiline_comment|/* Run Mode Frequency to Turbo Mode Frequency Multiplier (N) */
@@ -90,15 +90,15 @@ suffix:semicolon
 multiline_comment|/* Crystal clock */
 DECL|macro|BASE_CLK
 mdefine_line|#define BASE_CLK&t;3686400
-multiline_comment|/*&n; * Display what we were booted with.&n; */
-DECL|function|pxa_display_clocks
-r_static
+multiline_comment|/*&n; * Get the clock frequency as reflected by CCCR and the turbo flag.&n; * We assume these values have been applied via a fcs.&n; * If info is not 0 we also display the current settings.&n; */
+DECL|function|get_clk_frequency_khz
 r_int
-id|__init
-id|pxa_display_clocks
+r_int
+id|get_clk_frequency_khz
 c_func
 (paren
-r_void
+r_int
+id|info
 )paren
 (brace
 r_int
@@ -195,6 +195,12 @@ id|M
 op_div
 l_int|2
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|info
+)paren
+(brace
 id|L
 op_add_assign
 l_int|5000
@@ -291,10 +297,35 @@ suffix:colon
 l_string|&quot;in&quot;
 )paren
 suffix:semicolon
+)brace
 r_return
-l_int|0
+(paren
+id|turbo
+op_amp
+l_int|1
+)paren
+ques
+c_cond
+(paren
+id|N
+op_div
+l_int|1000
+)paren
+suffix:colon
+(paren
+id|M
+op_div
+l_int|1000
+)paren
 suffix:semicolon
 )brace
+DECL|variable|get_clk_frequency_khz
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_clk_frequency_khz
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Return the current lclk requency in units of 10kHz&n; */
 DECL|function|get_lclk_frequency_10khz
 r_int
@@ -565,9 +596,10 @@ id|standard_io_desc
 )paren
 )paren
 suffix:semicolon
-id|pxa_display_clocks
+id|get_clk_frequency_khz
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 )brace

@@ -391,7 +391,7 @@ id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
 id|local_fadt-&gt;xgpe0_blk
 comma
-id|local_fadt-&gt;gpe0_blk_len
+l_int|0
 comma
 id|local_fadt-&gt;V1_gpe0_blk
 )paren
@@ -400,7 +400,7 @@ id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
 id|local_fadt-&gt;xgpe1_blk
 comma
-id|local_fadt-&gt;gpe1_blk_len
+l_int|0
 comma
 id|local_fadt-&gt;V1_gpe1_blk
 )paren
@@ -599,7 +599,7 @@ id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
 id|local_fadt-&gt;xgpe0_blk
 comma
-id|local_fadt-&gt;gpe0_blk_len
+l_int|0
 comma
 id|local_fadt-&gt;V1_gpe0_blk
 )paren
@@ -618,7 +618,7 @@ id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
 id|local_fadt-&gt;xgpe1_blk
 comma
-id|local_fadt-&gt;gpe1_blk_len
+l_int|0
 comma
 id|local_fadt-&gt;V1_gpe1_blk
 )paren
