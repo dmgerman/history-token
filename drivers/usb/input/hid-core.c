@@ -21,7 +21,7 @@ macro_line|#include &quot;hid.h&quot;
 macro_line|#include &lt;linux/hiddev.h&gt;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v2.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v2.01&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Andreas Gal, Vojtech Pavlik&quot;
 DECL|macro|DRIVER_DESC
@@ -55,6 +55,33 @@ l_string|&quot;Keypad&quot;
 comma
 l_string|&quot;Multi-Axis Controller&quot;
 )brace
+suffix:semicolon
+multiline_comment|/*&n; * Module parameters.&n; */
+DECL|variable|hid_mousepoll_interval
+r_static
+r_int
+r_int
+id|hid_mousepoll_interval
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|mousepoll
+comma
+id|hid_mousepoll_interval
+comma
+id|uint
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mousepoll
+comma
+l_string|&quot;Polling interval of mice&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Register a new report for a device.&n; */
 DECL|function|hid_register_report
@@ -8075,6 +8102,22 @@ id|interval
 op_minus
 l_int|1
 )paren
+suffix:semicolon
+multiline_comment|/* Change the polling interval of mice. */
+r_if
+c_cond
+(paren
+id|hid-&gt;collection-&gt;usage
+op_eq
+id|HID_GD_MOUSE
+op_logical_and
+id|hid_mousepoll_interval
+OG
+l_int|0
+)paren
+id|interval
+op_assign
+id|hid_mousepoll_interval
 suffix:semicolon
 r_if
 c_cond
