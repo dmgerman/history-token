@@ -848,6 +848,10 @@ op_star
 id|ax25_dev_list
 suffix:semicolon
 r_extern
+id|spinlock_t
+id|ax25_dev_lock
+suffix:semicolon
+r_extern
 id|ax25_dev
 op_star
 id|ax25_dev_ax25dev
