@@ -20,5 +20,9 @@ macro_line|#else
 DECL|macro|mdelay
 mdefine_line|#define mdelay(n) (&bslash;&n;&t;(__builtin_constant_p(n) &amp;&amp; (n)&lt;=MAX_UDELAY_MS) ? udelay((n)*1000) : &bslash;&n;&t;({unsigned long msec=(n); while (msec--) udelay(1000);}))
 macro_line|#endif
+macro_line|#ifndef ndelay
+DECL|macro|ndelay
+mdefine_line|#define ndelay(x)&t;udelay(((x)+999)/1000)
+macro_line|#endif
 macro_line|#endif /* defined(_LINUX_DELAY_H) */
 eof
