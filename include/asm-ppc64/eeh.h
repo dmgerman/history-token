@@ -1147,7 +1147,6 @@ c_func
 id|port
 )paren
 )paren
-r_return
 id|out_8
 c_func
 (paren
@@ -1264,7 +1263,6 @@ c_func
 id|port
 )paren
 )paren
-r_return
 id|out_le16
 c_func
 (paren
@@ -1381,7 +1379,6 @@ c_func
 id|port
 )paren
 )paren
-r_return
 id|out_le32
 c_func
 (paren

@@ -358,6 +358,11 @@ op_assign
 op_amp
 id|pxamci_dmamask
 comma
+dot
+id|coherent_dma_mask
+op_assign
+l_int|0xffffffff
+comma
 )brace
 comma
 dot

@@ -6,9 +6,9 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
-multiline_comment|/*&n; * IOMAP_MAX_ORDER defines the largest contiguous block&n; * of dma (tce) space we can get.  IOMAP_MAX_ORDER = 10 &n; * allows up to 2**9 pages (512 * 4096) = 2 MB&n; */
+multiline_comment|/*&n; * IOMAP_MAX_ORDER defines the largest contiguous block&n; * of dma (tce) space we can get.  IOMAP_MAX_ORDER = 13&n; * allows up to 2**12 pages (4096 * 4096) = 16 MB&n; */
 DECL|macro|IOMAP_MAX_ORDER
-mdefine_line|#define IOMAP_MAX_ORDER 10
+mdefine_line|#define IOMAP_MAX_ORDER 13
 multiline_comment|/*&n; * Tces come in two formats, one for the virtual bus and a different&n; * format for PCI&n; */
 DECL|macro|TCE_VB
 mdefine_line|#define TCE_VB  0

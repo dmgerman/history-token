@@ -5135,6 +5135,12 @@ c_func
 id|group_info
 )paren
 suffix:semicolon
+id|task_lock
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|old_info
 op_assign
 id|current-&gt;group_info
@@ -5142,6 +5148,12 @@ suffix:semicolon
 id|current-&gt;group_info
 op_assign
 id|group_info
+suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 id|put_group_info
 c_func
@@ -5192,6 +5204,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/* no need to grab task_lock here; it cannot change */
 id|get_group_info
 c_func
 (paren

@@ -443,7 +443,7 @@ r_if
 c_cond
 (paren
 id|regno
-op_le
+OL
 l_int|16
 )paren
 (brace
@@ -1287,6 +1287,8 @@ id|u_long
 id|flags
 suffix:semicolon
 id|u_int
+id|lines_per_panel
+comma
 id|pcd
 op_assign
 id|get_pcd
@@ -1570,12 +1572,28 @@ c_func
 id|var-&gt;right_margin
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If we have a dual scan LCD, we need to halve&n;&t; * the YRES parameter.&n;&t; */
+id|lines_per_panel
+op_assign
+id|var-&gt;yres
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fbi-&gt;lccr0
+op_amp
+id|LCCR0_SDS
+)paren
+id|lines_per_panel
+op_div_assign
+l_int|2
+suffix:semicolon
 id|new_regs.lccr2
 op_assign
 id|LCCR2_DisHght
 c_func
 (paren
-id|var-&gt;yres
+id|lines_per_panel
 )paren
 op_plus
 id|LCCR2_VrtSnchWdth
@@ -1763,7 +1781,7 @@ op_star
 l_int|16
 suffix:semicolon
 DECL|macro|BYTES_PER_PANEL
-mdefine_line|#define BYTES_PER_PANEL ((fbi-&gt;lccr0 &amp; LCCR0_SDS) == LCCR0_Dual ? &bslash;&n;                                (var-&gt;xres * var-&gt;yres * var-&gt;bits_per_pixel / 8 / 2) : &bslash;&n;                                (var-&gt;xres * var-&gt;yres * var-&gt;bits_per_pixel / 8))
+mdefine_line|#define BYTES_PER_PANEL (lines_per_panel * fbi-&gt;fb.fix.line_length)
 multiline_comment|/* populate descriptors */
 id|fbi-&gt;dmadesc_fblow_cpu-&gt;fdadr
 op_assign
@@ -2713,11 +2731,9 @@ op_complement
 id|LCCR0_LDM
 suffix:semicolon
 multiline_comment|/* Enable LCD Disable Done Interrupt */
-singleline_comment|//TODO?enable_irq(IRQ_LCD);  /* Enable LCD IRQ */
 id|LCCR0
-op_and_assign
-op_complement
-id|LCCR0_ENB
+op_or_assign
+id|LCCR0_DIS
 suffix:semicolon
 multiline_comment|/* Disable LCD Controller */
 id|schedule_timeout
@@ -4289,7 +4305,7 @@ c_func
 (paren
 id|dev
 comma
-l_string|&quot;override pixclock: %uld&bslash;n&quot;
+l_string|&quot;override pixclock: %u&bslash;n&quot;
 comma
 id|inf-&gt;pixclock
 )paren
@@ -4330,7 +4346,7 @@ c_func
 (paren
 id|dev
 comma
-l_string|&quot;override left: %d&bslash;n&quot;
+l_string|&quot;override left: %u&bslash;n&quot;
 comma
 id|inf-&gt;left_margin
 )paren
@@ -4371,7 +4387,7 @@ c_func
 (paren
 id|dev
 comma
-l_string|&quot;override right: %d&bslash;n&quot;
+l_string|&quot;override right: %u&bslash;n&quot;
 comma
 id|inf-&gt;right_margin
 )paren
@@ -4412,7 +4428,7 @@ c_func
 (paren
 id|dev
 comma
-l_string|&quot;override upper: %d&bslash;n&quot;
+l_string|&quot;override upper: %u&bslash;n&quot;
 comma
 id|inf-&gt;upper_margin
 )paren
@@ -4453,7 +4469,7 @@ c_func
 (paren
 id|dev
 comma
-l_string|&quot;override lower: %d&bslash;n&quot;
+l_string|&quot;override lower: %u&bslash;n&quot;
 comma
 id|inf-&gt;lower_margin
 )paren
@@ -4494,7 +4510,7 @@ c_func
 (paren
 id|dev
 comma
-l_string|&quot;override hsynclen: %d&bslash;n&quot;
+l_string|&quot;override hsynclen: %u&bslash;n&quot;
 comma
 id|inf-&gt;hsync_len
 )paren
@@ -4535,7 +4551,7 @@ c_func
 (paren
 id|dev
 comma
-l_string|&quot;override vsynclen: %d&bslash;n&quot;
+l_string|&quot;override vsynclen: %u&bslash;n&quot;
 comma
 id|inf-&gt;vsync_len
 )paren

@@ -888,6 +888,10 @@ op_assign
 op_amp
 id|boot_cpu_data
 suffix:semicolon
+id|c-&gt;x86_cache_alignment
+op_assign
+l_int|32
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -950,10 +954,6 @@ suffix:semicolon
 id|c-&gt;x86
 op_assign
 l_int|4
-suffix:semicolon
-id|c-&gt;x86_cache_alignment
-op_assign
-l_int|32
 suffix:semicolon
 r_if
 c_cond
