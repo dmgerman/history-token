@@ -950,7 +950,7 @@ comma
 id|PCI_ROM_RESOURCE
 )paren
 op_amp
-id|PCI_ROM_ADDRESS_ENABLE
+id|IORESOURCE_ROM_ENABLE
 )paren
 )paren
 (brace
@@ -965,7 +965,7 @@ comma
 id|PCI_ROM_RESOURCE
 )paren
 op_or_assign
-id|PCI_ROM_ADDRESS_ENABLE
+id|IORESOURCE_ROM_ENABLE
 suffix:semicolon
 id|pci_read_config_dword
 c_func
@@ -1100,7 +1100,7 @@ id|PCI_ROM_RESOURCE
 )paren
 op_and_assign
 op_complement
-id|PCI_ROM_ADDRESS_ENABLE
+id|IORESOURCE_ROM_ENABLE
 suffix:semicolon
 id|pci_read_config_dword
 c_func
