@@ -13,16 +13,47 @@ mdefine_line|#define NDISC_NEIGHBOUR_ADVERTISEMENT&t;136
 DECL|macro|NDISC_REDIRECT
 mdefine_line|#define NDISC_REDIRECT&t;&t;&t;137
 multiline_comment|/*&n; *&t;ndisc options&n; */
-DECL|macro|ND_OPT_SOURCE_LL_ADDR
-mdefine_line|#define ND_OPT_SOURCE_LL_ADDR&t;&t;1
-DECL|macro|ND_OPT_TARGET_LL_ADDR
-mdefine_line|#define ND_OPT_TARGET_LL_ADDR&t;&t;2
-DECL|macro|ND_OPT_PREFIX_INFO
-mdefine_line|#define ND_OPT_PREFIX_INFO&t;&t;3
-DECL|macro|ND_OPT_REDIRECT_HDR
-mdefine_line|#define ND_OPT_REDIRECT_HDR&t;&t;4
-DECL|macro|ND_OPT_MTU
-mdefine_line|#define ND_OPT_MTU&t;&t;&t;5
+r_enum
+(brace
+DECL|enumerator|__ND_OPT_PREFIX_INFO_END
+id|__ND_OPT_PREFIX_INFO_END
+op_assign
+l_int|0
+comma
+DECL|enumerator|ND_OPT_SOURCE_LL_ADDR
+id|ND_OPT_SOURCE_LL_ADDR
+op_assign
+l_int|1
+comma
+multiline_comment|/* RFC2461 */
+DECL|enumerator|ND_OPT_TARGET_LL_ADDR
+id|ND_OPT_TARGET_LL_ADDR
+op_assign
+l_int|2
+comma
+multiline_comment|/* RFC2461 */
+DECL|enumerator|ND_OPT_PREFIX_INFO
+id|ND_OPT_PREFIX_INFO
+op_assign
+l_int|3
+comma
+multiline_comment|/* RFC2461 */
+DECL|enumerator|ND_OPT_REDIRECT_HDR
+id|ND_OPT_REDIRECT_HDR
+op_assign
+l_int|4
+comma
+multiline_comment|/* RFC2461 */
+DECL|enumerator|ND_OPT_MTU
+id|ND_OPT_MTU
+op_assign
+l_int|5
+comma
+multiline_comment|/* RFC2461 */
+DECL|enumerator|__ND_OPT_MAX
+id|__ND_OPT_MAX
+)brace
+suffix:semicolon
 DECL|macro|MAX_RTR_SOLICITATION_DELAY
 mdefine_line|#define MAX_RTR_SOLICITATION_DELAY&t;HZ
 DECL|macro|ND_REACHABLE_TIME

@@ -472,14 +472,8 @@ id|nd_opt_hdr
 op_star
 id|nd_opt_array
 (braket
-l_int|7
+id|__ND_OPT_MAX
 )braket
-suffix:semicolon
-DECL|member|nd_opt_piend
-r_struct
-id|nd_opt_hdr
-op_star
-id|nd_opt_piend
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -490,7 +484,7 @@ mdefine_line|#define nd_opts_tgt_lladdr&t;nd_opt_array[ND_OPT_TARGET_LL_ADDR]
 DECL|macro|nd_opts_pi
 mdefine_line|#define nd_opts_pi&t;&t;nd_opt_array[ND_OPT_PREFIX_INFO]
 DECL|macro|nd_opts_pi_end
-mdefine_line|#define nd_opts_pi_end&t;&t;nd_opt_piend
+mdefine_line|#define nd_opts_pi_end&t;&t;nd_opt_array[__ND_OPT_PREFIX_INFO_END]
 DECL|macro|nd_opts_rh
 mdefine_line|#define nd_opts_rh&t;&t;nd_opt_array[ND_OPT_REDIRECT_HDR]
 DECL|macro|nd_opts_mtu
