@@ -3118,6 +3118,14 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Check if client has already closed the TSAP and gone away */
+r_if
+c_cond
+(paren
+id|self-&gt;close_pend
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/*&n;&t; *  Inform service user if he has requested it&n;&t; */
 r_if
 c_cond
@@ -5445,7 +5453,7 @@ id|skb
 r_int
 id|err
 suffix:semicolon
-multiline_comment|/* Check if client has already tried to close the TSAP */
+multiline_comment|/* Check if client has already closed the TSAP and gone away */
 r_if
 c_cond
 (paren
@@ -5864,11 +5872,6 @@ DECL|member|id
 r_int
 id|id
 suffix:semicolon
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|irttp_seq_start
@@ -5903,13 +5906,11 @@ op_star
 id|self
 suffix:semicolon
 multiline_comment|/* Protect our access to the tsap list */
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|irttp-&gt;tsaps-&gt;hb_spinlock
-comma
-id|iter-&gt;flags
 )paren
 suffix:semicolon
 id|iter-&gt;id
@@ -6033,22 +6034,11 @@ op_star
 id|v
 )paren
 (brace
-r_struct
-id|irttp_iter_state
-op_star
-id|iter
-op_assign
-id|seq
-op_member_access_from_pointer
-r_private
-suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|irttp-&gt;tsaps-&gt;hb_spinlock
-comma
-id|iter-&gt;flags
 )paren
 suffix:semicolon
 )brace

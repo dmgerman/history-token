@@ -2684,10 +2684,6 @@ r_goto
 id|tx_err_dst_release
 suffix:semicolon
 )brace
-id|skb-&gt;h.raw
-op_assign
-id|skb-&gt;nh.raw
-suffix:semicolon
 multiline_comment|/*&n;&t; * Okay, now see if we can stuff it in the buffer as-is.&n;&t; */
 id|max_headroom
 op_add_assign
@@ -2782,6 +2778,10 @@ c_func
 (paren
 id|dst
 )paren
+suffix:semicolon
+id|skb-&gt;h.raw
+op_assign
+id|skb-&gt;nh.raw
 suffix:semicolon
 r_if
 c_cond
@@ -3345,11 +3345,7 @@ id|fl-&gt;fl6_flowlabel
 op_or_assign
 id|IPV6_TCLASS_MASK
 op_amp
-id|htonl
-c_func
-(paren
 id|p-&gt;flowinfo
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3365,11 +3361,7 @@ id|fl-&gt;fl6_flowlabel
 op_or_assign
 id|IPV6_FLOWLABEL_MASK
 op_amp
-id|htonl
-c_func
-(paren
 id|p-&gt;flowinfo
-)paren
 suffix:semicolon
 id|ip6_tnl_set_cap
 c_func
