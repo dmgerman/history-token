@@ -1091,7 +1091,17 @@ id|skb
 r_if
 c_cond
 (paren
+(paren
+id|raw6_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|checksum
+op_logical_or
 id|sk-&gt;sk_filter
+)paren
 op_logical_and
 id|skb-&gt;ip_summed
 op_ne
