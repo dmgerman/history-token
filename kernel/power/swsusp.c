@@ -4167,7 +4167,7 @@ id|pr_debug
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;swsusp: Invalid partition type.&bslash;n&quot;
+l_string|&quot;swsusp: Suspend partition has wrong signature?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
