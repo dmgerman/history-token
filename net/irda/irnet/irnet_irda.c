@@ -316,14 +316,17 @@ id|notify.instance
 op_assign
 id|self
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|notify.name
 comma
 id|IRNET_NOTIFY_NAME
 comma
-id|NOTIFY_MAX_NAME
+r_sizeof
+(paren
+id|notify.name
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Open an IrTTP instance */
@@ -2020,7 +2023,7 @@ id|self-&gt;daddr
 )paren
 (brace
 multiline_comment|/* Yes !!! Get it.. */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|self-&gt;rname
@@ -2032,7 +2035,10 @@ id|i
 dot
 id|info
 comma
-id|NICKNAME_MAX_LEN
+r_sizeof
+(paren
+id|self-&gt;rname
+)paren
 )paren
 suffix:semicolon
 id|self-&gt;rname
