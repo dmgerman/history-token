@@ -4878,6 +4878,9 @@ id|HID_REQ_GET_REPORT
 suffix:semicolon
 id|hid-&gt;cr.wValue
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 (paren
 (paren
 id|report-&gt;type
@@ -4889,6 +4892,7 @@ l_int|8
 )paren
 op_or
 id|report-&gt;id
+)paren
 suffix:semicolon
 id|hid-&gt;cr.wIndex
 op_assign
