@@ -4941,7 +4941,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page
