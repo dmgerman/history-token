@@ -38006,7 +38006,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;nsizeof IXJ struct %d bytes&quot;
+l_string|&quot;&bslash;nsizeof IXJ struct %Zd bytes&quot;
 comma
 r_sizeof
 (paren
@@ -38023,7 +38023,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;nsizeof DAA struct %d bytes&quot;
+l_string|&quot;&bslash;nsizeof DAA struct %Zd bytes&quot;
 comma
 r_sizeof
 (paren

@@ -506,6 +506,13 @@ id|acpi_gbl_FADT-&gt;pm1_evt_len
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* PM1B is optional; leave null if not present */
+r_if
+c_cond
+(paren
+id|local_fadt-&gt;xpm1b_evt_blk.address
+)paren
+(brace
 id|acpi_tb_init_generic_address
 (paren
 op_amp
@@ -532,6 +539,7 @@ id|acpi_gbl_FADT-&gt;pm1_evt_len
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_convert_fadt2&n; *&n; * PARAMETERS:  local_fadt      - Pointer to new FADT&n; *              original_fadt   - Pointer to old FADT&n; *&n; * RETURN:      Populates local_fadt&n; *&n; * DESCRIPTION: Convert an ACPI 2.0 FADT to common internal format.&n; *              Handles optional &quot;X&quot; fields.&n; *&n; ******************************************************************************/
 r_static
@@ -814,6 +822,13 @@ id|acpi_gbl_xpm1a_enable.address_space_id
 op_assign
 id|local_fadt-&gt;xpm1a_evt_blk.address_space_id
 suffix:semicolon
+multiline_comment|/* PM1B is optional; leave null if not present */
+r_if
+c_cond
+(paren
+id|local_fadt-&gt;xpm1b_evt_blk.address
+)paren
+(brace
 id|acpi_tb_init_generic_address
 (paren
 op_amp
@@ -844,6 +859,7 @@ id|acpi_gbl_xpm1b_enable.address_space_id
 op_assign
 id|local_fadt-&gt;xpm1b_evt_blk.address_space_id
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_convert_table_fadt&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Converts a BIOS supplied ACPI 1.0 FADT to a local&n; *              ACPI 2.0 FADT. If the BIOS supplied a 2.0 FADT then it is simply&n; *              copied to the local FADT.  The ACPI CA software uses this&n; *              local FADT. Thus a significant amount of special #ifdef&n; *              type codeing is saved.&n; *&n; ******************************************************************************/
 id|acpi_status

@@ -1124,6 +1124,15 @@ id|driver-&gt;init_termios
 op_assign
 id|tty_std_termios
 suffix:semicolon
+id|tty_set_operations
+c_func
+(paren
+id|driver
+comma
+op_amp
+id|srmcons_ops
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|tty_register_driver

@@ -302,12 +302,12 @@ id|ACPI_DB_DEBUG_OBJECT
 comma
 l_string|&quot;%8.8X%8.8X&bslash;n&quot;
 comma
-id|ACPI_HIWORD
+id|ACPI_HIDWORD
 (paren
 id|source_desc-&gt;integer.value
 )paren
 comma
-id|ACPI_LOWORD
+id|ACPI_LODWORD
 (paren
 id|source_desc-&gt;integer.value
 )paren

@@ -217,7 +217,7 @@ c_func
 id|s
 comma
 l_string|&quot;%s%08X%08X%08lX%08lX%08X%08lX&quot;
-l_string|&quot;%08X%08X%08X%08X%08X%08X%08X&quot;
+l_string|&quot;%08X%08X%08X%08X%08X%08ZX%08X&quot;
 comma
 l_string|&quot;070701&quot;
 comma
@@ -351,7 +351,7 @@ c_func
 id|s
 comma
 l_string|&quot;%s%08X%08X%08lX%08lX%08X%08lX&quot;
-l_string|&quot;%08X%08X%08X%08X%08X%08X%08X&quot;
+l_string|&quot;%08X%08X%08X%08X%08X%08ZX%08X&quot;
 comma
 l_string|&quot;070701&quot;
 comma
@@ -497,7 +497,7 @@ c_func
 id|s
 comma
 l_string|&quot;%s%08X%08X%08lX%08lX%08X%08lX&quot;
-l_string|&quot;%08X%08X%08X%08X%08X%08X%08X&quot;
+l_string|&quot;%08X%08X%08X%08X%08X%08ZX%08X&quot;
 comma
 l_string|&quot;070701&quot;
 comma
@@ -748,7 +748,7 @@ c_func
 id|s
 comma
 l_string|&quot;%s%08X%08X%08lX%08lX%08X%08lX&quot;
-l_string|&quot;%08X%08X%08X%08X%08X%08X%08X&quot;
+l_string|&quot;%08X%08X%08X%08X%08X%08ZX%08X&quot;
 comma
 l_string|&quot;070701&quot;
 comma

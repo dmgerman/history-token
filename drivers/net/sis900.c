@@ -272,6 +272,16 @@ id|LAN
 )brace
 comma
 (brace
+l_string|&quot;VIA 6103 PHY&quot;
+comma
+l_int|0x0101
+comma
+l_int|0x8f20
+comma
+id|LAN
+)brace
+comma
+(brace
 l_int|0
 comma
 )brace

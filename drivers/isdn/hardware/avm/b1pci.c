@@ -1002,6 +1002,10 @@ r_goto
 id|err_unmap
 suffix:semicolon
 )brace
+id|cinfo-&gt;capi_ctrl.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|cinfo-&gt;capi_ctrl.driver_name
 op_assign
 l_string|&quot;b1pciv4&quot;
@@ -1045,10 +1049,6 @@ id|cinfo-&gt;capi_ctrl.name
 comma
 id|card-&gt;name
 )paren
-suffix:semicolon
-id|cinfo-&gt;capi_ctrl.owner
-op_assign
-id|THIS_MODULE
 suffix:semicolon
 id|retval
 op_assign

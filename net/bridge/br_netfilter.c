@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/netfilter_bridge.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
+macro_line|#include &lt;linux/netfilter_arp.h&gt;
 macro_line|#include &lt;linux/in_route.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -954,6 +955,11 @@ id|nf_bridge
 op_assign
 id|skb-&gt;nf_bridge
 suffix:semicolon
+r_struct
+id|net_device
+op_star
+id|in
+suffix:semicolon
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 id|skb-&gt;nf_debug
 op_xor_assign
@@ -964,6 +970,22 @@ id|NF_BR_FORWARD
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|skb-&gt;protocol
+op_eq
+id|__constant_htons
+c_func
+(paren
+id|ETH_P_IP
+)paren
+)paren
+(brace
+id|in
+op_assign
+id|nf_bridge-&gt;physindev
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -981,6 +1003,25 @@ op_xor_assign
 id|BRNF_PKT_TYPE
 suffix:semicolon
 )brace
+)brace
+r_else
+(brace
+id|in
+op_assign
+op_star
+(paren
+(paren
+r_struct
+id|net_device
+op_star
+op_star
+)paren
+(paren
+id|skb-&gt;cb
+)paren
+)paren
+suffix:semicolon
+)brace
 id|NF_HOOK_THRESH
 c_func
 (paren
@@ -990,7 +1031,7 @@ id|NF_BR_FORWARD
 comma
 id|skb
 comma
-id|nf_bridge-&gt;physindev
+id|in
 comma
 id|skb-&gt;dev
 comma
@@ -1003,7 +1044,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* This is the &squot;purely bridged&squot; case.  We pass the packet to&n; * netfilter with indev and outdev set to the bridge device,&n; * but we are still able to filter on the &squot;real&squot; indev/outdev&n; * because of the ipt_physdev.c module.&n; */
+multiline_comment|/* This is the &squot;purely bridged&squot; case.  For IP, we pass the packet to&n; * netfilter with indev and outdev set to the bridge device,&n; * but we are still able to filter on the &squot;real&squot; indev/outdev&n; * because of the ipt_physdev.c module. For ARP, indev and outdev are the&n; * bridge ports.&n; */
 DECL|function|br_nf_forward
 r_static
 r_int
@@ -1068,6 +1109,14 @@ c_func
 (paren
 id|ETH_P_IP
 )paren
+op_logical_and
+id|skb-&gt;protocol
+op_ne
+id|__constant_htons
+c_func
+(paren
+id|ETH_P_ARP
+)paren
 )paren
 r_return
 id|NF_ACCEPT
@@ -1082,6 +1131,18 @@ id|NF_BR_FORWARD
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|skb-&gt;protocol
+op_eq
+id|__constant_htons
+c_func
+(paren
+id|ETH_P_IP
+)paren
+)paren
+(brace
 id|nf_bridge
 op_assign
 id|skb-&gt;nf_bridge
@@ -1103,11 +1164,11 @@ op_or_assign
 id|BRNF_PKT_TYPE
 suffix:semicolon
 )brace
+multiline_comment|/* The physdev module checks on this */
 id|nf_bridge-&gt;mask
 op_or_assign
 id|BRNF_BRIDGED
 suffix:semicolon
-multiline_comment|/* The physdev module checks on this */
 id|nf_bridge-&gt;physoutdev
 op_assign
 id|skb-&gt;dev
@@ -1124,18 +1185,74 @@ comma
 id|bridge_parent
 c_func
 (paren
-id|nf_bridge-&gt;physindev
+id|in
 )paren
 comma
 id|bridge_parent
 c_func
 (paren
-id|skb-&gt;dev
+id|out
 )paren
 comma
 id|br_nf_forward_finish
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+r_struct
+id|net_device
+op_star
+op_star
+id|d
+op_assign
+(paren
+r_struct
+id|net_device
+op_star
+op_star
+)paren
+(paren
+id|skb-&gt;cb
+)paren
+suffix:semicolon
+op_star
+id|d
+op_assign
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+id|in
+suffix:semicolon
+id|NF_HOOK
+c_func
+(paren
+id|NF_ARP
+comma
+id|NF_ARP_FORWARD
+comma
+id|skb
+comma
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+id|in
+comma
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+id|out
+comma
+id|br_nf_forward_finish
+)paren
+suffix:semicolon
+)brace
 r_return
 id|NF_STOLEN
 suffix:semicolon
