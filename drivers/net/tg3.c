@@ -5534,9 +5534,13 @@ id|tp-&gt;pci_chip_rev_id
 op_eq
 id|ASIC_REV_5704
 op_logical_or
+id|GET_ASIC_REV
+c_func
+(paren
 id|tp-&gt;pci_chip_rev_id
+)paren
 op_eq
-id|CHIPREV_ID_5705_A0
+id|ASIC_REV_5705
 )paren
 op_logical_and
 id|netif_carrier_ok
