@@ -314,6 +314,17 @@ DECL|macro|PA1_DIRA0
 mdefine_line|#define PA1_DIRA0&t;(PA1_RXDAT | PA1_CRS | PA1_COL | PA1_RXER | PA1_RXDV)
 DECL|macro|PA1_DIRA1
 mdefine_line|#define PA1_DIRA1&t;(PA1_TXDAT | PA1_TXEN | PA1_TXER)
+macro_line|#ifdef CONFIG_SBC82xx
+multiline_comment|/* rx is clk9, tx is clk10&n; */
+DECL|macro|PC_F1RXCLK
+mdefine_line|#define PC_F1RXCLK     ((uint)0x00000100)
+DECL|macro|PC_F1TXCLK
+mdefine_line|#define PC_F1TXCLK     ((uint)0x00000200)
+DECL|macro|CMX1_CLK_ROUTE
+mdefine_line|#define CMX1_CLK_ROUTE ((uint)0x25000000)
+DECL|macro|CMX1_CLK_MASK
+mdefine_line|#define CMX1_CLK_MASK  ((uint)0xff000000)
+macro_line|#else
 multiline_comment|/* CLK12 is receive, CLK11 is transmit.  These are board specific.&n;*/
 DECL|macro|PC_F1RXCLK
 mdefine_line|#define PC_F1RXCLK&t;((uint)0x00000800)
@@ -323,6 +334,7 @@ DECL|macro|CMX1_CLK_ROUTE
 mdefine_line|#define CMX1_CLK_ROUTE&t;((uint)0x3e000000)
 DECL|macro|CMX1_CLK_MASK
 mdefine_line|#define CMX1_CLK_MASK&t;((uint)0xff000000)
+macro_line|#endif /* !CONFIG_SBC82xx */
 multiline_comment|/* I/O Pin assignment for FCC2.  I don&squot;t yet know the best way to do this,&n; * but there is little variation among the choices.&n; */
 DECL|macro|PB2_TXER
 mdefine_line|#define PB2_TXER&t;((uint)0x00000001)
@@ -5522,6 +5534,27 @@ id|i
 op_decrement
 )paren
 (brace
+macro_line|#ifdef CONFIG_SBC82xx
+op_star
+id|eap
+op_increment
+op_assign
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+op_assign
+id|bd-&gt;bi_enetaddrs
+(braket
+id|fip-&gt;fc_fccnum
+op_plus
+l_int|1
+)braket
+(braket
+id|i
+)braket
+suffix:semicolon
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -5582,6 +5615,7 @@ id|i
 )braket
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 id|ep-&gt;fen_taddrh
 op_assign

@@ -8,6 +8,9 @@ macro_line|#ifdef CONFIG_8260
 macro_line|#ifdef CONFIG_EST8260
 macro_line|#include &lt;platforms/est8260.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_SBC82xx
+macro_line|#include &lt;platforms/sbc82xx.h&gt;
+macro_line|#endif
 macro_line|#ifdef CONFIG_SBS8260
 macro_line|#include &lt;platforms/sbs8260.h&gt;
 macro_line|#endif
