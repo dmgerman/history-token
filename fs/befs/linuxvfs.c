@@ -2576,7 +2576,9 @@ id|result
 id|o
 )braket
 comma
-l_int|1
+id|in_len
+op_minus
+id|o
 )paren
 suffix:semicolon
 r_if
