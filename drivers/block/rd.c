@@ -1860,6 +1860,22 @@ id|i
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 multiline_comment|/* We ought to separate initrd operations here */
+id|set_capacity
+c_func
+(paren
+id|initrd_disk
+comma
+(paren
+id|initrd_end
+op_minus
+id|initrd_start
+op_plus
+l_int|511
+)paren
+op_rshift
+l_int|9
+)paren
+suffix:semicolon
 id|add_disk
 c_func
 (paren
