@@ -56,6 +56,9 @@ op_star
 id|cmdline
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|acpi_mp_config
+mdefine_line|#define acpi_mp_config 0
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
 macro_line|#ifdef CONFIG_ACPI_PCI
 r_int
