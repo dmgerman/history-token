@@ -2038,7 +2038,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|EMU10K1_GRP_TRANSLATION_BASS
+id|EMU10K1_GPR_TRANSLATION_BASS
 suffix:colon
 id|snd_runtime_check
 c_func
@@ -2112,7 +2112,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|EMU10K1_GRP_TRANSLATION_TREBLE
+id|EMU10K1_GPR_TRANSLATION_TREBLE
 suffix:colon
 id|snd_runtime_check
 c_func
@@ -8994,7 +8994,7 @@ l_int|20
 suffix:semicolon
 id|ctl-&gt;translation
 op_assign
-id|EMU10K1_GRP_TRANSLATION_BASS
+id|EMU10K1_GPR_TRANSLATION_BASS
 suffix:semicolon
 id|ctl
 op_assign
@@ -9048,7 +9048,7 @@ l_int|20
 suffix:semicolon
 id|ctl-&gt;translation
 op_assign
-id|EMU10K1_GRP_TRANSLATION_TREBLE
+id|EMU10K1_GPR_TRANSLATION_TREBLE
 suffix:semicolon
 DECL|macro|BASS_GPR
 mdefine_line|#define BASS_GPR&t;0x8c
@@ -14578,7 +14578,7 @@ l_int|20
 suffix:semicolon
 id|ctl-&gt;translation
 op_assign
-id|EMU10K1_GRP_TRANSLATION_BASS
+id|EMU10K1_GPR_TRANSLATION_BASS
 suffix:semicolon
 id|ctl
 op_assign
@@ -14632,7 +14632,7 @@ l_int|20
 suffix:semicolon
 id|ctl-&gt;translation
 op_assign
-id|EMU10K1_GRP_TRANSLATION_TREBLE
+id|EMU10K1_GPR_TRANSLATION_TREBLE
 suffix:semicolon
 DECL|macro|BASS_GPR
 mdefine_line|#define BASS_GPR&t;0x8c

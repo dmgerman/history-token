@@ -405,6 +405,8 @@ id|driver
 suffix:semicolon
 multiline_comment|/*&n; * retrieve usb_interface descriptor from the host interface&n; * (conditional for compatibility with the older API)&n; */
 macro_line|#ifndef get_iface_desc
+DECL|macro|get_iface
+mdefine_line|#define get_iface(cfg, num)&t;((cfg)-&gt;interface[(num)])
 DECL|macro|get_iface_desc
 mdefine_line|#define get_iface_desc(iface)&t;(&amp;iface-&gt;desc)
 DECL|macro|get_endpoint

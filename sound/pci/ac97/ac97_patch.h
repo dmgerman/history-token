@@ -180,6 +180,15 @@ id|ac97
 )paren
 suffix:semicolon
 r_int
+id|patch_ad1985
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
+r_int
 id|patch_alc650
 c_func
 (paren
