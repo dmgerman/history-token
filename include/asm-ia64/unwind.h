@@ -43,6 +43,12 @@ id|UNW_AR_RSC
 comma
 DECL|enumerator|UNW_AR_CCV
 id|UNW_AR_CCV
+comma
+DECL|enumerator|UNW_AR_CSD
+id|UNW_AR_CSD
+comma
+DECL|enumerator|UNW_AR_SSD
+id|UNW_AR_SSD
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The following declarations are private to the unwind&n; * implementation:&n; */
@@ -310,13 +316,6 @@ multiline_comment|/*&n; * Initialize unwind support.&n; */
 r_extern
 r_void
 id|unw_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|unw_create_gate_table
 (paren
 r_void
 )paren

@@ -1,8 +1,8 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_DRIVER_H
 DECL|macro|_ASM_IA64_SN_DRIVER_H
 mdefine_line|#define _ASM_IA64_SN_DRIVER_H
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/*&n;** Interface for device driver handle management.&n;**&n;** These functions are mostly for use by the loadable driver code, and&n;** for use by I/O bus infrastructure code.&n;*/
 DECL|typedef|device_driver_t
@@ -89,7 +89,7 @@ multiline_comment|/* dma description */
 multiline_comment|/* TBD: allocated badwidth requirements */
 multiline_comment|/* interrupt description */
 DECL|member|intr_target
-id|devfs_handle_t
+id|vertex_hdl_t
 id|intr_target
 suffix:semicolon
 multiline_comment|/* Hardware locator string */

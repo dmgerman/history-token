@@ -10,7 +10,6 @@ macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/kldir.h&gt;
-macro_line|#include &lt;asm/sn/gda.h&gt; 
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
@@ -44,7 +43,7 @@ r_void
 id|mark_cpuvertex_as_cpu
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 comma
 id|cpuid_t
@@ -123,7 +122,7 @@ DECL|function|klhwg_disabled_cpu_invent_info
 id|klhwg_disabled_cpu_invent_info
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|cpuv
 comma
 id|cnodeid_t
@@ -294,7 +293,7 @@ DECL|function|klhwg_cpu_invent_info
 id|klhwg_cpu_invent_info
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|cpuv
 comma
 id|cnodeid_t
@@ -419,7 +418,7 @@ DECL|function|klhwg_baseio_inventory_add
 id|klhwg_baseio_inventory_add
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|baseio_vhdl
 comma
 id|cnodeid_t
@@ -502,34 +501,13 @@ id|invent_miscinfo_t
 )paren
 suffix:semicolon
 )brace
-DECL|variable|hub_rev
-r_char
-op_star
-id|hub_rev
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;0.0&quot;
-comma
-l_string|&quot;1.0&quot;
-comma
-l_string|&quot;2.0&quot;
-comma
-l_string|&quot;2.1&quot;
-comma
-l_string|&quot;2.2&quot;
-comma
-l_string|&quot;2.3&quot;
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * Add detailed cpu inventory info to the hardware graph.&n; */
 r_void
 DECL|function|klhwg_hub_invent_info
 id|klhwg_hub_invent_info
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hubv
 comma
 id|cnodeid_t
@@ -633,7 +611,7 @@ DECL|function|klhwg_add_hub
 id|klhwg_add_hub
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|node_vertex
 comma
 id|klhub_t
@@ -644,10 +622,10 @@ id|cnodeid_t
 id|cnode
 )paren
 (brace
-id|devfs_handle_t
+id|vertex_hdl_t
 id|myhubv
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub_mon
 suffix:semicolon
 r_int
@@ -703,7 +681,7 @@ id|EDGE_LBL_PERFMON
 comma
 l_int|0
 comma
-id|DEVFS_FL_AUTO_DEVNUM
+l_int|0
 comma
 l_int|0
 comma
@@ -741,7 +719,7 @@ DECL|function|klhwg_add_disabled_cpu
 id|klhwg_add_disabled_cpu
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|node_vertex
 comma
 id|cnodeid_t
@@ -755,7 +733,7 @@ id|slotid_t
 id|slot
 )paren
 (brace
-id|devfs_handle_t
+id|vertex_hdl_t
 id|my_cpu
 suffix:semicolon
 r_char
@@ -865,7 +843,7 @@ DECL|function|klhwg_add_cpu
 id|klhwg_add_cpu
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|node_vertex
 comma
 id|cnodeid_t
@@ -876,7 +854,7 @@ op_star
 id|cpu
 )paren
 (brace
-id|devfs_handle_t
+id|vertex_hdl_t
 id|my_cpu
 comma
 id|cpu_dir
@@ -1053,7 +1031,7 @@ suffix:semicolon
 r_int
 id|widgetnum
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xbow_v
 comma
 id|hubv
@@ -1360,15 +1338,11 @@ DECL|function|klhwg_add_node
 id|klhwg_add_node
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_root
 comma
 id|cnodeid_t
 id|cnode
-comma
-id|gda_t
-op_star
-id|gdap
 )paren
 (brace
 id|nasid_t
@@ -1382,7 +1356,7 @@ id|klhub_t
 op_star
 id|hub
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|node_vertex
 op_assign
 l_int|NULL
@@ -1457,7 +1431,7 @@ id|brd
 suffix:semicolon
 r_do
 (brace
-id|devfs_handle_t
+id|vertex_hdl_t
 id|cpu_dir
 suffix:semicolon
 multiline_comment|/* Generate a hardware graph path for this board. */
@@ -1762,7 +1736,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpu_enabled
+id|cpu_online
 c_func
 (paren
 id|cpu_id
@@ -1873,7 +1847,7 @@ DECL|function|klhwg_add_all_routers
 id|klhwg_add_all_routers
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_root
 )paren
 (brace
@@ -1887,7 +1861,7 @@ id|lboard_t
 op_star
 id|brd
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|node_vertex
 suffix:semicolon
 r_char
@@ -2108,7 +2082,7 @@ DECL|function|klhwg_connect_one_router
 id|klhwg_connect_one_router
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_root
 comma
 id|lboard_t
@@ -2138,10 +2112,10 @@ id|dest_path
 l_int|50
 )braket
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|router_hndl
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dest_hndl
 suffix:semicolon
 r_int
@@ -2538,7 +2512,7 @@ DECL|function|klhwg_connect_routers
 id|klhwg_connect_routers
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_root
 )paren
 (brace
@@ -2662,7 +2636,7 @@ DECL|function|klhwg_connect_hubs
 id|klhwg_connect_hubs
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_root
 )paren
 (brace
@@ -2684,10 +2658,10 @@ id|lboard_t
 op_star
 id|dest_brd
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub_hndl
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dest_hndl
 suffix:semicolon
 r_char
@@ -3278,7 +3252,7 @@ DECL|function|klhwg_add_all_modules
 id|klhwg_add_all_modules
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_root
 )paren
 (brace
@@ -3291,10 +3265,10 @@ id|name
 l_int|128
 )braket
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|module_vhdl
 suffix:semicolon
 r_int
@@ -3459,7 +3433,7 @@ DECL|function|klhwg_add_all_nodes
 id|klhwg_add_all_nodes
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_root
 )paren
 (brace
@@ -3487,8 +3461,6 @@ c_func
 id|hwgraph_root
 comma
 id|cnode
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 )brace

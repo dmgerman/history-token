@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_SN_PCI_PCIIO_H
 DECL|macro|_ASM_SN_PCI_PCIIO_H
 mdefine_line|#define _ASM_SN_PCI_PCIIO_H
@@ -231,7 +231,7 @@ id|pciio_piomap_t
 DECL|typedef|pciio_piomap_alloc_f
 id|pciio_piomap_alloc_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* set up mapping for this device */
@@ -300,7 +300,7 @@ id|caddr_t
 DECL|typedef|pciio_piotrans_addr_f
 id|pciio_piotrans_addr_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -329,7 +329,7 @@ id|caddr_t
 DECL|typedef|pciio_pio_addr_f
 id|pciio_pio_addr_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -363,7 +363,7 @@ id|iopaddr_t
 DECL|typedef|pciio_piospace_alloc_f
 id|pciio_piospace_alloc_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* PIO space for this device */
@@ -389,7 +389,7 @@ r_void
 DECL|typedef|pciio_piospace_free_f
 id|pciio_piospace_free_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* Device freeing space */
@@ -412,7 +412,7 @@ id|pciio_dmamap_t
 DECL|typedef|pciio_dmamap_alloc_f
 id|pciio_dmamap_alloc_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* set up mappings for this device */
@@ -457,23 +457,6 @@ id|byte_count
 suffix:semicolon
 multiline_comment|/* map this many bytes */
 r_typedef
-id|alenlist_t
-DECL|typedef|pciio_dmamap_list_f
-id|pciio_dmamap_list_f
-(paren
-id|pciio_dmamap_t
-id|dmamap
-comma
-multiline_comment|/* use these mapping resources */
-id|alenlist_t
-id|alenlist
-comma
-multiline_comment|/* map this address/length list */
-r_int
-id|flags
-)paren
-suffix:semicolon
-r_typedef
 r_void
 DECL|typedef|pciio_dmamap_done_f
 id|pciio_dmamap_done_f
@@ -487,7 +470,7 @@ id|iopaddr_t
 DECL|typedef|pciio_dmatrans_addr_f
 id|pciio_dmatrans_addr_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -509,28 +492,6 @@ id|flags
 suffix:semicolon
 multiline_comment|/* defined in dma.h */
 r_typedef
-id|alenlist_t
-DECL|typedef|pciio_dmatrans_list_f
-id|pciio_dmatrans_list_f
-(paren
-id|devfs_handle_t
-id|dev
-comma
-multiline_comment|/* translate for this device */
-id|device_desc_t
-id|dev_desc
-comma
-multiline_comment|/* device descriptor */
-id|alenlist_t
-id|palenlist
-comma
-multiline_comment|/* system address/length list */
-r_int
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* defined in dma.h */
-r_typedef
 r_void
 DECL|typedef|pciio_dmamap_drain_f
 id|pciio_dmamap_drain_f
@@ -544,7 +505,7 @@ r_void
 DECL|typedef|pciio_dmaaddr_drain_f
 id|pciio_dmaaddr_drain_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 comma
 id|paddr_t
@@ -559,7 +520,7 @@ r_void
 DECL|typedef|pciio_dmalist_drain_f
 id|pciio_dmalist_drain_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 comma
 id|alenlist_t
@@ -572,7 +533,7 @@ id|pciio_intr_t
 DECL|typedef|pciio_intr_alloc_f
 id|pciio_intr_alloc_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* which PCI device */
@@ -584,7 +545,7 @@ id|pciio_intr_line_t
 id|lines
 comma
 multiline_comment|/* which line(s) will be used */
-id|devfs_handle_t
+id|vertex_hdl_t
 id|owner_dev
 )paren
 suffix:semicolon
@@ -598,18 +559,6 @@ id|pciio_intr_t
 id|intr_hdl
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-r_typedef
-r_int
-DECL|typedef|pciio_intr_connect_f
-id|pciio_intr_connect_f
-(paren
-id|pciio_intr_t
-id|intr_hdl
-)paren
-suffix:semicolon
-multiline_comment|/* pciio intr resource handle */
-macro_line|#else
 r_typedef
 r_int
 DECL|typedef|pciio_intr_connect_f
@@ -626,7 +575,6 @@ id|intr_arg
 )paren
 suffix:semicolon
 multiline_comment|/* pciio intr resource handle */
-macro_line|#endif
 r_typedef
 r_void
 DECL|typedef|pciio_intr_disconnect_f
@@ -637,7 +585,7 @@ id|intr_hdl
 )paren
 suffix:semicolon
 r_typedef
-id|devfs_handle_t
+id|vertex_hdl_t
 DECL|typedef|pciio_intr_cpu_get_f
 id|pciio_intr_cpu_get_f
 (paren
@@ -652,7 +600,7 @@ r_void
 DECL|typedef|pciio_provider_startup_f
 id|pciio_provider_startup_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pciio_provider
 )paren
 suffix:semicolon
@@ -661,7 +609,7 @@ r_void
 DECL|typedef|pciio_provider_shutdown_f
 id|pciio_provider_shutdown_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pciio_provider
 )paren
 suffix:semicolon
@@ -670,7 +618,7 @@ r_int
 DECL|typedef|pciio_reset_f
 id|pciio_reset_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn
 )paren
 suffix:semicolon
@@ -680,7 +628,7 @@ r_int
 DECL|typedef|pciio_write_gather_flush_f
 id|pciio_write_gather_flush_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 )paren
 suffix:semicolon
@@ -691,7 +639,7 @@ multiline_comment|/* actual endianness */
 DECL|typedef|pciio_endian_set_f
 id|pciio_endian_set_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* specify endianness for this device */
@@ -709,7 +657,7 @@ id|pciio_priority_t
 DECL|typedef|pciio_priority_set_f
 id|pciio_priority_set_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pcicard
 comma
 id|pciio_priority_t
@@ -721,7 +669,7 @@ r_uint64
 DECL|typedef|pciio_config_get_f
 id|pciio_config_get_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn
 comma
 multiline_comment|/* pci connection point */
@@ -739,7 +687,7 @@ r_void
 DECL|typedef|pciio_config_set_f
 id|pciio_config_set_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn
 comma
 multiline_comment|/* pci connection point */
@@ -761,7 +709,7 @@ r_int
 DECL|typedef|pciio_error_devenable_f
 id|pciio_error_devenable_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pconn_vhdl
 comma
 r_int
@@ -773,7 +721,7 @@ id|pciio_slot_t
 DECL|typedef|pciio_error_extract_f
 id|pciio_error_extract_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 comma
 id|pciio_space_t
@@ -790,7 +738,7 @@ r_void
 DECL|typedef|pciio_driver_reg_callback_f
 id|pciio_driver_reg_callback_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn
 comma
 r_int
@@ -808,7 +756,7 @@ r_void
 DECL|typedef|pciio_driver_unreg_callback_f
 id|pciio_driver_unreg_callback_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn
 comma
 multiline_comment|/* pci connection point */
@@ -827,7 +775,7 @@ r_int
 DECL|typedef|pciio_device_unregister_f
 id|pciio_device_unregister_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn
 )paren
 suffix:semicolon
@@ -836,7 +784,7 @@ r_int
 DECL|typedef|pciio_dma_enabled_f
 id|pciio_dma_enabled_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn
 )paren
 suffix:semicolon
@@ -898,11 +846,6 @@ id|pciio_dmamap_addr_f
 op_star
 id|dmamap_addr
 suffix:semicolon
-DECL|member|dmamap_list
-id|pciio_dmamap_list_f
-op_star
-id|dmamap_list
-suffix:semicolon
 DECL|member|dmamap_done
 id|pciio_dmamap_done_f
 op_star
@@ -912,11 +855,6 @@ DECL|member|dmatrans_addr
 id|pciio_dmatrans_addr_f
 op_star
 id|dmatrans_addr
-suffix:semicolon
-DECL|member|dmatrans_list
-id|pciio_dmatrans_list_f
-op_star
-id|dmatrans_list
 suffix:semicolon
 DECL|member|dmamap_drain
 id|pciio_dmamap_drain_f
@@ -1082,20 +1020,12 @@ id|pciio_dmamap_addr_f
 id|pciio_dmamap_addr
 suffix:semicolon
 r_extern
-id|pciio_dmamap_list_f
-id|pciio_dmamap_list
-suffix:semicolon
-r_extern
 id|pciio_dmamap_done_f
 id|pciio_dmamap_done
 suffix:semicolon
 r_extern
 id|pciio_dmatrans_addr_f
 id|pciio_dmatrans_addr
-suffix:semicolon
-r_extern
-id|pciio_dmatrans_list_f
-id|pciio_dmatrans_list
 suffix:semicolon
 r_extern
 id|pciio_dmamap_drain_f
@@ -1208,7 +1138,7 @@ r_extern
 r_void
 id|pciio_error_register
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pconn
 comma
 multiline_comment|/* which slot */
@@ -1238,35 +1168,21 @@ r_void
 id|pciio_iter_f
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pconn
 )paren
 suffix:semicolon
 multiline_comment|/* a connect point */
-r_extern
-r_void
-id|pciio_iterate
-c_func
-(paren
-r_char
-op_star
-id|driver_prefix
-comma
-id|pciio_iter_f
-op_star
-id|func
-)paren
-suffix:semicolon
 multiline_comment|/* Interfaces used by PCI Bus Providers to talk to&n; * the Generic PCI layer.&n; */
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pciio_device_register
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|connectpt
 comma
 multiline_comment|/* vertex at center of bus */
-id|devfs_handle_t
+id|vertex_hdl_t
 id|master
 comma
 multiline_comment|/* card&squot;s master ASIC (pci provider) */
@@ -1292,7 +1208,7 @@ r_void
 id|pciio_device_unregister
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|connectpt
 )paren
 suffix:semicolon
@@ -1304,7 +1220,7 @@ id|pciio_info_t
 id|pciio_info
 comma
 multiline_comment|/* preallocated info struct */
-id|devfs_handle_t
+id|vertex_hdl_t
 id|master
 comma
 multiline_comment|/* card&squot;s master ASIC (pci provider) */
@@ -1335,11 +1251,11 @@ id|pciio_info
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pciio_device_info_register
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|connectpt
 comma
 multiline_comment|/* vertex at center of bus */
@@ -1353,7 +1269,7 @@ r_void
 id|pciio_device_info_unregister
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|connectpt
 comma
 multiline_comment|/* vertex at center of bus */
@@ -1367,7 +1283,7 @@ r_int
 id|pciio_device_attach
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pcicard
 comma
 multiline_comment|/* vertex created by pciio_device_register */
@@ -1380,7 +1296,7 @@ r_int
 id|pciio_device_detach
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pcicard
 comma
 multiline_comment|/* vertex created by pciio_device_register */
@@ -1438,30 +1354,6 @@ id|size
 suffix:semicolon
 multiline_comment|/* size of free range */
 multiline_comment|/* allocate window from mapping resource */
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-r_extern
-id|iopaddr_t
-id|pciio_device_win_alloc
-c_func
-(paren
-id|pciio_win_map_t
-id|win_map
-comma
-multiline_comment|/* win map */
-id|pciio_win_alloc_t
-id|win_alloc
-comma
-multiline_comment|/* opaque allocation cookie */
-r_int
-id|size
-comma
-multiline_comment|/* size of allocation */
-r_int
-id|align
-)paren
-suffix:semicolon
-multiline_comment|/* alignment of allocation */
-macro_line|#else
 r_extern
 id|iopaddr_t
 id|pciio_device_win_alloc
@@ -1488,7 +1380,6 @@ id|align
 )paren
 suffix:semicolon
 multiline_comment|/* alignment of allocation */
-macro_line|#endif
 multiline_comment|/* free previously allocated window */
 r_extern
 r_void
@@ -1503,7 +1394,7 @@ multiline_comment|/* opaque allocation cookie */
 multiline_comment|/*&n; * Generic PCI interface, for use with all PCI providers&n; * and all PCI devices.&n; */
 multiline_comment|/* Generic PCI interrupt interfaces */
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pciio_intr_dev_get
 c_func
 (paren
@@ -1512,7 +1403,7 @@ id|pciio_intr
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pciio_intr_cpu_get
 c_func
 (paren
@@ -1522,7 +1413,7 @@ id|pciio_intr
 suffix:semicolon
 multiline_comment|/* Generic PCI pio interfaces */
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pciio_pio_dev_get
 c_func
 (paren
@@ -1577,7 +1468,7 @@ id|pciio_piomap
 suffix:semicolon
 multiline_comment|/* Generic PCI dma interfaces */
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pciio_dma_dev_get
 c_func
 (paren
@@ -1591,7 +1482,7 @@ r_void
 id|pciio_provider_register
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|provider
 comma
 id|pciio_provider_t
@@ -1604,7 +1495,7 @@ r_void
 id|pciio_provider_unregister
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|provider
 )paren
 suffix:semicolon
@@ -1614,7 +1505,7 @@ op_star
 id|pciio_provider_fns_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|provider
 )paren
 suffix:semicolon
@@ -1624,7 +1515,7 @@ id|pciio_info_t
 id|pciio_info_chk
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 )paren
 suffix:semicolon
@@ -1633,7 +1524,7 @@ id|pciio_info_t
 id|pciio_info_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 )paren
 suffix:semicolon
@@ -1642,7 +1533,7 @@ id|pciio_info_t
 id|pciio_hostinfo_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 )paren
 suffix:semicolon
@@ -1651,7 +1542,7 @@ r_void
 id|pciio_info_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 comma
 id|pciio_info_t
@@ -1659,7 +1550,7 @@ id|widget_info
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pciio_info_dev_get
 c_func
 (paren
@@ -1668,7 +1559,7 @@ id|pciio_info
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pciio_info_hostdev_get
 c_func
 (paren
@@ -1722,7 +1613,7 @@ id|pciio_info
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pciio_info_master_get
 c_func
 (paren
@@ -1826,7 +1717,7 @@ r_int
 id|pciio_error_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 comma
@@ -1841,7 +1732,7 @@ r_int
 id|pciio_dma_enabled
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* C or C++ */

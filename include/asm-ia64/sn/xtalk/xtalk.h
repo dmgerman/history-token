@@ -1,8 +1,9 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#ifndef _ASM_SN_XTALK_XTALK_H
 DECL|macro|_ASM_SN_XTALK_XTALK_H
 mdefine_line|#define _ASM_SN_XTALK_XTALK_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &quot;asm/sn/sgi.h&quot;
 multiline_comment|/*&n; * xtalk.h -- platform-independent crosstalk interface&n; */
 multiline_comment|/*&n; * User-level device driver visible types&n; */
 DECL|typedef|xwidgetnum_t
@@ -85,7 +86,7 @@ id|xtalk_piomap_t
 DECL|typedef|xtalk_piomap_alloc_f
 id|xtalk_piomap_alloc_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* set up mapping for this device */
@@ -150,7 +151,7 @@ id|caddr_t
 DECL|typedef|xtalk_piotrans_addr_f
 id|xtalk_piotrans_addr_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -175,7 +176,7 @@ r_extern
 id|caddr_t
 id|xtalk_pio_addr
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -214,7 +215,7 @@ id|xtalk_dmamap_t
 DECL|typedef|xtalk_dmamap_alloc_f
 id|xtalk_dmamap_alloc_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* set up mappings for this device */
@@ -289,7 +290,7 @@ id|iopaddr_t
 DECL|typedef|xtalk_dmatrans_addr_f
 id|xtalk_dmatrans_addr_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -314,7 +315,7 @@ id|alenlist_t
 DECL|typedef|xtalk_dmatrans_list_f
 id|xtalk_dmatrans_list_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -345,7 +346,7 @@ r_void
 DECL|typedef|xtalk_dmaaddr_drain_f
 id|xtalk_dmaaddr_drain_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 comma
 multiline_comment|/* drain channel from this device */
@@ -363,7 +364,7 @@ r_void
 DECL|typedef|xtalk_dmalist_drain_f
 id|xtalk_dmalist_drain_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 comma
 multiline_comment|/* drain channel from this device */
@@ -397,7 +398,7 @@ id|xtalk_intr_t
 DECL|typedef|xtalk_intr_alloc_f
 id|xtalk_intr_alloc_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* which crosstalk device */
@@ -405,7 +406,7 @@ id|device_desc_t
 id|dev_desc
 comma
 multiline_comment|/* device descriptor */
-id|devfs_handle_t
+id|vertex_hdl_t
 id|owner_dev
 )paren
 suffix:semicolon
@@ -419,28 +420,6 @@ id|xtalk_intr_t
 id|intr_hdl
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-r_typedef
-r_int
-DECL|typedef|xtalk_intr_connect_f
-id|xtalk_intr_connect_f
-(paren
-id|xtalk_intr_t
-id|intr_hdl
-comma
-multiline_comment|/* xtalk intr resource handle */
-id|xtalk_intr_setfunc_f
-op_star
-id|setfunc
-comma
-multiline_comment|/* func to set intr hw */
-r_void
-op_star
-id|setfunc_arg
-)paren
-suffix:semicolon
-multiline_comment|/* arg to setfunc */
-macro_line|#else
 r_typedef
 r_int
 DECL|typedef|xtalk_intr_connect_f
@@ -470,7 +449,6 @@ id|setfunc_arg
 )paren
 suffix:semicolon
 multiline_comment|/* arg to setfunc */
-macro_line|#endif
 r_typedef
 r_void
 DECL|typedef|xtalk_intr_disconnect_f
@@ -481,7 +459,7 @@ id|intr_hdl
 )paren
 suffix:semicolon
 r_typedef
-id|devfs_handle_t
+id|vertex_hdl_t
 DECL|typedef|xtalk_intr_cpu_get_f
 id|xtalk_intr_cpu_get_f
 (paren
@@ -496,7 +474,7 @@ r_void
 DECL|typedef|xtalk_provider_startup_f
 id|xtalk_provider_startup_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xtalk_provider
 )paren
 suffix:semicolon
@@ -505,7 +483,7 @@ r_void
 DECL|typedef|xtalk_provider_shutdown_f
 id|xtalk_provider_shutdown_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xtalk_provider
 )paren
 suffix:semicolon
@@ -514,7 +492,7 @@ r_void
 DECL|typedef|xtalk_widgetdev_enable_f
 id|xtalk_widgetdev_enable_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 )paren
@@ -524,7 +502,7 @@ r_void
 DECL|typedef|xtalk_widgetdev_shutdown_f
 id|xtalk_widgetdev_shutdown_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 )paren
@@ -534,7 +512,7 @@ r_int
 DECL|typedef|xtalk_dma_enabled_f
 id|xtalk_dma_enabled_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 multiline_comment|/* Error Management */
@@ -543,7 +521,7 @@ r_int
 DECL|typedef|xtalk_error_devenable_f
 id|xtalk_error_devenable_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 comma
 r_int
@@ -687,11 +665,6 @@ id|xtalk_intr_disconnect_f
 op_star
 id|intr_disconnect
 suffix:semicolon
-DECL|member|intr_cpu_get
-id|xtalk_intr_cpu_get_f
-op_star
-id|intr_cpu_get
-suffix:semicolon
 multiline_comment|/* CONFIGURATION MANAGEMENT */
 DECL|member|provider_startup
 id|xtalk_provider_startup_f
@@ -832,7 +805,7 @@ r_int
 id|xtalk_error_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 comma
@@ -853,7 +826,7 @@ DECL|macro|XTALK_INTR_VECTOR_NONE
 mdefine_line|#define XTALK_INTR_VECTOR_NONE&t;(xtalk_intr_vector_t)0
 multiline_comment|/* Generic crosstalk interrupt interfaces */
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xtalk_intr_dev_get
 c_func
 (paren
@@ -889,7 +862,7 @@ id|xtalk_intr
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xtalk_intr_cpu_get
 c_func
 (paren
@@ -909,7 +882,7 @@ id|xtalk_intr
 suffix:semicolon
 multiline_comment|/* Generic crosstalk pio interfaces */
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xtalk_pio_dev_get
 c_func
 (paren
@@ -955,7 +928,7 @@ id|xtalk_piomap
 suffix:semicolon
 multiline_comment|/* Generic crosstalk dma interfaces */
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xtalk_dma_dev_get
 c_func
 (paren
@@ -987,7 +960,7 @@ r_void
 id|xtalk_provider_register
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|provider
 comma
 id|xtalk_provider_t
@@ -1000,7 +973,7 @@ r_void
 id|xtalk_provider_unregister
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|provider
 )paren
 suffix:semicolon
@@ -1010,7 +983,7 @@ op_star
 id|xtalk_provider_fns_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|provider
 )paren
 suffix:semicolon
@@ -1020,7 +993,7 @@ r_void
 id|xswitch_census
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xswitchv
 )paren
 suffix:semicolon
@@ -1029,7 +1002,7 @@ r_void
 id|xswitch_init_widgets
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xswitchv
 )paren
 suffix:semicolon
@@ -1115,7 +1088,7 @@ r_void
 id|xtalk_iter_f
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 )paren
 suffix:semicolon

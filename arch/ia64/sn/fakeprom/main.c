@@ -1,4 +1,4 @@
-multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2001 Silicon Graphics, Inc.  All rights reserved.&n; */
+multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc.  All rights reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -92,99 +92,6 @@ comma
 id|cpu
 suffix:semicolon
 multiline_comment|/*&n;&t; * First lets figure out who we are. This is done from the&n;&t; * LID passed to us.&n;&t; */
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-id|nasid
-op_assign
-(paren
-id|lid
-op_rshift
-l_int|24
-)paren
-suffix:semicolon
-id|syn
-op_assign
-(paren
-id|lid
-op_rshift
-l_int|17
-)paren
-op_amp
-l_int|1
-suffix:semicolon
-id|cpu
-op_assign
-(paren
-id|lid
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n;&t; * Now pick a synergy master to initialize synergy registers.&n;&t; */
-r_if
-c_cond
-(paren
-id|test_and_set_bit
-c_func
-(paren
-id|syn
-comma
-op_amp
-id|nasidmaster
-(braket
-id|nasid
-)braket
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|synergy_init
-c_func
-(paren
-id|nasid
-comma
-id|syn
-)paren
-suffix:semicolon
-id|test_and_set_bit
-c_func
-(paren
-id|syn
-op_plus
-l_int|2
-comma
-op_amp
-id|nasidmaster
-(braket
-id|nasid
-)braket
-)paren
-suffix:semicolon
-)brace
-r_else
-r_while
-c_loop
-(paren
-id|get_bit
-c_func
-(paren
-id|syn
-op_plus
-l_int|2
-comma
-op_amp
-id|nasidmaster
-(braket
-id|nasid
-)braket
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#else
 id|nasid
 op_assign
 (paren
@@ -209,7 +116,6 @@ id|syn
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Now pick a nasid master to initialize Bedrock registers.&n;&t; */
 r_if
 c_cond

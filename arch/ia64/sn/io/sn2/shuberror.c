@@ -1,7 +1,8 @@
-multiline_comment|/* $Id: shuberror.c,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000,2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id: shuberror.c,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000,2002-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
@@ -18,6 +19,7 @@ macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
+macro_line|#include &lt;asm/sn/ioerror_handling.h&gt;
 macro_line|#include &lt;asm/sn/ioerror.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
 macro_line|#include &lt;asm/sn/bte.h&gt;
@@ -40,7 +42,7 @@ id|cnode
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|hubii_eint_handler
 (paren
 r_int
@@ -60,7 +62,7 @@ r_int
 id|hubiio_crb_error_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub_v
 comma
 id|hubinfo_t
@@ -71,7 +73,7 @@ r_int
 id|hubiio_prb_error_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub_v
 comma
 id|hubinfo_t
@@ -83,7 +85,7 @@ r_void
 id|bte_crb_error_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub_v
 comma
 r_int
@@ -100,37 +102,47 @@ r_int
 id|bteop
 )paren
 suffix:semicolon
+r_void
+id|print_crb_fields
+c_func
+(paren
+r_int
+id|crb_num
+comma
+id|ii_icrb0_a_u_t
+id|icrba
+comma
+id|ii_icrb0_b_u_t
+id|icrbb
+comma
+id|ii_icrb0_c_u_t
+id|icrbc
+comma
+id|ii_icrb0_d_u_t
+id|icrbd
+comma
+id|ii_icrb0_e_u_t
+id|icrbe
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|maxcpus
 suffix:semicolon
+r_extern
+id|error_return_code_t
+id|error_state_set
+c_func
+(paren
+id|vertex_hdl_t
+id|v
+comma
+id|error_state_t
+id|new_state
+)paren
+suffix:semicolon
 DECL|macro|HUB_ERROR_PERIOD
 mdefine_line|#define HUB_ERROR_PERIOD        (120 * HZ)      /* 2 minutes */
-macro_line|#ifdef BUS_INT_WAR
-r_void
-id|sn_add_polled_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_int
-id|interval
-)paren
-suffix:semicolon
-r_void
-id|sn_delete_polled_interrupt
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|bus_int_war_ide_irq
-suffix:semicolon
-macro_line|#endif
 r_void
 DECL|function|hub_error_clear
 id|hub_error_clear
@@ -231,37 +243,10 @@ c_func
 (paren
 id|nasid
 comma
-id|IIO_IO_ERR_CLR
+id|IIO_IECLR
 comma
 op_minus
 l_int|1
-)paren
-suffix:semicolon
-id|idsr
-op_assign
-id|REMOTE_HUB_L
-c_func
-(paren
-id|nasid
-comma
-id|IIO_IIDSR
-)paren
-suffix:semicolon
-id|REMOTE_HUB_S
-c_func
-(paren
-id|nasid
-comma
-id|IIO_IIDSR
-comma
-(paren
-id|idsr
-op_amp
-op_complement
-(paren
-id|IIO_IIDSR_SENT_MASK
-)paren
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -326,7 +311,7 @@ suffix:semicolon
 id|cpuid_t
 id|intr_cpu
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub_v
 suffix:semicolon
 r_int
@@ -337,10 +322,13 @@ r_int
 id|bit
 )paren
 suffix:semicolon
+id|ii_ilcsr_u_t
+id|ilcsr
+suffix:semicolon
 id|hub_v
 op_assign
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 id|cnodeid_to_vertex
 c_func
@@ -377,6 +365,44 @@ op_eq
 id|cnode
 )paren
 suffix:semicolon
+id|ilcsr.ii_ilcsr_regval
+op_assign
+id|REMOTE_HUB_L
+c_func
+(paren
+id|hinfo-&gt;h_nasid
+comma
+id|IIO_ILCSR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ilcsr.ii_ilcsr_fld_s.i_llp_stat
+op_amp
+l_int|0x2
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/*&n;&t; * HUB II link is not up.  Disable LLP. Clear old errors.&n;&t; * Enable interrupts to handle BTE errors.&n;&t; */
+id|ilcsr.ii_ilcsr_fld_s.i_llp_en
+op_assign
+l_int|0
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|hinfo-&gt;h_nasid
+comma
+id|IIO_ILCSR
+comma
+id|ilcsr.ii_ilcsr_regval
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Select a possible interrupt target where there is a free interrupt&n;     * bit and also reserve the interrupt bit for this IO error interrupt&n;     */
 id|intr_cpu
 op_assign
@@ -387,8 +413,7 @@ id|hub_v
 comma
 l_int|0
 comma
-op_minus
-l_int|1
+id|SGI_II_ERROR
 comma
 l_int|0
 comma
@@ -426,7 +451,7 @@ c_func
 (paren
 id|intr_cpu
 comma
-id|bit
+id|SGI_II_ERROR
 comma
 l_int|0
 comma
@@ -436,17 +461,11 @@ suffix:semicolon
 id|request_irq
 c_func
 (paren
-id|bit
-op_plus
-(paren
-id|intr_cpu
-op_lshift
-l_int|8
-)paren
+id|SGI_II_ERROR
 comma
 id|hubii_eint_handler
 comma
-l_int|0
+id|SA_SHIRQ
 comma
 l_string|&quot;SN_hub_error&quot;
 comma
@@ -461,38 +480,12 @@ id|irq_desc
 c_func
 (paren
 id|bit
-op_plus
-(paren
-id|intr_cpu
-op_lshift
-l_int|8
-)paren
 )paren
 op_member_access_from_pointer
 id|status
 op_or_assign
 id|SN2_IRQ_PER_HUB
 suffix:semicolon
-macro_line|#ifdef BUS_INT_WAR                                              
-id|sn_add_polled_interrupt
-c_func
-(paren
-id|bit
-op_plus
-(paren
-id|intr_cpu
-op_lshift
-l_int|8
-)paren
-comma
-(paren
-l_float|0.01
-op_star
-id|HZ
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ASSERT_ALWAYS
 c_func
 (paren
@@ -542,7 +535,7 @@ id|hubio_eint.ii_iidsr_regval
 suffix:semicolon
 )brace
 multiline_comment|/*ARGSUSED*/
-r_void
+id|irqreturn_t
 DECL|function|hubii_eint_handler
 id|hubii_eint_handler
 (paren
@@ -559,7 +552,7 @@ op_star
 id|ep
 )paren
 (brace
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub_v
 suffix:semicolon
 id|hubinfo_t
@@ -571,11 +564,14 @@ suffix:semicolon
 id|hubreg_t
 id|idsr
 suffix:semicolon
+id|ii_ilcsr_u_t
+id|ilcsr
+suffix:semicolon
 multiline_comment|/* two levels of casting avoids compiler warning.!! */
 id|hub_v
 op_assign
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 (paren
 r_int
@@ -599,6 +595,43 @@ op_amp
 id|hinfo
 )paren
 suffix:semicolon
+id|idsr
+op_assign
+id|REMOTE_HUB_L
+c_func
+(paren
+id|hinfo-&gt;h_nasid
+comma
+id|IIO_ICMR
+)paren
+suffix:semicolon
+macro_line|#if 0
+r_if
+c_cond
+(paren
+id|idsr
+op_amp
+l_int|0x1
+)paren
+(brace
+multiline_comment|/* ICMR bit is set .. we are getting into &quot;Spurious Interrupts condition. */
+id|printk
+c_func
+(paren
+l_string|&quot;Cnode %d II has seen the ICMR condition&bslash;n&quot;
+comma
+id|hinfo-&gt;h_cnodeid
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;***** Please file PV with the above messages *****&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* panic(&quot;We have to panic to prevent further unknown states ..&bslash;n&quot;); */
+)brace
+macro_line|#endif
 multiline_comment|/* &n;     * Identify the reason for error. &n;     */
 id|wstat.ii_wstat_regval
 op_assign
@@ -708,10 +741,31 @@ l_string|&quot;Unknown&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Note: we may never be able to print this, if the II talking&n;&t; * to Xbow which hosts the console is dead. &n;&t; */
+id|ilcsr.ii_ilcsr_regval
+op_assign
+id|REMOTE_HUB_L
+c_func
+(paren
+id|hinfo-&gt;h_nasid
+comma
+id|IIO_ILCSR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ilcsr.ii_ilcsr_fld_s.i_llp_en
+op_eq
+l_int|1
+)paren
+(brace
+multiline_comment|/* Link is enabled */
 id|printk
 c_func
 (paren
-l_string|&quot;Hub %d to Xtalk Link failed (II_ECRAZY) Reason: %s&quot;
+l_string|&quot;Hub %d, cnode %d to Xtalk Link failed (II_ECRAZY) Reason: %s&quot;
+comma
+id|hinfo-&gt;h_nasid
 comma
 id|hinfo-&gt;h_cnodeid
 comma
@@ -719,30 +773,8 @@ id|reason
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;     * It&squot;s a toss as to which one among PRB/CRB to check first. &n;     * Current decision is based on the severity of the errors. &n;     * IO CRB errors tend to be more severe than PRB errors.&n;     *&n;     * It is possible for BTE errors to have been handled already, so we&n;     * may not see any errors handled here. &n;     */
-(paren
-r_void
-)paren
-id|hubiio_crb_error_handler
-c_func
-(paren
-id|hub_v
-comma
-id|hinfo
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|hubiio_prb_error_handler
-c_func
-(paren
-id|hub_v
-comma
-id|hinfo
-)paren
-suffix:semicolon
-multiline_comment|/*&n;     * If we reach here, it indicates crb/prb handlers successfully&n;     * handled the error. So, re-enable II to send more interrupt&n;     * and return.&n;     */
+)brace
+multiline_comment|/*&n;     * Before processing any interrupt related information, clear all&n;     * error indication and reenable interrupts.  This will prevent&n;     * lost interrupts due to the interrupt handler scanning past a PRB/CRB&n;     * which has not errorred yet and then the PRB/CRB goes into error.&n;     * Note, PRB errors are cleared individually.&n;     */
 id|REMOTE_HUB_S
 c_func
 (paren
@@ -750,7 +782,7 @@ id|hinfo-&gt;h_nasid
 comma
 id|IIO_IECLR
 comma
-l_int|0xffffff
+l_int|0xff0000
 )paren
 suffix:semicolon
 id|idsr
@@ -775,6 +807,32 @@ id|IIO_IIDSR
 comma
 id|idsr
 )paren
+suffix:semicolon
+multiline_comment|/* &n;     * It&squot;s a toss as to which one among PRB/CRB to check first. &n;     * Current decision is based on the severity of the errors. &n;     * IO CRB errors tend to be more severe than PRB errors.&n;     *&n;     * It is possible for BTE errors to have been handled already, so we&n;     * may not see any errors handled here. &n;     */
+(paren
+r_void
+)paren
+id|hubiio_crb_error_handler
+c_func
+(paren
+id|hub_v
+comma
+id|hinfo
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
+id|hubiio_prb_error_handler
+c_func
+(paren
+id|hub_v
+comma
+id|hinfo
+)paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Free the hub CRB &quot;crbnum&quot; which encountered an error.&n; * Assumption is, error handling was successfully done,&n; * and we now want to return the CRB back to Hub for normal usage.&n; *&n; * In order to free the CRB, all that&squot;s needed is to de-allocate it&n; *&n; * Assumption:&n; *      No other processor is mucking around with the hub control register.&n; *      So, upper layer has to single thread this.&n; */
@@ -888,13 +946,201 @@ comma
 l_string|&quot;Xtalk Error Packet&quot;
 )brace
 suffix:semicolon
+r_void
+DECL|function|print_crb_fields
+id|print_crb_fields
+c_func
+(paren
+r_int
+id|crb_num
+comma
+id|ii_icrb0_a_u_t
+id|icrba
+comma
+id|ii_icrb0_b_u_t
+id|icrbb
+comma
+id|ii_icrb0_c_u_t
+id|icrbc
+comma
+id|ii_icrb0_d_u_t
+id|icrbd
+comma
+id|ii_icrb0_e_u_t
+id|icrbe
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;CRB %d regA&bslash;n&bslash;t&quot;
+l_string|&quot;a_iow 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;valid0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;Address0x%lx&bslash;n&bslash;t&quot;
+l_string|&quot;a_tnum 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;a_sidn 0x%x&bslash;n&quot;
+comma
+id|crb_num
+comma
+id|icrba.a_iow
+comma
+id|icrba.a_valid
+comma
+id|icrba.a_addr
+comma
+id|icrba.a_tnum
+comma
+id|icrba.a_sidn
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;CRB %d regB&bslash;n&bslash;t&quot;
+l_string|&quot;b_imsgtype 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;b_imsg 0x%x&bslash;n&quot;
+l_string|&quot;&bslash;tb_use_old 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;b_initiator 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;b_exc 0x%x&bslash;n&quot;
+l_string|&quot;&bslash;tb_ackcnt 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;b_resp 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;b_ack 0x%x&bslash;n&quot;
+l_string|&quot;&bslash;tb_hold 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;b_wb 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;b_intvn 0x%x&bslash;n&quot;
+l_string|&quot;&bslash;tb_stall_ib 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;b_stall_int 0x%x&bslash;n&quot;
+l_string|&quot;&bslash;tb_stall_bte_0 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;b_stall_bte_1 0x%x&bslash;n&quot;
+l_string|&quot;&bslash;tb_error 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;b_lnetuce 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;b_mark 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;b_xerr 0x%x&bslash;n&quot;
+comma
+id|crb_num
+comma
+id|icrbb.b_imsgtype
+comma
+id|icrbb.b_imsg
+comma
+id|icrbb.b_use_old
+comma
+id|icrbb.b_initiator
+comma
+id|icrbb.b_exc
+comma
+id|icrbb.b_ackcnt
+comma
+id|icrbb.b_resp
+comma
+id|icrbb.b_ack
+comma
+id|icrbb.b_hold
+comma
+id|icrbb.b_wb
+comma
+id|icrbb.b_intvn
+comma
+id|icrbb.b_stall_ib
+comma
+id|icrbb.b_stall_int
+comma
+id|icrbb.b_stall_bte_0
+comma
+id|icrbb.b_stall_bte_1
+comma
+id|icrbb.b_error
+comma
+id|icrbb.b_lnetuce
+comma
+id|icrbb.b_mark
+comma
+id|icrbb.b_xerr
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;CRB %d regC&bslash;n&bslash;t&quot;
+l_string|&quot;c_source 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;c_xtsize 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;c_cohtrans 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;c_btenum 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;c_gbr 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;c_doresp 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;c_barrop 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;c_suppl 0x%x&bslash;n&quot;
+comma
+id|crb_num
+comma
+id|icrbc.c_source
+comma
+id|icrbc.c_xtsize
+comma
+id|icrbc.c_cohtrans
+comma
+id|icrbc.c_btenum
+comma
+id|icrbc.c_gbr
+comma
+id|icrbc.c_doresp
+comma
+id|icrbc.c_barrop
+comma
+id|icrbc.c_suppl
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;CRB %d regD&bslash;n&bslash;t&quot;
+l_string|&quot;d_bteaddr 0x%lx&bslash;n&bslash;t&quot;
+l_string|&quot;d_bteop 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;d_pripsc 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;d_pricnt 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;d_sleep 0x%x&bslash;n&bslash;t&quot;
+comma
+id|crb_num
+comma
+id|icrbd.d_bteaddr
+comma
+id|icrbd.d_bteop
+comma
+id|icrbd.d_pripsc
+comma
+id|icrbd.d_pricnt
+comma
+id|icrbd.d_sleep
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;CRB %d regE&bslash;n&bslash;t&quot;
+l_string|&quot;icrbe_timeout 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;icrbe_context 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;icrbe_toutvld 0x%x&bslash;n&bslash;t&quot;
+l_string|&quot;icrbe_ctxtvld 0x%x&bslash;n&bslash;t&quot;
+comma
+id|crb_num
+comma
+id|icrbe.icrbe_timeout
+comma
+id|icrbe.icrbe_context
+comma
+id|icrbe.icrbe_toutvld
+comma
+id|icrbe.icrbe_ctxtvld
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * hubiio_crb_error_handler&n; *&n; *&t;This routine gets invoked when a hub gets an error &n; *&t;interrupt. So, the routine is running in interrupt context&n; *&t;at error interrupt level.&n; * Action:&n; *&t;It&squot;s responsible for identifying ALL the CRBs that are marked&n; *&t;with error, and process them. &n; *&t;&n; * &t;If you find the CRB that&squot;s marked with error, map this to the&n; *&t;reason it caused error, and invoke appropriate error handler.&n; *&n; *&t;XXX Be aware of the information in the context register.&n; *&n; * NOTE:&n; *&t;Use REMOTE_HUB_* macro instead of LOCAL_HUB_* so that the interrupt&n; *&t;handler can be run on any node. (not necessarily the node &n; *&t;corresponding to the hub that encountered error).&n; */
 r_int
 DECL|function|hubiio_crb_error_handler
 id|hubiio_crb_error_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub_v
 comma
 id|hubinfo_t
@@ -954,6 +1200,7 @@ c_func
 id|nasid
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * XXX - Add locking for any recovery actions&n;&t; */
 multiline_comment|/*&n;&t; * Scan through all CRBs in the Hub, and handle the errors&n;&t; * in any of the CRBs marked.&n;&t; */
 r_for
 c_loop
@@ -1124,7 +1371,14 @@ l_int|0x4
 op_rshift
 l_int|2
 suffix:semicolon
-multiline_comment|/* &gt;&gt;&gt; bte_crb_error_handler needs to be &n;&t;&t;&t; * broken into two parts.  The first should&n;&t;&t;&t; * cleanup the CRB.  The second should wait&n;&t;&t;&t; * until all bte related CRB&squot;s are complete&n;&t;&t;&t; * and then do the error reset.&n;&t;&t;&t; */
+id|hubiio_crb_free
+c_func
+(paren
+id|hinfo
+comma
+id|i
+)paren
+suffix:semicolon
 id|bte_crb_error_handler
 c_func
 (paren
@@ -1138,14 +1392,6 @@ op_amp
 id|ioerror
 comma
 id|icrbd.d_bteop
-)paren
-suffix:semicolon
-id|hubiio_crb_free
-c_func
-(paren
-id|hinfo
-comma
-id|i
 )paren
 suffix:semicolon
 id|num_errors
@@ -1215,6 +1461,255 @@ id|icrba.a_tnum
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|icrbb.b_error
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;     * CRB &squot;i&squot; has some error. Identify the type of error,&n;&t;&t;     * and try to handle it.&n;&t;&t;     *&n;&t;&t;     */
+r_switch
+c_cond
+(paren
+id|icrbb.b_ecode
+)paren
+(brace
+r_case
+id|IIO_ICRB_ECODE_PERR
+suffix:colon
+r_case
+id|IIO_ICRB_ECODE_WERR
+suffix:colon
+r_case
+id|IIO_ICRB_ECODE_AERR
+suffix:colon
+r_case
+id|IIO_ICRB_ECODE_PWERR
+suffix:colon
+r_case
+id|IIO_ICRB_ECODE_TOUT
+suffix:colon
+r_case
+id|IIO_ICRB_ECODE_XTERR
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Shub II CRB %d: error %s on hub cnodeid: %d&quot;
+comma
+id|i
+comma
+id|hubiio_crb_errors
+(braket
+id|icrbb.b_ecode
+)braket
+comma
+id|cnode
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;     * Any sort of write error is mostly due&n;&t;&t;&t;     * bad programming (Note it&squot;s not a timeout.)&n;&t;&t;&t;     * So, invoke hub_iio_error_handler with&n;&t;&t;&t;     * appropriate information.&n;&t;&t;&t;     */
+id|IOERROR_SETVALUE
+c_func
+(paren
+op_amp
+id|ioerror
+comma
+id|errortype
+comma
+id|icrbb.b_ecode
+)paren
+suffix:semicolon
+multiline_comment|/* Go through the error bit lookup phase */
+r_if
+c_cond
+(paren
+id|error_state_set
+c_func
+(paren
+id|hub_v
+comma
+id|ERROR_STATE_LOOKUP
+)paren
+op_eq
+id|ERROR_RETURN_CODE_CANNOT_SET_STATE
+)paren
+r_return
+id|IOERROR_UNHANDLED
+suffix:semicolon
+id|rc
+op_assign
+id|hub_ioerror_handler
+c_func
+(paren
+id|hub_v
+comma
+id|DMA_WRITE_ERROR
+comma
+id|MODE_DEVERROR
+comma
+op_amp
+id|ioerror
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+id|IOERROR_HANDLED
+)paren
+(brace
+id|rc
+op_assign
+id|hub_ioerror_handler
+c_func
+(paren
+id|hub_v
+comma
+id|DMA_WRITE_ERROR
+comma
+id|MODE_DEVREENABLE
+comma
+op_amp
+id|ioerror
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Unable to handle %s on hub %d&quot;
+comma
+id|hubiio_crb_errors
+(braket
+id|icrbb.b_ecode
+)braket
+comma
+id|cnode
+)paren
+suffix:semicolon
+multiline_comment|/* panic; */
+)brace
+multiline_comment|/* Go to Next error */
+id|print_crb_fields
+c_func
+(paren
+id|i
+comma
+id|icrba
+comma
+id|icrbb
+comma
+id|icrbc
+comma
+id|icrbd
+comma
+id|icrbe
+)paren
+suffix:semicolon
+id|hubiio_crb_free
+c_func
+(paren
+id|hinfo
+comma
+id|i
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+r_case
+id|IIO_ICRB_ECODE_PRERR
+suffix:colon
+r_case
+id|IIO_ICRB_ECODE_DERR
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Shub II CRB %d: error %s on hub : %d&quot;
+comma
+id|i
+comma
+id|hubiio_crb_errors
+(braket
+id|icrbb.b_ecode
+)braket
+comma
+id|cnode
+)paren
+suffix:semicolon
+multiline_comment|/* panic */
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Shub II CRB error (code : %d) on hub : %d&quot;
+comma
+id|icrbb.b_ecode
+comma
+id|cnode
+)paren
+suffix:semicolon
+multiline_comment|/* panic */
+)brace
+)brace
+multiline_comment|/*&n;&t;&t; * Error is not indicated via the errcode field&n;&t;&t; * Check other error indications in this register.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|icrbb.b_xerr
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Shub II CRB %d: Xtalk Packet with error bit set to hub %d&quot;
+comma
+id|i
+comma
+id|cnode
+)paren
+suffix:semicolon
+multiline_comment|/* panic */
+)brace
+r_if
+c_cond
+(paren
+id|icrbb.b_lnetuce
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Shub II CRB %d: Uncorrectable data error detected on data &quot;
+l_string|&quot; from NUMAlink to node %d&quot;
+comma
+id|i
+comma
+id|cnode
+)paren
+suffix:semicolon
+multiline_comment|/* panic */
+)brace
+id|print_crb_fields
+c_func
+(paren
+id|i
+comma
+id|icrba
+comma
+id|icrbb
+comma
+id|icrbc
+comma
+id|icrbd
+comma
+id|icrbe
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1373,6 +1868,8 @@ c_func
 (paren
 l_string|&quot;Fatal error (code : %d) on hub : %d&quot;
 comma
+id|icrbb.b_ecode
+comma
 id|cnode
 )paren
 suffix:semicolon
@@ -1530,7 +2027,7 @@ DECL|function|hubii_prb_handler
 id|hubii_prb_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub_v
 comma
 id|hubinfo_t
@@ -1553,7 +2050,7 @@ c_func
 (paren
 id|nasid
 comma
-id|IIO_IO_ERR_CLR
+id|IIO_IECLR
 comma
 (paren
 l_int|1
@@ -1566,7 +2063,8 @@ multiline_comment|/*&n;         * PIO Write to Widget &squot;i&squot; got into a
 id|printk
 c_func
 (paren
-l_string|&quot;Hub nasid %d got a PIO Write error from widget %d, cleaning up and continuing&quot;
+l_string|&quot;Hub nasid %d got a PIO Write error from widget %d, &quot;
+l_string|&quot;cleaning up and continuing&quot;
 comma
 id|nasid
 comma
@@ -1580,7 +2078,7 @@ DECL|function|hubiio_prb_error_handler
 id|hubiio_prb_error_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub_v
 comma
 id|hubinfo_t

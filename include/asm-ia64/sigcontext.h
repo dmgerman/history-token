@@ -155,7 +155,7 @@ r_int
 r_int
 id|sc_ar25
 suffix:semicolon
-multiline_comment|/* rsvd for scratch use */
+multiline_comment|/* cmp8xchg16 uses this */
 DECL|member|sc_ar26
 r_int
 r_int
