@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt; /* For struct exception_table_entry */
 multiline_comment|/* Not Yet Implemented */
 DECL|macro|MODULE_AUTHOR
 mdefine_line|#define MODULE_AUTHOR(name)
@@ -85,6 +84,9 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Archs provide a method of finding the correct exception table. */
+r_struct
+id|exception_table_entry
+suffix:semicolon
 r_const
 r_struct
 id|exception_table_entry
@@ -148,29 +150,6 @@ r_int
 r_int
 id|add
 )paren
-suffix:semicolon
-DECL|struct|exception_table
-r_struct
-id|exception_table
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|num_entries
-r_int
-r_int
-id|num_entries
-suffix:semicolon
-DECL|member|entry
-r_const
-r_struct
-id|exception_table_entry
-op_star
-id|entry
-suffix:semicolon
-)brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_MODULES
 multiline_comment|/* Get/put a kernel symbol (calls must be symmetric) */
@@ -308,10 +287,17 @@ r_int
 op_star
 id|gpl_crcs
 suffix:semicolon
-multiline_comment|/* Exception tables */
+multiline_comment|/* Exception table */
+DECL|member|num_exentries
+r_int
+r_int
+id|num_exentries
+suffix:semicolon
 DECL|member|extable
+r_const
 r_struct
-id|exception_table
+id|exception_table_entry
+op_star
 id|extable
 suffix:semicolon
 multiline_comment|/* Startup function. */

@@ -33,7 +33,7 @@ DECL|macro|INIT_OFFSET_MASK
 mdefine_line|#define INIT_OFFSET_MASK (1UL &lt;&lt; (BITS_PER_LONG-1))
 DECL|macro|symbol_is
 mdefine_line|#define symbol_is(literal, string)&t;&t;&t;&t;&bslash;&n;&t;(strcmp(MODULE_SYMBOL_PREFIX literal, (string)) == 0)
-multiline_comment|/* Protects extables and symbols lists */
+multiline_comment|/* Protects module list */
 DECL|variable|modlist_lock
 r_static
 id|spinlock_t
@@ -54,13 +54,6 @@ id|LIST_HEAD
 c_func
 (paren
 id|modules
-)paren
-suffix:semicolon
-r_static
-id|LIST_HEAD
-c_func
-(paren
-id|extables
 )paren
 suffix:semicolon
 multiline_comment|/* We require a truly strong try_module_get() */
@@ -4020,13 +4013,6 @@ op_amp
 id|mod-&gt;list
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|mod-&gt;extable.list
-)paren
-suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -6195,16 +6181,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Set up exception table */
-r_if
-c_cond
-(paren
-id|exindex
-)paren
-(brace
-multiline_comment|/* FIXME: Sort exception table. */
-id|mod-&gt;extable.num_entries
+id|mod-&gt;num_exentries
 op_assign
-(paren
 id|sechdrs
 (braket
 id|exindex
@@ -6214,12 +6192,11 @@ id|sh_size
 op_div
 r_sizeof
 (paren
-r_struct
-id|exception_table_entry
-)paren
+op_star
+id|mod-&gt;extable
 )paren
 suffix:semicolon
-id|mod-&gt;extable.entry
+id|mod-&gt;extable
 op_assign
 (paren
 r_void
@@ -6232,7 +6209,6 @@ id|exindex
 dot
 id|sh_addr
 suffix:semicolon
-)brace
 multiline_comment|/* Now do relocations. */
 r_for
 c_loop
@@ -6728,16 +6704,6 @@ c_func
 (paren
 op_amp
 id|modlist_lock
-)paren
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|mod-&gt;extable.list
-comma
-op_amp
-id|extables
 )paren
 suffix:semicolon
 id|list_add
@@ -7520,9 +7486,9 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|exception_table
+id|module
 op_star
-id|i
+id|mod
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -7536,10 +7502,10 @@ suffix:semicolon
 id|list_for_each_entry
 c_func
 (paren
-id|i
+id|mod
 comma
 op_amp
-id|extables
+id|modules
 comma
 id|list
 )paren
@@ -7547,7 +7513,7 @@ id|list
 r_if
 c_cond
 (paren
-id|i-&gt;num_entries
+id|mod-&gt;num_exentries
 op_eq
 l_int|0
 )paren
@@ -7558,11 +7524,11 @@ op_assign
 id|search_extable
 c_func
 (paren
-id|i-&gt;entry
+id|mod-&gt;extable
 comma
-id|i-&gt;entry
+id|mod-&gt;extable
 op_plus
-id|i-&gt;num_entries
+id|mod-&gt;num_exentries
 op_minus
 l_int|1
 comma
