@@ -88,8 +88,6 @@ suffix:semicolon
 DECL|variable|sysctl_tcp_vegas_cong_avoid
 r_int
 id|sysctl_tcp_vegas_cong_avoid
-op_assign
-l_int|1
 suffix:semicolon
 DECL|variable|sysctl_tcp_moderate_rcvbuf
 r_int
