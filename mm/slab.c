@@ -595,7 +595,7 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* Must match cache_sizes above. Out of line to keep cache footprint low. */
 DECL|macro|CN
-mdefine_line|#define CN(x) { x, x &quot; (DMA)&quot; }
+mdefine_line|#define CN(x) { x, x &quot;(DMA)&quot; }
 r_static
 r_struct
 (brace
