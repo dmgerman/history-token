@@ -36,6 +36,7 @@ macro_line|#include &quot;mode.h&quot;
 macro_line|#ifdef UML_CONFIG_MODE_SKAS
 macro_line|#include &quot;skas.h&quot;
 macro_line|#include &quot;skas_ptrace.h&quot;
+macro_line|#include &quot;registers.h&quot;
 macro_line|#endif
 DECL|function|init_new_thread_stack
 r_void
