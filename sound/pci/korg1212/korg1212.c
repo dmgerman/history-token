@@ -1878,14 +1878,9 @@ op_logical_neg
 id|korg1212-&gt;stop_pending_cnt
 )paren
 (brace
-id|writel
-c_func
-(paren
-l_int|0xffffffff
-comma
-op_amp
 id|korg1212-&gt;sharedBufferPtr-&gt;cardCommand
-)paren
+op_assign
+l_int|0xffffffff
 suffix:semicolon
 multiline_comment|/* program the timer */
 id|korg1212-&gt;stop_pending_cnt
@@ -1999,12 +1994,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|readl
-c_func
-(paren
-op_amp
 id|korg1212-&gt;sharedBufferPtr-&gt;cardCommand
-)paren
 op_eq
 l_int|0
 )paren
@@ -2073,14 +2063,9 @@ c_func
 l_string|&quot;korg1212_timer_func timeout&bslash;n&quot;
 )paren
 suffix:semicolon
-id|writel
-c_func
-(paren
-l_int|0
-comma
-op_amp
 id|korg1212-&gt;sharedBufferPtr-&gt;cardCommand
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 id|korg1212-&gt;dsp_stop_is_processed
 op_assign
@@ -4245,14 +4230,9 @@ suffix:semicolon
 id|korg1212-&gt;totalerrorcnt
 op_increment
 suffix:semicolon
-id|writel
-c_func
-(paren
-l_int|0
-comma
-op_amp
 id|korg1212-&gt;sharedBufferPtr-&gt;cardCommand
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 id|snd_korg1212_setCardState
 c_func
@@ -4288,14 +4268,9 @@ id|korg1212-&gt;cardState
 )paren
 suffix:semicolon
 macro_line|#endif
-id|writel
-c_func
-(paren
-l_int|0
-comma
-op_amp
 id|korg1212-&gt;sharedBufferPtr-&gt;cardCommand
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -6093,7 +6068,7 @@ r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;writel(0, &amp;korg1212-&gt;sharedBufferPtr-&gt;cardCommand);&n;&t;&t;del_timer(&amp;korg1212-&gt;timer);&n;&t;&t;korg1212-&gt;stop_pending_cnt = 0;&n;&t;&t;*/
+multiline_comment|/*&n;&t;&t;korg1212-&gt;sharedBufferPtr-&gt;cardCommand = 0;&n;&t;&t;del_timer(&amp;korg1212-&gt;timer);&n;&t;&t;korg1212-&gt;stop_pending_cnt = 0;&n;&t;&t;*/
 )brace
 id|rc
 op_assign
