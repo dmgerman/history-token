@@ -32,18 +32,9 @@ DECL|macro|__HAVE_DMA_QUIESCENT
 mdefine_line|#define __HAVE_DMA_QUIESCENT&t;1
 DECL|macro|DRIVER_DMA_QUIESCENT
 mdefine_line|#define DRIVER_DMA_QUIESCENT() do {&t;&t;&t;&t;&t;&bslash;&n;&t;i810_dma_quiescent( dev );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+multiline_comment|/* Don&squot;t need an irq any more.  The template code will make sure that&n; * a noop stub is generated for compatibility.&n; */
 DECL|macro|__HAVE_DMA_IRQ
-mdefine_line|#define __HAVE_DMA_IRQ&t;&t;1
-DECL|macro|__HAVE_DMA_IRQ_BH
-mdefine_line|#define __HAVE_DMA_IRQ_BH&t;1
-DECL|macro|__HAVE_SHARED_IRQ
-mdefine_line|#define __HAVE_SHARED_IRQ       1
-DECL|macro|DRIVER_PREINSTALL
-mdefine_line|#define DRIVER_PREINSTALL() do {&t;&t;&t;&t;&t;&bslash;&n;&t;drm_i810_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(drm_i810_private_t *)dev-&gt;dev_private;&t;&t;&t;&bslash;&n;&t;u16 tmp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   &t;tmp = I810_READ16( I810REG_HWSTAM );&t;&t;&t;&t;&bslash;&n;   &t;tmp = tmp &amp; 0x6000;&t;&t;&t;&t;&t;&t;&bslash;&n;   &t;I810_WRITE16( I810REG_HWSTAM, tmp );&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;      &t;tmp = I810_READ16( I810REG_INT_MASK_R );&t;&t;&t;&bslash;&n;   &t;tmp = tmp &amp; 0x6000;&t;&t;/* Unmask interrupts */&t;&t;&bslash;&n;   &t;I810_WRITE16( I810REG_INT_MASK_R, tmp );&t;&t;&t;&bslash;&n;   &t;tmp = I810_READ16( I810REG_INT_ENABLE_R );&t;&t;&t;&bslash;&n;   &t;tmp = tmp &amp; 0x6000;&t;&t;/* Disable all interrupts */&t;&bslash;&n;      &t;I810_WRITE16( I810REG_INT_ENABLE_R, tmp );&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|DRIVER_POSTINSTALL
-mdefine_line|#define DRIVER_POSTINSTALL() do {&t;&t;&t;&t;&t;&bslash;&n;&t;drm_i810_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(drm_i810_private_t *)dev-&gt;dev_private;&t;&t;&t;&bslash;&n;&t;u16 tmp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   &t;tmp = I810_READ16( I810REG_INT_ENABLE_R );&t;&t;&t;&bslash;&n;   &t;tmp = tmp &amp; 0x6000;&t;&t;&t;&t;&t;&t;&bslash;&n;   &t;tmp = tmp | 0x0003;&t;/* Enable bp &amp; user interrupts */&t;&bslash;&n;   &t;I810_WRITE16( I810REG_INT_ENABLE_R, tmp );&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|DRIVER_UNINSTALL
-mdefine_line|#define DRIVER_UNINSTALL() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_i810_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(drm_i810_private_t *)dev-&gt;dev_private;&t;&t;&t;&bslash;&n;&t;u16 tmp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( dev_priv ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tmp = I810_READ16( I810REG_INT_IDENTITY_R );&t;&t;&bslash;&n;&t;&t;tmp = tmp &amp; ~(0x6000);&t;/* Clear all interrupts */&t;&bslash;&n;&t;&t;if ( tmp != 0 )&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;I810_WRITE16( I810REG_INT_IDENTITY_R, tmp );&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tmp = I810_READ16( I810REG_INT_ENABLE_R );&t;&t;&bslash;&n;&t;&t;tmp = tmp &amp; 0x6000;&t;/* Disable all interrupts */&t;&bslash;&n;&t;&t;I810_WRITE16( I810REG_INT_ENABLE_R, tmp );&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define __HAVE_DMA_IRQ&t;&t;0
 multiline_comment|/* Buffer customization:&n; */
 DECL|macro|DRIVER_BUF_PRIV_T
 mdefine_line|#define DRIVER_BUF_PRIV_T&t;drm_i810_buf_priv_t

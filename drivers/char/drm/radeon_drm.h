@@ -1,4 +1,4 @@
-multiline_comment|/* radeon_drm.h -- Public header for the radeon driver -*- linux-c -*-&n; *&n; * Copyright 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Fremont, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Kevin E. Martin &lt;martin@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/* radeon_drm.h -- Public header for the radeon driver -*- linux-c -*-&n; *&n; * Copyright 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Fremont, California.&n; * Copyright 2002 Tungsten Graphics, Inc., Cedar Park, Texas.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Kevin E. Martin &lt;martin@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; *    Keith Whitwell &lt;keith_whitwell@yahoo.com&gt;&n; */
 macro_line|#ifndef __RADEON_DRM_H__
 DECL|macro|__RADEON_DRM_H__
 mdefine_line|#define __RADEON_DRM_H__
@@ -6,7 +6,7 @@ multiline_comment|/* WARNING: If you change any of these defines, make sure to c
 macro_line|#ifndef __RADEON_SAREA_DEFINES__
 DECL|macro|__RADEON_SAREA_DEFINES__
 mdefine_line|#define __RADEON_SAREA_DEFINES__
-multiline_comment|/* What needs to be changed for the current vertex buffer?&n; */
+multiline_comment|/* Old style state flags, required for sarea interface (1.1 and 1.2&n; * clears) and 1.2 drm_vertex2 ioctl.&n; */
 DECL|macro|RADEON_UPLOAD_CONTEXT
 mdefine_line|#define RADEON_UPLOAD_CONTEXT&t;&t;0x00000001
 DECL|macro|RADEON_UPLOAD_VERTFMT
@@ -41,14 +41,184 @@ DECL|macro|RADEON_UPLOAD_CLIPRECTS
 mdefine_line|#define RADEON_UPLOAD_CLIPRECTS&t;&t;0x00008000 /* handled client-side */
 DECL|macro|RADEON_REQUIRE_QUIESCENCE
 mdefine_line|#define RADEON_REQUIRE_QUIESCENCE&t;0x00010000
+DECL|macro|RADEON_UPLOAD_ZBIAS
+mdefine_line|#define RADEON_UPLOAD_ZBIAS&t;&t;0x00020000 /* version 1.2 and newer */
 DECL|macro|RADEON_UPLOAD_ALL
-mdefine_line|#define RADEON_UPLOAD_ALL&t;&t;0x0001ffff
+mdefine_line|#define RADEON_UPLOAD_ALL&t;&t;0x003effff
+DECL|macro|RADEON_UPLOAD_CONTEXT_ALL
+mdefine_line|#define RADEON_UPLOAD_CONTEXT_ALL       0x003e01ff
+multiline_comment|/* New style per-packet identifiers for use in cmd_buffer ioctl with&n; * the RADEON_EMIT_PACKET command.  Comments relate new packets to old&n; * state bits and the packet size:&n; */
+DECL|macro|RADEON_EMIT_PP_MISC
+mdefine_line|#define RADEON_EMIT_PP_MISC                         0 /* context/7 */
+DECL|macro|RADEON_EMIT_PP_CNTL
+mdefine_line|#define RADEON_EMIT_PP_CNTL                         1 /* context/3 */
+DECL|macro|RADEON_EMIT_RB3D_COLORPITCH
+mdefine_line|#define RADEON_EMIT_RB3D_COLORPITCH                 2 /* context/1 */
+DECL|macro|RADEON_EMIT_RE_LINE_PATTERN
+mdefine_line|#define RADEON_EMIT_RE_LINE_PATTERN                 3 /* line/2 */
+DECL|macro|RADEON_EMIT_SE_LINE_WIDTH
+mdefine_line|#define RADEON_EMIT_SE_LINE_WIDTH                   4 /* line/1 */
+DECL|macro|RADEON_EMIT_PP_LUM_MATRIX
+mdefine_line|#define RADEON_EMIT_PP_LUM_MATRIX                   5 /* bumpmap/1 */
+DECL|macro|RADEON_EMIT_PP_ROT_MATRIX_0
+mdefine_line|#define RADEON_EMIT_PP_ROT_MATRIX_0                 6 /* bumpmap/2 */
+DECL|macro|RADEON_EMIT_RB3D_STENCILREFMASK
+mdefine_line|#define RADEON_EMIT_RB3D_STENCILREFMASK             7 /* masks/3 */
+DECL|macro|RADEON_EMIT_SE_VPORT_XSCALE
+mdefine_line|#define RADEON_EMIT_SE_VPORT_XSCALE                 8 /* viewport/6 */
+DECL|macro|RADEON_EMIT_SE_CNTL
+mdefine_line|#define RADEON_EMIT_SE_CNTL                         9 /* setup/2 */
+DECL|macro|RADEON_EMIT_SE_CNTL_STATUS
+mdefine_line|#define RADEON_EMIT_SE_CNTL_STATUS                  10 /* setup/1 */
+DECL|macro|RADEON_EMIT_RE_MISC
+mdefine_line|#define RADEON_EMIT_RE_MISC                         11 /* misc/1 */
+DECL|macro|RADEON_EMIT_PP_TXFILTER_0
+mdefine_line|#define RADEON_EMIT_PP_TXFILTER_0                   12 /* tex0/6 */
+DECL|macro|RADEON_EMIT_PP_BORDER_COLOR_0
+mdefine_line|#define RADEON_EMIT_PP_BORDER_COLOR_0               13 /* tex0/1 */
+DECL|macro|RADEON_EMIT_PP_TXFILTER_1
+mdefine_line|#define RADEON_EMIT_PP_TXFILTER_1                   14 /* tex1/6 */
+DECL|macro|RADEON_EMIT_PP_BORDER_COLOR_1
+mdefine_line|#define RADEON_EMIT_PP_BORDER_COLOR_1               15 /* tex1/1 */
+DECL|macro|RADEON_EMIT_PP_TXFILTER_2
+mdefine_line|#define RADEON_EMIT_PP_TXFILTER_2                   16 /* tex2/6 */
+DECL|macro|RADEON_EMIT_PP_BORDER_COLOR_2
+mdefine_line|#define RADEON_EMIT_PP_BORDER_COLOR_2               17 /* tex2/1 */
+DECL|macro|RADEON_EMIT_SE_ZBIAS_FACTOR
+mdefine_line|#define RADEON_EMIT_SE_ZBIAS_FACTOR                 18 /* zbias/2 */
+DECL|macro|RADEON_EMIT_SE_TCL_OUTPUT_VTX_FMT
+mdefine_line|#define RADEON_EMIT_SE_TCL_OUTPUT_VTX_FMT           19 /* tcl/11 */
+DECL|macro|RADEON_EMIT_SE_TCL_MATERIAL_EMMISSIVE_RED
+mdefine_line|#define RADEON_EMIT_SE_TCL_MATERIAL_EMMISSIVE_RED   20 /* material/17 */
+DECL|macro|RADEON_MAX_STATE_PACKETS
+mdefine_line|#define RADEON_MAX_STATE_PACKETS                    21
+multiline_comment|/* Commands understood by cmd_buffer ioctl.  More can be added but&n; * obviously these can&squot;t be removed or changed:&n; */
+DECL|macro|RADEON_CMD_PACKET
+mdefine_line|#define RADEON_CMD_PACKET      1 /* emit one of the register packets above */
+DECL|macro|RADEON_CMD_SCALARS
+mdefine_line|#define RADEON_CMD_SCALARS     2 /* emit scalar data */
+DECL|macro|RADEON_CMD_VECTORS
+mdefine_line|#define RADEON_CMD_VECTORS     3 /* emit vector data */
+DECL|macro|RADEON_CMD_DMA_DISCARD
+mdefine_line|#define RADEON_CMD_DMA_DISCARD 4 /* discard current dma buf */
+DECL|macro|RADEON_CMD_PACKET3
+mdefine_line|#define RADEON_CMD_PACKET3     5 /* emit hw packet */
+DECL|macro|RADEON_CMD_PACKET3_CLIP
+mdefine_line|#define RADEON_CMD_PACKET3_CLIP 6 /* emit hw packet wrapped in cliprects */
+r_typedef
+r_union
+(brace
+DECL|member|i
+r_int
+id|i
+suffix:semicolon
+r_struct
+(brace
+DECL|member|cmd_type
+DECL|member|pad0
+DECL|member|pad1
+DECL|member|pad2
+r_char
+id|cmd_type
+comma
+id|pad0
+comma
+id|pad1
+comma
+id|pad2
+suffix:semicolon
+DECL|member|header
+)brace
+id|header
+suffix:semicolon
+r_struct
+(brace
+DECL|member|cmd_type
+DECL|member|packet_id
+DECL|member|pad0
+DECL|member|pad1
+r_char
+id|cmd_type
+comma
+id|packet_id
+comma
+id|pad0
+comma
+id|pad1
+suffix:semicolon
+DECL|member|packet
+)brace
+id|packet
+suffix:semicolon
+r_struct
+(brace
+DECL|member|cmd_type
+DECL|member|offset
+DECL|member|stride
+DECL|member|count
+r_char
+id|cmd_type
+comma
+id|offset
+comma
+id|stride
+comma
+id|count
+suffix:semicolon
+DECL|member|scalars
+)brace
+id|scalars
+suffix:semicolon
+r_struct
+(brace
+DECL|member|cmd_type
+DECL|member|offset
+DECL|member|stride
+DECL|member|count
+r_char
+id|cmd_type
+comma
+id|offset
+comma
+id|stride
+comma
+id|count
+suffix:semicolon
+DECL|member|vectors
+)brace
+id|vectors
+suffix:semicolon
+r_struct
+(brace
+DECL|member|cmd_type
+DECL|member|buf_idx
+DECL|member|pad0
+DECL|member|pad1
+r_char
+id|cmd_type
+comma
+id|buf_idx
+comma
+id|pad0
+comma
+id|pad1
+suffix:semicolon
+DECL|member|dma
+)brace
+id|dma
+suffix:semicolon
+DECL|typedef|drm_radeon_cmd_header_t
+)brace
+id|drm_radeon_cmd_header_t
+suffix:semicolon
 DECL|macro|RADEON_FRONT
 mdefine_line|#define RADEON_FRONT&t;&t;&t;0x1
 DECL|macro|RADEON_BACK
 mdefine_line|#define RADEON_BACK&t;&t;&t;0x2
 DECL|macro|RADEON_DEPTH
 mdefine_line|#define RADEON_DEPTH&t;&t;&t;0x4
+DECL|macro|RADEON_STENCIL
+mdefine_line|#define RADEON_STENCIL                  0x8
 multiline_comment|/* Primitive types&n; */
 DECL|macro|RADEON_POINTS
 mdefine_line|#define RADEON_POINTS&t;&t;&t;0x1
@@ -68,11 +238,8 @@ mdefine_line|#define RADEON_BUFFER_SIZE&t;&t;65536
 multiline_comment|/* Byte offsets for indirect buffer data&n; */
 DECL|macro|RADEON_INDEX_PRIM_OFFSET
 mdefine_line|#define RADEON_INDEX_PRIM_OFFSET&t;20
-DECL|macro|RADEON_HOSTDATA_BLIT_OFFSET
-mdefine_line|#define RADEON_HOSTDATA_BLIT_OFFSET&t;32
 DECL|macro|RADEON_SCRATCH_REG_OFFSET
 mdefine_line|#define RADEON_SCRATCH_REG_OFFSET&t;32
-multiline_comment|/* Keep these small for testing&n; */
 DECL|macro|RADEON_NR_SAREA_CLIPRECTS
 mdefine_line|#define RADEON_NR_SAREA_CLIPRECTS&t;12
 multiline_comment|/* There are 2 heaps (local/AGP).  Each region within a heap is a&n; * minimum of 64k, and there are at most 64 of them per heap.&n; */
@@ -87,7 +254,7 @@ mdefine_line|#define RADEON_NR_TEX_REGIONS&t;&t;64
 DECL|macro|RADEON_LOG_TEX_GRANULARITY
 mdefine_line|#define RADEON_LOG_TEX_GRANULARITY&t;16
 DECL|macro|RADEON_MAX_TEXTURE_LEVELS
-mdefine_line|#define RADEON_MAX_TEXTURE_LEVELS&t;11
+mdefine_line|#define RADEON_MAX_TEXTURE_LEVELS&t;12
 DECL|macro|RADEON_MAX_TEXTURE_UNITS
 mdefine_line|#define RADEON_MAX_TEXTURE_UNITS&t;3
 macro_line|#endif /* __RADEON_SAREA_DEFINES__ */
@@ -288,74 +455,6 @@ r_int
 id|se_cntl_status
 suffix:semicolon
 multiline_comment|/* 0x2140 */
-macro_line|#ifdef TCL_ENABLE
-multiline_comment|/* TCL state */
-DECL|member|se_tcl_material_emmissive
-id|radeon_color_regs_t
-id|se_tcl_material_emmissive
-suffix:semicolon
-multiline_comment|/* 0x2210 */
-DECL|member|se_tcl_material_ambient
-id|radeon_color_regs_t
-id|se_tcl_material_ambient
-suffix:semicolon
-DECL|member|se_tcl_material_diffuse
-id|radeon_color_regs_t
-id|se_tcl_material_diffuse
-suffix:semicolon
-DECL|member|se_tcl_material_specular
-id|radeon_color_regs_t
-id|se_tcl_material_specular
-suffix:semicolon
-DECL|member|se_tcl_shininess
-r_int
-r_int
-id|se_tcl_shininess
-suffix:semicolon
-DECL|member|se_tcl_output_vtx_fmt
-r_int
-r_int
-id|se_tcl_output_vtx_fmt
-suffix:semicolon
-DECL|member|se_tcl_output_vtx_sel
-r_int
-r_int
-id|se_tcl_output_vtx_sel
-suffix:semicolon
-DECL|member|se_tcl_matrix_select_0
-r_int
-r_int
-id|se_tcl_matrix_select_0
-suffix:semicolon
-DECL|member|se_tcl_matrix_select_1
-r_int
-r_int
-id|se_tcl_matrix_select_1
-suffix:semicolon
-DECL|member|se_tcl_ucp_vert_blend_ctl
-r_int
-r_int
-id|se_tcl_ucp_vert_blend_ctl
-suffix:semicolon
-DECL|member|se_tcl_texture_proc_ctl
-r_int
-r_int
-id|se_tcl_texture_proc_ctl
-suffix:semicolon
-DECL|member|se_tcl_light_model_ctl
-r_int
-r_int
-id|se_tcl_light_model_ctl
-suffix:semicolon
-DECL|member|se_tcl_per_light_ctl
-r_int
-r_int
-id|se_tcl_per_light_ctl
-(braket
-l_int|4
-)braket
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Misc state */
 DECL|member|re_top_left
 r_int
@@ -371,6 +470,25 @@ suffix:semicolon
 DECL|typedef|drm_radeon_context_regs_t
 )brace
 id|drm_radeon_context_regs_t
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+multiline_comment|/* Zbias state */
+DECL|member|se_zbias_factor
+r_int
+r_int
+id|se_zbias_factor
+suffix:semicolon
+multiline_comment|/* 0x1dac */
+DECL|member|se_zbias_constant
+r_int
+r_int
+id|se_zbias_constant
+suffix:semicolon
+DECL|typedef|drm_radeon_context2_regs_t
+)brace
+id|drm_radeon_context2_regs_t
 suffix:semicolon
 multiline_comment|/* Setup registers for each texture unit&n; */
 r_typedef
@@ -411,24 +529,81 @@ r_int
 r_int
 id|pp_border_color
 suffix:semicolon
-macro_line|#ifdef CUBIC_ENABLE
-DECL|member|pp_cubic_faces
-r_int
-r_int
-id|pp_cubic_faces
-suffix:semicolon
-DECL|member|pp_cubic_offset
-r_int
-r_int
-id|pp_cubic_offset
-(braket
-l_int|5
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|typedef|drm_radeon_texture_regs_t
 )brace
 id|drm_radeon_texture_regs_t
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|start
+r_int
+r_int
+id|start
+suffix:semicolon
+DECL|member|finish
+r_int
+r_int
+id|finish
+suffix:semicolon
+DECL|member|prim
+r_int
+r_int
+id|prim
+suffix:colon
+l_int|8
+suffix:semicolon
+DECL|member|stateidx
+r_int
+r_int
+id|stateidx
+suffix:colon
+l_int|8
+suffix:semicolon
+DECL|member|numverts
+r_int
+r_int
+id|numverts
+suffix:colon
+l_int|16
+suffix:semicolon
+multiline_comment|/* overloaded as offset/64 for elt prims */
+DECL|member|vc_format
+r_int
+r_int
+id|vc_format
+suffix:semicolon
+multiline_comment|/* vertex format */
+DECL|typedef|drm_radeon_prim_t
+)brace
+id|drm_radeon_prim_t
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|context
+id|drm_radeon_context_regs_t
+id|context
+suffix:semicolon
+DECL|member|tex
+id|drm_radeon_texture_regs_t
+id|tex
+(braket
+id|RADEON_MAX_TEXTURE_UNITS
+)braket
+suffix:semicolon
+DECL|member|context2
+id|drm_radeon_context2_regs_t
+id|context2
+suffix:semicolon
+DECL|member|dirty
+r_int
+r_int
+id|dirty
+suffix:semicolon
+DECL|typedef|drm_radeon_state_t
+)brace
+id|drm_radeon_state_t
 suffix:semicolon
 r_typedef
 r_struct
@@ -457,7 +632,7 @@ suffix:semicolon
 r_typedef
 r_struct
 (brace
-multiline_comment|/* The channel for communication of state information to the kernel&n;&t; * on firing a vertex buffer.&n;&t; */
+multiline_comment|/* The channel for communication of state information to the&n;&t; * kernel on firing a vertex buffer with either of the&n;&t; * obsoleted vertex/index ioctls.&n;&t; */
 DECL|member|context_state
 id|drm_radeon_context_regs_t
 id|context_state
@@ -536,11 +711,21 @@ DECL|member|ctx_owner
 r_int
 id|ctx_owner
 suffix:semicolon
+DECL|member|pfState
+r_int
+id|pfState
+suffix:semicolon
+multiline_comment|/* number of 3d windows (0,1,2ormore) */
+DECL|member|pfCurrentPage
+r_int
+id|pfCurrentPage
+suffix:semicolon
+multiline_comment|/* which buffer is being displayed? */
 DECL|typedef|drm_radeon_sarea_t
 )brace
 id|drm_radeon_sarea_t
 suffix:semicolon
-multiline_comment|/* WARNING: If you change any of these defines, make sure to change the&n; * defines in the Xserver file (xf86drmRadeon.h)&n; */
+multiline_comment|/* WARNING: If you change any of these defines, make sure to change the&n; * defines in the Xserver file (xf86drmRadeon.h)&n; *&n; * KW: actually it&squot;s illegal to change any of this (backwards compatibility).&n; */
 DECL|struct|drm_radeon_init
 r_typedef
 r_struct
@@ -759,6 +944,7 @@ r_int
 r_int
 id|depth_mask
 suffix:semicolon
+multiline_comment|/* misnamed field:  should be stencil */
 DECL|member|depth_boxes
 id|drm_radeon_clear_rect_t
 op_star
@@ -825,6 +1011,72 @@ multiline_comment|/* Client finished with buffer? */
 DECL|typedef|drm_radeon_indices_t
 )brace
 id|drm_radeon_indices_t
+suffix:semicolon
+multiline_comment|/* v1.2 - obsoletes drm_radeon_vertex and drm_radeon_indices&n; *      - allows multiple primitives and state changes in a single ioctl&n; *      - supports driver change to emit native primitives&n; */
+DECL|struct|drm_radeon_vertex2
+r_typedef
+r_struct
+id|drm_radeon_vertex2
+(brace
+DECL|member|idx
+r_int
+id|idx
+suffix:semicolon
+multiline_comment|/* Index of vertex buffer */
+DECL|member|discard
+r_int
+id|discard
+suffix:semicolon
+multiline_comment|/* Client finished with buffer? */
+DECL|member|nr_states
+r_int
+id|nr_states
+suffix:semicolon
+DECL|member|state
+id|drm_radeon_state_t
+op_star
+id|state
+suffix:semicolon
+DECL|member|nr_prims
+r_int
+id|nr_prims
+suffix:semicolon
+DECL|member|prim
+id|drm_radeon_prim_t
+op_star
+id|prim
+suffix:semicolon
+DECL|typedef|drm_radeon_vertex2_t
+)brace
+id|drm_radeon_vertex2_t
+suffix:semicolon
+multiline_comment|/* v1.3 - obsoletes drm_radeon_vertex2&n; *      - allows arbitarily large cliprect list &n; *      - allows updating of tcl packet, vector and scalar state&n; *      - allows memory-efficient description of state updates&n; *      - allows state to be emitted without a primitive &n; *           (for clears, ctx switches)&n; *      - allows more than one dma buffer to be referenced per ioctl&n; *      - supports tcl driver&n; *      - may be extended in future versions with new cmd types, packets&n; */
+DECL|struct|drm_radeon_cmd_buffer
+r_typedef
+r_struct
+id|drm_radeon_cmd_buffer
+(brace
+DECL|member|bufsz
+r_int
+id|bufsz
+suffix:semicolon
+DECL|member|buf
+r_char
+op_star
+id|buf
+suffix:semicolon
+DECL|member|nbox
+r_int
+id|nbox
+suffix:semicolon
+DECL|member|boxes
+id|drm_clip_rect_t
+op_star
+id|boxes
+suffix:semicolon
+DECL|typedef|drm_radeon_cmd_buffer_t
+)brace
+id|drm_radeon_cmd_buffer_t
 suffix:semicolon
 DECL|struct|drm_radeon_tex_image
 r_typedef
@@ -932,6 +1184,27 @@ suffix:semicolon
 DECL|typedef|drm_radeon_indirect_t
 )brace
 id|drm_radeon_indirect_t
+suffix:semicolon
+multiline_comment|/* 1.3: An ioctl to get parameters that aren&squot;t available to the 3d&n; * client any other way.  &n; */
+DECL|macro|RADEON_PARAM_AGP_BUFFER_OFFSET
+mdefine_line|#define RADEON_PARAM_AGP_BUFFER_OFFSET 0x1
+DECL|struct|drm_radeon_getparam
+r_typedef
+r_struct
+id|drm_radeon_getparam
+(brace
+DECL|member|param
+r_int
+id|param
+suffix:semicolon
+DECL|member|value
+r_int
+op_star
+id|value
+suffix:semicolon
+DECL|typedef|drm_radeon_getparam_t
+)brace
+id|drm_radeon_getparam_t
 suffix:semicolon
 macro_line|#endif
 eof

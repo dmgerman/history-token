@@ -151,9 +151,9 @@ macro_line|#include &quot;mga_drm.h&quot;
 macro_line|#include &quot;i810_drm.h&quot;
 macro_line|#include &quot;r128_drm.h&quot;
 macro_line|#include &quot;radeon_drm.h&quot;
-macro_line|#ifdef CONFIG_DRM_SIS
 macro_line|#include &quot;sis_drm.h&quot;
-macro_line|#endif
+macro_line|#include &quot;i830_drm.h&quot;
+macro_line|#include &quot;gamma_drm.h&quot;
 DECL|struct|drm_version
 r_typedef
 r_struct
@@ -1289,6 +1289,16 @@ DECL|macro|DRM_IOCTL_I810_COPY
 mdefine_line|#define DRM_IOCTL_I810_COPY&t;&t;DRM_IOW( 0x47, drm_i810_copy_t)
 DECL|macro|DRM_IOCTL_I810_DOCOPY
 mdefine_line|#define DRM_IOCTL_I810_DOCOPY&t;&t;DRM_IO(  0x48)
+DECL|macro|DRM_IOCTL_I810_OV0INFO
+mdefine_line|#define DRM_IOCTL_I810_OV0INFO&t;&t;DRM_IOR( 0x49, drm_i810_overlay_t)
+DECL|macro|DRM_IOCTL_I810_FSTATUS
+mdefine_line|#define DRM_IOCTL_I810_FSTATUS&t;&t;DRM_IO ( 0x4a)
+DECL|macro|DRM_IOCTL_I810_OV0FLIP
+mdefine_line|#define DRM_IOCTL_I810_OV0FLIP&t;&t;DRM_IO ( 0x4b)
+DECL|macro|DRM_IOCTL_I810_MC
+mdefine_line|#define DRM_IOCTL_I810_MC&t;&t;DRM_IOW( 0x4c, drm_i810_mc_t)
+DECL|macro|DRM_IOCTL_I810_RSTATUS
+mdefine_line|#define DRM_IOCTL_I810_RSTATUS&t;&t;DRM_IO ( 0x4d )
 multiline_comment|/* Rage 128 specific ioctls */
 DECL|macro|DRM_IOCTL_R128_INIT
 mdefine_line|#define DRM_IOCTL_R128_INIT&t;&t;DRM_IOW( 0x40, drm_r128_init_t)
@@ -1320,6 +1330,8 @@ DECL|macro|DRM_IOCTL_R128_INDIRECT
 mdefine_line|#define DRM_IOCTL_R128_INDIRECT&t;&t;DRM_IOWR(0x4f, drm_r128_indirect_t)
 DECL|macro|DRM_IOCTL_R128_FULLSCREEN
 mdefine_line|#define DRM_IOCTL_R128_FULLSCREEN&t;DRM_IOW( 0x50, drm_r128_fullscreen_t)
+DECL|macro|DRM_IOCTL_R128_CLEAR2
+mdefine_line|#define DRM_IOCTL_R128_CLEAR2&t;&t;DRM_IOW( 0x51, drm_r128_clear2_t)
 multiline_comment|/* Radeon specific ioctls */
 DECL|macro|DRM_IOCTL_RADEON_CP_INIT
 mdefine_line|#define DRM_IOCTL_RADEON_CP_INIT&t;DRM_IOW( 0x40, drm_radeon_init_t)
@@ -1349,7 +1361,19 @@ DECL|macro|DRM_IOCTL_RADEON_INDIRECT
 mdefine_line|#define DRM_IOCTL_RADEON_INDIRECT&t;DRM_IOWR(0x4d, drm_radeon_indirect_t)
 DECL|macro|DRM_IOCTL_RADEON_TEXTURE
 mdefine_line|#define DRM_IOCTL_RADEON_TEXTURE&t;DRM_IOWR(0x4e, drm_radeon_texture_t)
-macro_line|#ifdef CONFIG_DRM_SIS
+DECL|macro|DRM_IOCTL_RADEON_VERTEX2
+mdefine_line|#define DRM_IOCTL_RADEON_VERTEX2&t;DRM_IOW( 0x4f, drm_radeon_vertex_t)
+DECL|macro|DRM_IOCTL_RADEON_CMDBUF
+mdefine_line|#define DRM_IOCTL_RADEON_CMDBUF  &t;DRM_IOW( 0x50, drm_radeon_cmd_buffer_t)
+DECL|macro|DRM_IOCTL_RADEON_GETPARAM
+mdefine_line|#define DRM_IOCTL_RADEON_GETPARAM&t;DRM_IOWR(0x51, drm_radeon_getparam_t)
+DECL|macro|DRM_IOCTL_RADEON_FLIP
+mdefine_line|#define DRM_IOCTL_RADEON_FLIP&t;&t;DRM_IO(  0x52)
+multiline_comment|/* Gamma specific ioctls */
+DECL|macro|DRM_IOCTL_GAMMA_INIT
+mdefine_line|#define DRM_IOCTL_GAMMA_INIT&t;&t;DRM_IOW( 0x40, drm_gamma_init_t)
+DECL|macro|DRM_IOCTL_GAMMA_COPY
+mdefine_line|#define DRM_IOCTL_GAMMA_COPY&t;&t;DRM_IOW( 0x41, drm_gamma_copy_t)
 multiline_comment|/* SiS specific ioctls */
 DECL|macro|SIS_IOCTL_FB_ALLOC
 mdefine_line|#define SIS_IOCTL_FB_ALLOC&t;&t;DRM_IOWR(0x44, drm_sis_mem_t)
@@ -1367,6 +1391,24 @@ DECL|macro|SIS_IOCTL_FLIP_INIT
 mdefine_line|#define SIS_IOCTL_FLIP_INIT&t;&t;DRM_IO(  0x49)
 DECL|macro|SIS_IOCTL_FLIP_FINAL
 mdefine_line|#define SIS_IOCTL_FLIP_FINAL&t;&t;DRM_IO(  0x50)
-macro_line|#endif
+multiline_comment|/* I830 specific ioctls */
+DECL|macro|DRM_IOCTL_I830_INIT
+mdefine_line|#define DRM_IOCTL_I830_INIT&t;&t;DRM_IOW( 0x40, drm_i830_init_t)
+DECL|macro|DRM_IOCTL_I830_VERTEX
+mdefine_line|#define DRM_IOCTL_I830_VERTEX&t;&t;DRM_IOW( 0x41, drm_i830_vertex_t)
+DECL|macro|DRM_IOCTL_I830_CLEAR
+mdefine_line|#define DRM_IOCTL_I830_CLEAR&t;&t;DRM_IOW( 0x42, drm_i830_clear_t)
+DECL|macro|DRM_IOCTL_I830_FLUSH
+mdefine_line|#define DRM_IOCTL_I830_FLUSH&t;&t;DRM_IO ( 0x43)
+DECL|macro|DRM_IOCTL_I830_GETAGE
+mdefine_line|#define DRM_IOCTL_I830_GETAGE&t;&t;DRM_IO ( 0x44)
+DECL|macro|DRM_IOCTL_I830_GETBUF
+mdefine_line|#define DRM_IOCTL_I830_GETBUF&t;&t;DRM_IOWR(0x45, drm_i830_dma_t)
+DECL|macro|DRM_IOCTL_I830_SWAP
+mdefine_line|#define DRM_IOCTL_I830_SWAP&t;&t;DRM_IO ( 0x46)
+DECL|macro|DRM_IOCTL_I830_COPY
+mdefine_line|#define DRM_IOCTL_I830_COPY&t;&t;DRM_IOW( 0x47, drm_i830_copy_t)
+DECL|macro|DRM_IOCTL_I830_DOCOPY
+mdefine_line|#define DRM_IOCTL_I830_DOCOPY&t;&t;DRM_IO ( 0x48)
 macro_line|#endif
 eof

@@ -34,27 +34,10 @@ macro_line|#if defined(CONFIG_AGP) || defined(CONFIG_AGP_MODULE)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020100 /* KERNEL_VERSION(2,1,0) */
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
-macro_line|#include &quot;compat-pre24.h&quot;
-macro_line|#endif
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &quot;drm.h&quot;
-multiline_comment|/* page_to_bus for earlier kernels, not optimal in all cases */
-macro_line|#ifndef page_to_bus
-DECL|macro|page_to_bus
-mdefine_line|#define page_to_bus(page)&t;((unsigned int)(virt_to_bus(page_address(page))))
-macro_line|#endif
-multiline_comment|/* We just use virt_to_bus for pci_map_single on older kernels */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
-DECL|macro|pci_map_single
-mdefine_line|#define pci_map_single(hwdev, ptr, size, direction)&t;virt_to_bus(ptr)
-DECL|macro|pci_unmap_single
-mdefine_line|#define pci_unmap_single(hwdev, dma_addr, size, direction)
-macro_line|#endif
 multiline_comment|/* DRM template customization defaults&n; */
 macro_line|#ifndef __HAVE_AGP
 DECL|macro|__HAVE_AGP
@@ -158,562 +141,176 @@ mdefine_line|#define DRM_MEM_SGLISTS   20
 DECL|macro|DRM_MAX_CTXBITMAP
 mdefine_line|#define DRM_MAX_CTXBITMAP (PAGE_SIZE * 8)
 multiline_comment|/* Backward compatibility section */
-multiline_comment|/* _PAGE_WT changed to _PAGE_PWT in 2.2.6 */
-macro_line|#ifndef _PAGE_PWT
-DECL|macro|_PAGE_PWT
-mdefine_line|#define _PAGE_PWT _PAGE_WT
+macro_line|#ifndef minor
+DECL|macro|minor
+mdefine_line|#define minor(x) MINOR((x))
 macro_line|#endif
-multiline_comment|/* Wait queue declarations changed in 2.3.1 */
-macro_line|#ifndef DECLARE_WAITQUEUE
-DECL|macro|DECLARE_WAITQUEUE
-mdefine_line|#define DECLARE_WAITQUEUE(w,c) struct wait_queue w = { c, NULL }
-DECL|typedef|wait_queue_head_t
-r_typedef
+macro_line|#ifndef MODULE_LICENSE
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(x) 
+macro_line|#endif
+macro_line|#ifndef preempt_disable
+DECL|macro|preempt_disable
+mdefine_line|#define preempt_disable()
+DECL|macro|preempt_enable
+mdefine_line|#define preempt_enable()
+macro_line|#endif
+macro_line|#ifndef pte_offset_map 
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map pte_offset
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte)
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; 0x020500
+DECL|function|vmalloc_to_page
+r_static
+r_inline
 r_struct
-id|wait_queue
+id|page
 op_star
-id|wait_queue_head_t
+id|vmalloc_to_page
+c_func
+(paren
+r_void
+op_star
+id|vmalloc_addr
+)paren
+(brace
+r_int
+r_int
+id|addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|vmalloc_addr
 suffix:semicolon
-DECL|macro|init_waitqueue_head
-mdefine_line|#define init_waitqueue_head(q) *q = NULL;
+r_struct
+id|page
+op_star
+id|page
+op_assign
+l_int|NULL
+suffix:semicolon
+id|pgd_t
+op_star
+id|pgd
+op_assign
+id|pgd_offset_k
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+id|pmd_t
+op_star
+id|pmd
+suffix:semicolon
+id|pte_t
+op_star
+id|ptep
+comma
+id|pte
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pgd_none
+c_func
+(paren
+op_star
+id|pgd
+)paren
+)paren
+(brace
+id|pmd
+op_assign
+id|pmd_offset
+c_func
+(paren
+id|pgd
+comma
+id|addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pmd_none
+c_func
+(paren
+op_star
+id|pmd
+)paren
+)paren
+(brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ptep
+op_assign
+id|pte_offset_map
+c_func
+(paren
+id|pmd
+comma
+id|addr
+)paren
+suffix:semicolon
+id|pte
+op_assign
+op_star
+id|ptep
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pte_present
+c_func
+(paren
+id|pte
+)paren
+)paren
+id|page
+op_assign
+id|pte_page
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
+id|pte_unmap
+c_func
+(paren
+id|ptep
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+)brace
+r_return
+id|page
+suffix:semicolon
+)brace
 macro_line|#endif
-multiline_comment|/* _PAGE_4M changed to _PAGE_PSE in 2.3.23 */
-macro_line|#ifndef _PAGE_PSE
-DECL|macro|_PAGE_PSE
-mdefine_line|#define _PAGE_PSE _PAGE_4M
-macro_line|#endif
-multiline_comment|/* vm_offset changed to vm_pgoff in 2.3.25 */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020319
-DECL|macro|VM_OFFSET
-mdefine_line|#define VM_OFFSET(vma) ((vma)-&gt;vm_offset)
+macro_line|#if LINUX_VERSION_CODE &lt; 0x020500
+DECL|macro|DRM_RPR_ARG
+mdefine_line|#define DRM_RPR_ARG(vma)
 macro_line|#else
+DECL|macro|DRM_RPR_ARG
+mdefine_line|#define DRM_RPR_ARG(vma) vma,
+macro_line|#endif
 DECL|macro|VM_OFFSET
 mdefine_line|#define VM_OFFSET(vma) ((vma)-&gt;vm_pgoff &lt;&lt; PAGE_SHIFT)
-macro_line|#endif
-multiline_comment|/* *_nopage return values defined in 2.3.26 */
-macro_line|#ifndef NOPAGE_SIGBUS
-DECL|macro|NOPAGE_SIGBUS
-mdefine_line|#define NOPAGE_SIGBUS 0
-macro_line|#endif
-macro_line|#ifndef NOPAGE_OOM
-DECL|macro|NOPAGE_OOM
-mdefine_line|#define NOPAGE_OOM 0
-macro_line|#endif
-multiline_comment|/* module_init/module_exit added in 2.3.13 */
-macro_line|#ifndef module_init
-DECL|macro|module_init
-mdefine_line|#define module_init(x)  int init_module(void) { return x(); }
-macro_line|#endif
-macro_line|#ifndef module_exit
-DECL|macro|module_exit
-mdefine_line|#define module_exit(x)  void cleanup_module(void) { x(); }
-macro_line|#endif
-multiline_comment|/* Generic cmpxchg added in 2.3.x */
-macro_line|#ifndef __HAVE_ARCH_CMPXCHG
-multiline_comment|/* Include this here so that driver can be&n;                                   used with older kernels. */
-macro_line|#if defined(__alpha__)
-r_static
-id|__inline__
-r_int
-r_int
-DECL|function|__cmpxchg_u32
-id|__cmpxchg_u32
-c_func
-(paren
-r_volatile
-r_int
-op_star
-id|m
-comma
-r_int
-id|old
-comma
-r_int
-r_new
-)paren
-(brace
-r_int
-r_int
-id|prev
-comma
-id|cmp
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;1:&t;ldl_l %0,%5&bslash;n&quot;
-l_string|&quot;&t;cmpeq %0,%3,%1&bslash;n&quot;
-l_string|&quot;&t;beq %1,2f&bslash;n&quot;
-l_string|&quot;&t;mov %4,%1&bslash;n&quot;
-l_string|&quot;&t;stl_c %1,%2&bslash;n&quot;
-l_string|&quot;&t;beq %1,3f&bslash;n&quot;
-l_string|&quot;2:&t;mb&bslash;n&quot;
-l_string|&quot;.subsection 2&bslash;n&quot;
-l_string|&quot;3:&t;br 1b&bslash;n&quot;
-l_string|&quot;.previous&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|prev
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|cmp
-)paren
-comma
-l_string|&quot;=m&quot;
-(paren
-op_star
-id|m
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-(paren
-r_int
-)paren
-id|old
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-r_new
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
-op_star
-id|m
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_return
-id|prev
-suffix:semicolon
-)brace
-r_static
-id|__inline__
-r_int
-r_int
-DECL|function|__cmpxchg_u64
-id|__cmpxchg_u64
-c_func
-(paren
-r_volatile
-r_int
-op_star
-id|m
-comma
-r_int
-r_int
-id|old
-comma
-r_int
-r_int
-r_new
-)paren
-(brace
-r_int
-r_int
-id|prev
-comma
-id|cmp
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;1:&t;ldq_l %0,%5&bslash;n&quot;
-l_string|&quot;&t;cmpeq %0,%3,%1&bslash;n&quot;
-l_string|&quot;&t;beq %1,2f&bslash;n&quot;
-l_string|&quot;&t;mov %4,%1&bslash;n&quot;
-l_string|&quot;&t;stq_c %1,%2&bslash;n&quot;
-l_string|&quot;&t;beq %1,3f&bslash;n&quot;
-l_string|&quot;2:&t;mb&bslash;n&quot;
-l_string|&quot;.subsection 2&bslash;n&quot;
-l_string|&quot;3:&t;br 1b&bslash;n&quot;
-l_string|&quot;.previous&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|prev
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|cmp
-)paren
-comma
-l_string|&quot;=m&quot;
-(paren
-op_star
-id|m
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-(paren
-r_int
-)paren
-id|old
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-r_new
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
-op_star
-id|m
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_return
-id|prev
-suffix:semicolon
-)brace
-r_static
-id|__inline__
-r_int
-r_int
-DECL|function|__cmpxchg
-id|__cmpxchg
-c_func
-(paren
-r_volatile
-r_void
-op_star
-id|ptr
-comma
-r_int
-r_int
-id|old
-comma
-r_int
-r_int
-r_new
-comma
-r_int
-id|size
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|size
-)paren
-(brace
-r_case
-l_int|4
-suffix:colon
-r_return
-id|__cmpxchg_u32
-c_func
-(paren
-id|ptr
-comma
-id|old
-comma
-r_new
-)paren
-suffix:semicolon
-r_case
-l_int|8
-suffix:colon
-r_return
-id|__cmpxchg_u64
-c_func
-(paren
-id|ptr
-comma
-id|old
-comma
-r_new
-)paren
-suffix:semicolon
-)brace
-r_return
-id|old
-suffix:semicolon
-)brace
-DECL|macro|cmpxchg
-mdefine_line|#define cmpxchg(ptr,o,n)&t;&t;&t;&t;&t;&t; &bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _o_ = (o);&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _n_ = (n);&t;&t;&t;&t;&t; &bslash;&n;     (__typeof__(*(ptr))) __cmpxchg((ptr), (unsigned long)_o_,&t;&t; &bslash;&n;&t;&t;&t;&t;    (unsigned long)_n_, sizeof(*(ptr))); &bslash;&n;  })
-macro_line|#elif __i386__
-DECL|function|__cmpxchg
-r_static
-r_inline
-r_int
-r_int
-id|__cmpxchg
-c_func
-(paren
-r_volatile
-r_void
-op_star
-id|ptr
-comma
-r_int
-r_int
-id|old
-comma
-r_int
-r_int
-r_new
-comma
-r_int
-id|size
-)paren
-(brace
-r_int
-r_int
-id|prev
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|size
-)paren
-(brace
-r_case
-l_int|1
-suffix:colon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-id|LOCK_PREFIX
-l_string|&quot;cmpxchgb %b1,%2&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|prev
-)paren
-suffix:colon
-l_string|&quot;q&quot;
-(paren
-r_new
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
-op_star
-id|__xg
-c_func
-(paren
-id|ptr
-)paren
-)paren
-comma
-l_string|&quot;0&quot;
-(paren
-id|old
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_return
-id|prev
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-id|LOCK_PREFIX
-l_string|&quot;cmpxchgw %w1,%2&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|prev
-)paren
-suffix:colon
-l_string|&quot;q&quot;
-(paren
-r_new
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
-op_star
-id|__xg
-c_func
-(paren
-id|ptr
-)paren
-)paren
-comma
-l_string|&quot;0&quot;
-(paren
-id|old
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_return
-id|prev
-suffix:semicolon
-r_case
-l_int|4
-suffix:colon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-id|LOCK_PREFIX
-l_string|&quot;cmpxchgl %1,%2&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|prev
-)paren
-suffix:colon
-l_string|&quot;q&quot;
-(paren
-r_new
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
-op_star
-id|__xg
-c_func
-(paren
-id|ptr
-)paren
-)paren
-comma
-l_string|&quot;0&quot;
-(paren
-id|old
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_return
-id|prev
-suffix:semicolon
-)brace
-r_return
-id|old
-suffix:semicolon
-)brace
-macro_line|#elif defined(__powerpc__)
-r_extern
-r_void
-id|__cmpxchg_called_with_bad_pointer
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|function|__cmpxchg
-r_static
-r_inline
-r_int
-r_int
-id|__cmpxchg
-c_func
-(paren
-r_volatile
-r_void
-op_star
-id|ptr
-comma
-r_int
-r_int
-id|old
-comma
-r_int
-r_int
-r_new
-comma
-r_int
-id|size
-)paren
-(brace
-r_int
-r_int
-id|prev
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|size
-)paren
-(brace
-r_case
-l_int|4
-suffix:colon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;sync;&quot;
-l_string|&quot;0:    lwarx %0,0,%1 ;&quot;
-l_string|&quot;      cmpl 0,%0,%3;&quot;
-l_string|&quot;      bne 1f;&quot;
-l_string|&quot;      stwcx. %2,0,%1;&quot;
-l_string|&quot;      bne- 0b;&quot;
-l_string|&quot;1:    &quot;
-l_string|&quot;sync;&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|prev
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|ptr
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-r_new
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|old
-)paren
-suffix:colon
-l_string|&quot;cr0&quot;
-comma
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_return
-id|prev
-suffix:semicolon
-)brace
-id|__cmpxchg_called_with_bad_pointer
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|old
-suffix:semicolon
-)brace
-macro_line|#endif /* i386, powerpc &amp; alpha */
-macro_line|#ifndef __alpha__
-DECL|macro|cmpxchg
-mdefine_line|#define cmpxchg(ptr,o,n)&t;&t;&t;&t;&t;&t;&bslash;&n;  ((__typeof__(*(ptr)))__cmpxchg((ptr),(unsigned long)(o),&t;&t;&bslash;&n;&t;&t;&t;&t; (unsigned long)(n),sizeof(*(ptr))))
-macro_line|#endif
-macro_line|#endif /* !__HAVE_ARCH_CMPXCHG */
 multiline_comment|/* Macros to make printk easier */
 DECL|macro|DRM_ERROR
 mdefine_line|#define DRM_ERROR(fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;[&quot; DRM_NAME &quot;:&quot; __FUNCTION__ &quot;] *ERROR* &quot; fmt , ##arg)
@@ -737,6 +334,8 @@ mdefine_line|#define DRM_PROC_PRINT_RET(ret, fmt, arg...)&t;&t;&t;&t;&bslash;&n;
 multiline_comment|/* Mapping helper macros */
 DECL|macro|DRM_IOREMAP
 mdefine_line|#define DRM_IOREMAP(map)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(map)-&gt;handle = DRM(ioremap)( (map)-&gt;offset, (map)-&gt;size )
+DECL|macro|DRM_IOREMAP_NOCACHE
+mdefine_line|#define DRM_IOREMAP_NOCACHE(map)&t;&t;&t;&t;&t;&bslash;&n;&t;(map)-&gt;handle = DRM(ioremap_nocache)((map)-&gt;offset, (map)-&gt;size)
 DECL|macro|DRM_IOREMAPFREE
 mdefine_line|#define DRM_IOREMAPFREE(map)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ( (map)-&gt;handle &amp;&amp; (map)-&gt;size )&t;&t;&t;&bslash;&n;&t;&t;&t;DRM(ioremapfree)( (map)-&gt;handle, (map)-&gt;size );&t;&bslash;&n;&t;} while (0)
 DECL|macro|DRM_FIND_MAP
@@ -2457,97 +2056,6 @@ id|wait
 )paren
 suffix:semicolon
 multiline_comment|/* Mapping support (drm_vm.h) */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020317
-r_extern
-r_int
-r_int
-id|DRM
-c_func
-(paren
-id|vm_nopage
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-id|unused
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|DRM
-c_func
-(paren
-id|vm_shm_nopage
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-id|unused
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|DRM
-c_func
-(paren
-id|vm_dma_nopage
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-id|unused
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|DRM
-c_func
-(paren
-id|vm_sg_nopage
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-id|unused
-)paren
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* Return type changed in 2.3.23 */
 r_extern
 r_struct
 id|page
@@ -2568,7 +2076,7 @@ r_int
 id|address
 comma
 r_int
-id|unused
+id|write_access
 )paren
 suffix:semicolon
 r_extern
@@ -2591,7 +2099,7 @@ r_int
 id|address
 comma
 r_int
-id|unused
+id|write_access
 )paren
 suffix:semicolon
 r_extern
@@ -2614,7 +2122,7 @@ r_int
 id|address
 comma
 r_int
-id|unused
+id|write_access
 )paren
 suffix:semicolon
 r_extern
@@ -2637,10 +2145,9 @@ r_int
 id|address
 comma
 r_int
-id|unused
+id|write_access
 )paren
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|DRM
@@ -2900,6 +2407,24 @@ id|DRM
 c_func
 (paren
 id|ioremap
+)paren
+(paren
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|DRM
+c_func
+(paren
+id|ioremap_nocache
 )paren
 (paren
 r_int

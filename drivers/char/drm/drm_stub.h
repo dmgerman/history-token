@@ -2,9 +2,6 @@ multiline_comment|/* drm_stub.h -- -*- linux-c -*-&n; * Created: Fri Jan 19 10:4
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;drmP.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
-macro_line|#include &quot;stubsupport-pre24.h&quot;
-macro_line|#endif
 DECL|macro|DRM_STUB_MAXCARDS
 mdefine_line|#define DRM_STUB_MAXCARDS 16&t;/* Enough for one machine */
 DECL|struct|drm_stub_list
@@ -236,12 +233,10 @@ id|stub_fops
 )paren
 op_assign
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020400
 id|owner
 suffix:colon
 id|THIS_MODULE
 comma
-macro_line|#endif
 id|open
 suffix:colon
 id|DRM

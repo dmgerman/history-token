@@ -488,6 +488,8 @@ l_int|0
 suffix:semicolon
 id|DMA_LOCALS
 suffix:semicolon
+multiline_comment|/*  &t;printk(&quot;mga_g400_emit_tex0 %x %x %x&bslash;n&quot;, tex-&gt;texorg, */
+multiline_comment|/*  &t;       tex-&gt;texctl, tex-&gt;texctl2); */
 id|BEGIN_DMA
 c_func
 (paren
@@ -656,6 +658,8 @@ l_int|1
 suffix:semicolon
 id|DMA_LOCALS
 suffix:semicolon
+multiline_comment|/*  &t;printk(&quot;mga_g400_emit_tex1 %x %x %x&bslash;n&quot;, tex-&gt;texorg,  */
+multiline_comment|/*  &t;       tex-&gt;texctl, tex-&gt;texctl2); */
 id|BEGIN_DMA
 c_func
 (paren
@@ -914,6 +918,7 @@ id|sarea_priv-&gt;warp_pipe
 suffix:semicolon
 id|DMA_LOCALS
 suffix:semicolon
+multiline_comment|/*  &t;printk(&quot;mga_g400_emit_pipe %x&bslash;n&quot;, pipe); */
 id|BEGIN_DMA
 c_func
 (paren

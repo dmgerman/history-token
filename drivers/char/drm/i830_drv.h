@@ -1,11 +1,11 @@
-multiline_comment|/* i810_drv.h -- Private header for the Matrox g200/g400 driver -*- linux-c -*-&n; * Created: Mon Dec 13 01:50:01 1999 by jhartmann@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors: Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &t;    Jeff Hartmann &lt;jhartmann@valinux.com&gt;&n; *&n; */
-macro_line|#ifndef _I810_DRV_H_
-DECL|macro|_I810_DRV_H_
-mdefine_line|#define _I810_DRV_H_
-DECL|struct|drm_i810_buf_priv
+multiline_comment|/* i830_drv.h -- Private header for the I830 driver -*- linux-c -*-&n; * Created: Mon Dec 13 01:50:01 1999 by jhartmann@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; * &n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; * &n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors: Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &t;    Jeff Hartmann &lt;jhartmann@valinux.com&gt;&n; *&n; */
+macro_line|#ifndef _I830_DRV_H_
+DECL|macro|_I830_DRV_H_
+mdefine_line|#define _I830_DRV_H_
+DECL|struct|drm_i830_buf_priv
 r_typedef
 r_struct
-id|drm_i810_buf_priv
+id|drm_i830_buf_priv
 (brace
 DECL|member|in_use
 id|u32
@@ -40,14 +40,14 @@ id|vm_area_struct
 op_star
 id|vma
 suffix:semicolon
-DECL|typedef|drm_i810_buf_priv_t
+DECL|typedef|drm_i830_buf_priv_t
 )brace
-id|drm_i810_buf_priv_t
+id|drm_i830_buf_priv_t
 suffix:semicolon
-DECL|struct|_drm_i810_ring_buffer
+DECL|struct|_drm_i830_ring_buffer
 r_typedef
 r_struct
-id|_drm_i810_ring_buffer
+id|_drm_i830_ring_buffer
 (brace
 DECL|member|tail_mask
 r_int
@@ -85,14 +85,14 @@ DECL|member|space
 r_int
 id|space
 suffix:semicolon
-DECL|typedef|drm_i810_ring_buffer_t
+DECL|typedef|drm_i830_ring_buffer_t
 )brace
-id|drm_i810_ring_buffer_t
+id|drm_i830_ring_buffer_t
 suffix:semicolon
-DECL|struct|drm_i810_private
+DECL|struct|drm_i830_private
 r_typedef
 r_struct
-id|drm_i810_private
+id|drm_i830_private
 (brace
 DECL|member|sarea_map
 id|drm_map_t
@@ -110,12 +110,12 @@ op_star
 id|mmio_map
 suffix:semicolon
 DECL|member|sarea_priv
-id|drm_i810_sarea_t
+id|drm_i830_sarea_t
 op_star
 id|sarea_priv
 suffix:semicolon
 DECL|member|ring
-id|drm_i810_ring_buffer_t
+id|drm_i830_ring_buffer_t
 id|ring
 suffix:semicolon
 DECL|member|hw_status_page
@@ -128,6 +128,15 @@ r_int
 r_int
 id|counter
 suffix:semicolon
+DECL|member|flush_done
+id|atomic_t
+id|flush_done
+suffix:semicolon
+DECL|member|flush_queue
+id|wait_queue_head_t
+id|flush_queue
+suffix:semicolon
+multiline_comment|/* Processes waiting until flush    */
 DECL|member|mmap_buffer
 id|drm_buf_t
 op_star
@@ -151,14 +160,6 @@ DECL|member|depth_offset
 r_int
 id|depth_offset
 suffix:semicolon
-DECL|member|overlay_offset
-r_int
-id|overlay_offset
-suffix:semicolon
-DECL|member|overlay_physical
-r_int
-id|overlay_physical
-suffix:semicolon
 DECL|member|w
 DECL|member|h
 r_int
@@ -170,14 +171,27 @@ DECL|member|pitch
 r_int
 id|pitch
 suffix:semicolon
-DECL|typedef|drm_i810_private_t
-)brace
-id|drm_i810_private_t
+DECL|member|back_pitch
+r_int
+id|back_pitch
 suffix:semicolon
-multiline_comment|/* i810_dma.c */
+DECL|member|depth_pitch
+r_int
+id|depth_pitch
+suffix:semicolon
+DECL|member|cpp
+r_int
+r_int
+id|cpp
+suffix:semicolon
+DECL|typedef|drm_i830_private_t
+)brace
+id|drm_i830_private_t
+suffix:semicolon
+multiline_comment|/* i830_dma.c */
 r_extern
 r_int
-id|i810_dma_schedule
+id|i830_dma_schedule
 c_func
 (paren
 id|drm_device_t
@@ -190,7 +204,7 @@ id|locked
 suffix:semicolon
 r_extern
 r_int
-id|i810_getbuf
+id|i830_getbuf
 c_func
 (paren
 r_struct
@@ -214,7 +228,7 @@ id|arg
 suffix:semicolon
 r_extern
 r_int
-id|i810_dma_init
+id|i830_dma_init
 c_func
 (paren
 r_struct
@@ -238,7 +252,7 @@ id|arg
 suffix:semicolon
 r_extern
 r_int
-id|i810_flush_ioctl
+id|i830_flush_ioctl
 c_func
 (paren
 r_struct
@@ -262,7 +276,7 @@ id|arg
 suffix:semicolon
 r_extern
 r_void
-id|i810_reclaim_buffers
+id|i830_reclaim_buffers
 c_func
 (paren
 id|drm_device_t
@@ -275,7 +289,7 @@ id|pid
 suffix:semicolon
 r_extern
 r_int
-id|i810_getage
+id|i830_getage
 c_func
 (paren
 r_struct
@@ -299,7 +313,7 @@ id|arg
 suffix:semicolon
 r_extern
 r_int
-id|i810_mmap_buffers
+id|i830_mmap_buffers
 c_func
 (paren
 r_struct
@@ -313,35 +327,9 @@ op_star
 id|vma
 )paren
 suffix:semicolon
-multiline_comment|/* Obsolete:&n; */
 r_extern
 r_int
-id|i810_copybuf
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-multiline_comment|/* Obsolete:&n; */
-r_extern
-r_int
-id|i810_docopy
+id|i830_copybuf
 c_func
 (paren
 r_struct
@@ -365,103 +353,7 @@ id|arg
 suffix:semicolon
 r_extern
 r_int
-id|i810_rstatus
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|i810_ov0_info
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|i810_fstatus
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|i810_ov0_flip
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|i810_dma_mc
+id|i830_docopy
 c_func
 (paren
 r_struct
@@ -485,7 +377,7 @@ id|arg
 suffix:semicolon
 r_extern
 r_void
-id|i810_dma_quiescent
+id|i830_dma_quiescent
 c_func
 (paren
 id|drm_device_t
@@ -493,8 +385,9 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
 r_int
-id|i810_dma_vertex
+id|i830_dma_vertex
 c_func
 (paren
 r_struct
@@ -516,8 +409,9 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+r_extern
 r_int
-id|i810_swap_bufs
+id|i830_swap_bufs
 c_func
 (paren
 r_struct
@@ -539,8 +433,9 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+r_extern
 r_int
-id|i810_clear_bufs
+id|i830_clear_bufs
 c_func
 (paren
 r_struct
@@ -562,22 +457,24 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-DECL|macro|I810_BASE
-mdefine_line|#define I810_BASE(reg)&t;&t;((unsigned long) &bslash;&n;&t;&t;&t;&t;dev_priv-&gt;mmio_map-&gt;handle)
-DECL|macro|I810_ADDR
-mdefine_line|#define I810_ADDR(reg)&t;&t;(I810_BASE(reg) + reg)
-DECL|macro|I810_DEREF
-mdefine_line|#define I810_DEREF(reg)&t;&t;*(__volatile__ int *)I810_ADDR(reg)
-DECL|macro|I810_READ
-mdefine_line|#define I810_READ(reg)&t;&t;I810_DEREF(reg)
-DECL|macro|I810_WRITE
-mdefine_line|#define I810_WRITE(reg,val) &t;do { I810_DEREF(reg) = val; } while (0)
-DECL|macro|I810_DEREF16
-mdefine_line|#define I810_DEREF16(reg)&t;*(__volatile__ u16 *)I810_ADDR(reg)
-DECL|macro|I810_READ16
-mdefine_line|#define I810_READ16(reg)&t;I810_DEREF16(reg)
-DECL|macro|I810_WRITE16
-mdefine_line|#define I810_WRITE16(reg,val)&t;do { I810_DEREF16(reg) = val; } while (0)
+DECL|macro|I830_VERBOSE
+mdefine_line|#define I830_VERBOSE 0
+DECL|macro|I830_BASE
+mdefine_line|#define I830_BASE(reg)&t;&t;((unsigned long) &bslash;&n;&t;&t;&t;&t;dev_priv-&gt;mmio_map-&gt;handle)
+DECL|macro|I830_ADDR
+mdefine_line|#define I830_ADDR(reg)&t;&t;(I830_BASE(reg) + reg)
+DECL|macro|I830_DEREF
+mdefine_line|#define I830_DEREF(reg)&t;&t;*(__volatile__ int *)I830_ADDR(reg)
+DECL|macro|I830_READ
+mdefine_line|#define I830_READ(reg)&t;&t;I830_DEREF(reg)
+DECL|macro|I830_WRITE
+mdefine_line|#define I830_WRITE(reg,val) &t;do { I830_DEREF(reg) = val; } while (0)
+DECL|macro|I830_DEREF16
+mdefine_line|#define I830_DEREF16(reg)&t;*(__volatile__ u16 *)I830_ADDR(reg)
+DECL|macro|I830_READ16
+mdefine_line|#define I830_READ16(reg) &t;I830_DEREF16(reg)
+DECL|macro|I830_WRITE16
+mdefine_line|#define I830_WRITE16(reg,val)&t;do { I830_DEREF16(reg) = val; } while (0)
 DECL|macro|GFX_OP_USER_INTERRUPT
 mdefine_line|#define GFX_OP_USER_INTERRUPT &t;&t;((0&lt;&lt;29)|(2&lt;&lt;23))
 DECL|macro|GFX_OP_BREAKPOINT_INTERRUPT
@@ -602,14 +499,14 @@ DECL|macro|BB1_UNPROTECTED
 mdefine_line|#define BB1_UNPROTECTED       (0&lt;&lt;0)
 DECL|macro|BB2_END_ADDR_MASK
 mdefine_line|#define BB2_END_ADDR_MASK     (~0x7)
-DECL|macro|I810REG_HWSTAM
-mdefine_line|#define I810REG_HWSTAM&t;&t;0x02098
-DECL|macro|I810REG_INT_IDENTITY_R
-mdefine_line|#define I810REG_INT_IDENTITY_R&t;0x020a4
-DECL|macro|I810REG_INT_MASK_R
-mdefine_line|#define I810REG_INT_MASK_R &t;0x020a8
-DECL|macro|I810REG_INT_ENABLE_R
-mdefine_line|#define I810REG_INT_ENABLE_R&t;0x020a0
+DECL|macro|I830REG_HWSTAM
+mdefine_line|#define I830REG_HWSTAM&t;&t;0x02098
+DECL|macro|I830REG_INT_IDENTITY_R
+mdefine_line|#define I830REG_INT_IDENTITY_R&t;0x020a4
+DECL|macro|I830REG_INT_MASK_R
+mdefine_line|#define I830REG_INT_MASK_R &t;0x020a8
+DECL|macro|I830REG_INT_ENABLE_R
+mdefine_line|#define I830REG_INT_ENABLE_R&t;0x020a0
 DECL|macro|LP_RING
 mdefine_line|#define LP_RING     &t;&t;0x2030
 DECL|macro|HP_RING
@@ -633,7 +530,7 @@ mdefine_line|#define START_ADDR          &t;0x00FFFFF8
 DECL|macro|RING_LEN
 mdefine_line|#define RING_LEN       &t;&t;0x0C
 DECL|macro|RING_NR_PAGES
-mdefine_line|#define RING_NR_PAGES       &t;0x000FF000
+mdefine_line|#define RING_NR_PAGES       &t;0x000FF000 
 DECL|macro|RING_REPORT_MASK
 mdefine_line|#define RING_REPORT_MASK    &t;0x00000006
 DECL|macro|RING_REPORT_64K
@@ -666,22 +563,24 @@ DECL|macro|SCI_YMAX_MASK
 mdefine_line|#define SCI_YMAX_MASK      (0xffff&lt;&lt;16)
 DECL|macro|SCI_XMAX_MASK
 mdefine_line|#define SCI_XMAX_MASK      (0xffff&lt;&lt;0)
+DECL|macro|GFX_OP_SCISSOR_ENABLE
+mdefine_line|#define GFX_OP_SCISSOR_ENABLE&t; ((0x3&lt;&lt;29)|(0x1c&lt;&lt;24)|(0x10&lt;&lt;19))
+DECL|macro|GFX_OP_SCISSOR_RECT
+mdefine_line|#define GFX_OP_SCISSOR_RECT&t; ((0x3&lt;&lt;29)|(0x1d&lt;&lt;24)|(0x81&lt;&lt;16)|1)
 DECL|macro|GFX_OP_COLOR_FACTOR
 mdefine_line|#define GFX_OP_COLOR_FACTOR      ((0x3&lt;&lt;29)|(0x1d&lt;&lt;24)|(0x1&lt;&lt;16)|0x0)
 DECL|macro|GFX_OP_STIPPLE
 mdefine_line|#define GFX_OP_STIPPLE           ((0x3&lt;&lt;29)|(0x1d&lt;&lt;24)|(0x83&lt;&lt;16))
 DECL|macro|GFX_OP_MAP_INFO
-mdefine_line|#define GFX_OP_MAP_INFO          ((0x3&lt;&lt;29)|(0x1d&lt;&lt;24)|0x2)
+mdefine_line|#define GFX_OP_MAP_INFO          ((0x3&lt;&lt;29)|(0x1d&lt;&lt;24)|0x4)
 DECL|macro|GFX_OP_DESTBUFFER_VARS
 mdefine_line|#define GFX_OP_DESTBUFFER_VARS   ((0x3&lt;&lt;29)|(0x1d&lt;&lt;24)|(0x85&lt;&lt;16)|0x0)
 DECL|macro|GFX_OP_DRAWRECT_INFO
 mdefine_line|#define GFX_OP_DRAWRECT_INFO     ((0x3&lt;&lt;29)|(0x1d&lt;&lt;24)|(0x80&lt;&lt;16)|(0x3))
 DECL|macro|GFX_OP_PRIMITIVE
 mdefine_line|#define GFX_OP_PRIMITIVE         ((0x3&lt;&lt;29)|(0x1f&lt;&lt;24))
-DECL|macro|CMD_OP_Z_BUFFER_INFO
-mdefine_line|#define CMD_OP_Z_BUFFER_INFO     ((0x0&lt;&lt;29)|(0x16&lt;&lt;23))
 DECL|macro|CMD_OP_DESTBUFFER_INFO
-mdefine_line|#define CMD_OP_DESTBUFFER_INFO   ((0x0&lt;&lt;29)|(0x15&lt;&lt;23))
+mdefine_line|#define CMD_OP_DESTBUFFER_INFO&t; ((0x3&lt;&lt;29)|(0x1d&lt;&lt;24)|(0x8e&lt;&lt;16)|1)
 DECL|macro|BR00_BITBLT_CLIENT
 mdefine_line|#define BR00_BITBLT_CLIENT   0x40000000
 DECL|macro|BR00_OP_COLOR_BLT
@@ -690,5 +589,35 @@ DECL|macro|BR00_OP_SRC_COPY_BLT
 mdefine_line|#define BR00_OP_SRC_COPY_BLT 0x10C00000
 DECL|macro|BR13_SOLID_PATTERN
 mdefine_line|#define BR13_SOLID_PATTERN   0x80000000
+DECL|macro|BUF_3D_ID_COLOR_BACK
+mdefine_line|#define BUF_3D_ID_COLOR_BACK    (0x3&lt;&lt;24)
+DECL|macro|BUF_3D_ID_DEPTH
+mdefine_line|#define BUF_3D_ID_DEPTH         (0x7&lt;&lt;24)
+DECL|macro|BUF_3D_USE_FENCE
+mdefine_line|#define BUF_3D_USE_FENCE        (1&lt;&lt;23)
+DECL|macro|BUF_3D_PITCH
+mdefine_line|#define BUF_3D_PITCH(x)         (((x)/4)&lt;&lt;2)
+DECL|macro|CMD_OP_MAP_PALETTE_LOAD
+mdefine_line|#define CMD_OP_MAP_PALETTE_LOAD&t;((3&lt;&lt;29)|(0x1d&lt;&lt;24)|(0x82&lt;&lt;16)|255)
+DECL|macro|MAP_PALETTE_NUM
+mdefine_line|#define MAP_PALETTE_NUM(x)&t;((x&lt;&lt;8) &amp; (1&lt;&lt;8))
+DECL|macro|MAP_PALETTE_BOTH
+mdefine_line|#define MAP_PALETTE_BOTH&t;(1&lt;&lt;11)
+DECL|macro|XY_COLOR_BLT_CMD
+mdefine_line|#define XY_COLOR_BLT_CMD&t;&t;((2&lt;&lt;29)|(0x50&lt;&lt;22)|0x4)
+DECL|macro|XY_COLOR_BLT_WRITE_ALPHA
+mdefine_line|#define XY_COLOR_BLT_WRITE_ALPHA&t;(1&lt;&lt;21)
+DECL|macro|XY_COLOR_BLT_WRITE_RGB
+mdefine_line|#define XY_COLOR_BLT_WRITE_RGB&t;&t;(1&lt;&lt;20)
+DECL|macro|XY_SRC_COPY_BLT_CMD
+mdefine_line|#define XY_SRC_COPY_BLT_CMD             ((2&lt;&lt;29)|(0x53&lt;&lt;22)|6)
+DECL|macro|XY_SRC_COPY_BLT_WRITE_ALPHA
+mdefine_line|#define XY_SRC_COPY_BLT_WRITE_ALPHA     (1&lt;&lt;21)
+DECL|macro|XY_SRC_COPY_BLT_WRITE_RGB
+mdefine_line|#define XY_SRC_COPY_BLT_WRITE_RGB       (1&lt;&lt;20)
+DECL|macro|MI_BATCH_BUFFER
+mdefine_line|#define MI_BATCH_BUFFER &t;((0x30&lt;&lt;23)|1)
+DECL|macro|MI_BATCH_NON_SECURE
+mdefine_line|#define MI_BATCH_NON_SECURE&t;(1)
 macro_line|#endif
 eof
