@@ -79,6 +79,7 @@ comma
 id|rc
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|device_base
 op_assign
@@ -302,6 +303,7 @@ suffix:colon
 id|fw_len
 suffix:semicolon
 id|u32
+id|__iomem
 op_star
 id|dev_fw_ptr
 op_assign
@@ -549,6 +551,7 @@ op_assign
 id|priv-&gt;ndev
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|device
 op_assign
@@ -1284,6 +1287,7 @@ id|priv
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|device_base
 op_assign

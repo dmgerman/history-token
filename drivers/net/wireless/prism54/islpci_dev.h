@@ -279,6 +279,7 @@ l_int|33
 suffix:semicolon
 DECL|member|device_base
 r_void
+id|__iomem
 op_star
 id|device_base
 suffix:semicolon
