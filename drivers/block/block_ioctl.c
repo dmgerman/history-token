@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 DECL|function|blk_do_rq
 r_int

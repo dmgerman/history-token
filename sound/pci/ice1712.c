@@ -267,6 +267,8 @@ DECL|macro|ICE1712_SUBDEVICE_DELTA44
 mdefine_line|#define ICE1712_SUBDEVICE_DELTA44&t;0x121433d6
 DECL|macro|ICE1712_SUBDEVICE_AUDIOPHILE
 mdefine_line|#define ICE1712_SUBDEVICE_AUDIOPHILE&t;0x121434d6
+DECL|macro|ICE1712_SUBDEVICE_DELTA1010LT
+mdefine_line|#define ICE1712_SUBDEVICE_DELTA1010LT&t;0x12143bd6
 DECL|macro|ICE1712_SUBDEVICE_EWX2496
 mdefine_line|#define ICE1712_SUBDEVICE_EWX2496&t;0x3b153011
 DECL|macro|ICE1712_SUBDEVICE_EWS88MT
@@ -22455,8 +22457,6 @@ id|id
 r_static
 r_int
 id|dev
-op_assign
-l_int|0
 suffix:semicolon
 id|snd_card_t
 op_star
@@ -22833,6 +22833,19 @@ c_func
 id|card-&gt;shortname
 comma
 l_string|&quot;M Audio Audiophile 24/96&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ICE1712_SUBDEVICE_DELTA1010LT
+suffix:colon
+id|strcpy
+c_func
+(paren
+id|card-&gt;shortname
+comma
+l_string|&quot;M Audio Delta 1010LT&quot;
 )paren
 suffix:semicolon
 r_break

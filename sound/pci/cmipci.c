@@ -6135,19 +6135,19 @@ id|runtime-&gt;hw
 op_assign
 id|snd_cmipci_playback_spdif
 suffix:semicolon
+macro_line|#ifdef DO_SOFT_AC3
 r_if
 c_cond
 (paren
 id|cm-&gt;can_ac3_hw
 )paren
-(brace
+macro_line|#endif
 id|runtime-&gt;hw.info
 op_or_assign
 id|SNDRV_PCM_INFO_MMAP
 op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 suffix:semicolon
-)brace
 id|snd_pcm_hw_constraint_minmax
 c_func
 (paren
@@ -11217,6 +11217,26 @@ op_ge
 l_int|0
 )paren
 (brace
+id|snd_cmipci_clear_bit
+c_func
+(paren
+id|cm
+comma
+id|CM_REG_MISC_CTRL
+comma
+id|CM_FM_EN
+)paren
+suffix:semicolon
+id|snd_cmipci_clear_bit
+c_func
+(paren
+id|cm
+comma
+id|CM_REG_LEGACY_CTRL
+comma
+id|CM_ENSPDOUT
+)paren
+suffix:semicolon
 id|snd_cmipci_write
 c_func
 (paren
@@ -11239,6 +11259,16 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* disable channels */
+id|snd_cmipci_write
+c_func
+(paren
+id|cm
+comma
+id|CM_REG_FUNCTRL1
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* reset mixer */
 id|snd_cmipci_mixer_write
 c_func
@@ -11926,10 +11956,14 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cmipci: no OPL device at 0x%lx&bslash;n&quot;
+l_string|&quot;cmipci: no OPL device at 0x%lx, skipping...&bslash;n&quot;
 comma
 id|iosynth
 )paren
+suffix:semicolon
+id|iosynth
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -11956,6 +11990,7 @@ id|cm-&gt;opl3hwdep
 OL
 l_int|0
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -11963,7 +11998,43 @@ id|KERN_ERR
 l_string|&quot;cmipci: cannot create OPL3 hwdep&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+id|err
+suffix:semicolon
 )brace
+)brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|iosynth
+)paren
+(brace
+multiline_comment|/* disable FM */
+id|snd_cmipci_write
+c_func
+(paren
+id|cm
+comma
+id|CM_REG_LEGACY_CTRL
+comma
+id|val
+op_amp
+op_complement
+id|CM_FMSEL_MASK
+)paren
+suffix:semicolon
+id|snd_cmipci_clear_bit
+c_func
+(paren
+id|cm
+comma
+id|CM_REG_MISC_CTRL
+comma
+id|CM_FM_EN
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* reset mixer */
 id|snd_cmipci_mixer_write
@@ -12230,8 +12301,6 @@ id|id
 r_static
 r_int
 id|dev
-op_assign
-l_int|0
 suffix:semicolon
 id|snd_card_t
 op_star

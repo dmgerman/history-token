@@ -265,6 +265,8 @@ DECL|macro|korg1212_t_magic
 mdefine_line|#define korg1212_t_magic&t;&t;&t;0xa15a3800
 DECL|macro|opl3sa2_t_magic
 mdefine_line|#define opl3sa2_t_magic&t;&t;&t;&t;0xa15a3900
+DECL|macro|serialmidi_t_magic
+mdefine_line|#define serialmidi_t_magic&t;&t;&t;0xa15a3a00
 macro_line|#else
 DECL|macro|snd_magic_kcalloc
 mdefine_line|#define snd_magic_kcalloc(type, extra, flags) (type *) snd_kcalloc(sizeof(type) + extra, flags)

@@ -990,6 +990,13 @@ DECL|macro|A_MUCMD2
 mdefine_line|#define A_MUCMD2&t;&t;0x73
 DECL|macro|A_MUSTAT2
 mdefine_line|#define A_MUSTAT2&t;&t;A_MUCMD2&t;
+multiline_comment|/* The next two are the Audigy equivalent of FXWC&t;&t;&t;&t;&t;&t;*/
+multiline_comment|/* the Audigy can record any output (16bit, 48kHz, up to 64 channel simultaneously) &t;&t;*/
+multiline_comment|/* Each bit selects a channel for recording */
+DECL|macro|A_FXWC1
+mdefine_line|#define A_FXWC1&t;&t;&t;0x74            /* Selects 0x7f-0x60 for FX recording           */
+DECL|macro|A_FXWC2
+mdefine_line|#define A_FXWC2&t;&t;&t;0x75&t;&t;/* Selects 0x9f-0x80 for FX recording           */
 DECL|macro|A_SPDIF_SAMPLERATE
 mdefine_line|#define A_SPDIF_SAMPLERATE&t;0x76&t;&t;/* Set the sample rate of SPDIF output&t;&t;*/
 DECL|macro|A_SPDIF_48000
@@ -1276,6 +1283,12 @@ r_int
 id|capture_cr_val
 suffix:semicolon
 multiline_comment|/* control value */
+DECL|member|capture_cr_val2
+r_int
+r_int
+id|capture_cr_val2
+suffix:semicolon
+multiline_comment|/* control value2 (for audigy) */
 DECL|member|capture_bs_val
 r_int
 r_int
@@ -2196,6 +2209,9 @@ DECL|member|efx_voices_mask
 r_int
 r_int
 id|efx_voices_mask
+(braket
+l_int|2
+)braket
 suffix:semicolon
 DECL|member|proc_entry
 id|snd_info_entry_t
@@ -3126,9 +3142,9 @@ mdefine_line|#define A_EXTOUT_AC97_L&t;&t;0x10&t;/* AC97 left (front) */
 DECL|macro|A_EXTOUT_AC97_R
 mdefine_line|#define A_EXTOUT_AC97_R&t;&t;0x11&t;/*      right */
 DECL|macro|A_EXTOUT_ADC_CAP_L
-mdefine_line|#define A_EXTOUT_ADC_CAP_L&t;0x12&t;/* ADC capture buffer left */
+mdefine_line|#define A_EXTOUT_ADC_CAP_L&t;0x16&t;/* ADC capture buffer left */
 DECL|macro|A_EXTOUT_ADC_CAP_R
-mdefine_line|#define A_EXTOUT_ADC_CAP_R&t;0x13&t;/*                    right */
+mdefine_line|#define A_EXTOUT_ADC_CAP_R&t;0x17&t;/*                    right */
 multiline_comment|/* Audigy constants */
 DECL|macro|A_C_00000000
 mdefine_line|#define A_C_00000000&t;0xc0

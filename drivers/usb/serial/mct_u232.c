@@ -1652,7 +1652,7 @@ c_func
 (paren
 id|port-&gt;write_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

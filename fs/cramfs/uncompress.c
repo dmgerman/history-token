@@ -2,7 +2,7 @@ multiline_comment|/*&n; * uncompress.c&n; *&n; * (C) Copyright 1999 Linus Torval
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/zlib_fs.h&gt;
+macro_line|#include &lt;linux/zlib.h&gt;
 DECL|variable|stream
 r_static
 id|z_stream
@@ -55,7 +55,7 @@ id|dstlen
 suffix:semicolon
 id|err
 op_assign
-id|zlib_fs_inflateReset
+id|zlib_inflateReset
 c_func
 (paren
 op_amp
@@ -73,19 +73,19 @@ id|Z_OK
 id|printk
 c_func
 (paren
-l_string|&quot;zlib_fs_inflateReset error %d&bslash;n&quot;
+l_string|&quot;zlib_inflateReset error %d&bslash;n&quot;
 comma
 id|err
 )paren
 suffix:semicolon
-id|zlib_fs_inflateEnd
+id|zlib_inflateEnd
 c_func
 (paren
 op_amp
 id|stream
 )paren
 suffix:semicolon
-id|zlib_fs_inflateInit
+id|zlib_inflateInit
 c_func
 (paren
 op_amp
@@ -95,7 +95,7 @@ suffix:semicolon
 )brace
 id|err
 op_assign
-id|zlib_fs_inflate
+id|zlib_inflate
 c_func
 (paren
 op_amp
@@ -166,7 +166,7 @@ op_assign
 id|vmalloc
 c_func
 (paren
-id|zlib_fs_inflate_workspacesize
+id|zlib_inflate_workspacesize
 c_func
 (paren
 )paren
@@ -196,7 +196,7 @@ id|stream.avail_in
 op_assign
 l_int|0
 suffix:semicolon
-id|zlib_fs_inflateInit
+id|zlib_inflateInit
 c_func
 (paren
 op_amp
@@ -224,7 +224,7 @@ op_decrement
 id|initialized
 )paren
 (brace
-id|zlib_fs_inflateEnd
+id|zlib_inflateEnd
 c_func
 (paren
 op_amp

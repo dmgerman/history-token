@@ -111,12 +111,6 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* Use Atari GEMDOS variation of MS-DOS fs */
-DECL|member|fat32
-id|fat32
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Is this a FAT32 partition? */
 DECL|member|nocase
 id|nocase
 suffix:colon

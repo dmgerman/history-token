@@ -313,33 +313,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_SIS5513 */
-macro_line|#ifdef CONFIG_BLK_DEV_SLC90E66
-r_extern
-id|byte
-id|slc90e66_proc
-suffix:semicolon
-DECL|variable|slc90e66_display_info
-r_int
-(paren
-op_star
-id|slc90e66_display_info
-)paren
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_SLC90E66 */
 macro_line|#ifdef CONFIG_BLK_DEV_VIA82CXXX
 r_extern
 id|byte
@@ -3159,31 +3132,6 @@ id|sis_display_info
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_SIS5513 */
-macro_line|#ifdef CONFIG_BLK_DEV_SLC90E66
-r_if
-c_cond
-(paren
-(paren
-id|slc90e66_display_info
-)paren
-op_logical_and
-(paren
-id|slc90e66_proc
-)paren
-)paren
-id|create_proc_info_entry
-c_func
-(paren
-l_string|&quot;slc90e66&quot;
-comma
-l_int|0
-comma
-id|proc_ide_root
-comma
-id|slc90e66_display_info
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_SLC90E66 */
 macro_line|#ifdef CONFIG_BLK_DEV_VIA82CXXX
 r_if
 c_cond
@@ -3450,27 +3398,6 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_SIS5513 */
-macro_line|#ifdef CONFIG_BLK_DEV_SLC90E66
-r_if
-c_cond
-(paren
-(paren
-id|slc90e66_display_info
-)paren
-op_logical_and
-(paren
-id|slc90e66_proc
-)paren
-)paren
-id|remove_proc_entry
-c_func
-(paren
-l_string|&quot;ide/slc90e66&quot;
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_SLC90E66 */
 macro_line|#ifdef CONFIG_BLK_DEV_VIA82CXXX
 r_if
 c_cond

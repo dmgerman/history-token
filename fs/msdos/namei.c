@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  linux/fs/msdos/namei.c&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *  Hidden files 1995 by Albert Cahalan &lt;albert@ccs.neu.edu&gt; &lt;adc@coe.neu.edu&gt;&n; *  Rewritten for constant inumbers 1999 by Al Viro&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
@@ -78,25 +76,6 @@ suffix:semicolon
 multiline_comment|/* GEMDOS is less restrictive */
 DECL|macro|bad_if_strict
 mdefine_line|#define&t;bad_if_strict(opts) ((opts)-&gt;atari ? bad_if_strict_atari : bad_if_strict_pc)
-multiline_comment|/* Must die */
-DECL|function|msdos_put_super
-r_void
-id|msdos_put_super
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-)paren
-(brace
-id|fat_put_super
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/***** Formats an MS-DOS file name. Rejects invalid names. */
 DECL|function|msdos_format_name
 r_static

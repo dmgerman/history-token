@@ -5646,7 +5646,7 @@ id|DELETED_FLAG
 suffix:semicolon
 id|de-&gt;attr
 op_assign
-l_int|0
+id|ATTR_NONE
 suffix:semicolon
 id|fat_mark_buffer_dirty
 c_func

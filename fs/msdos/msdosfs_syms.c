@@ -46,13 +46,6 @@ c_func
 id|msdos_unlink
 )paren
 suffix:semicolon
-DECL|variable|msdos_put_super
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|msdos_put_super
-)paren
-suffix:semicolon
 DECL|function|msdos_get_sb
 r_static
 r_struct
