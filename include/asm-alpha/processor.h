@@ -33,188 +33,30 @@ DECL|typedef|mm_segment_t
 )brace
 id|mm_segment_t
 suffix:semicolon
+multiline_comment|/* This is dead.  Everything has been moved to thread_info.  */
 DECL|struct|thread_struct
 r_struct
 id|thread_struct
 (brace
-multiline_comment|/* the fields below are used by PALcode and must match struct pcb: */
-DECL|member|ksp
-r_int
-r_int
-id|ksp
-suffix:semicolon
-DECL|member|usp
-r_int
-r_int
-id|usp
-suffix:semicolon
-DECL|member|ptbr
-r_int
-r_int
-id|ptbr
-suffix:semicolon
-DECL|member|pcc
-r_int
-r_int
-id|pcc
-suffix:semicolon
-DECL|member|asn
-r_int
-r_int
-id|asn
-suffix:semicolon
-DECL|member|unique
-r_int
-r_int
-id|unique
-suffix:semicolon
-multiline_comment|/*&n;&t; * bit  0: floating point enable&n;&t; * bit 62: performance monitor enable&n;&t; */
-DECL|member|pal_flags
-r_int
-r_int
-id|pal_flags
-suffix:semicolon
-DECL|member|res1
-DECL|member|res2
-r_int
-r_int
-id|res1
-comma
-id|res2
-suffix:semicolon
-multiline_comment|/*&n;&t; * The fields below are Linux-specific:&n;&t; *&n;&t; * bit 1..5: IEEE_TRAP_ENABLE bits (see fpu.h)&n;&t; * bit 6..8: UAC bits (see sysinfo.h)&n;&t; * bit 17..21: IEEE_STATUS_MASK bits (see fpu.h)&n;&t; * bit 63: die_if_kernel recursion lock&n;&t; */
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* Perform syscall argument validation (get/set_fs). */
-DECL|member|fs
-id|mm_segment_t
-id|fs
-suffix:semicolon
-multiline_comment|/* Breakpoint handling for ptrace.  */
-DECL|member|bpt_addr
-r_int
-r_int
-id|bpt_addr
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|bpt_insn
-r_int
-r_int
-id|bpt_insn
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|bpt_nsaved
-r_int
-id|bpt_nsaved
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;0, 0, 0, &bslash;&n;&t;0, 0, 0, &bslash;&n;&t;0, 0, 0, &bslash;&n;&t;0, &bslash;&n;&t;KERNEL_DS &bslash;&n;}
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
-macro_line|#include &lt;asm/ptrace.h&gt;
-multiline_comment|/*&n; * Return saved PC of a blocked thread.  This assumes the frame&n; * pointer is the 6th saved long on the kernel stack and that the&n; * saved return address is the first long in the frame.  This all&n; * holds provided the thread blocked through a call to schedule() ($15&n; * is the frame pointer in schedule() and $15 is saved at offset 48 by&n; * entry.S:do_switch_stack).&n; *&n; * Under heavy swap load I&squot;ve seen this lose in an ugly way.  So do&n; * some extra sanity checking on the ranges we expect these pointers&n; * to be in so that we can fail gracefully.  This is just for ps after&n; * all.  -- r~&n; */
-DECL|function|thread_saved_pc
+mdefine_line|#define INIT_THREAD  { }
+multiline_comment|/* Return saved PC of a blocked thread.  */
+r_struct
+id|task_struct
+suffix:semicolon
 r_extern
-r_inline
 r_int
 r_int
 id|thread_saved_pc
 c_func
 (paren
 r_struct
-id|thread_struct
+id|task_struct
 op_star
-id|t
 )paren
-(brace
-r_int
-r_int
-id|fp
-comma
-id|sp
-op_assign
-id|t-&gt;ksp
-comma
-id|base
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|t
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sp
-OG
-id|base
-op_logical_and
-id|sp
-op_plus
-l_int|6
-op_star
-l_int|8
-OL
-id|base
-op_plus
-l_int|16
-op_star
-l_int|1024
-)paren
-(brace
-id|fp
-op_assign
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|sp
-)paren
-(braket
-l_int|6
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fp
-OG
-id|sp
-op_logical_and
-id|fp
-OL
-id|base
-op_plus
-l_int|16
-op_star
-l_int|1024
-)paren
-r_return
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-id|fp
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Do necessary setup to start up a newly executed thread.  */
 r_extern
 r_void
@@ -231,9 +73,6 @@ comma
 r_int
 r_int
 )paren
-suffix:semicolon
-r_struct
-id|task_struct
 suffix:semicolon
 multiline_comment|/* Free all resources held by a thread. */
 r_extern
@@ -288,24 +127,13 @@ id|p
 suffix:semicolon
 multiline_comment|/* See arch/alpha/kernel/ptrace.c for details.  */
 DECL|macro|PT_REG
-mdefine_line|#define PT_REG(reg)&t;(PAGE_SIZE*2 - sizeof(struct pt_regs)&t;&t;&bslash;&n;&t;&t;&t; + (long)&amp;((struct pt_regs *)0)-&gt;reg)
+mdefine_line|#define PT_REG(reg) &bslash;&n;  (PAGE_SIZE*2 - sizeof(struct pt_regs) + offsetof(struct pt_regs, reg))
 DECL|macro|SW_REG
-mdefine_line|#define SW_REG(reg)&t;(PAGE_SIZE*2 - sizeof(struct pt_regs)&t;&t;&bslash;&n;&t;&t;&t; - sizeof(struct switch_stack)&t;&t;&t;&bslash;&n;&t;&t;&t; + (long)&amp;((struct switch_stack *)0)-&gt;reg)
+mdefine_line|#define SW_REG(reg) &bslash;&n; (PAGE_SIZE*2 - sizeof(struct pt_regs) - sizeof(struct switch_stack) &bslash;&n;  + offsetof(struct switch_stack, reg))
 DECL|macro|KSTK_EIP
-mdefine_line|#define KSTK_EIP(tsk) &bslash;&n;    (*(unsigned long *)(PT_REG(pc) + (unsigned long)(tsk)))
+mdefine_line|#define KSTK_EIP(tsk) &bslash;&n;  (*(unsigned long *)(PT_REG(pc) + (unsigned long) ((tsk)-&gt;thread_info)))
 DECL|macro|KSTK_ESP
-mdefine_line|#define KSTK_ESP(tsk)&t;((tsk) == current ? rdusp() : (tsk)-&gt;thread.usp)
-multiline_comment|/* NOTE: The task struct and the stack go together!  */
-DECL|macro|alloc_task_struct
-mdefine_line|#define alloc_task_struct() &bslash;&n;        ((struct task_struct *) __get_free_pages(GFP_KERNEL,1))
-DECL|macro|free_task_struct
-mdefine_line|#define free_task_struct(p)     free_pages((unsigned long)(p),1)
-DECL|macro|get_task_struct
-mdefine_line|#define get_task_struct(tsk)      atomic_inc(&amp;virt_to_page(tsk)-&gt;count)
-DECL|macro|init_task
-mdefine_line|#define init_task&t;(init_task_union.task)
-DECL|macro|init_stack
-mdefine_line|#define init_stack&t;(init_task_union.stack)
+mdefine_line|#define KSTK_ESP(tsk) &bslash;&n;  ((tsk) == current ? rdusp() : (tsk)-&gt;thread_info-&gt;pcb.usp)
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()&t;do { } while (0)
 DECL|macro|ARCH_HAS_PREFETCH
@@ -314,6 +142,80 @@ DECL|macro|ARCH_HAS_PREFETCHW
 mdefine_line|#define ARCH_HAS_PREFETCHW
 DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
 mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
+macro_line|#if __GNUC__ &gt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt;= 1)
+DECL|function|prefetch
+r_extern
+r_inline
+r_void
+id|prefetch
+c_func
+(paren
+r_const
+r_void
+op_star
+id|ptr
+)paren
+(brace
+id|__builtin_prefetch
+c_func
+(paren
+id|ptr
+comma
+l_int|0
+comma
+l_int|3
+)paren
+suffix:semicolon
+)brace
+DECL|function|prefetchw
+r_extern
+r_inline
+r_void
+id|prefetchw
+c_func
+(paren
+r_const
+r_void
+op_star
+id|ptr
+)paren
+(brace
+id|__builtin_prefetch
+c_func
+(paren
+id|ptr
+comma
+l_int|1
+comma
+l_int|3
+)paren
+suffix:semicolon
+)brace
+DECL|function|spin_lock_prefetch
+r_extern
+r_inline
+r_void
+id|spin_lock_prefetch
+c_func
+(paren
+r_const
+r_void
+op_star
+id|ptr
+)paren
+(brace
+id|__builtin_prefetch
+c_func
+(paren
+id|ptr
+comma
+l_int|1
+comma
+l_int|3
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
 DECL|function|prefetch
 r_extern
 r_inline
@@ -359,7 +261,7 @@ id|ptr
 (brace
 id|__asm__
 (paren
-l_string|&quot;ldl $31,%0&quot;
+l_string|&quot;ldq $31,%0&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;m&quot;
@@ -389,7 +291,7 @@ id|ptr
 (brace
 id|__asm__
 (paren
-l_string|&quot;ldl $31,%0&quot;
+l_string|&quot;ldq $31,%0&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;m&quot;
@@ -404,5 +306,6 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* GCC 3.1 */
 macro_line|#endif /* __ASM_ALPHA_PROCESSOR_H */
 eof

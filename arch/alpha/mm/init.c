@@ -54,8 +54,9 @@ r_int
 )paren
 suffix:semicolon
 DECL|variable|original_pcb
+r_static
 r_struct
-id|thread_struct
+id|pcb_struct
 id|original_pcb
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
@@ -577,7 +578,7 @@ id|load_PCB
 c_func
 (paren
 r_struct
-id|thread_struct
+id|pcb_struct
 op_star
 id|pcb
 )paren
@@ -696,26 +697,22 @@ id|hwrpb
 suffix:semicolon
 )brace
 multiline_comment|/* Also set up the real kernel PCB while we&squot;re at it.  */
-id|init_task.thread.ptbr
+id|init_thread_info.pcb.ptbr
 op_assign
 id|newptbr
 suffix:semicolon
-id|init_task.thread.pal_flags
+id|init_thread_info.pcb.flags
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* set FEN, clear everything else */
-id|init_task.thread.flags
-op_assign
-l_int|0
-suffix:semicolon
 id|original_pcb_ptr
 op_assign
 id|load_PCB
 c_func
 (paren
 op_amp
-id|init_task.thread
+id|init_thread_info.pcb
 )paren
 suffix:semicolon
 id|tbia
@@ -750,7 +747,7 @@ op_assign
 op_star
 (paren
 r_struct
-id|thread_struct
+id|pcb_struct
 op_star
 )paren
 id|original_pcb_ptr
@@ -1093,6 +1090,10 @@ id|VM_ALLOC
 suffix:semicolon
 id|console_remap_vm.addr
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|VMALLOC_START
 suffix:semicolon
 id|console_remap_vm.size

@@ -2,6 +2,7 @@ macro_line|#ifndef __ASM_SMP_H
 DECL|macro|__ASM_SMP_H
 mdefine_line|#define __ASM_SMP_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 multiline_comment|/* HACK: Cabrio WHAMI return value is bogus if more than 8 bits used.. :-( */
 r_static
@@ -188,7 +189,7 @@ mdefine_line|#define cpu_logical_map(cpu)  __cpu_logical_map[cpu]
 DECL|macro|hard_smp_processor_id
 mdefine_line|#define hard_smp_processor_id()&t;__hard_smp_processor_id()
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id()&t;(current-&gt;processor)
+mdefine_line|#define smp_processor_id()&t;(current_thread_info()-&gt;cpu)
 r_extern
 r_int
 r_int

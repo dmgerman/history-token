@@ -1641,9 +1641,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* Classify the elements of the scatterlist.  Write dma_address&n;   of each element with:&n;&t;0   : Followers all physically adjacent.&n;&t;1   : Followers all virtually adjacent.&n;&t;-1  : Not leader, physically adjacent to previous.&n;&t;-2  : Not leader, virtually adjacent to previous.&n;   Write dma_length of each leader with the combined lengths of&n;   the mergable followers.  */
 DECL|macro|SG_ENT_VIRT_ADDRESS
-mdefine_line|#define SG_ENT_VIRT_ADDRESS(SG)&t;&t;&t;&t;&bslash;&n;&t;((SG)-&gt;address&t;&t;&t;&t;&t;&bslash;&n;&t; ? (SG)-&gt;address&t;&t;&t;&t;&bslash;&n;&t; : page_address((SG)-&gt;page) + (SG)-&gt;offset)
+mdefine_line|#define SG_ENT_VIRT_ADDRESS(SG) (page_address((SG)-&gt;page) + (SG)-&gt;offset)
 DECL|macro|SG_ENT_PHYS_ADDRESS
-mdefine_line|#define SG_ENT_PHYS_ADDRESS(SG)&t;&bslash;&n;        __pa(SG_ENT_VIRT_ADDRESS(SG))
+mdefine_line|#define SG_ENT_PHYS_ADDRESS(SG) __pa(SG_ENT_VIRT_ADDRESS(SG))
 r_static
 r_void
 DECL|function|sg_classify
