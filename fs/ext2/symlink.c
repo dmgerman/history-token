@@ -96,12 +96,14 @@ id|inode_operations
 id|ext2_fast_symlink_inode_operations
 op_assign
 (brace
+dot
 id|readlink
-suffix:colon
+op_assign
 id|ext2_readlink
 comma
+dot
 id|follow_link
-suffix:colon
+op_assign
 id|ext2_follow_link
 comma
 )brace
