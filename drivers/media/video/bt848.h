@@ -533,6 +533,8 @@ DECL|macro|BT848_PLL_X
 mdefine_line|#define BT848_PLL_X            (1&lt;&lt;7)
 DECL|macro|BT848_PLL_C
 mdefine_line|#define BT848_PLL_C            (1&lt;&lt;6)
+DECL|macro|BT848_DVSIF
+mdefine_line|#define BT848_DVSIF            0x0FC
 multiline_comment|/* Bt878 register */
 DECL|macro|BT878_DEVCTRL
 mdefine_line|#define BT878_DEVCTRL 0x40
