@@ -251,7 +251,7 @@ DECL|macro|XFS_EXTFMT_INODE
 mdefine_line|#define XFS_EXTFMT_INODE(x) &bslash;&n;  (XFS_SB_VERSION_HASEXTFLGBIT(&amp;((x)-&gt;i_mount-&gt;m_sb)) ? &bslash;&n;&t;XFS_EXTFMT_HASSTATE : XFS_EXTFMT_NOSTATE)
 macro_line|#endif
 DECL|macro|ISUNWRITTEN
-mdefine_line|#define ISUNWRITTEN(x)&t;&t;((x) == XFS_EXT_UNWRITTEN)
+mdefine_line|#define ISUNWRITTEN(x)&t;((x)-&gt;br_state == XFS_EXT_UNWRITTEN)
 multiline_comment|/*&n; * Incore version of above.&n; */
 DECL|struct|xfs_bmbt_irec
 r_typedef

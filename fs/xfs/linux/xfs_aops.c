@@ -253,17 +253,6 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-op_logical_neg
-(paren
-id|mp-&gt;pbm_flags
-op_amp
-id|PBMF_UNWRITTEN
-)paren
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
 id|mp-&gt;pbm_bn
 op_ne
 id|PAGE_BUF_DADDR_NULL
@@ -1362,7 +1351,7 @@ id|all_bh
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Calling this without startio set means we are being asked to make a dirty&n; * page ready for freeing it&squot;s buffers.  When called with startio set then&n; * we are coming from writepage. &n; *&n; * When called with startio e.g. from&n; * write page it is important that we write WHOLE page if possible. The&n; * bh-&gt;b_state&squot;s can not know of any of the blocks or which block for&n; * that matter are dirty due to map writes, and therefore bh uptodate is&n; * only vaild if the pagei itself isn&squot;t completely uptodate. Some layers&n; * may clear the page dirty flag prior to calling write page under the&n; * assumption the entire page will be written out, by not writing out the&n; * whole page the page can be reused before all vaild dirty data is&n; * written out. Note: in the case of a page that has been dirty&squot;d by&n; * mapwrite and but partially setup by block_prepare_write the&n; * bh-&gt;b_states&squot;s will not agree and only ones setup by BPW/BCW will have&n; * valid state, thus the whole page must be written out thing.&n; */
+multiline_comment|/*&n; * Calling this without startio set means we are being asked to make a dirty&n; * page ready for freeing it&squot;s buffers.  When called with startio set then&n; * we are coming from writepage. &n; *&n; * When called with startio set it is important that we write the WHOLE&n; * page if possible.&n; * The bh-&gt;b_state&squot;s cannot know if any of the blocks or which block for&n; * that matter are dirty due to mmap writes, and therefore bh uptodate is&n; * only vaild if the page itself isn&squot;t completely uptodate.  Some layers&n; * may clear the page dirty flag prior to calling write page, under the&n; * assumption the entire page will be written out; by not writing out the&n; * whole page the page can be reused before all valid dirty data is&n; * written out.  Note: in the case of a page that has been dirty&squot;d by&n; * mapwrite and but partially setup by block_prepare_write the&n; * bh-&gt;b_states&squot;s will not agree and only ones setup by BPW/BCW will have&n; * valid state, thus the whole page must be written out thing.&n; */
 id|STATIC
 r_int
 DECL|function|delalloc_convert

@@ -1215,7 +1215,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Get a pagebuf for the last block, zero the part beyond the&n;&t; * EOF, and write it out sync.&t;We need to drop the ilock&n;&t; * while we do this so we don&squot;t deadlock when the buffer cache&n;&t; * calls back to us.&n;&t; */
+multiline_comment|/*&n;&t; * Zero the part of the last block beyond the EOF, and write it&n;&t; * out sync.  We need to drop the ilock while we do this so we&n;&t; * don&squot;t deadlock when the buffer cache calls back to us.&n;&t; */
 id|XFS_IUNLOCK
 c_func
 (paren
@@ -1548,7 +1548,6 @@ id|prev_zero_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Maybe change this loop to do the bmapi call and&n;&t; * loop while we split the mappings into pagebufs?&n;&t; */
 r_while
 c_loop
 (paren

@@ -6617,6 +6617,26 @@ id|sbp
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#if XFS_WANT_FUNCS_C || (XFS_WANT_SPACE_C &amp;&amp; XFSSO_XFS_SB_VERSION_HASSECTOR)
+r_int
+DECL|function|xfs_sb_version_hassector
+id|xfs_sb_version_hassector
+c_func
+(paren
+id|xfs_sb_t
+op_star
+id|sbp
+)paren
+(brace
+r_return
+id|XFS_SB_VERSION_HASSECTOR
+c_func
+(paren
+id|sbp
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS_C || (XFS_WANT_SPACE_C &amp;&amp; XFSSO_XFS_SB_VERSION_TONEW)
 r_int
 DECL|function|xfs_sb_version_tonew

@@ -225,22 +225,6 @@ id|mp
 )paren
 suffix:semicolon
 multiline_comment|/* file system mount structure */
-multiline_comment|/*&n; * Decide whether to use this allocation group for this allocation.&n; * If so, fix up the btree freelist&squot;s size.&n; * This is external so mkfs can call it, too.&n; */
-r_int
-multiline_comment|/* error */
-id|xfs_alloc_fix_freelist
-c_func
-(paren
-id|xfs_alloc_arg_t
-op_star
-id|args
-comma
-multiline_comment|/* allocation argument structure */
-r_int
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* XFS_ALLOC_FLAG_... */
 multiline_comment|/*&n; * Get a block from the freelist.&n; * Returns with the buffer for the block gotten.&n; */
 r_int
 multiline_comment|/* error */

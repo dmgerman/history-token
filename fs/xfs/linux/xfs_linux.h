@@ -40,6 +40,8 @@ DECL|macro|irix_sgid_inherit
 mdefine_line|#define irix_sgid_inherit&t;xfs_params.sgid_inherit
 DECL|macro|irix_symlink_mode
 mdefine_line|#define irix_symlink_mode&t;xfs_params.symlink_mode
+DECL|macro|xfs_panic_mask
+mdefine_line|#define xfs_panic_mask&t;&t;xfs_params.panic_mask
 DECL|struct|xfs_dirent
 r_typedef
 r_struct

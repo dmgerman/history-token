@@ -41,6 +41,8 @@ DECL|macro|XFS_SB_VERSION_SHAREDBIT
 mdefine_line|#define XFS_SB_VERSION_SHAREDBIT&t;0x0200
 DECL|macro|XFS_SB_VERSION_LOGV2BIT
 mdefine_line|#define XFS_SB_VERSION_LOGV2BIT&t;&t;0x0400
+DECL|macro|XFS_SB_VERSION_SECTORBIT
+mdefine_line|#define XFS_SB_VERSION_SECTORBIT&t;0x0800
 DECL|macro|XFS_SB_VERSION_EXTFLGBIT
 mdefine_line|#define XFS_SB_VERSION_EXTFLGBIT&t;0x1000
 DECL|macro|XFS_SB_VERSION_DIRV2BIT
@@ -48,13 +50,13 @@ mdefine_line|#define XFS_SB_VERSION_DIRV2BIT&t;&t;0x2000
 DECL|macro|XFS_SB_VERSION_OKSASHFBITS
 mdefine_line|#define XFS_SB_VERSION_OKSASHFBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_EXTFLGBIT | &bslash;&n;&t; XFS_SB_VERSION_DIRV2BIT)
 DECL|macro|XFS_SB_VERSION_OKREALFBITS
-mdefine_line|#define XFS_SB_VERSION_OKREALFBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_ATTRBIT | &bslash;&n;&t; XFS_SB_VERSION_NLINKBIT | &bslash;&n;&t; XFS_SB_VERSION_QUOTABIT | &bslash;&n;&t; XFS_SB_VERSION_ALIGNBIT | &bslash;&n;&t; XFS_SB_VERSION_DALIGNBIT | &bslash;&n;&t; XFS_SB_VERSION_SHAREDBIT | &bslash;&n;&t; XFS_SB_VERSION_LOGV2BIT)
+mdefine_line|#define XFS_SB_VERSION_OKREALFBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_ATTRBIT | &bslash;&n;&t; XFS_SB_VERSION_NLINKBIT | &bslash;&n;&t; XFS_SB_VERSION_QUOTABIT | &bslash;&n;&t; XFS_SB_VERSION_ALIGNBIT | &bslash;&n;&t; XFS_SB_VERSION_DALIGNBIT | &bslash;&n;&t; XFS_SB_VERSION_SHAREDBIT | &bslash;&n;&t; XFS_SB_VERSION_LOGV2BIT | &bslash;&n;&t; XFS_SB_VERSION_SECTORBIT)
 DECL|macro|XFS_SB_VERSION_OKSASHBITS
 mdefine_line|#define XFS_SB_VERSION_OKSASHBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_NUMBITS | &bslash;&n;&t; XFS_SB_VERSION_REALFBITS | &bslash;&n;&t; XFS_SB_VERSION_OKSASHFBITS)
 DECL|macro|XFS_SB_VERSION_OKREALBITS
 mdefine_line|#define XFS_SB_VERSION_OKREALBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_NUMBITS | &bslash;&n;&t; XFS_SB_VERSION_OKREALFBITS | &bslash;&n;&t; XFS_SB_VERSION_OKSASHFBITS)
 DECL|macro|XFS_SB_VERSION_MKFS
-mdefine_line|#define XFS_SB_VERSION_MKFS(ia,dia,extflag,dirv2,na)&t;&bslash;&n;&t;(((ia) || (dia) || (extflag) || (dirv2) || (na)) ? &bslash;&n;&t;&t;(XFS_SB_VERSION_4 | &bslash;&n;&t;&t; ((ia) ? XFS_SB_VERSION_ALIGNBIT : 0) | &bslash;&n;&t;&t; ((dia) ? XFS_SB_VERSION_DALIGNBIT : 0) | &bslash;&n;&t;&t; ((extflag) ? XFS_SB_VERSION_EXTFLGBIT : 0) | &bslash;&n;&t;&t; ((dirv2) ? XFS_SB_VERSION_DIRV2BIT : 0) | &bslash;&n;&t;&t; ((na) ? XFS_SB_VERSION_LOGV2BIT : 0)) : &bslash;&n;&t;&t;XFS_SB_VERSION_1)
+mdefine_line|#define XFS_SB_VERSION_MKFS(ia,dia,extflag,dirv2,na,sflag)&t;&bslash;&n;&t;(((ia) || (dia) || (extflag) || (dirv2) || (na)) ? &bslash;&n;&t;&t;(XFS_SB_VERSION_4 | &bslash;&n;&t;&t; ((ia) ? XFS_SB_VERSION_ALIGNBIT : 0) | &bslash;&n;&t;&t; ((dia) ? XFS_SB_VERSION_DALIGNBIT : 0) | &bslash;&n;&t;&t; ((extflag) ? XFS_SB_VERSION_EXTFLGBIT : 0) | &bslash;&n;&t;&t; ((dirv2) ? XFS_SB_VERSION_DIRV2BIT : 0) | &bslash;&n;&t;&t; ((na) ? XFS_SB_VERSION_LOGV2BIT : 0) | &bslash;&n;&t;&t; ((sflag) ? XFS_SB_VERSION_SECTORBIT : 0)) : &bslash;&n;&t;&t;XFS_SB_VERSION_1)
 DECL|struct|xfs_sb
 r_typedef
 r_struct
@@ -833,6 +835,22 @@ macro_line|#else
 DECL|macro|XFS_SB_VERSION_SUBEXTFLGBIT
 mdefine_line|#define XFS_SB_VERSION_SUBEXTFLGBIT(sbp)&t;&bslash;&n;&t;((sbp)-&gt;sb_versionnum = &bslash;&n;&t;&t;((sbp)-&gt;sb_versionnum &amp; ~XFS_SB_VERSION_EXTFLGBIT))
 macro_line|#endif
+macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_HASSECTOR)
+r_int
+id|xfs_sb_version_hassector
+c_func
+(paren
+id|xfs_sb_t
+op_star
+id|sbp
+)paren
+suffix:semicolon
+DECL|macro|XFS_SB_VERSION_HASSECTOR
+mdefine_line|#define XFS_SB_VERSION_HASSECTOR(sbp)   xfs_sb_version_hassector(sbp)
+macro_line|#else
+DECL|macro|XFS_SB_VERSION_HASSECTOR
+mdefine_line|#define XFS_SB_VERSION_HASSECTOR(sbp)   &bslash;&n;&t;((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_SECTORBIT))
+macro_line|#endif
 multiline_comment|/*&n; * end of superblock version macros&n; */
 DECL|macro|XFS_SB_DADDR
 mdefine_line|#define XFS_SB_DADDR&t;((xfs_daddr_t)0)&t;/* daddr in filesystem/ag */
@@ -934,8 +952,6 @@ macro_line|#endif
 multiline_comment|/*&n; * File system sector to basic block conversions.&n; */
 DECL|macro|XFS_FSS_TO_BB
 mdefine_line|#define XFS_FSS_TO_BB(mp,sec)&t;((sec) &lt;&lt; (mp)-&gt;m_sectbb_log)
-DECL|macro|XFS_LOGS_TO_BB
-mdefine_line|#define XFS_LOGS_TO_BB(mp,sec)&t;((sec) &lt;&lt; ((mp)-&gt;m_sb.sb_logsectlog - BBSHIFT))
 DECL|macro|XFS_BB_TO_FSS
 mdefine_line|#define XFS_BB_TO_FSS(mp,bb)&t;&bslash;&n;&t;(((bb) + (XFS_FSS_TO_BB(mp,1) - 1)) &gt;&gt; (mp)-&gt;m_sectbb_log)
 DECL|macro|XFS_BB_TO_FSST
@@ -956,7 +972,7 @@ DECL|macro|XFS_BB_FSB_OFFSET
 mdefine_line|#define XFS_BB_FSB_OFFSET(mp,bb) ((bb) &amp; ((mp)-&gt;m_bsize - 1))
 multiline_comment|/*&n; * File system block to byte conversions.&n; */
 DECL|macro|XFS_FSB_TO_B
-mdefine_line|#define XFS_FSB_TO_B(mp,fsbno)&t;((xfs_fsize_t)(fsbno) &lt;&lt; &bslash;&n;&t;&t;&t;&t; (mp)-&gt;m_sb.sb_blocklog)
+mdefine_line|#define XFS_FSB_TO_B(mp,fsbno)&t;((xfs_fsize_t)(fsbno) &lt;&lt; (mp)-&gt;m_sb.sb_blocklog)
 DECL|macro|XFS_B_TO_FSB
 mdefine_line|#define XFS_B_TO_FSB(mp,b)&t;&bslash;&n;&t;((((__uint64_t)(b)) + (mp)-&gt;m_blockmask) &gt;&gt; (mp)-&gt;m_sb.sb_blocklog)
 DECL|macro|XFS_B_TO_FSBT
