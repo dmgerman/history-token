@@ -2995,6 +2995,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|result
+op_ne
+id|USB_STOR_XFER_GOOD
+)paren
+r_return
+id|USB_STOR_TRANSPORT_ERROR
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|srb-&gt;cmnd
 (braket
 l_int|0

@@ -1898,6 +1898,16 @@ r_case
 id|US_BULK_STAT_OK
 suffix:colon
 multiline_comment|/* command good -- note that we could be short on data */
+r_if
+c_cond
+(paren
+id|srb-&gt;resid
+OG
+l_int|0
+)paren
+r_return
+id|ISD200_TRANSPORT_SHORT
+suffix:semicolon
 r_return
 id|ISD200_TRANSPORT_GOOD
 suffix:semicolon
@@ -2274,6 +2284,10 @@ c_cond
 id|status
 op_ne
 id|ISD200_TRANSPORT_GOOD
+op_logical_and
+id|status
+op_ne
+id|ISD200_TRANSPORT_SHORT
 )paren
 (brace
 id|US_DEBUGP
@@ -2510,6 +2524,12 @@ suffix:semicolon
 r_case
 id|ISD200_TRANSPORT_SHORT
 suffix:colon
+id|srb-&gt;result
+op_assign
+id|GOOD
+op_lshift
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
