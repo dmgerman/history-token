@@ -89,7 +89,7 @@ id|page
 comma
 l_string|&quot;%d&bslash;n&quot;
 comma
-id|dev-&gt;current_state
+id|dev-&gt;power_state
 )paren
 suffix:semicolon
 )brace
