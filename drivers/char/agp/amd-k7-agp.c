@@ -1999,10 +1999,6 @@ multiline_comment|/* 751 Errata (22564_B-1.PDF)&n;&t;   erratum 20: strobe glitc
 r_if
 c_cond
 (paren
-id|agp_bridge-&gt;dev-&gt;vendor
-op_eq
-id|PCI_VENDOR_ID_AMD
-op_logical_and
 id|agp_bridge-&gt;dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_AMD_FE_GATE_7006
@@ -2115,10 +2111,6 @@ multiline_comment|/* 761 Errata (23613_F.pdf)&n;&t; * Revisions B0/B1 were a dis
 r_if
 c_cond
 (paren
-id|agp_bridge-&gt;dev-&gt;vendor
-op_eq
-id|PCI_VENDOR_ID_AMD
-op_logical_and
 id|agp_bridge-&gt;dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_AMD_FE_GATE_700E
