@@ -402,12 +402,6 @@ r_struct
 id|device_driver
 id|drv
 suffix:semicolon
-DECL|member|next
-r_struct
-id|pcmcia_driver
-op_star
-id|next
-suffix:semicolon
 )brace
 suffix:semicolon
 r_int
