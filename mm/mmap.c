@@ -7432,6 +7432,18 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * mm-&gt;mmap_sem is required to protect against another thread&n;&t; * changing the mappings in case we sleep.&n;&t; */
+id|WARN_ON
+c_func
+(paren
+id|down_read_trylock
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Clear old maps.  this also does some error checking for us&n;&t; */
 id|munmap_back
 suffix:colon
