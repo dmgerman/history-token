@@ -874,12 +874,6 @@ id|tty_std_termios
 suffix:semicolon
 r_extern
 r_struct
-id|tty_struct
-op_star
-id|redirect
-suffix:semicolon
-r_extern
-r_struct
 id|tty_ldisc
 id|ldiscs
 (braket
