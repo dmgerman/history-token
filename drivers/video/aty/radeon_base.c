@@ -10126,6 +10126,8 @@ l_int|7
 )paren
 )paren
 (brace
+id|noaccel
+op_assign
 id|radeonfb_noaccel
 op_assign
 l_int|1
