@@ -1594,11 +1594,11 @@ id|done
 suffix:semicolon
 id|current_target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 id|current_lun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 id|current_cmnd
 op_assign
@@ -1710,9 +1710,9 @@ op_assign
 id|internal_command
 c_func
 (paren
-id|SCint-&gt;target
+id|SCint-&gt;device-&gt;id
 comma
-id|SCint-&gt;lun
+id|SCint-&gt;device-&gt;lun
 comma
 id|SCint-&gt;cmnd
 comma
@@ -1782,9 +1782,9 @@ id|SCpnt
 r_return
 id|internal_command
 (paren
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 comma
 id|SCpnt-&gt;cmnd
 comma
