@@ -2022,8 +2022,7 @@ r_int
 r_int
 id|len
 comma
-r_int
-r_int
+id|pgoff_t
 id|pgoff
 )paren
 suffix:semicolon
