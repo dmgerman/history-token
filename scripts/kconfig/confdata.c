@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * Copyright (C) 2002 Roman Zippel &lt;zippel@linux-m68k.org&gt;&n; * Released under the terms of the GNU GPL v2.0.&n; */
 macro_line|#include &lt;ctype.h&gt;
-macro_line|#include &lt;limits.h&gt;
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;string.h&gt;
@@ -16,15 +15,6 @@ id|conf_def_filename
 )braket
 op_assign
 l_string|&quot;.config&quot;
-suffix:semicolon
-DECL|variable|conf_filename
-r_char
-id|conf_filename
-(braket
-id|PATH_MAX
-op_plus
-l_int|1
-)braket
 suffix:semicolon
 DECL|variable|conf_defname
 r_const
@@ -253,7 +243,7 @@ suffix:semicolon
 r_char
 id|line
 (braket
-l_int|128
+l_int|1024
 )braket
 suffix:semicolon
 r_char
@@ -300,19 +290,6 @@ c_func
 id|name
 comma
 l_string|&quot;r&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|in
-)paren
-id|strcpy
-c_func
-(paren
-id|conf_filename
-comma
-id|name
 )paren
 suffix:semicolon
 )brace
@@ -397,6 +374,13 @@ id|sym
 id|sym-&gt;flags
 op_or_assign
 id|SYMBOL_NEW
+op_or
+id|SYMBOL_CHANGED
+suffix:semicolon
+id|sym-&gt;flags
+op_and_assign
+op_complement
+id|SYMBOL_VALID
 suffix:semicolon
 r_switch
 c_cond
@@ -422,7 +406,6 @@ c_func
 id|sym-&gt;def
 )paren
 )paren
-(brace
 id|free
 c_func
 (paren
@@ -433,6 +416,8 @@ id|sym-&gt;def
 )paren
 )paren
 suffix:semicolon
+r_default
+suffix:colon
 id|S_VAL
 c_func
 (paren
@@ -441,9 +426,13 @@ id|sym-&gt;def
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
-r_default
-suffix:colon
+id|S_TRI
+c_func
+(paren
+id|sym-&gt;def
+)paren
+op_assign
+id|no
 suffix:semicolon
 )brace
 )brace
@@ -455,7 +444,10 @@ c_func
 (paren
 id|line
 comma
-l_int|128
+r_sizeof
+(paren
+id|line
+)paren
 comma
 id|in
 )paren
@@ -841,6 +833,31 @@ id|p2
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p2
+)paren
+(brace
+id|fprintf
+c_func
+(paren
+id|stderr
+comma
+l_string|&quot;%s:%d: invalid string found&bslash;n&quot;
+comma
+id|name
+comma
+id|lineno
+)paren
+suffix:semicolon
+m_exit
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 r_case
 id|S_INT
 suffix:colon
@@ -878,12 +895,13 @@ id|SYMBOL_NEW
 suffix:semicolon
 )brace
 r_else
+(brace
 id|fprintf
 c_func
 (paren
 id|stderr
 comma
-l_string|&quot;%s:%d:symbol value &squot;%s&squot; invalid for %s&bslash;n&quot;
+l_string|&quot;%s:%d: symbol value &squot;%s&squot; invalid for %s&bslash;n&quot;
 comma
 id|name
 comma
@@ -894,6 +912,12 @@ comma
 id|sym-&gt;name
 )paren
 suffix:semicolon
+m_exit
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default
@@ -1799,14 +1823,6 @@ id|name
 )paren
 r_return
 l_int|1
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|conf_filename
-comma
-id|name
-)paren
 suffix:semicolon
 id|sym_change_count
 op_assign
