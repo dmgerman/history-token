@@ -468,6 +468,7 @@ suffix:semicolon
 DECL|function|reboot_init
 r_static
 r_int
+id|__init
 id|reboot_init
 c_func
 (paren
