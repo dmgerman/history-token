@@ -6235,7 +6235,7 @@ c_cond
 (paren
 id|xprt
 )paren
-id|rpc_free
+id|kfree
 c_func
 (paren
 id|xprt
@@ -6379,7 +6379,7 @@ c_func
 id|xprt
 )paren
 suffix:semicolon
-id|rpc_free
+id|kfree
 c_func
 (paren
 id|xprt

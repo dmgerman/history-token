@@ -15,20 +15,6 @@ macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcsock.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
 multiline_comment|/* RPC scheduler */
-DECL|variable|rpc_allocate
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rpc_allocate
-)paren
-suffix:semicolon
-DECL|variable|rpc_free
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rpc_free
-)paren
-suffix:semicolon
 DECL|variable|rpc_execute
 id|EXPORT_SYMBOL
 c_func
@@ -632,6 +618,20 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|rpc_init_mempool
+c_func
+(paren
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 macro_line|#ifdef RPC_DEBUG
 id|rpc_register_sysctl
 c_func
@@ -674,6 +674,11 @@ c_func
 r_void
 )paren
 (brace
+id|rpc_destroy_mempool
+c_func
+(paren
+)paren
+suffix:semicolon
 id|cache_unregister
 c_func
 (paren
