@@ -532,18 +532,32 @@ id|port-&gt;tty
 op_assign
 id|tty
 suffix:semicolon
-multiline_comment|/* lock this module before we call it */
+multiline_comment|/* lock this module before we call it,&n;&t;   this may, which means we must bail out, safe because we are called with BKL held */
 r_if
 c_cond
 (paren
 id|serial-&gt;type-&gt;owner
 )paren
-id|__MOD_INC_USE_COUNT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
 c_func
 (paren
 id|serial-&gt;type-&gt;owner
 )paren
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|ENODEV
 suffix:semicolon
+r_goto
+id|bailout
+suffix:semicolon
+)brace
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
@@ -607,6 +621,8 @@ id|serial-&gt;type-&gt;owner
 suffix:semicolon
 )brace
 )brace
+id|bailout
+suffix:colon
 id|up
 (paren
 op_amp
