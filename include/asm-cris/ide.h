@@ -396,18 +396,6 @@ DECL|macro|SUPPORT_SLOW_DATA_PORTS
 macro_line|#undef SUPPORT_SLOW_DATA_PORTS
 DECL|macro|SUPPORT_SLOW_DATA_PORTS
 mdefine_line|#define SUPPORT_SLOW_DATA_PORTS&t;0
-multiline_comment|/* request and free a normal interrupt */
-DECL|macro|ide_request_irq
-mdefine_line|#define ide_request_irq(irq,hand,flg,dev,id)&t;request_irq((irq),(hand),(flg),(dev),(id))
-DECL|macro|ide_free_irq
-mdefine_line|#define ide_free_irq(irq,dev_id)&t;&t;free_irq((irq), (dev_id))
-multiline_comment|/* ide-probe.c calls ide_request_region and stuff on the io_ports defined,&n; * but since they are not actually memory-mapped in the ETRAX driver, we don&squot;t&n; * do anything.&n; */
-DECL|macro|ide_check_region
-mdefine_line|#define ide_check_region(from,extent)&t;&t;(0)
-DECL|macro|ide_request_region
-mdefine_line|#define ide_request_region(from,extent,name)&t;do {} while(0)
-DECL|macro|ide_release_region
-mdefine_line|#define ide_release_region(from,extent)&t;&t;do {} while(0)
 multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; */
 DECL|macro|ide_ack_intr
 mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)

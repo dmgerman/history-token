@@ -40,6 +40,7 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_extern
 r_int
 id|macide_ack_intr
@@ -50,6 +51,7 @@ id|ata_channel
 op_star
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Baboon initialization.&n; */
 DECL|function|baboon_init
 r_void

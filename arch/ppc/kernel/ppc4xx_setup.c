@@ -733,89 +733,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * IDE stuff.&n; * should be generic for every IDE PCI chipset&n; */
-macro_line|#if defined(CONFIG_BLK_DEV_IDE)
-r_static
-r_int
-DECL|function|ppc4xx_ide_check_region
-id|ppc4xx_ide_check_region
-c_func
-(paren
-id|ide_ioreg_t
-id|from
-comma
-r_int
-r_int
-id|extent
-)paren
-(brace
-r_return
-id|check_region
-c_func
-(paren
-id|from
-comma
-id|extent
-)paren
-suffix:semicolon
-)brace
-r_static
-r_void
-DECL|function|ppc4xx_ide_request_region
-id|ppc4xx_ide_request_region
-c_func
-(paren
-id|ide_ioreg_t
-id|from
-comma
-r_int
-r_int
-id|extent
-comma
-r_const
-r_char
-op_star
-id|name
-)paren
-(brace
-id|request_region
-c_func
-(paren
-id|from
-comma
-id|extent
-comma
-id|name
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_static
-r_void
-DECL|function|ppc4xx_ide_release_region
-id|ppc4xx_ide_release_region
-c_func
-(paren
-id|ide_ioreg_t
-id|from
-comma
-r_int
-r_int
-id|extent
-)paren
-(brace
-id|release_region
-c_func
-(paren
-id|from
-comma
-id|extent
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_IDEPCI)
 r_static
 r_void
@@ -1200,25 +1117,13 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n;**   m8xx_setup.c, prep_setup.c use&n;**     defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)&n;*/
-macro_line|#if defined (CONFIG_IDE)
-id|ppc_ide_md.ide_request_region
-op_assign
-id|ppc4xx_ide_request_region
-suffix:semicolon
-id|ppc_ide_md.ide_release_region
-op_assign
-id|ppc4xx_ide_release_region
-suffix:semicolon
-id|ppc_ide_md.ide_check_region
-op_assign
-id|ppc4xx_ide_check_region
-suffix:semicolon
-macro_line|#if defined(CONFIG_BLK_DEV_IDEPCI)
+macro_line|#ifdef CONFIG_IDE
+macro_line|# if defined(CONFIG_BLK_DEV_IDEPCI)
 id|ppc_ide_md.ide_init_hwif
 op_assign
 id|ppc4xx_ide_init_hwif_ports
 suffix:semicolon
-macro_line|#elif defined (CONFIG_DMA_NONPCI)&t;/* ON board IDE */
+macro_line|# elif defined (CONFIG_DMA_NONPCI)&t;/* ON board IDE */
 id|ppc_ide_md.default_irq
 op_assign
 id|nonpci_ide_default_irq
@@ -1227,7 +1132,7 @@ id|ppc_ide_md.ide_init_hwif
 op_assign
 id|nonpci_ide_init_hwif_ports
 suffix:semicolon
-macro_line|#endif
+macro_line|# endif
 macro_line|#endif
 id|board_init
 c_func
