@@ -1560,7 +1560,6 @@ id|u64
 id|addr
 comma
 r_int
-r_int
 id|length
 comma
 id|u16
@@ -1587,7 +1586,6 @@ comma
 id|u64
 id|addr
 comma
-r_int
 r_int
 id|length
 comma
@@ -1664,7 +1662,6 @@ comma
 id|u64
 id|addr
 comma
-r_int
 r_int
 id|length
 comma
