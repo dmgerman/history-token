@@ -1910,13 +1910,12 @@ id|sk-&gt;socket
 op_assign
 l_int|NULL
 suffix:semicolon
-id|__set_bit
+id|sock_set_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 suffix:semicolon
 multiline_comment|/* Purge queues */
