@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/ist.h&gt;
 macro_line|#include &lt;asm/std_resources.h&gt;
 macro_line|#include &quot;setup_arch_pre.h&quot;
+macro_line|#include &lt;bios_ebda.h&gt;
 multiline_comment|/* This value is set up by the early boot code to point to the value&n;   immediately after the boot time page tables.  It contains a *physical*&n;   address, and must not be in the .bss segment! */
 DECL|variable|__initdata
 r_int
@@ -3298,6 +3299,42 @@ id|size
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * workaround for Dell systems that neglect to reserve EBDA&n; */
+DECL|function|reserve_ebda_region
+r_static
+r_void
+id|__init
+id|reserve_ebda_region
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+id|addr
+op_assign
+id|get_bios_ebda
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
+)paren
+id|reserve_bootmem
+c_func
+(paren
+id|addr
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+)brace
 DECL|function|setup_memory
 r_static
 r_int
@@ -3436,6 +3473,12 @@ c_func
 l_int|0
 comma
 id|PAGE_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/* reserve EBDA region, it&squot;s a 4K region */
+id|reserve_ebda_region
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* could be an AMD 768MPX chipset. Reserve a page  before VGA to prevent&n;       PCI prefetch into it (errata #56). Usually the page is reserved anyways,&n;       unless you have no PS/2 mouse plugged in. */

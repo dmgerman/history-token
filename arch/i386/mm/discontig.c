@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mmzone.h&gt;
+macro_line|#include &lt;bios_ebda.h&gt;
 DECL|variable|node_data
 r_struct
 id|pglist_data
@@ -812,6 +813,48 @@ r_return
 id|reserve_pages
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * workaround for Dell systems that neglect to reserve EBDA&n; */
+DECL|function|reserve_ebda_region_node
+r_static
+r_void
+id|__init
+id|reserve_ebda_region_node
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+id|addr
+op_assign
+id|get_bios_ebda
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
+)paren
+id|reserve_bootmem_node
+c_func
+(paren
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+comma
+id|addr
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+)brace
 DECL|function|setup_memory
 r_int
 r_int
@@ -1158,6 +1201,12 @@ comma
 id|PAGE_SIZE
 comma
 id|PAGE_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/* reserve EBDA region, it&squot;s a 4K region */
+id|reserve_ebda_region_node
+c_func
+(paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_SLEEP
