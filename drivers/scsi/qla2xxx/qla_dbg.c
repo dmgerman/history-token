@@ -168,7 +168,7 @@ id|KERN_WARNING
 comma
 id|ha
 comma
-l_string|&quot;Unable to allocated memory for firmware dump (%d/%d).&bslash;n&quot;
+l_string|&quot;Unable to allocated memory for firmware dump (%d/%Zd).&bslash;n&quot;
 comma
 id|ha-&gt;fw_dump_order
 comma
@@ -3836,7 +3836,7 @@ id|KERN_WARNING
 comma
 id|ha
 comma
-l_string|&quot;Unable to allocated memory for firmware dump (%d/%d).&bslash;n&quot;
+l_string|&quot;Unable to allocated memory for firmware dump (%d/%Zd).&bslash;n&quot;
 comma
 id|ha-&gt;fw_dump_order
 comma
