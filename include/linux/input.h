@@ -1196,7 +1196,7 @@ DECL|member|custom_len
 id|__u32
 id|custom_len
 suffix:semicolon
-multiline_comment|/* Number of samples  */
+multiline_comment|/* Number of samples */
 DECL|member|custom_data
 id|__s16
 op_star
