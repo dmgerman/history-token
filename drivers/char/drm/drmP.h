@@ -58,9 +58,9 @@ macro_line|#ifndef __HAVE_DMA
 DECL|macro|__HAVE_DMA
 mdefine_line|#define __HAVE_DMA&t;&t;0
 macro_line|#endif
-macro_line|#ifndef __HAVE_DMA_IRQ
-DECL|macro|__HAVE_DMA_IRQ
-mdefine_line|#define __HAVE_DMA_IRQ&t;&t;0
+macro_line|#ifndef __HAVE_IRQ
+DECL|macro|__HAVE_IRQ
+mdefine_line|#define __HAVE_IRQ&t;&t;0
 macro_line|#endif
 macro_line|#ifndef __HAVE_DMA_WAITLIST
 DECL|macro|__HAVE_DMA_WAITLIST
@@ -140,6 +140,8 @@ DECL|macro|DRM_MEM_STUB
 mdefine_line|#define DRM_MEM_STUB      19
 DECL|macro|DRM_MEM_SGLISTS
 mdefine_line|#define DRM_MEM_SGLISTS   20
+DECL|macro|DRM_MEM_CTXLIST
+mdefine_line|#define DRM_MEM_CTXLIST  21
 DECL|macro|DRM_MAX_CTXBITMAP
 mdefine_line|#define DRM_MAX_CTXBITMAP (PAGE_SIZE * 8)
 multiline_comment|/*@}*/
@@ -370,6 +372,8 @@ DECL|macro|DRM_BUFCOUNT
 mdefine_line|#define DRM_BUFCOUNT(x) ((x)-&gt;count - DRM_LEFTCOUNT(x))
 DECL|macro|DRM_WAITCOUNT
 mdefine_line|#define DRM_WAITCOUNT(dev,idx) DRM_BUFCOUNT(&amp;dev-&gt;queuelist[idx]-&gt;waitlist)
+DECL|macro|DRM_IF_VERSION
+mdefine_line|#define DRM_IF_VERSION(maj, min) (maj &lt;&lt; 16 | min)
 multiline_comment|/**&n; * Get the private SAREA mapping.&n; *&n; * &bslash;param _dev DRM device.&n; * &bslash;param _ctx context number.&n; * &bslash;param _map output mapping.&n; */
 DECL|macro|DRM_GET_PRIV_SAREA
 mdefine_line|#define DRM_GET_PRIV_SAREA(_dev, _ctx, _map) do {&t;&bslash;&n;&t;(_map) = (_dev)-&gt;context_sareas[_ctx];&t;&t;&bslash;&n;} while(0)
@@ -401,23 +405,6 @@ r_int
 r_int
 id|arg
 )paren
-suffix:semicolon
-DECL|struct|drm_pci_list
-r_typedef
-r_struct
-id|drm_pci_list
-(brace
-DECL|member|vendor
-id|u16
-id|vendor
-suffix:semicolon
-DECL|member|device
-id|u16
-id|device
-suffix:semicolon
-DECL|typedef|drm_pci_list_t
-)brace
-id|drm_pci_list_t
 suffix:semicolon
 DECL|struct|drm_ioctl_desc
 r_typedef
@@ -806,31 +793,6 @@ DECL|typedef|drm_buf_entry_t
 )brace
 id|drm_buf_entry_t
 suffix:semicolon
-multiline_comment|/**&n; * Hardware lock.&n; *&n; * The lock structure is a simple cache-line aligned integer.  To avoid&n; * processor bus contention on a multiprocessor system, there should not be any&n; * other data stored in the same cache line.&n; */
-DECL|struct|drm_hw_lock
-r_typedef
-r_struct
-id|drm_hw_lock
-(brace
-DECL|member|lock
-id|__volatile__
-r_int
-r_int
-id|lock
-suffix:semicolon
-multiline_comment|/**&lt; lock variable */
-DECL|member|padding
-r_char
-id|padding
-(braket
-l_int|60
-)braket
-suffix:semicolon
-multiline_comment|/**&lt; Pad to cache line */
-DECL|typedef|drm_hw_lock_t
-)brace
-id|drm_hw_lock_t
-suffix:semicolon
 multiline_comment|/** File private data */
 DECL|struct|drm_file
 r_typedef
@@ -889,6 +851,11 @@ r_int
 r_int
 id|lock_count
 suffix:semicolon
+macro_line|#ifdef DRIVER_FILE_FIELDS
+DECL|member|DRIVER_FILE_FIELDS
+id|DRIVER_FILE_FIELDS
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|drm_file_t
 )brace
 id|drm_file_t
@@ -1281,6 +1248,33 @@ r_typedef
 id|drm_map_t
 id|drm_local_map_t
 suffix:semicolon
+multiline_comment|/**&n; * Context handle list&n; */
+DECL|struct|drm_ctx_list
+r_typedef
+r_struct
+id|drm_ctx_list
+(brace
+DECL|member|head
+r_struct
+id|list_head
+id|head
+suffix:semicolon
+multiline_comment|/**&lt; list head */
+DECL|member|handle
+id|drm_context_t
+id|handle
+suffix:semicolon
+multiline_comment|/**&lt; context handle */
+DECL|member|tag
+id|drm_file_t
+op_star
+id|tag
+suffix:semicolon
+multiline_comment|/**&lt; associated fd private data */
+DECL|typedef|drm_ctx_list_t
+)brace
+id|drm_ctx_list_t
+suffix:semicolon
 macro_line|#if __HAVE_VBL_IRQ
 DECL|struct|drm_vbl_sig
 r_typedef
@@ -1348,6 +1342,16 @@ op_star
 id|devname
 suffix:semicolon
 multiline_comment|/**&lt; For /proc/interrupts */
+DECL|member|minor
+r_int
+id|minor
+suffix:semicolon
+multiline_comment|/**&lt; Minor device number */
+DECL|member|if_version
+r_int
+id|if_version
+suffix:semicolon
+multiline_comment|/**&lt; Highest interface version set */
 DECL|member|blocked
 r_int
 id|blocked
@@ -1460,6 +1464,25 @@ r_int
 id|map_count
 suffix:semicolon
 multiline_comment|/**&lt; Number of mappable regions */
+multiline_comment|/** &bslash;name Context handle management */
+multiline_comment|/*@{*/
+DECL|member|ctxlist
+id|drm_ctx_list_t
+op_star
+id|ctxlist
+suffix:semicolon
+multiline_comment|/**&lt; Linked list of context handles */
+DECL|member|ctx_count
+r_int
+id|ctx_count
+suffix:semicolon
+multiline_comment|/**&lt; Number of context handles */
+DECL|member|ctxlist_sem
+r_struct
+id|semaphore
+id|ctxlist_sem
+suffix:semicolon
+multiline_comment|/**&lt; For ctxlist */
 DECL|member|context_sareas
 id|drm_map_t
 op_star
@@ -1521,6 +1544,11 @@ r_int
 id|irq
 suffix:semicolon
 multiline_comment|/**&lt; Interrupt used by board */
+DECL|member|irq_enabled
+r_int
+id|irq_enabled
+suffix:semicolon
+multiline_comment|/**&lt; True if irq handler is enabled */
 DECL|member|context_flag
 id|__volatile__
 r_int
@@ -1666,6 +1694,26 @@ op_star
 id|pdev
 suffix:semicolon
 multiline_comment|/**&lt; PCI device structure */
+DECL|member|pci_domain
+r_int
+id|pci_domain
+suffix:semicolon
+multiline_comment|/**&lt; PCI bus domain number */
+DECL|member|pci_bus
+r_int
+id|pci_bus
+suffix:semicolon
+multiline_comment|/**&lt; PCI bus number */
+DECL|member|pci_slot
+r_int
+id|pci_slot
+suffix:semicolon
+multiline_comment|/**&lt; PCI slot number */
+DECL|member|pci_func
+r_int
+id|pci_func
+suffix:semicolon
+multiline_comment|/**&lt; PCI function number */
 macro_line|#ifdef __alpha__
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,3)
 DECL|member|hose
@@ -1957,102 +2005,6 @@ id|on
 )paren
 suffix:semicolon
 multiline_comment|/* Mapping support (drm_vm.h) */
-r_extern
-r_struct
-id|page
-op_star
-id|DRM
-c_func
-(paren
-id|vm_nopage
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-op_star
-id|type
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|page
-op_star
-id|DRM
-c_func
-(paren
-id|vm_shm_nopage
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-op_star
-id|type
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|page
-op_star
-id|DRM
-c_func
-(paren
-id|vm_dma_nopage
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-op_star
-id|type
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|page
-op_star
-id|DRM
-c_func
-(paren
-id|vm_sg_nopage
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-op_star
-id|type
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|DRM
@@ -2469,7 +2421,7 @@ r_int
 id|DRM
 c_func
 (paren
-id|irq_busid
+id|irq_by_busid
 )paren
 (paren
 r_struct
@@ -2605,6 +2557,33 @@ id|DRM
 c_func
 (paren
 id|getstats
+)paren
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|DRM
+c_func
+(paren
+id|setversion
 )paren
 (paren
 r_struct
@@ -3448,7 +3427,9 @@ op_star
 id|filp
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA_IRQ
+macro_line|#endif /* __HAVE_DMA */
+multiline_comment|/* IRQ support (drm_irq.h) */
+macro_line|#if __HAVE_IRQ || __HAVE_DMA
 r_extern
 r_int
 id|DRM
@@ -3476,6 +3457,8 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#if __HAVE_IRQ
 r_extern
 r_int
 id|DRM
@@ -3487,9 +3470,6 @@ id|irq_install
 id|drm_device_t
 op_star
 id|dev
-comma
-r_int
-id|irq
 )paren
 suffix:semicolon
 r_extern
@@ -3510,7 +3490,7 @@ id|irqreturn_t
 id|DRM
 c_func
 (paren
-id|dma_service
+id|irq_handler
 )paren
 (paren
 id|DRM_IRQ_ARGS
@@ -3615,13 +3595,13 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if __HAVE_DMA_IRQ_BH
+macro_line|#if __HAVE_IRQ_BH
 r_extern
 r_void
 id|DRM
 c_func
 (paren
-id|dma_immediate_bh
+id|irq_immediate_bh
 )paren
 (paren
 r_void
@@ -3631,7 +3611,6 @@ id|dev
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-macro_line|#endif /* __HAVE_DMA */
 macro_line|#if __REALLY_HAVE_AGP
 multiline_comment|/* AGP/GART support (drm_agpsupport.h) */
 r_extern

@@ -66,14 +66,20 @@ DECL|macro|DRM_VERIFYAREA_READ
 mdefine_line|#define DRM_VERIFYAREA_READ( uaddr, size ) &t;&t;&bslash;&n;&t;verify_area( VERIFY_READ, uaddr, size )
 DECL|macro|DRM_COPY_FROM_USER_UNCHECKED
 mdefine_line|#define DRM_COPY_FROM_USER_UNCHECKED(arg1, arg2, arg3) &t;&bslash;&n;&t;__copy_from_user(arg1, arg2, arg3)
+DECL|macro|DRM_COPY_TO_USER_UNCHECKED
+mdefine_line|#define DRM_COPY_TO_USER_UNCHECKED(arg1, arg2, arg3)&t;&bslash;&n;&t;__copy_to_user(arg1, arg2, arg3)
 DECL|macro|DRM_GET_USER_UNCHECKED
 mdefine_line|#define DRM_GET_USER_UNCHECKED(val, uaddr)&t;&t;&bslash;&n;&t;__get_user(val, uaddr)
+DECL|macro|DRM_PUT_USER_UNCHECKED
+mdefine_line|#define DRM_PUT_USER_UNCHECKED(uaddr, val)&t;&t;&bslash;&n;&t;__put_user(val, uaddr)
 multiline_comment|/** &squot;malloc&squot; without the overhead of DRM(alloc)() */
 DECL|macro|DRM_MALLOC
 mdefine_line|#define DRM_MALLOC(x) kmalloc(x, GFP_KERNEL)
 multiline_comment|/** &squot;free&squot; without the overhead of DRM(free)() */
 DECL|macro|DRM_FREE
 mdefine_line|#define DRM_FREE(x,size) kfree(x)
+DECL|macro|DRM_GET_PRIV_WITH_RETURN
+mdefine_line|#define DRM_GET_PRIV_WITH_RETURN(_priv, _filp) _priv = _filp-&gt;private_data
 multiline_comment|/** &n; * Get the pointer to the SAREA.&n; *&n; * Searches the SAREA on the mapping lists and points drm_device::sarea to it.&n; */
 DECL|macro|DRM_GETSAREA
 mdefine_line|#define DRM_GETSAREA()&t;&t;&t;&t;&t;&t;&t; &bslash;&n;do { &t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;drm_map_list_t *entry;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;list_for_each_entry( entry, &amp;dev-&gt;maplist-&gt;head, head ) {&t; &bslash;&n;&t;&t;if ( entry-&gt;map &amp;&amp;&t;&t;&t;&t;&t; &bslash;&n;&t;&t;     entry-&gt;map-&gt;type == _DRM_SHM &amp;&amp;&t;&t;&t; &bslash;&n;&t;&t;     (entry-&gt;map-&gt;flags &amp; _DRM_CONTAINS_LOCK) ) {&t; &bslash;&n;&t;&t;&t;dev_priv-&gt;sarea = entry-&gt;map;&t;&t;&t; &bslash;&n; &t;&t;&t;break;&t;&t;&t;&t;&t;&t; &bslash;&n; &t;&t;}&t;&t;&t;&t;&t;&t;&t; &bslash;&n; &t;}&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;} while (0)

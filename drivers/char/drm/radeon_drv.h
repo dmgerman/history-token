@@ -146,6 +146,10 @@ id|drm_radeon_sarea_t
 op_star
 id|sarea_priv
 suffix:semicolon
+DECL|member|fb_location
+id|u32
+id|fb_location
+suffix:semicolon
 DECL|member|gart_size
 r_int
 id|gart_size
@@ -350,11 +354,6 @@ DECL|member|sarea
 id|drm_local_map_t
 op_star
 id|sarea
-suffix:semicolon
-DECL|member|fb
-id|drm_local_map_t
-op_star
-id|fb
 suffix:semicolon
 DECL|member|mmio
 id|drm_local_map_t
@@ -639,6 +638,14 @@ id|DRM_IOCTL_ARGS
 suffix:semicolon
 r_extern
 r_int
+id|radeon_cp_setparam
+c_func
+(paren
+id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|radeon_cp_flip
 c_func
 (paren
@@ -807,6 +814,8 @@ DECL|macro|RADEON_CRTC2_OFFSET
 mdefine_line|#define RADEON_CRTC2_OFFSET&t;&t;0x0324
 DECL|macro|RADEON_CRTC2_OFFSET_CNTL
 mdefine_line|#define RADEON_CRTC2_OFFSET_CNTL&t;0x0328
+DECL|macro|RADEON_RB3D_COLOROFFSET
+mdefine_line|#define RADEON_RB3D_COLOROFFSET&t;&t;0x1c40
 DECL|macro|RADEON_RB3D_COLORPITCH
 mdefine_line|#define RADEON_RB3D_COLORPITCH&t;&t;0x1c48
 DECL|macro|RADEON_DP_GUI_MASTER_CNTL
@@ -965,6 +974,8 @@ DECL|macro|RADEON_PP_ROT_MATRIX_0
 mdefine_line|#define RADEON_PP_ROT_MATRIX_0&t;&t;0x1d58
 DECL|macro|RADEON_PP_TXFILTER_0
 mdefine_line|#define RADEON_PP_TXFILTER_0&t;&t;0x1c54
+DECL|macro|RADEON_PP_TXOFFSET_0
+mdefine_line|#define RADEON_PP_TXOFFSET_0&t;&t;0x1c5c
 DECL|macro|RADEON_PP_TXFILTER_1
 mdefine_line|#define RADEON_PP_TXFILTER_1&t;&t;0x1c6c
 DECL|macro|RADEON_PP_TXFILTER_2
