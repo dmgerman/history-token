@@ -5812,12 +5812,6 @@ id|udsl_usb_init
 r_void
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-multiline_comment|/* dummy for sizeof */
 id|dbg
 (paren
 l_string|&quot;udsl_usb_init: driver version &quot;
@@ -5835,7 +5829,16 @@ id|udsl_control
 OG
 r_sizeof
 (paren
-id|skb-&gt;cb
+(paren
+(paren
+r_struct
+id|sk_buff
+op_star
+)paren
+l_int|0
+)paren
+op_member_access_from_pointer
+id|cb
 )paren
 )paren
 (brace
