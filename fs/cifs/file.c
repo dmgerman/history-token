@@ -183,8 +183,6 @@ id|disposition
 op_assign
 id|FILE_OVERWRITE
 suffix:semicolon
-multiline_comment|/* BB first check if file has batch oplock (or oplock ?) */
-multiline_comment|/* BB finish adding in oplock support BB */
 r_if
 c_cond
 (paren

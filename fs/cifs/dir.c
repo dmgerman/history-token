@@ -601,7 +601,17 @@ op_assign
 id|GENERIC_ALL
 suffix:semicolon
 )brace
-multiline_comment|/* BB add processing for setting the equivalent of mode - e.g. via CreateX with ACLs */
+multiline_comment|/* BB add processing to set equivalent of mode - e.g. via CreateX with ACLs */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|oplockEnabled
+)paren
+id|oplock
+op_assign
+id|REQ_OPLOCK
+suffix:semicolon
 id|rc
 op_assign
 id|CIFSSMBOpen
