@@ -1685,11 +1685,6 @@ op_logical_and
 id|dev-&gt;agp
 )paren
 (brace
-id|drm_agp_uninit
-c_func
-(paren
-)paren
-suffix:semicolon
 id|drm_free
 c_func
 (paren

@@ -3,20 +3,6 @@ multiline_comment|/*&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Te
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#if __OS_HAS_AGP
-DECL|macro|DRM_AGP_GET
-mdefine_line|#define DRM_AGP_GET (drm_agp_t *)inter_module_get(&quot;drm_agp&quot;)
-DECL|macro|DRM_AGP_PUT
-mdefine_line|#define DRM_AGP_PUT inter_module_put(&quot;drm_agp&quot;)
-multiline_comment|/**&n; * Pointer to the drm_agp_t structure made available by the agpgart module.&n; */
-DECL|variable|drm_agp
-r_static
-r_const
-id|drm_agp_t
-op_star
-id|drm_agp
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/**&n; * AGP information ioctl.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a (output) drm_agp_info structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the AGP device has been initialized and acquired and fills in the&n; * drm_agp_info structure with the information in drm_agp_head::agp_info.&n; */
 DECL|function|drm_agp_info
 r_int
@@ -69,9 +55,6 @@ id|dev-&gt;agp
 op_logical_or
 op_logical_neg
 id|dev-&gt;agp-&gt;acquired
-op_logical_or
-op_logical_neg
-id|drm_agp-&gt;copy_info
 )paren
 r_return
 op_minus
@@ -156,7 +139,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Acquire the AGP device (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument.&n; * &bslash;return zero on success or a negative number on failure. &n; *&n; * Verifies the AGP device hasn&squot;t been acquired before and calls&n; * drm_agp-&gt;acquire().&n; */
+multiline_comment|/**&n; * Acquire the AGP device (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument.&n; * &bslash;return zero on success or a negative number on failure. &n; *&n; * Verifies the AGP device hasn&squot;t been acquired before and calls&n; * agp_acquire().&n; */
 DECL|function|drm_agp_acquire
 r_int
 id|drm_agp_acquire
@@ -218,22 +201,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|drm_agp-&gt;acquire
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
 (paren
 id|retcode
 op_assign
-id|drm_agp
-op_member_access_from_pointer
-id|acquire
+id|agp_backend_acquire
 c_func
 (paren
 )paren
@@ -250,7 +221,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Release the AGP device (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the AGP device has been acquired and calls drm_agp-&gt;release().&n; */
+multiline_comment|/**&n; * Release the AGP device (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the AGP device has been acquired and calls agp_backend_release().&n; */
 DECL|function|drm_agp_release
 r_int
 id|drm_agp_release
@@ -295,17 +266,12 @@ id|dev-&gt;agp
 op_logical_or
 op_logical_neg
 id|dev-&gt;agp-&gt;acquired
-op_logical_or
-op_logical_neg
-id|drm_agp-&gt;release
 )paren
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|drm_agp
-op_member_access_from_pointer
-id|release
+id|agp_backend_release
 c_func
 (paren
 )paren
@@ -318,7 +284,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Release the AGP device.&n; *&n; * Calls drm_agp-&gt;release().&n; */
+multiline_comment|/**&n; * Release the AGP device.&n; *&n; * Calls agp_backend_release().&n; */
 DECL|function|drm_agp_do_release
 r_void
 id|drm_agp_do_release
@@ -327,20 +293,13 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|drm_agp-&gt;release
-)paren
-id|drm_agp
-op_member_access_from_pointer
-id|release
+id|agp_backend_release
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Enable the AGP bus.&n; * &n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_agp_mode structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the AGP device has been acquired but not enabled, and calls&n; * drm_agp-&gt;enable().&n; */
+multiline_comment|/**&n; * Enable the AGP bus.&n; * &n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_agp_mode structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the AGP device has been acquired but not enabled, and calls&n; * agp_enable().&n; */
 DECL|function|drm_agp_enable
 r_int
 id|drm_agp_enable
@@ -388,9 +347,6 @@ id|dev-&gt;agp
 op_logical_or
 op_logical_neg
 id|dev-&gt;agp-&gt;acquired
-op_logical_or
-op_logical_neg
-id|drm_agp-&gt;enable
 )paren
 r_return
 op_minus
@@ -426,9 +382,7 @@ id|dev-&gt;agp-&gt;mode
 op_assign
 id|mode.mode
 suffix:semicolon
-id|drm_agp
-op_member_access_from_pointer
-id|enable
+id|agp_enable
 c_func
 (paren
 id|mode.mode
@@ -995,9 +949,6 @@ id|dev-&gt;agp
 op_logical_or
 op_logical_neg
 id|dev-&gt;agp-&gt;acquired
-op_logical_or
-op_logical_neg
-id|drm_agp-&gt;bind_memory
 )paren
 r_return
 op_minus
@@ -1275,7 +1226,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Initialize the AGP resources.&n; *&n; * &bslash;return pointer to a drm_agp_head structure.&n; *&n; * Gets the drm_agp_t structure which is made available by the agpgart module&n; * via the inter_module_* functions. Creates and initializes a drm_agp_head&n; * structure.&n; */
+multiline_comment|/**&n; * Initialize the AGP resources.&n; *&n; * &bslash;return pointer to a drm_agp_head structure.&n; *&n; */
 DECL|function|drm_agp_init
 id|drm_agp_head_t
 op_star
@@ -1291,16 +1242,6 @@ id|head
 op_assign
 l_int|NULL
 suffix:semicolon
-id|drm_agp
-op_assign
-id|DRM_AGP_GET
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|drm_agp
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -1342,9 +1283,7 @@ id|head
 )paren
 )paren
 suffix:semicolon
-id|drm_agp
-op_member_access_from_pointer
-id|copy_info
+id|agp_copy_info
 c_func
 (paren
 op_amp
@@ -1403,28 +1342,11 @@ op_assign
 id|head-&gt;agp_info.page_mask
 suffix:semicolon
 macro_line|#endif
-)brace
 r_return
 id|head
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Free the AGP resources.&n; *&n; * Releases the pointer in ::drm_agp.&n; */
-DECL|function|drm_agp_uninit
-r_void
-id|drm_agp_uninit
-c_func
-(paren
-r_void
-)paren
-(brace
-id|DRM_AGP_PUT
-suffix:semicolon
-id|drm_agp
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/** Calls drm_agp-&gt;allocate_memory() */
+multiline_comment|/** Calls agp_allocate_memory() */
 DECL|function|drm_agp_allocate_memory
 id|DRM_AGP_MEM
 op_star
@@ -1438,19 +1360,8 @@ id|u32
 id|type
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|drm_agp-&gt;allocate_memory
-)paren
 r_return
-l_int|NULL
-suffix:semicolon
-r_return
-id|drm_agp
-op_member_access_from_pointer
-id|allocate_memory
+id|agp_allocate_memory
 c_func
 (paren
 id|pages
@@ -1459,7 +1370,7 @@ id|type
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/** Calls drm_agp-&gt;free_memory() */
+multiline_comment|/** Calls agp_free_memory() */
 DECL|function|drm_agp_free_memory
 r_int
 id|drm_agp_free_memory
@@ -1475,16 +1386,11 @@ c_cond
 (paren
 op_logical_neg
 id|handle
-op_logical_or
-op_logical_neg
-id|drm_agp-&gt;free_memory
 )paren
 r_return
 l_int|0
 suffix:semicolon
-id|drm_agp
-op_member_access_from_pointer
-id|free_memory
+id|agp_free_memory
 c_func
 (paren
 id|handle
@@ -1494,7 +1400,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/** Calls drm_agp-&gt;bind_memory() */
+multiline_comment|/** Calls agp_bind_memory() */
 DECL|function|drm_agp_bind_memory
 r_int
 id|drm_agp_bind_memory
@@ -1513,18 +1419,13 @@ c_cond
 (paren
 op_logical_neg
 id|handle
-op_logical_or
-op_logical_neg
-id|drm_agp-&gt;bind_memory
 )paren
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|drm_agp
-op_member_access_from_pointer
-id|bind_memory
+id|agp_bind_memory
 c_func
 (paren
 id|handle
@@ -1533,7 +1434,7 @@ id|start
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/** Calls drm_agp-&gt;unbind_memory() */
+multiline_comment|/** Calls agp_unbind_memory() */
 DECL|function|drm_agp_unbind_memory
 r_int
 id|drm_agp_unbind_memory
@@ -1549,18 +1450,13 @@ c_cond
 (paren
 op_logical_neg
 id|handle
-op_logical_or
-op_logical_neg
-id|drm_agp-&gt;unbind_memory
 )paren
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|drm_agp
-op_member_access_from_pointer
-id|unbind_memory
+id|agp_unbind_memory
 c_func
 (paren
 id|handle
