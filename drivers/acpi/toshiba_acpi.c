@@ -2142,6 +2142,15 @@ suffix:semicolon
 id|u32
 id|hci_result
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 multiline_comment|/* simple device detection: look for HCI method */
 r_if
 c_cond
