@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/q40_master.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 DECL|macro|Q40_PHYS_SCREEN_ADDR
 mdefine_line|#define Q40_PHYS_SCREEN_ADDR 0xFE800000
 DECL|variable|pseudo_palette
@@ -31,12 +30,6 @@ r_static
 r_struct
 id|fb_info
 id|fb_info
-suffix:semicolon
-DECL|variable|display
-r_static
-r_struct
-id|display
-id|display
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -217,21 +210,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|q40fb_setcolreg
@@ -250,6 +228,11 @@ dot
 id|fb_imageblit
 op_assign
 id|cfb_imageblit
+comma
+dot
+id|fb_cursor
+op_assign
+id|cfb_cursor
 comma
 )brace
 suffix:semicolon
@@ -401,32 +384,6 @@ op_star
 id|q40fb_fix.smem_start
 suffix:semicolon
 multiline_comment|/* The below feilds will go away !!!! */
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|fb_info.fix.id
-)paren
-suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|display
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 id|fb_alloc_cmap
 c_func
 (paren
@@ -436,16 +393,6 @@ comma
 l_int|16
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|fb_info
 )paren
 suffix:semicolon
 id|master_outb

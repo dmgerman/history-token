@@ -608,6 +608,48 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/* VGA16 modes are not handled by VGACON */
+r_if
+c_cond
+(paren
+(paren
+id|ORIG_VIDEO_MODE
+op_eq
+l_int|0x0D
+)paren
+op_logical_or
+multiline_comment|/* 320x200/4 */
+(paren
+id|ORIG_VIDEO_MODE
+op_eq
+l_int|0x0E
+)paren
+op_logical_or
+multiline_comment|/* 640x200/4 */
+(paren
+id|ORIG_VIDEO_MODE
+op_eq
+l_int|0x10
+)paren
+op_logical_or
+multiline_comment|/* 640x350/4 */
+(paren
+id|ORIG_VIDEO_MODE
+op_eq
+l_int|0x12
+)paren
+op_logical_or
+multiline_comment|/* 640x480/4 */
+(paren
+id|ORIG_VIDEO_MODE
+op_eq
+l_int|0x6A
+)paren
+)paren
+multiline_comment|/* 800x600/4, 0x6A is very common */
+r_goto
+id|no_vga
+suffix:semicolon
 id|vga_video_num_lines
 op_assign
 id|ORIG_VIDEO_LINES
