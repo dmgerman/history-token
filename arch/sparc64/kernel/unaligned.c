@@ -1127,9 +1127,17 @@ comma
 id|current-&gt;mm
 ques
 c_cond
+id|CTX_HWBITS
+c_func
+(paren
 id|current-&gt;mm-&gt;context
+)paren
 suffix:colon
+id|CTX_HWBITS
+c_func
+(paren
 id|current-&gt;active_mm-&gt;context
+)paren
 )paren
 )paren
 suffix:semicolon

@@ -45,10 +45,10 @@ r_int
 r_int
 id|pgcache_size
 suffix:semicolon
-DECL|member|pgdcache_size
+DECL|member|__pad1
 r_int
 r_int
-id|pgdcache_size
+id|__pad1
 suffix:semicolon
 DECL|member|pte_cache
 r_int

@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_PARISC_UNALIGNED_H_
 DECL|macro|_ASM_PARISC_UNALIGNED_H_
 mdefine_line|#define _ASM_PARISC_UNALIGNED_H_
-macro_line|#include &lt;asm-parisc/unaligned.h&gt;
+macro_line|#include &lt;asm-generic/unaligned.h&gt;
 macro_line|#ifdef __KERNEL__
 r_struct
 id|pt_regs

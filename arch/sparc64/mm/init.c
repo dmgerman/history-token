@@ -97,7 +97,7 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|macro|CTX_BMAP_SLOTS
-mdefine_line|#define CTX_BMAP_SLOTS (1UL &lt;&lt; (CTX_VERSION_SHIFT - 6))
+mdefine_line|#define CTX_BMAP_SLOTS (1UL &lt;&lt; (CTX_NR_BITS - 6))
 DECL|variable|mmu_context_bmap
 r_int
 r_int
@@ -173,7 +173,6 @@ id|PGT_CACHE_HIGH
 (brace
 r_do
 (brace
-macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -188,7 +187,6 @@ c_func
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -245,139 +243,6 @@ id|PGT_CACHE_LOW
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_SMP
-r_if
-c_cond
-(paren
-id|pgd_cache_size
-OG
-id|PGT_CACHE_HIGH
-op_div
-l_int|4
-)paren
-(brace
-r_struct
-id|page
-op_star
-id|page
-comma
-op_star
-id|page2
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|page2
-op_assign
-l_int|NULL
-comma
-id|page
-op_assign
-(paren
-r_struct
-id|page
-op_star
-)paren
-id|pgd_quicklist
-suffix:semicolon
-id|page
-suffix:semicolon
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-r_int
-r_int
-)paren
-id|page-&gt;lru.prev
-op_eq
-l_int|3
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|page2
-)paren
-id|page2-&gt;lru.next
-op_assign
-id|page-&gt;lru.next
-suffix:semicolon
-r_else
-id|pgd_quicklist
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|page-&gt;lru.next
-suffix:semicolon
-id|pgd_cache_size
-op_sub_assign
-l_int|2
-suffix:semicolon
-id|__free_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|page2
-)paren
-id|page
-op_assign
-(paren
-r_struct
-id|page
-op_star
-)paren
-id|page2-&gt;lru.next
-suffix:semicolon
-r_else
-id|page
-op_assign
-(paren
-r_struct
-id|page
-op_star
-)paren
-id|pgd_quicklist
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pgd_cache_size
-op_le
-id|PGT_CACHE_LOW
-op_div
-l_int|4
-)paren
-r_break
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-id|page2
-op_assign
-id|page
-suffix:semicolon
-id|page
-op_assign
-(paren
-r_struct
-id|page
-op_star
-)paren
-id|page-&gt;lru.next
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|preempt_enable
 c_func
 (paren
@@ -429,7 +294,7 @@ id|dcpage_flushes
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 id|__flush_dcache_page
 c_func
 (paren
@@ -549,10 +414,10 @@ c_func
 (paren
 l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;ldx&t;[%2], %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;and&t;%%g7, %1, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;or&t;%%g5, %0, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;casx&t;[%2], %%g7, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;%%g7, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;and&t;%%g7, %1, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;or&t;%%g1, %0, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;casx&t;[%2], %%g7, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%%g7, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;%%xcc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; membar&t;#StoreLoad | #StoreStore&quot;
 suffix:colon
@@ -574,7 +439,7 @@ op_amp
 id|page-&gt;flags
 )paren
 suffix:colon
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 )paren
@@ -614,13 +479,13 @@ c_func
 l_string|&quot;! test_and_clear_dcache_dirty&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;ldx&t;[%2], %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;srlx&t;%%g7, 24, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;and&t;%%g5, %3, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;%%g5, %0&bslash;n&bslash;t&quot;
+l_string|&quot;srlx&t;%%g7, 24, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;and&t;%%g1, %3, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%%g1, %0&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;%%icc, 2f&bslash;n&bslash;t&quot;
-l_string|&quot; andn&t;%%g7, %1, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;casx&t;[%2], %%g7, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;%%g7, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot; andn&t;%%g7, %1, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;casx&t;[%2], %%g7, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%%g7, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;%%xcc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&quot;
@@ -650,7 +515,7 @@ op_minus
 l_int|1UL
 )paren
 suffix:colon
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 )paren
@@ -828,9 +693,11 @@ c_func
 id|__update_mmu_cache
 c_func
 (paren
+id|CTX_NRBITS
+c_func
+(paren
 id|vma-&gt;vm_mm-&gt;context
-op_amp
-id|TAG_CONTEXT_BITS
+)paren
 comma
 id|address
 comma
@@ -1125,16 +992,6 @@ comma
 id|pgtable_cache_size
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-id|printk
-c_func
-(paren
-l_string|&quot;%d entries in page dir cache&bslash;n&quot;
-comma
-id|pgd_cache_size
-)paren
-suffix:semicolon
-macro_line|#endif&t;
 )brace
 DECL|function|mmu_info
 r_void
@@ -1723,7 +1580,7 @@ op_star
 id|trans
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The obp translations are saved based on 8k pagesize, since obp can use&n;&t; * a mixture of pagesizes. Misses to the 0xf0000000 - 0x100000000, ie obp &n;&t; * range, are handled in entry.S and do not use the vpte scheme (see rant&n;&t; * in inherit_locked_prom_mappings()).&n;&t; */
+multiline_comment|/*&n;&t; * The obp translations are saved based on 8k pagesize, since obp can&n;&t; * use a mixture of pagesizes. Misses to the 0xf0000000 - 0x100000000,&n;&t; * ie obp range, are handled in entry.S and do not use the vpte scheme&n;&t; * (see rant in inherit_locked_prom_mappings()).&n;&t; */
 DECL|macro|OBP_PMD_SIZE
 mdefine_line|#define OBP_PMD_SIZE 2048
 id|prompmd
@@ -2080,6 +1937,7 @@ l_string|&quot;Remapping the kernel... &quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Using plain zero for the context value is&n;&t; *       correct here, we are not using the Linux trap&n;&t; *       tables yet so we should not use the special&n;&t; *       UltraSPARC-III+ page size encodings yet.&n;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -2358,6 +2216,7 @@ r_int
 id|KERNBASE
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Using plain zero for the context value is&n;&t; *       correct here, we are not using the Linux trap&n;&t; *       tables yet so we should not use the special&n;&t; *       UltraSPARC-III+ page size encodings yet.&n;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -2440,6 +2299,7 @@ id|prom_boot_page
 )paren
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Using plain zero for the context value is&n;&t; *       correct here, we are not using the Linux trap&n;&t; *       tables yet so we should not use the special&n;&t; *       UltraSPARC-III+ page size encodings yet.&n;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -2908,6 +2768,7 @@ r_int
 id|tag
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no cheetah+&n;&t;&t;&t; *       page size encodings.&n;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -3777,6 +3638,7 @@ r_int
 id|data
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no cheetah+&n;&t;&t;&t; *       page size encodings.&n;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -3835,6 +3697,7 @@ r_int
 id|tag
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no&n;&t;&t;&t;&t; *       cheetah+ page size encodings.&n;&t;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -3963,6 +3826,7 @@ r_int
 id|data
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no&n;&t;&t;&t; *       cheetah+ page size encodings.&n;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -4021,6 +3885,7 @@ r_int
 id|tag
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no&n;&t;&t;&t;&t; *       cheetah+ page size encodings.&n;&t;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -4654,6 +4519,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 DECL|function|__flush_dcache_range
 r_void
 id|__flush_dcache_range
@@ -4778,6 +4644,7 @@ id|ASI_DCACHE_INVALIDATE
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* DCACHE_ALIASING_POSSIBLE */
 multiline_comment|/* If not locked, zap it. */
 DECL|function|__flush_tlb_all
 r_void
@@ -4837,6 +4704,7 @@ op_increment
 )paren
 (brace
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no&n;&t;&t;&t; *       cheetah+ page size encodings.&n;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -4907,6 +4775,7 @@ l_int|0x0UL
 suffix:semicolon
 )brace
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no&n;&t;&t;&t; *       cheetah+ page size encodings.&n;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -5034,6 +4903,10 @@ id|ctx
 comma
 id|new_ctx
 suffix:semicolon
+r_int
+r_int
+id|orig_pgsz_bits
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -5041,15 +4914,23 @@ op_amp
 id|ctx_alloc_lock
 )paren
 suffix:semicolon
+id|orig_pgsz_bits
+op_assign
+(paren
+id|mm-&gt;context.sparc64_ctx_val
+op_amp
+id|CTX_PGSZ_MASK
+)paren
+suffix:semicolon
 id|ctx
 op_assign
-id|CTX_HWBITS
-c_func
 (paren
 id|tlb_context_cache
 op_plus
 l_int|1
 )paren
+op_amp
+id|CTX_NR_MASK
 suffix:semicolon
 id|new_ctx
 op_assign
@@ -5058,9 +4939,9 @@ c_func
 (paren
 id|mmu_context_bmap
 comma
-l_int|1UL
+l_int|1
 op_lshift
-id|CTX_VERSION_SHIFT
+id|CTX_NR_BITS
 comma
 id|ctx
 )paren
@@ -5071,9 +4952,9 @@ c_cond
 id|new_ctx
 op_ge
 (paren
-l_int|1UL
+l_int|1
 op_lshift
-id|CTX_VERSION_SHIFT
+id|CTX_NR_BITS
 )paren
 )paren
 (brace
@@ -5239,16 +5120,18 @@ id|tlb_context_cache
 op_assign
 id|new_ctx
 suffix:semicolon
+id|mm-&gt;context.sparc64_ctx_val
+op_assign
+id|new_ctx
+op_or
+id|orig_pgsz_bits
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
 op_amp
 id|ctx_alloc_lock
 )paren
-suffix:semicolon
-id|mm-&gt;context
-op_assign
-id|new_ctx
 suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_SMP
@@ -5259,7 +5142,7 @@ id|pgt_quicklists
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* OK, we have to color these pages. The page tables are accessed&n; * by non-Dcache enabled mapping in the VPTE area by the dtlb_backend.S&n; * code, as well as by PAGE_OFFSET range direct-mapped addresses by &n; * other parts of the kernel. By coloring, we make sure that the tlbmiss &n; * fast handlers do not get data from old/garbage dcache lines that &n; * correspond to an old/stale virtual address (user/kernel) that &n; * previously mapped the pagetable page while accessing vpte range &n; * addresses. The idea is that if the vpte color and PAGE_OFFSET range &n; * color is the same, then when the kernel initializes the pagetable &n; * using the later address range, accesses with the first address&n; * range will see the newly initialized data rather than the garbage.&n; */
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 DECL|macro|DC_ALIAS_SHIFT
 mdefine_line|#define DC_ALIAS_SHIFT&t;1
 macro_line|#else
@@ -5352,7 +5235,7 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 id|set_page_count
 c_func
 (paren
@@ -5471,7 +5354,7 @@ op_star
 id|paddr
 suffix:semicolon
 )brace
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 multiline_comment|/* Now free the other one up, adjust cache size. */
 id|preempt_disable
 c_func
@@ -8527,76 +8410,6 @@ id|initpages
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-(brace
-multiline_comment|/* Put empty_pg_dir on pgd_quicklist */
-r_extern
-id|pgd_t
-id|empty_pg_dir
-(braket
-l_int|1024
-)braket
-suffix:semicolon
-r_int
-r_int
-id|addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|empty_pg_dir
-suffix:semicolon
-r_int
-r_int
-id|alias_base
-op_assign
-id|kern_base
-op_plus
-id|PAGE_OFFSET
-op_minus
-(paren
-r_int
-)paren
-(paren
-id|KERNBASE
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|empty_pg_dir
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|empty_pg_dir
-)paren
-)paren
-suffix:semicolon
-id|addr
-op_add_assign
-id|alias_base
-suffix:semicolon
-id|free_pgd_fast
-c_func
-(paren
-(paren
-id|pgd_t
-op_star
-)paren
-id|addr
-)paren
-suffix:semicolon
-id|num_physpages
-op_increment
-suffix:semicolon
-id|totalram_pages
-op_increment
-suffix:semicolon
-)brace
-macro_line|#endif
 id|printk
 c_func
 (paren
