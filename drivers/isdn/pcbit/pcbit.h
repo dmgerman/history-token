@@ -102,6 +102,7 @@ DECL|member|sh_mem
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|sh_mem
 suffix:semicolon
@@ -208,6 +209,7 @@ DECL|member|readptr
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|readptr
 suffix:semicolon
@@ -215,6 +217,7 @@ DECL|member|writeptr
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|writeptr
 suffix:semicolon
