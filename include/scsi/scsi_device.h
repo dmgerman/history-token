@@ -718,8 +718,8 @@ id|scsi_device_state
 suffix:semicolon
 DECL|function|scsi_device_online
 r_static
-r_int
 r_inline
+r_int
 id|scsi_device_online
 c_func
 (paren
