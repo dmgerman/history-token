@@ -42,8 +42,8 @@ DECL|macro|AC97_GENERAL_PURPOSE
 mdefine_line|#define AC97_GENERAL_PURPOSE&t;0x20&t;/* General Purpose (optional) */
 DECL|macro|AC97_3D_CONTROL
 mdefine_line|#define AC97_3D_CONTROL&t;&t;0x22&t;/* 3D Control (optional) */
-DECL|macro|AC97_RESERVED
-mdefine_line|#define AC97_RESERVED&t;&t;0x24&t;/* Reserved */
+DECL|macro|AC97_INT_PAGING
+mdefine_line|#define AC97_INT_PAGING&t;&t;0x24&t;/* Audio Interrupt &amp; Paging (AC&squot;97 2.3) */
 DECL|macro|AC97_POWERDOWN
 mdefine_line|#define AC97_POWERDOWN&t;&t;0x26&t;/* Powerdown control / status */
 multiline_comment|/* range 0x28-0x3a - AUDIO AC&squot;97 2.0 extensions */
@@ -101,6 +101,19 @@ DECL|macro|AC97_VENDOR_ID1
 mdefine_line|#define AC97_VENDOR_ID1&t;&t;0x7c&t;/* Vendor ID1 */
 DECL|macro|AC97_VENDOR_ID2
 mdefine_line|#define AC97_VENDOR_ID2&t;&t;0x7e&t;/* Vendor ID2 / revision */
+multiline_comment|/* range 0x60-0x6f (page 1) - extended codec registers */
+DECL|macro|AC97_CODEC_CLASS_REV
+mdefine_line|#define AC97_CODEC_CLASS_REV&t;0x60&t;/* Codec Class/Revision */
+DECL|macro|AC97_PCI_SVID
+mdefine_line|#define AC97_PCI_SVID&t;&t;0x62&t;/* PCI Subsystem Vendor ID */
+DECL|macro|AC97_PCI_SID
+mdefine_line|#define AC97_PCI_SID&t;&t;0x64&t;/* PCI Subsystem ID */
+DECL|macro|AC97_FUNC_SELECT
+mdefine_line|#define AC97_FUNC_SELECT&t;0x66&t;/* Function Select */
+DECL|macro|AC97_FUNC_INFO
+mdefine_line|#define AC97_FUNC_INFO&t;&t;0x68&t;/* Function Information */
+DECL|macro|AC97_SENSE_INFO
+mdefine_line|#define AC97_SENSE_INFO&t;&t;0x6a&t;/* Sense Details */
 multiline_comment|/* slot allocation */
 DECL|macro|AC97_SLOT_TAG
 mdefine_line|#define AC97_SLOT_TAG&t;&t;0
@@ -206,6 +219,8 @@ DECL|macro|AC97_EI_REV_MASK
 mdefine_line|#define AC97_EI_REV_MASK&t;0x0c00&t;/* AC&squot;97 revision mask */
 DECL|macro|AC97_EI_REV_22
 mdefine_line|#define AC97_EI_REV_22&t;&t;0x0400&t;/* AC&squot;97 revision 2.2 */
+DECL|macro|AC97_EI_REV_23
+mdefine_line|#define AC97_EI_REV_23&t;&t;0x0800&t;/* AC&squot;97 revision 2.3 */
 DECL|macro|AC97_EI_REV_SHIFT
 mdefine_line|#define AC97_EI_REV_SHIFT&t;10
 DECL|macro|AC97_EI_ADDR_MASK
@@ -280,6 +295,23 @@ DECL|macro|AC97_SC_DRS
 mdefine_line|#define AC97_SC_DRS&t;&t;0x4000&t;/* Double Rate S/PDIF */
 DECL|macro|AC97_SC_V
 mdefine_line|#define AC97_SC_V&t;&t;0x8000&t;/* Validity status */
+multiline_comment|/* Interrupt and Paging bit defines (AC&squot;97 2.3) */
+DECL|macro|AC97_PAGE_MASK
+mdefine_line|#define AC97_PAGE_MASK&t;&t;0x000f&t;/* Page Selector */
+DECL|macro|AC97_PAGE_VENDOR
+mdefine_line|#define AC97_PAGE_VENDOR&t;0&t;/* Vendor-specific registers */
+DECL|macro|AC97_PAGE_1
+mdefine_line|#define AC97_PAGE_1&t;&t;1&t;/* Extended Codec Registers page 1 */
+DECL|macro|AC97_INT_ENABLE
+mdefine_line|#define AC97_INT_ENABLE&t;&t;0x0800&t;/* Interrupt Enable */
+DECL|macro|AC97_INT_SENSE
+mdefine_line|#define AC97_INT_SENSE&t;&t;0x1000&t;/* Sense Cycle */
+DECL|macro|AC97_INT_CAUSE_SENSE
+mdefine_line|#define AC97_INT_CAUSE_SENSE&t;0x2000&t;/* Sense Cycle Completed (RO) */
+DECL|macro|AC97_INT_CAUSE_GPIO
+mdefine_line|#define AC97_INT_CAUSE_GPIO&t;0x4000&t;/* GPIO bits changed (RO) */
+DECL|macro|AC97_INT_STATUS
+mdefine_line|#define AC97_INT_STATUS&t;&t;0x8000&t;/* Interrupt Status */
 multiline_comment|/* extended modem ID bit defines */
 DECL|macro|AC97_MEI_LINE1
 mdefine_line|#define AC97_MEI_LINE1&t;&t;0x0001&t;/* Line1 present */
