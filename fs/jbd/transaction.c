@@ -3148,7 +3148,7 @@ op_eq
 id|transaction
 op_logical_and
 op_logical_neg
-id|buffer_jdirty
+id|buffer_jbddirty
 c_func
 (paren
 id|jh2bh
@@ -5161,7 +5161,7 @@ c_func
 id|bh
 comma
 op_logical_neg
-id|buffer_jdirty
+id|buffer_jbddirty
 c_func
 (paren
 id|bh

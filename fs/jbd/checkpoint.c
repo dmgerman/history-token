@@ -431,7 +431,7 @@ id|out_return_1
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * We used to test for (jh-&gt;b_list != BUF_CLEAN) here.&n;&t;&t; * But unmap_underlying_metadata() can place buffer onto&n;&t;&t; * BUF_CLEAN.&n;&t;&t; */
-multiline_comment|/*&n;&t;&t; * AKPM: I think the buffer_jdirty test is redundant - it&n;&t;&t; * shouldn&squot;t have NULL b_transaction?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * AKPM: I think the buffer_jbddirty test is redundant - it&n;&t;&t; * shouldn&squot;t have NULL b_transaction?&n;&t;&t; */
 id|next_jh
 op_assign
 id|jh-&gt;b_cpnext
@@ -447,7 +447,7 @@ id|bh
 )paren
 op_logical_and
 op_logical_neg
-id|buffer_jdirty
+id|buffer_jbddirty
 c_func
 (paren
 id|bh
@@ -1656,7 +1656,7 @@ id|jh
 )paren
 )paren
 op_logical_or
-id|buffer_jdirty
+id|buffer_jbddirty
 c_func
 (paren
 id|jh2bh

@@ -313,13 +313,6 @@ id|journal_datalist_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/*&n; * jh_splice_lock needs explantion.&n; *&n; * In a number of places we want to do things like:&n; *&n; *&t;if (buffer_jbd(bh) &amp;&amp; bh2jh(bh)-&gt;foo)&n; *&n; * This is racy on SMP, because another CPU could remove the journal_head&n; * in the middle of this expression.  We need locking.&n; *&n; * But we can greatly optimise the locking cost by testing BH_JBD&n; * outside the lock.  So, effectively:&n; *&n; *&t;ret = 0;&n; *&t;if (buffer_jbd(bh)) {&n; *&t;&t;spin_lock(&amp;jh_splice_lock);&n; *&t;&t;if (buffer_jbd(bh)) {&t; (* Still there? *)&n; *&t;&t;&t;ret = bh2jh(bh)-&gt;foo;&n; *&t;&t;}&n; *&t;&t;spin_unlock(&amp;jh_splice_lock);&n; *&t;}&n; *&t;return ret;&n; *&n; * Now, that protects us from races where another CPU can remove the&n; * journal_head.  But it doesn&squot;t defend us from the situation where another&n; * CPU can *add* a journal_head.  This is a correctness issue.  But it&squot;s not&n; * a problem because a) the calling code was *already* racy and b) it often&n; * can&squot;t happen at the call site and c) the places where we add journal_heads&n; * tend to be under external locking.&n; */
-DECL|variable|jh_splice_lock
-id|spinlock_t
-id|jh_splice_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/*&n; * List of all journals in the system.  Protected by the BKL.&n; */
 r_static
 id|LIST_HEAD
@@ -1064,7 +1057,7 @@ c_func
 (paren
 id|jh_in
 comma
-id|buffer_jdirty
+id|buffer_jbddirty
 c_func
 (paren
 id|jh2bh
@@ -5272,14 +5265,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t; * We actually don&squot;t need jh_splice_lock when&n;&t;&t;&t; * adding a journal_head - only on removal.&n;&t;&t;&t; */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|jh_splice_lock
-)paren
-suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -5302,13 +5287,6 @@ c_func
 (paren
 op_amp
 id|bh-&gt;b_count
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|jh_splice_lock
 )paren
 suffix:semicolon
 id|BUFFER_TRACE
@@ -5440,13 +5418,6 @@ comma
 l_string|&quot;remove journal_head&quot;
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|jh_splice_lock
-)paren
-suffix:semicolon
 id|bh-&gt;b_private
 op_assign
 l_int|NULL
@@ -5469,13 +5440,6 @@ id|__brelse
 c_func
 (paren
 id|bh
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|jh_splice_lock
 )paren
 suffix:semicolon
 id|journal_free_journal_head

@@ -1592,7 +1592,7 @@ c_func
 (paren
 id|bh
 comma
-id|buffer_jdirty
+id|buffer_jbddirty
 c_func
 (paren
 id|bh
@@ -2321,7 +2321,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buffer_jdirty
+id|buffer_jbddirty
 c_func
 (paren
 id|bh

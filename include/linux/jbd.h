@@ -2291,117 +2291,6 @@ id|inode
 )paren
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-r_extern
-id|spinlock_t
-id|jh_splice_lock
-suffix:semicolon
-multiline_comment|/*&n; * Once `expr1&squot; has been found true, take jh_splice_lock&n; * and then reevaluate everything.&n; */
-DECL|macro|SPLICE_LOCK
-mdefine_line|#define SPLICE_LOCK(expr1, expr2)&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret = (expr1);&t;&t;&t;&t;&bslash;&n;&t;&t;if (ret) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;spin_lock(&amp;jh_splice_lock);&t;&t;&bslash;&n;&t;&t;&t;ret = (expr1) &amp;&amp; (expr2);&t;&t;&bslash;&n;&t;&t;&t;spin_unlock(&amp;jh_splice_lock);&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
-multiline_comment|/*&n; * A number of buffer state predicates.  They test for&n; * buffer_jbd() because they are used in core kernel code.&n; *&n; * These will be racy on SMP unless we&squot;re *sure* that the&n; * buffer won&squot;t be detached from the journalling system&n; * in parallel.&n; */
-multiline_comment|/* Return true if the buffer is on journal list `list&squot; */
-DECL|function|buffer_jlist_eq
-r_static
-r_inline
-r_int
-id|buffer_jlist_eq
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-comma
-r_int
-id|list
-)paren
-(brace
-r_return
-id|SPLICE_LOCK
-c_func
-(paren
-id|buffer_jbd
-c_func
-(paren
-id|bh
-)paren
-comma
-id|bh2jh
-c_func
-(paren
-id|bh
-)paren
-op_member_access_from_pointer
-id|b_jlist
-op_eq
-id|list
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Return true if this bufer is dirty wrt the journal */
-DECL|function|buffer_jdirty
-r_static
-r_inline
-r_int
-id|buffer_jdirty
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-(brace
-r_return
-id|buffer_jbd
-c_func
-(paren
-id|bh
-)paren
-op_logical_and
-id|buffer_jbddirty
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Return true if it&squot;s a data buffer which journalling is managing */
-DECL|function|buffer_jbd_data
-r_static
-r_inline
-r_int
-id|buffer_jbd_data
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-(brace
-r_return
-id|SPLICE_LOCK
-c_func
-(paren
-id|buffer_jbd
-c_func
-(paren
-id|bh
-)paren
-comma
-id|bh2jh
-c_func
-(paren
-id|bh
-)paren
-op_member_access_from_pointer
-id|b_jlist
-op_eq
-id|BJ_SyncData
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|assert_spin_locked
 mdefine_line|#define assert_spin_locked(lock)&t;J_ASSERT(spin_is_locked(lock))
@@ -2431,8 +2320,6 @@ DECL|macro|J_ASSERT_BH
 mdefine_line|#define J_ASSERT_BH(bh, expr)&t;&t;do {} while (0)
 DECL|macro|buffer_jbd
 mdefine_line|#define buffer_jbd(bh)&t;&t;&t;0
-DECL|macro|buffer_jlist_eq
-mdefine_line|#define buffer_jlist_eq(bh, val)&t;0
 DECL|macro|journal_buffer_journal_lru
 mdefine_line|#define journal_buffer_journal_lru(bh)&t;0
 macro_line|#endif&t;/* defined(__KERNEL__) &amp;&amp; !defined(CONFIG_JBD) */
