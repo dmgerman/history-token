@@ -2457,16 +2457,6 @@ comma
 id|model
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|get_cpuinfo
-c_func
-(paren
-id|buffer
-op_plus
-id|len
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
