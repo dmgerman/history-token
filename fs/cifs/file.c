@@ -2613,16 +2613,6 @@ id|list_head
 op_star
 id|tmp1
 suffix:semicolon
-r_int
-id|xid
-suffix:semicolon
-id|xid
-op_assign
-id|GetXid
-c_func
-(paren
-)paren
-suffix:semicolon
 id|cifs_sb
 op_assign
 id|CIFS_SB
@@ -2635,7 +2625,7 @@ id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
-multiline_comment|/* figure out which file struct to use &n;&t;if (file-&gt;private_data == NULL) {&n;&t;&t;FreeXid(xid);&n;&t;&t;return -EBADF;&n;&t;}     &n;&t; */
+multiline_comment|/* figure out which file struct to use &n;&t;if (file-&gt;private_data == NULL) {&n;&t;&t;return -EBADF;&n;&t;}     &n;&t; */
 r_if
 c_cond
 (paren
@@ -2643,12 +2633,6 @@ op_logical_neg
 id|mapping
 )paren
 (brace
-id|FreeXid
-c_func
-(paren
-id|xid
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EFAULT
@@ -2662,12 +2646,6 @@ op_logical_neg
 id|mapping-&gt;host
 )paren
 (brace
-id|FreeXid
-c_func
-(paren
-id|xid
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EFAULT
@@ -2714,12 +2692,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|FreeXid
-c_func
-(paren
-id|xid
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -2738,12 +2710,6 @@ id|kunmap
 c_func
 (paren
 id|page
-)paren
-suffix:semicolon
-id|FreeXid
-c_func
-(paren
-id|xid
 )paren
 suffix:semicolon
 r_return
@@ -2973,12 +2939,6 @@ id|kunmap
 c_func
 (paren
 id|page
-)paren
-suffix:semicolon
-id|FreeXid
-c_func
-(paren
-id|xid
 )paren
 suffix:semicolon
 r_return
