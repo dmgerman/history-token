@@ -969,7 +969,6 @@ id|ti-&gt;len
 op_minus
 id|offset
 suffix:semicolon
-multiline_comment|/* FIXME: obey io_restrictions ! */
 multiline_comment|/*&n;&t; * Does the target need to split even further ?&n;&t; */
 r_if
 c_cond
