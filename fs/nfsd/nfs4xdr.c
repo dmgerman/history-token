@@ -4348,10 +4348,10 @@ c_func
 (paren
 r_sizeof
 (paren
-id|stateid_t
+id|stateid_opaque_t
 )paren
 op_plus
-l_int|16
+l_int|20
 )paren
 suffix:semicolon
 id|READ32
