@@ -74,6 +74,11 @@ comma
 DECL|enumerator|PROC_TGID_WCHAN
 id|PROC_TGID_WCHAN
 comma
+macro_line|#ifdef CONFIG_SCHEDSTATS
+DECL|enumerator|PROC_TGID_SCHEDSTAT
+id|PROC_TGID_SCHEDSTAT
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_SECURITY
 DECL|enumerator|PROC_TGID_ATTR
 id|PROC_TGID_ATTR
@@ -139,6 +144,11 @@ comma
 DECL|enumerator|PROC_TID_WCHAN
 id|PROC_TID_WCHAN
 comma
+macro_line|#ifdef CONFIG_SCHEDSTATS
+DECL|enumerator|PROC_TID_SCHEDSTAT
+id|PROC_TID_SCHEDSTAT
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_SECURITY
 DECL|enumerator|PROC_TID_ATTR
 id|PROC_TID_ATTR
@@ -402,6 +412,20 @@ id|S_IRUGO
 )paren
 comma
 macro_line|#endif
+macro_line|#ifdef CONFIG_SCHEDSTATS
+id|E
+c_func
+(paren
+id|PROC_TGID_SCHEDSTAT
+comma
+l_string|&quot;schedstat&quot;
+comma
+id|S_IFREG
+op_or
+id|S_IRUGO
+)paren
+comma
+macro_line|#endif
 (brace
 l_int|0
 comma
@@ -605,6 +629,20 @@ c_func
 id|PROC_TID_WCHAN
 comma
 l_string|&quot;wchan&quot;
+comma
+id|S_IFREG
+op_or
+id|S_IRUGO
+)paren
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_SCHEDSTATS
+id|E
+c_func
+(paren
+id|PROC_TID_SCHEDSTAT
+comma
+l_string|&quot;schedstat&quot;
 comma
 id|S_IFREG
 op_or
@@ -2048,6 +2086,41 @@ id|wchan
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_KALLSYMS */
+macro_line|#ifdef CONFIG_SCHEDSTATS
+multiline_comment|/*&n; * Provides /proc/PID/schedstat&n; */
+DECL|function|proc_pid_schedstat
+r_static
+r_int
+id|proc_pid_schedstat
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
+r_char
+op_star
+id|buffer
+)paren
+(brace
+r_return
+id|sprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;%lu %lu %lu&bslash;n&quot;
+comma
+id|task-&gt;sched_info.cpu_time
+comma
+id|task-&gt;sched_info.run_delay
+comma
+id|task-&gt;sched_info.pcnt
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/************************************************************************/
 multiline_comment|/*                       Here the fs part begins                        */
 multiline_comment|/************************************************************************/
@@ -6693,6 +6766,25 @@ suffix:semicolon
 id|ei-&gt;op.proc_read
 op_assign
 id|proc_pid_wchan
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SCHEDSTATS
+r_case
+id|PROC_TID_SCHEDSTAT
+suffix:colon
+r_case
+id|PROC_TGID_SCHEDSTAT
+suffix:colon
+id|inode-&gt;i_fop
+op_assign
+op_amp
+id|proc_info_file_operations
+suffix:semicolon
+id|ei-&gt;op.proc_read
+op_assign
+id|proc_pid_schedstat
 suffix:semicolon
 r_break
 suffix:semicolon

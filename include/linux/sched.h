@@ -856,6 +856,45 @@ suffix:semicolon
 multiline_comment|/* wall_to_monotonic used when set */
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_SCHEDSTATS
+DECL|struct|sched_info
+r_struct
+id|sched_info
+(brace
+multiline_comment|/* cumulative counters */
+DECL|member|cpu_time
+r_int
+r_int
+id|cpu_time
+comma
+multiline_comment|/* time spent on the cpu */
+DECL|member|run_delay
+id|run_delay
+comma
+multiline_comment|/* time spent waiting on a runqueue */
+DECL|member|pcnt
+id|pcnt
+suffix:semicolon
+multiline_comment|/* # of timeslices run on this cpu */
+multiline_comment|/* timestamps */
+DECL|member|last_arrival
+r_int
+r_int
+id|last_arrival
+comma
+multiline_comment|/* when we last ran on a cpu */
+DECL|member|last_queued
+id|last_queued
+suffix:semicolon
+multiline_comment|/* when we were last queued to run */
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
+id|proc_schedstat_operations
+suffix:semicolon
+macro_line|#endif
 r_struct
 id|io_context
 suffix:semicolon
@@ -1038,6 +1077,13 @@ id|time_slice
 comma
 id|first_time_slice
 suffix:semicolon
+macro_line|#ifdef CONFIG_SCHEDSTATS
+DECL|member|sched_info
+r_struct
+id|sched_info
+id|sched_info
+suffix:semicolon
+macro_line|#endif
 DECL|member|tasks
 r_struct
 id|list_head
@@ -1591,167 +1637,6 @@ mdefine_line|#define PF_LESS_THROTTLE 0x00100000&t;/* Throttle me less: I clean 
 DECL|macro|PF_SYNCWRITE
 mdefine_line|#define PF_SYNCWRITE&t;0x00200000&t;/* I am doing a sync write */
 macro_line|#ifdef CONFIG_SMP
-DECL|macro|SCHED_LOAD_SCALE
-mdefine_line|#define SCHED_LOAD_SCALE&t;128UL&t;/* increase resolution of load */
-DECL|macro|SD_BALANCE_NEWIDLE
-mdefine_line|#define SD_BALANCE_NEWIDLE&t;1&t;/* Balance when about to become idle */
-DECL|macro|SD_BALANCE_EXEC
-mdefine_line|#define SD_BALANCE_EXEC&t;&t;2&t;/* Balance on exec */
-DECL|macro|SD_WAKE_IDLE
-mdefine_line|#define SD_WAKE_IDLE&t;&t;4&t;/* Wake to idle CPU on task wakeup */
-DECL|macro|SD_WAKE_AFFINE
-mdefine_line|#define SD_WAKE_AFFINE&t;&t;8&t;/* Wake task to waking CPU */
-DECL|macro|SD_WAKE_BALANCE
-mdefine_line|#define SD_WAKE_BALANCE&t;&t;16&t;/* Perform balancing at task wakeup */
-DECL|macro|SD_SHARE_CPUPOWER
-mdefine_line|#define SD_SHARE_CPUPOWER&t;32&t;/* Domain members share cpu power */
-DECL|struct|sched_group
-r_struct
-id|sched_group
-(brace
-DECL|member|next
-r_struct
-id|sched_group
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* Must be a circular list */
-DECL|member|cpumask
-id|cpumask_t
-id|cpumask
-suffix:semicolon
-multiline_comment|/*&n;&t; * CPU power of this group, SCHED_LOAD_SCALE being max power for a&n;&t; * single CPU. This should be read only (except for setup). Although&n;&t; * it will need to be written to at cpu hot(un)plug time, perhaps the&n;&t; * cpucontrol semaphore will provide enough exclusion?&n;&t; */
-DECL|member|cpu_power
-r_int
-r_int
-id|cpu_power
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|sched_domain
-r_struct
-id|sched_domain
-(brace
-multiline_comment|/* These fields must be setup */
-DECL|member|parent
-r_struct
-id|sched_domain
-op_star
-id|parent
-suffix:semicolon
-multiline_comment|/* top domain must be null terminated */
-DECL|member|groups
-r_struct
-id|sched_group
-op_star
-id|groups
-suffix:semicolon
-multiline_comment|/* the balancing groups of the domain */
-DECL|member|span
-id|cpumask_t
-id|span
-suffix:semicolon
-multiline_comment|/* span of all CPUs in this domain */
-DECL|member|min_interval
-r_int
-r_int
-id|min_interval
-suffix:semicolon
-multiline_comment|/* Minimum balance interval ms */
-DECL|member|max_interval
-r_int
-r_int
-id|max_interval
-suffix:semicolon
-multiline_comment|/* Maximum balance interval ms */
-DECL|member|busy_factor
-r_int
-r_int
-id|busy_factor
-suffix:semicolon
-multiline_comment|/* less balancing by factor if busy */
-DECL|member|imbalance_pct
-r_int
-r_int
-id|imbalance_pct
-suffix:semicolon
-multiline_comment|/* No balance until over watermark */
-DECL|member|cache_hot_time
-r_int
-r_int
-r_int
-id|cache_hot_time
-suffix:semicolon
-multiline_comment|/* Task considered cache hot (ns) */
-DECL|member|cache_nice_tries
-r_int
-r_int
-id|cache_nice_tries
-suffix:semicolon
-multiline_comment|/* Leave cache hot tasks for # tries */
-DECL|member|per_cpu_gain
-r_int
-r_int
-id|per_cpu_gain
-suffix:semicolon
-multiline_comment|/* CPU % gained by adding domain cpus */
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* See SD_* */
-multiline_comment|/* Runtime fields. */
-DECL|member|last_balance
-r_int
-r_int
-id|last_balance
-suffix:semicolon
-multiline_comment|/* init to jiffies. units in jiffies */
-DECL|member|balance_interval
-r_int
-r_int
-id|balance_interval
-suffix:semicolon
-multiline_comment|/* initialise to 1. units in ms. */
-DECL|member|nr_balance_failed
-r_int
-r_int
-id|nr_balance_failed
-suffix:semicolon
-multiline_comment|/* initialise to 0 */
-)brace
-suffix:semicolon
-macro_line|#ifndef ARCH_HAS_SCHED_TUNE
-macro_line|#ifdef CONFIG_SCHED_SMT
-DECL|macro|ARCH_HAS_SCHED_WAKE_IDLE
-mdefine_line|#define ARCH_HAS_SCHED_WAKE_IDLE
-multiline_comment|/* Common values for SMT siblings */
-DECL|macro|SD_SIBLING_INIT
-mdefine_line|#define SD_SIBLING_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 1,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 2,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 110,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 0,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 25,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_AFFINE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_IDLE&t;&t;&bslash;&n;&t;&t;&t;&t;| SD_SHARE_CPUPOWER,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
-macro_line|#endif
-multiline_comment|/* Common values for CPUs */
-DECL|macro|SD_CPU_INIT
-mdefine_line|#define SD_CPU_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 1,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 4,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 64,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (5*1000000/2),&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_AFFINE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
-macro_line|#ifdef CONFIG_NUMA
-multiline_comment|/* Common values for NUMA nodes */
-DECL|macro|SD_NODE_INIT
-mdefine_line|#define SD_NODE_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (10*1000000),&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
-macro_line|#endif
-macro_line|#endif /*  ARCH_HAS_SCHED_TUNE */
-r_extern
-r_void
-id|cpu_attach_domain
-c_func
-(paren
-r_struct
-id|sched_domain
-op_star
-id|sd
-comma
-r_int
-id|cpu
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|set_cpus_allowed
