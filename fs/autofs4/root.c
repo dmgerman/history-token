@@ -349,31 +349,13 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot;try_to_fill_entry: waiting for expire %p name=%.*s, flags&amp;PENDING=%s de_info=%p de_info-&gt;flags=%x&bslash;n&quot;
+l_string|&quot;try_to_fill_entry: waiting for expire %p name=%.*s&bslash;n&quot;
 comma
 id|dentry
 comma
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-comma
-id|dentry-&gt;d_flags
-op_amp
-id|DCACHE_AUTOFS_PENDING
-ques
-c_cond
-l_string|&quot;t&quot;
-suffix:colon
-l_string|&quot;f&quot;
-comma
-id|de_info
-comma
-id|de_info
-ques
-c_cond
-id|de_info-&gt;flags
-suffix:colon
-l_int|0
 )paren
 )paren
 suffix:semicolon
@@ -779,7 +761,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot;autofs_root_revalidate: dentry=%p %.*s, emptydir&bslash;n&quot;
+l_string|&quot;autofs4_root_revalidate: dentry=%p %.*s, emptydir&bslash;n&quot;
 comma
 id|dentry
 comma
@@ -1087,7 +1069,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot;autofs_root_lookup: name = %.*s&bslash;n&quot;
+l_string|&quot;autofs4_root_lookup: name = %.*s&bslash;n&quot;
 comma
 id|dentry-&gt;d_name.len
 comma
@@ -1136,7 +1118,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot;autofs_lookup: pid = %u, pgrp = %u, catatonic = %d, oz_mode = %d&bslash;n&quot;
+l_string|&quot;autofs4_lookup: pid = %u, pgrp = %u, catatonic = %d, oz_mode = %d&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
@@ -1382,7 +1364,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot;autofs_dir_symlink: %s &lt;- %.*s&bslash;n&quot;
+l_string|&quot;autofs4_dir_symlink: %s &lt;- %.*s&bslash;n&quot;
 comma
 id|symname
 comma
@@ -1569,7 +1551,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NOTE!&n; *&n; * Normal filesystems would do a &quot;d_delete()&quot; to tell the VFS dcache&n; * that the file no longer exists. However, doing that means that the&n; * VFS layer can turn the dentry into a negative dentry.  We don&squot;t want&n; * this, because since the unlink is probably the result of an expire.&n; * We simply d_drop it, which allows the dentry lookup to remount it&n; * if necessary.&n; *&n; * If a process is blocked on the dentry waiting for the expire to finish,&n; * it will invalidate the dentry and try to mount with a new one.&n; *&n; * Also see autofs_dir_rmdir().. &n; */
+multiline_comment|/*&n; * NOTE!&n; *&n; * Normal filesystems would do a &quot;d_delete()&quot; to tell the VFS dcache&n; * that the file no longer exists. However, doing that means that the&n; * VFS layer can turn the dentry into a negative dentry.  We don&squot;t want&n; * this, because since the unlink is probably the result of an expire.&n; * We simply d_drop it, which allows the dentry lookup to remount it&n; * if necessary.&n; *&n; * If a process is blocked on the dentry waiting for the expire to finish,&n; * it will invalidate the dentry and try to mount with a new one.&n; *&n; * Also see autofs4_dir_rmdir()..&n; */
 DECL|function|autofs4_dir_unlink
 r_static
 r_int
@@ -1898,7 +1880,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot;autofs_dir_mkdir: dentry %p, creating %.*s&bslash;n&quot;
+l_string|&quot;autofs4_dir_mkdir: dentry %p, creating %.*s&bslash;n&quot;
 comma
 id|dentry
 comma
@@ -2118,7 +2100,7 @@ id|p
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Identify autofs_dentries - this is so we can tell if there&squot;s&n;   an extra dentry refcount or not.  We only hold a refcount on the&n;   dentry if its non-negative (ie, d_inode != NULL)&n;*/
+multiline_comment|/* Identify autofs4_dentries - this is so we can tell if there&squot;s&n;   an extra dentry refcount or not.  We only hold a refcount on the&n;   dentry if its non-negative (ie, d_inode != NULL)&n;*/
 DECL|function|is_autofs4_dentry
 r_int
 id|is_autofs4_dentry
@@ -2193,7 +2175,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot;autofs_ioctl: cmd = 0x%08x, arg = 0x%08lx, sbi = %p, pgrp = %u&bslash;n&quot;
+l_string|&quot;autofs4_root_ioctl: cmd = 0x%08x, arg = 0x%08lx, sbi = %p, pgrp = %u&bslash;n&quot;
 comma
 id|cmd
 comma

@@ -317,7 +317,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot;autofs_notify: wait id = 0x%08lx, name = %.*s, type=%d&bslash;n&quot;
+l_string|&quot;autofs4_notify_daemon: wait id = 0x%08lx, name = %.*s, type=%d&bslash;n&quot;
 comma
 id|wq-&gt;wait_queue_token
 comma
@@ -456,7 +456,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;autofs_notify_daemon: bad type %d!&bslash;n&quot;
+l_string|&quot;autofs4_notify_daemon: bad type %d!&bslash;n&quot;
 comma
 id|type
 )paren
@@ -695,8 +695,12 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot;autofs_wait: new wait id = 0x%08lx, name = %.*s, nfy=%d&bslash;n&quot;
+l_string|&quot;autofs4_wait: new wait id = 0x%08lx, name = %.*s, nfy=%d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|wq-&gt;wait_queue_token
 comma
 id|wq-&gt;len
@@ -748,8 +752,12 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot;autofs_wait: existing wait id = 0x%08lx, name = %.*s, nfy=%d&bslash;n&quot;
+l_string|&quot;autofs4_wait: existing wait id = 0x%08lx, name = %.*s, nfy=%d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|wq-&gt;wait_queue_token
 comma
 id|wq-&gt;len
@@ -889,7 +897,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot;autofs_wait: skipped sleeping&bslash;n&quot;
+l_string|&quot;autofs4_wait: skipped sleeping&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
