@@ -4527,6 +4527,11 @@ id|substream
 op_assign
 id|substream-&gt;next
 )paren
+r_if
+c_cond
+(paren
+id|substream-&gt;runtime
+)paren
 id|substream-&gt;runtime-&gt;status-&gt;state
 op_assign
 id|SNDRV_PCM_STATE_DISCONNECTED
