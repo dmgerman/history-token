@@ -14584,7 +14584,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;nlink 0x%x uid 0x%x gid 0x%x projid 0x%x&bslash;n&quot;
+l_string|&quot;nlink %d uid %d gid %d projid %d flushiter %u&bslash;n&quot;
 comma
 id|INT_GET
 c_func
@@ -14617,6 +14617,17 @@ id|INT_GET
 c_func
 (paren
 id|dip-&gt;di_projid
+comma
+id|convert
+)paren
+comma
+(paren
+id|uint
+)paren
+id|INT_GET
+c_func
+(paren
+id|dip-&gt;di_flushiter
 comma
 id|convert
 )paren

@@ -455,6 +455,16 @@ op_lshift
 l_int|23
 )paren
 comma
+DECL|enumerator|PBF_RUN_QUEUES
+id|PBF_RUN_QUEUES
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|24
+)paren
+comma
+multiline_comment|/* run block device task queue&t;   */
 DECL|typedef|page_buf_flags_t
 )brace
 id|page_buf_flags_t
@@ -785,7 +795,6 @@ DECL|typedef|page_buf_t
 )brace
 id|page_buf_t
 suffix:semicolon
-multiline_comment|/*&n; * page_buf module entry points&n; */
 multiline_comment|/* Finding and Reading Buffers */
 r_extern
 id|page_buf_t
@@ -934,7 +943,7 @@ id|page_buf_flags_t
 )paren
 suffix:semicolon
 multiline_comment|/* additional read flags&t;*/
-multiline_comment|/* Writing and Releasing Buffers */
+multiline_comment|/* Releasing Buffers */
 r_extern
 r_void
 id|pagebuf_free
@@ -1003,30 +1012,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* buffer to unlock&t;&t;*/
-multiline_comment|/* Buffer Utility Routines */
-DECL|function|pagebuf_geterror
-r_static
-r_inline
-r_int
-id|pagebuf_geterror
-c_func
-(paren
-id|page_buf_t
-op_star
-id|pb
-)paren
-(brace
-r_return
-(paren
-id|pb
-ques
-c_cond
-id|pb-&gt;pb_error
-suffix:colon
-id|ENOMEM
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* Buffer Read and Write Routines */
 r_extern
 r_void
 id|pagebuf_iodone
@@ -1086,7 +1072,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* buffer to convey to device&t;*/
-multiline_comment|/*&n;&t; * pagebuf_iorequest is the core I/O request routine.&n;&t; * It assumes that the buffer is well-formed and&n;&t; * mapped and ready for physical I/O, unlike&n;&t; * pagebuf_iostart() and pagebuf_iophysio().  Those&n;&t; * routines call the inode pagebuf_ioinitiate routine to start I/O,&n;&t; * if it is present, or else call pagebuf_iorequest()&n;&t; * directly if the inode pagebuf_ioinitiate routine is not present.&n;&t; */
 r_extern
 r_int
 id|pagebuf_iowait
@@ -1098,17 +1083,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* buffer to wait on&t;&t;*/
-r_extern
-id|caddr_t
-id|pagebuf_offset
-c_func
-(paren
-id|page_buf_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|pagebuf_iomove
@@ -1132,6 +1106,73 @@ id|page_buf_rw_t
 )paren
 suffix:semicolon
 multiline_comment|/* direction&t;&t;&t;*/
+DECL|function|pagebuf_iostrategy
+r_static
+r_inline
+r_int
+id|pagebuf_iostrategy
+c_func
+(paren
+id|page_buf_t
+op_star
+id|pb
+)paren
+(brace
+r_return
+id|pb-&gt;pb_strat
+ques
+c_cond
+id|pb
+op_member_access_from_pointer
+id|pb_strat
+c_func
+(paren
+id|pb
+)paren
+suffix:colon
+id|pagebuf_iorequest
+c_func
+(paren
+id|pb
+)paren
+suffix:semicolon
+)brace
+DECL|function|pagebuf_geterror
+r_static
+r_inline
+r_int
+id|pagebuf_geterror
+c_func
+(paren
+id|page_buf_t
+op_star
+id|pb
+)paren
+(brace
+r_return
+id|pb
+ques
+c_cond
+id|pb-&gt;pb_error
+suffix:colon
+id|ENOMEM
+suffix:semicolon
+)brace
+multiline_comment|/* Buffer Utility Routines */
+r_extern
+id|caddr_t
+id|pagebuf_offset
+c_func
+(paren
+multiline_comment|/* pointer at offset in buffer&t;*/
+id|page_buf_t
+op_star
+comma
+multiline_comment|/* buffer to offset into&t;*/
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/* offset&t;&t;&t;*/
 multiline_comment|/* Pinning Buffer Storage in Memory */
 r_extern
 r_void
@@ -1160,21 +1201,13 @@ r_int
 id|pagebuf_ispin
 c_func
 (paren
+multiline_comment|/* check if buffer is pinned&t;*/
 id|page_buf_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* check if pagebuf is pinned&t;*/
-multiline_comment|/* Reading and writing pages */
-r_extern
-r_void
-id|pagebuf_delwri_dequeue
-c_func
-(paren
-id|page_buf_t
-op_star
-)paren
-suffix:semicolon
+multiline_comment|/* buffer to check&t;&t;*/
+multiline_comment|/* Delayed Write Buffer Routines */
 DECL|macro|PBDF_WAIT
 mdefine_line|#define PBDF_WAIT    0x01
 DECL|macro|PBDF_TRYLOCK
@@ -1184,8 +1217,7 @@ r_void
 id|pagebuf_delwri_flush
 c_func
 (paren
-r_struct
-id|pb_target
+id|pb_target_t
 op_star
 comma
 r_int
@@ -1195,6 +1227,16 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pagebuf_delwri_dequeue
+c_func
+(paren
+id|page_buf_t
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Buffer Daemon Setup Routines */
 r_extern
 r_int
 id|pagebuf_init
@@ -1211,70 +1253,5 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|function|__pagebuf_iorequest
-r_static
-id|__inline__
-r_int
-id|__pagebuf_iorequest
-c_func
-(paren
-id|page_buf_t
-op_star
-id|pb
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pb-&gt;pb_strat
-)paren
-r_return
-id|pb
-op_member_access_from_pointer
-id|pb_strat
-c_func
-(paren
-id|pb
-)paren
-suffix:semicolon
-r_return
-id|pagebuf_iorequest
-c_func
-(paren
-id|pb
-)paren
-suffix:semicolon
-)brace
-DECL|function|pagebuf_run_queues
-r_static
-id|__inline__
-r_void
-id|pagebuf_run_queues
-c_func
-(paren
-id|page_buf_t
-op_star
-id|pb
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pb
-op_logical_or
-id|atomic_read
-c_func
-(paren
-op_amp
-id|pb-&gt;pb_io_remaining
-)paren
-)paren
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif /* __PAGE_BUF_H__ */
 eof

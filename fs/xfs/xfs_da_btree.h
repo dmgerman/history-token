@@ -382,11 +382,6 @@ r_int
 id|rmtblkcnt
 suffix:semicolon
 multiline_comment|/* remote attr value block count */
-DECL|member|rename
-r_int
-id|rename
-suffix:semicolon
-multiline_comment|/* T/F: this is an atomic rename op */
 DECL|member|blkno2
 id|xfs_dablk_t
 id|blkno2
@@ -410,16 +405,29 @@ multiline_comment|/* remote attr value block count */
 DECL|member|justcheck
 r_int
 id|justcheck
+suffix:colon
+l_int|1
 suffix:semicolon
-multiline_comment|/* check for ok with no space */
+multiline_comment|/* T/F: check for ok with no space */
+DECL|member|rename
+r_int
+id|rename
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* T/F: this is an atomic rename op */
 DECL|member|addname
 r_int
 id|addname
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* T/F: this is an add operation */
 DECL|member|oknoent
 r_int
 id|oknoent
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* T/F: ok to return ENOENT, else die */
 DECL|typedef|xfs_da_args_t
@@ -618,6 +626,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* insert into 1-&gt;lf, 0-&gt;splf */
+DECL|member|holeok
+r_int
+r_int
+id|holeok
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* T/F: can deal with a hole */
 DECL|member|extravalid
 r_int
 r_int
