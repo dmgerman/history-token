@@ -6758,6 +6758,13 @@ c_func
 id|devfs_get_handle
 )paren
 suffix:semicolon
+DECL|variable|devfs_find_and_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|devfs_find_and_unregister
+)paren
+suffix:semicolon
 DECL|variable|devfs_get_flags
 id|EXPORT_SYMBOL
 c_func
