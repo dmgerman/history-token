@@ -7175,14 +7175,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|acpi_ioapic
-)paren
-multiline_comment|/* This gets done during IOAPIC enumeration for ACPI. */
-r_return
-suffix:semicolon
 multiline_comment|/*&n;&t; * This is broken; anything with a real cpu count has to&n;&t; * circumvent this idiocy regardless.&n;&t; */
 id|phys_id_present_map
 op_assign
@@ -9328,6 +9320,12 @@ l_string|&quot;ENABLING IO-APIC IRQs&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set up IO-APIC IRQ routing.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_ioapic
+)paren
 id|setup_ioapic_ids_from_mpc
 c_func
 (paren
@@ -9353,6 +9351,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_ioapic
+)paren
 id|print_IO_APIC
 c_func
 (paren

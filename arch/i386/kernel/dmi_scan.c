@@ -1905,6 +1905,10 @@ id|acpi_disabled
 op_assign
 l_int|1
 suffix:semicolon
+id|acpi_ht
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 )brace
 )brace
