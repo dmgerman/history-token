@@ -2221,10 +2221,23 @@ op_star
 id|rq
 )paren
 (brace
-id|ide_init_drive_cmd
+id|memset
+c_func
 (paren
 id|rq
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|rq
 )paren
+)paren
+suffix:semicolon
+id|rq-&gt;flags
+op_assign
+id|IDEFLOPPY_RQ
 suffix:semicolon
 multiline_comment|/* FIXME: --mdcki */
 id|rq-&gt;buffer
@@ -2234,10 +2247,6 @@ r_char
 op_star
 )paren
 id|pc
-suffix:semicolon
-id|rq-&gt;flags
-op_assign
-id|IDEFLOPPY_RQ
 suffix:semicolon
 (paren
 r_void
@@ -3781,6 +3790,7 @@ l_int|1
 )paren
 suffix:semicolon
 id|OUT_BYTE
+c_func
 (paren
 id|dma_ok
 ques
@@ -3794,6 +3804,7 @@ id|IDE_FEATURE_REG
 suffix:semicolon
 multiline_comment|/* Use PIO/DMA */
 id|OUT_BYTE
+c_func
 (paren
 id|bcount.b.high
 comma
@@ -3801,6 +3812,7 @@ id|IDE_BCOUNTH_REG
 )paren
 suffix:semicolon
 id|OUT_BYTE
+c_func
 (paren
 id|bcount.b.low
 comma
@@ -3808,6 +3820,7 @@ id|IDE_BCOUNTL_REG
 )paren
 suffix:semicolon
 id|OUT_BYTE
+c_func
 (paren
 id|drive-&gt;select.all
 comma
@@ -4896,10 +4909,18 @@ r_struct
 id|request
 id|rq
 suffix:semicolon
-id|ide_init_drive_cmd
+id|memset
+c_func
 (paren
 op_amp
 id|rq
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|rq
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: --mdcki */
@@ -4917,6 +4938,7 @@ id|IDEFLOPPY_RQ
 suffix:semicolon
 r_return
 id|ide_do_drive_cmd
+c_func
 (paren
 id|drive
 comma

@@ -796,9 +796,6 @@ multiline_comment|/*&n;&t;&t; * XXX: Reset the device, if we don&squot;t it will
 id|ata_reset
 c_func
 (paren
-r_struct
-id|ata_channel
-op_star
 id|hwif
 )paren
 suffix:semicolon

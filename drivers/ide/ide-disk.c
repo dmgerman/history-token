@@ -1049,10 +1049,6 @@ id|args.hobfile.device_head
 op_assign
 id|drive-&gt;select.all
 suffix:semicolon
-id|args.hobfile.control
-op_assign
-l_int|0x80
-suffix:semicolon
 id|args.taskfile.command
 op_assign
 id|get_command
@@ -2944,10 +2940,6 @@ suffix:semicolon
 id|args.hobfile.device_head
 op_assign
 l_int|0x40
-suffix:semicolon
-id|args.hobfile.control
-op_assign
-l_int|0x80
 suffix:semicolon
 id|args.handler
 op_assign

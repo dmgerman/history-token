@@ -402,9 +402,9 @@ multiline_comment|/* all of the bits together */
 r_struct
 (brace
 macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|head
+DECL|member|XXX_head
 r_int
-id|head
+id|XXX_head
 suffix:colon
 l_int|4
 suffix:semicolon
@@ -416,9 +416,9 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* drive select number: 0/1 */
-DECL|member|bit5
+DECL|member|XXX_bit5
 r_int
-id|bit5
+id|XXX_bit5
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -430,9 +430,9 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* using LBA instead of CHS */
-DECL|member|bit7
+DECL|member|XXX_bit7
 r_int
-id|bit7
+id|XXX_bit7
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -473,100 +473,6 @@ suffix:semicolon
 DECL|typedef|select_t
 )brace
 id|select_t
-suffix:semicolon
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* all of the bits together */
-r_struct
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|bit0
-r_int
-id|bit0
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|nIEN
-r_int
-id|nIEN
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* device INTRQ to host */
-DECL|member|SRST
-r_int
-id|SRST
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* host soft reset bit */
-DECL|member|bit3
-r_int
-id|bit3
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* ATA-2 thingy */
-DECL|member|reserved456
-r_int
-id|reserved456
-suffix:colon
-l_int|3
-suffix:semicolon
-DECL|member|HOB
-r_int
-id|HOB
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 48-bit address ordering */
-macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
-r_int
-id|HOB
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|reserved456
-suffix:colon
-l_int|3
-suffix:semicolon
-r_int
-id|bit3
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|SRST
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|nIEN
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|bit0
-suffix:colon
-l_int|1
-suffix:semicolon
-macro_line|#else
-macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
-macro_line|#endif
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|control_t
-)brace
-id|control_t
 suffix:semicolon
 multiline_comment|/*&n; * ATA/ATAPI device structure :&n; */
 DECL|struct|ata_device
@@ -1702,7 +1608,6 @@ c_func
 r_struct
 id|ata_channel
 op_star
-id|hwif
 )paren
 suffix:semicolon
 r_struct
@@ -2277,18 +2182,6 @@ id|ata_device
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This function is intended to be used prior to invoking ide_do_drive_cmd().&n; */
-r_extern
-r_void
-id|ide_init_drive_cmd
-c_func
-(paren
-r_struct
-id|request
-op_star
-id|rq
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * &quot;action&quot; parameter type for ide_do_drive_cmd() below.&n; */
 r_typedef
 r_enum
@@ -2355,7 +2248,7 @@ id|taskfile
 suffix:semicolon
 DECL|member|hobfile
 r_struct
-id|hd_drive_hob_hdr
+id|hd_drive_task_hdr
 id|hobfile
 suffix:semicolon
 DECL|member|command_type
@@ -2475,7 +2368,6 @@ id|request
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* This is setting up all fields in args, which depend upon the command type.&n; */
 r_extern
 r_void
 id|ide_cmd_type_parser
@@ -2499,21 +2391,6 @@ comma
 r_struct
 id|ata_taskfile
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ide_cmd_ioctl
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-comma
-r_int
-r_int
-id|arg
 )paren
 suffix:semicolon
 r_extern
@@ -2550,10 +2427,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|system_bus_speed
-suffix:semicolon
-r_extern
 r_void
 id|ide_stall_queue
 c_func
@@ -2565,6 +2438,10 @@ comma
 r_int
 r_int
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|system_bus_speed
 suffix:semicolon
 multiline_comment|/*&n; * CompactFlash cards and their brethern pretend to be removable hard disks,&n; * but they never have a slave unit, and they don&squot;t have doorlock mechanisms.&n; * This test catches them, and is invoked elsewhere when setting appropriate&n; * config bits.&n; */
 r_extern
@@ -3327,6 +3204,20 @@ c_func
 (paren
 r_struct
 id|ata_channel
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ata_out_regfile
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_struct
+id|hd_drive_task_hdr
 op_star
 )paren
 suffix:semicolon
