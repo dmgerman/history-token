@@ -37,11 +37,18 @@ op_star
 id|i_indirect
 suffix:semicolon
 multiline_comment|/* indirect blocks */
+DECL|member|alloced
+r_int
+r_int
+id|alloced
+suffix:semicolon
+multiline_comment|/* data pages allocated to file */
 DECL|member|swapped
 r_int
 r_int
 id|swapped
 suffix:semicolon
+multiline_comment|/* subtotal assigned to swap */
 DECL|member|flags
 r_int
 r_int
