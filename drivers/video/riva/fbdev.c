@@ -8185,7 +8185,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|fb_move_buf_aligned
+id|fb_sysmove_buf_aligned
 c_func
 (paren
 id|info
