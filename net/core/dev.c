@@ -3428,6 +3428,12 @@ op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
+multiline_comment|/* Disable soft irqs for various locks below. Also &n;&t; * stops preemption for RCU. &n;&t; */
+id|local_bh_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3548,12 +3554,6 @@ l_int|0
 )paren
 r_goto
 id|out_kfree_skb
-suffix:semicolon
-multiline_comment|/* Disable soft irqs for various locks below. Also &n;&t; * stops preemption for RCU. &n;&t; */
-id|local_bh_disable
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/* Updates of qdisc are serialized by queue_lock. &n;&t; * The struct Qdisc which is pointed to by qdisc is now a &n;&t; * rcu structure - it may be accessed without acquiring &n;&t; * a lock (but the structure may be stale.) The freeing of the&n;&t; * qdisc will be deferred until it&squot;s known that there are no &n;&t; * more references to it.&n;&t; * &n;&t; * If the qdisc has an enqueue function, we still need to &n;&t; * hold the queue_lock before calling it, since queue_lock&n;&t; * also serializes access to the device queue.&n;&t; */
 id|q
@@ -10648,13 +10648,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__skb_linearize
-)paren
-suffix:semicolon
-DECL|variable|call_netdevice_notifiers
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|call_netdevice_notifiers
 )paren
 suffix:semicolon
 DECL|variable|dev_add_pack
