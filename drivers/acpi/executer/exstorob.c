@@ -13,6 +13,9 @@ id|acpi_status
 DECL|function|acpi_ex_store_buffer_to_buffer
 id|acpi_ex_store_buffer_to_buffer
 (paren
+id|acpi_object_type
+id|original_src_type
+comma
 r_union
 id|acpi_operand_object
 op_star
@@ -121,11 +124,21 @@ comma
 id|length
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If the original source was a string, we must truncate the buffer,&n;&t;&t; * according to the ACPI spec.  Integer-to-Buffer and Buffer-to-Buffer&n;&t;&t; * copy must not truncate the original buffer.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|original_src_type
+op_eq
+id|ACPI_TYPE_STRING
+)paren
+(brace
 multiline_comment|/* Set the new length of the target */
 id|target_desc-&gt;buffer.length
 op_assign
 id|length
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
