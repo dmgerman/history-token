@@ -3776,6 +3776,7 @@ id|count
 suffix:semicolon
 )brace
 r_else
+(brace
 multiline_comment|/* Output &squot;&bslash;r&squot; before each &squot;&bslash;n&squot; */
 r_while
 c_loop
@@ -3850,6 +3851,7 @@ comma
 id|count
 )paren
 suffix:semicolon
+)brace
 )brace
 r_static
 r_struct
