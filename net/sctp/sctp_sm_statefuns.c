@@ -1827,18 +1827,6 @@ suffix:semicolon
 r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
-id|nomem
-suffix:colon
-id|__attribute__
-c_func
-(paren
-(paren
-id|unused
-)paren
-)paren
-r_return
-id|SCTP_DISPOSITION_NOMEM
-suffix:semicolon
 )brace
 multiline_comment|/* Populate the verification/tie tags based on overlapping INIT&n; * scenario.&n; *&n; * Note: Do not use in CLOSED or SHUTDOWN-ACK-SENT state.&n; */
 DECL|function|sctp_tietags_populate
@@ -4904,7 +4892,7 @@ id|asoc-&gt;frag_point
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;Discarding tsn: %u datalen: %d, &quot;
+l_string|&quot;Discarding tsn: %u datalen: %Zd, &quot;
 l_string|&quot;rwnd: %d&bslash;n&quot;
 comma
 id|tsn
