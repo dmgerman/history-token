@@ -242,6 +242,9 @@ id|pmd_t
 op_star
 id|pmd
 suffix:semicolon
+id|pte_t
+id|pte_val
+suffix:semicolon
 r_struct
 id|pte_chain
 op_star
@@ -374,6 +377,11 @@ comma
 id|pte_chain
 )paren
 suffix:semicolon
+id|pte_val
+op_assign
+op_star
+id|pte
+suffix:semicolon
 id|pte_unmap
 c_func
 (paren
@@ -400,8 +408,7 @@ id|vma
 comma
 id|addr
 comma
-op_star
-id|pte
+id|pte_val
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -496,6 +503,9 @@ id|pmd_t
 op_star
 id|pmd
 suffix:semicolon
+id|pte_t
+id|pte_val
+suffix:semicolon
 id|pgd
 op_assign
 id|pgd_offset
@@ -581,6 +591,11 @@ id|pgoff
 )paren
 )paren
 suffix:semicolon
+id|pte_val
+op_assign
+op_star
+id|pte
+suffix:semicolon
 id|pte_unmap
 c_func
 (paren
@@ -607,8 +622,7 @@ id|vma
 comma
 id|addr
 comma
-op_star
-id|pte
+id|pte_val
 )paren
 suffix:semicolon
 id|spin_unlock
