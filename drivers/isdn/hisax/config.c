@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: config.c,v 2.84.2.4 2004/01/24 20:47:20 keil Exp $&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              by Kai Germaschewski &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * based on the teles driver from Jan den Ouden&n; *&n; */
+multiline_comment|/* $Id: config.c,v 2.84.2.5 2004/02/11 13:21:33 keil Exp $&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              by Kai Germaschewski &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * based on the teles driver from Jan den Ouden&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -7380,21 +7380,53 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bcs-&gt;st-&gt;lli.l1writewakeup
-)paren
-id|bcs-&gt;st-&gt;lli
-dot
-id|l1writewakeup
+id|test_bit
 c_func
 (paren
-id|bcs-&gt;st
+id|FLG_LLI_L1WAKEUP
 comma
+op_amp
+id|bcs-&gt;st-&gt;lli.flag
+)paren
+)paren
+(brace
+id|u_long
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|bcs-&gt;aclock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|bcs-&gt;ackcnt
+op_add_assign
 (paren
 r_int
 )paren
 id|arg
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|bcs-&gt;aclock
+comma
+id|flags
 )paren
 suffix:semicolon
+id|schedule_event
+c_func
+(paren
+id|bcs
+comma
+id|B_ACKPENDING
+)paren
+suffix:semicolon
+)brace
 id|skb
 op_assign
 id|skb_dequeue

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hfc_pci.c,v 1.48.2.3 2004/01/13 14:31:25 keil Exp $&n; *&n; * low level driver for CCD&#xfffd;s hfc-pci based cards&n; *&n; * Author       Werner Cornelius&n; *              based on existing driver for CCD hfc ISA cards&n; * Copyright    by Werner Cornelius  &lt;werner@isdn4linux.de&gt;&n; *              by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; */
+multiline_comment|/* $Id: hfc_pci.c,v 1.48.2.4 2004/02/11 13:21:33 keil Exp $&n; *&n; * low level driver for CCD&#xfffd;s hfc-pci based cards&n; *&n; * Author       Werner Cornelius&n; *              based on existing driver for CCD hfc ISA cards&n; * Copyright    by Werner Cornelius  &lt;werner@isdn4linux.de&gt;&n; *              by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;hisax.h&quot;
@@ -21,7 +21,7 @@ r_char
 op_star
 id|hfcpci_revision
 op_assign
-l_string|&quot;$Revision: 1.48.2.3 $&quot;
+l_string|&quot;$Revision: 1.48.2.4 $&quot;
 suffix:semicolon
 multiline_comment|/* table entry in the PCI devices list */
 r_typedef
@@ -3570,7 +3570,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bcs-&gt;st-&gt;lli.l1writewakeup
+id|test_bit
+c_func
+(paren
+id|FLG_LLI_L1WAKEUP
+comma
+op_amp
+id|bcs-&gt;st-&gt;lli.flag
+)paren
 op_logical_and
 (paren
 id|PACKET_NOACK
@@ -3578,16 +3585,41 @@ op_ne
 id|bcs-&gt;tx_skb-&gt;pkt_type
 )paren
 )paren
-id|bcs-&gt;st-&gt;lli
-dot
-id|l1writewakeup
+(brace
+id|u_long
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
 c_func
 (paren
-id|bcs-&gt;st
+op_amp
+id|bcs-&gt;aclock
 comma
-id|bcs-&gt;tx_skb-&gt;len
+id|flags
 )paren
 suffix:semicolon
+id|bcs-&gt;ackcnt
+op_add_assign
+id|bcs-&gt;tx_skb-&gt;len
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|bcs-&gt;aclock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|schedule_event
+c_func
+(paren
+id|bcs
+comma
+id|B_ACKPENDING
+)paren
+suffix:semicolon
+)brace
 id|dev_kfree_skb_any
 c_func
 (paren
@@ -3921,7 +3953,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bcs-&gt;st-&gt;lli.l1writewakeup
+id|test_bit
+c_func
+(paren
+id|FLG_LLI_L1WAKEUP
+comma
+op_amp
+id|bcs-&gt;st-&gt;lli.flag
+)paren
 op_logical_and
 (paren
 id|PACKET_NOACK
@@ -3929,16 +3968,41 @@ op_ne
 id|bcs-&gt;tx_skb-&gt;pkt_type
 )paren
 )paren
-id|bcs-&gt;st-&gt;lli
-dot
-id|l1writewakeup
+(brace
+id|u_long
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
 c_func
 (paren
-id|bcs-&gt;st
+op_amp
+id|bcs-&gt;aclock
 comma
-id|bcs-&gt;tx_skb-&gt;len
+id|flags
 )paren
 suffix:semicolon
+id|bcs-&gt;ackcnt
+op_add_assign
+id|bcs-&gt;tx_skb-&gt;len
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|bcs-&gt;aclock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|schedule_event
+c_func
+(paren
+id|bcs
+comma
+id|B_ACKPENDING
+)paren
+suffix:semicolon
+)brace
 id|bz-&gt;za
 (braket
 id|new_f1
@@ -9376,10 +9440,6 @@ c_cond
 (paren
 op_logical_neg
 (paren
-(paren
-r_void
-op_star
-)paren
 id|cs-&gt;hw.hfcpci.share_start
 op_assign
 id|kmalloc
@@ -9403,11 +9463,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-(paren
-id|ulong
-)paren
 id|cs-&gt;hw.hfcpci.fifos
 op_assign
+(paren
+r_void
+op_star
+)paren
 (paren
 (paren
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnl1.h,v 2.12.2.2 2004/01/12 22:52:27 keil Exp $&n; *&n; * Layer 1 defines&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: isdnl1.h,v 2.12.2.3 2004/02/11 13:21:34 keil Exp $&n; *&n; * Layer 1 defines&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|D_RCVBUFREADY
 mdefine_line|#define D_RCVBUFREADY&t;0
 DECL|macro|D_XMTBUFREADY
@@ -18,9 +18,11 @@ mdefine_line|#define D_TX_MON1&t;7
 DECL|macro|E_RCVBUFREADY
 mdefine_line|#define E_RCVBUFREADY&t;8
 DECL|macro|B_RCVBUFREADY
-mdefine_line|#define B_RCVBUFREADY 0
+mdefine_line|#define B_RCVBUFREADY&t;0
 DECL|macro|B_XMTBUFREADY
-mdefine_line|#define B_XMTBUFREADY 1
+mdefine_line|#define B_XMTBUFREADY&t;1
+DECL|macro|B_ACKPENDING
+mdefine_line|#define B_ACKPENDING&t;2
 r_extern
 r_void
 id|debugl1

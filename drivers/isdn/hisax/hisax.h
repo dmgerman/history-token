@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hisax.h,v 2.64.2.3 2004/01/24 20:47:23 keil Exp $&n; *&n; * Basic declarations, defines and prototypes&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: hisax.h,v 2.64.2.4 2004/02/11 13:21:33 keil Exp $&n; *&n; * Basic declarations, defines and prototypes&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -857,36 +857,16 @@ r_void
 op_star
 id|userdata
 suffix:semicolon
-DECL|member|l1writewakeup
-r_void
-(paren
-op_star
-id|l1writewakeup
-)paren
-(paren
-r_struct
-id|PStack
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|member|l2writewakeup
-r_void
-(paren
-op_star
-id|l2writewakeup
-)paren
-(paren
-r_struct
-id|PStack
-op_star
-comma
-r_int
-)paren
+DECL|member|flag
+id|u_long
+id|flag
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|FLG_LLI_L1WAKEUP
+mdefine_line|#define&t;FLG_LLI_L1WAKEUP&t;1
+DECL|macro|FLG_LLI_L2WAKEUP
+mdefine_line|#define&t;FLG_LLI_L2WAKEUP&t;2
 DECL|struct|Management
 r_struct
 id|Management
@@ -1680,6 +1660,14 @@ id|sk_buff_head
 id|squeue
 suffix:semicolon
 multiline_comment|/* B-Channel send Queue */
+DECL|member|ackcnt
+r_int
+id|ackcnt
+suffix:semicolon
+DECL|member|aclock
+id|spinlock_t
+id|aclock
+suffix:semicolon
 DECL|member|st
 r_struct
 id|PStack
@@ -4388,6 +4376,19 @@ r_struct
 id|PStack
 op_star
 id|st
+)paren
+suffix:semicolon
+r_void
+id|lli_writewakeup
+c_func
+(paren
+r_struct
+id|PStack
+op_star
+id|st
+comma
+r_int
+id|len
 )paren
 suffix:semicolon
 r_void

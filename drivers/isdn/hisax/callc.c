@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: callc.c,v 2.59.2.3 2004/01/13 14:31:24 keil Exp $&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * based on the teles driver from Jan den Ouden&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: callc.c,v 2.59.2.4 2004/02/11 13:21:32 keil Exp $&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * based on the teles driver from Jan den Ouden&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
@@ -9,7 +9,7 @@ r_char
 op_star
 id|lli_revision
 op_assign
-l_string|&quot;$Revision: 2.59.2.3 $&quot;
+l_string|&quot;$Revision: 2.59.2.4 $&quot;
 suffix:semicolon
 r_extern
 r_struct
@@ -5383,10 +5383,6 @@ id|st-&gt;lli.userdata
 op_assign
 id|chanp
 suffix:semicolon
-id|st-&gt;lli.l2writewakeup
-op_assign
-l_int|NULL
-suffix:semicolon
 id|st-&gt;l3.l3l4
 op_assign
 id|dchan_l3l4
@@ -6369,10 +6365,9 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_static
 r_void
-DECL|function|ll_writewakeup
-id|ll_writewakeup
+DECL|function|lli_writewakeup
+id|lli_writewakeup
 c_func
 (paren
 r_struct
@@ -6686,13 +6681,23 @@ id|st-&gt;lli.userdata
 op_assign
 id|chanp
 suffix:semicolon
-id|st-&gt;lli.l1writewakeup
-op_assign
-l_int|NULL
+id|test_and_clear_bit
+c_func
+(paren
+id|FLG_LLI_L1WAKEUP
+comma
+op_amp
+id|st-&gt;lli.flag
+)paren
 suffix:semicolon
-id|st-&gt;lli.l2writewakeup
-op_assign
-id|ll_writewakeup
+id|test_and_set_bit
+c_func
+(paren
+id|FLG_LLI_L2WAKEUP
+comma
+op_amp
+id|st-&gt;lli.flag
+)paren
 suffix:semicolon
 id|st-&gt;l2.l2m.debug
 op_assign
@@ -6741,9 +6746,23 @@ id|st-&gt;lli.userdata
 op_assign
 id|chanp
 suffix:semicolon
-id|st-&gt;lli.l1writewakeup
-op_assign
-id|ll_writewakeup
+id|test_and_set_bit
+c_func
+(paren
+id|FLG_LLI_L1WAKEUP
+comma
+op_amp
+id|st-&gt;lli.flag
+)paren
+suffix:semicolon
+id|test_and_clear_bit
+c_func
+(paren
+id|FLG_LLI_L2WAKEUP
+comma
+op_amp
+id|st-&gt;lli.flag
+)paren
 suffix:semicolon
 id|setstack_transl2
 c_func

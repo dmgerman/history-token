@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnl2.c,v 2.30.2.3 2004/01/13 14:31:25 keil Exp $&n; *&n; * Author       Karsten Keil&n; *              based on the teles driver from Jan den Ouden&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: isdnl2.c,v 2.30.2.4 2004/02/11 13:21:34 keil Exp $&n; *&n; * Author       Karsten Keil&n; *              based on the teles driver from Jan den Ouden&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isdnl2.h&quot;
@@ -8,7 +8,7 @@ r_char
 op_star
 id|l2_revision
 op_assign
-l_string|&quot;$Revision: 2.30.2.3 $&quot;
+l_string|&quot;$Revision: 2.30.2.4 $&quot;
 suffix:semicolon
 r_static
 r_void
@@ -1951,7 +1951,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|st-&gt;lli.l2writewakeup
+id|test_bit
+c_func
+(paren
+id|FLG_LLI_L2WAKEUP
+comma
+op_amp
+id|st-&gt;lli.flag
+)paren
 op_logical_and
 (paren
 id|len
@@ -1959,9 +1966,7 @@ op_ge
 l_int|0
 )paren
 )paren
-id|st-&gt;lli
-dot
-id|l2writewakeup
+id|lli_writewakeup
 c_func
 (paren
 id|st

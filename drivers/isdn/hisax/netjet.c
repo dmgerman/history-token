@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: netjet.c,v 1.29.2.3 2004/01/13 14:31:26 keil Exp $&n; *&n; * low level stuff for Traverse Technologie NETJet ISDN cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to Traverse Technologies Australia for documents and information&n; *&n; * 16-Apr-2002 - led code added - Guy Ellis (guy@traverse.com.au)&n; *&n; */
+multiline_comment|/* $Id: netjet.c,v 1.29.2.4 2004/02/11 13:21:34 keil Exp $&n; *&n; * low level stuff for Traverse Technologie NETJet ISDN cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to Traverse Technologies Australia for documents and information&n; *&n; * 16-Apr-2002 - led code added - Guy Ellis (guy@traverse.com.au)&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isac.h&quot;
@@ -15,7 +15,7 @@ r_char
 op_star
 id|NETjet_revision
 op_assign
-l_string|&quot;$Revision: 1.29.2.3 $&quot;
+l_string|&quot;$Revision: 1.29.2.4 $&quot;
 suffix:semicolon
 multiline_comment|/* Interface functions */
 id|u_char
@@ -3915,7 +3915,14 @@ r_else
 r_if
 c_cond
 (paren
-id|bcs-&gt;st-&gt;lli.l1writewakeup
+id|test_bit
+c_func
+(paren
+id|FLG_LLI_L1WAKEUP
+comma
+op_amp
+id|bcs-&gt;st-&gt;lli.flag
+)paren
 op_logical_and
 (paren
 id|PACKET_NOACK
@@ -3923,16 +3930,41 @@ op_ne
 id|bcs-&gt;tx_skb-&gt;pkt_type
 )paren
 )paren
-id|bcs-&gt;st-&gt;lli
-dot
-id|l1writewakeup
+(brace
+id|u_long
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
 c_func
 (paren
-id|bcs-&gt;st
+op_amp
+id|bcs-&gt;aclock
 comma
-id|bcs-&gt;tx_skb-&gt;len
+id|flags
 )paren
 suffix:semicolon
+id|bcs-&gt;ackcnt
+op_add_assign
+id|bcs-&gt;tx_skb-&gt;len
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|bcs-&gt;aclock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|schedule_event
+c_func
+(paren
+id|bcs
+comma
+id|B_ACKPENDING
+)paren
+suffix:semicolon
+)brace
 id|dev_kfree_skb_any
 c_func
 (paren
