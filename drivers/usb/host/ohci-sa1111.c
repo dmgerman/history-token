@@ -567,14 +567,6 @@ r_goto
 id|err1
 suffix:semicolon
 )brace
-id|set_irq_type
-c_func
-(paren
-id|hcd-&gt;irq
-comma
-id|IRQT_RISING
-)paren
-suffix:semicolon
 id|retval
 op_assign
 id|request_irq
@@ -1307,7 +1299,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;SA1111 OHCI&quot;
+l_string|&quot;sa1111-ohci&quot;
 comma
 dot
 id|bus

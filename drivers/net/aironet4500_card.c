@@ -958,19 +958,19 @@ macro_line|#include &lt;linux/isapnp.h&gt;
 DECL|macro|AIRONET4X00_IO_SIZE
 mdefine_line|#define AIRONET4X00_IO_SIZE &t;0x40
 DECL|macro|isapnp_logdev
-mdefine_line|#define isapnp_logdev pci_dev
+mdefine_line|#define isapnp_logdev pnp_dev
 DECL|macro|isapnp_dev
-mdefine_line|#define isapnp_dev    pci_bus
+mdefine_line|#define isapnp_dev    pnp_card
 DECL|macro|isapnp_find_device
-mdefine_line|#define isapnp_find_device isapnp_find_card
+mdefine_line|#define isapnp_find_device pnp_find_card
 DECL|macro|isapnp_find_logdev
-mdefine_line|#define isapnp_find_logdev isapnp_find_dev
+mdefine_line|#define isapnp_find_logdev pnp_find_dev
 DECL|macro|PNP_BUS
-mdefine_line|#define PNP_BUS bus
+mdefine_line|#define PNP_BUS card
 DECL|macro|PNP_BUS_NUMBER
 mdefine_line|#define PNP_BUS_NUMBER number
 DECL|macro|PNP_DEV_NUMBER
-mdefine_line|#define PNP_DEV_NUMBER devfn
+mdefine_line|#define PNP_DEV_NUMBER number
 DECL|function|awc4500_pnp_hw_reset
 r_int
 (def_block
@@ -1054,34 +1054,10 @@ l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|isapnp_cfg_begin
+id|pnp_disable_dev
 c_func
 (paren
-id|logdev-&gt;PNP_BUS-&gt;PNP_BUS_NUMBER
-comma
-id|logdev-&gt;PNP_DEV_NUMBER
-)paren
-OL
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;isapnp cfg failed at release &bslash;n&quot;
-)paren
-suffix:semicolon
-id|isapnp_deactivate
-c_func
-(paren
-id|logdev-&gt;PNP_DEV_NUMBER
-)paren
-suffix:semicolon
-id|isapnp_cfg_end
-c_func
-(paren
+id|logdev
 )paren
 suffix:semicolon
 id|udelay
@@ -1093,12 +1069,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|isapnp_cfg_begin
+id|pnp_activate_dev
 c_func
 (paren
-id|logdev-&gt;PNP_BUS-&gt;PNP_BUS_NUMBER
+id|logdev
 comma
-id|logdev-&gt;PNP_DEV_NUMBER
+l_int|NULL
 )paren
 OL
 l_int|0
@@ -1121,18 +1097,6 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|isapnp_activate
-c_func
-(paren
-id|logdev-&gt;PNP_DEV_NUMBER
-)paren
-suffix:semicolon
-multiline_comment|/* activate device */
-id|isapnp_cfg_end
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1272,12 +1236,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|isapnp_cfg_begin
+id|pnp_device_attach
 c_func
 (paren
-id|logdev-&gt;PNP_BUS-&gt;PNP_BUS_NUMBER
-comma
-id|logdev-&gt;PNP_DEV_NUMBER
+id|logdev
 )paren
 OL
 l_int|0
@@ -1286,7 +1248,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;cfg begin failed for csn %x devnum %x &bslash;n&quot;
+l_string|&quot;pnp_device_attach failed for csn %x devnum %x &bslash;n&quot;
 comma
 id|logdev-&gt;PNP_BUS-&gt;PNP_BUS_NUMBER
 comma
@@ -1298,30 +1260,60 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|isapnp_activate
+r_if
+c_cond
+(paren
+id|pnp_activate_dev
 c_func
 (paren
+id|logdev
+comma
+l_int|NULL
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;pnp_activate_dev failed for csn %x devnum %x &bslash;n&quot;
+comma
+id|logdev-&gt;PNP_BUS-&gt;PNP_BUS_NUMBER
+comma
 id|logdev-&gt;PNP_DEV_NUMBER
 )paren
 suffix:semicolon
-multiline_comment|/* activate device */
-id|isapnp_cfg_end
+id|pnp_device_detach
 c_func
 (paren
+id|logdev
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|isa_irq_line
 op_assign
-id|logdev-&gt;irq
+id|pnp_irq
+c_func
+(paren
+id|logdev
+comma
+l_int|0
+)paren
 suffix:semicolon
 id|isa_ioaddr
 op_assign
-id|logdev-&gt;resource
-(braket
+id|pnp_port_start
+c_func
+(paren
+id|logdev
+comma
 l_int|0
-)braket
-dot
-id|start
+)paren
 suffix:semicolon
 id|request_region
 c_func
@@ -1365,23 +1357,10 @@ comma
 id|AIRONET4X00_IO_SIZE
 )paren
 suffix:semicolon
-id|isapnp_cfg_begin
+id|pnp_device_detach
 c_func
 (paren
-id|logdev-&gt;PNP_BUS-&gt;PNP_BUS_NUMBER
-comma
-id|logdev-&gt;PNP_DEV_NUMBER
-)paren
-suffix:semicolon
-id|isapnp_deactivate
-c_func
-(paren
-id|logdev-&gt;PNP_DEV_NUMBER
-)paren
-suffix:semicolon
-id|isapnp_cfg_end
-c_func
-(paren
+id|logdev
 )paren
 suffix:semicolon
 r_return
