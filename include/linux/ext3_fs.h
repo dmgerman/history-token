@@ -18,6 +18,9 @@ DECL|macro|EXT3FS_DATE
 mdefine_line|#define EXT3FS_DATE&t;&t;&quot;02 Dec 2001&quot;
 DECL|macro|EXT3FS_VERSION
 mdefine_line|#define EXT3FS_VERSION&t;&t;&quot;2.4-0.9.16&quot;
+multiline_comment|/*&n; * Always enable hashed directories&n; */
+DECL|macro|CONFIG_EXT3_INDEX
+mdefine_line|#define CONFIG_EXT3_INDEX
 multiline_comment|/*&n; * Debug code&n; */
 macro_line|#ifdef EXT3FS_DEBUG
 DECL|macro|ext3_debug
@@ -897,12 +900,32 @@ id|__u32
 id|s_last_orphan
 suffix:semicolon
 multiline_comment|/* start of list of inodes to delete */
+DECL|member|s_hash_seed
+id|__u32
+id|s_hash_seed
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* HTREE hash seed */
+DECL|member|s_def_hash_version
+id|__u8
+id|s_def_hash_version
+suffix:semicolon
+multiline_comment|/* Default hash version to use */
+DECL|member|s_reserved_char_pad
+id|__u8
+id|s_reserved_char_pad
+suffix:semicolon
+DECL|member|s_reserved_word_pad
+id|__u16
+id|s_reserved_word_pad
+suffix:semicolon
 DECL|member|s_reserved
-multiline_comment|/*EC*/
 id|__u32
 id|s_reserved
 (braket
-l_int|197
+l_int|192
 )braket
 suffix:semicolon
 multiline_comment|/* Padding to the end of the block */
@@ -1133,7 +1156,57 @@ DECL|macro|EXT3_DIR_ROUND
 mdefine_line|#define EXT3_DIR_ROUND&t;&t;&t;(EXT3_DIR_PAD - 1)
 DECL|macro|EXT3_DIR_REC_LEN
 mdefine_line|#define EXT3_DIR_REC_LEN(name_len)&t;(((name_len) + 8 + EXT3_DIR_ROUND) &amp; &bslash;&n;&t;&t;&t;&t;&t; ~EXT3_DIR_ROUND)
+multiline_comment|/*&n; * Hash Tree Directory indexing&n; * (c) Daniel Phillips, 2001&n; */
+macro_line|#ifdef CONFIG_EXT3_INDEX
+DECL|macro|is_dx
+mdefine_line|#define is_dx(dir) (EXT3_HAS_COMPAT_FEATURE(dir-&gt;i_sb, &bslash;&n;&t;&t;&t;&t;&t;      EXT3_FEATURE_COMPAT_DIR_INDEX) &amp;&amp; &bslash;&n;&t;&t;      (EXT3_I(dir)-&gt;i_flags &amp; EXT3_INDEX_FL))
+DECL|macro|EXT3_DIR_LINK_MAX
+mdefine_line|#define EXT3_DIR_LINK_MAX(dir) (!is_dx(dir) &amp;&amp; (dir)-&gt;i_nlink &gt;= EXT3_LINK_MAX)
+DECL|macro|EXT3_DIR_LINK_EMPTY
+mdefine_line|#define EXT3_DIR_LINK_EMPTY(dir) ((dir)-&gt;i_nlink == 2 || (dir)-&gt;i_nlink == 1)
+macro_line|#else
+DECL|macro|is_dx
+mdefine_line|#define is_dx(dir) 0
+DECL|macro|EXT3_DIR_LINK_MAX
+mdefine_line|#define EXT3_DIR_LINK_MAX(dir) ((dir)-&gt;i_nlink &gt;= EXT3_LINK_MAX)
+DECL|macro|EXT3_DIR_LINK_EMPTY
+mdefine_line|#define EXT3_DIR_LINK_EMPTY(dir) ((dir)-&gt;i_nlink == 2)
+macro_line|#endif
+multiline_comment|/* Legal values for the dx_root hash_version field: */
+DECL|macro|DX_HASH_LEGACY
+mdefine_line|#define DX_HASH_LEGACY&t;&t;0
+DECL|macro|DX_HASH_HALF_MD4
+mdefine_line|#define DX_HASH_HALF_MD4&t;1
+DECL|macro|DX_HASH_TEA
+mdefine_line|#define DX_HASH_TEA&t;&t;2
+multiline_comment|/* hash info structure used by the directory hash */
+DECL|struct|dx_hash_info
+r_struct
+id|dx_hash_info
+(brace
+DECL|member|hash
+id|u32
+id|hash
+suffix:semicolon
+DECL|member|minor_hash
+id|u32
+id|minor_hash
+suffix:semicolon
+DECL|member|hash_version
+r_int
+id|hash_version
+suffix:semicolon
+DECL|member|seed
+id|u32
+op_star
+id|seed
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * Control parameters used by ext3_htree_next_block&n; */
+DECL|macro|HASH_NB_ALWAYS
+mdefine_line|#define HASH_NB_ALWAYS&t;&t;1
 multiline_comment|/*&n; * Describe an inode&squot;s exact location on disk and in memory&n; */
 DECL|struct|ext3_iloc
 r_struct
@@ -1158,6 +1231,49 @@ id|block_group
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * This structure is stuffed into the struct file&squot;s private_data field&n; * for directories.  It is where we put information so that we can do&n; * readdir operations in hash tree order.&n; */
+DECL|struct|dir_private_info
+r_struct
+id|dir_private_info
+(brace
+DECL|member|root
+r_struct
+id|rb_root
+id|root
+suffix:semicolon
+DECL|member|curr_node
+r_struct
+id|rb_node
+op_star
+id|curr_node
+suffix:semicolon
+DECL|member|extra_fname
+r_struct
+id|fname
+op_star
+id|extra_fname
+suffix:semicolon
+DECL|member|last_pos
+id|loff_t
+id|last_pos
+suffix:semicolon
+DECL|member|curr_hash
+id|__u32
+id|curr_hash
+suffix:semicolon
+DECL|member|curr_minor_hash
+id|__u32
+id|curr_minor_hash
+suffix:semicolon
+DECL|member|next_hash
+id|__u32
+id|next_hash
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Special error return code only used by dx_probe() and its callers.&n; */
+DECL|macro|ERR_BAD_DX_DIR
+mdefine_line|#define ERR_BAD_DX_DIR&t;-75000
 multiline_comment|/*&n; * Function prototypes&n; */
 multiline_comment|/*&n; * Ok, these declarations are also in &lt;linux/kernel.h&gt; but none of the&n; * ext3 source programs needs to include it so they are duplicated here.&n; */
 DECL|macro|NORET_TYPE
@@ -1306,6 +1422,39 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ext3_htree_store_dirent
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|dir_file
+comma
+id|__u32
+id|hash
+comma
+id|__u32
+id|minor_hash
+comma
+r_struct
+id|ext3_dir_entry_2
+op_star
+id|dirent
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ext3_htree_free_dir_info
+c_func
+(paren
+r_struct
+id|dir_private_info
+op_star
+id|p
+)paren
+suffix:semicolon
 multiline_comment|/* fsync.c */
 r_extern
 r_int
@@ -1320,6 +1469,26 @@ id|dentry
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+multiline_comment|/* hash.c */
+r_extern
+r_int
+id|ext3fs_dirhash
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+comma
+r_int
+id|len
+comma
+r_struct
+id|dx_hash_info
+op_star
+id|hinfo
 )paren
 suffix:semicolon
 multiline_comment|/* ialloc.c */
@@ -1599,6 +1768,27 @@ comma
 r_struct
 id|inode
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ext3_htree_fill_tree
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|dir_file
+comma
+id|__u32
+id|start_hash
+comma
+id|__u32
+id|start_minor_hash
+comma
+id|__u32
+op_star
+id|next_hash
 )paren
 suffix:semicolon
 multiline_comment|/* super.c */

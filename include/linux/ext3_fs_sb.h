@@ -135,6 +135,17 @@ DECL|member|s_next_generation
 id|u32
 id|s_next_generation
 suffix:semicolon
+DECL|member|s_hash_seed
+id|u32
+id|s_hash_seed
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|s_def_hash_version
+r_int
+id|s_def_hash_version
+suffix:semicolon
 multiline_comment|/* Journaling */
 DECL|member|s_journal_inode
 r_struct

@@ -33,6 +33,8 @@ mdefine_line|#define EXT3_MAX_TRANS_DATA&t;&t;64
 multiline_comment|/* We break up a large truncate or write transaction once the handle&squot;s&n; * buffer credits gets this low, we need either to extend the&n; * transaction or to start a new one.  Reserve enough space here for&n; * inode, bitmap, superblock, group and indirection updates for at least&n; * one block, plus two quota updates.  Quota allocations are not&n; * needed. */
 DECL|macro|EXT3_RESERVE_TRANS_BLOCKS
 mdefine_line|#define EXT3_RESERVE_TRANS_BLOCKS&t;12
+DECL|macro|EXT3_INDEX_EXTRA_TRANS_BLOCKS
+mdefine_line|#define EXT3_INDEX_EXTRA_TRANS_BLOCKS&t;8
 r_int
 id|ext3_mark_iloc_dirty
 c_func

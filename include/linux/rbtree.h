@@ -105,6 +105,18 @@ id|rb_node
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|rb_node
+op_star
+id|rb_first
+c_func
+(paren
+r_struct
+id|rb_root
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Fast replacement of a single node without remove/rebalance/add/rebalance */
 r_extern
 r_void
