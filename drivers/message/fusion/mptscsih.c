@@ -3325,23 +3325,6 @@ r_case
 id|MPI_IOCSTATUS_SCSI_PROTOCOL_ERROR
 suffix:colon
 multiline_comment|/* 0x0047 */
-r_if
-c_cond
-(paren
-id|pScsiReply-&gt;SCSIState
-op_amp
-id|MPI_SCSI_STATE_TERMINATED
-)paren
-(brace
-multiline_comment|/*  Not real sure here either...  */
-id|sc-&gt;result
-op_assign
-id|DID_RESET
-op_lshift
-l_int|16
-suffix:semicolon
-)brace
-r_else
 id|sc-&gt;result
 op_assign
 id|DID_SOFT_ERROR
