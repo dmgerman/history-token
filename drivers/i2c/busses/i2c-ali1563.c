@@ -1645,7 +1645,6 @@ suffix:semicolon
 DECL|function|ali1563_shutdown
 r_static
 r_void
-id|__exit
 id|ali1563_shutdown
 c_func
 (paren
