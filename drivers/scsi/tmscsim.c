@@ -1264,7 +1264,6 @@ l_string|&quot;DC390: Using safe settings.&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef CONFIG_SCSI_DC390T_NOGENSUPP
 DECL|variable|tmscsim_def
 r_int
 id|__initdata
@@ -1469,7 +1468,6 @@ op_assign
 l_int|180
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Override defaults on cmdline:&n; * tmscsim: AdaptID, MaxSpeed (Index), DevMode (Bitmapped), AdaptMode (Bitmapped)&n; */
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,13)
 DECL|function|dc390_setup
@@ -7755,18 +7753,6 @@ id|index
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_SCSI_DC390T_NOGENSUPP
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;DC390_init: No EEPROM found!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-macro_line|#else
 r_int
 id|speed
 suffix:semicolon
@@ -7863,7 +7849,6 @@ l_int|5
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace

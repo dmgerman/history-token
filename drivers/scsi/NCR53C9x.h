@@ -1715,5 +1715,23 @@ r_int
 id|inout
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|esp_slave_alloc
+c_func
+(paren
+id|Scsi_Device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|esp_slave_destroy
+c_func
+(paren
+id|Scsi_Device
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* !(NCR53C9X_H) */
 eof

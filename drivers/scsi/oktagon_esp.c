@@ -2056,6 +2056,16 @@ op_assign
 id|oktagon_esp_detect
 comma
 dot
+id|slave_alloc
+op_assign
+id|esp_slave_alloc
+comma
+dot
+id|slave_destroy
+op_assign
+id|esp_slave_destroy
+comma
+dot
 id|release
 op_assign
 id|oktagon_esp_release

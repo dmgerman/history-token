@@ -1652,7 +1652,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;NCR5380&quot;
 comma
-l_int|NULL
+id|instance
 )paren
 )paren
 (brace

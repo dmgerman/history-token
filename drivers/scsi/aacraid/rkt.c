@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Adaptec AAC series RAID controller driver&n; *&t;(c) Copyright 2001 Red Hat Inc.&t;&lt;alan@redhat.com&gt;&n; *&n; * based on the old aacraid driver that is..&n; * Adaptec aacraid device driver for Linux.&n; *&n; * Copyright (c) 2000 Adaptec, Inc. (aacraid@adaptec.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Module Name:&n; *  rx.c&n; *&n; * Abstract: Hardware miniport for Drawbridge specific hardware functions.&n; *&n; */
+multiline_comment|/*&n; *&t;Adaptec AAC series RAID controller driver&n; *&t;(c) Copyright 2001 Red Hat Inc.&t;&lt;alan@redhat.com&gt;&n; *&n; * based on the old aacraid driver that is..&n; * Adaptec aacraid device driver for Linux.&n; *&n; * Copyright (c) 2000 Adaptec, Inc. (aacraid@adaptec.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Module Name:&n; *  rkt.c&n; *&n; * Abstract: Hardware miniport for Drawbridge specific hardware functions.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -13,10 +13,10 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;aacraid.h&quot;
-DECL|function|aac_rx_intr
+DECL|function|aac_rkt_intr
 r_static
 id|irqreturn_t
-id|aac_rx_intr
+id|aac_rkt_intr
 c_func
 (paren
 r_int
@@ -50,7 +50,7 @@ id|mask
 suffix:semicolon
 id|intstat
 op_assign
-id|rx_readb
+id|rkt_readb
 c_func
 (paren
 id|dev
@@ -77,7 +77,7 @@ id|mask
 (brace
 id|bellbits
 op_assign
-id|rx_readl
+id|rkt_readl
 c_func
 (paren
 id|dev
@@ -101,7 +101,7 @@ comma
 id|le32_to_cpu
 c_func
 (paren
-id|rx_readl
+id|rkt_readl
 (paren
 id|dev
 comma
@@ -113,7 +113,7 @@ l_int|5
 )paren
 )paren
 suffix:semicolon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -123,7 +123,7 @@ comma
 id|DoorBellPrintfReady
 )paren
 suffix:semicolon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -153,7 +153,7 @@ id|HostNormCmdQueue
 )braket
 )paren
 suffix:semicolon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -183,7 +183,7 @@ id|HostNormRespQueue
 )braket
 )paren
 suffix:semicolon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -203,7 +203,7 @@ op_amp
 id|DoorBellAdapterNormCmdNotFull
 )paren
 (brace
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -223,7 +223,7 @@ op_amp
 id|DoorBellAdapterNormRespNotFull
 )paren
 (brace
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -233,7 +233,7 @@ comma
 id|DoorBellAdapterNormCmdNotFull
 )paren
 suffix:semicolon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -252,11 +252,11 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;aac_rx_enable_interrupt&t;-&t;Enable event reporting&n; *&t;@dev: Adapter&n; *&t;@event: Event to enable&n; *&n; *&t;Enable event reporting from the i960 for a given event.&n; */
-DECL|function|aac_rx_enable_interrupt
+multiline_comment|/**&n; *&t;aac_rkt_enable_interrupt&t;-&t;Enable event reporting&n; *&t;@dev: Adapter&n; *&t;@event: Event to enable&n; *&n; *&t;Enable event reporting from the i960 for a given event.&n; */
+DECL|function|aac_rkt_enable_interrupt
 r_static
 r_void
-id|aac_rx_enable_interrupt
+id|aac_rkt_enable_interrupt
 c_func
 (paren
 r_struct
@@ -324,11 +324,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;aac_rx_disable_interrupt&t;-&t;Disable event reporting&n; *&t;@dev: Adapter&n; *&t;@event: Event to enable&n; *&n; *&t;Disable event reporting from the i960 for a given event.&n; */
-DECL|function|aac_rx_disable_interrupt
+multiline_comment|/**&n; *&t;aac_rkt_disable_interrupt&t;-&t;Disable event reporting&n; *&t;@dev: Adapter&n; *&t;@event: Event to enable&n; *&n; *&t;Disable event reporting from the i960 for a given event.&n; */
+DECL|function|aac_rkt_disable_interrupt
 r_static
 r_void
-id|aac_rx_disable_interrupt
+id|aac_rkt_disable_interrupt
 c_func
 (paren
 r_struct
@@ -392,11 +392,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;rx_sync_cmd&t;-&t;send a command and wait&n; *&t;@dev: Adapter&n; *&t;@command: Command to execute&n; *&t;@p1: first parameter&n; *&t;@ret: adapter status&n; *&n; *&t;This routine will send a synchronous comamnd to the adapter and wait &n; *&t;for its&t;completion.&n; */
-DECL|function|rx_sync_cmd
+multiline_comment|/**&n; *&t;rkt_sync_cmd&t;-&t;send a command and wait&n; *&t;@dev: Adapter&n; *&t;@command: Command to execute&n; *&t;@p1: first parameter&n; *&t;@ret: adapter status&n; *&n; *&t;This routine will send a synchronous comamnd to the adapter and wait &n; *&t;for its&t;completion.&n; */
+DECL|function|rkt_sync_cmd
 r_static
 r_int
-id|rx_sync_cmd
+id|rkt_sync_cmd
 c_func
 (paren
 r_struct
@@ -423,7 +423,7 @@ r_int
 id|ok
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Write the command into Mailbox 0&n;&t; */
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -438,7 +438,7 @@ id|command
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Write the parameters into Mailboxes 1 - 4&n;&t; */
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -452,7 +452,7 @@ id|p1
 )paren
 )paren
 suffix:semicolon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -462,7 +462,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -472,7 +472,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -483,7 +483,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Clear the synch command doorbell to start on a clean slate.&n;&t; */
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -494,7 +494,7 @@ id|OUTBOUNDDOORBELL_0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Disable doorbell interrupts&n;&t; */
-id|rx_writeb
+id|rkt_writeb
 c_func
 (paren
 id|dev
@@ -507,7 +507,7 @@ l_int|0x04
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Force the completion of the mask register write before issuing&n;&t; *&t;the interrupt.&n;&t; */
-id|rx_readb
+id|rkt_readb
 (paren
 id|dev
 comma
@@ -515,7 +515,7 @@ id|MUnit.OIMR
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Signal that there is a new synch command&n;&t; */
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -561,7 +561,7 @@ multiline_comment|/*&n;&t;&t; *&t;Mon960 will set doorbell0 bit when it has comp
 r_if
 c_cond
 (paren
-id|rx_readl
+id|rkt_readl
 c_func
 (paren
 id|dev
@@ -573,7 +573,7 @@ id|OUTBOUNDDOORBELL_0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; *&t;Clear the doorbell.&n;&t;&t;&t; */
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -613,7 +613,7 @@ l_int|1
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; *&t;Restore interrupt mask even though we timed out&n;&t;&t; */
-id|rx_writeb
+id|rkt_writeb
 c_func
 (paren
 id|dev
@@ -637,7 +637,7 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-id|rx_readl
+id|rkt_readl
 c_func
 (paren
 id|dev
@@ -650,7 +650,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Clear the synch command doorbell.&n;&t; */
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -661,7 +661,7 @@ id|OUTBOUNDDOORBELL_0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Restore interrupt mask&n;&t; */
-id|rx_writeb
+id|rkt_writeb
 c_func
 (paren
 id|dev
@@ -677,11 +677,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;aac_rx_interrupt_adapter&t;-&t;interrupt adapter&n; *&t;@dev: Adapter&n; *&n; *&t;Send an interrupt to the i960 and breakpoint it.&n; */
-DECL|function|aac_rx_interrupt_adapter
+multiline_comment|/**&n; *&t;aac_rkt_interrupt_adapter&t;-&t;interrupt adapter&n; *&t;@dev: Adapter&n; *&n; *&t;Send an interrupt to the i960 and breakpoint it.&n; */
+DECL|function|aac_rkt_interrupt_adapter
 r_static
 r_void
-id|aac_rx_interrupt_adapter
+id|aac_rkt_interrupt_adapter
 c_func
 (paren
 r_struct
@@ -693,7 +693,7 @@ id|dev
 id|u32
 id|ret
 suffix:semicolon
-id|rx_sync_cmd
+id|rkt_sync_cmd
 c_func
 (paren
 id|dev
@@ -707,11 +707,11 @@ id|ret
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;aac_rx_notify_adapter&t;&t;-&t;send an event to the adapter&n; *&t;@dev: Adapter&n; *&t;@event: Event to send&n; *&n; *&t;Notify the i960 that something it probably cares about has&n; *&t;happened.&n; */
-DECL|function|aac_rx_notify_adapter
+multiline_comment|/**&n; *&t;aac_rkt_notify_adapter&t;&t;-&t;send an event to the adapter&n; *&t;@dev: Adapter&n; *&t;@event: Event to send&n; *&n; *&t;Notify the i960 that something it probably cares about has&n; *&t;happened.&n; */
+DECL|function|aac_rkt_notify_adapter
 r_static
 r_void
-id|aac_rx_notify_adapter
+id|aac_rkt_notify_adapter
 c_func
 (paren
 r_struct
@@ -732,7 +732,7 @@ id|event
 r_case
 id|AdapNormCmdQue
 suffix:colon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -747,7 +747,7 @@ suffix:semicolon
 r_case
 id|HostNormRespNotFull
 suffix:colon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -762,7 +762,7 @@ suffix:semicolon
 r_case
 id|AdapNormRespQue
 suffix:colon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -777,7 +777,7 @@ suffix:semicolon
 r_case
 id|HostNormCmdNotFull
 suffix:colon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -792,13 +792,13 @@ suffix:semicolon
 r_case
 id|HostShutdown
 suffix:colon
-singleline_comment|//&t;&t;rx_sync_cmd(dev, HOST_CRASHING, 0, 0, 0, 0, &amp;ret);
+singleline_comment|//&t;&t;rkt_sync_cmd(dev, HOST_CRASHING, 0, 0, 0, 0, &amp;ret);
 r_break
 suffix:semicolon
 r_case
 id|FastIo
 suffix:colon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -813,7 +813,7 @@ suffix:semicolon
 r_case
 id|AdapPrintfDone
 suffix:colon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -836,11 +836,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;aac_rx_start_adapter&t;&t;-&t;activate adapter&n; *&t;@dev:&t;Adapter&n; *&n; *&t;Start up processing on an i960 based AAC adapter&n; */
-DECL|function|aac_rx_start_adapter
+multiline_comment|/**&n; *&t;aac_rkt_start_adapter&t;&t;-&t;activate adapter&n; *&t;@dev:&t;Adapter&n; *&n; *&t;Start up processing on an i960 based AAC adapter&n; */
+DECL|function|aac_rkt_start_adapter
 r_static
 r_void
-id|aac_rx_start_adapter
+id|aac_rkt_start_adapter
 c_func
 (paren
 r_struct
@@ -887,7 +887,7 @@ id|OUTBOUNDDOORBELL_4
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;First clear out all interrupts.  Then enable the one&squot;s that we&n;&t; *&t;can handle.&n;&t; */
-id|rx_writeb
+id|rkt_writeb
 c_func
 (paren
 id|dev
@@ -897,7 +897,7 @@ comma
 l_int|0xff
 )paren
 suffix:semicolon
-id|rx_writel
+id|rkt_writel
 c_func
 (paren
 id|dev
@@ -907,8 +907,8 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-singleline_comment|//&t;rx_writeb(dev, MUnit.OIMR, ~(u8)OUTBOUND_DOORBELL_INTERRUPT_MASK);
-id|rx_writeb
+singleline_comment|//&t;rkt_writeb(dev, MUnit.OIMR, ~(u8)OUTBOUND_DOORBELL_INTERRUPT_MASK);
+id|rkt_writeb
 c_func
 (paren
 id|dev
@@ -921,7 +921,7 @@ l_int|0xfb
 )paren
 suffix:semicolon
 singleline_comment|// We can only use a 32 bit address here
-id|rx_sync_cmd
+id|rkt_sync_cmd
 c_func
 (paren
 id|dev
@@ -941,11 +941,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;aac_rx_check_health&n; *&t;@dev: device to check if healthy&n; *&n; *&t;Will attempt to determine if the specified adapter is alive and&n; *&t;capable of handling requests, returning 0 if alive.&n; */
-DECL|function|aac_rx_check_health
+multiline_comment|/**&n; *&t;aac_rkt_check_health&n; *&t;@dev: device to check if healthy&n; *&n; *&t;Will attempt to determine if the specified adapter is alive and&n; *&t;capable of handling requests, returning 0 if alive.&n; */
+DECL|function|aac_rkt_check_health
 r_static
 r_int
-id|aac_rx_check_health
+id|aac_rkt_check_health
 c_func
 (paren
 r_struct
@@ -957,7 +957,7 @@ id|dev
 r_int
 id|status
 op_assign
-id|rx_readl
+id|rkt_readl
 c_func
 (paren
 id|dev
@@ -1012,11 +1012,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* aac_rx_check_health */
-multiline_comment|/**&n; *&t;aac_rx_init&t;-&t;initialize an i960 based AAC card&n; *&t;@dev: device to configure&n; *&t;@devnum: adapter number&n; *&n; *&t;Allocate and set up resources for the i960 based AAC variants. The &n; *&t;device_interface in the commregion will be allocated and linked &n; *&t;to the comm region.&n; */
-DECL|function|aac_rx_init
+multiline_comment|/* aac_rkt_check_health */
+multiline_comment|/**&n; *&t;aac_rkt_init&t;-&t;initialize an i960 based AAC card&n; *&t;@dev: device to configure&n; *&t;@devnum: adapter number&n; *&n; *&t;Allocate and set up resources for the i960 based AAC variants. The &n; *&t;device_interface in the commregion will be allocated and linked &n; *&t;to the comm region.&n; */
+DECL|function|aac_rkt_init
 r_int
-id|aac_rx_init
+id|aac_rkt_init
 c_func
 (paren
 r_struct
@@ -1062,11 +1062,11 @@ r_if
 c_cond
 (paren
 (paren
-id|dev-&gt;regs.rx
+id|dev-&gt;regs.rkt
 op_assign
 (paren
 r_struct
-id|rx_registers
+id|rkt_registers
 op_star
 )paren
 id|ioremap
@@ -1101,7 +1101,7 @@ multiline_comment|/*&n;&t; *&t;Check to see if the board failed any self tests.&
 r_if
 c_cond
 (paren
-id|rx_readl
+id|rkt_readl
 c_func
 (paren
 id|dev
@@ -1135,7 +1135,7 @@ multiline_comment|/*&n;&t; *&t;Check to see if the board panic&squot;d while boo
 r_if
 c_cond
 (paren
-id|rx_readl
+id|rkt_readl
 c_func
 (paren
 id|dev
@@ -1175,7 +1175,7 @@ c_loop
 (paren
 op_logical_neg
 (paren
-id|rx_readl
+id|rkt_readl
 c_func
 (paren
 id|dev
@@ -1208,7 +1208,7 @@ id|HZ
 (brace
 id|status
 op_assign
-id|rx_readl
+id|rkt_readl
 c_func
 (paren
 id|dev
@@ -1260,7 +1260,7 @@ c_func
 (paren
 id|dev-&gt;scsi_host_ptr-&gt;irq
 comma
-id|aac_rx_intr
+id|aac_rkt_intr
 comma
 id|SA_SHIRQ
 op_or
@@ -1297,23 +1297,23 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Fill in the function dispatch table.&n;&t; */
 id|dev-&gt;a_ops.adapter_interrupt
 op_assign
-id|aac_rx_interrupt_adapter
+id|aac_rkt_interrupt_adapter
 suffix:semicolon
 id|dev-&gt;a_ops.adapter_enable_int
 op_assign
-id|aac_rx_enable_interrupt
+id|aac_rkt_enable_interrupt
 suffix:semicolon
 id|dev-&gt;a_ops.adapter_disable_int
 op_assign
-id|aac_rx_disable_interrupt
+id|aac_rkt_disable_interrupt
 suffix:semicolon
 id|dev-&gt;a_ops.adapter_notify
 op_assign
-id|aac_rx_notify_adapter
+id|aac_rkt_notify_adapter
 suffix:semicolon
 id|dev-&gt;a_ops.adapter_sync_cmd
 op_assign
-id|rx_sync_cmd
+id|rkt_sync_cmd
 suffix:semicolon
 r_if
 c_cond
@@ -1353,8 +1353,28 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;thread_pid
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;aacraid: Unable to create rkt thread.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *&t;Tell the adapter that all is configured, and it can start&n;&t; *&t;accepting requests&n;&t; */
-id|aac_rx_start_adapter
+id|aac_rkt_start_adapter
 c_func
 (paren
 id|dev

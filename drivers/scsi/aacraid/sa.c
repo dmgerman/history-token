@@ -911,6 +911,75 @@ id|ret
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;aac_sa_check_health&n; *&t;@dev: device to check if healthy&n; *&n; *&t;Will attempt to determine if the specified adapter is alive and&n; *&t;capable of handling requests, returning 0 if alive.&n; */
+DECL|function|aac_sa_check_health
+r_static
+r_int
+id|aac_sa_check_health
+c_func
+(paren
+r_struct
+id|aac_dev
+op_star
+id|dev
+)paren
+(brace
+r_int
+id|status
+op_assign
+id|sa_readl
+c_func
+(paren
+id|dev
+comma
+id|Mailbox7
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Check to see if the board failed any self tests.&n;&t; */
+r_if
+c_cond
+(paren
+id|status
+op_amp
+id|SELF_TEST_FAILED
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Check to see if the board panic&squot;d while booting.&n;&t; */
+r_if
+c_cond
+(paren
+id|status
+op_amp
+id|KERNEL_PANIC
+)paren
+r_return
+op_minus
+l_int|2
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Wait for the adapter to be up and running. Wait up to 3 minutes&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|status
+op_amp
+id|KERNEL_UP_AND_RUNNING
+)paren
+)paren
+r_return
+op_minus
+l_int|3
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Everything is OK&n;&t; */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* aac_sa_check_health */
 multiline_comment|/**&n; *&t;aac_sa_init&t;-&t;initialize an ARM based AAC card&n; *&t;@dev: device to configure&n; *&t;@devnum: adapter number&n; *&n; *&t;Allocate and set up resources for the ARM based AAC variants. The &n; *&t;device_interface in the commregion will be allocated and linked &n; *&t;to the comm region.&n; */
 DECL|function|aac_sa_init
 r_int

@@ -27,9 +27,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2003 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.00.02&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.00.03&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.00.02&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.00.03&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver

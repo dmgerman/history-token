@@ -3672,14 +3672,10 @@ id|nd
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* The cache filesystem doesn&squot;t have its own permission function,&n;         * but we don&squot;t want to duplicate the VFS code here.  In order&n;         * to avoid looping from permission calling this function again,&n;         * we temporarily override the permission operation while we call&n;         * the VFS permission function.&n;         */
-id|inode-&gt;i_op-&gt;permission
-op_assign
-l_int|NULL
-suffix:semicolon
+multiline_comment|/* The cache filesystem doesn&squot;t have its own permission function,&n;         * so we call the default one.&n;         */
 id|rc
 op_assign
-id|permission
+id|vfs_permission
 c_func
 (paren
 id|inode
@@ -3688,11 +3684,6 @@ id|mask
 comma
 id|nd
 )paren
-suffix:semicolon
-id|inode-&gt;i_op-&gt;permission
-op_assign
-op_amp
-id|presto_permission
 suffix:semicolon
 id|EXIT
 suffix:semicolon

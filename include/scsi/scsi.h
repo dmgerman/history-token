@@ -3,7 +3,7 @@ macro_line|#ifndef _SCSI_SCSI_H
 DECL|macro|_SCSI_SCSI_H
 mdefine_line|#define _SCSI_SCSI_H
 macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/*&n; * SCSI command lengths&n; */
+multiline_comment|/*&n; *&t;SCSI command lengths&n; */
 r_extern
 r_const
 r_int
@@ -15,6 +15,19 @@ l_int|8
 suffix:semicolon
 DECL|macro|COMMAND_SIZE
 mdefine_line|#define COMMAND_SIZE(opcode) scsi_command_size[((opcode) &gt;&gt; 5) &amp; 7]
+multiline_comment|/*&n; *&t;SCSI device types&n; */
+DECL|macro|MAX_SCSI_DEVICE_CODE
+mdefine_line|#define MAX_SCSI_DEVICE_CODE 14
+r_extern
+r_const
+r_char
+op_star
+r_const
+id|scsi_device_types
+(braket
+id|MAX_SCSI_DEVICE_CODE
+)braket
+suffix:semicolon
 multiline_comment|/*&n; *      SCSI opcodes&n; */
 DECL|macro|TEST_UNIT_READY
 mdefine_line|#define TEST_UNIT_READY       0x00
@@ -510,6 +523,38 @@ DECL|macro|SCSI_MLQUEUE_DEVICE_BUSY
 mdefine_line|#define SCSI_MLQUEUE_DEVICE_BUSY 0x1056
 DECL|macro|SCSI_MLQUEUE_EH_RETRY
 mdefine_line|#define SCSI_MLQUEUE_EH_RETRY    0x1057
+multiline_comment|/*&n; *  Use these to separate status msg and our bytes&n; *&n; *  These are set by:&n; *&n; *      status byte = set from target device&n; *      msg_byte    = return status from host adapter itself.&n; *      host_byte   = set by low-level driver to indicate status.&n; *      driver_byte = set by mid-level.&n; */
+DECL|macro|status_byte
+mdefine_line|#define status_byte(result) (((result) &gt;&gt; 1) &amp; 0x1f)
+DECL|macro|msg_byte
+mdefine_line|#define msg_byte(result)    (((result) &gt;&gt; 8) &amp; 0xff)
+DECL|macro|host_byte
+mdefine_line|#define host_byte(result)   (((result) &gt;&gt; 16) &amp; 0xff)
+DECL|macro|driver_byte
+mdefine_line|#define driver_byte(result) (((result) &gt;&gt; 24) &amp; 0xff)
+DECL|macro|suggestion
+mdefine_line|#define suggestion(result)  (driver_byte(result) &amp; SUGGEST_MASK)
+DECL|macro|sense_class
+mdefine_line|#define sense_class(sense)  (((sense) &gt;&gt; 4) &amp; 0x7)
+DECL|macro|sense_error
+mdefine_line|#define sense_error(sense)  ((sense) &amp; 0xf)
+DECL|macro|sense_valid
+mdefine_line|#define sense_valid(sense)  ((sense) &amp; 0x80);
+DECL|macro|IDENTIFY_BASE
+mdefine_line|#define IDENTIFY_BASE       0x80
+DECL|macro|IDENTIFY
+mdefine_line|#define IDENTIFY(can_disconnect, lun)   (IDENTIFY_BASE |&bslash;&n;&t;&t;     ((can_disconnect) ?  0x40 : 0) |&bslash;&n;&t;&t;     ((lun) &amp; 0x07))
+multiline_comment|/*&n; *  SCSI command sets&n; */
+DECL|macro|SCSI_UNKNOWN
+mdefine_line|#define SCSI_UNKNOWN    0
+DECL|macro|SCSI_1
+mdefine_line|#define SCSI_1          1
+DECL|macro|SCSI_1_CCS
+mdefine_line|#define SCSI_1_CCS      2
+DECL|macro|SCSI_2
+mdefine_line|#define SCSI_2          3
+DECL|macro|SCSI_3
+mdefine_line|#define SCSI_3          4
 multiline_comment|/*&n; * Here are some scsi specific ioctl commands which are sometimes useful.&n; *&n; * Note that include/linux/cdrom.h also defines IOCTL 0x5300 - 0x5395&n; */
 multiline_comment|/* Used to obtain PUN and LUN info.  Conflicts with CDROMAUDIOBUFSIZ */
 DECL|macro|SCSI_IOCTL_GET_IDLUN

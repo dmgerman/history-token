@@ -2249,10 +2249,12 @@ id|cmd-&gt;sense_buffer
 )paren
 suffix:semicolon
 r_return
-id|scsi_dispatch_cmd
+id|scsi_queue_insert
 c_func
 (paren
 id|cmd
+comma
+id|SCSI_MLQUEUE_EH_RETRY
 )paren
 suffix:semicolon
 )brace
