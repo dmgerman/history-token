@@ -3448,6 +3448,10 @@ op_logical_neg
 id|virt_addr_valid
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|addr
 )paren
 )paren
@@ -3458,6 +3462,10 @@ c_func
 id|virt_to_page
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|addr
 )paren
 comma
