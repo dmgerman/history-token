@@ -1,8 +1,8 @@
-multiline_comment|/* generic HDLC line discipline for Linux&n; *&n; * Written by Paul Fulghum paulkf@microgate.com&n; * for Microgate Corporation&n; *&n; * Microgate and SyncLink are registered trademarks of Microgate Corporation&n; *&n; * Adapted from ppp.c, written by Michael Callahan &lt;callahan@maths.ox.ac.uk&gt;,&n; *&t;Al Longyear &lt;longyear@netcom.com&gt;, Paul Mackerras &lt;Paul.Mackerras@cs.anu.edu.au&gt;&n; *&n; * Original release 01/11/99&n; * $Id: n_hdlc.c,v 4.2 2002/10/10 14:52:41 paulkf Exp $&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * This module implements the tty line discipline N_HDLC for use with&n; * tty device drivers that support bit-synchronous HDLC communications.&n; *&n; * All HDLC data is frame oriented which means:&n; *&n; * 1. tty write calls represent one complete transmit frame of data&n; *    The device driver should accept the complete frame or none of &n; *    the frame (busy) in the write method. Each write call should have&n; *    a byte count in the range of 2-65535 bytes (2 is min HDLC frame&n; *    with 1 addr byte and 1 ctrl byte). The max byte count of 65535&n; *    should include any crc bytes required. For example, when using&n; *    CCITT CRC32, 4 crc bytes are required, so the maximum size frame&n; *    the application may transmit is limited to 65531 bytes. For CCITT&n; *    CRC16, the maximum application frame size would be 65533.&n; *&n; *&n; * 2. receive callbacks from the device driver represents&n; *    one received frame. The device driver should bypass&n; *    the tty flip buffer and call the line discipline receive&n; *    callback directly to avoid fragmenting or concatenating&n; *    multiple frames into a single receive callback.&n; *&n; *    The HDLC line discipline queues the receive frames in separate&n; *    buffers so complete receive frames can be returned by the&n; *    tty read calls.&n; *&n; * 3. tty read calls returns an entire frame of data or nothing.&n; *    &n; * 4. all send and receive data is considered raw. No processing&n; *    or translation is performed by the line discipline, regardless&n; *    of the tty flags&n; *&n; * 5. When line discipline is queried for the amount of receive&n; *    data available (FIOC), 0 is returned if no data available,&n; *    otherwise the count of the next available frame is returned.&n; *    (instead of the sum of all received frame counts).&n; *&n; * These conventions allow the standard tty programming interface&n; * to be used for synchronous HDLC applications when used with&n; * this line discipline (or another line discipline that is frame&n; * oriented such as N_PPP).&n; *&n; * The SyncLink driver (synclink.c) implements both asynchronous&n; * (using standard line discipline N_TTY) and synchronous HDLC&n; * (using N_HDLC) communications, with the latter using the above&n; * conventions.&n; *&n; * This implementation is very basic and does not maintain&n; * any statistics. The main point is to enforce the raw data&n; * and frame orientation of HDLC communications.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+multiline_comment|/* generic HDLC line discipline for Linux&n; *&n; * Written by Paul Fulghum paulkf@microgate.com&n; * for Microgate Corporation&n; *&n; * Microgate and SyncLink are registered trademarks of Microgate Corporation&n; *&n; * Adapted from ppp.c, written by Michael Callahan &lt;callahan@maths.ox.ac.uk&gt;,&n; *&t;Al Longyear &lt;longyear@netcom.com&gt;, Paul Mackerras &lt;Paul.Mackerras@cs.anu.edu.au&gt;&n; *&n; * Original release 01/11/99&n; * $Id: n_hdlc.c,v 4.6 2003/04/21 19:14:07 paulkf Exp $&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * This module implements the tty line discipline N_HDLC for use with&n; * tty device drivers that support bit-synchronous HDLC communications.&n; *&n; * All HDLC data is frame oriented which means:&n; *&n; * 1. tty write calls represent one complete transmit frame of data&n; *    The device driver should accept the complete frame or none of &n; *    the frame (busy) in the write method. Each write call should have&n; *    a byte count in the range of 2-65535 bytes (2 is min HDLC frame&n; *    with 1 addr byte and 1 ctrl byte). The max byte count of 65535&n; *    should include any crc bytes required. For example, when using&n; *    CCITT CRC32, 4 crc bytes are required, so the maximum size frame&n; *    the application may transmit is limited to 65531 bytes. For CCITT&n; *    CRC16, the maximum application frame size would be 65533.&n; *&n; *&n; * 2. receive callbacks from the device driver represents&n; *    one received frame. The device driver should bypass&n; *    the tty flip buffer and call the line discipline receive&n; *    callback directly to avoid fragmenting or concatenating&n; *    multiple frames into a single receive callback.&n; *&n; *    The HDLC line discipline queues the receive frames in separate&n; *    buffers so complete receive frames can be returned by the&n; *    tty read calls.&n; *&n; * 3. tty read calls returns an entire frame of data or nothing.&n; *    &n; * 4. all send and receive data is considered raw. No processing&n; *    or translation is performed by the line discipline, regardless&n; *    of the tty flags&n; *&n; * 5. When line discipline is queried for the amount of receive&n; *    data available (FIOC), 0 is returned if no data available,&n; *    otherwise the count of the next available frame is returned.&n; *    (instead of the sum of all received frame counts).&n; *&n; * These conventions allow the standard tty programming interface&n; * to be used for synchronous HDLC applications when used with&n; * this line discipline (or another line discipline that is frame&n; * oriented such as N_PPP).&n; *&n; * The SyncLink driver (synclink.c) implements both asynchronous&n; * (using standard line discipline N_TTY) and synchronous HDLC&n; * (using N_HDLC) communications, with the latter using the above&n; * conventions.&n; *&n; * This implementation is very basic and does not maintain&n; * any statistics. The main point is to enforce the raw data&n; * and frame orientation of HDLC communications.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 DECL|macro|HDLC_MAGIC
 mdefine_line|#define HDLC_MAGIC 0x239e
 DECL|macro|HDLC_VERSION
-mdefine_line|#define HDLC_VERSION &quot;$Revision: 4.2 $&quot;
+mdefine_line|#define HDLC_VERSION &quot;$Revision: 4.6 $&quot;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -182,6 +182,7 @@ multiline_comment|/* list unused received frame buffers */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * HDLC buffer list manipulation functions&n; */
+r_static
 r_void
 id|n_hdlc_buf_list_init
 c_func
@@ -191,6 +192,7 @@ op_star
 id|list
 )paren
 suffix:semicolon
+r_static
 r_void
 id|n_hdlc_buf_put
 c_func
@@ -204,6 +206,7 @@ op_star
 id|buf
 )paren
 suffix:semicolon
+r_static
 id|N_HDLC_BUF
 op_star
 id|n_hdlc_buf_get
@@ -754,8 +757,6 @@ id|n_hdlc_release
 id|n_hdlc
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 )brace
 r_if
@@ -878,8 +879,6 @@ suffix:semicolon
 id|n_hdlc-&gt;tty
 op_assign
 id|tty
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 macro_line|#if defined(TTY_NO_WRITE_SPLIT)
 multiline_comment|/* change tty_io write() to not split large writes into 8K chunks */
@@ -2853,6 +2852,7 @@ suffix:semicolon
 multiline_comment|/* end of n_hdlc_alloc() */
 multiline_comment|/* n_hdlc_buf_list_init()&n; * &n; * &t;initialize specified HDLC buffer list&n; * &t;&n; * Arguments:&t; &t;list&t;pointer to buffer list&n; * Return Value:&t;None&t;&n; */
 DECL|function|n_hdlc_buf_list_init
+r_static
 r_void
 id|n_hdlc_buf_list_init
 c_func
@@ -2886,6 +2886,7 @@ suffix:semicolon
 multiline_comment|/* end of n_hdlc_buf_list_init() */
 multiline_comment|/* n_hdlc_buf_put()&n; * &n; * &t;add specified HDLC buffer to tail of specified list&n; * &t;&n; * Arguments:&n; * &n; * &t;list&t;pointer to buffer list&n; * &t;buf&t;pointer to buffer&n; * &n; * Return Value:&t;None&t;&n; */
 DECL|function|n_hdlc_buf_put
+r_static
 r_void
 id|n_hdlc_buf_put
 c_func
@@ -2954,6 +2955,7 @@ suffix:semicolon
 multiline_comment|/* end of n_hdlc_buf_put() */
 multiline_comment|/* n_hdlc_buf_get()&n; * &n; * &t;remove and return an HDLC buffer from the&n; * &t;head of the specified HDLC buffer list&n; * &t;&n; * Arguments:&n; * &n; * &t;list&t;pointer to HDLC buffer list&n; * &t;&n; * Return Value:&n; * &n; * &t;pointer to HDLC buffer if available, otherwise NULL&n; */
 DECL|function|n_hdlc_buf_get
+r_static
 id|N_HDLC_BUF
 op_star
 id|n_hdlc_buf_get
@@ -3039,6 +3041,59 @@ r_static
 r_struct
 id|tty_ldisc
 id|n_hdlc_ldisc
+op_assign
+(brace
+id|TTY_LDISC_MAGIC
+comma
+multiline_comment|/* magic */
+l_string|&quot;hdlc&quot;
+comma
+multiline_comment|/* name */
+l_int|0
+comma
+multiline_comment|/* num */
+l_int|0
+comma
+multiline_comment|/* flags */
+id|n_hdlc_tty_open
+comma
+multiline_comment|/* open */
+id|n_hdlc_tty_close
+comma
+multiline_comment|/* close */
+l_int|0
+comma
+multiline_comment|/* flush_buffer */
+l_int|0
+comma
+multiline_comment|/* chars_in_buffer */
+id|n_hdlc_tty_read
+comma
+multiline_comment|/* read */
+id|n_hdlc_tty_write
+comma
+multiline_comment|/* write */
+id|n_hdlc_tty_ioctl
+comma
+multiline_comment|/* ioctl */
+l_int|0
+comma
+multiline_comment|/* set_termios */
+id|n_hdlc_tty_poll
+comma
+multiline_comment|/* poll */
+id|n_hdlc_tty_receive
+comma
+multiline_comment|/* receive_buf */
+id|n_hdlc_tty_room
+comma
+multiline_comment|/* receive_room */
+id|n_hdlc_tty_wakeup
+comma
+multiline_comment|/* write_wakeup */
+id|THIS_MODULE
+multiline_comment|/* owner */
+)brace
 suffix:semicolon
 r_int
 id|status
@@ -3076,65 +3131,6 @@ id|szVersion
 comma
 id|maxframe
 )paren
-suffix:semicolon
-multiline_comment|/* Register the tty discipline */
-id|memset
-c_func
-(paren
-op_amp
-id|n_hdlc_ldisc
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|n_hdlc_ldisc
-)paren
-)paren
-suffix:semicolon
-id|n_hdlc_ldisc.magic
-op_assign
-id|TTY_LDISC_MAGIC
-suffix:semicolon
-id|n_hdlc_ldisc.name
-op_assign
-l_string|&quot;hdlc&quot;
-suffix:semicolon
-id|n_hdlc_ldisc.open
-op_assign
-id|n_hdlc_tty_open
-suffix:semicolon
-id|n_hdlc_ldisc.close
-op_assign
-id|n_hdlc_tty_close
-suffix:semicolon
-id|n_hdlc_ldisc.read
-op_assign
-id|n_hdlc_tty_read
-suffix:semicolon
-id|n_hdlc_ldisc.write
-op_assign
-id|n_hdlc_tty_write
-suffix:semicolon
-id|n_hdlc_ldisc.ioctl
-op_assign
-id|n_hdlc_tty_ioctl
-suffix:semicolon
-id|n_hdlc_ldisc.poll
-op_assign
-id|n_hdlc_tty_poll
-suffix:semicolon
-id|n_hdlc_ldisc.receive_room
-op_assign
-id|n_hdlc_tty_room
-suffix:semicolon
-id|n_hdlc_ldisc.receive_buf
-op_assign
-id|n_hdlc_tty_receive
-suffix:semicolon
-id|n_hdlc_ldisc.write_wakeup
-op_assign
-id|n_hdlc_tty_wakeup
 suffix:semicolon
 id|status
 op_assign
