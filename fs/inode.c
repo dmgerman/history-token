@@ -190,10 +190,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|inode-&gt;i_sock
-op_assign
-l_int|0
-suffix:semicolon
 id|inode-&gt;i_op
 op_assign
 op_amp

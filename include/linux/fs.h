@@ -1157,11 +1157,6 @@ r_int
 r_int
 id|i_bytes
 suffix:semicolon
-DECL|member|i_sock
-r_int
-r_char
-id|i_sock
-suffix:semicolon
 DECL|member|i_lock
 id|spinlock_t
 id|i_lock
