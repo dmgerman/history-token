@@ -438,6 +438,7 @@ multiline_comment|/* current mchip frame number */
 DECL|member|mchip_mmregs
 r_int
 r_char
+id|__iomem
 op_star
 id|mchip_mmregs
 suffix:semicolon

@@ -501,6 +501,7 @@ multiline_comment|/*&n; * Check if there is usable memory at the end of Linux me
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|mem
 suffix:semicolon
@@ -652,10 +653,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mem
 )paren
 suffix:semicolon

@@ -4568,6 +4568,7 @@ id|dev-&gt;bmmio
 op_assign
 (paren
 id|__u8
+id|__iomem
 op_star
 )paren
 id|dev-&gt;lmmio

@@ -273,6 +273,7 @@ suffix:semicolon
 DECL|member|mem
 r_int
 r_char
+id|__iomem
 op_star
 id|mem
 suffix:semicolon
