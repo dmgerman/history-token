@@ -1609,6 +1609,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|rfcomm_sock_listen
+r_static
 r_int
 id|rfcomm_sock_listen
 c_func
@@ -1795,6 +1796,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|rfcomm_sock_accept
+r_static
 r_int
 id|rfcomm_sock_accept
 c_func
