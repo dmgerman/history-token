@@ -10,7 +10,7 @@ macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
 macro_line|#include &quot;cifsfs.h&quot;
 multiline_comment|/* BB fixme - add debug wrappers around this function to disable it fixme BB */
-multiline_comment|/* static void dump_cifs_file_struct(struct file * file, char * label)&n;{&n;&t;struct cifsFileInfo * cf;&n;&n;&t;if(file) {&n;&t;&t;cf = (struct cifsFileInfo *)file-&gt;private_data;&n;&t;&t;if(cf == NULL) {&n;&t;&t;&t;cFYI(1,(&quot;empty cifs private file data&quot;));&n;&t;&t;&t;return;&n;&t;&t;}&n;&t;&t;if(cf-&gt;invalidHandle) {&n;&t;&t;&t;cFYI(1,(&quot;invalid handle&quot;));&n;&t;&t;}&n;&t;&t;if(cf-&gt;srch_inf.endOfSearch) {&n;&t;&t;&t;cFYI(1,(&quot;end of search&quot;));&n;&t;&t;}&n;&t;&t;if(cf-&gt;srch_inf.emptyDir) {&n;&t;&t;&t;cFYI(1,(&quot;empty dir&quot;));&n;&t;&t;}&n;&t;&t;&n;&t;}&n;} */
+multiline_comment|/* static void dump_cifs_file_struct(struct file *file, char *label)&n;{&n;&t;struct cifsFileInfo * cf;&n;&n;&t;if(file) {&n;&t;&t;cf = (struct cifsFileInfo *)file-&gt;private_data;&n;&t;&t;if(cf == NULL) {&n;&t;&t;&t;cFYI(1,(&quot;empty cifs private file data&quot;));&n;&t;&t;&t;return;&n;&t;&t;}&n;&t;&t;if(cf-&gt;invalidHandle) {&n;&t;&t;&t;cFYI(1,(&quot;invalid handle&quot;));&n;&t;&t;}&n;&t;&t;if(cf-&gt;srch_inf.endOfSearch) {&n;&t;&t;&t;cFYI(1,(&quot;end of search&quot;));&n;&t;&t;}&n;&t;&t;if(cf-&gt;srch_inf.emptyDir) {&n;&t;&t;&t;cFYI(1,(&quot;empty dir&quot;));&n;&t;&t;}&n;&t;&t;&n;&t;}&n;} */
 multiline_comment|/* Returns one if new inode created (which therefore needs to be hashed) */
 multiline_comment|/* Might check in the future if inode number changed so we can rehash inode */
 DECL|function|construct_dentry
@@ -2903,9 +2903,9 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+DECL|function|cifs_filldir
 r_static
 r_int
-DECL|function|cifs_filldir
 id|cifs_filldir
 c_func
 (paren
