@@ -12488,6 +12488,8 @@ id|entry
 comma
 id|hdsp
 comma
+l_int|1024
+comma
 id|snd_hdsp_proc_read
 )paren
 suffix:semicolon

@@ -6888,6 +6888,8 @@ id|entry
 comma
 id|sonic
 comma
+l_int|1024
+comma
 id|snd_sonicvibes_proc_read
 )paren
 suffix:semicolon

@@ -9112,6 +9112,8 @@ id|entry
 comma
 id|stream
 comma
+l_int|1024
+comma
 id|proc_pcm_format_read
 )paren
 suffix:semicolon

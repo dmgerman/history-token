@@ -6527,6 +6527,8 @@ id|entry
 comma
 id|rme32
 comma
+l_int|1024
+comma
 id|snd_rme32_proc_read
 )paren
 suffix:semicolon

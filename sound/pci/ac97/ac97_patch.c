@@ -60,7 +60,7 @@ op_assign
 id|snd_ctl_add
 c_func
 (paren
-id|ac97-&gt;card
+id|ac97-&gt;bus-&gt;card
 comma
 id|snd_ac97_cnew
 c_func
@@ -869,7 +869,7 @@ op_assign
 id|snd_ctl_add
 c_func
 (paren
-id|ac97-&gt;card
+id|ac97-&gt;bus-&gt;card
 comma
 id|kctl
 op_assign
@@ -935,7 +935,7 @@ op_assign
 id|snd_ctl_add
 c_func
 (paren
-id|ac97-&gt;card
+id|ac97-&gt;bus-&gt;card
 comma
 id|snd_ac97_cnew
 c_func
@@ -1299,7 +1299,7 @@ op_assign
 id|snd_ctl_add
 c_func
 (paren
-id|ac97-&gt;card
+id|ac97-&gt;bus-&gt;card
 comma
 id|kctl
 op_assign
@@ -1381,7 +1381,7 @@ op_assign
 id|snd_ctl_add
 c_func
 (paren
-id|ac97-&gt;card
+id|ac97-&gt;bus-&gt;card
 comma
 id|kctl
 op_assign
@@ -1431,7 +1431,7 @@ op_assign
 id|snd_ctl_add
 c_func
 (paren
-id|ac97-&gt;card
+id|ac97-&gt;bus-&gt;card
 comma
 id|kctl
 op_assign

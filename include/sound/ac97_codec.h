@@ -433,13 +433,17 @@ DECL|macro|AC97_WM9711_OUT3VOL
 mdefine_line|#define AC97_WM9711_OUT3VOL     0x16
 multiline_comment|/* ac97-&gt;scaps */
 DECL|macro|AC97_SCAP_AUDIO
-mdefine_line|#define AC97_SCAP_AUDIO&t;&t;(1&lt;&lt;0)&t;/* audio AC&squot;97 codec */
+mdefine_line|#define AC97_SCAP_AUDIO&t;&t;(1&lt;&lt;0)&t;/* audio codec 97 */
 DECL|macro|AC97_SCAP_MODEM
-mdefine_line|#define AC97_SCAP_MODEM&t;&t;(1&lt;&lt;1)&t;/* modem AC&squot;97 codec */
+mdefine_line|#define AC97_SCAP_MODEM&t;&t;(1&lt;&lt;1)&t;/* modem codec 97 */
 DECL|macro|AC97_SCAP_SURROUND_DAC
 mdefine_line|#define AC97_SCAP_SURROUND_DAC&t;(1&lt;&lt;2)&t;/* surround L&amp;R DACs are present */
 DECL|macro|AC97_SCAP_CENTER_LFE_DAC
 mdefine_line|#define AC97_SCAP_CENTER_LFE_DAC (1&lt;&lt;3)&t;/* center and LFE DACs are present */
+DECL|macro|AC97_SCAP_SKIP_AUDIO
+mdefine_line|#define AC97_SCAP_SKIP_AUDIO&t;(1&lt;&lt;4)&t;/* skip audio part of codec */
+DECL|macro|AC97_SCAP_SKIP_MODEM
+mdefine_line|#define AC97_SCAP_SKIP_MODEM&t;(1&lt;&lt;5)&t;/* skip modem part of codec */
 multiline_comment|/* ac97-&gt;flags */
 DECL|macro|AC97_HAS_PC_BEEP
 mdefine_line|#define AC97_HAS_PC_BEEP&t;(1&lt;&lt;0)&t;/* force PC Speaker usage */
@@ -465,6 +469,12 @@ mdefine_line|#define AC97_RATES_MIC_ADC&t;4
 DECL|macro|AC97_RATES_SPDIF
 mdefine_line|#define AC97_RATES_SPDIF&t;5
 multiline_comment|/*&n; *&n; */
+DECL|typedef|ac97_bus_t
+r_typedef
+r_struct
+id|_snd_ac97_bus
+id|ac97_bus_t
+suffix:semicolon
 DECL|typedef|ac97_t
 r_typedef
 r_struct
@@ -525,10 +535,11 @@ id|ac97
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|_snd_ac97
+DECL|struct|_snd_ac97_bus
 r_struct
-id|_snd_ac97
+id|_snd_ac97_bus
 (brace
+multiline_comment|/* -- lowlevel (hardware) driver specific -- */
 DECL|member|reset
 r_void
 (paren
@@ -602,6 +613,61 @@ op_star
 id|ac97
 )paren
 suffix:semicolon
+DECL|member|private_data
+r_void
+op_star
+id|private_data
+suffix:semicolon
+DECL|member|private_free
+r_void
+(paren
+op_star
+id|private_free
+)paren
+(paren
+id|ac97_bus_t
+op_star
+id|bus
+)paren
+suffix:semicolon
+multiline_comment|/* --- */
+DECL|member|card
+id|snd_card_t
+op_star
+id|card
+suffix:semicolon
+DECL|member|num
+r_int
+r_int
+id|num
+suffix:semicolon
+multiline_comment|/* bus number */
+DECL|member|clock
+r_int
+r_int
+id|clock
+suffix:semicolon
+multiline_comment|/* AC&squot;97 clock (usually 48000Hz) */
+DECL|member|codec
+id|ac97_t
+op_star
+id|codec
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|proc
+id|snd_info_entry_t
+op_star
+id|proc
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|_snd_ac97
+r_struct
+id|_snd_ac97
+(brace
+multiline_comment|/* -- lowlevel (hardware) driver specific -- */
 DECL|member|build_ops
 r_struct
 id|snd_ac97_build_ops
@@ -626,10 +692,10 @@ id|ac97
 )paren
 suffix:semicolon
 multiline_comment|/* --- */
-DECL|member|card
-id|snd_card_t
+DECL|member|bus
+id|ac97_bus_t
 op_star
-id|card
+id|bus
 suffix:semicolon
 DECL|member|pci
 r_struct
@@ -638,6 +704,16 @@ op_star
 id|pci
 suffix:semicolon
 multiline_comment|/* assigned PCI device - used for quirks */
+DECL|member|proc
+id|snd_info_entry_t
+op_star
+id|proc
+suffix:semicolon
+DECL|member|proc_regs
+id|snd_info_entry_t
+op_star
+id|proc_regs
+suffix:semicolon
 DECL|member|subsystem_vendor
 r_int
 r_int
@@ -700,12 +776,6 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* specific code */
-DECL|member|clock
-r_int
-r_int
-id|clock
-suffix:semicolon
-multiline_comment|/* AC&squot;97 clock (usually 48000Hz) */
 DECL|member|rates
 r_int
 r_int
@@ -902,12 +972,31 @@ suffix:semicolon
 )brace
 multiline_comment|/* functions */
 r_int
-id|snd_ac97_mixer
+id|snd_ac97_bus
 c_func
 (paren
 id|snd_card_t
 op_star
 id|card
+comma
+id|ac97_bus_t
+op_star
+id|_bus
+comma
+id|ac97_bus_t
+op_star
+op_star
+id|rbus
+)paren
+suffix:semicolon
+multiline_comment|/* create new AC97 bus */
+r_int
+id|snd_ac97_mixer
+c_func
+(paren
+id|ac97_bus_t
+op_star
+id|bus
 comma
 id|ac97_t
 op_star
@@ -920,25 +1009,6 @@ id|rac97
 )paren
 suffix:semicolon
 multiline_comment|/* create mixer controls */
-r_int
-id|snd_ac97_modem
-c_func
-(paren
-id|snd_card_t
-op_star
-id|card
-comma
-id|ac97_t
-op_star
-id|_ac97
-comma
-id|ac97_t
-op_star
-op_star
-id|rac97
-)paren
-suffix:semicolon
-multiline_comment|/* create modem controls */
 r_void
 id|snd_ac97_write
 c_func

@@ -5149,6 +5149,8 @@ id|entry
 comma
 id|p
 comma
+l_int|1024
+comma
 id|info_read
 )paren
 suffix:semicolon

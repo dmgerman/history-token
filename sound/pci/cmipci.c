@@ -12847,6 +12847,8 @@ id|entry
 comma
 id|cm
 comma
+l_int|1024
+comma
 id|snd_cmipci_proc_read
 )paren
 suffix:semicolon
