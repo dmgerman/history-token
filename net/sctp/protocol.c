@@ -2826,6 +2826,11 @@ id|err_handler
 op_assign
 id|sctp_v4_err
 comma
+dot
+id|no_policy
+op_assign
+l_int|1
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* IPv4 address related functions.  */

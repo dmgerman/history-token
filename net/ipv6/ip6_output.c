@@ -21,6 +21,7 @@ macro_line|#include &lt;net/ip6_route.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/rawv6.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 DECL|function|ipv6_select_ident
 r_static
 id|__inline__
@@ -3207,6 +3208,23 @@ l_int|0
 r_goto
 id|error
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm6_policy_check
+c_func
+(paren
+l_int|NULL
+comma
+id|XFRM_POLICY_FWD
+comma
+id|skb
+)paren
+)paren
+r_goto
+id|drop
+suffix:semicolon
 id|skb-&gt;ip_summed
 op_assign
 id|CHECKSUM_NONE
@@ -3292,6 +3310,19 @@ op_minus
 id|ETIMEDOUT
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm6_route_forward
+c_func
+(paren
+id|skb
+)paren
+)paren
+r_goto
+id|drop
+suffix:semicolon
 multiline_comment|/* IPv6 specs say nothing about it, but it is clear that we cannot&n;&t;   send redirects to source routed frames.&n;&t; */
 r_if
 c_cond

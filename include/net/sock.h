@@ -8,9 +8,7 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;&t;/* struct sk_buff */
 macro_line|#include &lt;linux/security.h&gt;
-macro_line|#ifdef CONFIG_FILTER
 macro_line|#include &lt;linux/filter.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 multiline_comment|/*&n; * This structure really needs to be cleaned up.&n; * Most of it is for TCP, and not used by any of&n; * the other protocols.&n; */
@@ -381,7 +379,6 @@ DECL|member|sndtimeo
 r_int
 id|sndtimeo
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
 multiline_comment|/* Socket Filtering Instructions */
 DECL|member|filter
 r_struct
@@ -389,7 +386,6 @@ id|sk_filter
 op_star
 id|filter
 suffix:semicolon
-macro_line|#endif /* CONFIG_FILTER */
 multiline_comment|/* This is where all the private (optional) areas that don&squot;t&n;&t; * overlap will eventually live. &n;&t; */
 DECL|member|protinfo
 r_void
@@ -1781,7 +1777,6 @@ op_star
 id|sk
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
 multiline_comment|/**&n; *&t;__sk_filter - run a packet through a socket filter&n; *&t;@sk: sock associated with &amp;sk_buff&n; *&t;@skb: buffer to filter&n; *&t;@needlock: set to 1 if the sock is not locked by caller.&n; *&n; * Run the filter code and then cut skb-&gt;data to correct size returned by&n; * sk_run_filter. If pkt_len is 0 we toss packet. If skb-&gt;len is smaller&n; * than pkt_len we keep whole skb-&gt;data. This is the socket level&n; * wrapper to sk_run_filter. It returns 0 if the packet should&n; * be accepted or -EPERM if the packet should be tossed.&n; *&n; * This function should not be called directly, use sk_filter instead&n; * to ensure that the LSM security check is also performed.&n; */
 DECL|function|__sk_filter
 r_static
@@ -1985,33 +1980,6 @@ id|sk-&gt;omem_alloc
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|__sk_filter
-r_static
-r_inline
-r_int
-id|__sk_filter
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-r_int
-id|needlock
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_FILTER */
 DECL|function|sk_filter
 r_static
 r_inline

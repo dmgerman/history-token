@@ -24,9 +24,7 @@ macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
-macro_line|#ifdef CONFIG_FILTER
 macro_line|#include &lt;linux/filter.h&gt;
-macro_line|#endif
 macro_line|#ifdef CONFIG_INET
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#endif
@@ -249,13 +247,11 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
 r_struct
 id|sk_filter
 op_star
 id|filter
 suffix:semicolon
-macro_line|#endif
 r_int
 id|val
 suffix:semicolon
@@ -957,7 +953,6 @@ r_break
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_FILTER
 r_case
 id|SO_ATTACH_FILTER
 suffix:colon
@@ -1076,7 +1071,6 @@ id|ENONET
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* We implement the SO_SNDLOWAT etc to&n;&t;&t;   not be settable (1003.1g 5.3) */
 r_default
 suffix:colon
@@ -1833,13 +1827,11 @@ op_star
 id|sk
 )paren
 (brace
-macro_line|#ifdef CONFIG_FILTER
 r_struct
 id|sk_filter
 op_star
 id|filter
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1853,7 +1845,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
 id|filter
 op_assign
 id|sk-&gt;filter
@@ -1877,7 +1868,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
