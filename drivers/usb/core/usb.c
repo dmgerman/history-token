@@ -1249,7 +1249,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef&t;CONFIG_HOTPLUG
-multiline_comment|/*&n; * USB hotplugging invokes what /proc/sys/kernel/hotplug says&n; * (normally /sbin/hotplug) when USB devices get added or removed.&n; *&n; * This invokes a user mode policy agent, typically helping to load driver&n; * or other modules, configure the device, and more.  Drivers can provide&n; * a MODULE_DEVICE_TABLE to help with module loading subtasks.&n; *&n; * Some synchronization is important: removes can&squot;t start processing&n; * before the add-device processing completes, and vice versa.  That keeps&n; * a stack of USB-related identifiers stable while they&squot;re in use.  If we&n; * know that agents won&squot;t complete after they return (such as by forking&n; * a process that completes later), it&squot;s enough to just waitpid() for the&n; * agent -- as is currently done.&n; *&n; * The reason: we know we&squot;re called either from khubd (the typical case)&n; * or from root hub initialization (init, kapmd, modprobe, etc).  In both&n; * cases, we know no other thread can recycle our address, since we must&n; * already have been serialized enough to prevent that.&n; */
+multiline_comment|/*&n; * USB hotplugging invokes what /proc/sys/kernel/hotplug says&n; * (normally /sbin/hotplug) when USB devices get added or removed.&n; *&n; * This invokes a user mode policy agent, typically helping to load driver&n; * or other modules, configure the device, and more.  Drivers can provide&n; * a MODULE_DEVICE_TABLE to help with module loading subtasks.&n; *&n; * We&squot;re called either from khubd (the typical case) or from root hub&n; * (init, kapmd, modprobe, rmmod, etc), but the agents need to handle&n; * delays in event delivery.  Use sysfs (and DEVPATH) to make sure the&n; * device (and this configuration!) are still present.&n; */
 DECL|function|usb_hotplug
 r_static
 r_int
@@ -1458,7 +1458,7 @@ op_add_assign
 id|length
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* per-device configuration hacks are common */
+multiline_comment|/* per-device configurations are common */
 id|envp
 (braket
 id|i
@@ -1583,7 +1583,7 @@ id|alt
 op_assign
 id|intf-&gt;act_altsetting
 suffix:semicolon
-multiline_comment|/* a simple/common case: one config, one interface, one driver&n;&t;&t; * with current altsetting being a reasonable setting.&n;&t;&t; * everything needs a smart agent and usbfs; or can rely on&n;&t;&t; * device-specific binding policies.&n;&t;&t; */
+multiline_comment|/* 2.4 only exposed interface zero.  in 2.5, hotplug&n;&t;&t; * agents are called for all interfaces, and can use&n;&t;&t; * $DEVPATH/bInterfaceNumber if necessary.&n;&t;&t; */
 id|envp
 (braket
 id|i
