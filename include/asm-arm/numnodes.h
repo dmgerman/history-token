@@ -2,8 +2,12 @@ multiline_comment|/*&n; *  linux/include/asm-arm/numnodes.h&n; *&n; *  Copyright
 macro_line|#ifndef __ASM_ARM_NUMNODES_H
 DECL|macro|__ASM_ARM_NUMNODES_H
 mdefine_line|#define __ASM_ARM_NUMNODES_H
-multiline_comment|/* Max 4 Nodes */
+macro_line|#ifdef CONFIG_ARCH_LH7A40X
 DECL|macro|NODES_SHIFT
-mdefine_line|#define NODES_SHIFT&t;2
+macro_line|# define NODES_SHIFT&t;4&t;/* Max 16 nodes for the Sharp CPUs */
+macro_line|#else
+DECL|macro|NODES_SHIFT
+macro_line|# define NODES_SHIFT&t;2&t;/* Normally, Max 4 Nodes */
+macro_line|#endif
 macro_line|#endif
 eof

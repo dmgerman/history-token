@@ -413,8 +413,13 @@ mdefine_line|#define tag_size(type)&t;((sizeof(struct tag_header) + sizeof(struc
 DECL|macro|for_each_tag
 mdefine_line|#define for_each_tag(t,base)&t;&t;&bslash;&n;&t;for (t = base; t-&gt;hdr.size; t = tag_next(t))
 multiline_comment|/*&n; * Memory map description&n; */
+macro_line|#ifdef CONFIG_ARCH_LH7A40X
 DECL|macro|NR_BANKS
-mdefine_line|#define NR_BANKS 8
+macro_line|# define NR_BANKS 16
+macro_line|#else
+DECL|macro|NR_BANKS
+macro_line|# define NR_BANKS 8
+macro_line|#endif
 DECL|struct|meminfo
 r_struct
 id|meminfo
