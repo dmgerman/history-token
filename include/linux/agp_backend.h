@@ -20,9 +20,6 @@ comma
 DECL|enumerator|INTEL_GENERIC
 id|INTEL_GENERIC
 comma
-DECL|enumerator|INTEL_I815
-id|INTEL_I815
-comma
 DECL|enumerator|VIA_GENERIC
 id|VIA_GENERIC
 comma
@@ -34,9 +31,6 @@ id|AMD_GENERIC
 comma
 DECL|enumerator|AMD_8151
 id|AMD_8151
-comma
-DECL|enumerator|ALI_M1541
-id|ALI_M1541
 comma
 DECL|enumerator|ALI_GENERIC
 id|ALI_GENERIC
