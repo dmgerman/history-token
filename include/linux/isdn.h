@@ -590,14 +590,14 @@ id|receive
 )paren
 (paren
 r_struct
-id|isdn_net_dev_s
-op_star
-id|p
-comma
-r_struct
 id|isdn_net_local_s
 op_star
-id|olp
+id|lp
+comma
+r_struct
+id|isdn_net_dev_s
+op_star
+id|idev
 comma
 r_struct
 id|sk_buff
@@ -820,34 +820,6 @@ suffix:semicolon
 multiline_comment|/* List of remote-phonenumbers      */
 multiline_comment|/* phone[0] = Incoming Numbers      */
 multiline_comment|/* phone[1] = Outgoing Numbers      */
-DECL|member|master
-r_struct
-id|net_device
-op_star
-id|master
-suffix:semicolon
-multiline_comment|/* Ptr to Master device for slaves  */
-DECL|member|slave
-r_struct
-id|net_device
-op_star
-id|slave
-suffix:semicolon
-multiline_comment|/* Ptr to Slave device for masters  */
-DECL|member|next
-r_struct
-id|isdn_net_local_s
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* Ptr to next link in bundle       */
-DECL|member|last
-r_struct
-id|isdn_net_local_s
-op_star
-id|last
-suffix:semicolon
-multiline_comment|/* Ptr to last link in bundle       */
 DECL|member|netdev
 r_struct
 id|isdn_net_dev_s
@@ -855,6 +827,18 @@ op_star
 id|netdev
 suffix:semicolon
 multiline_comment|/* Ptr to netdev                    */
+DECL|member|queue
+r_struct
+id|isdn_net_dev_s
+op_star
+id|queue
+suffix:semicolon
+multiline_comment|/* circular list of all bundled&n;&t;&t;&t;&t;&t;  channels, which are currently&n;&t;&t;&t;&t;&t;  online                           */
+DECL|member|queue_lock
+id|spinlock_t
+id|queue_lock
+suffix:semicolon
+multiline_comment|/* lock to protect queue            */
 macro_line|#ifdef CONFIG_ISDN_X25
 DECL|member|dops
 r_struct
@@ -911,6 +895,12 @@ id|isdn_netif_ops
 op_star
 id|ops
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|net_device
+id|dev
+suffix:semicolon
+multiline_comment|/* interface to upper levels        */
 DECL|typedef|isdn_net_local
 )brace
 id|isdn_net_local
@@ -1075,17 +1065,33 @@ r_struct
 id|tq_struct
 id|tqueue
 suffix:semicolon
-DECL|member|queue
+DECL|member|master
 id|isdn_net_local
 op_star
-id|queue
+id|master
 suffix:semicolon
-multiline_comment|/* circular list of all bundled&n;&t;&t;&t;&t;&t;  channels, which are currently&n;&t;&t;&t;&t;&t;  online                           */
-DECL|member|queue_lock
-id|spinlock_t
-id|queue_lock
+multiline_comment|/* Ptr to Master device for slaves  */
+DECL|member|slave
+r_struct
+id|isdn_net_dev_s
+op_star
+id|slave
 suffix:semicolon
-multiline_comment|/* lock to protect queue            */
+multiline_comment|/* Ptr to Slave device for masters  */
+DECL|member|next
+r_struct
+id|isdn_net_dev_s
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* Ptr to next link in bundle       */
+DECL|member|last
+r_struct
+id|isdn_net_dev_s
+op_star
+id|last
+suffix:semicolon
+multiline_comment|/* Ptr to last link in bundle       */
 DECL|member|name
 r_char
 id|name
@@ -1100,12 +1106,6 @@ id|list_head
 id|global_list
 suffix:semicolon
 multiline_comment|/* global list of all isdn_net_devs */
-DECL|member|dev
-r_struct
-id|net_device
-id|dev
-suffix:semicolon
-multiline_comment|/* interface to upper levels        */
 macro_line|#ifdef CONFIG_ISDN_PPP
 DECL|member|pb
 id|ippp_bundle
