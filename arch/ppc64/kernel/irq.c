@@ -531,18 +531,11 @@ id|status
 op_amp
 id|IRQ_INPROGRESS
 )paren
-(brace
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 id|cpu_relax
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/* XXX Make this into free_irq() - Anton */
