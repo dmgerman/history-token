@@ -253,7 +253,7 @@ op_star
 id|usb3
 )paren
 (brace
-id|u64
+id|__fs64
 id|tmp
 suffix:semicolon
 r_switch
@@ -275,7 +275,7 @@ id|UFS_ST_SUN
 suffix:colon
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -292,7 +292,7 @@ l_int|0
 suffix:semicolon
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -314,7 +314,7 @@ id|UFS_ST_SUNx86
 suffix:colon
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -331,7 +331,7 @@ l_int|0
 suffix:semicolon
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -353,7 +353,7 @@ id|UFS_ST_44BSD
 suffix:colon
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -370,7 +370,7 @@ l_int|0
 suffix:semicolon
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -416,7 +416,7 @@ op_star
 id|usb3
 )paren
 (brace
-id|u64
+id|__fs64
 id|tmp
 suffix:semicolon
 r_switch
@@ -438,7 +438,7 @@ id|UFS_ST_SUN
 suffix:colon
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -455,7 +455,7 @@ l_int|0
 suffix:semicolon
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -477,7 +477,7 @@ id|UFS_ST_SUNx86
 suffix:colon
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -494,7 +494,7 @@ l_int|0
 suffix:semicolon
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -516,7 +516,7 @@ id|UFS_ST_44BSD
 suffix:colon
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -533,7 +533,7 @@ l_int|0
 suffix:semicolon
 (paren
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -1266,9 +1266,9 @@ multiline_comment|/*&n; * Extract byte from ufs_buffer_head&n; * Extract the bit
 DECL|macro|ubh_get_addr8
 mdefine_line|#define ubh_get_addr8(ubh,begin) &bslash;&n;&t;((u8*)(ubh)-&gt;bh[(begin) &gt;&gt; uspi-&gt;s_fshift]-&gt;b_data + &bslash;&n;&t;((begin) &amp; ~uspi-&gt;s_fmask))
 DECL|macro|ubh_get_addr16
-mdefine_line|#define ubh_get_addr16(ubh,begin) &bslash;&n;&t;(((u16*)((ubh)-&gt;bh[(begin) &gt;&gt; (uspi-&gt;s_fshift-1)]-&gt;b_data)) + &bslash;&n;&t;((begin) &amp; (uspi-&gt;fsize&gt;&gt;1) - 1)))
+mdefine_line|#define ubh_get_addr16(ubh,begin) &bslash;&n;&t;(((__fs16*)((ubh)-&gt;bh[(begin) &gt;&gt; (uspi-&gt;s_fshift-1)]-&gt;b_data)) + &bslash;&n;&t;((begin) &amp; (uspi-&gt;fsize&gt;&gt;1) - 1)))
 DECL|macro|ubh_get_addr32
-mdefine_line|#define ubh_get_addr32(ubh,begin) &bslash;&n;&t;(((u32*)((ubh)-&gt;bh[(begin) &gt;&gt; (uspi-&gt;s_fshift-2)]-&gt;b_data)) + &bslash;&n;&t;((begin) &amp; ((uspi-&gt;s_fsize&gt;&gt;2) - 1)))
+mdefine_line|#define ubh_get_addr32(ubh,begin) &bslash;&n;&t;(((__fs32*)((ubh)-&gt;bh[(begin) &gt;&gt; (uspi-&gt;s_fshift-2)]-&gt;b_data)) + &bslash;&n;&t;((begin) &amp; ((uspi-&gt;s_fsize&gt;&gt;2) - 1)))
 DECL|macro|ubh_get_addr
 mdefine_line|#define ubh_get_addr ubh_get_addr8
 DECL|macro|ubh_blkmap
@@ -1283,9 +1283,9 @@ DECL|macro|ufs_freespace
 mdefine_line|#define ufs_freespace(usb, percentreserved) &bslash;&n;&t;(ufs_blkstofrags(fs32_to_cpu(sb, (usb)-&gt;fs_cstotal.cs_nbfree)) + &bslash;&n;&t;fs32_to_cpu(sb, (usb)-&gt;fs_cstotal.cs_nffree) - (uspi-&gt;s_dsize * (percentreserved) / 100))
 multiline_comment|/*&n; * Macros to access cylinder group array structures&n; */
 DECL|macro|ubh_cg_blktot
-mdefine_line|#define ubh_cg_blktot(ucpi,cylno) &bslash;&n;&t;(*((__u32*)ubh_get_addr(UCPI_UBH, (ucpi)-&gt;c_btotoff + ((cylno) &lt;&lt; 2))))
+mdefine_line|#define ubh_cg_blktot(ucpi,cylno) &bslash;&n;&t;(*((__fs32*)ubh_get_addr(UCPI_UBH, (ucpi)-&gt;c_btotoff + ((cylno) &lt;&lt; 2))))
 DECL|macro|ubh_cg_blks
-mdefine_line|#define ubh_cg_blks(ucpi,cylno,rpos) &bslash;&n;&t;(*((__u16*)ubh_get_addr(UCPI_UBH, &bslash;&n;&t;(ucpi)-&gt;c_boff + (((cylno) * uspi-&gt;s_nrpos + (rpos)) &lt;&lt; 1 ))))
+mdefine_line|#define ubh_cg_blks(ucpi,cylno,rpos) &bslash;&n;&t;(*((__fs16*)ubh_get_addr(UCPI_UBH, &bslash;&n;&t;(ucpi)-&gt;c_boff + (((cylno) * uspi-&gt;s_nrpos + (rpos)) &lt;&lt; 1 ))))
 multiline_comment|/*&n; * Bitmap operations&n; * These functions work like classical bitmap operations.&n; * The difference is that we don&squot;t have the whole bitmap&n; * in one contiguous chunk of memory, but in several buffers.&n; * The parameters of each function are super_block, ufs_buffer_head and&n; * position of the beginning of the bitmap.&n; */
 DECL|macro|ubh_setbit
 mdefine_line|#define ubh_setbit(ubh,begin,bit) &bslash;&n;&t;(*ubh_get_addr(ubh, (begin) + ((bit) &gt;&gt; 3)) |= (1 &lt;&lt; ((bit) &amp; 7)))
@@ -2176,7 +2176,7 @@ comma
 r_int
 id|blockmap
 comma
-r_int
+id|__fs32
 op_star
 id|fraglist
 comma

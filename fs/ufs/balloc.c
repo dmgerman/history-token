@@ -1313,7 +1313,7 @@ id|inode
 op_star
 id|inode
 comma
-id|u32
+id|__fs32
 op_star
 id|p
 comma
@@ -4383,7 +4383,7 @@ c_func
 id|sb
 comma
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 id|ubh_get_addr
@@ -4416,7 +4416,7 @@ c_func
 id|sb
 comma
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 id|ubh_get_addr
@@ -4449,7 +4449,7 @@ c_func
 id|sb
 comma
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 id|ubh_get_addr
