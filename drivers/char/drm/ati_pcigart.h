@@ -109,11 +109,10 @@ id|page
 op_increment
 )paren
 (brace
-id|atomic_inc
+id|get_page
 c_func
 (paren
-op_amp
-id|page-&gt;count
+id|page
 )paren
 suffix:semicolon
 id|SetPageReserved
@@ -193,11 +192,10 @@ id|page
 op_increment
 )paren
 (brace
-id|atomic_dec
+id|__put_page
 c_func
 (paren
-op_amp
-id|page-&gt;count
+id|page
 )paren
 suffix:semicolon
 id|ClearPageReserved

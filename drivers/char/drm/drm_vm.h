@@ -253,11 +253,10 @@ id|offset
 comma
 id|offset
 comma
-id|atomic_read
+id|page_count
 c_func
 (paren
-op_amp
-id|page-&gt;count
+id|page
 )paren
 )paren
 suffix:semicolon

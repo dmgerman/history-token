@@ -1797,11 +1797,10 @@ op_amp
 id|page-&gt;flags
 )paren
 suffix:semicolon
-id|atomic_set
+id|set_page_count
 c_func
 (paren
-op_amp
-id|page-&gt;count
+id|page
 comma
 l_int|1
 )paren
