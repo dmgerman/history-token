@@ -616,7 +616,7 @@ id|open-&gt;op_claim_type
 r_case
 id|NFS4_OPEN_CLAIM_NULL
 suffix:colon
-multiline_comment|/*&n;&t; * This block of code will (1) set CURRENT_FH to the file being opened,&n;&t; * creating it if necessary, (2) set open-&gt;op_cinfo,&n;&t; * (3) set open-&gt;op_truncate if the file is to be truncated&n;&t; * after opening, (4) do permission checking.&n;&t; */
+multiline_comment|/*&n;&t;&t;&t; * (1) set CURRENT_FH to the file being opened,&n;&t;&t;&t; * creating it if necessary, (2) set open-&gt;op_cinfo,&n;&t;&t;&t; * (3) set open-&gt;op_truncate if the file is to be&n;&t;&t;&t; * truncated after opening, (4) do permission checking.&n;&t;&t;&t; */
 id|status
 op_assign
 id|do_open_lookup
@@ -642,7 +642,7 @@ suffix:semicolon
 r_case
 id|NFS4_OPEN_CLAIM_PREVIOUS
 suffix:colon
-multiline_comment|/*&n;&t;* The CURRENT_FH is already set to the file being opened. This&n;&t;* block of code will (1) set open-&gt;op_cinfo, (2) set&n;&t;* open-&gt;op_truncate if the file is to be truncated after opening,&n;&t;* (3) do permission checking.&n;&t;*/
+multiline_comment|/*&n;&t;&t;&t; * The CURRENT_FH is already set to the file being&n;&t;&t;&t; * opened.  (1) set open-&gt;op_cinfo, (2) set&n;&t;&t;&t; * open-&gt;op_truncate if the file is to be truncated&n;&t;&t;&t; * after opening, (3) do permission checking.&n;&t;&t;&t;*/
 id|status
 op_assign
 id|do_open_fhandle
