@@ -2175,8 +2175,8 @@ DECL|macro|GPIO19_DREQ1_MD
 mdefine_line|#define GPIO19_DREQ1_MD&t;&t;(19 | GPIO_ALT_FN_1_IN)
 DECL|macro|GPIO20_DREQ0_MD
 mdefine_line|#define GPIO20_DREQ0_MD&t;&t;(20 | GPIO_ALT_FN_1_IN)
-DECL|macro|GPIO23_SCLK_md
-mdefine_line|#define GPIO23_SCLK_md&t;&t;(23 | GPIO_ALT_FN_2_OUT)
+DECL|macro|GPIO23_SCLK_MD
+mdefine_line|#define GPIO23_SCLK_MD&t;&t;(23 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO24_SFRM_MD
 mdefine_line|#define GPIO24_SFRM_MD&t;&t;(24 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO25_STXD_MD
