@@ -1556,7 +1556,7 @@ id|SLAB_ATOMIC
 )paren
 )paren
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|dev_err
@@ -8668,7 +8668,7 @@ c_cond
 (paren
 id|qual
 op_eq
-l_int|0
+l_int|NULL
 )paren
 r_return
 suffix:semicolon
@@ -10765,7 +10765,7 @@ c_cond
 (paren
 id|buf
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|dev_err

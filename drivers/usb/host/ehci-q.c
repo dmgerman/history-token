@@ -838,7 +838,7 @@ id|likely
 (paren
 id|urb-&gt;hcpriv
 op_ne
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -1564,7 +1564,7 @@ id|likely
 (paren
 id|last
 op_ne
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -3200,7 +3200,7 @@ id|likely
 (paren
 id|qtd
 op_ne
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -3457,7 +3457,7 @@ id|likely
 (paren
 id|qh
 op_ne
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -3497,7 +3497,7 @@ id|unlikely
 (paren
 id|qh
 op_eq
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -3650,7 +3650,7 @@ id|state
 op_logical_and
 id|ehci-&gt;async-&gt;qh_next.qh
 op_eq
-l_int|0
+l_int|NULL
 )paren
 id|timer_action
 (paren
@@ -3957,7 +3957,7 @@ id|likely
 (paren
 id|qh
 op_ne
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace

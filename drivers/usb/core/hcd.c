@@ -1394,7 +1394,7 @@ op_assign
 id|urb-&gt;dev-&gt;bus-&gt;hcpriv
 )paren
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|spin_unlock

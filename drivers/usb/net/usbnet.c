@@ -2432,7 +2432,7 @@ id|GFP_KERNEL
 )paren
 )paren
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|dbg
@@ -8320,7 +8320,7 @@ id|flags
 )paren
 )paren
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|devdbg
@@ -9892,7 +9892,7 @@ c_cond
 (paren
 id|urb
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|clear_bit
@@ -10860,10 +10860,6 @@ id|i
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
 id|urb
 op_assign
 id|usb_alloc_urb
@@ -10872,9 +10868,13 @@ l_int|0
 comma
 id|GFP_ATOMIC
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|urb
 op_ne
-l_int|0
+l_int|NULL
 )paren
 id|rx_submit
 (paren
