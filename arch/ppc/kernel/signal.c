@@ -2244,14 +2244,13 @@ macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
 (paren
-l_string|&quot;badframe in handle_signal, regs=%p frame=%lx newsp=%lx&bslash;n&quot;
+l_string|&quot;badframe in handle_signal, regs=%p frame=%p newsp=%lx&bslash;n&quot;
 comma
 id|regs
 comma
 id|frame
 comma
-op_star
-id|newspp
+id|newsp
 )paren
 suffix:semicolon
 macro_line|#endif
