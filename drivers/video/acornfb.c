@@ -5689,10 +5689,10 @@ id|fb_set_var
 c_func
 (paren
 op_amp
-id|fb_info.var
+id|fb_info
 comma
 op_amp
-id|fb_info
+id|fb_info.var
 )paren
 )paren
 id|printk
