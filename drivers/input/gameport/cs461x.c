@@ -1256,6 +1256,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|cs461x_init
+r_static
 r_int
 id|__init
 id|cs461x_init
@@ -1274,6 +1275,7 @@ id|cs461x_pci_driver
 suffix:semicolon
 )brace
 DECL|function|cs461x_exit
+r_static
 r_void
 id|__exit
 id|cs461x_exit
