@@ -7,5 +7,7 @@ DECL|macro|L1_CACHE_SHIFT
 mdefine_line|#define L1_CACHE_SHIFT&t;7
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES&t;(1 &lt;&lt; L1_CACHE_SHIFT)
+DECL|macro|SMP_CACHE_BYTES
+mdefine_line|#define SMP_CACHE_BYTES L1_CACHE_BYTES
 macro_line|#endif
 eof
