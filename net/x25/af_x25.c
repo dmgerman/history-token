@@ -707,7 +707,7 @@ suffix:semicolon
 r_struct
 id|x25_neigh
 op_star
-id|neigh
+id|nb
 suffix:semicolon
 r_if
 c_cond
@@ -743,25 +743,33 @@ suffix:semicolon
 r_case
 id|NETDEV_GOING_DOWN
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|neigh
+id|nb
 op_assign
 id|x25_get_neigh
 c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nb
 )paren
-)paren
+(brace
 id|x25_terminate_link
 c_func
 (paren
-id|neigh
+id|nb
 )paren
 suffix:semicolon
+id|x25_neigh_put
+c_func
+(paren
+id|nb
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -944,7 +952,7 @@ comma
 r_struct
 id|x25_neigh
 op_star
-id|neigh
+id|nb
 )paren
 (brace
 r_struct
@@ -1001,7 +1009,7 @@ id|s
 op_member_access_from_pointer
 id|neighbour
 op_eq
-id|neigh
+id|nb
 )paren
 r_break
 suffix:semicolon
@@ -1025,7 +1033,7 @@ c_func
 r_struct
 id|x25_neigh
 op_star
-id|neigh
+id|nb
 )paren
 (brace
 r_int
@@ -1042,7 +1050,7 @@ c_func
 (paren
 id|lci
 comma
-id|neigh
+id|nb
 )paren
 )paren
 r_if
@@ -2558,7 +2566,7 @@ op_logical_neg
 id|x25-&gt;lci
 )paren
 r_goto
-id|out_put_route
+id|out_put_neigh
 suffix:semicolon
 id|rc
 op_assign
@@ -2572,7 +2580,7 @@ id|sk-&gt;zapped
 )paren
 multiline_comment|/* Must bind first - autobinding does not work */
 r_goto
-id|out_put_route
+id|out_put_neigh
 suffix:semicolon
 r_if
 c_cond
@@ -2654,7 +2662,7 @@ id|O_NONBLOCK
 )paren
 )paren
 r_goto
-id|out_put_route
+id|out_put_neigh
 suffix:semicolon
 id|cli
 c_func
@@ -2734,6 +2742,19 @@ suffix:colon
 id|sti
 c_func
 (paren
+)paren
+suffix:semicolon
+id|out_put_neigh
+suffix:colon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+id|x25_neigh_put
+c_func
+(paren
+id|x25-&gt;neighbour
 )paren
 suffix:semicolon
 id|out_put_route
@@ -3069,7 +3090,7 @@ comma
 r_struct
 id|x25_neigh
 op_star
-id|neigh
+id|nb
 comma
 r_int
 r_int
@@ -3190,7 +3211,7 @@ c_func
 op_amp
 id|facilities
 comma
-id|neigh
+id|nb
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Try to create a new socket.&n;&t; */
@@ -3250,7 +3271,7 @@ id|source_addr
 suffix:semicolon
 id|makex25-&gt;neighbour
 op_assign
-id|neigh
+id|nb
 suffix:semicolon
 id|makex25-&gt;facilities
 op_assign
@@ -3364,7 +3385,7 @@ suffix:semicolon
 id|x25_transmit_clear_request
 c_func
 (paren
-id|neigh
+id|nb
 comma
 id|lci
 comma
@@ -5627,7 +5648,7 @@ c_func
 r_struct
 id|x25_neigh
 op_star
-id|neigh
+id|nb
 )paren
 (brace
 r_struct
@@ -5659,7 +5680,7 @@ id|s
 op_member_access_from_pointer
 id|neighbour
 op_eq
-id|neigh
+id|nb
 )paren
 id|x25_disconnect
 c_func

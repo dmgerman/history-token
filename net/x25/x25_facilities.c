@@ -852,14 +852,14 @@ comma
 r_struct
 id|x25_neigh
 op_star
-id|neighbour
+id|nb
 )paren
 (brace
 r_if
 c_cond
 (paren
 op_logical_neg
-id|neighbour-&gt;extended
+id|nb-&gt;extended
 )paren
 (brace
 r_if
