@@ -211,6 +211,46 @@ id|pci_controller_info
 op_star
 id|parent
 suffix:semicolon
+multiline_comment|/* Physical address base of controller registers. */
+DECL|member|controller_regs
+r_int
+r_int
+id|controller_regs
+suffix:semicolon
+multiline_comment|/* Physical address base of PBM registers. */
+DECL|member|pbm_regs
+r_int
+r_int
+id|pbm_regs
+suffix:semicolon
+multiline_comment|/* Opaque 32-bit system bus Port ID. */
+DECL|member|portid
+id|u32
+id|portid
+suffix:semicolon
+multiline_comment|/* Chipset version information. */
+DECL|member|chip_type
+r_int
+id|chip_type
+suffix:semicolon
+DECL|macro|PBM_CHIP_TYPE_SABRE
+mdefine_line|#define PBM_CHIP_TYPE_SABRE&t;&t;1
+DECL|macro|PBM_CHIP_TYPE_PSYCHO
+mdefine_line|#define PBM_CHIP_TYPE_PSYCHO&t;&t;2
+DECL|macro|PBM_CHIP_TYPE_SCHIZO
+mdefine_line|#define PBM_CHIP_TYPE_SCHIZO&t;&t;3
+DECL|macro|PBM_CHIP_TYPE_SCHIZO_PLUS
+mdefine_line|#define PBM_CHIP_TYPE_SCHIZO_PLUS&t;4
+DECL|macro|PBM_CHIP_TYPE_TOMATILLO
+mdefine_line|#define PBM_CHIP_TYPE_TOMATILLO&t;&t;5
+DECL|member|chip_version
+r_int
+id|chip_version
+suffix:semicolon
+DECL|member|chip_revision
+r_int
+id|chip_revision
+suffix:semicolon
 multiline_comment|/* Name used for top-level resources. */
 DECL|member|name
 r_char
@@ -334,17 +374,6 @@ r_struct
 id|pci_controller_info
 op_star
 id|next
-suffix:semicolon
-multiline_comment|/* Physical address base of controller registers. */
-DECL|member|controller_regs
-r_int
-r_int
-id|controller_regs
-suffix:semicolon
-multiline_comment|/* Opaque 32-bit system bus Port ID. */
-DECL|member|portid
-id|u32
-id|portid
 suffix:semicolon
 multiline_comment|/* Each controller gets a unique index, used mostly for&n;&t; * error logging purposes.&n;&t; */
 DECL|member|index

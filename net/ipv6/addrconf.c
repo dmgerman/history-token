@@ -241,6 +241,9 @@ r_struct
 id|inet6_ifaddr
 op_star
 id|ifp
+comma
+r_int
+id|flags
 )paren
 suffix:semicolon
 r_static
@@ -3004,6 +3007,8 @@ id|addrconf_dad_start
 c_func
 (paren
 id|ift
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|in6_ifa_put
@@ -5682,8 +5687,6 @@ suffix:semicolon
 id|rtmsg.rtmsg_flags
 op_assign
 id|RTF_UP
-op_or
-id|RTF_ADDRCONF
 suffix:semicolon
 id|rtmsg.rtmsg_type
 op_assign
@@ -5813,7 +5816,7 @@ id|dev
 comma
 l_int|0
 comma
-id|RTF_ADDRCONF
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -6183,6 +6186,8 @@ comma
 id|RTF_ADDRCONF
 op_or
 id|RTF_EXPIRES
+op_or
+id|RTF_PREFIX_RT
 )paren
 suffix:semicolon
 )brace
@@ -6394,6 +6399,10 @@ id|addrconf_dad_start
 c_func
 (paren
 id|ifp
+comma
+id|RTF_ADDRCONF
+op_or
+id|RTF_PREFIX_RT
 )paren
 suffix:semicolon
 )brace
@@ -7168,6 +7177,8 @@ id|addrconf_dad_start
 c_func
 (paren
 id|ifp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|in6_ifa_put
@@ -8042,6 +8053,8 @@ id|addrconf_dad_start
 c_func
 (paren
 id|ifp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|in6_ifa_put
@@ -9057,8 +9070,6 @@ op_assign
 (paren
 id|RTF_ALLONLINK
 op_or
-id|RTF_ADDRCONF
-op_or
 id|RTF_DEFAULT
 op_or
 id|RTF_UP
@@ -9100,6 +9111,9 @@ r_struct
 id|inet6_ifaddr
 op_star
 id|ifp
+comma
+r_int
+id|flags
 )paren
 (brace
 r_struct
@@ -9149,7 +9163,7 @@ id|dev
 comma
 l_int|0
 comma
-id|RTF_ADDRCONF
+id|flags
 )paren
 suffix:semicolon
 id|net_srandom

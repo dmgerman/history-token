@@ -5676,6 +5676,13 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|type
+op_eq
+id|SOCK_STREAM
+)paren
 id|sock-&gt;sk-&gt;sk_reuse
 op_assign
 l_int|1

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * iptables module to match on related connections&n; *  
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_core.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_helper.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_helper.h&gt;
@@ -76,6 +77,11 @@ r_enum
 id|ip_conntrack_info
 id|ctinfo
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|ct
 op_assign
 id|ip_conntrack_get
@@ -132,6 +138,13 @@ id|exp
 op_assign
 id|ct-&gt;master
 suffix:semicolon
+id|READ_LOCK
+c_func
+(paren
+op_amp
+id|ip_conntrack_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -147,8 +160,8 @@ comma
 id|exp
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_unlock
 suffix:semicolon
 )brace
 r_if
@@ -166,8 +179,8 @@ comma
 id|exp-&gt;expectant
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_unlock
 suffix:semicolon
 )brace
 id|DEBUGP
@@ -180,7 +193,8 @@ comma
 id|info-&gt;name
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_logical_neg
 id|strncmp
 c_func
@@ -197,6 +211,18 @@ id|exp-&gt;expectant-&gt;helper-&gt;name
 )paren
 op_xor
 id|info-&gt;invert
+suffix:semicolon
+id|out_unlock
+suffix:colon
+id|READ_UNLOCK
+c_func
+(paren
+op_amp
+id|ip_conntrack_lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|check

@@ -116,6 +116,27 @@ DECL|member|num_isa_ranges
 r_int
 id|num_isa_ranges
 suffix:semicolon
+DECL|macro|linux_prom_isa_intmap
+mdefine_line|#define linux_prom_isa_intmap&t;linux_prom_ebus_intmap
+DECL|member|isa_intmap
+r_struct
+id|linux_prom_isa_intmap
+id|isa_intmap
+(braket
+id|PROMREG_MAX
+)braket
+suffix:semicolon
+DECL|member|num_isa_intmap
+r_int
+id|num_isa_intmap
+suffix:semicolon
+DECL|macro|linux_prom_isa_intmask
+mdefine_line|#define linux_prom_isa_intmask&t;linux_prom_ebus_intmask
+DECL|member|isa_intmask
+r_struct
+id|linux_prom_isa_intmap
+id|isa_intmask
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

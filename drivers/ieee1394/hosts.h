@@ -4,7 +4,7 @@ mdefine_line|#define _IEEE1394_HOSTS_H
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;csr.h&quot;
@@ -36,7 +36,7 @@ id|atomic_t
 id|generation
 suffix:semicolon
 DECL|member|refcount
-r_int
+id|atomic_t
 id|refcount
 suffix:semicolon
 DECL|member|pending_packets
@@ -48,10 +48,15 @@ DECL|member|pending_pkt_lock
 id|spinlock_t
 id|pending_pkt_lock
 suffix:semicolon
-DECL|member|timeout_tq
+DECL|member|timeout
 r_struct
-id|work_struct
-id|timeout_tq
+id|timer_list
+id|timeout
+suffix:semicolon
+DECL|member|timeout_interval
+r_int
+r_int
+id|timeout_interval
 suffix:semicolon
 DECL|member|iso_listen_count
 r_int
@@ -220,7 +225,7 @@ DECL|enum|isoctl_cmd
 r_enum
 id|isoctl_cmd
 (brace
-multiline_comment|/* rawiso API - see iso.h for the meanings of these commands&n;&t; * INIT = allocate resources&n;&t; * START = begin transmission/reception&n;&t; * STOP = halt transmission/reception&n;&t; * QUEUE/RELEASE = produce/consume packets&n;&t; * SHUTDOWN = deallocate resources&n;&t; */
+multiline_comment|/* rawiso API - see iso.h for the meanings of these commands&n;&t;   (they correspond exactly to the hpsb_iso_* API functions)&n;&t; * INIT = allocate resources&n;&t; * START = begin transmission/reception&n;&t; * STOP = halt transmission/reception&n;&t; * QUEUE/RELEASE = produce/consume packets&n;&t; * SHUTDOWN = deallocate resources&n;&t; */
 DECL|enumerator|XMIT_INIT
 id|XMIT_INIT
 comma
@@ -263,6 +268,8 @@ comma
 DECL|enumerator|RECV_SHUTDOWN
 id|RECV_SHUTDOWN
 comma
+DECL|enumerator|RECV_FLUSH
+id|RECV_FLUSH
 )brace
 suffix:semicolon
 DECL|enum|reset_types

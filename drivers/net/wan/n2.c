@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * SDL Inc. RISCom/N2 synchronous serial card driver for Linux&n; *&n; * Copyright (C) 1998-2003 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License&n; * as published by the Free Software Foundation.&n; *&n; * For information see http://hq.pm.waw.pl/hdlc/&n; *&n; * Note: integrated CSU/DSU/DDS are not supported by this driver&n; *&n; * Sources of information:&n; *    Hitachi HD64570 SCA User&squot;s Manual&n; *    SDL Inc. PPP/HDLC/CISCO driver&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -22,7 +21,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;SDL RISCom/N2 driver version: 1.14&quot;
+l_string|&quot;SDL RISCom/N2 driver version: 1.15&quot;
 suffix:semicolon
 DECL|variable|devname
 r_static
@@ -33,6 +32,10 @@ id|devname
 op_assign
 l_string|&quot;RISCom/N2&quot;
 suffix:semicolon
+DECL|macro|DEBUG_PKT
+macro_line|#undef DEBUG_PKT
+DECL|macro|DEBUG_RINGS
+mdefine_line|#define DEBUG_RINGS
 DECL|macro|USE_WINDOWSIZE
 mdefine_line|#define USE_WINDOWSIZE 16384
 DECL|macro|USE_BUS16BITS
@@ -53,6 +56,8 @@ DECL|macro|N2_IOPORTS
 mdefine_line|#define N2_IOPORTS 0x10
 DECL|macro|NEED_DETECT_RAM
 mdefine_line|#define NEED_DETECT_RAM
+DECL|macro|NEED_SCA_MSCI_INTR
+mdefine_line|#define NEED_SCA_MSCI_INTR
 DECL|macro|MAX_TX_BUFFERS
 mdefine_line|#define MAX_TX_BUFFERS 10
 DECL|variable|hw
@@ -908,7 +913,7 @@ c_func
 id|hdlc
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_HDLC_DEBUG_RINGS
+macro_line|#ifdef DEBUG_RINGS
 r_if
 c_cond
 (paren
@@ -1697,7 +1702,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_INFO
 l_string|&quot;n2: RISCom/N2 %u KB RAM, IRQ%u, &quot;
 l_string|&quot;using %u TX + %u RX packets rings&bslash;n&quot;
 comma

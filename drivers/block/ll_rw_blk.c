@@ -1900,7 +1900,7 @@ op_assign
 (brace
 l_string|&quot;REQ_RW&quot;
 comma
-l_string|&quot;REQ_RW_AHEAD&quot;
+l_string|&quot;REQ_FAILFAST&quot;
 comma
 l_string|&quot;REQ_SOFTBARRIER&quot;
 comma
@@ -1933,6 +1933,14 @@ comma
 l_string|&quot;REQ_DRIVE_TASK&quot;
 comma
 l_string|&quot;REQ_DRIVE_TASKFILE&quot;
+comma
+l_string|&quot;REQ_PREEMPT&quot;
+comma
+l_string|&quot;REQ_PM_SUSPEND&quot;
+comma
+l_string|&quot;REQ_PM_RESUME&quot;
+comma
+l_string|&quot;REQ_PM_SHUTDOWN&quot;
 comma
 )brace
 suffix:semicolon
@@ -3824,9 +3832,20 @@ id|elevator_t
 op_star
 id|chosen_elevator
 op_assign
+macro_line|#if defined(CONFIG_IOSCHED_AS)
 op_amp
 id|iosched_as
 suffix:semicolon
+macro_line|#elif defined(CONFIG_IOSCHED_DEADLINE)
+op_amp
+id|iosched_deadline
+suffix:semicolon
+macro_line|#else
+op_amp
+id|elevator_noop
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_IOSCHED_AS) || defined(CONFIG_IOSCHED_DEADLINE)
 DECL|function|elevator_setup
 r_static
 r_int
@@ -3839,6 +3858,7 @@ op_star
 id|str
 )paren
 (brace
+macro_line|#ifdef CONFIG_IOSCHED_DEADLINE
 r_if
 c_cond
 (paren
@@ -3856,6 +3876,8 @@ op_assign
 op_amp
 id|iosched_deadline
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_IOSCHED_AS
 r_if
 c_cond
 (paren
@@ -3873,6 +3895,7 @@ op_assign
 op_amp
 id|iosched_as
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -3885,6 +3908,7 @@ comma
 id|elevator_setup
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IOSCHED_AS || CONFIG_IOSCHED_DEADLINE */
 multiline_comment|/**&n; * blk_init_queue  - prepare a request queue for use with a block device&n; * @q:    The &amp;request_queue_t to be initialised&n; * @rfn:  The function to be called to process requests that have been&n; *        placed on the queue.&n; *&n; * Description:&n; *    If a block device wishes to use the standard request handling procedures,&n; *    which sorts requests and coalesces adjacent requests, then it must&n; *    call blk_init_queue().  The function @rfn will be called when there&n; *    are requests on the queue that need to be processed.  If the device&n; *    supports plugging, then @rfn may not be called immediately when requests&n; *    are available on the queue, but may be called at some time later instead.&n; *    Plugged queues are generally unplugged when a buffer belonging to one&n; *    of the requests on the queue is needed, or due to memory pressure.&n; *&n; *    @rfn is not required, or even expected, to remove all requests off the&n; *    queue, but only as many as it can handle at a time.  If it does leave&n; *    requests on the queue, it is responsible for arranging that the requests&n; *    get dealt with eventually.&n; *&n; *    The queue spin lock must be held while manipulating the requests on the&n; *    request queue.&n; *&n; * Note:&n; *    blk_init_queue() must be paired with a blk_cleanup_queue() call&n; *    when the block device is deactivated (such as at module unload).&n; **/
 DECL|function|blk_init_queue
 r_int
@@ -3935,33 +3959,12 @@ id|printed
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|chosen_elevator
-op_eq
-op_amp
-id|iosched_deadline
-)paren
 id|printk
 c_func
 (paren
-l_string|&quot;deadline elevator&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|chosen_elevator
-op_eq
-op_amp
-id|iosched_as
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;anticipatory scheduling elevator&bslash;n&quot;
+l_string|&quot;Using %s elevator&bslash;n&quot;
+comma
+id|chosen_elevator-&gt;elevator_name
 )paren
 suffix:semicolon
 )brace
@@ -4910,7 +4913,7 @@ id|rq
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * blk_insert_request - insert a special request in to a request queue&n; * @q:&t;&t;request queue where request should be inserted&n; * @rq:&t;&t;request to be inserted&n; * @at_head:&t;insert request at head or tail of queue&n; * @data:&t;private data&n; *&n; * Description:&n; *    Many block devices need to execute commands asynchronously, so they don&squot;t&n; *    block the whole kernel from preemption during request execution.  This is&n; *    accomplished normally by inserting aritficial requests tagged as&n; *    REQ_SPECIAL in to the corresponding request queue, and letting them be&n; *    scheduled for actual execution by the request queue.&n; *&n; *    We have the option of inserting the head or the tail of the queue.&n; *    Typically we use the tail for new ioctls and so forth.  We use the head&n; *    of the queue for things like a QUEUE_FULL message from a device, or a&n; *    host that is unable to accept a particular command.&n; */
+multiline_comment|/**&n; * blk_insert_request - insert a special request in to a request queue&n; * @q:&t;&t;request queue where request should be inserted&n; * @rq:&t;&t;request to be inserted&n; * @at_head:&t;insert request at head or tail of queue&n; * @data:&t;private data&n; * @reinsert:&t;true if request it a reinsertion of previously processed one&n; *&n; * Description:&n; *    Many block devices need to execute commands asynchronously, so they don&squot;t&n; *    block the whole kernel from preemption during request execution.  This is&n; *    accomplished normally by inserting aritficial requests tagged as&n; *    REQ_SPECIAL in to the corresponding request queue, and letting them be&n; *    scheduled for actual execution by the request queue.&n; *&n; *    We have the option of inserting the head or the tail of the queue.&n; *    Typically we use the tail for new ioctls and so forth.  We use the head&n; *    of the queue for things like a QUEUE_FULL message from a device, or a&n; *    host that is unable to accept a particular command.&n; */
 DECL|function|blk_insert_request
 r_void
 id|blk_insert_request
@@ -4931,6 +4934,9 @@ comma
 r_void
 op_star
 id|data
+comma
+r_int
+id|reinsert
 )paren
 (brace
 r_int
@@ -4957,6 +4963,23 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If command is tagged, release the tag&n;&t; */
+r_if
+c_cond
+(paren
+id|reinsert
+)paren
+(brace
+id|blk_requeue_request
+c_func
+(paren
+id|q
+comma
+id|rq
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -4997,6 +5020,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 id|q
 op_member_access_from_pointer
 id|request_fn
@@ -5855,6 +5879,8 @@ comma
 id|cur_nr_sectors
 comma
 id|barrier
+comma
+id|ra
 suffix:semicolon
 r_struct
 id|list_head
@@ -5918,6 +5944,20 @@ comma
 op_amp
 id|bio-&gt;bi_rw
 )paren
+suffix:semicolon
+id|ra
+op_assign
+id|bio_flagged
+c_func
+(paren
+id|bio
+comma
+id|BIO_RW_AHEAD
+)paren
+op_logical_or
+id|current-&gt;flags
+op_amp
+id|PF_READAHEAD
 suffix:semicolon
 id|again
 suffix:colon
@@ -6278,13 +6318,7 @@ multiline_comment|/*&n;&t;&t;&t; * READA bit set&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|bio_flagged
-c_func
-(paren
-id|bio
-comma
-id|BIO_RW_AHEAD
-)paren
+id|ra
 )paren
 r_goto
 id|end_io
@@ -6328,6 +6362,16 @@ id|REQ_HARDBARRIER
 op_or
 id|REQ_NOMERGE
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * don&squot;t stack up retries for read ahead&n;&t; */
+r_if
+c_cond
+(paren
+id|ra
+)paren
+id|req-&gt;flags
+op_or_assign
+id|REQ_FAILFAST
 suffix:semicolon
 id|req-&gt;errors
 op_assign
@@ -7545,20 +7589,24 @@ id|nr_bytes
 )paren
 )paren
 (brace
-id|bio_iovec
+id|bio_iovec_idx
 c_func
 (paren
 id|bio
+comma
+id|idx
 )paren
 op_member_access_from_pointer
 id|bv_offset
 op_add_assign
 id|nr_bytes
 suffix:semicolon
-id|bio_iovec
+id|bio_iovec_idx
 c_func
 (paren
 id|bio
+comma
+id|idx
 )paren
 op_member_access_from_pointer
 id|bv_len

@@ -1,8 +1,12 @@
 macro_line|#ifndef _I8042_SPARCIO_H
 DECL|macro|_I8042_SPARCIO_H
 mdefine_line|#define _I8042_SPARCIO_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
+macro_line|#endif
 DECL|variable|i8042_kbd_irq
 r_static
 r_int
@@ -140,6 +144,12 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef CONFIG_PCI
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+macro_line|#else
 r_char
 id|prop
 (braket
@@ -409,6 +419,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif /* CONFIG_PCI */
 )brace
 DECL|function|i8042_platform_exit
 r_static
@@ -420,6 +431,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PCI
 id|iounmap
 c_func
 (paren
@@ -430,6 +442,7 @@ op_star
 id|kbd_iobase
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#endif /* _I8042_SPARCIO_H */
 eof

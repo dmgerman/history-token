@@ -464,10 +464,10 @@ DECL|enumerator|__REQ_RW
 id|__REQ_RW
 comma
 multiline_comment|/* not set, read. set, write */
-DECL|enumerator|__REQ_RW_AHEAD
-id|__REQ_RW_AHEAD
+DECL|enumerator|__REQ_FAILFAST
+id|__REQ_FAILFAST
 comma
-multiline_comment|/* READA */
+multiline_comment|/* no low level driver retries */
 DECL|enumerator|__REQ_SOFTBARRIER
 id|__REQ_SOFTBARRIER
 comma
@@ -554,8 +554,8 @@ multiline_comment|/* stops here */
 suffix:semicolon
 DECL|macro|REQ_RW
 mdefine_line|#define REQ_RW&t;&t;(1 &lt;&lt; __REQ_RW)
-DECL|macro|REQ_RW_AHEAD
-mdefine_line|#define REQ_RW_AHEAD&t;(1 &lt;&lt; __REQ_RW_AHEAD)
+DECL|macro|REQ_FAILFAST
+mdefine_line|#define REQ_FAILFAST&t;(1 &lt;&lt; __REQ_FAILFAST)
 DECL|macro|REQ_SOFTBARRIER
 mdefine_line|#define REQ_SOFTBARRIER&t;(1 &lt;&lt; __REQ_SOFTBARRIER)
 DECL|macro|REQ_HARDBARRIER
@@ -1019,6 +1019,8 @@ DECL|macro|blk_fs_request
 mdefine_line|#define blk_fs_request(rq)&t;((rq)-&gt;flags &amp; REQ_CMD)
 DECL|macro|blk_pc_request
 mdefine_line|#define blk_pc_request(rq)&t;((rq)-&gt;flags &amp; REQ_BLOCK_PC)
+DECL|macro|blk_noretry_request
+mdefine_line|#define blk_noretry_request(rq)&t;((rq)-&gt;flags &amp; REQ_FAILFAST)
 DECL|macro|blk_pm_suspend_request
 mdefine_line|#define blk_pm_suspend_request(rq)&t;((rq)-&gt;flags &amp; REQ_PM_SUSPEND)
 DECL|macro|blk_pm_resume_request
@@ -1465,6 +1467,8 @@ r_int
 comma
 r_void
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern

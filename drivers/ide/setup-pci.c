@@ -437,7 +437,6 @@ DECL|function|ide_get_or_set_dma_base
 r_static
 r_int
 r_int
-id|__init
 id|ide_get_or_set_dma_base
 (paren
 id|ide_hwif_t

@@ -1214,7 +1214,6 @@ suffix:semicolon
 macro_line|#else
 DECL|variable|ns558_pnp_driver
 r_static
-r_const
 r_struct
 id|pnp_driver
 id|ns558_pnp_driver

@@ -204,10 +204,14 @@ c_cond
 (paren
 id|datalen
 op_ne
+id|EBT_ALIGN
+c_func
+(paren
 r_sizeof
 (paren
 r_struct
 id|ebt_nat_info
+)paren
 )paren
 )paren
 r_return

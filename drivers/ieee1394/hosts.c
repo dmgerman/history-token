@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
@@ -182,8 +181,12 @@ id|host-&gt;driver-&gt;owner
 )paren
 )paren
 (brace
+id|atomic_inc
+c_func
+(paren
+op_amp
 id|host-&gt;refcount
-op_increment
+)paren
 suffix:semicolon
 id|retval
 op_assign
@@ -230,14 +233,15 @@ op_amp
 id|hpsb_hosts_lock
 )paren
 suffix:semicolon
-id|host-&gt;refcount
-op_decrement
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
 id|host-&gt;refcount
+)paren
 op_logical_and
 id|host-&gt;is_shutdown
 )paren
@@ -331,9 +335,14 @@ id|h-&gt;driver
 op_assign
 id|drv
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
 id|h-&gt;refcount
-op_assign
+comma
 l_int|1
+)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -386,27 +395,32 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|INIT_WORK
+id|init_timer
 c_func
 (paren
 op_amp
-id|h-&gt;timeout_tq
-comma
-(paren
-r_void
-(paren
-op_star
-)paren
-(paren
-r_void
-op_star
-)paren
-)paren
-id|abort_timedouts
-comma
-id|h
+id|h-&gt;timeout
 )paren
 suffix:semicolon
+id|h-&gt;timeout.data
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|h
+suffix:semicolon
+id|h-&gt;timeout.function
+op_assign
+id|abort_timedouts
+suffix:semicolon
+id|h-&gt;timeout_interval
+op_assign
+id|HZ
+op_div
+l_int|20
+suffix:semicolon
+singleline_comment|// 50ms by default
 id|h-&gt;topology_map
 op_assign
 id|h-&gt;csr.topology_map

@@ -4,7 +4,6 @@ DECL|macro|__V850_CACHEFLUSH_H__
 mdefine_line|#define __V850_CACHEFLUSH_H__
 multiline_comment|/* Somebody depends on this; sigh...  */
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 multiline_comment|/* The following are all used by the kernel in ways that only affect&n;   systems with MMUs, so we don&squot;t need them.  */
 DECL|macro|flush_cache_all

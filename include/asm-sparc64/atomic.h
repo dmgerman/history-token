@@ -2,6 +2,7 @@ multiline_comment|/* $Id: atomic.h,v 1.22 2001/07/11 23:56:07 davem Exp $&n; * a
 macro_line|#ifndef __ARCH_SPARC64_ATOMIC__
 DECL|macro|__ARCH_SPARC64_ATOMIC__
 mdefine_line|#define __ARCH_SPARC64_ATOMIC__
+macro_line|#include &lt;linux/types.h&gt;
 DECL|member|counter
 DECL|typedef|atomic_t
 r_typedef
@@ -20,7 +21,7 @@ r_typedef
 r_struct
 (brace
 r_volatile
-r_int
+id|__s64
 id|counter
 suffix:semicolon
 )brace
@@ -54,7 +55,7 @@ r_int
 id|__atomic64_add
 c_func
 (paren
-r_int
+id|__s64
 comma
 id|atomic64_t
 op_star
@@ -76,7 +77,7 @@ r_int
 id|__atomic64_sub
 c_func
 (paren
-r_int
+id|__s64
 comma
 id|atomic64_t
 op_star

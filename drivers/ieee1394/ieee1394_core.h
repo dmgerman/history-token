@@ -3,7 +3,6 @@ DECL|macro|_IEEE1394_CORE_H
 mdefine_line|#define _IEEE1394_CORE_H
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;hosts.h&quot;
 DECL|struct|hpsb_packet
@@ -241,10 +240,9 @@ r_void
 id|abort_timedouts
 c_func
 (paren
-r_struct
-id|hpsb_host
-op_star
-id|host
+r_int
+r_int
+id|__opaque
 )paren
 suffix:semicolon
 r_void
@@ -501,13 +499,6 @@ c_func
 r_int
 id|blocknum
 )paren
-suffix:semicolon
-multiline_comment|/* the proc_fs entry for /proc/ieee1394 */
-r_extern
-r_struct
-id|proc_dir_entry
-op_star
-id|ieee1394_procfs_entry
 suffix:semicolon
 multiline_comment|/* Our sysfs bus entry */
 r_extern

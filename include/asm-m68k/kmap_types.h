@@ -1,7 +1,6 @@
 macro_line|#ifndef __ASM_M68K_KMAP_TYPES_H
 DECL|macro|__ASM_M68K_KMAP_TYPES_H
 mdefine_line|#define __ASM_M68K_KMAP_TYPES_H
-macro_line|#include &lt;linux/config.h&gt;
 DECL|enum|km_type
 r_enum
 id|km_type

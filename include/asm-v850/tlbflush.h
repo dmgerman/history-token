@@ -1,8 +1,7 @@
-multiline_comment|/*&n; * include/asm-v850/tlbflush.h&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/tlbflush.h&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_TLBFLUSH_H__
 DECL|macro|__V850_TLBFLUSH_H__
 mdefine_line|#define __V850_TLBFLUSH_H__
-macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 multiline_comment|/*&n; * flush all user-space atc entries.&n; */
 DECL|function|__flush_tlb

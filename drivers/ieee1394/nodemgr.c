@@ -1973,9 +1973,57 @@ op_assign
 op_amp
 id|ud-&gt;device
 suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|lh
+comma
+op_star
+id|next
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|list_for_each_safe
+c_func
+(paren
+id|lh
+comma
+id|next
+comma
+op_amp
+id|ud-&gt;device.children
+)paren
+(brace
+r_struct
+id|unit_directory
+op_star
+id|ud
+suffix:semicolon
+id|ud
+op_assign
+id|container_of
+c_func
+(paren
+id|list_to_dev
+c_func
+(paren
+id|lh
+)paren
+comma
+r_struct
+id|unit_directory
+comma
+id|device
+)paren
+suffix:semicolon
+id|nodemgr_remove_ud
+c_func
+(paren
+id|ud
+)paren
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -2196,15 +2244,15 @@ id|ud-&gt;device.name
 comma
 id|DEVICE_NAME_SIZE
 comma
-l_string|&quot;IEEE-1394 unit directory %d-&quot;
+l_string|&quot;IEEE-1394 unit directory &quot;
 id|NODE_BUS_FMT
 l_string|&quot;-%u&quot;
-comma
-id|hi-&gt;host-&gt;id
 comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|hi-&gt;host
+comma
 id|ne-&gt;nodeid
 )paren
 comma
@@ -3508,14 +3556,14 @@ id|ne-&gt;device.name
 comma
 id|DEVICE_NAME_SIZE
 comma
-l_string|&quot;IEEE-1394 device %d-&quot;
+l_string|&quot;IEEE-1394 device &quot;
 id|NODE_BUS_FMT
-comma
-id|host-&gt;id
 comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|host
+comma
 id|ne-&gt;nodeid
 )paren
 )paren
@@ -3568,7 +3616,7 @@ suffix:semicolon
 id|HPSB_DEBUG
 c_func
 (paren
-l_string|&quot;%s added: ID:BUS[%d-&quot;
+l_string|&quot;%s added: ID:BUS[&quot;
 id|NODE_BUS_FMT
 l_string|&quot;]  GUID[%016Lx]&quot;
 comma
@@ -3583,11 +3631,11 @@ l_string|&quot;Host&quot;
 suffix:colon
 l_string|&quot;Node&quot;
 comma
-id|host-&gt;id
-comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|host
+comma
 id|nodeid
 )paren
 comma
@@ -4285,6 +4333,11 @@ r_int
 r_int
 op_star
 id|id
+comma
+r_struct
+id|unit_directory
+op_star
+id|parent
 )paren
 (brace
 r_struct
@@ -4703,7 +4756,10 @@ suffix:semicolon
 r_case
 id|CONFIG_ROM_LOGICAL_UNIT_DIRECTORY
 suffix:colon
-multiline_comment|/* TODO: Parent this with it&squot;s UD */
+id|ud-&gt;flags
+op_or_assign
+id|UNIT_DIRECTORY_HAS_LUN_DIRECTORY
+suffix:semicolon
 id|ud_temp
 op_assign
 id|nodemgr_process_unit_directory
@@ -4720,17 +4776,20 @@ op_star
 l_int|4
 comma
 id|id
+comma
+id|parent
 )paren
 suffix:semicolon
-multiline_comment|/* inherit unspecified values */
 r_if
 c_cond
 (paren
 id|ud_temp
-op_ne
+op_eq
 l_int|NULL
 )paren
-(brace
+r_break
+suffix:semicolon
+multiline_comment|/* inherit unspecified values */
 r_if
 c_cond
 (paren
@@ -4839,7 +4898,6 @@ op_assign
 id|ud-&gt;version
 suffix:semicolon
 )brace
-)brace
 r_break
 suffix:semicolon
 r_default
@@ -4885,6 +4943,23 @@ id|ud-&gt;device
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|parent
+)paren
+(brace
+id|ud-&gt;flags
+op_or_assign
+id|UNIT_DIRECTORY_LUN_DIRECTORY
+suffix:semicolon
+id|ud-&gt;device.parent
+op_assign
+op_amp
+id|parent-&gt;device
+suffix:semicolon
+)brace
+r_else
 id|ud-&gt;device.parent
 op_assign
 op_amp
@@ -5230,6 +5305,8 @@ l_int|4
 comma
 op_amp
 id|ud_id
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_break
@@ -5601,8 +5678,7 @@ id|busoptions
 op_amp
 l_int|0x7
 suffix:semicolon
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
-id|HPSB_DEBUG
+id|HPSB_VERBOSE
 c_func
 (paren
 l_string|&quot;NodeMgr: raw=0x%08x irmc=%d cmc=%d isc=%d bmc=%d pmc=%d &quot;
@@ -5629,7 +5705,6 @@ comma
 id|ne-&gt;busopt.lnkspd
 )paren
 suffix:semicolon
-macro_line|#endif
 id|device_remove_file
 c_func
 (paren
@@ -5823,14 +5898,14 @@ id|ne-&gt;device.name
 comma
 id|DEVICE_NAME_SIZE
 comma
-l_string|&quot;IEEE-1394 device %d-&quot;
+l_string|&quot;IEEE-1394 device &quot;
 id|NODE_BUS_FMT
-comma
-id|hi-&gt;host-&gt;id
 comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|hi-&gt;host
+comma
 id|ne-&gt;nodeid
 )paren
 )paren
@@ -5838,24 +5913,24 @@ suffix:semicolon
 id|HPSB_DEBUG
 c_func
 (paren
-l_string|&quot;Node changed: %d-&quot;
+l_string|&quot;Node changed: &quot;
 id|NODE_BUS_FMT
-l_string|&quot; -&gt; %d-&quot;
+l_string|&quot; -&gt; &quot;
 id|NODE_BUS_FMT
-comma
-id|ne-&gt;host-&gt;id
 comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|ne-&gt;host
+comma
 id|ne-&gt;nodeid
 )paren
 comma
-id|ne-&gt;host-&gt;id
-comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|ne-&gt;host
+comma
 id|nodeid
 )paren
 )paren
@@ -5978,8 +6053,7 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* IEEE P1212 says that devices should support 64byte block&n;&t; * reads, aligned on 64byte boundaries. That doesn&squot;t seem to&n;&t; * work though, and we are forced to doing quadlet sized&n;&t; * reads.  */
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
-id|HPSB_INFO
+id|HPSB_VERBOSE
 c_func
 (paren
 l_string|&quot;Initiating ConfigROM request for node &quot;
@@ -5988,11 +6062,12 @@ comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|host
+comma
 id|nodeid
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* &n;&t; * Must retry a few times if config rom read returns zero (how long?). Will&n;&t; * not normally occur, but we should do the right thing. For example, with&n;&t; * some sbp2 devices, the bridge chipset cannot return valid config rom reads&n;&t; * immediately after power-on, since they need to detect the type of &n;&t; * device attached (disk or CD-ROM).&n;&t; */
 r_for
 c_loop
@@ -6042,6 +6117,8 @@ comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|host
+comma
 id|nodeid
 )paren
 )paren
@@ -6114,6 +6191,8 @@ comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|host
+comma
 id|nodeid
 )paren
 comma
@@ -6149,6 +6228,8 @@ comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|host
+comma
 id|nodeid
 )paren
 comma
@@ -6213,6 +6294,8 @@ comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|host
+comma
 id|nodeid
 )paren
 )paren
@@ -6313,6 +6396,8 @@ comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|host
+comma
 id|nodeid
 )paren
 comma
@@ -6644,15 +6729,15 @@ suffix:semicolon
 id|HPSB_DEBUG
 c_func
 (paren
-l_string|&quot;Node removed: ID:BUS[%d-&quot;
+l_string|&quot;Node removed: ID:BUS[&quot;
 id|NODE_BUS_FMT
 l_string|&quot;]  GUID[%016Lx]&quot;
-comma
-id|host-&gt;id
 comma
 id|NODE_BUS_ARGS
 c_func
 (paren
+id|host
+comma
 id|ne-&gt;nodeid
 )paren
 comma
@@ -7064,29 +7149,26 @@ id|nodemgr_serialize
 r_int
 r_int
 id|generation
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* Pause for 1/4 second, to make sure things settle down. */
+multiline_comment|/* Pause for 1/4 second in 1/16 second intervals,&n;&t;&t; * to make sure things settle down. */
 r_for
 c_loop
 (paren
 id|i
 op_assign
-id|HZ
-op_div
-l_int|4
-suffix:semicolon
-id|i
-OG
 l_int|0
 suffix:semicolon
 id|i
-op_sub_assign
-id|HZ
-op_div
-l_int|16
+OL
+l_int|4
+suffix:semicolon
+id|i
+op_increment
 )paren
 (brace
 id|set_current_state
@@ -7132,9 +7214,7 @@ id|hi-&gt;reset_sem
 )paren
 id|i
 op_assign
-id|HZ
-op_div
-l_int|4
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -7197,13 +7277,12 @@ suffix:semicolon
 )brace
 id|caught_signal
 suffix:colon
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
-id|HPSB_DEBUG
+id|HPSB_VERBOSE
+c_func
 (paren
 l_string|&quot;NodeMgr: Exiting thread&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|complete_and_exit
 c_func
 (paren
@@ -7702,15 +7781,14 @@ op_ne
 l_int|NULL
 )paren
 (brace
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
-id|HPSB_DEBUG
+id|HPSB_VERBOSE
+c_func
 (paren
 l_string|&quot;NodeMgr: Processing host reset for %s&quot;
 comma
 id|hi-&gt;daemon_name
 )paren
 suffix:semicolon
-macro_line|#endif
 id|up
 c_func
 (paren

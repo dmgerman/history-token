@@ -5519,7 +5519,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IP_MULTICAST
+macro_line|#if defined(CONFIG_IP_MULTICAST) &amp;&amp; defined(CONFIG_PROC_FS)
 id|igmp_mc_proc_init
 c_func
 (paren
