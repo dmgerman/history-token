@@ -548,6 +548,8 @@ id|hcd
 suffix:semicolon
 r_int
 id|ports
+op_assign
+id|hcd-&gt;self.root_hub-&gt;maxchild
 suffix:semicolon
 id|u32
 id|temp
@@ -556,16 +558,6 @@ r_int
 id|retval
 op_assign
 l_int|0
-suffix:semicolon
-singleline_comment|// if (port request)
-id|ports
-op_assign
-id|roothub_a
-(paren
-id|ohci
-)paren
-op_amp
-id|RH_A_NDP
 suffix:semicolon
 r_switch
 c_cond

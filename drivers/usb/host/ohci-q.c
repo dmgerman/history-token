@@ -2322,6 +2322,11 @@ op_or
 l_int|0xE000
 )paren
 suffix:semicolon
+multiline_comment|/* HC might read the TD right after we link it ... */
+id|wmb
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* append to queue */
 id|td-&gt;ed-&gt;hwTailP
 op_assign
@@ -2638,6 +2643,11 @@ c_cond
 op_logical_neg
 id|ohci-&gt;sleeping
 )paren
+(brace
+id|wmb
+(paren
+)paren
+suffix:semicolon
 id|writel
 (paren
 id|OHCI_BLF
@@ -2646,6 +2656,7 @@ op_amp
 id|ohci-&gt;regs-&gt;cmdstatus
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -2692,6 +2703,7 @@ suffix:semicolon
 r_case
 id|PIPE_CONTROL
 suffix:colon
+multiline_comment|/* control requests don&squot;t use toggle state  */
 id|info
 op_assign
 id|TD_CC
@@ -2818,6 +2830,11 @@ c_cond
 op_logical_neg
 id|ohci-&gt;sleeping
 )paren
+(brace
+id|wmb
+(paren
+)paren
+suffix:semicolon
 id|writel
 (paren
 id|OHCI_CLF
@@ -2826,6 +2843,7 @@ op_amp
 id|ohci-&gt;regs-&gt;cmdstatus
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
