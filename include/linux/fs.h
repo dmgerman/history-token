@@ -809,6 +809,12 @@ id|block_device_operations
 op_star
 id|bd_op
 suffix:semicolon
+DECL|member|bd_queue
+r_struct
+id|request_queue
+op_star
+id|bd_queue
+suffix:semicolon
 DECL|member|bd_sem
 r_struct
 id|semaphore
