@@ -4178,7 +4178,7 @@ comma
 dot
 id|connect
 op_assign
-id|udpv6_connect
+id|ip6_datagram_connect
 comma
 dot
 id|disconnect

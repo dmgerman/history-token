@@ -2844,7 +2844,7 @@ comma
 dot
 id|connect
 op_assign
-id|udp_connect
+id|ip4_datagram_connect
 comma
 dot
 id|disconnect
