@@ -93,10 +93,10 @@ c_func
 r_void
 )paren
 (brace
-id|pcibios_write_config_dword
+id|pci_bus_write_config_dword
 c_func
 (paren
-l_int|0
+id|pci_isa_hose-&gt;bus
 comma
 id|PCI_DEVFN
 c_func
