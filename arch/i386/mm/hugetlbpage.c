@@ -281,8 +281,6 @@ op_star
 id|pmd
 suffix:semicolon
 )brace
-DECL|macro|mk_pte_huge
-mdefine_line|#define mk_pte_huge(entry) {entry.pte_low |= (_PAGE_PRESENT | _PAGE_PSE);}
 DECL|function|set_huge_pte
 r_static
 r_void
