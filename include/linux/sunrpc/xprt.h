@@ -603,16 +603,20 @@ id|rpc_xprt
 op_star
 )paren
 suffix:semicolon
-DECL|macro|XPRT_CONNECT
-mdefine_line|#define XPRT_CONNECT&t;0
 DECL|macro|XPRT_LOCKED
-mdefine_line|#define XPRT_LOCKED&t;1
+mdefine_line|#define XPRT_LOCKED&t;0
+DECL|macro|XPRT_CONNECT
+mdefine_line|#define XPRT_CONNECT&t;1
+DECL|macro|XPRT_CONNECTING
+mdefine_line|#define XPRT_CONNECTING&t;2
 DECL|macro|xprt_connected
 mdefine_line|#define xprt_connected(xp)&t;&t;(test_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
 DECL|macro|xprt_set_connected
 mdefine_line|#define xprt_set_connected(xp)&t;&t;(set_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
 DECL|macro|xprt_test_and_set_connected
 mdefine_line|#define xprt_test_and_set_connected(xp)&t;(test_and_set_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
+DECL|macro|xprt_test_and_clear_connected
+mdefine_line|#define xprt_test_and_clear_connected(xp) &bslash;&n;&t;&t;&t;&t;&t;(test_and_clear_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
 DECL|macro|xprt_clear_connected
 mdefine_line|#define xprt_clear_connected(xp)&t;(clear_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
 macro_line|#endif /* __KERNEL__*/
