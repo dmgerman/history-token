@@ -1,12 +1,12 @@
-multiline_comment|/* Code to support devices on the DIO (and eventually DIO-II) bus&n; * Copyright (C) 05/1998 Peter Maydell &lt;pmaydell@chiark.greenend.org.uk&gt;&n; * &n; * This code has basically these routines at the moment:&n; * int dio_find(u_int deviceid)&n; *    Search the list of DIO devices and return the select code&n; *    of the next unconfigured device found that matches the given device ID.&n; *    Note that the deviceid parameter should be the encoded ID.&n; *    This means that framebuffers should pass it as &n; *    DIO_ENCODE_ID(DIO_ID_FBUFFER,DIO_ID2_TOPCAT)&n; *    (or whatever); everybody else just uses DIO_ID_FOOBAR.&n; * void *dio_scodetoviraddr(int scode)&n; *    Return the virtual address corresponding to the given select code.&n; *    NB: DIO-II devices will have to be mapped in in this routine!&n; * int dio_scodetoipl(int scode)&n; *    Every DIO card has a fixed interrupt priority level. This function &n; *    returns it, whatever it is.&n; * const char *dio_scodetoname(int scode)&n; *    Return a character string describing this board [might be &quot;&quot; if &n; *    not CONFIG_DIO_CONSTANTS]&n; * void dio_config_board(int scode)     mark board as configured in the list&n; * void dio_unconfig_board(int scode)   mark board as no longer configured&n; *&n; * This file is based on the way the Amiga port handles Zorro II cards, &n; * although we aren&squot;t so complicated...&n; */
+multiline_comment|/* Code to support devices on the DIO and DIO-II bus&n; * Copyright (C) 05/1998 Peter Maydell &lt;pmaydell@chiark.greenend.org.uk&gt;&n; * &n; * This code has basically these routines at the moment:&n; * int dio_find(u_int deviceid)&n; *    Search the list of DIO devices and return the select code&n; *    of the next unconfigured device found that matches the given device ID.&n; *    Note that the deviceid parameter should be the encoded ID.&n; *    This means that framebuffers should pass it as &n; *    DIO_ENCODE_ID(DIO_ID_FBUFFER,DIO_ID2_TOPCAT)&n; *    (or whatever); everybody else just uses DIO_ID_FOOBAR.&n; * unsigned long dio_scodetophysaddr(int scode)&n; *    Return the physical address corresponding to the given select code.&n; * int dio_scodetoipl(int scode)&n; *    Every DIO card has a fixed interrupt priority level. This function &n; *    returns it, whatever it is.&n; * const char *dio_scodetoname(int scode)&n; *    Return a character string describing this board [might be &quot;&quot; if &n; *    not CONFIG_DIO_CONSTANTS]&n; * void dio_config_board(int scode)     mark board as configured in the list&n; * void dio_unconfig_board(int scode)   mark board as no longer configured&n; *&n; * This file is based on the way the Amiga port handles Zorro II cards, &n; * although we aren&squot;t so complicated...&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/dio.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;                         /* kmalloc() */
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/hwtest.h&gt;                           /* hwreg_present() */
-macro_line|#include &lt;asm/io.h&gt;                               /* readb() */
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/io.h&gt;                             /* readb() */
 multiline_comment|/* not a real config option yet! */
 DECL|macro|CONFIG_DIO_CONSTANTS
 mdefine_line|#define CONFIG_DIO_CONSTANTS
@@ -94,12 +94,6 @@ id|DIONAME
 c_func
 (paren
 id|NHPIB
-)paren
-comma
-id|DIONAME
-c_func
-(paren
-id|IHPIB
 )paren
 comma
 id|DIONAME
@@ -326,7 +320,7 @@ r_char
 op_star
 id|unknowndioname
 op_assign
-l_string|&quot;unknown DIO board -- please email &lt;pmaydell@chiark.greenend.org.uk&gt;!&quot;
+l_string|&quot;unknown DIO board -- please email &lt;linux-m68k@lists.linux-m68k.org&gt;!&quot;
 suffix:semicolon
 DECL|function|dio_getname
 r_static
@@ -458,12 +452,21 @@ r_int
 id|deviceid
 )paren
 (brace
-multiline_comment|/* Called to find a DIO device before the full bus scan has run.  Basically&n;         * only used by the console driver.&n;         * We don&squot;t do the primary+secondary ID encoding thing here. Maybe we should.&n;         * (that would break the topcat detection, though. I need to think about&n;         * the whole primary/secondary ID thing.)&n;         */
+multiline_comment|/* Called to find a DIO device before the full bus scan has run.  Basically&n;&t; * only used by the console driver.&n;&t; */
 r_int
 id|scode
+comma
+id|id
 suffix:semicolon
 id|u_char
 id|prid
+comma
+id|secid
+comma
+id|i
+suffix:semicolon
+id|mm_segment_t
+id|fs
 suffix:semicolon
 r_for
 c_loop
@@ -484,6 +487,10 @@ r_void
 op_star
 id|va
 suffix:semicolon
+r_int
+r_int
+id|pa
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -495,9 +502,9 @@ id|scode
 )paren
 r_continue
 suffix:semicolon
-id|va
+id|pa
 op_assign
-id|dio_scodetoviraddr
+id|dio_scodetophysaddr
 c_func
 (paren
 id|scode
@@ -507,31 +514,101 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|pa
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|scode
+OL
+id|DIOII_SCBASE
+)paren
 id|va
-op_logical_or
-op_logical_neg
-id|hwreg_present
+op_assign
+(paren
+r_void
+op_star
+)paren
+(paren
+id|pa
+op_plus
+id|DIO_VIRADDRBASE
+)paren
+suffix:semicolon
+r_else
+id|va
+op_assign
+id|ioremap
 c_func
 (paren
+id|pa
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+id|fs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|i
+comma
+(paren
+r_int
+r_char
+op_star
+)paren
 id|va
 op_plus
 id|DIO_IDOFF
 )paren
 )paren
-r_continue
+(brace
+id|set_fs
+c_func
+(paren
+id|fs
+)paren
 suffix:semicolon
-multiline_comment|/* no board present at that select code */
-multiline_comment|/* We aren&squot;t very likely to want to use this to get at the IHPIB,&n;                 * but maybe it&squot;s returning the same ID as the card we do want...&n;                 */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|DIO_ISIHPIB
+id|scode
+op_ge
+id|DIOII_SCBASE
+)paren
+id|iounmap
 c_func
 (paren
-id|scode
+id|va
 )paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+multiline_comment|/* no board present at that select code */
+)brace
+id|set_fs
+c_func
+(paren
+id|fs
 )paren
+suffix:semicolon
 id|prid
 op_assign
 id|DIO_ID
@@ -540,27 +617,71 @@ c_func
 id|va
 )paren
 suffix:semicolon
-r_else
+r_if
+c_cond
+(paren
+id|DIO_NEEDSSECID
+c_func
+(paren
 id|prid
+)paren
+)paren
+(brace
+id|secid
 op_assign
-id|DIO_ID_IHPIB
+id|DIO_SECID
+c_func
+(paren
+id|va
+)paren
+suffix:semicolon
+id|id
+op_assign
+id|DIO_ENCODE_ID
+c_func
+(paren
+id|prid
+comma
+id|secid
+)paren
+suffix:semicolon
+)brace
+r_else
+id|id
+op_assign
+id|prid
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|prid
+id|id
 op_eq
 id|deviceid
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|scode
+op_ge
+id|DIOII_SCBASE
+)paren
+id|iounmap
+c_func
+(paren
+id|va
+)paren
+suffix:semicolon
 r_return
 id|scode
 suffix:semicolon
 )brace
+)brace
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Aargh: we use 0 for an error return code, but select code 0 exists!&n; * FIXME (trivial, use -1, but requires changes to all the drivers :-&lt; )&n; */
 DECL|function|dio_find
 r_int
 id|dio_find
@@ -610,9 +731,12 @@ r_return
 id|b-&gt;scode
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 )brace
+r_else
+(brace
 r_return
 id|dio_find_slow
 c_func
@@ -620,6 +744,7 @@ c_func
 id|deviceid
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* This is the function that scans the DIO space and works out what&n; * hardware is actually present.&n; */
 DECL|function|dio_init
@@ -645,9 +770,16 @@ id|bprev
 op_assign
 l_int|NULL
 suffix:semicolon
+id|mm_segment_t
+id|fs
+suffix:semicolon
+r_char
+id|i
+suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Scanning for DIO devices...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -678,6 +810,10 @@ id|u_char
 op_star
 id|va
 suffix:semicolon
+r_int
+r_int
+id|pa
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -689,9 +825,9 @@ id|scode
 )paren
 r_continue
 suffix:semicolon
-id|va
+id|pa
 op_assign
-id|dio_scodetoviraddr
+id|dio_scodetophysaddr
 c_func
 (paren
 id|scode
@@ -701,20 +837,101 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|pa
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|scode
+OL
+id|DIOII_SCBASE
+)paren
 id|va
-op_logical_or
-op_logical_neg
-id|hwreg_present
+op_assign
+(paren
+r_void
+op_star
+)paren
+(paren
+id|pa
+op_plus
+id|DIO_VIRADDRBASE
+)paren
+suffix:semicolon
+r_else
+id|va
+op_assign
+id|ioremap
 c_func
 (paren
+id|pa
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+id|fs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|i
+comma
+(paren
+r_int
+r_char
+op_star
+)paren
 id|va
 op_plus
 id|DIO_IDOFF
 )paren
 )paren
+(brace
+id|set_fs
+c_func
+(paren
+id|fs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|scode
+op_ge
+id|DIOII_SCBASE
+)paren
+id|iounmap
+c_func
+(paren
+id|va
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 multiline_comment|/* no board present at that select code */
+)brace
+id|set_fs
+c_func
+(paren
+id|fs
+)paren
+suffix:semicolon
 multiline_comment|/* Found a board, allocate it an entry in the list */
 id|b
 op_assign
@@ -730,17 +947,7 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-multiline_comment|/* read the ID byte(s) and encode if necessary. Note workaround &n;                 * for broken internal HPIB devices...&n;                 */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|DIO_ISIHPIB
-c_func
-(paren
-id|scode
-)paren
-)paren
+multiline_comment|/* read the ID byte(s) and encode if necessary. */
 id|prid
 op_assign
 id|DIO_ID
@@ -748,11 +955,6 @@ c_func
 (paren
 id|va
 )paren
-suffix:semicolon
-r_else
-id|prid
-op_assign
-id|DIO_ID_IHPIB
 suffix:semicolon
 r_if
 c_cond
@@ -815,9 +1017,10 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;select code %3d: ipl %d: ID %02X&quot;
 comma
-id|scode
+id|b-&gt;scode
 comma
 id|b-&gt;ipl
 comma
@@ -830,7 +1033,7 @@ c_cond
 id|DIO_NEEDSSECID
 c_func
 (paren
-id|b-&gt;id
+id|prid
 )paren
 )paren
 id|printk
@@ -847,6 +1050,19 @@ c_func
 l_string|&quot;: %s&bslash;n&quot;
 comma
 id|b-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|scode
+op_ge
+id|DIOII_SCBASE
+)paren
+id|iounmap
+c_func
+(paren
+id|va
 )paren
 suffix:semicolon
 id|b-&gt;next
@@ -883,11 +1099,11 @@ c_func
 id|dio_init
 )paren
 suffix:semicolon
-multiline_comment|/* Bear in mind that this is called in the very early stages of initialisation&n; * in order to get the virtual address of the serial port for the console...&n; */
-DECL|function|dio_scodetoviraddr
-r_void
-op_star
-id|dio_scodetoviraddr
+multiline_comment|/* Bear in mind that this is called in the very early stages of initialisation&n; * in order to get the address of the serial port for the console...&n; */
+DECL|function|dio_scodetophysaddr
+r_int
+r_int
+id|dio_scodetophysaddr
 c_func
 (paren
 r_int
@@ -898,18 +1114,22 @@ r_if
 c_cond
 (paren
 id|scode
-OG
+op_ge
 id|DIOII_SCBASE
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;dio_scodetoviraddr: don&squot;t support DIO-II yet!&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-l_int|0
+(paren
+id|DIOII_BASE
+op_plus
+(paren
+id|scode
+op_minus
+l_int|132
+)paren
+op_star
+id|DIOII_DEVSIZE
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -940,36 +1160,13 @@ id|scode
 r_return
 l_int|0
 suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|DIO_ISIHPIB
-c_func
-(paren
-id|scode
-)paren
-)paren
 r_return
 (paren
-r_void
-op_star
-)paren
-id|DIO_IHPIBADDR
-suffix:semicolon
-r_return
-(paren
-r_void
-op_star
-)paren
-(paren
-id|DIO_VIRADDRBASE
-op_plus
 id|DIO_BASE
 op_plus
 id|scode
 op_star
-l_int|0x10000
+id|DIO_DEVSIZE
 )paren
 suffix:semicolon
 )brace
@@ -1019,6 +1216,7 @@ id|b
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;dio_scodetoipl: bad select code %d&bslash;n&quot;
 comma
 id|scode
@@ -1081,6 +1279,7 @@ id|b
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;dio_scodetoname: bad select code %d&bslash;n&quot;
 comma
 id|scode
@@ -1140,6 +1339,7 @@ id|b
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;dio_config_board: bad select code %d&bslash;n&quot;
 comma
 id|scode
@@ -1154,6 +1354,7 @@ id|b-&gt;configured
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;dio_config_board: board at select code %d already configured&bslash;n&quot;
 comma
 id|scode
@@ -1210,6 +1411,7 @@ id|b
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;dio_unconfig_board: bad select code %d&bslash;n&quot;
 comma
 id|scode
@@ -1225,6 +1427,7 @@ id|b-&gt;configured
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;dio_unconfig_board: board at select code %d not configured&bslash;n&quot;
 comma
 id|scode

@@ -4,6 +4,7 @@ DECL|macro|_LINUX_DIO_H
 mdefine_line|#define _LINUX_DIO_H
 multiline_comment|/* The DIO boards in a system are distinguished by &squot;select codes&squot; which &n; * range from 0-63 (DIO) and 132-255 (DIO-II). &n; * The DIO board with select code sc is located at physical address &n; *     0x600000 + sc * 0x10000&n; * So DIO cards cover [0x600000-0x800000); the areas [0x200000-0x400000) and&n; * [0x800000-0x1000000) are for additional space required by things&n; * like framebuffers. [0x400000-0x600000) is for miscellaneous internal I/O.&n; * On Linux, this is currently all mapped into the virtual address space&n; * at 0xf0000000 on bootup.&n; * DIO-II boards are at 0x1000000 + (sc - 132) * 0x400000&n; * which is address range [0x1000000-0x20000000) -- too big to map completely,&n; * so currently we just don&squot;t handle DIO-II boards.  It wouldn&squot;t be hard to &n; * do with ioremap() though.&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;asm/hp300hw.h&gt;
 multiline_comment|/* DIO/DIO-II boards all have the following 8bit registers.&n; * These are offsets from the base of the device.&n; */
 DECL|macro|DIO_IDOFF
 mdefine_line|#define DIO_IDOFF     0x01                        /* primary device ID */
@@ -13,23 +14,8 @@ DECL|macro|DIO_SECIDOFF
 mdefine_line|#define DIO_SECIDOFF  0x15                        /* secondary device ID */
 DECL|macro|DIOII_SIZEOFF
 mdefine_line|#define DIOII_SIZEOFF 0x101                       /* device size, DIO-II only */
-multiline_comment|/* The internal HPIB device is special; this is its physaddr; its select code is 7. &n; * The reason why we have to treat it specially is because apparently it&squot;s broken:&n; * the device ID isn&squot;t consistent/reliable. *sigh*&n; */
-DECL|macro|DIO_IHPIBADDR
-mdefine_line|#define DIO_IHPIBADDR 0x47800
-DECL|macro|DIO_IHPIBSCODE
-mdefine_line|#define DIO_IHPIBSCODE 7
-multiline_comment|/* If we don&squot;t have the internal HPIB defined, then treat select code 7 like&n; * any other. If we *do* have internal HPIB, then we just have to assume that&n; * select code 7 is the internal HPIB regardless of the ID register :-&lt;&n; */
-DECL|macro|CONFIG_IHPIB
-mdefine_line|#define CONFIG_IHPIB /* hack hack : not yet a proper config option */
-macro_line|#ifdef CONFIG_IHPIB
-DECL|macro|DIO_ISIHPIB
-mdefine_line|#define DIO_ISIHPIB(scode) ((scode) == DIO_IHPIBSCODE)
-macro_line|#else
-DECL|macro|DIO_ISIHPIB
-mdefine_line|#define DIO_ISIHPIB(scode) 0
-macro_line|#endif
 DECL|macro|DIO_VIRADDRBASE
-mdefine_line|#define DIO_VIRADDRBASE 0xf0000000                /* vir addr where IOspace is mapped */
+mdefine_line|#define DIO_VIRADDRBASE 0xf0000000UL              /* vir addr where IOspace is mapped */
 DECL|macro|DIO_BASE
 mdefine_line|#define DIO_BASE                0x600000        /* start of DIO space */
 DECL|macro|DIO_END
@@ -44,11 +30,13 @@ DECL|macro|DIOII_DEVSIZE
 mdefine_line|#define DIOII_DEVSIZE           0x00400000      /* size of a DIO-II device */
 multiline_comment|/* Highest valid select code. If we add DIO-II support this should become&n; * 256 for everything except HP320, which only has DIO.&n; */
 DECL|macro|DIO_SCMAX
-mdefine_line|#define DIO_SCMAX 32                             
+mdefine_line|#define DIO_SCMAX (hp300_model == HP_320 ? 32 : 256)
 DECL|macro|DIOII_SCBASE
 mdefine_line|#define DIOII_SCBASE 132 /* lowest DIO-II select code */
 DECL|macro|DIO_SCINHOLE
 mdefine_line|#define DIO_SCINHOLE(scode) (((scode) &gt;= 32) &amp;&amp; ((scode) &lt; DIOII_SCBASE))
+DECL|macro|DIO_ISDIOII
+mdefine_line|#define DIO_ISDIOII(scode) ((scode) &gt;= 132 &amp;&amp; (scode) &lt; 256)
 multiline_comment|/* macros to read device IDs, given base address */
 DECL|macro|DIO_ID
 mdefine_line|#define DIO_ID(baseaddr) in_8((baseaddr) + DIO_IDOFF)
@@ -65,7 +53,7 @@ DECL|macro|DIO_SIZE
 mdefine_line|#define DIO_SIZE(scode, base) (DIO_ISDIOII((scode)) ? DIOII_SIZE((base)) : DIO_DEVSIZE)
 multiline_comment|/* The hardware has primary and secondary IDs; we encode these in a single&n; * int as PRIMARY ID &amp; (SECONDARY ID &lt;&lt; 8).&n; * In practice this is only important for framebuffers,&n; * and everybody else just sets ID fields equal to the DIO_ID_FOO value.&n; */
 DECL|macro|DIO_ENCODE_ID
-mdefine_line|#define DIO_ENCODE_ID(pr,sec) ((((int)sec &amp; 0xff) &lt;&lt; 8) &amp; ((int)pr &amp; 0xff))
+mdefine_line|#define DIO_ENCODE_ID(pr,sec) ((((int)sec &amp; 0xff) &lt;&lt; 8) | ((int)pr &amp; 0xff))
 multiline_comment|/* macro to determine whether a given primary ID requires a secondary ID byte */
 DECL|macro|DIO_NEEDSSECID
 mdefine_line|#define DIO_NEEDSSECID(id) ((id) == DIO_ID_FBUFFER)
@@ -103,13 +91,9 @@ mdefine_line|#define DIO_ID_FHPIB    0x08 /* 98625A/98625B fast HP-IB */
 DECL|macro|DIO_DESC_FHPIB
 mdefine_line|#define DIO_DESC_FHPIB &quot;98625A/98625B fast HPIB&quot;
 DECL|macro|DIO_ID_NHPIB
-mdefine_line|#define DIO_ID_NHPIB    0x80 /* 98624A HP-IB (normal ie slow) */
+mdefine_line|#define DIO_ID_NHPIB    0x01 /* 98624A HP-IB (normal ie slow) */
 DECL|macro|DIO_DESC_NHPIB
 mdefine_line|#define DIO_DESC_NHPIB &quot;98624A HPIB&quot;
-DECL|macro|DIO_ID_IHPIB
-mdefine_line|#define DIO_ID_IHPIB    0x00 /* internal HPIB (not its real ID, it hasn&squot;t got one! */
-DECL|macro|DIO_DESC_IHPIB
-mdefine_line|#define DIO_DESC_IHPIB &quot;internal HPIB&quot;
 DECL|macro|DIO_ID_SCSI0
 mdefine_line|#define DIO_ID_SCSI0    0x07 /* 98625A SCSI */
 DECL|macro|DIO_DESC_SCSI0
@@ -263,9 +247,9 @@ id|deviceid
 )paren
 suffix:semicolon
 r_extern
-r_void
-op_star
-id|dio_scodetoviraddr
+r_int
+r_int
+id|dio_scodetophysaddr
 c_func
 (paren
 r_int
