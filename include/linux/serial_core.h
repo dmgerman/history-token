@@ -102,6 +102,9 @@ suffix:semicolon
 r_struct
 id|serial_struct
 suffix:semicolon
+r_struct
+id|device
+suffix:semicolon
 multiline_comment|/*&n; * This structure describes all the operations that can be&n; * done on the physical hardware.&n; */
 DECL|struct|uart_ops
 r_struct
@@ -659,6 +662,13 @@ r_int
 id|mapbase
 suffix:semicolon
 multiline_comment|/* for ioremap */
+DECL|member|dev
+r_struct
+id|device
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* parent device */
 DECL|member|hub6
 r_int
 r_char
