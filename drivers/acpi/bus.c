@@ -9,7 +9,9 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#ifdef CONFIG_X86
 macro_line|#include &lt;asm/mpspec.h&gt;
+macro_line|#endif
 macro_line|#include &quot;acpi_bus.h&quot;
 macro_line|#include &quot;acpi_drivers.h&quot;
 macro_line|#include &quot;include/acinterp.h&quot;&t;/* for acpi_ex_eisa_id_to_string() */
@@ -2075,7 +2077,7 @@ r_struct
 id|acpi_bus_event
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -6507,6 +6509,7 @@ r_goto
 id|error1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_X86
 multiline_comment|/* Ensure the SCI is set to level-triggered, active-low */
 r_if
 c_cond
@@ -6532,6 +6535,7 @@ c_func
 id|acpi_fadt.sci_int
 )paren
 suffix:semicolon
+macro_line|#endif
 id|status
 op_assign
 id|acpi_enable_subsystem

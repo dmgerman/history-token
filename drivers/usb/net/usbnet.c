@@ -7122,6 +7122,29 @@ id|linuxdev_info
 comma
 )brace
 comma
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0E7E
+comma
+l_int|0x1001
+)paren
+comma
+singleline_comment|// G.Mate &quot;Yopy&quot;
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|linuxdev_info
+comma
+)brace
+comma
+singleline_comment|// NOTE:  the Sharp Zaurus uses a modified version of
+singleline_comment|// this driver, which is not interoperable with this.
 macro_line|#endif
 macro_line|#ifdef&t;CONFIG_USB_NET1080
 (brace

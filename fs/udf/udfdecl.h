@@ -33,7 +33,7 @@ mdefine_line|#define UDF_NAME_LEN&t;&t;255
 DECL|macro|UDF_PATH_LEN
 mdefine_line|#define UDF_PATH_LEN&t;&t;1023
 DECL|macro|CURRENT_UTIME
-mdefine_line|#define CURRENT_UTIME&t;(xtime.tv_usec)
+mdefine_line|#define CURRENT_UTIME&t;(xtime.tv_nsec / 1000)
 DECL|macro|udf_file_entry_alloc_offset
 mdefine_line|#define udf_file_entry_alloc_offset(inode)&bslash;&n;&t;((UDF_I_EXTENDED_FE(inode) ?&bslash;&n;&t;&t;sizeof(struct extendedFileEntry) :&bslash;&n;&t;&t;sizeof(struct fileEntry)) + UDF_I_LENEATTR(inode))
 DECL|macro|udf_ext0_offset

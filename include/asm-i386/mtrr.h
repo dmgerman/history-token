@@ -342,30 +342,6 @@ id|hi
 suffix:semicolon
 )brace
 macro_line|#  endif
-multiline_comment|/*  The following functions are for initialisation: don&squot;t use them!  */
-r_extern
-r_int
-id|mtrr_init
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#  if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_MTRR)
-r_extern
-r_void
-id|mtrr_init_boot_cpu
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|mtrr_init_secondary_cpu
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#  endif
 macro_line|#endif
 macro_line|#endif  /*  _LINUX_MTRR_H  */
 eof

@@ -572,7 +572,8 @@ suffix:semicolon
 multiline_comment|/* urb-&gt;lock ignored from here on (hcd is done with urb) */
 DECL|function|ehci_urb_done
 r_static
-r_void
+r_int
+r_int
 id|ehci_urb_done
 (paren
 r_struct
@@ -584,6 +585,10 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+r_int
+id|flags
 )paren
 (brace
 macro_line|#ifdef&t;INTR_AUTOMAGIC
@@ -642,7 +647,13 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* ... update hc-wide periodic stats (for usbfs) */
-id|ehci-&gt;hcd.self.bandwidth_int_reqs
+id|hcd_to_bus
+(paren
+op_amp
+id|ehci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_int_reqs
 op_decrement
 suffix:semicolon
 macro_line|#ifdef&t;INTR_AUTOMAGIC
@@ -729,6 +740,15 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* complete() can reenter this HCD */
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|usb_hcd_giveback_urb
 (paren
 op_amp
@@ -786,7 +806,7 @@ id|dev
 suffix:semicolon
 id|status
 op_assign
-id|usb_submit_urb
+id|SUBMIT_URB
 (paren
 id|resubmit
 comma
@@ -816,10 +836,22 @@ id|resubmit
 suffix:semicolon
 )brace
 macro_line|#endif
+id|spin_lock_irqsave
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|flags
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * Process completed qtds for a qh, issuing completions if needed.&n; * Frees qtds, unmaps buf, returns URB to driver.&n; * Races up to qh-&gt;hw_current; returns number of urb completions.&n; */
+multiline_comment|/*&n; * Process and free completed qtds for a qh, returning URBs to drivers.&n; * Chases up to qh-&gt;hw_current, returns irqsave flags (maybe modified).&n; */
 r_static
-r_void
+r_int
+r_int
 DECL|function|qh_completions
 id|qh_completions
 (paren
@@ -832,6 +864,10 @@ r_struct
 id|ehci_qh
 op_star
 id|qh
+comma
+r_int
+r_int
+id|flags
 )paren
 (brace
 r_struct
@@ -862,18 +898,6 @@ id|halted
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -885,18 +909,9 @@ id|qtd_list
 )paren
 )paren
 )paren
-(brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
+id|flags
 suffix:semicolon
-)brace
 multiline_comment|/* scan QTDs till end of list, or we reach an active one */
 r_for
 c_loop
@@ -971,32 +986,17 @@ op_ne
 id|urb
 )paren
 )paren
-(brace
-multiline_comment|/* complete() can reenter this HCD */
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
 id|flags
-)paren
-suffix:semicolon
+op_assign
 id|ehci_urb_done
 (paren
 id|ehci
 comma
 id|last-&gt;urb
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ehci-&gt;lock
 comma
 id|flags
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* qh overlays can have HC&squot;s old cached copies of&n;&t;&t;&t; * next qtd ptrs, if an URB was queued afterwards.&n;&t;&t;&t; */
 r_if
 c_cond
@@ -1073,6 +1073,8 @@ op_eq
 id|QH_STATE_IDLE
 )paren
 suffix:semicolon
+singleline_comment|// FIXME Remove the automagic unlink mode.
+singleline_comment|// Drivers can now clean up safely; its&squot; their job.
 multiline_comment|/* fault: unlink the rest, since this qtd saw an error? */
 r_if
 c_cond
@@ -1290,7 +1292,38 @@ id|urb-&gt;actual_length
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/* patch up list head? */
+multiline_comment|/* last urb&squot;s completion might still need calling */
+r_if
+c_cond
+(paren
+id|likely
+(paren
+id|last
+op_ne
+l_int|0
+)paren
+)paren
+(brace
+id|flags
+op_assign
+id|ehci_urb_done
+(paren
+id|ehci
+comma
+id|last-&gt;urb
+comma
+id|flags
+)paren
+suffix:semicolon
+id|ehci_qtd_free
+(paren
+id|ehci
+comma
+id|last
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* reactivate queue after error and driver&squot;s cleanup */
 r_if
 c_cond
 (paren
@@ -1322,41 +1355,9 @@ id|qtd_list
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
+r_return
 id|flags
-)paren
 suffix:semicolon
-multiline_comment|/* last urb&squot;s completion might still need calling */
-r_if
-c_cond
-(paren
-id|likely
-(paren
-id|last
-op_ne
-l_int|0
-)paren
-)paren
-(brace
-id|ehci_urb_done
-(paren
-id|ehci
-comma
-id|last-&gt;urb
-)paren
-suffix:semicolon
-id|ehci_qtd_free
-(paren
-id|ehci
-comma
-id|last
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * reverse of qh_urb_transaction:  free a list of TDs.&n; * used for cleanup after errors, before HC sees an URB&squot;s TDs.&n; */
@@ -1388,11 +1389,6 @@ id|entry
 comma
 op_star
 id|temp
-suffix:semicolon
-r_int
-id|unmapped
-op_assign
-l_int|0
 suffix:semicolon
 id|list_for_each_safe
 (paren
@@ -1426,70 +1422,6 @@ op_amp
 id|qtd-&gt;qtd_list
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unmapped
-op_ne
-l_int|2
-)paren
-(brace
-r_int
-id|direction
-suffix:semicolon
-r_int
-id|size
-suffix:semicolon
-multiline_comment|/* for ctrl unmap twice: SETUP and DATA;&n;&t;&t;&t; * else (bulk, intr) just once: DATA&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|unmapped
-op_increment
-op_logical_and
-id|usb_pipecontrol
-(paren
-id|urb-&gt;pipe
-)paren
-)paren
-(brace
-id|direction
-op_assign
-id|PCI_DMA_TODEVICE
-suffix:semicolon
-id|size
-op_assign
-r_sizeof
-(paren
-r_struct
-id|usb_ctrlrequest
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|direction
-op_assign
-id|usb_pipein
-(paren
-id|urb-&gt;pipe
-)paren
-ques
-c_cond
-id|PCI_DMA_FROMDEVICE
-suffix:colon
-id|PCI_DMA_TODEVICE
-suffix:semicolon
-id|size
-op_assign
-id|qtd-&gt;urb-&gt;transfer_buffer_length
-suffix:semicolon
-id|unmapped
-op_increment
-suffix:semicolon
-)brace
-)brace
 id|ehci_qtd_free
 (paren
 id|ehci
@@ -2558,9 +2490,9 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-macro_line|#ifdef DEBUG
 r_default
 suffix:colon
+macro_line|#ifdef DEBUG
 id|BUG
 (paren
 )paren
@@ -3276,7 +3208,13 @@ id|vdbg
 (paren
 l_string|&quot;%s: submit_async urb %p len %d ep %d-%s qtd %p [qh %p]&quot;
 comma
-id|ehci-&gt;hcd.self.bus_name
+id|hcd_to_bus
+(paren
+op_amp
+id|ehci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bus_name
 comma
 id|urb
 comma
@@ -3415,15 +3353,20 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* the async qh for the qtds being reclaimed are now unlinked from the HC */
 multiline_comment|/* caller must not own ehci-&gt;lock */
-DECL|function|end_unlink_async
 r_static
-r_void
+r_int
+r_int
+DECL|function|end_unlink_async
 id|end_unlink_async
 (paren
 r_struct
 id|ehci_hcd
 op_star
 id|ehci
+comma
+r_int
+r_int
+id|flags
 )paren
 (brace
 r_struct
@@ -3432,6 +3375,12 @@ op_star
 id|qh
 op_assign
 id|ehci-&gt;reclaim
+suffix:semicolon
+id|del_timer
+(paren
+op_amp
+id|ehci-&gt;watchdog
+)paren
 suffix:semicolon
 id|qh-&gt;qh_state
 op_assign
@@ -3457,15 +3406,17 @@ id|ehci-&gt;reclaim_ready
 op_assign
 l_int|0
 suffix:semicolon
+id|flags
+op_assign
 id|qh_completions
 (paren
 id|ehci
 comma
 id|qh
+comma
+id|flags
 )paren
 suffix:semicolon
-singleline_comment|// unlink any urb should now unlink all following urbs, so that
-singleline_comment|// relinking only happens for urbs before the unlinked ones.
 r_if
 c_cond
 (paren
@@ -3497,6 +3448,9 @@ id|qh
 )paren
 suffix:semicolon
 singleline_comment|// refcount from async list
+r_return
+id|flags
+suffix:semicolon
 )brace
 multiline_comment|/* makes sure the async qh will become idle */
 multiline_comment|/* caller must own ehci-&gt;lock */
@@ -3749,35 +3703,38 @@ id|ehci-&gt;regs-&gt;command
 )paren
 suffix:semicolon
 multiline_comment|/* posted write need not be known to HC yet ... */
+id|mod_timer
+(paren
+op_amp
+id|ehci-&gt;watchdog
+comma
+id|jiffies
+op_plus
+id|EHCI_WATCHDOG_JIFFIES
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|function|scan_async
 r_static
-r_void
+r_int
+r_int
+DECL|function|scan_async
 id|scan_async
 (paren
 r_struct
 id|ehci_hcd
 op_star
 id|ehci
+comma
+r_int
+r_int
+id|flags
 )paren
 (brace
 r_struct
 id|ehci_qh
 op_star
 id|qh
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|rescan
 suffix:colon
@@ -3818,26 +3775,14 @@ id|qh_get
 id|qh
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* concurrent unlink could happen here */
+id|flags
+op_assign
 id|qh_completions
 (paren
 id|ehci
 comma
 id|qh
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ehci-&gt;lock
 comma
 id|flags
 )paren
@@ -3912,13 +3857,8 @@ id|ehci-&gt;async
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
+r_return
 id|flags
-)paren
 suffix:semicolon
 )brace
 eof

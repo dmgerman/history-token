@@ -698,6 +698,19 @@ id|DEFAULT_GPIO_RESET
 id|PEGASUS_DEV
 c_func
 (paren
+l_string|&quot;Corega FEter&quot;
+comma
+id|VENDOR_COREGA
+comma
+l_int|0x0004
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
 l_string|&quot;D-Link DSB-650TX&quot;
 comma
 id|VENDOR_DLINK
@@ -783,7 +796,7 @@ id|DEFAULT_GPIO_RESET
 id|PEGASUS_DEV
 c_func
 (paren
-l_string|&quot;ELCON EPLC10Mi USB to Powerline Adapter&quot;
+l_string|&quot;GOLDPFEIL USB Adapter&quot;
 comma
 id|VENDOR_ELCON
 comma
@@ -1080,6 +1093,8 @@ comma
 l_int|0x1001
 comma
 id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
 )paren
 macro_line|#endif&t;/* PEGASUS_DEV */
 eof

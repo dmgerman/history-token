@@ -1030,6 +1030,31 @@ id|US_FL_MODE_XLATE
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Reported by Blake Matheny &lt;bmatheny@purdue.edu&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05dc
+comma
+l_int|0xb002
+comma
+l_int|0x0000
+comma
+l_int|0x0113
+comma
+l_string|&quot;Lexar&quot;
+comma
+l_string|&quot;USB CF Reader&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Reported by Carlos Villegas &lt;cav@uniscope.co.jp&gt;&n; * This device needs an INQUIRY of exactly 36-bytes to function.&n; * That is the only reason this entry is needed.&n; */
 id|UNUSUAL_DEV
 c_func
@@ -1680,6 +1705,31 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* aeb */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x090c
+comma
+l_int|0x1132
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Feiya&quot;
+comma
+l_string|&quot;5-in-1 Card Reader&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
 )paren
 comma
 id|UNUSUAL_DEV

@@ -410,6 +410,13 @@ c_func
 id|acpi_fadt
 )paren
 suffix:semicolon
+DECL|variable|acpi_walk_namespace
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_walk_namespace
+)paren
+suffix:semicolon
 DECL|variable|acpi_root_dir
 id|EXPORT_SYMBOL
 c_func

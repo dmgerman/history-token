@@ -693,7 +693,8 @@ multiline_comment|/*------------------------------------------------------------
 singleline_comment|// FIXME microframe periods not yet handled
 DECL|function|intr_deschedule
 r_static
-r_void
+r_int
+r_int
 id|intr_deschedule
 (paren
 r_struct
@@ -708,12 +709,12 @@ id|qh
 comma
 r_int
 id|wait
-)paren
-(brace
+comma
 r_int
 r_int
 id|flags
-suffix:semicolon
+)paren
+(brace
 r_int
 id|status
 suffix:semicolon
@@ -721,14 +722,6 @@ r_int
 id|frame
 op_assign
 id|qh-&gt;start
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_do
 (brace
@@ -798,14 +791,6 @@ l_string|&quot;periodic schedule still enabled&quot;
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * If the hc may be looking at this qh, then delay a uframe&n;&t; * (yeech!) to be sure it&squot;s done.&n;&t; * No other threads may be mucking with this qh.&n;&t; */
 r_if
 c_cond
@@ -833,6 +818,14 @@ c_cond
 id|wait
 )paren
 (brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|udelay
 (paren
 l_int|125
@@ -841,6 +834,14 @@ suffix:semicolon
 id|qh-&gt;hw_next
 op_assign
 id|EHCI_LIST_END
+suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -863,7 +864,13 @@ op_assign
 id|QH_STATE_IDLE
 suffix:semicolon
 multiline_comment|/* update per-qh bandwidth utilization (for usbfs) */
-id|ehci-&gt;hcd.self.bandwidth_allocated
+id|hcd_to_bus
+(paren
+op_amp
+id|ehci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_allocated
 op_sub_assign
 (paren
 id|qh-&gt;usecs
@@ -891,6 +898,9 @@ id|qh-&gt;refcount
 comma
 id|ehci-&gt;periodic_sched
 )paren
+suffix:semicolon
+r_return
+id|flags
 suffix:semicolon
 )brace
 DECL|function|check_period
@@ -1435,7 +1445,13 @@ id|ehci-&gt;periodic_size
 )paren
 suffix:semicolon
 multiline_comment|/* update per-qh bandwidth for usbfs */
-id|ehci-&gt;hcd.self.bandwidth_allocated
+id|hcd_to_bus
+(paren
+op_amp
+id|ehci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_allocated
 op_add_assign
 (paren
 id|qh-&gt;usecs
@@ -1660,7 +1676,13 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* ... update usbfs periodic stats */
-id|ehci-&gt;hcd.self.bandwidth_int_reqs
+id|hcd_to_bus
+(paren
+op_amp
+id|ehci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_int_reqs
 op_increment
 suffix:semicolon
 id|done
@@ -1762,25 +1784,13 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* handle any completions */
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
 id|flags
-)paren
-suffix:semicolon
+op_assign
 id|qh_completions
 (paren
 id|ehci
 comma
 id|qh
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ehci-&gt;lock
 comma
 id|flags
 )paren
@@ -1797,6 +1807,8 @@ id|qh-&gt;qtd_list
 )paren
 )paren
 )paren
+id|flags
+op_assign
 id|intr_deschedule
 (paren
 id|ehci
@@ -1804,6 +1816,8 @@ comma
 id|qh
 comma
 l_int|0
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -4021,15 +4035,20 @@ suffix:semicolon
 )brace
 macro_line|#endif /* have_split_iso */
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|function|scan_periodic
 r_static
-r_void
+r_int
+r_int
+DECL|function|scan_periodic
 id|scan_periodic
 (paren
 r_struct
 id|ehci_hcd
 op_star
 id|ehci
+comma
+r_int
+r_int
+id|flags
 )paren
 (brace
 r_int
@@ -4041,23 +4060,11 @@ id|now_uframe
 comma
 id|mod
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|mod
 op_assign
 id|ehci-&gt;periodic_size
 op_lshift
 l_int|3
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * When running, scan from last scan point up to &quot;now&quot;&n;&t; * else clean up by scanning everything that&squot;s left.&n;&t; * Touches as few pages as possible:  cache-friendly.&n;&t; * Don&squot;t scan ISO entries more than once, though.&n;&t; */
 id|frame
@@ -4557,13 +4564,8 @@ op_mod
 id|ehci-&gt;periodic_size
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
+r_return
 id|flags
-)paren
 suffix:semicolon
 )brace
 eof

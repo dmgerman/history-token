@@ -139,7 +139,7 @@ id|edx
 suffix:semicolon
 )brace
 DECL|macro|TICK_SIZE
-mdefine_line|#define TICK_SIZE tick
+mdefine_line|#define TICK_SIZE (tick_nsec / 1000)
 DECL|variable|i8253_lock
 id|spinlock_t
 id|i8253_lock
@@ -491,7 +491,11 @@ id|xtime.tv_sec
 suffix:semicolon
 id|usec
 op_add_assign
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 suffix:semicolon
 id|read_unlock_irqrestore
 c_func
@@ -583,10 +587,17 @@ id|tv-&gt;tv_sec
 op_decrement
 suffix:semicolon
 )brace
-id|xtime
+id|xtime.tv_sec
 op_assign
+id|tv-&gt;tv_sec
+suffix:semicolon
+id|xtime.tv_nsec
+op_assign
+(paren
+id|tv-&gt;tv_usec
 op_star
-id|tv
+l_int|1000
+)paren
 suffix:semicolon
 id|time_adjust
 op_assign
@@ -1010,7 +1021,11 @@ id|last_rtc_update
 op_plus
 l_int|660
 op_logical_and
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_ge
 l_int|500000
 op_minus
@@ -1018,12 +1033,16 @@ op_minus
 (paren
 r_int
 )paren
-id|tick
+id|TICK_SIZE
 )paren
 op_div
 l_int|2
 op_logical_and
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_le
 l_int|500000
 op_plus
@@ -1031,7 +1050,7 @@ op_plus
 (paren
 r_int
 )paren
-id|tick
+id|TICK_SIZE
 )paren
 op_div
 l_int|2
@@ -1809,7 +1828,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
