@@ -1,16 +1,13 @@
 multiline_comment|/*&n; * This is a module which is used for logging packets.&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
-r_struct
-id|in_device
-suffix:semicolon
 macro_line|#include &lt;net/route.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_LOG.h&gt;
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk
@@ -18,17 +15,6 @@ macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
-DECL|struct|esphdr
-r_struct
-id|esphdr
-(brace
-DECL|member|spi
-id|__u32
-id|spi
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* FIXME evil kludge */
 multiline_comment|/* Use lock to serialize, so printks don&squot;t overlap */
 DECL|variable|log_lock
 r_static
@@ -1239,35 +1225,104 @@ multiline_comment|/* Max Length */
 r_case
 id|IPPROTO_AH
 suffix:colon
+(brace
+r_struct
+id|ip_auth_hdr
+id|ah
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ntohs
+c_func
+(paren
+id|iph.frag_off
+)paren
+op_amp
+id|IP_OFFSET
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* Max length: 9 &quot;PROTO=AH &quot; */
+id|printk
+c_func
+(paren
+l_string|&quot;PROTO=AH &quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Max length: 25 &quot;INCOMPLETE [65535 bytes] &quot; */
+r_if
+c_cond
+(paren
+id|skb_copy_bits
+c_func
+(paren
+id|skb
+comma
+id|iphoff
+op_plus
+id|iph.ihl
+op_star
+l_int|4
+comma
+op_amp
+id|ah
+comma
+r_sizeof
+(paren
+id|ah
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;INCOMPLETE [%u bytes] &quot;
+comma
+id|skb-&gt;len
+op_minus
+id|iphoff
+op_minus
+id|iph.ihl
+op_star
+l_int|4
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Length: 15 &quot;SPI=0xF1234567 &quot; */
+id|printk
+c_func
+(paren
+l_string|&quot;SPI=0x%x &quot;
+comma
+id|ntohl
+c_func
+(paren
+id|ah.spi
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_case
 id|IPPROTO_ESP
 suffix:colon
 (brace
 r_struct
-id|esphdr
+id|ip_esp_hdr
 id|esph
-suffix:semicolon
-r_int
-id|esp
-op_assign
-(paren
-id|iph.protocol
-op_eq
-id|IPPROTO_ESP
-)paren
 suffix:semicolon
 multiline_comment|/* Max length: 10 &quot;PROTO=ESP &quot; */
 id|printk
 c_func
 (paren
-l_string|&quot;PROTO=%s &quot;
-comma
-id|esp
-ques
-c_cond
-l_string|&quot;ESP&quot;
-suffix:colon
-l_string|&quot;AH&quot;
+l_string|&quot;PROTO=ESP &quot;
 )paren
 suffix:semicolon
 r_if
