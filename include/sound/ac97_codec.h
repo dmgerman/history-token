@@ -57,7 +57,7 @@ mdefine_line|#define AC97_PCM_SURR_DAC_RATE&t;0x2e&t;/* PCM Surround DAC Rate */
 DECL|macro|AC97_PCM_LFE_DAC_RATE
 mdefine_line|#define AC97_PCM_LFE_DAC_RATE&t;0x30&t;/* PCM LFE DAC Rate */
 DECL|macro|AC97_PCM_LR_ADC_RATE
-mdefine_line|#define AC97_PCM_LR_ADC_RATE&t;0x32&t;/* PCM LR DAC Rate */
+mdefine_line|#define AC97_PCM_LR_ADC_RATE&t;0x32&t;/* PCM LR ADC Rate */
 DECL|macro|AC97_PCM_MIC_ADC_RATE
 mdefine_line|#define AC97_PCM_MIC_ADC_RATE&t;0x34&t;/* PCM MIC ADC Rate */
 DECL|macro|AC97_CENTER_LFE_MASTER
@@ -72,23 +72,66 @@ DECL|macro|AC97_VENDOR_ID1
 mdefine_line|#define AC97_VENDOR_ID1&t;&t;0x7c&t;/* Vendor ID1 */
 DECL|macro|AC97_VENDOR_ID2
 mdefine_line|#define AC97_VENDOR_ID2&t;&t;0x7e&t;/* Vendor ID2 / revision */
+multiline_comment|/* extended audio ID bit defines */
+DECL|macro|AC97_EI_VRA
+mdefine_line|#define AC97_EI_VRA&t;&t;0x0001&t;/* Variable bit rate supported */
+DECL|macro|AC97_EI_DRA
+mdefine_line|#define AC97_EI_DRA&t;&t;0x0002&t;/* Double rate supported */
+DECL|macro|AC97_EI_SPDIF
+mdefine_line|#define AC97_EI_SPDIF&t;&t;0x0004&t;/* S/PDIF out supported */
+DECL|macro|AC97_EI_VRM
+mdefine_line|#define AC97_EI_VRM&t;&t;0x0008&t;/* Variable bit rate supported for MIC */
+DECL|macro|AC97_EI_DACS_SLOT_MASK
+mdefine_line|#define AC97_EI_DACS_SLOT_MASK&t;0x0030&t;/* DACs slot assignment */
+DECL|macro|AC97_EI_DACS_SLOT_SHIFT
+mdefine_line|#define AC97_EI_DACS_SLOT_SHIFT&t;4
+DECL|macro|AC97_EI_CDAC
+mdefine_line|#define AC97_EI_CDAC&t;&t;0x0040&t;/* PCM Center DAC available */
+DECL|macro|AC97_EI_SDAC
+mdefine_line|#define AC97_EI_SDAC&t;&t;0x0080&t;/* PCM Surround DACs available */
+DECL|macro|AC97_EI_LDAC
+mdefine_line|#define AC97_EI_LDAC&t;&t;0x0100&t;/* PCM LFE DAC available */
+DECL|macro|AC97_EI_AMAP
+mdefine_line|#define AC97_EI_AMAP&t;&t;0x0200&t;/* indicates optional slot/DAC mapping based on codec ID */
+DECL|macro|AC97_EI_REV_MASK
+mdefine_line|#define AC97_EI_REV_MASK&t;0x0c00&t;/* AC&squot;97 revision mask */
+DECL|macro|AC97_EI_REV_22
+mdefine_line|#define AC97_EI_REV_22&t;&t;0x0100&t;/* AC&squot;97 revision 2.2 */
+DECL|macro|AC97_EI_REV_SHIFT
+mdefine_line|#define AC97_EI_REV_SHIFT&t;8
+DECL|macro|AC97_EI_ADDR_MASK
+mdefine_line|#define AC97_EI_ADDR_MASK&t;0xc000&t;/* physical codec ID (address) */
+DECL|macro|AC97_EI_ADDR_SHIFT
+mdefine_line|#define AC97_EI_ADDR_SHIFT&t;14
 multiline_comment|/* extended audio status and control bit defines */
 DECL|macro|AC97_EA_VRA
 mdefine_line|#define AC97_EA_VRA&t;&t;0x0001&t;/* Variable bit rate enable bit */
 DECL|macro|AC97_EA_DRA
 mdefine_line|#define AC97_EA_DRA&t;&t;0x0002&t;/* Double-rate audio enable bit */
 DECL|macro|AC97_EA_SPDIF
-mdefine_line|#define AC97_EA_SPDIF&t;&t;0x0004&t;/* S/PDIF Enable bit */
+mdefine_line|#define AC97_EA_SPDIF&t;&t;0x0004&t;/* S/PDIF out enable bit */
 DECL|macro|AC97_EA_VRM
 mdefine_line|#define AC97_EA_VRM&t;&t;0x0008&t;/* Variable bit rate for MIC enable bit */
+DECL|macro|AC97_EA_SPSA_SLOT_MASK
+mdefine_line|#define AC97_EA_SPSA_SLOT_MASK&t;0x0030&t;/* Mask for slot assignment bits */
+DECL|macro|AC97_EA_SPSA_SLOT_SHIFT
+mdefine_line|#define AC97_EA_SPSA_SLOT_SHIFT 4
+DECL|macro|AC97_EA_SPSA_3_4
+mdefine_line|#define AC97_EA_SPSA_3_4&t;0x0000&t;/* Slot assigned to 3 &amp; 4 */
+DECL|macro|AC97_EA_SPSA_7_8
+mdefine_line|#define AC97_EA_SPSA_7_8&t;0x0010&t;/* Slot assigned to 7 &amp; 8 */
+DECL|macro|AC97_EA_SPSA_6_9
+mdefine_line|#define AC97_EA_SPSA_6_9&t;0x0020&t;/* Slot assigned to 6 &amp; 9 */
+DECL|macro|AC97_EA_SPSA_10_11
+mdefine_line|#define AC97_EA_SPSA_10_11&t;0x0030&t;/* Slot assigned to 10 &amp; 11 */
 DECL|macro|AC97_EA_CDAC
 mdefine_line|#define AC97_EA_CDAC&t;&t;0x0040&t;/* PCM Center DAC is ready (Read only) */
 DECL|macro|AC97_EA_SDAC
-mdefine_line|#define AC97_EA_SDAC&t;&t;0x0040&t;/* PCM Surround DACs are ready (Read only) */
+mdefine_line|#define AC97_EA_SDAC&t;&t;0x0080&t;/* PCM Surround DACs are ready (Read only) */
 DECL|macro|AC97_EA_LDAC
-mdefine_line|#define AC97_EA_LDAC&t;&t;0x0080&t;/* PCM LFE DAC is ready (Read only) */
+mdefine_line|#define AC97_EA_LDAC&t;&t;0x0100&t;/* PCM LFE DAC is ready (Read only) */
 DECL|macro|AC97_EA_MDAC
-mdefine_line|#define AC97_EA_MDAC&t;&t;0x0100&t;/* MIC ADC is ready (Read only) */
+mdefine_line|#define AC97_EA_MDAC&t;&t;0x0200&t;/* MIC ADC is ready (Read only) */
 DECL|macro|AC97_EA_SPCV
 mdefine_line|#define AC97_EA_SPCV&t;&t;0x0400&t;/* S/PDIF configuration valid (Read only) */
 DECL|macro|AC97_EA_PRI
@@ -99,16 +142,6 @@ DECL|macro|AC97_EA_PRK
 mdefine_line|#define AC97_EA_PRK&t;&t;0x2000&t;/* Turns the PCM LFE DAC off */
 DECL|macro|AC97_EA_PRL
 mdefine_line|#define AC97_EA_PRL&t;&t;0x4000&t;/* Turns the MIC ADC off */
-DECL|macro|AC97_EA_SLOT_MASK
-mdefine_line|#define AC97_EA_SLOT_MASK&t;0xffcf&t;/* Mask for slot assignment bits */
-DECL|macro|AC97_EA_SPSA_3_4
-mdefine_line|#define AC97_EA_SPSA_3_4&t;0x0000&t;/* Slot assigned to 3 &amp; 4 */
-DECL|macro|AC97_EA_SPSA_7_8
-mdefine_line|#define AC97_EA_SPSA_7_8&t;0x0010&t;/* Slot assigned to 7 &amp; 8 */
-DECL|macro|AC97_EA_SPSA_6_9
-mdefine_line|#define AC97_EA_SPSA_6_9&t;0x0020&t;/* Slot assigned to 6 &amp; 9 */
-DECL|macro|AC97_EA_SPSA_10_11
-mdefine_line|#define AC97_EA_SPSA_10_11&t;0x0030&t;/* Slot assigned to 10 &amp; 11 */
 multiline_comment|/* S/PDIF control bit defines */
 DECL|macro|AC97_SC_PRO
 mdefine_line|#define AC97_SC_PRO&t;&t;0x0001&t;/* Professional status */
@@ -202,7 +235,20 @@ DECL|macro|AC97_CS_SPDIF
 mdefine_line|#define AC97_CS_SPDIF&t;&t;(1&lt;&lt;2)&t;/* Cirrus Logic uses funky SPDIF */
 DECL|macro|AC97_CX_SPDIF
 mdefine_line|#define AC97_CX_SPDIF&t;&t;(1&lt;&lt;3)&t;/* Conexant&squot;s spdif interface */
-multiline_comment|/*&n;&n; */
+multiline_comment|/* rates indexes */
+DECL|macro|AC97_RATES_FRONT_DAC
+mdefine_line|#define AC97_RATES_FRONT_DAC&t;0
+DECL|macro|AC97_RATES_SURR_DAC
+mdefine_line|#define AC97_RATES_SURR_DAC&t;1
+DECL|macro|AC97_RATES_LFE_DAC
+mdefine_line|#define AC97_RATES_LFE_DAC&t;2
+DECL|macro|AC97_RATES_ADC
+mdefine_line|#define AC97_RATES_ADC&t;&t;3
+DECL|macro|AC97_RATES_MIC_ADC
+mdefine_line|#define AC97_RATES_MIC_ADC&t;4
+DECL|macro|AC97_RATES_SPDIF
+mdefine_line|#define AC97_RATES_SPDIF&t;5
+multiline_comment|/*&n; *&n; */
 DECL|typedef|ac97_t
 r_typedef
 r_struct
@@ -371,31 +417,15 @@ r_int
 id|clock
 suffix:semicolon
 multiline_comment|/* AC&squot;97 clock (usually 48000Hz) */
-DECL|member|rates_front_dac
+DECL|member|rates
 r_int
 r_int
-id|rates_front_dac
+id|rates
+(braket
+l_int|6
+)braket
 suffix:semicolon
-DECL|member|rates_surr_dac
-r_int
-r_int
-id|rates_surr_dac
-suffix:semicolon
-DECL|member|rates_lfe_dac
-r_int
-r_int
-id|rates_lfe_dac
-suffix:semicolon
-DECL|member|rates_adc
-r_int
-r_int
-id|rates_adc
-suffix:semicolon
-DECL|member|rates_mic_adc
-r_int
-r_int
-id|rates_mic_adc
-suffix:semicolon
+multiline_comment|/* see AC97_RATES_* defines */
 DECL|member|spdif_status
 r_int
 r_int
@@ -481,6 +511,52 @@ id|spec
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* conditions */
+DECL|function|ac97_is_rev22
+r_static
+r_inline
+r_int
+id|ac97_is_rev22
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+r_return
+(paren
+id|ac97-&gt;ext_id
+op_amp
+id|AC97_EI_REV_MASK
+)paren
+op_eq
+id|AC97_EI_REV_22
+suffix:semicolon
+)brace
+DECL|function|ac97_can_amap
+r_static
+r_inline
+r_int
+id|ac97_can_amap
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+r_return
+(paren
+id|ac97-&gt;ext_id
+op_amp
+id|AC97_EI_AMAP
+)paren
+op_ne
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* functions */
 r_int
 id|snd_ac97_mixer
 c_func

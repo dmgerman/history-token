@@ -137,6 +137,8 @@ r_int
 id|active_index
 )paren
 suffix:semicolon
+DECL|macro|SNDRV_OSS_MAX_MIXERS
+mdefine_line|#define SNDRV_OSS_MAX_MIXERS&t;32
 DECL|struct|_snd_oss_mixer_slot
 r_struct
 id|_snd_oss_mixer_slot
@@ -218,7 +220,7 @@ DECL|member|slots
 id|snd_mixer_oss_slot_t
 id|slots
 (braket
-l_int|32
+id|SNDRV_OSS_MAX_MIXERS
 )braket
 suffix:semicolon
 multiline_comment|/* OSS mixer slots */
@@ -252,6 +254,16 @@ id|snd_mixer_oss_t
 op_star
 id|mixer
 )paren
+suffix:semicolon
+DECL|member|reg_mutex
+r_struct
+id|semaphore
+id|reg_mutex
+suffix:semicolon
+DECL|member|proc_entry
+id|snd_info_entry_t
+op_star
+id|proc_entry
 suffix:semicolon
 multiline_comment|/* --- */
 DECL|member|oss_recsrc

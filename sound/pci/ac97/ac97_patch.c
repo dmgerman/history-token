@@ -637,6 +637,14 @@ id|ac97-&gt;flags
 op_or_assign
 id|AC97_CS_SPDIF
 suffix:semicolon
+id|ac97-&gt;rates
+(braket
+id|AC97_RATES_SPDIF
+)braket
+op_and_assign
+op_complement
+id|SNDRV_PCM_RATE_32000
+suffix:semicolon
 id|ac97-&gt;ext_id
 op_or_assign
 id|AC97_EA_SPDIF

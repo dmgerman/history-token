@@ -142,12 +142,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|snd_rawmidi_receive_reset
-c_func
-(paren
-id|gus-&gt;midi_substream_input
-)paren
-suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -189,12 +183,6 @@ l_int|0x20
 (brace
 id|gus-&gt;gf1.uart_overrun
 op_increment
-suffix:semicolon
-id|snd_rawmidi_receive_reset
-c_func
-(paren
-id|gus-&gt;midi_substream_input
-)paren
 suffix:semicolon
 )brace
 )brace

@@ -3357,6 +3357,11 @@ id|substream
 )paren
 suffix:semicolon
 multiline_comment|/*snd_pcm_runtime_t *runtime = substream-&gt;runtime;*/
+r_int
+id|result
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 id|cs46xx_pcm_t
 op_star
@@ -3374,12 +3379,7 @@ op_minus
 id|ENXIO
 )paren
 suffix:semicolon
-macro_line|#endif
-r_int
-id|result
-op_assign
-l_int|0
-suffix:semicolon
+macro_line|#else
 id|spin_lock
 c_func
 (paren
@@ -3387,6 +3387,7 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 r_if
 c_cond
@@ -3395,13 +3396,6 @@ op_logical_neg
 id|cpcm-&gt;pcm_channel
 )paren
 (brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -3524,6 +3518,23 @@ r_case
 id|SNDRV_PCM_TRIGGER_SUSPEND
 suffix:colon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
+multiline_comment|/* mute channel */
+id|snd_cs46xx_poke
+c_func
+(paren
+id|chip
+comma
+(paren
+id|cpcm-&gt;pcm_channel-&gt;pcm_reader_scb-&gt;address
+op_plus
+l_int|0xE
+)paren
+op_lshift
+l_int|2
+comma
+l_int|0xffffffff
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3582,6 +3593,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_SND_CS46XX_NEW_DSP
 id|spin_unlock
 c_func
 (paren
@@ -3589,6 +3601,7 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|result
 suffix:semicolon
@@ -3991,7 +4004,7 @@ macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 id|down
 (paren
 op_amp
-id|chip-&gt;dsp_spos_instance-&gt;pcm_mutex
+id|chip-&gt;spos_mutex
 )paren
 suffix:semicolon
 r_if
@@ -4021,12 +4034,6 @@ op_assign
 id|runtime-&gt;rate
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|chip-&gt;dsp_spos_instance-&gt;pcm_mutex
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4039,6 +4046,11 @@ op_ne
 l_int|1
 )paren
 (brace
+r_int
+id|unlinked
+op_assign
+id|cpcm-&gt;pcm_channel-&gt;unlinked
+suffix:semicolon
 id|cs46xx_dsp_destroy_pcm_channel
 (paren
 id|chip
@@ -4074,12 +4086,24 @@ id|KERN_ERR
 l_string|&quot;cs46xx: failed to re-create virtual PCM channel&bslash;n&quot;
 )paren
 suffix:semicolon
+id|up
+(paren
+op_amp
+id|chip-&gt;spos_mutex
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-id|cs46xx_dsp_pcm_unlink
+r_if
+c_cond
+(paren
+op_logical_neg
+id|unlinked
+)paren
+id|cs46xx_dsp_pcm_link
 (paren
 id|chip
 comma
@@ -4111,6 +4135,12 @@ id|pfie
 op_and_assign
 op_complement
 l_int|0x0000f03f
+suffix:semicolon
+id|up
+(paren
+op_amp
+id|chip-&gt;spos_mutex
+)paren
 suffix:semicolon
 macro_line|#else
 multiline_comment|/* old dsp */
@@ -4844,8 +4874,7 @@ id|i
 dot
 id|private_data
 comma
-r_goto
-id|_invalid_pointer
+r_continue
 )paren
 suffix:semicolon
 id|snd_pcm_period_elapsed
@@ -4916,8 +4945,7 @@ id|i
 dot
 id|private_data
 comma
-r_goto
-id|_invalid_pointer
+r_continue
 )paren
 suffix:semicolon
 id|snd_pcm_period_elapsed
@@ -4929,18 +4957,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_continue
-suffix:semicolon
-id|_invalid_pointer
-suffix:colon
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;cs46xx: (interrupt) invalid pointer at pcm_channel[%d]&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
 )brace
 macro_line|#else
 multiline_comment|/* old dsp */
@@ -5498,6 +5514,12 @@ op_assign
 id|substream
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
+id|down
+(paren
+op_amp
+id|chip-&gt;spos_mutex
+)paren
+suffix:semicolon
 id|cpcm-&gt;pcm_channel
 op_assign
 id|cs46xx_dsp_create_pcm_channel
@@ -5544,16 +5566,21 @@ c_func
 id|cpcm
 )paren
 suffix:semicolon
+id|up
+(paren
+op_amp
+id|chip-&gt;spos_mutex
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|cs46xx_dsp_pcm_unlink
+id|up
 (paren
-id|chip
-comma
-id|cpcm-&gt;pcm_channel
+op_amp
+id|chip-&gt;spos_mutex
 )paren
 suffix:semicolon
 macro_line|#else
@@ -5728,6 +5755,12 @@ id|ENXIO
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
+id|down
+(paren
+op_amp
+id|chip-&gt;spos_mutex
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5747,6 +5780,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|up
+(paren
+op_amp
+id|chip-&gt;spos_mutex
+)paren
+suffix:semicolon
 macro_line|#else
 id|chip-&gt;playback_pcm
 op_assign
@@ -10785,7 +10824,7 @@ macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 id|cs46xx_dsp_spos_destroy
 c_func
 (paren
-id|chip-&gt;dsp_spos_instance
+id|chip
 )paren
 suffix:semicolon
 macro_line|#endif

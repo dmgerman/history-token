@@ -236,6 +236,10 @@ DECL|member|ref_count
 r_int
 id|ref_count
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|deleted
 r_int
 id|deleted
@@ -341,11 +345,6 @@ id|segment_desc_t
 id|code
 suffix:semicolon
 multiline_comment|/* PCM playback */
-DECL|member|pcm_mutex
-r_struct
-id|semaphore
-id|pcm_mutex
-suffix:semicolon
 DECL|member|master_mix_scb
 id|dsp_scb_descriptor_t
 op_star
@@ -418,11 +417,6 @@ op_star
 id|proc_sample_dump_info_entry
 suffix:semicolon
 multiline_comment|/* SCB&squot;s descriptors */
-DECL|member|scb_mutex
-r_struct
-id|semaphore
-id|scb_mutex
-suffix:semicolon
 DECL|member|nscb
 r_int
 id|nscb

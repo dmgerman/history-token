@@ -2751,7 +2751,7 @@ comma
 dot
 id|periods_max
 op_assign
-l_int|1024
+l_int|128
 comma
 dot
 id|fifo_size
@@ -2838,7 +2838,7 @@ comma
 dot
 id|periods_max
 op_assign
-l_int|1024
+l_int|128
 comma
 dot
 id|fifo_size
@@ -2930,7 +2930,10 @@ id|snd_via8233_playback
 suffix:semicolon
 id|runtime-&gt;hw.rates
 op_assign
-id|chip-&gt;ac97-&gt;rates_front_dac
+id|chip-&gt;ac97-&gt;rates
+(braket
+id|AC97_RATES_FRONT_DAC
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -2990,7 +2993,6 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -3011,7 +3013,6 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-macro_line|#endif
 id|snd_pcm_hw_constraint_list
 c_func
 (paren
@@ -3069,7 +3070,10 @@ id|snd_via8233_capture
 suffix:semicolon
 id|runtime-&gt;hw.rates
 op_assign
-id|chip-&gt;ac97-&gt;rates_adc
+id|chip-&gt;ac97-&gt;rates
+(braket
+id|AC97_RATES_ADC
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -3129,7 +3133,6 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -3150,7 +3153,6 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3206,19 +3208,6 @@ id|chip-&gt;playback.substream
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* disable DAC power */
-id|snd_ac97_update_bits
-c_func
-(paren
-id|chip-&gt;ac97
-comma
-id|AC97_POWERDOWN
-comma
-l_int|0x0200
-comma
-l_int|0x0200
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3273,19 +3262,6 @@ suffix:semicolon
 id|chip-&gt;capture.substream
 op_assign
 l_int|NULL
-suffix:semicolon
-multiline_comment|/* disable ADC power */
-id|snd_ac97_update_bits
-c_func
-(paren
-id|chip-&gt;ac97
-comma
-id|AC97_POWERDOWN
-comma
-l_int|0x0100
-comma
-l_int|0x0100
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -3574,45 +3550,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Mixer part&n; */
-DECL|function|snd_via8233_codec_init
-r_static
-r_void
-id|snd_via8233_codec_init
-c_func
-(paren
-id|ac97_t
-op_star
-id|ac97
-)paren
-(brace
-singleline_comment|// via8233_t *chip = snd_magic_cast(via8233_t, ac97-&gt;private_data, return);
-multiline_comment|/* disable DAC &amp; ADC power */
-id|snd_ac97_update_bits
-c_func
-(paren
-id|ac97
-comma
-id|AC97_POWERDOWN
-comma
-l_int|0x0300
-comma
-l_int|0x0300
-)paren
-suffix:semicolon
-multiline_comment|/* disable center DAC/surround DAC/LFE DAC/MIC ADC */
-id|snd_ac97_update_bits
-c_func
-(paren
-id|ac97
-comma
-id|AC97_EXTENDED_STATUS
-comma
-l_int|0xe800
-comma
-l_int|0xe800
-)paren
-suffix:semicolon
-)brace
 DECL|function|snd_via8233_mixer_free_ac97
 r_static
 r_void
@@ -3682,10 +3619,6 @@ suffix:semicolon
 id|ac97.read
 op_assign
 id|snd_via8233_codec_read
-suffix:semicolon
-id|ac97.init
-op_assign
-id|snd_via8233_codec_init
 suffix:semicolon
 id|ac97.private_data
 op_assign

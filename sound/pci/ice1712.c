@@ -7832,7 +7832,10 @@ id|snd_ice1712_capture
 suffix:semicolon
 id|runtime-&gt;hw.rates
 op_assign
-id|ice-&gt;ac97-&gt;rates_adc
+id|ice-&gt;ac97-&gt;rates
+(braket
+id|AC97_RATES_ADC
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -7995,19 +7998,6 @@ id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
-)paren
-suffix:semicolon
-multiline_comment|/* disable ADC power */
-id|snd_ac97_update_bits
-c_func
-(paren
-id|ice-&gt;ac97
-comma
-id|AC97_POWERDOWN
-comma
-l_int|0x0100
-comma
-l_int|0x0100
 )paren
 suffix:semicolon
 id|ice-&gt;capture_con_substream
@@ -12085,32 +12075,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_ice1712_ac97_init
-r_static
-r_void
-id|snd_ice1712_ac97_init
-c_func
-(paren
-id|ac97_t
-op_star
-id|ac97
-)paren
-(brace
-singleline_comment|// ice1712_t *ice = snd_magic_cast(ice1712_t, ac97-&gt;private_data, return);
-multiline_comment|/* disable center DAC/surround DAC/LFE DAC/MIC ADC */
-id|snd_ac97_update_bits
-c_func
-(paren
-id|ac97
-comma
-id|AC97_EXTENDED_STATUS
-comma
-l_int|0xe800
-comma
-l_int|0xe800
-)paren
-suffix:semicolon
-)brace
 DECL|function|snd_ice1712_mixer_free_ac97
 r_static
 r_void
@@ -12191,10 +12155,6 @@ suffix:semicolon
 id|ac97.read
 op_assign
 id|snd_ice1712_ac97_read
-suffix:semicolon
-id|ac97.init
-op_assign
-id|snd_ice1712_ac97_init
 suffix:semicolon
 id|ac97.private_data
 op_assign
@@ -12305,10 +12265,6 @@ suffix:semicolon
 id|ac97.read
 op_assign
 id|snd_ice1712_pro_ac97_read
-suffix:semicolon
-id|ac97.init
-op_assign
-id|snd_ice1712_ac97_init
 suffix:semicolon
 id|ac97.private_data
 op_assign

@@ -35,6 +35,8 @@ DECL|macro|MPU401_HW_CMIPCI
 mdefine_line|#define MPU401_HW_CMIPCI&t;&t;15&t;/* CMIPCI MPU-401 UART */
 DECL|macro|MPU401_HW_ALS4000
 mdefine_line|#define MPU401_HW_ALS4000&t;&t;16&t;/* Avance Logic ALS4000 */
+DECL|macro|MPU401_HW_INTEL8X0
+mdefine_line|#define MPU401_HW_INTEL8X0&t;&t;17&t;/* Intel8x0 driver */
 DECL|macro|MPU401_MODE_BIT_INPUT
 mdefine_line|#define MPU401_MODE_BIT_INPUT&t;&t;0
 DECL|macro|MPU401_MODE_BIT_OUTPUT

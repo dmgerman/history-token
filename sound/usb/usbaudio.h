@@ -7,6 +7,8 @@ DECL|macro|USB_SUBCLASS_AUDIO_CONTROL
 mdefine_line|#define USB_SUBCLASS_AUDIO_CONTROL&t;0x01
 DECL|macro|USB_SUBCLASS_AUDIO_STREAMING
 mdefine_line|#define USB_SUBCLASS_AUDIO_STREAMING&t;0x02
+DECL|macro|USB_SUBCLASS_MIDI_STREAMING
+mdefine_line|#define USB_SUBCLASS_MIDI_STREAMING&t;0x03
 DECL|macro|USB_DT_CS_DEVICE
 mdefine_line|#define USB_DT_CS_DEVICE                0x21
 DECL|macro|USB_DT_CS_CONFIG
@@ -53,6 +55,8 @@ DECL|macro|FORMAT_SPECIFIC
 mdefine_line|#define FORMAT_SPECIFIC&t;&t;&t;0x03
 DECL|macro|EP_GENERAL
 mdefine_line|#define EP_GENERAL&t;&t;&t;0x01
+DECL|macro|MS_GENERAL
+mdefine_line|#define MS_GENERAL&t;&t;&t;0x01
 multiline_comment|/* endpoint attributes */
 DECL|macro|EP_ATTR_MASK
 mdefine_line|#define EP_ATTR_MASK&t;&t;&t;0x0c
@@ -136,6 +140,11 @@ DECL|macro|USB_AUDIO_FORMAT_IEC1937_MPEG2_LAYER1_LS
 mdefine_line|#define USB_AUDIO_FORMAT_IEC1937_MPEG2_LAYER1_LS&t;0x2005
 DECL|macro|USB_AUDIO_FORMAT_IEC1937_MPEG2_LAYER23_LS
 mdefine_line|#define USB_AUDIO_FORMAT_IEC1937_MPEG2_LAYER23_LS&t;0x2006
+multiline_comment|/* maximum number of endpoints per interface */
+DECL|macro|MIDI_MAX_ENDPOINTS
+mdefine_line|#define MIDI_MAX_ENDPOINTS 2
+DECL|macro|SNDRV_SEQ_DEV_ID_USBMIDI
+mdefine_line|#define SNDRV_SEQ_DEV_ID_USBMIDI &quot;usb-midi&quot;
 multiline_comment|/*&n; */
 DECL|typedef|snd_usb_audio_t
 r_typedef
@@ -175,6 +184,155 @@ multiline_comment|/* list of pcm streams */
 DECL|member|pcm_devs
 r_int
 id|pcm_devs
+suffix:semicolon
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
+DECL|member|next_seq_device
+r_int
+id|next_seq_device
+suffix:semicolon
+macro_line|#endif
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Information about devices with broken descriptors&n; */
+DECL|typedef|snd_usb_audio_quirk_t
+r_typedef
+r_struct
+id|snd_usb_audio_quirk
+id|snd_usb_audio_quirk_t
+suffix:semicolon
+DECL|typedef|snd_usb_midi_endpoint_info_t
+r_typedef
+r_struct
+id|snd_usb_midi_endpoint_info
+id|snd_usb_midi_endpoint_info_t
+suffix:semicolon
+DECL|struct|snd_usb_audio_quirk
+r_struct
+id|snd_usb_audio_quirk
+(brace
+DECL|member|vendor_name
+r_const
+r_char
+op_star
+id|vendor_name
+suffix:semicolon
+DECL|member|product_name
+r_const
+r_char
+op_star
+id|product_name
+suffix:semicolon
+DECL|member|ifnum
+r_int
+id|ifnum
+suffix:semicolon
+multiline_comment|/* MIDI specific */
+DECL|struct|snd_usb_midi_endpoint_info
+r_struct
+id|snd_usb_midi_endpoint_info
+(brace
+DECL|member|epnum
+r_int16
+id|epnum
+suffix:semicolon
+multiline_comment|/* ep number, -1 autodetect */
+DECL|member|out_cables
+r_uint16
+id|out_cables
+suffix:semicolon
+multiline_comment|/* bitmask */
+DECL|member|in_cables
+r_uint16
+id|in_cables
+suffix:semicolon
+multiline_comment|/* bitmask */
+DECL|member|endpoints
+)brace
+id|endpoints
+(braket
+id|MIDI_MAX_ENDPOINTS
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * USB MIDI sequencer device data&n; */
+DECL|typedef|snd_usb_midi_t
+r_typedef
+r_struct
+id|snd_usb_midi
+id|snd_usb_midi_t
+suffix:semicolon
+DECL|typedef|snd_usb_midi_endpoint_t
+r_typedef
+r_struct
+id|snd_usb_midi_endpoint
+id|snd_usb_midi_endpoint_t
+suffix:semicolon
+DECL|typedef|snd_usb_midi_out_endpoint_t
+r_typedef
+r_struct
+id|snd_usb_midi_out_endpoint
+id|snd_usb_midi_out_endpoint_t
+suffix:semicolon
+DECL|typedef|snd_usb_midi_in_endpoint_t
+r_typedef
+r_struct
+id|snd_usb_midi_in_endpoint
+id|snd_usb_midi_in_endpoint_t
+suffix:semicolon
+DECL|struct|snd_usb_midi
+r_struct
+id|snd_usb_midi
+(brace
+multiline_comment|/* filled by usbaudio.c */
+DECL|member|chip
+id|snd_usb_audio_t
+op_star
+id|chip
+suffix:semicolon
+DECL|member|ifnum
+r_int
+id|ifnum
+suffix:semicolon
+DECL|member|quirk
+r_const
+id|snd_usb_audio_quirk_t
+op_star
+id|quirk
+suffix:semicolon
+multiline_comment|/* used internally in usbmidi.c */
+DECL|member|seq_client
+r_int
+id|seq_client
+suffix:semicolon
+DECL|struct|snd_usb_midi_endpoint
+r_struct
+id|snd_usb_midi_endpoint
+(brace
+DECL|member|out
+id|snd_usb_midi_out_endpoint_t
+op_star
+id|out
+suffix:semicolon
+DECL|member|in
+id|snd_usb_midi_in_endpoint_t
+op_star
+id|in
+suffix:semicolon
+DECL|member|rmidi
+id|snd_rawmidi_t
+op_star
+id|rmidi
+(braket
+l_int|0x10
+)braket
+suffix:semicolon
+DECL|member|endpoints
+)brace
+id|endpoints
+(braket
+id|MIDI_MAX_ENDPOINTS
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon

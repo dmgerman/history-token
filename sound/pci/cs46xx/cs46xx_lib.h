@@ -6,15 +6,15 @@ DECL|macro|chip_t
 mdefine_line|#define chip_t cs46xx_t
 multiline_comment|/*&n; *  constants&n; */
 DECL|macro|CS46XX_BA0_SIZE
-mdefine_line|#define CS46XX_BA0_SIZE&t;&t;0x1000
+mdefine_line|#define CS46XX_BA0_SIZE&t;&t;  0x1000
 DECL|macro|CS46XX_BA1_DATA0_SIZE
-mdefine_line|#define CS46XX_BA1_DATA0_SIZE&t;0x3000
+mdefine_line|#define CS46XX_BA1_DATA0_SIZE 0x3000
 DECL|macro|CS46XX_BA1_DATA1_SIZE
-mdefine_line|#define CS46XX_BA1_DATA1_SIZE&t;0x3800
+mdefine_line|#define CS46XX_BA1_DATA1_SIZE 0x3800
 DECL|macro|CS46XX_BA1_PRG_SIZE
-mdefine_line|#define CS46XX_BA1_PRG_SIZE&t;0x7000
+mdefine_line|#define CS46XX_BA1_PRG_SIZE&t;  0x7000
 DECL|macro|CS46XX_BA1_REG_SIZE
-mdefine_line|#define CS46XX_BA1_REG_SIZE&t;0x0100
+mdefine_line|#define CS46XX_BA1_REG_SIZE&t;  0x0100
 DECL|macro|CS46XX_PERIOD_SIZE
 mdefine_line|#define CS46XX_PERIOD_SIZE 2048
 DECL|macro|CS46XX_FRAGS
@@ -224,9 +224,9 @@ suffix:semicolon
 r_void
 id|cs46xx_dsp_spos_destroy
 (paren
-id|dsp_spos_instance_t
+id|cs46xx_t
 op_star
-id|instance
+id|chip
 )paren
 suffix:semicolon
 r_int

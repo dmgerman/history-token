@@ -2782,6 +2782,11 @@ id|current_gpio
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
+DECL|member|spos_mutex
+r_struct
+id|semaphore
+id|spos_mutex
+suffix:semicolon
 DECL|member|dsp_spos_instance
 id|dsp_spos_instance_t
 op_star
