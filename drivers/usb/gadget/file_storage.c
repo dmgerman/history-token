@@ -2308,6 +2308,8 @@ l_int|NULL
 comma
 )brace
 suffix:semicolon
+DECL|macro|FS_FUNCTION_PRE_EP_ENTRIES
+mdefine_line|#define FS_FUNCTION_PRE_EP_ENTRIES&t;2
 macro_line|#ifdef&t;CONFIG_USB_GADGET_DUALSPEED
 multiline_comment|/*&n; * USB 2.0 devices need to expose both high speed and full speed&n; * descriptors, unless they only run at full speed.&n; *&n; * That means alternate endpoint descriptors (bigger packets)&n; * and a &quot;device qualifier&quot; ... plus more construction options&n; * for the config descriptor.&n; */
 r_static
@@ -2518,6 +2520,8 @@ l_int|NULL
 comma
 )brace
 suffix:semicolon
+DECL|macro|HS_FUNCTION_PRE_EP_ENTRIES
+mdefine_line|#define HS_FUNCTION_PRE_EP_ENTRIES&t;2
 multiline_comment|/* Maxpacket and other transfer characteristics vary by speed. */
 DECL|macro|ep_desc
 mdefine_line|#define ep_desc(g,fs,hs)&t;(((g)-&gt;speed==USB_SPEED_HIGH) ? (hs) : (fs))
@@ -15612,7 +15616,7 @@ id|fs_function
 (braket
 id|i
 op_plus
-l_int|1
+id|FS_FUNCTION_PRE_EP_ENTRIES
 )braket
 op_assign
 l_int|NULL
@@ -15622,7 +15626,7 @@ id|hs_function
 (braket
 id|i
 op_plus
-l_int|1
+id|HS_FUNCTION_PRE_EP_ENTRIES
 )braket
 op_assign
 l_int|NULL
