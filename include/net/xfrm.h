@@ -89,6 +89,10 @@ DECL|member|reqid
 id|u16
 id|reqid
 suffix:semicolon
+DECL|member|family
+id|u16
+id|family
+suffix:semicolon
 DECL|member|saddr
 id|xfrm_address_t
 id|saddr
@@ -378,48 +382,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|XFRM_MAX_DEPTH
 mdefine_line|#define XFRM_MAX_DEPTH&t;&t;3
-r_enum
-(brace
-DECL|enumerator|XFRM_SHARE_ANY
-id|XFRM_SHARE_ANY
-comma
-multiline_comment|/* No limitations */
-DECL|enumerator|XFRM_SHARE_SESSION
-id|XFRM_SHARE_SESSION
-comma
-multiline_comment|/* For this session only */
-DECL|enumerator|XFRM_SHARE_USER
-id|XFRM_SHARE_USER
-comma
-multiline_comment|/* For this user only */
-DECL|enumerator|XFRM_SHARE_UNIQUE
-id|XFRM_SHARE_UNIQUE
-multiline_comment|/* Use once */
-)brace
-suffix:semicolon
-r_enum
-(brace
-DECL|enumerator|XFRM_POLICY_IN
-id|XFRM_POLICY_IN
-op_assign
-l_int|0
-comma
-DECL|enumerator|XFRM_POLICY_OUT
-id|XFRM_POLICY_OUT
-op_assign
-l_int|1
-comma
-DECL|enumerator|XFRM_POLICY_FWD
-id|XFRM_POLICY_FWD
-op_assign
-l_int|2
-comma
-DECL|enumerator|XFRM_POLICY_MAX
-id|XFRM_POLICY_MAX
-op_assign
-l_int|3
-)brace
-suffix:semicolon
 DECL|struct|xfrm_policy
 r_struct
 id|xfrm_policy
@@ -468,20 +430,18 @@ id|dst_entry
 op_star
 id|bundles
 suffix:semicolon
+DECL|member|family
+id|__u16
+id|family
+suffix:semicolon
 DECL|member|action
 id|__u8
 id|action
 suffix:semicolon
-DECL|macro|XFRM_POLICY_ALLOW
-mdefine_line|#define XFRM_POLICY_ALLOW&t;0
-DECL|macro|XFRM_POLICY_BLOCK
-mdefine_line|#define XFRM_POLICY_BLOCK&t;1
 DECL|member|flags
 id|__u8
 id|flags
 suffix:semicolon
-DECL|macro|XFRM_POLICY_LOCALOK
-mdefine_line|#define XFRM_POLICY_LOCALOK&t;1&t;/* Allow user to override global policy */
 DECL|member|dead
 id|__u8
 id|dead
@@ -1599,6 +1559,9 @@ id|daddr
 comma
 id|u32
 id|saddr
+comma
+r_int
+id|create
 )paren
 suffix:semicolon
 r_extern
