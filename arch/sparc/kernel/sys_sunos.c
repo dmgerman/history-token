@@ -4347,10 +4347,10 @@ id|op
 r_case
 l_int|0
 suffix:colon
-multiline_comment|/* sys_shmat(): attach a shared memory area */
+multiline_comment|/* do_shmat(): attach a shared memory area */
 id|rval
 op_assign
-id|sys_shmat
+id|do_shmat
 c_func
 (paren
 (paren

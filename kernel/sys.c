@@ -671,11 +671,6 @@ id|sys_shmget
 id|cond_syscall
 c_func
 (paren
-id|sys_shmat
-)paren
-id|cond_syscall
-c_func
-(paren
 id|sys_shmdt
 )paren
 id|cond_syscall
