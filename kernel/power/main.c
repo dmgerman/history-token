@@ -672,8 +672,9 @@ id|pm_states
 id|state
 )braket
 suffix:semicolon
-op_star
-id|s
+id|state
+OL
+id|PM_SUSPEND_MAX
 suffix:semicolon
 id|s
 op_increment
@@ -685,6 +686,9 @@ op_increment
 r_if
 c_cond
 (paren
+op_star
+id|s
+op_logical_and
 op_logical_neg
 id|strncmp
 c_func
