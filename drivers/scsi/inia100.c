@@ -85,13 +85,6 @@ op_star
 )paren
 l_int|NULL
 suffix:semicolon
-DECL|variable|inia100_adpt
-r_static
-r_struct
-id|inia100_Adpt_Struc
-op_star
-id|inia100_adpt
-suffix:semicolon
 r_static
 r_void
 id|inia100_intr
@@ -301,6 +294,12 @@ id|ORC_HCS
 op_star
 id|hcsp
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|inia100_Adpt_Struc
+op_star
+id|inia100_adpt
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; Function name  : inia100AppendSRBToQueue&n; Description    : This function will push current request into save list&n; Input          : pSRB  -       Pointer to SCSI request block.&n;&t;&t;  pHCB  -       Pointer to host adapter structure&n; Output         : None.&n; Return         : None.&n;*****************************************************************************/
 DECL|function|inia100AppendSRBToQueue
