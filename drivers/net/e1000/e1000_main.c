@@ -3188,9 +3188,29 @@ id|adapter-&gt;hw
 comma
 id|TIDV
 comma
-l_int|64
+id|adapter-&gt;tx_int_delay
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|adapter-&gt;hw.mac_type
+op_ge
+id|e1000_82540
+)paren
+(brace
+id|E1000_WRITE_REG
+c_func
+(paren
+op_amp
+id|adapter-&gt;hw
+comma
+id|TADV
+comma
+id|adapter-&gt;tx_abs_int_delay
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Program the Transmit Control Register */
 id|tctl
 op_assign
@@ -3641,7 +3661,7 @@ c_func
 op_amp
 id|adapter-&gt;hw
 comma
-id|RADV
+id|RDTR
 comma
 id|adapter-&gt;rx_int_delay
 )paren
@@ -3652,9 +3672,9 @@ c_func
 op_amp
 id|adapter-&gt;hw
 comma
-id|RDTR
+id|RADV
 comma
-l_int|64
+id|adapter-&gt;rx_abs_int_delay
 )paren
 suffix:semicolon
 multiline_comment|/* Set the interrupt throttling rate.  Value is calculated&n;&t;&t; * as DEFAULT_ITR = 1/(MAX_INTS_PER_SEC * 256ns) */

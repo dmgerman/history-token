@@ -260,6 +260,14 @@ DECL|member|txd_cmd
 r_uint32
 id|txd_cmd
 suffix:semicolon
+DECL|member|tx_int_delay
+r_uint32
+id|tx_int_delay
+suffix:semicolon
+DECL|member|tx_abs_int_delay
+r_uint32
+id|tx_abs_int_delay
+suffix:semicolon
 DECL|member|max_data_per_txd
 r_int
 id|max_data_per_txd
@@ -281,6 +289,10 @@ suffix:semicolon
 DECL|member|rx_int_delay
 r_uint32
 id|rx_int_delay
+suffix:semicolon
+DECL|member|rx_abs_int_delay
+r_uint32
+id|rx_abs_int_delay
 suffix:semicolon
 DECL|member|rx_csum
 id|boolean_t

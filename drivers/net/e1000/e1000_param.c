@@ -78,6 +78,24 @@ comma
 l_string|&quot;Disable or enable Receive Checksum offload&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Transmit Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 64&n; */
+id|E1000_PARAM
+c_func
+(paren
+id|TxIntDelay
+comma
+l_string|&quot;Transmit Interrupt Delay&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Transmit Absolute Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 0&n; */
+id|E1000_PARAM
+c_func
+(paren
+id|TxAbsIntDelay
+comma
+l_string|&quot;Transmit Absolute Interrupt Delay&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 0/128&n; */
 id|E1000_PARAM
 c_func
@@ -85,6 +103,15 @@ c_func
 id|RxIntDelay
 comma
 l_string|&quot;Receive Interrupt Delay&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Receive Absolute Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 128&n; */
+id|E1000_PARAM
+c_func
+(paren
+id|RxAbsIntDelay
+comma
+l_string|&quot;Receive Absolute Interrupt Delay&quot;
 )paren
 suffix:semicolon
 DECL|macro|AUTONEG_ADV_DEFAULT
@@ -110,13 +137,31 @@ mdefine_line|#define MIN_RXD                       80
 DECL|macro|MAX_82544_RXD
 mdefine_line|#define MAX_82544_RXD               4096
 DECL|macro|DEFAULT_RDTR
-mdefine_line|#define DEFAULT_RDTR                   0
-DECL|macro|DEFAULT_RADV
-mdefine_line|#define DEFAULT_RADV                 128
+mdefine_line|#define DEFAULT_RDTR                 128
+DECL|macro|DEFAULT_RDTR_82544
+mdefine_line|#define DEFAULT_RDTR_82544             0
 DECL|macro|MAX_RXDELAY
 mdefine_line|#define MAX_RXDELAY               0xFFFF
 DECL|macro|MIN_RXDELAY
 mdefine_line|#define MIN_RXDELAY                    0
+DECL|macro|DEFAULT_RADV
+mdefine_line|#define DEFAULT_RADV                 128
+DECL|macro|MAX_RXABSDELAY
+mdefine_line|#define MAX_RXABSDELAY            0xFFFF
+DECL|macro|MIN_RXABSDELAY
+mdefine_line|#define MIN_RXABSDELAY                 0
+DECL|macro|DEFAULT_TIDV
+mdefine_line|#define DEFAULT_TIDV                  64
+DECL|macro|MAX_TXDELAY
+mdefine_line|#define MAX_TXDELAY               0xFFFF
+DECL|macro|MIN_TXDELAY
+mdefine_line|#define MIN_TXDELAY                    0
+DECL|macro|DEFAULT_TADV
+mdefine_line|#define DEFAULT_TADV                  64
+DECL|macro|MAX_TXABSDELAY
+mdefine_line|#define MAX_TXABSDELAY            0xFFFF
+DECL|macro|MIN_TXABSDELAY
+mdefine_line|#define MIN_TXABSDELAY                 0
 DECL|struct|e1000_option
 r_struct
 id|e1000_option
@@ -850,6 +895,150 @@ id|fc
 suffix:semicolon
 )brace
 (brace
+multiline_comment|/* Transmit Interrupt Delay */
+r_char
+op_star
+id|tidv
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_TIDV
+)paren
+suffix:semicolon
+r_struct
+id|e1000_option
+id|opt
+op_assign
+(brace
+dot
+id|type
+op_assign
+id|range_option
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Transmit Interrupt Delay&quot;
+comma
+dot
+id|arg
+op_assign
+(brace
+id|r
+suffix:colon
+(brace
+id|min
+suffix:colon
+id|MIN_TXDELAY
+comma
+id|max
+suffix:colon
+id|MAX_TXDELAY
+)brace
+)brace
+)brace
+suffix:semicolon
+id|opt.def
+op_assign
+id|DEFAULT_TIDV
+suffix:semicolon
+id|opt.err
+op_assign
+id|tidv
+suffix:semicolon
+id|adapter-&gt;tx_int_delay
+op_assign
+id|TxIntDelay
+(braket
+id|bd
+)braket
+suffix:semicolon
+id|e1000_validate_option
+c_func
+(paren
+op_amp
+id|adapter-&gt;tx_int_delay
+comma
+op_amp
+id|opt
+)paren
+suffix:semicolon
+)brace
+(brace
+multiline_comment|/* Transmit Absolute Interrupt Delay */
+r_char
+op_star
+id|tadv
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_TADV
+)paren
+suffix:semicolon
+r_struct
+id|e1000_option
+id|opt
+op_assign
+(brace
+dot
+id|type
+op_assign
+id|range_option
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Transmit Absolute Interrupt Delay&quot;
+comma
+dot
+id|arg
+op_assign
+(brace
+id|r
+suffix:colon
+(brace
+id|min
+suffix:colon
+id|MIN_TXABSDELAY
+comma
+id|max
+suffix:colon
+id|MAX_TXABSDELAY
+)brace
+)brace
+)brace
+suffix:semicolon
+id|opt.def
+op_assign
+id|DEFAULT_TADV
+suffix:semicolon
+id|opt.err
+op_assign
+id|tadv
+suffix:semicolon
+id|adapter-&gt;tx_abs_int_delay
+op_assign
+id|TxAbsIntDelay
+(braket
+id|bd
+)braket
+suffix:semicolon
+id|e1000_validate_option
+c_func
+(paren
+op_amp
+id|adapter-&gt;tx_abs_int_delay
+comma
+op_amp
+id|opt
+)paren
+suffix:semicolon
+)brace
+(brace
 multiline_comment|/* Receive Interrupt Delay */
 r_char
 op_star
@@ -864,13 +1053,13 @@ id|DEFAULT_RDTR
 suffix:semicolon
 r_char
 op_star
-id|radv
+id|rdtr_82544
 op_assign
 l_string|&quot;using default of &quot;
 id|__MODULE_STRING
 c_func
 (paren
-id|DEFAULT_RADV
+id|DEFAULT_RDTR_82544
 )paren
 suffix:semicolon
 r_struct
@@ -914,24 +1103,24 @@ suffix:semicolon
 id|opt.def
 op_assign
 id|mac_type
-OL
-id|e1000_82540
+OG
+id|e1000_82544
 ques
 c_cond
 id|DEFAULT_RDTR
 suffix:colon
-id|DEFAULT_RADV
+l_int|0
 suffix:semicolon
 id|opt.err
 op_assign
 id|mac_type
-OL
-id|e1000_82540
+OG
+id|e1000_82544
 ques
 c_cond
 id|rdtr
 suffix:colon
-id|radv
+id|rdtr_82544
 suffix:semicolon
 id|adapter-&gt;rx_int_delay
 op_assign
@@ -945,6 +1134,78 @@ c_func
 (paren
 op_amp
 id|adapter-&gt;rx_int_delay
+comma
+op_amp
+id|opt
+)paren
+suffix:semicolon
+)brace
+(brace
+multiline_comment|/* Receive Absolute Interrupt Delay */
+r_char
+op_star
+id|radv
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_RADV
+)paren
+suffix:semicolon
+r_struct
+id|e1000_option
+id|opt
+op_assign
+(brace
+dot
+id|type
+op_assign
+id|range_option
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Receive Absolute Interrupt Delay&quot;
+comma
+dot
+id|arg
+op_assign
+(brace
+id|r
+suffix:colon
+(brace
+id|min
+suffix:colon
+id|MIN_RXABSDELAY
+comma
+id|max
+suffix:colon
+id|MAX_RXABSDELAY
+)brace
+)brace
+)brace
+suffix:semicolon
+id|opt.def
+op_assign
+id|DEFAULT_RADV
+suffix:semicolon
+id|opt.err
+op_assign
+id|radv
+suffix:semicolon
+id|adapter-&gt;rx_abs_int_delay
+op_assign
+id|RxAbsIntDelay
+(braket
+id|bd
+)braket
+suffix:semicolon
+id|e1000_validate_option
+c_func
+(paren
+op_amp
+id|adapter-&gt;rx_abs_int_delay
 comma
 op_amp
 id|opt
