@@ -4613,7 +4613,6 @@ id|data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Returns the number of bytes transferred */
 DECL|function|i2c_smbus_write_block_data
 id|s32
 id|i2c_smbus_write_block_data
