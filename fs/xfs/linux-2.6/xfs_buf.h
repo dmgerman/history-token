@@ -530,7 +530,7 @@ multiline_comment|/* Finding and Reading Buffers */
 r_extern
 id|xfs_buf_t
 op_star
-id|pagebuf_find
+id|_pagebuf_find
 c_func
 (paren
 multiline_comment|/* find buffer for block if&t;*/
@@ -546,13 +546,19 @@ r_int
 comma
 multiline_comment|/* length of range&t;&t;*/
 id|page_buf_flags_t
+comma
+multiline_comment|/* PBF_LOCK&t;&t;&t;*/
+id|xfs_buf_t
+op_star
 )paren
 suffix:semicolon
-multiline_comment|/* PBF_LOCK&t;&t;&t;*/
+multiline_comment|/* newly allocated buffer&t;*/
+DECL|macro|xfs_incore
+mdefine_line|#define xfs_incore(buftarg,blkno,len,lockit) &bslash;&n;&t;_pagebuf_find(buftarg, blkno ,len, lockit, NULL)
 r_extern
 id|xfs_buf_t
 op_star
-id|pagebuf_get
+id|xfs_buf_get_flags
 c_func
 (paren
 multiline_comment|/* allocate a buffer&t;&t;*/
@@ -571,6 +577,31 @@ id|page_buf_flags_t
 suffix:semicolon
 multiline_comment|/* PBF_LOCK, PBF_READ,&t;&t;*/
 multiline_comment|/* PBF_ASYNC&t;&t;&t;*/
+DECL|macro|xfs_buf_get
+mdefine_line|#define xfs_buf_get(target, blkno, len, flags) &bslash;&n;&t;xfs_buf_get_flags((target), (blkno), (len), PBF_LOCK | PBF_MAPPED)
+r_extern
+id|xfs_buf_t
+op_star
+id|xfs_buf_read_flags
+c_func
+(paren
+multiline_comment|/* allocate and read a buffer&t;*/
+id|xfs_buftarg_t
+op_star
+comma
+multiline_comment|/* inode for buffer&t;&t;*/
+id|loff_t
+comma
+multiline_comment|/* starting offset of range&t;*/
+r_int
+comma
+multiline_comment|/* length of range&t;&t;*/
+id|page_buf_flags_t
+)paren
+suffix:semicolon
+multiline_comment|/* PBF_LOCK, PBF_ASYNC&t;&t;*/
+DECL|macro|xfs_buf_read
+mdefine_line|#define xfs_buf_read(target, blkno, len, flags) &bslash;&n;&t;xfs_buf_read_flags((target), (blkno), (len), PBF_LOCK | PBF_MAPPED)
 r_extern
 id|xfs_buf_t
 op_star
@@ -1216,14 +1247,6 @@ DECL|macro|XFS_BUF_SET_VTYPE
 mdefine_line|#define XFS_BUF_SET_VTYPE(bp, type)
 DECL|macro|XFS_BUF_SET_REF
 mdefine_line|#define XFS_BUF_SET_REF(bp, ref)
-DECL|macro|xfs_buf_read
-mdefine_line|#define xfs_buf_read(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_LOCK | PBF_READ | PBF_MAPPED)
-DECL|macro|xfs_buf_get
-mdefine_line|#define xfs_buf_get(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_LOCK | PBF_MAPPED)
-DECL|macro|xfs_buf_read_flags
-mdefine_line|#define xfs_buf_read_flags(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), PBF_READ | (flags))
-DECL|macro|xfs_buf_get_flags
-mdefine_line|#define xfs_buf_get_flags(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), (flags))
 DECL|function|xfs_bawrite
 r_static
 r_inline
@@ -1307,8 +1330,6 @@ DECL|macro|xfs_buftrace
 mdefine_line|#define xfs_buftrace(id, bp)&t;&bslash;&n;&t;    pagebuf_trace(bp, id, NULL, (void *)__builtin_return_address(0))
 DECL|macro|xfs_biodone
 mdefine_line|#define xfs_biodone(pb)&t;&t;    &bslash;&n;&t;    pagebuf_iodone(pb, (pb-&gt;pb_flags &amp; PBF_FS_DATAIOD), 0)
-DECL|macro|xfs_incore
-mdefine_line|#define xfs_incore(buftarg,blkno,len,lockit) &bslash;&n;&t;    pagebuf_find(buftarg, blkno ,len, lockit)
 DECL|macro|xfs_biomove
 mdefine_line|#define xfs_biomove(pb, off, len, data, rw) &bslash;&n;&t;    pagebuf_iomove((pb), (off), (len), (data), &bslash;&n;&t;&t;((rw) == XFS_B_WRITE) ? PBRW_WRITE : PBRW_READ)
 DECL|macro|xfs_biozero

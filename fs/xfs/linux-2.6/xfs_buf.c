@@ -1567,7 +1567,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Finding and Reading Buffers&n; */
 multiline_comment|/*&n; *&t;_pagebuf_find&n; *&n; *&t;Looks up, and creates if absent, a lockable buffer for&n; *&t;a given range of an inode.  The buffer is returned&n; *&t;locked.&t; If other overlapping buffers exist, they are&n; *&t;released before the new buffer is created and locked,&n; *&t;which may imply that this call will block until those buffers&n; *&t;are unlocked.  No I/O is implied by this call.&n; */
-id|STATIC
 id|xfs_buf_t
 op_star
 DECL|function|_pagebuf_find
@@ -1921,54 +1920,11 @@ id|pb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;pagebuf_find&n; *&n; *&t;pagebuf_find returns a buffer matching the specified range of&n; *&t;data for the specified target, if any of the relevant blocks&n; *&t;are in memory.  The buffer may have unallocated holes, if&n; *&t;some, but not all, of the blocks are in memory.  Even where&n; *&t;pages are present in the buffer, not all of every page may be&n; *&t;valid.&n; */
+multiline_comment|/*&n; *&t;xfs_buf_get_flags assembles a buffer covering the specified range.&n; *&n; *&t;Storage in memory for all portions of the buffer will be allocated,&n; *&t;although backing storage may not be.&n; */
 id|xfs_buf_t
 op_star
-DECL|function|pagebuf_find
-id|pagebuf_find
-c_func
-(paren
-multiline_comment|/* find buffer for block&t;*/
-multiline_comment|/* if the block is in memory&t;*/
-id|xfs_buftarg_t
-op_star
-id|target
-comma
-multiline_comment|/* target for block&t;&t;*/
-id|loff_t
-id|ioff
-comma
-multiline_comment|/* starting offset of range&t;*/
-r_int
-id|isize
-comma
-multiline_comment|/* length of range&t;&t;*/
-id|page_buf_flags_t
-id|flags
-)paren
-multiline_comment|/* PBF_TRYLOCK&t;&t;&t;*/
-(brace
-r_return
-id|_pagebuf_find
-c_func
-(paren
-id|target
-comma
-id|ioff
-comma
-id|isize
-comma
-id|flags
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; *&t;pagebuf_get&n; *&n; *&t;pagebuf_get assembles a buffer covering the specified range.&n; *&t;Some or all of the blocks in the range may be valid.  Storage&n; *&t;in memory for all portions of the buffer will be allocated,&n; *&t;although backing storage may not be.  If PBF_READ is set in&n; *&t;flags, pagebuf_iostart is called also.&n; */
-id|xfs_buf_t
-op_star
-DECL|function|pagebuf_get
-id|pagebuf_get
+DECL|function|xfs_buf_get_flags
+id|xfs_buf_get_flags
 c_func
 (paren
 multiline_comment|/* allocate a buffer&t;&t;*/
@@ -2149,7 +2105,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;pagebuf_get: failed to map pages&bslash;n&quot;
+l_string|&quot;%s: failed to map pages&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_goto
@@ -2172,12 +2130,98 @@ id|pb-&gt;pb_count_desired
 op_assign
 id|pb-&gt;pb_buffer_length
 suffix:semicolon
+id|PB_TRACE
+c_func
+(paren
+id|pb
+comma
+l_string|&quot;get&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|pb
+suffix:semicolon
+id|no_buffer
+suffix:colon
 r_if
 c_cond
 (paren
 id|flags
 op_amp
+(paren
+id|PBF_LOCK
+op_or
+id|PBF_TRYLOCK
+)paren
+)paren
+id|pagebuf_unlock
+c_func
+(paren
+id|pb
+)paren
+suffix:semicolon
+id|pagebuf_rele
+c_func
+(paren
+id|pb
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+id|xfs_buf_t
+op_star
+DECL|function|xfs_buf_read_flags
+id|xfs_buf_read_flags
+c_func
+(paren
+id|xfs_buftarg_t
+op_star
+id|target
+comma
+id|loff_t
+id|ioff
+comma
+r_int
+id|isize
+comma
+id|page_buf_flags_t
+id|flags
+)paren
+(brace
+id|xfs_buf_t
+op_star
+id|pb
+suffix:semicolon
+id|flags
+op_or_assign
 id|PBF_READ
+suffix:semicolon
+id|pb
+op_assign
+id|xfs_buf_get_flags
+c_func
+(paren
+id|target
+comma
+id|ioff
+comma
+id|isize
+comma
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pb
 )paren
 (brace
 r_if
@@ -2195,7 +2239,7 @@ c_func
 (paren
 id|pb
 comma
-l_string|&quot;get_read&quot;
+l_string|&quot;read&quot;
 comma
 (paren
 r_int
@@ -2233,7 +2277,7 @@ c_func
 (paren
 id|pb
 comma
-l_string|&quot;get_read_async&quot;
+l_string|&quot;read_async&quot;
 comma
 (paren
 r_int
@@ -2254,7 +2298,7 @@ c_func
 (paren
 id|pb
 comma
-l_string|&quot;get_read_done&quot;
+l_string|&quot;read_done&quot;
 comma
 (paren
 r_int
@@ -2270,23 +2314,6 @@ op_complement
 id|PBF_READ
 suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-id|PB_TRACE
-c_func
-(paren
-id|pb
-comma
-l_string|&quot;get_write&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|flags
-)paren
-suffix:semicolon
 )brace
 r_return
 id|pb
@@ -2441,7 +2468,7 @@ op_or
 id|PBF_READ_AHEAD
 )paren
 suffix:semicolon
-id|pagebuf_get
+id|xfs_buf_get_flags
 c_func
 (paren
 id|target
