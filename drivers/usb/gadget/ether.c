@@ -163,22 +163,23 @@ mdefine_line|#define DRIVER_VENDOR_NUM&t;0x0525&t;&t;/* NetChip */
 DECL|macro|DRIVER_PRODUCT_NUM
 mdefine_line|#define DRIVER_PRODUCT_NUM&t;0xa4a1&t;&t;/* Linux-USB Ethernet Gadget */
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * hardware-specific configuration, controlled by which device&n; * controller driver was configured.&n; *&n; * CHIP ... hardware identifier&n; * DRIVER_VERSION_NUM ... alerts the host side driver to differences&n; * EP0_MAXPACKET ... controls packetization of control requests&n; * EP_*_NAME ... which endpoints do we use for which purpose?&n; * EP_*_NUM ... numbers for them (often limited by hardware)&n; * HIGHSPEED ... define if ep0 and descriptors need high speed support&n; * MAX_USB_POWER ... define if we use other than 100 mA bus current&n; * SELFPOWER ... unless we can run on bus power, USB_CONFIG_ATT_SELFPOWER&n; * WAKEUP ... if hardware supports remote wakeup AND we will issue the&n; * &t;usb_gadget_wakeup() call to initiate it, USB_CONFIG_ATT_WAKEUP&n; *&n; * hw_optimize(gadget) ... for any hardware tweaks we want to kick in&n; * &t;before we enable our endpoints&n; *&n; * add other defines for other portability issues, like hardware that&n; * for some reason doesn&squot;t handle full speed bulk maxpacket of 64.&n; */
+multiline_comment|/*&n; * hardware-specific configuration, controlled by which device&n; * controller driver was configured.&n; *&n; * CHIP ... hardware identifier&n; * DRIVER_VERSION_NUM ... alerts the host side driver to differences&n; * EP_*_NAME ... which endpoints do we use for which purpose?&n; * EP_*_NUM ... numbers for them (often limited by hardware)&n; * HIGHSPEED ... define if ep0 and descriptors need high speed support&n; * WAKEUP ... if hardware supports remote wakeup AND we will issue the&n; * &t;usb_gadget_wakeup() call to initiate it, USB_CONFIG_ATT_WAKEUP&n; *&n; * hw_optimize(gadget) ... for any hardware tweaks we want to kick in&n; * &t;before we enable our endpoints&n; *&n; * add other defines for other portability issues, like hardware that&n; * for some reason doesn&squot;t handle full speed bulk maxpacket of 64.&n; */
 DECL|macro|DEV_CONFIG_VALUE
 mdefine_line|#define DEV_CONFIG_VALUE&t;3&t;/* some hardware cares */
 multiline_comment|/* #undef on hardware that can&squot;t implement CDC */
 DECL|macro|DEV_CONFIG_CDC
 mdefine_line|#define&t;DEV_CONFIG_CDC
+multiline_comment|/* undef on bus-powered hardware, and #define MAX_USB_POWER */
+DECL|macro|SELFPOWER
+mdefine_line|#define SELFPOWER
 multiline_comment|/*&n; * NetChip 2280, PCI based.&n; *&n; * use DMA with fat fifos for all data traffic, PIO for the status channel&n; * where its 64 byte maxpacket ceiling is no issue.&n; *&n; * performance note:  only PIO needs per-usb-packet IRQs (ep0, ep-e, ep-f)&n; * otherwise IRQs are per-Ethernet-packet unless TX_DELAY and chaining help.&n; */
-macro_line|#ifdef&t;CONFIG_USB_ETH_NET2280
+macro_line|#ifdef&t;CONFIG_USB_GADGET_NET2280
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;net2280&quot;
 DECL|macro|DEFAULT_QLEN
 mdefine_line|#define DEFAULT_QLEN&t;&t;4&t;&t;/* has dma chaining */
 DECL|macro|DRIVER_VERSION_NUM
 mdefine_line|#define DRIVER_VERSION_NUM&t;0x0101
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;64
 DECL|variable|EP_OUT_NAME
 r_static
 r_const
@@ -217,9 +218,6 @@ DECL|macro|EP_STATUS_NUM
 mdefine_line|#define EP_STATUS_NUM&t;3
 DECL|macro|HIGHSPEED
 mdefine_line|#define HIGHSPEED
-multiline_comment|/* specific hardware configs could be bus-powered */
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER USB_CONFIG_ATT_SELFPOWER
 multiline_comment|/* supports remote wakeup, but this driver doesn&squot;t */
 r_extern
 r_int
@@ -257,15 +255,13 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * PXA-2xx UDC:  widely used in second gen Linux-capable ARM PDAs&n; * and other products.&n; *&n; * multiple interfaces (or altsettings) aren&squot;t usable.  so this hardware&n; * can&squot;t implement CDC, which needs both capabilities.&n; */
-macro_line|#ifdef&t;CONFIG_USB_ETH_PXA2XX
+macro_line|#ifdef&t;CONFIG_USB_GADGET_PXA2XX
 DECL|macro|DEV_CONFIG_CDC
 macro_line|#undef&t;DEV_CONFIG_CDC
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;pxa2xx&quot;
 DECL|macro|DRIVER_VERSION_NUM
 mdefine_line|#define DRIVER_VERSION_NUM&t;0x0103
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;16
 DECL|variable|EP_OUT_NAME
 r_static
 r_const
@@ -290,22 +286,17 @@ l_string|&quot;ep1in-bulk&quot;
 suffix:semicolon
 DECL|macro|EP_IN_NUM
 mdefine_line|#define EP_IN_NUM&t;1
-multiline_comment|/* doesn&squot;t support bus-powered operation */
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER USB_CONFIG_ATT_SELFPOWER
 multiline_comment|/* supports remote wakeup, but this driver doesn&squot;t */
 multiline_comment|/* no hw optimizations to apply */
 DECL|macro|hw_optimize
 mdefine_line|#define hw_optimize(g) do {} while (0)
 macro_line|#endif
 multiline_comment|/*&n; * SA-1100 UDC:  widely used in first gen Linux-capable PDAs.&n; *&n; * can&squot;t have a notification endpoint, since there are only the two&n; * bulk-capable ones.  the CDC spec allows that.&n; */
-macro_line|#ifdef&t;CONFIG_USB_ETH_SA1100
+macro_line|#ifdef&t;CONFIG_USB_GADGET_SA1100
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;sa1100&quot;
 DECL|macro|DRIVER_VERSION_NUM
 mdefine_line|#define DRIVER_VERSION_NUM&t;0x0105
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;8
 DECL|variable|EP_OUT_NAME
 r_static
 r_const
@@ -331,22 +322,17 @@ suffix:semicolon
 DECL|macro|EP_IN_NUM
 mdefine_line|#define EP_IN_NUM&t;2
 singleline_comment|// EP_STATUS_NUM is undefined
-multiline_comment|/* doesn&squot;t support bus-powered operation */
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER USB_CONFIG_ATT_SELFPOWER
 multiline_comment|/* doesn&squot;t support remote wakeup? */
 multiline_comment|/* no hw optimizations to apply */
 DECL|macro|hw_optimize
 mdefine_line|#define hw_optimize(g) do {} while (0)
 macro_line|#endif
 multiline_comment|/*&n; * Toshiba TC86C001 (&quot;Goku-S&quot;) UDC&n; *&n; * This has three semi-configurable full speed bulk/interrupt endpoints.&n; */
-macro_line|#ifdef&t;CONFIG_USB_ETH_GOKU
+macro_line|#ifdef&t;CONFIG_USB_GADGET_GOKU
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;goku&quot;
 DECL|macro|DRIVER_VERSION_NUM
 mdefine_line|#define DRIVER_VERSION_NUM&t;0x0106
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;8
 DECL|variable|EP_OUT_NAME
 r_static
 r_const
@@ -383,14 +369,47 @@ l_string|&quot;ep3-bulk&quot;
 suffix:semicolon
 DECL|macro|EP_STATUS_NUM
 mdefine_line|#define EP_STATUS_NUM&t;3
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER USB_CONFIG_ATT_SELFPOWER
 multiline_comment|/* doesn&squot;t support remote wakeup */
 DECL|macro|hw_optimize
 mdefine_line|#define hw_optimize(g) do {} while (0)
 macro_line|#endif
+multiline_comment|/*&n; * SuperH UDC:  UDC built-in to some Renesas SH processors.&n; *&n; * This has three semi-configurable full speed bulk/interrupt endpoints.&n; *&n; * Only one configuration and interface is supported.  So this hardware&n; * can&squot;t implement CDC.&n; */
+macro_line|#ifdef&t;CONFIG_USB_GADGET_SUPERH
+DECL|macro|DEV_CONFIG_CDC
+macro_line|#undef&t;DEV_CONFIG_CDC
+DECL|macro|CHIP
+mdefine_line|#define CHIP&t;&t;&t;&quot;superh&quot;
+DECL|macro|DRIVER_VERSION_NUM
+mdefine_line|#define DRIVER_VERSION_NUM&t;0x0107
+DECL|variable|EP_OUT_NAME
+r_static
+r_const
+r_char
+id|EP_OUT_NAME
+(braket
+)braket
+op_assign
+l_string|&quot;ep1out-bulk&quot;
+suffix:semicolon
+DECL|macro|EP_OUT_NUM
+mdefine_line|#define EP_OUT_NUM&t;&t;1
+DECL|variable|EP_IN_NAME
+r_static
+r_const
+r_char
+id|EP_IN_NAME
+(braket
+)braket
+op_assign
+l_string|&quot;ep2in-bulk&quot;
+suffix:semicolon
+DECL|macro|EP_IN_NUM
+mdefine_line|#define EP_IN_NUM&t;&t;2
+DECL|macro|hw_optimize
+mdefine_line|#define hw_optimize(g) do {} while (0)
+macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifndef EP0_MAXPACKET
+macro_line|#ifndef CHIP
 macro_line|#&t;error Configure some USB peripheral controller driver!
 macro_line|#endif
 multiline_comment|/* We normally expect hardware that can talk CDC.  That involves&n; * using multiple interfaces and altsettings, and maybe a status&n; * interrupt.  Driver binding to be done according to USB-IF class,&n; * though you can use different VENDOR and PRODUCT numbers if you&n; * want (and they&squot;re officially assigned).&n; * &n; * For hardware that can&squot;t talk CDC, we use the same vendor ID that&n; * ARM Linux has used for ethernet-over-usb, both with sa1100 and&n; * with pxa250.  We&squot;re protocol-compatible, if the host-side drivers&n; * use the endpoint descriptors.  DRIVER_VERSION_NUM is nonzero, so&n; * drivers that need to hard-wire endpoint numbers have a hook.&n; */
@@ -412,17 +431,16 @@ DECL|macro|DRIVER_PRODUCT_NUM
 mdefine_line|#define&t;DRIVER_PRODUCT_NUM&t;0x505a
 macro_line|#endif /* CONFIG_CDC_ETHER */
 multiline_comment|/* power usage is config specific.&n; * hardware that supports remote wakeup defaults to disabling it.&n; */
-macro_line|#ifndef&t;SELFPOWER
-multiline_comment|/* default: say we rely on bus power */
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER&t;0
-multiline_comment|/* else:&n; * - SELFPOWER value must be USB_CONFIG_ATT_SELFPOWER&n; * - MAX_USB_POWER may be nonzero.&n; */
-macro_line|#endif
 macro_line|#ifndef&t;MAX_USB_POWER
-multiline_comment|/* any hub supports this steady state bus power consumption */
+macro_line|#ifdef&t;SELFPOWER
+multiline_comment|/* some hosts are confused by 0mA  */
 DECL|macro|MAX_USB_POWER
-mdefine_line|#define MAX_USB_POWER&t;100&t;/* mA */
+mdefine_line|#define MAX_USB_POWER&t;2&t;/* mA */
+macro_line|#else
+multiline_comment|/* bus powered */
+macro_line|#error&t;Define your bus power consumption!
 macro_line|#endif
+macro_line|#endif&t;/* MAX_USB_POWER */
 macro_line|#ifndef&t;WAKEUP
 multiline_comment|/* default: this driver won&squot;t do remote wakeup */
 DECL|macro|WAKEUP
@@ -505,7 +523,6 @@ DECL|macro|USB_BUFSIZ
 mdefine_line|#define USB_BUFSIZ&t;256&t;&t;/* holds our biggest descriptor */
 multiline_comment|/*&n; * This device advertises one configuration.&n; */
 r_static
-r_const
 r_struct
 id|usb_device_descriptor
 DECL|variable|device_desc
@@ -545,11 +562,6 @@ dot
 id|bDeviceProtocol
 op_assign
 l_int|0
-comma
-dot
-id|bMaxPacketSize0
-op_assign
-id|EP0_MAXPACKET
 comma
 dot
 id|idVendor
@@ -593,7 +605,6 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_const
 r_struct
 id|usb_config_descriptor
 DECL|variable|eth_config
@@ -639,8 +650,6 @@ dot
 id|bmAttributes
 op_assign
 id|USB_CONFIG_ATT_ONE
-op_or
-id|SELFPOWER
 op_or
 id|WAKEUP
 comma
@@ -1409,7 +1418,6 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_const
 r_struct
 id|usb_qualifier_descriptor
 DECL|variable|dev_qualifier
@@ -1439,12 +1447,6 @@ dot
 id|bDeviceClass
 op_assign
 id|DEV_CONFIG_CLASS
-comma
-multiline_comment|/* assumes ep0 uses the same value for both speeds ... */
-dot
-id|bMaxPacketSize0
-op_assign
-id|EP0_MAXPACKET
 comma
 dot
 id|bNumConfigurations
@@ -2612,7 +2614,7 @@ id|dev-&gt;config
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_ETH_SA1100
+macro_line|#ifdef CONFIG_USB_GADGET_SA1100
 r_if
 c_cond
 (paren
@@ -2764,6 +2766,8 @@ macro_line|#ifdef&t;EP_STATUS_NUM
 multiline_comment|/* section 3.8.2 table 11 of the CDC spec lists Ethernet notifications */
 DECL|macro|CDC_NOTIFY_NETWORK_CONNECTION
 mdefine_line|#define CDC_NOTIFY_NETWORK_CONNECTION&t;0x00&t;/* required; 6.3.1 */
+DECL|macro|CDC_NOTIFY_RESPONSE_AVAILABLE
+mdefine_line|#define CDC_NOTIFY_RESPONSE_AVAILABLE&t;0x01&t;/* optional; 6.3.2 */
 DECL|macro|CDC_NOTIFY_SPEED_CHANGE
 mdefine_line|#define CDC_NOTIFY_SPEED_CHANGE&t;&t;0x2a&t;/* required; 6.3.8 */
 DECL|struct|cdc_notification
@@ -3231,6 +3235,10 @@ id|req-&gt;length
 suffix:semicolon
 )brace
 multiline_comment|/* see section 3.8.2 table 10 of the CDC spec for more ethernet&n; * requests, mostly for filters (multicast, pm) and statistics&n; */
+DECL|macro|CDC_SEND_ENCAPSULATED_REQUEST
+mdefine_line|#define CDC_SEND_ENCAPSULATED_REQUEST&t;0x00&t;/* optional */
+DECL|macro|CDC_GET_ENCAPSULATED_RESPONSE
+mdefine_line|#define CDC_GET_ENCAPSULATED_RESPONSE&t;0x01&t;/* optional */
 DECL|macro|CDC_SET_ETHERNET_PACKET_FILTER
 mdefine_line|#define CDC_SET_ETHERNET_PACKET_FILTER&t;0x43&t;/* required */
 multiline_comment|/*&n; * The setup() callback implements all the ep0 functionality that&squot;s not&n; * handled lower down.  CDC has a number of less-common features:&n; *&n; *  - two interfaces:  control, and ethernet data&n; *  - data interface has two altsettings:  default, and active&n; *  - class-specific descriptors for the control interface&n; *  - a mandatory class-specific control request&n; */
@@ -3482,7 +3490,7 @@ id|dev-&gt;lock
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_USB_ETH_PXA2XX
+macro_line|#ifdef&t;CONFIG_USB_GADGET_PXA2XX
 multiline_comment|/* PXA UDC prevents us from using SET_INTERFACE in normal ways.&n;&t; * And it hides GET_CONFIGURATION and GET_INTERFACE too.&n;&t; */
 r_case
 id|USB_REQ_SET_INTERFACE
@@ -5401,7 +5409,7 @@ id|req-&gt;complete
 op_assign
 id|tx_complete
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_USB_ETH_SA1100
+macro_line|#ifdef&t;CONFIG_USB_GADGET_SA1100
 multiline_comment|/* don&squot;t demand zlp (req-&gt;zero) support from all hardware */
 r_if
 c_cond
@@ -5892,6 +5900,28 @@ l_int|0
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+macro_line|#endif
+id|device_desc.bMaxPacketSize0
+op_assign
+id|gadget-&gt;ep0-&gt;maxpacket
+suffix:semicolon
+macro_line|#ifdef&t;HIGHSPEED
+multiline_comment|/* assumes ep0 uses the same value for both speeds ... */
+id|dev_qualifier.bMaxPacketSize0
+op_assign
+id|device_desc.bMaxPacketSize0
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef&t;SELFPOWERED
+id|eth_config.bmAttributes
+op_or_assign
+id|USB_CONFIG_ATT_SELFPOWERED
+suffix:semicolon
+id|usb_gadget_set_selfpowered
+(paren
+id|gadget
+)paren
 suffix:semicolon
 macro_line|#endif
 id|net
