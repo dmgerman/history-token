@@ -48,13 +48,6 @@ r_int
 id|scsi_hosts_registered
 suffix:semicolon
 multiline_comment|/* cnt of registered scsi hosts */
-DECL|variable|scsi_ignore_no_error_handling
-r_static
-r_int
-id|scsi_ignore_no_error_handling
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/**&n; * scsi_tp_for_each_host - call function for each scsi host off a template&n; * @shost_tp:&t;a pointer to a scsi host template&n; * @callback:&t;a pointer to callback function&n; *&n; * Return value:&n; * &t;0 on Success / 1 on Failure&n; **/
 DECL|function|scsi_tp_for_each_host
 r_int
