@@ -4982,8 +4982,7 @@ r_const
 r_int
 id|slen
 op_assign
-id|strlen
-c_func
+r_sizeof
 (paren
 l_string|&quot;.nfs&quot;
 )paren
@@ -4991,6 +4990,8 @@ op_plus
 id|i_inosize
 op_plus
 id|countersize
+op_minus
+l_int|1
 suffix:semicolon
 r_char
 id|silly
