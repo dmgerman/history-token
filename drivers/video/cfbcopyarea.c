@@ -22,7 +22,7 @@ macro_line|#else
 DECL|macro|FB_WRITEL
 mdefine_line|#define FB_WRITEL fb_writeq
 DECL|macro|FB_READL
-mdefine_line|#define FB_READL  fb_readq(x)
+mdefine_line|#define FB_READL  fb_readq
 DECL|macro|SHIFT_PER_LONG
 mdefine_line|#define SHIFT_PER_LONG 6
 DECL|macro|BYTES_PER_LONG

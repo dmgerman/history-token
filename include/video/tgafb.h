@@ -2,14 +2,14 @@ multiline_comment|/*&n; *  linux/drivers/video/tgafb.h -- DEC 21030 TGA frame bu
 macro_line|#ifndef TGAFB_H
 DECL|macro|TGAFB_H
 mdefine_line|#define TGAFB_H
-multiline_comment|/*&n;     * TGA hardware description (minimal)&n;     */
+multiline_comment|/*&n; * TGA hardware description (minimal)&n; */
 DECL|macro|TGA_TYPE_8PLANE
 mdefine_line|#define TGA_TYPE_8PLANE&t;&t;&t;0
 DECL|macro|TGA_TYPE_24PLANE
 mdefine_line|#define TGA_TYPE_24PLANE&t;&t;1
 DECL|macro|TGA_TYPE_24PLUSZ
 mdefine_line|#define TGA_TYPE_24PLUSZ&t;&t;3
-multiline_comment|/*&n;     * Offsets within Memory Space&n;     */
+multiline_comment|/*&n; * Offsets within Memory Space&n; */
 DECL|macro|TGA_ROM_OFFSET
 mdefine_line|#define&t;TGA_ROM_OFFSET&t;&t;&t;0x0000000
 DECL|macro|TGA_REGS_OFFSET
@@ -58,7 +58,7 @@ DECL|macro|TGA_RAMDAC_REG
 mdefine_line|#define&t;TGA_RAMDAC_REG&t;&t;&t;0x01f0
 DECL|macro|TGA_CMD_STAT_REG
 mdefine_line|#define&t;TGA_CMD_STAT_REG&t;&t;0x01f8
-multiline_comment|/* &n;     * useful defines for managing the registers&n;     */
+multiline_comment|/* &n; * Useful defines for managing the registers&n; */
 DECL|macro|TGA_HORIZ_ODD
 mdefine_line|#define TGA_HORIZ_ODD&t;&t;&t;0x80000000
 DECL|macro|TGA_HORIZ_POLARITY
@@ -93,12 +93,12 @@ DECL|macro|TGA_VALID_BLANK
 mdefine_line|#define TGA_VALID_BLANK&t;&t;&t;0x02
 DECL|macro|TGA_VALID_CURSOR
 mdefine_line|#define TGA_VALID_CURSOR&t;&t;0x04
-multiline_comment|/*&n;     * useful defines for managing the ICS1562 PLL clock&n;     */
+multiline_comment|/*&n; * Useful defines for managing the ICS1562 PLL clock&n; */
 DECL|macro|TGA_PLL_BASE_FREQ
 mdefine_line|#define TGA_PLL_BASE_FREQ &t;&t;14318&t;&t;/* .18 */
 DECL|macro|TGA_PLL_MAX_FREQ
 mdefine_line|#define TGA_PLL_MAX_FREQ &t;&t;230000
-multiline_comment|/*&n;     * useful defines for managing the BT485 on the 8-plane TGA&n;     */
+multiline_comment|/*&n; * Useful defines for managing the BT485 on the 8-plane TGA&n; */
 DECL|macro|BT485_READ_BIT
 mdefine_line|#define&t;BT485_READ_BIT&t;&t;&t;0x01
 DECL|macro|BT485_WRITE_BIT
@@ -137,7 +137,7 @@ DECL|macro|BT485_CUR_LOW_Y
 mdefine_line|#define&t;BT485_CUR_LOW_Y&t;&t;&t;0x1c
 DECL|macro|BT485_CUR_HIGH_Y
 mdefine_line|#define&t;BT485_CUR_HIGH_Y&t;&t;0x1e
-multiline_comment|/*&n;     * useful defines for managing the BT463 on the 24-plane TGAs&n;     */
+multiline_comment|/*&n; * Useful defines for managing the BT463 on the 24-plane TGAs&n; */
 DECL|macro|BT463_ADDR_LO
 mdefine_line|#define&t;BT463_ADDR_LO&t;&t;0x0
 DECL|macro|BT463_ADDR_HI
@@ -174,29 +174,34 @@ DECL|macro|BT463_BLINK_MASK_3
 mdefine_line|#define&t;BT463_BLINK_MASK_3&t;0x020c
 DECL|macro|BT463_WINDOW_TYPE_BASE
 mdefine_line|#define&t;BT463_WINDOW_TYPE_BASE&t;0x0300
-multiline_comment|/*&n;     * Macros for reading/writing TGA and RAMDAC registers&n;     */
-DECL|macro|TGA_WRITE_REG
-mdefine_line|#define TGA_WRITE_REG(v,r) &bslash;&n;&t;{ writel((v), fb_info.tga_regs_base+(r)); mb(); }
-DECL|macro|TGA_READ_REG
-mdefine_line|#define TGA_READ_REG(r) readl(fb_info.tga_regs_base+(r))
-DECL|macro|BT485_WRITE
-mdefine_line|#define BT485_WRITE(v,r) &bslash;&n;&t;  TGA_WRITE_REG((r),TGA_RAMDAC_SETUP_REG);&t;&t;&bslash;&n;&t;  TGA_WRITE_REG(((v)&amp;0xff)|((r)&lt;&lt;8),TGA_RAMDAC_REG);
-DECL|macro|BT463_LOAD_ADDR
-mdefine_line|#define BT463_LOAD_ADDR(a) &bslash;&n;&t;TGA_WRITE_REG(BT463_ADDR_LO&lt;&lt;2, TGA_RAMDAC_SETUP_REG); &bslash;&n;&t;TGA_WRITE_REG((BT463_ADDR_LO&lt;&lt;10)|((a)&amp;0xff), TGA_RAMDAC_REG); &bslash;&n;&t;TGA_WRITE_REG(BT463_ADDR_HI&lt;&lt;2, TGA_RAMDAC_SETUP_REG); &bslash;&n;&t;TGA_WRITE_REG((BT463_ADDR_HI&lt;&lt;10)|(((a)&gt;&gt;8)&amp;0xff), TGA_RAMDAC_REG);
-DECL|macro|BT463_WRITE
-mdefine_line|#define BT463_WRITE(m,a,v) &bslash;&n;&t;BT463_LOAD_ADDR((a)); &bslash;&n;&t;TGA_WRITE_REG(((m)&lt;&lt;2),TGA_RAMDAC_SETUP_REG); &bslash;&n;&t;TGA_WRITE_REG(((m)&lt;&lt;10)|((v)&amp;0xff),TGA_RAMDAC_REG);
-multiline_comment|/*&n;     *  This structure describes the board.&n;     */
-DECL|struct|tgafb_info
+multiline_comment|/*&n; * The framebuffer driver private data.&n; */
+DECL|struct|tga_par
 r_struct
-id|tgafb_info
+id|tga_par
 (brace
-multiline_comment|/* Use the generic framebuffer ops */
-DECL|member|gen
+multiline_comment|/* PCI device.  */
+DECL|member|pdev
 r_struct
-id|fb_info_gen
-id|gen
+id|pci_dev
+op_star
+id|pdev
 suffix:semicolon
-multiline_comment|/* Device dependent information */
+multiline_comment|/* Device dependent information.  */
+DECL|member|tga_mem_base
+r_void
+op_star
+id|tga_mem_base
+suffix:semicolon
+DECL|member|tga_fb_base
+r_void
+op_star
+id|tga_fb_base
+suffix:semicolon
+DECL|member|tga_regs_base
+r_void
+op_star
+id|tga_regs_base
+suffix:semicolon
 DECL|member|tga_type
 id|u8
 id|tga_type
@@ -207,31 +212,12 @@ id|u8
 id|tga_chip_rev
 suffix:semicolon
 multiline_comment|/* dc21030 revision */
-DECL|member|tga_mem_base
-id|u64
-id|tga_mem_base
+multiline_comment|/* Remember blank mode.  */
+DECL|member|vesa_blanked
+id|u8
+id|vesa_blanked
 suffix:semicolon
-DECL|member|tga_fb_base
-id|u64
-id|tga_fb_base
-suffix:semicolon
-DECL|member|tga_regs_base
-id|u64
-id|tga_regs_base
-suffix:semicolon
-DECL|member|default_var
-r_struct
-id|fb_var_screeninfo
-id|default_var
-suffix:semicolon
-multiline_comment|/* default video mode */
-)brace
-suffix:semicolon
-multiline_comment|/*&n;     *  This structure uniquely defines a video mode.&n;     */
-DECL|struct|tgafb_par
-r_struct
-id|tgafb_par
-(brace
+multiline_comment|/* Define the video mode.  */
 DECL|member|xres
 DECL|member|yres
 id|u32
@@ -267,5 +253,246 @@ suffix:semicolon
 multiline_comment|/* set if sync is on green */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Macros for reading/writing TGA and RAMDAC registers&n; */
+r_static
+r_inline
+r_void
+DECL|function|TGA_WRITE_REG
+id|TGA_WRITE_REG
+c_func
+(paren
+r_struct
+id|tga_par
+op_star
+id|par
+comma
+id|u32
+id|v
+comma
+id|u32
+id|r
+)paren
+(brace
+id|writel
+c_func
+(paren
+id|v
+comma
+id|par-&gt;tga_regs_base
+op_plus
+id|r
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|u32
+DECL|function|TGA_READ_REG
+id|TGA_READ_REG
+c_func
+(paren
+r_struct
+id|tga_par
+op_star
+id|par
+comma
+id|u32
+id|r
+)paren
+(brace
+r_return
+id|readl
+c_func
+(paren
+id|par-&gt;tga_regs_base
+op_plus
+id|r
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|BT485_WRITE
+id|BT485_WRITE
+c_func
+(paren
+r_struct
+id|tga_par
+op_star
+id|par
+comma
+id|u8
+id|v
+comma
+id|u8
+id|r
+)paren
+(brace
+id|TGA_WRITE_REG
+c_func
+(paren
+id|par
+comma
+id|r
+comma
+id|TGA_RAMDAC_SETUP_REG
+)paren
+suffix:semicolon
+id|TGA_WRITE_REG
+c_func
+(paren
+id|par
+comma
+id|v
+op_or
+(paren
+id|r
+op_lshift
+l_int|8
+)paren
+comma
+id|TGA_RAMDAC_REG
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|BT463_LOAD_ADDR
+id|BT463_LOAD_ADDR
+c_func
+(paren
+r_struct
+id|tga_par
+op_star
+id|par
+comma
+id|u16
+id|a
+)paren
+(brace
+id|TGA_WRITE_REG
+c_func
+(paren
+id|par
+comma
+id|BT463_ADDR_LO
+op_lshift
+l_int|2
+comma
+id|TGA_RAMDAC_SETUP_REG
+)paren
+suffix:semicolon
+id|TGA_WRITE_REG
+c_func
+(paren
+id|par
+comma
+(paren
+id|BT463_ADDR_LO
+op_lshift
+l_int|10
+)paren
+op_or
+(paren
+id|a
+op_amp
+l_int|0xff
+)paren
+comma
+id|TGA_RAMDAC_REG
+)paren
+suffix:semicolon
+id|TGA_WRITE_REG
+c_func
+(paren
+id|par
+comma
+id|BT463_ADDR_HI
+op_lshift
+l_int|2
+comma
+id|TGA_RAMDAC_SETUP_REG
+)paren
+suffix:semicolon
+id|TGA_WRITE_REG
+c_func
+(paren
+id|par
+comma
+(paren
+id|BT463_ADDR_HI
+op_lshift
+l_int|10
+)paren
+op_or
+(paren
+id|a
+op_rshift
+l_int|8
+)paren
+comma
+id|TGA_RAMDAC_REG
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|BT463_WRITE
+id|BT463_WRITE
+c_func
+(paren
+r_struct
+id|tga_par
+op_star
+id|par
+comma
+id|u32
+id|m
+comma
+id|u16
+id|a
+comma
+id|u8
+id|v
+)paren
+(brace
+id|BT463_LOAD_ADDR
+c_func
+(paren
+id|par
+comma
+id|a
+)paren
+suffix:semicolon
+id|TGA_WRITE_REG
+c_func
+(paren
+id|par
+comma
+id|m
+op_lshift
+l_int|2
+comma
+id|TGA_RAMDAC_SETUP_REG
+)paren
+suffix:semicolon
+id|TGA_WRITE_REG
+c_func
+(paren
+id|par
+comma
+id|m
+op_lshift
+l_int|10
+op_or
+id|v
+comma
+id|TGA_RAMDAC_REG
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* TGAFB_H */
 eof
