@@ -1944,7 +1944,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;atkbd.c: This is an XFree86 bug. It shouldn&squot;t access&quot;
-l_string|&quot;hardware directly.&bslash;n&quot;
+l_string|&quot; hardware directly.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
