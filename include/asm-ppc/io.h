@@ -1403,6 +1403,7 @@ id|count
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|macro|eth_io_copy_and_sum
 mdefine_line|#define eth_io_copy_and_sum(a,b,c,d)&t;&t;eth_copy_and_sum((a),(void __force *)(void __iomem *)(b),(c),(d))
 multiline_comment|/*&n; * Map in an area of physical address space, for accessing&n; * I/O devices etc.&n; */
@@ -1620,7 +1621,6 @@ id|address
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#endif
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv, for&n; * addresses in the area where the kernel has the RAM mapped.&n; */
 DECL|function|virt_to_phys
 r_extern
