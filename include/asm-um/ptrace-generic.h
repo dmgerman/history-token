@@ -8,11 +8,15 @@ DECL|macro|pt_regs
 mdefine_line|#define pt_regs pt_regs_subarch
 DECL|macro|show_regs
 mdefine_line|#define show_regs show_regs_subarch
+DECL|macro|send_sigtrap
+mdefine_line|#define send_sigtrap send_sigtrap_subarch
 macro_line|#include &quot;asm/arch/ptrace.h&quot;
 DECL|macro|pt_regs
 macro_line|#undef pt_regs
 DECL|macro|show_regs
 macro_line|#undef show_regs
+DECL|macro|send_sigtrap
+macro_line|#undef send_sigtrap
 DECL|macro|user_mode
 macro_line|#undef user_mode
 DECL|macro|instruction_pointer
@@ -154,6 +158,25 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|send_sigtrap
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_union
+id|uml_pt_regs
+op_star
+id|regs
+comma
+r_int
+id|error_code
 )paren
 suffix:semicolon
 macro_line|#endif
