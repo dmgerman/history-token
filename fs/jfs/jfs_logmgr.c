@@ -50,7 +50,7 @@ mdefine_line|#define LOGGC_LOCK(log)&t;&t;spin_lock_irq(&amp;(log)-&gt;gclock)
 DECL|macro|LOGGC_UNLOCK
 mdefine_line|#define LOGGC_UNLOCK(log)&t;spin_unlock_irq(&amp;(log)-&gt;gclock)
 DECL|macro|LOGGC_WAKEUP
-mdefine_line|#define LOGGC_WAKEUP(tblk)&t;wake_up(&amp;(tblk)-&gt;gcwait)
+mdefine_line|#define LOGGC_WAKEUP(tblk)&t;wake_up_all(&amp;(tblk)-&gt;gcwait)
 multiline_comment|/*&n; *&t;log sync serialization (per log)&n; */
 DECL|macro|LOGSYNC_DELTA
 mdefine_line|#define&t;LOGSYNC_DELTA(logsize)&t;&t;min((logsize)/8, 128*LOGPSIZE)
@@ -1382,13 +1382,6 @@ id|tblk-&gt;eor
 op_assign
 id|log-&gt;eor
 suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|tblk-&gt;gcwait
-)paren
-suffix:semicolon
 multiline_comment|/* enqueue transaction to commit queue */
 id|tblk-&gt;cqnext
 op_assign
@@ -2254,6 +2247,29 @@ id|tblk-&gt;cqnext
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tblk
+op_eq
+id|log-&gt;flush_tblk
+)paren
+(brace
+multiline_comment|/* we can stop flushing the log now */
+id|clear_bit
+c_func
+(paren
+id|log_FLUSH
+comma
+op_amp
+id|log-&gt;flag
+)paren
+suffix:semicolon
+id|log-&gt;flush_tblk
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 id|jfs_info
 c_func
 (paren
@@ -2295,7 +2311,6 @@ id|tblk-&gt;flag
 op_amp
 id|tblkGC_READY
 )paren
-(brace
 id|log-&gt;gcrtc
 op_decrement
 suffix:semicolon
@@ -2305,7 +2320,6 @@ c_func
 id|tblk
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* was page full before pageout ?&n;&t;&t; * (and this is the last tblk bound with the page)&n;&t;&t; */
 r_if
@@ -2436,6 +2450,12 @@ id|log_FLUSH
 comma
 op_amp
 id|log-&gt;flag
+)paren
+suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+id|log-&gt;flush_tblk
 )paren
 suffix:semicolon
 )brace
@@ -3777,7 +3797,11 @@ id|log-&gt;cqueue.head
 op_assign
 id|log-&gt;cqueue.tail
 op_assign
-l_int|0
+l_int|NULL
+suffix:semicolon
+id|log-&gt;flush_tblk
+op_assign
+l_int|NULL
 suffix:semicolon
 id|log-&gt;count
 op_assign
@@ -4008,7 +4032,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;jfs_flush_journal()&n; *&n; * FUNCTION:&t;initiate write of any outstanding transactions to the journal&n; *&t;&t;and optionally wait until they are all written to disk&n; */
+multiline_comment|/*&n; * NAME:&t;jfs_flush_journal()&n; *&n; * FUNCTION:&t;initiate write of any outstanding transactions to the journal&n; *&t;&t;and optionally wait until they are all written to disk&n; *&n; *&t;&t;wait == 0  flush until latest txn is committed, don&squot;t wait&n; *&t;&t;wait == 1  flush until latest txn is committed, wait&n; *&t;&t;wait &gt; 1   flush until all txn&squot;s are complete, wait&n; */
 DECL|function|jfs_flush_journal
 r_void
 id|jfs_flush_journal
@@ -4026,6 +4050,11 @@ id|wait
 r_int
 id|i
 suffix:semicolon
+r_struct
+id|tblock
+op_star
+id|target
+suffix:semicolon
 id|jfs_info
 c_func
 (paren
@@ -4036,7 +4065,54 @@ comma
 id|wait
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This ensures that we will keep writing to the journal as long&n;&t; * as there are unwritten commit records&n;&t; */
+id|LOGGC_LOCK
+c_func
+(paren
+id|log
+)paren
+suffix:semicolon
+id|target
+op_assign
+id|log-&gt;cqueue.head
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|target
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * This ensures that we will keep writing to the journal as long&n;&t;&t; * as there are unwritten commit records&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|log_FLUSH
+comma
+op_amp
+id|log-&gt;flag
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * We&squot;re already flushing.&n;&t;&t;&t; * if flush_tblk is NULL, we are flushing everything,&n;&t;&t;&t; * so leave it that way.  Otherwise, update it to the&n;&t;&t;&t; * latest transaction&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|log-&gt;flush_tblk
+)paren
+id|log-&gt;flush_tblk
+op_assign
+id|target
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Only flush until latest transaction is committed */
+id|log-&gt;flush_tblk
+op_assign
+id|target
+suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -4046,18 +4122,10 @@ op_amp
 id|log-&gt;flag
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Initiate I/O on outstanding transactions&n;&t; */
-id|LOGGC_LOCK
-c_func
-(paren
-id|log
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Initiate I/O on outstanding transactions&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|log-&gt;cqueue.head
-op_logical_and
 op_logical_neg
 (paren
 id|log-&gt;cflag
@@ -4079,6 +4147,113 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+)brace
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|wait
+OG
+l_int|1
+)paren
+op_logical_or
+id|test_bit
+c_func
+(paren
+id|log_SYNCBARRIER
+comma
+op_amp
+id|log-&gt;flag
+)paren
+)paren
+(brace
+multiline_comment|/* Flush until all activity complete */
+id|set_bit
+c_func
+(paren
+id|log_FLUSH
+comma
+op_amp
+id|log-&gt;flag
+)paren
+suffix:semicolon
+id|log-&gt;flush_tblk
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|wait
+op_logical_and
+id|target
+op_logical_and
+op_logical_neg
+(paren
+id|target-&gt;flag
+op_amp
+id|tblkGC_COMMITTED
+)paren
+)paren
+(brace
+id|DECLARE_WAITQUEUE
+c_func
+(paren
+id|__wait
+comma
+id|current
+)paren
+suffix:semicolon
+id|add_wait_queue
+c_func
+(paren
+op_amp
+id|target-&gt;gcwait
+comma
+op_amp
+id|__wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|LOGGC_UNLOCK
+c_func
+(paren
+id|log
+)paren
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_RUNNING
+suffix:semicolon
+id|LOGGC_LOCK
+c_func
+(paren
+id|log
+)paren
+suffix:semicolon
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|target-&gt;gcwait
+comma
+op_amp
+id|__wait
+)paren
+suffix:semicolon
+)brace
 id|LOGGC_UNLOCK
 c_func
 (paren
@@ -4088,11 +4263,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|wait
+OL
+l_int|2
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/*&n;&t; * If there was recent activity, we may need to wait&n;&t; * for the lazycommit thread to catch up&n;&t; */
 r_if
 c_cond
 (paren
@@ -4107,7 +4284,6 @@ id|log-&gt;synclist
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * If there was very recent activity, we may need to wait&n;&t;&t; * for the lazycommit thread to catch up&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -4238,7 +4414,7 @@ c_func
 (paren
 id|log
 comma
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We need to make sure all of the &quot;written&quot; metapages&n;&t; * actually make it to disk&n;&t; */

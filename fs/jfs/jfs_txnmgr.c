@@ -8835,14 +8835,7 @@ id|tblkGC_READY
 id|log-&gt;gcrtc
 op_decrement
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tblk-&gt;flag
-op_amp
-id|tblkGC_READY
-)paren
-id|wake_up
+id|wake_up_all
 c_func
 (paren
 op_amp

@@ -1,4 +1,5 @@
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/hardware/iomd.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;

@@ -1016,12 +1016,13 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|host_ptr
 comma
-id|dev
+op_amp
+id|dev-&gt;dev
 )paren
 suffix:semicolon
 id|dprintk

@@ -843,7 +843,13 @@ l_int|0x7fffffffUL
 id|snd_printk
 c_func
 (paren
-l_string|&quot;max memory size is 2GB!!&bslash;n&quot;
+l_string|&quot;max memory size is 2GB (addr = 0x%lx)!!&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|addr
 )paren
 suffix:semicolon
 r_return
@@ -1218,6 +1224,42 @@ op_increment
 (brace
 id|dma_addr_t
 id|addr
+suffix:semicolon
+macro_line|#ifdef CONFIG_SND_DEBUG
+r_if
+c_cond
+(paren
+id|idx
+op_ge
+id|sgbuf-&gt;pages
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;emu: pages overflow! (%d-%d) for %d&bslash;n&quot;
+comma
+id|blk-&gt;first_page
+comma
+id|blk-&gt;last_page
+comma
+id|sgbuf-&gt;pages
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|hdr-&gt;block_mutex
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+macro_line|#endif
+id|addr
 op_assign
 id|sgbuf-&gt;table
 (braket
@@ -1237,6 +1279,15 @@ id|addr
 )paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;emu: failure page = %d&bslash;n&quot;
+comma
+id|idx
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren

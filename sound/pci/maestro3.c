@@ -11261,16 +11261,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
-id|subsystem_vendor
-op_assign
-id|pci-&gt;subsystem_vendor
-suffix:semicolon
-id|subsystem_device
-op_assign
-id|pci-&gt;subsystem_device
-suffix:semicolon
-macro_line|#else
 id|pci_read_config_word
 c_func
 (paren
@@ -11293,7 +11283,6 @@ op_amp
 id|subsystem_device
 )paren
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren

@@ -1174,6 +1174,8 @@ suffix:semicolon
 r_int
 r_int
 id|rate
+comma
+id|prev
 suffix:semicolon
 id|save
 op_assign
@@ -1309,9 +1311,22 @@ op_star
 id|save
 suffix:semicolon
 )brace
+id|prev
+op_assign
+id|rate
+suffix:semicolon
 id|rate
 op_add_assign
 id|best_rate
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rate
+op_le
+id|prev
+)paren
+r_break
 suffix:semicolon
 )brace
 multiline_comment|/* not found, use the nearest rate */

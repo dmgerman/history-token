@@ -13107,6 +13107,12 @@ l_int|0xff
 r_case
 l_int|0xa
 suffix:colon
+r_case
+l_int|0xb
+suffix:colon
+r_case
+l_int|0x64
+suffix:colon
 multiline_comment|/* hdsp_initialize_firmware() will reset this */
 id|hdsp-&gt;card_name
 op_assign
