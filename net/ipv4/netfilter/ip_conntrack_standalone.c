@@ -3819,6 +3819,13 @@ c_func
 id|ip_conntrack_protocol_unregister
 )paren
 suffix:semicolon
+DECL|variable|ip_ct_get_tuple
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_ct_get_tuple
+)paren
+suffix:semicolon
 DECL|variable|invert_tuplepr
 id|EXPORT_SYMBOL
 c_func
