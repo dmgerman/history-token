@@ -214,6 +214,68 @@ id|b44
 op_star
 )paren
 suffix:semicolon
+DECL|function|br32
+r_static
+r_inline
+r_int
+r_int
+id|br32
+c_func
+(paren
+r_const
+r_struct
+id|b44
+op_star
+id|bp
+comma
+r_int
+r_int
+id|reg
+)paren
+(brace
+r_return
+id|readl
+c_func
+(paren
+id|bp-&gt;regs
+op_plus
+id|reg
+)paren
+suffix:semicolon
+)brace
+DECL|function|bw32
+r_static
+r_inline
+r_void
+id|bw32
+c_func
+(paren
+r_const
+r_struct
+id|b44
+op_star
+id|bp
+comma
+r_int
+r_int
+id|reg
+comma
+r_int
+r_int
+id|val
+)paren
+(brace
+id|writel
+c_func
+(paren
+id|val
+comma
+id|bp-&gt;regs
+op_plus
+id|reg
+)paren
+suffix:semicolon
+)brace
 DECL|function|b44_wait_bit
 r_static
 r_int
@@ -266,6 +328,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|reg
 )paren
 suffix:semicolon
@@ -459,6 +523,8 @@ r_return
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBIDHIGH
 )paren
 op_amp
@@ -530,6 +596,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBINTVEC
 )paren
 suffix:semicolon
@@ -540,6 +608,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBINTVEC
 comma
 id|val
@@ -550,6 +620,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|SSB_PCI_TRANS_2
 )paren
 suffix:semicolon
@@ -562,6 +634,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|SSB_PCI_TRANS_2
 comma
 id|val
@@ -599,6 +673,8 @@ c_cond
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 )paren
 op_amp
@@ -609,6 +685,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 comma
 (paren
@@ -649,6 +727,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 comma
 (paren
@@ -665,6 +745,8 @@ suffix:semicolon
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 )paren
 suffix:semicolon
@@ -677,6 +759,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 comma
 (paren
@@ -689,6 +773,8 @@ suffix:semicolon
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 )paren
 suffix:semicolon
@@ -723,6 +809,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 comma
 (paren
@@ -737,6 +825,8 @@ suffix:semicolon
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 )paren
 suffix:semicolon
@@ -753,6 +843,8 @@ c_cond
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSHIGH
 )paren
 op_amp
@@ -761,6 +853,8 @@ id|SBTMSHIGH_SERR
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSHIGH
 comma
 l_int|0
@@ -771,6 +865,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBIMSTATE
 )paren
 suffix:semicolon
@@ -788,6 +884,8 @@ id|SBIMSTATE_TO
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBIMSTATE
 comma
 id|val
@@ -803,6 +901,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 comma
 (paren
@@ -815,6 +915,8 @@ suffix:semicolon
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 )paren
 suffix:semicolon
@@ -827,6 +929,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 comma
 (paren
@@ -837,6 +941,8 @@ suffix:semicolon
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 )paren
 suffix:semicolon
@@ -866,6 +972,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBADMATCH0
 )paren
 suffix:semicolon
@@ -944,6 +1052,8 @@ r_return
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_SBTMSLOW
 )paren
 op_amp
@@ -1042,6 +1152,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_CAM_DATA_LO
 comma
 id|val
@@ -1084,6 +1196,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_CAM_DATA_HI
 comma
 id|val
@@ -1092,6 +1206,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_CAM_CTRL
 comma
 (paren
@@ -1136,6 +1252,8 @@ id|bp
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_IMASK
 comma
 l_int|0
@@ -1164,6 +1282,8 @@ multiline_comment|/* Flush posted writes. */
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_IMASK
 )paren
 suffix:semicolon
@@ -1183,6 +1303,8 @@ id|bp
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_IMASK
 comma
 id|bp-&gt;imask
@@ -1214,6 +1336,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_EMAC_ISTAT
 comma
 id|EMAC_INT_MII
@@ -1222,6 +1346,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_MDIO_DATA
 comma
 (paren
@@ -1275,6 +1401,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_MDIO_DATA
 )paren
 op_amp
@@ -1305,6 +1433,8 @@ id|val
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_EMAC_ISTAT
 comma
 id|EMAC_INT_MII
@@ -1313,6 +1443,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_MDIO_DATA
 comma
 (paren
@@ -1598,6 +1730,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_RXCONFIG
 )paren
 suffix:semicolon
@@ -1621,6 +1755,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_RXCONFIG
 comma
 id|val
@@ -1631,6 +1767,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_MAC_FLOW
 )paren
 suffix:semicolon
@@ -1662,6 +1800,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_MAC_FLOW
 comma
 id|val
@@ -2181,6 +2321,8 @@ op_add_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|reg
 )paren
 suffix:semicolon
@@ -2213,6 +2355,8 @@ op_add_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|reg
 )paren
 suffix:semicolon
@@ -2429,6 +2573,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_TX_CTRL
 )paren
 suffix:semicolon
@@ -2457,6 +2603,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_TX_CTRL
 comma
 id|val
@@ -2673,6 +2821,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMATX_STAT
 )paren
 op_amp
@@ -2800,6 +2950,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_GPTIMER
 comma
 l_int|0
@@ -3261,6 +3413,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMARX_STAT
 )paren
 op_amp
@@ -3673,6 +3827,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMARX_PTR
 comma
 id|cons
@@ -3962,6 +4118,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_ISTAT
 )paren
 suffix:semicolon
@@ -3970,6 +4128,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_IMASK
 )paren
 suffix:semicolon
@@ -4032,6 +4192,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_ISTAT
 comma
 id|istat
@@ -4040,6 +4202,8 @@ suffix:semicolon
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_ISTAT
 )paren
 suffix:semicolon
@@ -4355,6 +4519,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMATX_PTR
 comma
 id|entry
@@ -4376,6 +4542,8 @@ id|B44_FLAG_BUGGY_TXPTR
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMATX_PTR
 comma
 id|entry
@@ -4397,6 +4565,8 @@ id|B44_FLAG_REORDER_BUG
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMATX_PTR
 )paren
 suffix:semicolon
@@ -5029,6 +5199,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_MIB_CTRL
 comma
 id|MIB_CTRL_CLR_ON_READ
@@ -5052,6 +5224,8 @@ l_int|4UL
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|reg
 )paren
 suffix:semicolon
@@ -5073,6 +5247,8 @@ l_int|4UL
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|reg
 )paren
 suffix:semicolon
@@ -5103,6 +5279,8 @@ id|bp
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_RCV_LAZY
 comma
 l_int|0
@@ -5111,6 +5289,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_ENET_CTRL
 comma
 id|ENET_CTRL_DISABLE
@@ -5133,6 +5313,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMATX_CTRL
 comma
 l_int|0
@@ -5150,6 +5332,8 @@ c_cond
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMARX_STAT
 )paren
 op_amp
@@ -5174,6 +5358,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMARX_CTRL
 comma
 l_int|0
@@ -5222,6 +5408,8 @@ multiline_comment|/* Make PHY accessible. */
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_MDIO_CTRL
 comma
 (paren
@@ -5238,6 +5426,8 @@ suffix:semicolon
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_MDIO_CTRL
 )paren
 suffix:semicolon
@@ -5249,6 +5439,8 @@ op_logical_neg
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_DEVCTRL
 )paren
 op_amp
@@ -5259,6 +5451,8 @@ id|DEVCTRL_IPP
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_ENET_CTRL
 comma
 id|ENET_CTRL_EPSEL
@@ -5267,6 +5461,8 @@ suffix:semicolon
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_ENET_CTRL
 )paren
 suffix:semicolon
@@ -5284,6 +5480,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_DEVCTRL
 )paren
 suffix:semicolon
@@ -5298,6 +5496,8 @@ id|DEVCTRL_EPR
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_DEVCTRL
 comma
 (paren
@@ -5311,6 +5511,8 @@ suffix:semicolon
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_DEVCTRL
 )paren
 suffix:semicolon
@@ -5369,6 +5571,8 @@ id|bp
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_CAM_CTRL
 comma
 l_int|0
@@ -5403,12 +5607,16 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_CAM_CTRL
 )paren
 suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_CAM_CTRL
 comma
 id|val
@@ -5547,6 +5755,8 @@ multiline_comment|/* Enable CRC32, set proper LED modes and power on PHY */
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_MAC_CTRL
 comma
 id|MAC_CTRL_CRC32_ENAB
@@ -5557,6 +5767,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_RCV_LAZY
 comma
 (paren
@@ -5577,6 +5789,8 @@ multiline_comment|/* MTU + eth header + possible VLAN tag + struct rx_header */
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_RXMAXLEN
 comma
 id|bp-&gt;dev-&gt;mtu
@@ -5591,6 +5805,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_TXMAXLEN
 comma
 id|bp-&gt;dev-&gt;mtu
@@ -5605,6 +5821,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_TX_WMARK
 comma
 l_int|56
@@ -5614,6 +5832,8 @@ multiline_comment|/* XXX magic */
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMATX_CTRL
 comma
 id|DMATX_CTRL_ENABLE
@@ -5622,6 +5842,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMATX_ADDR
 comma
 id|bp-&gt;tx_ring_dma
@@ -5632,6 +5854,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMARX_CTRL
 comma
 (paren
@@ -5648,6 +5872,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMARX_ADDR
 comma
 id|bp-&gt;rx_ring_dma
@@ -5658,6 +5884,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_DMARX_PTR
 comma
 id|bp-&gt;rx_pending
@@ -5670,6 +5898,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_MIB_CTRL
 comma
 id|MIB_CTRL_CLR_ON_READ
@@ -5680,12 +5910,16 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_ENET_CTRL
 )paren
 suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_ENET_CTRL
 comma
 (paren
@@ -6263,6 +6497,8 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_RXCONFIG
 )paren
 suffix:semicolon
@@ -6290,6 +6526,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_RXCONFIG
 comma
 id|val
@@ -6352,6 +6590,8 @@ suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_RXCONFIG
 comma
 id|val
@@ -6362,12 +6602,16 @@ op_assign
 id|br32
 c_func
 (paren
+id|bp
+comma
 id|B44_CAM_CTRL
 )paren
 suffix:semicolon
 id|bw32
 c_func
 (paren
+id|bp
+comma
 id|B44_CAM_CTRL
 comma
 id|val
@@ -8085,10 +8329,6 @@ id|bp-&gt;lock
 suffix:semicolon
 id|bp-&gt;regs
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren

@@ -776,10 +776,6 @@ DECL|macro|SSB_PCI_MASK1
 mdefine_line|#define SSB_PCI_MASK1&t;&t;0xfc000000
 DECL|macro|SSB_PCI_MASK2
 mdefine_line|#define SSB_PCI_MASK2&t;&t;0xc0000000
-DECL|macro|br32
-mdefine_line|#define br32(REG)&t;readl(bp-&gt;regs + (REG))
-DECL|macro|bw32
-mdefine_line|#define bw32(REG,VAL)&t;writel((VAL), bp-&gt;regs + (REG))
 multiline_comment|/* 4400 PHY registers */
 DECL|macro|B44_MII_AUXCTRL
 mdefine_line|#define B44_MII_AUXCTRL&t;&t;24&t;/* Auxiliary Control */
@@ -1190,8 +1186,10 @@ id|b44_hw_stats
 id|hw_stats
 suffix:semicolon
 DECL|member|regs
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|regs
 suffix:semicolon
 DECL|member|pdev
