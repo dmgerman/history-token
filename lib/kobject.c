@@ -723,8 +723,8 @@ id|sequence_lock
 suffix:semicolon
 id|seq
 op_assign
-id|hotplug_seqnum
 op_increment
+id|hotplug_seqnum
 suffix:semicolon
 id|spin_unlock
 c_func
