@@ -288,7 +288,7 @@ c_func
 id|filemap_fdatawrite
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is a mostly non-blocking flush.  Not suitable for data-integrity&n; * purposes.&n; */
+multiline_comment|/*&n; * This is a mostly non-blocking flush.  Not suitable for data-integrity&n; * purposes - I/O may not be started against all dirty pages.&n; */
 DECL|function|filemap_flush
 r_int
 id|filemap_flush
