@@ -6473,13 +6473,6 @@ id|image
 )paren
 suffix:semicolon
 r_else
-r_if
-c_cond
-(paren
-id|image-&gt;depth
-op_le
-id|info-&gt;var.bits_per_pixel
-)paren
 id|vga_imageblit_color
 c_func
 (paren
