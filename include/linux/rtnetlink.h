@@ -56,6 +56,10 @@ DECL|macro|RTM_DELTFILTER
 mdefine_line|#define&t;RTM_DELTFILTER&t;(RTM_BASE+29)
 DECL|macro|RTM_GETTFILTER
 mdefine_line|#define&t;RTM_GETTFILTER&t;(RTM_BASE+30)
+DECL|macro|RTM_NEWIPSTATS
+mdefine_line|#define RTM_NEWIPSTATS (RTM_BASE+32)
+DECL|macro|RTM_GETIPSTATS
+mdefine_line|#define RTM_GETIPSTATS (RTM_BASE+34)
 DECL|macro|RTM_NEWPREFIX
 mdefine_line|#define RTM_NEWPREFIX&t;(RTM_BASE+36)
 DECL|macro|RTM_GETPREFIX
@@ -1199,6 +1203,33 @@ DECL|macro|TCA_RTA
 mdefine_line|#define TCA_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct tcmsg))))
 DECL|macro|TCA_PAYLOAD
 mdefine_line|#define TCA_PAYLOAD(n) NLMSG_PAYLOAD(n,sizeof(struct tcmsg))
+multiline_comment|/********************************************************************&n; *&t;&t;IP mibs information&n; ****/
+DECL|struct|ipstatsmsg
+r_struct
+id|ipstatsmsg
+(brace
+DECL|member|ipstats_family
+r_int
+id|ipstats_family
+suffix:semicolon
+DECL|member|ipstats_ifindex
+r_int
+id|ipstats_ifindex
+suffix:semicolon
+)brace
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|IPSTATS_IFNAME
+id|IPSTATS_IFNAME
+comma
+DECL|enumerator|IPSTATS_COUNTERS
+id|IPSTATS_COUNTERS
+comma
+)brace
+suffix:semicolon
+DECL|macro|IPSTATS_MAX
+mdefine_line|#define IPSTATS_MAX IPSTATS_COUNTERS
 multiline_comment|/* SUMMARY: maximal rtattr understood by kernel */
 DECL|macro|RTATTR_MAX
 mdefine_line|#define RTATTR_MAX&t;&t;RTA_MAX
