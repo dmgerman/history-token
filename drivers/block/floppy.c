@@ -46,7 +46,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|FDPATCHES
 mdefine_line|#define FDPATCHES
 macro_line|#include &lt;linux/fdreg.h&gt;
