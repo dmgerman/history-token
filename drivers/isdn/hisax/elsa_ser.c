@@ -2008,7 +2008,7 @@ id|bcs-&gt;Flag
 r_if
 c_cond
 (paren
-id|bcs-&gt;hw.hscx.rcvbuf
+id|bcs-&gt;rcvbuf
 )paren
 (brace
 r_if
@@ -2021,10 +2021,10 @@ id|L1_MODE_MODEM
 id|kfree
 c_func
 (paren
-id|bcs-&gt;hw.hscx.rcvbuf
+id|bcs-&gt;rcvbuf
 )paren
 suffix:semicolon
-id|bcs-&gt;hw.hscx.rcvbuf
+id|bcs-&gt;rcvbuf
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3133,7 +3133,7 @@ id|bcs-&gt;Flag
 )paren
 )paren
 (brace
-id|bcs-&gt;hw.hscx.rcvbuf
+id|bcs-&gt;rcvbuf
 op_assign
 id|bcs-&gt;cs-&gt;hw.elsa.rcvbuf
 suffix:semicolon
@@ -3169,7 +3169,7 @@ id|bcs-&gt;event
 op_assign
 l_int|0
 suffix:semicolon
-id|bcs-&gt;hw.hscx.rcvidx
+id|bcs-&gt;rcvidx
 op_assign
 l_int|0
 suffix:semicolon

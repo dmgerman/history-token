@@ -262,16 +262,5 @@ r_int
 id|jade
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|jade_fill_fifo
-c_func
-(paren
-r_struct
-id|BCState
-op_star
-id|bcs
-)paren
-suffix:semicolon
 macro_line|#endif&t;/* __JADE_H__ */
 eof

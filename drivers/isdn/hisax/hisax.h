@@ -1105,16 +1105,6 @@ DECL|member|hscx
 r_int
 id|hscx
 suffix:semicolon
-DECL|member|rcvidx
-r_int
-id|rcvidx
-suffix:semicolon
-DECL|member|rcvbuf
-id|u8
-op_star
-id|rcvbuf
-suffix:semicolon
-multiline_comment|/* B-Channel receive Buffer */
 DECL|member|tsaxr0
 id|u8
 id|tsaxr0
@@ -1599,13 +1589,22 @@ DECL|member|Flag
 r_int
 id|Flag
 suffix:semicolon
-multiline_comment|/* long req&squot;d for set_bit --RR */
 DECL|member|cs
 r_struct
 id|IsdnCardState
 op_star
 id|cs
 suffix:semicolon
+DECL|member|rcvidx
+r_int
+id|rcvidx
+suffix:semicolon
+DECL|member|rcvbuf
+id|u8
+op_star
+id|rcvbuf
+suffix:semicolon
+multiline_comment|/* B-Channel receive Buffer */
 DECL|member|tx_cnt
 r_int
 id|tx_cnt

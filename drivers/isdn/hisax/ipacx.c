@@ -192,7 +192,7 @@ id|arg
 suffix:semicolon
 r_static
 r_void
-id|bch_empty_fifo
+id|ipacx_bc_empty_fifo
 c_func
 (paren
 r_struct
@@ -2557,8 +2557,8 @@ singleline_comment|// Read B channel fifo to receive buffer
 singleline_comment|//----------------------------------------------------------
 r_static
 r_void
-DECL|function|bch_empty_fifo
-id|bch_empty_fifo
+DECL|function|ipacx_bc_empty_fifo
+id|ipacx_bc_empty_fifo
 c_func
 (paren
 r_struct
@@ -2572,7 +2572,7 @@ id|count
 (brace
 id|u8
 op_star
-id|ptr
+id|p
 comma
 id|hscx
 suffix:semicolon
@@ -2580,68 +2580,33 @@ r_struct
 id|IsdnCardState
 op_star
 id|cs
+op_assign
+id|bcs-&gt;cs
 suffix:semicolon
 r_int
 id|cnt
-suffix:semicolon
-id|cs
-op_assign
-id|bcs-&gt;cs
 suffix:semicolon
 id|hscx
 op_assign
 id|bcs-&gt;hw.hscx.hscx
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|cs-&gt;debug
-op_amp
-id|L1_DEB_HSCX
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|cs-&gt;debug
-op_amp
-id|L1_DEB_HSCX_FIFO
-)paren
-)paren
-id|debugl1
+id|p
+op_assign
+id|recv_empty_fifo_b
 c_func
 (paren
-id|cs
+id|bcs
 comma
-l_string|&quot;bch_empty_fifo()&quot;
+id|count
 )paren
 suffix:semicolon
-singleline_comment|// message too large, remove
 r_if
 c_cond
 (paren
-id|bcs-&gt;hw.hscx.rcvidx
-op_plus
-id|count
-OG
-id|HSCX_BUFMAX
+op_logical_neg
+id|p
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cs-&gt;debug
-op_amp
-id|L1_DEB_WARN
-)paren
-id|debugl1
-c_func
-(paren
-id|cs
-comma
-l_string|&quot;bch_empty_fifo() incoming packet too large&quot;
-)paren
-suffix:semicolon
 id|ipacx_bc_write_reg
 c_func
 (paren
@@ -2653,20 +2618,9 @@ l_int|0x80
 )paren
 suffix:semicolon
 singleline_comment|// RMC
-id|bcs-&gt;hw.hscx.rcvidx
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-singleline_comment|// Read data uninterruptible
-id|ptr
-op_assign
-id|bcs-&gt;hw.hscx.rcvbuf
-op_plus
-id|bcs-&gt;hw.hscx.rcvidx
-suffix:semicolon
 id|cnt
 op_assign
 id|count
@@ -2678,7 +2632,7 @@ id|cnt
 op_decrement
 )paren
 op_star
-id|ptr
+id|p
 op_increment
 op_assign
 id|ipacx_bc_read_reg
@@ -2700,14 +2654,8 @@ l_int|0x80
 )paren
 suffix:semicolon
 singleline_comment|// RMC
-id|ptr
-op_assign
-id|bcs-&gt;hw.hscx.rcvbuf
-op_plus
-id|bcs-&gt;hw.hscx.rcvidx
-suffix:semicolon
-id|bcs-&gt;hw.hscx.rcvidx
-op_add_assign
+id|p
+op_sub_assign
 id|count
 suffix:semicolon
 r_if
@@ -2731,7 +2679,7 @@ c_func
 (paren
 id|t
 comma
-l_string|&quot;bch_empty_fifo() B-%d cnt %d&quot;
+l_string|&quot;ipacx_empty_fifo() B-%d cnt %d&quot;
 comma
 id|hscx
 comma
@@ -2743,7 +2691,7 @@ c_func
 (paren
 id|t
 comma
-id|ptr
+id|p
 comma
 id|count
 )paren
@@ -2761,9 +2709,10 @@ suffix:semicolon
 singleline_comment|//----------------------------------------------------------
 singleline_comment|// Fill buffer to transmit FIFO
 singleline_comment|//----------------------------------------------------------
+r_static
 r_void
-DECL|function|ipacx_fill_fifo
-id|ipacx_fill_fifo
+DECL|function|ipacx_bc_fill_fifo
+id|ipacx_bc_fill_fifo
 c_func
 (paren
 r_struct
@@ -3096,7 +3045,7 @@ id|count
 op_assign
 id|B_FIFO_SIZE
 suffix:semicolon
-id|bch_empty_fifo
+id|ipacx_bc_empty_fifo
 c_func
 (paren
 id|bcs
@@ -3110,7 +3059,7 @@ c_cond
 (paren
 id|count
 op_assign
-id|bcs-&gt;hw.hscx.rcvidx
+id|bcs-&gt;rcvidx
 op_minus
 l_int|1
 )paren
@@ -3169,7 +3118,7 @@ comma
 id|count
 )paren
 comma
-id|bcs-&gt;hw.hscx.rcvbuf
+id|bcs-&gt;rcvbuf
 comma
 id|count
 )paren
@@ -3186,7 +3135,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|bcs-&gt;hw.hscx.rcvidx
+id|bcs-&gt;rcvidx
 op_assign
 l_int|0
 suffix:semicolon
@@ -3208,7 +3157,7 @@ l_int|0x40
 )paren
 (brace
 singleline_comment|// RPF
-id|bch_empty_fifo
+id|ipacx_bc_empty_fifo
 c_func
 (paren
 id|bcs
@@ -3260,7 +3209,7 @@ comma
 id|B_FIFO_SIZE
 )paren
 comma
-id|bcs-&gt;hw.hscx.rcvbuf
+id|bcs-&gt;rcvbuf
 comma
 id|B_FIFO_SIZE
 )paren
@@ -3275,7 +3224,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-id|bcs-&gt;hw.hscx.rcvidx
+id|bcs-&gt;rcvidx
 op_assign
 l_int|0
 suffix:semicolon
@@ -3688,16 +3637,16 @@ id|bcs-&gt;Flag
 r_if
 c_cond
 (paren
-id|bcs-&gt;hw.hscx.rcvbuf
+id|bcs-&gt;rcvbuf
 )paren
 (brace
 id|kfree
 c_func
 (paren
-id|bcs-&gt;hw.hscx.rcvbuf
+id|bcs-&gt;rcvbuf
 )paren
 suffix:semicolon
-id|bcs-&gt;hw.hscx.rcvbuf
+id|bcs-&gt;rcvbuf
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3799,7 +3748,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|bcs-&gt;hw.hscx.rcvbuf
+id|bcs-&gt;rcvbuf
 op_assign
 id|kmalloc
 c_func
@@ -3869,10 +3818,10 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|bcs-&gt;hw.hscx.rcvbuf
+id|bcs-&gt;rcvbuf
 )paren
 suffix:semicolon
-id|bcs-&gt;hw.hscx.rcvbuf
+id|bcs-&gt;rcvbuf
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3914,7 +3863,7 @@ id|bcs-&gt;event
 op_assign
 l_int|0
 suffix:semicolon
-id|bcs-&gt;hw.hscx.rcvidx
+id|bcs-&gt;rcvidx
 op_assign
 l_int|0
 suffix:semicolon
@@ -4333,7 +4282,7 @@ op_assign
 dot
 id|fill_fifo
 op_assign
-id|ipacx_fill_fifo
+id|ipacx_bc_fill_fifo
 comma
 )brace
 suffix:semicolon
