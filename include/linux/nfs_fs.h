@@ -1560,12 +1560,6 @@ id|NFS4CLNT_OK
 op_assign
 l_int|0
 comma
-DECL|enumerator|NFS4CLNT_NEW
-id|NFS4CLNT_NEW
-comma
-DECL|enumerator|NFS4CLNT_SETUP_STATE
-id|NFS4CLNT_SETUP_STATE
-comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The nfs4_client identifies our client state to the server.&n; */
@@ -1598,10 +1592,6 @@ DECL|member|cl_state
 r_int
 r_int
 id|cl_state
-suffix:semicolon
-DECL|member|cl_generation
-r_int
-id|cl_generation
 suffix:semicolon
 DECL|member|cl_lockowner_id
 id|u32
@@ -1731,19 +1721,9 @@ id|u32
 id|so_seqid
 suffix:semicolon
 multiline_comment|/* protected by so_sema */
-DECL|member|so_flags
-r_int
-r_int
-id|so_flags
-suffix:semicolon
-multiline_comment|/* protected by so_sema */
 DECL|member|so_count
 id|atomic_t
 id|so_count
-suffix:semicolon
-DECL|member|so_generation
-r_int
-id|so_generation
 suffix:semicolon
 DECL|member|so_cred
 r_struct
@@ -1972,7 +1952,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|_nfs4_do_close
+id|nfs4_do_close
 c_func
 (paren
 r_struct
@@ -1986,7 +1966,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|_nfs4_do_downgrade
+id|nfs4_do_downgrade
 c_func
 (paren
 r_struct
@@ -2136,6 +2116,17 @@ suffix:semicolon
 r_extern
 r_void
 id|nfs4_put_client
+c_func
+(paren
+r_struct
+id|nfs4_client
+op_star
+id|clp
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfs4_init_client
 c_func
 (paren
 r_struct
