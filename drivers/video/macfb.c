@@ -3232,8 +3232,6 @@ id|cmap
 comma
 l_int|1
 comma
-id|macfb_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -3248,8 +3246,6 @@ id|video_cmap_len
 )paren
 comma
 l_int|1
-comma
-id|macfb_setcolreg
 comma
 id|info
 )paren
@@ -3438,8 +3434,6 @@ id|cmap
 comma
 id|kspc
 comma
-id|macfb_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -3499,6 +3493,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|macfb_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|macfb_setcolreg
 comma
 )brace
 suffix:semicolon

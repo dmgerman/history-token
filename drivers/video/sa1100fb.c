@@ -3712,8 +3712,6 @@ id|fbi-&gt;fb.cmap
 comma
 l_int|1
 comma
-id|sa1100fb_setcolreg
-comma
 op_amp
 id|fbi-&gt;fb
 )paren
@@ -4357,8 +4355,6 @@ id|cmap
 comma
 id|kspc
 comma
-id|sa1100fb_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -4623,6 +4619,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|sa1100fb_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|sa1100fb_setcolreg
 comma
 id|fb_blank
 suffix:colon
@@ -4953,8 +4953,6 @@ op_amp
 id|fbi-&gt;fb.cmap
 comma
 l_int|1
-comma
-id|sa1100fb_setcolreg
 comma
 id|info
 )paren

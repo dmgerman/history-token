@@ -628,8 +628,6 @@ id|cmap
 comma
 id|kspc
 comma
-id|anakinfb_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -748,6 +746,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|anakinfb_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|anakinfb_setcolreg
 comma
 )brace
 suffix:semicolon

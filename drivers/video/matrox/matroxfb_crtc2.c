@@ -388,8 +388,6 @@ id|p-&gt;cmap
 comma
 l_int|1
 comma
-id|matroxfb_dh_setcolreg
-comma
 op_amp
 id|m2info-&gt;fbcon
 )paren
@@ -405,8 +403,6 @@ l_int|16
 )paren
 comma
 l_int|1
-comma
-id|matroxfb_dh_setcolreg
 comma
 op_amp
 id|m2info-&gt;fbcon
@@ -2526,8 +2522,6 @@ id|cmap
 comma
 id|kspc
 comma
-id|matroxfb_dh_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -3199,6 +3193,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|matroxfb_dh_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|matroxfb_dh_setcolreg
 comma
 id|fb_pan_display
 suffix:colon

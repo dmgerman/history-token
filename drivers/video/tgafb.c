@@ -4638,8 +4638,6 @@ id|cmap
 comma
 id|kspc
 comma
-id|tgafb_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -5149,8 +5147,6 @@ id|tgafb_set_par
 comma
 id|tgafb_getcolreg
 comma
-id|tgafb_setcolreg
-comma
 l_int|NULL
 comma
 id|tgafb_blank
@@ -5190,6 +5186,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|tgafb_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|tgafb_setcolreg
 comma
 id|fb_blank
 suffix:colon

@@ -2177,10 +2177,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|matrox_setcolreg
+DECL|function|matroxfb_setcolreg
 r_static
 r_int
-id|matrox_setcolreg
+id|matroxfb_setcolreg
 c_func
 (paren
 r_int
@@ -2226,7 +2226,7 @@ macro_line|#endif
 id|DBG
 c_func
 (paren
-l_string|&quot;matrox_setcolreg&quot;
+l_string|&quot;matroxfb_setcolreg&quot;
 )paren
 multiline_comment|/*&n;&t; *  Set a single color register. The values supplied are&n;&t; *  already rounded down to the hardware&squot;s capabilities&n;&t; *  (according to the entries in the `var&squot; structure). Return&n;&t; *  != 0 for invalid regno.&n;&t; */
 r_if
@@ -2582,8 +2582,6 @@ id|dsp-&gt;cmap
 comma
 l_int|1
 comma
-id|matrox_setcolreg
-comma
 op_amp
 id|ACCESS_FBINFO
 c_func
@@ -2607,8 +2605,6 @@ id|curr.cmap_len
 )paren
 comma
 l_int|1
-comma
-id|matrox_setcolreg
 comma
 op_amp
 id|ACCESS_FBINFO
@@ -4596,8 +4592,6 @@ id|cmap
 comma
 id|kspc
 comma
-id|matrox_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -5848,6 +5842,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|matroxfb_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|matroxfb_setcolreg
 comma
 id|fb_pan_display
 suffix:colon

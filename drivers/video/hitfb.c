@@ -1169,8 +1169,6 @@ id|hitfb_set_par
 comma
 id|hitfb_getcolreg
 comma
-id|hitfb_setcolreg
-comma
 id|hitfb_pan_display
 comma
 id|hitfb_blank
@@ -1208,6 +1206,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|fbgen_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|hitfb_setcolreg
 comma
 id|fb_pan_display
 suffix:colon

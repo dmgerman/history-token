@@ -1331,10 +1331,10 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-DECL|function|vesa_setcolreg
+DECL|function|vesafb_setcolreg
 r_static
 r_int
-id|vesa_setcolreg
+id|vesafb_setcolreg
 c_func
 (paren
 r_int
@@ -1649,8 +1649,6 @@ id|cmap
 comma
 l_int|1
 comma
-id|vesa_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -1665,8 +1663,6 @@ id|video_cmap_len
 )paren
 comma
 l_int|1
-comma
-id|vesa_setcolreg
 comma
 id|info
 )paren
@@ -1855,8 +1851,6 @@ id|cmap
 comma
 id|kspc
 comma
-id|vesa_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -1916,6 +1910,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|vesafb_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|vesafb_setcolreg
 comma
 id|fb_pan_display
 suffix:colon

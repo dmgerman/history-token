@@ -2908,10 +2908,10 @@ id|dac_val
 )paren
 suffix:semicolon
 )brace
-DECL|function|vga16_setcolreg
+DECL|function|vga16fb_setcolreg
 r_static
 r_int
-id|vga16_setcolreg
+id|vga16fb_setcolreg
 c_func
 (paren
 r_int
@@ -3117,8 +3117,6 @@ id|cmap
 comma
 l_int|1
 comma
-id|vga16_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -3133,8 +3131,6 @@ l_int|16
 )paren
 comma
 l_int|1
-comma
-id|vga16_setcolreg
 comma
 id|info
 )paren
@@ -3322,8 +3318,6 @@ c_func
 id|cmap
 comma
 id|kspc
-comma
-id|vga16_setcolreg
 comma
 id|info
 )paren
@@ -4308,6 +4302,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|vga16fb_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|vga16fb_setcolreg
 comma
 id|fb_pan_display
 suffix:colon

@@ -3315,8 +3315,6 @@ id|cmap
 comma
 id|kspc
 comma
-id|acornfb_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -4356,8 +4354,6 @@ id|cmap
 comma
 l_int|1
 comma
-id|acornfb_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -4638,6 +4634,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|acornfb_set_cmap
+comma
+id|fb_set_colreg
+suffix:colon
+id|acornfb_setcolreg
 comma
 id|fb_pan_display
 suffix:colon

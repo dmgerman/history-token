@@ -7295,8 +7295,6 @@ id|cmap
 comma
 l_int|1
 comma
-id|imsttfb_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -7329,8 +7327,6 @@ id|size
 )paren
 comma
 l_int|1
-comma
-id|imsttfb_setcolreg
 comma
 id|info
 )paren
@@ -8627,8 +8623,6 @@ id|cmap
 comma
 id|kspc
 comma
-id|imsttfb_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -9762,6 +9756,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|imsttfb_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|imsttfb_setcolreg
 comma
 id|fb_pan_display
 suffix:colon

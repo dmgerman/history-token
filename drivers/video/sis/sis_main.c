@@ -1636,10 +1636,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|sis_setcolreg
+DECL|function|sisfb_setcolreg
 r_static
 r_int
-id|sis_setcolreg
+id|sisfb_setcolreg
 (paren
 r_int
 id|regno
@@ -2660,8 +2660,6 @@ id|cmap
 comma
 l_int|1
 comma
-id|sis_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -2674,8 +2672,6 @@ id|video_cmap_len
 )paren
 comma
 l_int|1
-comma
-id|sis_setcolreg
 comma
 id|info
 )paren
@@ -8936,8 +8932,6 @@ id|cmap
 comma
 id|kspc
 comma
-id|sis_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -9435,6 +9429,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|sisfb_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|sisfb_setcolreg
 comma
 id|fb_blank
 suffix:colon

@@ -1854,11 +1854,11 @@ id|info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;hga_setcolreg - set color registers&n; *&t;@regno:register index to set&n; *&t;@red:red value, unused&n; *&t;@green:green value, unused&n; *&t;@blue:blue value, unused&n; *&t;@transp:transparency value, unused&n; *&t;@info:unused&n; *&n; *&t;This callback function is used to set the color registers of a HGA&n; *&t;board. Since we have only two fixed colors only @regno is checked.&n; *&t;A zero is returned on success and 1 for failure.&n; */
-DECL|function|hga_setcolreg
+multiline_comment|/**&n; *&t;hgafb_setcolreg - set color registers&n; *&t;@regno:register index to set&n; *&t;@red:red value, unused&n; *&t;@green:green value, unused&n; *&t;@blue:blue value, unused&n; *&t;@transp:transparency value, unused&n; *&t;@info:unused&n; *&n; *&t;This callback function is used to set the color registers of a HGA&n; *&t;board. Since we have only two fixed colors only @regno is checked.&n; *&t;A zero is returned on success and 1 for failure.&n; */
+DECL|function|hgafb_setcolreg
 r_static
 r_int
-id|hga_setcolreg
+id|hgafb_setcolreg
 c_func
 (paren
 id|u_int
@@ -1896,7 +1896,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;hga_set_cmap - set the colormap&n; *&t;@cmap:struct fb_cmap to set&n; *&t;@kspc:called from kernel space?&n; *&t;@con:unused&n; *&t;@info:pointer to fb_info object containing info for current hga board&n; *&n; *&t;This wrapper function passes it&squot;s input parameters to fb_set_cmap().&n; *&t;Callback function hga_setcolreg() is used to set the color registers.&n; */
+multiline_comment|/**&n; *&t;hga_set_cmap - set the colormap&n; *&t;@cmap:struct fb_cmap to set&n; *&t;@kspc:called from kernel space?&n; *&t;@con:unused&n; *&t;@info:pointer to fb_info object containing info for current hga board&n; *&n; *&t;This wrapper function passes it&squot;s input parameters to fb_set_cmap().&n; *&t;Callback function hgafb_setcolreg() is used to set the color registers.&n; */
 DECL|function|hga_set_cmap
 r_int
 id|hga_set_cmap
@@ -1941,8 +1941,6 @@ c_func
 id|cmap
 comma
 id|kspc
-comma
-id|hga_setcolreg
 comma
 id|info
 )paren
@@ -2161,6 +2159,10 @@ id|fb_set_cmap
 suffix:colon
 id|hga_set_cmap
 comma
+id|fb_setcolreg
+suffix:colon
+id|hgafb_setcolreg
+comma
 id|fb_pan_display
 suffix:colon
 id|hga_pan_display
@@ -2292,8 +2294,6 @@ op_amp
 id|info-&gt;cmap
 comma
 l_int|1
-comma
-id|hga_setcolreg
 comma
 id|info
 )paren

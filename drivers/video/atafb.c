@@ -529,7 +529,7 @@ id|fontdata_8x16
 (braket
 )braket
 suffix:semicolon
-multiline_comment|/* ++roman: This structure abstracts from the underlying hardware (ST(e),&n; * TT, or Falcon.&n; *&n; * int (*detect)( void )&n; *   This function should detect the current video mode settings and&n; *   store them in atafb_predefined[0] for later reference by the&n; *   user. Return the index+1 of an equivalent predefined mode or 0&n; *   if there is no such.&n; * &n; * int (*encode_fix)( struct fb_fix_screeninfo *fix,&n; *                    struct atafb_par *par )&n; *   This function should fill in the &squot;fix&squot; structure based on the&n; *   values in the &squot;par&squot; structure.&n; *   &n; * int (*decode_var)( struct fb_var_screeninfo *var,&n; *                    struct atafb_par *par )&n; *   Get the video params out of &squot;var&squot;. If a value doesn&squot;t fit, round&n; *   it up, if it&squot;s too big, return EINVAL.&n; *   Round up in the following order: bits_per_pixel, xres, yres, &n; *   xres_virtual, yres_virtual, xoffset, yoffset, grayscale, bitfields, &n; *   horizontal timing, vertical timing.&n; *&n; * int (*encode_var)( struct fb_var_screeninfo *var,&n; *                    struct atafb_par *par );&n; *   Fill the &squot;var&squot; structure based on the values in &squot;par&squot; and maybe&n; *   other values read out of the hardware.&n; *   &n; * void (*get_par)( struct atafb_par *par )&n; *   Fill the hardware&squot;s &squot;par&squot; structure.&n; *   &n; * void (*set_par)( struct atafb_par *par )&n; *   Set the hardware according to &squot;par&squot;.&n; *   &n; * int (*setcolreg)( unsigned regno, unsigned red,&n; *                   unsigned green, unsigned blue,&n; *                   unsigned transp, struct fb_info *info )&n; *   Set a single color register. The values supplied are already&n; *   rounded down to the hardware&squot;s capabilities (according to the&n; *   entries in the var structure). Return != 0 for invalid regno.&n; *&n; * int (*getcolreg)( unsigned regno, unsigned *red,&n; *                   unsigned *green, unsigned *blue,&n; *                   unsigned *transp, struct fb_info *info )&n; *   Read a single color register and split it into&n; *   colors/transparent. Return != 0 for invalid regno.&n; *&n; * void (*set_screen_base)(void *s_base)&n; *   Set the base address of the displayed frame buffer. Only called&n; *   if yres_virtual &gt; yres or xres_virtual &gt; xres.&n; *&n; * int (*blank)( int blank_mode )&n; *   Blank the screen if blank_mode!=0, else unblank. If blank==NULL then&n; *   the caller blanks by setting the CLUT to all black. Return 0 if blanking&n; *   succeeded, !=0 if un-/blanking failed due to e.g. a video mode which&n; *   doesn&squot;t support it. Implements VESA suspend and powerdown modes on&n; *   hardware that supports disabling hsync/vsync:&n; *       blank_mode==2: suspend vsync, 3:suspend hsync, 4: powerdown.&n; */
+multiline_comment|/* ++roman: This structure abstracts from the underlying hardware (ST(e),&n; * TT, or Falcon.&n; *&n; * int (*detect)( void )&n; *   This function should detect the current video mode settings and&n; *   store them in atafb_predefined[0] for later reference by the&n; *   user. Return the index+1 of an equivalent predefined mode or 0&n; *   if there is no such.&n; * &n; * int (*encode_fix)( struct fb_fix_screeninfo *fix,&n; *                    struct atafb_par *par )&n; *   This function should fill in the &squot;fix&squot; structure based on the&n; *   values in the &squot;par&squot; structure.&n; *   &n; * int (*decode_var)( struct fb_var_screeninfo *var,&n; *                    struct atafb_par *par )&n; *   Get the video params out of &squot;var&squot;. If a value doesn&squot;t fit, round&n; *   it up, if it&squot;s too big, return EINVAL.&n; *   Round up in the following order: bits_per_pixel, xres, yres, &n; *   xres_virtual, yres_virtual, xoffset, yoffset, grayscale, bitfields, &n; *   horizontal timing, vertical timing.&n; *&n; * int (*encode_var)( struct fb_var_screeninfo *var,&n; *                    struct atafb_par *par );&n; *   Fill the &squot;var&squot; structure based on the values in &squot;par&squot; and maybe&n; *   other values read out of the hardware.&n; *   &n; * void (*get_par)( struct atafb_par *par )&n; *   Fill the hardware&squot;s &squot;par&squot; structure.&n; *   &n; * void (*set_par)( struct atafb_par *par )&n; *   Set the hardware according to &squot;par&squot;.&n; *   &n; * int (*getcolreg)( unsigned regno, unsigned *red,&n; *                   unsigned *green, unsigned *blue,&n; *                   unsigned *transp, struct fb_info *info )&n; *   Read a single color register and split it into&n; *   colors/transparent. Return != 0 for invalid regno.&n; *&n; * void (*set_screen_base)(void *s_base)&n; *   Set the base address of the displayed frame buffer. Only called&n; *   if yres_virtual &gt; yres or xres_virtual &gt; xres.&n; *&n; * int (*blank)( int blank_mode )&n; *   Blank the screen if blank_mode!=0, else unblank. If blank==NULL then&n; *   the caller blanks by setting the CLUT to all black. Return 0 if blanking&n; *   succeeded, !=0 if un-/blanking failed due to e.g. a video mode which&n; *   doesn&squot;t support it. Implements VESA suspend and powerdown modes on&n; *   hardware that supports disabling hsync/vsync:&n; *       blank_mode==2: suspend vsync, 3:suspend hsync, 4: powerdown.&n; */
 DECL|struct|fb_hwswitch
 r_static
 r_struct
@@ -649,34 +649,6 @@ id|blue
 comma
 r_int
 op_star
-id|transp
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
-DECL|member|setcolreg
-r_int
-(paren
-op_star
-id|setcolreg
-)paren
-(paren
-r_int
-id|regno
-comma
-r_int
-id|red
-comma
-r_int
-id|green
-comma
-r_int
-id|blue
-comma
-r_int
 id|transp
 comma
 r_struct
@@ -10500,8 +10472,6 @@ id|tt_set_par
 comma
 id|tt_getcolreg
 comma
-id|tt_setcolreg
-comma
 id|set_screen_base
 comma
 l_int|NULL
@@ -10531,8 +10501,6 @@ comma
 id|falcon_set_par
 comma
 id|falcon_getcolreg
-comma
-id|falcon_setcolreg
 comma
 id|set_screen_base
 comma
@@ -10564,8 +10532,6 @@ id|stste_set_par
 comma
 id|stste_getcolreg
 comma
-id|stste_setcolreg
-comma
 id|stste_set_screen_base
 comma
 l_int|NULL
@@ -10595,8 +10561,6 @@ comma
 id|ext_set_par
 comma
 id|ext_getcolreg
-comma
-id|ext_setcolreg
 comma
 l_int|NULL
 comma
@@ -10876,8 +10840,6 @@ id|cmap
 comma
 l_int|1
 comma
-id|fbhw-&gt;setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -10899,8 +10861,6 @@ id|var.bits_per_pixel
 )paren
 comma
 l_int|1
-comma
-id|fbhw-&gt;setcolreg
 comma
 id|info
 )paren
@@ -11736,8 +11696,6 @@ id|cmap
 comma
 id|kspc
 comma
-id|fbhw-&gt;setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -12447,8 +12405,6 @@ id|cmap
 comma
 l_int|1
 comma
-id|fbhw-&gt;setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -12509,6 +12465,11 @@ op_assign
 op_amp
 id|ext_switch
 suffix:semicolon
+id|fb_info.fb_setcolreg
+op_assign
+op_amp
+id|ext_setcolreg
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -12529,6 +12490,11 @@ op_assign
 op_amp
 id|tt_switch
 suffix:semicolon
+id|fb_info.fb_setcolreg
+op_assign
+op_amp
+id|tt_setcolreg
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -12548,6 +12514,11 @@ id|fbhw
 op_assign
 op_amp
 id|falcon_switch
+suffix:semicolon
+id|fb_info.fb_setcolreg
+op_assign
+op_amp
+id|falcon_setcolreg
 suffix:semicolon
 id|request_irq
 c_func
@@ -12589,6 +12560,11 @@ op_assign
 op_amp
 id|st_switch
 suffix:semicolon
+id|fb_info.fb_setcolreg
+op_assign
+op_amp
+id|stste_setcolreg
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -12596,6 +12572,11 @@ id|fbhw
 op_assign
 op_amp
 id|st_switch
+suffix:semicolon
+id|fb_info.fb_setcolreg
+op_assign
+op_amp
+id|stste_setcolreg
 suffix:semicolon
 id|printk
 c_func

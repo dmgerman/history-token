@@ -1321,8 +1321,8 @@ suffix:semicolon
 multiline_comment|/*&n; *    Set a single color register. Return != 0 for invalid regno.&n; */
 r_static
 r_int
-DECL|function|cyber2000_setcolreg
-id|cyber2000_setcolreg
+DECL|function|cyber2000fb_setcolreg
+id|cyber2000fb_setcolreg
 c_func
 (paren
 id|u_int
@@ -2781,8 +2781,6 @@ c_func
 id|cmap
 comma
 id|kspc
-comma
-id|cyber2000_setcolreg
 comma
 op_amp
 id|cfb-&gt;fb
@@ -4442,8 +4440,6 @@ id|cfb-&gt;fb.cmap
 comma
 l_int|1
 comma
-id|cyber2000_setcolreg
-comma
 op_amp
 id|cfb-&gt;fb
 )paren
@@ -5029,6 +5025,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|cyber2000fb_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|cyber2000fb_setcolreg
 comma
 id|fb_pan_display
 suffix:colon

@@ -1504,10 +1504,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|e1355_setcolreg
+DECL|function|e1355fb_setcolreg
 r_static
 r_int
-id|e1355_setcolreg
+id|e1355fb_setcolreg
 c_func
 (paren
 r_int
@@ -1885,10 +1885,6 @@ id|getcolreg
 suffix:colon
 id|e1355_getcolreg
 comma
-id|setcolreg
-suffix:colon
-id|e1355_setcolreg
-comma
 id|pan_display
 suffix:colon
 id|e1355_pan_display
@@ -1934,6 +1930,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|fbgen_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|e1355fb_setcolreg
 comma
 id|fb_pan_display
 suffix:colon

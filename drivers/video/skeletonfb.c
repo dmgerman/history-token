@@ -337,10 +337,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|xxx_setcolreg
+DECL|function|xxxfb_setcolreg
 r_static
 r_int
-id|xxx_setcolreg
+id|xxxfb_setcolreg
 c_func
 (paren
 r_int
@@ -740,8 +740,6 @@ id|xxx_set_par
 comma
 id|xxx_getcolreg
 comma
-id|xxx_setcolreg
-comma
 id|xxx_pan_display
 comma
 id|xxx_blank
@@ -1019,6 +1017,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|fbgen_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|xxxfb_setcolreg
 comma
 id|fb_pan_display
 suffix:colon

@@ -1453,10 +1453,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|iga_setcolreg
+DECL|function|igafb_setcolreg
 r_static
 r_int
-id|iga_setcolreg
+id|igafb_setcolreg
 c_func
 (paren
 r_int
@@ -1736,8 +1736,6 @@ id|cmap
 comma
 l_int|1
 comma
-id|iga_setcolreg
-comma
 op_amp
 id|info-&gt;fb_info
 )paren
@@ -1753,8 +1751,6 @@ id|info-&gt;video_cmap_len
 )paren
 comma
 l_int|1
-comma
-id|iga_setcolreg
 comma
 op_amp
 id|info-&gt;fb_info
@@ -1969,8 +1965,6 @@ id|cmap
 comma
 id|kspc
 comma
-id|iga_setcolreg
-comma
 id|info
 )paren
 suffix:semicolon
@@ -2031,6 +2025,10 @@ comma
 id|fb_set_cmap
 suffix:colon
 id|igafb_set_cmap
+comma
+id|fb_setcolreg
+suffix:colon
+id|igafb_setcolreg
 comma
 macro_line|#ifdef __sparc__
 id|fb_mmap
