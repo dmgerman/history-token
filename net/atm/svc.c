@@ -2559,6 +2559,11 @@ op_assign
 id|PF_ATMSVC
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|release
 op_assign
 id|svc_release
@@ -2723,6 +2728,11 @@ dot
 id|create
 op_assign
 id|svc_create
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

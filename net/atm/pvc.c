@@ -486,6 +486,11 @@ op_assign
 id|PF_ATMPVC
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|release
 op_assign
 id|vcc_release
@@ -615,6 +620,11 @@ dot
 id|create
 op_assign
 id|pvc_create
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
