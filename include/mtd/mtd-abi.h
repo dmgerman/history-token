@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtd-abi.h,v 1.6 2004/08/09 13:38:30 dwmw2 Exp $&n; *&n; * Portions of MTD ABI definition which are shared by kernel and user space &n; */
+multiline_comment|/*&n; * $Id: mtd-abi.h,v 1.7 2004/11/23 15:37:32 gleixner Exp $&n; *&n; * Portions of MTD ABI definition which are shared by kernel and user space &n; */
 macro_line|#ifndef __MTD_ABI_H__
 DECL|macro|__MTD_ABI_H__
 mdefine_line|#define __MTD_ABI_H__
@@ -81,6 +81,9 @@ singleline_comment|// Out-of-band data (NAND flash)
 DECL|macro|MTD_ECC
 mdefine_line|#define MTD_ECC&t;&t;&t;128&t;
 singleline_comment|// Device capable of automatic ECC
+DECL|macro|MTD_NO_VIRTBLOCKS
+mdefine_line|#define MTD_NO_VIRTBLOCKS&t;256&t;
+singleline_comment|// Virtual blocks not allowed
 singleline_comment|// Some common devices / combinations of capabilities
 DECL|macro|MTD_CAP_ROM
 mdefine_line|#define MTD_CAP_ROM&t;&t;0

@@ -1,4 +1,4 @@
-multiline_comment|/**&n; *&n; * $Id: phram.c,v 1.3 2004/11/16 18:29:01 dwmw2 Exp $&n; *&n; * Copyright (c) Jochen Schaeuble &lt;psionic@psionic.de&gt;&n; * 07/2003&t;rewritten by Joern Engel &lt;joern@wh.fh-wedel.de&gt;&n; *&n; * DISCLAIMER:  This driver makes use of Rusty&squot;s excellent module code,&n; * so it will not work for 2.4 without changes and it wont work for 2.4&n; * as a module without major changes.  Oh well!&n; *&n; * Usage:&n; *&n; * one commend line parameter per device, each in the form:&n; *   phram=&lt;name&gt;,&lt;start&gt;,&lt;len&gt;&n; * &lt;name&gt; may be up to 63 characters.&n; * &lt;start&gt; and &lt;len&gt; can be octal, decimal or hexadecimal.  If followed&n; * by &quot;k&quot;, &quot;M&quot; or &quot;G&quot;, the numbers will be interpreted as kilo, mega or&n; * gigabytes.&n; *&n; */
+multiline_comment|/**&n; *&n; * $Id: phram.c,v 1.6 2004/11/25 16:51:09 joern Exp $&n; *&n; * Copyright (c) Jochen Schaeuble &lt;psionic@psionic.de&gt;&n; * 07/2003&t;rewritten by Joern Engel &lt;joern@wh.fh-wedel.de&gt;&n; *&n; * DISCLAIMER:  This driver makes use of Rusty&squot;s excellent module code,&n; * so it will not work for 2.4 without changes and it wont work for 2.4&n; * as a module without major changes.  Oh well!&n; *&n; * Usage:&n; *&n; * one commend line parameter per device, each in the form:&n; *   phram=&lt;name&gt;,&lt;start&gt;,&lt;len&gt;&n; * &lt;name&gt; may be up to 63 characters.&n; * &lt;start&gt; and &lt;len&gt; can be octal, decimal or hexadecimal.  If followed&n; * by &quot;ki&quot;, &quot;Mi&quot; or &quot;Gi&quot;, the numbers will be interpreted as kilo, mega or&n; * gigabytes.&n; *&n; * Example:&n; *&t;phram=swap,896Mi,110Mi phram=test,1006Mi,1Mi&n; *&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -722,8 +722,26 @@ id|result
 op_mul_assign
 l_int|1024
 suffix:semicolon
+multiline_comment|/* By dwmw2 editorial decree, &quot;ki&quot;, &quot;Mi&quot; or &quot;Gi&quot; are to be used. */
+r_if
+c_cond
+(paren
+(paren
+op_star
 id|endp
-op_increment
+)paren
+(braket
+l_int|1
+)braket
+op_eq
+l_char|&squot;i&squot;
+)paren
+(paren
+op_star
+id|endp
+)paren
+op_add_assign
+l_int|2
 suffix:semicolon
 )brace
 r_return
@@ -934,13 +952,13 @@ id|val
 comma
 r_sizeof
 (paren
-id|str
+id|buf
 )paren
 )paren
 op_ge
 r_sizeof
 (paren
-id|str
+id|buf
 )paren
 )paren
 id|parse_err
@@ -1205,13 +1223,13 @@ id|val
 comma
 r_sizeof
 (paren
-id|str
+id|buf
 )paren
 )paren
 op_ge
 r_sizeof
 (paren
-id|str
+id|buf
 )paren
 )paren
 id|parse_err
@@ -1514,13 +1532,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;phram loaded&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
