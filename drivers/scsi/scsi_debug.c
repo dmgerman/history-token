@@ -357,6 +357,11 @@ op_assign
 l_string|&quot;SCSI DEBUG&quot;
 comma
 dot
+id|release
+op_assign
+id|scsi_debug_release
+comma
+dot
 id|info
 op_assign
 id|scsi_debug_info
