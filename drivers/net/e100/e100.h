@@ -29,7 +29,6 @@ macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 DECL|macro|E100_REGS_LEN
 mdefine_line|#define E100_REGS_LEN 1
@@ -2315,59 +2314,11 @@ id|cfg_params
 id|params
 suffix:semicolon
 multiline_comment|/* adapter&squot;s command line parameters */
-DECL|member|proc_parent
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_parent
-suffix:semicolon
 DECL|member|id_string
 r_char
 op_star
 id|id_string
 suffix:semicolon
-DECL|member|cable_status
-r_char
-op_star
-id|cable_status
-suffix:semicolon
-DECL|member|mdix_status
-r_char
-op_star
-id|mdix_status
-suffix:semicolon
-multiline_comment|/* Variables for HWI */
-DECL|member|saved_open_circut
-r_int
-id|saved_open_circut
-suffix:semicolon
-DECL|member|saved_short_circut
-r_int
-id|saved_short_circut
-suffix:semicolon
-DECL|member|saved_distance
-r_int
-id|saved_distance
-suffix:semicolon
-DECL|member|saved_i
-r_int
-id|saved_i
-suffix:semicolon
-DECL|member|saved_same
-r_int
-id|saved_same
-suffix:semicolon
-DECL|member|hwi_started
-r_int
-r_char
-id|hwi_started
-suffix:semicolon
-DECL|member|hwi_timer
-r_struct
-id|timer_list
-id|hwi_timer
-suffix:semicolon
-multiline_comment|/* hwi timer id */
 DECL|member|speed_duplex_caps
 id|u32
 id|speed_duplex_caps
