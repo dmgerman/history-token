@@ -166,6 +166,8 @@ suffix:semicolon
 singleline_comment|// Hypervisor DevFn
 DECL|macro|HVMAXARCHITECTEDLPS
 mdefine_line|#define HVMAXARCHITECTEDLPS 32
+DECL|macro|HVMAXARCHITECTEDVIRTUALLANS
+mdefine_line|#define HVMAXARCHITECTEDVIRTUALLANS 16
 DECL|macro|HVCHUNKSIZE
 mdefine_line|#define HVCHUNKSIZE 256 * 1024
 DECL|macro|HVPAGESIZE

@@ -13,7 +13,9 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/vio.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/iSeries/vio.h&gt;
+macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
+macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
 DECL|macro|DBGENTER
 mdefine_line|#define DBGENTER() pr_debug(&quot;%s entered&bslash;n&quot;, __FUNCTION__)
 r_extern
@@ -97,26 +99,6 @@ r_struct
 id|iommu_table
 id|vio_iommu_table
 suffix:semicolon
-DECL|variable|_veth_dev
-r_static
-r_struct
-id|vio_dev
-id|_veth_dev
-op_assign
-(brace
-dot
-id|iommu_table
-op_assign
-op_amp
-id|veth_iommu_table
-comma
-dot
-id|dev.bus
-op_assign
-op_amp
-id|vio_bus_type
-)brace
-suffix:semicolon
 DECL|variable|_vio_dev
 r_static
 r_struct
@@ -137,15 +119,6 @@ op_amp
 id|vio_bus_type
 )brace
 suffix:semicolon
-DECL|variable|iSeries_veth_dev
-r_struct
-id|vio_dev
-op_star
-id|iSeries_veth_dev
-op_assign
-op_amp
-id|_veth_dev
-suffix:semicolon
 DECL|variable|iSeries_vio_dev
 r_struct
 id|device
@@ -154,13 +127,6 @@ id|iSeries_vio_dev
 op_assign
 op_amp
 id|_vio_dev.dev
-suffix:semicolon
-DECL|variable|iSeries_veth_dev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_veth_dev
-)paren
 suffix:semicolon
 DECL|variable|iSeries_vio_dev
 id|EXPORT_SYMBOL
@@ -756,6 +722,78 @@ c_func
 r_void
 )paren
 (brace
+id|HvLpIndexMap
+id|vlan_map
+op_assign
+id|HvLpConfig_getVirtualLanIndexMap
+c_func
+(paren
+)paren
+suffix:semicolon
+r_struct
+id|vio_dev
+op_star
+id|viodev
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|vlan_map
+op_assign
+id|HvLpConfig_getVirtualLanIndexMap
+c_func
+(paren
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|HVMAXARCHITECTEDVIRTUALLANS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|vlan_map
+op_amp
+(paren
+l_int|0x8000
+op_rshift
+id|i
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
+id|viodev
+op_assign
+id|vio_register_device_iseries
+c_func
+(paren
+l_string|&quot;vlan&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+multiline_comment|/* veth is special and has it own iommu_table */
+id|viodev-&gt;iommu_table
+op_assign
+op_amp
+id|veth_iommu_table
+suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 multiline_comment|/**&n; * vio_bus_init: - Initialize the virtual IO bus&n; */
