@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/console.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/machvec.h&gt;
 DECL|macro|DIRNAME
 mdefine_line|#define DIRNAME&t;&t;&quot;srm_environment&quot;&t;/* Subdir in /proc/&t;*/
 DECL|macro|VERSION
