@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * acpi-cpufreq-io.c - ACPI Processor P-States Driver ($Revision: 1.3 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2002 - 2004 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; * acpi-cpufreq.c - ACPI Processor P-States Driver ($Revision: 1.3 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2002 - 2004 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -11,31 +11,18 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/processor.h&gt;
-DECL|macro|ACPI_PROCESSOR_COMPONENT
-mdefine_line|#define ACPI_PROCESSOR_COMPONENT&t;0x01000000
-DECL|macro|ACPI_PROCESSOR_CLASS
-mdefine_line|#define ACPI_PROCESSOR_CLASS&t;&t;&quot;processor&quot;
-DECL|macro|ACPI_PROCESSOR_DRIVER_NAME
-mdefine_line|#define ACPI_PROCESSOR_DRIVER_NAME&t;&quot;ACPI Processor P-States Driver&quot;
-DECL|macro|ACPI_PROCESSOR_DEVICE_NAME
-mdefine_line|#define ACPI_PROCESSOR_DEVICE_NAME&t;&quot;Processor&quot;
-DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT&t;&t;ACPI_PROCESSOR_COMPONENT
-id|ACPI_MODULE_NAME
-(paren
-l_string|&quot;acpi_processor_perf&quot;
-)paren
+DECL|macro|dprintk
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;acpi-cpufreq&quot;, msg)
 id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Paul Diefenbaugh, Dominik Brodowski&quot;
 )paren
 suffix:semicolon
-DECL|variable|ACPI_PROCESSOR_DRIVER_NAME
 id|MODULE_DESCRIPTION
 c_func
 (paren
-id|ACPI_PROCESSOR_DRIVER_NAME
+l_string|&quot;ACPI Processor P-States Driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -293,10 +280,10 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
-id|ACPI_FUNCTION_TRACE
+id|dprintk
 c_func
 (paren
-l_string|&quot;acpi_processor_set_performance&quot;
+l_string|&quot;acpi_processor_set_performance&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * TBD: Use something other than set_cpus_allowed.&n;&t; * As set_cpus_allowed is a bit racy, &n;&t; * with any other set_cpus_allowed for this process.&n;&t; */
@@ -327,8 +314,7 @@ op_ne
 id|cpu
 )paren
 (brace
-id|return_VALUE
-c_func
+r_return
 (paren
 op_minus
 id|EAGAIN
@@ -343,16 +329,12 @@ op_eq
 id|data-&gt;acpi_data.state
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|dprintk
 c_func
 (paren
-(paren
-id|ACPI_DB_INFO
-comma
 l_string|&quot;Already at target state (P%d)&bslash;n&quot;
 comma
 id|state
-)paren
 )paren
 suffix:semicolon
 id|retval
@@ -363,18 +345,14 @@ r_goto
 id|migrate_end
 suffix:semicolon
 )brace
-id|ACPI_DEBUG_PRINT
+id|dprintk
 c_func
 (paren
-(paren
-id|ACPI_DB_INFO
-comma
 l_string|&quot;Transitioning from P%d to P%d&bslash;n&quot;
 comma
 id|data-&gt;acpi_data.state
 comma
 id|state
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* cpufreq frequency struct */
@@ -433,18 +411,14 @@ id|state
 dot
 id|control
 suffix:semicolon
-id|ACPI_DEBUG_PRINT
+id|dprintk
 c_func
 (paren
-(paren
-id|ACPI_DB_INFO
-comma
 l_string|&quot;Writing 0x%08x to port 0x%04x&bslash;n&quot;
 comma
 id|value
 comma
 id|port
-)paren
 )paren
 suffix:semicolon
 id|ret
@@ -465,16 +439,12 @@ c_cond
 id|ret
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|dprintk
 c_func
 (paren
-(paren
-id|ACPI_DB_WARN
-comma
 l_string|&quot;Invalid port width 0x%04x&bslash;n&quot;
 comma
 id|bit_width
-)paren
 )paren
 suffix:semicolon
 id|retval
@@ -494,12 +464,9 @@ id|bit_width
 op_assign
 id|data-&gt;acpi_data.status_register.bit_width
 suffix:semicolon
-id|ACPI_DEBUG_PRINT
+id|dprintk
 c_func
 (paren
-(paren
-id|ACPI_DB_INFO
-comma
 l_string|&quot;Looking for 0x%08x from port 0x%04x&bslash;n&quot;
 comma
 (paren
@@ -513,7 +480,6 @@ dot
 id|status
 comma
 id|port
-)paren
 )paren
 suffix:semicolon
 r_for
@@ -550,16 +516,12 @@ c_cond
 id|ret
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|dprintk
 c_func
 (paren
-(paren
-id|ACPI_DB_WARN
-comma
 l_string|&quot;Invalid port width 0x%04x&bslash;n&quot;
 comma
 id|bit_width
-)paren
 )paren
 suffix:semicolon
 id|retval
@@ -656,14 +618,11 @@ comma
 id|CPUFREQ_POSTCHANGE
 )paren
 suffix:semicolon
-id|ACPI_DEBUG_PRINT
+id|printk
 c_func
 (paren
-(paren
-id|ACPI_DB_WARN
-comma
-l_string|&quot;Transition failed&bslash;n&quot;
-)paren
+id|KERN_WARNING
+l_string|&quot;acpi-cpufreq: Transition failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -675,18 +634,14 @@ r_goto
 id|migrate_end
 suffix:semicolon
 )brace
-id|ACPI_DEBUG_PRINT
+id|dprintk
 c_func
 (paren
-(paren
-id|ACPI_DB_INFO
-comma
 l_string|&quot;Transition successful after %d microseconds&bslash;n&quot;
 comma
 id|i
 op_star
 l_int|10
-)paren
 )paren
 suffix:semicolon
 id|data-&gt;acpi_data.state
@@ -707,8 +662,7 @@ comma
 id|saved_mask
 )paren
 suffix:semicolon
-id|return_VALUE
-c_func
+r_return
 (paren
 id|retval
 )paren
@@ -755,10 +709,10 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_FUNCTION_TRACE
+id|dprintk
 c_func
 (paren
-l_string|&quot;acpi_cpufreq_setpolicy&quot;
+l_string|&quot;acpi_cpufreq_setpolicy&bslash;n&quot;
 )paren
 suffix:semicolon
 id|result
@@ -783,8 +737,7 @@ c_cond
 (paren
 id|result
 )paren
-id|return_VALUE
-c_func
+r_return
 (paren
 id|result
 )paren
@@ -800,8 +753,7 @@ comma
 id|next_state
 )paren
 suffix:semicolon
-id|return_VALUE
-c_func
+r_return
 (paren
 id|result
 )paren
@@ -834,10 +786,10 @@ id|acpi_io_data
 id|policy-&gt;cpu
 )braket
 suffix:semicolon
-id|ACPI_FUNCTION_TRACE
+id|dprintk
 c_func
 (paren
-l_string|&quot;acpi_cpufreq_verify&quot;
+l_string|&quot;acpi_cpufreq_verify&bslash;n&quot;
 )paren
 suffix:semicolon
 id|result
@@ -850,8 +802,7 @@ comma
 id|data-&gt;freq_table
 )paren
 suffix:semicolon
-id|return_VALUE
-c_func
+r_return
 (paren
 id|result
 )paren
@@ -1033,10 +984,10 @@ id|cpu_data
 op_plus
 id|cpu
 suffix:semicolon
-id|ACPI_FUNCTION_TRACE
+id|dprintk
 c_func
 (paren
-l_string|&quot;acpi_processor_cpu_init_pdc_est&quot;
+l_string|&quot;acpi_processor_cpu_init_pdc_est&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1051,7 +1002,7 @@ comma
 id|X86_FEATURE_EST
 )paren
 )paren
-id|return_VOID
+r_return
 suffix:semicolon
 multiline_comment|/* Initialize pdc. It will be used later. */
 r_if
@@ -1060,7 +1011,7 @@ c_cond
 op_logical_neg
 id|obj_list
 )paren
-id|return_VOID
+r_return
 suffix:semicolon
 r_if
 c_cond
@@ -1072,7 +1023,7 @@ op_logical_and
 id|obj_list-&gt;pointer
 )paren
 )paren
-id|return_VOID
+r_return
 suffix:semicolon
 id|obj
 op_assign
@@ -1124,7 +1075,7 @@ op_assign
 id|obj_list
 suffix:semicolon
 )brace
-id|return_VOID
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* CPU specific PDC initialization */
@@ -1158,10 +1109,10 @@ id|cpu_data
 op_plus
 id|cpu
 suffix:semicolon
-id|ACPI_FUNCTION_TRACE
+id|dprintk
 c_func
 (paren
-l_string|&quot;acpi_processor_cpu_init_pdc&quot;
+l_string|&quot;acpi_processor_cpu_init_pdc&bslash;n&quot;
 )paren
 suffix:semicolon
 id|perf-&gt;pdc
@@ -1189,7 +1140,7 @@ comma
 id|obj_list
 )paren
 suffix:semicolon
-id|return_VOID
+r_return
 suffix:semicolon
 )brace
 r_static
@@ -1249,10 +1200,10 @@ op_amp
 id|arg0
 )brace
 suffix:semicolon
-id|ACPI_FUNCTION_TRACE
+id|dprintk
 c_func
 (paren
-l_string|&quot;acpi_cpufreq_cpu_init&quot;
+l_string|&quot;acpi_cpufreq_cpu_init&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* setup arg_list for _PDC settings */
@@ -1288,8 +1239,7 @@ c_cond
 op_logical_neg
 id|data
 )paren
-id|return_VALUE
-c_func
+r_return
 (paren
 op_minus
 id|ENOMEM
@@ -1360,14 +1310,10 @@ op_le
 l_int|1
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|dprintk
 c_func
 (paren
-(paren
-id|ACPI_DB_ERROR
-comma
 l_string|&quot;No P-States&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|result
@@ -1395,12 +1341,9 @@ id|ACPI_ADR_SPACE_SYSTEM_IO
 )paren
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|dprintk
 c_func
 (paren
-(paren
-id|ACPI_DB_ERROR
-comma
 l_string|&quot;Unsupported address space [%d, %d]&bslash;n&quot;
 comma
 (paren
@@ -1415,7 +1358,6 @@ id|u32
 )paren
 (paren
 id|data-&gt;acpi_data.status_register.space_id
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -1618,7 +1560,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cpufreq: CPU%u - ACPI performance management activated.&bslash;n&quot;
+l_string|&quot;acpi-cpufreq: CPU%u - ACPI performance management activated.&bslash;n&quot;
 comma
 id|cpu
 )paren
@@ -1637,11 +1579,10 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;cpufreq: %cP%d: %d MHz, %d mW, %d uS&bslash;n&quot;
+l_string|&quot;     %cP%d: %d MHz, %d mW, %d uS&bslash;n&quot;
 comma
 (paren
 id|i
@@ -1695,8 +1636,7 @@ comma
 id|policy-&gt;cpu
 )paren
 suffix:semicolon
-id|return_VALUE
-c_func
+r_return
 (paren
 id|result
 )paren
@@ -1735,8 +1675,7 @@ id|cpu
 op_assign
 l_int|NULL
 suffix:semicolon
-id|return_VALUE
-c_func
+r_return
 (paren
 id|result
 )paren
@@ -1763,10 +1702,10 @@ id|acpi_io_data
 id|policy-&gt;cpu
 )braket
 suffix:semicolon
-id|ACPI_FUNCTION_TRACE
+id|dprintk
 c_func
 (paren
-l_string|&quot;acpi_cpufreq_cpu_exit&quot;
+l_string|&quot;acpi_cpufreq_cpu_exit&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1804,8 +1743,7 @@ id|data
 )paren
 suffix:semicolon
 )brace
-id|return_VALUE
-c_func
+r_return
 (paren
 l_int|0
 )paren
@@ -1886,10 +1824,10 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_FUNCTION_TRACE
+id|dprintk
 c_func
 (paren
-l_string|&quot;acpi_cpufreq_init&quot;
+l_string|&quot;acpi_cpufreq_init&bslash;n&quot;
 )paren
 suffix:semicolon
 id|result
@@ -1901,8 +1839,7 @@ op_amp
 id|acpi_cpufreq_driver
 )paren
 suffix:semicolon
-id|return_VALUE
-c_func
+r_return
 (paren
 id|result
 )paren
@@ -1917,10 +1854,10 @@ id|acpi_cpufreq_exit
 r_void
 )paren
 (brace
-id|ACPI_FUNCTION_TRACE
+id|dprintk
 c_func
 (paren
-l_string|&quot;acpi_cpufreq_exit&quot;
+l_string|&quot;acpi_cpufreq_exit&bslash;n&quot;
 )paren
 suffix:semicolon
 id|cpufreq_unregister_driver
@@ -1930,7 +1867,7 @@ op_amp
 id|acpi_cpufreq_driver
 )paren
 suffix:semicolon
-id|return_VOID
+r_return
 suffix:semicolon
 )brace
 DECL|variable|acpi_cpufreq_init
@@ -1945,6 +1882,12 @@ id|module_exit
 c_func
 (paren
 id|acpi_cpufreq_exit
+)paren
+suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;acpi&quot;
 )paren
 suffix:semicolon
 eof

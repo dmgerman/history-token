@@ -83,76 +83,8 @@ r_static
 r_int
 id|dont_scale_voltage
 suffix:semicolon
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
-DECL|function|dprintk
-r_static
-r_void
-id|dprintk
-c_func
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-(brace
-r_char
-id|s
-(braket
-l_int|256
-)braket
-suffix:semicolon
-id|va_list
-id|args
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|debug
-op_eq
-l_int|0
-)paren
-r_return
-suffix:semicolon
-id|va_start
-c_func
-(paren
-id|args
-comma
-id|fmt
-)paren
-suffix:semicolon
-id|vsprintf
-c_func
-(paren
-id|s
-comma
-id|fmt
-comma
-id|args
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|s
-)paren
-suffix:semicolon
-id|va_end
-c_func
-(paren
-id|args
-)paren
-suffix:semicolon
-)brace
+DECL|macro|dprintk
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;longhaul&quot;, msg)
 DECL|macro|__hlt
 mdefine_line|#define __hlt()     __asm__ __volatile__(&quot;hlt&quot;: : :&quot;memory&quot;)
 multiline_comment|/* Clock ratios multiplied by 10 */
@@ -202,6 +134,7 @@ id|cpufreq_frequency_table
 op_star
 id|longhaul_table
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_FREQ_DEBUG
 DECL|variable|speedbuffer
 r_static
 r_char
@@ -284,6 +217,7 @@ r_return
 id|speedbuffer
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|calc_speed
 r_static
 r_int
@@ -681,8 +615,6 @@ id|CPUFREQ_PRECHANGE
 suffix:semicolon
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;Setting to FSB:%dMHz Mult:%d.%dx (%s)&bslash;n&quot;
 comma
 id|fsb
@@ -1310,8 +1242,6 @@ suffix:semicolon
 )brace
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;MinMult:%d.%dx MaxMult:%d.%dx&bslash;n&quot;
 comma
 id|minmult
@@ -1370,16 +1300,9 @@ id|minmult
 suffix:semicolon
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;FSB:%dMHz  &quot;
+l_string|&quot;FSB:%dMHz  Lowest speed: %s   Highest speed:%s&bslash;n&quot;
 comma
 id|fsb
-)paren
-suffix:semicolon
-id|dprintk
-(paren
-l_string|&quot;Lowest speed:%s  &quot;
 comma
 id|print_speed
 c_func
@@ -1388,11 +1311,6 @@ id|lowest_speed
 op_div
 l_int|1000
 )paren
-)paren
-suffix:semicolon
-id|dprintk
-(paren
-l_string|&quot;Highest speed:%s&bslash;n&quot;
 comma
 id|print_speed
 c_func
@@ -1705,9 +1623,7 @@ l_int|0
 (brace
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;VRM 8.5 : &quot;
+l_string|&quot;VRM 8.5 &bslash;n&quot;
 )paren
 suffix:semicolon
 id|memcpy
@@ -1743,9 +1659,7 @@ r_else
 (brace
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;Mobile VRM : &quot;
+l_string|&quot;Mobile VRM &bslash;n&quot;
 )paren
 suffix:semicolon
 id|memcpy
@@ -2721,23 +2635,6 @@ c_func
 id|dont_scale_voltage
 comma
 l_string|&quot;Don&squot;t scale voltage of processor&quot;
-)paren
-suffix:semicolon
-id|module_param
-(paren
-id|debug
-comma
-r_int
-comma
-l_int|0644
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;Dump debugging information.&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR

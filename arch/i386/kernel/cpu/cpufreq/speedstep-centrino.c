@@ -15,14 +15,8 @@ DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&quot;speedstep-centrino: &quot;
 DECL|macro|MAINTAINER
 mdefine_line|#define MAINTAINER&t;&quot;Jeremy Fitzhardinge &lt;jeremy@goop.org&gt;&quot;
-multiline_comment|/*#define CENTRINO_DEBUG*/
-macro_line|#ifdef CENTRINO_DEBUG
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) printk(msg)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0)
-macro_line|#endif
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;speedstep-centrino&quot;, msg)
 DECL|struct|cpu_id
 r_struct
 id|cpu_id
@@ -970,6 +964,7 @@ comma
 id|cpu-&gt;x86_model_id
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_SPEEDSTEP_CENTRINO_ACPI
 id|printk
 c_func
 (paren
@@ -978,6 +973,7 @@ id|PFX
 l_string|&quot;try compiling with CONFIG_X86_SPEEDSTEP_CENTRINO_ACPI enabled&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 op_minus
 id|ENOENT
@@ -987,11 +983,9 @@ id|centrino_model
 op_assign
 id|model
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;found &bslash;&quot;%s&bslash;&quot;: max frequency: %dkHz&bslash;n&quot;
 comma
 id|model-&gt;model_name
@@ -1386,10 +1380,20 @@ comma
 id|policy-&gt;cpu
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;obtaining ACPI data failed&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 multiline_comment|/* verify the acpi_data */
 r_if
 c_cond
@@ -1399,10 +1403,9 @@ op_le
 l_int|1
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;No P-States&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1431,11 +1434,14 @@ id|ACPI_ADR_SPACE_FIXED_HARDWARE
 )paren
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;Invalid control/status registers&bslash;n&quot;
+l_string|&quot;Invalid control/status registers (%x - %x)&bslash;n&quot;
+comma
+id|p.control_register.space_id
+comma
+id|p.status_register.space_id
 )paren
 suffix:semicolon
 id|result
@@ -1480,11 +1486,24 @@ dot
 id|status
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;Different control and status values&bslash;n&quot;
+l_string|&quot;Different control (%x) and status values (%x)&bslash;n&quot;
+comma
+id|p.states
+(braket
+id|i
+)braket
+dot
+id|control
+comma
+id|p.states
+(braket
+id|i
+)braket
+dot
+id|status
 )paren
 suffix:semicolon
 id|result
@@ -1508,11 +1527,12 @@ dot
 id|core_frequency
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;Zero core frequency&bslash;n&quot;
+l_string|&quot;Zero core frequency for state %u&bslash;n&quot;
+comma
+id|i
 )paren
 suffix:semicolon
 id|result
@@ -1542,13 +1562,26 @@ dot
 id|core_frequency
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;P%u has larger frequency than P0, skipping&bslash;n&quot;
+l_string|&quot;P%u has larger frequency (%u) than P0 (%u), skipping&bslash;n&quot;
 comma
 id|i
+comma
+id|p.states
+(braket
+id|i
+)braket
+dot
+id|core_frequency
+comma
+id|p.states
+(braket
+l_int|0
+)braket
+dot
+id|core_frequency
 )paren
 suffix:semicolon
 id|p.states
@@ -1704,6 +1737,28 @@ id|core_frequency
 op_star
 l_int|1000
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;adding state %i with frequency %u and control value %04x&bslash;n&quot;
+comma
+id|i
+comma
+id|centrino_model-&gt;op_points
+(braket
+id|i
+)braket
+dot
+id|frequency
+comma
+id|centrino_model-&gt;op_points
+(braket
+id|i
+)braket
+dot
+id|index
+)paren
+suffix:semicolon
 )brace
 id|centrino_model-&gt;op_points
 (braket
@@ -1740,6 +1795,38 @@ op_increment
 r_if
 c_cond
 (paren
+op_logical_neg
+id|p.states
+(braket
+id|i
+)braket
+dot
+id|core_frequency
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;skipping state %u&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+id|centrino_model-&gt;op_points
+(braket
+id|i
+)braket
+dot
+id|frequency
+op_assign
+id|CPUFREQ_ENTRY_INVALID
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|extract_clock
 c_func
 (paren
@@ -1761,11 +1848,28 @@ id|frequency
 )paren
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;Invalid encoded frequency&bslash;n&quot;
+l_string|&quot;Invalid encoded frequency (%u vs. %u)&bslash;n&quot;
+comma
+id|extract_clock
+c_func
+(paren
+id|centrino_model-&gt;op_points
+(braket
+id|i
+)braket
+dot
+id|index
+)paren
+comma
+id|centrino_model-&gt;op_points
+(braket
+id|i
+)braket
+dot
+id|frequency
 )paren
 suffix:semicolon
 id|result
@@ -1792,26 +1896,6 @@ id|frequency
 id|p.state
 op_assign
 id|i
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|p.states
-(braket
-id|i
-)braket
-dot
-id|core_frequency
-)paren
-id|centrino_model-&gt;op_points
-(braket
-id|i
-)braket
-dot
-id|frequency
-op_assign
-id|CPUFREQ_ENTRY_INVALID
 suffix:semicolon
 )brace
 multiline_comment|/* notify BIOS that we exist */
@@ -1849,6 +1933,14 @@ op_amp
 id|p
 comma
 id|policy-&gt;cpu
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;invalid ACPI data&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2075,6 +2167,14 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;trying to enable Enhanced SpeedStep (%x)&bslash;n&quot;
+comma
+id|l
+)paren
+suffix:semicolon
 id|wrmsr
 c_func
 (paren
@@ -2149,11 +2249,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;centrino_cpu_init: policy=%d cur=%dkHz&bslash;n&quot;
-comma
-id|policy-&gt;policy
+l_string|&quot;centrino_cpu_init: cur=%dkHz&bslash;n&quot;
 comma
 id|policy-&gt;cur
 )paren
@@ -2226,6 +2322,12 @@ op_logical_neg
 id|centrino_model-&gt;model_name
 )paren
 (brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;unregistering and freeing ACPI data&bslash;n&quot;
+)paren
+suffix:semicolon
 id|acpi_processor_unregister_performance
 c_func
 (paren
@@ -2358,6 +2460,12 @@ op_ne
 id|policy-&gt;cpu
 )paren
 (brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;couldn&squot;t limit to CPUs in this domain&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
@@ -2426,11 +2534,18 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;no change needed - msr was and needs to be %x&bslash;n&quot;
+comma
+id|oldmsr
+)paren
+suffix:semicolon
 r_goto
 id|migrate_end
 suffix:semicolon
 )brace
-multiline_comment|/* Hm, old frequency can either be the last value we put in&n;&t;   PERF_CTL, or whatever it is now. The trouble is that TM2&n;&t;   can change it behind our back, which means we never get to&n;&t;   see the speed change.  Reading back the current speed would&n;&t;   tell us something happened, but it may leave the things on&n;&t;   the notifier chain confused; we therefore stick to using&n;&t;   the last programmed speed rather than the current speed for&n;&t;   &quot;old&quot;.&n;&n;&t;   TODO: work out how the TCC interrupts work, and try to&n;&t;   catch the CPU changing things under us.&n;&t;*/
 id|freqs.cpu
 op_assign
 id|policy-&gt;cpu
@@ -2456,8 +2571,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;target=%dkHz old=%d new=%d msr=%04x&bslash;n&quot;
 comma
 id|target_freq

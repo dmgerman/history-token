@@ -263,13 +263,8 @@ id|vid
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef DEBUG
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) printk(msg)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0)
-macro_line|#endif
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;powernow-k8&quot;, msg)
 r_static
 r_int
 id|core_voltage_pre_transition
