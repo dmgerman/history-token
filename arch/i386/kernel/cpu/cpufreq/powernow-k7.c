@@ -2802,7 +2802,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|powernow_acpi_force
+id|acpi_force
 comma
 l_string|&quot;Force ACPI to be used&quot;
 )paren
