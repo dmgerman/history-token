@@ -923,8 +923,36 @@ id|vm_area_struct
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Parameter block passed down to zap_pte_range in exceptional cases.&n; */
+DECL|struct|zap_details
 r_struct
 id|zap_details
+(brace
+DECL|member|nonlinear_vma
+r_struct
+id|vm_area_struct
+op_star
+id|nonlinear_vma
+suffix:semicolon
+multiline_comment|/* Check page-&gt;index if set */
+DECL|member|check_mapping
+r_struct
+id|address_space
+op_star
+id|check_mapping
+suffix:semicolon
+multiline_comment|/* Check page-&gt;mapping if set */
+DECL|member|first_index
+id|pgoff_t
+id|first_index
+suffix:semicolon
+multiline_comment|/* Lowest page-&gt;index to unmap */
+DECL|member|last_index
+id|pgoff_t
+id|last_index
+suffix:semicolon
+multiline_comment|/* Highest page-&gt;index to unmap */
+)brace
 suffix:semicolon
 r_void
 id|zap_page_range
