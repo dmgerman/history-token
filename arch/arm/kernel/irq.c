@@ -144,7 +144,7 @@ l_int|1
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;disable_irq - disable an irq and wait for completion&n; *&t;@irq: Interrupt to disable&n; *&n; *&t;Disable the selected interrupt line.  We do this lazily.&n; *&n; *&t;This function may be called from IRQ context.&n; */
+multiline_comment|/**&n; *&t;disable_irq - disable an irq and wait for completion&n; *&t;@irq: Interrupt to disable&n; *&n; *&t;Disable the selected interrupt line.  Enables and disables&n; *&t;are nested.  We do this lazily.&n; *&n; *&t;This function may be called from IRQ context.&n; */
 DECL|function|disable_irq
 r_void
 id|disable_irq
@@ -177,16 +177,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|desc-&gt;depth
+id|desc-&gt;disable_depth
 op_increment
-)paren
-id|desc-&gt;enabled
-op_assign
-l_int|0
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -222,11 +214,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-id|pending
-op_assign
-l_int|0
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -243,7 +230,7 @@ id|unlikely
 c_func
 (paren
 op_logical_neg
-id|desc-&gt;depth
+id|desc-&gt;disable_depth
 )paren
 )paren
 (brace
@@ -268,16 +255,12 @@ c_cond
 (paren
 op_logical_neg
 op_decrement
-id|desc-&gt;depth
+id|desc-&gt;disable_depth
 )paren
 (brace
 id|desc-&gt;probing
 op_assign
 l_int|0
-suffix:semicolon
-id|desc-&gt;enabled
-op_assign
-l_int|1
 suffix:semicolon
 id|desc-&gt;chip
 op_member_access_from_pointer
@@ -287,20 +270,17 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|pending
-op_assign
+multiline_comment|/*&n;&t;&t; * If the interrupt is waiting to be processed,&n;&t;&t; * try to re-run it.  We can&squot;t directly run it&n;&t;&t; * from here since the caller might be in an&n;&t;&t; * interrupt-protected region.&n;&t;&t; */
+r_if
+c_cond
+(paren
 id|desc-&gt;pending
-suffix:semicolon
+)paren
+(brace
 id|desc-&gt;pending
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the interrupt was waiting to be processed,&n;&t;&t; * retrigger it.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|pending
-)paren
 id|desc-&gt;chip
 op_member_access_from_pointer
 id|rerun
@@ -309,6 +289,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
+)brace
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -887,8 +868,7 @@ c_func
 (paren
 id|desc-&gt;running
 op_logical_or
-op_logical_neg
-id|desc-&gt;enabled
+id|desc-&gt;disable_depth
 )paren
 )paren
 r_goto
@@ -944,7 +924,8 @@ c_cond
 (paren
 id|desc-&gt;pending
 op_logical_and
-id|desc-&gt;enabled
+op_logical_neg
+id|desc-&gt;disable_depth
 )paren
 (brace
 id|desc-&gt;pending
@@ -976,7 +957,8 @@ c_loop
 (paren
 id|desc-&gt;pending
 op_logical_and
-id|desc-&gt;enabled
+op_logical_neg
+id|desc-&gt;disable_depth
 )paren
 suffix:semicolon
 id|desc-&gt;running
@@ -1084,7 +1066,8 @@ c_cond
 id|likely
 c_func
 (paren
-id|desc-&gt;enabled
+op_logical_neg
+id|desc-&gt;disable_depth
 )paren
 )paren
 (brace
@@ -1127,7 +1110,8 @@ c_cond
 id|likely
 c_func
 (paren
-id|desc-&gt;enabled
+op_logical_neg
+id|desc-&gt;disable_depth
 op_logical_and
 op_logical_neg
 id|check_irq_lock
@@ -1341,13 +1325,9 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|desc-&gt;depth
+id|desc-&gt;disable_depth
 op_assign
 l_int|1
-suffix:semicolon
-id|desc-&gt;enabled
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 id|desc-&gt;handle
@@ -1372,7 +1352,7 @@ id|desc-&gt;probe_ok
 op_assign
 l_int|0
 suffix:semicolon
-id|desc-&gt;depth
+id|desc-&gt;disable_depth
 op_assign
 l_int|0
 suffix:semicolon
@@ -1846,7 +1826,7 @@ id|desc-&gt;pending
 op_assign
 l_int|0
 suffix:semicolon
-id|desc-&gt;depth
+id|desc-&gt;disable_depth
 op_assign
 l_int|1
 suffix:semicolon
@@ -1857,13 +1837,9 @@ op_logical_neg
 id|desc-&gt;noautoenable
 )paren
 (brace
-id|desc-&gt;depth
+id|desc-&gt;disable_depth
 op_assign
 l_int|0
-suffix:semicolon
-id|desc-&gt;enabled
-op_assign
-l_int|1
 suffix:semicolon
 id|desc-&gt;chip
 op_member_access_from_pointer

@@ -175,7 +175,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&n; */
+multiline_comment|/**&n; * snd_iprintf - printf on the procfs buffer&n; * @buffer: the procfs buffer&n; * @fmt: the printf format&n; *&n; * Outputs the string on the procfs buffer just like printf().&n; *&n; * Returns the size of output string.&n; */
 DECL|function|snd_iprintf
 r_int
 id|snd_iprintf
@@ -1137,10 +1137,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_2
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1706,10 +1702,6 @@ id|entry-&gt;module
 suffix:semicolon
 id|__error1
 suffix:colon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|up
 c_func
 (paren
@@ -1898,10 +1890,6 @@ c_func
 id|entry-&gt;module
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|snd_magic_kfree
 c_func
 (paren
@@ -2545,6 +2533,7 @@ id|snd_info_card_followlink
 comma
 )brace
 suffix:semicolon
+multiline_comment|/**&n; * snd_create_proc_entry - create a procfs entry&n; * @name: the name of the proc file&n; * @mode: the file permission bits, S_Ixxx&n; * @parent: the parent proc-directory entry&n; *&n; * Creates a new proc file entry with the given name and permission&n; * on the given directory.&n; *&n; * Returns the pointer of new instance or NULL on failure.&n; */
 DECL|function|snd_create_proc_entry
 r_struct
 id|proc_dir_entry
@@ -2933,6 +2922,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&n; */
+multiline_comment|/*&n; * create a card proc file&n; * called from init.c&n; */
 DECL|function|snd_info_card_create
 r_int
 id|snd_info_card_create
@@ -3037,6 +3027,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * register the card proc file&n; * called from init.c&n; */
 DECL|function|snd_info_card_register
 r_int
 id|snd_info_card_register
@@ -3162,6 +3153,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * de-register the card proc file&n; * called from init.c&n; */
 DECL|function|snd_info_card_free
 r_int
 id|snd_info_card_free
@@ -3242,7 +3234,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&n; */
+multiline_comment|/**&n; * snd_info_get_line - read one line from the procfs buffer&n; * @buffer: the procfs buffer&n; * @line: the buffer to store&n; * @len: the max. buffer size - 1&n; *&n; * Reads one line from the buffer and stores the string.&n; *&n; * Returns zero if successful, or 1 if error or EOF.&n; */
 DECL|function|snd_info_get_line
 r_int
 id|snd_info_get_line
@@ -3393,6 +3385,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_info_get_line - parse a string token&n; * @dest: the buffer to store the string token&n; * @src: the original string&n; * @len: the max. length of token - 1&n; *&n; * Parses the original string and copy a token to the given&n; * string buffer.&n; *&n; * Returns the updated pointer of the original string so that&n; * it can be used for the next call.&n; */
 DECL|function|snd_info_get_str
 r_char
 op_star
@@ -3547,6 +3540,7 @@ r_return
 id|src
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_info_create_entry - create an info entry&n; * @name: the proc file name&n; *&n; * Creates an info entry with the given file name and initializes as&n; * the default state.&n; *&n; * Usually called from other functions such as&n; * snd_info_create_card_entry().&n; *&n; * Returns the pointer of the new instance, or NULL on failure.&n; */
 DECL|function|snd_info_create_entry
 r_static
 id|snd_info_entry_t
@@ -3566,17 +3560,12 @@ id|entry
 suffix:semicolon
 id|entry
 op_assign
-(paren
-id|snd_info_entry_t
-op_star
-)paren
-id|snd_kcalloc
+id|snd_magic_kcalloc
 c_func
 (paren
-r_sizeof
-(paren
 id|snd_info_entry_t
-)paren
+comma
+l_int|0
 comma
 id|GFP_KERNEL
 )paren
@@ -3609,7 +3598,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|kfree
+id|snd_magic_kfree
 c_func
 (paren
 id|entry
@@ -3640,6 +3629,7 @@ r_return
 id|entry
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_info_create_module_entry - create an info entry for the given module&n; * @module: the module pointer&n; * @name: the file name&n; * @parent: the parent directory&n; *&n; * Creates a new info entry and assigns it to the given module.&n; *&n; * Returns the pointer of the new instance, or NULL on failure.&n; */
 DECL|function|snd_info_create_module_entry
 id|snd_info_entry_t
 op_star
@@ -3690,6 +3680,7 @@ r_return
 id|entry
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_info_create_card_entry - create an info entry for the given card&n; * @card: the card instance&n; * @name: the file name&n; * @parent: the parent directory&n; *&n; * Creates a new info entry and assigns it to the given card.&n; *&n; * Returns the pointer of the new instance, or NULL on failure.&n; */
 DECL|function|snd_info_create_card_entry
 id|snd_info_entry_t
 op_star
@@ -3743,6 +3734,233 @@ r_return
 id|entry
 suffix:semicolon
 )brace
+DECL|function|snd_info_dev_free_entry
+r_static
+r_int
+id|snd_info_dev_free_entry
+c_func
+(paren
+id|snd_device_t
+op_star
+id|device
+)paren
+(brace
+id|snd_info_entry_t
+op_star
+id|entry
+op_assign
+id|snd_magic_cast
+c_func
+(paren
+id|snd_info_entry_t
+comma
+id|device-&gt;device_data
+comma
+r_return
+op_minus
+id|ENXIO
+)paren
+suffix:semicolon
+id|snd_info_free_entry
+c_func
+(paren
+id|entry
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|snd_info_dev_register_entry
+r_static
+r_int
+id|snd_info_dev_register_entry
+c_func
+(paren
+id|snd_device_t
+op_star
+id|device
+)paren
+(brace
+id|snd_info_entry_t
+op_star
+id|entry
+op_assign
+id|snd_magic_cast
+c_func
+(paren
+id|snd_info_entry_t
+comma
+id|device-&gt;device_data
+comma
+r_return
+op_minus
+id|ENXIO
+)paren
+suffix:semicolon
+r_return
+id|snd_info_register
+c_func
+(paren
+id|entry
+)paren
+suffix:semicolon
+)brace
+DECL|function|snd_info_dev_unregister_entry
+r_static
+r_int
+id|snd_info_dev_unregister_entry
+c_func
+(paren
+id|snd_device_t
+op_star
+id|device
+)paren
+(brace
+id|snd_info_entry_t
+op_star
+id|entry
+op_assign
+id|snd_magic_cast
+c_func
+(paren
+id|snd_info_entry_t
+comma
+id|device-&gt;device_data
+comma
+r_return
+op_minus
+id|ENXIO
+)paren
+suffix:semicolon
+r_return
+id|snd_info_unregister
+c_func
+(paren
+id|entry
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * snd_card_proc_new - create an info entry for the given card&n; * @card: the card instance&n; * @name: the file name&n; * @entryp: the pointer to store the new info entry&n; *&n; * Creates a new info entry and assigns it to the given card.&n; * Unlike snd_info_create_card_entry(), this function registers the&n; * info entry as an ALSA device component, so that it can be&n; * unregistered/released without explicit call.&n; * Also, you don&squot;t have to register this entry via snd_info_register(),&n; * since this will be registered by snd_card_register() automatically.&n; *&n; * The parent is assumed as card-&gt;proc_root.&n; *&n; * For releasing this entry, use snd_device_free() instead of&n; * snd_info_free_entry(). &n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
+DECL|function|snd_card_proc_new
+r_int
+id|snd_card_proc_new
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+comma
+r_const
+r_char
+op_star
+id|name
+comma
+id|snd_info_entry_t
+op_star
+op_star
+id|entryp
+)paren
+(brace
+r_static
+id|snd_device_ops_t
+id|ops
+op_assign
+(brace
+dot
+id|dev_free
+op_assign
+id|snd_info_dev_free_entry
+comma
+dot
+id|dev_register
+op_assign
+id|snd_info_dev_register_entry
+comma
+singleline_comment|// .dev_disconnect = snd_info_dev_disconnect_entry,
+dot
+id|dev_unregister
+op_assign
+id|snd_info_dev_unregister_entry
+)brace
+suffix:semicolon
+id|snd_info_entry_t
+op_star
+id|entry
+suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+id|entry
+op_assign
+id|snd_info_create_card_entry
+c_func
+(paren
+id|card
+comma
+id|name
+comma
+id|card-&gt;proc_root
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|entry
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_device_new
+c_func
+(paren
+id|card
+comma
+id|SNDRV_DEV_INFO
+comma
+id|entry
+comma
+op_amp
+id|ops
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|snd_info_free_entry
+c_func
+(paren
+id|entry
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|entryp
+)paren
+op_star
+id|entryp
+op_assign
+id|entry
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * snd_info_free_entry - release the info entry&n; * @entry: the info entry&n; *&n; * Releases the info entry.  Don&squot;t call this after registered.&n; */
 DECL|function|snd_info_free_entry
 r_void
 id|snd_info_free_entry
@@ -3790,7 +4008,7 @@ c_func
 id|entry
 )paren
 suffix:semicolon
-id|kfree
+id|snd_magic_kfree
 c_func
 (paren
 id|entry
@@ -3945,6 +4163,7 @@ id|THIS_MODULE
 suffix:semicolon
 )brace
 macro_line|#endif /* LINUX_2_2 */
+multiline_comment|/*&n; * create a procfs device file&n; */
 DECL|function|snd_info_create_device
 id|snd_info_entry_t
 op_star
@@ -3965,14 +4184,6 @@ r_int
 id|mode
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-r_char
-id|dname
-(braket
-l_int|32
-)braket
-suffix:semicolon
-macro_line|#endif
 r_int
 r_int
 id|_major
@@ -4074,7 +4285,7 @@ id|mode
 suffix:semicolon
 id|entry-&gt;c.device.major
 op_assign
-id|major
+id|_major
 suffix:semicolon
 id|entry-&gt;c.device.minor
 op_assign
@@ -4183,6 +4394,12 @@ l_int|8
 )paren
 (brace
 multiline_comment|/* created in sound.c */
+r_char
+id|dname
+(braket
+l_int|32
+)braket
+suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -4202,7 +4419,7 @@ id|dname
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|major
+id|_major
 comma
 id|minor
 comma
@@ -4220,6 +4437,7 @@ r_return
 id|entry
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * release a procfs device file&n; */
 DECL|function|snd_info_free_device
 r_void
 id|snd_info_free_device
@@ -4290,6 +4508,7 @@ id|entry
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_info_register - register the info entry&n; * @entry: the info entry&n; *&n; * Registers the proc info entry.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_info_register
 r_int
 id|snd_info_register
@@ -4425,6 +4644,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_info_unregister - de-register the info entry&n; * @entry: the info entry&n; *&n; * De-registers the info entry and releases the instance.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_info_unregister
 r_int
 id|snd_info_unregister

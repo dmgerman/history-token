@@ -131,10 +131,6 @@ DECL|macro|_NSIG_BPW
 mdefine_line|#define _NSIG_BPW     &t;64
 DECL|macro|_NSIG_WORDS
 mdefine_line|#define _NSIG_WORDS   &t;(__NEW_NSIG / _NSIG_BPW)
-DECL|macro|_NSIG_BPW32
-mdefine_line|#define _NSIG_BPW32   &t;32
-DECL|macro|_NSIG_WORDS32
-mdefine_line|#define _NSIG_WORDS32 &t;(__NEW_NSIG / _NSIG_BPW32)
 DECL|macro|SIGRTMIN
 mdefine_line|#define SIGRTMIN       32
 DECL|macro|SIGRTMAX
@@ -144,16 +140,12 @@ DECL|macro|_NSIG
 mdefine_line|#define _NSIG&t;&t;&t;__NEW_NSIG
 DECL|macro|__new_sigset_t
 mdefine_line|#define __new_sigset_t&t;&t;sigset_t
-DECL|macro|__new_sigset_t32
-mdefine_line|#define __new_sigset_t32&t;sigset_t32
 DECL|macro|__new_sigaction
 mdefine_line|#define __new_sigaction&t;&t;sigaction
 DECL|macro|__new_sigaction32
 mdefine_line|#define __new_sigaction32&t;sigaction32
 DECL|macro|__old_sigset_t
 mdefine_line|#define __old_sigset_t&t;&t;old_sigset_t
-DECL|macro|__old_sigset_t32
-mdefine_line|#define __old_sigset_t32&t;old_sigset_t32
 DECL|macro|__old_sigaction
 mdefine_line|#define __old_sigaction&t;&t;old_sigaction
 DECL|macro|__old_sigaction32
@@ -165,8 +157,6 @@ DECL|macro|NSIG
 mdefine_line|#define NSIG&t;&t;&t;_NSIG
 DECL|macro|__old_sigset_t
 mdefine_line|#define __old_sigset_t&t;&t;sigset_t
-DECL|macro|__old_sigset_t32
-mdefine_line|#define __old_sigset_t32&t;sigset_t32
 DECL|macro|__old_sigaction
 mdefine_line|#define __old_sigaction&t;&t;sigaction
 DECL|macro|__old_sigaction32
@@ -180,12 +170,6 @@ r_int
 id|__old_sigset_t
 suffix:semicolon
 multiline_comment|/* at least 32 bits */
-DECL|typedef|__old_sigset_t32
-r_typedef
-r_int
-r_int
-id|__old_sigset_t32
-suffix:semicolon
 r_typedef
 r_struct
 (brace
@@ -200,21 +184,6 @@ suffix:semicolon
 DECL|typedef|__new_sigset_t
 )brace
 id|__new_sigset_t
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|sig
-r_int
-r_int
-id|sig
-(braket
-id|_NSIG_WORDS32
-)braket
-suffix:semicolon
-DECL|typedef|__new_sigset_t32
-)brace
-id|__new_sigset_t32
 suffix:semicolon
 multiline_comment|/* A SunOS sigstack */
 DECL|struct|sigstack
@@ -353,6 +322,7 @@ id|sa_mask
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
 DECL|struct|__new_sigaction32
 r_struct
 id|__new_sigaction32
@@ -372,12 +342,11 @@ id|sa_restorer
 suffix:semicolon
 multiline_comment|/* not used by Linux/SPARC yet */
 DECL|member|sa_mask
-id|__new_sigset_t32
+id|compat_sigset_t
 id|sa_mask
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 DECL|struct|k_sigaction
 r_struct
 id|k_sigaction
@@ -425,6 +394,7 @@ suffix:semicolon
 multiline_comment|/* not used by Linux/SPARC yet */
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
 DECL|struct|__old_sigaction32
 r_struct
 id|__old_sigaction32
@@ -434,7 +404,7 @@ r_int
 id|sa_handler
 suffix:semicolon
 DECL|member|sa_mask
-id|__old_sigset_t32
+id|compat_old_sigset_t
 id|sa_mask
 suffix:semicolon
 DECL|member|sa_flags
@@ -449,6 +419,7 @@ suffix:semicolon
 multiline_comment|/* not used by Linux/SPARC yet */
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|struct|sigaltstack
 r_typedef
 r_struct

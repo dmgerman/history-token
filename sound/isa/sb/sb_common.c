@@ -1312,6 +1312,13 @@ c_func
 id|snd_sbmixer_new
 )paren
 suffix:semicolon
+DECL|variable|snd_sbmixer_add_ctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_sbmixer_add_ctl
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *  INIT part&n; */
 DECL|function|alsa_sb_common_init
 r_static

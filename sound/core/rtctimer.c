@@ -180,8 +180,6 @@ op_assign
 op_amp
 id|rtc_task
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -220,8 +218,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
