@@ -153,7 +153,7 @@ id|FE_NEEDS_BENDING
 op_assign
 l_int|0x20000000
 comma
-singleline_comment|// frontend requires frequency bending
+singleline_comment|// not supported anymore, don&squot;t use (frontend requires frequency bending)
 DECL|enumerator|FE_CAN_RECOVER
 id|FE_CAN_RECOVER
 op_assign

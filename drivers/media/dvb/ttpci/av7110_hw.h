@@ -149,6 +149,12 @@ DECL|macro|OSDQFull
 mdefine_line|#define OSDQFull&t;0x0010&t;&t;/* OSD Queue Full */
 DECL|macro|OSDQOver
 mdefine_line|#define OSDQOver&t;0x0020
+DECL|macro|GPMQBusy
+mdefine_line|#define GPMQBusy&t;0x0040&t;&t;/* Queue not empty, FW &gt;= 261d */
+DECL|macro|HPQBusy
+mdefine_line|#define HPQBusy&t;&t;0x0080
+DECL|macro|OSDQBusy
+mdefine_line|#define OSDQBusy&t;0x0100
 multiline_comment|/* hw section filter flags */
 DECL|macro|SECTION_EIT
 mdefine_line|#define&t;SECTION_EIT&t;&t;0x01
@@ -777,6 +783,20 @@ DECL|macro|FW_4M_SDRAM
 mdefine_line|#define FW_4M_SDRAM(arm_app)      ((arm_app) &amp; 0x40000000)
 DECL|macro|FW_VERSION
 mdefine_line|#define FW_VERSION(arm_app)&t;  ((arm_app) &amp; 0x0000FFFF)
+r_extern
+r_int
+id|av7110_wait_msgstate
+c_func
+(paren
+r_struct
+id|av7110
+op_star
+id|av7110
+comma
+id|u16
+id|flags
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|av7110_fw_cmd

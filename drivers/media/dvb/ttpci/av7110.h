@@ -29,6 +29,12 @@ macro_line|#include &quot;tda8083.h&quot;
 macro_line|#include &quot;sp8870.h&quot;
 macro_line|#include &quot;stv0297.h&quot;
 macro_line|#include &lt;media/saa7146_vv.h&gt;
+DECL|macro|ANALOG_TUNER_VES1820
+mdefine_line|#define ANALOG_TUNER_VES1820 1
+DECL|macro|ANALOG_TUNER_STV0297
+mdefine_line|#define ANALOG_TUNER_STV0297 2
+DECL|macro|ANALOG_TUNER_VBI
+mdefine_line|#define ANALOG_TUNER_VBI     0x100
 r_extern
 r_int
 id|av7110_debug
@@ -167,9 +173,9 @@ op_star
 id|card_name
 suffix:semicolon
 multiline_comment|/* support for analog module of dvb-c */
-DECL|member|has_analog_tuner
+DECL|member|analog_tuner_flags
 r_int
-id|has_analog_tuner
+id|analog_tuner_flags
 suffix:semicolon
 DECL|member|current_input
 r_int
@@ -268,10 +274,12 @@ id|semaphore
 id|dcomlock
 suffix:semicolon
 DECL|member|debitype
+r_volatile
 r_int
 id|debitype
 suffix:semicolon
 DECL|member|debilen
+r_volatile
 r_int
 id|debilen
 suffix:semicolon
@@ -728,6 +736,24 @@ comma
 r_int
 r_int
 id|cmd
+)paren
+suffix:semicolon
+DECL|member|fe_set_frontend
+r_int
+(paren
+op_star
+id|fe_set_frontend
+)paren
+(paren
+r_struct
+id|dvb_frontend
+op_star
+id|fe
+comma
+r_struct
+id|dvb_frontend_parameters
+op_star
+id|params
 )paren
 suffix:semicolon
 )brace

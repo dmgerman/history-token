@@ -4190,6 +4190,11 @@ op_assign
 l_int|0
 comma
 dot
+id|invert_oclk
+op_assign
+l_int|0
+comma
+dot
 id|pll_init
 op_assign
 id|philips_tdm1316l_pll_init

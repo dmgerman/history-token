@@ -69,7 +69,7 @@ id|MASK_20
 )paren
 suffix:semicolon
 singleline_comment|// DMA3 off
-id|IER_DISABLE
+id|SAA7146_IER_DISABLE
 c_func
 (paren
 id|budget-&gt;dev
@@ -476,7 +476,7 @@ id|MASK_20
 )paren
 suffix:semicolon
 singleline_comment|// DMA3 on
-id|IER_ENABLE
+id|SAA7146_IER_ENABLE
 c_func
 (paren
 id|budget-&gt;dev
