@@ -2587,6 +2587,16 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|s-&gt;state
+op_amp
+id|SOCKET_CARDBUS
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
