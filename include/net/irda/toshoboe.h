@@ -224,11 +224,6 @@ id|chipio_t
 id|io
 suffix:semicolon
 multiline_comment|/* IrDA controller information */
-DECL|member|flags
-id|__u32
-id|flags
-suffix:semicolon
-multiline_comment|/* Interface flags */
 DECL|member|new_speed
 id|__u32
 id|new_speed

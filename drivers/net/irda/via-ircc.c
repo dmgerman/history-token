@@ -321,6 +321,7 @@ r_int
 id|iobase
 )paren
 suffix:semicolon
+r_static
 r_void
 id|hwreset
 c_func
@@ -389,6 +390,7 @@ id|pdev
 suffix:semicolon
 multiline_comment|/* Should use udelay() instead, even if we are x86 only - Jean II */
 DECL|function|iodelay
+r_static
 r_void
 id|iodelay
 c_func
@@ -1780,20 +1782,6 @@ c_func
 op_amp
 id|self-&gt;qos
 )paren
-suffix:semicolon
-id|self-&gt;flags
-op_assign
-id|IFF_FIR
-op_or
-id|IFF_MIR
-op_or
-id|IFF_SIR
-op_or
-id|IFF_DMA
-op_or
-id|IFF_PIO
-op_or
-id|IFF_DONGLE
 suffix:semicolon
 multiline_comment|/* Max DMA buffer size needed = (data_size + 6) * (window_size) + 6; */
 id|self-&gt;rx_buff.truesize
@@ -3766,7 +3754,7 @@ comma
 id|OFF
 )paren
 suffix:semicolon
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma
@@ -4171,7 +4159,7 @@ comma
 id|OFF
 )paren
 suffix:semicolon
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma
@@ -4581,7 +4569,7 @@ comma
 id|ON
 )paren
 suffix:semicolon
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma2
@@ -6220,6 +6208,7 @@ id|iHostIntType
 suffix:semicolon
 )brace
 DECL|function|hwreset
+r_static
 r_void
 id|hwreset
 c_func

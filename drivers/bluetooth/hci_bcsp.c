@@ -2692,7 +2692,6 @@ op_assign
 r_void
 op_star
 )paren
-op_amp
 id|hu-&gt;hdev
 suffix:semicolon
 r_break
