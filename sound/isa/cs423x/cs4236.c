@@ -1866,6 +1866,16 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cfg
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|acard-&gt;wss
 op_assign
 id|pnp_request_card_device
