@@ -751,7 +751,17 @@ id|sys_set_mempolicy
 id|cond_syscall
 c_func
 (paren
+id|compat_mbind
+)paren
+id|cond_syscall
+c_func
+(paren
 id|compat_get_mempolicy
+)paren
+id|cond_syscall
+c_func
+(paren
+id|compat_set_mempolicy
 )paren
 multiline_comment|/* arch-specific weak syscall entries */
 id|cond_syscall
