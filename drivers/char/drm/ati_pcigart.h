@@ -2,7 +2,17 @@ multiline_comment|/* ati_pcigart.h -- ATI PCI GART support -*- linux-c -*-&n; * 
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;drmP.h&quot;
-macro_line|#if PAGE_SIZE == 8192
+macro_line|#if PAGE_SIZE == 65536
+DECL|macro|ATI_PCIGART_TABLE_ORDER
+macro_line|# define ATI_PCIGART_TABLE_ORDER&t;0
+DECL|macro|ATI_PCIGART_TABLE_PAGES
+macro_line|# define ATI_PCIGART_TABLE_PAGES&t;(1 &lt;&lt; 0)
+macro_line|#elif PAGE_SIZE == 16384
+DECL|macro|ATI_PCIGART_TABLE_ORDER
+macro_line|# define ATI_PCIGART_TABLE_ORDER&t;1
+DECL|macro|ATI_PCIGART_TABLE_PAGES
+macro_line|# define ATI_PCIGART_TABLE_PAGES&t;(1 &lt;&lt; 1)
+macro_line|#elif PAGE_SIZE == 8192
 DECL|macro|ATI_PCIGART_TABLE_ORDER
 macro_line|# define ATI_PCIGART_TABLE_ORDER &t;2
 DECL|macro|ATI_PCIGART_TABLE_PAGES
@@ -13,7 +23,7 @@ macro_line|# define ATI_PCIGART_TABLE_ORDER &t;3
 DECL|macro|ATI_PCIGART_TABLE_PAGES
 macro_line|# define ATI_PCIGART_TABLE_PAGES &t;(1 &lt;&lt; 3)
 macro_line|#else
-macro_line|# error - PAGE_SIZE not 8K or 4K
+macro_line|# error - PAGE_SIZE not 64K, 16K, 8K or 4K
 macro_line|#endif
 DECL|macro|ATI_MAX_PCIGART_PAGES
 macro_line|# define ATI_MAX_PCIGART_PAGES&t;&t;8192&t;/* 32 MB aperture, 4K pages */
