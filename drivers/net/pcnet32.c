@@ -44,6 +44,7 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; * PCI device identifiers for &quot;new style&quot; Linux PCI Device Drivers&n; */
 DECL|variable|pcnet32_pci_tbl
 r_static
