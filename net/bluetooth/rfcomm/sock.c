@@ -22,7 +22,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
-macro_line|#ifndef CONFIG_RFCOMM_DEBUG
+macro_line|#ifndef CONFIG_BLUEZ_RFCOMM_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -3020,7 +3020,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_RFCOMM_TTY
+macro_line|#ifdef CONFIG_BLUEZ_RFCOMM_TTY
 id|err
 op_assign
 id|rfcomm_dev_ioctl

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
-macro_line|#ifndef CONFIG_RFCOMM_DEBUG
+macro_line|#ifndef CONFIG_BLUEZ_RFCOMM_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
