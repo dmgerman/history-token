@@ -322,7 +322,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MODE_TT
+macro_line|#ifdef UML_CONFIG_MODE_TT
 multiline_comment|/* Allocate memory for thread command lines */
 r_if
 c_cond
