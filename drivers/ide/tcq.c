@@ -217,8 +217,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -424,8 +423,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -484,8 +482,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -529,8 +526,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -611,8 +607,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -650,8 +645,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren

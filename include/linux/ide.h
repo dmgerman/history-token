@@ -1124,7 +1124,7 @@ DECL|member|hw
 id|hw_regs_t
 id|hw
 suffix:semicolon
-multiline_comment|/* Hardware info */
+multiline_comment|/* hardware info */
 macro_line|#ifdef CONFIG_PCI
 DECL|member|pci_dev
 r_struct
@@ -1151,6 +1151,7 @@ id|gd
 suffix:semicolon
 multiline_comment|/* gendisk structure */
 multiline_comment|/*&n;&t; * Routines to tune PIO and DMA mode for drives.&n;&t; *&n;&t; * A value of 255 indicates that the function should choose the optimal&n;&t; * mode itself.&n;&t; */
+multiline_comment|/* setup disk on a channel for a particular transfer mode */
 DECL|member|tuneproc
 r_void
 (paren
@@ -1166,6 +1167,7 @@ id|byte
 id|pio
 )paren
 suffix:semicolon
+multiline_comment|/* setup the chipset timing for a particular transfer mode */
 DECL|member|speedproc
 r_int
 (paren
@@ -1246,6 +1248,21 @@ id|quirkproc
 r_struct
 id|ata_device
 op_star
+)paren
+suffix:semicolon
+multiline_comment|/* driver soft-power interface */
+DECL|member|busproc
+r_int
+(paren
+op_star
+id|busproc
+)paren
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/* CPU-polled transfer routines */
@@ -1619,21 +1636,33 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* supports nop auto-poll */
-DECL|member|io_32bit
-id|byte
-id|io_32bit
-suffix:semicolon
-multiline_comment|/* 0=16-bit, 1=32-bit, 2/3=32bit+sync */
 DECL|member|unmask
-id|byte
+r_int
 id|unmask
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* flag: okay to unmask other irqs */
 DECL|member|slow
-id|byte
+r_int
 id|slow
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* flag: slow data port */
+DECL|member|io_32bit
+r_int
+id|io_32bit
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 0=16-bit, 1=32-bit */
+DECL|member|bus_state
+r_int
+r_char
+id|bus_state
+suffix:semicolon
+multiline_comment|/* power state of the IDE bus */
 macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
 DECL|member|last_time
 r_int
@@ -1642,26 +1671,6 @@ id|last_time
 suffix:semicolon
 multiline_comment|/* time when previous rq was done */
 macro_line|#endif
-multiline_comment|/* driver soft-power interface */
-DECL|member|busproc
-r_int
-(paren
-op_star
-id|busproc
-)paren
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|member|bus_state
-id|byte
-id|bus_state
-suffix:semicolon
-multiline_comment|/* power state of the IDE bus */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Register new hardware with ide&n; */
@@ -2109,22 +2118,6 @@ comma
 id|byte
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Issue a simple drive command&n; * The drive must be selected beforehand.&n; */
-r_void
-id|ide_cmd
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-id|byte
-comma
-id|byte
-comma
-id|ata_handler_t
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * ide_fixstring() cleans up and (optionally) byte-swaps a text string,&n; * removing leading/trailing blanks and compressing internal blanks.&n; * It is primarily used to tidy up the model name/number fields as&n; * returned by the WIN_[P]IDENTIFY commands.&n; */
 r_void
 id|ide_fixstring
@@ -2243,10 +2236,6 @@ DECL|enumerator|ide_wait
 id|ide_wait
 comma
 multiline_comment|/* insert rq at end of list, and wait for it */
-DECL|enumerator|ide_next
-id|ide_next
-comma
-multiline_comment|/* insert rq immediately after current request */
 DECL|enumerator|ide_preempt
 id|ide_preempt
 comma
@@ -2508,16 +2497,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-id|byte
-id|ide_auto_reduce_xfer
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|ide_fix_driveid
 c_func
@@ -2540,20 +2519,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|ide_ata66_check
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|ata_taskfile
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|ide_config_drive_speed
 c_func
 (paren
@@ -2571,20 +2536,6 @@ c_func
 (paren
 r_struct
 id|ata_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|set_transfer
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|ata_taskfile
 op_star
 )paren
 suffix:semicolon

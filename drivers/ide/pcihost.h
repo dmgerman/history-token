@@ -170,16 +170,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_PDC_ADMA
-r_extern
-r_int
-id|init_pdcadma
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_SVWKS
 r_extern
 r_int

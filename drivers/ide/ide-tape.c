@@ -4718,11 +4718,9 @@ id|idetape_active_next_stage
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *&t;Insert the next request into the request queue.&n;&t;&t;&t; */
-(paren
-r_void
-)paren
+multiline_comment|/*&n;&t;&t;&t; * Insert the next request into the request queue.&n;&t;&t;&t; */
 id|ide_do_drive_cmd
+c_func
 (paren
 id|drive
 comma
@@ -4970,10 +4968,8 @@ id|rq-&gt;flags
 op_assign
 id|IDETAPE_PC_RQ1
 suffix:semicolon
-(paren
-r_void
-)paren
 id|ide_do_drive_cmd
+c_func
 (paren
 id|drive
 comma
@@ -10721,6 +10717,7 @@ id|IDETAPE_PC_RQ1
 suffix:semicolon
 r_return
 id|ide_do_drive_cmd
+c_func
 (paren
 id|drive
 comma

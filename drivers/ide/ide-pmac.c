@@ -22,10 +22,6 @@ macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#endif
 macro_line|#include &quot;ata-timing.h&quot;
-r_extern
-id|spinlock_t
-id|ide_lock
-suffix:semicolon
 DECL|macro|IDE_PMAC_DEBUG
 macro_line|#undef IDE_PMAC_DEBUG
 DECL|macro|DMA_WAIT_TIMEOUT
@@ -7832,12 +7828,11 @@ id|BUSY_STAT
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* We resume processing on the HW group */
+multiline_comment|/* We resume processing on the lock group */
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 id|clear_bit
@@ -7870,8 +7865,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 )brace

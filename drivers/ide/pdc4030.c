@@ -1092,11 +1092,9 @@ id|hwif-&gt;irq
 suffix:semicolon
 id|hwif-&gt;io_32bit
 op_assign
-l_int|3
-suffix:semicolon
 id|hwif2-&gt;io_32bit
 op_assign
-l_int|3
+l_int|1
 suffix:semicolon
 r_for
 c_loop
