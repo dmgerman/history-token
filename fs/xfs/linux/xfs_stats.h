@@ -313,6 +313,44 @@ id|__uint32_t
 id|vn_free
 suffix:semicolon
 multiline_comment|/* # times vn_free called */
+DECL|macro|XFSSTAT_END_BUF
+mdefine_line|#define XFSSTAT_END_BUF&t;&t;&t;(XFSSTAT_END_VNODE_OPS+9)
+DECL|member|pb_get
+id|__uint32_t
+id|pb_get
+suffix:semicolon
+DECL|member|pb_create
+id|__uint32_t
+id|pb_create
+suffix:semicolon
+DECL|member|pb_get_locked
+id|__uint32_t
+id|pb_get_locked
+suffix:semicolon
+DECL|member|pb_get_locked_waited
+id|__uint32_t
+id|pb_get_locked_waited
+suffix:semicolon
+DECL|member|pb_busy_locked
+id|__uint32_t
+id|pb_busy_locked
+suffix:semicolon
+DECL|member|pb_miss_locked
+id|__uint32_t
+id|pb_miss_locked
+suffix:semicolon
+DECL|member|pb_page_retries
+id|__uint32_t
+id|pb_page_retries
+suffix:semicolon
+DECL|member|pb_page_found
+id|__uint32_t
+id|pb_page_found
+suffix:semicolon
+DECL|member|pb_get_read
+id|__uint32_t
+id|pb_get_read
+suffix:semicolon
 multiline_comment|/* Extra precision counters */
 DECL|member|xs_xstrat_bytes
 id|__uint64_t
