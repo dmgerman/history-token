@@ -1413,7 +1413,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 l_string|&quot;md: disabled device %s, could not read superblock.&bslash;n&quot;
 comma
 id|bdevname
