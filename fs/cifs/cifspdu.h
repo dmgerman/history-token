@@ -2647,22 +2647,22 @@ r_struct
 id|file_notify_information
 (brace
 DECL|member|NextEntryOffset
-id|__u32
+id|__le32
 id|NextEntryOffset
 suffix:semicolon
 DECL|member|Action
-id|__u32
+id|__le32
 id|Action
 suffix:semicolon
 DECL|member|FileNameLength
-id|__u32
+id|__le32
 id|FileNameLength
 suffix:semicolon
 DECL|member|FileName
 id|__u8
 id|FileName
 (braket
-l_int|1
+l_int|0
 )braket
 suffix:semicolon
 )brace
@@ -2955,6 +2955,8 @@ DECL|macro|SMB_QUERY_FILE_UNIX_LINK
 mdefine_line|#define SMB_QUERY_FILE_UNIX_LINK        0x201
 DECL|macro|SMB_QUERY_POSIX_ACL
 mdefine_line|#define SMB_QUERY_POSIX_ACL             0x204
+DECL|macro|SMB_QUERY_XATTR
+mdefine_line|#define SMB_QUERY_XATTR                 0x205
 DECL|macro|SMB_QUERY_FILE_INTERNAL_INFO
 mdefine_line|#define SMB_QUERY_FILE_INTERNAL_INFO    0x3ee
 DECL|macro|SMB_QUERY_FILE_ACCESS_INFO
@@ -2979,10 +2981,12 @@ DECL|macro|SMB_SET_FILE_UNIX_BASIC
 mdefine_line|#define SMB_SET_FILE_UNIX_BASIC         0x200
 DECL|macro|SMB_SET_FILE_UNIX_LINK
 mdefine_line|#define SMB_SET_FILE_UNIX_LINK          0x201
-DECL|macro|SMB_SET_POSIX_ACL
-mdefine_line|#define SMB_SET_POSIX_ACL               0x204
 DECL|macro|SMB_SET_FILE_UNIX_HLINK
 mdefine_line|#define SMB_SET_FILE_UNIX_HLINK         0x203
+DECL|macro|SMB_SET_POSIX_ACL
+mdefine_line|#define SMB_SET_POSIX_ACL               0x204
+DECL|macro|SMB_SET_XATTR
+mdefine_line|#define SMB_SET_XATTR                   0x205
 DECL|macro|SMB_SET_FILE_BASIC_INFO2
 mdefine_line|#define SMB_SET_FILE_BASIC_INFO2        0x3ec
 DECL|macro|SMB_SET_FILE_RENAME_INFORMATION
@@ -4352,6 +4356,8 @@ DECL|macro|CIFS_UNIX_FCNTL_CAP
 mdefine_line|#define CIFS_UNIX_FCNTL_CAP             0x00000001 /* support for fcntl locks */
 DECL|macro|CIFS_UNIX_POSIX_ACL_CAP
 mdefine_line|#define CIFS_UNIX_POSIX_ACL_CAP         0x00000002
+DECL|macro|CIFS_UNIX_XATTR_CAP
+mdefine_line|#define CIFS_UNIX_XATTR_CAP             0x00000004 /*support for new namespace*/
 multiline_comment|/* DeviceType Flags */
 DECL|macro|FILE_DEVICE_CD_ROM
 mdefine_line|#define FILE_DEVICE_CD_ROM              0x00000002
@@ -5399,6 +5405,31 @@ l_int|1024
 suffix:semicolon
 )brace
 suffix:semicolon
+r_typedef
+r_struct
+(brace
+multiline_comment|/* BB do we need another field for flags? BB */
+DECL|member|xattr_name_len
+id|__u32
+id|xattr_name_len
+suffix:semicolon
+DECL|member|xattr_value_len
+id|__u32
+id|xattr_value_len
+suffix:semicolon
+DECL|member|xattr_name
+r_char
+id|xattr_name
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* followed by xattr_value[xattr_value_len], no pad */
+DECL|typedef|FILE_XATTR_INFO
+)brace
+id|FILE_XATTR_INFO
+suffix:semicolon
+multiline_comment|/* extended attribute, info level 205 */
 macro_line|#endif 
 macro_line|#pragma pack()&t;&t;&t;/* resume default structure packing */
 macro_line|#endif&t;&t;&t;&t;/* _CIFSPDU_H */

@@ -2286,11 +2286,13 @@ id|sendfile
 op_assign
 id|generic_file_sendfile
 comma
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 dot
 id|dir_notify
 op_assign
 id|cifs_dir_notify
 comma
+macro_line|#endif /* CONFIG_CIFS_EXPERIMENTAL */
 )brace
 suffix:semicolon
 DECL|variable|cifs_dir_ops
@@ -2314,11 +2316,13 @@ id|read
 op_assign
 id|generic_read_dir
 comma
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 dot
 id|dir_notify
 op_assign
 id|cifs_dir_notify
 comma
+macro_line|#endif /* CONFIG_CIFS_EXPERIMENTAL */
 )brace
 suffix:semicolon
 r_static

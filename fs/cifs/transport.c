@@ -1922,9 +1922,12 @@ c_func
 id|ses-&gt;server-&gt;response_q
 comma
 (paren
+op_logical_neg
+(paren
 id|midQ-&gt;midState
 op_amp
-id|MID_RESPONSE_RECEIVED
+id|MID_REQUEST_SUBMITTED
+)paren
 )paren
 op_logical_or
 id|time_after
@@ -1959,9 +1962,12 @@ c_func
 id|ses-&gt;server-&gt;response_q
 comma
 (paren
+op_logical_neg
+(paren
 id|midQ-&gt;midState
 op_amp
-id|MID_RESPONSE_RECEIVED
+id|MID_REQUEST_SUBMITTED
+)paren
 )paren
 op_logical_or
 (paren
