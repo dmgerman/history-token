@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
@@ -26,32 +27,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-r_extern
-r_int
-id|copy_semundo
-c_func
-(paren
-r_int
-r_int
-id|clone_flags
-comma
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|exit_sem
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-suffix:semicolon
 multiline_comment|/* The idle threads do not count..&n; * Protected by write_lock_irq(&amp;tasklist_lock)&n; */
 DECL|variable|nr_threads
 r_int

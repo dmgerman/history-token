@@ -209,10 +209,6 @@ suffix:semicolon
 multiline_comment|/* the actual message follows immediately */
 )brace
 suffix:semicolon
-DECL|macro|DATALEN_MSG
-mdefine_line|#define DATALEN_MSG&t;(PAGE_SIZE-sizeof(struct msg_msg))
-DECL|macro|DATALEN_SEG
-mdefine_line|#define DATALEN_SEG&t;(PAGE_SIZE-sizeof(struct msg_msgseg))
 multiline_comment|/* one msq_queue structure for each present queue on the system */
 DECL|struct|msg_queue
 r_struct
