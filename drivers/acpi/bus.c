@@ -6253,12 +6253,6 @@ id|acpi_root
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Install drivers required for proper enumeration of the&n;&t; * ACPI namespace.&n;&t; */
-id|acpi_system_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* ACPI System */
 id|acpi_power_init
 c_func
 (paren
@@ -6448,11 +6442,6 @@ c_func
 suffix:semicolon
 macro_line|#endif
 id|acpi_power_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-id|acpi_system_exit
 c_func
 (paren
 )paren
