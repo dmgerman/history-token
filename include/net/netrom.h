@@ -900,6 +900,17 @@ suffix:semicolon
 multiline_comment|/* nr_timer.c */
 r_extern
 r_void
+id|nr_init_timers
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|nr_start_heartbeat
 c_func
 (paren
