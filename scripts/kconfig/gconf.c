@@ -1,5 +1,5 @@
 multiline_comment|/* Hey EMACS -*- linux-c -*- */
-multiline_comment|/*&n; *&n; * Copyright (C) 2002-2003 Romain Lievin &lt;roms@lpg.ticalc.org&gt;&n; * Released under the terms of the GNU GPL v2.0.&n; *&n; */
+multiline_comment|/*&n; *&n; * Copyright (C) 2002-2003 Romain Lievin &lt;roms@tilp.info&gt;&n; * Released under the terms of the GNU GPL v2.0.&n; *&n; */
 macro_line|#ifdef HAVE_CONFIG_H
 macro_line|#  include &lt;config.h&gt;
 macro_line|#endif
@@ -5184,6 +5184,10 @@ l_int|NULL
 r_return
 id|FALSE
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|gtk_tree_model_get_iter
 c_func
 (paren
@@ -5194,6 +5198,9 @@ id|iter
 comma
 id|path
 )paren
+)paren
+r_return
+id|FALSE
 suffix:semicolon
 id|gtk_tree_model_get
 c_func
