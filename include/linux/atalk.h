@@ -1,13 +1,13 @@
-multiline_comment|/*&n; *&t;AppleTalk networking structures&n; *&n; *&t;The following are directly referenced from the University Of Michigan&n; *&t;netatalk for compatibility reasons.&n; */
 macro_line|#ifndef __LINUX_ATALK_H__
 DECL|macro|__LINUX_ATALK_H__
 mdefine_line|#define __LINUX_ATALK_H__
+multiline_comment|/*&n; * AppleTalk networking structures&n; *&n; * The following are directly referenced from the University Of Michigan&n; * netatalk for compatibility reasons.&n; */
 DECL|macro|ATPORT_FIRST
 mdefine_line|#define ATPORT_FIRST&t;1
 DECL|macro|ATPORT_RESERVED
 mdefine_line|#define ATPORT_RESERVED&t;128
 DECL|macro|ATPORT_LAST
-mdefine_line|#define ATPORT_LAST&t;254 /* 254 is only legal on localtalk */ 
+mdefine_line|#define ATPORT_LAST&t;254&t;&t;/* 254 is only legal on localtalk */ 
 DECL|macro|ATADDR_ANYNET
 mdefine_line|#define ATADDR_ANYNET&t;(__u16)0
 DECL|macro|ATADDR_ANYNODE
@@ -19,12 +19,12 @@ mdefine_line|#define ATADDR_BCAST&t;(__u8)255
 DECL|macro|DDP_MAXSZ
 mdefine_line|#define DDP_MAXSZ&t;587
 DECL|macro|DDP_MAXHOPS
-mdefine_line|#define DDP_MAXHOPS     15      /* 4 bits of hop counter */
+mdefine_line|#define DDP_MAXHOPS     15&t;&t;/* 4 bits of hop counter */
 DECL|macro|SIOCATALKDIFADDR
 mdefine_line|#define SIOCATALKDIFADDR       (SIOCPROTOPRIVATE + 0)
-DECL|struct|at_addr
+DECL|struct|atalk_addr
 r_struct
-id|at_addr
+id|atalk_addr
 (brace
 DECL|member|s_net
 id|__u16
@@ -50,7 +50,7 @@ id|sat_port
 suffix:semicolon
 DECL|member|sat_addr
 r_struct
-id|at_addr
+id|atalk_addr
 id|sat_addr
 suffix:semicolon
 DECL|member|sat_zero
@@ -62,9 +62,9 @@ l_int|8
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|netrange
+DECL|struct|atalk_netrange
 r_struct
-id|netrange
+id|atalk_netrange
 (brace
 DECL|member|nr_phase
 id|__u8
@@ -92,12 +92,12 @@ id|dev
 suffix:semicolon
 DECL|member|target
 r_struct
-id|at_addr
+id|atalk_addr
 id|target
 suffix:semicolon
 DECL|member|gateway
 r_struct
-id|at_addr
+id|atalk_addr
 id|gateway
 suffix:semicolon
 DECL|member|flags
@@ -112,6 +112,7 @@ id|next
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/**&n; *&t;struct atalk_iface - AppleTalk Interface&n; *&t;@dev - Network device associated with this interface&n; *&t;@address - Our address&n; *&t;@status - What are we doing?&n; *&t;@nets - Associated direct netrange&n; *&t;@next - next element in the list of interfaces&n; */
 DECL|struct|atalk_iface
 r_struct
 id|atalk_iface
@@ -124,25 +125,22 @@ id|dev
 suffix:semicolon
 DECL|member|address
 r_struct
-id|at_addr
+id|atalk_addr
 id|address
 suffix:semicolon
-multiline_comment|/* Our address */
 DECL|member|status
 r_int
 id|status
 suffix:semicolon
-multiline_comment|/* What are we doing? */
 DECL|macro|ATIF_PROBE
 mdefine_line|#define ATIF_PROBE&t;1&t;&t;/* Probing for an address */
 DECL|macro|ATIF_PROBE_FAIL
 mdefine_line|#define ATIF_PROBE_FAIL&t;2&t;&t;/* Probe collided */
 DECL|member|nets
 r_struct
-id|netrange
+id|atalk_netrange
 id|nets
 suffix:semicolon
-multiline_comment|/* Associated direct netrange */
 DECL|member|next
 r_struct
 id|atalk_iface
@@ -195,17 +193,17 @@ id|ddpehdr
 (brace
 macro_line|#ifdef __LITTLE_ENDIAN_BITFIELD
 DECL|member|deh_len
-DECL|member|deh_hops
-DECL|member|deh_pad
 id|__u16
 id|deh_len
 suffix:colon
 l_int|10
 comma
+DECL|member|deh_hops
 id|deh_hops
 suffix:colon
 l_int|4
 comma
+DECL|member|deh_pad
 id|deh_pad
 suffix:colon
 l_int|2
@@ -256,6 +254,30 @@ suffix:semicolon
 multiline_comment|/* And netatalk apps expect to stick the type in themselves */
 )brace
 suffix:semicolon
+DECL|function|ddp_hdr
+r_static
+id|__inline__
+r_struct
+id|ddpehdr
+op_star
+id|ddp_hdr
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|ddpehdr
+op_star
+)paren
+id|skb-&gt;h.raw
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Don&squot;t drop the struct into the struct above.  You&squot;ll get some&n; *&t;surprise padding.&n; */
 DECL|struct|ddpebits
 r_struct
@@ -263,17 +285,17 @@ id|ddpebits
 (brace
 macro_line|#ifdef __LITTLE_ENDIAN_BITFIELD
 DECL|member|deh_len
-DECL|member|deh_hops
-DECL|member|deh_pad
 id|__u16
 id|deh_len
 suffix:colon
 l_int|10
 comma
+DECL|member|deh_hops
 id|deh_hops
 suffix:colon
 l_int|4
 comma
+DECL|member|deh_pad
 id|deh_pad
 suffix:colon
 l_int|2
@@ -295,19 +317,19 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;Short form header&n; */
+multiline_comment|/* Short form header */
 DECL|struct|ddpshdr
 r_struct
 id|ddpshdr
 (brace
 macro_line|#ifdef __LITTLE_ENDIAN_BITFIELD
 DECL|member|dsh_len
-DECL|member|dsh_pad
 id|__u16
 id|dsh_len
 suffix:colon
 l_int|10
 comma
+DECL|member|dsh_pad
 id|dsh_pad
 suffix:colon
 l_int|6
@@ -459,16 +481,45 @@ id|packed
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|aarp_hdr
+r_static
+id|__inline__
+r_struct
+id|elapaarp
+op_star
+id|aarp_hdr
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|elapaarp
+op_star
+)paren
+id|skb-&gt;h.raw
+suffix:semicolon
+)brace
+multiline_comment|/* Not specified - how long till we drop a resolved entry */
 DECL|macro|AARP_EXPIRY_TIME
-mdefine_line|#define AARP_EXPIRY_TIME&t;(5*60*HZ)&t;/* Not specified - how long till we drop a resolved entry */
+mdefine_line|#define AARP_EXPIRY_TIME&t;(5 * 60 * HZ)
+multiline_comment|/* Size of hash table */
 DECL|macro|AARP_HASH_SIZE
-mdefine_line|#define AARP_HASH_SIZE&t;&t;16&t;&t;/* Size of hash table */
+mdefine_line|#define AARP_HASH_SIZE&t;&t;16
+multiline_comment|/* Fast retransmission timer when resolving */
 DECL|macro|AARP_TICK_TIME
-mdefine_line|#define AARP_TICK_TIME&t;&t;(HZ/5)&t;&t;/* Fast retransmission timer when resolving */
+mdefine_line|#define AARP_TICK_TIME&t;&t;(HZ / 5)
+multiline_comment|/* Send 10 requests then give up (2 seconds) */
 DECL|macro|AARP_RETRANSMIT_LIMIT
-mdefine_line|#define AARP_RETRANSMIT_LIMIT&t;10&t;&t;/* Send 10 requests then give up (2 seconds) */
+mdefine_line|#define AARP_RETRANSMIT_LIMIT&t;10
+multiline_comment|/*&n; * Some value bigger than total retransmit time + a bit for last reply to&n; * appear and to stop continual requests&n; */
 DECL|macro|AARP_RESOLVE_TIME
-mdefine_line|#define AARP_RESOLVE_TIME&t;(10*HZ)&t;&t;/* Some value bigger than total retransmit time + a bit for last reply to appear and to stop continual requests */
+mdefine_line|#define AARP_RESOLVE_TIME&t;(10 * HZ)
 r_extern
 r_struct
 id|datalink_proto
@@ -487,7 +538,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Inter module exports */
-multiline_comment|/*&n; *&t;Give a device find its atif control structure&n; */
+multiline_comment|/* Give a device find its atif control structure */
 DECL|function|atalk_find_dev
 r_static
 r_inline
@@ -509,7 +560,7 @@ suffix:semicolon
 )brace
 r_extern
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|atalk_find_dev_addr
 c_func
@@ -528,7 +579,7 @@ id|atrtr_get_dev
 c_func
 (paren
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|sa
 )paren
@@ -549,7 +600,7 @@ op_star
 id|skb
 comma
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|sa
 comma
@@ -569,7 +620,7 @@ op_star
 id|dev
 comma
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|addr
 )paren
