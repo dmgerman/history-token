@@ -1329,6 +1329,7 @@ id|cp_private
 (brace
 DECL|member|regs
 r_void
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -7563,6 +7564,7 @@ r_int
 id|read_eeprom
 (paren
 r_void
+id|__iomem
 op_star
 id|ioaddr
 comma
@@ -7582,6 +7584,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ee_addr
 op_assign
@@ -7839,6 +7842,7 @@ r_int
 id|rc
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|regs
 suffix:semicolon

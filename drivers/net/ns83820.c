@@ -582,6 +582,7 @@ id|stats
 suffix:semicolon
 DECL|member|base
 id|u8
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -4297,6 +4298,7 @@ id|dev
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -6025,6 +6027,7 @@ id|ndev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|rfcr
 op_assign
@@ -7634,9 +7637,6 @@ c_func
 op_amp
 id|dev-&gt;ee
 comma
-(paren
-r_int
-)paren
 id|dev-&gt;base
 op_plus
 id|MEAR

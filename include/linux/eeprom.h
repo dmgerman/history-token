@@ -54,7 +54,9 @@ op_star
 id|ops
 suffix:semicolon
 DECL|member|addr
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 suffix:semicolon
 DECL|member|ee_addr_bits
@@ -210,7 +212,9 @@ id|eeprom
 op_star
 id|ee
 comma
-r_int
+r_void
+id|__iomem
+op_star
 id|memaddr
 comma
 r_int

@@ -890,7 +890,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Calculate offset of a buffer object within the shared memory window */
 DECL|macro|BUF_OFFSET
-mdefine_line|#define BUF_OFFSET(X)   ((unsigned int)&amp;(((struct buf_window *)BFM_BASE)-&gt;X))
+mdefine_line|#define BUF_OFFSET(X)   (BFM_BASE + offsetof(struct buf_window, X))
 macro_line|#pragma pack()
 multiline_comment|/*      Device driver private information&n; *      =================================&n; */
 multiline_comment|/*      Per port (line or channel) information&n; */
@@ -986,12 +986,14 @@ id|fst_card_info
 (brace
 DECL|member|mem
 r_char
+id|__iomem
 op_star
 id|mem
 suffix:semicolon
 multiline_comment|/* Card memory mapped to kernel space */
 DECL|member|ctlmem
 r_char
+id|__iomem
 op_star
 id|ctlmem
 suffix:semicolon
