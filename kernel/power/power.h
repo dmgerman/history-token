@@ -62,7 +62,7 @@ id|PAGE_SIZE
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM_DISK
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 r_extern
 r_int
 id|pm_suspend_disk
