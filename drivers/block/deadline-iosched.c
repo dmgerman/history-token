@@ -2385,7 +2385,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|deadline_slab_setup
-id|subsys_init
+id|subsys_initcall
 c_func
 (paren
 id|deadline_slab_setup
