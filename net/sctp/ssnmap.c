@@ -4,6 +4,25 @@ macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
 DECL|macro|MAX_KMALLOC_SIZE
 mdefine_line|#define MAX_KMALLOC_SIZE&t;131072
+r_static
+r_struct
+id|sctp_ssnmap
+op_star
+id|sctp_ssnmap_init
+c_func
+(paren
+r_struct
+id|sctp_ssnmap
+op_star
+id|map
+comma
+id|__u16
+id|in
+comma
+id|__u16
+id|out
+)paren
+suffix:semicolon
 multiline_comment|/* Storage size needed for map includes 2 headers and then the&n; * specific needs of in or out streams.&n; */
 DECL|function|sctp_ssnmap_size
 r_static
@@ -190,6 +209,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Initialize a block of memory as a ssnmap.  */
 DECL|function|sctp_ssnmap_init
+r_static
 r_struct
 id|sctp_ssnmap
 op_star
