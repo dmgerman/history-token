@@ -434,6 +434,12 @@ comma
 id|victim
 )paren
 suffix:semicolon
+id|d_delete
+c_func
+(paren
+id|victim
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Drop reference from sysfs_get_dentry() above.&n;&t;&t; */
 id|dput
