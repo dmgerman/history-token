@@ -92,22 +92,6 @@ singleline_comment|// than a macro (used usually).
 singleline_comment|//
 r_extern
 id|cmdSyntaxPtr
-id|i2cmdSetSeq
-c_func
-(paren
-id|UCHAR
-id|seqno
-comma
-id|UCHAR
-id|size
-comma
-id|UCHAR
-op_star
-id|string
-)paren
-suffix:semicolon
-r_extern
-id|cmdSyntaxPtr
 id|i2cmdUnixFlags
 c_func
 (paren
@@ -119,18 +103,6 @@ id|cflag
 comma
 id|USHORT
 id|lflag
-)paren
-suffix:semicolon
-r_extern
-id|cmdSyntaxPtr
-id|i2cmdBaudRemap
-c_func
-(paren
-id|UCHAR
-id|dest
-comma
-id|UCHAR
-id|src
 )paren
 suffix:semicolon
 r_extern
@@ -1086,14 +1058,6 @@ singleline_comment|// CSE_ESTAT).
 singleline_comment|// COMMAND 37, to send flow control packets, is handled only by low-level
 singleline_comment|// library code in response to data movement and shouldn&squot;t ever be sent by the
 singleline_comment|// user code. See i2pack.h and the body of i2lib.c for details.
-singleline_comment|// COMMAND 38: Define the hot-key sequence
-singleline_comment|// seqno:  sequence number 0-15
-singleline_comment|// size:   number of characters in sequence (1-8)
-singleline_comment|// string: pointer to the characters
-singleline_comment|// (if size == 0, &quot;undefines&quot; this sequence
-singleline_comment|//
-DECL|macro|CMD_SET_SEQ
-mdefine_line|#define CMD_SET_SEQ(seqno,size,string) i2cmdSetSeq(seqno,size,string)
 singleline_comment|// Enable on-board post-processing, using options given in oflag argument.
 singleline_comment|// Formerly, this command was automatically preceded by a CMD_OPOST_OFF command
 singleline_comment|// because the loadware does not permit sending back-to-back CMD_OPOST_ON
@@ -1156,13 +1120,6 @@ singleline_comment|// Disable DTR flow control
 DECL|macro|CMD_BAUD_RESET
 mdefine_line|#define CMD_BAUD_RESET  (cmdSyntaxPtr)(ct52) 
 singleline_comment|// Reset baudrate table
-singleline_comment|// COMMAND 53: Remap baud rate table
-singleline_comment|// dest = index of table entry to be changed
-singleline_comment|// src  = index value to substitute.
-singleline_comment|// at default mapping table is f(x) = x
-singleline_comment|//
-DECL|macro|CMD_BAUD_REMAP
-mdefine_line|#define CMD_BAUD_REMAP(dest,src) i2cmdBaudRemap(dest,src)
 singleline_comment|// COMMAND 54: Define custom rate #1
 singleline_comment|// rate = (short) 1/10 of the desired baud rate
 singleline_comment|//

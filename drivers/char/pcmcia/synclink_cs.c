@@ -3518,6 +3518,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Return next bottom half action to perform.&n; * or 0 if nothing to do.&n; */
 DECL|function|bh_action
+r_static
 r_int
 id|bh_action
 c_func
@@ -3883,6 +3884,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* eom: non-zero = end of frame */
 DECL|function|rx_ready_hdlc
+r_static
 r_void
 id|rx_ready_hdlc
 c_func
@@ -4212,6 +4214,7 @@ id|CMD_RXFIFO
 suffix:semicolon
 )brace
 DECL|function|rx_ready_async
+r_static
 r_void
 id|rx_ready_async
 c_func
@@ -4506,6 +4509,7 @@ id|tty
 suffix:semicolon
 )brace
 DECL|function|tx_done
+r_static
 r_void
 id|tx_done
 c_func
@@ -4631,6 +4635,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|tx_ready
+r_static
 r_void
 id|tx_ready
 c_func
@@ -4896,6 +4901,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|cts_change
+r_static
 r_void
 id|cts_change
 c_func
@@ -5070,6 +5076,7 @@ id|BH_STATUS
 suffix:semicolon
 )brace
 DECL|function|dcd_change
+r_static
 r_void
 id|dcd_change
 c_func
@@ -5237,6 +5244,7 @@ id|BH_STATUS
 suffix:semicolon
 )brace
 DECL|function|dsr_change
+r_static
 r_void
 id|dsr_change
 c_func
@@ -5307,6 +5315,7 @@ id|BH_STATUS
 suffix:semicolon
 )brace
 DECL|function|ri_change
+r_static
 r_void
 id|ri_change
 c_func
@@ -12827,6 +12836,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Called to print information about devices&n; */
 DECL|function|mgslpc_read_proc
+r_static
 r_int
 id|mgslpc_read_proc
 c_func
@@ -13907,6 +13917,7 @@ id|synclink_cs_exit
 )paren
 suffix:semicolon
 DECL|function|mgslpc_set_rate
+r_static
 r_void
 id|mgslpc_set_rate
 c_func
@@ -14071,6 +14082,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Enabled the AUX clock output at the specified frequency.&n; */
 DECL|function|enable_auxclk
+r_static
 r_void
 id|enable_auxclk
 c_func

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 DECL|macro|SD_NODES_PER_DOMAIN
 mdefine_line|#define SD_NODES_PER_DOMAIN 6
 macro_line|#ifdef CONFIG_NUMA

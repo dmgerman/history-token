@@ -5,7 +5,9 @@ mdefine_line|#define _LINUX_SELECTION_H_
 macro_line|#include &lt;linux/tiocl.h&gt;
 macro_line|#include &lt;linux/vt_buffer.h&gt;
 r_extern
-r_int
+r_struct
+id|vc_data
+op_star
 id|sel_cons
 suffix:semicolon
 r_extern
@@ -84,14 +86,6 @@ r_int
 id|mry
 )paren
 suffix:semicolon
-DECL|macro|video_num_columns
-mdefine_line|#define video_num_columns&t;(vc_cons[currcons].d-&gt;vc_cols)
-DECL|macro|video_num_lines
-mdefine_line|#define video_num_lines&t;&t;(vc_cons[currcons].d-&gt;vc_rows)
-DECL|macro|video_size_row
-mdefine_line|#define video_size_row&t;&t;(vc_cons[currcons].d-&gt;vc_size_row)
-DECL|macro|can_do_color
-mdefine_line|#define can_do_color&t;&t;(vc_cons[currcons].d-&gt;vc_can_do_color)
 r_extern
 r_int
 id|console_blanked
@@ -128,8 +122,10 @@ op_star
 id|screen_pos
 c_func
 (paren
-r_int
-id|currcons
+r_struct
+id|vc_data
+op_star
+id|vc
 comma
 r_int
 id|w_offset
@@ -143,8 +139,10 @@ id|u16
 id|screen_glyph
 c_func
 (paren
-r_int
-id|currcons
+r_struct
+id|vc_data
+op_star
+id|vc
 comma
 r_int
 id|offset
@@ -155,8 +153,10 @@ r_void
 id|complement_pos
 c_func
 (paren
-r_int
-id|currcons
+r_struct
+id|vc_data
+op_star
+id|vc
 comma
 r_int
 id|offset
@@ -167,8 +167,10 @@ r_void
 id|invert_screen
 c_func
 (paren
-r_int
-id|currcons
+r_struct
+id|vc_data
+op_star
+id|vc
 comma
 r_int
 id|offset
@@ -185,8 +187,10 @@ r_void
 id|getconsxy
 c_func
 (paren
-r_int
-id|currcons
+r_struct
+id|vc_data
+op_star
+id|vc
 comma
 r_int
 r_char
@@ -199,8 +203,10 @@ r_void
 id|putconsxy
 c_func
 (paren
-r_int
-id|currcons
+r_struct
+id|vc_data
+op_star
+id|vc
 comma
 r_int
 r_char
@@ -213,8 +219,10 @@ id|u16
 id|vcs_scr_readw
 c_func
 (paren
-r_int
-id|currcons
+r_struct
+id|vc_data
+op_star
+id|vc
 comma
 r_const
 id|u16
@@ -227,8 +235,10 @@ r_void
 id|vcs_scr_writew
 c_func
 (paren
-r_int
-id|currcons
+r_struct
+id|vc_data
+op_star
+id|vc
 comma
 id|u16
 id|val

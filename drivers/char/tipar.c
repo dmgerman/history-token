@@ -1790,6 +1790,7 @@ id|tipar_detach
 comma
 )brace
 suffix:semicolon
+r_static
 r_int
 id|__init
 DECL|function|tipar_init_module
@@ -1934,6 +1935,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__exit
 DECL|function|tipar_cleanup_module

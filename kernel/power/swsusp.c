@@ -2926,6 +2926,30 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* At this point, device_suspend() has been called, but *not*&n;&t; * device_power_down(). We *must* device_power_down() now.&n;&t; * Otherwise, drivers for some devices (e.g. interrupt controllers)&n;&t; * become desynchronized with the actual state of the hardware&n;&t; * at resume time, and evil weirdness ensues.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|error
+op_assign
+id|device_power_down
+c_func
+(paren
+id|PM_SUSPEND_DISK
+)paren
+)paren
+)paren
+(brace
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|error
+suffix:semicolon
+)brace
 id|save_processor_state
 c_func
 (paren
@@ -2945,6 +2969,11 @@ c_func
 )paren
 suffix:semicolon
 id|restore_highmem
+c_func
+(paren
+)paren
+suffix:semicolon
+id|device_power_up
 c_func
 (paren
 )paren
@@ -3007,6 +3036,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|device_power_down
+c_func
+(paren
+id|PM_SUSPEND_DISK
+)paren
+suffix:semicolon
 multiline_comment|/* We&squot;ll ignore saved state, but this gets preempt count (etc) right */
 id|save_processor_state
 c_func
@@ -3034,6 +3069,11 @@ c_func
 )paren
 suffix:semicolon
 id|restore_highmem
+c_func
+(paren
+)paren
+suffix:semicolon
+id|device_power_up
 c_func
 (paren
 )paren

@@ -2590,6 +2590,13 @@ c_func
 id|generic_read_dir
 )paren
 suffix:semicolon
+DECL|variable|get_sb_pseudo
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_sb_pseudo
+)paren
+suffix:semicolon
 DECL|variable|simple_commit_write
 id|EXPORT_SYMBOL
 c_func

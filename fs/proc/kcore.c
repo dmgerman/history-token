@@ -1175,7 +1175,9 @@ op_amp
 id|kclist_lock
 )paren
 suffix:semicolon
-id|tsz
+id|proc_root_kcore-&gt;size
+op_assign
+id|size
 op_assign
 id|get_kcore_size
 c_func
@@ -1186,14 +1188,6 @@ comma
 op_amp
 id|elf_buflen
 )paren
-suffix:semicolon
-id|proc_root_kcore-&gt;size
-op_assign
-id|size
-op_assign
-id|tsz
-op_plus
-id|elf_buflen
 suffix:semicolon
 r_if
 c_cond

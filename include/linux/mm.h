@@ -2314,6 +2314,18 @@ suffix:semicolon
 )brace
 multiline_comment|/* mmap.c */
 r_extern
+r_int
+id|__vm_enough_memory
+c_func
+(paren
+r_int
+id|pages
+comma
+r_int
+id|cap_sys_admin
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|vma_adjust
 c_func

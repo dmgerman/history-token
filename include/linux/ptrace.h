@@ -257,6 +257,17 @@ op_star
 id|child
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ptrace_untrace
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|child
+)paren
+suffix:semicolon
 DECL|function|ptrace_link
 r_static
 r_inline

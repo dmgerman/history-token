@@ -2450,7 +2450,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;VFS: Error %d occurred while creating quota.&bslash;n&quot;
+l_string|&quot;VFS: Error %zd occurred while creating quota.&bslash;n&quot;
 comma
 id|ret
 )paren

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;

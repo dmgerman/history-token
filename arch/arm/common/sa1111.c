@@ -4837,7 +4837,7 @@ id|device
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace

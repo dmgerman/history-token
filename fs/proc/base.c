@@ -1806,7 +1806,9 @@ suffix:semicolon
 r_char
 id|namebuf
 (braket
-l_int|128
+id|KSYM_NAME_LEN
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 id|wchan

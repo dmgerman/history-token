@@ -606,10 +606,10 @@ mdefine_line|#define   MMCR0_FCECE&t;0x02000000UL /* freeze counters on enabled 
 multiline_comment|/* time base exception enable */
 DECL|macro|MMCR0_TBEE
 mdefine_line|#define   MMCR0_TBEE&t;0x00400000UL /* time base exception enable */
-DECL|macro|MMCR0_PMC1INTCONTROL
-mdefine_line|#define   MMCR0_PMC1INTCONTROL&t;0x00008000UL /* PMC1 count enable*/
-DECL|macro|MMCR0_PMCNINTCONTROL
-mdefine_line|#define   MMCR0_PMCNINTCONTROL&t;0x00004000UL /* PMCn count enable*/
+DECL|macro|MMCR0_PMC1CE
+mdefine_line|#define   MMCR0_PMC1CE&t;0x00008000UL /* PMC1 count enable*/
+DECL|macro|MMCR0_PMCjCE
+mdefine_line|#define   MMCR0_PMCjCE&t;0x00004000UL /* PMCj count enable*/
 DECL|macro|MMCR0_TRIGGER
 mdefine_line|#define   MMCR0_TRIGGER&t;0x00002000UL /* TRIGGER enable */
 DECL|macro|MMCR0_PMAO

@@ -117,6 +117,112 @@ id|FS_REQUIRES_DEV
 comma
 )brace
 suffix:semicolon
+DECL|variable|sgi_pt_types
+r_static
+r_struct
+id|pt_types
+id|sgi_pt_types
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x00
+comma
+l_string|&quot;SGI vh&quot;
+)brace
+comma
+(brace
+l_int|0x01
+comma
+l_string|&quot;SGI trkrepl&quot;
+)brace
+comma
+(brace
+l_int|0x02
+comma
+l_string|&quot;SGI secrepl&quot;
+)brace
+comma
+(brace
+l_int|0x03
+comma
+l_string|&quot;SGI raw&quot;
+)brace
+comma
+(brace
+l_int|0x04
+comma
+l_string|&quot;SGI bsd&quot;
+)brace
+comma
+(brace
+id|SGI_SYSV
+comma
+l_string|&quot;SGI sysv&quot;
+)brace
+comma
+(brace
+l_int|0x06
+comma
+l_string|&quot;SGI vol&quot;
+)brace
+comma
+(brace
+id|SGI_EFS
+comma
+l_string|&quot;SGI efs&quot;
+)brace
+comma
+(brace
+l_int|0x08
+comma
+l_string|&quot;SGI lv&quot;
+)brace
+comma
+(brace
+l_int|0x09
+comma
+l_string|&quot;SGI rlv&quot;
+)brace
+comma
+(brace
+l_int|0x0A
+comma
+l_string|&quot;SGI xfs&quot;
+)brace
+comma
+(brace
+l_int|0x0B
+comma
+l_string|&quot;SGI xfslog&quot;
+)brace
+comma
+(brace
+l_int|0x0C
+comma
+l_string|&quot;SGI xlv&quot;
+)brace
+comma
+(brace
+l_int|0x82
+comma
+l_string|&quot;Linux swap&quot;
+)brace
+comma
+(brace
+l_int|0x83
+comma
+l_string|&quot;Linux native&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|NULL
+)brace
+)brace
+suffix:semicolon
 DECL|variable|efs_inode_cachep
 r_static
 id|kmem_cache_t

@@ -238,12 +238,6 @@ r_int
 id|identity
 suffix:semicolon
 multiline_comment|/* Identification */
-multiline_comment|/* Data for normal processing */
-DECL|member|old_w
-r_int
-id|old_w
-suffix:semicolon
-multiline_comment|/* Previous w value */
 DECL|member|pkt_type
 r_int
 r_char

@@ -66,6 +66,13 @@ id|module_names
 op_assign
 id|INIT_QUOTA_MODULE_NAMES
 suffix:semicolon
+multiline_comment|/* SLAB cache for dquot structures */
+DECL|variable|dquot_cachep
+r_static
+id|kmem_cache_t
+op_star
+id|dquot_cachep
+suffix:semicolon
 DECL|function|register_quota_format
 r_int
 id|register_quota_format
@@ -385,6 +392,7 @@ id|free_dquots
 suffix:semicolon
 DECL|variable|dq_hash_bits
 DECL|variable|dq_hash_mask
+r_static
 r_int
 r_int
 id|dq_hash_bits
@@ -8531,12 +8539,6 @@ l_int|0
 )brace
 comma
 )brace
-suffix:semicolon
-multiline_comment|/* SLAB cache for dquot structures */
-DECL|variable|dquot_cachep
-id|kmem_cache_t
-op_star
-id|dquot_cachep
 suffix:semicolon
 DECL|function|dquot_init
 r_static

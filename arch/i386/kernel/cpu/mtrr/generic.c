@@ -1287,16 +1287,8 @@ c_func
 (paren
 id|cr4
 op_amp
-(paren
-r_int
-r_char
-)paren
 op_complement
-(paren
-l_int|1
-op_lshift
-l_int|7
-)paren
+id|X86_CR4_PGE
 )paren
 suffix:semicolon
 )brace

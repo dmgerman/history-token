@@ -3067,7 +3067,6 @@ id|deadline_var_show
 c_func
 (paren
 r_int
-r_int
 id|var
 comma
 r_char
@@ -3094,7 +3093,6 @@ id|deadline_var_store
 c_func
 (paren
 r_int
-r_int
 op_star
 id|var
 comma
@@ -3120,7 +3118,7 @@ suffix:semicolon
 op_star
 id|var
 op_assign
-id|simple_strtoul
+id|simple_strtol
 c_func
 (paren
 id|p
@@ -3136,7 +3134,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|SHOW_FUNCTION
-mdefine_line|#define SHOW_FUNCTION(__FUNC, __VAR, __CONV)&t;&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct deadline_data *dd, char *page)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int __data = __VAR;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__CONV)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__data = jiffies_to_msecs(__data);&t;&t;&t;&bslash;&n;&t;return deadline_var_show(__data, (page));&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SHOW_FUNCTION(__FUNC, __VAR, __CONV)&t;&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct deadline_data *dd, char *page)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __data = __VAR;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__CONV)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__data = jiffies_to_msecs(__data);&t;&t;&t;&bslash;&n;&t;return deadline_var_show(__data, (page));&t;&t;&t;&bslash;&n;}
 id|SHOW_FUNCTION
 c_func
 (paren
@@ -3196,7 +3194,7 @@ suffix:semicolon
 DECL|macro|SHOW_FUNCTION
 macro_line|#undef SHOW_FUNCTION
 DECL|macro|STORE_FUNCTION
-mdefine_line|#define STORE_FUNCTION(__FUNC, __PTR, MIN, MAX, __CONV)&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct deadline_data *dd, const char *page, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int __data;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret = deadline_var_store(&amp;__data, (page), count);&t;&t;&bslash;&n;&t;if (__data &lt; (MIN))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__data = (MIN);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;else if (__data &gt; (MAX))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__data = (MAX);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__CONV)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = msecs_to_jiffies(__data);&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = __data;&t;&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define STORE_FUNCTION(__FUNC, __PTR, MIN, MAX, __CONV)&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct deadline_data *dd, const char *page, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __data;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret = deadline_var_store(&amp;__data, (page), count);&t;&t;&bslash;&n;&t;if (__data &lt; (MIN))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__data = (MIN);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;else if (__data &gt; (MAX))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__data = (MAX);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__CONV)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = msecs_to_jiffies(__data);&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = __data;&t;&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 id|STORE_FUNCTION
 c_func
 (paren

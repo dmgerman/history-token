@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * linux/drivers/char/synclink.c&n; *&n; * $Id: synclink.c,v 4.28 2004/08/11 19:30:01 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink ISA and PCI&n; * high speed multiprotocol serial adapters.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * Derived from serial.c written by Theodore Ts&squot;o and Linus Torvalds&n; *&n; * Original release 01/11/99&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * This driver is primarily intended for use in synchronous&n; * HDLC mode. Asynchronous mode is also provided.&n; *&n; * When operating in synchronous mode, each call to mgsl_write()&n; * contains exactly one complete HDLC frame. Calling mgsl_put_char&n; * will start assembling an HDLC frame that will not be sent until&n; * mgsl_flush_chars or mgsl_write is called.&n; * &n; * Synchronous receive data is reported as complete frames. To accomplish&n; * this, the TTY flip buffer is bypassed (too small to hold largest&n; * frame and may fragment frames) and the line discipline&n; * receive entry point is called directly.&n; *&n; * This driver has been tested with a slightly modified ppp.c driver&n; * for synchronous PPP.&n; *&n; * 2000/02/16&n; * Added interface for syncppp.c driver (an alternate synchronous PPP&n; * implementation that also supports Cisco HDLC). Each device instance&n; * registers as a tty device AND a network device (if dosyncppp option&n; * is set for the device). The functionality is determined by which&n; * device interface is opened.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
-DECL|macro|VERSION
-mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
 macro_line|#if defined(__i386__)
 DECL|macro|BREAKPOINT
 macro_line|#  define BREAKPOINT() asm(&quot;   int $3&quot;);
@@ -65,6 +63,7 @@ macro_line|#include &quot;linux/synclink.h&quot;
 DECL|macro|RCLRVALUE
 mdefine_line|#define RCLRVALUE 0xffff
 DECL|variable|default_params
+r_static
 id|MGSL_PARAMS
 id|default_params
 op_assign
@@ -1300,6 +1299,7 @@ DECL|macro|usc_EnableTransmitter
 mdefine_line|#define usc_EnableTransmitter(a,b) &bslash;&n;&t;usc_OutReg( (a), TMR, (u16)((usc_InReg((a),TMR) &amp; 0xfffc) | (b)) )
 DECL|macro|usc_EnableReceiver
 mdefine_line|#define usc_EnableReceiver(a,b) &bslash;&n;&t;usc_OutReg( (a), RMR, (u16)((usc_InReg((a),RMR) &amp; 0xfffc) | (b)) )
+r_static
 id|u16
 id|usc_InDmaReg
 c_func
@@ -1313,6 +1313,7 @@ id|u16
 id|Port
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_OutDmaReg
 c_func
@@ -1329,6 +1330,7 @@ id|u16
 id|Value
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_DmaCmd
 c_func
@@ -1342,6 +1344,7 @@ id|u16
 id|Cmd
 )paren
 suffix:semicolon
+r_static
 id|u16
 id|usc_InReg
 c_func
@@ -1355,6 +1358,7 @@ id|u16
 id|Port
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_OutReg
 c_func
@@ -1371,6 +1375,7 @@ id|u16
 id|Value
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_RTCmd
 c_func
@@ -1416,6 +1421,7 @@ DECL|macro|usc_RCmd
 mdefine_line|#define usc_RCmd(a,b) usc_OutReg((a), RCSR, (b))
 DECL|macro|usc_SetTransmitSyncChars
 mdefine_line|#define usc_SetTransmitSyncChars(a,s0,s1) usc_OutReg((a), TSR, (u16)(((u16)s0&lt;&lt;8)|(u16)s1))
+r_static
 r_void
 id|usc_process_rxoverrun_sync
 c_func
@@ -1426,6 +1432,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_start_receiver
 c_func
@@ -1436,6 +1443,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_stop_receiver
 c_func
@@ -1446,6 +1454,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_start_transmitter
 c_func
@@ -1456,6 +1465,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_stop_transmitter
 c_func
@@ -1466,6 +1476,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_set_txidle
 c_func
@@ -1476,6 +1487,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_load_txfifo
 c_func
@@ -1486,6 +1498,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_enable_aux_clock
 c_func
@@ -1499,6 +1512,7 @@ id|u32
 id|DataRate
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_enable_loopback
 c_func
@@ -1512,6 +1526,7 @@ r_int
 id|enable
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_get_serial_signals
 c_func
@@ -1522,6 +1537,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_set_serial_signals
 c_func
@@ -1532,6 +1548,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_reset
 c_func
@@ -1542,6 +1559,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_set_sync_mode
 c_func
@@ -1552,6 +1570,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_set_sdlc_mode
 c_func
@@ -1562,6 +1581,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_set_async_mode
 c_func
@@ -1572,6 +1592,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_enable_async_clock
 c_func
@@ -1585,6 +1606,7 @@ id|u32
 id|DataRate
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_loopback_frame
 c_func
@@ -1595,6 +1617,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_tx_timeout
 c_func
@@ -1604,6 +1627,7 @@ r_int
 id|context
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_loopmode_cancel_transmit
 c_func
@@ -1614,6 +1638,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_loopmode_insert_request
 c_func
@@ -1624,6 +1649,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|usc_loopmode_active
 c_func
@@ -1634,6 +1660,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|usc_loopmode_send_done
 c_func
@@ -1644,16 +1671,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
-r_int
-id|usc_loopmode_send_active
-c_func
-(paren
-r_struct
-id|mgsl_struct
-op_star
-id|info
-)paren
-suffix:semicolon
+r_static
 r_int
 id|mgsl_ioctl_common
 c_func
@@ -1730,6 +1748,7 @@ macro_line|#endif
 multiline_comment|/*&n; * Defines a BUS descriptor value for the PCI adapter&n; * local bus address ranges.&n; */
 DECL|macro|BUS_DESCRIPTOR
 mdefine_line|#define BUS_DESCRIPTOR( WrHold, WrDly, RdDly, Nwdd, Nwad, Nxda, Nrdd, Nrad ) &bslash;&n;(0x00400020 + &bslash;&n;((WrHold) &lt;&lt; 30) + &bslash;&n;((WrDly)  &lt;&lt; 28) + &bslash;&n;((RdDly)  &lt;&lt; 26) + &bslash;&n;((Nwdd)   &lt;&lt; 20) + &bslash;&n;((Nwad)   &lt;&lt; 15) + &bslash;&n;((Nxda)   &lt;&lt; 13) + &bslash;&n;((Nrdd)   &lt;&lt; 11) + &bslash;&n;((Nrad)   &lt;&lt;  6) )
+r_static
 r_void
 id|mgsl_trace_block
 c_func
@@ -1752,6 +1771,7 @@ id|xmit
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Adapter diagnostic routines&n; */
+r_static
 id|BOOLEAN
 id|mgsl_register_test
 c_func
@@ -1762,6 +1782,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 id|BOOLEAN
 id|mgsl_irq_test
 c_func
@@ -1772,6 +1793,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 id|BOOLEAN
 id|mgsl_dma_test
 c_func
@@ -1782,6 +1804,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 id|BOOLEAN
 id|mgsl_memory_test
 c_func
@@ -1792,6 +1815,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|mgsl_adapter_test
 c_func
@@ -1803,6 +1827,7 @@ id|info
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * device and resource management routines&n; */
+r_static
 r_int
 id|mgsl_claim_resources
 c_func
@@ -1813,6 +1838,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_release_resources
 c_func
@@ -1823,6 +1849,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_add_device
 c_func
@@ -1833,6 +1860,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_struct
 id|mgsl_struct
 op_star
@@ -1843,6 +1871,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * DMA buffer manupulation functions.&n; */
+r_static
 r_void
 id|mgsl_free_rx_frame_buffers
 c_func
@@ -1861,6 +1890,7 @@ r_int
 id|EndIndex
 )paren
 suffix:semicolon
+r_static
 r_int
 id|mgsl_get_rx_frame
 c_func
@@ -1871,6 +1901,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|mgsl_get_raw_rx_frame
 c_func
@@ -1881,6 +1912,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_reset_rx_dma_buffers
 c_func
@@ -1891,6 +1923,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_reset_tx_dma_buffers
 c_func
@@ -1901,6 +1934,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|num_free_tx_dma_buffers
 c_func
@@ -1911,6 +1945,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_load_tx_dma_buffer
 c_func
@@ -1930,6 +1965,7 @@ r_int
 id|BufferSize
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_load_pci_memory
 c_func
@@ -1949,6 +1985,7 @@ id|count
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * DMA and Shared Memory buffer allocation and formatting&n; */
+r_static
 r_int
 id|mgsl_allocate_dma_buffers
 c_func
@@ -1959,6 +1996,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_free_dma_buffers
 c_func
@@ -1969,6 +2007,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|mgsl_alloc_frame_memory
 c_func
@@ -1986,6 +2025,7 @@ r_int
 id|Buffercount
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_free_frame_memory
 c_func
@@ -2003,6 +2043,7 @@ r_int
 id|Buffercount
 )paren
 suffix:semicolon
+r_static
 r_int
 id|mgsl_alloc_buffer_list_memory
 c_func
@@ -2013,6 +2054,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_free_buffer_list_memory
 c_func
@@ -2023,6 +2065,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|mgsl_alloc_intermediate_rxbuffer_memory
 c_func
@@ -2033,6 +2076,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_free_intermediate_rxbuffer_memory
 c_func
@@ -2043,6 +2087,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|mgsl_alloc_intermediate_txbuffer_memory
 c_func
@@ -2053,6 +2098,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_free_intermediate_txbuffer_memory
 c_func
@@ -2063,6 +2109,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|load_next_tx_holding_buffer
 c_func
@@ -2073,6 +2120,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|save_tx_buffer_request
 c_func
@@ -2093,6 +2141,7 @@ id|BufferSize
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Bottom half interrupt handlers&n; */
+r_static
 r_void
 id|mgsl_bh_handler
 c_func
@@ -2102,6 +2151,7 @@ op_star
 id|Context
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_bh_receive
 c_func
@@ -2112,6 +2162,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_bh_transmit
 c_func
@@ -2122,6 +2173,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_bh_status
 c_func
@@ -2133,6 +2185,7 @@ id|info
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Interrupt handler routines and dispatch table.&n; */
+r_static
 r_void
 id|mgsl_isr_null
 c_func
@@ -2143,6 +2196,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_isr_transmit_data
 c_func
@@ -2153,6 +2207,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_isr_receive_data
 c_func
@@ -2163,6 +2218,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_isr_receive_status
 c_func
@@ -2173,6 +2229,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_isr_transmit_status
 c_func
@@ -2183,6 +2240,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_isr_io_pin
 c_func
@@ -2193,6 +2251,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_isr_misc
 c_func
@@ -2203,6 +2262,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_isr_receive_dma
 c_func
@@ -2213,6 +2273,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|mgsl_isr_transmit_dma
 c_func
@@ -2237,6 +2298,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|variable|UscIsrTable
+r_static
 id|isr_dispatch_func
 id|UscIsrTable
 (braket
@@ -2453,6 +2515,7 @@ id|pci_registered
 suffix:semicolon
 multiline_comment|/*&n; * Global linked list of SyncLink devices&n; */
 DECL|variable|mgsl_device_list
+r_static
 r_struct
 id|mgsl_struct
 op_star
@@ -2816,6 +2879,7 @@ id|timeout
 suffix:semicolon
 multiline_comment|/*&n; * 1st function defined in .text section. Calling this function in&n; * init_module() followed by a breakpoint allows a remote debugger&n; * (gdb) to get the .text address for the add-symbol-file command.&n; * This allows remote debugging of dynamically loadable modules.&n; */
 DECL|function|mgsl_get_text_ptr
+r_static
 r_void
 op_star
 id|mgsl_get_text_ptr
@@ -3203,6 +3267,7 @@ multiline_comment|/* end of mgsl_start() */
 multiline_comment|/*&n; * Bottom half work queue access functions&n; */
 multiline_comment|/* mgsl_bh_action()&t;Return next bottom half action to perform.&n; * Return Value:&t;BH action code or 0 if nothing to do.&n; */
 DECL|function|mgsl_bh_action
+r_static
 r_int
 id|mgsl_bh_action
 c_func
@@ -3319,6 +3384,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * &t;Perform bottom half processing of work items queued by ISR.&n; */
 DECL|function|mgsl_bh_handler
+r_static
 r_void
 id|mgsl_bh_handler
 c_func
@@ -3485,6 +3551,7 @@ id|info-&gt;device_name
 suffix:semicolon
 )brace
 DECL|function|mgsl_bh_receive
+r_static
 r_void
 id|mgsl_bh_receive
 c_func
@@ -3591,6 +3658,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|mgsl_bh_transmit
+r_static
 r_void
 id|mgsl_bh_transmit
 c_func
@@ -3686,6 +3754,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|mgsl_bh_status
+r_static
 r_void
 id|mgsl_bh_status
 c_func
@@ -3734,6 +3803,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* mgsl_isr_receive_status()&n; * &n; *&t;Service a receive status interrupt. The type of status&n; *&t;interrupt is indicated by the state of the RCSR.&n; *&t;This is only used for HDLC mode.&n; *&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_isr_receive_status
+r_static
 r_void
 id|mgsl_isr_receive_status
 c_func
@@ -3916,6 +3986,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_isr_receive_status() */
 multiline_comment|/* mgsl_isr_transmit_status()&n; * &n; * &t;Service a transmit status interrupt&n; *&t;HDLC mode :end of transmit frame&n; *&t;Async mode:all data is sent&n; * &t;transmit status is indicated by bits in the TCSR.&n; * &n; * Arguments:&t;&t;info&t;       pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_isr_transmit_status
+r_static
 r_void
 id|mgsl_isr_transmit_status
 c_func
@@ -4139,6 +4210,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_isr_transmit_status() */
 multiline_comment|/* mgsl_isr_io_pin()&n; * &n; * &t;Service an Input/Output pin interrupt. The type of&n; * &t;interrupt is indicated by bits in the MISR&n; * &t;&n; * Arguments:&t;&t;info&t;       pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_isr_io_pin
+r_static
 r_void
 id|mgsl_isr_io_pin
 c_func
@@ -4685,6 +4757,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_isr_io_pin() */
 multiline_comment|/* mgsl_isr_transmit_data()&n; * &n; * &t;Service a transmit data interrupt (async mode only).&n; * &n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_isr_transmit_data
+r_static
 r_void
 id|mgsl_isr_transmit_data
 c_func
@@ -4770,6 +4843,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_isr_transmit_data() */
 multiline_comment|/* mgsl_isr_receive_data()&n; * &n; * &t;Service a receive data interrupt. This occurs&n; * &t;when operating in asynchronous interrupt transfer mode.&n; *&t;The receive data FIFO is flushed to the receive data buffers. &n; * &n; * Arguments:&t;&t;info&t;&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_isr_receive_data
+r_static
 r_void
 id|mgsl_isr_receive_data
 c_func
@@ -5241,6 +5315,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* mgsl_isr_misc()&n; * &n; * &t;Service a miscellaneos interrupt source.&n; * &t;&n; * Arguments:&t;&t;info&t;&t;pointer to device extension (instance data)&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_isr_misc
+r_static
 r_void
 id|mgsl_isr_misc
 c_func
@@ -5372,6 +5447,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_isr_misc() */
 multiline_comment|/* mgsl_isr_null()&n; *&n; * &t;Services undefined interrupt vectors from the&n; * &t;USC. (hence this function SHOULD never be called)&n; * &n; * Arguments:&t;&t;info&t;&t;pointer to device extension (instance data)&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_isr_null
+r_static
 r_void
 id|mgsl_isr_null
 c_func
@@ -5386,6 +5462,7 @@ id|info
 multiline_comment|/* end of mgsl_isr_null() */
 multiline_comment|/* mgsl_isr_receive_dma()&n; * &n; * &t;Service a receive DMA channel interrupt.&n; * &t;For this driver there are two sources of receive DMA interrupts&n; * &t;as identified in the Receive DMA mode Register (RDMR):&n; * &n; * &t;BIT3&t;EOA/EOL&t;&t;End of List, all receive buffers in receive&n; * &t;&t;&t;&t;buffer list have been filled (no more free buffers&n; * &t;&t;&t;&t;available). The DMA controller has shut down.&n; * &n; * &t;BIT2&t;EOB&t;&t;End of Buffer. This interrupt occurs when a receive&n; * &t;&t;&t;&t;DMA buffer is terminated in response to completion&n; * &t;&t;&t;&t;of a good frame or a frame with errors. The status&n; * &t;&t;&t;&t;of the frame is stored in the buffer entry in the&n; * &t;&t;&t;&t;list of receive buffer entries.&n; * &n; * Arguments:&t;&t;info&t;&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_isr_receive_dma
+r_static
 r_void
 id|mgsl_isr_receive_dma
 c_func
@@ -5469,6 +5546,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_isr_receive_dma() */
 multiline_comment|/* mgsl_isr_transmit_dma()&n; *&n; *&t;This function services a transmit DMA channel interrupt.&n; *&n; *&t;For this driver there is one source of transmit DMA interrupts&n; *&t;as identified in the Transmit DMA Mode Register (TDMR):&n; *&n; *     &t;BIT2  EOB       End of Buffer. This interrupt occurs when a&n; *     &t;&t;&t;transmit DMA buffer has been emptied.&n; *&n; *     &t;The driver maintains enough transmit DMA buffers to hold at least&n; *     &t;one max frame size transmit frame. When operating in a buffered&n; *     &t;transmit mode, there may be enough transmit DMA buffers to hold at&n; *     &t;least two or more max frame size frames. On an EOB condition,&n; *     &t;determine if there are any queued transmit buffers and copy into&n; *     &t;transmit DMA buffers if we have room.&n; *&n; * Arguments:&t;&t;info&t;&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_isr_transmit_dma
+r_static
 r_void
 id|mgsl_isr_transmit_dma
 c_func
@@ -10634,6 +10712,7 @@ id|arg
 suffix:semicolon
 )brace
 DECL|function|mgsl_ioctl_common
+r_static
 r_int
 id|mgsl_ioctl_common
 c_func
@@ -13510,6 +13589,7 @@ suffix:semicolon
 multiline_comment|/* end of line_info() */
 multiline_comment|/* mgsl_read_proc()&n; * &n; * Called to print information about devices&n; * &n; * Arguments:&n; * &t;page&t;page of memory to hold returned info&n; * &t;start&t;&n; * &t;off&n; * &t;count&n; * &t;eof&n; * &t;data&n; * &t;&n; * Return Value:&n; */
 DECL|function|mgsl_read_proc
+r_static
 r_int
 id|mgsl_read_proc
 c_func
@@ -13687,6 +13767,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_read_proc() */
 multiline_comment|/* mgsl_allocate_dma_buffers()&n; * &n; * &t;Allocate and format DMA buffers (ISA adapter)&n; * &t;or format shared memory buffers (PCI adapter).&n; * &n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;0 if success, otherwise error&n; */
 DECL|function|mgsl_allocate_dma_buffers
+r_static
 r_int
 id|mgsl_allocate_dma_buffers
 c_func
@@ -13904,6 +13985,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_allocate_dma_buffers() */
 multiline_comment|/*&n; * mgsl_alloc_buffer_list_memory()&n; * &n; * Allocate a common DMA buffer for use as the&n; * receive and transmit buffer lists.&n; * &n; * A buffer list is a set of buffer entries where each entry contains&n; * a pointer to an actual buffer and a pointer to the next buffer entry&n; * (plus some other info about the buffer).&n; * &n; * The buffer entries for a list are built to form a circular list so&n; * that when the entire list has been traversed you start back at the&n; * beginning.&n; * &n; * This function allocates memory for just the buffer entries.&n; * The links (pointer to next entry) are filled in with the physical&n; * address of the next entry so the adapter can navigate the list&n; * using bus master DMA. The pointers to the actual buffers are filled&n; * out later when the actual buffers are allocated.&n; * &n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;0 if success, otherwise error&n; */
 DECL|function|mgsl_alloc_buffer_list_memory
+r_static
 r_int
 id|mgsl_alloc_buffer_list_memory
 c_func
@@ -14181,6 +14263,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_alloc_buffer_list_memory() */
 multiline_comment|/* Free DMA buffers allocated for use as the&n; * receive and transmit buffer lists.&n; * Warning:&n; * &n; * &t;The data transfer buffers associated with the buffer list&n; * &t;MUST be freed before freeing the buffer list itself because&n; * &t;the buffer list contains the information necessary to free&n; * &t;the individual buffers!&n; */
 DECL|function|mgsl_free_buffer_list_memory
+r_static
 r_void
 id|mgsl_free_buffer_list_memory
 c_func
@@ -14222,6 +14305,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_free_buffer_list_memory() */
 multiline_comment|/*&n; * mgsl_alloc_frame_memory()&n; * &n; * &t;Allocate the frame DMA buffers used by the specified buffer list.&n; * &t;Each DMA buffer will be one memory page in size. This is necessary&n; * &t;because memory can fragment enough that it may be impossible&n; * &t;contiguous pages.&n; * &n; * Arguments:&n; * &n; *&t;info&t;&t;pointer to device instance data&n; * &t;BufferList&t;pointer to list of buffer entries&n; * &t;Buffercount&t;count of buffer entries in buffer list&n; * &n; * Return Value:&t;0 if success, otherwise -ENOMEM&n; */
 DECL|function|mgsl_alloc_frame_memory
+r_static
 r_int
 id|mgsl_alloc_frame_memory
 c_func
@@ -14358,6 +14442,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_alloc_frame_memory() */
 multiline_comment|/*&n; * mgsl_free_frame_memory()&n; * &n; * &t;Free the buffers associated with&n; * &t;each buffer entry of a buffer list.&n; * &n; * Arguments:&n; * &n; *&t;info&t;&t;pointer to device instance data&n; * &t;BufferList&t;pointer to list of buffer entries&n; * &t;Buffercount&t;count of buffer entries in buffer list&n; * &n; * Return Value:&t;None&n; */
 DECL|function|mgsl_free_frame_memory
+r_static
 r_void
 id|mgsl_free_frame_memory
 c_func
@@ -14444,6 +14529,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_free_frame_memory() */
 multiline_comment|/* mgsl_free_dma_buffers()&n; * &n; * &t;Free DMA buffers&n; * &t;&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_free_dma_buffers
+r_static
 r_void
 id|mgsl_free_dma_buffers
 c_func
@@ -14484,6 +14570,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_free_dma_buffers() */
 multiline_comment|/*&n; * mgsl_alloc_intermediate_rxbuffer_memory()&n; * &n; * &t;Allocate a buffer large enough to hold max_frame_size. This buffer&n; *&t;is used to pass an assembled frame to the line discipline.&n; * &n; * Arguments:&n; * &n; *&t;info&t;&t;pointer to device instance data&n; * &n; * Return Value:&t;0 if success, otherwise -ENOMEM&n; */
 DECL|function|mgsl_alloc_intermediate_rxbuffer_memory
+r_static
 r_int
 id|mgsl_alloc_intermediate_rxbuffer_memory
 c_func
@@ -14524,6 +14611,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_alloc_intermediate_rxbuffer_memory() */
 multiline_comment|/*&n; * mgsl_free_intermediate_rxbuffer_memory()&n; * &n; * &n; * Arguments:&n; * &n; *&t;info&t;&t;pointer to device instance data&n; * &n; * Return Value:&t;None&n; */
 DECL|function|mgsl_free_intermediate_rxbuffer_memory
+r_static
 r_void
 id|mgsl_free_intermediate_rxbuffer_memory
 c_func
@@ -14553,6 +14641,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_free_intermediate_rxbuffer_memory() */
 multiline_comment|/*&n; * mgsl_alloc_intermediate_txbuffer_memory()&n; *&n; * &t;Allocate intermdiate transmit buffer(s) large enough to hold max_frame_size.&n; * &t;This buffer is used to load transmit frames into the adapter&squot;s dma transfer&n; * &t;buffers when there is sufficient space.&n; *&n; * Arguments:&n; *&n; *&t;info&t;&t;pointer to device instance data&n; *&n; * Return Value:&t;0 if success, otherwise -ENOMEM&n; */
 DECL|function|mgsl_alloc_intermediate_txbuffer_memory
+r_static
 r_int
 id|mgsl_alloc_intermediate_txbuffer_memory
 c_func
@@ -14654,6 +14743,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_alloc_intermediate_txbuffer_memory() */
 multiline_comment|/*&n; * mgsl_free_intermediate_txbuffer_memory()&n; *&n; *&n; * Arguments:&n; *&n; *&t;info&t;&t;pointer to device instance data&n; *&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_free_intermediate_txbuffer_memory
+r_static
 r_void
 id|mgsl_free_intermediate_txbuffer_memory
 c_func
@@ -14731,6 +14821,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_free_intermediate_txbuffer_memory() */
 multiline_comment|/*&n; * load_next_tx_holding_buffer()&n; *&n; * attempts to load the next buffered tx request into the&n; * tx dma buffers&n; *&n; * Arguments:&n; *&n; *&t;info&t;&t;pointer to device instance data&n; *&n; * Return Value:&t;1 if next buffered tx request loaded&n; * &t;&t;&t;into adapter&squot;s tx dma buffer,&n; * &t;&t;&t;0 otherwise&n; */
 DECL|function|load_next_tx_holding_buffer
+r_static
 r_int
 id|load_next_tx_holding_buffer
 c_func
@@ -14855,6 +14946,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * save_tx_buffer_request()&n; *&n; * attempt to store transmit frame request for later transmission&n; *&n; * Arguments:&n; *&n; *&t;info&t;&t;pointer to device instance data&n; * &t;Buffer&t;&t;pointer to buffer containing frame to load&n; * &t;BufferSize&t;size in bytes of frame in Buffer&n; *&n; * Return Value:&t;1 if able to store, 0 otherwise&n; */
 DECL|function|save_tx_buffer_request
+r_static
 r_int
 id|save_tx_buffer_request
 c_func
@@ -14934,6 +15026,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|mgsl_claim_resources
+r_static
 r_int
 id|mgsl_claim_resources
 c_func
@@ -15325,6 +15418,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end of mgsl_claim_resources() */
 DECL|function|mgsl_release_resources
+r_static
 r_void
 id|mgsl_release_resources
 c_func
@@ -15532,6 +15626,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_release_resources() */
 multiline_comment|/* mgsl_add_device()&n; * &n; * &t;Add the specified device instance data structure to the&n; * &t;global linked list of devices and increment the device count.&n; * &t;&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_add_device
+r_static
 r_void
 id|mgsl_add_device
 c_func
@@ -15782,6 +15877,7 @@ macro_line|#endif
 multiline_comment|/* end of mgsl_add_device() */
 multiline_comment|/* mgsl_allocate_device()&n; * &n; * &t;Allocate and initialize a device instance structure&n; * &t;&n; * Arguments:&t;&t;none&n; * Return Value:&t;pointer to mgsl_struct if success, otherwise NULL&n; */
 DECL|function|mgsl_allocate_device
+r_static
 r_struct
 id|mgsl_struct
 op_star
@@ -16660,6 +16756,7 @@ id|synclink_exit
 suffix:semicolon
 multiline_comment|/*&n; * usc_RTCmd()&n; *&n; * Issue a USC Receive/Transmit command to the&n; * Channel Command/Address Register (CCAR).&n; *&n; * Notes:&n; *&n; *    The command is encoded in the most significant 5 bits &lt;15..11&gt;&n; *    of the CCAR value. Bits &lt;10..7&gt; of the CCAR must be preserved&n; *    and Bits &lt;6..0&gt; must be written as zeros.&n; *&n; * Arguments:&n; *&n; *    info   pointer to device information structure&n; *    Cmd    command mask (use symbolic macros)&n; *&n; * Return Value:&n; *&n; *    None&n; */
 DECL|function|usc_RTCmd
+r_static
 r_void
 id|usc_RTCmd
 c_func
@@ -16707,6 +16804,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_RTCmd() */
 multiline_comment|/*&n; * usc_DmaCmd()&n; *&n; *    Issue a DMA command to the DMA Command/Address Register (DCAR).&n; *&n; * Arguments:&n; *&n; *    info   pointer to device information structure&n; *    Cmd    DMA command mask (usc_DmaCmd_XX Macros)&n; *&n; * Return Value:&n; *&n; *       None&n; */
 DECL|function|usc_DmaCmd
+r_static
 r_void
 id|usc_DmaCmd
 c_func
@@ -16749,6 +16847,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_DmaCmd() */
 multiline_comment|/*&n; * usc_OutDmaReg()&n; *&n; *    Write a 16-bit value to a USC DMA register&n; *&n; * Arguments:&n; *&n; *    info      pointer to device info structure&n; *    RegAddr   register address (number) for write&n; *    RegValue  16-bit value to write to register&n; *&n; * Return Value:&n; *&n; *    None&n; *&n; */
 DECL|function|usc_OutDmaReg
+r_static
 r_void
 id|usc_OutDmaReg
 c_func
@@ -16803,6 +16902,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_OutDmaReg() */
 multiline_comment|/*&n; * usc_InDmaReg()&n; *&n; *    Read a 16-bit value from a DMA register&n; *&n; * Arguments:&n; *&n; *    info     pointer to device info structure&n; *    RegAddr  register address (number) to read from&n; *&n; * Return Value:&n; *&n; *    The 16-bit value read from register&n; *&n; */
 DECL|function|usc_InDmaReg
+r_static
 id|u16
 id|usc_InDmaReg
 c_func
@@ -16839,6 +16939,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_InDmaReg() */
 multiline_comment|/*&n; *&n; * usc_OutReg()&n; *&n; *    Write a 16-bit value to a USC serial channel register &n; *&n; * Arguments:&n; *&n; *    info      pointer to device info structure&n; *    RegAddr   register address (number) to write to&n; *    RegValue  16-bit value to write to register&n; *&n; * Return Value:&n; *&n; *    None&n; *&n; */
 DECL|function|usc_OutReg
+r_static
 r_void
 id|usc_OutReg
 c_func
@@ -16897,6 +16998,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_OutReg() */
 multiline_comment|/*&n; * usc_InReg()&n; *&n; *    Reads a 16-bit value from a USC serial channel register&n; *&n; * Arguments:&n; *&n; *    info       pointer to device extension&n; *    RegAddr    register address (number) to read from&n; *&n; * Return Value:&n; *&n; *    16-bit value read from register&n; */
 DECL|function|usc_InReg
+r_static
 id|u16
 id|usc_InReg
 c_func
@@ -16935,6 +17037,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_InReg() */
 multiline_comment|/* usc_set_sdlc_mode()&n; *&n; *    Set up the adapter for SDLC DMA communications.&n; *&n; * Arguments:&t;&t;info    pointer to device instance data&n; * Return Value: &t;NONE&n; */
 DECL|function|usc_set_sdlc_mode
+r_static
 r_void
 id|usc_set_sdlc_mode
 c_func
@@ -18356,6 +18459,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_set_sdlc_mode() */
 multiline_comment|/* usc_enable_loopback()&n; *&n; * Set the 16C32 for internal loopback mode.&n; * The TxCLK and RxCLK signals are generated from the BRG0 and&n; * the TxD is looped back to the RxD internally.&n; *&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; *&t;&t;&t;enable&t;1 = enable loopback, 0 = disable&n; * Return Value:&t;None&n; */
 DECL|function|usc_enable_loopback
+r_static
 r_void
 id|usc_enable_loopback
 c_func
@@ -18601,6 +18705,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_enable_loopback() */
 multiline_comment|/* usc_enable_aux_clock()&n; *&n; * Enabled the AUX clock output at the specified frequency.&n; *&n; * Arguments:&n; *&n; *&t;info&t;&t;pointer to device extension&n; *&t;data_rate&t;data rate of clock in bits per second&n; *&t;&t;&t;A data rate of 0 disables the AUX clock.&n; *&n; * Return Value:&t;None&n; */
 DECL|function|usc_enable_aux_clock
+r_static
 r_void
 id|usc_enable_aux_clock
 c_func
@@ -18780,6 +18885,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_enable_aux_clock() */
 multiline_comment|/*&n; *&n; * usc_process_rxoverrun_sync()&n; *&n; *&t;&t;This function processes a receive overrun by resetting the&n; *&t;&t;receive DMA buffers and issuing a Purge Rx FIFO command&n; *&t;&t;to allow the receiver to continue receiving.&n; *&n; * Arguments:&n; *&n; *&t;info&t;&t;pointer to device extension&n; *&n; * Return Value: None&n; */
 DECL|function|usc_process_rxoverrun_sync
+r_static
 r_void
 id|usc_process_rxoverrun_sync
 c_func
@@ -19277,6 +19383,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_process_rxoverrun_sync() */
 multiline_comment|/* usc_stop_receiver()&n; *&n; *&t;Disable USC receiver&n; *&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|usc_stop_receiver
+r_static
 r_void
 id|usc_stop_receiver
 c_func
@@ -19400,6 +19507,7 @@ suffix:semicolon
 multiline_comment|/* end of stop_receiver() */
 multiline_comment|/* usc_start_receiver()&n; *&n; *&t;Enable the USC receiver &n; *&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|usc_start_receiver
+r_static
 r_void
 id|usc_start_receiver
 c_func
@@ -19697,6 +19805,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_start_receiver() */
 multiline_comment|/* usc_start_transmitter()&n; *&n; *&t;Enable the USC transmitter and send a transmit frame if&n; *&t;one is loaded in the DMA buffers.&n; *&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|usc_start_transmitter
+r_static
 r_void
 id|usc_start_transmitter
 c_func
@@ -20096,6 +20205,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_start_transmitter() */
 multiline_comment|/* usc_stop_transmitter()&n; *&n; *&t;Stops the transmitter and DMA&n; *&n; * Arguments:&t;&t;info&t;pointer to device isntance data&n; * Return Value:&t;None&n; */
 DECL|function|usc_stop_transmitter
+r_static
 r_void
 id|usc_stop_transmitter
 c_func
@@ -20196,6 +20306,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_stop_transmitter() */
 multiline_comment|/* usc_load_txfifo()&n; *&n; *&t;Fill the transmit FIFO until the FIFO is full or&n; *&t;there is no more data to load.&n; *&n; * Arguments:&t;&t;info&t;pointer to device extension (instance data)&n; * Return Value:&t;None&n; */
 DECL|function|usc_load_txfifo
+r_static
 r_void
 id|usc_load_txfifo
 c_func
@@ -20436,6 +20547,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_load_txfifo() */
 multiline_comment|/* usc_reset()&n; *&n; *&t;Reset the adapter to a known state and prepare it for further use.&n; *&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|usc_reset
+r_static
 r_void
 id|usc_reset
 c_func
@@ -20654,6 +20766,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_reset() */
 multiline_comment|/* usc_set_async_mode()&n; *&n; *&t;Program adapter for asynchronous communications.&n; *&n; * Arguments:&t;&t;info&t;&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|usc_set_async_mode
+r_static
 r_void
 id|usc_set_async_mode
 c_func
@@ -21006,6 +21119,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_set_async_mode() */
 multiline_comment|/* usc_loopback_frame()&n; *&n; *&t;Loop back a small (2 byte) dummy SDLC frame.&n; *&t;Interrupts and DMA are NOT used. The purpose of this is to&n; *&t;clear any &squot;stale&squot; status info left over from running in&t;async mode.&n; *&n; *&t;The 16C32 shows the strange behaviour of marking the 1st&n; *&t;received SDLC frame with a CRC error even when there is no&n; *&t;CRC error. To get around this a small dummy from of 2 bytes&n; *&t;is looped back when switching from async to sync mode.&n; *&n; * Arguments:&t;&t;info&t;&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|usc_loopback_frame
+r_static
 r_void
 id|usc_loopback_frame
 c_func
@@ -21206,6 +21320,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_loopback_frame() */
 multiline_comment|/* usc_set_sync_mode()&t;Programs the USC for SDLC communications.&n; *&n; * Arguments:&t;&t;info&t;pointer to adapter info structure&n; * Return Value:&t;None&n; */
 DECL|function|usc_set_sync_mode
+r_static
 r_void
 id|usc_set_sync_mode
 c_func
@@ -21292,6 +21407,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_set_sync_mode() */
 multiline_comment|/* usc_set_txidle()&t;Set the HDLC idle mode for the transmitter.&n; *&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|usc_set_txidle
+r_static
 r_void
 id|usc_set_txidle
 c_func
@@ -21491,6 +21607,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_set_txidle() */
 multiline_comment|/* usc_get_serial_signals()&n; *&n; *&t;Query the adapter for the state of the V24 status (input) signals.&n; *&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|usc_get_serial_signals
+r_static
 r_void
 id|usc_get_serial_signals
 c_func
@@ -21572,6 +21689,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_get_serial_signals() */
 multiline_comment|/* usc_set_serial_signals()&n; *&n; *&t;Set the state of DTR and RTS based on contents of&n; *&t;serial_signals member of device extension.&n; *&t;&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|usc_set_serial_signals
+r_static
 r_void
 id|usc_set_serial_signals
 c_func
@@ -21654,6 +21772,7 @@ suffix:semicolon
 multiline_comment|/* end of usc_set_serial_signals() */
 multiline_comment|/* usc_enable_async_clock()&n; *&n; *&t;Enable the async clock at the specified frequency.&n; *&n; * Arguments:&t;&t;info&t;&t;pointer to device instance data&n; *&t;&t;&t;data_rate&t;data rate of clock in bps&n; *&t;&t;&t;&t;&t;0 disables the AUX clock.&n; * Return Value:&t;None&n; */
 DECL|function|usc_enable_async_clock
+r_static
 r_void
 id|usc_enable_async_clock
 c_func
@@ -21826,6 +21945,7 @@ multiline_comment|/* end of usc_enable_async_clock() */
 multiline_comment|/*&n; * Buffer Structures:&n; *&n; * Normal memory access uses virtual addresses that can make discontiguous&n; * physical memory pages appear to be contiguous in the virtual address&n; * space (the processors memory mapping handles the conversions).&n; *&n; * DMA transfers require physically contiguous memory. This is because&n; * the DMA system controller and DMA bus masters deal with memory using&n; * only physical addresses.&n; *&n; * This causes a problem under Windows NT when large DMA buffers are&n; * needed. Fragmentation of the nonpaged pool prevents allocations of&n; * physically contiguous buffers larger than the PAGE_SIZE.&n; *&n; * However the 16C32 supports Bus Master Scatter/Gather DMA which&n; * allows DMA transfers to physically discontiguous buffers. Information&n; * about each data transfer buffer is contained in a memory structure&n; * called a &squot;buffer entry&squot;. A list of buffer entries is maintained&n; * to track and control the use of the data transfer buffers.&n; *&n; * To support this strategy we will allocate sufficient PAGE_SIZE&n; * contiguous memory buffers to allow for the total required buffer&n; * space.&n; *&n; * The 16C32 accesses the list of buffer entries using Bus Master&n; * DMA. Control information is read from the buffer entries by the&n; * 16C32 to control data transfers. status information is written to&n; * the buffer entries by the 16C32 to indicate the status of completed&n; * transfers.&n; *&n; * The CPU writes control information to the buffer entries to control&n; * the 16C32 and reads status information from the buffer entries to&n; * determine information about received and transmitted frames.&n; *&n; * Because the CPU and 16C32 (adapter) both need simultaneous access&n; * to the buffer entries, the buffer entry memory is allocated with&n; * HalAllocateCommonBuffer(). This restricts the size of the buffer&n; * entry list to PAGE_SIZE.&n; *&n; * The actual data buffers on the other hand will only be accessed&n; * by the CPU or the adapter but not by both simultaneously. This allows&n; * Scatter/Gather packet based DMA procedures for using physically&n; * discontiguous pages.&n; */
 multiline_comment|/*&n; * mgsl_reset_tx_dma_buffers()&n; *&n; * &t;Set the count for all transmit buffers to 0 to indicate the&n; * &t;buffer is available for use and set the current buffer to the&n; * &t;first buffer. This effectively makes all buffers free and&n; * &t;discards any data in buffers.&n; *&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_reset_tx_dma_buffers
+r_static
 r_void
 id|mgsl_reset_tx_dma_buffers
 c_func
@@ -21904,6 +22024,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_reset_tx_dma_buffers() */
 multiline_comment|/*&n; * num_free_tx_dma_buffers()&n; *&n; * &t;returns the number of free tx dma buffers available&n; *&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;number of free tx dma buffers&n; */
 DECL|function|num_free_tx_dma_buffers
+r_static
 r_int
 id|num_free_tx_dma_buffers
 c_func
@@ -21922,6 +22043,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * mgsl_reset_rx_dma_buffers()&n; * &n; * &t;Set the count for all receive buffers to DMABUFFERSIZE&n; * &t;and set the current buffer to the first buffer. This effectively&n; * &t;makes all buffers free and discards any data in buffers.&n; * &n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_reset_rx_dma_buffers
+r_static
 r_void
 id|mgsl_reset_rx_dma_buffers
 c_func
@@ -21982,6 +22104,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_reset_rx_dma_buffers() */
 multiline_comment|/*&n; * mgsl_free_rx_frame_buffers()&n; * &n; * &t;Free the receive buffers used by a received SDLC&n; * &t;frame such that the buffers can be reused.&n; * &n; * Arguments:&n; * &n; * &t;info&t;&t;&t;pointer to device instance data&n; * &t;StartIndex&t;&t;index of 1st receive buffer of frame&n; * &t;EndIndex&t;&t;index of last receive buffer of frame&n; * &n; * Return Value:&t;None&n; */
 DECL|function|mgsl_free_rx_frame_buffers
+r_static
 r_void
 id|mgsl_free_rx_frame_buffers
 c_func
@@ -22093,6 +22216,7 @@ suffix:semicolon
 multiline_comment|/* end of free_rx_frame_buffers() */
 multiline_comment|/* mgsl_get_rx_frame()&n; * &n; * &t;This function attempts to return a received SDLC frame from the&n; * &t;receive DMA buffers. Only frames received without errors are returned.&n; *&n; * Arguments:&t; &t;info&t;pointer to device extension&n; * Return Value:&t;1 if frame returned, otherwise 0&n; */
 DECL|function|mgsl_get_rx_frame
+r_static
 r_int
 id|mgsl_get_rx_frame
 c_func
@@ -22736,6 +22860,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_get_rx_frame() */
 multiline_comment|/* mgsl_get_raw_rx_frame()&n; *&n; *     &t;This function attempts to return a received frame from the&n; *&t;receive DMA buffers when running in external loop mode. In this mode,&n; *&t;we will return at most one DMABUFFERSIZE frame to the application.&n; *&t;The USC receiver is triggering off of DCD going active to start a new&n; *&t;frame, and DCD going inactive to terminate the frame (similar to&n; *&t;processing a closing flag character).&n; *&n; *&t;In this routine, we will return DMABUFFERSIZE &quot;chunks&quot; at a time.&n; *&t;If DCD goes inactive, the last Rx DMA Buffer will have a non-zero&n; * &t;status field and the RCC field will indicate the length of the&n; *&t;entire received frame. We take this RCC field and get the modulus&n; *&t;of RCC and DMABUFFERSIZE to determine if number of bytes in the&n; *&t;last Rx DMA buffer and return that last portion of the frame.&n; *&n; * Arguments:&t; &t;info&t;pointer to device extension&n; * Return Value:&t;1 if frame returned, otherwise 0&n; */
 DECL|function|mgsl_get_raw_rx_frame
+r_static
 r_int
 id|mgsl_get_raw_rx_frame
 c_func
@@ -23138,6 +23263,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_get_raw_rx_frame() */
 multiline_comment|/* mgsl_load_tx_dma_buffer()&n; * &n; * &t;Load the transmit DMA buffer with the specified data.&n; * &n; * Arguments:&n; * &n; * &t;info&t;&t;pointer to device extension&n; * &t;Buffer&t;&t;pointer to buffer containing frame to load&n; * &t;BufferSize&t;size in bytes of frame in Buffer&n; * &n; * Return Value: &t;None&n; */
 DECL|function|mgsl_load_tx_dma_buffer
+r_static
 r_void
 id|mgsl_load_tx_dma_buffer
 c_func
@@ -23355,6 +23481,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_load_tx_dma_buffer() */
 multiline_comment|/*&n; * mgsl_register_test()&n; * &n; * &t;Performs a register test of the 16C32.&n; * &t;&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;&t;TRUE if test passed, otherwise FALSE&n; */
 DECL|function|mgsl_register_test
+r_static
 id|BOOLEAN
 id|mgsl_register_test
 c_func
@@ -23768,6 +23895,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_register_test() */
 multiline_comment|/* mgsl_irq_test() &t;Perform interrupt test of the 16C32.&n; * &n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;TRUE if test passed, otherwise FALSE&n; */
 DECL|function|mgsl_irq_test
+r_static
 id|BOOLEAN
 id|mgsl_irq_test
 c_func
@@ -23950,6 +24078,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_irq_test() */
 multiline_comment|/* mgsl_dma_test()&n; * &n; * &t;Perform a DMA test of the 16C32. A small frame is&n; * &t;transmitted via DMA from a transmit buffer to a receive buffer&n; * &t;using single buffer DMA mode.&n; * &t;&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;TRUE if test passed, otherwise FALSE&n; */
 DECL|function|mgsl_dma_test
+r_static
 id|BOOLEAN
 id|mgsl_dma_test
 c_func
@@ -25052,6 +25181,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_dma_test() */
 multiline_comment|/* mgsl_adapter_test()&n; * &n; * &t;Perform the register, IRQ, and DMA tests for the 16C32.&n; * &t;&n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;0 if success, otherwise -ENODEV&n; */
 DECL|function|mgsl_adapter_test
+r_static
 r_int
 id|mgsl_adapter_test
 c_func
@@ -25227,6 +25357,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_adapter_test() */
 multiline_comment|/* mgsl_memory_test()&n; * &n; * &t;Test the shared memory on a PCI adapter.&n; * &n; * Arguments:&t;&t;info&t;pointer to device instance data&n; * Return Value:&t;TRUE if test passed, otherwise FALSE&n; */
 DECL|function|mgsl_memory_test
+r_static
 id|BOOLEAN
 id|mgsl_memory_test
 c_func
@@ -25440,6 +25571,7 @@ suffix:semicolon
 multiline_comment|/* End Of mgsl_memory_test() */
 multiline_comment|/* mgsl_load_pci_memory()&n; * &n; * &t;Load a large block of data into the PCI shared memory.&n; * &t;Use this instead of memcpy() or memmove() to move data&n; * &t;into the PCI shared memory.&n; * &n; * Notes:&n; * &n; * &t;This function prevents the PCI9050 interface chip from hogging&n; * &t;the adapter local bus, which can starve the 16C32 by preventing&n; * &t;16C32 bus master cycles.&n; * &n; * &t;The PCI9050 documentation says that the 9050 will always release&n; * &t;control of the local bus after completing the current read&n; * &t;or write operation.&n; * &n; * &t;It appears that as long as the PCI9050 write FIFO is full, the&n; * &t;PCI9050 treats all of the writes as a single burst transaction&n; * &t;and will not release the bus. This causes DMA latency problems&n; * &t;at high speeds when copying large data blocks to the shared&n; * &t;memory.&n; * &n; * &t;This function in effect, breaks the a large shared memory write&n; * &t;into multiple transations by interleaving a shared memory read&n; * &t;which will flush the write FIFO and &squot;complete&squot; the write&n; * &t;transation. This allows any pending DMA request to gain control&n; * &t;of the local bus in a timely fasion.&n; * &n; * Arguments:&n; * &n; * &t;TargetPtr&t;pointer to target address in PCI shared memory&n; * &t;SourcePtr&t;pointer to source buffer for data&n; * &t;count&t;&t;count in bytes of data to copy&n; *&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_load_pci_memory
+r_static
 r_void
 id|mgsl_load_pci_memory
 c_func
@@ -25539,6 +25671,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* End Of mgsl_load_pci_memory() */
 DECL|function|mgsl_trace_block
+r_static
 r_void
 id|mgsl_trace_block
 c_func
@@ -25730,6 +25863,7 @@ suffix:semicolon
 multiline_comment|/* end of mgsl_trace_block() */
 multiline_comment|/* mgsl_tx_timeout()&n; * &n; * &t;called when HDLC frame times out&n; * &t;update stats and do tx completion processing&n; * &t;&n; * Arguments:&t;context&t;&t;pointer to device instance data&n; * Return Value:&t;None&n; */
 DECL|function|mgsl_tx_timeout
+r_static
 r_void
 id|mgsl_tx_timeout
 c_func
@@ -25925,6 +26059,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* release the line by echoing RxD to TxD&n; * upon completion of a transmit frame&n; */
 DECL|function|usc_loopmode_send_done
+r_static
 r_void
 id|usc_loopmode_send_done
 c_func
@@ -25958,6 +26093,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* abort a transmit in progress while in HDLC LoopMode&n; */
 DECL|function|usc_loopmode_cancel_transmit
+r_static
 r_void
 id|usc_loopmode_cancel_transmit
 c_func
@@ -25994,6 +26130,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* for HDLC/SDLC LoopMode, setting CMR:13 after the transmitter is enabled&n; * is an Insert Into Loop action. Upon receipt of a GoAhead sequence (RxAbort)&n; * we must clear CMR:13 to begin repeating TxData to RxData&n; */
 DECL|function|usc_loopmode_insert_request
+r_static
 r_void
 id|usc_loopmode_insert_request
 c_func
@@ -26047,6 +26184,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* return 1 if station is inserted into the loop, otherwise 0&n; */
 DECL|function|usc_loopmode_active
+r_static
 r_int
 id|usc_loopmode_active
 c_func
@@ -26067,35 +26205,6 @@ id|CCSR
 )paren
 op_amp
 id|BIT7
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* return 1 if USC is in loop send mode, otherwise 0&n; */
-DECL|function|usc_loopmode_send_active
-r_int
-id|usc_loopmode_send_active
-c_func
-(paren
-r_struct
-id|mgsl_struct
-op_star
-id|info
-)paren
-(brace
-r_return
-id|usc_InReg
-c_func
-(paren
-id|info
-comma
-id|CCSR
-)paren
-op_amp
-id|BIT6
 ques
 c_cond
 l_int|1

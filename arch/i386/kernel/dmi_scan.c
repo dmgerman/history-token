@@ -379,6 +379,7 @@ comma
 op_star
 id|q
 suffix:semicolon
+multiline_comment|/*&n;&t; * no iounmap() for that ioremap(); it would be a no-op, but it&squot;s&n;&t; * so early in setup that sucker gets confused into doing what&n;&t; * it shouldn&squot;t if we actually call it.&n;&t; */
 r_for
 c_loop
 (paren
@@ -580,24 +581,12 @@ op_eq
 l_int|0
 )paren
 (brace
-id|iounmap
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 )brace
 )brace
-id|iounmap
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1

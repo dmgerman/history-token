@@ -15,6 +15,17 @@ macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &quot;xattr.h&quot;
 macro_line|#include &quot;acl.h&quot;
+r_static
+r_int
+id|ext3_writepage_trans_blocks
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Test whether an inode is a fast symlink.&n; */
 DECL|function|ext3_inode_is_fast_symlink
 r_static
@@ -10563,6 +10574,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * akpm: how many blocks doth make a writepage()?&n; *&n; * With N blocks per page, it may be:&n; * N data blocks&n; * 2 indirect block&n; * 2 dindirect&n; * 1 tindirect&n; * N+5 bitmap blocks (from the above)&n; * N+5 group descriptor summary blocks&n; * 1 inode block&n; * 1 superblock.&n; * 2 * EXT3_SINGLEDATA_TRANS_BLOCKS for the quote files&n; *&n; * 3 * (N + 5) + 2 + 2 * EXT3_SINGLEDATA_TRANS_BLOCKS&n; *&n; * With ordered or writeback data it&squot;s the same, less the N data blocks.&n; *&n; * If the inode&squot;s direct blocks can hold an integral number of pages then a&n; * page cannot straddle two indirect blocks, and we can only touch one indirect&n; * and dindirect block, and the &quot;5&quot; above becomes &quot;3&quot;.&n; *&n; * This still overestimates under most circumstances.  If we were to pass the&n; * start and end offsets in here as well we could do block_to_path() on each&n; * block and work out the exact number of indirects which are touched.  Pah.&n; */
 DECL|function|ext3_writepage_trans_blocks
+r_static
 r_int
 id|ext3_writepage_trans_blocks
 c_func

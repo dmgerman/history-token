@@ -129,6 +129,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ip2_read_proc
 c_func
@@ -523,21 +524,6 @@ id|i2ChanStrPtr
 comma
 r_struct
 id|termios
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|set_modem_info
-c_func
-(paren
-id|i2ChanStrPtr
-comma
-r_int
-r_int
-comma
-r_int
-r_int
 op_star
 )paren
 suffix:semicolon
@@ -13231,6 +13217,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the handler for /proc/tty/driver/ip2&n; *&n; * This stretch of code has been largely plagerized from at least three&n; * different sources including ip2mkdev.c and a couple of other drivers.&n; * The bugs are all mine.  :-)&t;=mhw=&n; */
 DECL|function|ip2_read_proc
+r_static
 r_int
 id|ip2_read_proc
 c_func

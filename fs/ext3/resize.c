@@ -1570,6 +1570,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Iterate through the groups which hold BACKUP superblock/GDT copies in an&n; * ext3 filesystem.  The counters should be initialized to 1, 5, and 7 before&n; * calling this for the first time.  In a sparse filesystem it will be the&n; * sequence of powers of 3, 5, and 7: 1, 3, 5, 7, 9, 25, 27, 49, 81, ...&n; * For a non-sparse filesystem it will be every group: 1, 2, 3, 4, ...&n; */
 DECL|function|ext3_list_backups
+r_static
 r_int
 id|ext3_list_backups
 c_func

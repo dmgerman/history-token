@@ -286,6 +286,11 @@ r_int
 r_char
 id|set
 suffix:semicolon
+multiline_comment|/*&n;&t; * unsafe is used to share failure information from bprm_apply_creds()&n;&t; * to bprm_post_apply_creds().&n;&t; */
+DECL|member|unsafe
+r_char
+id|unsafe
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|netif_security_struct

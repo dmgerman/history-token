@@ -1207,6 +1207,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|create_dir_info
+r_static
 r_struct
 id|dir_private_info
 op_star

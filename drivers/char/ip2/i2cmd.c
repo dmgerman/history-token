@@ -574,44 +574,7 @@ singleline_comment|// by user-level code. It is sent only by library routines in
 singleline_comment|// movement.
 singleline_comment|//static UCHAR ct37[]={ 5, BYP|VIP, 0x25,0,0,0,0             }; // FLOW PACKET
 singleline_comment|// Back to normal
-DECL|variable|ct38
-r_static
-id|UCHAR
-id|ct38
-(braket
-)braket
-op_assign
-(brace
-l_int|11
-comma
-id|BTH
-op_or
-id|VAR
-comma
-l_int|0x26
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-suffix:semicolon
-singleline_comment|// DEF KEY SEQ
+singleline_comment|//static UCHAR ct38[] = {11, BTH|VAR, 0x26,0,0,0,0,0,0,0,0,0,0 }; // DEF KEY SEQ
 singleline_comment|//static UCHAR ct39[]={ 3, BTH|END, 0x27,0,0                 }; // OPOSTON
 singleline_comment|//static UCHAR ct40[]={ 1, BTH|END, 0x28                     }; // OPOSTOFF
 DECL|variable|ct41
@@ -668,26 +631,7 @@ singleline_comment|//static UCHAR ct49[]={ 1, BTH,     0x31                     
 singleline_comment|//static UCHAR ct50[]={ 1, BTH,     0x32                     }; // DTRFLOWENAB
 singleline_comment|//static UCHAR ct51[]={ 1, BTH,     0x33                     }; // DTRFLOWDSAB
 singleline_comment|//static UCHAR ct52[]={ 1, BTH,     0x34                     }; // BAUDTABRESET
-DECL|variable|ct53
-r_static
-id|UCHAR
-id|ct53
-(braket
-)braket
-op_assign
-(brace
-l_int|3
-comma
-id|BTH
-comma
-l_int|0x35
-comma
-l_int|0
-comma
-l_int|0
-)brace
-suffix:semicolon
-singleline_comment|// BAUDREMAP
+singleline_comment|//static UCHAR ct53[] = { 3, BTH,     0x35,0,0                 }; // BAUDREMAP
 DECL|variable|ct54
 r_static
 id|UCHAR
@@ -929,132 +873,6 @@ singleline_comment|//********
 singleline_comment|//* Code *
 singleline_comment|//********
 singleline_comment|//******************************************************************************
-singleline_comment|// Function:   i2cmdSetSeq(type, size, string)
-singleline_comment|// Parameters: type   - sequence number
-singleline_comment|//             size   - length of sequence
-singleline_comment|//             string - substitution string
-singleline_comment|//
-singleline_comment|// Returns:    Pointer to command structure
-singleline_comment|//
-singleline_comment|// Description:
-singleline_comment|//
-singleline_comment|// This routine sets the parameters of command 38 Define Hot Key sequence (alias
-singleline_comment|// &quot;special receive sequence&quot;). Returns a pointer to the structure. Endeavours
-singleline_comment|// to be bullet-proof in that the sequence number is forced in range, and any
-singleline_comment|// out-of-range sizes are forced to zero.
-singleline_comment|//******************************************************************************
-id|cmdSyntaxPtr
-DECL|function|i2cmdSetSeq
-id|i2cmdSetSeq
-c_func
-(paren
-r_int
-r_char
-id|type
-comma
-r_int
-r_char
-id|size
-comma
-r_int
-r_char
-op_star
-id|string
-)paren
-(brace
-id|cmdSyntaxPtr
-id|pCM
-op_assign
-(paren
-id|cmdSyntaxPtr
-)paren
-id|ct38
-suffix:semicolon
-r_int
-r_char
-op_star
-id|pc
-suffix:semicolon
-id|pCM-&gt;cmd
-(braket
-l_int|1
-)braket
-op_assign
-(paren
-(paren
-id|type
-OG
-l_int|0xf
-)paren
-ques
-c_cond
-l_int|0xf
-suffix:colon
-id|type
-)paren
-suffix:semicolon
-singleline_comment|// Sequence number
-id|size
-op_assign
-(paren
-(paren
-id|size
-OG
-l_int|0x8
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|size
-)paren
-suffix:semicolon
-singleline_comment|// size
-id|pCM-&gt;cmd
-(braket
-l_int|2
-)braket
-op_assign
-id|size
-suffix:semicolon
-id|pCM-&gt;length
-op_assign
-l_int|3
-op_plus
-id|size
-suffix:semicolon
-singleline_comment|// UPDATES THE LENGTH!
-id|pc
-op_assign
-op_amp
-(paren
-id|pCM-&gt;cmd
-(braket
-l_int|3
-)braket
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|size
-op_decrement
-)paren
-(brace
-op_star
-id|pc
-op_increment
-op_assign
-op_star
-id|string
-op_increment
-suffix:semicolon
-)brace
-r_return
-id|pCM
-suffix:semicolon
-)brace
-singleline_comment|//******************************************************************************
 singleline_comment|// Function:   i2cmdUnixFlags(iflag, cflag, lflag)
 singleline_comment|// Parameters: Unix tty flags
 singleline_comment|//
@@ -1168,57 +986,6 @@ id|lflag
 op_rshift
 l_int|8
 )paren
-suffix:semicolon
-r_return
-id|pCM
-suffix:semicolon
-)brace
-singleline_comment|//******************************************************************************
-singleline_comment|// Function:   i2cmdBaudRemap(dest,src)
-singleline_comment|// Parameters: ?
-singleline_comment|//
-singleline_comment|// Returns:    Pointer to command structure
-singleline_comment|//
-singleline_comment|// Description:
-singleline_comment|//
-singleline_comment|// This routine sets the parameters of command 53 and returns a pointer to the
-singleline_comment|// appropriate structure.
-singleline_comment|//******************************************************************************
-id|cmdSyntaxPtr
-DECL|function|i2cmdBaudRemap
-id|i2cmdBaudRemap
-c_func
-(paren
-r_int
-r_char
-id|dest
-comma
-r_int
-r_char
-id|src
-)paren
-(brace
-id|cmdSyntaxPtr
-id|pCM
-op_assign
-(paren
-id|cmdSyntaxPtr
-)paren
-id|ct53
-suffix:semicolon
-id|pCM-&gt;cmd
-(braket
-l_int|1
-)braket
-op_assign
-id|dest
-suffix:semicolon
-id|pCM-&gt;cmd
-(braket
-l_int|2
-)braket
-op_assign
-id|src
 suffix:semicolon
 r_return
 id|pCM

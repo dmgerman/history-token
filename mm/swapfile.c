@@ -6707,11 +6707,6 @@ c_func
 id|p
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|swap_map
-)paren
 id|vfree
 c_func
 (paren

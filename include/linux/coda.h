@@ -2012,12 +2012,12 @@ id|out
 suffix:semicolon
 multiline_comment|/* Data to be transferred out */
 DECL|member|in_size
-r_int
+id|u_short
 id|in_size
 suffix:semicolon
 multiline_comment|/* Size of input buffer &lt;= 2K */
 DECL|member|out_size
-r_int
+id|u_short
 id|out_size
 suffix:semicolon
 multiline_comment|/* Maximum size of output buffer, &lt;= 2K */

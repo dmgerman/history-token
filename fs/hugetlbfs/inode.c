@@ -631,6 +631,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|huge_pagevec_release
+r_static
 r_void
 id|huge_pagevec_release
 c_func
@@ -679,6 +680,7 @@ id|pvec
 suffix:semicolon
 )brace
 DECL|function|truncate_huge_page
+r_static
 r_void
 id|truncate_huge_page
 c_func
@@ -715,6 +717,7 @@ id|page
 suffix:semicolon
 )brace
 DECL|function|truncate_hugepages
+r_static
 r_void
 id|truncate_hugepages
 c_func
@@ -2149,6 +2152,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * For direct-IO reads into hugetlb pages&n; */
 DECL|function|hugetlbfs_set_page_dirty
+r_static
 r_int
 id|hugetlbfs_set_page_dirty
 c_func

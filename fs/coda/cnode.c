@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/coda_linux.h&gt;
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
 macro_line|#include &lt;linux/coda_psdev.h&gt;
 DECL|function|coda_fideq
+r_static
 r_inline
 r_int
 id|coda_fideq

@@ -16,17 +16,6 @@ mdefine_line|#define EXT3_XATTR_TRANS_BLOCKS&t;&t;6U
 multiline_comment|/* Define the minimum size for a transaction which modifies data.  This&n; * needs to take into account the fact that we may end up modifying two&n; * quota files too (one for the group, one for the user quota).  The&n; * superblock only gets updated once, of course, so don&squot;t bother&n; * counting that again for the quota updates. */
 DECL|macro|EXT3_DATA_TRANS_BLOCKS
 mdefine_line|#define EXT3_DATA_TRANS_BLOCKS&t;&t;(EXT3_SINGLEDATA_TRANS_BLOCKS + &bslash;&n;&t;&t;&t;&t;&t; EXT3_XATTR_TRANS_BLOCKS - 2 + &bslash;&n;&t;&t;&t;&t;&t; 2*EXT3_QUOTA_TRANS_BLOCKS)
-r_extern
-r_int
-id|ext3_writepage_trans_blocks
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-suffix:semicolon
 multiline_comment|/* Delete operations potentially hit one directory&squot;s namespace plus an&n; * entire inode, plus arbitrary amounts of bitmap/indirection data.  Be&n; * generous.  We can grow the delete transaction later if necessary. */
 DECL|macro|EXT3_DELETE_TRANS_BLOCKS
 mdefine_line|#define EXT3_DELETE_TRANS_BLOCKS&t;(2 * EXT3_DATA_TRANS_BLOCKS + 64)

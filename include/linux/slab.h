@@ -438,11 +438,6 @@ suffix:semicolon
 r_extern
 id|kmem_cache_t
 op_star
-id|dquot_cachep
-suffix:semicolon
-r_extern
-id|kmem_cache_t
-op_star
 id|fs_cachep
 suffix:semicolon
 r_extern

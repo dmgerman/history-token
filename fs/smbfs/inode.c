@@ -1970,6 +1970,7 @@ id|server
 suffix:semicolon
 )brace
 DECL|function|smb_fill_super
+r_static
 r_int
 id|smb_fill_super
 c_func

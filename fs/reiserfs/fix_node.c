@@ -2012,13 +2012,22 @@ dot
 id|vi_index
 op_ne
 id|TYPE_DIRENTRY
+op_logical_and
+id|vn-&gt;vn_vi
+(braket
+id|split_item_num
+)braket
+dot
+id|vi_index
+op_ne
+id|TYPE_INDIRECT
 )paren
 id|reiserfs_warning
 (paren
 id|tb-&gt;tb_sb
 comma
 l_string|&quot;vs-8115: get_num_ver: not &quot;
-l_string|&quot;directory item&quot;
+l_string|&quot;directory or indirect item&quot;
 )paren
 suffix:semicolon
 )brace

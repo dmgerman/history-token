@@ -6,7 +6,7 @@ r_int
 id|sysdev_suspend
 c_func
 (paren
-id|u32
+id|pm_message_t
 id|state
 )paren
 suffix:semicolon
@@ -22,7 +22,7 @@ id|device
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -75,7 +75,7 @@ r_int
 id|device_suspend
 c_func
 (paren
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -304,7 +304,7 @@ r_int
 id|device_power_down
 c_func
 (paren
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace

@@ -160,7 +160,6 @@ multiline_comment|/**&n; *&t;i2o_pci_free - Frees the DMA memory for the I2O con
 DECL|function|i2o_pci_free
 r_static
 r_void
-id|__devexit
 id|i2o_pci_free
 c_func
 (paren

@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/coda_psdev.h&gt;
 macro_line|#include &lt;linux/coda_proc.h&gt;
 multiline_comment|/* if CODA_STORE fails with EOPNOTSUPP, venus clearly doesn&squot;t support&n; * CODA_STORE/CODA_RELEASE and we fall back on using the CODA_CLOSE upcall */
 DECL|variable|use_coda_close
+r_static
 r_int
 id|use_coda_close
 suffix:semicolon

@@ -30,9 +30,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Set this to one if you want to partition the flash */
-DECL|macro|PARTITION
-mdefine_line|#define PARTITION 1
 DECL|variable|probe
 r_static
 r_int
@@ -163,7 +160,7 @@ id|mtd_info
 op_star
 id|mymtd
 suffix:semicolon
-macro_line|#if PARTITION
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
 DECL|variable|partition_info
 r_static
 r_struct
@@ -864,7 +861,7 @@ id|mymtd-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-macro_line|#if PARTITION
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
 id|partition_info
 (braket
 l_int|3
@@ -940,7 +937,7 @@ c_cond
 id|mymtd
 )paren
 (brace
-macro_line|#if PARTITION
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
 id|del_mtd_partitions
 c_func
 (paren

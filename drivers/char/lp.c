@@ -31,6 +31,7 @@ multiline_comment|/* ROUND_UP macro from fs/select.c */
 DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP(x,y) (((x)+(y)-1)/(y))
 DECL|variable|lp_table
+r_static
 r_struct
 id|lp_struct
 id|lp_table
@@ -3632,6 +3633,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|lp_init
+r_static
 r_int
 id|__init
 id|lp_init

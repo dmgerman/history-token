@@ -6981,6 +6981,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;BUG: wrong zone alignment, it will crash&bslash;n&quot;
 )paren
 suffix:semicolon

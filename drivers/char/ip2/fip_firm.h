@@ -1,6 +1,7 @@
 multiline_comment|/* fip_firm.h - Intelliport II loadware */
 multiline_comment|/* -31232 bytes read from ff.lod */
 DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|fip_firm

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/topology.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;

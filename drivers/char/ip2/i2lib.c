@@ -409,6 +409,7 @@ macro_line|#endif /* DEBUG_FIFO */
 singleline_comment|//********
 singleline_comment|//* Code *
 singleline_comment|//********
+r_static
 r_inline
 r_int
 DECL|function|i2Validate
