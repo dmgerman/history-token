@@ -533,6 +533,14 @@ comma
 l_int|512
 )paren
 suffix:semicolon
+id|blk_queue_dma_alignment
+c_func
+(paren
+id|q
+comma
+l_int|511
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * by default assume old behaviour and bounce for any highmem page&n;&t; */
 id|blk_queue_bounce_limit
 c_func
@@ -928,6 +936,25 @@ id|mask
 suffix:semicolon
 )brace
 id|q-&gt;seg_boundary_mask
+op_assign
+id|mask
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * blk_queue_dma_alignment - set dma length and memory alignment&n; * @q:  the request queue for the device&n; * @dma_mask:  alignment mask&n; *&n; * description:&n; *    set required memory and length aligment for direct dma transactions.&n; *    this is used when buiding direct io requests for the queue.&n; *&n; **/
+DECL|function|blk_queue_dma_alignment
+r_void
+id|blk_queue_dma_alignment
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+r_int
+id|mask
+)paren
+(brace
+id|q-&gt;dma_alignment
 op_assign
 id|mask
 suffix:semicolon
@@ -7331,6 +7358,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|blk_queue_segment_boundary
+)paren
+suffix:semicolon
+DECL|variable|blk_queue_dma_alignment
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blk_queue_dma_alignment
 )paren
 suffix:semicolon
 DECL|variable|blk_rq_map_sg
