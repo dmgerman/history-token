@@ -1554,6 +1554,17 @@ op_assign
 id|BLK_BOUNCE_ANY
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|pci_dev
+)paren
 id|addr
 op_assign
 id|HWIF
