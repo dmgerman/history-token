@@ -2,9 +2,6 @@ multiline_comment|/*&n; * cpufeature.h&n; *&n; * Defines x86 CPU feature bits&n;
 macro_line|#ifndef __ASM_I386_CPUFEATURE_H
 DECL|macro|__ASM_I386_CPUFEATURE_H
 mdefine_line|#define __ASM_I386_CPUFEATURE_H
-multiline_comment|/* Sample usage: CPU_FEATURE_P(cpu.x86_capability, FPU) */
-DECL|macro|CPU_FEATURE_P
-mdefine_line|#define CPU_FEATURE_P(CAP, FEATURE) test_bit(CAP, X86_FEATURE_##FEATURE ##_BIT)
 DECL|macro|NCAPINTS
 mdefine_line|#define NCAPINTS&t;4&t;/* Currently we have 4 32-bit words worth of info */
 multiline_comment|/* Intel-defined CPU features, CPUID level 0x00000001, word 0 */
@@ -98,6 +95,44 @@ DECL|macro|X86_FEATURE_CYRIX_ARR
 mdefine_line|#define X86_FEATURE_CYRIX_ARR&t;(3*32+ 2) /* Cyrix ARRs (= MTRRs) */
 DECL|macro|X86_FEATURE_CENTAUR_MCR
 mdefine_line|#define X86_FEATURE_CENTAUR_MCR&t;(3*32+ 3) /* Centaur MCRs (= MTRRs) */
+DECL|macro|cpu_has
+mdefine_line|#define cpu_has(c, bit)&t;&t;test_bit(bit, (c)-&gt;x86_capability)
+DECL|macro|boot_cpu_has
+mdefine_line|#define boot_cpu_has(bit)&t;test_bit(bit, boot_cpu_data.x86_capability)
+DECL|macro|cpu_has_fpu
+mdefine_line|#define cpu_has_fpu&t;&t;boot_cpu_has(X86_FEATURE_FPU)
+DECL|macro|cpu_has_vme
+mdefine_line|#define cpu_has_vme&t;&t;boot_cpu_has(X86_FEATURE_VME)
+DECL|macro|cpu_has_de
+mdefine_line|#define cpu_has_de&t;&t;boot_cpu_has(X86_FEATURE_DE)
+DECL|macro|cpu_has_pse
+mdefine_line|#define cpu_has_pse&t;&t;boot_cpu_has(X86_FEATURE_PSE)
+DECL|macro|cpu_has_tsc
+mdefine_line|#define cpu_has_tsc&t;&t;boot_cpu_has(X86_FEATURE_TSC)
+DECL|macro|cpu_has_pae
+mdefine_line|#define cpu_has_pae&t;&t;boot_cpu_has(X86_FEATURE_PAE)
+DECL|macro|cpu_has_pge
+mdefine_line|#define cpu_has_pge&t;&t;boot_cpu_has(X86_FEATURE_PGE)
+DECL|macro|cpu_has_apic
+mdefine_line|#define cpu_has_apic&t;&t;boot_cpu_has(X86_FEATURE_APIC)
+DECL|macro|cpu_has_mtrr
+mdefine_line|#define cpu_has_mtrr&t;&t;boot_cpu_has(X86_FEATURE_MTRR)
+DECL|macro|cpu_has_mmx
+mdefine_line|#define cpu_has_mmx&t;&t;boot_cpu_has(X86_FEATURE_MMX)
+DECL|macro|cpu_has_fxsr
+mdefine_line|#define cpu_has_fxsr&t;&t;boot_cpu_has(X86_FEATURE_FXSR)
+DECL|macro|cpu_has_xmm
+mdefine_line|#define cpu_has_xmm&t;&t;boot_cpu_has(X86_FEATURE_XMM)
+DECL|macro|cpu_has_ht
+mdefine_line|#define cpu_has_ht&t;&t;boot_cpu_has(X86_FEATURE_HT)
+DECL|macro|cpu_has_mp
+mdefine_line|#define cpu_has_mp&t;&t;boot_cpu_has(X86_FEATURE_MP)
+DECL|macro|cpu_has_k6_mtrr
+mdefine_line|#define cpu_has_k6_mtrr&t;&t;boot_cpu_has(X86_FEATURE_K6_MTRR)
+DECL|macro|cpu_has_cyrix_arr
+mdefine_line|#define cpu_has_cyrix_arr&t;boot_cpu_has(X86_FEATURE_CYRIX_ARR)
+DECL|macro|cpu_has_centaur_mcr
+mdefine_line|#define cpu_has_centaur_mcr&t;boot_cpu_has(X86_FEATURE_CENTAUR_MCR)
 macro_line|#endif /* __ASM_I386_CPUFEATURE_H */
 multiline_comment|/* &n; * Local Variables:&n; * mode:c&n; * comment-column:42&n; * End:&n; */
 eof

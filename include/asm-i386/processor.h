@@ -168,30 +168,6 @@ mdefine_line|#define cpu_data (&amp;boot_cpu_data)
 DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data boot_cpu_data
 macro_line|#endif
-DECL|macro|cpu_has_pge
-mdefine_line|#define cpu_has_pge&t;(test_bit(X86_FEATURE_PGE,  boot_cpu_data.x86_capability))
-DECL|macro|cpu_has_pse
-mdefine_line|#define cpu_has_pse&t;(test_bit(X86_FEATURE_PSE,  boot_cpu_data.x86_capability))
-DECL|macro|cpu_has_pae
-mdefine_line|#define cpu_has_pae&t;(test_bit(X86_FEATURE_PAE,  boot_cpu_data.x86_capability))
-DECL|macro|cpu_has_tsc
-mdefine_line|#define cpu_has_tsc&t;(test_bit(X86_FEATURE_TSC,  boot_cpu_data.x86_capability))
-DECL|macro|cpu_has_de
-mdefine_line|#define cpu_has_de&t;(test_bit(X86_FEATURE_DE,   boot_cpu_data.x86_capability))
-DECL|macro|cpu_has_vme
-mdefine_line|#define cpu_has_vme&t;(test_bit(X86_FEATURE_VME,  boot_cpu_data.x86_capability))
-DECL|macro|cpu_has_fxsr
-mdefine_line|#define cpu_has_fxsr&t;(test_bit(X86_FEATURE_FXSR, boot_cpu_data.x86_capability))
-DECL|macro|cpu_has_mmx
-mdefine_line|#define cpu_has_mmx&t;(test_bit(X86_FEATURE_MMX,  boot_cpu_data.x86_capability))
-DECL|macro|cpu_has_xmm
-mdefine_line|#define cpu_has_xmm&t;(test_bit(X86_FEATURE_XMM,  boot_cpu_data.x86_capability))
-DECL|macro|cpu_has_fpu
-mdefine_line|#define cpu_has_fpu&t;(test_bit(X86_FEATURE_FPU,  boot_cpu_data.x86_capability))
-DECL|macro|cpu_has_apic
-mdefine_line|#define cpu_has_apic&t;(test_bit(X86_FEATURE_APIC, boot_cpu_data.x86_capability))
-DECL|macro|cpu_has_mp
-mdefine_line|#define cpu_has_mp (test_bit(X86_FEATURE_MP, boot_cpu_data.x86_capability))
 r_extern
 r_char
 id|ignore_irq13

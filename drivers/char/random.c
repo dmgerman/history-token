@@ -398,7 +398,6 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * More asm magic....&n; * &n; * For entropy estimation, we need to do an integral base 2&n; * logarithm.  &n; *&n; * Note the &quot;12bits&quot; suffix - this is used for numbers between&n; * 0 and 4095 only.  This allows a few shortcuts.&n; */
 macro_line|#if 0&t;/* Slow but clear version */
-DECL|function|int_ln_12bits
 r_static
 r_inline
 id|__u32
@@ -523,7 +522,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if 0
-DECL|macro|DEBUG_ENT
 mdefine_line|#define DEBUG_ENT(fmt, arg...) printk(KERN_DEBUG &quot;random: &quot; fmt, ## arg)
 macro_line|#else
 DECL|macro|DEBUG_ENT
@@ -1595,6 +1593,7 @@ c_cond
 (paren
 id|cpu_has_tsc
 )paren
+(brace
 id|__u32
 id|high
 suffix:semicolon
