@@ -8327,6 +8327,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|tx_desc-&gt;buffer_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|tx_desc-&gt;lower.data
+op_assign
+l_int|0
+suffix:semicolon
 id|tx_desc-&gt;upper.data
 op_assign
 l_int|0
