@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 2002-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#ifndef _ASM_IA64_THREAD_INFO_H
 DECL|macro|_ASM_IA64_THREAD_INFO_H
 mdefine_line|#define _ASM_IA64_THREAD_INFO_H
@@ -68,6 +68,8 @@ mdefine_line|#define INIT_THREAD_INFO(ti)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;
 multiline_comment|/* how to get the thread information struct from C */
 DECL|macro|current_thread_info
 mdefine_line|#define current_thread_info() ((struct thread_info *) ((char *) current + IA64_TASK_SIZE))
+DECL|macro|free_thread_info
+mdefine_line|#define free_thread_info(ti)&t;/* nothing */
 macro_line|#endif /* !__ASSEMBLY */
 multiline_comment|/*&n; * thread information flags&n; * - these are process state flags that various assembly files may need to access&n; * - pending work-to-be-done flags are in least-significant 16 bits, other flags&n; *   in top 16 bits&n; */
 DECL|macro|TIF_NOTIFY_RESUME
