@@ -39,138 +39,31 @@ mdefine_line|#define KERNEL_LOW_HPAGES
 macro_line|#endif
 DECL|macro|KERNEL_CONTEXT
 mdefine_line|#define KERNEL_CONTEXT(ea) ({ &bslash;&n;&t;&t;mm_context_t ctx = { .id = REGION_ID(ea), KERNEL_LOW_HPAGES}; &bslash;&n;&t;&t;ctx; })
-r_typedef
+DECL|macro|STE_ESID_V
+mdefine_line|#define STE_ESID_V&t;0x80
+DECL|macro|STE_ESID_KS
+mdefine_line|#define STE_ESID_KS&t;0x20
+DECL|macro|STE_ESID_KP
+mdefine_line|#define STE_ESID_KP&t;0x10
+DECL|macro|STE_ESID_N
+mdefine_line|#define STE_ESID_N&t;0x08
+DECL|macro|STE_VSID_SHIFT
+mdefine_line|#define STE_VSID_SHIFT&t;12
+DECL|struct|stab_entry
 r_struct
+id|stab_entry
 (brace
-DECL|member|esid
+DECL|member|esid_data
 r_int
 r_int
-id|esid
-suffix:colon
-l_int|36
+id|esid_data
 suffix:semicolon
-multiline_comment|/* Effective segment ID */
-DECL|member|resv0
+DECL|member|vsid_data
 r_int
 r_int
-id|resv0
-suffix:colon
-l_int|20
+id|vsid_data
 suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|v
-r_int
-r_int
-id|v
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Entry valid (v=1) or invalid */
-DECL|member|resv1
-r_int
-r_int
-id|resv1
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|ks
-r_int
-r_int
-id|ks
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Supervisor (privileged) state storage key */
-DECL|member|kp
-r_int
-r_int
-id|kp
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Problem state storage key */
-DECL|member|n
-r_int
-r_int
-id|n
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* No-execute if n=1 */
-DECL|member|resv2
-r_int
-r_int
-id|resv2
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* padding to a 64b boundary */
-DECL|typedef|ste_dword0
 )brace
-id|ste_dword0
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|vsid
-r_int
-r_int
-id|vsid
-suffix:colon
-l_int|52
-suffix:semicolon
-multiline_comment|/* Virtual segment ID */
-DECL|member|resv0
-r_int
-r_int
-id|resv0
-suffix:colon
-l_int|12
-suffix:semicolon
-multiline_comment|/* Padding to a 64b boundary */
-DECL|typedef|ste_dword1
-)brace
-id|ste_dword1
-suffix:semicolon
-DECL|struct|_STE
-r_typedef
-r_struct
-id|_STE
-(brace
-r_union
-(brace
-DECL|member|dword0
-r_int
-r_int
-id|dword0
-suffix:semicolon
-DECL|member|dw0
-id|ste_dword0
-id|dw0
-suffix:semicolon
-DECL|member|dw0
-)brace
-id|dw0
-suffix:semicolon
-r_union
-(brace
-DECL|member|dword1
-r_int
-r_int
-id|dword1
-suffix:semicolon
-DECL|member|dw1
-id|ste_dword1
-id|dw1
-suffix:semicolon
-DECL|member|dw1
-)brace
-id|dw1
-suffix:semicolon
-DECL|typedef|STE
-)brace
-id|STE
 suffix:semicolon
 multiline_comment|/* Hardware Page Table Entry */
 DECL|macro|HPTES_PER_GROUP
