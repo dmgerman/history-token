@@ -243,6 +243,11 @@ op_amp
 id|q-&gt;backing_dev_info.state
 )paren
 suffix:semicolon
+id|smp_mb__after_clear_bit
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4942,11 +4947,6 @@ op_le
 id|q-&gt;nr_requests
 )paren
 (brace
-id|smp_mb
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
