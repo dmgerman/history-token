@@ -550,7 +550,7 @@ r_struct
 id|edd_info
 id|edd
 (braket
-id|EDDNR
+id|EDDMAXNR
 )braket
 suffix:semicolon
 r_extern
