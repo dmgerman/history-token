@@ -2,7 +2,6 @@ multiline_comment|/*&n; * linux/arch/arm/mach-omap/time.c&n; *&n; * OMAP Timers&
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
