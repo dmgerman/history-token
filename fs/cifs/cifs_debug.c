@@ -629,9 +629,17 @@ c_func
 id|tcon-&gt;fsDevInfo.DeviceCharacteristics
 )paren
 comma
+id|le32_to_cpu
+c_func
+(paren
 id|tcon-&gt;fsAttrInfo.Attributes
+)paren
 comma
+id|le32_to_cpu
+c_func
+(paren
 id|tcon-&gt;fsAttrInfo.MaxPathNameComponentLength
+)paren
 comma
 id|tcon-&gt;tidStatus
 )paren
