@@ -110,12 +110,7 @@ r_int
 id|matroxfb_vgaHWinit
 c_func
 (paren
-id|CPMINFO
-r_struct
-id|matrox_hw_state
-op_star
-id|hw
-comma
+id|WPMINFO
 r_struct
 id|my_timming
 op_star
@@ -131,16 +126,7 @@ r_void
 id|matroxfb_vgaHWrestore
 c_func
 (paren
-id|WPMINFO
-r_struct
-id|matrox_hw_state
-op_star
-id|hw
-comma
-r_struct
-id|matrox_hw_state
-op_star
-id|oldhw
+id|WPMINFO2
 )paren
 suffix:semicolon
 r_void
@@ -173,6 +159,13 @@ r_struct
 id|display
 op_star
 id|p
+)paren
+suffix:semicolon
+r_void
+id|matroxfb_read_pins
+c_func
+(paren
+id|WPMINFO2
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* __MATROXFB_MISC_H__ */
