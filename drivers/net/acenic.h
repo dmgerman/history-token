@@ -5,10 +5,6 @@ macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Generate TX index update each time, when TX ring is closed.&n; * Normally, this is not useful, because results in more dma (and irqs&n; * without TX_COAL_INTS_ONLY).&n; */
 DECL|macro|USE_TX_COAL_NOW
 mdefine_line|#define USE_TX_COAL_NOW&t; 0
-macro_line|#ifndef MAX_SKB_FRAGS
-DECL|macro|MAX_SKB_FRAGS
-mdefine_line|#define MAX_SKB_FRAGS 0
-macro_line|#endif
 multiline_comment|/*&n; * Addressing:&n; *&n; * The Tigon uses 64-bit host addresses, regardless of their actual&n; * length, and it expects a big-endian format. For 32 bit systems the&n; * upper 32 bits of the address are simply ignored (zero), however for&n; * little endian 64 bit systems (Alpha) this looks strange with the&n; * two parts of the address word being swapped.&n; *&n; * The addresses are split in two 32 bit words for all architectures&n; * as some of them are in PCI shared memory and it is necessary to use&n; * readl/writel to access them.&n; *&n; * The addressing code is derived from Pete Wyckoff&squot;s work, but&n; * modified to deal properly with readl/writel usage.&n; */
 DECL|struct|ace_regs
 r_struct
@@ -1398,6 +1394,7 @@ suffix:semicolon
 DECL|member|regs
 r_struct
 id|ace_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -1702,13 +1699,8 @@ suffix:semicolon
 )brace
 DECL|macro|tx_free
 mdefine_line|#define tx_free(ap) &t;&t;tx_space((ap)-&gt;tx_ret_csm, (ap)-&gt;tx_prd, ap)
-macro_line|#if MAX_SKB_FRAGS
 DECL|macro|tx_ring_full
 mdefine_line|#define tx_ring_full(ap, csm, prd)&t;(tx_space(ap, csm, prd) &lt;= TX_RESERVED)
-macro_line|#else
-DECL|macro|tx_ring_full
-mdefine_line|#define tx_ring_full&t;&t;&t;0
-macro_line|#endif
 DECL|function|set_aceaddr
 r_static
 r_inline
@@ -1759,6 +1751,7 @@ c_func
 (paren
 r_struct
 id|ace_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -1859,10 +1852,15 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|ace_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -1928,10 +1926,15 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|ace_regs
+id|__iomem
 op_star
 id|regs
 op_assign

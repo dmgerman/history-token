@@ -67,6 +67,10 @@ id|ia64_mv_outl_t
 id|__sn_outl
 suffix:semicolon
 r_extern
+id|ia64_mv_mmiowb_t
+id|__sn_mmiowb
+suffix:semicolon
+r_extern
 id|ia64_mv_readb_t
 id|__sn_readb
 suffix:semicolon
@@ -177,6 +181,8 @@ DECL|macro|platform_outw
 mdefine_line|#define platform_outw&t;&t;&t;__sn_outw
 DECL|macro|platform_outl
 mdefine_line|#define platform_outl&t;&t;&t;__sn_outl
+DECL|macro|platform_mmiowb
+mdefine_line|#define platform_mmiowb&t;&t;&t;__sn_mmiowb
 DECL|macro|platform_readb
 mdefine_line|#define platform_readb&t;&t;&t;__sn_readb
 DECL|macro|platform_readw

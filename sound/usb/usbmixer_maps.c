@@ -216,6 +216,31 @@ l_int|0
 multiline_comment|/* terminator */
 )brace
 suffix:semicolon
+multiline_comment|/* LineX FM Transmitter entry - needed to bypass controls bug */
+DECL|variable|linex_map
+r_static
+r_struct
+id|usbmix_name_map
+id|linex_map
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* 1: IT pcm */
+multiline_comment|/* 2: OT Speaker */
+(brace
+l_int|3
+comma
+l_string|&quot;Master&quot;
+)brace
+comma
+multiline_comment|/* FU: master volume - left / right / mute */
+(brace
+l_int|0
+)brace
+multiline_comment|/* terminator */
+)brace
+suffix:semicolon
 multiline_comment|/* Section &quot;justlink_map&quot; below added by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; * sourced from Maplin Electronics (http://www.maplin.co.uk), part number A56AK&n; * Part has 2 connectors that act as a single output. (TOSLINK Optical for digital out, and 3.5mm Jack for Analogue out.)&n; * The USB Mixer publishes a Microphone and extra Volume controls for it, but none exist on the device,&n; * so this map removes all unwanted sliders from alsamixer&n; */
 DECL|variable|justlink_map
 r_static
@@ -290,6 +315,16 @@ comma
 l_int|0x3000
 comma
 id|extigy_map
+comma
+l_int|1
+)brace
+comma
+(brace
+l_int|0x8bb
+comma
+l_int|0x2702
+comma
+id|linex_map
 comma
 l_int|1
 )brace

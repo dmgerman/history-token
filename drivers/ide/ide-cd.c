@@ -11795,28 +11795,17 @@ id|cap.buffer_size
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
 id|drive-&gt;using_dma
 )paren
-(paren
-r_void
-)paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
 id|ide_dma_verbose
 c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|printk
 c_func
 (paren
@@ -13776,12 +13765,14 @@ id|ignore
 op_assign
 l_int|NULL
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ignore
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0400
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

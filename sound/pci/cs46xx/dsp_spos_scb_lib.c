@@ -181,8 +181,9 @@ id|j
 comma
 id|col
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dst
 op_assign
 id|chip-&gt;region.idx
@@ -560,8 +561,9 @@ r_int
 id|dword_count
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dst
 op_assign
 id|chip-&gt;region.idx

@@ -4627,8 +4627,6 @@ r_void
 (brace
 r_int
 id|retval
-comma
-id|pci_nr_found
 suffix:semicolon
 id|printk
 c_func

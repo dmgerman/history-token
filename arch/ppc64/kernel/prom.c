@@ -36,7 +36,6 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &quot;open_pic.h&quot;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
@@ -5528,9 +5527,9 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Work out the sense (active-low level / active-high edge)&n; * of each interrupt from the device tree.&n; */
+DECL|function|prom_get_irq_senses
 r_void
 id|__init
-DECL|function|prom_get_irq_senses
 id|prom_get_irq_senses
 c_func
 (paren
@@ -5633,6 +5632,15 @@ id|j
 )braket
 dot
 id|sense
+ques
+c_cond
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+suffix:colon
+id|IRQ_SENSE_EDGE
+op_or
+id|IRQ_POLARITY_POSITIVE
 suffix:semicolon
 )brace
 )brace
@@ -8501,6 +8509,17 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|np-&gt;iommu_table
+)paren
+id|iommu_free_table
+c_func
+(paren
+id|np
+)paren
+suffix:semicolon
 id|write_lock
 c_func
 (paren

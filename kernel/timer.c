@@ -5763,6 +5763,8 @@ c_func
 (paren
 id|msecs
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 r_while
 c_loop
@@ -5814,6 +5816,8 @@ c_func
 (paren
 id|msecs
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 r_while
 c_loop

@@ -19,7 +19,7 @@ suffix:semicolon
 multiline_comment|/* Forward definition */
 r_extern
 r_void
-id|sn_mmiob
+id|__sn_mmiowb
 c_func
 (paren
 r_void
@@ -302,7 +302,7 @@ id|addr
 op_assign
 id|val
 suffix:semicolon
-id|sn_mmiob
+id|__sn_mmiowb
 c_func
 (paren
 )paren
@@ -349,7 +349,7 @@ id|addr
 op_assign
 id|val
 suffix:semicolon
-id|sn_mmiob
+id|__sn_mmiowb
 c_func
 (paren
 )paren
@@ -396,7 +396,7 @@ id|addr
 op_assign
 id|val
 suffix:semicolon
-id|sn_mmiob
+id|__sn_mmiowb
 c_func
 (paren
 )paren

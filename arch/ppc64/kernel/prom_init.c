@@ -35,7 +35,6 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &quot;open_pic.h&quot;
 macro_line|#ifdef CONFIG_LOGO_LINUX_CLUT224
 macro_line|#include &lt;linux/linux_logo.h&gt;
 r_extern
@@ -258,8 +257,6 @@ r_int
 r_int
 id|klimit
 suffix:semicolon
-singleline_comment|//int global_width = 640, global_height = 480, global_depth = 8, global_pitch;
-singleline_comment|//unsigned global_address;
 multiline_comment|/* prom structure */
 DECL|variable|prom
 r_static
@@ -3249,6 +3246,8 @@ l_int|0
 suffix:semicolon
 id|u32
 id|size
+op_assign
+l_int|0
 suffix:semicolon
 id|prom_debug
 c_func
@@ -3274,18 +3273,27 @@ l_string|&quot;/rtas&quot;
 )paren
 )paren
 suffix:semicolon
+id|prom_debug
+c_func
+(paren
+l_string|&quot;prom_rtas: %x&bslash;n&quot;
+comma
+id|prom_rtas
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|prom_rtas
-op_ne
+op_eq
 (paren
 id|phandle
 )paren
 op_minus
 l_int|1
 )paren
-(brace
+r_return
+suffix:semicolon
 id|prom_getprop
 c_func
 (paren
@@ -3306,10 +3314,11 @@ r_if
 c_cond
 (paren
 id|size
-op_ne
+op_eq
 l_int|0
 )paren
-(brace
+r_return
+suffix:semicolon
 id|base
 op_assign
 id|alloc_down
@@ -3439,7 +3448,6 @@ comma
 id|size
 )paren
 suffix:semicolon
-)brace
 id|prom_setprop
 c_func
 (paren
@@ -3515,7 +3523,6 @@ r_int
 id|size
 )paren
 suffix:semicolon
-)brace
 id|prom_debug
 c_func
 (paren
@@ -4594,6 +4601,9 @@ l_int|0
 r_continue
 suffix:semicolon
 multiline_comment|/* Skip non-configured cpus. */
+r_if
+c_cond
+(paren
 id|prom_getprop
 c_func
 (paren
@@ -4608,7 +4618,9 @@ r_sizeof
 id|type
 )paren
 )paren
-suffix:semicolon
+OG
+l_int|0
+)paren
 r_if
 c_cond
 (paren
@@ -4825,6 +4837,10 @@ l_int|1
 suffix:semicolon
 id|i
 op_increment
+)paren
+id|mb
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -5723,8 +5739,7 @@ suffix:semicolon
 multiline_comment|/*&n; * If we have a display that we don&squot;t know how to drive,&n; * we will want to try to execute OF&squot;s open method for it&n; * later.  However, OF will probably fall over if we do that&n; * we&squot;ve taken over the MMU.&n; * So we check whether we will need to open the display,&n; * and if so, open it now.&n; */
 DECL|function|prom_check_displays
 r_static
-r_int
-r_int
+r_void
 id|__init
 id|prom_check_displays
 c_func

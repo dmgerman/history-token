@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/seq_device.h&gt;
+macro_line|#include &lt;sound/seq_kernel.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -361,6 +362,38 @@ id|ops_mutex
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * load all registered drivers (called from seq_clientmgr.c)&n; */
+macro_line|#ifdef CONFIG_KMOD
+multiline_comment|/* avoid auto-loading during module_init() */
+DECL|variable|snd_seq_in_init
+r_static
+r_int
+id|snd_seq_in_init
+suffix:semicolon
+DECL|function|snd_seq_autoload_lock
+r_void
+id|snd_seq_autoload_lock
+c_func
+(paren
+r_void
+)paren
+(brace
+id|snd_seq_in_init
+op_increment
+suffix:semicolon
+)brace
+DECL|function|snd_seq_autoload_unlock
+r_void
+id|snd_seq_autoload_unlock
+c_func
+(paren
+r_void
+)paren
+(brace
+id|snd_seq_in_init
+op_decrement
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|snd_seq_device_load_drivers
 r_void
 id|snd_seq_device_load_drivers
@@ -374,6 +407,14 @@ r_struct
 id|list_head
 op_star
 id|head
+suffix:semicolon
+multiline_comment|/* Calling request_module during module_init()&n;&t; * may cause blocking.&n;&t; */
+r_if
+c_cond
+(paren
+id|snd_seq_in_init
+)paren
+r_return
 suffix:semicolon
 r_if
 c_cond
@@ -1072,6 +1113,11 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|snd_seq_autoload_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ops
 op_assign
 id|find_driver
@@ -1089,10 +1135,17 @@ id|ops
 op_eq
 l_int|NULL
 )paren
+(brace
+id|snd_seq_autoload_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1114,6 +1167,11 @@ id|unlock_driver
 c_func
 (paren
 id|ops
+)paren
+suffix:semicolon
+id|snd_seq_autoload_unlock
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -1186,6 +1244,11 @@ id|unlock_driver
 c_func
 (paren
 id|ops
+)paren
+suffix:semicolon
+id|snd_seq_autoload_unlock
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2099,4 +2162,20 @@ c_func
 id|snd_seq_device_unregister_driver
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_KMOD
+DECL|variable|snd_seq_autoload_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_seq_autoload_lock
+)paren
+suffix:semicolon
+DECL|variable|snd_seq_autoload_unlock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_seq_autoload_unlock
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

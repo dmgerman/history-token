@@ -36,6 +36,16 @@ op_star
 id|vptb
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|move_stack
+c_func
+(paren
+r_int
+r_int
+id|new_stack
+)paren
+suffix:semicolon
 DECL|variable|hwrpb
 r_struct
 id|hwrpb_struct
@@ -334,7 +344,6 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;bis %1,%1,$30&bslash;n&bslash;t&quot;
 l_string|&quot;bis %0,%0,$27&bslash;n&bslash;t&quot;
 l_string|&quot;jmp ($27)&quot;
 suffix:colon
@@ -343,13 +352,6 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|START_ADDR
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|PAGE_SIZE
-op_plus
-id|INIT_STACK
 )paren
 )paren
 suffix:semicolon
@@ -391,13 +393,11 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef INITRD_IMAGE_SIZE
 r_static
 r_int
 r_int
 id|initrd_start
 suffix:semicolon
-macro_line|#endif
 id|srm_printk
 c_func
 (paren
@@ -461,7 +461,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef INITRD_IMAGE_SIZE
 multiline_comment|/* The initrd must be page-aligned.  See below for the &n;&t;   cause of the magic number 5.  */
 id|initrd_start
 op_assign
@@ -472,6 +471,8 @@ op_plus
 l_int|5
 op_star
 id|KERNEL_SIZE
+op_plus
+id|PAGE_SIZE
 )paren
 op_or
 (paren
@@ -483,6 +484,7 @@ l_int|1
 op_plus
 l_int|1
 suffix:semicolon
+macro_line|#ifdef INITRD_IMAGE_SIZE
 id|srm_printk
 c_func
 (paren
@@ -492,6 +494,15 @@ id|initrd_start
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t; * Move the stack to a safe place to ensure it won&squot;t be&n;&t; * overwritten by kernel image.&n;&t; */
+id|move_stack
+c_func
+(paren
+id|initrd_start
+op_minus
+id|PAGE_SIZE
+)paren
+suffix:semicolon
 id|nbytes
 op_assign
 id|callback_getenv

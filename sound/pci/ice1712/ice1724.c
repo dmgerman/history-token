@@ -20,6 +20,7 @@ macro_line|#include &quot;revo.h&quot;
 macro_line|#include &quot;aureon.h&quot;
 macro_line|#include &quot;vt1720_mobo.h&quot;
 macro_line|#include &quot;pontis.h&quot;
+macro_line|#include &quot;prodigy192.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -47,6 +48,7 @@ id|AMP_AUDIO2000_DEVICE_DESC
 id|AUREON_DEVICE_DESC
 id|VT1720_MOBO_DEVICE_DESC
 id|PONTIS_DEVICE_DESC
+id|PRODIGY192_DEVICE_DESC
 l_string|&quot;{VIA,VT1720},&quot;
 l_string|&quot;{VIA,VT1724},&quot;
 l_string|&quot;{ICEnsemble,Generic ICE1724},&quot;
@@ -97,11 +99,6 @@ id|model
 id|SNDRV_CARDS
 )braket
 suffix:semicolon
-DECL|variable|boot_devs
-r_static
-r_int
-id|boot_devs
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -109,8 +106,7 @@ id|index
 comma
 r_int
 comma
-op_amp
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -130,8 +126,7 @@ id|id
 comma
 id|charp
 comma
-op_amp
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -151,8 +146,7 @@ id|enable
 comma
 r_bool
 comma
-op_amp
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -172,8 +166,7 @@ id|model
 comma
 id|charp
 comma
-op_amp
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -9575,6 +9568,8 @@ comma
 id|snd_vt1720_mobo_cards
 comma
 id|snd_vt1720_pontis_cards
+comma
+id|snd_vt1724_prodigy192_cards
 comma
 l_int|NULL
 comma

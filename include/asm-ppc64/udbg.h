@@ -9,6 +9,10 @@ c_func
 r_void
 op_star
 id|comport
+comma
+r_int
+r_int
+id|speed
 )paren
 suffix:semicolon
 r_void

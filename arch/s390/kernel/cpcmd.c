@@ -18,7 +18,7 @@ r_static
 r_char
 id|cpcmd_buf
 (braket
-l_int|128
+l_int|240
 )braket
 suffix:semicolon
 DECL|function|cpcmd
@@ -68,6 +68,14 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|cmdlen
+OG
+l_int|240
+)paren
+suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -105,7 +113,7 @@ l_string|&quot;LR    4,%1&bslash;n&bslash;t&quot;
 l_string|&quot;O     4,%4&bslash;n&bslash;t&quot;
 l_string|&quot;LRA   3,0(%2)&bslash;n&bslash;t&quot;
 l_string|&quot;LR    5,%3&bslash;n&bslash;t&quot;
-l_string|&quot;.long 0x83240008 # Diagnose 83&bslash;n&bslash;t&quot;
+l_string|&quot;.long 0x83240008 # Diagnose X&squot;08&squot;&bslash;n&bslash;t&quot;
 suffix:colon
 multiline_comment|/* no output */
 suffix:colon
@@ -134,6 +142,8 @@ l_string|&quot;m&quot;
 id|mask
 )paren
 suffix:colon
+l_string|&quot;cc&quot;
+comma
 l_string|&quot;2&quot;
 comma
 l_string|&quot;3&quot;
@@ -153,7 +163,7 @@ l_string|&quot;   o     4,%4&bslash;n&quot;
 l_string|&quot;   lrag  3,0(%2)&bslash;n&quot;
 l_string|&quot;   lgr   5,%3&bslash;n&quot;
 l_string|&quot;   sam31&bslash;n&quot;
-l_string|&quot;   .long 0x83240008 # Diagnose 83&bslash;n&quot;
+l_string|&quot;   .long 0x83240008 # Diagnose X&squot;08&squot;&bslash;n&quot;
 l_string|&quot;   sam64&quot;
 suffix:colon
 multiline_comment|/* no output */
@@ -183,6 +193,8 @@ l_string|&quot;m&quot;
 id|mask
 )paren
 suffix:colon
+l_string|&quot;cc&quot;
+comma
 l_string|&quot;2&quot;
 comma
 l_string|&quot;3&quot;
@@ -210,7 +222,7 @@ r_volatile
 (paren
 l_string|&quot;LRA   2,0(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;LR    3,%1&bslash;n&bslash;t&quot;
-l_string|&quot;.long 0x83230008 # Diagnose 83&bslash;n&bslash;t&quot;
+l_string|&quot;.long 0x83230008 # Diagnose X&squot;08&squot;&bslash;n&bslash;t&quot;
 suffix:colon
 multiline_comment|/* no output */
 suffix:colon
@@ -236,7 +248,7 @@ r_volatile
 l_string|&quot;   lrag  2,0(%0)&bslash;n&quot;
 l_string|&quot;   lgr   3,%1&bslash;n&quot;
 l_string|&quot;   sam31&bslash;n&quot;
-l_string|&quot;   .long 0x83230008 # Diagnose 83&bslash;n&quot;
+l_string|&quot;   .long 0x83230008 # Diagnose X&squot;08&squot;&bslash;n&quot;
 l_string|&quot;   sam64&quot;
 suffix:colon
 multiline_comment|/* no output */

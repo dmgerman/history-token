@@ -2621,7 +2621,7 @@ suffix:semicolon
 id|kunmap_atomic
 c_func
 (paren
-id|src_bvl-&gt;bv_page
+id|vfrom
 comma
 id|KM_USER0
 )paren
@@ -2759,10 +2759,7 @@ suffix:semicolon
 id|kunmap_atomic
 c_func
 (paren
-id|pages
-(braket
-id|f
-)braket
+id|vfrom
 comma
 id|KM_USER0
 )paren

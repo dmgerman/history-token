@@ -1590,89 +1590,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Configuration changes (passed on by ifconfig)&n; */
-DECL|function|meth_config
-r_static
-r_int
-id|meth_config
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|ifmap
-op_star
-id|map
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|dev-&gt;flags
-op_amp
-id|IFF_UP
-)paren
-multiline_comment|/* can&squot;t act on a running interface */
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-multiline_comment|/* Don&squot;t allow changing the I/O address */
-r_if
-c_cond
-(paren
-id|map-&gt;base_addr
-op_ne
-id|dev-&gt;base_addr
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;meth: Can&squot;t change I/O address&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-)brace
-multiline_comment|/* Don&squot;t allow changing the IRQ */
-r_if
-c_cond
-(paren
-id|map-&gt;irq
-op_ne
-id|dev-&gt;irq
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;meth: Can&squot;t change IRQ&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-)brace
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;Configured&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* ignore other fields */
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Receive a packet: retrieve, encapsulate and pass over to upper levels&n; */
 DECL|function|meth_rx
 r_static
@@ -3923,10 +3840,6 @@ suffix:semicolon
 id|dev-&gt;stop
 op_assign
 id|meth_release
-suffix:semicolon
-id|dev-&gt;set_config
-op_assign
-id|meth_config
 suffix:semicolon
 id|dev-&gt;hard_start_xmit
 op_assign

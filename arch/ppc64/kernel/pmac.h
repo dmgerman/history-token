@@ -79,17 +79,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|fixup_k2_sata
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|pmac_check_ht_link
 c_func
 (paren

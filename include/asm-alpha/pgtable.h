@@ -1268,7 +1268,7 @@ DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 macro_line|#endif
 DECL|macro|io_remap_page_range
-mdefine_line|#define io_remap_page_range(vma, start, busaddr, size, prot) &bslash;&n;    remap_pfn_range(vma, start, virt_to_phys(ioremap(busaddr, size)) &gt;&gt; PAGE_SHIFT, size, prot)
+mdefine_line|#define io_remap_page_range(vma, start, busaddr, size, prot)&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *va = (void __force *)ioremap(busaddr, size);&t;&bslash;&n;&t;unsigned long pfn = virt_to_phys(va) &gt;&gt; PAGE_SHIFT;&t;&bslash;&n;&t;remap_pfn_range(vma, start, pfn, size, prot);&t;&t;&bslash;&n;})
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pte %016lx.&bslash;n&quot;, __FILE__, __LINE__, pte_val(e))
 DECL|macro|pmd_ERROR

@@ -1872,10 +1872,7 @@ op_star
 id|fown
 comma
 r_int
-id|fd
-comma
-r_int
-id|reason
+id|sig
 )paren
 (brace
 r_return

@@ -144,6 +144,8 @@ DECL|macro|readw_relaxed
 mdefine_line|#define readw_relaxed(a) readw(a)
 DECL|macro|readl_relaxed
 mdefine_line|#define readl_relaxed(a) readl(a)
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 multiline_comment|/*&n; * If the platform has PC-like I/O, this function converts the offset into&n; * an address.&n; */
 DECL|function|isa_port2addr
 r_static

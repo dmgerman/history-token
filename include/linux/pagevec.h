@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * include/linux/pagevec.h&n; *&n; * In many places it is efficient to batch an operation up against multiple&n; * pages.  A pagevec is a multipage container which is used for that.&n; */
+multiline_comment|/* 14 pointers + two long&squot;s align the pagevec structure to a power of two */
 DECL|macro|PAGEVEC_SIZE
-mdefine_line|#define PAGEVEC_SIZE&t;15
+mdefine_line|#define PAGEVEC_SIZE&t;14
 r_struct
 id|page
 suffix:semicolon

@@ -1042,6 +1042,38 @@ id|size
 )paren
 suffix:semicolon
 )brace
+DECL|function|__ioremap
+r_static
+r_inline
+r_void
+id|__iomem
+op_star
+id|__ioremap
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+r_int
+id|flags
+)paren
+(brace
+r_return
+id|ioremap
+c_func
+(paren
+id|port
+comma
+id|size
+)paren
+suffix:semicolon
+)brace
 DECL|function|ioremap_nocache
 r_static
 r_inline
@@ -2059,6 +2091,8 @@ DECL|macro|readl_relaxed
 mdefine_line|#define readl_relaxed(addr) __raw_readl(addr)
 DECL|macro|readq_relaxed
 mdefine_line|#define readq_relaxed(addr) __raw_readq(addr)
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 multiline_comment|/*&n; * String version of IO memory access ops:&n; */
 r_extern
 r_void

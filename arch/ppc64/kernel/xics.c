@@ -2635,6 +2635,7 @@ suffix:semicolon
 id|i8259_init
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 )brace

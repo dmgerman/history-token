@@ -1227,8 +1227,10 @@ id|__user
 op_star
 id|dst
 comma
-r_int
-r_int
+r_const
+r_void
+id|__iomem
+op_star
 id|src
 comma
 r_int
@@ -1239,8 +1241,9 @@ r_int
 id|copy_from_user_toio
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dst
 comma
 r_const
@@ -1667,10 +1670,10 @@ mdefine_line|#define snd_printd(fmt, args...) &bslash;&n;&t;printk(fmt ,##args)
 macro_line|#endif
 multiline_comment|/**&n; * snd_assert - run-time assersion macro&n; * @expr: expression&n; * @args...: the action&n; *&n; * This macro checks the expression in run-time and invokes the commands&n; * given in the rest arguments if the assertion is failed.&n; * When CONFIG_SND_DEBUG is not set, the expression is executed but&n; * not checked.&n; */
 DECL|macro|snd_assert
-mdefine_line|#define snd_assert(expr, args...) do {&bslash;&n;&t;if (unlikely(!(expr))) {&t;&t;&t;&t;&bslash;&n;&t;&t;snd_printk(&quot;BUG? (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
+mdefine_line|#define snd_assert(expr, args...) do {&bslash;&n;&t;if (unlikely(!(expr))) {&t;&t;&t;&t;&bslash;&n;&t;&t;snd_printk(KERN_ERR &quot;BUG? (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
 multiline_comment|/**&n; * snd_runtime_check - run-time assersion macro&n; * @expr: expression&n; * @args...: the action&n; *&n; * This macro checks the expression in run-time and invokes the commands&n; * given in the rest arguments if the assertion is failed.&n; * Unlike snd_assert(), the action commands are executed even if&n; * CONFIG_SND_DEBUG is not set but without any error messages.&n; */
 DECL|macro|snd_runtime_check
-mdefine_line|#define snd_runtime_check(expr, args...) do {&bslash;&n;&t;if (unlikely(!(expr))) {&t;&t;&t;&t;&bslash;&n;&t;&t;snd_printk(&quot;ERROR (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
+mdefine_line|#define snd_runtime_check(expr, args...) do {&bslash;&n;&t;if (unlikely(!(expr))) {&t;&t;&t;&t;&bslash;&n;&t;&t;snd_printk(KERN_ERR &quot;ERROR (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
 macro_line|#else /* !CONFIG_SND_DEBUG */
 DECL|macro|snd_printd
 mdefine_line|#define snd_printd(fmt, args...)&t;/* nothing */

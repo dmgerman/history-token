@@ -474,6 +474,13 @@ r_int
 id|new_level
 )paren
 suffix:semicolon
+r_void
+id|debug_stop_all
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_inline
 id|debug_entry_t

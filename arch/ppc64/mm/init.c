@@ -964,6 +964,8 @@ comma
 id|IM_REGION_UNUSED
 op_or
 id|IM_REGION_SUBSET
+op_or
+id|IM_REGION_EXISTS
 )paren
 suffix:semicolon
 r_if

@@ -595,6 +595,8 @@ DECL|macro|outl_p
 mdefine_line|#define outl_p(val,port) ((port)&lt;1024 ? isa_outl_p((val),(port)) : out_le32((port),(val)))
 macro_line|#endif
 macro_line|#endif /* CONFIG_PCI */
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 DECL|function|ioremap
 r_static
 r_inline

@@ -399,6 +399,8 @@ DECL|macro|__raw_readl
 mdefine_line|#define __raw_readl readl
 DECL|macro|__raw_readq
 mdefine_line|#define __raw_readq readq
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 macro_line|#ifdef CONFIG_UNORDERED_IO
 DECL|function|__writel
 r_static

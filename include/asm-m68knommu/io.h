@@ -486,6 +486,8 @@ id|ap
 )paren
 suffix:semicolon
 )brace
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 multiline_comment|/*&n; *&t;make the short names macros so specific devices&n; *&t;can override them as required&n; */
 DECL|macro|memset_io
 mdefine_line|#define memset_io(a,b,c)&t;memset((void *)(a),(b),(c))

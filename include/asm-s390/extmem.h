@@ -3,14 +3,25 @@ macro_line|#ifndef _ASM_S390X_DCSS_H
 DECL|macro|_ASM_S390X_DCSS_H
 mdefine_line|#define _ASM_S390X_DCSS_H
 macro_line|#ifndef __ASSEMBLY__
-DECL|macro|SEGMENT_SHARED_RW
-mdefine_line|#define SEGMENT_SHARED_RW       0
-DECL|macro|SEGMENT_SHARED_RO
-mdefine_line|#define SEGMENT_SHARED_RO       1
-DECL|macro|SEGMENT_EXCLUSIVE_RW
-mdefine_line|#define SEGMENT_EXCLUSIVE_RW    2
-DECL|macro|SEGMENT_EXCLUSIVE_RO
-mdefine_line|#define SEGMENT_EXCLUSIVE_RO    3
+multiline_comment|/* possible values for segment type as returned by segment_info */
+DECL|macro|SEG_TYPE_SW
+mdefine_line|#define SEG_TYPE_SW 0
+DECL|macro|SEG_TYPE_EW
+mdefine_line|#define SEG_TYPE_EW 1
+DECL|macro|SEG_TYPE_SR
+mdefine_line|#define SEG_TYPE_SR 2
+DECL|macro|SEG_TYPE_ER
+mdefine_line|#define SEG_TYPE_ER 3
+DECL|macro|SEG_TYPE_SN
+mdefine_line|#define SEG_TYPE_SN 4
+DECL|macro|SEG_TYPE_EN
+mdefine_line|#define SEG_TYPE_EN 5
+DECL|macro|SEG_TYPE_SC
+mdefine_line|#define SEG_TYPE_SC 6
+DECL|macro|SEGMENT_SHARED
+mdefine_line|#define SEGMENT_SHARED 0
+DECL|macro|SEGMENT_EXCLUSIVE
+mdefine_line|#define SEGMENT_EXCLUSIVE 1
 r_extern
 r_int
 id|segment_load
@@ -45,8 +56,17 @@ id|name
 suffix:semicolon
 r_extern
 r_void
-id|segment_replace
+id|segment_save
 c_func
+(paren
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|segment_info
 (paren
 r_char
 op_star
