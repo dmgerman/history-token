@@ -332,6 +332,12 @@ suffix:semicolon
 r_case
 id|SND_AK4355
 suffix:colon
+r_if
+c_cond
+(paren
+id|state
+)paren
+(brace
 id|snd_akm4xxx_write
 c_func
 (paren
@@ -341,21 +347,13 @@ l_int|0
 comma
 l_int|0x01
 comma
-id|state
-ques
-c_cond
 l_int|0x02
-suffix:colon
-l_int|0x01
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|state
-)paren
+multiline_comment|/* reset and soft-mute */
 r_return
 suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -365,7 +363,7 @@ l_int|0x00
 suffix:semicolon
 id|reg
 OL
-l_int|0x0a
+l_int|0x0b
 suffix:semicolon
 id|reg
 op_increment
@@ -397,6 +395,19 @@ id|reg
 )paren
 )paren
 suffix:semicolon
+id|snd_akm4xxx_write
+c_func
+(paren
+id|ak
+comma
+l_int|0
+comma
+l_int|0x01
+comma
+l_int|0x01
+)paren
+suffix:semicolon
+multiline_comment|/* un-reset, unmute */
 r_break
 suffix:semicolon
 r_case
@@ -705,11 +716,12 @@ comma
 l_int|0x06
 comma
 multiline_comment|/* 0: mode3(i2s), disable auto-clock detect, disable DZF, sharp roll-off, RSTN#=0 */
-singleline_comment|// 0x02, 0x0e, /* 2: DA&squot;s power up, normal speed, RSTN#=0 */
 l_int|0x02
 comma
-l_int|0x2e
+l_int|0x0e
 comma
+multiline_comment|/* 2: DA&squot;s power up, normal speed, RSTN#=0 */
+singleline_comment|// 0x02, 0x2e, /* quad speed */
 l_int|0x03
 comma
 l_int|0x01
@@ -773,11 +785,12 @@ comma
 l_int|0x0c
 comma
 multiline_comment|/* 0: mode3(i2s), disable auto-clock detect */
-singleline_comment|// 0x01, 0x02, /* 1: de-emphasis off, normal speed, sharp roll-off, DZF off */
 l_int|0x01
 comma
-l_int|0x12
+l_int|0x02
 comma
+multiline_comment|/* 1: de-emphasis off, normal speed, sharp roll-off, DZF off */
+singleline_comment|// 0x01, 0x12, /* quad speed */
 l_int|0x02
 comma
 l_int|0x00
@@ -1725,6 +1738,8 @@ id|ak
 r_int
 r_int
 id|idx
+comma
+id|num_emphs
 suffix:semicolon
 r_int
 id|err
@@ -2041,6 +2056,10 @@ suffix:semicolon
 id|ctl.id.index
 op_assign
 id|idx
+op_plus
+id|ak-&gt;idx_offset
+op_star
+l_int|2
 suffix:semicolon
 id|ctl.id.iface
 op_assign
@@ -2143,6 +2162,10 @@ suffix:semicolon
 id|ctl.id.index
 op_assign
 id|idx
+op_plus
+id|ak-&gt;idx_offset
+op_star
+l_int|2
 suffix:semicolon
 id|ctl.id.iface
 op_assign
@@ -2221,6 +2244,24 @@ r_return
 id|err
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ak-&gt;type
+op_eq
+id|SND_AK4355
+)paren
+id|num_emphs
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+id|num_emphs
+op_assign
+id|ak-&gt;num_dacs
+op_div
+l_int|2
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2230,9 +2271,7 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|ak-&gt;num_dacs
-op_div
-l_int|2
+id|num_emphs
 suffix:semicolon
 id|idx
 op_increment

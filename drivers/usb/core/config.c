@@ -1052,14 +1052,6 @@ op_amp
 id|interface-&gt;dev
 )paren
 suffix:semicolon
-multiline_comment|/* put happens in usb_destroy_configuration */
-id|get_device
-c_func
-(paren
-op_amp
-id|interface-&gt;dev
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Go through the descriptors, checking their length and counting the&n;&t; * number of altsettings for each interface */
 id|buffer2

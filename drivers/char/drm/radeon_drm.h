@@ -385,11 +385,11 @@ DECL|macro|RADEON_SCRATCH_REG_OFFSET
 mdefine_line|#define RADEON_SCRATCH_REG_OFFSET&t;32
 DECL|macro|RADEON_NR_SAREA_CLIPRECTS
 mdefine_line|#define RADEON_NR_SAREA_CLIPRECTS&t;12
-multiline_comment|/* There are 2 heaps (local/AGP).  Each region within a heap is a&n; * minimum of 64k, and there are at most 64 of them per heap.&n; */
+multiline_comment|/* There are 2 heaps (local/GART).  Each region within a heap is a&n; * minimum of 64k, and there are at most 64 of them per heap.&n; */
 DECL|macro|RADEON_LOCAL_TEX_HEAP
 mdefine_line|#define RADEON_LOCAL_TEX_HEAP&t;&t;0
-DECL|macro|RADEON_AGP_TEX_HEAP
-mdefine_line|#define RADEON_AGP_TEX_HEAP&t;&t;1
+DECL|macro|RADEON_GART_TEX_HEAP
+mdefine_line|#define RADEON_GART_TEX_HEAP&t;&t;1
 DECL|macro|RADEON_NR_TEX_HEAPS
 mdefine_line|#define RADEON_NR_TEX_HEAPS&t;&t;2
 DECL|macro|RADEON_NR_TEX_REGIONS
@@ -939,9 +939,9 @@ DECL|member|cp_mode
 r_int
 id|cp_mode
 suffix:semicolon
-DECL|member|agp_size
+DECL|member|gart_size
 r_int
-id|agp_size
+id|gart_size
 suffix:semicolon
 DECL|member|ring_size
 r_int
@@ -1010,10 +1010,10 @@ r_int
 r_int
 id|buffers_offset
 suffix:semicolon
-DECL|member|agp_textures_offset
+DECL|member|gart_textures_offset
 r_int
 r_int
-id|agp_textures_offset
+id|gart_textures_offset
 suffix:semicolon
 DECL|typedef|drm_radeon_init_t
 )brace
@@ -1366,8 +1366,8 @@ DECL|typedef|drm_radeon_indirect_t
 id|drm_radeon_indirect_t
 suffix:semicolon
 multiline_comment|/* 1.3: An ioctl to get parameters that aren&squot;t available to the 3d&n; * client any other way.  &n; */
-DECL|macro|RADEON_PARAM_AGP_BUFFER_OFFSET
-mdefine_line|#define RADEON_PARAM_AGP_BUFFER_OFFSET     1 /* card offset of 1st agp buffer */
+DECL|macro|RADEON_PARAM_GART_BUFFER_OFFSET
+mdefine_line|#define RADEON_PARAM_GART_BUFFER_OFFSET    1 /* card offset of 1st GART buffer */
 DECL|macro|RADEON_PARAM_LAST_FRAME
 mdefine_line|#define RADEON_PARAM_LAST_FRAME            2
 DECL|macro|RADEON_PARAM_LAST_DISPATCH
@@ -1377,8 +1377,8 @@ mdefine_line|#define RADEON_PARAM_LAST_CLEAR            4
 multiline_comment|/* Added with DRM version 1.6. */
 DECL|macro|RADEON_PARAM_IRQ_NR
 mdefine_line|#define RADEON_PARAM_IRQ_NR                5
-DECL|macro|RADEON_PARAM_AGP_BASE
-mdefine_line|#define RADEON_PARAM_AGP_BASE              6 /* card offset of agp base */
+DECL|macro|RADEON_PARAM_GART_BASE
+mdefine_line|#define RADEON_PARAM_GART_BASE             6 /* card offset of GART base */
 multiline_comment|/* Added with DRM version 1.8. */
 DECL|macro|RADEON_PARAM_REGISTER_HANDLE
 mdefine_line|#define RADEON_PARAM_REGISTER_HANDLE       7 /* for drmMap() */
@@ -1386,8 +1386,8 @@ DECL|macro|RADEON_PARAM_STATUS_HANDLE
 mdefine_line|#define RADEON_PARAM_STATUS_HANDLE         8
 DECL|macro|RADEON_PARAM_SAREA_HANDLE
 mdefine_line|#define RADEON_PARAM_SAREA_HANDLE          9
-DECL|macro|RADEON_PARAM_AGP_TEX_HANDLE
-mdefine_line|#define RADEON_PARAM_AGP_TEX_HANDLE        10
+DECL|macro|RADEON_PARAM_GART_TEX_HANDLE
+mdefine_line|#define RADEON_PARAM_GART_TEX_HANDLE       10
 DECL|struct|drm_radeon_getparam
 r_typedef
 r_struct
@@ -1407,10 +1407,10 @@ DECL|typedef|drm_radeon_getparam_t
 id|drm_radeon_getparam_t
 suffix:semicolon
 multiline_comment|/* 1.6: Set up a memory manager for regions of shared memory:&n; */
-DECL|macro|RADEON_MEM_REGION_AGP
-mdefine_line|#define RADEON_MEM_REGION_AGP 1
+DECL|macro|RADEON_MEM_REGION_GART
+mdefine_line|#define RADEON_MEM_REGION_GART 1
 DECL|macro|RADEON_MEM_REGION_FB
-mdefine_line|#define RADEON_MEM_REGION_FB  2
+mdefine_line|#define RADEON_MEM_REGION_FB   2
 DECL|struct|drm_radeon_mem_alloc
 r_typedef
 r_struct
@@ -1433,7 +1433,7 @@ r_int
 op_star
 id|region_offset
 suffix:semicolon
-multiline_comment|/* offset from start of fb or agp */
+multiline_comment|/* offset from start of fb or GART */
 DECL|typedef|drm_radeon_mem_alloc_t
 )brace
 id|drm_radeon_mem_alloc_t
