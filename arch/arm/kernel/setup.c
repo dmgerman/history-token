@@ -159,11 +159,6 @@ r_int
 r_int
 id|processor_id
 suffix:semicolon
-DECL|variable|compat
-r_int
-r_int
-id|compat
-suffix:semicolon
 DECL|variable|__machine_arch_type
 r_int
 r_int
@@ -1007,35 +1002,6 @@ c_func
 l_string|&quot;Machine: %s&bslash;n&quot;
 comma
 id|list-&gt;name
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|compat
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Using compatibility code &quot;
-l_string|&quot;scheduled for removal in v%d.%d.%d&bslash;n&quot;
-comma
-id|compat
-op_rshift
-l_int|24
-comma
-(paren
-id|compat
-op_rshift
-l_int|12
-)paren
-op_amp
-l_int|0x3ff
-comma
-id|compat
-op_amp
-l_int|0x3ff
 )paren
 suffix:semicolon
 r_return
