@@ -1718,6 +1718,10 @@ op_assign
 id|EXT3_ACL_NOT_CACHED
 suffix:semicolon
 macro_line|#endif
+id|ei-&gt;i_rsv_window.rsv_end
+op_assign
+id|EXT3_RESERVE_WINDOW_NOT_ALLOCATED
+suffix:semicolon
 id|ei-&gt;vfs_inode.i_version
 op_assign
 l_int|1
@@ -1903,7 +1907,6 @@ l_string|&quot;ext3_inode_cache: not all structures were freed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_EXT3_FS_POSIX_ACL
 DECL|function|ext3_clear_inode
 r_static
 r_void
@@ -1916,6 +1919,7 @@ op_star
 id|inode
 )paren
 (brace
+macro_line|#ifdef CONFIG_EXT3_FS_POSIX_ACL
 r_if
 c_cond
 (paren
@@ -2006,11 +2010,14 @@ op_assign
 id|EXT3_ACL_NOT_CACHED
 suffix:semicolon
 )brace
-)brace
-macro_line|#else
-DECL|macro|ext3_clear_inode
-macro_line|# define ext3_clear_inode NULL
 macro_line|#endif
+id|ext3_discard_reservation
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_QUOTA
 DECL|macro|QTYPE2NAME
 mdefine_line|#define QTYPE2NAME(t) ((t)==USRQUOTA?&quot;user&quot;:&quot;group&quot;)
@@ -2293,11 +2300,6 @@ op_assign
 id|ext3_dirty_inode
 comma
 dot
-id|put_inode
-op_assign
-id|ext3_put_inode
-comma
-dot
 id|delete_inode
 op_assign
 id|ext3_delete_inode
@@ -2424,7 +2426,6 @@ DECL|enumerator|Opt_user_xattr
 DECL|enumerator|Opt_nouser_xattr
 DECL|enumerator|Opt_acl
 DECL|enumerator|Opt_noacl
-DECL|enumerator|Opt_noload
 id|Opt_user_xattr
 comma
 id|Opt_nouser_xattr
@@ -2432,6 +2433,13 @@ comma
 id|Opt_acl
 comma
 id|Opt_noacl
+comma
+DECL|enumerator|Opt_reservation
+DECL|enumerator|Opt_noreservation
+DECL|enumerator|Opt_noload
+id|Opt_reservation
+comma
+id|Opt_noreservation
 comma
 id|Opt_noload
 comma
@@ -2627,6 +2635,18 @@ comma
 id|Opt_noacl
 comma
 l_string|&quot;noacl&quot;
+)brace
+comma
+(brace
+id|Opt_reservation
+comma
+l_string|&quot;reservation&quot;
+)brace
+comma
+(brace
+id|Opt_noreservation
+comma
+l_string|&quot;noreservation&quot;
 )brace
 comma
 (brace
@@ -3339,6 +3359,32 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
+r_case
+id|Opt_reservation
+suffix:colon
+id|set_opt
+c_func
+(paren
+id|sbi-&gt;s_mount_opt
+comma
+id|RESERVATION
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|Opt_noreservation
+suffix:colon
+id|clear_opt
+c_func
+(paren
+id|sbi-&gt;s_mount_opt
+comma
+id|RESERVATION
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|Opt_journal_update
 suffix:colon
@@ -6682,6 +6728,54 @@ c_func
 (paren
 op_amp
 id|sbi-&gt;s_next_gen_lock
+)paren
+suffix:semicolon
+multiline_comment|/* per fileystem reservation list head &amp; lock */
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|sbi-&gt;s_rsv_window_lock
+)paren
+suffix:semicolon
+id|sbi-&gt;s_rsv_window_root
+op_assign
+id|RB_ROOT
+suffix:semicolon
+multiline_comment|/* Add a single, static dummy reservation to the start of the&n;&t; * reservation window list --- it gives us a placeholder for&n;&t; * append-at-start-of-list which makes the allocation logic&n;&t; * _much_ simpler. */
+id|sbi-&gt;s_rsv_window_head.rsv_start
+op_assign
+id|EXT3_RESERVE_WINDOW_NOT_ALLOCATED
+suffix:semicolon
+id|sbi-&gt;s_rsv_window_head.rsv_end
+op_assign
+id|EXT3_RESERVE_WINDOW_NOT_ALLOCATED
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|sbi-&gt;s_rsv_window_head.rsv_alloc_hit
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|sbi-&gt;s_rsv_window_head.rsv_goal_size
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|rsv_window_add
+c_func
+(paren
+id|sb
+comma
+op_amp
+id|sbi-&gt;s_rsv_window_head
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * set up enough so that it can read an inode&n;&t; */

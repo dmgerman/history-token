@@ -445,19 +445,6 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called at each iput()&n; *&n; * The inode may be &quot;bad&quot; if ext3_read_inode() saw an error from&n; * ext3_get_inode(), so we need to check that to avoid freeing random disk&n; * blocks.&n; */
-DECL|function|ext3_put_inode
-r_void
-id|ext3_put_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-)brace
 multiline_comment|/*&n; * Called at the last iput() if i_nlink is zero.&n; */
 DECL|function|ext3_delete_inode
 r_void
@@ -7499,6 +7486,12 @@ id|inode
 )paren
 r_return
 suffix:semicolon
+id|ext3_discard_reservation
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We have to lock the EOF page here, because lock_page() nests&n;&t; * outside journal_start().&n;&t; */
 r_if
 c_cond
@@ -8939,6 +8932,10 @@ op_assign
 id|EXT3_ACL_NOT_CACHED
 suffix:semicolon
 macro_line|#endif
+id|ei-&gt;i_rsv_window.rsv_end
+op_assign
+id|EXT3_RESERVE_WINDOW_NOT_ALLOCATED
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9248,6 +9245,30 @@ suffix:semicolon
 id|ei-&gt;i_block_group
 op_assign
 id|iloc.block_group
+suffix:semicolon
+id|ei-&gt;i_rsv_window.rsv_start
+op_assign
+l_int|0
+suffix:semicolon
+id|ei-&gt;i_rsv_window.rsv_end
+op_assign
+l_int|0
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|ei-&gt;i_rsv_window.rsv_goal_size
+comma
+id|EXT3_DEFAULT_RESERVE_BLOCKS
+)paren
+suffix:semicolon
+id|seqlock_init
+c_func
+(paren
+op_amp
+id|ei-&gt;i_rsv_window.rsv_seqlock
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * NOTE! The in-memory inode i_data array is in little-endian order&n;&t; * even on big-endian machines: we do NOT byteswap the block numbers!&n;&t; */
 r_for
