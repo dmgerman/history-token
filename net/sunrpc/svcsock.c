@@ -2627,10 +2627,10 @@ c_cond
 (paren
 id|sk-&gt;sk_state
 op_ne
-id|TCP_ESTABLISHED
+id|TCP_LISTEN
 )paren
 (brace
-multiline_comment|/* Aborted connection, SYN_RECV or whatever... */
+multiline_comment|/*&n;&t;&t; * This callback may called twice when a new connection&n;&t;&t; * is established as a child socket inherits everything&n;&t;&t; * from a parent LISTEN socket.&n;&t;&t; * 1) data_ready method of the parent socket will be called&n;&t;&t; *    when one of child sockets become ESTABLISHED.&n;&t;&t; * 2) data_ready method of the child socket may be called&n;&t;&t; *    when it receives data before the socket is accepted.&n;&t;&t; * In case of 2, we should ignore it silently.&n;&t;&t; */
 r_goto
 id|out
 suffix:semicolon
@@ -4259,6 +4259,22 @@ id|set_bit
 c_func
 (paren
 id|SK_DATA
+comma
+op_amp
+id|svsk-&gt;sk_flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sk-&gt;sk_state
+op_ne
+id|TCP_ESTABLISHED
+)paren
+id|set_bit
+c_func
+(paren
+id|SK_CLOSE
 comma
 op_amp
 id|svsk-&gt;sk_flags
