@@ -711,6 +711,11 @@ id|mode
 op_assign
 id|S_IRUGO
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 comma
 dot
