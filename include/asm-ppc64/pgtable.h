@@ -47,13 +47,15 @@ DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END   (VMALLOC_START + VALID_EA_BITS)
 multiline_comment|/*&n; * Define the address range of the imalloc VM area.&n; * (used for ioremap)&n; */
 DECL|macro|IMALLOC_START
-mdefine_line|#define IMALLOC_START (ioremap_bot)
+mdefine_line|#define IMALLOC_START     (ioremap_bot)
 DECL|macro|IMALLOC_VMADDR
 mdefine_line|#define IMALLOC_VMADDR(x) ((unsigned long)(x))
+DECL|macro|PHBS_IO_BASE
+mdefine_line|#define PHBS_IO_BASE  &t;  (0xE000000000000000)&t;/* Reserve 2 gigs for PHBs */
 DECL|macro|IMALLOC_BASE
-mdefine_line|#define IMALLOC_BASE  (0xE000000000000000)
+mdefine_line|#define IMALLOC_BASE      (0xE000000080000000)  
 DECL|macro|IMALLOC_END
-mdefine_line|#define IMALLOC_END   (IMALLOC_BASE + VALID_EA_BITS)
+mdefine_line|#define IMALLOC_END       (IMALLOC_BASE + VALID_EA_BITS)
 multiline_comment|/*&n; * Define the address range mapped virt &lt;-&gt; physical&n; */
 DECL|macro|KRANGE_START
 mdefine_line|#define KRANGE_START KERNELBASE
@@ -1081,6 +1083,56 @@ id|hpte_init_iSeries
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+multiline_comment|/* imalloc region types */
+DECL|macro|IM_REGION_UNUSED
+mdefine_line|#define IM_REGION_UNUSED&t;0x1
+DECL|macro|IM_REGION_SUBSET
+mdefine_line|#define IM_REGION_SUBSET&t;0x2
+DECL|macro|IM_REGION_EXISTS
+mdefine_line|#define IM_REGION_EXISTS&t;0x4
+DECL|macro|IM_REGION_OVERLAP
+mdefine_line|#define IM_REGION_OVERLAP&t;0x8
+r_extern
+r_struct
+id|vm_struct
+op_star
+id|im_get_free_area
+c_func
+(paren
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|vm_struct
+op_star
+id|im_get_area
+c_func
+(paren
+r_int
+r_int
+id|v_addr
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+id|region_type
+)paren
+suffix:semicolon
+r_int
+r_int
+id|im_free
+c_func
+(paren
+r_void
+op_star
+id|addr
 )paren
 suffix:semicolon
 DECL|typedef|pte_addr_t

@@ -533,7 +533,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_void
-id|__devinit
 DECL|function|pcibios_resource_to_bus
 id|pcibios_resource_to_bus
 c_func

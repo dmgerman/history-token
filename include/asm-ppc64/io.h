@@ -325,6 +325,28 @@ mdefine_line|#define IO_SPACE_LIMIT ~(0UL)
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Map in an area of physical address space, for accessing&n; * I/O devices etc.&n; */
 r_extern
+r_int
+id|__ioremap_explicit
+c_func
+(paren
+r_int
+r_int
+id|p_addr
+comma
+r_int
+r_int
+id|v_addr
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
+r_extern
 r_void
 op_star
 id|__ioremap
@@ -361,6 +383,20 @@ suffix:semicolon
 DECL|macro|ioremap_nocache
 mdefine_line|#define ioremap_nocache(addr, size)&t;ioremap((addr), (size))
 r_extern
+r_int
+id|iounmap_explicit
+c_func
+(paren
+r_void
+op_star
+id|addr
+comma
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|iounmap
 c_func
@@ -368,6 +404,17 @@ c_func
 r_void
 op_star
 id|addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|reserve_phb_iospace
+c_func
+(paren
+r_int
+r_int
+id|size
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv, for&n; * addresses in the area where the kernel has the RAM mapped.&n; */

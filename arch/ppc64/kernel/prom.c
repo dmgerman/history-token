@@ -11066,6 +11066,13 @@ r_return
 id|np
 suffix:semicolon
 )brace
+DECL|variable|of_find_node_by_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|of_find_node_by_type
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;of_find_compatible_node - Find a node based on type and one of the&n; *                                tokens in its &quot;compatible&quot; property&n; *&t;@from:&t;&t;The node to start searching from or NULL, the node&n; *&t;&t;&t;you pass will not be searched, only the next one&n; *&t;&t;&t;will; typically, you pass what the previous call&n; *&t;&t;&t;returned. of_node_put() will be called on it&n; *&t;@type:&t;&t;The type string to match &quot;device_type&quot; or NULL to ignore&n; *&t;@compatible:&t;The string to match to one of the tokens in the device&n; *&t;&t;&t;&quot;compatible&quot; list.&n; *&n; *&t;Returns a node pointer with refcount incremented, use&n; *&t;of_node_put() on it when done.&n; */
 DECL|function|of_find_compatible_node
 r_struct
