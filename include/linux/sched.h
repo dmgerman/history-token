@@ -2189,6 +2189,16 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+r_extern
+id|task_t
+op_star
+id|idle_task
+c_func
+(paren
+r_int
+id|cpu
+)paren
+suffix:semicolon
 r_void
 id|yield
 c_func
