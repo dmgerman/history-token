@@ -2583,6 +2583,15 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pcard-&gt;card-&gt;dev
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 id|xirq

@@ -5246,6 +5246,15 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pcard-&gt;card-&gt;dev
+)paren
+suffix:semicolon
 id|pnp_set_card_drvdata
 c_func
 (paren

@@ -9990,6 +9990,15 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pci-&gt;dev
+)paren
+suffix:semicolon
 op_star
 id|r_ice1712
 op_assign

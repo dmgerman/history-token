@@ -14578,6 +14578,15 @@ id|CM_JYSTK_EN
 suffix:semicolon
 )brace
 macro_line|#endif
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pci-&gt;dev
+)paren
+suffix:semicolon
 op_star
 id|rcmipci
 op_assign

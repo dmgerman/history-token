@@ -9182,6 +9182,15 @@ c_func
 id|pci
 )paren
 suffix:semicolon
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pci-&gt;dev
+)paren
+suffix:semicolon
 op_star
 id|r_via
 op_assign

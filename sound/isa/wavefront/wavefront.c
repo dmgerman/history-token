@@ -2281,7 +2281,11 @@ id|isapnp
 (braket
 id|dev
 )braket
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|snd_wavefront_pnp
 (paren
 id|dev
@@ -2322,6 +2326,16 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+)brace
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pcard-&gt;card-&gt;dev
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PNP */
 multiline_comment|/* --------- PCM --------------- */

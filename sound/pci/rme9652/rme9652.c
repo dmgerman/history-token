@@ -11872,6 +11872,15 @@ id|rme9652-&gt;pci
 op_assign
 id|pci
 suffix:semicolon
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pci-&gt;dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

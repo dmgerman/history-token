@@ -16761,6 +16761,15 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* disable CLKRUN */
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pci-&gt;dev
+)paren
+suffix:semicolon
 op_star
 id|rchip
 op_assign

@@ -9750,6 +9750,15 @@ id|chip-&gt;mc_base
 op_sub_assign
 l_int|0x80
 suffix:semicolon
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pcard-&gt;card-&gt;dev
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace

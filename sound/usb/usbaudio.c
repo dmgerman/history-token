@@ -13504,6 +13504,15 @@ c_func
 id|chip
 )paren
 suffix:semicolon
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|dev-&gt;dev
+)paren
+suffix:semicolon
 op_star
 id|rchip
 op_assign

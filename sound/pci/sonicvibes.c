@@ -8373,6 +8373,15 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pci-&gt;dev
+)paren
+suffix:semicolon
 op_star
 id|rsonic
 op_assign

@@ -1260,6 +1260,10 @@ op_star
 id|file
 )paren
 suffix:semicolon
+macro_line|#ifndef snd_card_set_dev
+DECL|macro|snd_card_set_dev
+mdefine_line|#define snd_card_set_dev(card,devptr) ((card)-&gt;dev = (devptr))
+macro_line|#endif
 multiline_comment|/* device.c */
 r_int
 id|snd_device_new
