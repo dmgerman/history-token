@@ -328,8 +328,9 @@ id|address_space_operations
 id|ncp_symlink_aops
 op_assign
 (brace
+dot
 id|readpage
-suffix:colon
+op_assign
 id|ncp_symlink_readpage
 comma
 )brace
