@@ -154,26 +154,6 @@ suffix:semicolon
 )brace
 DECL|macro|task_hot
 mdefine_line|#define task_hot(p, now, sd) ((long long) ((now) - (p)-&gt;last_ran)&t;&bslash;&n;&t;&t;&t;&t;&lt; (long long) (sd)-&gt;cache_hot_time)
-DECL|enum|idle_type
-r_enum
-id|idle_type
-(brace
-DECL|enumerator|IDLE
-id|IDLE
-comma
-DECL|enumerator|NOT_IDLE
-id|NOT_IDLE
-comma
-DECL|enumerator|NEWLY_IDLE
-id|NEWLY_IDLE
-comma
-DECL|enumerator|MAX_IDLE_TYPES
-id|MAX_IDLE_TYPES
-)brace
-suffix:semicolon
-r_struct
-id|sched_domain
-suffix:semicolon
 multiline_comment|/*&n; * These are the runqueue data structures:&n; */
 DECL|macro|BITMAP_SIZE
 mdefine_line|#define BITMAP_SIZE ((((MAX_PRIO+1+7)/8)+sizeof(long)-1)/sizeof(long))
@@ -456,223 +436,6 @@ comma
 id|runqueues
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * sched-domains (multiprocessor balancing) declarations:&n; */
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|SCHED_LOAD_SCALE
-mdefine_line|#define SCHED_LOAD_SCALE&t;128UL&t;/* increase resolution of load */
-DECL|macro|SD_LOAD_BALANCE
-mdefine_line|#define SD_LOAD_BALANCE&t;&t;1&t;/* Do load balancing on this domain. */
-DECL|macro|SD_BALANCE_NEWIDLE
-mdefine_line|#define SD_BALANCE_NEWIDLE&t;2&t;/* Balance when about to become idle */
-DECL|macro|SD_BALANCE_EXEC
-mdefine_line|#define SD_BALANCE_EXEC&t;&t;4&t;/* Balance on exec */
-DECL|macro|SD_WAKE_IDLE
-mdefine_line|#define SD_WAKE_IDLE&t;&t;8&t;/* Wake to idle CPU on task wakeup */
-DECL|macro|SD_WAKE_AFFINE
-mdefine_line|#define SD_WAKE_AFFINE&t;&t;16&t;/* Wake task to waking CPU */
-DECL|macro|SD_WAKE_BALANCE
-mdefine_line|#define SD_WAKE_BALANCE&t;&t;32&t;/* Perform balancing at task wakeup */
-DECL|macro|SD_SHARE_CPUPOWER
-mdefine_line|#define SD_SHARE_CPUPOWER&t;64&t;/* Domain members share cpu power */
-DECL|struct|sched_group
-r_struct
-id|sched_group
-(brace
-DECL|member|next
-r_struct
-id|sched_group
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* Must be a circular list */
-DECL|member|cpumask
-id|cpumask_t
-id|cpumask
-suffix:semicolon
-multiline_comment|/*&n;&t; * CPU power of this group, SCHED_LOAD_SCALE being max power for a&n;&t; * single CPU. This is read only (except for setup, hotplug CPU).&n;&t; */
-DECL|member|cpu_power
-r_int
-r_int
-id|cpu_power
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|sched_domain
-r_struct
-id|sched_domain
-(brace
-multiline_comment|/* These fields must be setup */
-DECL|member|parent
-r_struct
-id|sched_domain
-op_star
-id|parent
-suffix:semicolon
-multiline_comment|/* top domain must be null terminated */
-DECL|member|groups
-r_struct
-id|sched_group
-op_star
-id|groups
-suffix:semicolon
-multiline_comment|/* the balancing groups of the domain */
-DECL|member|span
-id|cpumask_t
-id|span
-suffix:semicolon
-multiline_comment|/* span of all CPUs in this domain */
-DECL|member|min_interval
-r_int
-r_int
-id|min_interval
-suffix:semicolon
-multiline_comment|/* Minimum balance interval ms */
-DECL|member|max_interval
-r_int
-r_int
-id|max_interval
-suffix:semicolon
-multiline_comment|/* Maximum balance interval ms */
-DECL|member|busy_factor
-r_int
-r_int
-id|busy_factor
-suffix:semicolon
-multiline_comment|/* less balancing by factor if busy */
-DECL|member|imbalance_pct
-r_int
-r_int
-id|imbalance_pct
-suffix:semicolon
-multiline_comment|/* No balance until over watermark */
-DECL|member|cache_hot_time
-r_int
-r_int
-r_int
-id|cache_hot_time
-suffix:semicolon
-multiline_comment|/* Task considered cache hot (ns) */
-DECL|member|cache_nice_tries
-r_int
-r_int
-id|cache_nice_tries
-suffix:semicolon
-multiline_comment|/* Leave cache hot tasks for # tries */
-DECL|member|per_cpu_gain
-r_int
-r_int
-id|per_cpu_gain
-suffix:semicolon
-multiline_comment|/* CPU % gained by adding domain cpus */
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* See SD_* */
-multiline_comment|/* Runtime fields. */
-DECL|member|last_balance
-r_int
-r_int
-id|last_balance
-suffix:semicolon
-multiline_comment|/* init to jiffies. units in jiffies */
-DECL|member|balance_interval
-r_int
-r_int
-id|balance_interval
-suffix:semicolon
-multiline_comment|/* initialise to 1. units in ms. */
-DECL|member|nr_balance_failed
-r_int
-r_int
-id|nr_balance_failed
-suffix:semicolon
-multiline_comment|/* initialise to 0 */
-macro_line|#ifdef CONFIG_SCHEDSTATS
-multiline_comment|/* load_balance() stats */
-DECL|member|lb_cnt
-r_int
-r_int
-id|lb_cnt
-(braket
-id|MAX_IDLE_TYPES
-)braket
-suffix:semicolon
-DECL|member|lb_failed
-r_int
-r_int
-id|lb_failed
-(braket
-id|MAX_IDLE_TYPES
-)braket
-suffix:semicolon
-DECL|member|lb_imbalance
-r_int
-r_int
-id|lb_imbalance
-(braket
-id|MAX_IDLE_TYPES
-)braket
-suffix:semicolon
-DECL|member|lb_nobusyg
-r_int
-r_int
-id|lb_nobusyg
-(braket
-id|MAX_IDLE_TYPES
-)braket
-suffix:semicolon
-DECL|member|lb_nobusyq
-r_int
-r_int
-id|lb_nobusyq
-(braket
-id|MAX_IDLE_TYPES
-)braket
-suffix:semicolon
-multiline_comment|/* sched_balance_exec() stats */
-DECL|member|sbe_attempts
-r_int
-r_int
-id|sbe_attempts
-suffix:semicolon
-DECL|member|sbe_pushed
-r_int
-r_int
-id|sbe_pushed
-suffix:semicolon
-multiline_comment|/* try_to_wake_up() stats */
-DECL|member|ttwu_wake_affine
-r_int
-r_int
-id|ttwu_wake_affine
-suffix:semicolon
-DECL|member|ttwu_wake_balance
-r_int
-r_int
-id|ttwu_wake_balance
-suffix:semicolon
-macro_line|#endif
-)brace
-suffix:semicolon
-macro_line|#ifndef ARCH_HAS_SCHED_TUNE
-macro_line|#ifdef CONFIG_SCHED_SMT
-DECL|macro|ARCH_HAS_SCHED_WAKE_IDLE
-mdefine_line|#define ARCH_HAS_SCHED_WAKE_IDLE
-multiline_comment|/* Common values for SMT siblings */
-DECL|macro|SD_SIBLING_INIT
-mdefine_line|#define SD_SIBLING_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 1,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 2,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 110,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 0,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 25,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_AFFINE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_IDLE&t;&t;&bslash;&n;&t;&t;&t;&t;| SD_SHARE_CPUPOWER,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
-macro_line|#endif
-multiline_comment|/* Common values for CPUs */
-DECL|macro|SD_CPU_INIT
-mdefine_line|#define SD_CPU_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 1,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 4,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 64,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= cache_decay_ticks*1000000 ? : (5*1000000/2),&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_AFFINE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
-multiline_comment|/* Arch can override this macro in processor.h */
-macro_line|#if defined(CONFIG_NUMA) &amp;&amp; !defined(SD_NODE_INIT)
-DECL|macro|SD_NODE_INIT
-mdefine_line|#define SD_NODE_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (10*1000000),&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
-macro_line|#endif
-macro_line|#endif /* ARCH_HAS_SCHED_TUNE */
-macro_line|#endif
 DECL|macro|for_each_domain
 mdefine_line|#define for_each_domain(cpu, domain) &bslash;&n;&t;for (domain = cpu_rq(cpu)-&gt;sd; domain; domain = domain-&gt;parent)
 DECL|macro|cpu_rq
@@ -937,7 +700,7 @@ c_loop
 (paren
 id|itype
 op_assign
-id|IDLE
+id|SCHED_IDLE
 suffix:semicolon
 id|itype
 OL
@@ -1016,7 +779,7 @@ c_loop
 (paren
 id|itype
 op_assign
-id|IDLE
+id|SCHED_IDLE
 suffix:semicolon
 id|itype
 OL
@@ -5991,7 +5754,7 @@ op_logical_or
 (paren
 id|idle
 op_eq
-id|IDLE
+id|SCHED_IDLE
 op_logical_and
 id|max_load
 OG
@@ -6884,7 +6647,7 @@ l_int|1
 comma
 id|sd
 comma
-id|IDLE
+id|SCHED_IDLE
 )paren
 )paren
 (brace
@@ -7049,7 +6812,7 @@ c_cond
 (paren
 id|idle
 op_ne
-id|IDLE
+id|SCHED_IDLE
 )paren
 id|interval
 op_mul_assign
@@ -7386,7 +7149,7 @@ id|cpu
 comma
 id|rq
 comma
-id|IDLE
+id|SCHED_IDLE
 )paren
 suffix:semicolon
 r_return
@@ -14181,8 +13944,8 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * Attach the domain &squot;sd&squot; to &squot;cpu&squot; as its base domain.  Callers must&n; * hold the hotplug lock.&n; */
 DECL|function|cpu_attach_domain
-r_static
 r_void
+id|__devinit
 id|cpu_attach_domain
 c_func
 (paren
@@ -14312,132 +14075,8 @@ id|req.done
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_SCHED_SMT
-r_static
-id|DEFINE_PER_CPU
-c_func
-(paren
-r_struct
-id|sched_domain
-comma
-id|cpu_domains
-)paren
-suffix:semicolon
-DECL|variable|sched_group_cpus
-r_static
-r_struct
-id|sched_group
-id|sched_group_cpus
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-DECL|function|cpu_to_cpu_group
-r_static
-r_int
-id|__devinit
-id|cpu_to_cpu_group
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-r_return
-id|cpu
-suffix:semicolon
-)brace
-macro_line|#endif
-r_static
-id|DEFINE_PER_CPU
-c_func
-(paren
-r_struct
-id|sched_domain
-comma
-id|phys_domains
-)paren
-suffix:semicolon
-DECL|variable|sched_group_phys
-r_static
-r_struct
-id|sched_group
-id|sched_group_phys
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-DECL|function|cpu_to_phys_group
-r_static
-r_int
-id|__devinit
-id|cpu_to_phys_group
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-macro_line|#ifdef CONFIG_SCHED_SMT
-r_return
-id|first_cpu
-c_func
-(paren
-id|cpu_sibling_map
-(braket
-id|cpu
-)braket
-)paren
-suffix:semicolon
-macro_line|#else
-r_return
-id|cpu
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#ifdef CONFIG_NUMA
-r_static
-id|DEFINE_PER_CPU
-c_func
-(paren
-r_struct
-id|sched_domain
-comma
-id|node_domains
-)paren
-suffix:semicolon
-DECL|variable|sched_group_nodes
-r_static
-r_struct
-id|sched_group
-id|sched_group_nodes
-(braket
-id|MAX_NUMNODES
-)braket
-suffix:semicolon
-DECL|function|cpu_to_node_group
-r_static
-r_int
-id|__devinit
-id|cpu_to_node_group
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-r_return
-id|cpu_to_node
-c_func
-(paren
-id|cpu
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* cpus with isolated domains */
 DECL|variable|cpu_isolated_map
-r_static
 id|cpumask_t
 id|__devinitdata
 id|cpu_isolated_map
@@ -14528,7 +14167,6 @@ id|isolated_cpu_setup
 suffix:semicolon
 multiline_comment|/*&n; * init_sched_build_groups takes an array of groups, the cpumask we wish&n; * to span, and a pointer to a function which identifies what group a CPU&n; * belongs to. The return value of group_fn must be a valid index into the&n; * groups[] array, and must be &gt;= 0 and &lt; NR_CPUS (due to the fact that we&n; * keep track of groups covered with a cpumask_t).&n; *&n; * init_sched_build_groups will build a circular linked list of the groups&n; * covered by the given span, and will set each group&squot;s -&gt;cpumask correctly,&n; * and -&gt;cpu_power to 0.&n; */
 DECL|function|init_sched_build_groups
-r_static
 r_void
 id|__devinit
 id|init_sched_build_groups
@@ -14693,6 +14331,149 @@ op_assign
 id|first
 suffix:semicolon
 )brace
+macro_line|#ifdef ARCH_HAS_SCHED_DOMAIN
+r_extern
+r_void
+id|__devinit
+id|arch_init_sched_domains
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__devinit
+id|arch_destroy_sched_domains
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+macro_line|#ifdef CONFIG_SCHED_SMT
+r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_struct
+id|sched_domain
+comma
+id|cpu_domains
+)paren
+suffix:semicolon
+DECL|variable|sched_group_cpus
+r_static
+r_struct
+id|sched_group
+id|sched_group_cpus
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+DECL|function|cpu_to_cpu_group
+r_static
+r_int
+id|__devinit
+id|cpu_to_cpu_group
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+r_return
+id|cpu
+suffix:semicolon
+)brace
+macro_line|#endif
+r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_struct
+id|sched_domain
+comma
+id|phys_domains
+)paren
+suffix:semicolon
+DECL|variable|sched_group_phys
+r_static
+r_struct
+id|sched_group
+id|sched_group_phys
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+DECL|function|cpu_to_phys_group
+r_static
+r_int
+id|__devinit
+id|cpu_to_phys_group
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+macro_line|#ifdef CONFIG_SCHED_SMT
+r_return
+id|first_cpu
+c_func
+(paren
+id|cpu_sibling_map
+(braket
+id|cpu
+)braket
+)paren
+suffix:semicolon
+macro_line|#else
+r_return
+id|cpu
+suffix:semicolon
+macro_line|#endif
+)brace
+macro_line|#ifdef CONFIG_NUMA
+r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_struct
+id|sched_domain
+comma
+id|node_domains
+)paren
+suffix:semicolon
+DECL|variable|sched_group_nodes
+r_static
+r_struct
+id|sched_group
+id|sched_group_nodes
+(braket
+id|MAX_NUMNODES
+)braket
+suffix:semicolon
+DECL|function|cpu_to_node_group
+r_static
+r_int
+id|__devinit
+id|cpu_to_node_group
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+r_return
+id|cpu_to_node
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * Set up scheduler domains and groups.  Callers must hold the hotplug lock.&n; */
 DECL|function|arch_init_sched_domains
 r_static
@@ -15204,10 +14985,12 @@ r_void
 multiline_comment|/* Do nothing: everything is statically allocated. */
 )brace
 macro_line|#endif
+macro_line|#endif /* ARCH_HAS_SCHED_DOMAIN */
 DECL|macro|SCHED_DOMAIN_DEBUG
 macro_line|#undef SCHED_DOMAIN_DEBUG
 macro_line|#ifdef SCHED_DOMAIN_DEBUG
 DECL|function|sched_domain_debug
+r_static
 r_void
 id|sched_domain_debug
 c_func
