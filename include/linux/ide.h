@@ -279,11 +279,8 @@ id|ide_umc8672
 comma
 id|ide_ht6560b
 comma
-DECL|enumerator|ide_pdc4030
 DECL|enumerator|ide_rz1000
 DECL|enumerator|ide_trm290
-id|ide_pdc4030
-comma
 id|ide_rz1000
 comma
 id|ide_trm290
@@ -2201,18 +2198,6 @@ op_star
 id|hwifops
 suffix:semicolon
 macro_line|#else
-multiline_comment|/* routine is for HBA specific IDENTITY operations */
-DECL|member|identify
-r_int
-(paren
-op_star
-id|identify
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* routine to tune PIO mode for drives */
 DECL|member|tuneproc
 r_void

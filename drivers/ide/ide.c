@@ -2264,10 +2264,6 @@ op_assign
 id|tmp_hwif-&gt;cds
 suffix:semicolon
 macro_line|#endif
-id|hwif-&gt;identify
-op_assign
-id|tmp_hwif-&gt;identify
-suffix:semicolon
 id|hwif-&gt;tuneproc
 op_assign
 id|tmp_hwif-&gt;tuneproc
@@ -7068,14 +7064,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* zero = nothing matched */
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-DECL|variable|probe_pdc4030
-r_static
-r_int
-id|__initdata
-id|probe_pdc4030
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX
 DECL|variable|probe_ali14xx
 r_static
@@ -7949,8 +7937,6 @@ l_string|&quot;umc8672&quot;
 comma
 l_string|&quot;ali14xx&quot;
 comma
-l_string|&quot;dc4030&quot;
-comma
 l_int|NULL
 )brace
 suffix:semicolon
@@ -8088,20 +8074,6 @@ c_cond
 id|i
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-r_case
-op_minus
-l_int|18
-suffix:colon
-multiline_comment|/* &quot;dc4030&quot; */
-id|probe_pdc4030
-op_assign
-l_int|1
-suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX
 r_case
 op_minus
@@ -8631,31 +8603,6 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_CMD640 */
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-(brace
-r_extern
-r_int
-id|pdc4030_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|probe_pdc4030
-)paren
-(paren
-r_void
-)paren
-id|pdc4030_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
 macro_line|#ifdef CONFIG_BLK_DEV_IDE_PMAC
 (brace
 r_extern

@@ -26,8 +26,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
-multiline_comment|/* FIXME: some day we shouldn&squot;t need to look in here! */
-macro_line|#include &quot;legacy/pdc4030.h&quot;
 multiline_comment|/*&n; * lba_capacity_is_ok() performs a sanity check on the claimed &quot;lba_capacity&quot;&n; * value for this drive (from its reported identification information).&n; *&n; * Returns:&t;1 if lba_capacity looks sensible&n; *&t;&t;0 otherwise&n; *&n; * It is called only once for each drive.&n; */
 DECL|function|lba_capacity_is_ok
 r_static
@@ -4600,6 +4598,8 @@ op_minus
 id|drive-&gt;sect0
 suffix:semicolon
 )brace
+DECL|macro|IS_PDC4030_DRIVE
+mdefine_line|#define IS_PDC4030_DRIVE&t;0
 DECL|function|idedisk_special
 r_static
 id|ide_startstop_t

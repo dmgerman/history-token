@@ -1315,15 +1315,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ide_pdc4030
-suffix:colon
-id|name
-op_assign
-l_string|&quot;pdc4030&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|ide_rz1000
 suffix:colon
 id|name

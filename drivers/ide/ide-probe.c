@@ -494,30 +494,6 @@ c_func
 l_string|&quot;ATAPI &quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-r_if
-c_cond
-(paren
-id|hwif-&gt;channel
-op_eq
-l_int|1
-op_logical_and
-id|hwif-&gt;chipset
-op_eq
-id|ide_pdc4030
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot; -- not supported on 2nd Promise port&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|err_misc
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
 r_switch
 c_cond
 (paren
@@ -917,31 +893,6 @@ comma
 id|IDE_FEATURE_REG
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwif-&gt;identify
-op_ne
-l_int|NULL
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|hwif
-op_member_access_from_pointer
-id|identify
-c_func
-(paren
-id|drive
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
 multiline_comment|/* ask drive for ID */
 id|hwif
 op_member_access_from_pointer
@@ -953,7 +904,6 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
-)brace
 id|timeout
 op_assign
 (paren
@@ -2442,18 +2392,6 @@ op_logical_neg
 id|hwif-&gt;mate-&gt;present
 )paren
 op_logical_and
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-(paren
-id|hwif-&gt;chipset
-op_ne
-id|ide_pdc4030
-op_logical_or
-id|hwif-&gt;channel
-op_eq
-l_int|0
-)paren
-op_logical_and
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
 (paren
 id|ide_hwif_request_regions
 c_func
