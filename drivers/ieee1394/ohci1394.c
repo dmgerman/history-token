@@ -9382,7 +9382,7 @@ op_amp
 id|OHCI1394_cycleInconsistent
 )paren
 (brace
-multiline_comment|/* We subscribe to the cycleInconsistent event only to&n;&t;&t; * clear the corresponding event bit... otherwise,&n;&t;&t; * isochronous cycleMatch DMA wont work. */
+multiline_comment|/* We subscribe to the cycleInconsistent event only to&n;&t;&t; * clear the corresponding event bit... otherwise,&n;&t;&t; * isochronous cycleMatch DMA won&squot;t work. */
 id|DBGMSG
 c_func
 (paren

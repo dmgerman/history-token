@@ -3775,7 +3775,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* its supposed to automute before suspending, so we wont bother */
+multiline_comment|/* its supposed to automute before suspending, so we won&squot;t bother */
 id|opl3sa2_read
 c_func
 (paren

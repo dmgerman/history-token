@@ -13506,7 +13506,7 @@ id|currcons
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Font switching&n; *&n; *  Currently we only support fonts up to 32 pixels wide, at a maximum height&n; *  of 32 pixels. Userspace fontdata is stored with 32 bytes (shorts/ints, &n; *  depending on width) reserved for each character which is kinda wasty, but &n; *  this is done in order to maintain compatibility with the EGA/VGA fonts. It &n; *  is upto the actual low-level console-driver convert data into its favorite&n; *  format (maybe we should add a `fontoffset&squot; field to the `display&squot;&n; *  structure so we wont have to convert the fontdata all the time.&n; *  /Jes&n; */
+multiline_comment|/*&n; *  Font switching&n; *&n; *  Currently we only support fonts up to 32 pixels wide, at a maximum height&n; *  of 32 pixels. Userspace fontdata is stored with 32 bytes (shorts/ints, &n; *  depending on width) reserved for each character which is kinda wasty, but &n; *  this is done in order to maintain compatibility with the EGA/VGA fonts. It &n; *  is upto the actual low-level console-driver convert data into its favorite&n; *  format (maybe we should add a `fontoffset&squot; field to the `display&squot;&n; *  structure so we won&squot;t have to convert the fontdata all the time.&n; *  /Jes&n; */
 DECL|macro|max_font_size
 mdefine_line|#define max_font_size 65536
 DECL|function|con_font_op

@@ -6942,7 +6942,7 @@ id|mddev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* on success, candidates will be empty, on error&n;&t;&t; * it wont...&n;&t;&t; */
+multiline_comment|/* on success, candidates will be empty, on error&n;&t;&t; * it won&squot;t...&n;&t;&t; */
 id|ITERATE_RDEV_GENERIC
 c_func
 (paren

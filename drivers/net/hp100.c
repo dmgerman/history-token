@@ -12009,7 +12009,7 @@ c_func
 id|TRAIN_ALLOW
 )paren
 suffix:semicolon
-multiline_comment|/* wont work on non-ETR card */
+multiline_comment|/* won&squot;t work on non-ETR card */
 macro_line|#ifdef HP100_DEBUG_TRAINING
 id|printk
 c_func
