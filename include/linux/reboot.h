@@ -12,7 +12,7 @@ DECL|macro|LINUX_REBOOT_MAGIC2B
 mdefine_line|#define&t;LINUX_REBOOT_MAGIC2B&t;369367448
 DECL|macro|LINUX_REBOOT_MAGIC2C
 mdefine_line|#define&t;LINUX_REBOOT_MAGIC2C&t;537993216
-multiline_comment|/*&n; * Commands accepted by the _reboot() system call.&n; *&n; * RESTART     Restart system using default command and mode.&n; * HALT        Stop OS and give system control to ROM monitor, if any.&n; * CAD_ON      Ctrl-Alt-Del sequence causes RESTART command.&n; * CAD_OFF     Ctrl-Alt-Del sequence sends SIGINT to init task.&n; * POWER_OFF   Stop OS and remove all power from system, if possible.&n; * RESTART2    Restart system using given command string.&n; * SW_SUSPEND  Suspend system using software suspend if compiled in.&n; */
+multiline_comment|/*&n; * Commands accepted by the _reboot() system call.&n; *&n; * RESTART     Restart system using default command and mode.&n; * HALT        Stop OS and give system control to ROM monitor, if any.&n; * CAD_ON      Ctrl-Alt-Del sequence causes RESTART command.&n; * CAD_OFF     Ctrl-Alt-Del sequence sends SIGINT to init task.&n; * POWER_OFF   Stop OS and remove all power from system, if possible.&n; * RESTART2    Restart system using given command string.&n; * SW_SUSPEND  Suspend system using software suspend if compiled in.&n; * KEXEC       Restart system using a previously loaded Linux kernel&n; */
 DECL|macro|LINUX_REBOOT_CMD_RESTART
 mdefine_line|#define&t;LINUX_REBOOT_CMD_RESTART&t;0x01234567
 DECL|macro|LINUX_REBOOT_CMD_HALT
@@ -27,6 +27,8 @@ DECL|macro|LINUX_REBOOT_CMD_RESTART2
 mdefine_line|#define&t;LINUX_REBOOT_CMD_RESTART2&t;0xA1B2C3D4
 DECL|macro|LINUX_REBOOT_CMD_SW_SUSPEND
 mdefine_line|#define&t;LINUX_REBOOT_CMD_SW_SUSPEND&t;0xD000FCE2
+DECL|macro|LINUX_REBOOT_CMD_KEXEC
+mdefine_line|#define&t;LINUX_REBOOT_CMD_KEXEC&t;&t;0x45584543
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/notifier.h&gt;
 r_extern
