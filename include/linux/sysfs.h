@@ -47,6 +47,13 @@ id|attrs
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/**&n; * Use these macros to make defining attributes easier. See include/linux/device.h&n; * for examples..&n; */
+DECL|macro|__ATTR
+mdefine_line|#define __ATTR(_name,_mode,_show,_store) { &bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode, .owner = THIS_MODULE },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&t;&bslash;&n;}
+DECL|macro|__ATTR_RO
+mdefine_line|#define __ATTR_RO(_name) { &bslash;&n;&t;.attr&t;= { .name = __stringify(_name), .mode = 0444, .owner = THIS_MODULE },&t;&bslash;&n;&t;.show&t;= _name##_show,&t;&bslash;&n;}
+DECL|macro|__ATTR_NULL
+mdefine_line|#define __ATTR_NULL { .attr = { .name = NULL } }
 DECL|struct|bin_attribute
 r_struct
 id|bin_attribute
