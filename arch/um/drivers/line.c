@@ -293,10 +293,6 @@ id|buf
 op_add_assign
 id|end
 suffix:semicolon
-id|len
-op_sub_assign
-id|end
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -305,6 +301,8 @@ comma
 id|buf
 comma
 id|len
+op_minus
+id|end
 )paren
 suffix:semicolon
 id|line-&gt;tail
@@ -312,6 +310,8 @@ op_assign
 id|line-&gt;buffer
 op_plus
 id|len
+op_minus
+id|end
 suffix:semicolon
 )brace
 r_return
