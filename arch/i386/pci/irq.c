@@ -1992,8 +1992,7 @@ id|u16
 id|device
 )paren
 (brace
-macro_line|#if 0 /* Let&squot;s see what chip this is supposed to be ... */
-multiline_comment|/* We must not touch 440GX even if we have tables. 440GX has&n;&t;   different IRQ routing weirdness */
+multiline_comment|/* 440GX has a proprietary PIRQ router -- don&squot;t use it */
 r_if
 c_cond
 (paren
@@ -2020,7 +2019,6 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
