@@ -5,10 +5,24 @@ macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_protocol.h&gt;
-DECL|macro|UDP_TIMEOUT
-mdefine_line|#define UDP_TIMEOUT (30*HZ)
-DECL|macro|UDP_STREAM_TIMEOUT
-mdefine_line|#define UDP_STREAM_TIMEOUT (180*HZ)
+DECL|variable|ip_ct_udp_timeout
+r_int
+r_int
+id|ip_ct_udp_timeout
+op_assign
+l_int|30
+op_star
+id|HZ
+suffix:semicolon
+DECL|variable|ip_ct_udp_timeout_stream
+r_int
+r_int
+id|ip_ct_udp_timeout_stream
+op_assign
+l_int|180
+op_star
+id|HZ
+suffix:semicolon
 DECL|function|udp_pkt_to_tuple
 r_static
 r_int
@@ -205,7 +219,7 @@ c_func
 (paren
 id|conntrack
 comma
-id|UDP_STREAM_TIMEOUT
+id|ip_ct_udp_timeout_stream
 )paren
 suffix:semicolon
 multiline_comment|/* Also, more likely to be important, and not a probe */
@@ -225,7 +239,7 @@ c_func
 (paren
 id|conntrack
 comma
-id|UDP_TIMEOUT
+id|ip_ct_udp_timeout
 )paren
 suffix:semicolon
 r_return

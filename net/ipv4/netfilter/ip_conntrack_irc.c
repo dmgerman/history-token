@@ -685,6 +685,7 @@ comma
 id|dcc_port
 )paren
 suffix:semicolon
+multiline_comment|/* dcc_ip can be the internal OR external (NAT&squot;ed) IP&n;&t;&t;&t; * Tiago Sousa &lt;mirage@kaotik.org&gt; */
 r_if
 c_cond
 (paren
@@ -694,6 +695,19 @@ id|dir
 )braket
 dot
 id|tuple.src.ip
+op_ne
+id|htonl
+c_func
+(paren
+id|dcc_ip
+)paren
+op_logical_and
+id|ct-&gt;tuplehash
+(braket
+id|IP_CT_DIR_REPLY
+)braket
+dot
+id|tuple.dst.ip
 op_ne
 id|htonl
 c_func
@@ -822,11 +836,12 @@ l_int|0
 )brace
 comma
 (brace
-id|htonl
-c_func
-(paren
-id|dcc_ip
-)paren
+id|ct-&gt;tuplehash
+(braket
+id|dir
+)braket
+dot
+id|tuple.src.ip
 comma
 (brace
 dot

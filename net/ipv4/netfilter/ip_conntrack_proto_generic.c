@@ -3,8 +3,15 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_protocol.h&gt;
-DECL|macro|GENERIC_TIMEOUT
-mdefine_line|#define GENERIC_TIMEOUT (600*HZ)
+DECL|variable|ip_ct_generic_timeout
+r_int
+r_int
+id|ip_ct_generic_timeout
+op_assign
+l_int|600
+op_star
+id|HZ
+suffix:semicolon
 DECL|function|generic_pkt_to_tuple
 r_static
 r_int
@@ -143,7 +150,7 @@ c_func
 (paren
 id|conntrack
 comma
-id|GENERIC_TIMEOUT
+id|ip_ct_generic_timeout
 )paren
 suffix:semicolon
 r_return
