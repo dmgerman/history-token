@@ -46,6 +46,10 @@ DECL|enumerator|BH_JBD
 id|BH_JBD
 comma
 multiline_comment|/* Has an attached ext3 journal_head */
+DECL|enumerator|BH_Boundary
+id|BH_Boundary
+comma
+multiline_comment|/* Block is followed by a discontiguity */
 DECL|enumerator|BH_PrivateStart
 id|BH_PrivateStart
 comma
@@ -231,6 +235,13 @@ c_func
 id|Async_Write
 comma
 id|async_write
+)paren
+id|BUFFER_FNS
+c_func
+(paren
+id|Boundary
+comma
+id|boundary
 )paren
 multiline_comment|/*&n; * FIXME: this is used only by bh_kmap, which is used only by RAID5.&n; * Move all that stuff into raid5.c&n; */
 DECL|macro|bh_offset

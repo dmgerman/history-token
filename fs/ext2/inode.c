@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/mpage.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -527,7 +528,7 @@ id|to
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ext2_block_to_path - parse the block number into array of offsets&n; *&t;@inode: inode in question (we are only interested in its superblock)&n; *&t;@i_block: block number to be parsed&n; *&t;@offsets: array to store the offsets in&n; *&n; *&t;To store the locations of file&squot;s data ext2 uses a data structure common&n; *&t;for UNIX filesystems - tree of pointers anchored in the inode, with&n; *&t;data blocks at leaves and indirect blocks in intermediate nodes.&n; *&t;This function translates the block number into path in that tree -&n; *&t;return value is the path length and @offsets[n] is the offset of&n; *&t;pointer to (n+1)th node in the nth one. If @block is out of range&n; *&t;(negative or too large) warning is printed and zero returned.&n; *&n; *&t;Note: function doesn&squot;t find node addresses, so no IO is needed. All&n; *&t;we need to know is the capacity of indirect blocks (taken from the&n; *&t;inode-&gt;i_sb).&n; */
+multiline_comment|/**&n; *&t;ext2_block_to_path - parse the block number into array of offsets&n; *&t;@inode: inode in question (we are only interested in its superblock)&n; *&t;@i_block: block number to be parsed&n; *&t;@offsets: array to store the offsets in&n; *      @boundary: set this non-zero if the referred-to block is likely to be&n; *             followed (on disk) by an indirect block.&n; *&t;To store the locations of file&squot;s data ext2 uses a data structure common&n; *&t;for UNIX filesystems - tree of pointers anchored in the inode, with&n; *&t;data blocks at leaves and indirect blocks in intermediate nodes.&n; *&t;This function translates the block number into path in that tree -&n; *&t;return value is the path length and @offsets[n] is the offset of&n; *&t;pointer to (n+1)th node in the nth one. If @block is out of range&n; *&t;(negative or too large) warning is printed and zero returned.&n; *&n; *&t;Note: function doesn&squot;t find node addresses, so no IO is needed. All&n; *&t;we need to know is the capacity of indirect blocks (taken from the&n; *&t;inode-&gt;i_sb).&n; */
 multiline_comment|/*&n; * Portability note: the last comparison (check that we fit into triple&n; * indirect block) is spelled differently, because otherwise on an&n; * architecture with 32-bit longs and 8Kb pages we might get into trouble&n; * if our filesystem had 8Kb blocks. We might use long long, but that would&n; * kill us on x86. Oh, well, at least the sign propagation does not matter -&n; * i_block would have to be negative in the very beginning, so we would not&n; * get there at all.&n; */
 DECL|function|ext2_block_to_path
 r_static
@@ -548,6 +549,10 @@ id|offsets
 (braket
 l_int|4
 )braket
+comma
+r_int
+op_star
+id|boundary
 )paren
 (brace
 r_int
@@ -595,6 +600,11 @@ id|n
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|final
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -630,6 +640,10 @@ op_increment
 op_assign
 id|i_block
 suffix:semicolon
+id|final
+op_assign
+id|direct_blocks
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -659,6 +673,10 @@ op_increment
 )braket
 op_assign
 id|i_block
+suffix:semicolon
+id|final
+op_assign
+id|ptrs
 suffix:semicolon
 )brace
 r_else
@@ -705,6 +723,10 @@ id|ptrs
 op_minus
 l_int|1
 )paren
+suffix:semicolon
+id|final
+op_assign
+id|ptrs
 suffix:semicolon
 )brace
 r_else
@@ -782,6 +804,10 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|final
+op_assign
+id|ptrs
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -795,6 +821,30 @@ l_string|&quot;block &gt; big&quot;
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|boundary
+)paren
+op_star
+id|boundary
+op_assign
+(paren
+id|i_block
+op_amp
+(paren
+id|ptrs
+op_minus
+l_int|1
+)paren
+)paren
+op_eq
+(paren
+id|final
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 r_return
 id|n
 suffix:semicolon
@@ -1833,6 +1883,11 @@ r_int
 id|left
 suffix:semicolon
 r_int
+id|boundary
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|depth
 op_assign
 id|ext2_block_to_path
@@ -1843,6 +1898,9 @@ comma
 id|iblock
 comma
 id|offsets
+comma
+op_amp
+id|boundary
 )paren
 suffix:semicolon
 r_if
@@ -1903,6 +1961,17 @@ l_int|1
 dot
 id|key
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|boundary
+)paren
+id|set_buffer_boundary
+c_func
+(paren
+id|bh_result
 )paren
 suffix:semicolon
 multiline_comment|/* Clean up and exit */
@@ -2128,7 +2197,7 @@ id|page
 )paren
 (brace
 r_return
-id|block_read_full_page
+id|mpage_readpage
 c_func
 (paren
 id|page
@@ -2137,9 +2206,43 @@ id|ext2_get_block
 )paren
 suffix:semicolon
 )brace
-DECL|function|ext2_prepare_write
 r_static
 r_int
+DECL|function|ext2_readpages
+id|ext2_readpages
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_struct
+id|list_head
+op_star
+id|pages
+comma
+r_int
+id|nr_pages
+)paren
+(brace
+r_return
+id|mpage_readpages
+c_func
+(paren
+id|mapping
+comma
+id|pages
+comma
+id|nr_pages
+comma
+id|ext2_get_block
+)paren
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|ext2_prepare_write
 id|ext2_prepare_write
 c_func
 (paren
@@ -2201,9 +2304,9 @@ id|ext2_get_block
 )paren
 suffix:semicolon
 )brace
-DECL|function|ext2_direct_IO
 r_static
 r_int
+DECL|function|ext2_direct_IO
 id|ext2_direct_IO
 c_func
 (paren
@@ -2309,6 +2412,10 @@ op_assign
 id|readpage
 suffix:colon
 id|ext2_readpage
+comma
+id|readpages
+suffix:colon
+id|ext2_readpages
 comma
 id|writepage
 suffix:colon
@@ -3099,6 +3206,8 @@ comma
 id|iblock
 comma
 id|offsets
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

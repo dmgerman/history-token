@@ -519,6 +519,27 @@ op_star
 id|page
 )paren
 suffix:semicolon
+DECL|member|readpages
+r_int
+(paren
+op_star
+id|readpages
+)paren
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_struct
+id|list_head
+op_star
+id|pages
+comma
+r_int
+id|nr_pages
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * ext3 requires that a successful prepare_write() call be followed&n;&t; * by a commit_write() call - they must be balanced&n;&t; */
 DECL|member|prepare_write
 r_int
