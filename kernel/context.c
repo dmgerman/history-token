@@ -210,7 +210,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|curtask-&gt;sigmask_lock
+id|curtask-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|siginitsetinv
@@ -235,7 +235,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|curtask-&gt;sigmask_lock
+id|curtask-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|complete
@@ -397,7 +397,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|curtask-&gt;sigmask_lock
+id|curtask-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|flush_signals
@@ -415,7 +415,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|curtask-&gt;sigmask_lock
+id|curtask-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 )brace

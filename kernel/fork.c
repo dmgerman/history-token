@@ -3124,13 +3124,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|p-&gt;sigmask_lock
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 id|p-&gt;array

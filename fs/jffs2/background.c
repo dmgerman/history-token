@@ -341,7 +341,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|siginitsetinv
@@ -383,7 +383,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -447,7 +447,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|signr
@@ -466,7 +466,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 r_switch
@@ -581,7 +581,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|siginitsetinv
@@ -617,7 +617,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|D1

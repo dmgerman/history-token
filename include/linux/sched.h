@@ -1105,11 +1105,6 @@ op_star
 r_namespace
 suffix:semicolon
 multiline_comment|/* signal handlers */
-DECL|member|sigmask_lock
-id|spinlock_t
-id|sigmask_lock
-suffix:semicolon
-multiline_comment|/* Protects signal and blocked */
 DECL|member|sig
 r_struct
 id|signal_struct
@@ -2592,22 +2587,6 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|remove_thread_group
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-comma
-r_struct
-id|signal_struct
-op_star
-id|sig
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|reparent_to_init
 c_func
 (paren
@@ -3593,7 +3572,7 @@ id|lock
 (brace
 )brace
 macro_line|#endif
-multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   Athread cathreaders should have t-&gt;sigmask_lock.  */
+multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sig-&gt;siglock.  */
 r_extern
 id|FASTCALL
 c_func
