@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* some random number */
 DECL|macro|HUGETLBFS_MAGIC
