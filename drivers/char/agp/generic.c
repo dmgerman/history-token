@@ -1073,6 +1073,7 @@ id|info-&gt;mode
 op_assign
 id|agp_bridge-&gt;mode
 op_amp
+op_complement
 id|AGP3_RESERVED_MASK
 suffix:semicolon
 r_else
@@ -1080,6 +1081,7 @@ id|info-&gt;mode
 op_assign
 id|agp_bridge-&gt;mode
 op_amp
+op_complement
 id|AGP2_RESERVED_MASK
 suffix:semicolon
 id|info-&gt;aper_base
