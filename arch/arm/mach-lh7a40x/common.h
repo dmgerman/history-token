@@ -18,4 +18,6 @@ id|lh7a404_init_irq
 r_void
 )paren
 suffix:semicolon
+DECL|macro|IRQ_DISPATCH
+mdefine_line|#define IRQ_DISPATCH(irq) irq_desc[irq].handle ((irq), &amp;irq_desc[irq], regs)
 eof
