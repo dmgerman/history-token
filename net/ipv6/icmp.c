@@ -1237,6 +1237,14 @@ id|saddr
 )paren
 op_amp
 id|IPV6_ADDR_MULTICAST
+op_logical_or
+id|ipv6_chk_acast_addr
+c_func
+(paren
+l_int|0
+comma
+id|saddr
+)paren
 )paren
 id|saddr
 op_assign
