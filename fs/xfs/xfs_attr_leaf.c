@@ -2246,12 +2246,6 @@ op_plus
 id|dp-&gt;i_afp-&gt;if_bytes
 )paren
 )paren
-op_logical_or
-(paren
-id|sfe-&gt;namelen
-op_ge
-id|MAXNAMELEN
-)paren
 )paren
 )paren
 (brace
