@@ -643,6 +643,14 @@ op_amp
 id|inetdev_lock
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
+id|neigh_sysctl_unregister
+c_func
+(paren
+id|in_dev-&gt;arp_parms
+)paren
+suffix:semicolon
+macro_line|#endif
 id|neigh_parms_release
 c_func
 (paren

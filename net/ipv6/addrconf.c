@@ -8474,6 +8474,22 @@ op_eq
 l_int|1
 )paren
 (brace
+macro_line|#ifdef CONFIG_SYSCTL
+id|addrconf_sysctl_unregister
+c_func
+(paren
+op_amp
+id|idev-&gt;cnf
+)paren
+suffix:semicolon
+id|neigh_sysctl_unregister
+c_func
+(paren
+op_amp
+id|idev-&gt;nd_parms
+)paren
+suffix:semicolon
+macro_line|#endif
 id|neigh_parms_release
 c_func
 (paren
@@ -8483,15 +8499,6 @@ comma
 id|idev-&gt;nd_parms
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
-id|addrconf_sysctl_unregister
-c_func
-(paren
-op_amp
-id|idev-&gt;cnf
-)paren
-suffix:semicolon
-macro_line|#endif
 id|in6_dev_put
 c_func
 (paren

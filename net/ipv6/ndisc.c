@@ -7036,6 +7036,15 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_SYSCTL
+id|neigh_sysctl_unregister
+c_func
+(paren
+op_amp
+id|nd_tbl.parms
+)paren
+suffix:semicolon
+macro_line|#endif
 id|neigh_table_clear
 c_func
 (paren
