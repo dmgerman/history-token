@@ -2585,13 +2585,12 @@ l_int|0
 dot
 id|start
 comma
-r_sizeof
-(paren
-r_struct
-id|wd_regblk
-)paren
+l_int|4
+op_star
+id|WD_TIMER_REGSZ
 )paren
 suffix:semicolon
+multiline_comment|/* ? */
 r_if
 c_cond
 (paren
