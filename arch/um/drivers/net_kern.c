@@ -1422,14 +1422,6 @@ id|dev-&gt;mem_end
 op_assign
 l_int|0
 suffix:semicolon
-id|dev-&gt;rmem_start
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;rmem_end
-op_assign
-l_int|0
-suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
