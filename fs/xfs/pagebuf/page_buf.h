@@ -389,10 +389,6 @@ r_typedef
 r_struct
 id|pb_target
 (brace
-DECL|member|pbr_flags
-r_int
-id|pbr_flags
-suffix:semicolon
 DECL|member|pbr_dev
 id|dev_t
 id|pbr_dev

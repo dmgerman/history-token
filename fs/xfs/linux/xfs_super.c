@@ -27,10 +27,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifndef EVMS_MAJOR
-DECL|macro|EVMS_MAJOR
-macro_line|# define EVMS_MAJOR&t;&t;117
-macro_line|#endif
 multiline_comment|/* For kernels which have the s_maxbytes field - set it */
 macro_line|#ifdef MAX_NON_LFS
 DECL|macro|set_max_bytes
@@ -2485,29 +2481,6 @@ id|bdev
 )paren
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|MAJOR
-c_func
-(paren
-id|btp-&gt;pbr_dev
-)paren
-)paren
-(brace
-r_case
-id|MD_MAJOR
-suffix:colon
-r_case
-id|EVMS_MAJOR
-suffix:colon
-id|btp-&gt;pbr_flags
-op_assign
-id|PBR_ALIGNED_ONLY
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 r_return
 id|btp
 suffix:semicolon
