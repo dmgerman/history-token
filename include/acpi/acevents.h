@@ -95,11 +95,30 @@ id|context
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Evgpe - GPE handling and dispatch&n; */
+id|acpi_status
+id|acpi_ev_walk_gpe_list
+(paren
+id|ACPI_GPE_CALLBACK
+id|gpe_walk_callback
+)paren
+suffix:semicolon
+id|u8
+id|acpi_ev_valid_gpe_event
+(paren
+r_struct
+id|acpi_gpe_event_info
+op_star
+id|gpe_event_info
+)paren
+suffix:semicolon
 r_struct
 id|acpi_gpe_event_info
 op_star
 id|acpi_ev_get_gpe_event_info
 (paren
+id|acpi_handle
+id|gpe_device
+comma
 id|u32
 id|gpe_number
 )paren
@@ -117,12 +136,18 @@ r_struct
 id|acpi_gpe_event_info
 op_star
 id|gpe_event_info
+comma
+id|u32
+id|gpe_number
 )paren
 suffix:semicolon
 id|u32
 id|acpi_ev_gpe_detect
 (paren
-r_void
+r_struct
+id|acpi_gpe_xrupt_info
+op_star
+id|gpe_xrupt_list
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Evregion - Address Space handling&n; */
@@ -330,6 +355,15 @@ id|acpi_ns_locked
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Evsci - SCI (System Control Interrupt) handling/dispatch&n; */
+id|u32
+id|ACPI_SYSTEM_XFACE
+id|acpi_ev_gpe_xrupt_handler
+(paren
+r_void
+op_star
+id|context
+)paren
+suffix:semicolon
 id|u32
 id|acpi_ev_install_sci_handler
 (paren

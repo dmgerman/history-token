@@ -755,10 +755,6 @@ r_typedef
 id|u32
 id|acpi_event_type
 suffix:semicolon
-DECL|macro|ACPI_EVENT_FIXED
-mdefine_line|#define ACPI_EVENT_FIXED                0
-DECL|macro|ACPI_EVENT_GPE
-mdefine_line|#define ACPI_EVENT_GPE                  1
 multiline_comment|/*&n; * Fixed events&n; */
 DECL|macro|ACPI_EVENT_PMTIMER
 mdefine_line|#define ACPI_EVENT_PMTIMER              0
