@@ -94,6 +94,60 @@ macro_line|#ifndef&t;_cdecl
 DECL|macro|_cdecl
 mdefine_line|#define _cdecl
 macro_line|#endif
+DECL|macro|MEM_TYPE_RAM
+mdefine_line|#define MEM_TYPE_RAM&t;&t;0
+DECL|macro|MEM_TYPE_PORT
+mdefine_line|#define MEM_TYPE_PORT&t;&t;1
+DECL|macro|MEM_TYPE_PROM
+mdefine_line|#define MEM_TYPE_PROM&t;&t;2
+DECL|macro|MEM_TYPE_CTLREG
+mdefine_line|#define MEM_TYPE_CTLREG&t;&t;3
+DECL|macro|MEM_TYPE_RESET
+mdefine_line|#define MEM_TYPE_RESET&t;&t;4
+DECL|macro|MEM_TYPE_CFG
+mdefine_line|#define MEM_TYPE_CFG&t;&t;5
+DECL|macro|MEM_TYPE_ADDRESS
+mdefine_line|#define MEM_TYPE_ADDRESS&t;6
+DECL|macro|MEM_TYPE_CONFIG
+mdefine_line|#define MEM_TYPE_CONFIG&t;&t;7
+DECL|macro|MEM_TYPE_CONTROL
+mdefine_line|#define MEM_TYPE_CONTROL&t;8
+DECL|macro|DIVA_OS_MEM_ATTACH_RAM
+mdefine_line|#define DIVA_OS_MEM_ATTACH_RAM(a)&t;((a)-&gt;ram)
+DECL|macro|DIVA_OS_MEM_ATTACH_PORT
+mdefine_line|#define DIVA_OS_MEM_ATTACH_PORT(a)&t;((a)-&gt;port)
+DECL|macro|DIVA_OS_MEM_ATTACH_PROM
+mdefine_line|#define DIVA_OS_MEM_ATTACH_PROM(a)&t;((a)-&gt;prom)
+DECL|macro|DIVA_OS_MEM_ATTACH_CTLREG
+mdefine_line|#define DIVA_OS_MEM_ATTACH_CTLREG(a)&t;((a)-&gt;ctlReg)
+DECL|macro|DIVA_OS_MEM_ATTACH_RESET
+mdefine_line|#define DIVA_OS_MEM_ATTACH_RESET(a)&t;((a)-&gt;reset)
+DECL|macro|DIVA_OS_MEM_ATTACH_CFG
+mdefine_line|#define DIVA_OS_MEM_ATTACH_CFG(a)&t;((a)-&gt;cfg)
+DECL|macro|DIVA_OS_MEM_ATTACH_ADDRESS
+mdefine_line|#define DIVA_OS_MEM_ATTACH_ADDRESS(a)&t;((a)-&gt;Address)
+DECL|macro|DIVA_OS_MEM_ATTACH_CONFIG
+mdefine_line|#define DIVA_OS_MEM_ATTACH_CONFIG(a)&t;((a)-&gt;Config)
+DECL|macro|DIVA_OS_MEM_ATTACH_CONTROL
+mdefine_line|#define DIVA_OS_MEM_ATTACH_CONTROL(a)&t;((a)-&gt;Control)
+DECL|macro|DIVA_OS_MEM_DETACH_RAM
+mdefine_line|#define DIVA_OS_MEM_DETACH_RAM(a, x)&t;do { } while(0)
+DECL|macro|DIVA_OS_MEM_DETACH_PORT
+mdefine_line|#define DIVA_OS_MEM_DETACH_PORT(a, x)&t;do { } while(0)
+DECL|macro|DIVA_OS_MEM_DETACH_PROM
+mdefine_line|#define DIVA_OS_MEM_DETACH_PROM(a, x)&t;do { } while(0)
+DECL|macro|DIVA_OS_MEM_DETACH_CTLREG
+mdefine_line|#define DIVA_OS_MEM_DETACH_CTLREG(a, x)&t;do { } while(0)
+DECL|macro|DIVA_OS_MEM_DETACH_RESET
+mdefine_line|#define DIVA_OS_MEM_DETACH_RESET(a, x)&t;do { } while(0)
+DECL|macro|DIVA_OS_MEM_DETACH_CFG
+mdefine_line|#define DIVA_OS_MEM_DETACH_CFG(a, x)&t;do { } while(0)
+DECL|macro|DIVA_OS_MEM_DETACH_ADDRESS
+mdefine_line|#define DIVA_OS_MEM_DETACH_ADDRESS(a, x)&t;do { } while(0)
+DECL|macro|DIVA_OS_MEM_DETACH_CONFIG
+mdefine_line|#define DIVA_OS_MEM_DETACH_CONFIG(a, x)&t;do { } while(0)
+DECL|macro|DIVA_OS_MEM_DETACH_CONTROL
+mdefine_line|#define DIVA_OS_MEM_DETACH_CONTROL(a, x)&t;do { } while(0)
 macro_line|#if !defined(DIM)
 DECL|macro|DIM
 mdefine_line|#define DIM(array)  (sizeof (array)/sizeof ((array)[0]))
