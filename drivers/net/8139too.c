@@ -1,8 +1,8 @@
-multiline_comment|/*&n;&n;&t;8139too.c: A RealTek RTL-8139 Fast Ethernet driver for Linux.&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000,2001 Jeff Garzik&n;&n;&t;Much code comes from Donald Becker&squot;s rtl8139.c driver,&n;&t;versions 1.13 and older.  This driver was originally based&n;&t;on rtl8139.c version 1.07.  Header of rtl8139.c version 1.13:&n;&n;&t;-----&lt;snip&gt;-----&n;&n;        &t;Written 1997-2001 by Donald Becker.&n;&t;&t;This software may be used and distributed according to the&n;&t;&t;terms of the GNU General Public License (GPL), incorporated&n;&t;&t;herein by reference.  Drivers based on or derived from this&n;&t;&t;code fall under the GPL and must retain the authorship,&n;&t;&t;copyright and license notice.  This file is not a complete&n;&t;&t;program and may only be used when the entire operating&n;&t;&t;system is licensed under the GPL.&n;&n;&t;&t;This driver is for boards based on the RTL8129 and RTL8139&n;&t;&t;PCI ethernet chips.&n;&n;&t;&t;The author may be reached as becker@scyld.com, or C/O Scyld&n;&t;&t;Computing Corporation 410 Severn Ave., Suite 210 Annapolis&n;&t;&t;MD 21403&n;&n;&t;&t;Support and updates available at&n;&t;&t;http://www.scyld.com/network/rtl8139.html&n;&n;&t;&t;Twister-tuning table provided by Kinston&n;&t;&t;&lt;shangh@realtek.com.tw&gt;.&n;&n;&t;-----&lt;snip&gt;-----&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Contributors:&n;&n;&t;&t;Donald Becker - he wrote the original driver, kudos to him!&n;&t;&t;(but please don&squot;t e-mail him for support, this isn&squot;t his driver)&n;&n;&t;&t;Tigran Aivazian - bug fixes, skbuff free cleanup&n;&n;&t;&t;Martin Mares - suggestions for PCI cleanup&n;&n;&t;&t;David S. Miller - PCI DMA and softnet updates&n;&n;&t;&t;Ernst Gill - fixes ported from BSD driver&n;&n;&t;&t;Daniel Kobras - identified specific locations of&n;&t;&t;&t;posted MMIO write bugginess&n;&n;&t;&t;Gerard Sharp - bug fix, testing and feedback&n;&n;&t;&t;David Ford - Rx ring wrap fix&n;&n;&t;&t;Dan DeMaggio - swapped RTL8139 cards with me, and allowed me&n;&t;&t;to find and fix a crucial bug on older chipsets.&n;&n;&t;&t;Donald Becker/Chris Butterworth/Marcus Westergren -&n;&t;&t;Noticed various Rx packet size-related buglets.&n;&n;&t;&t;Santiago Garcia Mantinan - testing and feedback&n;&n;&t;&t;Jens David - 2.2.x kernel backports&n;&n;&t;&t;Martin Dennett - incredibly helpful insight on undocumented&n;&t;&t;features of the 8139 chips&n;&n;&t;&t;Jean-Jacques Michel - bug fix&n;&n;&t;&t;Tobias Ringstr&#xfffd;m - Rx interrupt status checking suggestion&n;&n;&t;&t;Andrew Morton - Clear blocked signals, avoid&n;&t;&t;buffer overrun setting current-&gt;comm.&n;&n;&t;&t;Kalle Olavi Niemitalo - Wake-on-LAN ioctls&n;&n;&t;&t;Robert Kuebel - Save kernel thread from dying on any signal.&n;&n;&t;Submitting bug reports:&n;&n;&t;&t;&quot;rtl8139-diag -mmmaaavvveefN&quot; output&n;&t;&t;enable RTL8139_DEBUG below, and look at &squot;dmesg&squot; or kernel log&n;&n;&t;&t;See 8139too.txt for more details.&n;&n;*/
+multiline_comment|/*&n;&n;&t;8139too.c: A RealTek RTL-8139 Fast Ethernet driver for Linux.&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000-2002 Jeff Garzik&n;&n;&t;Much code comes from Donald Becker&squot;s rtl8139.c driver,&n;&t;versions 1.13 and older.  This driver was originally based&n;&t;on rtl8139.c version 1.07.  Header of rtl8139.c version 1.13:&n;&n;&t;-----&lt;snip&gt;-----&n;&n;        &t;Written 1997-2001 by Donald Becker.&n;&t;&t;This software may be used and distributed according to the&n;&t;&t;terms of the GNU General Public License (GPL), incorporated&n;&t;&t;herein by reference.  Drivers based on or derived from this&n;&t;&t;code fall under the GPL and must retain the authorship,&n;&t;&t;copyright and license notice.  This file is not a complete&n;&t;&t;program and may only be used when the entire operating&n;&t;&t;system is licensed under the GPL.&n;&n;&t;&t;This driver is for boards based on the RTL8129 and RTL8139&n;&t;&t;PCI ethernet chips.&n;&n;&t;&t;The author may be reached as becker@scyld.com, or C/O Scyld&n;&t;&t;Computing Corporation 410 Severn Ave., Suite 210 Annapolis&n;&t;&t;MD 21403&n;&n;&t;&t;Support and updates available at&n;&t;&t;http://www.scyld.com/network/rtl8139.html&n;&n;&t;&t;Twister-tuning table provided by Kinston&n;&t;&t;&lt;shangh@realtek.com.tw&gt;.&n;&n;&t;-----&lt;snip&gt;-----&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Contributors:&n;&n;&t;&t;Donald Becker - he wrote the original driver, kudos to him!&n;&t;&t;(but please don&squot;t e-mail him for support, this isn&squot;t his driver)&n;&n;&t;&t;Tigran Aivazian - bug fixes, skbuff free cleanup&n;&n;&t;&t;Martin Mares - suggestions for PCI cleanup&n;&n;&t;&t;David S. Miller - PCI DMA and softnet updates&n;&n;&t;&t;Ernst Gill - fixes ported from BSD driver&n;&n;&t;&t;Daniel Kobras - identified specific locations of&n;&t;&t;&t;posted MMIO write bugginess&n;&n;&t;&t;Gerard Sharp - bug fix, testing and feedback&n;&n;&t;&t;David Ford - Rx ring wrap fix&n;&n;&t;&t;Dan DeMaggio - swapped RTL8139 cards with me, and allowed me&n;&t;&t;to find and fix a crucial bug on older chipsets.&n;&n;&t;&t;Donald Becker/Chris Butterworth/Marcus Westergren -&n;&t;&t;Noticed various Rx packet size-related buglets.&n;&n;&t;&t;Santiago Garcia Mantinan - testing and feedback&n;&n;&t;&t;Jens David - 2.2.x kernel backports&n;&n;&t;&t;Martin Dennett - incredibly helpful insight on undocumented&n;&t;&t;features of the 8139 chips&n;&n;&t;&t;Jean-Jacques Michel - bug fix&n;&n;&t;&t;Tobias Ringstr&#xfffd;m - Rx interrupt status checking suggestion&n;&n;&t;&t;Andrew Morton - Clear blocked signals, avoid&n;&t;&t;buffer overrun setting current-&gt;comm.&n;&n;&t;&t;Kalle Olavi Niemitalo - Wake-on-LAN ioctls&n;&n;&t;&t;Robert Kuebel - Save kernel thread from dying on any signal.&n;&n;&t;Submitting bug reports:&n;&n;&t;&t;&quot;rtl8139-diag -mmmaaavvveefN&quot; output&n;&t;&t;enable RTL8139_DEBUG below, and look at &squot;dmesg&squot; or kernel log&n;&n;&t;&t;See 8139too.txt for more details.&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;8139too&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.9.24&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.9.25&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -3809,6 +3809,13 @@ l_int|0
 )braket
 op_assign
 l_int|32
+suffix:semicolon
+id|tp-&gt;mii.phy_id
+op_assign
+id|tp-&gt;phys
+(braket
+l_int|0
+)braket
 suffix:semicolon
 multiline_comment|/* The lower four bits are the media type. */
 id|option
@@ -10057,16 +10064,12 @@ op_rshift
 l_int|5
 )braket
 op_or_assign
-id|cpu_to_le32
-c_func
-(paren
 l_int|1
 op_lshift
 (paren
 id|bit_nr
 op_amp
 l_int|31
-)paren
 )paren
 suffix:semicolon
 id|rx_mode
