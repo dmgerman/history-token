@@ -456,11 +456,7 @@ c_cond
 (paren
 id|addr
 op_ge
-(paren
-r_int
-r_int
-)paren
-id|_stext
+id|PAGE_OFFSET
 op_logical_and
 id|addr
 op_le
