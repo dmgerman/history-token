@@ -69,7 +69,7 @@ r_int
 id|debug
 suffix:semicolon
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&quot;0.9.7&quot;
+mdefine_line|#define DRIVER_VERSION&t;&quot;0.9.8&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Dan Zink &lt;dan.zink@compaq.com&gt;, Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -2395,12 +2395,10 @@ c_cond
 op_logical_neg
 id|slot_func
 )paren
-(brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 r_return
 id|cpqhp_set_attention_status
 c_func
@@ -2764,6 +2762,7 @@ id|hotplug_slot-&gt;name
 suffix:semicolon
 r_return
 id|cpqhp_hardware_test
+c_func
 (paren
 id|ctrl
 comma
@@ -5253,7 +5252,7 @@ op_minus
 id|EIO
 suffix:semicolon
 r_goto
-id|error
+id|error_rom_start
 suffix:semicolon
 )brace
 id|smbios_start
@@ -5296,7 +5295,7 @@ op_minus
 id|EIO
 suffix:semicolon
 r_goto
-id|error
+id|error_smbios_start
 suffix:semicolon
 )brace
 id|initialized
@@ -5306,30 +5305,24 @@ suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
+id|error_smbios_start
+suffix:colon
+id|iounmap
+c_func
+(paren
+id|smbios_start
+)paren
+suffix:semicolon
+id|error_rom_start
+suffix:colon
+id|iounmap
+c_func
+(paren
+id|cpqhp_rom_start
+)paren
+suffix:semicolon
 id|error
 suffix:colon
-r_if
-c_cond
-(paren
-id|cpqhp_rom_start
-)paren
-id|iounmap
-c_func
-(paren
-id|cpqhp_rom_start
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|smbios_start
-)paren
-id|iounmap
-c_func
-(paren
-id|smbios_start
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -5337,6 +5330,7 @@ suffix:semicolon
 DECL|function|unload_cpqphpd
 r_static
 r_void
+id|__exit
 id|unload_cpqphpd
 c_func
 (paren
@@ -5839,7 +5833,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;pci_hotplug&quot;
+l_string|&quot;compaq_pci_hotplug&quot;
 comma
 dot
 id|id_table
