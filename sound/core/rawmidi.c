@@ -4341,7 +4341,7 @@ op_minus
 id|runtime-&gt;avail
 suffix:semicolon
 id|runtime-&gt;xruns
-op_assign
+op_add_assign
 id|count
 op_minus
 id|count1
