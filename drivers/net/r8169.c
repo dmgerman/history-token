@@ -5096,7 +5096,7 @@ id|start
 suffix:semicolon
 id|end
 op_minus
-id|start
+id|cur
 OG
 l_int|0
 suffix:semicolon
