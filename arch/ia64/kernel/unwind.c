@@ -1962,14 +1962,18 @@ c_func
 id|addr
 )paren
 )paren
+(brace
 id|UNW_DPRINT
 c_func
 (paren
 l_int|0
 comma
 l_string|&quot;unwind.%s: ignoring attempt to write read-only location&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
+)brace
 r_else
 (brace
 op_star
@@ -2225,14 +2229,18 @@ c_func
 id|addr
 )paren
 )paren
+(brace
 id|UNW_DPRINT
 c_func
 (paren
 l_int|0
 comma
 l_string|&quot;unwind.%s: ignoring attempt to write read-only location&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
+)brace
 r_else
 op_star
 id|addr
@@ -2501,14 +2509,18 @@ c_func
 id|addr
 )paren
 )paren
+(brace
 id|UNW_DPRINT
 c_func
 (paren
 l_int|0
 comma
 l_string|&quot;unwind.%s: ignoring attempt to write read-only location&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
+)brace
 r_else
 op_star
 id|addr
@@ -2877,14 +2889,18 @@ c_func
 id|addr
 )paren
 )paren
+(brace
 id|UNW_DPRINT
 c_func
 (paren
 l_int|0
 comma
 l_string|&quot;unwind.%s: ignoring attempt to write read-only location&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
+)brace
 r_else
 op_star
 id|addr
@@ -2964,14 +2980,18 @@ c_func
 id|addr
 )paren
 )paren
+(brace
 id|UNW_DPRINT
 c_func
 (paren
 l_int|0
 comma
 l_string|&quot;unwind.%s: ignoring attempt to write read-only location&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
+)brace
 r_else
 op_star
 id|addr
