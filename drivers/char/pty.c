@@ -253,7 +253,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|PTY_TYPE_MASTER
 )paren
@@ -342,7 +342,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|PTY_TYPE_MASTER
 )paren
@@ -387,9 +387,9 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 op_plus
-id|tty-&gt;driver.name_base
+id|tty-&gt;driver-&gt;name_base
 )paren
 suffix:semicolon
 )brace
@@ -824,7 +824,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|PTY_TYPE_SLAVE
 )paren
@@ -878,9 +878,9 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 op_plus
-id|tty-&gt;driver.name_base
+id|tty-&gt;driver-&gt;name_base
 suffix:semicolon
 r_return
 id|put_user
@@ -1224,7 +1224,7 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 suffix:semicolon
 r_if
 c_cond
@@ -1252,7 +1252,7 @@ id|pty_struct
 op_star
 )paren
 (paren
-id|tty-&gt;driver.driver_state
+id|tty-&gt;driver-&gt;driver_state
 )paren
 op_plus
 id|line

@@ -3677,7 +3677,7 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5663,7 +5663,7 @@ c_func
 (paren
 l_string|&quot;rs_close: bad serial port count for %s%d: %d&bslash;n&quot;
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|info-&gt;state-&gt;line
 comma
@@ -5781,10 +5781,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -5995,7 +5995,7 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 comma
 id|jiffies
 comma
@@ -6247,7 +6247,7 @@ multiline_comment|/*&n;     * If this is a callout device, then just make sure t
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -6820,7 +6820,7 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 suffix:semicolon
 singleline_comment|// is this a line that we&squot;ve got?
 id|MOD_INC_USE_COUNT
@@ -7034,7 +7034,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren

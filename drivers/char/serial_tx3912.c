@@ -2148,7 +2148,7 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 suffix:semicolon
 id|rs_dprintk
 (paren
@@ -2357,7 +2357,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren

@@ -96,7 +96,7 @@ r_return
 op_minus
 (paren
 id|serport-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren

@@ -906,9 +906,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 (paren
 id|tty
 )paren
@@ -1091,7 +1091,7 @@ suffix:semicolon
 id|actual
 op_assign
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -2375,11 +2375,11 @@ suffix:colon
 multiline_comment|/* get the pending tx byte count in the driver */
 id|count
 op_assign
-id|tty-&gt;driver.chars_in_buffer
+id|tty-&gt;driver-&gt;chars_in_buffer
 ques
 c_cond
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|chars_in_buffer
 c_func
 (paren

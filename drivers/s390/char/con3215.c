@@ -3959,7 +3959,7 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 suffix:semicolon
 r_if
 c_cond

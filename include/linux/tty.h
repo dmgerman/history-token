@@ -529,6 +529,7 @@ suffix:semicolon
 DECL|member|driver
 r_struct
 id|tty_driver
+op_star
 id|driver
 suffix:semicolon
 DECL|member|ldisc

@@ -10607,7 +10607,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.type
+id|tty-&gt;driver-&gt;type
 op_ne
 id|TTY_DRIVER_TYPE_CONSOLE
 )paren
@@ -11133,7 +11133,7 @@ id|tty-&gt;device
 )paren
 op_minus
 (paren
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 )paren
 suffix:semicolon
 r_if
@@ -11197,7 +11197,7 @@ id|tty-&gt;device
 )paren
 op_minus
 (paren
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 )paren
 suffix:semicolon
 r_if
@@ -11327,7 +11327,7 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 suffix:semicolon
 id|i
 op_assign
@@ -11454,7 +11454,7 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 comma
 l_int|1
 )paren

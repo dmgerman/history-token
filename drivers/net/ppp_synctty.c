@@ -1395,10 +1395,10 @@ op_amp
 id|tty-&gt;flags
 )paren
 op_logical_and
-id|tty-&gt;driver.unthrottle
+id|tty-&gt;driver-&gt;unthrottle
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|unthrottle
 c_func
 (paren
@@ -2429,7 +2429,7 @@ suffix:semicolon
 id|sent
 op_assign
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren

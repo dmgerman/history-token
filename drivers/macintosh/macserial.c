@@ -9443,10 +9443,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -9906,7 +9906,7 @@ multiline_comment|/*&n;&t; * If this is a callout device, then just make sure th
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -10375,7 +10375,7 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 suffix:semicolon
 r_if
 c_cond
@@ -10443,7 +10443,7 @@ c_func
 (paren
 l_string|&quot;rs_open %s%d, count = %d, tty=%p&bslash;n&quot;
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|info-&gt;line
 comma
@@ -10631,7 +10631,7 @@ id|ZILOG_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren

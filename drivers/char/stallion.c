@@ -4625,7 +4625,7 @@ multiline_comment|/*&n; *&t;Based on type of open being done check if it can ove
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|STL_DRVTYPCALLOUT
 )paren
@@ -4762,7 +4762,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|STL_DRVTYPSERIAL
 )paren

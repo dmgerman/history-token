@@ -647,7 +647,7 @@ id|name
 comma
 l_string|&quot;%s%d&quot;
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|minor
 c_func
@@ -655,9 +655,9 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 op_plus
-id|tty-&gt;driver.name_base
+id|tty-&gt;driver-&gt;name_base
 )paren
 suffix:semicolon
 id|hashbin_insert
@@ -682,10 +682,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -1238,7 +1238,7 @@ op_assign
 id|cflag
 suffix:semicolon
 id|self-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|set_termios
 c_func
 (paren
@@ -1409,7 +1409,7 @@ op_assign
 id|cflag
 suffix:semicolon
 id|self-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|set_termios
 c_func
 (paren
@@ -1569,7 +1569,7 @@ r_if
 c_cond
 (paren
 id|self-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|chars_in_buffer
 c_func
 (paren
@@ -2540,12 +2540,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|self-&gt;tty-&gt;driver.write
+id|self-&gt;tty-&gt;driver-&gt;write
 )paren
 id|actual
 op_assign
 id|self-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -2695,7 +2695,7 @@ multiline_comment|/* Write data left in transmit buffer */
 id|actual
 op_assign
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -2932,7 +2932,7 @@ r_if
 c_cond
 (paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|ioctl
 c_func
 (paren
@@ -3272,12 +3272,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|self-&gt;tty-&gt;driver.write
+id|self-&gt;tty-&gt;driver-&gt;write
 )paren
 id|actual
 op_assign
 id|self-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -3415,7 +3415,7 @@ id|hwname
 comma
 l_string|&quot;%s%d&quot;
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|minor
 c_func
@@ -3423,9 +3423,9 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 op_plus
-id|tty-&gt;driver.name_base
+id|tty-&gt;driver-&gt;name_base
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * Open new IrLAP layer instance, now that everything should be&n;&t; * initialized properly &n;&t; */

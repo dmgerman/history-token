@@ -2575,10 +2575,10 @@ c_cond
 (paren
 id|tty
 op_logical_and
-id|tty-&gt;driver.write
+id|tty-&gt;driver-&gt;write
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren

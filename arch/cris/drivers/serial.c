@@ -3617,7 +3617,7 @@ OL
 id|TTY_THROTTLE_LIMIT
 )paren
 id|info-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|throttle
 c_func
 (paren
@@ -4552,7 +4552,7 @@ OG
 id|TTY_THROTTLE_LIMIT
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|unthrottle
 c_func
 (paren
@@ -9644,10 +9644,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -10109,7 +10109,7 @@ multiline_comment|/*&n;&t; * If this is a callout device, then just make sure th
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -10580,7 +10580,7 @@ c_func
 id|tty-&gt;device
 )paren
 op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;driver-&gt;minor_start
 suffix:semicolon
 r_if
 c_cond
@@ -10623,7 +10623,7 @@ l_string|&quot;[%d] rs_open %s%d, count = %d&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|info-&gt;line
 comma
@@ -10829,7 +10829,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
