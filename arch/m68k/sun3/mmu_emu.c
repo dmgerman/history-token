@@ -89,6 +89,11 @@ id|CONTEXTS_NUM
 )braket
 op_assign
 (brace
+(paren
+r_struct
+id|mm_struct
+op_star
+)paren
 l_int|0xffffffff
 comma
 l_int|0

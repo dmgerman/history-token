@@ -123,10 +123,6 @@ suffix:semicolon
 macro_line|#endif
 id|empty_zero_page
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|alloc_bootmem_pages
 c_func
 (paren
@@ -136,10 +132,6 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|empty_zero_page
 comma
 l_int|0
