@@ -487,11 +487,6 @@ id|Scsi_Host_Template
 op_star
 id|hostt
 suffix:semicolon
-DECL|member|host_active
-id|atomic_t
-id|host_active
-suffix:semicolon
-multiline_comment|/* commands checked out */
 DECL|member|host_busy
 r_volatile
 r_int

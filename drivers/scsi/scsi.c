@@ -2716,18 +2716,11 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Command failed %p %x active=%d busy=%d failed=%d&bslash;n&quot;
+l_string|&quot;Command failed %p %x busy=%d failed=%d&bslash;n&quot;
 comma
 id|SCpnt
 comma
 id|SCpnt-&gt;result
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|SCpnt-&gt;device-&gt;host-&gt;host_active
-)paren
 comma
 id|SCpnt-&gt;device-&gt;host-&gt;host_busy
 comma

@@ -1172,15 +1172,6 @@ op_amp
 id|shost-&gt;default_lock
 )paren
 suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|shost-&gt;host_active
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

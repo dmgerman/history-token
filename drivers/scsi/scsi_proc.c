@@ -1612,18 +1612,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot; %d %d %d : %d %d&bslash;n&quot;
+l_string|&quot; %d %d : %d %d&bslash;n&quot;
 comma
 id|shpnt-&gt;host_failed
 comma
 id|shpnt-&gt;host_busy
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|shpnt-&gt;host_active
-)paren
 comma
 id|shpnt-&gt;host_blocked
 comma
