@@ -6,7 +6,6 @@ DECL|macro|IMM_VERSION
 mdefine_line|#define   IMM_VERSION   &quot;2.05 (for Linux 2.4.0)&quot;
 multiline_comment|/* &n; * 10 Apr 1998 (Good Friday) - Received EN144302 by email from Iomega.&n; * Scarry thing is the level of support from one of their managers.&n; * The onus is now on us (the developers) to shut up and start coding.&n; *                                              11Apr98 [ 0.10 ]&n; *&n; * --- SNIP ---&n; *&n; * It manages to find the drive which is a good start. Writing data during&n; * data phase is known to be broken (due to requirements of two byte writes).&n; * Removing &quot;Phase&quot; debug messages.&n; *&n; * PS: Took four hours of coding after I bought a drive.&n; *      ANZAC Day (Aus &quot;War Veterans Holiday&quot;)  25Apr98 [ 0.14 ]&n; *&n; * Ten minutes later after a few fixes.... (LITERALLY!!!)&n; * Have mounted disk, copied file, dismounted disk, remount disk, diff file&n; *                    -----  It actually works!!! -----&n; *                                              25Apr98 [ 0.15 ]&n; *&n; * Twenty minutes of mucking around, rearanged the IEEE negotiate mechanism.&n; * Now have byte mode working (only EPP and ECP to go now... :=)&n; *                                              26Apr98 [ 0.16 ]&n; *&n; * Thirty minutes of further coding results in EPP working on my machine.&n; *                                              27Apr98 [ 0.17 ]&n; *&n; * Due to work commitments and inability to get a &quot;true&quot; ECP mode functioning&n; * I have decided to code the parport support into imm.&n; *                                              09Jun98 [ 0.18 ]&n; *&n; * Driver is now out of beta testing.&n; * Support for parport has been added.&n; * Now distributed with the ppa driver.&n; *                                              12Jun98 [ 2.00 ]&n; *&n; * Err.. It appears that imm-2.00 was broken....&n; *                                              18Jun98 [ 2.01 ]&n; *&n; * Patch applied to sync this against the Linux 2.1.x kernel code&n; * Included qboot_zip.sh&n; *                                              21Jun98 [ 2.02 ]&n; *&n; * Other clean ups include the follow changes:&n; *    CONFIG_SCSI_PPA_HAVE_PEDANTIC =&gt; CONFIG_SCSI_IZIP_EPP16&n; *    added CONFIG_SCSI_IZIP_SLOW_CTR option&n; *                                                      [2.03]&n; *  Fix kernel panic on scsi timeout.&t;&t;20Aug00 [2.04]&n; *&n; *  Avoid io_request_lock problems.&n; *  John Cavan &lt;johncavan@home.com&gt;&t;&t;16Nov00 [2.05]&n; */
 multiline_comment|/* ------ END OF USER CONFIGURABLE PARAMETERS ----- */
-macro_line|#ifdef IMM_CODE
 macro_line|#include  &lt;linux/config.h&gt;
 macro_line|#include  &lt;linux/stddef.h&gt;
 macro_line|#include  &lt;linux/module.h&gt;
@@ -209,10 +208,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|imm_release
-mdefine_line|#define imm_release 0
-macro_line|#endif
+r_static
 r_int
 id|imm_detect
 c_func
@@ -221,25 +217,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
-r_const
-r_char
-op_star
-id|imm_info
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_int
-id|imm_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
+r_static
 r_int
 id|imm_queuecommand
 c_func
@@ -258,6 +236,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|imm_abort
 c_func
@@ -266,6 +245,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|imm_reset
 c_func
@@ -274,6 +254,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|imm_proc_info
 c_func
@@ -296,6 +277,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_static
 r_int
 id|imm_biosparam
 c_func

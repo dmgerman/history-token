@@ -1,8 +1,6 @@
 multiline_comment|/* imm.c   --  low level driver for the IOMEGA MatchMaker&n; * parallel port SCSI host adapter.&n; * &n; * (The IMM is the embedded controller in the ZIP Plus drive.)&n; * &n; * Current Maintainer: David Campbell (Perth, Western Australia)&n; *                     campbell@torque.net&n; *&n; * My unoffical company acronym list is 21 pages long:&n; *      FLA:    Four letter acronym with built in facility for&n; *              future expansion to five letters.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* The following #define is to avoid a clash with hosts.c */
-DECL|macro|IMM_CODE
-mdefine_line|#define IMM_CODE 1
 DECL|macro|IMM_PROBE_SPP
 mdefine_line|#define IMM_PROBE_SPP   0x0001
 DECL|macro|IMM_PROBE_PS2
@@ -13,6 +11,7 @@ DECL|macro|IMM_PROBE_EPP17
 mdefine_line|#define IMM_PROBE_EPP17 0x0100
 DECL|macro|IMM_PROBE_EPP19
 mdefine_line|#define IMM_PROBE_EPP19 0x0200
+r_static
 r_void
 id|imm_reset_pulse
 c_func
@@ -162,6 +161,7 @@ l_int|0x0000
 )brace
 suffix:semicolon
 DECL|function|imm_wakeup
+r_static
 r_void
 id|imm_wakeup
 c_func
@@ -228,6 +228,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|imm_release
+r_static
 r_int
 id|imm_release
 c_func
@@ -415,6 +416,7 @@ comma
 suffix:semicolon
 macro_line|#include  &quot;scsi_module.c&quot;
 DECL|function|imm_detect
+r_static
 r_int
 id|imm_detect
 c_func
@@ -554,7 +556,7 @@ id|dev
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* Claim the bus so it remembers what we do to the control&n;&t; * registers. [ CTR and ECP ]&n;&t; */
+multiline_comment|/* Claim the bus so it remembers what we do to the control&n;&t;&t; * registers. [ CTR and ECP ]&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -615,6 +617,7 @@ id|i
 )paren
 suffix:semicolon
 id|parport_unregister_device
+c_func
 (paren
 id|imm_hosts
 (braket
@@ -675,7 +678,7 @@ id|i
 dot
 id|dev-&gt;port-&gt;modes
 suffix:semicolon
-multiline_comment|/* Mode detection works up the chain of speed&n;&t; * This avoids a nasty if-then-else-if-... tree&n;&t; */
+multiline_comment|/* Mode detection works up the chain of speed&n;&t;&t; * This avoids a nasty if-then-else-if-... tree&n;&t;&t; */
 id|imm_hosts
 (braket
 id|i
@@ -828,10 +831,8 @@ id|hreg
 op_eq
 l_int|NULL
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|hreg-&gt;io_port
 op_assign
 id|pb-&gt;base
@@ -986,6 +987,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|imm_proc_info
+r_static
 r_int
 id|imm_proc_info
 c_func
@@ -1161,10 +1163,10 @@ suffix:semicolon
 macro_line|#if IMM_DEBUG &gt; 0
 DECL|macro|imm_fail
 mdefine_line|#define imm_fail(x,y) printk(&quot;imm: imm_fail(%i) from %s at line %d&bslash;n&quot;,&bslash;&n;&t;   y, __FUNCTION__, __LINE__); imm_fail_func(x,y);
-DECL|function|imm_fail_func
 r_static
 r_inline
 r_void
+DECL|function|imm_fail_func
 id|imm_fail_func
 c_func
 (paren
@@ -1299,7 +1301,7 @@ id|k
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * STR register (LPT base+1) to SCSI mapping:&n;     *&n;     * STR      imm     imm&n;     * ===================================&n;     * 0x80     S_REQ   S_REQ&n;     * 0x40     !S_BSY  (????)&n;     * 0x20     !S_CD   !S_CD&n;     * 0x10     !S_IO   !S_IO&n;     * 0x08     (????)  !S_BSY&n;     *&n;     * imm      imm     meaning&n;     * ==================================&n;     * 0xf0     0xb8    Bit mask&n;     * 0xc0     0x88    ZIP wants more data&n;     * 0xd0     0x98    ZIP wants to send more data&n;     * 0xe0     0xa8    ZIP is expecting SCSI command data&n;     * 0xf0     0xb8    end of transfer, ZIP is sending status&n;     */
+multiline_comment|/*&n;&t; * STR register (LPT base+1) to SCSI mapping:&n;&t; *&n;&t; * STR      imm     imm&n;&t; * ===================================&n;&t; * 0x80     S_REQ   S_REQ&n;&t; * 0x40     !S_BSY  (????)&n;&t; * 0x20     !S_CD   !S_CD&n;&t; * 0x10     !S_IO   !S_IO&n;&t; * 0x08     (????)  !S_BSY&n;&t; *&n;&t; * imm      imm     meaning&n;&t; * ==================================&n;&t; * 0xf0     0xb8    Bit mask&n;&t; * 0xc0     0x88    ZIP wants more data&n;&t; * 0xd0     0x98    ZIP wants to send more data&n;&t; * 0xe0     0xa8    ZIP is expecting SCSI command data&n;&t; * 0xf0     0xb8    end of transfer, ZIP is sending status&n;&t; */
 id|w_ctr
 c_func
 (paren
@@ -1351,7 +1353,7 @@ op_star
 id|tmp
 )paren
 (brace
-multiline_comment|/*&n;     * The following is supposedly the IEEE 1284-1994 negotiate&n;     * sequence. I have yet to obtain a copy of the above standard&n;     * so this is a bit of a guess...&n;     *&n;     * A fair chunk of this is based on the Linux parport implementation&n;     * of IEEE 1284.&n;     *&n;     * Return 0 if data available&n;     *        1 if no data available&n;     */
+multiline_comment|/*&n;&t; * The following is supposedly the IEEE 1284-1994 negotiate&n;&t; * sequence. I have yet to obtain a copy of the above standard&n;&t; * so this is a bit of a guess...&n;&t; *&n;&t; * A fair chunk of this is based on the Linux parport implementation&n;&t; * of IEEE 1284.&n;&t; *&n;&t; * Return 0 if data available&n;&t; *        1 if no data available&n;&t; */
 r_int
 r_int
 id|base
@@ -1488,7 +1490,6 @@ id|a
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;IMM: IEEE1284 negotiate indicates no data available.&bslash;n&quot;
 )paren
@@ -1766,7 +1767,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;     * The following is based on documented timing signals&n;     */
+multiline_comment|/*&n;&t; * The following is based on documented timing signals&n;&t; */
 id|w_ctr
 c_func
 (paren
@@ -1869,7 +1870,7 @@ id|len
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;     * The following is based on documented timing signals&n;     */
+multiline_comment|/*&n;&t; * The following is based on documented timing signals&n;&t; */
 id|w_ctr
 c_func
 (paren
@@ -1961,7 +1962,7 @@ c_func
 id|host_no
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Make sure that:&n;     * a) the SCSI bus is BUSY (device still listening)&n;     * b) the device is listening&n;     */
+multiline_comment|/*&n;&t; * Make sure that:&n;&t; * a) the SCSI bus is BUSY (device still listening)&n;&t; * b) the device is listening&n;&t; */
 r_if
 c_cond
 (paren
@@ -2219,7 +2220,7 @@ c_func
 id|host_no
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Make sure that:&n;     * a) the SCSI bus is BUSY (device still listening)&n;     * b) the device is sending data&n;     */
+multiline_comment|/*&n;&t; * Make sure that:&n;&t; * a) the SCSI bus is BUSY (device still listening)&n;&t; * b) the device is sending data&n;&t; */
 r_if
 c_cond
 (paren
@@ -2479,7 +2480,7 @@ r_char
 id|b
 )paren
 (brace
-multiline_comment|/*&n;     * Comments on udelay values refer to the&n;     * Command Packet Protocol (CPP) timing diagram.&n;     */
+multiline_comment|/*&n;&t; * Comments on udelay values refer to the&n;&t; * Command Packet Protocol (CPP) timing diagram.&n;&t; */
 r_int
 r_char
 id|s1
@@ -2623,7 +2624,7 @@ id|ppb
 op_amp
 l_int|0x38
 suffix:semicolon
-multiline_comment|/*&n;     * Values for b are:&n;     * 0000 00aa    Assign address aa to current device&n;     * 0010 00aa    Select device aa in EPP Winbond mode&n;     * 0010 10aa    Select device aa in EPP mode&n;     * 0011 xxxx    Deselect all devices&n;     * 0110 00aa    Test device aa&n;     * 1101 00aa    Select device aa in ECP mode&n;     * 1110 00aa    Select device aa in Compatible mode&n;     */
+multiline_comment|/*&n;&t; * Values for b are:&n;&t; * 0000 00aa    Assign address aa to current device&n;&t; * 0010 00aa    Select device aa in EPP Winbond mode&n;&t; * 0010 10aa    Select device aa in EPP mode&n;&t; * 0011 xxxx    Deselect all devices&n;&t; * 0110 00aa    Test device aa&n;&t; * 1101 00aa    Select device aa in ECP mode&n;&t; * 1110 00aa    Select device aa in Compatible mode&n;&t; */
 id|w_dtr
 c_func
 (paren
@@ -2699,7 +2700,7 @@ l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* 7 usec - infinite */
-multiline_comment|/*&n;     * The following table is electrical pin values.&n;     * (BSY is inverted at the CTR register)&n;     *&n;     *       BSY  ACK  POut SEL  Fault&n;     * S1    0    X    1    1    1&n;     * S2    1    X    0    1    1&n;     * S3    L    X    1    1    S&n;     *&n;     * L =&gt; Last device in chain&n;     * S =&gt; Selected&n;     *&n;     * Observered values for S1,S2,S3 are:&n;     * Disconnect =&gt; f8/58/78&n;     * Connect    =&gt; f8/58/70&n;     */
+multiline_comment|/*&n;&t; * The following table is electrical pin values.&n;&t; * (BSY is inverted at the CTR register)&n;&t; *&n;&t; *       BSY  ACK  POut SEL  Fault&n;&t; * S1    0    X    1    1    1&n;&t; * S2    1    X    0    1    1&n;&t; * S3    L    X    1    1    S&n;&t; *&n;&t; * L =&gt; Last device in chain&n;&t; * S =&gt; Selected&n;&t; *&n;&t; * Observered values for S1,S2,S3 are:&n;&t; * Disconnect =&gt; f8/58/78&n;&t; * Connect    =&gt; f8/58/70&n;&t; */
 r_if
 c_cond
 (paren
@@ -2911,7 +2912,7 @@ c_func
 id|host_no
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Firstly we want to make sure there is nothing&n;     * holding onto the SCSI bus.&n;     */
+multiline_comment|/*&n;&t; * Firstly we want to make sure there is nothing&n;&t; * holding onto the SCSI bus.&n;&t; */
 id|w_ctr
 c_func
 (paren
@@ -2957,7 +2958,7 @@ id|k
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;     * Now assert the SCSI ID (HOST and TARGET) on the data bus&n;     */
+multiline_comment|/*&n;&t; * Now assert the SCSI ID (HOST and TARGET) on the data bus&n;&t; */
 id|w_ctr
 c_func
 (paren
@@ -2986,7 +2987,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Deassert SELIN first followed by STROBE&n;     */
+multiline_comment|/*&n;&t; * Deassert SELIN first followed by STROBE&n;&t; */
 id|w_ctr
 c_func
 (paren
@@ -3003,7 +3004,7 @@ comma
 l_int|0xd
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * ACK should drop low while SELIN is deasserted.&n;     * FAULT should drop low when the SCSI device latches the bus.&n;     */
+multiline_comment|/*&n;&t; * ACK should drop low while SELIN is deasserted.&n;&t; * FAULT should drop low when the SCSI device latches the bus.&n;&t; */
 id|k
 op_assign
 id|IMM_SELECT_TMO
@@ -3033,7 +3034,7 @@ id|k
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Place the interface back into a sane state (status mode)&n;     */
+multiline_comment|/*&n;&t; * Place the interface back into a sane state (status mode)&n;&t; */
 id|w_ctr
 c_func
 (paren
@@ -3242,7 +3243,7 @@ op_star
 id|cmd
 )paren
 (brace
-multiline_comment|/* Return codes:&n;     * -1     Error&n;     *  0     Told to schedule&n;     *  1     Finished data transfer&n;     */
+multiline_comment|/* Return codes:&n;&t; * -1     Error&n;&t; *  0     Told to schedule&n;&t; *  1     Finished data transfer&n;&t; */
 r_int
 id|host_no
 op_assign
@@ -3312,7 +3313,7 @@ id|WRITE_10
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * We only get here if the drive is ready to comunicate,&n;     * hence no need for a full imm_wait.&n;     */
+multiline_comment|/*&n;&t; * We only get here if the drive is ready to comunicate,&n;&t; * hence no need for a full imm_wait.&n;&t; */
 id|w_ctr
 c_func
 (paren
@@ -3333,7 +3334,7 @@ op_amp
 l_int|0xb8
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * while (device is not ready to send status byte)&n;     *     loop;&n;     */
+multiline_comment|/*&n;&t; * while (device is not ready to send status byte)&n;&t; *     loop;&n;&t; */
 r_while
 c_loop
 (paren
@@ -3346,7 +3347,7 @@ r_char
 l_int|0xb8
 )paren
 (brace
-multiline_comment|/*&n;&t; * If we have been running for more than a full timer tick&n;&t; * then take a rest.&n;&t; */
+multiline_comment|/*&n;&t;&t; * If we have been running for more than a full timer tick&n;&t;&t; * then take a rest.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3363,7 +3364,7 @@ l_int|1
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * FAIL if:&n;&t; * a) Drive status is screwy (!ready &amp;&amp; !present)&n;&t; * b) Drive is requesting/sending more data than expected&n;&t; */
+multiline_comment|/*&n;&t;&t; * FAIL if:&n;&t;&t; * a) Drive status is screwy (!ready &amp;&amp; !present)&n;&t;&t; * b) Drive is requesting/sending more data than expected&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3537,7 +3538,7 @@ id|cmd-&gt;SCp.buffer-&gt;page
 op_plus
 id|cmd-&gt;SCp.buffer-&gt;offset
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Make sure that we transfer even number of bytes&n;&t;&t; * otherwise it makes imm_byte_out() messy.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Make sure that we transfer even number of bytes&n;&t;&t;&t;&t; * otherwise it makes imm_byte_out() messy.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3914,7 +3915,7 @@ id|retv
 comma
 id|x
 suffix:semicolon
-multiline_comment|/* First check for any errors that may have occurred&n;     * Here we check for internal errors&n;     */
+multiline_comment|/* First check for any errors that may have occurred&n;&t; * Here we check for internal errors&n;&t; */
 r_if
 c_cond
 (paren
@@ -3945,7 +3946,7 @@ OG
 id|HZ
 )paren
 (brace
-multiline_comment|/*&n;&t;     * We waited more than a second&n;&t;     * for parport to call us&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * We waited more than a second&n;&t;&t;&t; * for parport to call us&n;&t;&t;&t; */
 id|imm_fail
 c_func
 (paren
@@ -4529,6 +4530,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|imm_queuecommand
+r_static
 r_int
 id|imm_queuecommand
 c_func
@@ -4659,6 +4661,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Apparently the disk-&gt;capacity attribute is off by 1 sector &n; * for all disk drives.  We add the one here, but it should really&n; * be done in sd.c.  Even if it gets fixed there, this will still&n; * work.&n; */
 DECL|function|imm_biosparam
+r_static
 r_int
 id|imm_biosparam
 c_func
@@ -4781,6 +4784,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|imm_abort
+r_static
 r_int
 id|imm_abort
 c_func
@@ -4795,7 +4799,7 @@ id|host_no
 op_assign
 id|cmd-&gt;device-&gt;host-&gt;unique_id
 suffix:semicolon
-multiline_comment|/*&n;     * There is no method for aborting commands since Iomega&n;     * have tied the SCSI_MESSAGE line high in the interface&n;     */
+multiline_comment|/*&n;&t; * There is no method for aborting commands since Iomega&n;&t; * have tied the SCSI_MESSAGE line high in the interface&n;&t; */
 r_switch
 c_cond
 (paren
@@ -4836,6 +4840,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|imm_reset_pulse
+r_static
 r_void
 id|imm_reset_pulse
 c_func
@@ -4907,6 +4912,7 @@ l_int|0x04
 suffix:semicolon
 )brace
 DECL|function|imm_reset
+r_static
 r_int
 id|imm_reset
 c_func
@@ -4994,7 +5000,7 @@ r_int
 id|host_no
 )paren
 (brace
-multiline_comment|/* This routine looks for a device and then attempts to use EPP&n;       to send a command. If all goes as planned then EPP is available. */
+multiline_comment|/* This routine looks for a device and then attempts to use EPP&n;&t;   to send a command. If all goes as planned then EPP is available. */
 r_static
 r_char
 id|cmd
@@ -5260,7 +5266,6 @@ id|second_pass
 suffix:semicolon
 )brace
 id|printk
-c_func
 (paren
 l_string|&quot;imm: Unable to establish communication, aborting driver load.&bslash;n&quot;
 )paren
@@ -5398,7 +5403,6 @@ id|second_pass
 suffix:semicolon
 )brace
 id|printk
-c_func
 (paren
 l_string|&quot;imm: Unable to establish communication, aborting driver load.&bslash;n&quot;
 )paren
@@ -5414,7 +5418,6 @@ id|host_no
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;imm: Communication established at 0x%x with ID %i using %s&bslash;n&quot;
 comma
