@@ -159,6 +159,16 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_static
+r_int
+id|scsi_debug_release
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This driver is written for the lk 2.5 series&n; */
 DECL|macro|SCSI_DEBUG_CANQUEUE
 mdefine_line|#define SCSI_DEBUG_CANQUEUE  255 &t;/* needs to be &gt;= 1 */
@@ -179,6 +189,11 @@ dot
 id|name
 op_assign
 l_string|&quot;SCSI DEBUG&quot;
+comma
+dot
+id|release
+op_assign
+id|scsi_debug_release
 comma
 dot
 id|info
