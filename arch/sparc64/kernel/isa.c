@@ -92,13 +92,6 @@ r_int
 id|pregs_size
 )paren
 (brace
-r_struct
-id|linux_prom_registers
-id|regs
-(braket
-id|PROMREG_MAX
-)braket
-suffix:semicolon
 r_int
 r_int
 id|base
