@@ -161,6 +161,7 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/xqm.h&gt;
 macro_line|#include &lt;linux/dqblk_v1.h&gt;
+macro_line|#include &lt;linux/dqblk_v2.h&gt;
 multiline_comment|/*&n; * Data for one user/group kept in memory&n; */
 DECL|struct|mem_dqblk
 r_struct
@@ -242,6 +243,11 @@ DECL|member|v1_i
 r_struct
 id|v1_mem_dqinfo
 id|v1_i
+suffix:semicolon
+DECL|member|v2_i
+r_struct
+id|v2_mem_dqinfo
+id|v2_i
 suffix:semicolon
 DECL|member|u
 )brace
@@ -394,6 +400,11 @@ r_int
 id|dq_id
 suffix:semicolon
 multiline_comment|/* ID this applies to (uid, gid) */
+DECL|member|dq_off
+id|loff_t
+id|dq_off
+suffix:semicolon
+multiline_comment|/* Offset of dquot on disk */
 DECL|member|dq_type
 r_int
 id|dq_type
