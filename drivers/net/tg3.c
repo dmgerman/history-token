@@ -36258,7 +36258,7 @@ id|pci_cmd
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Back to back register writes can cause problems on this chip,&n;&t; * the workaround is to read back all reg writes except those to&n;&t; * mailbox regs.  See tg3_write_indirect_reg32().&n;&t; */
+multiline_comment|/* Back to back register writes can cause problems on this chip,&n;&t; * the workaround is to read back all reg writes except those to&n;&t; * mailbox regs.  See tg3_write_indirect_reg32().&n;&t; *&n;&t; * PCI Express 5750_A0 rev chips need this workaround too.&n;&t; */
 r_if
 c_cond
 (paren
@@ -36269,6 +36269,22 @@ id|tp-&gt;pci_chip_rev_id
 )paren
 op_eq
 id|ASIC_REV_5701
+op_logical_or
+(paren
+(paren
+id|tp-&gt;tg3_flags2
+op_amp
+id|TG3_FLG2_PCI_EXPRESS
+)paren
+op_logical_and
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_eq
+id|ASIC_REV_5750
+)paren
 )paren
 id|tp-&gt;tg3_flags
 op_or_assign
