@@ -82,6 +82,15 @@ r_struct
 id|videobuf_dvb
 op_star
 id|dvb
+comma
+r_struct
+id|module
+op_star
+id|module
+comma
+r_void
+op_star
+id|adapter_priv
 )paren
 suffix:semicolon
 r_void
