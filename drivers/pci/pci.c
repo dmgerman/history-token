@@ -2748,7 +2748,8 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pdev_set_mwi - arch helper function for pcibios_set_mwi&n; * @dev: the PCI device for which MWI is enabled&n; *&n; * Helper function for implementation the arch-specific pcibios_set_mwi&n; * function.  Originally copied from drivers/net/acenic.c.&n; * Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;.&n; *&n; * RETURNS: An appriopriate -ERRNO error value on eror, or zero for success.&n; */
+multiline_comment|/**&n; * pdev_set_mwi - helper function for pci_set_mwi&n; * @dev: the PCI device for which MWI is enabled&n; *&n; * Helper function for generic implementation of pci_set_mwi&n; * function.  Originally copied from drivers/net/acenic.c.&n; * Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;.&n; *&n; * RETURNS: An appriopriate -ERRNO error value on eror, or zero for success.&n; */
+r_static
 r_int
 DECL|function|pdev_set_mwi
 id|pdev_set_mwi
@@ -8225,13 +8226,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pci_clear_mwi
-)paren
-suffix:semicolon
-DECL|variable|pdev_set_mwi
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pdev_set_mwi
 )paren
 suffix:semicolon
 DECL|variable|pci_set_dma_mask
