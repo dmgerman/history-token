@@ -2344,6 +2344,15 @@ id|addr
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_NVRAM */
+DECL|variable|cpu_devices
+r_static
+r_struct
+id|cpu
+id|cpu_devices
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 DECL|function|ppc_init
 r_int
 id|__init
@@ -2353,6 +2362,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* clear the progress line */
 r_if
 c_cond
@@ -2369,6 +2381,45 @@ comma
 l_int|0xffff
 )paren
 suffix:semicolon
+multiline_comment|/* register CPU devices */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|cpu_possible
+c_func
+(paren
+id|i
+)paren
+)paren
+id|register_cpu
+c_func
+(paren
+op_amp
+id|cpu_devices
+(braket
+id|i
+)braket
+comma
+id|i
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* call platform init */
 r_if
 c_cond
 (paren
