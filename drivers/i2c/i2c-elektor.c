@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-pcf.h&gt;
-macro_line|#include &lt;linux/i2c-elektor.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;i2c-pcf8584.h&quot;

@@ -3,8 +3,27 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
-macro_line|#include &lt;linux/sensors.h&gt;
+macro_line|#include &lt;linux/i2c-proc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+multiline_comment|/* Registers */
+DECL|macro|ADM1021_SYSCTL_TEMP
+mdefine_line|#define ADM1021_SYSCTL_TEMP&t;&t;1200
+DECL|macro|ADM1021_SYSCTL_REMOTE_TEMP
+mdefine_line|#define ADM1021_SYSCTL_REMOTE_TEMP&t;1201
+DECL|macro|ADM1021_SYSCTL_DIE_CODE
+mdefine_line|#define ADM1021_SYSCTL_DIE_CODE&t;&t;1202
+DECL|macro|ADM1021_SYSCTL_ALARMS
+mdefine_line|#define ADM1021_SYSCTL_ALARMS&t;&t;1203
+DECL|macro|ADM1021_ALARM_TEMP_HIGH
+mdefine_line|#define ADM1021_ALARM_TEMP_HIGH&t;&t;0x40
+DECL|macro|ADM1021_ALARM_TEMP_LOW
+mdefine_line|#define ADM1021_ALARM_TEMP_LOW&t;&t;0x20
+DECL|macro|ADM1021_ALARM_RTEMP_HIGH
+mdefine_line|#define ADM1021_ALARM_RTEMP_HIGH&t;0x10
+DECL|macro|ADM1021_ALARM_RTEMP_LOW
+mdefine_line|#define ADM1021_ALARM_RTEMP_LOW&t;&t;0x08
+DECL|macro|ADM1021_ALARM_RTEMP_NA
+mdefine_line|#define ADM1021_ALARM_RTEMP_NA&t;&t;0x04
 multiline_comment|/* Addresses to scan */
 DECL|variable|normal_i2c
 r_static
