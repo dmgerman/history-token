@@ -67,6 +67,7 @@ id|opp_p
 )paren
 (brace
 r_int
+r_int
 id|bufsize
 suffix:semicolon
 r_if
