@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_RESOURCE_H
 DECL|macro|_ASM_IA64_RESOURCE_H
 mdefine_line|#define _ASM_IA64_RESOURCE_H
-multiline_comment|/*&n; * Resource limits&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Resource limits&n; *&n; * Based on &lt;asm-i386/resource.h&gt;.&n; *&n; * Modified 1998, 1999&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;, Hewlett-Packard Co&n; */
 macro_line|#include &lt;asm/ustack.h&gt;
 DECL|macro|RLIMIT_CPU
 mdefine_line|#define RLIMIT_CPU&t;0&t;&t;/* CPU time in ms */

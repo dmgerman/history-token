@@ -2678,6 +2678,24 @@ id|wacom_graphire_irq
 )brace
 comma
 (brace
+l_string|&quot;Wacom Graphire3&quot;
+comma
+l_int|8
+comma
+l_int|10208
+comma
+l_int|7424
+comma
+l_int|511
+comma
+l_int|32
+comma
+l_int|1
+comma
+id|wacom_graphire_irq
+)brace
+comma
+(brace
 l_string|&quot;Wacom Intuos 4x5&quot;
 comma
 l_int|10
@@ -3014,6 +3032,16 @@ c_func
 id|USB_VENDOR_ID_WACOM
 comma
 l_int|0x12
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|USB_VENDOR_ID_WACOM
+comma
+l_int|0x13
 )paren
 )brace
 comma

@@ -1018,7 +1018,7 @@ suffix:semicolon
 id|u8
 id|auth_data
 (braket
-id|ahp-&gt;icv_trunc_len
+id|MAX_AH_AUTH_LEN
 )braket
 suffix:semicolon
 id|memcpy
@@ -1447,6 +1447,14 @@ op_assign
 id|aalg_desc-&gt;uinfo.auth.icv_truncbits
 op_div
 l_int|8
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|ahp-&gt;icv_trunc_len
+OG
+id|MAX_AH_AUTH_LEN
+)paren
 suffix:semicolon
 id|ahp-&gt;work_icv
 op_assign

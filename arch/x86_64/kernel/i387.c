@@ -107,7 +107,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The _current_ task is using the FPU for the first time&n; * so initialize it and set the mxcsr to its default.&n; * remember the current task has used the FPU.&n; */
 DECL|function|init_fpu
 r_void
 id|init_fpu

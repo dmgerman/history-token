@@ -44,6 +44,12 @@ r_extern
 r_const
 r_struct
 id|raid6_calls
+id|raid6_intx32
+suffix:semicolon
+r_extern
+r_const
+r_struct
+id|raid6_calls
 id|raid6_mmxx1
 suffix:semicolon
 r_extern

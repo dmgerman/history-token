@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_MMAN_H
 DECL|macro|_ASM_IA64_MMAN_H
 mdefine_line|#define _ASM_IA64_MMAN_H
-multiline_comment|/*&n; * Copyright (C) 1998-2000, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Based on &lt;asm-i386/mman.h&gt;.&n; *&n; * Modified 1998-2000, 2002&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;, Hewlett-Packard Co&n; */
 DECL|macro|PROT_READ
 mdefine_line|#define PROT_READ&t;0x1&t;&t;/* page can be read */
 DECL|macro|PROT_WRITE

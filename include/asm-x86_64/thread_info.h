@@ -188,6 +188,8 @@ DECL|macro|TIF_IA32
 mdefine_line|#define TIF_IA32&t;&t;17&t;/* 32bit process */ 
 DECL|macro|TIF_FORK
 mdefine_line|#define TIF_FORK&t;&t;18&t;/* ret_from_fork */
+DECL|macro|TIF_ABI_PENDING
+mdefine_line|#define TIF_ABI_PENDING&t;&t;19
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_NOTIFY_RESUME
@@ -206,6 +208,8 @@ DECL|macro|_TIF_IA32
 mdefine_line|#define _TIF_IA32&t;&t;(1&lt;&lt;TIF_IA32)
 DECL|macro|_TIF_FORK
 mdefine_line|#define _TIF_FORK&t;&t;(1&lt;&lt;TIF_FORK)
+DECL|macro|_TIF_ABI_PENDING
+mdefine_line|#define _TIF_ABI_PENDING&t;(1&lt;&lt;TIF_ABI_PENDING)
 DECL|macro|_TIF_WORK_MASK
 mdefine_line|#define _TIF_WORK_MASK&t;&t;0x0000FFFE&t;/* work to do on interrupt/exception return */
 DECL|macro|_TIF_ALLWORK_MASK

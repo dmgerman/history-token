@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_SOCKIOS_H
 DECL|macro|_ASM_IA64_SOCKIOS_H
 mdefine_line|#define _ASM_IA64_SOCKIOS_H
-multiline_comment|/*&n; * Socket-level I/O control calls.  This mostly mirrors the Linux/x86&n; * version.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Socket-level I/O control calls.&n; *&n; * Based on &lt;asm-i386/sockios.h&gt;.&n; *&n; * Modified 1998, 1999&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;, Hewlett-Packard Co&n; */
 DECL|macro|FIOSETOWN
 mdefine_line|#define FIOSETOWN &t;0x8901
 DECL|macro|SIOCSPGRP

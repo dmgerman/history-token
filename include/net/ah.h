@@ -2,6 +2,9 @@ macro_line|#ifndef _NET_AH_H
 DECL|macro|_NET_AH_H
 mdefine_line|#define _NET_AH_H
 macro_line|#include &lt;net/xfrm.h&gt;
+multiline_comment|/* This is the maximum truncated ICV length that we know of. */
+DECL|macro|MAX_AH_AUTH_LEN
+mdefine_line|#define MAX_AH_AUTH_LEN&t;12
 DECL|struct|ah_data
 r_struct
 id|ah_data

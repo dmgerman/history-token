@@ -345,7 +345,7 @@ multiline_comment|/* This decides where the kernel will search for a free chunk 
 DECL|macro|IA32_PAGE_OFFSET
 mdefine_line|#define IA32_PAGE_OFFSET ((current-&gt;personality &amp; ADDR_LIMIT_3GB) ? 0xc0000000 : 0xFFFFe000)
 DECL|macro|TASK_UNMAPPED_32
-mdefine_line|#define TASK_UNMAPPED_32 (IA32_PAGE_OFFSET / 3)
+mdefine_line|#define TASK_UNMAPPED_32 (PAGE_ALIGN(IA32_PAGE_OFFSET / 3))
 DECL|macro|TASK_UNMAPPED_64
 mdefine_line|#define TASK_UNMAPPED_64 PAGE_ALIGN(TASK_SIZE/3) 
 DECL|macro|TASK_UNMAPPED_BASE

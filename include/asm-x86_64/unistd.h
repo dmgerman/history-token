@@ -2143,6 +2143,7 @@ id|__NR_vserver
 comma
 id|sys_ni_syscall
 )paren
+multiline_comment|/* 237,238,239 reserved for NUMA API */
 DECL|macro|__NR_syscall_max
 mdefine_line|#define __NR_syscall_max __NR_vserver
 macro_line|#ifndef __NO_STUBS
@@ -2464,7 +2465,7 @@ id|noreturn
 suffix:semicolon
 r_extern
 r_inline
-r_int
+r_void
 m_exit
 (paren
 r_int

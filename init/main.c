@@ -1153,6 +1153,10 @@ r_void
 r_int
 r_int
 id|i
+comma
+id|j
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME: This should be done in userspace --RR */
 r_for
@@ -1213,6 +1217,9 @@ c_func
 id|i
 )paren
 suffix:semicolon
+id|j
+op_increment
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Any cleanup work */
@@ -1221,7 +1228,7 @@ c_func
 (paren
 l_string|&quot;CPUS done %u&bslash;n&quot;
 comma
-id|max_cpus
+id|j
 )paren
 suffix:semicolon
 id|smp_cpus_done
@@ -1374,6 +1381,11 @@ op_amp
 id|unknown_bootoption
 )paren
 suffix:semicolon
+id|sort_main_extable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|trap_init
 c_func
 (paren
@@ -1472,11 +1484,6 @@ c_func
 )paren
 suffix:semicolon
 id|kmem_cache_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|sort_main_extable
 c_func
 (paren
 )paren

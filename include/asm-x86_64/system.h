@@ -20,97 +20,6 @@ DECL|macro|__SAVE
 mdefine_line|#define __SAVE(reg,offset) &quot;movq %%&quot; #reg &quot;,(14-&quot; #offset &quot;)*8(%%rsp)&bslash;n&bslash;t&quot;
 DECL|macro|__RESTORE
 mdefine_line|#define __RESTORE(reg,offset) &quot;movq (14-&quot; #offset &quot;)*8(%%rsp),%%&quot; #reg &quot;&bslash;n&bslash;t&quot;
-macro_line|#ifdef CONFIG_X86_REMOTE_DEBUG
-multiline_comment|/* full frame for the debug stub */
-multiline_comment|/* Should be replaced with a dwarf2 cie/fde description, then gdb could&n;   figure it out all by itself. */
-DECL|struct|save_context_frame
-r_struct
-id|save_context_frame
-(brace
-DECL|member|rbp
-r_int
-r_int
-id|rbp
-suffix:semicolon
-DECL|member|rbx
-r_int
-r_int
-id|rbx
-suffix:semicolon
-DECL|member|r11
-r_int
-r_int
-id|r11
-suffix:semicolon
-DECL|member|r10
-r_int
-r_int
-id|r10
-suffix:semicolon
-DECL|member|r9
-r_int
-r_int
-id|r9
-suffix:semicolon
-DECL|member|r8
-r_int
-r_int
-id|r8
-suffix:semicolon
-DECL|member|rcx
-r_int
-r_int
-id|rcx
-suffix:semicolon
-DECL|member|rdx
-r_int
-r_int
-id|rdx
-suffix:semicolon
-DECL|member|r15
-r_int
-r_int
-id|r15
-suffix:semicolon
-DECL|member|r14
-r_int
-r_int
-id|r14
-suffix:semicolon
-DECL|member|r13
-r_int
-r_int
-id|r13
-suffix:semicolon
-DECL|member|r12
-r_int
-r_int
-id|r12
-suffix:semicolon
-DECL|member|rdi
-r_int
-r_int
-id|rdi
-suffix:semicolon
-DECL|member|rsi
-r_int
-r_int
-id|rsi
-suffix:semicolon
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|SAVE_CONTEXT
-mdefine_line|#define SAVE_CONTEXT &bslash;&n;&t;&quot;pushfq&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;subq $14*8,%%rsp&bslash;n&bslash;t&quot; &t;&t;&t;&t;&t;&t;&bslash;&n;&t;__SAVE(rbx, 12) __SAVE(rdi,  1)&t;&t;&t;&t;&t;&bslash;&n;&t;__SAVE(rdx,  6) __SAVE(rcx,  7)&t;&t;&t;&t;&t;&bslash;&n;&t;__SAVE(r8,   8) __SAVE(r9,   9)&t;&t;&t;&t;&t;&bslash;&n;&t;__SAVE(r12,  2) __SAVE(r13,  3)&t;&t;&t;&t;&t;&bslash;&n;&t;__SAVE(r14,  4) __SAVE(r15,  5)&t;&t;&t;&t;&t;&bslash;&n;&t;__SAVE(r10, 10) __SAVE(r11, 11)&t;&t;&t;&t;&t;&bslash;&n;&t;__SAVE(rsi, 0)  __SAVE(rbp, 13) &t;&t;&t;&t;&bslash;&n;
-DECL|macro|RESTORE_CONTEXT
-mdefine_line|#define RESTORE_CONTEXT &bslash;&n;&t;__RESTORE(rbx, 12) __RESTORE(rdi,  1) &t;&t;&t;&t;&t;&bslash;&n;&t;__RESTORE(rdx,  6) __RESTORE(rcx,  7)&t;&t;&t;&t;&t;&bslash;&n;&t;__RESTORE(r12,  2) __RESTORE(r13,  3)&t;&t;&t;&t;&t;&bslash;&n;&t;__RESTORE(r14,  4) __RESTORE(r15,  5)&t;&t;&t;&t;&t;&bslash;&n;&t;__RESTORE(r10, 10) __RESTORE(r11, 11)&t;&t;&t;&t;&t;&bslash;&n;&t;__RESTORE(r8,   8) __RESTORE(r9,   9)&t;&t;&t;&t;&t;&bslash;&n;&t;__RESTORE(rbp, 13) __RESTORE(rsi, 0) &t;&t;   &t;&t;        &bslash;&n;&t;&quot;addq $14*8,%%rsp&bslash;n&bslash;t&quot; &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;popfq&bslash;n&bslash;t&quot;
-DECL|macro|__EXTRA_CLOBBER
-mdefine_line|#define __EXTRA_CLOBBER 
-macro_line|#else
 multiline_comment|/* frame pointer must be last for get_wchan */
 DECL|macro|SAVE_CONTEXT
 mdefine_line|#define SAVE_CONTEXT    &quot;pushfq ; pushq %%rbp ; movq %%rsi,%%rbp&bslash;n&bslash;t&quot;
@@ -118,7 +27,6 @@ DECL|macro|RESTORE_CONTEXT
 mdefine_line|#define RESTORE_CONTEXT &quot;movq %%rbp,%%rsi ; popq %%rbp ; popfq&bslash;n&bslash;t&quot; 
 DECL|macro|__EXTRA_CLOBBER
 mdefine_line|#define __EXTRA_CLOBBER  &bslash;&n;&t;,&quot;rcx&quot;,&quot;rbx&quot;,&quot;rdx&quot;,&quot;r8&quot;,&quot;r9&quot;,&quot;r10&quot;,&quot;r11&quot;,&quot;r12&quot;,&quot;r13&quot;,&quot;r14&quot;,&quot;r15&quot;
-macro_line|#endif
 DECL|macro|switch_to
 mdefine_line|#define switch_to(prev,next,last) &bslash;&n;&t;asm volatile(SAVE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %%rsp,%P[threadrsp](%[prev])&bslash;n&bslash;t&quot; /* save RSP */&t;  &bslash;&n;&t;&t;     &quot;movq %P[threadrsp](%[next]),%%rsp&bslash;n&bslash;t&quot; /* restore RSP */&t;  &bslash;&n;&t;&t;     &quot;call __switch_to&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;     &quot;.globl thread_return&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;thread_return:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %%gs:%P[pda_pcurrent],%%rsi&bslash;n&bslash;t&quot;&t;&t;&t;  &bslash;&n;&t;&t;     &quot;movq %P[thread_info](%%rsi),%%r8&bslash;n&bslash;t&quot;&t;&t;&t;  &bslash;&n;&t;&t;     &quot;btr  %[tif_fork],%P[ti_flags](%%r8)&bslash;n&bslash;t&quot;&t;&t;&t;  &bslash;&n;&t;&t;     &quot;movq %%rax,%%rdi&bslash;n&bslash;t&quot; &t;&t;&t;&t;&t;  &bslash;&n;&t;&t;     &quot;jc   ret_from_fork&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;     RESTORE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     : &quot;=a&quot; (last)&t;&t;&t;&t;&t;  &t;  &bslash;&n;&t;&t;     : [next] &quot;S&quot; (next), [prev] &quot;D&quot; (prev),&t;&t;&t;  &bslash;&n;&t;&t;       [threadrsp] &quot;i&quot; (offsetof(struct task_struct, thread.rsp)), &bslash;&n;&t;&t;       [ti_flags] &quot;i&quot; (offsetof(struct thread_info, flags)),&bslash;&n;&t;&t;       [tif_fork] &quot;i&quot; (TIF_FORK),&t;&t;&t;  &bslash;&n;&t;&t;       [thread_info] &quot;i&quot; (offsetof(struct task_struct, thread_info)), &bslash;&n;&t;&t;       [pda_pcurrent] &quot;i&quot; (offsetof(struct x8664_pda, pcurrent))   &bslash;&n;&t;&t;     : &quot;memory&quot;, &quot;cc&quot; __EXTRA_CLOBBER)
 r_extern
@@ -828,9 +736,8 @@ mdefine_line|#define local_irq_disable() &t;__asm__ __volatile__(&quot;cli&quot;
 DECL|macro|local_irq_enable
 mdefine_line|#define local_irq_enable()&t;__asm__ __volatile__(&quot;sti&quot;: : :&quot;memory&quot;)
 multiline_comment|/* used in the idle loop; sti takes one instruction cycle to complete */
-multiline_comment|/* Work around BIOS that don&squot;t have K8 Errata #93 fixed. */
 DECL|macro|safe_halt
-mdefine_line|#define safe_halt()&t;      &bslash;&n;&t;asm volatile(&quot;   sti&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;1: hlt&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;     &quot;3: call idle_warning&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;     &quot;   jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;     &quot;.align 8&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.quad 1b,3b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.previous&quot; ::: &quot;memory&quot;)
+mdefine_line|#define safe_halt()&t;&t;__asm__ __volatile__(&quot;sti; hlt&quot;: : :&quot;memory&quot;)
 DECL|macro|irqs_disabled
 mdefine_line|#define irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&bslash;&n;&t;!(flags &amp; (1&lt;&lt;9));&t;&t;&bslash;&n;})
 multiline_comment|/* For spinlocks etc */

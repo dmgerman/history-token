@@ -311,19 +311,6 @@ id|out_unlock
 suffix:semicolon
 multiline_comment|/* rmmod already pending */
 )brace
-multiline_comment|/* Initialize dongle driver callbacks */
-id|dev-&gt;read
-op_assign
-id|sirdev_raw_read
-suffix:semicolon
-id|dev-&gt;write
-op_assign
-id|sirdev_raw_write
-suffix:semicolon
-id|dev-&gt;set_dtr_rts
-op_assign
-id|dev-&gt;drv-&gt;set_dtr_rts
-suffix:semicolon
 id|dev-&gt;dongle_drv
 op_assign
 id|drv

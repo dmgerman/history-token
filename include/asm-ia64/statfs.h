@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_STATFS_H
 DECL|macro|_ASM_IA64_STATFS_H
 mdefine_line|#define _ASM_IA64_STATFS_H
-multiline_comment|/*&n; * Copyright (C) 1998, 1999, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Based on &lt;asm-i386/statfs.h&gt;.&n; *&n; * Modified 1998, 1999, 2003&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;, Hewlett-Packard Co&n; */
 macro_line|#ifndef __KERNEL_STRICT_NAMES
 macro_line|# include &lt;linux/types.h&gt;
 DECL|typedef|fsid_t

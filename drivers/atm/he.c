@@ -65,10 +65,6 @@ mdefine_line|#define pci_set_drvdata(pci_dev, data)&t;(pci_dev)-&gt;driver_data 
 DECL|macro|pci_get_drvdata
 mdefine_line|#define pci_get_drvdata(pci_dev)&t;(pci_dev)-&gt;driver_data
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,44)
-DECL|macro|pci_pool_create
-mdefine_line|#define pci_pool_create(a, b, c, d, e)&t;pci_pool_create(a, b, c, d, e, SLAB_KERNEL)
-macro_line|#endif
 macro_line|#include &quot;he.h&quot;
 macro_line|#include &quot;suni.h&quot;
 macro_line|#include &lt;linux/atm_he.h&gt;
@@ -8994,20 +8990,11 @@ id|tpd
 op_assign
 l_int|NULL
 suffix:semicolon
-id|p
-op_assign
-op_amp
-id|he_dev-&gt;outstanding_tpds
-suffix:semicolon
-r_while
-c_loop
-(paren
+id|list_for_each
+c_func
 (paren
 id|p
-op_assign
-id|p-&gt;next
-)paren
-op_ne
+comma
 op_amp
 id|he_dev-&gt;outstanding_tpds
 )paren
