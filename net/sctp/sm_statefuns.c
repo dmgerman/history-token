@@ -10753,6 +10753,20 @@ id|packet
 r_goto
 id|nomem_packet
 suffix:semicolon
+multiline_comment|/* Cache a route for the transport with the chunk&squot;s destination as&n;&t; * the source address.&n;&t; */
+id|sctp_transport_route
+c_func
+(paren
+id|transport
+comma
+(paren
+id|sockaddr_storage_t
+op_star
+)paren
+op_amp
+id|chunk-&gt;dest
+)paren
+suffix:semicolon
 id|packet
 op_assign
 id|sctp_packet_init

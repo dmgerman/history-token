@@ -2778,10 +2778,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Set chunk-&gt;source based on the IP header in chunk-&gt;skb.  */
-DECL|function|sctp_init_source
+multiline_comment|/* Set chunk-&gt;source and dest based on the IP header in chunk-&gt;skb.  */
+DECL|function|sctp_init_addrs
 r_void
-id|sctp_init_source
+id|sctp_init_addrs
 c_func
 (paren
 id|sctp_chunk_t
@@ -2792,6 +2792,9 @@ id|chunk
 id|sockaddr_storage_t
 op_star
 id|source
+comma
+op_star
+id|dest
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -2817,6 +2820,11 @@ id|source
 op_assign
 op_amp
 id|chunk-&gt;source
+suffix:semicolon
+id|dest
+op_assign
+op_amp
+id|chunk-&gt;dest
 suffix:semicolon
 id|skb
 op_assign
@@ -2859,6 +2867,22 @@ id|source-&gt;v4.sin_addr.s_addr
 op_assign
 id|ih4-&gt;saddr
 suffix:semicolon
+id|dest-&gt;v4.sin_family
+op_assign
+id|AF_INET
+suffix:semicolon
+id|dest-&gt;v4.sin_port
+op_assign
+id|ntohs
+c_func
+(paren
+id|sh-&gt;dest
+)paren
+suffix:semicolon
+id|dest-&gt;v4.sin_addr.s_addr
+op_assign
+id|ih4-&gt;daddr
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2882,6 +2906,22 @@ suffix:semicolon
 id|source-&gt;v6.sin6_addr
 op_assign
 id|ih6-&gt;saddr
+suffix:semicolon
+id|dest-&gt;v6.sin6_family
+op_assign
+id|AF_INET6
+suffix:semicolon
+id|dest-&gt;v6.sin6_port
+op_assign
+id|ntohs
+c_func
+(paren
+id|sh-&gt;dest
+)paren
+suffix:semicolon
+id|dest-&gt;v6.sin6_addr
+op_assign
+id|ih6-&gt;daddr
 suffix:semicolon
 multiline_comment|/* FIXME:  What do we do with scope, etc. ? */
 r_break
