@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This abstraction carries sctp events to the ULP (sockets).&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This abstraction carries sctp events to the ULP (sockets).&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
@@ -699,7 +699,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Helper function to return an event corresponding to the reassembled&n; * datagram.&n; */
+multiline_comment|/* Helper function to return an event corresponding to the reassembled&n; * datagram.&n; * This routine creates a re-assembled skb given the first and last skb&squot;s&n; * as stored in the reassembly queue. The skb&squot;s may be non-linear if the sctp&n; * payload was fragmented on the way and ip had to reassemble them.&n; * We add the rest of skb&squot;s to the first skb&squot;s fraglist.&n; */
 DECL|function|sctp_make_reassembled_event
 r_static
 r_inline
@@ -732,12 +732,58 @@ r_struct
 id|sk_buff
 op_star
 id|pnext
+comma
+op_star
+id|last
 suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|list
+op_assign
+id|skb_shinfo
+c_func
+(paren
+id|f_frag
+)paren
+op_member_access_from_pointer
+id|frag_list
+suffix:semicolon
+multiline_comment|/* Store the pointer to the 2nd skb */
 id|pos
 op_assign
 id|f_frag-&gt;next
 suffix:semicolon
-multiline_comment|/* Set the first fragment&squot;s frag_list to point to the 2nd fragment.  */
+multiline_comment|/* Get the last skb in the f_frag&squot;s frag_list if present. */
+r_for
+c_loop
+(paren
+id|last
+op_assign
+id|list
+suffix:semicolon
+id|list
+suffix:semicolon
+id|last
+op_assign
+id|list
+comma
+id|list
+op_assign
+id|list-&gt;next
+)paren
+suffix:semicolon
+multiline_comment|/* Add the list of remaining fragments to the first fragments&n;&t; * frag_list.&n;&t; */
+r_if
+c_cond
+(paren
+id|last
+)paren
+id|last-&gt;next
+op_assign
+id|pos
+suffix:semicolon
+r_else
 id|skb_shinfo
 c_func
 (paren
@@ -762,6 +808,15 @@ r_do
 id|pnext
 op_assign
 id|pos-&gt;next
+suffix:semicolon
+multiline_comment|/* Update the len and data_len fields of the first fragment. */
+id|f_frag-&gt;len
+op_add_assign
+id|pos-&gt;len
+suffix:semicolon
+id|f_frag-&gt;data_len
+op_add_assign
+id|pos-&gt;len
 suffix:semicolon
 multiline_comment|/* Remove the fragment from the reassembly queue.  */
 id|__skb_unlink
