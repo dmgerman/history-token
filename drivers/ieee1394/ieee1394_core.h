@@ -471,5 +471,11 @@ r_struct
 r_class
 id|hpsb_host_class
 suffix:semicolon
+r_extern
+r_struct
+id|class_simple
+op_star
+id|hpsb_protocol_class
+suffix:semicolon
 macro_line|#endif /* _IEEE1394_CORE_H */
 eof
