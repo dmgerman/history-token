@@ -8102,7 +8102,7 @@ suffix:colon
 id|sg
 op_assign
 op_amp
-id|sg
+id|qc-&gt;sg
 (braket
 id|qc-&gt;cursg
 )braket
@@ -9401,7 +9401,7 @@ l_int|0
 suffix:semicolon
 id|qc-&gt;nbytes
 op_assign
-id|qc-&gt;nbytes
+id|qc-&gt;curbytes
 op_assign
 l_int|0
 suffix:semicolon
