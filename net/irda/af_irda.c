@@ -6360,6 +6360,7 @@ comma
 (paren
 r_struct
 id|timeval
+id|__user
 op_star
 )paren
 id|arg
