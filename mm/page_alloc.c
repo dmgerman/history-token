@@ -1751,6 +1751,20 @@ r_return
 id|page
 suffix:semicolon
 )brace
+id|nopage
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: page allocation failure. order:%d, mode:0x%x&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|order
+comma
+id|gfp_mask
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1766,8 +1780,8 @@ op_amp
 id|__GFP_WAIT
 )paren
 )paren
-r_return
-l_int|NULL
+r_goto
+id|nopage
 suffix:semicolon
 id|page
 op_assign
@@ -1867,8 +1881,8 @@ id|order
 OG
 l_int|3
 )paren
-r_return
-l_int|NULL
+r_goto
+id|nopage
 suffix:semicolon
 multiline_comment|/* Yield for kswapd, and try again */
 id|__set_current_state
