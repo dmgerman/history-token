@@ -1002,7 +1002,7 @@ comma
 dot
 id|rate
 op_assign
-l_int|33000000
+l_int|14745600
 comma
 )brace
 suffix:semicolon
@@ -1401,7 +1401,7 @@ op_assign
 dot
 id|mclk
 op_assign
-l_int|33000000
+l_int|14745600
 comma
 dot
 id|ocr_mask
