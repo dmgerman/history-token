@@ -6944,23 +6944,6 @@ comma
 id|pbn_b1_1_115200
 )brace
 comma
-multiline_comment|/*&n;&t; * 3Com US Robotics 56k Voice Internal PCI model 5610&n;&t; */
-(brace
-id|PCI_VENDOR_ID_USR
-comma
-l_int|0x1008
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|pbn_b0_1_115200
-)brace
-comma
 multiline_comment|/*&n;&t; * Titan Electronic cards&n;&t; *  The 400L and 800L have a custom setup quirk.&n;&t; */
 (brace
 id|PCI_VENDOR_ID_TITAN
