@@ -6305,6 +6305,21 @@ id|pkt_len
 )paren
 suffix:semicolon
 multiline_comment|/* Make room */
+id|pci_dma_sync_single
+c_func
+(paren
+id|lp-&gt;pci_dev
+comma
+id|lp-&gt;rx_dma_addr
+(braket
+id|entry
+)braket
+comma
+id|PKT_BUF_SZ
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 id|eth_copy_and_sum
 c_func
 (paren
