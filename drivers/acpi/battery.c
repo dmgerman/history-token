@@ -1983,6 +1983,7 @@ op_amp
 l_int|0x02
 )paren
 )paren
+(brace
 id|p
 op_add_assign
 id|sprintf
@@ -1993,6 +1994,16 @@ comma
 l_string|&quot;charging state:          charging/discharging&bslash;n&quot;
 )paren
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Battery Charging and Discharging?&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -2030,6 +2041,7 @@ l_string|&quot;charging state:          charging&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
+(brace
 id|p
 op_add_assign
 id|sprintf
@@ -2037,9 +2049,10 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;charging state:          unknown&bslash;n&quot;
+l_string|&quot;charging state:          charged&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
