@@ -1428,10 +1428,24 @@ r_int
 id|max
 comma
 id|newsize
-op_assign
-id|req_size
 suffix:semicolon
 r_int
+id|sequential
+suffix:semicolon
+multiline_comment|/*&n;&t; * Here we detect the case where the application is performing&n;&t; * sub-page sized reads.  We avoid doing extra work and bogusly&n;&t; * perturbing the readahead window expansion logic.&n;&t; */
+r_if
+c_cond
+(paren
+id|offset
+op_eq
+id|ra-&gt;prev_page
+op_logical_and
+op_decrement
+id|req_size
+)paren
+op_increment
+id|offset
+suffix:semicolon
 id|sequential
 op_assign
 (paren
@@ -1441,21 +1455,6 @@ id|ra-&gt;prev_page
 op_plus
 l_int|1
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Here we detect the case where the application is performing&n;&t; * sub-page sized reads.  We avoid doing extra work and bogusly&n;&t; * perturbing the readahead window expansion logic.&n;&t; * If size is zero, there is no read ahead window so we need one&n;&t; */
-r_if
-c_cond
-(paren
-id|offset
-op_eq
-id|ra-&gt;prev_page
-op_logical_and
-id|req_size
-op_eq
-l_int|1
-)paren
-r_goto
-id|out
 suffix:semicolon
 id|ra-&gt;prev_page
 op_assign
@@ -1479,6 +1478,7 @@ comma
 id|max
 )paren
 suffix:semicolon
+multiline_comment|/* No readahead or file already in cache or sub-page sized read */
 r_if
 c_cond
 (paren
@@ -1492,16 +1492,9 @@ op_amp
 id|RA_FLAG_INCACHE
 )paren
 )paren
-(brace
-id|newsize
-op_assign
-l_int|1
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* No readahead or file already in cache */
-)brace
 id|ra-&gt;prev_page
 op_add_assign
 id|newsize
@@ -1677,7 +1670,9 @@ suffix:semicolon
 id|out
 suffix:colon
 r_return
-id|newsize
+id|ra-&gt;prev_page
+op_plus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * handle_ra_miss() is called when it is known that a page which should have&n; * been present in the pagecache (we just did some readahead there) was in fact&n; * not found.  This will happen if it was evicted by the VM (readahead&n; * thrashing)&n; *&n; * Turn on the cache miss flag in the RA struct, this will cause the RA code&n; * to reduce the RA size on the next read.&n; */
