@@ -243,7 +243,6 @@ comma
 )brace
 suffix:semicolon
 DECL|function|sysfs_init
-r_static
 r_int
 id|__init
 id|sysfs_init
@@ -315,11 +314,4 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|variable|sysfs_init
-id|core_initcall
-c_func
-(paren
-id|sysfs_init
-)paren
-suffix:semicolon
 eof
