@@ -116,7 +116,6 @@ DECL|macro|BASE_TIMESLICE
 mdefine_line|#define BASE_TIMESLICE(p) (MIN_TIMESLICE + &bslash;&n;&t;&t;((MAX_TIMESLICE - MIN_TIMESLICE) * &bslash;&n;&t;&t;&t;(MAX_PRIO-1 - (p)-&gt;static_prio) / (MAX_USER_PRIO-1)))
 DECL|function|task_timeslice
 r_static
-r_inline
 r_int
 r_int
 id|task_timeslice
@@ -350,7 +349,6 @@ macro_line|#endif
 multiline_comment|/*&n; * task_rq_lock - lock the runqueue a given task resides on and disable&n; * interrupts.  Note the ordering: we can safely lookup the task_rq without&n; * explicitly disabling preemption.&n; */
 DECL|function|task_rq_lock
 r_static
-r_inline
 id|runqueue_t
 op_star
 id|task_rq_lock
@@ -460,7 +458,6 @@ suffix:semicolon
 multiline_comment|/*&n; * rq_lock - lock a given runqueue and disable interrupts.&n; */
 DECL|function|this_rq_lock
 r_static
-r_inline
 id|runqueue_t
 op_star
 id|this_rq_lock
@@ -519,7 +516,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Adding/removing a task to/from a priority array:&n; */
 DECL|function|dequeue_task
 r_static
-r_inline
 r_void
 id|dequeue_task
 c_func
@@ -566,7 +562,6 @@ suffix:semicolon
 )brace
 DECL|function|enqueue_task
 r_static
-r_inline
 r_void
 id|enqueue_task
 c_func
@@ -980,7 +975,6 @@ suffix:semicolon
 multiline_comment|/*&n; * activate_task - move a task to the runqueue and do priority recalculation&n; *&n; * Update all the scheduling statistics stuff. (sleep average&n; * calculation, priority modifiers, etc.)&n; */
 DECL|function|activate_task
 r_static
-r_inline
 r_void
 id|activate_task
 c_func
@@ -1058,7 +1052,6 @@ suffix:semicolon
 multiline_comment|/*&n; * deactivate_task - remove a task from the runqueue.&n; */
 DECL|function|deactivate_task
 r_static
-r_inline
 r_void
 id|deactivate_task
 c_func
@@ -1103,7 +1096,6 @@ multiline_comment|/*&n; * resched_task - mark a task &squot;to be rescheduled no
 macro_line|#ifdef CONFIG_SMP
 DECL|function|resched_task
 r_static
-r_inline
 r_void
 id|resched_task
 c_func
@@ -2659,7 +2651,6 @@ suffix:semicolon
 multiline_comment|/**&n; * finish_task_switch - clean up after a task-switch&n; * @prev: the thread we just switched away from.&n; *&n; * We enter this with the runqueue still locked, and finish_arch_switch()&n; * will unlock it along with doing any other architecture-specific cleanup&n; * actions.&n; *&n; * Note that we may have delayed dropping an mm in context_switch(). If&n; * so, we finish that here outside of the runqueue lock.  (Doing it&n; * with the lock held can cause deadlocks; see schedule() for&n; * details.)&n; */
 DECL|function|finish_task_switch
 r_static
-r_inline
 r_void
 id|finish_task_switch
 c_func
@@ -3041,7 +3032,6 @@ suffix:semicolon
 multiline_comment|/*&n; * double_rq_lock - safely lock two runqueues&n; *&n; * Note this does not disable interrupts like task_rq_lock,&n; * you need to do so manually before calling.&n; */
 DECL|function|double_rq_lock
 r_static
-r_inline
 r_void
 id|double_rq_lock
 c_func
@@ -3116,7 +3106,6 @@ suffix:semicolon
 multiline_comment|/*&n; * double_rq_unlock - safely unlock two runqueues&n; *&n; * Note this does not restore interrupts like task_rq_unlock,&n; * you need to do so manually after calling.&n; */
 DECL|function|double_rq_unlock
 r_static
-r_inline
 r_void
 id|double_rq_unlock
 c_func
@@ -3544,7 +3533,6 @@ macro_line|#endif /* CONFIG_NUMA */
 multiline_comment|/*&n; * double_lock_balance - lock the busiest runqueue, this_rq is locked already.&n; */
 DECL|function|double_lock_balance
 r_static
-r_inline
 r_void
 id|double_lock_balance
 c_func
