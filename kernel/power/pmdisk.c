@@ -1510,7 +1510,7 @@ op_assign
 id|n
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;copy_pages - Atmoically snapshot memory.&n; *&n; *&t;Iterate over all the pages in the system and copy each one &n; *&t;into its corresponding location in the pagedir.&n; *&t;We rely on the fact that the number of pages that we&squot;re snap-&n; *&t;shotting hasn&squot;t changed since we counted them. &n; */
+multiline_comment|/**&n; *&t;copy_pages - Atomically snapshot memory.&n; *&n; *&t;Iterate over all the pages in the system and copy each one &n; *&t;into its corresponding location in the pagedir.&n; *&t;We rely on the fact that the number of pages that we&squot;re snap-&n; *&t;shotting hasn&squot;t changed since we counted them. &n; */
 DECL|function|copy_pages
 r_static
 r_void

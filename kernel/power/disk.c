@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * kernel/power/disk.c - Suspend-to-disk support.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; *&n; * This file is release under the GPLv2&n; *&n; */
+multiline_comment|/*&n; * kernel/power/disk.c - Suspend-to-disk support.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; *&n; * This file is released under the GPLv2.&n; *&n; */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/suspend.h&gt;
