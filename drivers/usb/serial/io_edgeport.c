@@ -1349,6 +1349,7 @@ l_int|0
 id|dev_err
 c_func
 (paren
+op_amp
 id|edge_serial-&gt;serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;sram_write failed (%x, %x, %d)&bslash;n&quot;
@@ -2462,6 +2463,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|urb-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - Error %d submitting control urb&bslash;n&quot;
@@ -2651,6 +2653,7 @@ id|status
 id|dev_err
 c_func
 (paren
+op_amp
 id|urb-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - usb_submit_urb(read bulk) failed, status = %d&bslash;n&quot;
@@ -3195,6 +3198,7 @@ id|response
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - Error %d submitting control urb&bslash;n&quot;
@@ -3297,6 +3301,7 @@ l_int|0
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - error sending open port command&bslash;n&quot;
@@ -4573,6 +4578,7 @@ l_int|NULL
 id|dev_err
 c_func
 (paren
+op_amp
 id|edge_serial-&gt;serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - no more kernel memory...&bslash;n&quot;
@@ -7405,6 +7411,7 @@ l_int|NULL
 id|dev_err
 c_func
 (paren
+op_amp
 id|edge_serial-&gt;serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - edge_port == NULL for port %d&bslash;n&quot;
@@ -8051,6 +8058,7 @@ id|transfer_buffer
 id|dev_err
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
@@ -8224,6 +8232,7 @@ id|transfer_buffer
 id|dev_err
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
@@ -8410,6 +8419,7 @@ id|transfer_buffer
 id|dev_err
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
@@ -8596,6 +8606,7 @@ id|buffer
 id|dev_err
 c_func
 (paren
+op_amp
 id|edge_port-&gt;port-&gt;dev
 comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
@@ -8946,6 +8957,7 @@ id|status
 id|dev_err
 c_func
 (paren
+op_amp
 id|edge_port-&gt;port-&gt;dev
 comma
 l_string|&quot;%s - bad baud rate&bslash;n&quot;
@@ -8977,6 +8989,7 @@ id|cmdBuffer
 id|dev_err
 c_func
 (paren
+op_amp
 id|edge_port-&gt;port-&gt;dev
 comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
@@ -10172,6 +10185,7 @@ l_int|1
 id|dev_err
 c_func
 (paren
+op_amp
 id|edge_serial-&gt;serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;error in getting manufacturer descriptor&bslash;n&quot;
@@ -10411,6 +10425,7 @@ l_int|1
 id|dev_err
 c_func
 (paren
+op_amp
 id|edge_serial-&gt;serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;error in getting boot descriptor&bslash;n&quot;
@@ -10663,6 +10678,7 @@ l_int|0
 id|dev_err
 c_func
 (paren
+op_amp
 id|edge_serial-&gt;serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;sram_write failed (%x, %x, %d)&bslash;n&quot;
@@ -10800,6 +10816,7 @@ l_int|NULL
 id|dev_err
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - Out of memory&quot;
@@ -10889,6 +10906,7 @@ suffix:semicolon
 id|dev_info
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s detected&bslash;n&quot;
@@ -11024,6 +11042,7 @@ l_int|NULL
 id|dev_err
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - Out of memory&quot;
