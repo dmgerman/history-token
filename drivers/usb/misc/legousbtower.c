@@ -1557,7 +1557,7 @@ op_logical_and
 id|dev-&gt;udev
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|dev-&gt;interrupt_in_urb
 )paren
@@ -1580,7 +1580,7 @@ op_logical_and
 id|dev-&gt;udev
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|dev-&gt;interrupt_out_urb
 )paren

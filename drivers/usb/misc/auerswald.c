@@ -1525,7 +1525,7 @@ id|dbg
 l_string|&quot;unlink active urb&quot;
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|urbp
 )paren
@@ -4092,18 +4092,13 @@ suffix:semicolon
 multiline_comment|/* This function is called to deactivate the interrupt&n;   endpoint. This function returns 0 if successful or an error code.&n;   NOTE: no mutex please!&n;*/
 DECL|function|auerswald_int_release
 r_static
-r_int
+r_void
 id|auerswald_int_release
 (paren
 id|pauerswald_t
 id|cp
 )paren
 (brace
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 id|dbg
 (paren
 l_string|&quot;auerswald_int_release&quot;
@@ -4115,35 +4110,16 @@ c_cond
 (paren
 id|cp-&gt;inturbp
 )paren
-(brace
-id|ret
-op_assign
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|cp-&gt;inturbp
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-id|dbg
-(paren
-l_string|&quot;nonzero int unlink result received: %d&quot;
-comma
-id|ret
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* deallocate memory */
 id|auerswald_int_free
 (paren
 id|cp
 )paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */

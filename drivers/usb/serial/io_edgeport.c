@@ -3921,7 +3921,8 @@ c_cond
 id|edge_port-&gt;write_urb
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|edge_port-&gt;write_urb
 )paren
@@ -8674,12 +8675,14 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|urb
 )paren
 suffix:semicolon
 id|usb_free_urb
+c_func
 (paren
 id|urb
 )paren

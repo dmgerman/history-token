@@ -1836,7 +1836,7 @@ id|pm-&gt;requires_update
 op_assign
 l_int|0
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|pm-&gt;irq

@@ -2657,7 +2657,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|aiptek-&gt;urb
@@ -8771,7 +8771,7 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* Free &amp; unhook everything from the system.&n;&t;&t; */
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|aiptek-&gt;urb

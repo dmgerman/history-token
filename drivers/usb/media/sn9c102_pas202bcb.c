@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; * Driver for PAS202BCB image sensor connected to the SN9C10[12] PC Camera *&n; * Controllers                                                             *&n; *                                                                         *&n; * Copyright (C) 2004 by Carlos Eduardo Medaglia Dyonisio                  *&n; *                       &lt;medaglia@undl.org.br&gt;                            *&n; *                       http://cadu.homelinux.com:8080/                   *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
+multiline_comment|/***************************************************************************&n; * Driver for PAS202BCB image sensor connected to the SN9C10x PC Camera    *&n; * Controllers                                                             *&n; *                                                                         *&n; * Copyright (C) 2004 by Carlos Eduardo Medaglia Dyonisio                  *&n; *                       &lt;medaglia@undl.org.br&gt;                            *&n; *                       http://cadu.homelinux.com:8080/                   *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;sn9c102_sensor.h&quot;
 DECL|variable|pas202bcb
@@ -79,7 +79,7 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x20
+l_int|0x30
 comma
 l_int|0x19
 )paren
@@ -105,7 +105,7 @@ id|cam
 comma
 l_int|0x02
 comma
-l_int|0x0c
+l_int|0x14
 )paren
 suffix:semicolon
 id|err
@@ -187,9 +187,9 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x08
+l_int|0x10
 comma
-l_int|0x01
+l_int|0x08
 )paren
 suffix:semicolon
 id|err
@@ -202,6 +202,18 @@ comma
 l_int|0x0b
 comma
 l_int|0x01
+)paren
+suffix:semicolon
+id|err
+op_add_assign
+id|sn9c102_i2c_write
+c_func
+(paren
+id|cam
+comma
+l_int|0x0c
+comma
+l_int|0x04
 )paren
 suffix:semicolon
 id|err
@@ -447,8 +459,6 @@ comma
 l_int|0x09
 comma
 id|ctrl-&gt;value
-op_amp
-l_int|0x0f
 )paren
 suffix:semicolon
 r_break
@@ -466,8 +476,6 @@ comma
 l_int|0x07
 comma
 id|ctrl-&gt;value
-op_amp
-l_int|0x0f
 )paren
 suffix:semicolon
 r_break
@@ -485,8 +493,6 @@ comma
 l_int|0x10
 comma
 id|ctrl-&gt;value
-op_amp
-l_int|0x1f
 )paren
 suffix:semicolon
 r_break
@@ -505,11 +511,7 @@ l_int|0x06
 comma
 l_int|0x0f
 op_minus
-(paren
 id|ctrl-&gt;value
-op_amp
-l_int|0x0f
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -535,6 +537,12 @@ l_int|0x01
 suffix:semicolon
 r_return
 id|err
+ques
+c_cond
+op_minus
+id|EIO
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|pas202bcb_set_crop
@@ -1001,7 +1009,7 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x00
+l_int|0x40
 comma
 l_int|0x01
 )paren

@@ -2385,9 +2385,10 @@ id|int_callback
 comma
 id|kaweth
 comma
-l_int|8
+l_int|250
 )paren
 suffix:semicolon
+multiline_comment|/* overriding the descriptor */
 id|kaweth-&gt;irq_urb-&gt;transfer_dma
 op_assign
 id|kaweth-&gt;intbufferhandle
@@ -4806,12 +4807,6 @@ r_return
 id|status
 suffix:semicolon
 )brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -4821,6 +4816,12 @@ op_logical_neg
 id|awd.done
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
@@ -4829,19 +4830,7 @@ c_func
 id|timeout
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
 )brace
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren

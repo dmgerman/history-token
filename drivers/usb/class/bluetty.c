@@ -1274,12 +1274,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* shutdown any in-flight urbs that we know about */
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|bluetooth-&gt;read_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|bluetooth-&gt;interrupt_in_urb
 )paren
@@ -2369,7 +2369,7 @@ op_logical_and
 id|bluetooth-&gt;read_urb-&gt;actual_length
 )paren
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|bluetooth-&gt;read_urb
@@ -4511,7 +4511,7 @@ c_cond
 id|bluetooth-&gt;read_urb
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|bluetooth-&gt;read_urb
 )paren
@@ -4538,7 +4538,7 @@ c_cond
 id|bluetooth-&gt;interrupt_in_urb
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|bluetooth-&gt;interrupt_in_urb
 )paren
@@ -4590,7 +4590,7 @@ id|i
 )braket
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|bluetooth-&gt;control_urb_pool
 (braket

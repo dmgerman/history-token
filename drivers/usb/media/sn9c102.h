@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; * V4L2 driver for SN9C10[12] PC Camera Controllers                        *&n; *                                                                         *&n; * Copyright (C) 2004 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;       *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
+multiline_comment|/***************************************************************************&n; * V4L2 driver for SN9C10x PC Camera Controllers                           *&n; *                                                                         *&n; * Copyright (C) 2004 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;       *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
 macro_line|#ifndef _SN9C102_H_
 DECL|macro|_SN9C102_H_
 mdefine_line|#define _SN9C102_H_
@@ -35,7 +35,7 @@ DECL|macro|SN9C102_CTRL_TIMEOUT
 mdefine_line|#define SN9C102_CTRL_TIMEOUT      10*HZ
 multiline_comment|/*****************************************************************************/
 DECL|macro|SN9C102_MODULE_NAME
-mdefine_line|#define SN9C102_MODULE_NAME  &quot;V4L2 driver for SN9C10[12] PC Camera Controllers&quot;
+mdefine_line|#define SN9C102_MODULE_NAME     &quot;V4L2 driver for SN9C10x PC Camera Controllers&quot;
 DECL|macro|SN9C102_MODULE_AUTHOR
 mdefine_line|#define SN9C102_MODULE_AUTHOR   &quot;(C) 2004 Luca Risolia&quot;
 DECL|macro|SN9C102_AUTHOR_EMAIL
@@ -43,13 +43,32 @@ mdefine_line|#define SN9C102_AUTHOR_EMAIL    &quot;&lt;luca.risolia@studio.unibo
 DECL|macro|SN9C102_MODULE_LICENSE
 mdefine_line|#define SN9C102_MODULE_LICENSE  &quot;GPL&quot;
 DECL|macro|SN9C102_MODULE_VERSION
-mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.08&quot;
+mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.12&quot;
 DECL|macro|SN9C102_MODULE_VERSION_CODE
-mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 8)
+mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 12)
+DECL|enum|sn9c102_bridge
+r_enum
+id|sn9c102_bridge
+(brace
+DECL|enumerator|BRIDGE_SN9C101
+id|BRIDGE_SN9C101
+op_assign
+l_int|0x01
+comma
+DECL|enumerator|BRIDGE_SN9C102
+id|BRIDGE_SN9C102
+op_assign
+l_int|0x02
+comma
+DECL|enumerator|BRIDGE_SN9C103
+id|BRIDGE_SN9C103
+op_assign
+l_int|0x04
+comma
+)brace
+suffix:semicolon
 id|SN9C102_ID_TABLE
-suffix:semicolon
 id|SN9C102_SENSOR_TABLE
-suffix:semicolon
 DECL|enum|sn9c102_frame_state
 r_enum
 id|sn9c102_frame_state
@@ -200,6 +219,11 @@ r_struct
 id|video_device
 op_star
 id|v4ldev
+suffix:semicolon
+DECL|member|bridge
+r_enum
+id|sn9c102_bridge
+id|bridge
 suffix:semicolon
 DECL|member|sensor
 r_struct
