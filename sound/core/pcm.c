@@ -3130,7 +3130,7 @@ c_cond
 id|id
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|pcm-&gt;id
@@ -3141,8 +3141,6 @@ r_sizeof
 (paren
 id|pcm-&gt;id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 )brace

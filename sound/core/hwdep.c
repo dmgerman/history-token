@@ -799,7 +799,7 @@ id|info.card
 op_assign
 id|hw-&gt;card-&gt;number
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.id
@@ -810,11 +810,9 @@ r_sizeof
 (paren
 id|info.id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|info.name
@@ -825,8 +823,6 @@ r_sizeof
 (paren
 id|info.name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|info.iface
@@ -1703,7 +1699,7 @@ c_cond
 id|id
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|hwdep-&gt;id
@@ -1714,8 +1710,6 @@ r_sizeof
 (paren
 id|hwdep-&gt;id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 )brace
