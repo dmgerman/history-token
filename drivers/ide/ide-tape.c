@@ -21847,6 +21847,10 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
+id|filp-&gt;private_data
+op_assign
+id|drive
+suffix:semicolon
 r_if
 c_cond
 (paren
