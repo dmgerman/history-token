@@ -3156,15 +3156,6 @@ id|ss-&gt;irq_urb_sem
 )paren
 )paren
 suffix:semicolon
-id|init_MUTEX
-c_func
-(paren
-op_amp
-(paren
-id|ss-&gt;current_urb_sem
-)paren
-)paren
-suffix:semicolon
 id|init_MUTEX_LOCKED
 c_func
 (paren
