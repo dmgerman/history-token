@@ -2047,15 +2047,15 @@ DECL|member|reserved_2
 r_uint8
 id|reserved_2
 (braket
-l_int|24
+l_int|22
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * LSB BIT 0 = Output Swing 1G bit 0&n;&t; * LSB BIT 1 = Output Swing 1G bit 1&n;&t; * LSB BIT 2 = Output Swing 1G bit 2&n;&t; * LSB BIT 3 = Output Emphasis 1G bit 0&n;&t; * LSB BIT 4 = Output Emphasis 1G bit 1&n;&t; * LSB BIT 5 = Output Swing 2G bit 0&n;&t; * LSB BIT 6 = Output Swing 2G bit 1&n;&t; * LSB BIT 7 = Output Swing 2G bit 2&n;&t; *            &n;&t; * MSB BIT 0 = Output Emphasis 2G bit 0&n;&t; * MSB BIT 1 = Output Emphasis 2G bit 1&n;&t; * MSB BIT 2 = Output Enable&n;&t; * MSB BIT 3 =&n;&t; * MSB BIT 4 =&n;&t; * MSB BIT 5 =&n;&t; * MSB BIT 6 =&n;&t; * MSB BIT 7 =&n;&t; */
+multiline_comment|/*&n;&t; * LSB BIT 0 = Tx Sensitivity 1G bit 0&n;&t; * LSB BIT 1 = Tx Sensitivity 1G bit 1&n;&t; * LSB BIT 2 = Tx Sensitivity 1G bit 2&n;&t; * LSB BIT 3 = Tx Sensitivity 1G bit 3&n;&t; * LSB BIT 4 = Rx Sensitivity 1G bit 0&n;&t; * LSB BIT 5 = Rx Sensitivity 1G bit 1&n;&t; * LSB BIT 6 = Rx Sensitivity 1G bit 2&n;&t; * LSB BIT 7 = Rx Sensitivity 1G bit 3&n;&t; *            &n;&t; * MSB BIT 0 = Tx Sensitivity 2G bit 0&n;&t; * MSB BIT 1 = Tx Sensitivity 2G bit 1&n;&t; * MSB BIT 2 = Tx Sensitivity 2G bit 2&n;&t; * MSB BIT 3 = Tx Sensitivity 2G bit 3&n;&t; * MSB BIT 4 = Rx Sensitivity 2G bit 0&n;&t; * MSB BIT 5 = Rx Sensitivity 2G bit 1&n;&t; * MSB BIT 6 = Rx Sensitivity 2G bit 2&n;&t; * MSB BIT 7 = Rx Sensitivity 2G bit 3&n;&t; *&n;&t; * LSB BIT 0 = Output Swing 1G bit 0&n;&t; * LSB BIT 1 = Output Swing 1G bit 1&n;&t; * LSB BIT 2 = Output Swing 1G bit 2&n;&t; * LSB BIT 3 = Output Emphasis 1G bit 0&n;&t; * LSB BIT 4 = Output Emphasis 1G bit 1&n;&t; * LSB BIT 5 = Output Swing 2G bit 0&n;&t; * LSB BIT 6 = Output Swing 2G bit 1&n;&t; * LSB BIT 7 = Output Swing 2G bit 2&n;&t; *            &n;&t; * MSB BIT 0 = Output Emphasis 2G bit 0&n;&t; * MSB BIT 1 = Output Emphasis 2G bit 1&n;&t; * MSB BIT 2 = Output Enable&n;&t; * MSB BIT 3 =&n;&t; * MSB BIT 4 =&n;&t; * MSB BIT 5 =&n;&t; * MSB BIT 6 =&n;&t; * MSB BIT 7 =&n;&t; */
 DECL|member|seriallink_options
 r_uint8
 id|seriallink_options
 (braket
-l_int|2
+l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * NVRAM host parameter block&n;&t; *&n;&t; * LSB BIT 0 = Enable spinup delay&n;&t; * LSB BIT 1 = Disable BIOS&n;&t; * LSB BIT 2 = Enable Memory Map BIOS&n;&t; * LSB BIT 3 = Enable Selectable Boot&n;&t; * LSB BIT 4 = Disable RISC code load&n;&t; * LSB BIT 5 = Set cache line size 1&n;&t; * LSB BIT 6 = PCI Parity Disable&n;&t; * LSB BIT 7 = Enable extended logging&n;&t; *&n;&t; * MSB BIT 0 = Enable 64bit addressing&n;&t; * MSB BIT 1 = Enable lip reset&n;&t; * MSB BIT 2 = Enable lip full login&n;&t; * MSB BIT 3 = Enable target reset&n;&t; * MSB BIT 4 = Enable database storage&n;&t; * MSB BIT 5 = Enable cache flush read&n;&t; * MSB BIT 6 = Enable database load&n;&t; * MSB BIT 7 = Enable alternate WWN&n;&t; */
@@ -4972,6 +4972,12 @@ id|enable_target_reset
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|enable_led_scheme
+r_uint32
+id|enable_led_scheme
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|flags
 )brace
 id|flags
@@ -5788,7 +5794,7 @@ DECL|member|fw_seriallink_options
 r_uint8
 id|fw_seriallink_options
 (braket
-l_int|2
+l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* Firmware dump information. */
