@@ -2,6 +2,7 @@ multiline_comment|/*&n;=========================================================
 macro_line|#ifndef __SOFTFLOAT_H__
 DECL|macro|__SOFTFLOAT_H__
 mdefine_line|#define __SOFTFLOAT_H__
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n;-------------------------------------------------------------------------------&n;The macro `FLOATX80&squot; must be defined to enable the extended double-precision&n;floating-point format `floatx80&squot;.  If this macro is not defined, the&n;`floatx80&squot; type will not be defined, and none of the functions that either&n;input or output the `floatx80&squot; type will be defined.&n;-------------------------------------------------------------------------------&n;*/
 macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 DECL|macro|FLOATX80

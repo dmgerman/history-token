@@ -1,6 +1,22 @@
 macro_line|#ifndef _LINUX_EISA_H
 DECL|macro|_LINUX_EISA_H
 mdefine_line|#define _LINUX_EISA_H
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#ifdef CONFIG_EISA
+macro_line|# ifdef CONFIG_EISA_ALWAYS
+DECL|macro|EISA_bus
+macro_line|#  define EISA_bus 1
+macro_line|# else
+r_extern
+r_int
+id|EISA_bus
+suffix:semicolon
+macro_line|# endif
+macro_line|#else
+DECL|macro|EISA_bus
+macro_line|# define EISA_bus 0
+macro_line|#endif
 DECL|macro|EISA_SIG_LEN
 mdefine_line|#define EISA_SIG_LEN   8
 DECL|macro|EISA_MAX_SLOTS

@@ -972,6 +972,7 @@ id|misc_deregister
 )paren
 suffix:semicolon
 DECL|function|misc_init
+r_static
 r_int
 id|__init
 id|misc_init
@@ -1101,4 +1102,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|misc_init
+id|module_init
+c_func
+(paren
+id|misc_init
+)paren
+suffix:semicolon
 eof

@@ -757,12 +757,24 @@ id|dev
 )paren
 )paren
 r_goto
-id|err_out_free_region
+id|err_out_iounmap
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* success */
+id|err_out_iounmap
+suffix:colon
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|dev-&gt;base_addr
+)paren
+suffix:semicolon
 id|err_out_free_region
 suffix:colon
 id|pci_release_regions

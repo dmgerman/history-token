@@ -121,15 +121,6 @@ c_func
 id|mips_machtype
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_EISA
-DECL|variable|EISA_bus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|EISA_bus
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * String functions&n; */
 DECL|variable|memcmp
 id|EXPORT_SYMBOL_NOVERS

@@ -241,8 +241,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/*&n; * Unlike Summit, we don&squot;t really care to let the NUMA-Q&n; * fall back to flat mode.  Don&squot;t compile for NUMA-Q&n; * unless you really need it!&n; */
 DECL|function|get_memcfg_numaq
-r_void
+r_int
 id|__init
 id|get_memcfg_numaq
 c_func
@@ -259,6 +260,9 @@ id|initialize_physnode_map
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 eof

@@ -301,15 +301,6 @@ comma
 id|vcei_count
 suffix:semicolon
 multiline_comment|/*&n; * Bus types (default is ISA, but people can check others with these..)&n; */
-macro_line|#ifdef CONFIG_EISA
-r_extern
-r_int
-id|EISA_bus
-suffix:semicolon
-macro_line|#else
-DECL|macro|EISA_bus
-mdefine_line|#define EISA_bus (0)
-macro_line|#endif
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 DECL|macro|MCA_bus__is_a_macro

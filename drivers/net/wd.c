@@ -1152,8 +1152,6 @@ suffix:semicolon
 r_int
 r_int
 id|irq_mask
-comma
-id|delay
 suffix:semicolon
 multiline_comment|/* We have an old-style ethercard that doesn&squot;t report its IRQ&n;&t;&t;&t;   line.  Do autoirq to find the IRQ line. Note that this IS NOT&n;&t;&t;&t;   a reliable way to trigger an interrupt. */
 id|outb_p
@@ -1226,24 +1224,10 @@ id|nic_addr
 )paren
 suffix:semicolon
 multiline_comment|/* Trigger it... */
-id|delay
-op_assign
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|50
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
+id|mdelay
 c_func
 (paren
-id|jiffies
-comma
-id|delay
-)paren
+l_int|20
 )paren
 suffix:semicolon
 id|dev-&gt;irq

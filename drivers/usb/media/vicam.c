@@ -8300,7 +8300,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;Interface %d. has %u. endpoints!&bslash;n&quot;
 comma
-id|ifnum
+id|interface-&gt;desc.bInterfaceNumber
 comma
 (paren
 r_int

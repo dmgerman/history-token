@@ -13,8 +13,6 @@ multiline_comment|/* This decides where the kernel will search for a free chunk 
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE &bslash;&n;  ((current-&gt;personality &amp; ADDR_LIMIT_32BIT) ? 0x40000000 : TASK_SIZE / 2)
 multiline_comment|/*&n; * Bus types&n; */
-DECL|macro|EISA_bus
-mdefine_line|#define EISA_bus 1
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 DECL|macro|MCA_bus__is_a_macro

@@ -6,8 +6,6 @@ multiline_comment|/*&n; * Default implementation of macro that returns current&n
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l;})
 macro_line|#ifdef __KERNEL__
-DECL|macro|EISA_bus
-mdefine_line|#define EISA_bus 0
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 DECL|macro|MCA_bus__is_a_macro

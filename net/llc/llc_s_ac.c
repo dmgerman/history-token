@@ -1,11 +1,11 @@
 multiline_comment|/*&n; * llc_s_ac.c - actions performed during sap state transition.&n; *&n; * Description :&n; *   Functions in this module are implementation of sap component actions.&n; *   Details of actions can be found in IEEE-802.2 standard document.&n; *   All functions have one sap and one event as input argument. All of&n; *   them return 0 On success and 1 otherwise.&n; *&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; *&t;&t; 2001-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;net/llc_if.h&gt;
-macro_line|#include &lt;net/llc_sap.h&gt;
-macro_line|#include &lt;net/llc_main.h&gt;
-macro_line|#include &lt;net/llc_s_ev.h&gt;
+macro_line|#include &lt;net/llc.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
-macro_line|#include &lt;net/llc_mac.h&gt;
+macro_line|#include &lt;net/llc_s_ac.h&gt;
+macro_line|#include &lt;net/llc_s_ev.h&gt;
+macro_line|#include &lt;net/llc_sap.h&gt;
+macro_line|#include &quot;llc_output.h&quot;
 multiline_comment|/**&n; *&t;llc_sap_action_unit_data_ind - forward UI PDU to network layer&n; *&t;@sap: SAP&n; *&t;@skb: the event to forward&n; *&n; *&t;Received a UI PDU from MAC layer; forward to network layer as a&n; *&t;UNITDATA INDICATION; verify our event is the kind we expect&n; */
 DECL|function|llc_sap_action_unitdata_ind
 r_int
@@ -88,7 +88,7 @@ id|skb
 suffix:semicolon
 id|rc
 op_assign
-id|lan_hdrs_init
+id|llc_mac_hdr_init
 c_func
 (paren
 id|skb
@@ -173,7 +173,7 @@ l_int|0
 suffix:semicolon
 id|rc
 op_assign
-id|lan_hdrs_init
+id|llc_mac_hdr_init
 c_func
 (paren
 id|skb
@@ -312,7 +312,7 @@ l_int|0
 suffix:semicolon
 id|rc
 op_assign
-id|lan_hdrs_init
+id|llc_mac_hdr_init
 c_func
 (paren
 id|nskb
@@ -395,7 +395,7 @@ id|skb
 suffix:semicolon
 id|rc
 op_assign
-id|lan_hdrs_init
+id|llc_mac_hdr_init
 c_func
 (paren
 id|skb
@@ -531,7 +531,7 @@ id|skb
 suffix:semicolon
 id|rc
 op_assign
-id|lan_hdrs_init
+id|llc_mac_hdr_init
 c_func
 (paren
 id|nskb

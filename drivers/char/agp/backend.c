@@ -1119,6 +1119,7 @@ r_void
 )paren
 (brace
 )brace
+macro_line|#ifdef MODULE
 DECL|function|agp_setup
 r_static
 id|__init
@@ -1175,6 +1176,7 @@ comma
 id|agp_setup
 )paren
 suffix:semicolon
+macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren

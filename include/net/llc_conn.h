@@ -5,6 +5,18 @@ multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;net/llc_if.h&gt;
 macro_line|#include &lt;linux/llc.h&gt;
+DECL|macro|LLC_EVENT
+mdefine_line|#define LLC_EVENT                1
+DECL|macro|LLC_PACKET
+mdefine_line|#define LLC_PACKET               2
+DECL|macro|LLC_P_TIME
+mdefine_line|#define LLC_P_TIME               2
+DECL|macro|LLC_ACK_TIME
+mdefine_line|#define LLC_ACK_TIME             1
+DECL|macro|LLC_REJ_TIME
+mdefine_line|#define LLC_REJ_TIME             3
+DECL|macro|LLC_BUSY_TIME
+mdefine_line|#define LLC_BUSY_TIME            3
 DECL|struct|llc_timer
 r_struct
 id|llc_timer
@@ -218,6 +230,60 @@ multiline_comment|/* used for saving header of last pdu&n;&t;&t;&t;&t;&t;      r
 suffix:semicolon
 DECL|macro|llc_sk
 mdefine_line|#define llc_sk(__sk) ((struct llc_opt *)(__sk)-&gt;sk_protinfo)
+DECL|function|llc_set_backlog_type
+r_static
+id|__inline__
+r_void
+id|llc_set_backlog_type
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_char
+id|type
+)paren
+(brace
+id|skb-&gt;cb
+(braket
+r_sizeof
+(paren
+id|skb-&gt;cb
+)paren
+op_minus
+l_int|1
+)braket
+op_assign
+id|type
+suffix:semicolon
+)brace
+DECL|function|llc_backlog_type
+r_static
+id|__inline__
+r_char
+id|llc_backlog_type
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+id|skb-&gt;cb
+(braket
+r_sizeof
+(paren
+id|skb-&gt;cb
+)paren
+op_minus
+l_int|1
+)braket
+suffix:semicolon
+)brace
 r_extern
 r_struct
 id|sock
@@ -408,10 +474,8 @@ id|laddr
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|sock
-op_star
-id|llc_lookup_dgram
+r_void
+id|llc_sap_add_socket
 c_func
 (paren
 r_struct
@@ -420,23 +484,25 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_addr
+id|sock
 op_star
-id|laddr
+id|sk
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|llc_save_primitive
+id|llc_sap_remove_socket
 c_func
 (paren
 r_struct
-id|sk_buff
+id|llc_sap
 op_star
-id|skb
+id|sap
 comma
-id|u8
-id|prim
+r_struct
+id|sock
+op_star
+id|sk
 )paren
 suffix:semicolon
 r_extern
@@ -454,6 +520,17 @@ id|llc_build_offset_table
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|llc_release_sockets
+c_func
+(paren
+r_struct
+id|llc_sap
+op_star
+id|sap
 )paren
 suffix:semicolon
 macro_line|#endif /* LLC_CONN_H */

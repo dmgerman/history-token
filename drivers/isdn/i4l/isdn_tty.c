@@ -8507,6 +8507,9 @@ id|SIGIO
 comma
 id|SEND_SIG_PRIV
 comma
+id|process_group
+c_func
+(paren
 (paren
 id|get_isdn_dev
 c_func
@@ -8514,7 +8517,8 @@ c_func
 )paren
 )paren
 op_member_access_from_pointer
-id|profd-&gt;pgrp
+id|profd
+)paren
 )paren
 suffix:semicolon
 )brace

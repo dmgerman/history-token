@@ -876,6 +876,10 @@ id|fidvidctl.bits.FID
 op_assign
 id|fid
 suffix:semicolon
+id|fidvidctl.bits.VIDC
+op_assign
+l_int|0
+suffix:semicolon
 id|fidvidctl.bits.FIDC
 op_assign
 l_int|1
@@ -918,9 +922,17 @@ op_ne
 id|vid
 )paren
 (brace
+id|fidvidctl.bits.SGTC
+op_assign
+id|latency
+suffix:semicolon
 id|fidvidctl.bits.VID
 op_assign
 id|vid
+suffix:semicolon
+id|fidvidctl.bits.FIDC
+op_assign
+l_int|0
 suffix:semicolon
 id|fidvidctl.bits.VIDC
 op_assign
@@ -1313,6 +1325,29 @@ id|latency
 op_assign
 id|psb-&gt;settlingtime
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|latency
+OL
+l_int|100
+)paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;BIOS set settling time to %d microseconds.&quot;
+l_string|&quot;Should be at least 100. Correcting.&bslash;n&quot;
+comma
+id|latency
+)paren
+suffix:semicolon
+id|latency
+op_assign
+l_int|100
+suffix:semicolon
+)brace
 id|dprintk
 (paren
 id|KERN_INFO
@@ -1331,6 +1366,11 @@ comma
 id|psb-&gt;numpst
 )paren
 suffix:semicolon
+id|latency
+op_mul_assign
+l_int|100
+suffix:semicolon
+multiline_comment|/* SGTC needs to be in units of 10ns */
 id|p
 op_add_assign
 r_sizeof

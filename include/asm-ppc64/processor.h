@@ -1047,10 +1047,6 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Bus types&n; */
-DECL|macro|EISA_bus
-mdefine_line|#define EISA_bus 0
-DECL|macro|EISA_bus__is_a_macro
-mdefine_line|#define EISA_bus__is_a_macro /* for versions in ksyms.c */
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 DECL|macro|MCA_bus__is_a_macro

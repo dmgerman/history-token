@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *  speedtouch.c  -  Alcatel SpeedTouch USB xDSL modem driver&n; *&n; *  Copyright (C) 2001, Alcatel&n; *  Copyright (C) 2003, Duncan Sands&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the Free&n; *  Software Foundation; either version 2 of the License, or (at your option)&n; *  any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for&n; *  more details.&n; *&n; *  You should have received a copy of the GNU General Public License along with&n; *  this program; if not, write to the Free Software Foundation, Inc., 59&n; *  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Written by Johan Verrept, maintained by Duncan Sands (duncan.sands@wanadoo.fr)&n; *&n; *  1.6:&t;- No longer opens a connection if the firmware is not loaded&n; *  &t;&t;- Added support for the speedtouch 330&n; *  &t;&t;- Removed the limit on the number of devices&n; *  &t;&t;- Module now autoloads on device plugin&n; *  &t;&t;- Merged relevant parts of sarlib&n; *  &t;&t;- Replaced the kernel thread with a tasklet&n; *  &t;&t;- New packet transmission code&n; *  &t;&t;- Changed proc file contents&n; *  &t;&t;- Fixed all known SMP races&n; *  &t;&t;- Many fixes and cleanups&n; *  &t;&t;- Various fixes by Oliver Neukum (oliver@neukum.name)&n; *&n; *  1.5A:&t;- Version for inclusion in 2.5 series kernel&n; *&t;&t;- Modifications by Richard Purdie (rpurdie@rpsys.net)&n; *&t;&t;- made compatible with kernel 2.5.6 onwards by changing&n; *&t;&t;udsl_usb_send_data_context-&gt;urb to a pointer and adding code&n; *&t;&t;to alloc and free it&n; *&t;&t;- remove_wait_queue() added to udsl_atm_processqueue_thread()&n; *&n; *  1.5:&t;- fixed memory leak when atmsar_decode_aal5 returned NULL.&n; *&t;&t;(reported by stephen.robinson@zen.co.uk)&n; *&n; *  1.4:&t;- changed the spin_lock() under interrupt to spin_lock_irqsave()&n; *&t;&t;- unlink all active send urbs of a vcc that is being closed.&n; *&n; *  1.3.1:&t;- added the version number&n; *&n; *  1.3:&t;- Added multiple send urb support&n; *&t;&t;- fixed memory leak and vcc-&gt;tx_inuse starvation bug&n; *&t;&t;  when not enough memory left in vcc.&n; *&n; *  1.2:&t;- Fixed race condition in udsl_usb_send_data()&n; *  1.1:&t;- Turned off packet debugging&n; *&n; */
+multiline_comment|/*&n; *  Written by Johan Verrept, maintained by Duncan Sands (duncan.sands@free.fr)&n; *&n; *  1.7+:&t;- See the check-in logs&n; *&n; *  1.6:&t;- No longer opens a connection if the firmware is not loaded&n; *  &t;&t;- Added support for the speedtouch 330&n; *  &t;&t;- Removed the limit on the number of devices&n; *  &t;&t;- Module now autoloads on device plugin&n; *  &t;&t;- Merged relevant parts of sarlib&n; *  &t;&t;- Replaced the kernel thread with a tasklet&n; *  &t;&t;- New packet transmission code&n; *  &t;&t;- Changed proc file contents&n; *  &t;&t;- Fixed all known SMP races&n; *  &t;&t;- Many fixes and cleanups&n; *  &t;&t;- Various fixes by Oliver Neukum (oliver@neukum.name)&n; *&n; *  1.5A:&t;- Version for inclusion in 2.5 series kernel&n; *&t;&t;- Modifications by Richard Purdie (rpurdie@rpsys.net)&n; *&t;&t;- made compatible with kernel 2.5.6 onwards by changing&n; *&t;&t;udsl_usb_send_data_context-&gt;urb to a pointer and adding code&n; *&t;&t;to alloc and free it&n; *&t;&t;- remove_wait_queue() added to udsl_atm_processqueue_thread()&n; *&n; *  1.5:&t;- fixed memory leak when atmsar_decode_aal5 returned NULL.&n; *&t;&t;(reported by stephen.robinson@zen.co.uk)&n; *&n; *  1.4:&t;- changed the spin_lock() under interrupt to spin_lock_irqsave()&n; *&t;&t;- unlink all active send urbs of a vcc that is being closed.&n; *&n; *  1.3.1:&t;- added the version number&n; *&n; *  1.3:&t;- Added multiple send urb support&n; *&t;&t;- fixed memory leak and vcc-&gt;tx_inuse starvation bug&n; *&t;&t;  when not enough memory left in vcc.&n; *&n; *  1.2:&t;- Fixed race condition in udsl_usb_send_data()&n; *  1.1:&t;- Turned off packet debugging&n; *&n; */
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -19,6 +19,13 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n;#define DEBUG&n;#define VERBOSE_DEBUG&n;*/
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#ifdef DEBUG
+DECL|macro|DEBUG_ON
+mdefine_line|#define DEBUG_ON(x)&t;BUG_ON(x)
+macro_line|#else
+DECL|macro|DEBUG_ON
+mdefine_line|#define DEBUG_ON(x)&t;do { if (x); } while (0)
+macro_line|#endif
 macro_line|#ifdef VERBOSE_DEBUG
 r_static
 r_int
@@ -45,11 +52,11 @@ DECL|macro|vdbg
 mdefine_line|#define vdbg(arg...)
 macro_line|#endif
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR&t;&quot;Johan Verrept, Duncan Sands &lt;duncan.sands@wanadoo.fr&gt;&quot;
+mdefine_line|#define DRIVER_AUTHOR&t;&quot;Johan Verrept, Duncan Sands &lt;duncan.sands@free.fr&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&quot;Alcatel SpeedTouch USB driver&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&quot;1.6&quot;
+mdefine_line|#define DRIVER_VERSION&t;&quot;1.7&quot;
 DECL|variable|udsl_driver_name
 r_static
 r_const
@@ -77,13 +84,13 @@ mdefine_line|#define UDSL_MAX_RCV_BUF_SIZE&t;&t;1024 /* ATM cells */
 DECL|macro|UDSL_MAX_SND_BUF_SIZE
 mdefine_line|#define UDSL_MAX_SND_BUF_SIZE&t;&t;1024 /* ATM cells */
 DECL|macro|UDSL_DEFAULT_RCV_URBS
-mdefine_line|#define UDSL_DEFAULT_RCV_URBS&t;&t;1
+mdefine_line|#define UDSL_DEFAULT_RCV_URBS&t;&t;2
 DECL|macro|UDSL_DEFAULT_SND_URBS
-mdefine_line|#define UDSL_DEFAULT_SND_URBS&t;&t;1
+mdefine_line|#define UDSL_DEFAULT_SND_URBS&t;&t;2
 DECL|macro|UDSL_DEFAULT_RCV_BUFS
-mdefine_line|#define UDSL_DEFAULT_RCV_BUFS&t;&t;2
+mdefine_line|#define UDSL_DEFAULT_RCV_BUFS&t;&t;4
 DECL|macro|UDSL_DEFAULT_SND_BUFS
-mdefine_line|#define UDSL_DEFAULT_SND_BUFS&t;&t;2
+mdefine_line|#define UDSL_DEFAULT_SND_BUFS&t;&t;4
 DECL|macro|UDSL_DEFAULT_RCV_BUF_SIZE
 mdefine_line|#define UDSL_DEFAULT_RCV_BUF_SIZE&t;64 /* ATM cells */
 DECL|macro|UDSL_DEFAULT_SND_BUF_SIZE
@@ -1257,7 +1264,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|BUG_ON
+id|DEBUG_ON
 (paren
 id|vcc_data-&gt;max_pdu
 OL
@@ -2001,7 +2008,7 @@ id|ATM_CELL_PAYLOAD
 op_minus
 id|ATM_AAL5_TRAILER
 suffix:semicolon
-id|BUG_ON
+id|DEBUG_ON
 (paren
 op_decrement
 id|ctrl-&gt;num_cells
@@ -2135,7 +2142,7 @@ comma
 id|buf
 )paren
 suffix:semicolon
-id|BUG_ON
+id|DEBUG_ON
 (paren
 id|buf-&gt;filled_cells
 OG
@@ -5417,20 +5424,12 @@ comma
 op_amp
 id|instance-&gt;spare_receivers
 )paren
-r_if
-c_cond
+id|DEBUG_ON
 (paren
 op_increment
 id|count
 OG
 id|num_rcv_urbs
-)paren
-id|panic
-(paren
-id|__FILE__
-l_string|&quot;: memory corruption detected at line %d!&bslash;n&quot;
-comma
-id|__LINE__
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -5607,20 +5606,12 @@ comma
 op_amp
 id|instance-&gt;spare_senders
 )paren
-r_if
-c_cond
+id|DEBUG_ON
 (paren
 op_increment
 id|count
 OG
 id|num_snd_urbs
-)paren
-id|panic
-(paren
-id|__FILE__
-l_string|&quot;: memory corruption detected at line %d!&bslash;n&quot;
-comma
-id|__LINE__
 )paren
 suffix:semicolon
 id|spin_unlock_irq

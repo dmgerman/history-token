@@ -236,7 +236,7 @@ id|val
 )paren
 (brace
 r_return
-id|r
+l_int|0
 suffix:semicolon
 )brace
 id|cpu_relax
@@ -279,7 +279,7 @@ id|val
 )paren
 (brace
 r_return
-id|r
+l_int|0
 suffix:semicolon
 )brace
 r_if

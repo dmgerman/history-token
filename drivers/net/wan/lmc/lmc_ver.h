@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#ifndef _IF_LMC_LINUXVER_
 DECL|macro|_IF_LMC_LINUXVER_
 mdefine_line|#define _IF_LMC_LINUXVER_

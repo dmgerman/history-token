@@ -9898,7 +9898,7 @@ id|arg
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * FIXME: There&squot;s a module removal race here: tty_hangup&n;&t; * calls schedule_task which will call into this&n;&t; * driver later.&n;&t; */
+multiline_comment|/*&n;&t; * FIXME: There&squot;s a module removal race here: tty_hangup&n;&t; * calls schedule_work which will call into this&n;&t; * driver later.&n;&t; */
 id|portp
 op_assign
 (paren
@@ -13050,7 +13050,7 @@ c_cond
 (paren
 id|tty
 )paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

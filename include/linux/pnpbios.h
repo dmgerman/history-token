@@ -4,7 +4,7 @@ DECL|macro|_LINUX_PNPBIOS_H
 mdefine_line|#define _LINUX_PNPBIOS_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/pnp.h&gt;
 multiline_comment|/*&n; * Return codes&n; */
 DECL|macro|PNP_SUCCESS
 mdefine_line|#define PNP_SUCCESS                     0x00
@@ -215,58 +215,9 @@ macro_line|#pragma pack()
 macro_line|#ifdef CONFIG_PNPBIOS
 multiline_comment|/* non-exported */
 r_extern
-r_int
-id|pnpbios_dont_use_current_config
-suffix:semicolon
-r_extern
 r_struct
 id|pnp_dev_node_info
 id|node_info
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|pnpbios_kmalloc
-c_func
-(paren
-r_int
-id|size
-comma
-r_int
-id|f
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pnpbios_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pnpbios_interface_attach_device
-c_func
-(paren
-r_struct
-id|pnp_bios_node
-op_star
-id|node
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pnpbios_proc_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pnpbios_proc_exit
-(paren
-r_void
-)paren
 suffix:semicolon
 r_extern
 r_int

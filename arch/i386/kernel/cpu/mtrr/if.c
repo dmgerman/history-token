@@ -15,21 +15,6 @@ r_int
 op_star
 id|usage_table
 suffix:semicolon
-r_static
-r_int
-id|mtrr_seq_show
-c_func
-(paren
-r_struct
-id|seq_file
-op_star
-id|seq
-comma
-r_void
-op_star
-id|offset
-)paren
-suffix:semicolon
 DECL|macro|FILE_FCOUNT
 mdefine_line|#define FILE_FCOUNT(f) (((struct seq_file *)((f)-&gt;private_data))-&gt;private)
 DECL|variable|mtrr_strings
@@ -91,6 +76,7 @@ suffix:colon
 l_string|&quot;?&quot;
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PROC_FS
 r_static
 r_int
 DECL|function|mtrr_file_add
@@ -1704,6 +1690,21 @@ id|file
 )paren
 suffix:semicolon
 )brace
+r_static
+r_int
+id|mtrr_seq_show
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|seq
+comma
+r_void
+op_star
+id|offset
+)paren
+suffix:semicolon
 DECL|function|mtrr_open
 r_static
 r_int
@@ -1797,7 +1798,6 @@ id|mtrr_close
 comma
 )brace
 suffix:semicolon
-macro_line|#  ifdef CONFIG_PROC_FS
 DECL|variable|proc_root_mtrr
 r_static
 r_struct
@@ -1805,7 +1805,6 @@ id|proc_dir_entry
 op_star
 id|proc_root_mtrr
 suffix:semicolon
-macro_line|#  endif&t;&t;&t;/*  CONFIG_PROC_FS  */
 DECL|function|mtrr_seq_show
 r_static
 r_int
@@ -1990,7 +1989,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PROC_FS
 id|proc_root_mtrr
 op_assign
 id|create_proc_entry
@@ -2022,7 +2020,6 @@ op_amp
 id|mtrr_fops
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -2034,4 +2031,5 @@ c_func
 id|mtrr_if_init
 )paren
 suffix:semicolon
+macro_line|#endif&t;&t;&t;/*  CONFIG_PROC_FS  */
 eof

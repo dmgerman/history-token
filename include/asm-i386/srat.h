@@ -8,7 +8,7 @@ macro_line|#endif
 DECL|macro|MAX_NUMNODES
 mdefine_line|#define MAX_NUMNODES&t;&t;8
 r_extern
-r_void
+r_int
 id|get_memcfg_from_srat
 c_func
 (paren
@@ -25,7 +25,5 @@ c_func
 r_int
 )paren
 suffix:semicolon
-DECL|macro|get_memcfg_numa
-mdefine_line|#define get_memcfg_numa() get_memcfg_from_srat()
 macro_line|#endif /* _ASM_SRAT_H_ */
 eof

@@ -3576,7 +3576,7 @@ multiline_comment|/* Trigger a CMC interrupt cascade  */
 id|platform_send_ipi
 c_func
 (paren
-id|__ffs
+id|first_cpu
 c_func
 (paren
 id|cpu_online_map
@@ -3781,7 +3781,7 @@ multiline_comment|/* Trigger a CPE interrupt cascade  */
 id|platform_send_ipi
 c_func
 (paren
-id|__ffs
+id|first_cpu
 c_func
 (paren
 id|cpu_online_map
