@@ -223,8 +223,20 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Loop flags&n; */
-DECL|macro|LO_FLAGS_READ_ONLY
-mdefine_line|#define LO_FLAGS_READ_ONLY&t;1
+r_enum
+(brace
+DECL|enumerator|LO_FLAGS_READ_ONLY
+id|LO_FLAGS_READ_ONLY
+op_assign
+l_int|1
+comma
+DECL|enumerator|LO_FLAGS_USE_AOPS
+id|LO_FLAGS_USE_AOPS
+op_assign
+l_int|2
+comma
+)brace
+suffix:semicolon
 macro_line|#include &lt;asm/posix_types.h&gt;&t;/* for __kernel_old_dev_t */
 macro_line|#include &lt;asm/types.h&gt;&t;&t;/* for __u64 */
 multiline_comment|/* Backwards compatibility version */
