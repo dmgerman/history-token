@@ -1943,7 +1943,7 @@ id|dev
 suffix:semicolon
 id|handle
 op_assign
-id|devfs_find_handle
+id|devfs_get_handle
 c_func
 (paren
 l_int|NULL
@@ -2000,6 +2000,12 @@ id|path
 )paren
 op_minus
 l_int|5
+)paren
+suffix:semicolon
+id|devfs_put
+c_func
+(paren
+id|handle
 )paren
 suffix:semicolon
 r_if

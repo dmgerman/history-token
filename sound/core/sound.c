@@ -1667,10 +1667,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#else
+id|devfs_unregister
+c_func
+(paren
 id|master
-op_assign
-id|devfs_find_handle
+)paren
+suffix:semicolon
+macro_line|#else
+id|devfs_find_and_unregister
 c_func
 (paren
 l_int|NULL
@@ -1687,12 +1691,6 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
-id|devfs_unregister
-c_func
-(paren
-id|master
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_SND_OSSEMUL
