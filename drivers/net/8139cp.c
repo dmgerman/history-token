@@ -1443,11 +1443,6 @@ id|pci_using_dac
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|board_type
-r_int
-r_int
-id|board_type
-suffix:semicolon
 DECL|member|wol_enabled
 r_int
 r_int
@@ -1518,40 +1513,6 @@ op_star
 id|cp
 )paren
 suffix:semicolon
-DECL|enum|board_type
-r_enum
-id|board_type
-(brace
-DECL|enumerator|RTL8139Cp
-id|RTL8139Cp
-comma
-)brace
-suffix:semicolon
-DECL|struct|cp_board_info
-r_static
-r_struct
-id|cp_board_info
-(brace
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|variable|cp_board_tbl
-)brace
-id|cp_board_tbl
-(braket
-)braket
-op_assign
-(brace
-multiline_comment|/* RTL8139Cp */
-(brace
-l_string|&quot;RTL-8139C+&quot;
-)brace
-comma
-)brace
-suffix:semicolon
 DECL|variable|cp_pci_tbl
 r_static
 r_struct
@@ -1574,7 +1535,6 @@ l_int|0
 comma
 l_int|0
 comma
-id|RTL8139Cp
 )brace
 comma
 (brace
@@ -2157,11 +2117,13 @@ id|dev-&gt;quota
 suffix:semicolon
 r_int
 id|rx
-op_assign
-l_int|0
 suffix:semicolon
 id|rx_status_loop
 suffix:colon
+id|rx
+op_assign
+l_int|0
+suffix:semicolon
 id|cpw16
 c_func
 (paren
@@ -4730,14 +4692,6 @@ id|PMEnable
 )paren
 suffix:semicolon
 multiline_comment|/* Disable Wake-on-LAN. Can be turned on with ETHTOOL_SWOL */
-r_if
-c_cond
-(paren
-id|cp-&gt;board_type
-op_eq
-id|RTL8139Cp
-)paren
-(brace
 id|cpw8
 c_func
 (paren
@@ -4750,7 +4704,6 @@ id|cp-&gt;wol_enabled
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|cpw8
 c_func
 (paren
@@ -7683,16 +7636,6 @@ id|pci_rev
 comma
 id|cache_size
 suffix:semicolon
-r_int
-r_int
-id|board_type
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ent-&gt;driver_data
-suffix:semicolon
 macro_line|#ifndef MODULE
 r_static
 r_int
@@ -7819,10 +7762,6 @@ suffix:semicolon
 id|cp-&gt;pdev
 op_assign
 id|pdev
-suffix:semicolon
-id|cp-&gt;board_type
-op_assign
-id|board_type
 suffix:semicolon
 id|cp-&gt;dev
 op_assign
@@ -8305,18 +8244,11 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;%s: %s at 0x%lx, &quot;
+l_string|&quot;%s: RTL-8139C+ at 0x%lx, &quot;
 l_string|&quot;%02x:%02x:%02x:%02x:%02x:%02x, &quot;
 l_string|&quot;IRQ %d&bslash;n&quot;
 comma
 id|dev-&gt;name
-comma
-id|cp_board_tbl
-(braket
-id|board_type
-)braket
-dot
-id|name
 comma
 id|dev-&gt;base_addr
 comma
