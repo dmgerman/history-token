@@ -188,8 +188,10 @@ id|Exprodata
 op_assign
 l_int|0x50
 comma
-DECL|enumerator|WakeEvent0x51
-id|WakeEvent0x51
+DECL|enumerator|WakeEvent
+id|WakeEvent
+op_assign
+l_int|0x51
 comma
 DECL|enumerator|CountDown
 id|CountDown

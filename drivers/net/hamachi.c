@@ -1364,7 +1364,6 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|hamachi_rx
 c_func

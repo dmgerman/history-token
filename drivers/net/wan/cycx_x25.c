@@ -588,7 +588,7 @@ id|bps
 suffix:semicolon
 r_static
 id|u8
-id|log2
+id|cycx_log2
 c_func
 (paren
 id|u32
@@ -893,7 +893,7 @@ l_int|64
 suffix:semicolon
 id|cfg.pktlen
 op_assign
-id|log2
+id|cycx_log2
 c_func
 (paren
 id|card-&gt;wandev.mtu
@@ -6504,10 +6504,10 @@ id|number
 suffix:semicolon
 )brace
 multiline_comment|/* log base 2 */
-DECL|function|log2
+DECL|function|cycx_log2
 r_static
 id|u8
-id|log2
+id|cycx_log2
 c_func
 (paren
 id|u32
