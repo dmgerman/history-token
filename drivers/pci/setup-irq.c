@@ -143,7 +143,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCI fixup irq: (%s) got %d&bslash;n&quot;
 comma
-id|dev-&gt;dev.name
+id|dev-&gt;dev.kobj.name
 comma
 id|dev-&gt;irq
 )paren
