@@ -535,6 +535,8 @@ macro_line|#endif
 id|ide_unmap_buffer
 c_func
 (paren
+id|rq
+comma
 id|to
 comma
 op_amp
@@ -840,6 +842,8 @@ suffix:semicolon
 id|ide_unmap_buffer
 c_func
 (paren
+id|rq
+comma
 id|to
 comma
 op_amp
@@ -1080,6 +1084,8 @@ suffix:semicolon
 id|ide_unmap_buffer
 c_func
 (paren
+id|rq
+comma
 id|buffer
 comma
 op_amp
@@ -2385,6 +2391,8 @@ suffix:semicolon
 id|ide_unmap_buffer
 c_func
 (paren
+id|rq
+comma
 id|to
 comma
 op_amp

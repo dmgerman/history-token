@@ -2562,6 +2562,11 @@ r_void
 id|ide_unmap_buffer
 c_func
 (paren
+r_struct
+id|request
+op_star
+id|rq
+comma
 r_char
 op_star
 id|buffer
@@ -2572,6 +2577,11 @@ op_star
 id|flags
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|rq-&gt;bio
+)paren
 id|bio_kunmap_irq
 c_func
 (paren

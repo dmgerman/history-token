@@ -35,7 +35,7 @@ macro_line|#endif
 DECL|macro|task_map_rq
 mdefine_line|#define task_map_rq(rq, flags)&t;&t;ide_map_buffer((rq), (flags))
 DECL|macro|task_unmap_rq
-mdefine_line|#define task_unmap_rq(rq, buf, flags)&t;ide_unmap_buffer((buf), (flags))
+mdefine_line|#define task_unmap_rq(rq, buf, flags)&t;ide_unmap_buffer((rq), (buf), (flags))
 DECL|function|task_read_24
 r_inline
 id|u32
