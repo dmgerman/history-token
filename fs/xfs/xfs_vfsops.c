@@ -1667,7 +1667,7 @@ id|rtdev
 id|xfs_size_buftarg
 c_func
 (paren
-id|mp-&gt;m_logdev_targp
+id|mp-&gt;m_rtdev_targp
 comma
 id|mp-&gt;m_sb.sb_blocksize
 comma
