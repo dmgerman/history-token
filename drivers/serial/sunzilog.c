@@ -6356,6 +6356,7 @@ op_increment
 id|spin_lock_init
 c_func
 (paren
+op_amp
 id|sunzilog_port_table
 (braket
 id|channel
