@@ -3,20 +3,6 @@ macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;scsi/scsi.h&gt;
-DECL|typedef|Scsi_Device
-r_typedef
-r_struct
-id|scsi_device
-id|Scsi_Device
-suffix:semicolon
-DECL|typedef|Scsi_Cmnd
-r_typedef
-r_struct
-id|scsi_cmnd
-id|Scsi_Cmnd
-suffix:semicolon
-macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;linux/udf_fs.h&gt;
 macro_line|#include &quot;udf_sb.h&quot;
 r_int
