@@ -801,10 +801,39 @@ DECL|member|refcnt
 id|atomic_t
 id|refcnt
 suffix:semicolon
-multiline_comment|/* The flag marking that device is unregistered, but held by an user */
-DECL|member|deadbeaf
-r_int
-id|deadbeaf
+multiline_comment|/* delayed register/unregister */
+DECL|member|todo_list
+r_struct
+id|list_head
+id|todo_list
+suffix:semicolon
+multiline_comment|/* register/unregister state machine */
+DECL|enumerator|NETREG_UNINITIALIZED
+r_enum
+(brace
+id|NETREG_UNINITIALIZED
+op_assign
+l_int|0
+comma
+DECL|enumerator|NETREG_REGISTERING
+id|NETREG_REGISTERING
+comma
+multiline_comment|/* called register_netdevice */
+DECL|enumerator|NETREG_REGISTERED
+id|NETREG_REGISTERED
+comma
+multiline_comment|/* completed register todo */
+DECL|enumerator|NETREG_UNREGISTERING
+id|NETREG_UNREGISTERING
+comma
+multiline_comment|/* called unregister_netdevice */
+DECL|enumerator|NETREG_UNREGISTERED
+id|NETREG_UNREGISTERED
+comma
+multiline_comment|/* completed unregister todo */
+DECL|member|reg_state
+)brace
+id|reg_state
 suffix:semicolon
 multiline_comment|/* Net device features */
 DECL|member|features
