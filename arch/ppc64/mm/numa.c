@@ -2702,15 +2702,6 @@ id|nid
 )paren
 r_continue
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|mem_start
-template_param
-id|start_paddr
-)paren
-(brace
-multiline_comment|/* should be no overlaps ! */
 id|dbg
 c_func
 (paren
@@ -2735,7 +2726,6 @@ comma
 id|mem_size
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
