@@ -2090,10 +2090,6 @@ macro_line|#endif
 multiline_comment|/* permedia3 -specific definitions */
 DECL|macro|PM3_SCALE_TO_CLOCK
 mdefine_line|#define PM3_SCALE_TO_CLOCK(pr, fe, po) ((2 * PM3_REF_CLOCK * fe) / (pr * (1 &lt;&lt; (po))))
-DECL|macro|PICOS2KHZ
-mdefine_line|#define PICOS2KHZ(a) (1000000000UL/(a))
-DECL|macro|KHZ2PICOS
-mdefine_line|#define KHZ2PICOS(a) (1000000000UL/(a))
 multiline_comment|/* in case it&squot;s not in linux/pci.h */
 macro_line|#ifndef PCI_DEVICE_ID_3DLABS_PERMEDIA3
 DECL|macro|PCI_DEVICE_ID_3DLABS_PERMEDIA3
