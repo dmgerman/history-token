@@ -6646,7 +6646,7 @@ op_assign
 id|get_user
 c_func
 (paren
-id|m.msg_perm.uid
+id|m64.msg_perm.uid
 comma
 op_amp
 id|up64-&gt;msg_perm.uid
@@ -6657,7 +6657,7 @@ op_or_assign
 id|get_user
 c_func
 (paren
-id|m.msg_perm.gid
+id|m64.msg_perm.gid
 comma
 op_amp
 id|up64-&gt;msg_perm.gid
@@ -6668,7 +6668,7 @@ op_or_assign
 id|get_user
 c_func
 (paren
-id|m.msg_perm.mode
+id|m64.msg_perm.mode
 comma
 op_amp
 id|up64-&gt;msg_perm.mode
@@ -6679,7 +6679,7 @@ op_or_assign
 id|get_user
 c_func
 (paren
-id|m.msg_qbytes
+id|m64.msg_qbytes
 comma
 op_amp
 id|up64-&gt;msg_qbytes
@@ -6693,7 +6693,7 @@ op_assign
 id|get_user
 c_func
 (paren
-id|m.msg_perm.uid
+id|m64.msg_perm.uid
 comma
 op_amp
 id|up32-&gt;msg_perm.uid
@@ -6704,7 +6704,7 @@ op_or_assign
 id|get_user
 c_func
 (paren
-id|m.msg_perm.gid
+id|m64.msg_perm.gid
 comma
 op_amp
 id|up32-&gt;msg_perm.gid
@@ -6715,7 +6715,7 @@ op_or_assign
 id|get_user
 c_func
 (paren
-id|m.msg_perm.mode
+id|m64.msg_perm.mode
 comma
 op_amp
 id|up32-&gt;msg_perm.mode
@@ -6726,7 +6726,7 @@ op_or_assign
 id|get_user
 c_func
 (paren
-id|m.msg_qbytes
+id|m64.msg_qbytes
 comma
 op_amp
 id|up32-&gt;msg_qbytes
@@ -6763,7 +6763,7 @@ comma
 id|second
 comma
 op_amp
-id|m
+id|m64
 )paren
 suffix:semicolon
 id|set_fs
