@@ -89,12 +89,12 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-macro_line|#elif defined(CONFIG_440)
-macro_line|#include &lt;asm/ibm440.h&gt;
+macro_line|#elif defined(CONFIG_44x)
+macro_line|#include &lt;asm/ibm44x.h&gt;
 DECL|macro|NR_UIC_IRQS
-mdefine_line|#define&t;NR_UIC_IRQS&t;64
+mdefine_line|#define&t;NR_UIC_IRQS&t;32
 DECL|macro|NR_IRQS
-mdefine_line|#define&t;NR_IRQS&t;&t;(NR_UIC_IRQS + NR_BOARD_IRQS)
+mdefine_line|#define&t;NR_IRQS&t;&t;((NR_UIC_IRQS * NR_UICS) + NR_BOARD_IRQS)
 r_static
 id|__inline__
 r_int

@@ -6,8 +6,9 @@ DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT&t;12
 DECL|macro|PAGE_SIZE
 mdefine_line|#define PAGE_SIZE&t;(1UL &lt;&lt; PAGE_SHIFT)
+multiline_comment|/*&n; * Subtle: this is an int (not an unsigned long) and so it&n; * gets extended to 64 bits the way want (i.e. with 1s).  -- paulus&n; */
 DECL|macro|PAGE_MASK
-mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
+mdefine_line|#define PAGE_MASK&t;(~((1 &lt;&lt; PAGE_SHIFT) - 1))
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* This must match what is in arch/ppc/Makefile */
@@ -16,8 +17,33 @@ mdefine_line|#define PAGE_OFFSET&t;CONFIG_KERNEL_START
 DECL|macro|KERNELBASE
 mdefine_line|#define KERNELBASE&t;PAGE_OFFSET
 macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/*&n; * The basic type of a PTE - 64 bits for those CPUs with &gt; 32 bit&n; * physical addressing.  For now this just the IBM PPC440.&n; */
+macro_line|#ifdef CONFIG_PTE_64BIT
+DECL|typedef|pte_basic_t
+r_typedef
+r_int
+r_int
+r_int
+id|pte_basic_t
+suffix:semicolon
+DECL|macro|PTE_SHIFT
+mdefine_line|#define PTE_SHIFT&t;(PAGE_SHIFT - 3)&t;/* 512 ptes per page */
+DECL|macro|PTE_FMT
+mdefine_line|#define PTE_FMT&t;&t;&quot;%16Lx&quot;
+macro_line|#else
+DECL|typedef|pte_basic_t
+r_typedef
+r_int
+r_int
+id|pte_basic_t
+suffix:semicolon
+DECL|macro|PTE_SHIFT
+mdefine_line|#define PTE_SHIFT&t;(PAGE_SHIFT - 2)&t;/* 1024 ptes per page */
+DECL|macro|PTE_FMT
+mdefine_line|#define PTE_FMT&t;&t;&quot;%.8lx&quot;
+macro_line|#endif
 DECL|macro|STRICT_MM_TYPECHECKS
-mdefine_line|#define STRICT_MM_TYPECHECKS
+macro_line|#undef STRICT_MM_TYPECHECKS
 macro_line|#ifdef STRICT_MM_TYPECHECKS
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
 DECL|member|pte
@@ -25,8 +51,7 @@ DECL|typedef|pte_t
 r_typedef
 r_struct
 (brace
-r_int
-r_int
+id|pte_basic_t
 id|pte
 suffix:semicolon
 )brace
@@ -88,8 +113,7 @@ macro_line|#else
 multiline_comment|/*&n; * .. while these make it easier on the compiler&n; */
 DECL|typedef|pte_t
 r_typedef
-r_int
-r_int
+id|pte_basic_t
 id|pte_t
 suffix:semicolon
 DECL|typedef|pmd_t
@@ -363,6 +387,8 @@ DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;((unsigned long)((page) - mem_map) + PPC_PGSTART)
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|page_to_virt
+mdefine_line|#define page_to_virt(page)&t;__va(page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
 DECL|macro|pfn_valid
 mdefine_line|#define pfn_valid(pfn)&t;&t;(((pfn) - PPC_PGSTART) &lt; max_mapnr)
 DECL|macro|virt_addr_valid
