@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/include/linux/acpi_serial.h&n; *&n; *  Copyright (C) 2000  Hewlett-Packard Co.&n; *  Copyright (C) 2000  Khalid Aziz &lt;khalid_aziz@hp.com&gt;&n; *&n; *  Definitions for ACPI defined serial ports (headless console and &n; *  debug ports)&n; *&n; */
+macro_line|#include &lt;linux/serial.h&gt;
 r_extern
 r_void
 id|setup_serial_acpi
