@@ -1837,13 +1837,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN3X_ZS
-id|sun_serial_setup
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#endif
 macro_line|#endif /* !CONFIG_SUN3 */
