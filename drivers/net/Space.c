@@ -567,6 +567,18 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SDLA
+r_extern
+r_struct
+id|net_device
+op_star
+id|sdla_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Detachable devices (&quot;pocket adaptors&quot;) */
 r_extern
 r_int
@@ -1458,47 +1470,14 @@ c_func
 r_void
 )paren
 (brace
-)brace
 macro_line|#ifdef CONFIG_SDLA
-r_extern
-r_int
 id|sdla_init
 c_func
 (paren
-r_struct
-id|net_device
-op_star
 )paren
 suffix:semicolon
-DECL|variable|sdla0_dev
-r_static
-r_struct
-id|net_device
-id|sdla0_dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;sdla0&quot;
-comma
-dot
-id|next
-op_assign
-id|NEXT_DEV
-comma
-dot
-id|init
-op_assign
-id|sdla_init
-comma
-)brace
-suffix:semicolon
-DECL|macro|NEXT_DEV
-macro_line|#undef NEXT_DEV
-DECL|macro|NEXT_DEV
-mdefine_line|#define NEXT_DEV&t;(&amp;sdla0_dev)
 macro_line|#endif
+)brace
 macro_line|#if defined(CONFIG_LTPC)
 r_extern
 r_int
