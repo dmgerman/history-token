@@ -12751,7 +12751,7 @@ id|SUCCESS
 (brace
 id|txFid
 op_assign
-l_int|0
+id|ERROR
 suffix:semicolon
 r_goto
 id|done
@@ -12771,7 +12771,7 @@ l_int|0
 (brace
 id|txFid
 op_assign
-l_int|0
+id|ERROR
 suffix:semicolon
 r_goto
 id|done
