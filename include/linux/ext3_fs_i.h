@@ -9,12 +9,13 @@ r_struct
 id|ext3_inode_info
 (brace
 DECL|member|i_data
-id|__u32
+id|__le32
 id|i_data
 (braket
 l_int|15
 )braket
 suffix:semicolon
+multiline_comment|/* unconverted */
 DECL|member|i_flags
 id|__u32
 id|i_flags

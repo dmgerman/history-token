@@ -5397,12 +5397,12 @@ op_ne
 l_int|0
 )paren
 (brace
-id|__u32
+id|__le32
 op_star
 id|value
 op_assign
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 (paren
