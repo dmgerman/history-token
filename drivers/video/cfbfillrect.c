@@ -414,6 +414,7 @@ c_func
 (paren
 r_int
 r_int
+id|__iomem
 op_star
 id|dst
 comma
@@ -702,6 +703,7 @@ c_func
 (paren
 r_int
 r_int
+id|__iomem
 op_star
 id|dst
 comma
@@ -1008,6 +1010,7 @@ c_func
 (paren
 r_int
 r_int
+id|__iomem
 op_star
 id|dst
 comma
@@ -1392,6 +1395,7 @@ c_func
 (paren
 r_int
 r_int
+id|__iomem
 op_star
 id|dst
 comma
@@ -1795,6 +1799,7 @@ id|fg
 suffix:semicolon
 r_int
 r_int
+id|__iomem
 op_star
 id|dst
 suffix:semicolon
@@ -1933,6 +1938,7 @@ op_assign
 (paren
 r_int
 r_int
+id|__iomem
 op_star
 )paren
 (paren
@@ -2026,6 +2032,7 @@ id|fill_op32
 (paren
 r_int
 r_int
+id|__iomem
 op_star
 id|dst
 comma
@@ -2151,6 +2158,7 @@ id|fill_op
 (paren
 r_int
 r_int
+id|__iomem
 op_star
 id|dst
 comma
