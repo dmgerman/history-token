@@ -1102,12 +1102,12 @@ id|nf_bridge-&gt;mask
 op_or_assign
 id|BRNF_PKT_TYPE
 suffix:semicolon
-multiline_comment|/* The physdev module checks on this */
+)brace
 id|nf_bridge-&gt;mask
 op_or_assign
 id|BRNF_BRIDGED
 suffix:semicolon
-)brace
+multiline_comment|/* The physdev module checks on this */
 id|nf_bridge-&gt;physoutdev
 op_assign
 id|skb-&gt;dev
