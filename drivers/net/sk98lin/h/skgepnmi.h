@@ -1,6 +1,6 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Name:&t;skgepnmi.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.61 $&n; * Date:&t;$Date: 2003/05/23 12:53:52 $&n; * Purpose:&t;Defines for Private Network Management Interface&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Name:&t;skgepnmi.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.62 $&n; * Date:&t;$Date: 2003/08/15 12:31:52 $&n; * Purpose:&t;Defines for Private Network Management Interface&n; *&n; ****************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect GmbH.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/*****************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgepnmi.h,v $&n; *&t;Revision 1.61  2003/05/23 12:53:52  tschilli&n; *&t;Generic PNMI IOCTL subcommands added.&n; *&t;Function prototype SkPnmiGenIoctl() added.&n; *&t;OID_SKGE_BOARDLEVEL added.&n; *&t;Return value SK_PNMI_ERR_NOT_SUPPORTED added.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.60  2003/03/27 11:27:26  tschilli&n; *&t;Copyright messages changed.&n; *&t;&n; *&t;Revision 1.59  2002/12/16 14:03:50  tschilli&n; *&t;New defines for VCT added.&n; *&t;&n; *&t;Revision 1.58  2002/12/16 09:04:59  tschilli&n; *&t;Code for VCT handling added.&n; *&t;&n; *&t;Revision 1.57  2002/09/26 12:41:05  tschilli&n; *&t;SK_PNMI_PORT BufPort entry in struct SK_PNMI added.&n; *&t;&n; *&t;Revision 1.56  2002/08/16 11:10:41  rwahl&n; *&t;- Replaced c++ comment.&n; *&t;&n; *&t;Revision 1.55  2002/08/09 15:40:21  rwahl&n; *&t;Editorial change (renamed ConfSpeedCap).&n; *&t;&n; *&t;Revision 1.54  2002/08/09 11:06:07  rwahl&n; *&t;Added OID_SKGE_SPEED_CAP.&n; *&t;&n; *&t;Revision 1.53  2002/08/09 09:45:28  rwahl&n; *&t;Added support for NDIS OID_PNP_xxx.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.52  2002/08/06 17:54:07  rwahl&n; *&t;- Added speed cap to PNMI config struct.&n; *&t;&n; *&t;Revision 1.51  2002/07/17 19:19:26  rwahl&n; *&t;- Added OID_SKGE_SPEED_MODE and OID_SKGE_SPEED_STATUS.&n; *&t;- Added SK_PNMI_CNT_RX_PMACC_ERR() &amp; SK_PNMI_CNT_RX_LONGFRAMES().&n; *&t;- Added speed mode &amp; status to PNMI config struct.&n; *&t;- Editorial changes.&n; *&t;&n; *&t;Revision 1.50  2002/05/22 08:59:37  rwahl&n; *&t;Added string definitions for error msgs.&n; *&t;&n; *&t;Revision 1.49  2001/11/20 09:23:50  rwahl&n; *&t;- pnmi struct: reordered and aligned to 32bit.&n; *&t;&n; *&t;Revision 1.48  2001/02/23 14:34:24  mkunz&n; *&t;Changed macro PHYS2INST. Added pAC to Interface&n; *&t;&n; *&t;Revision 1.47  2001/02/07 08:28:23  mkunz&n; *&t;- Added Oids: &t;OID_SKGE_DIAG_ACTION&n; *&t;&t;&t;&t;&t;OID_SKGE_DIAG_RESULT&n; *&t;&t;&t;&t;&t;OID_SKGE_MULTICAST_LIST&n; *&t;&t;&t;&t;&t;OID_SKGE_CURRENT_PACKET_FILTER&n; *&t;&t;&t;&t;&t;OID_SKGE_INTERMEDIATE_SUPPORT&n; *&t;- Changed value of OID_SKGE_MTU&n; *&t;&n; *&t;Revision 1.46  2001/02/06 10:01:41  mkunz&n; *&t;- Pnmi V4 dual net support added. Interface functions and macros extended&n; *&t;- Vpd bug fixed&n; *&t;- OID_SKGE_MTU added&n; *&t;&n; *&t;Revision 1.45  2001/01/22 13:41:37  rassmann&n; *&t;Supporting two nets on dual-port adapters.&n; *&t;&n; *&t;Revision 1.44  2000/09/07 07:35:27  rwahl&n; *&t;- removed NDIS counter specific data type.&n; *&t;- fixed spelling for OID_SKGE_RLMT_PORT_PREFERRED.&n; *&t;&n; *&t;Revision 1.43  2000/08/04 11:41:08  rwahl&n; *&t;- Fixed compiler warning (port is always &gt;= 0) for macros&n; *&t;  SK_PNMI_CNT_RX_LONGFRAMES &amp; SK_PNMI_CNT_SYNC_OCTETS&n; *&t;&n; *&t;Revision 1.42  2000/08/03 15:14:07  rwahl&n; *&t;- Corrected error in driver macros addressing a physical port.&n; *&t;&n; *&t;Revision 1.41  2000/08/01 16:22:29  rwahl&n; *&t;- Changed MDB version to 3.1.&n; *&t;- Added definitions for StatRxLongFrames counter.&n; *&t;- Added macro to be used by driver to count long frames received.&n; *&t;- Added directive to control width (default = 32bit) of NDIS statistic&n; *&t;  counters (SK_NDIS_64BIT_CTR).&n; *&t;&n; *&t;Revision 1.40  2000/03/31 13:51:34  rwahl&n; *&t;Added SK_UPTR cast to offset calculation for PNMI struct fields;&n; *&t;missing cast caused compiler warnings by Win64 compiler.&n; *&n; *&t;Revision 1.39  1999/12/06 10:09:47  rwahl&n; *&t;Added new error log message.&n; *&t;&n; *&t;Revision 1.38  1999/11/22 13:57:55  cgoos&n; *&t;Changed license header to GPL.&n; *&n; *&t;Revision 1.37  1999/09/14 14:25:32  rwahl&n; *&t;Set MDB version for 1000Base-T (sensors, Master/Slave) changes.&n; *&t;&n; *&t;Revision 1.36  1999/05/20 09:24:56  cgoos&n; *&t;Changes for 1000Base-T (sensors, Master/Slave).&n; *&t;&n; *&t;Revision 1.35  1999/04/13 15:10:51  mhaveman&n; *&t;Replaced RLMT macros SK_RLMT_CHECK_xxx again by those of PNMI to&n; *&t;grant unified interface. But PNMI macros will store the same&n; *&t;value as RLMT macros.&n; *&t;&n; *&t;Revision 1.34  1999/04/13 15:03:49  mhaveman&n; *&t;-Changed copyright&n; *&t;-Removed SK_PNMI_RLMT_MODE_CHK_xxx macros. Those of RLMT should be&n; *&t; used.&n; *&t;&n; *&t;Revision 1.33  1999/03/23 10:41:02  mhaveman&n; *&t;Changed comments.&n; *&t;&n; *&t;Revision 1.32  1999/01/25 15:01:33  mhaveman&n; *&t;Added support for multiple simultaniously active ports.&n; *&t;&n; *&t;Revision 1.31  1999/01/19 10:06:26  mhaveman&n; *&t;Added new error log message.&n; *&t;&n; *&t;Revision 1.30  1999/01/05 10:34:49  mhaveman&n; *&t;Fixed little error in RlmtChangeEstimate calculation.&n; *&t;&n; *&t;Revision 1.29  1999/01/05 09:59:41  mhaveman&n; *&t;Redesigned port switch average calculation to avoid 64bit&n; *&t;arithmetic.&n; *&t;&n; *&t;Revision 1.28  1998/12/08 10:05:48  mhaveman&n; *&t;Defined macro SK_PNMI_MIN_STRUCT_SIZE.&n; *&t;&n; *&t;Revision 1.27  1998/12/03 14:39:35  mhaveman&n; *&t;Fixed problem that LSTAT was enumerated wrong.&n; *&t;&n; *&t;Revision 1.26  1998/12/03 11:19:51  mhaveman&n; *&t;Changed contents of errlog message SK_PNMI_ERR016MSG&n; *&t;&n; *&t;Revision 1.25  1998/12/01 10:40:04  mhaveman&n; *&t;Changed size of SensorNumber, ChecksumNumber and RlmtPortNumber in&n; *&t;SK_PNMI_STRUCT_DATA to be conform with OID definition.&n; *&t;&n; *&t;Revision 1.24  1998/11/20 08:09:27  mhaveman&n; *&t;Added macros to convert between logical, physical port indexes and&n; *&t;instances.&n; *&t;&n; *&t;Revision 1.23  1998/11/10 13:41:13  mhaveman&n; *&t;Needed to change interface, because NT driver needs a return value&n; *&t;of needed buffer space on TOO_SHORT errors. Therefore all&n; *&t;SkPnmiGet/Preset/Set functions now have a pointer to the length&n; *&t;parameter, where the needed space on error is returned.&n; *&t;&n; *&t;Revision 1.22  1998/11/03 12:05:51  mhaveman&n; *&t;Added pAC parameter to counter macors.&n; *&n; *&t;Revision 1.21  1998/11/02 10:47:36  mhaveman&n; *&t;Added syslog messages for internal errors.&n; *&t;&n; *&t;Revision 1.20  1998/10/30 15:49:36  mhaveman&n; *&t;-Removed unused SK_PNMI_UTILIZATION_BASE and EstOldCnt.&n; *&t;-Redefined SK_PNMI_CHG_EST_BASE to hundreds of seconds.&n; *&t;&n; *&t;Revision 1.19  1998/10/29 15:38:44  mhaveman&n; *&t;Changed string lengths of PNMI_STRUCT_DATA structure because&n; *&t;string OIDs are now encoded with leading length ocetet.&n; *&t;&n; *&t;Revision 1.18  1998/10/29 08:52:27  mhaveman&n; *&t;-Added byte to strings in PNMI_STRUCT_DATA structure.&n; *&t;-Shortened SK_PNMI_RLMT structure to SK_MAX_MACS elements.&n; *&t;&n; *&t;Revision 1.17  1998/10/28 08:49:50  mhaveman&n; *&t;-Changed type of Instance back to SK_U32 because of VPD&n; *&t;-Changed type from SK_U8 to char of PciBusSpeed, PciBusWidth, PMD,&n; *&t; and Connector.&n; *&t;&n; *&t;Revision 1.16  1998/10/22 10:42:31  mhaveman&n; *&t;-Removed (SK_U32) casts for OIDs&n; *&t;-excluded NDIS OIDs when they are already defined with ifndef _NDIS_&n; *&t;&n; *&t;Revision 1.15  1998/10/20 13:56:28  mhaveman&n; *&t;Headerfile includes now directly other header files to comile correctly.&n; *&t;&n; *&t;Revision 1.14  1998/10/20 07:31:09  mhaveman&n; *&t;Made type changes to unsigned int where possible.&n; *&t;&n; *&t;Revision 1.13  1998/10/19 10:53:13  mhaveman&n; *&t;-Casted OID definitions to SK_U32&n; *&t;-Renamed RlmtMAC... to RlmtPort...&n; *&t;-Changed wrong type of VpdEntriesList from SK_U32 to char *&n; *&t;&n; *&t;Revision 1.12  1998/10/13 07:42:27  mhaveman&n; *&t;-Added OIDs OID_SKGE_TRAP_NUMBER and OID_SKGE_ALL_DATA&n; *&t;-Removed old cvs history entries&n; *&t;-Renamed MacNumber to PortNumber&n; *&t;&n; *&t;Revision 1.11  1998/10/07 10:55:24  mhaveman&n; *&t;-Added OID_MDB_VERSION. Therefore was a renumbering of the VPD OIDs&n; *&t; necessary.&n; *&t;-Added OID_GEN_ Ids to support the windows driver.&n; *&t;&n; *&t;Revision 1.10  1998/09/30 13:41:10  mhaveman&n; *&t;Renamed some OIDs to reduce usage of &squot;MAC&squot; which is replaced by &squot;PORT&squot;.&n; *&t;&n; *&t;Revision 1.9  1998/09/04 17:06:17  mhaveman&n; *&t;-Added SyncCounter as macro.&n; *&t;-Renamed OID_SKGE_.._NO_DESCR_CTS to OID_SKGE_.._NO_BUF_CTS.&n; *&t;-Added macros for driver description and version strings.&n; *&t;&n; *&t;Revision 1.8  1998/09/04 14:36:52  mhaveman&n; *&t;Added OIDs and Structure to access value of macro counters which are&n; *&t;counted by the driver.&n; *&t;&n; *&t;Revision 1.7  1998/09/04 11:59:36  mhaveman&n; *&t;Everything compiles now. Driver Macros for counting still missing.&n; *&t;&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgepnmi.h,v $&n; *&t;Revision 1.62  2003/08/15 12:31:52  tschilli&n; *&t;Added new OIDs:&n; *&t;OID_SKGE_DRIVER_RELDATE&n; *&t;OID_SKGE_DRIVER_FILENAME&n; *&t;OID_SKGE_CHIPID&n; *&t;OID_SKGE_RAMSIZE&n; *&t;OID_SKGE_VAUXAVAIL&n; *&t;OID_SKGE_PHY_TYPE&n; *&t;OID_SKGE_PHY_LP_MODE&n; *&t;&n; *&t;Added new define SK_DIAG_ATTACHED for OID_SKGE_DIAG_MODE handling.&n; *&t;&n; *&t;Revision 1.61  2003/05/23 12:53:52  tschilli&n; *&t;Generic PNMI IOCTL subcommands added.&n; *&t;Function prototype SkPnmiGenIoctl() added.&n; *&t;OID_SKGE_BOARDLEVEL added.&n; *&t;Return value SK_PNMI_ERR_NOT_SUPPORTED added.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.60  2003/03/27 11:27:26  tschilli&n; *&t;Copyright messages changed.&n; *&t;&n; *&t;Revision 1.59  2002/12/16 14:03:50  tschilli&n; *&t;New defines for VCT added.&n; *&t;&n; *&t;Revision 1.58  2002/12/16 09:04:59  tschilli&n; *&t;Code for VCT handling added.&n; *&t;&n; *&t;Revision 1.57  2002/09/26 12:41:05  tschilli&n; *&t;SK_PNMI_PORT BufPort entry in struct SK_PNMI added.&n; *&t;&n; *&t;Revision 1.56  2002/08/16 11:10:41  rwahl&n; *&t;- Replaced c++ comment.&n; *&t;&n; *&t;Revision 1.55  2002/08/09 15:40:21  rwahl&n; *&t;Editorial change (renamed ConfSpeedCap).&n; *&t;&n; *&t;Revision 1.54  2002/08/09 11:06:07  rwahl&n; *&t;Added OID_SKGE_SPEED_CAP.&n; *&t;&n; *&t;Revision 1.53  2002/08/09 09:45:28  rwahl&n; *&t;Added support for NDIS OID_PNP_xxx.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.52  2002/08/06 17:54:07  rwahl&n; *&t;- Added speed cap to PNMI config struct.&n; *&t;&n; *&t;Revision 1.51  2002/07/17 19:19:26  rwahl&n; *&t;- Added OID_SKGE_SPEED_MODE and OID_SKGE_SPEED_STATUS.&n; *&t;- Added SK_PNMI_CNT_RX_PMACC_ERR() &amp; SK_PNMI_CNT_RX_LONGFRAMES().&n; *&t;- Added speed mode &amp; status to PNMI config struct.&n; *&t;- Editorial changes.&n; *&t;&n; *&t;Revision 1.50  2002/05/22 08:59:37  rwahl&n; *&t;Added string definitions for error msgs.&n; *&t;&n; *&t;Revision 1.49  2001/11/20 09:23:50  rwahl&n; *&t;- pnmi struct: reordered and aligned to 32bit.&n; *&t;&n; *&t;Revision 1.48  2001/02/23 14:34:24  mkunz&n; *&t;Changed macro PHYS2INST. Added pAC to Interface&n; *&t;&n; *&t;Revision 1.47  2001/02/07 08:28:23  mkunz&n; *&t;- Added Oids: &t;OID_SKGE_DIAG_ACTION&n; *&t;&t;&t;&t;&t;OID_SKGE_DIAG_RESULT&n; *&t;&t;&t;&t;&t;OID_SKGE_MULTICAST_LIST&n; *&t;&t;&t;&t;&t;OID_SKGE_CURRENT_PACKET_FILTER&n; *&t;&t;&t;&t;&t;OID_SKGE_INTERMEDIATE_SUPPORT&n; *&t;- Changed value of OID_SKGE_MTU&n; *&t;&n; *&t;Revision 1.46  2001/02/06 10:01:41  mkunz&n; *&t;- Pnmi V4 dual net support added. Interface functions and macros extended&n; *&t;- Vpd bug fixed&n; *&t;- OID_SKGE_MTU added&n; *&t;&n; *&t;Revision 1.45  2001/01/22 13:41:37  rassmann&n; *&t;Supporting two nets on dual-port adapters.&n; *&t;&n; *&t;Revision 1.44  2000/09/07 07:35:27  rwahl&n; *&t;- removed NDIS counter specific data type.&n; *&t;- fixed spelling for OID_SKGE_RLMT_PORT_PREFERRED.&n; *&t;&n; *&t;Revision 1.43  2000/08/04 11:41:08  rwahl&n; *&t;- Fixed compiler warning (port is always &gt;= 0) for macros&n; *&t;  SK_PNMI_CNT_RX_LONGFRAMES &amp; SK_PNMI_CNT_SYNC_OCTETS&n; *&t;&n; *&t;Revision 1.42  2000/08/03 15:14:07  rwahl&n; *&t;- Corrected error in driver macros addressing a physical port.&n; *&t;&n; *&t;Revision 1.41  2000/08/01 16:22:29  rwahl&n; *&t;- Changed MDB version to 3.1.&n; *&t;- Added definitions for StatRxLongFrames counter.&n; *&t;- Added macro to be used by driver to count long frames received.&n; *&t;- Added directive to control width (default = 32bit) of NDIS statistic&n; *&t;  counters (SK_NDIS_64BIT_CTR).&n; *&t;&n; *&t;Revision 1.40  2000/03/31 13:51:34  rwahl&n; *&t;Added SK_UPTR cast to offset calculation for PNMI struct fields;&n; *&t;missing cast caused compiler warnings by Win64 compiler.&n; *&n; *&t;Revision 1.39  1999/12/06 10:09:47  rwahl&n; *&t;Added new error log message.&n; *&t;&n; *&t;Revision 1.38  1999/11/22 13:57:55  cgoos&n; *&t;Changed license header to GPL.&n; *&n; *&t;Revision 1.37  1999/09/14 14:25:32  rwahl&n; *&t;Set MDB version for 1000Base-T (sensors, Master/Slave) changes.&n; *&t;&n; *&t;Revision 1.36  1999/05/20 09:24:56  cgoos&n; *&t;Changes for 1000Base-T (sensors, Master/Slave).&n; *&t;&n; *&t;Revision 1.35  1999/04/13 15:10:51  mhaveman&n; *&t;Replaced RLMT macros SK_RLMT_CHECK_xxx again by those of PNMI to&n; *&t;grant unified interface. But PNMI macros will store the same&n; *&t;value as RLMT macros.&n; *&t;&n; *&t;Revision 1.34  1999/04/13 15:03:49  mhaveman&n; *&t;-Changed copyright&n; *&t;-Removed SK_PNMI_RLMT_MODE_CHK_xxx macros. Those of RLMT should be&n; *&t; used.&n; *&t;&n; *&t;Revision 1.33  1999/03/23 10:41:02  mhaveman&n; *&t;Changed comments.&n; *&t;&n; *&t;Revision 1.32  1999/01/25 15:01:33  mhaveman&n; *&t;Added support for multiple simultaniously active ports.&n; *&t;&n; *&t;Revision 1.31  1999/01/19 10:06:26  mhaveman&n; *&t;Added new error log message.&n; *&t;&n; *&t;Revision 1.30  1999/01/05 10:34:49  mhaveman&n; *&t;Fixed little error in RlmtChangeEstimate calculation.&n; *&t;&n; *&t;Revision 1.29  1999/01/05 09:59:41  mhaveman&n; *&t;Redesigned port switch average calculation to avoid 64bit&n; *&t;arithmetic.&n; *&t;&n; *&t;Revision 1.28  1998/12/08 10:05:48  mhaveman&n; *&t;Defined macro SK_PNMI_MIN_STRUCT_SIZE.&n; *&t;&n; *&t;Revision 1.27  1998/12/03 14:39:35  mhaveman&n; *&t;Fixed problem that LSTAT was enumerated wrong.&n; *&t;&n; *&t;Revision 1.26  1998/12/03 11:19:51  mhaveman&n; *&t;Changed contents of errlog message SK_PNMI_ERR016MSG&n; *&t;&n; *&t;Revision 1.25  1998/12/01 10:40:04  mhaveman&n; *&t;Changed size of SensorNumber, ChecksumNumber and RlmtPortNumber in&n; *&t;SK_PNMI_STRUCT_DATA to be conform with OID definition.&n; *&t;&n; *&t;Revision 1.24  1998/11/20 08:09:27  mhaveman&n; *&t;Added macros to convert between logical, physical port indexes and&n; *&t;instances.&n; *&t;&n; *&t;Revision 1.23  1998/11/10 13:41:13  mhaveman&n; *&t;Needed to change interface, because NT driver needs a return value&n; *&t;of needed buffer space on TOO_SHORT errors. Therefore all&n; *&t;SkPnmiGet/Preset/Set functions now have a pointer to the length&n; *&t;parameter, where the needed space on error is returned.&n; *&t;&n; *&t;Revision 1.22  1998/11/03 12:05:51  mhaveman&n; *&t;Added pAC parameter to counter macors.&n; *&n; *&t;Revision 1.21  1998/11/02 10:47:36  mhaveman&n; *&t;Added syslog messages for internal errors.&n; *&t;&n; *&t;Revision 1.20  1998/10/30 15:49:36  mhaveman&n; *&t;-Removed unused SK_PNMI_UTILIZATION_BASE and EstOldCnt.&n; *&t;-Redefined SK_PNMI_CHG_EST_BASE to hundreds of seconds.&n; *&t;&n; *&t;Revision 1.19  1998/10/29 15:38:44  mhaveman&n; *&t;Changed string lengths of PNMI_STRUCT_DATA structure because&n; *&t;string OIDs are now encoded with leading length ocetet.&n; *&t;&n; *&t;Revision 1.18  1998/10/29 08:52:27  mhaveman&n; *&t;-Added byte to strings in PNMI_STRUCT_DATA structure.&n; *&t;-Shortened SK_PNMI_RLMT structure to SK_MAX_MACS elements.&n; *&t;&n; *&t;Revision 1.17  1998/10/28 08:49:50  mhaveman&n; *&t;-Changed type of Instance back to SK_U32 because of VPD&n; *&t;-Changed type from SK_U8 to char of PciBusSpeed, PciBusWidth, PMD,&n; *&t; and Connector.&n; *&t;&n; *&t;Revision 1.16  1998/10/22 10:42:31  mhaveman&n; *&t;-Removed (SK_U32) casts for OIDs&n; *&t;-excluded NDIS OIDs when they are already defined with ifndef _NDIS_&n; *&t;&n; *&t;Revision 1.15  1998/10/20 13:56:28  mhaveman&n; *&t;Headerfile includes now directly other header files to comile correctly.&n; *&t;&n; *&t;Revision 1.14  1998/10/20 07:31:09  mhaveman&n; *&t;Made type changes to unsigned int where possible.&n; *&t;&n; *&t;Revision 1.13  1998/10/19 10:53:13  mhaveman&n; *&t;-Casted OID definitions to SK_U32&n; *&t;-Renamed RlmtMAC... to RlmtPort...&n; *&t;-Changed wrong type of VpdEntriesList from SK_U32 to char *&n; *&t;&n; *&t;Revision 1.12  1998/10/13 07:42:27  mhaveman&n; *&t;-Added OIDs OID_SKGE_TRAP_NUMBER and OID_SKGE_ALL_DATA&n; *&t;-Removed old cvs history entries&n; *&t;-Renamed MacNumber to PortNumber&n; *&t;&n; *&t;Revision 1.11  1998/10/07 10:55:24  mhaveman&n; *&t;-Added OID_MDB_VERSION. Therefore was a renumbering of the VPD OIDs&n; *&t; necessary.&n; *&t;-Added OID_GEN_ Ids to support the windows driver.&n; *&t;&n; *&t;Revision 1.10  1998/09/30 13:41:10  mhaveman&n; *&t;Renamed some OIDs to reduce usage of &squot;MAC&squot; which is replaced by &squot;PORT&squot;.&n; *&t;&n; *&t;Revision 1.9  1998/09/04 17:06:17  mhaveman&n; *&t;-Added SyncCounter as macro.&n; *&t;-Renamed OID_SKGE_.._NO_DESCR_CTS to OID_SKGE_.._NO_BUF_CTS.&n; *&t;-Added macros for driver description and version strings.&n; *&t;&n; *&t;Revision 1.8  1998/09/04 14:36:52  mhaveman&n; *&t;Added OIDs and Structure to access value of macro counters which are&n; *&t;counted by the driver.&n; *&t;&n; *&t;Revision 1.7  1998/09/04 11:59:36  mhaveman&n; *&t;Everything compiles now. Driver Macros for counting still missing.&n; *&t;&n; ****************************************************************************/
 macro_line|#ifndef _SKGEPNMI_H_
 DECL|macro|_SKGEPNMI_H_
 mdefine_line|#define _SKGEPNMI_H_
@@ -507,16 +507,31 @@ DECL|macro|OID_SKGE_ALL_DATA
 mdefine_line|#define OID_SKGE_ALL_DATA&t;&t;&t;&t;0xFF020190
 multiline_comment|/* Defines for VCT. */
 DECL|macro|OID_SKGE_VCT_GET
-mdefine_line|#define OID_SKGE_VCT_GET&t;&t;&t;0xFF020200
+mdefine_line|#define OID_SKGE_VCT_GET&t;&t;&t;&t;0xFF020200
 DECL|macro|OID_SKGE_VCT_SET
-mdefine_line|#define OID_SKGE_VCT_SET&t;&t;&t;0xFF020201
+mdefine_line|#define OID_SKGE_VCT_SET&t;&t;&t;&t;0xFF020201
 DECL|macro|OID_SKGE_VCT_STATUS
-mdefine_line|#define OID_SKGE_VCT_STATUS&t;&t;&t;0xFF020202
+mdefine_line|#define OID_SKGE_VCT_STATUS&t;&t;&t;&t;0xFF020202
 macro_line|#ifdef SK_DIAG_SUPPORT
 multiline_comment|/* Defines for driver DIAG mode. */
 DECL|macro|OID_SKGE_DIAG_MODE
-mdefine_line|#define OID_SKGE_DIAG_MODE&t;&t;&t;0xFF020204
+mdefine_line|#define OID_SKGE_DIAG_MODE&t;&t;&t;&t;0xFF020204
 macro_line|#endif /* SK_DIAG_SUPPORT */
+multiline_comment|/* New OIDs */
+DECL|macro|OID_SKGE_DRIVER_RELDATE
+mdefine_line|#define OID_SKGE_DRIVER_RELDATE&t;&t;&t;0xFF020210
+DECL|macro|OID_SKGE_DRIVER_FILENAME
+mdefine_line|#define OID_SKGE_DRIVER_FILENAME&t;&t;0xFF020211
+DECL|macro|OID_SKGE_CHIPID
+mdefine_line|#define OID_SKGE_CHIPID&t;&t;&t;&t;&t;0xFF020212
+DECL|macro|OID_SKGE_RAMSIZE
+mdefine_line|#define OID_SKGE_RAMSIZE&t;&t;&t;&t;0xFF020213
+DECL|macro|OID_SKGE_VAUXAVAIL
+mdefine_line|#define OID_SKGE_VAUXAVAIL&t;&t;&t;&t;0xFF020214
+DECL|macro|OID_SKGE_PHY_TYPE
+mdefine_line|#define OID_SKGE_PHY_TYPE&t;&t;&t;&t;0xFF020215
+DECL|macro|OID_SKGE_PHY_LP_MODE
+mdefine_line|#define OID_SKGE_PHY_LP_MODE&t;&t;&t;0xFF020216
 multiline_comment|/* VCT struct to store a backup copy of VCT data after a port reset. */
 DECL|struct|s_PnmiVct
 r_typedef
@@ -591,6 +606,15 @@ DECL|macro|OID_SKGE_TRAP_RLMT_PORT_UP
 mdefine_line|#define OID_SKGE_TRAP_RLMT_PORT_UP&t;&t;523
 DECL|macro|OID_SKGE_TRAP_RLMT_SEGMENTATION
 mdefine_line|#define OID_SKGE_TRAP_RLMT_SEGMENTATION&t;524
+macro_line|#ifdef SK_DIAG_SUPPORT
+multiline_comment|/* Defines for driver DIAG mode. */
+DECL|macro|SK_DIAG_ATTACHED
+mdefine_line|#define SK_DIAG_ATTACHED&t;2
+DECL|macro|SK_DIAG_RUNNING
+mdefine_line|#define SK_DIAG_RUNNING&t;&t;1
+DECL|macro|SK_DIAG_IDLE
+mdefine_line|#define SK_DIAG_IDLE&t;&t;0
+macro_line|#endif /* SK_DIAG_SUPPORT */
 multiline_comment|/*&n; * Generic PNMI IOCTL subcommand definitions.&n; */
 DECL|macro|SK_GET_SINGLE_VAR
 mdefine_line|#define&t;SK_GET_SINGLE_VAR&t;&t;1
@@ -809,11 +833,31 @@ DECL|macro|SK_PNMI_ERR052
 mdefine_line|#define SK_PNMI_ERR052&t;&t;(SK_ERRBASE_PNMI + 52)
 DECL|macro|SK_PNMI_ERR052MSG
 mdefine_line|#define SK_PNMI_ERR052MSG&t;&quot;&quot;
+DECL|macro|SK_PNMI_ERR053
+mdefine_line|#define SK_PNMI_ERR053&t;&t;(SK_ERRBASE_PNMI + 53)
+DECL|macro|SK_PNMI_ERR053MSG
+mdefine_line|#define SK_PNMI_ERR053MSG&t;&quot;General: Driver release date not initialized&quot;
+DECL|macro|SK_PNMI_ERR054
+mdefine_line|#define SK_PNMI_ERR054&t;&t;(SK_ERRBASE_PNMI + 54)
+DECL|macro|SK_PNMI_ERR054MSG
+mdefine_line|#define SK_PNMI_ERR054MSG&t;&quot;General: Driver release date string too long&quot;
+DECL|macro|SK_PNMI_ERR055
+mdefine_line|#define SK_PNMI_ERR055&t;&t;(SK_ERRBASE_PNMI + 55)
+DECL|macro|SK_PNMI_ERR055MSG
+mdefine_line|#define SK_PNMI_ERR055MSG&t;&quot;General: Driver file name not initialized&quot;
+DECL|macro|SK_PNMI_ERR056
+mdefine_line|#define SK_PNMI_ERR056&t;&t;(SK_ERRBASE_PNMI + 56)
+DECL|macro|SK_PNMI_ERR056MSG
+mdefine_line|#define SK_PNMI_ERR056MSG&t;&quot;General: Driver file name string too long&quot;
 multiline_comment|/*&n; * Management counter macros called by the driver&n; */
 DECL|macro|SK_PNMI_SET_DRIVER_DESCR
 mdefine_line|#define SK_PNMI_SET_DRIVER_DESCR(pAC,v)&t;((pAC)-&gt;Pnmi.pDriverDescription = &bslash;&n;&t;(char *)(v))
 DECL|macro|SK_PNMI_SET_DRIVER_VER
 mdefine_line|#define SK_PNMI_SET_DRIVER_VER(pAC,v)&t;((pAC)-&gt;Pnmi.pDriverVersion = &bslash;&n;&t;(char *)(v))
+DECL|macro|SK_PNMI_SET_DRIVER_RELDATE
+mdefine_line|#define SK_PNMI_SET_DRIVER_RELDATE(pAC,v)&t;((pAC)-&gt;Pnmi.pDriverReleaseDate = &bslash;&n;&t;(char *)(v))
+DECL|macro|SK_PNMI_SET_DRIVER_FILENAME
+mdefine_line|#define SK_PNMI_SET_DRIVER_FILENAME(pAC,v)&t;((pAC)-&gt;Pnmi.pDriverFileName = &bslash;&n;&t;(char *)(v))
 DECL|macro|SK_PNMI_CNT_TX_QUEUE_LEN
 mdefine_line|#define SK_PNMI_CNT_TX_QUEUE_LEN(pAC,v,p) &bslash;&n;&t;{ &bslash;&n;&t;&t;(pAC)-&gt;Pnmi.Port[p].TxSwQueueLen = (SK_U64)(v); &bslash;&n;&t;&t;if ((pAC)-&gt;Pnmi.Port[p].TxSwQueueLen &gt; (pAC)-&gt;Pnmi.Port[p].TxSwQueueMax) { &bslash;&n;&t;&t;&t;(pAC)-&gt;Pnmi.Port[p].TxSwQueueMax = (pAC)-&gt;Pnmi.Port[p].TxSwQueueLen; &bslash;&n;&t;&t;} &bslash;&n;&t;}
 DECL|macro|SK_PNMI_CNT_TX_RETRY
@@ -1268,6 +1312,14 @@ DECL|member|ConfConnector
 id|SK_U8
 id|ConfConnector
 suffix:semicolon
+DECL|member|ConfPhyType
+id|SK_U32
+id|ConfPhyType
+suffix:semicolon
+DECL|member|ConfPhyMode
+id|SK_U32
+id|ConfPhyMode
+suffix:semicolon
 DECL|member|ConfLinkCapability
 id|SK_U8
 id|ConfLinkCapability
@@ -1465,6 +1517,20 @@ id|DriverVersion
 id|SK_PNMI_STRINGLEN2
 )braket
 suffix:semicolon
+DECL|member|DriverReleaseDate
+r_char
+id|DriverReleaseDate
+(braket
+id|SK_PNMI_STRINGLEN1
+)braket
+suffix:semicolon
+DECL|member|DriverFileName
+r_char
+id|DriverFileName
+(braket
+id|SK_PNMI_STRINGLEN1
+)braket
+suffix:semicolon
 DECL|member|HwDescr
 r_char
 id|HwDescr
@@ -1482,6 +1548,18 @@ suffix:semicolon
 DECL|member|Chipset
 id|SK_U16
 id|Chipset
+suffix:semicolon
+DECL|member|ChipId
+id|SK_U32
+id|ChipId
+suffix:semicolon
+DECL|member|VauxAvail
+id|SK_U8
+id|VauxAvail
+suffix:semicolon
+DECL|member|RamSize
+id|SK_U32
+id|RamSize
 suffix:semicolon
 DECL|member|MtuSize
 id|SK_U32
@@ -1897,6 +1975,16 @@ r_char
 op_star
 id|pDriverVersion
 suffix:semicolon
+DECL|member|pDriverReleaseDate
+r_char
+op_star
+id|pDriverReleaseDate
+suffix:semicolon
+DECL|member|pDriverFileName
+r_char
+op_star
+id|pDriverFileName
+suffix:semicolon
 DECL|member|MacUpdatedFlag
 r_int
 id|MacUpdatedFlag
@@ -2014,6 +2102,12 @@ id|VctTimeout
 id|SK_MAX_MACS
 )braket
 suffix:semicolon
+macro_line|#ifdef SK_DIAG_SUPPORT
+DECL|member|DiagAttached
+id|SK_U32
+id|DiagAttached
+suffix:semicolon
+macro_line|#endif /* SK_DIAG_SUPPORT */
 DECL|typedef|SK_PNMI
 )brace
 id|SK_PNMI

@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgeinit.c&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.93 $&n; * Date:&t;$Date: 2003/05/28 15:44:43 $&n; * Purpose:&t;Contains functions to initialize the adapter&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgeinit.c&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.97 $&n; * Date:&t;$Date: 2003/10/02 16:45:31 $&n; * Purpose:&t;Contains functions to initialize the adapter&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgeinit.c,v $&n; *&t;Revision 1.93  2003/05/28 15:44:43  rschmidt&n; *&t;Added check for chip Id on WOL WA for chip Rev. A.&n; *&t;Added setting of GILevel in SkGeDeInit().&n; *&t;Minor changes to avoid LINT warnings.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.92  2003/05/13 17:42:26  mkarl&n; *&t;Added SK_FAR for PXE.&n; *&t;Separated code pathes not used for SLIM driver to reduce code size.&n; *&t;Removed calls to I2C for SLIM driver.&n; *&t;Removed currently unused function SkGeLoadLnkSyncCnt.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.91  2003/05/06 12:21:48  rschmidt&n; *&t;Added use of pAC-&gt;GIni.GIYukon for selection of YUKON branches.&n; *&t;Added defines around GENESIS resp. YUKON branches to reduce&n; *&t;code size for PXE.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.90  2003/04/28 09:12:20  rschmidt&n; *&t;Added init for GIValIrqMask (common IRQ mask).&n; *&t;Disabled HW Error IRQ on Yukon if sensor IRQ is set in SkGeInit1()&n; *&t;by changing the common mask stored in GIValIrqMask.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.89  2003/04/10 14:33:10  rschmidt&n; *&t;Fixed alignement error of patchable configuration parameter&n; *&t;in struct OemConfig caused by length of recognition string.&n; *&t;&n; *&t;Revision 1.88  2003/04/09 12:59:45  rschmidt&n; *&t;Added define around initialization of patchable OEM specific&n; *&t;configuration parameter.&n; *&t;&n; *&t;Revision 1.87  2003/04/08 16:46:13  rschmidt&n; *&t;Added configuration variable for OEMs and initialization for&n; *&t;GILedBlinkCtrl (LED Blink Control).&n; *&t;Improved detection for YUKON-Lite Rev. A1.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.86  2003/03/31 06:53:13  mkarl&n; *&t;Corrected Copyright.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.85  2003/02/05 15:30:33  rschmidt&n; *&t;Corrected setting of GIHstClkFact (Host Clock Factor) and&n; *&t;GIPollTimerVal (Descr. Poll Timer Init Value) for YUKON.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.84  2003/01/28 09:57:25  rschmidt&n; *&t;Added detection of YUKON-Lite Rev. A0 (stored in GIYukonLite).&n; *&t;Disabled Rx GMAC FIFO Flush for YUKON-Lite Rev. A0.&n; *&t;Added support for CLK_RUN (YUKON-Lite).&n; *&t;Added additional check of PME from D3cold for setting GIVauxAvail.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.83  2002/12/17 16:15:41  rschmidt&n; *&t;Added default setting of PhyType (Copper) for YUKON.&n; *&t;Added define around check for HW self test results.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.82  2002/12/05 13:40:21  rschmidt&n; *&t;Added setting of Rx GMAC FIFO Flush Mask register.&n; *&t;Corrected PhyType with new define SK_PHY_MARV_FIBER when&n; *&t;YUKON Fiber board was found.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.81  2002/11/15 12:48:35  rschmidt&n; *&t;Replaced message SKERR_HWI_E018 with SKERR_HWI_E024 for Rx queue error&n; *&t;in SkGeStopPort().&n; *&t;Added init for pAC-&gt;GIni.GIGenesis with SK_FALSE in YUKON-branch.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.80  2002/11/12 17:28:30  rschmidt&n; *&t;Initialized GIPciSlot64 and GIPciClock66 in SkGeInit1().&n; *&t;Reduced PCI FIFO watermarks for 32bit/33MHz bus in SkGeInitBmu().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.79  2002/10/21 09:31:02  mkarl&n; *&t;Changed SkGeInitAssignRamToQueues(), removed call to&n; *&t;SkGeInitAssignRamToQueues in SkGeInit1 and fixed compiler warning in&n; *&t;SkGeInit1.&n; *&t;&n; *&t;Revision 1.78  2002/10/16 15:55:07  mkarl&n; *&t;Fixed a bug in SkGeInitAssignRamToQueues.&n; *&t;&n; *&t;Revision 1.77  2002/10/14 15:07:22  rschmidt&n; *&t;Corrected timeout handling for Rx queue in SkGeStopPort() (#10748)&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.76  2002/10/11 09:24:38  mkarl&n; *&t;Added check for HW self test results.&n; *&t;&n; *&t;Revision 1.75  2002/10/09 16:56:44  mkarl&n; *&t;Now call SkGeInitAssignRamToQueues() in Init Level 1 in order to assign&n; *&t;the adapter memory to the queues. This default assignment is not suitable&n; *&t;for dual net mode.&n; *&t;&n; *&t;Revision 1.74  2002/09/12 08:45:06  rwahl&n; *&t;Set defaults for PMSCap, PLinkSpeed &amp; PLinkSpeedCap dependent on PHY.&n; *&t;&n; *&t;Revision 1.73  2002/08/16 15:19:45  rschmidt&n; *&t;Corrected check for Tx queues in SkGeCheckQSize().&n; *&t;Added init for new entry GIGenesis and GICopperType&n; *&t;Replaced all if(GIChipId == CHIP_ID_GENESIS) with new entry GIGenesis.&n; *&t;Replaced wrong 1st para pAC with IoC in SK_IN/OUT macros.&n; *&t;&n; *&t;Revision 1.72  2002/08/12 13:38:55  rschmidt&n; *&t;Added check if VAUX is available (stored in GIVauxAvail)&n; *&t;Initialized PLinkSpeedCap in Port struct with SK_LSPEED_CAP_1000MBPS&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.71  2002/08/08 16:32:58  rschmidt&n; *&t;Added check for Tx queues in SkGeCheckQSize().&n; *&t;Added start of Time Stamp Timer (YUKON) in SkGeInit2().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.70  2002/07/23 16:04:26  rschmidt&n; *&t;Added init for GIWolOffs (HW-Bug in YUKON 1st rev.)&n; *&t;Minor changes&n; *&t;&n; *&t;Revision 1.69  2002/07/17 17:07:08  rwahl&n; *&t;- SkGeInit1(): fixed PHY type debug output; corrected init of GIFunc&n; *&t;  table &amp; GIMacType.&n; *&t;- Editorial changes.&n; *&t;&n; *&t;Revision 1.68  2002/07/15 18:38:31  rwahl&n; *&t;Added initialization for MAC type dependent function table.&n; *&t;&n; *&t;Revision 1.67  2002/07/15 15:45:39  rschmidt&n; *&t;Added Tx Store &amp; Forward for YUKON (GMAC Tx FIFO is only 1 kB)&n; *&t;Replaced SK_PHY_MARV by SK_PHY_MARV_COPPER&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.66  2002/06/10 09:35:08  rschmidt&n; *&t;Replaced C++ comments (//)&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.65  2002/06/05 08:33:37  rschmidt&n; *&t;Changed GIRamSize and Reset sequence for YUKON.&n; *&t;SkMacInit() replaced by SkXmInitMac() resp. SkGmInitMac()&n; *&t;&n; *&t;Revision 1.64  2002/04/25 13:03:20  rschmidt&n; *&t;Changes for handling YUKON.&n; *&t;Removed reference to xmac_ii.h (not necessary).&n; *&t;Moved all defines into header file.&n; *&t;Replaced all SkXm...() functions with SkMac...() to handle also&n; *&t;YUKON&squot;s GMAC.&n; *&t;Added handling for GMAC FIFO in SkGeInitMacFifo(), SkGeStopPort().&n; *&t;Removed &squot;goto&squot;-directive from SkGeCfgSync(), SkGeCheckQSize().&n; *&t;Replaced all XMAC-access macros by functions: SkMacRxTxDisable(),&n; *&t;SkMacFlushTxFifo().&n; *&t;Optimized timeout handling in SkGeStopPort().&n; *&t;Initialized PLinkSpeed in Port struct with SK_LSPEED_AUTO.&n; *&t;Release of GMAC Link Control reset in SkGeInit1().&n; *&t;Initialized GIChipId and GIChipRev in GE Init structure.&n; *&t;Added GIRamSize and PhyType values for YUKON.&n; *&t;Removed use of PRxCmd to setup XMAC.&n; *&t;Moved setting of XM_RX_DIS_CEXT to SkXmInitMac().&n; *&t;Use of SkGeXmitLED() only for GENESIS.&n; *&t;Changes for V-CPU support.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.63  2001/04/05 11:02:09  rassmann&n; *&t;Stop Port check of the STOP bit did not take 2/18 sec as wanted.&n; *&t;&n; *&t;Revision 1.62  2001/02/07 07:54:21  rassmann&n; *&t;Corrected copyright.&n; *&t;&n; *&t;Revision 1.61  2001/01/31 15:31:40  gklug&n; *&t;fix: problem with autosensing an SR8800 switch&n; *&t;&n; *&t;Revision 1.60  2000/10/18 12:22:21  cgoos&n; *&t;Added workaround for half duplex hangup.&n; *&t;&n; *&t;Revision 1.59  2000/10/10 11:22:06  gklug&n; *&t;add: in manual half duplex mode ignore carrier extension errors&n; *&t;&n; *&t;Revision 1.58  2000/10/02 14:10:27  rassmann&n; *&t;Reading BCOM PHY after releasing reset until it returns a valid value.&n; *&t;&n; *&t;Revision 1.57  2000/08/03 14:55:28  rassmann&n; *&t;Waiting for I2C to be ready before de-initializing adapter&n; *&t;(prevents sensors from hanging up).&n; *&t;&n; *&t;Revision 1.56  2000/07/27 12:16:48  gklug&n; *&t;fix: Stop Port check of the STOP bit does now take 2/18 sec as wanted&n; *&t;&n; *&t;Revision 1.55  1999/11/22 13:32:26  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.54  1999/10/26 07:32:54  malthoff&n; *&t;Initialize PHWLinkUp with SK_FALSE. Required for Diagnostics.&n; *&t;&n; *&t;Revision 1.53  1999/08/12 19:13:50  malthoff&n; *&t;Fix for 1000BT. Do not owerwrite XM_MMU_CMD when&n; *&t;disabling receiver and transmitter. Other bits&n; *&t;may be lost.&n; *&t;&n; *&t;Revision 1.52  1999/07/01 09:29:54  gklug&n; *&t;fix: DoInitRamQueue needs pAC&n; *&t;&n; *&t;Revision 1.51  1999/07/01 08:42:21  gklug&n; *&t;chg: use Store &amp; forward for RAM buffer when Jumbos are used&n; *&t;&n; *&t;Revision 1.50  1999/05/27 13:19:38  cgoos&n; *&t;Added Tx PCI watermark initialization.&n; *&t;Removed Tx RAM queue Store &amp; Forward setting.&n; *&t;&n; *&t;Revision 1.49  1999/05/20 14:32:45  malthoff&n; *&t;SkGeLinkLED() is completly removed now.&n; *&t;&n; *&t;Revision 1.48  1999/05/19 07:28:24  cgoos&n; *&t;SkGeLinkLED no more available for drivers.&n; *&t;Changes for 1000Base-T.&n; *&t;&n; *&t;Revision 1.47  1999/04/08 13:57:45  gklug&n; *&t;add: Init of new port struct fiels PLinkResCt&n; *&t;chg: StopPort Timer check&n; *&t;&n; *&t;Revision 1.46  1999/03/25 07:42:15  malthoff&n; *&t;SkGeStopPort(): Add workaround for cache incoherency.&n; *&t;&t;&t;Create error log entry, disable port, and&n; *&t;&t;&t;exit loop if it does not terminate.&n; *&t;Add XM_RX_LENERR_OK to the default value for the&n; *&t;XMAC receive command register.&n; *&t;&n; *&t;Revision 1.45  1999/03/12 16:24:47  malthoff&n; *&t;Remove PPollRxD and PPollTxD.&n; *&t;Add check for GIPollTimerVal.&n; *&n; *&t;Revision 1.44  1999/03/12 13:40:23  malthoff&n; *&t;Fix: SkGeXmitLED(), SK_LED_TST mode does not work.&n; *&t;Add: Jumbo frame support.&n; *&t;Chg: Resolution of parameter IntTime in SkGeCfgSync().&n; *&n; *&t;Revision 1.43  1999/02/09 10:29:46  malthoff&n; *&t;Bugfix: The previous modification again also for the second location.&n; *&n; *&t;Revision 1.42  1999/02/09 09:35:16  malthoff&n; *&t;Bugfix: The bits &squot;66 MHz Capable&squot; and &squot;NEWCAP are reset while&n; *&t;&t;clearing the error bits in the PCI status register.&n; *&n; *&t;Revision 1.41  1999/01/18 13:07:02  malthoff&n; *&t;Bugfix: Do not use CFG cycles after during Init- or Runtime, because&n; *&t;&t;they may not be available after Boottime.&n; *&n; *&t;Revision 1.40  1999/01/11 12:40:49  malthoff&n; *&t;Bug fix: PCI_STATUS: clearing error bits sets the UDF bit.&n; *&n; *&t;Revision 1.39  1998/12/11 15:17:33  gklug&n; *&t;chg: Init LipaAutoNeg with Unknown&n; *&n; *&t;Revision 1.38  1998/12/10 11:02:57  malthoff&n; *&t;Disable Error Log Message when calling SkGeInit(level 2)&n; *&t;more than once.&n; *&n; *&t;Revision 1.37  1998/12/07 12:18:25  gklug&n; *&t;add: refinement of autosense mode: take into account the autoneg cap of LiPa&n; *&n; *&t;Revision 1.36  1998/12/07 07:10:39  gklug&n; *&t;fix: init values of LinkBroken/ Capabilities for management&n; *&n; *&t;Revision 1.35  1998/12/02 10:56:20  gklug&n; *&t;fix: do NOT init LoinkSync Counter.&n; *&n; *&t;Revision 1.34  1998/12/01 10:53:21  gklug&n; *&t;add: init of additional Counters for workaround&n; *&n; *&t;Revision 1.33  1998/12/01 10:00:49  gklug&n; *&t;add: init PIsave var in Port struct&n; *&n; *&t;Revision 1.32  1998/11/26 14:50:40  gklug&n; *&t;chg: Default is autosensing with AUTOFULL mode&n; *&n; *&t;Revision 1.31  1998/11/25 15:36:16  gklug&n; *&t;fix: do NOT stop LED Timer when port should be stopped&n; *&n; *&t;Revision 1.30  1998/11/24 13:15:28  gklug&n; *&t;add: Init PCkeckPar struct member&n; *&n; *&t;Revision 1.29  1998/11/18 13:19:27  malthoff&n; *&t;Disable packet arbiter timeouts on receive side.&n; *&t;Use maximum timeout value for packet arbiter&n; *&t;transmit timeouts.&n; *&t;Add TestStopBit() function to handle stop RX/TX&n; *&t;problem with active descriptor poll timers.&n; *&t;Bug Fix: Descriptor Poll Timer not started, because&n; *&t;GIPollTimerVal was initialized with 0.&n; *&n; *&t;Revision 1.28  1998/11/13 14:24:26  malthoff&n; *&t;Bug Fix: SkGeStopPort() may hang if a Packet Arbiter Timout&n; *&t;is pending or occurs while waiting for TX_STOP and RX_STOP.&n; *&t;The PA timeout is cleared now while waiting for TX- or RX_STOP.&n; *&n; *&t;Revision 1.27  1998/11/02 11:04:36  malthoff&n; *&t;fix the last fix&n; *&n; *&t;Revision 1.26  1998/11/02 10:37:03  malthoff&n; *&t;Fix: SkGePollTxD() enables always the synchronounous poll timer.&n; *&n; *&t;Revision 1.25  1998/10/28 07:12:43  cgoos&n; *&t;Fixed &quot;LED_STOP&quot; in SkGeLnkSyncCnt, &quot;== SK_INIT_IO&quot; in SkGeInit.&n; *&t;Removed: Reset of RAM Interface in SkGeStopPort.&n; *&n; *&t;Revision 1.24  1998/10/27 08:13:12  malthoff&n; *&t;Remove temporary code.&n; *&n; *&t;Revision 1.23  1998/10/26 07:45:03  malthoff&n; *&t;Add Address Calculation Workaround: If the EPROM byte&n; *&t;Id is 3, the address offset is 512 kB.&n; *&t;Initialize default values for PLinkMode and PFlowCtrlMode.&n; *&n; *&t;Revision 1.22  1998/10/22 09:46:47  gklug&n; *&t;fix SysKonnectFileId typo&n; *&n; *&t;Revision 1.21  1998/10/20 12:11:56  malthoff&n; *&t;Don&squot;t dendy the Queue config if the size of the unused&n; *&t;Rx qeueu is zero.&n; *&n; *&t;Revision 1.20  1998/10/19 07:27:58  malthoff&n; *&t;SkGeInitRamIface() is public to be called by diagnostics.&n; *&n; *&t;Revision 1.19  1998/10/16 13:33:45  malthoff&n; *&t;Fix: enabling descriptor polling is not allowed until&n; *&t;the descriptor addresses are set. Descriptor polling&n; *&t;must be handled by the driver.&n; *&n; *&t;Revision 1.18  1998/10/16 10:58:27  malthoff&n; *&t;Remove temp. code for Diag prototype.&n; *&t;Remove lint warning for dummy reads.&n; *&t;Call SkGeLoadLnkSyncCnt() during SkGeInitPort().&n; *&n; *&t;Revision 1.17  1998/10/14 09:16:06  malthoff&n; *&t;Change parameter LimCount and programming of&n; *&t;the limit counter in SkGeCfgSync().&n; *&n; *&t;Revision 1.16  1998/10/13 09:21:16  malthoff&n; *&t;Don&squot;t set XM_RX_SELF_RX in RxCmd Reg, because it&squot;s&n; *&t;like a Loopback Mode in half duplex.&n; *&n; *&t;Revision 1.15  1998/10/09 06:47:40  malthoff&n; *&t;SkGeInitMacArb(): set recovery counters init value&n; *&t;to zero although this counters are not uesd.&n; *&t;Bug fix in Rx Upper/Lower Pause Threshold calculation.&n; *&t;Add XM_RX_SELF_RX to RxCmd.&n; *&n; *&t;Revision 1.14  1998/10/06 15:15:53  malthoff&n; *&t;Make sure no pending IRQ is cleared in SkGeLoadLnkSyncCnt().&n; *&n; *&t;Revision 1.13  1998/10/06 14:09:36  malthoff&n; *&t;Add SkGeLoadLnkSyncCnt(). Modify&n; *&t;the &squot;port stopped&squot; condition according&n; *&t;to the current problem report.&n; *&n; *&t;Revision 1.12  1998/10/05 08:17:21  malthoff&n; *&t;Add functions: SkGePollRxD(), SkGePollTxD(),&n; *&t;DoCalcAddr(), SkGeCheckQSize(),&n; *&t;DoInitRamQueue(), and SkGeCfgSync().&n; *&t;Add coding for SkGeInitMacArb(), SkGeInitPktArb(),&n; *&t;SkGeInitMacFifo(), SkGeInitRamBufs(),&n; *&t;SkGeInitRamIface(), and SkGeInitBmu().&n; *&n; *&t;Revision 1.11  1998/09/29 08:26:29  malthoff&n; *&t;bug fix: SkGeInit0() &squot;i&squot; should be increment.&n; *&n; *&t;Revision 1.10  1998/09/28 13:19:01  malthoff&n; *&t;Coding time: Save the done work.&n; *&t;Modify SkGeLinkLED(), add SkGeXmitLED(),&n; *&t;define SkGeCheckQSize(), SkGeInitMacArb(),&n; *&t;SkGeInitPktArb(), SkGeInitMacFifo(),&n; *&t;SkGeInitRamBufs(), SkGeInitRamIface(),&n; *&t;and SkGeInitBmu(). Do coding for SkGeStopPort(),&n; *&t;SkGeInit1(), SkGeInit2(), and SkGeInit3().&n; *&t;Do coding for SkGeDinit() and SkGeInitPort().&n; *&n; *&t;Revision 1.9  1998/09/16 14:29:05  malthoff&n; *&t;Some minor changes.&n; *&n; *&t;Revision 1.8  1998/09/11 05:29:14  gklug&n; *&t;add: init state of a port&n; *&n; *&t;Revision 1.7  1998/09/04 09:26:25  malthoff&n; *&t;Short temporary modification.&n; *&n; *&t;Revision 1.6  1998/09/04 08:27:59  malthoff&n; *&t;Remark the do-while in StopPort() because it never ends&n; *&t;without a GE adapter.&n; *&n; *&t;Revision 1.5  1998/09/03 14:05:45  malthoff&n; *&t;Change comment for SkGeInitPort(). Do not&n; *&t;repair the queue sizes if invalid.&n; *&n; *&t;Revision 1.4  1998/09/03 10:03:19  malthoff&n; *&t;Implement the new interface according to the&n; *&t;reviewed interface specification.&n; *&n; *&t;Revision 1.3  1998/08/19 09:11:25  gklug&n; *&t;fix: struct are removed from c-source (see CCC)&n; *&n; *&t;Revision 1.2  1998/07/28 12:33:58  malthoff&n; *&t;Add &squot;IoC&squot; parameter in function declaration and SK IO macros.&n; *&n; *&t;Revision 1.1  1998/07/23 09:48:57  malthoff&n; *&t;Creation. First dummy &squot;C&squot; file.&n; *&t;SkGeInit(Level 0) is card_start for GE.&n; *&t;SkGeDeInit() is card_stop for GE.&n; *&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgeinit.c,v $&n; *&t;Revision 1.97  2003/10/02 16:45:31  rschmidt&n; *&t;Replaced default values of GMAC parameters with defines.&n; *&t;Removed hard reset of MACs in SkGeDeInit().&n; *&t;Added define SK_PHY_LP_MODE around power saving mode in SkGeDeInit().&n; *&t;Added check for VAUX available before switch power to VAUX.&n; *&t;&n; *&t;Revision 1.96  2003/09/18 14:02:41  rroesler&n; *&t;Add: Perform a hardreset of MACs in GeDeInit()&n; *&t;&n; *&t;Revision 1.95  2003/09/16 14:26:59  rschmidt&n; *&t;Added switch power to VCC (WA for VAUX problem) in SkGeInit1().&n; *&t;Fixed setting PHY to coma mode and D3 power state in SkGeDeInit().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.94  2003/09/16 07:17:10  mschmid&n; *&t;Added init for new members in port structure for MAC control&n; *&t;- PMacColThres&n; *&t;- PMacJamLen&n; *&t;- PMacJamIpgVal&n; *&t;- PMacJamIpgData&n; *&t;- PMacIpgData&n; *&t;- PMacLimit4&n; *&t;Added init for PHY power state in port structure&n; *&t;- PPhyPowerState&n; *&t;Added shutdown handling for Yukon Plus in SkGeDeInit()&n; *&t;&n; *&t;Revision 1.93  2003/05/28 15:44:43  rschmidt&n; *&t;Added check for chip Id on WOL WA for chip Rev. A.&n; *&t;Added setting of GILevel in SkGeDeInit().&n; *&t;Minor changes to avoid LINT warnings.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.92  2003/05/13 17:42:26  mkarl&n; *&t;Added SK_FAR for PXE.&n; *&t;Separated code pathes not used for SLIM driver to reduce code size.&n; *&t;Removed calls to I2C for SLIM driver.&n; *&t;Removed currently unused function SkGeLoadLnkSyncCnt.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.91  2003/05/06 12:21:48  rschmidt&n; *&t;Added use of pAC-&gt;GIni.GIYukon for selection of YUKON branches.&n; *&t;Added defines around GENESIS resp. YUKON branches to reduce&n; *&t;code size for PXE.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.90  2003/04/28 09:12:20  rschmidt&n; *&t;Added init for GIValIrqMask (common IRQ mask).&n; *&t;Disabled HW Error IRQ on Yukon if sensor IRQ is set in SkGeInit1()&n; *&t;by changing the common mask stored in GIValIrqMask.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.89  2003/04/10 14:33:10  rschmidt&n; *&t;Fixed alignement error of patchable configuration parameter&n; *&t;in struct OemConfig caused by length of recognition string.&n; *&t;&n; *&t;Revision 1.88  2003/04/09 12:59:45  rschmidt&n; *&t;Added define around initialization of patchable OEM specific&n; *&t;configuration parameter.&n; *&t;&n; *&t;Revision 1.87  2003/04/08 16:46:13  rschmidt&n; *&t;Added configuration variable for OEMs and initialization for&n; *&t;GILedBlinkCtrl (LED Blink Control).&n; *&t;Improved detection for YUKON-Lite Rev. A1.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.86  2003/03/31 06:53:13  mkarl&n; *&t;Corrected Copyright.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.85  2003/02/05 15:30:33  rschmidt&n; *&t;Corrected setting of GIHstClkFact (Host Clock Factor) and&n; *&t;GIPollTimerVal (Descr. Poll Timer Init Value) for YUKON.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.84  2003/01/28 09:57:25  rschmidt&n; *&t;Added detection of YUKON-Lite Rev. A0 (stored in GIYukonLite).&n; *&t;Disabled Rx GMAC FIFO Flush for YUKON-Lite Rev. A0.&n; *&t;Added support for CLK_RUN (YUKON-Lite).&n; *&t;Added additional check of PME from D3cold for setting GIVauxAvail.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.83  2002/12/17 16:15:41  rschmidt&n; *&t;Added default setting of PhyType (Copper) for YUKON.&n; *&t;Added define around check for HW self test results.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.82  2002/12/05 13:40:21  rschmidt&n; *&t;Added setting of Rx GMAC FIFO Flush Mask register.&n; *&t;Corrected PhyType with new define SK_PHY_MARV_FIBER when&n; *&t;YUKON Fiber board was found.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.81  2002/11/15 12:48:35  rschmidt&n; *&t;Replaced message SKERR_HWI_E018 with SKERR_HWI_E024 for Rx queue error&n; *&t;in SkGeStopPort().&n; *&t;Added init for pAC-&gt;GIni.GIGenesis with SK_FALSE in YUKON-branch.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.80  2002/11/12 17:28:30  rschmidt&n; *&t;Initialized GIPciSlot64 and GIPciClock66 in SkGeInit1().&n; *&t;Reduced PCI FIFO watermarks for 32bit/33MHz bus in SkGeInitBmu().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.79  2002/10/21 09:31:02  mkarl&n; *&t;Changed SkGeInitAssignRamToQueues(), removed call to&n; *&t;SkGeInitAssignRamToQueues in SkGeInit1 and fixed compiler warning in&n; *&t;SkGeInit1.&n; *&t;&n; *&t;Revision 1.78  2002/10/16 15:55:07  mkarl&n; *&t;Fixed a bug in SkGeInitAssignRamToQueues.&n; *&t;&n; *&t;Revision 1.77  2002/10/14 15:07:22  rschmidt&n; *&t;Corrected timeout handling for Rx queue in SkGeStopPort() (#10748)&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.76  2002/10/11 09:24:38  mkarl&n; *&t;Added check for HW self test results.&n; *&t;&n; *&t;Revision 1.75  2002/10/09 16:56:44  mkarl&n; *&t;Now call SkGeInitAssignRamToQueues() in Init Level 1 in order to assign&n; *&t;the adapter memory to the queues. This default assignment is not suitable&n; *&t;for dual net mode.&n; *&t;&n; *&t;Revision 1.74  2002/09/12 08:45:06  rwahl&n; *&t;Set defaults for PMSCap, PLinkSpeed &amp; PLinkSpeedCap dependent on PHY.&n; *&t;&n; *&t;Revision 1.73  2002/08/16 15:19:45  rschmidt&n; *&t;Corrected check for Tx queues in SkGeCheckQSize().&n; *&t;Added init for new entry GIGenesis and GICopperType&n; *&t;Replaced all if(GIChipId == CHIP_ID_GENESIS) with new entry GIGenesis.&n; *&t;Replaced wrong 1st para pAC with IoC in SK_IN/OUT macros.&n; *&t;&n; *&t;Revision 1.72  2002/08/12 13:38:55  rschmidt&n; *&t;Added check if VAUX is available (stored in GIVauxAvail)&n; *&t;Initialized PLinkSpeedCap in Port struct with SK_LSPEED_CAP_1000MBPS&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.71  2002/08/08 16:32:58  rschmidt&n; *&t;Added check for Tx queues in SkGeCheckQSize().&n; *&t;Added start of Time Stamp Timer (YUKON) in SkGeInit2().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.70  2002/07/23 16:04:26  rschmidt&n; *&t;Added init for GIWolOffs (HW-Bug in YUKON 1st rev.)&n; *&t;Minor changes&n; *&t;&n; *&t;Revision 1.69  2002/07/17 17:07:08  rwahl&n; *&t;- SkGeInit1(): fixed PHY type debug output; corrected init of GIFunc&n; *&t;  table &amp; GIMacType.&n; *&t;- Editorial changes.&n; *&t;&n; *&t;Revision 1.68  2002/07/15 18:38:31  rwahl&n; *&t;Added initialization for MAC type dependent function table.&n; *&t;&n; *&t;Revision 1.67  2002/07/15 15:45:39  rschmidt&n; *&t;Added Tx Store &amp; Forward for YUKON (GMAC Tx FIFO is only 1 kB)&n; *&t;Replaced SK_PHY_MARV by SK_PHY_MARV_COPPER&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.66  2002/06/10 09:35:08  rschmidt&n; *&t;Replaced C++ comments (//)&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.65  2002/06/05 08:33:37  rschmidt&n; *&t;Changed GIRamSize and Reset sequence for YUKON.&n; *&t;SkMacInit() replaced by SkXmInitMac() resp. SkGmInitMac()&n; *&t;&n; *&t;Revision 1.64  2002/04/25 13:03:20  rschmidt&n; *&t;Changes for handling YUKON.&n; *&t;Removed reference to xmac_ii.h (not necessary).&n; *&t;Moved all defines into header file.&n; *&t;Replaced all SkXm...() functions with SkMac...() to handle also&n; *&t;YUKON&squot;s GMAC.&n; *&t;Added handling for GMAC FIFO in SkGeInitMacFifo(), SkGeStopPort().&n; *&t;Removed &squot;goto&squot;-directive from SkGeCfgSync(), SkGeCheckQSize().&n; *&t;Replaced all XMAC-access macros by functions: SkMacRxTxDisable(),&n; *&t;SkMacFlushTxFifo().&n; *&t;Optimized timeout handling in SkGeStopPort().&n; *&t;Initialized PLinkSpeed in Port struct with SK_LSPEED_AUTO.&n; *&t;Release of GMAC Link Control reset in SkGeInit1().&n; *&t;Initialized GIChipId and GIChipRev in GE Init structure.&n; *&t;Added GIRamSize and PhyType values for YUKON.&n; *&t;Removed use of PRxCmd to setup XMAC.&n; *&t;Moved setting of XM_RX_DIS_CEXT to SkXmInitMac().&n; *&t;Use of SkGeXmitLED() only for GENESIS.&n; *&t;Changes for V-CPU support.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.63  2001/04/05 11:02:09  rassmann&n; *&t;Stop Port check of the STOP bit did not take 2/18 sec as wanted.&n; *&t;&n; *&t;Revision 1.62  2001/02/07 07:54:21  rassmann&n; *&t;Corrected copyright.&n; *&t;&n; *&t;Revision 1.61  2001/01/31 15:31:40  gklug&n; *&t;fix: problem with autosensing an SR8800 switch&n; *&t;&n; *&t;Revision 1.60  2000/10/18 12:22:21  cgoos&n; *&t;Added workaround for half duplex hangup.&n; *&t;&n; *&t;Revision 1.59  2000/10/10 11:22:06  gklug&n; *&t;add: in manual half duplex mode ignore carrier extension errors&n; *&t;&n; *&t;Revision 1.58  2000/10/02 14:10:27  rassmann&n; *&t;Reading BCOM PHY after releasing reset until it returns a valid value.&n; *&t;&n; *&t;Revision 1.57  2000/08/03 14:55:28  rassmann&n; *&t;Waiting for I2C to be ready before de-initializing adapter&n; *&t;(prevents sensors from hanging up).&n; *&t;&n; *&t;Revision 1.56  2000/07/27 12:16:48  gklug&n; *&t;fix: Stop Port check of the STOP bit does now take 2/18 sec as wanted&n; *&t;&n; *&t;Revision 1.55  1999/11/22 13:32:26  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.54  1999/10/26 07:32:54  malthoff&n; *&t;Initialize PHWLinkUp with SK_FALSE. Required for Diagnostics.&n; *&t;&n; *&t;Revision 1.53  1999/08/12 19:13:50  malthoff&n; *&t;Fix for 1000BT. Do not owerwrite XM_MMU_CMD when&n; *&t;disabling receiver and transmitter. Other bits&n; *&t;may be lost.&n; *&t;&n; *&t;Revision 1.52  1999/07/01 09:29:54  gklug&n; *&t;fix: DoInitRamQueue needs pAC&n; *&t;&n; *&t;Revision 1.51  1999/07/01 08:42:21  gklug&n; *&t;chg: use Store &amp; forward for RAM buffer when Jumbos are used&n; *&t;&n; *&t;Revision 1.50  1999/05/27 13:19:38  cgoos&n; *&t;Added Tx PCI watermark initialization.&n; *&t;Removed Tx RAM queue Store &amp; Forward setting.&n; *&t;&n; *&t;Revision 1.49  1999/05/20 14:32:45  malthoff&n; *&t;SkGeLinkLED() is completly removed now.&n; *&t;&n; *&t;Revision 1.48  1999/05/19 07:28:24  cgoos&n; *&t;SkGeLinkLED no more available for drivers.&n; *&t;Changes for 1000Base-T.&n; *&t;&n; *&t;Revision 1.47  1999/04/08 13:57:45  gklug&n; *&t;add: Init of new port struct fiels PLinkResCt&n; *&t;chg: StopPort Timer check&n; *&t;&n; *&t;Revision 1.46  1999/03/25 07:42:15  malthoff&n; *&t;SkGeStopPort(): Add workaround for cache incoherency.&n; *&t;&t;&t;Create error log entry, disable port, and&n; *&t;&t;&t;exit loop if it does not terminate.&n; *&t;Add XM_RX_LENERR_OK to the default value for the&n; *&t;XMAC receive command register.&n; *&t;&n; *&t;Revision 1.45  1999/03/12 16:24:47  malthoff&n; *&t;Remove PPollRxD and PPollTxD.&n; *&t;Add check for GIPollTimerVal.&n; *&n; *&t;Revision 1.44  1999/03/12 13:40:23  malthoff&n; *&t;Fix: SkGeXmitLED(), SK_LED_TST mode does not work.&n; *&t;Add: Jumbo frame support.&n; *&t;Chg: Resolution of parameter IntTime in SkGeCfgSync().&n; *&n; *&t;Revision 1.43  1999/02/09 10:29:46  malthoff&n; *&t;Bugfix: The previous modification again also for the second location.&n; *&n; *&t;Revision 1.42  1999/02/09 09:35:16  malthoff&n; *&t;Bugfix: The bits &squot;66 MHz Capable&squot; and &squot;NEWCAP are reset while&n; *&t;&t;clearing the error bits in the PCI status register.&n; *&n; *&t;Revision 1.41  1999/01/18 13:07:02  malthoff&n; *&t;Bugfix: Do not use CFG cycles after during Init- or Runtime, because&n; *&t;&t;they may not be available after Boottime.&n; *&n; *&t;Revision 1.40  1999/01/11 12:40:49  malthoff&n; *&t;Bug fix: PCI_STATUS: clearing error bits sets the UDF bit.&n; *&n; *&t;Revision 1.39  1998/12/11 15:17:33  gklug&n; *&t;chg: Init LipaAutoNeg with Unknown&n; *&n; *&t;Revision 1.38  1998/12/10 11:02:57  malthoff&n; *&t;Disable Error Log Message when calling SkGeInit(level 2)&n; *&t;more than once.&n; *&n; *&t;Revision 1.37  1998/12/07 12:18:25  gklug&n; *&t;add: refinement of autosense mode: take into account the autoneg cap of LiPa&n; *&n; *&t;Revision 1.36  1998/12/07 07:10:39  gklug&n; *&t;fix: init values of LinkBroken/ Capabilities for management&n; *&n; *&t;Revision 1.35  1998/12/02 10:56:20  gklug&n; *&t;fix: do NOT init LoinkSync Counter.&n; *&n; *&t;Revision 1.34  1998/12/01 10:53:21  gklug&n; *&t;add: init of additional Counters for workaround&n; *&n; *&t;Revision 1.33  1998/12/01 10:00:49  gklug&n; *&t;add: init PIsave var in Port struct&n; *&n; *&t;Revision 1.32  1998/11/26 14:50:40  gklug&n; *&t;chg: Default is autosensing with AUTOFULL mode&n; *&n; *&t;Revision 1.31  1998/11/25 15:36:16  gklug&n; *&t;fix: do NOT stop LED Timer when port should be stopped&n; *&n; *&t;Revision 1.30  1998/11/24 13:15:28  gklug&n; *&t;add: Init PCkeckPar struct member&n; *&n; *&t;Revision 1.29  1998/11/18 13:19:27  malthoff&n; *&t;Disable packet arbiter timeouts on receive side.&n; *&t;Use maximum timeout value for packet arbiter&n; *&t;transmit timeouts.&n; *&t;Add TestStopBit() function to handle stop RX/TX&n; *&t;problem with active descriptor poll timers.&n; *&t;Bug Fix: Descriptor Poll Timer not started, because&n; *&t;GIPollTimerVal was initialized with 0.&n; *&n; *&t;Revision 1.28  1998/11/13 14:24:26  malthoff&n; *&t;Bug Fix: SkGeStopPort() may hang if a Packet Arbiter Timout&n; *&t;is pending or occurs while waiting for TX_STOP and RX_STOP.&n; *&t;The PA timeout is cleared now while waiting for TX- or RX_STOP.&n; *&n; *&t;Revision 1.27  1998/11/02 11:04:36  malthoff&n; *&t;fix the last fix&n; *&n; *&t;Revision 1.26  1998/11/02 10:37:03  malthoff&n; *&t;Fix: SkGePollTxD() enables always the synchronounous poll timer.&n; *&n; *&t;Revision 1.25  1998/10/28 07:12:43  cgoos&n; *&t;Fixed &quot;LED_STOP&quot; in SkGeLnkSyncCnt, &quot;== SK_INIT_IO&quot; in SkGeInit.&n; *&t;Removed: Reset of RAM Interface in SkGeStopPort.&n; *&n; *&t;Revision 1.24  1998/10/27 08:13:12  malthoff&n; *&t;Remove temporary code.&n; *&n; *&t;Revision 1.23  1998/10/26 07:45:03  malthoff&n; *&t;Add Address Calculation Workaround: If the EPROM byte&n; *&t;Id is 3, the address offset is 512 kB.&n; *&t;Initialize default values for PLinkMode and PFlowCtrlMode.&n; *&n; *&t;Revision 1.22  1998/10/22 09:46:47  gklug&n; *&t;fix SysKonnectFileId typo&n; *&n; *&t;Revision 1.21  1998/10/20 12:11:56  malthoff&n; *&t;Don&squot;t dendy the Queue config if the size of the unused&n; *&t;Rx qeueu is zero.&n; *&n; *&t;Revision 1.20  1998/10/19 07:27:58  malthoff&n; *&t;SkGeInitRamIface() is public to be called by diagnostics.&n; *&n; *&t;Revision 1.19  1998/10/16 13:33:45  malthoff&n; *&t;Fix: enabling descriptor polling is not allowed until&n; *&t;the descriptor addresses are set. Descriptor polling&n; *&t;must be handled by the driver.&n; *&n; *&t;Revision 1.18  1998/10/16 10:58:27  malthoff&n; *&t;Remove temp. code for Diag prototype.&n; *&t;Remove lint warning for dummy reads.&n; *&t;Call SkGeLoadLnkSyncCnt() during SkGeInitPort().&n; *&n; *&t;Revision 1.17  1998/10/14 09:16:06  malthoff&n; *&t;Change parameter LimCount and programming of&n; *&t;the limit counter in SkGeCfgSync().&n; *&n; *&t;Revision 1.16  1998/10/13 09:21:16  malthoff&n; *&t;Don&squot;t set XM_RX_SELF_RX in RxCmd Reg, because it&squot;s&n; *&t;like a Loopback Mode in half duplex.&n; *&n; *&t;Revision 1.15  1998/10/09 06:47:40  malthoff&n; *&t;SkGeInitMacArb(): set recovery counters init value&n; *&t;to zero although this counters are not uesd.&n; *&t;Bug fix in Rx Upper/Lower Pause Threshold calculation.&n; *&t;Add XM_RX_SELF_RX to RxCmd.&n; *&n; *&t;Revision 1.14  1998/10/06 15:15:53  malthoff&n; *&t;Make sure no pending IRQ is cleared in SkGeLoadLnkSyncCnt().&n; *&n; *&t;Revision 1.13  1998/10/06 14:09:36  malthoff&n; *&t;Add SkGeLoadLnkSyncCnt(). Modify&n; *&t;the &squot;port stopped&squot; condition according&n; *&t;to the current problem report.&n; *&n; *&t;Revision 1.12  1998/10/05 08:17:21  malthoff&n; *&t;Add functions: SkGePollRxD(), SkGePollTxD(),&n; *&t;DoCalcAddr(), SkGeCheckQSize(),&n; *&t;DoInitRamQueue(), and SkGeCfgSync().&n; *&t;Add coding for SkGeInitMacArb(), SkGeInitPktArb(),&n; *&t;SkGeInitMacFifo(), SkGeInitRamBufs(),&n; *&t;SkGeInitRamIface(), and SkGeInitBmu().&n; *&n; *&t;Revision 1.11  1998/09/29 08:26:29  malthoff&n; *&t;bug fix: SkGeInit0() &squot;i&squot; should be increment.&n; *&n; *&t;Revision 1.10  1998/09/28 13:19:01  malthoff&n; *&t;Coding time: Save the done work.&n; *&t;Modify SkGeLinkLED(), add SkGeXmitLED(),&n; *&t;define SkGeCheckQSize(), SkGeInitMacArb(),&n; *&t;SkGeInitPktArb(), SkGeInitMacFifo(),&n; *&t;SkGeInitRamBufs(), SkGeInitRamIface(),&n; *&t;and SkGeInitBmu(). Do coding for SkGeStopPort(),&n; *&t;SkGeInit1(), SkGeInit2(), and SkGeInit3().&n; *&t;Do coding for SkGeDinit() and SkGeInitPort().&n; *&n; *&t;Revision 1.9  1998/09/16 14:29:05  malthoff&n; *&t;Some minor changes.&n; *&n; *&t;Revision 1.8  1998/09/11 05:29:14  gklug&n; *&t;add: init state of a port&n; *&n; *&t;Revision 1.7  1998/09/04 09:26:25  malthoff&n; *&t;Short temporary modification.&n; *&n; *&t;Revision 1.6  1998/09/04 08:27:59  malthoff&n; *&t;Remark the do-while in StopPort() because it never ends&n; *&t;without a GE adapter.&n; *&n; *&t;Revision 1.5  1998/09/03 14:05:45  malthoff&n; *&t;Change comment for SkGeInitPort(). Do not&n; *&t;repair the queue sizes if invalid.&n; *&n; *&t;Revision 1.4  1998/09/03 10:03:19  malthoff&n; *&t;Implement the new interface according to the&n; *&t;reviewed interface specification.&n; *&n; *&t;Revision 1.3  1998/08/19 09:11:25  gklug&n; *&t;fix: struct are removed from c-source (see CCC)&n; *&n; *&t;Revision 1.2  1998/07/28 12:33:58  malthoff&n; *&t;Add &squot;IoC&squot; parameter in function declaration and SK IO macros.&n; *&n; *&t;Revision 1.1  1998/07/23 09:48:57  malthoff&n; *&t;Creation. First dummy &squot;C&squot; file.&n; *&t;SkGeInit(Level 0) is card_start for GE.&n; *&t;SkGeDeInit() is card_stop for GE.&n; *&n; *&n; ******************************************************************************/
 macro_line|#include &quot;h/skdrv1st.h&quot;
 macro_line|#include &quot;h/skdrv2nd.h&quot;
 multiline_comment|/* global variables ***********************************************************/
@@ -14,7 +14,7 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;@(#) $Id: skgeinit.c,v 1.93 2003/05/28 15:44:43 rschmidt Exp $ (C) Marvell.&quot;
+l_string|&quot;@(#) $Id: skgeinit.c,v 1.97 2003/10/02 16:45:31 rschmidt Exp $ (C) Marvell.&quot;
 suffix:semicolon
 macro_line|#endif
 DECL|struct|s_QOffTab
@@ -1648,13 +1648,6 @@ id|DWord
 suffix:semicolon
 macro_line|#endif /* VCPU */
 multiline_comment|/*&n;&t; * For each FIFO:&n;&t; *&t;- release local reset&n;&t; *&t;- use default value for MAC FIFO size&n;&t; *&t;- setup defaults for the control register&n;&t; *&t;- enable the FIFO&n;&t; */
-id|Word
-op_assign
-(paren
-id|SK_U16
-)paren
-id|GMF_RX_CTRL_DEF
-suffix:semicolon
 macro_line|#ifdef GENESIS
 r_if
 c_cond
@@ -1814,6 +1807,13 @@ id|SK_U16
 )paren
 id|RX_FF_FL_DEF_MSK
 )paren
+suffix:semicolon
+id|Word
+op_assign
+(paren
+id|SK_U16
+)paren
+id|GMF_RX_CTRL_DEF
 suffix:semicolon
 multiline_comment|/* disable Rx GMAC FIFO Flush for YUKON-Lite Rev. A0 only */
 r_if
@@ -4368,6 +4368,34 @@ op_assign
 id|SK_TRUE
 suffix:semicolon
 multiline_comment|/* See WA code */
+id|pPrt-&gt;PPhyPowerState
+op_assign
+id|PHY_PM_OPERATIONAL_MODE
+suffix:semicolon
+id|pPrt-&gt;PMacColThres
+op_assign
+id|TX_COL_DEF
+suffix:semicolon
+id|pPrt-&gt;PMacJamLen
+op_assign
+id|TX_JAM_LEN_DEF
+suffix:semicolon
+id|pPrt-&gt;PMacJamIpgVal
+op_assign
+id|TX_JAM_IPG_DEF
+suffix:semicolon
+id|pPrt-&gt;PMacJamIpgData
+op_assign
+id|TX_IPG_JAM_DEF
+suffix:semicolon
+id|pPrt-&gt;PMacIpgData
+op_assign
+id|IPG_DATA_DEF
+suffix:semicolon
+id|pPrt-&gt;PMacLimit4
+op_assign
+id|SK_FALSE
+suffix:semicolon
 )brace
 id|pAC-&gt;GIni.GIPortUsage
 op_assign
@@ -5209,6 +5237,28 @@ id|DWord
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* switch power to VCC (WA for VAUX problem) */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|B0_POWER_CTRL
+comma
+(paren
+id|SK_U8
+)paren
+(paren
+id|PC_VAUX_ENA
+op_or
+id|PC_VCC_ENA
+op_or
+id|PC_VAUX_OFF
+op_or
+id|PC_VCC_ON
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* read the Interrupt source */
 id|SK_IN32
 c_func
@@ -6247,6 +6297,14 @@ suffix:semicolon
 id|SK_U16
 id|Word
 suffix:semicolon
+macro_line|#ifdef SK_PHY_LP_MODE
+id|SK_U8
+id|Byte
+suffix:semicolon
+id|SK_U16
+id|PmCtlSts
+suffix:semicolon
+macro_line|#endif /* SK_PHY_LP_MODE */
 macro_line|#if (!defined(SK_SLIM) &amp;&amp; !defined(VCPU))
 multiline_comment|/* ensure I2C is ready */
 id|SkI2cWaitIrq
@@ -6312,6 +6370,121 @@ id|SK_HARD_RST
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef SK_PHY_LP_MODE
+multiline_comment|/*&n;&t; * for power saving purposes within mobile environments&n;&t; * we set the PHY to coma mode and switch to D3 power state.&n;&t; */
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukonLite
+op_logical_and
+id|pAC-&gt;GIni.GIChipRev
+op_eq
+id|CHIP_REV_YU_LITE_A3
+)paren
+(brace
+multiline_comment|/* for all ports switch PHY to coma mode */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|pAC-&gt;GIni.GIMacsFound
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|SkGmEnterLowPowerMode
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|i
+comma
+id|PHY_PM_DEEP_SLEEP
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIVauxAvail
+)paren
+(brace
+multiline_comment|/* switch power to VAUX */
+id|Byte
+op_assign
+id|PC_VAUX_ENA
+op_or
+id|PC_VCC_ENA
+op_or
+id|PC_VAUX_ON
+op_or
+id|PC_VCC_OFF
+suffix:semicolon
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|B0_POWER_CTRL
+comma
+id|Byte
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* switch to D3 state */
+id|SK_IN16
+c_func
+(paren
+id|IoC
+comma
+id|PCI_C
+c_func
+(paren
+id|PCI_PM_CTL_STS
+)paren
+comma
+op_amp
+id|PmCtlSts
+)paren
+suffix:semicolon
+id|PmCtlSts
+op_or_assign
+id|PCI_PM_STATE_D3
+suffix:semicolon
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|B2_TST_CTRL1
+comma
+id|TST_CFG_WRITE_ON
+)paren
+suffix:semicolon
+id|SK_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|PCI_C
+c_func
+(paren
+id|PCI_PM_CTL_STS
+)paren
+comma
+id|PmCtlSts
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* SK_PHY_LP_MODE */
 multiline_comment|/* Reset all bits in the PCI STATUS register */
 multiline_comment|/*&n;&t; * Note: PCI Cfg cycles cannot be used, because they are not&n;&t; *&t; available on some platforms after &squot;boot time&squot;.&n;&t; */
 id|SK_IN16
