@@ -6128,6 +6128,8 @@ id|fbi-&gt;map_size
 comma
 op_amp
 id|fbi-&gt;map_dma
+comma
+id|PTE_BUFFERABLE
 )paren
 suffix:semicolon
 r_if
