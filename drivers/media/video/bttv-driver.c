@@ -13355,6 +13355,10 @@ r_return
 id|POLLERR
 suffix:semicolon
 )brace
+id|fh-&gt;cap.read_buf-&gt;memory
+op_assign
+id|V4L2_MEMORY_USERPTR
+suffix:semicolon
 id|field
 op_assign
 id|videobuf_next_field
