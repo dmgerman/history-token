@@ -87,21 +87,6 @@ l_int|288
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-r_int
-id|do_signal
-c_func
-(paren
-id|sigset_t
-op_star
-id|oldset
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Atomically swap in the new signal mask, and wait for a signal.&n; */
 DECL|function|sys_rt_sigsuspend
 r_int
@@ -1713,21 +1698,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Note that &squot;init&squot; is a special process: it doesn&squot;t get signals it doesn&squot;t&n; * want to handle. Thus you cannot kill init even with a SIGKILL even by&n; * mistake.&n; */
-r_extern
-r_int
-id|do_signal32
-c_func
-(paren
-id|sigset_t
-op_star
-id|oldset
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 DECL|function|do_signal
 r_int
 id|do_signal
