@@ -142,14 +142,6 @@ DECL|typedef|cam_status
 )brace
 id|cam_status
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-DECL|macro|SCSI_DATA_READ
-mdefine_line|#define&t;SCSI_DATA_READ&t;1
-DECL|macro|SCSI_DATA_WRITE
-mdefine_line|#define&t;SCSI_DATA_WRITE 2
-DECL|macro|SCSI_DATA_NONE
-mdefine_line|#define SCSI_DATA_NONE  3
-macro_line|#endif
 multiline_comment|/*&n; * Definitions for the asynchronous callback CCB fields.&n; */
 r_typedef
 r_enum

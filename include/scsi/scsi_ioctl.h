@@ -125,6 +125,30 @@ id|__user
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|scsi_nonblockable_ioctl
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+comma
+r_int
+id|cmd
+comma
+r_void
+id|__user
+op_star
+id|arg
+comma
+r_struct
+id|file
+op_star
+id|filp
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _SCSI_IOCTL_H */
 eof

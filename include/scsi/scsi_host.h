@@ -227,29 +227,6 @@ id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Old EH handlers, no longer used. Make them warn the user of old&n;&t; * drivers by using a wrong type&n;&t; *&n;&t; * Status: MORE THAN OBSOLETE&n;&t; */
-DECL|member|abort
-r_int
-(paren
-op_star
-m_abort
-)paren
-(paren
-r_int
-)paren
-suffix:semicolon
-DECL|member|reset
-r_int
-(paren
-op_star
-id|reset
-)paren
-(paren
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Before the mid layer attempts to scan for a new device where none&n;&t; * currently exists, it will call this entry in your driver.  Should&n;&t; * your driver need to allocate any structs or perform any other init&n;&t; * items in order to send commands to a currently unused target/lun&n;&t; * combo, then this is where you can perform those allocations.  This&n;&t; * is specifically so that drivers won&squot;t have to perform any kind of&n;&t; * &quot;is this a new device&quot; checks in their queuecommand routine,&n;&t; * thereby making the hot path a bit quicker.&n;&t; *&n;&t; * Return values: 0 on success, non-0 on failure&n;&t; *&n;&t; * Deallocation:  If we didn&squot;t find any devices at this ID, you will&n;&t; * get an immediate call to slave_destroy().  If we find something&n;&t; * here then you will get a call to slave_configure(), then the&n;&t; * device will be used for however long it is kept around, then when&n;&t; * the device is removed from the system (or * possibly at reboot&n;&t; * time), you will then get a call to slave_destroy().  This is&n;&t; * assuming you implement slave_configure and slave_destroy.&n;&t; * However, if you allocate memory and hang it off the device struct,&n;&t; * then you must implement the slave_destroy() routine at a minimum&n;&t; * in order to avoid leaking memory&n;&t; * each time a device is tore down.&n;&t; *&n;&t; * Status: OPTIONAL&n;&t; */
 DECL|member|slave_alloc
 r_int
@@ -819,6 +796,7 @@ r_int
 suffix:semicolon
 r_extern
 r_int
+id|__must_check
 id|scsi_add_host
 c_func
 (paren

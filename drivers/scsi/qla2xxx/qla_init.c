@@ -1863,14 +1863,6 @@ comma
 id|HCCR_CLR_RISC_INT
 )paren
 suffix:semicolon
-id|RD_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;hccr
-)paren
-suffix:semicolon
-multiline_comment|/* PCI Posting. */
 id|WRT_REG_WORD
 c_func
 (paren
@@ -1880,14 +1872,6 @@ comma
 id|HCCR_CLR_HOST_INT
 )paren
 suffix:semicolon
-id|RD_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;hccr
-)paren
-suffix:semicolon
-multiline_comment|/* PCI Posting. */
 multiline_comment|/* Reset ISP chip. */
 id|WRT_REG_WORD
 c_func
@@ -1898,14 +1882,6 @@ comma
 id|CSR_ISP_SOFT_RESET
 )paren
 suffix:semicolon
-id|RD_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;ctrl_status
-)paren
-suffix:semicolon
-multiline_comment|/* PCI Posting. */
 multiline_comment|/* Wait for RISC to recover from reset. */
 r_if
 c_cond
@@ -1992,14 +1968,6 @@ comma
 id|HCCR_RESET_RISC
 )paren
 suffix:semicolon
-id|RD_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;hccr
-)paren
-suffix:semicolon
-multiline_comment|/* PCI Posting. */
 id|WRT_REG_WORD
 c_func
 (paren
@@ -2306,14 +2274,6 @@ comma
 id|CSR_ISP_SOFT_RESET
 )paren
 suffix:semicolon
-id|RD_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;ctrl_status
-)paren
-suffix:semicolon
-multiline_comment|/* PCI Posting. */
 multiline_comment|/*&n;&t; * We need to have a delay here since the card will not respond while&n;&t; * in reset causing an MCA on some architectures.&n;&t; */
 id|udelay
 c_func
@@ -2401,14 +2361,6 @@ comma
 id|HCCR_RESET_RISC
 )paren
 suffix:semicolon
-id|RD_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;hccr
-)paren
-suffix:semicolon
-multiline_comment|/* PCI Posting. */
 id|WRT_REG_WORD
 c_func
 (paren
@@ -2418,14 +2370,6 @@ comma
 id|HCCR_RELEASE_RISC
 )paren
 suffix:semicolon
-id|RD_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;hccr
-)paren
-suffix:semicolon
-multiline_comment|/* PCI Posting. */
 multiline_comment|/* Workaround for QLA2312 PCI parity error */
 r_if
 c_cond

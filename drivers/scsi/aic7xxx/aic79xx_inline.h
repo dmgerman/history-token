@@ -876,7 +876,7 @@ r_void
 op_star
 id|sgptr
 comma
-id|bus_addr_t
+id|dma_addr_t
 id|addr
 comma
 id|bus_size_t
@@ -959,7 +959,7 @@ r_void
 op_star
 id|sgptr
 comma
-id|bus_addr_t
+id|dma_addr_t
 id|addr
 comma
 id|bus_size_t
@@ -977,7 +977,7 @@ c_cond
 (paren
 r_sizeof
 (paren
-id|bus_addr_t
+id|dma_addr_t
 )paren
 OG
 l_int|4
@@ -1570,7 +1570,7 @@ r_uint32
 id|sg_busaddr
 )paren
 (brace
-id|bus_addr_t
+id|dma_addr_t
 id|sg_offset
 suffix:semicolon
 multiline_comment|/* sg_list_phys points to entry 1, not 0 */
@@ -1622,7 +1622,7 @@ op_star
 id|sg
 )paren
 (brace
-id|bus_addr_t
+id|dma_addr_t
 id|sg_offset
 suffix:semicolon
 multiline_comment|/* sg_list_phys points to entry 1, not 0 */

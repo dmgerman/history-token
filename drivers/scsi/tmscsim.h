@@ -78,14 +78,12 @@ id|scatterlist
 op_star
 id|pSegmentList
 suffix:semicolon
-multiline_comment|/* 0x10: */
 DECL|member|Segmentx
 r_struct
 id|scatterlist
 id|Segmentx
 suffix:semicolon
 multiline_comment|/* make a one entry of S/G list table */
-multiline_comment|/* 0x1c: */
 DECL|member|SGBusAddr
 r_int
 r_int
@@ -108,11 +106,15 @@ r_int
 r_int
 id|SavedTotXLen
 suffix:semicolon
+DECL|member|Saved_Ptr
+r_int
+r_int
+id|Saved_Ptr
+suffix:semicolon
 DECL|member|SRBState
 id|u32
 id|SRBState
 suffix:semicolon
-multiline_comment|/* 0x30: */
 DECL|member|SRBStatus
 id|u8
 id|SRBStatus
@@ -136,7 +138,7 @@ id|u8
 id|ScsiPhase
 suffix:semicolon
 DECL|member|TagNumber
-id|u8
+id|s8
 id|TagNumber
 suffix:semicolon
 DECL|member|SGIndex
@@ -147,7 +149,6 @@ DECL|member|SGcount
 id|u8
 id|SGcount
 suffix:semicolon
-multiline_comment|/* 0x38: */
 DECL|member|MsgCnt
 id|u8
 id|MsgCnt
@@ -156,20 +157,10 @@ DECL|member|EndMessage
 id|u8
 id|EndMessage
 suffix:semicolon
-DECL|member|RetryCnt
-id|u8
-id|RetryCnt
-suffix:semicolon
 DECL|member|SavedSGCount
 id|u8
 id|SavedSGCount
 suffix:semicolon
-DECL|member|Saved_Ptr
-r_int
-r_int
-id|Saved_Ptr
-suffix:semicolon
-multiline_comment|/* 0x40: */
 DECL|member|MsgInBuf
 id|u8
 id|MsgInBuf
@@ -185,7 +176,6 @@ l_int|6
 )braket
 suffix:semicolon
 singleline_comment|//u8&t;&t;IORBFlag;&t;/*;81h-Reset, 2-retry */
-multiline_comment|/* 0x4c: */
 )brace
 suffix:semicolon
 multiline_comment|/*&n;;-----------------------------------------------------------------------&n;; Device Control Block&n;;-----------------------------------------------------------------------&n;*/
@@ -205,20 +195,7 @@ id|dc390_acb
 op_star
 id|pDCBACB
 suffix:semicolon
-multiline_comment|/* 0x08: */
 multiline_comment|/* Queued SRBs */
-DECL|member|pWaitingSRB
-r_struct
-id|dc390_srb
-op_star
-id|pWaitingSRB
-suffix:semicolon
-DECL|member|pWaitLast
-r_struct
-id|dc390_srb
-op_star
-id|pWaitLast
-suffix:semicolon
 DECL|member|pGoingSRB
 r_struct
 id|dc390_srb
@@ -237,24 +214,14 @@ id|dc390_srb
 op_star
 id|pActiveSRB
 suffix:semicolon
-DECL|member|WaitSRBCnt
-id|u8
-id|WaitSRBCnt
-suffix:semicolon
-multiline_comment|/* Not used */
 DECL|member|GoingSRBCnt
 id|u8
 id|GoingSRBCnt
-suffix:semicolon
-DECL|member|DevType
-id|u8
-id|DevType
 suffix:semicolon
 DECL|member|MaxCommand
 id|u8
 id|MaxCommand
 suffix:semicolon
-multiline_comment|/* 0x20: */
 DECL|member|TagMask
 id|u32
 id|TagMask
@@ -293,7 +260,6 @@ DECL|member|Inquiry7
 id|u8
 id|Inquiry7
 suffix:semicolon
-multiline_comment|/* 0x2c: */
 DECL|member|SyncMode
 id|u8
 id|SyncMode
@@ -314,10 +280,6 @@ id|u8
 id|SyncOffset
 suffix:semicolon
 multiline_comment|/*;for reg. and nego.(low nibble) */
-multiline_comment|/* 0x30:*/
-singleline_comment|//u8&t;&t;InqDataBuf[8];
-singleline_comment|//u8&t;&t;CapacityBuf[8];
-singleline_comment|///* 0x40: */
 )brace
 suffix:semicolon
 multiline_comment|/*&n;;-----------------------------------------------------------------------&n;; Adapter Control Block&n;;-----------------------------------------------------------------------&n;*/
@@ -330,12 +292,6 @@ r_struct
 id|Scsi_Host
 op_star
 id|pScsiHost
-suffix:semicolon
-DECL|member|pNextACB
-r_struct
-id|dc390_acb
-op_star
-id|pNextACB
 suffix:semicolon
 DECL|member|IOPortBase
 id|u16
@@ -478,11 +434,6 @@ suffix:semicolon
 DECL|member|CmdOutOfSRB
 id|u32
 id|CmdOutOfSRB
-suffix:semicolon
-DECL|member|Waiting_Timer
-r_struct
-id|timer_list
-id|Waiting_Timer
 suffix:semicolon
 DECL|member|TmpSRB
 r_struct
@@ -699,15 +650,15 @@ mdefine_line|#define MK_RES(drv,did,msg,tgt) ((int)(drv)&lt;&lt;24 | (int)(did)&
 DECL|macro|MK_RES_LNX
 mdefine_line|#define MK_RES_LNX(drv,did,msg,tgt) ((int)(drv)&lt;&lt;24 | (int)(did)&lt;&lt;16 | (int)(msg)&lt;&lt;8 | (int)(tgt)&lt;&lt;1)
 DECL|macro|SET_RES_TARGET
-mdefine_line|#define SET_RES_TARGET(who,tgt) { who &amp;= ~RES_TARGET; who |= (int)(tgt); }
+mdefine_line|#define SET_RES_TARGET(who, tgt) do { who &amp;= ~RES_TARGET; who |= (int)(tgt); } while (0)
 DECL|macro|SET_RES_TARGET_LNX
-mdefine_line|#define SET_RES_TARGET_LNX(who,tgt) { who &amp;= ~RES_TARGET_LNX; who |= (int)(tgt) &lt;&lt; 1; }
+mdefine_line|#define SET_RES_TARGET_LNX(who, tgt) do { who &amp;= ~RES_TARGET_LNX; who |= (int)(tgt) &lt;&lt; 1; } while (0)
 DECL|macro|SET_RES_MSG
-mdefine_line|#define SET_RES_MSG(who,msg) { who &amp;= ~RES_ENDMSG; who |= (int)(msg) &lt;&lt; 8; }
+mdefine_line|#define SET_RES_MSG(who, msg) do { who &amp;= ~RES_ENDMSG; who |= (int)(msg) &lt;&lt; 8; } while (0)
 DECL|macro|SET_RES_DID
-mdefine_line|#define SET_RES_DID(who,did) { who &amp;= ~RES_DID; who |= (int)(did) &lt;&lt; 16; }
+mdefine_line|#define SET_RES_DID(who, did) do { who &amp;= ~RES_DID; who |= (int)(did) &lt;&lt; 16; } while (0)
 DECL|macro|SET_RES_DRV
-mdefine_line|#define SET_RES_DRV(who,drv) { who &amp;= ~RES_DRV; who |= (int)(drv) &lt;&lt; 24; }
+mdefine_line|#define SET_RES_DRV(who, drv) do { who &amp;= ~RES_DRV; who |= (int)(drv) &lt;&lt; 24; } while (0)
 multiline_comment|/*;---Sync_Mode */
 DECL|macro|SYNC_DISABLE
 mdefine_line|#define SYNC_DISABLE&t;0

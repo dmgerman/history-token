@@ -380,6 +380,16 @@ id|BLIST_NOLUN
 )brace
 comma
 (brace
+l_string|&quot;SONY&quot;
+comma
+l_string|&quot;SDT-5000&quot;
+comma
+l_string|&quot;3.17&quot;
+comma
+id|BLIST_SELECT_NO_ATN
+)brace
+comma
+(brace
 l_string|&quot;TANDBERG&quot;
 comma
 l_string|&quot;TDC 3600&quot;
@@ -1323,6 +1333,17 @@ comma
 (brace
 l_string|&quot;SEAGATE&quot;
 comma
+l_string|&quot;ST34555N&quot;
+comma
+l_string|&quot;0930&quot;
+comma
+id|BLIST_NOTQ
+)brace
+comma
+multiline_comment|/* Chokes on tagged INQUIRY */
+(brace
+l_string|&quot;SEAGATE&quot;
+comma
 l_string|&quot;ST3390N&quot;
 comma
 l_string|&quot;9546&quot;
@@ -1358,6 +1379,16 @@ comma
 l_string|&quot;*&quot;
 comma
 id|BLIST_REPORTLUN2
+)brace
+comma
+(brace
+l_string|&quot;SGI&quot;
+comma
+l_string|&quot;Universal Xport&quot;
+comma
+l_string|&quot;*&quot;
+comma
+id|BLIST_NO_ULD_ATTACH
 )brace
 comma
 (brace
@@ -1453,6 +1484,36 @@ comma
 id|BLIST_FORCELUN
 op_or
 id|BLIST_INQUIRY_36
+)brace
+comma
+(brace
+l_string|&quot;WangDAT&quot;
+comma
+l_string|&quot;Model 2600&quot;
+comma
+l_string|&quot;01.7&quot;
+comma
+id|BLIST_SELECT_NO_ATN
+)brace
+comma
+(brace
+l_string|&quot;WangDAT&quot;
+comma
+l_string|&quot;Model 3200&quot;
+comma
+l_string|&quot;02.2&quot;
+comma
+id|BLIST_SELECT_NO_ATN
+)brace
+comma
+(brace
+l_string|&quot;WangDAT&quot;
+comma
+l_string|&quot;Model 1300&quot;
+comma
+l_string|&quot;02.4&quot;
+comma
+id|BLIST_SELECT_NO_ATN
 )brace
 comma
 (brace

@@ -4877,14 +4877,6 @@ comma
 id|CSR_ISP_SOFT_RESET
 )paren
 suffix:semicolon
-id|RD_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;ctrl_status
-)paren
-suffix:semicolon
-multiline_comment|/* PCI Posting. */
 )brace
 r_for
 c_loop
@@ -5081,14 +5073,6 @@ comma
 id|HCCR_RELEASE_RISC
 )paren
 suffix:semicolon
-id|RD_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;hccr
-)paren
-suffix:semicolon
-multiline_comment|/* PCI Posting. */
 )brace
 )brace
 r_if
