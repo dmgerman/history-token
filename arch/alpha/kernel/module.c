@@ -1091,6 +1091,22 @@ id|SHN_UNDEF
 r_goto
 id|reloc_overflow
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|sym-&gt;st_other
+op_amp
+id|STO_ALPHA_STD_GPLOAD
+)paren
+op_eq
+id|STO_ALPHA_STD_GPLOAD
+)paren
+multiline_comment|/* Omit the prologue. */
+id|value
+op_add_assign
+l_int|8
+suffix:semicolon
 multiline_comment|/* FALLTHRU */
 r_case
 id|R_ALPHA_BRADDR
