@@ -2,9 +2,9 @@ multiline_comment|/*&n; * ds.h 1.56 2000/06/12 21:55:40&n; *&n; * The contents o
 macro_line|#ifndef _LINUX_DS_H
 DECL|macro|_LINUX_DS_H
 mdefine_line|#define _LINUX_DS_H
-macro_line|#include &lt;pcmcia/driver_ops.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;pcmcia/cs_types.h&gt;
 DECL|struct|tuple_parse_t
 r_typedef
 r_struct
@@ -231,6 +231,35 @@ mdefine_line|#define DS_UNBIND_REQUEST&t;&t;_IOW (&squot;d&squot;, 63, bind_info
 DECL|macro|DS_BIND_MTD
 mdefine_line|#define DS_BIND_MTD&t;&t;&t;_IOWR(&squot;d&squot;, 64, mtd_info_t)
 macro_line|#ifdef __KERNEL__
+DECL|struct|dev_node_t
+r_typedef
+r_struct
+id|dev_node_t
+(brace
+DECL|member|dev_name
+r_char
+id|dev_name
+(braket
+id|DEV_NAME_LEN
+)braket
+suffix:semicolon
+DECL|member|major
+DECL|member|minor
+id|u_short
+id|major
+comma
+id|minor
+suffix:semicolon
+DECL|member|next
+r_struct
+id|dev_node_t
+op_star
+id|next
+suffix:semicolon
+DECL|typedef|dev_node_t
+)brace
+id|dev_node_t
+suffix:semicolon
 DECL|struct|dev_link_t
 r_typedef
 r_struct
