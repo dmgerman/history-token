@@ -244,13 +244,13 @@ multiline_comment|/* debug level can be set by insmod for debugging purposes */
 DECL|macro|DEBUG_LEVEL_INFO
 mdefine_line|#define DEBUG_LEVEL_INFO&t;1
 DECL|variable|debuglevel
+r_static
 r_int
 id|debuglevel
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* max frame size for memory allocations */
 DECL|variable|maxframe
+r_static
 id|ssize_t
 id|maxframe
 op_assign
