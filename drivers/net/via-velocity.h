@@ -3882,10 +3882,6 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|member|xmit_lock
-id|spinlock_t
-id|xmit_lock
-suffix:semicolon
 DECL|member|wol_opts
 r_int
 id|wol_opts
