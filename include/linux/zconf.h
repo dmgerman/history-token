@@ -17,14 +17,6 @@ macro_line|#endif
 multiline_comment|/* Type declarations */
 DECL|macro|OF
 macro_line|#    define OF(args)  args
-macro_line|#ifndef ZEXPORT
-DECL|macro|ZEXPORT
-macro_line|#  define ZEXPORT
-macro_line|#endif
-macro_line|#ifndef ZEXPORTVA
-DECL|macro|ZEXPORTVA
-macro_line|#  define ZEXPORTVA
-macro_line|#endif
 DECL|typedef|Byte
 r_typedef
 r_int

@@ -4892,7 +4892,6 @@ suffix:semicolon
 DECL|function|zlib_deflate_workspacesize
 r_extern
 r_int
-id|ZEXPORT
 id|zlib_deflate_workspacesize
 (paren
 )paren

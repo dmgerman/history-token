@@ -66,11 +66,10 @@ DECL|macro|OS_CODE
 macro_line|#  define OS_CODE  0x03  /* assume Unix */
 macro_line|#endif
 multiline_comment|/* functions */
-DECL|typedef|OF
+DECL|typedef|check_func
 r_typedef
 id|uLong
 (paren
-id|ZEXPORT
 op_star
 id|check_func
 )paren
