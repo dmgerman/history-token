@@ -367,7 +367,6 @@ mdefine_line|#define CALIBRATE_LATCH&t;(5 * LATCH)
 DECL|macro|CALIBRATE_TIME
 mdefine_line|#define CALIBRATE_TIME&t;(5 * 1000020/HZ)
 DECL|function|calibrate_tsc
-r_static
 r_int
 r_int
 id|__init
