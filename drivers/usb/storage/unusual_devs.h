@@ -2608,6 +2608,31 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* Patch by Stephan Walter &lt;stephan.walter@epfl.ch&gt;&n; * I don&squot;t know why, but it works... */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0dda
+comma
+l_int|0x0001
+comma
+l_int|0x0012
+comma
+l_int|0x0012
+comma
+l_string|&quot;WINWARD&quot;
+comma
+l_string|&quot;Music Disk&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
+)paren
+comma
 multiline_comment|/* Submitted by Antoine Mairesse &lt;antoine.mairesse@free.fr&gt; */
 id|UNUSUAL_DEV
 c_func
