@@ -300,16 +300,6 @@ op_star
 id|dev
 )paren
 (brace
-id|hdlc_device
-op_star
-id|hdlc
-op_assign
-id|dev_to_hdlc
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_int
 id|result
 suffix:semicolon
@@ -404,11 +394,7 @@ id|KERN_ERR
 l_string|&quot;%s: LAPB connect request &quot;
 l_string|&quot;failed, error code = %i&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|result
 )paren
@@ -459,11 +445,7 @@ id|KERN_ERR
 l_string|&quot;%s: LAPB disconnect request &quot;
 l_string|&quot;failed, error code = %i&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|result
 )paren
@@ -655,9 +637,10 @@ r_int
 id|hdlc_x25_ioctl
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 r_struct
 id|ifreq
@@ -665,15 +648,14 @@ op_star
 id|ifr
 )paren
 (brace
-r_struct
-id|net_device
+id|hdlc_device
 op_star
-id|dev
+id|hdlc
 op_assign
-id|hdlc_to_dev
+id|dev_to_hdlc
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 r_int

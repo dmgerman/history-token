@@ -575,7 +575,7 @@ mdefine_line|#define hdlc_fr_ioctl(dev, ifr)&t;-ENOSYS
 macro_line|#endif
 macro_line|#ifndef CONFIG_HDLC_X25
 DECL|macro|hdlc_x25_ioctl
-mdefine_line|#define hdlc_x25_ioctl(hdlc, ifr)&t;-ENOSYS
+mdefine_line|#define hdlc_x25_ioctl(dev, ifr)&t;-ENOSYS
 macro_line|#endif
 DECL|function|hdlc_ioctl
 r_int
@@ -731,7 +731,7 @@ r_return
 id|hdlc_x25_ioctl
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|ifr
 )paren
