@@ -43,17 +43,6 @@ macro_line|#include&t;&quot;h/skfbi.h&quot;
 macro_line|#include&t;&quot;h/fddi.h&quot;
 macro_line|#include&t;&quot;h/smc.h&quot;
 macro_line|#include&t;&quot;h/smtstate.h&quot;
-singleline_comment|// Define global routines
-r_int
-id|skfp_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 singleline_comment|// Define module-wide (static) routines
 r_static
 r_struct
@@ -82,17 +71,6 @@ r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_int
-(paren
-op_star
-id|init
-)paren
-(paren
-r_struct
-id|net_device
-op_star
-)paren
 )paren
 suffix:semicolon
 r_static
@@ -954,6 +932,7 @@ DECL|macro|PRIV
 mdefine_line|#define PRIV(dev) (&amp;(((struct s_smc *)dev-&gt;priv)-&gt;os))
 multiline_comment|/*&n; * ==============&n; * = skfp_probe =&n; * ==============&n; *   &n; * Overview:&n; *   Probes for supported FDDI PCI controllers&n; *  &n; * Returns:&n; *   Condition code&n; *       &n; * Arguments:&n; *   dev - pointer to device information&n; *&n; * Functional Description:&n; *   This routine is called by the OS for each FDDI device name (fddi0,&n; *   fddi1,...,fddi6, fddi7) specified in drivers/net/Space.c.&n; *   If loaded as a module, it will detect and initialize all &n; *   adapters the first time it is called.&n; *&n; *   Let&squot;s say that skfp_probe() is getting called to initialize fddi0.&n; *   Furthermore, let&squot;s say there are three supported controllers in the&n; *   system.  Before skfp_probe() leaves, devices fddi0, fddi1, and fddi2&n; *   will be initialized and a global flag will be set to indicate that&n; *   skfp_probe() has already been called.&n; *&n; *   However...the OS doesn&squot;t know that we&squot;ve already initialized&n; *   devices fddi1 and fddi2 so skfp_probe() gets called again and again&n; *   until it reaches the end of the device list for FDDI (presently,&n; *   fddi7).  It&squot;s important that the driver &quot;pretend&quot; to probe for&n; *   devices fddi1 and fddi2 and return success.  Devices fddi3&n; *   through fddi7 will return failure since they weren&squot;t initialized.&n; *&n; *   This algorithm seems to work for the time being.  As other FDDI&n; *   drivers are written for Linux, a more generic approach (perhaps&n; *   similar to the Ethernet card approach) may need to be implemented.&n; *   &n; * Return Codes:&n; *   0           - This device (fddi0, fddi1, etc) configured successfully&n; *   -ENODEV - No devices present, or no SysKonnect FDDI PCI device&n; *                         present for this device name&n; *&n; *&n; * Side Effects:&n; *   Device structures for FDDI adapters (fddi0, fddi1, etc) are&n; *   initialized and the board resources are read and stored in&n; *   the device structure.&n; */
 DECL|function|skfp_probe
+r_static
 r_int
 id|skfp_probe
 c_func
@@ -1716,8 +1695,6 @@ id|insert_device
 c_func
 (paren
 id|dev
-comma
-id|skfp_probe
 )paren
 suffix:semicolon
 r_return
@@ -1907,8 +1884,6 @@ id|insert_device
 c_func
 (paren
 id|dev
-comma
-id|skfp_probe
 )paren
 suffix:semicolon
 )brace
@@ -2134,17 +2109,6 @@ r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_int
-(paren
-op_star
-id|init
-)paren
-(paren
-r_struct
-id|net_device
-op_star
-)paren
 )paren
 (brace
 r_struct
@@ -2246,9 +2210,8 @@ r_new
 op_member_access_from_pointer
 id|init
 op_assign
-id|init
+id|skfp_probe
 suffix:semicolon
-multiline_comment|/* initialisation routine */
 r_if
 c_cond
 (paren
@@ -8135,8 +8098,6 @@ id|insert_device
 c_func
 (paren
 l_int|NULL
-comma
-id|skfp_probe
 )paren
 )paren
 op_eq
