@@ -9,13 +9,15 @@ mdefine_line|#define EDDBUF&t;0x600&t;&t;/* addr of edd_info structs in empty_ze
 DECL|macro|EDDMAXNR
 mdefine_line|#define EDDMAXNR 6&t;&t;/* number of edd_info structs starting at EDDBUF  */
 DECL|macro|EDDEXTSIZE
-mdefine_line|#define EDDEXTSIZE 4&t;&t;/* change these if you muck with the structures */
+mdefine_line|#define EDDEXTSIZE 8&t;&t;/* change these if you muck with the structures */
 DECL|macro|EDDPARMSIZE
 mdefine_line|#define EDDPARMSIZE 74
 DECL|macro|CHECKEXTENSIONSPRESENT
 mdefine_line|#define CHECKEXTENSIONSPRESENT 0x41
 DECL|macro|GETDEVICEPARAMETERS
 mdefine_line|#define GETDEVICEPARAMETERS 0x48
+DECL|macro|LEGACYGETDEVICEPARAMETERS
+mdefine_line|#define LEGACYGETDEVICEPARAMETERS 0x08
 DECL|macro|EDDMAGIC1
 mdefine_line|#define EDDMAGIC1 0x55AA
 DECL|macro|EDDMAGIC2
@@ -536,6 +538,18 @@ suffix:semicolon
 DECL|member|interface_support
 id|u16
 id|interface_support
+suffix:semicolon
+DECL|member|legacy_cylinders
+id|u16
+id|legacy_cylinders
+suffix:semicolon
+DECL|member|legacy_heads
+id|u8
+id|legacy_heads
+suffix:semicolon
+DECL|member|legacy_sectors
+id|u8
+id|legacy_sectors
 suffix:semicolon
 DECL|member|params
 r_struct
