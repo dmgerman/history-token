@@ -279,6 +279,7 @@ r_void
 id|bvme6000_reset
 c_func
 (paren
+r_void
 )paren
 (brace
 r_volatile
