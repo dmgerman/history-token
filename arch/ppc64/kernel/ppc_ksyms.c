@@ -430,13 +430,6 @@ c_func
 id|strpbrk
 )paren
 suffix:semicolon
-DECL|variable|strtok
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|strtok
-)paren
-suffix:semicolon
 DECL|variable|strstr
 id|EXPORT_SYMBOL
 c_func
