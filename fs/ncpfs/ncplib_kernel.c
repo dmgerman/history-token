@@ -86,7 +86,7 @@ id|ncp_server
 op_star
 id|server
 comma
-id|__u16
+id|__le16
 id|x
 )paren
 (brace
@@ -102,7 +102,7 @@ c_func
 id|x
 comma
 (paren
-id|__u16
+id|__le16
 op_star
 )paren
 (paren
@@ -184,7 +184,7 @@ id|ncp_server
 op_star
 id|server
 comma
-id|__u32
+id|__le32
 id|x
 )paren
 (brace
@@ -200,7 +200,7 @@ c_func
 id|x
 comma
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 (paren
@@ -610,7 +610,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|__u16
+id|__le16
 op_star
 )paren
 id|data
@@ -712,7 +712,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 id|data
@@ -721,7 +721,7 @@ id|data
 suffix:semicolon
 )brace
 r_static
-id|__u32
+id|__le32
 DECL|function|ncp_reply_dword
 id|ncp_reply_dword
 c_func
@@ -740,7 +740,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 id|ncp_reply_data
@@ -1657,7 +1657,7 @@ comma
 id|__u8
 id|vol_num
 comma
-id|__u32
+id|__le32
 id|dir_base
 comma
 r_int
@@ -1766,7 +1766,7 @@ comma
 id|__u8
 id|volnum
 comma
-id|__u32
+id|__le32
 id|dirent
 comma
 id|__u8
@@ -2274,7 +2274,7 @@ id|dir
 op_member_access_from_pointer
 id|volNumber
 suffix:semicolon
-id|__u32
+id|__le32
 id|dirent
 op_assign
 id|NCP_FINFO
@@ -2461,7 +2461,7 @@ comma
 id|__u8
 id|volnum
 comma
-id|__u32
+id|__le32
 id|dirent
 comma
 r_char
@@ -2469,7 +2469,7 @@ op_star
 id|path
 comma
 multiline_comment|/* At most 1 component */
-id|__u32
+id|__le32
 op_star
 id|DOS_dir_base
 )paren
@@ -2821,7 +2821,7 @@ comma
 id|__u8
 id|vol_num
 comma
-id|__u32
+id|__le32
 id|dir_base
 comma
 r_char
@@ -2829,11 +2829,11 @@ op_star
 id|path
 comma
 multiline_comment|/* At most 1 component */
-id|__u32
+id|__le32
 op_star
 id|dirEntNum
 comma
-id|__u32
+id|__le32
 op_star
 id|DosDirNum
 )paren
@@ -2993,18 +2993,18 @@ comma
 id|__u8
 id|srcNS
 comma
-id|__u32
+id|__le32
 id|dirEntNum
 comma
 id|__u32
 op_star
 id|volume
 comma
-id|__u32
+id|__le32
 op_star
 id|newDirEnt
 comma
-id|__u32
+id|__le32
 op_star
 id|newDosEnt
 )paren
@@ -3108,11 +3108,11 @@ id|__u32
 op_star
 id|volume
 comma
-id|__u32
+id|__le32
 op_star
 id|dirent
 comma
-id|__u32
+id|__le32
 op_star
 id|dosdirent
 )paren
@@ -3461,7 +3461,7 @@ r_char
 op_star
 id|path
 comma
-id|__u32
+id|__le32
 id|info_mask
 comma
 r_const
@@ -3482,7 +3482,7 @@ id|dir
 op_member_access_from_pointer
 id|volNumber
 suffix:semicolon
-id|__u32
+id|__le32
 id|dirent
 op_assign
 id|NCP_FINFO
@@ -3615,7 +3615,7 @@ id|inode
 op_star
 id|dir
 comma
-id|__u32
+id|__le32
 id|info_mask
 comma
 r_const
@@ -3655,7 +3655,7 @@ comma
 id|__u8
 id|volnum
 comma
-id|__u32
+id|__le32
 id|dirent
 comma
 id|__u32
@@ -3808,7 +3808,7 @@ comma
 id|__u8
 id|volnum
 comma
-id|__u32
+id|__le32
 id|dirent
 comma
 r_char
@@ -3818,7 +3818,7 @@ comma
 id|__u8
 id|ns
 comma
-r_int
+id|__le16
 id|attr
 )paren
 (brace
@@ -3926,7 +3926,7 @@ suffix:semicolon
 id|__u8
 id|volnum
 suffix:semicolon
-id|__u32
+id|__le32
 id|dirent
 suffix:semicolon
 r_if
@@ -4024,7 +4024,7 @@ id|dir
 op_member_access_from_pointer
 id|volNumber
 suffix:semicolon
-id|__u32
+id|__le32
 id|dirent
 op_assign
 id|NCP_FINFO
@@ -4219,10 +4219,10 @@ comma
 r_int
 id|open_create_mode
 comma
-id|__u32
+id|__le32
 id|create_attributes
 comma
-r_int
+id|__le16
 id|desired_acc_rights
 comma
 r_struct
@@ -4231,7 +4231,7 @@ op_star
 id|target
 )paren
 (brace
-id|__u16
+id|__le16
 id|search_attribs
 op_assign
 id|cpu_to_le16
@@ -4243,7 +4243,7 @@ suffix:semicolon
 id|__u8
 id|volnum
 suffix:semicolon
-id|__u32
+id|__le32
 id|dirent
 suffix:semicolon
 r_int
@@ -4516,7 +4516,7 @@ id|dir
 op_member_access_from_pointer
 id|volNumber
 suffix:semicolon
-id|__u32
+id|__le32
 id|dirent
 op_assign
 id|NCP_FINFO
@@ -5159,7 +5159,7 @@ r_char
 op_star
 id|old_name
 comma
-r_int
+id|__le16
 id|old_type
 comma
 r_struct
@@ -5422,7 +5422,7 @@ id|new_name
 r_int
 id|result
 suffix:semicolon
-r_int
+id|__le16
 id|old_type
 op_assign
 id|cpu_to_le16
@@ -5811,7 +5811,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|__u16
+id|__be16
 op_star
 )paren
 (paren

@@ -177,7 +177,7 @@ id|NCP_MIN_SYMLINK_SIZE
 op_logical_or
 (paren
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 id|rawlink
@@ -190,7 +190,7 @@ id|NCP_SYMLINK_MAGIC0
 op_logical_or
 (paren
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 id|rawlink
@@ -380,7 +380,8 @@ id|kludge
 suffix:semicolon
 r_int
 id|mode
-comma
+suffix:semicolon
+id|__le32
 id|attr
 suffix:semicolon
 r_int
@@ -492,7 +493,7 @@ id|aHIDDEN
 suffix:semicolon
 (paren
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 id|rawlink
@@ -505,7 +506,7 @@ id|NCP_SYMLINK_MAGIC0
 suffix:semicolon
 (paren
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 id|rawlink

@@ -706,7 +706,7 @@ r_struct
 id|nw_modify_dos_info
 id|info
 suffix:semicolon
-id|__u32
+id|__le32
 id|old_nwattr
 suffix:semicolon
 r_struct
@@ -902,7 +902,7 @@ id|old_inode
 op_assign
 id|old_dentry-&gt;d_inode
 suffix:semicolon
-id|__u32
+id|__le32
 id|old_nwattr
 op_assign
 id|NCP_FINFO
@@ -913,7 +913,7 @@ id|old_inode
 op_member_access_from_pointer
 id|nwattr
 suffix:semicolon
-id|__u32
+id|__le32
 id|new_nwattr
 op_assign
 l_int|0
@@ -3723,9 +3723,11 @@ id|dent
 suffix:semicolon
 id|__u32
 id|volNumber
-comma
+suffix:semicolon
+id|__le32
 id|dirEntNum
-comma
+suffix:semicolon
+id|__le32
 id|DosDirNum
 suffix:semicolon
 id|__u8
@@ -4338,7 +4340,7 @@ comma
 id|dev_t
 id|rdev
 comma
-r_int
+id|__le32
 id|attributes
 )paren
 (brace

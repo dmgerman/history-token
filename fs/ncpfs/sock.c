@@ -1687,7 +1687,7 @@ id|iov
 l_int|2
 )braket
 suffix:semicolon
-id|__u32
+id|__be32
 id|hdr
 (braket
 l_int|2

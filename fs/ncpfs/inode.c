@@ -3419,7 +3419,7 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-r_int
+id|__le32
 id|info_mask
 suffix:semicolon
 r_struct

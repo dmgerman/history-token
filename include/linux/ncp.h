@@ -385,7 +385,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|attributes
-id|__u32
+id|__le32
 id|attributes
 id|__attribute__
 c_func
@@ -407,7 +407,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|dataStreamSize
-id|__u32
+id|__le32
 id|dataStreamSize
 id|__attribute__
 c_func
@@ -418,7 +418,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|totalStreamSize
-id|__u32
+id|__le32
 id|totalStreamSize
 id|__attribute__
 c_func
@@ -440,7 +440,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|creationTime
-id|__u16
+id|__le16
 id|creationTime
 id|__attribute__
 c_func
@@ -451,7 +451,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|creationDate
-id|__u16
+id|__le16
 id|creationDate
 id|__attribute__
 c_func
@@ -473,7 +473,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|modifyTime
-id|__u16
+id|__le16
 id|modifyTime
 id|__attribute__
 c_func
@@ -484,7 +484,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|modifyDate
-id|__u16
+id|__le16
 id|modifyDate
 id|__attribute__
 c_func
@@ -506,7 +506,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|lastAccessDate
-id|__u16
+id|__le16
 id|lastAccessDate
 id|__attribute__
 c_func
@@ -561,7 +561,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|dirEntNum
-id|__u32
+id|__le32
 id|dirEntNum
 id|__attribute__
 c_func
@@ -572,7 +572,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|DosDirNum
-id|__u32
+id|__le32
 id|DosDirNum
 id|__attribute__
 c_func
@@ -704,7 +704,7 @@ r_struct
 id|nw_modify_dos_info
 (brace
 DECL|member|attributes
-id|__u32
+id|__le32
 id|attributes
 id|__attribute__
 c_func
@@ -715,7 +715,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|creationDate
-id|__u16
+id|__le16
 id|creationDate
 id|__attribute__
 c_func
@@ -726,7 +726,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|creationTime
-id|__u16
+id|__le16
 id|creationTime
 id|__attribute__
 c_func
@@ -748,7 +748,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|modifyDate
-id|__u16
+id|__le16
 id|modifyDate
 id|__attribute__
 c_func
@@ -759,7 +759,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|modifyTime
-id|__u16
+id|__le16
 id|modifyTime
 id|__attribute__
 c_func
@@ -814,7 +814,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|lastAccessDate
-id|__u16
+id|__le16
 id|lastAccessDate
 id|__attribute__
 c_func
