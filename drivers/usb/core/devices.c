@@ -2351,21 +2351,13 @@ op_amp
 id|usb_bus_list_lock
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each
+c_func
 (paren
 id|buslist
-op_assign
-id|usb_bus_list.next
-suffix:semicolon
-id|buslist
-op_ne
+comma
 op_amp
 id|usb_bus_list
-suffix:semicolon
-id|buslist
-op_assign
-id|buslist-&gt;next
 )paren
 (brace
 multiline_comment|/* print devices for this bus */
