@@ -58,11 +58,6 @@ r_static
 r_int
 id|debug
 suffix:semicolon
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
 DECL|function|dprintk
 r_static
 r_void
