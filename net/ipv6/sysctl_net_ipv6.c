@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sysctl_net_ipv6.c: sysctl interface to net IPV6 subsystem.&n; */
+multiline_comment|/*&n; * sysctl_net_ipv6.c: sysctl interface to net IPV6 subsystem.&n; *&n; * Changes:&n; * YOSHIFUJI Hideaki @USAGI:&t;added icmp sysctl table.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -10,6 +10,12 @@ macro_line|#include &lt;net/addrconf.h&gt;
 r_extern
 id|ctl_table
 id|ipv6_route_table
+(braket
+)braket
+suffix:semicolon
+r_extern
+id|ctl_table
+id|ipv6_icmp_table
 (braket
 )braket
 suffix:semicolon
@@ -33,6 +39,20 @@ comma
 l_int|0555
 comma
 id|ipv6_route_table
+)brace
+comma
+(brace
+id|NET_IPV6_ICMP
+comma
+l_string|&quot;icmp&quot;
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|0500
+comma
+id|ipv6_icmp_table
 )brace
 comma
 (brace
