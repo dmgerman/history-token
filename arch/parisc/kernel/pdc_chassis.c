@@ -370,7 +370,7 @@ comma
 id|message
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PARISC64
+macro_line|#ifdef CONFIG_64BIT
 r_if
 c_cond
 (paren
@@ -593,7 +593,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#endif /* CONFIG_PARISC64 */
+macro_line|#endif /* CONFIG_64BIT */
 )brace
 multiline_comment|/* if (pdc_chassis_enabled) */
 macro_line|#endif /* CONFIG_PDC_CHASSIS */
