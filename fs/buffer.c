@@ -2978,7 +2978,7 @@ op_amp
 id|mapping-&gt;private_list
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_unlock
 c_func
 (paren
 op_amp

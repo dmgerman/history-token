@@ -31,10 +31,6 @@ macro_line|#ifdef SERIAL_INLINE
 DECL|macro|_INLINE_
 mdefine_line|#define _INLINE_ inline
 macro_line|#endif
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 DECL|macro|IRQ_T
 mdefine_line|#define IRQ_T(info) ((info-&gt;flags &amp; ASYNC_SHARE_IRQ) ? SA_SHIRQ : SA_INTERRUPT)
 DECL|macro|SSC_GETCHAR
@@ -801,7 +797,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We removed the loop and try to do it in to chunks. We need&n;&t; * 2 operations maximum because it&squot;s a ring buffer.&n;&t; *&n;&t; * First from current to tail if possible.&n;&t; * Then from the beginning of the buffer until necessary&n;&t; */
 id|count
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|CIRC_CNT
