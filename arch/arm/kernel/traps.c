@@ -140,6 +140,39 @@ comma
 l_string|&quot;interrupt&quot;
 )brace
 suffix:semicolon
+DECL|function|dump_backtrace_entry
+r_void
+id|dump_backtrace_entry
+c_func
+(paren
+r_int
+r_int
+id|where
+comma
+r_int
+r_int
+id|from
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Function entered at [&lt;%08lx&gt;] from [&lt;%08lx&gt;]&bslash;n&quot;
+comma
+id|where
+comma
+id|from
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;  %s&bslash;n&quot;
+comma
+id|where
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Stack pointers should always be within the kernels view of&n; * physical memory.  If it is not there, then we can&squot;t dump&n; * out any information relating to the stack.&n; */
 DECL|function|verify_stack
 r_static
@@ -689,6 +722,20 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+DECL|function|dump_stack
+r_void
+id|dump_stack
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__backtrace
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * This is called from SysRq-T (show_task) to display the current call&n; * trace for each process.  This version will also display the running&n; * threads call trace (ie, us.)&n; */
 DECL|function|show_trace_task
 r_void
@@ -787,6 +834,12 @@ op_amp
 id|die_lock
 )paren
 suffix:semicolon
+id|bust_spinlocks
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -875,6 +928,12 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+id|bust_spinlocks
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
