@@ -1232,6 +1232,10 @@ comma
 id|dlci
 )paren
 suffix:semicolon
+id|d-&gt;priority
+op_assign
+l_int|7
+suffix:semicolon
 id|d-&gt;state
 op_assign
 id|BT_CONFIG
@@ -3584,7 +3588,7 @@ id|d-&gt;dlci
 suffix:semicolon
 id|pn-&gt;priority
 op_assign
-l_int|0
+id|d-&gt;priority
 suffix:semicolon
 id|pn-&gt;ack_timer
 op_assign
@@ -5622,14 +5626,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|d-&gt;mtu
-op_assign
-id|btohs
-c_func
-(paren
-id|pn-&gt;mtu
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -5662,6 +5658,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+)brace
+id|d-&gt;priority
+op_assign
+id|pn-&gt;priority
+suffix:semicolon
 id|d-&gt;mtu
 op_assign
 id|btohs
@@ -5670,7 +5671,6 @@ c_func
 id|pn-&gt;mtu
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -6227,7 +6227,7 @@ comma
 id|rpn-&gt;flow_ctrl
 )paren
 suffix:semicolon
-id|rpn-&gt;flow_ctrl
+id|flow_ctrl
 op_assign
 id|RFCOMM_RPN_FLOW_NONE
 suffix:semicolon
@@ -6261,7 +6261,7 @@ comma
 id|rpn-&gt;xon_char
 )paren
 suffix:semicolon
-id|rpn-&gt;xon_char
+id|xon_char
 op_assign
 id|RFCOMM_RPN_XON_CHAR
 suffix:semicolon
@@ -6295,7 +6295,7 @@ comma
 id|rpn-&gt;xoff_char
 )paren
 suffix:semicolon
-id|rpn-&gt;xoff_char
+id|xoff_char
 op_assign
 id|RFCOMM_RPN_XOFF_CHAR
 suffix:semicolon
