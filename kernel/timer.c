@@ -6,7 +6,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/div64.h&gt;
 multiline_comment|/*&n; * per-CPU timer vector definitions:&n; */
 DECL|macro|TVN_BITS
 mdefine_line|#define TVN_BITS 6
@@ -3579,6 +3581,9 @@ r_struct
 id|sysinfo
 id|val
 suffix:semicolon
+id|u64
+id|uptime
+suffix:semicolon
 r_int
 r_int
 id|mem_total
@@ -3617,11 +3622,25 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
+id|uptime
+op_assign
+id|jiffies_64
+suffix:semicolon
+id|do_div
+c_func
+(paren
+id|uptime
+comma
+id|HZ
+)paren
+suffix:semicolon
 id|val.uptime
 op_assign
-id|jiffies
-op_div
-id|HZ
+(paren
+r_int
+r_int
+)paren
+id|uptime
 suffix:semicolon
 id|val.loads
 (braket

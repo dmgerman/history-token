@@ -828,7 +828,7 @@ suffix:semicolon
 id|__put_user
 c_func
 (paren
-l_int|NULL
+l_int|0
 comma
 id|argv
 )paren
@@ -901,7 +901,7 @@ suffix:semicolon
 id|__put_user
 c_func
 (paren
-l_int|NULL
+l_int|0
 comma
 id|envp
 )paren
@@ -1442,7 +1442,6 @@ id|k
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Now use mmap to map the library into memory. */
 multiline_comment|/*&n;&t; * Now fill out the bss section.  First pad the last page up&n;&t; * to the page boundary, and then perform a mmap to make sure&n;&t; * that there are zero-mapped pages up to and including the &n;&t; * last bss page.&n;&t; */
 id|padzero
 c_func
@@ -2211,6 +2210,7 @@ id|ibcs2_interpreter
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * The early SET_PERSONALITY here is so that the lookup&n;&t;&t;&t; * for the interpreter happens in the namespace of the &n;&t;&t;&t; * to-be-execed image.  SET_PERSONALITY can select an&n;&t;&t;&t; * alternate root.&n;&t;&t;&t; *&n;&t;&t;&t; * However, SET_PERSONALITY is NOT allowed to switch&n;&t;&t;&t; * this task into the new images&squot;s memory mapping&n;&t;&t;&t; * policy - that is, TASK_SIZE must still evaluate to&n;&t;&t;&t; * that which is appropriate to the execing application.&n;&t;&t;&t; * This is because exit_mmap() needs to have TASK_SIZE&n;&t;&t;&t; * evaluate to the size of the old image.&n;&t;&t;&t; *&n;&t;&t;&t; * So if (say) a 64-bit application is execing a 32-bit&n;&t;&t;&t; * application it is the architecture&squot;s responsibility&n;&t;&t;&t; * to defer changing the value of TASK_SIZE until the&n;&t;&t;&t; * switch really is going to happen - do this in&n;&t;&t;&t; * flush_thread().&t;- akpm&n;&t;&t;&t; */
 id|SET_PERSONALITY
 c_func
 (paren

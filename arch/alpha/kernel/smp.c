@@ -1885,16 +1885,6 @@ c_func
 id|boot_cpuid
 )paren
 suffix:semicolon
-multiline_comment|/* We have already have the boot CPU online.. */
-id|set_bit
-c_func
-(paren
-id|boot_cpuid
-comma
-op_amp
-id|cpu_online_map
-)paren
-suffix:semicolon
 multiline_comment|/* Nothing to do on a UP box, or when told not to.  */
 r_if
 c_cond
@@ -2008,6 +1998,7 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/*&n;&t; * Mark the boot cpu (current cpu) as both present and online&n;&t; */
 id|set_bit
 c_func
 (paren
@@ -2018,6 +2009,18 @@ c_func
 comma
 op_amp
 id|cpu_present_mask
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+op_amp
+id|cpu_online_map
 )paren
 suffix:semicolon
 )brace

@@ -920,18 +920,14 @@ r_int
 r_int
 id|page_offset
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;__get_metapage: inode = 0x%p, lblock = 0x%lx&bslash;n&quot;
+l_string|&quot;__get_metapage: inode = 0x%p, lblock = 0x%lx&quot;
 comma
 id|inode
 comma
 id|lblock
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1017,16 +1013,12 @@ suffix:semicolon
 id|mp-&gt;count
 op_increment
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;__get_metapage: found 0x%p, in hash&bslash;n&quot;
+l_string|&quot;__get_metapage: found 0x%p, in hash&quot;
 comma
 id|mp
-)paren
 )paren
 suffix:semicolon
 m_assert
@@ -1101,14 +1093,10 @@ op_amp
 id|meta_lock
 )paren
 suffix:semicolon
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;MetaData crosses page boundary!!&bslash;n&quot;
-)paren
+l_string|&quot;MetaData crosses page boundary!!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1316,14 +1304,10 @@ c_cond
 r_new
 )paren
 (brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;__get_metapage: Calling grab_cache_page&bslash;n&quot;
-)paren
+l_string|&quot;__get_metapage: Calling grab_cache_page&quot;
 )paren
 suffix:semicolon
 id|mp-&gt;page
@@ -1343,14 +1327,10 @@ op_logical_neg
 id|mp-&gt;page
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;grab_cache_page failed!&bslash;n&quot;
-)paren
+l_string|&quot;grab_cache_page failed!&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1375,14 +1355,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;__get_metapage: Calling read_cache_page&bslash;n&quot;
-)paren
+l_string|&quot;__get_metapage: Calling read_cache_page&quot;
 )paren
 suffix:semicolon
 id|mp-&gt;page
@@ -1413,14 +1389,10 @@ id|mp-&gt;page
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;read_cache_page failed!&bslash;n&quot;
-)paren
+l_string|&quot;read_cache_page failed!&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1446,16 +1418,12 @@ op_plus
 id|page_offset
 suffix:semicolon
 )brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;__get_metapage: returning = 0x%p&bslash;n&quot;
+l_string|&quot;__get_metapage: returning = 0x%p&quot;
 comma
 id|mp
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1609,16 +1577,12 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;__write_metapage: mp = 0x%p&bslash;n&quot;
+l_string|&quot;__write_metapage: mp = 0x%p&quot;
 comma
 id|mp
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1695,16 +1659,12 @@ c_cond
 id|rc
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;prepare_write return %d!&bslash;n&quot;
+l_string|&quot;prepare_write return %d!&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 id|ClearPageUptodate
@@ -1755,16 +1715,12 @@ c_cond
 id|rc
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;commit_write returned %d&bslash;n&quot;
+l_string|&quot;commit_write returned %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1783,14 +1739,10 @@ op_amp
 id|mp-&gt;flag
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;__write_metapage done&bslash;n&quot;
-)paren
+l_string|&quot;__write_metapage done&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1874,18 +1826,14 @@ id|jfs_log
 op_star
 id|log
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;release_metapage: mp = 0x%p, flag = 0x%lx&bslash;n&quot;
+l_string|&quot;release_metapage: mp = 0x%p, flag = 0x%lx&quot;
 comma
 id|mp
 comma
 id|mp-&gt;flag
-)paren
 )paren
 suffix:semicolon
 id|spin_lock
@@ -2149,16 +2097,6 @@ id|mp
 )paren
 suffix:semicolon
 )brace
-id|jFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;release_metapage: done&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|__invalidate_metapages
 r_void

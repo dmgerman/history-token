@@ -76,16 +76,12 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;n&t;UnMount JFS: sb:0x%p&bslash;n&quot;
+l_string|&quot;UnMount JFS: sb:0x%p&quot;
 comma
 id|sb
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      update superblock and close log &n;&t; *&n;&t; * if mounted read-write and log based recovery was enabled&n;&t; */
@@ -108,18 +104,6 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * close fileset inode allocation map (aka fileset inode)&n;&t; */
-id|jEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;jfs_umount: close ipimap:0x%p&bslash;n&quot;
-comma
-id|ipimap
-)paren
-)paren
-suffix:semicolon
 id|diUnmount
 c_func
 (paren
@@ -149,18 +133,6 @@ c_cond
 id|ipaimap2
 )paren
 (brace
-id|jEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;jfs_umount: close ipaimap2:0x%p&bslash;n&quot;
-comma
-id|ipaimap2
-)paren
-)paren
-suffix:semicolon
 id|diUnmount
 c_func
 (paren
@@ -185,18 +157,6 @@ id|ipaimap
 op_assign
 id|sbi-&gt;ipaimap
 suffix:semicolon
-id|jEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;jfs_umount: close ipaimap:0x%p&bslash;n&quot;
-comma
-id|ipaimap
-)paren
-)paren
-suffix:semicolon
 id|diUnmount
 c_func
 (paren
@@ -216,18 +176,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * close aggregate block allocation map&n;&t; */
-id|jEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;jfs_umount: close ipbmap:%p&bslash;n&quot;
-comma
-id|ipbmap
-)paren
-)paren
-suffix:semicolon
 id|dbUnmount
 c_func
 (paren
@@ -289,16 +237,12 @@ id|log
 )paren
 suffix:semicolon
 )brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;&t;UnMount JFS Complete: %d&bslash;n&quot;
+l_string|&quot;UnMount JFS Complete: rc = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return

@@ -5497,7 +5497,7 @@ suffix:semicolon
 id|memblk_set_online
 c_func
 (paren
-id|__node_to_memblk
+id|node_to_memblk
 c_func
 (paren
 id|nid
@@ -6014,7 +6014,11 @@ l_string|&quot;pgrefill&quot;
 comma
 l_string|&quot;pgsteal&quot;
 comma
+l_string|&quot;pginodesteal&quot;
+comma
 l_string|&quot;kswapd_steal&quot;
+comma
+l_string|&quot;kswapd_inodesteal&quot;
 comma
 l_string|&quot;pageoutrun&quot;
 comma

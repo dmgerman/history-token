@@ -1090,7 +1090,7 @@ id|hpusbscsi
 op_star
 )paren
 (paren
-id|srb-&gt;host-&gt;hostdata
+id|srb-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -1363,7 +1363,7 @@ id|hpusbscsi
 op_star
 )paren
 (paren
-id|srb-&gt;host-&gt;hostdata
+id|srb-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -1407,7 +1407,7 @@ id|hpusbscsi
 op_star
 )paren
 (paren
-id|srb-&gt;host-&gt;hostdata
+id|srb-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket

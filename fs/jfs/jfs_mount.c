@@ -88,16 +88,6 @@ id|ipbmap
 op_assign
 l_int|NULL
 suffix:semicolon
-id|jFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;nMount JFS&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * read/validate superblock &n;&t; * (initialize mount inode from the superblock)&n;&t; */
 r_if
 c_cond
@@ -137,14 +127,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: Faild to read AGGREGATE_I&bslash;n&quot;
-)paren
+l_string|&quot;jfs_mount: Faild to read AGGREGATE_I&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -159,16 +145,12 @@ id|sbi-&gt;ipaimap
 op_assign
 id|ipaimap
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: ipaimap:0x%p&bslash;n&quot;
+l_string|&quot;jfs_mount: ipaimap:0x%p&quot;
 comma
 id|ipaimap
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * initialize aggregate inode allocation map&n;&t; */
@@ -186,16 +168,12 @@ id|ipaimap
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: diMount(ipaimap) failed w/rc = %d&bslash;n&quot;
+l_string|&quot;jfs_mount: diMount(ipaimap) failed w/rc = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -231,16 +209,12 @@ r_goto
 id|errout22
 suffix:semicolon
 )brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: ipbmap:0x%p&bslash;n&quot;
+l_string|&quot;jfs_mount: ipbmap:0x%p&quot;
 comma
 id|ipbmap
-)paren
 )paren
 suffix:semicolon
 id|sbi-&gt;ipbmap
@@ -262,16 +236,12 @@ id|ipbmap
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: dbMount failed w/rc = %d&bslash;n&quot;
+l_string|&quot;jfs_mount: dbMount failed w/rc = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -311,14 +281,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: Faild to read AGGREGATE_I&bslash;n&quot;
-)paren
+l_string|&quot;jfs_mount: Faild to read AGGREGATE_I&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -333,16 +299,12 @@ id|sbi-&gt;ipaimap2
 op_assign
 id|ipaimap2
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: ipaimap2:0x%p&bslash;n&quot;
+l_string|&quot;jfs_mount: ipaimap2:0x%p&quot;
 comma
 id|ipaimap2
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * initialize secondary aggregate inode allocation map&n;&t;&t; */
@@ -360,16 +322,12 @@ id|ipaimap2
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: diMount(ipaimap2) failed, rc = %d&bslash;n&quot;
+l_string|&quot;jfs_mount: diMount(ipaimap2) failed, rc = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -405,14 +363,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: Failed to read FILESYSTEM_I&bslash;n&quot;
-)paren
+l_string|&quot;jfs_mount: Failed to read FILESYSTEM_I&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* open fileset secondary inode allocation map */
@@ -424,16 +378,12 @@ r_goto
 id|errout40
 suffix:semicolon
 )brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: ipimap:0x%p&bslash;n&quot;
+l_string|&quot;jfs_mount: ipimap:0x%p&quot;
 comma
 id|ipimap
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* map further access of per fileset inodes by the fileset inode */
@@ -456,32 +406,18 @@ id|ipimap
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: diMount failed w/rc = %d&bslash;n&quot;
+l_string|&quot;jfs_mount: diMount failed w/rc = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_goto
 id|errout41
 suffix:semicolon
 )brace
-id|jFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;Mount JFS Complete.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
@@ -576,20 +512,14 @@ c_cond
 (paren
 id|rc
 )paren
-(brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;Mount JFS Failure: %d&bslash;n&quot;
+l_string|&quot;Mount JFS Failure: %d&quot;
 comma
 id|rc
 )paren
-)paren
 suffix:semicolon
-)brace
 r_return
 id|rc
 suffix:semicolon
@@ -692,14 +622,10 @@ id|sbi-&gt;ipimap
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount_rw: diMount failed!&bslash;n&quot;
-)paren
+l_string|&quot;jfs_mount_rw: diMount failed!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -728,14 +654,10 @@ id|sbi-&gt;ipbmap
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount_rw: dbMount failed!&bslash;n&quot;
-)paren
+l_string|&quot;jfs_mount_rw: dbMount failed!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -790,16 +712,12 @@ id|FM_MOUNT
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: updateSuper failed w/rc = %d&bslash;n&quot;
+l_string|&quot;jfs_mount: updateSuper failed w/rc = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 id|lmLogClose
@@ -977,14 +895,10 @@ op_ne
 id|PSIZE
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;Currently only 4K block size supported!&bslash;n&quot;
-)paren
+l_string|&quot;Currently only 4K block size supported!&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -996,13 +910,10 @@ id|out
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;&t;/* _JFS_4K */
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;superblock: flag:0x%08x state:0x%08x size:0x%Lx&bslash;n&quot;
+l_string|&quot;superblock: flag:0x%08x state:0x%08x size:0x%Lx&quot;
 comma
 id|le32_to_cpu
 c_func
@@ -1025,7 +936,6 @@ id|le64_to_cpu
 c_func
 (paren
 id|j_sb-&gt;s_size
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -1202,39 +1112,6 @@ c_func
 id|JFS_GROUPCOMMIT
 )paren
 suffix:semicolon
-id|jFYI
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;superblock: flag:0x%08x state:0x%08x size:0x%Lx&bslash;n&quot;
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|j_sb-&gt;s_flag
-)paren
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|j_sb-&gt;s_state
-)paren
-comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|le64_to_cpu
-c_func
-(paren
-id|j_sb-&gt;s_size
-)paren
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* validate fs state */
 r_if
 c_cond
@@ -1255,14 +1132,10 @@ id|MS_RDONLY
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount: Mount Failure: File System Dirty.&bslash;n&quot;
-)paren
+l_string|&quot;jfs_mount: Mount Failure: File System Dirty.&quot;
 )paren
 suffix:semicolon
 id|rc

@@ -96,11 +96,7 @@ l_string|&quot;(c) 1996-1997 Claus-Justus Heine (claus@momo.math.rwth-aachen.de)
 id|KERN_INFO
 l_string|&quot;QIC-117 driver for QIC-40/80/3010/3020 floppy tape drives&bslash;n&quot;
 id|KERN_INFO
-l_string|&quot;Compiled for Linux version %s&quot;
-macro_line|#ifdef MODVERSIONS
-l_string|&quot; with versioned symbols&quot;
-macro_line|#endif
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;Compiled for Linux version %s&bslash;n&quot;
 comma
 id|UTS_RELEASE
 )paren

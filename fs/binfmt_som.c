@@ -91,7 +91,7 @@ op_assign
 id|load_som_binary
 comma
 dot
-id|load_library
+id|load_shlib
 op_assign
 id|load_som_library
 comma

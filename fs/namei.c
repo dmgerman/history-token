@@ -6929,6 +6929,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Make sure that the actual truncation of the file will occur outside its&n; * directory&squot;s i_sem.  Truncate can take a long time if there is a lot of&n; * writeout happening, and we don&squot;t want to prevent access to the directory&n; * while waiting on the I/O.&n; */
 DECL|function|sys_unlink
 id|asmlinkage
 r_int
@@ -6958,6 +6959,13 @@ suffix:semicolon
 r_struct
 id|nameidata
 id|nd
+suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+l_int|NULL
 suffix:semicolon
 id|name
 op_assign
@@ -7070,6 +7078,23 @@ id|nd.last.len
 r_goto
 id|slashes
 suffix:semicolon
+id|inode
+op_assign
+id|dentry-&gt;d_inode
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode
+)paren
+id|inode
+op_assign
+id|igrab
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|vfs_unlink
@@ -7113,6 +7138,18 @@ c_func
 id|name
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode
+)paren
+id|iput
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+multiline_comment|/* truncate the inode here */
 r_return
 id|error
 suffix:semicolon

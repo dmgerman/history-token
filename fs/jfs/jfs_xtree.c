@@ -21,7 +21,7 @@ DECL|macro|XT_PAGE
 mdefine_line|#define XT_PAGE(IP, MP) BT_PAGE(IP, MP, xtpage_t, i_xtroot)
 multiline_comment|/* get page buffer for specified block address */
 DECL|macro|XT_GETPAGE
-mdefine_line|#define XT_GETPAGE(IP, BN, MP, SIZE, P, RC)&bslash;&n;{&bslash;&n;        BT_GETPAGE(IP, BN, MP, xtpage_t, SIZE, P, RC, i_xtroot)&bslash;&n;        if (!(RC))&bslash;&n;        {&bslash;&n;                if ((le16_to_cpu((P)-&gt;header.nextindex) &lt; XTENTRYSTART) ||&bslash;&n;                    (le16_to_cpu((P)-&gt;header.nextindex) &gt; le16_to_cpu((P)-&gt;header.maxentry)) ||&bslash;&n;                    (le16_to_cpu((P)-&gt;header.maxentry) &gt; (((BN)==0)?XTROOTMAXSLOT:PSIZE&gt;&gt;L2XTSLOTSIZE)))&bslash;&n;                {&bslash;&n;                        jERROR(1,(&quot;XT_GETPAGE: xtree page corrupt&bslash;n&quot;));&bslash;&n;&t;&t;&t;BT_PUTPAGE(MP);&bslash;&n;&t;&t;&t;updateSuper((IP)-&gt;i_sb, FM_DIRTY);&bslash;&n;&t;&t;&t;MP = NULL;&bslash;&n;                        RC = EIO;&bslash;&n;                }&bslash;&n;        }&bslash;&n;}
+mdefine_line|#define XT_GETPAGE(IP, BN, MP, SIZE, P, RC)&bslash;&n;{&bslash;&n;        BT_GETPAGE(IP, BN, MP, xtpage_t, SIZE, P, RC, i_xtroot)&bslash;&n;        if (!(RC))&bslash;&n;        {&bslash;&n;                if ((le16_to_cpu((P)-&gt;header.nextindex) &lt; XTENTRYSTART) ||&bslash;&n;                    (le16_to_cpu((P)-&gt;header.nextindex) &gt; le16_to_cpu((P)-&gt;header.maxentry)) ||&bslash;&n;                    (le16_to_cpu((P)-&gt;header.maxentry) &gt; (((BN)==0)?XTROOTMAXSLOT:PSIZE&gt;&gt;L2XTSLOTSIZE)))&bslash;&n;                {&bslash;&n;                        jfs_err(&quot;XT_GETPAGE: xtree page corrupt&quot;);&bslash;&n;&t;&t;&t;BT_PUTPAGE(MP);&bslash;&n;&t;&t;&t;updateSuper((IP)-&gt;i_sb, FM_DIRTY);&bslash;&n;&t;&t;&t;MP = NULL;&bslash;&n;                        RC = EIO;&bslash;&n;                }&bslash;&n;        }&bslash;&n;}
 multiline_comment|/* for consistency */
 DECL|macro|XT_PUTPAGE
 mdefine_line|#define XT_PUTPAGE(MP) BT_PUTPAGE(MP)
@@ -398,13 +398,10 @@ op_ge
 id|size
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;xtLookup: lstart (0x%lx) &gt;= size (0x%lx)&bslash;n&quot;
+l_string|&quot;xtLookup: lstart (0x%lx) &gt;= size (0x%lx)&quot;
 comma
 (paren
 id|ulong
@@ -415,7 +412,6 @@ comma
 id|ulong
 )paren
 id|size
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -449,16 +445,12 @@ l_int|0
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;xtLookup: xtSearch returned %d&bslash;n&quot;
+l_string|&quot;xtLookup: xtSearch returned %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -489,23 +481,9 @@ c_cond
 (paren
 id|cmp
 )paren
-(brace
-id|jFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;xtLookup: cmp = %d&bslash;n&quot;
-comma
-id|cmp
-)paren
-)paren
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * lxd covered by xad&n;&t; */
 id|xad
 op_assign
@@ -543,30 +521,6 @@ id|addressXAD
 c_func
 (paren
 id|xad
-)paren
-suffix:semicolon
-id|jEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;index = %d, xoff = 0x%lx, xlen = 0x%x, xaddr = 0x%lx&bslash;n&quot;
-comma
-id|index
-comma
-(paren
-id|ulong
-)paren
-id|xoff
-comma
-id|xlen
-comma
-(paren
-id|ulong
-)paren
-id|xaddr
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* initialize new pxd */
@@ -2176,13 +2130,10 @@ id|xtlock
 op_star
 id|xtlck
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;xtInsert: nxoff:0x%lx nxlen:0x%x&bslash;n&quot;
+l_string|&quot;xtInsert: nxoff:0x%lx nxlen:0x%x&quot;
 comma
 (paren
 id|ulong
@@ -2190,7 +2141,6 @@ id|ulong
 id|xoff
 comma
 id|xlen
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      search for the entry location at which to insert:&n;&t; *&n;&t; * xtFastSearch() and xtSearch() both returns (leaf page&n;&t; * pinned, index at which to insert).&n;&t; * n.b. xtSearch() may return index of maxentry of&n;&t; * the full page.&n;&t; */
@@ -3736,20 +3686,16 @@ l_int|NULL
 r_return
 id|EIO
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtSplitPage: ip:0x%p smp:0x%p rmp:0x%p&bslash;n&quot;
+l_string|&quot;xtSplitPage: ip:0x%p smp:0x%p rmp:0x%p&quot;
 comma
 id|ip
 comma
 id|smp
 comma
 id|rmp
-)paren
 )paren
 suffix:semicolon
 id|BT_MARK_DIRTY
@@ -4010,18 +3956,14 @@ id|pxd
 )paren
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtSplitPage: sp:0x%p rp:0x%p&bslash;n&quot;
+l_string|&quot;xtSplitPage: sp:0x%p rp:0x%p&quot;
 comma
 id|sp
 comma
 id|rp
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -4493,18 +4435,14 @@ id|pxd
 )paren
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtSplitPage: sp:0x%p rp:0x%p&bslash;n&quot;
+l_string|&quot;xtSplitPage: sp:0x%p rp:0x%p&quot;
 comma
 id|sp
 comma
 id|rp
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -4647,18 +4585,14 @@ l_int|NULL
 r_return
 id|EIO
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtSplitRoot: ip:0x%p rmp:0x%p&bslash;n&quot;
+l_string|&quot;xtSplitRoot: ip:0x%p rmp:0x%p&quot;
 comma
 id|ip
 comma
 id|rmp
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * acquire a transaction lock on the new right page;&n;&t; *&n;&t; * action: new page;&n;&t; */
@@ -5010,18 +4944,14 @@ id|pxd
 )paren
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtSplitRoot: sp:0x%p rp:0x%p&bslash;n&quot;
+l_string|&quot;xtSplitRoot: sp:0x%p rp:0x%p&quot;
 comma
 id|sp
 comma
 id|rp
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -5118,13 +5048,10 @@ id|rootsplit
 op_assign
 l_int|0
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;xtExtend: nxoff:0x%lx nxlen:0x%x&bslash;n&quot;
+l_string|&quot;xtExtend: nxoff:0x%lx nxlen:0x%x&quot;
 comma
 (paren
 id|ulong
@@ -5132,7 +5059,6 @@ id|ulong
 id|xoff
 comma
 id|xlen
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* there must exist extent to be extended */
@@ -5196,40 +5122,6 @@ id|p-&gt;xad
 (braket
 id|index
 )braket
-suffix:semicolon
-id|jFYI
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtExtend: xoff:0x%lx xlen:0x%x xaddr:0x%lx&bslash;n&quot;
-comma
-(paren
-id|ulong
-)paren
-id|offsetXAD
-c_func
-(paren
-id|xad
-)paren
-comma
-id|lengthXAD
-c_func
-(paren
-id|xad
-)paren
-comma
-(paren
-id|ulong
-)paren
-id|addressXAD
-c_func
-(paren
-id|xad
-)paren
-)paren
-)paren
 suffix:semicolon
 m_assert
 (paren
@@ -6290,33 +6182,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|jEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtTailgate: free extent xaddr:0x%lx xlen:0x%x&bslash;n&quot;
-comma
-(paren
-id|ulong
-)paren
-id|addressPXD
-c_func
-(paren
-op_amp
-id|pxdlock-&gt;pxd
-)paren
-comma
-id|lengthPXD
-c_func
-(paren
-op_amp
-id|pxdlock-&gt;pxd
-)paren
-)paren
-)paren
-suffix:semicolon
 )brace
 r_else
 multiline_comment|/* free from WMAP */
@@ -8392,13 +8257,10 @@ op_assign
 op_star
 id|xlenp
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtAppend: xoff:0x%lx maxblocks:%d xlen:%d xaddr:0x%lx&bslash;n&quot;
+l_string|&quot;xtAppend: xoff:0x%lx maxblocks:%d xlen:%d xaddr:0x%lx&quot;
 comma
 (paren
 id|ulong
@@ -8413,7 +8275,6 @@ comma
 id|ulong
 )paren
 id|xaddr
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      search for the entry location at which to insert:&n;&t; *&n;&t; * xtFastSearch() and xtSearch() both returns (leaf page&n;&t; * pinned, index at which to insert).&n;&t; * n.b. xtSearch() may return index of maxentry of&n;&t; * the full page.&n;&t; */
@@ -9583,13 +9444,10 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtDeleteUp(entry): 0x%lx[%d]&bslash;n&quot;
+l_string|&quot;xtDeleteUp(entry): 0x%lx[%d]&quot;
 comma
 (paren
 id|ulong
@@ -9597,7 +9455,6 @@ id|ulong
 id|parent-&gt;bn
 comma
 id|index
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -9812,13 +9669,10 @@ r_return
 id|ESTALE
 suffix:semicolon
 multiline_comment|/* stale extent */
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtRelocate: xtype:%d xoff:0x%lx xlen:0x%x xaddr:0x%lx:0x%lx&bslash;n&quot;
+l_string|&quot;xtRelocate: xtype:%d xoff:0x%lx xlen:0x%x xaddr:0x%lx:0x%lx&quot;
 comma
 id|xtype
 comma
@@ -9838,7 +9692,6 @@ comma
 id|ulong
 )paren
 id|nxaddr
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      1. get and validate the parent xtpage/xad entry&n;&t; *      covering the source extent to be relocated;&n;&t; */
@@ -10023,14 +9876,10 @@ id|index
 )braket
 suffix:semicolon
 )brace
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtRelocate: parent xad entry validated.&bslash;n&quot;
-)paren
+l_string|&quot;xtRelocate: parent xad entry validated.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      2. relocate the extent&n;&t; */
@@ -10285,14 +10134,10 @@ comma
 id|index
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtRelocate: target data extent relocated.&bslash;n&quot;
-)paren
+l_string|&quot;xtRelocate: target data extent relocated.&quot;
 )paren
 suffix:semicolon
 )brace
@@ -10645,14 +10490,10 @@ c_func
 id|mp
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtRelocate: target xtpage relocated.&bslash;n&quot;
-)paren
+l_string|&quot;xtRelocate: target xtpage relocated.&quot;
 )paren
 suffix:semicolon
 )brace
@@ -10733,14 +10574,10 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; *      4. update the parent xad entry for relocation;&n;&t; *&n;&t; * acquire tlck for the parent entry with XAD_NEW as entry&n;&t; * update which will write LOG_REDOPAGE and update bmap for&n;&t; * allocation of XAD_NEW destination extent;&n;&t; */
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;xtRelocate: update parent xad entry.&bslash;n&quot;
-)paren
+l_string|&quot;xtRelocate: update parent xad entry.&quot;
 )paren
 suffix:semicolon
 id|BT_MARK_DIRTY

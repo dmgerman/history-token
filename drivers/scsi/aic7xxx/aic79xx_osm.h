@@ -10,10 +10,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#ifndef AHD_MODVERSION_FILE
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

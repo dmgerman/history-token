@@ -61,32 +61,6 @@ r_extern
 r_int
 id|panic_timeout
 suffix:semicolon
-macro_line|#ifdef CONFIG_MODVERSIONS
-DECL|variable|__export_Using_Versions
-r_const
-r_struct
-id|module_symbol
-id|__export_Using_Versions
-id|__attribute__
-c_func
-(paren
-(paren
-id|section
-c_func
-(paren
-l_string|&quot;__ksymtab&quot;
-)paren
-)paren
-)paren
-op_assign
-(brace
-l_int|1
-multiline_comment|/* Version version */
-comma
-l_string|&quot;Using_Versions&quot;
-)brace
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* process memory management */
 DECL|variable|do_mmap_pgoff
 id|EXPORT_SYMBOL

@@ -4193,6 +4193,10 @@ comma
 id|shost-&gt;host_no
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_IOTHREAD
+suffix:semicolon
 id|shost-&gt;eh_wait
 op_assign
 op_amp

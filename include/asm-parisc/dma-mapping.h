@@ -1056,19 +1056,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|ccio_get_fake
-c_func
-(paren
-r_const
-r_struct
-id|parisc_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 r_int
 id|ccio_request_resource
 c_func
@@ -1144,8 +1131,6 @@ suffix:semicolon
 macro_line|#else /* !CONFIG_IOMMU_CCIO */
 DECL|macro|ccio_get_iommu
 mdefine_line|#define ccio_get_iommu(dev) NULL
-DECL|macro|ccio_get_fake
-mdefine_line|#define ccio_get_fake(dev) NULL
 DECL|macro|ccio_request_resource
 mdefine_line|#define ccio_request_resource(dev, res) request_resource(&amp;iomem_resource, res)
 DECL|macro|ccio_allocate_resource

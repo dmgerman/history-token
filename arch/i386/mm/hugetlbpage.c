@@ -1475,22 +1475,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|page_zone
+op_logical_neg
+id|PageHighMem
 c_func
 (paren
 id|page
 )paren
 )paren
-op_member_access_from_pointer
-id|name
-(braket
-l_int|0
-)braket
-op_ne
-l_char|&squot;H&squot;
-)paren
-singleline_comment|// Look for non-Highmem
 id|map
 op_assign
 id|page
