@@ -2297,7 +2297,7 @@ r_if
 c_cond
 (paren
 id|p-&gt;type
-OG
+op_ge
 id|SOCK_MAX
 )paren
 r_goto
