@@ -180,11 +180,8 @@ c_func
 id|page
 )paren
 )paren
-id|mark_page_accessed
-c_func
-(paren
-id|page
-)paren
+id|referenced
+op_increment
 suffix:semicolon
 r_if
 c_cond
