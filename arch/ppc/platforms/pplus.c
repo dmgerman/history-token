@@ -2577,12 +2577,6 @@ op_assign
 op_amp
 id|vga_con
 suffix:semicolon
-macro_line|#elif defined(CONFIG_DUMMY_CONSOLE)
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PPCBUG_NVRAM
 multiline_comment|/* Read in NVRAM data */

@@ -81,13 +81,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_FB)
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; *   This routine pretty-prints the platform&squot;s internal CPU clock&n; *   frequencies into the buffer for usage in /proc/cpuinfo.&n; */
 r_static

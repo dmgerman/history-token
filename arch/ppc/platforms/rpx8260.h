@@ -150,6 +150,14 @@ DECL|macro|BCSR15_FETH_IRQ
 mdefine_line|#define BCSR15_FETH_IRQ&t;&t;((u_char)0x20)
 DECL|macro|PHY_INTERRUPT
 mdefine_line|#define PHY_INTERRUPT&t;SIU_INT_IRQ7
+multiline_comment|/* For our show_cpuinfo hooks. */
+DECL|macro|CPUINFO_VENDOR
+mdefine_line|#define CPUINFO_VENDOR&t;&t;&quot;Embedded Planet&quot;
+DECL|macro|CPUINFO_MACHINE
+mdefine_line|#define CPUINFO_MACHINE&t;&t;&quot;EP8260 PowerPC&quot;
+multiline_comment|/* Warm reset vector. */
+DECL|macro|BOOTROM_RESTART_ADDR
+mdefine_line|#define BOOTROM_RESTART_ADDR&t;((uint)0xfff00104)
 macro_line|#endif /* __ASM_PLATFORMS_RPX8260_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

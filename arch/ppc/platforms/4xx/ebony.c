@@ -1370,13 +1370,6 @@ op_assign
 id|Root_HDA1
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_VT
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 id|ebony_early_serial_map
 c_func
 (paren

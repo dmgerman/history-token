@@ -762,13 +762,6 @@ op_assign
 id|Root_SDA1
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_VT
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Identify the system */
 id|printk
 c_func

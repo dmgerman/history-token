@@ -1,12 +1,12 @@
+multiline_comment|/* The CPM2 internal interrupt controller.  It is usually&n; * the only interrupt controller.&n; * There are two 32-bit registers (high/low) for up to 64&n; * possible interrupts.&n; *&n; * Now, the fun starts.....Interrupt Numbers DO NOT MAP&n; * in a simple arithmetic fashion to mask or pending registers.&n; * That is, interrupt 4 does not map to bit position 4.&n; * We create two tables, indexed by vector number, to indicate&n; * which register to use and which bit in the register to use.&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/immap_cpm2.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &quot;cpm2_pic.h&quot;
-multiline_comment|/* The CPM2 internal interrupt controller.  It is usually&n; * the only interrupt controller.&n; * There are two 32-bit registers (high/low) for up to 64&n; * possible interrupts.&n; *&n; * Now, the fun starts.....Interrupt Numbers DO NOT MAP&n; * in a simple arithmetic fashion to mask or pending registers.&n; * That is, interrupt 4 does not map to bit position 4.&n; * We create two tables, indexed by vector number, to indicate&n; * which register to use and which bit in the register to use.&n; */
 DECL|variable|irq_to_siureg
 r_static
 id|u_char
@@ -669,12 +669,6 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if 0
-id|irq
-op_add_assign
-id|ppc8260_pic.irq_offset
-suffix:semicolon
-macro_line|#endif
 r_return
 id|irq
 suffix:semicolon
