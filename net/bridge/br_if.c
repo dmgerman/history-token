@@ -686,7 +686,7 @@ c_cond
 (paren
 id|ret
 )paren
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|br-&gt;dev
