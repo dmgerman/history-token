@@ -2812,6 +2812,10 @@ op_assign
 id|QH_STATE_LINKED
 suffix:semicolon
 multiline_comment|/* qtd completions reported later by interrupt */
+id|ehci-&gt;async_idle
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * For control/bulk/interrupt, return QH with these TDs appended.&n; * Allocates and initializes the QH if necessary.&n; * Returns null if it can&squot;t allocate a QH it needs to.&n; * If the QH has TDs (urbs) already, that&squot;s great.&n; */
@@ -3866,7 +3870,7 @@ id|qh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* unlink idle entries, reducing HC PCI usage as&n;&t;&t;&t; * well as HCD schedule-scanning costs&n;&t;&t;&t; */
+multiline_comment|/* unlink idle entries, reducing HC PCI usage as&n;&t;&t;&t; * well as HCD schedule-scanning costs.  removing&n;&t;&t;&t; * the last qh is deferred, since it&squot;s costly.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3898,10 +3902,32 @@ id|qh
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timer_pending
+(paren
+op_amp
+id|ehci-&gt;watchdog
+)paren
+)paren
 (brace
-singleline_comment|// FIXME:  arrange to stop
-singleline_comment|// after it&squot;s been idle a while.
-singleline_comment|// stop/restart isn&squot;t free...
+multiline_comment|/* can&squot;t use IAA for last entry */
+id|ehci-&gt;async_idle
+op_assign
+l_int|1
+suffix:semicolon
+id|mod_timer
+(paren
+op_amp
+id|ehci-&gt;watchdog
+comma
+id|jiffies
+op_plus
+id|EHCI_ASYNC_JIFFIES
+)paren
+suffix:semicolon
 )brace
 )brace
 id|qh
