@@ -9676,14 +9676,6 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|entry_s-&gt;namelen
-OL
-id|MAXNAMELEN
-)paren
-suffix:semicolon
 id|tmp
 op_assign
 id|XFS_DIR_LEAF_ENTSIZE_BYENTRY
