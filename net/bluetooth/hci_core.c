@@ -1731,6 +1731,12 @@ id|hdev
 OG
 id|INQUIRY_CACHE_AGE_MAX
 op_logical_or
+id|inquiry_cache_empty
+c_func
+(paren
+id|hdev
+)paren
+op_logical_or
 id|ir.flags
 op_amp
 id|IREQ_CACHE_FLUSH
