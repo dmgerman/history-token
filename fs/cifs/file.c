@@ -6810,6 +6810,13 @@ op_star
 id|ptmp_inode
 )paren
 suffix:semicolon
+id|insert_inode_hash
+c_func
+(paren
+op_star
+id|ptmp_inode
+)paren
+suffix:semicolon
 )brace
 )brace
 r_else
@@ -6889,6 +6896,13 @@ id|d_rehash
 c_func
 (paren
 id|tmp_dentry
+)paren
+suffix:semicolon
+id|insert_inode_hash
+c_func
+(paren
+op_star
+id|ptmp_inode
 )paren
 suffix:semicolon
 )brace

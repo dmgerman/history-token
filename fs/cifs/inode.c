@@ -251,7 +251,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -264,6 +263,14 @@ l_int|NULL
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+)brace
+id|insert_inode_hash
+c_func
+(paren
+op_star
+id|pinode
+)paren
 suffix:semicolon
 )brace
 id|inode
@@ -1041,7 +1048,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1054,6 +1060,14 @@ l_int|NULL
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+)brace
+id|insert_inode_hash
+c_func
+(paren
+op_star
+id|pinode
+)paren
 suffix:semicolon
 )brace
 id|inode
