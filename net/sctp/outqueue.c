@@ -60,6 +60,11 @@ op_star
 id|q
 comma
 r_struct
+id|list_head
+op_star
+id|transmitted_queue
+comma
+r_struct
 id|sctp_transport
 op_star
 id|transport
@@ -4248,6 +4253,21 @@ comma
 id|highest_new_tsn
 )paren
 suffix:semicolon
+id|sctp_mark_missing
+c_func
+(paren
+id|q
+comma
+op_amp
+id|q-&gt;retransmit
+comma
+l_int|NULL
+comma
+id|highest_new_tsn
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* Run through the transmitted queue.&n;&t; * Credit bytes received and free those chunks which we can.&n;&t; *&n;&t; * This is a MASSIVE candidate for optimization.&n;&t; */
 id|list_for_each
 c_func
@@ -4320,6 +4340,9 @@ id|sctp_mark_missing
 c_func
 (paren
 id|q
+comma
+op_amp
+id|transport-&gt;transmitted
 comma
 id|transport
 comma
@@ -5393,6 +5416,11 @@ op_star
 id|q
 comma
 r_struct
+id|list_head
+op_star
+id|transmitted_queue
+comma
+r_struct
 id|sctp_transport
 op_star
 id|transport
@@ -5434,8 +5462,7 @@ c_func
 (paren
 id|pos
 comma
-op_amp
-id|transport-&gt;transmitted
+id|transmitted_queue
 )paren
 (brace
 id|chunk
@@ -5482,6 +5509,9 @@ multiline_comment|/* SFR-CACC may require us to skip marking&n;&t;&t;&t; * this 
 r_if
 c_cond
 (paren
+op_logical_neg
+id|transport
+op_logical_or
 op_logical_neg
 id|sctp_cacc_skip
 c_func
