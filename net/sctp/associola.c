@@ -1083,7 +1083,6 @@ c_cond
 (paren
 id|asoc-&gt;pmtu
 )paren
-(brace
 id|asoc-&gt;pmtu
 op_assign
 id|min_t
@@ -1096,14 +1095,11 @@ comma
 id|asoc-&gt;pmtu
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|asoc-&gt;pmtu
 op_assign
 id|peer-&gt;pmtu
 suffix:semicolon
-)brace
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
@@ -1118,14 +1114,15 @@ suffix:semicolon
 id|asoc-&gt;frag_point
 op_assign
 id|asoc-&gt;pmtu
-op_minus
-(paren
+suffix:semicolon
+id|asoc-&gt;frag_point
+op_sub_assign
 id|SCTP_IP_OVERHEAD
 op_plus
 r_sizeof
 (paren
-id|sctp_data_chunk_t
-)paren
+r_struct
+id|sctp_data_chunk
 )paren
 suffix:semicolon
 multiline_comment|/* The asoc-&gt;peer.port might not be meaningful yet, but&n;&t; * initialize the packet structure anyway.&n;&t; */
