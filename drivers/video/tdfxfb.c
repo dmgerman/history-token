@@ -570,7 +570,7 @@ comma
 dot
 id|fb_imageblit
 op_assign
-id|tdfxfb_imageblit
+id|cfb_imageblit
 comma
 dot
 id|fb_sync
@@ -5401,9 +5401,24 @@ r_if
 c_cond
 (paren
 id|pixmap-&gt;depth
-op_eq
+op_ne
 l_int|1
 )paren
+(brace
+singleline_comment|//banshee_make_room(par, 6 + ((size + 3) &gt;&gt; 2));
+singleline_comment|//srcfmt = stride | ((bpp+((bpp==8) ? 0 : 8)) &lt;&lt; 13) | 0x400000;
+id|cfb_imageblit
+c_func
+(paren
+id|info
+comma
+id|pixmap
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_else
 (brace
 id|banshee_make_room
 c_func
@@ -5447,11 +5462,6 @@ id|srcfmt
 op_assign
 l_int|0x400000
 suffix:semicolon
-)brace
-r_else
-(brace
-singleline_comment|//banshee_make_room(par, 6 + ((size + 3) &gt;&gt; 2));
-singleline_comment|//srcfmt = stride | ((bpp+((bpp==8) ? 0 : 8)) &lt;&lt; 13) | 0x400000;
 )brace
 id|tdfx_outl
 c_func
