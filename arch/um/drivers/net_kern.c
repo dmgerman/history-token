@@ -1307,7 +1307,7 @@ id|dev
 suffix:semicolon
 (paren
 op_star
-id|device-&gt;kern-&gt;init
+id|transport-&gt;kern-&gt;init
 )paren
 (paren
 id|dev
@@ -1345,7 +1345,7 @@ suffix:semicolon
 )brace
 id|dev-&gt;mtu
 op_assign
-id|device-&gt;user-&gt;max_packet
+id|transport-&gt;user-&gt;max_packet
 suffix:semicolon
 id|dev-&gt;open
 op_assign
