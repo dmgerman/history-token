@@ -2661,22 +2661,12 @@ id|us-&gt;host
 )paren
 suffix:semicolon
 multiline_comment|/* Free the extra data and the URB */
-r_if
-c_cond
-(paren
-id|us-&gt;extra
-)paren
 id|kfree
 c_func
 (paren
 id|us-&gt;extra
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|us-&gt;current_urb
-)paren
 id|usb_free_urb
 c_func
 (paren
