@@ -15,8 +15,6 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-DECL|macro|BUILDING_PTY_C
-mdefine_line|#define BUILDING_PTY_C 1
 macro_line|#include &lt;linux/devpts_fs.h&gt;
 DECL|struct|pty_struct
 r_struct
