@@ -939,12 +939,12 @@ id|elf_addr_t
 suffix:semicolon
 )brace
 macro_line|#ifndef elf_map
-r_static
-r_inline
-r_int
-r_int
 DECL|function|elf_map
+r_static
+r_int
+r_int
 id|elf_map
+c_func
 (paren
 r_struct
 id|file
@@ -3843,7 +3843,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Decide whether a segment is worth dumping; default is yes to be&n; * sure (missing info is worse than too much; etc).&n; * Personally I&squot;d include everything, and use the coredump limit...&n; *&n; * I think we should skip something. But I am not sure how. H.J.&n; */
 DECL|function|maydump
 r_static
-r_inline
 r_int
 id|maydump
 c_func
@@ -4303,7 +4302,6 @@ suffix:semicolon
 )brace
 DECL|function|fill_note
 r_static
-r_inline
 r_void
 id|fill_note
 c_func
@@ -4352,7 +4350,6 @@ suffix:semicolon
 multiline_comment|/*&n; * fill up all the fields in prstatus from the given task struct, except registers&n; * which need to be filled up separately.&n; */
 DECL|function|fill_prstatus
 r_static
-r_inline
 r_void
 id|fill_prstatus
 c_func
@@ -4446,7 +4443,6 @@ suffix:semicolon
 )brace
 DECL|function|fill_psinfo
 r_static
-r_inline
 r_void
 id|fill_psinfo
 c_func
