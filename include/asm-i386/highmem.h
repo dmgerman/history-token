@@ -39,13 +39,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Right now we initialize only a single pte table. It can be extended&n; * easily, subsequent pte tables have to be allocated in one physical&n; * chunk of RAM.&n; */
-macro_line|#if NR_CPUS &lt;= 32
-DECL|macro|PKMAP_BASE
-mdefine_line|#define PKMAP_BASE (0xff800000UL)
-macro_line|#else
-DECL|macro|PKMAP_BASE
-mdefine_line|#define PKMAP_BASE (0xff600000UL)
-macro_line|#endif
 macro_line|#ifdef CONFIG_X86_PAE
 DECL|macro|LAST_PKMAP
 mdefine_line|#define LAST_PKMAP 512
@@ -53,6 +46,9 @@ macro_line|#else
 DECL|macro|LAST_PKMAP
 mdefine_line|#define LAST_PKMAP 1024
 macro_line|#endif
+multiline_comment|/*&n; * Ordering is:&n; *&n; * FIXADDR_TOP&n; * &t;&t;&t;fixed_addresses&n; * FIXADDR_START&n; * &t;&t;&t;temp fixed addresses&n; * FIXADDR_BOOT_START&n; * &t;&t;&t;Persistent kmap area&n; * PKMAP_BASE&n; * VMALLOC_END&n; * &t;&t;&t;Vmalloc area&n; * VMALLOC_START&n; * high_memory&n; */
+DECL|macro|PKMAP_BASE
+mdefine_line|#define PKMAP_BASE ( (FIXADDR_BOOT_START - PAGE_SIZE*(LAST_PKMAP + 1)) &amp; PMD_MASK )
 DECL|macro|LAST_PKMAP_MASK
 mdefine_line|#define LAST_PKMAP_MASK (LAST_PKMAP-1)
 DECL|macro|PKMAP_NR
