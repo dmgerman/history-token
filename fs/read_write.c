@@ -1955,11 +1955,6 @@ op_increment
 )paren
 (brace
 id|ssize_t
-id|tmp
-op_assign
-id|tot_len
-suffix:semicolon
-id|ssize_t
 id|len
 op_assign
 (paren
@@ -1990,9 +1985,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ssize_t
+)paren
 id|tot_len
 OL
-id|tmp
+l_int|0
 )paren
 multiline_comment|/* maths overflow on the ssize_t */
 r_goto
