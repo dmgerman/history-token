@@ -34,13 +34,8 @@ DECL|macro|PTRS_PER_PMD
 mdefine_line|#define PTRS_PER_PMD&t;(1 &lt;&lt; PMD_INDEX_SIZE)
 DECL|macro|PTRS_PER_PGD
 mdefine_line|#define PTRS_PER_PGD&t;(1 &lt;&lt; PGD_INDEX_SIZE)
-macro_line|#if 0
-multiline_comment|/* DRENG / PPPBBB This is a compiler bug!!! */
-mdefine_line|#define USER_PTRS_PER_PGD&t;(TASK_SIZE / PGDIR_SIZE)
-macro_line|#else
 DECL|macro|USER_PTRS_PER_PGD
-mdefine_line|#define USER_PTRS_PER_PGD&t;(1024)
-macro_line|#endif
+mdefine_line|#define USER_PTRS_PER_PGD&t;(TASK_SIZE_USER64 / PGDIR_SIZE)
 DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;0
 DECL|macro|EADDR_SIZE
