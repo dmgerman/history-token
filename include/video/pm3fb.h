@@ -2054,34 +2054,6 @@ mdefine_line|#define PM3FBIO_RESETCHIP   0x504D33FF /* &squot;PM3&bslash;377&squ
 multiline_comment|/* ***************************************** */
 multiline_comment|/* ***** pm3fb useful define and macro ***** */
 multiline_comment|/* ***************************************** */
-multiline_comment|/* kernel -specific definitions */
-multiline_comment|/* what kernel is this ? */
-macro_line|#if ((LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)) &amp;&amp; (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,6,0)))
-DECL|macro|KERNEL_2_5
-mdefine_line|#define KERNEL_2_5
-macro_line|#endif
-macro_line|#if ((LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)) &amp;&amp; (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)))
-DECL|macro|KERNEL_2_4
-mdefine_line|#define KERNEL_2_4
-macro_line|#endif
-macro_line|#if ((LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)) &amp;&amp; (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))) 
-DECL|macro|KERNEL_2_2
-mdefine_line|#define KERNEL_2_2
-multiline_comment|/* pci_resource_start, available in 2.2.18 */
-macro_line|#include &lt;linux/kcomp.h&gt;
-macro_line|#ifdef CONFIG_FB_OF
-DECL|macro|SUPPORT_FB_OF
-mdefine_line|#define SUPPORT_FB_OF
-macro_line|#endif
-macro_line|#endif
-macro_line|#if (!defined(KERNEL_2_2)) &amp;&amp; (!defined(KERNEL_2_4)) &amp;&amp; (!defined(KERNEL_2_5))
-macro_line|#error &quot;Only kernel 2.2.x, kernel 2.4.y and kernel 2.5.z might work&quot;
-macro_line|#endif
-multiline_comment|/* not sure if/why it&squot;s needed. doesn&squot;t work without on my PowerMac... */
-macro_line|#ifdef __BIG_ENDIAN
-DECL|macro|MUST_BYTESWAP
-mdefine_line|#define MUST_BYTESWAP
-macro_line|#endif
 multiline_comment|/* permedia3 -specific definitions */
 DECL|macro|PM3_SCALE_TO_CLOCK
 mdefine_line|#define PM3_SCALE_TO_CLOCK(pr, fe, po) ((2 * PM3_REF_CLOCK * fe) / (pr * (1 &lt;&lt; (po))))
@@ -2147,25 +2119,10 @@ macro_line|#endif
 multiline_comment|/* ******************************************** */
 multiline_comment|/* ***** A bunch of register-access macro ***** */
 multiline_comment|/* ******************************************** */
-macro_line|#ifdef KERNEL_2_2
-macro_line|#ifdef MUST_BYTESWAP /* we are writing big_endian to big_endian through a little_endian macro */
-DECL|macro|PM3_READ_REG
-mdefine_line|#define PM3_READ_REG(r) __swab32(readl((l_fb_info-&gt;vIOBase + r)))
-DECL|macro|PM3_WRITE_REG
-mdefine_line|#define PM3_WRITE_REG(r, v) writel(__swab32(v), (l_fb_info-&gt;vIOBase + r))
-macro_line|#else /* MUST_BYTESWAP */
-DECL|macro|PM3_WRITE_REG
-mdefine_line|#define PM3_WRITE_REG(r, v) writel(v, (l_fb_info-&gt;vIOBase + r))
-DECL|macro|PM3_READ_REG
-mdefine_line|#define PM3_READ_REG(r) readl((l_fb_info-&gt;vIOBase + r))
-macro_line|#endif /* MUST_BYTESWAP */
-macro_line|#endif /* KERNEL_2_2 */
-macro_line|#if (defined KERNEL_2_4) || (defined KERNEL_2_5) /* native-endian access */
 DECL|macro|PM3_WRITE_REG
 mdefine_line|#define PM3_WRITE_REG(r, v) fb_writel(v, (l_fb_info-&gt;vIOBase + r))
 DECL|macro|PM3_READ_REG
 mdefine_line|#define PM3_READ_REG(r) fb_readl((l_fb_info-&gt;vIOBase + r))
-macro_line|#endif /* KERNEL_2_4 or KERNEL_2_5 */
 DECL|macro|depth2bpp
 mdefine_line|#define depth2bpp(d) ((d + 7L) &amp; ~7L)
 DECL|macro|depth2ByPP
