@@ -2503,6 +2503,19 @@ id|PFX
 l_string|&quot;Trying ACPI perflib&bslash;n&quot;
 )paren
 suffix:semicolon
+id|maximum_speed
+op_assign
+l_int|0
+suffix:semicolon
+id|minimum_speed
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|latency
+op_assign
+l_int|0
+suffix:semicolon
 id|result
 op_assign
 id|powernow_acpi_init
