@@ -267,6 +267,8 @@ id|mtouch-&gt;input
 comma
 id|ABS_Y
 comma
+id|MTOUCHUSB_MAX_YC
+op_minus
 id|MTOUCHUSB_GET_YC
 c_func
 (paren
