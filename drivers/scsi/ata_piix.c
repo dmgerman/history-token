@@ -193,15 +193,11 @@ r_struct
 id|ata_device
 op_star
 id|adev
-comma
-r_int
-r_int
-id|pio
 )paren
 suffix:semicolon
 r_static
 r_void
-id|piix_set_udmamode
+id|piix_set_dmamode
 (paren
 r_struct
 id|ata_port
@@ -212,10 +208,6 @@ r_struct
 id|ata_device
 op_star
 id|adev
-comma
-r_int
-r_int
-id|udma
 )paren
 suffix:semicolon
 DECL|variable|in_module_init
@@ -518,9 +510,9 @@ op_assign
 id|piix_set_piomode
 comma
 dot
-id|set_udmamode
+id|set_dmamode
 op_assign
-id|piix_set_udmamode
+id|piix_set_dmamode
 comma
 dot
 id|tf_load
@@ -605,16 +597,6 @@ dot
 id|port_disable
 op_assign
 id|ata_port_disable
-comma
-dot
-id|set_piomode
-op_assign
-id|piix_set_piomode
-comma
-dot
-id|set_udmamode
-op_assign
-id|piix_set_udmamode
 comma
 dot
 id|tf_load
@@ -717,9 +699,24 @@ comma
 dot
 id|pio_mask
 op_assign
-l_int|0x03
+l_int|0x1f
 comma
-multiline_comment|/* pio3-4 */
+multiline_comment|/* pio0-4 */
+macro_line|#if 0
+dot
+id|mwdma_mask
+op_assign
+l_int|0x06
+comma
+multiline_comment|/* mwdma1-2 */
+macro_line|#else
+dot
+id|mwdma_mask
+op_assign
+l_int|0x00
+comma
+multiline_comment|/* mwdma broken */
+macro_line|#endif
 dot
 id|udma_mask
 op_assign
@@ -756,15 +753,21 @@ comma
 dot
 id|pio_mask
 op_assign
-l_int|0x03
+l_int|0x1f
 comma
-multiline_comment|/* pio3-4 */
+multiline_comment|/* pio0-4 */
+dot
+id|mwdma_mask
+op_assign
+l_int|0x07
+comma
+multiline_comment|/* mwdma0-2 */
 dot
 id|udma_mask
 op_assign
 l_int|0x7f
 comma
-multiline_comment|/* udma0-6 ; FIXME */
+multiline_comment|/* udma0-6 */
 dot
 id|port_ops
 op_assign
@@ -791,9 +794,24 @@ comma
 dot
 id|pio_mask
 op_assign
-l_int|0x03
+l_int|0x1f
 comma
-multiline_comment|/* pio3-4 */
+multiline_comment|/* pio0-4 */
+macro_line|#if 0
+dot
+id|mwdma_mask
+op_assign
+l_int|0x06
+comma
+multiline_comment|/* mwdma1-2 */
+macro_line|#else
+dot
+id|mwdma_mask
+op_assign
+l_int|0x00
+comma
+multiline_comment|/* mwdma broken */
+macro_line|#endif
 dot
 id|udma_mask
 op_assign
@@ -832,15 +850,21 @@ comma
 dot
 id|pio_mask
 op_assign
-l_int|0x03
+l_int|0x1f
 comma
-multiline_comment|/* pio3-4 */
+multiline_comment|/* pio0-4 */
+dot
+id|mwdma_mask
+op_assign
+l_int|0x07
+comma
+multiline_comment|/* mwdma0-2 */
 dot
 id|udma_mask
 op_assign
 l_int|0x7f
 comma
-multiline_comment|/* udma0-6 ; FIXME */
+multiline_comment|/* udma0-6 */
 dot
 id|port_ops
 op_assign
@@ -1278,12 +1302,14 @@ r_struct
 id|ata_device
 op_star
 id|adev
-comma
+)paren
+(brace
 r_int
 r_int
 id|pio
-)paren
-(brace
+op_assign
+id|adev-&gt;pio_mode
+suffix:semicolon
 r_struct
 id|pci_dev
 op_star
@@ -1519,11 +1545,11 @@ id|slave_data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;piix_set_udmamode - Initialize host controller PATA PIO timings&n; *&t;@ap: Port whose timings we are configuring&n; *&t;@adev: um&n; *&t;@udma: udma mode, 0 - 6&n; *&n; *&t;Set UDMA mode for device, in host controller PCI config space.&n; *&n; *&t;LOCKING:&n; *&t;None (inherited from caller).&n; */
-DECL|function|piix_set_udmamode
+multiline_comment|/**&n; *&t;piix_set_dmamode - Initialize host controller PATA PIO timings&n; *&t;@ap: Port whose timings we are configuring&n; *&t;@adev: um&n; *&t;@udma: udma mode, 0 - 6&n; *&n; *&t;Set UDMA mode for device, in host controller PCI config space.&n; *&n; *&t;LOCKING:&n; *&t;None (inherited from caller).&n; */
+DECL|function|piix_set_dmamode
 r_static
 r_void
-id|piix_set_udmamode
+id|piix_set_dmamode
 (paren
 r_struct
 id|ata_port
@@ -1534,12 +1560,15 @@ r_struct
 id|ata_device
 op_star
 id|adev
-comma
+)paren
+(brace
 r_int
 r_int
 id|udma
-)paren
-(brace
+op_assign
+id|adev-&gt;dma_mode
+suffix:semicolon
+multiline_comment|/* FIXME: MWDMA too */
 r_struct
 id|pci_dev
 op_star
@@ -1768,6 +1797,14 @@ l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|XFER_MW_DMA_2
+suffix:colon
+r_case
+id|XFER_MW_DMA_1
+suffix:colon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|BUG
@@ -1778,6 +1815,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|speed
+op_ge
+id|XFER_UDMA_0
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1916,6 +1961,93 @@ op_complement
 id|v_flag
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|reg48
+op_amp
+id|u_flag
+)paren
+id|pci_write_config_byte
+c_func
+(paren
+id|dev
+comma
+l_int|0x48
+comma
+id|reg48
+op_amp
+op_complement
+id|u_flag
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reg4a
+op_amp
+id|a_speed
+)paren
+id|pci_write_config_word
+c_func
+(paren
+id|dev
+comma
+l_int|0x4a
+comma
+id|reg4a
+op_amp
+op_complement
+id|a_speed
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reg54
+op_amp
+id|v_flag
+)paren
+id|pci_write_config_byte
+c_func
+(paren
+id|dev
+comma
+l_int|0x54
+comma
+id|reg54
+op_amp
+op_complement
+id|v_flag
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reg55
+op_amp
+id|w_flag
+)paren
+id|pci_write_config_byte
+c_func
+(paren
+id|dev
+comma
+l_int|0x55
+comma
+(paren
+id|u8
+)paren
+id|reg55
+op_amp
+op_complement
+id|w_flag
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* move to PCI layer, integrate w/ MSI stuff */
 DECL|function|pci_enable_intx
