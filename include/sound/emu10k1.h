@@ -1081,9 +1081,9 @@ mdefine_line|#define A_SPDIF_RATE_MASK&t;0x000000c0
 DECL|macro|A_SPDIF_48000
 mdefine_line|#define A_SPDIF_48000&t;&t;0x00000000
 DECL|macro|A_SPDIF_44100
-mdefine_line|#define A_SPDIF_44100&t;&t;0x00000040
+mdefine_line|#define A_SPDIF_44100&t;&t;0x00000080
 DECL|macro|A_SPDIF_96000
-mdefine_line|#define A_SPDIF_96000&t;&t;0x00000080
+mdefine_line|#define A_SPDIF_96000&t;&t;0x00000040
 multiline_comment|/* 0x77,0x78,0x79 &quot;something i2s-related&quot; - default to 0x01080000 on my audigy 2 ZS --rlrevell&t;*/
 multiline_comment|/* 0x7a, 0x7b - lookup tables */
 DECL|macro|A_FXRT2
