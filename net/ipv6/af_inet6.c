@@ -46,7 +46,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* XX: Turn to one when all is ok within the&n;&t;&t;&t;      module for allowing unload */
 macro_line|#endif
-macro_line|#if defined(MODULE) &amp;&amp; LINUX_VERSION_CODE &gt; 0x20115
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -67,7 +66,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* IPv6 procfs goodies... */
 macro_line|#ifdef CONFIG_PROC_FS
 r_extern
