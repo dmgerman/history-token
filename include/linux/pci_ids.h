@@ -2159,11 +2159,11 @@ mdefine_line|#define PCI_DEVICE_ID_VIA_8233_0&t;0x3074
 DECL|macro|PCI_DEVICE_ID_VIA_8633_0
 mdefine_line|#define PCI_DEVICE_ID_VIA_8633_0&t;0x3091
 DECL|macro|PCI_DEVICE_ID_VIA_8367_0
-mdefine_line|#define PCI_DEVICE_ID_VIA_8367_0&t;0x3099 
+mdefine_line|#define PCI_DEVICE_ID_VIA_8367_0&t;0x3099
 DECL|macro|PCI_DEVICE_ID_VIA_8653_0
 mdefine_line|#define PCI_DEVICE_ID_VIA_8653_0&t;0x3101
 DECL|macro|PCI_DEVICE_ID_VIA_8622
-mdefine_line|#define PCI_DEVICE_ID_VIA_8622&t;&t;0x3102 
+mdefine_line|#define PCI_DEVICE_ID_VIA_8622&t;&t;0x3102
 DECL|macro|PCI_DEVICE_ID_VIA_8233C_0
 mdefine_line|#define PCI_DEVICE_ID_VIA_8233C_0&t;0x3109
 DECL|macro|PCI_DEVICE_ID_VIA_8361
