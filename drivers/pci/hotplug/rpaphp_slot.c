@@ -146,7 +146,7 @@ id|hotplug_slot_attr_location.attr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* free up the memory user by a slot */
+multiline_comment|/* free up the memory used by a slot */
 DECL|function|rpaphp_release_slot
 r_static
 r_void
@@ -164,9 +164,6 @@ id|slot
 op_star
 id|slot
 op_assign
-id|hotplug_slot
-ques
-c_cond
 (paren
 r_struct
 id|slot
@@ -174,16 +171,7 @@ op_star
 )paren
 id|hotplug_slot
 op_member_access_from_pointer
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|NULL
-)paren
-r_return
+r_private
 suffix:semicolon
 id|dealloc_slot_struct
 c_func
