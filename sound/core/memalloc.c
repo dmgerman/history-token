@@ -322,6 +322,8 @@ id|ret
 suffix:semicolon
 id|u64
 id|dma_mask
+comma
+id|coherent_dma_mask
 suffix:semicolon
 r_if
 c_cond
@@ -351,8 +353,17 @@ op_assign
 op_star
 id|dev-&gt;dma_mask
 suffix:semicolon
+id|coherent_dma_mask
+op_assign
+id|dev-&gt;coherent_dma_mask
+suffix:semicolon
 op_star
 id|dev-&gt;dma_mask
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+multiline_comment|/* do without masking */
+id|dev-&gt;coherent_dma_mask
 op_assign
 l_int|0xffffffff
 suffix:semicolon
@@ -375,6 +386,11 @@ op_star
 id|dev-&gt;dma_mask
 op_assign
 id|dma_mask
+suffix:semicolon
+multiline_comment|/* restore */
+id|dev-&gt;coherent_dma_mask
+op_assign
+id|coherent_dma_mask
 suffix:semicolon
 multiline_comment|/* restore */
 r_if
@@ -444,6 +460,17 @@ id|dma_mask
 op_ne
 l_int|0xffffffffUL
 )paren
+(brace
+multiline_comment|/* allocation with GFP_ATOMIC to avoid the long stall */
+id|flags
+op_and_assign
+op_complement
+id|GFP_KERNEL
+suffix:semicolon
+id|flags
+op_or_assign
+id|GFP_ATOMIC
+suffix:semicolon
 id|ret
 op_assign
 id|dma_alloc_coherent
@@ -458,6 +485,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 id|ret
