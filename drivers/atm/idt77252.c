@@ -10512,6 +10512,13 @@ op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* XXX: make this configurable */
+id|init_timer
+c_func
+(paren
+op_amp
+id|est-&gt;timer
+)paren
+suffix:semicolon
 id|est-&gt;timer.data
 op_assign
 (paren
@@ -10523,13 +10530,6 @@ suffix:semicolon
 id|est-&gt;timer.function
 op_assign
 id|idt77252_est_timer
-suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|est-&gt;timer
-)paren
 suffix:semicolon
 id|est-&gt;timer.expires
 op_assign
@@ -18719,6 +18719,13 @@ op_amp
 id|card-&gt;tst_lock
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|card-&gt;tst_timer
+)paren
+suffix:semicolon
 id|card-&gt;tst_timer.data
 op_assign
 (paren
@@ -18730,13 +18737,6 @@ suffix:semicolon
 id|card-&gt;tst_timer.function
 op_assign
 id|tst_timer
-suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|card-&gt;tst_timer
-)paren
 suffix:semicolon
 multiline_comment|/* Do the I/O remapping... */
 id|card-&gt;membase

@@ -3782,6 +3782,13 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|priv-&gt;timer
+)paren
+suffix:semicolon
 multiline_comment|/* Reset card...&n;&t; */
 id|ether3_outb
 c_func
