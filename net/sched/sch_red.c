@@ -587,6 +587,9 @@ id|sch-&gt;qstats.backlog
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
+id|sch-&gt;qstats.requeues
+op_increment
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

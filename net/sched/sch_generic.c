@@ -1181,6 +1181,9 @@ suffix:semicolon
 id|qdisc-&gt;q.qlen
 op_increment
 suffix:semicolon
+id|qdisc-&gt;qstats.requeues
+op_increment
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

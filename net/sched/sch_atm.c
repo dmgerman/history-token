@@ -2736,9 +2736,14 @@ c_cond
 op_logical_neg
 id|ret
 )paren
+(brace
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
+id|sch-&gt;qstats.requeues
+op_increment
+suffix:semicolon
+)brace
 r_else
 (brace
 id|sch-&gt;qstats.drops

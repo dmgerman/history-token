@@ -7314,6 +7314,9 @@ suffix:semicolon
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
+id|sch-&gt;qstats.requeues
+op_increment
+suffix:semicolon
 r_return
 id|NET_XMIT_SUCCESS
 suffix:semicolon

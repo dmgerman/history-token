@@ -215,6 +215,9 @@ comma
 id|skb
 )paren
 suffix:semicolon
+id|sch-&gt;qstats.requeues
+op_increment
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

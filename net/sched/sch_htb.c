@@ -3217,6 +3217,9 @@ suffix:semicolon
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
+id|sch-&gt;qstats.requeues
+op_increment
+suffix:semicolon
 id|HTB_DBG
 c_func
 (paren

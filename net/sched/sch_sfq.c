@@ -1240,9 +1240,14 @@ id|q-&gt;limit
 op_minus
 l_int|1
 )paren
+(brace
+id|sch-&gt;qstats.requeues
+op_increment
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon

@@ -474,6 +474,9 @@ l_int|0
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
+id|sch-&gt;qstats.requeues
+op_increment
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
