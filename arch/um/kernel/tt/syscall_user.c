@@ -238,7 +238,7 @@ c_cond
 (paren
 id|syscall
 OL
-l_int|1
+l_int|0
 )paren
 (brace
 r_return

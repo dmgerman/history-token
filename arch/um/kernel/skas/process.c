@@ -216,7 +216,7 @@ c_cond
 (paren
 id|syscall_nr
 OL
-l_int|1
+l_int|0
 )paren
 (brace
 id|relay_signal
