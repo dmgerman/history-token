@@ -11,7 +11,7 @@ mdefine_line|#define DRV_NAME &quot;ub&quot;
 DECL|macro|DEVFS_NAME
 mdefine_line|#define DEVFS_NAME DRV_NAME
 DECL|macro|UB_MAJOR
-mdefine_line|#define UB_MAJOR 125&t;/* Stolen from Experimental range for a week - XXX */
+mdefine_line|#define UB_MAJOR 180
 multiline_comment|/*&n; * Definitions which have to be scattered once we understand the layout better.&n; */
 multiline_comment|/* Transport (despite PR in the name) */
 DECL|macro|US_PR_BULK
