@@ -9269,7 +9269,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|3
+id|PCI_D3
 )paren
 suffix:semicolon
 id|pci_save_state
@@ -9343,7 +9343,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|sis900_init_rxfilter
