@@ -3,8 +3,12 @@ macro_line|#ifndef __SYSDEP_I386_PTRACE_H
 DECL|macro|__SYSDEP_I386_PTRACE_H
 mdefine_line|#define __SYSDEP_I386_PTRACE_H
 macro_line|#include &quot;uml-config.h&quot;
+macro_line|#ifdef CONFIG_MODE_TT
 macro_line|#include &quot;ptrace-tt.h&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MODE_SKAS
 macro_line|#include &quot;ptrace-skas.h&quot;
+macro_line|#endif
 macro_line|#include &quot;choose-mode.h&quot;
 DECL|struct|uml_pt_regs
 r_struct

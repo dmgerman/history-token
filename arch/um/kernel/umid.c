@@ -989,9 +989,6 @@ c_func
 id|dir
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|set_uml_dir
 r_static
