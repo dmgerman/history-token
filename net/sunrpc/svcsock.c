@@ -4101,6 +4101,17 @@ id|sk
 op_assign
 id|svsk-&gt;sk_sk
 suffix:semicolon
+r_struct
+id|tcp_opt
+op_star
+id|tp
+op_assign
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|svsk-&gt;sk_recvfrom
 op_assign
 id|svc_tcp_recvfrom
@@ -4165,6 +4176,11 @@ id|svsk-&gt;sk_tcplen
 op_assign
 l_int|0
 suffix:semicolon
+id|tp-&gt;nonagle
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* disable Nagle&squot;s algorithm */
 multiline_comment|/* initialise setting must have enough space to&n;&t;&t; * receive and respond to one request.  &n;&t;&t; * svc_tcp_recvfrom will re-adjust if necessary&n;&t;&t; */
 id|svc_sock_setbufsize
 c_func
