@@ -170,6 +170,11 @@ r_int
 id|n
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -256,6 +261,11 @@ r_int
 id|res
 comma
 id|tmp
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
