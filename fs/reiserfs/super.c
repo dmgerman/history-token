@@ -1089,6 +1089,14 @@ op_ne
 id|ITEM_NOT_FOUND
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+op_minus
+id|ENOSPC
+)paren
 id|reiserfs_warning
 (paren
 l_string|&quot;vs-2100: add_save_link:&quot;

@@ -2972,6 +2972,14 @@ c_cond
 id|retval
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+op_minus
+id|ENOSPC
+)paren
 id|printk
 c_func
 (paren
