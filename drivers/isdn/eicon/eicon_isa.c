@@ -481,6 +481,7 @@ r_int
 id|tmp
 suffix:semicolon
 r_int
+r_int
 id|timeout
 suffix:semicolon
 id|eicon_isa_codebuf
@@ -1388,6 +1389,7 @@ suffix:semicolon
 r_int
 id|tmp
 suffix:semicolon
+r_int
 r_int
 id|timeout
 suffix:semicolon

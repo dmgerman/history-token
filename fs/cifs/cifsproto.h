@@ -194,6 +194,7 @@ id|smb
 suffix:semicolon
 r_extern
 r_int
+r_int
 id|smbCalcSize
 c_func
 (paren

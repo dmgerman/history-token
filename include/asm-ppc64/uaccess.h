@@ -25,9 +25,9 @@ DECL|macro|set_fs
 mdefine_line|#define set_fs(val)&t;(current-&gt;thread.fs = (val))
 DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)&t;((a).seg == (b).seg)
-multiline_comment|/*&n; * Use the alpha trick for checking ranges:&n; *&n; * Is a address valid? This does a straightforward calculation rather&n; * than tests.&n; *&n; * Address valid if:&n; *  - &quot;addr&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;size&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;addr+size&quot; doesn&squot;t have any high-bits set&n; *  - OR we are in kernel mode.&n; */
+multiline_comment|/*&n; * Use the alpha trick for checking ranges:&n; *&n; * Is a address valid? This does a straightforward calculation rather&n; * than tests.&n; *&n; * Address valid if:&n; *  - &quot;addr&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;size&quot; doesn&squot;t have any high-bits set&n; *  - OR we are in kernel mode.&n; *&n; * We dont have to check for high bits in (addr+size) because the first&n; * two checks force the maximum result to be below the start of the&n; * kernel region.&n; */
 DECL|macro|__access_ok
-mdefine_line|#define __access_ok(addr,size,segment) &bslash;&n;&t;(((segment).seg &amp; (addr | size | (addr+size))) == 0)
+mdefine_line|#define __access_ok(addr,size,segment) &bslash;&n;&t;(((segment).seg &amp; (addr | size )) == 0)
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size) &bslash;&n;&t;__access_ok(((unsigned long)(addr)),(size),get_fs())
 DECL|function|verify_area

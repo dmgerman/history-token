@@ -4,15 +4,15 @@ macro_line|#ifndef __ACTYPES_H__
 DECL|macro|__ACTYPES_H__
 mdefine_line|#define __ACTYPES_H__
 multiline_comment|/*! [Begin] no source code translation (keep the typedefs) */
-multiline_comment|/*&n; * Data type ranges&n; */
+multiline_comment|/*&n; * Data type ranges&n; * Note: These macros are designed to be compiler independent as well as&n; * working around problems that some 32-bit compilers have with 64-bit&n; * constants.&n; */
 DECL|macro|ACPI_UINT8_MAX
-mdefine_line|#define ACPI_UINT8_MAX                  (~((UINT8)  0))
+mdefine_line|#define ACPI_UINT8_MAX                  (UINT8) (~((UINT8)  0)) /* 0xFF               */
 DECL|macro|ACPI_UINT16_MAX
-mdefine_line|#define ACPI_UINT16_MAX                 (~((UINT16) 0))
+mdefine_line|#define ACPI_UINT16_MAX                 (UINT16)(~((UINT16) 0)) /* 0xFFFF             */
 DECL|macro|ACPI_UINT32_MAX
-mdefine_line|#define ACPI_UINT32_MAX                 (~((UINT32) 0))
+mdefine_line|#define ACPI_UINT32_MAX                 (UINT32)(~((UINT32) 0)) /* 0xFFFFFFFF         */
 DECL|macro|ACPI_UINT64_MAX
-mdefine_line|#define ACPI_UINT64_MAX                 (~((UINT64) 0))
+mdefine_line|#define ACPI_UINT64_MAX                 (UINT64)(~((UINT64) 0)) /* 0xFFFFFFFFFFFFFFFF */
 DECL|macro|ACPI_ASCII_MAX
 mdefine_line|#define ACPI_ASCII_MAX                  0x7F
 macro_line|#ifdef DEFINE_ALTERNATE_TYPES
@@ -472,10 +472,6 @@ DECL|macro|ACPI_INTEGER_MAX
 mdefine_line|#define ACPI_INTEGER_MAX                ACPI_UINT32_MAX
 DECL|macro|ACPI_INTEGER_BIT_SIZE
 mdefine_line|#define ACPI_INTEGER_BIT_SIZE           32
-DECL|macro|ACPI_MAX_BCD_VALUE
-mdefine_line|#define ACPI_MAX_BCD_VALUE              99999999
-DECL|macro|ACPI_MAX_BCD_DIGITS
-mdefine_line|#define ACPI_MAX_BCD_DIGITS             8
 DECL|macro|ACPI_MAX_DECIMAL_DIGITS
 mdefine_line|#define ACPI_MAX_DECIMAL_DIGITS         10
 DECL|macro|ACPI_USE_NATIVE_DIVIDE
@@ -491,15 +487,6 @@ DECL|macro|ACPI_INTEGER_MAX
 mdefine_line|#define ACPI_INTEGER_MAX                ACPI_UINT64_MAX
 DECL|macro|ACPI_INTEGER_BIT_SIZE
 mdefine_line|#define ACPI_INTEGER_BIT_SIZE           64
-macro_line|#if ACPI_MACHINE_WIDTH == 64
-DECL|macro|ACPI_MAX_BCD_VALUE
-mdefine_line|#define ACPI_MAX_BCD_VALUE              9999999999999999UL
-macro_line|#else
-DECL|macro|ACPI_MAX_BCD_VALUE
-mdefine_line|#define ACPI_MAX_BCD_VALUE              9999999999999999ULL
-macro_line|#endif
-DECL|macro|ACPI_MAX_BCD_DIGITS
-mdefine_line|#define ACPI_MAX_BCD_DIGITS             16
 DECL|macro|ACPI_MAX_DECIMAL_DIGITS
 mdefine_line|#define ACPI_MAX_DECIMAL_DIGITS         19
 macro_line|#if ACPI_MACHINE_WIDTH == 64

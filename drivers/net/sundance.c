@@ -4026,7 +4026,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%02x %08x %08x %08x(%02x) %08x %08x&bslash;n&quot;
+l_string|&quot;%02x %08Zx %08x %08x(%02x) %08x %08x&bslash;n&quot;
 comma
 id|i
 comma
@@ -8020,7 +8020,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%02x %08x %08x %08x(%02x) %08x %08x&bslash;n&quot;
+l_string|&quot;%02x %08Zx %08x %08x(%02x) %08x %08x&bslash;n&quot;
 comma
 id|i
 comma
