@@ -489,7 +489,7 @@ c_func
 (paren
 l_string|&quot;fs/xfs&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 r_return
@@ -501,7 +501,7 @@ l_string|&quot;fs/xfs/stat&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|xfs_read_xfsstats
 comma
