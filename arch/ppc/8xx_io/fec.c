@@ -1,11 +1,4 @@
-multiline_comment|/*&n; * Fast Ethernet Controller (FEC) driver for Motorola MPC8xx.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * This version of the driver is specific to the FADS implementation,&n; * since the board contains control registers external to the processor&n; * for the control of the LevelOne LXT970 transceiver.  The MPC860T manual&n; * describes connections using the internal parallel port I/O, which&n; * is basically all of Port D.&n; *&n; * Includes support for the following PHYs: QS6612, LXT970, LXT971/2.&n; *&n; * Right now, I am very wasteful with the buffers.  I allocate memory&n; * pages and then divide them into 2K frame buffers.  This way I know I&n; * have buffers large enough to hold one frame within one buffer descriptor.&n; * Once I get this working, I will use 64 or 128 byte CPM buffers, which&n; * will be much more memory efficient and will easily handle lots of&n; * small packets.&n; *&n; * Much better multiple PHY support by Magnus Damm.&n; * Copyright (c) 2000 Ericsson Radio Systems AB.&n; *&n; * Make use of MII for PHY control configurable.&n; * Some fixes.&n; * Copyright (c) 2000 Wolfgang Denk, DENX Software Engineering.&n; */
-multiline_comment|/* List of PHYs we wish to support.&n;*/
-DECL|macro|CONFIG_FEC_LXT970
-macro_line|#undef&t;CONFIG_FEC_LXT970
-DECL|macro|CONFIG_FEC_LXT971
-mdefine_line|#define&t;CONFIG_FEC_LXT971
-DECL|macro|CONFIG_FEC_QS6612
-macro_line|#undef&t;CONFIG_FEC_QS6612
+multiline_comment|/*&n; * Fast Ethernet Controller (FEC) driver for Motorola MPC8xx.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * This version of the driver is specific to the FADS implementation,&n; * since the board contains control registers external to the processor&n; * for the control of the LevelOne LXT970 transceiver.  The MPC860T manual&n; * describes connections using the internal parallel port I/O, which&n; * is basically all of Port D.&n; *&n; * Includes support for the following PHYs: QS6612, LXT970, LXT971/2.&n; *&n; * Right now, I am very wasteful with the buffers.  I allocate memory&n; * pages and then divide them into 2K frame buffers.  This way I know I&n; * have buffers large enough to hold one frame within one buffer descriptor.&n; * Once I get this working, I will use 64 or 128 byte CPM buffers, which&n; * will be much more memory efficient and will easily handle lots of&n; * small packets.&n; *&n; * Much better multiple PHY support by Magnus Damm.&n; * Copyright (c) 2000 Ericsson Radio Systems AB.&n; *&n; * Make use of MII for PHY control configurable.&n; * Some fixes.&n; * Copyright (c) 2000-2002 Wolfgang Denk, DENX Software Engineering.&n; *&n; * Support for AMD AM79C874 added.&n; * Thomas Lange, thomas@corelatus.com&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -3780,6 +3773,276 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_FEC_QS6612 */
+multiline_comment|/* ------------------------------------------------------------------------- */
+multiline_comment|/* The Advanced Micro Devices AM79C874 is used on the ICU862&t;&t;     */
+macro_line|#ifdef CONFIG_FEC_AM79C874
+multiline_comment|/* register definitions for the 79C874 */
+DECL|macro|MII_AM79C874_MFR
+mdefine_line|#define MII_AM79C874_MFR&t;16  /* Miscellaneous Features Register      */
+DECL|macro|MII_AM79C874_ICSR
+mdefine_line|#define MII_AM79C874_ICSR&t;17  /* Interrupt Control/Status Register    */
+DECL|macro|MII_AM79C874_DR
+mdefine_line|#define MII_AM79C874_DR&t;&t;18  /* Diagnostic Register&t;&t;    */
+DECL|macro|MII_AM79C874_PMLR
+mdefine_line|#define MII_AM79C874_PMLR&t;19  /* Power Management &amp; Loopback Register */
+DECL|macro|MII_AM79C874_MCR
+mdefine_line|#define MII_AM79C874_MCR&t;21  /* Mode Control Register&t;&t;    */
+DECL|macro|MII_AM79C874_DC
+mdefine_line|#define MII_AM79C874_DC&t;&t;23  /* Disconnect Counter&t;&t;    */
+DECL|macro|MII_AM79C874_REC
+mdefine_line|#define MII_AM79C874_REC&t;24  /* Receiver Error Counter&t;&t;    */
+DECL|function|mii_parse_amd79c874_dr
+r_static
+r_void
+id|mii_parse_amd79c874_dr
+c_func
+(paren
+id|uint
+id|mii_reg
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+id|uint
+id|data
+)paren
+(brace
+r_volatile
+r_struct
+id|fec_enet_private
+op_star
+id|fep
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|uint
+id|s
+op_assign
+id|fep-&gt;phy_status
+suffix:semicolon
+id|s
+op_and_assign
+op_complement
+(paren
+id|PHY_STAT_SPMASK
+)paren
+suffix:semicolon
+multiline_comment|/* Register 18: Bit 10 is data rate, 11 is Duplex */
+r_switch
+c_cond
+(paren
+(paren
+id|mii_reg
+op_rshift
+l_int|10
+)paren
+op_amp
+l_int|3
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+id|s
+op_or_assign
+id|PHY_STAT_10HDX
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|s
+op_or_assign
+id|PHY_STAT_100HDX
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|s
+op_or_assign
+id|PHY_STAT_10FDX
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|3
+suffix:colon
+id|s
+op_or_assign
+id|PHY_STAT_100FDX
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|fep-&gt;phy_status
+op_assign
+id|s
+suffix:semicolon
+)brace
+DECL|variable|phy_info_amd79c874
+r_static
+id|phy_info_t
+id|phy_info_amd79c874
+op_assign
+(brace
+l_int|0x00022561
+comma
+l_string|&quot;AM79C874&quot;
+comma
+(paren
+r_const
+id|phy_cmd_t
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* config */
+singleline_comment|//&t;&t;{ mk_mii_write(MII_REG_ANAR, 0x021), NULL }, /* 10  Mbps, HD */
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_REG_CR
+)paren
+comma
+id|mii_parse_cr
+)brace
+comma
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_REG_ANAR
+)paren
+comma
+id|mii_parse_anar
+)brace
+comma
+(brace
+id|mk_mii_end
+comma
+)brace
+)brace
+comma
+(paren
+r_const
+id|phy_cmd_t
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* startup - enable interrupts */
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MII_AM79C874_ICSR
+comma
+l_int|0xff00
+)paren
+comma
+l_int|NULL
+)brace
+comma
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MII_REG_CR
+comma
+l_int|0x1200
+)paren
+comma
+l_int|NULL
+)brace
+comma
+multiline_comment|/* autonegotiate */
+(brace
+id|mk_mii_end
+comma
+)brace
+)brace
+comma
+(paren
+r_const
+id|phy_cmd_t
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* ack_int */
+multiline_comment|/* find out the current status */
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_REG_SR
+)paren
+comma
+id|mii_parse_sr
+)brace
+comma
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_AM79C874_DR
+)paren
+comma
+id|mii_parse_amd79c874_dr
+)brace
+comma
+multiline_comment|/* we only need to read ICSR to acknowledge */
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_AM79C874_ICSR
+)paren
+comma
+l_int|NULL
+)brace
+comma
+(brace
+id|mk_mii_end
+comma
+)brace
+)brace
+comma
+(paren
+r_const
+id|phy_cmd_t
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* shutdown - disable interrupts */
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MII_AM79C874_ICSR
+comma
+l_int|0x0000
+)paren
+comma
+l_int|NULL
+)brace
+comma
+(brace
+id|mk_mii_end
+comma
+)brace
+)brace
+comma
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_FEC_AM79C874 */
 DECL|variable|phy_info
 r_static
 id|phy_info_t
@@ -3803,7 +4066,12 @@ macro_line|#ifdef CONFIG_FEC_QS6612
 op_amp
 id|phy_info_qs6612
 comma
-macro_line|#endif /* CONFIG_FEC_LXT971 */
+macro_line|#endif /* CONFIG_FEC_QS6612 */
+macro_line|#ifdef CONFIG_FEC_AM79C874
+op_amp
+id|phy_info_amd79c874
+comma
+macro_line|#endif /* CONFIG_FEC_AM79C874 */
 l_int|NULL
 )brace
 suffix:semicolon

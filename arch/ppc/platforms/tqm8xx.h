@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * TQM8xx(L) board specific definitions&n; * &n; * Copyright (c) 1999,2000,2001 Wolfgang Denk (wd@denx.de)&n; */
+multiline_comment|/*&n; * TQM8xx(L) board specific definitions&n; * &n; * Copyright (c) 1999-2002 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __MACH_TQM8xx_H
 DECL|macro|__MACH_TQM8xx_H
@@ -17,8 +17,60 @@ mdefine_line|#define IMAP_SIZE&t;TQM_IMAP_SIZE&t;/* mapped size of IMMR area */
 multiline_comment|/*-----------------------------------------------------------------------&n; * PCMCIA stuff&n; *-----------------------------------------------------------------------&n; *&n; */
 DECL|macro|PCMCIA_MEM_SIZE
 mdefine_line|#define PCMCIA_MEM_SIZE&t;&t;( 64 &lt;&lt; 20 )
+macro_line|#ifndef CONFIG_KUP4K
 DECL|macro|MAX_HWIFS
-mdefine_line|#define&t;MAX_HWIFS&t;1&t;/* overwrite default in include/asm-ppc/ide.h */
+macro_line|# define&t;MAX_HWIFS&t;1&t;/* overwrite default in include/asm-ppc/ide.h&t;*/
+macro_line|#else&t;/* CONFIG_KUP4K */
+DECL|macro|MAX_HWIFS
+macro_line|# define&t;MAX_HWIFS&t;2&t;/* overwrite default in include/asm-ppc/ide.h&t;*/
+macro_line|# ifndef __ASSEMBLY__
+macro_line|# include &lt;asm/8xx_immap.h&gt;
+DECL|function|ide_led
+r_static
+id|__inline__
+r_void
+id|ide_led
+c_func
+(paren
+r_int
+id|on
+)paren
+(brace
+r_volatile
+id|immap_t
+op_star
+id|immap
+op_assign
+(paren
+id|immap_t
+op_star
+)paren
+id|IMAP_ADDR
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|on
+)paren
+(brace
+id|immap-&gt;im_ioport.iop_padat
+op_and_assign
+op_complement
+l_int|0x80
+suffix:semicolon
+)brace
+r_else
+(brace
+id|immap-&gt;im_ioport.iop_padat
+op_or_assign
+l_int|0x80
+suffix:semicolon
+)brace
+)brace
+macro_line|# endif&t;/* __ASSEMBLY__ */
+DECL|macro|IDE_LED
+macro_line|# define IDE_LED(x) ide_led((x))
+macro_line|#endif&t;/* CONFIG_KUP4K */
 multiline_comment|/*&n; * Definitions for IDE0 Interface&n; */
 DECL|macro|IDE0_BASE_OFFSET
 mdefine_line|#define IDE0_BASE_OFFSET&t;&t;0
@@ -42,8 +94,21 @@ DECL|macro|IDE0_CONTROL_REG_OFFSET
 mdefine_line|#define IDE0_CONTROL_REG_OFFSET&t;&t;0x0106
 DECL|macro|IDE0_IRQ_REG_OFFSET
 mdefine_line|#define IDE0_IRQ_REG_OFFSET&t;&t;0x000A&t;/* not used */
+multiline_comment|/* define IO_BASE for PCMCIA */
+DECL|macro|_IO_BASE
+mdefine_line|#define _IO_BASE 0x80000000
+DECL|macro|_IO_BASE_SIZE
+mdefine_line|#define _IO_BASE_SIZE  (64&lt;&lt;10)
+DECL|macro|FEC_INTERRUPT
+mdefine_line|#define&t;FEC_INTERRUPT&t;&t; 9&t;/* = SIU_LEVEL4&t;&t;&t;*/
+DECL|macro|PHY_INTERRUPT
+mdefine_line|#define PHY_INTERRUPT&t;&t;12&t;/* = IRQ6&t;&t;&t;*/
 DECL|macro|IDE0_INTERRUPT
-mdefine_line|#define&t;IDE0_INTERRUPT&t;&t;&t;13
+mdefine_line|#define&t;IDE0_INTERRUPT&t;&t;13
+macro_line|#ifdef CONFIG_IDE
+DECL|macro|ide_request_irq
+mdefine_line|#define ide_request_irq(irq,hand,flg,dev,id)    &bslash;&n;        request_8xxirq((irq),(hand),(flg),(dev),(id))
+macro_line|#endif
 multiline_comment|/*-----------------------------------------------------------------------&n; * CPM Ethernet through SCCx.&n; *-----------------------------------------------------------------------&n; *&n; */
 multiline_comment|/***  TQM823L, TQM850L  ***********************************************/
 macro_line|#if defined(CONFIG_TQM823L) || defined(CONFIG_TQM850L)

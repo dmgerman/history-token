@@ -26,25 +26,31 @@ DECL|macro|CPM_CR_STOP_TX
 mdefine_line|#define CPM_CR_STOP_TX&t;&t;((ushort)0x0004)
 DECL|macro|CPM_CR_RESTART_TX
 mdefine_line|#define CPM_CR_RESTART_TX&t;((ushort)0x0006)
+DECL|macro|CPM_CR_CLOSE_RX_BD
+mdefine_line|#define CPM_CR_CLOSE_RX_BD&t;((ushort)0x0007)
 DECL|macro|CPM_CR_SET_GADDR
 mdefine_line|#define CPM_CR_SET_GADDR&t;((ushort)0x0008)
+DECL|macro|CPM_CR_SET_TIMER
+mdefine_line|#define CPM_CR_SET_TIMER&t;CPM_CR_SET_GADDR
 multiline_comment|/* Channel numbers.&n;*/
 DECL|macro|CPM_CR_CH_SCC1
-mdefine_line|#define CPM_CR_CH_SCC1&t;((ushort)0x0000)
+mdefine_line|#define CPM_CR_CH_SCC1&t;&t;((ushort)0x0000)
 DECL|macro|CPM_CR_CH_I2C
-mdefine_line|#define CPM_CR_CH_I2C&t;((ushort)0x0001)&t;/* I2C and IDMA1 */
+mdefine_line|#define CPM_CR_CH_I2C&t;&t;((ushort)0x0001)&t;/* I2C and IDMA1 */
 DECL|macro|CPM_CR_CH_SCC2
-mdefine_line|#define CPM_CR_CH_SCC2&t;((ushort)0x0004)
+mdefine_line|#define CPM_CR_CH_SCC2&t;&t;((ushort)0x0004)
 DECL|macro|CPM_CR_CH_SPI
-mdefine_line|#define CPM_CR_CH_SPI&t;((ushort)0x0005)&t;/* SPI / IDMA2 / Timers */
+mdefine_line|#define CPM_CR_CH_SPI&t;&t;((ushort)0x0005)&t;/* SPI / IDMA2 / Timers */
+DECL|macro|CPM_CR_CH_TIMER
+mdefine_line|#define CPM_CR_CH_TIMER&t;&t;CPM_CR_CH_SPI
 DECL|macro|CPM_CR_CH_SCC3
-mdefine_line|#define CPM_CR_CH_SCC3&t;((ushort)0x0008)
+mdefine_line|#define CPM_CR_CH_SCC3&t;&t;((ushort)0x0008)
 DECL|macro|CPM_CR_CH_SMC1
-mdefine_line|#define CPM_CR_CH_SMC1&t;((ushort)0x0009)&t;/* SMC1 / DSP1 */
+mdefine_line|#define CPM_CR_CH_SMC1&t;&t;((ushort)0x0009)&t;/* SMC1 / DSP1 */
 DECL|macro|CPM_CR_CH_SCC4
-mdefine_line|#define CPM_CR_CH_SCC4&t;((ushort)0x000c)
+mdefine_line|#define CPM_CR_CH_SCC4&t;&t;((ushort)0x000c)
 DECL|macro|CPM_CR_CH_SMC2
-mdefine_line|#define CPM_CR_CH_SMC2&t;((ushort)0x000d)&t;/* SMC2 / DSP2 */
+mdefine_line|#define CPM_CR_CH_SMC2&t;&t;((ushort)0x000d)&t;/* SMC2 / DSP2 */
 DECL|macro|mk_cr_cmd
 mdefine_line|#define mk_cr_cmd(CH, CMD)&t;((CMD &lt;&lt; 8) | (CH &lt;&lt; 4))
 multiline_comment|/* The dual ported RAM is multi-functional.  Some areas can be (and are&n; * being) used for microcode.  There is an area that can only be used&n; * as data ram for buffer descriptors, which is all we use right now.&n; * Currently the first 512 and last 256 bytes are used for microcode.&n; */
@@ -123,6 +129,8 @@ DECL|macro|BD_SC_INTRPT
 mdefine_line|#define BD_SC_INTRPT&t;((ushort)0x1000)&t;/* Interrupt on change */
 DECL|macro|BD_SC_LAST
 mdefine_line|#define BD_SC_LAST&t;((ushort)0x0800)&t;/* Last buffer in frame */
+DECL|macro|BD_SC_TC
+mdefine_line|#define BD_SC_TC&t;((ushort)0x0400)&t;/* Transmit CRC */
 DECL|macro|BD_SC_CM
 mdefine_line|#define BD_SC_CM&t;((ushort)0x0200)&t;/* Continous mode */
 DECL|macro|BD_SC_ID
@@ -135,10 +143,16 @@ DECL|macro|BD_SC_FR
 mdefine_line|#define BD_SC_FR&t;((ushort)0x0010)&t;/* Framing error */
 DECL|macro|BD_SC_PR
 mdefine_line|#define BD_SC_PR&t;((ushort)0x0008)&t;/* Parity error */
+DECL|macro|BD_SC_NAK
+mdefine_line|#define BD_SC_NAK&t;((ushort)0x0004)&t;/* NAK - did not respond */
 DECL|macro|BD_SC_OV
 mdefine_line|#define BD_SC_OV&t;((ushort)0x0002)&t;/* Overrun */
+DECL|macro|BD_SC_UN
+mdefine_line|#define BD_SC_UN&t;((ushort)0x0002)&t;/* Underrun */
 DECL|macro|BD_SC_CD
 mdefine_line|#define BD_SC_CD&t;((ushort)0x0001)&t;/* ?? */
+DECL|macro|BD_SC_CL
+mdefine_line|#define BD_SC_CL&t;((ushort)0x0001)&t;/* Collision */
 multiline_comment|/* Parameter RAM offsets.&n;*/
 DECL|macro|PROFF_SCC1
 mdefine_line|#define PROFF_SCC1&t;((uint)0x0000)
@@ -146,6 +160,8 @@ DECL|macro|PROFF_IIC
 mdefine_line|#define PROFF_IIC&t;((uint)0x0080)
 DECL|macro|PROFF_SCC2
 mdefine_line|#define PROFF_SCC2&t;((uint)0x0100)
+DECL|macro|PROFF_SPI
+mdefine_line|#define PROFF_SPI&t;((uint)0x0180)
 DECL|macro|PROFF_SCC3
 mdefine_line|#define PROFF_SCC3&t;((uint)0x0200)
 DECL|macro|PROFF_SMC1
@@ -456,6 +472,23 @@ DECL|macro|CPM_BRG_CD_MASK
 mdefine_line|#define CPM_BRG_CD_MASK&t;&t;((uint)0x00001ffe)
 DECL|macro|CPM_BRG_DIV16
 mdefine_line|#define CPM_BRG_DIV16&t;&t;((uint)0x00000001)
+multiline_comment|/* SI Clock Route Register&n;*/
+DECL|macro|SICR_RCLK_SCC1_BRG1
+mdefine_line|#define SICR_RCLK_SCC1_BRG1&t;((uint)0x00000000)
+DECL|macro|SICR_TCLK_SCC1_BRG1
+mdefine_line|#define SICR_TCLK_SCC1_BRG1&t;((uint)0x00000000)
+DECL|macro|SICR_RCLK_SCC2_BRG2
+mdefine_line|#define SICR_RCLK_SCC2_BRG2&t;((uint)0x00000800)
+DECL|macro|SICR_TCLK_SCC2_BRG2
+mdefine_line|#define SICR_TCLK_SCC2_BRG2&t;((uint)0x00000100)
+DECL|macro|SICR_RCLK_SCC3_BRG3
+mdefine_line|#define SICR_RCLK_SCC3_BRG3&t;((uint)0x00100000)
+DECL|macro|SICR_TCLK_SCC3_BRG3
+mdefine_line|#define SICR_TCLK_SCC3_BRG3&t;((uint)0x00020000)
+DECL|macro|SICR_RCLK_SCC4_BRG4
+mdefine_line|#define SICR_RCLK_SCC4_BRG4&t;((uint)0x18000000)
+DECL|macro|SICR_TCLK_SCC4_BRG4
+mdefine_line|#define SICR_TCLK_SCC4_BRG4&t;((uint)0x03000000)
 multiline_comment|/* SCCs.&n;*/
 DECL|macro|SCC_GSMRH_IRP
 mdefine_line|#define SCC_GSMRH_IRP&t;&t;((uint)0x00040000)
@@ -1018,6 +1051,10 @@ DECL|macro|BD_ENET_RX_OV
 mdefine_line|#define BD_ENET_RX_OV&t;&t;((ushort)0x0002)
 DECL|macro|BD_ENET_RX_CL
 mdefine_line|#define BD_ENET_RX_CL&t;&t;((ushort)0x0001)
+DECL|macro|BD_ENET_RX_BC
+mdefine_line|#define BD_ENET_RX_BC&t;&t;((ushort)0x0080)&t;/* DA is Broadcast */
+DECL|macro|BD_ENET_RX_MC
+mdefine_line|#define BD_ENET_RX_MC&t;&t;((ushort)0x0040)&t;/* DA is Multicast */
 DECL|macro|BD_ENET_RX_STATS
 mdefine_line|#define BD_ENET_RX_STATS&t;((ushort)0x013f)&t;/* All status bits */
 multiline_comment|/* Buffer descriptor control/status used by Ethernet transmit.&n;*/
@@ -1345,12 +1382,227 @@ id|uint
 id|iic_txtmp
 suffix:semicolon
 multiline_comment|/* Internal */
+DECL|member|iic_res
+id|uint
+id|iic_res
+suffix:semicolon
+multiline_comment|/* reserved */
+DECL|member|iic_rpbase
+id|ushort
+id|iic_rpbase
+suffix:semicolon
+multiline_comment|/* Relocation pointer */
+DECL|member|iic_res2
+id|ushort
+id|iic_res2
+suffix:semicolon
+multiline_comment|/* reserved */
 DECL|typedef|iic_t
 )brace
 id|iic_t
 suffix:semicolon
 DECL|macro|BD_IIC_START
 mdefine_line|#define BD_IIC_START&t;&t;((ushort)0x0400)
+multiline_comment|/* SPI parameter RAM.&n;*/
+DECL|struct|spi
+r_typedef
+r_struct
+id|spi
+(brace
+DECL|member|spi_rbase
+id|ushort
+id|spi_rbase
+suffix:semicolon
+multiline_comment|/* Rx Buffer descriptor base address */
+DECL|member|spi_tbase
+id|ushort
+id|spi_tbase
+suffix:semicolon
+multiline_comment|/* Tx Buffer descriptor base address */
+DECL|member|spi_rfcr
+id|u_char
+id|spi_rfcr
+suffix:semicolon
+multiline_comment|/* Rx function code */
+DECL|member|spi_tfcr
+id|u_char
+id|spi_tfcr
+suffix:semicolon
+multiline_comment|/* Tx function code */
+DECL|member|spi_mrblr
+id|ushort
+id|spi_mrblr
+suffix:semicolon
+multiline_comment|/* Max receive buffer length */
+DECL|member|spi_rstate
+id|uint
+id|spi_rstate
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_rdp
+id|uint
+id|spi_rdp
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_rbptr
+id|ushort
+id|spi_rbptr
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_rbc
+id|ushort
+id|spi_rbc
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_rxtmp
+id|uint
+id|spi_rxtmp
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_tstate
+id|uint
+id|spi_tstate
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_tdp
+id|uint
+id|spi_tdp
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_tbptr
+id|ushort
+id|spi_tbptr
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_tbc
+id|ushort
+id|spi_tbc
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_txtmp
+id|uint
+id|spi_txtmp
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_res
+id|uint
+id|spi_res
+suffix:semicolon
+DECL|member|spi_rpbase
+id|ushort
+id|spi_rpbase
+suffix:semicolon
+multiline_comment|/* Relocation pointer */
+DECL|member|spi_res2
+id|ushort
+id|spi_res2
+suffix:semicolon
+DECL|typedef|spi_t
+)brace
+id|spi_t
+suffix:semicolon
+multiline_comment|/* SPI Mode register.&n;*/
+DECL|macro|SPMODE_LOOP
+mdefine_line|#define SPMODE_LOOP&t;((ushort)0x4000)&t;/* Loopback */
+DECL|macro|SPMODE_CI
+mdefine_line|#define SPMODE_CI&t;((ushort)0x2000)&t;/* Clock Invert */
+DECL|macro|SPMODE_CP
+mdefine_line|#define SPMODE_CP&t;((ushort)0x1000)&t;/* Clock Phase */
+DECL|macro|SPMODE_DIV16
+mdefine_line|#define SPMODE_DIV16&t;((ushort)0x0800)&t;/* BRG/16 mode */
+DECL|macro|SPMODE_REV
+mdefine_line|#define SPMODE_REV&t;((ushort)0x0400)&t;/* Reversed Data */
+DECL|macro|SPMODE_MSTR
+mdefine_line|#define SPMODE_MSTR&t;((ushort)0x0200)&t;/* SPI Master */
+DECL|macro|SPMODE_EN
+mdefine_line|#define SPMODE_EN&t;((ushort)0x0100)&t;/* Enable */
+DECL|macro|SPMODE_LENMSK
+mdefine_line|#define SPMODE_LENMSK&t;((ushort)0x00f0)&t;/* character length */
+DECL|macro|SPMODE_LEN4
+mdefine_line|#define SPMODE_LEN4&t;((ushort)0x0030)&t;/*  4 bits per char */
+DECL|macro|SPMODE_LEN8
+mdefine_line|#define SPMODE_LEN8&t;((ushort)0x0070)&t;/*  8 bits per char */
+DECL|macro|SPMODE_LEN16
+mdefine_line|#define SPMODE_LEN16&t;((ushort)0x00f0)&t;/* 16 bits per char */
+DECL|macro|SPMODE_PMMSK
+mdefine_line|#define SPMODE_PMMSK&t;((ushort)0x000f)&t;/* prescale modulus */
+multiline_comment|/* SPIE fields */
+DECL|macro|SPIE_MME
+mdefine_line|#define SPIE_MME&t;0x20
+DECL|macro|SPIE_TXE
+mdefine_line|#define SPIE_TXE&t;0x10
+DECL|macro|SPIE_BSY
+mdefine_line|#define SPIE_BSY&t;0x04
+DECL|macro|SPIE_TXB
+mdefine_line|#define SPIE_TXB&t;0x02
+DECL|macro|SPIE_RXB
+mdefine_line|#define SPIE_RXB&t;0x01
+multiline_comment|/*&n; * RISC Controller Configuration Register definitons&n; */
+DECL|macro|RCCR_TIME
+mdefine_line|#define RCCR_TIME&t;0x8000&t;&t;&t;/* RISC Timer Enable */
+DECL|macro|RCCR_TIMEP
+mdefine_line|#define RCCR_TIMEP(t)&t;(((t) &amp; 0x3F)&lt;&lt;8)&t;/* RISC Timer Period */
+DECL|macro|RCCR_TIME_MASK
+mdefine_line|#define RCCR_TIME_MASK&t;0x00FF&t;&t;&t;/* not RISC Timer related bits */
+multiline_comment|/* RISC Timer Parameter RAM offset */
+DECL|macro|PROFF_RTMR
+mdefine_line|#define PROFF_RTMR&t;((uint)0x01B0)
+DECL|struct|risc_timer_pram
+r_typedef
+r_struct
+id|risc_timer_pram
+(brace
+DECL|member|tm_base
+r_int
+r_int
+id|tm_base
+suffix:semicolon
+multiline_comment|/* RISC Timer Table Base Address */
+DECL|member|tm_ptr
+r_int
+r_int
+id|tm_ptr
+suffix:semicolon
+multiline_comment|/* RISC Timer Table Pointer (internal) */
+DECL|member|r_tmr
+r_int
+r_int
+id|r_tmr
+suffix:semicolon
+multiline_comment|/* RISC Timer Mode Register */
+DECL|member|r_tmv
+r_int
+r_int
+id|r_tmv
+suffix:semicolon
+multiline_comment|/* RISC Timer Valid Register */
+DECL|member|tm_cmd
+r_int
+r_int
+id|tm_cmd
+suffix:semicolon
+multiline_comment|/* RISC Timer Command Register */
+DECL|member|tm_cnt
+r_int
+r_int
+id|tm_cnt
+suffix:semicolon
+multiline_comment|/* RISC Timer Internal Count */
+DECL|typedef|rt_pram_t
+)brace
+id|rt_pram_t
+suffix:semicolon
+multiline_comment|/* Bits in RISC Timer Command Register */
+DECL|macro|TM_CMD_VALID
+mdefine_line|#define TM_CMD_VALID&t;0x80000000&t;/* Valid - Enables the timer */
+DECL|macro|TM_CMD_RESTART
+mdefine_line|#define TM_CMD_RESTART&t;0x40000000&t;/* Restart - for automatic restart */
+DECL|macro|TM_CMD_PWM
+mdefine_line|#define TM_CMD_PWM&t;0x20000000&t;/* Run in Pulse Width Modulation Mode */
+DECL|macro|TM_CMD_NUM
+mdefine_line|#define TM_CMD_NUM(n)&t;(((n)&amp;0xF)&lt;&lt;16)&t;/* Timer Number */
+DECL|macro|TM_CMD_PERIOD
+mdefine_line|#define TM_CMD_PERIOD(p) ((p)&amp;0xFFFF)&t;/* Timer Period */
 multiline_comment|/* CPM interrupts.  There are nearly 32 interrupts generated by CPM&n; * channels or devices.  All of these are presented to the PPC core&n; * as a single interrupt.  The CPM interrupt handler dispatches its&n; * own handlers, in a similar fashion to the PPC core handler.  We&n; * use the table as defined in the manuals (i.e. no special high&n; * priority and SCC1 == SCCa, etc...).&n; */
 DECL|macro|CPMVEC_NR
 mdefine_line|#define CPMVEC_NR&t;&t;32
