@@ -38,10 +38,61 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|macro|DCACHE_COLOUR
 mdefine_line|#define DCACHE_COLOUR(vaddr) ((vaddr &amp; (SHMLBA - 1)) &gt;&gt; PAGE_SHIFT)
-multiline_comment|/*&n; * Copy the page, taking account of the cache colour.&n; */
-DECL|function|v6_copy_user_page
+multiline_comment|/*&n; * Copy the user page.  No aliasing to deal with so we can just&n; * attack the kernel&squot;s existing mapping of these pages.&n; */
+DECL|function|v6_copy_user_page_nonaliasing
 r_void
-id|v6_copy_user_page
+id|v6_copy_user_page_nonaliasing
+c_func
+(paren
+r_void
+op_star
+id|kto
+comma
+r_const
+r_void
+op_star
+id|kfrom
+comma
+r_int
+r_int
+id|vaddr
+)paren
+(brace
+id|copy_page
+c_func
+(paren
+id|kto
+comma
+id|kfrom
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Clear the user page.  No aliasing to deal with so we can just&n; * attack the kernel&squot;s existing mapping of this page.&n; */
+DECL|function|v6_clear_user_page_nonaliasing
+r_void
+id|v6_clear_user_page_nonaliasing
+c_func
+(paren
+r_void
+op_star
+id|kaddr
+comma
+r_int
+r_int
+id|vaddr
+)paren
+(brace
+id|clear_page
+c_func
+(paren
+id|kaddr
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Copy the page, taking account of the cache colour.&n; */
+DECL|function|v6_copy_user_page_aliasing
+r_void
+id|v6_copy_user_page_aliasing
 c_func
 (paren
 r_void
@@ -74,6 +125,35 @@ id|from
 comma
 id|to
 suffix:semicolon
+multiline_comment|/*&n;&t; * Discard data in the kernel mapping for the new page.&n;&t; * FIXME: needs this MCRR to be supported.&n;&t; */
+id|__asm__
+c_func
+(paren
+l_string|&quot;mcrr&t;p15, 0, %1, %0, c6&t;@ 0xec401f06&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|kto
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+(paren
+r_int
+r_int
+)paren
+id|kto
+op_plus
+id|PAGE_SIZE
+op_minus
+id|L1_CACHE_BYTES
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Now copy the page using the same cache colour as the&n;&t; * pages ultimate destination.&n;&t; */
 id|spin_lock
 c_func
 (paren
@@ -181,9 +261,10 @@ id|v6_lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|v6_clear_user_page
+multiline_comment|/*&n; * Clear the user page.  We need to deal with the aliasing issues,&n; * so remap the kernel page into the same cache colour as the user&n; * page.&n; */
+DECL|function|v6_clear_user_page_aliasing
 r_void
-id|v6_clear_user_page
+id|v6_clear_user_page_aliasing
 c_func
 (paren
 r_void
@@ -217,6 +298,35 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Discard data in the kernel mapping for the new page&n;&t; * FIXME: needs this MCRR to be supported.&n;&t; */
+id|__asm__
+c_func
+(paren
+l_string|&quot;mcrr&t;p15, 0, %1, %0, c6&t;@ 0xec401f06&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|kaddr
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+(paren
+r_int
+r_int
+)paren
+id|kaddr
+op_plus
+id|PAGE_SIZE
+op_minus
+id|L1_CACHE_BYTES
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Now clear the page using the same cache colour as&n;&t; * the pages ultimate destination.&n;&t; */
 id|spin_lock
 c_func
 (paren
@@ -280,12 +390,12 @@ op_assign
 dot
 id|cpu_clear_user_page
 op_assign
-id|v6_clear_user_page
+id|v6_clear_user_page_nonaliasing
 comma
 dot
 id|cpu_copy_user_page
 op_assign
-id|v6_copy_user_page
+id|v6_copy_user_page_nonaliasing
 comma
 )brace
 suffix:semicolon
@@ -297,6 +407,15 @@ id|v6_userpage_init
 c_func
 (paren
 r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cache_is_vipt_aliasing
+c_func
+(paren
+)paren
 )paren
 (brace
 id|pgd_t
@@ -387,6 +506,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|v6_user_fns.cpu_clear_user_page
+op_assign
+id|v6_clear_user_page_aliasing
+suffix:semicolon
+id|v6_user_fns.cpu_copy_user_page
+op_assign
+id|v6_copy_user_page_aliasing
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

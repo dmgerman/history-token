@@ -3,7 +3,7 @@ macro_line|#ifndef __ASM_ARCH_PARAM_H
 DECL|macro|__ASM_ARCH_PARAM_H
 mdefine_line|#define __ASM_ARCH_PARAM_H
 multiline_comment|/* we cannot get our timer down to 100Hz with the setup as is, but we can&n; * manage 200 clock ticks per second... if this is a problem, we can always&n; * add a software pre-scaler to the evil timer systems.&n;*/
-DECL|macro|__KERNEL_HZ
-mdefine_line|#define __KERNEL_HZ   200
+DECL|macro|HZ
+mdefine_line|#define HZ   200
 macro_line|#endif /* __ASM_ARCH_PARAM_H */
 eof
