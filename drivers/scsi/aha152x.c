@@ -1555,7 +1555,7 @@ comma
 suffix:semicolon
 multiline_comment|/* setup &amp; interrupt */
 r_static
-r_void
+id|irqreturn_t
 id|intr
 c_func
 (paren
@@ -3056,7 +3056,7 @@ suffix:semicolon
 )brace
 DECL|function|swintr
 r_static
-r_void
+id|irqreturn_t
 id|swintr
 c_func
 (paren
@@ -3103,6 +3103,7 @@ id|irqno
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|HOSTDATA
@@ -3121,6 +3122,9 @@ id|DMACNTRL0
 comma
 id|INTEN
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef __ISAPNP__
@@ -7880,7 +7884,7 @@ suffix:semicolon
 multiline_comment|/*&n; *    Interrupts handler&n; *&n; */
 DECL|function|intr
 r_static
-r_void
+id|irqreturn_t
 id|intr
 c_func
 (paren
@@ -7925,6 +7929,7 @@ id|irqno
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* no more interrupts from the controller, while we&squot;re busy.&n;&t;   INTEN is restored by the BH handler */
@@ -8006,6 +8011,9 @@ c_func
 op_amp
 id|aha152x_tq
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * busfree phase&n; * - handle completition/disconnection/error of current command&n; * - start selection for next command (if any)&n; */

@@ -42,6 +42,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|NCR_NOT_SET
 mdefine_line|#define NCR_NOT_SET 0
 DECL|variable|ncr_irq

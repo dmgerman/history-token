@@ -2116,7 +2116,7 @@ suffix:semicolon
 )brace
 DECL|function|do_ql_ihandl
 r_static
-r_void
+id|irqreturn_t
 id|do_ql_ihandl
 c_func
 (paren
@@ -2169,6 +2169,9 @@ id|host-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#endif

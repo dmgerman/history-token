@@ -745,7 +745,7 @@ id|regs
 suffix:semicolon
 DECL|function|do_eata_pio_int_handler
 r_static
-r_void
+id|irqreturn_t
 id|do_eata_pio_int_handler
 c_func
 (paren
@@ -798,6 +798,9 @@ id|dev-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|eata_pio_int_handler

@@ -1167,7 +1167,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|do_ipsintr
 c_func
 (paren
@@ -5268,7 +5268,7 @@ multiline_comment|/*                                                            
 multiline_comment|/*   Wrapper for the interrupt handler                                      */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
-r_void
+id|irqreturn_t
 DECL|function|do_ipsintr
 id|do_ipsintr
 c_func
@@ -5322,6 +5322,7 @@ op_logical_neg
 id|ha
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|host
 op_assign
@@ -5347,6 +5348,7 @@ id|ha
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|IPS_LOCK_SAVE
@@ -5373,6 +5375,7 @@ id|cpu_flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 (paren
@@ -5399,6 +5402,9 @@ id|ha
 comma
 id|IPS_INTR_ON
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
