@@ -160,7 +160,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Figure out maximum filesize, on Linux this can depend on&n;&t; * the filesystem blocksize (on 32 bit platforms).&n;&t; * __block_prepare_write does this in an [unsigned] long...&n;&t; *      page-&gt;index &lt;&lt; (PAGE_CACHE_SHIFT - bbits)&n;&t; * So, for page sized blocks (4K on 32 bit platforms),&n;&t; * this wraps at around 8Tb (hence MAX_LFS_FILESIZE which is&n;&t; *      (((u64)PAGE_CACHE_SIZE &lt;&lt; (BITS_PER_LONG-1))-1)&n;&t; * but for smaller blocksizes it is less (bbits = log2 bsize).&n;&t; * Note1: get_block_t takes a long (implicit cast from above)&n;&t; * Note2: The Large Block Device (LBD and HAVE_SECTOR_T) patch&n;&t; * can optionally convert the [unsigned] long from above into&n;&t; * an [unsigned] long long.&n;&t; */
 macro_line|#if BITS_PER_LONG == 32
-macro_line|# if defined(HAVE_SECTOR_T)
+macro_line|# if defined(CONFIG_LBD)
 id|ASSERT
 c_func
 (paren
