@@ -5913,16 +5913,19 @@ id|pci_driver
 id|driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;SIS IDE&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|sis5513_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|sis5513_init_one
 comma
 )brace

@@ -1428,16 +1428,19 @@ id|pci_driver
 id|driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Cypress IDE&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|cy82c693_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|cy82c693_init_one
 comma
 )brace

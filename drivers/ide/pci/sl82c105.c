@@ -1147,16 +1147,19 @@ id|pci_driver
 id|driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;W82C105 IDE&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|sl82c105_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|sl82c105_init_one
 comma
 )brace
