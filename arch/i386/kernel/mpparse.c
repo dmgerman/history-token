@@ -4117,11 +4117,13 @@ comma
 id|MP_ISA_BUS
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * ES7000 has no legacy identity mappings&n;&t; */
+multiline_comment|/*&n;&t; * Older generations of ES7000 have no legacy identity mappings&n;&t; */
 r_if
 c_cond
 (paren
 id|es7000_plat
+op_eq
+l_int|1
 )paren
 r_return
 suffix:semicolon
