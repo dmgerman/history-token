@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/nfs_idmap.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &quot;callback.h&quot;
+macro_line|#include &quot;delegation.h&quot;
 DECL|macro|OPENOWNER_POOL_SIZE
 mdefine_line|#define OPENOWNER_POOL_SIZE&t;8
 DECL|variable|state_spinlock
@@ -3737,6 +3738,13 @@ id|status
 r_goto
 id|out_error
 suffix:semicolon
+multiline_comment|/* Mark all delagations for reclaim */
+id|nfs_delegation_mark_reclaim
+c_func
+(paren
+id|clp
+)paren
+suffix:semicolon
 multiline_comment|/* Note: list is protected by exclusive lock on cl-&gt;cl_sem */
 id|list_for_each_entry
 c_func
@@ -3781,6 +3789,12 @@ id|out_error
 suffix:semicolon
 )brace
 )brace
+id|nfs_delegation_reap_unclaimed
+c_func
+(paren
+id|clp
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 id|set_bit
