@@ -120,6 +120,7 @@ id|dev
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|iic
 op_assign
@@ -357,6 +358,7 @@ id|dev
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|iic
 op_assign
@@ -542,6 +544,7 @@ id|dev
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|iic
 op_assign
@@ -726,6 +729,7 @@ c_func
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|iic
 comma
@@ -812,6 +816,7 @@ id|p
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|iic
 op_assign
@@ -1329,6 +1334,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|iic
 op_assign
@@ -1395,6 +1401,7 @@ id|dev
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|iic
 op_assign
@@ -1533,6 +1540,7 @@ id|dev
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|iic
 op_assign
@@ -1643,6 +1651,7 @@ id|dev
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|iic
 op_assign
@@ -1898,6 +1907,7 @@ id|combined_xfer
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|iic
 op_assign
@@ -2036,8 +2046,8 @@ id|out_8
 c_func
 (paren
 (paren
-r_volatile
-id|u8
+r_void
+id|__iomem
 op_star
 )paren
 op_amp
@@ -2197,8 +2207,8 @@ id|in_8
 c_func
 (paren
 (paren
-r_volatile
-id|u8
+r_void
+id|__iomem
 op_star
 )paren
 op_amp
@@ -2239,6 +2249,7 @@ id|msg
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|iic
 op_assign
@@ -2460,6 +2471,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|iic
 op_assign
@@ -3379,10 +3391,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|dev-&gt;vaddr
 )paren
 suffix:semicolon
@@ -3393,7 +3401,7 @@ c_func
 (paren
 id|ocp
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|kfree
@@ -3527,10 +3535,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|dev-&gt;vaddr
 )paren
 suffix:semicolon

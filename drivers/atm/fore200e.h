@@ -1443,6 +1443,7 @@ id|host_txq_entry
 DECL|member|cp_entry
 r_struct
 id|cp_txq_entry
+id|__iomem
 op_star
 id|cp_entry
 suffix:semicolon
@@ -1504,6 +1505,7 @@ id|host_rxq_entry
 DECL|member|cp_entry
 r_struct
 id|cp_rxq_entry
+id|__iomem
 op_star
 id|cp_entry
 suffix:semicolon
@@ -1540,6 +1542,7 @@ id|host_bsq_entry
 DECL|member|cp_entry
 r_struct
 id|cp_bsq_entry
+id|__iomem
 op_star
 id|cp_entry
 suffix:semicolon
@@ -1576,6 +1579,7 @@ id|host_cmdq_entry
 DECL|member|cp_entry
 r_struct
 id|cp_cmdq_entry
+id|__iomem
 op_star
 id|cp_entry
 suffix:semicolon
@@ -2333,6 +2337,7 @@ id|fore200e_pca_regs
 DECL|member|hcr
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|hcr
 suffix:semicolon
@@ -2340,6 +2345,7 @@ multiline_comment|/* address of host control register        */
 DECL|member|imr
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|imr
 suffix:semicolon
@@ -2347,6 +2353,7 @@ multiline_comment|/* address of host interrupt mask register */
 DECL|member|psr
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|psr
 suffix:semicolon
@@ -2364,6 +2371,7 @@ id|fore200e_sba_regs
 DECL|member|hcr
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|hcr
 suffix:semicolon
@@ -2371,6 +2379,7 @@ multiline_comment|/* address of host control register              */
 DECL|member|bsr
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|bsr
 suffix:semicolon
@@ -2378,6 +2387,7 @@ multiline_comment|/* address of burst transfer size register       */
 DECL|member|isr
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|isr
 suffix:semicolon
@@ -2469,6 +2479,7 @@ id|read
 (paren
 r_volatile
 id|u32
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -2483,6 +2494,7 @@ id|u32
 comma
 r_volatile
 id|u32
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -2825,6 +2837,7 @@ suffix:semicolon
 multiline_comment|/* physical base address              */
 DECL|member|virt_base
 r_void
+id|__iomem
 op_star
 id|virt_base
 suffix:semicolon
@@ -2841,6 +2854,7 @@ multiline_comment|/* end system identifier              */
 DECL|member|cp_monitor
 r_struct
 id|cp_monitor
+id|__iomem
 op_star
 id|cp_monitor
 suffix:semicolon
@@ -2848,6 +2862,7 @@ multiline_comment|/* i960 monitor address               */
 DECL|member|cp_queues
 r_struct
 id|cp_queues
+id|__iomem
 op_star
 id|cp_queues
 suffix:semicolon

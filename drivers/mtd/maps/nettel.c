@@ -1655,16 +1655,12 @@ id|nettel_amd_map.virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|nettel_amd_map.virt
 )paren
 suffix:semicolon
 id|nettel_amd_map.virt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_MTD_CFI_INTELEXT

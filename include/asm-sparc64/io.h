@@ -465,6 +465,7 @@ id|u8
 id|_readb
 c_func
 (paren
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -508,6 +509,7 @@ id|u16
 id|_readw
 c_func
 (paren
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -551,6 +553,7 @@ id|u32
 id|_readl
 c_func
 (paren
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -594,6 +597,7 @@ id|u64
 id|_readq
 c_func
 (paren
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -1174,6 +1178,8 @@ id|u8
 id|_sbus_readb
 c_func
 (paren
+r_const
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1216,6 +1222,8 @@ id|u16
 id|_sbus_readw
 c_func
 (paren
+r_const
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1258,6 +1266,8 @@ id|u32
 id|_sbus_readl
 c_func
 (paren
+r_const
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1300,6 +1310,8 @@ id|u64
 id|_sbus_readq
 c_func
 (paren
+r_const
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1345,6 +1357,7 @@ c_func
 id|u8
 id|b
 comma
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1386,6 +1399,7 @@ c_func
 id|u16
 id|w
 comma
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1427,6 +1441,7 @@ c_func
 id|u32
 id|l
 comma
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1468,6 +1483,7 @@ c_func
 id|u64
 id|l
 comma
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1519,11 +1535,10 @@ DECL|function|_sbus_memset_io
 r_static
 r_inline
 r_void
-id|__iomem
-op_star
 id|_sbus_memset_io
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1555,25 +1570,17 @@ id|dst
 op_increment
 suffix:semicolon
 )brace
-r_return
-(paren
-r_void
-op_star
-)paren
-id|dst
-suffix:semicolon
 )brace
 DECL|macro|sbus_memset_io
 mdefine_line|#define sbus_memset_io(d,c,sz)&t;_sbus_memset_io(d,c,sz)
 r_static
 r_inline
 r_void
-id|__iomem
-op_star
 DECL|function|_memset_io
 id|_memset_io
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1586,6 +1593,7 @@ id|__kernel_size_t
 id|n
 )paren
 (brace
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1612,17 +1620,12 @@ id|d
 op_increment
 suffix:semicolon
 )brace
-r_return
-id|dst
-suffix:semicolon
 )brace
 DECL|macro|memset_io
 mdefine_line|#define memset_io(d,c,sz)&t;_memset_io(d,c,sz)
 r_static
 r_inline
 r_void
-id|__iomem
-op_star
 DECL|function|_memcpy_fromio
 id|_memcpy_fromio
 c_func
@@ -1631,6 +1634,8 @@ r_void
 op_star
 id|dst
 comma
+r_const
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1672,21 +1677,17 @@ id|src
 op_increment
 suffix:semicolon
 )brace
-r_return
-id|dst
-suffix:semicolon
 )brace
 DECL|macro|memcpy_fromio
 mdefine_line|#define memcpy_fromio(d,s,sz)&t;_memcpy_fromio(d,s,sz)
 r_static
 r_inline
 r_void
-id|__iomem
-op_star
 DECL|function|_memcpy_toio
 id|_memcpy_toio
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1708,6 +1709,7 @@ id|s
 op_assign
 id|src
 suffix:semicolon
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1741,9 +1743,6 @@ id|d
 op_increment
 suffix:semicolon
 )brace
-r_return
-id|dst
-suffix:semicolon
 )brace
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(d,s,sz)&t;_memcpy_toio(d,s,sz)
@@ -1857,6 +1856,7 @@ r_void
 id|iounmap
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star

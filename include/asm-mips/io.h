@@ -492,9 +492,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *     isa_check_signature             -       find BIOS signatures&n; *     @io_addr: mmio address to check&n; *     @signature:  signature block&n; *     @length: length of signature&n; *&n; *     Perform a signature comparison with the ISA mmio address io_addr.&n; *     Returns 1 on a match.&n; *&n; *     This function is deprecated. New drivers should use ioremap and&n; *     check_signature.&n; */
-DECL|macro|isa_check_signature
-mdefine_line|#define isa_check_signature(io, s, l)&t;check_signature(i,s,l)
 DECL|function|__outb
 r_static
 r_inline

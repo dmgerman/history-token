@@ -6431,7 +6431,7 @@ l_int|NULL
 (brace
 id|lvcc-&gt;vbase
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|lvcc-&gt;rx.atmvcc
 op_assign
@@ -6891,7 +6891,7 @@ id|lvcc-&gt;vci
 suffix:semicolon
 id|lvcc-&gt;vbase
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|lanai-&gt;vccs
 (braket
@@ -10419,10 +10419,6 @@ macro_line|#endif
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|lanai-&gt;base
 )paren
 suffix:semicolon
@@ -10557,10 +10553,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|lanai-&gt;base
 )paren
 suffix:semicolon

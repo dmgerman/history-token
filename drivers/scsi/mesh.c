@@ -384,6 +384,7 @@ DECL|member|mesh
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mesh
 suffix:semicolon
@@ -395,6 +396,7 @@ DECL|member|dma
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dma
 suffix:semicolon
@@ -1152,6 +1154,7 @@ id|ms
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -1160,6 +1163,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|md
 op_assign
@@ -1359,6 +1363,7 @@ c_func
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 )paren
@@ -1417,6 +1422,7 @@ id|ms
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -1425,6 +1431,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|md
 op_assign
@@ -1685,6 +1692,7 @@ id|cmd
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -2043,7 +2051,7 @@ op_star
 )paren
 id|ms
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2165,7 +2173,7 @@ op_star
 )paren
 id|ms
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2674,11 +2682,11 @@ id|ms-&gt;current_req
 suffix:semicolon
 id|ms-&gt;current_req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|tp-&gt;current_req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -2986,6 +2994,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -3196,6 +3205,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -3204,6 +3214,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|md
 op_assign
@@ -4037,6 +4048,7 @@ id|ms
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -4197,6 +4209,7 @@ id|ms
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -4883,6 +4896,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -5153,6 +5167,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -5620,6 +5635,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -6713,6 +6729,7 @@ id|ms
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|md
 op_assign
@@ -6721,6 +6738,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -7001,6 +7019,7 @@ id|ms
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -7361,6 +7380,7 @@ id|ms
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -8129,7 +8149,7 @@ id|disconnecting
 suffix:colon
 id|ms-&gt;current_req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ms-&gt;phase
 op_assign
@@ -8283,6 +8303,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -8503,6 +8524,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 op_assign
@@ -8511,6 +8533,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|md
 op_assign
@@ -9010,6 +9033,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mesh_regs
+id|__iomem
 op_star
 id|mr
 suffix:semicolon
@@ -9411,12 +9435,6 @@ id|pdev
 suffix:semicolon
 id|ms-&gt;mesh
 op_assign
-(paren
-r_volatile
-r_struct
-id|mesh_regs
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -9452,12 +9470,6 @@ suffix:semicolon
 )brace
 id|ms-&gt;dma
 op_assign
-(paren
-r_volatile
-r_struct
-id|dbdma_regs
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -9490,10 +9502,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ms-&gt;mesh
 )paren
 suffix:semicolon
@@ -9662,7 +9670,7 @@ id|tgt
 dot
 id|current_req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -9795,20 +9803,12 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ms-&gt;dma
 )paren
 suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ms-&gt;mesh
 )paren
 suffix:semicolon
@@ -9902,20 +9902,12 @@ multiline_comment|/* Unmap registers &amp; dma controller */
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ms-&gt;mesh
 )paren
 suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ms-&gt;dma
 )paren
 suffix:semicolon
