@@ -3260,7 +3260,7 @@ id|it87_driver.name
 r_goto
 id|ERROR0
 suffix:semicolon
-multiline_comment|/* Probe whether there is anything available on this address. Already&n;&t;   done for SMBus clients */
+multiline_comment|/* Probe whether there is anything available on this address. Already&n;&t;   done for SMBus and Super-I/O clients */
 r_if
 c_cond
 (paren
@@ -3273,6 +3273,9 @@ r_if
 c_cond
 (paren
 id|is_isa
+op_logical_and
+op_logical_neg
+id|chip_type
 )paren
 (brace
 DECL|macro|REALLY_SLOW_IO
