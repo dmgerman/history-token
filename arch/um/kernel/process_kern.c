@@ -12,6 +12,7 @@ macro_line|#include &quot;linux/smp_lock.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/init.h&quot;
 macro_line|#include &quot;linux/capability.h&quot;
+macro_line|#include &quot;linux/vmalloc.h&quot;
 macro_line|#include &quot;linux/spinlock.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;asm/mman.h&quot;
@@ -1283,6 +1284,24 @@ c_func
 id|size
 comma
 id|GFP_ATOMIC
+)paren
+suffix:semicolon
+)brace
+DECL|function|um_vmalloc
+r_void
+op_star
+id|um_vmalloc
+c_func
+(paren
+r_int
+id|size
+)paren
+(brace
+r_return
+id|vmalloc
+c_func
+(paren
+id|size
 )paren
 suffix:semicolon
 )brace
