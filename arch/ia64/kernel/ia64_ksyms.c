@@ -837,12 +837,10 @@ id|unw_access_pr
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 macro_line|# if __GNUC__ &lt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 4)
+multiline_comment|/*&n; * This is not a normal routine and we don&squot;t want a function descriptor for it, so we use&n; * a fake declaration here.&n; */
 r_extern
-r_void
+r_char
 id|ia64_spinlock_contention_pre3_4
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|variable|ia64_spinlock_contention_pre3_4
 id|EXPORT_SYMBOL
@@ -852,12 +850,10 @@ id|ia64_spinlock_contention_pre3_4
 )paren
 suffix:semicolon
 macro_line|# else
+multiline_comment|/*&n; * This is not a normal routine and we don&squot;t want a function descriptor for it, so we use&n; * a fake declaration here.&n; */
 r_extern
-r_void
+r_char
 id|ia64_spinlock_contention
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|variable|ia64_spinlock_contention
 id|EXPORT_SYMBOL

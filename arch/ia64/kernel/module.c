@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * IA-64-specific support for kernel module loader.&n; *&n; * Copyright (C) 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Loosely based on patch by Rusty Russell.&n; */
-multiline_comment|/* relocs tested so far:&n;&n;   DIR64LSB&n;   FPTR64LSB&n;   GPREL22&n;   LDXMOV&n;   LDXMOV&n;   LTOFF22&n;   LTOFF22X&n;   LTOFF22X&n;   LTOFF_FPTR22&n;   PCREL21B&n;   PCREL64LSB&n;   SECREL32LSB&n;   SEGREL64LSB&n; */
+multiline_comment|/* relocs tested so far:&n;&n;   DIR64LSB&n;   FPTR64LSB&n;   GPREL22&n;   LDXMOV&n;   LDXMOV&n;   LTOFF22&n;   LTOFF22X&n;   LTOFF22X&n;   LTOFF_FPTR22&n;   PCREL21B&t;(for br.call only; br.cond is not supported out of modules!)&n;   PCREL60B&t;(for brl.cond only; brl.call is not supported for modules!)&n;   PCREL64LSB&n;   SECREL32LSB&n;   SEGREL64LSB&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1475,11 +1475,11 @@ op_amp
 l_int|0x0800000000000000
 )paren
 op_lshift
-l_int|1
+l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* i -&gt; bit 60 */
+multiline_comment|/* i -&gt; bit 59 */
 r_return
 (paren
 r_int
