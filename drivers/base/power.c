@@ -137,7 +137,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|device_root
+id|device_lock
 )paren
 suffix:semicolon
 id|put_device
@@ -263,7 +263,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|device_root
+id|device_lock
 )paren
 suffix:semicolon
 id|put_device
@@ -399,7 +399,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|device_root
+id|device_lock
 )paren
 suffix:semicolon
 id|put_device
