@@ -991,8 +991,6 @@ r_void
 multiline_comment|/* preliminary initialisation */
 (brace
 r_int
-id|i
-comma
 id|unit
 suffix:semicolon
 r_if

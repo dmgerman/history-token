@@ -376,8 +376,9 @@ id|irttp-&gt;tsaps
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: can&squot;t allocate IrTTP hashbin!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), can&squot;t allocate IrTTP hashbin!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -452,7 +453,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*************************** SUBROUTINES ***************************/
-multiline_comment|/*&n; * Function irttp_start_todo_timer (self, timeout)&n; *&n; *    Start todo timer. &n; *&n; * Made it more effient and unsensitive to race conditions - Jean II&n; */
+multiline_comment|/*&n; * Function irttp_start_todo_timer (self, timeout)&n; *&n; *    Start todo timer.&n; *&n; * Made it more effient and unsensitive to race conditions - Jean II&n; */
 DECL|function|irttp_start_todo_timer
 r_static
 r_inline
@@ -829,7 +830,7 @@ id|skb
 r_return
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* &n;&t; * Need to reserve space for TTP header in case this skb needs to &n;&t; * be requeued in case delivery failes&n;&t; */
+multiline_comment|/*&n;&t; * Need to reserve space for TTP header in case this skb needs to&n;&t; * be requeued in case delivery failes&n;&t; */
 id|skb_reserve
 c_func
 (paren
@@ -1522,8 +1523,9 @@ l_int|NULL
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: unable to allocate LSAP!!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to allocate LSAP!!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1748,8 +1750,9 @@ id|self-&gt;disconnect_pend
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: TSAP still connected!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), TSAP still connected!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irttp_disconnect_request
@@ -1970,7 +1973,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irttp_data_request (handle, skb)&n; *&n; *    Queue frame for transmission. If SAR is enabled, fragement the frame &n; *    and queue the fragments for transmission&n; */
+multiline_comment|/*&n; * Function irttp_data_request (handle, skb)&n; *&n; *    Queue frame for transmission. If SAR is enabled, fragement the frame&n; *    and queue the fragments for transmission&n; */
 DECL|function|irttp_data_request
 r_int
 id|irttp_data_request
@@ -2065,8 +2068,9 @@ id|self-&gt;connected
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: No data, or not connected&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), No data, or not connected&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2074,7 +2078,7 @@ op_minus
 id|ENOTCONN
 suffix:semicolon
 )brace
-multiline_comment|/*  &n;&t; *  Check if SAR is disabled, and the frame is larger than what fits&n;&t; *  inside an IrLAP frame&n;&t; */
+multiline_comment|/*&n;&t; *  Check if SAR is disabled, and the frame is larger than what fits&n;&t; *  inside an IrLAP frame&n;&t; */
 r_if
 c_cond
 (paren
@@ -2094,8 +2098,9 @@ id|self-&gt;max_seg_size
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: SAR disabled, and data is to large for IrLAP!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), SAR disabled, and data is to large for IrLAP!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2103,7 +2108,7 @@ op_minus
 id|EMSGSIZE
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; *  Check if SAR is enabled, and the frame is larger than the &n;&t; *  TxMaxSduSize &n;&t; */
+multiline_comment|/*&n;&t; *  Check if SAR is enabled, and the frame is larger than the&n;&t; *  TxMaxSduSize&n;&t; */
 r_if
 c_cond
 (paren
@@ -2129,9 +2134,9 @@ id|self-&gt;tx_max_sdu_size
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: SAR enabled, but data is larger than TxMaxSduSize!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), SAR enabled, &quot;
-l_string|&quot;but data is larger than TxMaxSduSize!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2139,7 +2144,7 @@ op_minus
 id|EMSGSIZE
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; *  Check if transmit queue is full&n;&t; */
+multiline_comment|/*&n;&t; *  Check if transmit queue is full&n;&t; */
 r_if
 c_cond
 (paren
@@ -2388,7 +2393,7 @@ id|self-&gt;tx_queue
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  Since we can transmit and receive frames concurrently, &n;&t;&t; *  the code below is a critical region and we must assure that&n;&t;&t; *  nobody messes with the credits while we update them.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Since we can transmit and receive frames concurrently,&n;&t;&t; *  the code below is a critical region and we must assure that&n;&t;&t; *  nobody messes with the credits while we update them.&n;&t;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2442,7 +2447,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; *  More bit must be set by the data_request() or fragment() &n;&t;&t; *  functions&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  More bit must be set by the data_request() or fragment()&n;&t;&t; *  functions&n;&t;&t; */
 id|skb-&gt;data
 (braket
 l_int|0
@@ -2454,7 +2459,7 @@ op_amp
 l_int|0x7f
 )paren
 suffix:semicolon
-multiline_comment|/* Detach from socket.&n;&t;&t; * The current skb has a reference to the socket that sent&n;&t;&t; * it (skb-&gt;sk). When we pass it to IrLMP, the skb will be&n;&t;&t; * stored in in IrLAP (self-&gt;wx_list). When we are within&n;&t;&t; * IrLAP, we loose the notion of socket, so we should not&n;&t;&t; * have a reference to a socket. So, we drop it here.&n;&t;&t; * &n;&t;&t; * Why does it matter ?&n;&t;&t; * When the skb is freed (kfree_skb), if it is associated&n;&t;&t; * with a socket, it release buffer space on the socket&n;&t;&t; * (through sock_wfree() and sock_def_write_space()).&n;&t;&t; * If the socket no longer exist, we may crash. Hard.&n;&t;&t; * When we close a socket, we make sure that associated packets&n;&t;&t; * in IrTTP are freed. However, we have no way to cancel&n;&t;&t; * the packet that we have passed to IrLAP. So, if a packet&n;&t;&t; * remains in IrLAP (retry on the link or else) after we&n;&t;&t; * close the socket, we are dead !&n;&t;&t; * Jean II */
+multiline_comment|/* Detach from socket.&n;&t;&t; * The current skb has a reference to the socket that sent&n;&t;&t; * it (skb-&gt;sk). When we pass it to IrLMP, the skb will be&n;&t;&t; * stored in in IrLAP (self-&gt;wx_list). When we are within&n;&t;&t; * IrLAP, we loose the notion of socket, so we should not&n;&t;&t; * have a reference to a socket. So, we drop it here.&n;&t;&t; *&n;&t;&t; * Why does it matter ?&n;&t;&t; * When the skb is freed (kfree_skb), if it is associated&n;&t;&t; * with a socket, it release buffer space on the socket&n;&t;&t; * (through sock_wfree() and sock_def_write_space()).&n;&t;&t; * If the socket no longer exist, we may crash. Hard.&n;&t;&t; * When we close a socket, we make sure that associated packets&n;&t;&t; * in IrTTP are freed. However, we have no way to cancel&n;&t;&t; * the packet that we have passed to IrLAP. So, if a packet&n;&t;&t; * remains in IrLAP (retry on the link or else) after we&n;&t;&t; * close the socket, we are dead !&n;&t;&t; * Jean II */
 r_if
 c_cond
 (paren
@@ -2630,7 +2635,7 @@ comma
 id|self-&gt;max_header_size
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Since we can transmit and receive frames concurrently, &n;&t; *  the code below is a critical region and we must assure that&n;&t; *  nobody messes with the credits while we update them.&n;&t; */
+multiline_comment|/*&n;&t; *  Since we can transmit and receive frames concurrently,&n;&t; *  the code below is a critical region and we must assure that&n;&t; *  nobody messes with the credits while we update them.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2830,7 +2835,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irttp_data_indication (instance, sap, skb)&n; *&n; *    Receive segment from IrLMP. &n; *&n; */
+multiline_comment|/*&n; * Function irttp_data_indication (instance, sap, skb)&n; *&n; *    Receive segment from IrLMP.&n; *&n; */
 DECL|function|irttp_data_indication
 r_static
 r_int
@@ -2885,7 +2890,7 @@ multiline_comment|/* Extract the credits */
 id|self-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
-multiline_comment|/*  Deal with inbound credit&n;&t; *  Since we can transmit and receive frames concurrently, &n;&t; *  the code below is a critical region and we must assure that&n;&t; *  nobody messes with the credits while we update them.&n;&t; */
+multiline_comment|/*  Deal with inbound credit&n;&t; *  Since we can transmit and receive frames concurrently,&n;&t; *  the code below is a critical region and we must assure that&n;&t; *  nobody messes with the credits while we update them.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2918,7 +2923,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; *  Data or dataless packet? Dataless frames contains only the &n;&t; *  TTP_HEADER. &n;&t; */
+multiline_comment|/*&n;&t; *  Data or dataless packet? Dataless frames contains only the&n;&t; *  TTP_HEADER.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2927,7 +2932,7 @@ OG
 l_int|1
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; *  We don&squot;t remove the TTP header, since we must preserve the&n;&t;&t; *  more bit, so the defragment routing knows what to do&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  We don&squot;t remove the TTP header, since we must preserve the&n;&t;&t; *  more bit, so the defragment routing knows what to do&n;&t;&t; */
 id|skb_queue_tail
 c_func
 (paren
@@ -2956,7 +2961,7 @@ id|self
 )paren
 suffix:semicolon
 multiline_comment|/* We now give credits to peer in irttp_run_rx_queue().&n;&t; * We need to send credit *NOW*, otherwise we are going&n;&t; * to miss the next Tx window. The todo timer may take&n;&t; * a while before it&squot;s run... - Jean II */
-multiline_comment|/* &n;&t; * If the peer device has given us some credits and we didn&squot;t have&n;         * anyone from before, then we need to shedule the tx queue.&n;&t; * We need to do that because our Tx have stopped (so we may not&n;&t; * get any LAP flow indication) and the user may be stopped as&n;&t; * well. - Jean II&n;&t; */
+multiline_comment|/*&n;&t; * If the peer device has given us some credits and we didn&squot;t have&n;         * anyone from before, then we need to shedule the tx queue.&n;&t; * We need to do that because our Tx have stopped (so we may not&n;&t; * get any LAP flow indication) and the user may be stopped as&n;&t; * well. - Jean II&n;&t; */
 r_if
 c_cond
 (paren
@@ -3162,7 +3167,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function irttp_flow_request (self, command)&n; *&n; *    This funtion could be used by the upper layers to tell IrTTP to stop&n; *    delivering frames if the receive queues are starting to get full, or &n; *    to tell IrTTP to start delivering frames again.&n; */
+multiline_comment|/*&n; * Function irttp_flow_request (self, command)&n; *&n; *    This funtion could be used by the upper layers to tell IrTTP to stop&n; *    delivering frames if the receive queues are starting to get full, or&n; *    to tell IrTTP to start delivering frames again.&n; */
 DECL|function|irttp_flow_request
 r_void
 id|irttp_flow_request
@@ -3405,7 +3410,7 @@ id|skb
 op_assign
 id|userdata
 suffix:semicolon
-multiline_comment|/*  &n;&t;&t; *  Check that the client has reserved enough space for &n;&t;&t; *  headers&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Check that the client has reserved enough space for&n;&t;&t; *  headers&n;&t;&t; */
 id|ASSERT
 c_func
 (paren
@@ -3628,7 +3633,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irttp_connect_confirm (handle, qos, skb)&n; *&n; *    Sevice user confirms TSAP connection with peer. &n; *&n; */
+multiline_comment|/*&n; * Function irttp_connect_confirm (handle, qos, skb)&n; *&n; *    Sevice user confirms TSAP connection with peer.&n; *&n; */
 DECL|function|irttp_connect_confirm
 r_static
 r_void
@@ -3878,8 +3883,9 @@ l_int|0
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: error extracting parameters&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), error extracting parameters&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -4190,8 +4196,9 @@ l_int|0
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: error extracting parameters&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), error extracting parameters&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -4255,7 +4262,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irttp_connect_response (handle, userdata)&n; *&n; *    Service user is accepting the connection, just pass it down to&n; *    IrLMP!&n; * &n; */
+multiline_comment|/*&n; * Function irttp_connect_response (handle, userdata)&n; *&n; *    Service user is accepting the connection, just pass it down to&n; *    IrLMP!&n; *&n; */
 DECL|function|irttp_connect_response
 r_int
 id|irttp_connect_response
@@ -4370,7 +4377,7 @@ id|skb
 op_assign
 id|userdata
 suffix:semicolon
-multiline_comment|/*  &n;&t;&t; *  Check that the client has reserved enough space for &n;&t;&t; *  headers&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Check that the client has reserved enough space for&n;&t;&t; *  headers&n;&t;&t; */
 id|ASSERT
 c_func
 (paren
@@ -4502,7 +4509,7 @@ l_int|0x04
 suffix:semicolon
 multiline_comment|/* Length */
 multiline_comment|/* irda_param_insert(self, IRTTP_MAX_SDU_SIZE, frame+1,  */
-multiline_comment|/* &t;&t;&t;&t;  TTP_SAR_HEADER, &amp;param_info) */
+multiline_comment|/*&t;&t;&t;&t;  TTP_SAR_HEADER, &amp;param_info) */
 id|frame
 (braket
 l_int|2
@@ -4770,7 +4777,7 @@ r_return
 r_new
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irttp_disconnect_request (self)&n; *&n; *    Close this connection please! If priority is high, the queued data &n; *    segments, if any, will be deallocated first&n; *&n; */
+multiline_comment|/*&n; * Function irttp_disconnect_request (self)&n; *&n; *    Close this connection please! If priority is high, the queued data&n; *    segments, if any, will be deallocated first&n; *&n; */
 DECL|function|irttp_disconnect_request
 r_int
 id|irttp_disconnect_request
@@ -4925,7 +4932,7 @@ op_eq
 id|P_HIGH
 )paren
 (brace
-multiline_comment|/* &n;&t;&t;&t; *  No need to send the queued data, if we are &n;&t;&t;&t; *  disconnecting right now since the data will&n;&t;&t;&t; *  not have any usable connection to be sent on&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  No need to send the queued data, if we are&n;&t;&t;&t; *  disconnecting right now since the data will&n;&t;&t;&t; *  not have any usable connection to be sent on&n;&t;&t;&t; */
 id|IRDA_DEBUG
 c_func
 (paren
@@ -4951,7 +4958,7 @@ op_eq
 id|P_NORMAL
 )paren
 (brace
-multiline_comment|/* &n;&t;&t;&t; *  Must delay disconnect until after all data segments&n;&t;&t;&t; *  have been sent and the tx_queue is empty&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  Must delay disconnect until after all data segments&n;&t;&t;&t; *  have been sent and the tx_queue is empty&n;&t;&t;&t; */
 multiline_comment|/* We&squot;ll reuse this one later for the disconnect */
 id|self-&gt;disconnect_skb
 op_assign
@@ -5019,7 +5026,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; *  Reserve space for MUX and LAP header &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Reserve space for MUX and LAP header&n;&t;&t; */
 id|skb_reserve
 c_func
 (paren
@@ -5245,7 +5252,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* Usually the layer above will notify that it&squot;s input queue is&n;&t; * starting to get filled by using the flow request, but this may&n;&t; * be difficult, so it can instead just refuse to eat it and just&n;&t; * give an error back &n;&t; */
+multiline_comment|/* Usually the layer above will notify that it&squot;s input queue is&n;&t; * starting to get filled by using the flow request, but this may&n;&t; * be difficult, so it can instead just refuse to eat it and just&n;&t; * give an error back&n;&t; */
 r_if
 c_cond
 (paren
@@ -5393,7 +5400,7 @@ id|self-&gt;rx_sdu_size
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-multiline_comment|/*  &n;&t;&t; * If SAR is disabled, or user has requested no reassembly&n;&t;&t; * of received fragments then we just deliver them&n;&t;&t; * immediately. This can be requested by clients that&n;&t;&t; * implements byte streams without any message boundaries&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If SAR is disabled, or user has requested no reassembly&n;&t;&t; * of received fragments then we just deliver them&n;&t;&t; * immediately. This can be requested by clients that&n;&t;&t; * implements byte streams without any message boundaries&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5424,7 +5431,7 @@ c_cond
 id|more
 )paren
 (brace
-multiline_comment|/*  &n;&t;&t;&t; *  Queue the fragment if we still are within the &n;&t;&t;&t; *  limits of the maximum size of the rx_sdu&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  Queue the fragment if we still are within the&n;&t;&t;&t; *  limits of the maximum size of the rx_sdu&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5482,7 +5489,7 @@ id|TTP_SAR_UNBOUND
 )paren
 )paren
 (brace
-multiline_comment|/* &n;&t;&t;&t; * A little optimizing. Only queue the fragment if&n;&t;&t;&t; * there are other fragments. Since if this is the&n;&t;&t;&t; * last and only fragment, there is no need to&n;&t;&t;&t; * reassemble :-) &n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * A little optimizing. Only queue the fragment if&n;&t;&t;&t; * there are other fragments. Since if this is the&n;&t;&t;&t; * last and only fragment, there is no need to&n;&t;&t;&t; * reassemble :-)&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5564,7 +5571,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * It&squot;s not trivial to keep track of how many credits are available&n;&t; * by incrementing at each packet, because delivery may fail &n;&t; * (irttp_do_data_indication() may requeue the frame) and because&n;&t; * we need to take care of fragmentation.&n;&t; * We want the other side to send up to initial_credit packets.&n;&t; * We have some frames in our queues, and we have already allowed it&n;&t; * to send remote_credit.&n;&t; * No need to spinlock, write is atomic and self correcting...&n;&t; * Jean II&n;&t; */
+multiline_comment|/*&n;&t; * It&squot;s not trivial to keep track of how many credits are available&n;&t; * by incrementing at each packet, because delivery may fail&n;&t; * (irttp_do_data_indication() may requeue the frame) and because&n;&t; * we need to take care of fragmentation.&n;&t; * We want the other side to send up to initial_credit packets.&n;&t; * We have some frames in our queues, and we have already allowed it&n;&t; * to send remote_credit.&n;&t; * No need to spinlock, write is atomic and self correcting...&n;&t; * Jean II&n;&t; */
 id|self-&gt;avail_credit
 op_assign
 (paren

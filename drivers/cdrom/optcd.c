@@ -5767,9 +5767,6 @@ r_int
 id|arg
 )paren
 (brace
-r_int
-id|status
-suffix:semicolon
 r_struct
 id|cdrom_tochdr
 id|tochdr
@@ -5817,9 +5814,6 @@ r_int
 id|arg
 )paren
 (brace
-r_int
-id|status
-suffix:semicolon
 r_struct
 id|cdrom_tocentry
 id|entry
@@ -6434,9 +6428,6 @@ r_int
 id|arg
 )paren
 (brace
-r_int
-id|status
-suffix:semicolon
 r_struct
 id|cdrom_multisession
 id|ms

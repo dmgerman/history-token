@@ -40,8 +40,8 @@ DECL|macro|CDC_ETHER_REQ_SET_REGS
 mdefine_line|#define&t;CDC_ETHER_REQ_SET_REGS&t;0xf1
 DECL|macro|CDC_ETHER_REQ_SET_REG
 mdefine_line|#define&t;CDC_ETHER_REQ_SET_REG&t;PIPERIDER_REQ_SET_REGS
-DECL|macro|ALIGN
-mdefine_line|#define&t;ALIGN(x)&t;&t;x __attribute__((aligned(L1_CACHE_BYTES)))
+DECL|macro|L1_ALIGN
+mdefine_line|#define&t;L1_ALIGN(x)&t;&t;x __attribute__((aligned(L1_CACHE_BYTES)))
 DECL|macro|MODE_FLAG_PROMISCUOUS
 mdefine_line|#define MODE_FLAG_PROMISCUOUS   (1&lt;&lt;0)
 DECL|macro|MODE_FLAG_ALL_MULTICAST
@@ -194,7 +194,7 @@ id|intr_urb
 suffix:semicolon
 r_int
 r_char
-id|ALIGN
+id|L1_ALIGN
 c_func
 (paren
 id|rx_buff
@@ -205,7 +205,7 @@ id|CDC_ETHER_MAX_MTU
 suffix:semicolon
 r_int
 r_char
-id|ALIGN
+id|L1_ALIGN
 c_func
 (paren
 id|tx_buff
@@ -216,7 +216,7 @@ id|CDC_ETHER_MAX_MTU
 suffix:semicolon
 r_int
 r_char
-id|ALIGN
+id|L1_ALIGN
 c_func
 (paren
 id|intr_buff

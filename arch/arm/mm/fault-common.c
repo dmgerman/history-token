@@ -13,9 +13,8 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/unaligned.h&gt;
+macro_line|#include &quot;fault.h&quot;
 macro_line|#ifdef CONFIG_CPU_26
 DECL|macro|FAULT_CODE_WRITE
 mdefine_line|#define FAULT_CODE_WRITE&t;0x02
@@ -32,26 +31,6 @@ mdefine_line|#define DO_COW(code)&t;&t;((code) &amp; (1 &lt;&lt; 8))
 DECL|macro|READ_FAULT
 mdefine_line|#define READ_FAULT(code)&t;(!DO_COW(code))
 macro_line|#endif
-id|NORET_TYPE
-r_void
-id|die
-c_func
-(paren
-r_const
-r_char
-op_star
-id|msg
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_int
-id|err
-)paren
-id|ATTRIB_NORET
-suffix:semicolon
 multiline_comment|/*&n; * This is useful to dump out the page tables associated with&n; * &squot;addr&squot; in mm &squot;mm&squot;.&n; */
 DECL|function|show_pte
 r_void
@@ -296,7 +275,8 @@ r_int
 id|addr
 comma
 r_int
-id|error_code
+r_int
+id|fsr
 comma
 r_struct
 id|pt_regs
@@ -389,7 +369,7 @@ l_string|&quot;Oops&quot;
 comma
 id|regs
 comma
-id|error_code
+id|fsr
 )paren
 suffix:semicolon
 id|do_exit
@@ -416,7 +396,8 @@ r_int
 id|addr
 comma
 r_int
-id|error_code
+r_int
+id|fsr
 comma
 r_int
 id|code
@@ -442,7 +423,7 @@ id|tsk-&gt;comm
 comma
 id|addr
 comma
-id|error_code
+id|fsr
 )paren
 suffix:semicolon
 id|show_pte
@@ -466,7 +447,7 @@ id|addr
 suffix:semicolon
 id|tsk-&gt;thread.error_code
 op_assign
-id|error_code
+id|fsr
 suffix:semicolon
 id|tsk-&gt;thread.trap_no
 op_assign
@@ -524,7 +505,8 @@ r_int
 id|addr
 comma
 r_int
-id|error_code
+r_int
+id|fsr
 comma
 r_struct
 id|pt_regs
@@ -549,7 +531,7 @@ id|tsk
 comma
 id|addr
 comma
-id|error_code
+id|fsr
 comma
 id|SEGV_MAPERR
 comma
@@ -564,7 +546,7 @@ id|mm
 comma
 id|addr
 comma
-id|error_code
+id|fsr
 comma
 id|regs
 )paren
@@ -586,7 +568,8 @@ r_int
 id|addr
 comma
 r_int
-id|error_code
+r_int
+id|fsr
 comma
 r_struct
 id|task_struct
@@ -648,7 +631,7 @@ c_cond
 id|READ_FAULT
 c_func
 (paren
-id|error_code
+id|fsr
 )paren
 )paren
 multiline_comment|/* read? */
@@ -701,7 +684,7 @@ comma
 id|DO_COW
 c_func
 (paren
-id|error_code
+id|fsr
 )paren
 )paren
 suffix:semicolon
@@ -796,7 +779,8 @@ r_int
 id|addr
 comma
 r_int
-id|error_code
+r_int
+id|fsr
 comma
 r_struct
 id|pt_regs
@@ -856,7 +840,7 @@ id|mm
 comma
 id|addr
 comma
-id|error_code
+id|fsr
 comma
 id|tsk
 )paren
@@ -937,7 +921,7 @@ id|tsk
 comma
 id|addr
 comma
-id|error_code
+id|fsr
 comma
 id|fault
 op_eq
@@ -965,7 +949,7 @@ id|addr
 suffix:semicolon
 id|tsk-&gt;thread.error_code
 op_assign
-id|error_code
+id|fsr
 suffix:semicolon
 id|tsk-&gt;thread.trap_no
 op_assign
@@ -1020,7 +1004,7 @@ id|mm
 comma
 id|addr
 comma
-id|error_code
+id|fsr
 comma
 id|regs
 )paren
@@ -1040,7 +1024,8 @@ r_int
 id|addr
 comma
 r_int
-id|error_code
+r_int
+id|fsr
 comma
 r_struct
 id|pt_regs
@@ -1084,7 +1069,7 @@ c_func
 (paren
 id|addr
 comma
-id|error_code
+id|fsr
 comma
 id|regs
 )paren
@@ -1206,7 +1191,7 @@ id|tsk-&gt;active_mm
 comma
 id|addr
 comma
-id|error_code
+id|fsr
 comma
 id|regs
 )paren
