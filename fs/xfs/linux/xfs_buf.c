@@ -14,10 +14,6 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &quot;xfs_linux.h&quot;
-DECL|macro|BBSHIFT
-mdefine_line|#define BBSHIFT&t;&t;9
-DECL|macro|BN_ALIGN_MASK
-mdefine_line|#define BN_ALIGN_MASK&t;((1 &lt;&lt; (PAGE_CACHE_SHIFT - BBSHIFT)) - 1)
 macro_line|#ifndef GFP_READAHEAD
 DECL|macro|GFP_READAHEAD
 mdefine_line|#define GFP_READAHEAD&t;(__GFP_NOWARN|__GFP_NORETRY)
