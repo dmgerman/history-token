@@ -157,17 +157,10 @@ id|mem_flags
 )paren
 )paren
 )paren
-(brace
-id|usb_dec_dev_use
-(paren
-id|urb-&gt;dev
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 multiline_comment|/* for the private part of the URB we need the number of TDs (size) */
 r_switch
 c_cond
@@ -273,17 +266,10 @@ id|size
 op_le
 l_int|0
 )paren
-(brace
-id|usb_dec_dev_use
-(paren
-id|urb-&gt;dev
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -360,17 +346,10 @@ c_cond
 op_logical_neg
 id|urb_priv
 )paren
-(brace
-id|usb_dec_dev_use
-(paren
-id|urb-&gt;dev
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|memset
 (paren
 id|urb_priv
@@ -464,11 +443,6 @@ op_amp
 id|ohci-&gt;lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|usb_dec_dev_use
-(paren
-id|urb-&gt;dev
 )paren
 suffix:semicolon
 r_return
@@ -571,11 +545,6 @@ op_amp
 id|ohci-&gt;lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|usb_dec_dev_use
-(paren
-id|urb-&gt;dev
 )paren
 suffix:semicolon
 r_return
@@ -976,15 +945,6 @@ id|hcd_to_ohci
 id|hcd
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;OHCI_VERBOSE_DEBUG
-id|dbg
-(paren
-l_string|&quot;%s: ohci_get_frame&quot;
-comma
-id|hcd-&gt;bus_name
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|le16_to_cpu
 (paren
@@ -1322,8 +1282,6 @@ op_or
 id|OHCI_INTR_UE
 op_or
 id|OHCI_INTR_WDH
-op_or
-id|OHCI_INTR_SO
 suffix:semicolon
 id|writel
 (paren
@@ -1617,28 +1575,7 @@ id|regs-&gt;intrenable
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|ints
-op_amp
-id|OHCI_INTR_SO
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;USB Schedule overrun&quot;
-)paren
-suffix:semicolon
-id|writel
-(paren
-id|OHCI_INTR_SO
-comma
-op_amp
-id|regs-&gt;intrenable
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* could track INTR_SO to reduce available PCI/... bandwidth */
 singleline_comment|// FIXME:  this assumes SOF (1/ms) interrupts don&squot;t get lost...
 r_if
 c_cond
