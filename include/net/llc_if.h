@@ -447,5 +447,21 @@ op_star
 id|sap
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|llc_build_and_send_pkt
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
 macro_line|#endif /* LLC_IF_H */
 eof

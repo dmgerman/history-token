@@ -60,17 +60,6 @@ id|prim
 suffix:semicolon
 r_static
 r_int
-id|llc_data_req_handler
-c_func
-(paren
-r_struct
-id|llc_prim_if_block
-op_star
-id|prim
-)paren
-suffix:semicolon
-r_static
-r_int
 id|llc_conn_req_handler
 c_func
 (paren
@@ -183,8 +172,9 @@ comma
 id|LLC_DATA_PRIM
 )braket
 op_assign
-id|llc_data_req_handler
+l_int|NULL
 comma
+multiline_comment|/* replaced by llc_build_and_send_pkt */
 (braket
 id|LLC_DISC_PRIM
 )braket
@@ -728,17 +718,21 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_data_req_handler - Connection data sending for upper layers.&n; *&t;@prim: pointer to structure that contains service parameters&n; *&n; *&t;This function is called when upper layer wants to send data using&n; *&t;connection oriented communication mode. During sending data, connection&n; *&t;will be locked and received frames and expired timers will be queued.&n; *&t;Returns 0 for success, -ECONNABORTED when the connection already&n; *&t;closed and -EBUSY when sending data is not permitted in this state or&n; *&t;LLC has send an I pdu with p bit set to 1 and is waiting for it&squot;s&n; *&t;response.&n; */
-DECL|function|llc_data_req_handler
-r_static
+multiline_comment|/**&n; *&t;llc_build_and_send_pkt - Connection data sending for upper layers.&n; *&t;@prim: pointer to structure that contains service parameters&n; *&n; *&t;This function is called when upper layer wants to send data using&n; *&t;connection oriented communication mode. During sending data, connection&n; *&t;will be locked and received frames and expired timers will be queued.&n; *&t;Returns 0 for success, -ECONNABORTED when the connection already&n; *&t;closed and -EBUSY when sending data is not permitted in this state or&n; *&t;LLC has send an I pdu with p bit set to 1 and is waiting for it&squot;s&n; *&t;response.&n; */
+DECL|function|llc_build_and_send_pkt
 r_int
-id|llc_data_req_handler
+id|llc_build_and_send_pkt
 c_func
 (paren
 r_struct
-id|llc_prim_if_block
+id|sock
 op_star
-id|prim
+id|sk
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
 )paren
 (brace
 r_struct
@@ -751,14 +745,6 @@ id|rc
 op_assign
 op_minus
 id|ECONNABORTED
-suffix:semicolon
-multiline_comment|/* accept data frame from network layer to be sent using connection&n;&t; * mode communication; timeout/retries handled by this layer;&n;&t; * package primitive as an event and send to connection event handler&n;&t; */
-r_struct
-id|sock
-op_star
-id|sk
-op_assign
-id|prim-&gt;data-&gt;data.sk
 suffix:semicolon
 r_struct
 id|llc_opt
@@ -830,7 +816,7 @@ op_assign
 id|llc_conn_ev
 c_func
 (paren
-id|prim-&gt;data-&gt;data.skb
+id|skb
 )paren
 suffix:semicolon
 id|ev-&gt;type
@@ -847,9 +833,9 @@ id|LLC_PRIM_TYPE_REQ
 suffix:semicolon
 id|ev-&gt;data.prim.data
 op_assign
-id|prim
+l_int|NULL
 suffix:semicolon
-id|prim-&gt;data-&gt;data.skb-&gt;dev
+id|skb-&gt;dev
 op_assign
 id|llc-&gt;dev
 suffix:semicolon
@@ -860,7 +846,7 @@ c_func
 (paren
 id|sk
 comma
-id|prim-&gt;data-&gt;data.skb
+id|skb
 )paren
 suffix:semicolon
 id|out
