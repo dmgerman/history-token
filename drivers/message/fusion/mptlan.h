@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 singleline_comment|// #include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -52,10 +53,12 @@ DECL|macro|MPT_LAN_MAX_BUCKETS_OUT
 mdefine_line|#define MPT_LAN_MAX_BUCKETS_OUT 256
 DECL|macro|MPT_LAN_BUCKET_THRESH
 mdefine_line|#define MPT_LAN_BUCKET_THRESH&t;18 /* 9 buckets in one message */
+DECL|macro|MPT_LAN_BUCKETS_REMAIN_MISMATCH_THRESH
+mdefine_line|#define MPT_LAN_BUCKETS_REMAIN_MISMATCH_THRESH 10
 DECL|macro|MPT_LAN_RX_COPYBREAK
 mdefine_line|#define MPT_LAN_RX_COPYBREAK&t;200
 DECL|macro|MPT_LAN_TX_TIMEOUT
-mdefine_line|#define MPT_LAN_TX_TIMEOUT &t;(1*HZ)
+mdefine_line|#define MPT_LAN_TX_TIMEOUT&t;(1*HZ)
 DECL|macro|MPT_TX_MAX_OUT_LIM
 mdefine_line|#define MPT_TX_MAX_OUT_LIM      127
 DECL|macro|MPT_LAN_MIN_MTU
@@ -63,7 +66,7 @@ mdefine_line|#define MPT_LAN_MIN_MTU&t;&t;96&t;&t;/* RFC2625 */
 DECL|macro|MPT_LAN_MAX_MTU
 mdefine_line|#define MPT_LAN_MAX_MTU&t;&t;65280&t;&t;/* RFC2625 */
 DECL|macro|MPT_LAN_MTU
-mdefine_line|#define MPT_LAN_MTU             16128&t;&t;/* be nice to slab allocator */
+mdefine_line|#define MPT_LAN_MTU             13312&t;&t;/* Max perf range + lower mem&n;&t;&t;&t;&t;&t;&t;   usage than 16128 */
 DECL|macro|MPT_LAN_NAA_RFC2625
 mdefine_line|#define MPT_LAN_NAA_RFC2625     0x1
 DECL|macro|MPT_LAN_NAA_QLOGIC
@@ -80,6 +83,13 @@ mdefine_line|#define dioprintk(x)  printk x
 macro_line|#else
 DECL|macro|dioprintk
 mdefine_line|#define dioprintk(x)
+macro_line|#endif
+macro_line|#ifdef MPT_LAN_DEBUG
+DECL|macro|dlprintk
+mdefine_line|#define dlprintk(x)  printk x
+macro_line|#else
+DECL|macro|dlprintk
+mdefine_line|#define dlprintk(x)
 macro_line|#endif
 DECL|macro|NETDEV_TO_LANPRIV_PTR
 mdefine_line|#define NETDEV_TO_LANPRIV_PTR(d)&t;((struct mpt_lan_priv *)(d)-&gt;priv)

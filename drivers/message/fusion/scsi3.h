@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/scsi3.h&n; *      SCSI-3 definitions and macros.&n; *      (Ultimately) SCSI-3 definitions; for now, inheriting&n; *      SCSI-2 definitions.&n; *&n; *  Copyright (c) 1996-2001 Steven J. Ralston&n; *  Written By: Steven J. Ralston (19960517)&n; *  (mailto:Steve.Ralston@lsil.com)&n; *&n; *  $Id: scsi3.h,v 1.5 2001/04/06 14:31:32 sralston Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/scsi3.h&n; *      SCSI-3 definitions and macros.&n; *      (Ultimately) SCSI-3 definitions; for now, inheriting&n; *      SCSI-2 definitions.&n; *&n; *  Copyright (c) 1996-2002 Steven J. Ralston&n; *  Written By: Steven J. Ralston (19960517)&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: scsi3.h,v 1.9 2002/02/27 18:45:02 sralston Exp $&n; */
 macro_line|#ifndef SCSI3_H_INCLUDED
 DECL|macro|SCSI3_H_INCLUDED
 mdefine_line|#define SCSI3_H_INCLUDED
@@ -82,8 +82,14 @@ DECL|macro|CMD_WriteVerify
 mdefine_line|#define CMD_WriteVerify        0x2E
 DECL|macro|CMD_Verify
 mdefine_line|#define CMD_Verify             0x2F
+DECL|macro|CMD_SynchronizeCache
+mdefine_line|#define CMD_SynchronizeCache   0x35
 DECL|macro|CMD_ReadDefectData
 mdefine_line|#define CMD_ReadDefectData     0x37
+DECL|macro|CMD_WriteBuffer
+mdefine_line|#define CMD_WriteBuffer        0x3B
+DECL|macro|CMD_ReadBuffer
+mdefine_line|#define CMD_ReadBuffer         0x3C
 DECL|macro|CMD_ReadLong
 mdefine_line|#define CMD_ReadLong           0x3E
 DECL|macro|CMD_LogSelect
