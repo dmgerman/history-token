@@ -267,7 +267,7 @@ l_int|0xffff
 suffix:semicolon
 id|exp-&gt;mask.dst.protonum
 op_assign
-l_int|0xffff
+l_int|0xff
 suffix:semicolon
 id|exp-&gt;expectfn
 op_assign
@@ -548,7 +548,7 @@ id|i
 dot
 id|mask.dst.protonum
 op_assign
-l_int|0xFFFF
+l_int|0xFF
 suffix:semicolon
 id|tftp
 (braket

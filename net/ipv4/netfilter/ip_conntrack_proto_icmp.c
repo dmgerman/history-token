@@ -813,7 +813,13 @@ multiline_comment|/* Update skb to refer to this connection */
 id|skb-&gt;nfct
 op_assign
 op_amp
-id|h-&gt;ctrack-&gt;ct_general
+id|tuplehash_to_ctrack
+c_func
+(paren
+id|h
+)paren
+op_member_access_from_pointer
+id|ct_general
 suffix:semicolon
 id|skb-&gt;nfctinfo
 op_assign

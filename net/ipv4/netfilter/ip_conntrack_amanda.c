@@ -529,7 +529,7 @@ l_int|0xFFFFFFFF
 suffix:semicolon
 id|exp-&gt;mask.dst.protonum
 op_assign
-l_int|0xFFFF
+l_int|0xFF
 suffix:semicolon
 id|exp-&gt;mask.dst.u.tcp.port
 op_assign
@@ -687,7 +687,7 @@ op_assign
 dot
 id|protonum
 op_assign
-l_int|0xFFFF
+l_int|0xFF
 )brace
 comma
 )brace

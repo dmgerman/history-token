@@ -154,6 +154,7 @@ id|seq_file
 op_star
 id|s
 comma
+r_const
 r_struct
 id|ip_conntrack_counter
 op_star
@@ -308,12 +309,17 @@ op_star
 id|s
 )paren
 (brace
+r_const
 r_struct
 id|ip_conntrack
 op_star
 id|conntrack
 op_assign
-id|hash-&gt;ctrack
+id|tuplehash_to_ctrack
+c_func
+(paren
+id|hash
+)paren
 suffix:semicolon
 r_struct
 id|ip_conntrack_protocol

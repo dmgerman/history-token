@@ -130,6 +130,9 @@ id|IP_CT_DIR_MAX
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|ip_conntrack
+suffix:semicolon
 multiline_comment|/* Set up the info structure to map into this range. */
 r_extern
 r_int

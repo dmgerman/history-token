@@ -143,8 +143,13 @@ id|u
 suffix:semicolon
 multiline_comment|/* The protocol. */
 DECL|member|protonum
-id|u_int16_t
+id|u8
 id|protonum
+suffix:semicolon
+multiline_comment|/* The direction (for tuplehash) */
+DECL|member|dir
+id|u8
+id|dir
 suffix:semicolon
 DECL|member|dst
 )brace
@@ -176,7 +181,7 @@ DECL|macro|CTINFO2DIR
 mdefine_line|#define CTINFO2DIR(ctinfo) ((ctinfo) &gt;= IP_CT_IS_REPLY ? IP_CT_DIR_REPLY : IP_CT_DIR_ORIGINAL)
 multiline_comment|/* If we&squot;re the first tuple, it&squot;s the original dir. */
 DECL|macro|DIRECTION
-mdefine_line|#define DIRECTION(h) ((enum ip_conntrack_dir)(&amp;(h)-&gt;ctrack-&gt;tuplehash[1] == (h)))
+mdefine_line|#define DIRECTION(h) ((enum ip_conntrack_dir)(h)-&gt;tuple.dst.dir)
 multiline_comment|/* Connections have two entries in the hash table: one for each way */
 DECL|struct|ip_conntrack_tuple_hash
 r_struct
@@ -191,13 +196,6 @@ DECL|member|tuple
 r_struct
 id|ip_conntrack_tuple
 id|tuple
-suffix:semicolon
-multiline_comment|/* this == &amp;ctrack-&gt;tuplehash[DIRECTION(this)]. */
-DECL|member|ctrack
-r_struct
-id|ip_conntrack
-op_star
-id|ctrack
 suffix:semicolon
 )brace
 suffix:semicolon

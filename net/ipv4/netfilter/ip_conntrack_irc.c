@@ -946,7 +946,7 @@ l_int|0xFFFF
 )brace
 )brace
 comma
-l_int|0xFFFF
+l_int|0xFF
 )brace
 )brace
 )paren
@@ -1178,7 +1178,7 @@ l_int|0xFFFF
 suffix:semicolon
 id|hlpr-&gt;mask.dst.protonum
 op_assign
-l_int|0xFFFF
+l_int|0xFF
 suffix:semicolon
 id|hlpr-&gt;max_expected
 op_assign

@@ -2268,7 +2268,7 @@ l_int|0xFFFF
 )brace
 )brace
 comma
-l_int|0xFFFF
+l_int|0xFF
 )brace
 )brace
 )paren
@@ -2537,7 +2537,7 @@ id|i
 dot
 id|mask.dst.protonum
 op_assign
-l_int|0xFFFF
+l_int|0xFF
 suffix:semicolon
 id|ftp
 (braket
