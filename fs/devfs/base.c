@@ -2757,7 +2757,7 @@ id|TRUE
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function wait_for_devfsd_finished  */
-multiline_comment|/**&n; *&t;devfsd_notify_de - Notify the devfsd daemon of a change.&n; *&t;@de: The devfs entry that has changed. This and all parent entries will&n; *            have their reference counts incremented if the event was queued.&n; *&t;@type: The type of change.&n; *&t;@mode: The mode of the entry.&n; *&t;@uid: The user ID.&n; *&t;@gid: The group ID.&n; *&t;@fs_info: The filesystem info.&n; *&t;@atomic: If TRUE, an atomic allocation is required.&n; *&n; *&t;Returns %TRUE if an event was queued and devfsd woken up, else %FALSE.&n; */
+multiline_comment|/**&n; *&t;devfsd_notify_de - Notify the devfsd daemon of a change.&n; *&t;@de: The devfs entry that has changed. This and all parent entries will&n; *            have their reference counts incremented if the event was queued.&n; *&t;@type: The type of change.&n; *&t;@mode: The mode of the entry.&n; *&t;@uid: The user ID.&n; *&t;@gid: The group ID.&n; *&t;@fs_info: The filesystem info.&n; *&n; *&t;Returns %TRUE if an event was queued and devfsd woken up, else %FALSE.&n; */
 DECL|function|devfsd_notify_de
 r_static
 r_int
@@ -2968,8 +2968,6 @@ id|current-&gt;egid
 comma
 op_amp
 id|fs_info
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3033,16 +3031,11 @@ id|devfs_entry
 op_star
 id|de
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|flags
-)paren
-id|printk
+multiline_comment|/* we don&squot;t accept any flags anymore.  prototype will change soon. */
+id|WARN_ON
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;%s called with flags != 0, please fix!&bslash;n&quot;
+id|flags
 )paren
 suffix:semicolon
 r_if
