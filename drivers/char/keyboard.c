@@ -356,6 +356,8 @@ r_char
 id|kbd_sysrq_xlate
 (braket
 id|KEY_MAX
+op_plus
+l_int|1
 )braket
 op_assign
 l_string|&quot;&bslash;000&bslash;0331234567890-=&bslash;177&bslash;t&quot;
@@ -554,6 +556,17 @@ c_cond
 id|scancode
 op_ge
 id|dev-&gt;keycodemax
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|keycode
+OG
+id|KEY_MAX
 )paren
 r_return
 op_minus

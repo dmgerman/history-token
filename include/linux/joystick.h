@@ -55,13 +55,13 @@ mdefine_line|#define JSIOCSCORR&t;&t;_IOW(&squot;j&squot;, 0x21, struct js_corr)
 DECL|macro|JSIOCGCORR
 mdefine_line|#define JSIOCGCORR&t;&t;_IOR(&squot;j&squot;, 0x22, struct js_corr)&t;&t;&t;/* get correction values */
 DECL|macro|JSIOCSAXMAP
-mdefine_line|#define JSIOCSAXMAP&t;&t;_IOW(&squot;j&squot;, 0x31, __u8[ABS_MAX])&t;&t;&t;/* set axis mapping */
+mdefine_line|#define JSIOCSAXMAP&t;&t;_IOW(&squot;j&squot;, 0x31, __u8[ABS_MAX + 1])&t;&t;/* set axis mapping */
 DECL|macro|JSIOCGAXMAP
-mdefine_line|#define JSIOCGAXMAP&t;&t;_IOR(&squot;j&squot;, 0x32, __u8[ABS_MAX])&t;&t;&t;/* get axis mapping */
+mdefine_line|#define JSIOCGAXMAP&t;&t;_IOR(&squot;j&squot;, 0x32, __u8[ABS_MAX + 1])&t;&t;/* get axis mapping */
 DECL|macro|JSIOCSBTNMAP
-mdefine_line|#define JSIOCSBTNMAP&t;&t;_IOW(&squot;j&squot;, 0x33, __u16[KEY_MAX - BTN_MISC])&t;/* set button mapping */
+mdefine_line|#define JSIOCSBTNMAP&t;&t;_IOW(&squot;j&squot;, 0x33, __u16[KEY_MAX - BTN_MISC + 1])&t;/* set button mapping */
 DECL|macro|JSIOCGBTNMAP
-mdefine_line|#define JSIOCGBTNMAP&t;&t;_IOR(&squot;j&squot;, 0x34, __u16[KEY_MAX - BTN_MISC])&t;/* get button mapping */
+mdefine_line|#define JSIOCGBTNMAP&t;&t;_IOR(&squot;j&squot;, 0x34, __u16[KEY_MAX - BTN_MISC + 1])&t;/* get button mapping */
 multiline_comment|/*&n; * Types and constants for get/set correction&n; */
 DECL|macro|JS_CORR_NONE
 mdefine_line|#define JS_CORR_NONE&t;&t;0x00&t;/* returns raw values */

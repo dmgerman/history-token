@@ -25,7 +25,7 @@ mdefine_line|#define KG_CAPSSHIFT&t;8
 DECL|macro|NR_SHIFT
 mdefine_line|#define NR_SHIFT&t;9
 DECL|macro|NR_KEYS
-mdefine_line|#define NR_KEYS&t;&t;255
+mdefine_line|#define NR_KEYS&t;&t;256
 DECL|macro|MAX_NR_KEYMAPS
 mdefine_line|#define MAX_NR_KEYMAPS&t;256
 multiline_comment|/* This means 128Kb if all keymaps are allocated. Only the superuser&n;&t;may increase the number of keymaps beyond MAX_NR_OF_USER_KEYMAPS. */

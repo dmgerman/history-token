@@ -91,6 +91,8 @@ id|js_corr
 id|corr
 (braket
 id|ABS_MAX
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 DECL|member|glue
@@ -113,6 +115,8 @@ id|keymap
 id|KEY_MAX
 op_minus
 id|BTN_MISC
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 DECL|member|keypam
@@ -122,6 +126,8 @@ id|keypam
 id|KEY_MAX
 op_minus
 id|BTN_MISC
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 DECL|member|absmap
@@ -129,6 +135,8 @@ id|__u8
 id|absmap
 (braket
 id|ABS_MAX
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 DECL|member|abspam
@@ -136,6 +144,8 @@ id|__u8
 id|abspam
 (braket
 id|ABS_MAX
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 DECL|member|abs
@@ -143,6 +153,8 @@ id|__s16
 id|abs
 (braket
 id|ABS_MAX
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 )brace
@@ -1822,7 +1834,11 @@ r_sizeof
 id|__u8
 )paren
 op_star
+(paren
 id|ABS_MAX
+op_plus
+l_int|1
+)paren
 )paren
 )paren
 r_return
@@ -1888,7 +1904,11 @@ r_sizeof
 id|__u8
 )paren
 op_star
+(paren
 id|ABS_MAX
+op_plus
+l_int|1
+)paren
 )paren
 ques
 c_cond
@@ -1919,6 +1939,8 @@ op_star
 id|KEY_MAX
 op_minus
 id|BTN_MISC
+op_plus
+l_int|1
 )paren
 )paren
 )paren
@@ -1998,6 +2020,8 @@ op_star
 id|KEY_MAX
 op_minus
 id|BTN_MISC
+op_plus
+l_int|1
 )paren
 )paren
 ques
@@ -2323,6 +2347,8 @@ suffix:semicolon
 id|i
 OL
 id|ABS_MAX
+op_plus
+l_int|1
 suffix:semicolon
 id|i
 op_increment
@@ -2371,6 +2397,8 @@ OL
 id|KEY_MAX
 op_minus
 id|BTN_MISC
+op_plus
+l_int|1
 suffix:semicolon
 id|i
 op_increment
@@ -2421,6 +2449,8 @@ OL
 id|BTN_JOYSTICK
 op_minus
 id|BTN_MISC
+op_plus
+l_int|1
 suffix:semicolon
 id|i
 op_increment
