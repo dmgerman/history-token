@@ -183,11 +183,9 @@ id|DRV_NAME
 suffix:semicolon
 multiline_comment|/* This driver was written to use PCI memory space, however most versions&n;   of the Rhine only work correctly with I/O space accesses. */
 macro_line|#ifdef CONFIG_VIA_RHINE_MMIO
-DECL|macro|USE_MEM
-mdefine_line|#define USE_MEM
+DECL|macro|USE_MMIO
+mdefine_line|#define USE_MMIO
 macro_line|#else
-DECL|macro|USE_IO
-mdefine_line|#define USE_IO
 DECL|macro|readb
 macro_line|#undef readb
 DECL|macro|readw
@@ -464,7 +462,7 @@ l_int|0x20
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 DECL|macro|RHINE_IOTYPE
 mdefine_line|#define RHINE_IOTYPE (PCI_USES_MEM | PCI_USES_MASTER | PCI_ADDR1)
 macro_line|#else
@@ -809,7 +807,7 @@ op_assign
 l_int|0x08
 )brace
 suffix:semicolon
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 multiline_comment|/* Registers we check that mmio and reg are the same. */
 DECL|variable|mmio_verify_registers
 r_int
@@ -1671,7 +1669,7 @@ l_string|&quot;failed&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 DECL|function|enable_mmio
 r_static
 r_void
@@ -1908,7 +1906,7 @@ suffix:semicolon
 r_int
 id|pci_flags
 suffix:semicolon
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 r_int
 id|ioaddr0
 suffix:semicolon
@@ -2140,7 +2138,7 @@ id|shortname
 r_goto
 id|err_out_free_netdev
 suffix:semicolon
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 id|ioaddr0
 op_assign
 id|ioaddr
@@ -2269,7 +2267,7 @@ id|err_out_unmap
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+macro_line|#endif /* USE_MMIO */
 multiline_comment|/* D-Link provided reset code (with comment additions) */
 r_if
 c_cond
@@ -2376,14 +2374,7 @@ id|shortname
 )paren
 suffix:semicolon
 multiline_comment|/* Reload the station address from the EEPROM. */
-macro_line|#ifdef USE_IO
-id|reload_eeprom
-c_func
-(paren
-id|ioaddr
-)paren
-suffix:semicolon
-macro_line|#else
+macro_line|#ifdef USE_MMIO
 id|reload_eeprom
 c_func
 (paren
@@ -2397,6 +2388,13 @@ c_func
 id|ioaddr0
 comma
 id|chip_id
+)paren
+suffix:semicolon
+macro_line|#else
+id|reload_eeprom
+c_func
+(paren
+id|ioaddr
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3046,7 +3044,7 @@ l_int|0
 suffix:semicolon
 id|err_out_unmap
 suffix:colon
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 id|iounmap
 c_func
 (paren
@@ -8357,7 +8355,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 id|iounmap
 c_func
 (paren
