@@ -1510,7 +1510,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|info-&gt;currcon
+id|p-&gt;info.currcon
 )paren
 (brace
 id|write_cr
@@ -1612,7 +1612,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|info-&gt;currcon
+id|p-&gt;info.currcon
 )paren
 (brace
 id|write_cr

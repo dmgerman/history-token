@@ -5978,7 +5978,7 @@ id|rows
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;info.screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star
@@ -6182,7 +6182,7 @@ id|rows
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;info.screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star

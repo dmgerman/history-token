@@ -37,6 +37,9 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
 macro_line|#include &lt;asm/vc_ioctl.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_BOOTX_TEXT
+macro_line|#include &lt;asm/btext.h&gt;
+macro_line|#endif /* CONFIG_BOOTX_TEXT */
 macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &lt;video/fbcon-cfb16.h&gt;
@@ -392,6 +395,14 @@ id|rage_128_pro
 )brace
 comma
 (brace
+l_string|&quot;Rage128 Pro TR (AGP)&quot;
+comma
+id|PCI_DEVICE_ID_ATI_RAGE128_U3
+comma
+id|rage_128_pro
+)brace
+comma
+(brace
 l_string|&quot;Rage Mobility M3 (PCI)&quot;
 comma
 id|PCI_DEVICE_ID_ATI_RAGE128_LE
@@ -728,6 +739,7 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|__initdata
 r_static
 r_char
@@ -746,6 +758,7 @@ id|__initdata
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_MTRR
 DECL|variable|__initdata
 r_static
 r_int
@@ -754,6 +767,8 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
+macro_line|#endif /* MODULE */
 DECL|variable|__initdata
 r_static
 r_char
@@ -1880,6 +1895,10 @@ comma
 id|fb_pan_display
 suffix:colon
 id|aty128fb_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|aty128fb_blank
 comma
 id|fb_rasterimg
 suffix:colon
@@ -5555,6 +5574,50 @@ id|info-&gt;regbase_phys
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_FB_COMPAT_XPMAC */
+macro_line|#if defined(CONFIG_BOOTX_TEXT)
+id|btext_update_display
+c_func
+(paren
+id|info-&gt;frame_buffer_phys
+comma
+(paren
+(paren
+(paren
+id|par-&gt;crtc.h_total
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0xff
+)paren
+op_plus
+l_int|1
+)paren
+op_star
+l_int|8
+comma
+(paren
+(paren
+id|par-&gt;crtc.v_total
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0x7ff
+)paren
+op_plus
+l_int|1
+comma
+id|par-&gt;crtc.bpp
+comma
+id|par-&gt;crtc.vxres
+op_star
+id|par-&gt;crtc.bpp
+op_div
+l_int|8
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_BOOTX_TEXT */
 )brace
 multiline_comment|/*&n;     *  encode/decode the User Defined Part of the Display&n;     */
 r_static
@@ -7001,6 +7064,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|this_opt
 op_assign
 id|strsep
@@ -7011,6 +7075,9 @@ id|options
 comma
 l_string|&quot;,&quot;
 )paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if
@@ -7550,6 +7617,80 @@ id|VMODE_MAX
 id|default_vmode
 op_assign
 id|VMODE_1024_768_60
+suffix:semicolon
+multiline_comment|/* iMacs need that resolution&n;&t;     * PowerMac2,1 first r128 iMacs&n;&t;     * PowerMac2,2 summer 2000 iMacs&n;&t;     * PowerMac4,1 january 2001 iMacs &quot;flower power&quot;&n;&t;     */
+r_if
+c_cond
+(paren
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerMac2,1&quot;
+)paren
+op_logical_or
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerMac2,2&quot;
+)paren
+op_logical_or
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerMac4,1&quot;
+)paren
+)paren
+id|default_vmode
+op_assign
+id|VMODE_1024_768_75
+suffix:semicolon
+multiline_comment|/* iBook SE */
+r_if
+c_cond
+(paren
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook2,2&quot;
+)paren
+)paren
+id|default_vmode
+op_assign
+id|VMODE_800_600_60
+suffix:semicolon
+multiline_comment|/* PowerBook Firewire (Pismo), iBook Dual USB */
+r_if
+c_cond
+(paren
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook3,1&quot;
+)paren
+op_logical_or
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook4,1&quot;
+)paren
+)paren
+id|default_vmode
+op_assign
+id|VMODE_1024_768_60
+suffix:semicolon
+multiline_comment|/* PowerBook Titanium */
+r_if
+c_cond
+(paren
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook3,2&quot;
+)paren
+)paren
+id|default_vmode
+op_assign
+id|VMODE_1152_768_60
 suffix:semicolon
 r_if
 c_cond
