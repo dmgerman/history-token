@@ -882,7 +882,7 @@ suffix:semicolon
 DECL|function|tms_pci_detach
 r_static
 r_void
-id|__exit
+id|__devexit
 id|tms_pci_detach
 (paren
 r_struct
@@ -977,7 +977,11 @@ id|tms_pci_attach
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|tms_pci_detach
+)paren
 comma
 )brace
 suffix:semicolon

@@ -9534,7 +9534,6 @@ suffix:semicolon
 r_static
 DECL|function|release_zoran
 r_void
-id|__exit
 id|release_zoran
 c_func
 (paren

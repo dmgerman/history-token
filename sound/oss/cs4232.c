@@ -884,6 +884,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|unload_cs4232
+r_static
 r_void
 id|__exit
 id|unload_cs4232
@@ -1808,7 +1809,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cs4232_isapnp_remove
+r_static
 r_int
+id|__exit
 id|cs4232_isapnp_remove
 c_func
 (paren

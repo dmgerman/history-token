@@ -4779,7 +4779,6 @@ suffix:semicolon
 )brace
 DECL|function|unload_mpu401
 r_void
-id|__exit
 id|unload_mpu401
 c_func
 (paren

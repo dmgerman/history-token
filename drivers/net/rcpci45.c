@@ -275,7 +275,7 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 r_static
 r_void
-id|__exit
+id|__devexit
 DECL|function|rcpci45_remove_one
 id|rcpci45_remove_one
 (paren
@@ -824,7 +824,11 @@ id|rcpci45_init_one
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|rcpci45_remove_one
+)paren
 comma
 )brace
 suffix:semicolon

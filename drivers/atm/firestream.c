@@ -5730,7 +5730,7 @@ suffix:semicolon
 DECL|function|free_queue
 r_static
 r_void
-id|__exit
+id|__devexit
 id|free_queue
 (paren
 r_struct
@@ -5823,7 +5823,7 @@ suffix:semicolon
 DECL|function|free_freepool
 r_static
 r_void
-id|__exit
+id|__devexit
 id|free_freepool
 (paren
 r_struct
@@ -8459,7 +8459,6 @@ macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n;#ifdef MODULE&n;#define firestream_init init_module&n;#endif &n;*/
 DECL|variable|__devinitdata
-r_const
 r_static
 r_struct
 id|pci_device_id

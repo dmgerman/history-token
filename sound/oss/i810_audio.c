@@ -13044,7 +13044,7 @@ suffix:semicolon
 DECL|function|i810_remove
 r_static
 r_void
-id|__exit
+id|__devexit
 id|i810_remove
 c_func
 (paren
@@ -13902,7 +13902,11 @@ id|i810_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|i810_remove
+)paren
 comma
 macro_line|#ifdef CONFIG_PM
 id|suspend

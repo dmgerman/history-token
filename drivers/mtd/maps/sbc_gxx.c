@@ -762,7 +762,6 @@ suffix:semicolon
 DECL|function|cleanup_sbc_gxx
 r_static
 r_void
-id|__exit
 id|cleanup_sbc_gxx
 c_func
 (paren

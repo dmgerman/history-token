@@ -2887,7 +2887,11 @@ id|synclink_init_one
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|synclink_remove_one
+)paren
 comma
 )brace
 suffix:semicolon
@@ -28003,7 +28007,7 @@ suffix:semicolon
 DECL|function|synclink_remove_one
 r_static
 r_void
-id|__exit
+id|__devexit
 id|synclink_remove_one
 (paren
 r_struct
