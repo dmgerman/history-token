@@ -1414,7 +1414,6 @@ r_void
 id|__init
 DECL|function|build_cpu_to_node_map
 id|build_cpu_to_node_map
-c_func
 (paren
 r_void
 )paren
@@ -1435,11 +1434,11 @@ id|cpu
 OL
 id|NR_CPUS
 suffix:semicolon
-id|cpu
 op_increment
+id|cpu
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * All Itanium NUMA platforms I know use ACPI, so maybe we&n;&t;&t; * can drop this ifdef completely.                    [EF] &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * All Itanium NUMA platforms I know use ACPI, so maybe we&n;&t;&t; * can drop this ifdef completely.                    [EF]&n;&t;&t; */
 macro_line|#ifdef CONFIG_ACPI_NUMA
 r_for
 c_loop
@@ -1452,8 +1451,8 @@ id|i
 OL
 id|NR_CPUS
 suffix:semicolon
-id|i
 op_increment
+id|i
 )paren
 r_if
 c_cond
@@ -1487,10 +1486,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#else
+macro_line|#&t;&t;error Fixme: Dunno how to build CPU-to-node map.
 macro_line|#endif
 )brace
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_NUMA */
 multiline_comment|/*&n; * Cycle through the APs sending Wakeup IPIs to boot each.&n; */
 r_void
 id|__init
