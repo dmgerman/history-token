@@ -303,6 +303,28 @@ r_int
 id|phys
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|phys_to_pfn
+c_func
+(paren
+r_int
+r_int
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|pfn_to_phys
+c_func
+(paren
+r_int
+r_int
+id|pfn
+)paren
+suffix:semicolon
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x) pfn_to_page(pte_pfn(x))
 DECL|macro|pte_address
@@ -314,11 +336,11 @@ mdefine_line|#define phys_addr(p) ((p) &amp; ~REGION_MASK)
 DECL|macro|phys_page
 mdefine_line|#define phys_page(p) (phys_mem_map(p) + ((phys_addr(p)) &gt;&gt; PAGE_SHIFT))
 DECL|macro|pte_pfn
-mdefine_line|#define pte_pfn(x) ((unsigned long)(((x).pte_low &gt;&gt; PAGE_SHIFT)))
+mdefine_line|#define pte_pfn(x) phys_to_pfn(pte_val(x))
 DECL|macro|pfn_pte
-mdefine_line|#define pfn_pte(pfn, prot) __pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
+mdefine_line|#define pfn_pte(pfn, prot) __pte(pfn_to_phys(pfn) | pgprot_val(prot))
 DECL|macro|pfn_pmd
-mdefine_line|#define pfn_pmd(pfn, prot)&t;__pmd(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
+mdefine_line|#define pfn_pmd(pfn, prot) __pmd(pfn_to_phys(pfn) | pgprot_val(prot))
 DECL|function|pte_mknewprot
 r_static
 r_inline

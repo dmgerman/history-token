@@ -38,14 +38,10 @@ c_func
 (paren
 id|_PAGE_TABLE
 op_plus
-id|phys_addr
-c_func
-(paren
 id|page_to_phys
 c_func
 (paren
 id|pte
-)paren
 )paren
 )paren
 )paren
