@@ -1216,22 +1216,6 @@ op_assign
 op_amp
 id|e100_dma_off
 suffix:semicolon
-id|hwif-&gt;sg_table
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|scatterlist
-)paren
-op_star
-id|PRD_ENTRIES
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* actually reset and configure the etrax100 ide/ata interface */
 op_star
