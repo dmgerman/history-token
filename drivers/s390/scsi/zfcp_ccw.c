@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_ccw.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * CCW driver related routines&n; *&n; * (C) Copyright IBM Corp. 2003, 2004&n; *&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_CCW_C_REVISION
-mdefine_line|#define ZFCP_CCW_C_REVISION &quot;$Revision: 1.52 $&quot;
+mdefine_line|#define ZFCP_CCW_C_REVISION &quot;$Revision: 1.54 $&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
@@ -740,6 +740,24 @@ id|adapter
 )paren
 )paren
 suffix:semicolon
+id|debug_text_event
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
+l_int|1
+comma
+l_string|&quot;dev_gone&quot;
+)paren
+suffix:semicolon
+id|zfcp_erp_adapter_shutdown
+c_func
+(paren
+id|adapter
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -757,6 +775,24 @@ id|adapter
 )paren
 )paren
 suffix:semicolon
+id|debug_text_event
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
+l_int|1
+comma
+l_string|&quot;no_path&quot;
+)paren
+suffix:semicolon
+id|zfcp_erp_adapter_shutdown
+c_func
+(paren
+id|adapter
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -772,6 +808,16 @@ c_func
 (paren
 id|adapter
 )paren
+)paren
+suffix:semicolon
+id|debug_text_event
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
+l_int|1
+comma
+l_string|&quot;dev_oper&quot;
 )paren
 suffix:semicolon
 id|zfcp_erp_modify_adapter_status
@@ -795,6 +841,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|zfcp_erp_wait
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren

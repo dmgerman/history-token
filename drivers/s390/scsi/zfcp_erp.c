@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.51 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.52 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -8493,6 +8493,12 @@ c_func
 l_string|&quot;Doing exchange config data&bslash;n&quot;
 )paren
 suffix:semicolon
+id|zfcp_erp_action_to_running
+c_func
+(paren
+id|erp_action
+)paren
+suffix:semicolon
 id|zfcp_erp_timeout_init
 c_func
 (paren
@@ -8557,7 +8563,7 @@ l_string|&quot;Xchange underway&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Why this works:&n;&t;&t; * Both the normal completion handler as well as the timeout&n;&t;&t; * handler will do an &squot;up&squot; when the &squot;exchange config data&squot;&n;&t;&t; * request completes or times out. Thus, the signal to go on&n;&t;&t; * won&squot;t be lost utilizing this semaphore.&n;&t;&t; * Furthermore, this &squot;adapter_reopen&squot; action is&n;&t;&t; * guaranteed to be the only action being there (highest action&n;&t;&t; * which prevents other actions from being created).&n;&t;&t; * Resulting from that, the wake signal recognized here&n;&t;&t; * _must_ be the one belonging to the &squot;exchange config&n;&t;&t; * data&squot; request.&n;&t;&t; */
-id|down_interruptible
+id|down
 c_func
 (paren
 op_amp
