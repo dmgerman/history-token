@@ -971,11 +971,6 @@ op_assign
 op_amp
 id|netjet_dc_ops
 suffix:semicolon
-id|cs-&gt;BC_Send_Data
-op_assign
-op_amp
-id|netjet_fill_dma
-suffix:semicolon
 id|cs-&gt;cardmsg
 op_assign
 op_amp

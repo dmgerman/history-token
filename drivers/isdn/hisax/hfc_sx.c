@@ -5649,6 +5649,20 @@ id|cs
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hfcsx_l1_ops
+r_static
+r_struct
+id|bc_l1_ops
+id|hfcsx_l1_ops
+op_assign
+(brace
+dot
+id|fill_fifo
+op_assign
+id|hfcsx_fill_fifo
+comma
+)brace
+suffix:semicolon
 multiline_comment|/********************************/
 multiline_comment|/* called for card init message */
 multiline_comment|/********************************/
@@ -5701,9 +5715,10 @@ comma
 id|cs
 )paren
 suffix:semicolon
-id|cs-&gt;BC_Send_Data
+id|cs-&gt;bc_l1_ops
 op_assign
-id|hfcsx_fill_fifo
+op_amp
+id|hfcsx_l1_ops
 suffix:semicolon
 id|cs-&gt;DC_Send_Data
 op_assign

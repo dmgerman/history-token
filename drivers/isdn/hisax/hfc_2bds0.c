@@ -4903,10 +4903,6 @@ c_func
 l_int|32
 )paren
 suffix:semicolon
-id|cs-&gt;BC_Send_Data
-op_assign
-id|hfc_fill_fifo
-suffix:semicolon
 id|cs-&gt;DC_Send_Data
 op_assign
 id|hfc_fill_dfifo

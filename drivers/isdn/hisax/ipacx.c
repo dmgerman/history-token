@@ -4323,6 +4323,20 @@ id|IPACX_ISTAD
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ipacx_bc_l1_ops
+r_static
+r_struct
+id|bc_l1_ops
+id|ipacx_bc_l1_ops
+op_assign
+(brace
+dot
+id|fill_fifo
+op_assign
+id|ipacx_fill_fifo
+comma
+)brace
+suffix:semicolon
 singleline_comment|//----------------------------------------------------------
 singleline_comment|// Does chip configuration work
 singleline_comment|// Work to do depends on bit mask in part
@@ -4351,6 +4365,11 @@ l_int|1
 )paren
 (brace
 singleline_comment|// initialise chip
+id|cs-&gt;bc_l1_ops
+op_assign
+op_amp
+id|ipacx_bc_l1_ops
+suffix:semicolon
 id|clear_pending_ints
 c_func
 (paren

@@ -3409,11 +3409,6 @@ op_assign
 op_amp
 id|hscx_ops
 suffix:semicolon
-id|cs-&gt;BC_Send_Data
-op_assign
-op_amp
-id|hscx_fill_fifo
-suffix:semicolon
 id|cs-&gt;cardmsg
 op_assign
 op_amp
@@ -3757,11 +3752,6 @@ id|cs-&gt;bc_hw_ops
 op_assign
 op_amp
 id|isar_ops
-suffix:semicolon
-id|cs-&gt;BC_Send_Data
-op_assign
-op_amp
-id|isar_fill_fifo
 suffix:semicolon
 id|ver
 op_assign

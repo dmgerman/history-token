@@ -1714,11 +1714,6 @@ op_assign
 op_amp
 id|jade_ops
 suffix:semicolon
-id|cs-&gt;BC_Send_Data
-op_assign
-op_amp
-id|jade_fill_fifo
-suffix:semicolon
 id|cs-&gt;cardmsg
 op_assign
 op_amp

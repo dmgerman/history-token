@@ -1420,11 +1420,6 @@ op_assign
 op_amp
 id|isar_ops
 suffix:semicolon
-id|cs-&gt;BC_Send_Data
-op_assign
-op_amp
-id|isar_fill_fifo
-suffix:semicolon
 id|ver
 op_assign
 id|ISARVersion
