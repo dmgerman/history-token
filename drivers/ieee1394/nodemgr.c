@@ -5838,16 +5838,20 @@ suffix:semicolon
 id|HPSB_DEBUG
 c_func
 (paren
-l_string|&quot;Node &quot;
+l_string|&quot;Node changed: %d-&quot;
 id|NODE_BUS_FMT
-l_string|&quot; changed to &quot;
+l_string|&quot; -&gt; %d-&quot;
 id|NODE_BUS_FMT
+comma
+id|ne-&gt;host-&gt;id
 comma
 id|NODE_BUS_ARGS
 c_func
 (paren
 id|ne-&gt;nodeid
 )paren
+comma
+id|ne-&gt;host-&gt;id
 comma
 id|NODE_BUS_ARGS
 c_func
@@ -6640,9 +6644,11 @@ suffix:semicolon
 id|HPSB_DEBUG
 c_func
 (paren
-l_string|&quot;Device removed: ID:BUS[&quot;
+l_string|&quot;Node removed: ID:BUS[%d-&quot;
 id|NODE_BUS_FMT
 l_string|&quot;]  GUID[%016Lx]&quot;
+comma
+id|host-&gt;id
 comma
 id|NODE_BUS_ARGS
 c_func
@@ -7701,7 +7707,7 @@ id|HPSB_DEBUG
 (paren
 l_string|&quot;NodeMgr: Processing host reset for %s&quot;
 comma
-id|host-&gt;driver-&gt;name
+id|hi-&gt;daemon_name
 )paren
 suffix:semicolon
 macro_line|#endif
