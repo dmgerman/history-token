@@ -3778,7 +3778,33 @@ r_if
 c_cond
 (paren
 id|iov-&gt;iov_len
-OG
+OL
+id|hdrlen
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;NFS: READ reply header overflowed:&quot;
+l_string|&quot;length %d &gt; %d&bslash;n&quot;
+comma
+id|hdrlen
+comma
+id|iov-&gt;iov_len
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|errno_NFSERR_IO
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|iov-&gt;iov_len
+op_ne
 id|hdrlen
 )paren
 (brace
@@ -3802,7 +3828,7 @@ suffix:semicolon
 )brace
 id|recvd
 op_assign
-id|req-&gt;rq_rlen
+id|req-&gt;rq_received
 op_minus
 id|hdrlen
 suffix:semicolon
@@ -3829,6 +3855,10 @@ suffix:semicolon
 id|count
 op_assign
 id|recvd
+suffix:semicolon
+id|res-&gt;eof
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_if
