@@ -1127,13 +1127,13 @@ suffix:semicolon
 multiline_comment|/* Flags describing the attribute. */
 DECL|member|min_size
 multiline_comment|/* 90*/
-id|le64
+id|sle64
 id|min_size
 suffix:semicolon
 multiline_comment|/* Optional minimum attribute size. */
 DECL|member|max_size
 multiline_comment|/* 98*/
-id|le64
+id|sle64
 id|max_size
 suffix:semicolon
 multiline_comment|/* Maximum size of attribute. */
