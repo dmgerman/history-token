@@ -2387,6 +2387,42 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Enable keyboard.&n; */
+DECL|function|atkbd_enable
+r_static
+r_void
+id|atkbd_enable
+c_func
+(paren
+r_struct
+id|atkbd
+op_star
+id|atkbd
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|atkbd_command
+c_func
+(paren
+id|atkbd
+comma
+l_int|NULL
+comma
+id|ATKBD_CMD_ENABLE
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;atkbd.c: Failed to enable keyboard on %s&bslash;n&quot;
+comma
+id|atkbd-&gt;serio-&gt;phys
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * atkbd_set_3 checks if a keyboard has a working Set 3 support, and&n; * sets it into that. Unfortunately there are keyboards that can be switched&n; * to Set 3, but don&squot;t work well in that (BTC Multimedia ...)&n; */
 DECL|function|atkbd_set_3
 r_static
@@ -2733,7 +2769,23 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n; * Disable autorepeat. We don&squot;t need it, as we do it in software anyway,&n; * because that way can get faster repeat, and have less system load (less&n; * accesses to the slow ISA hardware). If this fails, we don&squot;t care, and will&n; * just ignore the repeated keys.&n; */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Disable autorepeat. We don&squot;t need it, as we do it in software anyway,&n; * because that way can get faster repeat, and have less system load (less&n; * accesses to the slow ISA hardware). If this fails, we don&squot;t care, and will&n; * just ignore the repeated keys.&n; *&n; * This command is for scancode set 3 only.&n; */
+DECL|function|atkbd_disable_autorepeat
+r_static
+r_void
+id|atkbd_disable_autorepeat
+c_func
+(paren
+r_struct
+id|atkbd
+op_star
+id|atkbd
+)paren
+(brace
 id|atkbd_command
 c_func
 (paren
@@ -2743,32 +2795,6 @@ l_int|NULL
 comma
 id|ATKBD_CMD_SETALL_MB
 )paren
-suffix:semicolon
-multiline_comment|/*&n; * Last, we enable the keyboard to make sure  that we get keypresses from it.&n; */
-r_if
-c_cond
-(paren
-id|atkbd_command
-c_func
-(paren
-id|atkbd
-comma
-l_int|NULL
-comma
-id|ATKBD_CMD_ENABLE
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;atkbd.c: Failed to enable keyboard on %s&bslash;n&quot;
-comma
-id|atkbd-&gt;serio-&gt;phys
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * atkbd_cleanup() restores the keyboard state so that BIOS is happy after a&n; * reboot.&n; */
@@ -2846,7 +2872,7 @@ id|atkbd
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * atkbd_connect() is called when the serio module finds and interface&n; * that isn&squot;t handled yet by an appropriate device driver. We check if&n; * there is an AT keyboard out there and if yes, we register ourselves&n; * to the input module.&n; */
+multiline_comment|/*&n; * atkbd_connect() is called when the serio module finds an interface&n; * that isn&squot;t handled yet by an appropriate device driver. We check if&n; * there is an AT keyboard out there and if yes, we register ourselves&n; * to the input module.&n; */
 DECL|function|atkbd_connect
 r_static
 r_void
@@ -3131,6 +3157,25 @@ suffix:semicolon
 id|atkbd-&gt;set
 op_assign
 id|atkbd_set_3
+c_func
+(paren
+id|atkbd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atkbd-&gt;set
+op_eq
+l_int|3
+)paren
+id|atkbd_disable_autorepeat
+c_func
+(paren
+id|atkbd
+)paren
+suffix:semicolon
+id|atkbd_enable
 c_func
 (paren
 id|atkbd

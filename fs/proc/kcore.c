@@ -710,6 +710,13 @@ id|EI_VERSION
 op_assign
 id|EV_CURRENT
 suffix:semicolon
+id|elf-&gt;e_ident
+(braket
+id|EI_OSABI
+)braket
+op_assign
+id|ELF_OSABI
+suffix:semicolon
 id|memset
 c_func
 (paren

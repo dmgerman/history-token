@@ -6,12 +6,19 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt; 
+macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
+macro_line|#include &lt;asm/arch/simpad.h&gt;
+macro_line|#include &lt;asm/arch/registry.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;generic.h&quot;
 DECL|variable|cs3_shadow
 r_int
@@ -22,10 +29,34 @@ r_int
 id|get_cs3_shadow
 c_func
 (paren
+r_void
 )paren
 (brace
 r_return
 id|cs3_shadow
+suffix:semicolon
+)brace
+DECL|function|set_cs3
+r_void
+id|set_cs3
+c_func
+(paren
+r_int
+id|value
+)paren
+(brace
+op_star
+(paren
+id|CS3BUSTYPE
+op_star
+)paren
+(paren
+id|CS3_BASE
+)paren
+op_assign
+id|cs3_shadow
+op_assign
+id|value
 suffix:semicolon
 )brace
 DECL|function|set_cs3_bit
@@ -79,6 +110,20 @@ op_assign
 id|cs3_shadow
 suffix:semicolon
 )brace
+DECL|variable|set_cs3_bit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_cs3_bit
+)paren
+suffix:semicolon
+DECL|variable|clear_cs3_bit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|clear_cs3_bit
+)paren
+suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -90,6 +135,7 @@ id|__initdata
 op_assign
 (brace
 multiline_comment|/* virtual&t;physical    length&t;type */
+multiline_comment|/* MQ200 */
 (brace
 l_int|0xf2800000
 comma
@@ -100,7 +146,7 @@ comma
 id|MT_DEVICE
 )brace
 comma
-multiline_comment|/* MQ200 */
+multiline_comment|/* Paules CS3, write only */
 (brace
 l_int|0xf1000000
 comma
@@ -110,7 +156,7 @@ l_int|0x00100000
 comma
 id|MT_DEVICE
 )brace
-multiline_comment|/* Paules CS3, write only */
+comma
 )brace
 suffix:semicolon
 DECL|function|simpad_uart_pm
@@ -148,19 +194,35 @@ c_cond
 (paren
 id|state
 )paren
+(brace
 id|clear_cs3_bit
 c_func
 (paren
 id|RS232_ON
 )paren
 suffix:semicolon
+id|clear_cs3_bit
+c_func
+(paren
+id|DECT_POWER_ON
+)paren
+suffix:semicolon
+)brace
 r_else
+(brace
 id|set_cs3_bit
 c_func
 (paren
 id|RS232_ON
 )paren
 suffix:semicolon
+id|set_cs3_bit
+c_func
+(paren
+id|DECT_POWER_ON
+)paren
+suffix:semicolon
+)brace
 )brace
 )brace
 DECL|variable|__initdata
@@ -205,17 +267,7 @@ id|simpad_io_desc
 )paren
 )paren
 suffix:semicolon
-id|PSPR
-op_assign
-l_int|0xc0008000
-suffix:semicolon
-id|GPDR
-op_and_assign
-op_complement
-id|GPIO_GPIO0
-suffix:semicolon
-id|cs3_shadow
-op_assign
+id|set_cs3_bit
 (paren
 id|EN1
 op_or
@@ -230,20 +282,17 @@ op_or
 id|ENABLE_5V
 op_or
 id|RESET_SIMCARD
+op_or
+id|DECT_POWER_ON
 )paren
 suffix:semicolon
-op_star
+id|sa1100_register_uart_fns
+c_func
 (paren
-id|CS3BUSTYPE
-op_star
+op_amp
+id|simpad_port_fns
 )paren
-(paren
-id|CS3_BASE
-)paren
-op_assign
-id|cs3_shadow
 suffix:semicolon
-singleline_comment|//It is only possible to register 3 UART in serial_sa1100.c
 id|sa1100_register_uart
 c_func
 (paren
@@ -252,6 +301,7 @@ comma
 l_int|3
 )paren
 suffix:semicolon
+multiline_comment|/* serial interface */
 id|sa1100_register_uart
 c_func
 (paren
@@ -260,13 +310,49 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|set_irq_type
-c_func
-(paren
-id|IRQ_GPIO_UCB1300_IRQ
-comma
-id|IRQT_RISING
-)paren
+multiline_comment|/* DECT             */
+singleline_comment|// Reassign UART 1 pins
+id|GAFR
+op_or_assign
+id|GPIO_UART_TXD
+op_or
+id|GPIO_UART_RXD
+suffix:semicolon
+id|GPDR
+op_or_assign
+id|GPIO_UART_TXD
+op_or
+id|GPIO_LDD13
+op_or
+id|GPIO_LDD15
+suffix:semicolon
+id|GPDR
+op_and_assign
+op_complement
+id|GPIO_UART_RXD
+suffix:semicolon
+id|PPAR
+op_or_assign
+id|PPAR_UPR
+suffix:semicolon
+multiline_comment|/*&n;&t; * Set up registers for sleep mode.&n;&t; */
+id|PWER
+op_assign
+id|PWER_GPIO0
+op_or
+id|PWER_RTC
+suffix:semicolon
+id|PGSR
+op_assign
+l_int|0x818
+suffix:semicolon
+id|PCFR
+op_assign
+l_int|0
+suffix:semicolon
+id|PSDR
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
@@ -330,6 +416,9 @@ id|p
 comma
 l_string|&quot;Chipselect3 : %x&bslash;n&quot;
 comma
+(paren
+id|uint
+)paren
 id|cs3_shadow
 )paren
 suffix:semicolon
@@ -439,6 +528,68 @@ r_return
 id|len
 suffix:semicolon
 )brace
+DECL|function|proc_cs3_write
+r_static
+r_int
+id|proc_cs3_write
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_const
+r_char
+op_star
+id|buffer
+comma
+r_int
+id|count
+comma
+id|loff_t
+op_star
+id|ppos
+)paren
+(brace
+r_int
+r_int
+id|newRegValue
+suffix:semicolon
+r_char
+op_star
+id|endp
+suffix:semicolon
+id|newRegValue
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|buffer
+comma
+op_amp
+id|endp
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|set_cs3
+c_func
+(paren
+id|newRegValue
+)paren
+suffix:semicolon
+r_return
+(paren
+id|count
+op_plus
+id|endp
+op_minus
+id|buffer
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|cs3_init
 r_static
 r_int
@@ -449,6 +600,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PROC_FS
 r_struct
 id|proc_dir_entry
 op_star
@@ -457,7 +609,7 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;cs3&quot;
+l_string|&quot;CS3&quot;
 comma
 l_int|0
 comma
@@ -469,10 +621,21 @@ c_cond
 (paren
 id|proc_cs3
 )paren
+(brace
 id|proc_cs3-&gt;read_proc
 op_assign
 id|proc_cs3_read
 suffix:semicolon
+id|proc_cs3-&gt;write_proc
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|proc_cs3_write
+suffix:semicolon
+)brace
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -484,8 +647,104 @@ c_func
 id|cs3_init
 )paren
 suffix:semicolon
-macro_line|#endif 
-singleline_comment|// CONFIG_PROC_FS
+DECL|function|simpad_power_off
+r_static
+r_void
+id|simpad_power_off
+c_func
+(paren
+r_void
+)paren
+(brace
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+singleline_comment|// was cli
+id|set_cs3
+c_func
+(paren
+l_int|0x800
+)paren
+suffix:semicolon
+multiline_comment|/* only SD_MEDIAQ */
+multiline_comment|/* disable internal oscillator, float CS lines */
+id|PCFR
+op_assign
+(paren
+id|PCFR_OPDE
+op_or
+id|PCFR_FP
+op_or
+id|PCFR_FS
+)paren
+suffix:semicolon
+multiline_comment|/* enable wake-up on GPIO0 (Assabet...) */
+id|PWER
+op_assign
+id|GFER
+op_assign
+id|GRER
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * set scratchpad to zero, just in case it is used as a&n;&t; * restart address by the bootloader.&n;&t; */
+id|PSPR
+op_assign
+l_int|0
+suffix:semicolon
+id|PGSR
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* enter sleep mode */
+id|PMCR
+op_assign
+id|PMCR_SF
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
+suffix:semicolon
+)brace
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* we won&squot;t ever call it */
+)brace
+DECL|function|simpad_init
+r_static
+r_int
+id|__init
+id|simpad_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|set_power_off_handler
+c_func
+(paren
+id|simpad_power_off
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|simpad_init
+id|arch_initcall
+c_func
+(paren
+id|simpad_init
+)paren
+suffix:semicolon
 id|MACHINE_START
 c_func
 (paren
@@ -506,6 +765,11 @@ comma
 l_int|0x80000000
 comma
 l_int|0xf8000000
+)paren
+id|BOOT_PARAMS
+c_func
+(paren
+l_int|0xc0000100
 )paren
 id|MAPIO
 c_func

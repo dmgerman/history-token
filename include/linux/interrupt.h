@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_INTERRUPT_H
 DECL|macro|_LINUX_INTERRUPT_H
 mdefine_line|#define _LINUX_INTERRUPT_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/preempt.h&gt;

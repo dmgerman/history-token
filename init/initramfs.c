@@ -1358,15 +1358,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;-&gt; %s&bslash;n&quot;
-comma
-id|collected
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1464,6 +1455,14 @@ comma
 id|gid
 )paren
 suffix:semicolon
+id|sys_chmod
+c_func
+(paren
+id|collected
+comma
+id|mode
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -1523,6 +1522,14 @@ comma
 id|uid
 comma
 id|gid
+)paren
+suffix:semicolon
+id|sys_chmod
+c_func
+(paren
+id|collected
+comma
+id|mode
 )paren
 suffix:semicolon
 )brace

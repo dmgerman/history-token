@@ -1480,30 +1480,6 @@ comma
 id|link
 )paren
 suffix:semicolon
-multiline_comment|/*&n;       If the device is currently in use, we won&squot;t release until it&n;       is actually closed.&n;    */
-r_if
-c_cond
-(paren
-id|link-&gt;open
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;avma1_cs: release postponed, &squot;%s&squot; still open&bslash;n&quot;
-comma
-id|link-&gt;dev-&gt;dev_name
-)paren
-suffix:semicolon
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_CONFIG
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* no unregister function with hisax */
 id|HiSax_closecard
 c_func

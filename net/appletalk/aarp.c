@@ -3641,7 +3641,6 @@ id|pos
 )paren
 suffix:colon
 id|SEQ_START_TOKEN
-)paren
 suffix:semicolon
 )brace
 DECL|function|aarp_seq_next
