@@ -1,13 +1,13 @@
-multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.com, 1998-1999&n;    (c) Philip Blundell, 1998&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.com, 1998-1999&n;    (c) Philip Blundell, 1998, 2001&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &quot;fpa11.h&quot;
 macro_line|#include &quot;softfloat.h&quot;
 macro_line|#include &quot;fpopcode.h&quot;
 macro_line|#include &quot;fpmodule.h&quot;
 macro_line|#include &quot;fpmodule.inl&quot;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|function|loadSingle
 r_static
 r_inline
-DECL|function|loadSingle
 r_void
 id|loadSingle
 c_func
@@ -54,9 +54,9 @@ id|pMem
 )paren
 suffix:semicolon
 )brace
+DECL|function|loadDouble
 r_static
 r_inline
-DECL|function|loadDouble
 r_void
 id|loadDouble
 c_func
@@ -141,9 +141,10 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* sign &amp; exponent */
 )brace
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
+DECL|function|loadExtended
 r_static
 r_inline
-DECL|function|loadExtended
 r_void
 id|loadExtended
 c_func
@@ -245,9 +246,10 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* ms bits */
 )brace
+macro_line|#endif
+DECL|function|loadMultiple
 r_static
 r_inline
-DECL|function|loadMultiple
 r_void
 id|loadMultiple
 c_func
@@ -382,6 +384,7 @@ multiline_comment|/* empty */
 )brace
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 r_case
 id|typeExtended
 suffix:colon
@@ -431,11 +434,12 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
+DECL|function|storeSingle
 r_static
 r_inline
-DECL|function|storeSingle
 r_void
 id|storeSingle
 c_func
@@ -502,6 +506,7 @@ id|fDouble
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 r_case
 id|typeExtended
 suffix:colon
@@ -520,6 +525,7 @@ id|fExtended
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|val.f
@@ -544,9 +550,9 @@ id|pMem
 )paren
 suffix:semicolon
 )brace
+DECL|function|storeDouble
 r_static
 r_inline
-DECL|function|storeDouble
 r_void
 id|storeDouble
 c_func
@@ -613,6 +619,7 @@ id|fSingle
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 r_case
 id|typeExtended
 suffix:colon
@@ -631,6 +638,7 @@ id|fExtended
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|val.f
@@ -676,9 +684,10 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* lsw */
 )brace
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
+DECL|function|storeExtended
 r_static
 r_inline
-DECL|function|storeExtended
 r_void
 id|storeExtended
 c_func
@@ -823,9 +832,10 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* msw */
 )brace
+macro_line|#endif
+DECL|function|storeMultiple
 r_static
 r_inline
-DECL|function|storeMultiple
 r_void
 id|storeMultiple
 c_func
@@ -942,6 +952,7 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 r_case
 id|typeExtended
 suffix:colon
@@ -1005,6 +1016,7 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 DECL|function|PerformLDF
@@ -1042,7 +1054,6 @@ c_func
 id|opcode
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;PerformLDF(0x%08x), Fd = 0x%08x&bslash;n&quot;,opcode,getFd(opcode));
 id|pBase
 op_assign
 (paren
@@ -1171,6 +1182,7 @@ id|pAddress
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 r_case
 id|TRANSFER_EXTENDED
 suffix:colon
@@ -1188,6 +1200,7 @@ id|pAddress
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|nRc
@@ -1255,7 +1268,6 @@ c_func
 id|opcode
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;PerformSTF(0x%08x), Fd = 0x%08x&bslash;n&quot;,opcode,getFd(opcode));
 id|SetRoundingMode
 c_func
 (paren
@@ -1390,6 +1402,7 @@ id|pAddress
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 r_case
 id|TRANSFER_EXTENDED
 suffix:colon
@@ -1407,6 +1420,7 @@ id|pAddress
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|nRc
@@ -1839,7 +1853,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if 1
 DECL|function|EmulateCPDT
 r_int
 r_int
@@ -1858,7 +1871,6 @@ id|nRc
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//printk(&quot;EmulateCPDT(0x%08x)&bslash;n&quot;,opcode);
 r_if
 c_cond
 (paren
@@ -1949,5 +1961,4 @@ r_return
 id|nRc
 suffix:semicolon
 )brace
-macro_line|#endif
 eof
