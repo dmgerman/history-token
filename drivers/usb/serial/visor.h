@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB HandSpring Visor driver&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; */
+multiline_comment|/*&n; * USB HandSpring Visor driver&n; *&n; *&t;Copyright (C) 1999 - 2002&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; */
 macro_line|#ifndef __LINUX_USB_SERIAL_VISOR_H
 DECL|macro|__LINUX_USB_SERIAL_VISOR_H
 mdefine_line|#define __LINUX_USB_SERIAL_VISOR_H
@@ -20,6 +20,8 @@ DECL|macro|SONY_CLIE_3_5_ID
 mdefine_line|#define SONY_CLIE_3_5_ID&t;&t;0x0038
 DECL|macro|SONY_CLIE_4_0_ID
 mdefine_line|#define SONY_CLIE_4_0_ID&t;&t;0x0066
+DECL|macro|SONY_CLIE_S360_ID
+mdefine_line|#define SONY_CLIE_S360_ID&t;&t;0x0095
 multiline_comment|/****************************************************************************&n; * Handspring Visor Vendor specific request codes (bRequest values)&n; * A big thank you to Handspring for providing the following information.&n; * If anyone wants the original file where these values and structures came&n; * from, send email to &lt;greg@kroah.com&gt;.&n; ****************************************************************************/
 multiline_comment|/****************************************************************************&n; * VISOR_REQUEST_BYTES_AVAILABLE asks the visor for the number of bytes that&n; * are available to be transferred to the host for the specified endpoint.&n; * Currently this is not used, and always returns 0x0001&n; ****************************************************************************/
 DECL|macro|VISOR_REQUEST_BYTES_AVAILABLE
