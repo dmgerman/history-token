@@ -461,7 +461,7 @@ id|BufPtr
 comma
 l_string|&quot;PCI: Bus%3d, AgentId%3d, Vendor %04X, Location %s&quot;
 comma
-id|DevNode-&gt;DsaAddr.busNumber
+id|DevNode-&gt;DsaAddr.Dsa.busNumber
 comma
 id|DevNode-&gt;AgentId
 comma

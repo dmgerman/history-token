@@ -36,7 +36,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
 macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
 macro_line|#include &lt;asm/iSeries/mf.h&gt;
-macro_line|#include &lt;asm/flight_recorder.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &quot;pci.h&quot;

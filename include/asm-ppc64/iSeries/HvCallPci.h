@@ -1,6 +1,6 @@
 multiline_comment|/************************************************************************/
 multiline_comment|/* Provides the Hypervisor PCI calls for iSeries Linux Parition.        */
-multiline_comment|/* Copyright (C) 20yy  &lt;Wayne G Holm&gt; &lt;IBM Corporation&gt;                 */
+multiline_comment|/* Copyright (C) 2001  &lt;Wayne G Holm&gt; &lt;IBM Corporation&gt;                 */
 multiline_comment|/*                                                                      */
 multiline_comment|/* This program is free software; you can redistribute it and/or modify */
 multiline_comment|/* it under the terms of the GNU General Public License as published by */
@@ -21,47 +21,31 @@ multiline_comment|/*************************************************************
 multiline_comment|/* Change Activity:                                                     */
 multiline_comment|/*   Created, Jan 9, 2001                                               */
 multiline_comment|/************************************************************************/
-singleline_comment|//============================================================================
-singleline_comment|//&t;&t;&t;&t;&t;&t;&t; Header File Id
-singleline_comment|// Name______________:&t;HvCallPci.H
-singleline_comment|//
-singleline_comment|// Description_______:
-singleline_comment|//
-singleline_comment|//&t;This file contains the &quot;hypervisor call&quot; interface which is used to
-singleline_comment|//&t;drive the hypervisor from SLIC.
-singleline_comment|//
-singleline_comment|//============================================================================
 macro_line|#ifndef _HVCALLPCI_H
 DECL|macro|_HVCALLPCI_H
 mdefine_line|#define _HVCALLPCI_H
-singleline_comment|//-------------------------------------------------------------------
-singleline_comment|// Forward declarations 
-singleline_comment|//-------------------------------------------------------------------
-singleline_comment|//-------------------------------------------------------------------
-singleline_comment|// Standard Includes
-singleline_comment|//-------------------------------------------------------------------
 macro_line|#include &lt;asm/iSeries/HvCallSc.h&gt;
 macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
-singleline_comment|//-----------------------------------------------------------------------------
-singleline_comment|// Constants
-singleline_comment|//-----------------------------------------------------------------------------
+multiline_comment|/*&n; * DSA == Direct Select Address&n; * this struct must be 64 bits in total&n; */
 DECL|struct|HvCallPci_DsaAddr
 r_struct
 id|HvCallPci_DsaAddr
 (brace
-singleline_comment|// make sure this struct size is 64-bits total
 DECL|member|busNumber
 id|u16
 id|busNumber
 suffix:semicolon
+multiline_comment|/* PHB index? */
 DECL|member|subBusNumber
 id|u8
 id|subBusNumber
 suffix:semicolon
+multiline_comment|/* PCI bus number? */
 DECL|member|deviceId
 id|u8
 id|deviceId
 suffix:semicolon
+multiline_comment|/* device and function? */
 DECL|member|barNumber
 id|u8
 id|barNumber
@@ -105,10 +89,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|enum|HvCallPci_DeviceType
-DECL|enumerator|HvCallPci_NodeDevice
 r_enum
 id|HvCallPci_DeviceType
 (brace
+DECL|enumerator|HvCallPci_NodeDevice
 id|HvCallPci_NodeDevice
 op_assign
 l_int|1
