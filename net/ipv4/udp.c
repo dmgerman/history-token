@@ -430,10 +430,10 @@ id|sk2
 op_logical_and
 (paren
 op_logical_neg
-id|sk2-&gt;bound_dev_if
+id|sk2-&gt;sk_bound_dev_if
 op_logical_or
 op_logical_neg
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 op_logical_or
 id|sk2-&gt;sk_bound_dev_if
 op_eq
