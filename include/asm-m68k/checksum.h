@@ -100,32 +100,41 @@ id|sum
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|tmp
+suffix:semicolon
 id|__asm__
 (paren
 l_string|&quot;subqw #1,%2&bslash;n&quot;
 l_string|&quot;1:&bslash;t&quot;
-l_string|&quot;movel %1@+,%/d0&bslash;n&bslash;t&quot;
-l_string|&quot;addxl %/d0,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %1@+,%3&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %3,%0&bslash;n&bslash;t&quot;
 l_string|&quot;dbra  %2,1b&bslash;n&bslash;t&quot;
-l_string|&quot;movel %0,%/d0&bslash;n&bslash;t&quot;
-l_string|&quot;swap  %/d0&bslash;n&bslash;t&quot;
-l_string|&quot;addxw %/d0,%0&bslash;n&bslash;t&quot;
-l_string|&quot;clrw  %/d0&bslash;n&bslash;t&quot;
-l_string|&quot;addxw %/d0,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %0,%3&bslash;n&bslash;t&quot;
+l_string|&quot;swap  %3&bslash;n&bslash;t&quot;
+l_string|&quot;addxw %3,%0&bslash;n&bslash;t&quot;
+l_string|&quot;clrw  %3&bslash;n&bslash;t&quot;
+l_string|&quot;addxw %3,%0&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
 id|sum
 )paren
 comma
-l_string|&quot;=a&quot;
+l_string|&quot;=&amp;a&quot;
 (paren
 id|iph
 )paren
 comma
-l_string|&quot;=d&quot;
+l_string|&quot;=&amp;d&quot;
 (paren
 id|ihl
+)paren
+comma
+l_string|&quot;=&amp;d&quot;
+(paren
+id|tmp
 )paren
 suffix:colon
 l_string|&quot;0&quot;
@@ -143,7 +152,7 @@ l_string|&quot;2&quot;
 id|ihl
 )paren
 suffix:colon
-l_string|&quot;d0&quot;
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -196,7 +205,7 @@ id|sum
 comma
 l_string|&quot;1&quot;
 (paren
-id|sum
+id|tmp
 )paren
 )paren
 suffix:semicolon
@@ -205,7 +214,6 @@ op_complement
 id|sum
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * computes the checksum of the TCP/UDP pseudo-header&n; * returns a 16-bit checksum, already complemented&n; */
 r_static
 r_inline
 r_int
@@ -237,9 +245,9 @@ id|sum
 (brace
 id|__asm__
 (paren
-l_string|&quot;addl  %1,%0&bslash;n&bslash;t&quot;
+l_string|&quot;addl  %2,%0&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %3,%0&bslash;n&bslash;t&quot;
 l_string|&quot;addxl %4,%0&bslash;n&bslash;t&quot;
-l_string|&quot;addxl %5,%0&bslash;n&bslash;t&quot;
 l_string|&quot;clrl %1&bslash;n&bslash;t&quot;
 l_string|&quot;addxl %1,%0&quot;
 suffix:colon
@@ -248,12 +256,12 @@ l_string|&quot;=&amp;d&quot;
 id|sum
 )paren
 comma
-l_string|&quot;=&amp;d&quot;
+l_string|&quot;=d&quot;
 (paren
 id|saddr
 )paren
 suffix:colon
-l_string|&quot;0&quot;
+l_string|&quot;g&quot;
 (paren
 id|daddr
 )paren
@@ -270,7 +278,7 @@ op_plus
 id|proto
 )paren
 comma
-l_string|&quot;d&quot;
+l_string|&quot;0&quot;
 (paren
 id|sum
 )paren
@@ -280,6 +288,7 @@ r_return
 id|sum
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * computes the checksum of the TCP/UDP pseudo-header&n; * returns a 16-bit checksum, already complemented&n; */
 r_static
 r_inline
 r_int
