@@ -142,19 +142,17 @@ DECL|macro|LM90_REG_R_TCRIT_HYST
 mdefine_line|#define LM90_REG_R_TCRIT_HYST&t;&t;0x21
 DECL|macro|LM90_REG_W_TCRIT_HYST
 mdefine_line|#define LM90_REG_W_TCRIT_HYST&t;&t;0x21
-multiline_comment|/*&n; * Conversions and various macros&n; * The LM90 uses signed 8-bit values for the local temperatures,&n; * and signed 11-bit values for the remote temperatures (except&n; * T_CRIT). Note that TEMP2_TO_REG does not round values, but&n; * stick to the nearest lower value instead. Fixing it is just&n; * not worth it.&n; */
+multiline_comment|/*&n; * Conversions and various macros&n; * For local temperatures and limits, critical limits and the hysteresis&n; * value, the LM90 uses signed 8-bit values with LSB = 1 degree Celcius.&n; * For remote temperatures and limits, it uses signed 11-bit values with&n; * LSB = 0.125 degree Celcius, left-justified in 16-bit registers.&n; */
 DECL|macro|TEMP1_FROM_REG
-mdefine_line|#define TEMP1_FROM_REG(val)&t;((val &amp; 0x80 ? val-0x100 : val) * 1000)
+mdefine_line|#define TEMP1_FROM_REG(val)&t;((val) * 1000)
 DECL|macro|TEMP1_TO_REG
-mdefine_line|#define TEMP1_TO_REG(val)&t;((val &lt; 0 ? val+0x100*1000 : val) / 1000)
+mdefine_line|#define TEMP1_TO_REG(val)&t;((val) &lt;= -128000 ? -128 : &bslash;&n;&t;&t;&t;&t; (val) &gt;= 127000 ? 127 : &bslash;&n;&t;&t;&t;&t; (val) &lt; 0 ? ((val) - 500) / 1000 : &bslash;&n;&t;&t;&t;&t; ((val) + 500) / 1000)
 DECL|macro|TEMP2_FROM_REG
-mdefine_line|#define TEMP2_FROM_REG(val)&t;(((val &amp; 0x8000 ? val-0x10000 : val) &gt;&gt; 5) * 125)
+mdefine_line|#define TEMP2_FROM_REG(val)&t;((val) / 32 * 125)
 DECL|macro|TEMP2_TO_REG
-mdefine_line|#define TEMP2_TO_REG(val)&t;((((val / 125) &lt;&lt; 5) + (val &lt; 0 ? 0x10000 : 0)) &amp; 0xFFE0)
-DECL|macro|HYST_FROM_REG
-mdefine_line|#define HYST_FROM_REG(val)&t;(val * 1000)
+mdefine_line|#define TEMP2_TO_REG(val)&t;((val) &lt;= -128000 ? 0x8000 : &bslash;&n;&t;&t;&t;&t; (val) &gt;= 127875 ? 0x7FE0 : &bslash;&n;&t;&t;&t;&t; (val) &lt; 0 ? ((val) - 62) / 125 * 32 : &bslash;&n;&t;&t;&t;&t; ((val) + 62) / 125 * 32)
 DECL|macro|HYST_TO_REG
-mdefine_line|#define HYST_TO_REG(val)&t;(val &lt;= 0 ? 0 : val &gt;= 31000 ? 31 : val / 1000)
+mdefine_line|#define HYST_TO_REG(val)&t;((val) &lt;= 0 ? 0 : (val) &gt;= 30500 ? 31 : &bslash;&n;&t;&t;&t;&t; ((val) + 500) / 1000)
 multiline_comment|/*&n; * Functions declaration&n; */
 r_static
 r_int
@@ -289,7 +287,7 @@ multiline_comment|/* registers values */
 DECL|member|temp_input1
 DECL|member|temp_low1
 DECL|member|temp_high1
-id|u8
+id|s8
 id|temp_input1
 comma
 id|temp_low1
@@ -300,7 +298,7 @@ multiline_comment|/* local */
 DECL|member|temp_input2
 DECL|member|temp_low2
 DECL|member|temp_high2
-id|u16
+id|s16
 id|temp_input2
 comma
 id|temp_low2
@@ -310,7 +308,7 @@ suffix:semicolon
 multiline_comment|/* remote, combined */
 DECL|member|temp_crit1
 DECL|member|temp_crit2
-id|u8
+id|s8
 id|temp_crit1
 comma
 id|temp_crit2
@@ -331,8 +329,6 @@ DECL|variable|lm90_id
 r_static
 r_int
 id|lm90_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show_temp
@@ -402,9 +398,9 @@ id|TEMP1_FROM_REG
 )paren
 suffix:semicolon
 DECL|macro|set_temp1
-mdefine_line|#define set_temp1(value, reg) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;data-&gt;value = TEMP1_TO_REG(simple_strtol(buf, NULL, 10)); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp1(value, reg) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = TEMP1_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
 DECL|macro|set_temp2
-mdefine_line|#define set_temp2(value, regh, regl) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;data-&gt;value = TEMP2_TO_REG(simple_strtol(buf, NULL, 10)); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regh, data-&gt;value &gt;&gt; 8); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regl, data-&gt;value &amp; 0xff); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp2(value, regh, regl) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = TEMP2_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regh, data-&gt;value &gt;&gt; 8); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regl, data-&gt;value &amp; 0xff); &bslash;&n;&t;return count; &bslash;&n;}
 id|set_temp1
 c_func
 (paren
@@ -458,7 +454,7 @@ id|LM90_REG_W_REMOTE_CRIT
 )paren
 suffix:semicolon
 DECL|macro|show_temp_hyst
-mdefine_line|#define show_temp_hyst(value, basereg) &bslash;&n;static ssize_t show_##value(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm90_data *data = lm90_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP1_FROM_REG(data-&gt;basereg) &bslash;&n;&t;&t;       - HYST_FROM_REG(data-&gt;temp_hyst)); &bslash;&n;}
+mdefine_line|#define show_temp_hyst(value, basereg) &bslash;&n;static ssize_t show_##value(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm90_data *data = lm90_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP1_FROM_REG(data-&gt;basereg) &bslash;&n;&t;&t;       - TEMP1_FROM_REG(data-&gt;temp_hyst)); &bslash;&n;}
 id|show_temp_hyst
 c_func
 (paren

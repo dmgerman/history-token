@@ -578,8 +578,10 @@ r_struct
 id|pci_dev
 op_star
 id|cy693_dev
+suffix:semicolon
+id|cy693_dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_CONTAQ
@@ -663,6 +665,12 @@ l_string|&quot;i2c-elektor: found API UP2000 like board, will probe PCF8584 late
 suffix:semicolon
 )brace
 )brace
+id|pci_dev_put
+c_func
+(paren
+id|cy693_dev
+)paren
+suffix:semicolon
 )brace
 )brace
 macro_line|#endif

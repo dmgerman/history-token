@@ -115,11 +115,11 @@ DECL|macro|LM83_REG_R_TCRIT
 mdefine_line|#define LM83_REG_R_TCRIT&t;&t;0x42
 DECL|macro|LM83_REG_W_TCRIT
 mdefine_line|#define LM83_REG_W_TCRIT&t;&t;0x5A
-multiline_comment|/*&n; * Conversions and various macros&n; * The LM83 uses signed 8-bit values.&n; */
+multiline_comment|/*&n; * Conversions and various macros&n; * The LM83 uses signed 8-bit values with LSB = 1 degree Celcius.&n; */
 DECL|macro|TEMP_FROM_REG
-mdefine_line|#define TEMP_FROM_REG(val)&t;(((val) &gt; 127 ? (val) - 0x100 : (val)) * 1000)
+mdefine_line|#define TEMP_FROM_REG(val)&t;((val) * 1000)
 DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val)&t;((val) &lt;= -50000 ? -50 + 0x100 : (val) &gt;= 127000 ? 127 : &bslash;&n;&t;&t;&t;&t; (val) &gt; -500 ? ((val)+500) / 1000 : &bslash;&n;&t;&t;&t;&t; ((val)-500) / 1000 + 0x100)
+mdefine_line|#define TEMP_TO_REG(val)&t;((val) &lt;= -128000 ? -128 : &bslash;&n;&t;&t;&t;&t; (val) &gt;= 127000 ? 127 : &bslash;&n;&t;&t;&t;&t; (val) &lt; 0 ? ((val) - 500) / 1000 : &bslash;&n;&t;&t;&t;&t; ((val) + 500) / 1000)
 DECL|variable|LM83_REG_R_TEMP
 r_static
 r_const
@@ -295,21 +295,21 @@ suffix:semicolon
 multiline_comment|/* in jiffies */
 multiline_comment|/* registers values */
 DECL|member|temp_input
-id|u8
+id|s8
 id|temp_input
 (braket
 l_int|4
 )braket
 suffix:semicolon
 DECL|member|temp_high
-id|u8
+id|s8
 id|temp_high
 (braket
 l_int|4
 )braket
 suffix:semicolon
 DECL|member|temp_crit
-id|u8
+id|s8
 id|temp_crit
 suffix:semicolon
 DECL|member|alarms
@@ -324,8 +324,6 @@ DECL|variable|lm83_id
 r_static
 r_int
 id|lm83_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show_temp
@@ -427,7 +425,7 @@ id|temp_crit
 )paren
 suffix:semicolon
 DECL|macro|set_temp
-mdefine_line|#define set_temp(suffix, value, reg) &bslash;&n;static ssize_t set_temp_##suffix(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm83_data *data = i2c_get_clientdata(client); &bslash;&n;&t;data-&gt;value = TEMP_TO_REG(simple_strtol(buf, NULL, 10)); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp(suffix, value, reg) &bslash;&n;static ssize_t set_temp_##suffix(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm83_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = TEMP_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
 id|set_temp
 c_func
 (paren

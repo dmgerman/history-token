@@ -836,7 +836,7 @@ comma
 id|max
 )paren
 DECL|macro|sysfs_in
-mdefine_line|#define sysfs_in(offset) &bslash;&n;static ssize_t &bslash;&n;&t;show_in##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_in(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in##offset##_input, S_IRUGO, &bslash;&n;&t;&t;show_in##offset, NULL); &bslash;&n;static ssize_t &bslash;&n;&t;show_in##offset##_min (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_in_min(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t &bslash;&n;&t;show_in##offset##_max (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_in_max(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t set_in##offset##_min (struct device *dev, &bslash;&n;&t;&t;const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return set_in_min(dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t set_in##offset##_max (struct device *dev, &bslash;&n;&t;&t;const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return set_in_max(dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in##offset##_min, S_IRUGO | S_IWUSR, &bslash;&n;&t;&t;show_in##offset##_min, set_in##offset##_min); &bslash;&n;static DEVICE_ATTR(in##offset##_max, S_IRUGO | S_IWUSR, &bslash;&n;&t;&t;show_in##offset##_max, set_in##offset##_max);
+mdefine_line|#define sysfs_in(offset) &bslash;&n;static ssize_t &bslash;&n;&t;show_in##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_in(dev, buf, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in##offset##_input, S_IRUGO, &bslash;&n;&t;&t;show_in##offset, NULL); &bslash;&n;static ssize_t &bslash;&n;&t;show_in##offset##_min (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_in_min(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t &bslash;&n;&t;show_in##offset##_max (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_in_max(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t set_in##offset##_min (struct device *dev, &bslash;&n;&t;&t;const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return set_in_min(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static ssize_t set_in##offset##_max (struct device *dev, &bslash;&n;&t;&t;const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return set_in_max(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in##offset##_min, S_IRUGO | S_IWUSR, &bslash;&n;&t;&t;show_in##offset##_min, set_in##offset##_min); &bslash;&n;static DEVICE_ATTR(in##offset##_max, S_IRUGO | S_IWUSR, &bslash;&n;&t;&t;show_in##offset##_max, set_in##offset##_max);
 id|sysfs_in
 c_func
 (paren
@@ -2106,7 +2106,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan1_pwm
+id|pwm1
 comma
 id|S_IRUGO
 op_or
@@ -2121,7 +2121,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan1_pwm_enable
+id|pwm1_enable
 comma
 id|S_IRUGO
 op_or
@@ -2133,7 +2133,7 @@ id|set_pwm_enable1
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_pwm1
-mdefine_line|#define device_create_file_pwm1(client) do { &bslash;&n;&t;device_create_file(&amp;new_client-&gt;dev, &amp;dev_attr_fan1_pwm); &bslash;&n;&t;device_create_file(&amp;new_client-&gt;dev, &amp;dev_attr_fan1_pwm_enable); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_pwm1(client) do { &bslash;&n;&t;device_create_file(&amp;new_client-&gt;dev, &amp;dev_attr_pwm1); &bslash;&n;&t;device_create_file(&amp;new_client-&gt;dev, &amp;dev_attr_pwm1_enable); &bslash;&n;} while (0)
 multiline_comment|/* This function is called when:&n;&t;asb100_driver is inserted (when this module is loaded), for each&n;&t;&t;available adapter&n;&t;when a new adapter is inserted (and asb100_driver is still present)&n; */
 DECL|function|asb100_attach_adapter
 r_static

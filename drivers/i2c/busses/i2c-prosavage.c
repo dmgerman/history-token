@@ -16,6 +16,7 @@ id|s_i2c_bus
 (brace
 DECL|member|mmvga
 r_void
+id|__iomem
 op_star
 id|mmvga
 suffix:semicolon
@@ -45,6 +46,7 @@ id|s_i2c_chip
 (brace
 DECL|member|mmio
 r_void
+id|__iomem
 op_star
 id|mmio
 suffix:semicolon
@@ -372,7 +374,8 @@ id|s_i2c_bus
 op_star
 id|p
 comma
-id|u8
+r_void
+id|__iomem
 op_star
 id|mmvga
 comma
@@ -950,6 +953,13 @@ comma
 )brace
 comma
 )brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+(paren
+id|pci
+comma
+id|prosavage_pci_tbl
+)paren
 suffix:semicolon
 DECL|variable|prosavage_driver
 r_static

@@ -2607,6 +2607,13 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+(paren
+id|pci
+comma
+id|i801_ids
+)paren
+suffix:semicolon
 DECL|function|i801_probe
 r_static
 r_int
