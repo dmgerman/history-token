@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PGTABLE_H
 DECL|macro|_ASM_IA64_PGTABLE_H
 mdefine_line|#define _ASM_IA64_PGTABLE_H
-multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -874,6 +874,16 @@ id|pte_t
 id|pte
 )paren
 suffix:semicolon
+DECL|macro|__HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+mdefine_line|#define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+multiline_comment|/*&n; * Update PTEP with ENTRY, which is guaranteed to be a less&n; * restrictive PTE.  That is, ENTRY may have the ACCESSED, DIRTY, and&n; * WRITABLE bits turned on, when the value at PTEP did not.  The&n; * WRITABLE bit may only be turned if SAFELY_WRITABLE is TRUE.&n; *&n; * SAFELY_WRITABLE is TRUE if we can update the value at PTEP without&n; * having to worry about races.  On SMP machines, there are only two&n; * cases where this is true:&n; *&n; *&t;(1) *PTEP has the PRESENT bit turned OFF&n; *&t;(2) ENTRY has the DIRTY bit turned ON&n; *&n; * On ia64, we could implement this routine with a cmpxchg()-loop&n; * which ORs in the _PAGE_A/_PAGE_D bit if they&squot;re set in ENTRY.&n; * However, like on x86, we can get a more streamlined version by&n; * observing that it is OK to drop ACCESSED bit updates when&n; * SAFELY_WRITABLE is FALSE.  Besides being rare, all that would do is&n; * result in an extra Access-bit fault, which would then turn on the&n; * ACCESSED bit in the low-level fault handler (iaccess_bit or&n; * daccess_bit in ivt.S).&n; */
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|ptep_set_access_flags
+macro_line|# define ptep_set_access_flags(__vma, __addr, __ptep, __entry, __safely_writable)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__safely_writable) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_pte(__ptep, __entry);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_tlb_page(__vma, __addr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|ptep_set_access_flags
+macro_line|# define ptep_set_access_flags(__vma, __addr, __ptep, __entry, __safely_writable)&t;&bslash;&n;&t;ptep_establish(__vma, __addr, __ptep, __entry)
+macro_line|#endif
 macro_line|#  ifdef CONFIG_VIRTUAL_MEM_MAP
 multiline_comment|/* arch mem_map init routine is needed due to holes in a virtual mem_map */
 DECL|macro|__HAVE_ARCH_MEMMAP_INIT

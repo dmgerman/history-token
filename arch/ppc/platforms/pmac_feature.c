@@ -5953,7 +5953,7 @@ suffix:semicolon
 id|MACIO_BIS
 c_func
 (paren
-id|KEYLARGO_FCR0
+id|KEYLARGO_FCR1
 comma
 id|KL1_USB2_CELL_ENABLE
 )paren

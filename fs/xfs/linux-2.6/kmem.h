@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 multiline_comment|/*&n; * Cutoff point to use vmalloc instead of kmalloc.&n; */
 DECL|macro|MAX_SLAB_SIZE
-mdefine_line|#define MAX_SLAB_SIZE&t;0x10000
+mdefine_line|#define MAX_SLAB_SIZE&t;0x20000
 multiline_comment|/*&n; * XFS uses slightly different names for these due to the&n; * IRIX heritage.&n; */
 DECL|macro|kmem_zone
 mdefine_line|#define&t;kmem_zone&t;kmem_cache_s
@@ -20,6 +20,8 @@ DECL|macro|KM_NOSLEEP
 mdefine_line|#define KM_NOSLEEP&t;0x0002
 DECL|macro|KM_NOFS
 mdefine_line|#define KM_NOFS&t;&t;0x0004
+DECL|macro|KM_MAYFAIL
+mdefine_line|#define KM_MAYFAIL&t;0x0005
 DECL|typedef|xfs_pflags_t
 r_typedef
 r_int
@@ -38,7 +40,6 @@ DECL|macro|PFLAGS_RESTORE_FSTRANS
 mdefine_line|#define PFLAGS_RESTORE_FSTRANS(STATEP) do {     &t;&t;&bslash;&n;&t;current-&gt;flags = ((current-&gt;flags &amp; ~PF_FSTRANS) |&t;&bslash;&n;&t;&t;&t;  (*(STATEP) &amp; PF_FSTRANS));&t;&t;&bslash;&n;} while (0)
 DECL|macro|PFLAGS_DUP
 mdefine_line|#define PFLAGS_DUP(OSTATEP, NSTATEP) do { &bslash;&n;&t;*(NSTATEP) = *(OSTATEP);&t;&bslash;&n;} while (0)
-multiline_comment|/*&n; * XXX get rid of the unconditional  __GFP_NOFAIL by adding&n; * a KM_FAIL flag and using it where we&squot;re allowed to fail.&n; */
 r_static
 id|__inline
 r_int
@@ -70,6 +71,8 @@ op_or
 id|KM_NOSLEEP
 op_or
 id|KM_NOFS
+op_or
+id|KM_MAYFAIL
 )paren
 )paren
 )paren
@@ -90,22 +93,24 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
-id|lflags
-op_assign
+r_if
+c_cond
 (paren
 id|flags
 op_amp
 id|KM_NOSLEEP
 )paren
-ques
-c_cond
+(brace
+id|lflags
+op_assign
 id|GFP_ATOMIC
-suffix:colon
-(paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|lflags
+op_assign
 id|GFP_KERNEL
-op_or
-id|__GFP_NOFAIL
-)paren
 suffix:semicolon
 multiline_comment|/* avoid recusive callbacks to filesystem during transactions */
 r_if
@@ -127,6 +132,21 @@ op_and_assign
 op_complement
 id|__GFP_FS
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|KM_MAYFAIL
+)paren
+)paren
+id|lflags
+op_or_assign
+id|__GFP_NOFAIL
+suffix:semicolon
+)brace
 r_return
 id|lflags
 suffix:semicolon

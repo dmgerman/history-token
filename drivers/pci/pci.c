@@ -1186,6 +1186,10 @@ op_star
 id|dev
 )paren
 (brace
+id|dev-&gt;is_enabled
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 id|pci_enable_device_bars
 c_func
@@ -1216,6 +1220,14 @@ id|dev
 (brace
 id|u16
 id|pci_command
+suffix:semicolon
+id|dev-&gt;is_enabled
+op_assign
+l_int|0
+suffix:semicolon
+id|dev-&gt;is_busmaster
+op_assign
+l_int|0
 suffix:semicolon
 id|pci_read_config_word
 c_func
@@ -1944,6 +1956,10 @@ id|cmd
 )paren
 suffix:semicolon
 )brace
+id|dev-&gt;is_busmaster
+op_assign
+l_int|1
+suffix:semicolon
 id|pcibios_set_master
 c_func
 (paren

@@ -211,7 +211,7 @@ mdefine_line|#define CSR3_ALE_LOW       2&t;/* Bit 1 = 1 -&gt; ALE asserted low 
 DECL|macro|CSR3_BSWAP_OFF
 mdefine_line|#define CSR3_BSWAP_OFF     0&t;/* Bit 2 = 0 -&gt; no byte swap         */
 DECL|macro|CSR3_BSWAP_ON
-mdefine_line|#define CSR3_BSWAP_ON      0&t;/* Bit 2 = 1 -&gt; byte swap            */
+mdefine_line|#define CSR3_BSWAP_ON      4&t;/* Bit 2 = 1 -&gt; byte swap            */
 multiline_comment|/* LANCE structures */
 r_typedef
 r_struct

@@ -845,18 +845,19 @@ id|a
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* take a deep breath */
+id|msleep
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|IDE_CONTROL_REG
 )paren
 (brace
-multiline_comment|/* take a deep breath */
-id|ide_delay_50ms
-c_func
-(paren
-)paren
-suffix:semicolon
 id|a
 op_assign
 id|hwif
@@ -920,17 +921,10 @@ suffix:semicolon
 )brace
 )brace
 r_else
-(brace
-id|ide_delay_50ms
-c_func
-(paren
-)paren
-suffix:semicolon
 id|hd_status
 op_assign
 id|IDE_STATUS_REG
 suffix:semicolon
-)brace
 multiline_comment|/* set features register for atapi&n;&t; * identify command to be sure of reply&n;&t; */
 r_if
 c_cond
@@ -1030,9 +1024,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* give drive a breather */
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 )brace
@@ -1053,9 +1048,10 @@ id|BUSY_STAT
 )paren
 suffix:semicolon
 multiline_comment|/* wait for IRQ and DRQ_STAT */
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 r_if
@@ -1425,9 +1421,10 @@ l_string|&quot;ATAPI&quot;
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* needed for some systems&n;&t; * (e.g. crw9624 as drive0 with disk as slave)&n;&t; */
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|SELECT_DRIVE
@@ -1436,9 +1433,10 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 r_if
@@ -1478,9 +1476,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* allow BUSY_STAT to assert &amp; clear */
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 )brace
@@ -1615,9 +1614,10 @@ id|IDE_STATUS_REG
 )paren
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|hwif
@@ -1630,9 +1630,10 @@ comma
 id|IDE_SELECT_REG
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|hwif
@@ -1676,9 +1677,10 @@ op_plus
 id|WAIT_WORSTCASE
 )paren
 )paren
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|rc
@@ -1755,9 +1757,10 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* ensure drive irq is clear */
@@ -1818,9 +1821,10 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|hwif
@@ -1862,9 +1866,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 )brace
@@ -1884,9 +1889,10 @@ op_amp
 id|BUSY_STAT
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 r_if
@@ -2776,9 +2782,10 @@ id|IDE_CONTROL_OFFSET
 suffix:semicolon
 r_do
 (brace
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|stat
