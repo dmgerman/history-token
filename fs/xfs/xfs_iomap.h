@@ -151,7 +151,7 @@ DECL|typedef|bmapi_flags_t
 )brace
 id|bmapi_flags_t
 suffix:semicolon
-multiline_comment|/*&n; * xfs_iomap_t:  File system I/O map&n; *&n; * The iomap_bn, iomap_offset and iomap_length fields are expressed in disk blocks.&n; * The iomap_length field specifies the size of the underlying backing store&n; * for the particular mapping.&n; *&n; * The iomap_bsize, iomap_size and iomap_delta fields are in bytes and indicate&n; * the size of the mapping, the number of bytes that are valid to access&n; * (read or write), and the offset into the mapping, given the offset&n; * supplied to the file I/O map routine.  iomap_delta is the offset of the&n; * desired data from the beginning of the mapping.&n; *&n; * When a request is made to read beyond the logical end of the object,&n; * iomap_size may be set to 0, but iomap_offset and iomap_length should be set to&n; * the actual amount of underlying storage that has been allocated, if any.&n; */
+multiline_comment|/*&n; * xfs_iomap_t:  File system I/O map&n; *&n; * The iomap_bn field is expressed in 512-byte blocks, and is where the &n; * mapping starts on disk.&n; *&n; * The iomap_offset, iomap_bsize and iomap_delta fields are in bytes.&n; * iomap_offset is the offset of the mapping in the file itself.&n; * iomap_bsize is the size of the mapping,  iomap_delta is the &n; * desired data&squot;s offset into the mapping, given the offset supplied &n; * to the file I/O map routine.&n; *&n; * When a request is made to read beyond the logical end of the object,&n; * iomap_size may be set to 0, but iomap_offset and iomap_length should be set&n; * to the actual amount of underlying storage that has been allocated, if any.&n; */
 DECL|struct|xfs_iomap
 r_typedef
 r_struct
@@ -161,6 +161,7 @@ DECL|member|iomap_bn
 id|xfs_daddr_t
 id|iomap_bn
 suffix:semicolon
+multiline_comment|/* first 512b blk of mapping */
 DECL|member|iomap_target
 id|xfs_buftarg_t
 op_star
@@ -170,14 +171,17 @@ DECL|member|iomap_offset
 id|loff_t
 id|iomap_offset
 suffix:semicolon
+multiline_comment|/* offset of mapping, bytes */
+DECL|member|iomap_bsize
+id|loff_t
+id|iomap_bsize
+suffix:semicolon
+multiline_comment|/* size of mapping, bytes */
 DECL|member|iomap_delta
 r_int
 id|iomap_delta
 suffix:semicolon
-DECL|member|iomap_bsize
-r_int
-id|iomap_bsize
-suffix:semicolon
+multiline_comment|/* offset into mapping, bytes */
 DECL|member|iomap_flags
 id|iomap_flags_t
 id|iomap_flags
