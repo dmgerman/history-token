@@ -656,7 +656,7 @@ suffix:semicolon
 r_else
 id|q-&gt;bounce_gfp
 op_assign
-id|GFP_NOHIGHIO
+id|GFP_NOIO
 suffix:semicolon
 multiline_comment|/*&n;&t; * keep this for debugging for now...&n;&t; */
 r_if

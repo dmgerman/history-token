@@ -3210,7 +3210,7 @@ id|zone
 comma
 id|max_scan
 comma
-id|GFP_KSWAPD
+id|GFP_KERNEL
 comma
 id|to_reclaim
 comma
@@ -3229,7 +3229,7 @@ id|max_scan
 op_plus
 id|nr_mapped
 comma
-id|GFP_KSWAPD
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
