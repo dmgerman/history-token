@@ -105,10 +105,14 @@ r_extern
 r_int
 id|leases_enable
 comma
-id|dir_notify_enable
-comma
 id|lease_break_time
 suffix:semicolon
+macro_line|#ifdef CONFIG_DNOTIFY
+r_extern
+r_int
+id|dir_notify_enable
+suffix:semicolon
+macro_line|#endif
 DECL|macro|NR_FILE
 mdefine_line|#define NR_FILE  8192&t;/* this can well be larger on a larger system */
 DECL|macro|NR_RESERVED_FILES
@@ -1251,6 +1255,7 @@ DECL|member|i_generation
 id|__u32
 id|i_generation
 suffix:semicolon
+macro_line|#ifdef CONFIG_DNOTIFY
 DECL|member|i_dnotify_mask
 r_int
 r_int
@@ -1264,6 +1269,7 @@ op_star
 id|i_dnotify
 suffix:semicolon
 multiline_comment|/* for directory notifications */
+macro_line|#endif
 DECL|member|i_state
 r_int
 r_int
