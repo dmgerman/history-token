@@ -1035,6 +1035,13 @@ r_sizeof
 r_struct
 id|icmpv6_mib
 )paren
+comma
+id|__alignof__
+c_func
+(paren
+r_struct
+id|ipv6_mib
+)paren
 )paren
 OL
 l_int|0

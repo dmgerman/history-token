@@ -1379,6 +1379,8 @@ id|bridge-&gt;dev
 comma
 op_star
 id|dev
+op_assign
+l_int|NULL
 suffix:semicolon
 id|u8
 id|mcapndx
@@ -1518,10 +1520,24 @@ id|head
 )paren
 suffix:semicolon
 multiline_comment|/* Find all AGP devices, and add them to dev_list. */
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|mcapndx

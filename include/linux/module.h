@@ -410,6 +410,12 @@ op_star
 id|strtab
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Per-cpu data. */
+DECL|member|percpu
+r_void
+op_star
+id|percpu
+suffix:semicolon
 multiline_comment|/* The command line arguments (may be mangled).  People like&n;&t;   keeping pointers to this stuff */
 DECL|member|args
 r_char

@@ -4553,17 +4553,14 @@ id|sci_driver.driver_name
 op_assign
 l_string|&quot;sci&quot;
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|sci_driver.name
-op_assign
-l_string|&quot;ttsc/&quot;
-suffix:semicolon
-macro_line|#else
 id|sci_driver.name
 op_assign
 l_string|&quot;ttySC&quot;
 suffix:semicolon
-macro_line|#endif
+id|sci_driver.devfs_name
+op_assign
+l_string|&quot;ttsc/&quot;
+suffix:semicolon
 id|sci_driver.major
 op_assign
 id|SCI_MAJOR

@@ -177,6 +177,7 @@ op_star
 comma
 id|off_t
 comma
+r_struct
 id|agp_memory
 op_star
 )paren
@@ -193,6 +194,7 @@ op_star
 comma
 id|off_t
 comma
+r_struct
 id|agp_memory
 op_star
 )paren

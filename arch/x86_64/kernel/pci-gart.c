@@ -99,7 +99,7 @@ mdefine_line|#define GPTE_ENCODE(x) &bslash;&n;&t;(((x) &amp; 0xfffff000) | (((x
 DECL|macro|GPTE_DECODE
 mdefine_line|#define GPTE_DECODE(x) (((x) &amp; 0xfffff000) | (((u64)(x) &amp; 0xff0) &lt;&lt; 28))
 DECL|macro|for_all_nb
-mdefine_line|#define for_all_nb(dev) &bslash;&n;&t;pci_for_each_dev(dev) &bslash;&n;&t;&t;if (dev-&gt;bus-&gt;number == 0 &amp;&amp; PCI_FUNC(dev-&gt;devfn) == 3 &amp;&amp; &bslash;&n;&t;&t;    (PCI_SLOT(dev-&gt;devfn) &gt;= 24) &amp;&amp; (PCI_SLOT(dev-&gt;devfn) &lt;= 31))
+mdefine_line|#define for_all_nb(dev) &bslash;&n;&t;dev=NULL; &bslash;&n;&t;while ((dev = pci_find_device(PCI_ANY_ID, PCI_ANY_ID, dev)) != NULL) &bslash;&n;&t;&t;if (dev-&gt;bus-&gt;number == 0 &amp;&amp; PCI_FUNC(dev-&gt;devfn) == 3 &amp;&amp; &bslash;&n;&t;&t;    (PCI_SLOT(dev-&gt;devfn) &gt;= 24) &amp;&amp; (PCI_SLOT(dev-&gt;devfn) &lt;= 31))
 DECL|macro|EMERGENCY_PAGES
 mdefine_line|#define EMERGENCY_PAGES 32 /* = 128KB */ 
 macro_line|#ifdef CONFIG_AGP

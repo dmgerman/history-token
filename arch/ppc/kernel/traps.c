@@ -388,7 +388,7 @@ op_star
 id|regs
 )paren
 (brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_int
 r_int
 id|msr
@@ -554,7 +554,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 r_return
 l_int|0
 suffix:semicolon

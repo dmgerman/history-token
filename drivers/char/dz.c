@@ -4240,17 +4240,14 @@ id|serial_driver.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt; 0x2032D &amp;&amp; defined(CONFIG_DEVFS_FS))
+id|serial_driver.devfs_name
+op_assign
+l_string|&quot;tts/&quot;
+suffix:semicolon
 id|serial_driver.name
 op_assign
 l_string|&quot;ttyS&quot;
 suffix:semicolon
-macro_line|#else
-id|serial_driver.name
-op_assign
-l_string|&quot;tts/&quot;
-suffix:semicolon
-macro_line|#endif
 id|serial_driver.major
 op_assign
 id|TTY_MAJOR

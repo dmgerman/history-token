@@ -1095,6 +1095,8 @@ r_struct
 id|pci_dev
 op_star
 id|loop_dev
+op_assign
+l_int|NULL
 suffix:semicolon
 id|u8
 id|rev_id
@@ -1295,10 +1297,24 @@ id|bridge-&gt;mode
 )paren
 suffix:semicolon
 multiline_comment|/* cache pci_devs of northbridges. */
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|loop_dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|loop_dev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if

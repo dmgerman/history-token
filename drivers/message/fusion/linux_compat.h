@@ -181,30 +181,20 @@ DECL|macro|MODULE_LICENSE
 mdefine_line|#define MODULE_LICENSE(license)
 macro_line|#endif
 multiline_comment|/* PCI/driver subsystem { */
-macro_line|#ifndef pci_for_each_dev
-DECL|macro|pci_for_each_dev
-mdefine_line|#define pci_for_each_dev(dev)&t;&t;for((dev)=pci_devices; (dev)!=NULL; (dev)=(dev)-&gt;next)
-DECL|macro|pci_peek_next_dev
-mdefine_line|#define pci_peek_next_dev(dev)&t;&t;((dev)-&gt;next ? (dev)-&gt;next : NULL)
-DECL|macro|DEVICE_COUNT_RESOURCE
+macro_line|#if 0&t;/* FIXME Don&squot;t know what to use to check for the proper kernel version */
 mdefine_line|#define DEVICE_COUNT_RESOURCE           6
-DECL|macro|PCI_BASEADDR_FLAGS
 mdefine_line|#define PCI_BASEADDR_FLAGS(idx)         base_address[idx]
-DECL|macro|PCI_BASEADDR_START
 mdefine_line|#define PCI_BASEADDR_START(idx)         base_address[idx] &amp; ~0xFUL
 multiline_comment|/*&n; * We have to keep track of the original value using&n; * a temporary, and not by just sticking pdev-&gt;base_address[x]&n; * back.  pdev-&gt;base_address[x] is an opaque cookie that can&n; * be used by the PCI implementation on a given Linux port&n; * for any purpose. -DaveM&n; */
-DECL|macro|PCI_BASEADDR_SIZE
 mdefine_line|#define PCI_BASEADDR_SIZE(__pdev, __idx) &bslash;&n;({&t;unsigned int size, tmp; &bslash;&n;&t;pci_read_config_dword(__pdev, PCI_BASE_ADDRESS_0 + (4*(__idx)), &amp;tmp); &bslash;&n;&t;pci_write_config_dword(__pdev, PCI_BASE_ADDRESS_0 + (4*(__idx)), 0xffffffff); &bslash;&n;&t;pci_read_config_dword(__pdev, PCI_BASE_ADDRESS_0 + (4*(__idx)), &amp;size); &bslash;&n;&t;pci_write_config_dword(__pdev, PCI_BASE_ADDRESS_0 + (4*(__idx)), tmp); &bslash;&n;&t;(4 - size); &bslash;&n;})
 macro_line|#else
-DECL|macro|pci_peek_next_dev
-mdefine_line|#define pci_peek_next_dev(dev)&t;&t;((dev) != pci_dev_g(&amp;pci_devices) ? pci_dev_g((dev)-&gt;global_list.next) : NULL)
 DECL|macro|PCI_BASEADDR_FLAGS
 mdefine_line|#define PCI_BASEADDR_FLAGS(idx)         resource[idx].flags
 DECL|macro|PCI_BASEADDR_START
 mdefine_line|#define PCI_BASEADDR_START(idx)         resource[idx].start
 DECL|macro|PCI_BASEADDR_SIZE
 mdefine_line|#define PCI_BASEADDR_SIZE(dev,idx)      (dev)-&gt;resource[idx].end - (dev)-&gt;resource[idx].start + 1
-macro_line|#endif&t;&t;/* } ifndef pci_for_each_dev */
+macro_line|#endif&t;&t;/* } ifndef 0 */
 multiline_comment|/* Compatability for the 2.3.x PCI DMA API. */
 macro_line|#ifndef PCI_DMA_BIDIRECTIONAL
 multiline_comment|/*{-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/

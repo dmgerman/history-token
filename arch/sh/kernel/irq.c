@@ -44,8 +44,9 @@ l_int|1
 )braket
 op_assign
 (brace
-l_int|0
-comma
+dot
+id|handler
+op_assign
 op_amp
 id|no_irq_type
 comma

@@ -19,23 +19,11 @@ r_int
 r_char
 id|uch
 suffix:semicolon
-DECL|typedef|uchf
-r_typedef
-id|uch
-id|FAR
-id|uchf
-suffix:semicolon
 DECL|typedef|ush
 r_typedef
 r_int
 r_int
 id|ush
-suffix:semicolon
-DECL|typedef|ushf
-r_typedef
-id|ush
-id|FAR
-id|ushf
 suffix:semicolon
 DECL|typedef|ulg
 r_typedef
@@ -78,29 +66,24 @@ DECL|macro|OS_CODE
 macro_line|#  define OS_CODE  0x03  /* assume Unix */
 macro_line|#endif
 multiline_comment|/* functions */
-DECL|typedef|OF
+DECL|typedef|check_func
 r_typedef
 id|uLong
 (paren
-id|ZEXPORT
 op_star
 id|check_func
 )paren
-id|OF
-c_func
-(paren
 (paren
 id|uLong
 id|check
 comma
 r_const
-id|Bytef
+id|Byte
 op_star
 id|buf
 comma
 id|uInt
 id|len
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* checksum functions */
@@ -132,7 +115,7 @@ id|uLong
 id|adler
 comma
 r_const
-id|Bytef
+id|Byte
 op_star
 id|buf
 comma

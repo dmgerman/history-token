@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#include &quot;../pci.h&quot;
 macro_line|#include &quot;pci_hotplug.h&quot;
 macro_line|#include &quot;acpiphp.h&quot;
 DECL|macro|MY_NAME

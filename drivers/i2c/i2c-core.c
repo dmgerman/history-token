@@ -352,6 +352,9 @@ r_struct
 id|list_head
 op_star
 id|item
+comma
+op_star
+id|_n
 suffix:semicolon
 r_struct
 id|i2c_driver
@@ -437,10 +440,12 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* detach any active clients. This must be done first, because&n;&t; * it can fail; in which case we give upp. */
-id|list_for_each
+id|list_for_each_safe
 c_func
 (paren
 id|item
+comma
+id|_n
 comma
 op_amp
 id|adap-&gt;clients
@@ -703,11 +708,12 @@ r_struct
 id|list_head
 op_star
 id|item1
-suffix:semicolon
-r_struct
-id|list_head
+comma
 op_star
 id|item2
+comma
+op_star
+id|_n
 suffix:semicolon
 r_struct
 id|i2c_client
@@ -822,10 +828,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|list_for_each
+id|list_for_each_safe
 c_func
 (paren
 id|item2
+comma
+id|_n
 comma
 op_amp
 id|adap-&gt;clients

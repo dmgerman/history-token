@@ -1,5 +1,6 @@
 multiline_comment|/* &n; * xfrm_policy.c&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro&n; * &t;&t;IPv6 support&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;YOSHIFUJI Hideaki&n; * &t;&t;Split up af-specific portion&n; *&t;Derek Atkins &lt;derek@ihtfp.com&gt;&t;&t;Add the post_input processor&n; * &t;&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 DECL|variable|xfrm_cfg_sem

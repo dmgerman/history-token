@@ -827,12 +827,6 @@ c_func
 id|bvec-&gt;bv_page
 )paren
 suffix:semicolon
-id|balance_dirty_pages_ratelimited
-c_func
-(paren
-id|mapping
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon

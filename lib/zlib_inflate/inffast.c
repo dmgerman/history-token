@@ -64,7 +64,7 @@ id|uInt
 id|k
 suffix:semicolon
 multiline_comment|/* bits in bit buffer */
-id|Bytef
+id|Byte
 op_star
 id|p
 suffix:semicolon
@@ -73,7 +73,7 @@ id|uInt
 id|n
 suffix:semicolon
 multiline_comment|/* bytes available there */
-id|Bytef
+id|Byte
 op_star
 id|q
 suffix:semicolon
@@ -98,7 +98,7 @@ id|uInt
 id|d
 suffix:semicolon
 multiline_comment|/* distance back to copy from */
-id|Bytef
+id|Byte
 op_star
 id|r
 suffix:semicolon

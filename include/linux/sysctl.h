@@ -550,6 +550,12 @@ op_assign
 l_int|20
 comma
 multiline_comment|/* Amount of protection of lower zones */
+DECL|enumerator|VM_MIN_FREE_KBYTES
+id|VM_MIN_FREE_KBYTES
+op_assign
+l_int|21
+comma
+multiline_comment|/* Minimum free kilobytes to maintain */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

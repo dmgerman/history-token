@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 multiline_comment|/*&n; * This interrupt-safe spinlock protects all accesses to PCI&n; * configuration space.&n; */
 DECL|variable|pci_lock
+r_static
 id|spinlock_t
 id|pci_lock
 op_assign
@@ -113,13 +114,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pci_bus_write_config_dword
-)paren
-suffix:semicolon
-DECL|variable|pci_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_lock
 )paren
 suffix:semicolon
 eof

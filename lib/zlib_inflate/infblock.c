@@ -75,7 +75,7 @@ comma
 id|z_streamp
 id|z
 comma
-id|uLongf
+id|uLong
 op_star
 id|c
 )paren
@@ -145,7 +145,7 @@ l_int|0L
 comma
 (paren
 r_const
-id|Bytef
+id|Byte
 op_star
 )paren
 id|Z_NULL
@@ -261,7 +261,7 @@ id|uInt
 id|k
 suffix:semicolon
 multiline_comment|/* bits in bit buffer */
-id|Bytef
+id|Byte
 op_star
 id|p
 suffix:semicolon
@@ -270,7 +270,7 @@ id|uInt
 id|n
 suffix:semicolon
 multiline_comment|/* bytes available there */
-id|Bytef
+id|Byte
 op_star
 id|q
 suffix:semicolon
@@ -1393,7 +1393,7 @@ op_star
 id|s
 comma
 r_const
-id|Bytef
+id|Byte
 op_star
 id|d
 comma

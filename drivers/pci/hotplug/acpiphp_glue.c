@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &quot;../pci.h&quot;
 macro_line|#include &quot;pci_hotplug.h&quot;
 macro_line|#include &quot;acpiphp.h&quot;
 r_static
@@ -972,97 +973,6 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
-multiline_comment|/* find pci_bus structure associated to specific bus number */
-DECL|function|find_pci_bus
-r_static
-r_struct
-id|pci_bus
-op_star
-id|find_pci_bus
-c_func
-(paren
-r_const
-r_struct
-id|list_head
-op_star
-id|list
-comma
-r_int
-id|bus
-)paren
-(brace
-r_const
-r_struct
-id|list_head
-op_star
-id|l
-suffix:semicolon
-id|list_for_each
-(paren
-id|l
-comma
-id|list
-)paren
-(brace
-r_struct
-id|pci_bus
-op_star
-id|b
-op_assign
-id|pci_bus_b
-c_func
-(paren
-id|l
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|b-&gt;number
-op_eq
-id|bus
-)paren
-r_return
-id|b
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|b-&gt;children
-)paren
-)paren
-(brace
-multiline_comment|/* XXX recursive call */
-id|b
-op_assign
-id|find_pci_bus
-c_func
-(paren
-op_amp
-id|b-&gt;children
-comma
-id|bus
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|b
-)paren
-r_return
-id|b
-suffix:semicolon
-)brace
-)brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/* decode ACPI 2.0 _HPP hot plug parameters */
 DECL|function|decode_hpp
 r_static
@@ -1479,12 +1389,9 @@ id|bus
 suffix:semicolon
 id|bridge-&gt;pci_bus
 op_assign
-id|find_pci_bus
+id|pci_find_bus
 c_func
 (paren
-op_amp
-id|pci_root_buses
-comma
 id|bus
 )paren
 suffix:semicolon

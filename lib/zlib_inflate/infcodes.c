@@ -119,7 +119,7 @@ id|uInt
 id|k
 suffix:semicolon
 multiline_comment|/* bits in bit buffer */
-id|Bytef
+id|Byte
 op_star
 id|p
 suffix:semicolon
@@ -128,7 +128,7 @@ id|uInt
 id|n
 suffix:semicolon
 multiline_comment|/* bytes available there */
-id|Bytef
+id|Byte
 op_star
 id|q
 suffix:semicolon
@@ -137,7 +137,7 @@ id|uInt
 id|m
 suffix:semicolon
 multiline_comment|/* bytes to end of window or read pointer */
-id|Bytef
+id|Byte
 op_star
 id|f
 suffix:semicolon

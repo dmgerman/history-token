@@ -367,6 +367,7 @@ DECL|function|prom_query_input_device
 id|prom_query_input_device
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -669,6 +670,7 @@ DECL|function|prom_query_output_device
 id|prom_query_output_device
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int

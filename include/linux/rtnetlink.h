@@ -60,7 +60,7 @@ DECL|macro|RTM_GETTFILTER
 mdefine_line|#define&t;RTM_GETTFILTER&t;(RTM_BASE+30)
 DECL|macro|RTM_MAX
 mdefine_line|#define&t;RTM_MAX&t;&t;(RTM_BASE+31)
-multiline_comment|/* &n;   Generic structure for encapsulation optional route information.&n;   It is reminiscent of sockaddr, but with sa_family replaced&n;   with attribute type.&n; */
+multiline_comment|/* &n;   Generic structure for encapsulation of optional route information.&n;   It is reminiscent of sockaddr, but with sa_family replaced&n;   with attribute type.&n; */
 DECL|struct|rtattr
 r_struct
 id|rtattr

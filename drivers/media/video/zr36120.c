@@ -7914,17 +7914,23 @@ op_star
 l_int|2
 )braket
 suffix:semicolon
-op_star
+id|__put_user
+c_func
+(paren
+id|a
+comma
 id|optr
 op_increment
-op_assign
-id|a
+)paren
 suffix:semicolon
-op_star
+id|__put_user
+c_func
+(paren
+id|a
+comma
 id|optr
 op_increment
-op_assign
-id|a
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* and clear the rest of the line */
@@ -7946,11 +7952,14 @@ suffix:semicolon
 id|x
 op_increment
 )paren
-op_star
+id|__put_user
+c_func
+(paren
+l_int|0
+comma
 id|optr
 op_increment
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/* next line */
 id|iptr
@@ -8015,16 +8024,19 @@ suffix:semicolon
 id|x
 op_increment
 )paren
-op_star
-id|optr
-op_increment
-op_assign
+id|__put_user
+c_func
+(paren
 id|iptr
 (braket
 id|x
 op_star
 l_int|2
 )braket
+comma
+id|optr
+op_increment
+)paren
 suffix:semicolon
 multiline_comment|/* and clear the rest of the line */
 r_for
@@ -8042,11 +8054,14 @@ suffix:semicolon
 id|x
 op_increment
 )paren
-op_star
+id|__put_user
+c_func
+(paren
+l_int|0
+comma
 id|optr
 op_increment
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/* next line */
 id|iptr
@@ -8056,6 +8071,13 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* API compliance:&n;&t; * place the framenumber (half fieldnr) in the last long&n;&t; */
+id|__put_user
+c_func
+(paren
+id|done-&gt;fieldnr
+op_div
+l_int|2
+comma
 (paren
 (paren
 id|ulong
@@ -8067,10 +8089,7 @@ id|eptr
 op_minus
 l_int|1
 )braket
-op_assign
-id|done-&gt;fieldnr
-op_div
-l_int|2
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* keep the engine running */

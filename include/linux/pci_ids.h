@@ -2458,12 +2458,34 @@ DECL|macro|PCI_DEVICE_ID_RP8OCTA
 mdefine_line|#define PCI_DEVICE_ID_RP8OCTA&t;&t;0x0005
 DECL|macro|PCI_DEVICE_ID_RP8J
 mdefine_line|#define PCI_DEVICE_ID_RP8J&t;&t;0x0006
+DECL|macro|PCI_DEVICE_ID_RP4J
+mdefine_line|#define PCI_DEVICE_ID_RP4J&t;&t;0x0007
 DECL|macro|PCI_DEVICE_ID_RPP4
 mdefine_line|#define PCI_DEVICE_ID_RPP4&t;&t;0x000A
 DECL|macro|PCI_DEVICE_ID_RPP8
 mdefine_line|#define PCI_DEVICE_ID_RPP8&t;&t;0x000B
 DECL|macro|PCI_DEVICE_ID_RP8M
 mdefine_line|#define PCI_DEVICE_ID_RP8M&t;&t;0x000C
+DECL|macro|PCI_DEVICE_ID_RP4M
+mdefine_line|#define PCI_DEVICE_ID_RP4M&t;&t;0x000D
+DECL|macro|PCI_DEVICE_ID_RP2_232
+mdefine_line|#define PCI_DEVICE_ID_RP2_232&t;&t;0x000E
+DECL|macro|PCI_DEVICE_ID_RP2_422
+mdefine_line|#define PCI_DEVICE_ID_RP2_422&t;&t;0x000F
+DECL|macro|PCI_DEVICE_ID_URP32INTF
+mdefine_line|#define PCI_DEVICE_ID_URP32INTF&t;&t;0x0801
+DECL|macro|PCI_DEVICE_ID_URP8INTF
+mdefine_line|#define PCI_DEVICE_ID_URP8INTF&t;&t;0x0802
+DECL|macro|PCI_DEVICE_ID_URP16INTF
+mdefine_line|#define PCI_DEVICE_ID_URP16INTF&t;&t;0x0803
+DECL|macro|PCI_DEVICE_ID_URP8OCTA
+mdefine_line|#define PCI_DEVICE_ID_URP8OCTA&t;&t;0x0805
+DECL|macro|PCI_DEVICE_ID_UPCI_RM3_8PORT
+mdefine_line|#define PCI_DEVICE_ID_UPCI_RM3_8PORT&t;0x080C       
+DECL|macro|PCI_DEVICE_ID_UPCI_RM3_4PORT
+mdefine_line|#define PCI_DEVICE_ID_UPCI_RM3_4PORT&t;0x080D
+DECL|macro|PCI_DEVICE_ID_CRP16INTF
+mdefine_line|#define PCI_DEVICE_ID_CRP16INTF&t;&t;0x0903       
 DECL|macro|PCI_VENDOR_ID_CYCLADES
 mdefine_line|#define PCI_VENDOR_ID_CYCLADES&t;&t;0x120e
 DECL|macro|PCI_DEVICE_ID_CYCLOM_Y_Lo

@@ -130,6 +130,14 @@ l_int|1
 )brace
 suffix:semicolon
 multiline_comment|/* Product ID for this card */
+DECL|variable|nrpacks
+r_static
+r_int
+id|nrpacks
+op_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* max. number of packets per urb */
 id|MODULE_PARM
 c_func
 (paren
@@ -282,6 +290,31 @@ id|SNDRV_ENABLED
 l_string|&quot;,allows:{{-1,0xffff}},base:16&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|nrpacks
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nrpacks
+comma
+l_string|&quot;Max. number of packets per URB.&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|nrpacks
+comma
+id|SNDRV_ENABLED
+l_string|&quot;,allows:{{2,10}}&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * for using ASYNC unlink mode, define the following.&n; * this will make the driver quicker response for request to STOP-trigger,&n; * but it may cause oops by some unknown reason (bug of usb driver?),&n; * so turning off might be sure.&n; */
 multiline_comment|/* #define SND_USE_ASYNC_UNLINK */
 macro_line|#ifdef SND_USB_ASYNC_UNLINK
@@ -294,8 +327,8 @@ macro_line|#endif
 multiline_comment|/*&n; * debug the h/w constraints&n; */
 multiline_comment|/* #define HW_CONST_DEBUG */
 multiline_comment|/*&n; *&n; */
-DECL|macro|NRPACKS
-mdefine_line|#define NRPACKS&t;&t;4&t;/* 4ms per urb */
+DECL|macro|MAX_PACKS
+mdefine_line|#define MAX_PACKS&t;10&t;
 DECL|macro|MAX_URBS
 mdefine_line|#define MAX_URBS&t;5&t;/* max. 20ms long packets */
 DECL|macro|SYNC_URBS
@@ -748,7 +781,7 @@ id|syncbuf
 (braket
 id|SYNC_URBS
 op_star
-id|NRPACKS
+id|MAX_PACKS
 op_star
 l_int|3
 )braket
@@ -3755,7 +3788,7 @@ c_func
 (paren
 id|maxsize
 op_star
-id|NRPACKS
+id|nrpacks
 comma
 id|GFP_KERNEL
 )paren
@@ -3819,12 +3852,12 @@ op_assign
 (paren
 id|total_packs
 op_plus
-id|NRPACKS
+id|nrpacks
 op_minus
 l_int|1
 )paren
 op_div
-id|NRPACKS
+id|nrpacks
 suffix:semicolon
 r_if
 c_cond
@@ -3843,7 +3876,7 @@ id|total_packs
 op_assign
 id|MAX_URBS
 op_star
-id|NRPACKS
+id|nrpacks
 suffix:semicolon
 )brace
 id|n
@@ -3872,16 +3905,16 @@ id|i
 op_assign
 id|n
 OG
-id|NRPACKS
+id|nrpacks
 ques
 c_cond
-id|NRPACKS
+id|nrpacks
 suffix:colon
 id|n
 suffix:semicolon
 id|n
 op_sub_assign
-id|NRPACKS
+id|nrpacks
 suffix:semicolon
 )brace
 r_if
@@ -4195,7 +4228,7 @@ id|subs
 suffix:semicolon
 id|u-&gt;packets
 op_assign
-id|NRPACKS
+id|nrpacks
 suffix:semicolon
 id|u-&gt;urb
 op_assign
@@ -4233,13 +4266,13 @@ id|subs-&gt;syncbuf
 op_plus
 id|i
 op_star
-id|NRPACKS
+id|nrpacks
 op_star
 l_int|3
 suffix:semicolon
 id|u-&gt;urb-&gt;transfer_buffer_length
 op_assign
-id|NRPACKS
+id|nrpacks
 op_star
 l_int|3
 suffix:semicolon
@@ -5173,34 +5206,6 @@ id|EP_ATTR_ADAPTIVE
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * QUIRK: plantronics headset has adaptive-in&n;&t;&t; * although it&squot;s really not...&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|dev-&gt;descriptor.idVendor
-op_eq
-l_int|0x047f
-op_logical_and
-id|dev-&gt;descriptor.idProduct
-op_eq
-l_int|0x0ca1
-)paren
-op_logical_or
-multiline_comment|/* Griffin iMic (note that there is an older model 77d:223) */
-(paren
-id|dev-&gt;descriptor.idVendor
-op_eq
-l_int|0x077d
-op_logical_and
-id|dev-&gt;descriptor.idProduct
-op_eq
-l_int|0x07af
-)paren
-)paren
-r_goto
-id|_ok
-suffix:semicolon
 multiline_comment|/* check endpoint */
 r_if
 c_cond
@@ -5379,8 +5384,6 @@ op_member_access_from_pointer
 id|bRefresh
 suffix:semicolon
 )brace
-id|_ok
-suffix:colon
 r_if
 c_cond
 (paren
@@ -7186,7 +7189,7 @@ l_int|1000
 op_star
 id|MIN_PACKS_URB
 comma
-multiline_comment|/*(NRPACKS * MAX_URBS) * 1000*/
+multiline_comment|/*(nrpacks * MAX_URBS) * 1000*/
 id|UINT_MAX
 )paren
 suffix:semicolon
@@ -7904,7 +7907,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * entry point for linux usb interface&n; */
-macro_line|#ifndef OLD_USB
 r_static
 r_int
 id|usb_audio_probe
@@ -7933,7 +7935,6 @@ op_star
 id|intf
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|usb_audio_ids
 r_static
 r_struct
@@ -8004,17 +8005,6 @@ id|disconnect
 op_assign
 id|usb_audio_disconnect
 comma
-macro_line|#ifdef OLD_USB
-dot
-id|driver_list
-op_assign
-id|LIST_HEAD_INIT
-c_func
-(paren
-id|usb_audio_driver.driver_list
-)paren
-comma
-macro_line|#endif
 dot
 id|id_table
 op_assign
@@ -9364,9 +9354,9 @@ l_string|&quot;%d:%u:%d : format type 0 is detected, processed as PCM&bslash;n&q
 comma
 id|dev-&gt;devnum
 comma
-id|iface_no
+id|fp-&gt;iface
 comma
-id|altno
+id|fp-&gt;altsetting
 )paren
 suffix:semicolon
 multiline_comment|/* fall-through */
@@ -10808,6 +10798,76 @@ id|csep
 l_int|3
 )braket
 suffix:semicolon
+multiline_comment|/* some quirks for attributes here */
+multiline_comment|/* workaround for AudioTrak Optoplay */
+r_if
+c_cond
+(paren
+id|dev-&gt;descriptor.idVendor
+op_eq
+l_int|0x0a92
+op_logical_and
+id|dev-&gt;descriptor.idProduct
+op_eq
+l_int|0x0053
+)paren
+(brace
+multiline_comment|/* Optoplay sets the sample rate attribute although&n;&t;&t;&t; * it seems not supporting it in fact.&n;&t;&t;&t; */
+id|fp-&gt;attributes
+op_and_assign
+op_complement
+id|EP_CS_ATTR_SAMPLE_RATE
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * plantronics headset and Griffin iMic have set adaptive-in&n;&t;&t; * although it&squot;s really not...&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|dev-&gt;descriptor.idVendor
+op_eq
+l_int|0x047f
+op_logical_and
+id|dev-&gt;descriptor.idProduct
+op_eq
+l_int|0x0ca1
+)paren
+op_logical_or
+multiline_comment|/* Griffin iMic (note that there is an older model 77d:223) */
+(paren
+id|dev-&gt;descriptor.idVendor
+op_eq
+l_int|0x077d
+op_logical_and
+id|dev-&gt;descriptor.idProduct
+op_eq
+l_int|0x07af
+)paren
+)paren
+(brace
+id|fp-&gt;ep_attr
+op_and_assign
+op_complement
+id|EP_ATTR_MASK
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stream
+op_eq
+id|SNDRV_PCM_STREAM_PLAYBACK
+)paren
+id|fp-&gt;ep_attr
+op_or_assign
+id|EP_ATTR_ADAPTIVE
+suffix:semicolon
+r_else
+id|fp-&gt;ep_attr
+op_or_assign
+id|EP_ATTR_SYNC
+suffix:semicolon
+)brace
+multiline_comment|/* ok, let&squot;s parse further... */
 r_if
 c_cond
 (paren
@@ -12025,7 +12085,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * audio-interface quirks&n; */
+multiline_comment|/*&n; * audio-interface quirks&n; *&n; * returns zero if no standard audio/MIDI parsing is needed.&n; * returns a postive value if standard audio/midi interfaces are parsed&n; * after this.&n; * returns a negative value at error.&n; */
 DECL|function|snd_usb_create_quirk
 r_static
 r_int
@@ -13375,7 +13435,6 @@ id|register_mutex
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef OLD_USB
 multiline_comment|/*&n; * new 2.5 USB kernel API&n; */
 DECL|function|usb_audio_probe
 r_static
@@ -13470,7 +13529,6 @@ id|intf-&gt;dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|snd_usb_audio_init
 r_static
 r_int
@@ -13481,6 +13539,26 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|nrpacks
+template_param
+id|MAX_PACKS
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;invalid nrpacks value.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|usb_register
 c_func
 (paren

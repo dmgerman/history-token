@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;mac.h&quot;
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_extern
 r_void
 id|note_bootable_part
@@ -107,7 +107,7 @@ suffix:semicolon
 r_int
 id|secsize
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_int
 id|found_root
 op_assign
@@ -384,7 +384,7 @@ l_int|512
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 multiline_comment|/*&n;&t;&t; * If this is the first bootable partition, tell the&n;&t;&t; * setup code, in case it wants to make this the root.&n;&t;&t; */
 r_if
 c_cond
@@ -599,12 +599,12 @@ id|goodness
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 op_increment
 id|slot
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_if
 c_cond
 (paren

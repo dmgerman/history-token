@@ -71,11 +71,11 @@ id|r
 id|uInt
 id|n
 suffix:semicolon
-id|Bytef
+id|Byte
 op_star
 id|p
 suffix:semicolon
-id|Bytef
+id|Byte
 op_star
 id|q
 suffix:semicolon

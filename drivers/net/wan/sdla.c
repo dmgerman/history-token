@@ -7676,6 +7676,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef MODULE
 id|unregister_netdev
 c_func
 (paren
@@ -7708,6 +7709,7 @@ op_amp
 id|sdla0
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 id|MODULE_LICENSE
 c_func

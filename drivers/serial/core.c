@@ -7927,6 +7927,10 @@ id|normal-&gt;driver_name
 op_assign
 id|drv-&gt;driver_name
 suffix:semicolon
+id|normal-&gt;devfs_name
+op_assign
+id|drv-&gt;devfs_name
+suffix:semicolon
 id|normal-&gt;name
 op_assign
 id|drv-&gt;dev_name

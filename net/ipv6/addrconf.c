@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *&t;IPv6 Address [auto]configuration&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: addrconf.c,v 1.69 2001/10/31 21:55:54 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
-multiline_comment|/*&n; *&t;Changes:&n; *&n; *&t;Janos Farkas&t;&t;&t;:&t;delete timer on ifdown&n; *&t;&lt;chexum@bankinf.banki.hu&gt;&n; *&t;Andi Kleen&t;&t;&t;:&t;kill doube kfree on module&n; *&t;&t;&t;&t;&t;&t;unload.&n; *&t;Maciej W. Rozycki&t;&t;:&t;FDDI support&n; *&t;sekiya@USAGI&t;&t;&t;:&t;Don&squot;t send too many RS&n; *&t;&t;&t;&t;&t;&t;packets.&n; *&t;yoshfuji@USAGI&t;&t;&t;:       Fixed interval between DAD&n; *&t;&t;&t;&t;&t;&t;packets.&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;improved accuracy of&n; *&t;&t;&t;&t;&t;&t;address validation timer.&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;Privacy Extensions (RFC3041)&n; *&t;&t;&t;&t;&t;&t;support.&n; *&t;Yuji SEKIYA @USAGI&t;&t;:&t;Don&squot;t assign a same IPv6&n; *&t;&t;&t;&t;&t;&t;address on a same interface.&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;ARCnet support&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;convert /proc/net/if_inet6 to&n; *&t;&t;&t;&t;&t;&t;seq_file.&n; */
+multiline_comment|/*&n; *&t;Changes:&n; *&n; *&t;Janos Farkas&t;&t;&t;:&t;delete timer on ifdown&n; *&t;&lt;chexum@bankinf.banki.hu&gt;&n; *&t;Andi Kleen&t;&t;&t;:&t;kill double kfree on module&n; *&t;&t;&t;&t;&t;&t;unload.&n; *&t;Maciej W. Rozycki&t;&t;:&t;FDDI support&n; *&t;sekiya@USAGI&t;&t;&t;:&t;Don&squot;t send too many RS&n; *&t;&t;&t;&t;&t;&t;packets.&n; *&t;yoshfuji@USAGI&t;&t;&t;:       Fixed interval between DAD&n; *&t;&t;&t;&t;&t;&t;packets.&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;improved accuracy of&n; *&t;&t;&t;&t;&t;&t;address validation timer.&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;Privacy Extensions (RFC3041)&n; *&t;&t;&t;&t;&t;&t;support.&n; *&t;Yuji SEKIYA @USAGI&t;&t;:&t;Don&squot;t assign a same IPv6&n; *&t;&t;&t;&t;&t;&t;address on a same interface.&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;ARCnet support&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;convert /proc/net/if_inet6 to&n; *&t;&t;&t;&t;&t;&t;seq_file.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1305,6 +1305,10 @@ id|nd_tbl
 comma
 id|ndev-&gt;nd_parms
 )paren
+suffix:semicolon
+id|ndev-&gt;dead
+op_assign
+l_int|1
 suffix:semicolon
 id|in6_dev_finish_destroy
 c_func
@@ -5732,7 +5736,7 @@ id|rtmsg.rtmsg_metric
 op_assign
 id|IP6_RT_PRIO_ADDRCONF
 suffix:semicolon
-multiline_comment|/* prefix length - 96 bytes &quot;::d.d.d.d&quot; */
+multiline_comment|/* prefix length - 96 bits &quot;::d.d.d.d&quot; */
 id|rtmsg.rtmsg_dst_len
 op_assign
 l_int|96
