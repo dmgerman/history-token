@@ -206,12 +206,11 @@ id|u32
 id|RxConfigMask
 suffix:semicolon
 multiline_comment|/* Clears the bits supported by this chip */
-DECL|variable|__devinitdata
+DECL|variable|rtl_chip_info
 )brace
 id|rtl_chip_info
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 id|_R
