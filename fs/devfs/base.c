@@ -6196,7 +6196,7 @@ id|de-&gt;name
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function devfs_get_name  */
-multiline_comment|/**&n; *&t;devfs_only - returns if &quot;devfs=only&quot; is a boot option&n; *&n; *&t;If &quot;devfs=only&quot; this function will return 1, otherwise 0 is returned.&n; */
+multiline_comment|/**&n; *&t;devfs_only - returns true if &quot;devfs=only&quot; is a boot option&n; *&n; *&t;If &quot;devfs=only&quot; this function will return 1, otherwise 0 is returned.&n; */
 DECL|function|devfs_only
 r_int
 id|devfs_only
@@ -6204,20 +6204,20 @@ id|devfs_only
 r_void
 )paren
 (brace
-r_if
-c_cond
+r_return
 (paren
 id|boot_options
 op_amp
 id|OPTION_ONLY
 )paren
-r_return
+ques
+c_cond
 l_int|1
-suffix:semicolon
-r_return
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*  End Function devfs_only  */
 multiline_comment|/**&n; *&t;devfs_setup - Process kernel boot options.&n; *&t;@str: The boot options after the &quot;devfs=&quot;.&n; */
 DECL|function|devfs_setup
 r_static
@@ -6626,6 +6626,13 @@ c_func
 id|devfs_get_handle
 )paren
 suffix:semicolon
+DECL|variable|devfs_find_and_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|devfs_find_and_unregister
+)paren
+suffix:semicolon
 DECL|variable|devfs_get_flags
 id|EXPORT_SYMBOL
 c_func
@@ -6729,6 +6736,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|devfs_get_name
+)paren
+suffix:semicolon
+DECL|variable|devfs_only
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|devfs_only
 )paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;try_modload - Notify devfsd of an inode lookup by a non-devfsd process.&n; *&t;@parent: The parent devfs entry.&n; *&t;@fs_info: The filesystem info.&n; *&t;@name: The device name.&n; *&t;@namelen: The number of characters in @name.&n; *&t;@buf: A working area that will be used. This must not go out of scope&n; *            until devfsd is idle again.&n; *&n; *&t;Returns 0 on success (event was queued), else a negative error code.&n; */
