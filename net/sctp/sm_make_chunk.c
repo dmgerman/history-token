@@ -5008,6 +5008,10 @@ id|priority
 id|sockaddr_storage_t
 id|addr
 suffix:semicolon
+id|sctp_addr_param_t
+op_star
+id|addrparm
+suffix:semicolon
 r_int
 id|j
 suffix:semicolon
@@ -5032,21 +5036,21 @@ id|param.p-&gt;type
 r_case
 id|SCTP_PARAM_IPV4_ADDRESS
 suffix:colon
-r_if
-c_cond
+id|addrparm
+op_assign
 (paren
-id|SCTP_CID_INIT
-op_ne
-id|cid
+id|sctp_addr_param_t
+op_star
 )paren
-(brace
+id|param.v
+suffix:semicolon
 id|sctp_param2sockaddr
 c_func
 (paren
 op_amp
 id|addr
 comma
-id|param
+id|addrparm
 comma
 id|asoc-&gt;peer.port
 )paren
@@ -5082,20 +5086,12 @@ comma
 id|priority
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
 id|SCTP_PARAM_IPV6_ADDRESS
 suffix:colon
-r_if
-c_cond
-(paren
-id|SCTP_CID_INIT
-op_ne
-id|cid
-)paren
-(brace
+multiline_comment|/* Rethink this as we may need to keep for&n;&t;&t; * restart considerations.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5104,13 +5100,21 @@ op_eq
 id|asoc-&gt;base.sk-&gt;family
 )paren
 (brace
+id|addrparm
+op_assign
+(paren
+id|sctp_addr_param_t
+op_star
+)paren
+id|param.v
+suffix:semicolon
 id|sctp_param2sockaddr
 c_func
 (paren
 op_amp
 id|addr
 comma
-id|param
+id|addrparm
 comma
 id|asoc-&gt;peer.port
 )paren
@@ -5146,7 +5150,6 @@ comma
 id|priority
 )paren
 suffix:semicolon
-)brace
 )brace
 r_break
 suffix:semicolon
@@ -5402,7 +5405,6 @@ op_star
 id|ep
 )paren
 (brace
-multiline_comment|/* I believe that this random number generator complies with RFC1750.  */
 id|__u32
 id|retval
 suffix:semicolon
@@ -5433,7 +5435,8 @@ id|sockaddr_storage_t
 op_star
 id|addr
 comma
-id|sctpParam_t
+id|sctp_addr_param_t
+op_star
 id|param
 comma
 id|__u16
@@ -5443,7 +5446,7 @@ id|port
 r_switch
 c_cond
 (paren
-id|param.p-&gt;type
+id|param-&gt;v4.param_hdr.type
 )paren
 (brace
 r_case
@@ -5459,7 +5462,7 @@ id|port
 suffix:semicolon
 id|addr-&gt;v4.sin_addr.s_addr
 op_assign
-id|param.v4-&gt;addr.s_addr
+id|param-&gt;v4.addr.s_addr
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -5481,7 +5484,7 @@ suffix:semicolon
 multiline_comment|/* BUG */
 id|addr-&gt;v6.sin6_addr
 op_assign
-id|param.v6-&gt;addr
+id|param-&gt;v6.addr
 suffix:semicolon
 id|addr-&gt;v6.sin6_scope_id
 op_assign
@@ -5500,7 +5503,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|param.p-&gt;type
+id|param-&gt;v4.param_hdr.type
 )paren
 )paren
 suffix:semicolon
@@ -5645,8 +5648,7 @@ r_return
 id|family
 suffix:semicolon
 )brace
-multiline_comment|/* Convert a sockaddr_in to  IP address in an SCTP para.  */
-multiline_comment|/* Returns true if a valid conversion was possible.  */
+multiline_comment|/* Convert a sockaddr_in to an IP address in an SCTP param.&n; * Returns len if a valid conversion was possible.  &n; */
 DECL|function|sockaddr2sctp_addr
 r_int
 id|sockaddr2sctp_addr
@@ -5657,7 +5659,8 @@ id|sockaddr_storage_t
 op_star
 id|sa
 comma
-id|sctpParam_t
+id|sctp_addr_param_t
+op_star
 id|p
 )paren
 (brace
@@ -5675,11 +5678,11 @@ id|sa-&gt;v4.sin_family
 r_case
 id|AF_INET
 suffix:colon
-id|p.p-&gt;type
+id|p-&gt;v4.param_hdr.type
 op_assign
 id|SCTP_PARAM_IPV4_ADDRESS
 suffix:semicolon
-id|p.p-&gt;length
+id|p-&gt;v4.param_hdr.length
 op_assign
 id|ntohs
 c_func
@@ -5697,7 +5700,7 @@ r_sizeof
 id|sctp_ipv4addr_param_t
 )paren
 suffix:semicolon
-id|p.v4-&gt;addr.s_addr
+id|p-&gt;v4.addr.s_addr
 op_assign
 id|sa-&gt;v4.sin_addr.s_addr
 suffix:semicolon
@@ -5706,11 +5709,11 @@ suffix:semicolon
 r_case
 id|AF_INET6
 suffix:colon
-id|p.p-&gt;type
+id|p-&gt;v6.param_hdr.type
 op_assign
 id|SCTP_PARAM_IPV6_ADDRESS
 suffix:semicolon
-id|p.p-&gt;length
+id|p-&gt;v6.param_hdr.length
 op_assign
 id|ntohs
 c_func
@@ -5728,7 +5731,7 @@ r_sizeof
 id|sctp_ipv6addr_param_t
 )paren
 suffix:semicolon
-id|p.v6-&gt;addr
+id|p-&gt;v6.addr
 op_assign
 op_star
 (paren
