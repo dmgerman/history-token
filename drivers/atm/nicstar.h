@@ -1181,8 +1181,8 @@ id|sram_size
 suffix:semicolon
 multiline_comment|/* In k x 32bit words. 32 or 128 */
 DECL|member|membase
-r_int
-r_int
+r_void
+op_star
 id|membase
 suffix:semicolon
 multiline_comment|/* Card&squot;s memory base address */

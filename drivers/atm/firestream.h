@@ -777,8 +777,8 @@ id|hw_base
 suffix:semicolon
 multiline_comment|/* mem base address */
 DECL|member|base
-r_int
-r_int
+r_void
+op_star
 id|base
 suffix:semicolon
 multiline_comment|/* Mapping of base address */

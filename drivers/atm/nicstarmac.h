@@ -1,8 +1,8 @@
 multiline_comment|/******************************************************************************&n; *&n; * nicstarmac.h&n; *&n; * Header file for nicstarmac.c&n; *&n; ******************************************************************************/
 DECL|typedef|virt_addr_t
 r_typedef
-r_int
-r_int
+r_void
+op_star
 id|virt_addr_t
 suffix:semicolon
 id|u_int32_t

@@ -1613,6 +1613,10 @@ suffix:semicolon
 r_int
 id|bcount
 suffix:semicolon
+r_int
+r_int
+id|membase
+suffix:semicolon
 id|error
 op_assign
 l_int|0
@@ -1737,7 +1741,7 @@ id|card-&gt;pcidev
 op_assign
 id|pcidev
 suffix:semicolon
-id|card-&gt;membase
+id|membase
 op_assign
 id|pci_resource_start
 c_func
@@ -1749,14 +1753,10 @@ l_int|1
 suffix:semicolon
 id|card-&gt;membase
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
-id|card-&gt;membase
+id|membase
 comma
 id|NS_IOREMAP_SIZE
 )paren

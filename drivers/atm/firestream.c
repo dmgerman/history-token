@@ -6480,9 +6480,6 @@ l_int|0
 suffix:semicolon
 id|dev-&gt;base
 op_assign
-(paren
-id|ulong
-)paren
 id|ioremap
 c_func
 (paren

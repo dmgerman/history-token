@@ -91,8 +91,8 @@ id|vci_t
 suffix:semicolon
 DECL|typedef|bus_addr_t
 r_typedef
-r_int
-r_int
+r_void
+op_star
 id|bus_addr_t
 suffix:semicolon
 multiline_comment|/* DMA buffer in host memory for TX, RX, or service list. */
@@ -1134,9 +1134,6 @@ id|reg
 r_return
 id|lanai-&gt;base
 op_plus
-(paren
-id|bus_addr_t
-)paren
 id|reg
 suffix:semicolon
 )brace
@@ -1931,9 +1928,6 @@ c_func
 (paren
 id|lvcc-&gt;vbase
 op_plus
-(paren
-id|bus_addr_t
-)paren
 id|offset
 )paren
 suffix:semicolon
@@ -2043,9 +2037,6 @@ id|val
 comma
 id|lvcc-&gt;vbase
 op_plus
-(paren
-id|bus_addr_t
-)paren
 id|offset
 )paren
 suffix:semicolon
@@ -9845,9 +9836,6 @@ id|error
 suffix:semicolon
 id|raw_base
 op_assign
-(paren
-id|bus_addr_t
-)paren
 id|lanai-&gt;pci-&gt;resource
 (braket
 l_int|0
