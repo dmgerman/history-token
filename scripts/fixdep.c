@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * &quot;Optimize&quot; a list of dependencies as spit out by gcc -MD &n; * for the kernel build&n; * ===========================================================================&n; *&n; * Author       Kai Germaschewski&n; * Copyright    2002 by Kai Germaschewski  &lt;kai.germaschewski@gmx.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; *&n; * Introduction:&n; * &n; * gcc produces a very nice and correct list of dependencies which&n; * tells make when to remake a file.&n; *&n; * To use this list as-is however has the drawback that virtually&n; * every file in the kernel includes &lt;linux/config.h&gt; which then again&n; * includes &lt;linux/autoconf.h&gt;&n; *&n; * If the user re-runs make *config, linux/autoconf.h will be&n; * regenerated.  make notices that and will rebuild every file which&n; * includes autconf.h, i.e. basically all files. This is extremely&n; * annoying if the user just changed CONFIG_HIS_DRIVER from n to m.&n; * &n; * So we play the same trick that &quot;mkdep&quot; played before. We replace&n; * the dependency on linux/autoconf.h by a dependency on every config&n; * option which is mentioned in any of the listed prequisites.&n; *  &n; * To be exact, split-include populates a tree in include/config/,&n; * e.g. include/config/his/driver.h, which contains the #define/#undef&n; * for the CONFIG_HIS_DRIVER option.&n; *&n; * So if the user changes his CONFIG_HIS_DRIVER option, only the objects&n; * which depend on &quot;include/linux/config/his/driver.h&quot; will be rebuilt,&n; * so most likely only his driver ;-) &n; *&n; * The idea above dates, by the way, back to Michael E Chastain, AFAIK.&n; * &n; * So to get dependencies right, there two issues:&n; * o if any of the files the compiler read changed, we need to rebuild&n; * o if the command line given to the compile the file changed, we&n; *   better rebuild as well.&n; *&n; * The former is handled by using the -MD output, the later by saving&n; * the command line used to compile the old object and comparing it&n; * to the one we would now use.&n; *&n; * Again, also this idea is pretty old and has been discussed on&n; * kbuild-devel a long time ago. I don&squot;t have a sensibly working&n; * internet connection right now, so I rather don&squot;t mention names&n; * without double checking.&n; *&n; * This code here has been based partially based on mkdep.c, which&n; * says the following about its history:&n; *&n; *   Copyright abandoned, Michael Chastain, &lt;mailto:mec@shout.net&gt;.&n; *   This is a C version of syncdep.pl by Werner Almesberger.&n; *&n; *&n; * It is invoked as&n; *&n; *   fixdep &lt;target&gt; &lt;topdir&gt; &lt;cmdline&gt;&n; *&n; * and will read the dependency file &quot;.&lt;target&gt;.d&quot;.&n; *&n; * The transformed dependency snipped is written to stdout.&n; *&n; * It first generates a line&n; *&n; *   cmd_&lt;target&gt; = &lt;cmdline&gt;&n; *&n; * and then basically copies the .&lt;target&gt;.d file to stdout, in the&n; * process filtering out the dependency on linux/autconf.h and adding&n; * dependencies on include/config/my/option.h for every&n; * CONFIG_MY_OPTION encountered in any of the prequisites.&n; *&n; * It will also filter out all the dependencies on *.ver. We need&n; * to make sure that the generated version checksum are globally up&n; * to date before even starting the recursive build, so it&squot;s too late&n; * at this point anyway.&n; *&n; * The algorithm to grep for &quot;CONFIG_...&quot; is bit unusual, but should&n; * be fast ;-) We don&squot;t even try to really parse the header files, but&n; * merely grep, i.e. if CONFIG_FOO is mentioned in a comment, it will&n; * be picked up as well. It&squot;s not a problem with respect to&n; * correctness, since that can only give too many dependencies, thus&n; * we cannot miss a rebuild. Since people tend to not mention totally&n; * unrelated CONFIG_ options all over the place, it&squot;s not an&n; * efficiency problem either.&n; * &n; * (Note: it&squot;d be easy to port over the complete mkdep state machine,&n; *  but I don&squot;t think the added complexity is worth it)&n; */
+multiline_comment|/*&n; * &quot;Optimize&quot; a list of dependencies as spit out by gcc -MD &n; * for the kernel build&n; * ===========================================================================&n; *&n; * Author       Kai Germaschewski&n; * Copyright    2002 by Kai Germaschewski  &lt;kai.germaschewski@gmx.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; *&n; * Introduction:&n; * &n; * gcc produces a very nice and correct list of dependencies which&n; * tells make when to remake a file.&n; *&n; * To use this list as-is however has the drawback that virtually&n; * every file in the kernel includes &lt;linux/config.h&gt; which then again&n; * includes &lt;linux/autoconf.h&gt;&n; *&n; * If the user re-runs make *config, linux/autoconf.h will be&n; * regenerated.  make notices that and will rebuild every file which&n; * includes autconf.h, i.e. basically all files. This is extremely&n; * annoying if the user just changed CONFIG_HIS_DRIVER from n to m.&n; * &n; * So we play the same trick that &quot;mkdep&quot; played before. We replace&n; * the dependency on linux/autoconf.h by a dependency on every config&n; * option which is mentioned in any of the listed prequisites.&n; *  &n; * To be exact, split-include populates a tree in include/config/,&n; * e.g. include/config/his/driver.h, which contains the #define/#undef&n; * for the CONFIG_HIS_DRIVER option.&n; *&n; * So if the user changes his CONFIG_HIS_DRIVER option, only the objects&n; * which depend on &quot;include/linux/config/his/driver.h&quot; will be rebuilt,&n; * so most likely only his driver ;-) &n; *&n; * The idea above dates, by the way, back to Michael E Chastain, AFAIK.&n; * &n; * So to get dependencies right, there two issues:&n; * o if any of the files the compiler read changed, we need to rebuild&n; * o if the command line given to the compile the file changed, we&n; *   better rebuild as well.&n; *&n; * The former is handled by using the -MD output, the later by saving&n; * the command line used to compile the old object and comparing it&n; * to the one we would now use.&n; *&n; * Again, also this idea is pretty old and has been discussed on&n; * kbuild-devel a long time ago. I don&squot;t have a sensibly working&n; * internet connection right now, so I rather don&squot;t mention names&n; * without double checking.&n; *&n; * This code here has been based partially based on mkdep.c, which&n; * says the following about its history:&n; *&n; *   Copyright abandoned, Michael Chastain, &lt;mailto:mec@shout.net&gt;.&n; *   This is a C version of syncdep.pl by Werner Almesberger.&n; *&n; *&n; * It is invoked as&n; *&n; *   fixdep &lt;depfile&gt; &lt;target&gt; &lt;topdir&gt; &lt;cmdline&gt;&n; *&n; * and will read the dependency file &lt;depfile&gt;&n; *&n; * The transformed dependency snipped is written to stdout.&n; *&n; * It first generates a line&n; *&n; *   cmd_&lt;target&gt; = &lt;cmdline&gt;&n; *&n; * and then basically copies the .&lt;target&gt;.d file to stdout, in the&n; * process filtering out the dependency on linux/autconf.h and adding&n; * dependencies on include/config/my/option.h for every&n; * CONFIG_MY_OPTION encountered in any of the prequisites.&n; *&n; * It will also filter out all the dependencies on *.ver. We need&n; * to make sure that the generated version checksum are globally up&n; * to date before even starting the recursive build, so it&squot;s too late&n; * at this point anyway.&n; *&n; * The algorithm to grep for &quot;CONFIG_...&quot; is bit unusual, but should&n; * be fast ;-) We don&squot;t even try to really parse the header files, but&n; * merely grep, i.e. if CONFIG_FOO is mentioned in a comment, it will&n; * be picked up as well. It&squot;s not a problem with respect to&n; * correctness, since that can only give too many dependencies, thus&n; * we cannot miss a rebuild. Since people tend to not mention totally&n; * unrelated CONFIG_ options all over the place, it&squot;s not an&n; * efficiency problem either.&n; * &n; * (Note: it&squot;d be easy to port over the complete mkdep state machine,&n; *  but I don&squot;t think the added complexity is worth it)&n; */
 macro_line|#include &lt;sys/types.h&gt;
 macro_line|#include &lt;sys/stat.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
@@ -23,6 +23,21 @@ r_char
 op_star
 id|topdir
 suffix:semicolon
+DECL|variable|target
+r_char
+op_star
+id|target
+suffix:semicolon
+DECL|variable|depfile
+r_char
+op_star
+id|depfile
+suffix:semicolon
+DECL|variable|cmdline
+r_char
+op_star
+id|cmdline
+suffix:semicolon
 DECL|function|usage
 r_void
 id|usage
@@ -36,7 +51,7 @@ c_func
 (paren
 id|stderr
 comma
-l_string|&quot;Usage: fixdep &lt;target&gt; &lt;topdir&gt; &lt;cmdline&gt;&bslash;n&quot;
+l_string|&quot;Usage: fixdep &lt;depfile&gt; &lt;target&gt; &lt;topdir&gt; &lt;cmdline&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
 m_exit
@@ -50,86 +65,17 @@ r_void
 id|print_cmdline
 c_func
 (paren
-r_char
-op_star
-id|target
-comma
-r_char
-op_star
-id|cmdline
+r_void
 )paren
 (brace
-r_char
-op_star
-id|s
-op_assign
-id|strdup
-c_func
-(paren
-id|target
-)paren
-suffix:semicolon
-r_char
-op_star
-id|p
-op_assign
-id|s
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|s
-)paren
-(brace
-id|fprintf
-c_func
-(paren
-id|stderr
-comma
-l_string|&quot;no mem!&bslash;n&quot;
-)paren
-suffix:semicolon
-m_exit
-(paren
-l_int|2
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|p
-op_assign
-id|strchr
-c_func
-(paren
-id|p
-comma
-l_char|&squot;/&squot;
-)paren
-)paren
-)paren
-op_star
-id|p
-op_assign
-l_char|&squot;_&squot;
-suffix:semicolon
 id|printf
 c_func
 (paren
 l_string|&quot;cmd_%s := %s&bslash;n&bslash;n&quot;
 comma
-id|s
+id|target
 comma
 id|cmdline
-)paren
-suffix:semicolon
-id|free
-c_func
-(paren
-id|s
 )paren
 suffix:semicolon
 )brace
@@ -990,9 +936,7 @@ c_func
 (paren
 id|stderr
 comma
-l_string|&quot;parse error at %d&quot;
-comma
-id|__LINE__
+l_string|&quot;fixdep: parse error&bslash;n&quot;
 )paren
 suffix:semicolon
 m_exit
@@ -1027,7 +971,7 @@ c_func
 (paren
 l_string|&quot;%s: &bslash;&bslash;&bslash;n&quot;
 comma
-id|s
+id|target
 )paren
 suffix:semicolon
 id|m
@@ -1198,17 +1142,9 @@ r_void
 id|print_deps
 c_func
 (paren
-r_char
-op_star
-id|target
+r_void
 )paren
 (brace
-r_char
-id|filename
-(braket
-id|PATH_MAX
-)braket
-suffix:semicolon
 r_struct
 id|stat
 id|st
@@ -1220,22 +1156,12 @@ r_void
 op_star
 id|map
 suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|filename
-comma
-l_string|&quot;.%s.d&quot;
-comma
-id|target
-)paren
-suffix:semicolon
 id|fd
 op_assign
 id|open
 c_func
 (paren
-id|filename
+id|depfile
 comma
 id|O_RDONLY
 )paren
@@ -1251,7 +1177,7 @@ l_int|0
 id|perror
 c_func
 (paren
-id|filename
+id|depfile
 )paren
 suffix:semicolon
 m_exit
@@ -1282,9 +1208,9 @@ c_func
 (paren
 id|stderr
 comma
-l_string|&quot;%s is empty&bslash;n&quot;
+l_string|&quot;fixdep: %s is empty&bslash;n&quot;
 comma
-id|filename
+id|depfile
 )paren
 suffix:semicolon
 id|close
@@ -1390,7 +1316,7 @@ c_func
 (paren
 id|stderr
 comma
-l_string|&quot;sizeof(int) != 4 or wrong endianess? %#x&bslash;n&quot;
+l_string|&quot;fixdep: sizeof(int) != 4 or wrong endianess? %#x&bslash;n&quot;
 comma
 op_star
 (paren
@@ -1422,13 +1348,6 @@ id|argv
 )braket
 )paren
 (brace
-r_char
-op_star
-id|target
-comma
-op_star
-id|cmdline
-suffix:semicolon
 id|traps
 c_func
 (paren
@@ -1439,46 +1358,49 @@ c_cond
 (paren
 id|argc
 op_ne
-l_int|4
+l_int|5
 )paren
 id|usage
 c_func
 (paren
 )paren
 suffix:semicolon
-id|target
+id|depfile
 op_assign
 id|argv
 (braket
 l_int|1
 )braket
 suffix:semicolon
-id|topdir
+id|target
 op_assign
 id|argv
 (braket
 l_int|2
 )braket
 suffix:semicolon
-id|cmdline
+id|topdir
 op_assign
 id|argv
 (braket
 l_int|3
 )braket
 suffix:semicolon
+id|cmdline
+op_assign
+id|argv
+(braket
+l_int|4
+)braket
+suffix:semicolon
 id|print_cmdline
 c_func
 (paren
-id|target
-comma
-id|cmdline
 )paren
 suffix:semicolon
 id|print_deps
 c_func
 (paren
-id|target
 )paren
 suffix:semicolon
 r_return
