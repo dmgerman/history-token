@@ -364,6 +364,22 @@ id|dma_addr_t
 id|dma
 )paren
 suffix:semicolon
+DECL|member|disable
+r_void
+(paren
+op_star
+id|disable
+)paren
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+comma
+r_int
+id|bEndpointAddress
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* each driver provides one of these, and hardware init support */
@@ -567,6 +583,28 @@ r_struct
 id|usb_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* hw synch, freeing endpoint resources that urb_dequeue can&squot;t */
+DECL|member|endpoint_disable
+r_void
+(paren
+op_star
+id|endpoint_disable
+)paren
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+comma
+r_struct
+id|hcd_dev
+op_star
+id|dev
+comma
+r_int
+id|bEndpointAddress
 )paren
 suffix:semicolon
 multiline_comment|/* root hub support */
