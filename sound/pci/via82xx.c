@@ -3621,6 +3621,7 @@ id|runtime-&gt;rate
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -3633,6 +3634,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_else
+macro_line|#endif
 id|rbits
 op_assign
 (paren
@@ -3947,6 +3949,7 @@ id|OFS_MULTPLAY_FORMAT
 )paren
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -3959,6 +3962,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_else
+macro_line|#endif
 (brace
 multiline_comment|/* set sample number to slot 3, 4, 7, 8, 6, 9 (for VIA8233/C,8235) */
 multiline_comment|/* corresponding to FL, FR, RL, RR, C, LFE ?? */
@@ -7007,12 +7011,24 @@ id|ac97_quirks
 op_assign
 (brace
 (brace
+dot
+id|vendor
+op_assign
 l_int|0x1106
 comma
+dot
+id|device
+op_assign
 l_int|0x4161
 comma
+dot
+id|name
+op_assign
 l_string|&quot;ASRock K7VT2&quot;
 comma
+dot
+id|type
+op_assign
 id|AC97_TUNE_HP_ONLY
 )brace
 comma
