@@ -928,7 +928,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|task_security_struct
+id|sk_security_struct
 op_star
 id|ssec
 op_assign
