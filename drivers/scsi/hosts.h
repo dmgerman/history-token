@@ -951,31 +951,6 @@ r_int
 r_char
 id|scsi_type
 suffix:semicolon
-DECL|member|nr_dev
-r_int
-r_int
-id|nr_dev
-suffix:semicolon
-multiline_comment|/* Number currently attached */
-DECL|member|dev_noticed
-r_int
-r_int
-id|dev_noticed
-suffix:semicolon
-multiline_comment|/* Number of devices detected. */
-DECL|member|dev_max
-r_int
-r_int
-id|dev_max
-suffix:semicolon
-multiline_comment|/* Current size of arrays */
-DECL|member|blk
-r_int
-id|blk
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 0 if character device */
 DECL|member|detect
 r_int
 (paren
@@ -988,17 +963,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Returns 1 if we can attach this device */
-DECL|member|init
-r_int
-(paren
-op_star
-id|init
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Sizes arrays based upon number of devices&n;&t;&t;   *  detected */
 DECL|member|attach
 r_int
 (paren

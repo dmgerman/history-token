@@ -88,6 +88,16 @@ id|try_wdio
 op_assign
 id|TRUE
 suffix:semicolon
+DECL|variable|st_dev_max
+r_static
+r_int
+id|st_dev_max
+suffix:semicolon
+DECL|variable|st_nr_dev
+r_static
+r_int
+id|st_nr_dev
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -4635,7 +4645,7 @@ c_cond
 (paren
 id|dev
 op_ge
-id|st_template.dev_max
+id|st_dev_max
 op_logical_or
 id|scsi_tapes
 op_eq
@@ -19270,9 +19280,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|st_template.nr_dev
+id|st_nr_dev
 op_ge
-id|st_template.dev_max
+id|st_dev_max
 )paren
 (brace
 id|Scsi_Tape
@@ -19290,7 +19300,7 @@ id|tmp_dev_max
 suffix:semicolon
 id|tmp_dev_max
 op_assign
-id|st_template.nr_dev
+id|st_nr_dev
 op_plus
 id|ST_DEV_ARR_LUMP
 suffix:semicolon
@@ -19310,7 +19320,7 @@ c_cond
 (paren
 id|tmp_dev_max
 op_le
-id|st_template.nr_dev
+id|st_nr_dev
 )paren
 (brace
 id|SDp-&gt;attached
@@ -19470,7 +19480,7 @@ id|tmp_da
 comma
 id|scsi_tapes
 comma
-id|st_template.dev_max
+id|st_dev_max
 op_star
 r_sizeof
 (paren
@@ -19490,7 +19500,7 @@ id|scsi_tapes
 op_assign
 id|tmp_da
 suffix:semicolon
-id|st_template.dev_max
+id|st_dev_max
 op_assign
 id|tmp_dev_max
 suffix:semicolon
@@ -19504,7 +19514,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|st_template.dev_max
+id|st_dev_max
 suffix:semicolon
 id|i
 op_increment
@@ -19526,7 +19536,7 @@ c_cond
 (paren
 id|i
 op_ge
-id|st_template.dev_max
+id|st_dev_max
 )paren
 id|panic
 c_func
@@ -19981,7 +19991,7 @@ op_amp
 id|tpnt-&gt;lock
 )paren
 suffix:semicolon
-id|st_template.nr_dev
+id|st_nr_dev
 op_increment
 suffix:semicolon
 id|write_unlock
@@ -20442,9 +20452,6 @@ id|SDp
 r_return
 l_int|0
 suffix:semicolon
-id|st_template.dev_noticed
-op_increment
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -20485,7 +20492,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|st_template.dev_max
+id|st_dev_max
 suffix:semicolon
 id|i
 op_increment
@@ -20570,10 +20577,7 @@ suffix:semicolon
 id|SDp-&gt;attached
 op_decrement
 suffix:semicolon
-id|st_template.nr_dev
-op_decrement
-suffix:semicolon
-id|st_template.dev_noticed
+id|st_nr_dev
 op_decrement
 suffix:semicolon
 id|write_unlock
@@ -20842,7 +20846,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|st_template.dev_max
+id|st_dev_max
 suffix:semicolon
 op_increment
 id|i
@@ -20884,10 +20888,6 @@ id|scsi_tapes
 )paren
 suffix:semicolon
 )brace
-id|st_template.dev_max
-op_assign
-l_int|0
-suffix:semicolon
 id|printk
 c_func
 (paren

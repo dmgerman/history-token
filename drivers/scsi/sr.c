@@ -101,11 +101,6 @@ op_assign
 id|TYPE_ROM
 comma
 dot
-id|blk
-op_assign
-l_int|1
-comma
-dot
 id|detect
 op_assign
 id|sr_detect
@@ -126,6 +121,12 @@ op_assign
 id|sr_init_command
 )brace
 suffix:semicolon
+DECL|variable|sr_nr_dev
+r_static
+r_int
+id|sr_nr_dev
+suffix:semicolon
+multiline_comment|/* XXX(hch) bad hack, we want a bitmap instead */
 r_static
 id|LIST_HEAD
 c_func
@@ -1868,9 +1869,6 @@ id|TYPE_WORM
 r_return
 l_int|0
 suffix:semicolon
-id|sr_template.dev_noticed
-op_increment
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1971,7 +1969,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * XXX  This doesn&squot;t make us better than the previous code in the&n;&t; * XXX  end (not worse either, though..).&n;&t; * XXX  To properly support hotplugging we should have a bitmap and&n;&t; * XXX  use find_first_zero_bit on it.  This will happen at the&n;&t; * XXX  same time template-&gt;nr_* goes away.&t;&t;--hch&n;&t; */
 id|minor
 op_assign
-id|sr_template.nr_dev
+id|sr_nr_dev
 op_increment
 suffix:semicolon
 id|disk-&gt;major
@@ -3269,7 +3267,7 @@ suffix:semicolon
 id|SDp-&gt;attached
 op_decrement
 suffix:semicolon
-id|sr_template.nr_dev
+id|sr_nr_dev
 op_decrement
 suffix:semicolon
 id|kfree
