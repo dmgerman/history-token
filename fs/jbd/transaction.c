@@ -4107,7 +4107,7 @@ op_assign
 id|jh-&gt;b_tprev
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Remove a buffer from the appropriate transaction list.&n; *&n; * Note that this function can *change* the value of&n; * bh-&gt;b_transaction-&gt;t_sync_datalist, t_buffers, t_forget,&n; * t_iobuf_list, t_shadow_list, t_log_list or t_reserved_list.  If the caller&n; * is holding onto a copy of one of thee pointers, it could go bad.&n; * Generally the caller needs to re-read the pointer from the transaction_t.&n; *&n; * If bh-&gt;b_jlist is BJ_SyncData then we may have been called&n; * via journal_try_to_free_buffer() or journal_clean_data_list().  In that&n; * case, j_list_lock will be held, and the journal may not be locked.&n; */
+multiline_comment|/* &n; * Remove a buffer from the appropriate transaction list.&n; *&n; * Note that this function can *change* the value of&n; * bh-&gt;b_transaction-&gt;t_sync_datalist, t_buffers, t_forget,&n; * t_iobuf_list, t_shadow_list, t_log_list or t_reserved_list.  If the caller&n; * is holding onto a copy of one of thee pointers, it could go bad.&n; * Generally the caller needs to re-read the pointer from the transaction_t.&n; *&n; * Called under j_list_lock.  The journal may not be locked.&n; */
 DECL|function|__journal_unfile_buffer
 r_void
 id|__journal_unfile_buffer
