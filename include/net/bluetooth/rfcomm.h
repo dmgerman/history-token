@@ -896,11 +896,16 @@ mdefine_line|#define RFCOMM_LM_RELIABLE&t;0x0010
 DECL|macro|RFCOMM_LM_SECURE
 mdefine_line|#define RFCOMM_LM_SECURE&t;0x0020
 DECL|macro|rfcomm_pi
-mdefine_line|#define rfcomm_pi(sk)   ((struct rfcomm_pinfo *)sk-&gt;sk_protinfo)
+mdefine_line|#define rfcomm_pi(sk) ((struct rfcomm_pinfo *) sk)
 DECL|struct|rfcomm_pinfo
 r_struct
 id|rfcomm_pinfo
 (brace
+DECL|member|bt
+r_struct
+id|bt_sock
+id|bt
+suffix:semicolon
 DECL|member|dlc
 r_struct
 id|rfcomm_dlc
