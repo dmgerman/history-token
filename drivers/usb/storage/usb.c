@@ -3309,15 +3309,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* serious error -- we&squot;re attempting to disconnect an interface but&n;&t; * cannot locate the local data structure&n;&t; */
-id|BUG_ON
-c_func
-(paren
-id|us
-op_eq
-l_int|NULL
-)paren
-suffix:semicolon
 multiline_comment|/* set devices offline -- need host lock for this */
 id|scsi_lock
 c_func
