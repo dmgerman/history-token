@@ -1773,6 +1773,15 @@ c_func
 l_string|&quot;scsi_devices corrupt (sr)&quot;
 )paren
 suffix:semicolon
+id|scsi_CDs
+(braket
+id|i
+)braket
+dot
+id|device
+op_assign
+id|SDp
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1786,15 +1795,6 @@ id|i
 )paren
 r_goto
 id|fail
-suffix:semicolon
-id|scsi_CDs
-(braket
-id|i
-)braket
-dot
-id|device
-op_assign
-id|SDp
 suffix:semicolon
 id|sr_template.nr_dev
 op_increment
