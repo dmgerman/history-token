@@ -12664,7 +12664,7 @@ r_goto
 id|drop
 suffix:semicolon
 )brace
-id|tcp_set_owner_r
+id|sk_stream_set_owner_r
 c_func
 (paren
 id|skb
@@ -13095,7 +13095,7 @@ op_member_access_from_pointer
 id|end_seq
 )paren
 suffix:semicolon
-id|tcp_set_owner_r
+id|sk_stream_set_owner_r
 c_func
 (paren
 id|skb
@@ -13930,7 +13930,7 @@ comma
 id|skb-&gt;list
 )paren
 suffix:semicolon
-id|tcp_set_owner_r
+id|sk_stream_set_owner_r
 c_func
 (paren
 id|nskb
@@ -16144,7 +16144,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|tcp_set_owner_r
+id|sk_stream_set_owner_r
 c_func
 (paren
 id|skb
