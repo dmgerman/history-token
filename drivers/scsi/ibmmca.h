@@ -23,14 +23,6 @@ op_star
 suffix:semicolon
 r_static
 r_int
-id|ibmmca_command
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
 id|ibmmca_queuecommand
 (paren
 id|Scsi_Cmnd
