@@ -1132,6 +1132,10 @@ id|server-&gt;lru_busy
 suffix:semicolon
 id|nfsv3_try_again
 suffix:colon
+id|server-&gt;caps
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Check NFS protocol revision and initialize RPC op vector&n;&t; * and file handle pool. */
 r_if
 c_cond
@@ -1150,6 +1154,10 @@ suffix:semicolon
 id|version
 op_assign
 l_int|3
+suffix:semicolon
+id|server-&gt;caps
+op_or_assign
+id|NFS_CAP_READDIRPLUS
 suffix:semicolon
 r_if
 c_cond
