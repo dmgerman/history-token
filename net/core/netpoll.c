@@ -686,7 +686,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -716,7 +716,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -750,7 +750,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp

@@ -56,7 +56,7 @@ id|gfp
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 suffix:semicolon
@@ -1123,7 +1123,7 @@ op_star
 id|peer
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 suffix:semicolon
@@ -2537,7 +2537,7 @@ id|newsk
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|newsp
 op_assign
@@ -3111,7 +3111,7 @@ id|pmtu
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign

@@ -2,11 +2,6 @@ macro_line|#ifndef _IP_CONNTRACK_H
 DECL|macro|_IP_CONNTRACK_H
 mdefine_line|#define _IP_CONNTRACK_H
 multiline_comment|/* Connection state tracking for netfilter.  This is separated from,&n;   but required by, the NAT layer; it can also be used by an iptables&n;   extension. */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tuple.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
 DECL|enum|ip_conntrack_info
 r_enum
 id|ip_conntrack_info
@@ -103,8 +98,108 @@ op_lshift
 id|IPS_CONFIRMED_BIT
 )paren
 comma
+multiline_comment|/* Connection needs src nat in orig dir.  This bit never changed. */
+DECL|enumerator|IPS_SRC_NAT_BIT
+id|IPS_SRC_NAT_BIT
+op_assign
+l_int|4
+comma
+DECL|enumerator|IPS_SRC_NAT
+id|IPS_SRC_NAT
+op_assign
+(paren
+l_int|1
+op_lshift
+id|IPS_SRC_NAT_BIT
+)paren
+comma
+multiline_comment|/* Connection needs dst nat in orig dir.  This bit never changed. */
+DECL|enumerator|IPS_DST_NAT_BIT
+id|IPS_DST_NAT_BIT
+op_assign
+l_int|5
+comma
+DECL|enumerator|IPS_DST_NAT
+id|IPS_DST_NAT
+op_assign
+(paren
+l_int|1
+op_lshift
+id|IPS_DST_NAT_BIT
+)paren
+comma
+multiline_comment|/* Both together. */
+DECL|enumerator|IPS_NAT_MASK
+id|IPS_NAT_MASK
+op_assign
+(paren
+id|IPS_DST_NAT
+op_or
+id|IPS_SRC_NAT
+)paren
+comma
+multiline_comment|/* Connection needs TCP sequence adjusted. */
+DECL|enumerator|IPS_SEQ_ADJUST_BIT
+id|IPS_SEQ_ADJUST_BIT
+op_assign
+l_int|6
+comma
+DECL|enumerator|IPS_SEQ_ADJUST
+id|IPS_SEQ_ADJUST
+op_assign
+(paren
+l_int|1
+op_lshift
+id|IPS_SEQ_ADJUST_BIT
+)paren
+comma
+multiline_comment|/* NAT initialization bits. */
+DECL|enumerator|IPS_SRC_NAT_DONE_BIT
+id|IPS_SRC_NAT_DONE_BIT
+op_assign
+l_int|7
+comma
+DECL|enumerator|IPS_SRC_NAT_DONE
+id|IPS_SRC_NAT_DONE
+op_assign
+(paren
+l_int|1
+op_lshift
+id|IPS_SRC_NAT_DONE_BIT
+)paren
+comma
+DECL|enumerator|IPS_DST_NAT_DONE_BIT
+id|IPS_DST_NAT_DONE_BIT
+op_assign
+l_int|8
+comma
+DECL|enumerator|IPS_DST_NAT_DONE
+id|IPS_DST_NAT_DONE
+op_assign
+(paren
+l_int|1
+op_lshift
+id|IPS_DST_NAT_DONE_BIT
+)paren
+comma
+multiline_comment|/* Both together */
+DECL|enumerator|IPS_NAT_DONE_MASK
+id|IPS_NAT_DONE_MASK
+op_assign
+(paren
+id|IPS_DST_NAT_DONE
+op_or
+id|IPS_SRC_NAT_DONE
+)paren
+comma
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tuple.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tcp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_icmp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_sctp.h&gt;
@@ -142,38 +237,6 @@ multiline_comment|/* Add protocol helper include file here */
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_amanda.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_ftp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_irc.h&gt;
-multiline_comment|/* per expectation: application helper private data */
-DECL|union|ip_conntrack_expect_help
-r_union
-id|ip_conntrack_expect_help
-(brace
-multiline_comment|/* insert conntrack helper private data (expect) here */
-DECL|member|exp_amanda_info
-r_struct
-id|ip_ct_amanda_expect
-id|exp_amanda_info
-suffix:semicolon
-DECL|member|exp_ftp_info
-r_struct
-id|ip_ct_ftp_expect
-id|exp_ftp_info
-suffix:semicolon
-DECL|member|exp_irc_info
-r_struct
-id|ip_ct_irc_expect
-id|exp_irc_info
-suffix:semicolon
-macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
-r_union
-(brace
-multiline_comment|/* insert nat helper private data (expect) here */
-DECL|member|nat
-)brace
-id|nat
-suffix:semicolon
-macro_line|#endif
-)brace
-suffix:semicolon
 multiline_comment|/* per conntrack: application helper private data */
 DECL|union|ip_conntrack_help
 r_union
@@ -194,16 +257,7 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
-multiline_comment|/* per conntrack: nat application helper private data */
-DECL|union|ip_conntrack_nat_help
-r_union
-id|ip_conntrack_nat_help
-(brace
-multiline_comment|/* insert nat helper private data here */
-)brace
-suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
@@ -223,44 +277,6 @@ r_struct
 id|list_head
 id|list
 suffix:semicolon
-multiline_comment|/* reference count */
-DECL|member|use
-id|atomic_t
-id|use
-suffix:semicolon
-multiline_comment|/* expectation list for this master */
-DECL|member|expected_list
-r_struct
-id|list_head
-id|expected_list
-suffix:semicolon
-multiline_comment|/* The conntrack of the master connection */
-DECL|member|expectant
-r_struct
-id|ip_conntrack
-op_star
-id|expectant
-suffix:semicolon
-multiline_comment|/* The conntrack of the sibling connection, set after&n;&t; * expectation arrived */
-DECL|member|sibling
-r_struct
-id|ip_conntrack
-op_star
-id|sibling
-suffix:semicolon
-multiline_comment|/* Tuple saved for conntrack */
-DECL|member|ct_tuple
-r_struct
-id|ip_conntrack_tuple
-id|ct_tuple
-suffix:semicolon
-multiline_comment|/* Timer function; deletes the expectation. */
-DECL|member|timeout
-r_struct
-id|timer_list
-id|timeout
-suffix:semicolon
-multiline_comment|/* Data filled out by the conntrack helpers follow: */
 multiline_comment|/* We expect this tuple, with the following mask */
 DECL|member|tuple
 DECL|member|mask
@@ -272,7 +288,7 @@ id|mask
 suffix:semicolon
 multiline_comment|/* Function to call after setup and insertion */
 DECL|member|expectfn
-r_int
+r_void
 (paren
 op_star
 id|expectfn
@@ -282,23 +298,40 @@ r_struct
 id|ip_conntrack
 op_star
 r_new
+comma
+r_struct
+id|ip_conntrack_expect
+op_star
+id|this
 )paren
 suffix:semicolon
-multiline_comment|/* At which sequence number did this expectation occur */
-DECL|member|seq
-id|u_int32_t
-id|seq
+multiline_comment|/* The conntrack of the master connection */
+DECL|member|master
+r_struct
+id|ip_conntrack
+op_star
+id|master
 suffix:semicolon
-DECL|member|proto
+multiline_comment|/* Timer function; deletes the expectation. */
+DECL|member|timeout
+r_struct
+id|timer_list
+id|timeout
+suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
+multiline_comment|/* This is the original per-proto part, used to map the&n;&t; * expected connection the way the recipient expects. */
+DECL|member|saved_proto
 r_union
-id|ip_conntrack_expect_proto
-id|proto
+id|ip_conntrack_manip_proto
+id|saved_proto
 suffix:semicolon
-DECL|member|help
-r_union
-id|ip_conntrack_expect_help
-id|help
+multiline_comment|/* Direction relative to the master connection. */
+DECL|member|dir
+r_enum
+id|ip_conntrack_dir
+id|dir
 suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|ip_conntrack_counter
@@ -351,24 +384,18 @@ id|IP_CT_DIR_MAX
 )braket
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* If we&squot;re expecting another related connection, this will be&n;           in expected linked list */
-DECL|member|sibling_list
+multiline_comment|/* If we were expected by an expectation, this will be it */
+DECL|member|master
 r_struct
-id|list_head
-id|sibling_list
+id|ip_conntrack
+op_star
+id|master
 suffix:semicolon
 multiline_comment|/* Current number of expected connections */
 DECL|member|expecting
 r_int
 r_int
 id|expecting
-suffix:semicolon
-multiline_comment|/* If we were expected by an expectation, this will be it */
-DECL|member|master
-r_struct
-id|ip_conntrack_expect
-op_star
-id|master
 suffix:semicolon
 multiline_comment|/* Helper, if any. */
 DECL|member|helper
@@ -395,11 +422,6 @@ DECL|member|info
 r_struct
 id|ip_nat_info
 id|info
-suffix:semicolon
-DECL|member|help
-r_union
-id|ip_conntrack_nat_help
-id|help
 suffix:semicolon
 macro_line|#if defined(CONFIG_IP_NF_TARGET_MASQUERADE) || &bslash;&n;&t;defined(CONFIG_IP_NF_TARGET_MASQUERADE_MODULE)
 DECL|member|masq_index
@@ -431,9 +453,41 @@ id|IP_CT_DIR_MAX
 suffix:semicolon
 )brace
 suffix:semicolon
+r_static
+r_inline
+r_struct
+id|ip_conntrack
+op_star
+DECL|function|tuplehash_to_ctrack
+id|tuplehash_to_ctrack
+c_func
+(paren
+r_const
+r_struct
+id|ip_conntrack_tuple_hash
+op_star
+id|hash
+)paren
+(brace
+r_return
+id|container_of
+c_func
+(paren
+id|hash
+comma
+r_struct
+id|ip_conntrack
+comma
+id|tuplehash
+(braket
+id|hash-&gt;tuple.dst.dir
+)braket
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* get master conntrack via master expectation */
 DECL|macro|master_ct
-mdefine_line|#define master_ct(conntr) (conntr-&gt;master ? conntr-&gt;master-&gt;expectant : NULL)
+mdefine_line|#define master_ct(conntr) (conntr-&gt;master)
 multiline_comment|/* Alter reply tuple (maybe alter helper). */
 r_extern
 r_void
@@ -520,31 +574,6 @@ op_star
 id|ct
 )paren
 suffix:semicolon
-multiline_comment|/* find unconfirmed expectation based on tuple */
-r_struct
-id|ip_conntrack_expect
-op_star
-id|ip_conntrack_expect_find_get
-c_func
-(paren
-r_const
-r_struct
-id|ip_conntrack_tuple
-op_star
-id|tuple
-)paren
-suffix:semicolon
-multiline_comment|/* decrement reference count on an expectation */
-r_void
-id|ip_conntrack_expect_put
-c_func
-(paren
-r_struct
-id|ip_conntrack_expect
-op_star
-id|exp
-)paren
-suffix:semicolon
 multiline_comment|/* call to create an explicit dependency on ip_conntrack. */
 r_extern
 r_void
@@ -600,7 +629,7 @@ suffix:semicolon
 multiline_comment|/* These are for NAT.  Icky. */
 multiline_comment|/* Update TCP window tracking data when NAT mangles the packet */
 r_extern
-r_int
+r_void
 id|ip_conntrack_tcp_update
 c_func
 (paren
@@ -614,7 +643,8 @@ id|ip_conntrack
 op_star
 id|conntrack
 comma
-r_int
+r_enum
+id|ip_conntrack_dir
 id|dir
 )paren
 suffix:semicolon
@@ -795,12 +825,51 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|CONNTRACK_STAT_INC
 mdefine_line|#define CONNTRACK_STAT_INC(count) (__get_cpu_var(ip_conntrack_stat).count++)
-multiline_comment|/* eg. PROVIDES_CONNTRACK(ftp); */
-DECL|macro|PROVIDES_CONNTRACK
-mdefine_line|#define PROVIDES_CONNTRACK(name)                        &bslash;&n;        int needs_ip_conntrack_##name;                  &bslash;&n;        EXPORT_SYMBOL(needs_ip_conntrack_##name)
-multiline_comment|/*. eg. NEEDS_CONNTRACK(ftp); */
-DECL|macro|NEEDS_CONNTRACK
-mdefine_line|#define NEEDS_CONNTRACK(name)                                           &bslash;&n;        extern int needs_ip_conntrack_##name;                           &bslash;&n;        static int *need_ip_conntrack_##name __attribute_used__ = &amp;needs_ip_conntrack_##name
+DECL|function|ip_nat_initialized
+r_static
+r_inline
+r_int
+id|ip_nat_initialized
+c_func
+(paren
+r_struct
+id|ip_conntrack
+op_star
+id|conntrack
+comma
+r_enum
+id|ip_nat_manip_type
+id|manip
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|manip
+op_eq
+id|IP_NAT_MANIP_SRC
+)paren
+r_return
+id|test_bit
+c_func
+(paren
+id|IPS_SRC_NAT_DONE_BIT
+comma
+op_amp
+id|conntrack-&gt;status
+)paren
+suffix:semicolon
+r_return
+id|test_bit
+c_func
+(paren
+id|IPS_DST_NAT_DONE_BIT
+comma
+op_amp
+id|conntrack-&gt;status
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _IP_CONNTRACK_H */
 eof
