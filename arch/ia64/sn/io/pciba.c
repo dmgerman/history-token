@@ -746,7 +746,7 @@ c_func
 (paren
 id|devfs_path
 comma
-l_string|&quot;%02x/%02x.%x&quot;
+l_string|&quot;pci/%02x/%02x.%x&quot;
 comma
 id|dev-&gt;bus-&gt;number
 comma
@@ -768,7 +768,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-id|pciba_devfs_handle
+l_int|NULL
 comma
 id|devfs_path
 comma
