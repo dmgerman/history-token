@@ -2740,7 +2740,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The typical workload of the driver: Handle the network interface&n; * interrupts. Establish which device needs attention, and call the correct&n; * chipset interrupt handler.&n; */
 DECL|function|arcnet_interrupt
-r_void
+id|irqreturn_t
 id|arcnet_interrupt
 c_func
 (paren
@@ -2865,6 +2865,7 @@ id|arcnet_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|BUGMSG
@@ -3547,6 +3548,13 @@ c_func
 (paren
 op_amp
 id|arcnet_lock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|didsomething
 )paren
 suffix:semicolon
 )brace

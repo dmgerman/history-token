@@ -223,7 +223,7 @@ id|addr
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|mace_interrupt
 c_func
 (paren
@@ -2356,7 +2356,7 @@ singleline_comment|//&t;volatile struct mace *mb = mp-&gt;mace;
 multiline_comment|/*&n; * Process the chip interrupt&n; */
 DECL|function|mace_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|mace_interrupt
 c_func
 (paren
@@ -2450,6 +2450,9 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|mace_tx_timeout
 r_static

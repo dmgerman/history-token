@@ -317,7 +317,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|streamer_interrupt
 c_func
 (paren
@@ -5014,7 +5014,7 @@ multiline_comment|/* end for all completed rx descriptors */
 )brace
 DECL|function|streamer_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|streamer_interrupt
 c_func
 (paren
@@ -5730,6 +5730,9 @@ c_func
 op_amp
 id|streamer_priv-&gt;streamer_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|streamer_xmit
