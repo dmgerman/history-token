@@ -28,6 +28,12 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
 DECL|macro|FLOPPY_DMA
 mdefine_line|#define FLOPPY_DMA 0
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
+DECL|macro|DEVICE_INTR
+mdefine_line|#define DEVICE_INTR do_floppy
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) ( (minor(device) &amp; 3) | ((minor(device) &amp; 0x80 ) &gt;&gt; 5 ))
 macro_line|#include &lt;linux/blk.h&gt;
 multiline_comment|/* Note: FD_MAX_UNITS could be redefined to 2 for the Atari (with&n; * little additional rework in this file). But I&squot;m not yet sure if&n; * some other code depends on the number of floppies... (It is defined&n; * in a public header!)&n; */
 macro_line|#if 0

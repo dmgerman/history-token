@@ -27,6 +27,12 @@ macro_line|#include &lt;asm/atari_stdma.h&gt;
 macro_line|#include &lt;asm/atari_stram.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
+DECL|macro|DEVICE_INTR
+mdefine_line|#define DEVICE_INTR do_floppy
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) ( (minor(device) &amp; 3) | ((minor(device) &amp; 0x80 ) &gt;&gt; 5 ))
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 DECL|macro|FD_MAX_UNITS

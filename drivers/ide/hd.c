@@ -24,6 +24,12 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR HD_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;hard disk&quot;
+DECL|macro|DEVICE_INTR
+mdefine_line|#define DEVICE_INTR do_hd
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device)&gt;&gt;6)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#ifdef __arm__
 DECL|macro|HD_IRQ

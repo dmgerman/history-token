@@ -23,6 +23,10 @@ macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &quot;cdu31a.h&quot;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR CDU31A_CDROM_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;CDU31A&quot;
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|CDU31A_READAHEAD
 mdefine_line|#define CDU31A_READAHEAD 4&t;/* 128 sector, 64kB, 32 reads read-ahead */

@@ -6,6 +6,10 @@ DECL|macro|MD_DRIVER
 mdefine_line|#define MD_DRIVER
 DECL|macro|MD_PERSONALITY
 mdefine_line|#define MD_PERSONALITY
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;Multiple devices driver&quot;
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 multiline_comment|/*&n; * Number of guaranteed r1bios in case of extreme VM load:&n; */
 DECL|macro|NR_RAID1_BIOS
 mdefine_line|#define&t;NR_RAID1_BIOS 256

@@ -1,6 +1,10 @@
 multiline_comment|/*&n;** z2ram - Amiga pseudo-driver to access 16bit-RAM in ZorroII space&n;**         as a block device, to be used as a RAM disk or swap space&n;** &n;** Copyright (C) 1994 by Ingo Wilken (Ingo.Wilken@informatik.uni-oldenburg.de)&n;**&n;** ++Geert: support for zorro_unused_z2ram, better range checking&n;** ++roman: translate accesses via an array&n;** ++Milan: support for ChipRAM usage&n;** ++yambo: converted to 2.0 kernel&n;** ++yambo: modularized and support added for 3 minor devices including:&n;**          MAJOR  MINOR  DESCRIPTION&n;**          -----  -----  ----------------------------------------------&n;**          37     0       Use Zorro II and Chip ram&n;**          37     1       Use only Zorro II ram&n;**          37     2       Use only Chip ram&n;**          37     4-7     Use memory list entry 1-4 (first is 0)&n;** ++jskov: support for 1-4th memory list entry.&n;**&n;** Permission to use, copy, modify, and distribute this software and its&n;** documentation for any purpose and without fee is hereby granted, provided&n;** that the above copyright notice appear in all copies and that both that&n;** copyright notice and this permission notice appear in supporting&n;** documentation.  This software is provided &quot;as is&quot; without express or&n;** implied warranty.&n;*/
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR    Z2RAM_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;Z2RAM&quot;
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;

@@ -16,6 +16,10 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR SCSI_CDROM_MAJOR
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;CD-ROM&quot;
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;

@@ -3,6 +3,12 @@ multiline_comment|/*&n; * Still to in this file:&n; *  - If a command ends with 
 multiline_comment|/*&n; * General notes:&n; *&n; *  - All ACSI devices (disks, CD-ROMs, ...) use major number 28.&n; *    Minors are organized like it is with SCSI: The upper 4 bits&n; *    identify the device, the lower 4 bits the partition.&n; *    The device numbers (the upper 4 bits) are given in the same&n; *    order as the devices are found on the bus.&n; *  - Up to 8 LUNs are supported for each target (if CONFIG_ACSI_MULTI_LUN&n; *    is defined), but only a total of 16 devices (due to minor&n; *    numbers...). Note that Atari allows only a maximum of 4 targets&n; *    (i.e. controllers, not devices) on the ACSI bus!&n; *  - A optimizing scheme similar to SCSI scatter-gather is implemented.&n; *  - Removable media are supported. After a medium change to device&n; *    is reinitialized (partition check etc.). Also, if the device&n; *    knows the PREVENT/ALLOW MEDIUM REMOVAL command, the door should&n; *    be locked and unlocked when mounting the first or unmounting the&n; *    last filesystem on the device. The code is untested, because I&n; *    don&squot;t have a removable hard disk.&n; *&n; */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR ACSI_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;ACSI&quot;
+DECL|macro|DEVICE_INTR
+mdefine_line|#define DEVICE_INTR do_acsi
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 4)
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

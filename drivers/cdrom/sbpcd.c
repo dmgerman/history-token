@@ -27,6 +27,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;sbpcd.h&quot;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MATSUSHITA_CDROM_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;Matsushita CD-ROM controller #1&quot;
 macro_line|#include &lt;linux/blk.h&gt;
 multiline_comment|/*==========================================================================*/
 macro_line|#if SBPCD_DIS_IRQ

@@ -31,6 +31,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR GOLDSTAR_CDROM_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;Goldstar R420&quot;
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|gscd_port
 mdefine_line|#define gscd_port gscd&t;&t;/* for compatible parameter passing with &quot;insmod&quot; */

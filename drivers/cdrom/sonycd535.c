@@ -22,6 +22,12 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR CDU535_CDROM_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;SONY-CDU535&quot;
+DECL|macro|DEVICE_INTR
+mdefine_line|#define DEVICE_INTR do_cdu535
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|sony535_cd_base_io
 mdefine_line|#define sony535_cd_base_io sonycd535 /* for compatible parameter passing with &quot;insmod&quot; */

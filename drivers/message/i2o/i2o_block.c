@@ -26,6 +26,10 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR I2O_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;I2O block&quot;
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device)&gt;&gt;4)
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|MAX_I2OB
 mdefine_line|#define MAX_I2OB&t;16
