@@ -701,13 +701,6 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-id|down_write
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;mmap_sem
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -744,6 +737,13 @@ c_func
 )paren
 r_goto
 id|out
+suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|current-&gt;mm-&gt;mmap_sem
+)paren
 suffix:semicolon
 id|lock_limit
 op_assign
@@ -793,8 +793,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 id|up_write
 c_func
 (paren
@@ -802,6 +800,8 @@ op_amp
 id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|ret
 suffix:semicolon
