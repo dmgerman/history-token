@@ -1,11 +1,13 @@
 multiline_comment|/*****************************************************************************&n; *                                                                           *&n; * Copyright (c) David L. Mills 1993                                         *&n; *                                                                           *&n; * Permission to use, copy, modify, and distribute this software and its     *&n; * documentation for any purpose and without fee is hereby granted, provided *&n; * that the above copyright notice appears in all copies and that both the   *&n; * copyright notice and this permission notice appear in supporting          *&n; * documentation, and that the name University of Delaware not be used in    *&n; * advertising or publicity pertaining to distribution of the software       *&n; * without specific, written prior permission.  The University of Delaware   *&n; * makes no representations about the suitability this software for any      *&n; * purpose.  It is provided &quot;as is&quot; without express or implied warranty.     *&n; *                                                                           *&n; *****************************************************************************/
-multiline_comment|/*&n; * Modification history timex.h&n; *&n; * 29 Dec 97&t;Russell King&n; *&t;Moved CLOCK_TICK_RATE, CLOCK_TICK_FACTOR and FINETUNE to asm/timex.h&n; *&t;for ARM machines&n; *&n; *  9 Jan 97    Adrian Sun&n; *      Shifted LATCH define to allow access to alpha machines.&n; *&n; * 26 Sep 94&t;David L. Mills&n; *&t;Added defines for hybrid phase/frequency-lock loop.&n; *&n; * 19 Mar 94&t;David L. Mills&n; *&t;Moved defines from kernel routines to header file and added new&n; *&t;defines for PPS phase-lock loop.&n; *&n; * 20 Feb 94&t;David L. Mills&n; *&t;Revised status codes and structures for external clock and PPS&n; *&t;signal discipline.&n; *&n; * 28 Nov 93&t;David L. Mills&n; *&t;Adjusted parameters to improve stability and increase poll&n; *&t;interval.&n; *&n; * 17 Sep 93    David L. Mills&n; *      Created file $NTP/include/sys/timex.h&n; * 07 Oct 93    Torsten Duwe&n; *      Derived linux/timex.h&n; * 1995-08-13    Torsten Duwe&n; *      kernel PLL updated to 1994-12-13 specs (rfc-1589)&n; * 1997-08-30    Ulrich Windl&n; *      Added new constant NTP_PHASE_LIMIT&n; */
+multiline_comment|/*&n; * Modification history timex.h&n; *&n; * 29 Dec 97&t;Russell King&n; *&t;Moved CLOCK_TICK_RATE, CLOCK_TICK_FACTOR and FINETUNE to asm/timex.h&n; *&t;for ARM machines&n; *&n; *  9 Jan 97    Adrian Sun&n; *      Shifted LATCH define to allow access to alpha machines.&n; *&n; * 26 Sep 94&t;David L. Mills&n; *&t;Added defines for hybrid phase/frequency-lock loop.&n; *&n; * 19 Mar 94&t;David L. Mills&n; *&t;Moved defines from kernel routines to header file and added new&n; *&t;defines for PPS phase-lock loop.&n; *&n; * 20 Feb 94&t;David L. Mills&n; *&t;Revised status codes and structures for external clock and PPS&n; *&t;signal discipline.&n; *&n; * 28 Nov 93&t;David L. Mills&n; *&t;Adjusted parameters to improve stability and increase poll&n; *&t;interval.&n; *&n; * 17 Sep 93    David L. Mills&n; *      Created file $NTP/include/sys/timex.h&n; * 07 Oct 93    Torsten Duwe&n; *      Derived linux/timex.h&n; * 1995-08-13    Torsten Duwe&n; *      kernel PLL updated to 1994-12-13 specs (rfc-1589)&n; * 1997-08-30    Ulrich Windl&n; *      Added new constant NTP_PHASE_LIMIT&n; * 2004-08-12    Christoph Lameter&n; *      Reworked time interpolation logic&n; */
 macro_line|#ifndef _LINUX_TIMEX_H
 DECL|macro|_LINUX_TIMEX_H
 mdefine_line|#define _LINUX_TIMEX_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * The following defines establish the engineering parameters of the PLL&n; * model. The HZ variable establishes the timer interrupt frequency, 100 Hz&n; * for the SunOS kernel, 256 Hz for the Ultrix kernel and 1024 Hz for the&n; * OSF/1 kernel. The SHIFT_HZ define expresses the same value as the&n; * nearest power of two in order to avoid hardware multiply operations.&n; */
 macro_line|#if HZ &gt;= 12 &amp;&amp; HZ &lt; 24
 DECL|macro|SHIFT_HZ
@@ -467,49 +469,71 @@ id|pps_stbcnt
 suffix:semicolon
 multiline_comment|/* stability limit exceeded */
 macro_line|#ifdef CONFIG_TIME_INTERPOLATION
+DECL|macro|TIME_SOURCE_CPU
+mdefine_line|#define TIME_SOURCE_CPU 0
+DECL|macro|TIME_SOURCE_MMIO64
+mdefine_line|#define TIME_SOURCE_MMIO64 1
+DECL|macro|TIME_SOURCE_MMIO32
+mdefine_line|#define TIME_SOURCE_MMIO32 2
+DECL|macro|TIME_SOURCE_FUNCTION
+mdefine_line|#define TIME_SOURCE_FUNCTION 3
+multiline_comment|/* For proper operations time_interpolator clocks must run slightly slower&n; * than the standard clock since the interpolator may only correct by having&n; * time jump forward during a tick. A slower clock is usually a side effect&n; * of the integer divide of the nanoseconds in a second by the frequency.&n; * The accuracy of the division can be increased by specifying a shift.&n; * However, this may cause the clock not to be slow enough.&n; * The interpolator will self-tune the clock by slowing down if no&n; * resets occur or speeding up if the time jumps per analysis cycle&n; * become too high.&n; *&n; * Setting jitter compensates for a fluctuating timesource by comparing&n; * to the last value read from the timesource to insure that an earlier value&n; * is not returned by a later call. The price to pay&n; * for the compensation is that the timer routines are not as scalable anymore.&n; */
+DECL|macro|INTERPOLATOR_ADJUST
+mdefine_line|#define INTERPOLATOR_ADJUST 65536
+DECL|macro|INTERPOLATOR_MAX_SKIP
+mdefine_line|#define INTERPOLATOR_MAX_SKIP 10*INTERPOLATOR_ADJUST
 DECL|struct|time_interpolator
 r_struct
 id|time_interpolator
 (brace
-multiline_comment|/* cache-hot stuff first: */
-DECL|member|get_offset
+DECL|member|source
 r_int
 r_int
-(paren
-op_star
-id|get_offset
-)paren
-(paren
-r_void
-)paren
+id|source
 suffix:semicolon
-DECL|member|update
-r_void
-(paren
-op_star
-id|update
-)paren
-(paren
+multiline_comment|/* time source flags */
+DECL|member|shift
 r_int
-)paren
+r_char
+id|shift
 suffix:semicolon
-DECL|member|reset
+multiline_comment|/* increases accuracy of multiply by shifting. */
+multiline_comment|/* Note that bits may be lost if shift is set too high */
+DECL|member|jitter
+r_int
+r_char
+id|jitter
+suffix:semicolon
+multiline_comment|/* if set compensate for fluctuations */
+DECL|member|nsec_per_cyc
+r_int
+id|nsec_per_cyc
+suffix:semicolon
+multiline_comment|/* set by register_time_interpolator() */
+DECL|member|addr
 r_void
-(paren
 op_star
-id|reset
-)paren
-(paren
-r_void
-)paren
+id|addr
 suffix:semicolon
-multiline_comment|/* cache-cold stuff follows here: */
-DECL|member|next
-r_struct
-id|time_interpolator
-op_star
-id|next
+multiline_comment|/* address of counter or function */
+DECL|member|offset
+r_int
+r_int
+id|offset
 suffix:semicolon
+multiline_comment|/* nsec offset at last update of interpolator */
+DECL|member|last_counter
+r_int
+r_int
+id|last_counter
+suffix:semicolon
+multiline_comment|/* counter value in units of the counter at last update */
+DECL|member|last_cycle
+r_int
+r_int
+id|last_cycle
+suffix:semicolon
+multiline_comment|/* Last timer value if TIME_SOURCE_JITTER is set */
 DECL|member|frequency
 r_int
 r_int
@@ -521,25 +545,25 @@ r_int
 id|drift
 suffix:semicolon
 multiline_comment|/* drift in parts-per-million (or -1) */
-)brace
-suffix:semicolon
-r_extern
-r_volatile
+DECL|member|skips
 r_int
 r_int
-id|last_nsec_offset
+id|skips
 suffix:semicolon
-macro_line|#ifndef __HAVE_ARCH_CMPXCHG
-r_extern
-id|spin_lock_t
-id|last_nsec_offset_lock
+multiline_comment|/* skips forward */
+DECL|member|ns_skipped
+r_int
+r_int
+id|ns_skipped
 suffix:semicolon
-macro_line|#endif
-r_extern
+multiline_comment|/* nanoseconds skipped */
+DECL|member|next
 r_struct
 id|time_interpolator
 op_star
-id|time_interpolator
+id|next
+suffix:semicolon
+)brace
 suffix:semicolon
 r_extern
 r_void
@@ -561,213 +585,36 @@ id|time_interpolator
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Called with xtime WRITE-lock acquired.  */
-r_static
-r_inline
+r_extern
 r_void
-DECL|function|time_interpolator_update
-id|time_interpolator_update
-c_func
-(paren
-r_int
-id|delta_nsec
-)paren
-(brace
-r_struct
-id|time_interpolator
-op_star
-id|ti
-op_assign
-id|time_interpolator
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|last_nsec_offset
-OG
-l_int|0
-)paren
-(brace
-macro_line|#ifdef __HAVE_ARCH_CMPXCHG
-r_int
-r_int
-r_new
-comma
-id|old
-suffix:semicolon
-r_do
-(brace
-id|old
-op_assign
-id|last_nsec_offset
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|old
-OG
-id|delta_nsec
-)paren
-r_new
-op_assign
-id|old
-op_minus
-id|delta_nsec
-suffix:semicolon
-r_else
-r_new
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|cmpxchg
-c_func
-(paren
-op_amp
-id|last_nsec_offset
-comma
-id|old
-comma
-r_new
-)paren
-op_ne
-id|old
-)paren
-suffix:semicolon
-macro_line|#else
-multiline_comment|/*&n;&t;&t; * This really hurts, because it serializes gettimeofday(), but without an&n;&t;&t; * atomic single-word compare-and-exchange, there isn&squot;t all that much else&n;&t;&t; * we can do.&n;&t;&t; */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|last_nsec_offset_lock
-)paren
-suffix:semicolon
-(brace
-id|last_nsec_offset
-op_sub_assign
-id|min
-c_func
-(paren
-id|last_nsec_offset
-comma
-id|delta_nsec
-)paren
-suffix:semicolon
-)brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|last_nsec_offset_lock
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-r_if
-c_cond
-(paren
-id|ti
-)paren
-(paren
-op_star
-id|ti-&gt;update
-)paren
-(paren
-id|delta_nsec
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Called with xtime WRITE-lock acquired.  */
-r_static
-r_inline
-r_void
-DECL|function|time_interpolator_reset
 id|time_interpolator_reset
 c_func
 (paren
 r_void
 )paren
-(brace
-r_struct
-id|time_interpolator
-op_star
-id|ti
-op_assign
-id|time_interpolator
 suffix:semicolon
-id|last_nsec_offset
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ti
-)paren
-(paren
-op_star
-id|ti-&gt;reset
-)paren
-(paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Called with xtime READ-lock acquired.  */
-r_static
-r_inline
+r_extern
 r_int
 r_int
-DECL|function|time_interpolator_get_offset
+id|time_interpolator_resolution
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
 id|time_interpolator_get_offset
 c_func
 (paren
 r_void
 )paren
-(brace
-r_struct
-id|time_interpolator
-op_star
-id|ti
-op_assign
-id|time_interpolator
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ti
-)paren
-r_return
-(paren
-op_star
-id|ti-&gt;get_offset
-)paren
-(paren
-)paren
-suffix:semicolon
-r_return
-id|last_nsec_offset
-suffix:semicolon
-)brace
 macro_line|#else /* !CONFIG_TIME_INTERPOLATION */
 r_static
 r_inline
 r_void
-DECL|function|time_interpolator_update
-id|time_interpolator_update
-c_func
-(paren
-r_int
-id|delta_nsec
-)paren
-(brace
-)brace
-r_static
-r_inline
-r_void
 DECL|function|time_interpolator_reset
 id|time_interpolator_reset
 c_func
@@ -775,21 +622,6 @@ c_func
 r_void
 )paren
 (brace
-)brace
-r_static
-r_inline
-r_int
-r_int
-DECL|function|time_interpolator_get_offset
-id|time_interpolator_get_offset
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 macro_line|#endif /* !CONFIG_TIME_INTERPOLATION */
 macro_line|#endif /* KERNEL */
