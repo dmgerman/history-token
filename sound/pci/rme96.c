@@ -2808,6 +2808,7 @@ id|mode
 r_case
 id|RME96_CLOCKMODE_SLAVE
 suffix:colon
+multiline_comment|/* AutoSync */
 id|rme96-&gt;wcreg
 op_and_assign
 op_complement
@@ -2823,6 +2824,7 @@ suffix:semicolon
 r_case
 id|RME96_CLOCKMODE_MASTER
 suffix:colon
+multiline_comment|/* Internal */
 id|rme96-&gt;wcreg
 op_or_assign
 id|RME96_WCR_MASTER
@@ -5210,7 +5212,7 @@ c_func
 (paren
 id|rme96
 )paren
-op_ne
+op_eq
 id|RME96_INPUT_ANALOG
 )paren
 (brace
@@ -7704,7 +7706,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;  clock mode: word clock&bslash;n&quot;
+l_string|&quot;  sample clock source: word clock&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7722,7 +7724,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;  clock mode: master&bslash;n&quot;
+l_string|&quot;  sample clock source: internal&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7744,7 +7746,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;  clock mode: slave (master anyway due to analog input setting)&bslash;n&quot;
+l_string|&quot;  sample clock source: autosync (internal anyway due to analog input setting)&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7769,7 +7771,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;  clock mode: slave (master anyway due to no valid signal)&bslash;n&quot;
+l_string|&quot;  sample clock source: autosync (internal anyway due to no valid signal)&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7780,7 +7782,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;  clock mode: slave&bslash;n&quot;
+l_string|&quot;  sample clock source: autosync&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8852,11 +8854,11 @@ l_int|3
 )braket
 op_assign
 (brace
-l_string|&quot;Slave&quot;
+l_string|&quot;AutoSync&quot;
 comma
-l_string|&quot;Master&quot;
+l_string|&quot;Internal&quot;
 comma
-l_string|&quot;Wordclock&quot;
+l_string|&quot;Word&quot;
 )brace
 suffix:semicolon
 id|uinfo-&gt;type
@@ -10530,7 +10532,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;Clock Mode&quot;
+l_string|&quot;Sample Clock Source&quot;
 comma
 dot
 id|info

@@ -101,10 +101,10 @@ mdefine_line|#define ICE1712_REG_MPU2_DATA&t;&t;0x1d&t;/* byte */
 DECL|macro|ICE1712_REG_TIMER
 mdefine_line|#define ICE1712_REG_TIMER&t;&t;0x1e&t;/* word */
 multiline_comment|/*&n; *  Indirect registers&n; */
-DECL|macro|ICE1712_IREG_PBK_COUNT_HI
-mdefine_line|#define ICE1712_IREG_PBK_COUNT_HI&t;0x00
 DECL|macro|ICE1712_IREG_PBK_COUNT_LO
-mdefine_line|#define ICE1712_IREG_PBK_COUNT_LO&t;0x01
+mdefine_line|#define ICE1712_IREG_PBK_COUNT_LO&t;0x00
+DECL|macro|ICE1712_IREG_PBK_COUNT_HI
+mdefine_line|#define ICE1712_IREG_PBK_COUNT_HI&t;0x01
 DECL|macro|ICE1712_IREG_PBK_CTRL
 mdefine_line|#define ICE1712_IREG_PBK_CTRL&t;&t;0x02
 DECL|macro|ICE1712_IREG_PBK_LEFT
@@ -119,10 +119,10 @@ DECL|macro|ICE1712_IREG_PBK_RATE_MID
 mdefine_line|#define ICE1712_IREG_PBK_RATE_MID&t;0x07
 DECL|macro|ICE1712_IREG_PBK_RATE_HI
 mdefine_line|#define ICE1712_IREG_PBK_RATE_HI&t;0x08
-DECL|macro|ICE1712_IREG_CAP_COUNT_HI
-mdefine_line|#define ICE1712_IREG_CAP_COUNT_HI&t;0x10
 DECL|macro|ICE1712_IREG_CAP_COUNT_LO
-mdefine_line|#define ICE1712_IREG_CAP_COUNT_LO&t;0x11
+mdefine_line|#define ICE1712_IREG_CAP_COUNT_LO&t;0x10
+DECL|macro|ICE1712_IREG_CAP_COUNT_HI
+mdefine_line|#define ICE1712_IREG_CAP_COUNT_HI&t;0x11
 DECL|macro|ICE1712_IREG_CAP_CTRL
 mdefine_line|#define ICE1712_IREG_CAP_CTRL&t;&t;0x12
 DECL|macro|ICE1712_IREG_GPIO_DATA

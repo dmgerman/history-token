@@ -5,7 +5,32 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
+macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &quot;ice1712.h&quot;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Jaroslav Kysela &lt;perex@suse.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ICEnsemble ICE17xx &lt;-&gt; AK4xxx AD/DA chip interface&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_CLASSES
+c_func
+(paren
+l_string|&quot;{sound}&quot;
+)paren
+suffix:semicolon
 DECL|function|snd_ice1712_akm4xxx_lock
 r_static
 r_void
@@ -415,7 +440,6 @@ suffix:semicolon
 multiline_comment|/*&n; * initialize the akm4xxx_t record with the template&n; */
 DECL|function|snd_ice1712_akm4xxx_init
 r_int
-id|__devinit
 id|snd_ice1712_akm4xxx_init
 c_func
 (paren
@@ -548,7 +572,6 @@ suffix:semicolon
 )brace
 DECL|function|snd_ice1712_akm4xxx_free
 r_void
-id|__devexit
 id|snd_ice1712_akm4xxx_free
 c_func
 (paren
@@ -627,7 +650,6 @@ suffix:semicolon
 multiline_comment|/*&n; * build AK4xxx controls&n; */
 DECL|function|snd_ice1712_akm4xxx_build_controls
 r_int
-id|__devinit
 id|snd_ice1712_akm4xxx_build_controls
 c_func
 (paren

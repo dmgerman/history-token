@@ -83,7 +83,7 @@ macro_line|#endif
 macro_line|#if 0
 mdefine_line|#define SNDRV_DEBUG_IRQ
 macro_line|#endif
-macro_line|#if defined(SNDRV_SBAWE) &amp;&amp; (defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE))
+macro_line|#if defined(SNDRV_SBAWE) &amp;&amp; (defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE)))
 DECL|macro|SNDRV_SBAWE_EMU8000
 mdefine_line|#define SNDRV_SBAWE_EMU8000
 macro_line|#endif

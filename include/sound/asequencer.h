@@ -36,9 +36,9 @@ mdefine_line|#define SNDRV_SEQ_EVENT_PITCHBEND&t;13&t;/**&lt; from -8192 to 8191
 DECL|macro|SNDRV_SEQ_EVENT_CONTROL14
 mdefine_line|#define SNDRV_SEQ_EVENT_CONTROL14&t;14&t;/**&lt; 14 bit controller value */
 DECL|macro|SNDRV_SEQ_EVENT_NONREGPARAM
-mdefine_line|#define SNDRV_SEQ_EVENT_NONREGPARAM&t;15&t;/**&lt; 14 bit NRPN */
+mdefine_line|#define SNDRV_SEQ_EVENT_NONREGPARAM&t;15&t;/**&lt; 14 bit NRPN address + 14 bit unsigned value */
 DECL|macro|SNDRV_SEQ_EVENT_REGPARAM
-mdefine_line|#define SNDRV_SEQ_EVENT_REGPARAM&t;16&t;/**&lt; 14 bit RPN */
+mdefine_line|#define SNDRV_SEQ_EVENT_REGPARAM&t;16&t;/**&lt; 14 bit RPN address + 14 bit unsigned value */
 multiline_comment|/** synchronisation messages&n; * event data type = #sndrv_seq_ev_ctrl&n; */
 DECL|macro|SNDRV_SEQ_EVENT_SONGPOS
 mdefine_line|#define SNDRV_SEQ_EVENT_SONGPOS&t;&t;20&t;/* Song Position Pointer with LSB and MSB values */

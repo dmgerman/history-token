@@ -1176,9 +1176,6 @@ c_func
 r_int
 r_int
 id|delay
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 r_if
@@ -1187,12 +1184,6 @@ c_cond
 id|delay
 OG
 l_int|999
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|can_schedule
 )paren
 (brace
 r_int
@@ -1256,31 +1247,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|delay
-op_add_assign
-l_int|999
-suffix:semicolon
-id|delay
-op_div_assign
-l_int|1000
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-id|delay
-OG
-l_int|0
-ques
-c_cond
-id|delay
-suffix:colon
-l_int|1
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
 id|udelay
 c_func
 (paren
@@ -1296,14 +1262,7 @@ r_void
 id|snd_cs4281_delay_long
 c_func
 (paren
-r_int
-id|can_schedule
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|can_schedule
+r_void
 )paren
 (brace
 id|set_current_state
@@ -1316,14 +1275,6 @@ id|schedule_timeout
 c_func
 (paren
 l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
-id|mdelay
-c_func
-(paren
-l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -4661,7 +4612,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * joystick support&n; */
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 DECL|struct|snd_cs4281_gameport
 r_typedef
 r_struct
@@ -5175,7 +5126,7 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|snd_cs4281_gameport
 mdefine_line|#define snd_cs4281_gameport(chip) /*NOP*/
-macro_line|#endif /* CONFIG_GAMEPORT || CONFIG_GAMEPORT_MODULE */
+macro_line|#endif /* CONFIG_GAMEPORT || (MODULE &amp;&amp; CONFIG_GAMEPORT_MODULE) */
 multiline_comment|/*&n;&n; */
 DECL|function|snd_cs4281_free
 r_static
@@ -5188,7 +5139,7 @@ op_star
 id|chip
 )paren
 (brace
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 r_if
 c_cond
 (paren
@@ -5405,9 +5356,6 @@ c_func
 id|cs4281_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 suffix:semicolon
 multiline_comment|/* defined below */
@@ -5788,8 +5736,6 @@ id|snd_cs4281_chip_init
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -5875,9 +5821,6 @@ c_func
 id|cs4281_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 r_int
@@ -6122,8 +6065,6 @@ id|snd_cs4281_delay
 c_func
 (paren
 l_int|50000
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 r_if
@@ -6188,8 +6129,6 @@ id|snd_cs4281_delay
 c_func
 (paren
 l_int|50000
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 id|snd_cs4281_pokeBA0
@@ -6231,7 +6170,6 @@ suffix:semicolon
 id|snd_cs4281_delay_long
 c_func
 (paren
-id|can_schedule
 )paren
 suffix:semicolon
 )brace
@@ -6295,7 +6233,6 @@ suffix:semicolon
 id|snd_cs4281_delay_long
 c_func
 (paren
-id|can_schedule
 )paren
 suffix:semicolon
 )brace
@@ -6360,7 +6297,6 @@ suffix:semicolon
 id|snd_cs4281_delay_long
 c_func
 (paren
-id|can_schedule
 )paren
 suffix:semicolon
 )brace
@@ -6456,7 +6392,6 @@ suffix:semicolon
 id|snd_cs4281_delay_long
 c_func
 (paren
-id|can_schedule
 )paren
 suffix:semicolon
 )brace
@@ -8907,8 +8842,6 @@ id|snd_cs4281_chip_init
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* restore the status registers */
@@ -9010,7 +8943,6 @@ id|SNDRV_CTL_POWER_D0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef PCI_OLD_SUSPEND
 DECL|function|snd_cs4281_suspend
 r_static
 r_int
@@ -9098,82 +9030,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|snd_cs4281_suspend
-r_static
-r_void
-id|snd_cs4281_suspend
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-id|cs4281_t
-op_star
-id|chip
-op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|cs4281_t
-comma
-id|pci_get_drvdata
-c_func
-(paren
-id|dev
-)paren
-comma
-r_return
-)paren
-suffix:semicolon
-id|cs4281_suspend
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
-)brace
-DECL|function|snd_cs4281_resume
-r_static
-r_void
-id|snd_cs4281_resume
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-id|cs4281_t
-op_star
-id|chip
-op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|cs4281_t
-comma
-id|pci_get_drvdata
-c_func
-(paren
-id|dev
-)paren
-comma
-r_return
-)paren
-suffix:semicolon
-id|cs4281_resume
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* callback */
 DECL|function|snd_cs4281_set_power_state
 r_static

@@ -253,6 +253,10 @@ id|opl4_sound_t
 op_star
 id|sound
 suffix:semicolon
+DECL|member|level_direct
+id|u8
+id|level_direct
+suffix:semicolon
 DECL|member|reg_f_number
 id|u8
 id|reg_f_number
@@ -260,6 +264,10 @@ suffix:semicolon
 DECL|member|reg_misc
 id|u8
 id|reg_misc
+suffix:semicolon
+DECL|member|reg_lfo_vibrato
+id|u8
+id|reg_lfo_vibrato
 suffix:semicolon
 DECL|typedef|opl4_voice_t
 )brace

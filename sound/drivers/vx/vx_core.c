@@ -47,13 +47,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
-id|chip-&gt;chip_status
-op_amp
-id|VX_STAT_IN_SUSPEND
-)paren
-op_logical_and
-op_logical_neg
 id|in_interrupt
 c_func
 (paren
@@ -2787,6 +2780,22 @@ id|uer_type
 (braket
 id|chip-&gt;uer_detected
 )braket
+)paren
+suffix:semicolon
+id|snd_iprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;Min/Max/Cur IBL: %d/%d/%d (granularity=%d)&bslash;n&quot;
+comma
+id|chip-&gt;ibl.min_size
+comma
+id|chip-&gt;ibl.max_size
+comma
+id|chip-&gt;ibl.size
+comma
+id|chip-&gt;ibl.granularity
 )paren
 suffix:semicolon
 )brace
