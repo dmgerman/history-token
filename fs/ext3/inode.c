@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
+macro_line|#include &quot;xattr.h&quot;
+macro_line|#include &quot;acl.h&quot;
 multiline_comment|/*&n; * SEARCH_FROM_ZERO forces each block allocation to search from the start&n; * of the filesystem.  This is to force rapid reallocation of recently-freed&n; * blocks.  The file fragmentation is horrendous.&n; */
 DECL|macro|SEARCH_FROM_ZERO
 macro_line|#undef SEARCH_FROM_ZERO
@@ -7950,6 +7952,16 @@ suffix:semicolon
 r_int
 id|block
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT3_FS_POSIX_ACL
+id|ei-&gt;i_acl
+op_assign
+id|EXT3_ACL_NOT_CACHED
+suffix:semicolon
+id|ei-&gt;i_default_acl
+op_assign
+id|EXT3_ACL_NOT_CACHED
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7962,11 +7974,9 @@ op_amp
 id|iloc
 )paren
 )paren
-(brace
 r_goto
 id|bad_inode
 suffix:semicolon
-)brace
 id|bh
 op_assign
 id|iloc.bh
@@ -9138,7 +9148,7 @@ id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ext3_setattr()&n; *&n; * Called from notify_change.&n; *&n; * We want to trap VFS attempts to truncate the file as soon as&n; * possible.  In particular, we want to make sure that when the VFS&n; * shrinks i_size, we put the inode on the orphan list and modify&n; * i_disksize immediately, so that during the subsequent flushing of&n; * dirty pages and freeing of disk blocks, we can guarantee that any&n; * commit will leave the blocks being flushed in an unused state on&n; * disk.  (On recovery, the inode will get truncated and the blocks will&n; * be freed, so we have a strong guarantee that no future commit will&n; * leave these blocks visible to the user.)  &n; *&n; * This is only needed for regular files.  rmdir() has its own path, and&n; * we can never truncate a direcory except on final unlink (at which&n; * point i_nlink is zero so recovery is easy.)&n; *&n; * Called with the BKL.  &n; */
+multiline_comment|/*&n; * ext3_setattr()&n; *&n; * Called from notify_change.&n; *&n; * We want to trap VFS attempts to truncate the file as soon as&n; * possible.  In particular, we want to make sure that when the VFS&n; * shrinks i_size, we put the inode on the orphan list and modify&n; * i_disksize immediately, so that during the subsequent flushing of&n; * dirty pages and freeing of disk blocks, we can guarantee that any&n; * commit will leave the blocks being flushed in an unused state on&n; * disk.  (On recovery, the inode will get truncated and the blocks will&n; * be freed, so we have a strong guarantee that no future commit will&n; * leave these blocks visible to the user.)  &n; *&n; * Called with inode-&gt;sem down.&n; */
 DECL|function|ext3_setattr
 r_int
 id|ext3_setattr
@@ -9251,6 +9261,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|S_ISREG
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+op_logical_and
 id|attr-&gt;ia_valid
 op_amp
 id|ATTR_SIZE
@@ -9366,6 +9382,26 @@ c_func
 (paren
 l_int|NULL
 comma
+id|inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+op_logical_and
+(paren
+id|ia_valid
+op_amp
+id|ATTR_MODE
+)paren
+)paren
+id|rc
+op_assign
+id|ext3_acl_chmod
+c_func
+(paren
 id|inode
 )paren
 suffix:semicolon

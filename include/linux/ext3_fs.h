@@ -556,6 +556,8 @@ DECL|macro|EXT3_MOUNT_NO_UID32
 mdefine_line|#define EXT3_MOUNT_NO_UID32&t;&t;0x2000  /* Disable 32-bit UIDs */
 DECL|macro|EXT3_MOUNT_XATTR_USER
 mdefine_line|#define EXT3_MOUNT_XATTR_USER&t;&t;0x4000&t;/* Extended user attributes */
+DECL|macro|EXT3_MOUNT_POSIX_ACL
+mdefine_line|#define EXT3_MOUNT_POSIX_ACL&t;&t;0x8000&t;/* POSIX Access Control Lists */
 multiline_comment|/* Compatibility, for having both ext2_fs.h and ext3_fs.h included at once */
 macro_line|#ifndef _LINUX_EXT2_FS_H
 DECL|macro|clear_opt

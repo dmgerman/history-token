@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;xattr.h&quot;
+macro_line|#include &quot;acl.h&quot;
 multiline_comment|/*&n; * define how far ahead to read directories while searching them.&n; */
 DECL|macro|NAMEI_RA_CHUNKS
 mdefine_line|#define NAMEI_RA_CHUNKS  2
@@ -8370,11 +8371,18 @@ c_func
 (paren
 id|inode
 comma
-id|mode
+id|inode-&gt;i_mode
 comma
 id|rdev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT3_FS_XATTR
+id|inode-&gt;i_op
+op_assign
+op_amp
+id|ext3_special_inode_operations
+suffix:semicolon
+macro_line|#endif
 id|err
 op_assign
 id|ext3_add_nondir
@@ -11628,6 +11636,11 @@ op_assign
 id|ext3_rename
 comma
 dot
+id|setattr
+op_assign
+id|ext3_setattr
+comma
+dot
 id|setxattr
 op_assign
 id|ext3_setxattr
@@ -11646,6 +11659,11 @@ dot
 id|removexattr
 op_assign
 id|ext3_removexattr
+comma
+dot
+id|permission
+op_assign
+id|ext3_permission
 comma
 )brace
 suffix:semicolon
@@ -11656,6 +11674,11 @@ id|ext3_special_inode_operations
 op_assign
 (brace
 dot
+id|setattr
+op_assign
+id|ext3_setattr
+comma
+dot
 id|setxattr
 op_assign
 id|ext3_setxattr
@@ -11674,6 +11697,11 @@ dot
 id|removexattr
 op_assign
 id|ext3_removexattr
+comma
+dot
+id|permission
+op_assign
+id|ext3_permission
 comma
 )brace
 suffix:semicolon

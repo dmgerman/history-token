@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/ext3_fs.h&gt;
 macro_line|#include &lt;linux/ext3_jbd.h&gt;
 macro_line|#include &quot;xattr.h&quot;
+macro_line|#include &quot;acl.h&quot;
 multiline_comment|/*&n; * Called when an inode is released. Note that this is different&n; * from ext3_file_open: open gets called at every open, but release&n; * gets called only when /all/ the files are closed.&n; */
 DECL|function|ext3_release_file
 r_static
@@ -276,6 +277,11 @@ dot
 id|removexattr
 op_assign
 id|ext3_removexattr
+comma
+dot
+id|permission
+op_assign
+id|ext3_permission
 comma
 )brace
 suffix:semicolon
