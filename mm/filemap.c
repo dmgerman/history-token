@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
+macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 multiline_comment|/*&n; * This is needed for the following functions:&n; *  - try_to_release_page&n; *  - block_invalidatepage&n; *  - page_has_buffers&n; *  - generic_osync_inode&n; *&n; * FIXME: remove all knowledge of the buffer layer from this file&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -1862,7 +1863,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This adds a page to the page cache, starting out as locked, unreferenced,&n; * not uptodate and with no errors.&n; *&n; * This function is used for two things: adding newly allocated pagecache&n; * pages and for moving existing anon pages into swapcache.&n; *&n; * In the case of pagecache pages, the page is new, so we can just run&n; * SetPageLocked() against it.  The other page state flags were set by&n; * rmqueue()&n; *&n; * In the case of swapcache, try_to_swap_out() has already locked the page, so&n; * SetPageLocked() is ugly-but-OK there too.  The required page state has been&n; * set up by swap_out_add_to_swap_cache().&n; */
+multiline_comment|/*&n; * This adds a page to the page cache, starting out as locked, unreferenced,&n; * not uptodate and with no errors.&n; *&n; * This function is used for two things: adding newly allocated pagecache&n; * pages and for moving existing anon pages into swapcache.&n; *&n; * In the case of pagecache pages, the page is new, so we can just run&n; * SetPageLocked() against it.  The other page state flags were set by&n; * rmqueue()&n; *&n; * In the case of swapcache, try_to_swap_out() has already locked the page, so&n; * SetPageLocked() is ugly-but-OK there too.  The required page state has been&n; * set up by swap_out_add_to_swap_cache().&n; *&n; * This function does not add the page to the LRU.  The caller must do that.&n; */
 DECL|function|add_to_page_cache
 r_int
 id|add_to_page_cache
@@ -1878,13 +1879,18 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
-r_int
+id|pgoff_t
 id|offset
 )paren
 (brace
 r_int
 id|error
+suffix:semicolon
+id|page_cache_get
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 id|write_lock
 c_func
@@ -1935,7 +1941,10 @@ comma
 id|offset
 )paren
 suffix:semicolon
-id|page_cache_get
+)brace
+r_else
+(brace
+id|page_cache_release
 c_func
 (paren
 id|page
@@ -1949,19 +1958,48 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Anon pages are already on the LRU */
-r_if
-c_cond
-(paren
-op_logical_neg
+r_return
 id|error
-op_logical_and
-op_logical_neg
-id|PageSwapCache
+suffix:semicolon
+)brace
+DECL|function|add_to_page_cache_lru
+r_int
+id|add_to_page_cache_lru
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+id|pgoff_t
+id|offset
+)paren
+(brace
+r_int
+id|ret
+op_assign
+id|add_to_page_cache
 c_func
 (paren
 id|page
+comma
+id|mapping
+comma
+id|offset
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
 )paren
 id|lru_cache_add
 c_func
@@ -1970,7 +2008,7 @@ id|page
 )paren
 suffix:semicolon
 r_return
-id|error
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This adds the requested page to the page cache if it isn&squot;t already there,&n; * and schedules an I/O to read in its contents from disk.&n; */
@@ -2044,7 +2082,7 @@ id|ENOMEM
 suffix:semicolon
 id|error
 op_assign
-id|add_to_page_cache
+id|add_to_page_cache_lru
 c_func
 (paren
 id|page
@@ -2880,7 +2918,7 @@ suffix:semicolon
 )brace
 id|err
 op_assign
-id|add_to_page_cache
+id|add_to_page_cache_lru
 c_func
 (paren
 id|cached_page
@@ -3012,7 +3050,7 @@ c_cond
 (paren
 id|page
 op_logical_and
-id|add_to_page_cache
+id|add_to_page_cache_lru
 c_func
 (paren
 id|page
@@ -3575,7 +3613,7 @@ suffix:semicolon
 )brace
 id|error
 op_assign
-id|add_to_page_cache
+id|add_to_page_cache_lru
 c_func
 (paren
 id|cached_page
@@ -6364,7 +6402,7 @@ suffix:semicolon
 )brace
 id|err
 op_assign
-id|add_to_page_cache
+id|add_to_page_cache_lru
 c_func
 (paren
 id|cached_page
@@ -6643,12 +6681,13 @@ r_return
 id|page
 suffix:semicolon
 )brace
-DECL|function|__grab_cache_page
+multiline_comment|/*&n; * If the page was newly created, increment its refcount and add it to the&n; * caller&squot;s lru-buffering pagevec.  This function is specifically for&n; * generic_file_write().&n; */
 r_static
 r_inline
 r_struct
 id|page
 op_star
+DECL|function|__grab_cache_page
 id|__grab_cache_page
 c_func
 (paren
@@ -6666,6 +6705,11 @@ id|page
 op_star
 op_star
 id|cached_page
+comma
+r_struct
+id|pagevec
+op_star
+id|lru_pvec
 )paren
 (brace
 r_int
@@ -6759,6 +6803,30 @@ id|page
 op_assign
 op_star
 id|cached_page
+suffix:semicolon
+id|page_cache_get
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pagevec_add
+c_func
+(paren
+id|lru_pvec
+comma
+id|page
+)paren
+)paren
+id|__pagevec_lru_add
+c_func
+(paren
+id|lru_pvec
+)paren
 suffix:semicolon
 op_star
 id|cached_page
@@ -6940,6 +7008,10 @@ id|bytes
 suffix:semicolon
 id|time_t
 id|time_now
+suffix:semicolon
+r_struct
+id|pagevec
+id|lru_pvec
 suffix:semicolon
 r_if
 c_cond
@@ -7489,6 +7561,13 @@ r_goto
 id|out_status
 suffix:semicolon
 )brace
+id|pagevec_init
+c_func
+(paren
+op_amp
+id|lru_pvec
+)paren
+suffix:semicolon
 r_do
 (brace
 r_int
@@ -7581,6 +7660,9 @@ id|index
 comma
 op_amp
 id|cached_page
+comma
+op_amp
+id|lru_pvec
 )paren
 suffix:semicolon
 r_if
@@ -7887,6 +7969,13 @@ id|status
 suffix:semicolon
 id|out
 suffix:colon
+id|pagevec_lru_add
+c_func
+(paren
+op_amp
+id|lru_pvec
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon

@@ -2649,7 +2649,7 @@ id|no_mem
 suffix:semicolon
 id|error
 op_assign
-id|add_to_page_cache
+id|add_to_page_cache_lru
 c_func
 (paren
 id|page
