@@ -123,7 +123,7 @@ r_new
 op_assign
 id|speedstep_freqs
 (braket
-id|SPEEDSTEP_LOW
+id|state
 )braket
 dot
 id|frequency
@@ -354,9 +354,11 @@ id|KERN_INFO
 l_string|&quot;cpufreq: change to %u MHz succeeded&bslash;n&quot;
 comma
 (paren
-id|freqs
-dot
-r_new
+id|speedstep_get_processor_frequency
+c_func
+(paren
+id|speedstep_processor
+)paren
 op_div
 l_int|1000
 )paren
