@@ -1066,6 +1066,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_BOOT
+multiline_comment|/* Initialize the ACPI boot-time table parser */
+id|acpi_table_init
+c_func
+(paren
+op_star
+id|cmdline_p
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_NUMA
+id|acpi_numa_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif /* CONFIG_APCI_BOOT */
 id|find_memory
 c_func
 (paren

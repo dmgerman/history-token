@@ -35,10 +35,16 @@ suffix:semicolon
 multiline_comment|/* == ~0U =&gt; fast mode */
 DECL|member|fullmm
 r_int
-r_int
+r_char
 id|fullmm
 suffix:semicolon
 multiline_comment|/* non-zero means full mm flush */
+DECL|member|need_flush
+r_int
+r_char
+id|need_flush
+suffix:semicolon
+multiline_comment|/* really unmapped some PTEs? */
 DECL|member|freed
 r_int
 r_int
@@ -99,6 +105,18 @@ id|end
 r_int
 r_int
 id|nr
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tlb-&gt;need_flush
+)paren
+r_return
+suffix:semicolon
+id|tlb-&gt;need_flush
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -397,45 +415,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Remove TLB entry for PTE mapped at virtual address ADDRESS.  This is called for any&n; * PTE, not just those pointing to (normal) physical memory.&n; */
-r_static
-r_inline
-r_void
-DECL|function|__tlb_remove_tlb_entry
-id|__tlb_remove_tlb_entry
-(paren
-id|mmu_gather_t
-op_star
-id|tlb
-comma
-id|pte_t
-op_star
-id|ptep
-comma
-r_int
-r_int
-id|address
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|tlb-&gt;start_addr
-op_eq
-op_complement
-l_int|0UL
-)paren
-id|tlb-&gt;start_addr
-op_assign
-id|address
-suffix:semicolon
-id|tlb-&gt;end_addr
-op_assign
-id|address
-op_plus
-id|PAGE_SIZE
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Logically, this routine frees PAGE.  On MP machines, the actual freeing of the page&n; * must be delayed until after the TLB has been flushed (see comments at the beginning of&n; * this file).&n; */
 r_static
 r_inline
@@ -453,6 +432,10 @@ op_star
 id|page
 )paren
 (brace
+id|tlb-&gt;need_flush
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -498,15 +481,54 @@ id|tlb-&gt;end_addr
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Remove TLB entry for PTE mapped at virtual address ADDRESS.  This is called for any&n; * PTE, not just those pointing to (normal) physical memory.&n; */
+r_static
+r_inline
+r_void
+DECL|function|__tlb_remove_tlb_entry
+id|__tlb_remove_tlb_entry
+(paren
+id|mmu_gather_t
+op_star
+id|tlb
+comma
+id|pte_t
+op_star
+id|ptep
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tlb-&gt;start_addr
+op_eq
+op_complement
+l_int|0UL
+)paren
+id|tlb-&gt;start_addr
+op_assign
+id|address
+suffix:semicolon
+id|tlb-&gt;end_addr
+op_assign
+id|address
+op_plus
+id|PAGE_SIZE
+suffix:semicolon
+)brace
 DECL|macro|tlb_start_vma
 mdefine_line|#define tlb_start_vma(tlb, vma)&t;&t;&t;do { } while (0)
 DECL|macro|tlb_end_vma
 mdefine_line|#define tlb_end_vma(tlb, vma)&t;&t;&t;do { } while (0)
 DECL|macro|tlb_remove_tlb_entry
-mdefine_line|#define tlb_remove_tlb_entry(tlb, ptep, addr)&t;__tlb_remove_tlb_entry(tlb, ptep, addr)
+mdefine_line|#define tlb_remove_tlb_entry(tlb, ptep, addr)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;__tlb_remove_tlb_entry(tlb, ptep, addr);&t;&bslash;&n;} while (0)
 DECL|macro|pte_free_tlb
-mdefine_line|#define pte_free_tlb(tlb, ptep)&t;&t;&t;__pte_free_tlb(tlb, ptep)
+mdefine_line|#define pte_free_tlb(tlb, ptep)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;__pte_free_tlb(tlb, ptep);&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|pmd_free_tlb
-mdefine_line|#define pmd_free_tlb(tlb, ptep)&t;&t;&t;__pmd_free_tlb(tlb, ptep)
+mdefine_line|#define pmd_free_tlb(tlb, ptep)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;__pmd_free_tlb(tlb, ptep);&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* _ASM_IA64_TLB_H */
 eof
