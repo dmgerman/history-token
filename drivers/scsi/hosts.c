@@ -902,6 +902,12 @@ op_star
 id|dev
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|dev
+)paren
+(brace
 id|dev-&gt;class_data
 op_assign
 id|shost
@@ -910,6 +916,7 @@ id|shost-&gt;host_gendev
 op_assign
 id|dev
 suffix:semicolon
+)brace
 r_return
 id|__scsi_add_host
 c_func
