@@ -1,7 +1,9 @@
 multiline_comment|/*&n; * drivers/pcmcia/sa1100_system3.c&n; *&n; * PT Diagital Board PCMCIA specific routines&n; *&n; * Copyright (C) 2001 Stefan Eletzhofer &lt;stefan.eletzhofer@eletztrick.de&gt;&n; *&n; * $Id: sa1100_system3.c,v 1.1.4.2 2002/02/25 13:56:45 seletz Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * $Log: sa1100_system3.c,v $&n; * Revision 1.1.4.2  2002/02/25 13:56:45  seletz&n; * - more cleanups&n; * - setup interrupts for CF card only ATM&n; *&n; * Revision 1.1.4.1  2002/02/14 02:23:27  seletz&n; * - 2.5.2-rmk6 PCMCIA changes&n; *&n; * Revision 1.1.2.1  2002/02/13 23:49:33  seletz&n; * - added from 2.4.16-rmk2&n; * - cleanups&n; *&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -255,6 +257,11 @@ id|system3_pcmcia_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|init
 op_assign
 id|system3_pcmcia_init
@@ -297,7 +304,10 @@ id|__init
 id|pcmcia_system3_init
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 r_int
@@ -321,6 +331,8 @@ c_func
 (paren
 op_amp
 id|system3_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -333,7 +345,10 @@ id|__exit
 id|pcmcia_system3_exit
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 id|sa1100_unregister_pcmcia
@@ -341,6 +356,8 @@ c_func
 (paren
 op_amp
 id|system3_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace

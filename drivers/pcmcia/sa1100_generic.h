@@ -130,6 +130,12 @@ DECL|struct|pcmcia_low_level
 r_struct
 id|pcmcia_low_level
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|init
 r_int
 (paren
@@ -251,6 +257,10 @@ c_func
 r_struct
 id|pcmcia_low_level
 op_star
+comma
+r_struct
+id|device
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -260,6 +270,10 @@ c_func
 (paren
 r_struct
 id|pcmcia_low_level
+op_star
+comma
+r_struct
+id|device
 op_star
 )paren
 suffix:semicolon

@@ -5,6 +5,8 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;pcmcia/ss.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -887,6 +889,7 @@ macro_line|#ifdef CONFIG_SA1100_ADSBITSY
 id|pcmcia_adsbitsy_init
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -894,6 +897,7 @@ macro_line|#ifdef CONFIG_SA1100_BADGE4
 id|pcmcia_badge4_init
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -901,6 +905,7 @@ macro_line|#ifdef CONFIG_SA1100_GRAPHICSMASTER
 id|pcmcia_graphicsmaster_init
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -908,6 +913,7 @@ macro_line|#ifdef CONFIG_SA1100_JORNADA720
 id|pcmcia_jornada720_init
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -915,6 +921,7 @@ macro_line|#ifdef CONFIG_ASSABET_NEPONSET
 id|pcmcia_neponset_init
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -922,6 +929,7 @@ macro_line|#ifdef CONFIG_SA1100_PFS168
 id|pcmcia_pfs_init
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -929,6 +937,7 @@ macro_line|#ifdef CONFIG_SA1100_PT_SYSTEM3
 id|pcmcia_system3_init
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -936,6 +945,7 @@ macro_line|#ifdef CONFIG_SA1100_XP860
 id|pcmcia_xp860_init
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -971,6 +981,7 @@ macro_line|#ifdef CONFIG_SA1100_ADSBITSY
 id|pcmcia_adsbitsy_exit
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -978,6 +989,7 @@ macro_line|#ifdef CONFIG_SA1100_BADGE4
 id|pcmcia_badge4_exit
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -985,6 +997,7 @@ macro_line|#ifdef CONFIG_SA1100_GRAPHICSMASTER
 id|pcmcia_graphicsmaster_exit
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -992,6 +1005,7 @@ macro_line|#ifdef CONFIG_SA1100_JORNADA720
 id|pcmcia_jornada720_exit
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -999,6 +1013,7 @@ macro_line|#ifdef CONFIG_ASSABET_NEPONSET
 id|pcmcia_neponset_exit
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1006,6 +1021,7 @@ macro_line|#ifdef CONFIG_SA1100_PFS168
 id|pcmcia_pfs_exit
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1013,6 +1029,7 @@ macro_line|#ifdef CONFIG_SA1100_PT_SYSTEM3
 id|pcmcia_system3_exit
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1020,6 +1037,7 @@ macro_line|#ifdef CONFIG_SA1100_XP860
 id|pcmcia_xp860_exit
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1101,6 +1119,12 @@ id|bus
 op_assign
 op_amp
 id|sa1111_bus_type
+comma
+dot
+id|devclass
+op_assign
+op_amp
+id|pcmcia_socket_class
 comma
 dot
 id|probe

@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * drivers/pcmcia/sa1100_trizeps.c&n; *&n; * PCMCIA implementation routines for Trizeps&n; *&n; * Authors:&n; * Andreas Hofer &lt;ho@dsa-ac.de&gt;,&n; * Peter Lueg &lt;pl@dsa-ac.de&gt;,&n; * Guennadi Liakhovetski &lt;gl@dsa-ac.de&gt;&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/arch/trizeps.h&gt;
@@ -609,6 +611,11 @@ id|trizeps_pcmcia_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|init
 op_assign
 id|trizeps_pcmcia_init
@@ -651,7 +658,10 @@ id|__init
 id|pcmcia_trizeps_init
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 r_if
@@ -669,6 +679,8 @@ c_func
 (paren
 op_amp
 id|trizeps_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -683,7 +695,10 @@ id|__exit
 id|pcmcia_trizeps_exit
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 id|sa1100_unregister_pcmcia
@@ -691,6 +706,8 @@ c_func
 (paren
 op_amp
 id|trizeps_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace

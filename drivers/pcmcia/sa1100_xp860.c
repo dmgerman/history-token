@@ -1,7 +1,9 @@
 multiline_comment|/*&n; * drivers/pcmcia/sa1100_xp860.c&n; *&n; * XP860 PCMCIA specific routines&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -379,6 +381,11 @@ id|xp860_pcmcia_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|init
 op_assign
 id|xp860_pcmcia_init
@@ -421,7 +428,10 @@ id|__init
 id|pcmcia_xp860_init
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 r_int
@@ -445,6 +455,8 @@ c_func
 (paren
 op_amp
 id|xp860_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -457,7 +469,10 @@ id|__exit
 id|pcmcia_xp860_exit
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 id|sa1100_unregister_pcmcia
@@ -465,6 +480,8 @@ c_func
 (paren
 op_amp
 id|xp860_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace

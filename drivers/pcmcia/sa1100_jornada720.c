@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * drivers/pcmcia/sa1100_jornada720.c&n; *&n; * Jornada720 PCMCIA specific routines&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -271,6 +272,8 @@ op_assign
 id|sa1111_pcmcia_configure_socket
 c_func
 (paren
+id|sock
+comma
 id|conf
 )paren
 suffix:semicolon
@@ -322,6 +325,11 @@ id|jornada720_pcmcia_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|init
 op_assign
 id|jornada720_pcmcia_init
@@ -364,7 +372,10 @@ id|__init
 id|pcmcia_jornada720_init
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 r_int
@@ -388,6 +399,8 @@ c_func
 (paren
 op_amp
 id|jornada720_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -400,7 +413,10 @@ id|__devexit
 id|pcmcia_jornada720_exit
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 id|sa1100_unregister_pcmcia
@@ -408,6 +424,8 @@ c_func
 (paren
 op_amp
 id|jornada720_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace

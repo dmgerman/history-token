@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * drivers/pcmcia/sa1100_simpad.c&n; *&n; * PCMCIA implementation routines for simpad&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -562,6 +564,11 @@ id|simpad_pcmcia_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|init
 op_assign
 id|simpad_pcmcia_init
@@ -604,7 +611,10 @@ id|__init
 id|pcmcia_simpad_init
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 r_int
@@ -628,6 +638,8 @@ c_func
 (paren
 op_amp
 id|simpad_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -640,7 +652,10 @@ id|__exit
 id|pcmcia_simpad_exit
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 id|sa1100_unregister_pcmcia
@@ -648,6 +663,8 @@ c_func
 (paren
 op_amp
 id|simpad_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace

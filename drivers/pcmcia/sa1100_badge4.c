@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/drivers/pcmcia/sa1100_badge4.c&n; *&n; * BadgePAD 4 PCMCIA specific routines&n; *&n; *   Christopher Hoover &lt;ch@hpl.hp.com&gt;&n; *&n; * Copyright (C) 2002 Hewlett-Packard Company&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -379,6 +380,11 @@ id|badge4_pcmcia_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|init
 op_assign
 id|badge4_pcmcia_init
@@ -420,7 +426,10 @@ r_int
 id|pcmcia_badge4_init
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 r_int
@@ -444,6 +453,8 @@ c_func
 (paren
 op_amp
 id|badge4_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -456,7 +467,10 @@ id|__devexit
 id|pcmcia_badge4_exit
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 id|sa1100_unregister_pcmcia
@@ -464,6 +478,8 @@ c_func
 (paren
 op_amp
 id|badge4_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace
