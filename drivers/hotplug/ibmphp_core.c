@@ -6617,6 +6617,7 @@ l_string|&quot;Can&squot;t find the root pci bus, can not continue&bslash;n&quot
 )paren
 suffix:semicolon
 id|rc
+op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
