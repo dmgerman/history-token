@@ -86,6 +86,24 @@ id|msr_hi
 op_and_assign
 l_int|0x0000007F
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|longrun_high_freq
+op_le
+id|longrun_low_freq
+)paren
+(brace
+multiline_comment|/* Assume degenerate Longrun table */
+id|policy-&gt;min
+op_assign
+id|policy-&gt;max
+op_assign
+id|longrun_high_freq
+suffix:semicolon
+)brace
+r_else
+(brace
 id|policy-&gt;min
 op_assign
 id|longrun_low_freq
@@ -118,6 +136,7 @@ op_div
 l_int|100
 )paren
 suffix:semicolon
+)brace
 id|policy-&gt;cpu
 op_assign
 l_int|0
@@ -156,6 +175,24 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|longrun_high_freq
+op_le
+id|longrun_low_freq
+)paren
+(brace
+multiline_comment|/* Assume degenerate Longrun table */
+id|pctg_lo
+op_assign
+id|pctg_hi
+op_assign
+l_int|100
+suffix:semicolon
+)brace
+r_else
+(brace
 id|pctg_lo
 op_assign
 (paren
@@ -192,6 +229,7 @@ op_div
 l_int|100
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
