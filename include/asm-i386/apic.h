@@ -269,7 +269,14 @@ id|regs
 suffix:semicolon
 r_extern
 r_void
-id|setup_APIC_clocks
+id|setup_boot_APIC_clock
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|setup_secondary_APIC_clock
 (paren
 r_void
 )paren

@@ -4524,7 +4524,7 @@ r_if
 c_cond
 (paren
 (paren
-id|num_online_cpus
+id|num_possible_cpus
 c_func
 (paren
 )paren
@@ -4919,7 +4919,7 @@ c_cond
 id|debug
 op_logical_and
 (paren
-id|num_online_cpus
+id|num_possible_cpus
 c_func
 (paren
 )paren
@@ -5180,7 +5180,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|num_online_cpus
+id|num_possible_cpus
 c_func
 (paren
 )paren
@@ -5942,12 +5942,11 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: When boot code changes, this will need to be&n;           deactivated when/if a CPU comes up --RR */
 r_if
 c_cond
 (paren
 (paren
-id|num_online_cpus
+id|num_possible_cpus
 c_func
 (paren
 )paren
@@ -6352,11 +6351,10 @@ op_or
 id|SIGCHLD
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: When boot code changes, this will need to be&n;           deactivated when/if a CPU comes up --RR */
 r_if
 c_cond
 (paren
-id|num_online_cpus
+id|num_possible_cpus
 c_func
 (paren
 )paren
