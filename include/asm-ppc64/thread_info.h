@@ -63,9 +63,9 @@ mdefine_line|#define THREAD_SIZE&t;&t;(PAGE_SIZE &lt;&lt; THREAD_ORDER)
 DECL|macro|THREAD_SHIFT
 mdefine_line|#define THREAD_SHIFT&t;&t;(PAGE_SHIFT + THREAD_ORDER)
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info(tsk) ((struct thread_info *) &bslash;&n;&t;&t;&t;&t;__get_free_pages(GFP_KERNEL, THREAD_ORDER))
+mdefine_line|#define alloc_thread_info(task)&t;((struct thread_info *)kmalloc(THREAD_SIZE, GFP_KERNEL))
 DECL|macro|free_thread_info
-mdefine_line|#define free_thread_info(ti)&t;free_pages((unsigned long) (ti), THREAD_ORDER)
+mdefine_line|#define free_thread_info(ti)&t;kfree(ti)
 DECL|macro|get_thread_info
 mdefine_line|#define get_thread_info(ti)&t;get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info

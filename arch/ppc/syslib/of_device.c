@@ -413,13 +413,13 @@ op_assign
 id|to_of_platform_driver
 c_func
 (paren
-id|of_dev-&gt;dev.driver
+id|dev-&gt;driver
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|drv
+id|dev-&gt;driver
 op_logical_and
 id|drv-&gt;remove
 )paren
@@ -469,7 +469,7 @@ op_assign
 id|to_of_platform_driver
 c_func
 (paren
-id|of_dev-&gt;dev.driver
+id|dev-&gt;driver
 )paren
 suffix:semicolon
 r_int
@@ -480,7 +480,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drv
+id|dev-&gt;driver
 op_logical_and
 id|drv-&gt;suspend
 )paren
@@ -531,7 +531,7 @@ op_assign
 id|to_of_platform_driver
 c_func
 (paren
-id|of_dev-&gt;dev.driver
+id|dev-&gt;driver
 )paren
 suffix:semicolon
 r_int
@@ -542,7 +542,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drv
+id|dev-&gt;driver
 op_logical_and
 id|drv-&gt;resume
 )paren

@@ -290,22 +290,22 @@ mdefine_line|#define&t;PORTSTATE_TXBREAK&t;0x02
 DECL|macro|PORTSTATE_LOOPBACK
 mdefine_line|#define&t;PORTSTATE_LOOPBACK &t;0x04
 singleline_comment|// MSR bits
-DECL|macro|MSR_dCTS
-mdefine_line|#define MSR_dCTS&t;  &t;&t;0x01&t;&t;
+DECL|macro|USA_MSR_dCTS
+mdefine_line|#define USA_MSR_dCTS&t;  &t;&t;0x01&t;&t;
 singleline_comment|// CTS has changed since last report&t;
-DECL|macro|MSR_dDSR
-mdefine_line|#define MSR_dDSR&t;  &t;&t;0x02
-DECL|macro|MSR_dRI
-mdefine_line|#define MSR_dRI&t;&t;&t;&t;0x04
-DECL|macro|MSR_dDCD
-mdefine_line|#define MSR_dDCD&t;  &t;&t;0x08
-DECL|macro|MSR_CTS
-mdefine_line|#define MSR_CTS&t;&t;&t;&t;0x10&t;  &t;
+DECL|macro|USA_MSR_dDSR
+mdefine_line|#define USA_MSR_dDSR&t;  &t;&t;0x02
+DECL|macro|USA_MSR_dRI
+mdefine_line|#define USA_MSR_dRI&t;&t;&t;0x04
+DECL|macro|USA_MSR_dDCD
+mdefine_line|#define USA_MSR_dDCD&t;  &t;&t;0x08
+DECL|macro|USA_MSR_CTS
+mdefine_line|#define USA_MSR_CTS&t;&t;&t;0x10&t;  &t;
 singleline_comment|// current state of CTS
-DECL|macro|MSR_DSR
-mdefine_line|#define MSR_DSR&t;&t;&t;&t;0x20
-DECL|macro|MSR_RI
-mdefine_line|#define MSR_RI&t;&t;&t;&t;0x40
+DECL|macro|USA_MSR_DSR
+mdefine_line|#define USA_MSR_DSR&t;&t;&t;0x20
+DECL|macro|USA_USA_MSR_RI
+mdefine_line|#define USA_USA_MSR_RI&t;&t;&t;0x40
 DECL|macro|MSR_DCD
 mdefine_line|#define MSR_DCD&t;&t;&t;&t;0x80
 singleline_comment|// ie: the maximum length of an endpoint buffer

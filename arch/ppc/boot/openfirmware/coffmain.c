@@ -162,7 +162,7 @@ r_int
 r_int
 id|prog_start
 op_assign
-l_int|0x800000
+l_int|0x900000
 suffix:semicolon
 DECL|variable|prog_size
 r_static
@@ -170,7 +170,7 @@ r_int
 r_int
 id|prog_size
 op_assign
-l_int|0x800000
+l_int|0x700000
 suffix:semicolon
 DECL|typedef|kernel_start_t
 r_typedef

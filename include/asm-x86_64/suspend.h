@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * Copyright 2001-2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; * Based on code&n; * Copyright 2001 Patrick Mochel &lt;mochel@osdl.org&gt;&n; */
+multiline_comment|/*&n; * Copyright 2001-2003 Pavel Machek &lt;pavel@suse.cz&gt;&n; * Based on code&n; * Copyright 2001 Patrick Mochel &lt;mochel@osdl.org&gt;&n; */
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 r_static
 r_inline
-r_void
+r_int
 DECL|function|arch_prepare_suspend
 id|arch_prepare_suspend
 c_func
@@ -11,6 +11,9 @@ c_func
 r_void
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* Image of the saved processor state. If you touch this, fix acpi_wakeup.S. */
 DECL|struct|saved_context

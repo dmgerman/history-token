@@ -3861,6 +3861,19 @@ id|pci_controller
 op_star
 id|controller
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ia64_platform_is
+c_func
+(paren
+l_string|&quot;sn2&quot;
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * set pci_raw_ops, etc.&n;&t; */
 id|sn_pci_fixup
 c_func

@@ -48,7 +48,7 @@ id|misc
 suffix:semicolon
 r_int
 r_int
-id|phys
+id|size
 suffix:semicolon
 r_int
 r_int
@@ -56,13 +56,10 @@ id|virt
 suffix:semicolon
 r_int
 r_int
-id|size
+id|phys
 suffix:semicolon
 r_int
 id|ret0
-suffix:semicolon
-r_int
-id|ret1
 suffix:semicolon
 )brace
 id|args
@@ -96,7 +93,7 @@ l_int|6
 suffix:semicolon
 id|args.nret
 op_assign
-l_int|2
+l_int|1
 suffix:semicolon
 id|args.method
 op_assign
@@ -108,8 +105,7 @@ id|of_prom_mmu
 suffix:semicolon
 id|args.misc
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 id|args.phys
 op_assign

@@ -102,8 +102,8 @@ id|sun4c_vacinfo
 suffix:semicolon
 multiline_comment|/* sun4c_enable_vac() enables the sun4c virtual address cache. */
 DECL|function|sun4c_enable_vac
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|sun4c_enable_vac
 c_func
@@ -119,6 +119,7 @@ l_string|&quot;lduba [%0] %1, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;or    %%g1, %2, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;stba  %%g1, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -140,6 +141,8 @@ id|SENABLE_CACHE
 )paren
 suffix:colon
 l_string|&quot;g1&quot;
+comma
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 id|sun4c_vacinfo.on
@@ -149,8 +152,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* sun4c_disable_vac() disables the virtual address cache. */
 DECL|function|sun4c_disable_vac
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|sun4c_disable_vac
 c_func
@@ -166,6 +169,7 @@ l_string|&quot;lduba [%0] %1, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;andn  %%g1, %2, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;stba  %%g1, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -187,6 +191,8 @@ id|SENABLE_CACHE
 )paren
 suffix:colon
 l_string|&quot;g1&quot;
+comma
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 id|sun4c_vacinfo.on

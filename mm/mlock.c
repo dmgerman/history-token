@@ -682,8 +682,7 @@ op_and_assign
 op_complement
 id|VM_LOCKED
 suffix:semicolon
-id|error
-op_assign
+multiline_comment|/* Ignore errors */
 id|mlock_fixup
 c_func
 (paren
@@ -695,13 +694,6 @@ id|vma-&gt;vm_end
 comma
 id|newflags
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_break
 suffix:semicolon
 )brace
 r_return

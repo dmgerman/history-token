@@ -13894,7 +13894,11 @@ suffix:semicolon
 id|get_random_bytes
 c_func
 (paren
+op_amp
 id|dev_addr
+(braket
+l_int|3
+)braket
 comma
 l_int|3
 )paren

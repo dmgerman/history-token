@@ -674,6 +674,7 @@ l_int|0
 op_assign
 l_int|0x0000000100000000
 suffix:semicolon
+multiline_comment|/* nop.m 0; nop.i 0; nop.i 0 */
 id|wp
 (braket
 l_int|1
@@ -681,10 +682,33 @@ l_int|1
 op_assign
 l_int|0x0004000000000200
 suffix:semicolon
+id|wp
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0x0000000100000011
+suffix:semicolon
+multiline_comment|/* nop.m 0; nop.i 0; br.ret.sptk.many b6 */
+id|wp
+(braket
+l_int|3
+)braket
+op_assign
+l_int|0x0084006880000200
+suffix:semicolon
 id|ia64_fc
 c_func
 (paren
 id|wp
+)paren
+suffix:semicolon
+id|ia64_fc
+c_func
+(paren
+id|wp
+op_plus
+l_int|2
 )paren
 suffix:semicolon
 op_increment

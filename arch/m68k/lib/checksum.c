@@ -168,6 +168,13 @@ r_return
 id|sum
 suffix:semicolon
 )brace
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * copy from user space while checksumming, with exception handling.&n; */
 r_int
 r_int

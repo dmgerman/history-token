@@ -25,6 +25,7 @@ macro_line|#include &lt;net/ipip.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#ifdef CONFIG_IPV6
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/ip6_fib.h&gt;
@@ -2335,6 +2336,16 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|secpath_put
+c_func
+(paren
+id|skb-&gt;sp
+)paren
+suffix:semicolon
+id|skb-&gt;sp
+op_assign
+l_int|NULL
+suffix:semicolon
 id|skb-&gt;mac.raw
 op_assign
 id|skb-&gt;nh.raw

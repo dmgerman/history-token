@@ -299,6 +299,7 @@ l_string|&quot;std&bslash;t%%g0, [%0 + %3 + 0x30]&bslash;n&bslash;t&quot;
 l_string|&quot;st&bslash;t%1, [%0 + %3 + 0x38]&bslash;n&bslash;t&quot;
 l_string|&quot;st&bslash;t%%g0, [%0 + %3 + 0x3c]&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -345,6 +346,8 @@ l_int|0
 )braket
 )paren
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace

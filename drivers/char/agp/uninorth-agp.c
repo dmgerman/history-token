@@ -1310,14 +1310,14 @@ l_int|1
 comma
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|agp_device_ids
 id|uninorth_agp_device_ids
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace
@@ -1377,7 +1377,7 @@ suffix:semicolon
 DECL|function|agp_uninorth_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|agp_uninorth_probe
 c_func
 (paren

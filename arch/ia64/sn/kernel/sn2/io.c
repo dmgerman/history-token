@@ -1,5 +1,6 @@
 multiline_comment|/* &n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2003 Silicon Graphics, Inc. All rights reserved.&n; *&n; * The generic kernel requires function pointers to these routines, so&n; * we wrap the inlines from asm/ia64/sn/sn2/io.h here.&n; */
 macro_line|#include &lt;asm/sn/sn2/io.h&gt;
+macro_line|#ifdef CONFIG_IA64_GENERIC
 DECL|macro|__sn_inb
 macro_line|#undef __sn_inb
 DECL|macro|__sn_inw
@@ -208,4 +209,5 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 eof

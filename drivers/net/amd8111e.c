@@ -7470,11 +7470,7 @@ id|lp-&gt;ipg_data.ipg_timer
 comma
 id|jiffies
 op_plus
-(paren
-id|IPG_CONVERGE_TIME
-op_star
-id|HZ
-)paren
+id|IPG_CONVERGE_JIFFIES
 )paren
 suffix:semicolon
 )brace
@@ -7791,11 +7787,7 @@ id|lp-&gt;ipg_data.ipg_timer
 comma
 id|jiffies
 op_plus
-(paren
-id|IPG_CONVERGE_TIME
-op_star
-id|HZ
-)paren
+id|IPG_CONVERGE_JIFFIES
 )paren
 suffix:semicolon
 r_return
@@ -8355,9 +8347,7 @@ id|lp-&gt;ipg_data.ipg_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|IPG_CONVERGE_TIME
-op_star
-id|HZ
+id|IPG_CONVERGE_JIFFIES
 suffix:semicolon
 id|lp-&gt;ipg_data.ipg
 op_assign

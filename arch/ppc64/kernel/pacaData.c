@@ -29,7 +29,6 @@ r_struct
 id|paca_struct
 id|paca
 (braket
-id|NR_CPUS
 )braket
 id|__page_aligned
 op_assign

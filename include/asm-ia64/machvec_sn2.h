@@ -171,5 +171,6 @@ DECL|macro|platform_dma_sync_sg
 mdefine_line|#define platform_dma_sync_sg&t;&t;sn_dma_sync_sg
 DECL|macro|platform_dma_supported
 mdefine_line|#define platform_dma_supported&t;&t;sn_dma_supported
+macro_line|#include &lt;asm/sn/sn2/io.h&gt;
 macro_line|#endif /* _ASM_IA64_MACHVEC_SN2_H */
 eof

@@ -1756,6 +1756,18 @@ c_func
 id|disarm_decr
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|mol_trampoline
+suffix:semicolon
+DECL|variable|mol_trampoline
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mol_trampoline
+)paren
+suffix:semicolon
+multiline_comment|/* For MOL */
 macro_line|#ifdef CONFIG_PPC_STD_MMU
 DECL|variable|flush_hash_pages
 id|EXPORT_SYMBOL
@@ -1765,6 +1777,20 @@ id|flush_hash_pages
 )paren
 suffix:semicolon
 multiline_comment|/* For MOL */
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_int
+id|mmu_hash_lock
+suffix:semicolon
+DECL|variable|mmu_hash_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mmu_hash_lock
+)paren
+suffix:semicolon
+multiline_comment|/* For MOL */
+macro_line|#endif /* CONFIG_SMP */
 r_extern
 r_int
 op_star
@@ -1777,7 +1803,7 @@ c_func
 id|intercept_table
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_PPC_STD_MMU */
 DECL|variable|cur_cpu_spec
 id|EXPORT_SYMBOL
 c_func

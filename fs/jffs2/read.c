@@ -1,9 +1,10 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: read.c,v 1.31 2003/01/14 14:06:22 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: read.c,v 1.34 2003/10/04 08:33:06 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 DECL|function|jffs2_read_dnode
 r_int
@@ -914,12 +915,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|frag
 op_logical_or
 id|frag-&gt;ofs
 OG
 id|offset
+)paren
 )paren
 (brace
 r_uint32
@@ -1017,73 +1022,12 @@ r_else
 r_if
 c_cond
 (paren
-id|frag-&gt;ofs
-OL
-id|offset
-op_logical_and
-(paren
-id|offset
-op_amp
-(paren
-id|PAGE_CACHE_SIZE
-op_minus
-l_int|1
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-id|D1
+id|unlikely
 c_func
-(paren
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;Eep. Overlap in ino #%u fraglist. frag-&gt;ofs = 0x%08x, offset = 0x%08x&bslash;n&quot;
-comma
-id|f-&gt;inocache-&gt;ino
-comma
-id|frag-&gt;ofs
-comma
-id|offset
-)paren
-)paren
-suffix:semicolon
-id|D1
-c_func
-(paren
-id|jffs2_print_frag_list
-c_func
-(paren
-id|f
-)paren
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|buf
-comma
-l_int|0
-comma
-id|end
-op_minus
-id|offset
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
 (paren
 op_logical_neg
 id|frag-&gt;node
+)paren
 )paren
 (brace
 r_uint32

@@ -690,10 +690,6 @@ id|__u16
 id|td_cnt
 suffix:semicolon
 singleline_comment|// tds already serviced
-DECL|member|state
-r_int
-id|state
-suffix:semicolon
 DECL|member|td
 r_struct
 id|td
@@ -708,8 +704,6 @@ DECL|typedef|urb_priv_t
 )brace
 id|urb_priv_t
 suffix:semicolon
-DECL|macro|URB_DEL
-mdefine_line|#define URB_DEL 1
 DECL|macro|TD_HASH_SIZE
 mdefine_line|#define TD_HASH_SIZE    64    /* power&squot;o&squot;two */
 singleline_comment|// sizeof (struct td) ~= 64 == 2^6 ... 
@@ -796,15 +790,6 @@ id|TD_HASH_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * driver state&n;&t; */
-DECL|member|disabled
-r_int
-id|disabled
-suffix:semicolon
-multiline_comment|/* e.g. got a UE, we&squot;re hung */
-DECL|member|sleeping
-r_int
-id|sleeping
-suffix:semicolon
 DECL|member|load
 r_int
 id|load

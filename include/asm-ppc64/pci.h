@@ -59,9 +59,9 @@ op_star
 id|dev
 )paren
 (brace
-multiline_comment|/* &n;&t; * pSeries firmware sets cacheline size and hardware treats&n;&t; * MWI the same as memory write, so we dont change cacheline size&n;&t; * or the MWI bit.&n;&t; */
+multiline_comment|/*&n;&t; * We would like to avoid touching the cacheline size or MWI bit&n;&t; * but we cant do that with the current pcibios_prep_mwi &n;&t; * interface. pSeries firmware sets the cacheline size (which is not&n;&t; * the cpu cacheline size in all cases) and hardware treats MWI &n;&t; * the same as memory write. So we dont touch the cacheline size&n;&t; * here and allow the generic code to set the MWI bit.&n;&t; */
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 r_extern

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: erase.c,v 1.51 2003/05/11 22:47:36 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: erase.c,v 1.53 2003/10/08 17:22:54 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -613,6 +613,10 @@ id|c-&gt;erasing_size
 op_add_assign
 id|c-&gt;sector_size
 suffix:semicolon
+id|c-&gt;wasted_size
+op_sub_assign
+id|jeb-&gt;wasted_size
+suffix:semicolon
 id|c-&gt;free_size
 op_sub_assign
 id|jeb-&gt;free_size
@@ -625,6 +629,8 @@ id|c-&gt;dirty_size
 op_sub_assign
 id|jeb-&gt;dirty_size
 suffix:semicolon
+id|jeb-&gt;wasted_size
+op_assign
 id|jeb-&gt;used_size
 op_assign
 id|jeb-&gt;dirty_size

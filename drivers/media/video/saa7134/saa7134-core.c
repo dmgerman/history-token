@@ -529,7 +529,7 @@ r_int
 id|saa7134_devcount
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(fmt, arg...)&t;if (core_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/core: &quot; fmt, dev-&gt;name, ## arg)
+mdefine_line|#define dprintk(fmt, arg...)&t;if (core_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/core: &quot; fmt, dev-&gt;name , ## arg)
 multiline_comment|/* ------------------------------------------------------------------ */
 multiline_comment|/* debug help functions                                               */
 DECL|variable|v4l1_ioctls

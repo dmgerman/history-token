@@ -29,24 +29,6 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
-r_void
-id|enable_irq
-c_func
-(paren
-r_int
-r_int
-id|irq_nr
-)paren
-suffix:semicolon
-r_void
-id|disable_irq
-c_func
-(paren
-r_int
-r_int
-id|irq_nr
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -283,6 +265,8 @@ op_or
 id|IRQ_AUTODETECT
 op_or
 id|IRQ_WAITING
+op_or
+id|IRQ_INPROGRESS
 )paren
 suffix:semicolon
 id|unmask_irq
@@ -341,6 +325,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|synchronize_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|synchronize_irq
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/* XXX Make this into free_irq() - Anton */
 multiline_comment|/* This could be promoted to a real free_irq() ... */
@@ -719,6 +710,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Generic enable/disable code: this just calls&n; * down into the PIC-specific version for the actual&n; * hardware disable after having gotten the irq&n; * controller lock. &n; */
 multiline_comment|/**&n; *&t;disable_irq_nosync - disable an irq without waiting&n; *&t;@irq: Interrupt to disable&n; *&n; *&t;Disable the selected interrupt line. Disables of an interrupt&n; *&t;stack. Unlike disable_irq(), this function does not ensure existing&n; *&t;instances of the IRQ handler have completed before returning.&n; *&n; *&t;This function may be called from IRQ context.&n; */
 DECL|function|disable_irq_nosync
+r_inline
 r_void
 id|disable_irq_nosync
 c_func
@@ -788,6 +780,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|disable_irq_nosync
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_irq_nosync
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;disable_irq - disable an irq and wait for completion&n; *&t;@irq: Interrupt to disable&n; *&n; *&t;Disable the selected interrupt line. Disables of an interrupt&n; *&t;stack. That is for two disables you need two enables. This&n; *&t;function waits for any pending IRQ handlers for this interrupt&n; *&t;to complete before returning. If you use this function while&n; *&t;holding a resource the IRQ handler may need you will deadlock.&n; *&n; *&t;This function may be called - with care - from IRQ context.&n; */
 DECL|function|disable_irq
 r_void
@@ -799,12 +798,25 @@ r_int
 id|irq
 )paren
 (brace
+id|irq_desc_t
+op_star
+id|desc
+op_assign
+id|irq_desc
+op_plus
+id|irq
+suffix:semicolon
 id|disable_irq_nosync
 c_func
 (paren
 id|irq
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|desc-&gt;action
+)paren
 id|synchronize_irq
 c_func
 (paren
@@ -812,6 +824,13 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|disable_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_irq
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;enable_irq - enable interrupt handling on an irq&n; *&t;@irq: Interrupt to enable&n; *&n; *&t;Re-enables the processing of interrupts on this IRQ line&n; *&t;providing no disable_irq calls are now in effect.&n; *&n; *&t;This function may be called from IRQ context.&n; */
 DECL|function|enable_irq
 r_void
@@ -861,7 +880,11 @@ op_assign
 id|desc-&gt;status
 op_amp
 op_complement
+(paren
 id|IRQ_DISABLED
+op_or
+id|IRQ_INPROGRESS
+)paren
 suffix:semicolon
 id|desc-&gt;status
 op_assign
@@ -919,9 +942,15 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;enable_irq(%u) unbalanced&bslash;n&quot;
+l_string|&quot;enable_irq(%u) unbalanced from %p&bslash;n&quot;
 comma
 id|irq
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -935,6 +964,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|enable_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_irq
+)paren
+suffix:semicolon
 DECL|function|show_interrupts
 r_int
 id|show_interrupts
@@ -2566,7 +2602,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/*&n;&t; * Parse the first 16 characters as a hex string, any non-hex char&n;&t; * is end-of-string. &squot;00e1&squot;, &squot;e1&squot;, &squot;00E1&squot;, &squot;E1&squot; are all the same.&n;&t; */
+multiline_comment|/*&n;&t; * Parse the first HEX_DIGITS characters as a hex string, any non-hex char&n;&t; * is end-of-string. &squot;00e1&squot;, &squot;e1&squot;, &squot;00E1&squot;, &squot;E1&squot; are all the same.&n;&t; */
 r_for
 c_loop
 (paren
@@ -2781,6 +2817,14 @@ op_amp
 id|new_value
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
+suffix:semicolon
 multiline_comment|/*&n;&t; * Do not allow disabling IRQs completely - it&squot;s a too easy&n;&t; * way to make the system unusable accidentally :-) At least&n;&t; * one online CPU still has to be targeted.&n;&t; */
 id|cpus_and
 c_func
@@ -2909,6 +2953,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -3131,6 +3176,12 @@ id|irq
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|entry
+)paren
+(brace
 id|entry-&gt;nlink
 op_assign
 l_int|1
@@ -3154,6 +3205,7 @@ id|entry-&gt;write_proc
 op_assign
 id|irq_affinity_write_proc
 suffix:semicolon
+)brace
 id|smp_affinity_entry
 (braket
 id|irq
@@ -3208,6 +3260,14 @@ l_int|0600
 comma
 id|root_irq_dir
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|entry
+)paren
+r_return
 suffix:semicolon
 id|entry-&gt;nlink
 op_assign

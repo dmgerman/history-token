@@ -8736,9 +8736,6 @@ op_amp
 id|card-&gt;midi.open_sem
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* for 2.2 */
 r_return
 l_int|0
 suffix:semicolon
@@ -8954,9 +8951,6 @@ op_amp
 id|card-&gt;midi.open_wait
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* for 2.2 */
 r_return
 l_int|0
 suffix:semicolon
@@ -16082,9 +16076,6 @@ id|ret
 suffix:semicolon
 )brace
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* for 2.2 */
 id|CS_DBGOUT
 c_func
 (paren
@@ -16604,9 +16595,6 @@ l_string|&quot;cs46xx: cs_release()- 0&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* For 2.2 */
 r_return
 l_int|0
 suffix:semicolon
@@ -19375,9 +19363,6 @@ op_amp
 id|card-&gt;mixer_use_cnt
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* for 2.2 */
 id|CS_DBGOUT
 c_func
 (paren
@@ -19554,9 +19539,6 @@ suffix:semicolon
 )brace
 id|match
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* for 2.2 */
 r_if
 c_cond
 (paren
