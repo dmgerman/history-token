@@ -152,9 +152,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|page-&gt;mapping-&gt;a_ops
 op_member_access_from_pointer

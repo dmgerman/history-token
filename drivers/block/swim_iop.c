@@ -2045,6 +2045,13 @@ op_amp
 id|fs-&gt;timeout
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|fs-&gt;timeout
+)paren
+suffix:semicolon
 id|fs-&gt;timeout.expires
 op_assign
 id|jiffies

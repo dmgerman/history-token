@@ -1541,8 +1541,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * This is for checking whether an inode has changed w.r.t. a file so&n;&t; * that the file can be updated if necessary (compare with f_version).&n;&t; */
 id|vi-&gt;i_version
 op_assign
-op_increment
-id|event
+l_int|0
 suffix:semicolon
 id|vi-&gt;i_uid
 op_assign

@@ -6003,9 +6003,7 @@ id|dir
 )paren
 suffix:semicolon
 id|dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|ext3_mark_inode_dirty
 c_func
@@ -7885,9 +7883,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|BUFFER_TRACE
 c_func
@@ -10119,9 +10115,7 @@ id|inode-&gt;i_nlink
 )paren
 suffix:semicolon
 id|inode-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|inode-&gt;i_nlink
 op_assign
@@ -11341,9 +11335,7 @@ op_assign
 id|old_de-&gt;file_type
 suffix:semicolon
 id|new_dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|BUFFER_TRACE
 c_func

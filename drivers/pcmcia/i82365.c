@@ -5202,6 +5202,13 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|poll_timer
+)paren
+suffix:semicolon
 id|poll_timer.expires
 op_assign
 id|jiffies

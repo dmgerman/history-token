@@ -675,6 +675,10 @@ op_assign
 id|EXT2_ACL_NOT_CACHED
 suffix:semicolon
 macro_line|#endif
+id|ei-&gt;vfs_inode.i_version
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 op_amp
 id|ei-&gt;vfs_inode

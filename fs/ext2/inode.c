@@ -4155,11 +4155,6 @@ c_func
 id|raw_inode-&gt;i_blocks
 )paren
 suffix:semicolon
-id|inode-&gt;i_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 id|ei-&gt;i_flags
 op_assign
 id|le32_to_cpu

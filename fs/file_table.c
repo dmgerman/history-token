@@ -45,12 +45,6 @@ id|files_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/* file version */
-DECL|variable|event
-r_int
-r_int
-id|event
-suffix:semicolon
 multiline_comment|/* Find an unused file structure and return a pointer to it.&n; * Returns NULL, if there are no more free file structures or&n; * we run out of memory.&n; *&n; * SMP-safe.&n; */
 DECL|function|get_empty_filp
 r_struct
@@ -172,8 +166,7 @@ l_int|1
 suffix:semicolon
 id|f-&gt;f_version
 op_assign
-op_increment
-id|event
+l_int|0
 suffix:semicolon
 id|f-&gt;f_uid
 op_assign
