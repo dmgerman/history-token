@@ -2533,7 +2533,7 @@ c_cond
 id|ultra_66
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * check to make sure drive on same channel&n;&t;&t;&t; * is u66 capable&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Check to make sure drive on the same channel&n;&t;&t;&t; * is UDMA3 or higher capable.  Ignore empty slots.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2547,7 +2547,7 @@ l_int|2
 )paren
 )braket
 dot
-id|id
+id|present
 )paren
 (brace
 r_if
