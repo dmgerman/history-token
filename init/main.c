@@ -191,6 +191,26 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_ACPI
+r_extern
+r_void
+id|acpi_early_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|acpi_early_init
+r_static
+r_inline
+id|acpi_early_init
+c_func
+(paren
+)paren
+(brace
+)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_TC
 r_extern
 r_void
@@ -1654,6 +1674,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|acpi_early_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* before LAPIC and SMP init */
 multiline_comment|/* &n;&t; *&t;We count on the initial thread going ok &n;&t; *&t;Like idlers init is an unlocked kernel thread, which will&n;&t; *&t;make syscalls (and thus be locked).&n;&t; */
 id|init_idle
 c_func
