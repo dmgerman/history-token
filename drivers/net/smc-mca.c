@@ -708,6 +708,9 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|ultra_found
+op_increment
+suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
 id|ioaddr
