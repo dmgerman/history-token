@@ -26,13 +26,20 @@ macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unwind.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
-macro_line|#ifdef CONFIG_IA64_SGI_SN
-macro_line|#include &lt;asm/sn/idle.h&gt;
-macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
 macro_line|# include &lt;asm/perfmon.h&gt;
 macro_line|#endif
 macro_line|#include &quot;sigframe.h&quot;
+DECL|variable|ia64_mark_idle
+r_void
+(paren
+op_star
+id|ia64_mark_idle
+)paren
+(paren
+r_int
+)paren
+suffix:semicolon
 r_void
 DECL|function|ia64_do_show_stack
 id|ia64_do_show_stack
@@ -774,6 +781,17 @@ op_star
 id|unused
 )paren
 (brace
+r_void
+(paren
+op_star
+id|mark_idle
+)paren
+(paren
+r_int
+)paren
+op_assign
+id|ia64_mark_idle
+suffix:semicolon
 multiline_comment|/* endless idle loop with no priority at all */
 r_while
 c_loop
@@ -828,13 +846,19 @@ c_func
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_IA64_SGI_SN
-id|snidle
-c_func
+r_if
+c_cond
 (paren
+id|mark_idle
+)paren
+(paren
+op_star
+id|mark_idle
+)paren
+(paren
+l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 (paren
 op_star
 id|idle
@@ -843,13 +867,19 @@ id|idle
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IA64_SGI_SN
-id|snidleoff
-c_func
+r_if
+c_cond
 (paren
+id|mark_idle
+)paren
+(paren
+op_star
+id|mark_idle
+)paren
+(paren
+l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 id|normal_xtp
 c_func
