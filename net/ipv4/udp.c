@@ -5943,32 +5943,5 @@ id|proc_net
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* CONFIG_PROC_FS */
-DECL|function|udp_proc_init
-r_int
-id|__init
-id|udp_proc_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|udp_proc_exit
-r_void
-id|__init
-id|udp_proc_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 macro_line|#endif /* CONFIG_PROC_FS */
 eof
