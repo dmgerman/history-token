@@ -13,7 +13,7 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|SG_MEMPOOL_NR
-mdefine_line|#define SG_MEMPOOL_NR&t;&t;5
+mdefine_line|#define SG_MEMPOOL_NR&t;&t;(sizeof(scsi_sg_pools)/sizeof(struct scsi_host_sg_pool))
 DECL|macro|SG_MEMPOOL_SIZE
 mdefine_line|#define SG_MEMPOOL_SIZE&t;&t;32
 DECL|struct|scsi_host_sg_pool
@@ -41,6 +41,9 @@ id|pool
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#if (SCSI_MAX_PHYS_SEGMENTS &lt; 32)
+macro_line|#error SCSI_MAX_PHYS_SEGMENTS is too small
+macro_line|#endif
 DECL|macro|SP
 mdefine_line|#define SP(x) { x, &quot;sgpool-&quot; #x } 
 DECL|variable|scsi_sg_pools
@@ -48,7 +51,6 @@ r_struct
 id|scsi_host_sg_pool
 id|scsi_sg_pools
 (braket
-id|SG_MEMPOOL_NR
 )braket
 op_assign
 (brace
@@ -70,17 +72,33 @@ c_func
 l_int|32
 )paren
 comma
+macro_line|#if (SCSI_MAX_PHYS_SEGMENTS &gt; 32)
 id|SP
 c_func
 (paren
 l_int|64
 )paren
 comma
+macro_line|#if (SCSI_MAX_PHYS_SEGMENTS &gt; 64)
 id|SP
 c_func
 (paren
-id|MAX_PHYS_SEGMENTS
+l_int|128
 )paren
+comma
+macro_line|#if (SCSI_MAX_PHYS_SEGMENTS &gt; 128)
+id|SP
+c_func
+(paren
+l_int|256
+)paren
+comma
+macro_line|#if (SCSI_MAX_PHYS_SEGMENTS &gt; 256)
+macro_line|#error SCSI_MAX_PHYS_SEGMENTS is too large
+macro_line|#endif
+macro_line|#endif
+macro_line|#endif
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|SP
@@ -1430,6 +1448,7 @@ l_int|2
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if (SCSI_MAX_PHYS_SEGMENTS &gt; 32)
 r_case
 l_int|33
 dot
@@ -1443,12 +1462,13 @@ l_int|3
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if (SCSI_MAX_PHYS_SEGMENTS &gt; 64)
 r_case
 l_int|65
 dot
 dot
 dot
-id|MAX_PHYS_SEGMENTS
+l_int|128
 suffix:colon
 id|cmd-&gt;sglist_len
 op_assign
@@ -1456,6 +1476,23 @@ l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if (SCSI_MAX_PHYS_SEGMENTS  &gt; 128)
+r_case
+l_int|129
+dot
+dot
+dot
+l_int|256
+suffix:colon
+id|cmd-&gt;sglist_len
+op_assign
+l_int|5
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
+macro_line|#endif
 r_default
 suffix:colon
 r_return
@@ -2514,6 +2551,12 @@ id|req-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 multiline_comment|/* release the command and kill it */
+id|scsi_release_buffers
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
 id|scsi_put_command
 c_func
 (paren
@@ -3607,7 +3650,7 @@ c_func
 (paren
 id|q
 comma
-id|MAX_PHYS_SEGMENTS
+id|SCSI_MAX_PHYS_SEGMENTS
 )paren
 suffix:semicolon
 id|blk_queue_max_sectors

@@ -1,10 +1,10 @@
-multiline_comment|/*&n; *  Copyright (c) 2001-2002 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_RAID.H&n; *          Title:  MPI RAID message and structures&n; *  Creation Date:  February 27, 2001&n; *&n; *    MPI_RAID.H Version:  01.02.07&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  02-27-01  01.01.01  Original release for this file.&n; *  03-27-01  01.01.02  Added structure offset comments.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *  09-28-01  01.02.02  Major rework for MPI v1.2 Integrated RAID changes.&n; *  10-04-01  01.02.03  Added ActionData defines for&n; *                      MPI_RAID_ACTION_DELETE_VOLUME action.&n; *  11-01-01  01.02.04  Added define for MPI_RAID_ACTION_ADATA_DO_NOT_SYNC.&n; *  03-14-02  01.02.05  Added define for MPI_RAID_ACTION_ADATA_LOW_LEVEL_INIT.&n; *  05-07-02  01.02.06  Added define for MPI_RAID_ACTION_ACTIVATE_VOLUME,&n; *                      MPI_RAID_ACTION_INACTIVATE_VOLUME, and&n; *                      MPI_RAID_ACTION_ADATA_INACTIVATE_ALL.&n; *  07-12-02  01.02.07  Added structures for Mailbox request and reply.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2001-2003 LSI Logic Corporation.&n; *&n; *&n; *           Name:  mpi_raid.h&n; *          Title:  MPI RAID message and structures&n; *  Creation Date:  February 27, 2001&n; *&n; *    mpi_raid.h Version:  01.05.xx&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  02-27-01  01.01.01  Original release for this file.&n; *  03-27-01  01.01.02  Added structure offset comments.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *  09-28-01  01.02.02  Major rework for MPI v1.2 Integrated RAID changes.&n; *  10-04-01  01.02.03  Added ActionData defines for&n; *                      MPI_RAID_ACTION_DELETE_VOLUME action.&n; *  11-01-01  01.02.04  Added define for MPI_RAID_ACTION_ADATA_DO_NOT_SYNC.&n; *  03-14-02  01.02.05  Added define for MPI_RAID_ACTION_ADATA_LOW_LEVEL_INIT.&n; *  05-07-02  01.02.06  Added define for MPI_RAID_ACTION_ACTIVATE_VOLUME,&n; *                      MPI_RAID_ACTION_INACTIVATE_VOLUME, and&n; *                      MPI_RAID_ACTION_ADATA_INACTIVATE_ALL.&n; *  07-12-02  01.02.07  Added structures for Mailbox request and reply.&n; *  11-15-02  01.02.08  Added missing MsgContext field to MSG_MAILBOX_REQUEST.&n; *  04-01-03  01.02.09  New action data option flag for&n; *                      MPI_RAID_ACTION_DELETE_VOLUME.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_RAID_H
 DECL|macro|MPI_RAID_H
 mdefine_line|#define MPI_RAID_H
 multiline_comment|/******************************************************************************&n;*&n;*        R A I D    M e s s a g e s&n;*&n;*******************************************************************************/
 multiline_comment|/****************************************************************************/
-multiline_comment|/* RAID Volume Request                                                      */
+multiline_comment|/* RAID Action Request                                                      */
 multiline_comment|/****************************************************************************/
 DECL|struct|_MSG_RAID_ACTION
 r_typedef
@@ -133,6 +133,10 @@ DECL|macro|MPI_RAID_ACTION_ADATA_KEEP_PHYS_DISKS
 mdefine_line|#define MPI_RAID_ACTION_ADATA_KEEP_PHYS_DISKS       (0x00000000)
 DECL|macro|MPI_RAID_ACTION_ADATA_DEL_PHYS_DISKS
 mdefine_line|#define MPI_RAID_ACTION_ADATA_DEL_PHYS_DISKS        (0x00000001)
+DECL|macro|MPI_RAID_ACTION_ADATA_KEEP_LBA0
+mdefine_line|#define MPI_RAID_ACTION_ADATA_KEEP_LBA0             (0x00000000)
+DECL|macro|MPI_RAID_ACTION_ADATA_ZERO_LBA0
+mdefine_line|#define MPI_RAID_ACTION_ADATA_ZERO_LBA0             (0x00000002)
 multiline_comment|/* ActionDataWord defines for use with MPI_RAID_ACTION_ACTIVATE_VOLUME action */
 DECL|macro|MPI_RAID_ACTION_ADATA_INACTIVATE_ALL
 mdefine_line|#define MPI_RAID_ACTION_ADATA_INACTIVATE_ALL        (0x00000001)
@@ -473,7 +477,7 @@ id|MPI_POINTER
 id|pSCSIIORaidPassthroughReply_t
 suffix:semicolon
 multiline_comment|/****************************************************************************/
-multiline_comment|/* Mailbox request structure */
+multiline_comment|/* Mailbox reqeust structure */
 multiline_comment|/****************************************************************************/
 DECL|struct|_MSG_MAILBOX_REQUEST
 r_typedef
@@ -503,6 +507,10 @@ suffix:semicolon
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
+suffix:semicolon
+DECL|member|MsgContext
+id|U32
+id|MsgContext
 suffix:semicolon
 DECL|member|Command
 id|U8

@@ -198,6 +198,7 @@ DECL|typedef|ST_mode
 )brace
 id|ST_mode
 suffix:semicolon
+multiline_comment|/* Number of modes can be changed by changing ST_NBR_MODE_BITS. The maximum&n;   number of modes is 16 (ST_NBR_MODE_BITS 4) */
 DECL|macro|ST_NBR_MODE_BITS
 mdefine_line|#define ST_NBR_MODE_BITS 2
 DECL|macro|ST_NBR_MODES

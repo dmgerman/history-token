@@ -12,31 +12,8 @@ macro_line|#ifndef rwlock_init
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x) do { *(x) = RW_LOCK_UNLOCKED; } while(0)
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 DECL|macro|SET_NICE
-mdefine_line|#define SET_NICE(current,x)&t;do {(current)-&gt;nice = (x);} while (0)
-macro_line|#else
-DECL|macro|SET_NICE
-mdefine_line|#define SET_NICE(current,x)
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0)
-DECL|macro|pci_enable_device
-mdefine_line|#define pci_enable_device(pdev)&t;(0)
-DECL|macro|SCSI_DATA_UNKNOWN
-mdefine_line|#define SCSI_DATA_UNKNOWN&t;0
-DECL|macro|SCSI_DATA_WRITE
-mdefine_line|#define SCSI_DATA_WRITE&t;&t;1
-DECL|macro|SCSI_DATA_READ
-mdefine_line|#define SCSI_DATA_READ&t;&t;2
-DECL|macro|SCSI_DATA_NONE
-mdefine_line|#define SCSI_DATA_NONE&t;&t;3
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,4)
-DECL|macro|pci_set_dma_mask
-mdefine_line|#define pci_set_dma_mask(pdev, mask)&t;(0)
-DECL|macro|scsi_set_pci_device
-mdefine_line|#define scsi_set_pci_device(sh, pdev)&t;(0)
-macro_line|#endif
+mdefine_line|#define SET_NICE(current,x) do {(current)-&gt;nice = (x);} while (0)
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
 macro_line|#&t;if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,2,18)
 DECL|typedef|dma_addr_t
@@ -181,20 +158,12 @@ DECL|macro|MODULE_LICENSE
 mdefine_line|#define MODULE_LICENSE(license)
 macro_line|#endif
 multiline_comment|/* PCI/driver subsystem { */
-macro_line|#if 0&t;/* FIXME Don&squot;t know what to use to check for the proper kernel version */
-mdefine_line|#define DEVICE_COUNT_RESOURCE           6
-mdefine_line|#define PCI_BASEADDR_FLAGS(idx)         base_address[idx]
-mdefine_line|#define PCI_BASEADDR_START(idx)         base_address[idx] &amp; ~0xFUL
-multiline_comment|/*&n; * We have to keep track of the original value using&n; * a temporary, and not by just sticking pdev-&gt;base_address[x]&n; * back.  pdev-&gt;base_address[x] is an opaque cookie that can&n; * be used by the PCI implementation on a given Linux port&n; * for any purpose. -DaveM&n; */
-mdefine_line|#define PCI_BASEADDR_SIZE(__pdev, __idx) &bslash;&n;({&t;unsigned int size, tmp; &bslash;&n;&t;pci_read_config_dword(__pdev, PCI_BASE_ADDRESS_0 + (4*(__idx)), &amp;tmp); &bslash;&n;&t;pci_write_config_dword(__pdev, PCI_BASE_ADDRESS_0 + (4*(__idx)), 0xffffffff); &bslash;&n;&t;pci_read_config_dword(__pdev, PCI_BASE_ADDRESS_0 + (4*(__idx)), &amp;size); &bslash;&n;&t;pci_write_config_dword(__pdev, PCI_BASE_ADDRESS_0 + (4*(__idx)), tmp); &bslash;&n;&t;(4 - size); &bslash;&n;})
-macro_line|#else
 DECL|macro|PCI_BASEADDR_FLAGS
 mdefine_line|#define PCI_BASEADDR_FLAGS(idx)         resource[idx].flags
 DECL|macro|PCI_BASEADDR_START
 mdefine_line|#define PCI_BASEADDR_START(idx)         resource[idx].start
 DECL|macro|PCI_BASEADDR_SIZE
 mdefine_line|#define PCI_BASEADDR_SIZE(dev,idx)      (dev)-&gt;resource[idx].end - (dev)-&gt;resource[idx].start + 1
-macro_line|#endif&t;&t;/* } ifndef 0 */
 multiline_comment|/* Compatability for the 2.3.x PCI DMA API. */
 macro_line|#ifndef PCI_DMA_BIDIRECTIONAL
 multiline_comment|/*{-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -282,52 +251,12 @@ DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
 multiline_comment|/*}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#endif /* PCI_DMA_BIDIRECTIONAL */
-multiline_comment|/*&n; *  With the new command queuing code in the SCSI mid-layer we no longer have&n; *  to hold the io_request_lock spin lock when calling the scsi_done routine.&n; *  For now we only do this with the 2.5.1 kernel or newer.&n; */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,1)
-DECL|macro|MPT_HOST_LOCK
-mdefine_line|#define MPT_HOST_LOCK(flags)
-DECL|macro|MPT_HOST_UNLOCK
-mdefine_line|#define MPT_HOST_UNLOCK(flags)
-macro_line|#else
-DECL|macro|MPT_HOST_LOCK
-mdefine_line|#define MPT_HOST_LOCK(flags) &bslash;&n;                spin_lock_irqsave(&amp;io_request_lock, flags)
-DECL|macro|MPT_HOST_UNLOCK
-mdefine_line|#define MPT_HOST_UNLOCK(flags) &bslash;&n;                spin_unlock_irqrestore(&amp;io_request_lock, flags)
-macro_line|#endif
-multiline_comment|/*&n; *  We use our new error handling code if the kernel version is 2.4.18 or newer.&n; */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,18)
-DECL|macro|MPT_SCSI_USE_NEW_EH
-mdefine_line|#define MPT_SCSI_USE_NEW_EH
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,41)
 DECL|macro|mpt_work_struct
 mdefine_line|#define mpt_work_struct work_struct
 DECL|macro|MPT_INIT_WORK
 mdefine_line|#define MPT_INIT_WORK(_task, _func, _data) INIT_WORK(_task, _func, _data)
-macro_line|#else
-DECL|macro|mpt_work_struct
-mdefine_line|#define mpt_work_struct tq_struct
-DECL|macro|MPT_INIT_WORK
-mdefine_line|#define MPT_INIT_WORK(_task, _func, _data) &bslash;&n;({&t;(_task)-&gt;sync = 0; &bslash;&n;&t;(_task)-&gt;routine = (_func); &bslash;&n;&t;(_task)-&gt;data = (void *) (_data); &bslash;&n;})
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,28)
-DECL|macro|mptscsih_sync_irq
-mdefine_line|#define mptscsih_sync_irq(_irq) synchronize_irq(_irq)
-macro_line|#else
-DECL|macro|mptscsih_sync_irq
-mdefine_line|#define mptscsih_sync_irq(_irq) synchronize_irq()
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,58)
-DECL|macro|mpt_inc_use_count
-mdefine_line|#define mpt_inc_use_count()
-DECL|macro|mpt_dec_use_count
-mdefine_line|#define mpt_dec_use_count()
-macro_line|#else
-DECL|macro|mpt_inc_use_count
-mdefine_line|#define mpt_inc_use_count() MOD_INC_USE_COUNT
-DECL|macro|mpt_dec_use_count
-mdefine_line|#define mpt_dec_use_count() MOD_DEC_USE_COUNT
-macro_line|#endif
+DECL|macro|mpt_sync_irq
+mdefine_line|#define mpt_sync_irq(_irq) synchronize_irq(_irq)
 multiline_comment|/*}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#endif /* _LINUX_COMPAT_H */
 eof
