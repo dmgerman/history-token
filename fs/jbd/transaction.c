@@ -1607,7 +1607,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * journal_get_write_access: notify intent to modify a buffer for metadata&n; * (not data) update.&n; *&n; * If the buffer is already part of the current transaction, then there&n; * is nothing we need to do.  If it is already part of a prior&n; * transaction which we are still committing to disk, then we need to&n; * make sure that we do not overwrite the old copy: we do copy-out to&n; * preserve the copy going to disk.  We also account the buffer against&n; * the handle&squot;s metadata buffer credits (unless the buffer is already&n; * part of the transaction, that is).&n; *&n; * Returns an error code or 0 on success.&n; *&n; * In full data journalling mode the buffer may be of type BJ_AsyncData,&n; * because we&squot;re write()ing a buffer which is also part of a shared mapping.&n; */
+multiline_comment|/*&n; * journal_get_write_access: notify intent to modify a buffer for metadata&n; * (not data) update.&n; *&n; * If the buffer is already part of the current transaction, then there&n; * is nothing we need to do.  If it is already part of a prior&n; * transaction which we are still committing to disk, then we need to&n; * make sure that we do not overwrite the old copy: we do copy-out to&n; * preserve the copy going to disk.  We also account the buffer against&n; * the handle&squot;s metadata buffer credits (unless the buffer is already&n; * part of the transaction, that is).&n; *&n; * Returns an error code or 0 on success.&n; */
 r_static
 r_int
 DECL|function|do_get_write_access
@@ -2829,7 +2829,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * journal_dirty_data: mark a buffer as containing dirty data which&n; * needs to be flushed before we can commit the current transaction.  &n; *&n; * The buffer is placed on the transaction&squot;s data list and is marked as&n; * belonging to the transaction.&n; *&n; * If `async&squot; is set then the writebabk will be initiated by the caller&n; * using submit_bh -&gt; end_buffer_async_write.  We put the buffer onto&n; * t_async_datalist.&n; * &n; * Returns error number or 0 on success.  &n; *&n; * journal_dirty_data() can be called via page_launder-&gt;ext3_writepage&n; * by kswapd.  So it cannot block.  Happily, there&squot;s nothing here&n; * which needs lock_journal if `async&squot; is set.&n; *&n; * When the buffer is on the current transaction we freely move it&n; * between BJ_AsyncData and BJ_SyncData according to who tried to&n; * change its state last.&n; */
+multiline_comment|/* &n; * journal_dirty_data: mark a buffer as containing dirty data which&n; * needs to be flushed before we can commit the current transaction.  &n; *&n; * The buffer is placed on the transaction&squot;s data list and is marked as&n; * belonging to the transaction.&n; *&n; * Returns error number or 0 on success.  &n; *&n; * journal_dirty_data() can be called via page_launder-&gt;ext3_writepage&n; * by kswapd.  So it cannot block.  Happily, there&squot;s nothing here&n; * which needs lock_journal if `async&squot; is set.&n; */
 DECL|function|journal_dirty_data
 r_int
 id|journal_dirty_data
@@ -2842,9 +2842,6 @@ r_struct
 id|buffer_head
 op_star
 id|bh
-comma
-r_int
-id|async
 )paren
 (brace
 id|journal_t
@@ -2857,16 +2854,6 @@ r_int
 id|need_brelse
 op_assign
 l_int|0
-suffix:semicolon
-r_int
-id|wanted_jlist
-op_assign
-id|async
-ques
-c_cond
-id|BJ_AsyncData
-suffix:colon
-id|BJ_SyncData
 suffix:semicolon
 r_struct
 id|journal_head
@@ -2976,10 +2963,6 @@ op_logical_and
 id|jh-&gt;b_jlist
 op_ne
 id|BJ_SyncData
-op_logical_and
-id|jh-&gt;b_jlist
-op_ne
-id|BJ_AsyncData
 )paren
 (brace
 id|JBUFFER_TRACE
@@ -2998,9 +2981,6 @@ multiline_comment|/*&n;&t;&t;&t; * This buffer may be undergoing writeout in com
 r_if
 c_cond
 (paren
-op_logical_neg
-id|async
-op_logical_and
 id|buffer_dirty
 c_func
 (paren
@@ -3088,7 +3068,7 @@ c_cond
 (paren
 id|jh-&gt;b_jlist
 op_ne
-id|wanted_jlist
+id|BJ_SyncData
 )paren
 (brace
 id|JBUFFER_TRACE
@@ -3134,7 +3114,7 @@ id|jh
 comma
 id|handle-&gt;h_transaction
 comma
-id|wanted_jlist
+id|BJ_SyncData
 )paren
 suffix:semicolon
 )brace
@@ -3156,7 +3136,7 @@ id|jh
 comma
 id|handle-&gt;h_transaction
 comma
-id|wanted_jlist
+id|BJ_SyncData
 )paren
 suffix:semicolon
 )brace
@@ -4559,7 +4539,7 @@ op_assign
 id|jh-&gt;b_tprev
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Remove a buffer from the appropriate transaction list.&n; *&n; * Note that this function can *change* the value of&n; * bh-&gt;b_transaction-&gt;t_sync_datalist, t_async_datalist, t_buffers, t_forget,&n; * t_iobuf_list, t_shadow_list, t_log_list or t_reserved_list.  If the caller&n; * is holding onto a copy of one of thee pointers, it could go bad.&n; * Generally the caller needs to re-read the pointer from the transaction_t.&n; *&n; * If bh-&gt;b_jlist is BJ_SyncData or BJ_AsyncData then we may have been called&n; * via journal_try_to_free_buffer() or journal_clean_data_list().  In that&n; * case, journal_datalist_lock will be held, and the journal may not be locked.&n; */
+multiline_comment|/* &n; * Remove a buffer from the appropriate transaction list.&n; *&n; * Note that this function can *change* the value of&n; * bh-&gt;b_transaction-&gt;t_sync_datalist, t_buffers, t_forget,&n; * t_iobuf_list, t_shadow_list, t_log_list or t_reserved_list.  If the caller&n; * is holding onto a copy of one of thee pointers, it could go bad.&n; * Generally the caller needs to re-read the pointer from the transaction_t.&n; *&n; * If bh-&gt;b_jlist is BJ_SyncData then we may have been called&n; * via journal_try_to_free_buffer() or journal_clean_data_list().  In that&n; * case, journal_datalist_lock will be held, and the journal may not be locked.&n; */
 DECL|function|__journal_unfile_buffer
 r_void
 id|__journal_unfile_buffer
@@ -4648,16 +4628,6 @@ id|list
 op_assign
 op_amp
 id|transaction-&gt;t_sync_datalist
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|BJ_AsyncData
-suffix:colon
-id|list
-op_assign
-op_amp
-id|transaction-&gt;t_async_datalist
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -4889,10 +4859,6 @@ c_cond
 id|jh-&gt;b_jlist
 op_eq
 id|BJ_SyncData
-op_logical_or
-id|jh-&gt;b_jlist
-op_eq
-id|BJ_AsyncData
 )paren
 (brace
 multiline_comment|/* A written-back ordered data buffer */
@@ -5923,16 +5889,6 @@ id|list
 op_assign
 op_amp
 id|transaction-&gt;t_sync_datalist
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|BJ_AsyncData
-suffix:colon
-id|list
-op_assign
-op_amp
-id|transaction-&gt;t_async_datalist
 suffix:semicolon
 r_break
 suffix:semicolon
