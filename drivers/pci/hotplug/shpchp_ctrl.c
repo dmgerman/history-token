@@ -6151,7 +6151,7 @@ l_string|&quot;%s: Failed to disable slot, error code(%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|rc
+id|retval
 )paren
 suffix:semicolon
 multiline_comment|/* Done with exclusive hardware access */
