@@ -168,14 +168,13 @@ multiline_comment|/* interface specific device info */
 DECL|member|class_dev
 r_struct
 id|class_device
+op_star
 id|class_dev
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|to_usb_interface
 mdefine_line|#define&t;to_usb_interface(d) container_of(d, struct usb_interface, dev)
-DECL|macro|class_dev_to_usb_interface
-mdefine_line|#define class_dev_to_usb_interface(d) container_of(d, struct usb_interface, class_dev)
 DECL|macro|interface_to_usbdev
 mdefine_line|#define&t;interface_to_usbdev(intf) &bslash;&n;&t;container_of(intf-&gt;dev.parent, struct usb_device, dev)
 DECL|function|usb_get_intfdata
