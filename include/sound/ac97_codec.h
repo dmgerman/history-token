@@ -383,6 +383,8 @@ DECL|macro|AC97_CS_SPDIF
 mdefine_line|#define AC97_CS_SPDIF&t;&t;(1&lt;&lt;2)&t;/* Cirrus Logic uses funky SPDIF */
 DECL|macro|AC97_CX_SPDIF
 mdefine_line|#define AC97_CX_SPDIF&t;&t;(1&lt;&lt;3)&t;/* Conexant&squot;s spdif interface */
+DECL|macro|AC97_STEREO_MUTES
+mdefine_line|#define AC97_STEREO_MUTES&t;(1&lt;&lt;4)&t;/* has stereo mute bits */
 multiline_comment|/* rates indexes */
 DECL|macro|AC97_RATES_FRONT_DAC
 mdefine_line|#define AC97_RATES_FRONT_DAC&t;0

@@ -3973,6 +3973,7 @@ id|patch_ad1980_build_ops
 suffix:semicolon
 multiline_comment|/* Switch FRONT/SURROUND LINE-OUT/HP-OUT default connection */
 multiline_comment|/* it seems that most vendors connect line-out connector to headphone out of AC&squot;97 */
+multiline_comment|/* Stereo mutes enabled */
 id|misc
 op_assign
 id|snd_ac97_read
@@ -3995,7 +3996,13 @@ op_or
 id|AC97_AD198X_LOSEL
 op_or
 id|AC97_AD198X_HPSEL
+op_or
+id|AC97_AD198X_MSPLT
 )paren
+suffix:semicolon
+id|ac97-&gt;flags
+op_or_assign
+id|AC97_STEREO_MUTES
 suffix:semicolon
 r_return
 l_int|0
@@ -4039,6 +4046,7 @@ suffix:semicolon
 multiline_comment|/* switch front/surround line-out/hp-out */
 multiline_comment|/* center/LFE, surround in High-Z mode */
 multiline_comment|/* AD-compatible mode */
+multiline_comment|/* Stereo mutes enabled */
 id|snd_ac97_write_cache
 c_func
 (paren
@@ -4058,8 +4066,14 @@ id|AC97_AD198X_CLDIS
 op_or
 id|AC97_AD198X_LODIS
 op_or
+id|AC97_AD198X_MSPLT
+op_or
 id|AC97_AD198X_AC97NC
 )paren
+suffix:semicolon
+id|ac97-&gt;flags
+op_or_assign
+id|AC97_STEREO_MUTES
 suffix:semicolon
 r_return
 l_int|0
