@@ -2775,8 +2775,8 @@ DECL|macro|DEFAULT_IPG
 mdefine_line|#define DEFAULT_IPG&t;&t;&t;0x60
 DECL|macro|IFS1_DELTA
 mdefine_line|#define IFS1_DELTA&t;&t;&t;36
-DECL|macro|IPG_CONVERGE_TIME
-mdefine_line|#define&t;IPG_CONVERGE_TIME 0.5
+DECL|macro|IPG_CONVERGE_JIFFIES
+mdefine_line|#define&t;IPG_CONVERGE_JIFFIES&t;(HZ / 2)
 DECL|macro|IPG_STABLE_TIME
 mdefine_line|#define&t;IPG_STABLE_TIME&t;5
 DECL|macro|MIN_IPG
