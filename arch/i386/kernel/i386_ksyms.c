@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/mmx.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 r_extern
 r_void
 id|dump_thread

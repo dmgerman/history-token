@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#ifdef CONFIG_X86_MCE
 DECL|variable|__initdata
 r_static
