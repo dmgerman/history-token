@@ -7494,7 +7494,7 @@ id|pos
 suffix:semicolon
 )brace
 DECL|macro|SHOW_FUNCTION
-mdefine_line|#define SHOW_FUNCTION(__FUNC, __VAR)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct as_data *ad, char *page)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return as_var_show(__VAR, (page));&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SHOW_FUNCTION(__FUNC, __VAR)&t;&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct as_data *ad, char *page)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return as_var_show(jiffies_to_msecs((__VAR)), (page));&t;&bslash;&n;}
 id|SHOW_FUNCTION
 c_func
 (paren
@@ -7550,7 +7550,7 @@ suffix:semicolon
 DECL|macro|SHOW_FUNCTION
 macro_line|#undef SHOW_FUNCTION
 DECL|macro|STORE_FUNCTION
-mdefine_line|#define STORE_FUNCTION(__FUNC, __PTR, MIN, MAX)&t;&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct as_data *ad, const char *page, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret = as_var_store(__PTR, (page), count);&t;&t;&bslash;&n;&t;if (*(__PTR) &lt; (MIN))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = (MIN);&t;&t;&t;&t;&t;&bslash;&n;&t;else if (*(__PTR) &gt; (MAX))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = (MAX);&t;&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define STORE_FUNCTION(__FUNC, __PTR, MIN, MAX)&t;&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct as_data *ad, const char *page, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret = as_var_store(__PTR, (page), count);&t;&t;&bslash;&n;&t;if (*(__PTR) &lt; (MIN))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = (MIN);&t;&t;&t;&t;&t;&bslash;&n;&t;else if (*(__PTR) &gt; (MAX))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = (MAX);&t;&t;&t;&t;&t;&bslash;&n;&t;*(__PTR) = msecs_to_jiffies(*(__PTR));&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 id|STORE_FUNCTION
 c_func
 (paren

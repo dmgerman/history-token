@@ -7414,13 +7414,15 @@ id|len
 suffix:semicolon
 )brace
 DECL|macro|SHOW_FUNCTION
-mdefine_line|#define SHOW_FUNCTION(__FUNC, __VAR)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct cfq_data *cfqd, char *page)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return cfq_var_show(__VAR, (page));&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SHOW_FUNCTION(__FUNC, __VAR, __CONV)&t;&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct cfq_data *cfqd, char *page)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int __data = __VAR;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__CONV)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__data = jiffies_to_msecs(__data);&t;&t;&t;&bslash;&n;&t;return cfq_var_show(__data, (page));&t;&t;&t;&t;&bslash;&n;}
 id|SHOW_FUNCTION
 c_func
 (paren
 id|cfq_quantum_show
 comma
 id|cfqd-&gt;cfq_quantum
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|SHOW_FUNCTION
@@ -7429,6 +7431,8 @@ c_func
 id|cfq_queued_show
 comma
 id|cfqd-&gt;cfq_queued
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|SHOW_FUNCTION
@@ -7437,6 +7441,8 @@ c_func
 id|cfq_fifo_expire_r_show
 comma
 id|cfqd-&gt;cfq_fifo_expire_r
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|SHOW_FUNCTION
@@ -7445,6 +7451,8 @@ c_func
 id|cfq_fifo_expire_w_show
 comma
 id|cfqd-&gt;cfq_fifo_expire_w
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|SHOW_FUNCTION
@@ -7453,6 +7461,8 @@ c_func
 id|cfq_fifo_batch_expire_show
 comma
 id|cfqd-&gt;cfq_fifo_batch_expire
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|SHOW_FUNCTION
@@ -7461,6 +7471,8 @@ c_func
 id|cfq_find_best_show
 comma
 id|cfqd-&gt;find_best_crq
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|SHOW_FUNCTION
@@ -7469,6 +7481,8 @@ c_func
 id|cfq_back_max_show
 comma
 id|cfqd-&gt;cfq_back_max
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|SHOW_FUNCTION
@@ -7477,12 +7491,14 @@ c_func
 id|cfq_back_penalty_show
 comma
 id|cfqd-&gt;cfq_back_penalty
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|macro|SHOW_FUNCTION
 macro_line|#undef SHOW_FUNCTION
 DECL|macro|STORE_FUNCTION
-mdefine_line|#define STORE_FUNCTION(__FUNC, __PTR, MIN, MAX)&t;&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct cfq_data *cfqd, const char *page, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret = cfq_var_store(__PTR, (page), count);&t;&t;&t;&bslash;&n;&t;if (*(__PTR) &lt; (MIN))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = (MIN);&t;&t;&t;&t;&t;&bslash;&n;&t;else if (*(__PTR) &gt; (MAX))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = (MAX);&t;&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define STORE_FUNCTION(__FUNC, __PTR, MIN, MAX, __CONV)&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct cfq_data *cfqd, const char *page, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int __data;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret = cfq_var_store(&amp;__data, (page), count);&t;&t;&bslash;&n;&t;if (__data &lt; (MIN))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__data = (MIN);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;else if (__data &gt; (MAX))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__data = (MAX);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__CONV)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = msecs_to_jiffies(__data);&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = __data;&t;&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 id|STORE_FUNCTION
 c_func
 (paren
@@ -7494,6 +7510,8 @@ comma
 l_int|1
 comma
 id|UINT_MAX
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|STORE_FUNCTION
@@ -7507,6 +7525,8 @@ comma
 l_int|1
 comma
 id|UINT_MAX
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|STORE_FUNCTION
@@ -7520,6 +7540,8 @@ comma
 l_int|1
 comma
 id|UINT_MAX
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|STORE_FUNCTION
@@ -7533,6 +7555,8 @@ comma
 l_int|1
 comma
 id|UINT_MAX
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|STORE_FUNCTION
@@ -7546,6 +7570,8 @@ comma
 l_int|0
 comma
 id|UINT_MAX
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|STORE_FUNCTION
@@ -7559,6 +7585,8 @@ comma
 l_int|0
 comma
 l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|STORE_FUNCTION
@@ -7572,6 +7600,8 @@ comma
 l_int|0
 comma
 id|UINT_MAX
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|STORE_FUNCTION
@@ -7585,6 +7615,8 @@ comma
 l_int|1
 comma
 id|UINT_MAX
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|macro|STORE_FUNCTION
