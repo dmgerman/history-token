@@ -5938,22 +5938,6 @@ r_int
 id|findex
 suffix:semicolon
 multiline_comment|/* freespace entry index */
-id|xfs_dir2_db_t
-id|foundbno
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* found freespace block no */
-r_int
-id|foundindex
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* found freespace entry idx */
-r_int
-id|foundhole
-suffix:semicolon
-multiline_comment|/* found hole in freespace */
 id|xfs_dir2_free_t
 op_star
 id|free
@@ -5992,10 +5976,6 @@ r_int
 id|needscan
 suffix:semicolon
 multiline_comment|/* need to rescan data frees */
-r_int
-id|needfreesp
-suffix:semicolon
-multiline_comment|/* need to allocate freesp blk */
 id|xfs_dir2_data_off_t
 op_star
 id|tagp
@@ -6025,10 +6005,6 @@ c_func
 (paren
 id|args-&gt;namelen
 )paren
-suffix:semicolon
-id|foundhole
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we came in with a freespace block that means that lookup&n;&t; * found an entry with our hash value.  This is the freespace&n;&t; * block for that data entry.&n;&t; */
 r_if
@@ -6225,11 +6201,6 @@ id|fbno
 op_assign
 id|ifbno
 suffix:semicolon
-id|foundindex
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * While we haven&squot;t identified a data block, search the freeblock&n;&t; * data for a good data block.  If we find a null freeblock entry,&n;&t; * indicating a hole in the data blocks, remember that.&n;&t; */
 r_while
@@ -6337,10 +6308,6 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|foundhole
-op_assign
-l_int|1
-suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -6411,41 +6378,6 @@ id|findex
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t; * If we haven&squot;t found an empty entry yet, and this&n;&t;&t;&t; * one is empty, remember this slot.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|foundindex
-op_eq
-op_minus
-l_int|1
-op_logical_and
-id|INT_GET
-c_func
-(paren
-id|free-&gt;bests
-(braket
-id|findex
-)braket
-comma
-id|ARCH_CONVERT
-)paren
-op_eq
-id|NULLDATAOFF
-op_logical_and
-op_logical_neg
-id|foundhole
-)paren
-(brace
-id|foundindex
-op_assign
-id|findex
-suffix:semicolon
-id|foundbno
-op_assign
-id|fbno
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t;&t; * Are we done with the freeblock?&n;&t;&t;&t; */
 r_if
 c_cond
@@ -6462,36 +6394,6 @@ id|ARCH_CONVERT
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * If there is space left in this freeblock,&n;&t;&t;&t;&t; * and we don&squot;t have an empty entry yet,&n;&t;&t;&t;&t; * remember this slot.&n;&t;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|foundindex
-op_eq
-op_minus
-l_int|1
-op_logical_and
-id|findex
-OL
-id|XFS_DIR2_MAX_FREE_BESTS
-c_func
-(paren
-id|mp
-)paren
-op_logical_and
-op_logical_neg
-id|foundhole
-)paren
-(brace
-id|foundindex
-op_assign
-id|findex
-suffix:semicolon
-id|foundbno
-op_assign
-id|fbno
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t;&t;&t; * Drop the block.&n;&t;&t;&t;&t; */
 id|xfs_da_brelse
 c_func
@@ -6580,6 +6482,9 @@ multiline_comment|/*&n;&t;&t; * Allocate and initialize the new data block.&n;&t
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 (paren
 id|error
 op_assign
@@ -6607,6 +6512,7 @@ id|dbno
 comma
 op_amp
 id|dbp
+)paren
 )paren
 )paren
 )paren
@@ -6639,29 +6545,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * If the freespace entry for this data block is not in the&n;&t;&t; * freespace block we have in hand, drop the one we have&n;&t;&t; * and get the right one.&n;&t;&t; */
-id|needfreesp
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|XFS_DIR2_DB_TO_FDB
-c_func
-(paren
-id|mp
-comma
-id|dbno
-)paren
-op_ne
-id|fbno
-op_logical_or
-id|fbp
-op_eq
-l_int|NULL
-)paren
-(brace
+multiline_comment|/*&n;&t;&t; * If (somehow) we have a freespace block, get rid of it.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6686,6 +6570,7 @@ id|fblk-&gt;bp
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Get the freespace block corresponding to the data block&n;&t;&t; * that was just allocated.&n;&t;&t; */
 id|fbno
 op_assign
 id|XFS_DIR2_DB_TO_FDB
@@ -6699,6 +6584,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
 (paren
 id|error
 op_assign
@@ -6738,63 +6625,15 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * If there wasn&squot;t a freespace block, the read will&n;&t;&t;&t; * return a NULL fbp.  Allocate one later.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If there wasn&squot;t a freespace block, the read will&n;&t;&t; * return a NULL fbp.  Allocate and initialize a new one.&n;&t;&t; */
 r_if
 c_cond
-(paren
-id|unlikely
-c_func
 (paren
 id|fbp
 op_eq
 l_int|NULL
 )paren
-)paren
 (brace
-id|needfreesp
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
-id|free
-op_assign
-id|fbp-&gt;data
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|INT_GET
-c_func
-(paren
-id|free-&gt;hdr.magic
-comma
-id|ARCH_CONVERT
-)paren
-op_eq
-id|XFS_DIR2_FREE_MAGIC
-)paren
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n;&t;&t; * If we don&squot;t have a data block, and there&squot;s no free slot in a&n;&t;&t; * freeblock, we need to add a new freeblock.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|needfreesp
-op_logical_or
-id|foundindex
-op_eq
-op_minus
-l_int|1
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * Add the new freeblock.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6821,6 +6660,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|XFS_DIR2_DB_TO_FDB
 c_func
 (paren
@@ -6831,18 +6673,20 @@ id|dbno
 op_ne
 id|fbno
 )paren
+)paren
 (brace
 id|cmn_err
 c_func
 (paren
 id|CE_ALERT
 comma
-l_string|&quot;xfs_dir2_node_addname_int: needed block %lld, got %lld&bslash;n&quot;
+l_string|&quot;xfs_dir2_node_addname_int: dir ino &quot;
+l_string|&quot;%llu needed freesp block %lld for&bslash;n&quot;
+l_string|&quot;  data block %lld, got %lld&bslash;n&quot;
+l_string|&quot;  ifbno %llu lastfbno %d&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
+id|dp-&gt;i_ino
+comma
 id|XFS_DIR2_DB_TO_FDB
 c_func
 (paren
@@ -6851,13 +6695,50 @@ comma
 id|dbno
 )paren
 comma
-(paren
-r_int
-r_int
-)paren
+id|dbno
+comma
 id|fbno
+comma
+id|ifbno
+comma
+id|lastfbno
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fblk
+)paren
+(brace
+id|cmn_err
+c_func
+(paren
+id|CE_ALERT
+comma
+l_string|&quot; fblk 0x%llu blkno %llu &quot;
+l_string|&quot;index %d magic 0x%x&bslash;n&quot;
+comma
+id|fblk
+comma
+id|fblk-&gt;blkno
+comma
+id|fblk-&gt;index
+comma
+id|fblk-&gt;magic
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cmn_err
+c_func
+(paren
+id|CE_ALERT
+comma
+l_string|&quot; ... fblk is NULL&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|XFS_ERROR_REPORT
 c_func
 (paren
@@ -6976,13 +6857,26 @@ comma
 id|ARCH_CONVERT
 )paren
 suffix:semicolon
-id|foundindex
+)brace
+r_else
+(brace
+id|free
 op_assign
-l_int|0
+id|fbp-&gt;data
 suffix:semicolon
-id|foundbno
-op_assign
-id|fbno
+id|ASSERT
+c_func
+(paren
+id|INT_GET
+c_func
+(paren
+id|free-&gt;hdr.magic
+comma
+id|ARCH_CONVERT
+)paren
+op_eq
+id|XFS_DIR2_FREE_MAGIC
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Set the freespace block index from the data block number.&n;&t;&t; */
