@@ -3722,11 +3722,26 @@ op_add_assign
 l_int|2
 suffix:semicolon
 id|p
-op_add_assign
-id|XDR_QUADLEN
+op_assign
+id|resp-&gt;buffer
+suffix:semicolon
+op_star
+id|p
+op_increment
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* no more entries */
+op_star
+id|p
+op_increment
+op_assign
+id|htonl
 c_func
 (paren
-id|resp-&gt;count
+id|resp-&gt;common.err
+op_eq
+id|nfserr_eof
 )paren
 suffix:semicolon
 )brace
@@ -3754,7 +3769,7 @@ c_func
 r_struct
 id|readdir_cd
 op_star
-id|cd
+id|ccd
 comma
 r_const
 r_char
@@ -3778,6 +3793,22 @@ r_int
 id|plus
 )paren
 (brace
+r_struct
+id|nfsd3_readdirres
+op_star
+id|cd
+op_assign
+id|container_of
+c_func
+(paren
+id|ccd
+comma
+r_struct
+id|nfsd3_readdirres
+comma
+id|common
+)paren
+suffix:semicolon
 id|u32
 op_star
 id|p
@@ -3806,17 +3837,6 @@ id|u64
 )paren
 id|offset
 )paren
-suffix:semicolon
-multiline_comment|/* nfsd_readdir calls us with name == 0 when it wants us to&n;&t; * set the last offset entry. */
-r_if
-c_cond
-(paren
-id|name
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;dprintk(&quot;encode_entry(%.*s @%ld%s)&bslash;n&quot;,&n;&t;&t;namlen, name, (long) offset, plus? &quot; plus&quot; : &quot;&quot;);&n;&t; */
 multiline_comment|/* truncate filename if too long */
@@ -3868,9 +3888,9 @@ OL
 l_int|0
 )paren
 (brace
-id|cd-&gt;eob
+id|cd-&gt;common.err
 op_assign
-l_int|1
+id|nfserr_readdir_nospc
 suffix:semicolon
 r_return
 op_minus
@@ -3950,11 +3970,11 @@ id|dchild
 suffix:semicolon
 id|dparent
 op_assign
-id|cd-&gt;dirfh-&gt;fh_dentry
+id|cd-&gt;fh.fh_dentry
 suffix:semicolon
 id|exp
 op_assign
-id|cd-&gt;dirfh-&gt;fh_export
+id|cd-&gt;fh.fh_export
 suffix:semicolon
 id|fh_init
 c_func
@@ -4056,7 +4076,8 @@ id|exp
 comma
 id|dchild
 comma
-id|cd-&gt;dirfh
+op_amp
+id|cd-&gt;fh
 )paren
 op_ne
 l_int|0
@@ -4115,6 +4136,10 @@ suffix:semicolon
 id|cd-&gt;buffer
 op_assign
 id|p
+suffix:semicolon
+id|cd-&gt;common.err
+op_assign
+id|nfs_ok
 suffix:semicolon
 r_return
 l_int|0
