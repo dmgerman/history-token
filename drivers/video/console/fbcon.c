@@ -2644,6 +2644,12 @@ id|scrollmode
 op_assign
 id|SCROLL_YREDRAW
 suffix:semicolon
+id|con_set_default_unimap
+c_func
+(paren
+id|unit
+)paren
+suffix:semicolon
 id|fbcon_set_display
 c_func
 (paren
