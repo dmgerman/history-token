@@ -2449,4 +2449,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|drm_mmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|drm_mmap
+)paren
+suffix:semicolon
 eof

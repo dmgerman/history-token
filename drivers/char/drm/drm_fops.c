@@ -498,6 +498,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|drm_poll
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|drm_poll
+)paren
+suffix:semicolon
 multiline_comment|/** No-op. */
 DECL|function|drm_read
 id|ssize_t

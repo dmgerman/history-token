@@ -1661,6 +1661,11 @@ DECL|member|num_ioctls
 r_int
 id|num_ioctls
 suffix:semicolon
+DECL|member|fops
+r_struct
+id|file_operations
+id|fops
+suffix:semicolon
 DECL|member|pci_driver
 r_struct
 id|pci_driver
@@ -2109,20 +2114,6 @@ DECL|member|sigmask
 id|sigset_t
 id|sigmask
 suffix:semicolon
-DECL|member|fops
-r_struct
-id|file_operations
-op_star
-id|fops
-suffix:semicolon
-multiline_comment|/**&lt; file operations */
-DECL|member|dev_root
-r_struct
-id|proc_dir_entry
-op_star
-id|dev_root
-suffix:semicolon
-multiline_comment|/**&lt; proc directory entry */
 DECL|member|driver
 r_struct
 id|drm_driver

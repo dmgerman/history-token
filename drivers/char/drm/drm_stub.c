@@ -204,7 +204,8 @@ op_assign
 id|fops_get
 c_func
 (paren
-id|dev-&gt;fops
+op_amp
+id|dev-&gt;driver-&gt;fops
 )paren
 suffix:semicolon
 r_if
