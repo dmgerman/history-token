@@ -11409,17 +11409,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|timeout
-OL
-id|asoc-&gt;max_init_timeo
-)paren
-op_logical_and
-(paren
 id|attempts
 OL
 id|asoc-&gt;max_init_attempts
-)paren
 )paren
 (brace
 r_switch
