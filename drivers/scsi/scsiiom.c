@@ -38,6 +38,7 @@ suffix:semicolon
 )brace
 )brace
 suffix:semicolon
+r_static
 id|UCHAR
 DECL|function|dc390_StartSCSI
 id|dc390_StartSCSI
@@ -1650,6 +1651,7 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|do_DC390_Interrupt
+r_static
 id|irqreturn_t
 id|do_DC390_Interrupt
 c_func
@@ -1708,6 +1710,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|dc390_DataOut_0
 id|dc390_DataOut_0
@@ -1996,6 +1999,7 @@ id|CLEAR_FIFO_CMD
 suffix:semicolon
 )brace
 )brace
+r_static
 r_void
 DECL|function|dc390_DataIn_0
 id|dc390_DataIn_0
@@ -4080,6 +4084,7 @@ id|MSG_ACCEPTED_CMD
 suffix:semicolon
 singleline_comment|//DC390_write8 (DMA_Cmd, DMA_IDLE_CMD);
 )brace
+r_static
 r_void
 DECL|function|dc390_DataIO_Comm
 id|dc390_DataIO_Comm

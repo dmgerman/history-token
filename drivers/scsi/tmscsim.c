@@ -134,26 +134,10 @@ DECL|macro|USE_SPINLOCKS
 mdefine_line|#define USE_SPINLOCKS 1
 DECL|macro|DC390_IFLAGS
 mdefine_line|#define DC390_IFLAGS unsigned long iflags
-DECL|macro|DC390_DFLAGS
-mdefine_line|#define DC390_DFLAGS unsigned long dflags
-DECL|variable|dc390_drvlock
-id|spinlock_t
-id|dc390_drvlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|macro|DC390_LOCK_IO
 mdefine_line|#define DC390_LOCK_IO(dev) spin_lock_irqsave (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
 DECL|macro|DC390_UNLOCK_IO
 mdefine_line|#define DC390_UNLOCK_IO(dev) spin_unlock_irqrestore (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
-DECL|macro|DC390_LOCK_DRV
-mdefine_line|#define DC390_LOCK_DRV spin_lock_irqsave (&amp;dc390_drvlock, dflags)
-DECL|macro|DC390_UNLOCK_DRV
-mdefine_line|#define DC390_UNLOCK_DRV spin_unlock_irqrestore (&amp;dc390_drvlock, dflags)
-DECL|macro|DC390_LOCK_DRV_NI
-mdefine_line|#define DC390_LOCK_DRV_NI spin_lock (&amp;dc390_drvlock)
-DECL|macro|DC390_UNLOCK_DRV_NI
-mdefine_line|#define DC390_UNLOCK_DRV_NI spin_unlock (&amp;dc390_drvlock)
 multiline_comment|/* These macros are used for uniform access to 2.0.x and 2.1.x PCI config space*/
 DECL|macro|PDEV
 mdefine_line|#define PDEV pdev
@@ -175,14 +159,8 @@ DECL|macro|PCI_WRITE_CONFIG_WORD
 mdefine_line|#define PCI_WRITE_CONFIG_WORD(pd, rv, bv) pci_write_config_word (pd, rv, bv)
 DECL|macro|PCI_READ_CONFIG_WORD
 mdefine_line|#define PCI_READ_CONFIG_WORD(pd, rv, bv) pci_read_config_word (pd, rv, bv)
-DECL|macro|PCI_BUS_DEV
-mdefine_line|#define PCI_BUS_DEV pdev-&gt;bus-&gt;number, pdev-&gt;devfn
 DECL|macro|PCI_PRESENT
 mdefine_line|#define PCI_PRESENT (1)
-DECL|macro|PCI_SET_MASTER
-mdefine_line|#define PCI_SET_MASTER pci_set_master (pdev)
-DECL|macro|PCI_FIND_DEVICE
-mdefine_line|#define PCI_FIND_DEVICE(vend, id) (pdev = pci_find_device (vend, id, pdev))
 DECL|macro|PCI_GET_IO_AND_IRQ
 mdefine_line|#define PCI_GET_IO_AND_IRQ do{io_port = pci_resource_start (pdev, 0); irq = pdev-&gt;irq;} while(0)
 macro_line|#include &quot;tmscsim.h&quot;
@@ -190,6 +168,7 @@ macro_line|#ifndef __init
 DECL|macro|__init
 macro_line|# define __init
 macro_line|#endif
+r_static
 id|UCHAR
 id|dc390_StartSCSI
 c_func
@@ -204,6 +183,7 @@ id|PSRB
 id|pSRB
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dc390_DataOut_0
 c_func
@@ -218,6 +198,7 @@ id|PUCHAR
 id|psstatus
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dc390_DataIn_0
 c_func
@@ -277,6 +258,7 @@ id|PUCHAR
 id|psstatus
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dc390_MsgIn_0
 c_func
@@ -321,6 +303,7 @@ id|PUCHAR
 id|psstatus
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dc390_CommandPhase
 c_func
@@ -350,6 +333,7 @@ id|PUCHAR
 id|psstatus
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dc390_MsgOutPhase
 c_func
@@ -421,6 +405,7 @@ id|PDCB
 id|pDCB
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dc390_Disconnect
 c_func
@@ -429,6 +414,7 @@ id|PACB
 id|pACB
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dc390_Reselect
 c_func
@@ -437,6 +423,7 @@ id|PACB
 id|pACB
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dc390_SRBdone
 c_func
@@ -451,6 +438,7 @@ id|PSRB
 id|pSRB
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dc390_DoingSRB_Done
 c_func
@@ -527,6 +515,7 @@ id|PDCB
 id|pDCB
 )paren
 suffix:semicolon
+r_static
 id|irqreturn_t
 id|do_DC390_Interrupt
 c_func
@@ -541,6 +530,7 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|dc390_initAdapter
 c_func
@@ -558,6 +548,7 @@ id|UCHAR
 id|index
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dc390_initDCB
 c_func
@@ -576,6 +567,7 @@ id|UCHAR
 id|lun
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dc390_updateDCB
 (paren
@@ -644,6 +636,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Startup values, to be overriden on the commandline */
 DECL|variable|tmscsim
+r_static
 r_int
 id|tmscsim
 (braket
@@ -789,6 +782,7 @@ suffix:semicolon
 macro_line|#endif   
 multiline_comment|/* Devices erroneously pretending to be able to do TagQ */
 DECL|variable|dc390_baddevname1
+r_static
 id|UCHAR
 id|dc390_baddevname1
 (braket
@@ -811,6 +805,7 @@ op_assign
 l_string|&quot;DC390&quot;
 suffix:semicolon
 DECL|variable|dc390_eepromBuf
+r_static
 id|UCHAR
 id|dc390_eepromBuf
 (braket
@@ -821,6 +816,7 @@ id|EE_LEN
 )braket
 suffix:semicolon
 DECL|variable|dc390_clock_period1
+r_static
 id|UCHAR
 id|dc390_clock_period1
 (braket
@@ -845,6 +841,7 @@ l_int|20
 )brace
 suffix:semicolon
 DECL|variable|dc390_clock_speed
+r_static
 id|UCHAR
 id|dc390_clock_speed
 (braket
@@ -1231,6 +1228,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|variable|tmscsim_def
+r_static
 r_int
 id|__initdata
 id|tmscsim_def
@@ -1436,6 +1434,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Override defaults on cmdline:&n; * tmscsim: AdaptID, MaxSpeed (Index), DevMode (Bitmapped), AdaptMode (Bitmapped)&n; */
 DECL|function|dc390_setup
+r_static
 r_int
 id|__init
 id|dc390_setup
@@ -2699,6 +2698,7 @@ id|pSRB
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 id|DC390_waiting_timed_out
 (paren
@@ -2953,6 +2953,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Wake up waiting queue */
 DECL|function|DC390_waiting_timed_out
+r_static
 r_void
 id|DC390_waiting_timed_out
 (paren
@@ -3688,6 +3689,7 @@ multiline_comment|/* KG: deferred PCI mapping to dc390_StartSCSI */
 )brace
 multiline_comment|/***********************************************************************&n; * Function : static int DC390_queue_command (Scsi_Cmnd *cmd,&n; *&t;&t;&t;&t;&t;       void (*done)(Scsi_Cmnd *))&n; *&n; * Purpose : enqueues a SCSI command&n; *&n; * Inputs : cmd - SCSI command, done - callback function called on &n; *&t;    completion, with a pointer to the command descriptor.&n; *&n; * Returns : (depending on kernel version)&n; * 2.0.x: always return 0&n; * 2.1.x: old model: (use_new_eh_code == 0): like 2.0.x&n; *&t;  TO BE DONE:&n; *&t;  new model: return 0 if successful&n; *&t;  &t;     return 1 if command cannot be queued (queue full)&n; *&t;&t;     command will be inserted in midlevel queue then ...&n; *&n; ***********************************************************************/
 DECL|function|DC390_queue_command
+r_static
 r_int
 id|DC390_queue_command
 (paren
@@ -4377,6 +4379,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Function:&n; *   DC390_bios_param&n; *&n; * Description:&n; *   Return the disk geometry for the given SCSI device.&n; *   Respect the partition table, otherwise try own heuristic&n; *&n; * Note:&n; *   In contrary to other externally callable funcs (DC390_), we don&squot;t lock&n; ***********************************************************************/
 DECL|function|DC390_bios_param
+r_static
 r_int
 id|DC390_bios_param
 (paren
@@ -4583,6 +4586,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|function|DC390_bios_param
+r_static
 r_int
 id|DC390_bios_param
 (paren
@@ -4618,6 +4622,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|dc390_dumpinfo
+r_static
 r_void
 id|dc390_dumpinfo
 (paren
@@ -4940,6 +4945,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Function : int DC390_abort (Scsi_Cmnd *cmd)&n; *&n; * Purpose : Abort an errant SCSI command&n; *&n; * Inputs : cmd - command to abort&n; *&n; * Returns : 0 on success, -1 on failure.&n; *&n; * Status: Buggy !&n; ***********************************************************************/
 DECL|function|DC390_abort
+r_static
 r_int
 id|DC390_abort
 (paren
@@ -5630,6 +5636,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/***********************************************************************&n; * Function : int DC390_reset (Scsi_Cmnd *cmd, ...)&n; *&n; * Purpose : perform a hard reset on the SCSI bus&n; *&n; * Inputs : cmd - command which caused the SCSI RESET&n; *&t;    resetFlags - how hard to try&n; *&n; * Returns : 0 on success.&n; ***********************************************************************/
 DECL|function|DC390_reset
+r_static
 r_int
 id|DC390_reset
 (paren
@@ -5800,6 +5807,7 @@ suffix:semicolon
 macro_line|#include &quot;scsiiom.c&quot;
 multiline_comment|/***********************************************************************&n; * Function : static void dc390_initDCB()&n; *&n; * Purpose :  initialize the internal structures for a DCB (to be malloced)&n; *&n; * Inputs : SCSI id and lun&n; ***********************************************************************/
 DECL|function|dc390_initDCB
+r_static
 r_void
 id|dc390_initDCB
 c_func
@@ -6123,6 +6131,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Function : static void dc390_updateDCB()&n; *&n; * Purpose :  Set the configuration dependent DCB parameters&n; ***********************************************************************/
 DECL|function|dc390_updateDCB
+r_static
 r_void
 id|dc390_updateDCB
 (paren
@@ -6226,6 +6235,7 @@ id|psrb
 multiline_comment|/* psrb-&gt;PhysSRB = virt_to_phys( psrb ); */
 )brace
 DECL|function|dc390_linkSRB
+r_static
 r_void
 id|dc390_linkSRB
 c_func
@@ -6308,6 +6318,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Function : static void dc390_initACB ()&n; *&n; * Purpose :  initialize the internal structures for a given SCSI host&n; *&n; * Inputs : psh - pointer to this host adapter&squot;s structure&n; *&t;    io_port, Irq, index: Resources and adapter index&n; ***********************************************************************/
 DECL|function|dc390_initACB
+r_static
 r_void
 id|__init
 id|dc390_initACB
@@ -6627,6 +6638,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Function : static int dc390_initAdapter ()&n; *&n; * Purpose :  initialize the SCSI chip ctrl registers&n; *&n; * Inputs : psh - pointer to this host adapter&squot;s structure&n; *&t;    io_port, Irq, index: Resources&n; *&n; * Outputs: 0 on success, -1 on error&n; ***********************************************************************/
 DECL|function|dc390_initAdapter
+r_static
 r_int
 id|__init
 id|dc390_initAdapter
@@ -6956,7 +6968,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/***********************************************************************&n; * Function : static int DC390_init (struct Scsi_Host *host, ...)&n; *&n; * Purpose :  initialize the internal structures for a given SCSI host&n; *&n; * Inputs : host - pointer to this host adapter&squot;s structure&n; *&t;    io_port - IO ports mapped to this adapter&n; *&t;    Irq - IRQ assigned to this adpater&n; *&t;    PDEVDECL - PCI access handle&n; *&t;    index - Adapter index&n; *&n; * Outputs: 0 on success, -1 on error&n; *&n; * Note: written in capitals, because the locking is only done here,&n; *&t;not in DC390_detect, called from outside &n; ***********************************************************************/
+multiline_comment|/***********************************************************************&n; * Function : static int DC390_init (struct Scsi_Host *host, ...)&n; *&n; * Purpose :  initialize the internal structures for a given SCSI host&n; *&n; * Inputs : host - pointer to this host adapter&squot;s structure&n; *&t;    io_port - IO ports mapped to this adapter&n; *&t;    Irq - IRQ assigned to this adpater&n; *&t;    struct pci_dev - PCI access handle&n; *&t;    index - Adapter index&n; *&n; * Outputs: 0 on success, -1 on error&n; *&n; * Note: written in capitals, because the locking is only done here,&n; *&t;not in DC390_detect, called from outside &n; ***********************************************************************/
 DECL|function|DC390_init
 r_static
 r_int
@@ -6972,7 +6984,10 @@ comma
 id|UCHAR
 id|Irq
 comma
-id|PDEVDECL
+r_struct
+id|pci_dev
+op_star
+id|pdev
 comma
 id|UCHAR
 id|index
@@ -7329,7 +7344,12 @@ op_star
 id|psht
 )paren
 (brace
-id|PDEVDECL0
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+l_int|NULL
 suffix:semicolon
 id|UCHAR
 id|irq
@@ -7349,11 +7369,18 @@ id|PCI_PRESENT
 r_while
 c_loop
 (paren
-id|PCI_FIND_DEVICE
+(paren
+id|pdev
+op_assign
+id|pci_find_device
+c_func
 (paren
 id|PCI_VENDOR_ID_AMD
 comma
 id|PCI_DEVICE_ID_AMD53C974
+comma
+id|pdev
+)paren
 )paren
 )paren
 (brace
@@ -7432,7 +7459,11 @@ id|dc390_adapterCnt
 )paren
 )paren
 (brace
-id|PCI_SET_MASTER
+id|pci_set_master
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 id|dc390_set_pci_cfg
 (paren
@@ -7481,6 +7512,7 @@ mdefine_line|#define SPRINTF(args...) pos += sprintf(pos, ## args)
 DECL|macro|YESNO
 mdefine_line|#define YESNO(YN)&t;&t;&bslash;&n; if (YN) SPRINTF(&quot; Yes &quot;);&t;&bslash;&n; else SPRINTF(&quot; No  &quot;)
 DECL|function|DC390_proc_info
+r_static
 r_int
 id|DC390_proc_info
 (paren
@@ -8293,6 +8325,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|dc390_freeDCBs
+r_static
 r_void
 id|dc390_freeDCBs
 (paren
@@ -8375,6 +8408,7 @@ id|pACB-&gt;pLinkDCB
 suffix:semicolon
 )brace
 DECL|function|DC390_release
+r_static
 r_int
 id|DC390_release
 (paren
