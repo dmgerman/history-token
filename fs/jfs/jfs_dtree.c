@@ -10526,7 +10526,11 @@ id|dtlck
 suffix:semicolon
 id|lv
 op_assign
+op_amp
 id|dtlck-&gt;lv
+(braket
+id|dtlck-&gt;index
+)braket
 suffix:semicolon
 id|lv-&gt;offset
 op_assign
