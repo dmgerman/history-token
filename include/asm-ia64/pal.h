@@ -95,6 +95,7 @@ DECL|macro|PAL_VM_TR_READ
 mdefine_line|#define PAL_VM_TR_READ&t;&t;261&t;/* read contents of translation register */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/fpu.h&gt;
 multiline_comment|/*&n; * Data types needed to pass information into PAL procedures and&n; * interpret information returned by them.&n; */
 multiline_comment|/* Return status from the PAL procedure */
 DECL|typedef|pal_status_t
@@ -1473,16 +1474,34 @@ comma
 id|u64
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ia64_save_scratch_fpregs
+(paren
+r_struct
+id|ia64_fpreg
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ia64_load_scratch_fpregs
+(paren
+r_struct
+id|ia64_fpreg
+op_star
+)paren
+suffix:semicolon
 DECL|macro|PAL_CALL
-mdefine_line|#define PAL_CALL(iprv,a0,a1,a2,a3)&t;&t;iprv = ia64_pal_call_static(a0, a1, a2, a3, 0)
+mdefine_line|#define PAL_CALL(iprv,a0,a1,a2,a3) do {&t;&t;&t;&bslash;&n;&t;struct ia64_fpreg fr[6];&t;&t;&t;&bslash;&n;&t;ia64_save_scratch_fpregs(fr);&t;&t;&t;&bslash;&n;&t;iprv = ia64_pal_call_static(a0, a1, a2, a3, 0);&t;&bslash;&n;&t;ia64_load_scratch_fpregs(fr);&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|PAL_CALL_IC_OFF
-mdefine_line|#define PAL_CALL_IC_OFF(iprv,a0,a1,a2,a3)&t;iprv = ia64_pal_call_static(a0, a1, a2, a3, 1)
+mdefine_line|#define PAL_CALL_IC_OFF(iprv,a0,a1,a2,a3) do {&t;&t;&bslash;&n;&t;struct ia64_fpreg fr[6];&t;&t;&t;&bslash;&n;&t;ia64_save_scratch_fpregs(fr);&t;&t;&t;&bslash;&n;&t;iprv = ia64_pal_call_static(a0, a1, a2, a3, 1);&t;&bslash;&n;&t;ia64_load_scratch_fpregs(fr);&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|PAL_CALL_STK
-mdefine_line|#define PAL_CALL_STK(iprv,a0,a1,a2,a3)&t;&t;iprv = ia64_pal_call_stacked(a0, a1, a2, a3)
+mdefine_line|#define PAL_CALL_STK(iprv,a0,a1,a2,a3) do {&t;&t;&bslash;&n;&t;struct ia64_fpreg fr[6];&t;&t;&t;&bslash;&n;&t;ia64_save_scratch_fpregs(fr);&t;&t;&t;&bslash;&n;&t;iprv = ia64_pal_call_stacked(a0, a1, a2, a3);&t;&bslash;&n;&t;ia64_load_scratch_fpregs(fr);&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|PAL_CALL_PHYS
-mdefine_line|#define PAL_CALL_PHYS(iprv,a0,a1,a2,a3)&t;&t;iprv = ia64_pal_call_phys_static(a0, a1, a2, a3)
+mdefine_line|#define PAL_CALL_PHYS(iprv,a0,a1,a2,a3) do {&t;&t;&t;&bslash;&n;&t;struct ia64_fpreg fr[6];&t;&t;&t;&t;&bslash;&n;&t;ia64_save_scratch_fpregs(fr);&t;&t;&t;&t;&bslash;&n;&t;iprv = ia64_pal_call_phys_static(a0, a1, a2, a3);&t;&bslash;&n;&t;ia64_load_scratch_fpregs(fr);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|PAL_CALL_PHYS_STK
-mdefine_line|#define PAL_CALL_PHYS_STK(iprv,a0,a1,a2,a3)&t;iprv = ia64_pal_call_phys_stacked(a0, a1, a2, a3)
+mdefine_line|#define PAL_CALL_PHYS_STK(iprv,a0,a1,a2,a3) do {&t;&t;&bslash;&n;&t;struct ia64_fpreg fr[6];&t;&t;&t;&t;&bslash;&n;&t;ia64_save_scratch_fpregs(fr);&t;&t;&t;&t;&bslash;&n;&t;iprv = ia64_pal_call_phys_stacked(a0, a1, a2, a3);&t;&bslash;&n;&t;ia64_load_scratch_fpregs(fr);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|typedef|ia64_pal_handler
 r_typedef
 r_int

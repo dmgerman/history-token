@@ -71,6 +71,8 @@ DECL|macro|hardirq_trylock
 mdefine_line|#define hardirq_trylock()&t;(!in_interrupt())
 DECL|macro|hardirq_endlock
 mdefine_line|#define hardirq_endlock()&t;do { } while (0)
+DECL|macro|in_atomic
+mdefine_line|#define in_atomic()&t;&t;(preempt_count() != 0)
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
 macro_line|#if CONFIG_PREEMPT

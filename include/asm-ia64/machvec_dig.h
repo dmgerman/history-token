@@ -24,9 +24,5 @@ DECL|macro|platform_setup
 mdefine_line|#define platform_setup&t;&t;dig_setup
 DECL|macro|platform_irq_init
 mdefine_line|#define platform_irq_init&t;dig_irq_init
-DECL|macro|platform_pci_fixup
-mdefine_line|#define platform_pci_fixup&t;iosapic_pci_fixup
-DECL|macro|platform_map_nr
-mdefine_line|#define platform_map_nr&t;&t;map_nr_dense
 macro_line|#endif /* _ASM_IA64_MACHVEC_DIG_h */
 eof

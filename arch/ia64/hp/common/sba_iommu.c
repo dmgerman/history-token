@@ -16,10 +16,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;&t;&t;/* PAGE_OFFSET */
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;SBA&quot;
-macro_line|#ifndef CONFIG_IA64_HP_PROTO
 DECL|macro|ALLOW_IOV_BYPASS
 mdefine_line|#define ALLOW_IOV_BYPASS
-macro_line|#endif
 DECL|macro|ENABLE_MARK_CLEAN
 mdefine_line|#define ENABLE_MARK_CLEAN
 multiline_comment|/*&n;** The number of debug flags is a clue - this code is fragile.&n;*/
@@ -2193,6 +2191,18 @@ id|addr
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sba_list
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;sba_map_single: no SBA found!&bslash;n&quot;
+)paren
+suffix:semicolon
 id|ioc
 op_assign
 id|GET_IOC
@@ -2530,6 +2540,18 @@ id|flags
 suffix:semicolon
 id|dma_addr_t
 id|offset
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sba_list
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;sba_map_single: no SBA found!&bslash;n&quot;
+)paren
 suffix:semicolon
 id|ioc
 op_assign
@@ -3410,6 +3432,18 @@ id|sglist
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sba_list
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;sba_map_single: no SBA found!&bslash;n&quot;
+)paren
+suffix:semicolon
 id|ioc
 op_assign
 id|GET_IOC
@@ -3754,6 +3788,18 @@ id|sglist
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sba_list
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;sba_map_single: no SBA found!&bslash;n&quot;
+)paren
+suffix:semicolon
 id|ioc
 op_assign
 id|GET_IOC
@@ -4010,22 +4056,6 @@ l_int|0xFFFFFFFFUL
 op_plus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_HP_PROTO
-r_if
-c_cond
-(paren
-op_logical_neg
-id|iova_space_size
-)paren
-id|iova_space_size
-op_assign
-id|GB
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;** iov_order is always based on a 1GB IOVA space since we want to&n;&t;** turn on the other half for AGP GART.&n;&t;*/
 id|iov_order
 op_assign
@@ -4956,34 +4986,15 @@ r_struct
 id|sba_device
 op_star
 id|sba_dev
-op_assign
-id|sba_list
 suffix:semicolon
 r_struct
 id|ioc
 op_star
 id|ioc
-op_assign
-op_amp
-id|sba_dev-&gt;ioc
-(braket
-l_int|0
-)braket
 suffix:semicolon
-multiline_comment|/* FIXME: Multi-IOC support! */
 r_int
 id|total_pages
-op_assign
-(paren
-r_int
-)paren
-(paren
-id|ioc-&gt;res_size
-op_lshift
-l_int|3
-)paren
 suffix:semicolon
-multiline_comment|/* 8 bits per byte */
 r_int
 r_int
 id|i
@@ -4998,6 +5009,41 @@ id|min
 comma
 id|max
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|sba_dev
+op_assign
+id|sba_list
+suffix:semicolon
+id|sba_dev
+suffix:semicolon
+id|sba_dev
+op_assign
+id|sba_dev-&gt;next
+)paren
+(brace
+id|ioc
+op_assign
+op_amp
+id|sba_dev-&gt;ioc
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* FIXME: Multi-IOC support! */
+id|total_pages
+op_assign
+(paren
+r_int
+)paren
+(paren
+id|ioc-&gt;res_size
+op_lshift
+l_int|3
+)paren
+suffix:semicolon
+multiline_comment|/* 8 bits per byte */
 id|sprintf
 c_func
 (paren
@@ -5333,6 +5379,7 @@ id|ioc-&gt;usg_calls
 )paren
 )paren
 suffix:semicolon
+)brace
 r_return
 id|strlen
 c_func
@@ -5375,6 +5422,20 @@ r_int
 r_int
 op_star
 id|res_ptr
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ioc
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|res_ptr
 op_assign
 (paren
 r_int
@@ -5382,9 +5443,6 @@ r_int
 op_star
 )paren
 id|ioc-&gt;res_map
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 id|buf
 (braket
@@ -5613,10 +5671,11 @@ r_if
 c_cond
 (paren
 id|func_id
-op_eq
+op_ne
 id|ZX1_FUNC_ID_VALUE
 )paren
-(brace
+r_return
+suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -5629,12 +5688,6 @@ id|func_offset
 op_assign
 id|zx1_func_offsets
 suffix:semicolon
-)brace
-r_else
-(brace
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Read HW Rev First */
 id|hw_rev
 op_assign
@@ -5768,22 +5821,13 @@ l_int|0x20
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s WARNING rev 2.0 or greater will be required for IO MMU support in the future&bslash;n&quot;
+l_string|&quot;%s: SBA rev less than 2.0 not supported&quot;
 comma
 id|DRIVER_NAME
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_HP_PROTO
-id|panic
-c_func
-(paren
-l_string|&quot;%s: CONFIG_IA64_HP_PROTO MUST be enabled to support SBA rev less than 2.0&quot;
-comma
-id|DRIVER_NAME
-)paren
+r_return
 suffix:semicolon
-macro_line|#endif
 )brace
 id|sba_dev
 op_assign
