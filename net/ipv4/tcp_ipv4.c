@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/jhash.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
@@ -3721,7 +3722,7 @@ suffix:semicolon
 DECL|function|tcp_v4_synq_hash
 r_static
 id|__inline__
-r_int
+id|u32
 id|tcp_v4_synq_hash
 c_func
 (paren
@@ -3730,34 +3731,31 @@ id|raddr
 comma
 id|u16
 id|rport
+comma
+id|u32
+id|rnd
 )paren
 (brace
-r_int
-id|h
-op_assign
-id|raddr
-op_xor
-id|rport
-suffix:semicolon
-id|h
-op_xor_assign
-id|h
-op_rshift
-l_int|16
-suffix:semicolon
-id|h
-op_xor_assign
-id|h
-op_rshift
-l_int|8
-suffix:semicolon
 r_return
-id|h
+(paren
+id|jhash_2words
+c_func
+(paren
+id|raddr
+comma
+(paren
+id|u32
+)paren
+id|rport
+comma
+id|rnd
+)paren
 op_amp
 (paren
 id|TCP_SYNQ_HSIZE
 op_minus
 l_int|1
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -3821,6 +3819,8 @@ c_func
 id|raddr
 comma
 id|rport
+comma
+id|lopt-&gt;hash_rnd
 )paren
 )braket
 suffix:semicolon
@@ -3920,7 +3920,7 @@ id|lopt
 op_assign
 id|tp-&gt;listen_opt
 suffix:semicolon
-r_int
+id|u32
 id|h
 op_assign
 id|tcp_v4_synq_hash
@@ -3929,6 +3929,8 @@ c_func
 id|req-&gt;af.v4_req.rmt_addr
 comma
 id|req-&gt;rmt_port
+comma
+id|lopt-&gt;hash_rnd
 )paren
 suffix:semicolon
 id|req-&gt;expires

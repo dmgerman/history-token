@@ -3495,6 +3495,14 @@ l_int|NULL
 r_goto
 id|listen_overflow
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|child
+comma
+id|sk-&gt;owner
+)paren
+suffix:semicolon
 id|tcp_synq_unlink
 c_func
 (paren

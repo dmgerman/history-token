@@ -1909,6 +1909,14 @@ comma
 id|newsk
 )paren
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|newsk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|newsk-&gt;type
 op_assign
 id|SOCK_STREAM
@@ -2791,6 +2799,11 @@ dot
 id|family
 op_assign
 id|PF_INET6
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|release

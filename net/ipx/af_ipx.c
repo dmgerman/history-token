@@ -9563,6 +9563,11 @@ op_assign
 id|PF_IPX
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|release
 op_assign
 id|ipx_release

@@ -1,5 +1,28 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode_item.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_bmap.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
+macro_line|#include &quot;xfs_quota.h&quot;
+macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_itable.h&quot;
+macro_line|#include &quot;xfs_utils.h&quot;
 multiline_comment|/*&n; * xfs_get_dir_entry is used to get a reference to an inode given&n; * its parent directory inode and the name of the file.&t; It does&n; * not lock the child inode, and it unlocks the directory before&n; * returning.  The directory&squot;s generation number is returned for&n; * use by a later call to xfs_lock_dir_and_entry.&n; */
 r_int
 DECL|function|xfs_get_dir_entry
@@ -475,7 +498,7 @@ c_cond
 id|call_again
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Normally, xfs_trans_commit releases all the locks.&n;&t;&t; * We call bhold to hang on to the ialloc_context across&n;&t;&t; * the commit.&t;Holding this buffer prevents any other&n;&t;&t; * processes from doing any allocations in this&n;&t;&t; * allocation group.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Normally, xfs_trans_commit releases all the locks.&n;&t;&t; * We call bhold to hang on to the ialloc_context across&n;&t;&t; * the commit.  Holding this buffer prevents any other&n;&t;&t; * processes from doing any allocations in this&n;&t;&t; * allocation group.&n;&t;&t; */
 id|xfs_trans_bhold
 c_func
 (paren
@@ -1076,7 +1099,7 @@ id|XFS_MAXLINK_1
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * The inode has increased its number of links beyond&n;&t;&t; * what can fit in an old format inode.&t; It now needs&n;&t;&t; * to be converted to a version 2 inode with a 32 bit&n;&t;&t; * link count.&t;If this is the first inode in the file&n;&t;&t; * system to do this, then we need to bump the superblock&n;&t;&t; * version number as well.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The inode has increased its number of links beyond&n;&t;&t; * what can fit in an old format inode.  It now needs&n;&t;&t; * to be converted to a version 2 inode with a 32 bit&n;&t;&t; * link count.  If this is the first inode in the file&n;&t;&t; * system to do this, then we need to bump the superblock&n;&t;&t; * version number as well.&n;&t;&t; */
 id|xfs_bump_ino_vers2
 c_func
 (paren
@@ -1100,7 +1123,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Try to truncate the given file to 0 length.&t;Currently called&n; * only out of xfs_remove when it has to truncate a file to free&n; * up space for the remove to proceed.&n; */
+multiline_comment|/*&n; * Try to truncate the given file to 0 length.  Currently called&n; * only out of xfs_remove when it has to truncate a file to free&n; * up space for the remove to proceed.&n; */
 r_int
 DECL|function|xfs_truncate_file
 id|xfs_truncate_file
@@ -1253,7 +1276,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Follow the normal truncate locking protocol.&t; Since we&n;&t; * hold the inode in the transaction, we know that it&squot;s number&n;&t; * of references will stay constant.&n;&t; */
+multiline_comment|/*&n;&t; * Follow the normal truncate locking protocol.  Since we&n;&t; * hold the inode in the transaction, we know that it&squot;s number&n;&t; * of references will stay constant.&n;&t; */
 id|xfs_ilock
 c_func
 (paren

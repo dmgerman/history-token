@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
@@ -1202,6 +1203,15 @@ op_ge
 id|sysctl_max_syn_backlog
 )paren
 r_break
+suffix:semicolon
+id|get_random_bytes
+c_func
+(paren
+op_amp
+id|lopt-&gt;hash_rnd
+comma
+l_int|4
+)paren
 suffix:semicolon
 id|write_lock_bh
 c_func

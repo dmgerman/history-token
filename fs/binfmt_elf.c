@@ -5373,6 +5373,12 @@ id|segs
 op_assign
 id|current-&gt;mm-&gt;map_count
 suffix:semicolon
+macro_line|#ifdef ELF_CORE_EXTRA_PHDRS
+id|segs
+op_add_assign
+id|ELF_CORE_EXTRA_PHDRS
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Set up header */
 id|fill_elf_header
 c_func
@@ -5789,6 +5795,10 @@ id|phdr
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ELF_CORE_WRITE_EXTRA_PHDRS
+id|ELF_CORE_WRITE_EXTRA_PHDRS
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* write out the notes section */
 r_for
 c_loop
@@ -6049,6 +6059,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#ifdef ELF_CORE_WRITE_EXTRA_DATA
+id|ELF_CORE_WRITE_EXTRA_DATA
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -1320,7 +1320,8 @@ op_logical_neg
 id|cpu_has_apic
 )paren
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 r_switch
 c_cond
@@ -1340,7 +1341,8 @@ OL
 l_int|6
 )paren
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 id|model
 op_assign
@@ -1377,7 +1379,8 @@ c_func
 )paren
 )paren
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1395,14 +1398,16 @@ c_func
 )paren
 )paren
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_break
@@ -1411,7 +1416,8 @@ macro_line|#endif /* !CONFIG_X86_64 */
 r_default
 suffix:colon
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|init_driverfs
@@ -1437,7 +1443,7 @@ l_string|&quot;oprofile: using NMI interrupt.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|nmi_exit

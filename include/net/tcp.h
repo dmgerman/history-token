@@ -5962,6 +5962,10 @@ DECL|member|clock_hand
 r_int
 id|clock_hand
 suffix:semicolon
+DECL|member|hash_rnd
+id|u32
+id|hash_rnd
+suffix:semicolon
 DECL|member|syn_table
 r_struct
 id|open_request

@@ -858,8 +858,6 @@ id|kfree
 id|db
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Allocate space for a (de) compressor.&n; */
@@ -1120,8 +1118,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/*&n; * If this is the compression buffer then there is no length data.&n; */
 r_if
 c_cond
@@ -3427,47 +3423,80 @@ id|compressor
 id|ppp_bsd_compress
 op_assign
 (brace
+dot
+id|compress_proto
+op_assign
 id|CI_BSD_COMPRESS
 comma
-multiline_comment|/* compress_proto */
+dot
+id|comp_alloc
+op_assign
 id|bsd_comp_alloc
 comma
-multiline_comment|/* comp_alloc */
+dot
+id|comp_free
+op_assign
 id|bsd_free
 comma
-multiline_comment|/* comp_free */
+dot
+id|comp_init
+op_assign
 id|bsd_comp_init
 comma
-multiline_comment|/* comp_init */
+dot
+id|comp_reset
+op_assign
 id|bsd_reset
 comma
-multiline_comment|/* comp_reset */
+dot
+id|compress
+op_assign
 id|bsd_compress
 comma
-multiline_comment|/* compress */
+dot
+id|comp_stat
+op_assign
 id|bsd_comp_stats
 comma
-multiline_comment|/* comp_stat */
+dot
+id|decomp_alloc
+op_assign
 id|bsd_decomp_alloc
 comma
-multiline_comment|/* decomp_alloc */
+dot
+id|decomp_free
+op_assign
 id|bsd_free
 comma
-multiline_comment|/* decomp_free */
+dot
+id|decomp_init
+op_assign
 id|bsd_decomp_init
 comma
-multiline_comment|/* decomp_init */
+dot
+id|decomp_reset
+op_assign
 id|bsd_reset
 comma
-multiline_comment|/* decomp_reset */
+dot
+id|decompress
+op_assign
 id|bsd_decompress
 comma
-multiline_comment|/* decompress */
+dot
+id|incomp
+op_assign
 id|bsd_incomp
 comma
-multiline_comment|/* incomp */
+dot
+id|decomp_stat
+op_assign
 id|bsd_comp_stats
-multiline_comment|/* decomp_stat */
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 )brace
 suffix:semicolon
 multiline_comment|/*************************************************************&n; * Module support routines&n; *************************************************************/

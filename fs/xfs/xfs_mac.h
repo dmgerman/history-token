@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * Copyright (c) 2001-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2001-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_MAC_H__
 DECL|macro|__XFS_MAC_H__
 mdefine_line|#define __XFS_MAC_H__
-multiline_comment|/*&n; * Mandatory Access Control&n; *&n; * Layout of a composite MAC label:&n; * ml_list contains the list of categories (MSEN) followed by the list of&n; * divisions (MINT). This is actually a header for the data structure which&n; * will have an ml_list with more than one element.&n; *&n; *&t;-------------------------------&n; *&t;| ml_msen_type | ml_mint_type |&n; *&t;-------------------------------&n; *&t;| ml_level     | ml_grade     |&n; *&t;-------------------------------&n; *&t;| ml_catcount&t;&t;      |&n; *&t;-------------------------------&n; *&t;| ml_divcount&t;&t;      |&n; *&t;-------------------------------&n; *&t;| category 1&t;&t;      |&n; *&t;| . . .&t;&t;&t;      |&n; *&t;| category N&t;&t;      | (where N = ml_catcount)&n; *&t;-------------------------------&n; *&t;| division 1&t;&t;      |&n; *&t;| . . .&t;&t;&t;      |&n; *&t;| division M&t;&t;      | (where M = ml_divcount)&n; *&t;-------------------------------&n; */
+multiline_comment|/*&n; * Mandatory Access Control&n; *&n; * Layout of a composite MAC label:&n; * ml_list contains the list of categories (MSEN) followed by the list of&n; * divisions (MINT). This is actually a header for the data structure which&n; * will have an ml_list with more than one element.&n; *&n; *      -------------------------------&n; *      | ml_msen_type | ml_mint_type |&n; *      -------------------------------&n; *      | ml_level     | ml_grade     |&n; *      -------------------------------&n; *      | ml_catcount                 |&n; *      -------------------------------&n; *      | ml_divcount                 |&n; *      -------------------------------&n; *      | category 1                  |&n; *      | . . .                       |&n; *      | category N                  | (where N = ml_catcount)&n; *      -------------------------------&n; *      | division 1                  |&n; *      | . . .                       |&n; *      | division M                  | (where M = ml_divcount)&n; *      -------------------------------&n; */
 DECL|macro|XFS_MAC_MAX_SETS
 mdefine_line|#define XFS_MAC_MAX_SETS&t;250
 DECL|struct|xfs_mac_label
@@ -52,7 +52,7 @@ DECL|typedef|xfs_mac_label_t
 )brace
 id|xfs_mac_label_t
 suffix:semicolon
-multiline_comment|/* MSEN label type names. Choose an upper case ASCII character.&t; */
+multiline_comment|/* MSEN label type names. Choose an upper case ASCII character.  */
 DECL|macro|XFS_MSEN_ADMIN_LABEL
 mdefine_line|#define XFS_MSEN_ADMIN_LABEL&t;&squot;A&squot;&t;/* Admin: low&lt;admin != tcsec&lt;high */
 DECL|macro|XFS_MSEN_EQUAL_LABEL
@@ -60,7 +60,7 @@ mdefine_line|#define XFS_MSEN_EQUAL_LABEL&t;&squot;E&squot;&t;/* Wildcard - alwa
 DECL|macro|XFS_MSEN_HIGH_LABEL
 mdefine_line|#define XFS_MSEN_HIGH_LABEL&t;&squot;H&squot;&t;/* System High - always dominates */
 DECL|macro|XFS_MSEN_MLD_HIGH_LABEL
-mdefine_line|#define XFS_MSEN_MLD_HIGH_LABEL &squot;I&squot;&t;/* System High, multi-level dir */
+mdefine_line|#define XFS_MSEN_MLD_HIGH_LABEL&t;&squot;I&squot;&t;/* System High, multi-level dir */
 DECL|macro|XFS_MSEN_LOW_LABEL
 mdefine_line|#define XFS_MSEN_LOW_LABEL&t;&squot;L&squot;&t;/* System Low - always dominated */
 DECL|macro|XFS_MSEN_MLD_LABEL
@@ -71,7 +71,7 @@ DECL|macro|XFS_MSEN_TCSEC_LABEL
 mdefine_line|#define XFS_MSEN_TCSEC_LABEL&t;&squot;T&squot;&t;/* TCSEC label */
 DECL|macro|XFS_MSEN_UNKNOWN_LABEL
 mdefine_line|#define XFS_MSEN_UNKNOWN_LABEL&t;&squot;U&squot;&t;/* unknown label */
-multiline_comment|/* MINT label type names. Choose a lower case ASCII character.&t;*/
+multiline_comment|/* MINT label type names. Choose a lower case ASCII character.  */
 DECL|macro|XFS_MINT_BIBA_LABEL
 mdefine_line|#define XFS_MINT_BIBA_LABEL&t;&squot;b&squot;&t;/* Dual of a TCSEC label */
 DECL|macro|XFS_MINT_EQUAL_LABEL
@@ -120,7 +120,7 @@ DECL|macro|_MAC_EXISTS
 mdefine_line|#define _MAC_EXISTS&t;&t;xfs_mac_vhaslabel
 macro_line|#else
 DECL|macro|_MAC_XFS_IACCESS
-mdefine_line|#define _MAC_XFS_IACCESS(i,m,c) (0)
+mdefine_line|#define _MAC_XFS_IACCESS(i,m,c)&t;(0)
 DECL|macro|_MAC_VACCESS
 mdefine_line|#define _MAC_VACCESS(v,c,m)&t;(0)
 DECL|macro|_MAC_EXISTS

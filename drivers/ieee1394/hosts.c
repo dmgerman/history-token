@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
@@ -385,7 +386,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|HPSB_INIT_WORK
+id|INIT_WORK
 c_func
 (paren
 op_amp

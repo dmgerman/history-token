@@ -5545,6 +5545,9 @@ id|i
 OL
 id|pos
 suffix:semicolon
+op_increment
+id|i
+comma
 id|dev
 op_assign
 id|dev-&gt;next
@@ -5596,6 +5599,8 @@ id|seq
 comma
 op_star
 id|pos
+op_minus
+l_int|1
 )paren
 suffix:colon
 (paren
@@ -5625,6 +5630,10 @@ op_star
 id|pos
 )paren
 (brace
+op_increment
+op_star
+id|pos
+suffix:semicolon
 r_return
 id|v
 op_eq
@@ -5809,7 +5818,7 @@ op_star
 )paren
 l_int|1
 )paren
-id|seq_printf
+id|seq_puts
 c_func
 (paren
 id|seq

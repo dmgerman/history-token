@@ -4490,7 +4490,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DECNET_ROUTE_FWMARK
 id|rt-&gt;fl.fld_fwmark
 op_assign
-id|flp-&gt;fld_fwmark
+id|oldflp-&gt;fld_fwmark
 suffix:semicolon
 macro_line|#endif
 id|rt-&gt;rt_saddr
@@ -5099,7 +5099,7 @@ macro_line|#ifdef CONFIG_DECNET_ROUTE_FWMARK
 dot
 id|fwmark
 op_assign
-id|skb-&gt;fwmark
+id|skb-&gt;nfmark
 macro_line|#endif
 )brace
 )brace

@@ -16,11 +16,11 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
+macro_line|#include &quot;nodemgr.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;iso.h&quot;
 macro_line|#include &quot;ieee1394_transactions.h&quot;
-macro_line|#include &quot;ieee1394_hotplug.h&quot;
 macro_line|#include &quot;raw1394.h&quot;
 macro_line|#include &quot;raw1394-private.h&quot;
 macro_line|#if BITS_PER_LONG == 64

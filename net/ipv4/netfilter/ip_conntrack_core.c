@@ -15,6 +15,8 @@ macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/jhash.h&gt;
 multiline_comment|/* For ERR_PTR().  Yeah, I know... --RR */
 macro_line|#include &lt;linux/fs.h&gt;
 multiline_comment|/* This rwlock protects the main hash table, protocol/helper/expected&n;   registrations, conntrack timers*/
@@ -288,8 +290,18 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ip_conntrack_hash_rnd_initted
 r_static
-r_inline
+r_int
+id|ip_conntrack_hash_rnd_initted
+suffix:semicolon
+DECL|variable|ip_conntrack_hash_rnd
+r_static
+r_int
+r_int
+id|ip_conntrack_hash_rnd
+suffix:semicolon
+r_static
 id|u_int32_t
 DECL|function|hash_conntrack
 id|hash_conntrack
@@ -310,32 +322,34 @@ id|tuple
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* ntohl because more differences in low bits. */
-multiline_comment|/* To ensure that halves of the same connection don&squot;t hash&n;&t;   clash, we add the source per-proto again. */
 r_return
 (paren
-id|ntohl
+id|jhash_3words
 c_func
 (paren
 id|tuple-&gt;src.ip
-op_plus
+comma
+(paren
 id|tuple-&gt;dst.ip
-op_plus
-id|tuple-&gt;src.u.all
-op_plus
-id|tuple-&gt;dst.u.all
-op_plus
+op_xor
 id|tuple-&gt;dst.protonum
 )paren
-op_plus
-id|ntohs
-c_func
+comma
 (paren
 id|tuple-&gt;src.u.all
+op_or
+(paren
+id|tuple-&gt;dst.u.all
+op_lshift
+l_int|16
 )paren
+)paren
+comma
+id|ip_conntrack_hash_rnd
 )paren
 op_mod
 id|ip_conntrack_htable_size
+)paren
 suffix:semicolon
 )brace
 r_int
@@ -2443,8 +2457,6 @@ id|repl_tuple
 suffix:semicolon
 r_int
 id|hash
-comma
-id|repl_hash
 suffix:semicolon
 r_struct
 id|ip_conntrack_expect
@@ -2461,6 +2473,27 @@ id|drop_next
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ip_conntrack_hash_rnd_initted
+)paren
+(brace
+id|get_random_bytes
+c_func
+(paren
+op_amp
+id|ip_conntrack_hash_rnd
+comma
+l_int|4
+)paren
+suffix:semicolon
+id|ip_conntrack_hash_rnd_initted
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|hash
 op_assign
 id|hash_conntrack
@@ -2574,15 +2607,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|repl_hash
-op_assign
-id|hash_conntrack
-c_func
-(paren
-op_amp
-id|repl_tuple
-)paren
-suffix:semicolon
 id|conntrack
 op_assign
 id|kmem_cache_alloc

@@ -769,6 +769,7 @@ op_logical_neg
 id|lmodel
 )paren
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 id|model

@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_DIR2_SF_H__
 DECL|macro|__XFS_DIR2_SF_H__
-mdefine_line|#define __XFS_DIR2_SF_H__
+mdefine_line|#define&t;__XFS_DIR2_SF_H__
 multiline_comment|/*&n; * Directory layout when stored internal to an inode.&n; *&n; * Small directories are packed as tightly as possible so as to&n; * fit into the literal area of the inode.&n; */
 r_struct
 id|uio
@@ -26,7 +26,7 @@ id|xfs_trans
 suffix:semicolon
 multiline_comment|/*&n; * Maximum size of a shortform directory.&n; */
 DECL|macro|XFS_DIR2_SF_MAX_SIZE
-mdefine_line|#define XFS_DIR2_SF_MAX_SIZE&t;&bslash;&n;&t;(XFS_DINODE_MAX_SIZE - (uint)sizeof(xfs_dinode_core_t) - &bslash;&n;&t; (uint)sizeof(xfs_agino_t))
+mdefine_line|#define&t;XFS_DIR2_SF_MAX_SIZE&t;&bslash;&n;&t;(XFS_DINODE_MAX_SIZE - (uint)sizeof(xfs_dinode_core_t) - &bslash;&n;&t; (uint)sizeof(xfs_agino_t))
 multiline_comment|/*&n; * Inode number stored as 8 8-bit values.&n; */
 DECL|member|i
 DECL|typedef|xfs_dir2_ino8_t
@@ -43,9 +43,9 @@ suffix:semicolon
 id|xfs_dir2_ino8_t
 suffix:semicolon
 DECL|macro|XFS_DIR2_SF_GET_INO8_ARCH
-mdefine_line|#define XFS_DIR2_SF_GET_INO8_ARCH(di,arch)&t;&bslash;&n;&t;(xfs_ino_t)(DIRINO_GET_ARCH(&amp;di,arch))
+mdefine_line|#define&t;XFS_DIR2_SF_GET_INO8_ARCH(di,arch)&t;&bslash;&n;&t;(xfs_ino_t)(DIRINO_GET_ARCH(&amp;di,arch))
 DECL|macro|XFS_DIR2_SF_GET_INO8
-mdefine_line|#define XFS_DIR2_SF_GET_INO8(di)&t;&t;&bslash;&n;&t;XFS_DIR2_SF_GET_INO8_ARCH(di,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_DIR2_SF_GET_INO8(di)&t;        &bslash;&n;&t;XFS_DIR2_SF_GET_INO8_ARCH(di,ARCH_NOCONVERT)
 multiline_comment|/*&n; * Inode number stored as 4 8-bit values.&n; * Works a lot of the time, when all the inode numbers in a directory&n; * fit in 32 bits.&n; */
 DECL|member|i
 DECL|typedef|xfs_dir2_ino4_t
@@ -62,9 +62,9 @@ suffix:semicolon
 id|xfs_dir2_ino4_t
 suffix:semicolon
 DECL|macro|XFS_DIR2_SF_GET_INO4_ARCH
-mdefine_line|#define XFS_DIR2_SF_GET_INO4_ARCH(di,arch)&t;&bslash;&n;&t;(xfs_ino_t)(DIRINO4_GET_ARCH(&amp;di,arch))
+mdefine_line|#define&t;XFS_DIR2_SF_GET_INO4_ARCH(di,arch)&t;&bslash;&n;&t;(xfs_ino_t)(DIRINO4_GET_ARCH(&amp;di,arch))
 DECL|macro|XFS_DIR2_SF_GET_INO4
-mdefine_line|#define XFS_DIR2_SF_GET_INO4(di)&t;&t;&bslash;&n;&t;XFS_DIR2_SF_GET_INO4_ARCH(di,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_DIR2_SF_GET_INO4(di)&t;        &bslash;&n;&t;XFS_DIR2_SF_GET_INO4_ARCH(di,ARCH_NOCONVERT)
 r_typedef
 r_union
 (brace
@@ -81,7 +81,7 @@ DECL|typedef|xfs_dir2_inou_t
 id|xfs_dir2_inou_t
 suffix:semicolon
 DECL|macro|XFS_DIR2_MAX_SHORT_INUM
-mdefine_line|#define XFS_DIR2_MAX_SHORT_INUM ((xfs_ino_t)0xffffffffULL)
+mdefine_line|#define&t;XFS_DIR2_MAX_SHORT_INUM&t;((xfs_ino_t)0xffffffffULL)
 multiline_comment|/*&n; * Normalized offset (in a data block) of the entry, really xfs_dir2_data_off_t.&n; * Only need 16 bits, this is the byte offset into the single block form.&n; */
 DECL|member|i
 DECL|typedef|xfs_dir2_sf_off_t
@@ -186,10 +186,10 @@ id|i8count
 )paren
 suffix:semicolon
 DECL|macro|XFS_DIR2_SF_HDR_SIZE
-mdefine_line|#define XFS_DIR2_SF_HDR_SIZE(i8count)&t;xfs_dir2_sf_hdr_size(i8count)
+mdefine_line|#define&t;XFS_DIR2_SF_HDR_SIZE(i8count)&t;xfs_dir2_sf_hdr_size(i8count)
 macro_line|#else
 DECL|macro|XFS_DIR2_SF_HDR_SIZE
-mdefine_line|#define XFS_DIR2_SF_HDR_SIZE(i8count)&t;&bslash;&n;&t;((uint)sizeof(xfs_dir2_sf_hdr_t) - &bslash;&n;&t; ((i8count) == 0) * &bslash;&n;&t; ((uint)sizeof(xfs_dir2_ino8_t) - (uint)sizeof(xfs_dir2_ino4_t)))
+mdefine_line|#define&t;XFS_DIR2_SF_HDR_SIZE(i8count)&t;&bslash;&n;&t;((uint)sizeof(xfs_dir2_sf_hdr_t) - &bslash;&n;&t; ((i8count) == 0) * &bslash;&n;&t; ((uint)sizeof(xfs_dir2_ino8_t) - (uint)sizeof(xfs_dir2_ino4_t)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_INUMBERP)
 id|xfs_dir2_inou_t
@@ -203,10 +203,10 @@ id|sfep
 )paren
 suffix:semicolon
 DECL|macro|XFS_DIR2_SF_INUMBERP
-mdefine_line|#define XFS_DIR2_SF_INUMBERP(sfep)&t;xfs_dir2_sf_inumberp(sfep)
+mdefine_line|#define&t;XFS_DIR2_SF_INUMBERP(sfep)&t;xfs_dir2_sf_inumberp(sfep)
 macro_line|#else
 DECL|macro|XFS_DIR2_SF_INUMBERP
-mdefine_line|#define XFS_DIR2_SF_INUMBERP(sfep)&t;&bslash;&n;&t;((xfs_dir2_inou_t *)&amp;(sfep)-&gt;name[(sfep)-&gt;namelen])
+mdefine_line|#define&t;XFS_DIR2_SF_INUMBERP(sfep)&t;&bslash;&n;&t;((xfs_dir2_inou_t *)&amp;(sfep)-&gt;name[(sfep)-&gt;namelen])
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_GET_INUMBER)
 id|xfs_intino_t
@@ -226,10 +226,10 @@ id|arch
 )paren
 suffix:semicolon
 DECL|macro|XFS_DIR2_SF_GET_INUMBER_ARCH
-mdefine_line|#define XFS_DIR2_SF_GET_INUMBER_ARCH(sfp, from, arch)&t;&bslash;&n;&t;xfs_dir2_sf_get_inumber_arch(sfp, from, arch)
+mdefine_line|#define&t;XFS_DIR2_SF_GET_INUMBER_ARCH(sfp, from, arch)&t;&bslash;&n;&t;xfs_dir2_sf_get_inumber_arch(sfp, from, arch)
 macro_line|#else
 DECL|macro|XFS_DIR2_SF_GET_INUMBER_ARCH
-mdefine_line|#define XFS_DIR2_SF_GET_INUMBER_ARCH(sfp, from, arch)&t;&bslash;&n;&t;((sfp)-&gt;hdr.i8count == 0 ? &bslash;&n;&t;&t;(xfs_intino_t)XFS_DIR2_SF_GET_INO4_ARCH(*(from), arch) : &bslash;&n;&t;&t;(xfs_intino_t)XFS_DIR2_SF_GET_INO8_ARCH(*(from), arch))
+mdefine_line|#define&t;XFS_DIR2_SF_GET_INUMBER_ARCH(sfp, from, arch)&t;&bslash;&n;&t;((sfp)-&gt;hdr.i8count == 0 ? &bslash;&n;&t;&t;(xfs_intino_t)XFS_DIR2_SF_GET_INO4_ARCH(*(from), arch) : &bslash;&n;&t;&t;(xfs_intino_t)XFS_DIR2_SF_GET_INO8_ARCH(*(from), arch))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_PUT_INUMBER)
 r_void
@@ -253,10 +253,10 @@ id|arch
 )paren
 suffix:semicolon
 DECL|macro|XFS_DIR2_SF_PUT_INUMBER_ARCH
-mdefine_line|#define XFS_DIR2_SF_PUT_INUMBER_ARCH(sfp,from,to,arch)&t;&bslash;&n;&t;xfs_dir2_sf_put_inumber_arch(sfp,from,to,arch)
+mdefine_line|#define&t;XFS_DIR2_SF_PUT_INUMBER_ARCH(sfp,from,to,arch)&t;&bslash;&n;&t;xfs_dir2_sf_put_inumber_arch(sfp,from,to,arch)
 macro_line|#else
 DECL|macro|XFS_DIR2_SF_PUT_INUMBER_ARCH
-mdefine_line|#define XFS_DIR2_SF_PUT_INUMBER_ARCH(sfp,from,to,arch)&t;&bslash;&n;&t;if ((sfp)-&gt;hdr.i8count == 0) { &bslash;&n;&t;    DIRINO4_COPY_ARCH(from,to,arch); &bslash;&n;&t;} else { &bslash;&n;&t;    DIRINO_COPY_ARCH(from,to,arch); &bslash;&n;&t;}
+mdefine_line|#define&t;XFS_DIR2_SF_PUT_INUMBER_ARCH(sfp,from,to,arch)&t;&bslash;&n;&t;if ((sfp)-&gt;hdr.i8count == 0) { &bslash;&n;&t;    DIRINO4_COPY_ARCH(from,to,arch); &bslash;&n;&t;} else { &bslash;&n;&t;    DIRINO_COPY_ARCH(from,to,arch); &bslash;&n;&t;}
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_GET_OFFSET)
 id|xfs_dir2_data_aoff_t
@@ -281,10 +281,10 @@ id|sfep
 )paren
 suffix:semicolon
 DECL|macro|XFS_DIR2_SF_GET_OFFSET_ARCH
-mdefine_line|#define XFS_DIR2_SF_GET_OFFSET_ARCH(sfep,arch)&t;&bslash;&n;&t;xfs_dir2_sf_get_offset_arch(sfep,arch)
+mdefine_line|#define&t;XFS_DIR2_SF_GET_OFFSET_ARCH(sfep,arch)&t;&bslash;&n;&t;xfs_dir2_sf_get_offset_arch(sfep,arch)
 macro_line|#else
 DECL|macro|XFS_DIR2_SF_GET_OFFSET_ARCH
-mdefine_line|#define XFS_DIR2_SF_GET_OFFSET_ARCH(sfep,arch)&t;&bslash;&n;&t;INT_GET_UNALIGNED_16_ARCH(&amp;(sfep)-&gt;offset.i,arch)
+mdefine_line|#define&t;XFS_DIR2_SF_GET_OFFSET_ARCH(sfep,arch)&t;&bslash;&n;&t;INT_GET_UNALIGNED_16_ARCH(&amp;(sfep)-&gt;offset.i,arch)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_PUT_OFFSET)
 r_void
@@ -303,10 +303,10 @@ id|arch
 )paren
 suffix:semicolon
 DECL|macro|XFS_DIR2_SF_PUT_OFFSET_ARCH
-mdefine_line|#define XFS_DIR2_SF_PUT_OFFSET_ARCH(sfep,off,arch) &bslash;&n;&t;xfs_dir2_sf_put_offset_arch(sfep,off,arch)
+mdefine_line|#define&t;XFS_DIR2_SF_PUT_OFFSET_ARCH(sfep,off,arch) &bslash;&n;&t;xfs_dir2_sf_put_offset_arch(sfep,off,arch)
 macro_line|#else
 DECL|macro|XFS_DIR2_SF_PUT_OFFSET_ARCH
-mdefine_line|#define XFS_DIR2_SF_PUT_OFFSET_ARCH(sfep,off,arch)&t;&bslash;&n;&t;INT_SET_UNALIGNED_16_ARCH(&amp;(sfep)-&gt;offset.i,off,arch)
+mdefine_line|#define&t;XFS_DIR2_SF_PUT_OFFSET_ARCH(sfep,off,arch)&t;&bslash;&n;&t;INT_SET_UNALIGNED_16_ARCH(&amp;(sfep)-&gt;offset.i,off,arch)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_ENTSIZE_BYNAME)
 r_int

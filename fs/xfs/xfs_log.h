@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#ifndef __XFS_LOG_H__
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#ifndef&t;__XFS_LOG_H__
 DECL|macro|__XFS_LOG_H__
 mdefine_line|#define __XFS_LOG_H__
 macro_line|#if __BYTE_ORDER == __LITTLE_ENDIAN
@@ -144,20 +144,20 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|XFS_LSN_CMP_ARCH
-mdefine_line|#define XFS_LSN_CMP_ARCH(x,y,arch)&t;_lsn_cmp(x, y, arch)
+mdefine_line|#define&t;XFS_LSN_CMP_ARCH(x,y,arch)&t;_lsn_cmp(x, y, arch)
 DECL|macro|XFS_LSN_CMP
-mdefine_line|#define XFS_LSN_CMP(x,y) XFS_LSN_CMP_ARCH(x,y,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_LSN_CMP(x,y) XFS_LSN_CMP_ARCH(x,y,ARCH_NOCONVERT)
 DECL|macro|XFS_LSN_DIFF_ARCH
-mdefine_line|#define XFS_LSN_DIFF_ARCH(x,y,arch)&t;_lsn_cmp(x, y, arch)
+mdefine_line|#define&t;XFS_LSN_DIFF_ARCH(x,y,arch)&t;_lsn_cmp(x, y, arch)
 DECL|macro|XFS_LSN_DIFF
-mdefine_line|#define XFS_LSN_DIFF(x,y) XFS_LSN_DIFF_ARCH(x,y,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_LSN_DIFF(x,y) XFS_LSN_DIFF_ARCH(x,y,ARCH_NOCONVERT)
 multiline_comment|/*&n; * Macros, structures, prototypes for interface to the log manager.&n; */
 multiline_comment|/*&n; * Flags to xfs_log_mount&n; */
 DECL|macro|XFS_LOG_RECOVER
 mdefine_line|#define XFS_LOG_RECOVER&t;&t;0x1
 multiline_comment|/*&n; * Flags to xfs_log_done()&n; */
 DECL|macro|XFS_LOG_REL_PERM_RESERV
-mdefine_line|#define XFS_LOG_REL_PERM_RESERV 0x1
+mdefine_line|#define XFS_LOG_REL_PERM_RESERV&t;0x1
 multiline_comment|/*&n; * Flags to xfs_log_reserve()&n; *&n; *&t;XFS_LOG_SLEEP:&t; If space is not available, sleep (default)&n; *&t;XFS_LOG_NOSLEEP: If space is not available, return error&n; *&t;XFS_LOG_PERM_RESERV: Permanent reservation.  When writes are&n; *&t;&t;performed against this type of reservation, the reservation&n; *&t;&t;is not decreased.  Long running transactions should use this.&n; */
 DECL|macro|XFS_LOG_SLEEP
 mdefine_line|#define XFS_LOG_SLEEP&t;&t;0x0

@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_ALLOC_BTREE_H__
 DECL|macro|__XFS_ALLOC_BTREE_H__
-mdefine_line|#define __XFS_ALLOC_BTREE_H__
+mdefine_line|#define&t;__XFS_ALLOC_BTREE_H__
 multiline_comment|/*&n; * Freespace on-disk structures&n; */
 r_struct
 id|xfs_buf
@@ -17,9 +17,9 @@ id|xfs_mount
 suffix:semicolon
 multiline_comment|/*&n; * There are two on-disk btrees, one sorted by blockno and one sorted&n; * by blockcount and blockno.  All blocks look the same to make the code&n; * simpler; if we have time later, we&squot;ll make the optimizations.&n; */
 DECL|macro|XFS_ABTB_MAGIC
-mdefine_line|#define XFS_ABTB_MAGIC&t;0x41425442&t;/* &squot;ABTB&squot; for bno tree */
+mdefine_line|#define&t;XFS_ABTB_MAGIC&t;0x41425442&t;/* &squot;ABTB&squot; for bno tree */
 DECL|macro|XFS_ABTC_MAGIC
-mdefine_line|#define XFS_ABTC_MAGIC&t;0x41425443&t;/* &squot;ABTC&squot; for cnt tree */
+mdefine_line|#define&t;XFS_ABTC_MAGIC&t;0x41425443&t;/* &squot;ABTC&squot; for cnt tree */
 multiline_comment|/*&n; * Data record/key structure&n; */
 DECL|struct|xfs_alloc_rec
 r_typedef
@@ -69,10 +69,10 @@ id|bp
 )paren
 suffix:semicolon
 DECL|macro|XFS_BUF_TO_ALLOC_BLOCK
-mdefine_line|#define XFS_BUF_TO_ALLOC_BLOCK(bp)&t;xfs_buf_to_alloc_block(bp)
+mdefine_line|#define&t;XFS_BUF_TO_ALLOC_BLOCK(bp)&t;xfs_buf_to_alloc_block(bp)
 macro_line|#else
 DECL|macro|XFS_BUF_TO_ALLOC_BLOCK
-mdefine_line|#define XFS_BUF_TO_ALLOC_BLOCK(bp) ((xfs_alloc_block_t *)(XFS_BUF_PTR(bp)))
+mdefine_line|#define&t;XFS_BUF_TO_ALLOC_BLOCK(bp) ((xfs_alloc_block_t *)(XFS_BUF_PTR(bp)))
 macro_line|#endif
 multiline_comment|/*&n; * Real block structures have a size equal to the disk block size.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_ALLOC_BLOCK_SIZE)
@@ -90,10 +90,10 @@ id|cur
 )paren
 suffix:semicolon
 DECL|macro|XFS_ALLOC_BLOCK_SIZE
-mdefine_line|#define XFS_ALLOC_BLOCK_SIZE(lev,cur)&t;xfs_alloc_block_size(lev,cur)
+mdefine_line|#define&t;XFS_ALLOC_BLOCK_SIZE(lev,cur)&t;xfs_alloc_block_size(lev,cur)
 macro_line|#else
 DECL|macro|XFS_ALLOC_BLOCK_SIZE
-mdefine_line|#define XFS_ALLOC_BLOCK_SIZE(lev,cur)&t;(1 &lt;&lt; (cur)-&gt;bc_blocklog)
+mdefine_line|#define&t;XFS_ALLOC_BLOCK_SIZE(lev,cur)&t;(1 &lt;&lt; (cur)-&gt;bc_blocklog)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_ALLOC_BLOCK_MAXRECS)
 r_int
@@ -110,10 +110,10 @@ id|cur
 )paren
 suffix:semicolon
 DECL|macro|XFS_ALLOC_BLOCK_MAXRECS
-mdefine_line|#define XFS_ALLOC_BLOCK_MAXRECS(lev,cur)&t;xfs_alloc_block_maxrecs(lev,cur)
+mdefine_line|#define&t;XFS_ALLOC_BLOCK_MAXRECS(lev,cur)&t;xfs_alloc_block_maxrecs(lev,cur)
 macro_line|#else
 DECL|macro|XFS_ALLOC_BLOCK_MAXRECS
-mdefine_line|#define XFS_ALLOC_BLOCK_MAXRECS(lev,cur)&t;&bslash;&n;&t;((cur)-&gt;bc_mp-&gt;m_alloc_mxr[lev != 0])
+mdefine_line|#define&t;XFS_ALLOC_BLOCK_MAXRECS(lev,cur)&t;&bslash;&n;&t;((cur)-&gt;bc_mp-&gt;m_alloc_mxr[lev != 0])
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_ALLOC_BLOCK_MINRECS)
 r_int
@@ -130,10 +130,10 @@ id|cur
 )paren
 suffix:semicolon
 DECL|macro|XFS_ALLOC_BLOCK_MINRECS
-mdefine_line|#define XFS_ALLOC_BLOCK_MINRECS(lev,cur)&t;xfs_alloc_block_minrecs(lev,cur)
+mdefine_line|#define&t;XFS_ALLOC_BLOCK_MINRECS(lev,cur)&t;xfs_alloc_block_minrecs(lev,cur)
 macro_line|#else
 DECL|macro|XFS_ALLOC_BLOCK_MINRECS
-mdefine_line|#define XFS_ALLOC_BLOCK_MINRECS(lev,cur)&t;&bslash;&n;&t;((cur)-&gt;bc_mp-&gt;m_alloc_mnr[lev != 0])
+mdefine_line|#define&t;XFS_ALLOC_BLOCK_MINRECS(lev,cur)&t;&bslash;&n;&t;((cur)-&gt;bc_mp-&gt;m_alloc_mnr[lev != 0])
 macro_line|#endif
 multiline_comment|/*&n; * Minimum and maximum blocksize and sectorsize.&n; * The blocksize upper limit is pretty much arbitrary.&n; * The sectorsize upper limit is due to sizeof(sb_sectsize).&n; */
 DECL|macro|XFS_MIN_BLOCKSIZE_LOG
@@ -165,10 +165,10 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_BNO_BLOCK
-mdefine_line|#define XFS_BNO_BLOCK(mp)&t;xfs_bno_block(mp)
+mdefine_line|#define&t;XFS_BNO_BLOCK(mp)&t;xfs_bno_block(mp)
 macro_line|#else
 DECL|macro|XFS_BNO_BLOCK
-mdefine_line|#define XFS_BNO_BLOCK(mp)&t;((xfs_agblock_t)(XFS_AGFL_BLOCK(mp) + 1))
+mdefine_line|#define&t;XFS_BNO_BLOCK(mp)&t;((xfs_agblock_t)(XFS_AGFL_BLOCK(mp) + 1))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_CNT_BLOCK)
 id|xfs_agblock_t
@@ -182,10 +182,10 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_CNT_BLOCK
-mdefine_line|#define XFS_CNT_BLOCK(mp)&t;xfs_cnt_block(mp)
+mdefine_line|#define&t;XFS_CNT_BLOCK(mp)&t;xfs_cnt_block(mp)
 macro_line|#else
 DECL|macro|XFS_CNT_BLOCK
-mdefine_line|#define XFS_CNT_BLOCK(mp)&t;((xfs_agblock_t)(XFS_BNO_BLOCK(mp) + 1))
+mdefine_line|#define&t;XFS_CNT_BLOCK(mp)&t;((xfs_agblock_t)(XFS_BNO_BLOCK(mp) + 1))
 macro_line|#endif
 multiline_comment|/*&n; * Record, key, and pointer address macros for btree blocks.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_ALLOC_REC_ADDR)
@@ -208,10 +208,10 @@ id|cur
 )paren
 suffix:semicolon
 DECL|macro|XFS_ALLOC_REC_ADDR
-mdefine_line|#define XFS_ALLOC_REC_ADDR(bb,i,cur)&t;xfs_alloc_rec_addr(bb,i,cur)
+mdefine_line|#define&t;XFS_ALLOC_REC_ADDR(bb,i,cur)&t;xfs_alloc_rec_addr(bb,i,cur)
 macro_line|#else
 DECL|macro|XFS_ALLOC_REC_ADDR
-mdefine_line|#define XFS_ALLOC_REC_ADDR(bb,i,cur)&t;&bslash;&n;&t;XFS_BTREE_REC_ADDR(XFS_ALLOC_BLOCK_SIZE(0,cur), xfs_alloc, bb, i, &bslash;&n;&t;&t;XFS_ALLOC_BLOCK_MAXRECS(0, cur))
+mdefine_line|#define&t;XFS_ALLOC_REC_ADDR(bb,i,cur)&t;&bslash;&n;&t;XFS_BTREE_REC_ADDR(XFS_ALLOC_BLOCK_SIZE(0,cur), xfs_alloc, bb, i, &bslash;&n;&t;&t;XFS_ALLOC_BLOCK_MAXRECS(0, cur))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_ALLOC_KEY_ADDR)
 id|xfs_alloc_key_t
@@ -233,10 +233,10 @@ id|cur
 )paren
 suffix:semicolon
 DECL|macro|XFS_ALLOC_KEY_ADDR
-mdefine_line|#define XFS_ALLOC_KEY_ADDR(bb,i,cur)&t;xfs_alloc_key_addr(bb,i,cur)
+mdefine_line|#define&t;XFS_ALLOC_KEY_ADDR(bb,i,cur)&t;xfs_alloc_key_addr(bb,i,cur)
 macro_line|#else
 DECL|macro|XFS_ALLOC_KEY_ADDR
-mdefine_line|#define XFS_ALLOC_KEY_ADDR(bb,i,cur)&t;&bslash;&n;&t;XFS_BTREE_KEY_ADDR(XFS_ALLOC_BLOCK_SIZE(1,cur), xfs_alloc, bb, i, &bslash;&n;&t;&t;XFS_ALLOC_BLOCK_MAXRECS(1, cur))
+mdefine_line|#define&t;XFS_ALLOC_KEY_ADDR(bb,i,cur)&t;&bslash;&n;&t;XFS_BTREE_KEY_ADDR(XFS_ALLOC_BLOCK_SIZE(1,cur), xfs_alloc, bb, i, &bslash;&n;&t;&t;XFS_ALLOC_BLOCK_MAXRECS(1, cur))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_ALLOC_PTR_ADDR)
 id|xfs_alloc_ptr_t
@@ -258,10 +258,10 @@ id|cur
 )paren
 suffix:semicolon
 DECL|macro|XFS_ALLOC_PTR_ADDR
-mdefine_line|#define XFS_ALLOC_PTR_ADDR(bb,i,cur)&t;xfs_alloc_ptr_addr(bb,i,cur)
+mdefine_line|#define&t;XFS_ALLOC_PTR_ADDR(bb,i,cur)&t;xfs_alloc_ptr_addr(bb,i,cur)
 macro_line|#else
 DECL|macro|XFS_ALLOC_PTR_ADDR
-mdefine_line|#define XFS_ALLOC_PTR_ADDR(bb,i,cur)&t;&bslash;&n;&t;XFS_BTREE_PTR_ADDR(XFS_ALLOC_BLOCK_SIZE(1,cur), xfs_alloc, bb, i, &bslash;&n;&t;&t;XFS_ALLOC_BLOCK_MAXRECS(1, cur))
+mdefine_line|#define&t;XFS_ALLOC_PTR_ADDR(bb,i,cur)&t;&bslash;&n;&t;XFS_BTREE_PTR_ADDR(XFS_ALLOC_BLOCK_SIZE(1,cur), xfs_alloc, bb, i, &bslash;&n;&t;&t;XFS_ALLOC_BLOCK_MAXRECS(1, cur))
 macro_line|#endif
 multiline_comment|/*&n; * Prototypes for externally visible routines.&n; */
 multiline_comment|/*&n; * Decrement cursor by one record at the level.&n; * For nonzero levels the leaf-ward information is untouched.&n; */

@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_DIR2_NODE_H__
 DECL|macro|__XFS_DIR2_NODE_H__
-mdefine_line|#define __XFS_DIR2_NODE_H__
+mdefine_line|#define&t;__XFS_DIR2_NODE_H__
 multiline_comment|/*&n; * Directory version 2, btree node format structures&n; */
 r_struct
 id|uio
@@ -27,13 +27,13 @@ suffix:semicolon
 multiline_comment|/*&n; * Constants.&n; */
 multiline_comment|/*&n; * Offset of the freespace index.&n; */
 DECL|macro|XFS_DIR2_FREE_SPACE
-mdefine_line|#define XFS_DIR2_FREE_SPACE&t;2
+mdefine_line|#define&t;XFS_DIR2_FREE_SPACE&t;2
 DECL|macro|XFS_DIR2_FREE_OFFSET
-mdefine_line|#define XFS_DIR2_FREE_OFFSET&t;(XFS_DIR2_FREE_SPACE * XFS_DIR2_SPACE_SIZE)
+mdefine_line|#define&t;XFS_DIR2_FREE_OFFSET&t;(XFS_DIR2_FREE_SPACE * XFS_DIR2_SPACE_SIZE)
 DECL|macro|XFS_DIR2_FREE_FIRSTDB
-mdefine_line|#define XFS_DIR2_FREE_FIRSTDB(mp)&t;&bslash;&n;&t;XFS_DIR2_BYTE_TO_DB(mp, XFS_DIR2_FREE_OFFSET)
+mdefine_line|#define&t;XFS_DIR2_FREE_FIRSTDB(mp)&t;&bslash;&n;&t;XFS_DIR2_BYTE_TO_DB(mp, XFS_DIR2_FREE_OFFSET)
 DECL|macro|XFS_DIR2_FREE_MAGIC
-mdefine_line|#define XFS_DIR2_FREE_MAGIC&t;0x58443246&t;/* XD2F */
+mdefine_line|#define&t;XFS_DIR2_FREE_MAGIC&t;0x58443246&t;/* XD2F */
 multiline_comment|/*&n; * Structures.&n; */
 DECL|struct|xfs_dir2_free_hdr
 r_typedef
@@ -88,7 +88,7 @@ DECL|typedef|xfs_dir2_free_t
 id|xfs_dir2_free_t
 suffix:semicolon
 DECL|macro|XFS_DIR2_MAX_FREE_BESTS
-mdefine_line|#define XFS_DIR2_MAX_FREE_BESTS(mp)&t;&bslash;&n;&t;(((mp)-&gt;m_dirblksize - (uint)sizeof(xfs_dir2_free_hdr_t)) / &bslash;&n;&t; (uint)sizeof(xfs_dir2_data_off_t))
+mdefine_line|#define&t;XFS_DIR2_MAX_FREE_BESTS(mp)&t;&bslash;&n;&t;(((mp)-&gt;m_dirblksize - (uint)sizeof(xfs_dir2_free_hdr_t)) / &bslash;&n;&t; (uint)sizeof(xfs_dir2_data_off_t))
 multiline_comment|/*&n; * Macros.&n; */
 multiline_comment|/*&n; * Convert data space db to the corresponding free db.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_DB_TO_FDB)
@@ -106,10 +106,10 @@ id|db
 )paren
 suffix:semicolon
 DECL|macro|XFS_DIR2_DB_TO_FDB
-mdefine_line|#define XFS_DIR2_DB_TO_FDB(mp,db)&t;xfs_dir2_db_to_fdb(mp, db)
+mdefine_line|#define&t;XFS_DIR2_DB_TO_FDB(mp,db)&t;xfs_dir2_db_to_fdb(mp, db)
 macro_line|#else
 DECL|macro|XFS_DIR2_DB_TO_FDB
-mdefine_line|#define XFS_DIR2_DB_TO_FDB(mp,db)&t;&bslash;&n;&t;(XFS_DIR2_FREE_FIRSTDB(mp) + (db) / XFS_DIR2_MAX_FREE_BESTS(mp))
+mdefine_line|#define&t;XFS_DIR2_DB_TO_FDB(mp,db)&t;&bslash;&n;&t;(XFS_DIR2_FREE_FIRSTDB(mp) + (db) / XFS_DIR2_MAX_FREE_BESTS(mp))
 macro_line|#endif
 multiline_comment|/*&n; * Convert data space db to the corresponding index in a free db.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_DB_TO_FDINDEX)
@@ -127,10 +127,10 @@ id|db
 )paren
 suffix:semicolon
 DECL|macro|XFS_DIR2_DB_TO_FDINDEX
-mdefine_line|#define XFS_DIR2_DB_TO_FDINDEX(mp,db)&t;xfs_dir2_db_to_fdindex(mp, db)
+mdefine_line|#define&t;XFS_DIR2_DB_TO_FDINDEX(mp,db)&t;xfs_dir2_db_to_fdindex(mp, db)
 macro_line|#else
 DECL|macro|XFS_DIR2_DB_TO_FDINDEX
-mdefine_line|#define XFS_DIR2_DB_TO_FDINDEX(mp,db)&t;((db) % XFS_DIR2_MAX_FREE_BESTS(mp))
+mdefine_line|#define&t;XFS_DIR2_DB_TO_FDINDEX(mp,db)&t;((db) % XFS_DIR2_MAX_FREE_BESTS(mp))
 macro_line|#endif
 multiline_comment|/*&n; * Functions.&n; */
 r_extern

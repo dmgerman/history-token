@@ -7,9 +7,9 @@ DECL|struct|oprofile_stat_struct
 r_struct
 id|oprofile_stat_struct
 (brace
-DECL|member|sample_lost_mmap_sem
+DECL|member|sample_lost_no_mm
 id|atomic_t
-id|sample_lost_mmap_sem
+id|sample_lost_no_mm
 suffix:semicolon
 DECL|member|event_lost_overflow
 id|atomic_t

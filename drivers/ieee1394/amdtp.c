@@ -3015,7 +3015,7 @@ l_int|8
 suffix:semicolon
 id|s-&gt;packet_pool
 op_assign
-id|hpsb_pci_pool_create
+id|pci_pool_create
 c_func
 (paren
 l_string|&quot;packet pool&quot;
@@ -3027,8 +3027,6 @@ comma
 l_int|0
 comma
 l_int|0
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -3828,7 +3826,7 @@ suffix:semicolon
 )brace
 id|s-&gt;descriptor_pool
 op_assign
-id|hpsb_pci_pool_create
+id|pci_pool_create
 c_func
 (paren
 l_string|&quot;descriptor pool&quot;
@@ -3844,8 +3842,6 @@ comma
 l_int|16
 comma
 l_int|0
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
