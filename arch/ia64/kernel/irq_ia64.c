@@ -29,14 +29,22 @@ DECL|macro|IRQ_DEBUG
 mdefine_line|#define IRQ_DEBUG&t;0
 multiline_comment|/* default base addr of IPI table */
 DECL|variable|ipi_base_addr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|ipi_base_addr
 op_assign
+(paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 (paren
 id|__IA64_UNCACHED_OFFSET
 op_or
 id|IA64_IPI_DEFAULT_BASE_ADDR
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Legacy IRQ to IA-64 vector translation table.&n; */
@@ -729,8 +737,9 @@ r_int
 id|redirect
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|ipi_addr
 suffix:semicolon
 r_int
@@ -784,7 +793,8 @@ suffix:semicolon
 id|ipi_addr
 op_assign
 id|ipi_base_addr
-op_or
+op_plus
+(paren
 (paren
 id|phys_cpu_id
 op_lshift
@@ -799,6 +809,7 @@ l_int|1
 )paren
 op_lshift
 l_int|3
+)paren
 )paren
 suffix:semicolon
 id|writeq

@@ -15,9 +15,9 @@ mdefine_line|#define IA64_NUM_PMC_REGS&t;32
 DECL|macro|IA64_NUM_PMD_REGS
 mdefine_line|#define IA64_NUM_PMD_REGS&t;32
 DECL|macro|DEFAULT_MAP_BASE
-mdefine_line|#define DEFAULT_MAP_BASE&t;0x2000000000000000
+mdefine_line|#define DEFAULT_MAP_BASE&t;__IA64_UL_CONST(0x2000000000000000)
 DECL|macro|DEFAULT_TASK_SIZE
-mdefine_line|#define DEFAULT_TASK_SIZE&t;0xa000000000000000
+mdefine_line|#define DEFAULT_TASK_SIZE&t;__IA64_UL_CONST(0xa000000000000000)
 multiline_comment|/*&n; * TASK_SIZE really is a mis-named.  It really is the maximum user&n; * space address (plus one).  On IA-64, there are five regions of 2TB&n; * each (assuming 8KB page size), for a total of 8TB of user virtual&n; * address space.&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;&t;(current-&gt;thread.task_size)
@@ -475,11 +475,11 @@ suffix:semicolon
 DECL|macro|SET_UNALIGN_CTL
 mdefine_line|#define SET_UNALIGN_CTL(task,value)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(task)-&gt;thread.flags = (((task)-&gt;thread.flags &amp; ~IA64_THREAD_UAC_MASK)&t;&t;&t;&bslash;&n;&t;&t;&t;&t;| (((value) &lt;&lt; IA64_THREAD_UAC_SHIFT) &amp; IA64_THREAD_UAC_MASK));&t;&bslash;&n;&t;0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|GET_UNALIGN_CTL
-mdefine_line|#define GET_UNALIGN_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_UAC_MASK) &gt;&gt; IA64_THREAD_UAC_SHIFT,&t;&bslash;&n;&t;&t; (int *) (addr));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define GET_UNALIGN_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_UAC_MASK) &gt;&gt; IA64_THREAD_UAC_SHIFT,&t;&bslash;&n;&t;&t; (int __user *) (addr));&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|SET_FPEMU_CTL
 mdefine_line|#define SET_FPEMU_CTL(task,value)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(task)-&gt;thread.flags = (((task)-&gt;thread.flags &amp; ~IA64_THREAD_FPEMU_MASK)&t;&t;&bslash;&n;&t;&t;&t;  | (((value) &lt;&lt; IA64_THREAD_FPEMU_SHIFT) &amp; IA64_THREAD_FPEMU_MASK));&t;&bslash;&n;&t;0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|GET_FPEMU_CTL
-mdefine_line|#define GET_FPEMU_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_FPEMU_MASK) &gt;&gt; IA64_THREAD_FPEMU_SHIFT,&t;&bslash;&n;&t;&t; (int *) (addr));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define GET_FPEMU_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_FPEMU_MASK) &gt;&gt; IA64_THREAD_FPEMU_SHIFT,&t;&bslash;&n;&t;&t; (int __user *) (addr));&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 DECL|struct|desc_struct
 r_struct
@@ -611,7 +611,7 @@ id|GDT_ENTRY_TLS_ENTRIES
 )braket
 suffix:semicolon
 DECL|macro|INIT_THREAD_IA32
-macro_line|# define INIT_THREAD_IA32&t;.eflag =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fsr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fcr =&t;&t;0x17800000037fULL,&t;&bslash;&n;&t;&t;&t;&t;.fir =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fdr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_k1 =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_iob =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.ppl =&t;&t;0,
+macro_line|# define INIT_THREAD_IA32&t;.eflag =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fsr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fcr =&t;&t;0x17800000037fULL,&t;&bslash;&n;&t;&t;&t;&t;.fir =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fdr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_k1 =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_iob =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.ppl =&t;&t;NULL,
 macro_line|#else
 DECL|macro|INIT_THREAD_IA32
 macro_line|# define INIT_THREAD_IA32

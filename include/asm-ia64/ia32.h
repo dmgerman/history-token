@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 DECL|macro|IA32_NR_syscalls
-mdefine_line|#define IA32_NR_syscalls&t;&t;283&t;/* length of syscall table */
+mdefine_line|#define IA32_NR_syscalls&t;&t;285&t;/* length of syscall table */
 DECL|macro|IA32_PAGE_SHIFT
 mdefine_line|#define IA32_PAGE_SHIFT&t;&t;&t;12&t;/* 4KB pages */
 macro_line|#ifndef __ASSEMBLY__
