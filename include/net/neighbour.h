@@ -632,7 +632,7 @@ id|sk_buff_head
 id|proxy_queue
 suffix:semicolon
 DECL|member|entries
-r_int
+id|atomic_t
 id|entries
 suffix:semicolon
 DECL|member|lock

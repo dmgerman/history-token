@@ -3428,12 +3428,6 @@ op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
-multiline_comment|/* Disable soft irqs for various locks below. Also &n;&t; * stops preemption for RCU. &n;&t; */
-id|local_bh_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3554,6 +3548,12 @@ l_int|0
 )paren
 r_goto
 id|out_kfree_skb
+suffix:semicolon
+multiline_comment|/* Disable soft irqs for various locks below. Also &n;&t; * stops preemption for RCU. &n;&t; */
+id|local_bh_disable
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Updates of qdisc are serialized by queue_lock. &n;&t; * The struct Qdisc which is pointed to by qdisc is now a &n;&t; * rcu structure - it may be accessed without acquiring &n;&t; * a lock (but the structure may be stale.) The freeing of the&n;&t; * qdisc will be deferred until it&squot;s known that there are no &n;&t; * more references to it.&n;&t; * &n;&t; * If the qdisc has an enqueue function, we still need to &n;&t; * hold the queue_lock before calling it, since queue_lock&n;&t; * also serializes access to the device queue.&n;&t; */
 id|q
@@ -3742,9 +3742,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-r_goto
-id|out_enetdown
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -3769,12 +3766,15 @@ id|dev-&gt;name
 suffix:semicolon
 )brace
 )brace
-id|out_enetdown
-suffix:colon
 id|rc
 op_assign
 op_minus
 id|ENETDOWN
+suffix:semicolon
+id|local_bh_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 id|out_kfree_skb
 suffix:colon
@@ -3783,6 +3783,9 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 id|out
 suffix:colon
@@ -7591,6 +7594,24 @@ suffix:semicolon
 r_case
 id|SIOCGIFHWADDR
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;addr_len
+)paren
+id|memset
+c_func
+(paren
+id|ifr-&gt;ifr_hwaddr.sa_data
+comma
+l_int|0
+comma
+r_sizeof
+id|ifr-&gt;ifr_hwaddr.sa_data
+)paren
+suffix:semicolon
+r_else
 id|memcpy
 c_func
 (paren
