@@ -15,24 +15,30 @@ macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/feature.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
 multiline_comment|/* Some compile options */
 DECL|macro|SUSPEND_USES_PMU
 macro_line|#undef SUSPEND_USES_PMU
+DECL|macro|DEBUG_SLEEP
+mdefine_line|#define DEBUG_SLEEP
 multiline_comment|/* Misc minor number allocated for /dev/pmu */
 DECL|macro|PMU_MINOR
 mdefine_line|#define PMU_MINOR&t;154
@@ -154,10 +160,9 @@ r_int
 r_char
 id|interrupt_data
 (braket
-l_int|256
+l_int|32
 )braket
 suffix:semicolon
-multiline_comment|/* Made bigger: I&squot;ve been told that might happen */
 DECL|variable|reply_ptr
 r_static
 r_int
@@ -180,18 +185,6 @@ r_static
 r_volatile
 r_int
 id|adb_int_pending
-suffix:semicolon
-DECL|variable|pmu_adb_flags
-r_static
-r_int
-id|pmu_adb_flags
-suffix:semicolon
-DECL|variable|adb_dev_map
-r_static
-r_int
-id|adb_dev_map
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|bright_req_1
 DECL|variable|bright_req_2
@@ -261,6 +254,28 @@ r_static
 id|spinlock_t
 id|pmu_lock
 suffix:semicolon
+DECL|variable|pmu_intr_mask
+r_static
+id|u8
+id|pmu_intr_mask
+suffix:semicolon
+DECL|variable|pmu_version
+r_static
+r_int
+id|pmu_version
+suffix:semicolon
+DECL|variable|drop_interrupts
+r_static
+r_int
+id|drop_interrupts
+suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_PBOOK
+DECL|variable|sleep_in_progress
+r_static
+r_int
+id|sleep_in_progress
+suffix:semicolon
+macro_line|#endif /* CONFIG_PMAC_PBOOK */
 DECL|variable|asleep
 r_int
 id|asleep
@@ -272,6 +287,18 @@ op_star
 id|sleep_notifier_list
 suffix:semicolon
 macro_line|#ifdef CONFIG_ADB
+DECL|variable|adb_dev_map
+r_static
+r_int
+id|adb_dev_map
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|pmu_adb_flags
+r_static
+r_int
+id|pmu_adb_flags
+suffix:semicolon
 r_static
 r_int
 id|pmu_probe
@@ -530,7 +557,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|sleep_save_intrs
+id|pmac_sleep_save_intrs
 c_func
 (paren
 r_int
@@ -538,12 +565,95 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|sleep_restore_intrs
+id|pmac_sleep_restore_intrs
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|openpic_sleep_save_intrs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|openpic_sleep_restore_intrs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|enable_kernel_altivec
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|enable_kernel_fp
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#ifdef DEBUG_SLEEP
+r_int
+id|pmu_polled_request
+c_func
+(paren
+r_struct
+id|adb_request
+op_star
+id|req
+)paren
+suffix:semicolon
+r_int
+id|pmu_wink
+c_func
+(paren
+r_struct
+id|adb_request
+op_star
+id|req
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_PMAC_PBOOK) &amp;&amp; defined(CONFIG_PM)
+r_static
+r_int
+id|generic_notify_sleep
+c_func
+(paren
+r_struct
+id|pmu_sleep_notifier
+op_star
+id|self
+comma
+r_int
+id|when
+)paren
+suffix:semicolon
+DECL|variable|generic_sleep_notifier
+r_static
+r_struct
+id|pmu_sleep_notifier
+id|generic_sleep_notifier
+op_assign
+(brace
+id|generic_notify_sleep
+comma
+id|SLEEP_LEVEL_MISC
+comma
+)brace
+suffix:semicolon
+macro_line|#endif /* defined(CONFIG_PMAC_PBOOK) &amp;&amp; defined(CONFIG_PM) */
 multiline_comment|/*&n; * This table indicates for each PMU opcode:&n; * - the number of data bytes to be sent with the command, or -1&n; *   if a length byte should be sent,&n; * - the number of response bytes which the PMU will return, or&n; *   -1 if it will send a length byte.&n; */
 DECL|variable|__openfirmwaredata
 r_static
@@ -2531,6 +2641,16 @@ id|pmu_has_adb
 op_assign
 l_int|1
 suffix:semicolon
+id|pmu_intr_mask
+op_assign
+id|PMU_INT_PCEJECT
+op_or
+id|PMU_INT_SNDBRT
+op_or
+id|PMU_INT_ADB
+op_or
+id|PMU_INT_TICK
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2630,6 +2750,18 @@ l_string|&quot;adb&quot;
 op_ne
 l_int|NULL
 )paren
+suffix:semicolon
+id|pmu_intr_mask
+op_assign
+id|PMU_INT_PCEJECT
+op_or
+id|PMU_INT_SNDBRT
+op_or
+id|PMU_INT_ADB
+op_or
+id|PMU_INT_TICK
+op_or
+id|PMU_INT_ENVIRONMENT
 suffix:semicolon
 id|gpiop
 op_assign
@@ -2762,18 +2894,35 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PMU driver initialized for %s&bslash;n&quot;
+l_string|&quot;PMU driver %d initialized for %s, firmware: %02x&bslash;n&quot;
+comma
+id|PMU_DRIVER_VERSION
 comma
 id|pbook_type
 (braket
 id|pmu_kind
 )braket
+comma
+id|pmu_version
 )paren
 suffix:semicolon
 id|sys_ctrler
 op_assign
 id|SYS_CTRLER_PMU
 suffix:semicolon
+macro_line|#if defined(CONFIG_PMAC_PBOOK) &amp;&amp; defined(CONFIG_PM)
+id|pmu_register_sleep_notifier
+c_func
+(paren
+op_amp
+id|generic_sleep_notifier
+)paren
+suffix:semicolon
+id|pm_active
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif&t;
 r_return
 l_int|1
 suffix:semicolon
@@ -3073,7 +3222,7 @@ l_int|2
 comma
 id|PMU_SET_INTR_MASK
 comma
-l_int|0xfc
+id|pmu_intr_mask
 )paren
 suffix:semicolon
 id|timeout
@@ -3192,7 +3341,7 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Tell PMU we are ready. Which PMU support this ? */
+multiline_comment|/* Tell PMU we are ready.  */
 r_if
 c_cond
 (paren
@@ -3228,6 +3377,45 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Read PMU version */
+id|pmu_request
+c_func
+(paren
+op_amp
+id|req
+comma
+l_int|NULL
+comma
+l_int|1
+comma
+id|PMU_GET_VERSION
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+id|req.complete
+)paren
+id|pmu_poll
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|req.reply_len
+OG
+l_int|1
+)paren
+id|pmu_version
+op_assign
+id|req.reply
+(braket
+l_int|1
+)braket
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -3849,7 +4037,6 @@ l_int|2
 op_assign
 id|ADB_BUSRESET
 suffix:semicolon
-multiline_comment|/* 3 ??? */
 id|req.data
 (braket
 l_int|3
@@ -4915,7 +5102,7 @@ l_int|2
 comma
 id|PMU_SET_INTR_MASK
 comma
-l_int|0xfc
+id|pmu_intr_mask
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -5073,6 +5260,18 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|out_8
+c_func
+(paren
+op_amp
+id|via
+(braket
+id|IFR
+)braket
+comma
+id|intr
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5094,54 +5293,10 @@ id|intr
 op_amp
 id|CB1_INT
 )paren
-(brace
 id|adb_int_pending
 op_assign
 l_int|1
 suffix:semicolon
-id|out_8
-c_func
-(paren
-op_amp
-id|via
-(braket
-id|IFR
-)braket
-comma
-id|CB1_INT
-)paren
-suffix:semicolon
-)brace
-id|intr
-op_and_assign
-op_complement
-(paren
-id|SR_INT
-op_or
-id|CB1_INT
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|intr
-op_ne
-l_int|0
-)paren
-(brace
-id|out_8
-c_func
-(paren
-op_amp
-id|via
-(braket
-id|IFR
-)braket
-comma
-id|intr
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* This is not necessary except if synchronous ADB requests are done&n;&t; * with interrupts off, which should not happen. Since I&squot;m not sure&n;&t; * this &quot;wiring&quot; will remain, I&squot;m commenting it out for now. Please do&n;&t; * not remove. -- BenH.&n;&t; */
 macro_line|#if 0
@@ -5328,18 +5483,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* This one seems to appear with PMU99. According to OF methods,&n;&t; * the protocol didn&squot;t change...&n;&t; */
-r_if
-c_cond
-(paren
-id|via
-(braket
-id|B
-)braket
-op_amp
-id|TACK
-)paren
-(brace
+multiline_comment|/* The ack may not yet be low when we get the interrupt */
 r_while
 c_loop
 (paren
@@ -5358,35 +5502,6 @@ id|TACK
 )paren
 op_ne
 l_int|0
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* reset TREQ and wait for TACK to go high */
-id|out_8
-c_func
-(paren
-op_amp
-id|via
-(braket
-id|B
-)braket
-comma
-id|in_8
-c_func
-(paren
-op_amp
-id|via
-(braket
-id|B
-)braket
-)paren
-op_or
-id|TREQ
-)paren
-suffix:semicolon
-id|wait_for_ack
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* if reading grab the byte, and reset the interrupt */
@@ -5413,16 +5528,32 @@ id|SR
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* reset TREQ and wait for TACK to go high */
 id|out_8
 c_func
 (paren
 op_amp
 id|via
 (braket
-id|IFR
+id|B
 )braket
 comma
-id|SR_INT
+id|in_8
+c_func
+(paren
+op_amp
+id|via
+(braket
+id|B
+)braket
+)paren
+op_or
+id|TREQ
+)paren
+suffix:semicolon
+id|wait_for_ack
+c_func
+(paren
 )paren
 suffix:semicolon
 r_switch
@@ -5636,6 +5767,13 @@ id|bite
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|data_index
+OL
+l_int|32
+)paren
 (brace
 id|reply_ptr
 (braket
@@ -5809,12 +5947,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|drop_interrupts
+op_logical_or
 id|len
 OL
 l_int|1
 )paren
 (brace
-singleline_comment|//&t;&t;xmon_printk(&quot;empty ADB&bslash;n&quot;);
 id|adb_int_pending
 op_assign
 l_int|0
@@ -5822,6 +5961,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Note: for some reason, we get an interrupt with len=1,&n;&t; * data[0]==0 after each normal ADB interrupt, at least&n;&t; * on the Pismo. Still investigating...  --BenH&n;&t; */
 r_if
 c_cond
 (paren
@@ -6418,6 +6558,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|drop_interrupts
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pmu_kind
+op_ne
+id|PMU_KEYLARGO_BASED
+)paren
+(brace
 id|pmu_request
 c_func
 (paren
@@ -6447,6 +6599,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 )brace
 id|pmu_request
 c_func
@@ -6506,6 +6659,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|drop_interrupts
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pmu_kind
+op_ne
+id|PMU_KEYLARGO_BASED
+)paren
+(brace
 id|pmu_request
 c_func
 (paren
@@ -6535,6 +6700,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 )brace
 id|pmu_request
 c_func
@@ -6606,6 +6772,75 @@ c_func
 id|sleep_notifiers
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
+r_static
+r_int
+DECL|function|generic_notify_sleep
+id|generic_notify_sleep
+c_func
+(paren
+r_struct
+id|pmu_sleep_notifier
+op_star
+id|self
+comma
+r_int
+id|when
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|when
+)paren
+(brace
+r_case
+id|PBOOK_SLEEP_NOW
+suffix:colon
+r_if
+c_cond
+(paren
+id|pm_send_all
+c_func
+(paren
+id|PM_SUSPEND
+comma
+(paren
+r_void
+op_star
+)paren
+l_int|3
+)paren
+)paren
+r_return
+id|PBOOK_SLEEP_REJECT
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PBOOK_WAKE
+suffix:colon
+(paren
+r_void
+)paren
+id|pm_send_all
+c_func
+(paren
+id|PM_RESUME
+comma
+(paren
+r_void
+op_star
+)paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_return
+id|PBOOK_SLEEP_OK
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PM */
 r_int
 DECL|function|pmu_register_sleep_notifier
 id|pmu_register_sleep_notifier
@@ -7260,9 +7495,10 @@ multiline_comment|/* other header types not restored at present */
 )brace
 )brace
 )brace
-macro_line|#if 0
+macro_line|#ifdef DEBUG_SLEEP
 multiline_comment|/* N.B. This doesn&squot;t work on the 3400 */
 r_void
+DECL|function|pmu_blink
 id|pmu_blink
 c_func
 (paren
@@ -7273,6 +7509,20 @@ id|n
 r_struct
 id|adb_request
 id|req
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|req
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|req
+)paren
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -7286,87 +7536,143 @@ op_decrement
 id|n
 )paren
 (brace
-id|pmu_request
-c_func
-(paren
-op_amp
-id|req
-comma
+id|req.nbytes
+op_assign
+l_int|4
+suffix:semicolon
+id|req.done
+op_assign
 l_int|NULL
-comma
-l_int|4
-comma
-l_int|0xee
-comma
-l_int|4
-comma
+suffix:semicolon
+id|req.data
+(braket
 l_int|0
-comma
+)braket
+op_assign
+l_int|0xee
+suffix:semicolon
+id|req.data
+(braket
 l_int|1
-)paren
+)braket
+op_assign
+l_int|4
 suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-id|req.complete
-)paren
-id|pmu_poll
-c_func
-(paren
-)paren
+id|req.data
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0
 suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|50000
-)paren
+id|req.data
+(braket
+l_int|3
+)braket
+op_assign
+l_int|1
 suffix:semicolon
-id|pmu_request
+id|req.reply
+(braket
+l_int|0
+)braket
+op_assign
+id|ADB_RET_OK
+suffix:semicolon
+id|req.reply_len
+op_assign
+l_int|1
+suffix:semicolon
+id|req.reply_expected
+op_assign
+l_int|0
+suffix:semicolon
+id|pmu_polled_request
 c_func
 (paren
 op_amp
 id|req
-comma
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
+id|req.nbytes
+op_assign
+l_int|4
+suffix:semicolon
+id|req.done
+op_assign
 l_int|NULL
-comma
-l_int|4
-comma
+suffix:semicolon
+id|req.data
+(braket
+l_int|0
+)braket
+op_assign
 l_int|0xee
-comma
+suffix:semicolon
+id|req.data
+(braket
+l_int|1
+)braket
+op_assign
 l_int|4
-comma
-l_int|0
-comma
-l_int|0
-)paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-id|req.complete
-)paren
-id|pmu_poll
+id|req.data
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|req.data
+(braket
+l_int|3
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|req.reply
+(braket
+l_int|0
+)braket
+op_assign
+id|ADB_RET_OK
+suffix:semicolon
+id|req.reply_len
+op_assign
+l_int|1
+suffix:semicolon
+id|req.reply_expected
+op_assign
+l_int|0
+suffix:semicolon
+id|pmu_polled_request
 c_func
 (paren
+op_amp
+id|req
 )paren
 suffix:semicolon
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|50000
+l_int|50
 )paren
 suffix:semicolon
 )brace
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|150000
+l_int|50
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* DEBUG_SLEEP */
 multiline_comment|/*&n; * Put the powerbook to sleep.&n; */
 DECL|variable|save_via
 r_static
@@ -7680,8 +7986,6 @@ id|CB1_INT
 )paren
 suffix:semicolon
 )brace
-DECL|macro|FEATURE_CTRL
-mdefine_line|#define FEATURE_CTRL(base)&t;((unsigned int *)(base + 0x38))
 DECL|macro|GRACKLE_PM
 mdefine_line|#define&t;GRACKLE_PM&t;(1&lt;&lt;7)
 DECL|macro|GRACKLE_DOZE
@@ -7920,16 +8224,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Disable all interrupts except pmu */
-id|sleep_save_intrs
+multiline_comment|/* Disable all interrupts */
+id|pmac_sleep_save_intrs
 c_func
 (paren
-id|vias-&gt;intrs
-(braket
-l_int|0
-)braket
-dot
-id|line
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure the PMU is idle */
@@ -7994,6 +8294,12 @@ id|giveup_fpu
 c_func
 (paren
 id|current
+)paren
+suffix:semicolon
+multiline_comment|/* We can now disable MSR_EE */
+id|cli
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* For 750, save backside cache setting and disable it */
@@ -8166,7 +8472,9 @@ multiline_comment|/* Restore userland MMU context */
 id|set_context
 c_func
 (paren
-id|current-&gt;mm-&gt;context
+id|current-&gt;active_mm-&gt;context
+comma
+id|current-&gt;active_mm-&gt;pgd
 )paren
 suffix:semicolon
 multiline_comment|/* Re-enable DEC interrupts and kick DEC */
@@ -8352,7 +8660,7 @@ l_int|10
 suffix:semicolon
 )brace
 multiline_comment|/* reenable interrupt controller */
-id|sleep_restore_intrs
+id|pmac_sleep_restore_intrs
 c_func
 (paren
 )paren
@@ -8365,12 +8673,6 @@ l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* Notify drivers */
-id|mdelay
-c_func
-(paren
-l_int|10
-)paren
-suffix:semicolon
 id|broadcast_wake
 c_func
 (paren
@@ -8380,7 +8682,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Not finished yet */
 DECL|function|powerbook_sleep_Core99
 r_int
 id|__openfirmware
@@ -8390,9 +8691,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|ret
-suffix:semicolon
 r_int
 r_int
 id|save_l2cr
@@ -8405,6 +8703,33 @@ r_struct
 id|adb_request
 id|req
 suffix:semicolon
+r_int
+id|ret
+comma
+id|timeout
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|feature_can_sleep
+c_func
+(paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Sleep mode not supported on this machine&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
 multiline_comment|/* Notify device drivers */
 id|ret
 op_assign
@@ -8481,11 +8806,7 @@ id|wait
 op_assign
 id|jiffies
 op_plus
-(paren
 id|HZ
-op_div
-l_int|4
-)paren
 suffix:semicolon
 id|time_before
 c_func
@@ -8497,6 +8818,24 @@ id|wait
 suffix:semicolon
 )paren
 id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Wait for completion of async backlight requests */
+r_while
+c_loop
+(paren
+op_logical_neg
+id|bright_req_1.complete
+op_logical_or
+op_logical_neg
+id|bright_req_2.complete
+op_logical_or
+op_logical_neg
+id|bright_req_3.complete
+)paren
+id|pmu_poll
 c_func
 (paren
 )paren
@@ -8564,16 +8903,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Disable all interrupts except pmu */
-id|sleep_save_intrs
+multiline_comment|/* Save &amp; disable all interrupts */
+id|openpic_sleep_save_intrs
 c_func
 (paren
-id|vias-&gt;intrs
-(braket
-l_int|0
-)braket
-dot
-id|line
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure the PMU is idle */
+r_while
+c_loop
+(paren
+id|pmu_state
+op_ne
+id|idle
+)paren
+id|pmu_poll
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure the decrementer won&squot;t interrupt us */
@@ -8589,13 +8935,51 @@ l_int|0x7fffffff
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Save the state of PCI config space for some slots */
-id|pbook_pci_save
+multiline_comment|/* Make sure any pending DEC interrupt occuring while we did&n;&t; * the above didn&squot;t re-enable the DEC */
+id|mb
 c_func
 (paren
 )paren
 suffix:semicolon
-id|feature_prepare_for_sleep
+id|asm
+r_volatile
+(paren
+l_string|&quot;mtdec %0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+l_int|0x7fffffff
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Giveup the FPU &amp; vec */
+id|enable_kernel_fp
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+r_if
+c_cond
+(paren
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_ALTIVEC
+)paren
+id|enable_kernel_altivec
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
+multiline_comment|/* We can now disable MSR_EE */
+id|cli
 c_func
 (paren
 )paren
@@ -8617,28 +9001,13 @@ id|save_l2cr
 id|_set_L2CR
 c_func
 (paren
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;thread.regs
-op_logical_and
-(paren
-id|current-&gt;thread.regs-&gt;msr
+id|save_l2cr
 op_amp
-id|MSR_FP
-)paren
-op_ne
-l_int|0
-)paren
-id|giveup_fpu
-c_func
-(paren
-id|current
+l_int|0x7fffffff
 )paren
 suffix:semicolon
+multiline_comment|/* Save the state of PCI config space for some slots */
+singleline_comment|//pbook_pci_save();
 multiline_comment|/* Ask the PMU to put us to sleep */
 id|pmu_request
 c_func
@@ -8666,25 +9035,51 @@ c_loop
 (paren
 op_logical_neg
 id|req.complete
-)paren
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
+op_logical_and
 id|pmu_state
 op_ne
 id|idle
 )paren
 id|pmu_poll
+c_func
+(paren
+)paren
+suffix:semicolon
+id|out_8
+c_func
+(paren
+op_amp
+id|via
+(braket
+id|B
+)braket
+comma
+id|in_8
+c_func
+(paren
+op_amp
+id|via
+(braket
+id|B
+)braket
+)paren
+op_or
+id|TREQ
+)paren
+suffix:semicolon
+id|wait_for_ack
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* The VIA is supposed not to be restored correctly*/
+id|save_via_state
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Shut down various ASICs. There&squot;s a chance that we can no longer&n;&t; * talk to the PMU after this, so I moved it to _after_ sending the&n;&t; * sleep command to it. Still need to be checked.&n;&t; */
+id|feature_prepare_for_sleep
 c_func
 (paren
 )paren
@@ -8695,38 +9090,25 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure the PMU is idle */
-r_while
-c_loop
-(paren
-id|pmu_state
-op_ne
-id|idle
-)paren
-id|pmu_poll
-c_func
-(paren
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* Restore Apple core ASICs state */
 id|feature_wake_up
 c_func
 (paren
 )paren
 suffix:semicolon
-id|pbook_pci_restore
+multiline_comment|/* Restore VIA */
+id|restore_via_state
 c_func
 (paren
 )paren
 suffix:semicolon
-id|set_context
+multiline_comment|/* Restore PCI config space. This should be overridable by PCI device&n;&t; * drivers as some of them may need special restore code. That&squot;s yet&n;&t; * another issue that should be handled by the common code properly,&n;&t; * maybe one day ?&n;&t; */
+multiline_comment|/* Don&squot;t restore PCI for now, it crashes. Maybe unnecessary on pbook */
+singleline_comment|//pbook_pci_restore();
+id|pmu_blink
 c_func
 (paren
-id|current-&gt;mm-&gt;context
+l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Restore L2 cache */
@@ -8739,15 +9121,45 @@ id|_set_L2CR
 c_func
 (paren
 id|save_l2cr
-op_or
-l_int|0x200000
 )paren
 suffix:semicolon
-multiline_comment|/* set invalidate bit */
-multiline_comment|/* reenable interrupts */
-id|sleep_restore_intrs
+multiline_comment|/* Restore userland MMU context */
+id|set_context
 c_func
 (paren
+id|current-&gt;active_mm-&gt;context
+comma
+id|current-&gt;active_mm-&gt;pgd
+)paren
+suffix:semicolon
+multiline_comment|/* Re-enable DEC interrupts and kick DEC */
+id|asm
+r_volatile
+(paren
+l_string|&quot;mtdec %0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+l_int|0x7fffffff
+)paren
+)paren
+suffix:semicolon
+id|sti
+c_func
+(paren
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mtdec %0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+l_int|0x10000000
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Tell PMU we are ready */
@@ -8777,13 +9189,109 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Notify drivers */
-id|mdelay
+id|pmu_request
+c_func
+(paren
+op_amp
+id|req
+comma
+l_int|NULL
+comma
+l_int|2
+comma
+id|PMU_SET_INTR_MASK
+comma
+l_int|0xfc
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+id|req.complete
+)paren
+id|pmu_poll
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* ack all pending interrupts */
+id|timeout
+op_assign
+l_int|100000
+suffix:semicolon
+id|interrupt_data
+(braket
+l_int|0
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|interrupt_data
+(braket
+l_int|0
+)braket
+op_logical_or
+id|pmu_state
+op_ne
+id|idle
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_decrement
+id|timeout
+OL
+l_int|0
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pmu_state
+op_eq
+id|idle
+)paren
+id|adb_int_pending
+op_assign
+l_int|1
+suffix:semicolon
+id|via_pmu_interrupt
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|udelay
 c_func
 (paren
 l_int|10
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* reenable interrupt controller */
+id|openpic_sleep_restore_intrs
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Leave some time for HW to settle down */
+id|mdelay
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
+multiline_comment|/* Notify drivers */
 id|broadcast_wake
 c_func
 (paren
@@ -8794,7 +9302,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|PB3400_MEM_CTRL
-mdefine_line|#define PB3400_MEM_CTRL&t;&t;((unsigned int *)0xf8000070)
+mdefine_line|#define PB3400_MEM_CTRL&t;&t;0xf8000000
+DECL|macro|PB3400_MEM_CTRL_SLEEP
+mdefine_line|#define PB3400_MEM_CTRL_SLEEP&t;0x70
 DECL|function|powerbook_sleep_3400
 r_int
 id|__openfirmware
@@ -8828,6 +9338,58 @@ suffix:semicolon
 r_struct
 id|adb_request
 id|sleep_req
+suffix:semicolon
+r_char
+op_star
+id|mem_ctrl
+suffix:semicolon
+r_int
+r_int
+op_star
+id|mem_ctrl_sleep
+suffix:semicolon
+multiline_comment|/* first map in the memory controller registers */
+id|mem_ctrl
+op_assign
+id|ioremap
+c_func
+(paren
+id|PB3400_MEM_CTRL
+comma
+l_int|0x100
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mem_ctrl
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;powerbook_sleep_3400: ioremap failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|mem_ctrl_sleep
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+id|mem_ctrl
+op_plus
+id|PB3400_MEM_CTRL_SLEEP
+)paren
 suffix:semicolon
 multiline_comment|/* Notify device drivers */
 id|ret
@@ -8925,8 +9487,26 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Wait for completion of async backlight requests */
+r_while
+c_loop
+(paren
+op_logical_neg
+id|bright_req_1.complete
+op_logical_or
+op_logical_neg
+id|bright_req_2.complete
+op_logical_or
+op_logical_neg
+id|bright_req_3.complete
+)paren
+id|pmu_poll
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Disable all interrupts except pmu */
-id|sleep_save_intrs
+id|pmac_sleep_save_intrs
 c_func
 (paren
 id|vias-&gt;intrs
@@ -8938,6 +9518,24 @@ id|line
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure the decrementer won&squot;t interrupt us */
+id|asm
+r_volatile
+(paren
+l_string|&quot;mtdec %0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+l_int|0x7fffffff
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure any pending DEC interrupt occuring while we did&n;&t; * the above didn&squot;t re-enable the DEC */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|asm
 r_volatile
 (paren
@@ -8975,7 +9573,7 @@ id|i
 id|out_be32
 c_func
 (paren
-id|PB3400_MEM_CTRL
+id|mem_ctrl_sleep
 comma
 id|i
 )paren
@@ -8988,7 +9586,7 @@ op_assign
 id|in_be32
 c_func
 (paren
-id|PB3400_MEM_CTRL
+id|mem_ctrl_sleep
 )paren
 op_rshift
 l_int|16
@@ -9120,22 +9718,14 @@ id|hid0
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|_nmask_and_or_msr
 c_func
 (paren
-id|msr
-)paren
-suffix:semicolon
-id|msr
-op_or_assign
+l_int|0
+comma
 id|MSR_POW
 op_or
 id|MSR_EE
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|msr
 )paren
 suffix:semicolon
 id|udelay
@@ -9148,7 +9738,7 @@ multiline_comment|/* OK, we&squot;re awake again, start restoring things */
 id|out_be32
 c_func
 (paren
-id|PB3400_MEM_CTRL
+id|mem_ctrl_sleep
 comma
 l_int|0x3f
 )paren
@@ -9169,8 +9759,38 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Re-enable DEC interrupts and kick DEC */
+id|asm
+r_volatile
+(paren
+l_string|&quot;mtdec %0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+l_int|0x7fffffff
+)paren
+)paren
+suffix:semicolon
+id|sti
+c_func
+(paren
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mtdec %0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+l_int|0x10000000
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* reenable interrupts */
-id|sleep_restore_intrs
+id|pmac_sleep_restore_intrs
 c_func
 (paren
 )paren
@@ -9181,13 +9801,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|mem_ctrl
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Support for /dev/pmu device&n; */
 DECL|macro|RB_SIZE
-mdefine_line|#define RB_SIZE&t;&t;10
+mdefine_line|#define RB_SIZE&t;&t;0x10
 DECL|struct|pmu_private
 r_struct
 id|pmu_private
@@ -10018,6 +10644,33 @@ id|cmd
 r_case
 id|PMU_IOC_SLEEP
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
+r_return
+op_minus
+id|EACCES
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sleep_in_progress
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+id|sleep_in_progress
+op_assign
+l_int|1
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -10051,7 +10704,6 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#if 0 /* Not ready yet */
 r_case
 id|PMU_KEYLARGO_BASED
 suffix:colon
@@ -10064,7 +10716,6 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif&t;&t;&t;
 r_default
 suffix:colon
 id|error
@@ -10073,14 +10724,46 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
+id|sleep_in_progress
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 id|error
+suffix:semicolon
+r_case
+id|PMU_IOC_CAN_SLEEP
+suffix:colon
+r_return
+id|put_user
+c_func
+(paren
+id|feature_can_sleep
+c_func
+(paren
+)paren
+comma
+(paren
+id|__u32
+op_star
+)paren
+id|arg
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 multiline_comment|/* Backlight should have its own device or go via&n;&t; * the fbdev&n;&t; */
 r_case
 id|PMU_IOC_GET_BACKLIGHT
 suffix:colon
+r_if
+c_cond
+(paren
+id|sleep_in_progress
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
 id|error
 op_assign
 id|get_backlight_level
@@ -10117,6 +10800,15 @@ suffix:colon
 (brace
 id|__u32
 id|value
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sleep_in_progress
+)paren
+r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 id|error
 op_assign
@@ -10259,7 +10951,8 @@ id|pmu_device
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
-macro_line|#if 0
+macro_line|#ifdef DEBUG_SLEEP
+DECL|function|polled_handshake
 r_static
 r_inline
 r_void
@@ -10329,6 +11022,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|polled_send_byte
 r_static
 r_inline
 r_void
@@ -10378,6 +11072,7 @@ id|via
 )paren
 suffix:semicolon
 )brace
+DECL|function|polled_recv_byte
 r_static
 r_inline
 r_int
@@ -10451,6 +11146,7 @@ id|x
 suffix:semicolon
 )brace
 r_int
+DECL|function|pmu_polled_request
 id|pmu_polled_request
 c_func
 (paren
@@ -10538,6 +11234,21 @@ id|idle
 id|pmu_poll
 c_func
 (paren
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|via
+(braket
+id|B
+)braket
+op_amp
+id|TACK
+)paren
+op_eq
+l_int|0
 )paren
 suffix:semicolon
 id|polled_send_byte
@@ -10671,5 +11382,56 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* 0 */
+macro_line|#endif /* DEBUG_SLEEP */
+DECL|variable|pmu_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pmu_request
+)paren
+suffix:semicolon
+DECL|variable|pmu_poll
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pmu_poll
+)paren
+suffix:semicolon
+DECL|variable|pmu_suspend
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pmu_suspend
+)paren
+suffix:semicolon
+DECL|variable|pmu_resume
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pmu_resume
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_PBOOK
+DECL|variable|pmu_register_sleep_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pmu_register_sleep_notifier
+)paren
+suffix:semicolon
+DECL|variable|pmu_unregister_sleep_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pmu_unregister_sleep_notifier
+)paren
+suffix:semicolon
+DECL|variable|pmu_enable_irled
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pmu_enable_irled
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PMAC_PBOOK */
 eof

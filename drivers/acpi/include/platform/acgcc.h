@@ -21,8 +21,6 @@ DECL|macro|disable
 mdefine_line|#define disable() __cli()
 DECL|macro|enable
 mdefine_line|#define enable()  __sti()
-DECL|macro|wbinvd
-mdefine_line|#define wbinvd()
 multiline_comment|/*! [Begin] no source code translation */
 macro_line|#include &lt;asm/pal.h&gt;
 DECL|macro|halt
@@ -49,8 +47,6 @@ DECL|macro|enable
 mdefine_line|#define enable()  __sti()
 DECL|macro|halt
 mdefine_line|#define halt()    __asm__ __volatile__ (&quot;sti; hlt&quot;:::&quot;memory&quot;)
-DECL|macro|wbinvd
-mdefine_line|#define wbinvd()
 multiline_comment|/*! [Begin] no source code translation&n; *&n; * A brief explanation as GNU inline assembly is a bit hairy&n; *  %0 is the output parameter in EAX (&quot;=a&quot;)&n; *  %1 and %2 are the input parameters in ECX (&quot;c&quot;)&n; *  and an immediate value (&quot;i&quot;) respectively&n; *  All actual register references are preceded with &quot;%%&quot; as in &quot;%%edx&quot;&n; *  Immediate values in the assembly are preceded by &quot;$&quot; as in &quot;$0x1&quot;&n; *  The final asm parameter are the operation altered non-output registers.&n; */
 DECL|macro|ACPI_ACQUIRE_GLOBAL_LOCK
 mdefine_line|#define ACPI_ACQUIRE_GLOBAL_LOCK(GLptr, Acq) &bslash;&n;&t;do { &bslash;&n;&t;&t;int dummy; &bslash;&n;&t;&t;asm(&quot;1:     movl (%1),%%eax;&quot; &bslash;&n;&t;&t;&t;&quot;movl   %%eax,%%edx;&quot; &bslash;&n;&t;&t;&t;&quot;andl   %2,%%edx;&quot; &bslash;&n;&t;&t;&t;&quot;btsl   $0x1,%%edx;&quot; &bslash;&n;&t;&t;&t;&quot;adcl   $0x0,%%edx;&quot; &bslash;&n;&t;&t;&t;&quot;lock;  cmpxchgl %%edx,(%1);&quot; &bslash;&n;&t;&t;&t;&quot;jnz    1b;&quot; &bslash;&n;&t;&t;&t;&quot;cmpb   $0x3,%%dl;&quot; &bslash;&n;&t;&t;&t;&quot;sbbl   %%eax,%%eax&quot; &bslash;&n;&t;&t;&t;:&quot;=a&quot;(Acq),&quot;=c&quot;(dummy):&quot;c&quot;(GLptr),&quot;i&quot;(~1L):&quot;dx&quot;); &bslash;&n;&t;} while(0)

@@ -237,7 +237,7 @@ l_int|0x0005
 comma
 l_int|0x0100
 comma
-l_int|0x0205
+l_int|0x0208
 comma
 l_string|&quot;SCM Microsystems&quot;
 comma

@@ -22462,6 +22462,16 @@ c_func
 (paren
 id|BLKSSZGET
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BLKBSZGET
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BLKBSZSET
+)paren
 multiline_comment|/* RAID */
 id|COMPATIBLE_IOCTL
 c_func

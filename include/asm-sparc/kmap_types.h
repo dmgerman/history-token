@@ -17,6 +17,12 @@ comma
 DECL|enumerator|KM_SKB_DATA_SOFTIRQ
 id|KM_SKB_DATA_SOFTIRQ
 comma
+DECL|enumerator|KM_USER0
+id|KM_USER0
+comma
+DECL|enumerator|KM_USER1
+id|KM_USER1
+comma
 DECL|enumerator|KM_TYPE_NR
 id|KM_TYPE_NR
 )brace

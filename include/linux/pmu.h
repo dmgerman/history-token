@@ -1,5 +1,7 @@
 multiline_comment|/*&n; * Definitions for talking to the PMU.  The PMU is a microcontroller&n; * which controls battery charging and system power on PowerBook 3400&n; * and 2400 models as well as the RTC and various other things.&n; *&n; * Copyright (C) 1998 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+DECL|macro|PMU_DRIVER_VERSION
+mdefine_line|#define PMU_DRIVER_VERSION&t;2
 multiline_comment|/*&n; * PMU commands&n; */
 DECL|macro|PMU_POWER_CTRL0
 mdefine_line|#define PMU_POWER_CTRL0&t;&t;0x10&t;/* control power of some devices */
@@ -27,6 +29,8 @@ DECL|macro|PMU_PCEJECT
 mdefine_line|#define PMU_PCEJECT&t;&t;0x4c&t;/* eject PC-card from slot */
 DECL|macro|PMU_BATTERY_STATE
 mdefine_line|#define PMU_BATTERY_STATE&t;0x6b&t;/* report battery state etc. */
+DECL|macro|PMU_SMART_BATTERY_STATE
+mdefine_line|#define PMU_SMART_BATTERY_STATE&t;0x6f&t;/* report battery state (new way) */
 DECL|macro|PMU_SET_INTR_MASK
 mdefine_line|#define PMU_SET_INTR_MASK&t;0x70&t;/* set PMU interrupt mask */
 DECL|macro|PMU_INT_ACK
@@ -45,6 +49,8 @@ DECL|macro|PMU_GET_COVER
 mdefine_line|#define PMU_GET_COVER&t;&t;0xdc&t;/* report cover open/closed */
 DECL|macro|PMU_SYSTEM_READY
 mdefine_line|#define PMU_SYSTEM_READY&t;0xdf&t;/* tell PMU we are awake */
+DECL|macro|PMU_GET_VERSION
+mdefine_line|#define PMU_GET_VERSION&t;&t;0xea&t;/* read the PMU version */
 multiline_comment|/* Bits to use with the PMU_POWER_CTRL0 command */
 DECL|macro|PMU_POW0_ON
 mdefine_line|#define PMU_POW0_ON&t;&t;0x80&t;/* OR this to power ON the device */
@@ -66,8 +72,6 @@ mdefine_line|#define PMU_POW_IRLED&t;&t;0x04&t;/* IR led power (on wallstreet) *
 DECL|macro|PMU_POW_MEDIABAY
 mdefine_line|#define PMU_POW_MEDIABAY&t;0x08&t;/* media bay power (wallstreet/lombard ?) */
 multiline_comment|/* Bits in PMU interrupt and interrupt mask bytes */
-DECL|macro|PMU_INT_ADB_AUTO
-mdefine_line|#define PMU_INT_ADB_AUTO&t;0x04&t;/* ADB autopoll, when PMU_INT_ADB */
 DECL|macro|PMU_INT_PCEJECT
 mdefine_line|#define PMU_INT_PCEJECT&t;&t;0x04&t;/* PC-card eject buttons */
 DECL|macro|PMU_INT_SNDBRT
@@ -75,11 +79,21 @@ mdefine_line|#define PMU_INT_SNDBRT&t;&t;0x08&t;/* sound/brightness up/down butt
 DECL|macro|PMU_INT_ADB
 mdefine_line|#define PMU_INT_ADB&t;&t;0x10&t;/* ADB autopoll or reply data */
 DECL|macro|PMU_INT_BATTERY
-mdefine_line|#define PMU_INT_BATTERY&t;&t;0x20
-DECL|macro|PMU_INT_WAKEUP
-mdefine_line|#define PMU_INT_WAKEUP&t;&t;0x40
+mdefine_line|#define PMU_INT_BATTERY&t;&t;0x20&t;/* Battery state change */
+DECL|macro|PMU_INT_ENVIRONMENT
+mdefine_line|#define PMU_INT_ENVIRONMENT&t;0x40&t;/* Environment interrupts */
 DECL|macro|PMU_INT_TICK
 mdefine_line|#define PMU_INT_TICK&t;&t;0x80&t;/* 1-second tick interrupt */
+multiline_comment|/* Other bits in PMU interrupt valid when PMU_INT_ADB is set */
+DECL|macro|PMU_INT_ADB_AUTO
+mdefine_line|#define PMU_INT_ADB_AUTO&t;0x04&t;/* ADB autopoll, when PMU_INT_ADB */
+DECL|macro|PMU_INT_WAITING_CHARGER
+mdefine_line|#define PMU_INT_WAITING_CHARGER&t;0x01&t;/* ??? */
+DECL|macro|PMU_INT_AUTO_SRQ_POLL
+mdefine_line|#define PMU_INT_AUTO_SRQ_POLL&t;0x02&t;/* ??? */
+multiline_comment|/* Bits in the environement message (either obtained via PMU_GET_COVER,&n; * or via PMU_INT_ENVIRONMENT on core99 */
+DECL|macro|PMU_ENV_LID_CLOSED
+mdefine_line|#define PMU_ENV_LID_CLOSED&t;0x01&t;/* The lid is closed */
 multiline_comment|/* Kind of PMU (model) */
 r_enum
 (brace
@@ -188,6 +202,9 @@ mdefine_line|#define PMU_IOC_GET_MODEL&t;_IOR(&squot;B&squot;, 3, sizeof(__u32*)
 multiline_comment|/* out param: u32*&t;has_adb: 0 or 1 */
 DECL|macro|PMU_IOC_HAS_ADB
 mdefine_line|#define PMU_IOC_HAS_ADB&t;&t;_IOR(&squot;B&squot;, 4, sizeof(__u32*)) 
+multiline_comment|/* out param: u32*&t;can_sleep: 0 or 1 */
+DECL|macro|PMU_IOC_CAN_SLEEP
+mdefine_line|#define PMU_IOC_CAN_SLEEP&t;_IOR(&squot;B&squot;, 5, sizeof(__u32*)) 
 macro_line|#ifdef __KERNEL__
 r_extern
 r_int
@@ -364,7 +381,7 @@ mdefine_line|#define SLEEP_LEVEL_ADB&t;&t;50&t;/* ADB */
 DECL|macro|SLEEP_LEVEL_MISC
 mdefine_line|#define SLEEP_LEVEL_MISC&t;30&t;/* Anything */
 DECL|macro|SLEEP_LEVEL_LAST
-mdefine_line|#define SLEEP_LEVEL_LAST&t;0&t;/* Anything */
+mdefine_line|#define SLEEP_LEVEL_LAST&t;0&t;/* Reserved for apm_emu */
 multiline_comment|/* special register notifier functions */
 r_int
 id|pmu_register_sleep_notifier

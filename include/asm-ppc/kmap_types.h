@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.kmap_types.h 1.6 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.kmap_types.h 1.9 08/29/01 14:03:05 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _ASM_KMAP_TYPES_H
 DECL|macro|_ASM_KMAP_TYPES_H
@@ -18,6 +18,12 @@ id|KM_SKB_DATA
 comma
 DECL|enumerator|KM_SKB_DATA_SOFTIRQ
 id|KM_SKB_DATA_SOFTIRQ
+comma
+DECL|enumerator|KM_USER0
+id|KM_USER0
+comma
+DECL|enumerator|KM_USER1
+id|KM_USER1
 comma
 DECL|enumerator|KM_TYPE_NR
 id|KM_TYPE_NR

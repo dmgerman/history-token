@@ -240,6 +240,11 @@ mdefine_line|#define BLKELVGET  _IOR(0x12,106,sizeof(blkelv_ioctl_arg_t))/* elev
 mdefine_line|#define BLKELVSET  _IOW(0x12,107,sizeof(blkelv_ioctl_arg_t))/* elevator set */
 multiline_comment|/* This was here just to show that the number is taken -&n;   probably all these _IO(0x12,*) ioctls should be moved to blkpg.h. */
 macro_line|#endif
+multiline_comment|/* A jump here: 108-111 have been used for various private purposes. */
+DECL|macro|BLKBSZGET
+mdefine_line|#define BLKBSZGET  _IOR(0x12,112,sizeof(int))
+DECL|macro|BLKBSZSET
+mdefine_line|#define BLKBSZSET  _IOW(0x12,113,sizeof(int))
 DECL|macro|BMAP_IOCTL
 mdefine_line|#define BMAP_IOCTL 1&t;&t;/* obsolete - kept for compatibility */
 DECL|macro|FIBMAP

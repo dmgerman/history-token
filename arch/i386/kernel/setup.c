@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/i386/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *&n; *  Enhanced CPU type detection by Mike Jagdis, Patrick St. Jean&n; *  and Martin Mares, November 1997.&n; *&n; *  Force Cyrix 6x86(MX) and M II processors to report MTRR capability&n; *  and Cyrix &quot;coma bug&quot; recognition by&n; *      Zolt&#xfffd;n B&#xfffd;sz&#xfffd;rm&#xfffd;nyi &lt;zboszor@mail.externet.hu&gt; February 1999.&n; * &n; *  Force Centaur C6 processors to report MTRR capability.&n; *      Bart Hartgers &lt;bart@etpmod.phys.tue.nl&gt;, May 1999.&n; *&n; *  Intel Mobile Pentium II detection fix. Sean Gilley, June 1999.&n; *&n; *  IDT Winchip tweaks, misc clean ups.&n; *&t;Dave Jones &lt;davej@suse.de&gt;, August 1999&n; *&n; *  Support of BIGMEM added by Gerhard Wichert, Siemens AG, July 1999&n; *&n; *  Better detection of Centaur/IDT WinChip models.&n; *      Bart Hartgers &lt;bart@etpmod.phys.tue.nl&gt;, August 1999.&n; *&n; *  Memory region support&n; *&t;David Parsons &lt;orc@pell.chi.il.us&gt;, July-August 1999&n; *&n; *  Cleaned up cache-detection code&n; *&t;Dave Jones &lt;davej@suse.de&gt;, October 1999&n; *&n; *&t;Added proper L2 cache detection for Coppermine&n; *&t;Dragan Stancevic &lt;visitor@valinux.com&gt;, October 1999&n; *&n; *  Added the original array for capability flags but forgot to credit &n; *  myself :) (~1998) Fixed/cleaned up some cpu_model_info and other stuff&n; *  &t;Jauder Ho &lt;jauderho@carumba.com&gt;, January 2000&n; *&n; *  Detection for Celeron coppermine, identify_cpu() overhauled,&n; *  and a few other clean ups.&n; *  Dave Jones &lt;davej@suse.de&gt;, April 2000&n; *&n; *  Pentium III FXSR, SSE support&n; *  General FPU state handling cleanups&n; *&t;Gareth Hughes &lt;gareth@valinux.com&gt;, May 2000&n; *&n; *  Added proper Cascades CPU and L2 cache detection for Cascades&n; *  and 8-way type cache happy bunch from Intel:^)&n; *  Dragan Stancevic &lt;visitor@valinux.com&gt;, May 2000 &n; *&n; *  Forward port AMD Duron errata T13 from 2.2.17pre&n; *  Dave Jones &lt;davej@suse.de&gt;, August 2000&n; *&n; *  Forward port lots of fixes/improvements from 2.2.18pre&n; *  Cyrix III, Pentium IV support.&n; *  Dave Jones &lt;davej@suse.de&gt;, October 2000&n; *&n; *  Massive cleanup of CPU detection and bug handling;&n; *  Transmeta CPU detection,&n; *  H. Peter Anvin &lt;hpa@zytor.com&gt;, November 2000&n; *&n; *  Added E820 sanitization routine (removes overlapping memory regions);&n; *  Brian Moyle &lt;bmoyle@mvista.com&gt;, February 2001&n; *&n; *  VIA C3 Support.&n; *  Dave Jones &lt;davej@suse.de&gt;, March 2001&n; */
+multiline_comment|/*&n; *  linux/arch/i386/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *&n; *  Enhanced CPU type detection by Mike Jagdis, Patrick St. Jean&n; *  and Martin Mares, November 1997.&n; *&n; *  Force Cyrix 6x86(MX) and M II processors to report MTRR capability&n; *  and Cyrix &quot;coma bug&quot; recognition by&n; *      Zolt&#xfffd;n B&#xfffd;sz&#xfffd;rm&#xfffd;nyi &lt;zboszor@mail.externet.hu&gt; February 1999.&n; * &n; *  Force Centaur C6 processors to report MTRR capability.&n; *      Bart Hartgers &lt;bart@etpmod.phys.tue.nl&gt;, May 1999.&n; *&n; *  Intel Mobile Pentium II detection fix. Sean Gilley, June 1999.&n; *&n; *  IDT Winchip tweaks, misc clean ups.&n; *&t;Dave Jones &lt;davej@suse.de&gt;, August 1999&n; *&n; *  Support of BIGMEM added by Gerhard Wichert, Siemens AG, July 1999&n; *&n; *  Better detection of Centaur/IDT WinChip models.&n; *      Bart Hartgers &lt;bart@etpmod.phys.tue.nl&gt;, August 1999.&n; *&n; *  Memory region support&n; *&t;David Parsons &lt;orc@pell.chi.il.us&gt;, July-August 1999&n; *&n; *  Cleaned up cache-detection code&n; *&t;Dave Jones &lt;davej@suse.de&gt;, October 1999&n; *&n; *&t;Added proper L2 cache detection for Coppermine&n; *&t;Dragan Stancevic &lt;visitor@valinux.com&gt;, October 1999&n; *&n; *  Added the original array for capability flags but forgot to credit &n; *  myself :) (~1998) Fixed/cleaned up some cpu_model_info and other stuff&n; *  &t;Jauder Ho &lt;jauderho@carumba.com&gt;, January 2000&n; *&n; *  Detection for Celeron coppermine, identify_cpu() overhauled,&n; *  and a few other clean ups.&n; *  Dave Jones &lt;davej@suse.de&gt;, April 2000&n; *&n; *  Pentium III FXSR, SSE support&n; *  General FPU state handling cleanups&n; *&t;Gareth Hughes &lt;gareth@valinux.com&gt;, May 2000&n; *&n; *  Added proper Cascades CPU and L2 cache detection for Cascades&n; *  and 8-way type cache happy bunch from Intel:^)&n; *  Dragan Stancevic &lt;visitor@valinux.com&gt;, May 2000 &n; *&n; *  Forward port AMD Duron errata T13 from 2.2.17pre&n; *  Dave Jones &lt;davej@suse.de&gt;, August 2000&n; *&n; *  Forward port lots of fixes/improvements from 2.2.18pre&n; *  Cyrix III, Pentium IV support.&n; *  Dave Jones &lt;davej@suse.de&gt;, October 2000&n; *&n; *  Massive cleanup of CPU detection and bug handling;&n; *  Transmeta CPU detection,&n; *  H. Peter Anvin &lt;hpa@zytor.com&gt;, November 2000&n; *&n; *  Added E820 sanitization routine (removes overlapping memory regions);&n; *  Brian Moyle &lt;bmoyle@mvista.com&gt;, February 2001&n; *&n; *  VIA C3 Support.&n; *  Dave Jones &lt;davej@suse.de&gt;, March 2001&n; *&n; *  AMD Athlon/Duron/Thunderbird bluesmoke support.&n; *  Dave Jones &lt;davej@suse.de&gt;, April 2001.&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of initialization&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -168,6 +169,17 @@ r_char
 id|aux_device_present
 suffix:semicolon
 r_extern
+r_void
+id|mcheck_init
+c_func
+(paren
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|root_mountflags
 suffix:semicolon
@@ -180,11 +192,6 @@ comma
 id|_edata
 comma
 id|_end
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|cpu_khz
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -4057,14 +4064,22 @@ multiline_comment|/* AMD errata T13 (order #21922) */
 r_if
 c_cond
 (paren
+(paren
 id|c-&gt;x86_vendor
 op_eq
 id|X86_VENDOR_AMD
+)paren
 op_logical_and
+(paren
 id|c-&gt;x86
 op_eq
 l_int|6
-op_logical_and
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|c-&gt;x86_model
 op_eq
 l_int|3
@@ -4073,10 +4088,68 @@ id|c-&gt;x86_mask
 op_eq
 l_int|0
 )paren
-(brace
+multiline_comment|/* Duron Rev A0 */
 id|l2size
 op_assign
 l_int|64
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|4
+op_logical_and
+(paren
+id|c-&gt;x86_mask
+op_eq
+l_int|0
+op_logical_or
+id|c-&gt;x86_mask
+op_eq
+l_int|1
+)paren
+)paren
+multiline_comment|/* Tbird rev A1/A2 */
+id|l2size
+op_assign
+l_int|256
+suffix:semicolon
+)brace
+multiline_comment|/* VIA C3 CPUs (670-68F) need further shifting. */
+r_if
+c_cond
+(paren
+id|c-&gt;x86_vendor
+op_eq
+id|X86_VENDOR_CENTAUR
+op_logical_and
+(paren
+id|c-&gt;x86
+op_eq
+l_int|6
+)paren
+op_logical_and
+(paren
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|7
+)paren
+op_logical_or
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|8
+)paren
+)paren
+)paren
+(brace
+id|l2size
+op_assign
+id|l2size
+op_rshift
+l_int|8
 suffix:semicolon
 )brace
 r_if
@@ -4107,7 +4180,7 @@ l_int|0xFF
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;B step AMD K6 before B 9730xxxx have hardware bugs that can cause&n; *&t;misexecution of code under Linux. Owners of such processors should&n; *&t;contact AMD for precise details and a CPU swap.&n; *&n; *&t;See&t;http://www.mygale.com/~poulot/k6bug.html&n; *&t;&t;http://www.amd.com/K6/k6docs/revgd.html&n; *&n; *&t;The following test is erm.. interesting. AMD neglected to up&n; *&t;the chip setting when fixing the bug but they also tweaked some&n; *&t;performance at the same time..&n; */
+multiline_comment|/*&n; *&t;B step AMD K6 before B 9730xxxx have hardware bugs that can cause&n; *&t;misexecution of code under Linux. Owners of such processors should&n; *&t;contact AMD for precise details and a CPU swap.&n; *&n; *&t;See&t;http://www.multimania.com/poulot/k6bug.html&n; *&t;&t;http://www.amd.com/K6/k6docs/revgd.html&n; *&n; *&t;The following test is erm.. interesting. AMD neglected to up&n; *&t;the chip setting when fixing the bug but they also tweaked some&n; *&t;performance at the same time..&n; */
 r_extern
 r_void
 id|vide
@@ -4154,6 +4227,7 @@ suffix:semicolon
 r_int
 id|r
 suffix:semicolon
+multiline_comment|/*&n;&t; *&t;FIXME: We should handle the K5 here. Set up the write&n;&t; *&t;range and also turn on MSR 83 bits 4 and 31 (write alloc,&n;&t; *&t;no bus pipeline)&n;&t; */
 multiline_comment|/* Bit 31 in normal CPUID used for nonstandard 3DNow ID;&n;&t;   3DNow is IDd by bit 31 in extended CPUID (1*32+31) anyway */
 id|clear_bit
 c_func
@@ -4393,7 +4467,7 @@ suffix:semicolon
 id|rdmsr
 c_func
 (paren
-l_int|0xC0000082
+id|MSR_K6_WHCR
 comma
 id|l
 comma
@@ -4440,20 +4514,15 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|wbinvd
+c_func
 (paren
-l_string|&quot;wbinvd&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 id|wrmsr
 c_func
 (paren
-l_int|0xC0000082
+id|MSR_K6_WHCR
 comma
 id|l
 comma
@@ -4512,7 +4581,7 @@ suffix:semicolon
 id|rdmsr
 c_func
 (paren
-l_int|0xC0000082
+id|MSR_K6_WHCR
 comma
 id|l
 comma
@@ -4559,20 +4628,15 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|wbinvd
+c_func
 (paren
-l_string|&quot;wbinvd&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 id|wrmsr
 c_func
 (paren
-l_int|0xC0000082
+id|MSR_K6_WHCR
 comma
 id|l
 comma
@@ -4643,6 +4707,12 @@ r_case
 l_int|6
 suffix:colon
 multiline_comment|/* An Athlon/Duron. We can trust the BIOS probably */
+id|mcheck_init
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -4993,6 +5063,10 @@ op_star
 id|c
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5006,10 +5080,6 @@ r_char
 id|ccr3
 comma
 id|ccr5
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -6057,11 +6127,10 @@ op_assign
 l_string|&quot;??&quot;
 suffix:semicolon
 )brace
-multiline_comment|/* get FCR  */
 id|rdmsr
 c_func
 (paren
-l_int|0x107
+id|MSR_IDT_FCR1
 comma
 id|lo
 comma
@@ -6103,7 +6172,7 @@ suffix:semicolon
 id|wrmsr
 c_func
 (paren
-l_int|0x107
+id|MSR_IDT_FCR1
 comma
 id|newlo
 comma
@@ -6218,6 +6287,12 @@ comma
 id|name
 )paren
 suffix:semicolon
+id|mcheck_init
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -6239,7 +6314,7 @@ suffix:colon
 multiline_comment|/* Cyrix III or C3 */
 id|rdmsr
 (paren
-l_int|0x1107
+id|MSR_VIA_FCR
 comma
 id|lo
 comma
@@ -6261,7 +6336,7 @@ suffix:semicolon
 multiline_comment|/* Report CX8 &amp; enable PGE */
 id|wrmsr
 (paren
-l_int|0x1107
+id|MSR_VIA_FCR
 comma
 id|lo
 comma
@@ -6789,12 +6864,6 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;If you have one of these please email davej@suse.de&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* Unhide possibly hidden capability flags&n;&t;   The mp6 iDragon family don&squot;t have MSRs.&n;&t;   We switch on extra features with this cpuid weirdness: */
 id|__asm__
 (paren
@@ -6857,17 +6926,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_void
-id|mcheck_init
-c_func
-(paren
-r_struct
-id|cpuinfo_x86
-op_star
-id|c
-)paren
-suffix:semicolon
 r_char
 op_star
 id|p
@@ -8264,7 +8322,7 @@ suffix:semicolon
 id|rdmsr
 c_func
 (paren
-l_int|0x119
+id|MSR_IA32_BBL_CR_CTL
 comma
 id|lo
 comma
@@ -8278,7 +8336,7 @@ suffix:semicolon
 id|wrmsr
 c_func
 (paren
-l_int|0x119
+id|MSR_IA32_BBL_CR_CTL
 comma
 id|lo
 comma

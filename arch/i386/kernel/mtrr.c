@@ -284,47 +284,62 @@ op_amp
 id|boot_cpu_data.x86_capability
 )paren
 )paren
-id|asm
-r_volatile
+(brace
+id|ctxt-&gt;cr4val
+op_assign
+id|read_cr4
+c_func
 (paren
-l_string|&quot;movl  %%cr4, %0&bslash;n&bslash;t&quot;
-l_string|&quot;movl  %0, %1&bslash;n&bslash;t&quot;
-l_string|&quot;andb  $0x7f, %b1&bslash;n&bslash;t&quot;
-l_string|&quot;movl  %1, %%cr4&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=r&quot;
+)paren
+suffix:semicolon
+id|write_cr4
+c_func
 (paren
 id|ctxt-&gt;cr4val
-)paren
-comma
-l_string|&quot;=q&quot;
+op_amp
 (paren
-id|tmp
+r_int
+r_char
 )paren
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
+op_complement
+(paren
+l_int|1
+op_lshift
+l_int|7
+)paren
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*  Disable and flush caches. Note that wbinvd flushes the TLBs as&n;&t;a side-effect  */
-id|asm
-r_volatile
+(brace
+r_int
+r_int
+id|cr0
+op_assign
+id|read_cr0
+c_func
 (paren
-l_string|&quot;movl  %%cr0, %0&bslash;n&bslash;t&quot;
-l_string|&quot;orl   $0x40000000, %0&bslash;n&bslash;t&quot;
-l_string|&quot;wbinvd&bslash;n&bslash;t&quot;
-l_string|&quot;movl  %0, %%cr0&bslash;n&bslash;t&quot;
-l_string|&quot;wbinvd&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|tmp
 )paren
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
+op_or
+l_int|0x40000000
+suffix:semicolon
+id|wbinvd
+c_func
+(paren
 )paren
 suffix:semicolon
+id|write_cr0
+c_func
+(paren
+id|cr0
+)paren
+suffix:semicolon
+id|wbinvd
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -397,10 +412,6 @@ op_star
 id|ctxt
 )paren
 (brace
-r_int
-r_int
-id|tmp
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -422,14 +433,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*  Flush caches and TLBs  */
-id|asm
-r_volatile
+id|wbinvd
+c_func
 (paren
-l_string|&quot;wbinvd&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*  Restore MTRRdefType  */
@@ -464,20 +470,15 @@ id|ctxt-&gt;ccr3
 suffix:semicolon
 )brace
 multiline_comment|/*  Enable caches  */
-id|asm
-r_volatile
+id|write_cr0
+c_func
 (paren
-l_string|&quot;movl  %%cr0, %0&bslash;n&bslash;t&quot;
-l_string|&quot;andl  $0xbfffffff, %0&bslash;n&bslash;t&quot;
-l_string|&quot;movl  %0, %%cr0&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=r&quot;
+id|read_cr0
+c_func
 (paren
-id|tmp
 )paren
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
+op_amp
+l_int|0xbfffffff
 )paren
 suffix:semicolon
 multiline_comment|/*  Restore value of CR4  */
@@ -493,18 +494,10 @@ op_amp
 id|boot_cpu_data.x86_capability
 )paren
 )paren
-id|asm
-r_volatile
-(paren
-l_string|&quot;movl  %0, %%cr4&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+id|write_cr4
+c_func
 (paren
 id|ctxt-&gt;cr4val
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*  Re-enable interrupts locally (if enabled previously)  */
@@ -1220,7 +1213,7 @@ id|high
 suffix:semicolon
 id|rdmsr
 (paren
-l_int|0xC0000085
+id|MSR_K6_UWCCR
 comma
 id|low
 comma
@@ -2030,7 +2023,7 @@ suffix:semicolon
 multiline_comment|/*&n;     *&t;Low is MTRR0 , High MTRR 1&n;     */
 id|rdmsr
 (paren
-l_int|0xC0000085
+id|MSR_K6_UWCCR
 comma
 id|regs
 (braket
@@ -2091,19 +2084,14 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     *&t;The writeback rule is quite specific. See the manual. Its&n;     *&t;disable local interrupts, write back the cache, set the mtrr&n;     */
-id|__asm__
-id|__volatile__
+id|wbinvd
+c_func
 (paren
-l_string|&quot;wbinvd&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 id|wrmsr
 (paren
-l_int|0xC0000085
+id|MSR_K6_UWCCR
 comma
 id|regs
 (braket
@@ -2272,7 +2260,7 @@ id|low
 suffix:semicolon
 id|wrmsr
 (paren
-l_int|0x110
+id|MSR_IDT_MCR0
 op_plus
 id|reg
 comma
@@ -7978,7 +7966,7 @@ multiline_comment|/* Unfortunately, MCR&squot;s are read-only, so there is no wa
 id|rdmsr
 c_func
 (paren
-l_int|0x120
+id|MSR_IDT_MCR_CTRL
 comma
 id|lo
 comma
@@ -8016,7 +8004,7 @@ multiline_comment|/* set key to 1 */
 id|wrmsr
 c_func
 (paren
-l_int|0x120
+id|MSR_IDT_MCR_CTRL
 comma
 id|lo
 comma
@@ -8088,7 +8076,7 @@ id|i
 (brace
 id|wrmsr
 (paren
-l_int|0x110
+id|MSR_IDT_MCR0
 op_plus
 id|i
 comma
@@ -8119,7 +8107,7 @@ multiline_comment|/* Write combine enables */
 id|wrmsr
 c_func
 (paren
-l_int|0x120
+id|MSR_IDT_MCR_CTRL
 comma
 id|lo
 comma
@@ -8183,7 +8171,7 @@ l_int|0
 (brace
 id|wrmsr
 (paren
-l_int|0x110
+id|MSR_IDT_MCR0
 op_plus
 id|i
 comma
@@ -8197,7 +8185,7 @@ suffix:semicolon
 id|wrmsr
 c_func
 (paren
-l_int|0x120
+id|MSR_IDT_MCR_CTRL
 comma
 l_int|0x01F0001F
 comma
@@ -8773,6 +8761,11 @@ id|cyrix_arr_init_secondary
 (paren
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MTRR_IF_NONE
+suffix:colon
 r_break
 suffix:semicolon
 r_default

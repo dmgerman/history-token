@@ -50,7 +50,7 @@ suffix:semicolon
 id|rdmsr
 c_func
 (paren
-l_int|0x17a
+id|MSR_IA32_MCG_STATUS
 comma
 id|mcgstl
 comma
@@ -109,7 +109,7 @@ op_increment
 id|rdmsr
 c_func
 (paren
-l_int|0x401
+id|MSR_IA32_MC0_STATUS
 op_plus
 id|i
 op_star
@@ -203,7 +203,7 @@ l_int|27
 id|rdmsr
 c_func
 (paren
-l_int|0x402
+id|MSR_IA32_MC0_ADDR
 op_plus
 id|i
 op_star
@@ -240,7 +240,7 @@ l_int|26
 id|rdmsr
 c_func
 (paren
-l_int|0x402
+id|MSR_IA32_MC0_ADDR
 op_plus
 id|i
 op_star
@@ -272,7 +272,7 @@ multiline_comment|/* Clear it */
 id|wrmsr
 c_func
 (paren
-l_int|0x401
+id|MSR_IA32_MC0_STATUS
 op_plus
 id|i
 op_star
@@ -340,7 +340,7 @@ suffix:semicolon
 id|wrmsr
 c_func
 (paren
-l_int|0x17a
+id|MSR_IA32_MCG_STATUS
 comma
 id|mcgstl
 comma
@@ -374,7 +374,7 @@ suffix:semicolon
 id|rdmsr
 c_func
 (paren
-l_int|0x0
+id|MSR_IA32_P5_MC_ADDR
 comma
 id|loaddr
 comma
@@ -384,7 +384,7 @@ suffix:semicolon
 id|rdmsr
 c_func
 (paren
-l_int|0x1
+id|MSR_IA32_P5_MC_TYPE
 comma
 id|lotype
 comma
@@ -598,7 +598,7 @@ multiline_comment|/* Read registers before enabling */
 id|rdmsr
 c_func
 (paren
-l_int|0x0
+id|MSR_IA32_P5_MC_ADDR
 comma
 id|l
 comma
@@ -608,7 +608,7 @@ suffix:semicolon
 id|rdmsr
 c_func
 (paren
-l_int|0x1
+id|MSR_IA32_P5_MC_TYPE
 comma
 id|l
 comma
@@ -706,7 +706,7 @@ suffix:semicolon
 id|rdmsr
 c_func
 (paren
-l_int|0x179
+id|MSR_IA32_MCG_CAP
 comma
 id|l
 comma
@@ -728,7 +728,7 @@ l_int|8
 id|wrmsr
 c_func
 (paren
-l_int|0x17b
+id|MSR_IA32_MCG_CTL
 comma
 l_int|0xffffffff
 comma
@@ -760,7 +760,7 @@ op_increment
 id|wrmsr
 c_func
 (paren
-l_int|0x400
+id|MSR_IA32_MC0_CTL
 op_plus
 l_int|4
 op_star
@@ -790,7 +790,7 @@ op_increment
 id|wrmsr
 c_func
 (paren
-l_int|0x401
+id|MSR_IA32_MC0_STATUS
 op_plus
 l_int|4
 op_star
@@ -869,7 +869,7 @@ suffix:semicolon
 id|rdmsr
 c_func
 (paren
-l_int|0x107
+id|MSR_IDT_FCR1
 comma
 id|lo
 comma
@@ -898,7 +898,7 @@ multiline_comment|/* Enable MCE */
 id|wrmsr
 c_func
 (paren
-l_int|0x107
+id|MSR_IDT_FCR1
 comma
 id|lo
 comma
@@ -1027,7 +1027,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 id|__setup

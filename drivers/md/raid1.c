@@ -516,7 +516,11 @@ l_int|NULL
 suffix:semicolon
 id|r1_bh-&gt;state
 op_assign
-l_int|0
+(paren
+l_int|1
+op_lshift
+id|R1BH_PreAlloc
+)paren
 suffix:semicolon
 id|r1_bh-&gt;bh_req.b_state
 op_assign

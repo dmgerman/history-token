@@ -888,7 +888,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_save_state - save the PCI configuration space of a device before suspending&n; * @dev - PCI device that we&squot;re dealing with&n; * @buffer - buffer to hold config space context&n; *&n; * @buffer must be large enough to hold the entire PCI 2.2 config space &n; * (&gt;= 64 bytes).&n; */
+multiline_comment|/**&n; * pci_save_state - save the PCI configuration space of a device before suspending&n; * @dev: - PCI device that we&squot;re dealing with&n; * @buffer: - buffer to hold config space context&n; *&n; * @buffer must be large enough to hold the entire PCI 2.2 config space &n; * (&gt;= 64 bytes).&n; */
 r_int
 DECL|function|pci_save_state
 id|pci_save_state
@@ -949,7 +949,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/** &n; * pci_restore_state - Restore the saved state of a PCI device&n; * @dev - PCI device that we&squot;re dealing with&n; * @buffer - saved PCI config space&n; *&n; */
+multiline_comment|/** &n; * pci_restore_state - Restore the saved state of a PCI device&n; * @dev: - PCI device that we&squot;re dealing with&n; * @buffer: - saved PCI config space&n; *&n; */
 r_int
 DECL|function|pci_restore_state
 id|pci_restore_state
@@ -1497,7 +1497,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;pci_request_regions - Reserved PCI I/O and memory resources&n; *&t;@pdev: PCI device whose resources are to be reserved&n; *&n; *&t;Mark all PCI regions associated with PCI device @pdev as&n; *&t;being reserved by owner @res_name.  Do not access any&n; *&t;address inside the PCI regions unless this call returns&n; *&t;successfully.&n; *&n; *&t;Returns 0 on success, or %EBUSY on error.  A warning&n; *&t;message is also printed on failure.&n; */
+multiline_comment|/**&n; *&t;pci_request_regions - Reserved PCI I/O and memory resources&n; *&t;@pdev: PCI device whose resources are to be reserved&n; *&t;@res_name: Name to be associated with resource.&n; *&n; *&t;Mark all PCI regions associated with PCI device @pdev as&n; *&t;being reserved by owner @res_name.  Do not access any&n; *&t;address inside the PCI regions unless this call returns&n; *&t;successfully.&n; *&n; *&t;Returns 0 on success, or %EBUSY on error.  A warning&n; *&t;message is also printed on failure.&n; */
 DECL|function|pci_request_regions
 r_int
 id|pci_request_regions

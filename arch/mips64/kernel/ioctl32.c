@@ -4451,6 +4451,18 @@ c_func
 id|BLKELVSET
 )paren
 comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|BLKBSZGET
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|BLKBSZSET
+)paren
+comma
 macro_line|#ifdef CONFIG_MD
 multiline_comment|/* status */
 id|IOCTL32_DEFAULT

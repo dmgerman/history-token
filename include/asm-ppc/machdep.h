@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.machdep.h 1.19 08/18/01 18:16:33 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.machdep.h 1.21 08/29/01 10:07:29 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_MACHDEP_H
 DECL|macro|_PPC_MACHDEP_H
@@ -15,9 +15,6 @@ id|pci_bus
 suffix:semicolon
 r_struct
 id|pci_dev
-suffix:semicolon
-r_struct
-id|kbd_repeat
 suffix:semicolon
 DECL|struct|machdep_calls
 r_struct
@@ -337,19 +334,6 @@ r_char
 id|leds
 )paren
 suffix:semicolon
-DECL|member|kbd_rate_fn
-r_int
-(paren
-op_star
-id|kbd_rate_fn
-)paren
-(paren
-r_struct
-id|kbd_repeat
-op_star
-id|rep
-)paren
-suffix:semicolon
 DECL|member|kbd_init_hw
 r_void
 (paren
@@ -380,6 +364,19 @@ id|pcibios_fixup
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Called after PPC generic resource fixup to perform&n;&t;   machine specific fixups */
+DECL|member|pcibios_fixup_resources
+r_void
+(paren
+op_star
+id|pcibios_fixup_resources
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Called for each PCI bus in the system when it&squot;s probed */
 DECL|member|pcibios_fixup_bus
 r_void
@@ -407,6 +404,57 @@ op_star
 comma
 r_int
 id|initial
+)paren
+suffix:semicolon
+multiline_comment|/* For interrupt routing */
+DECL|member|pci_swizzle
+r_int
+r_char
+(paren
+op_star
+id|pci_swizzle
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+r_int
+r_char
+op_star
+)paren
+suffix:semicolon
+DECL|member|pci_map_irq
+r_int
+(paren
+op_star
+id|pci_map_irq
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+r_int
+r_char
+comma
+r_int
+r_char
+)paren
+suffix:semicolon
+multiline_comment|/* Called in indirect_* to avoid touching devices */
+DECL|member|pci_exclude_device
+r_int
+(paren
+op_star
+id|pci_exclude_device
+)paren
+(paren
+r_int
+r_char
+comma
+r_int
+r_char
 )paren
 suffix:semicolon
 multiline_comment|/* Called at then very end of pcibios_init() */

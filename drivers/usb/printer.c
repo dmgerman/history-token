@@ -815,6 +815,11 @@ op_amp
 id|usblp-&gt;sem
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|usblp-&gt;used
 op_assign
 l_int|0
@@ -857,6 +862,11 @@ multiline_comment|/* finish cleanup from disconnect */
 id|usblp_cleanup
 (paren
 id|usblp
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2810,11 +2820,6 @@ id|usblp-&gt;dev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|usb_unlink_urb
 c_func
 (paren
@@ -2851,6 +2856,11 @@ id|up
 (paren
 op_amp
 id|usblp-&gt;sem
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

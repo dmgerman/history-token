@@ -379,6 +379,14 @@ id|dentry-&gt;d_name.name
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* only patch if needed (because we get called even for lookup&n;   (not only rlookup) stuff sometimes, like in umsdos_covered() */
+r_if
+c_cond
+(paren
+id|dentry-&gt;d_inode-&gt;u.umsdos_i.i_patched
+op_eq
+l_int|0
+)paren
 id|umsdos_patch_dentry_inode
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.32 08/20/01 15:06:15 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.34 08/29/01 10:07:29 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * Support for PReP (Motorola MTX/MVME)&n; * by Troy Benjegerdes (hozer@drgw.net)&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -217,17 +217,6 @@ c_func
 r_int
 r_char
 id|leds
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pckbd_rate
-c_func
-(paren
-r_struct
-id|kbd_repeat
-op_star
-id|rep
 )paren
 suffix:semicolon
 r_extern
@@ -3451,10 +3440,6 @@ suffix:semicolon
 id|ppc_md.kbd_leds
 op_assign
 id|pckbd_leds
-suffix:semicolon
-id|ppc_md.kbd_rate_fn
-op_assign
-id|pckbd_rate
 suffix:semicolon
 id|ppc_md.kbd_init_hw
 op_assign

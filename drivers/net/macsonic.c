@@ -343,6 +343,8 @@ c_func
 id|lp-&gt;dma_bitmode
 )paren
 comma
+id|GFP_KERNEL
+op_or
 id|GFP_DMA
 )paren
 )paren
@@ -358,6 +360,10 @@ l_string|&quot;%s: couldn&squot;t allocate descriptor buffers&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|desc_base
@@ -509,6 +515,8 @@ id|SONIC_NUM_RRS
 op_star
 id|SONIC_RBSIZE
 comma
+id|GFP_KERNEL
+op_or
 id|GFP_DMA
 )paren
 )paren

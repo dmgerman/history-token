@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -3779,6 +3780,26 @@ comma
 r_int
 op_star
 )paren
+id|arg
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BLKBSZGET
+suffix:colon
+r_case
+id|BLKBSZSET
+suffix:colon
+id|err
+op_assign
+id|blk_ioctl
+c_func
+(paren
+id|inode-&gt;i_rdev
+comma
+id|cmd
+comma
 id|arg
 )paren
 suffix:semicolon

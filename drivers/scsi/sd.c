@@ -841,6 +841,12 @@ suffix:colon
 r_case
 id|BLKELVSET
 suffix:colon
+r_case
+id|BLKBSZGET
+suffix:colon
+r_case
+id|BLKBSZSET
+suffix:colon
 r_return
 id|blk_ioctl
 c_func

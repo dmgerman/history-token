@@ -2134,17 +2134,18 @@ c_func
 (paren
 id|dentry
 comma
-l_int|NULL
+id|current-&gt;fs-&gt;rootmnt
 comma
 id|dentry-&gt;d_sb-&gt;s_root
 comma
-l_int|NULL
+id|current-&gt;fs-&gt;rootmnt
 comma
 id|buffer
 comma
 id|len
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: current-&gt;fs-&gt;rootmnt */
 id|spin_unlock
 c_func
 (paren
@@ -2167,7 +2168,7 @@ multiline_comment|/* skip leading &squot;/&squot; */
 r_if
 c_cond
 (paren
-id|old_root-&gt;d_inode
+id|current-&gt;fs-&gt;root-&gt;d_inode
 op_eq
 id|pseudo_root
 )paren

@@ -2983,7 +2983,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;skb_linearize - convert paged skb to linear one&n; *&t;@skb: buffer to linarize&n; *&t;@gfp_mask: allocation mode&n; *&n; *&t;If there is no free memory -ENOMEM is returned, otherwise zero&n; *&t;is returned and the old skb data released.  */
+multiline_comment|/**&n; *&t;skb_linearize - convert paged skb to linear one&n; *&t;@skb: buffer to linarize&n; *&t;@gfp: allocation mode&n; *&n; *&t;If there is no free memory -ENOMEM is returned, otherwise zero&n; *&t;is returned and the old skb data released.  */
 r_int
 id|skb_linearize
 c_func

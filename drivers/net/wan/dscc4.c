@@ -937,7 +937,7 @@ c_func
 id|RX_MAX
 c_func
 (paren
-id|dev-&gt;mtu
+id|HDLC_MAX_MRU
 op_plus
 l_int|2
 )paren
@@ -1391,6 +1391,8 @@ c_func
 (paren
 id|rx_fd-&gt;state2
 )paren
+op_minus
+l_int|1
 suffix:semicolon
 id|pci_dma_sync_single
 c_func
@@ -1400,6 +1402,8 @@ comma
 id|rx_fd-&gt;data
 comma
 id|pkt_len
+op_plus
+l_int|1
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -1411,8 +1415,6 @@ c_cond
 id|skb-&gt;data
 (braket
 id|pkt_len
-op_minus
-l_int|1
 )braket
 op_amp
 id|FrameOk
@@ -1497,8 +1499,6 @@ c_cond
 id|skb-&gt;data
 (braket
 id|pkt_len
-op_minus
-l_int|1
 )braket
 op_amp
 id|FrameRdo
@@ -1517,8 +1517,6 @@ op_logical_neg
 id|skb-&gt;data
 (braket
 id|pkt_len
-op_minus
-l_int|1
 )braket
 op_or
 op_complement
@@ -1539,8 +1537,6 @@ op_logical_neg
 id|skb-&gt;data
 (braket
 id|pkt_len
-op_minus
-l_int|1
 )braket
 op_or
 op_complement
@@ -3241,7 +3237,7 @@ c_func
 id|LengthCheck
 op_or
 (paren
-id|dev-&gt;mtu
+id|HDLC_MAX_MRU
 op_rshift
 l_int|5
 )paren
@@ -5251,7 +5247,7 @@ c_cond
 (paren
 id|state
 op_amp
-l_int|0x0df80c01
+l_int|0x0df80c00
 )paren
 (brace
 id|printk
@@ -5971,7 +5967,7 @@ c_cond
 (paren
 id|state
 op_amp
-l_int|0x0df80c01
+l_int|0x0df80c00
 )paren
 (brace
 id|printk
@@ -7006,7 +7002,7 @@ op_or_assign
 id|u32
 )paren
 (paren
-id|dev-&gt;mtu
+id|HDLC_MAX_MRU
 op_amp
 id|RxSizeMax
 )paren
@@ -7565,7 +7561,10 @@ r_int
 )paren
 id|dev
 suffix:semicolon
-singleline_comment|// FIXME: set hdlc-&gt;set_mode ?
+id|hdlc-&gt;set_mode
+op_assign
+l_int|NULL
+suffix:semicolon
 id|hdlc-&gt;open
 op_assign
 id|dscc4_hdlc_open

@@ -3897,6 +3897,27 @@ suffix:semicolon
 r_int
 id|offset
 suffix:semicolon
+r_int
+id|mask
+suffix:semicolon
+multiline_comment|/* The granularity of the memory limit is 4kB, on IO it&squot;s 4 bytes */
+id|mask
+op_assign
+op_complement
+l_int|0xfff
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|type
+op_amp
+id|IORESOURCE_IO
+)paren
+id|mask
+op_assign
+op_complement
+l_int|3
+suffix:semicolon
 id|offset
 op_assign
 l_int|0x1c
@@ -3960,6 +3981,8 @@ id|socket
 comma
 id|offset
 )paren
+op_amp
+id|mask
 suffix:semicolon
 id|end
 op_assign
@@ -3973,7 +3996,8 @@ op_plus
 l_int|4
 )paren
 op_or
-l_int|0xfff
+op_complement
+id|mask
 suffix:semicolon
 r_if
 c_cond

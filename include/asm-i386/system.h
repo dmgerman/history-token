@@ -125,9 +125,15 @@ DECL|macro|read_cr0
 mdefine_line|#define read_cr0() ({ &bslash;&n;&t;unsigned int __dummy; &bslash;&n;&t;__asm__( &bslash;&n;&t;&t;&quot;movl %%cr0,%0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;:&quot;=r&quot; (__dummy)); &bslash;&n;&t;__dummy; &bslash;&n;})
 DECL|macro|write_cr0
 mdefine_line|#define write_cr0(x) &bslash;&n;&t;__asm__(&quot;movl %0,%%cr0&quot;: :&quot;r&quot; (x));
+DECL|macro|read_cr4
+mdefine_line|#define read_cr4() ({ &bslash;&n;&t;unsigned int __dummy; &bslash;&n;&t;__asm__( &bslash;&n;&t;&t;&quot;movl %%cr4,%0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;:&quot;=r&quot; (__dummy)); &bslash;&n;&t;__dummy; &bslash;&n;})
+DECL|macro|write_cr4
+mdefine_line|#define write_cr4(x) &bslash;&n;&t;__asm__(&quot;movl %0,%%cr4&quot;: :&quot;r&quot; (x));
 DECL|macro|stts
 mdefine_line|#define stts() write_cr0(8 | read_cr0())
 macro_line|#endif&t;/* __KERNEL__ */
+DECL|macro|wbinvd
+mdefine_line|#define wbinvd() &bslash;&n;&t;__asm__ __volatile__ (&quot;wbinvd&quot;: : :&quot;memory&quot;);
 DECL|function|get_limit
 r_static
 r_inline

@@ -23,7 +23,7 @@ mdefine_line|#define dac_val&t;(0x3c9)
 DECL|macro|VGA_FB_PHYS
 mdefine_line|#define VGA_FB_PHYS 0xA0000
 DECL|macro|VGA_FB_PHYS_LEN
-mdefine_line|#define VGA_FB_PHYS_LEN 65535
+mdefine_line|#define VGA_FB_PHYS_LEN 65536
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * card parameters&n; */
 DECL|struct|vga16fb_info

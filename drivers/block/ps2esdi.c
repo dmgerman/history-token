@@ -5486,6 +5486,12 @@ r_case
 id|BLKFLSBUF
 suffix:colon
 r_case
+id|BLKBSZGET
+suffix:colon
+r_case
+id|BLKBSZSET
+suffix:colon
+r_case
 id|BLKPG
 suffix:colon
 r_return

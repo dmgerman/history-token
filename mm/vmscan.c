@@ -2684,14 +2684,20 @@ r_int
 id|user
 )paren
 (brace
-multiline_comment|/* Always walk at least the active queue when called */
 r_int
 id|shortage
 op_assign
-id|INACTIVE_SHORTAGE
+l_int|0
 suffix:semicolon
 r_int
 id|maxtry
+suffix:semicolon
+multiline_comment|/* Always walk at least the active queue when called */
+id|refill_inactive_scan
+c_func
+(paren
+id|DEF_PRIORITY
+)paren
 suffix:semicolon
 id|maxtry
 op_assign
@@ -2842,9 +2848,17 @@ c_loop
 id|shortage
 )paren
 suffix:semicolon
+multiline_comment|/* Return success if we&squot;re not &quot;totally short&quot; */
 r_return
-op_logical_neg
 id|shortage
+op_ne
+(paren
+id|FREE_SHORTAGE
+op_or
+id|INACTIVE_SHORTAGE
+op_or
+id|GENERAL_SHORTAGE
+)paren
 suffix:semicolon
 )brace
 DECL|variable|kswapd_wait

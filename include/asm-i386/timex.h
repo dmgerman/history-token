@@ -52,5 +52,10 @@ id|ret
 suffix:semicolon
 macro_line|#endif
 )brace
+r_extern
+r_int
+r_int
+id|cpu_khz
+suffix:semicolon
 macro_line|#endif
 eof
