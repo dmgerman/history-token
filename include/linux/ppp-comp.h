@@ -372,11 +372,11 @@ mdefine_line|#define DEFLATE_MAX_SIZE&t;15
 DECL|macro|DEFLATE_METHOD_VAL
 mdefine_line|#define DEFLATE_METHOD_VAL&t;8
 DECL|macro|DEFLATE_SIZE
-mdefine_line|#define DEFLATE_SIZE(x)&t;&t;(((x) &gt;&gt; 4) + DEFLATE_MIN_SIZE)
+mdefine_line|#define DEFLATE_SIZE(x)&t;&t;(((x) &gt;&gt; 4) + 8)
 DECL|macro|DEFLATE_METHOD
 mdefine_line|#define DEFLATE_METHOD(x)&t;((x) &amp; 0x0F)
 DECL|macro|DEFLATE_MAKE_OPT
-mdefine_line|#define DEFLATE_MAKE_OPT(w)&t;((((w) - DEFLATE_MIN_SIZE) &lt;&lt; 4) &bslash;&n;&t;&t;&t;&t; + DEFLATE_METHOD_VAL)
+mdefine_line|#define DEFLATE_MAKE_OPT(w)&t;((((w) - 8) &lt;&lt; 4) + DEFLATE_METHOD_VAL)
 DECL|macro|DEFLATE_CHK_SEQUENCE
 mdefine_line|#define DEFLATE_CHK_SEQUENCE&t;0
 multiline_comment|/*&n; * Definitions for other, as yet unsupported, compression methods.&n; */
