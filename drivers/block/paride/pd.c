@@ -2355,6 +2355,7 @@ r_return
 id|Ok
 suffix:semicolon
 )brace
+multiline_comment|/* special io requests */
 multiline_comment|/* According to the ATA standard, the default CHS geometry should be&n;   available following a reset.  Some Western Digital drives come up&n;   in a mode where only LBA addresses are accepted until the device&n;   parameters are initialised.&n;*/
 DECL|function|pd_init_dev_parms
 r_static
@@ -2884,7 +2885,8 @@ suffix:semicolon
 )brace
 DECL|function|pd_identify
 r_static
-r_int
+r_enum
+id|action
 id|pd_identify
 c_func
 (paren
@@ -2906,12 +2908,6 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* WARNING:  here there may be dragons.  reset() applies to both drives,&n;   but we call it only on probing the MASTER. This should allow most&n;   common configurations to work, but be warned that a reset can clear&n;   settings on the SLAVE drive.&n;*/
-id|pi_connect
-c_func
-(paren
-id|disk-&gt;pi
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2990,17 +2986,9 @@ l_string|&quot;IDENT DRQ&quot;
 op_amp
 id|STAT_ERR
 )paren
-(brace
-id|pi_disconnect
-c_func
-(paren
-id|disk-&gt;pi
-)paren
-suffix:semicolon
 r_return
-l_int|0
+id|Fail
 suffix:semicolon
-)brace
 id|pi_read_block
 c_func
 (paren
@@ -3235,16 +3223,11 @@ c_func
 id|disk
 )paren
 suffix:semicolon
-id|pi_disconnect
-c_func
-(paren
-id|disk-&gt;pi
-)paren
-suffix:semicolon
 r_return
-l_int|1
+id|Ok
 suffix:semicolon
 )brace
+multiline_comment|/* end of io request engine */
 DECL|function|do_pd_request
 r_static
 r_void
@@ -3739,11 +3722,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pd_identify
+id|pd_special_command
 c_func
 (paren
 id|disk
+comma
+id|pd_identify
 )paren
+op_eq
+l_int|0
 )paren
 id|set_capacity
 c_func
@@ -3804,6 +3791,7 @@ op_assign
 id|pd_revalidate
 )brace
 suffix:semicolon
+multiline_comment|/* probing */
 DECL|function|pd_probe_drive
 r_static
 r_void
@@ -3902,11 +3890,15 @@ op_increment
 r_if
 c_cond
 (paren
-id|pd_identify
+id|pd_special_command
 c_func
 (paren
 id|disk
+comma
+id|pd_identify
 )paren
+op_eq
+l_int|0
 )paren
 r_return
 suffix:semicolon
@@ -3915,11 +3907,15 @@ r_else
 r_if
 c_cond
 (paren
-id|pd_identify
+id|pd_special_command
 c_func
 (paren
 id|disk
+comma
+id|pd_identify
 )paren
+op_eq
+l_int|0
 )paren
 r_return
 suffix:semicolon
