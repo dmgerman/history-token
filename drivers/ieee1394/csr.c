@@ -424,7 +424,7 @@ suffix:semicolon
 id|HPSB_VERBOSE
 c_func
 (paren
-l_string|&quot;CSR: setting expire to %lu, HZ=%lu&quot;
+l_string|&quot;CSR: setting expire to %lu, HZ=%u&quot;
 comma
 id|csr-&gt;expire
 comma
