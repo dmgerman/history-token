@@ -13,11 +13,26 @@ macro_line|#include &lt;asm/dbdma.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mediabay.h&gt;
-macro_line|#include &lt;asm/feature.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/pmac_feature.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;FLOPPY_MAJOR
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+DECL|variable|floppy_blocksizes
+r_static
+r_int
+id|floppy_blocksizes
+(braket
+l_int|2
+)braket
+op_assign
+(brace
+l_int|512
+comma
+l_int|512
+)brace
+suffix:semicolon
 DECL|variable|floppy_sizes
 r_static
 r_int
@@ -27,9 +42,9 @@ l_int|2
 )braket
 op_assign
 (brace
-l_int|2880
+l_int|1440
 comma
-l_int|2880
+l_int|1440
 )brace
 suffix:semicolon
 DECL|macro|MAX_FLOPPIES
@@ -1269,7 +1284,7 @@ id|idle
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -1284,25 +1299,8 @@ id|DEVICE_NAME
 l_string|&quot;: request list destroyed&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|CURRENT-&gt;bh
-op_logical_and
-op_logical_neg
-id|buffer_locked
-c_func
-(paren
-id|CURRENT-&gt;bh
-)paren
-)paren
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: block not locked&quot;
-)paren
-suffix:semicolon
+singleline_comment|//&t;&t;if (CURRENT-&gt;bh &amp;&amp; !buffer_locked(CURRENT-&gt;bh))
+singleline_comment|//&t;&t;&t;panic(DEVICE_NAME &quot;: block not locked&quot;);
 macro_line|#if 0
 id|printk
 c_func
@@ -1393,7 +1391,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|WRITE
 )paren
@@ -1869,7 +1871,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|WRITE
 )paren
@@ -1959,7 +1965,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|WRITE
 )paren
@@ -2003,7 +2013,7 @@ c_func
 (paren
 id|cp
 comma
-id|OUTPUT_MORE
+id|OUTPUT_LAST
 comma
 id|write_postamble
 comma
@@ -2021,7 +2031,7 @@ c_func
 (paren
 id|cp
 comma
-id|INPUT_MORE
+id|INPUT_LAST
 comma
 id|CURRENT-&gt;buffer
 comma
@@ -2065,7 +2075,11 @@ op_amp
 id|sw-&gt;control_bis
 comma
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|WRITE
 ques
@@ -2754,7 +2768,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|WRITE
 )paren
@@ -2812,7 +2830,11 @@ id|KERN_ERR
 l_string|&quot;swim3: timeout %sing sector %ld&bslash;n&quot;
 comma
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|WRITE
 ques
@@ -2952,11 +2974,15 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;swim3_interrupt, state=%d, cmd=%x, intr=%x, err=%x&bslash;n&quot;
+l_string|&quot;swim3_interrupt, state=%d, dir=%lx, intr=%x, err=%x&bslash;n&quot;
 comma
 id|fs-&gt;state
 comma
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 comma
 id|intr
 comma
@@ -3257,15 +3283,42 @@ id|cp
 op_assign
 id|fs-&gt;dma_cmd
 suffix:semicolon
-id|st_le32
+multiline_comment|/* We must wait a bit for dbdma to complete */
+r_for
+c_loop
+(paren
+id|n
+op_assign
+l_int|0
+suffix:semicolon
+(paren
+id|in_le32
 c_func
 (paren
 op_amp
-id|dr-&gt;control
-comma
-id|RUN
-op_lshift
-l_int|16
+id|dr-&gt;status
+)paren
+op_amp
+id|ACTIVE
+)paren
+op_logical_and
+id|n
+OL
+l_int|1000
+suffix:semicolon
+id|n
+op_increment
+)paren
+id|udelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+id|DBDMA_DO_STOP
+c_func
+(paren
+id|dr
 )paren
 suffix:semicolon
 id|out_8
@@ -3311,7 +3364,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|WRITE
 )paren
@@ -3406,7 +3463,11 @@ c_func
 (paren
 l_string|&quot;swim3: error %sing block %ld (err=%x)&bslash;n&quot;
 comma
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|WRITE
 ques
@@ -3466,11 +3527,15 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;  state=%d, cmd=%x, intr=%x, err=%x&bslash;n&quot;
+l_string|&quot;  state=%d, dir=%lx, intr=%x, err=%x&bslash;n&quot;
 comma
 id|fs-&gt;state
 comma
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 comma
 id|intr
 comma
@@ -3934,7 +3999,7 @@ suffix:semicolon
 r_int
 id|devnum
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -4100,7 +4165,7 @@ suffix:semicolon
 r_int
 id|devnum
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -4529,7 +4594,7 @@ suffix:semicolon
 r_int
 id|devnum
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -4611,7 +4676,7 @@ suffix:semicolon
 r_int
 id|devnum
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -4620,7 +4685,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -4678,7 +4743,7 @@ suffix:semicolon
 r_int
 id|devnum
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -4687,7 +4752,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -5070,11 +5135,18 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|do_fd_request
+id|DEVICE_REQUEST
 comma
 op_amp
 id|swim3_lock
 )paren
+suffix:semicolon
+id|blksize_size
+(braket
+id|MAJOR_NR
+)braket
+op_assign
+id|floppy_blocksizes
 suffix:semicolon
 id|blk_size
 (braket
@@ -5173,6 +5245,33 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_OF_resource
+c_func
+(paren
+id|swim
+comma
+l_int|0
+comma
+l_int|NULL
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;swim3: can&squot;t request IO resource !&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|mediabay
 op_assign
 (paren
@@ -5199,12 +5298,16 @@ id|mediabay
 op_eq
 l_int|NULL
 )paren
-id|feature_set
+id|pmac_call_feature
 c_func
 (paren
+id|PMAC_FTR_SWIM3_ENABLE
+comma
 id|swim
 comma
-id|FEATURE_SWIM3_enable
+l_int|0
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|memset
@@ -5387,12 +5490,16 @@ comma
 id|fs-&gt;swim3_intr
 )paren
 suffix:semicolon
-id|feature_clear
+id|pmac_call_feature
 c_func
 (paren
+id|PMAC_FTR_SWIM3_ENABLE
+comma
 id|swim
 comma
-id|FEATURE_SWIM3_enable
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -5400,7 +5507,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;if (request_irq(fs-&gt;dma_intr, fd_dma_interrupt, 0, &quot;SWIM3-dma&quot;, fs)) {&n;&t;&t;printk(KERN_ERR &quot;Couldn&squot;t get irq %d for SWIM3 DMA&quot;,&n;&t;&t;       fs-&gt;dma_intr);&n;&t;&t;feature_clear(swim, FEATURE_SWIM3_enable);&n;&t;&t;return -EBUSY;&n;&t;}&n;*/
+multiline_comment|/*&n;&t;if (request_irq(fs-&gt;dma_intr, fd_dma_interrupt, 0, &quot;SWIM3-dma&quot;, fs)) {&n;&t;&t;printk(KERN_ERR &quot;Couldn&squot;t get irq %d for SWIM3 DMA&quot;,&n;&t;&t;       fs-&gt;dma_intr);&n;&t;&t;pmac_call_feature(PMAC_FTR_SWIM3_ENABLE, swim, 0, 0);&n;&t;&t;return -EBUSY;&n;&t;}&n;*/
 id|init_timer
 c_func
 (paren

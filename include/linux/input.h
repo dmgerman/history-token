@@ -543,6 +543,10 @@ DECL|macro|KEY_SHOP
 mdefine_line|#define KEY_SHOP&t;&t;221
 DECL|macro|KEY_UNKNOWN
 mdefine_line|#define KEY_UNKNOWN&t;&t;240
+DECL|macro|KEY_BRIGHTNESSDOWN
+mdefine_line|#define KEY_BRIGHTNESSDOWN&t;224
+DECL|macro|KEY_BRIGHTNESSUP
+mdefine_line|#define KEY_BRIGHTNESSUP&t;225
 DECL|macro|BTN_MISC
 mdefine_line|#define BTN_MISC&t;&t;0x100
 DECL|macro|BTN_0
