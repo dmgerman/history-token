@@ -30,7 +30,7 @@ multiline_comment|/*&n; * Align VAL to ALIGN, which must be a power of two.&n; *
 DECL|macro|ALIGN
 mdefine_line|#define ALIGN(val,align)&t;(((val) + ((align) - 1)) &amp; ~((align) - 1))
 DECL|macro|MAX
-mdefine_line|#define MAX(val1, val2) &t;(((val1) &gt; (val2)) ? val1 : val2)
+mdefine_line|#define MAX(val1, val2)&t;&t;(((val1) &gt; (val2)) ? val1 : val2)
 multiline_comment|/*&n; * Offsets relative to the I/O and memory base addresses from where resources&n; * are allocated.&n; */
 DECL|macro|IO_ALLOC_OFFSET
 mdefine_line|#define IO_ALLOC_OFFSET&t;&t;0x00004000

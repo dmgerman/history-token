@@ -11,7 +11,7 @@ DECL|macro|RBV_BASE
 mdefine_line|#define  RBV_BASE&t;(0x50F26000)
 multiline_comment|/*&n; *&t;Not all of these are true post MacII I think.&n; *      CSA: probably the ones CHRP marks as &squot;unused&squot; change purposes&n; *      when the IWM becomes the SWIM.&n; *      http://www.rs6000.ibm.com/resource/technology/chrpio/via5.mak.html&n; *      ftp://ftp.austin.ibm.com/pub/technology/spec/chrp/inwork/CHRP_IORef_1.0.pdf&n; *&n; * also, http://developer.apple.com/technotes/hw/hw_09.html claims the&n; * following changes for IIfx:&n; * VIA1A_vSccWrReq not available and that VIA1A_vSync has moved to an IOP.&n; * Also, &quot;All of the functionality of VIA2 has been moved to other chips&quot;.&n; */
 DECL|macro|VIA1A_vSccWrReq
-mdefine_line|#define VIA1A_vSccWrReq&t;0x80&t;/* SCC write. (input)&n;&t;&t;&t;&t; * [CHRP] SCC WREQ: Reflects the state of the &n;&t;&t;&t;&t; * Wait/Request pins from the SCC.&n;&t;&t;&t;&t; * [Macintosh Family Hardware]&n;&t;&t;&t;&t; * as CHRP on SE/30,II,IIx,IIcx,IIci.&n;&t;&t;&t;&t; * on IIfx, &quot;0 means an active request&quot;&n;&t;&t;&t;&t; */
+mdefine_line|#define VIA1A_vSccWrReq&t;0x80&t;/* SCC write. (input)&n;&t;&t;&t;&t; * [CHRP] SCC WREQ: Reflects the state of the&n;&t;&t;&t;&t; * Wait/Request pins from the SCC.&n;&t;&t;&t;&t; * [Macintosh Family Hardware]&n;&t;&t;&t;&t; * as CHRP on SE/30,II,IIx,IIcx,IIci.&n;&t;&t;&t;&t; * on IIfx, &quot;0 means an active request&quot;&n;&t;&t;&t;&t; */
 DECL|macro|VIA1A_vRev8
 mdefine_line|#define VIA1A_vRev8&t;0x40&t;/* Revision 8 board ???&n;                                 * [CHRP] En WaitReqB: Lets the WaitReq_L&n;&t;&t;&t;&t; * signal from port B of the SCC appear on&n;&t;&t;&t;&t; * the PA7 input pin. Output.&n;&t;&t;&t;&t; * [Macintosh Family] On the SE/30, this&n;&t;&t;&t;&t; * is the bit to flip screen buffers.&n;&t;&t;&t;&t; * 0=alternate, 1=main.&n;&t;&t;&t;&t; * on II,IIx,IIcx,IIci,IIfx this is a bit&n;&t;&t;&t;&t; * for Rev ID. 0=II,IIx, 1=IIcx,IIci,IIfx&n;&t;&t;&t;&t; */
 DECL|macro|VIA1A_vHeadSel
@@ -63,7 +63,7 @@ DECL|macro|EVRB_SFTWRIE
 mdefine_line|#define&t;EVRB_SFTWRIE&t;0x00&t;/* Software Interrupt ReQuest */
 DECL|macro|EVRB_SFTWRID
 mdefine_line|#define&t;EVRB_SFTWRID&t;0x80&t;/* Software Interrupt ReQuest */
-multiline_comment|/*&n; *&t;VIA2 A register is the interrupt lines raised off the nubus &n; *&t;slots.&n; *      The below info is from &squot;Macintosh Family Hardware.&squot;&n; *      MkLinux calls the &squot;IIci internal video IRQ&squot; below the &squot;RBV slot 0 irq.&squot;&n; *      It also notes that the slot $9 IRQ is the &squot;Ethernet IRQ&squot; and&n; *      defines the &squot;Video IRQ&squot; as 0x40 for the &squot;EVR&squot; VIA work-alike.&n; *      Perhaps OSS uses vRAM1 and vRAM2 for ADB.&n; */
+multiline_comment|/*&n; *&t;VIA2 A register is the interrupt lines raised off the nubus&n; *&t;slots.&n; *      The below info is from &squot;Macintosh Family Hardware.&squot;&n; *      MkLinux calls the &squot;IIci internal video IRQ&squot; below the &squot;RBV slot 0 irq.&squot;&n; *      It also notes that the slot $9 IRQ is the &squot;Ethernet IRQ&squot; and&n; *      defines the &squot;Video IRQ&squot; as 0x40 for the &squot;EVR&squot; VIA work-alike.&n; *      Perhaps OSS uses vRAM1 and vRAM2 for ADB.&n; */
 DECL|macro|VIA2A_vRAM1
 mdefine_line|#define VIA2A_vRAM1&t;0x80&t;/* RAM size bit 1 (IIci: reserved) */
 DECL|macro|VIA2A_vRAM0
@@ -136,7 +136,7 @@ mdefine_line|#define vIER&t;0x1c00  /* [VIA/RBV]  Interrupt enable register. */
 DECL|macro|vBufA
 mdefine_line|#define vBufA&t;0x1e00  /* [VIA/RBV] register A (no handshake) */
 multiline_comment|/* The RBV only decodes the bottom eight address lines; the VIA doesn&squot;t&n; * decode the bottom eight -- so vBufB | rBufB will always get you BufB */
-multiline_comment|/* CSA: in fact, only bits 0,1, and 4 seem to be decoded.&n; * BUT note the values for rIER and rIFR, where the top 8 bits *do* seem&n; * to matter.  In fact *all* of the top 8 bits seem to matter; &n; * setting rIER=0x1813 and rIFR=0x1803 doesn&squot;t work, either.&n; * Perhaps some sort of &squot;compatibility mode&squot; is built-in? [21-May-1999]&n; */
+multiline_comment|/* CSA: in fact, only bits 0,1, and 4 seem to be decoded.&n; * BUT note the values for rIER and rIFR, where the top 8 bits *do* seem&n; * to matter.  In fact *all* of the top 8 bits seem to matter;&n; * setting rIER=0x1813 and rIFR=0x1803 doesn&squot;t work, either.&n; * Perhaps some sort of &squot;compatibility mode&squot; is built-in? [21-May-1999]&n; */
 DECL|macro|rBufB
 mdefine_line|#define rBufB   0x0000  /* [VIA/RBV]  Register B */
 DECL|macro|rExp

@@ -111,7 +111,7 @@ suffix:semicolon
 id|env
 op_increment
 suffix:semicolon
-macro_line|#if 0 &t;&t;&t;
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -204,7 +204,7 @@ id|value
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif &t;&t;&t;
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -605,8 +605,8 @@ id|MACH_MAC
 suffix:semicolon
 multiline_comment|/* Read this from the macinfo we got ! */
 multiline_comment|/*&t;boot_info.cputype=CPU_68020|FPUB_68881;*/
-multiline_comment|/* &t;boot_info.memory[0].addr=0;*/
-multiline_comment|/* &t;boot_info.memory[0].size=((mac_bi_data.id&gt;&gt;7)&amp;31)&lt;&lt;20;*/
+multiline_comment|/*&t;boot_info.memory[0].addr=0;*/
+multiline_comment|/*&t;boot_info.memory[0].size=((mac_bi_data.id&gt;&gt;7)&amp;31)&lt;&lt;20;*/
 id|boot_info.num_memory
 op_assign
 l_int|1

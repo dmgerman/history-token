@@ -3,7 +3,7 @@ DECL|macro|__ARCH_M68K_SOCKIOS__
 mdefine_line|#define __ARCH_M68K_SOCKIOS__
 multiline_comment|/* Socket-level I/O control calls. */
 DECL|macro|FIOSETOWN
-mdefine_line|#define FIOSETOWN &t;0x8901
+mdefine_line|#define FIOSETOWN&t;0x8901
 DECL|macro|SIOCSPGRP
 mdefine_line|#define SIOCSPGRP&t;0x8902
 DECL|macro|FIOGETOWN

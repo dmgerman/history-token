@@ -1,7 +1,7 @@
 macro_line|#ifndef _M68K_SEMBUF_H
 DECL|macro|_M68K_SEMBUF_H
 mdefine_line|#define _M68K_SEMBUF_H
-multiline_comment|/* &n; * The semid64_ds structure for m68k architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 64-bit time_t to solve y2038 problem&n; * - 2 miscellaneous 32-bit values&n; */
+multiline_comment|/*&n; * The semid64_ds structure for m68k architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 64-bit time_t to solve y2038 problem&n; * - 2 miscellaneous 32-bit values&n; */
 DECL|struct|semid64_ds
 r_struct
 id|semid64_ds

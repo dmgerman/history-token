@@ -36,7 +36,7 @@ DECL|macro|SUN3X_FDC_FVR
 mdefine_line|#define SUN3X_FDC_FVR     0x6e000800
 multiline_comment|/* some NVRAM addresses */
 DECL|macro|SUN3X_EEPROM_CONS
-mdefine_line|#define SUN3X_EEPROM_CONS &t;(SUN3X_EEPROM + 0x1f)
+mdefine_line|#define SUN3X_EEPROM_CONS&t;(SUN3X_EEPROM + 0x1f)
 DECL|macro|SUN3X_EEPROM_PORTA
 mdefine_line|#define SUN3X_EEPROM_PORTA&t;(SUN3X_EEPROM + 0x58)
 DECL|macro|SUN3X_EEPROM_PORTB

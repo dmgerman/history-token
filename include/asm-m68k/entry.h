@@ -19,7 +19,7 @@ DECL|macro|ALLOWINT
 mdefine_line|#define ALLOWINT&t;(~0x700)
 DECL|macro|MAX_NOINT_IPL
 mdefine_line|#define&t;MAX_NOINT_IPL&t;0
-macro_line|#endif /* machine compilation types */ 
+macro_line|#endif /* machine compilation types */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|curptr
 mdefine_line|#define curptr a2

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Apple Sound Chip &n; */
+multiline_comment|/*&n; *&t;Apple Sound Chip&n; */
 macro_line|#ifndef __ASM_MAC_ASC_H
 DECL|macro|__ASM_MAC_ASC_H
 mdefine_line|#define __ASM_MAC_ASC_H

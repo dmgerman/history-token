@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Virtual DMA allocation&n; *&n; * (C) 1999 Thomas Bogendoerfer (tsbogend@alpha.franken.de) &n; *&n; * 11/26/2000 -- disabled the existing code because it didn&squot;t work for &n; * me in 2.4.  Replaced with a significantly more primitive version &n; * similar to the sun3 code.  the old functionality was probably more &n; * desirable, but....   -- Sam Creasey (sammy@oh.verio.com)&n; *&n; */
+multiline_comment|/*&n; * Virtual DMA allocation&n; *&n; * (C) 1999 Thomas Bogendoerfer (tsbogend@alpha.franken.de)&n; *&n; * 11/26/2000 -- disabled the existing code because it didn&squot;t work for&n; * me in 2.4.  Replaced with a significantly more primitive version&n; * similar to the sun3 code.  the old functionality was probably more&n; * desirable, but....   -- Sam Creasey (sammy@oh.verio.com)&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
@@ -49,9 +49,9 @@ op_star
 id|SUN3X_IOMMU
 suffix:semicolon
 DECL|macro|dvma_entry_paddr
-mdefine_line|#define dvma_entry_paddr(index) &t;(iommu_pte[index] &amp; IOMMU_ADDR_MASK)
+mdefine_line|#define dvma_entry_paddr(index)&t;&t;(iommu_pte[index] &amp; IOMMU_ADDR_MASK)
 DECL|macro|dvma_entry_vaddr
-mdefine_line|#define dvma_entry_vaddr(index,paddr) &t;((index &lt;&lt; DVMA_PAGE_SHIFT) |  &bslash;&n;&t;&t;&t;&t;&t; (paddr &amp; (DVMA_PAGE_SIZE-1)))
+mdefine_line|#define dvma_entry_vaddr(index,paddr)&t;((index &lt;&lt; DVMA_PAGE_SHIFT) |  &bslash;&n;&t;&t;&t;&t;&t; (paddr &amp; (DVMA_PAGE_SIZE-1)))
 macro_line|#if 0
 mdefine_line|#define dvma_entry_set(index,addr)&t;(iommu_pte[index] =            &bslash;&n;&t;&t;&t;&t;&t;    (addr &amp; IOMMU_ADDR_MASK) | &bslash;&n;&t;&t;&t;&t;             IOMMU_DT_VALID | IOMMU_CACHE_INHIBIT)
 macro_line|#else
@@ -511,7 +511,7 @@ op_add_assign
 id|DVMA_PAGE_SIZE
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG&t;
+macro_line|#ifdef DEBUG
 r_for
 c_loop
 (paren

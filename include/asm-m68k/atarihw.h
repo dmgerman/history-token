@@ -359,7 +359,7 @@ id|len
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n;** Shifter  &n; */
+multiline_comment|/*&n;** Shifter&n; */
 DECL|macro|ST_LOW
 mdefine_line|#define ST_LOW  0
 DECL|macro|ST_MID
@@ -373,7 +373,7 @@ mdefine_line|#define TT_MID  4
 DECL|macro|TT_HIGH
 mdefine_line|#define TT_HIGH 6
 DECL|macro|SHF_BAS
-mdefine_line|#define SHF_BAS (0xffff8200)    
+mdefine_line|#define SHF_BAS (0xffff8200)
 DECL|struct|SHIFTER
 r_struct
 id|SHIFTER
@@ -718,7 +718,7 @@ DECL|macro|videl
 mdefine_line|#define&t;videl&t;((*(volatile struct VIDEL *)VIDEL_BAS))
 multiline_comment|/*&n;** DMA/WD1772 Disk Controller&n; */
 DECL|macro|FWD_BAS
-mdefine_line|#define FWD_BAS (0xffff8604)  
+mdefine_line|#define FWD_BAS (0xffff8604)
 DECL|struct|DMA_WD
 r_struct
 id|DMA_WD
@@ -949,7 +949,7 @@ DECL|macro|tt_scsi
 mdefine_line|#define&t;tt_scsi&t;&t;&t;((*(volatile struct TT_5380 *)TT_5380_BAS))
 DECL|macro|tt_scsi_regp
 mdefine_line|#define&t;tt_scsi_regp&t;((volatile char *)TT_5380_BAS)
-multiline_comment|/* &n;** Falcon DMA Sound Subsystem&n; */
+multiline_comment|/*&n;** Falcon DMA Sound Subsystem&n; */
 DECL|macro|MATRIX_BASE
 mdefine_line|#define MATRIX_BASE (0xffff8930)
 DECL|struct|MATRIX
@@ -1190,7 +1190,7 @@ DECL|macro|TT_SCC_DMA_BAS
 mdefine_line|#define&t;TT_SCC_DMA_BAS&t;(0xffff8c00)
 DECL|macro|tt_scc_dma
 mdefine_line|#define&t;tt_scc_dma&t;((*(volatile struct TT_DMA *)TT_SCC_DMA_BAS))
-multiline_comment|/*&n;** VIDEL Palette Register &n; */
+multiline_comment|/*&n;** VIDEL Palette Register&n; */
 DECL|macro|FPL_BAS
 mdefine_line|#define FPL_BAS (0xffff9800)
 DECL|struct|VIDEL_PALETTE

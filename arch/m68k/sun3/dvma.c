@@ -87,7 +87,7 @@ c_func
 id|ptep
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;printk(&quot;dvma_remap: addr %lx -&gt; %lx pte %08lx len %x&bslash;n&quot;, 
+singleline_comment|//&t;&t;printk(&quot;dvma_remap: addr %lx -&gt; %lx pte %08lx len %x&bslash;n&quot;,
 singleline_comment|//&t;&t;       kaddr, vaddr, pte, len);
 r_if
 c_cond

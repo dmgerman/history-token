@@ -99,7 +99,7 @@ suffix:semicolon
 multiline_comment|/* Utility macros */
 multiline_comment|/* Send one data byte over the bus and set mode for next operation&n; * with one move.l -- Atari recommends this...&n; */
 DECL|macro|DMA_LONG_WRITE
-mdefine_line|#define DMA_LONG_WRITE(data,mode)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*((unsigned long *)&amp;dma_wd.fdc_acces_seccount) = &t;&bslash;&n;&t;&t;&t;((data)&lt;&lt;16) | (mode);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
+mdefine_line|#define DMA_LONG_WRITE(data,mode)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*((unsigned long *)&amp;dma_wd.fdc_acces_seccount) =&t;&bslash;&n;&t;&t;&t;((data)&lt;&lt;16) | (mode);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
 DECL|macro|ENABLE_IRQ
 mdefine_line|#define ENABLE_IRQ()&t;atari_turnon_irq( IRQ_MFP_ACSI )
 DECL|macro|DISABLE_IRQ

@@ -5,6 +5,6 @@ DECL|macro|PAGE_OFFSET_RAW
 mdefine_line|#define PAGE_OFFSET_RAW&t;&t;0x00000000
 macro_line|#else
 DECL|macro|PAGE_OFFSET_RAW
-mdefine_line|#define PAGE_OFFSET_RAW&t;&t;0x0E000000 
+mdefine_line|#define PAGE_OFFSET_RAW&t;&t;0x0E000000
 macro_line|#endif
 eof

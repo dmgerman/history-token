@@ -349,7 +349,7 @@ DECL|macro|TRACE_FLPY_INT
 macro_line|#undef TRACE_FLPY_INT
 DECL|macro|NO_FLOPPY_ASSEMBLER
 mdefine_line|#define NO_FLOPPY_ASSEMBLER
-macro_line|#ifdef TRACE_FLPY_INT 
+macro_line|#ifdef TRACE_FLPY_INT
 r_static
 r_int
 id|calls

@@ -51,7 +51,7 @@ multiline_comment|/* cache code */
 DECL|macro|FLUSH_I_AND_D
 mdefine_line|#define FLUSH_I_AND_D&t;(0x00000808)
 DECL|macro|FLUSH_I
-mdefine_line|#define FLUSH_I &t;(0x00000008)
+mdefine_line|#define FLUSH_I&t;&t;(0x00000008)
 multiline_comment|/* This is needed whenever the virtual mapping of the current&n;   process changes.  */
 DECL|macro|__flush_cache_all
 mdefine_line|#define __flush_cache_all()&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (CPU_IS_040_OR_060)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;     &quot;.chip 68040&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;     &quot;cpusha %dc&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;     &quot;.chip 68k&quot;);&t;&t;&bslash;&n;&t;else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long _tmp;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&quot;movec %%cacr,%0&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&t;&t;     &quot;orw %1,%0&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;     &quot;movec %0,%%cacr&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;     : &quot;=&amp;d&quot; (_tmp)&t;&t;&bslash;&n;&t;&t;&t;&t;     : &quot;di&quot; (FLUSH_I_AND_D));&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})

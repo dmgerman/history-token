@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Q40 master Chip Control &n; * RTC stuff merged for compactnes..&n;*/
+multiline_comment|/*&n; * Q40 master Chip Control&n; * RTC stuff merged for compactnes..&n;*/
 macro_line|#ifndef _Q40_MASTER_H
 DECL|macro|_Q40_MASTER_H
 mdefine_line|#define _Q40_MASTER_H

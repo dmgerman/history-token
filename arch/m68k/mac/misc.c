@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Miscellaneous Mac68K-specific stuff &n; */
+multiline_comment|/*&n; * Miscellaneous Mac68K-specific stuff&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -2089,7 +2089,7 @@ multiline_comment|/* day in the month */
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Read/write the hardware clock.&n; */
+multiline_comment|/*&n; * Read/write the hardware clock.&n; */
 DECL|function|mac_hwclk
 r_int
 id|mac_hwclk
