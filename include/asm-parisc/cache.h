@@ -3,7 +3,6 @@ macro_line|#ifndef __ARCH_PARISC_CACHE_H
 DECL|macro|__ARCH_PARISC_CACHE_H
 mdefine_line|#define __ARCH_PARISC_CACHE_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * PA 2.0 processors have 64-byte cachelines; PA 1.1 processors have&n; * 32-byte cachelines.  The default configuration is not for SMP anyway,&n; * so if you&squot;re building for SMP, you should select the appropriate&n; * processor type.  There is a potential livelock danger when running&n; * a machine with this value set too small, but it&squot;s more probable you&squot;ll&n; * just ruin performance.&n; */
 macro_line|#ifdef CONFIG_PA20
 DECL|macro|L1_CACHE_BYTES
@@ -16,14 +15,13 @@ mdefine_line|#define L1_CACHE_BYTES 32
 DECL|macro|L1_CACHE_SHIFT
 mdefine_line|#define L1_CACHE_SHIFT 5
 macro_line|#endif
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|L1_CACHE_ALIGN
 mdefine_line|#define L1_CACHE_ALIGN(x)       (((x)+(L1_CACHE_BYTES-1))&amp;~(L1_CACHE_BYTES-1))
 DECL|macro|SMP_CACHE_BYTES
 mdefine_line|#define SMP_CACHE_BYTES L1_CACHE_BYTES
 DECL|macro|L1_CACHE_SHIFT_MAX
 mdefine_line|#define L1_CACHE_SHIFT_MAX 5&t;/* largest L1 which this arch supports */
-DECL|macro|__cacheline_aligned
-mdefine_line|#define __cacheline_aligned __attribute__((__aligned__(L1_CACHE_BYTES)))
 r_extern
 r_void
 id|flush_data_cache_local

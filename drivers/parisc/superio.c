@@ -1,4 +1,4 @@
-multiline_comment|/*      National Semiconductor NS87560UBD Super I/O controller used in&n; *      HP [BCJ]x000 workstations.&n; *&n; *      This chip is a horrid piece of engineering, and National&n; *      denies any knowledge of its existence. Thus no datasheet is&n; *      available off www.national.com. &n; *&n; *&t;(C) Copyright 2000 Linuxcare, Inc.&n; * &t;(C) Copyright 2000 Linuxcare Canada, Inc.&n; *&t;(C) Copyright 2000 Martin K. Petersen &lt;mkp@linuxcare.com&gt;&n; * &t;(C) Copyright 2000 Alex deVries &lt;alex@linuxcare.com&gt;&n; *      (C) Copyright 2001 John Marvin &lt;jsm@fc.hp.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.  &n; *&n; *&t;The initial version of this is by Martin Peterson.  Alex deVries&n; *&t;has spent a bit of time trying to coax it into working.&n; *&n; *      Major changes to get basic interrupt infrastructure working to&n; *      hopefully be able to support all SuperIO devices. Currently&n; *      works with serial. -- John Marvin &lt;jsm@fc.hp.com&gt;&n; */
+multiline_comment|/*      National Semiconductor NS87560UBD Super I/O controller used in&n; *      HP [BCJ]x000 workstations.&n; *&n; *      This chip is a horrid piece of engineering, and National&n; *      denies any knowledge of its existence. Thus no datasheet is&n; *      available off www.national.com. &n; *&n; *&t;(C) Copyright 2000 Linuxcare, Inc.&n; * &t;(C) Copyright 2000 Linuxcare Canada, Inc.&n; *&t;(C) Copyright 2000 Martin K. Petersen &lt;mkp@linuxcare.com&gt;&n; * &t;(C) Copyright 2000 Alex deVries &lt;alex@linuxcare.com&gt;&n; *      (C) Copyright 2001 John Marvin &lt;jsm fc hp com&gt;&n; *      (C) Copyright 2003 Grant Grundler &lt;grundler parisc-linux org&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.  &n; *&n; *&t;The initial version of this is by Martin Peterson.  Alex deVries&n; *&t;has spent a bit of time trying to coax it into working.&n; *&n; *      Major changes to get basic interrupt infrastructure working to&n; *      hopefully be able to support all SuperIO devices. Currently&n; *      works with serial. -- John Marvin &lt;jsm@fc.hp.com&gt;&n; */
 multiline_comment|/* NOTES:&n; * &n; * Function 0 is an IDE controller. It is identical to a PC87415 IDE&n; * controller (and identifies itself as such).&n; *&n; * Function 1 is a &quot;Legacy I/O&quot; controller. Under this function is a&n; * whole mess of legacy I/O peripherals. Of course, HP hasn&squot;t enabled&n; * all the functionality in hardware, but the following is available:&n; *&n; *      Two 16550A compatible serial controllers&n; *      An IEEE 1284 compatible parallel port&n; *      A floppy disk controller&n; *&n; * Function 2 is a USB controller.&n; *&n; * We must be incredibly careful during initialization.  Since all&n; * interrupts are routed through function 1 (which is not allowed by&n; * the PCI spec), we need to program the PICs on the legacy I/O port&n; * *before* we attempt to set up IDE and USB.  @#$!&amp;&n; *&n; * According to HP, devices are only enabled by firmware if they have&n; * a physical device connected.&n; *&n; * Configuration register bits:&n; *     0x5A: FDC, SP1, IDE1, SP2, IDE2, PAR, Reserved, P92&n; *     0x5B: RTC, 8259, 8254, DMA1, DMA2, KBC, P61, APM&n; *&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -23,55 +23,16 @@ r_static
 r_struct
 id|superio_device
 id|sio_dev
-op_assign
-(brace
-dot
-id|iosapic_irq
-op_assign
-op_minus
-l_int|1
-)brace
 suffix:semicolon
-DECL|macro|DEBUG_INIT
-macro_line|#undef DEBUG_INIT
-r_void
-DECL|function|superio_inform_irq
-id|superio_inform_irq
-c_func
-(paren
-r_int
-id|irq
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|sio_dev.iosapic_irq
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;SuperIO: superio_inform_irq called twice! (more than one SuperIO?)&bslash;n&quot;
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|sio_dev.iosapic_irq
-op_assign
-id|irq
-suffix:semicolon
-)brace
+DECL|macro|DEBUG_SUPERIO_INIT
+macro_line|#undef DEBUG_SUPERIO_INIT
+macro_line|#ifdef DEBUG_SUPERIO_INIT
+DECL|macro|DBG_INIT
+mdefine_line|#define DBG_INIT(x...)  printk(x)
+macro_line|#else
+DECL|macro|DBG_INIT
+mdefine_line|#define DBG_INIT(x...)
+macro_line|#endif
 r_static
 id|irqreturn_t
 DECL|function|superio_interrupt
@@ -303,36 +264,49 @@ suffix:semicolon
 id|u16
 id|word
 suffix:semicolon
-id|u8
-id|i
+r_if
+c_cond
+(paren
+id|sio-&gt;suckyio_irq_enabled
+)paren
+r_return
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|pdev
-op_logical_or
-id|sio-&gt;iosapic_irq
-op_eq
-op_minus
-l_int|1
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;All SuperIO functions not found!&bslash;n&quot;
-)paren
-suffix:semicolon
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sio-&gt;usb_pdev
+)paren
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
-)brace
+multiline_comment|/* use the IRQ iosapic found for USB INT D... */
+id|pdev-&gt;irq
+op_assign
+id|sio-&gt;usb_pdev-&gt;irq
+suffix:semicolon
+multiline_comment|/* ...then properly fixup the USB to point at suckyio PIC */
+id|sio-&gt;usb_pdev-&gt;irq
+op_assign
+id|superio_fixup_irq
+c_func
+(paren
+id|sio-&gt;usb_pdev
+)paren
+suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
@@ -344,11 +318,11 @@ c_func
 id|pdev
 )paren
 comma
-id|sio-&gt;iosapic_irq
+id|pdev-&gt;irq
 )paren
 suffix:semicolon
 multiline_comment|/* Find our I/O devices */
-id|pci_read_config_word
+id|pci_read_config_dword
 (paren
 id|pdev
 comma
@@ -371,7 +345,7 @@ comma
 id|sio-&gt;sp1_base
 )paren
 suffix:semicolon
-id|pci_read_config_word
+id|pci_read_config_dword
 (paren
 id|pdev
 comma
@@ -394,7 +368,7 @@ comma
 id|sio-&gt;sp2_base
 )paren
 suffix:semicolon
-id|pci_read_config_word
+id|pci_read_config_dword
 (paren
 id|pdev
 comma
@@ -417,7 +391,7 @@ comma
 id|sio-&gt;pp_base
 )paren
 suffix:semicolon
-id|pci_read_config_word
+id|pci_read_config_dword
 (paren
 id|pdev
 comma
@@ -440,7 +414,7 @@ comma
 id|sio-&gt;fdc_base
 )paren
 suffix:semicolon
-id|pci_read_config_word
+id|pci_read_config_dword
 (paren
 id|pdev
 comma
@@ -523,48 +497,51 @@ id|pci_set_master
 id|pdev
 )paren
 suffix:semicolon
-multiline_comment|/* Next project is programming the onboard interrupt&n;&t; * controllers.  PDC hasn&squot;t done this for us, since it&squot;s using&n;&t; * polled I/O.&n;&t; */
-multiline_comment|/* Set PIC interrupts to edge triggered */
-id|pci_write_config_byte
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Next project is programming the onboard interrupt controllers.&n;&t; * PDC hasn&squot;t done this for us, since it&squot;s using polled I/O.&n;&t; *&n;&t; * XXX Use dword writes to avoid bugs in Elroy or Suckyio Config&n;&t; *     space access.  PCI is by nature a 32-bit bus and config&n;&t; *     space can be sensitive to that.&n;&t; */
+multiline_comment|/* 0x64 - 0x67 :&n;&t;&t;DMA Rtg 2&n;&t;&t;DMA Rtg 3&n;&t;&t;DMA Chan Ctl&n;&t;&t;TRIGGER_1    == 0x82   USB &amp; IDE level triggered, rest to edge&n;&t;*/
+id|pci_write_config_dword
 (paren
 id|pdev
 comma
-id|TRIGGER_1
+l_int|0x64
 comma
-l_int|0x0
+l_int|0x82000000U
 )paren
 suffix:semicolon
-id|pci_write_config_byte
+multiline_comment|/* 0x68 - 0x6b :&n;&t;&t;TRIGGER_2    == 0x00   all edge triggered (not used)&n;&t;&t;CFG_IR_SER   == 0x43   SerPort1 = IRQ3, SerPort2 = IRQ4&n;&t;&t;CFG_IR_PF    == 0x65   ParPort  = IRQ5, FloppyCtlr = IRQ6&n;&t;&t;CFG_IR_IDE   == 0x07   IDE1 = IRQ7, reserved&n;&t;*/
+id|pci_write_config_dword
 (paren
 id|pdev
 comma
 id|TRIGGER_2
 comma
-l_int|0x0
+l_int|0x07654300U
 )paren
 suffix:semicolon
-multiline_comment|/* Disable all interrupt routing */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-id|IR_LOW
-suffix:semicolon
-id|i
-OL
-id|IR_HIGH
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|pci_write_config_byte
+multiline_comment|/* 0x6c - 0x6f :&n;&t;&t;CFG_IR_INTAB == 0x00&n;&t;&t;CFG_IR_INTCD == 0x10   USB = IRQ1&n;&t;&t;CFG_IR_PS2   == 0x00&n;&t;&t;CFG_IR_FXBUS == 0x00&n;&t;*/
+id|pci_write_config_dword
 (paren
 id|pdev
 comma
-id|i
+id|CFG_IR_INTAB
 comma
-l_int|0x0
+l_int|0x00001000U
+)paren
+suffix:semicolon
+multiline_comment|/* 0x70 - 0x73 :&n;&t;&t;CFG_IR_USB   == 0x00  not used. USB is connected to INTD.&n;&t;&t;CFG_IR_ACPI  == 0x00  not used.&n;&t;&t;DMA Priority == 0x4c88  Power on default value. NFC.&n;&t;*/
+id|pci_write_config_dword
+(paren
+id|pdev
+comma
+id|CFG_IR_USB
+comma
+l_int|0x4c880000U
 )paren
 suffix:semicolon
 multiline_comment|/* PIC1 Initialization Command Word register programming */
@@ -587,7 +564,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* ICW2: N/A */
+multiline_comment|/* ICW2: interrupt vector table - not used */
 id|outb
 (paren
 l_int|0x04
@@ -701,58 +678,6 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* Set up interrupt routing */
-id|pci_write_config_byte
-(paren
-id|pdev
-comma
-id|IR_USB
-comma
-l_int|0x10
-)paren
-suffix:semicolon
-multiline_comment|/* USB on IRQ1 */
-id|pci_write_config_byte
-(paren
-id|pdev
-comma
-id|IR_SER
-comma
-l_int|0x43
-)paren
-suffix:semicolon
-multiline_comment|/* SP1 on IRQ3, SP2 on IRQ4 */
-id|pci_write_config_byte
-(paren
-id|pdev
-comma
-id|IR_PFD
-comma
-l_int|0x65
-)paren
-suffix:semicolon
-multiline_comment|/* PAR on IRQ5, FDC on IRQ6 */
-id|pci_write_config_byte
-(paren
-id|pdev
-comma
-id|IR_IDE
-comma
-l_int|0x07
-)paren
-suffix:semicolon
-multiline_comment|/* IDE1 on IRQ7 */
-multiline_comment|/* Set USB and IDE to level triggered interrupts, rest to edge */
-id|pci_write_config_byte
-(paren
-id|pdev
-comma
-id|TRIGGER_1
-comma
-l_int|0x82
-)paren
-suffix:semicolon
-multiline_comment|/* IRQ 1 and 7 */
 multiline_comment|/* Setup USB power regulation */
 id|outb
 c_func
@@ -792,19 +717,13 @@ id|KERN_ERR
 l_string|&quot;USB regulator not initialized!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pci_enable_device
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|request_irq
 c_func
 (paren
-id|sio-&gt;iosapic_irq
+id|pdev-&gt;irq
 comma
 id|superio_interrupt
 comma
@@ -835,7 +754,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|sio-&gt;iosapic_irq_enabled
+id|sio-&gt;suckyio_irq_enabled
 op_assign
 l_int|1
 suffix:semicolon
@@ -937,18 +856,6 @@ r_int
 id|local_irq
 )paren
 (brace
-r_struct
-id|superio_device
-op_star
-id|sio
-op_assign
-(paren
-r_struct
-id|superio_device
-op_star
-)paren
-id|dev
-suffix:semicolon
 id|u8
 id|r8
 suffix:semicolon
@@ -978,7 +885,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;SuperIO: Illegal irq number.&bslash;n&quot;
+l_string|&quot;SuperIO: Illegal irq number (%d).&bslash;n&quot;
+comma
+id|local_irq
 )paren
 suffix:semicolon
 id|BUG
@@ -989,19 +898,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * It&squot;s possible that we haven&squot;t initialized the legacy IO&n;&t; * function yet. If not, do it now.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sio-&gt;iosapic_irq_enabled
-)paren
-id|superio_init
-c_func
-(paren
-id|sio
-)paren
-suffix:semicolon
 multiline_comment|/* Unmask interrupt */
 id|r8
 op_assign
@@ -1100,7 +996,7 @@ op_assign
 id|superio_unmask_irq
 )brace
 suffix:semicolon
-macro_line|#ifdef DEBUG_INIT
+macro_line|#ifdef DEBUG_SUPERIO_INIT
 DECL|variable|expected_device
 r_static
 r_int
@@ -1133,7 +1029,7 @@ id|pcidev
 r_int
 id|local_irq
 suffix:semicolon
-macro_line|#ifdef DEBUG_INIT
+macro_line|#ifdef DEBUG_SUPERIO_INIT
 r_int
 id|fn
 suffix:semicolon
@@ -1263,7 +1159,7 @@ id|sio_dev.lio_pdev
 op_assign
 id|pcidev
 suffix:semicolon
-multiline_comment|/* save for later initialization */
+multiline_comment|/* save for superio_init() */
 r_return
 op_minus
 l_int|1
@@ -1272,6 +1168,11 @@ r_case
 id|PCI_DEVICE_ID_NS_87560_USB
 suffix:colon
 multiline_comment|/* Function 2 */
+id|sio_dev.usb_pdev
+op_assign
+id|pcidev
+suffix:semicolon
+multiline_comment|/* save for superio_init() */
 id|local_irq
 op_assign
 id|USB_IRQ
@@ -1382,6 +1283,15 @@ macro_line|#ifdef CONFIG_SERIAL_8250
 r_int
 id|retval
 suffix:semicolon
+r_extern
+r_void
+id|serial8250_console_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* drivers/serial/8250.c */
 r_if
 c_cond
 (paren
@@ -1395,15 +1305,19 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sio_dev.iosapic_irq_enabled
+id|serial
 )paren
-id|superio_init
+(brace
+id|printk
 c_func
 (paren
-op_amp
-id|sio_dev
+id|KERN_WARNING
+l_string|&quot;SuperIO: Could not get memory for serial struct.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|serial
 (braket
 l_int|0
@@ -1412,6 +1326,17 @@ dot
 id|iobase
 op_assign
 id|sio_dev.sp1_base
+suffix:semicolon
+id|serial
+(braket
+l_int|0
+)braket
+dot
+id|irq
+op_assign
+id|sio_dev.irq_region-&gt;data.irqbase
+op_plus
+id|SP1_IRQ
 suffix:semicolon
 id|retval
 op_assign
@@ -1432,11 +1357,20 @@ id|retval
 OL
 l_int|0
 )paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;SuperIO: Register Serial #0 failed.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|serial8250_console_init
+c_func
+(paren
 )paren
 suffix:semicolon
 id|serial
@@ -1447,6 +1381,17 @@ dot
 id|iobase
 op_assign
 id|sio_dev.sp2_base
+suffix:semicolon
+id|serial
+(braket
+l_int|1
+)braket
+dot
+id|irq
+op_assign
+id|sio_dev.irq_region-&gt;data.irqbase
+op_plus
+id|SP2_IRQ
 suffix:semicolon
 id|retval
 op_assign
@@ -1476,14 +1421,7 @@ l_string|&quot;SuperIO: Register Serial #1 failed.&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif /* CONFIG_SERIAL_8250 */
 )brace
-DECL|variable|superio_serial_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|superio_serial_init
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PARPORT_PC
+r_static
 r_void
 id|__devinit
 DECL|function|superio_parport_init
@@ -1493,28 +1431,7 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sio_dev.irq_region
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* superio not present */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sio_dev.iosapic_irq_enabled
-)paren
-id|superio_init
-c_func
-(paren
-op_amp
-id|sio_dev
-)paren
-suffix:semicolon
+macro_line|#ifdef CONFIG_PARPORT_PC
 r_if
 c_cond
 (paren
@@ -1545,15 +1462,8 @@ id|KERN_WARNING
 l_string|&quot;SuperIO: Probing parallel port failed.&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-DECL|variable|superio_parport_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|superio_parport_init
-)paren
-suffix:semicolon
 macro_line|#endif&t;/* CONFIG_PARPORT_PC */
+)brace
 r_int
 DECL|function|superio_get_ide_irq
 id|superio_get_ide_irq
@@ -1603,8 +1513,8 @@ op_star
 id|id
 )paren
 (brace
-macro_line|#ifdef DEBUG_INIT
-id|printk
+multiline_comment|/*&n;&t;** superio_probe(00:0e.0) ven 0x100b dev 0x2 sv 0x0 sd 0x0 class 0x1018a&n;&t;** superio_probe(00:0e.1) ven 0x100b dev 0xe sv 0x0 sd 0x0 class 0x68000&n;&t;** superio_probe(00:0e.2) ven 0x100b dev 0x12 sv 0x0 sd 0x0 class 0xc0310&n;&t;*/
+id|DBG_INIT
 c_func
 (paren
 l_string|&quot;superio_probe(%s) ven 0x%x dev 0x%x sv 0x%x sd 0x%x class 0x%x&bslash;n&quot;
@@ -1628,9 +1538,13 @@ op_member_access_from_pointer
 r_class
 )paren
 suffix:semicolon
-multiline_comment|/*&n;** superio_probe(00:0e.0) ven 0x100b dev 0x2 sv 0x0 sd 0x0 class 0x1018a&n;** superio_probe(00:0e.1) ven 0x100b dev 0xe sv 0x0 sd 0x0 class 0x68000&n;** superio_probe(00:0e.2) ven 0x100b dev 0x12 sv 0x0 sd 0x0 class 0xc0310&n;*/
-macro_line|#endif
-multiline_comment|/* superio_fixup_irq(dev); */
+id|superio_init
+c_func
+(paren
+op_amp
+id|sio_dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1639,33 +1553,70 @@ op_eq
 id|PCI_DEVICE_ID_NS_87560_LIO
 )paren
 (brace
-macro_line|#ifdef CONFIG_PARPORT_PC
+multiline_comment|/* Function 1 */
 id|superio_parport_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_8250
 id|superio_serial_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* REVISIT : superio_fdc_init() ? */
+multiline_comment|/* REVISIT XXX : superio_fdc_init() ? */
 r_return
 l_int|0
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_NS_87415
+)paren
 (brace
-multiline_comment|/* don&squot;t claim this device; let whatever either driver&n;&t;&t; * do it &n;&t;&t; */
-r_return
-op_minus
-l_int|1
+multiline_comment|/* Function 0 */
+id|DBG_INIT
+c_func
+(paren
+l_string|&quot;superio_probe: ignoring IDE 87415&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_NS_87560_USB
+)paren
+(brace
+multiline_comment|/* Function 2 */
+id|DBG_INIT
+c_func
+(paren
+l_string|&quot;superio_probe: ignoring USB OHCI controller&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|DBG_INIT
+c_func
+(paren
+l_string|&quot;superio_probe: WTF? Fire Extinguisher?&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Let appropriate other driver claim this device. */
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 )brace
 DECL|variable|superio_tbl
 r_static
@@ -1759,7 +1710,6 @@ id|superio_driver
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Make late initcall to ensure the serial and tty layers are initialised&n; * before we start superio.&n; *&n; * FIXME: does this break the superio console?&n; */
 DECL|variable|superio_modinit
 id|module_init
 c_func

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -27,8 +28,6 @@ DECL|macro|DBG
 mdefine_line|#define DBG(x)
 macro_line|#endif
 macro_line|#ifdef __LP64__
-DECL|macro|CHILD_IS_32BIT
-mdefine_line|#define CHILD_IS_32BIT&t;(child-&gt;personality == PER_LINUX_32BIT)
 multiline_comment|/* This function is needed to translate 32 bit pt_regs offsets in to&n; * 64 bit pt_regs offsets.  For example, a 32 bit gdb under a 64 bit kernel&n; * will request offset 12 if it wants gr3, but the lower 32 bits of&n; * the 64 bit kernels view of gr3 will be at offset 28 (3*8 + 4).&n; * This code relies on a 32 bit pt_regs being comprised of 32 bit values&n; * except for the fp registers which (a) are 64 bits, and (b) follow&n; * the gr registers at the start of pt_regs.  The 32 bit pt_regs should&n; * be half the size of the 64 bit pt_regs, plus 32*4 to allow for fr[]&n; * being 64 bit in both cases.&n; */
 DECL|function|translate_usr_offset
 r_static
@@ -404,7 +403,11 @@ macro_line|#ifdef __LP64__
 r_if
 c_cond
 (paren
-id|CHILD_IS_32BIT
+id|is_compat_task
+c_func
+(paren
+id|child
+)paren
 )paren
 (brace
 r_int
@@ -577,7 +580,11 @@ macro_line|#ifdef __LP64__
 r_if
 c_cond
 (paren
-id|CHILD_IS_32BIT
+id|is_compat_task
+c_func
+(paren
+id|child
+)paren
 )paren
 (brace
 r_int
@@ -702,7 +709,11 @@ macro_line|#ifdef __LP64__
 r_if
 c_cond
 (paren
-id|CHILD_IS_32BIT
+id|is_compat_task
+c_func
+(paren
+id|child
+)paren
 )paren
 (brace
 r_int
@@ -959,7 +970,11 @@ macro_line|#ifdef __LP64__
 r_if
 c_cond
 (paren
-id|CHILD_IS_32BIT
+id|is_compat_task
+c_func
+(paren
+id|child
+)paren
 )paren
 (brace
 r_if

@@ -298,6 +298,24 @@ op_star
 id|alignf_data
 )paren
 suffix:semicolon
+r_int
+id|adjust_resource
+c_func
+(paren
+r_struct
+id|resource
+op_star
+id|res
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
 multiline_comment|/* Convenience shorthand with allocation */
 DECL|macro|request_region
 mdefine_line|#define request_region(start,n,name)&t;__request_region(&amp;ioport_resource, (start), (n), (name))

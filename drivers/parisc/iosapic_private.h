@@ -1,3 +1,4 @@
+multiline_comment|/* &n; *    Private structs/constants for PARISC IOSAPIC support&n; *&n; *    Copyright (C) 2000 Hewlett Packard (Grant Grundler)&n; *    Copyright (C) 2000,2003 Grant Grundler (grundler at parisc-linux.org)&n; *    Copyright (C) 2002 Matthew Wilcox (willy at parisc-linux.org)&n; *&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n;** This file is private to iosapic driver.&n;** If stuff needs to be used by another driver, move it to a common file.&n;**&n;** WARNING: fields most data structures here are ordered to make sure&n;**          they pack nicely for 64-bit compilation. (ie sizeof(long) == 8)&n;*/
 multiline_comment|/*&n;** Interrupt Routing Stuff&n;** -----------------------&n;** The interrupt routing table consists of entries derived from&n;** MP Specification Draft 1.5. There is one interrupt routing &n;** table per cell.  N- and L-class consist of a single cell.&n;*/
 DECL|struct|irt_entry
@@ -115,59 +116,59 @@ DECL|struct|vector_info
 r_struct
 id|vector_info
 (brace
-DECL|member|vi_ios
+DECL|member|iosapic
 r_struct
 id|iosapic_info
 op_star
-id|vi_ios
+id|iosapic
 suffix:semicolon
 multiline_comment|/* I/O SAPIC this vector is on */
-DECL|member|vi_irte
+DECL|member|irte
 r_struct
 id|irt_entry
 op_star
-id|vi_irte
+id|irte
 suffix:semicolon
 multiline_comment|/* IRT entry */
-DECL|member|vi_eoi_addr
+DECL|member|eoi_addr
 id|u32
 op_star
-id|vi_eoi_addr
+id|eoi_addr
 suffix:semicolon
 multiline_comment|/* precalculate EOI reg address */
-DECL|member|vi_eoi_data
+DECL|member|eoi_data
 id|u32
-id|vi_eoi_data
+id|eoi_data
 suffix:semicolon
 multiline_comment|/* IA64: ?       PA: swapped txn_data */
-DECL|member|vi_txn_irq
+DECL|member|txn_irq
 r_int
-id|vi_txn_irq
+id|txn_irq
 suffix:semicolon
 multiline_comment|/* virtual IRQ number for processor */
-DECL|member|vi_txn_addr
+DECL|member|txn_addr
 id|ulong
-id|vi_txn_addr
+id|txn_addr
 suffix:semicolon
 multiline_comment|/* IA64: id_eid  PA: partial HPA */
-DECL|member|vi_txn_data
+DECL|member|txn_data
 id|ulong
-id|vi_txn_data
+id|txn_data
 suffix:semicolon
 multiline_comment|/* IA64: vector  PA: EIR bit */
-DECL|member|vi_status
+DECL|member|status
 id|u8
-id|vi_status
+id|status
 suffix:semicolon
 multiline_comment|/* status/flags */
-DECL|member|vi_irqline
+DECL|member|irqline
 id|u8
-id|vi_irqline
+id|irqline
 suffix:semicolon
 multiline_comment|/* INTINn(IRQ) */
-DECL|member|vi_name
+DECL|member|name
 r_char
-id|vi_name
+id|name
 (braket
 l_int|32
 )braket

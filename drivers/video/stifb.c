@@ -1,8 +1,10 @@
-multiline_comment|/*&n; * linux/drivers/video/stifb.c - &n; * Low level Frame buffer driver for HP workstations with &n; * STI (standard text interface) video firmware.&n; *&n; * Copyright (C) 2001-2002 Helge Deller &lt;deller@gmx.de&gt;&n; * Portions Copyright (C) 2001 Thomas Bogendoerfer &lt;tsbogend@alpha.franken.de&gt;&n; * &n; * Based on:&n; * - linux/drivers/video/artistfb.c -- Artist frame buffer driver&n; *&t;Copyright (C) 2000 Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *   - based on skeletonfb, which was&n; *&t;Created 28 Dec 1997 by Geert Uytterhoeven&n; * - HP Xhp cfb-based X11 window driver for XFree86&n; *&t;(c)Copyright 1992 Hewlett-Packard Co.&n; *&n; * &n; *  The following graphics display devices (NGLE family) are supported by this driver:&n; *&n; *  HPA4070A&t;known as &quot;HCRX&quot;, a 1280x1024 color device with 8 planes&n; *  HPA4071A&t;known as &quot;HCRX24&quot;, a 1280x1024 color device with 24 planes,&n; *&t;&t;optionally available with a hardware accelerator as HPA4071A_Z&n; *  HPA1659A&t;known as &quot;CRX&quot;, a 1280x1024 color device with 8 planes&n; *  HPA1439A&t;known as &quot;CRX24&quot;, a 1280x1024 color device with 24 planes,&n; *&t;&t;optionally available with a hardware accelerator.&n; *  HPA1924A&t;known as &quot;GRX&quot;, a 1280x1024 grayscale device with 8 planes&n; *  HPA2269A&t;known as &quot;Dual CRX&quot;, a 1280x1024 color device with 8 planes,&n; *&t;&t;implements support for two displays on a single graphics card.&n; *  HP710C&t;internal graphics support optionally available on the HP9000s710 SPU,&n; *&t;&t;supports 1280x1024 color displays with 8 planes.&n; *  HP710G&t;same as HP710C, 1280x1024 grayscale only&n; *  HP710L&t;same as HP710C, 1024x768 color only&n; *  HP712&t;internal graphics support on HP9000s712 SPU, supports 640x480, &n; *&t;&t;1024x768 or 1280x1024 color displays on 8 planes (Artist)&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
-multiline_comment|/* TODO:&n; *&t;- remove the static fb_info to support multiple cards&n; *&t;- 1bpp mode is completely untested&n; *&t;- add support for h/w acceleration&n; *&t;- add hardware cursor&n; */
+multiline_comment|/*&n; * linux/drivers/video/stifb.c - &n; * Low level Frame buffer driver for HP workstations with &n; * STI (standard text interface) video firmware.&n; *&n; * Copyright (C) 2001-2004 Helge Deller &lt;deller@gmx.de&gt;&n; * Portions Copyright (C) 2001 Thomas Bogendoerfer &lt;tsbogend@alpha.franken.de&gt;&n; * &n; * Based on:&n; * - linux/drivers/video/artistfb.c -- Artist frame buffer driver&n; *&t;Copyright (C) 2000 Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *   - based on skeletonfb, which was&n; *&t;Created 28 Dec 1997 by Geert Uytterhoeven&n; * - HP Xhp cfb-based X11 window driver for XFree86&n; *&t;(c)Copyright 1992 Hewlett-Packard Co.&n; *&n; * &n; *  The following graphics display devices (NGLE family) are supported by this driver:&n; *&n; *  HPA4070A&t;known as &quot;HCRX&quot;, a 1280x1024 color device with 8 planes&n; *  HPA4071A&t;known as &quot;HCRX24&quot;, a 1280x1024 color device with 24 planes,&n; *&t;&t;optionally available with a hardware accelerator as HPA4071A_Z&n; *  HPA1659A&t;known as &quot;CRX&quot;, a 1280x1024 color device with 8 planes&n; *  HPA1439A&t;known as &quot;CRX24&quot;, a 1280x1024 color device with 24 planes,&n; *&t;&t;optionally available with a hardware accelerator.&n; *  HPA1924A&t;known as &quot;GRX&quot;, a 1280x1024 grayscale device with 8 planes&n; *  HPA2269A&t;known as &quot;Dual CRX&quot;, a 1280x1024 color device with 8 planes,&n; *&t;&t;implements support for two displays on a single graphics card.&n; *  HP710C&t;internal graphics support optionally available on the HP9000s710 SPU,&n; *&t;&t;supports 1280x1024 color displays with 8 planes.&n; *  HP710G&t;same as HP710C, 1280x1024 grayscale only&n; *  HP710L&t;same as HP710C, 1024x768 color only&n; *  HP712&t;internal graphics support on HP9000s712 SPU, supports 640x480, &n; *&t;&t;1024x768 or 1280x1024 color displays on 8 planes (Artist)&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/* TODO:&n; *&t;- 1bpp mode is completely untested&n; *&t;- add support for h/w acceleration&n; *&t;- add hardware cursor&n; *&t;- automatically disable double buffering (e.g. on RDI precisionbook laptop)&n; */
 multiline_comment|/* on supported graphic devices you may:&n; * #define FALLBACK_TO_1BPP to fall back to 1 bpp, or&n; * #undef  FALLBACK_TO_1BPP to reject support for unsupported cards */
 DECL|macro|FALLBACK_TO_1BPP
 macro_line|#undef FALLBACK_TO_1BPP
+DECL|macro|DEBUG_STIFB_REGS
+macro_line|#undef DEBUG_STIFB_REGS&t;&t;/* debug sti register accesses */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -235,10 +237,32 @@ DECL|macro|READ_BYTE
 mdefine_line|#define READ_BYTE(fb,reg)&t;&t;__raw_readb((fb)-&gt;info.fix.mmio_start + (reg))
 DECL|macro|READ_WORD
 mdefine_line|#define READ_WORD(fb,reg)&t;&t;__raw_readl((fb)-&gt;info.fix.mmio_start + (reg))
+macro_line|#ifndef DEBUG_STIFB_REGS
+DECL|macro|DEBUG_OFF
+macro_line|# define  DEBUG_OFF()
+DECL|macro|DEBUG_ON
+macro_line|# define  DEBUG_ON()
 DECL|macro|WRITE_BYTE
-mdefine_line|#define WRITE_BYTE(value,fb,reg)&t;__raw_writeb((value),(fb)-&gt;info.fix.mmio_start + (reg))
+macro_line|# define WRITE_BYTE(value,fb,reg)&t;__raw_writeb((value),(fb)-&gt;info.fix.mmio_start + (reg))
 DECL|macro|WRITE_WORD
-mdefine_line|#define WRITE_WORD(value,fb,reg)&t;__raw_writel((value),(fb)-&gt;info.fix.mmio_start + (reg))
+macro_line|# define WRITE_WORD(value,fb,reg)&t;__raw_writel((value),(fb)-&gt;info.fix.mmio_start + (reg))
+macro_line|#else
+DECL|variable|debug_on
+r_static
+r_int
+id|debug_on
+op_assign
+l_int|1
+suffix:semicolon
+DECL|macro|DEBUG_OFF
+macro_line|# define  DEBUG_OFF() debug_on=0
+DECL|macro|DEBUG_ON
+macro_line|# define  DEBUG_ON()  debug_on=1
+DECL|macro|WRITE_BYTE
+macro_line|# define WRITE_BYTE(value,fb,reg)&t;do { if (debug_on) &bslash;&n;&t;&t;&t;&t;&t;&t;printk(KERN_DEBUG &quot;%30s: WRITE_BYTE(0x%06x) = 0x%02x (old=0x%02x)&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;&t;&t;__FUNCTION__, reg, value, READ_BYTE(fb,reg)); &t;&t;  &bslash;&n;&t;&t;&t;&t;&t;__raw_writeb((value),(fb)-&gt;info.fix.mmio_start + (reg)); } while (0)
+DECL|macro|WRITE_WORD
+macro_line|# define WRITE_WORD(value,fb,reg)&t;do { if (debug_on) &bslash;&n;&t;&t;&t;&t;&t;&t;printk(KERN_DEBUG &quot;%30s: WRITE_WORD(0x%06x) = 0x%08x (old=0x%08x)&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;&t;&t;__FUNCTION__, reg, value, READ_WORD(fb,reg)); &t;&t;  &bslash;&n;&t;&t;&t;&t;&t;__raw_writel((value),(fb)-&gt;info.fix.mmio_start + (reg)); } while (0)
+macro_line|#endif /* DEBUG_STIFB_REGS */
 DECL|macro|ENABLE
 mdefine_line|#define ENABLE&t;1&t;/* for enabling/disabling screen */&t;
 DECL|macro|DISABLE
@@ -1154,7 +1178,7 @@ mdefine_line|#define NGLE_SET_TRANSFERDATA(fb, val) &bslash;&n;&t;WRITE_WORD(val
 DECL|macro|NGLE_SET_DSTXY
 mdefine_line|#define NGLE_SET_DSTXY(fb, val) &bslash;&n;&t;WRITE_WORD(val, fb, REG_6)
 DECL|macro|NGLE_LONG_FB_ADDRESS
-mdefine_line|#define NGLE_LONG_FB_ADDRESS(fbaddrbase, x, y) (&t;&t;&bslash;&n;&t;(u32) (fbaddrbase) +&t;&t;&t;&t;&bslash;&n;&t;    (&t;(unsigned int)  ( (y) &lt;&lt; 13      ) |&t;&t;&bslash;&n;&t;&t;(unsigned int)  ( (x) &lt;&lt; 2       )&t;)&t;&bslash;&n;&t;)
+mdefine_line|#define NGLE_LONG_FB_ADDRESS(fbaddrbase, x, y) (&t;&t;&bslash;&n;&t;(u32) (fbaddrbase) +&t;&t;&t;&t;&t;&bslash;&n;&t;    (&t;(unsigned int)  ( (y) &lt;&lt; 13      ) |&t;&t;&bslash;&n;&t;&t;(unsigned int)  ( (x) &lt;&lt; 2       )&t;)&t;&bslash;&n;&t;)
 DECL|macro|NGLE_BINC_SET_DSTADDR
 mdefine_line|#define NGLE_BINC_SET_DSTADDR(fb, addr) &bslash;&n;&t;WRITE_WORD(addr, fb, REG_3)
 DECL|macro|NGLE_BINC_SET_SRCADDR
@@ -1326,6 +1350,7 @@ r_int
 id|height
 )paren
 (brace
+multiline_comment|/* REG_6 seems to have special values when run on a &n;&t;   RDI precisionbook parisc laptop (INTERNAL_EG_DX1024 or&n;&t;   INTERNAL_EG_X1024).  The values are:&n;&t;&t;0x2f0: internal (LCD) &amp; external display enabled&n;&t;&t;0x2a0: external display only&n;&t;&t;0x000: zero on standard artist graphic cards&n;&t;*/
 id|WRITE_WORD
 c_func
 (paren
@@ -2502,9 +2527,8 @@ id|enable
 )paren
 (brace
 r_case
-l_int|1
+id|ENABLE
 suffix:colon
-multiline_comment|/* ENABLE */
 multiline_comment|/* clear screen */
 r_if
 c_cond
@@ -2558,9 +2582,8 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0
+id|DISABLE
 suffix:colon
-multiline_comment|/* DISABLE */
 multiline_comment|/* clear screen */
 r_if
 c_cond
@@ -3568,6 +3591,11 @@ id|blue
 op_rshift_assign
 l_int|8
 suffix:semicolon
+id|DEBUG_OFF
+c_func
+(paren
+)paren
+suffix:semicolon
 id|START_IMAGE_COLORMAP_ACCESS
 c_func
 (paren
@@ -3706,6 +3734,11 @@ id|fb
 )paren
 suffix:semicolon
 )brace
+id|DEBUG_ON
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4219,6 +4252,36 @@ id|fb-&gt;id
 )paren
 (brace
 r_case
+id|CRT_ID_VISUALIZE_EG
+suffix:colon
+multiline_comment|/* look for a double buffering device like e.g. the &n;&t;&t;   &quot;INTERNAL_EG_DX1024&quot; in the RDI precisionbook laptop&n;&t;&t;   which won&squot;t work. The same device in non-double &n;&t;&t;   buffering mode returns &quot;INTERNAL_EG_X1024&quot;. */
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|sti-&gt;outptr.dev_name
+comma
+l_string|&quot;EG_DX&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;stifb: ignoring &squot;%s&squot;. Disable double buffering in IPL menu.&bslash;n&quot;
+comma
+id|sti-&gt;outptr.dev_name
+)paren
+suffix:semicolon
+r_goto
+id|out_err0
+suffix:semicolon
+)brace
+multiline_comment|/* fall though */
+r_case
 id|S9000_ID_ARTIST
 suffix:colon
 r_case
@@ -4233,9 +4296,6 @@ suffix:colon
 r_case
 id|S9000_ID_A1439A
 suffix:colon
-r_case
-id|CRT_ID_VISUALIZE_EG
-suffix:colon
 r_break
 suffix:semicolon
 r_default
@@ -4244,13 +4304,15 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;stifb: Unsupported gfx card id 0x%08x&bslash;n&quot;
+l_string|&quot;stifb: &squot;%s&squot; (id: 0x%08x) not supported.&bslash;n&quot;
+comma
+id|sti-&gt;outptr.dev_name
 comma
 id|fb-&gt;id
 )paren
 suffix:semicolon
 r_goto
-id|out_err1
+id|out_err0
 suffix:semicolon
 )brace
 multiline_comment|/* default to 8 bpp on most graphic chips */
@@ -4553,7 +4615,7 @@ id|fb-&gt;id
 )paren
 suffix:semicolon
 r_goto
-id|out_err1
+id|out_err0
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -4864,7 +4926,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;fb%d: %s %dx%d-%d frame buffer device, id: %04x, mmio: 0x%04lx&bslash;n&quot;
+l_string|&quot;fb%d: %s %dx%d-%d frame buffer device, %s, id: %04x, mmio: 0x%04lx&bslash;n&quot;
 comma
 id|fb-&gt;info.node
 comma
@@ -4875,6 +4937,8 @@ comma
 id|var-&gt;yres
 comma
 id|var-&gt;bits_per_pixel
+comma
+id|sti-&gt;outptr.dev_name
 comma
 id|fb-&gt;id
 comma
@@ -4913,6 +4977,8 @@ op_amp
 id|info-&gt;cmap
 )paren
 suffix:semicolon
+id|out_err0
+suffix:colon
 id|kfree
 c_func
 (paren
@@ -4924,6 +4990,12 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
+DECL|variable|__initdata
+r_static
+r_int
+id|stifb_disabled
+id|__initdata
+suffix:semicolon
 r_int
 id|__init
 DECL|function|stifb_init
@@ -4941,6 +5013,24 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|stifb_disabled
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;stifb: disabled by &bslash;&quot;stifb=off&bslash;&quot; kernel parameter&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENXIO
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -5134,6 +5224,31 @@ id|options
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|options
+comma
+l_string|&quot;off&quot;
+comma
+l_int|3
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|stifb_disabled
+op_assign
+l_int|1
+suffix:semicolon
+id|options
+op_add_assign
+l_int|3
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

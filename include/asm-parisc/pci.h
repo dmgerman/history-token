@@ -9,7 +9,7 @@ mdefine_line|#define PCI_MAX_BUSSES&t;256
 multiline_comment|/* [soapbox on]&n;** Who the hell can develop stuff without ASSERT or VASSERT?&n;** No one understands all the modules across all platforms.&n;** For linux add another dimension - processor architectures.&n;**&n;** This should be a standard/global macro used liberally&n;** in all code. Every respectable engineer I know in HP&n;** would support this argument. - grant&n;** [soapbox off]&n;*/
 macro_line|#ifdef PCI_DEBUG
 DECL|macro|ASSERT
-mdefine_line|#define ASSERT(expr) &bslash;&n;&t;if(!(expr)) { &bslash;&n;&t;&t;printk( &quot;&bslash;n&quot; __FILE__ &quot;:%d: Assertion &quot; #expr &quot; failed!&bslash;n&quot;,__LINE__); &bslash;&n;&t;&t;panic(#expr); &bslash;&n;&t;}
+mdefine_line|#define ASSERT(expr) &bslash;&n;&t;if(!(expr)) { &bslash;&n;&t;&t;printk(&quot;&bslash;n%s:%d: Assertion &quot; #expr &quot; failed!&bslash;n&quot;, &bslash;&n;&t;&t;       __FILE__, __LINE__); &bslash;&n;&t;&t;panic(#expr); &bslash;&n;&t;}
 macro_line|#else
 DECL|macro|ASSERT
 mdefine_line|#define ASSERT(expr)
@@ -69,6 +69,15 @@ id|resource
 id|elmmio_space
 suffix:semicolon
 multiline_comment|/* additional bus addresses &lt; 4Gb */
+DECL|member|gmmio_space
+r_struct
+id|resource
+id|gmmio_space
+suffix:semicolon
+multiline_comment|/* bus addresses &gt; 4Gb */
+multiline_comment|/* NOTE: Dino code assumes it can use *all* of the lmmio_space,&n;&t; * elmmio_space and gmmio_space as a contiguous array of&n;&t; * resources.  This #define represents the array size */
+DECL|macro|DINO_MAX_LMMIO_RESOURCES
+mdefine_line|#define DINO_MAX_LMMIO_RESOURCES&t;3
 DECL|member|lmmio_space_offset
 r_int
 r_int
