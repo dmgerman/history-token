@@ -142,18 +142,15 @@ r_void
 id|mark_ntfs_record_dirty
 c_func
 (paren
-id|ntfs_inode
-op_star
-id|ni
-comma
 r_struct
 id|page
 op_star
 id|page
 comma
+r_const
 r_int
 r_int
-id|rec_start
+id|ofs
 )paren
 suffix:semicolon
 macro_line|#endif /* NTFS_RW */

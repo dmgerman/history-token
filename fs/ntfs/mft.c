@@ -1070,12 +1070,6 @@ suffix:semicolon
 id|mark_ntfs_record_dirty
 c_func
 (paren
-id|NTFS_I
-c_func
-(paren
-id|ni-&gt;vol-&gt;mft_ino
-)paren
-comma
 id|ni-&gt;page
 comma
 id|ni-&gt;page_ofs
@@ -1874,7 +1868,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * write_mft_record_nolock - write out a mapped (extent) mft record&n; * @ni:&t;&t;ntfs inode describing the mapped (extent) mft record&n; * @m:&t;&t;mapped (extent) mft record to write&n; * @sync:&t;if true, wait for i/o completion&n; *&n; * Write the mapped (extent) mft record @m described by the (regular or extent)&n; * ntfs inode @ni to backing store.  If the mft record @m has a counterpart in&n; * the mft mirror, that is also updated.&n; *&n; * We only write the mft record if the ntfs inode @ni is dirty and the buffers&n; * belonging to its mft record are dirty, too.&n; *&n; * On success, clean the mft record and return 0.  On error, leave the mft&n; * record dirty and return -errno.  The caller should call make_bad_inode() on&n; * the base inode to ensure no more access happens to this inode.  We do not do&n; * it here as the caller may want to finish writing other extent mft records&n; * first to minimize on-disk metadata inconsistencies.&n; *&n; * NOTE:  We always perform synchronous i/o and ignore the @sync parameter.&n; * However, if the mft record has a counterpart in the mft mirror and @sync is&n; * true, we write the mft record, wait for i/o completion, and only then write&n; * the mft mirror copy.  This ensures that if the system crashes either the mft&n; * or the mft mirror will contain a self-consistent mft record @m.  If @sync is&n; * false on the other hand, we start i/o on both and then wait for completion&n; * on them.  This provides a speedup but no longer guarantees that you will end&n; * up with a self-consistent mft record in the case of a crash but if you asked&n; * for asynchronous writing you probably do not care about that anyway.&n; *&n; * TODO:  If @sync is false, want to do truly asynchronous i/o, i.e. just&n; * schedule i/o via -&gt;writepage or do it via kntfsd or whatever.&n; */
+multiline_comment|/**&n; * write_mft_record_nolock - write out a mapped (extent) mft record&n; * @ni:&t;&t;ntfs inode describing the mapped (extent) mft record&n; * @m:&t;&t;mapped (extent) mft record to write&n; * @sync:&t;if true, wait for i/o completion&n; *&n; * Write the mapped (extent) mft record @m described by the (regular or extent)&n; * ntfs inode @ni to backing store.  If the mft record @m has a counterpart in&n; * the mft mirror, that is also updated.&n; *&n; * We only write the mft record if the ntfs inode @ni is dirty and the first&n; * buffer belonging to its mft record is dirty, too.  We ignore the dirty state&n; * of subsequent buffers because we could have raced with&n; * fs/ntfs/aops.c::mark_ntfs_record_dirty().&n; *&n; * On success, clean the mft record and return 0.  On error, leave the mft&n; * record dirty and return -errno.  The caller should call make_bad_inode() on&n; * the base inode to ensure no more access happens to this inode.  We do not do&n; * it here as the caller may want to finish writing other extent mft records&n; * first to minimize on-disk metadata inconsistencies.&n; *&n; * NOTE:  We always perform synchronous i/o and ignore the @sync parameter.&n; * However, if the mft record has a counterpart in the mft mirror and @sync is&n; * true, we write the mft record, wait for i/o completion, and only then write&n; * the mft mirror copy.  This ensures that if the system crashes either the mft&n; * or the mft mirror will contain a self-consistent mft record @m.  If @sync is&n; * false on the other hand, we start i/o on both and then wait for completion&n; * on them.  This provides a speedup but no longer guarantees that you will end&n; * up with a self-consistent mft record in the case of a crash but if you asked&n; * for asynchronous writing you probably do not care about that anyway.&n; *&n; * TODO:  If @sync is false, want to do truly asynchronous i/o, i.e. just&n; * schedule i/o via -&gt;writepage or do it via kntfsd or whatever.&n; */
 DECL|function|write_mft_record_nolock
 r_int
 id|write_mft_record_nolock
@@ -2085,7 +2079,15 @@ id|m_end
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the buffer is clean and it is the first buffer of the mft&n;&t;&t; * record, it was written out by other means already so we are&n;&t;&t; * done.  For safety we make sure all the other buffers are&n;&t;&t; * clean also.  If it is clean but not the first buffer and the&n;&t;&t; * first buffer was dirty it is a bug.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|block_start
+op_eq
+id|m_start
+)paren
+(brace
+multiline_comment|/* This block is the first one in the record. */
 r_if
 c_cond
 (paren
@@ -2097,34 +2099,31 @@ id|bh
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|block_start
-op_eq
-id|m_start
-)paren
+multiline_comment|/* Clean records are not written out. */
 id|rec_is_dirty
 op_assign
 id|FALSE
 suffix:semicolon
-r_else
-id|BUG_ON
-c_func
-(paren
-id|rec_is_dirty
-)paren
-suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|BUG_ON
-c_func
+id|rec_is_dirty
+op_assign
+id|TRUE
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t; * This block is not the first one in the record.  We&n;&t;&t;&t; * ignore the buffer&squot;s dirty state because we could&n;&t;&t;&t; * have raced with a parallel mark_ntfs_record_dirty().&n;&t;&t;&t; */
+r_if
+c_cond
 (paren
 op_logical_neg
 id|rec_is_dirty
 )paren
+r_continue
 suffix:semicolon
+)brace
 id|BUG_ON
 c_func
 (paren
