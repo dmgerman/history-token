@@ -1360,6 +1360,15 @@ id|rd_bdev
 id|unit
 )braket
 op_member_access_from_pointer
+id|bd_block_size
+op_assign
+id|rd_blocksize
+suffix:semicolon
+id|rd_bdev
+(braket
+id|unit
+)braket
+op_member_access_from_pointer
 id|bd_inode-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
