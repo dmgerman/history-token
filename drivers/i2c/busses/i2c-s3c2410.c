@@ -1795,6 +1795,11 @@ id|retries
 op_assign
 l_int|2
 comma
+dot
+r_class
+op_assign
+id|I2C_CLASS_HWMON
+comma
 )brace
 comma
 )brace
