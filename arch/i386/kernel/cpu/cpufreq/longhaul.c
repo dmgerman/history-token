@@ -2399,11 +2399,6 @@ r_case
 l_int|8
 suffix:colon
 multiline_comment|/* C5M/C5N */
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-singleline_comment|// Waiting on updated docs from VIA before this is usable
 id|longhaul_version
 op_assign
 l_int|3
@@ -2572,17 +2567,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|c-&gt;x86_vendor
 op_ne
 id|X86_VENDOR_CENTAUR
-)paren
 op_logical_or
-(paren
 id|c-&gt;x86
 op_ne
 l_int|6
-)paren
 )paren
 r_return
 op_minus
@@ -2612,9 +2603,28 @@ suffix:semicolon
 r_case
 l_int|8
 suffix:colon
-r_return
-op_minus
-id|ENODEV
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Ezra-T unsupported: Waiting on updated docs &quot;
+l_string|&quot;from VIA before this is usable.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|9
+suffix:colon
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Nehemiah unsupported: Waiting on working silicon &quot;
+l_string|&quot;from VIA before this is usable.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_default
 suffix:colon
