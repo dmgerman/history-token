@@ -92,6 +92,10 @@ id|us-&gt;current_urb-&gt;transfer_flags
 op_assign
 id|URB_ASYNC_UNLINK
 suffix:semicolon
+id|us-&gt;current_urb-&gt;status
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* submit the URB */
 id|status
 op_assign
