@@ -311,7 +311,7 @@ mdefine_line|#define MPT_SCSI_USE_NEW_EH
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,28)
 DECL|macro|mptscsih_save_flags
-mdefine_line|#define mptscsih_save_flags(flags) &bslash;&n;({&t;local_save_flags(flags); &bslash;&n;&t;local_irq_disable(); &bslash;&n;})
+mdefine_line|#define mptscsih_save_flags(flags) &bslash;&n;({&t;local_irq_save(flags); &bslash;&n;})
 macro_line|#else
 DECL|macro|mptscsih_save_flags
 mdefine_line|#define mptscsih_save_flags(flags) &bslash;&n;({&t;save_flags(flags); &bslash;&n;&t;cli(); &bslash;&n;})
