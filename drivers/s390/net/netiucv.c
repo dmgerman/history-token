@@ -6397,12 +6397,6 @@ id|dev-&gt;tx_queue_len
 op_assign
 id|NETIUCV_QUEUELEN_DEFAULT
 suffix:semicolon
-id|dev_init_buffers
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|dev-&gt;flags
 op_assign
 id|IFF_POINTOPOINT
