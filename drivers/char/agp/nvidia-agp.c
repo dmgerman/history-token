@@ -1224,16 +1224,6 @@ id|agp_destroy_page
 op_assign
 id|agp_generic_destroy_page
 comma
-dot
-id|suspend
-op_assign
-id|agp_generic_suspend
-comma
-dot
-id|resume
-op_assign
-id|agp_generic_resume
-comma
 )brace
 suffix:semicolon
 DECL|function|agp_nvidia_probe
