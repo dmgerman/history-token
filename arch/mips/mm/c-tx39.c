@@ -650,6 +650,10 @@ comma
 r_int
 r_int
 id|page
+comma
+r_int
+r_int
+id|pfn
 )paren
 (brace
 r_int

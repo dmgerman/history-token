@@ -80,6 +80,8 @@ c_func
 id|vma
 comma
 id|addr
+comma
+id|pfn
 )paren
 suffix:semicolon
 id|pte

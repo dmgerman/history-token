@@ -182,9 +182,9 @@ mdefine_line|#define flush_icache_page(vma,page)&t;do { flush_kernel_dcache_page
 DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(s,e)&t;&t;do { flush_kernel_dcache_range_asm(s,e); flush_kernel_icache_range_asm(s,e); } while (0)
 DECL|macro|copy_to_user_page
-mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;do { &bslash;&n;&t;flush_cache_page(vma, vaddr); &bslash;&n;&t;memcpy(dst, src, len); &bslash;&n;&t;flush_kernel_dcache_range_asm((unsigned long)dst, (unsigned long)dst + len); &bslash;&n;} while (0)
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;do { &bslash;&n;&t;flush_cache_page(vma, vaddr, page_to_pfn(page)); &bslash;&n;&t;memcpy(dst, src, len); &bslash;&n;&t;flush_kernel_dcache_range_asm((unsigned long)dst, (unsigned long)dst + len); &bslash;&n;} while (0)
 DECL|macro|copy_from_user_page
-mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;do { &bslash;&n;&t;flush_cache_page(vma, vaddr); &bslash;&n;&t;memcpy(dst, src, len); &bslash;&n;} while (0)
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;do { &bslash;&n;&t;flush_cache_page(vma, vaddr, page_to_pfn(page)); &bslash;&n;&t;memcpy(dst, src, len); &bslash;&n;} while (0)
 DECL|function|flush_cache_range
 r_static
 r_inline
@@ -587,6 +587,10 @@ comma
 r_int
 r_int
 id|vmaddr
+comma
+r_int
+r_int
+id|pfn
 )paren
 (brace
 id|BUG_ON

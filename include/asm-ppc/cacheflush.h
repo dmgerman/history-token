@@ -12,7 +12,7 @@ mdefine_line|#define flush_cache_mm(mm)&t;&t;do { } while (0)
 DECL|macro|flush_cache_range
 mdefine_line|#define flush_cache_range(vma, a, b)&t;do { } while (0)
 DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, p)&t;do { } while (0)
+mdefine_line|#define flush_cache_page(vma, p, pfn)&t;do { } while (0)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma, page)&t;do { } while (0)
 DECL|macro|flush_cache_vmap

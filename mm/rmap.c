@@ -2076,6 +2076,12 @@ c_func
 id|vma
 comma
 id|address
+comma
+id|page_to_pfn
+c_func
+(paren
+id|page
+)paren
 )paren
 suffix:semicolon
 id|pteval
@@ -2548,6 +2554,8 @@ c_func
 id|vma
 comma
 id|address
+comma
+id|pfn
 )paren
 suffix:semicolon
 id|pteval
