@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/uts.h&gt;&t;&t;&t;/* for UTS_SYSNAME */
 macro_line|#include &lt;linux/pci.h&gt;&t;&t;&t;/* for hcd-&gt;pdev and dma addressing */
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;hcd.h&quot;
