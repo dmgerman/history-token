@@ -80,6 +80,12 @@ comma
 l_string|&quot;Happy Meal MAC address to set&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|root_happy_dev
 r_static
 r_struct
@@ -586,12 +592,6 @@ c_func
 id|pci
 comma
 id|happymeal_pci_ids
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
