@@ -2,7 +2,6 @@ multiline_comment|/* &n; * User address space access functions.&n; * The non inl
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmx.h&gt;
-macro_line|#ifdef INTEL_MOVSL
 DECL|function|movsl_is_ok
 r_static
 r_inline
@@ -25,19 +24,14 @@ r_int
 id|n
 )paren
 (brace
+macro_line|#ifdef CONFIG_X86_INTEL_USERCOPY
 r_if
 c_cond
 (paren
 id|n
-OL
+op_ge
 l_int|64
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 (paren
 (paren
 (paren
@@ -55,44 +49,15 @@ id|a2
 op_amp
 id|movsl_mask.mask
 )paren
-op_eq
-l_int|0
 )paren
-r_return
-l_int|1
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
-macro_line|#else
-DECL|function|movsl_is_ok
-r_static
-r_inline
-r_int
-id|movsl_is_ok
-c_func
-(paren
-r_const
-r_void
-op_star
-id|a1
-comma
-r_const
-r_void
-op_star
-id|a2
-comma
-r_int
-r_int
-id|n
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
 macro_line|#endif
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Copy a null terminated string from userspace.&n; */
 DECL|macro|__do_strncpy_from_user
 mdefine_line|#define __do_strncpy_from_user(dst,src,count,res)&t;&t;&t;   &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;int __d0, __d1, __d2;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;testl %1,%1&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;jz 2f&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;0:&t;lodsb&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;stosb&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;testb %%al,%%al&bslash;n&quot;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;jz 1f&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;decl %1&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;jnz 0b&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;1:&t;subl %1,%0&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;3:&t;movl %5,%0&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;.align 4&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;.long 0b,3b&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;: &quot;=d&quot;(res), &quot;=c&quot;(count), &quot;=&amp;a&quot; (__d0), &quot;=&amp;S&quot; (__d1),&t;   &bslash;&n;&t;&t;  &quot;=&amp;D&quot; (__d2)&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;: &quot;i&quot;(-EFAULT), &quot;0&quot;(count), &quot;1&quot;(count), &quot;3&quot;(src), &quot;4&quot;(dst) &bslash;&n;&t;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;   &bslash;&n;} while (0)
@@ -360,7 +325,7 @@ op_amp
 id|mask
 suffix:semicolon
 )brace
-macro_line|#ifdef INTEL_MOVSL
+macro_line|#ifdef CONFIG_X86_INTEL_USERCOPY
 r_static
 r_int
 r_int
@@ -665,7 +630,7 @@ r_return
 id|size
 suffix:semicolon
 )brace
-macro_line|#else&t;/* INTEL_MOVSL */
+macro_line|#else
 multiline_comment|/*&n; * Leave these declared but undefined.  They should not be any references to&n; * them&n; */
 r_int
 r_int
@@ -705,7 +670,7 @@ r_int
 id|size
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* INTEL_MOVSL */
+macro_line|#endif /* CONFIG_X86_INTEL_USERCOPY */
 multiline_comment|/* Generic arbitrary sized copy.  */
 DECL|macro|__copy_user
 mdefine_line|#define __copy_user(to,from,size)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __d0, __d1, __d2;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;cmp  $7,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;jbe  1f&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;movl %1,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;negl %0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;andl $7,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;subl %0,%3&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;4:&t;rep; movsb&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;movl %3,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;shrl $2,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;andl $3,%3&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align 2,0x90&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0:&t;rep; movsl&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;movl %3,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;rep; movsb&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;5:&t;addl %3,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;3:&t;lea 0(%3,%0,4),%0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align 4&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 4b,5b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 0b,3b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 1b,2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;c&quot;(size), &quot;=&amp;D&quot; (__d0), &quot;=&amp;S&quot; (__d1), &quot;=r&quot;(__d2)&t;&bslash;&n;&t;&t;: &quot;3&quot;(size), &quot;0&quot;(size), &quot;1&quot;(to), &quot;2&quot;(from)&t;&t;&bslash;&n;&t;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)

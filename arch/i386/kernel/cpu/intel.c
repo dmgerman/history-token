@@ -32,13 +32,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef INTEL_MOVSL
+macro_line|#ifdef CONFIG_X86_INTEL_USERCOPY
+multiline_comment|/*&n; * Alignment at which movsl is preferred for bulk memory copies.&n; */
 DECL|variable|movsl_mask
 r_struct
 id|movsl_mask
 id|movsl_mask
 suffix:semicolon
-multiline_comment|/* alignment at which movsl is preferred for&n;&t;&t;&t;   &t;   bulk memory copies */
 macro_line|#endif
 multiline_comment|/*&n; *&t;Early probe support logic for ppro memory erratum #50&n; *&n; *&t;This is called before we do cpu ident work&n; */
 DECL|function|ppro_with_ram_bug
@@ -1598,7 +1598,7 @@ c_func
 id|c
 )paren
 suffix:semicolon
-macro_line|#ifdef INTEL_MOVSL
+macro_line|#ifdef CONFIG_X86_INTEL_USERCOPY
 multiline_comment|/*&n;&t; * Set up the preferred alignment for movsl bulk memory moves&n;&t; */
 r_switch
 c_cond

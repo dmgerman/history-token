@@ -27,11 +27,7 @@ mdefine_line|#define set_fs(x)&t;(current_thread_info()-&gt;addr_limit = (x))
 DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)&t;((a).seg == (b).seg)
 multiline_comment|/*&n; * movsl can be slow when source and dest are not both 8-byte aligned&n; */
-macro_line|#if defined(CONFIG_M586MMX) || defined(CONFIG_M686) || &bslash;&n;&t;defined(CONFIG_MPENTIUMIII) || defined(CONFIG_MPENTIUM4)
-DECL|macro|INTEL_MOVSL
-mdefine_line|#define INTEL_MOVSL
-macro_line|#endif
-macro_line|#ifdef INTEL_MOVSL
+macro_line|#ifdef CONFIG_X86_INTEL_USERCOPY
 DECL|struct|movsl_mask
 r_extern
 r_struct
