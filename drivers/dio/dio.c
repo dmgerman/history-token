@@ -458,9 +458,12 @@ r_int
 id|deviceid
 )paren
 (brace
-multiline_comment|/* Called to find a DIO device before the full bus scan has run.  Basically&n;&t;   only used by the console driver.  */
+multiline_comment|/* Called to find a DIO device before the full bus scan has run.  Basically&n;         * only used by the console driver.&n;         * We don&squot;t do the primary+secondary ID encoding thing here. Maybe we should.&n;         * (that would break the topcat detection, though. I need to think about&n;         * the whole primary/secondary ID thing.)&n;         */
 r_int
 id|scode
+suffix:semicolon
+id|u_char
+id|prid
 suffix:semicolon
 r_for
 c_loop
@@ -518,14 +521,34 @@ id|DIO_IDOFF
 r_continue
 suffix:semicolon
 multiline_comment|/* no board present at that select code */
+multiline_comment|/* We aren&squot;t very likely to want to use this to get at the IHPIB,&n;                 * but maybe it&squot;s returning the same ID as the card we do want...&n;                 */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|DIO_ISIHPIB
+c_func
+(paren
+id|scode
+)paren
+)paren
+id|prid
+op_assign
 id|DIO_ID
 c_func
 (paren
 id|va
 )paren
+suffix:semicolon
+r_else
+id|prid
+op_assign
+id|DIO_ID_IHPIB
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|prid
 op_eq
 id|deviceid
 )paren
@@ -537,6 +560,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Aargh: we use 0 for an error return code, but select code 0 exists!&n; * FIXME (trivial, use -1, but requires changes to all the drivers :-&lt; )&n; */
 DECL|function|dio_find
 r_int
 id|dio_find
@@ -599,7 +623,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* This is the function that scans the DIO space and works out what&n; * hardware is actually present.&n; */
 DECL|function|dio_init
-r_void
+r_static
+r_int
 id|__init
 id|dio_init
 c_func
@@ -790,9 +815,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;select code %3d: ID %02X&quot;
+l_string|&quot;select code %3d: ipl %d: ID %02X&quot;
 comma
 id|scode
+comma
+id|b-&gt;ipl
 comma
 id|prid
 )paren
@@ -817,7 +844,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; %s&bslash;n&quot;
+l_string|&quot;: %s&bslash;n&quot;
 comma
 id|b-&gt;name
 )paren
@@ -845,6 +872,9 @@ op_assign
 id|b
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|dio_init
 id|subsys_initcall
@@ -914,11 +944,12 @@ r_else
 r_if
 c_cond
 (paren
+id|DIO_ISIHPIB
+c_func
+(paren
 id|scode
-op_eq
-id|DIO_IHPIBSCODE
 )paren
-multiline_comment|/* this should really be #ifdef CONFIG_IHPIB */
+)paren
 r_return
 (paren
 r_void
@@ -926,7 +957,6 @@ op_star
 )paren
 id|DIO_IHPIBADDR
 suffix:semicolon
-multiline_comment|/* or something similar... */
 r_return
 (paren
 r_void
