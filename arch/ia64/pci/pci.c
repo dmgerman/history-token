@@ -19,6 +19,7 @@ macro_line|#ifdef CONFIG_SMP
 macro_line|# include &lt;asm/smp.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/hw_irq.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 DECL|macro|DEBUG
@@ -2356,6 +2357,35 @@ suffix:semicolon
 )brace
 r_return
 id|rc
+suffix:semicolon
+)brace
+DECL|function|pci_vector_resources
+r_int
+id|pci_vector_resources
+c_func
+(paren
+r_int
+id|last
+comma
+r_int
+id|nr_released
+)paren
+(brace
+r_int
+id|count
+op_assign
+id|nr_released
+suffix:semicolon
+id|count
+op_add_assign
+(paren
+id|IA64_LAST_DEVICE_VECTOR
+op_minus
+id|last
+)paren
+suffix:semicolon
+r_return
+id|count
 suffix:semicolon
 )brace
 eof

@@ -148,10 +148,11 @@ c_func
 suffix:semicolon
 )brace
 r_int
-DECL|function|ia64_alloc_vector
-id|ia64_alloc_vector
+DECL|function|assign_irq_vector
+id|assign_irq_vector
 (paren
-r_void
+r_int
+id|irq
 )paren
 (brace
 r_static
@@ -171,7 +172,7 @@ multiline_comment|/* XXX could look for sharable vectors instead of panic&squot;
 id|panic
 c_func
 (paren
-l_string|&quot;ia64_alloc_vector: out of interrupt vectors!&quot;
+l_string|&quot;assign_irq_vector: out of interrupt vectors!&quot;
 )paren
 suffix:semicolon
 r_return
