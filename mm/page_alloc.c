@@ -8010,6 +8010,10 @@ comma
 r_int
 op_star
 id|length
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 id|proc_dointvec
@@ -8024,6 +8028,8 @@ comma
 id|buffer
 comma
 id|length
+comma
+id|ppos
 )paren
 suffix:semicolon
 id|setup_per_zone_pages_min
@@ -8066,6 +8072,10 @@ comma
 r_int
 op_star
 id|length
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 id|proc_dointvec_minmax
@@ -8080,6 +8090,8 @@ comma
 id|buffer
 comma
 id|length
+comma
+id|ppos
 )paren
 suffix:semicolon
 id|setup_per_zone_protection

@@ -45,6 +45,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_struct
@@ -88,7 +92,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|filp-&gt;f_pos
+op_star
+id|ppos
 )paren
 (brace
 op_star
@@ -175,7 +180,8 @@ id|lenp
 op_assign
 id|len
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|len
 suffix:semicolon
@@ -224,6 +230,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_struct
@@ -262,7 +272,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|filp-&gt;f_pos
+op_star
+id|ppos
 )paren
 (brace
 op_star
@@ -413,7 +424,8 @@ id|lenp
 op_assign
 id|len
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|len
 suffix:semicolon
@@ -460,6 +472,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_struct
@@ -488,7 +504,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|filp-&gt;f_pos
+op_star
+id|ppos
 )paren
 (brace
 op_star
@@ -542,7 +559,8 @@ id|lenp
 op_assign
 id|len
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|len
 suffix:semicolon
@@ -589,6 +607,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_struct
@@ -617,7 +639,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|filp-&gt;f_pos
+op_star
+id|ppos
 )paren
 (brace
 op_star
@@ -669,7 +692,8 @@ id|lenp
 op_assign
 id|len
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|len
 suffix:semicolon
@@ -716,6 +740,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_struct
@@ -744,7 +772,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|filp-&gt;f_pos
+op_star
+id|ppos
 )paren
 (brace
 op_star
@@ -796,7 +825,8 @@ id|lenp
 op_assign
 id|len
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|len
 suffix:semicolon
@@ -843,6 +873,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_struct
@@ -871,7 +905,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|filp-&gt;f_pos
+op_star
+id|ppos
 )paren
 (brace
 op_star
@@ -967,7 +1002,8 @@ id|lenp
 op_assign
 id|len
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|len
 suffix:semicolon

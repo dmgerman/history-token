@@ -2890,6 +2890,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 suffix:semicolon
 r_extern
@@ -2911,6 +2915,9 @@ id|__user
 op_star
 comma
 r_int
+op_star
+comma
+id|loff_t
 op_star
 )paren
 suffix:semicolon
@@ -2934,6 +2941,9 @@ op_star
 comma
 r_int
 op_star
+comma
+id|loff_t
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -2955,6 +2965,9 @@ id|__user
 op_star
 comma
 r_int
+op_star
+comma
+id|loff_t
 op_star
 )paren
 suffix:semicolon
@@ -2978,6 +2991,9 @@ op_star
 comma
 r_int
 op_star
+comma
+id|loff_t
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -2999,6 +3015,9 @@ id|__user
 op_star
 comma
 r_int
+op_star
+comma
+id|loff_t
 op_star
 )paren
 suffix:semicolon
@@ -3022,6 +3041,9 @@ op_star
 comma
 r_int
 op_star
+comma
+id|loff_t
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -3043,6 +3065,9 @@ id|__user
 op_star
 comma
 r_int
+op_star
+comma
+id|loff_t
 op_star
 )paren
 suffix:semicolon
@@ -3066,6 +3091,9 @@ id|__user
 op_star
 comma
 r_int
+op_star
+comma
+id|loff_t
 op_star
 )paren
 suffix:semicolon
