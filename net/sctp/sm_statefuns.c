@@ -9432,7 +9432,7 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Process the REQUESTHEARTBEAT primitive&n; *&n; * 10.1 ULP-to-SCTP&n; * J) Request Heartbeat&n; *&n; * Format: REQUESTHEARTBEAT(association id, destination transport address)&n; *&n; * -&gt; result&n; *&n; * Instructs the local endpoint to perform a HeartBeat on the specified&n; * destination transport address of the given association. The returned&n; * result should indicate whether the transmission of the HEARTBEAT&n; * chunk to the destination address is successful.&n; *&n; * Mandatory attributes:&n; *&n; * o association id - local handle to the SCTP association&n; *&n; * o destination transport address - the transport address of the&n; *   asociation on which a heartbeat should be issued.&n; */
+multiline_comment|/*&n; * Process the REQUESTHEARTBEAT primitive&n; *&n; * 10.1 ULP-to-SCTP&n; * J) Request Heartbeat&n; *&n; * Format: REQUESTHEARTBEAT(association id, destination transport address)&n; *&n; * -&gt; result&n; *&n; * Instructs the local endpoint to perform a HeartBeat on the specified&n; * destination transport address of the given association. The returned&n; * result should indicate whether the transmission of the HEARTBEAT&n; * chunk to the destination address is successful.&n; *&n; * Mandatory attributes:&n; *&n; * o association id - local handle to the SCTP association&n; *&n; * o destination transport address - the transport address of the&n; *   association on which a heartbeat should be issued.&n; */
 DECL|function|sctp_sf_do_prm_requestheartbeat
 id|sctp_disposition_t
 id|sctp_sf_do_prm_requestheartbeat

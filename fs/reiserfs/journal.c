@@ -8124,7 +8124,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** read and replay the log&n;** on a clean unmount, the journal header&squot;s next unflushed pointer will be to an invalid&n;** transaction.  This tests that before finding all the transactions in the log, whic makes normal mount times fast.&n;**&n;** After a crash, this starts with the next unflushed transaction, and replays until it finds one too old, or invalid.&n;**&n;** On exit, it sets things up so the first transaction will work correctly.&n;*/
+multiline_comment|/*&n;** read and replay the log&n;** on a clean unmount, the journal header&squot;s next unflushed pointer will be to an invalid&n;** transaction.  This tests that before finding all the transactions in the log, which makes normal mount times fast.&n;**&n;** After a crash, this starts with the next unflushed transaction, and replays until it finds one too old, or invalid.&n;**&n;** On exit, it sets things up so the first transaction will work correctly.&n;*/
 DECL|function|journal_read
 r_static
 r_int

@@ -865,7 +865,7 @@ comma
 id|skb-&gt;len
 )paren
 suffix:semicolon
-multiline_comment|/* Register the lcn on which incoming call came&n;         * from. Thus, if we have to clear it, we know&n;         * whic lcn to clear &n;&t; */
+multiline_comment|/* Register the lcn on which incoming call came&n;         * from. Thus, if we have to clear it, we know&n;         * which lcn to clear&n;&t; */
 id|newwp-&gt;lcn
 op_assign
 id|mbox_ptr-&gt;cmd.lcn
