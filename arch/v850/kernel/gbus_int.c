@@ -366,8 +366,7 @@ c_cond
 id|status
 )paren
 (brace
-r_int
-id|base_irq
+id|irq
 op_assign
 id|IRQ_GBUS_INT
 (paren
@@ -375,10 +374,6 @@ id|w
 op_star
 id|GBUS_INT_BITS_PER_WORD
 )paren
-suffix:semicolon
-id|irq
-op_assign
-id|base_irq
 suffix:semicolon
 r_do
 (brace
