@@ -2725,17 +2725,7 @@ id|AC97_PCM_FRONT_DAC_RATE
 )paren
 r_continue
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;setting ac97 reg 0x%x to rate %d&bslash;n&quot;
-comma
-id|reg
-comma
-id|rate
-)paren
-suffix:semicolon
+singleline_comment|//printk(KERN_DEBUG &quot;setting ac97 reg 0x%x to rate %d&bslash;n&quot;, reg, rate);
 id|err
 op_assign
 id|snd_ac97_set_rate
