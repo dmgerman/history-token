@@ -109,6 +109,11 @@ id|lid_t
 id|atltail
 suffix:semicolon
 multiline_comment|/* anonymous tlock list tail&t;*/
+DECL|member|ag_lock
+id|spinlock_t
+id|ag_lock
+suffix:semicolon
+multiline_comment|/* protects active_ag&t;&t;*/
 DECL|member|anon_inode_list
 r_struct
 id|list_head
