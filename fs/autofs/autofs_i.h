@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DPRINTK
