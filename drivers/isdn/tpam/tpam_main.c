@@ -2,6 +2,7 @@ multiline_comment|/* $Id: tpam_main.c,v 1.1.2.3 2001/09/23 22:25:03 kai Exp $&n;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;tpam.h&quot;
@@ -513,6 +514,13 @@ l_int|0x00000010
 )paren
 suffix:semicolon
 multiline_comment|/* fill the ISDN link layer structure */
+id|SET_MODULE_OWNER
+c_func
+(paren
+op_amp
+id|card-&gt;interface
+)paren
+suffix:semicolon
 id|card-&gt;interface.channels
 op_assign
 id|TPAM_NBCHANNEL
