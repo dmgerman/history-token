@@ -2216,7 +2216,7 @@ suffix:semicolon
 )brace
 DECL|variable|tmpbuf
 r_static
-id|u8
+r_char
 id|tmpbuf
 (braket
 id|HISAX_STATUS_BUFSIZE
@@ -2236,6 +2236,7 @@ r_char
 op_star
 id|head
 comma
+r_const
 r_char
 op_star
 id|fmt
@@ -2254,7 +2255,7 @@ id|count
 comma
 id|i
 suffix:semicolon
-id|u8
+r_char
 op_star
 id|p
 suffix:semicolon
@@ -2343,6 +2344,10 @@ r_else
 (brace
 id|p
 op_assign
+(paren
+r_char
+op_star
+)paren
 id|fmt
 suffix:semicolon
 id|len
