@@ -3458,6 +3458,10 @@ op_logical_neg
 id|ntfs_is_mft_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|maddr
 )paren
 )paren

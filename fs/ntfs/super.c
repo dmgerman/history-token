@@ -1887,11 +1887,12 @@ op_logical_and
 id|b-&gt;checksum
 )paren
 (brace
-id|u32
-id|i
-comma
+id|le32
 op_star
 id|u
+suffix:semicolon
+id|u32
+id|i
 suffix:semicolon
 r_for
 c_loop
@@ -1903,7 +1904,7 @@ comma
 id|u
 op_assign
 (paren
-id|u32
+id|le32
 op_star
 )paren
 id|b
@@ -1911,7 +1912,7 @@ suffix:semicolon
 id|u
 OL
 (paren
-id|u32
+id|le32
 op_star
 )paren
 (paren
@@ -3898,6 +3899,10 @@ c_cond
 id|ntfs_is_baad_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|kmft
 )paren
 )paren
@@ -3939,6 +3944,10 @@ c_cond
 id|ntfs_is_baad_recordp
 c_func
 (paren
+(paren
+id|le32
+op_star
+)paren
 id|kmirr
 )paren
 )paren
