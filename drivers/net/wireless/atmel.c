@@ -8452,6 +8452,14 @@ id|dev-&gt;base_addr
 op_assign
 id|port
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+id|sys_dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
