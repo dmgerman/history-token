@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/k2.h&n; * &n; * Definitions for SBS K2 board support&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/k2.h&n; * &n; * Definitions for SBS K2 board support&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifndef __PPC_PLATFORMS_K2_H
 DECL|macro|__PPC_PLATFORMS_K2_H
 mdefine_line|#define __PPC_PLATFORMS_K2_H
