@@ -3557,19 +3557,6 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|ide_setup_pci_device
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;alim15x3_init_one&t;-&t;set up an ALi15x3 IDE controller&n; *&t;@dev: PCI device to set up&n; *&n; *&t;Perform the actual set up for an ALi15x3 that has been found by the&n; *&t;hot plug layer.&n; */
 DECL|function|alim15x3_init_one
 r_static

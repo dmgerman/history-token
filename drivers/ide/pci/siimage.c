@@ -4858,19 +4858,6 @@ op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|ide_setup_pci_device
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;siimage_init_one&t;-&t;pci layer discovery entry&n; *&t;@dev: PCI device&n; *&t;@id: ident table entry&n; *&n; *&t;Called by the PCI code when it finds an SI680 or SI3112 controller.&n; *&t;We then use the IDE PCI generic helper to do most of the work.&n; */
 DECL|function|siimage_init_one
 r_static
