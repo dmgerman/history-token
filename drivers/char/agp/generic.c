@@ -1809,7 +1809,8 @@ suffix:semicolon
 id|agp_bridge.gatt_table_real
 op_assign
 (paren
-id|u32
+r_int
+r_int
 op_star
 )paren
 id|table
