@@ -256,6 +256,14 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|disable_kernel_fp
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|enable_kernel_fp
 c_func
 (paren
