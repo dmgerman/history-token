@@ -1346,13 +1346,7 @@ suffix:semicolon
 id|u32
 id|cb_size
 op_assign
-id|ni
-op_member_access_from_pointer
-id|_ICF
-c_func
-(paren
-id|compression_block_size
-)paren
+id|ni-&gt;itype.compressed.block_size
 suffix:semicolon
 id|u64
 id|cb_size_mask
@@ -1430,13 +1424,7 @@ id|start_vcn
 op_lshift
 id|vol-&gt;cluster_size_bits
 op_rshift
-id|ni
-op_member_access_from_pointer
-id|_ICF
-c_func
-(paren
-id|compression_block_size_bits
-)paren
+id|ni-&gt;itype.compressed.block_size_bits
 suffix:semicolon
 multiline_comment|/*&n;&t; * Number of pages required to store the uncompressed data from all&n;&t; * compression blocks (cbs) overlapping @page. Due to alignment&n;&t; * guarantees of start_vcn and end_vcn, no need to round up here.&n;&t; */
 r_int
@@ -1799,13 +1787,7 @@ l_int|0
 suffix:semicolon
 id|cb_clusters
 op_assign
-id|ni
-op_member_access_from_pointer
-id|_ICF
-c_func
-(paren
-id|compression_block_clusters
-)paren
+id|ni-&gt;itype.compressed.block_clusters
 suffix:semicolon
 id|do_next_cb
 suffix:colon

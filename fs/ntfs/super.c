@@ -3718,13 +3718,7 @@ op_plus
 id|le16_to_cpu
 c_func
 (paren
-id|ctx-&gt;attr
-op_member_access_from_pointer
-id|_ARA
-c_func
-(paren
-id|value_offset
-)paren
+id|ctx-&gt;attr-&gt;data.resident.value_offset
 )paren
 )paren
 suffix:semicolon
