@@ -9041,6 +9041,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
+macro_line|#endif /* __ARCH_WANT_SYS_SIGPROCMASK */
 macro_line|#ifndef __sparc__
 id|asmlinkage
 r_int
@@ -9184,7 +9185,6 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#endif /* __sparc__ */
-macro_line|#endif
 macro_line|#ifdef __ARCH_WANT_SYS_SGETMASK
 multiline_comment|/*&n; * For backwards compatibility.  Functionality superseded by sigprocmask.&n; */
 id|asmlinkage
