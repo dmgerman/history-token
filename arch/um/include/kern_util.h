@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karay
 macro_line|#ifndef __KERN_UTIL_H__
 DECL|macro|__KERN_UTIL_H__
 mdefine_line|#define __KERN_UTIL_H__
+macro_line|#include &quot;linux/threads.h&quot;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 r_extern
 r_int
@@ -28,6 +29,15 @@ suffix:semicolon
 r_extern
 r_int
 id|jail
+suffix:semicolon
+r_extern
+r_struct
+id|task_struct
+op_star
+id|idle_threads
+(braket
+id|NR_CPUS
+)braket
 suffix:semicolon
 DECL|macro|ROUND_DOWN
 mdefine_line|#define ROUND_DOWN(addr) ((void *)(((unsigned long) addr) &amp; PAGE_MASK))

@@ -53,6 +53,14 @@ id|enable
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|get_signals
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|block_signals
 c_func
@@ -63,14 +71,6 @@ suffix:semicolon
 r_extern
 r_void
 id|unblock_signals
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|get_signals
 c_func
 (paren
 r_void
@@ -87,6 +87,6 @@ mdefine_line|#define local_irq_enable() unblock_signals()
 DECL|macro|local_irq_disable
 mdefine_line|#define local_irq_disable() block_signals()
 DECL|macro|irqs_disabled
-mdefine_line|#define irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&bslash;&n;&t;(flags != 0);&t;&t;&t;&bslash;&n;})
+mdefine_line|#define irqs_disabled()                 &bslash;&n;({                                      &bslash;&n;        unsigned long flags;            &bslash;&n;        local_save_flags(flags);        &bslash;&n;        (flags == 0);                   &bslash;&n;})
 macro_line|#endif
 eof

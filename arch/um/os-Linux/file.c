@@ -1445,17 +1445,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;rcv_fd : recvmsg failed - errno = %d&bslash;n&quot;
-comma
-id|errno
-)paren
-suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|errno
 suffix:semicolon
 )brace
 r_else

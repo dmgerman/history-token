@@ -34,8 +34,10 @@ DECL|macro|SIGIO_WRITE_IRQ
 mdefine_line|#define SIGIO_WRITE_IRQ &t;11
 DECL|macro|TELNETD_IRQ
 mdefine_line|#define TELNETD_IRQ &t;&t;12
+DECL|macro|XTERM_IRQ
+mdefine_line|#define XTERM_IRQ &t;&t;13
 DECL|macro|LAST_IRQ
-mdefine_line|#define LAST_IRQ TELNETD_IRQ
+mdefine_line|#define LAST_IRQ XTERM_IRQ
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS (LAST_IRQ + 1)
 r_extern

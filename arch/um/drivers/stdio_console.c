@@ -180,6 +180,10 @@ id|tramp_stack
 suffix:colon
 l_int|0
 comma
+id|in_kernel
+suffix:colon
+l_int|1
+comma
 )brace
 suffix:semicolon
 DECL|variable|driver

@@ -1,9 +1,87 @@
-multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2000, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;kern.h&quot;
 macro_line|#include &quot;os.h&quot;
+macro_line|#ifdef CONFIG_SMP
+DECL|function|kill_idlers
+r_static
+r_void
+id|kill_idlers
+c_func
+(paren
+r_int
+id|me
+)paren
+(brace
+r_struct
+id|task_struct
+op_star
+id|p
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+r_sizeof
+(paren
+id|idle_threads
+)paren
+op_div
+r_sizeof
+(paren
+id|idle_threads
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|p
+op_assign
+id|idle_threads
+(braket
+id|i
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|p
+op_ne
+l_int|NULL
+)paren
+op_logical_and
+(paren
+id|p-&gt;thread.extern_pid
+op_ne
+id|me
+)paren
+)paren
+(brace
+id|os_kill_process
+c_func
+(paren
+id|p-&gt;thread.extern_pid
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+macro_line|#endif
 DECL|function|kill_off_processes
 r_static
 r_void
@@ -67,6 +145,14 @@ id|init_task.thread.extern_pid
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
+id|kill_idlers
+c_func
+(paren
+id|me
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|uml_cleanup
 r_void
