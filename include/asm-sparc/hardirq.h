@@ -109,9 +109,13 @@ macro_line|#ifndef CONFIG_SMP
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()             (preempt_count() += HARDIRQ_OFFSET)
 macro_line|#if CONFIG_PREEMPT
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;(preempt_count() != kernel_locked())
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
 macro_line|#else
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;(preempt_count() != 0)
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET HARDIRQ_OFFSET
 macro_line|#endif
