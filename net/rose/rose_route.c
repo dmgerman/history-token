@@ -687,13 +687,6 @@ id|rose_node
 op_star
 id|s
 suffix:semicolon
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-id|rose_node_list_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
