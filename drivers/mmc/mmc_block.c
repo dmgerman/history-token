@@ -1667,7 +1667,7 @@ id|mmc_card
 op_star
 id|card
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace

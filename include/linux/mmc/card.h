@@ -234,7 +234,7 @@ r_struct
 id|mmc_card
 op_star
 comma
-id|u32
+id|pm_message_t
 )paren
 suffix:semicolon
 DECL|member|resume
