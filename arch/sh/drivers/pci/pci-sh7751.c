@@ -661,33 +661,17 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif
-multiline_comment|/* Add future fixups here... */
-DECL|variable|pcibios_fixups
-r_struct
-id|pci_fixup
-id|pcibios_fixups
-(braket
-)braket
-op_assign
-(brace
-macro_line|#if !defined(CONFIG_SH_HS7751RVOIP) &amp;&amp; !defined(CONFIG_SH_RTS7751R2D)
-(brace
-id|PCI_FIXUP_HEADER
-comma
+id|DECLARE_PCI_FIXUP_HEADER
+c_func
+(paren
 id|PCI_ANY_ID
 comma
 id|PCI_ANY_ID
 comma
 id|pci_fixup_ide_bases
-)brace
-comma
-macro_line|#endif
-(brace
-l_int|0
-)brace
-)brace
+)paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; *  Called after each bus is probed, but before its children&n; *  are examined.&n; */
 DECL|function|pcibios_fixup_bus
 r_void

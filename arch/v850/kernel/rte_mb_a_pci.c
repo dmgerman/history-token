@@ -1038,19 +1038,6 @@ suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/* Stubs for things we don&squot;t use.  */
-DECL|variable|pcibios_fixups
-r_struct
-id|pci_fixup
-id|pcibios_fixups
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
 multiline_comment|/* Called after each bus is probed, but before its children are examined. */
 DECL|function|pcibios_fixup_bus
 r_void
