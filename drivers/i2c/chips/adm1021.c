@@ -402,7 +402,6 @@ id|adm1021_detach_client
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* I choose here for semi-static allocation. Complete dynamic&n;   allocation could also be used; the code needed for this would probably&n;   take more memory than the datastructure takes now. */
 DECL|variable|adm1021_id
 r_static
 r_int
