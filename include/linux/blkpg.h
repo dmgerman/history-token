@@ -86,7 +86,7 @@ op_star
 id|partition_name
 c_func
 (paren
-id|kdev_t
+id|dev_t
 id|dev
 )paren
 suffix:semicolon
