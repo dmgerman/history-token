@@ -1686,11 +1686,10 @@ op_minus
 id|ENOTEMPTY
 suffix:semicolon
 )brace
-id|list_del_init
+id|__d_drop
 c_func
 (paren
-op_amp
-id|dentry-&gt;d_hash
+id|dentry
 )paren
 suffix:semicolon
 id|spin_unlock
