@@ -3634,7 +3634,7 @@ macro_line|#ifdef CONFIG_IP_MULTICAST
 DECL|variable|igmp_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|igmp_protocol
 op_assign
 (brace
@@ -3649,7 +3649,7 @@ macro_line|#endif
 DECL|variable|tcp_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|tcp_protocol
 op_assign
 (brace
@@ -3673,7 +3673,7 @@ suffix:semicolon
 DECL|variable|udp_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|udp_protocol
 op_assign
 (brace
@@ -3697,7 +3697,7 @@ suffix:semicolon
 DECL|variable|icmp_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|icmp_protocol
 op_assign
 (brace

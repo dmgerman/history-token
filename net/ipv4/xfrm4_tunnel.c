@@ -751,7 +751,7 @@ suffix:semicolon
 DECL|variable|ipip_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|ipip_protocol
 op_assign
 (brace

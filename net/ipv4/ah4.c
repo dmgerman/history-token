@@ -1739,7 +1739,7 @@ suffix:semicolon
 DECL|variable|ah4_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|ah4_protocol
 op_assign
 (brace
