@@ -3673,6 +3673,13 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+id|init_apic_mappings
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|set_trap_gate
 c_func
 (paren

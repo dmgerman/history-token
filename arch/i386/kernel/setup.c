@@ -22,8 +22,8 @@ macro_line|#endif
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -188,6 +188,14 @@ r_struct
 id|cpuinfo_x86
 op_star
 id|c
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dmi_scan_machine
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -3336,11 +3344,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|init_apic_mappings
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * Request address space for all standard RAM and ROM resources&n;&t; * and also for regions reported as reserved by the e820.&n;&t; */
 id|probe_roms
@@ -3595,6 +3598,11 @@ id|dummy_con
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+id|dmi_scan_machine
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|variable|__initdata
 r_static
