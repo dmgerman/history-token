@@ -971,6 +971,8 @@ DECL|macro|SND_CLICK
 mdefine_line|#define SND_CLICK&t;&t;0x00
 DECL|macro|SND_BELL
 mdefine_line|#define SND_BELL&t;&t;0x01
+DECL|macro|SND_TONE
+mdefine_line|#define SND_TONE&t;&t;0x02
 DECL|macro|SND_MAX
 mdefine_line|#define SND_MAX&t;&t;&t;0x07
 multiline_comment|/*&n; * IDs.&n; */
