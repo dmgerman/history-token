@@ -520,6 +520,20 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* dma currently in progress */
+DECL|member|busy
+r_int
+id|busy
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* currently doing revalidate_disk() */
+DECL|member|blocked
+r_int
+id|blocked
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1=powermanagment told us not to do anything, so sleep nicely */
 DECL|member|present
 r_int
 id|present
@@ -534,13 +548,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* from:  hdx=noprobe */
-DECL|member|busy
-r_int
-id|busy
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* currently doing revalidate_disk() */
 DECL|member|removable
 r_int
 id|removable
@@ -618,13 +625,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=present, 0=default */
-DECL|member|blocked
-r_int
-id|blocked
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 1=powermanagment told us not to do anything, so sleep nicely */
 DECL|member|addressing
 r_int
 id|addressing
@@ -1867,13 +1867,6 @@ id|module
 op_star
 id|owner
 suffix:semicolon
-DECL|member|busy
-r_int
-id|busy
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* FIXME: this will go soon away... */
 DECL|member|cleanup
 r_int
 (paren

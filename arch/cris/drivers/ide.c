@@ -2847,9 +2847,9 @@ multiline_comment|/* ATAPI-devices (not disks) first call ide_dma_read/write to 
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 r_return
 l_int|0

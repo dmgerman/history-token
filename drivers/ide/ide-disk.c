@@ -1231,7 +1231,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|// panic(&quot;ide: Request while drive blocked?&quot;);
+id|printk
+c_func
+(paren
+l_string|&quot;ide: Request while drive blocked?&quot;
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2509,7 +2514,7 @@ op_assign
 id|capacity_2
 suffix:semicolon
 )brace
-macro_line|#else /* !CONFIG_IDEDISK_STROKE */
+macro_line|#else
 id|printk
 c_func
 (paren
@@ -2522,7 +2527,7 @@ comma
 id|capacity_2
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IDEDISK_STROKE */
+macro_line|#endif
 )brace
 id|drive-&gt;bios_cyl
 op_assign
@@ -2638,7 +2643,7 @@ op_assign
 id|capacity
 suffix:semicolon
 )brace
-macro_line|#else /* !CONFIG_IDEDISK_STROKE */
+macro_line|#else
 id|printk
 c_func
 (paren
@@ -2651,7 +2656,7 @@ comma
 id|capacity
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IDEDISK_STROKE */
+macro_line|#endif
 )brace
 id|drive-&gt;capacity
 op_assign
@@ -4799,6 +4804,16 @@ op_assign
 id|dev-&gt;driver_data
 suffix:semicolon
 multiline_comment|/* I hope that every freeze operations from the upper levels have&n;&t; * already been done...&n;&t; */
+r_if
+c_cond
+(paren
+id|level
+op_ne
+id|SUSPEND_SAVE_STATE
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/* wait until all commands are finished */
 id|printk
 c_func
@@ -4894,6 +4909,16 @@ op_star
 id|drive
 op_assign
 id|dev-&gt;driver_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|level
+op_ne
+id|RESUME_RESTORE_STATE
+)paren
+r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5492,12 +5517,22 @@ DECL|function|idedisk_cleanup
 r_static
 r_int
 id|idedisk_cleanup
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drive
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|put_device
 c_func
 (paren
