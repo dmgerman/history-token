@@ -83,7 +83,7 @@ id|init_task
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * The tasklist_lock protects the linked list of processes.&n; *&n; * The runqueue_lock locks the parts that actually access&n; * and change the run-queues, and have to be interrupt-safe.&n; *&n; * If both locks are to be concurrently held, the runqueue_lock&n; * nests inside the tasklist_lock.&n; */
+multiline_comment|/*&n; * The tasklist_lock protects the linked list of processes.&n; *&n; * The runqueue_lock locks the parts that actually access&n; * and change the run-queues, and have to be interrupt-safe.&n; *&n; * If both locks are to be concurrently held, the runqueue_lock&n; * nests inside the tasklist_lock.&n; *&n; * task-&gt;alloc_lock nests inside tasklist_lock.&n; */
 DECL|variable|__cacheline_aligned
 id|spinlock_t
 id|runqueue_lock

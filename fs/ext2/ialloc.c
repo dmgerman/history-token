@@ -1660,6 +1660,10 @@ id|inode-&gt;u.ext2_i.i_dtime
 op_assign
 l_int|0
 suffix:semicolon
+id|inode-&gt;u.ext2_i.i_prealloc_count
+op_assign
+l_int|0
+suffix:semicolon
 id|inode-&gt;u.ext2_i.i_block_group
 op_assign
 id|i

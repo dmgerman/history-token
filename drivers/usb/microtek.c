@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for Microtek Scanmaker X6 USB scanner, and possibly others.&n; *&n; * (C) Copyright 2000 John Fremlin &lt;vii@penguinpowered.com&gt;&n; * (C) Copyright 2000 Oliver Neukum &lt;Oliver.Neukum@lrz.uni-muenchen.de&gt;&n; *&n; * Parts shamelessly stolen from usb-storage and copyright by their&n; * authors. Thanks to Matt Dharm for giving us permission!&n; *&n; * This driver implements a SCSI host controller driver and a USB&n; * device driver. To avoid confusion, all the USB related stuff is&n; * prefixed by mts_usb_ and all the SCSI stuff by mts_scsi_.&n; * &n; * Microtek (www.microtek.com) did not release the specifications for&n; * their USB protocol to us, so we had to reverse engineer them. We&n; * don&squot;t know for which models they are valid.&n; *&n; * The X6 USB has three bulk endpoints, one output (0x1) down which&n; * commands and outgoing data are sent, and two input: 0x82 from which&n; * normal data is read from the scanner (in packets of maximum 32&n; * bytes) and from which the status byte is read, and 0x83 from which&n; * the results of a scan (or preview) are read in up to 64 * 1024 byte&n; * chunks by the Windows driver. We don&squot;t know how much it is possible&n; * to read at a time from 0x83.&n; *&n; * It seems possible to read (with URB transfers) everything from 0x82&n; * in one go, without bothering to read in 32 byte chunks.&n; *&n; * There seems to be an optimisation of a further READ implicit if&n; * you simply read from 0x83.&n; *&n; * Guessed protocol:&n; *&n; *&t;Send raw SCSI command to EP 0x1&n; *&n; *&t;If there is data to receive:&n; *&t;&t;If the command was READ datatype=image:&n; *&t;&t;&t;Read a lot of data from EP 0x83&n; *&t;&t;Else:&n; *&t;&t;&t;Read data from EP 0x82&n; *&t;Else:&n; *&t;&t;If there is data to transmit:&n; *&t;&t;&t;Write it to EP 0x1&n; *&n; *&t;Read status byte from EP 0x82&n; *&n; * References:&n; *&n; * The SCSI command set for the scanner is available from&n; *&t;ftp://ftp.microtek.com/microtek/devpack/&n; *&n; * Microtek NV sent us a more up to date version of the document. If&n; * you want it, just send mail.&n; *&n; * Status:&n; *&t;&n; *&t;Untested with multiple scanners.&n; *&t;Untested on SMP.&n; *&t;Untested on a bigendian machine.&n; *&n; * History:&n; *&n; *&t;20000417 starting history&n; *&t;20000417 fixed load oops&n; *&t;20000417 fixed unload oops&n; *&t;20000419 fixed READ IMAGE detection&n; *&t;20000424 started conversion to use URBs&n; *&t;20000502 handled short transfers as errors&n; *&t;20000513 rename and organisation of functions (john)&n; *&t;20000513 added IDs for all products supported by Windows driver (john)&n; *&t;20000514 Rewrote mts_scsi_queuecommand to use URBs (john)&n; *&t;20000514 Version 0.0.8j&n; *      20000514 Fix reporting of non-existant devices to SCSI layer (john)&n; *&t;20000514 Added MTS_DEBUG_INT (john)&n; *&t;20000514 Changed &quot;usb-microtek&quot; to &quot;microtek&quot; for consistency (john)&n; *&t;20000514 Stupid bug fixes (john)&n; *&t;20000514 Version 0.0.9j&n; *&t;20000515 Put transfer context and URB in mts_desc (john)&n; *&t;20000515 Added prelim turn off debugging support (john)&n; *&t;20000515 Version 0.0.10j&n; *      20000515 Fixed up URB allocation (clear URB on alloc) (john)&n; *      20000515 Version 0.0.11j&n; *&t;20000516 Removed unnecessary spinlock in mts_transfer_context (john)&n; *&t;20000516 Removed unnecessary up on instance lock in mts_remove_nolock (john)&n; *&t;20000516 Implemented (badly) scsi_abort (john)&n; *&t;20000516 Version 0.0.12j&n; *      20000517 Hopefully removed mts_remove_nolock quasideadlock (john)&n; *      20000517 Added mts_debug_dump to print ll USB info (john)&n; *&t;20000518 Tweaks and documentation updates (john)&n; *&t;20000518 Version 0.0.13j&n; *&t;20000518 Cleaned up abort handling (john)&n; *&t;20000523 Removed scsi_command and various scsi_..._resets (john)&n; *&t;20000523 Added unlink URB on scsi_abort, now OHCI supports it (john)&n; *&t;20000523 Fixed last tiresome compile warning (john)&n; *&t;20000523 Version 0.0.14j (though version 0.1 has come out?)&n; *&t;20000602 Added primitive reset&n; *&t;20000602 Version 0.2.0&n; *&t;20000603 various cosmetic changes&n; *&t;20000603 Version 0.2.1&n; *&t;20000620 minor cosmetic changes&n; *&t;20000620 Version 0.2.2&n; *&t;20000822 Hopefully fixed deadlock in mts_remove_nolock()&n; *&t;20000822 Fixed minor race in mts_transfer_cleanup()&n; *&t;20000822 Fixed deadlock on submission error in queuecommand&n; *&t;20000822 Version 0.2.3&n; *&t;20000913 Reduced module size if debugging is off&n; *&t;20000913 Version 0.2.4&n; */
+multiline_comment|/* Driver for Microtek Scanmaker X6 USB scanner, and possibly others.&n; *&n; * (C) Copyright 2000 John Fremlin &lt;vii@penguinpowered.com&gt;&n; * (C) Copyright 2000 Oliver Neukum &lt;Oliver.Neukum@lrz.uni-muenchen.de&gt;&n; *&n; * Parts shamelessly stolen from usb-storage and copyright by their&n; * authors. Thanks to Matt Dharm for giving us permission!&n; *&n; * This driver implements a SCSI host controller driver and a USB&n; * device driver. To avoid confusion, all the USB related stuff is&n; * prefixed by mts_usb_ and all the SCSI stuff by mts_scsi_.&n; *&n; * Microtek (www.microtek.com) did not release the specifications for&n; * their USB protocol to us, so we had to reverse engineer them. We&n; * don&squot;t know for which models they are valid.&n; *&n; * The X6 USB has three bulk endpoints, one output (0x1) down which&n; * commands and outgoing data are sent, and two input: 0x82 from which&n; * normal data is read from the scanner (in packets of maximum 32&n; * bytes) and from which the status byte is read, and 0x83 from which&n; * the results of a scan (or preview) are read in up to 64 * 1024 byte&n; * chunks by the Windows driver. We don&squot;t know how much it is possible&n; * to read at a time from 0x83.&n; *&n; * It seems possible to read (with URB transfers) everything from 0x82&n; * in one go, without bothering to read in 32 byte chunks.&n; *&n; * There seems to be an optimisation of a further READ implicit if&n; * you simply read from 0x83.&n; *&n; * Guessed protocol:&n; *&n; *&t;Send raw SCSI command to EP 0x1&n; *&n; *&t;If there is data to receive:&n; *&t;&t;If the command was READ datatype=image:&n; *&t;&t;&t;Read a lot of data from EP 0x83&n; *&t;&t;Else:&n; *&t;&t;&t;Read data from EP 0x82&n; *&t;Else:&n; *&t;&t;If there is data to transmit:&n; *&t;&t;&t;Write it to EP 0x1&n; *&n; *&t;Read status byte from EP 0x82&n; *&n; * References:&n; *&n; * The SCSI command set for the scanner is available from&n; *&t;ftp://ftp.microtek.com/microtek/devpack/&n; *&n; * Microtek NV sent us a more up to date version of the document. If&n; * you want it, just send mail.&n; *&n; * Status:&n; *&n; *&t;Untested with multiple scanners.&n; *&t;Untested on SMP.&n; *&t;Untested on a bigendian machine.&n; *&n; * History:&n; *&n; *&t;20000417 starting history&n; *&t;20000417 fixed load oops&n; *&t;20000417 fixed unload oops&n; *&t;20000419 fixed READ IMAGE detection&n; *&t;20000424 started conversion to use URBs&n; *&t;20000502 handled short transfers as errors&n; *&t;20000513 rename and organisation of functions (john)&n; *&t;20000513 added IDs for all products supported by Windows driver (john)&n; *&t;20000514 Rewrote mts_scsi_queuecommand to use URBs (john)&n; *&t;20000514 Version 0.0.8j&n; *      20000514 Fix reporting of non-existant devices to SCSI layer (john)&n; *&t;20000514 Added MTS_DEBUG_INT (john)&n; *&t;20000514 Changed &quot;usb-microtek&quot; to &quot;microtek&quot; for consistency (john)&n; *&t;20000514 Stupid bug fixes (john)&n; *&t;20000514 Version 0.0.9j&n; *&t;20000515 Put transfer context and URB in mts_desc (john)&n; *&t;20000515 Added prelim turn off debugging support (john)&n; *&t;20000515 Version 0.0.10j&n; *      20000515 Fixed up URB allocation (clear URB on alloc) (john)&n; *      20000515 Version 0.0.11j&n; *&t;20000516 Removed unnecessary spinlock in mts_transfer_context (john)&n; *&t;20000516 Removed unnecessary up on instance lock in mts_remove_nolock (john)&n; *&t;20000516 Implemented (badly) scsi_abort (john)&n; *&t;20000516 Version 0.0.12j&n; *      20000517 Hopefully removed mts_remove_nolock quasideadlock (john)&n; *      20000517 Added mts_debug_dump to print ll USB info (john)&n; *&t;20000518 Tweaks and documentation updates (john)&n; *&t;20000518 Version 0.0.13j&n; *&t;20000518 Cleaned up abort handling (john)&n; *&t;20000523 Removed scsi_command and various scsi_..._resets (john)&n; *&t;20000523 Added unlink URB on scsi_abort, now OHCI supports it (john)&n; *&t;20000523 Fixed last tiresome compile warning (john)&n; *&t;20000523 Version 0.0.14j (though version 0.1 has come out?)&n; *&t;20000602 Added primitive reset&n; *&t;20000602 Version 0.2.0&n; *&t;20000603 various cosmetic changes&n; *&t;20000603 Version 0.2.1&n; *&t;20000620 minor cosmetic changes&n; *&t;20000620 Version 0.2.2&n; *&t;20000822 Hopefully fixed deadlock in mts_remove_nolock()&n; *&t;20000822 Fixed minor race in mts_transfer_cleanup()&n; *&t;20000822 Fixed deadlock on submission error in queuecommand&n; *&t;20000822 Version 0.2.3&n; *&t;20000913 Reduced module size if debugging is off&n; *&t;20000913 Version 0.2.4&n; *      20010210 New abort logic&n; *      20010210 Version 0.3.0&n; *&t;20010217 Merged scatter/gather&n; *&t;20010218 Version 0.4.0&n; *&t;20010218 Cosmetic fixes&n; *&t;20010218 Version 0.4.1&n; *      20010306 Abort while using scatter/gather&n; *      20010306 Version 0.4.2&n; *      20010311 Remove all timeouts and tidy up generally (john)&n; *&t;20010320 check return value of scsi_register()&n; *&t;20010320 Version 0.4.3&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -18,11 +18,8 @@ macro_line|#include &quot;../scsi/scsi.h&quot;
 macro_line|#include &quot;../scsi/hosts.h&quot;
 macro_line|#include &quot;../scsi/sd.h&quot;
 macro_line|#include &quot;microtek.h&quot;
-multiline_comment|/* Constants */
-DECL|macro|MTS_ABORT_TIMEOUT
-mdefine_line|#define MTS_ABORT_TIMEOUT HZ /*jiffies*/
 multiline_comment|/* Should we do debugging? */
-singleline_comment|// #define MTS_DO_DEBUG
+singleline_comment|//#define MTS_DO_DEBUG
 multiline_comment|/* USB layer driver interface */
 r_static
 r_void
@@ -78,7 +75,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;microtek&quot;
+l_string|&quot;microtekX6&quot;
 comma
 id|probe
 suffix:colon
@@ -96,7 +93,7 @@ comma
 suffix:semicolon
 multiline_comment|/* Internal driver stuff */
 DECL|macro|MTS_VERSION
-mdefine_line|#define MTS_VERSION&t;&quot;0.2.4&quot;
+mdefine_line|#define MTS_VERSION&t;&quot;0.4.3&quot;
 DECL|macro|MTS_NAME
 mdefine_line|#define MTS_NAME&t;&quot;microtek usb (rev &quot; MTS_VERSION &quot;): &quot;
 DECL|macro|MTS_WARNING
@@ -113,7 +110,7 @@ mdefine_line|#define MTS_DEBUG(x...) &bslash;&n;&t;printk( KERN_DEBUG MTS_NAME x
 DECL|macro|MTS_DEBUG_GOT_HERE
 mdefine_line|#define MTS_DEBUG_GOT_HERE() &bslash;&n;&t;MTS_DEBUG(&quot;got to %s:%d (%s)&bslash;n&quot;, __FILE__, (int)__LINE__, __PRETTY_FUNCTION__ )
 DECL|macro|MTS_DEBUG_INT
-mdefine_line|#define MTS_DEBUG_INT() &bslash;&n;&t;do { MTS_DEBUG_GOT_HERE(); &bslash;&n;&t;     MTS_DEBUG(&quot;transfer = %x context = %x&bslash;n&quot;,(int)transfer,(int)context ); &bslash;&n;&t;     MTS_DEBUG(&quot;status = %x data-length = %x sent = %x&bslash;n&quot;,(int)transfer-&gt;status,(int)context-&gt;data_length, (int)transfer-&gt;actual_length ); &bslash;&n;             mts_debug_dump(context-&gt;instance);&bslash;&n;&t;   } while(0)
+mdefine_line|#define MTS_DEBUG_INT() &bslash;&n;&t;do { MTS_DEBUG_GOT_HERE(); &bslash;&n;&t;     MTS_DEBUG(&quot;transfer = 0x%x context = 0x%x&bslash;n&quot;,(int)transfer,(int)context ); &bslash;&n;&t;     MTS_DEBUG(&quot;status = 0x%x data-length = 0x%x sent = 0x%x&bslash;n&quot;,(int)transfer-&gt;status,(int)context-&gt;data_length, (int)transfer-&gt;actual_length ); &bslash;&n;             mts_debug_dump(context-&gt;instance);&bslash;&n;&t;   } while(0)
 macro_line|#else
 DECL|macro|MTS_NUL_STATEMENT
 mdefine_line|#define MTS_NUL_STATEMENT do { } while(0)
@@ -125,7 +122,7 @@ DECL|macro|MTS_DEBUG_INT
 mdefine_line|#define MTS_DEBUG_INT() MTS_NUL_STATEMENT
 macro_line|#endif
 DECL|macro|MTS_INT_INIT
-mdefine_line|#define MTS_INT_INIT()&bslash;&n;&t;do {&bslash;&n;&t;context = (struct mts_transfer_context*)transfer-&gt;context; &bslash;&n;&t;if (atomic_read(&amp;context-&gt;do_abort)) {&bslash;&n;&t;&t;mts_transfer_cleanup(transfer);&bslash;&n;&t;&t;return;&bslash;&n;&t;}&bslash;&n;&t;MTS_DEBUG_INT();&bslash;&n;&t;} while (0)
+mdefine_line|#define MTS_INT_INIT()&bslash;&n;&t;struct mts_transfer_context* context = (struct mts_transfer_context*)transfer-&gt;context; &bslash;&n;&t;MTS_DEBUG_INT();&bslash;&n;
 macro_line|#ifdef MTS_DO_DEBUG
 DECL|function|mts_debug_dump
 r_static
@@ -143,7 +140,7 @@ id|desc
 id|MTS_DEBUG
 c_func
 (paren
-l_string|&quot;desc at 0x%x: halted = %x%x, toggle = %x%x&bslash;n&quot;
+l_string|&quot;desc at 0x%x: halted = %02x%02x, toggle = %02x%02x&bslash;n&quot;
 comma
 (paren
 r_int
@@ -910,16 +907,9 @@ c_func
 (paren
 id|Scsi_Cmnd
 op_star
-id|srb
+id|dummy
 )paren
 (brace
-r_while
-c_loop
-(paren
-l_int|0
-)paren
-(brace
-)brace
 )brace
 DECL|function|mts_debug_dump
 r_static
@@ -931,76 +921,12 @@ c_func
 r_struct
 id|mts_desc
 op_star
-id|desc
+id|dummy
 )paren
 (brace
-r_while
-c_loop
-(paren
-l_int|0
-)paren
-(brace
-)brace
 )brace
 macro_line|#endif
-DECL|function|mts_is_aborting
-r_static
-r_inline
-r_int
-id|mts_is_aborting
-c_func
-(paren
-r_struct
-id|mts_desc
-op_star
-id|desc
-)paren
-(brace
-r_return
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|desc-&gt;context.do_abort
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|mts_request_abort
-r_static
-r_inline
-r_void
-id|mts_request_abort
-c_func
-(paren
-r_struct
-id|mts_desc
-op_star
-id|desc
-)paren
-(brace
-id|MTS_DEBUG_GOT_HERE
-c_func
-(paren
-)paren
-suffix:semicolon
-id|mts_debug_dump
-c_func
-(paren
-id|desc
-)paren
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|desc-&gt;context.do_abort
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* static inline int mts_is_aborting(struct mts_desc* desc) {&n;&t;return (atomic_read(&amp;desc-&gt;context.do_abort));&n;}  */
 DECL|function|mts_urb_abort
 r_static
 r_inline
@@ -1025,14 +951,6 @@ c_func
 id|desc
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|desc-&gt;urb.status
-op_eq
-id|USB_ST_URB_PENDING
-)paren
-(brace
 id|usb_unlink_urb
 c_func
 (paren
@@ -1040,64 +958,6 @@ op_amp
 id|desc-&gt;urb
 )paren
 suffix:semicolon
-)brace
-)brace
-DECL|function|mts_wait_abort
-r_static
-r_inline
-r_void
-id|mts_wait_abort
-c_func
-(paren
-r_struct
-id|mts_desc
-op_star
-id|desc
-)paren
-(brace
-id|mts_request_abort
-c_func
-(paren
-id|desc
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-id|atomic_read
-c_func
-(paren
-op_amp
-id|desc-&gt;lock.count
-)paren
-)paren
-(brace
-multiline_comment|/* Is there a function to check if the semaphore is locked? */
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|MTS_ABORT_TIMEOUT
-)paren
-suffix:semicolon
-id|MTS_DEBUG_GOT_HERE
-c_func
-(paren
-)paren
-suffix:semicolon
-id|mts_urb_abort
-c_func
-(paren
-id|desc
-)paren
-suffix:semicolon
-)brace
 )brace
 DECL|variable|mts_list
 r_static
@@ -1141,7 +1001,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|mts_wait_abort
+id|mts_urb_abort
 c_func
 (paren
 id|to_remove
@@ -1328,8 +1188,6 @@ id|Scsi_Cmnd
 op_star
 id|srb
 )paren
-multiline_comment|/* interrupt context (!) */
-multiline_comment|/* FIXME this is about to become task context */
 (brace
 r_struct
 id|mts_desc
@@ -1351,12 +1209,6 @@ suffix:semicolon
 id|MTS_DEBUG_GOT_HERE
 c_func
 (paren
-)paren
-suffix:semicolon
-id|mts_request_abort
-c_func
-(paren
-id|desc
 )paren
 suffix:semicolon
 id|mts_urb_abort
@@ -1527,6 +1379,30 @@ id|desc
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|desc-&gt;host
+op_eq
+l_int|NULL
+)paren
+(brace
+id|MTS_ERROR
+c_func
+(paren
+l_string|&quot;Cannot register due to low memory&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|sht-&gt;proc_name
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|desc-&gt;host-&gt;hostdata
 (braket
 l_int|0
@@ -1567,6 +1443,17 @@ op_star
 id|transfer
 )paren
 suffix:semicolon
+r_static
+r_void
+id|mts_do_sg
+c_func
+(paren
+r_struct
+id|urb
+op_star
+id|transfer
+)paren
+suffix:semicolon
 r_inline
 r_static
 DECL|function|mts_int_submit_urb
@@ -1597,11 +1484,6 @@ multiline_comment|/* Holding transfer-&gt;context-&gt;lock! */
 r_int
 id|res
 suffix:semicolon
-r_struct
-id|mts_transfer_context
-op_star
-id|context
-suffix:semicolon
 id|MTS_INT_INIT
 c_func
 (paren
@@ -1625,7 +1507,6 @@ comma
 id|context
 )paren
 suffix:semicolon
-multiline_comment|/*&t;transfer-&gt;transfer_flags = USB_DISABLE_SPD;*/
 id|transfer-&gt;transfer_flags
 op_assign
 id|USB_ASYNC_UNLINK
@@ -1633,10 +1514,6 @@ suffix:semicolon
 id|transfer-&gt;status
 op_assign
 l_int|0
-suffix:semicolon
-id|transfer-&gt;timeout
-op_assign
-l_int|100
 suffix:semicolon
 id|res
 op_assign
@@ -1669,10 +1546,6 @@ id|DID_ERROR
 op_lshift
 l_int|16
 suffix:semicolon
-id|context-&gt;state
-op_assign
-id|mts_con_error
-suffix:semicolon
 id|mts_transfer_cleanup
 c_func
 (paren
@@ -1696,17 +1569,10 @@ id|transfer
 )paren
 multiline_comment|/* Interrupt context! */
 (brace
-r_struct
-id|mts_transfer_context
-op_star
-id|context
-op_assign
+id|MTS_INT_INIT
+c_func
 (paren
-r_struct
-id|mts_transfer_context
-op_star
 )paren
-id|transfer-&gt;context
 suffix:semicolon
 r_if
 c_cond
@@ -1741,11 +1607,6 @@ op_star
 id|transfer
 )paren
 (brace
-r_struct
-id|mts_transfer_context
-op_star
-id|context
-suffix:semicolon
 id|MTS_INT_INIT
 c_func
 (paren
@@ -1786,19 +1647,10 @@ id|transfer
 )paren
 multiline_comment|/* Interrupt context! */
 (brace
-r_struct
-id|mts_transfer_context
-op_star
-id|context
-suffix:semicolon
 id|MTS_INT_INIT
 c_func
 (paren
 )paren
-suffix:semicolon
-id|context-&gt;state
-op_assign
-id|mts_con_status
 suffix:semicolon
 id|mts_int_submit_urb
 c_func
@@ -1821,8 +1673,6 @@ comma
 id|mts_transfer_done
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|mts_data_done
 r_static
@@ -1837,11 +1687,6 @@ id|transfer
 )paren
 multiline_comment|/* Interrupt context! */
 (brace
-r_struct
-id|mts_transfer_context
-op_star
-id|context
-suffix:semicolon
 id|MTS_INT_INIT
 c_func
 (paren
@@ -1871,7 +1716,17 @@ id|transfer-&gt;status
 (brace
 id|context-&gt;srb-&gt;result
 op_assign
+(paren
+id|transfer-&gt;status
+op_eq
+op_minus
+id|ENOENT
+ques
+c_cond
+id|DID_ABORT
+suffix:colon
 id|DID_ERROR
+)paren
 op_lshift
 l_int|16
 suffix:semicolon
@@ -1898,11 +1753,6 @@ id|transfer
 )paren
 multiline_comment|/* Interrupt context! */
 (brace
-r_struct
-id|mts_transfer_context
-op_star
-id|context
-suffix:semicolon
 id|MTS_INT_INIT
 c_func
 (paren
@@ -1914,12 +1764,43 @@ c_cond
 id|transfer-&gt;status
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|transfer-&gt;status
+op_eq
+op_minus
+id|ENOENT
+)paren
+(brace
+multiline_comment|/* We are being killed */
+id|MTS_DEBUG_GOT_HERE
+c_func
+(paren
+)paren
+suffix:semicolon
+id|context-&gt;srb-&gt;result
+op_assign
+id|DID_ABORT
+op_lshift
+l_int|16
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* A genuine error has occured */
+id|MTS_DEBUG_GOT_HERE
+c_func
+(paren
+)paren
+suffix:semicolon
 id|context-&gt;srb-&gt;result
 op_assign
 id|DID_ERROR
 op_lshift
 l_int|16
 suffix:semicolon
+)brace
 id|mts_transfer_cleanup
 c_func
 (paren
@@ -1935,10 +1816,6 @@ c_cond
 id|context-&gt;data
 )paren
 (brace
-id|context-&gt;state
-op_assign
-id|mts_con_data
-suffix:semicolon
 id|mts_int_submit_urb
 c_func
 (paren
@@ -1950,6 +1827,11 @@ id|context-&gt;data
 comma
 id|context-&gt;data_length
 comma
+id|context-&gt;srb-&gt;use_sg
+ques
+c_cond
+id|mts_do_sg
+suffix:colon
 id|mts_data_done
 )paren
 suffix:semicolon
@@ -1959,6 +1841,109 @@ id|mts_get_status
 c_func
 (paren
 id|transfer
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+DECL|function|mts_do_sg
+r_static
+r_void
+id|mts_do_sg
+(paren
+r_struct
+id|urb
+op_star
+id|transfer
+)paren
+(brace
+r_struct
+id|scatterlist
+op_star
+id|sg
+suffix:semicolon
+id|MTS_INT_INIT
+c_func
+(paren
+)paren
+suffix:semicolon
+id|MTS_DEBUG
+c_func
+(paren
+l_string|&quot;Processing fragment %d of %d&bslash;n&quot;
+comma
+id|context-&gt;fragment
+comma
+id|context-&gt;srb-&gt;use_sg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|transfer-&gt;status
+)paren
+(brace
+id|context-&gt;srb-&gt;result
+op_assign
+(paren
+id|transfer-&gt;status
+op_eq
+op_minus
+id|ENOENT
+ques
+c_cond
+id|DID_ABORT
+suffix:colon
+id|DID_ERROR
+)paren
+op_lshift
+l_int|16
+suffix:semicolon
+id|mts_transfer_cleanup
+c_func
+(paren
+id|transfer
+)paren
+suffix:semicolon
+)brace
+id|sg
+op_assign
+id|context-&gt;srb-&gt;buffer
+suffix:semicolon
+id|context-&gt;fragment
+op_increment
+suffix:semicolon
+id|mts_int_submit_urb
+c_func
+(paren
+id|transfer
+comma
+id|context-&gt;data_pipe
+comma
+id|sg
+(braket
+id|context-&gt;fragment
+)braket
+dot
+id|address
+comma
+id|sg
+(braket
+id|context-&gt;fragment
+)braket
+dot
+id|length
+comma
+id|context-&gt;fragment
+op_plus
+l_int|1
+op_eq
+id|context-&gt;srb-&gt;use_sg
+ques
+c_cond
+id|mts_data_done
+suffix:colon
+id|mts_do_sg
 )paren
 suffix:semicolon
 r_return
@@ -2089,6 +2074,11 @@ id|desc
 r_int
 id|pipe
 suffix:semicolon
+r_struct
+id|scatterlist
+op_star
+id|sg
+suffix:semicolon
 id|MTS_DEBUG_GOT_HERE
 c_func
 (paren
@@ -2102,19 +2092,17 @@ id|desc-&gt;context.srb
 op_assign
 id|srb
 suffix:semicolon
-id|desc-&gt;context.state
+id|desc-&gt;context.fragment
 op_assign
-id|mts_con_command
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|desc-&gt;context.do_abort
-comma
 l_int|0
-)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|srb-&gt;use_sg
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -2142,6 +2130,48 @@ suffix:semicolon
 id|desc-&gt;context.data_length
 op_assign
 id|srb-&gt;bufflen
+suffix:semicolon
+id|MTS_DEBUG
+c_func
+(paren
+l_string|&quot;length = %d or %d&bslash;n&quot;
+comma
+id|srb-&gt;request_bufflen
+comma
+id|srb-&gt;bufflen
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|MTS_DEBUG
+c_func
+(paren
+l_string|&quot;Using scatter/gather&bslash;n&quot;
+)paren
+suffix:semicolon
+id|sg
+op_assign
+id|srb-&gt;buffer
+suffix:semicolon
+id|desc-&gt;context.data
+op_assign
+id|sg
+(braket
+l_int|0
+)braket
+dot
+id|address
+suffix:semicolon
+id|desc-&gt;context.data_length
+op_assign
+id|sg
+(braket
+l_int|0
+)braket
+dot
+id|length
 suffix:semicolon
 )brace
 multiline_comment|/* can&squot;t rely on srb-&gt;sc_data_direction */
@@ -2371,17 +2401,6 @@ op_amp
 id|desc-&gt;lock
 )paren
 suffix:semicolon
-id|MTS_DEBUG_GOT_HERE
-c_func
-(paren
-)paren
-suffix:semicolon
-id|mts_show_command
-c_func
-(paren
-id|srb
-)paren
-suffix:semicolon
 id|FILL_BULK_URB
 c_func
 (paren
@@ -2420,15 +2439,6 @@ id|desc-&gt;context.final_callback
 op_assign
 id|callback
 suffix:semicolon
-id|desc-&gt;urb.timeout
-op_assign
-l_int|100
-suffix:semicolon
-id|desc-&gt;urb.transfer_flags
-op_assign
-id|USB_ASYNC_UNLINK
-suffix:semicolon
-multiline_comment|/*&t;desc-&gt;urb.transfer_flags = USB_DISABLE_SPD;*/
 id|res
 op_assign
 id|usb_submit_urb
@@ -2481,16 +2491,7 @@ op_amp
 id|desc-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* no further cleanup is done */
-r_goto
-id|out
-suffix:semicolon
 )brace
-id|MTS_DEBUG_GOT_HERE
-c_func
-(paren
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -2507,7 +2508,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;microtek&quot;
+l_string|&quot;microtekX6&quot;
 comma
 id|detect
 suffix:colon
@@ -2517,10 +2518,6 @@ id|release
 suffix:colon
 id|mts_scsi_release
 comma
-id|command
-suffix:colon
-l_int|0
-comma
 id|queuecommand
 suffix:colon
 id|mts_scsi_queuecommand
@@ -2529,17 +2526,13 @@ id|eh_abort_handler
 suffix:colon
 id|mts_scsi_abort
 comma
-id|eh_device_reset_handler
-suffix:colon
-l_int|0
-comma
-id|eh_bus_reset_handler
-suffix:colon
-l_int|0
-comma
 id|eh_host_reset_handler
 suffix:colon
 id|mts_scsi_host_reset
+comma
+id|sg_tablesize
+suffix:colon
+id|SG_ALL
 comma
 id|can_queue
 suffix:colon
@@ -2564,7 +2557,7 @@ id|FALSE
 comma
 id|use_clustering
 suffix:colon
-id|FALSE
+id|TRUE
 comma
 id|use_new_eh_code
 suffix:colon

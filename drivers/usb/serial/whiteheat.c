@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB ConnectTech WhiteHEAT driver&n; *&n; *&t;Copyright (C) 1999, 2000&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (10/03/2000) smd&n; *&t;firmware is improved to guard against crap sent to device&n; *&t;firmware now replies CMD_FAILURE on bad things&n; *&t;read_callback fix you provided for private info struct&n; *&t;command_finished now indicates success or fail&n; *&t;setup_port struct now packed to avoid gcc padding&n; *&t;firmware uses 1 based port numbering, driver now handles that&n; *&n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&t;Fixed bug with port-&gt;minor that was found by Al Borchers&n; *&n; * (07/04/2000) gkh&n; *&t;Added support for port settings. Baud rate can now be changed. Line signals&n; *&t;are not transferred to and from the tty layer yet, but things seem to be &n; *&t;working well now.&n; *&n; * (05/04/2000) gkh&n; *&t;First cut at open and close commands. Data can flow through the ports at&n; *&t;default speeds now.&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
+multiline_comment|/*&n; * USB ConnectTech WhiteHEAT driver&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * 2001_Mar_19 gkh&n; *&t;Fixed MOD_INC and MOD_DEC logic, the ability to open a port more &n; *&t;than once, and the got the proper usb_device_id table entries so&n; *&t;the driver works again.&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (10/03/2000) smd&n; *&t;firmware is improved to guard against crap sent to device&n; *&t;firmware now replies CMD_FAILURE on bad things&n; *&t;read_callback fix you provided for private info struct&n; *&t;command_finished now indicates success or fail&n; *&t;setup_port struct now packed to avoid gcc padding&n; *&t;firmware uses 1 based port numbering, driver now handles that&n; *&n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&t;Fixed bug with port-&gt;minor that was found by Al Borchers&n; *&n; * (07/04/2000) gkh&n; *&t;Added support for port settings. Baud rate can now be changed. Line signals&n; *&t;are not transferred to and from the tty layer yet, but things seem to be &n; *&t;working well now.&n; *&n; * (05/04/2000) gkh&n; *&t;First cut at open and close commands. Data can flow through the ports at&n; *&t;default speeds now.&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -72,7 +72,7 @@ c_func
 (paren
 id|CONNECT_TECH_VENDOR_ID
 comma
-id|CONNECT_TECH_WHITE_HEAT_ID
+id|CONNECT_TECH_FAKE_WHITE_HEAT_ID
 )paren
 )brace
 comma
@@ -950,23 +950,18 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
+op_increment
+id|port-&gt;open_count
+suffix:semicolon
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|port-&gt;active
 )paren
 (brace
-id|dbg
-(paren
-id|__FUNCTION__
-l_string|&quot; - device already open&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|port-&gt;active
 op_assign
 l_int|1
@@ -1122,6 +1117,7 @@ id|open_command
 suffix:semicolon
 multiline_comment|/* Need to do device specific setup here (control lines, baud rate, etc.) */
 multiline_comment|/* FIXME!!! */
+)brace
 id|dbg
 c_func
 (paren
@@ -1163,6 +1159,17 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
+op_decrement
+id|port-&gt;open_count
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|port-&gt;open_count
+op_le
+l_int|0
+)paren
+(brace
 multiline_comment|/* send a close command to the port */
 multiline_comment|/* firmware uses 1 based port numbering */
 id|close_command.port
@@ -1208,6 +1215,9 @@ suffix:semicolon
 id|port-&gt;active
 op_assign
 l_int|0
+suffix:semicolon
+)brace
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|whiteheat_ioctl
@@ -1997,12 +2007,57 @@ id|usb_serial_port
 op_star
 id|command_port
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 id|dbg
 c_func
 (paren
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* stop reads and writes on all ports */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|serial-&gt;num_ports
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|serial-&gt;port
+(braket
+id|i
+)braket
+dot
+id|open_count
+OG
+l_int|0
+)paren
+(brace
+id|whiteheat_close
+(paren
+op_amp
+id|serial-&gt;port
+(braket
+id|i
+)braket
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* free up our private data for our command port */
 id|command_port
 op_assign

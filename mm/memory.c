@@ -1499,13 +1499,6 @@ id|end
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Update rss for the mm_struct (not necessarily current-&gt;mm)&n;&t; * Notice that rss is an unsigned long.&n;&t; */
 r_if
 c_cond
@@ -1522,6 +1515,13 @@ r_else
 id|mm-&gt;rss
 op_assign
 l_int|0
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do a quick page-table lookup for a single page. &n; */
@@ -3378,7 +3378,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Establish a new mapping:&n; *  - flush the old one&n; *  - update the page tables&n; *  - inform the TLB about the new one&n; */
+multiline_comment|/*&n; * Establish a new mapping:&n; *  - flush the old one&n; *  - update the page tables&n; *  - inform the TLB about the new one&n; *&n; * We hold the mm semaphore for reading and vma-&gt;vm_mm-&gt;page_table_lock&n; */
 DECL|function|establish_pte
 r_static
 r_inline
@@ -3430,6 +3430,7 @@ id|entry
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * We hold the mm semaphore for reading and vma-&gt;vm_mm-&gt;page_table_lock&n; */
 DECL|function|break_cow
 r_static
 r_inline
@@ -4372,7 +4373,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We hold the mm semaphore and the page_table_lock on entry&n; * and exit.&n; */
+multiline_comment|/*&n; * We hold the mm semaphore and the page_table_lock on entry and exit.&n; */
 DECL|function|do_swap_page
 r_static
 r_int
@@ -4408,15 +4409,24 @@ r_struct
 id|page
 op_star
 id|page
+suffix:semicolon
+id|pte_t
+id|pte
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
+id|page
 op_assign
 id|lookup_swap_cache
 c_func
 (paren
 id|entry
 )paren
-suffix:semicolon
-id|pte_t
-id|pte
 suffix:semicolon
 r_if
 c_cond
@@ -4425,13 +4435,6 @@ op_logical_neg
 id|page
 )paren
 (brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
-suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -4456,6 +4459,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page
+)paren
+(brace
 id|spin_lock
 c_func
 (paren
@@ -4463,16 +4473,11 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|page
-)paren
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 id|flush_page_to_ram
 c_func
 (paren
@@ -4489,19 +4494,13 @@ id|page
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Freeze the &quot;shared&quot;ness of the page, ie page_count + swap_count.&n;&t; * Must lock page before transferring our swap count to already&n;&t; * obtained page count.&n;&t; */
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
-suffix:semicolon
 id|lock_page
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Back out if somebody else faulted in this pte while we&n;&t; * released the page table lock.&n;&t; */
 id|spin_lock
 c_func
 (paren
@@ -4509,7 +4508,6 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Back out if somebody else faulted in this pte while we slept.&n;&t; */
 r_if
 c_cond
 (paren

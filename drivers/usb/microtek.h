@@ -56,34 +56,10 @@ DECL|member|data_pipe
 r_int
 id|data_pipe
 suffix:semicolon
-r_enum
-(brace
-DECL|enumerator|mts_con_none
-id|mts_con_none
-comma
-DECL|enumerator|mts_con_command
-id|mts_con_command
-comma
-DECL|enumerator|mts_con_data
-id|mts_con_data
-comma
-DECL|enumerator|mts_con_status
-id|mts_con_status
-comma
-DECL|enumerator|mts_con_error
-id|mts_con_error
-comma
-DECL|enumerator|mts_con_done
-id|mts_con_done
-)brace
-DECL|member|state
-id|state
+DECL|member|fragment
+r_int
+id|fragment
 suffix:semicolon
-DECL|member|do_abort
-id|atomic_t
-id|do_abort
-suffix:semicolon
-multiline_comment|/* when != 0 URB completion routines will&n;&t;&t;&t;      return straightaway */
 DECL|member|status
 id|u8
 id|status
@@ -170,5 +146,5 @@ mdefine_line|#define MTS_EP_IMAGE&t;0x3
 DECL|macro|MTS_EP_TOTAL
 mdefine_line|#define MTS_EP_TOTAL&t;0x3
 DECL|macro|MTS_SCSI_ERR_MASK
-mdefine_line|#define MTS_SCSI_ERR_MASK ~0x3fu 
+mdefine_line|#define MTS_SCSI_ERR_MASK ~0x3fu
 eof

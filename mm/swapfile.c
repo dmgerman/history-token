@@ -790,6 +790,7 @@ id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The swap entry has been read in advance, and we return 1 to indicate&n; * that the page has been used or is no longer needed.&n; *&n; * Always set the resulting pte to be nowrite (the same as COW pages&n; * after one process has exited).  We don&squot;t know just how many PTEs will&n; * share this swap entry, so be cautious and let do_wp_page work out&n; * what to do if a write is requested later.&n; */
+multiline_comment|/* tasklist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
 DECL|function|unuse_pte
 r_static
 r_inline
@@ -919,6 +920,7 @@ op_increment
 id|vma-&gt;vm_mm-&gt;rss
 suffix:semicolon
 )brace
+multiline_comment|/* tasklist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
 DECL|function|unuse_pmd
 r_static
 r_inline
@@ -1082,6 +1084,7 @@ id|end
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* tasklist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
 DECL|function|unuse_pgd
 r_static
 r_inline
@@ -1263,6 +1266,7 @@ id|end
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* tasklist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
 DECL|function|unuse_vma
 r_static
 r_void

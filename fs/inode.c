@@ -293,9 +293,9 @@ c_cond
 id|flags
 op_amp
 (paren
-id|I_DIRTY
-op_or
 id|I_DIRTY_SYNC
+op_or
+id|I_DIRTY_DATASYNC
 )paren
 )paren
 (brace

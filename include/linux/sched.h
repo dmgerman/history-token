@@ -301,6 +301,7 @@ DECL|member|file_lock
 id|rwlock_t
 id|file_lock
 suffix:semicolon
+multiline_comment|/* Protects all the below members.  Nests inside tsk-&gt;alloc_lock */
 DECL|member|max_fds
 r_int
 id|max_fds
@@ -412,12 +413,13 @@ DECL|member|page_table_lock
 id|spinlock_t
 id|page_table_lock
 suffix:semicolon
+multiline_comment|/* Protects task page tables and mm-&gt;rss */
 DECL|member|mmlist
 r_struct
 id|list_head
 id|mmlist
 suffix:semicolon
-multiline_comment|/* List of all active mm&squot;s */
+multiline_comment|/* List of all active mm&squot;s.  These are globally strung&n;&t;&t;&t;&t;&t;&t; * together off init_mm.mmlist, and are protected&n;&t;&t;&t;&t;&t;&t; * by mmlist_lock&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|start_code
 DECL|member|end_code
 DECL|member|start_data
@@ -2777,6 +2779,7 @@ id|tasklist_lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Protects -&gt;fs, -&gt;files, -&gt;mm, and synchronises with wait4().  Nests inside tasklist_lock */
 DECL|function|task_lock
 r_static
 r_inline

@@ -1567,8 +1567,12 @@ l_string|&quot;swap %u %u&bslash;n&quot;
 l_string|&quot;intr %u&quot;
 comma
 id|kstat.pgpgin
+op_rshift
+l_int|1
 comma
 id|kstat.pgpgout
+op_rshift
+l_int|1
 comma
 id|kstat.pswpin
 comma

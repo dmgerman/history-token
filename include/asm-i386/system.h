@@ -214,41 +214,14 @@ id|high
 id|__asm__
 id|__volatile__
 (paren
-"&quot;"
-l_int|1
+l_string|&quot;&bslash;n1:&bslash;t&quot;
+l_string|&quot;movl (%0), %%eax&bslash;n&bslash;t&quot;
+l_string|&quot;movl 4(%0), %%edx&bslash;n&bslash;t&quot;
+l_string|&quot;cmpxchg8b (%0)&bslash;n&bslash;t&quot;
+l_string|&quot;jnz 1b&quot;
 suffix:colon
-id|movl
-(paren
-op_mod
-l_int|0
-)paren
-comma
-op_mod
-op_mod
-id|eax
-suffix:semicolon
-id|movl
-l_int|4
-(paren
-op_mod
-l_int|0
-)paren
-comma
-op_mod
-op_mod
-id|edx
-suffix:semicolon
-id|cmpxchg8b
-(paren
-op_mod
-l_int|0
-)paren
-suffix:semicolon
-id|jnz
-l_int|1
-id|b
-"&quot;"
-op_scope_resolution
+multiline_comment|/* no outputs */
+suffix:colon
 l_string|&quot;D&quot;
 (paren
 id|ptr

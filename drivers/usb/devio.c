@@ -4534,7 +4534,7 @@ id|isopkt
 suffix:semicolon
 r_return
 op_minus
-id|ENOMEM
+id|EINVAL
 suffix:semicolon
 )brace
 id|uurb.buffer_length

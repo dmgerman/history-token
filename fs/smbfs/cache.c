@@ -124,6 +124,8 @@ id|page
 suffix:semicolon
 id|out
 suffix:colon
+r_return
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Mark all dentries for &squot;parent&squot; as invalid, forcing them to be re-read&n; */
 r_void

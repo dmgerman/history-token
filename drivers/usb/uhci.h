@@ -580,6 +580,10 @@ r_int
 id|fsbr
 suffix:semicolon
 multiline_comment|/* Full speed bandwidth reclamation */
+DECL|member|is_suspended
+r_int
+id|is_suspended
+suffix:semicolon
 DECL|member|qh_remove_lock
 id|spinlock_t
 id|qh_remove_lock

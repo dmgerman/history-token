@@ -2310,19 +2310,10 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-"&quot;"
-id|repnz
-suffix:semicolon
-id|scasb
-id|jnz
-l_float|1f
-id|dec
-op_mod
-op_mod
-id|edi
-l_int|1
-suffix:colon
-"&quot;"
+l_string|&quot;repnz; scasb&bslash;n&bslash;t&quot;
+l_string|&quot;jnz 1f&bslash;n&bslash;t&quot;
+l_string|&quot;dec %%edi&bslash;n&quot;
+l_string|&quot;1:&quot;
 suffix:colon
 l_string|&quot;=D&quot;
 (paren

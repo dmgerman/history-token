@@ -2427,17 +2427,6 @@ id|port-&gt;bulk_out_size
 suffix:colon
 id|count
 suffix:semicolon
-id|usb_serial_debug_data
-(paren
-id|__FILE__
-comma
-id|__FUNCTION__
-comma
-id|count
-comma
-id|buf
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2467,6 +2456,17 @@ id|count
 )paren
 suffix:semicolon
 )brace
+id|usb_serial_debug_data
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|count
+comma
+id|port-&gt;write_urb-&gt;transfer_buffer
+)paren
+suffix:semicolon
 multiline_comment|/* set up our urb */
 id|FILL_BULK_URB
 c_func

@@ -795,6 +795,12 @@ DECL|member|read_lock
 id|spinlock_t
 id|read_lock
 suffix:semicolon
+multiline_comment|/* If the tty has a pending do_SAK, queue it here - akpm */
+DECL|member|SAK_tq
+r_struct
+id|tq_struct
+id|SAK_tq
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* tty magic number */

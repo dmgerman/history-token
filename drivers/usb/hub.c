@@ -1362,6 +1362,13 @@ id|hub-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|hub-&gt;khubd_sem
+)paren
+suffix:semicolon
 multiline_comment|/* Record the new hub&squot;s existence */
 id|spin_lock_irqsave
 c_func
@@ -1557,6 +1564,21 @@ op_amp
 id|hub_event_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|hub-&gt;khubd_sem
+)paren
+suffix:semicolon
+multiline_comment|/* Wait for khubd to leave this hub alone. */
+id|up
+c_func
+(paren
+op_amp
+id|hub-&gt;khubd_sem
 )paren
 suffix:semicolon
 r_if
@@ -2515,6 +2537,27 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Some low speed devices have problems with the quick delay, so */
+multiline_comment|/*  be a bit pessimistic with those devices. RHbug #23670 */
+r_if
+c_cond
+(paren
+id|portstatus
+op_amp
+id|USB_PORT_STAT_LOW_SPEED
+)paren
+(brace
+id|wait_ms
+c_func
+(paren
+l_int|400
+)paren
+suffix:semicolon
+id|delay
+op_assign
+id|HUB_LONG_RESET_TIME
+suffix:semicolon
+)brace
 id|down
 c_func
 (paren
@@ -2912,8 +2955,7 @@ op_amp
 id|hub_event_list
 )paren
 )paren
-r_goto
-id|he_unlock
+r_break
 suffix:semicolon
 multiline_comment|/* Grab the next entry from the beginning of the list */
 id|tmp
@@ -2949,6 +2991,14 @@ c_func
 id|tmp
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|hub-&gt;khubd_sem
+)paren
+suffix:semicolon
+multiline_comment|/* never blocks, we were on list */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2996,6 +3046,13 @@ id|usb_hub_disconnect
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|hub-&gt;khubd_sem
 )paren
 suffix:semicolon
 r_continue
@@ -3398,10 +3455,15 @@ id|hub
 suffix:semicolon
 )brace
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|hub-&gt;khubd_sem
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* end while (1) */
-id|he_unlock
-suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren

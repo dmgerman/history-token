@@ -1430,6 +1430,8 @@ id|purb
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|DEVNUM_ROUND_ROBIN
+mdefine_line|#define DEVNUM_ROUND_ROBIN&t;/***** OPTION *****/
 multiline_comment|/*&n; * Allocated per bus we have&n; */
 DECL|struct|usb_bus
 r_struct
@@ -1440,6 +1442,13 @@ r_int
 id|busnum
 suffix:semicolon
 multiline_comment|/* Bus number (in order of reg) */
+macro_line|#ifdef DEVNUM_ROUND_ROBIN
+DECL|member|devnum_next
+r_int
+id|devnum_next
+suffix:semicolon
+multiline_comment|/* Next open device number in round-robin allocation */
+macro_line|#endif /* DEVNUM_ROUND_ROBIN */
 DECL|member|devmap
 r_struct
 id|usb_devmap

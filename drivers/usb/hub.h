@@ -232,6 +232,11 @@ id|usb_hub_descriptor
 op_star
 id|descriptor
 suffix:semicolon
+DECL|member|khubd_sem
+r_struct
+id|semaphore
+id|khubd_sem
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

@@ -966,9 +966,6 @@ id|i
 )braket
 )paren
 (brace
-id|current-&gt;mm-&gt;rss
-op_increment
-suffix:semicolon
 id|put_dirty_page
 c_func
 (paren

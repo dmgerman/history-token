@@ -940,7 +940,7 @@ r_return
 id|r
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine is used to map in a page into an address space: needed by&n; * execve() for the initial stack and environment pages.&n; */
+multiline_comment|/*&n; * This routine is used to map in a page into an address space: needed by&n; * execve() for the initial stack and environment pages.&n; *&n; * tsk-&gt;mmap_sem is held for writing.&n; */
 DECL|function|put_dirty_page
 r_void
 id|put_dirty_page
@@ -1100,6 +1100,9 @@ id|PAGE_COPY
 )paren
 )paren
 )paren
+suffix:semicolon
+id|tsk-&gt;mm-&gt;rss
+op_increment
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -1315,9 +1318,6 @@ id|i
 )braket
 op_assign
 l_int|NULL
-suffix:semicolon
-id|current-&gt;mm-&gt;rss
-op_increment
 suffix:semicolon
 id|put_dirty_page
 c_func

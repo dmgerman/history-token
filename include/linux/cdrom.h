@@ -866,6 +866,8 @@ id|end_sector_l0
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|DVD_LAYERS
+mdefine_line|#define DVD_LAYERS&t;4
 DECL|struct|dvd_physical
 r_struct
 id|dvd_physical
@@ -883,7 +885,7 @@ r_struct
 id|dvd_layer
 id|layer
 (braket
-l_int|4
+id|DVD_LAYERS
 )braket
 suffix:semicolon
 )brace

@@ -43,6 +43,12 @@ suffix:semicolon
 multiline_comment|/* argument to function */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Emit code to initialise a tq_struct&squot;s routine and data pointers&n; */
+DECL|macro|PREPARE_TQUEUE
+mdefine_line|#define PREPARE_TQUEUE(_tq, _routine, _data)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(_tq)-&gt;routine = _routine;&t;&t;&t;&bslash;&n;&t;&t;(_tq)-&gt;data = _data;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+multiline_comment|/*&n; * Emit code to initialise all of a tq_struct&n; */
+DECL|macro|INIT_TQUEUE
+mdefine_line|#define INIT_TQUEUE(_tq, _routine, _data)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;INIT_LIST_HEAD(&amp;(_tq)-&gt;list);&t;&t;&t;&bslash;&n;&t;&t;(_tq)-&gt;sync = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;PREPARE_TQUEUE((_tq), (_routine), (_data));&t;&bslash;&n;&t;} while (0)
 DECL|typedef|task_queue
 r_typedef
 r_struct

@@ -9,7 +9,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
-multiline_comment|/*&n; * The swap-out functions return 1 if they successfully&n; * threw something out, and we got a free page. It returns&n; * zero if it couldn&squot;t do anything, and any other value&n; * indicates it decreased rss, but the page was shared.&n; *&n; * NOTE! If it sleeps, it *must* return 1 to make sure we&n; * don&squot;t continue with the swap-out. Otherwise we may be&n; * using a process that no longer actually exists (it might&n; * have died while we slept).&n; */
+multiline_comment|/*&n; * The swap-out function returns 1 if it successfully&n; * scanned all the pages it was asked to (`count&squot;).&n; * It returns zero if it couldn&squot;t do anything,&n; *&n; * rss may decrease because pages are shared, but this&n; * doesn&squot;t count as having freed a page.&n; */
+multiline_comment|/* mm-&gt;page_table_lock is held. mmap_sem is not held */
 DECL|function|try_to_swap_out
 r_static
 r_void
@@ -279,6 +280,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* mm-&gt;page_table_lock is held. mmap_sem is not held */
 DECL|function|swap_out_pmd
 r_static
 r_int
@@ -488,6 +490,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
+multiline_comment|/* mm-&gt;page_table_lock is held. mmap_sem is not held */
 DECL|function|swap_out_pgd
 r_static
 r_inline
@@ -663,6 +666,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
+multiline_comment|/* mm-&gt;page_table_lock is held. mmap_sem is not held */
 DECL|function|swap_out_vma
 r_static
 r_int
@@ -794,6 +798,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Returns non-zero if we scanned all `count&squot; pages&n; */
 DECL|function|swap_out_mm
 r_static
 r_int

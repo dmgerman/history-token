@@ -16,17 +16,6 @@ DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
-DECL|macro|DEVNUM_ROUND_ROBIN
-mdefine_line|#define DEVNUM_ROUND_ROBIN&t;/***** OPTION *****/
-macro_line|#ifdef DEVNUM_ROUND_ROBIN
-DECL|variable|devnum_next
-r_static
-r_int
-id|devnum_next
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 DECL|variable|usb_bandwidth_option
 r_static
 r_const
@@ -1226,6 +1215,12 @@ id|usb_devmap
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef DEVNUM_ROUND_ROBIN
+id|bus-&gt;devnum_next
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif /* DEVNUM_ROUND_ROBIN */
 id|bus-&gt;op
 op_assign
 id|op
@@ -5963,7 +5958,7 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#else&t;/* round_robin alloc of devnums */
-multiline_comment|/* Try to allocate the next devnum beginning at devnum_next. */
+multiline_comment|/* Try to allocate the next devnum beginning at bus-&gt;devnum_next. */
 id|devnum
 op_assign
 id|find_next_zero_bit
@@ -5973,7 +5968,7 @@ id|dev-&gt;bus-&gt;devmap.devicemap
 comma
 l_int|128
 comma
-id|devnum_next
+id|dev-&gt;bus-&gt;devnum_next
 )paren
 suffix:semicolon
 r_if
@@ -5995,22 +5990,20 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|devnum_next
+id|dev-&gt;bus-&gt;devnum_next
 op_assign
+(paren
+id|devnum
+op_ge
+l_int|127
+ques
+c_cond
+l_int|1
+suffix:colon
 id|devnum
 op_plus
 l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|devnum_next
-op_ge
-l_int|128
 )paren
-id|devnum_next
-op_assign
-l_int|1
 suffix:semicolon
 macro_line|#endif&t;/* round_robin alloc of devnums */
 r_if

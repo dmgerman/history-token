@@ -2716,7 +2716,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * a rather lightweight function, finding and getting a reference to a&n; * hashed page atomically, waiting for it if it&squot;s locked.&n; */
+multiline_comment|/*&n; * a rather lightweight function, finding and getting a reference to a&n; * hashed page atomically.&n; */
 DECL|function|__find_get_page
 r_struct
 id|page
@@ -2788,7 +2788,7 @@ r_return
 id|page
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Get the lock to a page atomically.&n; */
+multiline_comment|/*&n; * Same as the above, but lock the page too, verifying that&n; * it&squot;s still valid once we own it.&n; */
 DECL|function|__find_lock_page
 r_struct
 id|page

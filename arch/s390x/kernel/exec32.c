@@ -223,9 +223,6 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-id|current-&gt;mm-&gt;rss
-op_increment
-suffix:semicolon
 id|put_dirty_page
 c_func
 (paren

@@ -10436,6 +10436,33 @@ r_void
 op_star
 id|mem_base
 suffix:semicolon
+multiline_comment|/* blacklisted hardware? */
+r_if
+c_cond
+(paren
+id|id-&gt;driver_data
+)paren
+(brace
+id|info
+(paren
+l_string|&quot;%s (%s): %s&quot;
+comma
+id|dev-&gt;slot_name
+comma
+id|dev-&gt;name
+comma
+(paren
+r_char
+op_star
+)paren
+id|id-&gt;driver_data
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -11036,6 +11063,34 @@ id|ohci_pci_ids
 )braket
 op_assign
 (brace
+(brace
+multiline_comment|/*&n;&t; * AMD-756 [Viper] USB has a serious erratum when used with&n;&t; * lowspeed devices like mice; oopses have been seen.  The&n;&t; * vendor workaround needs an NDA ... for now, blacklist it.&n;&t; */
+id|vendor
+suffix:colon
+l_int|0x1022
+comma
+id|device
+suffix:colon
+l_int|0x740c
+comma
+id|subvendor
+suffix:colon
+id|PCI_ANY_ID
+comma
+id|subdevice
+suffix:colon
+id|PCI_ANY_ID
+comma
+id|driver_data
+suffix:colon
+(paren
+r_int
+r_int
+)paren
+l_string|&quot;blacklisted, erratum #4&quot;
+comma
+)brace
+comma
 (brace
 multiline_comment|/* handle any USB OHCI controller */
 r_class
