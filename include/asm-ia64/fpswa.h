@@ -208,5 +208,10 @@ DECL|typedef|fpswa_interface_t
 )brace
 id|fpswa_interface_t
 suffix:semicolon
+r_extern
+id|fpswa_interface_t
+op_star
+id|fpswa_interface
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_FPSWA_H */
 eof

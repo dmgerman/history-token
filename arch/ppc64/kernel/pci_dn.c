@@ -620,6 +620,13 @@ r_return
 id|dn
 suffix:semicolon
 )brace
+DECL|variable|fetch_dev_dn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fetch_dev_dn
+)paren
+suffix:semicolon
 multiline_comment|/******************************************************************&n; * Actually initialize the phbs.&n; * The buswalk on this phb has not happened yet.&n; ******************************************************************/
 r_void
 id|__init

@@ -1013,13 +1013,7 @@ id|policy-&gt;cpu
 )paren
 suffix:semicolon
 r_return
-id|cpufreq_p4_setdc
-c_func
-(paren
-id|policy-&gt;cpu
-comma
-id|DC_DISABLE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|p4clockmod_attr

@@ -1343,15 +1343,12 @@ id|index_msb
 op_assign
 l_int|31
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * At this point we only support two siblings per&n;&t;&t;&t; * processor package.&n;&t;&t;&t; */
-DECL|macro|NR_SIBLINGS
-mdefine_line|#define NR_SIBLINGS&t;2
 r_if
 c_cond
 (paren
 id|smp_num_siblings
-op_ne
-id|NR_SIBLINGS
+OG
+id|NR_CPUS
 )paren
 (brace
 id|printk

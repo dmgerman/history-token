@@ -431,7 +431,6 @@ r_return
 id|addr
 suffix:semicolon
 )brace
-r_else
 id|addr
 op_assign
 id|mm-&gt;free_area_cache

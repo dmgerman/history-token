@@ -128,6 +128,10 @@ id|features
 l_int|8
 )braket
 suffix:semicolon
+DECL|member|voice_setting
+id|__u16
+id|voice_setting
+suffix:semicolon
 DECL|member|pkt_type
 id|__u16
 id|pkt_type

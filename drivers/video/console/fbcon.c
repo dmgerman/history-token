@@ -9756,10 +9756,16 @@ c_cond
 (paren
 id|vc-&gt;vc_can_do_color
 )paren
+(brace
 id|vc-&gt;vc_complement_mask
 op_rshift_assign
 l_int|1
 suffix:semicolon
+id|vc-&gt;vc_s_complement_mask
+op_rshift_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* ++Edmund: reorder the attribute bits */
 r_if
 c_cond
@@ -9885,10 +9891,16 @@ c_cond
 (paren
 id|vc-&gt;vc_can_do_color
 )paren
+(brace
 id|vc-&gt;vc_complement_mask
 op_lshift_assign
 l_int|1
 suffix:semicolon
+id|vc-&gt;vc_s_complement_mask
+op_lshift_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* ++Edmund: reorder the attribute bits */
 (brace
 r_int

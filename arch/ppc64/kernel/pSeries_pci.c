@@ -3175,10 +3175,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|function|pcibios_final_fixup
+DECL|function|pSeries_final_fixup
 r_void
 id|__init
-id|pcibios_final_fixup
+id|pSeries_final_fixup
 c_func
 (paren
 r_void
