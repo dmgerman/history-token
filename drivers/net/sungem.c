@@ -2769,7 +2769,7 @@ suffix:semicolon
 id|gp-&gt;net_stats.tx_packets
 op_increment
 suffix:semicolon
-id|dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
