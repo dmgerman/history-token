@@ -4825,11 +4825,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|reparent_to_init
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Set the name of this process.&n;&t; */
 id|sprintf
 c_func

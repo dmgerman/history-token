@@ -1033,11 +1033,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|reparent_to_init
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* avoid getting signals */
 id|spin_lock_irq
 c_func
