@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * originally based on the dummy device.&n; *&n; * Copyright 1999, Thomas Davis, tadavis@lbl.gov.&n; * Licensed under the GPL. Based on dummy.c, and eql.c devices.&n; *&n; * bonding.c: an Ethernet Bonding driver&n; *&n; * This is useful to talk to a Cisco EtherChannel compatible equipment:&n; *&t;Cisco 5500&n; *&t;Sun Trunking (Solaris)&n; *&t;Alteon AceDirector Trunks&n; *&t;Linux Bonding&n; *&t;and probably many L2 switches ...&n; *&n; * How it works:&n; *    ifconfig bond0 ipaddress netmask up&n; *      will setup a network device, with an ip address.  No mac address&n; *&t;will be assigned at this time.  The hw mac address will come from&n; *&t;the first slave bonded to the channel.  All slaves will then use&n; *&t;this hw mac address.&n; *&n; *    ifconfig bond0 down&n; *         will release all slaves, marking them as down.&n; *&n; *    ifenslave bond0 eth0&n; *&t;will attach eth0 to bond0 as a slave.  eth0 hw mac address will either&n; *&t;a: be used as initial mac address&n; *&t;b: if a hw mac address already is there, eth0&squot;s hw mac address&n; *&t;   will then be set from bond0.&n; *&n; * v0.1 - first working version.&n; * v0.2 - changed stats to be calculated by summing slaves stats.&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - fix leaks on failure at bond_init&n; *&n; * 2000/09/30 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added trivial code to release a slave device.&n; *     - fixed security bug (CAP_NET_ADMIN not checked)&n; *     - implemented MII link monitoring to disable dead links :&n; *       All MII capable slaves are checked every &lt;miimon&gt; milliseconds&n; *       (100 ms seems good). This value can be changed by passing it to&n; *       insmod. A value of zero disables the monitoring (default).&n; *     - fixed an infinite loop in bond_xmit_roundrobin() when there&squot;s no&n; *       good slave.&n; *     - made the code hopefully SMP safe&n; *&n; * 2000/10/03 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - optimized slave lists based on relevant suggestions from Thomas Davis&n; *     - implemented active-backup method to obtain HA with two switches:&n; *       stay as long as possible on the same active interface, while we&n; *       also monitor the backup one (MII link status) because we want to know&n; *       if we are able to switch at any time. ( pass &quot;mode=1&quot; to insmod )&n; *     - lots of stress testings because we need it to be more robust than the&n; *       wires ! :-&gt;&n; *&n; * 2000/10/09 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added up and down delays after link state change.&n; *     - optimized the slaves chaining so that when we run forward, we never&n; *       repass through the bond itself, but we can find it by searching&n; *       backwards. Renders the deletion more difficult, but accelerates the&n; *       scan.&n; *     - smarter enslaving and releasing.&n; *     - finer and more robust SMP locking&n; *&n; * 2000/10/17 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed two potential SMP race conditions&n; *&n; * 2000/10/18 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - small fixes to the monitoring FSM in case of zero delays&n; * 2000/11/01 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed first slave not automatically used in trunk mode.&n; * 2000/11/10 : spelling of &quot;EtherChannel&quot; corrected.&n; * 2000/11/13 : fixed a race condition in case of concurrent accesses to ioctl().&n; * 2000/12/16 : fixed improper usage of rtnl_exlock_nowait().&n; *&n; * 2001/1/3 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - The bonding driver now simulates MII status monitoring, just like&n; *       a normal network device.  It will show that the link is down iff&n; *       every slave in the bond shows that their links are down.  If at least&n; *       one slave is up, the bond&squot;s MII status will appear as up.&n; *&n; * 2001/2/7 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Applications can now query the bond from user space to get&n; *       information which may be useful.  They do this by calling&n; *       the BOND_INFO_QUERY ioctl.  Once the app knows how many slaves&n; *       are in the bond, it can call the BOND_SLAVE_INFO_QUERY ioctl to&n; *       get slave specific information (# link failures, etc).  See&n; *       &lt;linux/if_bonding.h&gt; for more details.  The structs of interest&n; *       are ifbond and ifslave.&n; *&n; * 2001/4/5 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Ported to 2.4 Kernel&n; *&n; * 2001/5/2 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - When a device is detached from a bond, the slave device is no longer&n; *       left thinking that is has a master.&n; *&n; * 2001/5/16 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - memset did not appropriately initialized the bond rw_locks. Used&n; *       rwlock_init to initialize to unlocked state to prevent deadlock when&n; *       first attempting a lock&n; *     - Called SET_MODULE_OWNER for bond device&n; *&n; * 2001/5/17 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - 2 paths for releasing for slave release; 1 through ioctl&n; *       and 2) through close. Both paths need to release the same way.&n; *     - the free slave in bond release is changing slave status before&n; *       the free. The netdev_set_master() is intended to change slave state&n; *       so it should not be done as part of the release process.&n; *     - Simple rule for slave state at release: only the active in A/B and&n; *       only one in the trunked case.&n; *&n; * 2001/6/01 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - Now call dev_close when releasing a slave so it doesn&squot;t screw up&n; *       out routing table.&n; *&n; * 2001/6/01 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Added /proc support for getting bond and slave information.&n; *       Information is in /proc/net/&lt;bond device&gt;/info.&n; *     - Changed the locking when calling bond_close to prevent deadlock.&n; *&n; * 2001/8/05 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - correct problem where refcnt of slave is not incremented in bond_ioctl&n; *       so the system hangs when halting.&n; *     - correct locking problem when unable to malloc in bond_enslave.&n; *     - adding bond_xmit_xor logic.&n; *     - adding multiple bond device support.&n; *&n; * 2001/8/13 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - correct locking problem with rtnl_exlock_nowait&n; *&n; * 2001/8/23 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - bzero initial dev_bonds, to correct oops&n; *     - convert SIOCDEVPRIVATE to new MII ioctl calls&n; *&n; * 2001/9/13 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Add the BOND_CHANGE_ACTIVE ioctl implementation&n; *&n; * 2001/9/14 - Mark Huth &lt;mhuth at mvista dot com&gt;&n; *     - Change MII_LINK_READY to not check for end of auto-negotiation,&n; *       but only for an up link.&n; *&n; * 2001/9/20 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Add the device field to bonding_t.  Previously the net_device&n; *       corresponding to a bond wasn&squot;t available from the bonding_t&n; *       structure.&n; *&n; * 2001/9/25 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - add arp_monitor for active backup mode&n; *&n; * 2001/10/23 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Various memory leak fixes&n; *&n; * 2001/11/5 - Mark Huth &lt;mark dot huth at mvista dot com&gt;&n; *     - Don&squot;t take rtnl lock in bond_mii_monitor as it deadlocks under&n; *       certain hotswap conditions.&n; *       Note:  this same change may be required in bond_arp_monitor ???&n; *     - Remove possibility of calling bond_sethwaddr with NULL slave_dev ptr&n; *     - Handle hot swap ethernet interface deregistration events to remove&n; *       kernel oops following hot swap of enslaved interface&n; *&n; * 2002/1/2 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Restore original slave flags at release time.&n; *&n; * 2002/02/18 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - bond_release(): calling kfree on our_slave after call to&n; *       bond_restore_slave_flags, not before&n; *     - bond_enslave(): saving slave flags into original_flags before&n; *       call to netdev_set_master, so the IFF_SLAVE flag doesn&squot;t end&n; *       up in original_flags&n; *&n; * 2002/04/05 - Mark Smith &lt;mark.smith at comdev dot cc&gt; and&n; *              Steve Mead &lt;steve.mead at comdev dot cc&gt;&n; *     - Port Gleb Natapov&squot;s multicast support patchs from 2.4.12&n; *       to 2.4.18 adding support for multicast.&n; *&n; * 2002/06/10 - Tony Cureington &lt;tony.cureington * hp_com&gt;&n; *     - corrected uninitialized pointer (ifr.ifr_data) in bond_check_dev_link;&n; *       actually changed function to use MIIPHY, then MIIREG, and finally&n; *       ETHTOOL to determine the link status&n; *     - fixed bad ifr_data pointer assignments in bond_ioctl&n; *     - corrected mode 1 being reported as active-backup in bond_get_info;&n; *       also added text to distinguish type of load balancing (rr or xor)&n; *     - change arp_ip_target module param from &quot;1-12s&quot; (array of 12 ptrs)&n; *       to &quot;s&quot; (a single ptr)&n; *&n; * 2002/08/30 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *     - Removed acquisition of xmit_lock in set_multicast_list; caused&n; *       deadlock on SMP (lock is held by caller).&n; *     - Revamped SIOCGMIIPHY, SIOCGMIIREG portion of bond_check_dev_link().&n; *&n; * 2002/09/18 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *     - Fixed up bond_check_dev_link() (and callers): removed some magic&n; *&t; numbers, banished local MII_ defines, wrapped ioctl calls to&n; *&t; prevent EFAULT errors&n; *&n; * 2002/9/30 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *     - make sure the ip target matches the arp_target before saving the&n; *&t; hw address.&n; *&n; * 2002/9/30 - Dan Eisner &lt;eisner at 2robots dot com&gt;&n; *     - make sure my_ip is set before taking down the link, since&n; *&t; not all switches respond if the source ip is not set.&n; *&n; * 2002/10/8 - Janice Girouard &lt;girouard at us dot ibm dot com&gt;&n; *     - read in the local ip address when enslaving a device&n; *     - add primary support&n; *     - make sure 2*arp_interval has passed when a new device&n; *       is brought on-line before taking it down.&n; *&n; * 2002/09/11 - Philippe De Muyter &lt;phdm at macqel dot be&gt;&n; *     - Added bond_xmit_broadcast logic.&n; *     - Added bond_mode() support function.&n; *&n; * 2002/10/26 - Laurent Deniel &lt;laurent.deniel at free.fr&gt;&n; *     - allow to register multicast addresses only on active slave&n; *       (useful in active-backup mode)&n; *     - add multicast module parameter&n; *     - fix deletion of multicast groups after unloading module&n; *&n; * 2002/11/06 - Kameshwara Rayaprolu &lt;kameshwara.rao * wipro_com&gt;&n; *     - Changes to prevent panic from closing the device twice; if we close&n; *       the device in bond_release, we must set the original_flags to down&n; *       so it won&squot;t be closed again by the network layer.&n; *&n; * 2002/11/07 - Tony Cureington &lt;tony.cureington * hp_com&gt;&n; *     - Fix arp_target_hw_addr memory leak&n; *     - Created activebackup_arp_monitor function to handle arp monitoring&n; *       in active backup mode - the bond_arp_monitor had several problems...&n; *       such as allowing slaves to tx arps sequentially without any delay&n; *       for a response&n; *     - Renamed bond_arp_monitor to loadbalance_arp_monitor and re-wrote&n; *       this function to just handle arp monitoring in load-balancing mode;&n; *       it is a lot more compact now&n; *     - Changes to ensure one and only one slave transmits in active-backup&n; *       mode&n; *     - Robustesize parameters; warn users about bad combinations of&n; *       parameters; also if miimon is specified and a network driver does&n; *       not support MII or ETHTOOL, inform the user of this&n; *     - Changes to support link_failure_count when in arp monitoring mode&n; *     - Fix up/down delay reported in /proc&n; *     - Added version; log version; make version available from &quot;modinfo -d&quot;&n; *     - Fixed problem in bond_check_dev_link - if the first IOCTL (SIOCGMIIPH)&n; *&t; failed, the ETHTOOL ioctl never got a chance&n; *&n; * 2002/11/16 - Laurent Deniel &lt;laurent.deniel at free.fr&gt;&n; *     - fix multicast handling in activebackup_arp_monitor&n; *     - remove one unnecessary and confusing curr_active_slave == slave test&n; *&t; in activebackup_arp_monitor&n; *&n; *  2002/11/17 - Laurent Deniel &lt;laurent.deniel at free.fr&gt;&n; *     - fix bond_slave_info_query when slave_id = num_slaves&n; *&n; *  2002/11/19 - Janice Girouard &lt;girouard at us dot ibm dot com&gt;&n; *     - correct ifr_data reference.  Update ifr_data reference&n; *       to mii_ioctl_data struct values to avoid confusion.&n; *&n; *  2002/11/22 - Bert Barbe &lt;bert.barbe at oracle dot com&gt;&n; *      - Add support for multiple arp_ip_target&n; *&n; *  2002/12/13 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- Changed to allow text strings for mode and multicast, e.g.,&n; *&t;  insmod bonding mode=active-backup.  The numbers still work.&n; *&t;  One change: an invalid choice will cause module load failure,&n; *&t;  rather than the previous behavior of just picking one.&n; *&t;- Minor cleanups; got rid of dup ctype stuff, atoi function&n; *&n; * 2003/02/07 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- Added use_carrier module parameter that causes miimon to&n; *&t;  use netif_carrier_ok() test instead of MII/ETHTOOL ioctls.&n; *&t;- Minor cleanups; consolidated ioctl calls to one function.&n; *&n; * 2003/02/07 - Tony Cureington &lt;tony.cureington * hp_com&gt;&n; *&t;- Fix bond_mii_monitor() logic error that could result in&n; *&t;  bonding round-robin mode ignoring links after failover/recovery&n; *&n; * 2003/03/17 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- kmalloc fix (GFP_KERNEL to GFP_ATOMIC) reported by&n; *&t;  Shmulik dot Hen at intel.com.&n; *&t;- Based on discussion on mailing list, changed use of&n; *&t;  update_slave_cnt(), created wrapper functions for adding/removing&n; *&t;  slaves, changed bond_xmit_xor() to check slave_cnt instead of&n; *&t;  checking slave and slave-&gt;dev (which only worked by accident).&n; *&t;- Misc code cleanup: get arp_send() prototype from header file,&n; *&t;  add max_bonds to bonding.txt.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Make sure only bond_attach_slave() and bond_detach_slave() can&n; *&t;  manipulate the slave list, including slave_cnt, even when in&n; *&t;  bond_release_all().&n; *&t;- Fixed hang in bond_release() with traffic running:&n; *&t;  netdev_set_master() must not be called from within the bond lock.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Fixed hang in bond_enslave() with traffic running:&n; *&t;  netdev_set_master() must not be called from within the bond lock.&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added support for getting slave&squot;s speed and duplex via ethtool.&n; *&t;  Needed for 802.3ad and other future modes.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Enable support of modes that need to use the unique mac address of&n; *&t;  each slave.&n; *&t;  * bond_enslave(): Moved setting the slave&squot;s mac address, and&n; *&t;    openning it, from the application to the driver. This breaks&n; *&t;    backward comaptibility with old versions of ifenslave that open&n; *&t;     the slave before enalsving it !!!.&n; *&t;  * bond_release(): The driver also takes care of closing the slave&n; *&t;    and restoring its original mac address.&n; *&t;- Removed the code that restores all base driver&squot;s flags.&n; *&t;  Flags are automatically restored once all undo stages are done&n; *&t;  properly.&n; *&t;- Block possibility of enslaving before the master is up. This&n; *&t;  prevents putting the system in an unstable state.&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;,&n; *&t;&t;Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for IEEE 802.3ad Dynamic link aggregation mode.&n; *&n; * 2003/05/01 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added ABI version control to restore compatibility between&n; *&t;  new/old ifenslave and new/old bonding.&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Fixed bug in bond_release_all(): save old value of curr_active_slave&n; *&t;  before setting it to NULL.&n; *&t;- Changed driver versioning scheme to include version number instead&n; *&t;  of release date (that is already in another field). There are 3&n; *&t;  fields X.Y.Z where:&n; *&t;&t;X - Major version - big behavior changes&n; *&t;&t;Y - Minor version - addition of features&n; *&t;&t;Z - Extra version - minor changes and bug fixes&n; *&t;  The current version is 1.0.0 as a base line.&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added support for lacp_rate module param.&n; *&t;- Code beautification and style changes (mainly in comments).&n; *&t;  new version - 1.0.1&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Based on discussion on mailing list, changed locking scheme&n; *&t;  to use lock/unlock or lock_bh/unlock_bh appropriately instead&n; *&t;  of lock_irqsave/unlock_irqrestore. The new scheme helps exposing&n; *&t;  hidden bugs and solves system hangs that occurred due to the fact&n; *&t;  that holding lock_irqsave doesn&squot;t prevent softirqs from running.&n; *&t;  This also increases total throughput since interrupts are not&n; *&t;  blocked on each transmitted packets or monitor timeout.&n; *&t;  new version - 2.0.0&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for Transmit load balancing mode.&n; *&t;- Concentrate all assignments of curr_active_slave to a single point&n; *&t;  so specific modes can take actions when the primary adapter is&n; *&t;  changed.&n; *&t;- Take the updelay parameter into consideration during bond_enslave&n; *&t;  since some adapters loose their link during setting the device.&n; *&t;- Renamed bond_3ad_link_status_changed() to&n; *&t;  bond_3ad_handle_link_change() for compatibility with TLB.&n; *&t;  new version - 2.1.0&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt;&n; *&t;- Added support for Adaptive load balancing mode which is&n; *&t;  equivalent to Transmit load balancing + Receive load balancing.&n; *&t;  new version - 2.2.0&n; *&n; * 2003/05/15 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- Applied fix to activebackup_arp_monitor posted to bonding-devel&n; *&t;  by Tony Cureington &lt;tony.cureington * hp_com&gt;.  Fixes ARP&n; *&t;  monitor endless failover bug.  Version to 2.2.10&n; *&n; * 2003/05/20 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Fixed bug in ABI version control - Don&squot;t commit to a specific&n; *&t;  ABI version if receiving unsupported ioctl commands.&n; *&n; * 2003/05/22 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- Fix ifenslave -c causing bond to loose existing routes;&n; *&t;  added bond_set_mac_address() that doesn&squot;t require the&n; *&t;  bond to be down.&n; *&t;- In conjunction with fix for ifenslave -c, in&n; *&t;  bond_change_active(), changing to the already active slave&n; *&t;  is no longer an error (it successfully does nothing).&n; *&n; * 2003/06/30 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; * &t;- Fixed bond_change_active() for ALB/TLB modes.&n; *&t;  Version to 2.2.14.&n; *&n; * 2003/07/29 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; * &t;- Fixed ARP monitoring bug.&n; *&t;  Version to 2.2.15.&n; *&n; * 2003/07/31 - Willy Tarreau &lt;willy at ods dot org&gt;&n; * &t;- Fixed kernel panic when using ARP monitoring without&n; *&t;  setting bond&squot;s IP address.&n; *&t;  Version to 2.2.16.&n; *&n; * 2003/08/06 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; * &t;- Back port from 2.6: use alloc_netdev(); fix /proc handling;&n; *&t;  made stats a part of bond struct so no need to allocate&n; *&t;  and free it separately; use standard list operations instead&n; *&t;  of pre-allocated array of bonds.&n; *&t;  Version to 2.3.0.&n; *&n; * 2003/08/07 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;,&n; *&t;       Amir Noam &lt;amir.noam at intel dot com&gt; and&n; *&t;       Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Propagating master&squot;s settings: Distinguish between modes that&n; *&t;  use a primary slave from those that don&squot;t, and propagate settings&n; *&t;  accordingly; Consolidate change_active opeartions and add&n; *&t;  reselect_active and find_best opeartions; Decouple promiscuous&n; *&t;  handling from the multicast mode setting; Add support for changing&n; *&t;  HW address and MTU with proper unwind; Consolidate procfs code,&n; *&t;  add CHANGENAME handler; Enhance netdev notification handling.&n; *&t;  Version to 2.4.0.&n; *&n; * 2003/09/15 - Stephen Hemminger &lt;shemminger at osdl dot org&gt;,&n; *&t;       Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Convert /proc to seq_file interface.&n; *&t;  Change /proc/net/bondX/info to /proc/net/bonding/bondX.&n; *&t;  Set version to 2.4.1.&n; *&n; * 2003/11/20 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Fix /proc creation/destruction.&n; *&n; * 2003/12/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Massive cleanup - Set version to 2.5.0&n; *&t;  Code changes:&n; *&t;  o Consolidate format of prints and debug prints.&n; *&t;  o Remove bonding_t/slave_t typedefs and consolidate all casts.&n; *&t;  o Remove dead code and unnecessary checks.&n; *&t;  o Consolidate starting/stopping timers.&n; *&t;  o Consolidate handling of primary module param throughout the code.&n; *&t;  o Removed multicast module param support - all settings are done&n; *&t;    according to mode.&n; *&t;  o Slave list iteration - bond is no longer part of the list,&n; *&t;    added cyclic list iteration macros.&n; *&t;  o Consolidate error handling in all xmit functions.&n; *&t;  Style changes:&n; *&t;  o Consolidate function naming and declarations.&n; *&t;  o Consolidate function params and local variables names.&n; *&t;  o Consolidate return values.&n; *&t;  o Consolidate curly braces.&n; *&t;  o Consolidate conditionals format.&n; *&t;  o Change struct member names and types.&n; *&t;  o Chomp trailing spaces, remove empty lines, fix indentations.&n; *&t;  o Re-organize code according to context.&n; *&n; * 2003/12/30 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Fixed: Cannot remove and re-enslave the original active slave.&n; *&t;- Fixed: Releasing the original active slave causes mac address duplication.&n; *&t;- Add support for slaves that use ethtool_ops.&n; *&t;  Set version to 2.5.3.&n; */
+multiline_comment|/*&n; * originally based on the dummy device.&n; *&n; * Copyright 1999, Thomas Davis, tadavis@lbl.gov.&n; * Licensed under the GPL. Based on dummy.c, and eql.c devices.&n; *&n; * bonding.c: an Ethernet Bonding driver&n; *&n; * This is useful to talk to a Cisco EtherChannel compatible equipment:&n; *&t;Cisco 5500&n; *&t;Sun Trunking (Solaris)&n; *&t;Alteon AceDirector Trunks&n; *&t;Linux Bonding&n; *&t;and probably many L2 switches ...&n; *&n; * How it works:&n; *    ifconfig bond0 ipaddress netmask up&n; *      will setup a network device, with an ip address.  No mac address&n; *&t;will be assigned at this time.  The hw mac address will come from&n; *&t;the first slave bonded to the channel.  All slaves will then use&n; *&t;this hw mac address.&n; *&n; *    ifconfig bond0 down&n; *         will release all slaves, marking them as down.&n; *&n; *    ifenslave bond0 eth0&n; *&t;will attach eth0 to bond0 as a slave.  eth0 hw mac address will either&n; *&t;a: be used as initial mac address&n; *&t;b: if a hw mac address already is there, eth0&squot;s hw mac address&n; *&t;   will then be set from bond0.&n; *&n; * v0.1 - first working version.&n; * v0.2 - changed stats to be calculated by summing slaves stats.&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - fix leaks on failure at bond_init&n; *&n; * 2000/09/30 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added trivial code to release a slave device.&n; *     - fixed security bug (CAP_NET_ADMIN not checked)&n; *     - implemented MII link monitoring to disable dead links :&n; *       All MII capable slaves are checked every &lt;miimon&gt; milliseconds&n; *       (100 ms seems good). This value can be changed by passing it to&n; *       insmod. A value of zero disables the monitoring (default).&n; *     - fixed an infinite loop in bond_xmit_roundrobin() when there&squot;s no&n; *       good slave.&n; *     - made the code hopefully SMP safe&n; *&n; * 2000/10/03 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - optimized slave lists based on relevant suggestions from Thomas Davis&n; *     - implemented active-backup method to obtain HA with two switches:&n; *       stay as long as possible on the same active interface, while we&n; *       also monitor the backup one (MII link status) because we want to know&n; *       if we are able to switch at any time. ( pass &quot;mode=1&quot; to insmod )&n; *     - lots of stress testings because we need it to be more robust than the&n; *       wires ! :-&gt;&n; *&n; * 2000/10/09 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added up and down delays after link state change.&n; *     - optimized the slaves chaining so that when we run forward, we never&n; *       repass through the bond itself, but we can find it by searching&n; *       backwards. Renders the deletion more difficult, but accelerates the&n; *       scan.&n; *     - smarter enslaving and releasing.&n; *     - finer and more robust SMP locking&n; *&n; * 2000/10/17 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed two potential SMP race conditions&n; *&n; * 2000/10/18 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - small fixes to the monitoring FSM in case of zero delays&n; * 2000/11/01 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed first slave not automatically used in trunk mode.&n; * 2000/11/10 : spelling of &quot;EtherChannel&quot; corrected.&n; * 2000/11/13 : fixed a race condition in case of concurrent accesses to ioctl().&n; * 2000/12/16 : fixed improper usage of rtnl_exlock_nowait().&n; *&n; * 2001/1/3 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - The bonding driver now simulates MII status monitoring, just like&n; *       a normal network device.  It will show that the link is down iff&n; *       every slave in the bond shows that their links are down.  If at least&n; *       one slave is up, the bond&squot;s MII status will appear as up.&n; *&n; * 2001/2/7 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Applications can now query the bond from user space to get&n; *       information which may be useful.  They do this by calling&n; *       the BOND_INFO_QUERY ioctl.  Once the app knows how many slaves&n; *       are in the bond, it can call the BOND_SLAVE_INFO_QUERY ioctl to&n; *       get slave specific information (# link failures, etc).  See&n; *       &lt;linux/if_bonding.h&gt; for more details.  The structs of interest&n; *       are ifbond and ifslave.&n; *&n; * 2001/4/5 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Ported to 2.4 Kernel&n; *&n; * 2001/5/2 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - When a device is detached from a bond, the slave device is no longer&n; *       left thinking that is has a master.&n; *&n; * 2001/5/16 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - memset did not appropriately initialized the bond rw_locks. Used&n; *       rwlock_init to initialize to unlocked state to prevent deadlock when&n; *       first attempting a lock&n; *     - Called SET_MODULE_OWNER for bond device&n; *&n; * 2001/5/17 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - 2 paths for releasing for slave release; 1 through ioctl&n; *       and 2) through close. Both paths need to release the same way.&n; *     - the free slave in bond release is changing slave status before&n; *       the free. The netdev_set_master() is intended to change slave state&n; *       so it should not be done as part of the release process.&n; *     - Simple rule for slave state at release: only the active in A/B and&n; *       only one in the trunked case.&n; *&n; * 2001/6/01 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - Now call dev_close when releasing a slave so it doesn&squot;t screw up&n; *       out routing table.&n; *&n; * 2001/6/01 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Added /proc support for getting bond and slave information.&n; *       Information is in /proc/net/&lt;bond device&gt;/info.&n; *     - Changed the locking when calling bond_close to prevent deadlock.&n; *&n; * 2001/8/05 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - correct problem where refcnt of slave is not incremented in bond_ioctl&n; *       so the system hangs when halting.&n; *     - correct locking problem when unable to malloc in bond_enslave.&n; *     - adding bond_xmit_xor logic.&n; *     - adding multiple bond device support.&n; *&n; * 2001/8/13 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - correct locking problem with rtnl_exlock_nowait&n; *&n; * 2001/8/23 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - bzero initial dev_bonds, to correct oops&n; *     - convert SIOCDEVPRIVATE to new MII ioctl calls&n; *&n; * 2001/9/13 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Add the BOND_CHANGE_ACTIVE ioctl implementation&n; *&n; * 2001/9/14 - Mark Huth &lt;mhuth at mvista dot com&gt;&n; *     - Change MII_LINK_READY to not check for end of auto-negotiation,&n; *       but only for an up link.&n; *&n; * 2001/9/20 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Add the device field to bonding_t.  Previously the net_device&n; *       corresponding to a bond wasn&squot;t available from the bonding_t&n; *       structure.&n; *&n; * 2001/9/25 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - add arp_monitor for active backup mode&n; *&n; * 2001/10/23 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Various memory leak fixes&n; *&n; * 2001/11/5 - Mark Huth &lt;mark dot huth at mvista dot com&gt;&n; *     - Don&squot;t take rtnl lock in bond_mii_monitor as it deadlocks under&n; *       certain hotswap conditions.&n; *       Note:  this same change may be required in bond_arp_monitor ???&n; *     - Remove possibility of calling bond_sethwaddr with NULL slave_dev ptr&n; *     - Handle hot swap ethernet interface deregistration events to remove&n; *       kernel oops following hot swap of enslaved interface&n; *&n; * 2002/1/2 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Restore original slave flags at release time.&n; *&n; * 2002/02/18 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - bond_release(): calling kfree on our_slave after call to&n; *       bond_restore_slave_flags, not before&n; *     - bond_enslave(): saving slave flags into original_flags before&n; *       call to netdev_set_master, so the IFF_SLAVE flag doesn&squot;t end&n; *       up in original_flags&n; *&n; * 2002/04/05 - Mark Smith &lt;mark.smith at comdev dot cc&gt; and&n; *              Steve Mead &lt;steve.mead at comdev dot cc&gt;&n; *     - Port Gleb Natapov&squot;s multicast support patchs from 2.4.12&n; *       to 2.4.18 adding support for multicast.&n; *&n; * 2002/06/10 - Tony Cureington &lt;tony.cureington * hp_com&gt;&n; *     - corrected uninitialized pointer (ifr.ifr_data) in bond_check_dev_link;&n; *       actually changed function to use MIIPHY, then MIIREG, and finally&n; *       ETHTOOL to determine the link status&n; *     - fixed bad ifr_data pointer assignments in bond_ioctl&n; *     - corrected mode 1 being reported as active-backup in bond_get_info;&n; *       also added text to distinguish type of load balancing (rr or xor)&n; *     - change arp_ip_target module param from &quot;1-12s&quot; (array of 12 ptrs)&n; *       to &quot;s&quot; (a single ptr)&n; *&n; * 2002/08/30 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *     - Removed acquisition of xmit_lock in set_multicast_list; caused&n; *       deadlock on SMP (lock is held by caller).&n; *     - Revamped SIOCGMIIPHY, SIOCGMIIREG portion of bond_check_dev_link().&n; *&n; * 2002/09/18 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *     - Fixed up bond_check_dev_link() (and callers): removed some magic&n; *&t; numbers, banished local MII_ defines, wrapped ioctl calls to&n; *&t; prevent EFAULT errors&n; *&n; * 2002/9/30 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *     - make sure the ip target matches the arp_target before saving the&n; *&t; hw address.&n; *&n; * 2002/9/30 - Dan Eisner &lt;eisner at 2robots dot com&gt;&n; *     - make sure my_ip is set before taking down the link, since&n; *&t; not all switches respond if the source ip is not set.&n; *&n; * 2002/10/8 - Janice Girouard &lt;girouard at us dot ibm dot com&gt;&n; *     - read in the local ip address when enslaving a device&n; *     - add primary support&n; *     - make sure 2*arp_interval has passed when a new device&n; *       is brought on-line before taking it down.&n; *&n; * 2002/09/11 - Philippe De Muyter &lt;phdm at macqel dot be&gt;&n; *     - Added bond_xmit_broadcast logic.&n; *     - Added bond_mode() support function.&n; *&n; * 2002/10/26 - Laurent Deniel &lt;laurent.deniel at free.fr&gt;&n; *     - allow to register multicast addresses only on active slave&n; *       (useful in active-backup mode)&n; *     - add multicast module parameter&n; *     - fix deletion of multicast groups after unloading module&n; *&n; * 2002/11/06 - Kameshwara Rayaprolu &lt;kameshwara.rao * wipro_com&gt;&n; *     - Changes to prevent panic from closing the device twice; if we close&n; *       the device in bond_release, we must set the original_flags to down&n; *       so it won&squot;t be closed again by the network layer.&n; *&n; * 2002/11/07 - Tony Cureington &lt;tony.cureington * hp_com&gt;&n; *     - Fix arp_target_hw_addr memory leak&n; *     - Created activebackup_arp_monitor function to handle arp monitoring&n; *       in active backup mode - the bond_arp_monitor had several problems...&n; *       such as allowing slaves to tx arps sequentially without any delay&n; *       for a response&n; *     - Renamed bond_arp_monitor to loadbalance_arp_monitor and re-wrote&n; *       this function to just handle arp monitoring in load-balancing mode;&n; *       it is a lot more compact now&n; *     - Changes to ensure one and only one slave transmits in active-backup&n; *       mode&n; *     - Robustesize parameters; warn users about bad combinations of&n; *       parameters; also if miimon is specified and a network driver does&n; *       not support MII or ETHTOOL, inform the user of this&n; *     - Changes to support link_failure_count when in arp monitoring mode&n; *     - Fix up/down delay reported in /proc&n; *     - Added version; log version; make version available from &quot;modinfo -d&quot;&n; *     - Fixed problem in bond_check_dev_link - if the first IOCTL (SIOCGMIIPH)&n; *&t; failed, the ETHTOOL ioctl never got a chance&n; *&n; * 2002/11/16 - Laurent Deniel &lt;laurent.deniel at free.fr&gt;&n; *     - fix multicast handling in activebackup_arp_monitor&n; *     - remove one unnecessary and confusing curr_active_slave == slave test&n; *&t; in activebackup_arp_monitor&n; *&n; *  2002/11/17 - Laurent Deniel &lt;laurent.deniel at free.fr&gt;&n; *     - fix bond_slave_info_query when slave_id = num_slaves&n; *&n; *  2002/11/19 - Janice Girouard &lt;girouard at us dot ibm dot com&gt;&n; *     - correct ifr_data reference.  Update ifr_data reference&n; *       to mii_ioctl_data struct values to avoid confusion.&n; *&n; *  2002/11/22 - Bert Barbe &lt;bert.barbe at oracle dot com&gt;&n; *      - Add support for multiple arp_ip_target&n; *&n; *  2002/12/13 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- Changed to allow text strings for mode and multicast, e.g.,&n; *&t;  insmod bonding mode=active-backup.  The numbers still work.&n; *&t;  One change: an invalid choice will cause module load failure,&n; *&t;  rather than the previous behavior of just picking one.&n; *&t;- Minor cleanups; got rid of dup ctype stuff, atoi function&n; *&n; * 2003/02/07 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- Added use_carrier module parameter that causes miimon to&n; *&t;  use netif_carrier_ok() test instead of MII/ETHTOOL ioctls.&n; *&t;- Minor cleanups; consolidated ioctl calls to one function.&n; *&n; * 2003/02/07 - Tony Cureington &lt;tony.cureington * hp_com&gt;&n; *&t;- Fix bond_mii_monitor() logic error that could result in&n; *&t;  bonding round-robin mode ignoring links after failover/recovery&n; *&n; * 2003/03/17 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- kmalloc fix (GFP_KERNEL to GFP_ATOMIC) reported by&n; *&t;  Shmulik dot Hen at intel.com.&n; *&t;- Based on discussion on mailing list, changed use of&n; *&t;  update_slave_cnt(), created wrapper functions for adding/removing&n; *&t;  slaves, changed bond_xmit_xor() to check slave_cnt instead of&n; *&t;  checking slave and slave-&gt;dev (which only worked by accident).&n; *&t;- Misc code cleanup: get arp_send() prototype from header file,&n; *&t;  add max_bonds to bonding.txt.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Make sure only bond_attach_slave() and bond_detach_slave() can&n; *&t;  manipulate the slave list, including slave_cnt, even when in&n; *&t;  bond_release_all().&n; *&t;- Fixed hang in bond_release() with traffic running:&n; *&t;  netdev_set_master() must not be called from within the bond lock.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Fixed hang in bond_enslave() with traffic running:&n; *&t;  netdev_set_master() must not be called from within the bond lock.&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added support for getting slave&squot;s speed and duplex via ethtool.&n; *&t;  Needed for 802.3ad and other future modes.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Enable support of modes that need to use the unique mac address of&n; *&t;  each slave.&n; *&t;  * bond_enslave(): Moved setting the slave&squot;s mac address, and&n; *&t;    openning it, from the application to the driver. This breaks&n; *&t;    backward comaptibility with old versions of ifenslave that open&n; *&t;     the slave before enalsving it !!!.&n; *&t;  * bond_release(): The driver also takes care of closing the slave&n; *&t;    and restoring its original mac address.&n; *&t;- Removed the code that restores all base driver&squot;s flags.&n; *&t;  Flags are automatically restored once all undo stages are done&n; *&t;  properly.&n; *&t;- Block possibility of enslaving before the master is up. This&n; *&t;  prevents putting the system in an unstable state.&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;,&n; *&t;&t;Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for IEEE 802.3ad Dynamic link aggregation mode.&n; *&n; * 2003/05/01 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added ABI version control to restore compatibility between&n; *&t;  new/old ifenslave and new/old bonding.&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Fixed bug in bond_release_all(): save old value of curr_active_slave&n; *&t;  before setting it to NULL.&n; *&t;- Changed driver versioning scheme to include version number instead&n; *&t;  of release date (that is already in another field). There are 3&n; *&t;  fields X.Y.Z where:&n; *&t;&t;X - Major version - big behavior changes&n; *&t;&t;Y - Minor version - addition of features&n; *&t;&t;Z - Extra version - minor changes and bug fixes&n; *&t;  The current version is 1.0.0 as a base line.&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added support for lacp_rate module param.&n; *&t;- Code beautification and style changes (mainly in comments).&n; *&t;  new version - 1.0.1&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Based on discussion on mailing list, changed locking scheme&n; *&t;  to use lock/unlock or lock_bh/unlock_bh appropriately instead&n; *&t;  of lock_irqsave/unlock_irqrestore. The new scheme helps exposing&n; *&t;  hidden bugs and solves system hangs that occurred due to the fact&n; *&t;  that holding lock_irqsave doesn&squot;t prevent softirqs from running.&n; *&t;  This also increases total throughput since interrupts are not&n; *&t;  blocked on each transmitted packets or monitor timeout.&n; *&t;  new version - 2.0.0&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for Transmit load balancing mode.&n; *&t;- Concentrate all assignments of curr_active_slave to a single point&n; *&t;  so specific modes can take actions when the primary adapter is&n; *&t;  changed.&n; *&t;- Take the updelay parameter into consideration during bond_enslave&n; *&t;  since some adapters loose their link during setting the device.&n; *&t;- Renamed bond_3ad_link_status_changed() to&n; *&t;  bond_3ad_handle_link_change() for compatibility with TLB.&n; *&t;  new version - 2.1.0&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt;&n; *&t;- Added support for Adaptive load balancing mode which is&n; *&t;  equivalent to Transmit load balancing + Receive load balancing.&n; *&t;  new version - 2.2.0&n; *&n; * 2003/05/15 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- Applied fix to activebackup_arp_monitor posted to bonding-devel&n; *&t;  by Tony Cureington &lt;tony.cureington * hp_com&gt;.  Fixes ARP&n; *&t;  monitor endless failover bug.  Version to 2.2.10&n; *&n; * 2003/05/20 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Fixed bug in ABI version control - Don&squot;t commit to a specific&n; *&t;  ABI version if receiving unsupported ioctl commands.&n; *&n; * 2003/05/22 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- Fix ifenslave -c causing bond to loose existing routes;&n; *&t;  added bond_set_mac_address() that doesn&squot;t require the&n; *&t;  bond to be down.&n; *&t;- In conjunction with fix for ifenslave -c, in&n; *&t;  bond_change_active(), changing to the already active slave&n; *&t;  is no longer an error (it successfully does nothing).&n; *&n; * 2003/06/30 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; * &t;- Fixed bond_change_active() for ALB/TLB modes.&n; *&t;  Version to 2.2.14.&n; *&n; * 2003/07/29 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; * &t;- Fixed ARP monitoring bug.&n; *&t;  Version to 2.2.15.&n; *&n; * 2003/07/31 - Willy Tarreau &lt;willy at ods dot org&gt;&n; * &t;- Fixed kernel panic when using ARP monitoring without&n; *&t;  setting bond&squot;s IP address.&n; *&t;  Version to 2.2.16.&n; *&n; * 2003/08/06 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; * &t;- Back port from 2.6: use alloc_netdev(); fix /proc handling;&n; *&t;  made stats a part of bond struct so no need to allocate&n; *&t;  and free it separately; use standard list operations instead&n; *&t;  of pre-allocated array of bonds.&n; *&t;  Version to 2.3.0.&n; *&n; * 2003/08/07 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;,&n; *&t;       Amir Noam &lt;amir.noam at intel dot com&gt; and&n; *&t;       Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Propagating master&squot;s settings: Distinguish between modes that&n; *&t;  use a primary slave from those that don&squot;t, and propagate settings&n; *&t;  accordingly; Consolidate change_active opeartions and add&n; *&t;  reselect_active and find_best opeartions; Decouple promiscuous&n; *&t;  handling from the multicast mode setting; Add support for changing&n; *&t;  HW address and MTU with proper unwind; Consolidate procfs code,&n; *&t;  add CHANGENAME handler; Enhance netdev notification handling.&n; *&t;  Version to 2.4.0.&n; *&n; * 2003/09/15 - Stephen Hemminger &lt;shemminger at osdl dot org&gt;,&n; *&t;       Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Convert /proc to seq_file interface.&n; *&t;  Change /proc/net/bondX/info to /proc/net/bonding/bondX.&n; *&t;  Set version to 2.4.1.&n; *&n; * 2003/11/20 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Fix /proc creation/destruction.&n; *&n; * 2003/12/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Massive cleanup - Set version to 2.5.0&n; *&t;  Code changes:&n; *&t;  o Consolidate format of prints and debug prints.&n; *&t;  o Remove bonding_t/slave_t typedefs and consolidate all casts.&n; *&t;  o Remove dead code and unnecessary checks.&n; *&t;  o Consolidate starting/stopping timers.&n; *&t;  o Consolidate handling of primary module param throughout the code.&n; *&t;  o Removed multicast module param support - all settings are done&n; *&t;    according to mode.&n; *&t;  o Slave list iteration - bond is no longer part of the list,&n; *&t;    added cyclic list iteration macros.&n; *&t;  o Consolidate error handling in all xmit functions.&n; *&t;  Style changes:&n; *&t;  o Consolidate function naming and declarations.&n; *&t;  o Consolidate function params and local variables names.&n; *&t;  o Consolidate return values.&n; *&t;  o Consolidate curly braces.&n; *&t;  o Consolidate conditionals format.&n; *&t;  o Change struct member names and types.&n; *&t;  o Chomp trailing spaces, remove empty lines, fix indentations.&n; *&t;  o Re-organize code according to context.&n; *&n; * 2003/12/30 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Fixed: Cannot remove and re-enslave the original active slave.&n; *&t;- Fixed: Releasing the original active slave causes mac address duplication.&n; *&t;- Add support for slaves that use ethtool_ops.&n; *&t;  Set version to 2.5.3.&n; *&n; * 2004/01/05 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Save bonding parameters per bond instead of using the global values.&n; */
 singleline_comment|//#define BONDING_DEBUG 1
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -800,6 +800,11 @@ id|bond_check_dev_link
 c_func
 (paren
 r_struct
+id|bonding
+op_star
+id|bond
+comma
+r_struct
 id|net_device
 op_star
 id|slave_dev
@@ -842,7 +847,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|use_carrier
+id|bond-&gt;params.use_carrier
 )paren
 (brace
 r_return
@@ -1936,6 +1941,8 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|mintime
+op_assign
+id|bond-&gt;params.updelay
 suffix:semicolon
 r_int
 id|i
@@ -1976,10 +1983,6 @@ suffix:semicolon
 multiline_comment|/* still no slave, return NULL */
 )brace
 )brace
-id|mintime
-op_assign
-id|updelay
-suffix:semicolon
 multiline_comment|/* first try the primary link; if arping, a link must tx/rx traffic&n;&t; * before it can be considered the curr_active_slave - also, we would skip&n;&t; * slaves between the curr_active_slave and primary_slave that may be up&n;&t; * and able to arp&n;&t; */
 r_if
 c_cond
@@ -1990,7 +1993,7 @@ id|bond-&gt;primary_slave
 op_logical_and
 (paren
 op_logical_neg
-id|arp_interval
+id|bond-&gt;params.arp_interval
 )paren
 op_logical_and
 (paren
@@ -2153,12 +2156,12 @@ comma
 id|new_active-&gt;dev-&gt;name
 comma
 (paren
-id|updelay
+id|bond-&gt;params.updelay
 op_minus
 id|new_active-&gt;delay
 )paren
 op_star
-id|miimon
+id|bond-&gt;params.miimon
 )paren
 suffix:semicolon
 )brace
@@ -3187,10 +3190,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|miimon
+id|bond-&gt;params.miimon
 op_logical_and
 op_logical_neg
-id|use_carrier
+id|bond-&gt;params.use_carrier
 )paren
 (brace
 id|link_reporting
@@ -3198,6 +3201,8 @@ op_assign
 id|bond_check_dev_link
 c_func
 (paren
+id|bond
+comma
 id|slave_dev
 comma
 l_int|1
@@ -3214,7 +3219,7 @@ l_int|1
 )paren
 op_logical_and
 op_logical_neg
-id|arp_interval
+id|bond-&gt;params.arp_interval
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * miimon is set but a bonded network driver&n;&t;&t;&t; * does not support ETHTOOL/MII and&n;&t;&t;&t; * arp_interval is not set.  Note: if&n;&t;&t;&t; * use_carrier is enabled, we will never go&n;&t;&t;&t; * here (because netif_carrier is always&n;&t;&t;&t; * supported); thus, we don&squot;t need to change&n;&t;&t;&t; * the messages for netif_carrier.&n;&t;&t;&t; */
@@ -3265,12 +3270,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|miimon
+id|bond-&gt;params.miimon
 op_logical_or
 (paren
 id|bond_check_dev_link
 c_func
 (paren
+id|bond
+comma
 id|slave_dev
 comma
 l_int|0
@@ -3283,7 +3290,7 @@ id|BMSR_LSTATUS
 r_if
 c_cond
 (paren
-id|updelay
+id|bond-&gt;params.updelay
 )paren
 (brace
 id|dprintk
@@ -3299,7 +3306,7 @@ id|BOND_LINK_BACK
 suffix:semicolon
 id|new_slave-&gt;delay
 op_assign
-id|updelay
+id|bond-&gt;params.updelay
 suffix:semicolon
 )brace
 r_else
@@ -3390,7 +3397,10 @@ c_func
 id|bond-&gt;params.mode
 )paren
 op_logical_and
-id|primary
+id|bond-&gt;params.primary
+(braket
+l_int|0
+)braket
 )paren
 (brace
 multiline_comment|/* if there is a primary slave, remember it */
@@ -3400,7 +3410,7 @@ c_cond
 id|strcmp
 c_func
 (paren
-id|primary
+id|bond-&gt;params.primary
 comma
 id|new_slave-&gt;dev-&gt;name
 )paren
@@ -3519,7 +3529,7 @@ l_int|1000
 op_div
 id|AD_TIMER_INTERVAL
 comma
-id|lacp_fast
+id|bond-&gt;params.lacp_fast
 )paren
 suffix:semicolon
 )brace
@@ -5072,7 +5082,7 @@ id|bond-&gt;params.mode
 suffix:semicolon
 id|info-&gt;miimon
 op_assign
-id|miimon
+id|bond-&gt;params.miimon
 suffix:semicolon
 id|read_lock_bh
 c_func
@@ -5262,14 +5272,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|delta_in_ticks
-op_assign
-(paren
-id|miimon
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
 suffix:semicolon
 r_int
 id|i
@@ -5280,6 +5282,16 @@ c_func
 op_amp
 id|bond-&gt;lock
 )paren
+suffix:semicolon
+id|delta_in_ticks
+op_assign
+(paren
+id|bond-&gt;params.miimon
+op_star
+id|HZ
+)paren
+op_div
+l_int|1000
 suffix:semicolon
 r_if
 c_cond
@@ -5357,6 +5369,8 @@ op_assign
 id|bond_check_dev_link
 c_func
 (paren
+id|bond
+comma
 id|slave_dev
 comma
 l_int|0
@@ -5393,7 +5407,7 @@ id|BOND_LINK_FAIL
 suffix:semicolon
 id|slave-&gt;delay
 op_assign
-id|downdelay
+id|bond-&gt;params.downdelay
 suffix:semicolon
 r_if
 c_cond
@@ -5410,7 +5424,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|downdelay
+id|bond-&gt;params.downdelay
 )paren
 (brace
 id|printk
@@ -5459,9 +5473,9 @@ l_string|&quot;idle &quot;
 comma
 id|slave_dev-&gt;name
 comma
-id|downdelay
+id|bond-&gt;params.downdelay
 op_star
-id|miimon
+id|bond-&gt;params.miimon
 )paren
 suffix:semicolon
 )brace
@@ -5619,12 +5633,12 @@ comma
 id|bond_dev-&gt;name
 comma
 (paren
-id|downdelay
+id|bond-&gt;params.downdelay
 op_minus
 id|slave-&gt;delay
 )paren
 op_star
-id|miimon
+id|bond-&gt;params.miimon
 comma
 id|slave_dev-&gt;name
 )paren
@@ -5657,12 +5671,12 @@ id|BOND_LINK_BACK
 suffix:semicolon
 id|slave-&gt;delay
 op_assign
-id|updelay
+id|bond-&gt;params.updelay
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|updelay
+id|bond-&gt;params.updelay
 )paren
 (brace
 multiline_comment|/* if updelay == 0, no need to&n;&t;&t;&t;&t;&t;   advertise about a 0 ms delay */
@@ -5679,9 +5693,9 @@ id|bond_dev-&gt;name
 comma
 id|slave_dev-&gt;name
 comma
-id|updelay
+id|bond-&gt;params.updelay
 op_star
-id|miimon
+id|bond-&gt;params.miimon
 )paren
 suffix:semicolon
 )brace
@@ -5715,12 +5729,12 @@ comma
 id|bond_dev-&gt;name
 comma
 (paren
-id|updelay
+id|bond-&gt;params.updelay
 op_minus
 id|slave-&gt;delay
 )paren
 op_star
-id|miimon
+id|bond-&gt;params.miimon
 comma
 id|slave_dev-&gt;name
 )paren
@@ -5994,6 +6008,12 @@ suffix:semicolon
 )brace
 id|re_arm
 suffix:colon
+r_if
+c_cond
+(paren
+id|bond-&gt;params.miimon
+)paren
+(brace
 id|mod_timer
 c_func
 (paren
@@ -6005,6 +6025,7 @@ op_plus
 id|delta_in_ticks
 )paren
 suffix:semicolon
+)brace
 id|out
 suffix:colon
 id|read_unlock
@@ -6022,6 +6043,11 @@ id|bond_arp_send_all
 c_func
 (paren
 r_struct
+id|bonding
+op_star
+id|bond
+comma
+r_struct
 id|slave
 op_star
 id|slave
@@ -6029,6 +6055,12 @@ id|slave
 (brace
 r_int
 id|i
+suffix:semicolon
+id|u32
+op_star
+id|targets
+op_assign
+id|bond-&gt;params.arp_targets
 suffix:semicolon
 r_for
 c_loop
@@ -6043,7 +6075,7 @@ OL
 id|BOND_MAX_ARP_TARGETS
 )paren
 op_logical_and
-id|arp_target
+id|targets
 (braket
 id|i
 )braket
@@ -6059,7 +6091,7 @@ id|ARPOP_REQUEST
 comma
 id|ETH_P_ARP
 comma
-id|arp_target
+id|targets
 (braket
 id|i
 )braket
@@ -6112,14 +6144,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|delta_in_ticks
-op_assign
-(paren
-id|arp_interval
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
 suffix:semicolon
 r_int
 id|i
@@ -6130,6 +6154,16 @@ c_func
 op_amp
 id|bond-&gt;lock
 )paren
+suffix:semicolon
+id|delta_in_ticks
+op_assign
+(paren
+id|bond-&gt;params.arp_interval
+op_star
+id|HZ
+)paren
+op_div
+l_int|1000
 suffix:semicolon
 r_if
 c_cond
@@ -6366,6 +6400,8 @@ id|slave-&gt;dev
 id|bond_arp_send_all
 c_func
 (paren
+id|bond
+comma
 id|slave
 )paren
 suffix:semicolon
@@ -6421,6 +6457,12 @@ suffix:semicolon
 )brace
 id|re_arm
 suffix:colon
+r_if
+c_cond
+(paren
+id|bond-&gt;params.arp_interval
+)paren
+(brace
 id|mod_timer
 c_func
 (paren
@@ -6432,6 +6474,7 @@ op_plus
 id|delta_in_ticks
 )paren
 suffix:semicolon
+)brace
 id|out
 suffix:colon
 id|read_unlock
@@ -6469,14 +6512,6 @@ id|slave
 suffix:semicolon
 r_int
 id|delta_in_ticks
-op_assign
-(paren
-id|arp_interval
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
 suffix:semicolon
 r_int
 id|i
@@ -6487,6 +6522,16 @@ c_func
 op_amp
 id|bond-&gt;lock
 )paren
+suffix:semicolon
+id|delta_in_ticks
+op_assign
+(paren
+id|bond-&gt;params.arp_interval
+op_star
+id|HZ
+)paren
+op_div
+l_int|1000
 suffix:semicolon
 r_if
 c_cond
@@ -6979,6 +7024,8 @@ id|my_ip
 id|bond_arp_send_all
 c_func
 (paren
+id|bond
+comma
 id|slave
 )paren
 suffix:semicolon
@@ -7052,6 +7099,8 @@ suffix:semicolon
 id|bond_arp_send_all
 c_func
 (paren
+id|bond
+comma
 id|slave
 )paren
 suffix:semicolon
@@ -7116,6 +7165,12 @@ suffix:semicolon
 )brace
 id|re_arm
 suffix:colon
+r_if
+c_cond
+(paren
+id|bond-&gt;params.arp_interval
+)paren
+(brace
 id|mod_timer
 c_func
 (paren
@@ -7127,6 +7182,7 @@ op_plus
 id|delta_in_ticks
 )paren
 suffix:semicolon
+)brace
 id|out
 suffix:colon
 id|read_unlock
@@ -7415,12 +7471,26 @@ id|bond-&gt;params.mode
 )paren
 )paren
 (brace
-r_if
-c_cond
+id|seq_printf
+c_func
 (paren
-id|curr
+id|seq
+comma
+l_string|&quot;Primary Slave: %s&bslash;n&quot;
+comma
+(paren
+id|bond-&gt;params.primary
+(braket
+l_int|0
+)braket
 )paren
-(brace
+ques
+c_cond
+id|bond-&gt;params.primary
+suffix:colon
+l_string|&quot;None&quot;
+)paren
+suffix:semicolon
 id|seq_printf
 c_func
 (paren
@@ -7428,10 +7498,16 @@ id|seq
 comma
 l_string|&quot;Currently Active Slave: %s&bslash;n&quot;
 comma
+(paren
+id|curr
+)paren
+ques
+c_cond
 id|curr-&gt;dev-&gt;name
+suffix:colon
+l_string|&quot;None&quot;
 )paren
 suffix:semicolon
-)brace
 )brace
 id|seq_printf
 c_func
@@ -7457,7 +7533,7 @@ id|seq
 comma
 l_string|&quot;MII Polling Interval (ms): %d&bslash;n&quot;
 comma
-id|miimon
+id|bond-&gt;params.miimon
 )paren
 suffix:semicolon
 id|seq_printf
@@ -7467,9 +7543,9 @@ id|seq
 comma
 l_string|&quot;Up Delay (ms): %d&bslash;n&quot;
 comma
-id|updelay
+id|bond-&gt;params.updelay
 op_star
-id|miimon
+id|bond-&gt;params.miimon
 )paren
 suffix:semicolon
 id|seq_printf
@@ -7479,9 +7555,9 @@ id|seq
 comma
 l_string|&quot;Down Delay (ms): %d&bslash;n&quot;
 comma
-id|downdelay
+id|bond-&gt;params.downdelay
 op_star
-id|miimon
+id|bond-&gt;params.miimon
 )paren
 suffix:semicolon
 r_if
@@ -7502,6 +7578,23 @@ c_func
 id|seq
 comma
 l_string|&quot;&bslash;n802.3ad info&bslash;n&quot;
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|seq
+comma
+l_string|&quot;LACP rate: %s&bslash;n&quot;
+comma
+(paren
+id|bond-&gt;params.lacp_fast
+)paren
+ques
+c_cond
+l_string|&quot;fast&quot;
+suffix:colon
+l_string|&quot;slow&quot;
 )paren
 suffix:semicolon
 r_if
@@ -8799,7 +8892,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|miimon
+id|bond-&gt;params.miimon
 )paren
 (brace
 multiline_comment|/* link check interval, in milliseconds. */
@@ -8842,7 +8935,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|arp_interval
+id|bond-&gt;params.arp_interval
 )paren
 (brace
 multiline_comment|/* arp interval, in milliseconds. */
@@ -9038,7 +9131,7 @@ multiline_comment|/* del_timer_sync must run without holding the bond-&gt;lock&n
 r_if
 c_cond
 (paren
-id|miimon
+id|bond-&gt;params.miimon
 )paren
 (brace
 multiline_comment|/* link check interval, in milliseconds. */
@@ -9053,7 +9146,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|arp_interval
+id|bond-&gt;params.arp_interval
 )paren
 (brace
 multiline_comment|/* arp interval, in milliseconds. */
@@ -10846,7 +10939,7 @@ multiline_comment|/* if we are sending arp packets, try to at least&n;&t;   iden
 r_if
 c_cond
 (paren
-id|arp_interval
+id|bond-&gt;params.arp_interval
 op_logical_and
 op_logical_neg
 id|my_ip
