@@ -151,7 +151,7 @@ id|inode
 id|inode-&gt;i_op
 op_assign
 op_amp
-id|simple_dir_inode_operations
+id|sysfs_dir_inode_operations
 suffix:semicolon
 id|inode-&gt;i_fop
 op_assign
