@@ -4298,7 +4298,7 @@ id|unknown
 suffix:semicolon
 DECL|macro|p
 mdefine_line|#define p pkt-&gt;L4_Pack.L4_Data.L4_PPCPack
-multiline_comment|/* Must be 32-bit memory address */
+multiline_comment|/* Must be 32-bit system address */
 r_if
 c_cond
 (paren
@@ -4310,7 +4310,7 @@ id|p.PPCData
 l_int|0
 )braket
 op_eq
-l_int|2
+l_int|3
 )paren
 op_logical_and
 (paren
