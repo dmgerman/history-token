@@ -713,6 +713,16 @@ suffix:semicolon
 id|MAKE_BUDGET_INFO
 c_func
 (paren
+id|ttbt2
+comma
+l_string|&quot;TT-Budget/WinTV-NOVA-T  PCI&quot;
+comma
+id|BUDGET_TT
+)paren
+suffix:semicolon
+id|MAKE_BUDGET_INFO
+c_func
+(paren
 id|satel
 comma
 l_string|&quot;SATELCO Multimedia PCI&quot;
@@ -761,6 +771,16 @@ comma
 l_int|0x13c2
 comma
 l_int|0x1005
+)paren
+comma
+id|MAKE_EXTENSION_PCI
+c_func
+(paren
+id|ttbt2
+comma
+l_int|0x13c2
+comma
+l_int|0x1011
 )paren
 comma
 id|MAKE_EXTENSION_PCI
