@@ -151,7 +151,7 @@ c_func
 (paren
 id|displayConfig
 comma
-l_string|&quot;If 1 then display the configuration used in /etc/modules.conf.&quot;
+l_string|&quot;If 1 then display the configuration used in /etc/modprobe.conf.&quot;
 )paren
 suffix:semicolon
 DECL|variable|ql2xplogiabsentdevice
