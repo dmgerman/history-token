@@ -1755,6 +1755,27 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* drivrs/base/firmware.c */
+r_extern
+r_int
+id|firmware_register
+c_func
+(paren
+r_struct
+id|subsystem
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|firmware_uregister
+c_func
+(paren
+r_struct
+id|subsystem
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* debugging and troubleshooting/diagnostic helpers. */
 macro_line|#ifdef DEBUG
 DECL|macro|dev_dbg
