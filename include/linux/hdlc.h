@@ -1,98 +1,209 @@
-multiline_comment|/*&n; * Generic HDLC support routines for Linux&n; *&n; * Copyright (C) 1999, 2000 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
+multiline_comment|/*&n; * Generic HDLC support routines for Linux&n; *&n; * Copyright (C) 1999-2002 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
 macro_line|#ifndef __HDLC_H
 DECL|macro|__HDLC_H
 mdefine_line|#define __HDLC_H
-multiline_comment|/* Ioctls - to be changed */
-DECL|macro|HDLCGSLOTMAP
-mdefine_line|#define HDLCGSLOTMAP&t;(0x89F4) /* E1/T1 slot bitmap */
-DECL|macro|HDLCGCLOCK
-mdefine_line|#define HDLCGCLOCK&t;(0x89F5) /* clock sources */
-DECL|macro|HDLCGCLOCKRATE
-mdefine_line|#define HDLCGCLOCKRATE&t;(0x89F6) /* clock rate */
-DECL|macro|HDLCGMODE
-mdefine_line|#define HDLCGMODE&t;(0x89F7) /* internal to hdlc.c - protocol used */
-DECL|macro|HDLCGLINE
-mdefine_line|#define HDLCGLINE&t;(0x89F8) /* physical interface */
-DECL|macro|HDLCSSLOTMAP
-mdefine_line|#define HDLCSSLOTMAP&t;(0x89F9)
-DECL|macro|HDLCSCLOCK
-mdefine_line|#define HDLCSCLOCK&t;(0x89FA)
-DECL|macro|HDLCSCLOCKRATE
-mdefine_line|#define HDLCSCLOCKRATE&t;(0x89FB)
-DECL|macro|HDLCSMODE
-mdefine_line|#define HDLCSMODE&t;(0x89FC) /* internal to hdlc.c - select protocol */
-DECL|macro|HDLCPVC
-mdefine_line|#define HDLCPVC&t;&t;(0x89FD) /* internal to hdlc.c - create/delete PVC */
-DECL|macro|HDLCSLINE
-mdefine_line|#define HDLCSLINE&t;(0x89FE)
-DECL|macro|HDLCRUN
-mdefine_line|#define HDLCRUN&t;&t;(0x89FF) /* Download firmware and run board */
-multiline_comment|/* Modes */
-DECL|macro|MODE_NONE
-mdefine_line|#define MODE_NONE&t;0x00000000 /* Not initialized */
-DECL|macro|MODE_DCE
-mdefine_line|#define MODE_DCE&t;0x00000080 /* DCE */
-DECL|macro|MODE_HDLC
-mdefine_line|#define MODE_HDLC&t;0x00000100 /* Raw HDLC frames */
-DECL|macro|MODE_CISCO
-mdefine_line|#define MODE_CISCO&t;0x00000200
-DECL|macro|MODE_PPP
-mdefine_line|#define MODE_PPP&t;0x00000400
-DECL|macro|MODE_FR
-mdefine_line|#define MODE_FR&t;&t;0x00000800 /* Any LMI */
-DECL|macro|MODE_FR_ANSI
-mdefine_line|#define MODE_FR_ANSI&t;0x00000801
-DECL|macro|MODE_FR_CCITT
-mdefine_line|#define MODE_FR_CCITT&t;0x00000802
-DECL|macro|MODE_X25
-mdefine_line|#define MODE_X25&t;0x00001000
-DECL|macro|MODE_MASK
-mdefine_line|#define MODE_MASK&t;0x0000FF00
-DECL|macro|MODE_SOFT
-mdefine_line|#define MODE_SOFT&t;0x80000000 /* Driver modes, using hardware HDLC */
-multiline_comment|/* Lines */
-DECL|macro|LINE_DEFAULT
-mdefine_line|#define LINE_DEFAULT&t;0x00000000
-DECL|macro|LINE_V35
-mdefine_line|#define LINE_V35&t;0x00000001
-DECL|macro|LINE_RS232
-mdefine_line|#define LINE_RS232&t;0x00000002
-DECL|macro|LINE_X21
-mdefine_line|#define LINE_X21&t;0x00000003
-DECL|macro|LINE_T1
-mdefine_line|#define LINE_T1&t;&t;0x00000004
-DECL|macro|LINE_E1
-mdefine_line|#define LINE_E1&t;&t;0x00000005
-DECL|macro|LINE_MASK
-mdefine_line|#define LINE_MASK&t;0x000000FF
-DECL|macro|LINE_LOOPBACK
-mdefine_line|#define LINE_LOOPBACK&t;0x80000000 /* On-card loopback */
+DECL|macro|CLOCK_DEFAULT
+mdefine_line|#define CLOCK_DEFAULT   0&t;/* Default (current) setting */
 DECL|macro|CLOCK_EXT
-mdefine_line|#define CLOCK_EXT&t;0&t;/* External TX and RX clock - DTE */
+mdefine_line|#define CLOCK_EXT&t;1&t;/* External TX and RX clock - DTE */
 DECL|macro|CLOCK_INT
-mdefine_line|#define CLOCK_INT&t;1&t;/* Internal TX and RX clock - DCE */
+mdefine_line|#define CLOCK_INT&t;2&t;/* Internal TX and RX clock - DCE */
 DECL|macro|CLOCK_TXINT
-mdefine_line|#define CLOCK_TXINT&t;2&t;/* Internal TX and external RX clock */
+mdefine_line|#define CLOCK_TXINT&t;3&t;/* Internal TX and external RX clock */
 DECL|macro|CLOCK_TXFROMRX
-mdefine_line|#define CLOCK_TXFROMRX&t;3&t;/* TX clock derived from external RX clock */
-DECL|macro|HDLC_MAX_MTU
-mdefine_line|#define HDLC_MAX_MTU 1500&t;/* Ethernet 1500 bytes */
-DECL|macro|HDLC_MAX_MRU
-mdefine_line|#define HDLC_MAX_MRU (HDLC_MAX_MTU + 10) /* max 10 bytes for FR */
+mdefine_line|#define CLOCK_TXFROMRX&t;4&t;/* TX clock derived from external RX clock */
+r_typedef
+r_struct
+(brace
+DECL|member|clock_rate
+r_int
+r_int
+id|clock_rate
+suffix:semicolon
+multiline_comment|/* bits per second */
+DECL|member|clock_type
+r_int
+r_int
+id|clock_type
+suffix:semicolon
+multiline_comment|/* internal, external, TX-internal etc. */
+DECL|member|loopback
+r_int
+r_int
+id|loopback
+suffix:semicolon
+DECL|typedef|sync_serial_settings
+)brace
+id|sync_serial_settings
+suffix:semicolon
+multiline_comment|/* V.35, V.24, X.21 */
+r_typedef
+r_struct
+(brace
+DECL|member|clock_rate
+r_int
+r_int
+id|clock_rate
+suffix:semicolon
+multiline_comment|/* bits per second */
+DECL|member|clock_type
+r_int
+r_int
+id|clock_type
+suffix:semicolon
+multiline_comment|/* internal, external, TX-internal etc. */
+DECL|member|loopback
+r_int
+r_int
+id|loopback
+suffix:semicolon
+DECL|member|slot_map
+r_int
+r_int
+id|slot_map
+suffix:semicolon
+DECL|typedef|te1_settings
+)brace
+id|te1_settings
+suffix:semicolon
+multiline_comment|/* T1, E1 */
+DECL|macro|ENCODING_DEFAULT
+mdefine_line|#define ENCODING_DEFAULT&t;0 /* Default (current) setting */
+DECL|macro|ENCODING_NRZ
+mdefine_line|#define ENCODING_NRZ&t;&t;1
+DECL|macro|ENCODING_NRZI
+mdefine_line|#define ENCODING_NRZI&t;&t;2
+DECL|macro|ENCODING_FM_MARK
+mdefine_line|#define ENCODING_FM_MARK&t;3
+DECL|macro|ENCODING_FM_SPACE
+mdefine_line|#define ENCODING_FM_SPACE&t;4
+DECL|macro|ENCODING_MANCHESTER
+mdefine_line|#define ENCODING_MANCHESTER&t;5
+DECL|macro|PARITY_DEFAULT
+mdefine_line|#define PARITY_DEFAULT&t;&t;0 /* Default (current) setting */
+DECL|macro|PARITY_NONE
+mdefine_line|#define PARITY_NONE&t;&t;1 /* No parity */
+DECL|macro|PARITY_CRC16_PR0
+mdefine_line|#define PARITY_CRC16_PR0&t;2 /* CRC16, initial value 0x0000 */
+DECL|macro|PARITY_CRC16_PR1
+mdefine_line|#define PARITY_CRC16_PR1&t;3 /* CRC16, initial value 0xFFFF */
+DECL|macro|PARITY_CRC16_PR0_CCITT
+mdefine_line|#define PARITY_CRC16_PR0_CCITT&t;4 /* CRC16, initial 0x0000, ITU-T version */
+DECL|macro|PARITY_CRC16_PR1_CCITT
+mdefine_line|#define PARITY_CRC16_PR1_CCITT&t;5 /* CRC16, initial 0xFFFF, ITU-T version */
+DECL|macro|PARITY_CRC32_PR0_CCITT
+mdefine_line|#define PARITY_CRC32_PR0_CCITT&t;6 /* CRC32, initial value 0x00000000 */
+DECL|macro|PARITY_CRC32_PR1_CCITT
+mdefine_line|#define PARITY_CRC32_PR1_CCITT&t;7 /* CRC32, initial value 0xFFFFFFFF */
+r_typedef
+r_struct
+(brace
+DECL|member|encoding
+r_int
+r_int
+id|encoding
+suffix:semicolon
+DECL|member|parity
+r_int
+r_int
+id|parity
+suffix:semicolon
+DECL|typedef|hdlc_proto
+)brace
+id|hdlc_proto
+suffix:semicolon
+DECL|macro|LMI_DEFAULT
+mdefine_line|#define LMI_DEFAULT&t;&t;0 /* Default (current) setting */
+DECL|macro|LMI_NONE
+mdefine_line|#define LMI_NONE&t;&t;1 /* No LMI, all PVCs are static */
+DECL|macro|LMI_ANSI
+mdefine_line|#define LMI_ANSI&t;&t;2 /* ANSI Annex D */
+DECL|macro|LMI_CCITT
+mdefine_line|#define LMI_CCITT&t;&t;3 /* ITU-T Annex A */
+r_typedef
+r_struct
+(brace
+DECL|member|t391
+r_int
+r_int
+id|t391
+suffix:semicolon
+DECL|member|t392
+r_int
+r_int
+id|t392
+suffix:semicolon
+DECL|member|n391
+r_int
+r_int
+id|n391
+suffix:semicolon
+DECL|member|n392
+r_int
+r_int
+id|n392
+suffix:semicolon
+DECL|member|n393
+r_int
+r_int
+id|n393
+suffix:semicolon
+DECL|member|lmi
+r_int
+r_int
+id|lmi
+suffix:semicolon
+DECL|member|dce
+r_int
+r_int
+id|dce
+suffix:semicolon
+multiline_comment|/* 1 for DCE (network side) operation */
+DECL|typedef|fr_proto
+)brace
+id|fr_proto
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|dlci
+r_int
+r_int
+id|dlci
+suffix:semicolon
+DECL|typedef|fr_proto_pvc
+)brace
+id|fr_proto_pvc
+suffix:semicolon
+multiline_comment|/* for creating/deleting FR PVCs */
+r_typedef
+r_struct
+(brace
+DECL|member|interval
+r_int
+r_int
+id|interval
+suffix:semicolon
+DECL|member|timeout
+r_int
+r_int
+id|timeout
+suffix:semicolon
+DECL|typedef|cisco_proto
+)brace
+id|cisco_proto
+suffix:semicolon
+multiline_comment|/* PPP doesn&squot;t need any info now - supply length = 0 to ioctl */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/syncppp.h&gt;
+DECL|macro|HDLC_MAX_MTU
+mdefine_line|#define HDLC_MAX_MTU 1500&t;/* Ethernet 1500 bytes */
+DECL|macro|HDLC_MAX_MRU
+mdefine_line|#define HDLC_MAX_MRU (HDLC_MAX_MTU + 10) /* max 10 bytes for FR */
 DECL|macro|MAXLEN_LMISTAT
 mdefine_line|#define MAXLEN_LMISTAT  20&t;/* max size of status enquiry frame */
-DECL|macro|LINK_STATE_RELIABLE
-mdefine_line|#define LINK_STATE_RELIABLE 0x01
-DECL|macro|LINK_STATE_REQUEST
-mdefine_line|#define LINK_STATE_REQUEST  0x02 /* full stat sent (DCE) / req pending (DTE) */
-DECL|macro|LINK_STATE_CHANGED
-mdefine_line|#define LINK_STATE_CHANGED  0x04 /* change in PVCs state, send full report */
-DECL|macro|LINK_STATE_FULLREP_SENT
-mdefine_line|#define LINK_STATE_FULLREP_SENT 0x08 /* full report sent */
 DECL|macro|PVC_STATE_NEW
 mdefine_line|#define PVC_STATE_NEW       0x01
 DECL|macro|PVC_STATE_ACTIVE
@@ -156,6 +267,7 @@ mdefine_line|#define LMI_ANSI_LENGTH           14
 r_typedef
 r_struct
 (brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
 DECL|member|ea1
 r_int
 id|ea1
@@ -204,6 +316,50 @@ id|dlcil
 suffix:colon
 l_int|4
 suffix:semicolon
+macro_line|#elif defined (__BIG_ENDIAN_BITFIELD)
+r_int
+id|dlcih
+suffix:colon
+l_int|6
+suffix:semicolon
+r_int
+id|cr
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|ea1
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|dlcil
+suffix:colon
+l_int|4
+suffix:semicolon
+r_int
+id|fecn
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|becn
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|de
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|ea2
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#else
+macro_line|#error  &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
 DECL|typedef|fr_hdr
 )brace
 id|__attribute__
@@ -307,86 +463,42 @@ id|pvc_device_struct
 op_star
 id|next
 suffix:semicolon
-DECL|member|state
-id|u8
-id|state
+r_struct
+(brace
+DECL|member|active
+r_int
+id|active
 suffix:semicolon
-DECL|member|newstate
-id|u8
-id|newstate
+DECL|member|new
+r_int
+r_new
+suffix:semicolon
+DECL|member|deleted
+r_int
+id|deleted
+suffix:semicolon
+DECL|member|fecn
+r_int
+id|fecn
+suffix:semicolon
+DECL|member|becn
+r_int
+id|becn
+suffix:semicolon
+DECL|member|state
+)brace
+id|state
 suffix:semicolon
 DECL|typedef|pvc_device
 )brace
 id|pvc_device
 suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|last_errors
-id|u32
-id|last_errors
-suffix:semicolon
-multiline_comment|/* last errors bit list */
-DECL|member|last_poll
-r_int
-id|last_poll
-suffix:semicolon
-multiline_comment|/* ! */
-DECL|member|T391
-id|u8
-id|T391
-suffix:semicolon
-multiline_comment|/* ! link integrity verification polling timer */
-DECL|member|T392
-id|u8
-id|T392
-suffix:semicolon
-multiline_comment|/* ! polling verification timer */
-DECL|member|N391
-id|u8
-id|N391
-suffix:semicolon
-multiline_comment|/* full status polling counter */
-DECL|member|N392
-id|u8
-id|N392
-suffix:semicolon
-multiline_comment|/* error threshold */
-DECL|member|N393
-id|u8
-id|N393
-suffix:semicolon
-multiline_comment|/* monitored events count */
-DECL|member|N391cnt
-id|u8
-id|N391cnt
-suffix:semicolon
-DECL|member|state
-id|u8
-id|state
-suffix:semicolon
-multiline_comment|/* ! */
-DECL|member|txseq
-id|u32
-id|txseq
-suffix:semicolon
-multiline_comment|/* ! TX sequence number - Cisco uses 4 bytes */
-DECL|member|rxseq
-id|u32
-id|rxseq
-suffix:semicolon
-multiline_comment|/* ! RX sequence number */
-DECL|typedef|fr_lmi
-)brace
-id|fr_lmi
-suffix:semicolon
-multiline_comment|/* ! means used in Cisco HDLC as well */
 DECL|struct|hdlc_device_struct
 r_typedef
 r_struct
 id|hdlc_device_struct
 (brace
-multiline_comment|/* to be initialized by hardware driver: */
+multiline_comment|/* To be initialized by hardware driver */
 DECL|member|netdev
 r_struct
 id|net_device
@@ -398,23 +510,12 @@ r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
-DECL|member|pppdev
-r_struct
-id|ppp_device
-id|pppdev
-suffix:semicolon
-DECL|member|syncppp_ptr
-r_struct
-id|ppp_device
-op_star
-id|syncppp_ptr
-suffix:semicolon
-multiline_comment|/* set_mode may be NULL if HDLC-only board */
-DECL|member|set_mode
+multiline_comment|/* used by HDLC layer to take control over HDLC device from hw driver*/
+DECL|member|attach
 r_int
 (paren
 op_star
-id|set_mode
+id|attach
 )paren
 (paren
 r_struct
@@ -423,7 +524,53 @@ op_star
 id|hdlc
 comma
 r_int
-id|mode
+r_int
+id|encoding
+comma
+r_int
+r_int
+id|parity
+)paren
+suffix:semicolon
+multiline_comment|/* hardware driver must handle this instead of dev-&gt;hard_start_xmit */
+DECL|member|xmit
+r_int
+(paren
+op_star
+id|xmit
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* Things below are for HDLC layer internal use only */
+DECL|member|ioctl
+r_int
+(paren
+op_star
+id|ioctl
+)paren
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|ifr
+comma
+r_int
+id|cmd
 )paren
 suffix:semicolon
 DECL|member|open
@@ -439,11 +586,11 @@ op_star
 id|hdlc
 )paren
 suffix:semicolon
-DECL|member|close
+DECL|member|stop
 r_void
 (paren
 op_star
-id|close
+id|stop
 )paren
 (paren
 r_struct
@@ -452,35 +599,266 @@ op_star
 id|hdlc
 )paren
 suffix:semicolon
-DECL|member|xmit
-r_int
+DECL|member|detach
+r_void
 (paren
 op_star
-id|xmit
+id|detach
 )paren
 (paren
 r_struct
 id|hdlc_device_struct
 op_star
 id|hdlc
-comma
+)paren
+suffix:semicolon
+DECL|member|netif_rx
+r_void
+(paren
+op_star
+id|netif_rx
+)paren
+(paren
 r_struct
 id|sk_buff
 op_star
 id|skb
 )paren
 suffix:semicolon
-DECL|member|ioctl
+DECL|member|proto
+r_int
+id|proto
+suffix:semicolon
+multiline_comment|/* IF_PROTO_HDLC/CISCO/FR/etc. */
+r_union
+(brace
+r_struct
+(brace
+DECL|member|settings
+id|fr_proto
+id|settings
+suffix:semicolon
+DECL|member|first_pvc
+id|pvc_device
+op_star
+id|first_pvc
+suffix:semicolon
+DECL|member|pvc_count
+r_int
+id|pvc_count
+suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
+DECL|member|last_poll
+r_int
+id|last_poll
+suffix:semicolon
+DECL|member|reliable
+r_int
+id|reliable
+suffix:semicolon
+DECL|member|changed
+r_int
+id|changed
+suffix:semicolon
+DECL|member|request
+r_int
+id|request
+suffix:semicolon
+DECL|member|fullrep_sent
+r_int
+id|fullrep_sent
+suffix:semicolon
+DECL|member|last_errors
+id|u32
+id|last_errors
+suffix:semicolon
+multiline_comment|/* last errors bit list */
+DECL|member|n391cnt
+id|u8
+id|n391cnt
+suffix:semicolon
+DECL|member|txseq
+id|u8
+id|txseq
+suffix:semicolon
+multiline_comment|/* TX sequence number */
+DECL|member|rxseq
+id|u8
+id|rxseq
+suffix:semicolon
+multiline_comment|/* RX sequence number */
+DECL|member|fr
+)brace
+id|fr
+suffix:semicolon
+r_struct
+(brace
+DECL|member|settings
+id|cisco_proto
+id|settings
+suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
+DECL|member|last_poll
+r_int
+id|last_poll
+suffix:semicolon
+DECL|member|up
+r_int
+id|up
+suffix:semicolon
+DECL|member|txseq
+id|u32
+id|txseq
+suffix:semicolon
+multiline_comment|/* TX sequence number */
+DECL|member|rxseq
+id|u32
+id|rxseq
+suffix:semicolon
+multiline_comment|/* RX sequence number */
+DECL|member|cisco
+)brace
+id|cisco
+suffix:semicolon
+r_struct
+(brace
+DECL|member|settings
+id|hdlc_proto
+id|settings
+suffix:semicolon
+DECL|member|hdlc
+)brace
+id|hdlc
+suffix:semicolon
+r_struct
+(brace
+DECL|member|pppdev
+r_struct
+id|ppp_device
+id|pppdev
+suffix:semicolon
+DECL|member|syncppp_ptr
+r_struct
+id|ppp_device
+op_star
+id|syncppp_ptr
+suffix:semicolon
+DECL|member|old_change_mtu
 r_int
 (paren
 op_star
-id|ioctl
+id|old_change_mtu
 )paren
 (paren
 r_struct
-id|hdlc_device_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|new_mtu
+)paren
+suffix:semicolon
+DECL|member|ppp
+)brace
+id|ppp
+suffix:semicolon
+DECL|member|state
+)brace
+id|state
+suffix:semicolon
+DECL|typedef|hdlc_device
+)brace
+id|hdlc_device
+suffix:semicolon
+r_int
+id|hdlc_raw_ioctl
+c_func
+(paren
+id|hdlc_device
 op_star
 id|hdlc
+comma
+r_struct
+id|ifreq
+op_star
+id|ifr
+)paren
+suffix:semicolon
+r_int
+id|hdlc_cisco_ioctl
+c_func
+(paren
+id|hdlc_device
+op_star
+id|hdlc
+comma
+r_struct
+id|ifreq
+op_star
+id|ifr
+)paren
+suffix:semicolon
+r_int
+id|hdlc_ppp_ioctl
+c_func
+(paren
+id|hdlc_device
+op_star
+id|hdlc
+comma
+r_struct
+id|ifreq
+op_star
+id|ifr
+)paren
+suffix:semicolon
+r_int
+id|hdlc_fr_ioctl
+c_func
+(paren
+id|hdlc_device
+op_star
+id|hdlc
+comma
+r_struct
+id|ifreq
+op_star
+id|ifr
+)paren
+suffix:semicolon
+r_int
+id|hdlc_x25_ioctl
+c_func
+(paren
+id|hdlc_device
+op_star
+id|hdlc
+comma
+r_struct
+id|ifreq
+op_star
+id|ifr
+)paren
+suffix:semicolon
+multiline_comment|/* Exported from hdlc.o */
+multiline_comment|/* Called by hardware driver when a user requests HDLC service */
+r_int
+id|hdlc_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 r_struct
 id|ifreq
@@ -491,82 +869,7 @@ r_int
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/* Only in &quot;hardware&quot; FR modes etc. - may be NULL */
-DECL|member|create_pvc
-r_int
-(paren
-op_star
-id|create_pvc
-)paren
-(paren
-id|pvc_device
-op_star
-id|pvc
-)paren
-suffix:semicolon
-DECL|member|destroy_pvc
-r_void
-(paren
-op_star
-id|destroy_pvc
-)paren
-(paren
-id|pvc_device
-op_star
-id|pvc
-)paren
-suffix:semicolon
-DECL|member|open_pvc
-r_int
-(paren
-op_star
-id|open_pvc
-)paren
-(paren
-id|pvc_device
-op_star
-id|pvc
-)paren
-suffix:semicolon
-DECL|member|close_pvc
-r_void
-(paren
-op_star
-id|close_pvc
-)paren
-(paren
-id|pvc_device
-op_star
-id|pvc
-)paren
-suffix:semicolon
-multiline_comment|/* for hdlc.c internal use only */
-DECL|member|first_pvc
-id|pvc_device
-op_star
-id|first_pvc
-suffix:semicolon
-DECL|member|pvc_count
-id|u16
-id|pvc_count
-suffix:semicolon
-DECL|member|mode
-r_int
-id|mode
-suffix:semicolon
-DECL|member|timer
-r_struct
-id|timer_list
-id|timer
-suffix:semicolon
-DECL|member|lmi
-id|fr_lmi
-id|lmi
-suffix:semicolon
-DECL|typedef|hdlc_device
-)brace
-id|hdlc_device
-suffix:semicolon
+multiline_comment|/* Must be used by hardware driver on module startup/exit */
 r_int
 id|register_hdlc_device
 c_func
@@ -583,20 +886,6 @@ c_func
 id|hdlc_device
 op_star
 id|hdlc
-)paren
-suffix:semicolon
-r_void
-id|hdlc_netif_rx
-c_func
-(paren
-id|hdlc_device
-op_star
-id|hdlc
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
 )paren
 suffix:semicolon
 DECL|function|hdlc_to_dev
@@ -729,184 +1018,6 @@ op_member_access_from_pointer
 id|name
 suffix:semicolon
 )brace
-DECL|function|status_to_dlci
-r_static
-id|__inline__
-id|u16
-id|status_to_dlci
-c_func
-(paren
-id|hdlc_device
-op_star
-id|hdlc
-comma
-id|u8
-op_star
-id|status
-comma
-id|u8
-op_star
-id|state
-)paren
-(brace
-op_star
-id|state
-op_and_assign
-op_complement
-(paren
-id|PVC_STATE_ACTIVE
-op_or
-id|PVC_STATE_NEW
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0x08
-)paren
-op_star
-id|state
-op_or_assign
-id|PVC_STATE_NEW
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|status
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0x02
-)paren
-op_star
-id|state
-op_or_assign
-id|PVC_STATE_ACTIVE
-suffix:semicolon
-r_return
-(paren
-(paren
-id|status
-(braket
-l_int|0
-)braket
-op_amp
-l_int|0x3F
-)paren
-op_lshift
-l_int|4
-)paren
-op_or
-(paren
-(paren
-id|status
-(braket
-l_int|1
-)braket
-op_amp
-l_int|0x78
-)paren
-op_rshift
-l_int|3
-)paren
-suffix:semicolon
-)brace
-DECL|function|dlci_to_status
-r_static
-id|__inline__
-r_void
-id|dlci_to_status
-c_func
-(paren
-id|hdlc_device
-op_star
-id|hdlc
-comma
-id|u16
-id|dlci
-comma
-id|u8
-op_star
-id|status
-comma
-id|u8
-id|state
-)paren
-(brace
-id|status
-(braket
-l_int|0
-)braket
-op_assign
-(paren
-id|dlci
-op_rshift
-l_int|4
-)paren
-op_amp
-l_int|0x3F
-suffix:semicolon
-id|status
-(braket
-l_int|1
-)braket
-op_assign
-(paren
-(paren
-id|dlci
-op_lshift
-l_int|3
-)paren
-op_amp
-l_int|0x78
-)paren
-op_or
-l_int|0x80
-suffix:semicolon
-id|status
-(braket
-l_int|2
-)braket
-op_assign
-l_int|0x80
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|state
-op_amp
-id|PVC_STATE_NEW
-)paren
-id|status
-(braket
-l_int|2
-)braket
-op_or_assign
-l_int|0x08
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|state
-op_amp
-id|PVC_STATE_ACTIVE
-)paren
-id|status
-(braket
-l_int|2
-)braket
-op_or_assign
-l_int|0x02
-suffix:semicolon
-)brace
 DECL|function|netdev_dlci
 r_static
 id|__inline__
@@ -1019,83 +1130,6 @@ op_or
 l_int|0x01
 suffix:semicolon
 )brace
-DECL|function|mode_is
-r_static
-id|__inline__
-r_int
-id|mode_is
-c_func
-(paren
-id|hdlc_device
-op_star
-id|hdlc
-comma
-r_int
-id|mask
-)paren
-(brace
-r_return
-(paren
-id|hdlc-&gt;mode
-op_amp
-id|mask
-)paren
-op_eq
-id|mask
-suffix:semicolon
-)brace
-DECL|function|find_pvc
-r_static
-id|__inline__
-id|pvc_device
-op_star
-id|find_pvc
-c_func
-(paren
-id|hdlc_device
-op_star
-id|hdlc
-comma
-id|u16
-id|dlci
-)paren
-(brace
-id|pvc_device
-op_star
-id|pvc
-op_assign
-id|hdlc-&gt;first_pvc
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|pvc
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|netdev_dlci
-c_func
-(paren
-op_amp
-id|pvc-&gt;netdev
-)paren
-op_eq
-id|dlci
-)paren
-r_return
-id|pvc
-suffix:semicolon
-id|pvc
-op_assign
-id|pvc-&gt;next
-suffix:semicolon
-)brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 DECL|function|debug_frame
 r_static
 id|__inline__
@@ -1162,6 +1196,108 @@ c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* Must be called by hardware driver when HDLC device is being opened */
+DECL|function|hdlc_open
+r_static
+id|__inline__
+r_int
+id|hdlc_open
+c_func
+(paren
+id|hdlc_device
+op_star
+id|hdlc
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|hdlc-&gt;proto
+op_eq
+op_minus
+l_int|1
+)paren
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+multiline_comment|/* no protocol attached */
+r_if
+c_cond
+(paren
+id|hdlc-&gt;open
+)paren
+r_return
+id|hdlc
+op_member_access_from_pointer
+id|open
+c_func
+(paren
+id|hdlc
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Must be called by hardware driver when HDLC device is being closed */
+DECL|function|hdlc_close
+r_static
+id|__inline__
+r_void
+id|hdlc_close
+c_func
+(paren
+id|hdlc_device
+op_star
+id|hdlc
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|hdlc-&gt;stop
+)paren
+id|hdlc
+op_member_access_from_pointer
+id|stop
+c_func
+(paren
+id|hdlc
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* May be used by hardware driver to gain control over HDLC device */
+DECL|function|hdlc_detach
+r_static
+id|__inline__
+r_void
+id|hdlc_detach
+c_func
+(paren
+id|hdlc_device
+op_star
+id|hdlc
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|hdlc-&gt;detach
+)paren
+id|hdlc
+op_member_access_from_pointer
+id|detach
+c_func
+(paren
+id|hdlc
+)paren
+suffix:semicolon
+id|hdlc-&gt;detach
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif /* __KERNEL */

@@ -6867,6 +6867,10 @@ op_logical_or
 id|cmd
 op_eq
 id|SIOCSMIIREG
+op_logical_or
+id|cmd
+op_eq
+id|SIOCDEVICE
 )paren
 (brace
 r_if
@@ -7391,6 +7395,11 @@ r_if
 c_cond
 (paren
 id|cmd
+op_eq
+id|SIOCDEVICE
+op_logical_or
+(paren
+id|cmd
 op_ge
 id|SIOCDEVPRIVATE
 op_logical_and
@@ -7399,6 +7408,7 @@ op_le
 id|SIOCDEVPRIVATE
 op_plus
 l_int|15
+)paren
 )paren
 (brace
 id|dev_load

@@ -42,6 +42,38 @@ mdefine_line|#define IFF_DYNAMIC&t;0x8000&t;&t;/* dialup device with changing ad
 multiline_comment|/* Private (from user) interface flags (netdevice-&gt;priv_flags). */
 DECL|macro|IFF_802_1Q_VLAN
 mdefine_line|#define IFF_802_1Q_VLAN 0x1             /* 802.1Q VLAN device.          */
+DECL|macro|IF_GET_IFACE
+mdefine_line|#define IF_GET_IFACE&t;0x0001&t;&t;/* for querying only */
+DECL|macro|IF_GET_PROTO
+mdefine_line|#define IF_GET_PROTO&t;0x0002
+multiline_comment|/* For definitions see hdlc.h */
+DECL|macro|IF_IFACE_V35
+mdefine_line|#define IF_IFACE_V35&t;0x1000&t;&t;/* V.35 serial interface&t;*/
+DECL|macro|IF_IFACE_V24
+mdefine_line|#define IF_IFACE_V24&t;0x1001&t;&t;/* V.24 serial interface&t;*/
+DECL|macro|IF_IFACE_X21
+mdefine_line|#define IF_IFACE_X21&t;0x1002&t;&t;/* X.21 serial interface&t;*/
+DECL|macro|IF_IFACE_T1
+mdefine_line|#define IF_IFACE_T1&t;0x1003&t;&t;/* T1 telco serial interface&t;*/
+DECL|macro|IF_IFACE_E1
+mdefine_line|#define IF_IFACE_E1&t;0x1004&t;&t;/* E1 telco serial interface&t;*/
+DECL|macro|IF_IFACE_SYNC_SERIAL
+mdefine_line|#define IF_IFACE_SYNC_SERIAL 0x1005&t;/* cant&squot;b be set by software&t;*/
+multiline_comment|/* For definitions see hdlc.h */
+DECL|macro|IF_PROTO_HDLC
+mdefine_line|#define IF_PROTO_HDLC&t;0x2000&t;&t;/* raw HDLC protocol&t;&t;*/
+DECL|macro|IF_PROTO_PPP
+mdefine_line|#define IF_PROTO_PPP&t;0x2001&t;&t;/* PPP protocol&t;&t;&t;*/
+DECL|macro|IF_PROTO_CISCO
+mdefine_line|#define IF_PROTO_CISCO&t;0x2002&t;&t;/* Cisco HDLC protocol&t;&t;*/
+DECL|macro|IF_PROTO_FR
+mdefine_line|#define IF_PROTO_FR&t;0x2003&t;&t;/* Frame Relay protocol&t;&t;*/
+DECL|macro|IF_PROTO_FR_ADD_PVC
+mdefine_line|#define IF_PROTO_FR_ADD_PVC 0x2004&t;/*    Create FR PVC&t;&t;*/
+DECL|macro|IF_PROTO_FR_DEL_PVC
+mdefine_line|#define IF_PROTO_FR_DEL_PVC 0x2005&t;/*    Delete FR PVC&t;&t;*/
+DECL|macro|IF_PROTO_X25
+mdefine_line|#define IF_PROTO_X25&t;0x2006&t;&t;/* X.25&t;&t;&t;&t;*/
 multiline_comment|/*&n; *&t;Device mapping structure. I&squot;d just gone off and designed a &n; *&t;beautiful scheme using only loadable modules with arguments&n; *&t;for driver options and along come the PCMCIA people 8)&n; *&n; *&t;Ah well. The get() side of this is good for WDSETUP, and it&squot;ll&n; *&t;be handy for debugging things. The set side is fine for now and&n; *&t;being very small might be worth keeping for clean configuration.&n; */
 DECL|struct|ifmap
 r_struct
@@ -78,6 +110,30 @@ r_char
 id|port
 suffix:semicolon
 multiline_comment|/* 3 bytes spare */
+)brace
+suffix:semicolon
+DECL|struct|if_settings
+r_struct
+id|if_settings
+(brace
+DECL|member|type
+r_int
+r_int
+id|type
+suffix:semicolon
+multiline_comment|/* Type of physical device or protocol */
+DECL|member|data_length
+r_int
+r_int
+id|data_length
+suffix:semicolon
+multiline_comment|/* device/protocol data length */
+DECL|member|data
+r_void
+op_star
+id|data
+suffix:semicolon
+multiline_comment|/* pointer to data, ignored if length = 0 */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Interface request structure used for socket&n; * ioctl&squot;s.  All interface ioctl&squot;s must have parameter&n; * definitions which begin with ifr_name.  The&n; * remainder may be interface specific.&n; */
@@ -167,6 +223,11 @@ r_char
 op_star
 id|ifru_data
 suffix:semicolon
+DECL|member|ifru_settings
+r_struct
+id|if_settings
+id|ifru_settings
+suffix:semicolon
 DECL|member|ifr_ifru
 )brace
 id|ifr_ifru
@@ -205,6 +266,8 @@ DECL|macro|ifr_qlen
 mdefine_line|#define ifr_qlen&t;ifr_ifru.ifru_ivalue&t;/* Queue length &t;*/
 DECL|macro|ifr_newname
 mdefine_line|#define ifr_newname&t;ifr_ifru.ifru_newname&t;/* New name&t;&t;*/
+DECL|macro|ifr_settings
+mdefine_line|#define ifr_settings&t;ifr_ifru.ifru_settings&t;/* Device/proto settings*/
 multiline_comment|/*&n; * Structure used in SIOCGIFCONF request.&n; * Used to retrieve interface configuration&n; * for machine (useful for programs which&n; * must know all networks accessible).&n; */
 DECL|struct|ifconf
 r_struct
