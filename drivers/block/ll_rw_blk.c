@@ -471,13 +471,6 @@ id|q-&gt;unplug_delay
 op_assign
 l_int|1
 suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|q-&gt;unplug_timer
-)paren
-suffix:semicolon
 id|INIT_WORK
 c_func
 (paren
@@ -4048,6 +4041,13 @@ r_sizeof
 op_star
 id|q
 )paren
+)paren
+suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|q-&gt;unplug_timer
 )paren
 suffix:semicolon
 id|atomic_set
