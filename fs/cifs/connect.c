@@ -4843,8 +4843,15 @@ l_string|&quot;Socket created&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;(*csocket)-&gt;sk-&gt;allocation = GFP_NOFS; */
-multiline_comment|/* BB is there equivalent in 2.6 */
+(paren
+op_star
+id|csocket
+)paren
+op_member_access_from_pointer
+id|sk-&gt;sk_allocation
+op_assign
+id|GFP_NOFS
+suffix:semicolon
 )brace
 )brace
 id|psin_server-&gt;sin_family
@@ -5344,6 +5351,15 @@ comma
 l_string|&quot;ipv6 Socket created&quot;
 )paren
 )paren
+suffix:semicolon
+(paren
+op_star
+id|csocket
+)paren
+op_member_access_from_pointer
+id|sk-&gt;sk_allocation
+op_assign
+id|GFP_NOFS
 suffix:semicolon
 )brace
 )brace
