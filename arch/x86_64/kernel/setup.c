@@ -4966,6 +4966,14 @@ id|i
 suffix:semicolon
 )brace
 )brace
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
