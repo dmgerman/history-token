@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * A policy database (policydb) specifies the&n; * configuration data for the security policy.&n; *&n; * Author : Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; */
-multiline_comment|/* Updated: Frank Mayer &lt;mayerf@tresys.com&gt; and Karl MacMillan &lt;kmacmillan@tresys.com&gt;&n; *&n; * &t;Added conditional policy language extensions&n; *&n; * Copyright (C) 2003 - 2004 Tresys Technology, LLC&n; *&t;This program is free software; you can redistribute it and/or modify&n; *  &t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation, version 2.&n; */
+multiline_comment|/*&n; * Updated: Trusted Computer Solutions, Inc. &lt;dgoeddel@trustedcs.com&gt;&n; *&n; *&t;Support for enhanced MLS infrastructure.&n; *&n; * Updated: Frank Mayer &lt;mayerf@tresys.com&gt; and Karl MacMillan &lt;kmacmillan@tresys.com&gt;&n; *&n; * &t;Added conditional policy language extensions&n; *&n; * Copyright (C) 2004-2005 Trusted Computer Solutions, Inc.&n; * Copyright (C) 2003 - 2004 Tresys Technology, LLC&n; *&t;This program is free software; you can redistribute it and/or modify&n; *  &t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation, version 2.&n; */
 macro_line|#ifndef _SS_POLICYDB_H_
 DECL|macro|_SS_POLICYDB_H_
 mdefine_line|#define _SS_POLICYDB_H_
@@ -19,21 +19,6 @@ id|u32
 id|value
 suffix:semicolon
 multiline_comment|/* permission bit + 1 */
-macro_line|#ifdef CONFIG_SECURITY_SELINUX_MLS
-DECL|macro|MLS_BASE_READ
-mdefine_line|#define MLS_BASE_READ    1&t;/* MLS base permission `read&squot; */
-DECL|macro|MLS_BASE_WRITE
-mdefine_line|#define MLS_BASE_WRITE   2&t;/* MLS base permission `write&squot; */
-DECL|macro|MLS_BASE_READBY
-mdefine_line|#define MLS_BASE_READBY  4&t;/* MLS base permission `readby&squot; */
-DECL|macro|MLS_BASE_WRITEBY
-mdefine_line|#define MLS_BASE_WRITEBY 8&t;/* MLS base permission `writeby&squot; */
-DECL|member|base_perms
-id|u32
-id|base_perms
-suffix:semicolon
-multiline_comment|/* MLS base permission mask */
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* Attributes of a common prefix for access vectors */
@@ -90,14 +75,13 @@ op_star
 id|constraints
 suffix:semicolon
 multiline_comment|/* constraints on class permissions */
-macro_line|#ifdef CONFIG_SECURITY_SELINUX_MLS
-DECL|member|mlsperms
+DECL|member|validatetrans
 r_struct
-id|mls_perms
-id|mlsperms
+id|constraint_node
+op_star
+id|validatetrans
 suffix:semicolon
-multiline_comment|/* MLS base permission masks */
-macro_line|#endif
+multiline_comment|/* special transition rules */
 )brace
 suffix:semicolon
 multiline_comment|/* Role attributes */
@@ -207,18 +191,20 @@ id|ebitmap
 id|roles
 suffix:semicolon
 multiline_comment|/* set of authorized roles for user */
-macro_line|#ifdef CONFIG_SECURITY_SELINUX_MLS
-DECL|member|ranges
+DECL|member|range
 r_struct
-id|mls_range_list
-op_star
-id|ranges
+id|mls_range
+id|range
 suffix:semicolon
-multiline_comment|/* list of authorized MLS ranges for user */
-macro_line|#endif
+multiline_comment|/* MLS range (min - max) for user */
+DECL|member|dfltlevel
+r_struct
+id|mls_level
+id|dfltlevel
+suffix:semicolon
+multiline_comment|/* default login MLS level for user */
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_SECURITY_SELINUX_MLS
 multiline_comment|/* Sensitivity attributes */
 DECL|struct|level_datum
 r_struct
@@ -257,7 +243,34 @@ suffix:semicolon
 multiline_comment|/* is this category an alias for another? */
 )brace
 suffix:semicolon
-macro_line|#endif
+DECL|struct|range_trans
+r_struct
+id|range_trans
+(brace
+DECL|member|dom
+id|u32
+id|dom
+suffix:semicolon
+multiline_comment|/* current process domain */
+DECL|member|type
+id|u32
+id|type
+suffix:semicolon
+multiline_comment|/* program executable type */
+DECL|member|range
+r_struct
+id|mls_range
+id|range
+suffix:semicolon
+multiline_comment|/* new range */
+DECL|member|next
+r_struct
+id|range_trans
+op_star
+id|next
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* Boolean data type */
 DECL|struct|cond_bool_datum
 r_struct
@@ -424,21 +437,14 @@ DECL|macro|SYM_TYPES
 mdefine_line|#define SYM_TYPES   3
 DECL|macro|SYM_USERS
 mdefine_line|#define SYM_USERS   4
-macro_line|#ifdef CONFIG_SECURITY_SELINUX_MLS
-DECL|macro|SYM_LEVELS
-mdefine_line|#define SYM_LEVELS  5
-DECL|macro|SYM_CATS
-mdefine_line|#define SYM_CATS    6
-DECL|macro|SYM_BOOLS
-mdefine_line|#define SYM_BOOLS   7
-DECL|macro|SYM_NUM
-mdefine_line|#define SYM_NUM     8
-macro_line|#else
 DECL|macro|SYM_BOOLS
 mdefine_line|#define SYM_BOOLS   5
+DECL|macro|SYM_LEVELS
+mdefine_line|#define SYM_LEVELS  6
+DECL|macro|SYM_CATS
+mdefine_line|#define SYM_CATS    7
 DECL|macro|SYM_NUM
-mdefine_line|#define SYM_NUM     6
-macro_line|#endif
+mdefine_line|#define SYM_NUM     8
 multiline_comment|/* object context array indices */
 DECL|macro|OCON_ISID
 mdefine_line|#define OCON_ISID  0&t;/* initial SIDs */
@@ -480,12 +486,12 @@ DECL|macro|p_types
 mdefine_line|#define p_types symtab[SYM_TYPES]
 DECL|macro|p_users
 mdefine_line|#define p_users symtab[SYM_USERS]
+DECL|macro|p_bools
+mdefine_line|#define p_bools symtab[SYM_BOOLS]
 DECL|macro|p_levels
 mdefine_line|#define p_levels symtab[SYM_LEVELS]
 DECL|macro|p_cats
 mdefine_line|#define p_cats symtab[SYM_CATS]
-DECL|macro|p_bools
-mdefine_line|#define p_bools symtab[SYM_BOOLS]
 multiline_comment|/* symbol names indexed by (value - 1) */
 DECL|member|sym_val_to_name
 r_char
@@ -506,12 +512,12 @@ DECL|macro|p_type_val_to_name
 mdefine_line|#define p_type_val_to_name sym_val_to_name[SYM_TYPES]
 DECL|macro|p_user_val_to_name
 mdefine_line|#define p_user_val_to_name sym_val_to_name[SYM_USERS]
+DECL|macro|p_bool_val_to_name
+mdefine_line|#define p_bool_val_to_name sym_val_to_name[SYM_BOOLS]
 DECL|macro|p_sens_val_to_name
 mdefine_line|#define p_sens_val_to_name sym_val_to_name[SYM_LEVELS]
 DECL|macro|p_cat_val_to_name
 mdefine_line|#define p_cat_val_to_name sym_val_to_name[SYM_CATS]
-DECL|macro|p_bool_val_to_name
-mdefine_line|#define p_bool_val_to_name sym_val_to_name[SYM_BOOLS]
 multiline_comment|/* class, role, and user attributes indexed by (value - 1) */
 DECL|member|class_val_to_struct
 r_struct
@@ -592,28 +598,13 @@ id|genfs
 op_star
 id|genfs
 suffix:semicolon
-macro_line|#ifdef CONFIG_SECURITY_SELINUX_MLS
-multiline_comment|/* number of legitimate MLS levels */
-DECL|member|nlevels
-id|u32
-id|nlevels
-suffix:semicolon
-DECL|member|trustedreaders
+multiline_comment|/* range transitions */
+DECL|member|range_tr
 r_struct
-id|ebitmap
-id|trustedreaders
+id|range_trans
+op_star
+id|range_tr
 suffix:semicolon
-DECL|member|trustedwriters
-r_struct
-id|ebitmap
-id|trustedwriters
-suffix:semicolon
-DECL|member|trustedobjects
-r_struct
-id|ebitmap
-id|trustedobjects
-suffix:semicolon
-macro_line|#endif
 DECL|member|policyvers
 r_int
 r_int
