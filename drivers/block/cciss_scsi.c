@@ -4717,6 +4717,33 @@ r_case
 l_int|0x08
 suffix:colon
 multiline_comment|/* medium changer */
+r_if
+c_cond
+(paren
+id|ncurrent
+op_ge
+id|CCISS_MAX_SCSI_DEVS_PER_HBA
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;cciss%d: %s ignored, &quot;
+l_string|&quot;too many devices.&bslash;n&quot;
+comma
+id|cntl_num
+comma
+id|DEVICETYPE
+c_func
+(paren
+id|devtype
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren
