@@ -2092,6 +2092,13 @@ suffix:semicolon
 macro_line|#endif
 r_int
 id|i
+op_assign
+op_star
+(paren
+id|loff_t
+op_star
+)paren
+id|v
 suffix:semicolon
 r_struct
 id|irqaction
@@ -2103,6 +2110,14 @@ r_int
 id|flags
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|0
+)paren
+(brace
 id|seq_puts
 c_func
 (paren
@@ -2152,20 +2167,14 @@ comma
 l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
-r_for
-c_loop
+r_if
+c_cond
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
 id|i
 OL
 id|ACTUAL_NR_IRQS
-suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
 id|spin_lock_irqsave
@@ -2368,6 +2377,15 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|ACTUAL_NR_IRQS
+)paren
+(brace
 macro_line|#ifdef CONFIG_SMP
 id|seq_puts
 c_func
@@ -2434,6 +2452,7 @@ comma
 id|irq_err_count
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
