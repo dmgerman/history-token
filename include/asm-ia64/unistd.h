@@ -440,6 +440,12 @@ DECL|macro|__NR_io_submit
 mdefine_line|#define __NR_io_submit&t;&t;&t;1241
 DECL|macro|__NR_io_cancel
 mdefine_line|#define __NR_io_cancel&t;&t;&t;1242
+DECL|macro|__NR_epoll_create
+mdefine_line|#define __NR_epoll_create&t;&t;1243
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl&t;&t;&t;1244
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait&t;&t;&t;1245
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int

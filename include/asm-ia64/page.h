@@ -26,6 +26,10 @@ DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;&t;(~(PAGE_SIZE - 1))
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr) + PAGE_SIZE - 1) &amp; PAGE_MASK)
+DECL|macro|PERCPU_PAGE_SHIFT
+mdefine_line|#define PERCPU_PAGE_SHIFT&t;16&t;/* log2() of max. size of per-CPU area */
+DECL|macro|PERCPU_PAGE_SIZE
+mdefine_line|#define PERCPU_PAGE_SIZE&t;(__IA64_UL_CONST(1) &lt;&lt; PERCPU_PAGE_SHIFT)
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
 macro_line|# if defined(CONFIG_HUGETLB_PAGE_SIZE_4GB)
 DECL|macro|HPAGE_SHIFT
