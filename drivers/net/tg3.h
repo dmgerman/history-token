@@ -3852,6 +3852,8 @@ DECL|macro|TG3_FLG2_PHY_ADC_BUG
 mdefine_line|#define TG3_FLG2_PHY_ADC_BUG&t;&t;0x00000040
 DECL|macro|TG3_FLG2_PHY_5704_A0_BUG
 mdefine_line|#define TG3_FLG2_PHY_5704_A0_BUG&t;0x00000080
+DECL|macro|TG3_FLG2_PHY_BER_BUG
+mdefine_line|#define TG3_FLG2_PHY_BER_BUG&t;&t;0x00000100
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
