@@ -14927,6 +14927,17 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|controls
+(braket
+id|i
+op_minus
+l_int|1
+)braket
+dot
+id|id.index
+op_assign
+l_int|1
+suffix:semicolon
 id|snd_emu10k1_init_stereo_onoff_control
 c_func
 (paren
