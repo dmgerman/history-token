@@ -923,6 +923,33 @@ op_or
 id|US_FL_MODE_XLATE
 )paren
 comma
+multiline_comment|/* Submitted by Rajesh Kumble Nayak &lt;nayak@obs-nice.fr&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x002e
+comma
+l_int|0x0500
+comma
+l_int|0x0500
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;Handycam HC-85&quot;
+comma
+id|US_SC_UFI
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+op_or
+id|US_FL_MODE_XLATE
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
