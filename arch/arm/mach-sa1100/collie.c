@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;asm/hardware/scoop.h&gt;
+macro_line|#include &lt;asm/mach/sharpsl_param.h&gt;
 macro_line|#include &lt;asm/hardware/locomo.h&gt;
 macro_line|#include &quot;generic.h&quot;
 DECL|variable|collie_scoop_resources
@@ -606,6 +607,11 @@ c_func
 (paren
 id|collie_flash_resources
 )paren
+)paren
+suffix:semicolon
+id|sharpsl_save_param
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

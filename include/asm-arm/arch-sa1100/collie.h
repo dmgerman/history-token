@@ -83,42 +83,6 @@ DECL|macro|COLLIE_LCM_IRQ_GPIO_nSD_DETECT
 mdefine_line|#define COLLIE_LCM_IRQ_GPIO_nSD_DETECT&t;IRQ_LOCOMO_GPIO13
 DECL|macro|COLLIE_LCM_IRQ_GPIO_nSD_WP
 mdefine_line|#define COLLIE_LCM_IRQ_GPIO_nSD_WP&t;IRQ_LOCOMO_GPIO14
-multiline_comment|/*&n; * Flash Memory mappings&n; *&n; */
-DECL|macro|FLASH_MEM_BASE
-mdefine_line|#define FLASH_MEM_BASE 0xe8ffc000
-DECL|macro|FLASH_DATA
-mdefine_line|#define&t;FLASH_DATA(adr) (*(volatile unsigned int*)(FLASH_MEM_BASE+(adr)))
-DECL|macro|FLASH_DATA_F
-mdefine_line|#define&t;FLASH_DATA_F(adr) (*(volatile float32 *)(FLASH_MEM_BASE+(adr)))
-DECL|macro|FLASH_MAGIC_CHG
-mdefine_line|#define FLASH_MAGIC_CHG(a,b,c,d) ( ( d &lt;&lt; 24 ) | ( c &lt;&lt; 16 )  | ( b &lt;&lt; 8 ) | a )
-singleline_comment|// COMADJ
-DECL|macro|FLASH_COMADJ_MAJIC
-mdefine_line|#define FLASH_COMADJ_MAJIC&t;FLASH_MAGIC_CHG(&squot;C&squot;,&squot;M&squot;,&squot;A&squot;,&squot;D&squot;)
-DECL|macro|FLASH_COMADJ_MAGIC_ADR
-mdefine_line|#define&t;FLASH_COMADJ_MAGIC_ADR&t;0x00
-DECL|macro|FLASH_COMADJ_DATA_ADR
-mdefine_line|#define&t;FLASH_COMADJ_DATA_ADR&t;0x04
-singleline_comment|// TOUCH PANEL
-DECL|macro|FLASH_TOUCH_MAJIC
-mdefine_line|#define FLASH_TOUCH_MAJIC&t;FLASH_MAGIC_CHG(&squot;T&squot;,&squot;U&squot;,&squot;C&squot;,&squot;H&squot;)
-DECL|macro|FLASH_TOUCH_MAGIC_ADR
-mdefine_line|#define&t;FLASH_TOUCH_MAGIC_ADR&t;0x1C
-DECL|macro|FLASH_TOUCH_XP_DATA_ADR
-mdefine_line|#define&t;FLASH_TOUCH_XP_DATA_ADR&t;0x20
-DECL|macro|FLASH_TOUCH_YP_DATA_ADR
-mdefine_line|#define&t;FLASH_TOUCH_YP_DATA_ADR&t;0x24
-DECL|macro|FLASH_TOUCH_XD_DATA_ADR
-mdefine_line|#define&t;FLASH_TOUCH_XD_DATA_ADR&t;0x28
-DECL|macro|FLASH_TOUCH_YD_DATA_ADR
-mdefine_line|#define&t;FLASH_TOUCH_YD_DATA_ADR&t;0x2C
-singleline_comment|// AD
-DECL|macro|FLASH_AD_MAJIC
-mdefine_line|#define FLASH_AD_MAJIC&t;FLASH_MAGIC_CHG(&squot;B&squot;,&squot;V&squot;,&squot;A&squot;,&squot;D&squot;)
-DECL|macro|FLASH_AD_MAGIC_ADR
-mdefine_line|#define&t;FLASH_AD_MAGIC_ADR&t;0x30
-DECL|macro|FLASH_AD_DATA_ADR
-mdefine_line|#define&t;FLASH_AD_DATA_ADR&t;0x34
 multiline_comment|/* GPIO&squot;s on the TC35143AF (Toshiba Analog Frontend) */
 DECL|macro|COLLIE_TC35143_GPIO_VERSION0
 mdefine_line|#define COLLIE_TC35143_GPIO_VERSION0    UCB_IO_0&t;/* GPIO0=Version                 */
