@@ -433,6 +433,10 @@ c_func
 id|tfm
 )paren
 suffix:semicolon
+id|tfm
+op_assign
+l_int|NULL
+suffix:semicolon
 id|out_put
 suffix:colon
 id|crypto_alg_put
