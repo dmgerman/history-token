@@ -667,6 +667,16 @@ id|bh
 )braket
 )paren
 suffix:semicolon
+r_void
+id|sync_dirty_buffer
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+)paren
+suffix:semicolon
 r_int
 id|submit_bh
 c_func

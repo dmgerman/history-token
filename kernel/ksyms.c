@@ -956,6 +956,13 @@ c_func
 id|ll_rw_block
 )paren
 suffix:semicolon
+DECL|variable|sync_dirty_buffer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sync_dirty_buffer
+)paren
+suffix:semicolon
 DECL|variable|submit_bh
 id|EXPORT_SYMBOL
 c_func
