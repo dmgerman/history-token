@@ -7302,6 +7302,7 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#if ALLOW_DMA
 r_struct
 id|net_local
 op_star
@@ -7313,6 +7314,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 id|netif_stop_queue
 c_func
 (paren
