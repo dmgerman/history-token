@@ -3,6 +3,7 @@ DECL|macro|_ASM_IA64_BYTEORDER_H
 mdefine_line|#define _ASM_IA64_BYTEORDER_H
 multiline_comment|/*&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 r_static
 id|__inline__
 id|__const__
@@ -17,19 +18,14 @@ id|x
 id|__u64
 id|result
 suffix:semicolon
-id|__asm__
-(paren
-l_string|&quot;mux1 %0=%1,@rev&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|result
-)paren
-suffix:colon
-l_string|&quot;r&quot;
+op_assign
+id|ia64_mux1
+c_func
 (paren
 id|x
-)paren
+comma
+id|ia64_mux1_rev
 )paren
 suffix:semicolon
 r_return
