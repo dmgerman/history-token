@@ -146,9 +146,13 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
-multiline_comment|/* forward declararation of callback */
 multiline_comment|/* Callback for data arriving from the PowerMate over the USB interrupt pipe */
 DECL|function|powermate_irq
 r_static
@@ -160,6 +164,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -627,6 +636,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct

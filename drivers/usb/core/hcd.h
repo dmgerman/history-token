@@ -489,6 +489,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* each driver provides one of these, and hardware init support */
+r_struct
+id|pt_regs
+suffix:semicolon
 DECL|struct|hc_driver
 r_struct
 id|hc_driver
@@ -512,6 +515,11 @@ r_struct
 id|usb_hcd
 op_star
 id|hcd
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 DECL|member|flags
@@ -745,6 +753,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_extern

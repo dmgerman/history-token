@@ -809,6 +809,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -929,9 +934,6 @@ id|buf
 comma
 id|len
 comma
-(paren
-id|usb_complete_t
-)paren
 id|usb_write_callback
 comma
 id|ep
@@ -1058,6 +1060,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -3968,9 +3975,6 @@ id|ep-&gt;recvBuf
 comma
 id|bufSize
 comma
-(paren
-id|usb_complete_t
-)paren
 id|usb_bulk_read
 comma
 id|ep
