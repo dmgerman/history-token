@@ -1206,6 +1206,12 @@ op_star
 id|device_queue
 suffix:semicolon
 multiline_comment|/* queue of SCSI Command structures */
+DECL|member|current_cmnd
+id|Scsi_Cmnd
+op_star
+id|current_cmnd
+suffix:semicolon
+multiline_comment|/* currently active command */
 DECL|member|id
 DECL|member|lun
 DECL|member|channel
@@ -2067,6 +2073,8 @@ DECL|macro|MSG_HEAD_TAG
 mdefine_line|#define MSG_HEAD_TAG&t;0x21
 DECL|macro|MSG_ORDERED_TAG
 mdefine_line|#define MSG_ORDERED_TAG&t;0x22
+DECL|macro|SCSI_NO_TAG
+mdefine_line|#define SCSI_NO_TAG&t;(-1)    /* identify no tag in use */
 multiline_comment|/**&n; * scsi_populate_tag_msg - place a tag message in a buffer&n; * @SCpnt:&t;pointer to the Scsi_Cmnd for the tag&n; * @msg:&t;pointer to the area to place the tag&n; *&n; * Notes:&n; *&t;designed to create the correct type of tag message for the &n; *&t;particular request.  Returns the size of the tag message.&n; *&t;May return 0 if TCQ is disabled for this device.&n; **/
 DECL|function|scsi_populate_tag_msg
 r_static
@@ -2136,6 +2144,72 @@ id|SCpnt-&gt;request-&gt;tag
 suffix:semicolon
 r_return
 l_int|2
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * scsi_find_tag - find a tagged command by device&n; * @SDpnt:&t;pointer to the ScSI device&n; * @tag:&t;the tag number&n; *&n; * Notes:&n; *&t;Only works with tags allocated by the generic blk layer.&n; **/
+DECL|function|scsi_find_tag
+r_static
+r_inline
+id|Scsi_Cmnd
+op_star
+id|scsi_find_tag
+c_func
+(paren
+id|Scsi_Device
+op_star
+id|SDpnt
+comma
+r_int
+id|tag
+)paren
+(brace
+r_struct
+id|request
+op_star
+id|req
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tag
+op_eq
+id|SCSI_NO_TAG
+)paren
+(brace
+multiline_comment|/* single command, look in space */
+r_return
+id|SDpnt-&gt;current_cmnd
+suffix:semicolon
+)brace
+id|req
+op_assign
+id|blk_queue_find_tag
+c_func
+(paren
+op_amp
+id|SDpnt-&gt;request_queue
+comma
+id|tag
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|req
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+r_return
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+id|req-&gt;special
 suffix:semicolon
 )brace
 macro_line|#endif
