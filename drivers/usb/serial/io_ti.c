@@ -6839,18 +6839,6 @@ op_star
 id|urb-&gt;context
 suffix:semicolon
 r_struct
-id|usb_serial
-op_star
-id|serial
-op_assign
-id|get_usb_serial
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_struct
 id|tty_struct
 op_star
 id|tty
@@ -6864,23 +6852,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|serial
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;%s - bad serial pointer, exiting&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6908,7 +6879,7 @@ id|EPIPE
 multiline_comment|/* clear any problem that might have happened on this pipe */
 id|usb_clear_halt
 (paren
-id|serial-&gt;dev
+id|port-&gt;serial-&gt;dev
 comma
 id|urb-&gt;pipe
 )paren
@@ -7547,11 +7518,6 @@ id|filp
 )paren
 (brace
 r_struct
-id|usb_serial
-op_star
-id|serial
-suffix:semicolon
-r_struct
 id|edgeport_serial
 op_star
 id|edge_serial
@@ -7577,29 +7543,12 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|serial
-op_assign
-id|get_usb_serial
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|serial
-)paren
-r_return
-suffix:semicolon
 id|edge_serial
 op_assign
 id|usb_get_serial_data
 c_func
 (paren
-id|serial
+id|port-&gt;serial
 )paren
 suffix:semicolon
 id|edge_port
@@ -7627,13 +7576,7 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|serial-&gt;dev
-)paren
-(brace
-multiline_comment|/* The bulkreadcompletion routine will check &n;&t;&t; * this flag and dump add read data */
+multiline_comment|/* The bulkreadcompletion routine will check &n;&t; * this flag and dump add read data */
 id|edge_port-&gt;close_pending
 op_assign
 l_int|1
@@ -7649,7 +7592,7 @@ id|usb_unlink_urb
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
-multiline_comment|/* assuming we can still talk to the device,&n;&t;&t; * send a close port command to it */
+multiline_comment|/* assuming we can still talk to the device,&n;&t; * send a close port command to it */
 id|dbg
 c_func
 (paren
@@ -7702,7 +7645,7 @@ l_int|0
 multiline_comment|/* last port is now closed, let&squot;s shut down our interrupt urb */
 id|usb_unlink_urb
 (paren
-id|serial-&gt;port
+id|port-&gt;serial-&gt;port
 (braket
 l_int|0
 )braket
@@ -7719,7 +7662,6 @@ id|edge_port-&gt;close_pending
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|dbg
 c_func
 (paren
@@ -7752,13 +7694,6 @@ r_int
 id|count
 )paren
 (brace
-r_struct
-id|usb_serial
-op_star
-id|serial
-op_assign
-id|port-&gt;serial
-suffix:semicolon
 r_struct
 id|edgeport_port
 op_star
@@ -7906,11 +7841,11 @@ id|usb_fill_bulk_urb
 (paren
 id|port-&gt;write_urb
 comma
-id|serial-&gt;dev
+id|port-&gt;serial-&gt;dev
 comma
 id|usb_sndbulkpipe
 (paren
-id|serial-&gt;dev
+id|port-&gt;serial-&gt;dev
 comma
 id|port-&gt;bulk_out_endpointAddress
 )paren

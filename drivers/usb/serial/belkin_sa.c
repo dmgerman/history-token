@@ -752,28 +752,6 @@ op_star
 id|filp
 )paren
 (brace
-r_struct
-id|usb_serial
-op_star
-id|serial
-suffix:semicolon
-id|serial
-op_assign
-id|get_usb_serial
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|serial
-)paren
-r_return
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -784,12 +762,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|serial-&gt;dev
-)paren
-(brace
 multiline_comment|/* shutdown our bulk reads and writes */
 id|usb_unlink_urb
 (paren
@@ -806,7 +778,6 @@ id|usb_unlink_urb
 id|port-&gt;interrupt_in_urb
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* belkin_sa_close */
 DECL|function|belkin_sa_read_int_callback
