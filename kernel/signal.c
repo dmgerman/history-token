@@ -2828,7 +2828,6 @@ multiline_comment|/*&n; * Test if P wants to take SIG.  After we&squot;ve checke
 DECL|macro|wants_signal
 mdefine_line|#define wants_signal(sig, p, mask) &t;&t;&t;&bslash;&n;&t;(!sigismember(&amp;(p)-&gt;blocked, sig)&t;&t;&bslash;&n;&t; &amp;&amp; !((p)-&gt;state &amp; mask)&t;&t;&t;&bslash;&n;&t; &amp;&amp; !((p)-&gt;flags &amp; PF_EXITING)&t;&t;&t;&bslash;&n;&t; &amp;&amp; (task_curr(p) || !signal_pending(p)))
 r_static
-r_inline
 r_void
 DECL|function|__group_complete_signal
 id|__group_complete_signal
