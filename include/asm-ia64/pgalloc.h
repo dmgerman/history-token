@@ -486,6 +486,8 @@ id|alloc_pages
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|__GFP_REPEAT
 comma
 l_int|0
 )paren
@@ -544,6 +546,8 @@ id|__get_free_page
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|__GFP_REPEAT
 )paren
 suffix:semicolon
 r_if

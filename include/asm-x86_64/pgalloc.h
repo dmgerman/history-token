@@ -244,6 +244,8 @@ id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|__GFP_REPEAT
 )paren
 suffix:semicolon
 )brace
@@ -278,6 +280,8 @@ id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|__GFP_REPEAT
 )paren
 suffix:semicolon
 r_if
