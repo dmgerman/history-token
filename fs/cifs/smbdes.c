@@ -3823,14 +3823,7 @@ l_int|0
 suffix:semicolon
 id|ind
 OL
-(paren
 id|val
-ques
-c_cond
-l_int|516
-suffix:colon
-l_int|16
-)paren
 suffix:semicolon
 id|ind
 op_increment
