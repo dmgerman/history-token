@@ -2140,13 +2140,22 @@ op_amp
 id|raw_v4_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;This can&squot;t change while we are doing it.&n;&t; *&t;Callers have obtained BR_NETPROTO_LOCK so&n;&t; *&t;we are OK.&n;&t; */
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ipprot
 op_assign
 id|inet_protos
 (braket
 id|hash
 )braket
+suffix:semicolon
+id|smp_read_barrier_depends
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2163,6 +2172,11 @@ c_func
 id|skb
 comma
 id|info
+)paren
+suffix:semicolon
+id|rcu_read_unlock
+c_func
+(paren
 )paren
 suffix:semicolon
 id|out

@@ -24,7 +24,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/igmp.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
@@ -88,12 +87,20 @@ id|raw4_sk_cachep
 suffix:semicolon
 multiline_comment|/* The inetsw table contains everything that inet_create needs to&n; * build a new socket.&n; */
 DECL|variable|inetsw
+r_static
 r_struct
 id|list_head
 id|inetsw
 (braket
 id|SOCK_MAX
 )braket
+suffix:semicolon
+DECL|variable|inetsw_lock
+r_static
+id|spinlock_t
+id|inetsw_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* New destruction routine */
 DECL|function|inet_sock_destruct
@@ -839,13 +846,12 @@ id|answer
 op_assign
 l_int|NULL
 suffix:semicolon
-id|br_read_lock_bh
+id|rcu_read_lock
 c_func
 (paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
-id|list_for_each
+id|list_for_each_rcu
 c_func
 (paren
 id|p
@@ -922,12 +928,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|br_read_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -1004,6 +1004,11 @@ id|answer-&gt;flags
 id|sk-&gt;reuse
 op_assign
 l_int|1
+suffix:semicolon
+id|rcu_read_unlock
+c_func
+(paren
+)paren
 suffix:semicolon
 id|inet
 op_assign
@@ -1180,6 +1185,11 @@ id|err
 suffix:semicolon
 id|out_sk_free
 suffix:colon
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|sk_free
 c_func
 (paren
@@ -3432,10 +3442,11 @@ id|list_head
 op_star
 id|last_perm
 suffix:semicolon
-id|br_write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|inetsw_lock
 )paren
 suffix:semicolon
 r_if
@@ -3523,7 +3534,7 @@ r_goto
 id|out_permanent
 suffix:semicolon
 multiline_comment|/* Add the new entry after the last permanent entry if any, so that&n;&t; * the new entry does not override a permanent entry when matched with&n;&t; * a wild-card protocol. But it is allowed to override any existing&n;&t; * non-permanent entry.  This means that when we remove this entry, the &n;&t; * system automatically returns to the old behavior.&n;&t; */
-id|list_add
+id|list_add_rcu
 c_func
 (paren
 op_amp
@@ -3534,10 +3545,16 @@ id|last_perm
 suffix:semicolon
 id|out
 suffix:colon
-id|br_write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|inetsw_lock
+)paren
+suffix:semicolon
+id|synchronize_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -3602,23 +3619,30 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|br_write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|inetsw_lock
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_rcu
 c_func
 (paren
 op_amp
 id|p-&gt;list
 )paren
 suffix:semicolon
-id|br_write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|inetsw_lock
+)paren
+suffix:semicolon
+id|synchronize_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

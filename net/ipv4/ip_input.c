@@ -295,6 +295,11 @@ id|skb-&gt;h.raw
 op_assign
 id|skb-&gt;data
 suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 (brace
 multiline_comment|/* Note: See raw.c and net/raw.h, RAWV4_HTABLE_SIZE==MAX_INET_PROTOS */
 r_int
@@ -368,6 +373,11 @@ l_int|NULL
 r_int
 id|ret
 suffix:semicolon
+id|smp_read_barrier_depends
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -392,8 +402,8 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|ret
@@ -488,6 +498,13 @@ id|skb
 suffix:semicolon
 )brace
 )brace
+id|out
+suffix:colon
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
