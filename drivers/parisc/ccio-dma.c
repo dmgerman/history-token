@@ -602,8 +602,9 @@ r_else
 id|panic
 c_func
 (paren
+l_string|&quot;%s: %s() Too many pages to map. pages_needed: %ld&bslash;n&quot;
+comma
 id|__FILE__
-l_string|&quot;: %s() Too many pages to map. pages_needed: %ld&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -614,8 +615,9 @@ suffix:semicolon
 id|panic
 c_func
 (paren
+l_string|&quot;%s: %s() I/O MMU is out of mapping resources.&bslash;n&quot;
+comma
 id|__FILE__
-l_string|&quot;: %s() I/O MMU is out of mapping resources.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -900,8 +902,9 @@ r_else
 id|panic
 c_func
 (paren
+l_string|&quot;%s:%s() Too many pages to unmap.&bslash;n&quot;
+comma
 id|__FILE__
-l_string|&quot;:%s() Too many pages to unmap.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4406,8 +4409,9 @@ id|ioc-&gt;pdir_base
 id|panic
 c_func
 (paren
+l_string|&quot;%s:%s() could not allocate I/O Page Table&bslash;n&quot;
+comma
 id|__FILE__
-l_string|&quot;:%s() could not allocate I/O Page Table&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4506,8 +4510,9 @@ id|ioc-&gt;res_map
 id|panic
 c_func
 (paren
+l_string|&quot;%s:%s() could not allocate resource map&bslash;n&quot;
+comma
 id|__FILE__
-l_string|&quot;:%s() could not allocate resource map&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -5452,12 +5457,12 @@ c_cond
 (paren
 id|ioc-&gt;mmio_region-&gt;start
 op_le
-id|dev-&gt;hpa
+id|res-&gt;start
 )paren
 op_logical_and
 (paren
-id|dev-&gt;hpa
-OL
+id|res-&gt;end
+op_le
 id|ioc-&gt;mmio_region-&gt;end
 )paren
 )paren
@@ -5480,12 +5485,12 @@ l_int|1
 op_member_access_from_pointer
 id|start
 op_le
-id|dev-&gt;hpa
+id|res-&gt;start
 )paren
 op_logical_and
 (paren
-id|dev-&gt;hpa
-OL
+id|res-&gt;end
+op_le
 (paren
 id|ioc-&gt;mmio_region
 op_plus

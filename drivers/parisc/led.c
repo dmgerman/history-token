@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *    Chassis LCD/LED driver for HP-PARISC workstations&n; *&n; *      (c) Copyright 2000 Red Hat Software&n; *      (c) Copyright 2000 Helge Deller &lt;hdeller@redhat.com&gt;&n; *      (c) Copyright 2001-2003 Helge Deller &lt;deller@gmx.de&gt;&n; *      (c) Copyright 2001 Randolph Chung &lt;tausq@debian.org&gt;&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; * TODO:&n; *&t;- speed-up calculations with inlined assembler&n; *&t;- interface to write to second row of LCD from /proc (if technically possible)&n; *&n; * Changes:&n; *      - Audit copy_from_user in led_proc_write.&n; *                                Daniele Bellucci &lt;bellucda@tiscali.it&gt;&n; */
+multiline_comment|/*&n; *    Chassis LCD/LED driver for HP-PARISC workstations&n; *&n; *      (c) Copyright 2000 Red Hat Software&n; *      (c) Copyright 2000 Helge Deller &lt;hdeller@redhat.com&gt;&n; *      (c) Copyright 2001-2004 Helge Deller &lt;deller@gmx.de&gt;&n; *      (c) Copyright 2001 Randolph Chung &lt;tausq@debian.org&gt;&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; * TODO:&n; *&t;- speed-up calculations with inlined assembler&n; *&t;- interface to write to second row of LCD from /proc (if technically possible)&n; *&n; * Changes:&n; *      - Audit copy_from_user in led_proc_write.&n; *                                Daniele Bellucci &lt;bellucda@tiscali.it&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* for offsetof() */
@@ -60,6 +60,16 @@ id|lcd_text
 (braket
 l_int|32
 )braket
+suffix:semicolon
+DECL|variable|lcd_text_default
+r_static
+r_char
+id|lcd_text_default
+(braket
+)braket
+op_assign
+l_string|&quot;Linux &quot;
+id|UTS_RELEASE
 suffix:semicolon
 macro_line|#if 0
 mdefine_line|#define DPRINTK(x)&t;printk x
@@ -656,29 +666,8 @@ suffix:semicolon
 r_case
 id|LED_HASLCD
 suffix:colon
-r_if
-c_cond
-(paren
-op_star
-id|cur
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/* reset to default */
-id|lcd_print
-c_func
-(paren
-l_string|&quot;Linux &quot;
-id|UTS_RELEASE
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* chop off trailing &bslash;n.. if the user gives multiple&n;&t;&t;&t; * &bslash;n then it&squot;s all their fault.. */
-r_if
-c_cond
+r_while
+c_loop
 (paren
 op_star
 id|cur
@@ -709,13 +698,24 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|cur
+op_eq
+l_int|0
+)paren
+id|cur
+op_assign
+id|lcd_text_default
+suffix:semicolon
 id|lcd_print
 c_func
 (paren
 id|cur
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_default
@@ -1451,13 +1451,8 @@ DECL|macro|HEARTBEAT_2ND_RANGE_START
 mdefine_line|#define HEARTBEAT_2ND_RANGE_START (HZ*22/100)
 DECL|macro|HEARTBEAT_2ND_RANGE_END
 mdefine_line|#define HEARTBEAT_2ND_RANGE_END   (HEARTBEAT_2ND_RANGE_START + HEARTBEAT_LEN)
-macro_line|#if HZ==100
-DECL|macro|NORMALIZED_COUNT
-mdefine_line|#define NORMALIZED_COUNT(count) (count)
-macro_line|#else
 DECL|macro|NORMALIZED_COUNT
 mdefine_line|#define NORMALIZED_COUNT(count) (count/(HZ/100))
-macro_line|#endif
 DECL|function|led_tasklet_func
 r_static
 r_void
@@ -1910,8 +1905,7 @@ suffix:semicolon
 id|lcd_print
 c_func
 (paren
-l_string|&quot;Linux &quot;
-id|UTS_RELEASE
+id|lcd_text_default
 )paren
 suffix:semicolon
 id|led_type

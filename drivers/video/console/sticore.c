@@ -2545,7 +2545,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;STI id %04x-%04x, conforms to spec rev. %d.%02x&bslash;n&quot;
+l_string|&quot;    id %04x-%04x, conforms to spec rev. %d.%02x&bslash;n&quot;
 comma
 id|rom-&gt;graphics_id
 (braket
@@ -2576,7 +2576,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot; supports %d monitors&bslash;n&quot;
+l_string|&quot;      supports %d monitors&bslash;n&quot;
 comma
 id|rom-&gt;num_mons
 )paren
@@ -2586,7 +2586,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot; font start %08x&bslash;n&quot;
+l_string|&quot;      font start %08x&bslash;n&quot;
 comma
 id|rom-&gt;font_start
 )paren
@@ -2596,7 +2596,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot; region list %08x&bslash;n&quot;
+l_string|&quot;      region list %08x&bslash;n&quot;
 comma
 id|rom-&gt;region_list
 )paren
@@ -2606,7 +2606,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot; init_graph %08x&bslash;n&quot;
+l_string|&quot;      init_graph %08x&bslash;n&quot;
 comma
 id|rom-&gt;init_graph
 )paren
@@ -2616,7 +2616,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot; bus support %02x&bslash;n&quot;
+l_string|&quot;      bus support %02x&bslash;n&quot;
 comma
 id|rom-&gt;bus_support
 )paren
@@ -2626,7 +2626,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot; ext bus support %02x&bslash;n&quot;
+l_string|&quot;      ext bus support %02x&bslash;n&quot;
 comma
 id|rom-&gt;ext_bus_support
 )paren
@@ -2636,7 +2636,7 @@ id|DPRINTK
 c_func
 (paren
 (paren
-l_string|&quot; alternate code type %d&bslash;n&quot;
+l_string|&quot;      alternate code type %d&bslash;n&quot;
 comma
 id|rom-&gt;alt_code_type
 )paren
@@ -3974,15 +3974,16 @@ op_eq
 l_int|0x01
 )paren
 (brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;STI byte mode ROM at %08lx, hpa at %08lx&bslash;n&quot;
+(paren
+l_string|&quot;    byte mode ROM at %08lx, hpa at %08lx&bslash;n&quot;
 comma
 id|address
 comma
 id|hpa
+)paren
 )paren
 suffix:semicolon
 id|ok
@@ -4010,15 +4011,16 @@ op_eq
 l_int|0x0303
 )paren
 (brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;STI word mode ROM at %08lx, hpa at %08lx&bslash;n&quot;
+(paren
+l_string|&quot;    word mode ROM at %08lx, hpa at %08lx&bslash;n&quot;
 comma
 id|address
 comma
 id|hpa
+)paren
 )paren
 suffix:semicolon
 id|ok
@@ -4140,7 +4142,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;STI device: %s&bslash;n&quot;
+l_string|&quot;    graphics card name: %s&bslash;n&quot;
 comma
 id|sti-&gt;outptr.dev_name
 )paren
