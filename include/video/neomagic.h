@@ -482,6 +482,10 @@ DECL|member|external_display
 r_int
 id|external_display
 suffix:semicolon
+DECL|member|libretto
+r_int
+id|libretto
+suffix:semicolon
 )brace
 suffix:semicolon
 r_typedef

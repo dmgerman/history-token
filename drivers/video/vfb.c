@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 multiline_comment|/*&n;     *  RAM we reserve for the frame buffer. This defines the maximum screen&n;     *  size&n;     *&n;     *  The default can be overridden if the driver is compiled as a module&n;     */
 DECL|macro|VIDEOMEMSIZE
 mdefine_line|#define VIDEOMEMSIZE&t;(1*1024*1024)&t;/* 1 MB */
@@ -60,12 +59,6 @@ id|vfb_pseudo_palette
 (braket
 l_int|17
 )braket
-suffix:semicolon
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -333,9 +326,6 @@ id|fb_var_screeninfo
 op_star
 id|var
 comma
-r_int
-id|con
-comma
 r_struct
 id|fb_info
 op_star
@@ -371,47 +361,48 @@ id|vfb_ops
 op_assign
 (brace
 dot
-id|fb_set_var
-id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-id|gen_set_cmap
-comma
-dot
-id|fb_set_cmap
-id|gen_set_cmap
-comma
-dot
 id|fb_check_var
+op_assign
 id|vfb_check_var
 comma
 dot
 id|fb_set_par
+op_assign
 id|vfb_set_par
 comma
 dot
 id|fb_setcolreg
+op_assign
 id|vfb_setcolreg
 comma
 dot
 id|fb_pan_display
+op_assign
 id|vfb_pan_display
 comma
 dot
 id|fb_fillrect
+op_assign
 id|cfb_fillrect
 comma
 dot
 id|fb_copyarea
+op_assign
 id|cfb_copyarea
 comma
 dot
 id|fb_imageblit
+op_assign
 id|cfb_imageblit
 comma
 dot
+id|fb_cursor
+op_assign
+id|cfb_cursor
+comma
+dot
 id|fb_mmap
+op_assign
 id|vfb_mmap
 comma
 )brace
@@ -1217,9 +1208,6 @@ id|fb_var_screeninfo
 op_star
 id|var
 comma
-r_int
-id|con
-comma
 r_struct
 id|fb_info
 op_star
@@ -1531,36 +1519,6 @@ id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|vfb_fix.id
-)paren
-suffix:semicolon
-id|fb_info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 id|fb_alloc_cmap
 c_func
 (paren
@@ -1602,7 +1560,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: Virtual frame buffer device, using %ldK of video memory&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|fb_info.node
