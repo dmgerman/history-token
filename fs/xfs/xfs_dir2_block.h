@@ -4,9 +4,6 @@ DECL|macro|__XFS_DIR2_BLOCK_H__
 mdefine_line|#define __XFS_DIR2_BLOCK_H__
 multiline_comment|/*&n; * xfs_dir2_block.h&n; * Directory version 2, single block format structures&n; */
 r_struct
-id|dirent
-suffix:semicolon
-r_struct
 id|uio
 suffix:semicolon
 r_struct
