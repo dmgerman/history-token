@@ -1,6 +1,7 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
+macro_line|#include &quot;jfs_superblock.h&quot;
 macro_line|#include &quot;jfs_dmap.h&quot;
 macro_line|#include &quot;jfs_imap.h&quot;
 macro_line|#include &quot;jfs_lock.h&quot;
@@ -531,13 +532,6 @@ c_func
 (paren
 id|s64
 id|nb
-)paren
-suffix:semicolon
-r_void
-id|fsDirty
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 r_int
@@ -1927,15 +1921,56 @@ id|ipbmap
 )paren
 suffix:semicolon
 multiline_comment|/* block to be freed better be within the mapsize. */
-m_assert
+r_if
+c_cond
 (paren
 id|blkno
 op_plus
 id|nblocks
-op_le
+OG
 id|bmp-&gt;db_mapsize
 )paren
+(brace
+id|IREAD_UNLOCK
+c_func
+(paren
+id|ipbmap
+)paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;blkno = %Lx, nblocks = %Lx&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|blkno
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|nblocks
+)paren
+suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;dbFree: block to be freed is outside the map&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * free the blocks a dmap at a time.&n;&t; */
 id|mp
 op_assign
@@ -2220,15 +2255,50 @@ comma
 id|diffp
 suffix:semicolon
 multiline_comment|/* the blocks better be within the mapsize. */
-m_assert
+r_if
+c_cond
 (paren
 id|blkno
 op_plus
 id|nblocks
-op_le
+OG
 id|bmp-&gt;db_mapsize
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;blkno = %Lx, nblocks = %Lx&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|blkno
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|nblocks
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbUpdatePMap: blocks are outside the map&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* compute delta of transaction lsn from log syncpt */
 id|lsn
 op_assign
@@ -3064,13 +3134,27 @@ op_assign
 id|bmp-&gt;db_mapsize
 suffix:semicolon
 multiline_comment|/* the hint should be within the map */
-m_assert
+r_if
+c_cond
 (paren
 id|hint
-OL
+op_ge
 id|mapSize
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;dbAlloc: the hint is outside the map&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* if the number of blocks to be allocated is greater than the&n;&t; * allocation group size, try to allocate anywhere.&n;&t; */
 r_if
 c_cond
@@ -4162,17 +4246,37 @@ id|bmp
 op_assign
 id|sbi-&gt;bmap
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|lastblkno
-op_ge
-l_int|0
-op_logical_and
-id|lastblkno
 OL
+l_int|0
+op_logical_or
+id|lastblkno
+op_ge
 id|bmp-&gt;db_mapsize
 )paren
+(brace
+id|IREAD_UNLOCK
+c_func
+(paren
+id|ipbmap
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;dbExtend: the block is outside the filesystem&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* we&squot;ll attempt to extend the current allocation in place by&n;&t; * allocating the additional blocks as the blocks immediately&n;&t; * following the current allocation.  we only try to extend the&n;&t; * current allocation in place if the number of additional blocks&n;&t; * can fit into a dmap, the last block of the current allocation&n;&t; * is not the last block of the file system, and the start of the&n;&t; * inplace extension is not on an allocation group boundary.&n;&t; */
 r_if
 c_cond
@@ -4327,7 +4431,6 @@ id|mp
 suffix:semicolon
 )brace
 r_else
-(brace
 multiline_comment|/* we were not successful */
 id|release_metapage
 c_func
@@ -4335,20 +4438,6 @@ c_func
 id|mp
 )paren
 suffix:semicolon
-m_assert
-(paren
-id|rc
-op_eq
-op_minus
-id|ENOSPC
-op_logical_or
-id|rc
-op_eq
-op_minus
-id|EIO
-)paren
-suffix:semicolon
-)brace
 r_return
 (paren
 id|rc
@@ -4900,13 +4989,28 @@ r_int
 id|budmin
 suffix:semicolon
 multiline_comment|/* allocation request should not be for more than the&n;&t; * allocation group size.&n;&t; */
-m_assert
+r_if
+c_cond
 (paren
 id|l2nb
-op_le
+OG
 id|bmp-&gt;db_agl2size
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|bmp-&gt;db_ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbAllocAG: allocation request is larger than the &quot;
+l_string|&quot;allocation group size&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* determine the starting block number of the allocation&n;&t; * group.&n;&t; */
 id|blkno
 op_assign
@@ -4949,7 +5053,6 @@ comma
 id|results
 )paren
 suffix:semicolon
-multiline_comment|/* assert(!(rc == -ENOSPC &amp;&amp; bmp-&gt;db_agfree[agno] == bmp-&gt;db_agsize)); */
 r_if
 c_cond
 (paren
@@ -4970,11 +5073,11 @@ id|bmp-&gt;db_agsize
 )paren
 )paren
 (brace
-id|jfs_err
+id|printk
 c_func
 (paren
-l_string|&quot;dbAllocAG: removed assert, but still need to &quot;
-l_string|&quot;debug here&bslash;nblkno = 0x%Lx, nblocks = 0x%Lx&quot;
+id|KERN_ERR
+l_string|&quot;blkno = %Lx, blocks = %Lx&bslash;n&quot;
 comma
 (paren
 r_int
@@ -4989,6 +5092,14 @@ r_int
 r_int
 )paren
 id|nblocks
+)paren
+suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|bmp-&gt;db_ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbAllocAG: dbAllocCtl failed in free AG&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5180,13 +5291,27 @@ r_break
 suffix:semicolon
 )brace
 )brace
-m_assert
+r_if
+c_cond
 (paren
 id|n
-OL
+op_eq
 l_int|4
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|bmp-&gt;db_ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbAllocAG: failed descending stree&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* determine the block number within the file system&n;&t;&t; * that corresponds to this leaf.&n;&t;&t; */
 r_if
@@ -5287,14 +5412,29 @@ id|blkno
 )paren
 )paren
 (brace
-m_assert
+r_if
+c_cond
 (paren
 id|rc
-op_ne
+op_eq
 op_minus
 id|ENOSPC
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|bmp-&gt;db_ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbAllocAG: control page &quot;
+l_string|&quot;inconsistent&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_return
 (paren
 id|rc
@@ -5319,14 +5459,29 @@ comma
 id|results
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|rc
-op_ne
+op_eq
 op_minus
 id|ENOSPC
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|bmp-&gt;db_ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbAllocAG: unable to allocate blocks&quot;
+)paren
 suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_return
 (paren
 id|rc
@@ -5419,14 +5574,28 @@ comma
 id|results
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|rc
-op_ne
+op_eq
 op_minus
 id|ENOSPC
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|bmp-&gt;db_ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbAllocAny: unable to allocate blocks&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_return
 (paren
 id|rc
@@ -5585,13 +5754,27 @@ c_cond
 id|rc
 )paren
 (brace
-m_assert
+r_if
+c_cond
 (paren
 id|lev
-op_eq
+op_ne
 id|level
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|bmp-&gt;db_ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbFindCtl: dmap inconsistent&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_return
 op_minus
 id|ENOSPC
@@ -5873,16 +6056,40 @@ op_star
 id|mp-&gt;data
 suffix:semicolon
 multiline_comment|/* the dmap better be all free.&n;&t;&t; */
-m_assert
+r_if
+c_cond
 (paren
 id|dp-&gt;tree.stree
 (braket
 id|ROOT
 )braket
-op_eq
+op_ne
 id|L2BPERDMAP
 )paren
+(brace
+id|release_metapage
+c_func
+(paren
+id|mp
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|bmp-&gt;db_ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbAllocCtl: the dmap is not all free&quot;
+)paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_goto
+id|backout
+suffix:semicolon
+)brace
 multiline_comment|/* determine how many blocks to allocate from this dmap.&n;&t;&t; */
 id|nb
 op_assign
@@ -6011,15 +6218,11 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* could not back out.  mark the file system&n;&t;&t;&t; * to indicate that we have leaked blocks.&n;&t;&t;&t; */
-id|fsDirty
+id|jfs_error
 c_func
 (paren
-)paren
-suffix:semicolon
-multiline_comment|/* !!! */
-id|jfs_err
-c_func
-(paren
+id|bmp-&gt;db_ipbmap-&gt;i_sb
+comma
 l_string|&quot;dbAllocCtl: I/O Error: Block Leakage.&quot;
 )paren
 suffix:semicolon
@@ -6059,15 +6262,11 @@ c_func
 id|mp
 )paren
 suffix:semicolon
-id|fsDirty
+id|jfs_error
 c_func
 (paren
-)paren
-suffix:semicolon
-multiline_comment|/* !!! */
-id|jfs_err
-c_func
-(paren
+id|bmp-&gt;db_ipbmap-&gt;i_sb
+comma
 l_string|&quot;dbAllocCtl: Block Leakage.&quot;
 )paren
 suffix:semicolon
@@ -6741,16 +6940,29 @@ op_sub_assign
 id|nw
 )paren
 (brace
-m_assert
+r_if
+c_cond
 (paren
 id|leaf
 (braket
 id|word
 )braket
-op_ge
+OL
 id|BUDMIN
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|bmp-&gt;db_ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbAllocBits: leaf page &quot;
+l_string|&quot;corrupt&quot;
+)paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/* determine what the leaf value should be&n;&t;&t;&t;&t; * updated to as the minimum of the l2 number&n;&t;&t;&t;&t; * of bits being allocated and the l2 number&n;&t;&t;&t;&t; * of bits currently described by this leaf.&n;&t;&t;&t;&t; */
 id|size
 op_assign
@@ -7612,13 +7824,24 @@ op_eq
 id|bmp-&gt;db_maxlevel
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|bmp-&gt;db_maxfreebud
-op_eq
+op_ne
 id|oldroot
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|bmp-&gt;db_ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbAdjCtl: the maximum free buddy is &quot;
+l_string|&quot;not the old root&quot;
+)paren
 suffix:semicolon
+)brace
 id|bmp-&gt;db_maxfreebud
 op_assign
 id|dcp-&gt;stree
@@ -8836,27 +9059,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* fix compiler warning */
 )brace
-multiline_comment|/*&n; * NAME:&t;fsDirty()&n; *&n; * FUNCTION:    xxx&n; *&n; * PARAMETERS:&n; *      ipmnt&t;- mount inode&n; *&n; * RETURN VALUES:&n; *      none&n; */
-DECL|function|fsDirty
-r_void
-id|fsDirty
-c_func
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;fsDirty(): bye-bye&bslash;n&quot;
-)paren
-suffix:semicolon
-m_assert
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * NAME:    &t;dbAllocBottomUp()&n; *&n; * FUNCTION:&t;alloc the specified block range from the working block&n; *&t;&t;allocation map.&n; *&n; *&t;&t;the blocks will be alloc from the working map one dmap&n; *&t;&t;at a time.&n; *&n; * PARAMETERS:&n; *      ip&t;-  pointer to in-core inode;&n; *      blkno&t;-  starting block number to be freed.&n; *      nblocks&t;-  number of blocks to be freed.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -EIO&t;- i/o error&n; */
 DECL|function|dbAllocBottomUp
 r_int
@@ -9838,11 +10040,26 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
+op_logical_neg
 id|l2mp
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbExtendFS: L2 page could not be read&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|l2dcp
 op_assign
 (paren
@@ -10493,10 +10710,17 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* for each L1 in a L2 */
-m_assert
+id|jfs_error
+c_func
 (paren
-l_int|0
+id|ipbmap-&gt;i_sb
+comma
+l_string|&quot;dbExtendFS: function has not returned as expected&quot;
 )paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 multiline_comment|/*&n;&t; *      finalize bmap control page&n;&t; */
 id|finalize
@@ -10670,13 +10894,23 @@ id|avgfree
 r_break
 suffix:semicolon
 )brace
-m_assert
+r_if
+c_cond
 (paren
 id|bmp-&gt;db_agpref
-OL
+op_ge
 id|bmp-&gt;db_numag
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ipbmap-&gt;i_sb
+comma
+l_string|&quot;cannot find ag with average freespace&quot;
+)paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * compute db_aglevel, db_agheigth, db_width, db_agstart:&n;&t; * an ag is covered in aglevel dmapctl summary tree, &n;&t; * at agheight level height (from leaf) with agwidth number of nodes &n;&t; * each, which starts at agstart index node of the smmary tree node &n;&t; * array;&n;&t; */
 id|bmp-&gt;db_aglevel
@@ -10753,7 +10987,6 @@ op_lshift_assign
 l_int|2
 suffix:semicolon
 )brace
-multiline_comment|/*&n;printk(&quot;bmap: agpref:%d aglevel:%d agheigth:%d agwidth:%d&bslash;n&quot;,&n;&t;bmp-&gt;db_agpref, bmp-&gt;db_aglevel, bmp-&gt;db_agheigth, bmp-&gt;db_agwidth);&n;*/
 )brace
 multiline_comment|/*&n; * NAME:&t;dbInitDmap()/ujfs_idmap_page()&n; *                                                                    &n; * FUNCTION:&t;initialize working/persistent bitmap of the dmap page&n; *&t;&t;for the specified number of blocks:&n; *                                                                    &n; *&t;&t;at entry, the bitmaps had been initialized as free (ZEROS);&n; *&t;&t;The number of blocks will only account for the actually &n; *&t;&t;existing blocks. Blocks which don&squot;t actually exist in &n; *&t;&t;the aggregate will be marked as allocated (ONES);&n; *&n; * PARAMETERS:&n; *&t;dp&t;- pointer to page of map&n; *&t;nblocks&t;- number of blocks this page&n; *&n; * RETURNS: NONE&n; */
 DECL|function|dbInitDmap
@@ -10789,7 +11022,6 @@ id|nb
 comma
 id|i
 suffix:semicolon
-multiline_comment|/*&n;printk(&quot;sbh_dmap:  in dbInitDmap blkno:%Ld nblocks:%ld&bslash;n&quot;, Blkno, nblocks); &n;*/
 multiline_comment|/* starting block number within the dmap */
 id|blkno
 op_assign
@@ -11069,7 +11301,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * mark bits following the range to be freed (non-existing &n;&t; * blocks) as allocated (ONES)&n;&t; */
-multiline_comment|/*&n;printk(&quot;sbh_dmap:  in dbInitDmap, preparing to mark unbacked, blkno:%ld nblocks:%ld&bslash;n&quot;,&n;&t;&t;blkno, nblocks); &n;*/
 r_if
 c_cond
 (paren
@@ -11098,7 +11329,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;printk(&quot;sbh_dmap:  in dbInitDmap, b:%ld w:%ld mask: %lx&bslash;n&quot;, b, w, (ONES&gt;&gt;b)); &n;*/
 r_if
 c_cond
 (paren
@@ -12066,11 +12296,12 @@ id|dbmap
 op_eq
 l_int|NULL
 )paren
-m_assert
+id|BUG
+c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* Not robust since this is only unused debug code */
 r_for
 c_loop
 (paren
@@ -12166,10 +12397,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
-m_assert
+id|jfs_error
+c_func
 (paren
-l_int|0
+id|ipbmap-&gt;i_sb
+comma
+l_string|&quot;DBinitmap: could not read disk map page&quot;
 )paren
+suffix:semicolon
+r_continue
 suffix:semicolon
 )brace
 id|dp

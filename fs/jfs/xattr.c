@@ -1,7 +1,8 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines  Corp., 2000-2002&n; *   Copyright (c) Christoph Hellwig, 2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines  Corp., 2000-2003&n; *   Copyright (C) Christoph Hellwig, 2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/xattr.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
+macro_line|#include &quot;jfs_superblock.h&quot;
 macro_line|#include &quot;jfs_dmap.h&quot;
 macro_line|#include &quot;jfs_debug.h&quot;
 macro_line|#include &quot;jfs_dinode.h&quot;
@@ -1015,11 +1016,26 @@ op_amp
 id|ji-&gt;ea
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
+op_logical_neg
 id|nbytes
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;ea_read: nbytes is 0&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* &n;&t; * Figure out how many blocks were allocated when this EA list was&n;&t; * originally written to disk.&n;&t; */
 id|nblocks
 op_assign
@@ -1385,13 +1401,30 @@ suffix:semicolon
 )brace
 r_else
 (brace
-m_assert
+r_if
+c_cond
+(paren
+op_logical_neg
 (paren
 id|ji-&gt;ea.flag
 op_amp
 id|DXD_EXTENT
 )paren
+)paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;ea_get: invalid ea.flag)&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|current_blocks
 op_assign
 (paren
