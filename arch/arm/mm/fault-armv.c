@@ -515,6 +515,8 @@ c_cond
 (paren
 id|dirty
 )paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * This is our first userspace mapping of this page.&n;&t;&t;&t; * Ensure that the physical page is coherent with&n;&t;&t;&t; * the kernel mapping.&n;&t;&t;&t; *&n;&t;&t;&t; * FIXME: only need to do this on VIVT and aliasing&n;&t;&t;&t; *        VIPT cache architectures.  We can do that&n;&t;&t;&t; *&t;  by choosing whether to set this bit...&n;&t;&t;&t; */
 id|__cpuc_flush_dcache_page
 c_func
 (paren
@@ -525,6 +527,15 @@ id|page
 )paren
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|cache_is_vivt
+c_func
+(paren
+)paren
+)paren
 id|make_coherent
 c_func
 (paren

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 DECL|function|__flush_dcache_page
 r_static
 r_void
@@ -39,6 +40,7 @@ suffix:semicolon
 id|pgoff_t
 id|pgoff
 suffix:semicolon
+multiline_comment|/*&n;&t; * Writeback any data associated with the kernel mapping of this&n;&t; * page.  This ensures that data in the physical page is mutually&n;&t; * coherent with the kernels mapping.&n;&t; */
 id|__cpuc_flush_dcache_page
 c_func
 (paren
@@ -49,6 +51,7 @@ id|page
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If there&squot;s no mapping pointer here, then this page isn&squot;t&n;&t; * visible to userspace yet, so there are no cache lines&n;&t; * associated with any other aliases.&n;&t; */
 r_if
 c_cond
 (paren
@@ -57,7 +60,7 @@ id|mapping
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n;&t; * With a VIVT cache, we need to also write back&n;&t; * and invalidate any user data.&n;&t; */
+multiline_comment|/*&n;&t; * There are possible user space mappings of this page:&n;&t; * - VIVT cache: we need to also write back and invalidate all user&n;&t; *   data in the current VM view associated with this page.&n;&t; * - aliasing VIPT: we only need to find one mapping of this page.&n;&t; */
 id|pgoff
 op_assign
 id|page-&gt;index
@@ -136,6 +139,16 @@ op_plus
 id|offset
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cache_is_vipt
+c_func
+(paren
+)paren
+)paren
+r_break
+suffix:semicolon
 )brace
 id|flush_dcache_mmap_unlock
 c_func
@@ -144,6 +157,7 @@ id|mapping
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Ensure cache coherency between kernel mapping and userspace mapping&n; * of this page.&n; *&n; * We have three cases to consider:&n; *  - VIPT non-aliasing cache: fully coherent so nothing required.&n; *  - VIVT: fully aliasing, so we need to handle every alias in our&n; *          current VM view.&n; *  - VIPT aliasing: need to handle one alias in our current VM view.&n; *&n; * If we need to handle aliasing:&n; *  If the page only exists in the page cache and there are no user&n; *  space mappings, we can be lazy and remember that we may have dirty&n; *  kernel cache lines for later.  Otherwise, we assume we have&n; *  aliasing mappings.&n; */
 DECL|function|flush_dcache_page
 r_void
 id|flush_dcache_page
@@ -165,6 +179,16 @@ c_func
 (paren
 id|page
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cache_is_vipt_nonaliasing
+c_func
+(paren
+)paren
+)paren
+r_return
 suffix:semicolon
 r_if
 c_cond
