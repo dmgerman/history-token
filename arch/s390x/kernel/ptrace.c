@@ -999,8 +999,17 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
-op_minus
-id|EIO
+id|ptrace_request
+c_func
+(paren
+id|child
+comma
+id|request
+comma
+id|addr
+comma
+id|data
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_S390_SUPPORT
@@ -2080,8 +2089,17 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
-op_minus
-id|EIO
+id|ptrace_request
+c_func
+(paren
+id|child
+comma
+id|request
+comma
+id|addr
+comma
+id|data
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -2324,29 +2342,6 @@ comma
 id|data
 )paren
 suffix:semicolon
-r_case
-id|PTRACE_SETOPTIONS
-suffix:colon
-r_if
-c_cond
-(paren
-id|data
-op_amp
-id|PTRACE_O_TRACESYSGOOD
-)paren
-id|child-&gt;ptrace
-op_or_assign
-id|PT_TRACESYSGOOD
-suffix:semicolon
-r_else
-id|child-&gt;ptrace
-op_and_assign
-op_complement
-id|PT_TRACESYSGOOD
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 multiline_comment|/* Do requests that differ for 31/64 bit */
 r_default
 suffix:colon
@@ -2388,6 +2383,7 @@ id|data
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Not reached.  */
 r_return
 op_minus
 id|EIO
