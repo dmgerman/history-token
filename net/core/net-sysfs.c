@@ -1885,6 +1885,8 @@ id|net_class_attributes
 id|i
 )braket
 )paren
+op_ne
+l_int|NULL
 suffix:semicolon
 id|i
 op_increment
