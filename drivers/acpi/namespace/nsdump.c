@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 150 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;nsdump&quot;
 )paren
 macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_print_pathname&n; *&n; * PARAMETERS:  Num_segment         - Number of ACPI name segments&n; *              Pathname            - The compressed (internal) path&n; *&n; * DESCRIPTION: Print an object&squot;s full namespace pathname&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_print_pathname&n; *&n; * PARAMETERS:  num_segment         - Number of ACPI name segments&n; *              Pathname            - The compressed (internal) path&n; *&n; * DESCRIPTION: Print an object&squot;s full namespace pathname&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_print_pathname
 id|acpi_ns_print_pathname
@@ -25,7 +25,7 @@ id|pathname
 (brace
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ns_print_pathname&quot;
+l_string|&quot;ns_print_pathname&quot;
 )paren
 suffix:semicolon
 r_if
@@ -98,7 +98,7 @@ l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_dump_pathname&n; *&n; * PARAMETERS:  Handle              - Object&n; *              Msg                 - Prefix message&n; *              Level               - Desired debug level&n; *              Component           - Caller&squot;s component ID&n; *&n; * DESCRIPTION: Print an object&squot;s full namespace pathname&n; *              Manages allocation/freeing of a pathname buffer&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_dump_pathname&n; *&n; * PARAMETERS:  Handle              - Object&n; *              Msg                 - Prefix message&n; *              Level               - Desired debug level&n; *              Component           - Caller&squot;s component ID&n; *&n; * DESCRIPTION: Print an object&squot;s full namespace pathname&n; *              Manages allocation/freeing of a pathname buffer&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_dump_pathname
 id|acpi_ns_dump_pathname
@@ -119,7 +119,7 @@ id|component
 (brace
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_dump_pathname&quot;
+l_string|&quot;ns_dump_pathname&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Do this only if the requested debug level and component are enabled */
@@ -160,7 +160,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_dump_one_object&n; *&n; * PARAMETERS:  Handle              - Node to be dumped&n; *              Level               - Nesting level of the handle&n; *              Context             - Passed into Walk_namespace&n; *&n; * DESCRIPTION: Dump a single Node&n; *              This procedure is a User_function called by Acpi_ns_walk_namespace.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_dump_one_object&n; *&n; * PARAMETERS:  Handle              - Node to be dumped&n; *              Level               - Nesting level of the handle&n; *              Context             - Passed into walk_namespace&n; *&n; * DESCRIPTION: Dump a single Node&n; *              This procedure is a user_function called by acpi_ns_walk_namespace.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_dump_one_object
 id|acpi_ns_dump_one_object
@@ -218,7 +218,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ns_dump_one_object&quot;
+l_string|&quot;ns_dump_one_object&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Is output enabled? */
@@ -1272,7 +1272,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_dump_objects&n; *&n; * PARAMETERS:  Type                - Object type to be dumped&n; *              Max_depth           - Maximum depth of dump.  Use ACPI_UINT32_MAX&n; *                                    for an effectively unlimited depth.&n; *              Owner_id            - Dump only objects owned by this ID.  Use&n; *                                    ACPI_UINT32_MAX to match all owners.&n; *              Start_handle        - Where in namespace to start/end search&n; *&n; * DESCRIPTION: Dump typed objects within the loaded namespace.&n; *              Uses Acpi_ns_walk_namespace in conjunction with Acpi_ns_dump_one_object.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_dump_objects&n; *&n; * PARAMETERS:  Type                - Object type to be dumped&n; *              max_depth           - Maximum depth of dump.  Use ACPI_UINT32_MAX&n; *                                    for an effectively unlimited depth.&n; *              owner_id            - Dump only objects owned by this ID.  Use&n; *                                    ACPI_UINT32_MAX to match all owners.&n; *              start_handle        - Where in namespace to start/end search&n; *&n; * DESCRIPTION: Dump typed objects within the loaded namespace.&n; *              Uses acpi_ns_walk_namespace in conjunction with acpi_ns_dump_one_object.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_dump_objects
 id|acpi_ns_dump_objects
@@ -1338,7 +1338,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_dump_tables&n; *&n; * PARAMETERS:  Search_base         - Root of subtree to be dumped, or&n; *                                    NS_ALL to dump the entire namespace&n; *              Max_depth           - Maximum depth of dump.  Use INT_MAX&n; *                                    for an effectively unlimited depth.&n; *&n; * DESCRIPTION: Dump the name space, or a portion of it.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_dump_tables&n; *&n; * PARAMETERS:  search_base         - Root of subtree to be dumped, or&n; *                                    NS_ALL to dump the entire namespace&n; *              max_depth           - Maximum depth of dump.  Use INT_MAX&n; *                                    for an effectively unlimited depth.&n; *&n; * DESCRIPTION: Dump the name space, or a portion of it.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_dump_tables
 id|acpi_ns_dump_tables
@@ -1357,7 +1357,7 @@ id|search_base
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_dump_tables&quot;
+l_string|&quot;ns_dump_tables&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1419,7 +1419,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_dump_entry&n; *&n; * PARAMETERS:  Handle              - Node to be dumped&n; *              Debug_level         - Output level&n; *&n; * DESCRIPTION: Dump a single Node&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_dump_entry&n; *&n; * PARAMETERS:  Handle              - Node to be dumped&n; *              debug_level         - Output level&n; *&n; * DESCRIPTION: Dump a single Node&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_dump_entry
 id|acpi_ns_dump_entry

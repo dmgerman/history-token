@@ -76,7 +76,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_install_initialization_handler
 (paren
-id|ACPI_INIT_HANDLER
+id|acpi_init_handler
 id|handler
 comma
 id|u32
@@ -115,7 +115,7 @@ id|acpi_find_root_pointer
 id|u32
 id|flags
 comma
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|rsdp_address
 )paren
@@ -267,7 +267,7 @@ id|acpi_attach_data
 id|acpi_handle
 id|obj_handle
 comma
-id|ACPI_OBJECT_HANDLER
+id|acpi_object_handler
 id|handler
 comma
 r_void
@@ -281,7 +281,7 @@ id|acpi_detach_data
 id|acpi_handle
 id|obj_handle
 comma
-id|ACPI_OBJECT_HANDLER
+id|acpi_object_handler
 id|handler
 )paren
 suffix:semicolon
@@ -291,7 +291,7 @@ id|acpi_get_data
 id|acpi_handle
 id|obj_handle
 comma
-id|ACPI_OBJECT_HANDLER
+id|acpi_object_handler
 id|handler
 comma
 r_void
@@ -451,7 +451,7 @@ id|acpi_install_address_space_handler
 id|acpi_handle
 id|device
 comma
-id|ACPI_ADR_SPACE_TYPE
+id|acpi_adr_space_type
 id|space_id
 comma
 id|acpi_adr_space_handler
@@ -471,7 +471,7 @@ id|acpi_remove_address_space_handler
 id|acpi_handle
 id|device
 comma
-id|ACPI_ADR_SPACE_TYPE
+id|acpi_adr_space_type
 id|space_id
 comma
 id|acpi_adr_space_handler
@@ -651,14 +651,14 @@ suffix:semicolon
 id|acpi_status
 id|acpi_set_firmware_waking_vector
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|physical_address
 )paren
 suffix:semicolon
 id|acpi_status
 id|acpi_get_firmware_waking_vector
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 op_star
 id|physical_address
 )paren

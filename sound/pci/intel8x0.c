@@ -49,6 +49,7 @@ l_string|&quot;{Intel,82801DB-ICH4},&quot;
 l_string|&quot;{Intel,MX440},&quot;
 l_string|&quot;{SiS,SI7012},&quot;
 l_string|&quot;{NVidia,NForce Audio},&quot;
+l_string|&quot;{NVidia,NForce2 Audio},&quot;
 l_string|&quot;{AMD,AMD768},&quot;
 l_string|&quot;{AMD,AMD8111},&quot;
 l_string|&quot;{ALI,M5455}}&quot;
@@ -369,6 +370,10 @@ macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP_AUDIO
 DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP_AUDIO
 mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP_AUDIO&t;0x01b1
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO
+DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO
+mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO&t;0x006a
 macro_line|#endif
 DECL|enumerator|DEVICE_INTEL
 DECL|enumerator|DEVICE_INTEL_ICH4
@@ -1332,6 +1337,23 @@ id|DEVICE_INTEL
 )brace
 comma
 multiline_comment|/* NFORCE */
+(brace
+l_int|0x10de
+comma
+l_int|0x006a
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_INTEL
+)brace
+comma
+multiline_comment|/* NFORCE2 */
 (brace
 l_int|0x1022
 comma
@@ -11908,6 +11930,12 @@ comma
 id|PCI_DEVICE_ID_NVIDIA_MCP_AUDIO
 comma
 l_string|&quot;NVidia NForce&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO
+comma
+l_string|&quot;NVidia NForce2&quot;
 )brace
 comma
 (brace

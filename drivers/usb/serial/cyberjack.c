@@ -234,6 +234,11 @@ op_assign
 l_string|&quot;Reiner SCT Cyberjack USB card reader&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;cyberjack&quot;
+comma
+dot
 id|id_table
 op_assign
 id|id_table

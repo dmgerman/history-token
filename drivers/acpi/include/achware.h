@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: achware.h -- hardware specific interfaces&n; *       $Revision: 60 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: achware.h -- hardware specific interfaces&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACHWARE_H__
 DECL|macro|__ACHWARE_H__
@@ -45,7 +45,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Register I/O Prototypes */
-id|ACPI_BIT_REGISTER_INFO
+id|acpi_bit_register_info
 op_star
 id|acpi_hw_get_bit_register_info
 (paren

@@ -2195,6 +2195,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * The usbdevfs name is now deprecated (as of 2.5.1).&n; * It will be removed when the 2.7.x development cycle is started.&n; * You have been warned :)&n; */
+DECL|variable|usbdevice_fs_type
+r_static
+r_struct
+id|file_system_type
+id|usbdevice_fs_type
+suffix:semicolon
 DECL|function|usb_get_sb
 r_static
 r_struct
@@ -2220,6 +2226,21 @@ op_star
 id|data
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|fs_type
+op_eq
+op_amp
+id|usbdevice_fs_type
+)paren
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;Please use the &squot;usbfs&squot; filetype instead, &quot;
+l_string|&quot;the &squot;usbdevfs&squot; name is depreciated.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 id|get_sb_single
 c_func

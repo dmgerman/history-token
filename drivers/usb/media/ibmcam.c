@@ -106,7 +106,8 @@ suffix:semicolon
 DECL|macro|IBMCAM_T
 mdefine_line|#define&t;IBMCAM_T(uvd)&t;((ibmcam_t *)((uvd)-&gt;user_data))
 DECL|variable|cams
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 id|cams
 op_assign
@@ -784,7 +785,8 @@ suffix:semicolon
 multiline_comment|/*&n; * ibmcam_find_header()&n; *&n; * Locate one of supported header markers in the queue.&n; * Once found, remove all preceding bytes AND the marker (4 bytes)&n; * from the data pump queue. Whatever follows must be video lines.&n; *&n; * History:&n; * 1/21/00  Created.&n; */
 DECL|function|ibmcam_find_header
 r_static
-id|ParseState_t
+r_enum
+id|ParseState
 id|ibmcam_find_header
 c_func
 (paren
@@ -1359,7 +1361,8 @@ suffix:semicolon
 multiline_comment|/*&n; * ibmcam_parse_lines()&n; *&n; * Parse one line (interlaced) from the buffer, put&n; * decoded RGB value into the current frame buffer&n; * and add the written number of bytes (RGB) to&n; * the *pcopylen.&n; *&n; * History:&n; * 21-Jan-2000 Created.&n; * 12-Oct-2000 Reworked to reflect interlaced nature of the data.&n; */
 DECL|function|ibmcam_parse_lines
 r_static
-id|ParseState_t
+r_enum
+id|ParseState
 id|ibmcam_parse_lines
 c_func
 (paren
@@ -2198,7 +2201,8 @@ suffix:semicolon
 multiline_comment|/*&n; * ibmcam_model2_320x240_parse_lines()&n; *&n; * This procedure deals with a weird RGB format that is produced by IBM&n; * camera model 2 in modes 320x240 and above; &squot;x&squot; below is 159 or 175,&n; * depending on horizontal size of the picture:&n; *&n; * &lt;--- 160 or 176 pairs of RA,RB bytes -----&gt;&n; * *-----------------------------------------* &bslash;&n; * | RA0 | RB0 | RA1 | RB1 | ... | RAx | RBx |  &bslash;   This is pair of horizontal lines,&n; * |-----+-----+-----+-----+ ... +-----+-----|   *- or one interlaced line, total&n; * | B0  | G0  | B1  | G1  | ... | Bx  | Gx  |  /   120 or 144 such pairs which yield&n; * |=====+=====+=====+=====+ ... +=====+=====| /    240 or 288 lines after deinterlacing.&n; *&n; * Each group of FOUR bytes (RAi, RBi, Bi, Gi) where i=0..frame_width/2-1&n; * defines ONE pixel. Therefore this format yields 176x144 &quot;decoded&quot;&n; * resolution at best. I do not know why camera sends such format - the&n; * previous model (1) just used interlaced I420 and everyone was happy.&n; *&n; * I do not know what is the difference between RAi and RBi bytes. Both&n; * seemingly represent R component, but slightly vary in value (so that&n; * the picture looks a bit colored if one or another is used). I use&n; * them both as R component in attempt to at least partially recover the&n; * lost resolution.&n; */
 DECL|function|ibmcam_model2_320x240_parse_lines
 r_static
-id|ParseState_t
+r_enum
+id|ParseState
 id|ibmcam_model2_320x240_parse_lines
 c_func
 (paren
@@ -2801,7 +2805,8 @@ suffix:semicolon
 )brace
 DECL|function|ibmcam_model3_parse_lines
 r_static
-id|ParseState_t
+r_enum
+id|ParseState
 id|ibmcam_model3_parse_lines
 c_func
 (paren
@@ -3388,7 +3393,8 @@ suffix:semicolon
 multiline_comment|/*&n; * ibmcam_model4_128x96_parse_lines()&n; *&n; * This decoder is for one strange data format that is produced by Model 4&n; * camera only in 128x96 mode. This is RGB format and here is its description.&n; * First of all, this is non-interlaced stream, meaning that all scan lines&n; * are present in the datastream. There are 96 consecutive blocks of data&n; * that describe all 96 lines of the image. Each block is 5*128 bytes long&n; * and carries R, G, B components. The format of the block is shown in the&n; * code below. First 128*2 bytes are interleaved R and G components. Then&n; * we have a gap (junk data) 64 bytes long. Then follow B and something&n; * else, also interleaved (this makes another 128*2 bytes). After that&n; * probably another 64 bytes of junk follow.&n; *&n; * History:&n; * 10-Feb-2001 Created.&n; */
 DECL|function|ibmcam_model4_128x96_parse_lines
 r_static
-id|ParseState_t
+r_enum
+id|ParseState
 id|ibmcam_model4_128x96_parse_lines
 c_func
 (paren
@@ -3771,7 +3777,8 @@ op_star
 id|frame
 )paren
 (brace
-id|ParseState_t
+r_enum
+id|ParseState
 id|newstate
 suffix:semicolon
 r_int

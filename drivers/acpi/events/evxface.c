@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxface - External interfaces for ACPI events&n; *              $Revision: 132 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxface - External interfaces for ACPI events&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evxface&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_install_fixed_event_handler&n; *&n; * PARAMETERS:  Event           - Event type to enable.&n; *              Handler         - Pointer to the handler function for the&n; *                                event&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Saves the pointer to the handler function and then enables the&n; *              event.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_fixed_event_handler&n; *&n; * PARAMETERS:  Event           - Event type to enable.&n; *              Handler         - Pointer to the handler function for the&n; *                                event&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Saves the pointer to the handler function and then enables the&n; *              event.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_install_fixed_event_handler
 id|acpi_install_fixed_event_handler
@@ -31,7 +31,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_install_fixed_event_handler&quot;
+l_string|&quot;acpi_install_fixed_event_handler&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -193,7 +193,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_remove_fixed_event_handler&n; *&n; * PARAMETERS:  Event           - Event type to disable.&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disables the event and unregisters the event handler.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_fixed_event_handler&n; *&n; * PARAMETERS:  Event           - Event type to disable.&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disables the event and unregisters the event handler.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_remove_fixed_event_handler
 id|acpi_remove_fixed_event_handler
@@ -212,7 +212,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_remove_fixed_event_handler&quot;
+l_string|&quot;acpi_remove_fixed_event_handler&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -331,7 +331,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_install_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              Handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: System_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: Driver_handler (80-ff)&n; *              Handler         - Address of the handler&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: system_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: driver_handler (80-ff)&n; *              Handler         - Address of the handler&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_install_notify_handler
 id|acpi_install_notify_handler
@@ -367,7 +367,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_install_notify_handler&quot;
+l_string|&quot;acpi_install_notify_handler&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -717,7 +717,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_remove_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              Handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: System_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: Driver_handler (80-ff)&n; *              Handler         - Address of the handler&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: system_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: driver_handler (80-ff)&n; *              Handler         - Address of the handler&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_remove_notify_handler
 id|acpi_remove_notify_handler
@@ -749,7 +749,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_remove_notify_handler&quot;
+l_string|&quot;acpi_remove_notify_handler&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -1045,7 +1045,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_install_gpe_handler&n; *&n; * PARAMETERS:  Gpe_number      - The GPE number.  The numbering scheme is&n; *                                bank 0 first, then bank 1.&n; *              Type            - Whether this GPE should be treated as an&n; *                                edge- or level-triggered interrupt.&n; *              Handler         - Address of the handler&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for a General Purpose Event.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_gpe_handler&n; *&n; * PARAMETERS:  gpe_number      - The GPE number.  The numbering scheme is&n; *                                bank 0 first, then bank 1.&n; *              Type            - Whether this GPE should be treated as an&n; *                                edge- or level-triggered interrupt.&n; *              Handler         - Address of the handler&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for a General Purpose Event.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_install_gpe_handler
 id|acpi_install_gpe_handler
@@ -1072,7 +1072,7 @@ id|gpe_number_index
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_install_gpe_handler&quot;
+l_string|&quot;acpi_install_gpe_handler&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -1228,7 +1228,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_remove_gpe_handler&n; *&n; * PARAMETERS:  Gpe_number      - The event to remove a handler&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for a General Purpose Acpi_event.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_gpe_handler&n; *&n; * PARAMETERS:  gpe_number      - The event to remove a handler&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for a General Purpose acpi_event.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_remove_gpe_handler
 id|acpi_remove_gpe_handler
@@ -1248,7 +1248,7 @@ id|gpe_number_index
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_remove_gpe_handler&quot;
+l_string|&quot;acpi_remove_gpe_handler&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -1397,7 +1397,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_acquire_global_lock&n; *&n; * PARAMETERS:  Timeout         - How long the caller is willing to wait&n; *              Out_handle      - A handle to the lock if acquired&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Acquire the ACPI Global Lock&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_acquire_global_lock&n; *&n; * PARAMETERS:  Timeout         - How long the caller is willing to wait&n; *              out_handle      - A handle to the lock if acquired&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Acquire the ACPI Global Lock&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_acquire_global_lock
 id|acpi_acquire_global_lock
@@ -1482,7 +1482,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_release_global_lock&n; *&n; * PARAMETERS:  Handle      - Returned from Acpi_acquire_global_lock&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release the ACPI Global Lock&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_release_global_lock&n; *&n; * PARAMETERS:  Handle      - Returned from acpi_acquire_global_lock&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release the ACPI Global Lock&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_release_global_lock
 id|acpi_release_global_lock

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 71 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __AMLCODE_H__
 DECL|macro|__AMLCODE_H__
@@ -283,7 +283,7 @@ DECL|macro|AML_INT_EVAL_SUBTREE_OP
 mdefine_line|#define AML_INT_EVAL_SUBTREE_OP     (u16) 0x0037
 DECL|macro|ARG_NONE
 mdefine_line|#define ARG_NONE                    0x0
-multiline_comment|/*&n; * Argument types for the AML Parser&n; * Each field in the Arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types&n; */
+multiline_comment|/*&n; * Argument types for the AML Parser&n; * Each field in the arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types&n; */
 DECL|macro|ARGP_BYTEDATA
 mdefine_line|#define ARGP_BYTEDATA               0x01
 DECL|macro|ARGP_BYTELIST
@@ -320,7 +320,7 @@ DECL|macro|ARGP_QWORDDATA
 mdefine_line|#define ARGP_QWORDDATA              0x11
 DECL|macro|ARGP_SIMPLENAME
 mdefine_line|#define ARGP_SIMPLENAME             0x12
-multiline_comment|/*&n; * Resolved argument types for the AML Interpreter&n; * Each field in the Arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types (0 is end-of-arg-list indicator)&n; *&n; * Note: If and when 5 bits becomes insufficient, it would probably be best&n; * to convert to a 6-byte array of argument types, allowing 8 bits per argument.&n; */
+multiline_comment|/*&n; * Resolved argument types for the AML Interpreter&n; * Each field in the arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types (0 is end-of-arg-list indicator)&n; *&n; * Note: If and when 5 bits becomes insufficient, it would probably be best&n; * to convert to a 6-byte array of argument types, allowing 8 bits per argument.&n; */
 multiline_comment|/* &quot;Standard&quot; ACPI types are 1-15 (0x0F) */
 DECL|macro|ARGI_INTEGER
 mdefine_line|#define ARGI_INTEGER                ACPI_TYPE_INTEGER       /* 1 */
@@ -348,7 +348,7 @@ mdefine_line|#define ARGI_ANYTYPE                0x12
 DECL|macro|ARGI_COMPUTEDATA
 mdefine_line|#define ARGI_COMPUTEDATA            0x13     /* Buffer, String, or Integer */
 DECL|macro|ARGI_DATAOBJECT
-mdefine_line|#define ARGI_DATAOBJECT             0x14     /* Buffer, String, package or reference to a Node - Used only by Size_of operator*/
+mdefine_line|#define ARGI_DATAOBJECT             0x14     /* Buffer, String, package or reference to a Node - Used only by size_of operator*/
 DECL|macro|ARGI_COMPLEXOBJ
 mdefine_line|#define ARGI_COMPLEXOBJ             0x15     /* Buffer, String, or package (Used by INDEX op only) */
 DECL|macro|ARGI_INTEGER_REF
@@ -419,13 +419,13 @@ mdefine_line|#define AML_FLAGS_EXEC_1A_0T_1R     AML_HAS_ARGS |                 
 DECL|macro|AML_FLAGS_EXEC_1A_1T_0R
 mdefine_line|#define AML_FLAGS_EXEC_1A_1T_0R     AML_HAS_ARGS | AML_HAS_TARGET
 DECL|macro|AML_FLAGS_EXEC_1A_1T_1R
-mdefine_line|#define AML_FLAGS_EXEC_1A_1T_1R     AML_HAS_ARGS | AML_HAS_TARGET | AML_HAS_RETVAL /* Monadic2_r */
+mdefine_line|#define AML_FLAGS_EXEC_1A_1T_1R     AML_HAS_ARGS | AML_HAS_TARGET | AML_HAS_RETVAL /* monadic2_r */
 DECL|macro|AML_FLAGS_EXEC_2A_0T_0R
 mdefine_line|#define AML_FLAGS_EXEC_2A_0T_0R     AML_HAS_ARGS                                   /* Dyadic1   */
 DECL|macro|AML_FLAGS_EXEC_2A_0T_1R
 mdefine_line|#define AML_FLAGS_EXEC_2A_0T_1R     AML_HAS_ARGS |                  AML_HAS_RETVAL /* Dyadic2   */
 DECL|macro|AML_FLAGS_EXEC_2A_1T_1R
-mdefine_line|#define AML_FLAGS_EXEC_2A_1T_1R     AML_HAS_ARGS | AML_HAS_TARGET | AML_HAS_RETVAL /* Dyadic2_r  */
+mdefine_line|#define AML_FLAGS_EXEC_2A_1T_1R     AML_HAS_ARGS | AML_HAS_TARGET | AML_HAS_RETVAL /* dyadic2_r  */
 DECL|macro|AML_FLAGS_EXEC_2A_2T_1R
 mdefine_line|#define AML_FLAGS_EXEC_2A_2T_1R     AML_HAS_ARGS | AML_HAS_TARGET | AML_HAS_RETVAL
 DECL|macro|AML_FLAGS_EXEC_3A_0T_0R
@@ -442,13 +442,13 @@ mdefine_line|#define AML_TYPE_EXEC_1A_0T_1R      0x01 /* Monadic2  */
 DECL|macro|AML_TYPE_EXEC_1A_1T_0R
 mdefine_line|#define AML_TYPE_EXEC_1A_1T_0R      0x02
 DECL|macro|AML_TYPE_EXEC_1A_1T_1R
-mdefine_line|#define AML_TYPE_EXEC_1A_1T_1R      0x03 /* Monadic2_r */
+mdefine_line|#define AML_TYPE_EXEC_1A_1T_1R      0x03 /* monadic2_r */
 DECL|macro|AML_TYPE_EXEC_2A_0T_0R
 mdefine_line|#define AML_TYPE_EXEC_2A_0T_0R      0x04 /* Dyadic1   */
 DECL|macro|AML_TYPE_EXEC_2A_0T_1R
 mdefine_line|#define AML_TYPE_EXEC_2A_0T_1R      0x05 /* Dyadic2   */
 DECL|macro|AML_TYPE_EXEC_2A_1T_1R
-mdefine_line|#define AML_TYPE_EXEC_2A_1T_1R      0x06 /* Dyadic2_r  */
+mdefine_line|#define AML_TYPE_EXEC_2A_1T_1R      0x06 /* dyadic2_r  */
 DECL|macro|AML_TYPE_EXEC_2A_2T_1R
 mdefine_line|#define AML_TYPE_EXEC_2A_2T_1R      0x07
 DECL|macro|AML_TYPE_EXEC_3A_0T_0R
@@ -515,7 +515,7 @@ DECL|macro|AML_CLASS_METHOD_CALL
 mdefine_line|#define AML_CLASS_METHOD_CALL       0x09
 DECL|macro|AML_CLASS_UNKNOWN
 mdefine_line|#define AML_CLASS_UNKNOWN           0x0A
-multiline_comment|/* Predefined Operation Region Space_iDs */
+multiline_comment|/* Predefined Operation Region space_iDs */
 r_typedef
 r_enum
 (brace
@@ -554,7 +554,7 @@ DECL|typedef|AML_REGION_TYPES
 )brace
 id|AML_REGION_TYPES
 suffix:semicolon
-multiline_comment|/* Comparison operation codes for Match_op operator */
+multiline_comment|/* Comparison operation codes for match_op operator */
 r_typedef
 r_enum
 (brace
@@ -593,7 +593,7 @@ id|AML_MATCH_OPERATOR
 suffix:semicolon
 DECL|macro|MAX_MATCH_OPERATOR
 mdefine_line|#define MAX_MATCH_OPERATOR          5
-multiline_comment|/*&n; * Field_flags&n; *&n; * This byte is extracted from the AML and includes three separate&n; * pieces of information about the field:&n; * 1) The field access type&n; * 2) The field update rule&n; * 3) The lock rule for the field&n; *&n; * Bits 00 - 03 : Access_type (Any_acc, Byte_acc, etc.)&n; *      04      : Lock_rule (1 == Lock)&n; *      05 - 06 : Update_rule&n; */
+multiline_comment|/*&n; * field_flags&n; *&n; * This byte is extracted from the AML and includes three separate&n; * pieces of information about the field:&n; * 1) The field access type&n; * 2) The field update rule&n; * 3) The lock rule for the field&n; *&n; * Bits 00 - 03 : access_type (any_acc, byte_acc, etc.)&n; *      04      : lock_rule (1 == Lock)&n; *      05 - 06 : update_rule&n; */
 DECL|macro|AML_FIELD_ACCESS_TYPE_MASK
 mdefine_line|#define AML_FIELD_ACCESS_TYPE_MASK  0x0F
 DECL|macro|AML_FIELD_LOCK_RULE_MASK
@@ -678,7 +678,7 @@ DECL|typedef|AML_UPDATE_RULE
 )brace
 id|AML_UPDATE_RULE
 suffix:semicolon
-multiline_comment|/*&n; * Field Access Attributes.&n; * This byte is extracted from the AML via the&n; * Access_as keyword&n; */
+multiline_comment|/*&n; * Field Access Attributes.&n; * This byte is extracted from the AML via the&n; * access_as keyword&n; */
 r_typedef
 r_enum
 (brace
@@ -720,7 +720,7 @@ DECL|typedef|AML_ACCESS_ATTRIBUTE
 )brace
 id|AML_ACCESS_ATTRIBUTE
 suffix:semicolon
-multiline_comment|/* bit fields in Method_flags byte */
+multiline_comment|/* bit fields in method_flags byte */
 DECL|macro|METHOD_FLAGS_ARG_COUNT
 mdefine_line|#define METHOD_FLAGS_ARG_COUNT      0x07
 DECL|macro|METHOD_FLAGS_SERIALIZED

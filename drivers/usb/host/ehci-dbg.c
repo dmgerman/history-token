@@ -1,34 +1,39 @@
 multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this file is part of ehci-hcd.c */
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,50)
 DECL|macro|ehci_dbg
 mdefine_line|#define ehci_dbg(ehci, fmt, args...) &bslash;&n;&t;dev_dbg (*(ehci)-&gt;hcd.controller, fmt, ## args )
-macro_line|#ifdef EHCI_VERBOSE_DEBUG
-DECL|macro|ehci_vdbg
-mdefine_line|#define ehci_vdbg(ehci, fmt, args...) &bslash;&n;&t;dev_dbg (*(ehci)-&gt;hcd.controller, fmt, ## args )
+DECL|macro|ehci_err
+mdefine_line|#define ehci_err(ehci, fmt, args...) &bslash;&n;&t;dev_err (*(ehci)-&gt;hcd.controller, fmt, ## args )
+DECL|macro|ehci_info
+mdefine_line|#define ehci_info(ehci, fmt, args...) &bslash;&n;&t;dev_info (*(ehci)-&gt;hcd.controller, fmt, ## args )
+DECL|macro|ehci_warn
+mdefine_line|#define ehci_warn(ehci, fmt, args...) &bslash;&n;&t;dev_warn (*(ehci)-&gt;hcd.controller, fmt, ## args )
 macro_line|#else
-DECL|macro|ehci_vdbg
-mdefine_line|#define ehci_vdbg(ehci, fmt, args...) do { } while (0)
+macro_line|#ifdef DEBUG
+DECL|macro|ehci_dbg
+mdefine_line|#define ehci_dbg(ehci, fmt, args...) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s %s: &quot; fmt, hcd_name, &bslash;&n;&t;&t;(ehci)-&gt;hcd.pdev-&gt;slot_name, ## args )
+macro_line|#else
+DECL|macro|ehci_dbg
+mdefine_line|#define ehci_dbg(ehci, fmt, args...) do { } while (0)
+macro_line|#endif
+DECL|macro|ehci_err
+mdefine_line|#define ehci_err(ehci, fmt, args...) &bslash;&n;&t;printk(KERN_ERR &quot;%s %s: &quot; fmt, hcd_name, &bslash;&n;&t;&t;(ehci)-&gt;hcd.pdev-&gt;slot_name, ## args )
+DECL|macro|ehci_info
+mdefine_line|#define ehci_info(ehci, fmt, args...) &bslash;&n;&t;printk(KERN_INFO &quot;%s %s: &quot; fmt, hcd_name, &bslash;&n;&t;&t;(ehci)-&gt;hcd.pdev-&gt;slot_name, ## args )
+DECL|macro|ehci_warn
+mdefine_line|#define ehci_warn(ehci, fmt, args...) &bslash;&n;&t;printk(KERN_WARNING &quot;%s %s: &quot; fmt, hcd_name, &bslash;&n;&t;&t;(ehci)-&gt;hcd.pdev-&gt;slot_name, ## args )
 macro_line|#endif
 macro_line|#ifdef EHCI_VERBOSE_DEBUG
 DECL|macro|vdbg
 macro_line|#&t;define vdbg dbg
+DECL|macro|ehci_vdbg
+macro_line|#&t;define ehci_vdbg ehci_dbg
 macro_line|#else
-DECL|function|vdbg
-r_static
-r_inline
-r_void
-id|vdbg
-(paren
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-(brace
-)brace
+DECL|macro|vdbg
+macro_line|#&t;define vdbg(fmt,args...) do { } while (0)
+DECL|macro|ehci_vdbg
+macro_line|#&t;define ehci_vdbg(ehci, fmt, args...) do { } while (0)
 macro_line|#endif
 macro_line|#ifdef&t;DEBUG
 multiline_comment|/* check the values in the HCSPARAMS register&n; * (host controller _Structural_ parameters)&n; * see EHCI spec, Table 2-4 for each value&n; */

@@ -4,6 +4,7 @@ mdefine_line|#define __SOUND_CORE_H
 multiline_comment|/*&n; *  Main header file for the ALSA driver&n; *  Copyright (c) 1994-2001 by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* wake_up() */
 macro_line|#include &lt;asm/semaphore.h&gt;&t;&t;/* struct semaphore */
+macro_line|#include &lt;linux/rwsem.h&gt;&t;&t;/* struct rw_semaphore */
 multiline_comment|/* Typedef&squot;s */
 DECL|typedef|snd_timestamp_t
 r_typedef
@@ -111,13 +112,12 @@ r_enum
 (brace
 DECL|enumerator|SNDRV_DEV_BUILD
 id|SNDRV_DEV_BUILD
-op_assign
-l_int|0
 comma
 DECL|enumerator|SNDRV_DEV_REGISTERED
 id|SNDRV_DEV_REGISTERED
-op_assign
-l_int|1
+comma
+DECL|enumerator|SNDRV_DEV_DISCONNECTED
+id|SNDRV_DEV_DISCONNECTED
 DECL|typedef|snd_device_state_t
 )brace
 id|snd_device_state_t
@@ -179,6 +179,18 @@ op_star
 id|device
 )paren
 suffix:semicolon
+DECL|typedef|snd_dev_disconnect_t
+r_typedef
+r_int
+(paren
+id|snd_dev_disconnect_t
+)paren
+(paren
+id|snd_device_t
+op_star
+id|device
+)paren
+suffix:semicolon
 DECL|typedef|snd_dev_unregister_t
 r_typedef
 r_int
@@ -203,6 +215,11 @@ DECL|member|dev_register
 id|snd_dev_register_t
 op_star
 id|dev_register
+suffix:semicolon
+DECL|member|dev_disconnect
+id|snd_dev_disconnect_t
+op_star
+id|dev_disconnect
 suffix:semicolon
 DECL|member|dev_unregister
 id|snd_dev_unregister_t
@@ -330,6 +347,29 @@ id|_snd_oss_mixer
 id|snd_mixer_oss_t
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* monitor files for graceful shutdown (hotplug) */
+DECL|struct|snd_monitor_file
+r_struct
+id|snd_monitor_file
+(brace
+DECL|member|file
+r_struct
+id|file
+op_star
+id|file
+suffix:semicolon
+DECL|member|next
+r_struct
+id|snd_monitor_file
+op_star
+id|next
+suffix:semicolon
+)brace
+suffix:semicolon
+r_struct
+id|snd_shutdown_f_ops
+suffix:semicolon
+multiline_comment|/* define it later */
 multiline_comment|/* main structure for soundcard */
 DECL|struct|_snd_card
 r_struct
@@ -426,16 +466,17 @@ r_int
 id|last_numid
 suffix:semicolon
 multiline_comment|/* last used numeric ID */
-DECL|member|control_rwlock
-id|rwlock_t
-id|control_rwlock
+DECL|member|controls_rwsem
+r_struct
+id|rw_semaphore
+id|controls_rwsem
 suffix:semicolon
-multiline_comment|/* control list lock */
-DECL|member|control_owner_lock
+multiline_comment|/* controls list lock */
+DECL|member|ctl_files_rwlock
 id|rwlock_t
-id|control_owner_lock
+id|ctl_files_rwlock
 suffix:semicolon
-multiline_comment|/* control list lock */
+multiline_comment|/* ctl_files list lock */
 DECL|member|controls_count
 r_int
 id|controls_count
@@ -472,6 +513,34 @@ op_star
 id|proc_root_link
 suffix:semicolon
 multiline_comment|/* number link to real id */
+DECL|member|files
+r_struct
+id|snd_monitor_file
+op_star
+id|files
+suffix:semicolon
+multiline_comment|/* all files associated to this card */
+DECL|member|s_f_ops
+r_struct
+id|snd_shutdown_f_ops
+op_star
+id|s_f_ops
+suffix:semicolon
+multiline_comment|/* file operations in the shutdown state */
+DECL|member|files_lock
+id|spinlock_t
+id|files_lock
+suffix:semicolon
+multiline_comment|/* lock the files for this card */
+DECL|member|shutdown
+r_int
+id|shutdown
+suffix:semicolon
+multiline_comment|/* this card is going down */
+DECL|member|shutdown_sleep
+id|wait_queue_head_t
+id|shutdown_sleep
+suffix:semicolon
 macro_line|#ifdef CONFIG_PM
 DECL|member|set_power_state
 r_int
@@ -1209,6 +1278,11 @@ r_int
 id|snd_cards_count
 suffix:semicolon
 r_extern
+r_int
+r_int
+id|snd_cards_lock
+suffix:semicolon
+r_extern
 id|snd_card_t
 op_star
 id|snd_cards
@@ -1221,6 +1295,12 @@ id|rwlock_t
 id|snd_card_rwlock
 suffix:semicolon
 macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
+DECL|macro|SND_MIXER_OSS_NOTIFY_REGISTER
+mdefine_line|#define SND_MIXER_OSS_NOTIFY_REGISTER&t;0
+DECL|macro|SND_MIXER_OSS_NOTIFY_DISCONNECT
+mdefine_line|#define SND_MIXER_OSS_NOTIFY_DISCONNECT&t;1
+DECL|macro|SND_MIXER_OSS_NOTIFY_FREE
+mdefine_line|#define SND_MIXER_OSS_NOTIFY_FREE&t;2
 r_extern
 r_int
 (paren
@@ -1233,7 +1313,7 @@ op_star
 id|card
 comma
 r_int
-id|free_flag
+id|cmd
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1260,7 +1340,25 @@ id|extra_size
 )paren
 suffix:semicolon
 r_int
+id|snd_card_disconnect
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+)paren
+suffix:semicolon
+r_int
 id|snd_card_free
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+)paren
+suffix:semicolon
+r_int
+id|snd_card_free_in_thread
 c_func
 (paren
 id|snd_card_t
@@ -1305,6 +1403,34 @@ op_star
 id|component
 )paren
 suffix:semicolon
+r_int
+id|snd_card_file_add
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
+r_int
+id|snd_card_file_remove
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
 multiline_comment|/* device.c */
 r_int
 id|snd_device_new
@@ -1341,6 +1467,28 @@ id|device_data
 suffix:semicolon
 r_int
 id|snd_device_register_all
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+)paren
+suffix:semicolon
+r_int
+id|snd_device_disconnect
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+comma
+r_void
+op_star
+id|device_data
+)paren
+suffix:semicolon
+r_int
+id|snd_device_disconnect_all
 c_func
 (paren
 id|snd_card_t

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfobj - Public interfaces to the ACPI subsystem&n; *                         ACPI Object oriented interfaces&n; *              $Revision: 114 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfobj - Public interfaces to the ACPI subsystem&n; *                         ACPI Object oriented interfaces&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsxfobj&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_type&n; *&n; * PARAMETERS:  Handle          - Handle of object whose type is desired&n; *              *Ret_type       - Where the type will be placed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This routine returns the type associatd with a particular handle&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_type&n; *&n; * PARAMETERS:  Handle          - Handle of object whose type is desired&n; *              *ret_type       - Where the type will be placed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This routine returns the type associatd with a particular handle&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_type
 id|acpi_get_type
@@ -131,7 +131,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_parent&n; *&n; * PARAMETERS:  Handle          - Handle of object whose parent is desired&n; *              Ret_handle      - Where the parent handle will be placed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Returns a handle to the parent of the object represented by&n; *              Handle.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_parent&n; *&n; * PARAMETERS:  Handle          - Handle of object whose parent is desired&n; *              ret_handle      - Where the parent handle will be placed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Returns a handle to the parent of the object represented by&n; *              Handle.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_parent
 id|acpi_get_parent
@@ -268,7 +268,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_next_object&n; *&n; * PARAMETERS:  Type            - Type of object to be searched for&n; *              Parent          - Parent object whose children we are getting&n; *              Last_child      - Previous child that was found.&n; *                                The NEXT child will be returned&n; *              Ret_handle      - Where handle to the next object is placed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Return the next peer object within the namespace.  If Handle is&n; *              valid, Scope is ignored.  Otherwise, the first object within&n; *              Scope is returned.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_next_object&n; *&n; * PARAMETERS:  Type            - Type of object to be searched for&n; *              Parent          - Parent object whose children we are getting&n; *              last_child      - Previous child that was found.&n; *                                The NEXT child will be returned&n; *              ret_handle      - Where handle to the next object is placed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Return the next peer object within the namespace.  If Handle is&n; *              valid, Scope is ignored.  Otherwise, the first object within&n; *              Scope is returned.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_next_object
 id|acpi_get_next_object

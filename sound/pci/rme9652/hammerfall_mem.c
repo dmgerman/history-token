@@ -609,6 +609,7 @@ suffix:semicolon
 DECL|function|hammerfall_free_buffers
 r_static
 r_void
+id|__exit
 id|hammerfall_free_buffers
 (paren
 r_void

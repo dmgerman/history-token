@@ -36,9 +36,9 @@ DECL|macro|GDT_ENTRY_PNPBIOS_BASE
 mdefine_line|#define GDT_ENTRY_PNPBIOS_BASE&t;&t;(GDT_ENTRY_KERNEL_BASE + 6)
 DECL|macro|GDT_ENTRY_APMBIOS_BASE
 mdefine_line|#define GDT_ENTRY_APMBIOS_BASE&t;&t;(GDT_ENTRY_KERNEL_BASE + 11)
-multiline_comment|/*&n; * The GDT has 23 entries but we pad it to cacheline boundary:&n; */
+multiline_comment|/*&n; * The GDT has 25 entries but we pad it to cacheline boundary:&n; */
 DECL|macro|GDT_ENTRIES
-mdefine_line|#define GDT_ENTRIES 24
+mdefine_line|#define GDT_ENTRIES 28
 DECL|macro|GDT_SIZE
 mdefine_line|#define GDT_SIZE (GDT_ENTRIES * 8)
 multiline_comment|/*&n; * The interrupt descriptor table has room for 256 idt&squot;s,&n; * the global descriptor table is dependent on the number&n; * of tasks we can have..&n; */

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfield - ACPI AML (p-code) execution - field manipulation&n; *              $Revision: 117 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfield - ACPI AML (p-code) execution - field manipulation&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exfield&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_read_data_from_field&n; *&n; * PARAMETERS:  Walk_state          - Current execution state&n; *              Obj_desc            - The named field&n; *              Ret_buffer_desc     - Where the return data object is stored&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read from a named field.  Returns either an Integer or a&n; *              Buffer, depending on the size of the field.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_read_data_from_field&n; *&n; * PARAMETERS:  walk_state          - Current execution state&n; *              obj_desc            - The named field&n; *              ret_buffer_desc     - Where the return data object is stored&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read from a named field.  Returns either an Integer or a&n; *              Buffer, depending on the size of the field.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_read_data_from_field
 id|acpi_ex_read_data_from_field
@@ -35,7 +35,7 @@ id|acpi_operand_object
 op_star
 id|buffer_desc
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|length
 suffix:semicolon
 r_void
@@ -47,7 +47,7 @@ id|locked
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_read_data_from_field&quot;
+l_string|&quot;ex_read_data_from_field&quot;
 comma
 id|obj_desc
 )paren
@@ -77,7 +77,7 @@ op_eq
 id|ACPI_TYPE_BUFFER_FIELD
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * If the Buffer_field arguments have not been previously evaluated,&n;&t;&t; * evaluate them now and save the results.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the buffer_field arguments have not been previously evaluated,&n;&t;&t; * evaluate them now and save the results.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -200,7 +200,7 @@ multiline_comment|/*&n;&t; * Allocate a buffer for the contents of the field.&n;
 id|length
 op_assign
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|ACPI_ROUND_BITS_UP_TO_BYTES
 (paren
@@ -306,7 +306,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Field_write: Bit_len=%X Bit_off=%X Byte_off=%X&bslash;n&quot;
+l_string|&quot;field_write: bit_len=%X bit_off=%X byte_off=%X&bslash;n&quot;
 comma
 id|obj_desc-&gt;common_field.bit_length
 comma
@@ -380,7 +380,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_write_data_to_field&n; *&n; * PARAMETERS:  Source_desc         - Contains data to write&n; *              Obj_desc            - The named field&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Write to a named field&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_write_data_to_field&n; *&n; * PARAMETERS:  source_desc         - Contains data to write&n; *              obj_desc            - The named field&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Write to a named field&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_write_data_to_field
 id|acpi_ex_write_data_to_field
@@ -425,7 +425,7 @@ id|buffer_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_write_data_to_field&quot;
+l_string|&quot;ex_write_data_to_field&quot;
 comma
 id|obj_desc
 )paren
@@ -458,7 +458,7 @@ op_eq
 id|ACPI_TYPE_BUFFER_FIELD
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * If the Buffer_field arguments have not been previously evaluated,&n;&t;&t; * evaluate them now and save the results.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the buffer_field arguments have not been previously evaluated,&n;&t;&t; * evaluate them now and save the results.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -804,7 +804,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Field_read: Bit_len=%X Bit_off=%X Byte_off=%X&bslash;n&quot;
+l_string|&quot;field_read: bit_len=%X bit_off=%X byte_off=%X&bslash;n&quot;
 comma
 id|obj_desc-&gt;common_field.bit_length
 comma

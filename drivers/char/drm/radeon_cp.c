@@ -6545,7 +6545,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-id|DRM_ERROR
+id|DRM_DEBUG
 c_func
 (paren
 l_string|&quot;returning NULL!&bslash;n&quot;

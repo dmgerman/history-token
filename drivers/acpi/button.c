@@ -556,6 +556,7 @@ c_func
 id|device
 )paren
 )paren
+(brace
 id|remove_proc_entry
 c_func
 (paren
@@ -568,6 +569,15 @@ comma
 id|acpi_button_dir
 )paren
 suffix:semicolon
+id|acpi_device_dir
+c_func
+(paren
+id|device
+)paren
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 id|return_VALUE
 c_func
 (paren

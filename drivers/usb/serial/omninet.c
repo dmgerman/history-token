@@ -219,6 +219,11 @@ op_assign
 l_string|&quot;ZyXEL - omni.net lcd plus usb&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;omninet&quot;
+comma
+dot
 id|id_table
 op_assign
 id|id_table

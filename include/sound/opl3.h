@@ -163,6 +163,8 @@ DECL|macro|OPL3_HW_OPL3_FM801
 mdefine_line|#define OPL3_HW_OPL3_FM801&t;0x0303&t;/* FM801 */
 DECL|macro|OPL3_HW_OPL3_CS4281
 mdefine_line|#define OPL3_HW_OPL3_CS4281&t;0x0304&t;/* CS4281 */
+DECL|macro|OPL3_HW_OPL3_PC98
+mdefine_line|#define OPL3_HW_OPL3_PC98&t;0x0305&t;/* PC9800 */
 DECL|macro|OPL3_HW_OPL4
 mdefine_line|#define OPL3_HW_OPL4&t;&t;0x0400
 DECL|macro|OPL3_HW_MASK

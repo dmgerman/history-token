@@ -10,6 +10,9 @@ macro_line|#include &lt;sound/seq_virmidi.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
+multiline_comment|/* hack: OSS defines midi_devs, so undefine it (versioned symbols) */
+DECL|macro|midi_devs
+macro_line|#undef midi_devs
 id|MODULE_AUTHOR
 c_func
 (paren

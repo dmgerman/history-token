@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbrsdt - ACPI RSDT table utilities&n; *              $Revision: 5 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbrsdt - ACPI RSDT table utilities&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -8,12 +8,12 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbrsdt&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_verify_rsdp&n; *&n; * PARAMETERS:  Address         - RSDP (Pointer to RSDT)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate the RSDP (ptr) and RSDT (table)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_verify_rsdp&n; *&n; * PARAMETERS:  Address         - RSDP (Pointer to RSDT)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate the RSDP (ptr) and RSDT (table)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_verify_rsdp
 id|acpi_tb_verify_rsdp
 (paren
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|address
 )paren
@@ -24,13 +24,13 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|RSDP_DESCRIPTOR
+id|rsdp_descriptor
 op_star
 id|rsdp
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_verify_rsdp&quot;
+l_string|&quot;tb_verify_rsdp&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -60,7 +60,7 @@ id|address-&gt;pointer.physical
 comma
 r_sizeof
 (paren
-id|RSDP_DESCRIPTOR
+id|rsdp_descriptor
 )paren
 comma
 (paren
@@ -198,7 +198,7 @@ id|table_info.length
 op_assign
 r_sizeof
 (paren
-id|RSDP_DESCRIPTOR
+id|rsdp_descriptor
 )paren
 suffix:semicolon
 id|table_info.allocation
@@ -234,7 +234,7 @@ id|acpi_gbl_RSDP
 op_assign
 id|ACPI_CAST_PTR
 (paren
-id|RSDP_DESCRIPTOR
+id|rsdp_descriptor
 comma
 id|table_info.pointer
 )paren
@@ -261,7 +261,7 @@ id|rsdp
 comma
 r_sizeof
 (paren
-id|RSDP_DESCRIPTOR
+id|rsdp_descriptor
 )paren
 )paren
 suffix:semicolon
@@ -272,12 +272,12 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_rsdt_address&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      RSDT physical address&n; *&n; * DESCRIPTION: Extract the address of the RSDT or XSDT, depending on the&n; *              version of the RSDP&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_rsdt_address&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      RSDT physical address&n; *&n; * DESCRIPTION: Extract the address of the RSDT or XSDT, depending on the&n; *              version of the RSDP&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_tb_get_rsdt_address
 id|acpi_tb_get_rsdt_address
 (paren
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|out_address
 )paren
@@ -314,7 +314,7 @@ id|acpi_gbl_RSDP-&gt;xsdt_physical_address
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_validate_rsdt&n; *&n; * PARAMETERS:  Table_ptr       - Addressable pointer to the RSDT.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Validate signature for the RSDT or XSDT&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_validate_rsdt&n; *&n; * PARAMETERS:  table_ptr       - Addressable pointer to the RSDT.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Validate signature for the RSDT or XSDT&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_validate_rsdt
 id|acpi_tb_validate_rsdt
@@ -329,7 +329,7 @@ id|no_match
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Tb_validate_rsdt&quot;
+l_string|&quot;tb_validate_rsdt&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * For RSDP revision 0 or 1, we use the RSDT.&n;&t; * For RSDP revision 2 and above, we use the XSDT&n;&t; */
@@ -420,7 +420,7 @@ r_void
 op_star
 )paren
 (paren
-id|NATIVE_UINT
+id|acpi_native_uint
 )paren
 id|acpi_gbl_RSDP-&gt;rsdt_physical_address
 )paren
@@ -438,7 +438,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_rsdt&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate the RSDP (ptr) and RSDT (table)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_table_rsdt&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate the RSDP (ptr) and RSDT (table)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_table_rsdt
 id|acpi_tb_get_table_rsdt
@@ -452,12 +452,12 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_POINTER
+id|acpi_pointer
 id|address
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_get_table_rsdt&quot;
+l_string|&quot;tb_get_table_rsdt&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Get the RSDT/XSDT via the RSDP */

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconfig - Namespace reconfiguration (Load/Unload opcodes)&n; *              $Revision: 69 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconfig - Namespace reconfiguration (Load/Unload opcodes)&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -12,7 +12,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exconfig&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_add_table&n; *&n; * PARAMETERS:  Table               - Pointer to raw table&n; *              Parent_node         - Where to load the table (scope)&n; *              Ddb_handle          - Where to return the table handle.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Common function to Install and Load an ACPI table with a&n; *              returned table handle.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_add_table&n; *&n; * PARAMETERS:  Table               - Pointer to raw table&n; *              parent_node         - Where to load the table (scope)&n; *              ddb_handle          - Where to return the table handle.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Common function to Install and Load an ACPI table with a&n; *              returned table handle.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_add_table
 id|acpi_ex_add_table
@@ -43,7 +43,7 @@ id|obj_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_add_table&quot;
+l_string|&quot;ex_add_table&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Create an object to be the table handle */
@@ -75,7 +75,7 @@ suffix:semicolon
 id|table_info.length
 op_assign
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|table-&gt;length
 suffix:semicolon
@@ -168,7 +168,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_load_table_op&n; *&n; * PARAMETERS:  Walk_state          - Current state with operands&n; *              Return_desc         - Where to store the return object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load an ACPI table&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_load_table_op&n; *&n; * PARAMETERS:  walk_state          - Current state with operands&n; *              return_desc         - Where to store the return object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load an ACPI table&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_load_table_op
 id|acpi_ex_load_table_op
@@ -221,7 +221,7 @@ id|ddb_handle
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_load_table_op&quot;
+l_string|&quot;ex_load_table_op&quot;
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -354,7 +354,7 @@ id|parent_node
 op_assign
 id|acpi_gbl_root_node
 suffix:semicolon
-multiline_comment|/* Root_path (optional parameter) */
+multiline_comment|/* root_path (optional parameter) */
 r_if
 c_cond
 (paren
@@ -368,7 +368,7 @@ OG
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Find the node referenced by the Root_path_string. This is the&n;&t;&t; * location within the namespace where the table will be loaded.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Find the node referenced by the root_path_string. This is the&n;&t;&t; * location within the namespace where the table will be loaded.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ns_get_node_by_path
@@ -404,7 +404,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Parameter_path (optional parameter) */
+multiline_comment|/* parameter_path (optional parameter) */
 r_if
 c_cond
 (paren
@@ -450,13 +450,13 @@ l_char|&squot;^&squot;
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Path is not absolute, so it will be relative to the node&n;&t;&t;&t; * referenced by the Root_path_string (or the NS root if omitted)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Path is not absolute, so it will be relative to the node&n;&t;&t;&t; * referenced by the root_path_string (or the NS root if omitted)&n;&t;&t;&t; */
 id|start_node
 op_assign
 id|parent_node
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Find the node referenced by the Parameter_path_string&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Find the node referenced by the parameter_path_string&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ns_get_node_by_path
@@ -572,7 +572,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_load_op&n; *&n; * PARAMETERS:  Obj_desc        - Region or Field where the table will be&n; *                                obtained&n; *              Target          - Where a handle to the table will be stored&n; *              Walk_state      - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load an ACPI table from a field or operation region&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_load_op&n; *&n; * PARAMETERS:  obj_desc        - Region or Field where the table will be&n; *                                obtained&n; *              Target          - Where a handle to the table will be stored&n; *              walk_state      - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load an ACPI table from a field or operation region&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_load_op
 id|acpi_ex_load_op
@@ -621,10 +621,10 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_load_op&quot;
+l_string|&quot;ex_load_op&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Object can be either an Op_region or a Field */
+multiline_comment|/* Object can be either an op_region or a Field */
 r_switch
 c_cond
 (paren
@@ -685,7 +685,7 @@ comma
 id|ACPI_READ
 comma
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|i
 comma
@@ -793,7 +793,7 @@ comma
 id|ACPI_READ
 comma
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|i
 comma
@@ -993,7 +993,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/* Store the Ddb_handle into the Target operand */
+multiline_comment|/* Store the ddb_handle into the Target operand */
 id|status
 op_assign
 id|acpi_ex_store
@@ -1056,7 +1056,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_unload_table&n; *&n; * PARAMETERS:  Ddb_handle          - Handle to a previously loaded table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Unload an ACPI table&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_unload_table&n; *&n; * PARAMETERS:  ddb_handle          - Handle to a previously loaded table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Unload an ACPI table&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_unload_table
 id|acpi_ex_unload_table
@@ -1083,10 +1083,10 @@ id|table_info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_unload_table&quot;
+l_string|&quot;ex_unload_table&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Validate the handle&n;&t; * Although the handle is partially validated in Acpi_ex_reconfiguration(),&n;&t; * when it calls Acpi_ex_resolve_operands(), the handle is more completely&n;&t; * validated here.&n;&t; */
+multiline_comment|/*&n;&t; * Validate the handle&n;&t; * Although the handle is partially validated in acpi_ex_reconfiguration(),&n;&t; * when it calls acpi_ex_resolve_operands(), the handle is more completely&n;&t; * validated here.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1120,7 +1120,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Get the actual table descriptor from the Ddb_handle */
+multiline_comment|/* Get the actual table descriptor from the ddb_handle */
 id|table_info
 op_assign
 (paren
@@ -1129,7 +1129,7 @@ op_star
 )paren
 id|table_desc-&gt;reference.object
 suffix:semicolon
-multiline_comment|/*&n;&t; * Delete the entire namespace under this table Node&n;&t; * (Offset contains the Table_id)&n;&t; */
+multiline_comment|/*&n;&t; * Delete the entire namespace under this table Node&n;&t; * (Offset contains the table_id)&n;&t; */
 id|acpi_ns_delete_namespace_by_owner
 (paren
 id|table_info-&gt;table_id
@@ -1144,7 +1144,7 @@ id|acpi_tb_uninstall_table
 id|table_info-&gt;installed_desc
 )paren
 suffix:semicolon
-multiline_comment|/* Delete the table descriptor (Ddb_handle) */
+multiline_comment|/* Delete the table descriptor (ddb_handle) */
 id|acpi_ut_remove_reference
 (paren
 id|table_desc

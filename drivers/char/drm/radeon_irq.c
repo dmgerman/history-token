@@ -72,7 +72,6 @@ id|dev_priv-&gt;swi_queue
 )paren
 suffix:semicolon
 )brace
-macro_line|#if __HAVE_VBL_IRQ
 multiline_comment|/* VBLANK interrupt */
 r_if
 c_cond
@@ -96,8 +95,16 @@ op_amp
 id|dev-&gt;vbl_queue
 )paren
 suffix:semicolon
+id|DRM
+c_func
+(paren
+id|vbl_send_signals
+)paren
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Acknowledge all the bits in GEN_INT_STATUS -- seem to get&n;&t; * more than we asked for...&n;&t; */
 id|RADEON_WRITE
 c_func
@@ -318,7 +325,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#if __HAVE_VBL_IRQ
 DECL|function|vblank_wait
 r_int
 id|DRM
@@ -413,12 +419,9 @@ op_amp
 id|dev-&gt;vbl_received
 )paren
 )paren
-op_plus
-op_complement
+op_minus
 op_star
 id|sequence
-op_plus
-l_int|1
 )paren
 op_le
 (paren
@@ -438,7 +441,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Needs the lock as it touches the ring.&n; */
 DECL|function|radeon_irq_emit
 r_int

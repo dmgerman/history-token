@@ -37,6 +37,8 @@ DECL|macro|MPU401_HW_ALS4000
 mdefine_line|#define MPU401_HW_ALS4000&t;&t;16&t;/* Avance Logic ALS4000 */
 DECL|macro|MPU401_HW_INTEL8X0
 mdefine_line|#define MPU401_HW_INTEL8X0&t;&t;17&t;/* Intel8x0 driver */
+DECL|macro|MPU401_HW_PC98II
+mdefine_line|#define MPU401_HW_PC98II&t;&t;18&t;/* Roland PC98II */
 DECL|macro|MPU401_MODE_BIT_INPUT
 mdefine_line|#define MPU401_MODE_BIT_INPUT&t;&t;0
 DECL|macro|MPU401_MODE_BIT_OUTPUT
@@ -88,6 +90,12 @@ r_int
 id|port
 suffix:semicolon
 multiline_comment|/* base port of MPU-401 chip */
+DECL|member|cport
+r_int
+r_int
+id|cport
+suffix:semicolon
+multiline_comment|/* port + 1 (usually) */
 DECL|member|res
 r_struct
 id|resource
@@ -198,9 +206,9 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* I/O ports */
 DECL|macro|MPU401C
-mdefine_line|#define MPU401C(mpu) ((mpu)-&gt;port + 1)
+mdefine_line|#define MPU401C(mpu) (mpu)-&gt;cport
 DECL|macro|MPU401D
-mdefine_line|#define MPU401D(mpu) ((mpu)-&gt;port + 0)
+mdefine_line|#define MPU401D(mpu) (mpu)-&gt;port
 multiline_comment|/*&n;&n; */
 r_void
 id|snd_mpu401_uart_interrupt

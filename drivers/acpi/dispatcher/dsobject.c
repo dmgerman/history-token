@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 112 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -13,7 +13,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;dsobject&quot;
 )paren
 macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_build_internal_object&n; *&n; * PARAMETERS:  Walk_state      - Current walk state&n; *              Op              - Parser object to be translated&n; *              Obj_desc_ptr    - Where the ACPI internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parser Op object to the equivalent namespace object&n; *              Simple objects are any objects other than a package object!&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_build_internal_object&n; *&n; * PARAMETERS:  walk_state      - Current walk state&n; *              Op              - Parser object to be translated&n; *              obj_desc_ptr    - Where the ACPI internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parser Op object to the equivalent namespace object&n; *              Simple objects are any objects other than a package object!&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_build_internal_object
 id|acpi_ds_build_internal_object
@@ -41,7 +41,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_build_internal_object&quot;
+l_string|&quot;ds_build_internal_object&quot;
 )paren
 suffix:semicolon
 op_star
@@ -191,7 +191,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_build_internal_buffer_obj&n; *&n; * PARAMETERS:  Walk_state      - Current walk state&n; *              Op              - Parser object to be translated&n; *              Buffer_length   - Length of the buffer&n; *              Obj_desc_ptr    - Where the ACPI internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parser Op package object to the equivalent&n; *              namespace object&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_build_internal_buffer_obj&n; *&n; * PARAMETERS:  walk_state      - Current walk state&n; *              Op              - Parser object to be translated&n; *              buffer_length   - Length of the buffer&n; *              obj_desc_ptr    - Where the ACPI internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parser Op package object to the equivalent&n; *              namespace object&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_build_internal_buffer_obj
 id|acpi_ds_build_internal_buffer_obj
@@ -232,7 +232,7 @@ l_int|0
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_build_internal_buffer_obj&quot;
+l_string|&quot;ds_build_internal_buffer_obj&quot;
 )paren
 suffix:semicolon
 id|obj_desc
@@ -277,7 +277,7 @@ id|AE_NO_MEMORY
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Second arg is the buffer data (optional) Byte_list can be either&n;&t; * individual bytes or a string initializer.  In either case, a&n;&t; * Byte_list appears in the AML.&n;&t; */
+multiline_comment|/*&n;&t; * Second arg is the buffer data (optional) byte_list can be either&n;&t; * individual bytes or a string initializer.  In either case, a&n;&t; * byte_list appears in the AML.&n;&t; */
 id|arg
 op_assign
 id|op-&gt;common.value.arg
@@ -396,7 +396,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize buffer from the Byte_list (if present) */
+multiline_comment|/* Initialize buffer from the byte_list (if present) */
 r_if
 c_cond
 (paren
@@ -432,7 +432,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_build_internal_package_obj&n; *&n; * PARAMETERS:  Walk_state      - Current walk state&n; *              Op              - Parser object to be translated&n; *              Package_length  - Number of elements in the package&n; *              Obj_desc_ptr    - Where the ACPI internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parser Op package object to the equivalent&n; *              namespace object&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_build_internal_package_obj&n; *&n; * PARAMETERS:  walk_state      - Current walk state&n; *              Op              - Parser object to be translated&n; *              package_length  - Number of elements in the package&n; *              obj_desc_ptr    - Where the ACPI internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parser Op package object to the equivalent&n; *              namespace object&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_build_internal_package_obj
 id|acpi_ds_build_internal_package_obj
@@ -481,7 +481,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_build_internal_package_obj&quot;
+l_string|&quot;ds_build_internal_package_obj&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Find the parent of a possibly nested package */
@@ -607,7 +607,7 @@ id|ACPI_MEM_CALLOCATE
 (paren
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|obj_desc-&gt;package.count
 op_plus
@@ -724,7 +724,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_node&n; *&n; * PARAMETERS:  Walk_state      - Current walk state&n; *              Node            - NS Node to be initialized&n; *              Op              - Parser object to be translated&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create the object to be associated with a namespace node&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_create_node&n; *&n; * PARAMETERS:  walk_state      - Current walk state&n; *              Node            - NS Node to be initialized&n; *              Op              - Parser object to be translated&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create the object to be associated with a namespace node&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_create_node
 id|acpi_ds_create_node
@@ -751,7 +751,7 @@ id|obj_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_create_node&quot;
+l_string|&quot;ds_create_node&quot;
 comma
 id|op
 )paren
@@ -847,7 +847,7 @@ id|status
 suffix:semicolon
 )brace
 macro_line|#endif /* ACPI_NO_METHOD_EXECUTION */
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_init_object_from_op&n; *&n; * PARAMETERS:  Walk_state      - Current walk state&n; *              Op              - Parser op used to init the internal object&n; *              Opcode          - AML opcode associated with the object&n; *              Ret_obj_desc    - Namespace object to be initialized&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize a namespace object from a parser Op and its&n; *              associated arguments.  The namespace object is a more compact&n; *              representation of the Op and its arguments.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_init_object_from_op&n; *&n; * PARAMETERS:  walk_state      - Current walk state&n; *              Op              - Parser op used to init the internal object&n; *              Opcode          - AML opcode associated with the object&n; *              ret_obj_desc    - Namespace object to be initialized&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize a namespace object from a parser Op and its&n; *              associated arguments.  The namespace object is a more compact&n; *              representation of the Op and its arguments.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_init_object_from_op
 id|acpi_ds_init_object_from_op
@@ -885,7 +885,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_init_object_from_op&quot;
+l_string|&quot;ds_init_object_from_op&quot;
 )paren
 suffix:semicolon
 id|obj_desc
@@ -930,7 +930,7 @@ id|obj_desc
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Defer evaluation of Buffer Term_arg operand&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Defer evaluation of Buffer term_arg operand&n;&t;&t; */
 id|obj_desc-&gt;buffer.node
 op_assign
 (paren
@@ -955,7 +955,7 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_PACKAGE
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Defer evaluation of Package Term_arg operand&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Defer evaluation of Package term_arg operand&n;&t;&t; */
 id|obj_desc-&gt;package.node
 op_assign
 (paren
@@ -989,7 +989,7 @@ id|op_info-&gt;type
 r_case
 id|AML_TYPE_CONSTANT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Resolve AML Constants here - AND ONLY HERE!&n;&t;&t;&t; * All constants are integers.&n;&t;&t;&t; * We mark the integer with a flag that indicates that it started life&n;&t;&t;&t; * as a constant -- so that stores to constants will perform as expected (noop).&n;&t;&t;&t; * (Zero_op is used as a placeholder for optional target operands.)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Resolve AML Constants here - AND ONLY HERE!&n;&t;&t;&t; * All constants are integers.&n;&t;&t;&t; * We mark the integer with a flag that indicates that it started life&n;&t;&t;&t; * as a constant -- so that stores to constants will perform as expected (noop).&n;&t;&t;&t; * (zero_op is used as a placeholder for optional target operands.)&n;&t;&t;&t; */
 id|obj_desc-&gt;common.flags
 op_assign
 id|AOPOBJ_AML_CONSTANT

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsdump - Functions to display the resource structures.&n; *              $Revision: 34 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsdump - Functions to display the resource structures.&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;rsdump&quot;
 )paren
 macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_irq&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_irq&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_irq
 id|acpi_rs_dump_irq
@@ -126,7 +126,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_dma&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_dma&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_dma
 id|acpi_rs_dump_dma
@@ -317,7 +317,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_start_depend_fns&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_start_depend_fns&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_start_depend_fns
 id|acpi_rs_dump_start_depend_fns
@@ -442,7 +442,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_io&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_io&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_io
 id|acpi_rs_dump_io
@@ -516,7 +516,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_fixed_io&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_fixed_io&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_fixed_io
 id|acpi_rs_dump_fixed_io
@@ -562,7 +562,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_vendor_specific&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_vendor_specific&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_vendor_specific
 id|acpi_rs_dump_vendor_specific
@@ -634,7 +634,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_memory24&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_memory24&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_memory24
 id|acpi_rs_dump_memory24
@@ -708,7 +708,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_memory32&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_memory32&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_memory32
 id|acpi_rs_dump_memory32
@@ -782,7 +782,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_fixed_memory32&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_fixed_memory32&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_fixed_memory32
 id|acpi_rs_dump_fixed_memory32
@@ -842,7 +842,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_address16&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_address16&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_address16
 id|acpi_rs_dump_address16
@@ -1164,7 +1164,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_address32&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_address32&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_address32
 id|acpi_rs_dump_address32
@@ -1481,7 +1481,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_address64&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_address64&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_address64
 id|acpi_rs_dump_address64
@@ -1838,7 +1838,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_extended_irq&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_extended_irq&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_extended_irq
 id|acpi_rs_dump_extended_irq
@@ -1992,7 +1992,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_resource_list&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Dispatches the structure to the correct dump routine.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_resource_list&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Dispatches the structure to the correct dump routine.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_resource_list
 id|acpi_rs_dump_resource_list
@@ -2087,10 +2087,10 @@ id|ACPI_RSTYPE_END_DPF
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;End_dependent_functions Resource&bslash;n&quot;
+l_string|&quot;end_dependent_functions Resource&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Acpi_rs_dump_end_dependent_functions (Resource-&gt;Data);*/
+multiline_comment|/* acpi_rs_dump_end_dependent_functions (Resource-&gt;Data);*/
 r_break
 suffix:semicolon
 r_case
@@ -2129,10 +2129,10 @@ suffix:semicolon
 r_case
 id|ACPI_RSTYPE_END_TAG
 suffix:colon
-multiline_comment|/*Rs_dump_end_tag (Resource-&gt;Data);*/
+multiline_comment|/*rs_dump_end_tag (Resource-&gt;Data);*/
 id|acpi_os_printf
 (paren
-l_string|&quot;End_tag Resource&bslash;n&quot;
+l_string|&quot;end_tag Resource&bslash;n&quot;
 )paren
 suffix:semicolon
 id|done
@@ -2244,7 +2244,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_irq_list&n; *&n; * PARAMETERS:  Data            - pointer to the routing table to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Dispatches the structures to the correct dump routine.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_dump_irq_list&n; *&n; * PARAMETERS:  Data            - pointer to the routing table to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Dispatches the structures to the correct dump routine.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_rs_dump_irq_list
 id|acpi_rs_dump_irq_list
@@ -2345,7 +2345,7 @@ id|prt_element-&gt;source
 suffix:semicolon
 id|acpi_os_printf
 (paren
-l_string|&quot;  Source_index: %X&bslash;n&quot;
+l_string|&quot;  source_index: %X&bslash;n&quot;
 comma
 id|prt_element-&gt;source_index
 )paren

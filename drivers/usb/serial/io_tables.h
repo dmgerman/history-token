@@ -694,6 +694,11 @@ op_assign
 l_string|&quot;Edgeport 1 port adapter&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;edgeport_1&quot;
+comma
+dot
 id|id_table
 op_assign
 id|edgeport_1port_id_table
@@ -796,6 +801,11 @@ dot
 id|name
 op_assign
 l_string|&quot;Edgeport 2 port adapter&quot;
+comma
+dot
+id|short_name
+op_assign
+l_string|&quot;edgeport_2&quot;
 comma
 dot
 id|id_table
@@ -902,6 +912,11 @@ op_assign
 l_string|&quot;Edgeport 4 port adapter&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;edgeport_4&quot;
+comma
+dot
 id|id_table
 op_assign
 id|edgeport_4port_id_table
@@ -1004,6 +1019,11 @@ dot
 id|name
 op_assign
 l_string|&quot;Edgeport 8 port adapter&quot;
+comma
+dot
+id|short_name
+op_assign
+l_string|&quot;edgeport_8&quot;
 comma
 dot
 id|id_table

@@ -3110,6 +3110,11 @@ op_assign
 l_string|&quot;Keyspan PDA - (prerenumeration)&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;kyspn_pda_nofirm&quot;
+comma
+dot
 id|id_table
 op_assign
 id|id_table_fake
@@ -3161,6 +3166,11 @@ op_assign
 l_string|&quot;Xircom / Entregra PGS - (prerenumeration)&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;xircom_nofirm&quot;
+comma
+dot
 id|id_table
 op_assign
 id|id_table_fake_xircom
@@ -3209,6 +3219,11 @@ dot
 id|name
 op_assign
 l_string|&quot;Keyspan PDA&quot;
+comma
+dot
+id|short_name
+op_assign
+l_string|&quot;keyspan_pda&quot;
 comma
 dot
 id|id_table

@@ -1241,7 +1241,7 @@ id|ehci_vdbg
 (paren
 id|ehci
 comma
-l_string|&quot;port %d reset&quot;
+l_string|&quot;port %d reset&bslash;n&quot;
 comma
 id|wIndex
 op_plus

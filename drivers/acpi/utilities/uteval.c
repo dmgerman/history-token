@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: uteval - Object evaluation&n; *              $Revision: 44 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: uteval - Object evaluation&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;uteval&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_evaluate_object&n; *&n; * PARAMETERS:  Prefix_node         - Starting node&n; *              Path                - Path to object from starting node&n; *              Expected_return_types - Bitmap of allowed return types&n; *              Return_desc         - Where a return value is stored&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Evaluates a namespace object and verifies the type of the&n; *              return object.  Common code that simplifies accessing objects&n; *              that have required return objects of fixed types.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_evaluate_object&n; *&n; * PARAMETERS:  prefix_node         - Starting node&n; *              Path                - Path to object from starting node&n; *              expected_return_types - Bitmap of allowed return types&n; *              return_desc         - Where a return value is stored&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Evaluates a namespace object and verifies the type of the&n; *              return object.  Common code that simplifies accessing objects&n; *              that have required return objects of fixed types.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_evaluate_object
 id|acpi_ut_evaluate_object
@@ -43,7 +43,7 @@ id|return_btype
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_evaluate_object&quot;
+l_string|&quot;ut_evaluate_object&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Evaluate the object/method */
@@ -267,7 +267,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_evaluate_numeric_object&n; *&n; * PARAMETERS:  *Object_name        - Object name to be evaluated&n; *              Device_node         - Node for the device&n; *              *Address            - Where the value is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Evaluates a numeric namespace object for a selected device&n; *              and stores result in *Address.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_evaluate_numeric_object&n; *&n; * PARAMETERS:  *object_name        - Object name to be evaluated&n; *              device_node         - Node for the device&n; *              *Address            - Where the value is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Evaluates a numeric namespace object for a selected device&n; *              and stores result in *Address.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_evaluate_numeric_object
 id|acpi_ut_evaluate_numeric_object
@@ -294,7 +294,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_evaluate_numeric_object&quot;
+l_string|&quot;ut_evaluate_numeric_object&quot;
 )paren
 suffix:semicolon
 id|status
@@ -344,7 +344,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_execute_HID&n; *&n; * PARAMETERS:  Device_node         - Node for the device&n; *              *Hid                - Where the HID is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Executes the _HID control method that returns the hardware&n; *              ID of the device.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_execute_HID&n; *&n; * PARAMETERS:  device_node         - Node for the device&n; *              *Hid                - Where the HID is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Executes the _HID control method that returns the hardware&n; *              ID of the device.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_execute_HID
 id|acpi_ut_execute_HID
@@ -367,7 +367,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_execute_HID&quot;
+l_string|&quot;ut_execute_HID&quot;
 )paren
 suffix:semicolon
 id|status
@@ -452,7 +452,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_execute_CID&n; *&n; * PARAMETERS:  Device_node         - Node for the device&n; *              *Cid                - Where the CID is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Executes the _CID control method that returns one or more&n; *              compatible hardware IDs for the device.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_execute_CID&n; *&n; * PARAMETERS:  device_node         - Node for the device&n; *              *Cid                - Where the CID is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Executes the _CID control method that returns one or more&n; *              compatible hardware IDs for the device.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_execute_CID
 id|acpi_ut_execute_CID
@@ -475,7 +475,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_execute_CID&quot;
+l_string|&quot;ut_execute_CID&quot;
 )paren
 suffix:semicolon
 id|status
@@ -586,7 +586,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_execute_UID&n; *&n; * PARAMETERS:  Device_node         - Node for the device&n; *              *Uid                - Where the UID is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Executes the _UID control method that returns the hardware&n; *              ID of the device.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_execute_UID&n; *&n; * PARAMETERS:  device_node         - Node for the device&n; *              *Uid                - Where the UID is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Executes the _UID control method that returns the hardware&n; *              ID of the device.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_execute_UID
 id|acpi_ut_execute_UID
@@ -609,7 +609,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_execute_UID&quot;
+l_string|&quot;ut_execute_UID&quot;
 )paren
 suffix:semicolon
 id|status
@@ -691,7 +691,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_execute_STA&n; *&n; * PARAMETERS:  Device_node         - Node for the device&n; *              *Flags              - Where the status flags are returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Executes _STA for selected device and stores results in&n; *              *Flags.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_execute_STA&n; *&n; * PARAMETERS:  device_node         - Node for the device&n; *              *Flags              - Where the status flags are returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Executes _STA for selected device and stores results in&n; *              *Flags.&n; *&n; *              NOTE: Internal function, no parameter validation&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_execute_STA
 id|acpi_ut_execute_STA
@@ -714,7 +714,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_execute_STA&quot;
+l_string|&quot;ut_execute_STA&quot;
 )paren
 suffix:semicolon
 id|status

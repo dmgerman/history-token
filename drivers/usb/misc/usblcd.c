@@ -373,7 +373,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|ENOIOCTLCMD
+id|ENOTTY
 suffix:semicolon
 r_break
 suffix:semicolon

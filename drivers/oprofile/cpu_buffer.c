@@ -1,12 +1,9 @@
 multiline_comment|/**&n; * @file cpu_buffer.c&n; *&n; * @remark Copyright 2002 OProfile authors&n; * @remark Read the file COPYING&n; *&n; * @author John Levon &lt;levon@movementarian.org&gt;&n; *&n; * Each CPU has a local buffer that stores PC value/event&n; * pairs. We also log context switches when we notice them.&n; * Eventually each CPU&squot;s buffer is processed into the global&n; * event buffer by sync_cpu_buffers().&n; *&n; * We use a local buffer for two reasons: an NMI or similar&n; * interrupt cannot synchronise, and high sampling rates&n; * would lead to catastrophic global synchronisation if&n; * a global buffer was used.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &quot;cpu_buffer.h&quot;
 macro_line|#include &quot;oprof.h&quot;
-macro_line|#include &quot;oprofile_stats.h&quot;
 DECL|variable|__cacheline_aligned
 r_struct
 id|oprofile_cpu_buffer
@@ -184,6 +181,10 @@ id|b-&gt;sample_lost_overflow
 op_assign
 l_int|0
 suffix:semicolon
+id|b-&gt;sample_lost_task_exit
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -249,14 +250,6 @@ r_struct
 id|task_struct
 op_star
 id|task
-suffix:semicolon
-multiline_comment|/* temporary ? */
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|oprofile_started
-)paren
 suffix:semicolon
 id|cpu_buf-&gt;sample_received
 op_increment

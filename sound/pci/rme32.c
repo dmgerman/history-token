@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   ALSA driver for RME Digi32, Digi32/8 and Digi32 PRO audio interfaces&n; *&n; *&t;Copyright (c) 2002 Martin Langer &lt;martin-langer@gmx.de&gt;&n; *&n; *      Thanks to :        Anders Torger &lt;torger@ludd.luth.se&gt;,&n; *                         Henk Hesselink &lt;henk@anda.nl&gt;&n; *                         for writing the digi96-driver &n; *                         and RME for all informations.&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * &n; *   ToDo: full duplex (32, 32/8, 32Pro)&n; */
+multiline_comment|/*&n; *   ALSA driver for RME Digi32, Digi32/8 and Digi32 PRO audio interfaces&n; *&n; *&t;Copyright (c) 2002 Martin Langer &lt;martin-langer@gmx.de&gt;&n; *&n; *      Thanks to :        Anders Torger &lt;torger@ludd.luth.se&gt;,&n; *                         Henk Hesselink &lt;henk@anda.nl&gt;&n; *                         for writing the digi96-driver &n; *                         and RME for all informations.&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * &n; * ****************************************************************************&n; * &n; * Note #1 &quot;Sek&squot;d models&quot; ................................... martin 2002-12-07&n; * &n; * Identical soundcards by Sek&squot;d were labeled:&n; * RME Digi 32     = Sek&squot;d Prodif 32&n; * RME Digi 32 Pro = Sek&squot;d Prodif 96&n; * RME Digi 32/8   = Sek&squot;d Prodif Gold&n; * &n; * ****************************************************************************&n; * &n; * Note #2 &quot;full duplex mode&quot; ............................... martin 2002-12-07&n; * &n; * Full duplex doesn&squot;t work. All cards (32, 32/8, 32Pro) are working identical&n; * in this mode. Rec data and play data are using the same buffer therefore. At&n; * first you have got the playing bits in the buffer and then (after playing&n; * them) they were overwitten by the captured sound of the CS8412/14. Both &n; * modes (play/record) are running harmonically hand in hand in the same buffer&n; * and you have only one start bit plus one interrupt bit to control this &n; * paired action.&n; * This is opposite to the latter rme96 where playing and capturing is totally&n; * separated and so their full duplex mode is supported by alsa (using two &n; * start bits and two interrupts for two different buffers). &n; * But due to the wrong sequence of playing and capturing ALSA shows no solved&n; * full duplex support for the rme32 at the moment. That&squot;s bad, but I&squot;m not&n; * able to solve it. Are you motivated enough to solve this problem now? Your&n; * patch would be welcome!&n; * &n; * ****************************************************************************&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -193,37 +193,37 @@ DECL|macro|RME32_IO_RESET_POS
 mdefine_line|#define RME32_IO_RESET_POS          0x20100
 multiline_comment|/* Write control register bits */
 DECL|macro|RME32_WCR_START
-mdefine_line|#define RME32_WCR_START     (1 &lt;&lt; 0)
+mdefine_line|#define RME32_WCR_START     (1 &lt;&lt; 0)    /* startbit */
 DECL|macro|RME32_WCR_MONO
-mdefine_line|#define RME32_WCR_MONO      (1 &lt;&lt; 1)    /* 0: stereo, 1: mono&n;                                           Setting the whole card to mono&n;                                           don&squot;t seems to be very useful.&n;                                           A software-solution can handle &n;                                           full-duplex with one direction in&n;                                           stereo and the other way in mono. &n;                                           So, the hardware should work all &n;                                           the time in stereo! */
+mdefine_line|#define RME32_WCR_MONO      (1 &lt;&lt; 1)    /* 0=stereo, 1=mono&n;                                           Setting the whole card to mono&n;                                           doesn&squot;t seem to be very useful.&n;                                           A software-solution can handle &n;                                           full-duplex with one direction in&n;                                           stereo and the other way in mono. &n;                                           So, the hardware should work all &n;                                           the time in stereo! */
 DECL|macro|RME32_WCR_MODE24
-mdefine_line|#define RME32_WCR_MODE24    (1 &lt;&lt; 2)
+mdefine_line|#define RME32_WCR_MODE24    (1 &lt;&lt; 2)    /* 0=16bit, 1=32bit */
 DECL|macro|RME32_WCR_SEL
-mdefine_line|#define RME32_WCR_SEL       (1 &lt;&lt; 3)
+mdefine_line|#define RME32_WCR_SEL       (1 &lt;&lt; 3)    /* 0=input on output, 1=normal playback/capture */
 DECL|macro|RME32_WCR_FREQ_0
-mdefine_line|#define RME32_WCR_FREQ_0    (1 &lt;&lt; 4)
+mdefine_line|#define RME32_WCR_FREQ_0    (1 &lt;&lt; 4)    /* frequency (play) */
 DECL|macro|RME32_WCR_FREQ_1
 mdefine_line|#define RME32_WCR_FREQ_1    (1 &lt;&lt; 5)
 DECL|macro|RME32_WCR_INP_0
-mdefine_line|#define RME32_WCR_INP_0     (1 &lt;&lt; 6)
+mdefine_line|#define RME32_WCR_INP_0     (1 &lt;&lt; 6)    /* input switch */
 DECL|macro|RME32_WCR_INP_1
 mdefine_line|#define RME32_WCR_INP_1     (1 &lt;&lt; 7)
 DECL|macro|RME32_WCR_RESET
-mdefine_line|#define RME32_WCR_RESET     (1 &lt;&lt; 8)
+mdefine_line|#define RME32_WCR_RESET     (1 &lt;&lt; 8)    /* Reset address */
 DECL|macro|RME32_WCR_MUTE
-mdefine_line|#define RME32_WCR_MUTE      (1 &lt;&lt; 9)
+mdefine_line|#define RME32_WCR_MUTE      (1 &lt;&lt; 9)    /* digital mute for output */
 DECL|macro|RME32_WCR_PRO
-mdefine_line|#define RME32_WCR_PRO       (1 &lt;&lt; 10)
+mdefine_line|#define RME32_WCR_PRO       (1 &lt;&lt; 10)   /* 1=professional, 0=consumer */
 DECL|macro|RME32_WCR_DS_BM
-mdefine_line|#define RME32_WCR_DS_BM     (1 &lt;&lt; 11)&t;/* only PRO/Adat-Version */
+mdefine_line|#define RME32_WCR_DS_BM     (1 &lt;&lt; 11)&t;/* 1=DoubleSpeed (only PRO-Version); 1=BlockMode (only Adat-Version) */
 DECL|macro|RME32_WCR_ADAT
-mdefine_line|#define RME32_WCR_ADAT      (1 &lt;&lt; 12)&t;/* only Adat-Version */
+mdefine_line|#define RME32_WCR_ADAT      (1 &lt;&lt; 12)&t;/* Adat Mode (only Adat-Version) */
 DECL|macro|RME32_WCR_AUTOSYNC
-mdefine_line|#define RME32_WCR_AUTOSYNC  (1 &lt;&lt; 13)
+mdefine_line|#define RME32_WCR_AUTOSYNC  (1 &lt;&lt; 13)   /* AutoSync */
 DECL|macro|RME32_WCR_PD
-mdefine_line|#define RME32_WCR_PD        (1 &lt;&lt; 14)&t;/* only PRO-Version */
+mdefine_line|#define RME32_WCR_PD        (1 &lt;&lt; 14)&t;/* DAC Reset (only PRO-Version) */
 DECL|macro|RME32_WCR_EMP
-mdefine_line|#define RME32_WCR_EMP       (1 &lt;&lt; 15)&t;/* only PRO-Version */
+mdefine_line|#define RME32_WCR_EMP       (1 &lt;&lt; 15)&t;/* 1=Emphasis on (only PRO-Version) */
 DECL|macro|RME32_WCR_BITPOS_FREQ_0
 mdefine_line|#define RME32_WCR_BITPOS_FREQ_0 4
 DECL|macro|RME32_WCR_BITPOS_FREQ_1
@@ -236,19 +236,19 @@ multiline_comment|/* Read control register bits */
 DECL|macro|RME32_RCR_AUDIO_ADDR_MASK
 mdefine_line|#define RME32_RCR_AUDIO_ADDR_MASK 0x10001
 DECL|macro|RME32_RCR_LOCK
-mdefine_line|#define RME32_RCR_LOCK      (1 &lt;&lt; 23)
+mdefine_line|#define RME32_RCR_LOCK      (1 &lt;&lt; 23)   /* 1=locked, 0=not locked */
 DECL|macro|RME32_RCR_ERF
-mdefine_line|#define RME32_RCR_ERF       (1 &lt;&lt; 26)
+mdefine_line|#define RME32_RCR_ERF       (1 &lt;&lt; 26)   /* 1=Error, 0=no Error */
 DECL|macro|RME32_RCR_FREQ_0
-mdefine_line|#define RME32_RCR_FREQ_0    (1 &lt;&lt; 27)
+mdefine_line|#define RME32_RCR_FREQ_0    (1 &lt;&lt; 27)   /* CS841x frequency (record) */
 DECL|macro|RME32_RCR_FREQ_1
 mdefine_line|#define RME32_RCR_FREQ_1    (1 &lt;&lt; 28)
 DECL|macro|RME32_RCR_FREQ_2
 mdefine_line|#define RME32_RCR_FREQ_2    (1 &lt;&lt; 29)
 DECL|macro|RME32_RCR_KMODE
-mdefine_line|#define RME32_RCR_KMODE     (1 &lt;&lt; 30)
+mdefine_line|#define RME32_RCR_KMODE     (1 &lt;&lt; 30)   /* card mode: 1=PLL, 0=quartz */
 DECL|macro|RME32_RCR_IRQ
-mdefine_line|#define RME32_RCR_IRQ       (1 &lt;&lt; 31)
+mdefine_line|#define RME32_RCR_IRQ       (1 &lt;&lt; 31)   /* interrupt */
 DECL|macro|RME32_RCR_BITPOS_F0
 mdefine_line|#define RME32_RCR_BITPOS_F0 27
 DECL|macro|RME32_RCR_BITPOS_F1
@@ -296,13 +296,13 @@ macro_line|#ifndef PCI_DEVICE_ID_DIGI32
 DECL|macro|PCI_DEVICE_ID_DIGI32
 macro_line|# define PCI_DEVICE_ID_DIGI32 0x9896
 macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_DIGI32_8
-DECL|macro|PCI_DEVICE_ID_DIGI32_8
-macro_line|# define PCI_DEVICE_ID_DIGI32_8 0x9898
-macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_DIGI32_PRO
 DECL|macro|PCI_DEVICE_ID_DIGI32_PRO
 macro_line|# define PCI_DEVICE_ID_DIGI32_PRO 0x9897
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_DIGI32_8
+DECL|macro|PCI_DEVICE_ID_DIGI32_8
+macro_line|# define PCI_DEVICE_ID_DIGI32_8 0x9898
 macro_line|#endif
 DECL|struct|snd_rme32
 r_typedef
@@ -884,16 +884,18 @@ op_or
 id|SNDRV_PCM_INFO_PAUSE
 )paren
 comma
+dot
 id|formats
-suffix:colon
+op_assign
 (paren
 id|SNDRV_PCM_FMTBIT_S16_LE
 op_or
 id|SNDRV_PCM_FMTBIT_S32_LE
 )paren
 comma
+dot
 id|rates
-suffix:colon
+op_assign
 (paren
 id|SNDRV_PCM_RATE_32000
 op_or
@@ -902,48 +904,58 @@ op_or
 id|SNDRV_PCM_RATE_48000
 )paren
 comma
+dot
 id|rate_min
-suffix:colon
+op_assign
 l_int|32000
 comma
+dot
 id|rate_max
-suffix:colon
+op_assign
 l_int|48000
 comma
+dot
 id|channels_min
-suffix:colon
+op_assign
 l_int|2
 comma
+dot
 id|channels_max
-suffix:colon
+op_assign
 l_int|2
 comma
+dot
 id|buffer_bytes_max
-suffix:colon
+op_assign
 id|RME32_BUFFER_SIZE
 comma
+dot
 id|period_bytes_min
-suffix:colon
+op_assign
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|period_bytes_max
-suffix:colon
+op_assign
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|periods_min
-suffix:colon
+op_assign
 id|RME32_BUFFER_SIZE
 op_div
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|periods_max
-suffix:colon
+op_assign
 id|RME32_BUFFER_SIZE
 op_div
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|fifo_size
-suffix:colon
+op_assign
 l_int|0
 comma
 )brace
@@ -968,16 +980,18 @@ op_or
 id|SNDRV_PCM_INFO_PAUSE
 )paren
 comma
+dot
 id|formats
-suffix:colon
+op_assign
 (paren
 id|SNDRV_PCM_FMTBIT_S16_LE
 op_or
 id|SNDRV_PCM_FMTBIT_S32_LE
 )paren
 comma
+dot
 id|rates
-suffix:colon
+op_assign
 (paren
 id|SNDRV_PCM_RATE_32000
 op_or
@@ -986,48 +1000,58 @@ op_or
 id|SNDRV_PCM_RATE_48000
 )paren
 comma
+dot
 id|rate_min
-suffix:colon
+op_assign
 l_int|32000
 comma
+dot
 id|rate_max
-suffix:colon
+op_assign
 l_int|48000
 comma
+dot
 id|channels_min
-suffix:colon
+op_assign
 l_int|2
 comma
+dot
 id|channels_max
-suffix:colon
+op_assign
 l_int|2
 comma
+dot
 id|buffer_bytes_max
-suffix:colon
+op_assign
 id|RME32_BUFFER_SIZE
 comma
+dot
 id|period_bytes_min
-suffix:colon
+op_assign
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|period_bytes_max
-suffix:colon
+op_assign
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|periods_min
-suffix:colon
+op_assign
 id|RME32_BUFFER_SIZE
 op_div
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|periods_max
-suffix:colon
+op_assign
 id|RME32_BUFFER_SIZE
 op_div
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|fifo_size
-suffix:colon
+op_assign
 l_int|0
 comma
 )brace
@@ -1052,60 +1076,72 @@ op_or
 id|SNDRV_PCM_INFO_PAUSE
 )paren
 comma
+dot
 id|formats
-suffix:colon
+op_assign
 id|SNDRV_PCM_FMTBIT_S16_LE
 comma
+dot
 id|rates
-suffix:colon
+op_assign
 (paren
 id|SNDRV_PCM_RATE_44100
 op_or
 id|SNDRV_PCM_RATE_48000
 )paren
 comma
+dot
 id|rate_min
-suffix:colon
+op_assign
 l_int|44100
 comma
+dot
 id|rate_max
-suffix:colon
+op_assign
 l_int|48000
 comma
+dot
 id|channels_min
-suffix:colon
+op_assign
 l_int|8
 comma
+dot
 id|channels_max
-suffix:colon
+op_assign
 l_int|8
 comma
+dot
 id|buffer_bytes_max
-suffix:colon
+op_assign
 id|RME32_BUFFER_SIZE
 comma
+dot
 id|period_bytes_min
-suffix:colon
+op_assign
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|period_bytes_max
-suffix:colon
+op_assign
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|periods_min
-suffix:colon
+op_assign
 id|RME32_BUFFER_SIZE
 op_div
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|periods_max
-suffix:colon
+op_assign
 id|RME32_BUFFER_SIZE
 op_div
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|fifo_size
-suffix:colon
+op_assign
 l_int|0
 comma
 )brace
@@ -1130,60 +1166,72 @@ op_or
 id|SNDRV_PCM_INFO_PAUSE
 )paren
 comma
+dot
 id|formats
-suffix:colon
+op_assign
 id|SNDRV_PCM_FMTBIT_S16_LE
 comma
+dot
 id|rates
-suffix:colon
+op_assign
 (paren
 id|SNDRV_PCM_RATE_44100
 op_or
 id|SNDRV_PCM_RATE_48000
 )paren
 comma
+dot
 id|rate_min
-suffix:colon
+op_assign
 l_int|44100
 comma
+dot
 id|rate_max
-suffix:colon
+op_assign
 l_int|48000
 comma
+dot
 id|channels_min
-suffix:colon
+op_assign
 l_int|8
 comma
+dot
 id|channels_max
-suffix:colon
+op_assign
 l_int|8
 comma
+dot
 id|buffer_bytes_max
-suffix:colon
+op_assign
 id|RME32_BUFFER_SIZE
 comma
+dot
 id|period_bytes_min
-suffix:colon
+op_assign
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|period_bytes_max
-suffix:colon
+op_assign
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|periods_min
-suffix:colon
+op_assign
 id|RME32_BUFFER_SIZE
 op_div
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|periods_max
-suffix:colon
+op_assign
 id|RME32_BUFFER_SIZE
 op_div
 id|RME32_BLOCK_SIZE
 comma
+dot
 id|fifo_size
-suffix:colon
+op_assign
 l_int|0
 comma
 )brace

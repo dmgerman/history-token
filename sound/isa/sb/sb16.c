@@ -867,6 +867,21 @@ l_char|&squot;T&squot;
 comma
 l_char|&squot;L&squot;
 comma
+l_int|0x0025
+comma
+l_int|0x0031
+)paren
+comma
+multiline_comment|/* Sound Blaster 16 PnP */
+id|ISAPNP_SB16
+c_func
+(paren
+l_char|&squot;C&squot;
+comma
+l_char|&squot;T&squot;
+comma
+l_char|&squot;L&squot;
+comma
 l_int|0x0026
 comma
 l_int|0x0031
@@ -3797,7 +3812,7 @@ id|__attribute__
 id|__unused__
 )paren
 )paren
-id|csp
+id|xcsp
 op_assign
 id|INT_MAX
 suffix:semicolon
@@ -3997,10 +4012,7 @@ op_amp
 id|str
 comma
 op_amp
-id|csp
-(braket
-id|nr_dev
-)braket
+id|xcsp
 )paren
 op_eq
 l_int|2
@@ -4063,7 +4075,7 @@ macro_line|#ifdef CONFIG_SND_SB16_CSP
 r_if
 c_cond
 (paren
-id|csp
+id|xcsp
 op_ne
 id|INT_MAX
 )paren
@@ -4072,7 +4084,7 @@ id|csp
 id|nr_dev
 )braket
 op_assign
-id|csp
+id|xcsp
 suffix:semicolon
 macro_line|#endif
 id|nr_dev

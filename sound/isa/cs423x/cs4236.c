@@ -1491,6 +1491,23 @@ comma
 l_int|0x0110
 )paren
 comma
+multiline_comment|/* IBM IntelliStation M Pro 6898 11U - CS4236B */
+id|ISAPNP_CS4232_WOMPU
+c_func
+(paren
+l_char|&squot;C&squot;
+comma
+l_char|&squot;S&squot;
+comma
+l_char|&squot;C&squot;
+comma
+l_int|0xe835
+comma
+l_int|0x0000
+comma
+l_int|0x0010
+)paren
+comma
 multiline_comment|/* Some noname CS4236 based card */
 id|ISAPNP_CS4232
 c_func
@@ -3671,8 +3688,8 @@ c_func
 id|alsa_card_cs423x_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-cs4232=enable,index,id,isapnp,port,&n;&t;&t;&t; cport,mpu_port,fm_port,sb_port,&n;&t;&t;&t; irq,mpu_irq,dma1,dma1_size,&n;&t;&t;&t; dma2,dma2_size */
-multiline_comment|/* format is: snd-cs4236=enable,index,id,isapnp,port,&n;&t;&t;&t; cport,mpu_port,fm_port,sb_port,&n;&t;&t;&t; irq,mpu_irq,dma1,dma1_size,&n;&t;&t;&t; dma2,dma2_size */
+multiline_comment|/* format is: snd-cs4232=enable,index,id,isapnp,port,&n;&t;&t;&t; cport,mpu_port,fm_port,sb_port,&n;&t;&t;&t; irq,mpu_irq,dma1,dma2 */
+multiline_comment|/* format is: snd-cs4236=enable,index,id,isapnp,port,&n;&t;&t;&t; cport,mpu_port,fm_port,sb_port,&n;&t;&t;&t; irq,mpu_irq,dma1,dma2 */
 DECL|function|alsa_card_cs423x_setup
 r_static
 r_int

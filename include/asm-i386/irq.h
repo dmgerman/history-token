@@ -59,6 +59,16 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|release_x86_irqs
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|macro|ARCH_HAS_NMI_WATCHDOG
 mdefine_line|#define ARCH_HAS_NMI_WATCHDOG&t;&t;/* See include/linux/nmi.h */

@@ -2493,8 +2493,6 @@ id|search_exception_table
 c_func
 (paren
 id|pc
-comma
-id|regs.gp
 )paren
 )paren
 op_ne

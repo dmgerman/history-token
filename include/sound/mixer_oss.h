@@ -272,6 +272,10 @@ id|snd_info_entry_t
 op_star
 id|proc_entry
 suffix:semicolon
+DECL|member|oss_dev_alloc
+r_int
+id|oss_dev_alloc
+suffix:semicolon
 multiline_comment|/* --- */
 DECL|member|oss_recsrc
 r_int

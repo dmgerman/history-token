@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *              $Revision: 67 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbxfroot&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_find_table&n; *&n; * PARAMETERS:  Signature           - String with ACPI table signature&n; *              Oem_id              - String with the table OEM ID&n; *              Oem_table_id        - String with the OEM Table ID.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find an ACPI table (in the RSDT/XSDT) that matches the&n; *              Signature, OEM ID and OEM Table ID.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_find_table&n; *&n; * PARAMETERS:  Signature           - String with ACPI table signature&n; *              oem_id              - String with the table OEM ID&n; *              oem_table_id        - String with the OEM Table ID.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find an ACPI table (in the RSDT/XSDT) that matches the&n; *              Signature, OEM ID and OEM Table ID.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_find_table
 id|acpi_tb_find_table
@@ -40,7 +40,7 @@ id|table
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_find_table&quot;
+l_string|&quot;tb_find_table&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Validate string lengths */
@@ -117,7 +117,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Check Oem_id and Oem_table_id */
+multiline_comment|/* Check oem_id and oem_table_id */
 r_if
 c_cond
 (paren
@@ -167,7 +167,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_firmware_table&n; *&n; * PARAMETERS:  Signature       - Any ACPI table signature&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *              Flags           - Physical/Virtual support&n; *              Ret_buffer      - pointer to a structure containing a buffer to&n; *                                receive the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get an ACPI table.  The caller&n; *              supplies an Out_buffer large enough to contain the entire ACPI&n; *              table.  Upon completion&n; *              the Out_buffer-&gt;Length field will indicate the number of bytes&n; *              copied into the Out_buffer-&gt;Buf_ptr buffer. This table will be&n; *              a complete table including the header.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_firmware_table&n; *&n; * PARAMETERS:  Signature       - Any ACPI table signature&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *              Flags           - Physical/Virtual support&n; *              ret_buffer      - pointer to a structure containing a buffer to&n; *                                receive the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get an ACPI table.  The caller&n; *              supplies an out_buffer large enough to contain the entire ACPI&n; *              table.  Upon completion&n; *              the out_buffer-&gt;Length field will indicate the number of bytes&n; *              copied into the out_buffer-&gt;buf_ptr buffer. This table will be&n; *              a complete table including the header.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_firmware_table
 id|acpi_get_firmware_table
@@ -187,10 +187,10 @@ op_star
 id|table_pointer
 )paren
 (brace
-id|ACPI_POINTER
+id|acpi_pointer
 id|rsdp_address
 suffix:semicolon
-id|ACPI_POINTER
+id|acpi_pointer
 id|address
 suffix:semicolon
 id|acpi_status
@@ -216,7 +216,7 @@ id|j
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_get_firmware_table&quot;
+l_string|&quot;acpi_get_firmware_table&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure that at least the table manager is initialized.  We don&squot;t&n;&t; * require that the entire ACPI subsystem is up for this interface&n;&t; */
@@ -314,7 +314,7 @@ id|rsdp_address.pointer.physical
 comma
 r_sizeof
 (paren
-id|RSDP_DESCRIPTOR
+id|rsdp_descriptor
 )paren
 comma
 (paren
@@ -430,7 +430,7 @@ id|address.pointer.value
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Insert Processor_mode flags */
+multiline_comment|/* Insert processor_mode flags */
 id|address.pointer_type
 op_or_assign
 id|flags
@@ -663,7 +663,7 @@ id|acpi_os_unmap_memory
 id|rsdt_info.pointer
 comma
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|rsdt_info.pointer-&gt;length
 )paren
@@ -676,7 +676,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* TBD: Move to a new file */
 macro_line|#if ACPI_MACHINE_WIDTH != 16
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_find_root_pointer&n; *&n; * PARAMETERS:  **Rsdp_address          - Where to place the RSDP address&n; *              Flags                   - Logical/Physical addressing&n; *&n; * RETURN:      Status, Physical address of the RSDP&n; *&n; * DESCRIPTION: Find the RSDP&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_find_root_pointer&n; *&n; * PARAMETERS:  **rsdp_address          - Where to place the RSDP address&n; *              Flags                   - Logical/Physical addressing&n; *&n; * RETURN:      Status, Physical address of the RSDP&n; *&n; * DESCRIPTION: Find the RSDP&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_find_root_pointer
 id|acpi_find_root_pointer
@@ -684,7 +684,7 @@ id|acpi_find_root_pointer
 id|u32
 id|flags
 comma
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|rsdp_address
 )paren
@@ -697,7 +697,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_find_root_pointer&quot;
+l_string|&quot;acpi_find_root_pointer&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Get the RSDP */
@@ -756,7 +756,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_scan_memory_for_rsdp&n; *&n; * PARAMETERS:  Start_address       - Starting pointer for search&n; *              Length              - Maximum length to search&n; *&n; * RETURN:      Pointer to the RSDP if found, otherwise NULL.&n; *&n; * DESCRIPTION: Search a block of memory for the RSDP signature&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_scan_memory_for_rsdp&n; *&n; * PARAMETERS:  start_address       - Starting pointer for search&n; *              Length              - Maximum length to search&n; *&n; * RETURN:      Pointer to the RSDP if found, otherwise NULL.&n; *&n; * DESCRIPTION: Search a block of memory for the RSDP signature&n; *&n; ******************************************************************************/
 id|u8
 op_star
 DECL|function|acpi_tb_scan_memory_for_rsdp
@@ -779,7 +779,7 @@ id|mem_rover
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_scan_memory_for_rsdp&quot;
+l_string|&quot;tb_scan_memory_for_rsdp&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Search from given start addr for the requested length  */
@@ -876,7 +876,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_find_rsdp&n; *&n; * PARAMETERS:  *Table_info             - Where the table info is returned&n; *              Flags                   - Current memory mode (logical vs.&n; *                                        physical addressing)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Search lower 1_mbyte of memory for the root system descriptor&n; *              pointer structure.  If it is found, set *RSDP to point to it.&n; *&n; *              NOTE: The RSDP must be either in the first 1_k of the Extended&n; *              BIOS Data Area or between E0000 and FFFFF (ACPI 1.0 section&n; *              5.2.2; assertion #421).&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_find_rsdp&n; *&n; * PARAMETERS:  *table_info             - Where the table info is returned&n; *              Flags                   - Current memory mode (logical vs.&n; *                                        physical addressing)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: search lower 1_mbyte of memory for the root system descriptor&n; *              pointer structure.  If it is found, set *RSDP to point to it.&n; *&n; *              NOTE: The RSDp must be either in the first 1_k of the Extended&n; *              BIOS Data Area or between E0000 and FFFFF (ACPI 1.0 section&n; *              5.2.2; assertion #421).&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_find_rsdp
 id|acpi_tb_find_rsdp
@@ -907,7 +907,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_find_rsdp&quot;
+l_string|&quot;tb_find_rsdp&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Scan supports either 1) Logical addressing or 2) Physical addressing&n;&t; */

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 67 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;psargs&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_package_length&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *&n; * RETURN:      Decoded package length.  On completion, the AML pointer points&n; *              past the length byte or bytes.&n; *&n; * DESCRIPTION: Decode and return a package length field&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_get_next_package_length&n; *&n; * PARAMETERS:  parser_state        - Current parser state object&n; *&n; * RETURN:      Decoded package length.  On completion, the AML pointer points&n; *              past the length byte or bytes.&n; *&n; * DESCRIPTION: Decode and return a package length field&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ps_get_next_package_length
 id|acpi_ps_get_next_package_length
@@ -30,7 +30,7 @@ l_int|0
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ps_get_next_package_length&quot;
+l_string|&quot;ps_get_next_package_length&quot;
 )paren
 suffix:semicolon
 id|encoded_length
@@ -200,7 +200,7 @@ id|length
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_package_end&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *&n; * RETURN:      Pointer to end-of-package +1&n; *&n; * DESCRIPTION: Get next package length and return a pointer past the end of&n; *              the package.  Consumes the package length field&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_get_next_package_end&n; *&n; * PARAMETERS:  parser_state        - Current parser state object&n; *&n; * RETURN:      Pointer to end-of-package +1&n; *&n; * DESCRIPTION: Get next package length and return a pointer past the end of&n; *              the package.  Consumes the package length field&n; *&n; ******************************************************************************/
 id|u8
 op_star
 DECL|function|acpi_ps_get_next_package_end
@@ -217,19 +217,19 @@ id|start
 op_assign
 id|parser_state-&gt;aml
 suffix:semicolon
-id|NATIVE_UINT
+id|acpi_native_uint
 id|length
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ps_get_next_package_end&quot;
+l_string|&quot;ps_get_next_package_end&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Function below changes Parser_state-&gt;Aml */
+multiline_comment|/* Function below changes parser_state-&gt;Aml */
 id|length
 op_assign
 (paren
-id|NATIVE_UINT
+id|acpi_native_uint
 )paren
 id|acpi_ps_get_next_package_length
 (paren
@@ -245,7 +245,7 @@ id|length
 suffix:semicolon
 multiline_comment|/* end of package */
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_namestring&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *&n; * RETURN:      Pointer to the start of the name string (pointer points into&n; *              the AML.&n; *&n; * DESCRIPTION: Get next raw namestring within the AML stream.  Handles all name&n; *              prefix characters.  Set parser state to point past the string.&n; *              (Name is consumed from the AML.)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_get_next_namestring&n; *&n; * PARAMETERS:  parser_state        - Current parser state object&n; *&n; * RETURN:      Pointer to the start of the name string (pointer points into&n; *              the AML.&n; *&n; * DESCRIPTION: Get next raw namestring within the AML stream.  Handles all name&n; *              prefix characters.  Set parser state to point past the string.&n; *              (Name is consumed from the AML.)&n; *&n; ******************************************************************************/
 r_char
 op_star
 DECL|function|acpi_ps_get_next_namestring
@@ -270,7 +270,7 @@ id|parser_state-&gt;aml
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ps_get_next_namestring&quot;
+l_string|&quot;ps_get_next_namestring&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Handle multiple prefix characters */
@@ -304,7 +304,7 @@ id|end
 r_case
 l_int|0
 suffix:colon
-multiline_comment|/* Null_name */
+multiline_comment|/* null_name */
 r_if
 c_cond
 (paren
@@ -349,7 +349,7 @@ l_int|2
 op_plus
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|ACPI_GET8
 (paren
@@ -391,7 +391,7 @@ id|start
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_namepath&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *              Arg                 - Where the namepath will be stored&n; *              Arg_count           - If the namepath points to a control method&n; *                                    the method&squot;s argument is returned here.&n; *              Method_call         - Whether the namepath can possibly be the&n; *                                    start of a method call&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get next name (if method call, return # of required args).&n; *              Names are looked up in the internal namespace to determine&n; *              if the name represents a control method.  If a method&n; *              is found, the number of arguments to the method is returned.&n; *              This information is critical for parsing to continue correctly.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_get_next_namepath&n; *&n; * PARAMETERS:  parser_state        - Current parser state object&n; *              Arg                 - Where the namepath will be stored&n; *              arg_count           - If the namepath points to a control method&n; *                                    the method&squot;s argument is returned here.&n; *              method_call         - Whether the namepath can possibly be the&n; *                                    start of a method call&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get next name (if method call, return # of required args).&n; *              Names are looked up in the internal namespace to determine&n; *              if the name represents a control method.  If a method&n; *              is found, the number of arguments to the method is returned.&n; *              This information is critical for parsing to continue correctly.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ps_get_next_namepath
 id|acpi_ps_get_next_namepath
@@ -438,7 +438,7 @@ id|scope_info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ps_get_next_namepath&quot;
+l_string|&quot;ps_get_next_namepath&quot;
 )paren
 suffix:semicolon
 id|path
@@ -644,7 +644,7 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * 1) Any error other than NOT_FOUND is always severe&n;&t;&t;&t; * 2) NOT_FOUND is only important if we are executing a method.&n;&t;&t;&t; * 3) If executing a Cond_ref_of opcode, NOT_FOUND is ok.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 1) Any error other than NOT_FOUND is always severe&n;&t;&t;&t; * 2) NOT_FOUND is only important if we are executing a method.&n;&t;&t;&t; * 3) If executing a cond_ref_of opcode, NOT_FOUND is ok.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -689,7 +689,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * We got a NOT_FOUND during table load or we encountered&n;&t;&t;&t;&t; * a Cond_ref_of(x) where the target does not exist.&n;&t;&t;&t;&t; * -- either case is ok&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * We got a NOT_FOUND during table load or we encountered&n;&t;&t;&t;&t; * a cond_ref_of(x) where the target does not exist.&n;&t;&t;&t;&t; * -- either case is ok&n;&t;&t;&t;&t; */
 id|status
 op_assign
 id|AE_OK
@@ -715,7 +715,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_simple_arg&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *              Arg_type            - The argument type (AML_*_ARG)&n; *              Arg                 - Where the argument is returned&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Get the next simple argument (constant, string, or namestring)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_get_next_simple_arg&n; *&n; * PARAMETERS:  parser_state        - Current parser state object&n; *              arg_type            - The argument type (AML_*_ARG)&n; *              Arg                 - Where the argument is returned&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Get the next simple argument (constant, string, or namestring)&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ps_get_next_simple_arg
 id|acpi_ps_get_next_simple_arg
@@ -734,7 +734,7 @@ id|arg
 (brace
 id|ACPI_FUNCTION_TRACE_U32
 (paren
-l_string|&quot;Ps_get_next_simple_arg&quot;
+l_string|&quot;ps_get_next_simple_arg&quot;
 comma
 id|arg_type
 )paren
@@ -910,7 +910,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Invalid Arg_type %X&bslash;n&quot;
+l_string|&quot;Invalid arg_type %X&bslash;n&quot;
 comma
 id|arg_type
 )paren
@@ -922,7 +922,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_field&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *&n; * RETURN:      A newly allocated FIELD op&n; *&n; * DESCRIPTION: Get next field (Named_field, Reserved_field, or Access_field)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_get_next_field&n; *&n; * PARAMETERS:  parser_state        - Current parser state object&n; *&n; * RETURN:      A newly allocated FIELD op&n; *&n; * DESCRIPTION: Get next field (named_field, reserved_field, or access_field)&n; *&n; ******************************************************************************/
 id|acpi_parse_object
 op_star
 DECL|function|acpi_ps_get_next_field
@@ -955,7 +955,7 @@ id|name
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ps_get_next_field&quot;
+l_string|&quot;ps_get_next_field&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* determine field type */
@@ -1082,7 +1082,7 @@ suffix:semicolon
 r_case
 id|AML_INT_ACCESSFIELD_OP
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Get Access_type and Access_attrib and merge into the field Op&n;&t;&t; * Access_type is first operand, Access_attribute is second&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Get access_type and access_attrib and merge into the field Op&n;&t;&t; * access_type is first operand, access_attribute is second&n;&t;&t; */
 id|field-&gt;common.value.integer32
 op_assign
 (paren
@@ -1121,7 +1121,7 @@ id|field
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_arg&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *              Arg_type            - The argument type (AML_*_ARG)&n; *              Arg_count           - If the argument points to a control method&n; *                                    the method&squot;s argument is returned here.&n; *&n; * RETURN:      Status, and an op object containing the next argument.&n; *&n; * DESCRIPTION: Get next argument (including complex list arguments that require&n; *              pushing the parser stack)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_get_next_arg&n; *&n; * PARAMETERS:  parser_state        - Current parser state object&n; *              arg_type            - The argument type (AML_*_ARG)&n; *              arg_count           - If the argument points to a control method&n; *                                    the method&squot;s argument is returned here.&n; *&n; * RETURN:      Status, and an op object containing the next argument.&n; *&n; * DESCRIPTION: Get next argument (including complex list arguments that require&n; *              pushing the parser stack)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ps_get_next_arg
 id|acpi_ps_get_next_arg
@@ -1169,7 +1169,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ps_get_next_arg&quot;
+l_string|&quot;ps_get_next_arg&quot;
 comma
 id|parser_state
 )paren
@@ -1402,7 +1402,7 @@ id|subop
 )paren
 )paren
 (brace
-multiline_comment|/* Null_name or Name_string */
+multiline_comment|/* null_name or name_string */
 id|arg
 op_assign
 id|acpi_ps_alloc_op
@@ -1490,7 +1490,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Invalid Arg_type: %X&bslash;n&quot;
+l_string|&quot;Invalid arg_type: %X&bslash;n&quot;
 comma
 id|arg_type
 )paren

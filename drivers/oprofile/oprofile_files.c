@@ -1,11 +1,9 @@
 multiline_comment|/**&n; * @file oprofile_files.c&n; *&n; * @remark Copyright 2002 OProfile authors&n; * @remark Read the file COPYING&n; *&n; * @author John Levon &lt;levon@movementarian.org&gt;&n; */
-macro_line|#include &lt;linux/oprofile.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;oprof.h&quot;
+macro_line|#include &lt;linux/oprofile.h&gt;
 macro_line|#include &quot;event_buffer.h&quot;
 macro_line|#include &quot;oprofile_stats.h&quot;
+macro_line|#include &quot;oprof.h&quot;
 DECL|variable|fs_buffer_size
 r_int
 r_int
@@ -28,27 +26,6 @@ op_assign
 l_int|32768
 suffix:semicolon
 multiline_comment|/* FIXME: tune */
-DECL|function|simple_open
-r_static
-r_int
-id|simple_open
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|cpu_type_read
 r_static
 id|ssize_t
@@ -100,11 +77,6 @@ id|file_operations
 id|cpu_type_fops
 op_assign
 (brace
-dot
-id|open
-op_assign
-id|simple_open
-comma
 dot
 id|read
 op_assign
@@ -250,11 +222,6 @@ id|enable_fops
 op_assign
 (brace
 dot
-id|open
-op_assign
-id|simple_open
-comma
-dot
 id|read
 op_assign
 id|enable_read
@@ -263,6 +230,53 @@ dot
 id|write
 op_assign
 id|enable_write
+comma
+)brace
+suffix:semicolon
+DECL|function|dump_write
+r_static
+id|ssize_t
+id|dump_write
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_char
+r_const
+op_star
+id|buf
+comma
+r_int
+id|count
+comma
+id|loff_t
+op_star
+id|offset
+)paren
+(brace
+id|wake_up_buffer_waiter
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|count
+suffix:semicolon
+)brace
+DECL|variable|dump_fops
+r_static
+r_struct
+id|file_operations
+id|dump_fops
+op_assign
+(brace
+dot
+id|write
+op_assign
+id|dump_write
 comma
 )brace
 suffix:semicolon
@@ -293,6 +307,19 @@ l_string|&quot;enable&quot;
 comma
 op_amp
 id|enable_fops
+)paren
+suffix:semicolon
+id|oprofilefs_create_file
+c_func
+(paren
+id|sb
+comma
+id|root
+comma
+l_string|&quot;dump&quot;
+comma
+op_amp
+id|dump_fops
 )paren
 suffix:semicolon
 id|oprofilefs_create_file

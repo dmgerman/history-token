@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exutils - interpreter/scanner utilities&n; *              $Revision: 107 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exutils - interpreter/scanner utilities&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * DEFINE_AML_GLOBALS is tested in amlcode.h&n; * to determine whether certain global names should be &quot;defined&quot; or only&n; * &quot;declared&quot; in the current compilation.  This enhances maintainability&n; * by enabling a single header file to embody all knowledge of the names&n; * in question.&n; *&n; * Exactly one module of any executable should #define DEFINE_GLOBALS&n; * before #including the header files which use this convention.  The&n; * names in question will be defined and initialized in that module,&n; * and declared as extern in all other modules which #include those&n; * header files.&n; */
 DECL|macro|DEFINE_AML_GLOBALS
@@ -14,7 +14,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;exutils&quot;
 )paren
 macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_enter_interpreter&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Enter the interpreter execution region.  Failure to enter&n; *              the interpreter region is a fatal system error&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_enter_interpreter&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Enter the interpreter execution region.  Failure to enter&n; *              the interpreter region is a fatal system error&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_enter_interpreter
 id|acpi_ex_enter_interpreter
@@ -27,7 +27,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_enter_interpreter&quot;
+l_string|&quot;ex_enter_interpreter&quot;
 )paren
 suffix:semicolon
 id|status
@@ -60,7 +60,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_exit_interpreter&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Exit the interpreter execution region&n; *&n; * Cases where the interpreter is unlocked:&n; *      1) Completion of the execution of a control method&n; *      2) Method blocked on a Sleep() AML opcode&n; *      3) Method blocked on an Acquire() AML opcode&n; *      4) Method blocked on a Wait() AML opcode&n; *      5) Method blocked to acquire the global lock&n; *      6) Method blocked to execute a serialized control method that is&n; *          already executing&n; *      7) About to invoke a user-installed opregion handler&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_exit_interpreter&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Exit the interpreter execution region&n; *&n; * Cases where the interpreter is unlocked:&n; *      1) Completion of the execution of a control method&n; *      2) Method blocked on a Sleep() AML opcode&n; *      3) Method blocked on an Acquire() AML opcode&n; *      4) Method blocked on a Wait() AML opcode&n; *      5) Method blocked to acquire the global lock&n; *      6) Method blocked to execute a serialized control method that is&n; *          already executing&n; *      7) About to invoke a user-installed opregion handler&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_exit_interpreter
 id|acpi_ex_exit_interpreter
@@ -73,7 +73,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_exit_interpreter&quot;
+l_string|&quot;ex_exit_interpreter&quot;
 )paren
 suffix:semicolon
 id|status
@@ -103,7 +103,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_truncate_for32bit_table&n; *&n; * PARAMETERS:  Obj_desc        - Object to be truncated&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Truncate a number to 32-bits if the currently executing method&n; *              belongs to a 32-bit ACPI table.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_truncate_for32bit_table&n; *&n; * PARAMETERS:  obj_desc        - Object to be truncated&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Truncate a number to 32-bits if the currently executing method&n; *              belongs to a 32-bit ACPI table.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_truncate_for32bit_table
 id|acpi_ex_truncate_for32bit_table
@@ -157,7 +157,7 @@ id|ACPI_UINT32_MAX
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_acquire_global_lock&n; *&n; * PARAMETERS:  Field_flags           - Flags with Lock rule:&n; *                                      Always_lock or Never_lock&n; *&n; * RETURN:      TRUE/FALSE indicating whether the lock was actually acquired&n; *&n; * DESCRIPTION: Obtain the global lock and keep track of this fact via two&n; *              methods.  A global variable keeps the state of the lock, and&n; *              the state is returned to the caller.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_acquire_global_lock&n; *&n; * PARAMETERS:  field_flags           - Flags with Lock rule:&n; *                                      always_lock or never_lock&n; *&n; * RETURN:      TRUE/FALSE indicating whether the lock was actually acquired&n; *&n; * DESCRIPTION: Obtain the global lock and keep track of this fact via two&n; *              methods.  A global variable keeps the state of the lock, and&n; *              the state is returned to the caller.&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ex_acquire_global_lock
 id|acpi_ex_acquire_global_lock
@@ -176,10 +176,10 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_acquire_global_lock&quot;
+l_string|&quot;ex_acquire_global_lock&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Only attempt lock if the Always_lock bit is set */
+multiline_comment|/* Only attempt lock if the always_lock bit is set */
 r_if
 c_cond
 (paren
@@ -234,7 +234,7 @@ id|locked
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_release_global_lock&n; *&n; * PARAMETERS:  Locked_by_me    - Return value from corresponding call to&n; *                                Acquire_global_lock.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release the global lock if it is locked.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_release_global_lock&n; *&n; * PARAMETERS:  locked_by_me    - Return value from corresponding call to&n; *                                acquire_global_lock.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release the global lock if it is locked.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_release_global_lock
 id|acpi_ex_release_global_lock
@@ -248,7 +248,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_release_global_lock&quot;
+l_string|&quot;ex_release_global_lock&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Only attempt unlock if the caller locked it */
@@ -292,7 +292,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_digits_needed&n; *&n; * PARAMETERS:  Value           - Value to be represented&n; *              Base            - Base of representation&n; *&n; * RETURN:      the number of digits needed to represent Value in Base&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_digits_needed&n; *&n; * PARAMETERS:  Value           - Value to be represented&n; *              Base            - Base of representation&n; *&n; * RETURN:      the number of digits needed to represent Value in Base&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ex_digits_needed
 id|acpi_ex_digits_needed
@@ -315,7 +315,7 @@ id|quotient
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_digits_needed&quot;
+l_string|&quot;ex_digits_needed&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * acpi_integer is unsigned, so we don&squot;t worry about a &squot;-&squot;&n;&t; */
@@ -363,7 +363,7 @@ id|num_digits
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_eisa_id_to_string&n; *&n; * PARAMETERS:  Numeric_id      - EISA ID to be converted&n; *              Out_string      - Where to put the converted string (8 bytes)&n; *&n; * DESCRIPTION: Convert a numeric EISA ID to string representation&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_eisa_id_to_string&n; *&n; * PARAMETERS:  numeric_id      - EISA ID to be converted&n; *              out_string      - Where to put the converted string (8 bytes)&n; *&n; * DESCRIPTION: Convert a numeric EISA ID to string representation&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_eisa_id_to_string
 id|acpi_ex_eisa_id_to_string
@@ -529,7 +529,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_unsigned_integer_to_string&n; *&n; * PARAMETERS:  Value           - Value to be converted&n; *              Out_string      - Where to put the converted string (8 bytes)&n; *&n; * RETURN:      Convert a number to string representation&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_unsigned_integer_to_string&n; *&n; * PARAMETERS:  Value           - Value to be converted&n; *              out_string      - Where to put the converted string (8 bytes)&n; *&n; * RETURN:      Convert a number to string representation&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_unsigned_integer_to_string
 id|acpi_ex_unsigned_integer_to_string

@@ -498,8 +498,6 @@ DECL|macro|SB_DT019X_SPKR_DEV
 mdefine_line|#define SB_DT019X_SPKR_DEV&t;0x6a
 DECL|macro|SB_DT019X_LINE_DEV
 mdefine_line|#define SB_DT019X_LINE_DEV&t;0x6e
-DECL|macro|SB_DT019X_OUTPUT_SW1
-mdefine_line|#define SB_DT019X_OUTPUT_SW1&t;0x3c
 DECL|macro|SB_DT019X_OUTPUT_SW2
 mdefine_line|#define SB_DT019X_OUTPUT_SW2&t;0x4c
 DECL|macro|SB_DT019X_CAPTURE_SW
@@ -514,6 +512,20 @@ DECL|macro|SB_DT019X_CAP_SYNTH
 mdefine_line|#define SB_DT019X_CAP_SYNTH&t;0x07
 DECL|macro|SB_DT019X_CAP_MAIN
 mdefine_line|#define SB_DT019X_CAP_MAIN&t;0x07
+DECL|macro|SB_ALS4000_MONO_IO_CTRL
+mdefine_line|#define SB_ALS4000_MONO_IO_CTRL&t;0x4b
+DECL|macro|SB_ALS4000_MIC_IN_GAIN
+mdefine_line|#define SB_ALS4000_MIC_IN_GAIN&t;0x4d
+DECL|macro|SB_ALS4000_FMDAC
+mdefine_line|#define SB_ALS4000_FMDAC&t;0x4f
+DECL|macro|SB_ALS4000_3D_SND_FX
+mdefine_line|#define SB_ALS4000_3D_SND_FX&t;0x50
+DECL|macro|SB_ALS4000_3D_TIME_DELAY
+mdefine_line|#define SB_ALS4000_3D_TIME_DELAY&t;0x51
+DECL|macro|SB_ALS4000_3D_AUTO_MUTE
+mdefine_line|#define SB_ALS4000_3D_AUTO_MUTE&t;0x52
+DECL|macro|SB_ALS4000_QSOUND
+mdefine_line|#define SB_ALS4000_QSOUND&t;0xdb
 multiline_comment|/* IRQ setting bitmap */
 DECL|macro|SB_IRQSETUP_IRQ9
 mdefine_line|#define SB_IRQSETUP_IRQ9&t;0x01

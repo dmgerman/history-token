@@ -8,7 +8,7 @@ macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else
 DECL|macro|DEBUGP
-mdefine_line|#define DEBUGP(fmt , ...)
+mdefine_line|#define DEBUGP(fmt, a...)
 macro_line|#endif
 DECL|function|parse_one
 r_static

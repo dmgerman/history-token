@@ -156,6 +156,12 @@ DECL|macro|SEND_VOLUME_TAG
 mdefine_line|#define SEND_VOLUME_TAG       0xb6
 DECL|macro|WRITE_LONG_2
 mdefine_line|#define WRITE_LONG_2          0xea
+DECL|macro|READ_16
+mdefine_line|#define READ_16               0x88
+DECL|macro|WRITE_16
+mdefine_line|#define WRITE_16              0x8a
+DECL|macro|SERVICE_ACTION_IN
+mdefine_line|#define SERVICE_ACTION_IN     0x9e
 multiline_comment|/*&n; *  Status codes&n; */
 DECL|macro|GOOD
 mdefine_line|#define GOOD                 0x00

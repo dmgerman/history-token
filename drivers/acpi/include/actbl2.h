@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actbl2.h - ACPI Specification Revision 2.0 Tables&n; *       $Revision: 29 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actbl2.h - ACPI Specification Revision 2.0 Tables&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTBL2_H__
 DECL|macro|__ACTBL2_H__
@@ -116,9 +116,9 @@ suffix:colon
 l_int|31
 suffix:semicolon
 multiline_comment|/* Must be 0 */
-DECL|member|Xfirmware_waking_vector
+DECL|member|xfirmware_waking_vector
 id|u64
-id|Xfirmware_waking_vector
+id|xfirmware_waking_vector
 suffix:semicolon
 multiline_comment|/* 64bit physical address of the Firmware Waking Vector. */
 DECL|member|version
@@ -234,12 +234,12 @@ DECL|member|V1_pm1a_evt_blk
 id|u32
 id|V1_pm1a_evt_blk
 suffix:semicolon
-multiline_comment|/* Port address of Power Mgt 1a Acpi_event Reg Blk */
+multiline_comment|/* Port address of Power Mgt 1a acpi_event Reg Blk */
 DECL|member|V1_pm1b_evt_blk
 id|u32
 id|V1_pm1b_evt_blk
 suffix:semicolon
-multiline_comment|/* Port address of Power Mgt 1b Acpi_event Reg Blk */
+multiline_comment|/* Port address of Power Mgt 1b acpi_event Reg Blk */
 DECL|member|V1_pm1a_cnt_blk
 id|u32
 id|V1_pm1a_cnt_blk
@@ -264,22 +264,22 @@ DECL|member|V1_gpe0_blk
 id|u32
 id|V1_gpe0_blk
 suffix:semicolon
-multiline_comment|/* Port addr of General Purpose Acpi_event 0 Reg Blk */
+multiline_comment|/* Port addr of General Purpose acpi_event 0 Reg Blk */
 DECL|member|V1_gpe1_blk
 id|u32
 id|V1_gpe1_blk
 suffix:semicolon
-multiline_comment|/* Port addr of General Purpose Acpi_event 1 Reg Blk */
+multiline_comment|/* Port addr of General Purpose acpi_event 1 Reg Blk */
 DECL|member|pm1_evt_len
 id|u8
 id|pm1_evt_len
 suffix:semicolon
-multiline_comment|/* Byte Length of ports at pm1_x_evt_blk */
+multiline_comment|/* Byte length of ports at pm1_x_evt_blk */
 DECL|member|pm1_cnt_len
 id|u8
 id|pm1_cnt_len
 suffix:semicolon
-multiline_comment|/* Byte Length of ports at pm1_x_cnt_blk */
+multiline_comment|/* Byte length of ports at pm1_x_cnt_blk */
 DECL|member|pm2_cnt_len
 id|u8
 id|pm2_cnt_len
@@ -480,7 +480,7 @@ DECL|member|reset_value
 id|u8
 id|reset_value
 suffix:semicolon
-multiline_comment|/* Value to write to the Reset_register port to reset the system. */
+multiline_comment|/* Value to write to the reset_register port to reset the system. */
 DECL|member|reserved7
 id|u8
 id|reserved7
@@ -489,9 +489,9 @@ l_int|3
 )braket
 suffix:semicolon
 multiline_comment|/* These three bytes must be zero */
-DECL|member|Xfirmware_ctrl
+DECL|member|xfirmware_ctrl
 id|u64
-id|Xfirmware_ctrl
+id|xfirmware_ctrl
 suffix:semicolon
 multiline_comment|/* 64-bit physical address of FACS */
 DECL|member|Xdsdt
@@ -499,46 +499,46 @@ id|u64
 id|Xdsdt
 suffix:semicolon
 multiline_comment|/* 64-bit physical address of DSDT */
-DECL|member|Xpm1a_evt_blk
+DECL|member|xpm1a_evt_blk
 id|acpi_generic_address
-id|Xpm1a_evt_blk
+id|xpm1a_evt_blk
 suffix:semicolon
-multiline_comment|/* Extended Power Mgt 1a Acpi_event Reg Blk address */
-DECL|member|Xpm1b_evt_blk
+multiline_comment|/* Extended Power Mgt 1a acpi_event Reg Blk address */
+DECL|member|xpm1b_evt_blk
 id|acpi_generic_address
-id|Xpm1b_evt_blk
+id|xpm1b_evt_blk
 suffix:semicolon
-multiline_comment|/* Extended Power Mgt 1b Acpi_event Reg Blk address */
-DECL|member|Xpm1a_cnt_blk
+multiline_comment|/* Extended Power Mgt 1b acpi_event Reg Blk address */
+DECL|member|xpm1a_cnt_blk
 id|acpi_generic_address
-id|Xpm1a_cnt_blk
+id|xpm1a_cnt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1a Control Reg Blk address */
-DECL|member|Xpm1b_cnt_blk
+DECL|member|xpm1b_cnt_blk
 id|acpi_generic_address
-id|Xpm1b_cnt_blk
+id|xpm1b_cnt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1b Control Reg Blk address */
-DECL|member|Xpm2_cnt_blk
+DECL|member|xpm2_cnt_blk
 id|acpi_generic_address
-id|Xpm2_cnt_blk
+id|xpm2_cnt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 2 Control Reg Blk address */
-DECL|member|Xpm_tmr_blk
+DECL|member|xpm_tmr_blk
 id|acpi_generic_address
-id|Xpm_tmr_blk
+id|xpm_tmr_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt Timer Ctrl Reg Blk address */
-DECL|member|Xgpe0_blk
+DECL|member|xgpe0_blk
 id|acpi_generic_address
-id|Xgpe0_blk
+id|xgpe0_blk
 suffix:semicolon
-multiline_comment|/* Extended General Purpose Acpi_event 0 Reg Blk address */
-DECL|member|Xgpe1_blk
+multiline_comment|/* Extended General Purpose acpi_event 0 Reg Blk address */
+DECL|member|xgpe1_blk
 id|acpi_generic_address
-id|Xgpe1_blk
+id|xgpe1_blk
 suffix:semicolon
-multiline_comment|/* Extended General Purpose Acpi_event 1 Reg Blk address */
+multiline_comment|/* Extended General Purpose acpi_event 1 Reg Blk address */
 DECL|typedef|fadt_descriptor_rev2
 )brace
 id|fadt_descriptor_rev2

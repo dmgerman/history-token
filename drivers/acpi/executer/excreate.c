@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: excreate - Named object creation&n; *              $Revision: 98 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: excreate - Named object creation&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -13,7 +13,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;excreate&quot;
 )paren
 macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_alias&n; *&n; * PARAMETERS:  Walk_state           - Current state, contains operands&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new named alias&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_create_alias&n; *&n; * PARAMETERS:  walk_state           - Current state, contains operands&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new named alias&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_create_alias
 id|acpi_ex_create_alias
@@ -38,7 +38,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_create_alias&quot;
+l_string|&quot;ex_create_alias&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Get the source/alias operands (both namespace nodes) */
@@ -148,7 +148,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_event&n; *&n; * PARAMETERS:  Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new event object&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_create_event&n; *&n; * PARAMETERS:  walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new event object&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_create_event
 id|acpi_ex_create_event
@@ -167,7 +167,7 @@ id|obj_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_create_event&quot;
+l_string|&quot;ex_create_event&quot;
 )paren
 suffix:semicolon
 id|obj_desc
@@ -251,7 +251,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_mutex&n; *&n; * PARAMETERS:  Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new mutex object&n; *&n; *              Mutex (Name[0], Sync_level[1])&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_create_mutex&n; *&n; * PARAMETERS:  walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new mutex object&n; *&n; *              Mutex (Name[0], sync_level[1])&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_create_mutex
 id|acpi_ex_create_mutex
@@ -272,7 +272,7 @@ id|obj_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_create_mutex&quot;
+l_string|&quot;ex_create_mutex&quot;
 comma
 id|ACPI_WALK_OPERANDS
 )paren
@@ -375,7 +375,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_region&n; *&n; * PARAMETERS:  Aml_start           - Pointer to the region declaration AML&n; *              Aml_length          - Max length of the declaration AML&n; *              Operands            - List of operands for the opcode&n; *              Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new operation region object&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_create_region&n; *&n; * PARAMETERS:  aml_start           - Pointer to the region declaration AML&n; *              aml_length          - Max length of the declaration AML&n; *              Operands            - List of operands for the opcode&n; *              walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new operation region object&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_create_region
 id|acpi_ex_create_region
@@ -412,7 +412,7 @@ id|region_obj2
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_create_region&quot;
+l_string|&quot;ex_create_region&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Get the Node from the object stack  */
@@ -456,7 +456,7 @@ id|ACPI_USER_REGION_BEGIN
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Invalid Address_space type %X&bslash;n&quot;
+l_string|&quot;Invalid address_space type %X&bslash;n&quot;
 comma
 id|region_space
 )paren
@@ -563,7 +563,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_table_region&n; *&n; * PARAMETERS:  Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new Data_table_region object&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_create_table_region&n; *&n; * PARAMETERS:  walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new data_table_region object&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_create_table_region
 id|acpi_ex_create_table_region
@@ -605,7 +605,7 @@ id|region_obj2
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_create_table_region&quot;
+l_string|&quot;ex_create_table_region&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Get the Node from the object stack  */
@@ -711,7 +711,7 @@ suffix:semicolon
 id|obj_desc-&gt;region.address
 op_assign
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|ACPI_TO_INTEGER
 (paren
@@ -811,7 +811,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_processor&n; *&n; * PARAMETERS:  Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new processor object and populate the fields&n; *&n; *              Processor (Name[0], Cpu_iD[1], Pblock_addr[2], Pblock_length[3])&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_create_processor&n; *&n; * PARAMETERS:  walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new processor object and populate the fields&n; *&n; *              Processor (Name[0], cpu_iD[1], pblock_addr[2], pblock_length[3])&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_create_processor
 id|acpi_ex_create_processor
@@ -841,7 +841,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_create_processor&quot;
+l_string|&quot;ex_create_processor&quot;
 comma
 id|walk_state
 )paren
@@ -883,7 +883,7 @@ suffix:semicolon
 id|obj_desc-&gt;processor.address
 op_assign
 (paren
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 )paren
 id|operand
 (braket
@@ -935,7 +935,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_power_resource&n; *&n; * PARAMETERS:  Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new Power_resource object and populate the fields&n; *&n; *              Power_resource (Name[0], System_level[1], Resource_order[2])&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_create_power_resource&n; *&n; * PARAMETERS:  walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new power_resource object and populate the fields&n; *&n; *              power_resource (Name[0], system_level[1], resource_order[2])&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_create_power_resource
 id|acpi_ex_create_power_resource
@@ -965,7 +965,7 @@ id|obj_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_create_power_resource&quot;
+l_string|&quot;ex_create_power_resource&quot;
 comma
 id|walk_state
 )paren
@@ -1048,7 +1048,7 @@ id|status
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_create_method&n; *&n; * PARAMETERS:  Aml_start       - First byte of the method&squot;s AML&n; *              Aml_length      - AML byte count for this method&n; *              Walk_state      - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new method object&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_create_method&n; *&n; * PARAMETERS:  aml_start       - First byte of the method&squot;s AML&n; *              aml_length      - AML byte count for this method&n; *              walk_state      - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new method object&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_create_method
 id|acpi_ex_create_method
@@ -1088,7 +1088,7 @@ id|method_flags
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_create_method&quot;
+l_string|&quot;ex_create_method&quot;
 comma
 id|walk_state
 )paren
@@ -1160,7 +1160,7 @@ op_amp
 id|METHOD_FLAGS_SERIALIZED
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * ACPI 1.0: Concurrency = 1&n;&t;&t; * ACPI 2.0: Concurrency = (Sync_level (in method declaration) + 1)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * ACPI 1.0: Concurrency = 1&n;&t;&t; * ACPI 2.0: Concurrency = (sync_level (in method declaration) + 1)&n;&t;&t; */
 id|obj_desc-&gt;method.concurrency
 op_assign
 (paren

@@ -2,8 +2,8 @@ macro_line|#ifndef PWC_IOCTL_H
 DECL|macro|PWC_IOCTL_H
 mdefine_line|#define PWC_IOCTL_H
 multiline_comment|/* (C) 2001-2002 Nemosoft Unv.    webcam@smcc.demon.nl&n;   &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
-multiline_comment|/*         This is pwc-ioctl.h belonging to PWC 8.7                        */
-multiline_comment|/* &n;   Changes&n;   2001/08/03  Alvarado   Added ioctl constants to access methods for &n;                          changing white balance and red/blue gains&n; */
+multiline_comment|/*         This is pwc-ioctl.h belonging to PWC 8.10                        */
+multiline_comment|/* &n;   Changes&n;   2001/08/03  Alvarado   Added ioctl constants to access methods for &n;                          changing white balance and red/blue gains&n;   2002/12/15  G. H. Fernandez-Toribio   VIDIOCGREALSIZE&n; */
 multiline_comment|/* These are private ioctl() commands, specific for the Philips webcams.&n;   They contain functions not found in other webcams, and settings not&n;   specified in the Video4Linux API. &n;   &n;   The #define names are built up like follows:&n;   VIDIOC&t;&t;VIDeo IOCtl prefix&n;         PWC&t;&t;Philps WebCam&n;            G           optional: Get&n;            S           optional: Set&n;             ... &t;the function&n; */
 multiline_comment|/* The frame rate is encoded in the video_window.flags parameter using&n;   the upper 16 bits, since some flags are defined nowadays. The following&n;   defines provide a mask and shift to filter out this value.&n;   &n;   In &squot;Snapshot&squot; mode the camera freezes its automatic exposure and colour &n;   balance controls.&n; */
 DECL|macro|PWC_FPS_SHIFT
@@ -101,6 +101,21 @@ suffix:semicolon
 multiline_comment|/* Led off-time; range = 0..25000  */
 )brace
 suffix:semicolon
+multiline_comment|/* Image size (used with GREALSIZE) */
+DECL|struct|pwc_imagesize
+r_struct
+id|pwc_imagesize
+(brace
+DECL|member|width
+r_int
+id|width
+suffix:semicolon
+DECL|member|height
+r_int
+id|height
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* Restore user settings */
 DECL|macro|VIDIOCPWCRUSER
 mdefine_line|#define VIDIOCPWCRUSER&t;&t;_IO(&squot;v&squot;, 192)
@@ -164,5 +179,8 @@ DECL|macro|VIDIOCPWCSDYNNOISE
 mdefine_line|#define VIDIOCPWCSDYNNOISE&t;_IOW(&squot;v&squot;, 209, int)
 DECL|macro|VIDIOCPWCGDYNNOISE
 mdefine_line|#define VIDIOCPWCGDYNNOISE&t;_IOR(&squot;v&squot;, 209, int)
+multiline_comment|/* Real image size as used by the camera; tells you whether or not there&squot;s a gray border around the image */
+DECL|macro|VIDIOCPWCGREALSIZE
+mdefine_line|#define VIDIOCPWCGREALSIZE&t;_IOR(&squot;v&squot;, 210, struct pwc_imagesize)
 macro_line|#endif
 eof

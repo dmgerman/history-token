@@ -2,12 +2,8 @@ multiline_comment|/**&n; * @file oprof.c&n; *&n; * @remark Copyright 2002 OProfi
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/notifier.h&gt;
-macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;oprof.h&quot;
 macro_line|#include &quot;event_buffer.h&quot;
 macro_line|#include &quot;cpu_buffer.h&quot;
@@ -216,6 +212,11 @@ id|oprofile_started
 r_goto
 id|out
 suffix:semicolon
+id|oprofile_reset_stats
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -236,11 +237,6 @@ suffix:semicolon
 id|oprofile_started
 op_assign
 l_int|1
-suffix:semicolon
-id|oprofile_reset_stats
-c_func
-(paren
-)paren
 suffix:semicolon
 id|out
 suffix:colon
@@ -433,12 +429,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 DECL|variable|oprofile_init
 id|module_init
 c_func
@@ -451,6 +441,24 @@ id|module_exit
 c_func
 (paren
 id|oprofile_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;John Levon &lt;levon@movementarian.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;OProfile system profiler&quot;
 )paren
 suffix:semicolon
 eof

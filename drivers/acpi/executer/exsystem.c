@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exsystem - Interface to OS services&n; *              $Revision: 74 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exsystem - Interface to OS services&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exsystem&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_wait_semaphore&n; *&n; * PARAMETERS:  Semaphore           - OSD semaphore to wait on&n; *              Timeout             - Max time to wait&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Implements a semaphore wait with a check to see if the&n; *              semaphore is available immediately.  If it is not, the&n; *              interpreter is released.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_system_wait_semaphore&n; *&n; * PARAMETERS:  Semaphore           - OSD semaphore to wait on&n; *              Timeout             - Max time to wait&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Implements a semaphore wait with a check to see if the&n; *              semaphore is available immediately.  If it is not, the&n; *              interpreter is released.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_system_wait_semaphore
 id|acpi_ex_system_wait_semaphore
@@ -29,7 +29,7 @@ id|status2
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_system_wait_semaphore&quot;
+l_string|&quot;ex_system_wait_semaphore&quot;
 )paren
 suffix:semicolon
 id|status
@@ -126,7 +126,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_do_stall&n; *&n; * PARAMETERS:  How_long            - The amount of time to stall&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Suspend running thread for specified amount of time.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_system_do_stall&n; *&n; * PARAMETERS:  how_long            - The amount of time to stall&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Suspend running thread for specified amount of time.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_system_do_stall
 id|acpi_ex_system_do_stall
@@ -193,7 +193,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_do_suspend&n; *&n; * PARAMETERS:  How_long            - The amount of time to suspend&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Suspend running thread for specified amount of time.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_system_do_suspend&n; *&n; * PARAMETERS:  how_long            - The amount of time to suspend&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Suspend running thread for specified amount of time.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_system_do_suspend
 id|acpi_ex_system_do_suspend
@@ -254,7 +254,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_acquire_mutex&n; *&n; * PARAMETERS:  *Time_desc          - The &squot;time to delay&squot; object descriptor&n; *              *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Provides an access point to perform synchronization operations&n; *              within the AML.  This function will cause a lock to be generated&n; *              for the Mutex pointed to by Obj_desc.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_system_acquire_mutex&n; *&n; * PARAMETERS:  *time_desc          - The &squot;time to delay&squot; object descriptor&n; *              *obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Provides an access point to perform synchronization operations&n; *              within the AML.  This function will cause a lock to be generated&n; *              for the Mutex pointed to by obj_desc.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_system_acquire_mutex
 id|acpi_ex_system_acquire_mutex
@@ -275,7 +275,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_system_acquire_mutex&quot;
+l_string|&quot;ex_system_acquire_mutex&quot;
 comma
 id|obj_desc
 )paren
@@ -336,7 +336,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_release_mutex&n; *&n; * PARAMETERS:  *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Provides an access point to perform synchronization operations&n; *              within the AML.  This operation is a request to release a&n; *              previously acquired Mutex.  If the Mutex variable is set then&n; *              it will be decremented.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_system_release_mutex&n; *&n; * PARAMETERS:  *obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Provides an access point to perform synchronization operations&n; *              within the AML.  This operation is a request to release a&n; *              previously acquired Mutex.  If the Mutex variable is set then&n; *              it will be decremented.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_system_release_mutex
 id|acpi_ex_system_release_mutex
@@ -353,7 +353,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_system_release_mutex&quot;
+l_string|&quot;ex_system_release_mutex&quot;
 )paren
 suffix:semicolon
 r_if
@@ -405,7 +405,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_signal_event&n; *&n; * PARAMETERS:  *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      AE_OK&n; *&n; * DESCRIPTION: Provides an access point to perform synchronization operations&n; *              within the AML.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_system_signal_event&n; *&n; * PARAMETERS:  *obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      AE_OK&n; *&n; * DESCRIPTION: Provides an access point to perform synchronization operations&n; *              within the AML.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_system_signal_event
 id|acpi_ex_system_signal_event
@@ -422,7 +422,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_system_signal_event&quot;
+l_string|&quot;ex_system_signal_event&quot;
 )paren
 suffix:semicolon
 r_if
@@ -447,7 +447,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_wait_event&n; *&n; * PARAMETERS:  *Time_desc          - The &squot;time to delay&squot; object descriptor&n; *              *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Provides an access point to perform synchronization operations&n; *              within the AML.  This operation is a request to wait for an&n; *              event.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_system_wait_event&n; *&n; * PARAMETERS:  *time_desc          - The &squot;time to delay&squot; object descriptor&n; *              *obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Provides an access point to perform synchronization operations&n; *              within the AML.  This operation is a request to wait for an&n; *              event.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_system_wait_event
 id|acpi_ex_system_wait_event
@@ -468,7 +468,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_system_wait_event&quot;
+l_string|&quot;ex_system_wait_event&quot;
 )paren
 suffix:semicolon
 r_if
@@ -496,7 +496,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_reset_event&n; *&n; * PARAMETERS:  *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Reset an event to a known state.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_system_reset_event&n; *&n; * PARAMETERS:  *obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Reset an event to a known state.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_system_reset_event
 id|acpi_ex_system_reset_event

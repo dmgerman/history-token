@@ -173,6 +173,10 @@ id|snd_card_t
 op_star
 id|card
 suffix:semicolon
+DECL|member|shutdown
+r_int
+id|shutdown
+suffix:semicolon
 DECL|member|num_interfaces
 r_int
 id|num_interfaces
@@ -271,7 +275,7 @@ multiline_comment|/* bitmask */
 )brace
 suffix:semicolon
 multiline_comment|/* for QUIRK_MIDI_YAMAHA, data is NULL */
-multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data is the number of ports */
+multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data points to a snd_usb_midi_endpoint_info&n; * structure (out_cables and in_cables only) */
 multiline_comment|/* for QUIRK_ROLAND_UA100, data is NULL */
 multiline_comment|/*&n; */
 DECL|macro|combine_word
@@ -395,6 +399,10 @@ DECL|macro|get_ep_desc
 mdefine_line|#define get_ep_desc(ep)&t;&t;(&amp;(ep)-&gt;desc)
 DECL|macro|get_cfg_desc
 mdefine_line|#define get_cfg_desc(cfg)&t;(&amp;(cfg)-&gt;desc)
+macro_line|#endif
+macro_line|#ifndef usb_pipe_needs_resubmit
+DECL|macro|usb_pipe_needs_resubmit
+mdefine_line|#define usb_pipe_needs_resubmit(pipe) 1
 macro_line|#endif
 macro_line|#endif /* __USBAUDIO_H */
 eof

@@ -68,8 +68,6 @@ DECL|macro|DSP_SPDIF_STATUS_PLAYBACK_OPEN
 mdefine_line|#define DSP_SPDIF_STATUS_PLAYBACK_OPEN  2
 DECL|macro|DSP_SPDIF_STATUS_HW_ENABLED
 mdefine_line|#define DSP_SPDIF_STATUS_HW_ENABLED     4
-DECL|macro|DSP_SPDIF_STATUS_AC3_MODE
-mdefine_line|#define DSP_SPDIF_STATUS_AC3_MODE       8
 r_struct
 id|_dsp_module_desc_t
 suffix:semicolon
@@ -334,10 +332,6 @@ id|dsp_scb_descriptor_t
 op_star
 id|mixer_scb
 suffix:semicolon
-DECL|member|pcm_channel_id
-r_int
-id|pcm_channel_id
-suffix:semicolon
 DECL|member|private_data
 r_void
 op_star
@@ -516,6 +510,15 @@ suffix:semicolon
 DECL|member|spdif_input_volume_left
 id|u16
 id|spdif_input_volume_left
+suffix:semicolon
+multiline_comment|/* spdif channel status,&n;&t;   left right and user validity bits */
+DECL|member|spdif_csuv_default
+r_int
+id|spdif_csuv_default
+suffix:semicolon
+DECL|member|spdif_csuv_stream
+r_int
+id|spdif_csuv_stream
 suffix:semicolon
 multiline_comment|/* SPDIF input sample rate converter */
 DECL|member|spdif_in_src

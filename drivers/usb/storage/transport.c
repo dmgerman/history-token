@@ -1012,7 +1012,7 @@ r_if
 c_cond
 (paren
 id|status
-op_ge
+op_eq
 l_int|0
 )paren
 id|status
@@ -1362,22 +1362,53 @@ comma
 id|length
 )paren
 suffix:semicolon
-multiline_comment|/* stalled */
-r_if
+r_switch
 c_cond
 (paren
 id|result
-op_eq
-op_minus
-id|EPIPE
 )paren
 (brace
-multiline_comment|/* for non-bulk (i.e., control) endpoints, a stall indicates&n;&t;&t; * a protocol error */
+multiline_comment|/* no error code; did we send all the data? */
+r_case
+l_int|0
+suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|usb_pipebulk
+id|partial
+op_ne
+id|length
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- short transfer&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_SHORT
+suffix:semicolon
+)brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- transfer complete&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_GOOD
+suffix:semicolon
+multiline_comment|/* stalled */
+r_case
+op_minus
+id|EPIPE
+suffix:colon
+multiline_comment|/* for control endpoints, a stall indicates a protocol error */
+r_if
+c_cond
+(paren
+id|usb_pipecontrol
 c_func
 (paren
 id|pipe
@@ -1394,7 +1425,7 @@ r_return
 id|USB_STOR_XFER_ERROR
 suffix:semicolon
 )brace
-multiline_comment|/* for a bulk endpoint, clear the stall */
+multiline_comment|/* for other sorts of endpoint, clear the stall */
 id|US_DEBUGP
 c_func
 (paren
@@ -1422,17 +1453,11 @@ suffix:semicolon
 r_return
 id|USB_STOR_XFER_STALLED
 suffix:semicolon
-)brace
 multiline_comment|/* NAK - that means we&squot;ve retried this a few times already */
-r_if
-c_cond
-(paren
-id|result
-op_eq
+r_case
 op_minus
 id|ETIMEDOUT
-)paren
-(brace
+suffix:colon
 id|US_DEBUGP
 c_func
 (paren
@@ -1442,17 +1467,11 @@ suffix:semicolon
 r_return
 id|USB_STOR_XFER_ERROR
 suffix:semicolon
-)brace
 multiline_comment|/* the transfer was cancelled, presumably by an abort */
-r_if
-c_cond
-(paren
-id|result
-op_eq
+r_case
 op_minus
 id|ENODEV
-)paren
-(brace
+suffix:colon
 id|US_DEBUGP
 c_func
 (paren
@@ -1462,16 +1481,23 @@ suffix:semicolon
 r_return
 id|USB_STOR_XFER_ERROR
 suffix:semicolon
-)brace
-multiline_comment|/* the catch-all error case */
-r_if
-c_cond
+multiline_comment|/* short scatter-gather read transfer */
+r_case
+op_minus
+id|EREMOTEIO
+suffix:colon
+id|US_DEBUGP
+c_func
 (paren
-id|result
-OL
-l_int|0
+l_string|&quot;-- short read transfer&bslash;n&quot;
 )paren
-(brace
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_SHORT
+suffix:semicolon
+multiline_comment|/* the catch-all error case */
+r_default
+suffix:colon
 id|US_DEBUGP
 c_func
 (paren
@@ -1482,36 +1508,6 @@ r_return
 id|USB_STOR_XFER_ERROR
 suffix:semicolon
 )brace
-multiline_comment|/* no error code; did we send all the data? */
-r_if
-c_cond
-(paren
-id|partial
-op_ne
-id|length
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- transferred only %u bytes&bslash;n&quot;
-comma
-id|partial
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_SHORT
-suffix:semicolon
-)brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- transfer complete&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_GOOD
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Transfer one control message&n; *&n; * This function does basically the same thing as usb_stor_control_msg()&n; * above, except that return codes are USB_STOR_XFER_xxx rather than the&n; * urb status or transfer length.&n; */
 DECL|function|usb_stor_ctrl_transfer

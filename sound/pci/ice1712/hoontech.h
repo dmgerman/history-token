@@ -3,9 +3,11 @@ DECL|macro|__SOUND_HOONTECH_H
 mdefine_line|#define __SOUND_HOONTECH_H
 multiline_comment|/*&n; *   ALSA driver for ICEnsemble ICE1712 (Envy24)&n; *&n; *   Lowlevel functions for Hoontech STDSP24&n; *&n; *&t;Copyright (c) 2000 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 DECL|macro|HOONTECH_DEVICE_DESC
-mdefine_line|#define  HOONTECH_DEVICE_DESC &t;       &quot;{Hoontech SoundTrack DSP 24},&quot;
+mdefine_line|#define  HOONTECH_DEVICE_DESC &bslash;&n;&t;&quot;{Hoontech SoundTrack DSP 24},&quot; &bslash;&n;&t;&quot;{Hoontech SoundTrack DSP 24 Value},&quot; &bslash;&n;&t;&quot;{Hoontech SoundTrack DSP 24 Media 7.1},&quot; &bslash;&n;
 DECL|macro|ICE1712_SUBDEVICE_STDSP24
-mdefine_line|#define ICE1712_SUBDEVICE_STDSP24&t;0x12141217&t;/* Hoontech SoundTrack Audio DSP 24 */
+mdefine_line|#define ICE1712_SUBDEVICE_STDSP24&t;&t;0x12141217&t;/* Hoontech SoundTrack Audio DSP 24 */
+DECL|macro|ICE1712_SUBDEVICE_STDSP24_MEDIA7_1
+mdefine_line|#define ICE1712_SUBDEVICE_STDSP24_MEDIA7_1&t;0x16141217&t;/* Hoontech ST Audio DSP24 Media 7.1 */
 r_extern
 r_struct
 id|snd_ice1712_card_info

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsnames - Name manipulation and search&n; *              $Revision: 81 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsnames - Name manipulation and search&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsnames&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_build_external_path&n; *&n; * PARAMETERS:  Node            - NS node whose pathname is needed&n; *              Size            - Size of the pathname&n; *              *Name_buffer    - Where to return the pathname&n; *&n; * RETURN:      Places the pathname into the Name_buffer, in external format&n; *              (name segments separated by path separators)&n; *&n; * DESCRIPTION: Generate a full pathaname&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_build_external_path&n; *&n; * PARAMETERS:  Node            - NS node whose pathname is needed&n; *              Size            - Size of the pathname&n; *              *name_buffer    - Where to return the pathname&n; *&n; * RETURN:      Places the pathname into the name_buffer, in external format&n; *              (name segments separated by path separators)&n; *&n; * DESCRIPTION: Generate a full pathaname&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_build_external_path
 id|acpi_ns_build_external_path
@@ -18,7 +18,7 @@ id|acpi_namespace_node
 op_star
 id|node
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 r_char
@@ -26,7 +26,7 @@ op_star
 id|name_buffer
 )paren
 (brace
-id|ACPI_SIZE
+id|acpi_size
 id|index
 suffix:semicolon
 id|acpi_namespace_node
@@ -35,7 +35,7 @@ id|parent_node
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ns_build_external_path&quot;
+l_string|&quot;ns_build_external_path&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Special case for root */
@@ -180,7 +180,7 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#ifdef ACPI_DEBUG_OUTPUT
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_external_pathname&n; *&n; * PARAMETERS:  Node            - NS node whose pathname is needed&n; *&n; * RETURN:      Pointer to storage containing the fully qualified name of&n; *              the node, In external format (name segments separated by path&n; *              separators.)&n; *&n; * DESCRIPTION: Used for debug printing in Acpi_ns_search_table().&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_external_pathname&n; *&n; * PARAMETERS:  Node            - NS node whose pathname is needed&n; *&n; * RETURN:      Pointer to storage containing the fully qualified name of&n; *              the node, In external format (name segments separated by path&n; *              separators.)&n; *&n; * DESCRIPTION: Used for debug printing in acpi_ns_search_table().&n; *&n; ******************************************************************************/
 r_char
 op_star
 DECL|function|acpi_ns_get_external_pathname
@@ -195,12 +195,12 @@ r_char
 op_star
 id|name_buffer
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|size
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ns_get_external_pathname&quot;
+l_string|&quot;ns_get_external_pathname&quot;
 comma
 id|node
 )paren
@@ -231,7 +231,7 @@ id|name_buffer
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Ns_get_table_pathname: allocation failure&bslash;n&quot;
+l_string|&quot;ns_get_table_pathname: allocation failure&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -258,8 +258,8 @@ id|name_buffer
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_pathname_length&n; *&n; * PARAMETERS:  Node        - Namespace node&n; *&n; * RETURN:      Length of path, including prefix&n; *&n; * DESCRIPTION: Get the length of the pathname string for this node&n; *&n; ******************************************************************************/
-id|ACPI_SIZE
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_pathname_length&n; *&n; * PARAMETERS:  Node        - Namespace node&n; *&n; * RETURN:      Length of path, including prefix&n; *&n; * DESCRIPTION: Get the length of the pathname string for this node&n; *&n; ******************************************************************************/
+id|acpi_size
 DECL|function|acpi_ns_get_pathname_length
 id|acpi_ns_get_pathname_length
 (paren
@@ -268,7 +268,7 @@ op_star
 id|node
 )paren
 (brace
-id|ACPI_SIZE
+id|acpi_size
 id|size
 suffix:semicolon
 id|acpi_namespace_node
@@ -320,7 +320,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_handle_to_pathname&n; *&n; * PARAMETERS:  Target_handle           - Handle of named object whose name is&n; *                                        to be found&n; *              Buffer                  - Where the pathname is returned&n; *&n; * RETURN:      Status, Buffer is filled with pathname if status is AE_OK&n; *&n; * DESCRIPTION: Build and return a full namespace pathname&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_handle_to_pathname&n; *&n; * PARAMETERS:  target_handle           - Handle of named object whose name is&n; *                                        to be found&n; *              Buffer                  - Where the pathname is returned&n; *&n; * RETURN:      Status, Buffer is filled with pathname if status is AE_OK&n; *&n; * DESCRIPTION: Build and return a full namespace pathname&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_handle_to_pathname
 id|acpi_ns_handle_to_pathname
@@ -340,12 +340,12 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|required_size
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ns_handle_to_pathname&quot;
+l_string|&quot;ns_handle_to_pathname&quot;
 comma
 id|target_handle
 )paren

@@ -1,16 +1,12 @@
 multiline_comment|/**&n; * @file event_buffer.c&n; *&n; * @remark Copyright 2002 OProfile authors&n; * @remark Read the file COPYING&n; *&n; * @author John Levon &lt;levon@movementarian.org&gt;&n; *&n; * This is the global event buffer that the user-space&n; * daemon reads from. The event buffer is an untyped array&n; * of unsigned longs. Entries are prefixed by the&n; * escape value ESCAPE_CODE followed by an identifying code.&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/dcookies.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/dcookies.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &quot;event_buffer.h&quot;
-macro_line|#include &quot;cpu_buffer.h&quot;
 macro_line|#include &quot;oprof.h&quot;
+macro_line|#include &quot;event_buffer.h&quot;
 macro_line|#include &quot;oprofile_stats.h&quot;
 DECL|variable|buffer_sem
 id|DECLARE_MUTEX

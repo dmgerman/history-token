@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 177 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utglobal&quot;
 )paren
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_format_exception&n; *&n; * PARAMETERS:  Status       - The acpi_status code to be formatted&n; *&n; * RETURN:      A string containing the exception  text&n; *&n; * DESCRIPTION: This function translates an ACPI exception into an ASCII string.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_format_exception&n; *&n; * PARAMETERS:  Status       - The acpi_status code to be formatted&n; *&n; * RETURN:      A string containing the exception  text&n; *&n; * DESCRIPTION: This function translates an ACPI exception into an ASCII string.&n; *&n; ******************************************************************************/
 r_const
 r_char
 op_star
@@ -33,7 +33,7 @@ id|sub_status
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Format_exception&quot;
+l_string|&quot;format_exception&quot;
 )paren
 suffix:semicolon
 id|sub_status
@@ -454,7 +454,7 @@ comma
 multiline_comment|/* 04 Package          */
 id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 05 Field_unit       */
+multiline_comment|/* 05 field_unit       */
 id|ACPI_NS_NEWSCOPE
 comma
 multiline_comment|/* 06 Device           */
@@ -481,22 +481,22 @@ comma
 multiline_comment|/* 13 Thermal          */
 id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 14 Buffer_field     */
+multiline_comment|/* 14 buffer_field     */
 id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 15 Ddb_handle       */
+multiline_comment|/* 15 ddb_handle       */
 id|ACPI_NS_NORMAL
 comma
 multiline_comment|/* 16 Debug Object     */
 id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 17 Def_field        */
+multiline_comment|/* 17 def_field        */
 id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 18 Bank_field       */
+multiline_comment|/* 18 bank_field       */
 id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 19 Index_field      */
+multiline_comment|/* 19 index_field      */
 id|ACPI_NS_NORMAL
 comma
 multiline_comment|/* 20 Reference        */
@@ -575,7 +575,7 @@ comma
 l_char|&squot;F&squot;
 )brace
 suffix:semicolon
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_hex_to_ascii_char&n; *&n; * PARAMETERS:  Integer             - Contains the hex digit&n; *              Position            - bit position of the digit within the&n; *                                    integer&n; *&n; * RETURN:      Ascii character&n; *&n; * DESCRIPTION: Convert a hex digit to an ascii character&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_hex_to_ascii_char&n; *&n; * PARAMETERS:  Integer             - Contains the hex digit&n; *              Position            - bit position of the digit within the&n; *                                    integer&n; *&n; * RETURN:      Ascii character&n; *&n; * DESCRIPTION: Convert a hex digit to an ascii character&n; *&n; ****************************************************************************/
 r_char
 DECL|function|acpi_ut_hex_to_ascii_char
 id|acpi_ut_hex_to_ascii_char
@@ -787,7 +787,7 @@ comma
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Event and Hardware globals&n; *&n; ******************************************************************************/
 DECL|variable|acpi_gbl_bit_register_info
-id|ACPI_BIT_REGISTER_INFO
+id|acpi_bit_register_info
 id|acpi_gbl_bit_register_info
 (braket
 id|ACPI_NUM_BITREG
@@ -1041,7 +1041,7 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_region_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a Space ID into a name string (Debug only)&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_get_region_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a Space ID into a name string (Debug only)&n; *&n; ****************************************************************************/
 multiline_comment|/* Region type decoding */
 DECL|variable|acpi_gbl_region_types
 r_const
@@ -1053,13 +1053,13 @@ id|ACPI_NUM_PREDEFINED_REGIONS
 )braket
 op_assign
 (brace
-l_string|&quot;System_memory&quot;
+l_string|&quot;system_memory&quot;
 comma
-l_string|&quot;System_iO&quot;
+l_string|&quot;system_iO&quot;
 comma
 l_string|&quot;PCI_Config&quot;
 comma
-l_string|&quot;Embedded_control&quot;
+l_string|&quot;embedded_control&quot;
 comma
 l_string|&quot;SMBus&quot;
 comma
@@ -1067,7 +1067,7 @@ l_string|&quot;CMOS&quot;
 comma
 l_string|&quot;PCIBARTarget&quot;
 comma
-l_string|&quot;Data_table&quot;
+l_string|&quot;data_table&quot;
 comma
 )brace
 suffix:semicolon
@@ -1090,7 +1090,7 @@ id|ACPI_USER_REGION_BEGIN
 (brace
 r_return
 (paren
-l_string|&quot;User_defined_region&quot;
+l_string|&quot;user_defined_region&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1105,7 +1105,7 @@ id|ACPI_NUM_PREDEFINED_REGIONS
 (brace
 r_return
 (paren
-l_string|&quot;Invalid_space_iD&quot;
+l_string|&quot;invalid_space_iD&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1122,7 +1122,7 @@ id|space_id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_event_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a Event ID into a name string (Debug only)&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_get_event_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a Event ID into a name string (Debug only)&n; *&n; ****************************************************************************/
 multiline_comment|/* Event type decoding */
 DECL|variable|acpi_gbl_event_types
 r_static
@@ -1137,13 +1137,13 @@ op_assign
 (brace
 l_string|&quot;PM_Timer&quot;
 comma
-l_string|&quot;Global_lock&quot;
+l_string|&quot;global_lock&quot;
 comma
-l_string|&quot;Power_button&quot;
+l_string|&quot;power_button&quot;
 comma
-l_string|&quot;Sleep_button&quot;
+l_string|&quot;sleep_button&quot;
 comma
-l_string|&quot;Real_time_clock&quot;
+l_string|&quot;real_time_clock&quot;
 comma
 )brace
 suffix:semicolon
@@ -1166,7 +1166,7 @@ id|ACPI_EVENT_MAX
 (brace
 r_return
 (paren
-l_string|&quot;Invalid_event_iD&quot;
+l_string|&quot;invalid_event_iD&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1183,8 +1183,8 @@ id|event_id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_type_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a Type ID into a name string (Debug only)&n; *&n; ****************************************************************************/
-multiline_comment|/*&n; * Elements of Acpi_gbl_Ns_type_names below must match&n; * one-to-one with values of acpi_object_type&n; *&n; * The type ACPI_TYPE_ANY (Untyped) is used as a &quot;don&squot;t care&quot; when searching; when&n; * stored in a table it really means that we have thus far seen no evidence to&n; * indicatewhat type is actually going to be stored for this entry.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_get_type_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a Type ID into a name string (Debug only)&n; *&n; ****************************************************************************/
+multiline_comment|/*&n; * Elements of acpi_gbl_ns_type_names below must match&n; * one-to-one with values of acpi_object_type&n; *&n; * The type ACPI_TYPE_ANY (Untyped) is used as a &quot;don&squot;t care&quot; when searching; when&n; * stored in a table it really means that we have thus far seen no evidence to&n; * indicatewhat type is actually going to be stored for this entry.&n; */
 DECL|variable|acpi_gbl_bad_type
 r_static
 r_const
@@ -1224,7 +1224,7 @@ multiline_comment|/* 04 */
 l_string|&quot;Package&quot;
 comma
 multiline_comment|/* 05 */
-l_string|&quot;Field_unit&quot;
+l_string|&quot;field_unit&quot;
 comma
 multiline_comment|/* 06 */
 l_string|&quot;Device&quot;
@@ -1251,22 +1251,22 @@ multiline_comment|/* 13 */
 l_string|&quot;Thermal&quot;
 comma
 multiline_comment|/* 14 */
-l_string|&quot;Buffer_field&quot;
+l_string|&quot;buffer_field&quot;
 comma
 multiline_comment|/* 15 */
-l_string|&quot;Ddb_handle&quot;
+l_string|&quot;ddb_handle&quot;
 comma
 multiline_comment|/* 16 */
-l_string|&quot;Debug_object&quot;
+l_string|&quot;debug_object&quot;
 comma
 multiline_comment|/* 17 */
-l_string|&quot;Region_field&quot;
+l_string|&quot;region_field&quot;
 comma
 multiline_comment|/* 18 */
-l_string|&quot;Bank_field&quot;
+l_string|&quot;bank_field&quot;
 comma
 multiline_comment|/* 19 */
-l_string|&quot;Index_field&quot;
+l_string|&quot;index_field&quot;
 comma
 multiline_comment|/* 20 */
 l_string|&quot;Reference&quot;
@@ -1278,13 +1278,13 @@ multiline_comment|/* 22 */
 l_string|&quot;Notify&quot;
 comma
 multiline_comment|/* 23 */
-l_string|&quot;Addr_handler&quot;
+l_string|&quot;addr_handler&quot;
 comma
 multiline_comment|/* 24 */
-l_string|&quot;Resource_desc&quot;
+l_string|&quot;resource_desc&quot;
 comma
 multiline_comment|/* 25 */
-l_string|&quot;Resource_fld&quot;
+l_string|&quot;resource_fld&quot;
 comma
 multiline_comment|/* 26 */
 l_string|&quot;Scope&quot;
@@ -1376,7 +1376,7 @@ suffix:semicolon
 )brace
 macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
 multiline_comment|/*&n; * Strings and procedures used for debug only&n; */
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_mutex_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a mutex ID into a name string (Debug only)&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_get_mutex_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a mutex ID into a name string (Debug only)&n; *&n; ****************************************************************************/
 r_char
 op_star
 DECL|function|acpi_ut_get_mutex_name
@@ -1410,7 +1410,7 @@ id|mutex_id
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_valid_object_type&n; *&n; * PARAMETERS:  Type            - Object type to be validated&n; *&n; * RETURN:      TRUE if valid object type&n; *&n; * DESCRIPTION: Validate an object type&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_valid_object_type&n; *&n; * PARAMETERS:  Type            - Object type to be validated&n; *&n; * RETURN:      TRUE if valid object type&n; *&n; * DESCRIPTION: Validate an object type&n; *&n; ****************************************************************************/
 id|u8
 DECL|function|acpi_ut_valid_object_type
 id|acpi_ut_valid_object_type
@@ -1440,7 +1440,7 @@ id|TRUE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_allocate_owner_id&n; *&n; * PARAMETERS:  Id_type         - Type of ID (method or table)&n; *&n; * DESCRIPTION: Allocate a table or method owner id&n; *&n; ***************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_allocate_owner_id&n; *&n; * PARAMETERS:  id_type         - Type of ID (method or table)&n; *&n; * DESCRIPTION: Allocate a table or method owner id&n; *&n; ***************************************************************************/
 id|acpi_owner_id
 DECL|function|acpi_ut_allocate_owner_id
 id|acpi_ut_allocate_owner_id
@@ -1456,7 +1456,7 @@ l_int|0xFFFF
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_allocate_owner_id&quot;
+l_string|&quot;ut_allocate_owner_id&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1552,7 +1552,7 @@ id|owner_id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_init_globals&n; *&n; * PARAMETERS:  none&n; *&n; * DESCRIPTION: Init library globals.  All globals that require specific&n; *              initialization should be initialized here!&n; *&n; ***************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_init_globals&n; *&n; * PARAMETERS:  none&n; *&n; * DESCRIPTION: Init library globals.  All globals that require specific&n; *              initialization should be initialized here!&n; *&n; ***************************************************************************/
 r_void
 DECL|function|acpi_ut_init_globals
 id|acpi_ut_init_globals
@@ -1565,7 +1565,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_init_globals&quot;
+l_string|&quot;ut_init_globals&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Memory allocation and cache lists */
@@ -1577,7 +1577,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 )paren
 op_star
 id|ACPI_NUM_MEM_LISTS
@@ -1756,7 +1756,7 @@ id|object_size
 op_assign
 r_sizeof
 (paren
-id|ACPI_PARSE_OBJ_COMMON
+id|acpi_parse_obj_common
 )paren
 suffix:semicolon
 id|acpi_gbl_memory_lists
@@ -1768,7 +1768,7 @@ id|object_size
 op_assign
 r_sizeof
 (paren
-id|ACPI_PARSE_OBJ_NAMED
+id|acpi_parse_obj_named
 )paren
 suffix:semicolon
 id|acpi_gbl_memory_lists

@@ -124,6 +124,31 @@ l_string|&quot;12 Mb/s&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* for dev_info, dev_dbg, etc */
+DECL|function|hubdev
+r_static
+r_inline
+r_struct
+id|device
+op_star
+id|hubdev
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+(brace
+r_return
+op_amp
+id|dev-&gt;actconfig-&gt;interface
+(braket
+l_int|0
+)braket
+dot
+id|dev
+suffix:semicolon
+)brace
 multiline_comment|/* USB 2.0 spec Section 11.24.4.5 */
 DECL|function|usb_get_hub_descriptor
 r_static
@@ -1193,10 +1218,15 @@ id|dev-&gt;maxchild
 op_assign
 id|hub-&gt;descriptor-&gt;bNbrPorts
 suffix:semicolon
-id|info
-c_func
+id|dev_info
 (paren
-l_string|&quot;%d port%s detected&quot;
+op_star
+id|hubdev
+(paren
+id|dev
+)paren
+comma
+l_string|&quot;%d port%s detected&bslash;n&quot;
 comma
 id|dev-&gt;maxchild
 comma
@@ -2145,12 +2175,15 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* We found a hub */
-id|info
-c_func
+id|dev_info
 (paren
-l_string|&quot;USB hub found at %s&quot;
+op_star
+id|hubdev
+(paren
+id|dev
+)paren
 comma
-id|dev-&gt;devpath
+l_string|&quot;USB hub found&bslash;n&quot;
 )paren
 suffix:semicolon
 id|hub
@@ -2763,29 +2796,6 @@ c_func
 id|portsts-&gt;wPortChange
 )paren
 suffix:semicolon
-id|dbg
-c_func
-(paren
-l_string|&quot;port %d, portstatus %x, change %x, %s&quot;
-comma
-id|port
-op_plus
-l_int|1
-comma
-op_star
-id|status
-comma
-op_star
-id|change
-comma
-id|portspeed
-c_func
-(paren
-op_star
-id|status
-)paren
-)paren
-suffix:semicolon
 id|ret
 op_assign
 l_int|0
@@ -2993,16 +3003,19 @@ id|delay
 op_assign
 id|HUB_LONG_RESET_TIME
 suffix:semicolon
-id|dbg
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;port %d of hub %s not reset yet, waiting %dms&quot;
+op_star
+id|hubdev
+(paren
+id|hub
+)paren
+comma
+l_string|&quot;port %d not reset yet, waiting %dms&bslash;n&quot;
 comma
 id|port
 op_plus
 l_int|1
-comma
-id|hub-&gt;devpath
 comma
 id|delay
 )paren
@@ -3111,16 +3124,19 @@ r_return
 id|status
 suffix:semicolon
 )brace
-id|dbg
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;port %d of hub %s not enabled, trying reset again...&quot;
+op_star
+id|hubdev
+(paren
+id|hub
+)paren
+comma
+l_string|&quot;port %d not enabled, trying reset again...&bslash;n&quot;
 comma
 id|port
 op_plus
 l_int|1
-comma
-id|hub-&gt;devpath
 )paren
 suffix:semicolon
 id|delay
@@ -3128,22 +3144,19 @@ op_assign
 id|HUB_LONG_RESET_TIME
 suffix:semicolon
 )brace
-id|err
-c_func
+id|dev_err
 (paren
-l_string|&quot;Cannot enable port %i of hub %s, disabling port.&quot;
+op_star
+id|hubdev
+(paren
+id|hub
+)paren
+comma
+l_string|&quot;Cannot enable port %i.  Maybe the USB cable is bad?&bslash;n&quot;
 comma
 id|port
 op_plus
 l_int|1
-comma
-id|hub-&gt;devpath
-)paren
-suffix:semicolon
-id|err
-c_func
-(paren
-l_string|&quot;Maybe the USB cable is bad?&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3366,14 +3379,19 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* XXX Replace this with dbg() when 2.6 is about to ship. */
-id|info
-c_func
+id|dev_info
 (paren
-l_string|&quot;debounce: hub %d port %d: delay %dms stable %d status 0x%x&bslash;n&quot;
+op_star
+id|hubdev
+(paren
+id|hub
+)paren
 comma
-id|hub-&gt;devnum
+l_string|&quot;debounce: port %d: delay %dms stable %d status 0x%x&bslash;n&quot;
 comma
 id|port
+op_plus
+l_int|1
 comma
 id|delay_time
 comma
@@ -3443,12 +3461,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|dbg
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;hub %s port %d, portstatus %x, change %x, %s&quot;
+id|hubstate-&gt;intf-&gt;dev
 comma
-id|hub-&gt;devpath
+l_string|&quot;port %d, status %x, change %x, %s&bslash;n&quot;
 comma
 id|port
 op_plus
@@ -3538,10 +3555,11 @@ id|port
 )paren
 )paren
 (brace
-id|err
-c_func
+id|dev_err
 (paren
-l_string|&quot;connect-debounce failed, port %d disabled&quot;
+id|hubstate-&gt;intf-&gt;dev
+comma
+l_string|&quot;connect-debounce failed, port %d disabled&bslash;n&quot;
 comma
 id|port
 op_plus
@@ -3620,10 +3638,11 @@ op_logical_neg
 id|dev
 )paren
 (brace
-id|err
-c_func
+id|dev_err
 (paren
-l_string|&quot;couldn&squot;t allocate usb_device&quot;
+id|hubstate-&gt;intf-&gt;dev
+comma
+l_string|&quot;couldn&squot;t allocate usb_device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3770,9 +3789,11 @@ op_eq
 r_sizeof
 id|dev-&gt;devpath
 )paren
-id|warn
+id|dev_err
 (paren
-l_string|&quot;devpath size! usb/%03d/%03d path %s&quot;
+id|hubstate-&gt;intf-&gt;dev
+comma
+l_string|&quot;devpath size! usb/%03d/%03d path %s&bslash;n&quot;
 comma
 id|dev-&gt;bus-&gt;busnum
 comma
@@ -3781,14 +3802,15 @@ comma
 id|dev-&gt;devpath
 )paren
 suffix:semicolon
-id|info
-c_func
+id|dev_info
 (paren
-l_string|&quot;new USB device %s-%s, assigned address %d&quot;
+id|hubstate-&gt;intf-&gt;dev
 comma
-id|dev-&gt;bus-&gt;bus_name
+l_string|&quot;new USB device on port %d, assigned address %d&bslash;n&quot;
 comma
-id|dev-&gt;devpath
+id|port
+op_plus
+l_int|1
 comma
 id|dev-&gt;devnum
 )paren
@@ -4100,18 +4122,6 @@ op_amp
 id|USB_PORT_STAT_C_CONNECTION
 )paren
 (brace
-id|dbg
-c_func
-(paren
-l_string|&quot;hub %s port %d connection change&quot;
-comma
-id|dev-&gt;devpath
-comma
-id|i
-op_plus
-l_int|1
-)paren
-suffix:semicolon
 id|usb_hub_port_connect_change
 c_func
 (paren
@@ -4134,12 +4144,15 @@ op_amp
 id|USB_PORT_STAT_C_ENABLE
 )paren
 (brace
-id|dbg
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;hub %s port %d enable change, status %x&quot;
+op_star
+id|hubdev
+(paren
+id|dev
+)paren
 comma
-id|dev-&gt;devpath
+l_string|&quot;port %d enable change, status %x&bslash;n&quot;
 comma
 id|i
 op_plus

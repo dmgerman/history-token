@@ -941,11 +941,12 @@ op_or
 id|USB_REQ_SET_ADDRESS
 suffix:colon
 singleline_comment|// wValue == urb-&gt;dev-&gt;devaddr
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;%s root hub device address %d&quot;
+op_star
+id|hcd-&gt;controller
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;root hub device address %d&bslash;n&quot;
 comma
 id|wValue
 )paren
@@ -3438,16 +3439,6 @@ id|URB_ASYNC_UNLINK
 r_return
 op_minus
 id|EINPROGRESS
-suffix:semicolon
-id|dev_dbg
-(paren
-op_star
-id|sys
-comma
-l_string|&quot;wait for giveback urb %p&bslash;n&quot;
-comma
-id|urb
-)paren
 suffix:semicolon
 id|wait_for_completion
 (paren

@@ -4346,7 +4346,7 @@ suffix:semicolon
 DECL|function|snd_es1938_new_pcm
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_es1938_new_pcm
 c_func
 (paren
@@ -6747,7 +6747,7 @@ suffix:semicolon
 DECL|function|snd_es1938_create
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_es1938_create
 c_func
 (paren
@@ -7773,7 +7773,7 @@ mdefine_line|#define ES1938_DMA_SIZE 64
 DECL|function|snd_es1938_mixer
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_es1938_mixer
 c_func
 (paren

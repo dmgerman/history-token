@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actbl1.h - ACPI 1.0 tables&n; *       $Revision: 22 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actbl1.h - ACPI 1.0 tables&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTBL1_H__
 DECL|macro|__ACTBL1_H__
@@ -147,12 +147,12 @@ DECL|member|pm1a_evt_blk
 id|u32
 id|pm1a_evt_blk
 suffix:semicolon
-multiline_comment|/* Port address of Power Mgt 1a Acpi_event Reg Blk */
+multiline_comment|/* Port address of Power Mgt 1a acpi_event Reg Blk */
 DECL|member|pm1b_evt_blk
 id|u32
 id|pm1b_evt_blk
 suffix:semicolon
-multiline_comment|/* Port address of Power Mgt 1b Acpi_event Reg Blk */
+multiline_comment|/* Port address of Power Mgt 1b acpi_event Reg Blk */
 DECL|member|pm1a_cnt_blk
 id|u32
 id|pm1a_cnt_blk
@@ -177,22 +177,22 @@ DECL|member|gpe0_blk
 id|u32
 id|gpe0_blk
 suffix:semicolon
-multiline_comment|/* Port addr of General Purpose Acpi_event 0 Reg Blk */
+multiline_comment|/* Port addr of General Purpose acpi_event 0 Reg Blk */
 DECL|member|gpe1_blk
 id|u32
 id|gpe1_blk
 suffix:semicolon
-multiline_comment|/* Port addr of General Purpose Acpi_event 1 Reg Blk */
+multiline_comment|/* Port addr of General Purpose acpi_event 1 Reg Blk */
 DECL|member|pm1_evt_len
 id|u8
 id|pm1_evt_len
 suffix:semicolon
-multiline_comment|/* Byte Length of ports at pm1_x_evt_blk */
+multiline_comment|/* Byte length of ports at pm1_x_evt_blk */
 DECL|member|pm1_cnt_len
 id|u8
 id|pm1_cnt_len
 suffix:semicolon
-multiline_comment|/* Byte Length of ports at pm1_x_cnt_blk */
+multiline_comment|/* Byte length of ports at pm1_x_cnt_blk */
 DECL|member|pm2_cnt_len
 id|u8
 id|pm2_cnt_len

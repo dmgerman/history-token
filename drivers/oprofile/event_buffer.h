@@ -3,7 +3,7 @@ macro_line|#ifndef EVENT_BUFFER_H
 DECL|macro|EVENT_BUFFER_H
 mdefine_line|#define EVENT_BUFFER_H
 macro_line|#include &lt;linux/types.h&gt; 
-macro_line|#include &lt;linux/sem.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 r_int
 id|alloc_event_buffer
 c_func

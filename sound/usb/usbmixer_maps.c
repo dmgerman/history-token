@@ -41,7 +41,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * USB control mappers for SB Exitigy&n; */
-multiline_comment|/*&n; * Topology of SB Extigy (see on the wide screen :)&n;&n;USB_IN[1] ---&gt;FU[2]------------------------------+-&gt;MU[16]--&gt;PE[17]-+-&gt;FU[18]--+-&gt;EU[27]--+-&gt;EU[21]--&gt;FU[22]--+-&gt;FU[23] &gt; Dig_OUT[24]&n;                                                 ^                  |          |          |                   |&n;USB_IN[3] -+-&gt;SU[5]--&gt;FU[6]--+-&gt;MU[14] -&gt;PE[15]-&gt;+                  |          |          |                   +-&gt;FU[25] &gt; Dig_OUT[26]&n;           ^                 ^                   |                  |          |          |&n;Dig_IN[4] -+                 |                   |                  |          |          +-&gt;FU[28]---------------------&gt; Spk_OUT[19]&n;                             |                   |                  |          |&n;Lin-IN[7] -+--&gt;FU[8]---------+                   |                  |          +----------------------------------------&gt; Hph_OUT[20]&n;           |                                     |                  |&n;Mic-IN[9] --+-&gt;FU[10]----------------------------+                  |&n;           ||                                                       |&n;           ||  +----------------------------------------------------+&n;           VV  V&n;           ++--+-&gt;SU[11]--&gt;FU[12] --------------------------------------------------------------------------------------&gt; USB_OUT[13]&n;*/
+multiline_comment|/*&n; * Topology of SB Extigy (see on the wide screen :)&n;&n;USB_IN[1] ---&gt;FU[2]------------------------------+-&gt;MU[16]--&gt;PU[17]-+-&gt;FU[18]--+-&gt;EU[27]--+-&gt;EU[21]--&gt;FU[22]--+-&gt;FU[23] &gt; Dig_OUT[24]&n;                                                 ^                  |          |          |                   |&n;USB_IN[3] -+-&gt;SU[5]--&gt;FU[6]--+-&gt;MU[14] -&gt;PU[15]-&gt;+                  |          |          |                   +-&gt;FU[25] &gt; Dig_OUT[26]&n;           ^                 ^                   |                  |          |          |&n;Dig_IN[4] -+                 |                   |                  |          |          +-&gt;FU[28]---------------------&gt; Spk_OUT[19]&n;                             |                   |                  |          |&n;Lin-IN[7] -+--&gt;FU[8]---------+                   |                  |          +----------------------------------------&gt; Hph_OUT[20]&n;           |                                     |                  |&n;Mic-IN[9] --+-&gt;FU[10]----------------------------+                  |&n;           ||                                                       |&n;           ||  +----------------------------------------------------+&n;           VV  V&n;           ++--+-&gt;SU[11]--&gt;FU[12] --------------------------------------------------------------------------------------&gt; USB_OUT[13]&n;*/
 DECL|variable|extigy_map
 r_static
 r_struct
@@ -107,9 +107,9 @@ comma
 multiline_comment|/* FU */
 multiline_comment|/* 13: OT pcm capture */
 multiline_comment|/* 14: MU (w/o controls) */
-multiline_comment|/* 15: PE (3D enh) */
+multiline_comment|/* 15: PU (3D enh) */
 multiline_comment|/* 16: MU (w/o controls) */
-multiline_comment|/* 17: PE (updown) */
+multiline_comment|/* 17: PU (updown) */
 multiline_comment|/* FIXME: what control? */
 (brace
 l_int|18

@@ -669,6 +669,11 @@ op_assign
 l_string|&quot;Handspring Visor / Treo / Palm 4.0 / Cli&#xfffd; 4.x&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;visor&quot;
+comma
+dot
 id|id_table
 op_assign
 id|id_table
@@ -787,6 +792,11 @@ dot
 id|name
 op_assign
 l_string|&quot;Sony Cli&#xfffd; 3.5&quot;
+comma
+dot
+id|short_name
+op_assign
+l_string|&quot;clie_3.5&quot;
 comma
 dot
 id|id_table

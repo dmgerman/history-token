@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsutils - Utilities for the resource manager&n; *              $Revision: 34 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsutils - Utilities for the resource manager&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;rsutils&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_get_prt_method_data&n; *&n; * PARAMETERS:  Handle          - a handle to the containing object&n; *              Ret_buffer      - a pointer to a buffer structure for the&n; *                                  results&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the _PRT value of an object&n; *              contained in an object specified by the handle passed in&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the contents of the callers buffer is undefined.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_get_prt_method_data&n; *&n; * PARAMETERS:  Handle          - a handle to the containing object&n; *              ret_buffer      - a pointer to a buffer structure for the&n; *                                  results&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the _PRT value of an object&n; *              contained in an object specified by the handle passed in&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the contents of the callers buffer is undefined.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_rs_get_prt_method_data
 id|acpi_rs_get_prt_method_data
@@ -31,7 +31,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Rs_get_prt_method_data&quot;
+l_string|&quot;rs_get_prt_method_data&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameters guaranteed valid by caller */
@@ -75,7 +75,7 @@ comma
 id|ret_buffer
 )paren
 suffix:semicolon
-multiline_comment|/* On exit, we must delete the object returned by Evaluate_object */
+multiline_comment|/* On exit, we must delete the object returned by evaluate_object */
 id|acpi_ut_remove_reference
 (paren
 id|obj_desc
@@ -87,7 +87,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_get_crs_method_data&n; *&n; * PARAMETERS:  Handle          - a handle to the containing object&n; *              Ret_buffer      - a pointer to a buffer structure for the&n; *                                  results&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the _CRS value of an object&n; *              contained in an object specified by the handle passed in&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the contents of the callers buffer is undefined.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_get_crs_method_data&n; *&n; * PARAMETERS:  Handle          - a handle to the containing object&n; *              ret_buffer      - a pointer to a buffer structure for the&n; *                                  results&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the _CRS value of an object&n; *              contained in an object specified by the handle passed in&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the contents of the callers buffer is undefined.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_rs_get_crs_method_data
 id|acpi_rs_get_crs_method_data
@@ -109,7 +109,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Rs_get_crs_method_data&quot;
+l_string|&quot;rs_get_crs_method_data&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameters guaranteed valid by caller */
@@ -153,7 +153,7 @@ comma
 id|ret_buffer
 )paren
 suffix:semicolon
-multiline_comment|/* On exit, we must delete the object returned by evaluate_object */
+multiline_comment|/* on exit, we must delete the object returned by evaluate_object */
 id|acpi_ut_remove_reference
 (paren
 id|obj_desc
@@ -165,7 +165,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_get_prs_method_data&n; *&n; * PARAMETERS:  Handle          - a handle to the containing object&n; *              Ret_buffer      - a pointer to a buffer structure for the&n; *                                  results&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the _PRS value of an object&n; *              contained in an object specified by the handle passed in&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the contents of the callers buffer is undefined.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_get_prs_method_data&n; *&n; * PARAMETERS:  Handle          - a handle to the containing object&n; *              ret_buffer      - a pointer to a buffer structure for the&n; *                                  results&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the _PRS value of an object&n; *              contained in an object specified by the handle passed in&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the contents of the callers buffer is undefined.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_rs_get_prs_method_data
 id|acpi_rs_get_prs_method_data
@@ -187,7 +187,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Rs_get_prs_method_data&quot;
+l_string|&quot;rs_get_prs_method_data&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameters guaranteed valid by caller */
@@ -231,7 +231,7 @@ comma
 id|ret_buffer
 )paren
 suffix:semicolon
-multiline_comment|/* On exit, we must delete the object returned by evaluate_object */
+multiline_comment|/* on exit, we must delete the object returned by evaluate_object */
 id|acpi_ut_remove_reference
 (paren
 id|obj_desc
@@ -243,7 +243,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_set_srs_method_data&n; *&n; * PARAMETERS:  Handle          - a handle to the containing object&n; *              In_buffer       - a pointer to a buffer structure of the&n; *                                  parameter&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to set the _SRS of an object contained&n; *              in an object specified by the handle passed in&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the contents of the callers buffer is undefined.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_set_srs_method_data&n; *&n; * PARAMETERS:  Handle          - a handle to the containing object&n; *              in_buffer       - a pointer to a buffer structure of the&n; *                                  parameter&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to set the _SRS of an object contained&n; *              in an object specified by the handle passed in&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the contents of the callers buffer is undefined.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_rs_set_srs_method_data
 id|acpi_rs_set_srs_method_data
@@ -271,11 +271,11 @@ id|buffer
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Rs_set_srs_method_data&quot;
+l_string|&quot;rs_set_srs_method_data&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameters guaranteed valid by caller */
-multiline_comment|/*&n;&t; * The In_buffer parameter will point to a linked list of&n;&t; * resource parameters.  It needs to be formatted into a&n;&t; * byte stream to be sent in as an input parameter to _SRS&n;&t; *&n;&t; * Convert the linked list into a byte stream&n;&t; */
+multiline_comment|/*&n;&t; * The in_buffer parameter will point to a linked list of&n;&t; * resource parameters.  It needs to be formatted into a&n;&t; * byte stream to be sent in as an input parameter to _SRS&n;&t; *&n;&t; * Convert the linked list into a byte stream&n;&t; */
 id|buffer.length
 op_assign
 id|ACPI_ALLOCATE_LOCAL_BUFFER
@@ -389,7 +389,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Clean up and return the status from Acpi_ns_evaluate_relative&n;&t; */
+multiline_comment|/*&n;&t; * Clean up and return the status from acpi_ns_evaluate_relative&n;&t; */
 id|acpi_ut_remove_reference
 (paren
 id|params

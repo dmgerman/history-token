@@ -526,7 +526,7 @@ id|acpi_set_firmware_waking_vector
 c_func
 (paren
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|acpi_wakeup_address
 )paren
@@ -603,7 +603,7 @@ id|acpi_set_firmware_waking_vector
 c_func
 (paren
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 l_int|0
 )paren

@@ -512,8 +512,6 @@ id|search_exception_table
 c_func
 (paren
 id|regs-&gt;pc
-comma
-id|regs-&gt;gp
 )paren
 )paren
 op_ne

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 100 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utxface - External interfaces for &quot;global&quot; ACPI functions&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -12,7 +12,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utxface&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_initialize_subsystem&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initializes all global variables.  This is the first function&n; *              called, so any early initialization belongs here.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_initialize_subsystem&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initializes all global variables.  This is the first function&n; *              called, so any early initialization belongs here.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_initialize_subsystem
 id|acpi_initialize_subsystem
@@ -25,7 +25,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_initialize_subsystem&quot;
+l_string|&quot;acpi_initialize_subsystem&quot;
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_EXEC
@@ -158,7 +158,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_enable_subsystem&n; *&n; * PARAMETERS:  Flags           - Init/enable Options&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Completes the subsystem initialization including hardware.&n; *              Puts system into ACPI mode if it isn&squot;t already.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_enable_subsystem&n; *&n; * PARAMETERS:  Flags           - Init/enable Options&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Completes the subsystem initialization including hardware.&n; *              Puts system into ACPI mode if it isn&squot;t already.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_enable_subsystem
 id|acpi_enable_subsystem
@@ -174,10 +174,10 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_enable_subsystem&quot;
+l_string|&quot;acpi_enable_subsystem&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Install the default Op_region handlers. These are installed unless&n;&t; * other handlers have already been installed via the&n;&t; * Install_address_space_handler interface&n;&t; */
+multiline_comment|/*&n;&t; * Install the default op_region handlers. These are installed unless&n;&t; * other handlers have already been installed via the&n;&t; * install_address_space_handler interface&n;&t; */
 r_if
 c_cond
 (paren
@@ -311,7 +311,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_WARN
 comma
-l_string|&quot;Acpi_enable failed.&bslash;n&quot;
+l_string|&quot;acpi_enable failed.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -414,7 +414,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_initialize_objects&n; *&n; * PARAMETERS:  Flags           - Init/enable Options&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Completes namespace initialization by initializing device&n; *              objects and executing AML code for Regions, buffers, etc.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_initialize_objects&n; *&n; * PARAMETERS:  Flags           - Init/enable Options&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Completes namespace initialization by initializing device&n; *              objects and executing AML code for Regions, buffers, etc.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_initialize_objects
 id|acpi_initialize_objects
@@ -430,7 +430,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_initialize_objects&quot;
+l_string|&quot;acpi_initialize_objects&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize all device objects in the namespace&n;&t; * This runs the _STA and _INI methods.&n;&t; */
@@ -476,7 +476,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Initialize the objects that remain uninitialized.  This&n;&t; * runs the executable AML that is part of the declaration of Op_regions&n;&t; * and Fields.&n;&t; */
+multiline_comment|/*&n;&t; * Initialize the objects that remain uninitialized.  This&n;&t; * runs the executable AML that is part of the declaration of op_regions&n;&t; * and Fields.&n;&t; */
 r_if
 c_cond
 (paren
@@ -536,7 +536,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_terminate&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Shutdown the ACPI subsystem.  Release all resources.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_terminate&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Shutdown the ACPI subsystem.  Release all resources.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_terminate
 id|acpi_terminate
@@ -549,7 +549,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_terminate&quot;
+l_string|&quot;acpi_terminate&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Terminate the AML Debugger if present */
@@ -591,7 +591,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_subsystem_status&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status of the ACPI subsystem&n; *&n; * DESCRIPTION: Other drivers that use the ACPI subsystem should call this&n; *              before making any other calls, to ensure the subsystem initial-&n; *              ized successfully.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_subsystem_status&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status of the ACPI subsystem&n; *&n; * DESCRIPTION: Other drivers that use the ACPI subsystem should call this&n; *              before making any other calls, to ensure the subsystem initial-&n; *              ized successfully.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_subsystem_status
 id|acpi_subsystem_status
@@ -622,7 +622,7 @@ id|AE_ERROR
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_system_info&n; *&n; * PARAMETERS:  Out_buffer      - a pointer to a buffer to receive the&n; *                                resources for the device&n; *              Buffer_length   - the number of bytes available in the buffer&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: This function is called to get information about the current&n; *              state of the ACPI subsystem.  It will return system information&n; *              in the Out_buffer.&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the value of Out_buffer is undefined.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_system_info&n; *&n; * PARAMETERS:  out_buffer      - a pointer to a buffer to receive the&n; *                                resources for the device&n; *              buffer_length   - the number of bytes available in the buffer&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: This function is called to get information about the current&n; *              state of the ACPI subsystem.  It will return system information&n; *              in the out_buffer.&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the value of out_buffer is undefined.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_system_info
 id|acpi_get_system_info
@@ -644,7 +644,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_get_system_info&quot;
+l_string|&quot;acpi_get_system_info&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -809,12 +809,12 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_install_initialization_handler&n; *&n; * PARAMETERS:  Handler             - Callback procedure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install an initialization handler&n; *&n; * TBD: When a second function is added, must save the Function also.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_install_initialization_handler&n; *&n; * PARAMETERS:  Handler             - Callback procedure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install an initialization handler&n; *&n; * TBD: When a second function is added, must save the Function also.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_install_initialization_handler
 id|acpi_install_initialization_handler
 (paren
-id|ACPI_INIT_HANDLER
+id|acpi_init_handler
 id|handler
 comma
 id|u32
@@ -854,7 +854,7 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_purge_cached_objects&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Empty all caches (delete the cached objects)&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_purge_cached_objects&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Empty all caches (delete the cached objects)&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_purge_cached_objects
 id|acpi_purge_cached_objects
@@ -864,7 +864,7 @@ r_void
 (brace
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_purge_cached_objects&quot;
+l_string|&quot;acpi_purge_cached_objects&quot;
 )paren
 suffix:semicolon
 id|acpi_ut_delete_generic_state_cache

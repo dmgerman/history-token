@@ -476,7 +476,7 @@ r_if
 c_cond
 (paren
 id|pos
-OG
+op_ge
 id|runtime-&gt;buffer_size
 )paren
 (brace
@@ -502,7 +502,7 @@ id|snd_runtime_check
 c_func
 (paren
 id|pos
-op_le
+OL
 id|runtime-&gt;buffer_size
 comma
 r_return
@@ -806,7 +806,7 @@ r_if
 c_cond
 (paren
 id|pos
-OG
+op_ge
 id|runtime-&gt;buffer_size
 )paren
 (brace
@@ -832,7 +832,7 @@ id|snd_runtime_check
 c_func
 (paren
 id|pos
-op_le
+OL
 id|runtime-&gt;buffer_size
 comma
 r_return

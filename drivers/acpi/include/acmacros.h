@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 135 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACMACROS_H__
 DECL|macro|__ACMACROS_H__
@@ -46,7 +46,7 @@ mdefine_line|#define ACPI_HIDWORD(l)                 ((u32)(((*(uint64_struct *)
 DECL|macro|ACPI_GET_ADDRESS
 mdefine_line|#define ACPI_GET_ADDRESS(a)             (a)
 DECL|macro|ACPI_STORE_ADDRESS
-mdefine_line|#define ACPI_STORE_ADDRESS(a,b)         ((a)=(ACPI_PHYSICAL_ADDRESS)(b))
+mdefine_line|#define ACPI_STORE_ADDRESS(a,b)         ((a)=(acpi_physical_address)(b))
 DECL|macro|ACPI_VALID_ADDRESS
 mdefine_line|#define ACPI_VALID_ADDRESS(a)           (a)
 macro_line|#endif
@@ -56,16 +56,16 @@ DECL|macro|ACPI_GET8
 mdefine_line|#define ACPI_GET8(addr)                 (*(u8*)(addr))
 multiline_comment|/* Pointer arithmetic */
 DECL|macro|ACPI_PTR_ADD
-mdefine_line|#define ACPI_PTR_ADD(t,a,b)             (t *) (void *)((char *)(a) + (NATIVE_UINT)(b))
+mdefine_line|#define ACPI_PTR_ADD(t,a,b)             (t *) (void *)((char *)(a) + (acpi_native_uint)(b))
 DECL|macro|ACPI_PTR_DIFF
-mdefine_line|#define ACPI_PTR_DIFF(a,b)              (NATIVE_UINT) ((char *)(a) - (char *)(b))
+mdefine_line|#define ACPI_PTR_DIFF(a,b)              (acpi_native_uint) ((char *)(a) - (char *)(b))
 multiline_comment|/* Pointer/Integer type conversions */
 DECL|macro|ACPI_TO_POINTER
-mdefine_line|#define ACPI_TO_POINTER(i)              ACPI_PTR_ADD (void, (void *) NULL,(NATIVE_UINT)i)
+mdefine_line|#define ACPI_TO_POINTER(i)              ACPI_PTR_ADD (void, (void *) NULL,(acpi_native_uint)i)
 DECL|macro|ACPI_TO_INTEGER
 mdefine_line|#define ACPI_TO_INTEGER(p)              ACPI_PTR_DIFF (p,(void *) NULL)
 DECL|macro|ACPI_OFFSET
-mdefine_line|#define ACPI_OFFSET(d,f)                (ACPI_SIZE) ACPI_PTR_DIFF (&amp;(((d *)0)-&gt;f),(void *) NULL)
+mdefine_line|#define ACPI_OFFSET(d,f)                (acpi_size) ACPI_PTR_DIFF (&amp;(((d *)0)-&gt;f),(void *) NULL)
 DECL|macro|ACPI_FADT_OFFSET
 mdefine_line|#define ACPI_FADT_OFFSET(f)             ACPI_OFFSET (FADT_DESCRIPTOR, f)
 DECL|macro|ACPI_CAST_PTR
@@ -140,19 +140,19 @@ DECL|macro|ACPI_MOD_16
 mdefine_line|#define ACPI_MOD_16(a)                  _ACPI_MOD(a,16)
 multiline_comment|/*&n; * Rounding macros (Power of two boundaries only)&n; */
 DECL|macro|ACPI_ROUND_DOWN
-mdefine_line|#define ACPI_ROUND_DOWN(value,boundary)      (((NATIVE_UINT)(value)) &amp; (~(((NATIVE_UINT) boundary)-1)))
+mdefine_line|#define ACPI_ROUND_DOWN(value,boundary)      (((acpi_native_uint)(value)) &amp; (~(((acpi_native_uint) boundary)-1)))
 DECL|macro|ACPI_ROUND_UP
-mdefine_line|#define ACPI_ROUND_UP(value,boundary)        ((((NATIVE_UINT)(value)) + (((NATIVE_UINT) boundary)-1)) &amp; (~(((NATIVE_UINT) boundary)-1)))
+mdefine_line|#define ACPI_ROUND_UP(value,boundary)        ((((acpi_native_uint)(value)) + (((acpi_native_uint) boundary)-1)) &amp; (~(((acpi_native_uint) boundary)-1)))
 DECL|macro|ACPI_ROUND_DOWN_TO_32_BITS
 mdefine_line|#define ACPI_ROUND_DOWN_TO_32_BITS(a)        ACPI_ROUND_DOWN(a,4)
 DECL|macro|ACPI_ROUND_DOWN_TO_64_BITS
 mdefine_line|#define ACPI_ROUND_DOWN_TO_64_BITS(a)        ACPI_ROUND_DOWN(a,8)
 DECL|macro|ACPI_ROUND_DOWN_TO_NATIVE_WORD
 mdefine_line|#define ACPI_ROUND_DOWN_TO_NATIVE_WORD(a)    ACPI_ROUND_DOWN(a,ALIGNED_ADDRESS_BOUNDARY)
-DECL|macro|ACPI_ROUND_UP_TO_32_bITS
-mdefine_line|#define ACPI_ROUND_UP_TO_32_bITS(a)          ACPI_ROUND_UP(a,4)
-DECL|macro|ACPI_ROUND_UP_TO_64_bITS
-mdefine_line|#define ACPI_ROUND_UP_TO_64_bITS(a)          ACPI_ROUND_UP(a,8)
+DECL|macro|ACPI_ROUND_UP_to_32_bITS
+mdefine_line|#define ACPI_ROUND_UP_to_32_bITS(a)          ACPI_ROUND_UP(a,4)
+DECL|macro|ACPI_ROUND_UP_to_64_bITS
+mdefine_line|#define ACPI_ROUND_UP_to_64_bITS(a)          ACPI_ROUND_UP(a,8)
 DECL|macro|ACPI_ROUND_UP_TO_NATIVE_WORD
 mdefine_line|#define ACPI_ROUND_UP_TO_NATIVE_WORD(a)      ACPI_ROUND_UP(a,ALIGNED_ADDRESS_BOUNDARY)
 DECL|macro|ACPI_ROUND_BITS_UP_TO_BYTES
@@ -203,34 +203,26 @@ DECL|macro|ACPI_REGISTER_INSERT_VALUE
 mdefine_line|#define ACPI_REGISTER_INSERT_VALUE(reg, pos, mask, val)  reg = (reg &amp; (~(mask))) | ACPI_REGISTER_PREPARE_BITS(val, pos, mask)
 multiline_comment|/*&n; * An acpi_namespace_node * can appear in some contexts,&n; * where a pointer to an acpi_operand_object  can also&n; * appear.  This macro is used to distinguish them.&n; *&n; * The &quot;Descriptor&quot; field is the first field in both structures.&n; */
 DECL|macro|ACPI_GET_DESCRIPTOR_TYPE
-mdefine_line|#define ACPI_GET_DESCRIPTOR_TYPE(d)     (((ACPI_DESCRIPTOR *)(void *)(d))-&gt;descriptor_id)
+mdefine_line|#define ACPI_GET_DESCRIPTOR_TYPE(d)     (((acpi_descriptor *)(void *)(d))-&gt;descriptor_id)
 DECL|macro|ACPI_SET_DESCRIPTOR_TYPE
-mdefine_line|#define ACPI_SET_DESCRIPTOR_TYPE(d,t)   (((ACPI_DESCRIPTOR *)(void *)(d))-&gt;descriptor_id = t)
+mdefine_line|#define ACPI_SET_DESCRIPTOR_TYPE(d,t)   (((acpi_descriptor *)(void *)(d))-&gt;descriptor_id = t)
 multiline_comment|/* Macro to test the object type */
 DECL|macro|ACPI_GET_OBJECT_TYPE
 mdefine_line|#define ACPI_GET_OBJECT_TYPE(d)         (((acpi_operand_object *)(void *)(d))-&gt;common.type)
 multiline_comment|/* Macro to check the table flags for SINGLE or MULTIPLE tables are allowed */
 DECL|macro|ACPI_IS_SINGLE_TABLE
 mdefine_line|#define ACPI_IS_SINGLE_TABLE(x)         (((x) &amp; 0x01) == ACPI_TABLE_SINGLE ? 1 : 0)
-multiline_comment|/*&n; * Macro to check if a pointer is within an ACPI table.&n; * Parameter (a) is the pointer to check.  Parameter (b) must be defined&n; * as a pointer to an acpi_table_header.  (b+1) then points past the header,&n; * and ((u8 *)b+b-&gt;Length) points one byte past the end of the table.&n; */
-macro_line|#if ACPI_MACHINE_WIDTH != 16
-DECL|macro|ACPI_IS_IN_ACPI_TABLE
-mdefine_line|#define ACPI_IS_IN_ACPI_TABLE(a,b)      (((u8 *)(a) &gt;= (u8 *)(b + 1)) &amp;&amp;&bslash;&n;&t;&t;&t;&t;&t;&t;&t; ((u8 *)(a) &lt; ((u8 *)b + b-&gt;length)))
-macro_line|#else
-DECL|macro|ACPI_IS_IN_ACPI_TABLE
-mdefine_line|#define ACPI_IS_IN_ACPI_TABLE(a,b)      (_segment)(a) == (_segment)(b) &amp;&amp;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t; (((u8 *)(a) &gt;= (u8 *)(b + 1)) &amp;&amp;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((u8 *)(a) &lt; ((u8 *)b + b-&gt;length)))
-macro_line|#endif
 multiline_comment|/*&n; * Macros for the master AML opcode table&n; */
 macro_line|#if defined(ACPI_DISASSEMBLER) || defined (ACPI_DEBUG_OUTPUT)
 DECL|macro|ACPI_OP
-mdefine_line|#define ACPI_OP(name,Pargs,Iargs,obj_type,class,type,flags)    {name,Pargs,Iargs,flags,obj_type,class,type}
+mdefine_line|#define ACPI_OP(name,Pargs,Iargs,obj_type,class,type,flags)    {name,(u32)(Pargs),(u32)(Iargs),(u32)(flags),obj_type,class,type}
 macro_line|#else
 DECL|macro|ACPI_OP
-mdefine_line|#define ACPI_OP(name,Pargs,Iargs,obj_type,class,type,flags)    {Pargs,Iargs,flags,obj_type,class,type}
+mdefine_line|#define ACPI_OP(name,Pargs,Iargs,obj_type,class,type,flags)    {(u32)(Pargs),(u32)(Iargs),(u32)(flags),obj_type,class,type}
 macro_line|#endif
 macro_line|#ifdef ACPI_DISASSEMBLER
 DECL|macro|ACPI_DISASM_ONLY_MEMBERS
-mdefine_line|#define ACPI_DISASM_ONLY_MEMBERS(a)      a;
+mdefine_line|#define ACPI_DISASM_ONLY_MEMBERS(a)     a;
 macro_line|#else
 DECL|macro|ACPI_DISASM_ONLY_MEMBERS
 mdefine_line|#define ACPI_DISASM_ONLY_MEMBERS(a)
@@ -279,7 +271,7 @@ DECL|macro|INCREMENT_ARG_LIST
 mdefine_line|#define INCREMENT_ARG_LIST(list)        (list &gt;&gt;= ((u32) ARG_TYPE_WIDTH))
 multiline_comment|/*&n; * Build a GAS structure from earlier ACPI table entries (V1.0 and 0.71 extensions)&n; *&n; * 1) Address space&n; * 2) Length in bytes -- convert to length in bits&n; * 3) Bit offset is zero&n; * 4) Reserved field is zero&n; * 5) Expand address to 64 bits&n; */
 DECL|macro|ASL_BUILD_GAS_FROM_ENTRY
-mdefine_line|#define ASL_BUILD_GAS_FROM_ENTRY(a,b,c,d)   do {a.address_space_id = (u8) d;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; a.register_bit_width = (u8) ACPI_MUL_8 (b);&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; a.register_bit_offset = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; a.reserved = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ACPI_STORE_ADDRESS (a.address,(ACPI_PHYSICAL_ADDRESS) c);} while (0)
+mdefine_line|#define ASL_BUILD_GAS_FROM_ENTRY(a,b,c,d)   do {a.address_space_id = (u8) d;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;  a.register_bit_width = (u8) ACPI_MUL_8 (b);&bslash;&n;&t;&t;&t;&t;&t;&t;&t;  a.register_bit_offset = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;  a.reserved = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;  ACPI_STORE_ADDRESS (a.address,(acpi_physical_address) c);} while (0)
 multiline_comment|/* ACPI V1.0 entries -- address space is always I/O */
 DECL|macro|ASL_BUILD_GAS_FROM_V1_ENTRY
 mdefine_line|#define ASL_BUILD_GAS_FROM_V1_ENTRY(a,b,c)  ASL_BUILD_GAS_FROM_ENTRY(a,b,c,ACPI_ADR_SPACE_SYSTEM_IO)
@@ -289,9 +281,9 @@ mdefine_line|#define ACPI_PARAM_LIST(pl)                  pl
 multiline_comment|/*&n; * Error reporting.  These versions add callers module and line#.  Since&n; * _THIS_MODULE gets compiled out when ACPI_DEBUG_OUTPUT isn&squot;t defined, only&n; * use it in debug mode.&n; */
 macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|macro|ACPI_REPORT_INFO
-mdefine_line|#define ACPI_REPORT_INFO(fp)                {acpi_ut_report_info(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
+mdefine_line|#define ACPI_REPORT_INFO(fp)                {acpi_ut_report_info(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;   acpi_os_printf ACPI_PARAM_LIST(fp);}
 DECL|macro|ACPI_REPORT_ERROR
-mdefine_line|#define ACPI_REPORT_ERROR(fp)               {acpi_ut_report_error(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
+mdefine_line|#define ACPI_REPORT_ERROR(fp)               {acpi_ut_report_error(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; acpi_os_printf ACPI_PARAM_LIST(fp);}
 DECL|macro|ACPI_REPORT_WARNING
 mdefine_line|#define ACPI_REPORT_WARNING(fp)             {acpi_ut_report_warning(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
 DECL|macro|ACPI_REPORT_NSERROR
@@ -321,7 +313,7 @@ multiline_comment|/*&n; * Debug macros that are conditionally compiled&n; */
 macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|macro|ACPI_MODULE_NAME
 mdefine_line|#define ACPI_MODULE_NAME(name)               static char ACPI_UNUSED_VAR *_THIS_MODULE = name;
-multiline_comment|/*&n; * Function entry tracing.&n; * The first parameter should be the procedure name as a quoted string.  This is declared&n; * as a local string (&quot;_Proc_name) so that it can be also used by the function exit macros below.&n; */
+multiline_comment|/*&n; * Function entry tracing.&n; * The first parameter should be the procedure name as a quoted string.  This is declared&n; * as a local string (&quot;_proc_name) so that it can be also used by the function exit macros below.&n; */
 DECL|macro|ACPI_FUNCTION_NAME
 mdefine_line|#define ACPI_FUNCTION_NAME(a)           acpi_debug_print_info _dbg;     &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.component_id = _COMPONENT; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.proc_name   = a;           &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.module_name = _THIS_MODULE;
 DECL|macro|ACPI_FUNCTION_TRACE
@@ -334,7 +326,7 @@ DECL|macro|ACPI_FUNCTION_TRACE_STR
 mdefine_line|#define ACPI_FUNCTION_TRACE_STR(a,b)    ACPI_FUNCTION_NAME(a)&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_str(__LINE__,&amp;_dbg,(char *)b)
 DECL|macro|ACPI_FUNCTION_ENTRY
 mdefine_line|#define ACPI_FUNCTION_ENTRY()           acpi_ut_track_stack_ptr()
-multiline_comment|/*&n; * Function exit tracing.&n; * WARNING: These macros include a return statement.  This is usually considered&n; * bad form, but having a separate exit macro is very ugly and difficult to maintain.&n; * One of the FUNCTION_TRACE macros above must be used in conjunction with these macros&n; * so that &quot;_Proc_name&quot; is defined.&n; */
+multiline_comment|/*&n; * Function exit tracing.&n; * WARNING: These macros include a return statement.  This is usually considered&n; * bad form, but having a separate exit macro is very ugly and difficult to maintain.&n; * One of the FUNCTION_TRACE macros above must be used in conjunction with these macros&n; * so that &quot;_proc_name&quot; is defined.&n; */
 macro_line|#ifdef ACPI_USE_DO_WHILE_0
 DECL|macro|ACPI_DO_WHILE0
 mdefine_line|#define ACPI_DO_WHILE0(a)               do a while(0)
@@ -483,9 +475,9 @@ multiline_comment|/*&n; * Memory allocation tracking (DEBUG ONLY)&n; */
 macro_line|#ifndef ACPI_DBG_TRACK_ALLOCATIONS
 multiline_comment|/* Memory allocation */
 DECL|macro|ACPI_MEM_ALLOCATE
-mdefine_line|#define ACPI_MEM_ALLOCATE(a)            acpi_ut_allocate((ACPI_SIZE)(a),_COMPONENT,_THIS_MODULE,__LINE__)
+mdefine_line|#define ACPI_MEM_ALLOCATE(a)            acpi_ut_allocate((acpi_size)(a),_COMPONENT,_THIS_MODULE,__LINE__)
 DECL|macro|ACPI_MEM_CALLOCATE
-mdefine_line|#define ACPI_MEM_CALLOCATE(a)           acpi_ut_callocate((ACPI_SIZE)(a), _COMPONENT,_THIS_MODULE,__LINE__)
+mdefine_line|#define ACPI_MEM_CALLOCATE(a)           acpi_ut_callocate((acpi_size)(a), _COMPONENT,_THIS_MODULE,__LINE__)
 DECL|macro|ACPI_MEM_FREE
 mdefine_line|#define ACPI_MEM_FREE(a)                acpi_os_free(a)
 DECL|macro|ACPI_MEM_TRACKING
@@ -493,9 +485,9 @@ mdefine_line|#define ACPI_MEM_TRACKING(a)
 macro_line|#else
 multiline_comment|/* Memory allocation */
 DECL|macro|ACPI_MEM_ALLOCATE
-mdefine_line|#define ACPI_MEM_ALLOCATE(a)            acpi_ut_allocate_and_track((ACPI_SIZE)(a),_COMPONENT,_THIS_MODULE,__LINE__)
+mdefine_line|#define ACPI_MEM_ALLOCATE(a)            acpi_ut_allocate_and_track((acpi_size)(a),_COMPONENT,_THIS_MODULE,__LINE__)
 DECL|macro|ACPI_MEM_CALLOCATE
-mdefine_line|#define ACPI_MEM_CALLOCATE(a)           acpi_ut_callocate_and_track((ACPI_SIZE)(a), _COMPONENT,_THIS_MODULE,__LINE__)
+mdefine_line|#define ACPI_MEM_CALLOCATE(a)           acpi_ut_callocate_and_track((acpi_size)(a), _COMPONENT,_THIS_MODULE,__LINE__)
 DECL|macro|ACPI_MEM_FREE
 mdefine_line|#define ACPI_MEM_FREE(a)                acpi_ut_free_and_track(a,_COMPONENT,_THIS_MODULE,__LINE__)
 DECL|macro|ACPI_MEM_TRACKING

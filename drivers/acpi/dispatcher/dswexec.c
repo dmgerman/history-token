@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 97 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -45,7 +45,7 @@ comma
 id|acpi_ex_opcode_6A_0T_1R
 )brace
 suffix:semicolon
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_predicate_value&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the result of a predicate evaluation&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_get_predicate_value&n; *&n; * PARAMETERS:  walk_state      - Current state of the parse tree walk&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the result of a predicate evaluation&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_get_predicate_value
 id|acpi_ds_get_predicate_value
@@ -70,7 +70,7 @@ id|obj_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_get_predicate_value&quot;
+l_string|&quot;ds_get_predicate_value&quot;
 comma
 id|walk_state
 )paren
@@ -201,7 +201,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;No predicate Obj_desc=%p State=%p&bslash;n&quot;
+l_string|&quot;No predicate obj_desc=%p State=%p&bslash;n&quot;
 comma
 id|obj_desc
 comma
@@ -232,7 +232,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Bad predicate (not a number) Obj_desc=%p State=%p Type=%X&bslash;n&quot;
+l_string|&quot;Bad predicate (not a number) obj_desc=%p State=%p Type=%X&bslash;n&quot;
 comma
 id|obj_desc
 comma
@@ -325,7 +325,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_exec_begin_op&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *              Out_op          - Return op if a new one is created&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Descending callback used during the execution of control&n; *              methods.  This is where most operators and operands are&n; *              dispatched to the interpreter.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_exec_begin_op&n; *&n; * PARAMETERS:  walk_state      - Current state of the parse tree walk&n; *              out_op          - Return op if a new one is created&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Descending callback used during the execution of control&n; *              methods.  This is where most operators and operands are&n; *              dispatched to the interpreter.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_exec_begin_op
 id|acpi_ds_exec_begin_op
@@ -354,7 +354,7 @@ id|opcode_class
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_exec_begin_op&quot;
+l_string|&quot;ds_exec_begin_op&quot;
 comma
 id|walk_state
 )paren
@@ -659,7 +659,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_exec_end_op&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *              Op              - Op that has been just been completed in the&n; *                                walk;  Arguments have now been evaluated.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Ascending callback used during the execution of control&n; *              methods.  The only thing we really need to do here is to&n; *              notice the beginning of IF, ELSE, and WHILE blocks.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_exec_end_op&n; *&n; * PARAMETERS:  walk_state      - Current state of the parse tree walk&n; *              Op              - Op that has been just been completed in the&n; *                                walk;  Arguments have now been evaluated.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Ascending callback used during the execution of control&n; *              methods.  The only thing we really need to do here is to&n; *              notice the beginning of IF, ELSE, and WHILE blocks.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_exec_end_op
 id|acpi_ds_exec_end_op
@@ -694,7 +694,7 @@ id|first_arg
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_exec_end_op&quot;
+l_string|&quot;ds_exec_end_op&quot;
 comma
 id|walk_state
 )paren
@@ -891,7 +891,7 @@ id|walk_state-&gt;opcode
 comma
 id|walk_state-&gt;num_operands
 comma
-l_string|&quot;after Ex_resolve_operands&quot;
+l_string|&quot;after ex_resolve_operands&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Dispatch the request to the appropriate interpreter handler&n;&t;&t;&t; * routine.  There is one routine per opcode &quot;type&quot; based upon the&n;&t;&t;&t; * number of opcode arguments and return type.&n;&t;&t;&t; */
@@ -972,7 +972,7 @@ r_case
 id|AML_TYPE_CONTROL
 suffix:colon
 multiline_comment|/* Type 1 opcode, IF/ELSE/WHILE/NOOP */
-multiline_comment|/* 1 Operand, 0 External_result, 0 Internal_result */
+multiline_comment|/* 1 Operand, 0 external_result, 0 internal_result */
 id|status
 op_assign
 id|acpi_ds_exec_end_control_op
@@ -1018,12 +1018,12 @@ id|op
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * (AML_METHODCALL) Op-&gt;Value-&gt;Arg-&gt;Node contains&n;&t;&t;&t; * the method Node pointer&n;&t;&t;&t; */
-multiline_comment|/* Next_op points to the op that holds the method name */
+multiline_comment|/* next_op points to the op that holds the method name */
 id|next_op
 op_assign
 id|first_arg
 suffix:semicolon
-multiline_comment|/* Next_op points to first argument op */
+multiline_comment|/* next_op points to first argument op */
 id|next_op
 op_assign
 id|next_op-&gt;common.next
@@ -1095,7 +1095,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Executing Create_field Buffer/Index Op=%p&bslash;n&quot;
+l_string|&quot;Executing create_field Buffer/Index Op=%p&bslash;n&quot;
 comma
 id|op
 )paren
@@ -1139,7 +1139,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Executing Create_object (Buffer/Package) Op=%p&bslash;n&quot;
+l_string|&quot;Executing create_object (Buffer/Package) Op=%p&bslash;n&quot;
 comma
 id|op
 )paren
@@ -1298,7 +1298,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Executing Op_region Address/Length Op=%p&bslash;n&quot;
+l_string|&quot;Executing op_region Address/Length Op=%p&bslash;n&quot;
 comma
 id|op
 )paren

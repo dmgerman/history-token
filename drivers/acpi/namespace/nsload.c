@@ -1,8 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsload - namespace loading/expanding/contracting procedures&n; *              $Revision: 61 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsload - namespace loading/expanding/contracting procedures&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
@@ -11,7 +10,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;nsload&quot;
 )paren
 macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_load_table&n; *&n; * PARAMETERS:  Table_desc      - Descriptor for table to be loaded&n; *              Node            - Owning NS node&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load one ACPI table into the namespace&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_load_table&n; *&n; * PARAMETERS:  table_desc      - Descriptor for table to be loaded&n; *              Node            - Owning NS node&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load one ACPI table into the namespace&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_load_table
 id|acpi_ns_load_table
@@ -30,7 +29,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_load_table&quot;
+l_string|&quot;ns_load_table&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Check if table contains valid AML (must be DSDT, PSDT, SSDT, etc.) */
@@ -211,7 +210,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_load_table_by_type&n; *&n; * PARAMETERS:  Table_type          - Id of the table type to load&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load an ACPI table or tables into the namespace.  All tables&n; *              of the given type are loaded.  The mechanism allows this&n; *              routine to be called repeatedly.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_load_table_by_type&n; *&n; * PARAMETERS:  table_type          - Id of the table type to load&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load an ACPI table or tables into the namespace.  All tables&n; *              of the given type are loaded.  The mechanism allows this&n; *              routine to be called repeatedly.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_load_table_by_type
 id|acpi_ns_load_table_by_type
@@ -232,7 +231,7 @@ id|table_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_load_table_by_type&quot;
+l_string|&quot;ns_load_table_by_type&quot;
 )paren
 suffix:semicolon
 id|status
@@ -528,7 +527,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_load_namespace&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load the name space from what ever is pointed to by DSDT.&n; *              (DSDT points to either the BIOS or a buffer.)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_load_namespace&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load the name space from what ever is pointed to by DSDT.&n; *              (DSDT points to either the BIOS or a buffer.)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_load_namespace
 id|acpi_ns_load_namespace
@@ -541,7 +540,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_load_name_space&quot;
+l_string|&quot;acpi_load_name_space&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* There must be at least a DSDT installed */
@@ -625,7 +624,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_subtree&n; *&n; * PARAMETERS:  Start_handle        - Handle in namespace where search begins&n; *&n; * RETURNS      Status&n; *&n; * DESCRIPTION: Walks the namespace starting at the given handle and deletes&n; *              all objects, entries, and scopes in the entire subtree.&n; *&n; *              Namespace/Interpreter should be locked or the subsystem should&n; *              be in shutdown before this routine is called.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_delete_subtree&n; *&n; * PARAMETERS:  start_handle        - Handle in namespace where search begins&n; *&n; * RETURNS      Status&n; *&n; * DESCRIPTION: Walks the namespace starting at the given handle and deletes&n; *              all objects, entries, and scopes in the entire subtree.&n; *&n; *              Namespace/Interpreter should be locked or the subsystem should&n; *              be in shutdown before this routine is called.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_delete_subtree
 id|acpi_ns_delete_subtree
@@ -654,7 +653,7 @@ id|level
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_delete_subtree&quot;
+l_string|&quot;ns_delete_subtree&quot;
 )paren
 suffix:semicolon
 id|parent_handle
@@ -796,7 +795,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; *  FUNCTION:       Acpi_ns_unload_name_space&n; *&n; *  PARAMETERS:     Handle          - Root of namespace subtree to be deleted&n; *&n; *  RETURN:         Status&n; *&n; *  DESCRIPTION:    Shrinks the namespace, typically in response to an undocking&n; *                  event.  Deletes an entire subtree starting from (and&n; *                  including) the given handle.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; *  FUNCTION:       acpi_ns_unload_name_space&n; *&n; *  PARAMETERS:     Handle          - Root of namespace subtree to be deleted&n; *&n; *  RETURN:         Status&n; *&n; *  DESCRIPTION:    Shrinks the namespace, typically in response to an undocking&n; *                  event.  Deletes an entire subtree starting from (and&n; *                  including) the given handle.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_unload_namespace
 id|acpi_ns_unload_namespace
@@ -810,7 +809,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_unload_name_space&quot;
+l_string|&quot;ns_unload_name_space&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */

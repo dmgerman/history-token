@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exnames - interpreter/scanner name load/execute&n; *              $Revision: 93 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exnames - interpreter/scanner name load/execute&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -18,7 +18,7 @@ DECL|macro|ACPI_AML_PACKAGE_TYPE3
 mdefine_line|#define ACPI_AML_PACKAGE_TYPE3   0x400000
 DECL|macro|ACPI_AML_PACKAGE_TYPE4
 mdefine_line|#define ACPI_AML_PACKAGE_TYPE4   0x40000000
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_allocate_name_string&n; *&n; * PARAMETERS:  Prefix_count        - Count of parent levels. Special cases:&n; *                                    (-1) = root,  0 = none&n; *              Num_name_segs       - count of 4-character name segments&n; *&n; * RETURN:      A pointer to the allocated string segment.  This segment must&n; *              be deleted by the caller.&n; *&n; * DESCRIPTION: Allocate a buffer for a name string. Ensure allocated name&n; *              string is long enough, and set up prefix if any.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_allocate_name_string&n; *&n; * PARAMETERS:  prefix_count        - Count of parent levels. Special cases:&n; *                                    (-1) = root,  0 = none&n; *              num_name_segs       - count of 4-character name segments&n; *&n; * RETURN:      A pointer to the allocated string segment.  This segment must&n; *              be deleted by the caller.&n; *&n; * DESCRIPTION: Allocate a buffer for a name string. Ensure allocated name&n; *              string is long enough, and set up prefix if any.&n; *&n; ******************************************************************************/
 r_char
 op_star
 DECL|function|acpi_ex_allocate_name_string
@@ -44,10 +44,10 @@ id|size_needed
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_allocate_name_string&quot;
+l_string|&quot;ex_allocate_name_string&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Allow room for all &bslash; and ^ prefixes, all segments, and a Multi_name_prefix.&n;&t; * Also, one byte for the null terminator.&n;&t; * This may actually be somewhat longer than needed.&n;&t; */
+multiline_comment|/*&n;&t; * Allow room for all &bslash; and ^ prefixes, all segments, and a multi_name_prefix.&n;&t; * Also, one byte for the null terminator.&n;&t; * This may actually be somewhat longer than needed.&n;&t; */
 r_if
 c_cond
 (paren
@@ -107,7 +107,7 @@ id|name_string
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Ex_allocate_name_string: Could not allocate size %d&bslash;n&quot;
+l_string|&quot;ex_allocate_name_string: Could not allocate size %d&bslash;n&quot;
 comma
 id|size_needed
 )paren
@@ -199,7 +199,7 @@ op_assign
 id|AML_DUAL_NAME_PREFIX
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Terminate string following prefixes. Acpi_ex_name_segment() will&n;&t; * append the segment(s)&n;&t; */
+multiline_comment|/*&n;&t; * Terminate string following prefixes. acpi_ex_name_segment() will&n;&t; * append the segment(s)&n;&t; */
 op_star
 id|temp_ptr
 op_assign
@@ -211,7 +211,7 @@ id|name_string
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_name_segment&n; *&n; * PARAMETERS:  Interpreter_mode    - Current running mode (load1/Load2/Exec)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a name segment (4 bytes)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_name_segment&n; *&n; * PARAMETERS:  interpreter_mode    - Current running mode (load1/Load2/Exec)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a name segment (4 bytes)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_name_segment
 id|acpi_ex_name_segment
@@ -253,7 +253,7 @@ l_int|5
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_name_segment&quot;
+l_string|&quot;ex_name_segment&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If first character is a digit, then we know that we aren&squot;t looking at a&n;&t; * valid name segment&n;&t; */
@@ -484,7 +484,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_get_name_string&n; *&n; * PARAMETERS:  Data_type           - Data type to be associated with this name&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get a name, including any prefixes.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_get_name_string&n; *&n; * PARAMETERS:  data_type           - Data type to be associated with this name&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get a name, including any prefixes.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_get_name_string
 id|acpi_ex_get_name_string
@@ -538,7 +538,7 @@ id|FALSE
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_get_name_string&quot;
+l_string|&quot;ex_get_name_string&quot;
 comma
 id|aml_address
 )paren
@@ -559,7 +559,7 @@ op_eq
 id|data_type
 )paren
 (brace
-multiline_comment|/* Disallow prefixes for types associated with Field_unit names */
+multiline_comment|/* Disallow prefixes for types associated with field_unit names */
 id|name_string
 op_assign
 id|acpi_ex_allocate_name_string
@@ -597,7 +597,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Data_type is not a field name.&n;&t;&t; * Examine first character of name for root or parent prefix operators&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * data_type is not a field name.&n;&t;&t; * Examine first character of name for root or parent prefix operators&n;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -613,13 +613,13 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_LOAD
 comma
-l_string|&quot;Root_prefix(&bslash;&bslash;) at %p&bslash;n&quot;
+l_string|&quot;root_prefix(&bslash;&bslash;) at %p&bslash;n&quot;
 comma
 id|aml_address
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Remember that we have a Root_prefix --&n;&t;&t;&t; * see comment in Acpi_ex_allocate_name_string()&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Remember that we have a root_prefix --&n;&t;&t;&t; * see comment in acpi_ex_allocate_name_string()&n;&t;&t;&t; */
 id|aml_address
 op_increment
 suffix:semicolon
@@ -644,7 +644,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_LOAD
 comma
-l_string|&quot;Parent_prefix (^) at %p&bslash;n&quot;
+l_string|&quot;parent_prefix (^) at %p&bslash;n&quot;
 comma
 id|aml_address
 )paren
@@ -694,7 +694,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_LOAD
 comma
-l_string|&quot;Dual_name_prefix at %p&bslash;n&quot;
+l_string|&quot;dual_name_prefix at %p&bslash;n&quot;
 comma
 id|aml_address
 )paren
@@ -771,7 +771,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_LOAD
 comma
-l_string|&quot;Multi_name_prefix at %p&bslash;n&quot;
+l_string|&quot;multi_name_prefix at %p&bslash;n&quot;
 comma
 id|aml_address
 )paren
@@ -846,7 +846,7 @@ suffix:semicolon
 r_case
 l_int|0
 suffix:colon
-multiline_comment|/* Null_name valid as of 8-12-98 ASL/AML Grammar Update */
+multiline_comment|/* null_name valid as of 8-12-98 ASL/AML Grammar Update */
 r_if
 c_cond
 (paren
@@ -860,7 +860,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Name_seg is &bslash;&quot;&bslash;&bslash;&bslash;&quot; followed by NULL&bslash;n&quot;
+l_string|&quot;name_seg is &bslash;&quot;&bslash;&bslash;&bslash;&quot; followed by NULL&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -948,7 +948,7 @@ multiline_comment|/* Ran out of segments after processing a prefix */
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Ex_do_name: Malformed Name at %p&bslash;n&quot;
+l_string|&quot;ex_do_name: Malformed Name at %p&bslash;n&quot;
 comma
 id|name_string
 )paren

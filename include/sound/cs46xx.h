@@ -2317,6 +2317,11 @@ id|pcm_channel_descriptor_t
 op_star
 id|pcm_channel
 suffix:semicolon
+DECL|member|pcm_channel_id
+r_int
+id|pcm_channel_id
+suffix:semicolon
+multiline_comment|/* Fron Rear, Center Lfe  ... */
 DECL|typedef|cs46xx_pcm_t
 )brace
 id|cs46xx_pcm_t

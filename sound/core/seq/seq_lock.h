@@ -2,7 +2,7 @@ macro_line|#ifndef __SND_SEQ_LOCK_H
 DECL|macro|__SND_SEQ_LOCK_H
 mdefine_line|#define __SND_SEQ_LOCK_H
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#if defined(__SMP__) || defined(CONFIG_SND_DEBUG)
+macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_SND_DEBUG)
 DECL|typedef|snd_use_lock_t
 r_typedef
 id|atomic_t

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsopcode - Dispatcher Op Region support and handling of&n; *                         &quot;control&quot; opcodes&n; *              $Revision: 84 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsopcode - Dispatcher Op Region support and handling of&n; *                         &quot;control&quot; opcodes&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -13,7 +13,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dsopcode&quot;
 )paren
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_execute_arguments&n; *&n; * PARAMETERS:  Node                - Parent NS node&n; *              Aml_length          - Length of executable AML&n; *              Aml_start           - Pointer to the AML&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Late execution of region or field arguments&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_execute_arguments&n; *&n; * PARAMETERS:  Node                - Parent NS node&n; *              aml_length          - Length of executable AML&n; *              aml_start           - Pointer to the AML&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Late execution of region or field arguments&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_execute_arguments
 id|acpi_ds_execute_arguments
@@ -51,7 +51,7 @@ id|arg
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_ds_execute_arguments&quot;
+l_string|&quot;acpi_ds_execute_arguments&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate a new parser op to be the root of the parsed tree&n;&t; */
@@ -75,7 +75,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Save the Node for use in Acpi_ps_parse_aml */
+multiline_comment|/* Save the Node for use in acpi_ps_parse_aml */
 id|op-&gt;common.node
 op_assign
 id|scope_node
@@ -309,7 +309,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_buffer_field_arguments&n; *&n; * PARAMETERS:  Obj_desc        - A valid Buffer_field object&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get Buffer_field Buffer and Index. This implements the late&n; *              evaluation of these field attributes.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_get_buffer_field_arguments&n; *&n; * PARAMETERS:  obj_desc        - A valid buffer_field object&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get buffer_field Buffer and Index. This implements the late&n; *              evaluation of these field attributes.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_get_buffer_field_arguments
 id|acpi_ds_get_buffer_field_arguments
@@ -332,7 +332,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_get_buffer_field_arguments&quot;
+l_string|&quot;ds_get_buffer_field_arguments&quot;
 comma
 id|obj_desc
 )paren
@@ -351,7 +351,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Get the AML pointer (method object) and Buffer_field node */
+multiline_comment|/* Get the AML pointer (method object) and buffer_field node */
 id|extra_desc
 op_assign
 id|acpi_ns_get_secondary_object
@@ -381,13 +381,13 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;[%4.4s] Buffer_field JIT Init&bslash;n&quot;
+l_string|&quot;[%4.4s] buffer_field JIT Init&bslash;n&quot;
 comma
 id|node-&gt;name.ascii
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Execute the AML code for the Term_arg arguments */
+multiline_comment|/* Execute the AML code for the term_arg arguments */
 id|status
 op_assign
 id|acpi_ds_execute_arguments
@@ -410,7 +410,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_buffer_arguments&n; *&n; * PARAMETERS:  Obj_desc        - A valid Bufferobject&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get Buffer length and initializer byte list.  This implements&n; *              the late evaluation of these attributes.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_get_buffer_arguments&n; *&n; * PARAMETERS:  obj_desc        - A valid Bufferobject&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get Buffer length and initializer byte list.  This implements&n; *              the late evaluation of these attributes.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_get_buffer_arguments
 id|acpi_ds_get_buffer_arguments
@@ -429,7 +429,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_get_buffer_arguments&quot;
+l_string|&quot;ds_get_buffer_arguments&quot;
 comma
 id|obj_desc
 )paren
@@ -486,7 +486,7 @@ l_string|&quot;Buffer JIT Init&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Execute the AML code for the Term_arg arguments */
+multiline_comment|/* Execute the AML code for the term_arg arguments */
 id|status
 op_assign
 id|acpi_ds_execute_arguments
@@ -506,7 +506,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_package_arguments&n; *&n; * PARAMETERS:  Obj_desc        - A valid Packageobject&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get Package length and initializer byte list.  This implements&n; *              the late evaluation of these attributes.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_get_package_arguments&n; *&n; * PARAMETERS:  obj_desc        - A valid Packageobject&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get Package length and initializer byte list.  This implements&n; *              the late evaluation of these attributes.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_get_package_arguments
 id|acpi_ds_get_package_arguments
@@ -525,7 +525,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_get_package_arguments&quot;
+l_string|&quot;ds_get_package_arguments&quot;
 comma
 id|obj_desc
 )paren
@@ -582,7 +582,7 @@ l_string|&quot;Package JIT Init&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Execute the AML code for the Term_arg arguments */
+multiline_comment|/* Execute the AML code for the term_arg arguments */
 id|status
 op_assign
 id|acpi_ds_execute_arguments
@@ -602,7 +602,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_region_arguments&n; *&n; * PARAMETERS:  Obj_desc        - A valid region object&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get region address and length.  This implements the late&n; *              evaluation of these region attributes.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_get_region_arguments&n; *&n; * PARAMETERS:  obj_desc        - A valid region object&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get region address and length.  This implements the late&n; *              evaluation of these region attributes.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_get_region_arguments
 id|acpi_ds_get_region_arguments
@@ -625,7 +625,7 @@ id|extra_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_get_region_arguments&quot;
+l_string|&quot;ds_get_region_arguments&quot;
 comma
 id|obj_desc
 )paren
@@ -687,7 +687,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;[%4.4s] Op_region Init at AML %p&bslash;n&quot;
+l_string|&quot;[%4.4s] op_region Init at AML %p&bslash;n&quot;
 comma
 id|node-&gt;name.ascii
 comma
@@ -717,7 +717,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_initialize_region&n; *&n; * PARAMETERS:  Op              - A valid region Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Front end to Ev_initialize_region&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_initialize_region&n; *&n; * PARAMETERS:  Op              - A valid region Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Front end to ev_initialize_region&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_initialize_region
 id|acpi_ds_initialize_region
@@ -756,7 +756,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_init_buffer_field&n; *&n; * PARAMETERS:  Aml_opcode      - Create_xxx_field&n; *              Obj_desc        - Buffer_field object&n; *              Buffer_desc     - Host Buffer&n; *              Offset_desc     - Offset into buffer&n; *              Length          - Length of field (CREATE_FIELD_OP only)&n; *              Result          - Where to store the result&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform actual initialization of a buffer field&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_init_buffer_field&n; *&n; * PARAMETERS:  aml_opcode      - create_xxx_field&n; *              obj_desc        - buffer_field object&n; *              buffer_desc     - Host Buffer&n; *              offset_desc     - Offset into buffer&n; *              Length          - Length of field (CREATE_FIELD_OP only)&n; *              Result          - Where to store the result&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform actual initialization of a buffer field&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_init_buffer_field
 id|acpi_ds_init_buffer_field
@@ -802,7 +802,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_init_buffer_field&quot;
+l_string|&quot;ds_init_buffer_field&quot;
 comma
 id|obj_desc
 )paren
@@ -841,7 +841,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The last parameter to all of these opcodes (Result_desc) started&n;&t; * out as a Name_string, and should therefore now be a NS node&n;&t; * after resolution in Acpi_ex_resolve_operands().&n;&t; */
+multiline_comment|/*&n;&t; * The last parameter to all of these opcodes (result_desc) started&n;&t; * out as a name_string, and should therefore now be a NS node&n;&t; * after resolution in acpi_ex_resolve_operands().&n;&t; */
 r_if
 c_cond
 (paren
@@ -1077,7 +1077,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Initialize areas of the field object that are common to all fields&n;&t; * For Field_flags, use LOCK_RULE = 0 (NO_LOCK), UPDATE_RULE = 0 (UPDATE_PRESERVE)&n;&t; */
+multiline_comment|/*&n;&t; * Initialize areas of the field object that are common to all fields&n;&t; * For field_flags, use LOCK_RULE = 0 (NO_LOCK), UPDATE_RULE = 0 (UPDATE_PRESERVE)&n;&t; */
 id|status
 op_assign
 id|acpi_ex_prep_common_field_object
@@ -1110,7 +1110,7 @@ id|obj_desc-&gt;buffer_field.buffer_obj
 op_assign
 id|buffer_desc
 suffix:semicolon
-multiline_comment|/* Reference count for Buffer_desc inherits Obj_desc count */
+multiline_comment|/* Reference count for buffer_desc inherits obj_desc count */
 id|buffer_desc-&gt;common.reference_count
 op_assign
 (paren
@@ -1168,7 +1168,7 @@ multiline_comment|/* Result descriptor */
 )brace
 r_else
 (brace
-multiline_comment|/* Now the address and length are valid for this Buffer_field */
+multiline_comment|/* Now the address and length are valid for this buffer_field */
 id|obj_desc-&gt;buffer_field.flags
 op_or_assign
 id|AOPOBJ_DATA_VALID
@@ -1180,7 +1180,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_eval_buffer_field_operands&n; *&n; * PARAMETERS:  Walk_state      - Current walk&n; *              Op              - A valid Buffer_field Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get Buffer_field Buffer and Index&n; *              Called from Acpi_ds_exec_end_op during Buffer_field parse tree walk&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_eval_buffer_field_operands&n; *&n; * PARAMETERS:  walk_state      - Current walk&n; *              Op              - A valid buffer_field Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get buffer_field Buffer and Index&n; *              Called from acpi_ds_exec_end_op during buffer_field parse tree walk&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_eval_buffer_field_operands
 id|acpi_ds_eval_buffer_field_operands
@@ -1211,17 +1211,17 @@ id|next_op
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_eval_buffer_field_operands&quot;
+l_string|&quot;ds_eval_buffer_field_operands&quot;
 comma
 id|op
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This is where we evaluate the address and length fields of the&n;&t; * Create_xxx_field declaration&n;&t; */
+multiline_comment|/*&n;&t; * This is where we evaluate the address and length fields of the&n;&t; * create_xxx_field declaration&n;&t; */
 id|node
 op_assign
 id|op-&gt;common.node
 suffix:semicolon
-multiline_comment|/* Next_op points to the op that holds the Buffer */
+multiline_comment|/* next_op points to the op that holds the Buffer */
 id|next_op
 op_assign
 id|op-&gt;common.value.arg
@@ -1296,7 +1296,7 @@ id|op-&gt;common.aml_opcode
 comma
 id|walk_state-&gt;num_operands
 comma
-l_string|&quot;after Acpi_ex_resolve_operands&quot;
+l_string|&quot;after acpi_ex_resolve_operands&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1372,7 +1372,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* All other, Create_xxx_field opcodes */
+multiline_comment|/* All other, create_xxx_field opcodes */
 id|status
 op_assign
 id|acpi_ds_init_buffer_field
@@ -1406,7 +1406,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_eval_region_operands&n; *&n; * PARAMETERS:  Walk_state      - Current walk&n; *              Op              - A valid region Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get region address and length&n; *              Called from Acpi_ds_exec_end_op during Op_region parse tree walk&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_eval_region_operands&n; *&n; * PARAMETERS:  walk_state      - Current walk&n; *              Op              - A valid region Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get region address and length&n; *              Called from acpi_ds_exec_end_op during op_region parse tree walk&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_eval_region_operands
 id|acpi_ds_eval_region_operands
@@ -1441,22 +1441,22 @@ id|next_op
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_eval_region_operands&quot;
+l_string|&quot;ds_eval_region_operands&quot;
 comma
 id|op
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This is where we evaluate the address and length fields of the Op_region declaration&n;&t; */
+multiline_comment|/*&n;&t; * This is where we evaluate the address and length fields of the op_region declaration&n;&t; */
 id|node
 op_assign
 id|op-&gt;common.node
 suffix:semicolon
-multiline_comment|/* Next_op points to the op that holds the Space_iD */
+multiline_comment|/* next_op points to the op that holds the space_iD */
 id|next_op
 op_assign
 id|op-&gt;common.value.arg
 suffix:semicolon
-multiline_comment|/* Next_op points to address op */
+multiline_comment|/* next_op points to address op */
 id|next_op
 op_assign
 id|next_op-&gt;common.next
@@ -1526,7 +1526,7 @@ id|op-&gt;common.aml_opcode
 comma
 l_int|1
 comma
-l_string|&quot;after Acpi_ex_resolve_operands&quot;
+l_string|&quot;after acpi_ex_resolve_operands&quot;
 )paren
 suffix:semicolon
 id|obj_desc
@@ -1584,7 +1584,7 @@ suffix:semicolon
 id|obj_desc-&gt;region.address
 op_assign
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|operand_desc-&gt;integer.value
 suffix:semicolon
@@ -1598,7 +1598,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Rgn_obj %p Addr %8.8X%8.8X Len %X&bslash;n&quot;
+l_string|&quot;rgn_obj %p Addr %8.8X%8.8X Len %X&bslash;n&quot;
 comma
 id|obj_desc
 comma
@@ -1627,7 +1627,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_eval_data_object_operands&n; *&n; * PARAMETERS:  Walk_state      - Current walk&n; *              Op              - A valid Data_object Op object&n; *              Obj_desc        - Data_object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the operands and complete the following data objec types:&n; *              Buffer&n; *              Package&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_eval_data_object_operands&n; *&n; * PARAMETERS:  walk_state      - Current walk&n; *              Op              - A valid data_object Op object&n; *              obj_desc        - data_object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the operands and complete the following data objec types:&n; *              Buffer&n; *              Package&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_eval_data_object_operands
 id|acpi_ds_eval_data_object_operands
@@ -1657,7 +1657,7 @@ id|length
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_eval_data_object_operands&quot;
+l_string|&quot;ds_eval_data_object_operands&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* The first operand (for all of these data objects) is the length */
@@ -1833,7 +1833,7 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Return the object in the Walk_state, unless the parent is a package --&n;&t;&t; * in this case, the return object will be stored in the parse tree&n;&t;&t; * for the package.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Return the object in the walk_state, unless the parent is a package --&n;&t;&t; * in this case, the return object will be stored in the parse tree&n;&t;&t; * for the package.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1875,7 +1875,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_exec_begin_control_op&n; *&n; * PARAMETERS:  Walk_list       - The list that owns the walk stack&n; *              Op              - The control Op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handles all control ops encountered during control method&n; *              execution.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_exec_begin_control_op&n; *&n; * PARAMETERS:  walk_list       - The list that owns the walk stack&n; *              Op              - The control Op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handles all control ops encountered during control method&n; *              execution.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_exec_begin_control_op
 id|acpi_ds_exec_begin_control_op
@@ -1900,7 +1900,7 @@ id|control_state
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_exec_begin_control_op&quot;
+l_string|&quot;ds_exec_begin_control_op&quot;
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -2011,7 +2011,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_exec_end_control_op&n; *&n; * PARAMETERS:  Walk_list       - The list that owns the walk stack&n; *              Op              - The control Op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handles all control ops encountered during control method&n; *              execution.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_exec_end_control_op&n; *&n; * PARAMETERS:  walk_list       - The list that owns the walk stack&n; *              Op              - The control Op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handles all control ops encountered during control method&n; *              execution.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_exec_end_control_op
 id|acpi_ds_exec_end_control_op
@@ -2036,7 +2036,7 @@ id|control_state
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_exec_end_control_op&quot;
+l_string|&quot;ds_exec_end_control_op&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -2222,7 +2222,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Get the return value and save as the last result&n;&t;&t;&t; * value.  This is the only place where Walk_state-&gt;Return_desc&n;&t;&t;&t; * is set to anything other than zero!&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Get the return value and save as the last result&n;&t;&t;&t; * value.  This is the only place where walk_state-&gt;return_desc&n;&t;&t;&t; * is set to anything other than zero!&n;&t;&t;&t; */
 id|walk_state-&gt;return_desc
 op_assign
 id|walk_state-&gt;operands
@@ -2364,7 +2364,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;Completed RETURN_OP State=%p, Ret_val=%p&bslash;n&quot;
+l_string|&quot;Completed RETURN_OP State=%p, ret_val=%p&bslash;n&quot;
 comma
 id|walk_state
 comma
@@ -2449,7 +2449,7 @@ id|AE_AML_NO_WHILE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Was: Walk_state-&gt;Aml_last_while = Walk_state-&gt;Control_state-&gt;Control.Aml_predicate_start; */
+multiline_comment|/* Was: walk_state-&gt;aml_last_while = walk_state-&gt;control_state-&gt;Control.aml_predicate_start; */
 id|walk_state-&gt;aml_last_while
 op_assign
 id|walk_state-&gt;control_state-&gt;control.package_end

@@ -1889,6 +1889,9 @@ suffix:semicolon
 r_case
 id|SNDRV_PCM_TRIGGER_START
 suffix:colon
+r_case
+id|SNDRV_PCM_TRIGGER_RESUME
+suffix:colon
 id|snd_cs4281_pokeBA0
 c_func
 (paren
@@ -1919,6 +1922,9 @@ r_break
 suffix:semicolon
 r_case
 id|SNDRV_PCM_TRIGGER_STOP
+suffix:colon
+r_case
+id|SNDRV_PCM_TRIGGER_SUSPEND
 suffix:colon
 id|dma-&gt;valDMR
 op_and_assign
@@ -2832,6 +2838,8 @@ id|SNDRV_PCM_INFO_MMAP_VALID
 op_or
 id|SNDRV_PCM_INFO_PAUSE
 op_or
+id|SNDRV_PCM_INFO_RESUME
+op_or
 id|SNDRV_PCM_INFO_SYNC_START
 )paren
 comma
@@ -2942,6 +2950,8 @@ op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 op_or
 id|SNDRV_PCM_INFO_PAUSE
+op_or
+id|SNDRV_PCM_INFO_RESUME
 op_or
 id|SNDRV_PCM_INFO_SYNC_START
 )paren
@@ -7320,7 +7330,7 @@ id|chip-&gt;midcr
 op_or_assign
 id|BA0_MIDCR_TXE
 suffix:semicolon
-id|chip-&gt;midi_input
+id|chip-&gt;midi_output
 op_assign
 id|substream
 suffix:semicolon

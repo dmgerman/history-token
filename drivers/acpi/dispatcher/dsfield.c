@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *              $Revision: 70 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -12,7 +12,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dsfield&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_buffer_field&n; *&n; * PARAMETERS:  Opcode              - The opcode to be executed&n; *              Operands            - List of operands for the opcode&n; *              Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute the Create_field operators:&n; *              Create_bit_field_op,&n; *              Create_byte_field_op,&n; *              Create_word_field_op,&n; *              Create_dWord_field_op,&n; *              Create_qWord_field_op,&n; *              Create_field_op     (all of which define fields in buffers)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_create_buffer_field&n; *&n; * PARAMETERS:  Opcode              - The opcode to be executed&n; *              Operands            - List of operands for the opcode&n; *              walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute the create_field operators:&n; *              create_bit_field_op,&n; *              create_byte_field_op,&n; *              create_word_field_op,&n; *              create_dword_field_op,&n; *              create_qword_field_op,&n; *              create_field_op     (all of which define fields in buffers)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_create_buffer_field
 id|acpi_ds_create_buffer_field
@@ -52,10 +52,10 @@ id|flags
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_create_buffer_field&quot;
+l_string|&quot;ds_create_buffer_field&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Get the Name_string argument */
+multiline_comment|/* Get the name_string argument */
 r_if
 c_cond
 (paren
@@ -127,7 +127,7 @@ op_or
 id|ACPI_NS_ERROR_IF_FOUND
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Enter the Name_string into the namespace&n;&t; */
+multiline_comment|/*&n;&t; * Enter the name_string into the namespace&n;&t; */
 id|status
 op_assign
 id|acpi_ns_lookup
@@ -277,12 +277,12 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_field_names&n; *&n; * PARAMETERS:  Info            - Create_field info structure&n; *  `           Walk_state      - Current method state&n; *              Arg             - First parser arg for the field name list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Process all named fields in a field declaration.  Names are&n; *              entered into the namespace.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_get_field_names&n; *&n; * PARAMETERS:  Info            - create_field info structure&n; *  `           walk_state      - Current method state&n; *              Arg             - First parser arg for the field name list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Process all named fields in a field declaration.  Names are&n; *              entered into the namespace.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_get_field_names
 id|acpi_ds_get_field_names
 (paren
-id|ACPI_CREATE_FIELD_INFO
+id|acpi_create_field_info
 op_star
 id|info
 comma
@@ -303,7 +303,7 @@ id|position
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_get_field_names&quot;
+l_string|&quot;ds_get_field_names&quot;
 comma
 id|info
 )paren
@@ -320,7 +320,7 @@ c_loop
 id|arg
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Three types of field elements are handled:&n;&t;&t; * 1) Offset - specifies a bit offset&n;&t;&t; * 2) Access_as - changes the access mode&n;&t;&t; * 3) Name - Enters a new named field into the namespace&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Three types of field elements are handled:&n;&t;&t; * 1) Offset - specifies a bit offset&n;&t;&t; * 2) access_as - changes the access mode&n;&t;&t; * 3) Name - Enters a new named field into the namespace&n;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -375,7 +375,7 @@ suffix:semicolon
 r_case
 id|AML_INT_ACCESSFIELD_OP
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Get a new Access_type and Access_attribute -- to be used for all&n;&t;&t;&t; * field units that follow, until field end or another Access_as keyword.&n;&t;&t;&t; *&n;&t;&t;&t; * In Field_flags, preserve the flag bits other than the ACCESS_TYPE bits&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Get a new access_type and access_attribute -- to be used for all&n;&t;&t;&t; * field units that follow, until field end or another access_as keyword.&n;&t;&t;&t; *&n;&t;&t;&t; * In field_flags, preserve the flag bits other than the ACCESS_TYPE bits&n;&t;&t;&t; */
 id|info-&gt;field_flags
 op_assign
 (paren
@@ -591,7 +591,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              Region_node     - Object for the containing Operation Region&n; *  `           Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new field in the specified operation region&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_create_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              region_node     - Object for the containing Operation Region&n; *  `           walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new field in the specified operation region&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_create_field
 id|acpi_ds_create_field
@@ -616,17 +616,17 @@ id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
-id|ACPI_CREATE_FIELD_INFO
+id|acpi_create_field_info
 id|info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_create_field&quot;
+l_string|&quot;ds_create_field&quot;
 comma
 id|op
 )paren
 suffix:semicolon
-multiline_comment|/* First arg is the name of the parent Op_region (must already exist) */
+multiline_comment|/* First arg is the name of the parent op_region (must already exist) */
 id|arg
 op_assign
 id|op-&gt;common.value.arg
@@ -721,7 +721,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_init_field_objects&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *  `           Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: For each &quot;Field Unit&quot; name in the argument list that is&n; *              part of the field declaration, enter the name into the&n; *              namespace.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_init_field_objects&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *  `           walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: For each &quot;Field Unit&quot; name in the argument list that is&n; *              part of the field declaration, enter the name into the&n; *              namespace.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_init_field_objects
 id|acpi_ds_init_field_objects
@@ -755,7 +755,7 @@ l_int|0
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_init_field_objects&quot;
+l_string|&quot;ds_init_field_objects&quot;
 comma
 id|op
 )paren
@@ -828,7 +828,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Walk the list of entries in the Field_list&n;&t; */
+multiline_comment|/*&n;&t; * Walk the list of entries in the field_list&n;&t; */
 r_while
 c_loop
 (paren
@@ -931,7 +931,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_bank_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              Region_node     - Object for the containing Operation Region&n; *  `           Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new bank field in the specified operation region&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_create_bank_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              region_node     - Object for the containing Operation Region&n; *  `           walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new bank field in the specified operation region&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_create_bank_field
 id|acpi_ds_create_bank_field
@@ -956,17 +956,17 @@ id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
-id|ACPI_CREATE_FIELD_INFO
+id|acpi_create_field_info
 id|info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_create_bank_field&quot;
+l_string|&quot;ds_create_bank_field&quot;
 comma
 id|op
 )paren
 suffix:semicolon
-multiline_comment|/* First arg is the name of the parent Op_region (must already exist) */
+multiline_comment|/* First arg is the name of the parent op_region (must already exist) */
 id|arg
 op_assign
 id|op-&gt;common.value.arg
@@ -1068,7 +1068,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Third arg is the Bank_value */
+multiline_comment|/* Third arg is the bank_value */
 id|arg
 op_assign
 id|arg-&gt;common.next
@@ -1113,7 +1113,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_index_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              Region_node     - Object for the containing Operation Region&n; *  `           Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new index field in the specified operation region&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_create_index_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              region_node     - Object for the containing Operation Region&n; *  `           walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new index field in the specified operation region&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_create_index_field
 id|acpi_ds_create_index_field
@@ -1138,12 +1138,12 @@ id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
-id|ACPI_CREATE_FIELD_INFO
+id|acpi_create_field_info
 id|info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_create_index_field&quot;
+l_string|&quot;ds_create_index_field&quot;
 comma
 id|op
 )paren

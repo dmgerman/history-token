@@ -36,8 +36,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|macro|LINUX_2_1
-mdefine_line|#define LINUX_2_1
 DECL|typedef|hp100_stats_t
 r_typedef
 r_struct
@@ -474,7 +472,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|HP100_PCI_IDS_SIZE
 mdefine_line|#define HP100_PCI_IDS_SIZE&t;(sizeof(hp100_pci_ids)/sizeof(struct hp100_pci_id))
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20400
 DECL|variable|__initdata
 r_static
 r_struct
@@ -542,7 +539,6 @@ comma
 id|hp100_pci_tbl
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* LINUX_VERSION_CODE &gt;= 0x20400 */
 DECL|variable|hp100_rx_ratio
 r_static
 r_int
@@ -1045,13 +1041,11 @@ id|ioaddr
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
 r_int
 id|pci_start_index
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef HP100_DEBUG_B
 id|hp100_outw
 c_func
@@ -3366,7 +3360,18 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;10Mb/s network.&bslash;n&quot;
+l_string|&quot;10Mb/s network (10baseT).&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|HP100_LAN_COAX
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;10Mb/s network (coax).&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3516,7 +3521,7 @@ c_func
 (paren
 id|dev
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 id|hp100_page
@@ -3559,7 +3564,7 @@ c_func
 (paren
 id|dev
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Set Option Registers to a safe state  */
@@ -3646,7 +3651,7 @@ c_func
 (paren
 id|dev
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* ------- initialisation complete ----------- */
@@ -3654,16 +3659,24 @@ multiline_comment|/* Finally try to log in the Hub if there may be a VG connecti
 r_if
 c_cond
 (paren
+(paren
 id|lp-&gt;lan_type
-op_ne
-id|HP100_LAN_10
+op_eq
+id|HP100_LAN_100
+)paren
+op_logical_or
+(paren
+id|lp-&gt;lan_type
+op_eq
+id|HP100_LAN_ERR
+)paren
 )paren
 id|hp100_login_to_vg_hub
 c_func
 (paren
 id|dev
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* relogin */
@@ -4736,7 +4749,7 @@ c_func
 (paren
 id|dev
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|netif_stop_queue
@@ -6026,7 +6039,7 @@ c_func
 (paren
 id|dev
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -6038,6 +6051,110 @@ id|PERFORMANCE
 suffix:semicolon
 multiline_comment|/* hp100_outw( HP100_BM_READ | HP100_BM_WRITE | HP100_RESET_HB, OPTION_LSW ); */
 multiline_comment|/* Busmaster mode should be shut down now. */
+)brace
+DECL|function|hp100_check_lan
+r_static
+r_int
+id|hp100_check_lan
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|hp100_private
+op_star
+id|lp
+op_assign
+(paren
+r_struct
+id|hp100_private
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lp-&gt;lan_type
+OL
+l_int|0
+)paren
+(brace
+multiline_comment|/* no LAN type detected yet? */
+id|hp100_stop_interface
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|lp-&gt;lan_type
+op_assign
+id|hp100_sense_lan
+c_func
+(paren
+id|dev
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;hp100: %s: no connection found - check wire&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|hp100_start_interface
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* 10Mb/s RX packets maybe handled */
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|lp-&gt;lan_type
+op_eq
+id|HP100_LAN_100
+)paren
+id|lp-&gt;hub_status
+op_assign
+id|hp100_login_to_vg_hub
+c_func
+(paren
+id|dev
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* relogin */
+id|hp100_start_interface
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* &n; *  transmit functions&n; */
 multiline_comment|/* tx function for busmaster mode */
@@ -6165,79 +6282,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;lan_type
-OL
-l_int|0
-)paren
-(brace
-multiline_comment|/* no LAN type detected yet? */
-id|hp100_stop_interface
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|lp-&gt;lan_type
-op_assign
-id|hp100_sense_lan
+id|hp100_check_lan
 c_func
 (paren
 id|dev
 )paren
 )paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;hp100: %s: no connection found - check wire&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|hp100_start_interface
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* 10Mb/s RX pkts maybe handled */
 r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|lp-&gt;lan_type
-op_eq
-id|HP100_LAN_100
-)paren
-id|lp-&gt;hub_status
-op_assign
-id|hp100_login_to_vg_hub
-c_func
-(paren
-id|dev
-comma
-id|FALSE
-)paren
-suffix:semicolon
-multiline_comment|/* relogin */
-id|hp100_start_interface
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6272,7 +6326,7 @@ c_func
 (paren
 id|dev
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|hp100_start_interface
@@ -6346,7 +6400,7 @@ id|i
 )paren
 (brace
 multiline_comment|/* cable change! */
-multiline_comment|/* it&squot;s very hard - all network setting must be changed!!! */
+multiline_comment|/* it&squot;s very hard - all network settings must be changed!!! */
 id|printk
 c_func
 (paren
@@ -6379,7 +6433,7 @@ c_func
 (paren
 id|dev
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|hp100_start_interface
@@ -6419,7 +6473,7 @@ c_func
 (paren
 id|dev
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|hp100_start_interface
@@ -6842,79 +6896,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;lan_type
-OL
-l_int|0
-)paren
-(brace
-multiline_comment|/* no LAN type detected yet? */
-id|hp100_stop_interface
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|lp-&gt;lan_type
-op_assign
-id|hp100_sense_lan
+id|hp100_check_lan
 c_func
 (paren
 id|dev
 )paren
 )paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;hp100: %s: no connection found - check wire&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|hp100_start_interface
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* 10Mb/s RX packets maybe handled */
 r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|lp-&gt;lan_type
-op_eq
-id|HP100_LAN_100
-)paren
-id|lp-&gt;hub_status
-op_assign
-id|hp100_login_to_vg_hub
-c_func
-(paren
-id|dev
-comma
-id|FALSE
-)paren
-suffix:semicolon
-multiline_comment|/* relogin */
-id|hp100_start_interface
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* If there is not enough free memory on the card... */
 id|i
 op_assign
@@ -7031,7 +7022,7 @@ c_func
 (paren
 id|dev
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|hp100_start_interface
@@ -7138,7 +7129,7 @@ c_func
 (paren
 id|dev
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|hp100_start_interface
@@ -7178,7 +7169,7 @@ c_func
 (paren
 id|dev
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|hp100_start_interface
@@ -8710,6 +8701,13 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#ifdef HP100_DEBUG_B
+r_int
+id|ioaddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+macro_line|#endif
 r_struct
 id|hp100_private
 op_star
@@ -9391,7 +9389,7 @@ c_func
 (paren
 id|dev
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* force a relogin to the hub */
@@ -9558,7 +9556,7 @@ c_func
 (paren
 id|dev
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* force a relogin to the hub */
@@ -10697,7 +10695,7 @@ id|PERFORMANCE
 )paren
 suffix:semicolon
 r_return
-id|HP100_LAN_10
+id|HP100_LAN_COAX
 suffix:semicolon
 )brace
 r_if
@@ -11406,7 +11404,7 @@ c_cond
 (paren
 id|force_relogin
 op_eq
-id|TRUE
+l_int|1
 )paren
 op_logical_or
 (paren
@@ -12190,8 +12188,6 @@ r_if
 c_cond
 (paren
 id|enable
-op_eq
-id|TRUE
 )paren
 (brace
 id|hp100_outw

@@ -248,6 +248,20 @@ comma
 id|MAX_PHYS_SEGMENTS
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SHpnt-&gt;max_sectors
+)paren
+(brace
+multiline_comment|/* driver imposes no hard sector transfer limit.&n;&t;&t; * start at machine infinity initially */
+id|SHpnt-&gt;max_sectors
+op_assign
+id|SCSI_DEFAULT_MAX_SECTORS
+suffix:semicolon
+)brace
+multiline_comment|/* FIXME: we should also adjust this limit later on&n;&t; * after we know what the device capabilities are */
 id|blk_queue_max_sectors
 c_func
 (paren

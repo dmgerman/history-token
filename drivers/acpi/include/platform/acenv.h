@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 101 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACENV_H__
 DECL|macro|__ACENV_H__
@@ -115,25 +115,25 @@ mdefine_line|#define ACPI_STRSTR(s1,s2)      strstr((s1), (s2))
 DECL|macro|ACPI_STRUPR
 mdefine_line|#define ACPI_STRUPR(s)          (void) acpi_ut_strupr ((s))
 DECL|macro|ACPI_STRLEN
-mdefine_line|#define ACPI_STRLEN(s)          (ACPI_SIZE) strlen((s))
+mdefine_line|#define ACPI_STRLEN(s)          (acpi_size) strlen((s))
 DECL|macro|ACPI_STRCPY
 mdefine_line|#define ACPI_STRCPY(d,s)        (void) strcpy((d), (s))
 DECL|macro|ACPI_STRNCPY
-mdefine_line|#define ACPI_STRNCPY(d,s,n)     (void) strncpy((d), (s), (ACPI_SIZE)(n))
+mdefine_line|#define ACPI_STRNCPY(d,s,n)     (void) strncpy((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_STRNCMP
-mdefine_line|#define ACPI_STRNCMP(d,s,n)     strncmp((d), (s), (ACPI_SIZE)(n))
+mdefine_line|#define ACPI_STRNCMP(d,s,n)     strncmp((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_STRCMP
 mdefine_line|#define ACPI_STRCMP(d,s)        strcmp((d), (s))
 DECL|macro|ACPI_STRCAT
 mdefine_line|#define ACPI_STRCAT(d,s)        (void) strcat((d), (s))
 DECL|macro|ACPI_STRNCAT
-mdefine_line|#define ACPI_STRNCAT(d,s,n)     strncat((d), (s), (ACPI_SIZE)(n))
+mdefine_line|#define ACPI_STRNCAT(d,s,n)     strncat((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_STRTOUL
-mdefine_line|#define ACPI_STRTOUL(d,s,n)     strtoul((d), (s), (ACPI_SIZE)(n))
+mdefine_line|#define ACPI_STRTOUL(d,s,n)     strtoul((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_MEMCPY
-mdefine_line|#define ACPI_MEMCPY(d,s,n)      (void) memcpy((d), (s), (ACPI_SIZE)(n))
+mdefine_line|#define ACPI_MEMCPY(d,s,n)      (void) memcpy((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_MEMSET
-mdefine_line|#define ACPI_MEMSET(d,s,n)      (void) memset((d), (s), (ACPI_SIZE)(n))
+mdefine_line|#define ACPI_MEMSET(d,s,n)      (void) memset((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_TOUPPER
 mdefine_line|#define ACPI_TOUPPER            toupper
 DECL|macro|ACPI_TOLOWER
@@ -168,9 +168,9 @@ suffix:semicolon
 macro_line|#endif /* _VALIST */
 multiline_comment|/*&n; * Storage alignment properties&n; */
 DECL|macro|_AUPBND
-mdefine_line|#define  _AUPBND                (sizeof (NATIVE_INT) - 1)
+mdefine_line|#define  _AUPBND                (sizeof (acpi_native_int) - 1)
 DECL|macro|_ADNBND
-mdefine_line|#define  _ADNBND                (sizeof (NATIVE_INT) - 1)
+mdefine_line|#define  _ADNBND                (sizeof (acpi_native_int) - 1)
 multiline_comment|/*&n; * Variable argument list macro definitions&n; */
 DECL|macro|_bnd
 mdefine_line|#define _bnd(X, bnd)            (((sizeof (X)) + (bnd)) &amp; (~(bnd)))
@@ -186,25 +186,25 @@ mdefine_line|#define ACPI_STRSTR(s1,s2)      acpi_ut_strstr ((s1), (s2))
 DECL|macro|ACPI_STRUPR
 mdefine_line|#define ACPI_STRUPR(s)          (void) acpi_ut_strupr ((s))
 DECL|macro|ACPI_STRLEN
-mdefine_line|#define ACPI_STRLEN(s)          (ACPI_SIZE) acpi_ut_strlen ((s))
+mdefine_line|#define ACPI_STRLEN(s)          (acpi_size) acpi_ut_strlen ((s))
 DECL|macro|ACPI_STRCPY
 mdefine_line|#define ACPI_STRCPY(d,s)        (void) acpi_ut_strcpy ((d), (s))
 DECL|macro|ACPI_STRNCPY
-mdefine_line|#define ACPI_STRNCPY(d,s,n)     (void) acpi_ut_strncpy ((d), (s), (ACPI_SIZE)(n))
+mdefine_line|#define ACPI_STRNCPY(d,s,n)     (void) acpi_ut_strncpy ((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_STRNCMP
-mdefine_line|#define ACPI_STRNCMP(d,s,n)     acpi_ut_strncmp ((d), (s), (ACPI_SIZE)(n))
+mdefine_line|#define ACPI_STRNCMP(d,s,n)     acpi_ut_strncmp ((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_STRCMP
 mdefine_line|#define ACPI_STRCMP(d,s)        acpi_ut_strcmp ((d), (s))
 DECL|macro|ACPI_STRCAT
 mdefine_line|#define ACPI_STRCAT(d,s)        (void) acpi_ut_strcat ((d), (s))
 DECL|macro|ACPI_STRNCAT
-mdefine_line|#define ACPI_STRNCAT(d,s,n)     acpi_ut_strncat ((d), (s), (ACPI_SIZE)(n))
+mdefine_line|#define ACPI_STRNCAT(d,s,n)     acpi_ut_strncat ((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_STRTOUL
-mdefine_line|#define ACPI_STRTOUL(d,s,n)     acpi_ut_strtoul ((d), (s), (ACPI_SIZE)(n))
+mdefine_line|#define ACPI_STRTOUL(d,s,n)     acpi_ut_strtoul ((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_MEMCPY
-mdefine_line|#define ACPI_MEMCPY(d,s,n)      (void) acpi_ut_memcpy ((d), (s), (ACPI_SIZE)(n))
+mdefine_line|#define ACPI_MEMCPY(d,s,n)      (void) acpi_ut_memcpy ((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_MEMSET
-mdefine_line|#define ACPI_MEMSET(d,v,n)      (void) acpi_ut_memset ((d), (v), (ACPI_SIZE)(n))
+mdefine_line|#define ACPI_MEMSET(d,v,n)      (void) acpi_ut_memset ((d), (v), (acpi_size)(n))
 DECL|macro|ACPI_TOUPPER
 mdefine_line|#define ACPI_TOUPPER            acpi_ut_to_upper
 DECL|macro|ACPI_TOLOWER

@@ -56,7 +56,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_extern
-id|NATIVE_CHAR
+r_char
 id|line_buf
 (braket
 l_int|80
@@ -158,7 +158,7 @@ id|acpi_os_printf
 c_func
 (paren
 r_const
-id|NATIVE_CHAR
+r_char
 op_star
 id|fmt
 comma
@@ -199,7 +199,7 @@ id|acpi_os_vprintf
 c_func
 (paren
 r_const
-id|NATIVE_CHAR
+r_char
 op_star
 id|fmt
 comma
@@ -268,7 +268,7 @@ DECL|function|acpi_os_allocate
 id|acpi_os_allocate
 c_func
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 )paren
 (brace
@@ -307,7 +307,7 @@ c_func
 id|u32
 id|flags
 comma
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|addr
 )paren
@@ -403,10 +403,10 @@ DECL|function|acpi_os_map_memory
 id|acpi_os_map_memory
 c_func
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|phys
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 r_void
@@ -513,7 +513,7 @@ r_void
 op_star
 id|virt
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|size
 )paren
 (brace
@@ -533,7 +533,7 @@ r_void
 op_star
 id|virt
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 op_star
 id|phys
 )paren
@@ -822,7 +822,7 @@ DECL|function|acpi_os_read_port
 id|acpi_os_read_port
 c_func
 (paren
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 id|port
 comma
 r_void
@@ -924,7 +924,7 @@ DECL|function|acpi_os_write_port
 id|acpi_os_write_port
 c_func
 (paren
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 id|port
 comma
 id|acpi_integer
@@ -996,7 +996,7 @@ DECL|function|acpi_os_read_memory
 id|acpi_os_read_memory
 c_func
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|phys_addr
 comma
 r_void
@@ -1172,7 +1172,7 @@ DECL|function|acpi_os_write_memory
 id|acpi_os_write_memory
 c_func
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|phys_addr
 comma
 id|acpi_integer
@@ -2766,7 +2766,7 @@ DECL|function|acpi_os_get_line
 id|acpi_os_get_line
 c_func
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|buffer
 )paren

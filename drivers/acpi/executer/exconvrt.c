@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 47 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exconvrt&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_to_integer&n; *&n; * PARAMETERS:  *Obj_desc       - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to an integer.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_integer&n; *&n; * PARAMETERS:  *obj_desc       - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to an integer.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_integer
 id|acpi_ex_convert_to_integer
@@ -50,7 +50,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_convert_to_integer&quot;
+l_string|&quot;ex_convert_to_integer&quot;
 comma
 id|obj_desc
 )paren
@@ -292,7 +292,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_to_buffer&n; *&n; * PARAMETERS:  *Obj_desc       - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a Buffer&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_buffer&n; *&n; * PARAMETERS:  *obj_desc       - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a Buffer&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_buffer
 id|acpi_ex_convert_to_buffer
@@ -324,7 +324,7 @@ id|new_buf
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_convert_to_buffer&quot;
+l_string|&quot;ex_convert_to_buffer&quot;
 comma
 id|obj_desc
 )paren
@@ -426,7 +426,7 @@ op_assign
 id|acpi_ut_create_buffer_object
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|obj_desc-&gt;string.length
 )paren
@@ -517,7 +517,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_ascii&n; *&n; * PARAMETERS:  Integer         - Value to be converted&n; *              Base            - 10 or 16&n; *              String          - Where the string is returned&n; *              Data_width      - Size of data item to be converted&n; *&n; * RETURN:      Actual string length&n; *&n; * DESCRIPTION: Convert an ACPI Integer to a hex or decimal string&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_ascii&n; *&n; * PARAMETERS:  Integer         - Value to be converted&n; *              Base            - 10 or 16&n; *              String          - Where the string is returned&n; *              data_width      - Size of data item to be converted&n; *&n; * RETURN:      Actual string length&n; *&n; * DESCRIPTION: Convert an ACPI Integer to a hex or decimal string&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ex_convert_to_ascii
 id|acpi_ex_convert_to_ascii
@@ -834,7 +834,7 @@ id|k
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_to_string&n; *&n; * PARAMETERS:  *Obj_desc       - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a string&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_string&n; *&n; * PARAMETERS:  *obj_desc       - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a string&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_string
 id|acpi_ex_convert_to_string
@@ -867,9 +867,6 @@ id|u32
 id|i
 suffix:semicolon
 id|u32
-id|index
-suffix:semicolon
-id|u32
 id|string_length
 suffix:semicolon
 id|u8
@@ -882,7 +879,7 @@ id|pointer
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_convert_to_string&quot;
+l_string|&quot;ex_convert_to_string&quot;
 comma
 id|obj_desc
 )paren
@@ -976,7 +973,7 @@ op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|string_length
 op_plus
@@ -993,7 +990,7 @@ id|new_buf
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Ex_convert_to_string: Buffer allocation failure&bslash;n&quot;
+l_string|&quot;ex_convert_to_string: Buffer allocation failure&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1069,26 +1066,40 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
+multiline_comment|/* Find the string length */
+id|pointer
+op_assign
+id|obj_desc-&gt;buffer.pointer
+suffix:semicolon
+r_for
+c_loop
+(paren
 id|string_length
 op_assign
-id|obj_desc-&gt;buffer.length
-op_star
-l_int|3
+l_int|0
 suffix:semicolon
+id|string_length
+OL
+id|obj_desc-&gt;buffer.length
+suffix:semicolon
+id|string_length
+op_increment
+)paren
+(brace
+multiline_comment|/* Exit on null terminator */
 r_if
 c_cond
 (paren
-id|base
-op_eq
-l_int|10
+op_logical_neg
+id|pointer
+(braket
+id|string_length
+)braket
 )paren
 (brace
-id|string_length
-op_assign
-id|obj_desc-&gt;buffer.length
-op_star
-l_int|4
+r_break
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -1153,7 +1164,7 @@ op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|string_length
 op_plus
@@ -1170,7 +1181,7 @@ id|new_buf
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Ex_convert_to_string: Buffer allocation failure&bslash;n&quot;
+l_string|&quot;ex_convert_to_string: Buffer allocation failure&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1185,74 +1196,20 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Convert each byte of the buffer to two ASCII characters plus a space.&n;&t;&t; */
-id|pointer
-op_assign
-id|obj_desc-&gt;buffer.pointer
-suffix:semicolon
-id|index
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
+multiline_comment|/* Copy the appropriate number of buffer characters */
+id|ACPI_MEMCPY
 (paren
-id|i
-op_assign
-l_int|0
-comma
-id|index
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|obj_desc-&gt;buffer.length
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|index
-op_add_assign
-id|acpi_ex_convert_to_ascii
-(paren
-(paren
-id|acpi_integer
-)paren
-id|pointer
-(braket
-id|i
-)braket
-comma
-id|base
-comma
-op_amp
 id|new_buf
-(braket
-id|index
-)braket
 comma
-l_int|1
+id|pointer
+comma
+id|string_length
 )paren
 suffix:semicolon
-id|new_buf
-(braket
-id|index
-)braket
-op_assign
-l_char|&squot; &squot;
-suffix:semicolon
-id|index
-op_increment
-suffix:semicolon
-)brace
 multiline_comment|/* Null terminate */
 id|new_buf
 (braket
-id|index
-op_minus
-l_int|1
+id|string_length
 )braket
 op_assign
 l_int|0
@@ -1263,17 +1220,7 @@ id|new_buf
 suffix:semicolon
 id|ret_desc-&gt;string.length
 op_assign
-(paren
-id|u32
-)paren
-id|ACPI_STRLEN
-(paren
-(paren
-r_char
-op_star
-)paren
-id|new_buf
-)paren
+id|string_length
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1321,7 +1268,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_to_target_type&n; *&n; * PARAMETERS:  Destination_type    - Current type of the destination&n; *              Source_desc         - Source object to be converted.&n; *              Walk_state          - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Implements &quot;implicit conversion&quot; rules for storing an object.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_target_type&n; *&n; * PARAMETERS:  destination_type    - Current type of the destination&n; *              source_desc         - Source object to be converted.&n; *              walk_state          - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Implements &quot;implicit conversion&quot; rules for storing an object.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_target_type
 id|acpi_ex_convert_to_target_type
@@ -1350,7 +1297,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_convert_to_target_type&quot;
+l_string|&quot;ex_convert_to_target_type&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Default behavior */
@@ -1521,7 +1468,7 @@ suffix:semicolon
 r_case
 id|ARGI_REFERENCE
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Create_xxxx_field cases - we are storing the field object into the name&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * create_xxxx_field cases - we are storing the field object into the name&n;&t;&t; */
 r_break
 suffix:semicolon
 r_default
@@ -1531,7 +1478,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown Target type ID 0x%X Op %s Dest_type %s&bslash;n&quot;
+l_string|&quot;Unknown Target type ID 0x%X Op %s dest_type %s&bslash;n&quot;
 comma
 id|GET_CURRENT_ARG_TYPE
 (paren

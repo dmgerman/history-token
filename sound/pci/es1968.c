@@ -178,6 +178,30 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
+DECL|variable|use_pm
+r_static
+r_int
+id|use_pm
+(braket
+id|SNDRV_CARDS
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|SNDRV_CARDS
+op_minus
+l_int|1
+)paren
+)braket
+op_assign
+l_int|2
+)brace
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -401,6 +425,37 @@ c_func
 id|clock
 comma
 id|SNDRV_ENABLED
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|use_pm
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|SNDRV_CARDS
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|use_pm
+comma
+l_string|&quot;Toggle power-management.  (0 = off, 1 = on, 2 = auto)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|use_pm
+comma
+id|SNDRV_ENABLED
+l_string|&quot;,allows:{{0,1,2}},skill:advanced&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* PCI Dev ID&squot;s */
@@ -958,6 +1013,19 @@ DECL|enumerator|ESM_APU_FREE
 id|ESM_APU_FREE
 )brace
 suffix:semicolon
+multiline_comment|/* chip type */
+r_enum
+(brace
+DECL|enumerator|TYPE_MAESTRO
+DECL|enumerator|TYPE_MAESTRO2
+DECL|enumerator|TYPE_MAESTRO2E
+id|TYPE_MAESTRO
+comma
+id|TYPE_MAESTRO2
+comma
+id|TYPE_MAESTRO2E
+)brace
+suffix:semicolon
 multiline_comment|/* DMA Hack! */
 DECL|struct|snd_esm_memory
 r_struct
@@ -1173,6 +1241,11 @@ id|snd_pcm_t
 op_star
 id|pcm
 suffix:semicolon
+DECL|member|do_pm
+r_int
+id|do_pm
+suffix:semicolon
+multiline_comment|/* power-management enabled */
 multiline_comment|/* DMA memory block */
 DECL|member|buf_list
 r_struct
@@ -1289,12 +1362,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-DECL|macro|CARD_TYPE_ESS_ESOLDM1
-mdefine_line|#define CARD_TYPE_ESS_ESOLDM1&t;&t;0x12850100
-DECL|macro|CARD_TYPE_ESS_ES1968
-mdefine_line|#define CARD_TYPE_ESS_ES1968&t;&t;0x125d1968
-DECL|macro|CARD_TYPE_ESS_ES1978
-mdefine_line|#define CARD_TYPE_ESS_ES1978&t;&t;0x125d1978
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -1321,8 +1388,7 @@ l_int|8
 comma
 l_int|0xffff00
 comma
-l_int|0
-comma
+id|TYPE_MAESTRO
 )brace
 comma
 multiline_comment|/* Maestro 2 */
@@ -1341,8 +1407,7 @@ l_int|8
 comma
 l_int|0xffff00
 comma
-l_int|0
-comma
+id|TYPE_MAESTRO2
 )brace
 comma
 multiline_comment|/* Maestro 2E */
@@ -1361,8 +1426,7 @@ l_int|8
 comma
 l_int|0xffff00
 comma
-l_int|0
-comma
+id|TYPE_MAESTRO2E
 )brace
 comma
 (brace
@@ -10580,6 +10644,14 @@ id|card
 op_assign
 id|chip-&gt;card
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chip-&gt;do_pm
+)paren
+r_return
+suffix:semicolon
 id|snd_power_lock
 c_func
 (paren
@@ -10641,6 +10713,14 @@ op_star
 id|card
 op_assign
 id|chip-&gt;card
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chip-&gt;do_pm
+)paren
+r_return
 suffix:semicolon
 id|snd_power_lock
 c_func
@@ -11124,6 +11204,12 @@ comma
 r_int
 id|capt_streams
 comma
+r_int
+id|chip_type
+comma
+r_int
+id|do_pm
+comma
 id|es1968_t
 op_star
 op_star
@@ -11237,13 +11323,7 @@ suffix:semicolon
 multiline_comment|/* Set Vars */
 id|chip-&gt;type
 op_assign
-(paren
-id|pci-&gt;vendor
-op_lshift
-l_int|16
-)paren
-op_or
-id|pci-&gt;device
+id|chip_type
 suffix:semicolon
 id|spin_lock_init
 c_func
@@ -11490,6 +11570,61 @@ c_func
 id|pci
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|do_pm
+)paren
+(brace
+multiline_comment|/* disable power-management if not maestro2e or&n;&t;&t; * if not on the whitelist&n;&t;&t; */
+r_int
+r_int
+id|vend
+suffix:semicolon
+id|pci_read_config_dword
+c_func
+(paren
+id|chip-&gt;pci
+comma
+id|PCI_SUBSYSTEM_VENDOR_ID
+comma
+op_amp
+id|vend
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;type
+op_ne
+id|TYPE_MAESTRO2E
+op_logical_or
+(paren
+id|vend
+op_amp
+l_int|0xffff
+)paren
+op_ne
+l_int|0x1028
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;es1968: not attempting power management.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|do_pm
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+id|chip-&gt;do_pm
+op_assign
+id|do_pm
+suffix:semicolon
 id|snd_es1968_chip_init
 c_func
 (paren
@@ -11497,6 +11632,12 @@ id|chip
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
+r_if
+c_cond
+(paren
+id|chip-&gt;do_pm
+)paren
+(brace
 id|card-&gt;set_power_state
 op_assign
 id|snd_es1968_set_power_state
@@ -11505,6 +11646,7 @@ id|card-&gt;power_state_private_data
 op_assign
 id|chip
 suffix:semicolon
+)brace
 macro_line|#endif
 r_if
 c_cond
@@ -11931,6 +12073,13 @@ id|pcm_substreams_c
 id|dev
 )braket
 comma
+id|pci_id-&gt;driver_data
+comma
+id|use_pm
+(braket
+id|dev
+)braket
+comma
 op_amp
 id|chip
 )paren
@@ -11956,7 +12105,7 @@ id|chip-&gt;type
 )paren
 (brace
 r_case
-id|CARD_TYPE_ESS_ES1978
+id|TYPE_MAESTRO2E
 suffix:colon
 id|strcpy
 c_func
@@ -11977,7 +12126,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CARD_TYPE_ESS_ES1968
+id|TYPE_MAESTRO2
 suffix:colon
 id|strcpy
 c_func
@@ -11998,7 +12147,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CARD_TYPE_ESS_ESOLDM1
+id|TYPE_MAESTRO
 suffix:colon
 id|strcpy
 c_func

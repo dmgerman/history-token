@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 45 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -8,12 +8,12 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbconvrt&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_count&n; *&n; * PARAMETERS:  RSDP            - Pointer to the RSDP&n; *              RSDT            - Pointer to the RSDT/XSDT&n; *&n; * RETURN:      The number of tables pointed to by the RSDT or XSDT.&n; *&n; * DESCRIPTION: Calculate the number of tables.  Automatically handles either&n; *              an RSDT or XSDT.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_table_count&n; *&n; * PARAMETERS:  RSDP            - Pointer to the RSDP&n; *              RSDT            - Pointer to the RSDT/XSDT&n; *&n; * RETURN:      The number of tables pointed to by the RSDT or XSDT.&n; *&n; * DESCRIPTION: Calculate the number of tables.  Automatically handles either&n; *              an RSDT or XSDT.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_tb_get_table_count
 id|acpi_tb_get_table_count
 (paren
-id|RSDP_DESCRIPTOR
+id|rsdp_descriptor
 op_star
 id|RSDP
 comma
@@ -73,7 +73,7 @@ id|pointer_size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_to_xsdt&n; *&n; * PARAMETERS:  Table_info      - Info about the RSDT&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an RSDT to an XSDT (internal common format)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_convert_to_xsdt&n; *&n; * PARAMETERS:  table_info      - Info about the RSDT&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an RSDT to an XSDT (internal common format)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_convert_to_xsdt
 id|acpi_tb_convert_to_xsdt
@@ -83,7 +83,7 @@ op_star
 id|table_info
 )paren
 (brace
-id|ACPI_SIZE
+id|acpi_size
 id|table_size
 suffix:semicolon
 id|u32
@@ -102,7 +102,7 @@ id|table_size
 op_assign
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|acpi_gbl_rsdt_table_count
 op_star
@@ -255,7 +255,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_fadt1&n; *&n; * PARAMETERS:  Local_fadt      - Pointer to new FADT&n; *              Original_fadt   - Pointer to old FADT&n; *&n; * RETURN:      Populates Local_fadt&n; *&n; * DESCRIPTION: Convert an ACPI 1.0 FADT to common internal format&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_convert_fadt1&n; *&n; * PARAMETERS:  local_fadt      - Pointer to new FADT&n; *              original_fadt   - Pointer to old FADT&n; *&n; * RETURN:      Populates local_fadt&n; *&n; * DESCRIPTION: Convert an ACPI 1.0 FADT to common internal format&n; *&n; ******************************************************************************/
 r_static
 r_void
 DECL|function|acpi_tb_convert_fadt1
@@ -288,7 +288,7 @@ suffix:semicolon
 multiline_comment|/* Convert table pointers to 64-bit fields */
 id|ACPI_STORE_ADDRESS
 (paren
-id|local_fadt-&gt;Xfirmware_ctrl
+id|local_fadt-&gt;xfirmware_ctrl
 comma
 id|local_fadt-&gt;V1_firmware_ctrl
 )paren
@@ -300,7 +300,7 @@ comma
 id|local_fadt-&gt;V1_dsdt
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * System Interrupt Model isn&squot;t used in ACPI 2.0 (Local_fadt-&gt;Reserved1 = 0;)&n;&t; */
+multiline_comment|/*&n;&t; * System Interrupt Model isn&squot;t used in ACPI 2.0 (local_fadt-&gt;Reserved1 = 0;)&n;&t; */
 multiline_comment|/*&n;&t; * This field is set by the OEM to convey the preferred power management&n;&t; * profile to OSPM. It doesn&squot;t have any 1.0 equivalence.  Since we don&squot;t&n;&t; * know what kind of 32-bit system this is, we will use &quot;unspecified&quot;.&n;&t; */
 id|local_fadt-&gt;prefer_PM_profile
 op_assign
@@ -324,7 +324,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Convert the V1.0 block addresses to V2.0 GAS structures&n;&t; */
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xpm1a_evt_blk
+id|local_fadt-&gt;xpm1a_evt_blk
 comma
 id|local_fadt-&gt;pm1_evt_len
 comma
@@ -333,7 +333,7 @@ id|local_fadt-&gt;V1_pm1a_evt_blk
 suffix:semicolon
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xpm1b_evt_blk
+id|local_fadt-&gt;xpm1b_evt_blk
 comma
 id|local_fadt-&gt;pm1_evt_len
 comma
@@ -342,7 +342,7 @@ id|local_fadt-&gt;V1_pm1b_evt_blk
 suffix:semicolon
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xpm1a_cnt_blk
+id|local_fadt-&gt;xpm1a_cnt_blk
 comma
 id|local_fadt-&gt;pm1_cnt_len
 comma
@@ -351,7 +351,7 @@ id|local_fadt-&gt;V1_pm1a_cnt_blk
 suffix:semicolon
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xpm1b_cnt_blk
+id|local_fadt-&gt;xpm1b_cnt_blk
 comma
 id|local_fadt-&gt;pm1_cnt_len
 comma
@@ -360,7 +360,7 @@ id|local_fadt-&gt;V1_pm1b_cnt_blk
 suffix:semicolon
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xpm2_cnt_blk
+id|local_fadt-&gt;xpm2_cnt_blk
 comma
 id|local_fadt-&gt;pm2_cnt_len
 comma
@@ -369,7 +369,7 @@ id|local_fadt-&gt;V1_pm2_cnt_blk
 suffix:semicolon
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xpm_tmr_blk
+id|local_fadt-&gt;xpm_tmr_blk
 comma
 id|local_fadt-&gt;pm_tm_len
 comma
@@ -378,7 +378,7 @@ id|local_fadt-&gt;V1_pm_tmr_blk
 suffix:semicolon
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xgpe0_blk
+id|local_fadt-&gt;xgpe0_blk
 comma
 id|local_fadt-&gt;gpe0_blk_len
 comma
@@ -387,7 +387,7 @@ id|local_fadt-&gt;V1_gpe0_blk
 suffix:semicolon
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xgpe1_blk
+id|local_fadt-&gt;xgpe1_blk
 comma
 id|local_fadt-&gt;gpe1_blk_len
 comma
@@ -395,7 +395,7 @@ id|local_fadt-&gt;V1_gpe1_blk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_fadt2&n; *&n; * PARAMETERS:  Local_fadt      - Pointer to new FADT&n; *              Original_fadt   - Pointer to old FADT&n; *&n; * RETURN:      Populates Local_fadt&n; *&n; * DESCRIPTION: Convert an ACPI 2.0 FADT to common internal format.&n; *              Handles optional &quot;X&quot; fields.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_convert_fadt2&n; *&n; * PARAMETERS:  local_fadt      - Pointer to new FADT&n; *              original_fadt   - Pointer to old FADT&n; *&n; * RETURN:      Populates local_fadt&n; *&n; * DESCRIPTION: Convert an ACPI 2.0 FADT to common internal format.&n; *              Handles optional &quot;X&quot; fields.&n; *&n; ******************************************************************************/
 r_static
 r_void
 DECL|function|acpi_tb_convert_fadt2
@@ -429,13 +429,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|local_fadt-&gt;Xfirmware_ctrl
+id|local_fadt-&gt;xfirmware_ctrl
 )paren
 )paren
 (brace
 id|ACPI_STORE_ADDRESS
 (paren
-id|local_fadt-&gt;Xfirmware_ctrl
+id|local_fadt-&gt;xfirmware_ctrl
 comma
 id|local_fadt-&gt;V1_firmware_ctrl
 )paren
@@ -463,13 +463,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|local_fadt-&gt;Xpm1a_evt_blk.address
+id|local_fadt-&gt;xpm1a_evt_blk.address
 )paren
 )paren
 (brace
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xpm1a_evt_blk
+id|local_fadt-&gt;xpm1a_evt_blk
 comma
 id|local_fadt-&gt;pm1_evt_len
 comma
@@ -482,13 +482,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|local_fadt-&gt;Xpm1b_evt_blk.address
+id|local_fadt-&gt;xpm1b_evt_blk.address
 )paren
 )paren
 (brace
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xpm1b_evt_blk
+id|local_fadt-&gt;xpm1b_evt_blk
 comma
 id|local_fadt-&gt;pm1_evt_len
 comma
@@ -501,13 +501,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|local_fadt-&gt;Xpm1a_cnt_blk.address
+id|local_fadt-&gt;xpm1a_cnt_blk.address
 )paren
 )paren
 (brace
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xpm1a_cnt_blk
+id|local_fadt-&gt;xpm1a_cnt_blk
 comma
 id|local_fadt-&gt;pm1_cnt_len
 comma
@@ -520,13 +520,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|local_fadt-&gt;Xpm1b_cnt_blk.address
+id|local_fadt-&gt;xpm1b_cnt_blk.address
 )paren
 )paren
 (brace
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xpm1b_cnt_blk
+id|local_fadt-&gt;xpm1b_cnt_blk
 comma
 id|local_fadt-&gt;pm1_cnt_len
 comma
@@ -539,13 +539,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|local_fadt-&gt;Xpm2_cnt_blk.address
+id|local_fadt-&gt;xpm2_cnt_blk.address
 )paren
 )paren
 (brace
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xpm2_cnt_blk
+id|local_fadt-&gt;xpm2_cnt_blk
 comma
 id|local_fadt-&gt;pm2_cnt_len
 comma
@@ -558,13 +558,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|local_fadt-&gt;Xpm_tmr_blk.address
+id|local_fadt-&gt;xpm_tmr_blk.address
 )paren
 )paren
 (brace
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xpm_tmr_blk
+id|local_fadt-&gt;xpm_tmr_blk
 comma
 id|local_fadt-&gt;pm_tm_len
 comma
@@ -577,13 +577,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|local_fadt-&gt;Xgpe0_blk.address
+id|local_fadt-&gt;xgpe0_blk.address
 )paren
 )paren
 (brace
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xgpe0_blk
+id|local_fadt-&gt;xgpe0_blk
 comma
 id|local_fadt-&gt;gpe0_blk_len
 comma
@@ -596,13 +596,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|local_fadt-&gt;Xgpe1_blk.address
+id|local_fadt-&gt;xgpe1_blk.address
 )paren
 )paren
 (brace
 id|ASL_BUILD_GAS_FROM_V1_ENTRY
 (paren
-id|local_fadt-&gt;Xgpe1_blk
+id|local_fadt-&gt;xgpe1_blk
 comma
 id|local_fadt-&gt;gpe1_blk_len
 comma
@@ -611,7 +611,7 @@ id|local_fadt-&gt;V1_gpe1_blk
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_table_fadt&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Converts a BIOS supplied ACPI 1.0 FADT to a local&n; *              ACPI 2.0 FADT. If the BIOS supplied a 2.0 FADT then it is simply&n; *              copied to the local FADT.  The ACPI CA software uses this&n; *              local FADT. Thus a significant amount of special #ifdef&n; *              type codeing is saved.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_convert_table_fadt&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Converts a BIOS supplied ACPI 1.0 FADT to a local&n; *              ACPI 2.0 FADT. If the BIOS supplied a 2.0 FADT then it is simply&n; *              copied to the local FADT.  The ACPI CA software uses this&n; *              local FADT. Thus a significant amount of special #ifdef&n; *              type codeing is saved.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_convert_table_fadt
 id|acpi_tb_convert_table_fadt
@@ -629,10 +629,10 @@ id|table_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_convert_table_fadt&quot;
+l_string|&quot;tb_convert_table_fadt&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Acpi_gbl_FADT is valid&n;&t; * Allocate and zero the 2.0 FADT buffer&n;&t; */
+multiline_comment|/*&n;&t; * acpi_gbl_FADT is valid&n;&t; * Allocate and zero the 2.0 FADT buffer&n;&t; */
 id|local_fadt
 op_assign
 id|ACPI_MEM_CALLOCATE
@@ -833,7 +833,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_table_facs&n; *&n; * PARAMETERS:  Table_info      - Info for currently installad FACS&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert ACPI 1.0 and ACPI 2.0 FACS to a common internal&n; *              table format.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_convert_table_facs&n; *&n; * PARAMETERS:  table_info      - Info for currently installad FACS&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert ACPI 1.0 and ACPI 2.0 FACS to a common internal&n; *              table format.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_build_common_facs
 id|acpi_tb_build_common_facs
@@ -845,7 +845,7 @@ id|table_info
 (brace
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_build_common_facs&quot;
+l_string|&quot;tb_build_common_facs&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Absolute minimum length is 24, but the ACPI spec says 64 */
@@ -916,7 +916,7 @@ op_logical_or
 (paren
 op_logical_neg
 (paren
-id|acpi_gbl_FACS-&gt;Xfirmware_waking_vector
+id|acpi_gbl_FACS-&gt;xfirmware_waking_vector
 )paren
 )paren
 )paren
@@ -945,7 +945,7 @@ multiline_comment|/* ACPI 2.0 FACS with valid X_ field */
 id|acpi_gbl_common_fACS.firmware_waking_vector
 op_assign
 op_amp
-id|acpi_gbl_FACS-&gt;Xfirmware_waking_vector
+id|acpi_gbl_FACS-&gt;xfirmware_waking_vector
 suffix:semicolon
 id|acpi_gbl_common_fACS.vector_width
 op_assign
