@@ -203,11 +203,6 @@ id|devfs_handle_t
 id|de
 suffix:semicolon
 multiline_comment|/* primary (master) devfs entry  */
-DECL|member|number
-r_int
-id|number
-suffix:semicolon
-multiline_comment|/* stupid old code wastes space  */
 DECL|member|hd_driverfs_dev
 r_struct
 id|device
@@ -280,6 +275,11 @@ DECL|member|flags
 r_int
 id|flags
 suffix:semicolon
+DECL|member|number
+r_int
+id|number
+suffix:semicolon
+multiline_comment|/* devfs crap */
 )brace
 suffix:semicolon
 multiline_comment|/* drivers/block/genhd.c */
