@@ -2769,7 +2769,7 @@ op_member_access_from_pointer
 id|do_ioctl
 c_func
 (paren
-id|dev
+id|real_dev
 comma
 op_amp
 id|ifrr
