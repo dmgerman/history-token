@@ -18,8 +18,6 @@ DECL|macro|OPTION_DEFAULT
 mdefine_line|#define OPTION_DEFAULT      { [0 ... MAX_UNITS-1] = -1}
 DECL|macro|REV_ID_VT6110
 mdefine_line|#define REV_ID_VT6110       (0)
-DECL|macro|DEVICE_ID
-mdefine_line|#define DEVICE_ID           (0x3119)
 DECL|macro|BYTE_REG_BITS_ON
 mdefine_line|#define BYTE_REG_BITS_ON(x,p)       do { writeb(readb((p))|(x),(p));} while (0)
 DECL|macro|WORD_REG_BITS_ON
@@ -3806,9 +3804,13 @@ DECL|member|rd_curr
 r_int
 id|rd_curr
 suffix:semicolon
-DECL|member|rd_used
+DECL|member|rd_dirty
 r_int
-id|rd_used
+id|rd_dirty
+suffix:semicolon
+DECL|member|rd_filled
+id|u32
+id|rd_filled
 suffix:semicolon
 DECL|member|rd_ring
 r_struct
