@@ -2110,7 +2110,8 @@ c_func
 (paren
 l_string|&quot;lgdt %0&quot;
 suffix:colon
-l_string|&quot;=m&quot;
+suffix:colon
+l_string|&quot;m&quot;
 (paren
 id|cpu_gdt_descr
 (braket
@@ -2125,7 +2126,8 @@ c_func
 (paren
 l_string|&quot;lidt %0&quot;
 suffix:colon
-l_string|&quot;=m&quot;
+suffix:colon
+l_string|&quot;m&quot;
 (paren
 id|idt_descr
 )paren
