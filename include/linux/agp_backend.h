@@ -63,7 +63,8 @@ r_int
 id|mode
 suffix:semicolon
 DECL|member|aper_base
-id|off_t
+r_int
+r_int
 id|aper_base
 suffix:semicolon
 DECL|member|aper_size
@@ -96,7 +97,7 @@ id|vm_ops
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * The agp_memory structure has information about the block of agp memory&n; * allocated.  A caller may manipulate the next and prev pointers to link&n; * each allocated item into a list.  These pointers are ignored by the backend.&n; * Everything else should never be written to, but the caller may read any of&n; * the items to detrimine the status of this block of agp memory. &n; */
+multiline_comment|/*&n; * The agp_memory structure has information about the block of agp memory&n; * allocated.  A caller may manipulate the next and prev pointers to link&n; * each allocated item into a list.  These pointers are ignored by the backend.&n; * Everything else should never be written to, but the caller may read any of&n; * the items to detrimine the status of this block of agp memory.&n; */
 DECL|struct|agp_memory
 r_struct
 id|agp_memory
