@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Definitions for the FTDI USB Single Port Serial Converter - &n; * known as FTDI_SIO (Serial Input/Output application of the chipset) &n; *&n; * The example I have is known as the USC-1000 which is available from&n; * http://www.dse.co.nz - cat no XH4214 It looks similar to this:&n; * http://www.dansdata.com/usbser.htm but I can&squot;t be sure There are other&n; * USC-1000s which don&squot;t look like my device though so beware!&n; *&n; * The device is based on the FTDI FT8U100AX chip. It has a DB25 on one side, &n; * USB on the other.&n; *&n; * Thanx to FTDI (http://www.ftdi.co.uk) for so kindly providing details&n; * of the protocol required to talk to the device and ongoing assistence&n; * during development.&n; *&n; * Bill Ryder - bryder@sgi.com of Silicon Graphics, Inc.- wrote the &n; * FTDI_SIO implementation.&n; *&n; * Philipp G&#xfffd;hring - pg@futureware.at - added the Device ID of the USB relais&n; * from Rudolf Gugler&n; */
+multiline_comment|/*&n; * Definitions for the FTDI USB Single Port Serial Converter - &n; * known as FTDI_SIO (Serial Input/Output application of the chipset) &n; *&n; * The example I have is known as the USC-1000 which is available from&n; * http://www.dse.co.nz - cat no XH4214 It looks similar to this:&n; * http://www.dansdata.com/usbser.htm but I can&squot;t be sure There are other&n; * USC-1000s which don&squot;t look like my device though so beware!&n; *&n; * The device is based on the FTDI FT8U100AX chip. It has a DB25 on one side, &n; * USB on the other.&n; *&n; * Thanx to FTDI (http://www.ftdi.co.uk) for so kindly providing details&n; * of the protocol required to talk to the device and ongoing assistence&n; * during development.&n; *&n; * Bill Ryder - bryder@sgi.com formerly of Silicon Graphics, Inc.- wrote the &n; * FTDI_SIO implementation.&n; *&n; * Philipp G&#xfffd;hring - pg@futureware.at - added the Device ID of the USB relais&n; * from Rudolf Gugler&n; *&n; */
 DECL|macro|FTDI_VID
 mdefine_line|#define FTDI_VID&t;0x0403&t;/* Vendor Id */
 DECL|macro|FTDI_SIO_PID
@@ -11,6 +11,137 @@ DECL|macro|FTDI_NF_RIC_VID
 mdefine_line|#define FTDI_NF_RIC_VID&t;0x0DCD&t;/* Vendor Id */
 DECL|macro|FTDI_NF_RIC_PID
 mdefine_line|#define FTDI_NF_RIC_PID&t;0x0001&t;/* Product Id */
+multiline_comment|/* www.crystalfontz.com devices - thanx for providing free devices for evaluation ! */
+multiline_comment|/* they use the ftdi chipset for the USB interface and the vendor id is the same */
+DECL|macro|FTDI_XF_634_PID
+mdefine_line|#define FTDI_XF_634_PID  0xFC09&t;/* Four line device */
+DECL|macro|FTDI_XF_632_PID
+mdefine_line|#define FTDI_XF_632_PID  0xFC08&t;/* Two line device */
+multiline_comment|/* Video Networks Limited / Homechoice in the UK use an ftdi-based device for their 1Mb */
+multiline_comment|/* broadband internet service.  The following PID is exhibited by the usb device supplied */
+multiline_comment|/* (the VID is the standard ftdi vid (FTDI_VID) */
+DECL|macro|FTDI_VNHCPCUSB_D_PID
+mdefine_line|#define FTDI_VNHCPCUSB_D_PID 0xfe38 /* Product Id */
+multiline_comment|/*&n; * The following are the values for the Matrix Orbital LCD displays,&n; * which are the FT232BM ( similar to the 8U232AM )&n; */
+DECL|macro|FTDI_MTXORB_VID
+mdefine_line|#define FTDI_MTXORB_VID                FTDI_VID        /* Matrix Orbital Product Id */
+DECL|macro|FTDI_MTXORB_0_PID
+mdefine_line|#define FTDI_MTXORB_0_PID      0xFA00  /* Matrix Orbital Product Id */
+DECL|macro|FTDI_MTXORB_1_PID
+mdefine_line|#define FTDI_MTXORB_1_PID      0xFA01  /* Matrix Orbital Product Id */
+DECL|macro|FTDI_MTXORB_2_PID
+mdefine_line|#define FTDI_MTXORB_2_PID      0xFA02  /* Matrix Orbital Product Id */
+DECL|macro|FTDI_MTXORB_3_PID
+mdefine_line|#define FTDI_MTXORB_3_PID      0xFA03  /* Matrix Orbital Product Id */
+DECL|macro|FTDI_MTXORB_4_PID
+mdefine_line|#define FTDI_MTXORB_4_PID      0xFA04  /* Matrix Orbital Product Id */
+DECL|macro|FTDI_MTXORB_5_PID
+mdefine_line|#define FTDI_MTXORB_5_PID      0xFA05  /* Matrix Orbital Product Id */
+DECL|macro|FTDI_MTXORB_6_PID
+mdefine_line|#define FTDI_MTXORB_6_PID      0xFA06  /* Matrix Orbital Product Id */
+multiline_comment|/*&n; * The following are the values for the Sealevel SeaLINK+ adapters.&n; * (Original list sent by Tuan Hoang.  Ian Abbott renamed the macros and&n; * removed some PIDs that don&squot;t seem to match any existing products.)&n; */
+DECL|macro|SEALEVEL_VID
+mdefine_line|#define SEALEVEL_VID&t;&t;0x0c52&t;/* Sealevel Vendor ID */
+DECL|macro|SEALEVEL_2101_PID
+mdefine_line|#define SEALEVEL_2101_PID&t;0x2101&t;/* SeaLINK+232 (2101/2105) */
+DECL|macro|SEALEVEL_2102_PID
+mdefine_line|#define SEALEVEL_2102_PID&t;0x2102&t;/* SeaLINK+485 (2102) */
+DECL|macro|SEALEVEL_2103_PID
+mdefine_line|#define SEALEVEL_2103_PID&t;0x2103&t;/* SeaLINK+232I (2103) */
+DECL|macro|SEALEVEL_2104_PID
+mdefine_line|#define SEALEVEL_2104_PID&t;0x2104&t;/* SeaLINK+485I (2104) */
+DECL|macro|SEALEVEL_2201_1_PID
+mdefine_line|#define SEALEVEL_2201_1_PID&t;0x2211&t;/* SeaPORT+2/232 (2201) Port 1 */
+DECL|macro|SEALEVEL_2201_2_PID
+mdefine_line|#define SEALEVEL_2201_2_PID&t;0x2221&t;/* SeaPORT+2/232 (2201) Port 2 */
+DECL|macro|SEALEVEL_2202_1_PID
+mdefine_line|#define SEALEVEL_2202_1_PID&t;0x2212&t;/* SeaPORT+2/485 (2202) Port 1 */
+DECL|macro|SEALEVEL_2202_2_PID
+mdefine_line|#define SEALEVEL_2202_2_PID&t;0x2222&t;/* SeaPORT+2/485 (2202) Port 2 */
+DECL|macro|SEALEVEL_2203_1_PID
+mdefine_line|#define SEALEVEL_2203_1_PID&t;0x2213&t;/* SeaPORT+2 (2203) Port 1 */
+DECL|macro|SEALEVEL_2203_2_PID
+mdefine_line|#define SEALEVEL_2203_2_PID&t;0x2223&t;/* SeaPORT+2 (2203) Port 2 */
+DECL|macro|SEALEVEL_2401_1_PID
+mdefine_line|#define SEALEVEL_2401_1_PID&t;0x2411&t;/* SeaPORT+4/232 (2401) Port 1 */
+DECL|macro|SEALEVEL_2401_2_PID
+mdefine_line|#define SEALEVEL_2401_2_PID&t;0x2421&t;/* SeaPORT+4/232 (2401) Port 2 */
+DECL|macro|SEALEVEL_2401_3_PID
+mdefine_line|#define SEALEVEL_2401_3_PID&t;0x2431&t;/* SeaPORT+4/232 (2401) Port 3 */
+DECL|macro|SEALEVEL_2401_4_PID
+mdefine_line|#define SEALEVEL_2401_4_PID&t;0x2441&t;/* SeaPORT+4/232 (2401) Port 4 */
+DECL|macro|SEALEVEL_2402_1_PID
+mdefine_line|#define SEALEVEL_2402_1_PID&t;0x2412&t;/* SeaPORT+4/485 (2402) Port 1 */
+DECL|macro|SEALEVEL_2402_2_PID
+mdefine_line|#define SEALEVEL_2402_2_PID&t;0x2422&t;/* SeaPORT+4/485 (2402) Port 2 */
+DECL|macro|SEALEVEL_2402_3_PID
+mdefine_line|#define SEALEVEL_2402_3_PID&t;0x2432&t;/* SeaPORT+4/485 (2402) Port 3 */
+DECL|macro|SEALEVEL_2402_4_PID
+mdefine_line|#define SEALEVEL_2402_4_PID&t;0x2442&t;/* SeaPORT+4/485 (2402) Port 4 */
+DECL|macro|SEALEVEL_2403_1_PID
+mdefine_line|#define SEALEVEL_2403_1_PID&t;0x2413&t;/* SeaPORT+4 (2403) Port 1 */
+DECL|macro|SEALEVEL_2403_2_PID
+mdefine_line|#define SEALEVEL_2403_2_PID&t;0x2423&t;/* SeaPORT+4 (2403) Port 2 */
+DECL|macro|SEALEVEL_2403_3_PID
+mdefine_line|#define SEALEVEL_2403_3_PID&t;0x2433&t;/* SeaPORT+4 (2403) Port 3 */
+DECL|macro|SEALEVEL_2403_4_PID
+mdefine_line|#define SEALEVEL_2403_4_PID&t;0x2443&t;/* SeaPORT+4 (2403) Port 4 */
+DECL|macro|SEALEVEL_2801_1_PID
+mdefine_line|#define SEALEVEL_2801_1_PID&t;0X2811&t;/* SeaLINK+8/232 (2801) Port 1 */
+DECL|macro|SEALEVEL_2801_2_PID
+mdefine_line|#define SEALEVEL_2801_2_PID&t;0X2821&t;/* SeaLINK+8/232 (2801) Port 2 */
+DECL|macro|SEALEVEL_2801_3_PID
+mdefine_line|#define SEALEVEL_2801_3_PID&t;0X2831&t;/* SeaLINK+8/232 (2801) Port 3 */
+DECL|macro|SEALEVEL_2801_4_PID
+mdefine_line|#define SEALEVEL_2801_4_PID&t;0X2841&t;/* SeaLINK+8/232 (2801) Port 4 */
+DECL|macro|SEALEVEL_2801_5_PID
+mdefine_line|#define SEALEVEL_2801_5_PID&t;0X2851&t;/* SeaLINK+8/232 (2801) Port 5 */
+DECL|macro|SEALEVEL_2801_6_PID
+mdefine_line|#define SEALEVEL_2801_6_PID&t;0X2861&t;/* SeaLINK+8/232 (2801) Port 6 */
+DECL|macro|SEALEVEL_2801_7_PID
+mdefine_line|#define SEALEVEL_2801_7_PID&t;0X2871&t;/* SeaLINK+8/232 (2801) Port 7 */
+DECL|macro|SEALEVEL_2801_8_PID
+mdefine_line|#define SEALEVEL_2801_8_PID&t;0X2881&t;/* SeaLINK+8/232 (2801) Port 8 */
+DECL|macro|SEALEVEL_2802_1_PID
+mdefine_line|#define SEALEVEL_2802_1_PID&t;0X2812&t;/* SeaLINK+8/485 (2802) Port 1 */
+DECL|macro|SEALEVEL_2802_2_PID
+mdefine_line|#define SEALEVEL_2802_2_PID&t;0X2822&t;/* SeaLINK+8/485 (2802) Port 2 */
+DECL|macro|SEALEVEL_2802_3_PID
+mdefine_line|#define SEALEVEL_2802_3_PID&t;0X2832&t;/* SeaLINK+8/485 (2802) Port 3 */
+DECL|macro|SEALEVEL_2802_4_PID
+mdefine_line|#define SEALEVEL_2802_4_PID&t;0X2842&t;/* SeaLINK+8/485 (2802) Port 4 */
+DECL|macro|SEALEVEL_2802_5_PID
+mdefine_line|#define SEALEVEL_2802_5_PID&t;0X2852&t;/* SeaLINK+8/485 (2802) Port 5 */
+DECL|macro|SEALEVEL_2802_6_PID
+mdefine_line|#define SEALEVEL_2802_6_PID&t;0X2862&t;/* SeaLINK+8/485 (2802) Port 6 */
+DECL|macro|SEALEVEL_2802_7_PID
+mdefine_line|#define SEALEVEL_2802_7_PID&t;0X2872&t;/* SeaLINK+8/485 (2802) Port 7 */
+DECL|macro|SEALEVEL_2802_8_PID
+mdefine_line|#define SEALEVEL_2802_8_PID&t;0X2882&t;/* SeaLINK+8/485 (2802) Port 8 */
+DECL|macro|SEALEVEL_2803_1_PID
+mdefine_line|#define SEALEVEL_2803_1_PID&t;0X2813&t;/* SeaLINK+8 (2803) Port 1 */
+DECL|macro|SEALEVEL_2803_2_PID
+mdefine_line|#define SEALEVEL_2803_2_PID&t;0X2823 &t;/* SeaLINK+8 (2803) Port 2 */
+DECL|macro|SEALEVEL_2803_3_PID
+mdefine_line|#define SEALEVEL_2803_3_PID&t;0X2833 &t;/* SeaLINK+8 (2803) Port 3 */
+DECL|macro|SEALEVEL_2803_4_PID
+mdefine_line|#define SEALEVEL_2803_4_PID&t;0X2843 &t;/* SeaLINK+8 (2803) Port 4 */
+DECL|macro|SEALEVEL_2803_5_PID
+mdefine_line|#define SEALEVEL_2803_5_PID&t;0X2853 &t;/* SeaLINK+8 (2803) Port 5 */
+DECL|macro|SEALEVEL_2803_6_PID
+mdefine_line|#define SEALEVEL_2803_6_PID&t;0X2863 &t;/* SeaLINK+8 (2803) Port 6 */
+DECL|macro|SEALEVEL_2803_7_PID
+mdefine_line|#define SEALEVEL_2803_7_PID&t;0X2873 &t;/* SeaLINK+8 (2803) Port 7 */
+DECL|macro|SEALEVEL_2803_8_PID
+mdefine_line|#define SEALEVEL_2803_8_PID&t;0X2883 &t;/* SeaLINK+8 (2803) Port 8 */
+multiline_comment|/*&n; * Home Electronics (www.home-electro.com) USB gadgets&n; */
+DECL|macro|FTDI_HE_TIRA1_PID
+mdefine_line|#define FTDI_HE_TIRA1_PID&t;0xFA78&t;/* Tira-1 IR tranceiver */
+multiline_comment|/* USB-UIRT - An infrared receiver and transmitter using the 8U232AM chip */
+multiline_comment|/* http://home.earthlink.net/~jrhees/USBUIRT/index.htm */
+DECL|macro|FTDI_USB_UIRT_PID
+mdefine_line|#define FTDI_USB_UIRT_PID&t;0xF850&t;/* Product Id */
+multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */
 DECL|macro|FTDI_SIO_MODEM_CTRL
@@ -54,23 +185,30 @@ DECL|macro|FTDI_SIO_SET_BAUDRATE_REQUEST_TYPE
 mdefine_line|#define FTDI_SIO_SET_BAUDRATE_REQUEST_TYPE 0x40
 DECL|macro|FTDI_SIO_SET_BAUDRATE_REQUEST
 mdefine_line|#define FTDI_SIO_SET_BAUDRATE_REQUEST 3
-multiline_comment|/*&n; * BmRequestType:  0100 0000B&n; * bRequest:       FTDI_SIO_SET_BAUDRATE&n; * wValue:         BaudRate value - see below&n; * wIndex:         Port&n; * wLength:        0&n; * Data:           None&n; */
-DECL|enum|ftdi_type
+multiline_comment|/*&n; * BmRequestType:  0100 0000B&n; * bRequest:       FTDI_SIO_SET_BAUDRATE&n; * wValue:         BaudDivisor value - see below&n; * wIndex:         Port&n; * wLength:        0&n; * Data:           None&n; * The BaudDivisor values are calculated as follows:&n; * - BaseClock is either 12000000 or 48000000 depending on the device. FIXME: I wish&n; *   I knew how to detect old chips to select proper base clock!&n; * - BaudDivisor is a fixed point number encoded in a funny way.&n; *   (--WRONG WAY OF THINKING--)&n; *   BaudDivisor is a fixed point number encoded with following bit weighs:&n; *   (-2)(-1)(13..0). It is a radical with a denominator of 4, so values&n; *   end with 0.0 (00...), 0.25 (10...), 0.5 (01...), and 0.75 (11...).&n; *   (--THE REALITY--)&n; *   The both-bits-set has quite different meaning from 0.75 - the chip designers&n; *   have decided it to mean 0.125 instead of 0.75.&n; *   This info looked up in FTDI application note &quot;FT8U232 DEVICES &bslash; Data Rates&n; *   and Flow Control Consideration for USB to RS232&quot;.&n; * - BaudDivisor = (BaseClock / 16) / BaudRate, where the (=) operation should&n; *   automagically re-encode the resulting value to take fractions into consideration.&n; * As all values are integers, some bit twiddling is in order:&n; *   BaudDivisor = (BaseClock / 16 / BaudRate) |&n; *   (((BaseClock / 2 / BaudRate) &amp; 4) ? 0x4000    // 0.5&n; *    : ((BaseClock / 2 / BaudRate) &amp; 2) ? 0x8000  // 0.25&n; *    : ((BaseClock / 2 / BaudRate) &amp; 1) ? 0xc000  // 0.125&n; *    : 0)&n; *&n; * For the FT232BM, a 17th divisor bit was introduced to encode the multiples&n; * of 0.125 missing from the FT8U232AM.  Bits 16 to 14 are coded as follows&n; * (the first four codes are the same as for the FT8U232AM, where bit 16 is&n; * always 0):&n; *   000 - add .000 to divisor&n; *   001 - add .500 to divisor&n; *   010 - add .250 to divisor&n; *   011 - add .125 to divisor&n; *   100 - add .375 to divisor&n; *   101 - add .625 to divisor&n; *   110 - add .750 to divisor&n; *   111 - add .875 to divisor&n; * Bits 15 to 0 of the 17-bit divisor are placed in the urb value.  Bit 16 is &n; * placed in bit 0 of the urb index.&n; *&n; * Note that there are a couple of special cases to support the highest baud&n; * rates.  If the calculated divisor value is 1, this needs to be replaced with&n; * 0.  Additionally for the FT232BM, if the calculated divisor value is 0x4001&n; * (1.5), this needs to be replaced with 0x0001 (1) (but this divisor value is&n; * not supported by the FT8U232AM).&n; */
+r_typedef
 r_enum
-id|ftdi_type
 (brace
-DECL|enumerator|sio
-id|sio
+DECL|enumerator|SIO
+id|SIO
 op_assign
 l_int|1
 comma
-DECL|enumerator|F8U232AM
-id|F8U232AM
+DECL|enumerator|FT8U232AM
+id|FT8U232AM
 op_assign
 l_int|2
 comma
+DECL|enumerator|FT232BM
+id|FT232BM
+op_assign
+l_int|3
+comma
+DECL|typedef|ftdi_chip_type_t
 )brace
+id|ftdi_chip_type_t
 suffix:semicolon
+r_typedef
 r_enum
 (brace
 DECL|enumerator|ftdi_sio_b300
@@ -122,137 +260,11 @@ DECL|enumerator|ftdi_sio_b115200
 id|ftdi_sio_b115200
 op_assign
 l_int|9
+DECL|typedef|FTDI_SIO_baudrate_t
 )brace
+id|FTDI_SIO_baudrate_t
 suffix:semicolon
-r_enum
-(brace
-DECL|enumerator|ftdi_8U232AM_12MHz_b300
-id|ftdi_8U232AM_12MHz_b300
-op_assign
-l_int|0x09c4
-comma
-DECL|enumerator|ftdi_8U232AM_12MHz_b600
-id|ftdi_8U232AM_12MHz_b600
-op_assign
-l_int|0x04E2
-comma
-DECL|enumerator|ftdi_8U232AM_12MHz_b1200
-id|ftdi_8U232AM_12MHz_b1200
-op_assign
-l_int|0x0271
-comma
-DECL|enumerator|ftdi_8U232AM_12MHz_b2400
-id|ftdi_8U232AM_12MHz_b2400
-op_assign
-l_int|0x4138
-comma
-DECL|enumerator|ftdi_8U232AM_12MHz_b4800
-id|ftdi_8U232AM_12MHz_b4800
-op_assign
-l_int|0x809c
-comma
-DECL|enumerator|ftdi_8U232AM_12MHz_b9600
-id|ftdi_8U232AM_12MHz_b9600
-op_assign
-l_int|0xc04e
-comma
-DECL|enumerator|ftdi_8U232AM_12MHz_b19200
-id|ftdi_8U232AM_12MHz_b19200
-op_assign
-l_int|0x0027
-comma
-DECL|enumerator|ftdi_8U232AM_12MHz_b38400
-id|ftdi_8U232AM_12MHz_b38400
-op_assign
-l_int|0x4013
-comma
-DECL|enumerator|ftdi_8U232AM_12MHz_b57600
-id|ftdi_8U232AM_12MHz_b57600
-op_assign
-l_int|0x000d
-comma
-DECL|enumerator|ftdi_8U232AM_12MHz_b115200
-id|ftdi_8U232AM_12MHz_b115200
-op_assign
-l_int|0x4006
-comma
-DECL|enumerator|ftdi_8U232AM_12MHz_b230400
-id|ftdi_8U232AM_12MHz_b230400
-op_assign
-l_int|0x8003
-comma
-)brace
-suffix:semicolon
-multiline_comment|/* Apparently all devices are 48MHz */
-r_enum
-(brace
-DECL|enumerator|ftdi_8U232AM_48MHz_b300
-id|ftdi_8U232AM_48MHz_b300
-op_assign
-l_int|0x2710
-comma
-DECL|enumerator|ftdi_8U232AM_48MHz_b600
-id|ftdi_8U232AM_48MHz_b600
-op_assign
-l_int|0x1388
-comma
-DECL|enumerator|ftdi_8U232AM_48MHz_b1200
-id|ftdi_8U232AM_48MHz_b1200
-op_assign
-l_int|0x09c4
-comma
-DECL|enumerator|ftdi_8U232AM_48MHz_b2400
-id|ftdi_8U232AM_48MHz_b2400
-op_assign
-l_int|0x04e2
-comma
-DECL|enumerator|ftdi_8U232AM_48MHz_b4800
-id|ftdi_8U232AM_48MHz_b4800
-op_assign
-l_int|0x0271
-comma
-DECL|enumerator|ftdi_8U232AM_48MHz_b9600
-id|ftdi_8U232AM_48MHz_b9600
-op_assign
-l_int|0x4138
-comma
-DECL|enumerator|ftdi_8U232AM_48MHz_b19200
-id|ftdi_8U232AM_48MHz_b19200
-op_assign
-l_int|0x809c
-comma
-DECL|enumerator|ftdi_8U232AM_48MHz_b38400
-id|ftdi_8U232AM_48MHz_b38400
-op_assign
-l_int|0xc04e
-comma
-DECL|enumerator|ftdi_8U232AM_48MHz_b57600
-id|ftdi_8U232AM_48MHz_b57600
-op_assign
-l_int|0x0034
-comma
-DECL|enumerator|ftdi_8U232AM_48MHz_b115200
-id|ftdi_8U232AM_48MHz_b115200
-op_assign
-l_int|0x001a
-comma
-DECL|enumerator|ftdi_8U232AM_48MHz_b230400
-id|ftdi_8U232AM_48MHz_b230400
-op_assign
-l_int|0x000d
-comma
-DECL|enumerator|ftdi_8U232AM_48MHz_b460800
-id|ftdi_8U232AM_48MHz_b460800
-op_assign
-l_int|0x4006
-comma
-DECL|enumerator|ftdi_8U232AM_48MHz_b921600
-id|ftdi_8U232AM_48MHz_b921600
-op_assign
-l_int|0x8003
-comma
-)brace
-suffix:semicolon
+multiline_comment|/*&n; * The ftdi_8U232AM_xxMHz_byyy constants have been removed. The encoded divisor values&n; * are calculated internally.&n; */
 DECL|macro|FTDI_SIO_SET_DATA_REQUEST
 mdefine_line|#define FTDI_SIO_SET_DATA_REQUEST FTDI_SIO_SET_DATA
 DECL|macro|FTDI_SIO_SET_DATA_REQUEST_TYPE
@@ -335,6 +347,14 @@ DECL|macro|FTDI_SIO_RLSD_MASK
 mdefine_line|#define FTDI_SIO_RLSD_MASK 0x80
 multiline_comment|/* &n; *   BmRequestType:   1100 0000b&n; *   bRequest:        FTDI_SIO_GET_MODEM_STATUS&n; *   wValue:          zero&n; *   wIndex:          Port&n; *   wLength:         1&n; *   Data:            Status&n; * &n; * One byte of data is returned &n; * B0..3 0&n; * B4    CTS&n; *         0 = inactive&n; *         1 = active&n; * B5    DSR&n; *         0 = inactive&n; *         1 = active&n; * B6    Ring Indicator (RI)&n; *         0 = inactive&n; *         1 = active&n; * B7    Receive Line Signal Detect (RLSD)&n; *         0 = inactive&n; *         1 = active &n; */
 multiline_comment|/* Descriptors returned by the device &n; * &n; *  Device Descriptor&n; * &n; * Offset&t;Field&t;&t;Size&t;Value&t;Description&n; * 0&t;bLength&t;&t;1&t;0x12&t;Size of descriptor in bytes&n; * 1&t;bDescriptorType&t;1&t;0x01&t;DEVICE Descriptor Type&n; * 2&t;bcdUSB&t;&t;2&t;0x0110&t;USB Spec Release Number&n; * 4&t;bDeviceClass&t;1&t;0x00&t;Class Code&n; * 5&t;bDeviceSubClass&t;1&t;0x00&t;SubClass Code&n; * 6&t;bDeviceProtocol&t;1&t;0x00&t;Protocol Code&n; * 7&t;bMaxPacketSize0 1&t;0x08&t;Maximum packet size for endpoint 0&n; * 8&t;idVendor&t;2&t;0x0403&t;Vendor ID&n; * 10&t;idProduct&t;2&t;0x8372&t;Product ID (FTDI_SIO_PID)&n; * 12&t;bcdDevice&t;2&t;0x0001&t;Device release number&n; * 14&t;iManufacturer&t;1&t;0x01&t;Index of man. string desc&n; * 15&t;iProduct&t;1&t;0x02&t;Index of prod string desc&n; * 16&t;iSerialNumber&t;1&t;0x02&t;Index of serial nmr string desc&n; * 17&t;bNumConfigurations 1    0x01&t;Number of possible configurations&n; * &n; * Configuration Descriptor&n; * &n; * Offset&t;Field&t;&t;&t;Size&t;Value&n; * 0&t;bLength&t;&t;&t;1&t;0x09&t;Size of descriptor in bytes&n; * 1&t;bDescriptorType&t;&t;1&t;0x02&t;CONFIGURATION Descriptor Type&n; * 2&t;wTotalLength&t;&t;2&t;0x0020&t;Total length of data&n; * 4&t;bNumInterfaces&t;&t;1&t;0x01&t;Number of interfaces supported&n; * 5&t;bConfigurationValue&t;1&t;0x01&t;Argument for SetCOnfiguration() req&n; * 6&t;iConfiguration&t;&t;1&t;0x02&t;Index of config string descriptor&n; * 7&t;bmAttributes&t;&t;1&t;0x20&t;Config characteristics Remote Wakeup&n; * 8&t;MaxPower&t;&t;1&t;0x1E&t;Max power consumption&n; * &n; * Interface Descriptor&n; * &n; * Offset&t;Field&t;&t;&t;Size&t;Value&n; * 0&t;bLength&t;&t;&t;1&t;0x09&t;Size of descriptor in bytes&n; * 1&t;bDescriptorType&t;&t;1&t;0x04&t;INTERFACE Descriptor Type&n; * 2&t;bInterfaceNumber&t;1&t;0x00&t;Number of interface&n; * 3&t;bAlternateSetting&t;1&t;0x00&t;Value used to select alternate&n; * 4&t;bNumEndpoints&t;&t;1&t;0x02&t;Number of endpoints&n; * 5&t;bInterfaceClass&t;&t;1&t;0xFF&t;Class Code&n; * 6&t;bInterfaceSubClass&t;1&t;0xFF&t;Subclass Code&n; * 7&t;bInterfaceProtocol&t;1&t;0xFF&t;Protocol Code&n; * 8&t;iInterface&t;&t;1&t;0x02&t;Index of interface string description&n; * &n; * IN Endpoint Descriptor&n; * &n; * Offset&t;Field&t;&t;&t;Size&t;Value&n; * 0&t;bLength&t;&t;&t;1&t;0x07&t;Size of descriptor in bytes&n; * 1&t;bDescriptorType&t;&t;1&t;0x05&t;ENDPOINT descriptor type&n; * 2&t;bEndpointAddress&t;1&t;0x82&t;Address of endpoint&n; * 3&t;bmAttributes&t;&t;1&t;0x02&t;Endpoint attributes - Bulk&n; * 4&t;bNumEndpoints&t;&t;2&t;0x0040&t;maximum packet size&n; * 5&t;bInterval&t;&t;1&t;0x00&t;Interval for polling endpoint&n; * &n; * OUT Endpoint Descriptor&n; * &n; * Offset&t;Field&t;&t;&t;Size&t;Value&n; * 0&t;bLength&t;&t;&t;1&t;0x07&t;Size of descriptor in bytes&n; * 1&t;bDescriptorType&t;&t;1&t;0x05&t;ENDPOINT descriptor type&n; * 2&t;bEndpointAddress&t;1&t;0x02&t;Address of endpoint&n; * 3&t;bmAttributes&t;&t;1&t;0x02&t;Endpoint attributes - Bulk&n; * 4&t;bNumEndpoints&t;&t;2&t;0x0040&t;maximum packet size&n; * 5&t;bInterval&t;&t;1&t;0x00&t;Interval for polling endpoint&n; *     &n; * DATA FORMAT&n; * &n; * IN Endpoint&n; * &n; * The device reserves the first two bytes of data on this endpoint to contain the current&n; * values of the modem and line status registers. In the absence of data, the device &n; * generates a message consisting of these two status bytes every 40 ms&n; * &n; * Byte 0: Modem Status&n; * &n; * Offset&t;Description&n; * B0&t;Reserved - must be 1&n; * B1&t;Reserved - must be 0&n; * B2&t;Reserved - must be 0&n; * B3&t;Reserved - must be 0&n; * B4&t;Clear to Send (CTS)&n; * B5&t;Data Set Ready (DSR)&n; * B6&t;Ring Indicator (RI)&n; * B7&t;Receive Line Signal Detect (RLSD)&n; * &n; * Byte 1: Line Status&n; * &n; * Offset&t;Description&n; * B0&t;Data Ready (DR)&n; * B1&t;Overrun Error (OE)&n; * B2&t;Parity Error (PE)&n; * B3&t;Framing Error (FE)&n; * B4&t;Break Interrupt (BI)&n; * B5&t;Transmitter Holding Register (THRE)&n; * B6&t;Transmitter Empty (TEMT)&n; * B7&t;Error in RCVR FIFO&n; * &n; */
+DECL|macro|FTDI_RS0_CTS
+mdefine_line|#define FTDI_RS0_CTS&t;(1 &lt;&lt; 4)
+DECL|macro|FTDI_RS0_DSR
+mdefine_line|#define FTDI_RS0_DSR&t;(1 &lt;&lt; 5)
+DECL|macro|FTDI_RS0_RI
+mdefine_line|#define FTDI_RS0_RI&t;(1 &lt;&lt; 6)
+DECL|macro|FTDI_RS0_RLSD
+mdefine_line|#define FTDI_RS0_RLSD&t;(1 &lt;&lt; 7)
 DECL|macro|FTDI_RS_DR
 mdefine_line|#define FTDI_RS_DR  1
 DECL|macro|FTDI_RS_OE

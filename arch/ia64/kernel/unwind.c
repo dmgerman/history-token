@@ -38,19 +38,11 @@ id|unw_debug_level
 op_assign
 id|UNW_DEBUG
 suffix:semicolon
-macro_line|#  ifdef CONFIG_KDB
-macro_line|#    include &lt;linux/kdb.h&gt;
 DECL|macro|UNW_DEBUG_ON
-macro_line|#    define UNW_DEBUG_ON(n)&t;(unw_debug_level &gt;= n &amp;&amp; !KDB_IS_RUNNING())
-DECL|macro|UNW_DPRINT
-macro_line|#    define UNW_DPRINT(n, ...)&t;if (UNW_DEBUG_ON(n)) kdb_printf(__VA_ARGS__)
-macro_line|#  else&t;/* !CONFIG_KDB */
-DECL|macro|UNW_DEBUG_ON
-macro_line|#    define UNW_DEBUG_ON(n)&t;unw_debug_level &gt;= n
+macro_line|#  define UNW_DEBUG_ON(n)&t;unw_debug_level &gt;= n
 multiline_comment|/* Do not code a printk level, not all debug lines end in newline */
 DECL|macro|UNW_DPRINT
-macro_line|#    define UNW_DPRINT(n, ...)  if (UNW_DEBUG_ON(n)) printk(__VA_ARGS__)
-macro_line|#  endif /* CONFIG_KDB */
+macro_line|#  define UNW_DPRINT(n, ...)  if (UNW_DEBUG_ON(n)) printk(__VA_ARGS__)
 DECL|macro|inline
 macro_line|#  define inline
 macro_line|#else /* !UNW_DEBUG */
@@ -10370,7 +10362,7 @@ id|table
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 id|__init
 DECL|function|create_gate_table
 id|create_gate_table
@@ -10478,6 +10470,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|start
@@ -10600,6 +10593,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|unw.gate_table_size
@@ -10721,6 +10715,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* end-of-table marker */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|create_gate_table
 id|__initcall

@@ -1,8 +1,9 @@
-multiline_comment|/* drm_memory.h -- Memory management wrappers for DRM -*- linux-c -*-&n; * Created: Thu Feb  4 14:00:34 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/** &n; * &bslash;file drm_memory.h &n; * Memory management wrappers for DRM&n; *&n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/* &n; * Created: Thu Feb  4 14:00:34 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &quot;drmP.h&quot;
-multiline_comment|/* Cut down version of drm_memory_debug.h, which used to be called&n; * drm_memory.h.  If you want the debug functionality, change 0 to 1&n; * below.&n; */
+multiline_comment|/**&n; * Cut down version of drm_memory_debug.h, which used to be called&n; * drm_memory.h.  If you want the debug functionality, change 0 to 1&n; * below.&n; */
 DECL|macro|DEBUG_MEMORY
 mdefine_line|#define DEBUG_MEMORY 0
 macro_line|#if __REALLY_HAVE_AGP
@@ -681,6 +682,7 @@ suffix:semicolon
 macro_line|#if DEBUG_MEMORY
 macro_line|#include &quot;drm_memory_debug.h&quot;
 macro_line|#else
+multiline_comment|/** No-op. */
 DECL|function|mem_init
 r_void
 id|DRM
@@ -693,7 +695,7 @@ r_void
 )paren
 (brace
 )brace
-multiline_comment|/* drm_mem_info is called whenever a process reads /dev/drm/mem. */
+multiline_comment|/**&n; * Called when &quot;/proc/dri/%dev%/mem&quot; is read.&n; * &n; * &bslash;param buf output buffer.&n; * &bslash;param start start of output data.&n; * &bslash;param offset requested start offset.&n; * &bslash;param len requested number of bytes.&n; * &bslash;param eof whether there is no more data to return.&n; * &bslash;param data private data.&n; * &bslash;return number of written bytes.&n; *&n; * No-op. &n; */
 DECL|function|mem_info
 r_int
 id|DRM
@@ -730,6 +732,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/** Wrapper around kmalloc() */
 DECL|function|alloc
 r_void
 op_star
@@ -756,6 +759,7 @@ id|GFP_KERNEL
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/** Wrapper around kmalloc() and kfree() */
 DECL|function|realloc
 r_void
 op_star
@@ -831,6 +835,7 @@ r_return
 id|pt
 suffix:semicolon
 )brace
+multiline_comment|/** Wrapper around kfree() */
 DECL|function|free
 r_void
 id|DRM
@@ -857,6 +862,7 @@ id|pt
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Allocate pages.&n; *&n; * &bslash;param order size order.&n; * &bslash;param area memory area. (Not used.)&n; * &bslash;return page address on success, or zero on failure.&n; *&n; * Allocate and reserve free pages.&n; */
 DECL|function|alloc_pages
 r_int
 r_int
@@ -967,6 +973,7 @@ r_return
 id|address
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Free pages.&n; * &n; * &bslash;param address address of the pages to free.&n; * &bslash;param order size order.&n; * &bslash;param area memory area. (Not used.)&n; *&n; * Unreserve and free pages allocated by alloc_pages().&n; */
 DECL|function|free_pages
 r_void
 id|DRM
@@ -1055,6 +1062,7 @@ id|order
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/** Wrapper around drm_ioremap() */
 DECL|function|ioremap
 r_void
 op_star
@@ -1089,6 +1097,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/** Wrapper around drm_ioremap_nocache() */
 DECL|function|ioremap_nocache
 r_void
 op_star
@@ -1123,6 +1132,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/** Wrapper around drm_iounmap() */
 DECL|function|ioremapfree
 r_void
 id|DRM
@@ -1156,6 +1166,7 @@ id|dev
 suffix:semicolon
 )brace
 macro_line|#if __REALLY_HAVE_AGP
+multiline_comment|/** Wrapper around agp_allocate_memory() */
 DECL|function|alloc_agp
 r_struct
 id|agp_memory
@@ -1186,6 +1197,7 @@ id|type
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/** Wrapper around agp_free_memory() */
 DECL|function|free_agp
 r_int
 id|DRM
@@ -1220,6 +1232,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/** Wrapper around agp_bind_memory() */
 DECL|function|bind_agp
 r_int
 id|DRM
@@ -1251,6 +1264,7 @@ id|start
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/** Wrapper around agp_unbind_memory() */
 DECL|function|unbind_agp
 r_int
 id|DRM

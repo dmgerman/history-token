@@ -2222,21 +2222,6 @@ op_star
 id|data
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|fs_type
-op_eq
-op_amp
-id|usbdevice_fs_type
-)paren
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;Please use the &squot;usbfs&squot; filetype instead, &quot;
-l_string|&quot;the &squot;usbdevfs&squot; name is deprecated.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 id|get_sb_single
 c_func

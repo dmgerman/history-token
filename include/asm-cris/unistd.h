@@ -1,9 +1,10 @@
 macro_line|#ifndef _ASM_CRIS_UNISTD_H_
 DECL|macro|_ASM_CRIS_UNISTD_H_
 mdefine_line|#define _ASM_CRIS_UNISTD_H_
+macro_line|#include &lt;asm/arch/unistd.h&gt;
 multiline_comment|/*&n; * This file contains the system call numbers, and stub macros for libc.&n; */
-DECL|macro|__NR_setup
-mdefine_line|#define __NR_setup&t;&t;  0&t;/* used only by init, to get system going */
+DECL|macro|__NR_restart_syscall
+mdefine_line|#define __NR_restart_syscall      0
 DECL|macro|__NR_exit
 mdefine_line|#define __NR_exit&t;&t;  1
 DECL|macro|__NR_fork
@@ -449,28 +450,99 @@ DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid             224
 DECL|macro|__NR_readahead
 mdefine_line|#define __NR_readahead          225
+DECL|macro|__NR_setxattr
+mdefine_line|#define __NR_setxattr&t;&t;226
+DECL|macro|__NR_lsetxattr
+mdefine_line|#define __NR_lsetxattr&t;&t;227
+DECL|macro|__NR_fsetxattr
+mdefine_line|#define __NR_fsetxattr&t;&t;228
+DECL|macro|__NR_getxattr
+mdefine_line|#define __NR_getxattr&t;&t;229
+DECL|macro|__NR_lgetxattr
+mdefine_line|#define __NR_lgetxattr&t;&t;230
+DECL|macro|__NR_fgetxattr
+mdefine_line|#define __NR_fgetxattr&t;&t;231
+DECL|macro|__NR_listxattr
+mdefine_line|#define __NR_listxattr&t;&t;232
+DECL|macro|__NR_llistxattr
+mdefine_line|#define __NR_llistxattr&t;&t;233
+DECL|macro|__NR_flistxattr
+mdefine_line|#define __NR_flistxattr&t;&t;234
+DECL|macro|__NR_removexattr
+mdefine_line|#define __NR_removexattr&t;235
+DECL|macro|__NR_lremovexattr
+mdefine_line|#define __NR_lremovexattr&t;236
+DECL|macro|__NR_fremovexattr
+mdefine_line|#define __NR_fremovexattr&t;237
 DECL|macro|__NR_tkill
-mdefine_line|#define __NR_tkill              226
-multiline_comment|/* XXX - _foo needs to be __foo, while __NR_bar could be _NR_bar. */
-DECL|macro|_syscall0
-mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;  register long __a __asm__ (&quot;r10&quot;); &bslash;&n;  __asm__ __volatile__ (&quot;movu.w %1,$r9&bslash;n&bslash;tbreak 13&quot; &bslash;&n;&t;&t;&t;: &quot;=r&quot; (__a) &bslash;&n;&t;&t;&t;: &quot;g&quot; (__NR_##name) &bslash;&n;&t;&t;&t;: &quot;r10&quot;, &quot;r9&quot;); &bslash;&n;  if(__a &gt;= 0) &bslash;&n;     return (type) __a; &bslash;&n;  errno = -__a; &bslash;&n;  return (type) -1; &bslash;&n;}
-DECL|macro|_syscall1
-mdefine_line|#define _syscall1(type,name,type1,arg1) &bslash;&n;type name(type1 arg1) &bslash;&n;{ &bslash;&n;  register long __a __asm__ (&quot;r10&quot;) = (long) arg1; &bslash;&n;  __asm__ __volatile__ (&quot;movu.w %1,$r9&bslash;n&bslash;tbreak 13&quot; &bslash;&n;&t;&t;&t;: &quot;=r&quot; (__a) &bslash;&n;&t;&t;&t;: &quot;g&quot; (__NR_##name), &quot;0&quot; (__a) &bslash;&n;&t;&t;&t;: &quot;r10&quot;, &quot;r9&quot;); &bslash;&n;  if(__a &gt;= 0) &bslash;&n;     return (type) __a; &bslash;&n;  errno = -__a; &bslash;&n;  return (type) -1; &bslash;&n;}
-DECL|macro|_syscall2
-mdefine_line|#define _syscall2(type,name,type1,arg1,type2,arg2) &bslash;&n;type name(type1 arg1,type2 arg2) &bslash;&n;{ &bslash;&n;  register long __a __asm__ (&quot;r10&quot;) = (long) arg1; &bslash;&n;  register long __b __asm__ (&quot;r11&quot;) = (long) arg2; &bslash;&n;  __asm__ __volatile__ (&quot;movu.w %1,$r9&bslash;n&bslash;tbreak 13&quot; &bslash;&n;&t;&t;&t;: &quot;=r&quot; (__a) &bslash;&n;&t;&t;&t;: &quot;g&quot; (__NR_##name), &quot;0&quot; (__a), &quot;r&quot; (__b) &bslash;&n;&t;&t;&t;: &quot;r10&quot;, &quot;r9&quot;); &bslash;&n;  if(__a &gt;= 0) &bslash;&n;     return (type) __a; &bslash;&n;  errno = -__a; &bslash;&n;  return (type) -1; &bslash;&n;}
-DECL|macro|_syscall3
-mdefine_line|#define _syscall3(type,name,type1,arg1,type2,arg2,type3,arg3) &bslash;&n;type name(type1 arg1,type2 arg2,type3 arg3) &bslash;&n;{ &bslash;&n;  register long __a __asm__ (&quot;r10&quot;) = (long) arg1; &bslash;&n;  register long __b __asm__ (&quot;r11&quot;) = (long) arg2; &bslash;&n;  register long __c __asm__ (&quot;r12&quot;) = (long) arg3; &bslash;&n;  __asm__ __volatile__ (&quot;movu.w %1,$r9&bslash;n&bslash;tbreak 13&quot; &bslash;&n;&t;&t;&t;: &quot;=r&quot; (__a) &bslash;&n;&t;&t;&t;: &quot;g&quot; (__NR_##name), &quot;0&quot; (__a), &quot;r&quot; (__b), &quot;r&quot; (__c) &bslash;&n;&t;&t;&t;: &quot;r10&quot;, &quot;r9&quot;); &bslash;&n;  if(__a &gt;= 0) &bslash;&n;     return (type) __a; &bslash;&n;  errno = -__a; &bslash;&n;  return (type) -1; &bslash;&n;}
-DECL|macro|_syscall4
-mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4) &bslash;&n;type name (type1 arg1, type2 arg2, type3 arg3, type4 arg4) &bslash;&n;{ &bslash;&n;  register long __a __asm__ (&quot;r10&quot;) = (long) arg1; &bslash;&n;  register long __b __asm__ (&quot;r11&quot;) = (long) arg2; &bslash;&n;  register long __c __asm__ (&quot;r12&quot;) = (long) arg3; &bslash;&n;  register long __d __asm__ (&quot;r13&quot;) = (long) arg4; &bslash;&n;  __asm__ __volatile__ (&quot;movu.w %1,$r9&bslash;n&bslash;tbreak 13&quot; &bslash;&n;&t;&t;&t;: &quot;=r&quot; (__a) &bslash;&n;&t;&t;&t;: &quot;g&quot; (__NR_##name), &quot;0&quot; (__a), &quot;r&quot; (__b), &bslash;&n;&t;&t;&t;  &quot;r&quot; (__c), &quot;r&quot; (__d) &bslash;&n;&t;&t;&t;: &quot;r10&quot;, &quot;r9&quot;); &bslash;&n;  if(__a &gt;= 0) &bslash;&n;     return (type) __a; &bslash;&n;  errno = -__a; &bslash;&n;  return (type) -1; &bslash;&n;} 
-DECL|macro|_syscall5
-mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4, &bslash;&n;&t;  type5,arg5) &bslash;&n;type name (type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5) &bslash;&n;{ &bslash;&n;  register long __a __asm__ (&quot;r10&quot;) = (long) arg1; &bslash;&n;  register long __b __asm__ (&quot;r11&quot;) = (long) arg2; &bslash;&n;  register long __c __asm__ (&quot;r12&quot;) = (long) arg3; &bslash;&n;  register long __d __asm__ (&quot;r13&quot;) = (long) arg4; &bslash;&n;  __asm__ __volatile__ (&quot;move %6,$mof&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;&quot;movu.w %1,$r9&bslash;n&bslash;tbreak 13&quot; &bslash;&n;&t;&t;&t;: &quot;=r&quot; (__a) &bslash;&n;&t;&t;&t;: &quot;g&quot; (__NR_##name), &quot;0&quot; (__a), &quot;r&quot; (__b), &bslash;&n;&t;&t;&t;  &quot;r&quot; (__c), &quot;r&quot; (__d), &quot;g&quot; (arg5) &bslash;&n;&t;&t;&t;: &quot;r10&quot;, &quot;r9&quot;); &bslash;&n;  if(__a &gt;= 0) &bslash;&n;     return (type) __a; &bslash;&n;  errno = -__a; &bslash;&n;  return (type) -1; &bslash;&n;}
-DECL|macro|_syscall6
-mdefine_line|#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4, &bslash;&n;&t;  type5,arg5,type6,arg6) &bslash;&n;type name (type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5,type6 arg6) &bslash;&n;{ &bslash;&n;  register long __a __asm__ (&quot;r10&quot;) = (long) arg1; &bslash;&n;  register long __b __asm__ (&quot;r11&quot;) = (long) arg2; &bslash;&n;  register long __c __asm__ (&quot;r12&quot;) = (long) arg3; &bslash;&n;  register long __d __asm__ (&quot;r13&quot;) = (long) arg4; &bslash;&n;  __asm__ __volatile__ (&quot;move %6,$mof&bslash;n&bslash;tmove %7,$srp&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;&quot;movu.w %1,$r9&bslash;n&bslash;tbreak 13&quot; &bslash;&n;&t;&t;&t;: &quot;=r&quot; (__a) &bslash;&n;&t;&t;&t;: &quot;g&quot; (__NR_##name), &quot;0&quot; (__a), &quot;r&quot; (__b), &bslash;&n;&t;&t;&t;  &quot;r&quot; (__c), &quot;r&quot; (__d), &quot;g&quot; (arg5), &quot;g&quot; (arg6)&bslash;&n;&t;&t;&t;: &quot;r10&quot;, &quot;r9&quot;, &quot;srp&quot;); &bslash;&n;  if(__a &gt;= 0) &bslash;&n;     return (type) __a; &bslash;&n;  errno = -__a; &bslash;&n;  return (type) -1; &bslash;&n;}
+mdefine_line|#define __NR_tkill&t;&t;238
+DECL|macro|__NR_sendfile64
+mdefine_line|#define __NR_sendfile64&t;&t;239
+DECL|macro|__NR_futex
+mdefine_line|#define __NR_futex&t;&t;240
+DECL|macro|__NR_sched_setaffinity
+mdefine_line|#define __NR_sched_setaffinity&t;241
+DECL|macro|__NR_sched_getaffinity
+mdefine_line|#define __NR_sched_getaffinity&t;242
+DECL|macro|__NR_set_thread_area
+mdefine_line|#define __NR_set_thread_area&t;243
+DECL|macro|__NR_get_thread_area
+mdefine_line|#define __NR_get_thread_area&t;244
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;245
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;246
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;247
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;248
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;249
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64&t;&t;250
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;252
+DECL|macro|__NR_lookup_dcookie
+mdefine_line|#define __NR_lookup_dcookie&t;253
+DECL|macro|__NR_epoll_create
+mdefine_line|#define __NR_epoll_create&t;254
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl&t;&t;255
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait&t;&t;256
+DECL|macro|__NR_remap_file_pages
+mdefine_line|#define __NR_remap_file_pages&t;257
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address&t;258
+DECL|macro|__NR_timer_create
+mdefine_line|#define __NR_timer_create&t;259
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;(__NR_timer_create+1)
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;(__NR_timer_create+2)
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;(__NR_timer_create+3)
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;(__NR_timer_create+4)
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;(__NR_timer_create+5)
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;(__NR_timer_create+6)
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;(__NR_timer_create+7)
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;(__NR_timer_create+8)
+DECL|macro|__NR_statfs64
+mdefine_line|#define __NR_statfs64&t;&t;268
+DECL|macro|__NR_fstatfs64
+mdefine_line|#define __NR_fstatfs64&t;&t;269
+DECL|macro|NR_syscalls
+mdefine_line|#define NR_syscalls 270
 macro_line|#ifdef __KERNEL_SYSCALLS__
 multiline_comment|/*&n; * we need this inline - forking from kernel space will result&n; * in NO COPY ON WRITE (!!!), until an execve is executed. This&n; * is no problem, but for the stack. This is handled by not letting&n; * main() use the stack at all after fork(). Thus, no function&n; * calls - which means inline code for fork too, as otherwise we&n; * would use the stack upon exit from &squot;fork()&squot;.&n; *&n; * Actually only pause and fork are needed inline, so that there&n; * won&squot;t be any messing with the stack from main(), but we define&n; * some others too.&n; */
 DECL|macro|__NR__exit
 mdefine_line|#define __NR__exit __NR_exit
-r_static
+r_extern
 r_inline
 id|_syscall0
 c_func
@@ -479,7 +551,7 @@ id|pid_t
 comma
 id|setsid
 )paren
-r_static
+r_extern
 r_inline
 id|_syscall3
 c_func
@@ -502,7 +574,50 @@ id|off_t
 comma
 id|count
 )paren
-r_static
+r_extern
+r_inline
+id|_syscall3
+c_func
+(paren
+r_int
+comma
+id|read
+comma
+r_int
+comma
+id|fd
+comma
+r_char
+op_star
+comma
+id|buf
+comma
+id|off_t
+comma
+id|count
+)paren
+r_extern
+r_inline
+id|_syscall3
+c_func
+(paren
+id|off_t
+comma
+id|lseek
+comma
+r_int
+comma
+id|fd
+comma
+id|off_t
+comma
+id|offset
+comma
+r_int
+comma
+id|count
+)paren
+r_extern
 r_inline
 id|_syscall1
 c_func
@@ -515,7 +630,7 @@ r_int
 comma
 id|fd
 )paren
-r_static
+r_extern
 r_inline
 id|_syscall3
 c_func
@@ -542,7 +657,7 @@ op_star
 comma
 id|envp
 )paren
-r_static
+r_extern
 r_inline
 id|_syscall3
 c_func
@@ -565,7 +680,7 @@ r_int
 comma
 id|mode
 )paren
-r_static
+r_extern
 r_inline
 id|_syscall1
 c_func
@@ -578,7 +693,12 @@ r_int
 comma
 id|fd
 )paren
-r_static
+multiline_comment|/*&n; * Since we define it &quot;external&quot;, it collides with the built-in&n; * definition, which has the &quot;noreturn&quot; attribute and will cause&n; * complaints.  We don&squot;t want to use -fno-builtin, so just use a&n; * different name when in the kernel.&n; */
+macro_line|#ifdef __KERNEL__
+DECL|macro|_exit
+mdefine_line|#define _exit kernel_syscall_exit
+macro_line|#endif
+r_extern
 r_inline
 id|_syscall1
 c_func
@@ -591,7 +711,7 @@ r_int
 comma
 id|exitcode
 )paren
-r_static
+r_extern
 r_inline
 id|_syscall3
 c_func
@@ -612,50 +732,6 @@ comma
 r_int
 comma
 id|options
-)paren
-r_static
-r_inline
-id|_syscall3
-c_func
-(paren
-id|off_t
-comma
-id|lseek
-comma
-r_int
-comma
-id|fd
-comma
-id|off_t
-comma
-id|offset
-comma
-r_int
-comma
-id|count
-)paren
-multiline_comment|/* the following are just while developing the elinux port! */
-r_static
-r_inline
-id|_syscall3
-c_func
-(paren
-r_int
-comma
-id|read
-comma
-r_int
-comma
-id|fd
-comma
-r_char
-op_star
-comma
-id|buf
-comma
-id|off_t
-comma
-id|count
 )paren
 macro_line|#endif
 multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on all toolchains, so we just do it by hand&n; */

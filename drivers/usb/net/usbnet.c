@@ -8110,7 +8110,7 @@ id|drop
 suffix:colon
 id|retval
 op_assign
-id|NET_XMIT_DROP
+id|NET_XMIT_SUCCESS
 suffix:semicolon
 id|dev-&gt;stats.tx_dropped
 op_increment

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/fs_struct.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/sunrpc/stats.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
@@ -585,6 +586,11 @@ id|serv
 op_assign
 id|rqstp-&gt;rq_server
 suffix:semicolon
+r_struct
+id|fs_struct
+op_star
+id|fsp
+suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -619,6 +625,46 @@ dot
 id|rlim_cur
 op_assign
 id|RLIM_INFINITY
+suffix:semicolon
+multiline_comment|/* After daemonize() this kernel thread shares current-&gt;fs&n;&t; * with the init process. We need to create files with a&n;&t; * umask of 0 instead of init&squot;s umask. */
+id|fsp
+op_assign
+id|copy_fs_struct
+c_func
+(paren
+id|current-&gt;fs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fsp
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Unable to start nfsd thread: out of memory&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|exit_fs
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+id|current-&gt;fs
+op_assign
+id|fsp
+suffix:semicolon
+id|current-&gt;fs-&gt;umask
+op_assign
+l_int|0
 suffix:semicolon
 id|siginitsetinv
 c_func
@@ -938,6 +984,8 @@ suffix:semicolon
 id|nfsdstats.th_cnt
 op_decrement
 suffix:semicolon
+id|out
+suffix:colon
 multiline_comment|/* Release the thread */
 id|svc_exit_thread
 c_func

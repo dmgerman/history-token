@@ -557,12 +557,6 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
-id|disable_irq
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 id|unset_nmi_callback
 c_func
 (paren
@@ -606,12 +600,6 @@ suffix:semicolon
 id|nmi_active
 op_assign
 l_int|1
-suffix:semicolon
-id|enable_irq
-c_func
-(paren
-l_int|0
-)paren
 suffix:semicolon
 )brace
 )brace

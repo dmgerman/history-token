@@ -31,6 +31,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* spinlock for vfsmount related operations, inplace of dcache_lock */
+DECL|variable|__cacheline_aligned_in_smp
+id|spinlock_t
+id|vfsmount_lock
+id|__cacheline_aligned_in_smp
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|variable|mount_hashtable
 r_static
 r_struct
@@ -278,6 +286,7 @@ id|mnt
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Now, lookup_mnt increments the ref count before returning&n; * the vfsmount struct.&n; */
 DECL|function|lookup_mnt
 r_struct
 id|vfsmount
@@ -322,6 +331,18 @@ r_struct
 id|vfsmount
 op_star
 id|p
+comma
+op_star
+id|found
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|vfsmount_lock
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -371,11 +392,28 @@ id|p-&gt;mnt_mountpoint
 op_eq
 id|dentry
 )paren
+(brace
+id|found
+op_assign
+id|mntget
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+)brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vfsmount_lock
+)paren
+suffix:semicolon
 r_return
-id|p
+id|found
 suffix:semicolon
 )brace
 DECL|function|check_mnt
@@ -394,7 +432,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 r_while
@@ -412,7 +450,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 r_return
@@ -1385,7 +1423,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 )brace
@@ -1408,7 +1446,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 id|path_release
@@ -1429,7 +1467,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 )brace
@@ -1595,7 +1633,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 r_if
@@ -1616,7 +1654,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 id|lock_kernel
@@ -1651,7 +1689,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 )brace
@@ -1703,7 +1741,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 r_if
@@ -2197,7 +2235,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 id|list_add_tail
@@ -2223,7 +2261,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 )brace
@@ -2243,7 +2281,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 id|umount_tree
@@ -2256,7 +2294,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 )brace
@@ -2365,7 +2403,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 r_if
@@ -2435,7 +2473,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 id|out_unlock
@@ -2643,7 +2681,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 id|umount_tree
@@ -2656,7 +2694,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 )brace
@@ -2987,7 +3025,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 r_if
@@ -3109,7 +3147,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 id|out1
@@ -4008,7 +4046,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 id|list_add_tail
@@ -4025,7 +4063,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Second pass: switch the tsk-&gt;fs-&gt;* elements */
@@ -5097,7 +5135,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 r_if
@@ -5211,7 +5249,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 id|chroot_fs_refs
@@ -5311,7 +5349,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 r_goto

@@ -20,10 +20,10 @@ comma
 r_uint32
 id|divisor
 )paren
-id|__attribute_pure__
 suffix:semicolon
+multiline_comment|/* The unnecessary pointer compare is there&n; * to check for type safety (n must be 64bit)&n; */
 DECL|macro|do_div
-macro_line|# define do_div(n,base) ({&t;&t;&t;&t;&bslash;&n;&t;uint32_t __base = (base);&t;&t;&t;&bslash;&n;&t;uint32_t __rem;&t;&t;&t;&t;&t;&bslash;&n;&t;if (likely(((n) &gt;&gt; 32) == 0)) {&t;&t;&t;&bslash;&n;&t;&t;__rem = (uint32_t)(n) % __base;&t;&t;&bslash;&n;&t;&t;(n) = (uint32_t)(n) / __base;&t;&t;&bslash;&n;&t;} else &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__rem = __div64_32(&amp;(n), __base);&t;&bslash;&n;&t;__rem;&t;&t;&t;&t;&t;&t;&bslash;&n; })
+macro_line|# define do_div(n,base) ({&t;&t;&t;&t;&bslash;&n;&t;uint32_t __base = (base);&t;&t;&t;&bslash;&n;&t;uint32_t __rem;&t;&t;&t;&t;&t;&bslash;&n;&t;(void)(((typeof((n)) *)0) == ((uint64_t *)0));&t;&bslash;&n;&t;if (likely(((n) &gt;&gt; 32) == 0)) {&t;&t;&t;&bslash;&n;&t;&t;__rem = (uint32_t)(n) % __base;&t;&t;&bslash;&n;&t;&t;(n) = (uint32_t)(n) / __base;&t;&t;&bslash;&n;&t;} else &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__rem = __div64_32(&amp;(n), __base);&t;&bslash;&n;&t;__rem;&t;&t;&t;&t;&t;&t;&bslash;&n; })
 macro_line|#else /* BITS_PER_LONG == ?? */
 macro_line|# error do_div() does not yet support the C64
 macro_line|#endif /* BITS_PER_LONG */

@@ -337,15 +337,12 @@ id|dma_handle
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* We can&squot;t easily support &lt; 32 bit devices */
 r_if
 c_cond
 (paren
-id|IS_PCI32L
-c_func
-(paren
-id|hwdev
-)paren
+id|hwdev-&gt;dma_mask
+OL
+l_int|0xffffffffUL
 )paren
 r_return
 l_int|NULL
@@ -394,17 +391,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-id|cpuaddr
-comma
-l_int|0
-comma
-id|size
-)paren
-suffix:semicolon
-multiline_comment|/* have to zero it out */
 multiline_comment|/* physical addr. of the memory we just got */
 id|phys_addr
 op_assign
@@ -447,6 +433,36 @@ op_or
 id|PCIIO_DMA_CMD
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If this device is in PCI-X mode, the system would have&n;&t; * automatically allocated a 64Bits DMA Address.  Error out if the &n;&t; * device cannot support DAC.&n;&t; */
+r_if
+c_cond
+(paren
+op_star
+id|dma_handle
+OG
+id|hwdev-&gt;consistent_dma_mask
+)paren
+(brace
+id|free_pages
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|cpuaddr
+comma
+id|get_order
+c_func
+(paren
+id|size
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * It is a 32 bit card and we cannot do direct mapping,&n;&t; * so we try to use an ATE.&n;&t; */
 r_if
 c_cond

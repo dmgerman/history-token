@@ -1,4 +1,5 @@
-multiline_comment|/* drm_agpsupport.h -- DRM support for AGP/GART backend -*- linux-c -*-&n; * Created: Mon Dec 13 09:56:45 1999 by faith@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Author:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/**&n; * &bslash;file drm_agpsupport.h &n; * DRM support for AGP/GART backend&n; *    &n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/*&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#if __REALLY_HAVE_AGP
@@ -6,6 +7,7 @@ DECL|macro|DRM_AGP_GET
 mdefine_line|#define DRM_AGP_GET (drm_agp_t *)inter_module_get(&quot;drm_agp&quot;)
 DECL|macro|DRM_AGP_PUT
 mdefine_line|#define DRM_AGP_PUT inter_module_put(&quot;drm_agp&quot;)
+multiline_comment|/**&n; * Pointer to the drm_agp_t structure made available by the agpgart module.&n; */
 DECL|variable|drm_agp
 r_static
 r_const
@@ -15,6 +17,7 @@ id|drm_agp
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/**&n; * AGP information ioctl.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a (output) drm_agp_info structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the AGP device has been initialized and acquired and fills in the&n; * drm_agp_info structure with the information in drm_agp_head::agp_info.&n; */
 DECL|function|agp_info
 r_int
 id|DRM
@@ -156,6 +159,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Acquire the AGP device (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument.&n; * &bslash;return zero on success or a negative number on failure. &n; *&n; * Verifies the AGP device hasn&squot;t been acquired before and calls&n; * drm_agp-&gt;acquire().&n; */
 DECL|function|agp_acquire
 r_int
 id|DRM
@@ -238,6 +242,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Release the AGP device (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the AGP device has been acquired and calls drm_agp-&gt;release().&n; */
 DECL|function|agp_release
 r_int
 id|DRM
@@ -308,6 +313,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Release the AGP device.&n; *&n; * Calls drm_agp-&gt;release().&n; */
 DECL|function|agp_do_release
 r_void
 id|DRM
@@ -332,6 +338,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Enable the AGP bus.&n; * &n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_agp_mode structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the AGP device has been acquired but not enabled, and calls&n; * drm_agp-&gt;enable().&n; */
 DECL|function|agp_enable
 r_int
 id|DRM
@@ -439,6 +446,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Allocate AGP memory.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_agp_buffer structure.&n; * &bslash;return zero on success or a negative number on failure.&n; * &n; * Verifies the AGP device is present and has been acquired, allocates the&n; * memory via alloc_agp() and creates a drm_agp_mem entry for it.&n; */
 DECL|function|agp_alloc
 r_int
 id|DRM
@@ -644,6 +652,8 @@ r_int
 r_int
 )paren
 id|memory-&gt;key
+op_plus
+l_int|1
 suffix:semicolon
 id|entry-&gt;memory
 op_assign
@@ -753,6 +763,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Search for the AGP memory entry associated with a handle.&n; *&n; * &bslash;param dev DRM device structure.&n; * &bslash;param handle AGP memory handle.&n; * &bslash;return pointer to the drm_agp_mem structure associated with &bslash;p handle.&n; * &n; * Walks through drm_agp_head::memory until finding a matching handle.&n; */
 DECL|function|agp_lookup_entry
 r_static
 id|drm_agp_mem_t
@@ -805,6 +816,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Unbind AGP memory from the GATT (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_agp_binding structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the AGP device is present and acquired, looks-up the AGP memory&n; * entry and passes it to the unbind_agp() function.&n; */
 DECL|function|agp_unbind
 r_int
 id|DRM
@@ -951,6 +963,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Bind AGP memory into the GATT (ioctl)&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_agp_binding structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the AGP device is present and has been acquired and that no memory&n; * is currently bound into the GATT. Looks-up the AGP memory entry and passes&n; * it to bind_agp() function.&n; */
 DECL|function|agp_bind
 r_int
 id|DRM
@@ -1133,6 +1146,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Free AGP memory (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_agp_buffer structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the AGP device is present and has been acquired and looks up the&n; * AGP memory entry. If the memory it&squot;s currently bound, unbind it via&n; * unbind_agp(). Frees it via free_agp() as well as the entry itself&n; * and unlinks from the doubly linked list it&squot;s inserted in.&n; */
 DECL|function|agp_free
 r_int
 id|DRM
@@ -1309,6 +1323,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Initialize the AGP resources.&n; *&n; * &bslash;return pointer to a drm_agp_head structure.&n; *&n; * Gets the drm_agp_t structure which is made available by the agpgart module&n; * via the inter_module_* functions. Creates and initializes a drm_agp_head&n; * structure.&n; */
 DECL|function|agp_init
 id|drm_agp_head_t
 op_star
@@ -1450,6 +1465,7 @@ r_return
 id|head
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Free the AGP resources.&n; *&n; * Releases the pointer in ::drm_agp.&n; */
 DECL|function|agp_uninit
 r_void
 id|DRM
@@ -1468,6 +1484,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/** Calls drm_agp-&gt;allocate_memory() */
 DECL|function|agp_allocate_memory
 r_struct
 id|agp_memory
@@ -1506,6 +1523,7 @@ id|type
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/** Calls drm_agp-&gt;free_memory() */
 DECL|function|agp_free_memory
 r_int
 id|DRM
@@ -1544,6 +1562,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/** Calls drm_agp-&gt;bind_memory() */
 DECL|function|agp_bind_memory
 r_int
 id|DRM
@@ -1586,6 +1605,7 @@ id|start
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/** Calls drm_agp-&gt;unbind_memory() */
 DECL|function|agp_unbind_memory
 r_int
 id|DRM

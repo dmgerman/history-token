@@ -1,4 +1,4 @@
-multiline_comment|/* ----------------------------------------------------------------------------&n;Linux PCMCIA ethernet adapter driver for the New Media Ethernet LAN.&n;  nmclan_cs.c,v 0.16 1995/07/01 06:42:17 rpao Exp rpao&n;&n;  The Ethernet LAN uses the Advanced Micro Devices (AMD) Am79C940 Media&n;  Access Controller for Ethernet (MACE).  It is essentially the Am2150&n;  PCMCIA Ethernet card contained in the Am2150 Demo Kit.&n;&n;Written by Roger C. Pao &lt;rpao@paonet.org&gt;&n;  Copyright 1995 Roger C. Pao&n;&n;  This software may be used and distributed according to the terms of&n;  the GNU General Public License.&n;&n;Ported to Linux 1.3.* network driver environment by&n;  Matti Aarnio &lt;mea@utu.fi&gt;&n;&n;References&n;&n;  Am2150 Technical Reference Manual, Revision 1.0, August 17, 1993&n;  Am79C940 (MACE) Data Sheet, 1994&n;  Am79C90 (C-LANCE) Data Sheet, 1994&n;  Linux PCMCIA Programmer&squot;s Guide v1.17&n;  /usr/src/linux/net/inet/dev.c, Linux kernel 1.2.8&n;&n;  Eric Mears, New Media Corporation&n;  Tom Pollard, New Media Corporation&n;  Dean Siasoyco, New Media Corporation&n;  Ken Lesniak, Silicon Graphics, Inc. &lt;lesniak@boston.sgi.com&gt;&n;  Donald Becker &lt;becker@scyld.com&gt;&n;  David Hinds &lt;dahinds@users.sourceforge.net&gt;&n;&n;  The Linux client driver is based on the 3c589_cs.c client driver by&n;  David Hinds.&n;&n;  The Linux network driver outline is based on the 3c589_cs.c driver,&n;  the 8390.c driver, and the example skeleton.c kernel code, which are&n;  by Donald Becker.&n;&n;  The Am2150 network driver hardware interface code is based on the&n;  OS/9000 driver for the New Media Ethernet LAN by Eric Mears.&n;&n;  Special thanks for testing and help in debugging this driver goes&n;  to Ken Lesniak.&n;&n;-------------------------------------------------------------------------------&n;Driver Notes and Issues&n;-------------------------------------------------------------------------------&n;&n;1. Developed on a Dell 320SLi&n;   PCMCIA Card Services 2.6.2&n;   Linux dell 1.2.10 #1 Thu Jun 29 20:23:41 PDT 1995 i386&n;&n;2. rc.pcmcia may require loading pcmcia_core with io_speed=300:&n;   &squot;insmod pcmcia_core.o io_speed=300&squot;.&n;   This will avoid problems with fast systems which causes rx_framecnt&n;   to return random values.&n;&n;3. If hot extraction does not work for you, use &squot;ifconfig eth0 down&squot;&n;   before extraction.&n;&n;4. There is a bad slow-down problem in this driver.&n;&n;5. Future: Multicast processing.  In the meantime, do _not_ compile your&n;   kernel with multicast ip enabled.&n;&n;-------------------------------------------------------------------------------&n;History&n;-------------------------------------------------------------------------------&n;Log: nmclan_cs.c,v&n; * Revision 0.16  1995/07/01  06:42:17  rpao&n; * Bug fix: nmclan_reset() called CardServices incorrectly.&n; *&n; * Revision 0.15  1995/05/24  08:09:47  rpao&n; * Re-implement MULTI_TX dev-&gt;tbusy handling.&n; *&n; * Revision 0.14  1995/05/23  03:19:30  rpao&n; * Added, in nmclan_config(), &quot;tuple.Attributes = 0;&quot;.&n; * Modified MACE ID check to ignore chip revision level.&n; * Avoid tx_free_frames race condition between _start_xmit and _interrupt.&n; *&n; * Revision 0.13  1995/05/18  05:56:34  rpao&n; * Statistics changes.&n; * Bug fix: nmclan_reset did not enable TX and RX: call restore_multicast_list.&n; * Bug fix: mace_interrupt checks ~MACE_IMR_DEFAULT.  Fixes driver lockup.&n; *&n; * Revision 0.12  1995/05/14  00:12:23  rpao&n; * Statistics overhaul.&n; *&n;&n;95/05/13 rpao&t;V0.10a&n;&t;&t;Bug fix: MACE statistics counters used wrong I/O ports.&n;&t;&t;Bug fix: mace_interrupt() needed to allow statistics to be&n;&t;&t;processed without RX or TX interrupts pending.&n;95/05/11 rpao&t;V0.10&n;&t;&t;Multiple transmit request processing.&n;&t;&t;Modified statistics to use MACE counters where possible.&n;95/05/10 rpao&t;V0.09 Bug fix: Must use IO_DATA_PATH_WIDTH_AUTO.&n;&t;&t;*Released&n;95/05/10 rpao&t;V0.08&n;&t;&t;Bug fix: Make all non-exported functions private by using&n;&t;&t;static keyword.&n;&t;&t;Bug fix: Test IntrCnt _before_ reading MACE_IR.&n;95/05/10 rpao&t;V0.07 Statistics.&n;95/05/09 rpao&t;V0.06 Fix rx_framecnt problem by addition of PCIC wait states.&n;&n;---------------------------------------------------------------------------- */
+multiline_comment|/* ----------------------------------------------------------------------------&n;Linux PCMCIA ethernet adapter driver for the New Media Ethernet LAN.&n;  nmclan_cs.c,v 0.16 1995/07/01 06:42:17 rpao Exp rpao&n;&n;  The Ethernet LAN uses the Advanced Micro Devices (AMD) Am79C940 Media&n;  Access Controller for Ethernet (MACE).  It is essentially the Am2150&n;  PCMCIA Ethernet card contained in the Am2150 Demo Kit.&n;&n;Written by Roger C. Pao &lt;rpao@paonet.org&gt;&n;  Copyright 1995 Roger C. Pao&n;  Linux 2.5 cleanups Copyright Red Hat 2003&n;&n;  This software may be used and distributed according to the terms of&n;  the GNU General Public License.&n;&n;Ported to Linux 1.3.* network driver environment by&n;  Matti Aarnio &lt;mea@utu.fi&gt;&n;&n;References&n;&n;  Am2150 Technical Reference Manual, Revision 1.0, August 17, 1993&n;  Am79C940 (MACE) Data Sheet, 1994&n;  Am79C90 (C-LANCE) Data Sheet, 1994&n;  Linux PCMCIA Programmer&squot;s Guide v1.17&n;  /usr/src/linux/net/inet/dev.c, Linux kernel 1.2.8&n;&n;  Eric Mears, New Media Corporation&n;  Tom Pollard, New Media Corporation&n;  Dean Siasoyco, New Media Corporation&n;  Ken Lesniak, Silicon Graphics, Inc. &lt;lesniak@boston.sgi.com&gt;&n;  Donald Becker &lt;becker@scyld.com&gt;&n;  David Hinds &lt;dahinds@users.sourceforge.net&gt;&n;&n;  The Linux client driver is based on the 3c589_cs.c client driver by&n;  David Hinds.&n;&n;  The Linux network driver outline is based on the 3c589_cs.c driver,&n;  the 8390.c driver, and the example skeleton.c kernel code, which are&n;  by Donald Becker.&n;&n;  The Am2150 network driver hardware interface code is based on the&n;  OS/9000 driver for the New Media Ethernet LAN by Eric Mears.&n;&n;  Special thanks for testing and help in debugging this driver goes&n;  to Ken Lesniak.&n;&n;-------------------------------------------------------------------------------&n;Driver Notes and Issues&n;-------------------------------------------------------------------------------&n;&n;1. Developed on a Dell 320SLi&n;   PCMCIA Card Services 2.6.2&n;   Linux dell 1.2.10 #1 Thu Jun 29 20:23:41 PDT 1995 i386&n;&n;2. rc.pcmcia may require loading pcmcia_core with io_speed=300:&n;   &squot;insmod pcmcia_core.o io_speed=300&squot;.&n;   This will avoid problems with fast systems which causes rx_framecnt&n;   to return random values.&n;&n;3. If hot extraction does not work for you, use &squot;ifconfig eth0 down&squot;&n;   before extraction.&n;&n;4. There is a bad slow-down problem in this driver.&n;&n;5. Future: Multicast processing.  In the meantime, do _not_ compile your&n;   kernel with multicast ip enabled.&n;&n;-------------------------------------------------------------------------------&n;History&n;-------------------------------------------------------------------------------&n;Log: nmclan_cs.c,v&n; * 2.5.75-ac1 2003/07/11 Alan Cox &lt;alan@redhat.com&gt;&n; * Fixed hang on card eject as we probe it&n; * Cleaned up to use new style locking.&n; *&n; * Revision 0.16  1995/07/01  06:42:17  rpao&n; * Bug fix: nmclan_reset() called CardServices incorrectly.&n; *&n; * Revision 0.15  1995/05/24  08:09:47  rpao&n; * Re-implement MULTI_TX dev-&gt;tbusy handling.&n; *&n; * Revision 0.14  1995/05/23  03:19:30  rpao&n; * Added, in nmclan_config(), &quot;tuple.Attributes = 0;&quot;.&n; * Modified MACE ID check to ignore chip revision level.&n; * Avoid tx_free_frames race condition between _start_xmit and _interrupt.&n; *&n; * Revision 0.13  1995/05/18  05:56:34  rpao&n; * Statistics changes.&n; * Bug fix: nmclan_reset did not enable TX and RX: call restore_multicast_list.&n; * Bug fix: mace_interrupt checks ~MACE_IMR_DEFAULT.  Fixes driver lockup.&n; *&n; * Revision 0.12  1995/05/14  00:12:23  rpao&n; * Statistics overhaul.&n; *&n;&n;95/05/13 rpao&t;V0.10a&n;&t;&t;Bug fix: MACE statistics counters used wrong I/O ports.&n;&t;&t;Bug fix: mace_interrupt() needed to allow statistics to be&n;&t;&t;processed without RX or TX interrupts pending.&n;95/05/11 rpao&t;V0.10&n;&t;&t;Multiple transmit request processing.&n;&t;&t;Modified statistics to use MACE counters where possible.&n;95/05/10 rpao&t;V0.09 Bug fix: Must use IO_DATA_PATH_WIDTH_AUTO.&n;&t;&t;*Released&n;95/05/10 rpao&t;V0.08&n;&t;&t;Bug fix: Make all non-exported functions private by using&n;&t;&t;static keyword.&n;&t;&t;Bug fix: Test IntrCnt _before_ reading MACE_IR.&n;95/05/10 rpao&t;V0.07 Statistics.&n;95/05/09 rpao&t;V0.06 Fix rx_framecnt problem by addition of PCIC wait states.&n;&n;---------------------------------------------------------------------------- */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;nmclan_cs&quot;
 DECL|macro|DRV_VERSION
@@ -418,6 +418,11 @@ r_char
 id|tx_irq_disabled
 suffix:semicolon
 multiline_comment|/* MACE TX interrupt disabled */
+DECL|member|bank_lock
+id|spinlock_t
+id|bank_lock
+suffix:semicolon
+multiline_comment|/* Must be held if you step off bank 0 */
 DECL|typedef|mace_private
 )brace
 id|mace_private
@@ -893,6 +898,13 @@ id|link-&gt;priv
 op_assign
 id|dev
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|lp-&gt;bank_lock
+)paren
+suffix:semicolon
 id|init_timer
 c_func
 (paren
@@ -1229,7 +1241,7 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -1314,6 +1326,10 @@ r_int
 id|mace_read
 c_func
 (paren
+id|mace_private
+op_star
+id|lp
+comma
 id|ioaddr_t
 id|ioaddr
 comma
@@ -1360,15 +1376,13 @@ r_case
 l_int|1
 suffix:colon
 multiline_comment|/* register 16-31 */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;bank_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|MACEBANK
@@ -1399,9 +1413,12 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;bank_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1424,6 +1441,10 @@ r_void
 id|mace_write
 c_func
 (paren
+id|mace_private
+op_star
+id|lp
+comma
 id|ioaddr_t
 id|ioaddr
 comma
@@ -1470,15 +1491,13 @@ r_case
 l_int|1
 suffix:colon
 multiline_comment|/* register 16-31 */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;bank_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|MACEBANK
@@ -1511,9 +1530,12 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;bank_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1525,10 +1547,14 @@ multiline_comment|/* mace_write */
 multiline_comment|/* ----------------------------------------------------------------------------&n;mace_init&n;&t;Resets the MACE chip.&n;---------------------------------------------------------------------------- */
 DECL|function|mace_init
 r_static
-r_void
+r_int
 id|mace_init
 c_func
 (paren
+id|mace_private
+op_star
+id|lp
+comma
 id|ioaddr_t
 id|ioaddr
 comma
@@ -1540,10 +1566,17 @@ id|enet_addr
 r_int
 id|i
 suffix:semicolon
+r_int
+id|ct
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* MACE Software reset */
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_BIUCC
@@ -1557,6 +1590,8 @@ c_loop
 id|mace_read
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_BIUCC
@@ -1567,10 +1602,39 @@ l_int|0x01
 (brace
 multiline_comment|/* Wait for reset bit to be cleared automatically after &lt;= 200ns */
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_increment
+id|ct
+OG
+l_int|500
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mace: reset failed, card removed ?&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 )brace
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_BIUCC
@@ -1582,6 +1646,8 @@ multiline_comment|/* The Am2150 requires that the MACE FIFOs operate in burst mo
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_FIFOCC
@@ -1592,6 +1658,8 @@ suffix:semicolon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_RCVFC
@@ -1603,6 +1671,8 @@ multiline_comment|/* Disable Auto Strip Receive */
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_IMR
@@ -1624,6 +1694,8 @@ suffix:colon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_PLSCC
@@ -1639,6 +1711,8 @@ suffix:colon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_PLSCC
@@ -1653,6 +1727,8 @@ suffix:colon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_PHYCC
@@ -1668,6 +1744,8 @@ suffix:semicolon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_IAC
@@ -1678,12 +1756,18 @@ id|MACE_IAC_PHYADDR
 )paren
 suffix:semicolon
 multiline_comment|/* Poll ADDRCHG bit */
+id|ct
+op_assign
+l_int|0
+suffix:semicolon
 r_while
 c_loop
 (paren
 id|mace_read
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_IAC
@@ -1691,7 +1775,29 @@ id|MACE_IAC
 op_amp
 id|MACE_IAC_ADDRCHG
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_increment
+id|ct
+OG
+l_int|500
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mace: ADDRCHG timeout, card removed ?&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* Set PADR register */
 r_for
 c_loop
@@ -1710,6 +1816,8 @@ op_increment
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_PADR
@@ -1722,16 +1830,21 @@ id|i
 suffix:semicolon
 multiline_comment|/* MAC Configuration Control Register should be written last */
 multiline_comment|/* Let set_multicast_list set this. */
-multiline_comment|/* mace_write(ioaddr, MACE_MACCC, MACE_MACCC_ENXMT | MACE_MACCC_ENRCV); */
+multiline_comment|/* mace_write(lp, ioaddr, MACE_MACCC, MACE_MACCC_ENXMT | MACE_MACCC_ENRCV); */
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_MACCC
 comma
 l_int|0x00
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* mace_init */
@@ -2002,6 +2115,8 @@ op_assign
 id|mace_read
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_CHIPIDL
@@ -2015,6 +2130,8 @@ op_assign
 id|mace_read
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_CHIPIDH
@@ -2094,14 +2211,27 @@ r_return
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
 id|mace_init
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|dev-&gt;dev_addr
 )paren
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+r_goto
+id|failed
 suffix:semicolon
+)brace
 multiline_comment|/* The if_port symbol can be set when the module is loaded */
 r_if
 c_cond
@@ -2664,6 +2794,8 @@ multiline_comment|/* Reinitialize the MACE chip for operation. */
 id|mace_init
 c_func
 (paren
+id|lp
+comma
 id|dev-&gt;base_addr
 comma
 id|dev-&gt;dev_addr
@@ -2672,6 +2804,8 @@ suffix:semicolon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|dev-&gt;base_addr
 comma
 id|MACE_IMR
@@ -4759,6 +4893,8 @@ op_add_assign
 id|mace_read
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_RCVCC
@@ -4769,6 +4905,8 @@ op_add_assign
 id|mace_read
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_RNTPC
@@ -4779,6 +4917,8 @@ op_add_assign
 id|mace_read
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_MPC
@@ -5309,6 +5449,8 @@ suffix:semicolon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_IAC
@@ -5325,6 +5467,8 @@ c_loop
 id|mace_read
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_IAC
@@ -5351,6 +5495,8 @@ op_increment
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_LADRF
@@ -5364,6 +5510,8 @@ suffix:semicolon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_UTR
@@ -5376,6 +5524,8 @@ suffix:semicolon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_MACCC
@@ -5399,6 +5549,8 @@ multiline_comment|/* Promiscuous mode: receive all packets */
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_UTR
@@ -5409,6 +5561,8 @@ suffix:semicolon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_MACCC
@@ -5427,6 +5581,8 @@ multiline_comment|/* Normal mode */
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_UTR
@@ -5437,6 +5593,8 @@ suffix:semicolon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_MACCC
@@ -5623,6 +5781,16 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+id|mace_private
+op_star
+id|lp
+op_assign
+(paren
+id|mace_private
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -5657,6 +5825,8 @@ multiline_comment|/* Promiscuous mode: receive all packets */
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_UTR
@@ -5667,6 +5837,8 @@ suffix:semicolon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_MACCC
@@ -5685,6 +5857,8 @@ multiline_comment|/* Normal mode */
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_UTR
@@ -5695,6 +5869,8 @@ suffix:semicolon
 id|mace_write
 c_func
 (paren
+id|lp
+comma
 id|ioaddr
 comma
 id|MACE_MACCC

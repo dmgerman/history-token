@@ -326,7 +326,9 @@ comma
 r_new
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If ISA interrupts don&squot;t work, then fall back to routing card&n;&t; * interrupts to the PCI interrupt of the socket.&n;&t; */
+macro_line|#if 0
+multiline_comment|/* THIS CAUSES HANGS! Disabled for now, do not know why */
+multiline_comment|/*&n;&t; * If ISA interrupts don&squot;t work, then fall back to routing card&n;&t; * interrupts to the PCI interrupt of the socket.&n;&t; *&n;&t; * Tweaking this when we are using serial PCI IRQs causes hangs&n;&t; *   --rmk&n;&t; */
 r_if
 c_cond
 (paren
@@ -334,16 +336,10 @@ op_logical_neg
 id|socket-&gt;socket.irq_mask
 )paren
 (brace
-r_int
+id|u8
 id|irqmux
 comma
 id|devctl
-suffix:semicolon
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;ti113x: Routing card interrupts to PCI&bslash;n&quot;
-)paren
 suffix:semicolon
 id|devctl
 op_assign
@@ -353,6 +349,22 @@ c_func
 id|socket
 comma
 id|TI113X_DEVICE_CONTROL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|devctl
+op_amp
+id|TI113X_DCR_IMODE_MASK
+op_ne
+id|TI12XX_DCR_IMODE_ALL_SERIAL
+)paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;ti113x: Routing card interrupts to PCI&bslash;n&quot;
 )paren
 suffix:semicolon
 id|devctl
@@ -415,7 +427,9 @@ id|devctl
 )paren
 suffix:semicolon
 )brace
-id|socket-&gt;socket.ss_entry-&gt;init
+)brace
+macro_line|#endif
+id|socket-&gt;socket.ops-&gt;init
 op_assign
 id|ti_init
 suffix:semicolon
@@ -611,7 +625,7 @@ c_func
 id|socket
 )paren
 suffix:semicolon
-id|socket-&gt;socket.ss_entry-&gt;init
+id|socket-&gt;socket.ops-&gt;init
 op_assign
 id|ti113x_init
 suffix:semicolon
@@ -808,7 +822,7 @@ c_func
 id|socket
 )paren
 suffix:semicolon
-id|socket-&gt;socket.ss_entry-&gt;init
+id|socket-&gt;socket.ops-&gt;init
 op_assign
 id|ti1250_init
 suffix:semicolon

@@ -41,7 +41,7 @@ id|dongles
 )braket
 op_assign
 (brace
-multiline_comment|/* ACTiSYS Corp,  ACT-IR2000U FIR-USB Adapter */
+multiline_comment|/* ACTiSYS Corp.,  ACT-IR2000U FIR-USB Adapter */
 (brace
 id|USB_DEVICE
 c_func
@@ -54,6 +54,23 @@ comma
 dot
 id|driver_info
 op_assign
+id|IUC_SPEED_BUG
+op_or
+id|IUC_NO_WINDOW
+)brace
+comma
+multiline_comment|/* Look like ACTiSYS, Report : IBM Corp., IBM UltraPort IrDA */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x4428
+comma
+l_int|0x012
+)paren
+comma
+id|driver_info
+suffix:colon
 id|IUC_SPEED_BUG
 op_or
 id|IUC_NO_WINDOW
@@ -3386,9 +3403,14 @@ op_amp
 id|self-&gt;qos
 )paren
 suffix:semicolon
+multiline_comment|/* See spec section 7.2 for meaning.&n;&t; * Values are little endian (as most USB stuff), the IrDA stack&n;&t; * use it in native order (see parameters.c). - Jean II */
 id|self-&gt;qos.baud_rate.bits
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|desc-&gt;wBaudRate
+)paren
 suffix:semicolon
 id|self-&gt;qos.min_turn_time.bits
 op_assign
@@ -3437,7 +3459,7 @@ id|IUC_SIR_ONLY
 (brace
 id|self-&gt;qos.baud_rate.bits
 op_and_assign
-l_int|0xff
+l_int|0x00ff
 suffix:semicolon
 )brace
 r_if
@@ -4093,6 +4115,7 @@ op_star
 id|desc
 )paren
 (brace
+multiline_comment|/* Values are little endian */
 id|printk
 c_func
 (paren
@@ -4114,7 +4137,11 @@ c_func
 (paren
 l_string|&quot;bcdSpecRevision=%x&bslash;n&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|desc-&gt;bcdSpecRevision
+)paren
 )paren
 suffix:semicolon
 id|printk
@@ -4146,7 +4173,11 @@ c_func
 (paren
 l_string|&quot;wBaudRate=%x&bslash;n&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|desc-&gt;wBaudRate
+)paren
 )paren
 suffix:semicolon
 id|printk

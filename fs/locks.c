@@ -652,7 +652,11 @@ suffix:colon
 multiline_comment|/*SEEK_END*/
 id|start
 op_assign
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|filp-&gt;f_dentry-&gt;d_inode
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -837,7 +841,11 @@ suffix:colon
 multiline_comment|/*SEEK_END*/
 id|start
 op_assign
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|filp-&gt;f_dentry-&gt;d_inode
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

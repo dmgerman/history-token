@@ -5663,7 +5663,11 @@ suffix:semicolon
 id|last_block
 op_assign
 (paren
-id|inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|inode
+)paren
 op_minus
 l_int|1
 )paren
@@ -7238,7 +7242,11 @@ suffix:semicolon
 id|lblock
 op_assign
 (paren
-id|inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|inode
+)paren
 op_plus
 id|blocksize
 op_minus
@@ -8382,6 +8390,7 @@ comma
 id|to
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * No need to use i_size_read() here, the i_size&n;&t; * cannot change under us because we hold i_sem.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8390,9 +8399,13 @@ OG
 id|inode-&gt;i_size
 )paren
 (brace
-id|inode-&gt;i_size
-op_assign
+id|i_size_write
+c_func
+(paren
+id|inode
+comma
 id|pos
+)paren
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -9113,9 +9126,13 @@ OG
 id|inode-&gt;i_size
 )paren
 (brace
-id|inode-&gt;i_size
-op_assign
+id|i_size_write
+c_func
+(paren
+id|inode
+comma
 id|pos
+)paren
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -9764,12 +9781,21 @@ id|inode
 op_assign
 id|page-&gt;mapping-&gt;host
 suffix:semicolon
+id|loff_t
+id|i_size
+op_assign
+id|i_size_read
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 r_const
 r_int
 r_int
 id|end_index
 op_assign
-id|inode-&gt;i_size
+id|i_size
 op_rshift
 id|PAGE_CACHE_SHIFT
 suffix:semicolon
@@ -9804,7 +9830,7 @@ suffix:semicolon
 multiline_comment|/* Is the page fully outside i_size? (truncate in progress) */
 id|offset
 op_assign
-id|inode-&gt;i_size
+id|i_size
 op_amp
 (paren
 id|PAGE_CACHE_SIZE

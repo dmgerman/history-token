@@ -1,11 +1,11 @@
 multiline_comment|/* sundance.c: A Linux device driver for the Sundance ST201 &quot;Alta&quot;. */
-multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;&n;&n;&t;Version LK1.01a (jgarzik):&n;&t;- Replace some MII-related magic numbers with constants&n;&n;&t;Version LK1.02 (D-Link):&n;&t;- Add new board to PCI ID list&n;&t;- Fix multicast bug&n;&n;&t;Version LK1.03 (D-Link):&n;&t;- New Rx scheme, reduce Rx congestion&n;&t;- Option to disable flow control&n;&n;&t;Version LK1.04 (D-Link):&n;&t;- Tx timeout recovery&n;&t;- More support for ethtool.&n;&n;&t;Version LK1.04a:&n;&t;- Remove unused/constant members from struct pci_id_info&n;&t;(which then allows removal of &squot;drv_flags&squot; from private struct)&n;&t;(jgarzik)&n;&t;- If no phy is found, fail to load that board (jgarzik)&n;&t;- Always start phy id scan at id 1 to avoid problems (Donald Becker)&n;&t;- Autodetect where mii_preable_required is needed,&n;&t;default to not needed.  (Donald Becker)&n;&n;&t;Version LK1.04b:&n;&t;- Remove mii_preamble_required module parameter (Donald Becker)&n;&t;- Add per-interface mii_preamble_required (setting is autodetected)&n;&t;  (Donald Becker)&n;&t;- Remove unnecessary cast from void pointer (jgarzik)&n;&t;- Re-align comments in private struct (jgarzik)&n;&n;&t;Version LK1.04c (jgarzik):&n;&t;- Support bitmapped message levels (NETIF_MSG_xxx), and the&n;&t;  two ethtool ioctls that get/set them&n;&t;- Don&squot;t hand-code MII ethtool support, use standard API/lib&n;&n;&t;Version LK1.04d:&n;&t;- Merge from Donald Becker&squot;s sundance.c: (Jason Lunz)&n;&t;&t;* proper support for variably-sized MTUs&n;&t;&t;* default to PIO, to fix chip bugs&n;&t;- Add missing unregister_netdev (Jason Lunz)&n;&t;- Add CONFIG_SUNDANCE_MMIO config option (jgarzik)&n;&t;- Better rx buf size calculation (Donald Becker)&n;&n;&t;Version LK1.05 (D-Link):&n;&t;- Fix DFE-580TX packet drop issue (for DL10050C)&n;&t;- Fix reset_tx logic&n;&n;&t;Version LK1.06 (D-Link):&n;&t;- Fix crash while unloading driver&n;&n;&t;Versin LK1.06b (D-Link):&n;&t;- New tx scheme, adaptive tx_coalesce&n;&t;&n;&t;Version LK1.07 (D-Link):&n;&t;- Fix tx bugs in big-endian machines&n;&t;- Remove unused max_interrupt_work module parameter, the new &n;&t;  NAPI-like rx scheme doesn&squot;t need it.&n;&t;- Remove redundancy get_stats() in intr_handler(), those &n;&t;  I/O access could affect performance in ARM-based system&n;&t;- Add Linux software VLAN support&n;&t;&n;&t;Version LK1.08 (D-Link):&n;&t;- Fix bug of custom mac address &n;&t;(StationAddr register only accept word write) &n;&n;&t;Version LK1.09 (D-Link):&n;&t;- Fix the flowctrl bug.&t;&n;&t;- Set Pause bit in MII ANAR if flow control enabled.&t;&n;*/
+multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;&n;&n;&t;Version LK1.01a (jgarzik):&n;&t;- Replace some MII-related magic numbers with constants&n;&n;&t;Version LK1.02 (D-Link):&n;&t;- Add new board to PCI ID list&n;&t;- Fix multicast bug&n;&n;&t;Version LK1.03 (D-Link):&n;&t;- New Rx scheme, reduce Rx congestion&n;&t;- Option to disable flow control&n;&n;&t;Version LK1.04 (D-Link):&n;&t;- Tx timeout recovery&n;&t;- More support for ethtool.&n;&n;&t;Version LK1.04a:&n;&t;- Remove unused/constant members from struct pci_id_info&n;&t;(which then allows removal of &squot;drv_flags&squot; from private struct)&n;&t;(jgarzik)&n;&t;- If no phy is found, fail to load that board (jgarzik)&n;&t;- Always start phy id scan at id 1 to avoid problems (Donald Becker)&n;&t;- Autodetect where mii_preable_required is needed,&n;&t;default to not needed.  (Donald Becker)&n;&n;&t;Version LK1.04b:&n;&t;- Remove mii_preamble_required module parameter (Donald Becker)&n;&t;- Add per-interface mii_preamble_required (setting is autodetected)&n;&t;  (Donald Becker)&n;&t;- Remove unnecessary cast from void pointer (jgarzik)&n;&t;- Re-align comments in private struct (jgarzik)&n;&n;&t;Version LK1.04c (jgarzik):&n;&t;- Support bitmapped message levels (NETIF_MSG_xxx), and the&n;&t;  two ethtool ioctls that get/set them&n;&t;- Don&squot;t hand-code MII ethtool support, use standard API/lib&n;&n;&t;Version LK1.04d:&n;&t;- Merge from Donald Becker&squot;s sundance.c: (Jason Lunz)&n;&t;&t;* proper support for variably-sized MTUs&n;&t;&t;* default to PIO, to fix chip bugs&n;&t;- Add missing unregister_netdev (Jason Lunz)&n;&t;- Add CONFIG_SUNDANCE_MMIO config option (jgarzik)&n;&t;- Better rx buf size calculation (Donald Becker)&n;&n;&t;Version LK1.05 (D-Link):&n;&t;- Fix DFE-580TX packet drop issue (for DL10050C)&n;&t;- Fix reset_tx logic&n;&n;&t;Version LK1.06 (D-Link):&n;&t;- Fix crash while unloading driver&n;&n;&t;Versin LK1.06b (D-Link):&n;&t;- New tx scheme, adaptive tx_coalesce&n;&t;&n;&t;Version LK1.07 (D-Link):&n;&t;- Fix tx bugs in big-endian machines&n;&t;- Remove unused max_interrupt_work module parameter, the new &n;&t;  NAPI-like rx scheme doesn&squot;t need it.&n;&t;- Remove redundancy get_stats() in intr_handler(), those &n;&t;  I/O access could affect performance in ARM-based system&n;&t;- Add Linux software VLAN support&n;&t;&n;&t;Version LK1.08 (D-Link):&n;&t;- Fix bug of custom mac address &n;&t;(StationAddr register only accept word write) &n;&n;&t;Version LK1.09 (D-Link):&n;&t;- Fix the flowctrl bug.&t;&n;&t;- Set Pause bit in MII ANAR if flow control enabled.&t;&n;&n;&t;Version LK1.09a (ICPlus):&n;&t;- Add the delay time in reading the contents of EEPROM&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sundance&quot;
 DECL|macro|DRV_VERSION
 mdefine_line|#define DRV_VERSION&t;&quot;1.01+LK1.09a&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;16-May-2003&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;10-Jul-2003&quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -2723,6 +2723,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|eeprom_delay
+mdefine_line|#define eeprom_delay(ee_addr)&t;readl(ee_addr)
 multiline_comment|/* Read the EEPROM and MII Management Data I/O (MDIO) interfaces. */
 DECL|function|eeprom_read
 r_static
@@ -2741,9 +2743,9 @@ id|location
 r_int
 id|boguscnt
 op_assign
-l_int|1000
+l_int|10000
 suffix:semicolon
-multiline_comment|/* Typical 190 ticks. */
+multiline_comment|/* Typical 1900 ticks. */
 id|writew
 c_func
 (paren
@@ -2762,6 +2764,14 @@ id|EECtrl
 suffix:semicolon
 r_do
 (brace
+id|eeprom_delay
+c_func
+(paren
+id|ioaddr
+op_plus
+id|EECtrl
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

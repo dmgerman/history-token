@@ -2899,12 +2899,8 @@ c_func
 (paren
 id|IRDA_SERV_TRACE
 comma
-l_string|&quot; - self=0x%X&bslash;n&quot;
+l_string|&quot; - self=0x%p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 op_amp
 id|irnet_server.s
 )paren

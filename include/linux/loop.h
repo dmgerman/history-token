@@ -80,9 +80,16 @@ id|sector_t
 id|real_block
 )paren
 suffix:semicolon
-DECL|member|lo_name
+DECL|member|lo_file_name
 r_char
-id|lo_name
+id|lo_file_name
+(braket
+id|LO_NAME_SIZE
+)braket
+suffix:semicolon
+DECL|member|lo_crypt_name
+r_char
+id|lo_crypt_name
 (braket
 id|LO_NAME_SIZE
 )braket
@@ -156,14 +163,6 @@ r_void
 op_star
 id|key_data
 suffix:semicolon
-DECL|member|key_reserved
-r_char
-id|key_reserved
-(braket
-l_int|48
-)braket
-suffix:semicolon
-multiline_comment|/* for use by the filter modules */
 DECL|member|old_gfp_mask
 r_int
 id|old_gfp_mask
@@ -345,9 +344,16 @@ id|__u32
 id|lo_flags
 suffix:semicolon
 multiline_comment|/* ioctl r/o */
-DECL|member|lo_name
+DECL|member|lo_file_name
 id|__u8
-id|lo_name
+id|lo_file_name
+(braket
+id|LO_NAME_SIZE
+)braket
+suffix:semicolon
+DECL|member|lo_crypt_name
+id|__u8
+id|lo_crypt_name
 (braket
 id|LO_NAME_SIZE
 )braket

@@ -103,7 +103,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|init_MUTEX
-r_static
+r_extern
 r_inline
 r_void
 id|init_MUTEX
@@ -124,7 +124,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|init_MUTEX_LOCKED
-r_static
+r_extern
 r_inline
 r_void
 id|init_MUTEX_LOCKED
@@ -218,13 +218,13 @@ id|sem-&gt;__magic
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* atomically decrement the semaphores count, and if its negative, we wait */
-id|save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -238,7 +238,7 @@ id|sem-&gt;count
 OL
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -288,13 +288,13 @@ id|sem-&gt;__magic
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* atomically decrement the semaphores count, and if its negative, we wait */
-id|save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -308,7 +308,7 @@ id|sem-&gt;count
 OL
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -361,13 +361,13 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
-id|save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -381,7 +381,7 @@ id|sem-&gt;count
 OL
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -436,13 +436,13 @@ id|sem-&gt;__magic
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* atomically increment the semaphores count, and if it was negative, we wake people */
-id|save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -456,7 +456,7 @@ id|sem-&gt;count
 op_le
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

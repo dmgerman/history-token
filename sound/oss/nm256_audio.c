@@ -4040,7 +4040,7 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;              force_ac97 = 1&bslash;n&quot;
+l_string|&quot;              force_load = 1&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk

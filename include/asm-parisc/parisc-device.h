@@ -151,6 +151,19 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* New device discovered */
+DECL|member|remove
+r_int
+(paren
+op_star
+id|remove
+)paren
+(paren
+r_struct
+id|parisc_device
+op_star
+id|dev
+)paren
+suffix:semicolon
 DECL|member|drv
 r_struct
 id|device_driver

@@ -4415,6 +4415,9 @@ id|mtime_update
 op_assign
 l_int|0
 suffix:semicolon
+id|loff_t
+id|cur_isize
+suffix:semicolon
 id|dfprintk
 c_func
 (paren
@@ -4690,6 +4693,14 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * If we have pending writebacks, things can get&n;&t; * messy.&n;&t; */
+id|cur_isize
+op_assign
+id|i_size_read
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4701,11 +4712,11 @@ id|inode
 op_logical_and
 id|new_isize
 OL
-id|inode-&gt;i_size
+id|cur_isize
 )paren
 id|new_isize
 op_assign
-id|inode-&gt;i_size
+id|cur_isize
 suffix:semicolon
 id|nfsi-&gt;read_cache_ctime
 op_assign
@@ -4747,9 +4758,13 @@ id|nfsi-&gt;read_cache_isize
 op_assign
 id|new_size
 suffix:semicolon
-id|inode-&gt;i_size
-op_assign
+id|i_size_write
+c_func
+(paren
+id|inode
+comma
 id|new_isize
+)paren
 suffix:semicolon
 r_if
 c_cond

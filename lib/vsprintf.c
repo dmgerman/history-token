@@ -535,6 +535,7 @@ id|end
 comma
 r_int
 r_int
+r_int
 id|num
 comma
 r_int
@@ -649,6 +650,11 @@ id|SIGN
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+r_int
+)paren
 id|num
 OL
 l_int|0
@@ -661,6 +667,11 @@ suffix:semicolon
 id|num
 op_assign
 op_minus
+(paren
+r_int
+r_int
+r_int
+)paren
 id|num
 suffix:semicolon
 id|size

@@ -869,7 +869,7 @@ multiline_comment|/* GLOBAL_POWER_EVENTS */
 l_int|0x06
 comma
 l_int|0x13
-multiline_comment|/* manual says 0x05 */
+multiline_comment|/* older manual says 0x05, newer 0x13 */
 comma
 (brace
 (brace

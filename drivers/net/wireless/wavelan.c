@@ -15105,7 +15105,8 @@ multiline_comment|/* Check if the base address if available. */
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|ioaddr
@@ -15114,11 +15115,13 @@ r_sizeof
 (paren
 id|ha_t
 )paren
+comma
+l_string|&quot;wavelan probe&quot;
 )paren
 )paren
 r_return
 op_minus
-id|EADDRINUSE
+id|EBUSY
 suffix:semicolon
 multiline_comment|/* ioaddr already used */
 multiline_comment|/* Reset host interface */
@@ -15147,6 +15150,17 @@ comma
 id|mac
 comma
 l_int|6
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|ioaddr
+comma
+r_sizeof
+(paren
+id|ha_t
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check the first three octets of the address for the manufacturer&squot;s code.&n;&t; * Note: if this can&squot;t find your WaveLAN card, you&squot;ve got a&n;&t; * non-NCR/AT&amp;T/Lucent ISA card.  See wavelan.p.h for detail on&n;&t; * how to configure your card.&n;&t; */

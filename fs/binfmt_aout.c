@@ -1177,7 +1177,11 @@ c_func
 id|ex
 )paren
 op_logical_or
-id|bprm-&gt;file-&gt;f_dentry-&gt;d_inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|bprm-&gt;file-&gt;f_dentry-&gt;d_inode
+)paren
 OL
 id|ex.a_text
 op_plus
@@ -2213,7 +2217,11 @@ op_eq
 id|ZMAGIC
 )paren
 op_logical_or
-id|inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|inode
+)paren
 OL
 id|ex.a_text
 op_plus

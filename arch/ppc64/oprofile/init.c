@@ -34,7 +34,6 @@ suffix:semicolon
 )brace
 DECL|function|oprofile_arch_exit
 r_void
-id|__exit
 id|oprofile_arch_exit
 c_func
 (paren

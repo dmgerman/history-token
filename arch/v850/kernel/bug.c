@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 multiline_comment|/* We should use __builtin_return_address, but it doesn&squot;t work in gcc-2.90&n;   (which is currently our standard compiler on the v850).  */
 DECL|macro|ret_addr
@@ -328,10 +329,16 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * TASK is a pointer to the task whose backtrace we want to see (or NULL&n; * for current task), SP is the stack pointer of the first frame that&n; * should be shown in the back trace (or NULL if the entire call-chain of&n; * the task should be shown).&n; */
 DECL|function|show_stack
 r_void
 id|show_stack
 (paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
 r_int
 r_int
 op_star
@@ -340,10 +347,15 @@ id|sp
 (brace
 r_int
 r_int
+id|addr
+comma
 id|end
 suffix:semicolon
-r_int
-r_int
+r_if
+c_cond
+(paren
+id|sp
+)paren
 id|addr
 op_assign
 (paren
@@ -352,12 +364,20 @@ r_int
 )paren
 id|sp
 suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
-op_logical_neg
-id|addr
+id|task
 )paren
+id|addr
+op_assign
+id|task_sp
+(paren
+id|task
+)paren
+suffix:semicolon
+r_else
 id|addr
 op_assign
 id|stack_addr
@@ -455,6 +475,8 @@ id|dump_stack
 (brace
 id|show_stack
 (paren
+l_int|0
+comma
 l_int|0
 )paren
 suffix:semicolon

@@ -83,7 +83,7 @@ suffix:semicolon
 multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
 DECL|function|timer_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|timer_interrupt
 (paren
 r_int
@@ -323,6 +323,9 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_HEARTBEAT */
 macro_line|#endif /* 0 */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This version of gettimeofday has near microsecond resolution.&n; */
 DECL|function|do_gettimeofday

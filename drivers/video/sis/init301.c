@@ -30318,8 +30318,6 @@ l_int|0
 (brace
 id|temp
 op_assign
-id|temp
-op_assign
 id|SiS_GetCH701x
 c_func
 (paren

@@ -469,12 +469,6 @@ id|journal-&gt;j_max_transaction_buffers
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * First thing we are allowed to do is to discard any remaining&n;&t; * BJ_Reserved buffers.  Note, it is _not_ permissible to assume&n;&t; * that there are no such buffers: if a large filesystem&n;&t; * operation like a truncate needs to split itself over multiple&n;&t; * transactions, then it may try to do a journal_restart() while&n;&t; * there are still BJ_Reserved buffers outstanding.  These must&n;&t; * be released cleanly from the current transaction.&n;&t; *&n;&t; * In this case, the filesystem must still reserve write access&n;&t; * again before modifying the buffer in the new transaction, but&n;&t; * we do not require it to remember exactly which old buffers it&n;&t; * has reserved.  This is consistent with the existing behaviour&n;&t; * that multiple journal_get_write_access() calls to the same&n;&t; * buffer are perfectly permissable.&n;&t; */
-(brace
-r_int
-id|nr
-op_assign
-l_int|0
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -501,43 +495,6 @@ comma
 id|jh
 )paren
 suffix:semicolon
-id|nr
-op_increment
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|nr
-)paren
-(brace
-r_static
-r_int
-id|noisy
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|noisy
-OL
-l_int|10
-)paren
-(brace
-id|noisy
-op_increment
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s: freed %d reserved buffers&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|nr
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 multiline_comment|/*&n;&t; * Now try to drop any written-back buffers from the journal&squot;s&n;&t; * checkpoint lists.  We do this *before* commit because it potentially&n;&t; * frees some memory&n;&t; */
 id|spin_lock
@@ -1329,6 +1286,10 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * start_this_handle() uses t_outstanding_credits to determine&n;&t;&t; * the free space in the log, but this counter is changed&n;&t;&t; * by journal_next_log_block() also.&n;&t;&t; */
+id|commit_transaction-&gt;t_outstanding_credits
+op_decrement
+suffix:semicolon
 multiline_comment|/* Bump b_count to prevent truncate from stumbling over&n;                   the shadowed buffer!  @@@ This can go if we ever get&n;                   rid of the BJ_IO/BJ_Shadow pairing of buffers. */
 id|atomic_inc
 c_func

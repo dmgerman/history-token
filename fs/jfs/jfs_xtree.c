@@ -21,7 +21,7 @@ DECL|macro|XT_PAGE
 mdefine_line|#define XT_PAGE(IP, MP) BT_PAGE(IP, MP, xtpage_t, i_xtroot)
 multiline_comment|/* get page buffer for specified block address */
 DECL|macro|XT_GETPAGE
-mdefine_line|#define XT_GETPAGE(IP, BN, MP, SIZE, P, RC)&bslash;&n;{&bslash;&n;        BT_GETPAGE(IP, BN, MP, xtpage_t, SIZE, P, RC, i_xtroot)&bslash;&n;        if (!(RC))&bslash;&n;        {&bslash;&n;                if ((le16_to_cpu((P)-&gt;header.nextindex) &lt; XTENTRYSTART) ||&bslash;&n;                    (le16_to_cpu((P)-&gt;header.nextindex) &gt; le16_to_cpu((P)-&gt;header.maxentry)) ||&bslash;&n;                    (le16_to_cpu((P)-&gt;header.maxentry) &gt; (((BN)==0)?XTROOTMAXSLOT:PSIZE&gt;&gt;L2XTSLOTSIZE)))&bslash;&n;                {&bslash;&n;                        jfs_err(&quot;XT_GETPAGE: xtree page corrupt&quot;);&bslash;&n;&t;&t;&t;BT_PUTPAGE(MP);&bslash;&n;&t;&t;&t;updateSuper((IP)-&gt;i_sb, FM_DIRTY);&bslash;&n;&t;&t;&t;MP = NULL;&bslash;&n;                        RC = EIO;&bslash;&n;                }&bslash;&n;        }&bslash;&n;}
+mdefine_line|#define XT_GETPAGE(IP, BN, MP, SIZE, P, RC)&bslash;&n;{&bslash;&n;        BT_GETPAGE(IP, BN, MP, xtpage_t, SIZE, P, RC, i_xtroot)&bslash;&n;        if (!(RC))&bslash;&n;        {&bslash;&n;                if ((le16_to_cpu((P)-&gt;header.nextindex) &lt; XTENTRYSTART) ||&bslash;&n;                    (le16_to_cpu((P)-&gt;header.nextindex) &gt; le16_to_cpu((P)-&gt;header.maxentry)) ||&bslash;&n;                    (le16_to_cpu((P)-&gt;header.maxentry) &gt; (((BN)==0)?XTROOTMAXSLOT:PSIZE&gt;&gt;L2XTSLOTSIZE)))&bslash;&n;                {&bslash;&n;                        jfs_err(&quot;XT_GETPAGE: xtree page corrupt&quot;);&bslash;&n;&t;&t;&t;BT_PUTPAGE(MP);&bslash;&n;&t;&t;&t;updateSuper((IP)-&gt;i_sb, FM_DIRTY);&bslash;&n;&t;&t;&t;MP = NULL;&bslash;&n;                        RC = -EIO;&bslash;&n;                }&bslash;&n;        }&bslash;&n;}
 multiline_comment|/* for consistency */
 DECL|macro|XT_PUTPAGE
 mdefine_line|#define XT_PUTPAGE(MP) BT_PUTPAGE(MP)
@@ -2198,6 +2198,7 @@ l_int|0
 (brace
 id|rc
 op_assign
+op_minus
 id|EEXIST
 suffix:semicolon
 r_goto
@@ -3091,6 +3092,7 @@ c_cond
 id|rc
 )paren
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 id|XT_PUTPAGE
@@ -3684,6 +3686,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 id|jfs_info
@@ -4583,6 +4586,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 id|jfs_info
@@ -8331,6 +8335,7 @@ l_int|0
 (brace
 id|rc
 op_assign
+op_minus
 id|EEXIST
 suffix:semicolon
 r_goto
@@ -8860,6 +8865,7 @@ id|mp
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENOENT
 suffix:semicolon
 )brace
@@ -9666,6 +9672,7 @@ op_ge
 id|ip-&gt;i_size
 )paren
 r_return
+op_minus
 id|ESTALE
 suffix:semicolon
 multiline_comment|/* stale extent */
@@ -9743,6 +9750,7 @@ id|pmp
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ESTALE
 suffix:semicolon
 )brace
@@ -9799,6 +9807,7 @@ id|pmp
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ESTALE
 suffix:semicolon
 )brace
@@ -9846,6 +9855,7 @@ id|pmp
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ESTALE
 suffix:semicolon
 )brace
@@ -10819,6 +10829,7 @@ op_amp
 id|BT_LEAF
 )paren
 r_return
+op_minus
 id|ESTALE
 suffix:semicolon
 id|lim
@@ -11559,7 +11570,6 @@ c_cond
 id|rc
 )paren
 r_return
-op_minus
 id|rc
 suffix:semicolon
 multiline_comment|/* process entries backward from last index */
@@ -12302,7 +12312,6 @@ c_cond
 id|rc
 )paren
 r_return
-op_minus
 id|rc
 suffix:semicolon
 id|index
@@ -13078,7 +13087,6 @@ c_cond
 id|rc
 )paren
 r_return
-op_minus
 id|rc
 suffix:semicolon
 m_assert
@@ -13137,7 +13145,6 @@ c_cond
 id|rc
 )paren
 r_return
-op_minus
 id|rc
 suffix:semicolon
 multiline_comment|/* process entries backward from last index */
@@ -13310,7 +13317,6 @@ c_cond
 id|rc
 )paren
 r_return
-op_minus
 id|rc
 suffix:semicolon
 id|index
@@ -14185,6 +14191,7 @@ c_cond
 id|rc
 )paren
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 multiline_comment|/* first subroot page which&n;&t;&t;&t; * covers all new allocated blocks&n;&t;&t;&t; * itself not new/modified.&n;&t;&t;&t; * (if modified from split of descendent,&n;&t;&t;&t; * go down path of split page)&n;&n;&t;&t;&t; if (nfound == nnew &amp;&amp;&n;&t;&t;&t; !(p-&gt;header.flag &amp; (NEW | MOD)))&n;&t;&t;&t; exit scan;&n;&t;&t;&t; */

@@ -268,6 +268,7 @@ id|list
 (brace
 r_int
 r_int
+r_int
 id|delta
 suffix:semicolon
 id|delta

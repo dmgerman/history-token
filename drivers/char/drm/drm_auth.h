@@ -1,5 +1,7 @@
-multiline_comment|/* drm_auth.h -- IOCTLs for authentication -*- linux-c -*-&n; * Created: Tue Feb  2 08:37:54 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/**&n; * &bslash;file drm_auth.h &n; * IOCTLs for authentication&n; *&n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/*&n; * Created: Tue Feb  2 08:37:54 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
+multiline_comment|/**&n; * Generate a hash key from a magic.&n; *&n; * &bslash;param magic magic.&n; * &bslash;return hash key.&n; *&n; * The key is the modulus of the hash table size, #DRM_HASH_SIZE, which must be&n; * a power of 2.&n; */
 DECL|function|hash_magic
 r_static
 r_int
@@ -23,6 +25,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Find the file with the given magic number.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param magic magic number.&n; *&n; * Searches in drm_device::magiclist within all files with the same hash key&n; * the one with matching magic number, while holding the drm_device::struct_sem&n; * lock.&n; */
 DECL|function|find_file
 r_static
 id|drm_file_t
@@ -116,6 +119,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Adds a magic number.&n; * &n; * &bslash;param dev DRM device.&n; * &bslash;param priv file private data.&n; * &bslash;param magic magic number.&n; *&n; * Creates a drm_magic_entry structure and appends to the linked list&n; * associated the magic number hash key in drm_device::magiclist, while holding&n; * the drm_device::struct_sem lock.&n; */
 DECL|function|add_magic
 r_int
 id|DRM
@@ -284,6 +288,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Remove a magic number.&n; * &n; * &bslash;param dev DRM device.&n; * &bslash;param magic magic number.&n; *&n; * Searches and unlinks the entry in drm_device::magiclist with the magic&n; * number hash key, while holding the drm_device::struct_sem lock.&n; */
 DECL|function|remove_magic
 r_int
 id|DRM
@@ -468,6 +473,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Get a unique magic number (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a resulting drm_auth structure.&n; * &bslash;return zero on success, or a negative number on failure.&n; *&n; * If there is a magic number in drm_file::magic then use it, otherwise&n; * searches an unique non-zero magic number and add it associating it with &bslash;p&n; * filp.&n; */
 DECL|function|getmagic
 r_int
 id|DRM
@@ -638,6 +644,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Authenticate with a magic.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_auth structure.&n; * &bslash;return zero if authentication successed, or a negative number otherwise.&n; *&n; * Checks if &bslash;p filp is associated with the magic number passed in &bslash;arg.&n; */
 DECL|function|authmagic
 r_int
 id|DRM

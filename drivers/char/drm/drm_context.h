@@ -1,9 +1,14 @@
-multiline_comment|/* drm_context.h -- IOCTLs for generic contexts -*- linux-c -*-&n; * Created: Fri Nov 24 18:31:37 2000 by gareth@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; * ChangeLog:&n; *  2001-11-16&t;Torsten Duwe &lt;duwe@caldera.de&gt;&n; *&t;&t;added context constructor/destructor hooks,&n; *&t;&t;needed by SiS driver&squot;s memory management.&n; */
+multiline_comment|/**&n; * &bslash;file drm_context.h &n; * IOCTLs for generic contexts&n; * &n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/*&n; * Created: Fri Nov 24 18:31:37 2000 by gareth@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
+multiline_comment|/*&n; * ChangeLog:&n; *  2001-11-16&t;Torsten Duwe &lt;duwe@caldera.de&gt;&n; *&t;&t;added context constructor/destructor hooks,&n; *&t;&t;needed by SiS driver&squot;s memory management.&n; */
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#if !__HAVE_CTX_BITMAP
 macro_line|#error &quot;__HAVE_CTX_BITMAP must be defined&quot;
 macro_line|#endif
-multiline_comment|/* ================================================================&n; * Context bitmap support&n; */
+multiline_comment|/******************************************************************/
+multiline_comment|/** &bslash;name Context bitmap support */
+multiline_comment|/*@{*/
+multiline_comment|/**&n; * Free a handle from the context bitmap.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param ctx_handle context handle.&n; *&n; * Clears the bit specified by &bslash;p ctx_handle in drm_device::ctx_bitmap and the entry&n; * in drm_device::context_sareas, while holding the drm_device::struct_sem&n; * lock.&n; */
 DECL|function|ctxbitmap_free
 r_void
 id|DRM
@@ -92,6 +97,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/** &n; * Context bitmap allocation.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;return (non-negative) context handle on success or a negative number on failure.&n; *&n; * Find the first zero bit in drm_device::ctx_bitmap and (re)allocates&n; * drm_device::context_sareas to accommodate the new entry while holding the&n; * drm_device::struct_sem lock.&n; */
 DECL|function|ctxbitmap_next
 r_int
 id|DRM
@@ -345,6 +351,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Context bitmap initialization.&n; *&n; * &bslash;param dev DRM device.&n; *&n; * Allocates and initialize drm_device::ctx_bitmap and drm_device::context_sareas, while holding&n; * the drm_device::struct_sem lock.&n; */
 DECL|function|ctxbitmap_init
 r_int
 id|DRM
@@ -478,6 +485,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Context bitmap cleanup.&n; *&n; * &bslash;param dev DRM device.&n; *&n; * Frees drm_device::ctx_bitmap and drm_device::context_sareas, while holding&n; * the drm_device::struct_sem lock.&n; */
 DECL|function|ctxbitmap_cleanup
 r_void
 id|DRM
@@ -549,7 +557,11 @@ id|dev-&gt;struct_sem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* ================================================================&n; * Per Context SAREA Support&n; */
+multiline_comment|/*@}*/
+multiline_comment|/******************************************************************/
+multiline_comment|/** &bslash;name Per Context SAREA Support */
+multiline_comment|/*@{*/
+multiline_comment|/**&n; * Get per-context SAREA.&n; * &n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx_priv_map structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Gets the map from drm_device::context_sareas with the handle specified and&n; * returns its handle.&n; */
 DECL|function|getsareactx
 r_int
 id|DRM
@@ -702,6 +714,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Set per-context SAREA.&n; * &n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx_priv_map structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Searches the mapping specified in &bslash;p arg and update the entry in&n; * drm_device::context_sareas with it.&n; */
 DECL|function|setsareactx
 r_int
 id|DRM
@@ -898,7 +911,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* ================================================================&n; * The actual DRM context handling routines&n; */
+multiline_comment|/*@}*/
+multiline_comment|/******************************************************************/
+multiline_comment|/** &bslash;name The actual DRM context handling routines */
+multiline_comment|/*@{*/
+multiline_comment|/**&n; * Switch context.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param old old context handle.&n; * &bslash;param new new context handle.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Attempt to set drm_device::context_flag.&n; */
 DECL|function|context_switch
 r_int
 id|DRM
@@ -977,6 +994,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Complete context switch.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param new new context handle.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Updates drm_device::last_context and drm_device::last_switch. Verifies the&n; * hardware lock is held, clears the drm_device::context_flag and wakes up&n; * drm_device::context_wait.&n; */
 DECL|function|context_switch_complete
 r_int
 id|DRM
@@ -1041,6 +1059,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Reserve contexts.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx_res structure.&n; * &bslash;return zero on success or a negative number on failure.&n; */
 DECL|function|resctx
 r_int
 id|DRM
@@ -1203,6 +1222,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Add context.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Get a new handle for the context and copy to userspace.&n; */
 DECL|function|addctx
 r_int
 id|DRM
@@ -1408,6 +1428,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Get context.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx structure.&n; * &bslash;return zero on success or a negative number on failure.&n; */
 DECL|function|getctx
 r_int
 id|DRM
@@ -1497,6 +1518,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Switch context.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Calls context_switch().&n; */
 DECL|function|switchctx
 r_int
 id|DRM
@@ -1587,6 +1609,7 @@ id|ctx.handle
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * New context.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Calls context_switch_complete().&n; */
 DECL|function|newctx
 r_int
 id|DRM
@@ -1677,6 +1700,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Remove context.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * If not the special kernel context, calls ctxbitmap_free() to free the specified context.&n; */
 DECL|function|rmctx
 r_int
 id|DRM
@@ -1800,4 +1824,5 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*@}*/
 eof

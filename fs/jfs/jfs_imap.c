@@ -282,7 +282,7 @@ mdefine_line|#define DBG_DIALLOC(imap, ino)
 DECL|macro|DBG_DIFREE
 mdefine_line|#define DBG_DIFREE(imap, ino)
 macro_line|#endif&t;&t;&t;&t;/* _JFS_DEBUG_IMAP */
-multiline_comment|/*&n; * NAME:        diMount()&n; *&n; * FUNCTION:    initialize the incore inode map control structures for&n; *&t;&t;a fileset or aggregate init time.&n; *&n; *              the inode map&squot;s control structure (dinomap) is &n; *              brought in from disk and placed in virtual memory.&n; *&n; * PARAMETERS:&n; *      ipimap  - pointer to inode map inode for the aggregate or fileset.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      ENOMEM  - insufficient free virtual memory.&n; *      EIO  &t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diMount()&n; *&n; * FUNCTION:    initialize the incore inode map control structures for&n; *&t;&t;a fileset or aggregate init time.&n; *&n; *              the inode map&squot;s control structure (dinomap) is &n; *              brought in from disk and placed in virtual memory.&n; *&n; * PARAMETERS:&n; *      ipimap  - pointer to inode map inode for the aggregate or fileset.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -ENOMEM  - insufficient free virtual memory.&n; *      -EIO  &t;- i/o error.&n; */
 DECL|function|diMount
 r_int
 id|diMount
@@ -348,9 +348,8 @@ l_string|&quot;diMount: kmalloc returned NULL!&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
+op_minus
 id|ENOMEM
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* read the on-disk inode map control structure. */
@@ -391,9 +390,8 @@ id|imap
 )paren
 suffix:semicolon
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* copy the on-disk version to the in-memory version. */
@@ -614,7 +612,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diUnmount()&n; *&n; * FUNCTION:    write to disk the incore inode map control structures for&n; *&t;&t;a fileset or aggregate at unmount time.&n; *&n; * PARAMETERS:&n; *      ipimap  - pointer to inode map inode for the aggregate or fileset.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      ENOMEM  - insufficient free virtual memory.&n; *      EIO  &t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diUnmount()&n; *&n; * FUNCTION:    write to disk the incore inode map control structures for&n; *&t;&t;a fileset or aggregate at unmount time.&n; *&n; * PARAMETERS:&n; *      ipimap  - pointer to inode map inode for the aggregate or fileset.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -ENOMEM  - insufficient free virtual memory.&n; *      -EIO  &t;- i/o error.&n; */
 DECL|function|diUnmount
 r_int
 id|diUnmount
@@ -762,6 +760,7 @@ l_string|&quot;diSync: get_metapage failed!&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -955,7 +954,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diRead()&n; *&n; * FUNCTION:    initialize an incore inode from disk.&n; *&n; *&t;&t;on entry, the specifed incore inode should itself&n; *&t;&t;specify the disk inode number corresponding to the&n; *&t;&t;incore inode (i.e. i_number should be initialized).&n; *&t;&t;&n; *&t;&t;this routine handles incore inode initialization for&n; *&t;&t;both &quot;special&quot; and &quot;regular&quot; inodes.  special inodes&n; *&t;&t;are those required early in the mount process and&n; *&t;        require special handling since much of the file system&n; *&t;&t;is not yet initialized.  these &quot;special&quot; inodes are&n; *&t;&t;identified by a NULL inode map inode pointer and are&n; *&t;&t;actually initialized by a call to diReadSpecial().&n; *&t;&t;&n; *&t;&t;for regular inodes, the iag describing the disk inode&n; *&t;&t;is read from disk to determine the inode extent address&n; *&t;&t;for the disk inode.  with the inode extent address in&n; *&t;&t;hand, the page of the extent that contains the disk&n; *&t;&t;inode is read and the disk inode is copied to the&n; *&t;&t;incore inode.&n; *&n; * PARAMETERS:&n; *      ip  -  pointer to incore inode to be initialized from disk.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      EIO  &t;- i/o error.&n; *      ENOMEM&t;- insufficient memory&n; *      &n; */
+multiline_comment|/*&n; * NAME:        diRead()&n; *&n; * FUNCTION:    initialize an incore inode from disk.&n; *&n; *&t;&t;on entry, the specifed incore inode should itself&n; *&t;&t;specify the disk inode number corresponding to the&n; *&t;&t;incore inode (i.e. i_number should be initialized).&n; *&t;&t;&n; *&t;&t;this routine handles incore inode initialization for&n; *&t;&t;both &quot;special&quot; and &quot;regular&quot; inodes.  special inodes&n; *&t;&t;are those required early in the mount process and&n; *&t;        require special handling since much of the file system&n; *&t;&t;is not yet initialized.  these &quot;special&quot; inodes are&n; *&t;&t;identified by a NULL inode map inode pointer and are&n; *&t;&t;actually initialized by a call to diReadSpecial().&n; *&t;&t;&n; *&t;&t;for regular inodes, the iag describing the disk inode&n; *&t;&t;is read from disk to determine the inode extent address&n; *&t;&t;for the disk inode.  with the inode extent address in&n; *&t;&t;hand, the page of the extent that contains the disk&n; *&t;&t;inode is read and the disk inode is copied to the&n; *&t;&t;incore inode.&n; *&n; * PARAMETERS:&n; *      ip  -  pointer to incore inode to be initialized from disk.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -EIO  &t;- i/o error.&n; *      -ENOMEM&t;- insufficient memory&n; *      &n; */
 DECL|function|diRead
 r_int
 id|diRead
@@ -1181,6 +1180,7 @@ id|mp
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ESTALE
 suffix:semicolon
 )brace
@@ -1323,6 +1323,7 @@ l_string|&quot;diRead: read_metapage failed&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -1368,6 +1369,7 @@ id|FM_DIRTY
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -1385,6 +1387,7 @@ l_int|0
 )paren
 id|rc
 op_assign
+op_minus
 id|ESTALE
 suffix:semicolon
 r_else
@@ -1999,7 +2002,7 @@ id|ip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diWrite()&n; *&n; * FUNCTION:    write the on-disk inode portion of the in-memory inode&n; *&t;&t;to its corresponding on-disk inode.&n; *&n; *&t;&t;on entry, the specifed incore inode should itself&n; *&t;&t;specify the disk inode number corresponding to the&n; *&t;&t;incore inode (i.e. i_number should be initialized).&n; *&n; *&t;&t;the inode contains the inode extent address for the disk&n; *&t;&t;inode.  with the inode extent address in hand, the&n; *&t;&t;page of the extent that contains the disk inode is&n; *&t;&t;read and the disk inode portion of the incore inode&n; *&t;&t;is copied to the disk inode.&n; *&t;&t;&n; * PARAMETERS:&n; *&t;tid -  transacation id&n; *      ip  -  pointer to incore inode to be written to the inode extent.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      EIO  &t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diWrite()&n; *&n; * FUNCTION:    write the on-disk inode portion of the in-memory inode&n; *&t;&t;to its corresponding on-disk inode.&n; *&n; *&t;&t;on entry, the specifed incore inode should itself&n; *&t;&t;specify the disk inode number corresponding to the&n; *&t;&t;incore inode (i.e. i_number should be initialized).&n; *&n; *&t;&t;the inode contains the inode extent address for the disk&n; *&t;&t;inode.  with the inode extent address in hand, the&n; *&t;&t;page of the extent that contains the disk inode is&n; *&t;&t;read and the disk inode portion of the incore inode&n; *&t;&t;is copied to the disk inode.&n; *&t;&t;&n; * PARAMETERS:&n; *&t;tid -  transacation id&n; *      ip  -  pointer to incore inode to be written to the inode extent.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -EIO  &t;- i/o error.&n; */
 DECL|function|diWrite
 r_int
 id|diWrite
@@ -2272,9 +2275,8 @@ op_eq
 l_int|0
 )paren
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 multiline_comment|/* get the pointer to the disk inode */
 id|dp
@@ -3002,7 +3004,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diFree(ip)&n; *&n; * FUNCTION:    free a specified inode from the inode working map&n; *&t;&t;for a fileset or aggregate.&n; *&n; *&t;&t;if the inode to be freed represents the first (only)&n; *&t;&t;free inode within the iag, the iag will be placed on&n; *&t;&t;the ag free inode list.&n; *&t;&n; *&t;&t;freeing the inode will cause the inode extent to be&n; *&t;&t;freed if the inode is the only allocated inode within&n; *&t;&t;the extent.  in this case all the disk resource backing&n; *&t;&t;up the inode extent will be freed. in addition, the iag&n; *&t;&t;will be placed on the ag extent free list if the extent&n; *&t;&t;is the first free extent in the iag.  if freeing the&n; *&t;&t;extent also means that no free inodes will exist for&n; *&t;&t;the iag, the iag will also be removed from the ag free&n; *&t;&t;inode list.&n; *&n; *&t;&t;the iag describing the inode will be freed if the extent&n; *&t;&t;is to be freed and it is the only backed extent within&n; *&t;&t;the iag.  in this case, the iag will be removed from the&n; *&t;&t;ag free extent list and ag free inode list and placed on&n; *&t;&t;the inode map&squot;s free iag list.&n; *&n; *&t;&t;a careful update approach is used to provide consistency&n; *&t;&t;in the face of updates to multiple buffers.  under this&n; *&t;&t;approach, all required buffers are obtained before making&n; *&t;&t;any updates and are held until all updates are complete.&n; *&n; * PARAMETERS:&n; *      ip  &t;- inode to be freed.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      EIO  &t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diFree(ip)&n; *&n; * FUNCTION:    free a specified inode from the inode working map&n; *&t;&t;for a fileset or aggregate.&n; *&n; *&t;&t;if the inode to be freed represents the first (only)&n; *&t;&t;free inode within the iag, the iag will be placed on&n; *&t;&t;the ag free inode list.&n; *&t;&n; *&t;&t;freeing the inode will cause the inode extent to be&n; *&t;&t;freed if the inode is the only allocated inode within&n; *&t;&t;the extent.  in this case all the disk resource backing&n; *&t;&t;up the inode extent will be freed. in addition, the iag&n; *&t;&t;will be placed on the ag extent free list if the extent&n; *&t;&t;is the first free extent in the iag.  if freeing the&n; *&t;&t;extent also means that no free inodes will exist for&n; *&t;&t;the iag, the iag will also be removed from the ag free&n; *&t;&t;inode list.&n; *&n; *&t;&t;the iag describing the inode will be freed if the extent&n; *&t;&t;is to be freed and it is the only backed extent within&n; *&t;&t;the iag.  in this case, the iag will be removed from the&n; *&t;&t;ag free extent list and ag free inode list and placed on&n; *&t;&t;the inode map&squot;s free iag list.&n; *&n; *&t;&t;a careful update approach is used to provide consistency&n; *&t;&t;in the face of updates to multiple buffers.  under this&n; *&t;&t;approach, all required buffers are obtained before making&n; *&t;&t;any updates and are held until all updates are complete.&n; *&n; * PARAMETERS:&n; *      ip  &t;- inode to be freed.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -EIO  &t;- i/o error.&n; */
 DECL|function|diFree
 r_int
 id|diFree
@@ -3193,6 +3195,7 @@ id|FM_DIRTY
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -3420,6 +3423,7 @@ id|FM_DIRTY
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -4886,7 +4890,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diAlloc(pip,dir,ip)&n; *&n; * FUNCTION:    allocate a disk inode from the inode working map &n; *&t;&t;for a fileset or aggregate.&n; *&n; * PARAMETERS:&n; *      pip  &t;- pointer to incore inode for the parent inode.&n; *      dir  &t;- TRUE if the new disk inode is for a directory.&n; *      ip  &t;- pointer to a new inode&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      ENOSPC &t;- insufficient disk resources.&n; *      EIO  &t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diAlloc(pip,dir,ip)&n; *&n; * FUNCTION:    allocate a disk inode from the inode working map &n; *&t;&t;for a fileset or aggregate.&n; *&n; * PARAMETERS:&n; *      pip  &t;- pointer to incore inode for the parent inode.&n; *      dir  &t;- TRUE if the new disk inode is for a directory.&n; *      ip  &t;- pointer to a new inode&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      -ENOSPC&t;- insufficient disk resources.&n; *      -EIO  &t;- i/o error.&n; */
 DECL|function|diAlloc
 r_int
 id|diAlloc
@@ -5310,6 +5314,7 @@ m_assert
 (paren
 id|rc
 op_eq
+op_minus
 id|EIO
 )paren
 suffix:semicolon
@@ -5559,6 +5564,7 @@ m_assert
 (paren
 id|rc
 op_eq
+op_minus
 id|EIO
 )paren
 suffix:semicolon
@@ -5664,6 +5670,7 @@ c_cond
 (paren
 id|rc
 op_eq
+op_minus
 id|ENOSPC
 )paren
 r_break
@@ -5672,6 +5679,7 @@ m_assert
 (paren
 id|rc
 op_eq
+op_minus
 id|EIO
 )paren
 suffix:semicolon
@@ -5815,6 +5823,7 @@ c_cond
 (paren
 id|rc
 op_ne
+op_minus
 id|ENOSPC
 )paren
 r_return
@@ -5839,7 +5848,7 @@ id|ip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diAllocAG(imap,agno,dir,ip)&n; *&n; * FUNCTION:    allocate a disk inode from the allocation group.&n; *&n; *&t;&t;this routine first determines if a new extent of free&n; *&t;&t;inodes should be added for the allocation group, with&n; *&t;&t;the current request satisfied from this extent. if this&n; *&t;&t;is the case, an attempt will be made to do just that.  if&n; *&t;&t;this attempt fails or it has been determined that a new &n; *&t;&t;extent should not be added, an attempt is made to satisfy&n; *&t;&t;the request by allocating an existing (backed) free inode&n; *&t;&t;from the allocation group.&n; *&n; * PRE CONDITION: Already have the AG lock for this AG.&n; *&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      agno  &t;- allocation group to allocate from.&n; *      dir  &t;- TRUE if the new disk inode is for a directory.&n; *      ip  &t;- pointer to the new inode to be filled in on successful return&n; *&t;&t;  with the disk inode number allocated, its extent address&n; *&t;&t;  and the start of the ag.&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      ENOSPC &t;- insufficient disk resources.&n; *      EIO  &t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diAllocAG(imap,agno,dir,ip)&n; *&n; * FUNCTION:    allocate a disk inode from the allocation group.&n; *&n; *&t;&t;this routine first determines if a new extent of free&n; *&t;&t;inodes should be added for the allocation group, with&n; *&t;&t;the current request satisfied from this extent. if this&n; *&t;&t;is the case, an attempt will be made to do just that.  if&n; *&t;&t;this attempt fails or it has been determined that a new &n; *&t;&t;extent should not be added, an attempt is made to satisfy&n; *&t;&t;the request by allocating an existing (backed) free inode&n; *&t;&t;from the allocation group.&n; *&n; * PRE CONDITION: Already have the AG lock for this AG.&n; *&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      agno  &t;- allocation group to allocate from.&n; *      dir  &t;- TRUE if the new disk inode is for a directory.&n; *      ip  &t;- pointer to the new inode to be filled in on successful return&n; *&t;&t;  with the disk inode number allocated, its extent address&n; *&t;&t;  and the start of the ag.&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      -ENOSPC&t;- insufficient disk resources.&n; *      -EIO  &t;- i/o error.&n; */
 r_static
 r_int
 DECL|function|diAllocAG
@@ -5914,6 +5923,7 @@ id|FM_DIRTY
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -5985,6 +5995,7 @@ id|ip
 )paren
 )paren
 op_ne
+op_minus
 id|ENOSPC
 )paren
 r_return
@@ -6008,7 +6019,7 @@ id|ip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diAllocAny(imap,agno,dir,iap)&n; *&n; * FUNCTION:    allocate a disk inode from any other allocation group.&n; *&n; *&t;&t;this routine is called when an allocation attempt within&n; *&t;&t;the primary allocation group has failed. if attempts to&n; *&t;&t;allocate an inode from any allocation group other than the&n; *&t;&t;specified primary group.&n; *&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      agno  &t;- primary allocation group (to avoid).&n; *      dir  &t;- TRUE if the new disk inode is for a directory.&n; *      ip  &t;- pointer to a new inode to be filled in on successful return&n; *&t;&t;  with the disk inode number allocated, its extent address&n; *&t;&t;  and the start of the ag.&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      ENOSPC &t;- insufficient disk resources.&n; *      EIO  &t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diAllocAny(imap,agno,dir,iap)&n; *&n; * FUNCTION:    allocate a disk inode from any other allocation group.&n; *&n; *&t;&t;this routine is called when an allocation attempt within&n; *&t;&t;the primary allocation group has failed. if attempts to&n; *&t;&t;allocate an inode from any allocation group other than the&n; *&t;&t;specified primary group.&n; *&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      agno  &t;- primary allocation group (to avoid).&n; *      dir  &t;- TRUE if the new disk inode is for a directory.&n; *      ip  &t;- pointer to a new inode to be filled in on successful return&n; *&t;&t;  with the disk inode number allocated, its extent address&n; *&t;&t;  and the start of the ag.&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      -ENOSPC&t;- insufficient disk resources.&n; *      -EIO  &t;- i/o error.&n; */
 r_static
 r_int
 DECL|function|diAllocAny
@@ -6101,6 +6112,7 @@ c_cond
 (paren
 id|rc
 op_ne
+op_minus
 id|ENOSPC
 )paren
 r_return
@@ -6160,6 +6172,7 @@ c_cond
 (paren
 id|rc
 op_ne
+op_minus
 id|ENOSPC
 )paren
 r_return
@@ -6170,12 +6183,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* no free disk inodes.&n;&t; */
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diAllocIno(imap,agno,ip)&n; *&n; * FUNCTION:    allocate a disk inode from the allocation group&squot;s free&n; *&t;&t;inode list, returning an error if this free list is&n; *&t;&t;empty (i.e. no iags on the list).&n; *&n; *&t;&t;allocation occurs from the first iag on the list using&n; *&t;&t;the iag&squot;s free inode summary map to find the leftmost&n; *&t;&t;free inode in the iag. &n; *&t;&t;&n; * PRE CONDITION: Already have AG lock for this AG.&n; *&t;&t;&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      agno  &t;- allocation group.&n; *      ip  &t;- pointer to new inode to be filled in on successful return&n; *&t;&t;  with the disk inode number allocated, its extent address&n; *&t;&t;  and the start of the ag.&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      ENOSPC &t;- insufficient disk resources.&n; *      EIO  &t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diAllocIno(imap,agno,ip)&n; *&n; * FUNCTION:    allocate a disk inode from the allocation group&squot;s free&n; *&t;&t;inode list, returning an error if this free list is&n; *&t;&t;empty (i.e. no iags on the list).&n; *&n; *&t;&t;allocation occurs from the first iag on the list using&n; *&t;&t;the iag&squot;s free inode summary map to find the leftmost&n; *&t;&t;free inode in the iag. &n; *&t;&t;&n; * PRE CONDITION: Already have AG lock for this AG.&n; *&t;&t;&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      agno  &t;- allocation group.&n; *      ip  &t;- pointer to new inode to be filled in on successful return&n; *&t;&t;  with the disk inode number allocated, its extent address&n; *&t;&t;  and the start of the ag.&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      -ENOSPC&t;- insufficient disk resources.&n; *      -EIO  &t;- i/o error.&n; */
 DECL|function|diAllocIno
 r_static
 r_int
@@ -6237,9 +6249,8 @@ OL
 l_int|0
 )paren
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 multiline_comment|/* obtain read lock on imap inode */
 id|IREAD_LOCK
@@ -6333,6 +6344,7 @@ id|FM_DIRTY
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -6503,7 +6515,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diAllocExt(imap,agno,ip)&n; *&n; * FUNCTION:   &t;add a new extent of free inodes to an iag, allocating&n; *&t;       &t;an inode from this extent to satisfy the current allocation&n; *&t;       &t;request.&n; *&t;&t;&n; *&t;&t;this routine first tries to find an existing iag with free&n; *&t;&t;extents through the ag free extent list.  if list is not&n; *&t;&t;empty, the head of the list will be selected as the home&n; *&t;&t;of the new extent of free inodes.  otherwise (the list is&n; *&t;&t;empty), a new iag will be allocated for the ag to contain&n; *&t;&t;the extent.&n; *&t;&t;&n; *&t;&t;once an iag has been selected, the free extent summary map&n; *&t;&t;is used to locate a free extent within the iag and diNewExt()&n; *&t;&t;is called to initialize the extent, with initialization&n; *&t;&t;including the allocation of the first inode of the extent&n; *&t;&t;for the purpose of satisfying this request.&n; *&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      agno  &t;- allocation group number.&n; *      ip  &t;- pointer to new inode to be filled in on successful return&n; *&t;&t;  with the disk inode number allocated, its extent address&n; *&t;&t;  and the start of the ag.&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      ENOSPC &t;- insufficient disk resources.&n; *      EIO  &t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diAllocExt(imap,agno,ip)&n; *&n; * FUNCTION:   &t;add a new extent of free inodes to an iag, allocating&n; *&t;       &t;an inode from this extent to satisfy the current allocation&n; *&t;       &t;request.&n; *&t;&t;&n; *&t;&t;this routine first tries to find an existing iag with free&n; *&t;&t;extents through the ag free extent list.  if list is not&n; *&t;&t;empty, the head of the list will be selected as the home&n; *&t;&t;of the new extent of free inodes.  otherwise (the list is&n; *&t;&t;empty), a new iag will be allocated for the ag to contain&n; *&t;&t;the extent.&n; *&t;&t;&n; *&t;&t;once an iag has been selected, the free extent summary map&n; *&t;&t;is used to locate a free extent within the iag and diNewExt()&n; *&t;&t;is called to initialize the extent, with initialization&n; *&t;&t;including the allocation of the first inode of the extent&n; *&t;&t;for the purpose of satisfying this request.&n; *&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      agno  &t;- allocation group number.&n; *      ip  &t;- pointer to new inode to be filled in on successful return&n; *&t;&t;  with the disk inode number allocated, its extent address&n; *&t;&t;  and the start of the ag.&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      -ENOSPC&t;- insufficient disk resources.&n; *      -EIO  &t;- i/o error.&n; */
 DECL|function|diAllocExt
 r_static
 r_int
@@ -6832,7 +6844,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diAllocBit(imap,iagp,ino)&n; *&n; * FUNCTION:   &t;allocate a backed inode from an iag.&n; *&n; *&t;&t;this routine performs the mechanics of allocating a&n; *&t;&t;specified inode from a backed extent.&n; *&n; *&t;&t;if the inode to be allocated represents the last free&n; *&t;&t;inode within the iag, the iag will be removed from the&n; *&t;&t;ag free inode list.&n; *&n; *&t;&t;a careful update approach is used to provide consistency&n; *&t;&t;in the face of updates to multiple buffers.  under this&n; *&t;&t;approach, all required buffers are obtained before making&n; *&t;&t;any updates and are held all are updates are complete.&n; *&t;&t;&n; * PRE CONDITION: Already have buffer lock on iagp.  Already have AG lock on&n; *&t;this AG.  Must have read lock on imap inode.&n; *&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      iagp  &t;- pointer to iag. &n; *      ino   &t;- inode number to be allocated within the iag.&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      ENOSPC &t;- insufficient disk resources.&n; *      EIO  &t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diAllocBit(imap,iagp,ino)&n; *&n; * FUNCTION:   &t;allocate a backed inode from an iag.&n; *&n; *&t;&t;this routine performs the mechanics of allocating a&n; *&t;&t;specified inode from a backed extent.&n; *&n; *&t;&t;if the inode to be allocated represents the last free&n; *&t;&t;inode within the iag, the iag will be removed from the&n; *&t;&t;ag free inode list.&n; *&n; *&t;&t;a careful update approach is used to provide consistency&n; *&t;&t;in the face of updates to multiple buffers.  under this&n; *&t;&t;approach, all required buffers are obtained before making&n; *&t;&t;any updates and are held all are updates are complete.&n; *&t;&t;&n; * PRE CONDITION: Already have buffer lock on iagp.  Already have AG lock on&n; *&t;this AG.  Must have read lock on imap inode.&n; *&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      iagp  &t;- pointer to iag. &n; *      ino   &t;- inode number to be allocated within the iag.&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      -ENOSPC&t;- insufficient disk resources.&n; *      -EIO  &t;- i/o error.&n; */
 DECL|function|diAllocBit
 r_static
 r_int
@@ -7280,7 +7292,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diNewExt(imap,iagp,extno)&n; *&n; * FUNCTION:    initialize a new extent of inodes for an iag, allocating&n; *&t;        the first inode of the extent for use for the current&n; *&t;        allocation request.&n; *&n; *&t;&t;disk resources are allocated for the new extent of inodes&n; *&t;&t;and the inodes themselves are initialized to reflect their&n; *&t;&t;existence within the extent (i.e. their inode numbers and&n; *&t;&t;inode extent addresses are set) and their initial state&n; *&t;&t;(mode and link count are set to zero).&n; *&n; *&t;&t;if the iag is new, it is not yet on an ag extent free list&n; *&t;&t;but will now be placed on this list.&n; *&n; *&t;&t;if the allocation of the new extent causes the iag to&n; *&t;&t;have no free extent, the iag will be removed from the&n; *&t;&t;ag extent free list.&n; *&n; *&t;&t;if the iag has no free backed inodes, it will be placed&n; *&t;&t;on the ag free inode list, since the addition of the new&n; *&t;&t;extent will now cause it to have free inodes.&n; *&n; *&t;&t;a careful update approach is used to provide consistency&n; *&t;&t;(i.e. list consistency) in the face of updates to multiple&n; *&t;&t;buffers.  under this approach, all required buffers are&n; *&t;&t;obtained before making any updates and are held until all&n; *&t;&t;updates are complete.&n; *&t;&t;&n; * PRE CONDITION: Already have buffer lock on iagp.  Already have AG lock on&n; *&t;this AG.  Must have read lock on imap inode.&n; *&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      iagp  &t;- pointer to iag. &n; *      extno  &t;- extent number.&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      ENOSPC &t;- insufficient disk resources.&n; *      EIO  &t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diNewExt(imap,iagp,extno)&n; *&n; * FUNCTION:    initialize a new extent of inodes for an iag, allocating&n; *&t;        the first inode of the extent for use for the current&n; *&t;        allocation request.&n; *&n; *&t;&t;disk resources are allocated for the new extent of inodes&n; *&t;&t;and the inodes themselves are initialized to reflect their&n; *&t;&t;existence within the extent (i.e. their inode numbers and&n; *&t;&t;inode extent addresses are set) and their initial state&n; *&t;&t;(mode and link count are set to zero).&n; *&n; *&t;&t;if the iag is new, it is not yet on an ag extent free list&n; *&t;&t;but will now be placed on this list.&n; *&n; *&t;&t;if the allocation of the new extent causes the iag to&n; *&t;&t;have no free extent, the iag will be removed from the&n; *&t;&t;ag extent free list.&n; *&n; *&t;&t;if the iag has no free backed inodes, it will be placed&n; *&t;&t;on the ag free inode list, since the addition of the new&n; *&t;&t;extent will now cause it to have free inodes.&n; *&n; *&t;&t;a careful update approach is used to provide consistency&n; *&t;&t;(i.e. list consistency) in the face of updates to multiple&n; *&t;&t;buffers.  under this approach, all required buffers are&n; *&t;&t;obtained before making any updates and are held until all&n; *&t;&t;updates are complete.&n; *&t;&t;&n; * PRE CONDITION: Already have buffer lock on iagp.  Already have AG lock on&n; *&t;this AG.  Must have read lock on imap inode.&n; *&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      iagp  &t;- pointer to iag. &n; *      extno  &t;- extent number.&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      -ENOSPC&t;- insufficient disk resources.&n; *      -EIO  &t;- i/o error.&n; */
 DECL|function|diNewExt
 r_static
 r_int
@@ -7860,6 +7872,7 @@ l_int|NULL
 (brace
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -8368,7 +8381,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diNewIAG(imap,iagnop,agno)&n; *&n; * FUNCTION:   &t;allocate a new iag for an allocation group.&n; *&t;&t;&n; *&t;&t;first tries to allocate the iag from the inode map &n; *&t;&t;iagfree list:  &n; *&t;&t;if the list has free iags, the head of the list is removed &n; *&t;&t;and returned to satisfy the request.&n; *&t;&t;if the inode map&squot;s iag free list is empty, the inode map&n; *&t;&t;is extended to hold a new iag. this new iag is initialized&n; *&t;&t;and returned to satisfy the request.&n; *&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      iagnop &t;- pointer to an iag number set with the number of the&n; *&t;&t;  newly allocated iag upon successful return.&n; *      agno  &t;- allocation group number.&n; *&t;bpp&t;- Buffer pointer to be filled in with new IAG&squot;s buffer&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      ENOSPC &t;- insufficient disk resources.&n; *      EIO  &t;- i/o error.&n; *&n; * serialization: &n; *&t;AG lock held on entry/exit;&n; *&t;write lock on the map is held inside;&n; *&t;read lock on the map is held on successful completion;&n; *&n; * note: new iag transaction: &n; * . synchronously write iag;&n; * . write log of xtree and inode  of imap;&n; * . commit;&n; * . synchronous write of xtree (right to left, bottom to top);&n; * . at start of logredo(): init in-memory imap with one additional iag page;&n; * . at end of logredo(): re-read imap inode to determine&n; *   new imap size;&n; */
+multiline_comment|/*&n; * NAME:        diNewIAG(imap,iagnop,agno)&n; *&n; * FUNCTION:   &t;allocate a new iag for an allocation group.&n; *&t;&t;&n; *&t;&t;first tries to allocate the iag from the inode map &n; *&t;&t;iagfree list:  &n; *&t;&t;if the list has free iags, the head of the list is removed &n; *&t;&t;and returned to satisfy the request.&n; *&t;&t;if the inode map&squot;s iag free list is empty, the inode map&n; *&t;&t;is extended to hold a new iag. this new iag is initialized&n; *&t;&t;and returned to satisfy the request.&n; *&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      iagnop &t;- pointer to an iag number set with the number of the&n; *&t;&t;  newly allocated iag upon successful return.&n; *      agno  &t;- allocation group number.&n; *&t;bpp&t;- Buffer pointer to be filled in with new IAG&squot;s buffer&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      -ENOSPC&t;- insufficient disk resources.&n; *      -EIO  &t;- i/o error.&n; *&n; * serialization: &n; *&t;AG lock held on entry/exit;&n; *&t;write lock on the map is held inside;&n; *&t;read lock on the map is held on successful completion;&n; *&n; * note: new iag transaction: &n; * . synchronously write iag;&n; * . write log of xtree and inode  of imap;&n; * . commit;&n; * . synchronous write of xtree (right to left, bottom to top);&n; * . at start of logredo(): init in-memory imap with one additional iag page;&n; * . at end of logredo(): re-read imap inode to determine&n; *   new imap size;&n; */
 r_static
 r_int
 DECL|function|diNewIAG
@@ -8551,6 +8564,7 @@ id|ipimap
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|ENOSPC
 suffix:semicolon
 r_goto
@@ -8655,6 +8669,7 @@ id|ipimap
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -8787,6 +8802,7 @@ id|ipimap
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -8979,6 +8995,7 @@ id|ipimap
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -9034,7 +9051,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diIAGRead()&n; *&n; * FUNCTION:    get the buffer for the specified iag within a fileset&n; *&t;&t;or aggregate inode map.&n; *&t;&t;&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      iagno  &t;- iag number.&n; *      bpp  &t;- point to buffer pointer to be filled in on successful&n; *&t;&t;  exit.&n; *&n; * SERIALIZATION:&n; *&t;must have read lock on imap inode&n; *&t;(When called by diExtendFS, the filesystem is quiesced, therefore&n; *&t; the read lock is unnecessary.)&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      EIO  &t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diIAGRead()&n; *&n; * FUNCTION:    get the buffer for the specified iag within a fileset&n; *&t;&t;or aggregate inode map.&n; *&t;&t;&n; * PARAMETERS:&n; *      imap  &t;- pointer to inode map control structure.&n; *      iagno  &t;- iag number.&n; *      bpp  &t;- point to buffer pointer to be filled in on successful&n; *&t;&t;  exit.&n; *&n; * SERIALIZATION:&n; *&t;must have read lock on imap inode&n; *&t;(When called by diExtendFS, the filesystem is quiesced, therefore&n; *&t; the read lock is unnecessary.)&n; *&n; * RETURN VALUES:&n; *      0       - success.&n; *      -EIO  &t;- i/o error.&n; */
 DECL|function|diIAGRead
 r_static
 r_int
@@ -9109,9 +9126,8 @@ l_int|NULL
 )paren
 (brace
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 )brace
 r_return
@@ -9188,7 +9204,7 @@ id|bitno
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;diUpdatePMap()&n; *                                                                    &n; * FUNCTION: Update the persistent map in an IAG for the allocation or &n; *&t;freeing of the specified inode.&n; *                                                                    &n; * PRE CONDITIONS: Working map has already been updated for allocate.&n; *&n; * PARAMETERS:&n; *&t;ipimap&t;- Incore inode map inode&n; *&t;inum&t;- Number of inode to mark in permanent map&n; *&t;is_free&t;- If TRUE indicates inode should be marked freed, otherwise&n; *&t;&t;  indicates inode should be marked allocated.&n; *&n; * RETURNS: 0 for success&n; */
+multiline_comment|/*&n; * NAME:&t;diUpdatePMap()&n; *                                                                    &n; * FUNCTION: Update the persistent map in an IAG for the allocation or &n; *&t;freeing of the specified inode.&n; *                                                                    &n; * PRE CONDITIONS: Working map has already been updated for allocate.&n; *&n; * PARAMETERS:&n; *&t;ipimap&t;- Incore inode map inode&n; *&t;inum&t;- Number of inode to mark in permanent map&n; *&t;is_free&t;- If TRUE indicates inode should be marked freed, otherwise&n; *&t;&t;  indicates inode should be marked allocated.&n; *&n; * RETURN VALUES: &n; *&t;&t;0 for success&n; */
 r_int
 DECL|function|diUpdatePMap
 id|diUpdatePMap
@@ -10525,7 +10541,7 @@ id|ip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        copy_from_dinode()&n; *&n; * FUNCTION:    Copies inode info from disk inode to in-memory inode&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      ENOMEM&t;- insufficient memory&n; */
+multiline_comment|/*&n; * NAME:        copy_from_dinode()&n; *&n; * FUNCTION:    Copies inode info from disk inode to in-memory inode&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -ENOMEM&t;- insufficient memory&n; */
 DECL|function|copy_from_dinode
 r_static
 r_int

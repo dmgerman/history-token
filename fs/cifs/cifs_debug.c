@@ -398,7 +398,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;tLocal Users To Same Server: %d &quot;
+l_string|&quot;&bslash;tLocal Users To Same Server: %d SecMode: 0x%x&quot;
 comma
 id|atomic_read
 c_func
@@ -406,6 +406,8 @@ c_func
 op_amp
 id|ses-&gt;server-&gt;socketUseCount
 )paren
+comma
+id|ses-&gt;server-&gt;secMode
 )paren
 suffix:semicolon
 )brace
@@ -2667,6 +2669,18 @@ l_char|&squot;Y&squot;
 id|sign_CIFS_PDUs
 op_assign
 l_int|1
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|c
+op_eq
+l_char|&squot;2&squot;
+)paren
+id|sign_CIFS_PDUs
+op_assign
+l_int|2
 suffix:semicolon
 r_return
 id|count

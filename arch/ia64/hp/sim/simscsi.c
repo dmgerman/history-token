@@ -1621,6 +1621,9 @@ suffix:semicolon
 r_case
 id|MODE_SENSE
 suffix:colon
+r_case
+id|MODE_SENSE_10
+suffix:colon
 multiline_comment|/* sd.c uses this to determine whether disk does write-caching. */
 id|memset
 c_func

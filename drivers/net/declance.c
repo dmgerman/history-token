@@ -4016,6 +4016,10 @@ comma
 id|jiffies
 op_plus
 l_int|4
+op_star
+id|HZ
+op_div
+l_int|100
 )paren
 suffix:semicolon
 id|netif_wake_queue

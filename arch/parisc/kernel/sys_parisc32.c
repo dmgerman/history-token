@@ -1743,7 +1743,7 @@ id|sys32_settimeofday
 c_func
 (paren
 r_struct
-id|compat_timeval
+id|compat_timespec
 op_star
 id|tv
 comma
@@ -1767,7 +1767,7 @@ id|do_sys_settimeofday
 c_func
 (paren
 r_struct
-id|timeval
+id|timespec
 op_star
 id|tv
 comma

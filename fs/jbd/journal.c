@@ -1594,6 +1594,26 @@ op_assign
 id|tid
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|journal-&gt;j_committing_transaction
+op_logical_and
+id|ptid
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * If ext3_write_super() recently started a commit, then we&n;&t;&t; * have to wait for completion of that transaction&n;&t;&t; */
+op_star
+id|ptid
+op_assign
+id|journal-&gt;j_committing_transaction-&gt;t_tid
+suffix:semicolon
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren
@@ -3574,8 +3594,6 @@ id|log_do_checkpoint
 c_func
 (paren
 id|journal
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|spin_lock
@@ -4314,8 +4332,6 @@ id|log_do_checkpoint
 c_func
 (paren
 id|journal
-comma
-id|journal-&gt;j_maxlen
 )paren
 suffix:semicolon
 id|spin_lock

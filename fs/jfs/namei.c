@@ -219,6 +219,7 @@ l_int|NULL
 (brace
 id|rc
 op_assign
+op_minus
 id|ENOSPC
 suffix:semicolon
 r_goto
@@ -554,12 +555,10 @@ c_func
 (paren
 l_string|&quot;jfs_create: rc:%d&quot;
 comma
-op_minus
 id|rc
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace
@@ -646,6 +645,7 @@ id|JFS_LINK_MAX
 (brace
 id|rc
 op_assign
+op_minus
 id|EMLINK
 suffix:semicolon
 r_goto
@@ -703,6 +703,7 @@ l_int|NULL
 (brace
 id|rc
 op_assign
+op_minus
 id|ENOSPC
 suffix:semicolon
 r_goto
@@ -1054,16 +1055,14 @@ c_func
 (paren
 l_string|&quot;jfs_mkdir: rc:%d&quot;
 comma
-op_minus
 id|rc
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;jfs_rmdir(dip, dentry)&n; *&n; * FUNCTION:&t;remove a link to child directory&n; *&n; * PARAMETER:&t;dip &t;- parent inode&n; *&t;&t;dentry&t;- child directory dentry&n; *&n; * RETURN:&t;EINVAL&t;- if name is . or ..&n; *&t;&t;EINVAL  - if . or .. exist but are invalid.&n; *&t;&t;errors from subroutines&n; *&n; * note:&n; * if other threads have the directory open when the last link &n; * is removed, the &quot;.&quot; and &quot;..&quot; entries, if present, are removed before &n; * rmdir() returns and no new entries may be created in the directory, &n; * but the directory is not removed until the last reference to &n; * the directory is released (cf.unlink() of regular file).&n; */
+multiline_comment|/*&n; * NAME:&t;jfs_rmdir(dip, dentry)&n; *&n; * FUNCTION:&t;remove a link to child directory&n; *&n; * PARAMETER:&t;dip &t;- parent inode&n; *&t;&t;dentry&t;- child directory dentry&n; *&n; * RETURN:&t;-EINVAL&t;- if name is . or ..&n; *&t;&t;-EINVAL  - if . or .. exist but are invalid.&n; *&t;&t;errors from subroutines&n; *&n; * note:&n; * if other threads have the directory open when the last link &n; * is removed, the &quot;.&quot; and &quot;..&quot; entries, if present, are removed before &n; * rmdir() returns and no new entries may be created in the directory, &n; * but the directory is not removed until the last reference to &n; * the directory is released (cf.unlink() of regular file).&n; */
 DECL|function|jfs_rmdir
 r_int
 id|jfs_rmdir
@@ -1138,6 +1137,7 @@ id|ip
 (brace
 id|rc
 op_assign
+op_minus
 id|ENOTEMPTY
 suffix:semicolon
 r_goto
@@ -1554,7 +1554,6 @@ id|rc
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace
@@ -1925,10 +1924,8 @@ id|ip
 suffix:semicolon
 id|rc
 op_assign
-op_minus
 id|new_size
 suffix:semicolon
-multiline_comment|/* We return -rc */
 r_goto
 id|out1
 suffix:semicolon
@@ -2200,16 +2197,14 @@ c_func
 (paren
 l_string|&quot;jfs_unlink: rc:%d&quot;
 comma
-op_minus
 id|rc
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;commitZeroLink()&n; *&n; * FUNCTION:    for non-directory, called by jfs_remove(),&n; *&t;&t;truncate a regular file, directory or symbolic&n; *&t;&t;link to zero length. return 0 if type is not &n; *&t;&t;one of these.&n; *&n; *&t;&t;if the file is currently associated with a VM segment&n; *&t;&t;only permanent disk and inode map resources are freed,&n; *&t;&t;and neither the inode nor indirect blocks are modified&n; *&t;&t;so that the resources can be later freed in the work&n; *&t;&t;map by ctrunc1.&n; *&t;&t;if there is no VM segment on entry, the resources are&n; *&t;&t;freed in both work and permanent map.&n; *&t;&t;(? for temporary file - memory object is cached even &n; *&t;&t;after no reference:&n; *&t;&t;reference count &gt; 0 -   )&n; *&n; * PARAMETERS:&t;cd&t;- pointer to commit data structure.&n; *&t;&t;&t;  current inode is the one to truncate.&n; *&n; * RETURN :&t;Errors from subroutines&n; */
+multiline_comment|/*&n; * NAME:&t;commitZeroLink()&n; *&n; * FUNCTION:    for non-directory, called by jfs_remove(),&n; *&t;&t;truncate a regular file, directory or symbolic&n; *&t;&t;link to zero length. return 0 if type is not &n; *&t;&t;one of these.&n; *&n; *&t;&t;if the file is currently associated with a VM segment&n; *&t;&t;only permanent disk and inode map resources are freed,&n; *&t;&t;and neither the inode nor indirect blocks are modified&n; *&t;&t;so that the resources can be later freed in the work&n; *&t;&t;map by ctrunc1.&n; *&t;&t;if there is no VM segment on entry, the resources are&n; *&t;&t;freed in both work and permanent map.&n; *&t;&t;(? for temporary file - memory object is cached even &n; *&t;&t;after no reference:&n; *&t;&t;reference count &gt; 0 -   )&n; *&n; * PARAMETERS:&t;cd&t;- pointer to commit data structure.&n; *&t;&t;&t;  current inode is the one to truncate.&n; *&n; * RETURN:&t;Errors from subroutines&n; */
 DECL|function|commitZeroLink
 id|s64
 id|commitZeroLink
@@ -2851,6 +2846,7 @@ id|JFS_LINK_MAX
 (brace
 id|rc
 op_assign
+op_minus
 id|EMLINK
 suffix:semicolon
 r_goto
@@ -3049,7 +3045,6 @@ id|rc
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace
@@ -3218,6 +3213,7 @@ l_int|NULL
 (brace
 id|rc
 op_assign
+op_minus
 id|ENOSPC
 suffix:semicolon
 r_goto
@@ -3596,6 +3592,7 @@ id|JFS_REMOVE
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -3701,6 +3698,7 @@ id|JFS_REMOVE
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|ENOSPC
 suffix:semicolon
 r_goto
@@ -3873,12 +3871,10 @@ c_func
 (paren
 l_string|&quot;jfs_symlink: rc:%d&quot;
 comma
-op_minus
 id|rc
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace
@@ -4085,6 +4081,7 @@ id|old_ip-&gt;i_ino
 (brace
 id|rc
 op_assign
+op_minus
 id|ENOENT
 suffix:semicolon
 r_goto
@@ -4137,6 +4134,7 @@ id|new_ip-&gt;i_ino
 (brace
 id|rc
 op_assign
+op_minus
 id|ESTALE
 suffix:semicolon
 r_goto
@@ -4150,6 +4148,7 @@ c_cond
 (paren
 id|rc
 op_ne
+op_minus
 id|ENOENT
 )paren
 r_goto
@@ -4165,6 +4164,7 @@ id|new_ip
 multiline_comment|/* no entry exists, but one was expected */
 id|rc
 op_assign
+op_minus
 id|ESTALE
 suffix:semicolon
 r_goto
@@ -4200,6 +4200,7 @@ id|new_ip
 (brace
 id|rc
 op_assign
+op_minus
 id|ENOTEMPTY
 suffix:semicolon
 r_goto
@@ -4226,6 +4227,7 @@ id|JFS_LINK_MAX
 (brace
 id|rc
 op_assign
+op_minus
 id|EMLINK
 suffix:semicolon
 r_goto
@@ -4445,10 +4447,8 @@ suffix:semicolon
 multiline_comment|/* Marks FS Dirty */
 id|rc
 op_assign
-op_minus
 id|new_size
 suffix:semicolon
-multiline_comment|/* We return -rc */
 r_goto
 id|out4
 suffix:semicolon
@@ -4981,10 +4981,8 @@ l_int|1
 suffix:semicolon
 id|rc
 op_assign
-op_minus
 id|new_size
 suffix:semicolon
-multiline_comment|/* We return -rc */
 )brace
 r_else
 id|rc
@@ -5125,7 +5123,6 @@ id|rc
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace
@@ -5242,6 +5239,7 @@ l_int|NULL
 (brace
 id|rc
 op_assign
+op_minus
 id|ENOSPC
 suffix:semicolon
 r_goto
@@ -5521,7 +5519,6 @@ id|rc
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace
@@ -5662,7 +5659,6 @@ r_return
 id|ERR_PTR
 c_func
 (paren
-op_minus
 id|rc
 )paren
 suffix:semicolon
@@ -5697,6 +5693,7 @@ c_cond
 (paren
 id|rc
 op_eq
+op_minus
 id|ENOENT
 )paren
 (brace
@@ -5735,7 +5732,6 @@ r_return
 id|ERR_PTR
 c_func
 (paren
-op_minus
 id|rc
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/gbus_int.c -- Midas labs GBUS interrupt support&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * arch/v850/kernel/gbus_int.c -- Midas labs GBUS interrupt support&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -288,7 +288,7 @@ multiline_comment|/* Delegating interrupts.  */
 multiline_comment|/* Handle a shared GINT interrupt by passing to the appropriate GBUS&n;   interrupt handler.  */
 DECL|function|gbus_int_handle_irq
 r_static
-r_void
+id|irqreturn_t
 id|gbus_int_handle_irq
 (paren
 r_int
@@ -306,6 +306,11 @@ id|regs
 (brace
 r_int
 id|w
+suffix:semicolon
+id|irqreturn_t
+id|rval
+op_assign
+id|IRQ_NONE
 suffix:semicolon
 r_int
 id|gint
@@ -410,6 +415,10 @@ comma
 id|regs
 )paren
 suffix:semicolon
+id|rval
+op_assign
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_while
 c_loop
@@ -438,6 +447,9 @@ id|gint
 )paren
 op_or_assign
 l_int|0x1
+suffix:semicolon
+r_return
+id|rval
 suffix:semicolon
 )brace
 "&f;"

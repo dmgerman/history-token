@@ -849,6 +849,10 @@ DECL|macro|R128_CCE_VC_CNTL_PRIM_WALK_RING
 mdefine_line|#define R128_CCE_VC_CNTL_PRIM_WALK_RING&t;&t;0x00000030
 DECL|macro|R128_CCE_VC_CNTL_NUM_SHIFT
 mdefine_line|#define R128_CCE_VC_CNTL_NUM_SHIFT&t;&t;16
+DECL|macro|R128_DATATYPE_VQ
+mdefine_line|#define R128_DATATYPE_VQ&t;&t;0
+DECL|macro|R128_DATATYPE_CI4
+mdefine_line|#define R128_DATATYPE_CI4&t;&t;1
 DECL|macro|R128_DATATYPE_CI8
 mdefine_line|#define R128_DATATYPE_CI8&t;&t;2
 DECL|macro|R128_DATATYPE_ARGB1555
@@ -861,8 +865,18 @@ DECL|macro|R128_DATATYPE_ARGB8888
 mdefine_line|#define R128_DATATYPE_ARGB8888&t;&t;6
 DECL|macro|R128_DATATYPE_RGB332
 mdefine_line|#define R128_DATATYPE_RGB332&t;&t;7
+DECL|macro|R128_DATATYPE_Y8
+mdefine_line|#define R128_DATATYPE_Y8&t;&t;8
 DECL|macro|R128_DATATYPE_RGB8
 mdefine_line|#define R128_DATATYPE_RGB8&t;&t;9
+DECL|macro|R128_DATATYPE_CI16
+mdefine_line|#define R128_DATATYPE_CI16&t;&t;10
+DECL|macro|R128_DATATYPE_YVYU422
+mdefine_line|#define R128_DATATYPE_YVYU422&t;&t;11
+DECL|macro|R128_DATATYPE_VYUY422
+mdefine_line|#define R128_DATATYPE_VYUY422&t;&t;12
+DECL|macro|R128_DATATYPE_AYUV444
+mdefine_line|#define R128_DATATYPE_AYUV444&t;&t;14
 DECL|macro|R128_DATATYPE_ARGB4444
 mdefine_line|#define R128_DATATYPE_ARGB4444&t;&t;15
 multiline_comment|/* Constants */

@@ -2180,8 +2180,7 @@ comma
 r_int
 id|search_all
 comma
-r_int
-r_int
+id|b_blocknr_t
 op_star
 id|next_zero_bit
 )paren
@@ -3520,8 +3519,7 @@ id|sb
 op_assign
 id|cn-&gt;sb
 suffix:semicolon
-r_int
-r_int
+id|b_blocknr_t
 id|blocknr
 op_assign
 id|cn-&gt;blocknr
@@ -3643,7 +3641,7 @@ id|debug
 id|printk
 c_func
 (paren
-l_string|&quot;block %lu, bh is %d, state %ld&bslash;n&quot;
+l_string|&quot;block %u, bh is %d, state %ld&bslash;n&quot;
 comma
 id|cn-&gt;blocknr
 comma
@@ -5116,8 +5114,7 @@ comma
 op_star
 id|walk_cn
 suffix:semicolon
-r_int
-r_int
+id|b_blocknr_t
 id|blocknr
 suffix:semicolon
 r_int
@@ -12749,8 +12746,7 @@ id|super_block
 op_star
 id|p_s_sb
 comma
-r_int
-r_int
+id|b_blocknr_t
 id|blocknr
 comma
 r_int
@@ -13024,8 +13020,7 @@ id|sb
 op_assign
 id|cn-&gt;sb
 suffix:semicolon
-r_int
-r_int
+id|b_blocknr_t
 id|blocknr
 op_assign
 id|cn-&gt;blocknr
@@ -14272,8 +14267,7 @@ id|super_block
 op_star
 id|p_s_sb
 comma
-r_int
-r_int
+id|b_blocknr_t
 id|blocknr
 )paren
 (brace
@@ -14336,7 +14330,7 @@ id|bh
 (brace
 id|printk
 (paren
-l_string|&quot;journal_mark_freed(dont_log): dirty buffer on hash list: %lx %ld&bslash;n&quot;
+l_string|&quot;journal_mark_freed(dont_log): dirty buffer on hash list: %lx %d&bslash;n&quot;
 comma
 id|bh-&gt;b_state
 comma

@@ -150,7 +150,8 @@ op_assign
 id|__u32
 op_star
 )paren
-id|cpu_key
+op_amp
+id|cpu_key-&gt;on_disk_key
 suffix:semicolon
 r_for
 c_loop

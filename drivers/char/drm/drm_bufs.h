@@ -1,4 +1,5 @@
-multiline_comment|/* drm_bufs.h -- Generic buffer template -*- linux-c -*-&n; * Created: Thu Nov 23 03:10:50 2000 by gareth@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/**&n; * &bslash;file drm_bufs.h &n; * Generic buffer template&n; * &n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/*&n; * Created: Thu Nov 23 03:10:50 2000 by gareth@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#ifndef __HAVE_PCI_DMA
@@ -21,7 +22,7 @@ DECL|macro|DRIVER_AGP_BUFFERS_MAP
 mdefine_line|#define DRIVER_AGP_BUFFERS_MAP( dev )&t;NULL
 macro_line|#endif
 macro_line|#endif
-multiline_comment|/*&n; * Compute order.  Can be made faster.&n; */
+multiline_comment|/**&n; * Compute size order.  Returns the exponent of the smaller power of two which&n; * is greater or equal to given number.&n; * &n; * &bslash;param size size.&n; * &bslash;return order.&n; *&n; * &bslash;todo Can be made faster.&n; */
 DECL|function|order
 r_int
 id|DRM
@@ -80,6 +81,7 @@ r_return
 id|order
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Ioctl to specify a range of memory that is available for mapping by a non-root process.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_map structure.&n; * &bslash;return zero on success or a negative value on error.&n; *&n; * Adjusts the memory offset to its absolute value according to the mapping&n; * type.  Adds the map to the map list drm_device::maplist. Adds MTRR&squot;s where&n; * applicable and if supported by the kernel.&n; */
 DECL|function|addmap
 r_int
 id|DRM
@@ -748,7 +750,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Remove a map private from list and deallocate resources if the mapping&n; * isn&squot;t in use.&n; */
+multiline_comment|/**&n; * Remove a map private from list and deallocate resources if the mapping&n; * isn&squot;t in use.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_map_t structure.&n; * &bslash;return zero on success or a negative value on error.&n; *&n; * Searches the map on drm_device::maplist, removes it from the list, see if&n; * its being used, and free any associate resource (such as MTRR&squot;s) if it&squot;s not&n; * being on use.&n; *&n; * &bslash;sa addmap().&n; */
 DECL|function|rmmap
 r_int
 id|DRM
@@ -1098,6 +1100,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#if __HAVE_DMA
+multiline_comment|/**&n; * Cleanup after an error on one of the addbufs() functions.&n; *&n; * &bslash;param entry buffer entry where the error occurred.&n; *&n; * Frees any pages and buffers associated with the given entry.&n; */
 DECL|function|cleanup_buf_error
 r_static
 r_void
@@ -1282,6 +1285,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#if __REALLY_HAVE_AGP
+multiline_comment|/**&n; * Add AGP buffers for DMA transfers (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_buf_desc_t request.&n; * &bslash;return zero on success or a negative number on failure.&n; * &n; * After some sanity checks creates a drm_buf structure for each buffer and&n; * reallocates the buffer list of the same size order to accommodate the new&n; * buffers.&n; */
 DECL|function|addbufs_agp
 r_int
 id|DRM
@@ -4298,6 +4302,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* __HAVE_SG */
+multiline_comment|/**&n; * Add buffers for DMA transfers (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_buf_desc_t request.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * According with the memory type specified in drm_buf_desc::flags and the&n; * build options, it dispatches the call either to addbufs_agp(),&n; * addbufs_sg() or addbufs_pci() for AGP, scatter-gather or consistent&n; * PCI memory respectively.&n; */
 DECL|function|addbufs
 r_int
 id|DRM
@@ -4429,6 +4434,7 @@ id|EINVAL
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/**&n; * Get information about the buffer mappings.&n; *&n; * This was originally mean for debugging purposes, or by a sophisticated&n; * client library to determine how best to use the available buffers (e.g.,&n; * large buffers can be used for image transfer).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_buf_info structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Increments drm_device::buf_use while holding the drm_device::count_lock&n; * lock, preventing of allocating more buffers after this call. Information&n; * about each requested buffer is then copied into user space.&n; */
 DECL|function|infobufs
 r_int
 id|DRM
@@ -4816,6 +4822,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Specifies a low and high water mark for buffer allocation&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg a pointer to a drm_buf_desc structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies that the size order is bounded between the admissible orders and&n; * updates the respective drm_device_dma::bufs entry low and high water mark.&n; *&n; * &bslash;note This ioctl is deprecated and mostly never used.&n; */
 DECL|function|markbufs
 r_int
 id|DRM
@@ -4982,6 +4989,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Unreserve the buffers in list, previously reserved using drmDMA. &n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_buf_free structure.&n; * &bslash;return zero on success or a negative number on failure.&n; * &n; * Calls free_buffer() for each used buffer.&n; * This function is primarily used for debugging.&n; */
 DECL|function|freebufs
 r_int
 id|DRM
@@ -5196,6 +5204,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Maps all of the DMA buffers into client-virtual space (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_buf_map structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Maps the AGP or SG buffer region with do_mmap(), and copies information&n; * about each buffer into user space. The PCI buffers are already mapped on the&n; * addbufs_pci() call.&n; */
 DECL|function|mapbufs
 r_int
 id|DRM

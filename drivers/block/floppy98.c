@@ -16990,7 +16990,6 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|t360
-DECL|variable|t1200
 r_static
 r_int
 id|t360
@@ -17002,7 +17001,10 @@ l_int|1
 comma
 l_int|0
 )brace
-comma
+suffix:semicolon
+DECL|variable|t1200
+r_static
+r_int
 id|t1200
 (braket
 )braket
@@ -17030,8 +17032,10 @@ l_int|23
 comma
 l_int|0
 )brace
-comma
+suffix:semicolon
 DECL|variable|t3in
+r_static
+r_int
 id|t3in
 (braket
 )braket
@@ -18787,7 +18791,7 @@ l_int|0
 suffix:semicolon
 id|out1
 suffix:colon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -18933,8 +18937,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -18951,8 +18953,6 @@ l_string|&quot;Unable to grab IRQ%d for the floppy driver&bslash;n&quot;
 comma
 id|FLOPPY_IRQ
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -19001,8 +19001,6 @@ id|fd_free_irq
 c_func
 (paren
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -19425,8 +19423,6 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -19769,8 +19765,6 @@ suffix:semicolon
 id|fdc
 op_assign
 id|old_fdc
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE

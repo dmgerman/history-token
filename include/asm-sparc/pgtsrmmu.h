@@ -6,6 +6,9 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifdef __ASSEMBLY__
 macro_line|#include &lt;asm/thread_info.h&gt;&t;/* TI_UWINMASK for WINDOW_FLUSH */
 macro_line|#endif
+multiline_comment|/* Number of contexts is implementation-dependent; 64k is the most we support */
+DECL|macro|SRMMU_MAX_CONTEXTS
+mdefine_line|#define SRMMU_MAX_CONTEXTS&t;65536
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table entry can map */
 DECL|macro|SRMMU_PMD_SHIFT
 mdefine_line|#define SRMMU_PMD_SHIFT         18

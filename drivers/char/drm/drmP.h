@@ -1,4 +1,5 @@
-multiline_comment|/* drmP.h -- Private header for Direct Rendering Manager -*- linux-c -*-&n; * Created: Mon Jan  4 10:05:05 1999 by faith@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/**&n; * &bslash;file drmP.h &n; * Private header for Direct Rendering Manager&n; * &n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/*&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#ifndef _DRM_P_H_
 DECL|macro|_DRM_P_H_
 mdefine_line|#define _DRM_P_H_
@@ -38,7 +39,9 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;drm_os_linux.h&quot;
-multiline_comment|/* DRM template customization defaults&n; */
+multiline_comment|/***********************************************************************/
+multiline_comment|/** &bslash;name DRM template customization defaults */
+multiline_comment|/*@{*/
 macro_line|#ifndef __HAVE_AGP
 DECL|macro|__HAVE_AGP
 mdefine_line|#define __HAVE_AGP&t;&t;0
@@ -73,23 +76,26 @@ DECL|macro|__REALLY_HAVE_MTRR
 mdefine_line|#define __REALLY_HAVE_MTRR&t;(__HAVE_MTRR &amp;&amp; defined(CONFIG_MTRR))
 DECL|macro|__REALLY_HAVE_SG
 mdefine_line|#define __REALLY_HAVE_SG&t;(__HAVE_SG)
-multiline_comment|/* Begin the DRM...&n; */
+multiline_comment|/*@}*/
+multiline_comment|/***********************************************************************/
+multiline_comment|/** &bslash;name Begin the DRM... */
+multiline_comment|/*@{*/
 DECL|macro|DRM_DEBUG_CODE
-mdefine_line|#define DRM_DEBUG_CODE 2&t;  /* Include debugging code (if &gt; 1, then&n;&t;&t;&t;&t;     also include looping detection. */
+mdefine_line|#define DRM_DEBUG_CODE 2&t;  /**&lt; Include debugging code if &gt; 1, then&n;&t;&t;&t;&t;     also include looping detection. */
 DECL|macro|DRM_HASH_SIZE
-mdefine_line|#define DRM_HASH_SIZE&t;      16 /* Size of key hash table&t;&t;  */
+mdefine_line|#define DRM_HASH_SIZE&t;      16 /**&lt; Size of key hash table. Must be power of 2. */
 DECL|macro|DRM_KERNEL_CONTEXT
-mdefine_line|#define DRM_KERNEL_CONTEXT    0&t; /* Change drm_resctx if changed&t;  */
+mdefine_line|#define DRM_KERNEL_CONTEXT    0&t; /**&lt; Change drm_resctx if changed */
 DECL|macro|DRM_RESERVED_CONTEXTS
-mdefine_line|#define DRM_RESERVED_CONTEXTS 1&t; /* Change drm_resctx if changed&t;  */
+mdefine_line|#define DRM_RESERVED_CONTEXTS 1&t; /**&lt; Change drm_resctx if changed */
 DECL|macro|DRM_LOOPING_LIMIT
 mdefine_line|#define DRM_LOOPING_LIMIT     5000000
 DECL|macro|DRM_BSZ
-mdefine_line|#define DRM_BSZ&t;&t;      1024 /* Buffer size for /dev/drm? output&t;  */
+mdefine_line|#define DRM_BSZ&t;&t;      1024 /**&lt; Buffer size for /dev/drm? output */
 DECL|macro|DRM_TIME_SLICE
-mdefine_line|#define DRM_TIME_SLICE&t;      (HZ/20)  /* Time slice for GLXContexts&t;  */
+mdefine_line|#define DRM_TIME_SLICE&t;      (HZ/20)  /**&lt; Time slice for GLXContexts */
 DECL|macro|DRM_LOCK_SLICE
-mdefine_line|#define DRM_LOCK_SLICE&t;      1&t;/* Time slice for lock, in jiffies&t;  */
+mdefine_line|#define DRM_LOCK_SLICE&t;      1&t;/**&lt; Time slice for lock, in jiffies */
 DECL|macro|DRM_FLAG_DEBUG
 mdefine_line|#define DRM_FLAG_DEBUG&t;  0x01
 DECL|macro|DRM_MEM_DMA
@@ -136,7 +142,10 @@ DECL|macro|DRM_MEM_SGLISTS
 mdefine_line|#define DRM_MEM_SGLISTS   20
 DECL|macro|DRM_MAX_CTXBITMAP
 mdefine_line|#define DRM_MAX_CTXBITMAP (PAGE_SIZE * 8)
-multiline_comment|/* Backward compatibility section */
+multiline_comment|/*@}*/
+multiline_comment|/***********************************************************************/
+multiline_comment|/** &bslash;name Backward compatibility section */
+multiline_comment|/*@{*/
 macro_line|#ifndef minor
 DECL|macro|minor
 mdefine_line|#define minor(x) MINOR((x))
@@ -307,13 +316,19 @@ mdefine_line|#define DRM_RPR_ARG(vma) vma,
 macro_line|#endif
 DECL|macro|VM_OFFSET
 mdefine_line|#define VM_OFFSET(vma) ((vma)-&gt;vm_pgoff &lt;&lt; PAGE_SHIFT)
-multiline_comment|/* Macros to make printk easier */
+multiline_comment|/*@}*/
+multiline_comment|/***********************************************************************/
+multiline_comment|/** &bslash;name Macros to make printk easier */
+multiline_comment|/*@{*/
+multiline_comment|/**&n; * Error output.&n; *&n; * &bslash;param fmt printf() like format string.&n; * &bslash;param arg arguments&n; */
 DECL|macro|DRM_ERROR
 mdefine_line|#define DRM_ERROR(fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;[&quot; DRM_NAME &quot;:%s] *ERROR* &quot; fmt , __FUNCTION__ , ##arg)
+multiline_comment|/**&n; * Memory error output.&n; *&n; * &bslash;param area memory area where the error occurred.&n; * &bslash;param fmt printf() like format string.&n; * &bslash;param arg arguments&n; */
 DECL|macro|DRM_MEM_ERROR
 mdefine_line|#define DRM_MEM_ERROR(area, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;[&quot; DRM_NAME &quot;:%s:%s] *ERROR* &quot; fmt , __FUNCTION__, &bslash;&n;&t;       DRM(mem_stats)[area].name , ##arg)
 DECL|macro|DRM_INFO
 mdefine_line|#define DRM_INFO(fmt, arg...)  printk(KERN_INFO &quot;[&quot; DRM_NAME &quot;] &quot; fmt , ##arg)
+multiline_comment|/**&n; * Debug output.&n; * &n; * &bslash;param fmt printf() like format string.&n; * &bslash;param arg arguments&n; */
 macro_line|#if DRM_DEBUG_CODE
 DECL|macro|DRM_DEBUG
 mdefine_line|#define DRM_DEBUG(fmt, arg...)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ( DRM(flags) &amp; DRM_FLAG_DEBUG )&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_DEBUG&t;&t;&t;&t;&bslash;&n;&t;&t;&t;       &quot;[&quot; DRM_NAME &quot;:%s] &quot; fmt ,&t;&bslash;&n;&t;&t;&t;       __FUNCTION__ , ##arg);&t;&t;&t;&bslash;&n;&t;} while (0)
@@ -327,18 +342,26 @@ DECL|macro|DRM_PROC_PRINT
 mdefine_line|#define DRM_PROC_PRINT(fmt, arg...)&t;&t;&t;&t;&t;&bslash;&n;   len += sprintf(&amp;buf[len], fmt , ##arg);&t;&t;&t;&t;&bslash;&n;   if (len &gt; DRM_PROC_LIMIT) { *eof = 1; return len - offset; }
 DECL|macro|DRM_PROC_PRINT_RET
 mdefine_line|#define DRM_PROC_PRINT_RET(ret, fmt, arg...)&t;&t;&t;&t;&bslash;&n;   len += sprintf(&amp;buf[len], fmt , ##arg);&t;&t;&t;&t;&bslash;&n;   if (len &gt; DRM_PROC_LIMIT) { ret; *eof = 1; return len - offset; }
-multiline_comment|/* Mapping helper macros */
+multiline_comment|/*@}*/
+multiline_comment|/***********************************************************************/
+multiline_comment|/** &bslash;name Mapping helper macros */
+multiline_comment|/*@{*/
 DECL|macro|DRM_IOREMAP
 mdefine_line|#define DRM_IOREMAP(map, dev)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(map)-&gt;handle = DRM(ioremap)( (map)-&gt;offset, (map)-&gt;size, (dev) )
 DECL|macro|DRM_IOREMAP_NOCACHE
 mdefine_line|#define DRM_IOREMAP_NOCACHE(map, dev)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(map)-&gt;handle = DRM(ioremap_nocache)((map)-&gt;offset, (map)-&gt;size, (dev))
 DECL|macro|DRM_IOREMAPFREE
 mdefine_line|#define DRM_IOREMAPFREE(map, dev)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ( (map)-&gt;handle &amp;&amp; (map)-&gt;size )&t;&t;&t;&t;&bslash;&n;&t;&t;&t;DRM(ioremapfree)( (map)-&gt;handle, (map)-&gt;size, (dev) );&t;&bslash;&n;&t;} while (0)
+multiline_comment|/**&n; * Find mapping.&n; *&n; * &bslash;param _map matching mapping if found, untouched otherwise.&n; * &bslash;param _o offset.&n; *&n; * Expects the existence of a local variable named &bslash;p dev pointing to the&n; * drm_device structure.&n; */
 DECL|macro|DRM_FIND_MAP
 mdefine_line|#define DRM_FIND_MAP(_map, _o)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct list_head *_list;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;list_for_each( _list, &amp;dev-&gt;maplist-&gt;head ) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;drm_map_list_t *_entry = list_entry( _list, drm_map_list_t, head );&t;&bslash;&n;&t;&t;if ( _entry-&gt;map &amp;&amp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     _entry-&gt;map-&gt;offset == (_o) ) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;(_map) = _entry-&gt;map;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+multiline_comment|/**&n; * Drop mapping.&n; *&n; * &bslash;sa #DRM_FIND_MAP.&n; */
 DECL|macro|DRM_DROP_MAP
 mdefine_line|#define DRM_DROP_MAP(_map)
-multiline_comment|/* Internal types and structures */
+multiline_comment|/*@}*/
+multiline_comment|/***********************************************************************/
+multiline_comment|/** &bslash;name Internal types and structures */
+multiline_comment|/*@{*/
 DECL|macro|DRM_ARRAY_SIZE
 mdefine_line|#define DRM_ARRAY_SIZE(x) (sizeof(x)/sizeof(x[0]))
 DECL|macro|DRM_MIN
@@ -351,10 +374,13 @@ DECL|macro|DRM_BUFCOUNT
 mdefine_line|#define DRM_BUFCOUNT(x) ((x)-&gt;count - DRM_LEFTCOUNT(x))
 DECL|macro|DRM_WAITCOUNT
 mdefine_line|#define DRM_WAITCOUNT(dev,idx) DRM_BUFCOUNT(&amp;dev-&gt;queuelist[idx]-&gt;waitlist)
+multiline_comment|/**&n; * Get the private SAREA mapping.&n; *&n; * &bslash;param _dev DRM device.&n; * &bslash;param _ctx context number.&n; * &bslash;param _map output mapping.&n; */
 DECL|macro|DRM_GET_PRIV_SAREA
 mdefine_line|#define DRM_GET_PRIV_SAREA(_dev, _ctx, _map) do {&t;&bslash;&n;&t;(_map) = (_dev)-&gt;context_sareas[_ctx];&t;&t;&bslash;&n;} while(0)
+multiline_comment|/**&n; * Test that the hardware lock is held by the caller, returning otherwise.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param filp file pointer of the caller.&n; */
 DECL|macro|LOCK_TEST_WITH_RETURN
 mdefine_line|#define LOCK_TEST_WITH_RETURN( dev, filp )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !_DRM_LOCK_IS_HELD( dev-&gt;lock.hw_lock-&gt;lock ) ||&t;&t;&bslash;&n;&t;     dev-&gt;lock.filp != filp ) {&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;%s called without lock held&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+multiline_comment|/**&n; * Ioctl function type.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg argument.&n; */
 DECL|typedef|drm_ioctl_t
 r_typedef
 r_int
@@ -428,7 +454,7 @@ DECL|member|owner
 id|pid_t
 id|owner
 suffix:semicolon
-multiline_comment|/* X server pid holding x_lock */
+multiline_comment|/**&lt; X server pid holding x_lock */
 DECL|typedef|drm_devstate_t
 )brace
 id|drm_devstate_t
@@ -504,6 +530,7 @@ DECL|typedef|drm_vma_entry_t
 )brace
 id|drm_vma_entry_t
 suffix:semicolon
+multiline_comment|/**&n; * DMA buffer.&n; */
 DECL|struct|drm_buf
 r_typedef
 r_struct
@@ -513,81 +540,81 @@ DECL|member|idx
 r_int
 id|idx
 suffix:semicolon
-multiline_comment|/* Index into master buflist&t;     */
+multiline_comment|/**&lt; Index into master buflist */
 DECL|member|total
 r_int
 id|total
 suffix:semicolon
-multiline_comment|/* Buffer size&t;&t;&t;     */
+multiline_comment|/**&lt; Buffer size */
 DECL|member|order
 r_int
 id|order
 suffix:semicolon
-multiline_comment|/* log-base-2(total)&t;&t;     */
+multiline_comment|/**&lt; log-base-2(total) */
 DECL|member|used
 r_int
 id|used
 suffix:semicolon
-multiline_comment|/* Amount of buffer in use (for DMA)  */
+multiline_comment|/**&lt; Amount of buffer in use (for DMA) */
 DECL|member|offset
 r_int
 r_int
 id|offset
 suffix:semicolon
-multiline_comment|/* Byte offset (used internally)&t;     */
+multiline_comment|/**&lt; Byte offset (used internally) */
 DECL|member|address
 r_void
 op_star
 id|address
 suffix:semicolon
-multiline_comment|/* Address of buffer&t;&t;     */
+multiline_comment|/**&lt; Address of buffer */
 DECL|member|bus_address
 r_int
 r_int
 id|bus_address
 suffix:semicolon
-multiline_comment|/* Bus address of buffer&t;&t;     */
+multiline_comment|/**&lt; Bus address of buffer */
 DECL|member|next
 r_struct
 id|drm_buf
 op_star
 id|next
 suffix:semicolon
-multiline_comment|/* Kernel-only: used for free list    */
+multiline_comment|/**&lt; Kernel-only: used for free list */
 DECL|member|waiting
 id|__volatile__
 r_int
 id|waiting
 suffix:semicolon
-multiline_comment|/* On kernel DMA queue&t;&t;     */
+multiline_comment|/**&lt; On kernel DMA queue */
 DECL|member|pending
 id|__volatile__
 r_int
 id|pending
 suffix:semicolon
-multiline_comment|/* On hardware DMA queue&t;&t;     */
+multiline_comment|/**&lt; On hardware DMA queue */
 DECL|member|dma_wait
 id|wait_queue_head_t
 id|dma_wait
 suffix:semicolon
-multiline_comment|/* Processes waiting&t;&t;     */
+multiline_comment|/**&lt; Processes waiting */
 DECL|member|filp
 r_struct
 id|file
 op_star
 id|filp
 suffix:semicolon
-multiline_comment|/* Pointer to holding file descr&t;     */
+multiline_comment|/**&lt; Pointer to holding file descr */
 DECL|member|context
 r_int
 id|context
 suffix:semicolon
-multiline_comment|/* Kernel queue for this buffer&t;     */
+multiline_comment|/**&lt; Kernel queue for this buffer */
 DECL|member|while_locked
 r_int
 id|while_locked
 suffix:semicolon
-multiline_comment|/* Dispatch this buffer while locked  */
+multiline_comment|/**&lt; Dispatch this buffer while locked */
 r_enum
 (brace
 DECL|enumerator|DRM_LIST_NONE
@@ -623,23 +650,23 @@ DECL|member|list
 )brace
 id|list
 suffix:semicolon
-multiline_comment|/* Which list we&squot;re on&t;&t;     */
+multiline_comment|/**&lt; Which list we&squot;re on */
 DECL|member|dev_priv_size
 r_int
 id|dev_priv_size
 suffix:semicolon
-multiline_comment|/* Size of buffer private stoarge   */
+multiline_comment|/**&lt; Size of buffer private storage */
 DECL|member|dev_private
 r_void
 op_star
 id|dev_private
 suffix:semicolon
-multiline_comment|/* Per-buffer private storage       */
+multiline_comment|/**&lt; Per-buffer private storage */
 DECL|typedef|drm_buf_t
 )brace
 id|drm_buf_t
 suffix:semicolon
-multiline_comment|/* bufs is one longer than it has to be */
+multiline_comment|/** bufs is one longer than it has to be */
 DECL|struct|drm_waitlist
 r_typedef
 r_struct
@@ -649,35 +676,35 @@ DECL|member|count
 r_int
 id|count
 suffix:semicolon
-multiline_comment|/* Number of possible buffers&t;   */
+multiline_comment|/**&lt; Number of possible buffers */
 DECL|member|bufs
 id|drm_buf_t
 op_star
 op_star
 id|bufs
 suffix:semicolon
-multiline_comment|/* List of pointers to buffers&t;   */
+multiline_comment|/**&lt; List of pointers to buffers */
 DECL|member|rp
 id|drm_buf_t
 op_star
 op_star
 id|rp
 suffix:semicolon
-multiline_comment|/* Read pointer&t;&t;&t;   */
+multiline_comment|/**&lt; Read pointer */
 DECL|member|wp
 id|drm_buf_t
 op_star
 op_star
 id|wp
 suffix:semicolon
-multiline_comment|/* Write pointer&t;&t;   */
+multiline_comment|/**&lt; Write pointer */
 DECL|member|end
 id|drm_buf_t
 op_star
 op_star
 id|end
 suffix:semicolon
-multiline_comment|/* End pointer&t;&t;&t;   */
+multiline_comment|/**&lt; End pointer */
 DECL|member|read_lock
 id|spinlock_t
 id|read_lock
@@ -699,38 +726,38 @@ DECL|member|initialized
 r_int
 id|initialized
 suffix:semicolon
-multiline_comment|/* Freelist in use&t;&t;   */
+multiline_comment|/**&lt; Freelist in use */
 DECL|member|count
 id|atomic_t
 id|count
 suffix:semicolon
-multiline_comment|/* Number of free buffers&t;   */
+multiline_comment|/**&lt; Number of free buffers */
 DECL|member|next
 id|drm_buf_t
 op_star
 id|next
 suffix:semicolon
-multiline_comment|/* End pointer&t;&t;&t;   */
+multiline_comment|/**&lt; End pointer */
 DECL|member|waiting
 id|wait_queue_head_t
 id|waiting
 suffix:semicolon
-multiline_comment|/* Processes waiting on free bufs   */
+multiline_comment|/**&lt; Processes waiting on free bufs */
 DECL|member|low_mark
 r_int
 id|low_mark
 suffix:semicolon
-multiline_comment|/* Low water mark&t;&t;   */
+multiline_comment|/**&lt; Low water mark */
 DECL|member|high_mark
 r_int
 id|high_mark
 suffix:semicolon
-multiline_comment|/* High water mark&t;&t;   */
+multiline_comment|/**&lt; High water mark */
 DECL|member|wfh
 id|atomic_t
 id|wfh
 suffix:semicolon
-multiline_comment|/* If waiting for high mark&t;   */
+multiline_comment|/**&lt; If waiting for high mark */
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -739,6 +766,7 @@ DECL|typedef|drm_freelist_t
 )brace
 id|drm_freelist_t
 suffix:semicolon
+multiline_comment|/**&n; * Buffer entry.  There is one of this for each buffer size order.&n; */
 DECL|struct|drm_buf_entry
 r_typedef
 r_struct
@@ -748,15 +776,18 @@ DECL|member|buf_size
 r_int
 id|buf_size
 suffix:semicolon
+multiline_comment|/**&lt; size */
 DECL|member|buf_count
 r_int
 id|buf_count
 suffix:semicolon
+multiline_comment|/**&lt; number of buffers */
 DECL|member|buflist
 id|drm_buf_t
 op_star
 id|buflist
 suffix:semicolon
+multiline_comment|/**&lt; buffer list */
 DECL|member|seg_count
 r_int
 id|seg_count
@@ -779,6 +810,7 @@ DECL|typedef|drm_buf_entry_t
 )brace
 id|drm_buf_entry_t
 suffix:semicolon
+multiline_comment|/**&n; * Hardware lock.&n; *&n; * The lock structure is a simple cache-line aligned integer.  To avoid&n; * processor bus contention on a multiprocessor system, there should not be any&n; * other data stored in the same cache line.&n; */
 DECL|struct|drm_hw_lock
 r_typedef
 r_struct
@@ -790,6 +822,7 @@ r_int
 r_int
 id|lock
 suffix:semicolon
+multiline_comment|/**&lt; lock variable */
 DECL|member|padding
 r_char
 id|padding
@@ -797,11 +830,12 @@ id|padding
 l_int|60
 )braket
 suffix:semicolon
-multiline_comment|/* Pad to cache line */
+multiline_comment|/**&lt; Pad to cache line */
 DECL|typedef|drm_hw_lock_t
 )brace
 id|drm_hw_lock_t
 suffix:semicolon
+multiline_comment|/** File private data */
 DECL|struct|drm_file
 r_typedef
 r_struct
@@ -863,6 +897,7 @@ DECL|typedef|drm_file_t
 )brace
 id|drm_file_t
 suffix:semicolon
+multiline_comment|/** Wait queue */
 DECL|struct|drm_queue
 r_typedef
 r_struct
@@ -872,73 +907,74 @@ DECL|member|use_count
 id|atomic_t
 id|use_count
 suffix:semicolon
-multiline_comment|/* Outstanding uses (+1)&t;    */
+multiline_comment|/**&lt; Outstanding uses (+1) */
 DECL|member|finalization
 id|atomic_t
 id|finalization
 suffix:semicolon
-multiline_comment|/* Finalization in progress&t;    */
+multiline_comment|/**&lt; Finalization in progress */
 DECL|member|block_count
 id|atomic_t
 id|block_count
 suffix:semicolon
-multiline_comment|/* Count of processes waiting&t;    */
+multiline_comment|/**&lt; Count of processes waiting */
 DECL|member|block_read
 id|atomic_t
 id|block_read
 suffix:semicolon
-multiline_comment|/* Queue blocked for reads&t;    */
+multiline_comment|/**&lt; Queue blocked for reads */
 DECL|member|read_queue
 id|wait_queue_head_t
 id|read_queue
 suffix:semicolon
-multiline_comment|/* Processes waiting on block_read  */
+multiline_comment|/**&lt; Processes waiting on block_read */
 DECL|member|block_write
 id|atomic_t
 id|block_write
 suffix:semicolon
-multiline_comment|/* Queue blocked for writes&t;    */
+multiline_comment|/**&lt; Queue blocked for writes */
 DECL|member|write_queue
 id|wait_queue_head_t
 id|write_queue
 suffix:semicolon
-multiline_comment|/* Processes waiting on block_write */
+multiline_comment|/**&lt; Processes waiting on block_write */
 macro_line|#if 1
 DECL|member|total_queued
 id|atomic_t
 id|total_queued
 suffix:semicolon
-multiline_comment|/* Total queued statistic&t;    */
+multiline_comment|/**&lt; Total queued statistic */
 DECL|member|total_flushed
 id|atomic_t
 id|total_flushed
 suffix:semicolon
-multiline_comment|/* Total flushes statistic&t;    */
+multiline_comment|/**&lt; Total flushes statistic */
 DECL|member|total_locks
 id|atomic_t
 id|total_locks
 suffix:semicolon
-multiline_comment|/* Total locks statistics&t;    */
+multiline_comment|/**&lt; Total locks statistics */
 macro_line|#endif
 DECL|member|flags
 id|drm_ctx_flags_t
 id|flags
 suffix:semicolon
-multiline_comment|/* Context preserving and 2D-only   */
+multiline_comment|/**&lt; Context preserving and 2D-only */
 DECL|member|waitlist
 id|drm_waitlist_t
 id|waitlist
 suffix:semicolon
-multiline_comment|/* Pending buffers&t;&t;    */
+multiline_comment|/**&lt; Pending buffers */
 DECL|member|flush_queue
 id|wait_queue_head_t
 id|flush_queue
 suffix:semicolon
-multiline_comment|/* Processes waiting until flush    */
+multiline_comment|/**&lt; Processes waiting until flush */
 DECL|typedef|drm_queue_t
 )brace
 id|drm_queue_t
 suffix:semicolon
+multiline_comment|/**&n; * Lock data.&n; */
 DECL|struct|drm_lock_data
 r_typedef
 r_struct
@@ -949,29 +985,30 @@ id|drm_hw_lock_t
 op_star
 id|hw_lock
 suffix:semicolon
-multiline_comment|/* Hardware lock&t;&t;   */
+multiline_comment|/**&lt; Hardware lock */
 DECL|member|filp
 r_struct
 id|file
 op_star
 id|filp
 suffix:semicolon
-multiline_comment|/* File descr of lock holder (0=kernel)   */
+multiline_comment|/**&lt; File descr of lock holder (0=kernel) */
 DECL|member|lock_queue
 id|wait_queue_head_t
 id|lock_queue
 suffix:semicolon
-multiline_comment|/* Queue of blocked processes&t;   */
+multiline_comment|/**&lt; Queue of blocked processes */
 DECL|member|lock_time
 r_int
 r_int
 id|lock_time
 suffix:semicolon
-multiline_comment|/* Time of last lock in jiffies&t;   */
+multiline_comment|/**&lt; Time of last lock in jiffies */
 DECL|typedef|drm_lock_data_t
 )brace
 id|drm_lock_data_t
 suffix:semicolon
+multiline_comment|/**&n; * DMA data.&n; */
 DECL|struct|drm_device_dma
 r_typedef
 r_struct
@@ -986,17 +1023,19 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/**&lt; buffers, grouped by their size order */
 DECL|member|buf_count
 r_int
 id|buf_count
 suffix:semicolon
+multiline_comment|/**&lt; total number of buffers */
 DECL|member|buflist
 id|drm_buf_t
 op_star
 op_star
 id|buflist
 suffix:semicolon
-multiline_comment|/* Vector of pointers info bufs&t;   */
+multiline_comment|/**&lt; Vector of pointers into drm_device_dma::bufs */
 DECL|member|seg_count
 r_int
 id|seg_count
@@ -1005,12 +1044,14 @@ DECL|member|page_count
 r_int
 id|page_count
 suffix:semicolon
+multiline_comment|/**&lt; number of pages */
 DECL|member|pagelist
 r_int
 r_int
 op_star
 id|pagelist
 suffix:semicolon
+multiline_comment|/**&lt; page list */
 DECL|member|byte_count
 r_int
 r_int
@@ -1031,35 +1072,38 @@ DECL|member|flags
 )brace
 id|flags
 suffix:semicolon
-multiline_comment|/* DMA support */
+multiline_comment|/** &bslash;name DMA support */
+multiline_comment|/*@{*/
 DECL|member|this_buffer
 id|drm_buf_t
 op_star
 id|this_buffer
 suffix:semicolon
-multiline_comment|/* Buffer being sent&t;&t;   */
+multiline_comment|/**&lt; Buffer being sent */
 DECL|member|next_buffer
 id|drm_buf_t
 op_star
 id|next_buffer
 suffix:semicolon
-multiline_comment|/* Selected buffer to send&t;   */
+multiline_comment|/**&lt; Selected buffer to send */
 DECL|member|next_queue
 id|drm_queue_t
 op_star
 id|next_queue
 suffix:semicolon
-multiline_comment|/* Queue from which buffer selected*/
+multiline_comment|/**&lt; Queue from which buffer selected*/
 DECL|member|waiting
 id|wait_queue_head_t
 id|waiting
 suffix:semicolon
-multiline_comment|/* Processes waiting on free bufs  */
+multiline_comment|/**&lt; Processes waiting on free bufs */
+multiline_comment|/*@}*/
 DECL|typedef|drm_device_dma_t
 )brace
 id|drm_device_dma_t
 suffix:semicolon
 macro_line|#if __REALLY_HAVE_AGP
+multiline_comment|/** &n; * AGP memory entry.  Stored as a doubly linked list.&n; */
 DECL|struct|drm_agp_mem
 r_typedef
 r_struct
@@ -1070,6 +1114,7 @@ r_int
 r_int
 id|handle
 suffix:semicolon
+multiline_comment|/**&lt; handle */
 DECL|member|memory
 r_struct
 id|agp_memory
@@ -1081,7 +1126,7 @@ r_int
 r_int
 id|bound
 suffix:semicolon
-multiline_comment|/* address */
+multiline_comment|/**&lt; address */
 DECL|member|pages
 r_int
 id|pages
@@ -1092,16 +1137,19 @@ id|drm_agp_mem
 op_star
 id|prev
 suffix:semicolon
+multiline_comment|/**&lt; previous entry */
 DECL|member|next
 r_struct
 id|drm_agp_mem
 op_star
 id|next
 suffix:semicolon
+multiline_comment|/**&lt; next entry */
 DECL|typedef|drm_agp_mem_t
 )brace
 id|drm_agp_mem_t
 suffix:semicolon
+multiline_comment|/**&n; * AGP data.&n; *&n; * &bslash;sa DRM(agp_init)() and drm_device::agp.&n; */
 DECL|struct|drm_agp_head
 r_typedef
 r_struct
@@ -1112,24 +1160,29 @@ r_struct
 id|agp_kern_info
 id|agp_info
 suffix:semicolon
+multiline_comment|/**&lt; AGP device information */
 DECL|member|memory
 id|drm_agp_mem_t
 op_star
 id|memory
 suffix:semicolon
+multiline_comment|/**&lt; memory entries */
 DECL|member|mode
 r_int
 r_int
 id|mode
 suffix:semicolon
+multiline_comment|/**&lt; AGP mode */
 DECL|member|enabled
 r_int
 id|enabled
 suffix:semicolon
+multiline_comment|/**&lt; whether the AGP bus as been enabled */
 DECL|member|acquired
 r_int
 id|acquired
 suffix:semicolon
+multiline_comment|/**&lt; whether the AGP device has been acquired */
 DECL|member|base
 r_int
 r_int
@@ -1153,6 +1206,7 @@ DECL|typedef|drm_agp_head_t
 id|drm_agp_head_t
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/**&n; * Scatter-gather memory.&n; */
 DECL|struct|drm_sg_mem
 r_typedef
 r_struct
@@ -1206,6 +1260,7 @@ DECL|typedef|drm_sigdata_t
 )brace
 id|drm_sigdata_t
 suffix:semicolon
+multiline_comment|/**&n; * Mappings list&n; */
 DECL|struct|drm_map_list
 r_typedef
 r_struct
@@ -1216,11 +1271,13 @@ r_struct
 id|list_head
 id|head
 suffix:semicolon
+multiline_comment|/**&lt; list head */
 DECL|member|map
 id|drm_map_t
 op_star
 id|map
 suffix:semicolon
+multiline_comment|/**&lt; mapping */
 DECL|typedef|drm_map_list_t
 )brace
 id|drm_map_list_t
@@ -1262,6 +1319,7 @@ DECL|typedef|drm_vbl_sig_t
 id|drm_vbl_sig_t
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/**&n; * DRM device structure.&n; */
 DECL|struct|drm_device
 r_typedef
 r_struct
@@ -1273,80 +1331,85 @@ r_char
 op_star
 id|name
 suffix:semicolon
-multiline_comment|/* Simple driver name&t;&t;   */
+multiline_comment|/**&lt; Simple driver name */
 DECL|member|unique
 r_char
 op_star
 id|unique
 suffix:semicolon
-multiline_comment|/* Unique identifier: e.g., busid  */
+multiline_comment|/**&lt; Unique identifier: e.g., busid */
 DECL|member|unique_len
 r_int
 id|unique_len
 suffix:semicolon
-multiline_comment|/* Length of unique field&t;   */
+multiline_comment|/**&lt; Length of unique field */
 DECL|member|device
 id|dev_t
 id|device
 suffix:semicolon
-multiline_comment|/* Device number for mknod&t;   */
+multiline_comment|/**&lt; Device number for mknod */
 DECL|member|devname
 r_char
 op_star
 id|devname
 suffix:semicolon
-multiline_comment|/* For /proc/interrupts&t;&t;   */
+multiline_comment|/**&lt; For /proc/interrupts */
 DECL|member|blocked
 r_int
 id|blocked
 suffix:semicolon
-multiline_comment|/* Blocked due to VC switch?&t;   */
+multiline_comment|/**&lt; Blocked due to VC switch? */
 DECL|member|root
 r_struct
 id|proc_dir_entry
 op_star
 id|root
 suffix:semicolon
-multiline_comment|/* Root for this device&squot;s entries  */
-multiline_comment|/* Locks */
+multiline_comment|/**&lt; Root for this device&squot;s entries */
+multiline_comment|/** &bslash;name Locks */
+multiline_comment|/*@{*/
 DECL|member|count_lock
 id|spinlock_t
 id|count_lock
 suffix:semicolon
-multiline_comment|/* For inuse, open_count, buf_use  */
+multiline_comment|/**&lt; For inuse, drm_device::open_count, drm_device::buf_use */
 DECL|member|struct_sem
 r_struct
 id|semaphore
 id|struct_sem
 suffix:semicolon
-multiline_comment|/* For others&t;&t;&t;   */
-multiline_comment|/* Usage Counters */
+multiline_comment|/**&lt; For others */
+multiline_comment|/*@}*/
+multiline_comment|/** &bslash;name Usage Counters */
+multiline_comment|/*@{*/
 DECL|member|open_count
 r_int
 id|open_count
 suffix:semicolon
-multiline_comment|/* Outstanding files open&t;   */
+multiline_comment|/**&lt; Outstanding files open */
 DECL|member|ioctl_count
 id|atomic_t
 id|ioctl_count
 suffix:semicolon
-multiline_comment|/* Outstanding IOCTLs pending&t;   */
+multiline_comment|/**&lt; Outstanding IOCTLs pending */
 DECL|member|vma_count
 id|atomic_t
 id|vma_count
 suffix:semicolon
-multiline_comment|/* Outstanding vma areas open&t;   */
+multiline_comment|/**&lt; Outstanding vma areas open */
 DECL|member|buf_use
 r_int
 id|buf_use
 suffix:semicolon
-multiline_comment|/* Buffers in use -- cannot alloc  */
+multiline_comment|/**&lt; Buffers in use -- cannot alloc */
 DECL|member|buf_alloc
 id|atomic_t
 id|buf_alloc
 suffix:semicolon
-multiline_comment|/* Buffer allocation in progress   */
-multiline_comment|/* Performance counters */
+multiline_comment|/**&lt; Buffer allocation in progress */
+multiline_comment|/*@}*/
+multiline_comment|/** &bslash;name Performance counters */
+multiline_comment|/*@{*/
 DECL|member|counters
 r_int
 r_int
@@ -1366,17 +1429,21 @@ id|counts
 l_int|15
 )braket
 suffix:semicolon
-multiline_comment|/* Authentication */
+multiline_comment|/*@}*/
+multiline_comment|/** &bslash;name Authentication */
+multiline_comment|/*@{*/
 DECL|member|file_first
 id|drm_file_t
 op_star
 id|file_first
 suffix:semicolon
+multiline_comment|/**&lt; file list head */
 DECL|member|file_last
 id|drm_file_t
 op_star
 id|file_last
 suffix:semicolon
+multiline_comment|/**&lt; file list tail */
 DECL|member|magiclist
 id|drm_magic_head_t
 id|magiclist
@@ -1384,19 +1451,28 @@ id|magiclist
 id|DRM_HASH_SIZE
 )braket
 suffix:semicolon
-multiline_comment|/* Memory management */
+multiline_comment|/**&lt; magic hash table */
+multiline_comment|/*@}*/
+multiline_comment|/** &bslash;name Memory management */
+multiline_comment|/*@{*/
 DECL|member|maplist
 id|drm_map_list_t
 op_star
 id|maplist
 suffix:semicolon
-multiline_comment|/* Linked list of regions&t;   */
+multiline_comment|/**&lt; Linked list of regions */
+DECL|member|map_count
+r_int
+id|map_count
+suffix:semicolon
+multiline_comment|/**&lt; Number of mappable regions */
 DECL|member|context_sareas
 id|drm_map_t
 op_star
 op_star
 id|context_sareas
 suffix:semicolon
+multiline_comment|/**&lt; per-context SAREA&squot;s */
 DECL|member|max_context
 r_int
 id|max_context
@@ -1406,102 +1482,110 @@ id|drm_vma_entry_t
 op_star
 id|vmalist
 suffix:semicolon
-multiline_comment|/* List of vmas (for debugging)&t;   */
+multiline_comment|/**&lt; List of vmas (for debugging) */
 DECL|member|lock
 id|drm_lock_data_t
 id|lock
 suffix:semicolon
-multiline_comment|/* Information on hardware lock&t;   */
-multiline_comment|/* DMA queues (contexts) */
+multiline_comment|/**&lt; Information on hardware lock */
+multiline_comment|/*@}*/
+multiline_comment|/** &bslash;name DMA queues (contexts) */
+multiline_comment|/*@{*/
 DECL|member|queue_count
 r_int
 id|queue_count
 suffix:semicolon
-multiline_comment|/* Number of active DMA queues&t;   */
+multiline_comment|/**&lt; Number of active DMA queues */
 DECL|member|queue_reserved
 r_int
 id|queue_reserved
 suffix:semicolon
-multiline_comment|/* Number of reserved DMA queues */
+multiline_comment|/**&lt; Number of reserved DMA queues */
 DECL|member|queue_slots
 r_int
 id|queue_slots
 suffix:semicolon
-multiline_comment|/* Actual length of queuelist&t;   */
+multiline_comment|/**&lt; Actual length of queuelist */
 DECL|member|queuelist
 id|drm_queue_t
 op_star
 op_star
 id|queuelist
 suffix:semicolon
-multiline_comment|/* Vector of pointers to DMA queues */
+multiline_comment|/**&lt; Vector of pointers to DMA queues */
 DECL|member|dma
 id|drm_device_dma_t
 op_star
 id|dma
 suffix:semicolon
-multiline_comment|/* Optional pointer for DMA support */
-multiline_comment|/* Context support */
+multiline_comment|/**&lt; Optional pointer for DMA support */
+multiline_comment|/*@}*/
+multiline_comment|/** &bslash;name Context support */
+multiline_comment|/*@{*/
 DECL|member|irq
 r_int
 id|irq
 suffix:semicolon
-multiline_comment|/* Interrupt used by board&t;   */
+multiline_comment|/**&lt; Interrupt used by board */
 DECL|member|context_flag
 id|__volatile__
 r_int
 id|context_flag
 suffix:semicolon
-multiline_comment|/* Context swapping flag&t;   */
+multiline_comment|/**&lt; Context swapping flag */
 DECL|member|interrupt_flag
 id|__volatile__
 r_int
 id|interrupt_flag
 suffix:semicolon
-multiline_comment|/* Interruption handler flag&t;   */
+multiline_comment|/**&lt; Interruption handler flag */
 DECL|member|dma_flag
 id|__volatile__
 r_int
 id|dma_flag
 suffix:semicolon
-multiline_comment|/* DMA dispatch flag&t;&t;   */
+multiline_comment|/**&lt; DMA dispatch flag */
 DECL|member|timer
 r_struct
 id|timer_list
 id|timer
 suffix:semicolon
-multiline_comment|/* Timer for delaying ctx switch   */
+multiline_comment|/**&lt; Timer for delaying ctx switch */
 DECL|member|context_wait
 id|wait_queue_head_t
 id|context_wait
 suffix:semicolon
-multiline_comment|/* Processes waiting on ctx switch */
+multiline_comment|/**&lt; Processes waiting on ctx switch */
 DECL|member|last_checked
 r_int
 id|last_checked
 suffix:semicolon
-multiline_comment|/* Last context checked for DMA&t;   */
+multiline_comment|/**&lt; Last context checked for DMA */
 DECL|member|last_context
 r_int
 id|last_context
 suffix:semicolon
-multiline_comment|/* Last current context&t;&t;   */
+multiline_comment|/**&lt; Last current context */
 DECL|member|last_switch
 r_int
 r_int
 id|last_switch
 suffix:semicolon
-multiline_comment|/* jiffies at last context switch  */
+multiline_comment|/**&lt; jiffies at last context switch */
+multiline_comment|/*@}*/
 DECL|member|work
 r_struct
 id|work_struct
 id|work
 suffix:semicolon
+multiline_comment|/** &bslash;name VBLANK IRQ support */
+multiline_comment|/*@{*/
 macro_line|#if __HAVE_VBL_IRQ
 DECL|member|vbl_queue
 id|wait_queue_head_t
 id|vbl_queue
 suffix:semicolon
+multiline_comment|/**&lt; VBLANK wait queue */
 DECL|member|vbl_received
 id|atomic_t
 id|vbl_received
@@ -1514,12 +1598,14 @@ DECL|member|vbl_sigs
 id|drm_vbl_sig_t
 id|vbl_sigs
 suffix:semicolon
+multiline_comment|/**&lt; signal list to send on VBLANK */
 DECL|member|vbl_pending
 r_int
 r_int
 id|vbl_pending
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*@}*/
 DECL|member|ctx_start
 id|cycles_t
 id|ctx_start
@@ -1528,7 +1614,6 @@ DECL|member|lck_start
 id|cycles_t
 id|lck_start
 suffix:semicolon
-multiline_comment|/* Callback to X server for context switch&n;&t;&t;&t;&t;   and for heavy-handed reset. */
 DECL|member|buf
 r_char
 id|buf
@@ -1536,48 +1621,49 @@ id|buf
 id|DRM_BSZ
 )braket
 suffix:semicolon
-multiline_comment|/* Output buffer&t;&t;   */
+multiline_comment|/**&lt; Output buffer */
 DECL|member|buf_rp
 r_char
 op_star
 id|buf_rp
 suffix:semicolon
-multiline_comment|/* Read pointer&t;&t;&t;   */
+multiline_comment|/**&lt; Read pointer */
 DECL|member|buf_wp
 r_char
 op_star
 id|buf_wp
 suffix:semicolon
-multiline_comment|/* Write pointer&t;&t;   */
+multiline_comment|/**&lt; Write pointer */
 DECL|member|buf_end
 r_char
 op_star
 id|buf_end
 suffix:semicolon
-multiline_comment|/* End pointer&t;&t;&t;   */
+multiline_comment|/**&lt; End pointer */
 DECL|member|buf_async
 r_struct
 id|fasync_struct
 op_star
 id|buf_async
 suffix:semicolon
-multiline_comment|/* Processes waiting for SIGIO&t;   */
+multiline_comment|/**&lt; Processes waiting for SIGIO */
 DECL|member|buf_readers
 id|wait_queue_head_t
 id|buf_readers
 suffix:semicolon
-multiline_comment|/* Processes waiting to read&t;   */
+multiline_comment|/**&lt; Processes waiting to read */
 DECL|member|buf_writers
 id|wait_queue_head_t
 id|buf_writers
 suffix:semicolon
-multiline_comment|/* Processes waiting to ctx switch */
+multiline_comment|/**&lt; Processes waiting to ctx switch */
 macro_line|#if __REALLY_HAVE_AGP
 DECL|member|agp
 id|drm_agp_head_t
 op_star
 id|agp
 suffix:semicolon
+multiline_comment|/**&lt; AGP data */
 macro_line|#endif
 DECL|member|pdev
 r_struct
@@ -1585,6 +1671,7 @@ id|pci_dev
 op_star
 id|pdev
 suffix:semicolon
+multiline_comment|/**&lt; PCI device structure */
 macro_line|#ifdef __alpha__
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,3)
 DECL|member|hose
@@ -1607,23 +1694,25 @@ id|drm_sg_mem_t
 op_star
 id|sg
 suffix:semicolon
-multiline_comment|/* Scatter gather memory */
+multiline_comment|/**&lt; Scatter gather memory */
 DECL|member|ctx_bitmap
 r_int
 r_int
 op_star
 id|ctx_bitmap
 suffix:semicolon
+multiline_comment|/**&lt; context bitmap */
 DECL|member|dev_private
 r_void
 op_star
 id|dev_private
 suffix:semicolon
+multiline_comment|/**&lt; device private data */
 DECL|member|sigdata
 id|drm_sigdata_t
 id|sigdata
 suffix:semicolon
-multiline_comment|/* For block_all_signals */
+multiline_comment|/**&lt; For block_all_signals */
 DECL|member|sigmask
 id|sigset_t
 id|sigmask
@@ -1632,7 +1721,9 @@ DECL|typedef|drm_device_t
 )brace
 id|drm_device_t
 suffix:semicolon
-multiline_comment|/* ================================================================&n; * Internal function definitions&n; */
+multiline_comment|/******************************************************************/
+multiline_comment|/** &bslash;name Internal function definitions */
+multiline_comment|/*@{*/
 multiline_comment|/* Misc. support (drm_init.h) */
 r_extern
 r_int
@@ -4052,6 +4143,7 @@ id|dma_addr_t
 id|bus_addr
 )paren
 suffix:semicolon
+multiline_comment|/*@}*/
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

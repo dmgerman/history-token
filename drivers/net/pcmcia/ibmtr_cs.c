@@ -921,7 +921,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -931,7 +931,7 @@ id|ti-&gt;tr_timer
 )paren
 suffix:semicolon
 )brace
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp

@@ -7,11 +7,12 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;        /* for request_irq/free_irq */        
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/pc_keyb.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
+macro_line|#include &lt;linux/pci_ids.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/parisc-device.h&gt;
 multiline_comment|/* Debugging stuff */
 DECL|macro|KBD_DEBUG
 macro_line|#undef KBD_DEBUG
@@ -28,6 +29,8 @@ DECL|macro|AUX_RECONNECT
 mdefine_line|#define AUX_RECONNECT&t;&t;0xAA&t;/* PS/2 Mouse end of test successful */
 DECL|macro|AUX_REPLY_ACK
 mdefine_line|#define AUX_REPLY_ACK&t;&t;0xFA
+DECL|macro|AUX_ENABLE_DEV
+mdefine_line|#define AUX_ENABLE_DEV&t;&t;0xF4&t;/* Enables aux device */
 multiline_comment|/* Order of the mouse bytes coming to the host */
 DECL|macro|PACKET_X
 mdefine_line|#define PACKET_X&t;&t;1
@@ -109,6 +112,17 @@ DECL|macro|MOUSE_XOVFLOW
 mdefine_line|#define MOUSE_XOVFLOW&t;&t;0x40
 DECL|macro|MOUSE_YOVFLOW
 mdefine_line|#define MOUSE_YOVFLOW&t;&t;0x80
+multiline_comment|/* Remnant of pc_keyb.h */
+DECL|macro|KBD_CMD_SET_LEDS
+mdefine_line|#define KBD_CMD_SET_LEDS&t;0xED&t;/* Sets keyboard leds */
+DECL|macro|KBD_CMD_SET_RATE
+mdefine_line|#define KBD_CMD_SET_RATE&t;0xF3&t;/* Sets typematic rate */
+DECL|macro|KBD_CMD_ENABLE
+mdefine_line|#define KBD_CMD_ENABLE&t;&t;0xF4&t;/* Enables scanning */
+DECL|macro|KBD_CMD_DISABLE
+mdefine_line|#define KBD_CMD_DISABLE&t;&t;0xF5
+DECL|macro|KBD_CMD_RESET
+mdefine_line|#define KBD_CMD_RESET&t;&t;0xFF
 DECL|variable|hpkeyb_keycode
 r_static
 r_int
@@ -1757,12 +1771,7 @@ comma
 id|hpkeyb.released
 )paren
 suffix:semicolon
-id|input_regs
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
+multiline_comment|/*input_regs(regs);*/
 id|input_report_key
 c_func
 (paren
@@ -1951,12 +1960,7 @@ c_func
 l_string|&quot;Mouse: position overflow&bslash;n&quot;
 )paren
 suffix:semicolon
-id|input_regs
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
+multiline_comment|/*input_regs(regs);*/
 id|input_report_key
 c_func
 (paren
@@ -2100,7 +2104,7 @@ suffix:semicolon
 multiline_comment|/**&n; * gscps2_interrupt() - Interruption service routine&n; *&n; * This processes the list of scancodes queued and sends appropriate&n; * key value to the system.&n; */
 DECL|function|gscps2_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|gscps2_interrupt
 c_func
 (paren
@@ -2152,6 +2156,9 @@ c_func
 (paren
 id|reg
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * gscps2_hpkeyb_event() - Event handler&n; * @return: success/error report&n; *&n; * Currently only updates leds on keyboard&n; */
@@ -2587,7 +2594,7 @@ id|BUS_GSC
 suffix:semicolon
 id|hpkeyb.dev.id.vendor
 op_assign
-l_int|0x0001
+id|PCI_VENDOR_ID_HP
 suffix:semicolon
 id|hpkeyb.dev.id.product
 op_assign
@@ -2782,6 +2789,8 @@ id|name
 suffix:semicolon
 r_int
 id|ret
+op_assign
+l_int|0
 comma
 id|device_found
 op_assign

@@ -71,7 +71,11 @@ id|inode-&gt;i_ctime
 suffix:semicolon
 id|stat-&gt;size
 op_assign
-id|inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 id|stat-&gt;blocks
 op_assign

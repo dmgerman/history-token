@@ -313,6 +313,8 @@ mdefine_line|#define TRACEREG32_SZ&t;sizeof(struct pt_regs32)
 DECL|macro|STACKFRAME32_SZ
 mdefine_line|#define STACKFRAME32_SZ&t;sizeof(struct sparc_stackf32)
 macro_line|#ifdef __KERNEL__
+DECL|macro|force_successful_syscall_return
+mdefine_line|#define force_successful_syscall_return()&t;&bslash;&n;&t;set_thread_flag(TIF_SYSCALL_SUCCESS)
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (!((regs)-&gt;tstate &amp; TSTATE_PRIV))
 DECL|macro|instruction_pointer

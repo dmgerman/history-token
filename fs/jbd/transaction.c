@@ -479,21 +479,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n;&t; * The commit code assumes that it can get enough log space&n;&t; * without forcing a checkpoint.  This is *critical* for&n;&t; * correctness: a checkpoint of a buffer which is also&n;&t; * associated with a committing transaction creates a deadlock,&n;&t; * so commit simply cannot force through checkpoints.&n;&t; *&n;&t; * We must therefore ensure the necessary space in the journal&n;&t; * *before* starting to dirty potentially checkpointed buffers&n;&t; * in the new transaction. &n;&t; *&n;&t; * The worst part is, any transaction currently committing can&n;&t; * reduce the free space arbitrarily.  Be careful to account for&n;&t; * those buffers when checkpointing.&n;&t; */
 multiline_comment|/*&n;&t; * @@@ AKPM: This seems rather over-defensive.  We&squot;re giving commit&n;&t; * a _lot_ of headroom: 1/4 of the journal plus the size of&n;&t; * the committing transaction.  Really, we only need to give it&n;&t; * committing_transaction-&gt;t_outstanding_credits plus &quot;enough&quot; for&n;&t; * the log control blocks.&n;&t; * Also, this test is inconsitent with the matching one in&n;&t; * journal_extend().&n;&t; */
-id|needed
-op_assign
-id|journal-&gt;j_max_transaction_buffers
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|journal-&gt;j_committing_transaction
-)paren
-id|needed
-op_add_assign
-id|journal-&gt;j_committing_transaction
-op_member_access_from_pointer
-id|t_outstanding_credits
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -503,7 +488,11 @@ c_func
 id|journal
 )paren
 OL
-id|needed
+id|jbd_space_needed
+c_func
+(paren
+id|journal
+)paren
 )paren
 (brace
 id|jbd_debug
@@ -527,8 +516,6 @@ id|__log_wait_for_space
 c_func
 (paren
 id|journal
-comma
-id|needed
 )paren
 suffix:semicolon
 r_goto

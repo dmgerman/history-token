@@ -2,7 +2,7 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef KERNEL_IRDA_H
 DECL|macro|KERNEL_IRDA_H
 mdefine_line|#define KERNEL_IRDA_H
-macro_line|#include &lt;linux/socket.h&gt; /* only for sa_family_t */
+multiline_comment|/* Please do *not* add any #include in this file, this file is&n; * included as-is in user space.&n; * Please fix the calling file to properly included needed files before&n; * this one, or preferably to include &lt;net/irda/irda.h&gt; instead.&n; * Jean II */
 multiline_comment|/* Hint bit positions for first hint byte */
 DECL|macro|HINT_PNP
 mdefine_line|#define HINT_PNP         0x01

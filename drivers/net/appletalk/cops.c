@@ -1232,7 +1232,9 @@ id|cops_timer.expires
 op_assign
 id|jiffies
 op_plus
-l_int|5
+id|HZ
+op_div
+l_int|20
 suffix:semicolon
 id|add_timer
 c_func
@@ -2382,11 +2384,14 @@ id|TANG_TX_READY
 (brace
 suffix:semicolon
 )brace
+multiline_comment|/* poll 20 times per second */
 id|cops_timer.expires
 op_assign
 id|jiffies
 op_plus
-l_int|5
+id|HZ
+op_div
+l_int|20
 suffix:semicolon
 id|add_timer
 c_func

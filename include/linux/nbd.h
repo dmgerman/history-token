@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * 1999 Copyright (C) Pavel Machek, pavel@ucw.cz. This code is GPL.&n; * 1999/11/04 Copyright (C) 1999 VMware, Inc. (Regis &quot;HPReg&quot; Duchesne)&n; *            Made nbd_end_request() use the io_request_lock&n; * 2001 Copyright (C) Steven Whitehouse&n; *            New nbd_end_request() for compatibility with new linux block&n; *            layer code.&n; */
+multiline_comment|/*&n; * 1999 Copyright (C) Pavel Machek, pavel@ucw.cz. This code is GPL.&n; * 1999/11/04 Copyright (C) 1999 VMware, Inc. (Regis &quot;HPReg&quot; Duchesne)&n; *            Made nbd_end_request() use the io_request_lock&n; * 2001 Copyright (C) Steven Whitehouse&n; *            New nbd_end_request() for compatibility with new linux block&n; *            layer code.&n; * 2003/06/24 Louis D. Langholtz &lt;ldl@aros.net&gt;&n; *            Removed unneeded blksize_bits field from nbd_device struct.&n; *            Cleanup PARANOIA usage &amp; code.&n; */
 macro_line|#ifndef LINUX_NBD_H
 DECL|macro|LINUX_NBD_H
 mdefine_line|#define LINUX_NBD_H
@@ -38,28 +38,17 @@ op_assign
 l_int|2
 )brace
 suffix:semicolon
-macro_line|#ifdef PARANOIA
-r_extern
-r_int
-id|requests_in
-suffix:semicolon
-r_extern
-r_int
-id|requests_out
-suffix:semicolon
-macro_line|#endif
 DECL|macro|nbd_cmd
 mdefine_line|#define nbd_cmd(req) ((req)-&gt;cmd[0])
 DECL|macro|MAX_NBD
 mdefine_line|#define MAX_NBD 128
+multiline_comment|/* Define PARANOIA to include extra sanity checking code in here &amp; driver */
+DECL|macro|PARANOIA
+mdefine_line|#define PARANOIA
 DECL|struct|nbd_device
 r_struct
 id|nbd_device
 (brace
-DECL|member|refcnt
-r_int
-id|refcnt
-suffix:semicolon
 DECL|member|flags
 r_int
 id|flags
@@ -86,11 +75,13 @@ op_star
 id|file
 suffix:semicolon
 multiline_comment|/* If == NULL, device is not ready, yet&t;*/
+macro_line|#ifdef PARANOIA
 DECL|member|magic
 r_int
 id|magic
 suffix:semicolon
 multiline_comment|/* FIXME: not if debugging is off&t;*/
+macro_line|#endif
 DECL|member|queue_lock
 id|spinlock_t
 id|queue_lock
@@ -115,10 +106,6 @@ suffix:semicolon
 DECL|member|blksize
 r_int
 id|blksize
-suffix:semicolon
-DECL|member|blksize_bits
-r_int
-id|blksize_bits
 suffix:semicolon
 DECL|member|bytesize
 id|u64

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sysctl.h: General linux system control interface&n; *&n; * Begun 24 March 1995, Stephen Tweedie&n; *&n; ****************************************************************&n; ****************************************************************&n; **&n; **  WARNING:  &n; **  The values in this file are exported to user space via &n; **  the sysctl() binary interface.  Do *NOT* change the &n; **  numbering of any existing values here, and do not change&n; **  any numbers within any one set of values.  If you have&n; **  to redefine an existing interface, use a new number for it.&n; **  The kernel will then return ENOTDIR to any application using&n; **  the old binary interface.&n; **&n; **  --sct&n; **&n; ****************************************************************&n; ****************************************************************&n; */
+multiline_comment|/*&n; * sysctl.h: General linux system control interface&n; *&n; * Begun 24 March 1995, Stephen Tweedie&n; *&n; ****************************************************************&n; ****************************************************************&n; **&n; **  The values in this file are exported to user space via &n; **  the sysctl() binary interface.  However this interface&n; **  is unstable and deprecated and will be removed in the future. &n; **  For a stable interface use /proc/sys.&n; **&n; ****************************************************************&n; ****************************************************************&n; */
 macro_line|#ifndef _LINUX_SYSCTL_H
 DECL|macro|_LINUX_SYSCTL_H
 mdefine_line|#define _LINUX_SYSCTL_H
@@ -425,6 +425,18 @@ op_assign
 l_int|57
 comma
 multiline_comment|/* int: whether we will panic on an oops */
+DECL|enumerator|KERN_HPPA_PWRSW
+id|KERN_HPPA_PWRSW
+op_assign
+l_int|58
+comma
+multiline_comment|/* int: hppa soft-power enable */
+DECL|enumerator|KERN_HPPA_UNALIGNED
+id|KERN_HPPA_UNALIGNED
+op_assign
+l_int|59
+comma
+multiline_comment|/* int: hppa unaligned-trap enable */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */

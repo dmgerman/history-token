@@ -22,14 +22,6 @@ macro_line|#include &lt;asm/sn/ioc3.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 macro_line|#ifdef __ia64
-DECL|macro|rmallocmap
-mdefine_line|#define rmallocmap atemapalloc
-DECL|macro|rmfreemap
-mdefine_line|#define rmfreemap atemapfree
-DECL|macro|rmfree
-mdefine_line|#define rmfree atefree
-DECL|macro|rmalloc
-mdefine_line|#define rmalloc atealloc
 r_inline
 r_int
 DECL|function|compare_and_swap_ptr

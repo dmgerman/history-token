@@ -397,8 +397,7 @@ DECL|macro|NO_MORE_UNUSED_CONTIGUOUS_BLOCKS
 mdefine_line|#define NO_MORE_UNUSED_CONTIGUOUS_BLOCKS (-5)
 DECL|typedef|b_blocknr_t
 r_typedef
-r_int
-r_int
+id|__u32
 id|b_blocknr_t
 suffix:semicolon
 DECL|typedef|unp_t
@@ -1056,6 +1055,9 @@ id|uniqueness
 r_switch
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|uniqueness
 )paren
 (brace
@@ -3761,8 +3763,7 @@ r_struct
 id|super_block
 op_star
 comma
-r_int
-r_int
+id|b_blocknr_t
 id|blocknr
 )paren
 suffix:semicolon
@@ -3812,8 +3813,7 @@ comma
 r_int
 id|searchall
 comma
-r_int
-r_int
+id|b_blocknr_t
 op_star
 id|next
 )paren
@@ -6329,8 +6329,7 @@ id|super_block
 op_star
 id|s
 comma
-r_int
-r_int
+id|b_blocknr_t
 id|block
 comma
 r_int
@@ -6345,8 +6344,7 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
-r_int
-r_int
+id|b_blocknr_t
 )paren
 suffix:semicolon
 r_int

@@ -124,6 +124,10 @@ DECL|macro|TIOCSHAYESESP
 mdefine_line|#define TIOCSHAYESESP   0x545F  /* Set Hayes ESP configuration */
 DECL|macro|FIOQSIZE
 mdefine_line|#define FIOQSIZE&t;0x5460
+DECL|macro|TIOCSERSETRS485
+mdefine_line|#define TIOCSERSETRS485 0x5461  /* enable rs-485 */
+DECL|macro|TIOCSERWRRS485
+mdefine_line|#define TIOCSERWRRS485  0x5462  /* write rs-485 */
 multiline_comment|/* Used for packet mode */
 DECL|macro|TIOCPKT_DATA
 mdefine_line|#define TIOCPKT_DATA&t;&t; 0

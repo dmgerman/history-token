@@ -4446,7 +4446,7 @@ id|socket
 )paren
 suffix:semicolon
 multiline_comment|/* prepare pcmcia_socket */
-id|socket-&gt;socket.ss_entry
+id|socket-&gt;socket.ops
 op_assign
 op_amp
 id|yenta_socket_operations

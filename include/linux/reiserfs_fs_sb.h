@@ -144,8 +144,7 @@ id|sb
 suffix:semicolon
 multiline_comment|/* dev of real buffer head */
 DECL|member|blocknr
-r_int
-r_int
+id|__u32
 id|blocknr
 suffix:semicolon
 multiline_comment|/* block number of real buffer head, == 0 when buffer on disk */

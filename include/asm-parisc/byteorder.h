@@ -69,9 +69,9 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;permh 3210, %0, %0&bslash;n&bslash;t&quot;
+l_string|&quot;permh,3210 %0, %0&bslash;n&bslash;t&quot;
 l_string|&quot;hshl %0, 8, %1&bslash;n&bslash;t&quot;
-l_string|&quot;hshr u, %0, 8, %0&bslash;n&bslash;t&quot;
+l_string|&quot;hshr,u %0, 8, %0&bslash;n&bslash;t&quot;
 l_string|&quot;or %1, %0, %0&quot;
 suffix:colon
 l_string|&quot;=r&quot;

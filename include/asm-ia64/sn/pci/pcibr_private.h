@@ -677,7 +677,7 @@ mdefine_line|#define PV854697 (~0)     /* PIC: write 64bit regs as 64bits. perma
 DECL|macro|PV854827
 mdefine_line|#define PV854827 (~0)     /* PIC: fake widget 0xf presence bit. permanent */
 DECL|macro|PV855271
-mdefine_line|#define PV855271 (~0)     /* PIC: use virt chan iff 64-bit device. permanent */
+mdefine_line|#define PV855271 (1 &lt;&lt; 1) /* PIC: PIC: use virt chan iff 64-bit device. */
 DECL|macro|PV855272
 mdefine_line|#define PV855272 (1 &lt;&lt; 1) /* PIC: runaway interrupt WAR */
 DECL|macro|PV856155
@@ -812,20 +812,24 @@ id|xwidgetnum_t
 id|bs_dir_xport
 suffix:semicolon
 multiline_comment|/* xtalk port for 32-bit PCI direct map */
-DECL|member|bs_int_ate_map
+DECL|member|bs_int_ate_resource
 r_struct
-id|map
-op_star
-id|bs_int_ate_map
+id|resource
+id|bs_int_ate_resource
 suffix:semicolon
-multiline_comment|/* rmalloc map for internal ATEs */
-DECL|member|bs_ext_ate_map
+multiline_comment|/* root resource for internal ATEs */
+DECL|member|bs_ext_ate_resource
 r_struct
-id|map
-op_star
-id|bs_ext_ate_map
+id|resource
+id|bs_ext_ate_resource
 suffix:semicolon
-multiline_comment|/* rmalloc map for external ATEs */
+multiline_comment|/* root resource for external ATEs */
+DECL|member|bs_allocated_ate_res
+r_void
+op_star
+id|bs_allocated_ate_res
+suffix:semicolon
+multiline_comment|/* resource struct allocated */
 DECL|member|bs_int_ate_size
 r_int
 id|bs_int_ate_size
@@ -1146,6 +1150,24 @@ DECL|member|bs_mem_win_map
 r_struct
 id|pciio_win_map_s
 id|bs_mem_win_map
+suffix:semicolon
+multiline_comment|/* Memory addr space */
+DECL|member|bs_io_win_root_resource
+r_struct
+id|resource
+id|bs_io_win_root_resource
+suffix:semicolon
+multiline_comment|/* I/O addr space */
+DECL|member|bs_swin_root_resource
+r_struct
+id|resource
+id|bs_swin_root_resource
+suffix:semicolon
+multiline_comment|/* Small window addr space */
+DECL|member|bs_mem_win_root_resource
+r_struct
+id|resource
+id|bs_mem_win_root_resource
 suffix:semicolon
 multiline_comment|/* Memory addr space */
 DECL|member|bs_bus_addr_status

@@ -14873,11 +14873,43 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+multiline_comment|/* Remember, tcp_poll() does not lock socket!&n;&t;&t; * Change state from SYN-SENT only after copied_seq&n;&t;&t; * is initialized. */
+id|tp-&gt;copied_seq
+op_assign
+id|tp-&gt;rcv_nxt
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|tcp_set_state
+c_func
+(paren
+id|sk
+comma
+id|TCP_ESTABLISHED
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure socket is routed, for correct metrics.  */
+id|tp-&gt;af_specific
+op_member_access_from_pointer
+id|rebuild_header
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|tcp_init_metrics
 c_func
 (paren
 id|sk
 )paren
+suffix:semicolon
+multiline_comment|/* Prevent spurious tcp_cwnd_restart() on first data&n;&t;&t; * packet.&n;&t;&t; */
+id|tp-&gt;lsndtime
+op_assign
+id|tcp_time_stamp
 suffix:semicolon
 id|tcp_init_buffer_space
 c_func
@@ -14926,24 +14958,6 @@ r_else
 id|tp-&gt;pred_flags
 op_assign
 l_int|0
-suffix:semicolon
-multiline_comment|/* Remember, tcp_poll() does not lock socket!&n;&t;&t; * Change state from SYN-SENT only after copied_seq&n;&t;&t; * is initialized. */
-id|tp-&gt;copied_seq
-op_assign
-id|tp-&gt;rcv_nxt
-suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|tcp_set_state
-c_func
-(paren
-id|sk
-comma
-id|TCP_ESTABLISHED
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -15747,11 +15761,25 @@ id|tp-&gt;advmss
 op_sub_assign
 id|TCPOLEN_TSTAMP_ALIGNED
 suffix:semicolon
+multiline_comment|/* Make sure socket is routed, for&n;&t;&t;&t;&t; * correct metrics.&n;&t;&t;&t;&t; */
+id|tp-&gt;af_specific
+op_member_access_from_pointer
+id|rebuild_header
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|tcp_init_metrics
 c_func
 (paren
 id|sk
 )paren
+suffix:semicolon
+multiline_comment|/* Prevent spurious tcp_cwnd_restart() on&n;&t;&t;&t;&t; * first data packet.&n;&t;&t;&t;&t; */
+id|tp-&gt;lsndtime
+op_assign
+id|tcp_time_stamp
 suffix:semicolon
 id|tcp_initialize_rcv_mss
 c_func

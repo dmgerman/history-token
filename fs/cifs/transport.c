@@ -865,6 +865,17 @@ r_if
 c_cond
 (paren
 id|long_op
+op_eq
+op_minus
+l_int|1
+)paren
+r_goto
+id|cifs_no_response_exit
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|long_op
 OG
 l_int|1
 )paren
@@ -1233,6 +1244,8 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|cifs_no_response_exit
+suffix:colon
 id|DeleteMidQEntry
 c_func
 (paren

@@ -164,6 +164,46 @@ DECL|member|pitch
 r_int
 id|pitch
 suffix:semicolon
+DECL|member|back_pitch
+r_int
+id|back_pitch
+suffix:semicolon
+DECL|member|depth_pitch
+r_int
+id|depth_pitch
+suffix:semicolon
+DECL|member|do_boxes
+r_int
+id|do_boxes
+suffix:semicolon
+DECL|member|dma_used
+r_int
+id|dma_used
+suffix:semicolon
+DECL|member|current_page
+r_int
+id|current_page
+suffix:semicolon
+DECL|member|page_flipping
+r_int
+id|page_flipping
+suffix:semicolon
+DECL|member|irq_queue
+id|wait_queue_head_t
+id|irq_queue
+suffix:semicolon
+DECL|member|irq_received
+id|atomic_t
+id|irq_received
+suffix:semicolon
+DECL|member|irq_emitted
+id|atomic_t
+id|irq_emitted
+suffix:semicolon
+DECL|member|front_offset
+r_int
+id|front_offset
+suffix:semicolon
 DECL|typedef|drm_i810_private_t
 )brace
 id|drm_i810_private_t
@@ -564,6 +604,29 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+r_int
+id|i810_flip_bufs
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
 DECL|macro|I810_BASE
 mdefine_line|#define I810_BASE(reg)&t;&t;((unsigned long) &bslash;&n;&t;&t;&t;&t;dev_priv-&gt;mmio_map-&gt;handle)
 DECL|macro|I810_ADDR
@@ -696,6 +759,8 @@ DECL|macro|CMD_OP_DESTBUFFER_INFO
 mdefine_line|#define CMD_OP_DESTBUFFER_INFO   ((0x0&lt;&lt;29)|(0x15&lt;&lt;23))
 DECL|macro|CMD_OP_FRONTBUFFER_INFO
 mdefine_line|#define CMD_OP_FRONTBUFFER_INFO  ((0x0&lt;&lt;29)|(0x14&lt;&lt;23))
+DECL|macro|CMD_OP_WAIT_FOR_EVENT
+mdefine_line|#define CMD_OP_WAIT_FOR_EVENT    ((0x0&lt;&lt;29)|(0x03&lt;&lt;23))
 DECL|macro|BR00_BITBLT_CLIENT
 mdefine_line|#define BR00_BITBLT_CLIENT   0x40000000
 DECL|macro|BR00_OP_COLOR_BLT
@@ -704,5 +769,11 @@ DECL|macro|BR00_OP_SRC_COPY_BLT
 mdefine_line|#define BR00_OP_SRC_COPY_BLT 0x10C00000
 DECL|macro|BR13_SOLID_PATTERN
 mdefine_line|#define BR13_SOLID_PATTERN   0x80000000
+DECL|macro|WAIT_FOR_PLANE_A_SCANLINES
+mdefine_line|#define WAIT_FOR_PLANE_A_SCANLINES (1&lt;&lt;1) 
+DECL|macro|WAIT_FOR_PLANE_A_FLIP
+mdefine_line|#define WAIT_FOR_PLANE_A_FLIP      (1&lt;&lt;2) 
+DECL|macro|WAIT_FOR_VBLANK
+mdefine_line|#define WAIT_FOR_VBLANK (1&lt;&lt;3)
 macro_line|#endif
 eof

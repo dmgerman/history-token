@@ -12988,12 +12988,14 @@ op_assign
 op_amp
 id|happy_meal_ioctl
 suffix:semicolon
-multiline_comment|/* Happy Meal can do it all... */
+multiline_comment|/* Happy Meal can do it all... except VLAN. */
 id|dev-&gt;features
 op_or_assign
 id|NETIF_F_SG
 op_or
 id|NETIF_F_HW_CSUM
+op_or
+id|NETIF_F_VLAN_CHALLENGED
 suffix:semicolon
 id|dev-&gt;irq
 op_assign

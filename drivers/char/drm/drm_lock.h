@@ -1,5 +1,7 @@
-multiline_comment|/* lock.c -- IOCTLs for locking -*- linux-c -*-&n; * Created: Tue Feb  2 08:37:54 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/**&n; * &bslash;file drm_lock.h &n; * IOCTLs for locking&n; * &n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/*&n; * Created: Tue Feb  2 08:37:54 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
+multiline_comment|/** No-op ioctl. */
 DECL|function|noop
 r_int
 id|DRM
@@ -37,6 +39,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Take the heavyweight lock.&n; *&n; * &bslash;param lock lock pointer.&n; * &bslash;param context locking context.&n; * &bslash;return one if the lock is held, or zero otherwise.&n; *&n; * Attempt to mark the lock as held by the given context, via the &bslash;p cmpxchg instruction.&n; */
 DECL|function|lock_take
 r_int
 id|DRM
@@ -175,7 +178,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* This takes a lock forcibly and hands it to context.&t;Should ONLY be used&n;   inside *_unlock to give lock to kernel before calling *_dma_schedule. */
+multiline_comment|/**&n; * This takes a lock forcibly and hands it to context.&t;Should ONLY be used&n; * inside *_unlock to give lock to kernel before calling *_dma_schedule. &n; * &n; * &bslash;param dev DRM device.&n; * &bslash;param lock lock pointer.&n; * &bslash;param context locking context.&n; * &bslash;return always one.&n; *&n; * Resets the lock file pointer.&n; * Marks the lock as held by the given context, via the &bslash;p cmpxchg instruction.&n; */
 DECL|function|lock_transfer
 r_int
 id|DRM
@@ -249,6 +252,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Free lock.&n; * &n; * &bslash;param dev DRM device.&n; * &bslash;param lock lock.&n; * &bslash;param context context.&n; * &n; * Resets the lock file pointer.&n; * Marks the lock as not held, via the &bslash;p cmpxchg instruction. Wakes any task&n; * waiting on the lock queue.&n; */
 DECL|function|lock_free
 r_int
 id|DRM
@@ -363,7 +367,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* If we get here, it means that the process has called DRM_IOCTL_LOCK&n;   without calling DRM_IOCTL_UNLOCK.&n;&n;   If the lock is not held, then let the signal proceed as usual.&n;&n;   If the lock is held, then set the contended flag and keep the signal&n;   blocked.&n;&n;&n;   Return 1 if the signal should be delivered normally.&n;   Return 0 if the signal should be blocked.  */
+multiline_comment|/**&n; * If we get here, it means that the process has called DRM_IOCTL_LOCK&n; * without calling DRM_IOCTL_UNLOCK.&n; *&n; * If the lock is not held, then let the signal proceed as usual.  If the lock&n; * is held, then set the contended flag and keep the signal blocked.&n; *&n; * &bslash;param priv pointer to a drm_sigdata structure.&n; * &bslash;return one if the signal should be delivered normally, or zero if the&n; * signal should be blocked.&n; */
 DECL|function|notifier
 r_int
 id|DRM

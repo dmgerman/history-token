@@ -974,6 +974,7 @@ c_func
 id|clear_page
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|flush_tlb_page
 id|EXPORT_SYMBOL
 c_func
@@ -988,4 +989,5 @@ c_func
 id|flush_tlb_all
 )paren
 suffix:semicolon
+macro_line|#endif
 eof

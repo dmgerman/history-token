@@ -1,7 +1,9 @@
-multiline_comment|/* drm_stub.h -- -*- linux-c -*-&n; * Created: Fri Jan 19 10:48:35 2001 by faith@acm.org&n; *&n; * Copyright 2001 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *&n; */
+multiline_comment|/**&n; * &bslash;file drm_stub.h&n; * Stub support&n; *&n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; */
+multiline_comment|/*&n; * Created: Fri Jan 19 10:48:35 2001 by faith@acm.org&n; *&n; * Copyright 2001 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
 DECL|macro|DRM_STUB_MAXCARDS
 mdefine_line|#define DRM_STUB_MAXCARDS 16&t;/* Enough for one machine */
+multiline_comment|/** Stub list. One for each minor. */
 DECL|struct|drm_stub_list
 r_static
 r_struct
@@ -19,12 +21,14 @@ id|file_operations
 op_star
 id|fops
 suffix:semicolon
+multiline_comment|/**&lt; file operations */
 DECL|member|dev_root
 r_struct
 id|proc_dir_entry
 op_star
 id|dev_root
 suffix:semicolon
+multiline_comment|/**&lt; proc directory entry */
 )brace
 op_star
 id|DRM
@@ -43,6 +47,7 @@ c_func
 id|stub_root
 )paren
 suffix:semicolon
+multiline_comment|/** Stub information */
 DECL|struct|drm_stub_info
 r_static
 r_struct
@@ -88,6 +93,7 @@ c_func
 id|stub_info
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * File &bslash;c open operation.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; *&n; * Puts the drm_stub_list::fops corresponding to the device minor number into&n; * &bslash;p filp, call the &bslash;c open method, and restore the file operations.&n; */
 DECL|function|stub_open
 r_static
 r_int
@@ -220,6 +226,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/** File operations structure */
 DECL|variable|stub_fops
 r_static
 r_struct
@@ -246,6 +253,7 @@ id|stub_open
 )paren
 )brace
 suffix:semicolon
+multiline_comment|/**&n; * Get a device minor number.&n; *&n; * &bslash;param name driver name.&n; * &bslash;param fops file operations.&n; * &bslash;param dev DRM device.&n; * &bslash;return minor number on success, or a negative number on failure.&n; *&n; * Allocate and initialize ::stub_list if one doesn&squot;t exist already.  Search an&n; * empty entry and initialize it to the given parameters, and create the proc&n; * init entry via proc_init().&n; */
 DECL|function|stub_getminor
 r_static
 r_int
@@ -472,6 +480,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Put a device minor number.&n; *&n; * &bslash;param minor minor number.&n; * &bslash;return always zero.&n; *&n; * Cleans up the proc resources. If a minor is zero then release the foreign&n; * &quot;drm&quot; data, otherwise unregisters the &quot;drm&quot; data, frees the stub list and&n; * unregisters the character device. &n; */
 DECL|function|stub_putminor
 r_static
 r_int
@@ -613,6 +622,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Register.&n; *&n; * &bslash;param name driver name.&n; * &bslash;param fops file operations&n; * &bslash;param dev DRM device.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Attempt to register the char device and get the foreign &quot;drm&quot; data. If&n; * successful then another module already registered so gets the stub info,&n; * otherwise use this module stub info and make it available for other modules.&n; *&n; * Finally calls stub_info::info_register.&n; */
 DECL|function|stub_register
 r_int
 id|DRM
@@ -816,6 +826,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Unregister.&n; *&n; * &bslash;param minor&n; *&n; * Calls drm_stub_info::unregister.&n; */
 DECL|function|stub_unregister
 r_int
 id|DRM

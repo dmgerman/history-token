@@ -51,7 +51,6 @@ id|console
 op_star
 id|co
 comma
-r_const
 r_char
 op_star
 id|buf

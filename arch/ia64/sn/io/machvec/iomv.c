@@ -28,6 +28,19 @@ c_func
 )paren
 )paren
 (brace
+multiline_comment|/* On sn2, legacy I/O ports don&squot;t point at anything */
+r_if
+c_cond
+(paren
+id|port
+OL
+l_int|64
+op_star
+l_int|1024
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_return
 (paren
 r_void
@@ -42,6 +55,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* but the simulator uses them... */
 r_int
 r_int
 id|io_base

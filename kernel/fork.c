@@ -1477,6 +1477,10 @@ id|mm-&gt;ioctx_list_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
+id|mm-&gt;ioctx_list
+op_assign
+l_int|NULL
+suffix:semicolon
 id|mm-&gt;default_kioctx
 op_assign
 (paren
