@@ -128,7 +128,9 @@ l_int|128
 suffix:semicolon
 multiline_comment|/* Driver Data: */
 DECL|member|user_data
-id|caddr_t
+r_void
+id|__user
+op_star
 id|user_data
 suffix:semicolon
 DECL|member|user_data_len
@@ -137,6 +139,7 @@ id|user_data_len
 suffix:semicolon
 DECL|member|user_pthru
 id|mraid_passthru_t
+id|__user
 op_star
 id|user_pthru
 suffix:semicolon
