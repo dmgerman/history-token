@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: synclinkmp.c,v 4.8 2003/04/21 17:46:55 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink Multiport&n; * high speed multiprotocol serial adapter.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * Derived from serial.c written by Theodore Ts&squot;o and Linus Torvalds&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * $Id: synclinkmp.c,v 4.12 2003/06/18 15:29:33 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink Multiport&n; * high speed multiprotocol serial adapter.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * Derived from serial.c written by Theodore Ts&squot;o and Linus Torvalds&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
 macro_line|#if defined(__i386__)
@@ -1107,13 +1107,6 @@ id|ttymajor
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|cuamajor
-r_static
-r_int
-id|cuamajor
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n; * Array of user specified options for ISA adapters.&n; */
 DECL|variable|debug_level
 r_static
@@ -1160,14 +1153,6 @@ id|MODULE_PARM
 c_func
 (paren
 id|ttymajor
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|cuamajor
 comma
 l_string|&quot;i&quot;
 )paren
@@ -1222,7 +1207,7 @@ r_char
 op_star
 id|driver_version
 op_assign
-l_string|&quot;$Revision: 4.8 $&quot;
+l_string|&quot;$Revision: 4.12 $&quot;
 suffix:semicolon
 r_static
 r_int
@@ -2957,29 +2942,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|info
-)paren
-(brace
-id|printk
+id|sanity_check
 c_func
 (paren
-l_string|&quot;%s(%d):%s Can&squot;t find specified device on open (line=%d)&bslash;n&quot;
+id|info
 comma
-id|__FILE__
+id|tty-&gt;name
 comma
-id|__LINE__
-comma
-id|info-&gt;device_name
-comma
-id|line
+l_string|&quot;open&quot;
 )paren
-suffix:semicolon
+)paren
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3012,23 +2988,6 @@ suffix:semicolon
 id|info-&gt;tty
 op_assign
 id|tty
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sanity_check
-c_func
-(paren
-id|info
-comma
-id|tty-&gt;name
-comma
-l_string|&quot;open&quot;
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -3264,6 +3223,18 @@ id|retval
 r_if
 c_cond
 (paren
+id|tty-&gt;count
+op_eq
+l_int|1
+)paren
+id|info-&gt;tty
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* tty layer will release tty struct */
+r_if
+c_cond
+(paren
 id|info-&gt;count
 )paren
 (brace
@@ -3307,9 +3278,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|info
-op_logical_or
 id|sanity_check
 c_func
 (paren
@@ -3348,7 +3316,12 @@ c_cond
 (paren
 op_logical_neg
 id|info-&gt;count
-op_logical_or
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|tty_hung_up_p
 c_func
 (paren
@@ -16660,10 +16633,6 @@ c_func
 r_void
 )paren
 (brace
-id|SLMP_INFO
-op_star
-id|info
-suffix:semicolon
 r_if
 c_cond
 (paren
