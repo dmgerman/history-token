@@ -435,7 +435,7 @@ id|ISILoad_fops
 )brace
 suffix:semicolon
 DECL|function|WaitTillCardIsFree
-r_extern
+r_static
 r_inline
 r_int
 id|WaitTillCardIsFree
@@ -1849,7 +1849,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|schedule_bh
-r_extern
+r_static
 r_inline
 r_void
 id|schedule_bh
@@ -4084,7 +4084,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* open et all */
 DECL|function|isicom_setup_board
-r_extern
+r_static
 r_inline
 r_void
 id|isicom_setup_board
@@ -5266,7 +5266,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* close et all */
 DECL|function|isicom_shutdown_board
-r_extern
+r_static
 r_inline
 r_void
 id|isicom_shutdown_board
@@ -6490,7 +6490,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ioctl et all */
 DECL|function|isicom_send_break
-r_extern
+r_static
 r_inline
 r_void
 id|isicom_send_break

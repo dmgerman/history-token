@@ -1,4 +1,4 @@
-multiline_comment|/*  x86-64 MTRR (Memory Type Range Register) driver.&n;&t;Based largely upon arch/i386/kernel/mtrr.c&n;&n;    Copyright (C) 1997-2000  Richard Gooch&n;&t;Copyright (C) 2002 Dave Jones.&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;&t;(For earlier history, see arch/i386/kernel/mtrr.c)&n;&t;v2.00&t;September 2001&t;Dave Jones &lt;davej@suse.de&gt;&n;&t;&t;Initial rewrite for x86-64.&n;&t;  Removal of non-Intel style MTRR code.&n;&t;v2.01  June 2002  Dave Jones &lt;davej@suse.de&gt;&n;&t;  Removal of redundant abstraction layer.&n;&t;  64-bit fixes.&n;&t;v2.02  July 2002  Dave Jones &lt;davej@suse.de&gt;&n;&t;  Fix gentry inconsistencies between kernel/userspace.&n;&t;  More casts to clean up warnings.&n;*/
+multiline_comment|/*  x86-64 MTRR (Memory Type Range Register) driver.&n;&t;Based largely upon arch/i386/kernel/mtrr.c&n;&n;&t;Copyright (C) 1997-2000  Richard Gooch&n;&t;Copyright (C) 2002 Dave Jones.&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;&t;(For earlier history, see arch/i386/kernel/mtrr.c)&n;&t;v2.00&t;September 2001&t;Dave Jones &lt;davej@suse.de&gt;&n;&t;  Initial rewrite for x86-64.&n;&t;  Removal of non-Intel style MTRR code.&n;&t;v2.01  June 2002  Dave Jones &lt;davej@suse.de&gt;&n;&t;  Removal of redundant abstraction layer.&n;&t;  64-bit fixes.&n;&t;v2.02  July 2002  Dave Jones &lt;davej@suse.de&gt;&n;&t;  Fix gentry inconsistencies between kernel/userspace.&n;&t;  More casts to clean up warnings.&n;*/
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -59,7 +59,7 @@ id|u8
 id|mtrr_type
 suffix:semicolon
 DECL|macro|LINE_SIZE
-mdefine_line|#define LINE_SIZE      80
+mdefine_line|#define LINE_SIZE 80
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|set_mtrr
 mdefine_line|#define set_mtrr(reg,base,size,type) set_mtrr_smp (reg, base, size, type)
@@ -158,7 +158,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*  Save value of CR4 and clear Page Global Enable (bit 7)  */
+multiline_comment|/* Save value of CR4 and clear Page Global Enable (bit 7)  */
 r_if
 c_cond
 (paren
@@ -186,7 +186,7 @@ l_int|7
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*  Disable and flush caches. Note that wbinvd flushes the TLBs as&n;&t;a side-effect  */
+multiline_comment|/* Disable and flush caches. Note that wbinvd flushes the TLBs as&n;&t;   a side-effect */
 id|cr0
 op_assign
 id|read_cr0
@@ -212,7 +212,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*  Disable MTRRs, and set the default type to uncached  */
+multiline_comment|/* Disable MTRRs, and set the default type to uncached */
 id|rdmsr
 c_func
 (paren
@@ -236,7 +236,7 @@ id|ctxt-&gt;deftype_hi
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*  Restore the processor after a set_mtrr_prepare  */
+multiline_comment|/* Restore the processor after a set_mtrr_prepare */
 DECL|function|set_mtrr_done
 r_static
 r_void
@@ -248,13 +248,13 @@ op_star
 id|ctxt
 )paren
 (brace
-multiline_comment|/*  Flush caches and TLBs  */
+multiline_comment|/* Flush caches and TLBs */
 id|wbinvd
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*  Restore MTRRdefType  */
+multiline_comment|/* Restore MTRRdefType */
 id|wrmsr
 c_func
 (paren
@@ -265,7 +265,7 @@ comma
 id|ctxt-&gt;deftype_hi
 )paren
 suffix:semicolon
-multiline_comment|/*  Enable caches  */
+multiline_comment|/* Enable caches */
 id|write_cr0
 c_func
 (paren
@@ -277,7 +277,7 @@ op_amp
 l_int|0xbfffffff
 )paren
 suffix:semicolon
-multiline_comment|/*  Restore value of CR4  */
+multiline_comment|/* Restore value of CR4 */
 r_if
 c_cond
 (paren
@@ -288,7 +288,7 @@ id|write_cr4
 id|ctxt-&gt;cr4val
 )paren
 suffix:semicolon
-multiline_comment|/*  Re-enable interrupts locally (if enabled previously)  */
+multiline_comment|/* Re-enable interrupts locally (if enabled previously) */
 id|local_irq_restore
 c_func
 (paren
@@ -571,7 +571,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* The invalid bit is kept in the mask, so we simply clear the&n;&t;   relevant mask register to disable a range. */
+multiline_comment|/* The invalid bit is kept in the mask, so we simply clear the&n;&t;&t;   relevant mask register to disable a range. */
 id|wrmsr
 (paren
 id|MSR_MTRRphysMask
@@ -1623,7 +1623,7 @@ id|change_mask
 op_or_assign
 id|MTRR_CHANGE_MASK_FIXED
 suffix:semicolon
-multiline_comment|/*  Set_mtrr_restore restores the old value of MTRRdefType,&n;&t;so to set it we fiddle with the saved value  */
+multiline_comment|/* Set_mtrr_restore restores the old value of MTRRdefType,&n;&t;   so to set it we fiddle with the saved value  */
 r_if
 c_cond
 (paren
@@ -1739,7 +1739,7 @@ op_amp
 id|ctxt
 )paren
 suffix:semicolon
-multiline_comment|/*  Notify master that I&squot;ve flushed and disabled my cache  */
+multiline_comment|/* Notify master that I&squot;ve flushed and disabled my cache  */
 id|atomic_dec
 (paren
 op_amp
@@ -1755,7 +1755,7 @@ id|barrier
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*  The master has cleared me to execute  */
+multiline_comment|/* The master has cleared me to execute  */
 id|set_mtrr_up
 (paren
 id|data-&gt;smp_reg
@@ -1769,14 +1769,14 @@ comma
 id|FALSE
 )paren
 suffix:semicolon
-multiline_comment|/*  Notify master CPU that I&squot;ve executed the function  */
+multiline_comment|/* Notify master CPU that I&squot;ve executed the function  */
 id|atomic_dec
 (paren
 op_amp
 id|undone_count
 )paren
 suffix:semicolon
-multiline_comment|/*  Wait for master to clear me to enable cache and return  */
+multiline_comment|/* Wait for master to clear me to enable cache and return  */
 r_while
 c_loop
 (paren
@@ -1950,7 +1950,7 @@ id|barrier
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*  Now all CPUs should have finished the function. Release the barrier to&n;&t;allow them to re-enable their caches and return from their interrupt,&n;&t;then enable the local cache and return  */
+multiline_comment|/*  Now all CPUs should have finished the function. Release the barrier to&n;&t;   allow them to re-enable their caches and return from their interrupt,&n;&t;   then enable the local cache and return  */
 id|wait_barrier_cache_enable
 op_assign
 id|FALSE
@@ -2023,7 +2023,7 @@ l_string|&quot;mtrr: probably your BIOS does not setup all CPUs&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif  /*  CONFIG_SMP  */
+macro_line|#endif&t;/*  CONFIG_SMP  */
 DECL|function|attrib_to_str
 r_static
 r_inline
@@ -2297,7 +2297,7 @@ suffix:semicolon
 macro_line|#if defined(__x86_64__) &amp;&amp; defined(CONFIG_AGP) 
 multiline_comment|/*&t;{&n;&t;agp_kern_info info; &n;&t;if (type != MTRR_TYPE_UNCACHABLE &amp;&amp; agp_copy_info(&amp;info) &gt;= 0 &amp;&amp; &n;&t;    base&lt;&lt;PAGE_SHIFT &gt;= info.aper_base &amp;&amp; &n;            (base&lt;&lt;PAGE_SHIFT)+(size&lt;&lt;PAGE_SHIFT) &gt;= &n;&t;&t;&t;info.aper_base+info.aper_size*1024*1024)&n;&t;&t;printk(KERN_INFO &quot;%s[%d] setting conflicting mtrr into agp aperture&bslash;n&quot;,current-&gt;comm,current-&gt;pid); &n;&t;}*/
 macro_line|#endif
-multiline_comment|/*  Check upper bits of base and last are equal and lower bits are 0&n;&t;    for base and 1 for last  */
+multiline_comment|/*  Check upper bits of base and last are equal and lower bits are 0&n;&t;   for base and 1 for last  */
 id|last
 op_assign
 id|base
@@ -2427,8 +2427,16 @@ id|printk
 id|KERN_WARNING
 l_string|&quot;mtrr: base(%lx) exceeds the MTRR width(%lx)&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|base
 comma
+(paren
+r_int
+r_int
+)paren
 (paren
 id|size_or_mask
 op_rshift
@@ -5280,7 +5288,7 @@ r_struct
 id|set_mtrr_context
 id|ctxt
 suffix:semicolon
-multiline_comment|/*  Note that this is not ideal, since the cache is only flushed/disabled&n;&t;for this CPU while the MTRRs are changed, but changing this requires&n;&t;more invasive changes to the way the kernel boots  */
+multiline_comment|/* Note that this is not ideal, since the cache is only flushed/disabled&n;&t;   for this CPU while the MTRRs are changed, but changing this requires&n;&t;   more invasive changes to the way the kernel boots  */
 id|set_mtrr_prepare
 (paren
 op_amp
@@ -5344,7 +5352,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif  /*  CONFIG_SMP  */
+macro_line|#endif&t;/*  CONFIG_SMP  */
 DECL|function|mtrr_init
 r_int
 id|__init

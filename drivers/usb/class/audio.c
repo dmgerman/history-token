@@ -633,7 +633,7 @@ multiline_comment|/* prevent picking up a bogus abs macro */
 DECL|macro|abs
 macro_line|#undef abs
 DECL|function|abs
-r_extern
+r_static
 r_inline
 r_int
 id|abs
@@ -660,7 +660,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|ld2
-r_extern
+r_static
 r_inline
 r_int
 id|ld2
@@ -11055,7 +11055,7 @@ id|s
 suffix:semicolon
 )brace
 DECL|function|prog_dmabuf_in
-r_extern
+r_static
 r_inline
 r_int
 id|prog_dmabuf_in
@@ -11083,7 +11083,7 @@ id|as-&gt;usbin.dma
 suffix:semicolon
 )brace
 DECL|function|prog_dmabuf_out
-r_extern
+r_static
 r_inline
 r_int
 id|prog_dmabuf_out
@@ -20167,7 +20167,7 @@ id|unitid
 )paren
 suffix:semicolon
 DECL|function|checkmixbmap
-r_extern
+r_static
 r_inline
 r_int
 id|checkmixbmap
