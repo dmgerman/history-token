@@ -4029,7 +4029,7 @@ comma
 id|IDE_HCYL_REG
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * (ks) In the flagged taskfile approch, we will used all specified&n;&t; * registers and the register value will not be changed. Except the&n;&t; * select bit (master/slave) in the drive_head register. We must make&n;&t; * sure that the desired drive is selected.&n;&t; */
+multiline_comment|/*&n;&t; * (ks) In the flagged taskfile approch, we will use all specified&n;&t; * registers and the register value will not be changed, except the&n;&t; * select bit (master/slave) in the drive_head register. We must make&n;&t; * sure that the desired drive is selected.&n;&t; */
 id|hwif
 op_member_access_from_pointer
 id|OUTB

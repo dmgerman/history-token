@@ -387,7 +387,10 @@ id|pc-&gt;sg-&gt;page
 op_plus
 id|pc-&gt;sg-&gt;offset
 suffix:semicolon
+id|drive-&gt;hwif
+op_member_access_from_pointer
 id|atapi_input_bytes
+c_func
 (paren
 id|drive
 comma
@@ -508,7 +511,10 @@ id|pc-&gt;sg-&gt;page
 op_plus
 id|pc-&gt;sg-&gt;offset
 suffix:semicolon
+id|drive-&gt;hwif
+op_member_access_from_pointer
 id|atapi_output_bytes
+c_func
 (paren
 id|drive
 comma
@@ -2473,6 +2479,8 @@ id|temp
 )paren
 suffix:semicolon
 r_else
+id|drive-&gt;hwif
+op_member_access_from_pointer
 id|atapi_input_bytes
 c_func
 (paren
@@ -2811,6 +2819,8 @@ id|idescsi_expiry
 )paren
 suffix:semicolon
 multiline_comment|/* Send the actual packet */
+id|drive-&gt;hwif
+op_member_access_from_pointer
 id|atapi_output_bytes
 c_func
 (paren

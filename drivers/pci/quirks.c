@@ -830,6 +830,35 @@ comma
 id|quirk_natoma
 )paren
 suffix:semicolon
+multiline_comment|/*&n; *  This chip can cause PCI parity errors if config register 0xA0 is read&n; *  while DMAs are occurring.&n; */
+DECL|function|quirk_citrine
+r_static
+r_void
+id|__devinit
+id|quirk_citrine
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+id|dev-&gt;cfg_size
+op_assign
+l_int|0xA0
+suffix:semicolon
+)brace
+id|DECLARE_PCI_FIXUP_HEADER
+c_func
+(paren
+id|PCI_VENDOR_ID_IBM
+comma
+id|PCI_DEVICE_ID_IBM_CITRINE
+comma
+id|quirk_citrine
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *  S3 868 and 968 chips report region size equal to 32M, but they decode 64M.&n; *  If it&squot;s needed, re-allocate the region.&n; */
 DECL|function|quirk_s3_64M
 r_static

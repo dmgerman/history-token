@@ -2,6 +2,8 @@ multiline_comment|/*&n; * File:&t;mca.h&n; * Purpose:&t;Machine check handling s
 macro_line|#ifndef _ASM_IA64_MCA_H
 DECL|macro|_ASM_IA64_MCA_H
 mdefine_line|#define _ASM_IA64_MCA_H
+DECL|macro|IA64_MCA_STACK_SIZE
+mdefine_line|#define IA64_MCA_STACK_SIZE&t;8192
 macro_line|#if !defined(__ASSEMBLY__)
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -273,99 +275,56 @@ DECL|typedef|ia64_mca_os_to_sal_state_t
 )brace
 id|ia64_mca_os_to_sal_state_t
 suffix:semicolon
-DECL|macro|IA64_MCA_STACK_SIZE
-mdefine_line|#define IA64_MCA_STACK_SIZE &t;1024
-DECL|macro|IA64_MCA_STACK_SIZE_BYTES
-mdefine_line|#define IA64_MCA_STACK_SIZE_BYTES &t;(1024 * 8)
-DECL|macro|IA64_MCA_BSPSTORE_SIZE
-mdefine_line|#define IA64_MCA_BSPSTORE_SIZE &t;1024
-DECL|struct|ia64_mca_cpu_s
-r_typedef
+multiline_comment|/* Per-CPU MCA state that is too big for normal per-CPU variables.  */
+DECL|struct|ia64_mca_cpu
 r_struct
-id|ia64_mca_cpu_s
+id|ia64_mca_cpu
 (brace
-DECL|member|ia64_mca_stack
+DECL|member|stack
 id|u64
-id|ia64_mca_stack
+id|stack
 (braket
 id|IA64_MCA_STACK_SIZE
+op_div
+l_int|8
 )braket
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|16
-)paren
-)paren
-)paren
 suffix:semicolon
-DECL|member|ia64_mca_proc_state_dump
+multiline_comment|/* MCA memory-stack */
+DECL|member|proc_state_dump
 id|u64
-id|ia64_mca_proc_state_dump
+id|proc_state_dump
 (braket
 l_int|512
 )braket
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|16
-)paren
-)paren
-)paren
 suffix:semicolon
-DECL|member|ia64_mca_stackframe
+DECL|member|stackframe
 id|u64
-id|ia64_mca_stackframe
+id|stackframe
 (braket
 l_int|32
 )braket
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|16
-)paren
-)paren
-)paren
 suffix:semicolon
-DECL|member|ia64_mca_bspstore
+DECL|member|rbstore
 id|u64
-id|ia64_mca_bspstore
+id|rbstore
 (braket
-id|IA64_MCA_BSPSTORE_SIZE
+id|IA64_MCA_STACK_SIZE
+op_div
+l_int|8
 )braket
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|16
-)paren
-)paren
-)paren
 suffix:semicolon
-DECL|member|ia64_init_stack
+multiline_comment|/* MCA reg.-backing store */
+DECL|member|init_stack
 id|u64
-id|ia64_init_stack
+id|init_stack
 (braket
 id|KERNEL_STACK_SIZE
 op_div
 l_int|8
 )braket
+suffix:semicolon
+)brace
 id|__attribute__
-c_func
 (paren
 (paren
 id|aligned
@@ -376,18 +335,30 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-DECL|typedef|ia64_mca_cpu_t
-)brace
-id|ia64_mca_cpu_t
+multiline_comment|/* Array of physical addresses of each CPU&squot;s MCA area.  */
+r_extern
+r_int
+r_int
+id|__per_cpu_mca
+(braket
+id|NR_CPUS
+)braket
 suffix:semicolon
-DECL|macro|PERCPU_MCA_SIZE
-mdefine_line|#define PERCPU_MCA_SIZE sizeof(ia64_mca_cpu_t)
 r_extern
 r_void
 id|ia64_mca_init
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ia64_mca_cpu_init
+c_func
+(paren
+r_void
+op_star
 )paren
 suffix:semicolon
 r_extern
