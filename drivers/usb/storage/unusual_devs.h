@@ -772,6 +772,32 @@ comma
 id|US_FL_BULK32
 )paren
 comma
+macro_line|#ifdef CONFIG_USB_STORAGE_USBAT
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04e6
+comma
+l_int|0x1010
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;SCM&quot;
+comma
+l_string|&quot;SCM USBAT-02&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_SCM_ATAPI
+comma
+id|init_usbat_hp8200e
+comma
+id|US_FL_SINGLE_LUN
+)paren
+comma
+macro_line|#endif
 multiline_comment|/* Reported by Bob Sass &lt;rls@vectordb.com&gt; -- only rev 1.33 tested */
 id|UNUSUAL_DEV
 c_func
