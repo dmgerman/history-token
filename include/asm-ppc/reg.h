@@ -138,6 +138,8 @@ DECL|macro|SPRN_TBWL
 mdefine_line|#define SPRN_TBWL&t;0x11C&t;/* Time Base Lower Register (super, R/W) */
 DECL|macro|SPRN_TBWU
 mdefine_line|#define SPRN_TBWU&t;0x11D&t;/* Time Base Upper Register (super, R/W) */
+DECL|macro|SPRN_HIOR
+mdefine_line|#define SPRN_HIOR&t;0x137&t;/* 970 Hypervisor interrupt offset */
 DECL|macro|SPRN_DBAT0L
 mdefine_line|#define SPRN_DBAT0L&t;0x219&t;/* Data BAT 0 Lower Register */
 DECL|macro|SPRN_DBAT0U
@@ -310,8 +312,14 @@ DECL|macro|HID1_SYNCBE
 mdefine_line|#define HID1_SYNCBE&t;(1&lt;&lt;11)&t;&t;/* 7450 ABE for sync, eieio */
 DECL|macro|HID1_ABE
 mdefine_line|#define HID1_ABE&t;(1&lt;&lt;10)&t;&t;/* 7450 Address Broadcast Enable */
+DECL|macro|SPRN_HID2
+mdefine_line|#define SPRN_HID2&t;0x3F8&t;&t;/* Hardware Implementation Register 2 */
 DECL|macro|SPRN_IABR
 mdefine_line|#define SPRN_IABR&t;0x3F2&t;/* Instruction Address Breakpoint Register */
+DECL|macro|SPRN_HID4
+mdefine_line|#define SPRN_HID4&t;0x3F4&t;&t;/* 970 HID4 */
+DECL|macro|SPRN_HID5
+mdefine_line|#define SPRN_HID5&t;0x3F6&t;&t;/* 970 HID5 */
 macro_line|#if !defined(SPRN_IAC1) &amp;&amp; !defined(SPRN_IAC2)
 DECL|macro|SPRN_IAC1
 mdefine_line|#define SPRN_IAC1&t;0x3F4&t;&t;/* Instruction Address Compare 1 */

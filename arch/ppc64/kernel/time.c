@@ -715,7 +715,10 @@ r_int
 r_int
 id|cpu
 op_assign
-id|lpaca-&gt;xPacaIndex
+id|smp_processor_id
+c_func
+(paren
+)paren
 suffix:semicolon
 id|irq_enter
 c_func

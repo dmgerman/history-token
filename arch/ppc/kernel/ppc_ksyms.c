@@ -210,6 +210,13 @@ c_func
 id|clear_page
 )paren
 suffix:semicolon
+DECL|variable|clear_user_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|clear_user_page
+)paren
+suffix:semicolon
 DECL|variable|do_signal
 id|EXPORT_SYMBOL
 c_func
@@ -1053,36 +1060,6 @@ id|cuda_poll
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ADB_CUDA */
-macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
-DECL|variable|get_backlight_level
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|get_backlight_level
-)paren
-suffix:semicolon
-DECL|variable|set_backlight_level
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_backlight_level
-)paren
-suffix:semicolon
-DECL|variable|set_backlight_enable
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_backlight_enable
-)paren
-suffix:semicolon
-DECL|variable|register_backlight_controller
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_backlight_controller
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
 macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 DECL|variable|_machine
 id|EXPORT_SYMBOL
@@ -1291,38 +1268,6 @@ id|kd_mksound
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_NVRAM
-DECL|variable|nvram_read_byte
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nvram_read_byte
-)paren
-suffix:semicolon
-DECL|variable|nvram_write_byte
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nvram_write_byte
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PMAC
-DECL|variable|pmac_xpram_read
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pmac_xpram_read
-)paren
-suffix:semicolon
-DECL|variable|pmac_xpram_write
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pmac_xpram_write
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif /* CONFIG_NVRAM */
 DECL|variable|to_tm
 id|EXPORT_SYMBOL
 c_func

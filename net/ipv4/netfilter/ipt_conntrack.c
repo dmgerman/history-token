@@ -1,4 +1,4 @@
-multiline_comment|/* Kernel module to match connection tracking information.&n; * Superset of Rusty&squot;s minimalistic state match.&n; * GPL (C) 2001  Marc Boucher (marc@mbsi.ca).&n; */
+multiline_comment|/* Kernel module to match connection tracking information.&n; * Superset of Rusty&squot;s minimalistic state match.&n; *&n; * (C) 2001  Marc Boucher (marc@mbsi.ca).&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack.h&gt;

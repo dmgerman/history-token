@@ -267,6 +267,11 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_POWER4
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#else
 r_int
 r_int
 id|tot
@@ -480,6 +485,7 @@ suffix:semicolon
 r_return
 id|done
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Set up one of the I/D BAT (block address translation) register pairs.&n; * The parameters are not checked; in particular size must be a power&n; * of 2 between 128k and 256M.&n; */
 DECL|function|setbat
@@ -1088,6 +1094,7 @@ id|Hash
 op_or
 id|SDR1_LOW_BITS
 suffix:semicolon
+macro_line|#endif /* CONFIG_POWER4 */
 id|Hash_end
 op_assign
 (paren
@@ -1104,7 +1111,6 @@ op_plus
 id|Hash_size
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_POWER4 */
 id|printk
 c_func
 (paren

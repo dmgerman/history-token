@@ -1,4 +1,5 @@
-multiline_comment|/* NETMAP - static NAT mapping of IP network addresses (1:1).&n;   The mapping can be applied to source (POSTROUTING),&n;   destination (PREROUTING), or both (with separate rules).&n;&n;   Author: Svenning Soerensen &lt;svenning@post5.tele.dk&gt;&n;*/
+multiline_comment|/* NETMAP - static NAT mapping of IP network addresses (1:1).&n; * The mapping can be applied to source (POSTROUTING),&n; * destination (PREROUTING), or both (with separate rules).&n; */
+multiline_comment|/* (C) 2000-2001 Svenning Soerensen &lt;svenning@post5.tele.dk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;

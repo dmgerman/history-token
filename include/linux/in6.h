@@ -298,5 +298,6 @@ DECL|macro|IPV6_IPSEC_POLICY
 mdefine_line|#define IPV6_IPSEC_POLICY&t;34
 DECL|macro|IPV6_XFRM_POLICY
 mdefine_line|#define IPV6_XFRM_POLICY&t;35
+multiline_comment|/*&n; * Multicast:&n; * Following socket options are shared between IPv4 and IPv6.&n; *&n; * MCAST_JOIN_GROUP&t;&t;42&n; * MCAST_BLOCK_SOURCE&t;&t;43&n; * MCAST_UNBLOCK_SOURCE&t;&t;44&n; * MCAST_LEAVE_GROUP&t;&t;45&n; * MCAST_JOIN_SOURCE_GROUP&t;46&n; * MCAST_LEAVE_SOURCE_GROUP&t;47&n; * MCAST_MSFILTER&t;&t;48&n; */
 macro_line|#endif
 eof

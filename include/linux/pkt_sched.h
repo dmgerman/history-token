@@ -663,6 +663,85 @@ id|ctokens
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* HFSC section */
+DECL|struct|tc_hfsc_qopt
+r_struct
+id|tc_hfsc_qopt
+(brace
+DECL|member|defcls
+id|__u16
+id|defcls
+suffix:semicolon
+multiline_comment|/* default class */
+)brace
+suffix:semicolon
+DECL|struct|tc_service_curve
+r_struct
+id|tc_service_curve
+(brace
+DECL|member|m1
+id|__u32
+id|m1
+suffix:semicolon
+multiline_comment|/* slope of the first segment in bps */
+DECL|member|d
+id|__u32
+id|d
+suffix:semicolon
+multiline_comment|/* x-projection of the first segment in us */
+DECL|member|m2
+id|__u32
+id|m2
+suffix:semicolon
+multiline_comment|/* slope of the second segment in bps */
+)brace
+suffix:semicolon
+DECL|struct|tc_hfsc_stats
+r_struct
+id|tc_hfsc_stats
+(brace
+DECL|member|work
+id|__u64
+id|work
+suffix:semicolon
+multiline_comment|/* total work done */
+DECL|member|rtwork
+id|__u64
+id|rtwork
+suffix:semicolon
+multiline_comment|/* work done by real-time criteria */
+DECL|member|period
+id|__u32
+id|period
+suffix:semicolon
+multiline_comment|/* current period */
+DECL|member|level
+id|__u32
+id|level
+suffix:semicolon
+multiline_comment|/* class level in hierarchy */
+)brace
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|TCA_HFSC_UNSPEC
+id|TCA_HFSC_UNSPEC
+comma
+DECL|enumerator|TCA_HFSC_RSC
+id|TCA_HFSC_RSC
+comma
+DECL|enumerator|TCA_HFSC_FSC
+id|TCA_HFSC_FSC
+comma
+DECL|enumerator|TCA_HFSC_USC
+id|TCA_HFSC_USC
+comma
+DECL|enumerator|TCA_HFSC_MAX
+id|TCA_HFSC_MAX
+op_assign
+id|TCA_HFSC_USC
+)brace
+suffix:semicolon
 multiline_comment|/* CBQ section */
 DECL|macro|TC_CBQ_MAXPRIO
 mdefine_line|#define TC_CBQ_MAXPRIO&t;&t;8

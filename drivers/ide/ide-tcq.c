@@ -1211,13 +1211,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_queued_start
+id|__ide_dma_queued_start
 c_func
 (paren
 id|drive
@@ -2743,9 +2737,7 @@ id|feat
 )paren
 suffix:semicolon
 r_return
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_queued_start
+id|__ide_dma_queued_start
 c_func
 (paren
 id|drive

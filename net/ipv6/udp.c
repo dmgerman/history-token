@@ -3151,13 +3151,11 @@ multiline_comment|/* &n;&t; *&t;Multicast receive code &n;&t; */
 r_if
 c_cond
 (paren
-id|ipv6_addr_type
+id|ipv6_addr_is_multicast
 c_func
 (paren
 id|daddr
 )paren
-op_amp
-id|IPV6_ADDR_MULTICAST
 )paren
 (brace
 id|udpv6_mcast_deliver

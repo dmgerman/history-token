@@ -275,7 +275,7 @@ id|dev_dummy
 )paren
 )paren
 (brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev_dummy

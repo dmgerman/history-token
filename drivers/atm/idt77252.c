@@ -2986,7 +2986,7 @@ suffix:semicolon
 id|TXPRINTK
 c_func
 (paren
-l_string|&quot;idt77252: SCQ: base 0x%p, next 0x%p, last 0x%p, paddr %08x&bslash;n&quot;
+l_string|&quot;idt77252: SCQ: base 0x%p, next 0x%p, last 0x%p, paddr %08llx&bslash;n&quot;
 comma
 id|scq-&gt;base
 comma
@@ -2994,6 +2994,11 @@ id|scq-&gt;next
 comma
 id|scq-&gt;last
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|scq-&gt;paddr
 )paren
 suffix:semicolon

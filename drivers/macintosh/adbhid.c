@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/input/adbhid.c&n; *&n; * ADB HID driver for Power Macintosh computers.&n; *&n; * Adapted from drivers/macintosh/mac_keyb.c by Franz Sirl.&n; * drivers/macintosh/mac_keyb.c was Copyright (C) 1996 Paul Mackerras&n; * with considerable contributions from Ben Herrenschmidt and others.&n; *&n; * Copyright (C) 2000 Franz Sirl.&n; *&n; * Adapted to ADB changes and support for more devices by&n; * Benjamin Herrenschmidt. Adapted from code in MkLinux&n; * and reworked.&n; * &n; * Supported devices:&n; *&n; * - Standard 1 button mouse&n; * - All standard Apple Extended protocol (handler ID 4)&n; * - mouseman and trackman mice &amp; trackballs &n; * - PowerBook Trackpad (default setup: enable tapping)&n; * - MicroSpeed mouse &amp; trackball (needs testing)&n; * - CH Products Trackball Pro (needs testing)&n; * - Contour Design (Contour Mouse)&n; * - Hunter digital (NoHandsMouse)&n; * - Kensignton TurboMouse 5 (needs testing)&n; * - Mouse Systems A3 mice and trackballs &lt;aidan@kublai.com&gt;&n; * - MacAlly 2-buttons mouse (needs testing) &lt;pochini@denise.shiny.it&gt;&n; *&n; * To do:&n; *&n; * Improve Kensington support.&n; */
+multiline_comment|/*&n; * drivers/input/adbhid.c&n; *&n; * ADB HID driver for Power Macintosh computers.&n; *&n; * Adapted from drivers/macintosh/mac_keyb.c by Franz Sirl.&n; * drivers/macintosh/mac_keyb.c was Copyright (C) 1996 Paul Mackerras&n; * with considerable contributions from Ben Herrenschmidt and others.&n; *&n; * Copyright (C) 2000 Franz Sirl.&n; *&n; * Adapted to ADB changes and support for more devices by&n; * Benjamin Herrenschmidt. Adapted from code in MkLinux&n; * and reworked.&n; * &n; * Supported devices:&n; *&n; * - Standard 1 button mouse&n; * - All standard Apple Extended protocol (handler ID 4)&n; * - mouseman and trackman mice &amp; trackballs &n; * - PowerBook Trackpad (default setup: enable tapping)&n; * - MicroSpeed mouse &amp; trackball (needs testing)&n; * - CH Products Trackball Pro (needs testing)&n; * - Contour Design (Contour Mouse)&n; * - Hunter digital (NoHandsMouse)&n; * - Kensignton TurboMouse 5 (needs testing)&n; * - Mouse Systems A3 mice and trackballs &lt;aidan@kublai.com&gt;&n; * - MacAlly 2-buttons mouse (needs testing) &lt;pochini@denise.shiny.it&gt;&n; *&n; * To do:&n; *&n; * Improve Kensington support.&n; * Split mouse/kbd&n; * Move to syfs&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -57,6 +57,21 @@ id|adb_message_handler
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* Some special keys */
+DECL|macro|ADB_KEY_DEL
+mdefine_line|#define ADB_KEY_DEL&t;&t;0x33
+DECL|macro|ADB_KEY_CMD
+mdefine_line|#define ADB_KEY_CMD&t;&t;0x37
+DECL|macro|ADB_KEY_CAPSLOCK
+mdefine_line|#define ADB_KEY_CAPSLOCK&t;0x39
+DECL|macro|ADB_KEY_FN
+mdefine_line|#define ADB_KEY_FN&t;&t;0x3f
+DECL|macro|ADB_KEY_FWDEL
+mdefine_line|#define ADB_KEY_FWDEL&t;&t;0x75
+DECL|macro|ADB_KEY_POWER_OLD
+mdefine_line|#define ADB_KEY_POWER_OLD&t;0x7e
+DECL|macro|ADB_KEY_POWER
+mdefine_line|#define ADB_KEY_POWER&t;&t;0x7f
 DECL|variable|adb_to_linux_keycodes
 r_int
 r_char
@@ -372,8 +387,18 @@ id|phys
 l_int|32
 )braket
 suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|FLAG_FN_KEY_PRESSED
+mdefine_line|#define FLAG_FN_KEY_PRESSED&t;0x00000001
+DECL|macro|FLAG_POWER_FROM_FN
+mdefine_line|#define FLAG_POWER_FROM_FN&t;0x00000002
+DECL|macro|FLAG_EMU_FWDEL_DOWN
+mdefine_line|#define FLAG_EMU_FWDEL_DOWN&t;0x00000004
 DECL|variable|adbhid
 r_static
 r_struct
@@ -706,6 +731,16 @@ op_star
 id|regs
 )paren
 (brace
+r_struct
+id|adbhid
+op_star
+id|ahid
+op_assign
+id|adbhid
+(braket
+id|id
+)braket
+suffix:semicolon
 r_int
 id|up_flag
 suffix:semicolon
@@ -728,19 +763,14 @@ id|keycode
 )paren
 (brace
 r_case
-l_int|0x39
+id|ADB_KEY_CAPSLOCK
 suffix:colon
 multiline_comment|/* Generate down/up events for CapsLock everytime. */
 id|input_regs
 c_func
 (paren
 op_amp
-id|adbhid
-(braket
-id|id
-)braket
-op_member_access_from_pointer
-id|input
+id|ahid-&gt;input
 comma
 id|regs
 )paren
@@ -749,12 +779,7 @@ id|input_report_key
 c_func
 (paren
 op_amp
-id|adbhid
-(braket
-id|id
-)braket
-op_member_access_from_pointer
-id|input
+id|ahid-&gt;input
 comma
 id|KEY_CAPSLOCK
 comma
@@ -765,12 +790,7 @@ id|input_report_key
 c_func
 (paren
 op_amp
-id|adbhid
-(braket
-id|id
-)braket
-op_member_access_from_pointer
-id|input
+id|ahid-&gt;input
 comma
 id|KEY_CAPSLOCK
 comma
@@ -781,25 +801,14 @@ id|input_sync
 c_func
 (paren
 op_amp
-id|adbhid
-(braket
-id|id
-)braket
-op_member_access_from_pointer
-id|input
+id|ahid-&gt;input
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
-r_case
-l_int|0x3f
-suffix:colon
-multiline_comment|/* ignore Powerbook Fn key */
-r_return
-suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_PMAC
 r_case
-l_int|0x7e
+id|ADB_KEY_POWER_OLD
 suffix:colon
 multiline_comment|/* Power key on PBook 3400 needs remapping */
 r_switch
@@ -829,7 +838,139 @@ id|PMAC_TYPE_KANGA
 suffix:colon
 id|keycode
 op_assign
-l_int|0x7f
+id|ADB_KEY_POWER
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|ADB_KEY_POWER
+suffix:colon
+multiline_comment|/* Fn + Command will produce a bogus &quot;power&quot; keycode */
+r_if
+c_cond
+(paren
+id|ahid-&gt;flags
+op_amp
+id|FLAG_FN_KEY_PRESSED
+)paren
+(brace
+id|keycode
+op_assign
+id|ADB_KEY_CMD
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|up_flag
+)paren
+id|ahid-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_POWER_FROM_FN
+suffix:semicolon
+r_else
+id|ahid-&gt;flags
+op_or_assign
+id|FLAG_POWER_FROM_FN
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|ahid-&gt;flags
+op_amp
+id|FLAG_POWER_FROM_FN
+)paren
+(brace
+id|keycode
+op_assign
+id|ADB_KEY_CMD
+suffix:semicolon
+id|ahid-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_POWER_FROM_FN
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|ADB_KEY_FN
+suffix:colon
+multiline_comment|/* Keep track of the Fn key state */
+r_if
+c_cond
+(paren
+id|up_flag
+)paren
+(brace
+id|ahid-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_FN_KEY_PRESSED
+suffix:semicolon
+multiline_comment|/* Emulate Fn+delete = forward delete */
+r_if
+c_cond
+(paren
+id|ahid-&gt;flags
+op_amp
+id|FLAG_EMU_FWDEL_DOWN
+)paren
+(brace
+id|ahid-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_EMU_FWDEL_DOWN
+suffix:semicolon
+id|keycode
+op_assign
+id|ADB_KEY_FWDEL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_else
+id|ahid-&gt;flags
+op_or_assign
+id|FLAG_FN_KEY_PRESSED
+suffix:semicolon
+multiline_comment|/* Swallow the key press */
+r_return
+suffix:semicolon
+r_case
+id|ADB_KEY_DEL
+suffix:colon
+multiline_comment|/* Emulate Fn+delete = forward delete */
+r_if
+c_cond
+(paren
+id|ahid-&gt;flags
+op_amp
+id|FLAG_FN_KEY_PRESSED
+)paren
+(brace
+id|keycode
+op_assign
+id|ADB_KEY_FWDEL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|up_flag
+)paren
+id|ahid-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_EMU_FWDEL_DOWN
+suffix:semicolon
+r_else
+id|ahid-&gt;flags
+op_or_assign
+id|FLAG_EMU_FWDEL_DOWN
 suffix:semicolon
 )brace
 r_break
@@ -2668,6 +2809,15 @@ op_member_access_from_pointer
 id|mouse_kind
 op_assign
 id|mouse_kind
+suffix:semicolon
+id|adbhid
+(braket
+id|id
+)braket
+op_member_access_from_pointer
+id|flags
+op_assign
+l_int|0
 suffix:semicolon
 id|adbhid
 (braket

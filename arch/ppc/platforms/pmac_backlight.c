@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Miscellaneous procedures for dealing with the PowerMac hardware.&n; * Contains support for the backlight.&n; *&n; *   Copyright (C) 2000 Benjamin Herrenschmidt&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/nvram.h&gt;
@@ -86,6 +87,16 @@ r_int
 id|valid
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* There&squot;s already a matching controller, bail out */
+r_if
+c_cond
+(paren
+id|backlighter
+op_ne
+l_int|NULL
+)paren
+r_return
 suffix:semicolon
 id|bk_node
 op_assign
@@ -339,6 +350,13 @@ id|backlight_level
 )paren
 suffix:semicolon
 )brace
+DECL|variable|register_backlight_controller
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_backlight_controller
+)paren
+suffix:semicolon
 r_void
 id|__pmac
 DECL|function|unregister_backlight_controller
@@ -372,6 +390,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|unregister_backlight_controller
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unregister_backlight_controller
+)paren
+suffix:semicolon
 r_int
 id|__pmac
 DECL|function|set_backlight_enable
@@ -423,6 +448,13 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+DECL|variable|set_backlight_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_backlight_enable
+)paren
+suffix:semicolon
 r_int
 id|__pmac
 DECL|function|get_backlight_enable
@@ -446,6 +478,13 @@ r_return
 id|backlight_enabled
 suffix:semicolon
 )brace
+DECL|variable|get_backlight_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_backlight_enable
+)paren
+suffix:semicolon
 r_int
 id|__pmac
 DECL|function|set_backlight_level
@@ -551,6 +590,13 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+DECL|variable|set_backlight_level
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_backlight_level
+)paren
+suffix:semicolon
 r_int
 id|__pmac
 DECL|function|get_backlight_level
@@ -574,4 +620,11 @@ r_return
 id|backlight_level
 suffix:semicolon
 )brace
+DECL|variable|get_backlight_level
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_backlight_level
+)paren
+suffix:semicolon
 eof

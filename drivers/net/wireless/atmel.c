@@ -1,4 +1,4 @@
-multiline_comment|/*** -*- linux-c -*- **********************************************************&n;&n;     Driver for Atmel at76c502 at76c504 and at76c506 wireless cards.&n;&n;        Copyright 2000-2001 ATMEL Corporation.&n;        Copyright 2003 Simon Kelley.&n;&n;    This code was developed from version 2.1.1 of the Atmel drivers, &n;    released by Atmel corp. under the GPL in December 2002. It also &n;    includes code from the Linux aironet drivers (C) Benjamin Reed, &n;    and the Linux PCMCIA package, (C) David Hinds and the Linux wireless&n;    extensions, (C) Jean Tourrilhes.&n;&n;    The firmware module for reading the MAC address of the card comes from&n;    net.russotto.AtmelMACFW, written by Matthew T. Russotto and copyright&n;    by him. net.russotto.AtmelMACFW is used under the GPL license version 2.&n;    This file contains the module in binary form and, under the terms&n;    of the GPL, in source form. The source is located at the end of the file.&n;&n;    For all queries about this code, please contact the current author, &n;    Simon Kelley &lt;simon@thekelleys.org.uk&gt; and not Atmel Corporation.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This software is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with Atmel wireless lan drivers; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;******************************************************************************/
+multiline_comment|/*** -*- linux-c -*- **********************************************************&n;&n;     Driver for Atmel at76c502 at76c504 and at76c506 wireless cards.&n;&n;        Copyright 2000-2001 ATMEL Corporation.&n;        Copyright 2003 Simon Kelley.&n;&n;    This code was developed from version 2.1.1 of the Atmel drivers, &n;    released by Atmel corp. under the GPL in December 2002. It also &n;    includes code from the Linux aironet drivers (C) Benjamin Reed, &n;    and the Linux PCMCIA package, (C) David Hinds and the Linux wireless&n;    extensions, (C) Jean Tourrilhes.&n;&n;    The firmware module for reading the MAC address of the card comes from&n;    net.russotto.AtmelMACFW, written by Matthew T. Russotto and copyright&n;    by him. net.russotto.AtmelMACFW is used under the GPL license version 2.&n;    This file contains the module in binary form and, under the terms&n;    of the GPL, in source form. The source is located at the end of the file.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This software is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with Atmel wireless lan drivers; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;    For all queries about this code, please contact the current author, &n;    Simon Kelley &lt;simon@thekelleys.org.uk&gt; and not Atmel Corporation.&n;&n;    Credit is due to HP UK and Cambridge Online Systems Ltd for supplying&n;    hardware used during development of this driver.&n;&n;******************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -30,7 +30,7 @@ macro_line|#include &quot;ieee802_11.h&quot;
 DECL|macro|DRIVER_MAJOR
 mdefine_line|#define DRIVER_MAJOR 0
 DECL|macro|DRIVER_MINOR
-mdefine_line|#define DRIVER_MINOR 9
+mdefine_line|#define DRIVER_MINOR 91
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -2116,11 +2116,6 @@ DECL|member|card_type
 )brace
 id|card_type
 suffix:semicolon
-DECL|member|is3com
-r_int
-id|is3com
-suffix:semicolon
-multiline_comment|/* is this a 3com card? they are uniquely borken */
 DECL|member|do_rx_crc
 r_int
 id|do_rx_crc
@@ -2221,9 +2216,13 @@ id|MAX_ENCRYPTION_KEYS
 )braket
 suffix:semicolon
 DECL|member|use_wpa
+DECL|member|radio_on_broken
 r_int
 id|use_wpa
+comma
+id|radio_on_broken
 suffix:semicolon
+multiline_comment|/* firmware dependent stuff. */
 DECL|member|host_info_base
 id|u16
 id|host_info_base
@@ -7541,9 +7540,6 @@ r_char
 op_star
 id|firmware_id
 comma
-r_int
-id|is3com
-comma
 r_struct
 id|device
 op_star
@@ -7712,10 +7708,6 @@ suffix:semicolon
 id|priv-&gt;station_state
 op_assign
 id|STATION_STATE_DOWN
-suffix:semicolon
-id|priv-&gt;is3com
-op_assign
-id|is3com
 suffix:semicolon
 id|priv-&gt;do_rx_crc
 op_assign
@@ -8228,12 +8220,6 @@ id|priv
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|unregister_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/* put a brick on it... */
 r_if
 c_cond
@@ -8262,19 +8248,25 @@ comma
 l_int|0x0040
 )paren
 suffix:semicolon
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|priv-&gt;management_timer
+)paren
+suffix:semicolon
+id|unregister_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
 l_string|&quot;driver/atmel&quot;
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-id|del_timer_sync
-c_func
-(paren
-op_amp
-id|priv-&gt;management_timer
 )paren
 suffix:semicolon
 id|free_irq
@@ -10305,7 +10297,7 @@ op_ge
 (paren
 r_int
 )paren
-l_float|2.412e8
+l_int|241200000
 )paren
 op_logical_and
 (paren
@@ -10314,7 +10306,7 @@ op_le
 (paren
 r_int
 )paren
-l_float|2.487e8
+l_int|248700000
 )paren
 )paren
 (brace
@@ -18082,13 +18074,21 @@ id|priv
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Check the version and set the correct flag for wpa stuff,&n;&t;   old and new firmware is incompatible. */
+multiline_comment|/* Check the version and set the correct flag for wpa stuff,&n;&t;   old and new firmware is incompatible.&n;&t;   The pre-wpa 3com firmware reports major version 5,&n;&t;   the wpa 3com firmware is major version 4 and doesn&squot;t need&n;&t;   the 3com broken-ness filter. */
 id|priv-&gt;use_wpa
 op_assign
 (paren
 id|priv-&gt;host_info.major_version
-op_ge
+op_eq
 l_int|4
+)paren
+suffix:semicolon
+id|priv-&gt;radio_on_broken
+op_assign
+(paren
+id|priv-&gt;host_info.major_version
+op_eq
+l_int|5
 )paren
 suffix:semicolon
 multiline_comment|/* unmask all irq sources */
@@ -18367,7 +18367,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|priv-&gt;is3com
+id|priv-&gt;radio_on_broken
 )paren
 (brace
 r_if

@@ -1120,13 +1120,6 @@ DECL|member|TxDescriptControlInit
 id|u_int32_t
 id|TxDescriptControlInit
 suffix:semicolon
-DECL|member|next_module
-r_struct
-id|net_device
-op_star
-id|next_module
-suffix:semicolon
-multiline_comment|/* Link to the next module  */
 DECL|member|tx_TimeoutInd
 r_int
 id|tx_TimeoutInd
@@ -1367,22 +1360,7 @@ macro_line|#ifndef TULIP_CMD_RECEIVEALL
 DECL|macro|TULIP_CMD_RECEIVEALL
 mdefine_line|#define TULIP_CMD_RECEIVEALL 0x40000000L
 macro_line|#endif
-multiline_comment|/* PCI register values */
-DECL|macro|CORRECT_VENDOR_ID
-mdefine_line|#define CORRECT_VENDOR_ID    0x1011
-DECL|macro|CORRECT_DEV_ID
-mdefine_line|#define CORRECT_DEV_ID       9
-DECL|macro|PCI_VENDOR_LMC
-mdefine_line|#define PCI_VENDOR_LMC&t;&t;0x1376
-DECL|macro|PCI_PRODUCT_LMC_HSSI
-mdefine_line|#define PCI_PRODUCT_LMC_HSSI&t;0x0003
-DECL|macro|PCI_PRODUCT_LMC_DS3
-mdefine_line|#define PCI_PRODUCT_LMC_DS3&t;0x0004
-DECL|macro|PCI_PRODUCT_LMC_SSI
-mdefine_line|#define PCI_PRODUCT_LMC_SSI&t;0x0005
-DECL|macro|PCI_PRODUCT_LMC_T1
-mdefine_line|#define PCI_PRODUCT_LMC_T1      0x0006
-multiline_comment|/* Adapcter module number */
+multiline_comment|/* Adapter module number */
 DECL|macro|LMC_ADAP_HSSI
 mdefine_line|#define LMC_ADAP_HSSI           2
 DECL|macro|LMC_ADAP_DS3

@@ -1,12 +1,17 @@
 multiline_comment|/* tulip_core.c: A DEC 21x4x-family ethernet driver for Linux. */
 multiline_comment|/*&n;&t;Maintained by Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;tulip&quot;
+macro_line|#ifdef CONFIG_TULIP_NAPI
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION    &quot;1.1.13-NAPI&quot; /* Keep at least for test */
+macro_line|#else
 DECL|macro|DRV_VERSION
 mdefine_line|#define DRV_VERSION&t;&quot;1.1.13&quot;
+macro_line|#endif
 DECL|macro|DRV_RELDATE
 mdefine_line|#define DRV_RELDATE&t;&quot;May 11, 2002&quot;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;tulip.h&quot;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -2741,75 +2746,28 @@ op_amp
 id|tp-&gt;timer
 )paren
 suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
-multiline_comment|/* Enable receiver */
-DECL|function|tulip_xon
-r_void
-id|tulip_xon
+macro_line|#ifdef CONFIG_TULIP_NAPI
+id|init_timer
 c_func
 (paren
-r_struct
-id|net_device
-op_star
-id|dev
+op_amp
+id|tp-&gt;oom_timer
 )paren
-(brace
-r_struct
-id|tulip_private
-op_star
-id|tp
+suffix:semicolon
+id|tp-&gt;oom_timer.data
 op_assign
 (paren
-r_struct
-id|tulip_private
-op_star
+r_int
+r_int
 )paren
-id|dev-&gt;priv
-suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|tp-&gt;fc_bit
-comma
-op_amp
-id|netdev_fc_xoff
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|netif_running
-c_func
-(paren
 id|dev
-)paren
-)paren
-(brace
-id|tulip_refill_rx
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
-id|outl
-c_func
-(paren
-id|tulip_tbl
-(braket
-id|tp-&gt;chip_id
-)braket
-dot
-id|valid_intrs
-comma
-id|dev-&gt;base_addr
-op_plus
-id|CSR7
-)paren
+id|tp-&gt;oom_timer.function
+op_assign
+id|oom_timer
 suffix:semicolon
-)brace
-)brace
 macro_line|#endif
+)brace
 r_static
 r_int
 DECL|function|tulip_open
@@ -2822,20 +2780,6 @@ op_star
 id|dev
 )paren
 (brace
-macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
-r_struct
-id|tulip_private
-op_star
-id|tp
-op_assign
-(paren
-r_struct
-id|tulip_private
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-macro_line|#endif
 r_int
 id|retval
 suffix:semicolon
@@ -2874,18 +2818,6 @@ id|tulip_up
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
-id|tp-&gt;fc_bit
-op_assign
-id|netdev_register_fc
-c_func
-(paren
-id|dev
-comma
-id|tulip_xon
-)paren
-suffix:semicolon
-macro_line|#endif
 id|netif_start_queue
 (paren
 id|dev
@@ -3474,28 +3406,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Stop and restart the chip&squot;s Tx processes . */
-macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
-r_if
-c_cond
-(paren
-id|tp-&gt;fc_bit
-op_logical_and
-id|test_bit
-c_func
-(paren
-id|tp-&gt;fc_bit
-comma
-op_amp
-id|netdev_fc_xoff
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;BUG tx_timeout restarting rx when fc on&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|tulip_restart_rxtx
 c_func
 (paren
@@ -4352,6 +4262,14 @@ op_amp
 id|tp-&gt;timer
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_TULIP_NAPI
+id|del_timer_sync
+(paren
+op_amp
+id|tp-&gt;oom_timer
+)paren
+suffix:semicolon
+macro_line|#endif
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -4497,30 +4415,6 @@ id|netif_stop_queue
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
-r_if
-c_cond
-(paren
-id|tp-&gt;fc_bit
-)paren
-(brace
-r_int
-id|bit
-op_assign
-id|tp-&gt;fc_bit
-suffix:semicolon
-id|tp-&gt;fc_bit
-op_assign
-l_int|0
-suffix:semicolon
-id|netdev_unregister_fc
-c_func
-(paren
-id|bit
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|tulip_down
 (paren
 id|dev
@@ -8997,6 +8891,16 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
+macro_line|#ifdef CONFIG_TULIP_NAPI
+id|dev-&gt;poll
+op_assign
+id|tulip_poll
+suffix:semicolon
+id|dev-&gt;weight
+op_assign
+l_int|16
+suffix:semicolon
+macro_line|#endif
 id|dev-&gt;stop
 op_assign
 id|tulip_close
@@ -9488,7 +9392,7 @@ id|pdev
 suffix:semicolon
 id|err_out_free_netdev
 suffix:colon
-id|kfree
+id|free_netdev
 (paren
 id|dev
 )paren

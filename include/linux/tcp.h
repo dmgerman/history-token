@@ -1232,6 +1232,59 @@ r_int
 r_int
 id|last_synq_overflow
 suffix:semicolon
+multiline_comment|/* TCP Westwood structure */
+r_struct
+(brace
+DECL|member|bw_sample
+id|__u32
+id|bw_sample
+suffix:semicolon
+multiline_comment|/* bandwidth sample */
+DECL|member|bw_ns_est
+id|__u32
+id|bw_ns_est
+suffix:semicolon
+multiline_comment|/* first bandwidth estimation..not too smoothed 8) */
+DECL|member|bw_est
+id|__u32
+id|bw_est
+suffix:semicolon
+multiline_comment|/* bandwidth estimate */
+DECL|member|rtt_win_sx
+id|__u32
+id|rtt_win_sx
+suffix:semicolon
+multiline_comment|/* here starts a new evaluation... */
+DECL|member|bk
+id|__u32
+id|bk
+suffix:semicolon
+DECL|member|snd_una
+id|__u32
+id|snd_una
+suffix:semicolon
+multiline_comment|/* used for evaluating the number of acked bytes */
+DECL|member|cumul_ack
+id|__u32
+id|cumul_ack
+suffix:semicolon
+DECL|member|accounted
+id|__u32
+id|accounted
+suffix:semicolon
+DECL|member|rtt
+id|__u32
+id|rtt
+suffix:semicolon
+DECL|member|rtt_min
+id|__u32
+id|rtt_min
+suffix:semicolon
+multiline_comment|/* minimum observed RTT */
+DECL|member|westwood
+)brace
+id|westwood
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* WARNING: don&squot;t change the layout of the members in tcp_sock! */

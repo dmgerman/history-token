@@ -1751,14 +1751,12 @@ r_else
 r_if
 c_cond
 (paren
-id|ipv6_addr_type
+id|ipv6_addr_any
 c_func
 (paren
 op_amp
 id|np-&gt;rcv_saddr
 )paren
-op_eq
-id|IPV6_ADDR_ANY
 )paren
 id|ipv6_addr_copy
 c_func

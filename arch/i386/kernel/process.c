@@ -787,13 +787,15 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
+l_string|&quot;.section .text&bslash;n&quot;
 l_string|&quot;.align 4&bslash;n&quot;
 l_string|&quot;kernel_thread_helper:&bslash;n&bslash;t&quot;
 l_string|&quot;movl %edx,%eax&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %edx&bslash;n&bslash;t&quot;
 l_string|&quot;call *%ebx&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %eax&bslash;n&bslash;t&quot;
-l_string|&quot;call do_exit&quot;
+l_string|&quot;call do_exit&bslash;n&quot;
+l_string|&quot;.previous&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Create a kernel thread&n; */

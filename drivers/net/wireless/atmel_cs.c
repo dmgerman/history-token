@@ -134,8 +134,6 @@ comma
 r_char
 op_star
 comma
-r_int
-comma
 r_struct
 id|device
 op_star
@@ -824,6 +822,30 @@ l_string|&quot;NoName-504&quot;
 )brace
 comma
 (brace
+l_int|0
+comma
+l_int|0
+comma
+l_string|&quot;ATMEL/AT76C504A&quot;
+comma
+l_string|&quot;atmel_at76c504a_2958%s.bin&quot;
+comma
+l_string|&quot;NoName-504a-2958&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_string|&quot;ATMEL/AT76C504_R&quot;
+comma
+l_string|&quot;atmel_at76c504_2958%s.bin&quot;
+comma
+l_string|&quot;NoName-504-2958&quot;
+)brace
+comma
+(brace
 id|MANFID_3COM
 comma
 l_int|0x0620
@@ -883,7 +905,6 @@ comma
 l_string|&quot;Sitecom WLAN-011&quot;
 )brace
 comma
-multiline_comment|/* suspect - from a usenet posting. */
 (brace
 l_int|0x01bf
 comma
@@ -891,12 +912,11 @@ l_int|0x3302
 comma
 l_int|NULL
 comma
-l_string|&quot;atmel_at76c502d%s.bin&quot;
+l_string|&quot;atmel_at76c502e%s.bin&quot;
 comma
-l_string|&quot;Belkin F5D6060u&quot;
+l_string|&quot;Belkin F5D6020-V2&quot;
 )brace
 comma
-multiline_comment|/*    &quot;        &quot;  &quot;    &quot;      &quot;     */
 (brace
 l_int|0
 comma
@@ -931,6 +951,42 @@ comma
 l_string|&quot;atmel_at76c502e%s.bin&quot;
 comma
 l_string|&quot;CNet CNWLC-811ARL&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_string|&quot;Wireless/PC_CARD&quot;
+comma
+l_string|&quot;atmel_at76c502d%s.bin&quot;
+comma
+l_string|&quot;Planet WL-3552&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_string|&quot;OEM/11Mbps Wireless LAN PC Card V-3&quot;
+comma
+l_string|&quot;atmel_at76c502%s.bin&quot;
+comma
+l_string|&quot;OEM 11Mbps WLAN PCMCIA Card&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_string|&quot;11WAVE/11WP611AL-E&quot;
+comma
+l_string|&quot;atmel_at76c502e%s.bin&quot;
+comma
+l_string|&quot;11WAVE WaveBuddy&quot;
 )brace
 )brace
 suffix:semicolon
@@ -1992,25 +2048,6 @@ id|card_index
 )braket
 dot
 id|firmware
-comma
-id|card_index
-op_eq
-op_minus
-l_int|1
-ques
-c_cond
-l_int|0
-suffix:colon
-(paren
-id|card_table
-(braket
-id|card_index
-)braket
-dot
-id|manf
-op_eq
-id|MANFID_3COM
-)paren
 comma
 op_amp
 id|atmel_device

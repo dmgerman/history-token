@@ -1,3 +1,4 @@
+multiline_comment|/* (C) 1999-2001 Michal Ludvig &lt;michal@logix.cz&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
@@ -8,6 +9,18 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Michal Ludvig &lt;michal@logix.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;IP tables match to match on linklayer packet type&quot;
 )paren
 suffix:semicolon
 DECL|function|match
