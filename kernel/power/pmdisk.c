@@ -1991,6 +1991,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: si_swapinfo(&amp;i) returns all swap devices information.&n;&t; * We should only consider resume_device. &n;&t; */
 id|si_swapinfo
 c_func
 (paren
@@ -1998,7 +1999,6 @@ op_amp
 id|i
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: si_swapinfo(&amp;i) returns all swap devices information.&n;&t;&t;&t;&t;   We should only consider resume_device. */
 r_if
 c_cond
 (paren
@@ -2052,12 +2052,6 @@ c_func
 l_string|&quot;pmdisk: Couldn&squot;t allocate pagedir&bslash;n&quot;
 )paren
 suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;pmdisk: Couldn&squot;t allocate pagedir&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -2071,12 +2065,13 @@ id|pagedir_order_check
 op_assign
 id|pagedir_order
 suffix:semicolon
+multiline_comment|/* During allocating of suspend pagedir, new cold pages may appear. &n;&t; * Kill them &n;&t; */
 id|drain_local_pages
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* During allocating of suspend pagedir, new cold pages may appear. Kill them */
+multiline_comment|/* copy */
 r_if
 c_cond
 (paren
@@ -2088,7 +2083,6 @@ c_func
 id|pm_pagedir_nosave
 )paren
 )paren
-multiline_comment|/* copy */
 id|BUG
 c_func
 (paren
