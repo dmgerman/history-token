@@ -47,6 +47,20 @@ c_func
 id|acpi_wakeup_device_list
 )paren
 suffix:semicolon
+r_static
+r_int
+id|acpi_bus_trim
+c_func
+(paren
+r_struct
+id|acpi_device
+op_star
+id|start
+comma
+r_int
+id|rmdevice
+)paren
+suffix:semicolon
 DECL|function|acpi_device_release
 r_static
 r_void
@@ -3610,6 +3624,7 @@ id|buffer.pointer
 suffix:semicolon
 )brace
 DECL|function|acpi_device_set_context
+r_static
 r_int
 id|acpi_device_set_context
 c_func
@@ -3686,6 +3701,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|acpi_device_get_debug_info
+r_static
 r_void
 id|acpi_device_get_debug_info
 c_func
@@ -3890,6 +3906,7 @@ id|handle
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_DEBUG_OUTPUT*/
 )brace
+r_static
 r_int
 DECL|function|acpi_bus_remove
 id|acpi_bus_remove
@@ -4796,6 +4813,7 @@ c_func
 id|acpi_bus_scan
 )paren
 suffix:semicolon
+r_static
 r_int
 DECL|function|acpi_bus_trim
 id|acpi_bus_trim

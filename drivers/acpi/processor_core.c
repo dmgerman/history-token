@@ -209,6 +209,7 @@ mdefine_line|#define INSTALL_NOTIFY_HANDLER&t;&t;1
 DECL|macro|UNINSTALL_NOTIFY_HANDLER
 mdefine_line|#define UNINSTALL_NOTIFY_HANDLER&t;2
 DECL|variable|acpi_processor_info_fops
+r_static
 r_struct
 id|file_operations
 id|acpi_processor_info_fops
@@ -251,6 +252,7 @@ id|acpi_processor_errata
 id|errata
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                                Errata Handling&n;   -------------------------------------------------------------------------- */
+r_static
 r_int
 DECL|function|acpi_processor_errata_piix4
 id|acpi_processor_errata_piix4
@@ -655,6 +657,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                              FS Interface (/proc)&n;   -------------------------------------------------------------------------- */
 DECL|variable|acpi_processor_dir
+r_static
 r_struct
 id|proc_dir_entry
 op_star

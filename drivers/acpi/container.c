@@ -953,6 +953,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 id|__init
 DECL|function|acpi_container_init
@@ -1015,6 +1016,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__exit
 DECL|function|acpi_container_exit

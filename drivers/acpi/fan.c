@@ -47,6 +47,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+r_static
 r_int
 id|acpi_fan_add
 (paren
@@ -56,6 +57,7 @@ op_star
 id|device
 )paren
 suffix:semicolon
+r_static
 r_int
 id|acpi_fan_remove
 (paren
@@ -120,6 +122,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                              FS Interface (/proc)&n;   -------------------------------------------------------------------------- */
 DECL|variable|acpi_fan_dir
+r_static
 r_struct
 id|proc_dir_entry
 op_star
@@ -671,6 +674,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                                 Driver Interface&n;   -------------------------------------------------------------------------- */
+r_static
 r_int
 DECL|function|acpi_fan_add
 id|acpi_fan_add
@@ -889,6 +893,7 @@ id|result
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|acpi_fan_remove
 id|acpi_fan_remove
@@ -967,6 +972,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 id|__init
 DECL|function|acpi_fan_init
@@ -1053,6 +1059,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__exit
 DECL|function|acpi_fan_exit

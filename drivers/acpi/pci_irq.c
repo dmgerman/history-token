@@ -18,11 +18,12 @@ id|ACPI_MODULE_NAME
 l_string|&quot;pci_irq&quot;
 )paren
 DECL|variable|acpi_prt
+r_static
 r_struct
 id|acpi_prt_list
 id|acpi_prt
 suffix:semicolon
-DECL|variable|acpi_prt_lock
+r_static
 id|DEFINE_SPINLOCK
 c_func
 (paren

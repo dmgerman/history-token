@@ -1866,6 +1866,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/* TODO: Change code to take advantage of driver model more */
+r_static
 r_void
 DECL|function|acpi_os_derive_pci_id_2
 id|acpi_os_derive_pci_id_2
@@ -3533,6 +3534,7 @@ c_func
 id|acpi_os_signal
 )paren
 suffix:semicolon
+r_static
 r_int
 id|__init
 DECL|function|acpi_os_name_setup
@@ -3651,6 +3653,7 @@ id|acpi_os_name_setup
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * _OSI control&n; * empty string disables _OSI&n; * TBD additional string adds to _OSI&n; */
+r_static
 r_int
 id|__init
 DECL|function|acpi_osi_setup
@@ -3715,6 +3718,7 @@ id|acpi_osi_setup
 )paren
 suffix:semicolon
 multiline_comment|/* enable serialization to combat AE_ALREADY_EXISTS errors */
+r_static
 r_int
 id|__init
 DECL|function|acpi_serialize_setup
@@ -3751,6 +3755,7 @@ id|acpi_serialize_setup
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Wake and Run-Time GPES are expected to be separate.&n; * We disable wake-GPEs at run-time to prevent spurious&n; * interrupts.&n; *&n; * However, if a system exists that shares Wake and&n; * Run-time events on the same GPE this flag is available&n; * to tell Linux to keep the wake-time GPEs enabled at run-time.&n; */
+r_static
 r_int
 id|__init
 DECL|function|acpi_wake_gpes_always_on_setup
