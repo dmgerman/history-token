@@ -80,9 +80,21 @@ id|args
 op_assign
 id|rq-&gt;special
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|ide__sti
 c_func
 (paren
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|drive-&gt;channel-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|blkdev_dequeue_request
@@ -99,6 +111,14 @@ id|end_that_request_last
 c_func
 (paren
 id|rq
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|drive-&gt;channel-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|kfree
@@ -694,7 +714,7 @@ op_star
 id|rq
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * issue SERVICE command to drive -- drive must have been selected first,&n; * and it must have reported a need for service (status has SERVICE_STAT set)&n; *&n; * Also, nIEN must be set as not to need protection against ide_dmaq_intr&n; */
+multiline_comment|/*&n; * issue SERVICE command to drive -- drive must have been selected first,&n; * and it must have reported a need for service (status has SERVICE_STAT set)&n; *&n; * Also, nIEN must be set as not to need protection against ide_dmaq_intr&n; *&n; * Channel lock should be held.&n; */
 DECL|function|service
 r_static
 id|ide_startstop_t
@@ -1699,7 +1719,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; * UDMA transfer handling functions.&n; */
-multiline_comment|/*&n; * Invoked from a SERVICE interrupt, command etc already known.  Just need to&n; * start the dma engine for this tag.&n; */
+multiline_comment|/*&n; * Invoked from a SERVICE interrupt, command etc already known.  Just need to&n; * start the dma engine for this tag.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|udma_tcq_start
 r_static
 id|ide_startstop_t
@@ -1805,7 +1825,7 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start a queued command from scratch.&n; */
+multiline_comment|/*&n; * Start a queued command from scratch.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|udma_tcq_taskfile
 id|ide_startstop_t
 id|udma_tcq_taskfile
