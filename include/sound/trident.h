@@ -1287,30 +1287,6 @@ r_int
 r_char
 id|pad
 suffix:semicolon
-DECL|member|ctl_vol
-id|snd_kcontrol_t
-op_star
-id|ctl_vol
-suffix:semicolon
-multiline_comment|/* front volume */
-DECL|member|ctl_pan
-id|snd_kcontrol_t
-op_star
-id|ctl_pan
-suffix:semicolon
-multiline_comment|/* pan */
-DECL|member|ctl_rvol
-id|snd_kcontrol_t
-op_star
-id|ctl_rvol
-suffix:semicolon
-multiline_comment|/* rear volume */
-DECL|member|ctl_cvol
-id|snd_kcontrol_t
-op_star
-id|ctl_cvol
-suffix:semicolon
-multiline_comment|/* center volume */
 )brace
 suffix:semicolon
 DECL|struct|_snd_trident
@@ -1504,6 +1480,30 @@ id|pcm_mixer
 l_int|32
 )braket
 suffix:semicolon
+DECL|member|ctl_vol
+id|snd_kcontrol_t
+op_star
+id|ctl_vol
+suffix:semicolon
+multiline_comment|/* front volume */
+DECL|member|ctl_pan
+id|snd_kcontrol_t
+op_star
+id|ctl_pan
+suffix:semicolon
+multiline_comment|/* pan */
+DECL|member|ctl_rvol
+id|snd_kcontrol_t
+op_star
+id|ctl_rvol
+suffix:semicolon
+multiline_comment|/* rear volume */
+DECL|member|ctl_cvol
+id|snd_kcontrol_t
+op_star
+id|ctl_cvol
+suffix:semicolon
+multiline_comment|/* center volume */
 DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock

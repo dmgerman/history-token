@@ -166,7 +166,9 @@ mdefine_line|#define OPL3_HW_OPL3_CS4281&t;0x0304&t;/* CS4281 */
 DECL|macro|OPL3_HW_OPL3_PC98
 mdefine_line|#define OPL3_HW_OPL3_PC98&t;0x0305&t;/* PC9800 */
 DECL|macro|OPL3_HW_OPL4
-mdefine_line|#define OPL3_HW_OPL4&t;&t;0x0400
+mdefine_line|#define OPL3_HW_OPL4&t;&t;0x0400&t;/* YMF278B/YMF295 */
+DECL|macro|OPL3_HW_OPL4_ML
+mdefine_line|#define OPL3_HW_OPL4_ML&t;&t;0x0401&t;/* YMF704/YMF721 */
 DECL|macro|OPL3_HW_MASK
 mdefine_line|#define OPL3_HW_MASK&t;&t;0xff00
 DECL|macro|MAX_OPL2_VOICES

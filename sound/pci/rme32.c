@@ -3533,7 +3533,12 @@ id|rme32-&gt;wcreg_spdif_stream
 op_assign
 id|rme32-&gt;wcreg_spdif
 suffix:semicolon
-id|rme32-&gt;spdif_ctl-&gt;access
+id|rme32-&gt;spdif_ctl-&gt;vd
+(braket
+l_int|0
+)braket
+dot
+id|access
 op_and_assign
 op_complement
 id|SNDRV_CTL_ELEM_ACCESS_INACTIVE
@@ -4173,7 +4178,12 @@ c_cond
 id|spdif
 )paren
 (brace
-id|rme32-&gt;spdif_ctl-&gt;access
+id|rme32-&gt;spdif_ctl-&gt;vd
+(braket
+l_int|0
+)braket
+dot
+id|access
 op_or_assign
 id|SNDRV_CTL_ELEM_ACCESS_INACTIVE
 suffix:semicolon

@@ -10480,7 +10480,12 @@ id|rme9652-&gt;creg_spdif_stream
 op_assign
 id|rme9652-&gt;creg_spdif
 suffix:semicolon
-id|rme9652-&gt;spdif_ctl-&gt;access
+id|rme9652-&gt;spdif_ctl-&gt;vd
+(braket
+l_int|0
+)braket
+dot
+id|access
 op_and_assign
 op_complement
 id|SNDRV_CTL_ELEM_ACCESS_INACTIVE
@@ -10554,7 +10559,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|rme9652-&gt;spdif_ctl-&gt;access
+id|rme9652-&gt;spdif_ctl-&gt;vd
+(braket
+l_int|0
+)braket
+dot
+id|access
 op_or_assign
 id|SNDRV_CTL_ELEM_ACCESS_INACTIVE
 suffix:semicolon

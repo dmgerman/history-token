@@ -33,9 +33,9 @@ mdefine_line|#define NUM_G           64              /* use all channels */
 DECL|macro|NUM_FXSENDS
 mdefine_line|#define NUM_FXSENDS     4
 DECL|macro|EMU10K1_DMA_MASK
-mdefine_line|#define EMU10K1_DMA_MASK&t;0x1fffffffUL
+mdefine_line|#define EMU10K1_DMA_MASK&t;0x7fffffffUL&t;/* 31bit */
 DECL|macro|AUDIGY_DMA_MASK
-mdefine_line|#define AUDIGY_DMA_MASK&t;&t;0xffffffffUL
+mdefine_line|#define AUDIGY_DMA_MASK&t;&t;0xffffffffUL&t;/* 32bit */
 DECL|macro|TMEMSIZE
 mdefine_line|#define TMEMSIZE        256*1024
 DECL|macro|TMEMSIZEREG
@@ -1352,21 +1352,6 @@ id|attn
 l_int|3
 )braket
 suffix:semicolon
-DECL|member|ctl_send_routing
-id|snd_kcontrol_t
-op_star
-id|ctl_send_routing
-suffix:semicolon
-DECL|member|ctl_send_volume
-id|snd_kcontrol_t
-op_star
-id|ctl_send_volume
-suffix:semicolon
-DECL|member|ctl_attn
-id|snd_kcontrol_t
-op_star
-id|ctl_attn
-suffix:semicolon
 DECL|member|epcm
 id|emu10k1_pcm_t
 op_star
@@ -2097,6 +2082,21 @@ id|pcm_mixer
 (braket
 l_int|32
 )braket
+suffix:semicolon
+DECL|member|ctl_send_routing
+id|snd_kcontrol_t
+op_star
+id|ctl_send_routing
+suffix:semicolon
+DECL|member|ctl_send_volume
+id|snd_kcontrol_t
+op_star
+id|ctl_send_volume
+suffix:semicolon
+DECL|member|ctl_attn
+id|snd_kcontrol_t
+op_star
+id|ctl_attn
 suffix:semicolon
 DECL|member|hwvol_interrupt
 r_void

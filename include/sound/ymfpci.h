@@ -264,6 +264,45 @@ DECL|macro|YDSXG_CAPTURE_VOICES
 mdefine_line|#define YDSXG_CAPTURE_VOICES&t;&t;2
 DECL|macro|YDSXG_EFFECT_VOICES
 mdefine_line|#define YDSXG_EFFECT_VOICES&t;&t;5
+DECL|macro|YMFPCI_LEGACY_SBEN
+mdefine_line|#define YMFPCI_LEGACY_SBEN&t;(1 &lt;&lt; 0)&t;/* soundblaster enable */
+DECL|macro|YMFPCI_LEGACY_FMEN
+mdefine_line|#define YMFPCI_LEGACY_FMEN&t;(1 &lt;&lt; 1)&t;/* OPL3 enable */
+DECL|macro|YMFPCI_LEGACY_JPEN
+mdefine_line|#define YMFPCI_LEGACY_JPEN&t;(1 &lt;&lt; 2)&t;/* joystick enable */
+DECL|macro|YMFPCI_LEGACY_MEN
+mdefine_line|#define YMFPCI_LEGACY_MEN&t;(1 &lt;&lt; 3)&t;/* MPU401 enable */
+DECL|macro|YMFPCI_LEGACY_MIEN
+mdefine_line|#define YMFPCI_LEGACY_MIEN&t;(1 &lt;&lt; 4)&t;/* MPU RX irq enable */
+DECL|macro|YMFPCI_LEGACY_IOBITS
+mdefine_line|#define YMFPCI_LEGACY_IOBITS&t;(1 &lt;&lt; 5)&t;/* i/o bits range, 0 = 16bit, 1 =10bit */
+DECL|macro|YMFPCI_LEGACY_SDMA
+mdefine_line|#define YMFPCI_LEGACY_SDMA&t;(3 &lt;&lt; 6)&t;/* SB DMA select */
+DECL|macro|YMFPCI_LEGACY_SBIRQ
+mdefine_line|#define YMFPCI_LEGACY_SBIRQ&t;(7 &lt;&lt; 8)&t;/* SB IRQ select */
+DECL|macro|YMFPCI_LEGACY_MPUIRQ
+mdefine_line|#define YMFPCI_LEGACY_MPUIRQ&t;(7 &lt;&lt; 11)&t;/* MPU IRQ select */
+DECL|macro|YMFPCI_LEGACY_SIEN
+mdefine_line|#define YMFPCI_LEGACY_SIEN&t;(1 &lt;&lt; 14)&t;/* serialized IRQ */
+DECL|macro|YMFPCI_LEGACY_LAD
+mdefine_line|#define YMFPCI_LEGACY_LAD&t;(1 &lt;&lt; 15)&t;/* legacy audio disable */
+DECL|macro|YMFPCI_LEGACY2_FMIO
+mdefine_line|#define YMFPCI_LEGACY2_FMIO&t;(3 &lt;&lt; 0)&t;/* OPL3 i/o address (724/740) */
+DECL|macro|YMFPCI_LEGACY2_SBIO
+mdefine_line|#define YMFPCI_LEGACY2_SBIO&t;(3 &lt;&lt; 2)&t;/* SB i/o address (724/740) */
+DECL|macro|YMFPCI_LEGACY2_MPUIO
+mdefine_line|#define YMFPCI_LEGACY2_MPUIO&t;(3 &lt;&lt; 4)&t;/* MPU401 i/o address (724/740) */
+DECL|macro|YMFPCI_LEGACY2_JSIO
+mdefine_line|#define YMFPCI_LEGACY2_JSIO&t;(3 &lt;&lt; 6)&t;/* joystick i/o address (724/740) */
+DECL|macro|YMFPCI_LEGACY2_MAIM
+mdefine_line|#define YMFPCI_LEGACY2_MAIM&t;(1 &lt;&lt; 8)&t;/* MPU401 ack intr mask */
+DECL|macro|YMFPCI_LEGACY2_SMOD
+mdefine_line|#define YMFPCI_LEGACY2_SMOD&t;(3 &lt;&lt; 11)&t;/* SB DMA mode */
+DECL|macro|YMFPCI_LEGACY2_SBVER
+mdefine_line|#define YMFPCI_LEGACY2_SBVER&t;(3 &lt;&lt; 13)&t;/* SB version select */
+DECL|macro|YMFPCI_LEGACY2_IMOD
+mdefine_line|#define YMFPCI_LEGACY2_IMOD&t;(1 &lt;&lt; 15)&t;/* legacy IRQ mode */
+multiline_comment|/* SIEN:IMOD 0:0 = legacy irq, 0:1 = INTA, 1:0 = serialized IRQ */
 multiline_comment|/*&n; *&n; */
 DECL|struct|_snd_ymfpci_playback_bank
 r_typedef
@@ -693,6 +732,18 @@ r_struct
 id|resource
 op_star
 id|res_reg_area
+suffix:semicolon
+DECL|member|fm_res
+r_struct
+id|resource
+op_star
+id|fm_res
+suffix:semicolon
+DECL|member|mpu_res
+r_struct
+id|resource
+op_star
+id|mpu_res
 suffix:semicolon
 DECL|member|old_legacy_ctrl
 r_int
