@@ -51,15 +51,53 @@ id|count
 comma
 id|gfp_mask
 suffix:semicolon
-multiline_comment|/*&n;&t; * First we need to know how many scatter gather segments are needed.&n;&t; */
-id|count
-op_assign
-id|req-&gt;nr_phys_segments
+multiline_comment|/*&n;&t; * non-sg block request. FIXME: check bouncing for isa hosts!&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|req-&gt;flags
+op_amp
+id|REQ_BLOCK_PC
+)paren
+op_logical_and
+op_logical_neg
+id|req-&gt;bio
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * FIXME: isa bouncing&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|SCpnt-&gt;host-&gt;unchecked_isa_dma
+)paren
+r_goto
+id|fail
 suffix:semicolon
+id|SCpnt-&gt;request_bufflen
+op_assign
+id|req-&gt;data_len
+suffix:semicolon
+id|SCpnt-&gt;request_buffer
+op_assign
+id|req-&gt;data
+suffix:semicolon
+id|req-&gt;buffer
+op_assign
+id|req-&gt;data
+suffix:semicolon
+id|SCpnt-&gt;use_sg
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * we used to not use scatter-gather for single segment request,&n;&t; * but now we do (it makes highmem I/O easier to support without&n;&t; * kmapping pages)&n;&t; */
 id|SCpnt-&gt;use_sg
 op_assign
-id|count
+id|req-&gt;nr_phys_segments
 suffix:semicolon
 id|gfp_mask
 op_assign
@@ -179,6 +217,8 @@ id|req-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * kill it. there should be no leftover blocks in this request&n;&t; */
+id|fail
+suffix:colon
 id|SCpnt
 op_assign
 id|scsi_end_request
