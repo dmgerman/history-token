@@ -604,7 +604,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.string&bslash;t&bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&bslash;t.asciz&bslash;t&bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|table
 (braket
