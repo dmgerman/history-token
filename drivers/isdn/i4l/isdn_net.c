@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_net.c,v 1.140.6.11 2001/11/06 20:58:28 kai Exp $&n; *&n; * Linux ISDN subsystem, network interfaces and related functions (linklevel).&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Jan 2001: fix CISCO HDLC      Bjoern A. Zeeb &lt;i4l@zabbadoz.net&gt;&n; *           for info on the protocol, see &n; *           http://i4l.zabbadoz.net/i4l/cisco-hdlc.txt&n; */
+multiline_comment|/* $Id: isdn_net.c,v 1.140.6.11 2001/11/06 20:58:28 kai Exp $&n; *&n; * Linux ISDN subsystem, network interfaces and related functions (linklevel).&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Data Over Voice (DOV) support added - Guy Ellis 23-Mar-02 &n; *                                       guy@traverse.com.au&n; * Outgoing calls - looks for a &squot;V&squot; in first char of dialed number&n; * Incoming calls - checks first character of eaz as follows:&n; *   Numeric - accept DATA only - original functionality&n; *   &squot;V&squot;     - accept VOICE (DOV) only&n; *   &squot;B&squot;     - accept BOTH DATA and DOV types&n; *&n; * Jan 2001: fix CISCO HDLC      Bjoern A. Zeeb &lt;i4l@zabbadoz.net&gt;&n; *           for info on the protocol, see &n; *           http://i4l.zabbadoz.net/i4l/cisco-hdlc.txt&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
@@ -1960,6 +1960,10 @@ suffix:semicolon
 id|isdn_ctrl
 id|cmd
 suffix:semicolon
+id|u_char
+op_star
+id|phone_number
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -2426,14 +2430,61 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|sprintf
+id|cmd.driver
+op_assign
+id|lp-&gt;isdn_device
+suffix:semicolon
+id|cmd.command
+op_assign
+id|ISDN_CMD_DIAL
+suffix:semicolon
+id|cmd.parm.setup.si2
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* check for DOV */
+id|phone_number
+op_assign
+id|lp-&gt;dial-&gt;num
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|phone_number
+op_eq
+l_char|&squot;v&squot;
+)paren
+op_logical_or
+(paren
+op_star
+id|phone_number
+op_eq
+l_char|&squot;V&squot;
+)paren
+)paren
+(brace
+multiline_comment|/* DOV call */
+id|cmd.parm.setup.si1
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* DATA call */
+id|cmd.parm.setup.si1
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+id|strcpy
 c_func
 (paren
 id|cmd.parm.setup.phone
 comma
-l_string|&quot;%s&quot;
-comma
-id|lp-&gt;dial-&gt;num
+id|phone_number
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * Switch to next number or back to start if at end of list.&n;&t;&t;&t;&t;&t; */
@@ -2523,22 +2574,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|cmd.driver
-op_assign
-id|lp-&gt;isdn_device
-suffix:semicolon
-id|cmd.command
-op_assign
-id|ISDN_CMD_DIAL
-suffix:semicolon
-id|cmd.parm.setup.si1
-op_assign
-l_int|7
-suffix:semicolon
-id|cmd.parm.setup.si2
-op_assign
-l_int|0
-suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -2601,13 +2636,24 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: dialing %d %s...&bslash;n&quot;
+l_string|&quot;%s: dialing %d %s... %s&bslash;n&quot;
 comma
 id|lp-&gt;name
 comma
 id|lp-&gt;dialretry
 comma
 id|cmd.parm.setup.phone
+comma
+(paren
+id|cmd.parm.setup.si1
+op_eq
+l_int|1
+)paren
+ques
+c_cond
+l_string|&quot;DOV&quot;
+suffix:colon
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 id|lp-&gt;dtimer
@@ -8577,6 +8623,10 @@ id|nr
 l_int|32
 )braket
 suffix:semicolon
+r_char
+op_star
+id|my_eaz
+suffix:semicolon
 multiline_comment|/* Search name in netdev-chain */
 id|save_flags
 c_func
@@ -8693,13 +8743,21 @@ comma
 id|eaz
 )paren
 suffix:semicolon
-multiline_comment|/* Accept only calls with Si1 = 7 (Data-Transmission) */
+multiline_comment|/* Accept DATA and VOICE calls at this stage&n;        local eaz is checked later for allowed call types */
 r_if
 c_cond
+(paren
 (paren
 id|si1
 op_ne
 l_int|7
+)paren
+op_logical_and
+(paren
+id|si1
+op_ne
+l_int|1
+)paren
 )paren
 (brace
 id|restore_flags
@@ -8719,7 +8777,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;isdn_net: Service-Indicator not 7, ignored&bslash;n&quot;
+l_string|&quot;isdn_net: Service-Indicator not 1 or 7, ignored&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8816,18 +8874,9 @@ id|swapped
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|matchret
+multiline_comment|/* check acceptable call types for DOV */
+id|my_eaz
 op_assign
-id|isdn_msncmp
-c_func
-(paren
-id|eaz
-comma
 id|isdn_map_eaz2msn
 c_func
 (paren
@@ -8835,8 +8884,96 @@ id|lp-&gt;msn
 comma
 id|di
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|si1
+op_eq
+l_int|1
 )paren
+(brace
+multiline_comment|/* it&squot;s a DOV call, check if we allow it */
+r_if
+c_cond
+(paren
+op_star
+id|my_eaz
+op_eq
+l_char|&squot;v&squot;
+op_logical_or
+op_star
+id|my_eaz
+op_eq
+l_char|&squot;V&squot;
+op_logical_or
+op_star
+id|my_eaz
+op_eq
+l_char|&squot;b&squot;
+op_logical_or
+op_star
+id|my_eaz
+op_eq
+l_char|&squot;B&squot;
 )paren
+id|my_eaz
+op_increment
+suffix:semicolon
+multiline_comment|/* skip to allow a match */
+r_else
+id|my_eaz
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* force non match */
+)brace
+r_else
+(brace
+multiline_comment|/* it&squot;s a DATA call, check if we allow it */
+r_if
+c_cond
+(paren
+op_star
+id|my_eaz
+op_eq
+l_char|&squot;b&squot;
+op_logical_or
+op_star
+id|my_eaz
+op_eq
+l_char|&squot;B&squot;
+)paren
+id|my_eaz
+op_increment
+suffix:semicolon
+multiline_comment|/* skip to allow a match */
+)brace
+r_if
+c_cond
+(paren
+id|my_eaz
+)paren
+id|matchret
+op_assign
+id|isdn_msncmp
+c_func
+(paren
+id|eaz
+comma
+id|my_eaz
+)paren
+suffix:semicolon
+r_else
+id|matchret
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|matchret
 )paren
 id|ematch
 op_assign
