@@ -127,8 +127,10 @@ id|hdrptr
 suffix:semicolon
 id|hdrlen
 op_assign
+(paren
 op_star
 id|hdrptr
+)paren
 (braket
 l_int|1
 )braket
@@ -165,8 +167,10 @@ id|hdrptr
 suffix:semicolon
 id|hdrlen
 op_assign
+(paren
 op_star
 id|hdrptr
+)paren
 (braket
 l_int|1
 )braket
