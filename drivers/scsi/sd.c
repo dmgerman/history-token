@@ -4095,7 +4095,7 @@ id|sdkp-&gt;ready
 )paren
 (brace
 multiline_comment|/* FLOPTICAL */
-multiline_comment|/*&n;&t;&t; * For removable scsi disk ( FLOPTICAL ) we have to recognise&n;&t;&t; * the Write Protect Flag. This flag is kept in the Scsi_Disk&n;&t;&t; * struct and tested at open !&n;&t;&t; * Daniel Roche ( dan@lectra.fr )&n;&t;&t; *&n;&t;&t; * Changed to get all pages (0x3f) rather than page 1 to&n;&t;&t; * get around devices which do not have a page 1.  Since&n;&t;&t; * we&squot;re only interested in the header anyway, this should&n;&t;&t; * be fine.&n;&t;&t; *   -- Matthew Dharm (mdharm-scsi@one-eyed-alien.net)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * For removable scsi disk ( FLOPTICAL ) we have to recognise&n;&t;&t; * the Write Protect Flag. This flag is kept in the Scsi_Disk&n;&t;&t; * struct and tested at open !&n;&t;&t; * Daniel Roche ( dan@lectra.fr )&n;&t;&t; *&n;&t;&t; * Changed to get all pages (0x3f) rather than page 1 to&n;&t;&t; * get around devices which do not have a page 1.  Since&n;&t;&t; * we&squot;re only interested in the header anyway, this should&n;&t;&t; * be fine.&n;&t;&t; *   -- Matthew Dharm (mdharm-scsi@one-eyed-alien.net)&n;&t;&t; *&n;&t;&t; * As it turns out, some devices return an error for&n;&t;&t; * every MODE_SENSE request except one for page 0.&n;&t;&t; * So, we should also try that. --aeb&n;&t;&t; */
 id|memset
 c_func
 (paren
@@ -4221,13 +4221,12 @@ id|the_result
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;%s: test WP failed, assume &quot;
-l_string|&quot;Write Enabled&bslash;n&quot;
+l_string|&quot;%s: test WP failed, assume Write Enabled&bslash;n&quot;
 comma
 id|nbuff
 )paren
 suffix:semicolon
+multiline_comment|/* alternatively, try page 0 */
 )brace
 r_else
 (brace

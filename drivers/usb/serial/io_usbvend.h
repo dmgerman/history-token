@@ -111,6 +111,46 @@ singleline_comment|// Edgeport/8 RS422 (single-CPU)
 DECL|macro|ION_DEVICE_ID_MT4X56USB
 mdefine_line|#define ION_DEVICE_ID_MT4X56USB&t;&t;&t;0x1403&t;
 singleline_comment|// OEM device
+singleline_comment|// BlackBox OEM devices
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_4
+mdefine_line|#define ION_DEVICE_ID_BB_EDGEPORT_4&t;&t;0x001&t;
+singleline_comment|// Edgeport/4 RS232
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_4T
+mdefine_line|#define ION_DEVICE_ID_BB_EDGEPORT_4T&t;&t;0x004&t;
+singleline_comment|// Edgeport/4 RS232 for Telxon (aka &quot;Fleetport&quot;)
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_2
+mdefine_line|#define ION_DEVICE_ID_BB_EDGEPORT_2&t;&t;0x005&t;
+singleline_comment|// Edgeport/2 RS232
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_4I
+mdefine_line|#define ION_DEVICE_ID_BB_EDGEPORT_4I&t;&t;0x006&t;
+singleline_comment|// Edgeport/4 RS422
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_2I
+mdefine_line|#define ION_DEVICE_ID_BB_EDGEPORT_2I&t;&t;0x007&t;
+singleline_comment|// Edgeport/2 RS422/RS485
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_421
+mdefine_line|#define&t;ION_DEVICE_ID_BB_EDGEPORT_421&t;&t;0x00C&t;
+singleline_comment|// Edgeport/421 Hub+RS232+Parallel
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_21
+mdefine_line|#define&t;ION_DEVICE_ID_BB_EDGEPORT_21&t;&t;0x00D&t;
+singleline_comment|// Edgeport/21  RS232+Parallel
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_8_DUAL_CPU
+mdefine_line|#define ION_DEVICE_ID_BB_EDGEPORT_8_DUAL_CPU&t;0x00E&t;
+singleline_comment|// Half of an Edgeport/8 (the kind with 2 EP/4s on 1 PCB)
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_8
+mdefine_line|#define ION_DEVICE_ID_BB_EDGEPORT_8&t;&t;0x00F&t;
+singleline_comment|// Edgeport/8 (single-CPU)
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_2_DIN
+mdefine_line|#define ION_DEVICE_ID_BB_EDGEPORT_2_DIN&t;&t;0x010&t;
+singleline_comment|// Edgeport/2 RS232 with Apple DIN connector
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_4_DIN
+mdefine_line|#define ION_DEVICE_ID_BB_EDGEPORT_4_DIN&t;&t;0x011&t;
+singleline_comment|// Edgeport/4 RS232 with Apple DIN connector
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_16_DUAL_CPU
+mdefine_line|#define ION_DEVICE_ID_BB_EDGEPORT_16_DUAL_CPU&t;0x012&t;
+singleline_comment|// Half of an Edgeport/16 (the kind with 2 EP/8s)
+DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_8I
+mdefine_line|#define ION_DEVICE_ID_BB_EDGEPORT_8I&t;&t;0x014&t;
+singleline_comment|// Edgeport/8 RS422 (single-CPU)
 singleline_comment|// These IDs are used by the Edgeport.exe program for uninstalling.
 singleline_comment|// 
 DECL|macro|EDGEPORT_DEVICE_IDS

@@ -3154,6 +3154,9 @@ suffix:semicolon
 r_int
 id|protocol
 suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
 r_char
 id|name
 (braket
@@ -3227,9 +3230,8 @@ id|usblp-&gt;ifnum
 op_assign
 id|ifnum
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|retval
+op_assign
 id|usb_register_dev
 c_func
 (paren
@@ -3241,8 +3243,32 @@ comma
 op_amp
 id|usblp-&gt;minor
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+op_minus
+id|ENODEV
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;Not able to get a minor for this device.&quot;
+)paren
+suffix:semicolon
+r_goto
+m_abort
+suffix:semicolon
+)brace
 multiline_comment|/* Look for a free usblp_table entry on our own. */
 r_while
 c_loop
@@ -3464,6 +3490,14 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* add a table entry so the device works when advertised */
+id|usblp_table
+(braket
+id|usblp-&gt;minor
+)braket
+op_assign
+id|usblp
+suffix:semicolon
 multiline_comment|/* If we have devfs, create with perms=660. */
 id|sprintf
 c_func
@@ -3542,11 +3576,6 @@ id|usblp-&gt;dev-&gt;descriptor.idProduct
 )paren
 suffix:semicolon
 r_return
-id|usblp_table
-(braket
-id|usblp-&gt;minor
-)braket
-op_assign
 id|usblp
 suffix:semicolon
 m_abort

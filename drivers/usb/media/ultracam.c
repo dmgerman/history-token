@@ -4254,6 +4254,30 @@ r_return
 id|uvd
 suffix:semicolon
 )brace
+DECL|variable|id_table
+r_static
+r_struct
+id|usb_device_id
+id|id_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|ULTRACAM_VENDOR_ID
+comma
+id|ULTRACAM_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
+)brace
+multiline_comment|/* Terminating entry */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * ultracam_init()&n; *&n; * This code is run to initialize the driver.&n; */
 DECL|function|ultracam_init
 r_static
@@ -4334,6 +4358,8 @@ op_amp
 id|cbTbl
 comma
 id|THIS_MODULE
+comma
+id|id_table
 )paren
 suffix:semicolon
 )brace
@@ -4355,32 +4381,6 @@ id|cams
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(usb_device_id_ver)
-DECL|variable|id_table
-r_static
-id|__devinitdata
-r_struct
-id|usb_device_id
-id|id_table
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|ULTRACAM_VENDOR_ID
-comma
-id|ULTRACAM_PRODUCT_ID
-)paren
-)brace
-comma
-(brace
-)brace
-multiline_comment|/* Terminating entry */
-)brace
-suffix:semicolon
 id|MODULE_DEVICE_TABLE
 c_func
 (paren
@@ -4389,7 +4389,6 @@ comma
 id|id_table
 )paren
 suffix:semicolon
-macro_line|#endif /* defined(usb_device_id_ver) */
 id|MODULE_LICENSE
 c_func
 (paren

@@ -556,7 +556,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;jumpshot_raw_bulk:  Transfered %d of %d bytes&bslash;n&quot;
+l_string|&quot;jumpshot_raw_bulk:  Transferred %d of %d bytes&bslash;n&quot;
 comma
 id|act_len
 comma
