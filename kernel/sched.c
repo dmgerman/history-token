@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/cpuset.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/kthread.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -11956,6 +11957,9 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
+id|cpumask_t
+id|cpus_allowed
+suffix:semicolon
 id|lock_cpu_hotplug
 c_func
 (paren
@@ -12043,6 +12047,24 @@ id|CAP_SYS_NICE
 )paren
 r_goto
 id|out_unlock
+suffix:semicolon
+id|cpus_allowed
+op_assign
+id|cpuset_cpus_allowed
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+id|cpus_and
+c_func
+(paren
+id|new_mask
+comma
+id|new_mask
+comma
+id|cpus_allowed
+)paren
 suffix:semicolon
 id|retval
 op_assign
@@ -14563,10 +14585,12 @@ op_eq
 id|NR_CPUS
 )paren
 (brace
-id|cpus_setall
+id|tsk-&gt;cpus_allowed
+op_assign
+id|cpuset_cpus_allowed
 c_func
 (paren
-id|tsk-&gt;cpus_allowed
+id|tsk
 )paren
 suffix:semicolon
 id|dest_cpu

@@ -4396,7 +4396,7 @@ l_int|0
 (brace
 id|attr-&gt;ia_gid
 op_assign
-id|getuid
+id|getgid
 c_func
 (paren
 )paren

@@ -6532,10 +6532,6 @@ id|d
 suffix:semicolon
 r_int
 r_int
-id|order
-suffix:semicolon
-r_int
-r_int
 id|nr_hash
 suffix:semicolon
 r_int
@@ -6565,10 +6561,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|order
-op_assign
-l_int|0
-suffix:semicolon
 id|mount_hashtable
 op_assign
 (paren
@@ -6576,12 +6568,10 @@ r_struct
 id|list_head
 op_star
 )paren
-id|__get_free_pages
+id|__get_free_page
 c_func
 (paren
 id|GFP_ATOMIC
-comma
-id|order
 )paren
 suffix:semicolon
 r_if
@@ -6599,12 +6589,6 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Find the power-of-two list-heads that can fit into the allocation..&n;&t; * We don&squot;t guarantee that &quot;sizeof(struct list_head)&quot; is necessarily&n;&t; * a power-of-two.&n;&t; */
 id|nr_hash
 op_assign
-(paren
-l_int|1UL
-op_lshift
-id|order
-)paren
-op_star
 id|PAGE_SIZE
 op_div
 r_sizeof
@@ -6654,17 +6638,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Mount-cache hash table entries: %d (order: %ld, %ld bytes)&bslash;n&quot;
+l_string|&quot;Mount-cache hash table entries: %d&bslash;n&quot;
 comma
 id|nr_hash
-comma
-id|order
-comma
-(paren
-id|PAGE_SIZE
-op_lshift
-id|order
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* And initialize the newly allocated array */

@@ -25,9 +25,9 @@ macro_line|#include &lt;linux/completion.h&gt;
 DECL|macro|CCISS_DRIVER_VERSION
 mdefine_line|#define CCISS_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;HP CISS Driver (v 2.6.4)&quot;
+mdefine_line|#define DRIVER_NAME &quot;HP CISS Driver (v 2.6.6)&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,6,4)
+mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,6,6)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
 id|MODULE_AUTHOR
 c_func
@@ -38,14 +38,14 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for HP Controller SA5xxx SA6xxx version 2.6.4&quot;
+l_string|&quot;Driver for HP Controller SA5xxx SA6xxx version 2.6.6&quot;
 )paren
 suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;HP SA5i SA5i+ SA532 SA5300 SA5312 SA641 SA642 SA6400&quot;
-l_string|&quot; SA6i P600&quot;
+l_string|&quot; SA6i P600 P800 E400&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -228,6 +228,38 @@ l_int|0
 )brace
 comma
 (brace
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_CISSB
+comma
+l_int|0x103c
+comma
+l_int|0x3223
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_CISSB
+comma
+l_int|0x103c
+comma
+l_int|0x3231
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
 l_int|0
 comma
 )brace
@@ -343,6 +375,24 @@ op_amp
 id|SA5_access
 )brace
 comma
+(brace
+l_int|0x3223103C
+comma
+l_string|&quot;Smart Array P800&quot;
+comma
+op_amp
+id|SA5_access
+)brace
+comma
+(brace
+l_int|0x3231103C
+comma
+l_string|&quot;Smart Array E400&quot;
+comma
+op_amp
+id|SA5_access
+)brace
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* How long to wait (in millesconds) for board to go into simple mode */
@@ -358,7 +408,10 @@ mdefine_line|#define READ_AHEAD &t; 1024
 DECL|macro|NR_CMDS
 mdefine_line|#define NR_CMDS&t;&t; 384 /* #commands that can be outstanding */
 DECL|macro|MAX_CTLR
-mdefine_line|#define MAX_CTLR 8
+mdefine_line|#define MAX_CTLR&t;32
+multiline_comment|/* Originally cciss driver only supports 8 major numbers */
+DECL|macro|MAX_CTLR_ORIG
+mdefine_line|#define MAX_CTLR_ORIG &t;8
 DECL|macro|CCISS_DMA_MASK
 mdefine_line|#define CCISS_DMA_MASK&t;0xFFFFFFFF&t;/* 32 bit DMA */
 DECL|variable|hba
@@ -9730,6 +9783,7 @@ id|i
 comma
 id|dir
 suffix:semicolon
+multiline_comment|/* We call start_io here in case there is a command waiting on the&n;&t; * queue that has not been sent.&n;&t;*/
 r_if
 c_cond
 (paren
@@ -10218,6 +10272,7 @@ id|q
 suffix:semicolon
 id|startio
 suffix:colon
+multiline_comment|/* We will already have the driver lock here so not need&n;&t; * to lock it.&n;&t;*/
 id|start_io
 c_func
 (paren
@@ -10262,6 +10317,14 @@ id|__u32
 id|a
 comma
 id|a1
+suffix:semicolon
+r_int
+id|j
+suffix:semicolon
+r_int
+id|start_queue
+op_assign
+id|h-&gt;next_to_run
 suffix:semicolon
 multiline_comment|/* Is this interrupt for us? */
 r_if
@@ -10468,13 +10531,157 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t; * See if we can queue up some more IO&n;&t; */
+multiline_comment|/* check to see if we have maxed out the number of commands that can&n; &t; * be placed on the queue.  If so then exit.  We do this check here&n; &t; * in case the interrupt we serviced was from an ioctl and did not&n; &t; * free any new commands.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|find_first_zero_bit
+c_func
+(paren
+id|h-&gt;cmd_pool_bits
+comma
+id|NR_CMDS
+)paren
+)paren
+op_eq
+id|NR_CMDS
+)paren
+r_goto
+id|cleanup
+suffix:semicolon
+multiline_comment|/* We have room on the queue for more commands.  Now we need to queue&n; &t; * them up.  We will also keep track of the next queue to run so&n; &t; * that every queue gets a chance to be started first.&n; &t;*/
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|NWD
+suffix:semicolon
+id|j
+op_increment
+)paren
+(brace
+r_int
+id|curr_queue
+op_assign
+(paren
+id|start_queue
+op_plus
+id|j
+)paren
+op_mod
+id|NWD
+suffix:semicolon
+multiline_comment|/* make sure the disk has been added and the drive is real&n; &t;&t; * because this can be called from the middle of init_one.&n; &t;&t;*/
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|h-&gt;gendisk
+(braket
+id|curr_queue
+)braket
+op_member_access_from_pointer
+id|queue
+)paren
+op_logical_or
+op_logical_neg
+(paren
+id|h-&gt;drv
+(braket
+id|curr_queue
+)braket
+dot
+id|heads
+)paren
+)paren
+(brace
+r_continue
+suffix:semicolon
+)brace
 id|blk_start_queue
 c_func
 (paren
-id|h-&gt;queue
+id|h-&gt;gendisk
+(braket
+id|curr_queue
+)braket
+op_member_access_from_pointer
+id|queue
 )paren
 suffix:semicolon
+multiline_comment|/* check to see if we have maxed out the number of commands&n; &t;&t; * that can be placed on the queue.&n; &t;&t;*/
+r_if
+c_cond
+(paren
+(paren
+id|find_first_zero_bit
+c_func
+(paren
+id|h-&gt;cmd_pool_bits
+comma
+id|NR_CMDS
+)paren
+)paren
+op_eq
+id|NR_CMDS
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|curr_queue
+op_eq
+id|start_queue
+)paren
+(brace
+id|h-&gt;next_to_run
+op_assign
+(paren
+id|start_queue
+op_plus
+l_int|1
+)paren
+op_mod
+id|NWD
+suffix:semicolon
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
+r_else
+(brace
+id|h-&gt;next_to_run
+op_assign
+id|curr_queue
+suffix:semicolon
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|curr_queue
+op_assign
+(paren
+id|curr_queue
+op_plus
+l_int|1
+)paren
+op_mod
+id|NWD
+suffix:semicolon
+)brace
+)brace
+id|cleanup
+suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -12743,7 +12950,9 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;cciss: This driver supports a maximum&quot;
-l_string|&quot; of 8 controllers.&bslash;n&quot;
+l_string|&quot; of %d controllers.&bslash;n&quot;
+comma
+id|MAX_CTLR
 )paren
 suffix:semicolon
 r_goto
@@ -12868,6 +13077,9 @@ id|i
 suffix:semicolon
 r_int
 id|j
+suffix:semicolon
+r_int
+id|rc
 suffix:semicolon
 id|printk
 c_func
@@ -13017,30 +13229,36 @@ r_goto
 id|clean1
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * register with the major number, or get a dynamic major number&n;&t; * by passing 0 as argument.  This is done for greater than&n;&t; * 8 controller support.&n;&t; */
 r_if
 c_cond
 (paren
-id|register_blkdev
-c_func
-(paren
-id|COMPAQ_CISS_MAJOR
-op_plus
 id|i
-comma
+OL
+id|MAX_CTLR_ORIG
+)paren
 id|hba
 (braket
 id|i
 )braket
 op_member_access_from_pointer
-id|devname
-)paren
-)paren
-(brace
-id|printk
+id|major
+op_assign
+id|MAJOR_NR
+op_plus
+id|i
+suffix:semicolon
+id|rc
+op_assign
+id|register_blkdev
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;cciss: Unable to register device %s&bslash;n&quot;
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|major
 comma
 id|hba
 (braket
@@ -13050,8 +13268,65 @@ op_member_access_from_pointer
 id|devname
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+op_minus
+id|EBUSY
+op_logical_or
+id|rc
+op_eq
+op_minus
+id|EINVAL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cciss:  Unable to get major number %d for %s &quot;
+l_string|&quot;on hba %d&bslash;n&quot;
+comma
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|major
+comma
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|devname
+comma
+id|i
+)paren
+suffix:semicolon
 r_goto
 id|clean1
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|i
+op_ge
+id|MAX_CTLR_ORIG
+)paren
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|major
+op_assign
+id|rc
 suffix:semicolon
 )brace
 multiline_comment|/* make sure the board interrupts are off */
@@ -13551,9 +13826,12 @@ id|j
 suffix:semicolon
 id|disk-&gt;major
 op_assign
-id|COMPAQ_CISS_MAJOR
-op_plus
+id|hba
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|major
 suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
@@ -13758,9 +14036,12 @@ suffix:colon
 id|unregister_blkdev
 c_func
 (paren
-id|COMPAQ_CISS_MAJOR
-op_plus
+id|hba
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|major
 comma
 id|hba
 (braket
@@ -13977,9 +14258,12 @@ multiline_comment|/* unhook from SCSI subsystem */
 id|unregister_blkdev
 c_func
 (paren
-id|COMPAQ_CISS_MAJOR
-op_plus
+id|hba
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|major
 comma
 id|hba
 (braket

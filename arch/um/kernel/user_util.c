@@ -6,7 +6,6 @@ macro_line|#include &lt;limits.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;sys/stat.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &lt;sys/utsname.h&gt;
 macro_line|#include &lt;sys/param.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
@@ -25,6 +24,7 @@ macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;helper.h&quot;
+macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;uml-config.h&quot;
 DECL|macro|COMMAND_LINE_SIZE
 mdefine_line|#define COMMAND_LINE_SIZE _POSIX_ARG_MAX

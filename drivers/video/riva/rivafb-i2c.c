@@ -494,6 +494,7 @@ id|name
 )paren
 suffix:semicolon
 r_else
+(brace
 id|dev_warn
 c_func
 (paren
@@ -505,6 +506,11 @@ comma
 id|name
 )paren
 suffix:semicolon
+id|chan-&gt;par
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 r_return
 id|rc
 suffix:semicolon
@@ -787,6 +793,15 @@ suffix:semicolon
 id|u8
 op_star
 id|buf
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chan-&gt;par
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 id|buf
 op_assign

@@ -541,6 +541,7 @@ id|bd
 suffix:semicolon
 )brace
 DECL|variable|backlight_class
+r_static
 r_struct
 r_class
 id|backlight_class

@@ -354,5 +354,10 @@ id|u32
 id|sid
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|selinux_checkreqprot
+suffix:semicolon
 macro_line|#endif /* _SELINUX_OBJSEC_H_ */
 eof

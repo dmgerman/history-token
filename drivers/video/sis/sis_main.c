@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -239,7 +240,7 @@ macro_line|#endif
 )brace
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|sisfb_search_vesamode
 id|sisfb_search_vesamode
 c_func
@@ -33408,7 +33409,7 @@ macro_line|#endif
 macro_line|#endif
 DECL|function|sisfb_init_module
 r_int
-id|__init
+id|__devinit
 id|sisfb_init_module
 c_func
 (paren

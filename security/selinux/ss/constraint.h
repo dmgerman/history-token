@@ -32,6 +32,20 @@ DECL|macro|CEXPR_TYPE
 mdefine_line|#define CEXPR_TYPE 4&t;&t;/* type */
 DECL|macro|CEXPR_TARGET
 mdefine_line|#define CEXPR_TARGET 8&t;&t;/* target if set, source otherwise */
+DECL|macro|CEXPR_XTARGET
+mdefine_line|#define CEXPR_XTARGET 16&t;/* special 3rd target for validatetrans rule */
+DECL|macro|CEXPR_L1L2
+mdefine_line|#define CEXPR_L1L2 32&t;&t;/* low level 1 vs. low level 2 */
+DECL|macro|CEXPR_L1H2
+mdefine_line|#define CEXPR_L1H2 64&t;&t;/* low level 1 vs. high level 2 */
+DECL|macro|CEXPR_H1L2
+mdefine_line|#define CEXPR_H1L2 128&t;&t;/* high level 1 vs. low level 2 */
+DECL|macro|CEXPR_H1H2
+mdefine_line|#define CEXPR_H1H2 256&t;&t;/* high level 1 vs. high level 2 */
+DECL|macro|CEXPR_L1H1
+mdefine_line|#define CEXPR_L1H1 512&t;&t;/* low level 1 vs. high level 1 */
+DECL|macro|CEXPR_L2H2
+mdefine_line|#define CEXPR_L2H2 1024&t;&t;/* low level 2 vs. high level 2 */
 DECL|member|attr
 id|u32
 id|attr

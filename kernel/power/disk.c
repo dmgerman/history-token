@@ -693,11 +693,6 @@ c_func
 r_goto
 id|Free
 suffix:semicolon
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 id|mb
 c_func
 (paren

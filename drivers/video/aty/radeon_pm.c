@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#endif
 macro_line|#include &quot;ati_ids.h&quot;
 DECL|function|radeon_pm_disable_dynamic_mode
+r_static
 r_void
 id|radeon_pm_disable_dynamic_mode
 c_func
@@ -785,6 +786,7 @@ l_int|16
 suffix:semicolon
 )brace
 DECL|function|radeon_pm_enable_dynamic_mode
+r_static
 r_void
 id|radeon_pm_enable_dynamic_mode
 c_func
@@ -6750,6 +6752,12 @@ c_func
 id|pllSPLL_CNTL
 )paren
 suffix:semicolon
+id|radeon_pll_workaround_before
+c_func
+(paren
+id|rinfo
+)paren
+suffix:semicolon
 id|OUTREG8
 c_func
 (paren
@@ -6758,6 +6766,12 @@ comma
 id|pllSPLL_CNTL
 op_plus
 id|PLL_WR_EN
+)paren
+suffix:semicolon
+id|radeon_pll_workaround_after
+c_func
+(paren
+id|rinfo
 )paren
 suffix:semicolon
 id|OUTREG8
@@ -6774,6 +6788,17 @@ l_int|8
 )paren
 op_amp
 l_int|0xff
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rinfo-&gt;R300_cg_workaround
+)paren
+id|R300_cg_workardound
+c_func
+(paren
+id|rinfo
 )paren
 suffix:semicolon
 multiline_comment|/* Set SPLL feedback divider */
@@ -6935,6 +6960,12 @@ c_func
 id|pllMPLL_CNTL
 )paren
 suffix:semicolon
+id|radeon_pll_workaround_before
+c_func
+(paren
+id|rinfo
+)paren
+suffix:semicolon
 id|OUTREG8
 c_func
 (paren
@@ -6943,6 +6974,12 @@ comma
 id|pllMPLL_CNTL
 op_plus
 id|PLL_WR_EN
+)paren
+suffix:semicolon
+id|radeon_pll_workaround_after
+c_func
+(paren
+id|rinfo
 )paren
 suffix:semicolon
 id|OUTREG8
@@ -6959,6 +6996,17 @@ l_int|8
 )paren
 op_amp
 l_int|0xff
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rinfo-&gt;R300_cg_workaround
+)paren
+id|R300_cg_workardound
+c_func
+(paren
+id|rinfo
 )paren
 suffix:semicolon
 multiline_comment|/* Set MPLL feedback divider */
@@ -7467,6 +7515,12 @@ id|rinfo
 id|u32
 id|tmp
 suffix:semicolon
+id|radeon_pll_workaround_before
+c_func
+(paren
+id|rinfo
+)paren
+suffix:semicolon
 id|OUTREG8
 c_func
 (paren
@@ -7477,12 +7531,29 @@ op_plus
 id|PLL_WR_EN
 )paren
 suffix:semicolon
+id|radeon_pll_workaround_after
+c_func
+(paren
+id|rinfo
+)paren
+suffix:semicolon
 id|OUTREG8
 c_func
 (paren
 id|CLOCK_CNTL_DATA
 comma
 l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rinfo-&gt;R300_cg_workaround
+)paren
+id|R300_cg_workardound
+c_func
+(paren
+id|rinfo
 )paren
 suffix:semicolon
 id|tmp
@@ -7551,6 +7622,12 @@ c_func
 id|pllPPLL_CNTL
 )paren
 suffix:semicolon
+id|radeon_pll_workaround_before
+c_func
+(paren
+id|rinfo
+)paren
+suffix:semicolon
 id|OUTREG8
 c_func
 (paren
@@ -7559,6 +7636,12 @@ comma
 id|pllSPLL_CNTL
 op_plus
 id|PLL_WR_EN
+)paren
+suffix:semicolon
+id|radeon_pll_workaround_after
+c_func
+(paren
+id|rinfo
 )paren
 suffix:semicolon
 id|OUTREG8
@@ -7577,21 +7660,15 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
-multiline_comment|/* Not sure what was intended here ... */
-id|tmp
-op_assign
-id|INREG
-c_func
+r_if
+c_cond
 (paren
-id|CLOCK_CNTL_INDEX
+id|rinfo-&gt;R300_cg_workaround
 )paren
-suffix:semicolon
-id|OUTREG
+id|R300_cg_workardound
 c_func
 (paren
-id|CLOCK_CNTL_INDEX
-comma
-id|tmp
+id|rinfo
 )paren
 suffix:semicolon
 multiline_comment|/* Restore our &quot;reference&quot; PPLL divider set by firmware&n;&t; * according to proper spread spectrum calculations&n;&t; */
@@ -7705,6 +7782,12 @@ l_int|5
 )paren
 suffix:semicolon
 multiline_comment|/* Switch pixel clock to firmware default div 0 */
+id|radeon_pll_workaround_before
+c_func
+(paren
+id|rinfo
+)paren
+suffix:semicolon
 id|OUTREG8
 c_func
 (paren
@@ -7713,6 +7796,23 @@ op_plus
 l_int|1
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|radeon_pll_workaround_after
+c_func
+(paren
+id|rinfo
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rinfo-&gt;R300_cg_workaround
+)paren
+id|R300_cg_workardound
+c_func
+(paren
+id|rinfo
 )paren
 suffix:semicolon
 )brace
@@ -12640,7 +12740,13 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;radeonfb: switching to D2 state...&bslash;n&quot;
+l_string|&quot;radeonfb (%s): switching to D2 state...&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|rinfo-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Disable dynamic power management of clocks for the&n;&t;&t; * duration of the suspend/resume process&n;&t;&t; */
@@ -12825,7 +12931,13 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;radeonfb: switching to D0 state...&bslash;n&quot;
+l_string|&quot;radeonfb (%s): switching to D0 state...&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|rinfo-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Switch back PCI powermanagment to D0 */
@@ -13088,6 +13200,9 @@ id|rinfo
 op_assign
 id|info-&gt;par
 suffix:semicolon
+id|u8
+id|agp
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -13136,7 +13251,13 @@ id|susdisking
 id|printk
 c_func
 (paren
-l_string|&quot;suspending to disk but state = %d&bslash;n&quot;
+l_string|&quot;radeonfb (%s): suspending to disk but state = %d&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|state
 )paren
@@ -13214,6 +13335,80 @@ op_amp
 id|rinfo-&gt;lvds_timer
 )paren
 suffix:semicolon
+multiline_comment|/* Disable AGP. The AGP host should have done it, but since ordering&n;&t; * isn&squot;t always properly guaranteed in this specific case, let&squot;s make&n;&t; * sure it&squot;s disabled on card side now. Ultimately, when merging fbdev&n;&t; * and dri into some common infrastructure, this will be handled&n;&t; * more nicely. The host bridge side will (or will not) be dealt with&n;&t; * by the bridge AGP driver, we don&squot;t attempt to touch it here.&n;&t; */
+id|agp
+op_assign
+id|pci_find_capability
+c_func
+(paren
+id|pdev
+comma
+id|PCI_CAP_ID_AGP
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|agp
+)paren
+(brace
+id|u32
+id|cmd
+suffix:semicolon
+id|pci_read_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|agp
+op_plus
+id|PCI_AGP_COMMAND
+comma
+op_amp
+id|cmd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd
+op_amp
+id|PCI_AGP_COMMAND_AGP
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;radeonfb (%s): AGP was enabled, &quot;
+l_string|&quot;disabling ...&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
+)paren
+suffix:semicolon
+id|cmd
+op_and_assign
+op_complement
+id|PCI_AGP_COMMAND_AGP
+suffix:semicolon
+id|pci_write_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|agp
+op_plus
+id|PCI_AGP_COMMAND
+comma
+id|cmd
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* If we support wakeup from poweroff, we save all regs we can including cfg&n;&t; * space&n;&t; */
 r_if
 c_cond
@@ -13348,6 +13543,7 @@ id|LVDS_DIGON
 )paren
 )paren
 suffix:semicolon
+)brace
 singleline_comment|// FIXME: Use PCI layer
 r_for
 c_loop
@@ -13366,7 +13562,7 @@ id|i
 id|pci_read_config_dword
 c_func
 (paren
-id|rinfo-&gt;pdev
+id|pdev
 comma
 id|i
 op_star
@@ -13379,7 +13575,12 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* If we support D2, we go to it (should be fixed later with a flag forcing&n;&t; * D3 only for some laptops)&n;&t; */
 r_if
@@ -13941,11 +14142,6 @@ suffix:semicolon
 id|rinfo-&gt;pm_mode
 op_or_assign
 id|radeon_pm_off
-suffix:semicolon
-multiline_comment|/* Workaround not used for now */
-id|rinfo-&gt;m9p_workaround
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* If any of the above is set, we assume the machine can sleep/resume.&n;&t;&t; * It&squot;s a bit of a &quot;shortcut&quot; but will work fine. Ideally, we need infos&n;&t;&t; * from the platform about what happens to the chip...&n;&t;&t; * Now we tell the platform about our capability&n;&t;&t; */

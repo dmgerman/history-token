@@ -1889,14 +1889,6 @@ multiline_comment|/* used for TRUECOLOR */
 suffix:semicolon
 DECL|macro|round_div
 mdefine_line|#define round_div(n, d) ((n+(d/2))/d)
-multiline_comment|/*&n;     *  Interface used by the world&n;     */
-r_int
-id|aty128fb_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_int
 id|aty128fb_check_var
@@ -7426,7 +7418,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|aty128fb_setup
+r_static
 r_int
 id|__init
 id|aty128fb_setup
@@ -7703,6 +7697,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif  /*  MODULE  */
 multiline_comment|/*&n; *  Initialisation&n; */
 macro_line|#ifdef CONFIG_PPC_PMAC
 DECL|function|aty128_early_resume
@@ -10618,6 +10613,9 @@ id|par
 op_assign
 id|info-&gt;par
 suffix:semicolon
+id|u8
+id|agp
+suffix:semicolon
 multiline_comment|/* We don&squot;t do anything but D2, for now we return 0, but&n;&t; * we may want to change that. How do we know if the BIOS&n;&t; * can properly take care of D3 ? Also, with swsusp, we&n;&t; * know we&squot;ll be rebooted, ...&n;&t; */
 macro_line|#ifdef CONFIG_PPC_PMAC
 multiline_comment|/* HACK ALERT ! Once I find a proper way to say to each driver&n;&t; * individually what will happen with it&squot;s PCI slot, I&squot;ll change&n;&t; * that. On laptops, the AGP slot is just unclocked, so D2 is&n;&t; * expected, while on desktops, the card is powered off&n;&t; */
@@ -10704,6 +10702,74 @@ id|par-&gt;lock_blank
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* Disable AGP. The AGP host should have done it, but since ordering&n;&t; * isn&squot;t always properly guaranteed in this specific case, let&squot;s make&n;&t; * sure it&squot;s disabled on card side now. Ultimately, when merging fbdev&n;&t; * and dri into some common infrastructure, this will be handled&n;&t; * more nicely. The host bridge side will (or will not) be dealt with&n;&t; * by the bridge AGP driver, we don&squot;t attempt to touch it here.&n;&t; */
+id|agp
+op_assign
+id|pci_find_capability
+c_func
+(paren
+id|pdev
+comma
+id|PCI_CAP_ID_AGP
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|agp
+)paren
+(brace
+id|u32
+id|cmd
+suffix:semicolon
+id|pci_read_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|agp
+op_plus
+id|PCI_AGP_COMMAND
+comma
+op_amp
+id|cmd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd
+op_amp
+id|PCI_AGP_COMMAND_AGP
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;aty128fb: AGP was enabled, &quot;
+l_string|&quot;disabling ...&bslash;n&quot;
+)paren
+suffix:semicolon
+id|cmd
+op_and_assign
+op_complement
+id|PCI_AGP_COMMAND_AGP
+suffix:semicolon
+id|pci_write_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|agp
+op_plus
+id|PCI_AGP_COMMAND
+comma
+id|cmd
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* We need a way to make sure the fbdev layer will _not_ touch the&n;&t; * framebuffer before we put the chip to suspend state. On 2.4, I&n;&t; * used dummy fb ops, 2.5 need proper support for this at the&n;&t; * fbdev level&n;&t; */
 r_if
 c_cond
@@ -10905,6 +10971,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|function|aty128fb_init
+r_static
 r_int
 id|__init
 id|aty128fb_init
@@ -10977,7 +11044,6 @@ c_func
 id|aty128fb_init
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|aty128fb_exit
 id|module_exit
 c_func
@@ -11042,6 +11108,5 @@ comma
 l_string|&quot;bool: Disable MTRR support (0 or 1=disabled) (default=0)&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 eof

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Linux logo to be displayed on boot&n; *&n; *  Copyrig
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linux_logo.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifdef CONFIG_M68K
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#endif
@@ -161,7 +162,8 @@ id|logo_linux_clut224
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_LOGO_DEC_CLUT224
-multiline_comment|/* DEC Linux logo on MIPS/MIPS64 */
+multiline_comment|/* DEC Linux logo on MIPS/MIPS64 or ALPHA */
+macro_line|#ifndef CONFIG_ALPHA
 r_if
 c_cond
 (paren
@@ -169,6 +171,7 @@ id|mips_machgroup
 op_eq
 id|MACH_GROUP_DEC
 )paren
+macro_line|#endif
 id|logo
 op_assign
 op_amp
@@ -234,4 +237,11 @@ r_return
 id|logo
 suffix:semicolon
 )brace
+DECL|variable|fb_find_logo
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|fb_find_logo
+)paren
+suffix:semicolon
 eof

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &quot;pci.h&quot;
 macro_line|#include &quot;msi.h&quot;
 r_static
 id|DEFINE_SPINLOCK
@@ -1515,6 +1516,32 @@ id|status
 r_return
 id|status
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_msi_quirk
+)paren
+(brace
+id|pci_msi_enable
+op_assign
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;PCI: MSI quirk detected. MSI disabled.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|status
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_return
+id|status
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

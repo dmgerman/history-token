@@ -139,6 +139,14 @@ r_void
 suffix:semicolon
 r_extern
 r_int
+id|getgid
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|pause
 c_func
 (paren

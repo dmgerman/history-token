@@ -1,7 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;mem.h&quot;
 macro_line|#include &quot;user.h&quot;
@@ -21,10 +20,6 @@ id|virt
 comma
 r_int
 r_int
-id|phys
-comma
-r_int
-r_int
 id|len
 comma
 r_int
@@ -35,21 +30,24 @@ id|w
 comma
 r_int
 id|x
+comma
+r_int
+id|phys_fd
+comma
+r_int
+r_int
+r_int
+id|offset
 )paren
 (brace
 r_struct
 id|proc_mm_op
 id|map
 suffix:semicolon
-id|__u64
-id|offset
-suffix:semicolon
 r_int
 id|prot
 comma
 id|n
-comma
-id|phys_fd
 suffix:semicolon
 id|prot
 op_assign
@@ -78,17 +76,6 @@ c_cond
 id|PROT_EXEC
 suffix:colon
 l_int|0
-)paren
-suffix:semicolon
-id|phys_fd
-op_assign
-id|phys_mapping
-c_func
-(paren
-id|phys
-comma
-op_amp
-id|offset
 )paren
 suffix:semicolon
 id|map
@@ -198,6 +185,7 @@ r_void
 op_star
 id|addr
 comma
+r_int
 r_int
 id|len
 )paren

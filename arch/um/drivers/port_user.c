@@ -47,6 +47,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|port_init
+r_static
 r_void
 op_star
 id|port_init
@@ -237,6 +238,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|port_free
+r_static
 r_void
 id|port_free
 c_func
@@ -267,6 +269,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|port_open
+r_static
 r_int
 id|port_open
 c_func
@@ -376,6 +379,7 @@ id|fd
 suffix:semicolon
 )brace
 DECL|function|port_close
+r_static
 r_void
 id|port_close
 c_func
@@ -409,6 +413,7 @@ id|fd
 suffix:semicolon
 )brace
 DECL|function|port_console_write
+r_static
 r_int
 id|port_console_write
 c_func

@@ -4,9 +4,7 @@ macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;sys/types.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &quot;ptproxy.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;user_util.h&quot;
@@ -571,7 +569,7 @@ r_case
 id|PTRACE_PEEKTEXT
 suffix:colon
 r_case
-id|PTRACE_PEEKUSER
+id|PTRACE_PEEKUSR
 suffix:colon
 multiline_comment|/* The value being read out could be -1, so we have to &n;&t;&t; * check errno to see if there&squot;s an error, and zero it&n;&t;&t; * beforehand so we&squot;re not faked out by an old error&n;&t;&t; */
 id|errno
@@ -652,7 +650,7 @@ r_case
 id|PTRACE_POKETEXT
 suffix:colon
 r_case
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 suffix:colon
 id|result
 op_assign
@@ -687,7 +685,7 @@ c_cond
 (paren
 id|arg1
 op_eq
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 )paren
 (brace
 id|ptrace_pokeuser

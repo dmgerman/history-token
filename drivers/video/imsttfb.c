@@ -902,14 +902,14 @@ id|value
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|initvalues
 id|ibm_initregs
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace
@@ -1130,14 +1130,14 @@ l_int|0x00
 )brace
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|initvalues
 id|tvp_initregs
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace
@@ -1460,19 +1460,19 @@ l_int|0
 )brace
 suffix:semicolon
 macro_line|#if defined(CONFIG_PPC)
-DECL|variable|__initdata
-DECL|variable|__initdata
+DECL|variable|__devinitdata
+DECL|variable|__devinitdata
 r_static
 r_int
 r_char
 id|init_vmode
-id|__initdata
+id|__devinitdata
 op_assign
 op_minus
 l_int|1
 comma
 id|init_cmode
-id|__initdata
+id|__devinitdata
 op_assign
 op_minus
 l_int|1
@@ -8037,7 +8037,7 @@ comma
 suffix:semicolon
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|init_imstt
 id|init_imstt
 c_func
@@ -9161,6 +9161,7 @@ id|info
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
+r_static
 r_int
 id|__init
 DECL|function|imsttfb_setup
@@ -9457,6 +9458,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* MODULE */
 DECL|function|imsttfb_init
+r_static
 r_int
 id|__init
 id|imsttfb_init
@@ -9522,14 +9524,12 @@ id|imsttfb_pci_driver
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|imsttfb_init
 id|module_init
 c_func

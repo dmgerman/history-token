@@ -575,6 +575,8 @@ comma
 op_amp
 id|resp-&gt;fh
 comma
+l_int|NULL
+comma
 id|argp-&gt;offset
 comma
 id|argp-&gt;vec
@@ -695,6 +697,8 @@ id|rqstp
 comma
 op_amp
 id|resp-&gt;fh
+comma
+l_int|NULL
 comma
 id|argp-&gt;offset
 comma

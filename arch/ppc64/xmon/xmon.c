@@ -22,6 +22,7 @@ macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/sstep.h&gt;
 macro_line|#include &lt;asm/bug.h&gt;
+macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;privinst.h&quot;
 DECL|macro|scanhex

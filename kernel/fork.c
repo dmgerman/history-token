@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/cpuset.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
@@ -2765,6 +2766,9 @@ id|signal_struct
 op_star
 id|sig
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2815,6 +2819,34 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|ret
+op_assign
+id|copy_thread_group_keys
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+(brace
+id|kmem_cache_free
+c_func
+(paren
+id|signal_cachep
+comma
+id|sig
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 id|atomic_set
 c_func
 (paren
@@ -4208,6 +4240,12 @@ c_func
 id|p
 comma
 id|current-&gt;parent
+)paren
+suffix:semicolon
+id|cpuset_fork
+c_func
+(paren
+id|p
 )paren
 suffix:semicolon
 id|attach_pid

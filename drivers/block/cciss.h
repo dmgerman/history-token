@@ -13,6 +13,8 @@ DECL|macro|IO_OK
 mdefine_line|#define IO_OK&t;&t;0
 DECL|macro|IO_ERROR
 mdefine_line|#define IO_ERROR&t;1
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR COMPAQ_CISS_MAJOR
 r_struct
 id|ctlr_info
 suffix:semicolon
@@ -214,6 +216,10 @@ DECL|member|interrupts_enabled
 r_int
 id|interrupts_enabled
 suffix:semicolon
+DECL|member|major
+r_int
+id|major
+suffix:semicolon
 DECL|member|max_commands
 r_int
 id|max_commands
@@ -325,6 +331,11 @@ suffix:semicolon
 DECL|member|busy_configuring
 r_int
 id|busy_configuring
+suffix:semicolon
+multiline_comment|/* This element holds the zero based queue number of the last&n;&t; * queue to be started.  It is used for fairness.&n;&t;*/
+DECL|member|next_to_run
+r_int
+id|next_to_run
 suffix:semicolon
 singleline_comment|// Disk structures we need to pass back
 DECL|member|gendisk

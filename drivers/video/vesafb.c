@@ -782,6 +782,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|vesafb_setup
+r_static
 r_int
 id|__init
 id|vesafb_setup
@@ -1989,6 +1990,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|vesafb_init
+r_static
 r_int
 id|__init
 id|vesafb_init
@@ -2071,7 +2073,6 @@ c_func
 id|vesafb_init
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 id|MODULE_LICENSE
 c_func
 (paren

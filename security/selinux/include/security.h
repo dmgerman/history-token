@@ -20,11 +20,15 @@ DECL|macro|POLICYDB_VERSION_IPV6
 mdefine_line|#define POLICYDB_VERSION_IPV6&t;&t;17
 DECL|macro|POLICYDB_VERSION_NLCLASS
 mdefine_line|#define POLICYDB_VERSION_NLCLASS&t;18
+DECL|macro|POLICYDB_VERSION_VALIDATETRANS
+mdefine_line|#define POLICYDB_VERSION_VALIDATETRANS&t;19
+DECL|macro|POLICYDB_VERSION_MLS
+mdefine_line|#define POLICYDB_VERSION_MLS&t;&t;19
 multiline_comment|/* Range of policy versions we understand*/
 DECL|macro|POLICYDB_VERSION_MIN
 mdefine_line|#define POLICYDB_VERSION_MIN   POLICYDB_VERSION_BASE
 DECL|macro|POLICYDB_VERSION_MAX
-mdefine_line|#define POLICYDB_VERSION_MAX   POLICYDB_VERSION_NLCLASS
+mdefine_line|#define POLICYDB_VERSION_MAX   POLICYDB_VERSION_MLS
 macro_line|#ifdef CONFIG_SECURITY_SELINUX_BOOTPARAM
 r_extern
 r_int
@@ -34,13 +38,10 @@ macro_line|#else
 DECL|macro|selinux_enabled
 mdefine_line|#define selinux_enabled 1
 macro_line|#endif
-macro_line|#ifdef CONFIG_SECURITY_SELINUX_MLS
-DECL|macro|selinux_mls_enabled
-mdefine_line|#define selinux_mls_enabled 1
-macro_line|#else
-DECL|macro|selinux_mls_enabled
-mdefine_line|#define selinux_mls_enabled 0
-macro_line|#endif
+r_extern
+r_int
+id|selinux_mls_enabled
+suffix:semicolon
 r_int
 id|security_load_policy
 c_func
@@ -264,6 +265,23 @@ comma
 id|u32
 op_star
 id|out_sid
+)paren
+suffix:semicolon
+r_int
+id|security_validate_transition
+c_func
+(paren
+id|u32
+id|oldsid
+comma
+id|u32
+id|newsid
+comma
+id|u32
+id|tasksid
+comma
+id|u16
+id|tclass
 )paren
 suffix:semicolon
 DECL|macro|SECURITY_FS_USE_XATTR

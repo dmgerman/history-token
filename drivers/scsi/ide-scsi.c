@@ -3637,10 +3637,6 @@ op_member_access_from_pointer
 id|busy
 op_increment
 suffix:semicolon
-id|drive-&gt;ready_stat
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3771,6 +3767,42 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|variable|idescsi_proc
+r_static
+id|ide_proc_entry_t
+id|idescsi_proc
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_string|&quot;capacity&quot;
+comma
+id|S_IFREG
+op_or
+id|S_IRUGO
+comma
+id|proc_ide_read_capacity
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+)brace
+suffix:semicolon
+macro_line|#else
+DECL|macro|idescsi_proc
+macro_line|# define idescsi_proc&t;NULL
+macro_line|#endif
 multiline_comment|/*&n; *&t;IDE subdriver functions, registered with ide.c&n; */
 DECL|variable|idescsi_driver
 r_static
@@ -3807,6 +3839,11 @@ dot
 id|supports_dsc_overlap
 op_assign
 l_int|0
+comma
+dot
+id|proc
+op_assign
+id|idescsi_proc
 comma
 dot
 id|attach

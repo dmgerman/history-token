@@ -127,14 +127,6 @@ id|ramdac_powerdown
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|default_font_storage
-r_static
-r_char
-id|default_font_storage
-(braket
-l_int|40
-)braket
-suffix:semicolon
 DECL|variable|default_font
 r_static
 r_char
@@ -5321,6 +5313,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Parse Cyber2000fb options.  Usage:&n; *  video=cyber2000:font:fontname&n; */
+macro_line|#ifndef MODULE
+r_static
 r_int
 DECL|function|cyber2000fb_setup
 id|cyber2000fb_setup
@@ -5392,6 +5386,13 @@ op_eq
 l_int|0
 )paren
 (brace
+r_static
+r_char
+id|default_font_storage
+(braket
+l_int|40
+)braket
+suffix:semicolon
 id|strlcpy
 c_func
 (paren
@@ -5428,6 +5429,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif  /*  MODULE  */
 multiline_comment|/*&n; * The CyberPro chips can be placed on many different bus types.&n; * This probe function is common to all bus types.  The bus-specific&n; * probe function is expected to have:&n; *  - enabled access to the linear memory region&n; *  - memory mapped access to the registers&n; *  - initialised mem_ctl1 and mem_ctl2 appropriately.&n; */
 DECL|function|cyberpro_common_probe
 r_static
@@ -6746,6 +6748,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * I don&squot;t think we can use the &quot;module_init&quot; stuff here because&n; * the fbcon stuff may not be initialised yet.  Hence the #ifdef&n; * around module_init.&n; *&n; * Tony: &quot;module_init&quot; is now required&n; */
 DECL|function|cyber2000fb_init
+r_static
 r_int
 id|__init
 id|cyber2000fb_init

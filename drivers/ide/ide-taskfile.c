@@ -746,13 +746,6 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-DECL|variable|set_multmode_intr
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_multmode_intr
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * set_geometry_intr() is invoked on completion of a WIN_SPECIFY cmd.&n; */
 DECL|function|set_geometry_intr
 id|ide_startstop_t
@@ -882,13 +875,6 @@ r_return
 id|ide_started
 suffix:semicolon
 )brace
-DECL|variable|set_geometry_intr
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_geometry_intr
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * recal_intr() is invoked on completion of a WIN_RESTORE (recalibrate) cmd.&n; */
 DECL|function|recal_intr
 id|ide_startstop_t
@@ -949,13 +935,6 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-DECL|variable|recal_intr
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|recal_intr
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Handler for commands without a data phase&n; */
 DECL|function|task_no_data_intr
 id|ide_startstop_t

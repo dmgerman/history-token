@@ -1006,6 +1006,17 @@ c_func
 id|rsv_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rsv_is_empty
+c_func
+(paren
+op_amp
+id|rsv-&gt;rsv_window
+)paren
+)paren
 id|rsv_window_remove
 c_func
 (paren

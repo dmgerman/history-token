@@ -3425,9 +3425,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|lp-&gt;close
 op_ne
 l_int|NULL
+)paren
+op_logical_and
+(paren
+id|lp-&gt;fd
+op_ge
+l_int|0
+)paren
 )paren
 (brace
 (paren
