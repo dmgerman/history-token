@@ -1,6 +1,7 @@
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;agp.h&quot;
 multiline_comment|/* Generic AGP 3.0 enabling routines */
 DECL|struct|agp_3_0_dev
@@ -2333,4 +2334,11 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
+DECL|variable|agp_generic_agp_3_0_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|agp_generic_agp_3_0_enable
+)paren
+suffix:semicolon
 eof
