@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &quot;mthca_provider.h&quot;
 macro_line|#include &quot;mthca_doorbell.h&quot;
 DECL|macro|DRV_NAME
@@ -594,11 +593,11 @@ DECL|member|eq_set_ci_base
 id|u64
 id|eq_set_ci_base
 suffix:semicolon
-DECL|member|mem
+DECL|member|icm
 r_struct
-id|scatterlist
+id|mthca_icm
 op_star
-id|mem
+id|icm
 suffix:semicolon
 DECL|member|fw_pages
 id|u16

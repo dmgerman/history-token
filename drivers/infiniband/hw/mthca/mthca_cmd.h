@@ -672,13 +672,10 @@ id|mthca_dev
 op_star
 id|dev
 comma
-r_int
-id|count
-comma
 r_struct
-id|scatterlist
+id|mthca_icm
 op_star
-id|sglist
+id|icm
 comma
 id|u8
 op_star
