@@ -4,6 +4,7 @@ DECL|macro|_IDT77252_H
 mdefine_line|#define _IDT77252_H 1
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*                                                                           */
 multiline_comment|/* Makros                                                                    */
