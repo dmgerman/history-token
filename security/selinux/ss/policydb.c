@@ -6518,6 +6518,16 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|c-&gt;v.behavior
+OG
+id|SECURITY_FS_USE_NONE
+)paren
+r_goto
+id|bad
+suffix:semicolon
 id|len
 op_assign
 id|le32_to_cpu
