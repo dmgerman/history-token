@@ -2166,7 +2166,7 @@ id|p-&gt;next
 r_if
 c_cond
 (paren
-id|p-&gt;local-&gt;isdn_slot
+id|p-&gt;local.isdn_slot
 op_eq
 id|isdn_dc2minor
 c_func
@@ -2182,13 +2182,13 @@ c_func
 (paren
 id|cmd.parm.setup.eazmsn
 comma
-id|p-&gt;local-&gt;msn
+id|p-&gt;local.msn
 )paren
 suffix:semicolon
 id|isdn_slot_command
 c_func
 (paren
-id|p-&gt;local-&gt;isdn_slot
+id|p-&gt;local.isdn_slot
 comma
 id|ISDN_CMD_ACCEPTD
 comma

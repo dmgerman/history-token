@@ -843,6 +843,7 @@ id|isdn_net_local
 op_star
 id|lp
 op_assign
+op_amp
 id|net_dev-&gt;local
 suffix:semicolon
 r_if
@@ -4547,7 +4548,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|net_dev-&gt;local-&gt;master
+id|net_dev-&gt;local.master
 )paren
 id|BUG
 c_func
@@ -5068,7 +5069,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|net_dev-&gt;local-&gt;ppp_slot
+id|net_dev-&gt;local.ppp_slot
 OL
 l_int|0
 )paren
@@ -5080,7 +5081,7 @@ id|KERN_ERR
 id|__FUNCTION__
 l_string|&quot;: net_dev-&gt;local-&gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
-id|net_dev-&gt;local-&gt;ppp_slot
+id|net_dev-&gt;local.ppp_slot
 )paren
 suffix:semicolon
 r_goto
@@ -5095,7 +5096,7 @@ c_func
 (paren
 id|ippp_table
 (braket
-id|net_dev-&gt;local-&gt;ppp_slot
+id|net_dev-&gt;local.ppp_slot
 )braket
 op_member_access_from_pointer
 id|slcomp
@@ -5214,7 +5215,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|net_dev-&gt;local-&gt;ppp_slot
+id|net_dev-&gt;local.ppp_slot
 OL
 l_int|0
 )paren
@@ -5226,7 +5227,7 @@ id|KERN_ERR
 id|__FUNCTION__
 l_string|&quot;: net_dev-&gt;local-&gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
-id|net_dev-&gt;local-&gt;ppp_slot
+id|net_dev-&gt;local.ppp_slot
 )paren
 suffix:semicolon
 r_goto
@@ -5240,7 +5241,7 @@ c_func
 (paren
 id|ippp_table
 (braket
-id|net_dev-&gt;local-&gt;ppp_slot
+id|net_dev-&gt;local.ppp_slot
 )braket
 op_member_access_from_pointer
 id|slcomp
@@ -5375,7 +5376,7 @@ r_return
 suffix:semicolon
 id|drop_packet
 suffix:colon
-id|net_dev-&gt;local-&gt;stats.rx_dropped
+id|net_dev-&gt;local.stats.rx_dropped
 op_increment
 suffix:semicolon
 id|kfree_skb
@@ -9249,6 +9250,7 @@ l_int|1
 suffix:semicolon
 id|lp
 op_assign
+op_amp
 id|ndev-&gt;local
 suffix:semicolon
 r_if
@@ -9373,6 +9375,7 @@ l_int|1
 suffix:semicolon
 id|lp
 op_assign
+op_amp
 id|ndev-&gt;local
 suffix:semicolon
 r_if

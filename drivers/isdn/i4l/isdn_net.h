@@ -550,6 +550,7 @@ id|lp
 multiline_comment|/* last in queue */
 id|master_lp-&gt;netdev-&gt;queue
 op_assign
+op_amp
 id|master_lp-&gt;netdev-&gt;local
 suffix:semicolon
 )brace

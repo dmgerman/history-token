@@ -916,7 +916,6 @@ id|isdn_net_dev_s
 (brace
 DECL|member|local
 id|isdn_net_local
-op_star
 id|local
 suffix:semicolon
 DECL|member|queue
