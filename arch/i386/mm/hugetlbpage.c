@@ -60,7 +60,7 @@ id|list_add
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 comma
 op_amp
 id|hugepage_freelists
@@ -185,14 +185,14 @@ comma
 r_struct
 id|page
 comma
-id|list
+id|lru
 )paren
 suffix:semicolon
 id|list_del
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 )paren
 suffix:semicolon
 )brace
@@ -1320,7 +1320,7 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 )paren
 suffix:semicolon
 id|spin_lock
@@ -2027,7 +2027,7 @@ id|list_del
 c_func
 (paren
 op_amp
-id|map-&gt;list
+id|map-&gt;lru
 )paren
 suffix:semicolon
 id|update_and_free_page
@@ -2064,7 +2064,7 @@ comma
 r_struct
 id|page
 comma
-id|list
+id|lru
 )paren
 suffix:semicolon
 r_if
@@ -2092,7 +2092,7 @@ id|list_del
 c_func
 (paren
 op_amp
-id|map-&gt;list
+id|map-&gt;lru
 )paren
 suffix:semicolon
 id|update_and_free_page
