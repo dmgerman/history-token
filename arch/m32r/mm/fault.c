@@ -366,6 +366,8 @@ c_func
 id|vma
 comma
 id|address
+comma
+l_int|NULL
 )paren
 )paren
 r_goto
