@@ -1575,7 +1575,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_sb8dsp_interrupt
-r_void
+id|irqreturn_t
 id|snd_sb8dsp_interrupt
 c_func
 (paren
@@ -1682,6 +1682,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|snd_sb8_playback_pointer
 r_static

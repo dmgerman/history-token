@@ -222,10 +222,8 @@ DECL|macro|VT1724_AC97_READ
 mdefine_line|#define   VT1724_AC97_READ&t;0x10&t;/* W: read, R: read in progress */
 DECL|macro|VT1724_AC97_READY
 mdefine_line|#define   VT1724_AC97_READY&t;0x08&t;/* codec ready status bit */
-DECL|macro|VT1724_AC97_PBK_VSR
-mdefine_line|#define   VT1724_AC97_PBK_VSR&t;0x02&t;/* playback VSR */
-DECL|macro|VT1724_AC97_CAP_VSR
-mdefine_line|#define   VT1724_AC97_CAP_VSR&t;0x01&t;/* capture VSR */
+DECL|macro|VT1724_AC97_ID_MASK
+mdefine_line|#define   VT1724_AC97_ID_MASK&t;0x03&t;/* codec id mask */
 DECL|macro|VT1724_MT_AC97_DATA
 mdefine_line|#define VT1724_MT_AC97_DATA&t;&t;0x06&t;/* word - AC&squot;97 data */
 DECL|macro|VT1724_MT_PLAYBACK_ADDR

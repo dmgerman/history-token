@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Philips UDA1341 mixer device driver&n; * Copyright (c) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; * Portions are Copyright (C) 2000 Lernout &amp; Hauspie Speech Products, N.V.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2002-03-13   Tomas Kasparek  initial release - based on uda1341.c from OSS&n; * 2002-03-28   Tomas Kasparek  basic mixer is working (volume, bass, treble)&n; * 2002-03-30   Tomas Kasparek  proc filesystem support, complete mixer and DSP&n; *                              features support&n; * 2002-04-12&t;Tomas Kasparek&t;proc interface update, code cleanup&n; * 2002-05-12   Tomas Kasparek  another code cleanup&n; */
-multiline_comment|/* $Id: uda1341.c,v 1.8 2003/03/20 16:45:59 perex Exp $ */
+multiline_comment|/* $Id: uda1341.c,v 1.9 2003/04/19 13:34:33 perex Exp $ */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -13,10 +13,6 @@ macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;linux/l3/l3.h&gt;
-DECL|macro|DEBUG_MODE
-macro_line|#undef DEBUG_MODE
-DECL|macro|DEBUG_FUNCTION_NAMES
-macro_line|#undef DEBUG_FUNCTION_NAMES
 macro_line|#include &lt;sound/uda1341.h&gt;
 multiline_comment|/* {{{ HW regs definition */
 DECL|macro|STAT0
@@ -272,7 +268,7 @@ r_struct
 id|uda1341
 (brace
 DECL|member|write
-r_void
+r_int
 (paren
 op_star
 id|write
@@ -294,7 +290,6 @@ id|val
 suffix:semicolon
 DECL|member|read
 r_int
-r_char
 (paren
 op_star
 id|read
@@ -335,6 +330,20 @@ DECL|member|cfg
 id|uda1341_cfg
 id|cfg
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
+DECL|member|suspend_regs
+r_int
+r_char
+id|suspend_regs
+(braket
+id|uda1341_reg_last
+)braket
+suffix:semicolon
+DECL|member|suspend_cfg
+id|uda1341_cfg
+id|suspend_cfg
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 singleline_comment|//hack for ALSA magic casting
@@ -346,15 +355,6 @@ id|l3_client_t
 suffix:semicolon
 DECL|macro|chip_t
 mdefine_line|#define chip_t l3_client_t      
-DECL|variable|uda1341
-r_static
-r_struct
-id|l3_client
-op_star
-id|uda1341
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* transfer 8bit integer into string with binary representation */
 DECL|function|int2str_bin8
 r_void
@@ -435,7 +435,7 @@ singleline_comment|//end the string with zero
 )def_block
 multiline_comment|/* {{{ HW manipulation routines */
 DECL|function|snd_uda1341_codec_write
-r_void
+r_int
 id|snd_uda1341_codec_write
 c_func
 (paren
@@ -461,11 +461,6 @@ op_assign
 id|clnt-&gt;driver_data
 suffix:semicolon
 r_int
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 r_char
 id|buf
 (braket
@@ -479,19 +474,10 @@ l_int|0xe0
 )brace
 suffix:semicolon
 singleline_comment|// for EXT addressing
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;codec_write: reg: %s val: %d &quot;
-comma
-id|uda1341_reg_names
-(braket
-id|reg
-)braket
-comma
-id|val
-)paren
+r_int
+id|err
+op_assign
+l_int|0
 suffix:semicolon
 id|uda-&gt;regs
 (braket
@@ -506,12 +492,6 @@ c_cond
 id|uda-&gt;active
 )paren
 (brace
-id|DEBUG
-c_func
-(paren
-l_string|&quot;O&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -522,12 +502,6 @@ id|reg
 )paren
 )paren
 (brace
-id|DEBUG
-c_func
-(paren
-l_string|&quot; D0 &quot;
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|l3_write
@@ -561,12 +535,6 @@ id|reg
 )paren
 )paren
 (brace
-id|DEBUG
-c_func
-(paren
-l_string|&quot; D1 &quot;
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|l3_write
@@ -600,12 +568,6 @@ id|reg
 )paren
 )paren
 (brace
-id|DEBUG
-c_func
-(paren
-l_string|&quot; S &quot;
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|l3_write
@@ -639,12 +601,6 @@ id|reg
 )paren
 )paren
 (brace
-id|DEBUG
-c_func
-(paren
-l_string|&quot; E &quot;
-)paren
-suffix:semicolon
 id|buf
 (braket
 l_int|0
@@ -667,22 +623,6 @@ op_or_assign
 id|val
 suffix:semicolon
 singleline_comment|//EXT data
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%x %x &quot;
-comma
-id|buf
-(braket
-l_int|0
-)braket
-comma
-id|buf
-(braket
-l_int|1
-)braket
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|l3_write
@@ -704,32 +644,6 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|err
-op_eq
-l_int|1
-op_logical_or
-id|err
-op_eq
-l_int|2
-)paren
-id|DEBUG
-c_func
-(paren
-l_string|&quot;K&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|DEBUG
-c_func
-(paren
-l_string|&quot; Error: %d&bslash;n&quot;
-comma
-id|err
-)paren
-suffix:semicolon
 )brace
 r_else
 id|printk
@@ -739,10 +653,12 @@ id|KERN_ERR
 l_string|&quot;UDA1341 codec not active!&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+id|err
+suffix:semicolon
 )brace
 DECL|function|snd_uda1341_codec_read
 r_int
-r_char
 id|snd_uda1341_codec_read
 c_func
 (paren
@@ -757,28 +673,11 @@ id|reg
 )paren
 (brace
 r_int
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 r_char
 id|val
 suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;codec_read: reg: %d &quot;
-comma
-id|reg
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;O&quot;
-)paren
+r_int
+id|err
 suffix:semicolon
 id|err
 op_assign
@@ -802,30 +701,27 @@ id|err
 op_eq
 l_int|1
 )paren
-id|DEBUG
-c_func
-(paren
-l_string|&quot;K&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|DEBUG
-c_func
-(paren
-l_string|&quot; Error: %d&bslash;n&quot;
-comma
-id|err
-)paren
-suffix:semicolon
+singleline_comment|// use just 6bits - the rest is address of the reg
 r_return
 id|val
 op_amp
 l_int|63
 suffix:semicolon
-singleline_comment|//use just 6bits - the rest is address of the reg
+r_return
+id|err
+OL
+l_int|0
+ques
+c_cond
+id|err
+suffix:colon
+op_minus
+id|EIO
+suffix:semicolon
 )brace
 DECL|function|snd_uda1341_valid_reg
 r_static
+r_inline
 r_int
 id|snd_uda1341_valid_reg
 c_func
@@ -840,13 +736,6 @@ r_int
 id|reg
 )paren
 (brace
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;valid_reg&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 id|reg
 OL
@@ -899,7 +788,8 @@ id|uda
 op_assign
 id|clnt-&gt;driver_data
 suffix:semicolon
-id|DEBUG
+macro_line|#if 0
+id|printk
 c_func
 (paren
 id|KERN_DEBUG
@@ -917,6 +807,7 @@ comma
 id|value
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1048,7 +939,13 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|DEBUG_NAME
+macro_line|#ifdef CONFIG_PM
+r_int
+id|reg
+suffix:semicolon
+macro_line|#endif
+macro_line|#if 0
+id|printk
 c_func
 (paren
 id|KERN_DEBUG
@@ -1059,6 +956,7 @@ comma
 id|value
 )paren
 suffix:semicolon
+macro_line|#endif
 id|uda-&gt;cfg
 (braket
 id|what
@@ -1093,7 +991,7 @@ comma
 id|flush
 )paren
 suffix:semicolon
-singleline_comment|//MUTE
+singleline_comment|// MUTE
 id|ret
 op_assign
 id|snd_uda1341_update_bits
@@ -1112,7 +1010,7 @@ comma
 id|flush
 )paren
 suffix:semicolon
-singleline_comment|//RESET
+singleline_comment|// RESET
 id|ret
 op_assign
 id|snd_uda1341_update_bits
@@ -1646,6 +1544,117 @@ id|flush
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM&t;&t;
+r_case
+id|CMD_SUSPEND
+suffix:colon
+r_for
+c_loop
+(paren
+id|reg
+op_assign
+id|stat0
+suffix:semicolon
+id|reg
+OL
+id|uda1341_reg_last
+suffix:semicolon
+id|reg
+op_increment
+)paren
+id|uda-&gt;suspend_regs
+(braket
+id|reg
+)braket
+op_assign
+id|uda-&gt;regs
+(braket
+id|reg
+)braket
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|reg
+op_assign
+l_int|0
+suffix:semicolon
+id|reg
+OL
+id|CMD_LAST
+suffix:semicolon
+id|reg
+op_increment
+)paren
+id|uda-&gt;suspend_cfg
+(braket
+id|reg
+)braket
+op_assign
+id|uda-&gt;cfg
+(braket
+id|reg
+)braket
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|CMD_RESUME
+suffix:colon
+r_for
+c_loop
+(paren
+id|reg
+op_assign
+id|stat0
+suffix:semicolon
+id|reg
+OL
+id|uda1341_reg_last
+suffix:semicolon
+id|reg
+op_increment
+)paren
+id|snd_uda1341_codec_write
+c_func
+(paren
+id|clnt
+comma
+id|reg
+comma
+id|uda-&gt;suspend_regs
+(braket
+id|reg
+)braket
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|reg
+op_assign
+l_int|0
+suffix:semicolon
+id|reg
+OL
+id|CMD_LAST
+suffix:semicolon
+id|reg
+op_increment
+)paren
+id|uda-&gt;cfg
+(braket
+id|reg
+)braket
+op_assign
+id|uda-&gt;suspend_cfg
+(braket
+id|reg
+)braket
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|ret
@@ -1662,7 +1671,6 @@ c_cond
 op_logical_neg
 id|uda-&gt;active
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -1670,7 +1678,6 @@ id|KERN_ERR
 l_string|&quot;UDA1341 codec not active!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_return
 id|ret
 suffix:semicolon
@@ -1727,12 +1734,16 @@ comma
 id|UDA1341_DATA1
 )paren
 suffix:semicolon
-id|DEBUG_NAME
-c_func
+r_if
+c_cond
 (paren
-id|KERN_DEBUG
-l_string|&quot;proc_read&bslash;n&quot;
+id|peak
+OL
+l_int|0
 )paren
+id|peak
+op_assign
+l_int|0
 suffix:semicolon
 id|snd_iprintf
 c_func
@@ -1986,7 +1997,6 @@ id|CMD_VOLUME
 op_eq
 l_int|0
 )paren
-(brace
 id|snd_iprintf
 c_func
 (paren
@@ -1995,7 +2005,6 @@ comma
 l_string|&quot;Volume              : 0 dB&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -2364,13 +2373,6 @@ id|buf
 l_int|12
 )braket
 suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;proc_regs_read&bslash;n&quot;
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -2482,20 +2484,6 @@ id|snd_info_entry_t
 op_star
 id|entry
 suffix:semicolon
-r_struct
-id|uda1341
-op_star
-id|uda
-op_assign
-id|clnt-&gt;driver_data
-suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;proc_init&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2536,7 +2524,6 @@ op_amp
 id|entry
 )paren
 )paren
-(brace
 id|snd_info_set_text_ops
 c_func
 (paren
@@ -2553,6 +2540,7 @@ multiline_comment|/* {{{ Mixer controls setting */
 multiline_comment|/* {{{ UDA1341 single functions */
 DECL|macro|UDA1341_SINGLE
 mdefine_line|#define UDA1341_SINGLE(xname, where, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_uda1341_info_single, &bslash;&n;  .get = snd_uda1341_get_single, .put = snd_uda1341_put_single, &bslash;&n;  .private_value = where | (reg &lt;&lt; 5) | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
+DECL|function|snd_uda1341_info_single
 r_static
 r_int
 id|snd_uda1341_info_single
@@ -2577,17 +2565,6 @@ l_int|12
 )paren
 op_amp
 l_int|63
-suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;info_single where: %ld&bslash;n&quot;
-comma
-id|kcontrol-&gt;private_value
-op_amp
-l_int|31
-)paren
 suffix:semicolon
 id|uinfo-&gt;type
 op_assign
@@ -2616,6 +2593,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_uda1341_get_single
 r_static
 r_int
 id|snd_uda1341_get_single
@@ -2676,20 +2654,6 @@ l_int|18
 op_amp
 l_int|1
 suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;get_single where: %d (val: %d)&bslash;n&quot;
-comma
-id|where
-comma
-id|uda-&gt;cfg
-(braket
-id|where
-)braket
-)paren
-suffix:semicolon
 id|ucontrol-&gt;value.integer.value
 (braket
 l_int|0
@@ -2721,6 +2685,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_uda1341_put_single
 r_static
 r_int
 id|snd_uda1341_put_single
@@ -2829,25 +2794,6 @@ id|mask
 op_minus
 id|val
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;put_single where: %d reg: %d mask: %d shift: %d inv: %d val: %d&bslash;n&quot;
-comma
-id|where
-comma
-id|reg
-comma
-id|mask
-comma
-id|shift
-comma
-id|invert
-comma
-id|val
-)paren
-suffix:semicolon
 id|uda-&gt;cfg
 (braket
 id|where
@@ -2877,6 +2823,7 @@ multiline_comment|/* }}} */
 multiline_comment|/* {{{ UDA1341 enum functions */
 DECL|macro|UDA1341_ENUM
 mdefine_line|#define UDA1341_ENUM(xname, where, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_uda1341_info_enum, &bslash;&n;  .get = snd_uda1341_get_enum, .put = snd_uda1341_put_enum, &bslash;&n;  .private_value = where | (reg &lt;&lt; 5) | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
+DECL|function|snd_uda1341_info_enum
 r_static
 r_int
 id|snd_uda1341_info_enum
@@ -2903,15 +2850,6 @@ r_char
 op_star
 op_star
 id|texts
-suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;info_enum where: %d&bslash;n&quot;
-comma
-id|where
-)paren
 suffix:semicolon
 singleline_comment|// this register we don&squot;t handle this way
 r_if
@@ -2983,6 +2921,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_uda1341_get_enum
 r_static
 r_int
 id|snd_uda1341_get_enum
@@ -3021,20 +2960,6 @@ id|kcontrol-&gt;private_value
 op_amp
 l_int|31
 suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;get_enum where: %d (val: %d)&bslash;n&quot;
-comma
-id|where
-comma
-id|uda-&gt;cfg
-(braket
-id|where
-)braket
-)paren
-suffix:semicolon
 id|ucontrol-&gt;value.enumerated.item
 (braket
 l_int|0
@@ -3049,6 +2974,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_uda1341_put_enum
 r_static
 r_int
 id|snd_uda1341_put_enum
@@ -3134,26 +3060,6 @@ op_amp
 id|mask
 )paren
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;put_enum where: %d reg: %d mask: %d shift: %d val: %d&bslash;n&quot;
-comma
-id|where
-comma
-id|reg
-comma
-id|mask
-comma
-id|shift
-comma
-id|uda-&gt;cfg
-(braket
-id|where
-)braket
-)paren
-suffix:semicolon
 r_return
 id|snd_uda1341_update_bits
 c_func
@@ -3179,6 +3085,7 @@ multiline_comment|/* }}} */
 multiline_comment|/* {{{ UDA1341 2regs functions */
 DECL|macro|UDA1341_2REGS
 mdefine_line|#define UDA1341_2REGS(xname, where, reg_1, reg_2, shift_1, shift_2, mask_1, mask_2, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = (xname), .info = snd_uda1341_info_2regs, &bslash;&n;  .get = snd_uda1341_get_2regs, .put = snd_uda1341_put_2regs, &bslash;&n;  .private_value = where | (reg_1 &lt;&lt; 5) | (reg_2 &lt;&lt; 9) | (shift_1 &lt;&lt; 13) | (shift_2 &lt;&lt; 16) | &bslash;&n;                         (mask_1 &lt;&lt; 19) | (mask_2 &lt;&lt; 25) | (invert &lt;&lt; 31) &bslash;&n;}
+DECL|function|snd_uda1341_info_2regs
 r_static
 r_int
 id|snd_uda1341_info_2regs
@@ -3217,17 +3124,6 @@ l_int|63
 suffix:semicolon
 r_int
 id|mask
-suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;info_2regs where: %ld&bslash;n&quot;
-comma
-id|kcontrol-&gt;private_value
-op_amp
-l_int|31
-)paren
 suffix:semicolon
 id|mask
 op_assign
@@ -3272,6 +3168,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_uda1341_get_2regs
 r_static
 r_int
 id|snd_uda1341_get_2regs
@@ -3346,20 +3243,6 @@ suffix:semicolon
 r_int
 id|mask
 suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;get_2regs where: %d (val: %d)&bslash;n&quot;
-comma
-id|where
-comma
-id|uda-&gt;cfg
-(braket
-id|where
-)braket
-)paren
-suffix:semicolon
 id|mask
 op_assign
 (paren
@@ -3407,6 +3290,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_uda1341_put_2regs
 r_static
 r_int
 id|snd_uda1341_put_2regs
@@ -3540,32 +3424,6 @@ id|ucontrol-&gt;value.integer.value
 l_int|0
 )braket
 suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;put_2regs where: %d reg1: %d reg2: %d mask1: %d mask2: %d &quot;
-l_string|&quot;shift1: %d shift2: %d inv: %d val: %d&bslash;n&quot;
-comma
-id|where
-comma
-id|reg_1
-comma
-id|reg_2
-comma
-id|mask_1
-comma
-id|mask_2
-comma
-id|shift_1
-comma
-id|shift_2
-comma
-id|invert
-comma
-id|val
-)paren
-suffix:semicolon
 id|mask
 op_assign
 (paren
@@ -3673,6 +3531,7 @@ suffix:semicolon
 multiline_comment|/* }}} */
 DECL|macro|UDA1341_CONTROLS
 mdefine_line|#define UDA1341_CONTROLS (sizeof(snd_uda1341_controls)/sizeof(snd_kcontrol_new_t))
+DECL|variable|snd_uda1341_controls
 r_static
 id|snd_kcontrol_new_t
 id|snd_uda1341_controls
@@ -3992,6 +3851,69 @@ l_int|0
 comma
 )brace
 suffix:semicolon
+DECL|function|uda1341_free
+r_static
+r_void
+id|uda1341_free
+c_func
+(paren
+r_struct
+id|l3_client
+op_star
+id|uda1341
+)paren
+(brace
+id|l3_detach_client
+c_func
+(paren
+id|uda1341
+)paren
+suffix:semicolon
+singleline_comment|// calls kfree for driver_data (uda1341_t)
+id|snd_magic_kfree
+c_func
+(paren
+id|uda1341
+)paren
+suffix:semicolon
+)brace
+DECL|function|uda1341_dev_free
+r_static
+r_int
+id|uda1341_dev_free
+c_func
+(paren
+id|snd_device_t
+op_star
+id|device
+)paren
+(brace
+r_struct
+id|l3_client
+op_star
+id|clnt
+op_assign
+id|snd_magic_cast
+c_func
+(paren
+id|l3_client_t
+comma
+id|device-&gt;device_data
+comma
+r_return
+)paren
+suffix:semicolon
+id|uda1341_free
+c_func
+(paren
+id|clnt
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|snd_chip_uda1341_mixer_new
 r_int
 id|__init
 id|snd_chip_uda1341_mixer_new
@@ -4008,17 +3930,27 @@ op_star
 id|clnt
 )paren
 (brace
+r_static
+id|snd_device_ops_t
+id|ops
+op_assign
+(brace
+dot
+id|dev_free
+op_assign
+id|uda1341_dev_free
+comma
+)brace
+suffix:semicolon
+r_struct
+id|l3_client
+op_star
+id|uda1341
+suffix:semicolon
 r_int
 id|idx
 comma
 id|err
-suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;uda1341 mixer_new&bslash;n&quot;
-)paren
 suffix:semicolon
 id|snd_assert
 c_func
@@ -4072,10 +4004,56 @@ l_string|&quot;snd-uda1341&quot;
 )paren
 )paren
 )paren
-r_return
-op_minus
-id|ENODEV
+(brace
+id|kfree
+c_func
+(paren
+id|uda1341
+)paren
 suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_device_new
+c_func
+(paren
+id|card
+comma
+id|SNDRV_DEV_LOWLEVEL
+comma
+id|uda1341
+comma
+op_amp
+id|ops
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|l3_detach_client
+c_func
+(paren
+id|uda1341
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|uda1341
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -4159,42 +4137,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_void
-id|__init
-id|snd_chip_uda1341_mixer_del
-c_func
-(paren
-id|snd_card_t
-op_star
-id|card
-)paren
-(brace
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;uda1341 mixer_del&bslash;n&quot;
-)paren
-suffix:semicolon
-id|l3_detach_client
-c_func
-(paren
-id|uda1341
-)paren
-suffix:semicolon
-id|snd_magic_kfree
-c_func
-(paren
-id|uda1341
-)paren
-suffix:semicolon
-id|uda1341
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/* }}} */
 multiline_comment|/* {{{ L3 operations */
+DECL|function|uda1341_attach
 r_static
 r_int
 id|uda1341_attach
@@ -4210,13 +4155,6 @@ r_struct
 id|uda1341
 op_star
 id|uda
-suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;uda1341 attach&bslash;n&quot;
-)paren
 suffix:semicolon
 id|uda
 op_assign
@@ -4239,20 +4177,6 @@ id|uda
 r_return
 op_minus
 id|ENOMEM
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|uda
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|uda
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* init fixed parts of my copy of registers */
 id|uda-&gt;regs
@@ -4309,11 +4233,11 @@ id|clnt-&gt;driver_data
 op_assign
 id|uda
 suffix:semicolon
-singleline_comment|//l3_open(clnt);
 r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|uda1341_detach
 r_static
 r_void
 id|uda1341_detach
@@ -4325,13 +4249,11 @@ op_star
 id|clnt
 )paren
 (brace
-id|DEBUG_NAME
-c_func
+r_if
+c_cond
 (paren
-id|KERN_DEBUG
-l_string|&quot;uda1341 detach&bslash;n&quot;
+id|clnt-&gt;driver_data
 )paren
-suffix:semicolon
 id|snd_magic_kfree
 c_func
 (paren
@@ -4341,6 +4263,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|uda1341_command
 id|uda1341_command
 c_func
 (paren
@@ -4357,13 +4280,6 @@ op_star
 id|arg
 )paren
 (brace
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;l3_command&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4400,6 +4316,7 @@ id|arg
 )paren
 suffix:semicolon
 )brace
+DECL|function|uda1341_open
 r_static
 r_int
 id|uda1341_open
@@ -4417,13 +4334,6 @@ op_star
 id|uda
 op_assign
 id|clnt-&gt;driver_data
-suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;uda1341 open&bslash;n&quot;
-)paren
 suffix:semicolon
 id|uda-&gt;active
 op_assign
@@ -4720,6 +4630,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|uda1341_close
 r_static
 r_void
 id|uda1341_close
@@ -4738,13 +4649,6 @@ id|uda
 op_assign
 id|clnt-&gt;driver_data
 suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;uda1341 close&bslash;n&quot;
-)paren
-suffix:semicolon
 id|uda-&gt;active
 op_assign
 l_int|0
@@ -4752,6 +4656,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* }}} */
 multiline_comment|/* {{{ Module and L3 initialization */
+DECL|variable|uda1341_ops
 r_static
 r_struct
 id|l3_ops
@@ -4775,6 +4680,7 @@ id|uda1341_close
 comma
 )brace
 suffix:semicolon
+DECL|variable|uda1341_driver
 r_static
 r_struct
 id|l3_driver
@@ -4809,6 +4715,7 @@ id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
+DECL|function|uda1341_init
 r_static
 r_int
 id|__init
@@ -4827,6 +4734,7 @@ id|uda1341_driver
 )paren
 suffix:semicolon
 )brace
+DECL|function|uda1341_exit
 r_static
 r_void
 id|__exit
@@ -4844,12 +4752,14 @@ id|uda1341_driver
 )paren
 suffix:semicolon
 )brace
+DECL|variable|uda1341_init
 id|module_init
 c_func
 (paren
 id|uda1341_init
 )paren
 suffix:semicolon
+DECL|variable|uda1341_exit
 id|module_exit
 c_func
 (paren
@@ -4886,16 +4796,11 @@ c_func
 l_string|&quot;{{UDA1341,UDA1341TS}}&quot;
 )paren
 suffix:semicolon
+DECL|variable|snd_chip_uda1341_mixer_new
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_chip_uda1341_mixer_new
-)paren
-suffix:semicolon
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_chip_uda1341_mixer_del
 )paren
 suffix:semicolon
 multiline_comment|/* }}} */
