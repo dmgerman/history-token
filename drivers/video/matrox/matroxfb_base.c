@@ -8,6 +8,7 @@ macro_line|#include &quot;matroxfb_DAC1064.h&quot;
 macro_line|#include &quot;matroxfb_Ti3026.h&quot;
 macro_line|#include &quot;matroxfb_maven.h&quot;
 macro_line|#include &quot;matroxfb_crtc2.h&quot;
+macro_line|#include &quot;matroxfb_g450.h&quot;
 macro_line|#include &lt;linux/matroxfb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_PPC
@@ -576,6 +577,12 @@ c_func
 (paren
 id|fbcon
 )paren
+)paren
+suffix:semicolon
+id|matroxfb_g450_shutdown
+c_func
+(paren
+id|PMINFO2
 )paren
 suffix:semicolon
 id|del_timer_sync
@@ -8928,6 +8935,12 @@ comma
 l_string|&quot;matrox&quot;
 )paren
 suffix:semicolon
+id|matroxfb_g450_connect
+c_func
+(paren
+id|PMINFO2
+)paren
+suffix:semicolon
 id|ACCESS_FBINFO
 c_func
 (paren
@@ -9798,6 +9811,12 @@ l_int|0
 suffix:semicolon
 id|failVideoIO
 suffix:colon
+suffix:semicolon
+id|matroxfb_g450_shutdown
+c_func
+(paren
+id|PMINFO2
+)paren
 suffix:semicolon
 id|mga_iounmap
 c_func
