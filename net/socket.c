@@ -5241,7 +5241,7 @@ suffix:semicolon
 id|err
 op_assign
 op_minus
-id|EMFILE
+id|ENFILE
 suffix:semicolon
 r_if
 c_cond
