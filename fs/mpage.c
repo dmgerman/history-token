@@ -1508,6 +1508,15 @@ r_struct
 id|buffer_head
 id|map_bh
 suffix:semicolon
+id|loff_t
+id|i_size
+op_assign
+id|i_size_read
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1732,11 +1741,7 @@ suffix:semicolon
 id|last_block
 op_assign
 (paren
-id|i_size_read
-c_func
-(paren
-id|inode
-)paren
+id|i_size
 op_minus
 l_int|1
 )paren
@@ -1891,13 +1896,11 @@ id|first_unmapped
 op_assign
 id|page_block
 suffix:semicolon
+id|page_is_mapped
+suffix:colon
 id|end_index
 op_assign
-id|i_size_read
-c_func
-(paren
-id|inode
-)paren
+id|i_size
 op_rshift
 id|PAGE_CACHE_SHIFT
 suffix:semicolon
@@ -1909,14 +1912,11 @@ op_ge
 id|end_index
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * The page straddles i_size.  It must be zeroed out on each&n;&t;&t; * and every writepage invokation because it may be mmapped.&n;&t;&t; * &quot;A file is mapped in multiples of the page size.  For a file&n;&t;&t; * that is not a multiple of the page size, the remaining memory&n;&t;&t; * is zeroed when mapped, and writes to that region are not&n;&t;&t; * written out to the file.&quot;&n;&t;&t; */
 r_int
 id|offset
 op_assign
-id|i_size_read
-c_func
-(paren
-id|inode
-)paren
+id|i_size
 op_amp
 (paren
 id|PAGE_CACHE_SIZE
@@ -1980,8 +1980,6 @@ id|KM_USER0
 )paren
 suffix:semicolon
 )brace
-id|page_is_mapped
-suffix:colon
 multiline_comment|/*&n;&t; * This page will go to BIO.  Do we need to send this BIO off first?&n;&t; */
 r_if
 c_cond
