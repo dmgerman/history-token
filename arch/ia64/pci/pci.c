@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * pci.c - Low-Level PCI Access in IA-64&n; *&n; * Derived from bios32.c of i386 tree.&n; *&n; * Copyright (C) 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Note: Above list of copyright holders is incomplete...&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -357,7 +358,6 @@ dot
 id|write
 op_assign
 id|pci_sal_write
-comma
 )brace
 suffix:semicolon
 DECL|variable|pci_root_ops
@@ -370,6 +370,51 @@ op_amp
 id|pci_sal_ops
 suffix:semicolon
 multiline_comment|/* default to SAL */
+r_static
+r_int
+id|__init
+DECL|function|pci_acpi_init
+id|pci_acpi_init
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_pci_irq_init
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;PCI: Using ACPI for IRQ routing&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;PCI: Invalid ACPI-PCI IRQ routing table&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|pci_acpi_init
+id|subsys_initcall
+c_func
+(paren
+id|pci_acpi_init
+)paren
+suffix:semicolon
+multiline_comment|/* Called by ACPI when it finds a new root bus.  */
 r_struct
 id|pci_bus
 op_star
@@ -384,15 +429,11 @@ r_struct
 id|list_head
 op_star
 id|list
-op_assign
-l_int|NULL
 suffix:semicolon
 r_struct
 id|pci_bus
 op_star
 id|pci_bus
-op_assign
-l_int|NULL
 suffix:semicolon
 id|list_for_each
 c_func
@@ -453,92 +494,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-r_static
-r_int
-id|__init
-DECL|function|pcibios_init
-id|pcibios_init
-(paren
-r_void
-)paren
-(brace
-DECL|macro|PCI_BUSES_TO_SCAN
-macro_line|#&t;define PCI_BUSES_TO_SCAN 255
-r_int
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|acpi_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* hackedy hack hack... */
-macro_line|#ifdef CONFIG_IA64_MCA
-id|ia64_mca_check_errors
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* For post-failure MCA error logging */
-macro_line|#endif
-id|platform_pci_fixup
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* phase 0 fixups (before buses scanned) */
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: Probing PCI hardware&bslash;n&quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|PCI_BUSES_TO_SCAN
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|pci_scan_bus
-c_func
-(paren
-id|i
-comma
-id|pci_root_ops
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|platform_pci_fixup
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* phase 1 fixups (after buses scanned) */
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|pcibios_init
-id|subsys_initcall
-c_func
-(paren
-id|pcibios_init
-)paren
-suffix:semicolon
-multiline_comment|/*&n; *  Called after each bus is probed, but before its children&n; *  are examined.&n; */
+multiline_comment|/*&n; *  Called after each bus is probed, but before its children are examined.&n; */
 r_void
 id|__init
 DECL|function|pcibios_fixup_bus
@@ -928,7 +884,11 @@ id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|acpi_pci_irq_enable
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 r_void

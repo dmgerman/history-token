@@ -50,10 +50,6 @@ DECL|macro|platform_name
 mdefine_line|#define platform_name&t;&t;&t;&quot;hpzx1&quot;
 DECL|macro|platform_setup
 mdefine_line|#define platform_setup&t;&t;&t;dig_setup
-DECL|macro|platform_pci_fixup
-mdefine_line|#define platform_pci_fixup&t;&t;hpzx1_pci_fixup
-DECL|macro|platform_map_nr
-mdefine_line|#define platform_map_nr&t;&t;&t;map_nr_dense
 DECL|macro|platform_pci_dma_init
 mdefine_line|#define platform_pci_dma_init&t;&t;((ia64_mv_pci_dma_init *) machvec_noop)
 DECL|macro|platform_pci_alloc_consistent

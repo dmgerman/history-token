@@ -423,6 +423,13 @@ id|SAL_INFO_TYPE_MCA
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ia64_mca_check_errors
+id|device_initcall
+c_func
+(paren
+id|ia64_mca_check_errors
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ia64_mca_register_cpev&n; *&n; *  Register the corrected platform error vector with SAL.&n; *&n; *  Inputs&n; *      cpev        Corrected Platform Error Vector number&n; *&n; *  Outputs&n; *      None&n; */
 r_static
 r_void
