@@ -4,6 +4,7 @@ macro_line|#include &quot;linux/slab.h&quot;
 macro_line|#include &quot;asm/semaphore.h&quot;
 macro_line|#include &quot;asm/irq.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
+macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;xterm.h&quot;
 DECL|struct|xterm_wait
@@ -66,6 +67,18 @@ op_amp
 id|xterm-&gt;pid
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|xterm-&gt;new_fd
+op_eq
+op_minus
+id|EAGAIN
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -214,6 +227,14 @@ c_func
 (paren
 op_amp
 id|data-&gt;sem
+)paren
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|XTERM_IRQ
+comma
+id|data
 )paren
 suffix:semicolon
 id|ret
