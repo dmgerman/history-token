@@ -1,7 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/minix/dir.c&n; *&n; *  Copyright (C) 1991, 1992 Linus Torvalds&n; *&n; *  minix directory handling functions&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/minix_fs.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &quot;minix.h&quot;
 DECL|typedef|minix_dirent
 r_typedef
 r_struct

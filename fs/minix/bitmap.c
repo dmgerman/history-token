@@ -1,8 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/minix/bitmap.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
 multiline_comment|/*&n; * Modified for 680x0 by Hamish Macdonald&n; * Fixed for 680x0 by Andreas Schwab&n; */
 multiline_comment|/* bitmap.c contains the code that handles the inode and block bitmaps */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/minix_fs.h&gt;
+macro_line|#include &quot;minix.h&quot;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 DECL|variable|nibblemap

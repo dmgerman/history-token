@@ -1,5 +1,4 @@
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/minix_fs.h&gt;
+macro_line|#include &quot;minix.h&quot;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|enumerator|DIRECT
