@@ -34,6 +34,7 @@ macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 DECL|macro|BAR_0
@@ -234,6 +235,11 @@ suffix:semicolon
 DECL|member|irq_sem
 id|atomic_t
 id|irq_sem
+suffix:semicolon
+DECL|member|tx_timeout_task
+r_struct
+id|tq_struct
+id|tx_timeout_task
 suffix:semicolon
 DECL|member|blink_timer
 r_struct
