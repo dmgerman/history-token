@@ -2683,6 +2683,10 @@ op_logical_and
 id|usage-&gt;code
 op_eq
 id|BTN_BACK
+op_logical_or
+id|usage-&gt;code
+op_eq
+id|BTN_EXTRA
 )paren
 )paren
 (brace
@@ -2743,6 +2747,7 @@ op_ne
 id|usage-&gt;hat_max
 )paren
 (brace
+multiline_comment|/* FIXME: hat_max can be 0 and hat_min 1 */
 id|value
 op_assign
 (paren
@@ -3041,7 +3046,7 @@ l_int|0
 )paren
 )paren
 (brace
-multiline_comment|/* Key 0 is &quot;unassigned&quot;, not KEY_UKNOWN */
+multiline_comment|/* Key 0 is &quot;unassigned&quot;, not KEY_UNKNOWN */
 r_return
 suffix:semicolon
 )brace
