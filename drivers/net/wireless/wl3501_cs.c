@@ -2006,8 +2006,6 @@ id|signal.ssid
 l_int|0
 )braket
 op_assign
-l_int|0
-suffix:semicolon
 id|signal.ssid
 (braket
 l_int|1
@@ -2025,8 +2023,6 @@ l_int|0x10
 suffix:semicolon
 id|signal.min_chan_time
 op_assign
-id|chan_time
-suffix:semicolon
 id|signal.max_chan_time
 op_assign
 id|chan_time
@@ -6814,9 +6810,10 @@ op_assign
 op_amp
 id|this-&gt;wstats
 suffix:semicolon
-id|u16
+id|u32
 id|value
 suffix:semicolon
+multiline_comment|/* size checked: it is u32 */
 id|memset
 c_func
 (paren
@@ -8414,6 +8411,7 @@ id|extra
 id|u16
 id|threshold
 suffix:semicolon
+multiline_comment|/* size checked: it is u16 */
 r_struct
 id|wl3501_card
 op_star
@@ -8500,6 +8498,7 @@ id|extra
 id|u16
 id|threshold
 suffix:semicolon
+multiline_comment|/* size checked: it is u16 */
 r_struct
 id|wl3501_card
 op_star
@@ -8675,6 +8674,7 @@ id|extra
 id|u16
 id|retry
 suffix:semicolon
+multiline_comment|/* size checked: it is u16 */
 r_struct
 id|wl3501_card
 op_star
