@@ -534,6 +534,9 @@ comma
 DECL|enumerator|TCA_ROUTE4_POLICE
 id|TCA_ROUTE4_POLICE
 comma
+DECL|enumerator|TCA_ROUTE4_ACT
+id|TCA_ROUTE4_ACT
+comma
 DECL|enumerator|__TCA_ROUTE4_MAX
 id|__TCA_ROUTE4_MAX
 )brace
