@@ -12,7 +12,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Free memory management - zoned buddy allocator.&n; */
 macro_line|#ifndef CONFIG_FORCE_MAX_ZONEORDER
 DECL|macro|MAX_ORDER
-mdefine_line|#define MAX_ORDER 10
+mdefine_line|#define MAX_ORDER 11
 macro_line|#else
 DECL|macro|MAX_ORDER
 mdefine_line|#define MAX_ORDER CONFIG_FORCE_MAX_ZONEORDER

@@ -802,6 +802,39 @@ comma
 id|non_flushes
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+(brace
+r_extern
+r_int
+r_int
+id|htlbpagemem
+comma
+id|htlbzone_pages
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;HugePages:    %8lu&bslash;n&quot;
+l_string|&quot;Available:    %8lu&bslash;n&quot;
+l_string|&quot;Size:         %8lu kB&bslash;n&quot;
+comma
+id|htlbzone_pages
+comma
+id|htlbpagemem
+comma
+id|HPAGE_SIZE
+op_div
+l_int|1024
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_return
 id|proc_calc_metrics
 c_func

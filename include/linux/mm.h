@@ -177,6 +177,8 @@ DECL|macro|VM_RESERVED
 mdefine_line|#define VM_RESERVED&t;0x00080000&t;/* Don&squot;t unmap it from swap_out */
 DECL|macro|VM_ACCOUNT
 mdefine_line|#define VM_ACCOUNT&t;0x00100000&t;/* Is a VM accounted object */
+DECL|macro|VM_HUGETLB
+mdefine_line|#define VM_HUGETLB&t;0x00400000&t;/* Huge TLB Page VM */
 DECL|macro|VM_STACK_FLAGS
 mdefine_line|#define VM_STACK_FLAGS&t;(0x00000100 | VM_DATA_DEFAULT_FLAGS | VM_ACCOUNT)
 DECL|macro|VM_READHINTMASK
@@ -919,6 +921,80 @@ op_star
 id|page
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|macro|is_vm_hugetlb_page
+mdefine_line|#define is_vm_hugetlb_page(vma) (vma-&gt;vm_flags &amp; VM_HUGETLB)
+r_extern
+r_int
+id|copy_hugetlb_page_range
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+comma
+r_struct
+id|mm_struct
+op_star
+comma
+r_struct
+id|vm_area_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|follow_hugetlb_page
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+comma
+r_struct
+id|vm_area_struct
+op_star
+comma
+r_struct
+id|page
+op_star
+op_star
+comma
+r_struct
+id|vm_area_struct
+op_star
+op_star
+comma
+r_int
+r_int
+op_star
+comma
+r_int
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|free_hugepages
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|is_vm_hugetlb_page
+mdefine_line|#define is_vm_hugetlb_page(vma) (0)
+DECL|macro|follow_hugetlb_page
+mdefine_line|#define follow_hugetlb_page(mm, vma, pages, vmas, start, len, i) (0)
+DECL|macro|copy_hugetlb_page_range
+mdefine_line|#define copy_hugetlb_page_range(dst, src, vma) (0)
+DECL|macro|free_hugepages
+mdefine_line|#define free_hugepages(mpnt)  do { } while(0)
+macro_line|#endif
 multiline_comment|/*&n; * If the mapping doesn&squot;t provide a set_page_dirty a_op, then&n; * just fall through and assume that it wants buffer_heads.&n; * FIXME: make the method unconditional.&n; */
 DECL|function|set_page_dirty
 r_static
