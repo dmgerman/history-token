@@ -905,6 +905,13 @@ r_int
 id|gfp_mask
 suffix:semicolon
 multiline_comment|/* how to allocate the pages */
+DECL|member|ra_pages
+r_int
+r_int
+op_star
+id|ra_pages
+suffix:semicolon
+multiline_comment|/* device readahead */
 )brace
 suffix:semicolon
 DECL|struct|char_device
@@ -1373,6 +1380,12 @@ r_int
 r_int
 id|ahead_size
 suffix:semicolon
+DECL|member|ra_pages
+r_int
+r_int
+id|ra_pages
+suffix:semicolon
+multiline_comment|/* Maximum readahead window */
 )brace
 suffix:semicolon
 DECL|struct|file

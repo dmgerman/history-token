@@ -1603,6 +1603,11 @@ op_star
 id|file
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|default_ra_pages
+suffix:semicolon
 multiline_comment|/* vma is the first one with  address &lt; vma-&gt;vm_end,&n; * and even  address &lt; vma-&gt;vm_start. Have to extend vma. */
 DECL|function|expand_stack
 r_static
