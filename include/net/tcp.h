@@ -3169,6 +3169,10 @@ c_cond
 id|mtu
 op_ne
 id|tp-&gt;pmtu_cookie
+op_logical_or
+id|tp-&gt;ext2_header_len
+op_ne
+id|dst-&gt;header_len
 )paren
 id|mss_now
 op_assign

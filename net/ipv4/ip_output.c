@@ -1695,6 +1695,7 @@ c_cond
 id|unlikely
 c_func
 (paren
+(paren
 id|iph-&gt;frag_off
 op_amp
 id|htons
@@ -1702,6 +1703,10 @@ c_func
 (paren
 id|IP_DF
 )paren
+)paren
+op_logical_and
+op_logical_neg
+id|skb-&gt;local_df
 )paren
 )paren
 (brace
@@ -3195,6 +3200,7 @@ id|inet-&gt;cork.length
 op_add_assign
 id|length
 suffix:semicolon
+multiline_comment|/* So, what&squot;s going on in the loop below?&n;&t; *&n;&t; * We use calculated fragment length to generate chained skb,&n;&t; * each of segments is IP fragment ready for sending to network after&n;&t; * adding appropriate IP header.&n;&t; *&n;&t; * Mistake is:&n;&t; *&n;&t; *    If mtu-fragheaderlen is not 0 modulo 8, we generate additional&n;&t; *    small fragment of length (mtu-fragheaderlen)%8, even though&n;&t; *    it is not necessary. Not a big bug, but needs a fix.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3311,6 +3317,18 @@ op_assign
 id|datalen
 op_plus
 id|fragheaderlen
+suffix:semicolon
+multiline_comment|/* The last fragment gets additional space at tail.&n;&t;&t;&t; * Note, with MSG_MORE we overallocate on fragments,&n;&t;&t;&t; * because we have no idea what fragment will be&n;&t;&t;&t; * the last.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|datalen
+op_eq
+id|length
+)paren
+id|alloclen
+op_add_assign
+id|rt-&gt;u.dst.trailer_len
 suffix:semicolon
 r_if
 c_cond
@@ -4664,6 +4682,19 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/* Unless user demanded real pmtu discovery (IP_PMTUDISC_DO), we allow&n;&t; * to fragment the frame generated here. No matter, what transforms&n;&t; * how transforms change size of the packet, it will come out.&n;&t; */
+r_if
+c_cond
+(paren
+id|inet-&gt;pmtudisc
+op_ne
+id|IP_PMTUDISC_DO
+)paren
+id|skb-&gt;local_df
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* DF bit is set when we want to see DF on outgoing frames.&n;&t; * If local_df is set too, we still allow to fragment this frame&n;&t; * locally. */
 r_if
 c_cond
 (paren

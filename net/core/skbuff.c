@@ -517,6 +517,10 @@ id|skb-&gt;csum
 op_assign
 l_int|0
 suffix:semicolon
+id|skb-&gt;local_df
+op_assign
+l_int|0
+suffix:semicolon
 id|skb-&gt;cloned
 op_assign
 l_int|0
@@ -1196,6 +1200,12 @@ c_func
 id|csum
 )paren
 suffix:semicolon
+id|C
+c_func
+(paren
+id|local_df
+)paren
+suffix:semicolon
 id|n-&gt;cloned
 op_assign
 l_int|1
@@ -1494,6 +1504,12 @@ id|users
 comma
 l_int|1
 )paren
+suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|local_df
+op_assign
+id|old-&gt;local_df
 suffix:semicolon
 r_new
 op_member_access_from_pointer

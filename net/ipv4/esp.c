@@ -1494,7 +1494,7 @@ id|mtu
 op_plus
 id|x-&gt;props.header_len
 op_plus
-id|esp-&gt;auth.icv_full_len
+id|esp-&gt;auth.icv_trunc_len
 suffix:semicolon
 )brace
 DECL|function|esp4_err
@@ -2015,6 +2015,18 @@ suffix:semicolon
 id|x-&gt;data
 op_assign
 id|esp
+suffix:semicolon
+id|x-&gt;props.trailer_len
+op_assign
+id|esp4_get_max_size
+c_func
+(paren
+id|x
+comma
+l_int|0
+)paren
+op_minus
+id|x-&gt;props.header_len
 suffix:semicolon
 r_return
 l_int|0

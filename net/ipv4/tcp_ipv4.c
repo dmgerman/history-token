@@ -3610,9 +3610,8 @@ op_amp
 id|rt-&gt;u.dst
 )paren
 suffix:semicolon
-multiline_comment|/* DAVEM REDPEN: This used to sit above forced ext_header_len = 0&n;&t; *               above, it was real bug.  Is this one correct?&n;&t; */
-id|tp-&gt;ext_header_len
-op_add_assign
+id|tp-&gt;ext2_header_len
+op_assign
 id|rt-&gt;u.dst.header_len
 suffix:semicolon
 r_if
@@ -6681,8 +6680,8 @@ id|newtp-&gt;ext_header_len
 op_assign
 id|newinet-&gt;opt-&gt;optlen
 suffix:semicolon
-id|newtp-&gt;ext_header_len
-op_add_assign
+id|newtp-&gt;ext2_header_len
+op_assign
 id|dst-&gt;header_len
 suffix:semicolon
 id|newinet-&gt;id
