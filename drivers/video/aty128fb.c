@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: aty128fb.c,v 1.1.1.1.36.1 1999/12/11 09:03:05 Exp $&n; *  linux/drivers/video/aty128fb.c -- Frame buffer device for ATI Rage128&n; *&n; *  Copyright (C) 1999-2000, Brad Douglas &lt;brad@neruo.com&gt;&n; *  Copyright (C) 1999, Anthony Tong &lt;atong@uiuc.edu&gt;&n; *&n; *                Ani Joshi / Jeff Garzik&n; *                      - Code cleanup&n; *&n; *  Based off of Geert&squot;s atyfb.c and vfb.c.&n; *&n; *  TODO:&n; *&t;&t;- panning&n; *&t;&t;- monitor sensing (DDC)&n; *              - virtual display&n; *&t;&t;- other platform support (only ppc/x86 supported)&n; *&t;&t;- hardware cursor support&n; *&t;&t;- ioctl()&squot;s&n; *&n; *    Please cc: your patches to brad@neruo.com.&n; */
+multiline_comment|/* $Id: aty128fb.c,v 1.1.1.1.36.1 1999/12/11 09:03:05 Exp $&n; *  linux/drivers/video/aty128fb.c -- Frame buffer device for ATI Rage128&n; *&n; *  Copyright (C) 1999-2000, Brad Douglas &lt;brad@neruo.com&gt;&n; *  Copyright (C) 1999, Anthony Tong &lt;atong@uiuc.edu&gt;&n; *&n; *                Ani Joshi / Jeff Garzik&n; *                      - Code cleanup&n; *&n; *                Andreas Hundt &lt;andi@convergence.de&gt;&n; *                      - FB_ACTIVATE fixes&n; *&n; *  Based off of Geert&squot;s atyfb.c and vfb.c.&n; *&n; *  TODO:&n; *&t;&t;- panning&n; *&t;&t;- monitor sensing (DDC)&n; *              - virtual display&n; *&t;&t;- other platform support (only ppc/x86 supported)&n; *&t;&t;- hardware cursor support&n; *&t;&t;- ioctl()&squot;s&n; *&n; *    Please cc: your patches to brad@neruo.com.&n; */
 multiline_comment|/*&n; * A special note of gratitude to ATI&squot;s devrel for providing documentation,&n; * example code and hardware. Thanks Nitya.&t;-atong and brad&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -335,7 +335,6 @@ suffix:semicolon
 multiline_comment|/* supported Rage128 chipsets */
 DECL|variable|__initdata
 r_static
-r_const
 r_struct
 id|aty128_chip_info
 id|aty128_pci_probe_list
@@ -757,7 +756,6 @@ l_int|0
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|mode_option
@@ -3880,6 +3878,22 @@ id|crtc-&gt;offset
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|var-&gt;activate
+op_amp
+id|FB_ACTIVATE_MASK
+)paren
+op_eq
+id|FB_ACTIVATE_NOW
+)paren
+id|crtc-&gt;offset_cntl
+op_assign
+l_int|0x00010000
+suffix:semicolon
+r_else
 id|crtc-&gt;offset_cntl
 op_assign
 l_int|0
@@ -6093,8 +6107,8 @@ id|var-&gt;activate
 op_amp
 id|FB_ACTIVATE_MASK
 )paren
-op_ne
-id|FB_ACTIVATE_NOW
+op_eq
+id|FB_ACTIVATE_TEST
 )paren
 r_return
 l_int|0
@@ -11953,6 +11967,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;FBDev driver for ATI Rage128 / Pro cards&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

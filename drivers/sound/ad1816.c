@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * AD1816 lowlevel sound driver for Linux 2.2.0 and above&n; *&n; * Copyright (C) 1998 by Thorsten Knabe &lt;tek@rbg.informatik.tu-darmstadt.de&gt;&n; *&n; * Based on the CS4232/AD1848 driver Copyright (C) by Hannu Savolainen 1993-1996&n; *&n; *&n; * version: 1.3.1&n; * status: experimental&n; * date: 1999/4/18&n; *&n; * Changes:&n; *&t;Oleg Drokin: Some cleanup of load/unload functions.&t;1998/11/24&n; *&t;&n; *&t;Thorsten Knabe: attach and unload rewritten, &n; *&t;some argument checks added&t;&t;&t;&t;1998/11/30&n; *&n; *&t;Thorsten Knabe: Buggy isa bridge workaround added&t;1999/01/16&n; *&t;&n; *&t;David Moews/Thorsten Knabe: Introduced options &n; *&t;parameter. Added slightly modified patch from &n; *&t;David Moews to disable dsp audio sources by setting &n; *&t;bit 0 of options parameter. This seems to be&n; *&t;required by some Aztech/Newcom SC-16 cards.&t;&t;1999/04/18&n; *&n; *&t;Christoph Hellwig: Adapted to module_init/module_exit.&t;2000/03/03&n; *&n; *&t;Christoph Hellwig: Added isapnp support&t;&t;&t;2000/03/15&n; */
+multiline_comment|/*&n; *&n; * AD1816 lowlevel sound driver for Linux 2.2.0 and above&n; *&n; * Copyright (C) 1998 by Thorsten Knabe &lt;tek@rbg.informatik.tu-darmstadt.de&gt;&n; *&n; * Based on the CS4232/AD1848 driver Copyright (C) by Hannu Savolainen 1993-1996&n; *&n; *&n; * version: 1.3.1&n; * status: experimental&n; * date: 1999/4/18&n; *&n; * Changes:&n; *&t;Oleg Drokin: Some cleanup of load/unload functions.&t;1998/11/24&n; *&t;&n; *&t;Thorsten Knabe: attach and unload rewritten, &n; *&t;some argument checks added&t;&t;&t;&t;1998/11/30&n; *&n; *&t;Thorsten Knabe: Buggy isa bridge workaround added&t;1999/01/16&n; *&t;&n; *&t;David Moews/Thorsten Knabe: Introduced options &n; *&t;parameter. Added slightly modified patch from &n; *&t;David Moews to disable dsp audio sources by setting &n; *&t;bit 0 of options parameter. This seems to be&n; *&t;required by some Aztech/Newcom SC-16 cards.&t;&t;1999/04/18&n; *&n; *&t;Christoph Hellwig: Adapted to module_init/module_exit.&t;2000/03/03&n; *&n; *&t;Christoph Hellwig: Added isapnp support&t;&t;&t;2000/03/15&n; *&n; *&t;Arnaldo Carvalho de Melo: get rid of check_region&t;2001/10/07&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -14,7 +14,7 @@ mdefine_line|#define DEBUGLOG(x)
 DECL|macro|DEBUGWARN
 mdefine_line|#define DEBUGWARN(x)
 DECL|macro|CHECK_FOR_POWER
-mdefine_line|#define CHECK_FOR_POWER { int timeout=100; &bslash;&n;  while (timeout &gt; 0 &amp;&amp; (inb(devc-&gt;base)&amp;0x80)!= 0x80) {&bslash;&n;          timeout--; &bslash;&n;  } &bslash;&n;  if (timeout==0) {&bslash;&n;          printk(&quot;ad1816: Check for power failed in %s line: %d&bslash;n&quot;,__FILE__,__LINE__); &bslash;&n;  } &bslash;&n;}
+mdefine_line|#define CHECK_FOR_POWER { int timeout=100; &bslash;&n;  while (timeout &gt; 0 &amp;&amp; (inb(devc-&gt;base)&amp;0x80)!= 0x80) {&bslash;&n;          timeout--; &bslash;&n;  } &bslash;&n;  if (timeout==0) {&bslash;&n;          printk(KERN_WARNING &quot;ad1816: Check for power failed in %s line: %d&bslash;n&quot;,__FILE__,__LINE__); &bslash;&n;  } &bslash;&n;}
 multiline_comment|/* structure to hold device specific information */
 r_typedef
 r_struct
@@ -105,8 +105,6 @@ DECL|variable|nr_ad1816_devs
 r_static
 r_int
 id|nr_ad1816_devs
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|ad1816_clockfreq
 r_static
@@ -119,8 +117,6 @@ DECL|variable|options
 r_static
 r_int
 id|options
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* for backward mapping of irq to sound device */
 DECL|variable|irq2dev
@@ -2171,7 +2167,9 @@ l_int|15
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ad1816: Got bogus interrupt %d&bslash;n&quot;
 comma
 id|irq
@@ -2200,8 +2198,11 @@ id|num_audiodevs
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;ad1816: IRQ2AD1816-mapping failed for irq %d device %d&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;ad1816: IRQ2AD1816-mapping failed for &quot;
+l_string|&quot;irq %d device %d&bslash;n&quot;
 comma
 id|irq
 comma
@@ -4423,13 +4424,17 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ad1816: AD1816 sounddriver Copyright (C) 1998 by Thorsten Knabe&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ad1816: AD1816 sounddriver &quot;
+l_string|&quot;Copyright (C) 1998 by Thorsten Knabe&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ad1816: io=0x%x, irq=%d, dma=%d, dma2=%d, clockfreq=%d, options=%d isadmabug=%d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ad1816: io=0x%x, irq=%d, dma=%d, dma2=%d, &quot;
+l_string|&quot;clockfreq=%d, options=%d isadmabug=%d&bslash;n&quot;
 comma
 id|hw_config-&gt;io_base
 comma
@@ -4449,23 +4454,29 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
+c_func
 (paren
 id|io_base
 comma
 l_int|16
+comma
+l_string|&quot;AD1816 Sound&quot;
 )paren
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ad1816: I/O port 0x%03x not free&bslash;n&quot;
 comma
 id|io_base
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|err
 suffix:semicolon
 )brace
 id|DEBUGLOG
@@ -4488,12 +4499,14 @@ id|MAX_AUDIO_DEV
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ad1816: detect error - step 0&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_release_region
 suffix:semicolon
 )brace
 id|devc-&gt;base
@@ -4549,8 +4562,8 @@ l_string|&quot;ad1816: Chip is not an AD1816 or chip is not active (Test 0)&bsla
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_release_region
 suffix:semicolon
 )brace
 multiline_comment|/* writes to ireg 8 are copied to ireg 9 */
@@ -4586,8 +4599,8 @@ l_string|&quot;ad1816: Chip is not an AD1816 (Test 1)&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_release_region
 suffix:semicolon
 )brace
 multiline_comment|/* writes to ireg 8 are copied to ireg 9 */
@@ -4623,8 +4636,8 @@ l_string|&quot;ad1816: Chip is not an AD1816 (Test 2)&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_release_region
 suffix:semicolon
 )brace
 multiline_comment|/* writes to ireg 10 are copied to ireg 11 */
@@ -4660,8 +4673,8 @@ l_string|&quot;ad1816: Chip is not an AD1816 (Test 3)&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_release_region
 suffix:semicolon
 )brace
 multiline_comment|/* writes to ireg 10 are copied to ireg 11 */
@@ -4697,8 +4710,8 @@ l_string|&quot;ad1816: Chip is not an AD1816 (Test 4)&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_release_region
 suffix:semicolon
 )brace
 multiline_comment|/* bit in base +1 cannot be set to 1 */
@@ -4744,8 +4757,8 @@ l_string|&quot;ad1816: Chip is not an AD1816 (Test 5)&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_release_region
 suffix:semicolon
 )brace
 id|DEBUGLOG
@@ -4772,9 +4785,25 @@ l_int|45
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*  detection was successful */
+multiline_comment|/* detection was successful */
 r_return
 l_int|1
+suffix:semicolon
+id|out_release_region
+suffix:colon
+id|release_region
+c_func
+(paren
+id|io_base
+comma
+l_int|16
+)paren
+suffix:semicolon
+multiline_comment|/* detection was NOT successful */
+id|err
+suffix:colon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* allocate resources from the kernel. If any allocation fails, free&n;   all allocated resources and exit attach.&n;  &n; */
@@ -4809,16 +4838,6 @@ id|dev_info
 id|nr_ad1816_devs
 )braket
 suffix:semicolon
-multiline_comment|/* allocate i/o ports */
-id|request_region
-(paren
-id|hw_config-&gt;io_base
-comma
-l_int|16
-comma
-l_string|&quot;AD1816 Sound&quot;
-)paren
-suffix:semicolon
 id|devc-&gt;base
 op_assign
 id|hw_config-&gt;io_base
@@ -4852,18 +4871,9 @@ id|hw_config-&gt;irq
 template_param
 l_int|15
 )paren
-(brace
-id|release_region
-c_func
-(paren
-id|hw_config-&gt;io_base
-comma
-l_int|16
-)paren
+r_goto
+id|out_release_region
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4885,19 +4895,14 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ad1816: IRQ in use&bslash;n&quot;
 )paren
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|hw_config-&gt;io_base
-comma
-l_int|16
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|out_release_region
 suffix:semicolon
 )brace
 id|devc-&gt;irq
@@ -4917,29 +4922,16 @@ l_string|&quot;Sound System&quot;
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ad1816: Can&squot;t allocate DMA%d&bslash;n&quot;
 comma
 id|hw_config-&gt;dma
 )paren
 suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|hw_config-&gt;irq
-comma
-id|hw_config-&gt;osp
-)paren
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|hw_config-&gt;io_base
-comma
-l_int|16
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|out_free_irq
 suffix:semicolon
 )brace
 id|devc-&gt;dma_playback
@@ -4963,6 +4955,7 @@ r_if
 c_cond
 (paren
 id|sound_alloc_dma
+c_func
 (paren
 id|hw_config-&gt;dma2
 comma
@@ -4971,35 +4964,16 @@ l_string|&quot;Sound System (capture)&quot;
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ad1816: Can&squot;t allocate DMA%d&bslash;n&quot;
 comma
 id|hw_config-&gt;dma2
 )paren
 suffix:semicolon
-id|sound_free_dma
-c_func
-(paren
-id|hw_config-&gt;dma
-)paren
-suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|hw_config-&gt;irq
-comma
-id|hw_config-&gt;osp
-)paren
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|hw_config-&gt;io_base
-comma
-l_int|16
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|out_free_dma
 suffix:semicolon
 )brace
 id|devc-&gt;dma_capture
@@ -5083,48 +5057,14 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ad1816: Can&squot;t install sound driver&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|devc-&gt;dma_capture
-op_ge
-l_int|0
-)paren
-(brace
-id|sound_free_dma
-c_func
-(paren
-id|hw_config-&gt;dma2
-)paren
-suffix:semicolon
-)brace
-id|sound_free_dma
-c_func
-(paren
-id|hw_config-&gt;dma
-)paren
-suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|hw_config-&gt;irq
-comma
-id|hw_config-&gt;osp
-)paren
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|hw_config-&gt;io_base
-comma
-l_int|16
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|out_free_dma_2
 suffix:semicolon
 )brace
 multiline_comment|/* fill rest of structure with reasonable default values */
@@ -5405,6 +5345,56 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+r_return
+suffix:semicolon
+id|out_free_dma_2
+suffix:colon
+r_if
+c_cond
+(paren
+id|devc-&gt;dma_capture
+op_ge
+l_int|0
+)paren
+id|sound_free_dma
+c_func
+(paren
+id|hw_config-&gt;dma2
+)paren
+suffix:semicolon
+id|out_free_dma
+suffix:colon
+id|sound_free_dma
+c_func
+(paren
+id|hw_config-&gt;dma
+)paren
+suffix:semicolon
+id|out_free_irq
+suffix:colon
+id|free_irq
+c_func
+(paren
+id|hw_config-&gt;irq
+comma
+id|hw_config-&gt;osp
+)paren
+suffix:semicolon
+id|out_release_region
+suffix:colon
+id|release_region
+c_func
+(paren
+id|hw_config-&gt;io_base
+comma
+l_int|16
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
 )brace
 DECL|function|unload_card
 r_static
@@ -5529,13 +5519,13 @@ id|devc-&gt;base
 suffix:semicolon
 )brace
 r_else
-(brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ad1816: no device/card specified&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|variable|cfg
 r_static

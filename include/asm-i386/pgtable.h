@@ -83,8 +83,20 @@ multiline_comment|/*&n; * The Linux x86 paging architecture is &squot;compile-ti
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#if CONFIG_X86_PAE
 macro_line|# include &lt;asm/pgtable-3level.h&gt;
+multiline_comment|/*&n; * Need to initialise the X86 PAE caches&n; */
+r_extern
+r_void
+id|pgtable_cache_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else
 macro_line|# include &lt;asm/pgtable-2level.h&gt;
+multiline_comment|/*&n; * No page table caches to initialise&n; */
+DECL|macro|pgtable_cache_init
+mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 macro_line|#endif
 macro_line|#endif
 DECL|macro|__beep

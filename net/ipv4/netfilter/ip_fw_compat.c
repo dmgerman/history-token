@@ -261,11 +261,6 @@ suffix:semicolon
 id|u_int16_t
 id|redirpt
 suffix:semicolon
-r_struct
-id|sk_buff
-op_star
-id|nskb
-suffix:semicolon
 multiline_comment|/* Assume worse case: any hook could change packet */
 (paren
 op_star
@@ -298,32 +293,6 @@ op_member_access_from_pointer
 id|ip_summed
 op_assign
 id|CHECKSUM_NONE
-suffix:semicolon
-multiline_comment|/* Firewall rules can alter TOS: raw socket may have clone of&n;           skb: don&squot;t disturb it --RR */
-id|nskb
-op_assign
-id|skb_unshare
-c_func
-(paren
-op_star
-id|pskb
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|nskb
-)paren
-r_return
-id|NF_DROP
-suffix:semicolon
-op_star
-id|pskb
-op_assign
-id|nskb
 suffix:semicolon
 r_switch
 c_cond

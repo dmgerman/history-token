@@ -236,12 +236,6 @@ id|exec_domain
 op_star
 id|ep
 suffix:semicolon
-r_char
-id|buffer
-(braket
-l_int|30
-)braket
-suffix:semicolon
 id|u_long
 id|pers
 op_assign
@@ -304,6 +298,13 @@ op_amp
 id|exec_domains_lock
 )paren
 suffix:semicolon
+(brace
+r_char
+id|buffer
+(braket
+l_int|30
+)braket
+suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -320,6 +321,7 @@ c_func
 id|buffer
 )paren
 suffix:semicolon
+)brace
 id|read_lock
 c_func
 (paren

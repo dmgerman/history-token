@@ -665,5 +665,8 @@ suffix:semicolon
 DECL|macro|HAVE_ARCH_FB_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_FB_UNMAPPED_AREA
 macro_line|#endif /* !(__ASSEMBLY__) */
+multiline_comment|/*&n; * No page table caches to initialise&n; */
+DECL|macro|pgtable_cache_init
+mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 macro_line|#endif /* !(_SPARC64_PGTABLE_H) */
 eof

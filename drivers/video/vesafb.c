@@ -2317,16 +2317,13 @@ l_string|&quot;vesafb&quot;
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 l_string|&quot;vesafb: abort, cannot reserve video memory at 0x%lx&bslash;n&quot;
 comma
 id|video_base
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
+multiline_comment|/* We cannot make this fatal. Sometimes this comes from magic&n;&t;&t;   spaces our resource handlers simply don&squot;t know about */
 )brace
 id|video_vbase
 op_assign
@@ -2887,9 +2884,32 @@ id|temp_size
 op_assign
 id|video_size
 suffix:semicolon
+multiline_comment|/* Find the largest power-of-two */
 r_while
 c_loop
 (paren
+id|temp_size
+op_amp
+(paren
+id|temp_size
+op_minus
+l_int|1
+)paren
+)paren
+id|temp_size
+op_and_assign
+(paren
+id|temp_size
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* Try and find a power of two to add */
+r_while
+c_loop
+(paren
+id|temp_size
+op_logical_and
 id|mtrr_add
 c_func
 (paren
@@ -3001,4 +3021,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -1093,7 +1093,7 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|pci_get_drv_data
+id|pci_get_drvdata
 c_func
 (paren
 id|pdev

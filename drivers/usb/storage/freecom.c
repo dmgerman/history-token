@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for Freecom USB/IDE adaptor&n; *&n; * $Id: freecom.c,v 1.18 2001/11/04 13:01:17 mdharm Exp $&n; *&n; * Freecom v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (C) 2000 David Brown &lt;usb-storage@davidb.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * This driver was developed with information provided in FREECOM&squot;s USB&n; * Programmers Reference Guide.  For further information contact Freecom&n; * (http://www.freecom.de/)&n; */
+multiline_comment|/* Driver for Freecom USB/IDE adaptor&n; *&n; * $Id: freecom.c,v 1.19 2001/11/11 05:42:34 mdharm Exp $&n; *&n; * Freecom v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (C) 2000 David Brown &lt;usb-storage@davidb.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * This driver was developed with information provided in FREECOM&squot;s USB&n; * Programmers Reference Guide.  For further information contact Freecom&n; * (http://www.freecom.de/)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
@@ -178,26 +178,28 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Freecom stuffs the interrupt status in the INDEX_STAT bit of the ide&n; * register. */
 DECL|macro|FCM_INT_STATUS
-mdefine_line|#define FCM_INT_STATUS   INDEX_STAT
+mdefine_line|#define FCM_INT_STATUS&t;&t;0x02 /* INDEX_STAT */
+DECL|macro|FCM_STATUS_BUSY
+mdefine_line|#define FCM_STATUS_BUSY&t;&t;0x80
 multiline_comment|/* These are the packet types.  The low bit indicates that this command&n; * should wait for an interrupt. */
 DECL|macro|FCM_PACKET_ATAPI
-mdefine_line|#define FCM_PACKET_ATAPI  0x21
+mdefine_line|#define FCM_PACKET_ATAPI&t;0x21
 DECL|macro|FCM_PACKET_STATUS
-mdefine_line|#define FCM_PACKET_STATUS 0x20
+mdefine_line|#define FCM_PACKET_STATUS&t;0x20
 multiline_comment|/* Receive data from the IDE interface.  The ATAPI packet has already&n; * waited, so the data should be immediately available. */
 DECL|macro|FCM_PACKET_INPUT
-mdefine_line|#define FCM_PACKET_INPUT  0x81
+mdefine_line|#define FCM_PACKET_INPUT&t;0x81
 multiline_comment|/* Send data to the IDE interface. */
 DECL|macro|FCM_PACKET_OUTPUT
-mdefine_line|#define FCM_PACKET_OUTPUT 0x01
+mdefine_line|#define FCM_PACKET_OUTPUT&t;0x01
 multiline_comment|/* Write a value to an ide register.  Or the ide register to write after&n; * munging the address a bit. */
 DECL|macro|FCM_PACKET_IDE_WRITE
-mdefine_line|#define FCM_PACKET_IDE_WRITE    0x40
+mdefine_line|#define FCM_PACKET_IDE_WRITE&t;0x40
 DECL|macro|FCM_PACKET_IDE_READ
-mdefine_line|#define FCM_PACKET_IDE_READ     0xC0
+mdefine_line|#define FCM_PACKET_IDE_READ&t;0xC0
 multiline_comment|/* All packets (except for status) are 64 bytes long. */
 DECL|macro|FCM_PACKET_LENGTH
-mdefine_line|#define FCM_PACKET_LENGTH 64
+mdefine_line|#define FCM_PACKET_LENGTH&t;64
 multiline_comment|/*&n; * Transfer an entire SCSI command&squot;s worth of data payload over the bulk&n; * pipe.&n; *&n; * Note that this uses usb_stor_transfer_partial to achieve it&squot;s goals -- this&n; * function simply determines if we&squot;re going to use scatter-gather or not,&n; * and acts appropriately.  For now, it also re-interprets the error codes.&n; */
 DECL|function|us_transfer_freecom
 r_static
@@ -573,9 +575,11 @@ r_return
 id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Read a value from an ide register. */
 r_static
 r_int
+DECL|function|freecom_ide_read
 id|freecom_ide_read
 (paren
 r_struct
@@ -674,6 +678,14 @@ r_else
 id|reg
 op_assign
 l_int|0x0e
+suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;IDE in request for register 0x%02x&bslash;n&quot;
+comma
+id|reg
+)paren
 suffix:semicolon
 id|idein-&gt;Type
 op_assign
@@ -788,6 +800,14 @@ r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;IDE in partial is %d&bslash;n&quot;
+comma
+id|partial
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -820,7 +840,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;IDE in  0x%02x -&gt; 0x%02x&bslash;n&quot;
+l_string|&quot;IDE in 0x%02x -&gt; 0x%02x&bslash;n&quot;
 comma
 id|reg
 comma
@@ -832,7 +852,6 @@ r_return
 id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 )brace
-macro_line|#endif
 r_static
 r_int
 DECL|function|freecom_readdata
@@ -1291,33 +1310,6 @@ comma
 id|us-&gt;ep_in
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* Yuck, let&squot;s see if this helps us.  Artificially increase the&n;         * length on this. */
-r_if
-c_cond
-(paren
-id|srb-&gt;cmnd
-(braket
-l_int|0
-)braket
-op_eq
-l_int|0x03
-op_logical_and
-id|srb-&gt;cmnd
-(braket
-l_int|4
-)braket
-op_eq
-l_int|0x12
-)paren
-id|srb-&gt;cmnd
-(braket
-l_int|4
-)braket
-op_assign
-l_int|0x0E
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* The ATAPI Command always goes out first. */
 id|fcb-&gt;Type
 op_assign
@@ -1482,25 +1474,30 @@ id|partial
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* while we haven&squot;t received the IRQ */
+multiline_comment|/* The firmware will time-out commands after 20 seconds. Some commands&n;&t; * can legitimately take longer than this, so we use a different&n;&t; * command that only waits for the interrupt and then sends status,&n;&t; * without having to send a new ATAPI command to the device. &n;&t; *&n;&t; * NOTE: There is some indication that a data transfer after a timeout&n;&t; * may not work, but that is a condition that should never happen.&n;&t; */
 r_while
 c_loop
 (paren
-op_logical_neg
-(paren
 id|fst-&gt;Status
 op_amp
-l_int|0x2
-)paren
+id|FCM_STATUS_BUSY
 )paren
 (brace
-multiline_comment|/* send a command to re-fetch the status */
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Re-attempting to get status...&bslash;n&quot;
+l_string|&quot;20 second USB/ATAPI bridge TIMEOUT occured!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;fst-&gt;Status is %x&bslash;n&quot;
+comma
+id|fst-&gt;Status
+)paren
+suffix:semicolon
+multiline_comment|/* Get the status again */
 id|fcb-&gt;Type
 op_assign
 id|FCM_PACKET_STATUS
@@ -1515,7 +1512,10 @@ id|fcb-&gt;Atapi
 comma
 l_int|0
 comma
-l_int|12
+r_sizeof
+(paren
+id|fcb-&gt;Filler
+)paren
 )paren
 suffix:semicolon
 id|memset
@@ -1589,7 +1589,7 @@ r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
-multiline_comment|/* actually get the status info */
+multiline_comment|/* get the data */
 id|result
 op_assign
 id|usb_stor_bulk_msg

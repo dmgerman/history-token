@@ -18,10 +18,6 @@ DECL|variable|is_sony_vaio_laptop
 r_int
 id|is_sony_vaio_laptop
 suffix:semicolon
-DECL|variable|enable_acpi_smp_table
-r_int
-id|enable_acpi_smp_table
-suffix:semicolon
 DECL|struct|dmi_header
 r_struct
 id|dmi_header

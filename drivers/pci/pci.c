@@ -3932,7 +3932,7 @@ r_static
 r_struct
 id|pci_bus
 op_star
-id|__init
+id|__devinit
 id|pci_alloc_bus
 c_func
 (paren
@@ -3998,11 +3998,10 @@ id|b
 suffix:semicolon
 )brace
 DECL|function|pci_add_new_bus
-r_static
 r_struct
 id|pci_bus
 op_star
-id|__init
+id|__devinit
 id|pci_add_new_bus
 c_func
 (paren
@@ -4113,10 +4112,9 @@ r_return
 id|child
 suffix:semicolon
 )brace
-r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|pci_do_scan_bus
 c_func
 (paren
@@ -4130,7 +4128,7 @@ multiline_comment|/*&n; * If it&squot;s a bridge, configure it and scan the bus 
 DECL|function|pci_scan_bridge
 r_static
 r_int
-id|__init
+id|__devinit
 id|pci_scan_bridge
 c_func
 (paren
@@ -4833,11 +4831,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the config data for a PCI device, sanity-check it&n; * and fill in the dev structure...&n; */
 DECL|function|pci_scan_device
-r_static
 r_struct
 id|pci_dev
 op_star
-id|__init
+id|__devinit
 id|pci_scan_device
 c_func
 (paren
@@ -4984,7 +4981,7 @@ DECL|function|pci_scan_slot
 r_struct
 id|pci_dev
 op_star
-id|__init
+id|__devinit
 id|pci_scan_slot
 c_func
 (paren
@@ -5153,10 +5150,9 @@ id|first_dev
 suffix:semicolon
 )brace
 DECL|function|pci_do_scan_bus
-r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|pci_do_scan_bus
 c_func
 (paren
@@ -5347,7 +5343,7 @@ suffix:semicolon
 )brace
 DECL|function|pci_bus_exists
 r_int
-id|__init
+id|__devinit
 id|pci_bus_exists
 c_func
 (paren
@@ -5423,7 +5419,7 @@ DECL|function|pci_alloc_primary_bus
 r_struct
 id|pci_bus
 op_star
-id|__init
+id|__devinit
 id|pci_alloc_primary_bus
 c_func
 (paren
@@ -5509,7 +5505,7 @@ DECL|function|pci_scan_bus
 r_struct
 id|pci_bus
 op_star
-id|__init
+id|__devinit
 id|pci_scan_bus
 c_func
 (paren
@@ -7572,7 +7568,7 @@ suffix:semicolon
 )brace
 DECL|function|pci_init
 r_void
-id|__init
+id|__devinit
 id|pci_init
 c_func
 (paren
@@ -7620,7 +7616,7 @@ macro_line|#endif
 DECL|function|pci_setup
 r_static
 r_int
-id|__init
+id|__devinit
 id|pci_setup
 c_func
 (paren

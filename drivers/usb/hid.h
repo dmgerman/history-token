@@ -326,11 +326,16 @@ id|__u8
 id|type
 suffix:semicolon
 multiline_comment|/* input driver type */
-DECL|member|hat
-id|__u8
-id|hat
+DECL|member|hat_min
+id|__s8
+id|hat_min
 suffix:semicolon
 multiline_comment|/* hat switch fun */
+DECL|member|hat_max
+id|__s8
+id|hat_max
+suffix:semicolon
+multiline_comment|/* ditto */
 )brace
 suffix:semicolon
 DECL|struct|hid_field

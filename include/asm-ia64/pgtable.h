@@ -870,5 +870,8 @@ DECL|macro|KERNEL_TR_PAGE_SIZE
 mdefine_line|#define KERNEL_TR_PAGE_SIZE&t;(1 &lt;&lt; KERNEL_TR_PAGE_SHIFT)
 DECL|macro|KERNEL_TR_PAGE_NUM
 mdefine_line|#define KERNEL_TR_PAGE_NUM&t;((KERNEL_START - PAGE_OFFSET) / KERNEL_TR_PAGE_SIZE)
+multiline_comment|/*&n; * No page table caches to initialise&n; */
+DECL|macro|pgtable_cache_init
+mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 macro_line|#endif /* _ASM_IA64_PGTABLE_H */
 eof

@@ -717,5 +717,8 @@ DECL|macro|PageSkip
 mdefine_line|#define PageSkip(page)&t;&t;(0)
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range
+multiline_comment|/*&n; * No page table caches to initialise&n; */
+DECL|macro|pgtable_cache_init
+mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 macro_line|#endif /* _PARISC_PAGE_H */
 eof

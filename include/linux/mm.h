@@ -67,7 +67,7 @@ r_int
 r_int
 id|vm_end
 suffix:semicolon
-multiline_comment|/* Our end address within vm_mm. */
+multiline_comment|/* The first byte after our end address&n;&t;&t;&t;&t;&t;   within vm_mm. */
 multiline_comment|/* linked list of VM areas per task, sorted by address */
 DECL|member|vm_next
 r_struct

@@ -1244,6 +1244,13 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|rtc_lock
+)paren
+suffix:semicolon
 multiline_comment|/* The Linux interpretation of the CMOS clock register contents:&n;&t; * When the Update-In-Progress (UIP) flag goes from 1 to 0, the&n;&t; * RTC registers show the second which has precisely just started.&n;&t; * Let&squot;s hope other operating systems interpret the RTC the same way.&n;&t; */
 multiline_comment|/* read RTC exactly on falling edge of update flag */
 r_for
@@ -1423,6 +1430,13 @@ id|year
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|rtc_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

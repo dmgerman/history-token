@@ -450,6 +450,22 @@ id|pci_mem_start
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PCI_BIOS
+DECL|variable|pcibios_set_irq_routing
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_set_irq_routing
+)paren
+suffix:semicolon
+DECL|variable|pcibios_get_irq_routing_table
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_get_irq_routing_table
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_USE_3DNOW
 DECL|variable|_mmx_memcpy
 id|EXPORT_SYMBOL

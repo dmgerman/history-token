@@ -3985,28 +3985,6 @@ id|this_task
 )paren
 suffix:semicolon
 multiline_comment|/* Set the exit signal to SIGCHLD so we signal init on exit */
-r_if
-c_cond
-(paren
-id|this_task-&gt;exit_signal
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;task `%s&squot; exit_signal %d in &quot;
-id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
-comma
-id|this_task-&gt;comm
-comma
-id|this_task-&gt;exit_signal
-)paren
-suffix:semicolon
-)brace
 id|this_task-&gt;exit_signal
 op_assign
 id|SIGCHLD

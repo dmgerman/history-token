@@ -12,7 +12,7 @@ DECL|macro|ATI_PCIGART_TABLE_ORDER
 macro_line|# define ATI_PCIGART_TABLE_ORDER &t;3
 DECL|macro|ATI_PCIGART_TABLE_PAGES
 macro_line|# define ATI_PCIGART_TABLE_PAGES &t;(1 &lt;&lt; 3)
-macro_line|#elif
+macro_line|#else
 macro_line|# error - PAGE_SIZE not 8K or 4K
 macro_line|#endif
 DECL|macro|ATI_MAX_PCIGART_PAGES
@@ -90,7 +90,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|i
-op_le
+OL
 id|ATI_PCIGART_TABLE_PAGES
 suffix:semicolon
 id|i
@@ -174,7 +174,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|i
-op_le
+OL
 id|ATI_PCIGART_TABLE_PAGES
 suffix:semicolon
 id|i

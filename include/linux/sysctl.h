@@ -115,7 +115,13 @@ DECL|enumerator|CTL_ABI
 id|CTL_ABI
 op_assign
 l_int|9
+comma
 multiline_comment|/* Binary emulation */
+DECL|enumerator|CTL_CPU
+id|CTL_CPU
+op_assign
+l_int|10
+multiline_comment|/* CPU stuff (speed scaling, etc) */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_BUS names: */
