@@ -3452,20 +3452,8 @@ comma
 l_int|0
 )paren
 comma
-id|AC97_SINGLE
-c_func
-(paren
-l_string|&quot;Digital Audio Mode&quot;
-comma
-id|AC97_AD_MISC
-comma
-l_int|12
-comma
-l_int|1
-comma
-l_int|0
-)paren
-comma
+multiline_comment|/* AC97_SINGLE(&quot;Digital Audio Mode&quot;, AC97_AD_MISC, 12, 1, 0), */
+multiline_comment|/* seems problematic */
 id|AC97_SINGLE
 c_func
 (paren
@@ -3597,6 +3585,17 @@ comma
 id|jack
 op_or
 l_int|0x0300
+)paren
+suffix:semicolon
+multiline_comment|/* set default */
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|AC97_AD_MISC
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|ac97-&gt;build_ops
