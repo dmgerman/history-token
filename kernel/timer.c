@@ -438,15 +438,30 @@ id|TVR_MASK
 suffix:semicolon
 )brace
 r_else
+(brace
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* If the timeout is larger than 0xffffffff on 64-bit&n;&t;&t; * architectures then we use the maximum timeout:&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|idx
-op_le
+OG
 l_int|0xffffffffUL
 )paren
 (brace
-r_int
+id|idx
+op_assign
+l_int|0xffffffffUL
+suffix:semicolon
+id|expires
+op_assign
+id|idx
+op_plus
+id|base-&gt;timer_jiffies
+suffix:semicolon
+)brace
 id|i
 op_assign
 (paren
@@ -468,19 +483,6 @@ op_assign
 id|base-&gt;tv5.vec
 op_plus
 id|i
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Can only get here on architectures with 64-bit jiffies */
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|timer-&gt;entry
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Timers are FIFO:&n;&t; */
