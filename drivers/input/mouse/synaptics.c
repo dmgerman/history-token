@@ -1413,12 +1413,13 @@ comma
 id|psmouse-&gt;phys
 )paren
 suffix:semicolon
-id|serio_register_slave_port
+id|__serio_register_port
 c_func
 (paren
 id|port
 )paren
 suffix:semicolon
+multiline_comment|/* already have serio_sem */
 multiline_comment|/* adjust the touchpad to child&squot;s choice of protocol */
 id|child
 op_assign
@@ -1981,12 +1982,13 @@ c_cond
 id|priv-&gt;ptport
 )paren
 (brace
-id|serio_unregister_slave_port
+id|__serio_unregister_port
 c_func
 (paren
 id|priv-&gt;ptport
 )paren
 suffix:semicolon
+multiline_comment|/* already have serio_sem */
 id|kfree
 c_func
 (paren

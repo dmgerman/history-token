@@ -43,11 +43,11 @@ c_func
 id|serio_register_port
 )paren
 suffix:semicolon
-DECL|variable|serio_register_slave_port
+DECL|variable|__serio_register_port
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|serio_register_slave_port
+id|__serio_register_port
 )paren
 suffix:semicolon
 DECL|variable|serio_unregister_port
@@ -57,11 +57,11 @@ c_func
 id|serio_unregister_port
 )paren
 suffix:semicolon
-DECL|variable|serio_unregister_slave_port
+DECL|variable|__serio_unregister_port
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|serio_unregister_slave_port
+id|__serio_unregister_port
 )paren
 suffix:semicolon
 DECL|variable|serio_register_device
@@ -588,17 +588,7 @@ op_amp
 id|serio_sem
 )paren
 suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|serio-&gt;node
-comma
-op_amp
-id|serio_list
-)paren
-suffix:semicolon
-id|serio_find_dev
+id|__serio_register_port
 c_func
 (paren
 id|serio
@@ -612,10 +602,10 @@ id|serio_sem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Same as serio_register_port but does not try to acquire serio_sem.&n; * Should be used when registering a serio from other input device&squot;s&n; * connect() function.&n; */
-DECL|function|serio_register_slave_port
+multiline_comment|/*&n; * Should only be called directly if serio_sem has already been taken,&n; * for example when unregistering a serio from other input device&squot;s&n; * connect() function.&n; */
+DECL|function|__serio_register_port
 r_void
-id|serio_register_slave_port
+id|__serio_register_port
 c_func
 (paren
 r_struct
@@ -659,23 +649,7 @@ op_amp
 id|serio_sem
 )paren
 suffix:semicolon
-id|list_del_init
-c_func
-(paren
-op_amp
-id|serio-&gt;node
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|serio-&gt;dev
-op_logical_and
-id|serio-&gt;dev-&gt;disconnect
-)paren
-id|serio-&gt;dev
-op_member_access_from_pointer
-id|disconnect
+id|__serio_unregister_port
 c_func
 (paren
 id|serio
@@ -689,10 +663,10 @@ id|serio_sem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Same as serio_unregister_port but does not try to acquire serio_sem.&n; * Should be used when unregistering a serio from other input device&squot;s&n; * disconnect() function.&n; */
-DECL|function|serio_unregister_slave_port
+multiline_comment|/*&n; * Should only be called directly if serio_sem has already been taken,&n; * for example when unregistering a serio from other input device&squot;s&n; * disconnect() function.&n; */
+DECL|function|__serio_unregister_port
 r_void
-id|serio_unregister_slave_port
+id|__serio_unregister_port
 c_func
 (paren
 r_struct

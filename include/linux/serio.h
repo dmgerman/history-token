@@ -279,7 +279,7 @@ id|serio
 )paren
 suffix:semicolon
 r_void
-id|serio_register_slave_port
+id|__serio_register_port
 c_func
 (paren
 r_struct
@@ -299,7 +299,7 @@ id|serio
 )paren
 suffix:semicolon
 r_void
-id|serio_unregister_slave_port
+id|__serio_unregister_port
 c_func
 (paren
 r_struct
