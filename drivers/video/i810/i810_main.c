@@ -7209,7 +7209,13 @@ c_func
 (paren
 id|dev
 comma
+id|pci_choose_state
+c_func
+(paren
+id|dev
+comma
 id|state
+)paren
 )paren
 suffix:semicolon
 r_return

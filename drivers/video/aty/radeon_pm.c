@@ -13926,7 +13926,7 @@ id|rinfo
 suffix:semicolon
 id|pdev-&gt;dev.power.power_state
 op_assign
-l_int|0
+id|PMSG_ON
 suffix:semicolon
 id|bail
 suffix:colon

@@ -396,7 +396,7 @@ id|pci_dev
 op_star
 id|pdev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 suffix:semicolon
@@ -10591,7 +10591,7 @@ id|pci_dev
 op_star
 id|pdev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -10920,7 +10920,7 @@ id|info
 suffix:semicolon
 id|pdev-&gt;dev.power.power_state
 op_assign
-l_int|0
+id|PMSG_ON
 suffix:semicolon
 id|printk
 c_func
