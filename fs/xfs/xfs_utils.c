@@ -327,7 +327,7 @@ comma
 id|nlink_t
 id|nlink
 comma
-id|dev_t
+id|xfs_dev_t
 id|rdev
 comma
 id|cred_t

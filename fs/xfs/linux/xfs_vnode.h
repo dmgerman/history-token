@@ -1363,7 +1363,7 @@ id|va_gid
 suffix:semicolon
 multiline_comment|/* owner group id */
 DECL|member|va_fsid
-id|dev_t
+id|xfs_dev_t
 id|va_fsid
 suffix:semicolon
 multiline_comment|/* file system id (dev for now) */
@@ -1398,7 +1398,7 @@ id|va_ctime
 suffix:semicolon
 multiline_comment|/* time file ``created&squot;&squot; */
 DECL|member|va_rdev
-id|dev_t
+id|xfs_dev_t
 id|va_rdev
 suffix:semicolon
 multiline_comment|/* device the file represents */
@@ -1625,8 +1625,6 @@ c_func
 r_struct
 id|vnode
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern

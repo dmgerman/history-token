@@ -1379,7 +1379,7 @@ id|mode_t
 comma
 id|nlink_t
 comma
-id|dev_t
+id|xfs_dev_t
 comma
 r_struct
 id|cred
@@ -1687,6 +1687,22 @@ id|uint
 suffix:semicolon
 DECL|macro|xfs_ipincount
 mdefine_line|#define xfs_ipincount(ip)&t;((unsigned int) atomic_read(&amp;ip-&gt;i_pincount))
+r_void
+id|xfs_revalidate_inode
+c_func
+(paren
+r_struct
+id|xfs_mount
+op_star
+comma
+id|vnode_t
+op_star
+id|vp
+comma
+id|xfs_inode_t
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifdef DEBUG
 r_void
 id|xfs_isize_check
