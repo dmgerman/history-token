@@ -371,7 +371,7 @@ id|dprintk
 c_func
 (paren
 id|PFX
-l_string|&quot;cpu%d, init lo %x, hi %x&bslash;n&quot;
+l_string|&quot;cpu%d, init lo 0x%x, hi 0x%x&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -463,7 +463,7 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;writing fid %x, lo %x, hi %x&bslash;n&quot;
+l_string|&quot;writing fid 0x%x, lo 0x%x, hi 0x%x&bslash;n&quot;
 comma
 id|fid
 comma
@@ -517,7 +517,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;vid change on fid trans, old %x, new %x&bslash;n&quot;
+l_string|&quot;vid change on fid trans, old 0x%x, new 0x%x&bslash;n&quot;
 comma
 id|savevid
 comma
@@ -541,7 +541,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;fid trans failed, fid %x, curr %x&bslash;n&quot;
+l_string|&quot;fid trans failed, fid 0x%x, curr 0x%x&bslash;n&quot;
 comma
 id|fid
 comma
@@ -625,7 +625,7 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;writing vid %x, lo %x, hi %x&bslash;n&quot;
+l_string|&quot;writing vid 0x%x, lo 0x%x, hi 0x%x&bslash;n&quot;
 comma
 id|vid
 comma
@@ -669,7 +669,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;fid changed on vid trans, old %x new %x&bslash;n&quot;
+l_string|&quot;fid changed on vid trans, old 0x%x new 0x%x&bslash;n&quot;
 comma
 id|savefid
 comma
@@ -693,7 +693,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;vid trans failed, vid %x, curr %x&bslash;n&quot;
+l_string|&quot;vid trans failed, vid 0x%x, curr 0x%x&bslash;n&quot;
 comma
 id|vid
 comma
@@ -1403,7 +1403,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;ph2: vid changed, save %x, curr %x&bslash;n&quot;
+l_string|&quot;ph2: vid changed, save 0x%x, curr 0x%x&bslash;n&quot;
 comma
 id|savevid
 comma
@@ -1508,7 +1508,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;ph3: bad fid change, save %x, curr %x&bslash;n&quot;
+l_string|&quot;ph3: bad fid change, save 0x%x, curr 0x%x&bslash;n&quot;
 comma
 id|savefid
 comma
@@ -1532,7 +1532,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;ph3: failed vid transition&bslash;n, req %x, curr %x&quot;
+l_string|&quot;ph3: failed vid transition&bslash;n, req 0x%x, curr 0x%x&quot;
 comma
 id|reqvid
 comma
@@ -2516,7 +2516,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;cfid %x, cvid %x&bslash;n&quot;
+l_string|&quot;cfid 0x%x, cvid 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currfid
 comma
@@ -2825,7 +2825,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;maximum voltage step: %d - %x&bslash;n&quot;
+l_string|&quot;maximum voltage step: %d - 0x%x&bslash;n&quot;
 comma
 id|mvs
 comma
@@ -2872,7 +2872,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;plllocktime: %x (units 1us)&bslash;n&quot;
+l_string|&quot;plllocktime: 0x%x (units 1us)&bslash;n&quot;
 comma
 id|psb-&gt;plllocktime
 )paren
@@ -2882,7 +2882,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;maxfid: %x&bslash;n&quot;
+l_string|&quot;maxfid: 0x%x&bslash;n&quot;
 comma
 id|psb-&gt;maxfid
 )paren
@@ -2892,7 +2892,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;maxvid: %x&bslash;n&quot;
+l_string|&quot;maxvid: 0x%x&bslash;n&quot;
 comma
 id|psb-&gt;maxvid
 )paren
@@ -2910,7 +2910,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;numpstates: %x&bslash;n&quot;
+l_string|&quot;numpstates: 0x%x&bslash;n&quot;
 comma
 id|data-&gt;numps
 )paren
@@ -3245,7 +3245,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;   %d : fid %x, vid %x&bslash;n&quot;
+l_string|&quot;   %d : fid 0x%x, vid 0x%x&bslash;n&quot;
 comma
 id|i
 comma
@@ -3740,7 +3740,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;ignoring illegal change in lo freq table-%x to %x&bslash;n&quot;
+l_string|&quot;ignoring illegal change in lo freq table-%x to 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currfid
 comma
