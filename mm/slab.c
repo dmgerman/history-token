@@ -9625,7 +9625,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot; : tunables &lt;batchcount&gt; &lt;limit &lt;sharedfactor&gt;&quot;
+l_string|&quot; : tunables &lt;batchcount&gt; &lt;limit&gt; &lt;sharedfactor&gt;&quot;
 )paren
 suffix:semicolon
 id|seq_puts
@@ -9650,7 +9650,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot; : cpustat &lt;allochit &lt;allocmiss &lt;freehit &lt;freemiss&gt;&quot;
+l_string|&quot; : cpustat &lt;allochit&gt; &lt;allocmiss&gt; &lt;freehit &lt;freemiss&gt;&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
