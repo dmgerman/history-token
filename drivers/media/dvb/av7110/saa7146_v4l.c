@@ -1383,13 +1383,6 @@ id|i
 op_assign
 id|GBUFFER_UNUSED
 suffix:semicolon
-id|printk
-(paren
-l_string|&quot;saa7146_v4l.o: SAA7146_V4L_CSYNC, frame %i done.&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace

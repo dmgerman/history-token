@@ -3863,12 +3863,10 @@ id|mscp
 )paren
 suffix:semicolon
 multiline_comment|/* A command has been lost.  Reset and report an error&n;&t;   for all commands.  */
-id|ultrastor_reset
+id|ultrastor_host_reset
 c_func
 (paren
-l_int|NULL
-comma
-l_int|0
+id|dev_id
 )paren
 suffix:semicolon
 r_return

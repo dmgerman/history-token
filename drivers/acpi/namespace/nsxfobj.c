@@ -236,7 +236,7 @@ id|node
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Return exeption if parent is null */
+multiline_comment|/* Return exception if parent is null */
 r_if
 c_cond
 (paren

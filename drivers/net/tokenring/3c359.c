@@ -1313,7 +1313,7 @@ op_assign
 r_char
 op_star
 )paren
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 suffix:semicolon
 id|xl_priv-&gt;xl_mmio
 op_assign

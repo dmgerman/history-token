@@ -6255,16 +6255,6 @@ comma
 l_string|&quot;i2o_block&quot;
 )paren
 suffix:semicolon
-id|blk_cleanup_queue
-c_func
-(paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren

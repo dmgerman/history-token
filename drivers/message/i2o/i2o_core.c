@@ -12355,6 +12355,16 @@ l_int|1
 )paren
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd
+op_eq
+id|I2O_CMD_UTIL_EVT_REGISTER
+)paren
+r_return
+suffix:semicolon
+singleline_comment|// No status in this reply
 id|printk
 c_func
 (paren

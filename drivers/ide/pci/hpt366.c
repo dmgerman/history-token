@@ -1056,7 +1056,6 @@ id|u8
 id|speed
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_struct
 id|pci_dev
 op_star
@@ -1355,20 +1354,6 @@ suffix:semicolon
 r_return
 id|speed
 suffix:semicolon
-macro_line|#else
-r_return
-id|min
-c_func
-(paren
-id|speed
-comma
-(paren
-id|u8
-)paren
-id|XFER_PIO_4
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 DECL|function|check_in_drive_lists
 r_static
@@ -1529,7 +1514,7 @@ comma
 id|xferspeed
 )paren
 suffix:semicolon
-singleline_comment|//&t;u8 speed&t;= ide_rate_filter(hpt3xx_ratemask(drive), xferspeed);
+singleline_comment|//&t;u8 speed&t;&t;= ide_rate_filter(hpt3xx_ratemask(drive), xferspeed);
 id|u8
 id|regtime
 op_assign
@@ -2413,7 +2398,6 @@ id|pio
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/*&n; * This allows the configuration of ide_pci chipset registers&n; * for cards that learn about the drive&squot;s UDMA, DMA, PIO capabilities&n; * after the drive is reported by the OS.  Initally for designed for&n; * HPT366 UDMA chipset by HighPoint|Triones Technologies, Inc.&n; *&n; * check_in_drive_lists(drive, bad_ata66_4)&n; * check_in_drive_lists(drive, bad_ata66_3)&n; * check_in_drive_lists(drive, bad_ata33)&n; *&n; */
 DECL|function|config_chipset_for_dma
 r_static
@@ -3550,7 +3534,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/*&n; * Since SUN Cobalt is attempting to do this operation, I should disclose&n; * this has been a long time ago Thu Jul 27 16:40:57 2000 was the patch date&n; * HOTSWAP ATA Infrastructure.&n; */
 DECL|function|hpt3xx_reset
 r_static
@@ -5505,7 +5488,6 @@ id|hwif-&gt;mwdma_mask
 op_assign
 l_int|0x07
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -5652,7 +5634,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 DECL|function|init_dma_hpt366
 r_static

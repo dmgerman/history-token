@@ -144,7 +144,7 @@ r_void
 id|ide_outb
 (paren
 id|u8
-id|addr
+id|value
 comma
 id|ide_ioreg_t
 id|port
@@ -153,7 +153,7 @@ id|port
 id|outb
 c_func
 (paren
-id|addr
+id|value
 comma
 id|port
 )paren
@@ -165,7 +165,7 @@ r_void
 id|ide_outw
 (paren
 id|u16
-id|addr
+id|value
 comma
 id|ide_ioreg_t
 id|port
@@ -174,7 +174,7 @@ id|port
 id|outw
 c_func
 (paren
-id|addr
+id|value
 comma
 id|port
 )paren
@@ -213,7 +213,7 @@ r_void
 id|ide_outl
 (paren
 id|u32
-id|addr
+id|value
 comma
 id|ide_ioreg_t
 id|port
@@ -222,7 +222,7 @@ id|port
 id|outl
 c_func
 (paren
-id|addr
+id|value
 comma
 id|port
 )paren
@@ -244,7 +244,6 @@ id|u32
 id|count
 )paren
 (brace
-r_return
 id|outsl
 c_func
 (paren
@@ -4028,7 +4027,7 @@ id|stat
 suffix:semicolon
 singleline_comment|//&t;while (HWGROUP(drive)-&gt;busy)
 singleline_comment|//&t;&t;ide_delay_50ms();
-macro_line|#if defined(CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !defined(CONFIG_DMA_NONPCI)
+macro_line|#if !defined(CONFIG_DMA_NONPCI)
 id|hwif
 op_member_access_from_pointer
 id|ide_dma_host_off
@@ -4037,7 +4036,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-macro_line|#endif /* (CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !(CONFIG_DMA_NONPCI) */
+macro_line|#endif /* !(CONFIG_DMA_NONPCI) */
 multiline_comment|/*&n;&t; * Don&squot;t use ide_wait_cmd here - it will&n;&t; * attempt to set_geometry and recalibrate,&n;&t; * but for some reason these don&squot;t work at&n;&t; * this point (lost interrupt).&n;&t; */
 multiline_comment|/*&n;         * Select the drive, and issue the SETFEATURES command&n;         */
 id|disable_irq
@@ -4335,7 +4334,7 @@ op_and_assign
 op_complement
 l_int|0x0F00
 suffix:semicolon
-macro_line|#if defined(CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !defined(CONFIG_DMA_NONPCI)
+macro_line|#if !defined(CONFIG_DMA_NONPCI)
 r_if
 c_cond
 (paren
@@ -4360,7 +4359,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-macro_line|#endif /* (CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !(CONFIG_DMA_NONPCI) */
+macro_line|#endif /* !(CONFIG_DMA_NONPCI) */
 r_switch
 c_cond
 (paren
@@ -5151,28 +5150,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|speedproc
-)paren
-op_ne
-l_int|NULL
-)paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|speedproc
+id|ide_set_xfer_rate
 c_func
 (paren
 id|drive

@@ -4188,7 +4188,6 @@ c_cond
 id|speed
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_case
 id|XFER_UDMA_6
 suffix:colon
@@ -4432,7 +4431,6 @@ id|XFER_SW_DMA_0
 suffix:colon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_case
 id|XFER_PIO_4
 suffix:colon
@@ -4561,7 +4559,6 @@ id|pio
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/*&n; * ((id-&gt;hw_config &amp; 0x4000|0x2000) &amp;&amp; (HWIF(drive)-&gt;udma_four))&n; */
 DECL|function|config_chipset_for_dma
 r_static
@@ -4896,7 +4893,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/* Chip detection and general config */
 DECL|function|init_chipset_sis5513
 r_static
@@ -5709,7 +5705,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x07
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -5776,7 +5771,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace

@@ -81,7 +81,8 @@ r_struct
 id|dvb_net_s
 (brace
 DECL|member|dvbdev
-id|dvb_device_t
+r_struct
+id|dvb_device
 op_star
 id|dvbdev
 suffix:semicolon
@@ -129,7 +130,8 @@ r_int
 id|dvb_net_init
 c_func
 (paren
-id|dvb_adapter_t
+r_struct
+id|dvb_adapter
 op_star
 comma
 id|dvb_net_t

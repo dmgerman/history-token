@@ -61,7 +61,8 @@ id|p
 op_assign
 id|buffer
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|bibma
 op_assign
 id|pci_resource_start
@@ -496,7 +497,6 @@ c_cond
 id|speed
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_case
 id|XFER_UDMA_7
 suffix:colon
@@ -639,7 +639,6 @@ l_int|0xA8
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_case
 id|XFER_PIO_4
 suffix:colon
@@ -696,7 +695,6 @@ op_lshift
 id|drive-&gt;dn
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|pci_write_config_byte
 c_func
 (paren
@@ -710,7 +708,6 @@ comma
 id|ultra_timing
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|pci_write_config_byte
 c_func
 (paren
@@ -789,7 +786,6 @@ id|pio
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/*&n; * This allows the configuration of ide_pci chipset registers&n; * for cards that learn about the drive&squot;s UDMA, DMA, PIO capabilities&n; * after the drive is reported by the OS.&n; */
 DECL|function|config_chipset_for_dma
 r_static
@@ -1082,8 +1078,8 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 DECL|function|init_chipset_nforce
+r_static
 r_int
 r_int
 id|__init
@@ -1321,7 +1317,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x07
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -1371,7 +1366,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 multiline_comment|/* FIXME - not needed */
 DECL|function|init_dma_nforce

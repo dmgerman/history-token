@@ -1762,6 +1762,29 @@ id|csb5_pio
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* If we are about to put a disk into UDMA mode we screwed up.&n;&t;   Our code assumes we never _ever_ do this on an OSB4 */
+r_if
+c_cond
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SERVERWORKS_OSB4
+op_logical_and
+id|drive-&gt;media
+op_ne
+id|ide_disk
+op_logical_and
+id|speed
+op_ge
+id|XFER_UDMA_0
+)paren
+(brace
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|pci_read_config_byte
 c_func
 (paren
@@ -2251,7 +2274,6 @@ id|drive-&gt;dn
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_case
 id|XFER_MW_DMA_2
 suffix:colon
@@ -2362,7 +2384,6 @@ op_lshift
 id|drive-&gt;dn
 )paren
 suffix:semicolon
-macro_line|#endif
 r_default
 suffix:colon
 r_break
@@ -2396,7 +2417,6 @@ comma
 id|csb5_pio
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|pci_write_config_byte
 c_func
 (paren
@@ -2434,7 +2454,6 @@ comma
 id|ultra_enable
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_return
 (paren
 id|ide_config_drive_speed
@@ -2710,7 +2729,6 @@ id|pio
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|config_chipset_for_dma
 r_static
 r_int
@@ -3024,6 +3042,8 @@ op_star
 id|drive
 )paren
 (brace
+multiline_comment|/*&n;&t; *&t;We never place the OSB4 into a UDMA mode with a disk&n;&t; *&t;medium, that means the UDMA &quot;all my data is 4 byte shifted&quot;&n;&t; *&t;problem cannot occur.&n;&t; */
+macro_line|#if 0
 id|ide_hwif_t
 op_star
 id|hwif
@@ -3101,6 +3121,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif&t;
 r_return
 id|__ide_dma_end
 c_func
@@ -3109,7 +3130,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 DECL|function|init_chipset_svwks
 r_static
 r_int
@@ -3933,7 +3953,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;ide_dma_check
 op_assign
 op_amp
@@ -4048,7 +4067,6 @@ l_int|0x40
 suffix:semicolon
 singleline_comment|//&t;hwif-&gt;drives[0].autodma = hwif-&gt;autodma;
 singleline_comment|//&t;hwif-&gt;drives[1].autodma = hwif-&gt;autodma;
-macro_line|#endif /* !CONFIG_BLK_DEV_IDEDMA */
 )brace
 multiline_comment|/*&n; * We allow the BM-DMA driver to only work on enabled interfaces.&n; */
 DECL|function|init_dma_svwks

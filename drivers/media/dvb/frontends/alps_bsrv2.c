@@ -1754,11 +1754,15 @@ op_star
 id|ber
 op_or_assign
 (paren
+(paren
 id|ves1893_readreg
 (paren
 id|i2c
 comma
 l_int|0x17
+)paren
+op_amp
+l_int|0x0f
 )paren
 op_lshift
 l_int|16

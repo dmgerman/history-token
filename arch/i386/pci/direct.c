@@ -1373,10 +1373,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|pci_root_ops
-op_assign
-l_int|NULL
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

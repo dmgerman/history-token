@@ -395,7 +395,11 @@ op_assign
 id|value
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Re-write a value: to be used for read-modify-write&n; * cycles where the read already set up the index register.&n; */
+multiline_comment|/*&n; * Re-write a value: to be used for read-modify-write&n; * cycles where the read already set up the index register.&n; *&n; * Older SiS APIC requires we rewrite the index regiser&n; */
+r_extern
+r_int
+id|sis_apic_bug
+suffix:semicolon
 DECL|function|io_apic_modify
 r_static
 r_inline
@@ -409,9 +413,27 @@ id|apic
 comma
 r_int
 r_int
+id|reg
+comma
+r_int
+r_int
 id|value
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|sis_apic_bug
+)paren
+op_star
+id|IO_APIC_BASE
+c_func
+(paren
+id|apic
+)paren
+op_assign
+id|reg
+suffix:semicolon
 op_star
 (paren
 id|IO_APIC_BASE

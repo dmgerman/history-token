@@ -2786,7 +2786,7 @@ r_char
 op_star
 id|pad_chars
 op_assign
-l_string|&quot;0123456789+-*/&bslash;015,.?()&quot;
+l_string|&quot;0123456789+-*/&bslash;015,.?()#&quot;
 suffix:semicolon
 r_static
 r_const
@@ -2794,7 +2794,7 @@ r_char
 op_star
 id|app_map
 op_assign
-l_string|&quot;pqrstuvwxylSRQMnnmPQ&quot;
+l_string|&quot;pqrstuvwxylSRQMnnmPQS&quot;
 suffix:semicolon
 r_if
 c_cond

@@ -191,7 +191,6 @@ id|drive-&gt;using_dma
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|trm290_ide_dma_write
 r_static
 r_int
@@ -807,7 +806,6 @@ l_int|0x00ff
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/*&n; * Invoked from ide-dma.c at boot time.&n; */
 DECL|function|init_hwif_trm290
 r_void
@@ -1043,7 +1041,6 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;ide_dma_write
 op_assign
 op_amp
@@ -1069,7 +1066,6 @@ op_assign
 op_amp
 id|trm290_ide_dma_test_irq
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|hwif-&gt;selectproc
 op_assign
 op_amp

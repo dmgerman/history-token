@@ -877,15 +877,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|save_flags
+multiline_comment|/* Kill our private IRQ line the hostess can end up chattering&n;&t;   until the configuration is set */
+id|disable_irq
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+id|irq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Begin normal initialise&n;&t; */
@@ -908,10 +904,10 @@ id|KERN_ERR
 l_string|&quot;Z8530 series device not found.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|restore_flags
+id|enable_irq
 c_func
 (paren
-id|flags
+id|irq
 )paren
 suffix:semicolon
 r_goto
@@ -955,10 +951,10 @@ comma
 id|z8530_hdlc_kilostream_85230
 )paren
 suffix:semicolon
-id|restore_flags
+id|enable_irq
 c_func
 (paren
-id|flags
+id|irq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Now we can take the IRQ&n;&t; */
@@ -1334,7 +1330,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;SV-11 Z85230 Synchronous Driver v 0.02.&bslash;n&quot;
+l_string|&quot;SV-11 Z85230 Synchronous Driver v 0.03.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk

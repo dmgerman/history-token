@@ -6,7 +6,6 @@ multiline_comment|/*************************************************************
 macro_line|#if !defined(__GENKSYMS__)
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 singleline_comment|// #include &lt;linux/etherdevice.h&gt;

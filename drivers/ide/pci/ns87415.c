@@ -295,7 +295,6 @@ id|drive-&gt;using_dma
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|ns87415_ide_dma_end
 r_static
 r_int
@@ -537,7 +536,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 DECL|function|init_hwif_ns87415
 r_static
 r_void
@@ -891,7 +889,6 @@ id|hwif-&gt;dma_base
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|hwif
 op_member_access_from_pointer
 id|OUTB
@@ -950,7 +947,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 DECL|function|init_dma_ns87415
 r_static

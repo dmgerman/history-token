@@ -1677,6 +1677,10 @@ l_string|&quot;&gt;])&quot;
 comma
 id|c
 )paren
+op_logical_and
+id|in_paren
+OG
+l_int|0
 )paren
 op_decrement
 id|in_paren

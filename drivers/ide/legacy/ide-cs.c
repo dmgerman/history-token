@@ -1735,6 +1735,7 @@ c_cond
 id|info-&gt;ndev
 )paren
 (brace
+multiline_comment|/* FIXME: if this fails we need to queue the cleanup somehow&n;&t;   -- need to investigate the required PCMCIA magic */
 id|ide_unregister
 c_func
 (paren

@@ -151,7 +151,6 @@ suffix:semicolon
 multiline_comment|/* =&gt; must be less than 4k! */
 )brace
 macro_line|#endif  /* defined(DISPLAY_PDCADMA_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/*&n; * pdcadma_dma functions() initiates/aborts (U)DMA read/write&n; * operations on a drive.&n; */
 macro_line|#if 0
 r_int
@@ -353,7 +352,6 @@ id|drive
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 DECL|function|init_chipset_pdcadma
 r_static
 r_int

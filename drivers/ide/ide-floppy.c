@@ -33,6 +33,13 @@ mdefine_line|#define IDEFLOPPY_DEBUG_BUGS&t;&t;1
 multiline_comment|/* #define IDEFLOPPY_DEBUG(fmt, args...) printk(KERN_INFO fmt, ## args) */
 DECL|macro|IDEFLOPPY_DEBUG
 mdefine_line|#define IDEFLOPPY_DEBUG( fmt, args... )
+macro_line|#ifndef IDEFLOPPY_DEBUG_LOG
+DECL|macro|debug_log
+mdefine_line|#define debug_log(fmt, args... ) do {} while(0)
+macro_line|#else
+DECL|macro|debug_log
+mdefine_line|#define debug_log printk
+macro_line|#endif
 multiline_comment|/*&n; *&t;Some drives require a longer irq timeout.&n; */
 DECL|macro|IDEFLOPPY_WAIT_CMD
 mdefine_line|#define IDEFLOPPY_WAIT_CMD&t;&t;(5 * WAIT_CMD)
@@ -1346,15 +1353,13 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Reached idefloppy_end_request&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 r_switch
 c_cond
 (paren
@@ -1760,7 +1765,6 @@ id|count
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|idefloppy_update_buffers
 r_static
 r_void
@@ -1811,7 +1815,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/*&n; *&t;idefloppy_queue_pc_head generates a new packet command request in front&n; *&t;of the request queue, before the current request, so that it will be&n; *&t;processed immediately, on the next pass through the driver.&n; */
 DECL|function|idefloppy_queue_pc_head
 r_static
@@ -2006,13 +2009,12 @@ l_int|1
 suffix:colon
 l_int|0x10000
 suffix:semicolon
-macro_line|#if IDEFLOPPY_DEBUG_LOG
 r_if
 c_cond
 (paren
 id|floppy-&gt;failed_pc
 )paren
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_INFO
@@ -2032,7 +2034,7 @@ id|result-&gt;ascq
 )paren
 suffix:semicolon
 r_else
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_INFO
@@ -2046,7 +2048,6 @@ comma
 id|result-&gt;ascq
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 )brace
 DECL|function|idefloppy_request_sense_callback
 r_static
@@ -2064,8 +2065,7 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_INFO
@@ -2074,7 +2074,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -2143,8 +2142,8 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-floppy: Reached %s&bslash;n&quot;
@@ -2152,7 +2151,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 id|idefloppy_do_end_request
 c_func
 (paren
@@ -2374,8 +2372,7 @@ r_int
 r_int
 id|temp
 suffix:semicolon
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_INFO
@@ -2384,8 +2381,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */&t;
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -2440,16 +2435,14 @@ id|pc
 )paren
 suffix:semicolon
 )brace
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-floppy: DMA finished&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/* Clear the interrupt */
 id|status.all
 op_assign
@@ -2473,8 +2466,7 @@ id|status.b.drq
 )paren
 (brace
 multiline_comment|/* No more interrupts */
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_INFO
@@ -2484,7 +2476,6 @@ comma
 id|pc-&gt;actually_transferred
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 id|clear_bit
 c_func
 (paren
@@ -2515,8 +2506,7 @@ id|pc-&gt;flags
 )paren
 (brace
 multiline_comment|/* Error detected */
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_INFO
@@ -2525,7 +2515,6 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 id|rq-&gt;errors
 op_increment
 suffix:semicolon
@@ -2596,7 +2585,6 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -2641,7 +2629,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/* Get the number of bytes to transfer */
 id|bcount.b.high
 op_assign
@@ -2848,8 +2835,7 @@ r_return
 id|ide_started
 suffix:semicolon
 )brace
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_NOTICE
@@ -2858,7 +2844,6 @@ l_string|&quot;send us more data than expected - &quot;
 l_string|&quot;allowing transfer&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 )brace
 )brace
 r_if
@@ -3484,8 +3469,7 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_INFO
@@ -3494,7 +3478,6 @@ comma
 id|pc-&gt;retries
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 id|pc-&gt;retries
 op_increment
 suffix:semicolon
@@ -3519,7 +3502,6 @@ op_star
 l_int|1024
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -3549,12 +3531,10 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|feature.all
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -3618,7 +3598,6 @@ id|drive
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_if
 c_cond
 (paren
@@ -3695,7 +3674,6 @@ comma
 id|IDE_SELECT_REG
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -3730,7 +3708,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/* Can we transfer the packet when we get the interrupt or wait? */
 r_if
 c_cond
@@ -3860,14 +3837,13 @@ op_star
 id|drive
 )paren
 (brace
-macro_line|#if IDEFLOPPY_DEBUG_LOG&t;
-id|printk
+id|debug_log
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-floppy: Reached idefloppy_rw_callback&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 id|idefloppy_do_end_request
 c_func
 (paren
@@ -3894,8 +3870,7 @@ r_int
 id|prevent
 )paren
 (brace
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_INFO
@@ -3905,7 +3880,6 @@ comma
 id|prevent
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 id|idefloppy_init_pc
 c_func
 (paren
@@ -4332,8 +4306,7 @@ c_func
 id|rq
 )paren
 suffix:semicolon
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
 c_func
 (paren
 l_string|&quot;create_rw1%d_cmd: block == %d, blocks == %d&bslash;n&quot;
@@ -4353,7 +4326,6 @@ comma
 id|blocks
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 id|idefloppy_init_pc
 c_func
 (paren
@@ -4626,8 +4598,7 @@ r_int
 )paren
 id|block_s
 suffix:semicolon
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_INFO
@@ -4642,12 +4613,12 @@ comma
 id|rq-&gt;errors
 )paren
 suffix:semicolon
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;sector: %ld, nr_sectors: %ld, &quot;
-l_string|&quot;current_nr_sectors: %ld&bslash;n&quot;
+l_string|&quot;current_nr_sectors: %d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -4659,7 +4630,6 @@ comma
 id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -5628,7 +5598,7 @@ op_logical_neg
 id|i
 )paren
 (brace
-id|IDEFLOPPY_DEBUG
+id|debug_log
 c_func
 (paren
 l_string|&quot;Descriptor 0 Code: %d&bslash;n&quot;
@@ -5637,7 +5607,7 @@ id|descriptor-&gt;dc
 )paren
 suffix:semicolon
 )brace
-id|IDEFLOPPY_DEBUG
+id|debug_log
 c_func
 (paren
 l_string|&quot;Descriptor %d: %dkB, %d blocks, %d &quot;
@@ -7734,15 +7704,13 @@ suffix:semicolon
 id|drive-&gt;usage
 op_increment
 suffix:semicolon
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Reached idefloppy_open&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -7954,14 +7922,13 @@ suffix:semicolon
 id|idefloppy_pc_t
 id|pc
 suffix:semicolon
-macro_line|#if IDEFLOPPY_DEBUG_LOG
-id|printk
+id|debug_log
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Reached idefloppy_release&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 r_if
 c_cond
 (paren

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;eata_pio.h&quot;
 macro_line|#include &quot;eata_dma_proc.h&quot;
@@ -4546,7 +4547,7 @@ c_func
 (paren
 l_string|&quot;eata_pio: find_PCI, HBA at %s&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 )paren
 suffix:semicolon
@@ -4590,7 +4591,7 @@ c_func
 (paren
 l_string|&quot;eata_pio: invalid base address of device %s&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 r_continue

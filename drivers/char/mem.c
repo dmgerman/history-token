@@ -3020,13 +3020,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_QIC02_TAPE
-id|qic02_tape_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_FTAPE
 id|ftape_init
 c_func

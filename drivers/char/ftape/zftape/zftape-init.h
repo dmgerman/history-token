@@ -200,25 +200,5 @@ r_int
 id|try_to_load
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|asmlinkage
-r_extern
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|asmlinkage
-r_extern
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 eof

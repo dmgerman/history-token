@@ -1765,7 +1765,6 @@ c_cond
 id|speed
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_case
 id|XFER_UDMA_4
 suffix:colon
@@ -1831,7 +1830,6 @@ id|XFER_SW_DMA_2
 suffix:colon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_case
 id|XFER_PIO_4
 suffix:colon
@@ -2123,7 +2121,6 @@ id|speed
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/**&n; *&t;piix_config_drive_for_dma&t;-&t;configure drive for DMA&n; *&t;@drive: IDE drive to configure&n; *&n; *&t;Set up a PIIX interface channel for the best available speed.&n; *&t;We prefer UDMA if it is available and then MWDMA. If DMA is &n; *&t;not available we switch to PIO and return 0. &n; */
 DECL|function|piix_config_drive_for_dma
 r_static
@@ -2440,7 +2437,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/**&n; *&t;init_chipset_piix&t;-&t;set up the PIIX chipset&n; *&t;@dev: PCI device to set up&n; *&t;@name: Name of the device&n; *&n; *&t;Initialize the PCI device as required. For the PIIX this turns&n; *&t;out to be nice and simple&n; */
 DECL|function|init_chipset_piix
 r_static
@@ -2574,7 +2570,6 @@ op_star
 id|hwif
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|u8
 id|reg54h
 op_assign
@@ -2598,7 +2593,6 @@ l_int|0xc0
 suffix:colon
 l_int|0x30
 suffix:semicolon
-macro_line|#endif /* !CONFIG_BLK_DEV_IDEDMA */
 macro_line|#ifndef CONFIG_IA64
 r_if
 c_cond
@@ -2684,7 +2678,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x04
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_switch
 c_cond
 (paren
@@ -2820,7 +2813,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* !CONFIG_BLK_DEV_IDEDMA */
 )brace
 multiline_comment|/**&n; *&t;init_dma_piix&t;&t;-&t;set up the PIIX DMA&n; *&t;@hwif: IDE interface&n; *&t;@dmabase: DMA PCI base&n; *&n; *&t;Set up the DMA on the PIIX controller, providing a DMA base is&n; *&t;available. The PIIX follows the normal specs so we do nothing&n; *&t;magical here.&n; */
 DECL|function|init_dma_piix

@@ -574,7 +574,7 @@ id|pnp_bus_type
 suffix:semicolon
 )brace
 DECL|variable|pnp_init
-id|core_initcall
+id|subsys_initcall
 c_func
 (paren
 id|pnp_init

@@ -76,7 +76,7 @@ DECL|macro|_MP_DSP_RESET
 mdefine_line|#define _MP_DSP_RESET    0x02        /* active lo   */
 DECL|macro|_MP_RISC_RESET
 mdefine_line|#define _MP_RISC_RESET   0x81        /* active hi, bit 7 for compatibility with old boards */
-multiline_comment|/* CPU exeption context structure in MP shared ram after trap */
+multiline_comment|/* CPU exception context structure in MP shared ram after trap */
 DECL|typedef|MP_XCPTC
 r_typedef
 r_struct

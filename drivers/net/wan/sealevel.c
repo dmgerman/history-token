@@ -990,15 +990,10 @@ r_goto
 id|dmafail
 suffix:semicolon
 )brace
-id|save_flags
+id|disable_irq
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+id|irq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Begin normal initialise&n;&t; */
@@ -1021,10 +1016,10 @@ id|KERN_ERR
 l_string|&quot;Z8530 series device not found.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|restore_flags
+id|enable_irq
 c_func
 (paren
-id|flags
+id|irq
 )paren
 suffix:semicolon
 r_goto
@@ -1080,10 +1075,10 @@ id|z8530_hdlc_kilostream_85230
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Now we can take the IRQ&n;&t; */
-id|restore_flags
+id|enable_irq
 c_func
 (paren
-id|flags
+id|irq
 )paren
 suffix:semicolon
 r_for
@@ -1586,7 +1581,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;SeaLevel Z85230 Synchronous Driver v 0.01.&bslash;n&quot;
+l_string|&quot;SeaLevel Z85230 Synchronous Driver v 0.02.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
