@@ -11268,7 +11268,7 @@ r_int
 id|nr_sectors
 )paren
 (brace
-id|rdev-&gt;bdev-&gt;bd_disk-&gt;sync_io
+id|rdev-&gt;bdev-&gt;bd_contains-&gt;bd_disk-&gt;sync_io
 op_add_assign
 id|nr_sectors
 suffix:semicolon
@@ -11319,7 +11319,7 @@ id|gendisk
 op_star
 id|disk
 op_assign
-id|rdev-&gt;bdev-&gt;bd_disk
+id|rdev-&gt;bdev-&gt;bd_contains-&gt;bd_disk
 suffix:semicolon
 id|curr_events
 op_assign
