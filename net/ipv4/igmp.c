@@ -10484,9 +10484,13 @@ id|im-&gt;users
 comma
 id|im-&gt;tm_running
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|im-&gt;timer.expires
 op_minus
 id|jiffies
+)paren
 comma
 id|im-&gt;reporter
 )paren
