@@ -155,23 +155,5 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-r_static
-r_int
-id|imm_init
-c_func
-(paren
-id|imm_struct
-op_star
-)paren
-suffix:semicolon
-r_static
-r_void
-id|imm_interrupt
-c_func
-(paren
-r_void
-op_star
-)paren
-suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _IMM_H */
 eof
