@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/**&n; *&t;ide_match_hwif&t;-&t;match a PCI IDE against an ide_hwif&n; *&t;@io_base: I/O base of device&n; *&t;@bootable: set if its bootable&n; *&t;@name: name of device&n; *&n; *&t;Match a PCI IDE port against an entry in ide_hwifs[],&n; *&t;based on io_base port if possible. Return the matching hwif,&n; *&t;or a new hwif. If we find an error (clashing, out of devices, etc)&n; *&t;return NULL&n; *&n; *&t;FIXME: we need to handle mmio matches here too&n; */
