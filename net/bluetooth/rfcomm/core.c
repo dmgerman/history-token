@@ -21,7 +21,7 @@ macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/l2cap.h&gt;
 macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;1.0&quot;
+mdefine_line|#define VERSION &quot;1.1&quot;
 macro_line|#ifndef CONFIG_BT_RFCOMM_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
@@ -734,9 +734,9 @@ id|RFCOMM_V24_RTR
 op_or
 id|RFCOMM_V24_DV
 suffix:semicolon
-id|d-&gt;credits
+id|d-&gt;cfc
 op_assign
-id|RFCOMM_MAX_CREDITS
+id|RFCOMM_CFC_DISABLED
 suffix:semicolon
 id|d-&gt;rx_credits
 op_assign
@@ -1257,9 +1257,18 @@ id|d-&gt;mtu
 op_assign
 id|s-&gt;mtu
 suffix:semicolon
-id|d-&gt;credits
+id|d-&gt;cfc
 op_assign
-id|s-&gt;credits
+(paren
+id|s-&gt;cfc
+op_eq
+id|RFCOMM_CFC_UNKNOWN
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+id|s-&gt;cfc
 suffix:semicolon
 r_if
 c_cond
@@ -1715,7 +1724,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|d-&gt;credits
+id|d-&gt;cfc
 )paren
 (brace
 id|d-&gt;v24_sig
@@ -1764,7 +1773,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|d-&gt;credits
+id|d-&gt;cfc
 )paren
 (brace
 id|d-&gt;v24_sig
@@ -1987,9 +1996,9 @@ id|s-&gt;mtu
 op_assign
 id|RFCOMM_DEFAULT_MTU
 suffix:semicolon
-id|s-&gt;credits
+id|s-&gt;cfc
 op_assign
-id|RFCOMM_MAX_CREDITS
+id|RFCOMM_CFC_UNKNOWN
 suffix:semicolon
 id|list_add
 c_func
@@ -3606,7 +3615,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|d-&gt;credits
+id|s-&gt;cfc
 )paren
 (brace
 id|pn-&gt;flow_ctrl
@@ -5900,6 +5909,13 @@ op_star
 id|pn
 )paren
 (brace
+r_struct
+id|rfcomm_session
+op_star
+id|s
+op_assign
+id|d-&gt;session
+suffix:semicolon
 id|BT_DBG
 c_func
 (paren
@@ -5921,49 +5937,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cr
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|pn-&gt;flow_ctrl
 op_eq
 l_int|0xf0
-)paren
-(brace
-id|d-&gt;tx_credits
-op_assign
-id|pn-&gt;credits
-suffix:semicolon
-)brace
-r_else
-(brace
-id|set_bit
-c_func
-(paren
-id|RFCOMM_TX_THROTTLED
-comma
-op_amp
-id|d-&gt;flags
-)paren
-suffix:semicolon
-id|d-&gt;credits
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
+op_logical_or
 id|pn-&gt;flow_ctrl
 op_eq
 l_int|0xe0
 )paren
 (brace
+id|d-&gt;cfc
+op_assign
+id|s-&gt;cfc
+op_assign
+id|RFCOMM_CFC_ENABLED
+suffix:semicolon
 id|d-&gt;tx_credits
 op_assign
 id|pn-&gt;credits
@@ -5971,6 +5959,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|d-&gt;cfc
+op_assign
+id|s-&gt;cfc
+op_assign
+id|RFCOMM_CFC_DISABLED
+suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -5980,17 +5974,14 @@ op_amp
 id|d-&gt;flags
 )paren
 suffix:semicolon
-id|d-&gt;credits
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 )brace
 id|d-&gt;priority
 op_assign
 id|pn-&gt;priority
 suffix:semicolon
 id|d-&gt;mtu
+op_assign
+id|s-&gt;mtu
 op_assign
 id|btohs
 c_func
@@ -6882,7 +6873,7 @@ op_amp
 id|RFCOMM_V24_FC
 op_logical_and
 op_logical_neg
-id|d-&gt;credits
+id|d-&gt;cfc
 )paren
 id|set_bit
 c_func
@@ -7291,7 +7282,7 @@ c_cond
 (paren
 id|pf
 op_logical_and
-id|d-&gt;credits
+id|d-&gt;cfc
 )paren
 (brace
 id|u8
@@ -7759,13 +7750,13 @@ suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;dlc %p state %ld credits %d rx_credits %d tx_credits %d&quot;
+l_string|&quot;dlc %p state %ld cfc %d rx_credits %d tx_credits %d&quot;
 comma
 id|d
 comma
 id|d-&gt;state
 comma
-id|d-&gt;credits
+id|d-&gt;cfc
 comma
 id|d-&gt;rx_credits
 comma
@@ -7800,7 +7791,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|d-&gt;credits
+id|d-&gt;cfc
 )paren
 (brace
 multiline_comment|/* CFC enabled. &n;&t;&t; * Give them some credits */
@@ -7820,7 +7811,7 @@ op_logical_and
 id|d-&gt;rx_credits
 op_le
 (paren
-id|d-&gt;credits
+id|d-&gt;cfc
 op_rshift
 l_int|2
 )paren
@@ -7833,14 +7824,14 @@ id|d-&gt;session
 comma
 id|d-&gt;addr
 comma
-id|d-&gt;credits
+id|d-&gt;cfc
 op_minus
 id|d-&gt;rx_credits
 )paren
 suffix:semicolon
 id|d-&gt;rx_credits
 op_assign
-id|d-&gt;credits
+id|d-&gt;cfc
 suffix:semicolon
 )brace
 )brace
@@ -7934,7 +7925,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|d-&gt;credits
+id|d-&gt;cfc
 op_logical_and
 op_logical_neg
 id|d-&gt;tx_credits
