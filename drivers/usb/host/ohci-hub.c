@@ -1273,7 +1273,7 @@ suffix:semicolon
 r_int
 id|can_suspend
 op_assign
-l_int|1
+id|hcd-&gt;can_wakeup
 suffix:semicolon
 r_int
 r_int
