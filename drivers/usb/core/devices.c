@@ -253,9 +253,9 @@ multiline_comment|/* leave as last */
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************/
-DECL|function|usbdevfs_conn_disc_event
+DECL|function|usbfs_conn_disc_event
 r_void
-id|usbdevfs_conn_disc_event
+id|usbfs_conn_disc_event
 c_func
 (paren
 r_void
@@ -1719,7 +1719,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* PROC_EXTRA */
 multiline_comment|/*****************************************************************/
-multiline_comment|/* This is a recursive function. Parameters:&n; * buffer - the user-space buffer to write data into&n; * nbytes - the maximum number of bytes to write&n; * skip_bytes - the number of bytes to skip before writing anything&n; * file_offset - the offset into the devices file on completion&n; * The caller must own the usbdev-&gt;serialize semaphore.&n; */
+multiline_comment|/* This is a recursive function. Parameters:&n; * buffer - the user-space buffer to write data into&n; * nbytes - the maximum number of bytes to write&n; * skip_bytes - the number of bytes to skip before writing anything&n; * file_offset - the offset into the devices file on completion&n; * The caller must own the device lock.&n; */
 DECL|function|usb_device_dump
 r_static
 id|ssize_t
@@ -2282,11 +2282,6 @@ id|ppos
 )paren
 (brace
 r_struct
-id|list_head
-op_star
-id|buslist
-suffix:semicolon
-r_struct
 id|usb_bus
 op_star
 id|bus
@@ -2344,36 +2339,24 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/* enumerate busses */
 id|down
 (paren
 op_amp
 id|usb_bus_list_lock
 )paren
 suffix:semicolon
-id|list_for_each
+multiline_comment|/* print devices for all busses */
+id|list_for_each_entry
 c_func
 (paren
-id|buslist
+id|bus
 comma
 op_amp
 id|usb_bus_list
-)paren
-(brace
-multiline_comment|/* print devices for this bus */
-id|bus
-op_assign
-id|list_entry
-c_func
-(paren
-id|buslist
-comma
-r_struct
-id|usb_bus
 comma
 id|bus_list
 )paren
-suffix:semicolon
+(brace
 multiline_comment|/* recurse through all children of the root hub */
 r_if
 c_cond
@@ -2383,11 +2366,10 @@ id|bus-&gt;root_hub
 )paren
 r_continue
 suffix:semicolon
-id|down
+id|usb_lock_device
 c_func
 (paren
-op_amp
-id|bus-&gt;root_hub-&gt;serialize
+id|bus-&gt;root_hub
 )paren
 suffix:semicolon
 id|ret
@@ -2417,11 +2399,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|up
+id|usb_unlock_device
 c_func
 (paren
-op_amp
-id|bus-&gt;root_hub-&gt;serialize
+id|bus-&gt;root_hub
 )paren
 suffix:semicolon
 r_if
@@ -2753,10 +2734,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|usbdevfs_devices_fops
+DECL|variable|usbfs_devices_fops
 r_struct
 id|file_operations
-id|usbdevfs_devices_fops
+id|usbfs_devices_fops
 op_assign
 (brace
 dot

@@ -3989,7 +3989,7 @@ op_logical_neg
 op_decrement
 id|wacom-&gt;open
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|wacom-&gt;irq
@@ -4859,7 +4859,7 @@ c_cond
 id|wacom
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|wacom-&gt;irq

@@ -623,6 +623,29 @@ r_int
 id|saved_framenumber
 suffix:semicolon
 multiline_comment|/* Save during PM suspend */
+multiline_comment|/* Support for port suspend/resume */
+DECL|member|port_c_suspend
+r_int
+r_int
+id|port_c_suspend
+suffix:semicolon
+multiline_comment|/* Bit-arrays of ports */
+DECL|member|suspended_ports
+r_int
+r_int
+id|suspended_ports
+suffix:semicolon
+DECL|member|resuming_ports
+r_int
+r_int
+id|resuming_ports
+suffix:semicolon
+DECL|member|resume_timeout
+r_int
+r_int
+id|resume_timeout
+suffix:semicolon
+multiline_comment|/* Time to stop signalling */
 multiline_comment|/* Main list of URB&squot;s currently controlled by this HC */
 DECL|member|urb_list
 r_struct

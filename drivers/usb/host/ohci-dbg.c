@@ -3204,7 +3204,7 @@ l_int|31
 )paren
 ques
 c_cond
-l_string|&quot; FIT&quot;
+l_string|&quot;FIT &quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -3256,7 +3256,7 @@ l_int|31
 )paren
 ques
 c_cond
-l_string|&quot; FRT&quot;
+l_string|&quot;FRT &quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
