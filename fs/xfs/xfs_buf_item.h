@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#ifndef __XFS_BUF_ITEM_H__
+multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#ifndef&t;__XFS_BUF_ITEM_H__
 DECL|macro|__XFS_BUF_ITEM_H__
-mdefine_line|#define __XFS_BUF_ITEM_H__
-multiline_comment|/*&n; * This is the structure used to lay out a buf log item in the&n; * log.&t; The data map describes which 128 byte chunks of the buffer&n; * have been logged.  This structure works only on buffers that&n; * reside up to the first TB in the filesystem.&t; These buffers are&n; * generated only by pre-6.2 systems and are known as XFS_LI_6_1_BUF.&n; */
+mdefine_line|#define&t;__XFS_BUF_ITEM_H__
+multiline_comment|/*&n; * This is the structure used to lay out a buf log item in the&n; * log.  The data map describes which 128 byte chunks of the buffer&n; * have been logged.  This structure works only on buffers that&n; * reside up to the first TB in the filesystem.  These buffers are&n; * generated only by pre-6.2 systems and are known as XFS_LI_6_1_BUF.&n; */
 DECL|struct|xfs_buf_log_format_v1
 r_typedef
 r_struct
@@ -110,35 +110,35 @@ id|xfs_buf_log_format_t
 suffix:semicolon
 multiline_comment|/*&n; * This flag indicates that the buffer contains on disk inodes&n; * and requires special recovery handling.&n; */
 DECL|macro|XFS_BLI_INODE_BUF
-mdefine_line|#define XFS_BLI_INODE_BUF&t;0x1
+mdefine_line|#define&t;XFS_BLI_INODE_BUF&t;0x1
 multiline_comment|/*&n; * This flag indicates that the buffer should not be replayed&n; * during recovery because its blocks are being freed.&n; */
 DECL|macro|XFS_BLI_CANCEL
-mdefine_line|#define XFS_BLI_CANCEL&t;&t;0x2
+mdefine_line|#define&t;XFS_BLI_CANCEL&t;&t;0x2
 multiline_comment|/*&n; * This flag indicates that the buffer contains on disk&n; * user or group dquots and may require special recovery handling.&n; */
 DECL|macro|XFS_BLI_UDQUOT_BUF
-mdefine_line|#define XFS_BLI_UDQUOT_BUF&t;0x4
+mdefine_line|#define&t;XFS_BLI_UDQUOT_BUF&t;0x4
 multiline_comment|/* #define XFS_BLI_PDQUOT_BUF&t;0x8 */
 DECL|macro|XFS_BLI_GDQUOT_BUF
-mdefine_line|#define XFS_BLI_GDQUOT_BUF&t;0x10
+mdefine_line|#define&t;XFS_BLI_GDQUOT_BUF&t;0x10
 DECL|macro|XFS_BLI_CHUNK
-mdefine_line|#define XFS_BLI_CHUNK&t;&t;128
+mdefine_line|#define&t;XFS_BLI_CHUNK&t;&t;128
 DECL|macro|XFS_BLI_SHIFT
-mdefine_line|#define XFS_BLI_SHIFT&t;&t;7
+mdefine_line|#define&t;XFS_BLI_SHIFT&t;&t;7
 DECL|macro|BIT_TO_WORD_SHIFT
-mdefine_line|#define BIT_TO_WORD_SHIFT&t;5
+mdefine_line|#define&t;BIT_TO_WORD_SHIFT&t;5
 DECL|macro|NBWORD
-mdefine_line|#define NBWORD&t;&t;&t;(NBBY * sizeof(unsigned int))
+mdefine_line|#define&t;NBWORD&t;&t;&t;(NBBY * sizeof(unsigned int))
 multiline_comment|/*&n; * buf log item flags&n; */
 DECL|macro|XFS_BLI_HOLD
-mdefine_line|#define XFS_BLI_HOLD&t;&t;0x01
+mdefine_line|#define&t;XFS_BLI_HOLD&t;&t;0x01
 DECL|macro|XFS_BLI_DIRTY
-mdefine_line|#define XFS_BLI_DIRTY&t;&t;0x02
+mdefine_line|#define&t;XFS_BLI_DIRTY&t;&t;0x02
 DECL|macro|XFS_BLI_STALE
-mdefine_line|#define XFS_BLI_STALE&t;&t;0x04
+mdefine_line|#define&t;XFS_BLI_STALE&t;&t;0x04
 DECL|macro|XFS_BLI_LOGGED
-mdefine_line|#define XFS_BLI_LOGGED&t;&t;0x08
+mdefine_line|#define&t;XFS_BLI_LOGGED&t;&t;0x08
 DECL|macro|XFS_BLI_INODE_ALLOC_BUF
-mdefine_line|#define XFS_BLI_INODE_ALLOC_BUF 0x10
+mdefine_line|#define&t;XFS_BLI_INODE_ALLOC_BUF&t;0x10
 macro_line|#ifdef __KERNEL__
 r_struct
 id|xfs_buf
@@ -245,10 +245,10 @@ DECL|typedef|xfs_buf_cancel_t
 id|xfs_buf_cancel_t
 suffix:semicolon
 DECL|macro|XFS_BLI_TRACE_SIZE
-mdefine_line|#define XFS_BLI_TRACE_SIZE&t;32
+mdefine_line|#define&t;XFS_BLI_TRACE_SIZE&t;32
 macro_line|#if defined(XFS_ALL_TRACE)
 DECL|macro|XFS_BLI_TRACE
-mdefine_line|#define XFS_BLI_TRACE
+mdefine_line|#define&t;XFS_BLI_TRACE
 macro_line|#endif
 macro_line|#if !defined(DEBUG)
 DECL|macro|XFS_BLI_TRACE
@@ -268,7 +268,7 @@ op_star
 suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_buf_item_trace
-mdefine_line|#define xfs_buf_item_trace(id, bip)
+mdefine_line|#define&t;xfs_buf_item_trace(id, bip)
 macro_line|#endif
 r_void
 id|xfs_buf_item_init
@@ -377,7 +377,7 @@ id|last
 suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_buf_item_flush_log_debug
-mdefine_line|#define xfs_buf_item_flush_log_debug(bp, first, last)
+mdefine_line|#define&t;xfs_buf_item_flush_log_debug(bp, first, last)
 macro_line|#endif
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* __XFS_BUF_ITEM_H__ */

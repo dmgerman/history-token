@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __PAGEBUF_TRACE__
 DECL|macro|__PAGEBUF_TRACE__
 mdefine_line|#define __PAGEBUF_TRACE__
@@ -6,14 +6,14 @@ macro_line|#ifdef PB_DEFINE_TRACES
 DECL|macro|PB_TRACE_START
 mdefine_line|#define PB_TRACE_START&t;typedef enum {
 DECL|macro|PB_TRACE_REC
-mdefine_line|#define PB_TRACE_REC(x) pb_trace_point_##x
+mdefine_line|#define PB_TRACE_REC(x)&t;pb_trace_point_##x
 DECL|macro|PB_TRACE_END
 mdefine_line|#define PB_TRACE_END&t;} pb_trace_var_t;
 macro_line|#else
 DECL|macro|PB_TRACE_START
 mdefine_line|#define PB_TRACE_START&t;static char&t;*event_names[] = {
 DECL|macro|PB_TRACE_REC
-mdefine_line|#define PB_TRACE_REC(x) #x
+mdefine_line|#define PB_TRACE_REC(x)&t;#x
 DECL|macro|PB_TRACE_END
 mdefine_line|#define PB_TRACE_END&t;};
 macro_line|#endif
@@ -260,7 +260,7 @@ op_star
 suffix:semicolon
 macro_line|#ifdef PAGEBUF_TRACE
 DECL|macro|PB_TRACE
-macro_line|# define PB_TRACE(pb, event, misc)&t;&t;&bslash;&n;&t;pb_trace_func(pb, event, (void *) misc, &bslash;&n;&t;&t;&t;(void *)__builtin_return_address(0))
+macro_line|# define PB_TRACE(pb, event, misc)&t;&t;&bslash;&n;&t;pb_trace_func(pb, event, (void *) misc,&t;&bslash;&n;&t;&t;&t;(void *)__builtin_return_address(0))
 macro_line|#else
 DECL|macro|PB_TRACE
 macro_line|# define PB_TRACE(pb, event, misc)&t;do { } while (0)

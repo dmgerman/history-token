@@ -1678,6 +1678,14 @@ comma
 id|sk
 )paren
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|sk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|sk-&gt;backlog_rcv
 op_assign
 id|dn_nsp_backlog_rcv
@@ -9893,6 +9901,11 @@ dot
 id|family
 op_assign
 id|AF_DECnet
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|release

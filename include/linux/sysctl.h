@@ -1224,6 +1224,12 @@ DECL|enumerator|NET_IPV4_ROUTE_MIN_ADVMSS
 id|NET_IPV4_ROUTE_MIN_ADVMSS
 op_assign
 l_int|17
+comma
+DECL|enumerator|NET_IPV4_ROUTE_SECRET_INTERVAL
+id|NET_IPV4_ROUTE_SECRET_INTERVAL
+op_assign
+l_int|18
+comma
 )brace
 suffix:semicolon
 r_enum

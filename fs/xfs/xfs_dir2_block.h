@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_DIR2_BLOCK_H__
 DECL|macro|__XFS_DIR2_BLOCK_H__
-mdefine_line|#define __XFS_DIR2_BLOCK_H__
+mdefine_line|#define&t;__XFS_DIR2_BLOCK_H__
 multiline_comment|/*&n; * xfs_dir2_block.h&n; * Directory version 2, single block format structures&n; */
 r_struct
 id|uio
@@ -29,7 +29,7 @@ id|xfs_trans
 suffix:semicolon
 multiline_comment|/*&n; * The single block format is as follows:&n; * xfs_dir2_data_hdr_t structure&n; * xfs_dir2_data_entry_t and xfs_dir2_data_unused_t structures&n; * xfs_dir2_leaf_entry_t structures&n; * xfs_dir2_block_tail_t structure&n; */
 DECL|macro|XFS_DIR2_BLOCK_MAGIC
-mdefine_line|#define XFS_DIR2_BLOCK_MAGIC&t;0x58443242&t;/* XD2B: for one block dirs */
+mdefine_line|#define&t;XFS_DIR2_BLOCK_MAGIC&t;0x58443242&t;/* XD2B: for one block dirs */
 DECL|struct|xfs_dir2_block_tail
 r_typedef
 r_struct
@@ -100,10 +100,10 @@ id|block
 )paren
 suffix:semicolon
 DECL|macro|XFS_DIR2_BLOCK_TAIL_P
-mdefine_line|#define XFS_DIR2_BLOCK_TAIL_P(mp,block) xfs_dir2_block_tail_p(mp,block)
+mdefine_line|#define&t;XFS_DIR2_BLOCK_TAIL_P(mp,block)&t;xfs_dir2_block_tail_p(mp,block)
 macro_line|#else
 DECL|macro|XFS_DIR2_BLOCK_TAIL_P
-mdefine_line|#define XFS_DIR2_BLOCK_TAIL_P(mp,block) &bslash;&n;&t;(((xfs_dir2_block_tail_t *)((char *)(block) + (mp)-&gt;m_dirblksize)) - 1)
+mdefine_line|#define&t;XFS_DIR2_BLOCK_TAIL_P(mp,block)&t;&bslash;&n;&t;(((xfs_dir2_block_tail_t *)((char *)(block) + (mp)-&gt;m_dirblksize)) - 1)
 macro_line|#endif
 multiline_comment|/*&n; * Pointer to the leaf entries embedded in a data block (1-block format)&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_BLOCK_LEAF_P)
@@ -122,10 +122,10 @@ id|arch
 )paren
 suffix:semicolon
 DECL|macro|XFS_DIR2_BLOCK_LEAF_P_ARCH
-mdefine_line|#define XFS_DIR2_BLOCK_LEAF_P_ARCH(btp,arch) &bslash;&n;&t;xfs_dir2_block_leaf_p_arch(btp,arch)
+mdefine_line|#define&t;XFS_DIR2_BLOCK_LEAF_P_ARCH(btp,arch) &bslash;&n;&t;xfs_dir2_block_leaf_p_arch(btp,arch)
 macro_line|#else
 DECL|macro|XFS_DIR2_BLOCK_LEAF_P_ARCH
-mdefine_line|#define XFS_DIR2_BLOCK_LEAF_P_ARCH(btp,arch)&t;&bslash;&n;&t;(((struct xfs_dir2_leaf_entry *)(btp)) - INT_GET((btp)-&gt;count, arch))
+mdefine_line|#define&t;XFS_DIR2_BLOCK_LEAF_P_ARCH(btp,arch)&t;&bslash;&n;&t;(((struct xfs_dir2_leaf_entry *)(btp)) - INT_GET((btp)-&gt;count, arch))
 macro_line|#endif
 multiline_comment|/*&n; * Function declarations.&n; */
 r_extern

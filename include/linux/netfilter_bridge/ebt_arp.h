@@ -11,8 +11,12 @@ DECL|macro|EBT_ARP_SRC_IP
 mdefine_line|#define EBT_ARP_SRC_IP 0x08
 DECL|macro|EBT_ARP_DST_IP
 mdefine_line|#define EBT_ARP_DST_IP 0x10
+DECL|macro|EBT_ARP_SRC_MAC
+mdefine_line|#define EBT_ARP_SRC_MAC 0x20
+DECL|macro|EBT_ARP_DST_MAC
+mdefine_line|#define EBT_ARP_DST_MAC 0x40
 DECL|macro|EBT_ARP_MASK
-mdefine_line|#define EBT_ARP_MASK (EBT_ARP_OPCODE | EBT_ARP_HTYPE | EBT_ARP_PTYPE | &bslash;&n;   EBT_ARP_SRC_IP | EBT_ARP_DST_IP)
+mdefine_line|#define EBT_ARP_MASK (EBT_ARP_OPCODE | EBT_ARP_HTYPE | EBT_ARP_PTYPE | &bslash;&n;   EBT_ARP_SRC_IP | EBT_ARP_DST_IP | EBT_ARP_SRC_MAC | EBT_ARP_DST_MAC)
 DECL|macro|EBT_ARP_MATCH
 mdefine_line|#define EBT_ARP_MATCH &quot;arp&quot;
 DECL|struct|ebt_arp_info
@@ -46,6 +50,38 @@ suffix:semicolon
 DECL|member|dmsk
 r_uint32
 id|dmsk
+suffix:semicolon
+DECL|member|smaddr
+r_int
+r_char
+id|smaddr
+(braket
+id|ETH_ALEN
+)braket
+suffix:semicolon
+DECL|member|smmsk
+r_int
+r_char
+id|smmsk
+(braket
+id|ETH_ALEN
+)braket
+suffix:semicolon
+DECL|member|dmaddr
+r_int
+r_char
+id|dmaddr
+(braket
+id|ETH_ALEN
+)braket
+suffix:semicolon
+DECL|member|dmmsk
+r_int
+r_char
+id|dmmsk
+(braket
+id|ETH_ALEN
+)braket
 suffix:semicolon
 DECL|member|bitmask
 r_uint8

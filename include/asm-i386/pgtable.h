@@ -41,9 +41,8 @@ multiline_comment|/*&n; * The Linux x86 paging architecture is &squot;compile-ti
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef CONFIG_X86_PAE
 macro_line|# include &lt;asm/pgtable-3level.h&gt;
-macro_line|#else
-macro_line|# include &lt;asm/pgtable-2level.h&gt;
-macro_line|#endif
+multiline_comment|/*&n; * Need to initialise the X86 PAE caches&n; */
+r_extern
 r_void
 id|pgtable_cache_init
 c_func
@@ -51,6 +50,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+macro_line|# include &lt;asm/pgtable-2level.h&gt;
+multiline_comment|/*&n; * No page table caches to initialise&n; */
+DECL|macro|pgtable_cache_init
+mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
+macro_line|#endif
 macro_line|#endif
 DECL|macro|PMD_SIZE
 mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
@@ -225,6 +230,27 @@ mdefine_line|#define&t;pmd_bad(x)&t;((pmd_val(x) &amp; (~PAGE_MASK &amp; ~_PAGE_
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x) ((x) &gt;&gt; (20-PAGE_SHIFT))
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
+DECL|function|pte_user
+r_static
+r_inline
+r_int
+id|pte_user
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+(paren
+id|pte
+)paren
+dot
+id|pte_low
+op_amp
+id|_PAGE_USER
+suffix:semicolon
+)brace
 DECL|function|pte_read
 r_static
 r_inline

@@ -4110,6 +4110,11 @@ op_assign
 id|PF_BLUETOOTH
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|release
 op_assign
 id|sco_sock_release
@@ -4201,6 +4206,11 @@ dot
 id|create
 op_assign
 id|sco_sock_create
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

@@ -86,7 +86,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* There are two cases of tasks modifying task-&gt;mm-&gt;mmap list we&n; * must concern ourselves with. First, when a task is about to&n; * exit (exit_mmap()), we should process the buffer to deal with&n; * any samples in the CPU buffer, before we lose the -&gt;mmap information&n; * we need. Second, a task may unmap (part of) an executable mmap,&n; * so we want to process samples before that happens too&n; */
+multiline_comment|/* There are two cases of tasks modifying task-&gt;mm-&gt;mmap list we&n; * must concern ourselves with. First, when a task is about to&n; * exit (exit_mmap()), we should process the buffer to deal with&n; * any samples in the CPU buffer, before we lose the -&gt;mmap information&n; * we need. It is vital to get this case correct, otherwise we can&n; * end up trying to access a freed task_struct.&n; */
 DECL|function|mm_notify
 r_static
 r_int
@@ -110,6 +110,39 @@ id|data
 id|sync_cpu_buffers
 c_func
 (paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Second, a task may unmap (part of) an executable mmap,&n; * so we want to process samples before that happens too. This is merely&n; * a QOI issue not a correctness one.&n; */
+DECL|function|munmap_notify
+r_static
+r_int
+id|munmap_notify
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|self
+comma
+r_int
+r_int
+id|val
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+multiline_comment|/* Note that we cannot sync the buffers directly, because we might end up&n;&t; * taking the the mmap_sem that we hold now inside of event_buffer_read()&n;&t; * on a page fault, whilst holding buffer_sem - deadlock.&n;&t; *&n;&t; * This would mean a threaded reader of the event buffer, but we should&n;&t; * prevent it anyway.&n;&t; *&n;&t; * Delaying the work in a context that doesn&squot;t hold the mmap_sem means&n;&t; * that we won&squot;t lose samples from other mappings that current() may&n;&t; * have. Note that either way, we lose any pending samples for what is&n;&t; * being unmapped.&n;&t; */
+id|schedule_work
+c_func
+(paren
+op_amp
+id|sync_wq
 )paren
 suffix:semicolon
 r_return
@@ -208,7 +241,7 @@ op_assign
 dot
 id|notifier_call
 op_assign
-id|mm_notify
+id|munmap_notify
 comma
 )brace
 suffix:semicolon
@@ -447,6 +480,12 @@ c_func
 (paren
 op_amp
 id|sync_timer
+)paren
+suffix:semicolon
+multiline_comment|/* timer might have queued work, make sure it&squot;s completed. */
+id|flush_scheduled_work
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1004,6 +1043,16 @@ id|s
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|oprofile_stats.sample_lost_no_mm
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|release_mm
 r_static
@@ -1031,12 +1080,12 @@ id|mm-&gt;mmap_sem
 suffix:semicolon
 )brace
 multiline_comment|/* Take the task&squot;s mmap_sem to protect ourselves from&n; * races when we do lookup_dcookie().&n; */
-DECL|function|take_task_mm
+DECL|function|take_tasks_mm
 r_static
 r_struct
 id|mm_struct
 op_star
-id|take_task_mm
+id|take_tasks_mm
 c_func
 (paren
 r_struct
@@ -1049,42 +1098,38 @@ r_struct
 id|mm_struct
 op_star
 id|mm
+suffix:semicolon
+multiline_comment|/* Subtle. We don&squot;t need to keep a reference to this task&squot;s mm,&n;&t; * because, for the mm to be freed on another CPU, that would have&n;&t; * to go through the task exit notifier, which ends up sleeping&n;&t; * on the buffer_sem we hold, so we end up with mutual exclusion&n;&t; * anyway.&n;&t; */
+id|task_lock
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+id|mm
 op_assign
 id|task-&gt;mm
 suffix:semicolon
-multiline_comment|/* if task-&gt;mm !NULL, mm_count must be at least 1. It cannot&n;&t; * drop to 0 without the task exiting, which will have to sleep&n;&t; * on buffer_sem first. So we do not need to mark mm_count&n;&t; * ourselves.&n;&t; */
+id|task_unlock
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|mm
 )paren
 (brace
-multiline_comment|/* More ugliness. If a task took its mmap&n;&t;&t; * sem then came to sleep on buffer_sem we&n;&t;&t; * will deadlock waiting for it. So we can&n;&t;&t; * but try. This will lose samples :/&n;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|down_read_trylock
+multiline_comment|/* needed to walk the task&squot;s VMAs */
+id|down_read
 c_func
 (paren
 op_amp
 id|mm-&gt;mmap_sem
 )paren
-)paren
-(brace
-multiline_comment|/* FIXME: this underestimates samples lost */
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|oprofile_stats.sample_lost_mmap_sem
-)paren
 suffix:semicolon
-id|mm
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 )brace
 r_return
 id|mm
@@ -1327,7 +1372,7 @@ id|mm
 suffix:semicolon
 id|mm
 op_assign
-id|take_task_mm
+id|take_tasks_mm
 c_func
 (paren
 r_new

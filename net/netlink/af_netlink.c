@@ -917,6 +917,14 @@ comma
 id|sk
 )paren
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|sk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|nlk
 op_assign
 id|nlk_sk
@@ -4904,6 +4912,11 @@ dot
 id|family
 op_assign
 id|PF_NETLINK
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|release

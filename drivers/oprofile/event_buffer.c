@@ -493,7 +493,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* wait for the event buffer to fill up with some data */
 id|wait_event_interruptible
 c_func
 (paren
@@ -519,6 +518,22 @@ id|current
 r_return
 op_minus
 id|EINTR
+suffix:semicolon
+multiline_comment|/* can&squot;t currently happen */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|atomic_read
+c_func
+(paren
+op_amp
+id|buffer_ready
+)paren
+)paren
+r_return
+op_minus
+id|EAGAIN
 suffix:semicolon
 id|down
 c_func

@@ -67,8 +67,8 @@ mdefine_line|#define ELF_PLATFORM  (system_utsname.machine)
 multiline_comment|/*&n; * Architecture-neutral AT_ values in 0-17, leave some room&n; * for more of them, start the x86-specific ones at 32.&n; */
 DECL|macro|AT_SYSINFO
 mdefine_line|#define AT_SYSINFO&t;&t;32
-DECL|macro|AT_SYSINFO_EH_FRAME
-mdefine_line|#define AT_SYSINFO_EH_FRAME&t;33
+DECL|macro|AT_SYSINFO_EHDR
+mdefine_line|#define AT_SYSINFO_EHDR&t;&t;33
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)
@@ -127,11 +127,25 @@ suffix:semicolon
 DECL|macro|ELF_CORE_SYNC
 mdefine_line|#define ELF_CORE_SYNC dump_smp_unlazy_fpu
 macro_line|#endif
-multiline_comment|/* Offset from the beginning of the page where the .eh_frame information&n;   for the code in the vsyscall page starts.  */
-DECL|macro|EH_FRAME_OFFSET
-mdefine_line|#define EH_FRAME_OFFSET 96
+DECL|macro|VSYSCALL_BASE
+mdefine_line|#define VSYSCALL_BASE&t;(__fix_to_virt(FIX_VSYSCALL))
+DECL|macro|VSYSCALL_EHDR
+mdefine_line|#define VSYSCALL_EHDR&t;((const struct elfhdr *) VSYSCALL_BASE)
+DECL|macro|VSYSCALL_ENTRY
+mdefine_line|#define VSYSCALL_ENTRY&t;((unsigned long) &amp;__kernel_vsyscall)
+r_extern
+r_void
+id|__kernel_vsyscall
+suffix:semicolon
 DECL|macro|ARCH_DLINFO
-mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO, 0xffffe000);&t;&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO_EH_FRAME,&t;&t;&bslash;&n;&t;&t;&t;    0xffffe000 + EH_FRAME_OFFSET);&t;&bslash;&n;} while (0)
+mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO,&t;VSYSCALL_ENTRY);&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, VSYSCALL_BASE);&t;&bslash;&n;} while (0)
+multiline_comment|/*&n; * These macros parameterize elf_core_dump in fs/binfmt_elf.c to write out&n; * extra segments containing the vsyscall DSO contents.  Dumping its&n; * contents makes post-mortem fully interpretable later without matching up&n; * the same kernel and hardware config to see what PC values meant.&n; * Dumping its extra ELF program headers includes all the other information&n; * a debugger needs to easily find how the vsyscall DSO was being used.&n; */
+DECL|macro|ELF_CORE_EXTRA_PHDRS
+mdefine_line|#define ELF_CORE_EXTRA_PHDRS&t;&t;(VSYSCALL_EHDR-&gt;e_phnum)
+DECL|macro|ELF_CORE_WRITE_EXTRA_PHDRS
+mdefine_line|#define ELF_CORE_WRITE_EXTRA_PHDRS&t;&t;&t;&t;&t;      &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;const struct elf_phdr *const vsyscall_phdrs =&t;&t;&t;      &bslash;&n;&t;&t;(const struct elf_phdr *) (VSYSCALL_BASE&t;&t;      &bslash;&n;&t;&t;&t;&t;&t;   + VSYSCALL_EHDR-&gt;e_phoff);&t;      &bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;Elf32_Off ofs = 0;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;for (i = 0; i &lt; VSYSCALL_EHDR-&gt;e_phnum; ++i) {&t;&t;&t;      &bslash;&n;&t;&t;struct elf_phdr phdr = vsyscall_phdrs[i];&t;&t;      &bslash;&n;&t;&t;if (phdr.p_type == PT_LOAD) {&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;ofs = phdr.p_offset = offset;&t;&t;&t;      &bslash;&n;&t;&t;&t;offset += phdr.p_filesz;&t;&t;&t;      &bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;phdr.p_offset += ofs;&t;&t;&t;&t;      &bslash;&n;&t;&t;phdr.p_paddr = 0; /* match other core phdrs */&t;&t;      &bslash;&n;&t;&t;DUMP_WRITE(&amp;phdr, sizeof(phdr));&t;&t;&t;      &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;} while (0)
+DECL|macro|ELF_CORE_WRITE_EXTRA_DATA
+mdefine_line|#define ELF_CORE_WRITE_EXTRA_DATA&t;&t;&t;&t;&t;      &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;const struct elf_phdr *const vsyscall_phdrs =&t;&t;&t;      &bslash;&n;&t;&t;(const struct elf_phdr *) (VSYSCALL_BASE&t;&t;      &bslash;&n;&t;&t;&t;&t;&t;   + VSYSCALL_EHDR-&gt;e_phoff);&t;      &bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;for (i = 0; i &lt; VSYSCALL_EHDR-&gt;e_phnum; ++i) {&t;&t;&t;      &bslash;&n;&t;&t;if (vsyscall_phdrs[i].p_type == PT_LOAD)&t;&t;      &bslash;&n;&t;&t;&t;DUMP_WRITE((void *) vsyscall_phdrs[i].p_vaddr,&t;      &bslash;&n;&t;&t;&t;&t;   vsyscall_phdrs[i].p_filesz);&t;&t;      &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#endif
 eof

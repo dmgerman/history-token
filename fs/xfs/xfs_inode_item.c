@@ -1,6 +1,31 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * This file contains the implementation of the xfs_inode_log_item.&n; * It contains the item operations used to manipulate the inode log&n; * items as well as utility routines used by the inode specific&n; * transaction routines.&n; */
-macro_line|#include &lt;xfs.h&gt;
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_buf_item.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_trans_priv.h&quot;
+macro_line|#include &quot;xfs_ag.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode_item.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_rw.h&quot;
 DECL|variable|xfs_ili_zone
 id|kmem_zone_t
 op_star
@@ -621,7 +646,7 @@ id|nvecs
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Clear i_update_core if the timestamps (or any other&n;&t; * non-transactional modification) need flushing/logging&n;&t; * and we&squot;re about to log them with the rest of the core.&n;&t; *&n;&t; * This is the same logic as xfs_iflush() but this code can&squot;t&n;&t; * run at the same time as xfs_iflush because we&squot;re in commit&n;&t; * processing here and so we have the inode lock held in&n;&t; * exclusive mode.  Although it doesn&squot;t really matter&n;&t; * for the timestamps if both routines were to grab the&n;&t; * timestamps or not.  That would be ok.&n;&t; *&n;&t; * We clear i_update_core before copying out the data.&n;&t; * This is for coordination with our timestamp updates&n;&t; * that don&squot;t hold the inode lock. They will always&n;&t; * update the timestamps BEFORE setting i_update_core,&n;&t; * so if we clear i_update_core after they set it we&n;&t; * are guaranteed to see their updates to the timestamps&n;&t; * either here.&t; Likewise, if they set it after we clear it&n;&t; * here, we&squot;ll see it either on the next commit of this&n;&t; * inode or the next time the inode gets flushed via&n;&t; * xfs_iflush().  This depends on strongly ordered memory&n;&t; * semantics, but we have that.&t; We use the SYNCHRONIZE&n;&t; * macro to make sure that the compiler does not reorder&n;&t; * the i_update_core access below the data copy below.&n;&t; */
+multiline_comment|/*&n;&t; * Clear i_update_core if the timestamps (or any other&n;&t; * non-transactional modification) need flushing/logging&n;&t; * and we&squot;re about to log them with the rest of the core.&n;&t; *&n;&t; * This is the same logic as xfs_iflush() but this code can&squot;t&n;&t; * run at the same time as xfs_iflush because we&squot;re in commit&n;&t; * processing here and so we have the inode lock held in&n;&t; * exclusive mode.  Although it doesn&squot;t really matter&n;&t; * for the timestamps if both routines were to grab the&n;&t; * timestamps or not.  That would be ok.&n;&t; *&n;&t; * We clear i_update_core before copying out the data.&n;&t; * This is for coordination with our timestamp updates&n;&t; * that don&squot;t hold the inode lock. They will always&n;&t; * update the timestamps BEFORE setting i_update_core,&n;&t; * so if we clear i_update_core after they set it we&n;&t; * are guaranteed to see their updates to the timestamps&n;&t; * either here.  Likewise, if they set it after we clear it&n;&t; * here, we&squot;ll see it either on the next commit of this&n;&t; * inode or the next time the inode gets flushed via&n;&t; * xfs_iflush().  This depends on strongly ordered memory&n;&t; * semantics, but we have that.  We use the SYNCHRONIZE&n;&t; * macro to make sure that the compiler does not reorder&n;&t; * the i_update_core access below the data copy below.&n;&t; */
 r_if
 c_cond
 (paren
@@ -673,7 +698,7 @@ id|iip-&gt;ili_format.ilf_fields
 op_or_assign
 id|XFS_ILOG_CORE
 suffix:semicolon
-multiline_comment|/*&n;&t; * If this is really an old format inode, then we need to&n;&t; * log it as such.  This means that we have to copy the link&n;&t; * count from the new field to the old.&t; We don&squot;t have to worry&n;&t; * about the new fields, because nothing trusts them as long as&n;&t; * the old inode version number is there.  If the superblock already&n;&t; * has a new version number, then we don&squot;t bother converting back.&n;&t; */
+multiline_comment|/*&n;&t; * If this is really an old format inode, then we need to&n;&t; * log it as such.  This means that we have to copy the link&n;&t; * count from the new field to the old.  We don&squot;t have to worry&n;&t; * about the new fields, because nothing trusts them as long as&n;&t; * the old inode version number is there.  If the superblock already&n;&t; * has a new version number, then we don&squot;t bother converting back.&n;&t; */
 id|mp
 op_assign
 id|ip-&gt;i_mount
@@ -1343,7 +1368,7 @@ id|vecp-&gt;i_len
 op_assign
 id|ip-&gt;i_afp-&gt;if_bytes
 suffix:semicolon
-macro_line|#else&t;&t;
+macro_line|#else
 id|ASSERT
 c_func
 (paren
@@ -1589,7 +1614,7 @@ op_assign
 id|nvecs
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called to pin the inode associated with the inode log&n; * item in memory so it cannot be written out.&t;Do this by calling&n; * xfs_ipin() to bump the pin count in the inode while holding the&n; * inode pin lock.&n; */
+multiline_comment|/*&n; * This is called to pin the inode associated with the inode log&n; * item in memory so it cannot be written out.  Do this by calling&n; * xfs_ipin() to bump the pin count in the inode while holding the&n; * inode pin lock.&n; */
 id|STATIC
 r_void
 DECL|function|xfs_inode_item_pin
@@ -2489,7 +2514,7 @@ op_le
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since we were able to lock the inode&squot;s flush lock and&n;&t; * we found it on the AIL, the inode must be dirty.  This&n;&t; * is because the inode is removed from the AIL while still&n;&t; * holding the flush lock in xfs_iflush_done().&t; Thus, if&n;&t; * we found it in the AIL and were able to obtain the flush&n;&t; * lock without sleeping, then there must not have been&n;&t; * anyone in the process of flushing the inode.&n;&t; */
+multiline_comment|/*&n;&t; * Since we were able to lock the inode&squot;s flush lock and&n;&t; * we found it on the AIL, the inode must be dirty.  This&n;&t; * is because the inode is removed from the AIL while still&n;&t; * holding the flush lock in xfs_iflush_done().  Thus, if&n;&t; * we found it in the AIL and were able to obtain the flush&n;&t; * lock without sleeping, then there must not have been&n;&t; * anyone in the process of flushing the inode.&n;&t; */
 id|ASSERT
 c_func
 (paren
@@ -2504,7 +2529,7 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Write out the inode.&t; The completion routine (&squot;iflush_done&squot;) will&n;&t; * pull it from the AIL, mark it clean, unlock the flush lock.&n;&t; */
+multiline_comment|/*&n;&t; * Write out the inode.  The completion routine (&squot;iflush_done&squot;) will&n;&t; * pull it from the AIL, mark it clean, unlock the flush lock.&n;&t; */
 (paren
 r_void
 )paren
@@ -2900,7 +2925,7 @@ id|ip
 op_assign
 id|iip-&gt;ili_inode
 suffix:semicolon
-multiline_comment|/*&n;&t; * We only want to pull the item from the AIL if it is&n;&t; * actually there and its location in the log has not&n;&t; * changed since we started the flush.&t;Thus, we only bother&n;&t; * if the ili_logged flag is set and the inode&squot;s lsn has not&n;&t; * changed.  First we check the lsn outside&n;&t; * the lock since it&squot;s cheaper, and then we recheck while&n;&t; * holding the lock before removing the inode from the AIL.&n;&t; */
+multiline_comment|/*&n;&t; * We only want to pull the item from the AIL if it is&n;&t; * actually there and its location in the log has not&n;&t; * changed since we started the flush.  Thus, we only bother&n;&t; * if the ili_logged flag is set and the inode&squot;s lsn has not&n;&t; * changed.  First we check the lsn outside&n;&t; * the lock since it&squot;s cheaper, and then we recheck while&n;&t; * holding the lock before removing the inode from the AIL.&n;&t; */
 r_if
 c_cond
 (paren

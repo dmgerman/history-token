@@ -2460,6 +2460,11 @@ op_assign
 id|PF_BLUETOOTH
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|release
 op_assign
 id|hci_sock_release

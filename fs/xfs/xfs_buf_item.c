@@ -1,15 +1,29 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * This file contains the implementation of the xfs_buf_log_item.&n; * It contains the item operations used to manipulate the buf log&n; * items as well as utility routines used by the buffer specific&n; * transaction routines.&n; */
-macro_line|#include &lt;xfs.h&gt;
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_buf_item.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_trans_priv.h&quot;
+macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_bit.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
 DECL|macro|ROUNDUPNBWORD
-mdefine_line|#define ROUNDUPNBWORD(x)&t;(((x) + (NBWORD - 1)) &amp; ~(NBWORD - 1))
+mdefine_line|#define&t;ROUNDUPNBWORD(x)&t;(((x) + (NBWORD - 1)) &amp; ~(NBWORD - 1))
 DECL|variable|xfs_buf_item_zone
 id|kmem_zone_t
 op_star
 id|xfs_buf_item_zone
 suffix:semicolon
 macro_line|#ifdef XFS_TRANS_DEBUG
-multiline_comment|/*&n; * This function uses an alternate strategy for tracking the bytes&n; * that the user requests to be logged.&t; This can then be used&n; * in conjunction with the bli_orig array in the buf log item to&n; * catch bugs in our callers&squot; code.&n; *&n; * We also double check the bits set in xfs_buf_item_log using a&n; * simple algorithm to check that every byte is accounted for.&n; */
+multiline_comment|/*&n; * This function uses an alternate strategy for tracking the bytes&n; * that the user requests to be logged.  This can then be used&n; * in conjunction with the bli_orig array in the buf log item to&n; * catch bugs in our callers&squot; code.&n; *&n; * We also double check the bits set in xfs_buf_item_log using a&n; * simple algorithm to check that every byte is accounted for.&n; */
 id|STATIC
 r_void
 DECL|function|xfs_buf_item_log_debug
@@ -151,7 +165,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This function is called when we flush something into a buffer without&n; * logging it.&t;This happens for things like inodes which are logged&n; * separately from the buffer.&n; */
+multiline_comment|/*&n; * This function is called when we flush something into a buffer without&n; * logging it.  This happens for things like inodes which are logged&n; * separately from the buffer.&n; */
 r_void
 DECL|function|xfs_buf_item_flush_log_debug
 id|xfs_buf_item_flush_log_debug
@@ -505,7 +519,7 @@ op_minus
 l_int|1
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * This takes the bit number to start looking from and&n;&t;&t; * returns the next set bit from there.&t; It returns -1&n;&t;&t; * if there are no more bits set or the start bit is&n;&t;&t; * beyond the end of the bitmap.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This takes the bit number to start looking from and&n;&t;&t; * returns the next set bit from there.  It returns -1&n;&t;&t; * if there are no more bits set or the start bit is&n;&t;&t; * beyond the end of the bitmap.&n;&t;&t; */
 id|next_bit
 op_assign
 id|xfs_next_bit
@@ -611,7 +625,7 @@ r_return
 id|nvecs
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called to fill in the vector of log iovecs for the&n; * given log buf item.&t;It fills the first entry with a buf log&n; * format structure, and the rest point to contiguous chunks&n; * within the buffer.&n; */
+multiline_comment|/*&n; * This is called to fill in the vector of log iovecs for the&n; * given log buf item.  It fills the first entry with a buf log&n; * format structure, and the rest point to contiguous chunks&n; * within the buffer.&n; */
 r_void
 DECL|function|xfs_buf_item_format
 id|xfs_buf_item_format
@@ -816,7 +830,7 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * This takes the bit number to start looking from and&n;&t;&t; * returns the next set bit from there.&t; It returns -1&n;&t;&t; * if there are no more bits set or the start bit is&n;&t;&t; * beyond the end of the bitmap.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This takes the bit number to start looking from and&n;&t;&t; * returns the next set bit from there.  It returns -1&n;&t;&t; * if there are no more bits set or the start bit is&n;&t;&t; * beyond the end of the bitmap.&n;&t;&t; */
 id|next_bit
 op_assign
 id|xfs_next_bit
@@ -1022,7 +1036,7 @@ id|bip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called to pin the buffer associated with the buf log&n; * item in memory so it cannot be written out.&t;Simply call bpin()&n; * on the buffer to do this.&n; */
+multiline_comment|/*&n; * This is called to pin the buffer associated with the buf log&n; * item in memory so it cannot be written out.  Simply call bpin()&n; * on the buffer to do this.&n; */
 r_void
 DECL|function|xfs_buf_item_pin
 id|xfs_buf_item_pin
@@ -1736,7 +1750,7 @@ id|bp
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This is called to find out where the oldest active copy of the&n; * buf log item in the on disk log resides now that the last log&n; * write of it completed at the given lsn.&n; * We always re-log all the dirty data in a buffer, so usually the&n; * latest copy in the on disk log is the only one that matters.&t; For&n; * those cases we simply return the given lsn.&n; *&n; * The one exception to this is for buffers full of newly allocated&n; * inodes.  These buffers are only relogged with the XFS_BLI_INODE_BUF&n; * flag set, indicating that only the di_next_unlinked fields from the&n; * inodes in the buffers will be replayed during recovery.  If the&n; * original newly allocated inode images have not yet been flushed&n; * when the buffer is so relogged, then we need to make sure that we&n; * keep the old images in the &squot;active&squot; portion of the log.  We do this&n; * by returning the original lsn of that transaction here rather than&n; * the current one.&n; */
+multiline_comment|/*&n; * This is called to find out where the oldest active copy of the&n; * buf log item in the on disk log resides now that the last log&n; * write of it completed at the given lsn.&n; * We always re-log all the dirty data in a buffer, so usually the&n; * latest copy in the on disk log is the only one that matters.  For&n; * those cases we simply return the given lsn.&n; *&n; * The one exception to this is for buffers full of newly allocated&n; * inodes.  These buffers are only relogged with the XFS_BLI_INODE_BUF&n; * flag set, indicating that only the di_next_unlinked fields from the&n; * inodes in the buffers will be replayed during recovery.  If the&n; * original newly allocated inode images have not yet been flushed&n; * when the buffer is so relogged, then we need to make sure that we&n; * keep the old images in the &squot;active&squot; portion of the log.  We do this&n; * by returning the original lsn of that transaction here rather than&n; * the current one.&n; */
 id|xfs_lsn_t
 DECL|function|xfs_buf_item_committed
 id|xfs_buf_item_committed
@@ -1826,7 +1840,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called to asynchronously write the buffer associated with this&n; * buf log item out to disk. The buffer will already have been locked by&n; * a successful call to xfs_buf_item_trylock().&t; If the buffer still has&n; * B_DELWRI set, then get it going out to disk with a call to bawrite().&n; * If not, then just release the buffer.&n; */
+multiline_comment|/*&n; * This is called to asynchronously write the buffer associated with this&n; * buf log item out to disk. The buffer will already have been locked by&n; * a successful call to xfs_buf_item_trylock().  If the buffer still has&n; * B_DELWRI set, then get it going out to disk with a call to bawrite().&n; * If not, then just release the buffer.&n; */
 r_void
 DECL|function|xfs_buf_item_push
 id|xfs_buf_item_push
@@ -2130,7 +2144,7 @@ suffix:semicolon
 r_int
 id|map_size
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check to see if there is already a buf log item for&n;&t; * this buffer.&t; If there is, it is guaranteed to be&n;&t; * the first.  If we do already have one, there is&n;&t; * nothing to do here so return.&n;&t; */
+multiline_comment|/*&n;&t; * Check to see if there is already a buf log item for&n;&t; * this buffer.  If there is, it is guaranteed to be&n;&t; * the first.  If we do already have one, there is&n;&t; * nothing to do here so return.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2199,7 +2213,7 @@ r_return
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * chunks is the number of XFS_BLI_CHUNK size pieces&n;&t; * the buffer can be divided into. Make sure not to&n;&t; * truncate any pieces.&t; map_size is the size of the&n;&t; * bitmap needed to describe the chunks of the buffer.&n;&t; */
+multiline_comment|/*&n;&t; * chunks is the number of XFS_BLI_CHUNK size pieces&n;&t; * the buffer can be divided into. Make sure not to&n;&t; * truncate any pieces.  map_size is the size of the&n;&t; * bitmap needed to describe the chunks of the buffer.&n;&t; */
 id|chunks
 op_assign
 (paren
@@ -2514,7 +2528,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * First set any bits in the first word of our range.&n;&t; * If it starts at bit 0 of the word, it will be&n;&t; * set below rather than here.&t;That is what the variable&n;&t; * bit tells us. The variable bits_set tracks the number&n;&t; * of bits that have been set so far.  End_bit is the number&n;&t; * of the last bit to be set in this word plus one.&n;&t; */
+multiline_comment|/*&n;&t; * First set any bits in the first word of our range.&n;&t; * If it starts at bit 0 of the word, it will be&n;&t; * set below rather than here.  That is what the variable&n;&t; * bit tells us. The variable bits_set tracks the number&n;&t; * of bits that have been set so far.  End_bit is the number&n;&t; * of the last bit to be set in this word plus one.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2804,7 +2818,7 @@ id|bip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Add the given log item with its callback to the list of callbacks&n; * to be called when the buffer&squot;s I/O completes.  If it is not set&n; * already, set the buffer&squot;s b_iodone() routine to be&n; * xfs_buf_iodone_callbacks() and link the log item into the list of&n; * items rooted at b_fsprivate.&t; Items are always added as the second&n; * entry in the list if there is a first, because the buf item code&n; * assumes that the buf log item is first.&n; */
+multiline_comment|/*&n; * Add the given log item with its callback to the list of callbacks&n; * to be called when the buffer&squot;s I/O completes.  If it is not set&n; * already, set the buffer&squot;s b_iodone() routine to be&n; * xfs_buf_iodone_callbacks() and link the log item into the list of&n; * items rooted at b_fsprivate.  Items are always added as the second&n; * entry in the list if there is a first, because the buf item code&n; * assumes that the buf log item is first.&n; */
 r_void
 DECL|function|xfs_buf_attach_iodone
 id|xfs_buf_attach_iodone
@@ -3001,7 +3015,7 @@ id|nlip
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This is the iodone() function for buffers which have had callbacks&n; * attached to them by xfs_buf_attach_iodone().&t; It should remove each&n; * log item from the buffer&squot;s list and call the callback of each in turn.&n; * When done, the buffer&squot;s fsprivate field is set to NULL and the buffer&n; * is unlocked with a call to iodone().&n; */
+multiline_comment|/*&n; * This is the iodone() function for buffers which have had callbacks&n; * attached to them by xfs_buf_attach_iodone().  It should remove each&n; * log item from the buffer&squot;s list and call the callback of each in turn.&n; * When done, the buffer&squot;s fsprivate field is set to NULL and the buffer&n; * is unlocked with a call to iodone().&n; */
 r_void
 DECL|function|xfs_buf_iodone_callbacks
 id|xfs_buf_iodone_callbacks

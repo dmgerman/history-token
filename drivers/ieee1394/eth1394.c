@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
@@ -41,7 +42,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 906 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 918 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Our ieee1394 highlevel driver */
 DECL|macro|ETHER1394_DRIVER_NAME
@@ -3406,7 +3407,7 @@ op_assign
 id|dest_node
 suffix:semicolon
 multiline_comment|/* TODO: When 2.4 is out of the way, give each of our ethernet&n;&t; * dev&squot;s a workqueue to handle these.  */
-id|HPSB_INIT_WORK
+id|INIT_WORK
 c_func
 (paren
 op_amp
@@ -3417,7 +3418,7 @@ comma
 id|ptask
 )paren
 suffix:semicolon
-id|hpsb_schedule_work
+id|schedule_work
 c_func
 (paren
 op_amp

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_VNODE_H__
 DECL|macro|__XFS_VNODE_H__
 mdefine_line|#define __XFS_VNODE_H__
@@ -228,11 +228,11 @@ id|vttoif_tab
 )braket
 suffix:semicolon
 DECL|macro|IFTOVT
-mdefine_line|#define IFTOVT(M)&t;(iftovt_tab[((M) &amp; S_IFMT) &gt;&gt; 12])
+mdefine_line|#define IFTOVT(M)       (iftovt_tab[((M) &amp; S_IFMT) &gt;&gt; 12])
 DECL|macro|VTTOIF
-mdefine_line|#define VTTOIF(T)&t;(vttoif_tab[(int)(T)])
+mdefine_line|#define VTTOIF(T)       (vttoif_tab[(int)(T)])
 DECL|macro|MAKEIMODE
-mdefine_line|#define MAKEIMODE(T, M) (VTTOIF(T) | ((M) &amp; ~S_IFMT))
+mdefine_line|#define MAKEIMODE(T, M)&t;(VTTOIF(T) | ((M) &amp; ~S_IFMT))
 multiline_comment|/*&n; * Vnode flags.&n; */
 DECL|macro|VINACT
 mdefine_line|#define VINACT&t;&t;       0x1&t;/* vnode is being inactivated&t;*/
@@ -271,9 +271,9 @@ id|vrwlock_t
 suffix:semicolon
 multiline_comment|/*&n; * Return values for VOP_INACTIVE.  A return value of&n; * VN_INACTIVE_NOCACHE implies that the file system behavior&n; * has disassociated its state and bhv_desc_t from the vnode.&n; */
 DECL|macro|VN_INACTIVE_CACHE
-mdefine_line|#define VN_INACTIVE_CACHE&t;0
+mdefine_line|#define&t;VN_INACTIVE_CACHE&t;0
 DECL|macro|VN_INACTIVE_NOCACHE
-mdefine_line|#define VN_INACTIVE_NOCACHE&t;1
+mdefine_line|#define&t;VN_INACTIVE_NOCACHE&t;1
 multiline_comment|/*&n; * Values for the cmd code given to VOP_VNODE_CHANGE.&n; */
 DECL|enum|vchange
 r_typedef
@@ -1253,31 +1253,31 @@ mdefine_line|#define VOP_OPEN(vp, cr, rv)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _V
 DECL|macro|VOP_GETATTR
 mdefine_line|#define VOP_GETATTR(vp, vap, f, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_getattr, vp)((vp)-&gt;v_fbhv, vap, f, cr)
 DECL|macro|VOP_SETATTR
-mdefine_line|#define VOP_SETATTR(vp, vap, f, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_setattr, vp)((vp)-&gt;v_fbhv, vap, f, cr)
+mdefine_line|#define&t;VOP_SETATTR(vp, vap, f, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_setattr, vp)((vp)-&gt;v_fbhv, vap, f, cr)
 DECL|macro|VOP_ACCESS
-mdefine_line|#define VOP_ACCESS(vp, mode, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_access, vp)((vp)-&gt;v_fbhv, mode, cr)
+mdefine_line|#define&t;VOP_ACCESS(vp, mode, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_access, vp)((vp)-&gt;v_fbhv, mode, cr)
 DECL|macro|VOP_LOOKUP
-mdefine_line|#define VOP_LOOKUP(vp,d,vpp,f,rdir,cr,rv)&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_lookup, vp)((vp)-&gt;v_fbhv,d,vpp,f,rdir,cr)
+mdefine_line|#define&t;VOP_LOOKUP(vp,d,vpp,f,rdir,cr,rv)&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_lookup, vp)((vp)-&gt;v_fbhv,d,vpp,f,rdir,cr)
 DECL|macro|VOP_CREATE
 mdefine_line|#define VOP_CREATE(dvp,d,vap,vpp,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_create, dvp)((dvp)-&gt;v_fbhv,d,vap,vpp,cr)
 DECL|macro|VOP_REMOVE
 mdefine_line|#define VOP_REMOVE(dvp,d,cr,rv)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_remove, dvp)((dvp)-&gt;v_fbhv,d,cr)
 DECL|macro|VOP_LINK
-mdefine_line|#define VOP_LINK(tdvp,fvp,d,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_link, tdvp)((tdvp)-&gt;v_fbhv,fvp,d,cr)
+mdefine_line|#define&t;VOP_LINK(tdvp,fvp,d,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_link, tdvp)((tdvp)-&gt;v_fbhv,fvp,d,cr)
 DECL|macro|VOP_RENAME
-mdefine_line|#define VOP_RENAME(fvp,fnm,tdvp,tnm,cr,rv)&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_rename, fvp)((fvp)-&gt;v_fbhv,fnm,tdvp,tnm,cr)
+mdefine_line|#define&t;VOP_RENAME(fvp,fnm,tdvp,tnm,cr,rv)&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_rename, fvp)((fvp)-&gt;v_fbhv,fnm,tdvp,tnm,cr)
 DECL|macro|VOP_MKDIR
-mdefine_line|#define VOP_MKDIR(dp,d,vap,vpp,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_mkdir, dp)((dp)-&gt;v_fbhv,d,vap,vpp,cr)
+mdefine_line|#define&t;VOP_MKDIR(dp,d,vap,vpp,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_mkdir, dp)((dp)-&gt;v_fbhv,d,vap,vpp,cr)
 DECL|macro|VOP_RMDIR
 mdefine_line|#define&t;VOP_RMDIR(dp,d,cr,rv)&t; &t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_rmdir, dp)((dp)-&gt;v_fbhv,d,cr)
 DECL|macro|VOP_READDIR
-mdefine_line|#define VOP_READDIR(vp,uiop,cr,eofp,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_readdir, vp)((vp)-&gt;v_fbhv,uiop,cr,eofp)
+mdefine_line|#define&t;VOP_READDIR(vp,uiop,cr,eofp,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_readdir, vp)((vp)-&gt;v_fbhv,uiop,cr,eofp)
 DECL|macro|VOP_SYMLINK
-mdefine_line|#define VOP_SYMLINK(dvp,d,vap,tnm,vpp,cr,rv)&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_symlink, dvp) ((dvp)-&gt;v_fbhv,d,vap,tnm,vpp,cr)
+mdefine_line|#define&t;VOP_SYMLINK(dvp,d,vap,tnm,vpp,cr,rv)&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_symlink, dvp) ((dvp)-&gt;v_fbhv,d,vap,tnm,vpp,cr)
 DECL|macro|VOP_READLINK
-mdefine_line|#define VOP_READLINK(vp,uiop,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_readlink, vp)((vp)-&gt;v_fbhv,uiop,cr)
+mdefine_line|#define&t;VOP_READLINK(vp,uiop,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_readlink, vp)((vp)-&gt;v_fbhv,uiop,cr)
 DECL|macro|VOP_FSYNC
-mdefine_line|#define VOP_FSYNC(vp,f,cr,b,e,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_fsync, vp)((vp)-&gt;v_fbhv,f,cr,b,e)
+mdefine_line|#define&t;VOP_FSYNC(vp,f,cr,b,e,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_fsync, vp)((vp)-&gt;v_fbhv,f,cr,b,e)
 DECL|macro|VOP_INACTIVE
 mdefine_line|#define VOP_INACTIVE(vp, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_inactive, vp)((vp)-&gt;v_fbhv, cr)
 DECL|macro|VOP_RELEASE
@@ -1297,11 +1297,11 @@ mdefine_line|#define VOP_RECLAIM(vp, rv)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VO
 DECL|macro|VOP_ATTR_GET
 mdefine_line|#define VOP_ATTR_GET(vp, name, val, vallenp, fl, cred, rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_get, vp)((vp)-&gt;v_fbhv,name,val,vallenp,fl,cred)
 DECL|macro|VOP_ATTR_SET
-mdefine_line|#define VOP_ATTR_SET(vp, name, val, vallen, fl, cred, rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_set, vp)((vp)-&gt;v_fbhv,name,val,vallen,fl,cred)
+mdefine_line|#define&t;VOP_ATTR_SET(vp, name, val, vallen, fl, cred, rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_set, vp)((vp)-&gt;v_fbhv,name,val,vallen,fl,cred)
 DECL|macro|VOP_ATTR_REMOVE
-mdefine_line|#define VOP_ATTR_REMOVE(vp, name, flags, cred, rv)&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_remove, vp)((vp)-&gt;v_fbhv,name,flags,cred)
+mdefine_line|#define&t;VOP_ATTR_REMOVE(vp, name, flags, cred, rv)&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_remove, vp)((vp)-&gt;v_fbhv,name,flags,cred)
 DECL|macro|VOP_ATTR_LIST
-mdefine_line|#define VOP_ATTR_LIST(vp, buf, buflen, fl, cursor, cred, rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_list, vp)((vp)-&gt;v_fbhv,buf,buflen,fl,cursor,cred)
+mdefine_line|#define&t;VOP_ATTR_LIST(vp, buf, buflen, fl, cursor, cred, rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_list, vp)((vp)-&gt;v_fbhv,buf,buflen,fl,cursor,cred)
 DECL|macro|VOP_LINK_REMOVED
 mdefine_line|#define VOP_LINK_REMOVED(vp, dvp, linkzero)&t;&t;&t;&t;&bslash;&n;&t;(void)_VOP_(vop_link_removed, vp)((vp)-&gt;v_fbhv, dvp, linkzero)
 DECL|macro|VOP_VNODE_CHANGE
@@ -1800,17 +1800,17 @@ DECL|macro|VUNMODIFY
 mdefine_line|#define VUNMODIFY(vp)&t;VN_FLAGCLR(vp, VMODIFIED)
 multiline_comment|/*&n; * Flags to VOP_SETATTR/VOP_GETATTR.&n; */
 DECL|macro|ATTR_UTIME
-mdefine_line|#define ATTR_UTIME&t;0x01&t;/* non-default utime(2) request */
+mdefine_line|#define&t;ATTR_UTIME&t;0x01&t;/* non-default utime(2) request */
 DECL|macro|ATTR_EXEC
-mdefine_line|#define ATTR_EXEC&t;0x02&t;/* invocation from exec(2) */
+mdefine_line|#define&t;ATTR_EXEC&t;0x02&t;/* invocation from exec(2) */
 DECL|macro|ATTR_COMM
-mdefine_line|#define ATTR_COMM&t;0x04&t;/* yield common vp attributes */
+mdefine_line|#define&t;ATTR_COMM&t;0x04&t;/* yield common vp attributes */
 DECL|macro|ATTR_DMI
-mdefine_line|#define ATTR_DMI&t;0x08&t;/* invocation from a DMI function */
+mdefine_line|#define&t;ATTR_DMI&t;0x08&t;/* invocation from a DMI function */
 DECL|macro|ATTR_LAZY
-mdefine_line|#define ATTR_LAZY&t;0x80&t;/* set/get attributes lazily */
+mdefine_line|#define&t;ATTR_LAZY&t;0x80&t;/* set/get attributes lazily */
 DECL|macro|ATTR_NONBLOCK
-mdefine_line|#define ATTR_NONBLOCK&t;0x100&t;/* return EAGAIN if operation would block */
+mdefine_line|#define&t;ATTR_NONBLOCK&t;0x100&t;/* return EAGAIN if operation would block */
 DECL|macro|ATTR_NOLOCK
 mdefine_line|#define ATTR_NOLOCK&t;0x200&t;/* Don&squot;t grab any conflicting locks */
 DECL|macro|ATTR_NOSIZETOK
@@ -1826,18 +1826,18 @@ DECL|macro|FSYNC_DATA
 mdefine_line|#define FSYNC_DATA&t;0x4&t;/* synchronous fsync of data only */
 macro_line|#if (defined(CONFIG_XFS_VNODE_TRACING))
 DECL|macro|VNODE_TRACE_SIZE
-mdefine_line|#define VNODE_TRACE_SIZE&t;16&t;&t;/* number of trace entries */
+mdefine_line|#define&t;VNODE_TRACE_SIZE&t;16&t;&t;/* number of trace entries */
 multiline_comment|/*&n; * Tracing entries.&n; */
 DECL|macro|VNODE_KTRACE_ENTRY
-mdefine_line|#define VNODE_KTRACE_ENTRY&t;1
+mdefine_line|#define&t;VNODE_KTRACE_ENTRY&t;1
 DECL|macro|VNODE_KTRACE_EXIT
-mdefine_line|#define VNODE_KTRACE_EXIT&t;2
+mdefine_line|#define&t;VNODE_KTRACE_EXIT&t;2
 DECL|macro|VNODE_KTRACE_HOLD
-mdefine_line|#define VNODE_KTRACE_HOLD&t;3
+mdefine_line|#define&t;VNODE_KTRACE_HOLD&t;3
 DECL|macro|VNODE_KTRACE_REF
-mdefine_line|#define VNODE_KTRACE_REF&t;4
+mdefine_line|#define&t;VNODE_KTRACE_REF&t;4
 DECL|macro|VNODE_KTRACE_RELE
-mdefine_line|#define VNODE_KTRACE_RELE&t;5
+mdefine_line|#define&t;VNODE_KTRACE_RELE&t;5
 r_extern
 r_void
 id|vn_trace_entry
@@ -1925,20 +1925,20 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|VN_TRACE
-mdefine_line|#define VN_TRACE(vp)&t;&t;&bslash;&n;&t;vn_trace_ref(vp, __FILE__, __LINE__, (inst_t *)__return_address)
+mdefine_line|#define&t;VN_TRACE(vp)&t;&t;&bslash;&n;&t;vn_trace_ref(vp, __FILE__, __LINE__, (inst_t *)__return_address)
 macro_line|#else&t;/* ! (defined(CONFIG_XFS_VNODE_TRACING)) */
 DECL|macro|vn_trace_entry
-mdefine_line|#define vn_trace_entry(a,b,c)
+mdefine_line|#define&t;vn_trace_entry(a,b,c)
 DECL|macro|vn_trace_exit
-mdefine_line|#define vn_trace_exit(a,b,c)
+mdefine_line|#define&t;vn_trace_exit(a,b,c)
 DECL|macro|vn_trace_hold
-mdefine_line|#define vn_trace_hold(a,b,c,d)
+mdefine_line|#define&t;vn_trace_hold(a,b,c,d)
 DECL|macro|vn_trace_ref
-mdefine_line|#define vn_trace_ref(a,b,c,d)
+mdefine_line|#define&t;vn_trace_ref(a,b,c,d)
 DECL|macro|vn_trace_rele
-mdefine_line|#define vn_trace_rele(a,b,c,d)
+mdefine_line|#define&t;vn_trace_rele(a,b,c,d)
 DECL|macro|VN_TRACE
-mdefine_line|#define VN_TRACE(vp)
+mdefine_line|#define&t;VN_TRACE(vp)
 macro_line|#endif&t;/* ! (defined(CONFIG_XFS_VNODE_TRACING)) */
 macro_line|#endif&t;/* __XFS_VNODE_H__ */
 eof

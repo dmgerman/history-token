@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000, 2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000, 2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_DA_BTREE_H__
 DECL|macro|__XFS_DA_BTREE_H__
-mdefine_line|#define __XFS_DA_BTREE_H__
+mdefine_line|#define&t;__XFS_DA_BTREE_H__
 r_struct
 id|xfs_buf
 suffix:semicolon
@@ -29,11 +29,11 @@ mdefine_line|#define XFS_DIR_LEAF_MAGIC&t;0xfeeb&t;/* magic number: directory le
 DECL|macro|XFS_ATTR_LEAF_MAGIC
 mdefine_line|#define XFS_ATTR_LEAF_MAGIC&t;0xfbee&t;/* magic number: attribute leaf blks */
 DECL|macro|XFS_DIR2_LEAF1_MAGIC
-mdefine_line|#define XFS_DIR2_LEAF1_MAGIC&t;0xd2f1&t;/* magic number: v2 dirlf single blks */
+mdefine_line|#define&t;XFS_DIR2_LEAF1_MAGIC&t;0xd2f1&t;/* magic number: v2 dirlf single blks */
 DECL|macro|XFS_DIR2_LEAFN_MAGIC
-mdefine_line|#define XFS_DIR2_LEAFN_MAGIC&t;0xd2ff&t;/* magic number: v2 dirlf multi blks */
+mdefine_line|#define&t;XFS_DIR2_LEAFN_MAGIC&t;0xd2ff&t;/* magic number: v2 dirlf multi blks */
 DECL|macro|XFS_DIRX_LEAF_MAGIC
-mdefine_line|#define XFS_DIRX_LEAF_MAGIC(mp) &bslash;&n;&t;(XFS_DIR_IS_V1(mp) ? XFS_DIR_LEAF_MAGIC : XFS_DIR2_LEAFN_MAGIC)
+mdefine_line|#define&t;XFS_DIRX_LEAF_MAGIC(mp)&t;&bslash;&n;&t;(XFS_DIR_IS_V1(mp) ? XFS_DIR_LEAF_MAGIC : XFS_DIR2_LEAFN_MAGIC)
 DECL|struct|xfs_da_blkinfo
 r_typedef
 r_struct
@@ -65,7 +65,7 @@ id|xfs_da_blkinfo_t
 suffix:semicolon
 multiline_comment|/*&n; * This is the structure of the root and intermediate nodes in the Btree.&n; * The leaf nodes are defined above.&n; *&n; * Entries are not packed.&n; *&n; * Since we have duplicate keys, use a binary search but always follow&n; * all match in the block, not just the first match found.&n; */
 DECL|macro|XFS_DA_NODE_MAXDEPTH
-mdefine_line|#define XFS_DA_NODE_MAXDEPTH&t;5&t;/* max depth of Btree */
+mdefine_line|#define&t;XFS_DA_NODE_MAXDEPTH&t;5&t;/* max depth of Btree */
 DECL|struct|xfs_da_intnode
 r_typedef
 r_struct
@@ -148,10 +148,10 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_LBSIZE
-mdefine_line|#define XFS_LBSIZE(mp)&t;&t;&t;xfs_lbsize(mp)
+mdefine_line|#define&t;XFS_LBSIZE(mp)&t;&t;&t;xfs_lbsize(mp)
 macro_line|#else
 DECL|macro|XFS_LBSIZE
-mdefine_line|#define XFS_LBSIZE(mp)&t;((mp)-&gt;m_sb.sb_blocksize)
+mdefine_line|#define&t;XFS_LBSIZE(mp)&t;((mp)-&gt;m_sb.sb_blocksize)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_LBLOG)
 r_int
@@ -165,10 +165,10 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_LBLOG
-mdefine_line|#define XFS_LBLOG(mp)&t;&t;&t;xfs_lblog(mp)
+mdefine_line|#define&t;XFS_LBLOG(mp)&t;&t;&t;xfs_lblog(mp)
 macro_line|#else
 DECL|macro|XFS_LBLOG
-mdefine_line|#define XFS_LBLOG(mp)&t;((mp)-&gt;m_sb.sb_blocklog)
+mdefine_line|#define&t;XFS_LBLOG(mp)&t;((mp)-&gt;m_sb.sb_blocklog)
 macro_line|#endif
 multiline_comment|/*&n; * Macros used by directory code to interface to the kernel&n; */
 multiline_comment|/*&n; * Macros used to manipulate directory off_t&squot;s&n; */
@@ -190,10 +190,10 @@ id|entry
 )paren
 suffix:semicolon
 DECL|macro|XFS_DA_MAKE_BNOENTRY
-mdefine_line|#define XFS_DA_MAKE_BNOENTRY(mp,bno,entry)&t;&bslash;&n;&t;xfs_da_make_bnoentry(mp,bno,entry)
+mdefine_line|#define&t;XFS_DA_MAKE_BNOENTRY(mp,bno,entry)&t;&bslash;&n;&t;xfs_da_make_bnoentry(mp,bno,entry)
 macro_line|#else
 DECL|macro|XFS_DA_MAKE_BNOENTRY
-mdefine_line|#define XFS_DA_MAKE_BNOENTRY(mp,bno,entry) &bslash;&n;&t;(((bno) &lt;&lt; (mp)-&gt;m_dircook_elog) | (entry))
+mdefine_line|#define&t;XFS_DA_MAKE_BNOENTRY(mp,bno,entry) &bslash;&n;&t;(((bno) &lt;&lt; (mp)-&gt;m_dircook_elog) | (entry))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DA_MAKE_COOKIE)
 id|xfs_off_t
@@ -216,10 +216,10 @@ id|hash
 )paren
 suffix:semicolon
 DECL|macro|XFS_DA_MAKE_COOKIE
-mdefine_line|#define XFS_DA_MAKE_COOKIE(mp,bno,entry,hash)&t;&bslash;&n;&t;xfs_da_make_cookie(mp,bno,entry,hash)
+mdefine_line|#define&t;XFS_DA_MAKE_COOKIE(mp,bno,entry,hash)&t;&bslash;&n;&t;xfs_da_make_cookie(mp,bno,entry,hash)
 macro_line|#else
 DECL|macro|XFS_DA_MAKE_COOKIE
-mdefine_line|#define XFS_DA_MAKE_COOKIE(mp,bno,entry,hash) &bslash;&n;&t;(((xfs_off_t)XFS_DA_MAKE_BNOENTRY(mp, bno, entry) &lt;&lt; 32) | (hash))
+mdefine_line|#define&t;XFS_DA_MAKE_COOKIE(mp,bno,entry,hash) &bslash;&n;&t;(((xfs_off_t)XFS_DA_MAKE_BNOENTRY(mp, bno, entry) &lt;&lt; 32) | (hash))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DA_COOKIE_HASH)
 id|xfs_dahash_t
@@ -236,10 +236,10 @@ id|cookie
 )paren
 suffix:semicolon
 DECL|macro|XFS_DA_COOKIE_HASH
-mdefine_line|#define XFS_DA_COOKIE_HASH(mp,cookie)&t;&t;xfs_da_cookie_hash(mp,cookie)
+mdefine_line|#define&t;XFS_DA_COOKIE_HASH(mp,cookie)&t;&t;xfs_da_cookie_hash(mp,cookie)
 macro_line|#else
 DECL|macro|XFS_DA_COOKIE_HASH
-mdefine_line|#define XFS_DA_COOKIE_HASH(mp,cookie)&t;((xfs_dahash_t)(cookie))
+mdefine_line|#define&t;XFS_DA_COOKIE_HASH(mp,cookie)&t;((xfs_dahash_t)(cookie))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DA_COOKIE_BNO)
 id|xfs_dablk_t
@@ -256,10 +256,10 @@ id|cookie
 )paren
 suffix:semicolon
 DECL|macro|XFS_DA_COOKIE_BNO
-mdefine_line|#define XFS_DA_COOKIE_BNO(mp,cookie)&t;&t;xfs_da_cookie_bno(mp,cookie)
+mdefine_line|#define&t;XFS_DA_COOKIE_BNO(mp,cookie)&t;&t;xfs_da_cookie_bno(mp,cookie)
 macro_line|#else
 DECL|macro|XFS_DA_COOKIE_BNO
-mdefine_line|#define XFS_DA_COOKIE_BNO(mp,cookie) &bslash;&n;&t;(((xfs_off_t)(cookie) &gt;&gt; 31) == -1LL ? &bslash;&n;&t;&t;(xfs_dablk_t)0 : &bslash;&n;&t;&t;(xfs_dablk_t)((xfs_off_t)(cookie) &gt;&gt; ((mp)-&gt;m_dircook_elog + 32)))
+mdefine_line|#define&t;XFS_DA_COOKIE_BNO(mp,cookie) &bslash;&n;&t;(((xfs_off_t)(cookie) &gt;&gt; 31) == -1LL ? &bslash;&n;&t;&t;(xfs_dablk_t)0 : &bslash;&n;&t;&t;(xfs_dablk_t)((xfs_off_t)(cookie) &gt;&gt; ((mp)-&gt;m_dircook_elog + 32)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DA_COOKIE_ENTRY)
 r_int
@@ -276,10 +276,10 @@ id|cookie
 )paren
 suffix:semicolon
 DECL|macro|XFS_DA_COOKIE_ENTRY
-mdefine_line|#define XFS_DA_COOKIE_ENTRY(mp,cookie)&t;&t;xfs_da_cookie_entry(mp,cookie)
+mdefine_line|#define&t;XFS_DA_COOKIE_ENTRY(mp,cookie)&t;&t;xfs_da_cookie_entry(mp,cookie)
 macro_line|#else
 DECL|macro|XFS_DA_COOKIE_ENTRY
-mdefine_line|#define XFS_DA_COOKIE_ENTRY(mp,cookie) &bslash;&n;&t;(((xfs_off_t)(cookie) &gt;&gt; 31) == -1LL ? &bslash;&n;&t;&t;(xfs_dablk_t)0 : &bslash;&n;&t;&t;(xfs_dablk_t)(((xfs_off_t)(cookie) &gt;&gt; 32) &amp; &bslash;&n;&t;&t;&t;      ((1 &lt;&lt; (mp)-&gt;m_dircook_elog) - 1)))
+mdefine_line|#define&t;XFS_DA_COOKIE_ENTRY(mp,cookie) &bslash;&n;&t;(((xfs_off_t)(cookie) &gt;&gt; 31) == -1LL ? &bslash;&n;&t;&t;(xfs_dablk_t)0 : &bslash;&n;&t;&t;(xfs_dablk_t)(((xfs_off_t)(cookie) &gt;&gt; 32) &amp; &bslash;&n;&t;&t;&t;      ((1 &lt;&lt; (mp)-&gt;m_dircook_elog) - 1)))
 macro_line|#endif
 multiline_comment|/*========================================================================&n; * Btree searching and modification structure definitions.&n; *========================================================================*/
 multiline_comment|/*&n; * Structure to ease passing around component names.&n; */
@@ -500,7 +500,7 @@ DECL|typedef|xfs_dabuf_t
 id|xfs_dabuf_t
 suffix:semicolon
 DECL|macro|XFS_DA_BUF_SIZE
-mdefine_line|#define XFS_DA_BUF_SIZE(n)&t;&bslash;&n;&t;(sizeof(xfs_dabuf_t) + sizeof(struct xfs_buf *) * ((n) - 1))
+mdefine_line|#define&t;XFS_DA_BUF_SIZE(n)&t;&bslash;&n;&t;(sizeof(xfs_dabuf_t) + sizeof(struct xfs_buf *) * ((n) - 1))
 macro_line|#ifdef XFS_DABUF_DEBUG
 r_extern
 id|xfs_dabuf_t

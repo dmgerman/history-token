@@ -4,6 +4,7 @@ mdefine_line|#define _IEEE1394_HOSTS_H
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;csr.h&quot;
@@ -49,7 +50,7 @@ id|pending_pkt_lock
 suffix:semicolon
 DECL|member|timeout_tq
 r_struct
-id|hpsb_queue_struct
+id|work_struct
 id|timeout_tq
 suffix:semicolon
 DECL|member|iso_listen_count

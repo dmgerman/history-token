@@ -10,6 +10,8 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
@@ -20,7 +22,6 @@ macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;ieee1394_transactions.h&quot;
 macro_line|#include &quot;csr.h&quot;
 macro_line|#include &quot;nodemgr.h&quot;
-macro_line|#include &quot;ieee1394_hotplug.h&quot;
 macro_line|#include &quot;dma.h&quot;
 macro_line|#include &quot;iso.h&quot;
 multiline_comment|/*&n; * Disable the nodemgr detection and config rom reading functionality.&n; */
@@ -1841,7 +1842,7 @@ op_amp
 id|packet-&gt;state_change
 )paren
 suffix:semicolon
-id|hpsb_schedule_work
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -4473,7 +4474,7 @@ op_amp
 id|host-&gt;pending_packets
 )paren
 )paren
-id|hpsb_schedule_work
+id|schedule_work
 c_func
 (paren
 op_amp

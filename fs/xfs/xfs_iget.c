@@ -1,6 +1,29 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
-multiline_comment|/*&n; * Initialize the inode hash table for the newly mounted file system.&n; *&n; * mp -- this is the mount point structure for the file system being&n; *&t; initialized&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_ag.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_quota.h&quot;
+macro_line|#include &quot;xfs_utils.h&quot;
+multiline_comment|/*&n; * Initialize the inode hash table for the newly mounted file system.&n; *&n; * mp -- this is the mount point structure for the file system being&n; *       initialized&n; */
 r_void
 DECL|function|xfs_ihash_init
 id|xfs_ihash_init
@@ -109,7 +132,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Initialize the inode cluster hash table for the newly mounted file system.&n; *&n; * mp -- this is the mount point structure for the file system being&n; *&t; initialized&n; */
+multiline_comment|/*&n; * Initialize the inode cluster hash table for the newly mounted file system.&n; *&n; * mp -- this is the mount point structure for the file system being&n; *       initialized&n; */
 r_void
 DECL|function|xfs_chash_init
 id|xfs_chash_init
@@ -275,7 +298,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Look up an inode by number in the given file system.&n; * The inode is looked up in the hash table for the file system&n; * represented by the mount point parameter mp.&t; Each bucket of&n; * the hash table is guarded by an individual semaphore.&n; *&n; * If the inode is found in the hash table, its corresponding vnode&n; * is obtained with a call to vn_get().&t; This call takes care of&n; * coordination with the reclamation of the inode and vnode.  Note&n; * that the vmap structure is filled in while holding the hash lock.&n; * This gives us the state of the inode/vnode when we found it and&n; * is used for coordination in vn_get().&n; *&n; * If it is not in core, read it in from the file system&squot;s device and&n; * add the inode into the hash table.&n; *&n; * The inode is locked according to the value of the lock_flags parameter.&n; * This flag parameter indicates how and if the inode&squot;s IO lock and inode lock&n; * should be taken.&n; *&n; * mp -- the mount point structure for the current file system.&t; It points&n; *&t; to the inode hash table.&n; * tp -- a pointer to the current transaction if there is one.&t;This is&n; *&t; simply passed through to the xfs_iread() call.&n; * ino -- the number of the inode desired.  This is the unique identifier&n; *&t;  within the file system for the inode being requested.&n; * lock_flags -- flags indicating how to lock the inode.  See the comment&n; *&t;&t; for xfs_ilock() for a list of valid values.&n; * bno -- the block number starting the buffer containing the inode,&n; *&t;  if known (as by bulkstat), else 0.&n; */
+multiline_comment|/*&n; * Look up an inode by number in the given file system.&n; * The inode is looked up in the hash table for the file system&n; * represented by the mount point parameter mp.  Each bucket of&n; * the hash table is guarded by an individual semaphore.&n; *&n; * If the inode is found in the hash table, its corresponding vnode&n; * is obtained with a call to vn_get().  This call takes care of&n; * coordination with the reclamation of the inode and vnode.  Note&n; * that the vmap structure is filled in while holding the hash lock.&n; * This gives us the state of the inode/vnode when we found it and&n; * is used for coordination in vn_get().&n; *&n; * If it is not in core, read it in from the file system&squot;s device and&n; * add the inode into the hash table.&n; *&n; * The inode is locked according to the value of the lock_flags parameter.&n; * This flag parameter indicates how and if the inode&squot;s IO lock and inode lock&n; * should be taken.&n; *&n; * mp -- the mount point structure for the current file system.  It points&n; *       to the inode hash table.&n; * tp -- a pointer to the current transaction if there is one.  This is&n; *       simply passed through to the xfs_iread() call.&n; * ino -- the number of the inode desired.  This is the unique identifier&n; *        within the file system for the inode being requested.&n; * lock_flags -- flags indicating how to lock the inode.  See the comment&n; *&t;&t; for xfs_ilock() for a list of valid values.&n; * bno -- the block number starting the buffer containing the inode,&n; *&t;  if known (as by bulkstat), else 0.&n; */
 id|STATIC
 r_int
 DECL|function|xfs_iget_core
@@ -1686,7 +1709,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Decrement reference count of an inode structure and unlock it.&n; *&n; * ip -- the inode being released&n; * lock_flags -- this parameter indicates the inode&squot;s locks to be&n; *&t; to be released.  See the comment on xfs_iunlock() for a list&n; *&t; of valid values.&n; */
+multiline_comment|/*&n; * Decrement reference count of an inode structure and unlock it.&n; *&n; * ip -- the inode being released&n; * lock_flags -- this parameter indicates the inode&squot;s locks to be&n; *       to be released.  See the comment on xfs_iunlock() for a list&n; *&t; of valid values.&n; */
 r_void
 DECL|function|xfs_iput
 id|xfs_iput
@@ -1858,7 +1881,7 @@ c_func
 id|ip
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Here we do a spurious inode lock in order to coordinate with&n;&t; * xfs_sync().&t;This is because xfs_sync() references the inodes&n;&t; * in the mount list without taking references on the corresponding&n;&t; * vnodes.  We make that OK here by ensuring that we wait until&n;&t; * the inode is unlocked in xfs_sync() before we go ahead and&n;&t; * free it.  We get both the regular lock and the io lock because&n;&t; * the xfs_sync() code may need to drop the regular one but will&n;&t; * still hold the io lock.&n;&t; */
+multiline_comment|/*&n;&t; * Here we do a spurious inode lock in order to coordinate with&n;&t; * xfs_sync().  This is because xfs_sync() references the inodes&n;&t; * in the mount list without taking references on the corresponding&n;&t; * vnodes.  We make that OK here by ensuring that we wait until&n;&t; * the inode is unlocked in xfs_sync() before we go ahead and&n;&t; * free it.  We get both the regular lock and the io lock because&n;&t; * the xfs_sync() code may need to drop the regular one but will&n;&t; * still hold the io lock.&n;&t; */
 id|xfs_ilock
 c_func
 (paren
@@ -1918,7 +1941,7 @@ id|ip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine removes an about-to-be-destroyed inode from&n; * all of the lists in which it is located with the exception&n; * of the behavior chain. &n; */
+multiline_comment|/*&n; * This routine removes an about-to-be-destroyed inode from&n; * all of the lists in which it is located with the exception&n; * of the behavior chain.&n; */
 r_void
 DECL|function|xfs_iextract
 id|xfs_iextract
@@ -2259,7 +2282,7 @@ id|mp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is a wrapper routine around the xfs_ilock() routine&n; * used to centralize some grungy code.&t; It is used in places&n; * that wish to lock the inode solely for reading the extents.&n; * The reason these places can&squot;t just call xfs_ilock(SHARED)&n; * is that the inode lock also guards to bringing in of the&n; * extents from disk for a file in b-tree format.  If the inode&n; * is in b-tree format, then we need to lock the inode exclusively&n; * until the extents are read in.  Locking it exclusively all&n; * the time would limit our parallelism unnecessarily, though.&n; * What we do instead is check to see if the extents have been&n; * read in yet, and only lock the inode exclusively if they&n; * have not.&n; *&n; * The function returns a value which should be given to the&n; * corresponding xfs_iunlock_map_shared().  This value is&n; * the mode in which the lock was actually taken.&n; */
+multiline_comment|/*&n; * This is a wrapper routine around the xfs_ilock() routine&n; * used to centralize some grungy code.  It is used in places&n; * that wish to lock the inode solely for reading the extents.&n; * The reason these places can&squot;t just call xfs_ilock(SHARED)&n; * is that the inode lock also guards to bringing in of the&n; * extents from disk for a file in b-tree format.  If the inode&n; * is in b-tree format, then we need to lock the inode exclusively&n; * until the extents are read in.  Locking it exclusively all&n; * the time would limit our parallelism unnecessarily, though.&n; * What we do instead is check to see if the extents have been&n; * read in yet, and only lock the inode exclusively if they&n; * have not.&n; *&n; * The function returns a value which should be given to the&n; * corresponding xfs_iunlock_map_shared().  This value is&n; * the mode in which the lock was actually taken.&n; */
 id|uint
 DECL|function|xfs_ilock_map_shared
 id|xfs_ilock_map_shared
@@ -2341,7 +2364,7 @@ id|lock_mode
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The xfs inode contains 2 locks: a multi-reader lock called the&n; * i_iolock and a multi-reader lock called the i_lock.&t;This routine&n; * allows either or both of the locks to be obtained.&n; *&n; * The 2 locks should always be ordered so that the IO lock is&n; * obtained first in order to prevent deadlock.&n; *&n; * ip -- the inode being locked&n; * lock_flags -- this parameter indicates the inode&squot;s locks&n; *&t; to be locked.&t;It can be:&n; *&t;&t;XFS_IOLOCK_SHARED,&n; *&t;&t;XFS_IOLOCK_EXCL,&n; *&t;&t;XFS_ILOCK_SHARED,&n; *&t;&t;XFS_ILOCK_EXCL,&n; *&t;&t;XFS_IOLOCK_SHARED | XFS_ILOCK_SHARED,&n; *&t;&t;XFS_IOLOCK_SHARED | XFS_ILOCK_EXCL,&n; *&t;&t;XFS_IOLOCK_EXCL | XFS_ILOCK_SHARED,&n; *&t;&t;XFS_IOLOCK_EXCL | XFS_ILOCK_EXCL&n; */
+multiline_comment|/*&n; * The xfs inode contains 2 locks: a multi-reader lock called the&n; * i_iolock and a multi-reader lock called the i_lock.  This routine&n; * allows either or both of the locks to be obtained.&n; *&n; * The 2 locks should always be ordered so that the IO lock is&n; * obtained first in order to prevent deadlock.&n; *&n; * ip -- the inode being locked&n; * lock_flags -- this parameter indicates the inode&squot;s locks&n; *       to be locked.  It can be:&n; *&t;&t;XFS_IOLOCK_SHARED,&n; *&t;&t;XFS_IOLOCK_EXCL,&n; *&t;&t;XFS_ILOCK_SHARED,&n; *&t;&t;XFS_ILOCK_EXCL,&n; *&t;&t;XFS_IOLOCK_SHARED | XFS_ILOCK_SHARED,&n; *&t;&t;XFS_IOLOCK_SHARED | XFS_ILOCK_EXCL,&n; *&t;&t;XFS_IOLOCK_EXCL | XFS_ILOCK_SHARED,&n; *&t;&t;XFS_IOLOCK_EXCL | XFS_ILOCK_EXCL&n; */
 r_void
 DECL|function|xfs_ilock
 id|xfs_ilock
@@ -2494,7 +2517,7 @@ id|return_address
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * This is just like xfs_ilock(), except that the caller&n; * is guaranteed not to sleep.&t;It returns 1 if it gets&n; * the requested locks and 0 otherwise.&t; If the IO lock is&n; * obtained but the inode lock cannot be, then the IO lock&n; * is dropped before returning.&n; *&n; * ip -- the inode being locked&n; * lock_flags -- this parameter indicates the inode&squot;s locks to be&n; *&t; to be locked.&t;See the comment for xfs_ilock() for a list&n; *&t; of valid values.&n; *&n; */
+multiline_comment|/*&n; * This is just like xfs_ilock(), except that the caller&n; * is guaranteed not to sleep.  It returns 1 if it gets&n; * the requested locks and 0 otherwise.  If the IO lock is&n; * obtained but the inode lock cannot be, then the IO lock&n; * is dropped before returning.&n; *&n; * ip -- the inode being locked&n; * lock_flags -- this parameter indicates the inode&squot;s locks to be&n; *       to be locked.  See the comment for xfs_ilock() for a list&n; *&t; of valid values.&n; *&n; */
 r_int
 DECL|function|xfs_ilock_nowait
 id|xfs_ilock_nowait
@@ -2740,7 +2763,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * xfs_iunlock() is used to drop the inode locks acquired with&n; * xfs_ilock() and xfs_ilock_nowait().&t;The caller must pass&n; * in the flags given to xfs_ilock() or xfs_ilock_nowait() so&n; * that we know which locks to drop.&n; *&n; * ip -- the inode being unlocked&n; * lock_flags -- this parameter indicates the inode&squot;s locks to be&n; *&t; to be unlocked.  See the comment for xfs_ilock() for a list&n; *&t; of valid values for this parameter.&n; *&n; */
+multiline_comment|/*&n; * xfs_iunlock() is used to drop the inode locks acquired with&n; * xfs_ilock() and xfs_ilock_nowait().  The caller must pass&n; * in the flags given to xfs_ilock() or xfs_ilock_nowait() so&n; * that we know which locks to drop.&n; *&n; * ip -- the inode being unlocked&n; * lock_flags -- this parameter indicates the inode&squot;s locks to be&n; *       to be unlocked.  See the comment for xfs_ilock() for a list&n; *&t; of valid values for this parameter.&n; *&n; */
 r_void
 DECL|function|xfs_iunlock
 id|xfs_iunlock
@@ -2998,7 +3021,7 @@ id|__return_address
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * give up write locks.&t; the i/o lock cannot be held nested&n; * if it is being demoted.&n; */
+multiline_comment|/*&n; * give up write locks.  the i/o lock cannot be held nested&n; * if it is being demoted.&n; */
 r_void
 DECL|function|xfs_ilock_demote
 id|xfs_ilock_demote

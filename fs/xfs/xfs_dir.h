@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * Copyright (c) 2000 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_DIR_H__
 DECL|macro|__XFS_DIR_H__
-mdefine_line|#define __XFS_DIR_H__
-multiline_comment|/*&n; * Large directories are structured around Btrees where all the data&n; * elements are in the leaf nodes.  Filenames are hashed into an int,&n; * then that int is used as the index into the Btree.  Since the hashval&n; * of a filename may not be unique, we may have duplicate keys.&t; The&n; * internal links in the Btree are logical block offsets into the file.&n; *&n; * Small directories use a different format and are packed as tightly&n; * as possible so as to fit into the literal area of the inode.&n; */
+mdefine_line|#define&t;__XFS_DIR_H__
+multiline_comment|/*&n; * Large directories are structured around Btrees where all the data&n; * elements are in the leaf nodes.  Filenames are hashed into an int,&n; * then that int is used as the index into the Btree.  Since the hashval&n; * of a filename may not be unique, we may have duplicate keys.  The&n; * internal links in the Btree are logical block offsets into the file.&n; *&n; * Small directories use a different format and are packed as tightly&n; * as possible so as to fit into the literal area of the inode.&n; */
 macro_line|#ifdef XFS_ALL_TRACE
 DECL|macro|XFS_DIR_TRACE
-mdefine_line|#define XFS_DIR_TRACE
+mdefine_line|#define&t;XFS_DIR_TRACE
 macro_line|#endif
 macro_line|#if !defined(DEBUG)
 DECL|macro|XFS_DIR_TRACE
@@ -389,29 +389,29 @@ r_void
 suffix:semicolon
 multiline_comment|/* called exactly once */
 DECL|macro|XFS_DIR_MOUNT
-mdefine_line|#define XFS_DIR_MOUNT(mp)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_mount(mp))
+mdefine_line|#define&t;XFS_DIR_MOUNT(mp)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_mount(mp))
 DECL|macro|XFS_DIR_ISEMPTY
-mdefine_line|#define XFS_DIR_ISEMPTY(mp,dp)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_isempty(dp))
+mdefine_line|#define&t;XFS_DIR_ISEMPTY(mp,dp)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_isempty(dp))
 DECL|macro|XFS_DIR_INIT
-mdefine_line|#define XFS_DIR_INIT(mp,tp,dp,pdp)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_init(tp,dp,pdp))
+mdefine_line|#define&t;XFS_DIR_INIT(mp,tp,dp,pdp)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_init(tp,dp,pdp))
 DECL|macro|XFS_DIR_CREATENAME
-mdefine_line|#define XFS_DIR_CREATENAME(mp,tp,dp,name,namelen,inum,first,flist,total) &bslash;&n;&t;((mp)-&gt;m_dirops.xd_createname(tp,dp,name,namelen,inum,first,flist,&bslash;&n;&t;&t;&t;&t;      total))
+mdefine_line|#define&t;XFS_DIR_CREATENAME(mp,tp,dp,name,namelen,inum,first,flist,total) &bslash;&n;&t;((mp)-&gt;m_dirops.xd_createname(tp,dp,name,namelen,inum,first,flist,&bslash;&n;&t;&t;&t;&t;      total))
 DECL|macro|XFS_DIR_LOOKUP
-mdefine_line|#define XFS_DIR_LOOKUP(mp,tp,dp,name,namelen,inum)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_lookup(tp,dp,name,namelen,inum))
+mdefine_line|#define&t;XFS_DIR_LOOKUP(mp,tp,dp,name,namelen,inum)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_lookup(tp,dp,name,namelen,inum))
 DECL|macro|XFS_DIR_REMOVENAME
-mdefine_line|#define XFS_DIR_REMOVENAME(mp,tp,dp,name,namelen,ino,first,flist,total) &bslash;&n;&t;((mp)-&gt;m_dirops.xd_removename(tp,dp,name,namelen,ino,first,flist,total))
+mdefine_line|#define&t;XFS_DIR_REMOVENAME(mp,tp,dp,name,namelen,ino,first,flist,total)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_removename(tp,dp,name,namelen,ino,first,flist,total))
 DECL|macro|XFS_DIR_GETDENTS
-mdefine_line|#define XFS_DIR_GETDENTS(mp,tp,dp,uio,eofp)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_getdents(tp,dp,uio,eofp))
+mdefine_line|#define&t;XFS_DIR_GETDENTS(mp,tp,dp,uio,eofp)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_getdents(tp,dp,uio,eofp))
 DECL|macro|XFS_DIR_REPLACE
-mdefine_line|#define XFS_DIR_REPLACE(mp,tp,dp,name,namelen,inum,first,flist,total)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_replace(tp,dp,name,namelen,inum,first,flist,total))
+mdefine_line|#define&t;XFS_DIR_REPLACE(mp,tp,dp,name,namelen,inum,first,flist,total)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_replace(tp,dp,name,namelen,inum,first,flist,total))
 DECL|macro|XFS_DIR_CANENTER
-mdefine_line|#define XFS_DIR_CANENTER(mp,tp,dp,name,namelen) &bslash;&n;&t;((mp)-&gt;m_dirops.xd_canenter(tp,dp,name,namelen))
+mdefine_line|#define&t;XFS_DIR_CANENTER(mp,tp,dp,name,namelen)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_canenter(tp,dp,name,namelen))
 DECL|macro|XFS_DIR_SHORTFORM_VALIDATE_ONDISK
-mdefine_line|#define XFS_DIR_SHORTFORM_VALIDATE_ONDISK(mp,dip)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_shortform_validate_ondisk(mp,dip))
+mdefine_line|#define&t;XFS_DIR_SHORTFORM_VALIDATE_ONDISK(mp,dip)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_shortform_validate_ondisk(mp,dip))
 DECL|macro|XFS_DIR_SHORTFORM_TO_SINGLE
-mdefine_line|#define XFS_DIR_SHORTFORM_TO_SINGLE(mp,args)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_shortform_to_single(args))
+mdefine_line|#define&t;XFS_DIR_SHORTFORM_TO_SINGLE(mp,args)&t;&bslash;&n;&t;((mp)-&gt;m_dirops.xd_shortform_to_single(args))
 DECL|macro|XFS_DIR_IS_V1
-mdefine_line|#define XFS_DIR_IS_V1(mp)&t;((mp)-&gt;m_dirversion == 1)
+mdefine_line|#define&t;XFS_DIR_IS_V1(mp)&t;((mp)-&gt;m_dirversion == 1)
 r_extern
 id|xfs_dirops_t
 id|xfsv1_dirops

@@ -1,17 +1,56 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
-macro_line|#include &lt;xfs_log_recover.h&gt;
-macro_line|#include &quot;quota/xfs_qm.h&quot;
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;pagebuf/page_buf_internal.h&quot;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/kdb.h&gt;
 macro_line|#include &lt;linux/kdbprivate.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_alloc.h&quot;
+macro_line|#include &quot;xfs_ag.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_buf_item.h&quot;
+macro_line|#include &quot;xfs_extfree_item.h&quot;
+macro_line|#include &quot;xfs_inode_item.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_bmap.h&quot;
+macro_line|#include &quot;xfs_da_btree.h&quot;
+macro_line|#include &quot;xfs_attr.h&quot;
+macro_line|#include &quot;xfs_attr_leaf.h&quot;
+macro_line|#include &quot;xfs_dir_leaf.h&quot;
+macro_line|#include &quot;xfs_dir2_data.h&quot;
+macro_line|#include &quot;xfs_dir2_leaf.h&quot;
+macro_line|#include &quot;xfs_dir2_block.h&quot;
+macro_line|#include &quot;xfs_dir2_node.h&quot;
+macro_line|#include &quot;xfs_dir2_trace.h&quot;
+macro_line|#include &quot;xfs_log_priv.h&quot;
+macro_line|#include &quot;xfs_log_recover.h&quot;
+macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_bit.h&quot;
+macro_line|#include &quot;xfs_quota.h&quot;
+macro_line|#include &quot;xfs_log_recover.h&quot;
+macro_line|#include &quot;quota/xfs_qm.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;SGI &lt;sgi.com&gt;&quot;
+l_string|&quot;Silicon Graphics, Inc.&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -7551,7 +7590,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot; i_mode = 0x%x&t; i_nlink = %d  i_rdev = 0x%x i_state = 0x%lx&bslash;n&quot;
+l_string|&quot; i_mode = 0x%x  i_nlink = %d  i_rdev = 0x%x i_state = 0x%lx&bslash;n&quot;
 comma
 id|ip-&gt;i_mode
 comma
@@ -7904,42 +7943,24 @@ comma
 l_string|&quot;TRYLOCK&quot;
 comma
 multiline_comment|/* 15 */
-l_string|&quot;FILE_ALLOCATE&quot;
-comma
 l_string|&quot;DONT_BLOCK&quot;
-comma
-l_string|&quot;DIRECT&quot;
-comma
-l_string|&quot;INVALID18&quot;
 comma
 l_string|&quot;LOCKABLE&quot;
 comma
-multiline_comment|/* 20 */
 l_string|&quot;PRIVATE_BH&quot;
 comma
 l_string|&quot;ALL_PAGES_MAPPED&quot;
 comma
 l_string|&quot;ADDR_ALLOCATED&quot;
 comma
+multiline_comment|/* 20 */
 l_string|&quot;MEM_ALLOCATED&quot;
 comma
 l_string|&quot;FORCEIO&quot;
 comma
-multiline_comment|/* 25 */
 l_string|&quot;FLUSH&quot;
 comma
 l_string|&quot;READ_AHEAD&quot;
-comma
-l_string|&quot;INVALID27&quot;
-comma
-l_string|&quot;INVALID28&quot;
-comma
-l_string|&quot;INVALID29&quot;
-comma
-multiline_comment|/* 30 */
-l_string|&quot;INVALID30&quot;
-comma
-l_string|&quot;INVALID31&quot;
 comma
 l_int|NULL
 )brace
@@ -8068,7 +8089,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;&bslash;n&t;      &quot;
+l_string|&quot;&bslash;n            &quot;
 )paren
 suffix:semicolon
 id|offset
@@ -8894,7 +8915,7 @@ macro_line|# undef PB_TRACE_END
 macro_line|# endif
 macro_line|#include &quot;pagebuf/page_buf_trace.h&quot;
 DECL|macro|EV_SIZE
-mdefine_line|#define EV_SIZE (sizeof(event_names)/sizeof(char *))
+mdefine_line|#define EV_SIZE&t;(sizeof(event_names)/sizeof(char *))
 r_void
 DECL|function|pb_trace_core
 id|pb_trace_core
@@ -9267,7 +9288,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;&t;offset 0x%Lx size 0x%x task 0x%p&bslash;n&quot;
+l_string|&quot;    offset 0x%Lx size 0x%x task 0x%p&bslash;n&quot;
 comma
 id|trace-&gt;offset
 comma
@@ -9279,7 +9300,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;&t;flags: %s&bslash;n&quot;
+l_string|&quot;    flags: %s&bslash;n&quot;
 comma
 id|pb_flags
 c_func
@@ -12879,7 +12900,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;&bslash;n&t; &quot;
+l_string|&quot;&bslash;n   &quot;
 )paren
 suffix:semicolon
 id|xfsidbg_xbuf_real
@@ -13242,7 +13263,7 @@ op_increment
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;&t;block %Lx len %d&bslash;n&quot;
+l_string|&quot;    block %Lx len %d&bslash;n&quot;
 comma
 id|ep-&gt;ext_start
 comma
@@ -13388,7 +13409,7 @@ op_increment
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;&t;block %Lx len %d&bslash;n&quot;
+l_string|&quot;    block %Lx len %d&bslash;n&quot;
 comma
 id|ep-&gt;ext_start
 comma
@@ -16052,7 +16073,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;&gt;&bslash;n&t;    name &bslash;&quot;&quot;
+l_string|&quot;&gt;&bslash;n     name &bslash;&quot;&quot;
 )paren
 suffix:semicolon
 r_if
@@ -17789,7 +17810,7 @@ id|XFS_DQUOT_MAGIC
 )paren
 (brace
 DECL|macro|XFSIDBG_DQTYPESTR
-mdefine_line|#define XFSIDBG_DQTYPESTR(d)&t; &bslash;&n;&t;((INT_GET((d)-&gt;d_flags, ARCH_CONVERT) &amp; XFS_DQ_USER) ? &quot;USR&quot; : &bslash;&n;&t;((INT_GET((d)-&gt;d_flags, ARCH_CONVERT) &amp; XFS_DQ_GROUP) ? &quot;GRP&quot; : &quot;???&quot;))
+mdefine_line|#define XFSIDBG_DQTYPESTR(d)     &bslash;&n;&t;((INT_GET((d)-&gt;d_flags, ARCH_CONVERT) &amp; XFS_DQ_USER) ? &quot;USR&quot; : &bslash;&n;&t;((INT_GET((d)-&gt;d_flags, ARCH_CONVERT) &amp; XFS_DQ_GROUP) ? &quot;GRP&quot; : &quot;???&quot;))
 id|kdb_printf
 c_func
 (paren
@@ -20647,7 +20668,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;magicno: %x&t; cycle: %d  version: %d&t; lsn: 0x%Lx&bslash;n&quot;
+l_string|&quot;magicno: %x  cycle: %d  version: %d  lsn: 0x%Lx&bslash;n&quot;
 comma
 id|INT_GET
 c_func
@@ -20748,7 +20769,7 @@ op_increment
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;%x&t;&quot;
+l_string|&quot;%x  &quot;
 comma
 id|INT_GET
 c_func
@@ -20798,7 +20819,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;data: 0x%p&t;&amp;forcesema: 0x%p  next: 0x%p bp: 0x%p&bslash;n&quot;
+l_string|&quot;data: 0x%p  &amp;forcesema: 0x%p  next: 0x%p bp: 0x%p&bslash;n&quot;
 comma
 id|iclog-&gt;ic_datap
 comma
@@ -21465,7 +21486,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;mp: 0x%p  xbuf: 0x%p  roundoff: %d&t;l_covered_state: %s &bslash;n&quot;
+l_string|&quot;mp: 0x%p  xbuf: 0x%p  roundoff: %d  l_covered_state: %s &bslash;n&quot;
 comma
 id|log-&gt;l_mp
 comma
@@ -21568,7 +21589,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;GResCycle: %d  GResBytes: %d  GWrCycle: %d&t;GWrBytes: %d&bslash;n&quot;
+l_string|&quot;GResCycle: %d  GResBytes: %d  GWrCycle: %d  GWrBytes: %d&bslash;n&quot;
 comma
 id|log-&gt;l_grant_reserve_cycle
 comma
@@ -22395,7 +22416,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;next: 0x%p&t;prev: 0x%p  tid: 0x%x  &bslash;n&quot;
+l_string|&quot;next: 0x%p  prev: 0x%p  tid: 0x%x  &bslash;n&quot;
 comma
 id|tic-&gt;t_next
 comma
@@ -22407,7 +22428,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;curr_res: %d  unit_res: %d&t;ocnt: %d  cnt: %d&bslash;n&quot;
+l_string|&quot;curr_res: %d  unit_res: %d  ocnt: %d  cnt: %d&bslash;n&quot;
 comma
 id|tic-&gt;t_curr_res
 comma
@@ -22937,7 +22958,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;  lsn %s&bslash;n&t; &quot;
+l_string|&quot;  lsn %s&bslash;n   &quot;
 comma
 id|xfs_fmtlsn
 c_func
@@ -24629,7 +24650,7 @@ id|pag-&gt;pagi_init
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;&t;i_freecount %d i_inodeok %d&bslash;n&quot;
+l_string|&quot;    i_freecount %d i_inodeok %d&bslash;n&quot;
 comma
 id|pag-&gt;pagi_freecount
 comma
@@ -25044,7 +25065,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;qlock 0x%p&t;flock 0x%p (%s) pincount 0x%x&bslash;n&quot;
+l_string|&quot;qlock 0x%p  flock 0x%p (%s) pincount 0x%x&bslash;n&quot;
 comma
 op_amp
 id|dqp-&gt;q_qlock
@@ -25089,7 +25110,7 @@ id|dqp-&gt;q_core
 suffix:semicolon
 )brace
 DECL|macro|XQMIDBG_LIST_PRINT
-mdefine_line|#define XQMIDBG_LIST_PRINT(l, NXT) &bslash;&n;{ &bslash;&n;&t;  xfs_dquot_t&t;*dqp;&bslash;&n;&t;  int i = 0; &bslash;&n;&t;  kdb_printf(&quot;[#%d dquots]&bslash;n&quot;, (int) (l)-&gt;qh_nelems); &bslash;&n;&t;  for (dqp = (l)-&gt;qh_next; dqp != NULL; dqp = dqp-&gt;NXT) {&bslash;&n;&t;   kdb_printf( &bslash;&n;&t;      &quot;&bslash;t%d. [0x%p] &bslash;&quot;%d (%s)&bslash;&quot;&bslash;t blks = %d, inos = %d refs = %d&bslash;n&quot;, &bslash;&n;&t;&t;&t; ++i, dqp, (int) INT_GET(dqp-&gt;q_core.d_id, ARCH_CONVERT), &bslash;&n;&t;&t;&t; DQFLAGTO_TYPESTR(dqp),&t;     &bslash;&n;&t;&t;&t; (int) INT_GET(dqp-&gt;q_core.d_bcount, ARCH_CONVERT), &bslash;&n;&t;&t;&t; (int) INT_GET(dqp-&gt;q_core.d_icount, ARCH_CONVERT), &bslash;&n;&t;&t;&t; (int) dqp-&gt;q_nrefs); }&bslash;&n;&t;  kdb_printf(&quot;&bslash;n&quot;); &bslash;&n;}
+mdefine_line|#define XQMIDBG_LIST_PRINT(l, NXT) &bslash;&n;{ &bslash;&n;&t;  xfs_dquot_t&t;*dqp;&bslash;&n;&t;  int i = 0; &bslash;&n;&t;  kdb_printf(&quot;[#%d dquots]&bslash;n&quot;, (int) (l)-&gt;qh_nelems); &bslash;&n;&t;  for (dqp = (l)-&gt;qh_next; dqp != NULL; dqp = dqp-&gt;NXT) {&bslash;&n;&t;   kdb_printf( &bslash;&n;&t;      &quot;&bslash;t%d. [0x%p] &bslash;&quot;%d (%s)&bslash;&quot;&bslash;t blks = %d, inos = %d refs = %d&bslash;n&quot;, &bslash;&n;&t;&t;&t; ++i, dqp, (int) INT_GET(dqp-&gt;q_core.d_id, ARCH_CONVERT), &bslash;&n;&t;&t;&t; DQFLAGTO_TYPESTR(dqp),      &bslash;&n;&t;&t;&t; (int) INT_GET(dqp-&gt;q_core.d_bcount, ARCH_CONVERT), &bslash;&n;&t;&t;&t; (int) INT_GET(dqp-&gt;q_core.d_icount, ARCH_CONVERT), &bslash;&n;&t;&t;&t; (int) dqp-&gt;q_nrefs); }&bslash;&n;&t;  kdb_printf(&quot;&bslash;n&quot;); &bslash;&n;}
 r_static
 r_void
 DECL|function|xfsidbg_xqm_dqattached_inos

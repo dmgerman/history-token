@@ -1,6 +1,7 @@
 multiline_comment|/**&n; * @file init.c&n; *&n; * @remark Copyright 2002 OProfile authors&n; * @remark Read the file COPYING&n; *&n; * @author John Levon &lt;levon@movementarian.org&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 r_extern
 r_void
@@ -27,14 +28,9 @@ op_star
 id|ops
 )paren
 (brace
-id|timer_init
-c_func
-(paren
-id|ops
-)paren
-suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|oprofile_arch_exit

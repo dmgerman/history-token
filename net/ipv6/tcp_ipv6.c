@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/jhash.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/icmpv6.h&gt;
@@ -1835,8 +1836,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Open request hash tables.&n; */
 DECL|function|tcp_v6_synq_hash
 r_static
-id|__inline__
-r_int
+id|u32
 id|tcp_v6_synq_hash
 c_func
 (paren
@@ -1847,37 +1847,49 @@ id|raddr
 comma
 id|u16
 id|rport
+comma
+id|u32
+id|rnd
 )paren
 (brace
-r_int
-id|h
-op_assign
+r_return
+(paren
+id|jhash_3words
+c_func
+(paren
+id|raddr-&gt;s6_addr32
+(braket
+l_int|0
+)braket
+op_xor
+id|raddr-&gt;s6_addr32
+(braket
+l_int|1
+)braket
+comma
+id|raddr-&gt;s6_addr32
+(braket
+l_int|2
+)braket
+op_xor
 id|raddr-&gt;s6_addr32
 (braket
 l_int|3
 )braket
-op_xor
+comma
+(paren
+id|u32
+)paren
 id|rport
-suffix:semicolon
-id|h
-op_xor_assign
-id|h
-op_rshift
-l_int|16
-suffix:semicolon
-id|h
-op_xor_assign
-id|h
-op_rshift
-l_int|8
-suffix:semicolon
-r_return
-id|h
+comma
+id|rnd
+)paren
 op_amp
 (paren
 id|TCP_SYNQ_HSIZE
 op_minus
 l_int|1
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1948,6 +1960,8 @@ c_func
 id|raddr
 comma
 id|rport
+comma
+id|lopt-&gt;hash_rnd
 )paren
 )braket
 suffix:semicolon
@@ -5756,7 +5770,7 @@ id|lopt
 op_assign
 id|tp-&gt;listen_opt
 suffix:semicolon
-r_int
+id|u32
 id|h
 op_assign
 id|tcp_v6_synq_hash
@@ -5766,6 +5780,8 @@ op_amp
 id|req-&gt;af.v6_req.rmt_addr
 comma
 id|req-&gt;rmt_port
+comma
+id|lopt-&gt;hash_rnd
 )paren
 suffix:semicolon
 id|req-&gt;sk
@@ -6449,8 +6465,6 @@ id|inet6_sock_nr
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* It is tricky place. Until this moment IPv4 tcp&n;&t;&t;   worked with IPv6 af_tcp.af_specific.&n;&t;&t;   Sync it now.&n;&t;&t; */
 id|tcp_sync_mss
 c_func
@@ -6652,8 +6666,6 @@ id|inet6_sock_nr
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|ip6_dst_store
 c_func
 (paren
