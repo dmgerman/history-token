@@ -10692,6 +10692,12 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
+id|pci_set_master
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 multiline_comment|/* first lets just bring everything back. .*/
 id|snd_m3_outw
 c_func
