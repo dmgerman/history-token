@@ -3,10 +3,10 @@ macro_line|#ifndef _CA_H_
 DECL|macro|_CA_H_
 mdefine_line|#define _CA_H_
 multiline_comment|/* slot interface types and info */
-DECL|struct|ca_slot_info_s
+DECL|struct|ca_slot_info
 r_typedef
 r_struct
-id|ca_slot_info_s
+id|ca_slot_info
 (brace
 DECL|member|num
 r_int
@@ -40,10 +40,10 @@ DECL|typedef|ca_slot_info_t
 id|ca_slot_info_t
 suffix:semicolon
 multiline_comment|/* descrambler types and info */
-DECL|struct|ca_descr_info_s
+DECL|struct|ca_descr_info
 r_typedef
 r_struct
-id|ca_descr_info_s
+id|ca_descr_info
 (brace
 DECL|member|num
 r_int
@@ -67,10 +67,10 @@ DECL|typedef|ca_descr_info_t
 )brace
 id|ca_descr_info_t
 suffix:semicolon
-DECL|struct|ca_cap_s
+DECL|struct|ca_caps
 r_typedef
 r_struct
-id|ca_cap_s
+id|ca_caps
 (brace
 DECL|member|slot_num
 r_int
@@ -96,15 +96,15 @@ r_int
 id|descr_type
 suffix:semicolon
 multiline_comment|/* OR of all supported types */
-DECL|typedef|ca_cap_t
+DECL|typedef|ca_caps_t
 )brace
-id|ca_cap_t
+id|ca_caps_t
 suffix:semicolon
 multiline_comment|/* a message to/from a CI-CAM */
-DECL|struct|ca_msg_s
+DECL|struct|ca_msg
 r_typedef
 r_struct
-id|ca_msg_s
+id|ca_msg
 (brace
 DECL|member|index
 r_int
@@ -133,10 +133,10 @@ DECL|typedef|ca_msg_t
 )brace
 id|ca_msg_t
 suffix:semicolon
-DECL|struct|ca_descr_s
+DECL|struct|ca_descr
 r_typedef
 r_struct
-id|ca_descr_s
+id|ca_descr
 (brace
 DECL|member|index
 r_int
@@ -163,7 +163,7 @@ suffix:semicolon
 DECL|macro|CA_RESET
 mdefine_line|#define CA_RESET          _IO(&squot;o&squot;, 128)
 DECL|macro|CA_GET_CAP
-mdefine_line|#define CA_GET_CAP        _IOR(&squot;o&squot;, 129, ca_cap_t)
+mdefine_line|#define CA_GET_CAP        _IOR(&squot;o&squot;, 129, ca_caps_t)
 DECL|macro|CA_GET_SLOT_INFO
 mdefine_line|#define CA_GET_SLOT_INFO  _IOR(&squot;o&squot;, 130, ca_slot_info_t)
 DECL|macro|CA_GET_DESCR_INFO
