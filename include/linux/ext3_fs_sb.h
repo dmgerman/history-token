@@ -5,32 +5,9 @@ mdefine_line|#define _LINUX_EXT3_FS_SB
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/blockgroup_lock.h&gt;
+macro_line|#include &lt;linux/percpu_counter.h&gt;
 macro_line|#endif
-DECL|struct|ext3_bg_info
-r_struct
-id|ext3_bg_info
-(brace
-DECL|member|bg_debts
-id|u8
-id|bg_debts
-suffix:semicolon
-DECL|member|bg_balloc_lock
-id|spinlock_t
-id|bg_balloc_lock
-suffix:semicolon
-DECL|member|bg_ialloc_lock
-id|spinlock_t
-id|bg_ialloc_lock
-suffix:semicolon
-DECL|member|bg_reserved
-r_int
-r_int
-id|bg_reserved
-suffix:semicolon
-DECL|variable|____cacheline_aligned_in_smp
-)brace
-id|____cacheline_aligned_in_smp
-suffix:semicolon
 multiline_comment|/*&n; * third extended-fs super-block data in memory&n; */
 DECL|struct|ext3_sb_info
 r_struct
@@ -171,11 +148,30 @@ DECL|member|s_def_hash_version
 r_int
 id|s_def_hash_version
 suffix:semicolon
-DECL|member|s_bgi
-r_struct
-id|ext3_bg_info
+DECL|member|s_debts
+id|u8
 op_star
-id|s_bgi
+id|s_debts
+suffix:semicolon
+DECL|member|s_freeblocks_counter
+r_struct
+id|percpu_counter
+id|s_freeblocks_counter
+suffix:semicolon
+DECL|member|s_freeinodes_counter
+r_struct
+id|percpu_counter
+id|s_freeinodes_counter
+suffix:semicolon
+DECL|member|s_dirs_counter
+r_struct
+id|percpu_counter
+id|s_dirs_counter
+suffix:semicolon
+DECL|member|s_blockgroup_lock
+r_struct
+id|blockgroup_lock
+id|s_blockgroup_lock
 suffix:semicolon
 multiline_comment|/* Journaling */
 DECL|member|s_journal_inode
