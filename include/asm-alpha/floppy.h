@@ -119,7 +119,7 @@ multiline_comment|/* different from last time -- unmap prev */
 id|pci_unmap_single
 c_func
 (paren
-l_int|NULL
+id|isa_bridge
 comma
 id|bus_addr
 comma
@@ -145,7 +145,7 @@ op_assign
 id|pci_map_single
 c_func
 (paren
-l_int|NULL
+id|isa_bridge
 comma
 id|addr
 comma

@@ -748,9 +748,9 @@ id|machine_check
 suffix:colon
 id|mikasa_apecs_machine_check
 comma
-id|max_dma_address
+id|max_isa_dma_address
 suffix:colon
-id|ALPHA_MAX_DMA_ADDRESS
+id|ALPHA_MAX_ISA_DMA_ADDRESS
 comma
 id|min_io_address
 suffix:colon
@@ -827,9 +827,9 @@ id|machine_check
 suffix:colon
 id|cia_machine_check
 comma
-id|max_dma_address
+id|max_isa_dma_address
 suffix:colon
-id|ALPHA_MAX_DMA_ADDRESS
+id|ALPHA_MAX_ISA_DMA_ADDRESS
 comma
 id|min_io_address
 suffix:colon
