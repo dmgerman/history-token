@@ -298,6 +298,7 @@ op_star
 id|SCpnt
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_static
 r_int
 id|aha1542_old_abort
@@ -320,6 +321,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_int
 id|aha1542_biosparam
@@ -345,6 +347,6 @@ DECL|macro|NULL
 mdefine_line|#define NULL 0
 macro_line|#endif
 DECL|macro|AHA1542
-mdefine_line|#define AHA1542 {    proc_name:&t;&t;&t;&quot;aha1542&quot;,&t;&t;&bslash;&n;&t;&t;     name:&t;&t;&t;&quot;Adaptec 1542&quot;, &t;&bslash;&n;&t;&t;     detect:&t;&t;&t;aha1542_detect,&t;&t;&bslash;&n;&t;&t;     command:&t;&t;&t;aha1542_command,&t;&bslash;&n;&t;&t;     queuecommand:&t;&t;aha1542_queuecommand,&t;&bslash;&n;                     abort:&t;&t;        aha1542_old_abort,&t;&bslash;&n;                     reset:&t;&t;&t;aha1542_old_reset,&t;&bslash;&n;&t;&t;     eh_abort_handler:&t;&t;aha1542_abort,&t;&t;&bslash;&n;&t;&t;     eh_device_reset_handler:&t;aha1542_dev_reset,&t;&bslash;&n;&t;&t;     eh_bus_reset_handler:&t;aha1542_bus_reset,&t;&bslash;&n;&t;&t;     eh_host_reset_handler:&t;aha1542_host_reset,&t;&bslash;&n;&t;&t;     bios_param:&t;&t;aha1542_biosparam,      &bslash;&n;&t;&t;     can_queue:&t;&t;&t;AHA1542_MAILBOXES, &t;&bslash;&n;&t;&t;     this_id:&t;&t;&t;7, &t;&t;&t;&bslash;&n;&t;&t;     sg_tablesize:&t;&t;AHA1542_SCATTER, &t;&bslash;&n;&t;&t;     cmd_per_lun:&t;&t;AHA1542_CMDLUN, &t;&bslash;&n;&t;&t;     unchecked_isa_dma:&t;&t;1, &t;&t;&t;&bslash;&n;&t;&t;     use_clustering:&t;&t;ENABLE_CLUSTERING&t;&bslash;&n;}
+mdefine_line|#define AHA1542 {    proc_name:&t;&t;&t;&quot;aha1542&quot;,&t;&t;&bslash;&n;&t;&t;     name:&t;&t;&t;&quot;Adaptec 1542&quot;, &t;&bslash;&n;&t;&t;     detect:&t;&t;&t;aha1542_detect,&t;&t;&bslash;&n;&t;&t;     command:&t;&t;&t;aha1542_command,&t;&bslash;&n;&t;&t;     queuecommand:&t;&t;aha1542_queuecommand,&t;&bslash;&n;&t;&t;     eh_abort_handler:&t;&t;aha1542_abort,&t;&t;&bslash;&n;&t;&t;     eh_device_reset_handler:&t;aha1542_dev_reset,&t;&bslash;&n;&t;&t;     eh_bus_reset_handler:&t;aha1542_bus_reset,&t;&bslash;&n;&t;&t;     eh_host_reset_handler:&t;aha1542_host_reset,&t;&bslash;&n;&t;&t;     bios_param:&t;&t;aha1542_biosparam,      &bslash;&n;&t;&t;     can_queue:&t;&t;&t;AHA1542_MAILBOXES, &t;&bslash;&n;&t;&t;     this_id:&t;&t;&t;7, &t;&t;&t;&bslash;&n;&t;&t;     sg_tablesize:&t;&t;AHA1542_SCATTER, &t;&bslash;&n;&t;&t;     cmd_per_lun:&t;&t;AHA1542_CMDLUN, &t;&bslash;&n;&t;&t;     unchecked_isa_dma:&t;&t;1, &t;&t;&t;&bslash;&n;&t;&t;     use_clustering:&t;&t;ENABLE_CLUSTERING&t;&bslash;&n;}
 macro_line|#endif
 eof
