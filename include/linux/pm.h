@@ -473,6 +473,7 @@ id|dev
 (brace
 )brace
 macro_line|#endif /* CONFIG_PM */
+multiline_comment|/*&n; * Callbacks for platform drivers to implement.&n; */
 r_extern
 r_void
 (paren
@@ -493,6 +494,46 @@ id|pm_power_off
 r_void
 )paren
 suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|PM_SUSPEND_ON
+id|PM_SUSPEND_ON
+comma
+DECL|enumerator|PM_SUSPEND_STANDBY
+id|PM_SUSPEND_STANDBY
+comma
+DECL|enumerator|PM_SUSPEND_MEM
+id|PM_SUSPEND_MEM
+comma
+DECL|enumerator|PM_SUSPEND_DISK
+id|PM_SUSPEND_DISK
+comma
+DECL|enumerator|PM_SUSPEND_MAX
+id|PM_SUSPEND_MAX
+comma
+)brace
+suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|pm_power_down
+)paren
+(paren
+id|u32
+id|state
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pm_suspend
+c_func
+(paren
+id|u32
+id|state
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Device power management&n; */
 r_struct
 id|device
 suffix:semicolon
