@@ -63,6 +63,8 @@ DECL|macro|SIG_KERNEL_ONLY_MASK
 mdefine_line|#define SIG_KERNEL_ONLY_MASK (&bslash;&n;&t;M(SIGKILL)   |  M(SIGSTOP)                                   )
 DECL|macro|SIG_KERNEL_STOP_MASK
 mdefine_line|#define SIG_KERNEL_STOP_MASK (&bslash;&n;&t;M(SIGSTOP)   |  M(SIGTSTP)   |  M(SIGTTIN)   |  M(SIGTTOU)   )
+DECL|macro|SIG_KERNEL_CONT_MASK
+mdefine_line|#define SIG_KERNEL_CONT_MASK (&bslash;&n;&t;M(SIGCONT)   |  M(SIGKILL)   )
 DECL|macro|SIG_KERNEL_COREDUMP_MASK
 mdefine_line|#define SIG_KERNEL_COREDUMP_MASK (&bslash;&n;        M(SIGQUIT)   |  M(SIGILL)    |  M(SIGTRAP)   |  M(SIGABRT)   | &bslash;&n;        M(SIGFPE)    |  M(SIGSEGV)   |  M(SIGBUS)    |  M(SIGSYS)    | &bslash;&n;        M(SIGXCPU)   |  M(SIGXFSZ)   |  M_SIGEMT                     )
 DECL|macro|SIG_KERNEL_IGNORE_MASK
@@ -75,6 +77,8 @@ DECL|macro|sig_kernel_ignore
 mdefine_line|#define sig_kernel_ignore(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_KERNEL_IGNORE_MASK))
 DECL|macro|sig_kernel_stop
 mdefine_line|#define sig_kernel_stop(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_KERNEL_STOP_MASK))
+DECL|macro|sig_kernel_cont
+mdefine_line|#define sig_kernel_cont(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_KERNEL_CONT_MASK))
 DECL|macro|sig_user_defined
 mdefine_line|#define sig_user_defined(t, signr) &bslash;&n;&t;(((t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler != SIG_DFL) &amp;&amp;&t;&bslash;&n;&t; ((t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler != SIG_IGN))
 DECL|macro|sig_ignored
@@ -1921,9 +1925,11 @@ r_else
 r_if
 c_cond
 (paren
+id|sig_kernel_cont
+c_func
+(paren
 id|sig
-op_eq
-id|SIGCONT
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Remove all stop signals from all queues,&n;&t;&t; * and wake all threads.&n;&t;&t; */
@@ -1993,26 +1999,7 @@ op_amp
 id|t-&gt;pending
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|t-&gt;state
-op_eq
-id|TASK_STOPPED
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * If there is a handler for SIGCONT, we&n;&t;&t;&t;&t; * must make sure that no thread returns to&n;&t;&t;&t;&t; * user mode before we post the signal, in&n;&t;&t;&t;&t; * case it was the only thread eligible to&n;&t;&t;&t;&t; * run the signal handler--then it must not&n;&t;&t;&t;&t; * do anything between resuming and running&n;&t;&t;&t;&t; * the handler.  With the TIF_SIGPENDING flag&n;&t;&t;&t;&t; * set, the thread will pause and acquire the&n;&t;&t;&t;&t; * siglock that we hold now and until we&squot;ve&n;&t;&t;&t;&t; * queued the pending signal.&n;&t;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|sig_user_defined
-c_func
-(paren
-id|p
-comma
-id|SIGCONT
-)paren
-)paren
+multiline_comment|/*&n;&t;&t;&t; * This wakeup is only need if in TASK_STOPPED,&n;&t;&t;&t; * but there can be SMP races with testing for that.&n;&t;&t;&t; * In the normal SIGCONT case, all will be stopped.&n;&t;&t;&t; * A spuriously sent SIGCONT will interrupt all running&n;&t;&t;&t; * threads to check signals even if it&squot;s ignored.&n;&t;&t;&t; *&n;&t;&t;&t; * If there is a handler for SIGCONT, we must make&n;&t;&t;&t; * sure that no thread returns to user mode before&n;&t;&t;&t; * we post the signal, in case it was the only&n;&t;&t;&t; * thread eligible to run the signal handler--then&n;&t;&t;&t; * it must not do anything between resuming and&n;&t;&t;&t; * running the handler.  With the TIF_SIGPENDING&n;&t;&t;&t; * flag set, the thread will pause and acquire the&n;&t;&t;&t; * siglock that we hold now and until we&squot;ve queued&n;&t;&t;&t; * the pending signal.  For SIGKILL, we likewise&n;&t;&t;&t; * don&squot;t want anybody doing anything but taking the&n;&t;&t;&t; * SIGKILL.  The only case in which a thread would&n;&t;&t;&t; * not already be in the signal dequeuing loop is&n;&t;&t;&t; * non-signal (e.g. syscall) ptrace tracing, so we&n;&t;&t;&t; * don&squot;t worry about an unnecessary trip through&n;&t;&t;&t; * the signal code and just keep this code path&n;&t;&t;&t; * simpler by unconditionally setting the flag.&n;&t;&t;&t; */
 id|set_tsk_thread_flag
 c_func
 (paren
@@ -2027,7 +2014,6 @@ c_func
 id|t
 )paren
 suffix:semicolon
-)brace
 id|t
 op_assign
 id|next_thread
