@@ -1196,6 +1196,23 @@ id|board_ahci
 comma
 multiline_comment|/* ICH7R */
 (brace
+id|PCI_VENDOR_ID_AL
+comma
+l_int|0x5288
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|board_ahci
+)brace
+comma
+multiline_comment|/* ULi M5288 */
+(brace
 )brace
 multiline_comment|/* terminate list */
 )brace
