@@ -227,7 +227,7 @@ multiline_comment|/*&n; * Flush windows so that the VM switch which follows&n; *
 DECL|macro|prepare_arch_switch
 mdefine_line|#define prepare_arch_switch(rq, next) do { &bslash;&n;&t;__asm__ __volatile__( &bslash;&n;&t;&quot;.globl&bslash;tflush_patch_switch&bslash;nflush_patch_switch:&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;save %sp, -0x40, %sp; save %sp, -0x40, %sp; save %sp, -0x40, %sp&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;save %sp, -0x40, %sp; save %sp, -0x40, %sp; save %sp, -0x40, %sp&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;save %sp, -0x40, %sp&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;restore; restore; restore; restore; restore; restore; restore&quot;); &bslash;&n;} while(0)
 DECL|macro|finish_arch_switch
-mdefine_line|#define finish_arch_switch(rq, next)&t;do{ }while(0)
+mdefine_line|#define finish_arch_switch(rq, next)&t;spin_unlock_irq(&amp;(rq)-&gt;lock)
 DECL|macro|task_running
 mdefine_line|#define task_running(rq, p)&t;&t;((rq)-&gt;curr == (p))
 multiline_comment|/* Much care has gone into this code, do not touch it.&n;&t; *&n;&t; * We need to loadup regs l0/l1 for the newly forked child&n;&t; * case because the trap return path relies on those registers&n;&t; * holding certain values, gcc is told that they are clobbered.&n;&t; * Gcc needs registers for 3 values in and 1 value out, so we&n;&t; * clobber every non-fixed-usage register besides l2/l3/o4/o5.  -DaveM&n;&t; *&n;&t; * Hey Dave, that do not touch sign is too much of an incentive&n;&t; * - Anton &amp; Pete&n;&t; */
@@ -263,45 +263,6 @@ suffix:colon
 l_string|&quot;memory&quot;
 comma
 l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
-)brace
-DECL|function|local_irq_disable
-r_extern
-id|__inline__
-r_void
-id|local_irq_disable
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-r_int
-id|tmp
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;rd&t;%%psr, %0&bslash;n&bslash;t&quot;
-l_string|&quot;nop; nop; nop;&bslash;n&bslash;t&quot;
-multiline_comment|/* Sun4m + Cypress + SMP bug */
-l_string|&quot;or&t;%0, %1, %0&bslash;n&bslash;t&quot;
-l_string|&quot;wr&t;%0, 0x0, %%psr&bslash;n&bslash;t&quot;
-l_string|&quot;nop; nop; nop&bslash;n&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|tmp
-)paren
-suffix:colon
-l_string|&quot;i&quot;
-(paren
-id|PSR_PIL
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
@@ -375,7 +336,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|swap_pil
+macro_line|#if 0 /* not used */
 r_extern
 id|__inline__
 r_int
@@ -436,6 +397,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|read_psr_and_cli
 r_extern
 id|__inline__
@@ -487,9 +449,10 @@ DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(flags)&t;((flags) = read_psr_and_cli())
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(flags)&t;setipl((flags))
-multiline_comment|/* On sparc32 IRQ flags are the PSR register in the PSR_PIL&n; * field.&n; */
+DECL|macro|local_irq_disable
+mdefine_line|#define local_irq_disable()&t;((void) read_psr_and_cli())
 DECL|macro|irqs_disabled
-mdefine_line|#define irqs_disabled()&t;&t;&bslash;&n;({&t;unsigned long flags;&t;&bslash;&n;&t;local_save_flags(flags);&bslash;&n;&t;(flags &amp; PSR_PIL) != 0;&t;&bslash;&n;})
+mdefine_line|#define irqs_disabled()&t;&t;((getipl() &amp; PSR_PIL) != 0)
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int
