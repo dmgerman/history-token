@@ -403,6 +403,11 @@ c_func
 (paren
 id|LL_MAX_HEADER
 )paren
+op_div
+r_sizeof
+(paren
+r_int
+)paren
 )braket
 suffix:semicolon
 )brace
