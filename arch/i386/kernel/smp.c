@@ -89,7 +89,6 @@ id|mask
 suffix:semicolon
 )brace
 DECL|function|__send_IPI_shortcut
-r_static
 r_inline
 r_void
 id|__send_IPI_shortcut
@@ -154,7 +153,6 @@ id|vector
 suffix:semicolon
 )brace
 DECL|function|send_IPI_mask_bitmask
-r_static
 r_inline
 r_void
 id|send_IPI_mask_bitmask
@@ -232,7 +230,6 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|send_IPI_mask_sequence
-r_static
 r_inline
 r_void
 id|send_IPI_mask_sequence

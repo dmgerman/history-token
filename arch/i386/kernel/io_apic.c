@@ -1017,12 +1017,14 @@ id|pending_irq_balance_apicid
 id|NR_IRQS
 )braket
 suffix:semicolon
+DECL|macro|IRQBALANCE_CHECK_ARCH
+mdefine_line|#define IRQBALANCE_CHECK_ARCH -999
 DECL|variable|irqbalance_disabled
 r_static
 r_int
 id|irqbalance_disabled
 op_assign
-id|NO_BALANCE_IRQ
+id|IRQBALANCE_CHECK_ARCH
 suffix:semicolon
 DECL|variable|physical_balance
 r_static
@@ -1248,6 +1250,18 @@ r_int
 r_int
 id|new_cpu
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|irqbalance_disabled
+op_eq
+id|IRQBALANCE_CHECK_ARCH
+op_logical_and
+id|NO_BALANCE_IRQ
+)paren
+r_return
+suffix:semicolon
+r_else
 r_if
 c_cond
 (paren

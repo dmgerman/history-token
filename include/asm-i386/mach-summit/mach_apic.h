@@ -1,10 +1,16 @@
 macro_line|#ifndef __ASM_MACH_APIC_H
 DECL|macro|__ASM_MACH_APIC_H
 mdefine_line|#define __ASM_MACH_APIC_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_X86_GENERICARCH
+DECL|macro|x86_summit
+mdefine_line|#define x86_summit 1&t;/* must be an constant expressiona for generic arch */
+macro_line|#else
 r_extern
 r_int
 id|x86_summit
 suffix:semicolon
+macro_line|#endif
 DECL|macro|esr_disable
 mdefine_line|#define esr_disable (x86_summit ? 1 : 0)
 DECL|macro|NO_BALANCE_IRQ
@@ -13,23 +19,141 @@ DECL|macro|XAPIC_DEST_CPUS_MASK
 mdefine_line|#define XAPIC_DEST_CPUS_MASK    0x0Fu
 DECL|macro|XAPIC_DEST_CLUSTER_MASK
 mdefine_line|#define XAPIC_DEST_CLUSTER_MASK 0xF0u
-DECL|macro|xapic_phys_to_log_apicid
-mdefine_line|#define xapic_phys_to_log_apicid(phys_apic) ( (1ul &lt;&lt; ((phys_apic) &amp; 0x3)) |&bslash;&n;&t;&t;((phys_apic) &amp; XAPIC_DEST_CLUSTER_MASK) )
+DECL|function|xapic_phys_to_log_apicid
+r_static
+r_inline
+r_int
+r_int
+id|xapic_phys_to_log_apicid
+c_func
+(paren
+r_int
+id|phys_apic
+)paren
+(brace
+r_return
+(paren
+(paren
+l_int|1ul
+op_lshift
+(paren
+(paren
+id|phys_apic
+)paren
+op_amp
+l_int|0x3
+)paren
+)paren
+op_or
+(paren
+(paren
+id|phys_apic
+)paren
+op_amp
+id|XAPIC_DEST_CLUSTER_MASK
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(x86_summit ? APIC_DFR_CLUSTER : APIC_DFR_FLAT)
+DECL|function|target_cpus
+r_static
+r_inline
+r_int
+r_int
+id|target_cpus
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+(paren
+id|x86_summit
+ques
+c_cond
+id|XAPIC_DEST_CPUS_MASK
+suffix:colon
+id|cpu_online_map
+)paren
+suffix:semicolon
+)brace
 DECL|macro|TARGET_CPUS
-mdefine_line|#define TARGET_CPUS&t;(x86_summit ? XAPIC_DEST_CPUS_MASK : cpu_online_map)
+mdefine_line|#define TARGET_CPUS&t;(target_cpus())
 DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE (x86_summit ? dest_Fixed : dest_LowestPrio)
 DECL|macro|INT_DEST_MODE
 mdefine_line|#define INT_DEST_MODE 1     /* logical delivery broadcast to all procs */
 DECL|macro|APIC_BROADCAST_ID
-mdefine_line|#define APIC_BROADCAST_ID     (x86_summit ? 0xFF : 0x0F)
-DECL|macro|check_apicid_used
-mdefine_line|#define check_apicid_used(bitmap, apicid) (x86_summit ? 0 : (bitmap &amp; (1 &lt;&lt; apicid)))
+mdefine_line|#define APIC_BROADCAST_ID     (0x0F)
+DECL|function|check_apicid_used
+r_static
+r_inline
+r_int
+r_int
+id|check_apicid_used
+c_func
+(paren
+r_int
+r_int
+id|bitmap
+comma
+r_int
+id|apicid
+)paren
+(brace
+r_return
+(paren
+id|x86_summit
+ques
+c_cond
+l_int|0
+suffix:colon
+(paren
+id|bitmap
+op_amp
+(paren
+l_int|1
+op_lshift
+id|apicid
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* we don&squot;t use the phys_cpu_present_map to indicate apicid presence */
-DECL|macro|check_apicid_present
-mdefine_line|#define check_apicid_present(bit) (x86_summit ? 1 : (phys_cpu_present_map &amp; (1 &lt;&lt; bit))) 
+DECL|function|check_apicid_present
+r_static
+r_inline
+r_int
+r_int
+id|check_apicid_present
+c_func
+(paren
+r_int
+id|bit
+)paren
+(brace
+r_return
+(paren
+id|x86_summit
+ques
+c_cond
+l_int|1
+suffix:colon
+(paren
+id|phys_cpu_present_map
+op_amp
+(paren
+l_int|1
+op_lshift
+id|bit
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 r_extern
 id|u8
 id|bios_cpu_apicid
@@ -399,5 +523,35 @@ id|phys_cpu_present_map
 )paren
 suffix:semicolon
 )brace
+DECL|macro|APIC_ID_MASK
+mdefine_line|#define&t;&t;APIC_ID_MASK&t;&t;(0xFF&lt;&lt;24)
+DECL|function|get_apic_id
+r_static
+r_inline
+r_int
+id|get_apic_id
+c_func
+(paren
+r_int
+r_int
+id|x
+)paren
+(brace
+r_return
+(paren
+(paren
+(paren
+id|x
+)paren
+op_rshift
+l_int|24
+)paren
+op_amp
+l_int|0xFF
+)paren
+suffix:semicolon
+)brace
+DECL|macro|GET_APIC_ID
+mdefine_line|#define&t;&t;GET_APIC_ID(x)&t;get_apic_id(x)
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof

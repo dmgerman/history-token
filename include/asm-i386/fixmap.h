@@ -66,7 +66,7 @@ id|FIX_F00F_IDT
 comma
 multiline_comment|/* Virtual mapping for IDT */
 macro_line|#endif
-macro_line|#ifdef CONFIG_X86_SUMMIT
+macro_line|#ifdef CONFIG_X86_CYCLONE_TIMER
 DECL|enumerator|FIX_CYCLONE_TIMER
 id|FIX_CYCLONE_TIMER
 comma
