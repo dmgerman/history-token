@@ -1778,7 +1778,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Destroying alive neighbour %p from %08lx&bslash;n&quot;
+l_string|&quot;Destroying alive neighbour %p&bslash;n&quot;
 comma
 id|neigh
 )paren
