@@ -18,6 +18,10 @@ r_struct
 id|resource
 id|res
 suffix:semicolon
+DECL|member|dma_mask
+id|u64
+id|dma_mask
+suffix:semicolon
 DECL|member|periphid
 r_int
 r_int

@@ -109,6 +109,11 @@ op_assign
 op_amp
 id|sa1111_dmamask
 comma
+dot
+id|coherent_dma_mask
+op_assign
+l_int|0xffffffff
+comma
 )brace
 comma
 dot

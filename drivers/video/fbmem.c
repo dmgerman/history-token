@@ -67,14 +67,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|anakinfb_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|atafb_init
 c_func
 (paren
@@ -1041,16 +1033,6 @@ comma
 id|amifb_init
 comma
 id|amifb_setup
-)brace
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_FB_ANAKIN
-(brace
-l_string|&quot;anakinfb&quot;
-comma
-id|anakinfb_init
-comma
-l_int|NULL
 )brace
 comma
 macro_line|#endif

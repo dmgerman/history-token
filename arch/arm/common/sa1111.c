@@ -1985,6 +1985,15 @@ op_rshift
 l_int|2
 )braket
 suffix:semicolon
+id|sachip-&gt;dev-&gt;coherent_dma_mask
+op_and_assign
+id|sa1111_dma_mask
+(braket
+id|drac
+op_rshift
+l_int|2
+)braket
+suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|sa1111_dev_release
@@ -2147,6 +2156,10 @@ suffix:semicolon
 id|dev-&gt;dev.release
 op_assign
 id|sa1111_dev_release
+suffix:semicolon
+id|dev-&gt;dev.coherent_dma_mask
+op_assign
+id|sachip-&gt;dev-&gt;coherent_dma_mask
 suffix:semicolon
 id|dev-&gt;res.start
 op_assign
