@@ -1,7 +1,8 @@
 macro_line|#ifndef _ASM_IA64_HW_IRQ_H
 DECL|macro|_ASM_IA64_HW_IRQ_H
 mdefine_line|#define _ASM_IA64_HW_IRQ_H
-multiline_comment|/*&n; * Copyright (C) 2001 Hewlett-Packard Co&n; * Copyright (C) 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 2001-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -90,6 +91,15 @@ l_int|16
 suffix:semicolon
 DECL|macro|isa_irq_to_vector
 mdefine_line|#define isa_irq_to_vector(x)&t;isa_irq_to_vector_map[(x)]
+r_extern
+id|__u8
+id|gsi_to_vector_map
+(braket
+l_int|255
+)braket
+suffix:semicolon
+DECL|macro|gsi_to_vector
+mdefine_line|#define gsi_to_vector(x)&t;gsi_to_vector_map[(x)]
 r_extern
 r_int
 r_int

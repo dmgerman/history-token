@@ -11,15 +11,13 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|kernel_locked
 macro_line|# define kernel_locked()&t;spin_is_locked(&amp;kernel_flag)
-DECL|macro|check_irq_holder
-macro_line|# define check_irq_holder(cpu)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (global_irq_holder == (cpu))&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#else
 DECL|macro|kernel_locked
 macro_line|# define kernel_locked()&t;(1)
 macro_line|#endif
 multiline_comment|/*&n; * Release global kernel lock and global interrupt lock&n; */
 DECL|macro|release_kernel_lock
-mdefine_line|#define release_kernel_lock(task, cpu)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(task-&gt;lock_depth &gt;= 0)) {&t;&bslash;&n;&t;&t;spin_unlock(&amp;kernel_flag);&t;&bslash;&n;&t;&t;check_irq_holder(cpu);&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define release_kernel_lock(task)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(task-&gt;lock_depth &gt;= 0))&t;&bslash;&n;&t;&t;spin_unlock(&amp;kernel_flag);&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Re-acquire the kernel lock&n; */
 DECL|macro|reacquire_kernel_lock
 mdefine_line|#define reacquire_kernel_lock(task)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(task-&gt;lock_depth &gt;= 0))&t;&bslash;&n;&t;&t;spin_lock(&amp;kernel_flag);&t;&bslash;&n;} while (0)

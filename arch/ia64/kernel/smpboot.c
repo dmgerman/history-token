@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SMP boot-related support&n; *&n; * Copyright (C) 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 01/05/16 Rohit Seth &lt;rohit.seth@intel.com&gt;&t;Moved SMP booting functions from smp.c to here.&n; * 01/04/27 David Mosberger &lt;davidm@hpl.hp.com&gt;&t;Added ITC synching code.&n; */
+multiline_comment|/*&n; * SMP boot-related support&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 01/05/16 Rohit Seth &lt;rohit.seth@intel.com&gt;&t;Moved SMP booting functions from smp.c to here.&n; * 01/04/27 David Mosberger &lt;davidm@hpl.hp.com&gt;&t;Added ITC synching code.&n; * 02/07/31 David Mosberger &lt;davidm@hpl.hp.com&gt;&t;Switch over to hotplug-CPU boot-sequence.&n; *&t;&t;&t;&t;&t;&t;smp_boot_cpus()/smp_commence() is replaced by&n; *&t;&t;&t;&t;&t;&t;smp_prepare_cpus()/__cpu_up()/smp_cpus_done().&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
@@ -74,7 +74,6 @@ r_extern
 r_void
 id|__init
 id|calibrate_delay
-c_func
 (paren
 r_void
 )paren
@@ -82,7 +81,6 @@ suffix:semicolon
 r_extern
 r_void
 id|start_ap
-c_func
 (paren
 r_void
 )paren
@@ -101,21 +99,17 @@ id|task_t
 op_star
 id|task_for_booting_cpu
 suffix:semicolon
-multiline_comment|/* Setup configured maximum number of CPUs to activate */
-DECL|variable|max_cpus
-r_static
-r_int
-id|max_cpus
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 multiline_comment|/* Bitmask of currently online CPUs */
 DECL|variable|cpu_online_map
 r_volatile
 r_int
 r_int
 id|cpu_online_map
+suffix:semicolon
+DECL|variable|phys_cpu_present_map
+r_int
+r_int
+id|phys_cpu_present_map
 suffix:semicolon
 multiline_comment|/* which logical CPU number maps to which CPU (physical APIC ID) */
 DECL|variable|ia64_cpu_to_sapicid
@@ -139,12 +133,6 @@ id|smp_boot_data
 id|smp_boot_data
 id|__initdata
 suffix:semicolon
-multiline_comment|/* Set when the idlers are all forked */
-DECL|variable|smp_threads_ready
-r_volatile
-r_int
-id|smp_threads_ready
-suffix:semicolon
 DECL|variable|ap_wakeup_vector
 r_int
 r_int
@@ -165,67 +153,6 @@ r_char
 id|smp_int_redirect
 suffix:semicolon
 multiline_comment|/* are INT and IPI redirectable by the chipset? */
-multiline_comment|/*&n; * Setup routine for controlling SMP activation&n; *&n; * Command-line option of &quot;nosmp&quot; or &quot;maxcpus=0&quot; will disable SMP&n; * activation entirely (the MPS table probe still happens, though).&n; *&n; * Command-line option of &quot;maxcpus=&lt;NUM&gt;&quot;, where &lt;NUM&gt; is an integer&n; * greater than 0, limits the maximum number of CPUs activated in&n; * SMP mode to &lt;NUM&gt;.&n; */
-r_static
-r_int
-id|__init
-DECL|function|nosmp
-id|nosmp
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|max_cpus
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;nosmp&quot;
-comma
-id|nosmp
-)paren
-suffix:semicolon
-r_static
-r_int
-id|__init
-DECL|function|maxcpus
-id|maxcpus
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|max_cpus
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;maxcpus=&quot;
-comma
-id|maxcpus
-)paren
-suffix:semicolon
 r_static
 r_int
 id|__init
@@ -873,6 +800,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+r_static
 r_void
 id|__init
 DECL|function|smp_commence
@@ -1214,6 +1142,15 @@ op_assign
 op_increment
 id|cpucount
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|cpu
+comma
+op_amp
+id|phys_cpu_present_map
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We can&squot;t use kernel_thread since we must avoid to&n;&t; * reschedule the child.&n;&t; */
 id|idle
 op_assign
@@ -1268,7 +1205,7 @@ suffix:semicolon
 id|Dprintk
 c_func
 (paren
-l_string|&quot;Sending wakeup vector %u to AP 0x%x/0x%x.&bslash;n&quot;
+l_string|&quot;Sending wakeup vector %lu to AP 0x%x/0x%x.&bslash;n&quot;
 comma
 id|ap_wakeup_vector
 comma
@@ -1432,12 +1369,15 @@ id|HZ
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Cycle through the APs sending Wakeup IPIs to boot each.&n; */
+r_static
 r_void
 id|__init
 DECL|function|smp_boot_cpus
 id|smp_boot_cpus
 (paren
-r_void
+r_int
+r_int
+id|max_cpus
 )paren
 (brace
 r_int
@@ -1500,6 +1440,15 @@ op_amp
 id|cpu_callin_map
 )paren
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|phys_cpu_present_map
+)paren
+suffix:semicolon
 id|local_cpu_data-&gt;loops_per_jiffy
 op_assign
 id|loops_per_jiffy
@@ -1520,10 +1469,6 @@ l_int|0
 comma
 id|boot_cpu_id
 )paren
-suffix:semicolon
-id|global_irq_holder
-op_assign
-id|NO_PROC_ID
 suffix:semicolon
 id|current_thread_info
 c_func
@@ -1707,8 +1652,8 @@ id|cpucount
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;Error: only one processor found.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;Warning: only one processor found.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1740,7 +1685,7 @@ c_cond
 id|cpu_online_map
 op_amp
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 id|cpu
 )paren
@@ -1791,6 +1736,55 @@ suffix:semicolon
 id|smp_done
 suffix:colon
 suffix:semicolon
+)brace
+r_void
+id|__init
+DECL|function|smp_prepare_cpus
+id|smp_prepare_cpus
+(paren
+r_int
+r_int
+id|max_cpus
+)paren
+(brace
+id|smp_boot_cpus
+c_func
+(paren
+id|max_cpus
+)paren
+suffix:semicolon
+)brace
+r_int
+id|__devinit
+DECL|function|__cpu_up
+id|__cpu_up
+(paren
+r_int
+r_int
+id|cpu
+)paren
+(brace
+multiline_comment|/*&n;&t; * Yeah, that&squot;s cheesy, but it will do until there is real hotplug support and in&n;&t; * the meantime, this gives time for the interface changes to settle down...&n;&t; */
+id|smp_commence
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_void
+id|__init
+DECL|function|smp_cpus_done
+id|smp_cpus_done
+(paren
+r_int
+r_int
+id|max_cpus
+)paren
+(brace
+multiline_comment|/* nuthing... */
 )brace
 multiline_comment|/*&n; * Assume that CPU&squot;s have been discovered by some platform-dependant interface.  For&n; * SoftSDV/Lion, that would be ACPI.&n; *&n; * Setup of the IPI irq handler is done in irq.c:init_IRQ_SMP().&n; */
 r_void
@@ -1865,11 +1859,10 @@ id|sal_ret
 OL
 l_int|0
 )paren
-(brace
 id|printk
 c_func
 (paren
-l_string|&quot;SMP: Can&squot;t set SAL AP Boot Rendezvous: %s&bslash;n     Forcing UP mode&bslash;n&quot;
+l_string|&quot;SMP: Can&squot;t set SAL AP Boot Rendezvous: %s&bslash;n&quot;
 comma
 id|ia64_sal_strerror
 c_func
@@ -1878,10 +1871,5 @@ id|sal_ret
 )paren
 )paren
 suffix:semicolon
-id|max_cpus
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 )brace
 eof

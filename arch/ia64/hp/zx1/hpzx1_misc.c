@@ -18,6 +18,7 @@ macro_line|#include &quot;../drivers/acpi/include/acobject.h&quot;
 macro_line|#include &quot;../drivers/acpi/include/acstruct.h&quot;
 macro_line|#include &quot;../drivers/acpi/include/acnamesp.h&quot;
 macro_line|#include &quot;../drivers/acpi/include/acutils.h&quot;
+macro_line|#include &quot;../drivers/acpi/acpi_bus.h&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;hpzx1: &quot;
 DECL|struct|fake_pci_dev
@@ -209,7 +210,7 @@ suffix:semicolon
 DECL|macro|HP_CFG_RD
 mdefine_line|#define HP_CFG_RD(sz, bits, name) &bslash;&n;static int hp_cfg_read##sz (struct pci_dev *dev, int where, u##bits *value) &bslash;&n;{ &bslash;&n;&t;struct fake_pci_dev *fake_dev; &bslash;&n;&t;if (!(fake_dev = fake_pci_find_slot(dev-&gt;bus-&gt;number, dev-&gt;devfn))) &bslash;&n;&t;&t;return orig_pci_ops-&gt;name(dev, where, value); &bslash;&n;&t;&bslash;&n;&t;switch (where) { &bslash;&n;&t;case PCI_COMMAND: &bslash;&n;&t;&t;*value = read##sz(fake_dev-&gt;mapped_csrs + where); &bslash;&n;&t;&t;*value |= PCI_COMMAND_MEMORY; /* SBA omits this */ &bslash;&n;&t;&t;break; &bslash;&n;&t;case PCI_BASE_ADDRESS_0: &bslash;&n;&t;&t;if (fake_dev-&gt;sizing) &bslash;&n;&t;&t;&t;*value = ~(fake_dev-&gt;csr_size - 1); &bslash;&n;&t;&t;else &bslash;&n;&t;&t;&t;*value = (fake_dev-&gt;csr_base &amp; &bslash;&n;&t;&t;&t;&t;    PCI_BASE_ADDRESS_MEM_MASK) | &bslash;&n;&t;&t;&t;&t;PCI_BASE_ADDRESS_SPACE_MEMORY; &bslash;&n;&t;&t;fake_dev-&gt;sizing = 0; &bslash;&n;&t;&t;break; &bslash;&n;&t;default: &bslash;&n;&t;&t;*value = read##sz(fake_dev-&gt;mapped_csrs + where); &bslash;&n;&t;&t;break; &bslash;&n;&t;} &bslash;&n;&t;return PCIBIOS_SUCCESSFUL; &bslash;&n;}
 DECL|macro|HP_CFG_WR
-mdefine_line|#define HP_CFG_WR(sz, bits, name) &bslash;&n;static int hp_cfg_write##sz (struct pci_dev *dev, int where, u##bits value) &bslash;&n;{ &bslash;&n;&t;struct fake_pci_dev *fake_dev; &bslash;&n;&t;if (!(fake_dev = fake_pci_find_slot(dev-&gt;bus-&gt;number, dev-&gt;devfn))) &bslash;&n;&t;&t;return orig_pci_ops-&gt;name(dev, where, value); &bslash;&n;&t;&bslash;&n;&t;switch (where) { &bslash;&n;&t;case PCI_BASE_ADDRESS_0: &bslash;&n;&t;&t;if (value == ~0) &bslash;&n;&t;&t;&t;fake_dev-&gt;sizing = 1; &bslash;&n;&t;&t;break; &bslash;&n;&t;default: &bslash;&n;&t;&t;write##sz(value, fake_dev-&gt;mapped_csrs + where); &bslash;&n;&t;&t;break; &bslash;&n;&t;} &bslash;&n;&t;return PCIBIOS_SUCCESSFUL; &bslash;&n;}
+mdefine_line|#define HP_CFG_WR(sz, bits, name) &bslash;&n;static int hp_cfg_write##sz (struct pci_dev *dev, int where, u##bits value) &bslash;&n;{ &bslash;&n;&t;struct fake_pci_dev *fake_dev; &bslash;&n;&t;if (!(fake_dev = fake_pci_find_slot(dev-&gt;bus-&gt;number, dev-&gt;devfn))) &bslash;&n;&t;&t;return orig_pci_ops-&gt;name(dev, where, value); &bslash;&n;&t;&bslash;&n;&t;switch (where) { &bslash;&n;&t;case PCI_BASE_ADDRESS_0: &bslash;&n;&t;&t;if (value == (u##bits) ~0) &bslash;&n;&t;&t;&t;fake_dev-&gt;sizing = 1; &bslash;&n;&t;&t;break; &bslash;&n;&t;default: &bslash;&n;&t;&t;write##sz(value, fake_dev-&gt;mapped_csrs + where); &bslash;&n;&t;&t;break; &bslash;&n;&t;} &bslash;&n;&t;return PCIBIOS_SUCCESSFUL; &bslash;&n;}
 id|HP_CFG_RD
 c_func
 (paren
@@ -441,6 +442,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Drivers should ioremap what they need, but we have to do&n;&t; * it here, too, so PCI config accesses work.&n;&t; */
 id|dev-&gt;mapped_csrs
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|ioremap
 c_func
 (paren
@@ -1133,6 +1138,10 @@ id|name
 comma
 id|csr_base
 comma
+(paren
+r_int
+r_int
+)paren
 id|busnum
 comma
 id|dev-&gt;bus

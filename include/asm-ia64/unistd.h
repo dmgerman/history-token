@@ -422,6 +422,14 @@ DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;&t;1232
 DECL|macro|__NR_security
 mdefine_line|#define __NR_security&t;&t;&t;1233
+DECL|macro|__NR_get_large_pages
+mdefine_line|#define __NR_get_large_pages&t;&t;1234
+DECL|macro|__NR_free_large_pages
+mdefine_line|#define __NR_free_large_pages&t;&t;1235
+DECL|macro|__NR_share_large_pages
+mdefine_line|#define __NR_share_large_pages&t;&t;1236
+DECL|macro|__NR_unshare_large_pages
+mdefine_line|#define __NR_unshare_large_pages&t;1237
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int

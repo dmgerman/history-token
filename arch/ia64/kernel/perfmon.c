@@ -95,6 +95,13 @@ DECL|macro|UNLOCK_PFS
 mdefine_line|#define UNLOCK_PFS()&t;    spin_unlock(&amp;pfm_sessions.pfs_lock)
 DECL|macro|PFM_REG_RETFLAG_SET
 mdefine_line|#define PFM_REG_RETFLAG_SET(flags, val)&t;do { flags &amp;= ~PFM_REG_RETFL_MASK; flags |= (val); } while(0)
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|cpu_is_online
+mdefine_line|#define cpu_is_online(i) (cpu_online_map &amp; (1UL &lt;&lt; i))
+macro_line|#else
+DECL|macro|cpu_is_online
+mdefine_line|#define cpu_is_online(i)        (i==0)
+macro_line|#endif
 multiline_comment|/*&n; * debugging&n; */
 DECL|macro|DBprintk
 mdefine_line|#define DBprintk(a) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (pfm_sysctl.debug &gt;0) { printk(&quot;%s.%d: CPU%d &quot;, __FUNCTION__, __LINE__, smp_processor_id()); printk a; } &bslash;&n;&t;} while (0)
@@ -639,6 +646,11 @@ r_int
 r_int
 op_star
 id|val
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 DECL|member|write_check
@@ -661,6 +673,11 @@ r_int
 r_int
 op_star
 id|val
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 DECL|member|dep_pmd
@@ -1696,6 +1713,8 @@ comma
 id|ctx-&gt;ctx_smpl_vaddr
 comma
 id|psb-&gt;psb_size
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|up_write
@@ -2808,21 +2827,23 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * and it must be a valid CPU&n;&t;&t; */
 id|cpu
 op_assign
-id|ffs
+id|ffz
 c_func
 (paren
+op_complement
 id|pfx-&gt;ctx_cpu_mask
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|cpu_online
+id|cpu_is_online
 c_func
 (paren
 id|cpu
 )paren
+op_eq
+l_int|0
 )paren
 (brace
 id|DBprintk
@@ -2914,6 +2935,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -2943,6 +2965,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 multiline_comment|/* probably more to add here */
 r_return
@@ -3088,13 +3111,12 @@ id|PFM_FL_SYSTEM_WIDE
 multiline_comment|/* at this point, we know there is at least one bit set */
 id|cpu
 op_assign
-id|ffs
+id|ffz
 c_func
 (paren
+op_complement
 id|tmp.ctx_cpu_mask
 )paren
-op_minus
-l_int|1
 suffix:semicolon
 id|DBprintk
 c_func
@@ -4336,6 +4358,8 @@ id|cnum
 comma
 op_amp
 id|tmp.reg_value
+comma
+id|regs
 )paren
 suffix:semicolon
 id|abort_mission
@@ -4697,6 +4721,8 @@ id|cnum
 comma
 op_amp
 id|tmp.reg_value
+comma
+id|regs
 )paren
 suffix:semicolon
 id|abort_mission
@@ -4787,6 +4813,19 @@ id|dep_pmd
 (braket
 l_int|0
 )braket
+)paren
+suffix:semicolon
+multiline_comment|/* mark this register as used as well */
+id|CTX_USED_PMD
+c_func
+(paren
+id|ctx
+comma
+id|RDEP
+c_func
+(paren
+id|cnum
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* writes to unimplemented part is ignored, so this is safe */
@@ -4999,11 +5038,6 @@ op_increment
 (brace
 r_int
 r_int
-id|reg_val
-op_assign
-op_complement
-l_int|0UL
-comma
 id|ctx_val
 op_assign
 op_complement
@@ -5087,8 +5121,6 @@ c_func
 suffix:semicolon
 id|val
 op_assign
-id|reg_val
-op_assign
 id|ia64_get_pmd
 c_func
 (paren
@@ -5160,8 +5192,6 @@ macro_line|#endif
 multiline_comment|/* context has been saved */
 id|val
 op_assign
-id|reg_val
-op_assign
 id|th-&gt;pmd
 (braket
 id|cnum
@@ -5195,19 +5225,6 @@ dot
 id|val
 suffix:semicolon
 )brace
-r_else
-(brace
-id|val
-op_assign
-id|reg_val
-op_assign
-id|ia64_get_pmd
-c_func
-(paren
-id|cnum
-)paren
-suffix:semicolon
-)brace
 id|tmp.reg_value
 op_assign
 id|val
@@ -5237,6 +5254,8 @@ id|cnum
 comma
 op_amp
 id|tmp.reg_value
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace
@@ -5252,15 +5271,13 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot;read pmd[%u] ret=%d soft_pmd=0x%lx reg=0x%lx pmc=0x%lx&bslash;n&quot;
+l_string|&quot;read pmd[%u] ret=%d value=0x%lx pmc=0x%lx&bslash;n&quot;
 comma
 id|cnum
 comma
 id|ret
 comma
-id|ctx_val
-comma
-id|reg_val
+id|val
 comma
 id|ia64_get_pmc
 c_func
@@ -5384,13 +5401,12 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * XXX: not pretty&n;&t; */
 id|LOCK_PFS
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We only allow the use of debug registers when there is no system&n;&t; * wide monitoring &n;&t; * XXX: we could relax this by &n;&t; */
+multiline_comment|/*&n;&t; * We cannot allow setting breakpoints when system wide monitoring&n;&t; * sessions are using the debug registers.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6646,15 +6662,22 @@ id|ctx-&gt;ctx_fl_using_dbreg
 op_assign
 l_int|1
 suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot;system-wide setting fl_using_dbreg for [%d]&bslash;n&quot;
+comma
+id|task-&gt;pid
+)paren
+)paren
+suffix:semicolon
 )brace
 r_else
-(brace
 r_if
 c_cond
 (paren
-id|ctx-&gt;ctx_fl_using_dbreg
-op_eq
-l_int|0
+id|first_time
 )paren
 (brace
 id|ret
@@ -6693,6 +6716,16 @@ id|ctx-&gt;ctx_fl_using_dbreg
 op_assign
 l_int|1
 suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot;setting fl_using_dbreg for [%d]&bslash;n&quot;
+comma
+id|task-&gt;pid
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* &n;&t;&t;&t; * Given debug registers cannot be used for both debugging &n;&t;&t;&t; * and performance monitoring at the same time, we reuse&n;&t;&t;&t; * the storage area to save and restore the registers on ctxsw.&n;&t;&t;&t; */
 id|memset
 c_func
@@ -6720,7 +6753,24 @@ id|task-&gt;thread.ibr
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * clear hardware registers to make sure we don&squot;t&n;&t;&t;&t; * pick up stale state&n;&t;&t;&t; */
+)brace
+r_if
+c_cond
+(paren
+id|first_time
+)paren
+(brace
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot;[%d] clearing ibrs,dbrs&bslash;n&quot;
+comma
+id|task-&gt;pid
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; &t; * clear hardware registers to make sure we don&squot;t&n;&t; &t; * pick up stale state. &n;&t;&t; *&n;&t;&t; * for a system wide session, we do not use&n;&t;&t; * thread.dbr, thread.ibr because this process&n;&t;&t; * never leaves the current CPU and the state&n;&t;&t; * is shared by all processes running on it&n;&t; &t; */
 r_for
 c_loop
 (paren
@@ -6779,7 +6829,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 id|ret
 op_assign
@@ -8167,17 +8216,12 @@ suffix:semicolon
 id|pfm_context_t
 op_star
 id|ctx
-op_assign
-id|task-&gt;thread.pfm_context
 suffix:semicolon
 r_int
 id|sz
 suffix:semicolon
 r_int
 id|ret
-op_assign
-op_minus
-id|ESRCH
 comma
 id|narg
 suffix:semicolon
@@ -8363,6 +8407,11 @@ op_ne
 id|current-&gt;pid
 )paren
 (brace
+id|ret
+op_assign
+op_minus
+id|ESRCH
+suffix:semicolon
 id|read_lock
 c_func
 (paren
@@ -8433,12 +8482,12 @@ r_goto
 id|abort_call
 suffix:semicolon
 )brace
+)brace
+)brace
 id|ctx
 op_assign
 id|task-&gt;thread.pfm_context
 suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
 (paren
@@ -9953,12 +10002,6 @@ op_star
 id|page
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|cpu_is_online
-mdefine_line|#define cpu_is_online(i) (cpu_online_map &amp; (1UL &lt;&lt; i))
-macro_line|#else
-mdefine_line|#define cpu_is_online(i)        1
-macro_line|#endif
 r_char
 op_star
 id|p
@@ -13364,16 +13407,19 @@ id|irqaction
 id|perfmon_irqaction
 op_assign
 (brace
+dot
 id|handler
-suffix:colon
+op_assign
 id|perfmon_interrupt
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|SA_INTERRUPT
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;perfmon&quot;
 )brace
 suffix:semicolon
@@ -13461,26 +13507,6 @@ id|pm_info
 suffix:semicolon
 id|s64
 id|status
-suffix:semicolon
-id|register_percpu_irq
-c_func
-(paren
-id|IA64_PERFMON_VECTOR
-comma
-op_amp
-id|perfmon_irqaction
-)paren
-suffix:semicolon
-id|ia64_set_pmv
-c_func
-(paren
-id|IA64_PERFMON_VECTOR
-)paren
-suffix:semicolon
-id|ia64_srlz_d
-c_func
-(paren
-)paren
 suffix:semicolon
 id|pmu_conf.pfm_is_disabled
 op_assign
@@ -13722,6 +13748,25 @@ id|perfmon_init_percpu
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+op_eq
+l_int|0
+)paren
+id|register_percpu_irq
+c_func
+(paren
+id|IA64_PERFMON_VECTOR
+comma
+op_amp
+id|perfmon_irqaction
+)paren
+suffix:semicolon
 id|ia64_set_pmv
 c_func
 (paren

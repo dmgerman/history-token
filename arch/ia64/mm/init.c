@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -169,7 +170,7 @@ id|vm_area_struct
 op_star
 id|vma
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we&squot;re out of memory and kmem_cache_alloc() returns NULL,&n;&t; * we simply ignore the problem.  When the process attempts to&n;&t; * write to the register backing store for the first time, it&n;&t; * will get a SEGFAULT in this case.&n;&t; */
+multiline_comment|/*&n;&t; * If we&squot;re out of memory and kmem_cache_alloc() returns NULL, we simply ignore&n;&t; * the problem.  When the process attempts to write to the register backing store&n;&t; * for the first time, it will get a SEGFAULT in this case.&n;&t; */
 id|vma
 op_assign
 id|kmem_cache_alloc
@@ -240,6 +241,90 @@ comma
 id|vma
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* map NaT-page at address zero to speed up speculative dereferencing of NULL: */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|current-&gt;personality
+op_amp
+id|MMAP_PAGE_ZERO
+)paren
+)paren
+(brace
+id|vma
+op_assign
+id|kmem_cache_alloc
+c_func
+(paren
+id|vm_area_cachep
+comma
+id|SLAB_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vma
+)paren
+(brace
+id|memset
+c_func
+(paren
+id|vma
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|vma
+)paren
+)paren
+suffix:semicolon
+id|vma-&gt;vm_mm
+op_assign
+id|current-&gt;mm
+suffix:semicolon
+id|vma-&gt;vm_end
+op_assign
+id|PAGE_SIZE
+suffix:semicolon
+id|vma-&gt;vm_page_prot
+op_assign
+id|__pgprot
+c_func
+(paren
+id|pgprot_val
+c_func
+(paren
+id|PAGE_READONLY
+)paren
+op_or
+id|_PAGE_MA_NAT
+)paren
+suffix:semicolon
+id|vma-&gt;vm_flags
+op_assign
+id|VM_READ
+op_or
+id|VM_MAYREAD
+op_or
+id|VM_IO
+op_or
+id|VM_RESERVED
+suffix:semicolon
+id|insert_vm_struct
+c_func
+(paren
+id|current-&gt;mm
+comma
+id|vma
+)paren
+suffix:semicolon
+)brace
 )brace
 )brace
 r_void
