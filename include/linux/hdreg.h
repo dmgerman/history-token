@@ -42,8 +42,8 @@ DECL|macro|DRQ_STAT
 mdefine_line|#define DRQ_STAT&t;&t;0x08
 DECL|macro|SEEK_STAT
 mdefine_line|#define SEEK_STAT&t;&t;0x10
-DECL|macro|SERVICE_STAT
-mdefine_line|#define SERVICE_STAT&t;&t;SEEK_STAT
+DECL|macro|SRV_STAT
+mdefine_line|#define SRV_STAT&t;&t;0x10
 DECL|macro|WRERR_STAT
 mdefine_line|#define WRERR_STAT&t;&t;0x20
 DECL|macro|READY_STAT
@@ -69,6 +69,15 @@ DECL|macro|BBD_ERR
 mdefine_line|#define BBD_ERR&t;&t;&t;0x80&t;/* pre-EIDE meaning:  block marked bad */
 DECL|macro|ICRC_ERR
 mdefine_line|#define ICRC_ERR&t;&t;0x80&t;/* new meaning:  CRC error during transfer */
+multiline_comment|/* Bits of HD_NSECTOR */
+DECL|macro|CD
+mdefine_line|#define CD&t;&t;&t;0x01
+DECL|macro|IO
+mdefine_line|#define IO&t;&t;&t;0x02
+DECL|macro|REL
+mdefine_line|#define REL&t;&t;&t;0x04
+DECL|macro|TAG_MASK
+mdefine_line|#define TAG_MASK&t;&t;0xf8
 multiline_comment|/*&n; * Command Header sizes for IOCTL commands&n; */
 DECL|macro|HDIO_DRIVE_CMD_HDR_SIZE
 mdefine_line|#define HDIO_DRIVE_CMD_HDR_SIZE&t;&t;(4 * sizeof(u8))
@@ -94,7 +103,7 @@ mdefine_line|#define IDE_TASKFILE_STD_OUT_FLAGS&t;0xFE
 DECL|macro|IDE_TASKFILE_STD_IN_FLAGS
 mdefine_line|#define IDE_TASKFILE_STD_IN_FLAGS&t;0xFE
 DECL|macro|IDE_HOB_STD_OUT_FLAGS
-mdefine_line|#define IDE_HOB_STD_OUT_FLAGS&t;&t;0x3C     /* sector, nsector lcyl and hcyl */
+mdefine_line|#define IDE_HOB_STD_OUT_FLAGS&t;&t;0x3C
 DECL|macro|IDE_HOB_STD_IN_FLAGS
 mdefine_line|#define IDE_HOB_STD_IN_FLAGS&t;&t;0x3C
 DECL|typedef|task_ioreg_t
@@ -102,6 +111,12 @@ r_typedef
 r_int
 r_char
 id|task_ioreg_t
+suffix:semicolon
+DECL|typedef|sata_ioreg_t
+r_typedef
+r_int
+r_int
+id|sata_ioreg_t
 suffix:semicolon
 DECL|union|ide_reg_valid_s
 r_typedef
@@ -437,18 +452,28 @@ mdefine_line|#define TASKFILE_P_OUT_DMAQ&t;&t;0x4000
 multiline_comment|/* ATA/ATAPI Commands pre T13 Spec */
 DECL|macro|WIN_NOP
 mdefine_line|#define WIN_NOP&t;&t;&t;&t;0x00
+multiline_comment|/*&n; *&t;0x01-&gt;0x02 Reserved&n; */
 DECL|macro|CFA_REQ_EXT_ERROR_CODE
 mdefine_line|#define CFA_REQ_EXT_ERROR_CODE&t;&t;0x03 /* CFA Request Extended Error Code */
+multiline_comment|/*&n; *&t;0x04-&gt;0x07 Reserved&n; */
 DECL|macro|WIN_SRST
 mdefine_line|#define WIN_SRST&t;&t;&t;0x08 /* ATAPI soft reset command */
 DECL|macro|WIN_DEVICE_RESET
 mdefine_line|#define WIN_DEVICE_RESET&t;&t;0x08
+multiline_comment|/*&n; *&t;0x09-&gt;0x0F Reserved&n; */
 DECL|macro|WIN_RECAL
 mdefine_line|#define WIN_RECAL&t;&t;&t;0x10
 DECL|macro|WIN_RESTORE
-mdefine_line|#define WIN_RESTORE&t;&t;&t;0x10
+mdefine_line|#define WIN_RESTORE&t;&t;&t;WIN_RECAL
+multiline_comment|/*&n; *&t;0x10-&gt;0x1F Reserved&n; */
 DECL|macro|WIN_READ
 mdefine_line|#define WIN_READ&t;&t;&t;0x20 /* 28-Bit */
+DECL|macro|WIN_READ_ONCE
+mdefine_line|#define WIN_READ_ONCE&t;&t;&t;0x21 /* 28-Bit without retries */
+DECL|macro|WIN_READ_LONG
+mdefine_line|#define WIN_READ_LONG&t;&t;&t;0x22 /* 28-Bit */
+DECL|macro|WIN_READ_LONG_ONCE
+mdefine_line|#define WIN_READ_LONG_ONCE&t;&t;0x23 /* 28-Bit without retries */
 DECL|macro|WIN_READ_EXT
 mdefine_line|#define WIN_READ_EXT&t;&t;&t;0x24 /* 48-Bit */
 DECL|macro|WIN_READDMA_EXT
@@ -457,10 +482,18 @@ DECL|macro|WIN_READDMA_QUEUED_EXT
 mdefine_line|#define WIN_READDMA_QUEUED_EXT&t;&t;0x26 /* 48-Bit */
 DECL|macro|WIN_READ_NATIVE_MAX_EXT
 mdefine_line|#define WIN_READ_NATIVE_MAX_EXT&t;&t;0x27 /* 48-Bit */
+multiline_comment|/*&n; *&t;0x28&n; */
 DECL|macro|WIN_MULTREAD_EXT
 mdefine_line|#define WIN_MULTREAD_EXT&t;&t;0x29 /* 48-Bit */
+multiline_comment|/*&n; *&t;0x2A-&gt;0x2F Reserved&n; */
 DECL|macro|WIN_WRITE
 mdefine_line|#define WIN_WRITE&t;&t;&t;0x30 /* 28-Bit */
+DECL|macro|WIN_WRITE_ONCE
+mdefine_line|#define WIN_WRITE_ONCE&t;&t;&t;0x31 /* 28-Bit without retries */
+DECL|macro|WIN_WRITE_LONG
+mdefine_line|#define WIN_WRITE_LONG&t;&t;&t;0x32 /* 28-Bit */
+DECL|macro|WIN_WRITE_LONG_ONCE
+mdefine_line|#define WIN_WRITE_LONG_ONCE&t;&t;0x33 /* 28-Bit without retries */
 DECL|macro|WIN_WRITE_EXT
 mdefine_line|#define WIN_WRITE_EXT&t;&t;&t;0x34 /* 48-Bit */
 DECL|macro|WIN_WRITEDMA_EXT
@@ -473,18 +506,25 @@ DECL|macro|CFA_WRITE_SECT_WO_ERASE
 mdefine_line|#define CFA_WRITE_SECT_WO_ERASE&t;&t;0x38 /* CFA Write Sectors without erase */
 DECL|macro|WIN_MULTWRITE_EXT
 mdefine_line|#define WIN_MULTWRITE_EXT&t;&t;0x39 /* 48-Bit */
+multiline_comment|/*&n; *&t;0x3A-&gt;0x3B Reserved&n; */
 DECL|macro|WIN_WRITE_VERIFY
 mdefine_line|#define WIN_WRITE_VERIFY&t;&t;0x3C /* 28-Bit */
+multiline_comment|/*&n; *&t;0x3D-&gt;0x3F Reserved&n; */
 DECL|macro|WIN_VERIFY
 mdefine_line|#define WIN_VERIFY&t;&t;&t;0x40 /* 28-Bit - Read Verify Sectors */
+DECL|macro|WIN_VERIFY_ONCE
+mdefine_line|#define WIN_VERIFY_ONCE&t;&t;&t;0x41 /* 28-Bit - without retries */
 DECL|macro|WIN_VERIFY_EXT
 mdefine_line|#define WIN_VERIFY_EXT&t;&t;&t;0x42 /* 48-Bit */
+multiline_comment|/*&n; *&t;0x43-&gt;0x4F Reserved&n; */
 DECL|macro|WIN_FORMAT
 mdefine_line|#define WIN_FORMAT&t;&t;&t;0x50
+multiline_comment|/*&n; *&t;0x51-&gt;0x5F Reserved&n; */
 DECL|macro|WIN_INIT
 mdefine_line|#define WIN_INIT&t;&t;&t;0x60
+multiline_comment|/*&n; *&t;0x61-&gt;0x5F Reserved&n; */
 DECL|macro|WIN_SEEK
-mdefine_line|#define WIN_SEEK&t;&t;&t;0x70
+mdefine_line|#define WIN_SEEK&t;&t;&t;0x70 /* 0x70-0x7F Reserved */
 DECL|macro|CFA_TRANSLATE_SECTOR
 mdefine_line|#define CFA_TRANSLATE_SECTOR&t;&t;0x87 /* CFA Translate Sector */
 DECL|macro|WIN_DIAGNOSE
@@ -495,12 +535,15 @@ DECL|macro|WIN_DOWNLOAD_MICROCODE
 mdefine_line|#define WIN_DOWNLOAD_MICROCODE&t;&t;0x92
 DECL|macro|WIN_STANDBYNOW2
 mdefine_line|#define WIN_STANDBYNOW2&t;&t;&t;0x94
+DECL|macro|WIN_STANDBY2
+mdefine_line|#define WIN_STANDBY2&t;&t;&t;0x96
 DECL|macro|WIN_SETIDLE2
 mdefine_line|#define WIN_SETIDLE2&t;&t;&t;0x97
 DECL|macro|WIN_CHECKPOWERMODE2
 mdefine_line|#define WIN_CHECKPOWERMODE2&t;&t;0x98
 DECL|macro|WIN_SLEEPNOW2
 mdefine_line|#define WIN_SLEEPNOW2&t;&t;&t;0x99
+multiline_comment|/*&n; *&t;0x9A VENDOR&n; */
 DECL|macro|WIN_PACKETCMD
 mdefine_line|#define WIN_PACKETCMD&t;&t;&t;0xA0 /* Send a packet command. */
 DECL|macro|WIN_PIDENTIFY
@@ -521,14 +564,24 @@ DECL|macro|WIN_READDMA_QUEUED
 mdefine_line|#define WIN_READDMA_QUEUED&t;&t;0xC7 /* read sectors using Queued DMA transfers */
 DECL|macro|WIN_READDMA
 mdefine_line|#define WIN_READDMA&t;&t;&t;0xC8 /* read sectors using DMA transfers */
+DECL|macro|WIN_READDMA_ONCE
+mdefine_line|#define WIN_READDMA_ONCE&t;&t;0xC9 /* 28-Bit - without retries */
 DECL|macro|WIN_WRITEDMA
 mdefine_line|#define WIN_WRITEDMA&t;&t;&t;0xCA /* write sectors using DMA transfers */
+DECL|macro|WIN_WRITEDMA_ONCE
+mdefine_line|#define WIN_WRITEDMA_ONCE&t;&t;0xCB /* 28-Bit - without retries */
 DECL|macro|WIN_WRITEDMA_QUEUED
 mdefine_line|#define WIN_WRITEDMA_QUEUED&t;&t;0xCC /* write sectors using Queued DMA transfers */
 DECL|macro|CFA_WRITE_MULTI_WO_ERASE
 mdefine_line|#define CFA_WRITE_MULTI_WO_ERASE&t;0xCD /* CFA Write multiple without erase */
 DECL|macro|WIN_GETMEDIASTATUS
 mdefine_line|#define WIN_GETMEDIASTATUS&t;&t;0xDA
+DECL|macro|WIN_ACKMEDIACHANGE
+mdefine_line|#define WIN_ACKMEDIACHANGE&t;&t;0xDB /* ATA-1, ATA-2 vendor */
+DECL|macro|WIN_POSTBOOT
+mdefine_line|#define WIN_POSTBOOT&t;&t;&t;0xDC
+DECL|macro|WIN_PREBOOT
+mdefine_line|#define WIN_PREBOOT &t;&t;&t;0xDD
 DECL|macro|WIN_DOORLOCK
 mdefine_line|#define WIN_DOORLOCK&t;&t;&t;0xDE /* lock door on removable drives */
 DECL|macro|WIN_DOORUNLOCK
@@ -551,6 +604,9 @@ DECL|macro|WIN_FLUSH_CACHE
 mdefine_line|#define WIN_FLUSH_CACHE&t;&t;&t;0xE7
 DECL|macro|WIN_WRITE_BUFFER
 mdefine_line|#define WIN_WRITE_BUFFER&t;&t;0xE8 /* force write only 1 sector */
+DECL|macro|WIN_WRITE_SAME
+mdefine_line|#define WIN_WRITE_SAME&t;&t;&t;0xE9 /* read ata-2 to use */
+multiline_comment|/* SET_FEATURES 0x22 or 0xDD */
 DECL|macro|WIN_FLUSH_CACHE_EXT
 mdefine_line|#define WIN_FLUSH_CACHE_EXT&t;&t;0xEA /* 48-Bit */
 DECL|macro|WIN_IDENTIFY
@@ -662,6 +718,8 @@ DECL|macro|SETFEATURES_DIS_DEFECT
 mdefine_line|#define SETFEATURES_DIS_DEFECT&t;0x04&t;/* Disable Defect Management */
 DECL|macro|SETFEATURES_EN_APM
 mdefine_line|#define SETFEATURES_EN_APM&t;0x05&t;/* Enable advanced power management */
+DECL|macro|SETFEATURES_EN_SAME_R
+mdefine_line|#define SETFEATURES_EN_SAME_R&t;0x22&t;/* for a region ATA-1 */
 DECL|macro|SETFEATURES_DIS_MSN
 mdefine_line|#define SETFEATURES_DIS_MSN&t;0x31&t;/* Disable Media Status Notification */
 DECL|macro|SETFEATURES_DIS_RETRY
@@ -700,6 +758,8 @@ DECL|macro|SETFEATURES_EN_RLA
 mdefine_line|#define SETFEATURES_EN_RLA&t;0xAA&t;/* Enable read look-ahead feature */
 DECL|macro|SETFEATURES_PREFETCH
 mdefine_line|#define SETFEATURES_PREFETCH&t;0xAB&t;/* Sets drive prefetch value */
+DECL|macro|SETFEATURES_EN_REST
+mdefine_line|#define SETFEATURES_EN_REST&t;0xAC&t;/* ATA-1 */
 DECL|macro|SETFEATURES_4B_RW_LONG
 mdefine_line|#define SETFEATURES_4B_RW_LONG&t;0xBB&t;/* Set Lenght of 4 bytes */
 DECL|macro|SETFEATURES_DIS_AAM
@@ -707,9 +767,11 @@ mdefine_line|#define SETFEATURES_DIS_AAM&t;0xC2&t;/* Disable Automatic Acoustic 
 DECL|macro|SETFEATURES_EN_RPOD
 mdefine_line|#define SETFEATURES_EN_RPOD&t;0xCC&t;/* Enable reverting to power on defaults */
 DECL|macro|SETFEATURES_DIS_RI
-mdefine_line|#define SETFEATURES_DIS_RI&t;0xDD&t;/* Disable release interrupt */
+mdefine_line|#define SETFEATURES_DIS_RI&t;0xDD&t;/* Disable release interrupt ATAPI */
+DECL|macro|SETFEATURES_EN_SAME_M
+mdefine_line|#define SETFEATURES_EN_SAME_M&t;0xDD&t;/* for a entire device ATA-1 */
 DECL|macro|SETFEATURES_DIS_SI
-mdefine_line|#define SETFEATURES_DIS_SI&t;0xDE&t;/* Disable SERVICE interrupt */
+mdefine_line|#define SETFEATURES_DIS_SI&t;0xDE&t;/* Disable SERVICE interrupt ATAPI */
 multiline_comment|/* WIN_SECURITY sub-commands */
 DECL|macro|SECURITY_SET_PASSWORD
 mdefine_line|#define SECURITY_SET_PASSWORD&t;&t;0xBA
@@ -785,6 +847,8 @@ DECL|macro|HDIO_GET_MULTCOUNT
 mdefine_line|#define HDIO_GET_MULTCOUNT&t;0x0304&t;/* get current IDE blockmode setting */
 DECL|macro|HDIO_GET_QDMA
 mdefine_line|#define HDIO_GET_QDMA&t;&t;0x0305&t;/* get use-qdma flag */
+DECL|macro|HDIO_SET_XFER
+mdefine_line|#define HDIO_SET_XFER&t;&t;0x0306  /* set transfer rate via proc */
 DECL|macro|HDIO_OBSOLETE_IDENTITY
 mdefine_line|#define HDIO_OBSOLETE_IDENTITY&t;0x0307&t;/* OBSOLETE, DO NOT USE: returns 142 bytes */
 DECL|macro|HDIO_GET_KEEPSETTINGS
@@ -869,6 +933,10 @@ multiline_comment|/* hd/ide ctl&squot;s that pass (arg) ptrs to user space are n
 multiline_comment|/* 0x330 is reserved - used to be HDIO_GETGEO_BIG */
 DECL|macro|HDIO_GETGEO_BIG_RAW
 mdefine_line|#define HDIO_GETGEO_BIG_RAW&t;0x0331&t;/* */
+DECL|macro|HDIO_SET_IDE_SCSI
+mdefine_line|#define HDIO_SET_IDE_SCSI      0x0338
+DECL|macro|HDIO_SET_SCSI_IDE
+mdefine_line|#define HDIO_SET_SCSI_IDE      0x0339
 DECL|macro|__NEW_HD_DRIVE_ID
 mdefine_line|#define __NEW_HD_DRIVE_ID
 multiline_comment|/*&n; * Structure returned by HDIO_GET_IDENTITY, as per ANSI NCITS ATA6 rev.1b spec.&n; *&n; * If you change something here, please remember to update fix_driveid() in&n; * ide/probe.c.&n; */
@@ -1200,7 +1268,7 @@ r_int
 r_int
 id|cfsse
 suffix:semicolon
-multiline_comment|/* (word 84)&n;&t;&t;&t;&t;&t; * cmd set-feature supported extensions&n;&t;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t;&t; * 13:3&t;reserved&n;&t;&t;&t;&t;&t; *  2:&t;Media Serial Number Valid&n;&t;&t;&t;&t;&t; *  1:&t;SMART selt-test supported&n;&t;&t;&t;&t;&t; *  0:&t;SMART error logging&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 84)&n;&t;&t;&t;&t;&t; * cmd set-feature supported extensions&n;&t;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t;&t; * 13:6&t;reserved&n;&t;&t;&t;&t;&t; *  5:&t;General Purpose Logging&n;&t;&t;&t;&t;&t; *  4:&t;Streaming Feature Set&n;&t;&t;&t;&t;&t; *  3:&t;Media Card Pass Through&n;&t;&t;&t;&t;&t; *  2:&t;Media Serial Number Valid&n;&t;&t;&t;&t;&t; *  1:&t;SMART selt-test supported&n;&t;&t;&t;&t;&t; *  0:&t;SMART error logging&n;&t;&t;&t;&t;&t; */
 DECL|member|cfs_enable_1
 r_int
 r_int
@@ -1218,58 +1286,73 @@ r_int
 r_int
 id|csf_default
 suffix:semicolon
-multiline_comment|/* (word 87)&n;&t;&t;&t;&t;&t; * command set-feature default&n;&t;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t;&t; * 13:3&t;reserved&n;&t;&t;&t;&t;&t; *  2:&t;Media Serial Number Valid&n;&t;&t;&t;&t;&t; *  1:&t;SMART selt-test supported&n;&t;&t;&t;&t;&t; *  0:&t;SMART error logging&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 87)&n;&t;&t;&t;&t;&t; * command set-feature default&n;&t;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t;&t; * 13:6&t;reserved&n;&t;&t;&t;&t;&t; *  5:&t;General Purpose Logging enabled&n;&t;&t;&t;&t;&t; *  4:&t;Valid CONFIGURE STREAM executed&n;&t;&t;&t;&t;&t; *  3:&t;Media Card Pass Through enabled&n;&t;&t;&t;&t;&t; *  2:&t;Media Serial Number Valid&n;&t;&t;&t;&t;&t; *  1:&t;SMART selt-test supported&n;&t;&t;&t;&t;&t; *  0:&t;SMART error logging&n;&t;&t;&t;&t;&t; */
 DECL|member|dma_ultra
 r_int
 r_int
 id|dma_ultra
 suffix:semicolon
 multiline_comment|/* (word 88) */
-DECL|member|word89
+DECL|member|trseuc
 r_int
 r_int
-id|word89
+id|trseuc
 suffix:semicolon
-multiline_comment|/* reserved (word 89) */
-DECL|member|word90
+multiline_comment|/* time required for security erase */
+DECL|member|trsEuc
 r_int
 r_int
-id|word90
+id|trsEuc
 suffix:semicolon
-multiline_comment|/* reserved (word 90) */
+multiline_comment|/* time required for enhanced erase */
 DECL|member|CurAPMvalues
 r_int
 r_int
 id|CurAPMvalues
 suffix:semicolon
 multiline_comment|/* current APM values */
-DECL|member|word92
+DECL|member|mprc
 r_int
 r_int
-id|word92
+id|mprc
 suffix:semicolon
-multiline_comment|/* reserved (word 92) */
+multiline_comment|/* master password revision code */
 DECL|member|hw_config
 r_int
 r_int
 id|hw_config
 suffix:semicolon
-multiline_comment|/* hardware config (word 93)&n;&t;&t;&t;&t;&t; * 15:&n;&t;&t;&t;&t;&t; * 14:&n;&t;&t;&t;&t;&t; * 13:&n;&t;&t;&t;&t;&t; * 12:&n;&t;&t;&t;&t;&t; * 11:&n;&t;&t;&t;&t;&t; * 10:&n;&t;&t;&t;&t;&t; *  9:&n;&t;&t;&t;&t;&t; *  8:&n;&t;&t;&t;&t;&t; *  7:&n;&t;&t;&t;&t;&t; *  6:&n;&t;&t;&t;&t;&t; *  5:&n;&t;&t;&t;&t;&t; *  4:&n;&t;&t;&t;&t;&t; *  3:&n;&t;&t;&t;&t;&t; *  2:&n;&t;&t;&t;&t;&t; *  1:&n;&t;&t;&t;&t;&t; *  0:&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* hardware config (word 93)&n;&t;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t;&t; * 13:&n;&t;&t;&t;&t;&t; * 12:&n;&t;&t;&t;&t;&t; * 11:&n;&t;&t;&t;&t;&t; * 10:&n;&t;&t;&t;&t;&t; *  9:&n;&t;&t;&t;&t;&t; *  8:&n;&t;&t;&t;&t;&t; *  7:&n;&t;&t;&t;&t;&t; *  6:&n;&t;&t;&t;&t;&t; *  5:&n;&t;&t;&t;&t;&t; *  4:&n;&t;&t;&t;&t;&t; *  3:&n;&t;&t;&t;&t;&t; *  2:&n;&t;&t;&t;&t;&t; *  1:&n;&t;&t;&t;&t;&t; *  0:&t;Shall be ONE&n;&t;&t;&t;&t;&t; */
 DECL|member|acoustic
 r_int
 r_int
 id|acoustic
 suffix:semicolon
 multiline_comment|/* (word 94)&n;&t;&t;&t;&t;&t; * 15:8&t;Vendor&squot;s recommended value&n;&t;&t;&t;&t;&t; *  7:0&t;current value&n;&t;&t;&t;&t;&t; */
-DECL|member|words95_99
+DECL|member|msrqs
 r_int
 r_int
-id|words95_99
-(braket
-l_int|5
-)braket
+id|msrqs
 suffix:semicolon
-multiline_comment|/* reserved words 95-99 */
+multiline_comment|/* min stream request size */
+DECL|member|sxfert
+r_int
+r_int
+id|sxfert
+suffix:semicolon
+multiline_comment|/* stream transfer time */
+DECL|member|sal
+r_int
+r_int
+id|sal
+suffix:semicolon
+multiline_comment|/* stream access latency */
+DECL|member|spg
+r_int
+r_int
+id|spg
+suffix:semicolon
+multiline_comment|/* stream performance granularity */
 DECL|member|lba_capacity_2
 r_int
 r_int
@@ -1374,13 +1457,6 @@ id|integrity_word
 suffix:semicolon
 multiline_comment|/* (word 255)&n;&t;&t;&t;&t;&t; * 15:8 Checksum&n;&t;&t;&t;&t;&t; *  7:0 Signature&n;&t;&t;&t;&t;&t; */
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/*&n; * IDE &quot;nice&quot; flags. These are used on a per drive basis to determine&n; * when to be nice and give more bandwidth to the other devices which&n; * share the same IDE bus.&n; */
 DECL|macro|IDE_NICE_DSC_OVERLAP
