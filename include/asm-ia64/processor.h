@@ -778,6 +778,8 @@ id|regnum
 r_int
 r_int
 id|r
+op_assign
+l_int|0
 suffix:semicolon
 r_switch
 c_cond
