@@ -1928,7 +1928,6 @@ r_int
 id|inc_opt
 )paren
 (brace
-r_static
 r_struct
 id|in6_addr
 id|tmpaddr
