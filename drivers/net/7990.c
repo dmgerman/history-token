@@ -1877,9 +1877,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|lp-&gt;devlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|netif_start_queue
 (paren

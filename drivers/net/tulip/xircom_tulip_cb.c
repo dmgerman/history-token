@@ -2495,9 +2495,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|tp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|tp-&gt;pdev
 op_assign

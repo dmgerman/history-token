@@ -3971,9 +3971,12 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* to reverse what we do in tok_close */
 multiline_comment|/* init the spinlock */
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|ti-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|init_timer
 c_func

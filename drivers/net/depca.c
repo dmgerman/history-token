@@ -1574,9 +1574,12 @@ id|DEPCA_NICSR
 )paren
 suffix:semicolon
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|lp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|sprintf
 c_func
