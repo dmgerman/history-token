@@ -11,7 +11,6 @@ macro_line|#include &quot;malloc.h&quot;
 macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * ntfs_cluster_free_from_rl_nolock - free clusters from runlist&n; * @vol:&t;mounted ntfs volume on which to free the clusters&n; * @rl:&t;&t;runlist describing the clusters to free&n; *&n; * Free all the clusters described by the runlist @rl on the volume @vol.  In&n; * the case of an error being returned, at least some of the clusters were not&n; * freed.&n; *&n; * Return 0 on success and -errno on error.&n; *&n; * Locking: - The volume lcn bitmap must be locked for writing on entry and is&n; *&t;      left locked on return.&n; */
 DECL|function|ntfs_cluster_free_from_rl_nolock
-r_static
 r_int
 id|ntfs_cluster_free_from_rl_nolock
 c_func
