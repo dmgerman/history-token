@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   32bit -&gt; 64bit ioctl wrapper for control API&n; *
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
