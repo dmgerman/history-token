@@ -3223,7 +3223,7 @@ id|ARC4_ENC_TEST_VECTORS
 suffix:semicolon
 id|test_cipher
 (paren
-l_string|&quot;arc4x&quot;
+l_string|&quot;arc4&quot;
 comma
 id|MODE_ECB
 comma
