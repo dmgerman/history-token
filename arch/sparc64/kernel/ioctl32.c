@@ -103,25 +103,6 @@ DECL|macro|EXT2_IOC32_GETVERSION
 mdefine_line|#define EXT2_IOC32_GETVERSION             _IOR(&squot;v&squot;, 1, int)
 DECL|macro|EXT2_IOC32_SETVERSION
 mdefine_line|#define EXT2_IOC32_SETVERSION             _IOW(&squot;v&squot;, 2, int)
-r_extern
-id|asmlinkage
-r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
 DECL|function|w_long
 r_static
 r_int

@@ -21,8 +21,6 @@ macro_line|#endif
 DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK    (~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
-multiline_comment|/* #include &lt;asm/head.h&gt; XXX */
-multiline_comment|/* for KERNBASE */
 macro_line|#include &lt;asm/btfixup.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|clear_page
