@@ -112,7 +112,7 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * On x86 all CPUs are mapped 1:1 to the APIC space.&n; * This simplifies scheduling and IPI sending and&n; * compresses data structures.&n; */
 DECL|function|cpu_logical_map
-r_extern
+r_static
 r_inline
 r_int
 id|cpu_logical_map
@@ -127,7 +127,7 @@ id|cpu
 suffix:semicolon
 )brace
 DECL|function|cpu_number_map
-r_extern
+r_static
 r_inline
 r_int
 id|cpu_number_map
@@ -181,7 +181,7 @@ multiline_comment|/*&n; * This function is needed by all SMP systems. It must _a
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current-&gt;processor)
 DECL|function|hard_smp_processor_id
-r_extern
+r_static
 id|__inline
 r_int
 id|hard_smp_processor_id

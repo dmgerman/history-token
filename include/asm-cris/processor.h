@@ -94,7 +94,7 @@ id|flags
 suffix:semicolon
 multiline_comment|/* give the thread a program location&n; * set user-mode (The &squot;U&squot; flag (User mode flag) is CCR/DCCR bit 8) &n; * switch user-stackpointer&n; */
 DECL|macro|start_thread
-mdefine_line|#define start_thread(regs, ip, usp) do { &bslash;&n;&t;set_fs(USER_DS);      &bslash;&n;&t;regs-&gt;irp = ip;       &bslash;&n;&t;regs-&gt;dccr |= 1 &lt;&lt; 8; &bslash;&n;&t;wrusp(usp);           &bslash;&n;} while(0)
+mdefine_line|#define start_thread(regs, ip, usp) do { &bslash;&n;&t;set_fs(USER_DS);      &bslash;&n;&t;regs-&gt;irp = ip;       &bslash;&n;&t;regs-&gt;dccr |= 1 &lt;&lt; U_DCCR_BITNR; &bslash;&n;&t;wrusp(usp);           &bslash;&n;} while(0)
 r_int
 r_int
 id|get_wchan

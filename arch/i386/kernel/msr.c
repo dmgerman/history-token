@@ -16,7 +16,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/* Note: &quot;err&quot; is handled in a funny way below.  Otherwise one version&n;   of gcc or another breaks. */
 DECL|function|wrmsr_eio
-r_extern
+r_static
 r_inline
 r_int
 id|wrmsr_eio
@@ -86,7 +86,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|rdmsr_eio
-r_extern
+r_static
 r_inline
 r_int
 id|rdmsr_eio
@@ -292,7 +292,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|do_wrmsr
-r_extern
+r_static
 r_inline
 r_int
 id|do_wrmsr
@@ -381,7 +381,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|do_rdmsr
-r_extern
+r_static
 r_inline
 r_int
 id|do_rdmsr
@@ -475,7 +475,7 @@ suffix:semicolon
 )brace
 macro_line|#else /* ! CONFIG_SMP */
 DECL|function|do_wrmsr
-r_extern
+r_static
 r_inline
 r_int
 id|do_wrmsr
@@ -507,7 +507,7 @@ id|edx
 suffix:semicolon
 )brace
 DECL|function|do_rdmsr
-r_extern
+r_static
 r_inline
 r_int
 id|do_rdmsr

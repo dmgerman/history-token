@@ -1,9 +1,13 @@
-multiline_comment|/*&n; *  drivers/s390/net/netiucv.c&n; *    Network driver for VM using iucv&n; *&n; *  S/390 version&n; *    Copyright (C) 1999, 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *               Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *&n; *&n; *    2.3 Updates Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *                Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *    Re-write:   Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *                Uses iucv.c kernel module for IUCV services. &n; *&n; * -------------------------------------------------------------------------- &n; *  An IUCV frame consists of one or more packets preceded by a 16-bit&n; *  header.   The header contains the offset to the next packet header,&n; *  measured from the beginning of the _frame_.  If zero, there are no more&n; *  packets in the frame.  Consider a frame which contains a 10-byte packet&n; *  followed by a 20-byte packet:&n; *        +-----+----------------+-----+----------------------------+-----+&n; *        |h&squot;12&squot;| 10-byte packet |h&squot;34&squot;|  20-byte packet            |h&squot;00&squot;|&n; *        +-----+----------------+-----+----------------------------+-----+&n; * Offset: 0     2                12    14                           34  &n; *&n; *  This means that each header will always have a larger value than the&n; *  previous one (except for the final zero header, of course).&n; *  &n; *  For outbound packets, we send ONE frame per packet.  So, our frame is:&n; *       AL2(packet length+2), packet, AL2(0)&n; *  The maximum packet size is the MTU, so the maximum IUCV frame we send&n; *  is MTU+4 bytes.&n; *&n; *  For inbound frames, we don&squot;t care how long the frame is.  We tear apart&n; *  the frame, processing packets up to MTU size in length, until no more&n; *  packets remain in the frame.&n; *&n; * --------------------------------------------------------------------------&n; *  The code uses the 2.3.43 network driver interfaces.  If compiled on an&n; *  an older level of the kernel, the module provides its own macros.&n; *  Doc is in Linux Weekly News (lwn.net) memo from David Miller, 9 Feb 2000.&n; *  There are a few other places with 2.3-specific enhancements.&n; *&n; * --------------------------------------------------------------------------&n;*/
+multiline_comment|/*&n; *  drivers/s390/net/netiucv.c&n; *    Network driver for VM using iucv&n; *&n; *  S/390 version&n; *    Copyright (C) 1999, 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *               Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *&n; *&n; *    2.3 Updates Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *                Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *    Re-write:   Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *                Uses iucv.c kernel module for IUCV services. &n; *&n; *    2.4 Updates Alan Altmark (Alan_Altmark@us.ibm.com)  June 2001&n; *                Update to use changed IUCV (iucv.c) interface.&n; *&n; * -------------------------------------------------------------------------- &n; *  An IUCV frame consists of one or more packets preceded by a 16-bit&n; *  header.   The header contains the offset to the next packet header,&n; *  measured from the beginning of the _frame_.  If zero, there are no more&n; *  packets in the frame.  Consider a frame which contains a 10-byte packet&n; *  followed by a 20-byte packet:&n; *        +-----+----------------+--------------------------------+-----+&n; *        |h&squot;12&squot;| 10-byte packet |h&squot;34&squot;|  20-byte packet          |h&squot;00&squot;|&n; *        +-----+----------------+-----+--------------------------+-----+&n; * Offset: 0     2                12    14                         34  &n; *&n; *  This means that each header will always have a larger value than the&n; *  previous one (except for the final zero header, of course).&n; *  &n; *  For outbound packets, we send ONE frame per packet.  So, our frame is:&n; *       AL2(packet length+2), packet, AL2(0)&n; *  The maximum packet size is the MTU, so the maximum IUCV frame we send&n; *  is MTU+4 bytes.&n; *&n; *  For inbound frames, we don&squot;t care how long the frame is.  We tear apart&n; *  the frame, processing packets up to MTU size in length, until no more&n; *  packets remain in the frame.&n; *&n; * --------------------------------------------------------------------------&n; *  The code uses the 2.3.43 network driver interfaces.  If compiled on an&n; *  an older level of the kernel, the module provides its own macros.&n; *  Doc is in Linux Weekly News (lwn.net) memo from David Miller, 9 Feb 2000.&n; *  There are a few other places with 2.3-specific enhancements.&n; *&n; * --------------------------------------------------------------------------&n;*/
 singleline_comment|//#define DEBUG 1
+singleline_comment|//#define DEBUG2 1
+singleline_comment|//#define IPDEBUG 1
+DECL|macro|LEVEL
+mdefine_line|#define LEVEL &quot;1.1&quot;
 multiline_comment|/* If MAX_DEVICES increased, add initialization data to iucv_netdev[] array */
 multiline_comment|/* (See bottom of program.)&t;&t;&t;&t;&t;&t;    */
 DECL|macro|MAX_DEVICES
-mdefine_line|#define MAX_DEVICES 10&t;&t;/* Allows &quot;iucv0&quot; to &quot;iucv9&quot;    */
+mdefine_line|#define MAX_DEVICES 20&t;&t;/* Allows &quot;iucv0&quot; to &quot;iucv19&quot;   */
 DECL|macro|MAX_VM_MTU
 mdefine_line|#define MAX_VM_MTU 32764&t;/* 32K IUCV buffer, minus 4     */
 DECL|macro|MAX_TX_Q
@@ -19,7 +23,8 @@ l_string|&quot;(C) 2000 IBM Corporation by Alan Altmark (Alan_Altmark@us.ibm.com
 suffix:semicolon
 id|MODULE_DESCRIPTION
 (paren
-l_string|&quot;Linux for S/390 IUCV network driver&quot;
+l_string|&quot;Linux for S/390 IUCV network driver &quot;
+id|LEVEL
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -42,6 +47,9 @@ l_string|&quot;Specify the userids associated with iucv0-iucv9:&bslash;n&quot;
 l_string|&quot;iucv=userid1,userid2,...,userid10&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef MODVERSIONS
+macro_line|#include &lt;linux/modversions.h&gt;
+macro_line|#endif
 macro_line|#else
 DECL|macro|MOD_INC_USE_COUNT
 mdefine_line|#define MOD_INC_USE_COUNT
@@ -55,22 +63,30 @@ macro_line|#include &lt;linux/types.h&gt;&t;/* size_t                       */
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* mark_bh                      */
 macro_line|#include &lt;linux/netdevice.h&gt;&t;/* struct net_device, etc.      */
 macro_line|#include &lt;linux/if_arp.h&gt;&t;/* ARPHRD_SLIP                  */
+macro_line|#include &lt;linux/ip.h&gt;&t;&t;/* IP header                    */
 macro_line|#include &lt;linux/skbuff.h&gt;&t;/* skb                          */
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* __setup()                    */
-macro_line|#include &lt;asm/io.h&gt;&t;&t;/* virt_to_phys()               */
 macro_line|#include &lt;asm/string.h&gt;&t;&t;/* memset, memcpy, etc.         */
 macro_line|#include &quot;iucv.h&quot;
 DECL|macro|min
 mdefine_line|#define min(a,b) (a &lt; b) ? a : b
-macro_line|#ifdef DEBUG
+macro_line|#if defined( DEBUG )
 DECL|macro|KERN_INFO
 macro_line|#undef KERN_INFO
 DECL|macro|KERN_DEBUG
 macro_line|#undef KERN_DEBUG
+DECL|macro|KERN_NOTICE
+macro_line|#undef KERN_NOTICE
+DECL|macro|KERN_ERR
+macro_line|#undef KERN_ERR
 DECL|macro|KERN_INFO
 mdefine_line|#define KERN_INFO    KERN_EMERG
 DECL|macro|KERN_DEBUG
 mdefine_line|#define KERN_DEBUG   KERN_EMERG
+DECL|macro|KERN_NOTICE
+mdefine_line|#define KERN_NOTICE  KERN_EMERG
+DECL|macro|KERN_ERR
+mdefine_line|#define KERN_ERR     KERN_EMERG
 macro_line|#endif
 macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0))
 DECL|typedef|net_device
@@ -233,6 +249,8 @@ id|iucv_rx
 id|net_device
 op_star
 comma
+id|u32
+comma
 id|uchar
 op_star
 comma
@@ -258,7 +276,8 @@ id|connection_severed
 id|iucv_ConnectionSevered
 op_star
 comma
-id|ulong
+r_void
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -268,7 +287,8 @@ id|connection_pending
 id|iucv_ConnectionPending
 op_star
 comma
-id|ulong
+r_void
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -278,7 +298,8 @@ id|connection_complete
 id|iucv_ConnectionComplete
 op_star
 comma
-id|ulong
+r_void
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -288,7 +309,8 @@ id|message_pending
 id|iucv_MessagePending
 op_star
 comma
-id|ulong
+r_void
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -298,7 +320,8 @@ id|send_complete
 id|iucv_MessageComplete
 op_star
 comma
-id|ulong
+r_void
+op_star
 )paren
 suffix:semicolon
 r_void
@@ -358,20 +381,6 @@ id|iucv_netdev
 id|MAX_DEVICES
 )braket
 suffix:semicolon
-DECL|variable|eodata
-r_static
-r_char
-id|eodata
-(braket
-l_int|2
-)braket
-op_assign
-(brace
-l_char|&squot;&bslash;0&squot;
-comma
-l_char|&squot;&bslash;0&squot;
-)brace
-suffix:semicolon
 multiline_comment|/* This structure is private to each device. It contains the    */
 multiline_comment|/* information necessary to do IUCV operations.                 */
 DECL|struct|iucv_priv
@@ -423,29 +432,6 @@ mdefine_line|#define CONNECTED 2
 DECL|member|pathid
 id|u16
 id|pathid
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|iucvtag
-r_struct
-id|iucvtag
-(brace
-DECL|member|iucvvec
-id|iucv_array_t
-id|iucvvec
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|framelen
-id|u16
-id|framelen
-suffix:semicolon
-DECL|member|skb
-r_struct
-id|sk_buff
-op_star
-id|skb
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -575,7 +561,7 @@ comma
 l_int|0xff
 )brace
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if defined( DEBUG2 ) || defined( IPDEBUG )
 multiline_comment|/*--------------------------*/
 multiline_comment|/* Dump buffer formatted    */
 multiline_comment|/*--------------------------*/
@@ -722,14 +708,6 @@ id|rc
 comma
 id|i
 suffix:semicolon
-id|uchar
-id|pri
-suffix:semicolon
-id|uchar
-id|unused
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
 r_struct
 id|iucv_priv
 op_star
@@ -773,7 +751,7 @@ r_struct
 id|iucv_priv
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -914,7 +892,8 @@ op_amp
 id|netiucv_ops
 comma
 (paren
-id|ulong
+r_void
+op_star
 )paren
 id|dev
 )paren
@@ -930,13 +909,10 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;%s: iucv_register_program error, rc=%i&bslash;n&quot;
+l_string|&quot;%s: iucv_register_program error, rc=%p&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-(paren
-r_int
-)paren
 id|p-&gt;handle
 )paren
 suffix:semicolon
@@ -1007,24 +983,14 @@ id|p-&gt;userid2
 comma
 id|iucv_host
 comma
-id|unused
+l_int|0
 comma
-id|unused
+l_int|NULL
 comma
-id|unused
-comma
-id|unused
-comma
-id|unused
-comma
-op_amp
-id|pri
+l_int|NULL
 comma
 id|p-&gt;handle
 comma
-(paren
-id|ulong
-)paren
 id|p
 )paren
 suffix:semicolon
@@ -1054,7 +1020,7 @@ multiline_comment|/* Wait for parter to connect */
 id|printk
 (paren
 id|KERN_NOTICE
-l_string|&quot;Device %s: &quot;
+l_string|&quot;%s: &quot;
 l_string|&quot;User %s is not available now.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1080,7 +1046,7 @@ multiline_comment|/* Wait for partner to connect */
 id|printk
 (paren
 id|KERN_NOTICE
-l_string|&quot;Device %s: &quot;
+l_string|&quot;%s: &quot;
 l_string|&quot;User %s is not ready to talk now.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1106,7 +1072,7 @@ multiline_comment|/* Fatal */
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;Device %s: &quot;
+l_string|&quot;%s: &quot;
 l_string|&quot;You have too many IUCV connections.&quot;
 l_string|&quot;Check MAXCONN in CP directory.&bslash;n&quot;
 comma
@@ -1122,7 +1088,7 @@ multiline_comment|/* Fatal */
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;Device %s: &quot;
+l_string|&quot;%s: &quot;
 l_string|&quot;User %s has too many IUCV connections.&quot;
 l_string|&quot;Check MAXCONN in CP directory.&bslash;n&quot;
 comma
@@ -1140,7 +1106,7 @@ multiline_comment|/* Fatal */
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;Device %s: &quot;
+l_string|&quot;%s: &quot;
 l_string|&quot;No IUCV authorization found in CP directory.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1165,7 +1131,7 @@ suffix:semicolon
 )brace
 id|rc
 op_assign
-id|iucv_unregister
+id|iucv_unregister_program
 (paren
 id|p-&gt;handle
 )paren
@@ -1199,7 +1165,8 @@ id|iucv_ConnectionComplete
 op_star
 id|cci
 comma
-id|ulong
+r_void
+op_star
 id|pgm_data
 )paren
 (brace
@@ -1252,7 +1219,7 @@ id|p-&gt;dev
 suffix:semicolon
 id|printk
 (paren
-id|KERN_INFO
+id|KERN_NOTICE
 l_string|&quot;%s: Connection to user %s is up&bslash;n&quot;
 comma
 id|p-&gt;dev-&gt;name
@@ -1278,7 +1245,8 @@ id|iucv_ConnectionPending
 op_star
 id|cpi
 comma
-id|ulong
+r_void
+op_star
 id|pgm_data
 )paren
 (brace
@@ -1310,19 +1278,14 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
+id|u16
+id|msglimit
+suffix:semicolon
 id|uchar
 id|udata
 (braket
 l_int|16
 )braket
-suffix:semicolon
-id|uchar
-id|no
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-id|uchar
-id|na
 suffix:semicolon
 multiline_comment|/* If we&squot;re not waiting on a connect, reject the connection */
 r_if
@@ -1357,39 +1320,30 @@ id|iucv_accept
 (paren
 id|cpi-&gt;ippathid
 comma
-multiline_comment|/* Path id              */
+multiline_comment|/* Path id                      */
 id|MAX_TX_Q
 comma
-multiline_comment|/* msglimit                     */
+multiline_comment|/* desired IUCV msg limit       */
 id|udata
 comma
 multiline_comment|/* user_Data                    */
-id|no
+l_int|0
 comma
-multiline_comment|/* will we send priority msgs?  */
-id|no
-comma
-multiline_comment|/* do we accept prmdata?        */
-id|no
-comma
-multiline_comment|/* quiece immediately?          */
-id|no
-comma
-multiline_comment|/* control path?                */
-op_amp
-id|na
-comma
-multiline_comment|/* other side accept prmdata?   */
+multiline_comment|/* No flags                     */
 id|p-&gt;handle
 comma
-multiline_comment|/* registration handle  */
-(paren
-id|ulong
-)paren
+multiline_comment|/* registration handle          */
 id|p
+comma
+multiline_comment|/* private data                 */
+l_int|NULL
+comma
+multiline_comment|/* don&squot;t care about output flags */
+op_amp
+id|msglimit
 )paren
 suffix:semicolon
-multiline_comment|/* private data         */
+multiline_comment|/* Actual IUCV msg limit        */
 r_if
 c_cond
 (paren
@@ -1419,13 +1373,24 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|atomic_set
+(paren
+op_amp
+id|p-&gt;state
+comma
+id|CONNECTED
+)paren
+suffix:semicolon
 id|p-&gt;pathid
 op_assign
 id|cpi-&gt;ippathid
 suffix:semicolon
 id|p-&gt;dev-&gt;tx_queue_len
 op_assign
-id|cpi-&gt;ipmsglim
+(paren
+id|u32
+)paren
+id|msglimit
 suffix:semicolon
 id|netif_start
 (paren
@@ -1437,18 +1402,10 @@ id|netif_start_queue
 id|p-&gt;dev
 )paren
 suffix:semicolon
-id|atomic_set
-(paren
-op_amp
-id|p-&gt;state
-comma
-id|CONNECTED
-)paren
-suffix:semicolon
 id|printk
 (paren
-id|KERN_INFO
-l_string|&quot;Device %s: Connection to user %s is up&bslash;n&quot;
+id|KERN_NOTICE
+l_string|&quot;%s: Connection to user %s is up&bslash;n&quot;
 comma
 id|p-&gt;dev-&gt;name
 comma
@@ -1470,7 +1427,8 @@ id|iucv_ConnectionSevered
 op_star
 id|eib
 comma
-id|ulong
+r_void
+op_star
 id|pgm_data
 )paren
 (brace
@@ -1496,6 +1454,8 @@ comma
 id|p-&gt;userid
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: We can also get a severed interrupt while in&n;&t;          state CONNECTING!  Fix the state machine ... */
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -1514,6 +1474,16 @@ l_int|0
 r_return
 suffix:semicolon
 multiline_comment|/* In case reconnect in progress already */
+macro_line|#else
+id|atomic_set
+(paren
+op_amp
+id|p-&gt;state
+comma
+id|FREE
+)paren
+suffix:semicolon
+macro_line|#endif
 id|netif_stop_queue
 (paren
 id|p-&gt;dev
@@ -1587,14 +1557,14 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* Unregister will sever associated connections */
 id|rc
 op_assign
-id|iucv_unregister
+id|iucv_unregister_program
 (paren
 id|p-&gt;handle
 )paren
 suffix:semicolon
-multiline_comment|/* Will sever connections */
 id|dev-&gt;priv
 op_assign
 l_int|NULL
@@ -1625,7 +1595,8 @@ id|iucv_MessagePending
 op_star
 id|mpi
 comma
-id|ulong
+r_void
+op_star
 id|pgm_data
 )paren
 (brace
@@ -1664,12 +1635,10 @@ id|mpi-&gt;ln1msg2.ipbfln1f
 suffix:semicolon
 id|pr_debug
 (paren
-l_string|&quot;message_pending: ID=%p Length=%u&bslash;n&quot;
+l_string|&quot;%s: MP id=%i Length=%u&bslash;n&quot;
 comma
-(paren
-r_void
-op_star
-)paren
+id|p-&gt;dev-&gt;name
+comma
 id|mpi-&gt;ipmsgid
 comma
 id|buffer_length
@@ -1702,7 +1671,7 @@ suffix:semicolon
 )brace
 id|rc
 op_assign
-id|iucv_receive_simple
+id|iucv_receive
 (paren
 id|p-&gt;pathid
 comma
@@ -1713,6 +1682,12 @@ comma
 id|buffer
 comma
 id|buffer_length
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1730,11 +1705,13 @@ l_int|5
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;%s: iucv_receive error. rc=%X, length=%u&bslash;n&quot;
+l_string|&quot;%s: IUCV rcv error. rc=%X ID=%i length=%u&bslash;n&quot;
 comma
 id|p-&gt;dev-&gt;name
 comma
 id|rc
+comma
+id|mpi-&gt;ipmsgid
 comma
 id|buffer_length
 )paren
@@ -1811,6 +1788,8 @@ id|iucv_rx
 (paren
 id|p-&gt;dev
 comma
+id|mpi-&gt;ipmsgid
+comma
 id|buffer
 op_plus
 id|prev_offset
@@ -1866,6 +1845,9 @@ id|net_device
 op_star
 id|dev
 comma
+id|u32
+id|msgid
+comma
 id|uchar
 op_star
 id|buf
@@ -1891,16 +1873,15 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|pr_debug
+macro_line|#ifdef IPDEBUG
+id|printk
 (paren
-l_string|&quot;%s: iucv_rx len=%u&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;RX id=%i&bslash;n&quot;
 comma
-id|p-&gt;dev-&gt;name
-comma
-id|len
+id|msgid
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
 id|dumpit
 (paren
 id|buf
@@ -1908,7 +1889,25 @@ comma
 l_int|20
 )paren
 suffix:semicolon
+id|dumpit
+(paren
+id|buf
+op_plus
+l_int|20
+comma
+l_int|20
+)paren
+suffix:semicolon
 macro_line|#endif
+id|pr_debug
+(paren
+l_string|&quot;%s: RX len=%u&bslash;n&quot;
+comma
+id|p-&gt;dev-&gt;name
+comma
+id|len
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1920,9 +1919,11 @@ id|p-&gt;dev-&gt;mtu
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;%s: inbound packet length %u exceeds MTU %i&bslash;n&quot;
+l_string|&quot;%s: inbound packet id# %i length %u exceeds MTU %i&bslash;n&quot;
 comma
 id|p-&gt;dev-&gt;name
+comma
+id|msgid
 comma
 id|len
 comma
@@ -2041,10 +2042,14 @@ id|rc
 comma
 id|pktlen
 suffix:semicolon
-r_struct
-id|iucvtag
+id|u32
+id|framelen
+comma
+id|msgid
+suffix:semicolon
+r_void
 op_star
-id|tag
+id|frame
 suffix:semicolon
 r_struct
 id|iucv_priv
@@ -2065,10 +2070,24 @@ id|skb
 op_eq
 l_int|NULL
 )paren
+(brace
 multiline_comment|/* Nothing to do */
-r_return
-l_int|0
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: TX Kernel passed null sk_buffer&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
 suffix:semicolon
+id|p-&gt;stats.tx_dropped
+op_increment
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2077,6 +2096,44 @@ id|netif_is_busy
 id|dev
 )paren
 )paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
+multiline_comment|/* save the timestamp */
+multiline_comment|/* IUCV frame will be released when MessageComplete   */
+multiline_comment|/* interrupt is received.                             */
+id|pktlen
+op_assign
+id|skb-&gt;len
+suffix:semicolon
+id|framelen
+op_assign
+id|pktlen
+op_plus
+l_int|4
+suffix:semicolon
+id|frame
+op_assign
+id|kmalloc
+(paren
+id|framelen
+comma
+id|GFP_ATOMIC
+op_or
+id|GFP_DMA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|frame
+)paren
 (brace
 id|p-&gt;stats.tx_dropped
 op_increment
@@ -2086,17 +2143,8 @@ id|dev_kfree_skb
 id|skb
 )paren
 suffix:semicolon
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;%s: tx conflict! leave iucv_tx.&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|EBUSY
+l_int|0
 suffix:semicolon
 )brace
 id|netif_stop_queue
@@ -2105,176 +2153,70 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* transmission is busy */
-id|dev-&gt;trans_start
-op_assign
-id|jiffies
-suffix:semicolon
-multiline_comment|/* save the timestamp */
-multiline_comment|/* Tag contains data that must survive exit from this */
-multiline_comment|/* routine.  MessageComplete exit will free the tag   */
-multiline_comment|/* and any structures it points to.                   */
-id|tag
-op_assign
-(paren
-r_struct
-id|iucvtag
 op_star
-)paren
-id|kmalloc
-(paren
-r_sizeof
-(paren
-r_struct
-id|iucvtag
-)paren
-comma
-id|GFP_DMA
-op_or
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tag
-)paren
-(brace
-id|p-&gt;stats.tx_dropped
-op_increment
-suffix:semicolon
-id|dev_kfree_skb
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-id|pktlen
-op_assign
-id|skb-&gt;len
-suffix:semicolon
-id|tag-&gt;framelen
-op_assign
 (paren
 id|u16
+op_star
 )paren
+id|frame
+op_assign
 id|pktlen
 op_plus
 l_int|2
 suffix:semicolon
-id|tag-&gt;skb
-op_assign
-id|skb
-suffix:semicolon
-id|tag-&gt;iucvvec
-(braket
-l_int|0
-)braket
-dot
-id|address
-op_assign
-op_amp
-id|tag-&gt;framelen
-suffix:semicolon
-id|tag-&gt;iucvvec
-(braket
-l_int|0
-)braket
-dot
-id|length
-op_assign
+multiline_comment|/* Set header   */
+id|memcpy
+(paren
+id|frame
+op_plus
 l_int|2
-suffix:semicolon
-id|tag-&gt;iucvvec
-(braket
-l_int|1
-)braket
-dot
-id|address
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|virt_to_phys
-(paren
+comma
 id|skb-&gt;data
-)paren
-suffix:semicolon
-id|tag-&gt;iucvvec
-(braket
-l_int|1
-)braket
-dot
-id|length
-op_assign
-id|pktlen
-suffix:semicolon
-id|tag-&gt;iucvvec
-(braket
-l_int|2
-)braket
-dot
-id|address
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|virt_to_phys
-(paren
-id|eodata
-)paren
-suffix:semicolon
-id|tag-&gt;iucvvec
-(braket
-l_int|2
-)braket
-dot
-id|length
-op_assign
-l_int|2
-suffix:semicolon
-id|pr_debug
-(paren
-l_string|&quot;iucv_tx: length=%i, skb=%p tag=%p&bslash;n&quot;
 comma
 id|pktlen
-comma
-id|tag-&gt;skb
-comma
-id|tag
 )paren
 suffix:semicolon
-multiline_comment|/* Ok, now the packet is ready for transmission: send it. */
+multiline_comment|/* Copy data    */
+id|memset
+(paren
+id|frame
+op_plus
+id|pktlen
+op_plus
+l_int|2
+comma
+l_int|0
+comma
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* Set trailer  */
+multiline_comment|/* Ok, now the frame is ready for transmission: send it. */
 id|rc
 op_assign
-id|iucv_send_array
+id|iucv_send
 (paren
 id|p-&gt;pathid
 comma
-l_int|NULL
+op_amp
+id|msgid
 comma
 l_int|0
 comma
 l_int|0
 comma
 (paren
-id|ulong
+id|u32
 )paren
-id|tag
+id|frame
 comma
+multiline_comment|/* Msg tag      */
 l_int|0
 comma
-id|tag-&gt;iucvvec
+multiline_comment|/* No flags     */
+id|frame
 comma
-id|pktlen
-op_plus
-l_int|4
+id|framelen
 )paren
 suffix:semicolon
 r_if
@@ -2284,9 +2226,52 @@ id|rc
 op_eq
 l_int|0
 )paren
+(brace
+macro_line|#ifdef IPDEBUG
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;TX id=%i&bslash;n&quot;
+comma
+id|msgid
+)paren
+suffix:semicolon
+id|dumpit
+(paren
+id|skb-&gt;data
+comma
+l_int|20
+)paren
+suffix:semicolon
+id|dumpit
+(paren
+id|skb-&gt;data
+op_plus
+l_int|20
+comma
+l_int|20
+)paren
+suffix:semicolon
+macro_line|#endif
+id|pr_debug
+(paren
+l_string|&quot;%s: tx START %i.%i @=%p len=%i&bslash;n&quot;
+comma
+id|p-&gt;dev-&gt;name
+comma
+id|p-&gt;pathid
+comma
+id|msgid
+comma
+id|frame
+comma
+id|framelen
+)paren
+suffix:semicolon
 id|p-&gt;stats.tx_packets
 op_increment
 suffix:semicolon
+)brace
 r_else
 (brace
 r_if
@@ -2308,11 +2293,22 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;%s: iucv send failed, rc=%i&bslash;n&quot;
+l_string|&quot;%s: tx ERROR id=%i.%i rc=%i&bslash;n&quot;
 comma
 id|p-&gt;dev-&gt;name
 comma
+id|p-&gt;pathid
+comma
+id|msgid
+comma
 id|rc
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* We won&squot;t get interrupt.  Free frame now. */
+id|kfree
+(paren
+id|frame
 )paren
 suffix:semicolon
 )brace
@@ -2321,27 +2317,20 @@ id|dev_kfree_skb
 id|skb
 )paren
 suffix:semicolon
-id|kfree
-(paren
-id|tag
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* Finished with skb            */
 id|netif_wake_queue
 (paren
 id|p-&gt;dev
 )paren
 suffix:semicolon
 r_return
-id|rc
+l_int|0
 suffix:semicolon
-multiline_comment|/* zero == done; nonzero == fail */
 )brace
 multiline_comment|/* end iucv_tx() */
 multiline_comment|/*-----------------------------------------------------------*/
 multiline_comment|/* SEND COMPLETE                    Called by IUCV handler.  */
-multiline_comment|/* Free SKB associated with this transmission and free       */
-multiline_comment|/* the IUCV buffer list and SKB pointer.                     */
+multiline_comment|/* Free the IUCV frame that was used for this transmission.  */
 multiline_comment|/*-----------------------------------------------------------*/
 r_static
 r_void
@@ -2352,39 +2341,56 @@ id|iucv_MessageComplete
 op_star
 id|mci
 comma
-id|ulong
+r_void
+op_star
 id|pgm_data
 )paren
 (brace
-r_struct
-id|iucvtag
+r_void
 op_star
-id|tag
+id|frame
+suffix:semicolon
+macro_line|#ifdef DEBUG
+r_struct
+id|iucv_priv
+op_star
+id|p
 op_assign
 (paren
 r_struct
-id|iucvtag
+id|iucv_priv
 op_star
+)paren
+id|pgm_data
+suffix:semicolon
+macro_line|#endif
+id|frame
+op_assign
+(paren
+r_void
+op_star
+)paren
+(paren
+id|ulong
 )paren
 id|mci-&gt;ipmsgtag
 suffix:semicolon
-id|pr_debug
-(paren
-l_string|&quot;TX COMPLETE: Tag=%p skb=%p&bslash;n&quot;
-comma
-id|tag
-comma
-id|tag-&gt;skb
-)paren
-suffix:semicolon
-id|dev_kfree_skb
-(paren
-id|tag-&gt;skb
-)paren
-suffix:semicolon
 id|kfree
 (paren
-id|tag
+id|frame
+)paren
+suffix:semicolon
+id|pr_debug
+(paren
+l_string|&quot;%s: TX DONE %i.%i @=%p&bslash;n&quot;
+comma
+id|p-&gt;dev-&gt;name
+comma
+id|mci-&gt;ippathid
+comma
+id|mci-&gt;ipmsgid
+comma
+id|frame
 )paren
 suffix:semicolon
 )brace
@@ -2522,7 +2528,7 @@ suffix:semicolon
 multiline_comment|/* Default - updated based on IUCV */
 multiline_comment|/* keep the default flags, just add NOARP and POINTOPOINT */
 id|dev-&gt;flags
-op_assign
+op_or_assign
 id|IFF_NOARP
 op_or
 id|IFF_POINTOPOINT
@@ -2530,6 +2536,11 @@ suffix:semicolon
 id|dev-&gt;mtu
 op_assign
 l_int|9216
+suffix:semicolon
+id|dev_init_buffers
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|pr_debug
 (paren
@@ -2618,6 +2629,14 @@ l_int|8
 )braket
 op_assign
 l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+id|printk
+(paren
+id|KERN_NOTICE
+l_string|&quot;netiucv: IUCV network driver &quot;
+id|LEVEL
+l_string|&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2819,6 +2838,14 @@ r_void
 (brace
 r_int
 id|i
+suffix:semicolon
+id|printk
+(paren
+id|KERN_NOTICE
+l_string|&quot;netiucv: IUCV network driver &quot;
+id|LEVEL
+l_string|&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -3235,6 +3262,216 @@ op_amp
 id|iucv_names
 (braket
 l_int|9
+)braket
+(braket
+l_int|0
+)braket
+comma
+multiline_comment|/* Name filled in at load time  */
+macro_line|#endif
+id|init
+suffix:colon
+id|iucv_init
+multiline_comment|/* probe function               */
+)brace
+comma
+(brace
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+id|name
+suffix:colon
+op_amp
+id|iucv_names
+(braket
+l_int|10
+)braket
+(braket
+l_int|0
+)braket
+comma
+multiline_comment|/* Name filled in at load time  */
+macro_line|#endif
+id|init
+suffix:colon
+id|iucv_init
+multiline_comment|/* probe function               */
+)brace
+comma
+(brace
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+id|name
+suffix:colon
+op_amp
+id|iucv_names
+(braket
+l_int|11
+)braket
+(braket
+l_int|0
+)braket
+comma
+multiline_comment|/* Name filled in at load time  */
+macro_line|#endif
+id|init
+suffix:colon
+id|iucv_init
+multiline_comment|/* probe function               */
+)brace
+comma
+(brace
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+id|name
+suffix:colon
+op_amp
+id|iucv_names
+(braket
+l_int|12
+)braket
+(braket
+l_int|0
+)braket
+comma
+multiline_comment|/* Name filled in at load time  */
+macro_line|#endif
+id|init
+suffix:colon
+id|iucv_init
+multiline_comment|/* probe function               */
+)brace
+comma
+(brace
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+id|name
+suffix:colon
+op_amp
+id|iucv_names
+(braket
+l_int|13
+)braket
+(braket
+l_int|0
+)braket
+comma
+multiline_comment|/* Name filled in at load time  */
+macro_line|#endif
+id|init
+suffix:colon
+id|iucv_init
+multiline_comment|/* probe function               */
+)brace
+comma
+(brace
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+id|name
+suffix:colon
+op_amp
+id|iucv_names
+(braket
+l_int|14
+)braket
+(braket
+l_int|0
+)braket
+comma
+multiline_comment|/* Name filled in at load time  */
+macro_line|#endif
+id|init
+suffix:colon
+id|iucv_init
+multiline_comment|/* probe function               */
+)brace
+comma
+(brace
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+id|name
+suffix:colon
+op_amp
+id|iucv_names
+(braket
+l_int|15
+)braket
+(braket
+l_int|0
+)braket
+comma
+multiline_comment|/* Name filled in at load time  */
+macro_line|#endif
+id|init
+suffix:colon
+id|iucv_init
+multiline_comment|/* probe function               */
+)brace
+comma
+(brace
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+id|name
+suffix:colon
+op_amp
+id|iucv_names
+(braket
+l_int|16
+)braket
+(braket
+l_int|0
+)braket
+comma
+multiline_comment|/* Name filled in at load time  */
+macro_line|#endif
+id|init
+suffix:colon
+id|iucv_init
+multiline_comment|/* probe function               */
+)brace
+comma
+(brace
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+id|name
+suffix:colon
+op_amp
+id|iucv_names
+(braket
+l_int|17
+)braket
+(braket
+l_int|0
+)braket
+comma
+multiline_comment|/* Name filled in at load time  */
+macro_line|#endif
+id|init
+suffix:colon
+id|iucv_init
+multiline_comment|/* probe function               */
+)brace
+comma
+(brace
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+id|name
+suffix:colon
+op_amp
+id|iucv_names
+(braket
+l_int|18
+)braket
+(braket
+l_int|0
+)braket
+comma
+multiline_comment|/* Name filled in at load time  */
+macro_line|#endif
+id|init
+suffix:colon
+id|iucv_init
+multiline_comment|/* probe function               */
+)brace
+comma
+(brace
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+id|name
+suffix:colon
+op_amp
+id|iucv_names
+(braket
+l_int|19
 )braket
 (braket
 l_int|0

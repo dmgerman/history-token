@@ -191,7 +191,7 @@ DECL|macro|__xg
 mdefine_line|#define __xg(x) ((struct __xchg_dummy *)(x))
 multiline_comment|/*&n; * The semantics of XCHGCMP8B are a bit strange, this is why&n; * there is a loop and the loading of %%eax and %%edx has to&n; * be inside. This inlines well in most cases, the cached&n; * cost is around ~38 cycles. (in the future we might want&n; * to do an SIMD/3DNOW!/MMX/FPU 64-bit store here, but that&n; * might have an implicit FPU-save as a cost, so it&squot;s not&n; * clear which path to go.)&n; */
 DECL|function|__set_64bit
-r_extern
+r_static
 r_inline
 r_void
 id|__set_64bit
@@ -246,9 +246,9 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 DECL|function|__set_64bit_constant
-r_extern
-r_void
+r_static
 r_inline
+r_void
 id|__set_64bit_constant
 (paren
 r_int
@@ -295,9 +295,9 @@ mdefine_line|#define ll_low(x)&t;*(((unsigned int*)&amp;(x))+0)
 DECL|macro|ll_high
 mdefine_line|#define ll_high(x)&t;*(((unsigned int*)&amp;(x))+1)
 DECL|function|__set_64bit_var
-r_extern
-r_void
+r_static
 r_inline
+r_void
 id|__set_64bit_var
 (paren
 r_int

@@ -639,7 +639,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-r_extern
+r_static
 id|__inline__
 r_void
 op_star
@@ -667,7 +667,7 @@ id|size
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|rpc_exit
@@ -693,7 +693,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef RPC_DEBUG
-r_extern
+r_static
 id|__inline__
 r_char
 op_star

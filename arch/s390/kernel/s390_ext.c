@@ -1,10 +1,10 @@
 multiline_comment|/*&n; *  arch/s390/kernel/s390_ext.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Holger Smolinski (Holger.Smolinski@de.ibm.com),&n; *               Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
-multiline_comment|/*&n; * Simple hash strategy: index = code &amp; 0xff;&n; * ext_int_hash[index] is the start of the list for all external interrupts&n; * that hash to this index. With the current set of external interrupts &n; * (0x1202 external call, 0x1004 cpu timer, 0x2401 hwc console and 0x4000&n; * iucv) this is always the first element. &n; */
+multiline_comment|/*&n; * Simple hash strategy: index = code &amp; 0xff;&n; * ext_int_hash[index] is the start of the list for all external interrupts&n; * that hash to this index. With the current set of external interrupts &n; * (0x1202 external call, 0x1004 cpu timer, 0x2401 hwc console, 0x4000&n; * iucv and 0x2603 pfault) this is always the first element. &n; */
 DECL|variable|ext_int_hash
 id|ext_int_info_t
 op_star
@@ -25,6 +25,10 @@ suffix:semicolon
 DECL|variable|ext_int_info_hwc
 id|ext_int_info_t
 id|ext_int_info_hwc
+suffix:semicolon
+DECL|variable|ext_int_pfault
+id|ext_int_info_t
+id|ext_int_pfault
 suffix:semicolon
 DECL|function|register_external_interrupt
 r_int
@@ -108,6 +112,20 @@ id|p
 op_assign
 op_amp
 id|ext_int_info_hwc
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|code
+op_eq
+l_int|0x2603
+)paren
+multiline_comment|/* pfault_init is done too early too */
+id|p
+op_assign
+op_amp
+id|ext_int_pfault
 suffix:semicolon
 r_else
 id|p
@@ -273,6 +291,10 @@ op_logical_and
 id|code
 op_ne
 l_int|0x2401
+op_logical_and
+id|code
+op_ne
+l_int|0x2603
 )paren
 id|kfree
 c_func

@@ -2075,6 +2075,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|pfault_token
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|start_secondary
 r_int
 id|__init
@@ -2129,6 +2137,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PFAULT
+multiline_comment|/* Enable pfault pseudo page faults on this cpu. */
+id|pfault_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* cpu_idle will call schedule for us */
 r_return
 id|cpu_idle

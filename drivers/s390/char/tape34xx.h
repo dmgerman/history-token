@@ -223,7 +223,7 @@ id|count
 comma
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -235,7 +235,7 @@ id|cqr
 comma
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 id|ccw_req_t
@@ -252,7 +252,7 @@ id|count
 comma
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -264,7 +264,7 @@ id|cqr
 comma
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -276,7 +276,7 @@ id|cqr
 comma
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 id|ccw_req_t
@@ -285,7 +285,7 @@ id|tape34xx_mtfsf
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -297,7 +297,7 @@ id|tape34xx_mtbsf
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -309,7 +309,7 @@ id|tape34xx_mtfsr
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -321,7 +321,7 @@ id|tape34xx_mtbsr
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -333,7 +333,7 @@ id|tape34xx_mtweof
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -345,7 +345,7 @@ id|tape34xx_mtrew
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -357,7 +357,7 @@ id|tape34xx_mtoffl
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -369,7 +369,7 @@ id|tape34xx_mtnop
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -381,7 +381,7 @@ id|tape34xx_mtbsfm
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -393,7 +393,7 @@ id|tape34xx_mtfsfm
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -405,7 +405,7 @@ id|tape34xx_mteom
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -417,7 +417,7 @@ id|tape34xx_mterase
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -429,7 +429,7 @@ id|tape34xx_mtsetdensity
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -441,7 +441,7 @@ id|tape34xx_mtseek
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -453,7 +453,7 @@ id|tape34xx_mttell
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -465,7 +465,7 @@ id|tape34xx_mtsetdrvbuffer
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -477,7 +477,7 @@ id|tape34xx_mtlock
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -489,7 +489,7 @@ id|tape34xx_mtunlock
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -501,7 +501,7 @@ id|tape34xx_mtload
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -513,7 +513,7 @@ id|tape34xx_mtunload
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -525,7 +525,7 @@ id|tape34xx_mtcompression
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -537,7 +537,7 @@ id|tape34xx_mtsetpart
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -549,7 +549,7 @@ id|tape34xx_mtmkpart
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -561,7 +561,7 @@ id|tape34xx_mtiocget
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -573,7 +573,7 @@ id|tape34xx_mtiocpos
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -590,7 +590,7 @@ id|req
 comma
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|tapeblock_major
@@ -607,7 +607,7 @@ id|req
 comma
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|tapeblock_major
@@ -641,7 +641,7 @@ id|tape34xx_default_handler
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -649,7 +649,7 @@ id|tape34xx_unexpect_uchk_handler
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -658,7 +658,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -667,7 +667,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -676,7 +676,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -685,7 +685,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -694,7 +694,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -703,7 +703,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -712,7 +712,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -721,7 +721,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -730,7 +730,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -739,7 +739,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -748,7 +748,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -757,7 +757,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -766,7 +766,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -775,7 +775,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -784,7 +784,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -793,7 +793,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -802,7 +802,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_extern
@@ -811,7 +811,7 @@ id|schedule_tapeblock_exec_IO
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 singleline_comment|// the error recovery stuff:
@@ -820,7 +820,7 @@ id|tape34xx_error_recovery
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -828,7 +828,7 @@ id|tape34xx_error_recovery_has_failed
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|error_id
@@ -840,7 +840,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -849,7 +849,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -857,7 +857,7 @@ id|tape34xx_error_recovery_read_opposite
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -865,7 +865,7 @@ id|tape34xx_error_recovery_HWBUG
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|condno

@@ -31,7 +31,7 @@ id|tape_discipline_t
 op_star
 id|tape3490_init
 (paren
-r_void
+r_int
 )paren
 suffix:semicolon
 macro_line|#endif 

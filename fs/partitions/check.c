@@ -11,6 +11,7 @@ macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;acorn.h&quot;
 macro_line|#include &quot;amiga.h&quot;
 macro_line|#include &quot;atari.h&quot;
+macro_line|#include &quot;ldm.h&quot;
 macro_line|#include &quot;mac.h&quot;
 macro_line|#include &quot;msdos.h&quot;
 macro_line|#include &quot;osf.h&quot;
@@ -68,6 +69,11 @@ op_assign
 macro_line|#ifdef CONFIG_ACORN_PARTITION
 id|acorn_partition
 comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_LDM_PARTITION
+id|ldm_partition
+comma
+multiline_comment|/* this must come before msdos */
 macro_line|#endif
 macro_line|#ifdef CONFIG_MSDOS_PARTITION
 id|msdos_partition

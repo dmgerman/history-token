@@ -54,16 +54,10 @@ DECL|macro|__LC_MCCK_CODE
 mdefine_line|#define __LC_MCCK_CODE                  0x0E8
 DECL|macro|__LC_SAVE_AREA
 mdefine_line|#define __LC_SAVE_AREA                  0xC00
-DECL|macro|__LC_CREGS_SAVE_AREA
-mdefine_line|#define __LC_CREGS_SAVE_AREA            0xC80
-DECL|macro|__LC_AREGS_SAVE_AREA
-mdefine_line|#define __LC_AREGS_SAVE_AREA            0xD00
 DECL|macro|__LC_KERNEL_STACK
 mdefine_line|#define __LC_KERNEL_STACK               0xD40
 DECL|macro|__LC_KERNEL_LEVEL
 mdefine_line|#define __LC_KERNEL_LEVEL               0xD48
-DECL|macro|__LC_IRQ_STAT
-mdefine_line|#define __LC_IRQ_STAT                   0xD50
 DECL|macro|__LC_CPUID
 mdefine_line|#define __LC_CPUID                      0xD90
 DECL|macro|__LC_CPUADDR
@@ -72,6 +66,12 @@ DECL|macro|__LC_IPLDEV
 mdefine_line|#define __LC_IPLDEV                     0xDB8
 DECL|macro|__LC_PANIC_MAGIC
 mdefine_line|#define __LC_PANIC_MAGIC                0xE00
+DECL|macro|__LC_AREGS_SAVE_AREA
+mdefine_line|#define __LC_AREGS_SAVE_AREA            0x1340
+DECL|macro|__LC_CREGS_SAVE_AREA
+mdefine_line|#define __LC_CREGS_SAVE_AREA            0x1380
+DECL|macro|__LC_PFAULT_INTPARM
+mdefine_line|#define __LC_PFAULT_INTPARM             0x11B8
 multiline_comment|/* interrupt handler start with all io, external and mcck interrupt disabled */
 DECL|macro|_RESTART_PSW_MASK
 mdefine_line|#define _RESTART_PSW_MASK    0x0000000180000000
@@ -427,22 +427,16 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* 0xc00 */
-DECL|member|cregs_save_area
-id|__u64
-id|cregs_save_area
+DECL|member|pad9
+id|__u8
+id|pad9
 (braket
-l_int|16
+l_int|0xd40
+op_minus
+l_int|0xc80
 )braket
 suffix:semicolon
 multiline_comment|/* 0xc80 */
-DECL|member|access_regs_save_area
-id|__u32
-id|access_regs_save_area
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* 0xd00 */
 DECL|member|kernel_stack
 id|__u64
 id|kernel_stack
@@ -454,39 +448,13 @@ id|kernel_level
 suffix:semicolon
 multiline_comment|/* 0xd48 */
 multiline_comment|/* entry.S sensitive area start */
-multiline_comment|/* Next 6 words are the s390 equivalent of irq_stat */
-DECL|member|__softirq_active
-id|__u32
-id|__softirq_active
-suffix:semicolon
-multiline_comment|/* 0xd50 */
-DECL|member|__softirq_mask
-id|__u32
-id|__softirq_mask
-suffix:semicolon
-multiline_comment|/* 0xd54 */
-DECL|member|__local_irq_count
-id|__u32
-id|__local_irq_count
-suffix:semicolon
-multiline_comment|/* 0xd58 */
-DECL|member|__local_bh_count
-id|__u32
-id|__local_bh_count
-suffix:semicolon
-multiline_comment|/* 0xd5c */
-DECL|member|__syscall_count
-id|__u32
-id|__syscall_count
-suffix:semicolon
-multiline_comment|/* 0xd60 */
 DECL|member|pad10
 id|__u8
 id|pad10
 (braket
 l_int|0xd80
 op_minus
-l_int|0xd64
+l_int|0xd50
 )braket
 suffix:semicolon
 multiline_comment|/* 0xd64 */
@@ -501,9 +469,9 @@ id|__u32
 id|ipl_device
 suffix:semicolon
 multiline_comment|/* 0xdb8 */
-DECL|member|pad13
+DECL|member|pad11
 id|__u32
-id|pad13
+id|pad11
 suffix:semicolon
 multiline_comment|/* 0xdbc was lsw word of ipl_device until a bug was found DJB */
 multiline_comment|/* entry.S sensitive area end */
@@ -528,9 +496,9 @@ id|__u64
 id|ext_call_count
 suffix:semicolon
 multiline_comment|/* 0xdd8 */
-DECL|member|pad11
+DECL|member|pad12
 id|__u8
-id|pad11
+id|pad12
 (braket
 l_int|0xe00
 op_minus
@@ -545,17 +513,129 @@ id|__u32
 id|panic_magic
 suffix:semicolon
 multiline_comment|/* 0xe00 */
-multiline_comment|/* Align to the top 1k of prefix area */
-DECL|member|pad12
+DECL|member|pad13
 id|__u8
-id|pad12
+id|pad13
 (braket
-l_int|0x1000
+l_int|0x1200
 op_minus
 l_int|0xe04
 )braket
 suffix:semicolon
 multiline_comment|/* 0xe04 */
+multiline_comment|/* System info area */
+DECL|member|floating_pt_save_area
+id|__u64
+id|floating_pt_save_area
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1200 */
+DECL|member|gpregs_save_area
+id|__u64
+id|gpregs_save_area
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1280 */
+DECL|member|st_status_fixed_logout
+id|__u32
+id|st_status_fixed_logout
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1300 */
+DECL|member|pad14
+id|__u8
+id|pad14
+(braket
+l_int|0x1318
+op_minus
+l_int|0x1310
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1310 */
+DECL|member|prefixreg_save_area
+id|__u32
+id|prefixreg_save_area
+suffix:semicolon
+multiline_comment|/* 0x1318 */
+DECL|member|fpt_creg_save_area
+id|__u32
+id|fpt_creg_save_area
+suffix:semicolon
+multiline_comment|/* 0x131c */
+DECL|member|pad15
+id|__u8
+id|pad15
+(braket
+l_int|0x1324
+op_minus
+l_int|0x1320
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1320 */
+DECL|member|tod_progreg_save_area
+id|__u32
+id|tod_progreg_save_area
+suffix:semicolon
+multiline_comment|/* 0x1324 */
+DECL|member|cpu_timer_save_area
+id|__u32
+id|cpu_timer_save_area
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1328 */
+DECL|member|clock_comp_save_area
+id|__u32
+id|clock_comp_save_area
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1330 */
+DECL|member|pad16
+id|__u8
+id|pad16
+(braket
+l_int|0x1340
+op_minus
+l_int|0x1338
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1338 */
+DECL|member|access_regs_save_area
+id|__u32
+id|access_regs_save_area
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1340 */
+DECL|member|cregs_save_area
+id|__u64
+id|cregs_save_area
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1380 */
+multiline_comment|/* align to the top of the prefix area */
+DECL|member|pad17
+id|__u8
+id|pad17
+(braket
+l_int|0x2000
+op_minus
+l_int|0x1400
+)braket
+suffix:semicolon
+multiline_comment|/* 0x1400 */
 )brace
 id|__attribute__
 c_func

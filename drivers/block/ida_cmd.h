@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *    Disk Array driver for Compaq SMART2 Controllers&n; *    Copyright 1998 Compaq Computer Corporation&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to arrays@compaq.com&n; *&n; *    If you want to make changes, improve or add functionality to this&n; *    driver, you&squot;ll probably need the Compaq Array Controller Interface&n; *    Specificiation (Document number ECG086/1198)&n; */
+multiline_comment|/*&n; *    Disk Array driver for Compaq SMART2 Controllers&n; *    Copyright 1998 Compaq Computer Corporation&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to arrays@compaq.com&n; *&n; */
 macro_line|#ifndef ARRAYCMD_H
 DECL|macro|ARRAYCMD_H
 mdefine_line|#define ARRAYCMD_H
@@ -1152,6 +1152,16 @@ id|scsi_param_t
 suffix:semicolon
 DECL|macro|RESUME_BACKGROUND_ACTIVITY
 mdefine_line|#define RESUME_BACKGROUND_ACTIVITY&t;0x99
+DECL|macro|SENSE_CONTROLLER_PERFORMANCE
+mdefine_line|#define SENSE_CONTROLLER_PERFORMANCE&t;0xa8
+DECL|macro|FLUSH_CACHE
+mdefine_line|#define FLUSH_CACHE&t;&t;&t;0xc2
+DECL|macro|COLLECT_BUFFER
+mdefine_line|#define COLLECT_BUFFER&t;&t;&t;0xd2
+DECL|macro|READ_FLASH_ROM
+mdefine_line|#define READ_FLASH_ROM&t;&t;&t;0xf6
+DECL|macro|WRITE_FLASH_ROM
+mdefine_line|#define WRITE_FLASH_ROM&t;&t;&t;0xf7
 macro_line|#pragma pack()&t;
 macro_line|#endif /* ARRAYCMD_H */
 eof

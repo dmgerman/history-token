@@ -1397,6 +1397,8 @@ id|NCR5380_region_size
 )paren
 suffix:semicolon
 macro_line|#endif
+r_continue
+suffix:semicolon
 )brace
 id|instance-&gt;NCR5380_instance_name
 op_assign

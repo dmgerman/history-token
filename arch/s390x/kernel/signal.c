@@ -1513,6 +1513,10 @@ c_func
 id|ka-&gt;sa.sa_handler
 )paren
 suffix:semicolon
+id|regs-&gt;psw.mask
+op_assign
+id|_USER_PSW_MASK
+suffix:semicolon
 )brace
 multiline_comment|/* Set up to return from userspace.  If provided, use a stub&n;&t;   already in userspace.  */
 r_if
@@ -1668,6 +1672,21 @@ id|addr_t
 )paren
 op_amp
 id|frame-&gt;sc
+suffix:semicolon
+multiline_comment|/* We forgot to include these in the sigcontext.&n;&t;   To avoid breaking binary compatibility, they are passed as args. */
+id|regs-&gt;gprs
+(braket
+l_int|4
+)braket
+op_assign
+id|current-&gt;thread.trap_no
+suffix:semicolon
+id|regs-&gt;gprs
+(braket
+l_int|5
+)braket
+op_assign
+id|current-&gt;thread.prot_addr
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -1962,9 +1981,9 @@ multiline_comment|/* Are we from a system call? */
 r_if
 c_cond
 (paren
-id|regs-&gt;orig_gpr2
-op_ge
-l_int|0
+id|regs-&gt;trap
+op_eq
+id|__LC_SVC_OLD_PSW
 )paren
 (brace
 multiline_comment|/* If so, check system call restarting.. */
@@ -2595,11 +2614,6 @@ suffix:semicolon
 multiline_comment|/* FALLTHRU */
 r_default
 suffix:colon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|sigaddset
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/synclink.c&n; *&n; * $Id: synclink.c,v 3.8 2001/03/30 17:30:38 ez Exp $&n; *&n; * Device driver for Microgate SyncLink ISA and PCI&n; * high speed multiprotocol serial adapters.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * Derived from serial.c written by Theodore Ts&squot;o and Linus Torvalds&n; *&n; * Original release 01/11/99&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * This driver is primarily intended for use in synchronous&n; * HDLC mode. Asynchronous mode is also provided.&n; *&n; * When operating in synchronous mode, each call to mgsl_write()&n; * contains exactly one complete HDLC frame. Calling mgsl_put_char&n; * will start assembling an HDLC frame that will not be sent until&n; * mgsl_flush_chars or mgsl_write is called.&n; * &n; * Synchronous receive data is reported as complete frames. To accomplish&n; * this, the TTY flip buffer is bypassed (too small to hold largest&n; * frame and may fragment frames) and the line discipline&n; * receive entry point is called directly.&n; *&n; * This driver has been tested with a slightly modified ppp.c driver&n; * for synchronous PPP.&n; *&n; * 2000/02/16&n; * Added interface for syncppp.c driver (an alternate synchronous PPP&n; * implementation that also supports Cisco HDLC). Each device instance&n; * registers as a tty device AND a network device (if dosyncppp option&n; * is set for the device). The functionality is determined by which&n; * device interface is opened.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * linux/drivers/char/synclink.c&n; *&n; * $Id: synclink.c,v 3.12 2001/07/18 19:14:21 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink ISA and PCI&n; * high speed multiprotocol serial adapters.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * Derived from serial.c written by Theodore Ts&squot;o and Linus Torvalds&n; *&n; * Original release 01/11/99&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * This driver is primarily intended for use in synchronous&n; * HDLC mode. Asynchronous mode is also provided.&n; *&n; * When operating in synchronous mode, each call to mgsl_write()&n; * contains exactly one complete HDLC frame. Calling mgsl_put_char&n; * will start assembling an HDLC frame that will not be sent until&n; * mgsl_flush_chars or mgsl_write is called.&n; * &n; * Synchronous receive data is reported as complete frames. To accomplish&n; * this, the TTY flip buffer is bypassed (too small to hold largest&n; * frame and may fragment frames) and the line discipline&n; * receive entry point is called directly.&n; *&n; * This driver has been tested with a slightly modified ppp.c driver&n; * for synchronous PPP.&n; *&n; * 2000/02/16&n; * Added interface for syncppp.c driver (an alternate synchronous PPP&n; * implementation that also supports Cisco HDLC). Each device instance&n; * registers as a tty device AND a network device (if dosyncppp option&n; * is set for the device). The functionality is determined by which&n; * device interface is opened.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
 macro_line|#if defined(__i386__)
@@ -2568,34 +2568,24 @@ r_struct
 id|mgsl_struct
 op_star
 id|mgsl_device_list
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mgsl_device_count
 r_int
 id|mgsl_device_count
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Set this param to non-zero to load eax with the&n; * .text section address and breakpoint on module load.&n; * This is useful for use with gdb and add-symbol-file command.&n; */
 DECL|variable|break_on_load
 r_int
 id|break_on_load
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Driver major number, defaults to zero to get auto&n; * assigned major number. May be forced as module parameter.&n; */
 DECL|variable|ttymajor
 r_int
 id|ttymajor
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|cuamajor
 r_int
 id|cuamajor
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Array of user specified options for ISA adapters.&n; */
 DECL|variable|io
@@ -2605,11 +2595,6 @@ id|io
 (braket
 id|MAX_ISA_DEVICES
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 DECL|variable|irq
 r_static
@@ -2618,11 +2603,6 @@ id|irq
 (braket
 id|MAX_ISA_DEVICES
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 DECL|variable|dma
 r_static
@@ -2631,18 +2611,11 @@ id|dma
 (braket
 id|MAX_ISA_DEVICES
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 DECL|variable|debug_level
 r_static
 r_int
 id|debug_level
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|maxframe
 r_static
@@ -2651,11 +2624,6 @@ id|maxframe
 (braket
 id|MAX_TOTAL_DEVICES
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 DECL|variable|dosyncppp
 r_static
@@ -2664,11 +2632,6 @@ id|dosyncppp
 (braket
 id|MAX_TOTAL_DEVICES
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 DECL|variable|txdmabufs
 r_static
@@ -2677,11 +2640,6 @@ id|txdmabufs
 (braket
 id|MAX_TOTAL_DEVICES
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 DECL|variable|txholdbufs
 r_static
@@ -2690,11 +2648,6 @@ id|txholdbufs
 (braket
 id|MAX_TOTAL_DEVICES
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -2840,7 +2793,7 @@ r_char
 op_star
 id|driver_version
 op_assign
-l_string|&quot;3.8&quot;
+l_string|&quot;$Revision: 3.12 $&quot;
 suffix:semicolon
 r_static
 r_int
@@ -15883,6 +15836,8 @@ id|request_mem_region
 c_func
 (paren
 id|info-&gt;phys_lcr_base
+op_plus
+id|info-&gt;lcr_offset
 comma
 l_int|128
 comma
@@ -15904,6 +15859,8 @@ comma
 id|info-&gt;device_name
 comma
 id|info-&gt;phys_lcr_base
+op_plus
+id|info-&gt;lcr_offset
 )paren
 suffix:semicolon
 r_goto
@@ -16263,6 +16220,8 @@ id|release_mem_region
 c_func
 (paren
 id|info-&gt;phys_lcr_base
+op_plus
+id|info-&gt;lcr_offset
 comma
 l_int|128
 )paren
@@ -16566,11 +16525,13 @@ id|info-&gt;max_frame_size
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SYNCLINK_SYNCPPP
+macro_line|#ifdef MODULE
 r_if
 c_cond
 (paren
 id|info-&gt;dosyncppp
 )paren
+macro_line|#endif
 id|mgsl_sppp_init
 c_func
 (paren
@@ -17057,7 +17018,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s version %s, tty major#%d callout major#%d&bslash;n&quot;
+l_string|&quot;%s %s, tty major#%d callout major#%d&bslash;n&quot;
 comma
 id|driver_name
 comma
@@ -17282,7 +17243,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s version %s&bslash;n&quot;
+l_string|&quot;%s %s&bslash;n&quot;
 comma
 id|driver_name
 comma
@@ -17407,7 +17368,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Unloading %s: version %s&bslash;n&quot;
+l_string|&quot;Unloading %s: %s&bslash;n&quot;
 comma
 id|driver_name
 comma
@@ -27069,6 +27030,14 @@ l_int|10
 op_star
 id|HZ
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; VERSION(2,4,4) 
+id|dev_init_buffers
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

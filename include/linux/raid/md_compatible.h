@@ -13,7 +13,7 @@ mdefine_line|#define md__get_free_pages(x,y) __get_free_pages(x,y)
 macro_line|#ifdef __i386__
 multiline_comment|/* 001 */
 DECL|function|md_cpu_has_mmx
-r_extern
+r_static
 id|__inline__
 r_int
 id|md_cpu_has_mmx
@@ -51,7 +51,7 @@ DECL|macro|md_put_user
 mdefine_line|#define md_put_user put_user
 multiline_comment|/* 007 */
 DECL|function|md_capable_admin
-r_extern
+r_static
 r_inline
 r_int
 id|md_capable_admin
@@ -73,7 +73,7 @@ DECL|macro|MD_FILE_TO_INODE
 mdefine_line|#define MD_FILE_TO_INODE(file) ((file)-&gt;f_dentry-&gt;d_inode)
 multiline_comment|/* 009 */
 DECL|function|md_flush_signals
-r_extern
+r_static
 r_inline
 r_void
 id|md_flush_signals
@@ -104,7 +104,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* 010 */
 DECL|function|md_init_signals
-r_extern
+r_static
 r_inline
 r_void
 id|md_init_signals

@@ -10,7 +10,7 @@ DECL|macro|LIST_FIND
 mdefine_line|#define LIST_FIND(head, cmpfn, type, args...)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct list_head *__i = (head);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_READ_LOCK(head);&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__i = __i-&gt;next;&t;&t;&t;&bslash;&n;&t;&t;if (__i == (head)) {&t;&t;&t;&bslash;&n;&t;&t;&t;__i = NULL;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;} while (!cmpfn((const type)__i , ## args));&t;&bslash;&n;&t;(type)__i;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|LIST_FIND_W
 mdefine_line|#define LIST_FIND_W(head, cmpfn, type, args...)&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct list_head *__i = (head);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_WRITE_LOCK(head);&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__i = __i-&gt;next;&t;&t;&bslash;&n;&t;&t;if (__i == (head)) {&t;&t;&bslash;&n;&t;&t;&t;__i = NULL;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&bslash;&n;&t;} while (!cmpfn((type)__i , ## args));&t;&bslash;&n;&t;(type)__i;&t;&t;&t;&t;&bslash;&n;})
-r_extern
+r_static
 r_inline
 r_int
 DECL|function|__list_cmp_same
@@ -35,7 +35,7 @@ id|p2
 suffix:semicolon
 )brace
 multiline_comment|/* Is this entry in the list? */
-r_extern
+r_static
 r_inline
 r_int
 DECL|function|list_inlist
@@ -79,7 +79,7 @@ DECL|macro|LIST_DELETE
 mdefine_line|#define LIST_DELETE(head, oldentry) list_del((struct list_head *)oldentry)
 macro_line|#endif
 multiline_comment|/* Append. */
-r_extern
+r_static
 r_inline
 r_void
 DECL|function|list_append
@@ -118,7 +118,7 @@ id|prev
 suffix:semicolon
 )brace
 multiline_comment|/* Prepend. */
-r_extern
+r_static
 r_inline
 r_void
 DECL|function|list_prepend
@@ -155,7 +155,7 @@ DECL|macro|LIST_INSERT
 mdefine_line|#define LIST_INSERT(head, new, cmpfn)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct list_head *__i;&t;&t;&t;&t;&t;&bslash;&n;&t;ASSERT_WRITE_LOCK(head);&t;&t;&t;&t;&bslash;&n;&t;for (__i = (head)-&gt;next;&t;&t;&t;&t;&bslash;&n;&t;     !cmpfn((new), (typeof (new))__i) &amp;&amp; __i != (head);&t;&bslash;&n;&t;     __i = __i-&gt;next);&t;&t;&t;&t;&t;&bslash;&n;&t;list_add((struct list_head *)(new), __i-&gt;prev);&t;&t;&bslash;&n;} while(0)
 multiline_comment|/* If the field after the list_head is a nul-terminated string, you&n;   can use these functions. */
 DECL|function|__list_cmp_name
-r_extern
+r_static
 r_inline
 r_int
 id|__list_cmp_name
@@ -191,7 +191,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Returns false if same name already in list, otherwise does insert. */
-r_extern
+r_static
 r_inline
 r_int
 DECL|function|list_named_insert

@@ -160,6 +160,17 @@ id|TE_SIZE
 )brace
 id|tape_events
 suffix:semicolon
+DECL|typedef|tape_disc_shutdown_t
+r_typedef
+r_void
+(paren
+op_star
+id|tape_disc_shutdown_t
+)paren
+(paren
+r_int
+)paren
+suffix:semicolon
 DECL|typedef|tape_event_handler_t
 r_typedef
 r_void
@@ -185,7 +196,7 @@ id|tape_ccwgen_t
 r_struct
 id|_tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|count
@@ -208,7 +219,7 @@ comma
 r_struct
 id|_tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|tapeblock_major
@@ -234,7 +245,7 @@ comma
 r_struct
 id|_tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 DECL|typedef|tape_freeblock_t
@@ -252,7 +263,7 @@ comma
 r_struct
 id|_tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 DECL|typedef|tape_setup_assist_t
@@ -435,6 +446,10 @@ suffix:semicolon
 DECL|member|mtiocpos
 id|tape_ccwgen_t
 id|mtiocpos
+suffix:semicolon
+DECL|member|shutdown
+id|tape_disc_shutdown_t
+id|shutdown
 suffix:semicolon
 DECL|member|discipline_ioctl_overload
 r_int
@@ -631,6 +646,11 @@ DECL|member|position
 r_int
 id|position
 suffix:semicolon
+DECL|member|medium_is_unloaded
+r_int
+id|medium_is_unloaded
+suffix:semicolon
+singleline_comment|// Becomes true when a unload-type operation was issued, false again when medium-insert was detected
 DECL|member|cqr
 id|ccw_req_t
 op_star
@@ -741,7 +761,7 @@ id|tape_alloc_ccw_req
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|cplength
@@ -789,7 +809,7 @@ id|tapestate_set
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|newstate
@@ -801,7 +821,7 @@ id|tapestate_get
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -809,7 +829,7 @@ id|tapestate_event
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 comma
 r_int
 id|event

@@ -600,7 +600,7 @@ id|skb
 )paren
 suffix:semicolon
 DECL|function|hdlc_to_dev
-r_extern
+r_static
 id|__inline__
 r_struct
 id|net_device
@@ -619,7 +619,7 @@ id|hdlc-&gt;netdev
 suffix:semicolon
 )brace
 DECL|function|dev_to_hdlc
-r_extern
+r_static
 id|__inline__
 id|hdlc_device
 op_star
@@ -641,7 +641,7 @@ id|dev
 suffix:semicolon
 )brace
 DECL|function|pvc_to_dev
-r_extern
+r_static
 id|__inline__
 r_struct
 id|net_device
@@ -660,7 +660,7 @@ id|pvc-&gt;netdev
 suffix:semicolon
 )brace
 DECL|function|dev_to_pvc
-r_extern
+r_static
 id|__inline__
 id|pvc_device
 op_star
@@ -682,7 +682,7 @@ id|dev
 suffix:semicolon
 )brace
 DECL|function|hdlc_to_name
-r_extern
+r_static
 id|__inline__
 r_const
 r_char
@@ -706,7 +706,7 @@ id|name
 suffix:semicolon
 )brace
 DECL|function|pvc_to_name
-r_extern
+r_static
 id|__inline__
 r_const
 r_char
@@ -730,7 +730,7 @@ id|name
 suffix:semicolon
 )brace
 DECL|function|status_to_dlci
-r_extern
+r_static
 id|__inline__
 id|u16
 id|status_to_dlci
@@ -819,7 +819,7 @@ l_int|3
 suffix:semicolon
 )brace
 DECL|function|dlci_to_status
-r_extern
+r_static
 id|__inline__
 r_void
 id|dlci_to_status
@@ -908,7 +908,7 @@ l_int|0x02
 suffix:semicolon
 )brace
 DECL|function|netdev_dlci
-r_extern
+r_static
 id|__inline__
 id|u16
 id|netdev_dlci
@@ -934,7 +934,7 @@ id|dev-&gt;dev_addr
 suffix:semicolon
 )brace
 DECL|function|q922_to_dlci
-r_extern
+r_static
 id|__inline__
 id|u16
 id|q922_to_dlci
@@ -974,7 +974,7 @@ l_int|4
 suffix:semicolon
 )brace
 DECL|function|dlci_to_q922
-r_extern
+r_static
 id|__inline__
 r_void
 id|dlci_to_q922
@@ -1020,7 +1020,7 @@ l_int|0x01
 suffix:semicolon
 )brace
 DECL|function|mode_is
-r_extern
+r_static
 id|__inline__
 r_int
 id|mode_is
@@ -1045,7 +1045,7 @@ id|mask
 suffix:semicolon
 )brace
 DECL|function|find_pvc
-r_extern
+r_static
 id|__inline__
 id|pvc_device
 op_star
@@ -1097,7 +1097,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|debug_frame
-r_extern
+r_static
 id|__inline__
 r_void
 id|debug_frame

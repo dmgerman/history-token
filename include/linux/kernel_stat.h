@@ -154,7 +154,7 @@ suffix:semicolon
 macro_line|#if !defined(CONFIG_ARCH_S390)
 multiline_comment|/*&n; * Number of interrupts per specific IRQ source, since bootup&n; */
 DECL|function|kstat_irqs
-r_extern
+r_static
 r_inline
 r_int
 id|kstat_irqs

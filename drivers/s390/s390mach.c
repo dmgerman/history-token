@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  arch/s390/kernel/s390mach.c&n; *   S/390 machine chec
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#endif

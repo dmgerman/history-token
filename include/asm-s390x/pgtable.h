@@ -133,7 +133,7 @@ mdefine_line|#define _REGION_THIRD       0x4
 DECL|macro|_REGION_THIRD_LEN
 mdefine_line|#define _REGION_THIRD_LEN   0x3 
 DECL|macro|_REGION_TABLE
-mdefine_line|#define _REGION_TABLE       (_REGION_THIRD|_REGION_THIRD_LEN)
+mdefine_line|#define _REGION_TABLE       (_REGION_THIRD|_REGION_THIRD_LEN|0x40)
 multiline_comment|/* Bits in the storage key */
 DECL|macro|_PAGE_CHANGED
 mdefine_line|#define _PAGE_CHANGED    0x02          /* HW changed bit                   */
@@ -782,6 +782,8 @@ c_func
 id|pte
 )paren
 )paren
+suffix:colon
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
@@ -860,6 +862,8 @@ op_star
 id|ptep
 )paren
 )paren
+suffix:colon
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return

@@ -292,10 +292,6 @@ DECL|member|_u
 )brace
 id|_u
 suffix:semicolon
-DECL|member|sa_mask
-id|sigset_t
-id|sa_mask
-suffix:semicolon
 DECL|member|sa_flags
 r_int
 r_int
@@ -310,6 +306,10 @@ id|sa_restorer
 (paren
 r_void
 )paren
+suffix:semicolon
+DECL|member|sa_mask
+id|sigset_t
+id|sa_mask
 suffix:semicolon
 )brace
 suffix:semicolon

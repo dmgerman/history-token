@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq.c,v 1.15 2001/06/10 11:18:46 bjornw Exp $&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000,2001 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * Notice Linux/CRIS: these routines do not care about SMP&n; *&n; */
+multiline_comment|/* $Id: irq.c,v 1.17 2001/07/25 16:08:01 bjornw Exp $&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000,2001 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * Notice Linux/CRIS: these routines do not care about SMP&n; *&n; */
 multiline_comment|/*&n; * IRQ&squot;s are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -1075,13 +1076,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|softirq_active
-c_func
-(paren
-id|cpu
-)paren
-op_amp
-id|softirq_mask
+id|softirq_pending
 c_func
 (paren
 id|cpu
@@ -1645,8 +1640,9 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* from entry.S */
-DECL|function|init_IRQ
 r_void
+id|__init
+DECL|function|init_IRQ
 id|init_IRQ
 c_func
 (paren
@@ -1852,8 +1848,9 @@ macro_line|#endif
 )brace
 macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_SYSCTL)
 multiline_comment|/* Used by other archs to show/control IRQ steering during SMP */
-DECL|function|init_irq_proc
 r_void
+id|__init
+DECL|function|init_irq_proc
 id|init_irq_proc
 c_func
 (paren

@@ -351,7 +351,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; *  ISI Card specific ops ...&n; */
 DECL|function|raise_dtr
-r_extern
+r_static
 r_inline
 r_void
 id|raise_dtr
@@ -479,7 +479,7 @@ id|ISI_DTR
 suffix:semicolon
 )brace
 DECL|function|drop_dtr
-r_extern
+r_static
 r_inline
 r_void
 id|drop_dtr
@@ -608,7 +608,7 @@ id|ISI_DTR
 suffix:semicolon
 )brace
 DECL|function|raise_rts
-r_extern
+r_static
 r_inline
 r_void
 id|raise_rts
@@ -736,7 +736,7 @@ id|ISI_RTS
 suffix:semicolon
 )brace
 DECL|function|drop_rts
-r_extern
+r_static
 r_inline
 r_void
 id|drop_rts
@@ -865,7 +865,7 @@ id|ISI_RTS
 suffix:semicolon
 )brace
 DECL|function|raise_dtr_rts
-r_extern
+r_static
 r_inline
 r_void
 id|raise_dtr_rts
@@ -997,7 +997,7 @@ id|ISI_RTS
 suffix:semicolon
 )brace
 DECL|function|drop_dtr_rts
-r_extern
+r_static
 r_inline
 r_void
 id|drop_dtr_rts
@@ -1130,7 +1130,7 @@ id|ISI_DTR
 suffix:semicolon
 )brace
 DECL|function|kill_queue
-r_extern
+r_static
 r_inline
 r_void
 id|kill_queue

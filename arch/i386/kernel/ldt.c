@@ -223,7 +223,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Horrible dependencies! Try to get rid of this. This is wrong,&n;&t; * as it only reloads the ldt for the first process with this&n;&t; * mm. The implications are that you should really make sure that&n;&t; * you have a ldt before you do the first clone(), otherwise&n;&t; * you get strange behaviour (the kernel is safe, it&squot;s just user&n;&t; * space strangeness).&n;&t; *&n;&t; * we have two choices: either we preallocate the LDT descriptor&n;&t; * and can do a shared modify_ldt(), or we postallocate it and do&n;&t; * an smp message pass to update it. Currently we are a bit&n;&t; * un-nice to user-space and reload the LDT only on the next&n;&t; * schedule. (only an issue on SMP)&n;&t; *&n;&t; * the GDT index of the LDT is allocated dynamically, and is&n;&t; * limited by MAX_LDT_DESCRIPTORS.&n;&t; */
+multiline_comment|/*&n;&t; * the GDT index of the LDT is allocated dynamically, and is&n;&t; * limited by MAX_LDT_DESCRIPTORS.&n;&t; */
 id|down_write
 c_func
 (paren
@@ -238,12 +238,9 @@ op_logical_neg
 id|mm-&gt;context.segments
 )paren
 (brace
-id|error
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-id|mm-&gt;context.segments
+r_void
+op_star
+id|segments
 op_assign
 id|vmalloc
 c_func
@@ -253,11 +250,16 @@ op_star
 id|LDT_ENTRY_SIZE
 )paren
 suffix:semicolon
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|mm-&gt;context.segments
+id|segments
 )paren
 r_goto
 id|out_unlock
@@ -265,7 +267,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|mm-&gt;context.segments
+id|segments
 comma
 l_int|0
 comma
@@ -274,7 +276,24 @@ op_star
 id|LDT_ENTRY_SIZE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Possibly do an SMP cross-call to other CPUs to reload&n;&t;&t; * their LDTs?&n;&t;&t; */
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|mm-&gt;context.segments
+op_assign
+id|segments
+suffix:semicolon
+id|mm-&gt;context.cpuvalid
+op_assign
+l_int|1UL
+op_lshift
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 id|load_LDT
 c_func
 (paren

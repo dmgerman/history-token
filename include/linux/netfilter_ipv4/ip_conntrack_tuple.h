@@ -155,7 +155,7 @@ id|IP_CT_DIR_MAX
 )brace
 suffix:semicolon
 DECL|function|ip_ct_tuple_src_equal
-r_extern
+r_static
 r_inline
 r_int
 id|ip_ct_tuple_src_equal
@@ -185,7 +185,7 @@ id|t2-&gt;src.u.all
 suffix:semicolon
 )brace
 DECL|function|ip_ct_tuple_dst_equal
-r_extern
+r_static
 r_inline
 r_int
 id|ip_ct_tuple_dst_equal
@@ -219,7 +219,7 @@ id|t2-&gt;dst.protonum
 suffix:semicolon
 )brace
 DECL|function|ip_ct_tuple_equal
-r_extern
+r_static
 r_inline
 r_int
 id|ip_ct_tuple_equal
@@ -257,7 +257,7 @@ id|t2
 suffix:semicolon
 )brace
 DECL|function|ip_ct_tuple_mask_cmp
-r_extern
+r_static
 r_inline
 r_int
 id|ip_ct_tuple_mask_cmp

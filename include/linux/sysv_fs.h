@@ -844,7 +844,7 @@ mdefine_line|#define COH_KLUDGE_SYMLINK_MODE&t;(S_IFREG | S_ISVTX)
 DECL|macro|COH_KLUDGE_NOT_SYMLINK
 mdefine_line|#define COH_KLUDGE_NOT_SYMLINK&t;(S_IFREG | S_ISVTX | S_IRUSR) /* force read access */
 DECL|function|from_coh_imode
-r_extern
+r_static
 r_inline
 id|mode_t
 id|from_coh_imode
@@ -875,7 +875,7 @@ id|mode
 suffix:semicolon
 )brace
 DECL|function|to_coh_imode
-r_extern
+r_static
 r_inline
 r_int
 r_int

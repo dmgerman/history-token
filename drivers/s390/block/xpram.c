@@ -32,7 +32,7 @@ macro_line|#  include &lt;linux/init.h&gt;
 macro_line|#endif /* V24 */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt; /* printk() */
-macro_line|#include &lt;linux/malloc.h&gt; /* kmalloc() */
+macro_line|#include &lt;linux/slab.h&gt; /* kmalloc() */
 macro_line|#if (XPRAM_VERSION == 24)
 macro_line|#  include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#endif /* V24 */
@@ -53,6 +53,10 @@ r_int
 id|xpram_major
 suffix:semicolon
 multiline_comment|/* must be declared before including blk.h */
+DECL|variable|xpram_devfs_handle
+id|devfs_handle_t
+id|xpram_devfs_handle
+suffix:semicolon
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) MINOR(device)   /* xpram has no partition bits */
 DECL|macro|DEVICE_NAME
@@ -2997,6 +3001,45 @@ r_return
 id|result
 suffix:semicolon
 )brace
+macro_line|#if (XPRAM_VERSION == 24)
+id|xpram_devfs_handle
+op_assign
+id|devfs_mk_dir
+(paren
+l_int|NULL
+comma
+l_string|&quot;slram&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|devfs_register_series
+(paren
+id|xpram_devfs_handle
+comma
+l_string|&quot;%u&quot;
+comma
+id|XPRAM_MAX_DEVS
+comma
+id|DEVFS_FL_DEFAULT
+comma
+id|XPRAM_MAJOR
+comma
+l_int|0
+comma
+id|S_IFBLK
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
+comma
+op_amp
+id|xpram_devops
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+macro_line|#endif /* V22/V24 */
 r_if
 c_cond
 (paren
@@ -4065,6 +4108,7 @@ id|xpram_offsets
 )paren
 suffix:semicolon
 multiline_comment|/* finally, the usual cleanup */
+macro_line|#if (XPRAM_VERSION == 22)
 id|unregister_blkdev
 c_func
 (paren
@@ -4073,6 +4117,32 @@ comma
 l_string|&quot;xpram&quot;
 )paren
 suffix:semicolon
+macro_line|#elif (XPRAM_VERSION == 24)
+id|devfs_unregister
+c_func
+(paren
+id|xpram_devfs_handle
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|devfs_unregister_blkdev
+c_func
+(paren
+id|MAJOR_NR
+comma
+l_string|&quot;xpram&quot;
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;xpram: cannot unregister blkdev&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* V22/V24 */
 id|kfree
 c_func
 (paren

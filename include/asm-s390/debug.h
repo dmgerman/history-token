@@ -99,7 +99,7 @@ DECL|macro|DEBUG_DATA
 mdefine_line|#define DEBUG_DATA(entry) (char*)(entry + 1) /* data is stored behind */
 multiline_comment|/* the entry information */
 DECL|macro|STCK
-mdefine_line|#define STCK(x)&t;asm volatile (&quot;STCK %0&quot;:&quot;=m&quot; (x))
+mdefine_line|#define STCK(x)&t;asm volatile (&quot;STCK %0&quot; : &quot;=m&quot; (x) : : &quot;cc&quot; )
 DECL|typedef|debug_entry_t
 r_typedef
 r_struct

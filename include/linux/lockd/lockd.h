@@ -723,7 +723,7 @@ id|nlm_host
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 id|__inline__
 r_struct
 id|inode
@@ -743,7 +743,7 @@ id|file-&gt;f_file.f_dentry-&gt;d_inode
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Compare two host addresses (needs modifying for ipv6)&n; */
-r_extern
+r_static
 id|__inline__
 r_int
 DECL|function|nlm_cmp_addr
@@ -768,7 +768,7 @@ id|sin2-&gt;sin_addr.s_addr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Compare two NLM locks.&n; * When the second lock is of type F_UNLCK, this acts like a wildcard.&n; */
-r_extern
+r_static
 id|__inline__
 r_int
 DECL|function|nlm_compare_locks

@@ -147,7 +147,7 @@ mdefine_line|#define&t;fh_auth&t;&t;&t;fh_base.fh_new.fb_auth
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Conversion macros for the filehandle fields.&n; */
 DECL|function|kdev_t_to_u32
-r_extern
+r_static
 r_inline
 id|__u32
 id|kdev_t_to_u32
@@ -165,7 +165,7 @@ id|dev
 suffix:semicolon
 )brace
 DECL|function|u32_to_kdev_t
-r_extern
+r_static
 r_inline
 id|kdev_t
 id|u32_to_kdev_t
@@ -183,7 +183,7 @@ id|udev
 suffix:semicolon
 )brace
 DECL|function|ino_t_to_u32
-r_extern
+r_static
 r_inline
 id|__u32
 id|ino_t_to_u32
@@ -201,7 +201,7 @@ id|ino
 suffix:semicolon
 )brace
 DECL|function|u32_to_ino_t
-r_extern
+r_static
 r_inline
 id|ino_t
 id|u32_to_ino_t

@@ -232,6 +232,20 @@ c_func
 id|kernel_thread
 )paren
 suffix:semicolon
+DECL|variable|console_mode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|console_mode
+)paren
+suffix:semicolon
+DECL|variable|console_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|console_device
+)paren
+suffix:semicolon
 macro_line|#if CONFIG_IP_MULTICAST
 multiline_comment|/* Required for lcs gigibit ethernet multicast support */
 DECL|variable|arp_mc_map

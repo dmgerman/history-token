@@ -329,13 +329,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-DECL|variable|tty3270_major_string
-r_char
-id|tty3270_major_string
-(braket
-l_int|16
-)braket
-suffix:semicolon
 DECL|variable|tty3270_driver
 r_struct
 id|tty_driver
@@ -372,7 +365,7 @@ id|tty3270_termios_locked
 id|TUBMAXMINS
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_3270_CONSOLE
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
 DECL|variable|con3270_major
 r_int
 id|con3270_major
@@ -416,7 +409,7 @@ id|con3270_termios_locked
 l_int|1
 )braket
 suffix:semicolon
-macro_line|#endif /* CONFIG_3270_CONSOLE */
+macro_line|#endif /* CONFIG_TN3270_CONSOLE */
 DECL|variable|tty3270_proc_index
 r_int
 id|tty3270_proc_index
@@ -495,6 +488,12 @@ id|td-&gt;flags
 op_assign
 id|TTY_DRIVER_RESET_TERMIOS
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|td-&gt;flags
+op_or_assign
+id|TTY_DRIVER_NO_DEVFS
+suffix:semicolon
+macro_line|#endif
 id|td-&gt;refcount
 op_assign
 op_amp
@@ -630,16 +629,6 @@ id|tty3270_major
 op_assign
 id|IBM_TTY3270_MAJOR
 suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|tty3270_major_string
-comma
-l_string|&quot;%d&quot;
-comma
-id|tty3270_major
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -654,7 +643,14 @@ op_or
 id|S_IWUGO
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_3270_CONSOLE
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
+r_if
+c_cond
+(paren
+id|CONSOLE_IS_3270
+)paren
+(brace
 id|tty3270_con_driver
 op_assign
 op_star
@@ -758,7 +754,9 @@ op_or
 id|S_IWUGO
 suffix:semicolon
 )brace
-macro_line|#endif /* if CONFIG_3270_CONSOLE */
+)brace
+macro_line|#endif /* ifdef CONFIG_TN3270_CONSOLE */
+macro_line|#endif /* if LINUX_VERSION_CODE */
 r_return
 id|rc
 suffix:semicolon
@@ -794,10 +792,12 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_3270_CONSOLE
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
 r_if
 c_cond
 (paren
+id|CONSOLE_IS_3270
+op_logical_and
 id|con3270_major
 op_ne
 op_minus
@@ -1262,10 +1262,12 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_3270_CONSOLE
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
 r_if
 c_cond
 (paren
+id|CONSOLE_IS_3270
+op_logical_and
 id|tub3270_con_tubp
 op_eq
 id|tubp
@@ -1276,7 +1278,7 @@ c_func
 id|tubp
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_3270_CONSOLE */
+macro_line|#endif /* CONFIG_TN3270_CONSOLE */
 id|obcb.bc_buf
 op_assign
 (paren
@@ -1315,6 +1317,8 @@ id|obcb
 comma
 op_amp
 id|tubp-&gt;tty_bcb
+comma
+id|fromuser
 )paren
 suffix:semicolon
 id|tty3270_try_logging
@@ -2109,10 +2113,6 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
-r_char
-op_star
-id|majstr
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2161,23 +2161,16 @@ id|tubminors
 id|i
 )braket
 suffix:semicolon
-id|majstr
-op_assign
-id|tty3270_major_string
-suffix:semicolon
-macro_line|#ifdef CONFIG_3270_CONSOLE
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
 r_if
 c_cond
 (paren
+id|CONSOLE_IS_3270
+op_logical_and
 id|tubp
 op_eq
 id|tub3270_con_tubp
 )paren
-id|majstr
-op_assign
-l_string|&quot;CONSOLE&quot;
-suffix:semicolon
-macro_line|#endif /* CONFIG_3270_CONSOLE */
 id|len
 op_add_assign
 id|sprintf
@@ -2187,11 +2180,29 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;%.3x %s %d&bslash;n&quot;
+l_string|&quot;%.3x CONSOLE %d&bslash;n&quot;
 comma
 id|tubp-&gt;devno
 comma
-id|majstr
+id|i
+)paren
+suffix:semicolon
+r_else
+macro_line|#endif
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;%.3x %d %d&bslash;n&quot;
+comma
+id|tubp-&gt;devno
+comma
+id|tty3270_major
 comma
 id|i
 )paren
@@ -2529,10 +2540,13 @@ id|device
 )paren
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_3270_CONSOLE
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
 r_if
 c_cond
 (paren
+id|CONSOLE_IS_3270
+op_logical_and
 id|device
 op_eq
 id|S390_CONSOLE_DEV
@@ -2541,7 +2555,8 @@ id|tubp
 op_assign
 id|tub3270_con_tubp
 suffix:semicolon
-macro_line|#endif /* CONFIG_3270_CONSOLE */
+macro_line|#endif /* LINUX_VERSION_CODE */
+macro_line|#endif /* CONFIG_TN3270_CONSOLE */
 )brace
 r_if
 c_cond
@@ -3601,10 +3616,12 @@ id|TBS_MORE
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_3270_CONSOLE
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
 r_if
 c_cond
 (paren
+id|CONSOLE_IS_3270
+op_logical_and
 id|tub3270_con_tubp
 op_eq
 id|tubp
@@ -3615,7 +3632,7 @@ c_func
 id|tubp
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_3270_CONSOLE */
+macro_line|#endif /* CONFIG_TN3270_CONSOLE */
 r_if
 c_cond
 (paren
@@ -4549,13 +4566,10 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;Info for tub_t[%d] at %.8x:&bslash;n&quot;
+l_string|&quot;Info for tub_t[%d] at %p:&bslash;n&quot;
 comma
 id|minor
 comma
-(paren
-r_int
-)paren
 id|tubp
 )paren
 suffix:semicolon
@@ -4568,11 +4582,8 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;inattr is at %.8x&bslash;n&quot;
+l_string|&quot;inattr is at %p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 op_amp
 id|tubp-&gt;tty_inattr
 )paren
@@ -4604,15 +4615,12 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;    lnopen=%-2d     fsopen=%-2d   waitq=%.8x&bslash;n&quot;
+l_string|&quot;    lnopen=%-2d     fsopen=%-2d   waitq=%p&bslash;n&quot;
 comma
 id|tubp-&gt;lnopen
 comma
 id|tubp-&gt;fsopen
 comma
-(paren
-r_int
-)paren
 op_amp
 id|tubp-&gt;waitq
 )paren
@@ -4626,7 +4634,8 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;    dstat=%.2x      mode=%-2d     stat=%-2d     flags=%-4x&bslash;n&quot;
+l_string|&quot;    dstat=%.2x      mode=%-2d     &quot;
+l_string|&quot;stat=%-2d     flags=%-4x&bslash;n&quot;
 comma
 id|tubp-&gt;dstat
 comma
@@ -4647,7 +4656,8 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;    oucount=%-4d  ourd=%-5d  ouwr=%-5d  nextlogx=%-5d&bslash;n&quot;
+l_string|&quot;    oucount=%-4d  ourd=%-5d  ouwr=%-5d&quot;
+l_string|&quot;  nextlogx=%-5d&bslash;n&quot;
 comma
 id|tubp-&gt;tty_oucount
 comma
@@ -4668,11 +4678,8 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;    tty=%.8x&bslash;n&quot;
+l_string|&quot;    tty=%p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|tubp-&gt;tty
 )paren
 suffix:semicolon
@@ -4692,16 +4699,8 @@ id|len
 comma
 l_string|&quot;    write_wait=%.8x read_wait=%.8x&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
-op_amp
 id|tty-&gt;write_wait
 comma
-(paren
-r_int
-)paren
-op_amp
 id|tty-&gt;read_wait
 )paren
 suffix:semicolon
@@ -4727,7 +4726,8 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;    iflag=%.8x oflag=%.8x cflag=%.8x lflag=%.8x&bslash;n&quot;
+l_string|&quot;    iflag=%.8x oflag=%.8x &quot;
+l_string|&quot;cflag=%.8x lflag=%.8x&bslash;n&quot;
 comma
 id|mp-&gt;c_iflag
 comma

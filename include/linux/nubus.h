@@ -985,7 +985,7 @@ id|maxlen
 suffix:semicolon
 multiline_comment|/* We&squot;d like to get rid of this eventually.  Only daynaport.c uses it now. */
 DECL|function|nubus_slot_addr
-r_extern
+r_static
 r_inline
 r_void
 op_star

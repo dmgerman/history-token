@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/cris/mm/init.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000,2001  Axis Communications AB&n; *&n; *  Authors:  Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: init.c,v $&n; *  Revision 1.25  2001/06/13 00:02:23  bjornw&n; *  Use a separate variable to store the current pgd to avoid races in schedule&n; *&n; *  Revision 1.24  2001/05/15 00:52:20  hp&n; *  Only map segment 0xa as seg if CONFIG_JULIETTE&n; *&n; *  Revision 1.23  2001/04/04 14:35:40  bjornw&n; *  * Removed get_pte_slow and friends (2.4.3 change)&n; *  * Removed bad_pmd handling (2.4.3 change)&n; *&n; *  Revision 1.22  2001/04/04 13:38:04  matsfg&n; *  Moved ioremap to a separate function instead&n; *&n; *  Revision 1.21  2001/03/27 09:28:33  bjornw&n; *  ioremap used too early - lets try it in mem_init instead&n; *&n; *  Revision 1.20  2001/03/23 07:39:21  starvik&n; *  Corrected according to review remarks&n; *&n; *  Revision 1.19  2001/03/15 14:25:17  bjornw&n; *  More general shadow registers and ioremaped addresses for external I/O&n; *&n; *  Revision 1.18  2001/02/23 12:46:44  bjornw&n; *  * 0xc was not CSE1; 0x8 is, same as uncached flash, so we move the uncached&n; *    flash during CRIS_LOW_MAP from 0xe to 0x8 so both the flash and the I/O&n; *    is mapped straight over (for !CRIS_LOW_MAP the uncached flash is still 0xe)&n; *&n; *  Revision 1.17  2001/02/22 15:05:21  bjornw&n; *  Map 0x9 straight over during LOW_MAP to allow for memory mapped LEDs&n; *&n; *  Revision 1.16  2001/02/22 15:02:35  bjornw&n; *  Map 0xc straight over during LOW_MAP to allow for memory mapped I/O&n; *&n; *  Revision 1.15  2001/01/10 21:12:10  bjornw&n; *  loops_per_sec -&gt; loops_per_jiffy&n; *&n; *  Revision 1.14  2000/11/22 16:23:20  bjornw&n; *  Initialize totalhigh counters to 0 to make /proc/meminfo look nice.&n; *&n; *  Revision 1.13  2000/11/21 16:37:51  bjornw&n; *  Temporarily disable initmem freeing&n; *&n; *  Revision 1.12  2000/11/21 13:55:07  bjornw&n; *  Use CONFIG_CRIS_LOW_MAP for the low VM map instead of explicit CPU type&n; *&n; *  Revision 1.11  2000/10/06 12:38:22  bjornw&n; *  Cast empty_bad_page correctly (should really be of * type from the start..&n; *&n; *  Revision 1.10  2000/10/04 16:53:57  bjornw&n; *  Fix memory-map due to LX features&n; *&n; *  Revision 1.9  2000/09/13 15:47:49  bjornw&n; *  Wrong count in reserved-pages loop&n; *&n; *  Revision 1.8  2000/09/13 14:35:10  bjornw&n; *  2.4.0-test8 added a new arg to free_area_init_node&n; *&n; *  Revision 1.7  2000/08/17 15:35:55  bjornw&n; *  2.4.0-test6 removed MAP_NR and inserted virt_to_page&n; *&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/cris/mm/init.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000,2001  Axis Communications AB&n; *&n; *  Authors:  Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: init.c,v $&n; *  Revision 1.29  2001/07/25 16:09:50  bjornw&n; *  val-&gt;sharedram will stay 0&n; *&n; *  Revision 1.28  2001/06/28 16:30:17  bjornw&n; *  Oops. This needs to wait until 2.4.6 is merged&n; *&n; *  Revision 1.27  2001/06/28 14:04:07  bjornw&n; *  Fill in sharedram&n; *&n; *  Revision 1.26  2001/06/18 06:36:02  hp&n; *  Enable free_initmem of __init-type pages&n; *&n; *  Revision 1.25  2001/06/13 00:02:23  bjornw&n; *  Use a separate variable to store the current pgd to avoid races in schedule&n; *&n; *  Revision 1.24  2001/05/15 00:52:20  hp&n; *  Only map segment 0xa as seg if CONFIG_JULIETTE&n; *&n; *  Revision 1.23  2001/04/04 14:35:40  bjornw&n; *  * Removed get_pte_slow and friends (2.4.3 change)&n; *  * Removed bad_pmd handling (2.4.3 change)&n; *&n; *  Revision 1.22  2001/04/04 13:38:04  matsfg&n; *  Moved ioremap to a separate function instead&n; *&n; *  Revision 1.21  2001/03/27 09:28:33  bjornw&n; *  ioremap used too early - lets try it in mem_init instead&n; *&n; *  Revision 1.20  2001/03/23 07:39:21  starvik&n; *  Corrected according to review remarks&n; *&n; *  Revision 1.19  2001/03/15 14:25:17  bjornw&n; *  More general shadow registers and ioremaped addresses for external I/O&n; *&n; *  Revision 1.18  2001/02/23 12:46:44  bjornw&n; *  * 0xc was not CSE1; 0x8 is, same as uncached flash, so we move the uncached&n; *    flash during CRIS_LOW_MAP from 0xe to 0x8 so both the flash and the I/O&n; *    is mapped straight over (for !CRIS_LOW_MAP the uncached flash is still 0xe)&n; *&n; *  Revision 1.17  2001/02/22 15:05:21  bjornw&n; *  Map 0x9 straight over during LOW_MAP to allow for memory mapped LEDs&n; *&n; *  Revision 1.16  2001/02/22 15:02:35  bjornw&n; *  Map 0xc straight over during LOW_MAP to allow for memory mapped I/O&n; *&n; *  Revision 1.15  2001/01/10 21:12:10  bjornw&n; *  loops_per_sec -&gt; loops_per_jiffy&n; *&n; *  Revision 1.14  2000/11/22 16:23:20  bjornw&n; *  Initialize totalhigh counters to 0 to make /proc/meminfo look nice.&n; *&n; *  Revision 1.13  2000/11/21 16:37:51  bjornw&n; *  Temporarily disable initmem freeing&n; *&n; *  Revision 1.12  2000/11/21 13:55:07  bjornw&n; *  Use CONFIG_CRIS_LOW_MAP for the low VM map instead of explicit CPU type&n; *&n; *  Revision 1.11  2000/10/06 12:38:22  bjornw&n; *  Cast empty_bad_page correctly (should really be of * type from the start..&n; *&n; *  Revision 1.10  2000/10/04 16:53:57  bjornw&n; *  Fix memory-map due to LX features&n; *&n; *  Revision 1.9  2000/09/13 15:47:49  bjornw&n; *  Wrong count in reserved-pages loop&n; *&n; *  Revision 1.8  2000/09/13 14:35:10  bjornw&n; *  2.4.0-test8 added a new arg to free_area_init_node&n; *&n; *  Revision 1.7  2000/08/17 15:35:55  bjornw&n; *  2.4.0-test6 removed MAP_NR and inserted virt_to_page&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1712,8 +1712,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if 0
-multiline_comment|/* currently this is a bad idea since the cramfs image is catted onto&n;&t; * the vmlinux image, and the end of that image is not page-padded so&n;&t; * part of the cramfs image will be freed here&n;&t; */
 r_int
 r_int
 id|addr
@@ -1796,7 +1794,6 @@ op_rshift
 l_int|10
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_void
 DECL|function|si_meminfo
@@ -1822,12 +1819,7 @@ l_int|0
 suffix:semicolon
 id|val-&gt;sharedram
 op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|shmem_nrpages
-)paren
+l_int|0
 suffix:semicolon
 id|val-&gt;freeram
 op_assign

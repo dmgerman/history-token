@@ -335,8 +335,6 @@ DECL|macro|__NR_madvise
 mdefine_line|#define __NR_madvise            219
 DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64         220
-DECL|macro|__NR_fcntl64
-mdefine_line|#define __NR_fcntl64            221
 multiline_comment|/* user-visible error numbers are in the range -1 - -122: see &lt;asm-s390/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res)                          &bslash;&n;do {                                                         &bslash;&n;        if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;                errno = -(res);                              &bslash;&n;                res = -1;                                    &bslash;&n;        }                                                    &bslash;&n;        return (type) (res);                                 &bslash;&n;} while (0)

@@ -60,8 +60,6 @@ DECL|macro|__LC_KERNEL_STACK
 mdefine_line|#define __LC_KERNEL_STACK               0xC40
 DECL|macro|__LC_KERNEL_LEVEL
 mdefine_line|#define __LC_KERNEL_LEVEL               0xC44
-DECL|macro|__LC_IRQ_STAT
-mdefine_line|#define __LC_IRQ_STAT                   0xC48
 DECL|macro|__LC_CPUID
 mdefine_line|#define __LC_CPUID                      0xC60
 DECL|macro|__LC_CPUADDR
@@ -70,6 +68,8 @@ DECL|macro|__LC_IPLDEV
 mdefine_line|#define __LC_IPLDEV                     0xC7C
 DECL|macro|__LC_PANIC_MAGIC
 mdefine_line|#define __LC_PANIC_MAGIC                0xE00
+DECL|macro|__LC_PFAULT_INTPARM
+mdefine_line|#define __LC_PFAULT_INTPARM             0x080
 multiline_comment|/* interrupt handler start with all io, external and mcck interrupt disabled */
 DECL|macro|_RESTART_PSW_MASK
 mdefine_line|#define _RESTART_PSW_MASK    0x00080000
@@ -462,39 +462,13 @@ id|kernel_level
 suffix:semicolon
 multiline_comment|/* 0xc44 */
 multiline_comment|/* entry.S sensitive area start */
-multiline_comment|/* Next 6 words are the s390 equivalent of irq_stat */
-DECL|member|__softirq_active
-id|__u32
-id|__softirq_active
-suffix:semicolon
-multiline_comment|/* 0xc48 */
-DECL|member|__softirq_mask
-id|__u32
-id|__softirq_mask
-suffix:semicolon
-multiline_comment|/* 0xc4c */
-DECL|member|__local_irq_count
-id|__u32
-id|__local_irq_count
-suffix:semicolon
-multiline_comment|/* 0xc50 */
-DECL|member|__local_bh_count
-id|__u32
-id|__local_bh_count
-suffix:semicolon
-multiline_comment|/* 0xc54 */
-DECL|member|__syscall_count
-id|__u32
-id|__syscall_count
-suffix:semicolon
-multiline_comment|/* 0xc58 */
 DECL|member|pad10
 id|__u8
 id|pad10
 (braket
 l_int|0xc60
 op_minus
-l_int|0xc5c
+l_int|0xc48
 )braket
 suffix:semicolon
 multiline_comment|/* 0xc5c */

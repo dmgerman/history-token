@@ -885,7 +885,7 @@ multiline_comment|/* End of information exported to user level */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 DECL|function|rtattr_strcmp
-r_extern
+r_static
 id|__inline__
 r_int
 id|rtattr_strcmp

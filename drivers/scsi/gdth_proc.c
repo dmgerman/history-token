@@ -253,6 +253,16 @@ comma
 id|FALSE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|scp
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|scp-&gt;cmd_len
 op_assign
 l_int|12

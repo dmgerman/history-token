@@ -909,6 +909,8 @@ op_amp
 id|dummy
 )paren
 suffix:colon
+l_string|&quot;cc&quot;
+comma
 l_string|&quot;2&quot;
 comma
 l_string|&quot;3&quot;

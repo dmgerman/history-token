@@ -21,7 +21,7 @@ DECL|macro|pgd_ERROR
 mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pgd_val(e))
 multiline_comment|/*&n; * The &quot;pgd_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; */
 DECL|function|pgd_none
-r_extern
+r_static
 r_inline
 r_int
 id|pgd_none
@@ -36,7 +36,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pgd_bad
-r_extern
+r_static
 r_inline
 r_int
 id|pgd_bad
@@ -51,7 +51,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pgd_present
-r_extern
+r_static
 r_inline
 r_int
 id|pgd_present
@@ -78,7 +78,7 @@ mdefine_line|#define set_pgd(pgdptr, pgdval) (*(pgdptr) = pgdval)
 DECL|macro|pgd_page
 mdefine_line|#define pgd_page(pgd) &bslash;&n;((unsigned long) __va(pgd_val(pgd) &amp; PAGE_MASK))
 DECL|function|pmd_offset
-r_extern
+r_static
 r_inline
 id|pmd_t
 op_star

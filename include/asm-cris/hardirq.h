@@ -7,15 +7,10 @@ multiline_comment|/* entry.S is sensitive to the offsets of these fields */
 r_typedef
 r_struct
 (brace
-DECL|member|__softirq_active
+DECL|member|__softirq_pending
 r_int
 r_int
-id|__softirq_active
-suffix:semicolon
-DECL|member|__softirq_mask
-r_int
-r_int
-id|__softirq_mask
+id|__softirq_pending
 suffix:semicolon
 DECL|member|__local_irq_count
 r_int
@@ -32,6 +27,13 @@ r_int
 r_int
 id|__syscall_count
 suffix:semicolon
+DECL|member|__ksoftirqd_task
+r_struct
+id|task_struct
+op_star
+id|__ksoftirqd_task
+suffix:semicolon
+multiline_comment|/* waitqueue is too large */
 DECL|typedef|irq_cpustat_t
 )brace
 id|____cacheline_aligned

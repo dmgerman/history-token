@@ -219,10 +219,6 @@ suffix:semicolon
 r_int
 r_int
 id|lost_ticks
-op_assign
-id|jiffies
-op_minus
-id|wall_jiffies
 suffix:semicolon
 id|read_lock_irqsave
 c_func
@@ -232,6 +228,12 @@ id|xtime_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+id|lost_ticks
+op_assign
+id|jiffies
+op_minus
+id|wall_jiffies
 suffix:semicolon
 id|usec
 op_assign

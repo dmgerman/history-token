@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: parport.c,v 1.5 2001/05/09 12:38:42 johana Exp $&n; * &n; * Elinux parallel port driver&n; * NOTE!&n; *   Since par0 shares DMA with ser2 and par 1 shares DMA with ser3&n; *   this should be handled if both are enabled at the same time.&n; *   THIS IS NOT HANDLED YET!&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; * &n; * Author: Fredrik Hugosson&n; *&n; */
+multiline_comment|/* $Id: parport.c,v 1.7 2001/06/25 16:17:30 jonashg Exp $&n; * &n; * Elinux parallel port driver&n; * NOTE!&n; *   Since par0 shares DMA with ser2 and par 1 shares DMA with ser3&n; *   this should be handled if both are enabled at the same time.&n; *   THIS IS NOT HANDLED YET!&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; * &n; * Author: Fredrik Hugosson&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
@@ -43,7 +43,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * Etrax100 DMAchannels:&n; * Par0 out : DMA2&n; * Par0 in  : DMA3&n; * Par1 out : DMA4&n; * Par1 in  : DMA5&n; * NOTE! par0 is hared with ser2 and par1 is shared with ser3 regarding&n; *       DMA and DMA irq&n; */
+multiline_comment|/*&n; * Etrax100 DMAchannels:&n; * Par0 out : DMA2&n; * Par0 in  : DMA3&n; * Par1 out : DMA4&n; * Par1 in  : DMA5&n; * NOTE! par0 is shared with ser2 and par1 is shared with ser3 regarding&n; *       DMA and DMA irq&n; */
 singleline_comment|//#define CONFIG_PAR0_INT 1
 singleline_comment|//#define CONFIG_PAR1_INT 1
 DECL|macro|SETF
@@ -137,21 +137,6 @@ op_star
 id|icmdadr
 suffix:semicolon
 multiline_comment|/* adr to R_DMA_CHx_CMD, input */
-DECL|member|istatusadr
-r_const
-r_volatile
-id|u8
-op_star
-id|istatusadr
-suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_STATUS, input */
-DECL|member|ihwswadr
-r_volatile
-id|u32
-op_star
-id|ihwswadr
-suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_HWSW, input */
 multiline_comment|/* Non DMA interrupt stuff */
 DECL|member|int_irq
 r_int
@@ -218,13 +203,6 @@ r_int
 id|portnr
 suffix:semicolon
 multiline_comment|/* ----- end of fields initialised in port_table[] below ----- */
-singleline_comment|//  struct etrax_dma_descr tr_descr;
-singleline_comment|//  unsigned char tr_buf[LP_BUFFER_SIZE];
-singleline_comment|//  const unsigned char *tr_buf_curr; /* current char sent */
-singleline_comment|//  const unsigned char *tr_buf_last; /* last char in buf */
-singleline_comment|//  int fifo_magic; /* fifo amount - bytes left in dma buffer */
-singleline_comment|//  unsigned char         fifo_didmagic; /* a fifo eop has been forced */
-singleline_comment|//  volatile int          tr_running; /* 1 if output is running */
 DECL|member|port
 r_struct
 id|parport
@@ -293,10 +271,6 @@ comma
 id|R_DMA_CH3_FIRST
 comma
 id|R_DMA_CH3_CMD
-comma
-id|R_DMA_CH3_STATUS
-comma
-id|R_DMA_CH3_HWSW
 comma
 multiline_comment|/* Non DMA interrupt stuff */
 id|IO_BITNR
@@ -390,10 +364,6 @@ comma
 id|R_DMA_CH5_FIRST
 comma
 id|R_DMA_CH5_CMD
-comma
-id|R_DMA_CH5_STATUS
-comma
-id|R_DMA_CH5_HWSW
 comma
 multiline_comment|/* Non DMA interrupt stuff */
 id|IO_BITNR
@@ -1427,6 +1397,7 @@ suffix:semicolon
 multiline_comment|/* ----------- Initialisation code --------------------------------- */
 r_static
 r_void
+id|__init
 DECL|function|parport_etrax_show_parallel_version
 id|parport_etrax_show_parallel_version
 c_func
@@ -1457,6 +1428,7 @@ mdefine_line|#define PAR1_USE_DMA 0
 macro_line|#endif
 r_static
 r_void
+id|__init
 DECL|function|parport_etrax_init_registers
 id|parport_etrax_init_registers
 c_func
@@ -1472,9 +1444,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* The different times below will be (value*160 + 20) ns,    */
-multiline_comment|/* i.e. 20ns-4.98us. E.g. if setup is set to 00110 (0x6),    */
-multiline_comment|/* the setup time will be (6*160+20) = 980ns.                */
 r_for
 c_loop
 (paren

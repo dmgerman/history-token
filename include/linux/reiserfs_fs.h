@@ -61,7 +61,7 @@ mdefine_line|#define REISERFS_SUPER_MAGIC_STRING &quot;ReIsErFs&quot;
 DECL|macro|REISER2FS_SUPER_MAGIC_STRING
 mdefine_line|#define REISER2FS_SUPER_MAGIC_STRING &quot;ReIsEr2Fs&quot;
 DECL|function|is_reiserfs_magic_string
-r_extern
+r_static
 r_inline
 r_int
 id|is_reiserfs_magic_string
@@ -487,7 +487,7 @@ singleline_comment|//
 singleline_comment|// here are conversion routines
 singleline_comment|//
 DECL|function|uniqueness2type
-r_extern
+r_static
 r_inline
 r_int
 id|uniqueness2type
@@ -533,7 +533,7 @@ id|TYPE_ANY
 suffix:semicolon
 )brace
 DECL|function|type2uniqueness
-r_extern
+r_static
 r_inline
 id|__u32
 id|type2uniqueness
@@ -584,7 +584,7 @@ singleline_comment|// there is no way to get version of object from key, so, pro
 singleline_comment|// version to these defines
 singleline_comment|//
 DECL|function|le_key_k_offset
-r_extern
+r_static
 r_inline
 id|loff_t
 id|le_key_k_offset
@@ -615,7 +615,7 @@ id|key-&gt;u.k_offset_v2.k_offset
 suffix:semicolon
 )brace
 DECL|function|le_ih_k_offset
-r_extern
+r_static
 r_inline
 id|loff_t
 id|le_ih_k_offset
@@ -642,7 +642,7 @@ id|ih-&gt;ih_key
 suffix:semicolon
 )brace
 DECL|function|le_key_k_type
-r_extern
+r_static
 r_inline
 id|loff_t
 id|le_key_k_type
@@ -676,7 +676,7 @@ id|key-&gt;u.k_offset_v2.k_type
 suffix:semicolon
 )brace
 DECL|function|le_ih_k_type
-r_extern
+r_static
 r_inline
 id|loff_t
 id|le_ih_k_type
@@ -703,7 +703,7 @@ id|ih-&gt;ih_key
 suffix:semicolon
 )brace
 DECL|function|set_le_key_k_offset
-r_extern
+r_static
 r_inline
 r_void
 id|set_le_key_k_offset
@@ -744,7 +744,7 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|set_le_ih_k_offset
-r_extern
+r_static
 r_inline
 r_void
 id|set_le_ih_k_offset
@@ -775,7 +775,7 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|set_le_key_k_type
-r_extern
+r_static
 r_inline
 r_void
 id|set_le_key_k_type
@@ -819,7 +819,7 @@ id|type
 suffix:semicolon
 )brace
 DECL|function|set_le_ih_k_type
-r_extern
+r_static
 r_inline
 r_void
 id|set_le_ih_k_type
@@ -872,7 +872,7 @@ singleline_comment|//
 singleline_comment|// key is pointer to cpu key, result is cpu
 singleline_comment|//
 DECL|function|cpu_key_k_offset
-r_extern
+r_static
 r_inline
 id|loff_t
 id|cpu_key_k_offset
@@ -897,7 +897,7 @@ id|key-&gt;on_disk_key.u.k_offset_v2.k_offset
 suffix:semicolon
 )brace
 DECL|function|cpu_key_k_type
-r_extern
+r_static
 r_inline
 id|loff_t
 id|cpu_key_k_type
@@ -925,7 +925,7 @@ id|key-&gt;on_disk_key.u.k_offset_v2.k_type
 suffix:semicolon
 )brace
 DECL|function|set_cpu_key_k_offset
-r_extern
+r_static
 r_inline
 r_void
 id|set_cpu_key_k_offset
@@ -960,7 +960,7 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|set_cpu_key_k_type
-r_extern
+r_static
 r_inline
 r_void
 id|set_cpu_key_k_type
@@ -998,7 +998,7 @@ id|type
 suffix:semicolon
 )brace
 DECL|function|cpu_key_k_offset_dec
-r_extern
+r_static
 r_inline
 r_void
 id|cpu_key_k_offset_dec
@@ -1415,7 +1415,7 @@ DECL|macro|de_hidden
 mdefine_line|#define de_hidden(deh)&t;    &t;    !test_bit_unaligned (DEH_Visible, &amp;((deh)-&gt;deh_state))
 multiline_comment|/* compose directory item containing &quot;.&quot; and &quot;..&quot; entries (entries are&n;   not aligned to 4 byte boundary) */
 DECL|function|make_empty_dir_item_v1
-r_extern
+r_static
 r_inline
 r_void
 id|make_empty_dir_item_v1
@@ -1655,7 +1655,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* compose directory item containing &quot;.&quot; and &quot;..&quot; entries */
 DECL|function|make_empty_dir_item
-r_extern
+r_static
 r_inline
 r_void
 id|make_empty_dir_item
@@ -1908,7 +1908,7 @@ mdefine_line|#define B_I_DEH(bh,ih) ((struct reiserfs_de_head *)(B_I_PITEM(bh,ih
 multiline_comment|/* length of the directory entry in directory item. This define&n;   calculates length of i-th directory entry using directory entry&n;   locations from dir entry head. When it calculates length of 0-th&n;   directory entry, it uses length of whole item in place of entry&n;   location of the non-existent following entry in the calculation.&n;   See picture above.*/
 multiline_comment|/*&n;#define I_DEH_N_ENTRY_LENGTH(ih,deh,i) &bslash;&n;((i) ? (((deh)-1)-&gt;deh_location - (deh)-&gt;deh_location) : ((ih)-&gt;ih_item_len) - (deh)-&gt;deh_location)&n;*/
 DECL|function|entry_length
-r_extern
+r_static
 r_inline
 r_int
 id|entry_length
@@ -2246,7 +2246,7 @@ singleline_comment|// reiserfs version 2 has max offset 60 bits. Version 1 - 32 
 DECL|macro|U32_MAX
 mdefine_line|#define U32_MAX (~(__u32)0)
 DECL|function|max_reiserfs_offset
-r_extern
+r_static
 r_inline
 id|loff_t
 id|max_reiserfs_offset
@@ -4169,7 +4169,7 @@ singleline_comment|//
 singleline_comment|// get key version from on disk key - kludge
 singleline_comment|//
 DECL|function|le_key_version
-r_extern
+r_static
 r_inline
 r_int
 id|le_key_version
@@ -4213,7 +4213,7 @@ id|ITEM_VERSION_2
 suffix:semicolon
 )brace
 DECL|function|copy_key
-r_extern
+r_static
 r_inline
 r_void
 id|copy_key
@@ -6205,7 +6205,7 @@ singleline_comment|// this was totally copied from from linux&squot;s
 singleline_comment|// find_first_zero_bit and changed a bit
 singleline_comment|//
 macro_line|#ifdef __i386__
-r_extern
+r_static
 id|__inline__
 r_int
 DECL|function|find_first_nonzero_bit
@@ -6302,7 +6302,7 @@ suffix:semicolon
 )brace
 macro_line|#else /* __i386__ */
 DECL|function|find_next_nonzero_bit
-r_extern
+r_static
 id|__inline__
 r_int
 id|find_next_nonzero_bit
@@ -6494,7 +6494,7 @@ multiline_comment|/* sometimes reiserfs_truncate may require to allocate few new
 DECL|macro|SPARE_SPACE
 mdefine_line|#define SPARE_SPACE 500
 DECL|function|reiserfs_get_journal_block
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -6522,7 +6522,7 @@ id|s_journal_block
 suffix:semicolon
 )brace
 DECL|function|reiserfs_get_journal_orig_size
-r_extern
+r_static
 r_inline
 r_int
 r_int

@@ -219,7 +219,7 @@ op_star
 suffix:semicolon
 macro_line|#else
 DECL|function|svc_proc_unregister
-r_extern
+r_static
 r_inline
 r_void
 id|svc_proc_unregister
@@ -233,7 +233,7 @@ id|p
 (brace
 )brace
 DECL|function|svc_proc_register
-r_extern
+r_static
 r_inline
 r_struct
 id|proc_dir_entry
@@ -252,7 +252,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|svc_proc_read
-r_extern
+r_static
 r_inline
 r_int
 id|svc_proc_read

@@ -296,7 +296,7 @@ id|from
 )paren
 suffix:semicolon
 DECL|function|pm_access
-r_extern
+r_static
 r_inline
 r_void
 id|pm_access
@@ -310,7 +310,7 @@ id|dev
 (brace
 )brace
 DECL|function|pm_dev_idle
-r_extern
+r_static
 r_inline
 r_void
 id|pm_dev_idle
@@ -327,7 +327,7 @@ macro_line|#else /* CONFIG_PM */
 DECL|macro|PM_IS_ACTIVE
 mdefine_line|#define PM_IS_ACTIVE() 0
 DECL|function|pm_register
-r_extern
+r_static
 r_inline
 r_struct
 id|pm_dev
@@ -351,7 +351,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pm_unregister
-r_extern
+r_static
 r_inline
 r_void
 id|pm_unregister
@@ -365,7 +365,7 @@ id|dev
 (brace
 )brace
 DECL|function|pm_unregister_all
-r_extern
+r_static
 r_inline
 r_void
 id|pm_unregister_all
@@ -377,7 +377,7 @@ id|callback
 (brace
 )brace
 DECL|function|pm_send
-r_extern
+r_static
 r_inline
 r_int
 id|pm_send
@@ -401,7 +401,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pm_send_all
-r_extern
+r_static
 r_inline
 r_int
 id|pm_send_all
@@ -420,7 +420,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pm_find
-r_extern
+r_static
 r_inline
 r_struct
 id|pm_dev
@@ -442,7 +442,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pm_access
-r_extern
+r_static
 r_inline
 r_void
 id|pm_access
@@ -456,7 +456,7 @@ id|dev
 (brace
 )brace
 DECL|function|pm_dev_idle
-r_extern
+r_static
 r_inline
 r_void
 id|pm_dev_idle

@@ -31,6 +31,33 @@ DECL|macro|MACHINE_IS_P390
 mdefine_line|#define MACHINE_IS_P390  (machine_flags &amp; 4)
 DECL|macro|MACHINE_HAS_MVPG
 mdefine_line|#define MACHINE_HAS_MVPG (machine_flags &amp; 16)
+DECL|macro|MACHINE_HAS_HWC
+mdefine_line|#define MACHINE_HAS_HWC  (!MACHINE_IS_P390)
+multiline_comment|/*&n; * Console mode. Override with conmode=&n; */
+r_extern
+r_int
+r_int
+id|console_mode
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|console_device
+suffix:semicolon
+DECL|macro|CONSOLE_IS_UNDEFINED
+mdefine_line|#define CONSOLE_IS_UNDEFINED&t;(console_mode == 0)
+DECL|macro|CONSOLE_IS_HWC
+mdefine_line|#define CONSOLE_IS_HWC&t;&t;(console_mode == 1)
+DECL|macro|CONSOLE_IS_3215
+mdefine_line|#define CONSOLE_IS_3215&t;&t;(console_mode == 2)
+DECL|macro|CONSOLE_IS_3270
+mdefine_line|#define CONSOLE_IS_3270&t;&t;(console_mode == 3)
+DECL|macro|SET_CONSOLE_HWC
+mdefine_line|#define SET_CONSOLE_HWC&t;&t;do { console_mode = 1; } while (0)
+DECL|macro|SET_CONSOLE_3215
+mdefine_line|#define SET_CONSOLE_3215&t;do { console_mode = 2; } while (0)
+DECL|macro|SET_CONSOLE_3270
+mdefine_line|#define SET_CONSOLE_3270&t;do { console_mode = 3; } while (0)
 macro_line|#else 
 DECL|macro|IPL_DEVICE
 mdefine_line|#define IPL_DEVICE        0x10400

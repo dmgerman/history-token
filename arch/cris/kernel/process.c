@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: process.c,v 1.14 2001/05/29 11:27:59 markusl Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: process.c,v $&n; *  Revision 1.14  2001/05/29 11:27:59  markusl&n; *  Fixed so that hard_reset_now will do reset even if watchdog wasn&squot;t enabled&n; *&n; *  Revision 1.13  2001/03/20 19:44:06  bjornw&n; *  Use the 7th syscall argument for regs instead of current_regs&n; *&n; */
+multiline_comment|/* $Id: process.c,v 1.16 2001/06/21 02:00:40 hp Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: process.c,v $&n; *  Revision 1.16  2001/06/21 02:00:40  hp&n; *  &t;* entry.S: Include asm/unistd.h.&n; *  &t;(_sys_call_table): Use section .rodata, not .data.&n; *  &t;(_kernel_thread): Move from...&n; *  &t;* process.c: ... here.&n; *  &t;* entryoffsets.c (VAL): Break out from...&n; *  &t;(OF): Use VAL.&n; *  &t;(LCLONE_VM): New asmified value from CLONE_VM.&n; *&n; *  Revision 1.15  2001/06/20 16:31:57  hp&n; *  Add comments to describe empty functions according to review.&n; *&n; *  Revision 1.14  2001/05/29 11:27:59  markusl&n; *  Fixed so that hard_reset_now will do reset even if watchdog wasn&squot;t enabled&n; *&n; *  Revision 1.13  2001/03/20 19:44:06  bjornw&n; *  Use the 7th syscall argument for regs instead of current_regs&n; *&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -91,6 +91,7 @@ id|init_task_union.task
 )paren
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * The hlt_counter, disable_hlt and enable_hlt is just here as a hook if&n; * there would ever be a halt sequence (for power save when idle) with&n; * some largish delay when halting or resuming *and* a driver that can&squot;t&n; * afford that delay.  The hlt_counter would then be checked before&n; * executing the halt sequence, and the driver marks the unhaltable&n; * region by enable_hlt/disable_hlt.&n; */
 DECL|variable|hlt_counter
 r_static
 r_int
@@ -219,7 +220,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* can&squot;t do much here... */
+multiline_comment|/*&n; * Similar to machine_power_off, but don&squot;t shut off power.  Add code&n; * here to freeze the system for e.g. post-mortem debug purpose when&n; * possible.  This halt has nothing to do with the idle halt.&n; */
 DECL|function|machine_halt
 r_void
 id|machine_halt
@@ -229,6 +230,7 @@ r_void
 )paren
 (brace
 )brace
+multiline_comment|/* If or when software power-off is implemented, add code here.  */
 DECL|function|machine_power_off
 r_void
 id|machine_power_off
@@ -238,111 +240,7 @@ r_void
 )paren
 (brace
 )brace
-multiline_comment|/*&n; * This is the mechanism for creating a new kernel thread.&n; *&n; * NOTE! Only a kernel-only process(ie the swapper or direct descendants&n; * who haven&squot;t done an &quot;execve()&quot;) should use this: it will work within&n; * a system call from a &quot;real&quot; process, but the process memory space will&n; * not be free&squot;d until both the parent and the child have exited.&n; */
-DECL|function|kernel_thread
-r_int
-id|kernel_thread
-c_func
-(paren
-r_int
-(paren
-op_star
-id|fn
-)paren
-(paren
-r_void
-op_star
-)paren
-comma
-r_void
-op_star
-id|arg
-comma
-r_int
-r_int
-id|flags
-)paren
-(brace
-r_register
-r_int
-id|__a
-id|__asm__
-(paren
-l_string|&quot;r10&quot;
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;movu.w %1,r9&bslash;n&bslash;t&quot;
-multiline_comment|/* r9 contains syscall number, to sys_clone */
-l_string|&quot;clear.d r10&bslash;n&bslash;t&quot;
-multiline_comment|/* r10 is argument 1 to clone */
-l_string|&quot;move.d %2,r11&bslash;n&bslash;t&quot;
-multiline_comment|/* r11 is argument 2 to clone, the flags */
-l_string|&quot;break 13&bslash;n&bslash;t&quot;
-multiline_comment|/* call sys_clone, this will fork */
-l_string|&quot;test.d r10&bslash;n&bslash;t&quot;
-multiline_comment|/* parent or child? child returns 0 here. */
-l_string|&quot;bne 1f&bslash;n&bslash;t&quot;
-multiline_comment|/* jump if parent */
-l_string|&quot;nop&bslash;n&bslash;t&quot;
-multiline_comment|/* delay slot */
-l_string|&quot;move.d %4,r10&bslash;n&bslash;t&quot;
-multiline_comment|/* set argument to function to call */
-l_string|&quot;jsr %5&bslash;n&bslash;t&quot;
-multiline_comment|/* call specified function */
-l_string|&quot;movu.w %3,r9&bslash;n&bslash;t&quot;
-multiline_comment|/* r9 is sys_exit syscall number */
-l_string|&quot;moveq -1,r10&bslash;n&bslash;t&quot;
-multiline_comment|/* Give a really bad exit-value */
-l_string|&quot;break 13&bslash;n&bslash;t&quot;
-multiline_comment|/* call sys_exit, killing the child */
-l_string|&quot;1:&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|__a
-)paren
-suffix:colon
-l_string|&quot;g&quot;
-(paren
-id|__NR_clone
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|flags
-op_or
-id|CLONE_VM
-)paren
-comma
-l_string|&quot;g&quot;
-(paren
-id|__NR_exit
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|arg
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|fn
-)paren
-suffix:colon
-l_string|&quot;r10&quot;
-comma
-l_string|&quot;r11&quot;
-comma
-l_string|&quot;r9&quot;
-)paren
-suffix:semicolon
-r_return
-id|__a
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * When a process does an &quot;exec&quot;, machine state like FPU and debug&n; * registers need to be reset.  This is a hook function for that.&n; * Currently we don&squot;t have any such state to reset, so this is empty.&n; */
 DECL|function|flush_thread
 r_void
 id|flush_thread

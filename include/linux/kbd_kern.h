@@ -201,7 +201,7 @@ id|led
 )paren
 suffix:semicolon
 DECL|function|show_console
-r_extern
+r_static
 r_inline
 r_void
 id|show_console
@@ -223,7 +223,7 @@ id|console_tasklet
 suffix:semicolon
 )brace
 DECL|function|set_console
-r_extern
+r_static
 r_inline
 r_void
 id|set_console
@@ -246,7 +246,7 @@ id|console_tasklet
 suffix:semicolon
 )brace
 DECL|function|set_leds
-r_extern
+r_static
 r_inline
 r_void
 id|set_leds
@@ -264,7 +264,7 @@ id|keyboard_tasklet
 suffix:semicolon
 )brace
 DECL|function|vc_kbd_mode
-r_extern
+r_static
 r_inline
 r_int
 id|vc_kbd_mode
@@ -292,7 +292,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|vc_kbd_led
-r_extern
+r_static
 r_inline
 r_int
 id|vc_kbd_led
@@ -320,7 +320,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|set_vc_kbd_mode
-r_extern
+r_static
 r_inline
 r_void
 id|set_vc_kbd_mode
@@ -343,7 +343,7 @@ id|flag
 suffix:semicolon
 )brace
 DECL|function|set_vc_kbd_led
-r_extern
+r_static
 r_inline
 r_void
 id|set_vc_kbd_led
@@ -366,7 +366,7 @@ id|flag
 suffix:semicolon
 )brace
 DECL|function|clr_vc_kbd_mode
-r_extern
+r_static
 r_inline
 r_void
 id|clr_vc_kbd_mode
@@ -392,7 +392,7 @@ id|flag
 suffix:semicolon
 )brace
 DECL|function|clr_vc_kbd_led
-r_extern
+r_static
 r_inline
 r_void
 id|clr_vc_kbd_led
@@ -418,7 +418,7 @@ id|flag
 suffix:semicolon
 )brace
 DECL|function|chg_vc_kbd_lock
-r_extern
+r_static
 r_inline
 r_void
 id|chg_vc_kbd_lock
@@ -441,7 +441,7 @@ id|flag
 suffix:semicolon
 )brace
 DECL|function|chg_vc_kbd_slock
-r_extern
+r_static
 r_inline
 r_void
 id|chg_vc_kbd_slock
@@ -464,7 +464,7 @@ id|flag
 suffix:semicolon
 )brace
 DECL|function|chg_vc_kbd_mode
-r_extern
+r_static
 r_inline
 r_void
 id|chg_vc_kbd_mode
@@ -487,7 +487,7 @@ id|flag
 suffix:semicolon
 )brace
 DECL|function|chg_vc_kbd_led
-r_extern
+r_static
 r_inline
 r_void
 id|chg_vc_kbd_led
@@ -565,7 +565,7 @@ id|task_queue
 id|con_task_queue
 suffix:semicolon
 DECL|function|con_schedule_flip
-r_extern
+r_static
 r_inline
 r_void
 id|con_schedule_flip

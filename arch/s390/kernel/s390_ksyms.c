@@ -150,6 +150,13 @@ c_func
 id|strrchr
 )paren
 suffix:semicolon
+DECL|variable|strstr
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|strstr
+)paren
+suffix:semicolon
 DECL|variable|strtok
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -191,6 +198,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|csum_fold
+)paren
+suffix:semicolon
+DECL|variable|console_mode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|console_mode
+)paren
+suffix:semicolon
+DECL|variable|console_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|console_device
 )paren
 suffix:semicolon
 macro_line|#if CONFIG_IP_MULTICAST

@@ -413,7 +413,7 @@ mdefine_line|#define sigev_notify_attributes&t;_sigev_un._sigev_thread._attribut
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/string.h&gt;
 DECL|function|copy_siginfo
-r_extern
+r_static
 r_inline
 r_void
 id|copy_siginfo

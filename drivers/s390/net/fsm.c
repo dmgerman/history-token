@@ -1,6 +1,8 @@
-multiline_comment|/**&n; * $Id: fsm.c,v 1.1 2000/11/30 11:21:08 bird Exp $&n; *&n; * A generic FSM based on fsm used in isdn4linux&n; *&n; * $Log: fsm.c,v $&n; * Revision 1.1  2000/11/30 11:21:08  bird&n; * Support for new ctc driver&n; *&n; * Revision 1.2  2000/11/10 17:25:11  felfert&n; * Changes for kernel 2.4&n; *&n; * Revision 1.1  2000/11/03 16:58:45  felfert&n; * Initial import&n; *&n; *&n; */
+multiline_comment|/**&n; * $Id: fsm.c,v 1.3 2001/06/18 16:49:19 felfert Exp $&n; *&n; * A generic FSM based on fsm used in isdn4linux&n; *&n; */
 macro_line|#include &quot;fsm.h&quot;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 id|fsm_instance
 op_star
 DECL|function|init_fsm
@@ -1032,4 +1034,69 @@ id|this-&gt;tl
 )paren
 suffix:semicolon
 )brace
+DECL|variable|init_fsm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_fsm
+)paren
+suffix:semicolon
+DECL|variable|kfree_fsm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kfree_fsm
+)paren
+suffix:semicolon
+DECL|variable|fsm_settimer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fsm_settimer
+)paren
+suffix:semicolon
+DECL|variable|fsm_deltimer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fsm_deltimer
+)paren
+suffix:semicolon
+DECL|variable|fsm_addtimer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fsm_addtimer
+)paren
+suffix:semicolon
+DECL|variable|fsm_modtimer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fsm_modtimer
+)paren
+suffix:semicolon
+DECL|variable|fsm_getstate_str
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fsm_getstate_str
+)paren
+suffix:semicolon
+macro_line|#if FSM_DEBUG_HISTORY
+DECL|variable|fsm_print_history
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fsm_print_history
+)paren
+suffix:semicolon
+DECL|variable|fsm_record_history
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fsm_record_history
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

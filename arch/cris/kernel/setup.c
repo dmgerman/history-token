@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: setup.c,v 1.16 2001/05/15 01:23:13 hp Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
+multiline_comment|/* $Id: setup.c,v 1.18 2001/06/28 04:47:16 hp Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of initialization&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -322,7 +322,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* we dont use a command line yet, so just let it be an empty string &n;&t;   to start with */
+multiline_comment|/* We dont use a command line yet, so just re-initialize it without&n;&t;   saving anything that might be there.  */
 op_star
 id|cmdline_p
 op_assign
@@ -729,7 +729,7 @@ op_plus
 l_int|500
 )paren
 op_div
-l_int|100000
+l_int|500000
 comma
 (paren
 (paren
@@ -740,7 +740,7 @@ op_plus
 l_int|500
 )paren
 op_div
-l_int|1000
+l_int|5000
 )paren
 op_mod
 l_int|100

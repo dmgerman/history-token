@@ -688,7 +688,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; *&t;Messenger inlines&n; */
 DECL|function|I2O_POST_READ32
-r_extern
+r_static
 r_inline
 id|u32
 id|I2O_POST_READ32
@@ -706,7 +706,7 @@ id|c-&gt;post_port
 suffix:semicolon
 )brace
 DECL|function|I2O_POST_WRITE32
-r_extern
+r_static
 r_inline
 r_void
 id|I2O_POST_WRITE32
@@ -728,7 +728,7 @@ id|Val
 suffix:semicolon
 )brace
 DECL|function|I2O_REPLY_READ32
-r_extern
+r_static
 r_inline
 id|u32
 id|I2O_REPLY_READ32
@@ -746,7 +746,7 @@ id|c-&gt;reply_port
 suffix:semicolon
 )brace
 DECL|function|I2O_REPLY_WRITE32
-r_extern
+r_static
 r_inline
 r_void
 id|I2O_REPLY_WRITE32
@@ -768,7 +768,7 @@ id|Val
 suffix:semicolon
 )brace
 DECL|function|I2O_IRQ_READ32
-r_extern
+r_static
 r_inline
 id|u32
 id|I2O_IRQ_READ32
@@ -786,7 +786,7 @@ id|c-&gt;irq_mask
 suffix:semicolon
 )brace
 DECL|function|I2O_IRQ_WRITE32
-r_extern
+r_static
 r_inline
 r_void
 id|I2O_IRQ_WRITE32
@@ -808,7 +808,7 @@ id|Val
 suffix:semicolon
 )brace
 DECL|function|i2o_post_message
-r_extern
+r_static
 r_inline
 r_void
 id|i2o_post_message
@@ -843,7 +843,7 @@ id|c
 suffix:semicolon
 )brace
 DECL|function|i2o_flush_reply
-r_extern
+r_static
 r_inline
 r_void
 id|i2o_flush_reply

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: e100lpslavenet.c,v 1.2 2001/06/11 15:39:52 olof Exp $&n; *&n; * e100lpslavenet.c: A network driver for the ETRAX 100LX slave controller.&n; *&n; * Copyright (c) 1998-2001 Axis Communications AB.&n; *&n; * The outline of this driver comes from skeleton.c.&n; *&n; * $Log: e100lpslavenet.c,v $&n; * Revision 1.2  2001/06/11 15:39:52  olof&n; * Clean up and sync with ethernet.c rev 1.16. Increased reset time of slave.&n; *&n; * Revision 1.1  2001/06/06 08:56:26  olof&n; * Added support for slave Etrax defined by CONFIG_ETRAX_ETHERNET_LPSLAVE&n; *&n; */
+multiline_comment|/* $Id: e100lpslavenet.c,v 1.4 2001/06/21 16:55:26 olof Exp $&n; *&n; * e100lpslavenet.c: A network driver for the ETRAX 100LX slave controller.&n; *&n; * Copyright (c) 1998-2001 Axis Communications AB.&n; *&n; * The outline of this driver comes from skeleton.c.&n; *&n; * $Log: e100lpslavenet.c,v $&n; * Revision 1.4  2001/06/21 16:55:26  olof&n; * Minimized par port setup time to gain bandwidth&n; *&n; * Revision 1.3  2001/06/21 15:49:02  olof&n; * Removed setting of default MAC address&n; *&n; * Revision 1.2  2001/06/11 15:39:52  olof&n; * Clean up and sync with ethernet.c rev 1.16. Increased reset time of slave.&n; *&n; * Revision 1.1  2001/06/06 08:56:26  olof&n; * Added support for slave Etrax defined by CONFIG_ETRAX_ETHERNET_LPSLAVE&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -567,16 +567,6 @@ suffix:semicolon
 id|dev-&gt;set_mac_address
 op_assign
 id|e100_set_mac_address
-suffix:semicolon
-multiline_comment|/* set the default MAC address */
-id|e100_set_mac_address
-c_func
-(paren
-id|dev
-comma
-op_amp
-id|default_mac
-)paren
 suffix:semicolon
 multiline_comment|/* Initialise the list of Etrax DMA-descriptors */
 multiline_comment|/* Initialise receive descriptors */
@@ -1311,7 +1301,7 @@ comma
 id|ecp_fwd
 )paren
 suffix:semicolon
-multiline_comment|/* Setup time of value * 160 + 20 ns == 180 ns below */
+multiline_comment|/* Setup time of value * 160 + 20 ns == 20 ns below */
 op_star
 id|R_PAR1_DELAY
 op_assign
@@ -1322,7 +1312,7 @@ id|R_PAR1_DELAY
 comma
 id|setup
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 op_star
@@ -3406,7 +3396,6 @@ c_func
 id|code
 )paren
 suffix:semicolon
-multiline_comment|/*TxDescList[1].buf = code;*/
 id|TxDescList
 (braket
 l_int|1

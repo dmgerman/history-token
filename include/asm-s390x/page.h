@@ -46,6 +46,8 @@ id|page
 suffix:colon
 l_string|&quot;memory&quot;
 comma
+l_string|&quot;cc&quot;
+comma
 l_string|&quot;1&quot;
 comma
 l_string|&quot;2&quot;
@@ -105,6 +107,8 @@ id|from
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 comma
 l_string|&quot;0&quot;
 )paren

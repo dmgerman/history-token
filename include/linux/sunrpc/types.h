@@ -24,7 +24,7 @@ id|next
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|__rpc_append_list
@@ -97,7 +97,7 @@ id|prev
 suffix:semicolon
 )brace
 )brace
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|__rpc_insert_list
@@ -130,7 +130,7 @@ op_assign
 id|item
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|__rpc_remove_list

@@ -197,17 +197,22 @@ id|per_struct
 id|per_info
 suffix:semicolon
 multiline_comment|/* Must be aligned on an 4 byte boundary*/
+multiline_comment|/* Used to give failing instruction back to user for ieee exceptions */
 DECL|member|ieee_instruction_pointer
 id|addr_t
 id|ieee_instruction_pointer
 suffix:semicolon
-multiline_comment|/* Used to give failing instruction back to user for ieee exceptions */
 DECL|member|flags
 r_int
 r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* various flags */
+multiline_comment|/* pfault_wait is used to block the process on a pfault event */
+DECL|member|pfault_wait
+id|addr_t
+id|pfault_wait
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|typedef|thread_struct
@@ -219,7 +224,7 @@ suffix:semicolon
 DECL|macro|INIT_MMAP
 mdefine_line|#define INIT_MMAP &bslash;&n;{ &amp;init_mm, 0, 0, NULL, PAGE_SHARED, &bslash;&n;VM_READ | VM_WRITE | VM_EXEC, 1, NULL,NULL }
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD { (struct pt_regs *) 0,                       &bslash;&n;                    { 0,{{0},{0},{0},{0},{0},{0},{0},{0},{0},{0}, &bslash;&n;&t;&t;&t;    {0},{0},{0},{0},{0},{0}}},            &bslash;&n;                     0, 0,                                        &bslash;&n;                    sizeof(init_stack) + (addr_t) &amp;init_stack,    &bslash;&n;              (__pa((addr_t) &amp;swapper_pg_dir[0]) + _REGION_TABLE),&bslash;&n;                     0,0,0,                                       &bslash;&n;                     (per_struct) {{{{0,}}},0,0,0,0,{{0,}}},      &bslash;&n;&t;&t;     0&t;&t;&t;&t;&t;          &bslash;&n;} 
+mdefine_line|#define INIT_THREAD { (struct pt_regs *) 0,                       &bslash;&n;                    { 0,{{0},{0},{0},{0},{0},{0},{0},{0},{0},{0}, &bslash;&n;&t;&t;&t;    {0},{0},{0},{0},{0},{0}}},            &bslash;&n;                     0, 0,                                        &bslash;&n;                    sizeof(init_stack) + (addr_t) &amp;init_stack,    &bslash;&n;              (__pa((addr_t) &amp;swapper_pg_dir[0]) + _REGION_TABLE),&bslash;&n;                     0,0,0,                                       &bslash;&n;                     (per_struct) {{{{0,}}},0,0,0,0,{{0,}}},      &bslash;&n;&t;&t;     0, 0, 0&t;&t;&t;&t;          &bslash;&n;} 
 multiline_comment|/* need to define ... */
 DECL|macro|start_thread
 mdefine_line|#define start_thread(regs, new_psw, new_stackp) do {            &bslash;&n;        regs-&gt;psw.mask  = _USER_PSW_MASK;                       &bslash;&n;        regs-&gt;psw.addr  = new_psw;                              &bslash;&n;        regs-&gt;gprs[15]  = new_stackp;                           &bslash;&n;} while (0)
@@ -484,6 +489,8 @@ op_amp
 id|ctl_buf
 )paren
 suffix:colon
+l_string|&quot;cc&quot;
+comma
 l_string|&quot;0&quot;
 comma
 l_string|&quot;1&quot;

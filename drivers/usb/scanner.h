@@ -92,7 +92,8 @@ l_string|&quot;User specified read timeout in seconds&quot;
 suffix:semicolon
 multiline_comment|/* Enable to activate the ioctl interface.  This is mainly meant for */
 multiline_comment|/* development purposes until an ioctl number is officially registered */
-singleline_comment|// #define SCN_IOCTL
+DECL|macro|SCN_IOCTL
+mdefine_line|#define SCN_IOCTL
 multiline_comment|/* WARNING: These DATA_DUMP&squot;s can produce a lot of data. Caveat Emptor. */
 singleline_comment|// #define RD_DATA_DUMP /* Enable to dump data - limited to 24 bytes */
 singleline_comment|// #define WR_DATA_DUMP /* DEBUG does not have to be defined. */
@@ -608,6 +609,17 @@ l_int|0x010c
 )brace
 comma
 multiline_comment|/* Perfection 640U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
+l_int|0x010e
+)paren
+)brace
+comma
+multiline_comment|/* Expression 1680 */
 multiline_comment|/* Umax */
 (brace
 id|USB_DEVICE
@@ -752,6 +764,11 @@ DECL|macro|PV8630_IOCTL_INREQUEST
 mdefine_line|#define PV8630_IOCTL_INREQUEST 69
 DECL|macro|PV8630_IOCTL_OUTREQUEST
 mdefine_line|#define PV8630_IOCTL_OUTREQUEST 70
+multiline_comment|/* read vendor and product IDs */
+DECL|macro|IOCTL_SCANNER_VENDOR
+mdefine_line|#define IOCTL_SCANNER_VENDOR _IOR(&squot;u&squot;, 0xa0, int)
+DECL|macro|IOCTL_SCANNER_PRODUCT
+mdefine_line|#define IOCTL_SCANNER_PRODUCT _IOR(&squot;u&squot;, 0xa1, int)
 DECL|macro|SCN_MAX_MNR
 mdefine_line|#define SCN_MAX_MNR 16&t;&t;/* We&squot;re allocated 16 minors */
 DECL|macro|SCN_BASE_MNR

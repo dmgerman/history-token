@@ -8,7 +8,7 @@ multiline_comment|/* Console I/O for simulated etrax100.  Use #ifdef so erroneou
 macro_line|#ifdef CONFIG_SVINTO_SIM
 multiline_comment|/* Let&squot;s use the ucsim interface since it lets us do write(2, ...) */
 DECL|macro|SIMCOUT
-mdefine_line|#define SIMCOUT(s,len) asm (&quot;moveq 4,r1&bslash;n&bslash;tmoveq 2,r10&bslash;n&bslash;tmove.d %0,r11&bslash;n&bslash;tmove.d %1,r12&bslash;&n;&bslash;n&bslash;tpush irp&bslash;n&bslash;t.word 0xae3f&bslash;n&bslash;t.dword 0f&bslash;n&bslash;tjump -6809&bslash;n0:&bslash;n&bslash;tpop irp&quot; &bslash;&n;       : : &quot;rm&quot; (s), &quot;rm&quot; (len) : &quot;r1&quot;,&quot;r10&quot;,&quot;r11&quot;,&quot;r12&quot;,&quot;memory&quot;)
+mdefine_line|#define SIMCOUT(s,len)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  asm (&quot;moveq 4,r1&t;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       &quot;moveq 2,r10&t;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       &quot;move.d %0,r11&t;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       &quot;move.d %1,r12&t;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       &quot;push irp&t;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       &quot;move 0f,irp&t;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       &quot;jump -6809&t;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       &quot;0:&t;&t;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       &quot;pop irp&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;       : : &quot;rm&quot; (s), &quot;rm&quot; (len) : &quot;r1&quot;,&quot;r10&quot;,&quot;r11&quot;,&quot;r12&quot;,&quot;memory&quot;)
 DECL|macro|TRACE_ON
 mdefine_line|#define TRACE_ON() __extension__ &bslash;&n; ({ int _Foofoo; __asm__ volatile (&quot;bmod [%0],%0&quot; : &quot;=r&quot; (_Foofoo) : &quot;0&quot; &bslash;&n;&t;&t;&t;       (255)); _Foofoo; })
 DECL|macro|TRACE_OFF
@@ -161,7 +161,7 @@ mdefine_line|#define LED_ACTIVE_SET_G(x) &bslash;&n;         REG_SHADOW_SET(R_PO
 DECL|macro|LED_ACTIVE_SET_R
 mdefine_line|#define LED_ACTIVE_SET_R(x) &bslash;&n;         REG_SHADOW_SET(R_PORT_PA_DATA, port_pa_data_shadow, CONFIG_ETRAX_LED2R, !(x))
 DECL|macro|LED_DISK_WRITE
-mdefine_line|#define LED_DISK_WRITE(x) &bslash;&n;         REG_SHADOW_SET(R_PORT_PA_DATA, port_pa_data_shadow, CONFIG_ETRAX_LED3R, !(x))
+mdefine_line|#define LED_DISK_WRITE(x) &bslash;&n;         do{&bslash;&n;                REG_SHADOW_SET(R_PORT_PA_DATA, port_pa_data_shadow, CONFIG_ETRAX_LED3G, !(x));&bslash;&n;                REG_SHADOW_SET(R_PORT_PA_DATA, port_pa_data_shadow, CONFIG_ETRAX_LED3R, !(x));&bslash;&n;        }while(0)
 DECL|macro|LED_DISK_READ
 mdefine_line|#define LED_DISK_READ(x) &bslash;&n;         REG_SHADOW_SET(R_PORT_PA_DATA, port_pa_data_shadow, CONFIG_ETRAX_LED3G, !(x)) 
 macro_line|#endif
@@ -175,7 +175,7 @@ mdefine_line|#define LED_ACTIVE_SET_G(x) &bslash;&n;         REG_SHADOW_SET(R_PO
 DECL|macro|LED_ACTIVE_SET_R
 mdefine_line|#define LED_ACTIVE_SET_R(x) &bslash;&n;         REG_SHADOW_SET(R_PORT_PB_DATA, port_pb_data_shadow, CONFIG_ETRAX_LED2R, !(x))
 DECL|macro|LED_DISK_WRITE
-mdefine_line|#define LED_DISK_WRITE(x) &bslash;&n;         REG_SHADOW_SET(R_PORT_PB_DATA, port_pb_data_shadow, CONFIG_ETRAX_LED3R, !(x))
+mdefine_line|#define LED_DISK_WRITE(x) &bslash;&n;        do{&bslash;&n;                REG_SHADOW_SET(R_PORT_PB_DATA, port_pb_data_shadow, CONFIG_ETRAX_LED3G, !(x));&bslash;&n;                REG_SHADOW_SET(R_PORT_PB_DATA, port_pb_data_shadow, CONFIG_ETRAX_LED3R, !(x));&bslash;&n;        }while(0)
 DECL|macro|LED_DISK_READ
 mdefine_line|#define LED_DISK_READ(x) &bslash;&n;         REG_SHADOW_SET(R_PORT_PB_DATA, port_pb_data_shadow, CONFIG_ETRAX_LED3G, !(x))     
 macro_line|#endif
@@ -191,7 +191,7 @@ mdefine_line|#define LED_ACTIVE_SET_G(x) &bslash;&n;         REG_SHADOW_SET(port
 DECL|macro|LED_ACTIVE_SET_R
 mdefine_line|#define LED_ACTIVE_SET_R(x) &bslash;&n;         REG_SHADOW_SET(port_csp0_addr, port_csp0_shadow, CONFIG_ETRAX_LED2R, !(x))
 DECL|macro|LED_DISK_WRITE
-mdefine_line|#define LED_DISK_WRITE(x) &bslash;&n;         REG_SHADOW_SET(port_csp0_addr, port_csp0_shadow, CONFIG_ETRAX_LED3R, !(x))
+mdefine_line|#define LED_DISK_WRITE(x) &bslash;&n;        do{&bslash;&n;                REG_SHADOW_SET(port_csp0_addr, port_csp0_shadow, CONFIG_ETRAX_LED3G, !(x));&bslash;&n;                REG_SHADOW_SET(port_csp0_addr, port_csp0_shadow, CONFIG_ETRAX_LED3R, !(x));&bslash;&n;        }while(0)
 DECL|macro|LED_DISK_READ
 mdefine_line|#define LED_DISK_READ(x) &bslash;&n;         REG_SHADOW_SET(port_csp0_addr, port_csp0_shadow, CONFIG_ETRAX_LED3G, !(x))
 DECL|macro|LED_BIT_SET

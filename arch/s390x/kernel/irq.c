@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -1352,6 +1352,34 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__global_restore_flags
+)paren
+suffix:semicolon
+DECL|variable|global_irq_holder
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|global_irq_holder
+)paren
+suffix:semicolon
+DECL|variable|global_irq_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|global_irq_lock
+)paren
+suffix:semicolon
+DECL|variable|global_irq_count
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|global_irq_count
+)paren
+suffix:semicolon
+DECL|variable|global_bh_count
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|global_bh_count
 )paren
 suffix:semicolon
 macro_line|#endif

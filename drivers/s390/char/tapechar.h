@@ -92,7 +92,7 @@ id|tapechar_mkdevfstree
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 macro_line|#endif

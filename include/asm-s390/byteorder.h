@@ -39,7 +39,7 @@ op_amp
 id|temp
 )paren
 suffix:colon
-l_string|&quot;memory&quot;
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
@@ -79,6 +79,8 @@ l_string|&quot;a&quot;
 (paren
 id|x
 )paren
+suffix:colon
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
@@ -115,6 +117,8 @@ suffix:colon
 l_string|&quot;0&quot;
 comma
 l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
@@ -152,6 +156,8 @@ id|temp
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
@@ -190,6 +196,8 @@ l_string|&quot;a&quot;
 (paren
 id|x
 )paren
+suffix:colon
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
@@ -225,6 +233,8 @@ suffix:colon
 l_string|&quot;0&quot;
 comma
 l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace

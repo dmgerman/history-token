@@ -6,7 +6,7 @@ DECL|macro|_INLINE_
 mdefine_line|#define _INLINE_ extern
 macro_line|#else
 DECL|macro|_INLINE_
-mdefine_line|#define _INLINE_ extern __inline__
+mdefine_line|#define _INLINE_ static __inline__
 macro_line|#endif
 DECL|function|tty_insert_flip_char
 id|_INLINE_

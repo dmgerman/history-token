@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * URB OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000 David Brownell &lt;david-b@pacbell.net&gt;&n; * &n; * usb-ohci.h&n; */
+multiline_comment|/*&n; * URB OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2001 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * usb-ohci.h&n; */
 DECL|variable|cc_to_error
 r_static
 r_int
@@ -845,6 +845,10 @@ r_int
 id|disabled
 suffix:semicolon
 multiline_comment|/* e.g. got a UE, we&squot;re hung */
+DECL|member|sleeping
+r_int
+id|sleeping
+suffix:semicolon
 DECL|member|resume_count
 id|atomic_t
 id|resume_count

@@ -11,7 +11,7 @@ macro_line|#ifndef IBM_FS3270_MAJOR
 DECL|macro|IBM_FS3270_MAJOR
 macro_line|#  define IBM_FS3270_MAJOR 213
 macro_line|#endif /* IBM_FS3270_MAJOR */
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
@@ -19,6 +19,9 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0))
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#endif
 DECL|macro|TUB
 mdefine_line|#define TUB(x) ((&squot;3&squot;&lt;&lt;8)|(x))
 DECL|macro|TUBICMD
@@ -674,10 +677,15 @@ DECL|macro|TUB_OPEN_STET
 mdefine_line|#define&t;TUB_OPEN_STET&t;0x0400&t;&t;/* No screen clear on open */
 DECL|macro|TUB_UE_BUSY
 mdefine_line|#define&t;TUB_UE_BUSY&t;0x0800
-macro_line|#ifdef CONFIG_3270_CONSOLE
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
 multiline_comment|/*&n; * Extra stuff for 3270 console support&n; */
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
 DECL|macro|S390_CONSOLE_DEV
 mdefine_line|#define&t;S390_CONSOLE_DEV MKDEV(TTY_MAJOR, 64)
+macro_line|#else
+DECL|macro|S390_CONSOLE_DEV
+mdefine_line|#define&t;S390_CONSOLE_DEV MKDEV(TTYAUX_MAJOR, 1)
+macro_line|#endif
 r_extern
 r_int
 id|tub3270_con_devno
@@ -717,7 +725,7 @@ r_struct
 id|tty_driver
 id|tty3270_con_driver
 suffix:semicolon
-macro_line|#endif /* CONFIG_3270_CONSOLE */
+macro_line|#endif /* CONFIG_TN3270_CONSOLE */
 r_extern
 r_int
 id|tubnummins
@@ -795,6 +803,35 @@ r_enum
 id|tubwhat
 id|tty3270_proc_what
 suffix:semicolon
+r_extern
+r_struct
+id|tty_driver
+id|tty3270_driver
+suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+r_extern
+id|devfs_handle_t
+id|fs3270_devfs_dir
+suffix:semicolon
+r_extern
+r_void
+id|fs3270_devfs_register
+c_func
+(paren
+id|tub_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|fs3270_devfs_unregister
+c_func
+(paren
+id|tub_t
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifndef spin_trylock_irqsave
 DECL|macro|spin_trylock_irqsave
 mdefine_line|#define spin_trylock_irqsave(lock, flags) &bslash;&n;({ &bslash;&n;&t;int success; &bslash;&n;&t;__save_flags(flags); &bslash;&n;&t;__cli(); &bslash;&n;&t;success = spin_trylock(lock); &bslash;&n;&t;if (success == 0) &bslash;&n;&t;&t;__restore_flags(flags); &bslash;&n;&t;success; &bslash;&n;})
@@ -822,21 +859,185 @@ suffix:semicolon
 DECL|macro|IRQ2TUB
 mdefine_line|#define IRQ2TUB(irq) tubfindbyirq(irq)
 multiline_comment|/*&n; * Find tub_t * given fullscreen device&squot;s inode pointer&n; * This algorithm takes into account /dev/3270/tub.&n; */
-macro_line|#ifdef CONFIG_3270_CONSOLE
-DECL|macro|INODE2TUB
-mdefine_line|#define INODE2TUB(ip) &bslash;&n;({ &bslash;&n;&t;unsigned int minor; &bslash;&n;&t;tub_t *tubp = NULL; &bslash;&n;&t;minor = MINOR((ip)-&gt;i_rdev); &bslash;&n;&t;if (minor == 0 &amp;&amp; current-&gt;tty != NULL) { &bslash;&n;&t;&t;if (tub3270_con_tubp != NULL &amp;&amp; &bslash;&n;&t;&t;    current-&gt;tty-&gt;device == S390_CONSOLE_DEV) &bslash;&n;&t;&t;&t;minor = tub3270_con_tubp-&gt;minor; &bslash;&n;&t;&t;else if (MAJOR(current-&gt;tty-&gt;device) == IBM_TTY3270_MAJOR) &bslash;&n;&t;&t;&t;minor = MINOR(current-&gt;tty-&gt;device); &bslash;&n;&t;} &bslash;&n;&t;if (minor &lt;= tubnummins &amp;&amp; minor &gt; 0) &bslash;&n;&t;&t;tubp = (*tubminors)[minor]; &bslash;&n;&t;tubp; &bslash;&n;})
-macro_line|#else /* not CONFIG_3270_CONSOLE */
-DECL|macro|INODE2TUB
-mdefine_line|#define INODE2TUB(ip) &bslash;&n;({ &bslash;&n;&t;unsigned int minor; &bslash;&n;&t;tub_t *tubp = NULL; &bslash;&n;&t;minor = MINOR((ip)-&gt;i_rdev); &bslash;&n;&t;if (minor == 0 &amp;&amp; current-&gt;tty != NULL &amp;&amp; &bslash;&n;&t;    MAJOR(current-&gt;tty-&gt;device) == IBM_TTY3270_MAJOR) &bslash;&n;&t;&t;minor = MINOR(current-&gt;tty-&gt;device); &bslash;&n;&t;if (minor &lt;= tubnummins &amp;&amp; minor &gt; 0) &bslash;&n;&t;&t;tubp = (*tubminors)[minor]; &bslash;&n;&t;tubp; &bslash;&n;})
-macro_line|#endif /* CONFIG_3270_CONSOLE or not */
+DECL|function|INODE2TUB
+r_extern
+r_inline
+id|tub_t
+op_star
+id|INODE2TUB
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|ip
+)paren
+(brace
+r_int
+r_int
+id|minor
+op_assign
+id|MINOR
+c_func
+(paren
+id|ip-&gt;i_rdev
+)paren
+suffix:semicolon
+id|tub_t
+op_star
+id|tubp
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|minor
+op_eq
+l_int|0
+op_logical_and
+id|current-&gt;tty
+op_ne
+l_int|NULL
+)paren
+(brace
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
+r_if
+c_cond
+(paren
+id|tub3270_con_tubp
+op_ne
+l_int|NULL
+op_logical_and
+id|current-&gt;tty-&gt;device
+op_eq
+id|S390_CONSOLE_DEV
+)paren
+id|minor
+op_assign
+id|tub3270_con_tubp-&gt;minor
+suffix:semicolon
+r_else
+macro_line|#endif
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|MAJOR
+c_func
+(paren
+id|current-&gt;tty-&gt;device
+)paren
+op_eq
+id|IBM_TTY3270_MAJOR
+)paren
+id|minor
+op_assign
+id|MINOR
+c_func
+(paren
+id|current-&gt;tty-&gt;device
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|minor
+op_ge
+id|tubnummins
+op_logical_and
+id|minor
+OG
+l_int|0
+)paren
+id|tubp
+op_assign
+(paren
+op_star
+id|tubminors
+)paren
+(braket
+id|minor
+)braket
+suffix:semicolon
+r_return
+id|tubp
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Find tub_t * given non-fullscreen (tty) device&squot;s tty_struct pointer&n; */
-macro_line|#ifdef CONFIG_3270_CONSOLE
-DECL|macro|TTY2TUB
-mdefine_line|#define TTY2TUB(tty) &bslash;&n;({ &bslash;&n;&t;unsigned int minor; &bslash;&n;&t;tub_t *tubp = NULL; &bslash;&n;&t;minor = MINOR(tty-&gt;device); &bslash;&n;&t;if (tty-&gt;device == S390_CONSOLE_DEV) &bslash;&n;&t;&t;tubp = tub3270_con_tubp; &bslash;&n;&t;else if (minor &lt;= tubnummins &amp;&amp; minor &gt; 0) &bslash;&n;&t;&t;tubp = (*tubminors)[minor]; &bslash;&n;&t;tubp; &bslash;&n;})
-macro_line|#else /* if not CONFIG_3270_CONSOLE */
-DECL|macro|TTY2TUB
-mdefine_line|#define TTY2TUB(tty) &bslash;&n;({ &bslash;&n;&t;unsigned int minor; &bslash;&n;&t;tub_t *tubp = NULL; &bslash;&n;&t;minor = MINOR(tty-&gt;device); &bslash;&n;&t;if (minor &lt;= tubnummins &amp;&amp; minor &gt; 0) &bslash;&n;&t;&t;tubp = (*tubminors)[minor]; &bslash;&n;&t;tubp; &bslash;&n;})
-macro_line|#endif /* CONFIG_3270_CONSOLE or not */
+DECL|function|TTY2TUB
+r_extern
+r_inline
+id|tub_t
+op_star
+id|TTY2TUB
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+id|tty
+)paren
+(brace
+r_int
+r_int
+id|minor
+op_assign
+id|MINOR
+c_func
+(paren
+id|tty-&gt;device
+)paren
+suffix:semicolon
+id|tub_t
+op_star
+id|tubp
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
+r_if
+c_cond
+(paren
+id|tty-&gt;device
+op_eq
+id|S390_CONSOLE_DEV
+)paren
+id|tubp
+op_assign
+id|tub3270_con_tubp
+suffix:semicolon
+r_else
+macro_line|#endif
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|minor
+op_le
+id|tubnummins
+op_logical_and
+id|minor
+OG
+l_int|0
+)paren
+id|tubp
+op_assign
+(paren
+op_star
+id|tubminors
+)paren
+(braket
+id|minor
+)braket
+suffix:semicolon
+r_return
+id|tubp
+suffix:semicolon
+)brace
 r_extern
 r_void
 id|tub_inc_use_count
@@ -863,6 +1064,8 @@ op_star
 comma
 id|bcb_t
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))

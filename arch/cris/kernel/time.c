@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.6 2001/05/29 11:29:42 markusl Exp $&n; *&n; *  linux/arch/cris/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999, 2000 Axis Communications AB&n; *&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1996-05-03    Ingo Molnar&n; *      fixed time warps in do_[slow|fast]_gettimeoffset()&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&n; * Linux/CRIS specific code:&n; *&n; * Authors:    Bjorn Wesen&n; *&n; */
+multiline_comment|/* $Id: time.c,v 1.8 2001/07/18 14:01:03 bjornw Exp $&n; *&n; *  linux/arch/cris/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999, 2000, 2001 Axis Communications AB&n; *&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1996-05-03    Ingo Molnar&n; *      fixed time warps in do_[slow|fast]_gettimeoffset()&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&n; * Linux/CRIS specific code:&n; *&n; * Authors:    Bjorn Wesen&n; *&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -487,8 +487,6 @@ multiline_comment|/* arbitrary number */
 multiline_comment|/* number of pages to consider &quot;out of memory&quot;. it is normal that the memory&n; * is used though, so put this really low.&n; */
 DECL|macro|WATCHDOG_MIN_FREE_PAGES
 mdefine_line|#define WATCHDOG_MIN_FREE_PAGES 8
-r_static
-r_inline
 r_void
 DECL|function|reset_watchdog
 id|reset_watchdog
@@ -541,6 +539,46 @@ id|start
 suffix:semicolon
 )brace
 macro_line|#endif
+)brace
+multiline_comment|/* stop the watchdog - we still need the correct key */
+r_void
+DECL|function|stop_watchdog
+id|stop_watchdog
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#if defined(CONFIG_ETRAX_WATCHDOG) &amp;&amp; !defined(CONFIG_SVINTO_SIM)
+id|watchdog_key
+op_xor_assign
+l_int|0x7
+suffix:semicolon
+multiline_comment|/* invert key, which is 3 bits */
+op_star
+id|R_WATCHDOG
+op_assign
+id|IO_FIELD
+c_func
+(paren
+id|R_WATCHDOG
+comma
+id|key
+comma
+id|watchdog_key
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_WATCHDOG
+comma
+id|enable
+comma
+id|stop
+)paren
+suffix:semicolon
+macro_line|#endif&t;
 )brace
 multiline_comment|/* last time the cmos clock got updated */
 DECL|variable|last_rtc_update
@@ -1465,6 +1503,38 @@ suffix:semicolon
 id|start_watchdog
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/* If we use the hardware watchdog, we want to trap it as an NMI&n;&t;   and dump registers before it resets us.  For this to happen, we&n;&t;   must set the &quot;m&quot; NMI enable flag (which once set, is unset only&n;&t;   when an NMI is taken).&n;&n;&t;   The same goes for the external NMI, but that doesn&squot;t have any&n;&t;   driver or infrastructure support yet.  */
+id|asm
+(paren
+l_string|&quot;setf m&quot;
+)paren
+suffix:semicolon
+op_star
+id|R_IRQ_MASK0_SET
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK0_SET
+comma
+id|watchdog_nmi
+comma
+id|set
+)paren
+suffix:semicolon
+op_star
+id|R_VECT_MASK_SET
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_VECT_MASK_SET
+comma
+id|nmi
+comma
+id|set
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *    Disk Array driver for Compaq SMART2 Controllers&n; *    Copyright 1998 Compaq Computer Corporation&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to arrays@compaq.com&n; *&n; *    If you want to make changes, improve or add functionality to this&n; *    driver, you&squot;ll probably need the Compaq Array Controller Interface&n; *    Specificiation (Document number ECG086/1198)&n; */
+multiline_comment|/*&n; *    Disk Array driver for Compaq SMART2 Controllers&n; *    Copyright 1998 Compaq Computer Corporation&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to arrays@compaq.com&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;&t;/* CONFIG_PROC_FS */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -20,9 +20,9 @@ macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|SMART2_DRIVER_VERSION
 mdefine_line|#define SMART2_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;Compaq SMART2 Driver (v 2.4.4)&quot;
+mdefine_line|#define DRIVER_NAME &quot;Compaq SMART2 Driver (v 2.4.5)&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION SMART2_DRIVER_VERSION(2,4,4)
+mdefine_line|#define DRIVER_VERSION SMART2_DRIVER_VERSION(2,4,5)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
 multiline_comment|/* Original author Chris Frantz - Compaq Computer Corporation */
 id|MODULE_AUTHOR
@@ -922,7 +922,7 @@ op_assign
 id|proc_mkdir
 c_func
 (paren
-l_string|&quot;array&quot;
+l_string|&quot;cpqarray&quot;
 comma
 id|proc_root_driver
 )paren
@@ -1492,13 +1492,11 @@ id|gendisk
 op_star
 id|g
 suffix:semicolon
-id|remove_proc_entry
-c_func
-(paren
-l_string|&quot;array&quot;
-comma
-id|proc_root_driver
-)paren
+r_char
+id|buff
+(braket
+l_int|4
+)braket
 suffix:semicolon
 r_for
 c_loop
@@ -1515,24 +1513,40 @@ id|i
 op_increment
 )paren
 (brace
-id|hba
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|access
-dot
-id|set_intr_mask
+multiline_comment|/* sendcmd will turn off interrupt, and send the flush... &n;&t;&t; * To write all data in the battery backed cache to disks    &n;&t;&t; * no data returned, but don&squot;t want to send NULL to sendcmd */
+r_if
+c_cond
+(paren
+id|sendcmd
 c_func
 (paren
-id|hba
-(braket
+id|FLUSH_CACHE
+comma
 id|i
-)braket
+comma
+id|buff
+comma
+l_int|4
+comma
+l_int|0
+comma
+l_int|0
 comma
 l_int|0
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Unable to flush cache on &quot;
+l_string|&quot;controller %d&bslash;n&quot;
+comma
+id|i
+)paren
 suffix:semicolon
+)brace
 id|free_irq
 c_func
 (paren
@@ -1722,6 +1736,14 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|remove_proc_entry
+c_func
+(paren
+l_string|&quot;cpqarray&quot;
+comma
+id|proc_root_driver
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -5589,7 +5611,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_NOTICE
 l_string|&quot;Non Fatal error on ida/c%dd%d&bslash;n&quot;
 comma
 id|cmd-&gt;ctlr
@@ -5910,6 +5932,28 @@ comma
 id|c
 )paren
 suffix:semicolon
+multiline_comment|/*  Check for invalid command.&n;                                 *  Controller returns command error,&n;                                 *  But rcode = 0.&n;                                 */
+r_if
+c_cond
+(paren
+(paren
+id|a1
+op_amp
+l_int|0x03
+)paren
+op_logical_and
+(paren
+id|c-&gt;req.hdr.rcode
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+id|c-&gt;req.hdr.rcode
+op_assign
+id|RCODE_INVREQ
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6888,6 +6932,12 @@ suffix:semicolon
 r_case
 id|IDA_READ
 suffix:colon
+r_case
+id|READ_FLASH_ROM
+suffix:colon
+r_case
+id|SENSE_CONTROLLER_PERFORMANCE
+suffix:colon
 id|p
 op_assign
 id|kmalloc
@@ -6981,6 +7031,12 @@ id|IDA_WRITE_MEDIA
 suffix:colon
 r_case
 id|DIAG_PASS_THRU
+suffix:colon
+r_case
+id|COLLECT_BUFFER
+suffix:colon
+r_case
+id|WRITE_FLASH_ROM
 suffix:colon
 id|p
 op_assign
@@ -7241,6 +7297,12 @@ suffix:colon
 r_case
 id|DIAG_PASS_THRU
 suffix:colon
+r_case
+id|SENSE_CONTROLLER_PERFORMANCE
+suffix:colon
+r_case
+id|READ_FLASH_ROM
+suffix:colon
 id|copy_to_user
 c_func
 (paren
@@ -7271,6 +7333,12 @@ id|IDA_WRITE
 suffix:colon
 r_case
 id|IDA_WRITE_MEDIA
+suffix:colon
+r_case
+id|COLLECT_BUFFER
+suffix:colon
+r_case
+id|WRITE_FLASH_ROM
 suffix:colon
 id|kfree
 c_func

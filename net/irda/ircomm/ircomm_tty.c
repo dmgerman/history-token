@@ -1750,7 +1750,14 @@ id|self-&gt;settings.service_type
 op_assign
 id|IRCOMM_9_WIRE
 suffix:semicolon
-multiline_comment|/* Default */
+multiline_comment|/* 9 wire as default */
+id|self-&gt;settings.dce
+op_assign
+id|IRCOMM_CTS
+op_or
+id|IRCOMM_CD
+suffix:semicolon
+multiline_comment|/* Default line settings */
 id|IRDA_DEBUG
 c_func
 (paren

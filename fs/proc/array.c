@@ -869,7 +869,7 @@ id|buffer
 suffix:semicolon
 )brace
 DECL|function|task_cap
-r_extern
+r_static
 r_inline
 r_char
 op_star

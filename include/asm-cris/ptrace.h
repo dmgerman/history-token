@@ -52,6 +52,29 @@ DECL|macro|PT_USP
 mdefine_line|#define PT_USP       23    /* special case - USP is not in the pt_regs */
 DECL|macro|PT_MAX
 mdefine_line|#define PT_MAX       23
+multiline_comment|/* Condition code bit numbers.  The same numbers apply to CCR of course,&n;   but we use DCCR everywhere else, so let&squot;s try and be consistent.  */
+DECL|macro|C_DCCR_BITNR
+mdefine_line|#define C_DCCR_BITNR 0
+DECL|macro|V_DCCR_BITNR
+mdefine_line|#define V_DCCR_BITNR 1
+DECL|macro|Z_DCCR_BITNR
+mdefine_line|#define Z_DCCR_BITNR 2
+DECL|macro|N_DCCR_BITNR
+mdefine_line|#define N_DCCR_BITNR 3
+DECL|macro|X_DCCR_BITNR
+mdefine_line|#define X_DCCR_BITNR 4
+DECL|macro|I_DCCR_BITNR
+mdefine_line|#define I_DCCR_BITNR 5
+DECL|macro|B_DCCR_BITNR
+mdefine_line|#define B_DCCR_BITNR 6
+DECL|macro|M_DCCR_BITNR
+mdefine_line|#define M_DCCR_BITNR 7
+DECL|macro|U_DCCR_BITNR
+mdefine_line|#define U_DCCR_BITNR 8
+DECL|macro|P_DCCR_BITNR
+mdefine_line|#define P_DCCR_BITNR 9
+DECL|macro|F_DCCR_BITNR
+mdefine_line|#define F_DCCR_BITNR 10
 multiline_comment|/* Frame types */
 DECL|macro|CRIS_FRAME_NORMAL
 mdefine_line|#define CRIS_FRAME_NORMAL   0 /* normal frame without SBFS stacking */
@@ -253,7 +276,7 @@ DECL|macro|PTRACE_SETREGS
 mdefine_line|#define PTRACE_SETREGS            13
 multiline_comment|/* bit 8 is user-mode flag */
 DECL|macro|user_mode
-mdefine_line|#define user_mode(regs) ((regs)-&gt;dccr &amp; 0x100)
+mdefine_line|#define user_mode(regs) (((regs)-&gt;dccr &amp; 0x100) != 0)
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;irp)
 r_extern

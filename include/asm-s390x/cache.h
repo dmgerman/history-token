@@ -3,6 +3,8 @@ macro_line|#ifndef __ARCH_S390_CACHE_H
 DECL|macro|__ARCH_S390_CACHE_H
 mdefine_line|#define __ARCH_S390_CACHE_H
 DECL|macro|L1_CACHE_BYTES
-mdefine_line|#define L1_CACHE_BYTES     16
+mdefine_line|#define L1_CACHE_BYTES     256
+DECL|macro|L1_CACHE_SHIFT
+mdefine_line|#define L1_CACHE_SHIFT     16
 macro_line|#endif
 eof

@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/cpcmd.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &quot;ctrlchar.h&quot;
 DECL|macro|NR_3215
 mdefine_line|#define NR_3215&t;&t;    1
@@ -326,61 +327,6 @@ macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
 macro_line|#endif
-DECL|function|con3215_setup
-r_static
-r_int
-id|__init
-id|con3215_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|vdev
-suffix:semicolon
-id|vdev
-op_assign
-id|simple_strtoul
-c_func
-(paren
-id|str
-comma
-op_amp
-id|str
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vdev
-op_ge
-l_int|0
-op_logical_and
-id|vdev
-OL
-l_int|65536
-)paren
-id|raw3215_condevice
-op_assign
-id|vdev
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;condev=&quot;
-comma
-id|con3215_setup
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Get a request structure from the free list&n; */
 DECL|function|raw3215_alloc_req
 r_extern
@@ -3211,7 +3157,7 @@ c_cond
 (paren
 id|dinfo.devno
 op_eq
-id|raw3215_condevice
+id|console_device
 op_logical_or
 id|dinfo.sid_data.cu_type
 op_eq
@@ -3247,7 +3193,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* console not found */
 )brace
-macro_line|#ifdef CONFIG_3215_CONSOLE
+macro_line|#ifdef CONFIG_TN3215_CONSOLE
 multiline_comment|/*&n; * Write a string to the 3215 console&n; */
 r_static
 r_void
@@ -4355,19 +4301,29 @@ op_star
 id|req
 suffix:semicolon
 r_int
+id|irq
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
+multiline_comment|/* Check if 3215 is to be the console */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|MACHINE_IS_VM
-op_logical_and
-op_logical_neg
-id|MACHINE_IS_P390
+id|CONSOLE_IS_3215
 )paren
 r_return
 suffix:semicolon
+id|irq
+op_assign
+id|raw3215_find_dev
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Set the console mode for VM */
 r_if
 c_cond
 (paren
@@ -4451,7 +4407,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_3215_CONSOLE
+macro_line|#ifdef CONFIG_TN3215_CONSOLE
 id|raw3215
 (braket
 l_int|0
@@ -4638,17 +4594,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|MACHINE_IS_VM
-op_logical_and
-op_logical_neg
-id|MACHINE_IS_P390
-)paren
-r_return
-suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the tty_driver structure&n;&t; * Entries in tty3215_driver that are NOT initialized:&n;&t; * proc_entry, set_termios, flush_buffer, set_ldisc, write_proc&n;&t; */
 id|memset
 c_func

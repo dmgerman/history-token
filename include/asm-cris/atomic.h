@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: atomic.h,v 1.2 2000/07/13 16:51:57 bjornw Exp $ */
+multiline_comment|/* $Id: atomic.h,v 1.3 2001/07/25 16:15:19 bjornw Exp $ */
 macro_line|#ifndef __ASM_CRIS_ATOMIC__
 DECL|macro|__ASM_CRIS_ATOMIC__
 mdefine_line|#define __ASM_CRIS_ATOMIC__
@@ -543,5 +543,14 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/* Atomic operations are already serializing */
+DECL|macro|smp_mb__before_atomic_dec
+mdefine_line|#define smp_mb__before_atomic_dec()    barrier()
+DECL|macro|smp_mb__after_atomic_dec
+mdefine_line|#define smp_mb__after_atomic_dec()     barrier()
+DECL|macro|smp_mb__before_atomic_inc
+mdefine_line|#define smp_mb__before_atomic_inc()    barrier()
+DECL|macro|smp_mb__after_atomic_inc
+mdefine_line|#define smp_mb__after_atomic_inc()     barrier()
 macro_line|#endif
 eof

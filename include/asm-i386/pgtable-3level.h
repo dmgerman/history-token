@@ -22,7 +22,7 @@ mdefine_line|#define pmd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pmd %p(%
 DECL|macro|pgd_ERROR
 mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %p(%016Lx).&bslash;n&quot;, __FILE__, __LINE__, &amp;(e), pgd_val(e))
 DECL|function|pgd_none
-r_extern
+r_static
 r_inline
 r_int
 id|pgd_none
@@ -37,7 +37,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pgd_bad
-r_extern
+r_static
 r_inline
 r_int
 id|pgd_bad
@@ -52,7 +52,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pgd_present
-r_extern
+r_static
 r_inline
 r_int
 id|pgd_present
@@ -102,7 +102,7 @@ DECL|macro|set_pgd
 mdefine_line|#define set_pgd(pgdptr,pgdval) &bslash;&n;&t;&t;set_64bit((unsigned long long *)(pgdptr),pgd_val(pgdval))
 multiline_comment|/*&n; * Pentium-II erratum A13: in PAE mode we explicitly have to flush&n; * the TLB via cr3 if the top-level pgd is changed...&n; * We do not let the generic code free and clear pgd entries due to&n; * this erratum.&n; */
 DECL|function|pgd_clear
-r_extern
+r_static
 r_inline
 r_void
 id|pgd_clear

@@ -54,7 +54,7 @@ suffix:semicolon
 macro_line|#ifndef __KERNEL__
 macro_line|#include &lt;sys/ioctl.h&gt;
 DECL|function|i2c_smbus_access
-r_extern
+r_static
 r_inline
 id|__s32
 id|i2c_smbus_access
@@ -112,7 +112,7 @@ id|args
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_write_quick
-r_extern
+r_static
 r_inline
 id|__s32
 id|i2c_smbus_write_quick
@@ -142,7 +142,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_read_byte
-r_extern
+r_static
 r_inline
 id|__s32
 id|i2c_smbus_read_byte
@@ -186,7 +186,7 @@ id|data.byte
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_write_byte
-r_extern
+r_static
 r_inline
 id|__s32
 id|i2c_smbus_write_byte
@@ -216,7 +216,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_read_byte_data
-r_extern
+r_static
 r_inline
 id|__s32
 id|i2c_smbus_read_byte_data
@@ -263,7 +263,7 @@ id|data.byte
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_write_byte_data
-r_extern
+r_static
 r_inline
 id|__s32
 id|i2c_smbus_write_byte_data
@@ -305,7 +305,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_read_word_data
-r_extern
+r_static
 r_inline
 id|__s32
 id|i2c_smbus_read_word_data
@@ -352,7 +352,7 @@ id|data.word
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_write_word_data
-r_extern
+r_static
 r_inline
 id|__s32
 id|i2c_smbus_write_word_data
@@ -394,7 +394,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_process_call
-r_extern
+r_static
 r_inline
 id|__s32
 id|i2c_smbus_process_call
@@ -449,7 +449,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Returns the number of read bytes */
 DECL|function|i2c_smbus_read_block_data
-r_extern
+r_static
 r_inline
 id|__s32
 id|i2c_smbus_read_block_data
@@ -535,7 +535,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|i2c_smbus_write_block_data
-r_extern
+r_static
 r_inline
 id|__s32
 id|i2c_smbus_write_block_data
@@ -624,7 +624,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_write_i2c_block_data
-r_extern
+r_static
 r_inline
 id|__s32
 id|i2c_smbus_write_i2c_block_data

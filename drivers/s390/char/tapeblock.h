@@ -43,7 +43,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_void
@@ -51,7 +51,7 @@ id|schedule_tapeblock_exec_IO
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 r_int
@@ -60,7 +60,7 @@ c_func
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
@@ -69,7 +69,7 @@ id|tapeblock_mkdevfstree
 (paren
 id|tape_info_t
 op_star
-id|tape
+id|ti
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Interrupt handling assembler and defines for Linux/CRIS&n; *&n; * Copyright (c) 2000 Axis Communications AB&n; *&n; * Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; * $Id: irq.h,v 1.11 2001/06/01 14:57:17 starvik Exp $&n; */
+multiline_comment|/*&n; * Interrupt handling assembler and defines for Linux/CRIS&n; *&n; * Copyright (c) 2000, 2001 Axis Communications AB&n; *&n; * Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; * $Id: irq.h,v 1.13 2001/07/06 18:52:08 hp Exp $&n; */
 macro_line|#ifndef _ASM_IRQ_H
 DECL|macro|_ASM_IRQ_H
 mdefine_line|#define _ASM_IRQ_H
@@ -21,7 +21,7 @@ multiline_comment|/* par1, scsi1 on 5 */
 DECL|macro|NETWORK_STATUS_IRQ_NBR
 mdefine_line|#define NETWORK_STATUS_IRQ_NBR IO_BITNR(R_VECT_MASK_RD, network) /* 6 */
 DECL|macro|SERIAL_IRQ_NBR
-mdefine_line|#define SERIAL_IRQ_NBR IO_BITNR(R_VECT_MASK_RD, network) /* 8 */
+mdefine_line|#define SERIAL_IRQ_NBR IO_BITNR(R_VECT_MASK_RD, serial) /* 8 */
 DECL|macro|PA_IRQ_NBR
 mdefine_line|#define PA_IRQ_NBR IO_BITNR(R_VECT_MASK_RD, pa) /* 11 */
 multiline_comment|/* extdma0 and extdma1 is at irq 12 and 13 and/or same as dma5 and dma6 ? */

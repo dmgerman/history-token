@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: traps.c,v 1.12 2001/05/15 15:46:40 bjornw Exp $&n; *&n; *  linux/arch/cris/traps.c&n; *&n; *  Here we handle the break vectors not used by the system call &n; *  mechanism, as well as some general stack/register dumping &n; *  things.&n; * &n; *  Copyright (C) 2000,2001 Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen&n; *&n; */
+multiline_comment|/* $Id: traps.c,v 1.15 2001/07/18 14:02:37 bjornw Exp $&n; *&n; *  linux/arch/cris/traps.c&n; *&n; *  Here we handle the break vectors not used by the system call &n; *  mechanism, as well as some general stack/register dumping &n; *  things.&n; * &n; *  Copyright (C) 2000,2001 Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen&n; *  &t;       Hans-Peter Nilsson&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -20,6 +21,7 @@ suffix:semicolon
 multiline_comment|/*&n; * These constants are for searching for possible module text&n; * segments. MODULE_RANGE is a guess of how much space is likely&n; * to be vmalloced.&n; */
 DECL|macro|MODULE_RANGE
 mdefine_line|#define MODULE_RANGE (8*1024*1024)
+multiline_comment|/*&n; * The output (format, strings and order) is adjusted to be usable with&n; * ksymoops-2.4.1 with some necessary CRIS-specific patches.  Please don&squot;t&n; * change it unless you&squot;re serious about adjusting ksymoops and syncing&n; * with the ksymoops maintainer.&n; */
 r_void
 DECL|function|show_stack
 id|show_stack
@@ -51,7 +53,7 @@ id|_stext
 comma
 id|_etext
 suffix:semicolon
-multiline_comment|/*&n;         * debugging aid: &quot;show_stack(NULL);&quot; prints the&n;         * back trace for this cpu.&n;         */
+multiline_comment|/*&n;&t; * debugging aid: &quot;show_stack(NULL);&quot; prints a&n;&t; * back trace.&n;&t; */
 r_if
 c_cond
 (paren
@@ -76,6 +78,14 @@ suffix:semicolon
 id|stack
 op_assign
 id|sp
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;nStack from %08lx:&bslash;n       &quot;
+comma
+id|stack
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -133,14 +143,37 @@ c_func
 l_string|&quot;&bslash;n       &quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|__get_user
+(paren
+id|addr
+comma
+id|stack
+)paren
+)paren
+(brace
+multiline_comment|/* This message matches &quot;failing address&quot; marked&n;&t;&t;&t;   s390 in ksymoops, so lines containing it will&n;&t;&t;&t;   not be filtered out by ksymoops.  */
+id|printk
+(paren
+l_string|&quot;Failing address 0x%lx&bslash;n&quot;
+comma
+id|stack
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|stack
+op_increment
+suffix:semicolon
 id|printk
 c_func
 (paren
 l_string|&quot;%08lx &quot;
 comma
-op_star
-id|stack
-op_increment
+id|addr
 )paren
 suffix:semicolon
 )brace
@@ -185,9 +218,28 @@ op_ne
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|__get_user
+(paren
 id|addr
-op_assign
-op_star
+comma
+id|stack
+)paren
+)paren
+(brace
+multiline_comment|/* This message matches &quot;failing address&quot; marked&n;&t;&t;&t;   s390 in ksymoops, so lines containing it will&n;&t;&t;&t;   not be filtered out by ksymoops.  */
+id|printk
+(paren
+l_string|&quot;Failing address 0x%lx&bslash;n&quot;
+comma
+id|stack
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|stack
 op_increment
 suffix:semicolon
@@ -354,6 +406,7 @@ op_star
 id|regs
 )paren
 (brace
+multiline_comment|/* We either use rdusp() - the USP register, which might not&n;&t;   correspond to the current process for all cases we&squot;re called,&n;&t;   or we use the current-&gt;thread.usp, which is not up to date for&n;&t;   the current process.  Experience shows we want the USP&n;&t;   register.  */
 r_int
 r_int
 id|usp
@@ -366,7 +419,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;IRP: %08lx SRP: %08lx CCR: %08lx USP: %08lx MOF: %08lx&bslash;n&quot;
+l_string|&quot;IRP: %08lx SRP: %08lx DCCR: %08lx USP: %08lx MOF: %08lx&bslash;n&quot;
 comma
 id|regs-&gt;irp
 comma
@@ -382,7 +435,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; r0: %08lx  r1: %08lx  r2: %08lx  r3: %08lx&bslash;n&quot;
+l_string|&quot; r0: %08lx  r1: %08lx   r2: %08lx  r3: %08lx&bslash;n&quot;
 comma
 id|regs-&gt;r0
 comma
@@ -396,7 +449,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; r4: %08lx  r5: %08lx  r6: %08lx  r7: %08lx&bslash;n&quot;
+l_string|&quot; r4: %08lx  r5: %08lx   r6: %08lx  r7: %08lx&bslash;n&quot;
 comma
 id|regs-&gt;r4
 comma
@@ -410,7 +463,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; r8: %08lx  r9: %08lx r10: %08lx r11: %08lx&bslash;n&quot;
+l_string|&quot; r8: %08lx  r9: %08lx  r10: %08lx r11: %08lx&bslash;n&quot;
 comma
 id|regs-&gt;r8
 comma
@@ -436,6 +489,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+l_string|&quot;R_MMU_CAUSE: %08lx&bslash;n&quot;
+comma
+op_star
+id|R_MMU_CAUSE
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
 l_string|&quot;Process %s (pid: %d, stackpage=%08lx)&bslash;n&quot;
 comma
 id|current-&gt;comm
@@ -449,20 +511,20 @@ r_int
 id|current
 )paren
 suffix:semicolon
-multiline_comment|/* TODO, fix in_kernel detection */
-macro_line|#if 0
 multiline_comment|/*&n;         * When in-kernel, we also print out the stack and code at the&n;         * time of the fault..&n;         */
 r_if
 c_cond
 (paren
-l_int|1
-)paren
-(brace
-id|printk
+op_logical_neg
+id|user_mode
 c_func
 (paren
-l_string|&quot;&bslash;nStack: &quot;
+id|regs
 )paren
+)paren
+(brace
+r_int
+id|i
 suffix:semicolon
 id|show_stack
 c_func
@@ -473,6 +535,19 @@ r_int
 op_star
 )paren
 id|usp
+)paren
+suffix:semicolon
+multiline_comment|/* Dump kernel stack if the previous dump wasn&squot;t one.  */
+r_if
+c_cond
+(paren
+id|usp
+op_ne
+l_int|0
+)paren
+id|show_stack
+(paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|printk
@@ -493,16 +568,18 @@ r_goto
 id|bad
 suffix:semicolon
 )brace
+multiline_comment|/* Often enough the value at regs-&gt;irp does not point to&n;&t;&t;   the interesting instruction, which is most often the&n;&t;&t;   _previous_ instruction.  So we dump at an offset large&n;&t;&t;   enough that instruction decoding should be in sync at&n;&t;&t;   the interesting point, but small enough to fit on a row&n;&t;&t;   (sort of).  We point out the regs-&gt;irp location in a&n;&t;&t;   ksymoops-friendly way by wrapping the byte for that&n;&t;&t;   address in parentheses.  */
 r_for
 c_loop
 (paren
 id|i
 op_assign
-l_int|0
+op_minus
+l_int|12
 suffix:semicolon
 id|i
 OL
-l_int|20
+l_int|12
 suffix:semicolon
 id|i
 op_increment
@@ -546,6 +623,22 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;(%02x) &quot;
+comma
+id|c
+)paren
+suffix:semicolon
+r_else
 id|printk
 c_func
 (paren
@@ -555,14 +648,13 @@ id|c
 )paren
 suffix:semicolon
 )brace
-)brace
 id|printk
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 )brace
 r_void
 DECL|function|die_if_kernel
@@ -596,6 +688,11 @@ id|regs
 r_return
 suffix:semicolon
 )brace
+id|stop_watchdog
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -614,13 +711,11 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-id|show_stack
+id|reset_watchdog
 c_func
 (paren
-l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* print backtrace for kernel stack on this CPU */
 id|do_exit
 c_func
 (paren

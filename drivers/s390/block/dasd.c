@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -41,6 +41,12 @@ macro_line|#endif&t;&t;&t;&t;/*  CONFIG_DASD_FBA */
 macro_line|#ifdef CONFIG_DASD_DIAG
 macro_line|#include &quot;dasd_diag.h&quot;
 macro_line|#endif&t;&t;&t;&t;/*  CONFIG_DASD_DIAG */
+multiline_comment|/* SECTION: exported variables of dasd.c */
+DECL|variable|dasd_debug_area
+id|debug_info_t
+op_star
+id|dasd_debug_area
+suffix:semicolon
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&quot;

@@ -16,7 +16,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
@@ -23003,18 +23003,19 @@ r_int
 id|pgoff
 )paren
 (brace
-r_int
-id|error
-op_assign
-op_minus
-id|EBADF
-suffix:semicolon
 r_struct
 id|file
 op_star
 id|file
 op_assign
 l_int|NULL
+suffix:semicolon
+r_int
+r_int
+id|error
+op_assign
+op_minus
+id|EBADF
 suffix:semicolon
 id|flags
 op_and_assign
@@ -23079,6 +23080,44 @@ comma
 id|pgoff
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|error
+)paren
+op_logical_and
+id|error
+op_plus
+id|len
+op_ge
+l_int|0x80000000ULL
+)paren
+(brace
+multiline_comment|/* Result is out of bounds.  */
+id|do_munmap
+c_func
+(paren
+id|current-&gt;mm
+comma
+id|addr
+comma
+id|len
+)paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|up_write
 c_func
 (paren

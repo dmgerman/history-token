@@ -13009,6 +13009,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t; *&t;This relies on lock_kernel() stuff so wants tidying for 2.5&n;&t; */
 r_if
 c_cond
 (paren

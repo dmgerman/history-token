@@ -3907,7 +3907,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|get_lease
-r_extern
+r_static
 r_inline
 r_int
 id|get_lease

@@ -350,7 +350,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|function|inet_ifa_match
-r_extern
+r_static
 id|__inline__
 r_int
 id|inet_ifa_match
@@ -380,7 +380,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Check if a mask is acceptable.&n; */
 DECL|function|bad_mask
-r_extern
+r_static
 id|__inline__
 r_int
 id|bad_mask
@@ -444,7 +444,7 @@ r_extern
 id|rwlock_t
 id|inetdev_lock
 suffix:semicolon
-r_extern
+r_static
 id|__inline__
 r_struct
 id|in_device
@@ -499,7 +499,7 @@ r_return
 id|in_dev
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_struct
 id|in_device
@@ -535,7 +535,7 @@ op_star
 id|idev
 )paren
 suffix:semicolon
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|in_dev_put
@@ -571,7 +571,7 @@ DECL|macro|in_dev_hold
 mdefine_line|#define in_dev_hold(idev)   atomic_inc(&amp;(idev)-&gt;refcnt)
 macro_line|#endif /* __KERNEL__ */
 DECL|function|inet_make_mask
-r_extern
+r_static
 id|__inline__
 id|__u32
 id|inet_make_mask
@@ -611,7 +611,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|inet_mask_len
-r_extern
+r_static
 id|__inline__
 r_int
 id|inet_mask_len

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: checksum.h,v 1.3 2000/11/15 17:35:16 bjornw Exp $ */
+multiline_comment|/* $Id: checksum.h,v 1.4 2001/06/28 03:58:36 hp Exp $ */
 multiline_comment|/* TODO: csum_tcpudp_magic could be speeded up, and csum_fold as well */
 macro_line|#ifndef _CRIS_CHECKSUM_H
 DECL|macro|_CRIS_CHECKSUM_H
@@ -177,10 +177,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/* TODO we need to write this properly to handle userland VM exceptions!! */
-DECL|macro|csum_partial_copy_from_user
-mdefine_line|#define csum_partial_copy_from_user(a,b,c,d,errptr) csum_partial_copy_nocheck(a,b,c,d)
-macro_line|#if 0
+r_extern
 r_int
 r_int
 id|csum_partial_copy_from_user
@@ -201,9 +198,12 @@ comma
 r_int
 r_int
 id|sum
+comma
+r_int
+op_star
+id|errptr
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; *&t;This is a version of ip_compute_csum() optimized for IP headers,&n; *&t;which always checksum on 4 octet boundaries.&n; *&n; */
 DECL|function|ip_fast_csum
 r_static

@@ -105,7 +105,7 @@ DECL|macro|CO_IRQ_8259
 mdefine_line|#define&t;CO_IRQ_8259&t;12
 macro_line|#ifdef CONFIG_X86_VISWS_APIC
 DECL|function|co_cpu_write
-r_extern
+r_static
 id|__inline
 r_void
 id|co_cpu_write
@@ -139,7 +139,7 @@ id|v
 suffix:semicolon
 )brace
 DECL|function|co_cpu_read
-r_extern
+r_static
 id|__inline
 r_int
 r_int
@@ -169,7 +169,7 @@ id|reg
 suffix:semicolon
 )brace
 DECL|function|co_apic_write
-r_extern
+r_static
 id|__inline
 r_void
 id|co_apic_write
@@ -203,7 +203,7 @@ id|v
 suffix:semicolon
 )brace
 DECL|function|co_apic_read
-r_extern
+r_static
 id|__inline
 r_int
 r_int

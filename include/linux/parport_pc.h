@@ -80,7 +80,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|parport_pc_write_data
-r_extern
+r_static
 id|__inline__
 r_void
 id|parport_pc_write_data
@@ -122,7 +122,7 @@ id|p
 suffix:semicolon
 )brace
 DECL|function|parport_pc_read_data
-r_extern
+r_static
 id|__inline__
 r_int
 r_char
@@ -165,7 +165,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG_PARPORT
 DECL|function|dump_parport_state
-r_extern
+r_static
 id|__inline__
 r_void
 id|dump_parport_state
@@ -648,7 +648,7 @@ id|ctr
 suffix:semicolon
 )brace
 DECL|function|parport_pc_data_reverse
-r_extern
+r_static
 id|__inline__
 r_void
 id|parport_pc_data_reverse
@@ -670,7 +670,7 @@ l_int|0x20
 suffix:semicolon
 )brace
 DECL|function|parport_pc_data_forward
-r_extern
+r_static
 id|__inline__
 r_void
 id|parport_pc_data_forward
@@ -692,7 +692,7 @@ l_int|0x00
 suffix:semicolon
 )brace
 DECL|function|parport_pc_write_control
-r_extern
+r_static
 id|__inline__
 r_void
 id|parport_pc_write_control
@@ -760,7 +760,7 @@ id|wm
 suffix:semicolon
 )brace
 DECL|function|parport_pc_read_control
-r_extern
+r_static
 id|__inline__
 r_int
 r_char
@@ -804,7 +804,7 @@ suffix:semicolon
 multiline_comment|/* Use soft copy */
 )brace
 DECL|function|parport_pc_frob_control
-r_extern
+r_static
 id|__inline__
 r_int
 r_char
@@ -909,7 +909,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|parport_pc_read_status
-r_extern
+r_static
 id|__inline__
 r_int
 r_char
@@ -935,7 +935,7 @@ id|p
 suffix:semicolon
 )brace
 DECL|function|parport_pc_disable_irq
-r_extern
+r_static
 id|__inline__
 r_void
 id|parport_pc_disable_irq
@@ -958,7 +958,7 @@ l_int|0x00
 suffix:semicolon
 )brace
 DECL|function|parport_pc_enable_irq
-r_extern
+r_static
 id|__inline__
 r_void
 id|parport_pc_enable_irq

@@ -87,7 +87,7 @@ id|MD_RESERVED
 suffix:semicolon
 )brace
 DECL|function|level_to_pers
-r_extern
+r_static
 r_inline
 r_int
 id|level_to_pers

@@ -640,7 +640,7 @@ multiline_comment|/* Error verdict. */
 DECL|macro|IP6T_ERROR_TARGET
 mdefine_line|#define IP6T_ERROR_TARGET &quot;ERROR&quot;
 multiline_comment|/* Helper functions */
-r_extern
+r_static
 id|__inline__
 r_struct
 id|ip6t_entry_target

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Empeg empeg-car player driver&n; *&n; *&t;Copyright (C) 2000, 2001&n; *&t;    Gary Brubaker (xavyer@ix.netcom.com)&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License, as published by&n; *&t;the Free Software Foundation, version 2.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (05/30/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (04/08/2001) gb&n; *      Identify version on module load.&n; * &n; * (01/22/2001) gb&n; *&t;Added write_room() and chars_in_buffer() support. &n; * &n; * (12/21/2000) gb&n; *&t;Moved termio stuff inside the port-&gt;active check.&n; *&t;Moved MOD_DEC_USE_COUNT to end of empeg_close().&n; * &n; * (12/03/2000) gb&n; *&t;Added port-&gt;tty-&gt;ldisc.set_termios(port-&gt;tty, NULL) to empeg_open()&n; *&t;This notifies the tty driver that the termios have changed.&n; * &n; * (11/13/2000) gb&n; *&t;Moved tty-&gt;low_latency = 1 from empeg_read_bulk_callback() to empeg_open()&n; *&t;(It only needs to be set once - Doh!)&n; * &n; * (11/11/2000) gb&n; *&t;Updated to work with id_table structure.&n; * &n; * (11/04/2000) gb&n; *&t;Forked this from visor.c, and hacked it up to work with an&n; *&t;Empeg ltd. empeg-car player.  Constructive criticism welcomed.&n; *&t;I would like to say, &squot;Thank You&squot; to Greg Kroah-Hartman for the&n; *&t;use of his code, and for his guidance, advice and patience. :)&n; *&t;A &squot;Thank You&squot; is in order for John Ripley of Empeg ltd for his&n; *&t;advice, and patience too.&n; * &n; */
+multiline_comment|/*&n; * USB Empeg empeg-car player driver&n; *&n; *&t;Copyright (C) 2000, 2001&n; *&t;    Gary Brubaker (xavyer@ix.netcom.com)&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License, as published by&n; *&t;the Free Software Foundation, version 2.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (07/16/2001) gb&n; *&t;remove unused code in empeg_close() (thanks to Oliver Neukum for pointing this&n; *&t;out) and rewrote empeg_set_termios().&n; * &n; * (05/30/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (04/08/2001) gb&n; *      Identify version on module load.&n; * &n; * (01/22/2001) gb&n; *&t;Added write_room() and chars_in_buffer() support. &n; * &n; * (12/21/2000) gb&n; *&t;Moved termio stuff inside the port-&gt;active check.&n; *&t;Moved MOD_DEC_USE_COUNT to end of empeg_close().&n; * &n; * (12/03/2000) gb&n; *&t;Added port-&gt;tty-&gt;ldisc.set_termios(port-&gt;tty, NULL) to empeg_open()&n; *&t;This notifies the tty driver that the termios have changed.&n; * &n; * (11/13/2000) gb&n; *&t;Moved tty-&gt;low_latency = 1 from empeg_read_bulk_callback() to empeg_open()&n; *&t;(It only needs to be set once - Doh!)&n; * &n; * (11/11/2000) gb&n; *&t;Updated to work with id_table structure.&n; * &n; * (11/04/2000) gb&n; *&t;Forked this from visor.c, and hacked it up to work with an&n; *&t;Empeg ltd. empeg-car player.  Constructive criticism welcomed.&n; *&t;I would like to say, &squot;Thank You&squot; to Greg Kroah-Hartman for the&n; *&t;use of his code, and for his guidance, advice and patience. :)&n; *&t;A &squot;Thank You&squot; is in order for John Ripley of Empeg ltd for his&n; *&t;advice, and patience too.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -32,7 +32,7 @@ macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.1&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.2&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;, Gary Brubaker &lt;xavyer@ix.netcom.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -445,76 +445,13 @@ op_logical_neg
 id|port-&gt;active
 )paren
 (brace
-multiline_comment|/* gb - 2000/11/05&n;&t;&t; * personally, I think these termios should be set in&n;&t;&t; * empeg_startup(), but it appears doing so leads to one&n;&t;&t; * of those chicken/egg problems. :)&n;&t;&t; */
-id|port-&gt;tty-&gt;termios-&gt;c_iflag
-op_and_assign
-op_complement
+multiline_comment|/* Force default termio settings */
+id|empeg_set_termios
 (paren
-id|IGNBRK
-op_or
-id|BRKINT
-op_or
-id|PARMRK
-op_or
-id|ISTRIP
-op_or
-id|INLCR
-op_or
-id|IGNCR
-op_or
-id|ICRNL
-op_or
-id|IXON
-)paren
-suffix:semicolon
-id|port-&gt;tty-&gt;termios-&gt;c_oflag
-op_and_assign
-op_complement
-id|OPOST
-suffix:semicolon
-id|port-&gt;tty-&gt;termios-&gt;c_lflag
-op_and_assign
-op_complement
-(paren
-id|ECHO
-op_or
-id|ECHONL
-op_or
-id|ICANON
-op_or
-id|ISIG
-op_or
-id|IEXTEN
-)paren
-suffix:semicolon
-id|port-&gt;tty-&gt;termios-&gt;c_cflag
-op_and_assign
-op_complement
-(paren
-id|CSIZE
-op_or
-id|PARENB
-)paren
-suffix:semicolon
-id|port-&gt;tty-&gt;termios-&gt;c_cflag
-op_or_assign
-id|CS8
-suffix:semicolon
-multiline_comment|/* gb - 2000/12/03&n;&t;&t; * Contributed by Borislav Deianov&n;&t;&t; * Notify the tty driver that the termios have changed!!&n;&t;&t; */
-id|port-&gt;tty-&gt;ldisc
-dot
-id|set_termios
-c_func
-(paren
-id|port-&gt;tty
+id|port
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-multiline_comment|/* gb - 2000/11/05&n;&t;&t; * force low_latency on&n;&t;&t; *&n;&t;&t; * The tty_flip_buffer_push()&squot;s in empeg_read_bulk_callback() will actually&n;&t;&t; * force the data through if low_latency is set.  Otherwise the pushes are&n;&t;&t; * scheduled; this is bad as it opens up the possibility of dropping bytes&n;&t;&t; * on the floor.  We are trying to sustain high data transfer rates; and&n;&t;&t; * don&squot;t want to drop bytes on the floor.&n;&t;&t; * Moral: use low_latency - drop no bytes - life is good. :)&n;&t;&t; */
-id|port-&gt;tty-&gt;low_latency
-op_assign
-l_int|1
 suffix:semicolon
 id|port-&gt;active
 op_assign
@@ -1769,7 +1706,6 @@ op_minus
 id|ENOIOCTLCMD
 suffix:semicolon
 )brace
-multiline_comment|/* This function is all nice and good, but we don&squot;t change anything based on it :) */
 DECL|function|empeg_set_termios
 r_static
 r_void
@@ -1786,12 +1722,6 @@ op_star
 id|old_termios
 )paren
 (brace
-r_int
-r_int
-id|cflag
-op_assign
-id|port-&gt;tty-&gt;termios-&gt;c_cflag
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1801,48 +1731,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-multiline_comment|/* check that they really want us to change something */
-r_if
-c_cond
-(paren
-id|old_termios
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|cflag
-op_eq
-id|old_termios-&gt;c_cflag
-)paren
-op_logical_and
-(paren
-id|RELEVANT_IFLAG
-c_func
-(paren
-id|port-&gt;tty-&gt;termios-&gt;c_iflag
-)paren
-op_eq
-id|RELEVANT_IFLAG
-c_func
-(paren
-id|old_termios-&gt;c_iflag
-)paren
-)paren
-)paren
-(brace
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - nothing to change...&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
 (paren
@@ -1867,199 +1755,100 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* get the byte size */
-r_switch
-c_cond
+multiline_comment|/*&n;         * The empeg-car player wants these particular tty settings.&n;         * You could, for example, change the baud rate, however the&n;         * player only supports 115200 (currently), so there is really&n;         * no point in support for changes to the tty settings.&n;         * (at least for now)&n;         *&n;         * The default requirements for this device are:&n;         */
+id|port-&gt;tty-&gt;termios-&gt;c_iflag
+op_and_assign
+op_complement
 (paren
-id|cflag
-op_amp
+id|IGNBRK
+multiline_comment|/* disable ignore break */
+op_or
+id|BRKINT
+multiline_comment|/* disable break causes interrupt */
+op_or
+id|PARMRK
+multiline_comment|/* disable mark parity errors */
+op_or
+id|ISTRIP
+multiline_comment|/* disable clear high bit of input characters */
+op_or
+id|INLCR
+multiline_comment|/* disable translate NL to CR */
+op_or
+id|IGNCR
+multiline_comment|/* disable ignore CR */
+op_or
+id|ICRNL
+multiline_comment|/* disable translate CR to NL */
+op_or
+id|IXON
+)paren
+suffix:semicolon
+multiline_comment|/* disable enable XON/XOFF flow control */
+id|port-&gt;tty-&gt;termios-&gt;c_oflag
+op_and_assign
+op_complement
+id|OPOST
+suffix:semicolon
+multiline_comment|/* disable postprocess output characters */
+id|port-&gt;tty-&gt;termios-&gt;c_lflag
+op_and_assign
+op_complement
+(paren
+id|ECHO
+multiline_comment|/* disable echo input characters */
+op_or
+id|ECHONL
+multiline_comment|/* disable echo new line */
+op_or
+id|ICANON
+multiline_comment|/* disable erase, kill, werase, and rprnt special characters */
+op_or
+id|ISIG
+multiline_comment|/* disable interrupt, quit, and suspend special characters */
+op_or
+id|IEXTEN
+)paren
+suffix:semicolon
+multiline_comment|/* disable non-POSIX special characters */
+id|port-&gt;tty-&gt;termios-&gt;c_cflag
+op_and_assign
+op_complement
+(paren
 id|CSIZE
-)paren
-(brace
-r_case
-id|CS5
-suffix:colon
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - data bits = 5&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|CS6
-suffix:colon
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - data bits = 6&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|CS7
-suffix:colon
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - data bits = 7&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_case
-id|CS8
-suffix:colon
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - data bits = 8&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* determine the parity */
-r_if
-c_cond
-(paren
-id|cflag
-op_amp
+multiline_comment|/* no size */
+op_or
 id|PARENB
-)paren
-r_if
-c_cond
-(paren
-id|cflag
-op_amp
-id|PARODD
-)paren
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - parity = odd&quot;
+multiline_comment|/* disable parity bit */
+op_or
+id|CBAUD
 )paren
 suffix:semicolon
-r_else
-id|dbg
-c_func
+multiline_comment|/* clear current baud rate */
+id|port-&gt;tty-&gt;termios-&gt;c_cflag
+op_or_assign
 (paren
-id|__FUNCTION__
-l_string|&quot; - parity = even&quot;
+id|CS8
+multiline_comment|/* character size 8 bits */
+op_or
+id|B115200
 )paren
 suffix:semicolon
-r_else
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - parity = none&quot;
-)paren
+multiline_comment|/* baud rate 115200 */
+multiline_comment|/*&n;&t; * Force low_latency on; otherwise the pushes are scheduled;&n;&t; * this is bad as it opens up the possibility of dropping bytes&n;&t; * on the floor.  We don&squot;t want to drop bytes on the floor. :)&n;&t; */
+id|port-&gt;tty-&gt;low_latency
+op_assign
+l_int|1
 suffix:semicolon
-multiline_comment|/* figure out the stop bits requested */
-r_if
-c_cond
-(paren
-id|cflag
-op_amp
-id|CSTOPB
-)paren
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - stop bits = 2&quot;
-)paren
-suffix:semicolon
-r_else
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - stop bits = 1&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* figure out the flow control settings */
-r_if
-c_cond
-(paren
-id|cflag
-op_amp
-id|CRTSCTS
-)paren
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - RTS/CTS is enabled&quot;
-)paren
-suffix:semicolon
-r_else
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - RTS/CTS is disabled&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* determine software flow control */
-r_if
-c_cond
-(paren
-id|I_IXOFF
+multiline_comment|/* Notify the tty driver that the termios have changed. */
+id|port-&gt;tty-&gt;ldisc
+dot
+id|set_termios
 c_func
 (paren
 id|port-&gt;tty
-)paren
-)paren
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - XON/XOFF is enabled, XON = %2x, XOFF = %2x&quot;
 comma
-id|START_CHAR
-c_func
-(paren
-id|port-&gt;tty
-)paren
-comma
-id|STOP_CHAR
-c_func
-(paren
-id|port-&gt;tty
-)paren
-)paren
-suffix:semicolon
-r_else
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - XON/XOFF is disabled&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* get the baud rate wanted */
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - baud rate = %d&quot;
-comma
-id|tty_get_baud_rate
-c_func
-(paren
-id|port-&gt;tty
-)paren
+l_int|NULL
 )paren
 suffix:semicolon
 r_return

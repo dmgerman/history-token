@@ -156,7 +156,7 @@ DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
-r_extern
+r_static
 id|__inline__
 r_int
 id|get_order

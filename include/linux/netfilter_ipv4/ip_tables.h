@@ -632,7 +632,7 @@ multiline_comment|/* Error verdict. */
 DECL|macro|IPT_ERROR_TARGET
 mdefine_line|#define IPT_ERROR_TARGET &quot;ERROR&quot;
 multiline_comment|/* Helper functions */
-r_extern
+r_static
 id|__inline__
 r_struct
 id|ipt_entry_target

@@ -49,7 +49,7 @@ id|p
 )paren
 suffix:semicolon
 DECL|function|poll_wait
-r_extern
+r_static
 r_inline
 r_void
 id|poll_wait

@@ -3541,6 +3541,15 @@ op_star
 id|devc
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|mixer_devs
+(braket
+id|devc-&gt;my_mixerdev
+)braket
+)paren
+suffix:semicolon
 id|sound_unload_mixerdev
 c_func
 (paren

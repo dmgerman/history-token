@@ -69,7 +69,7 @@ DECL|macro|__swab64
 macro_line|#  define __swab64(x) __fswab64(x)
 macro_line|#endif /* OPTIMIZE */
 DECL|function|__fswab16
-r_extern
+r_static
 id|__inline__
 id|__const__
 id|__u16
@@ -89,7 +89,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|__swab16p
-r_extern
+r_static
 id|__inline__
 id|__u16
 id|__swab16p
@@ -109,7 +109,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|__swab16s
-r_extern
+r_static
 id|__inline__
 r_void
 id|__swab16s
@@ -128,7 +128,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|__fswab32
-r_extern
+r_static
 id|__inline__
 id|__const__
 id|__u32
@@ -148,7 +148,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|__swab32p
-r_extern
+r_static
 id|__inline__
 id|__u32
 id|__swab32p
@@ -168,7 +168,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|__swab32s
-r_extern
+r_static
 id|__inline__
 r_void
 id|__swab32s
@@ -188,7 +188,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef __BYTEORDER_HAS_U64__
 DECL|function|__fswab64
-r_extern
+r_static
 id|__inline__
 id|__const__
 id|__u64
@@ -262,7 +262,7 @@ suffix:semicolon
 macro_line|#  endif
 )brace
 DECL|function|__swab64p
-r_extern
+r_static
 id|__inline__
 id|__u64
 id|__swab64p
@@ -282,7 +282,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|__swab64s
-r_extern
+r_static
 id|__inline__
 r_void
 id|__swab64s

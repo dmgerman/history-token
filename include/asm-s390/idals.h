@@ -1,15 +1,13 @@
 multiline_comment|/* &n;   * File...........: linux/include/asm-s390x/idals.h&n;   * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n;   * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n;   * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000a&n;   &n;   * History of changes&n;   * 07/24/00 new file&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-DECL|typedef|idaw_t
-r_typedef
-r_int
-r_int
-id|idaw_t
-suffix:semicolon
+DECL|macro|IDA_SIZE_LOG
+mdefine_line|#define IDA_SIZE_LOG 12 /* 11 for 2k , 12 for 4k */
+DECL|macro|IDA_BLOCK_SIZE
+mdefine_line|#define IDA_BLOCK_SIZE (1L&lt;&lt;IDA_SIZE_LOG)
 r_static
 r_inline
-id|idaw_t
+id|addr_t
 op_star
 DECL|function|idal_alloc
 id|idal_alloc
@@ -38,7 +36,7 @@ id|nridaws
 op_star
 r_sizeof
 (paren
-id|idaw_t
+id|addr_t
 )paren
 comma
 id|GFP_ATOMIC
@@ -53,7 +51,7 @@ r_void
 DECL|function|idal_free
 id|idal_free
 (paren
-id|idaw_t
+id|addr_t
 op_star
 id|idal
 )paren
@@ -64,26 +62,26 @@ id|idal
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function: set_normalized_cda&n; * sets the address of the data in CCW&n; * if necessary it allocates an IDAL and sets sthe appropriate flags&n; */
-macro_line|#if defined (CONFIG_ARCH_S390X)
+macro_line|#if defined(CONFIG_ARCH_S390X)
 r_extern
-r_void
-id|set_normalized_cda
+r_int
+r_int
+id|__create_idal
 c_func
 (paren
-id|ccw1_t
-op_star
-id|ccw
-comma
 r_int
 r_int
 id|address
+comma
+r_int
+id|count
 )paren
 suffix:semicolon
-macro_line|#else
+macro_line|#endif
+multiline_comment|/*&n; * Function: set_normalized_cda&n; * sets the address of the data in CCW&n; * if necessary it allocates an IDAL and sets sthe appropriate flags&n; */
 r_static
 r_inline
-r_void
+r_int
 DECL|function|set_normalized_cda
 id|set_normalized_cda
 c_func
@@ -97,12 +95,78 @@ r_int
 id|address
 )paren
 (brace
-id|ccw-&gt;cda
+r_int
+id|ret
 op_assign
+l_int|0
+suffix:semicolon
+macro_line|#if defined (CONFIG_ARCH_S390X)
+r_if
+c_cond
+(paren
+(paren
+(paren
 id|address
+op_plus
+id|ccw-&gt;count
+)paren
+op_rshift
+l_int|31
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ccw-&gt;flags
+op_amp
+id|CCW_FLAG_IDA
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+id|address
+op_assign
+id|__create_idal
+c_func
+(paren
+id|address
+comma
+id|ccw-&gt;count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|address
+)paren
+id|ccw-&gt;flags
+op_or_assign
+id|CCW_FLAG_IDA
+suffix:semicolon
+r_else
+id|ret
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 macro_line|#endif
+id|ccw-&gt;cda
+op_assign
+(paren
+id|__u32
+)paren
+id|address
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Function: clear_normalized_cda&n; * releases any allocated IDAL related to the CCW&n; */
 r_static
 r_inline
@@ -115,6 +179,7 @@ op_star
 id|ccw
 )paren
 (brace
+macro_line|#if defined(CONFIG_ARCH_S390X)
 r_if
 c_cond
 (paren
@@ -128,8 +193,12 @@ id|CCW_FLAG_IDA
 id|idal_free
 (paren
 (paren
-id|idaw_t
+id|addr_t
 op_star
+)paren
+(paren
+r_int
+r_int
 )paren
 (paren
 id|ccw
@@ -146,6 +215,7 @@ op_complement
 id|CCW_FLAG_IDA
 suffix:semicolon
 )brace
+macro_line|#endif
 id|ccw
 op_member_access_from_pointer
 id|cda

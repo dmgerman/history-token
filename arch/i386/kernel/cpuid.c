@@ -99,7 +99,7 @@ l_int|3
 suffix:semicolon
 )brace
 DECL|function|do_cpuid
-r_extern
+r_static
 r_inline
 r_void
 id|do_cpuid
@@ -193,7 +193,7 @@ suffix:semicolon
 )brace
 macro_line|#else /* ! CONFIG_SMP */
 DECL|function|do_cpuid
-r_extern
+r_static
 r_inline
 r_void
 id|do_cpuid

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fsm.h,v 1.1 2000/11/30 11:21:08 bird Exp $&n; *&n; * $Log: fsm.h,v $&n; * Revision 1.1  2000/11/30 11:21:08  bird&n; * Support for new ctc driver&n; *&n; * Revision 1.1  2000/11/03 16:58:45  felfert&n; * Initial import&n; *&n; *&n; */
+multiline_comment|/* $Id: fsm.h,v 1.3 2001/06/18 16:49:19 felfert Exp $&n; */
 macro_line|#ifndef _FSM_H_
 DECL|macro|_FSM_H_
 mdefine_line|#define _FSM_H_
@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -196,6 +196,7 @@ DECL|typedef|fsm_timer
 id|fsm_timer
 suffix:semicolon
 multiline_comment|/**&n; * Creates an FSM&n; *&n; * @param name        Name of this instance for logging purposes.&n; * @param state_names An array of names for all states for logging purposes.&n; * @param event_names An array of names for all events for logging purposes.&n; * @param nr_states   Number of states for this instance.&n; * @param nr_events   Number of events for this instance.&n; * @param tmpl        An array of fsm_nodes, describing this FSM.&n; * @param tmpl_len    Length of the describing array.&n; * @param order       Parameter for allocation of the FSM data structs.&n; */
+r_extern
 id|fsm_instance
 op_star
 id|init_fsm

@@ -46,6 +46,8 @@ l_string|&quot;a&quot;
 (paren
 id|address
 )paren
+suffix:colon
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return

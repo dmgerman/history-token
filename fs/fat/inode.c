@@ -26,8 +26,6 @@ r_extern
 r_struct
 id|cvf_format
 id|default_cvf
-comma
-id|bigblock_cvf
 suffix:semicolon
 multiline_comment|/* #define FAT_PARANOIA 1 */
 DECL|macro|DEBUG_LEVEL
@@ -2447,21 +2445,6 @@ id|hard_blksize
 op_assign
 l_int|512
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hard_blksize
-op_ne
-l_int|512
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;MSDOS: Hardware sector size is %d&bslash;n&quot;
-comma
-id|hard_blksize
-)paren
-suffix:semicolon
 id|opts.isvfat
 op_assign
 id|sbi-&gt;options.isvfat
@@ -2552,13 +2535,14 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|brelse
+id|printk
+c_func
 (paren
-id|bh
+l_string|&quot;FAT: unable to read boot sector&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|out_no_bread
+id|out_fail
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The DOS3 partition size limit is *not* 32M as many people think.  &n; * Instead, it is 64K sectors (with the usual sector size being&n; * 512 bytes, leading to a 32M limit).&n; * &n; * DOS 3 partition managers got around this problem by faking a &n; * larger sector size, ie treating multiple physical sectors as &n; * a single logical sector.&n; * &n; * We can accommodate this scheme by adjusting our cluster size,&n; * fat_start, and data_start by an appropriate value.&n; *&n; * (by Drew Eckhardt)&n; */
@@ -2609,7 +2593,7 @@ l_int|1
 id|printk
 c_func
 (paren
-l_string|&quot;fatfs: bogus logical sector size %d&bslash;n&quot;
+l_string|&quot;FAT: bogus logical sector size %d&bslash;n&quot;
 comma
 id|logical_sector_size
 )paren
@@ -2648,9 +2632,36 @@ l_int|1
 id|printk
 c_func
 (paren
-l_string|&quot;fatfs: bogus cluster size %d&bslash;n&quot;
+l_string|&quot;FAT: bogus cluster size %d&bslash;n&quot;
 comma
 id|sbi-&gt;cluster_size
+)paren
+suffix:semicolon
+id|brelse
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+r_goto
+id|out_invalid
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|logical_sector_size
+OL
+id|hard_blksize
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;FAT: logical sector size too small for device&quot;
+l_string|&quot; (logical sector size = %d)&bslash;n&quot;
+comma
+id|logical_sector_size
 )paren
 suffix:semicolon
 id|brelse
@@ -2807,7 +2818,8 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;FAT: bread failed, fsinfo block %d&bslash;n&quot;
+l_string|&quot;FAT: bread failed, FSINFO block&quot;
+l_string|&quot; (blocknr = %d)&bslash;n&quot;
 comma
 id|fsinfo_block
 )paren
@@ -3130,14 +3142,6 @@ id|logical_sector_size
 op_minus
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sb-&gt;s_blocksize
-op_ge
-id|hard_blksize
-)paren
-(brace
 id|set_blocksize
 c_func
 (paren
@@ -3151,23 +3155,6 @@ op_assign
 op_amp
 id|default_cvf
 suffix:semicolon
-)brace
-r_else
-(brace
-id|set_blocksize
-c_func
-(paren
-id|sb-&gt;s_dev
-comma
-id|hard_blksize
-)paren
-suffix:semicolon
-id|sbi-&gt;cvf_format
-op_assign
-op_amp
-id|bigblock_cvf
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3261,7 +3248,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;[me=0x%x,cs=%d,#f=%d,fs=%d,fl=%ld,ds=%ld,de=%d,data=%ld,&quot;
-l_string|&quot;se=%d,ts=%ld,ls=%d,rc=%ld,fc=%u]&bslash;n&quot;
+l_string|&quot;se=%u,ts=%u,ls=%d,rc=%ld,fc=%u]&bslash;n&quot;
 comma
 id|b-&gt;media
 comma
@@ -3282,7 +3269,9 @@ comma
 id|CF_LE_W
 c_func
 (paren
-op_star
+id|get_unaligned
+c_func
+(paren
 (paren
 r_int
 r_int
@@ -3291,12 +3280,13 @@ op_star
 op_amp
 id|b-&gt;sectors
 )paren
-comma
-(paren
-r_int
-r_int
 )paren
+comma
+id|CF_LE_L
+c_func
+(paren
 id|b-&gt;total_sect
+)paren
 comma
 id|logical_sector_size
 comma
@@ -3307,7 +3297,7 @@ id|sbi-&gt;free_clusters
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;Transaction block size = %d&bslash;n&quot;
+l_string|&quot;hard sector size = %d&bslash;n&quot;
 comma
 id|hard_blksize
 )paren
@@ -3563,7 +3553,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;get root inode failed&bslash;n&quot;
+l_string|&quot;FAT: get root inode failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iput
@@ -3597,10 +3587,11 @@ c_cond
 op_logical_neg
 id|silent
 )paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;VFS: Can&squot;t find a valid MSDOS filesystem on dev %s.&bslash;n&quot;
+l_string|&quot;VFS: Can&squot;t find a valid FAT filesystem on dev %s.&bslash;n&quot;
 comma
 id|kdevname
 c_func
@@ -3609,17 +3600,7 @@ id|sb-&gt;s_dev
 )paren
 )paren
 suffix:semicolon
-r_goto
-id|out_fail
-suffix:semicolon
-id|out_no_bread
-suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot;FAT bread failed&bslash;n&quot;
-)paren
-suffix:semicolon
+)brace
 id|out_fail
 suffix:colon
 r_if
@@ -3631,7 +3612,7 @@ id|opts.iocharset
 id|printk
 c_func
 (paren
-l_string|&quot;VFS: freeing iocharset=%s&bslash;n&quot;
+l_string|&quot;FAT: freeing iocharset=%s&bslash;n&quot;
 comma
 id|opts.iocharset
 )paren

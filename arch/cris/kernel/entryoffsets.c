@@ -9,10 +9,14 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* Exclude everything except the assembly by wrapping it in &quot;.if 0&quot;.  */
+DECL|macro|VAL
+macro_line|#undef VAL
+DECL|macro|VAL
+mdefine_line|#define VAL(NAME, VALUE)&t;&t;&t;&bslash;&n;void NAME ## _fun (void)&t;&t;&t;&bslash;&n; {&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ (&quot;.endif &bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;   #NAME &quot; = %0 &bslash;n&quot;&t;&t;&t;&bslash;&n;&t;   &quot;.if 0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;   : : &quot;i&quot; (VALUE));&t;&t;&t;&bslash;&n; }
 DECL|macro|OF
 macro_line|#undef OF
 DECL|macro|OF
-mdefine_line|#define OF(NAME, TYPE, MEMBER)&t;&t;&t;&bslash;&n;void NAME ## _fun (void)&t;&t;&t;&bslash;&n; {&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ (&quot;.endif &bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;   #NAME &quot; = %0 &bslash;n&quot;&t;&t;&t;&bslash;&n;&t;   &quot;.if 0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;   : : &quot;i&quot; (offsetof (TYPE, MEMBER)));&t;&bslash;&n; }
+mdefine_line|#define OF(NAME, TYPE, MEMBER)&t;&t;&t;&bslash;&n;  VAL (NAME, offsetof (TYPE, MEMBER))
 multiline_comment|/* task_struct offsets.  */
 id|OF
 (paren
@@ -168,6 +172,13 @@ r_struct
 id|thread_struct
 comma
 id|dccr
+)paren
+multiline_comment|/* linux/sched.h values - doesn&squot;t have an #ifdef __ASSEMBLY__ for these.  */
+id|VAL
+(paren
+id|LCLONE_VM
+comma
+id|CLONE_VM
 )paren
 id|__asm__
 (paren

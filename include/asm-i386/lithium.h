@@ -20,7 +20,7 @@ mdefine_line|#define LI_PCI_INTEN    0x46
 macro_line|#ifdef CONFIG_X86_VISWS_APIC
 multiline_comment|/* More special purpose macros... */
 DECL|function|li_pcia_write16
-r_extern
+r_static
 id|__inline
 r_void
 id|li_pcia_write16
@@ -54,7 +54,7 @@ id|v
 suffix:semicolon
 )brace
 DECL|function|li_pcia_read16
-r_extern
+r_static
 id|__inline
 r_int
 r_int
@@ -84,7 +84,7 @@ id|reg
 suffix:semicolon
 )brace
 DECL|function|li_pcib_write16
-r_extern
+r_static
 id|__inline
 r_void
 id|li_pcib_write16
@@ -118,7 +118,7 @@ id|v
 suffix:semicolon
 )brace
 DECL|function|li_pcib_read16
-r_extern
+r_static
 id|__inline
 r_int
 r_int

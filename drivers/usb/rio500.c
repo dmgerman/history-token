@@ -13,10 +13,11 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &quot;rio500_usb.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.1&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Cesar Miquel &lt;miquel@df.uba.ar&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -42,6 +43,11 @@ op_star
 id|rio_dev
 suffix:semicolon
 multiline_comment|/* init: probe_rio */
+DECL|member|devfs
+id|devfs_handle_t
+id|devfs
+suffix:semicolon
+multiline_comment|/* devfs device */
 DECL|member|ifnum
 r_int
 r_int
@@ -89,6 +95,11 @@ suffix:semicolon
 multiline_comment|/* general race avoidance */
 )brace
 suffix:semicolon
+r_extern
+id|devfs_handle_t
+id|usb_devfs_handle
+suffix:semicolon
+multiline_comment|/* /dev/usb dir. */
 DECL|variable|rio_instance
 r_static
 r_struct
@@ -1343,8 +1354,6 @@ suffix:semicolon
 r_char
 op_star
 id|ibuf
-op_assign
-id|rio-&gt;ibuf
 suffix:semicolon
 multiline_comment|/* Sanity check to make sure rio is connected, powered, etc */
 r_if
@@ -1365,6 +1374,10 @@ l_int|NULL
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+id|ibuf
+op_assign
+id|rio-&gt;ibuf
 suffix:semicolon
 id|read_count
 op_assign
@@ -1675,6 +1688,35 @@ r_return
 id|read_count
 suffix:semicolon
 )brace
+r_static
+r_struct
+DECL|variable|usb_rio_fops
+id|file_operations
+id|usb_rio_fops
+op_assign
+(brace
+id|read
+suffix:colon
+id|read_rio
+comma
+id|write
+suffix:colon
+id|write_rio
+comma
+id|ioctl
+suffix:colon
+id|ioctl_rio
+comma
+id|open
+suffix:colon
+id|open_rio
+comma
+id|release
+suffix:colon
+id|close_rio
+comma
+)brace
+suffix:semicolon
 DECL|function|probe_rio
 r_static
 r_void
@@ -1806,6 +1848,50 @@ comma
 id|rio-&gt;ibuf
 )paren
 suffix:semicolon
+id|rio-&gt;devfs
+op_assign
+id|devfs_register
+c_func
+(paren
+id|usb_devfs_handle
+comma
+l_string|&quot;rio500&quot;
+comma
+id|DEVFS_FL_DEFAULT
+comma
+id|USB_MAJOR
+comma
+id|RIO_MINOR
+comma
+id|S_IFCHR
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
+op_or
+id|S_IRGRP
+op_or
+id|S_IWGRP
+comma
+op_amp
+id|usb_rio_fops
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rio-&gt;devfs
+op_eq
+l_int|NULL
+)paren
+id|dbg
+c_func
+(paren
+l_string|&quot;probe_rio: device node registration failed&quot;
+)paren
+suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
@@ -1846,6 +1932,12 @@ id|rio_usb_data
 op_star
 )paren
 id|ptr
+suffix:semicolon
+id|devfs_unregister
+c_func
+(paren
+id|rio-&gt;devfs
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1888,35 +1980,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-r_static
-r_struct
-DECL|variable|usb_rio_fops
-id|file_operations
-id|usb_rio_fops
-op_assign
-(brace
-id|read
-suffix:colon
-id|read_rio
-comma
-id|write
-suffix:colon
-id|write_rio
-comma
-id|ioctl
-suffix:colon
-id|ioctl_rio
-comma
-id|open
-suffix:colon
-id|open_rio
-comma
-id|release
-suffix:colon
-id|close_rio
-comma
-)brace
-suffix:semicolon
 DECL|variable|rio_table
 r_static
 r_struct

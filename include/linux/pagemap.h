@@ -83,7 +83,7 @@ r_int
 suffix:semicolon
 multiline_comment|/*&n; * We use a power-of-two hash table to avoid a modulus,&n; * and get a reasonable hash by knowing roughly how the&n; * inode pointer and indexes are distributed (ie, we&n; * roughly know which bits are &quot;significant&quot;)&n; *&n; * For the time being it will work for struct address_space too (most of&n; * them sitting inside the inodes). We might want to change it later.&n; */
 DECL|function|_page_hashfn
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -276,7 +276,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|function|wait_on_page
-r_extern
+r_static
 r_inline
 r_void
 id|wait_on_page

@@ -142,9 +142,9 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|module_init
-mdefine_line|#define module_init(x) &bslash;&n;&t;int init_module(void) __attribute__((alias(#x))); &bslash;&n;&t;extern inline __init_module_func_t __init_module_inline(void) &bslash;&n;&t;{ return x; }
+mdefine_line|#define module_init(x) &bslash;&n;&t;int init_module(void) __attribute__((alias(#x))); &bslash;&n;&t;static inline __init_module_func_t __init_module_inline(void) &bslash;&n;&t;{ return x; }
 DECL|macro|module_exit
-mdefine_line|#define module_exit(x) &bslash;&n;&t;void cleanup_module(void) __attribute__((alias(#x))); &bslash;&n;&t;extern inline __cleanup_module_func_t __cleanup_module_inline(void) &bslash;&n;&t;{ return x; }
+mdefine_line|#define module_exit(x) &bslash;&n;&t;void cleanup_module(void) __attribute__((alias(#x))); &bslash;&n;&t;static inline __cleanup_module_func_t __cleanup_module_inline(void) &bslash;&n;&t;{ return x; }
 DECL|macro|__setup
 mdefine_line|#define __setup(str,func) /* nothing */
 macro_line|#endif

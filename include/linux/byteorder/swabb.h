@@ -49,7 +49,7 @@ DECL|macro|__swahb32
 macro_line|#  define __swahb32(x) __fswahb32(x)
 macro_line|#endif /* OPTIMIZE */
 DECL|function|__fswahw32
-r_extern
+r_static
 id|__inline__
 id|__const__
 id|__u32
@@ -69,7 +69,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|__swahw32p
-r_extern
+r_static
 id|__inline__
 id|__u32
 id|__swahw32p
@@ -89,7 +89,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|__swahw32s
-r_extern
+r_static
 id|__inline__
 r_void
 id|__swahw32s
@@ -108,7 +108,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|__fswahb32
-r_extern
+r_static
 id|__inline__
 id|__const__
 id|__u32
@@ -128,7 +128,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|__swahb32p
-r_extern
+r_static
 id|__inline__
 id|__u32
 id|__swahb32p
@@ -148,7 +148,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|__swahb32s
-r_extern
+r_static
 id|__inline__
 r_void
 id|__swahb32s

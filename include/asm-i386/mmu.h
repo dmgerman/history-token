@@ -10,6 +10,11 @@ r_void
 op_star
 id|segments
 suffix:semicolon
+DECL|member|cpuvalid
+r_int
+r_int
+id|cpuvalid
+suffix:semicolon
 DECL|typedef|mm_context_t
 )brace
 id|mm_context_t

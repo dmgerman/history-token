@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *      linux/drivers/char/riscom.c  -- RISCom/8 multiport serial driver.&n; *&n; *      Copyright (C) 1994-1996  Dmitry Gorodchanin (pgmdsg@ibi.com)&n; *&n; *      This code is loosely based on the Linux serial driver, written by&n; *      Linus Torvalds, Theodore T&squot;so and others. The RISCom/8 card &n; *      programming info was obtained from various drivers for other OSes &n; *&t;(FreeBSD, ISC, etc), but no source code from those drivers were &n; *&t;directly included in this driver.&n; *&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *&t;Revision 1.0 &n; */
+multiline_comment|/*&n; *      linux/drivers/char/riscom.c  -- RISCom/8 multiport serial driver.&n; *&n; *      Copyright (C) 1994-1996  Dmitry Gorodchanin (pgmdsg@ibi.com)&n; *&n; *      This code is loosely based on the Linux serial driver, written by&n; *      Linus Torvalds, Theodore T&squot;so and others. The RISCom/8 card &n; *      programming info was obtained from various drivers for other OSes &n; *&t;(FreeBSD, ISC, etc), but no source code from those drivers were &n; *&t;directly included in this driver.&n; *&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *&t;Revision 1.1&n; *&n; *&t;ChangeLog:&n; *&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 27-Jun-2001&n; *&t;- get rid of check_region and several cleanups&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -179,38 +179,30 @@ id|RC_NBOARD
 op_assign
 (brace
 (brace
-l_int|0
-comma
+id|base
+suffix:colon
 id|RC_IOBASE1
 comma
-l_int|0
-comma
 )brace
 comma
 (brace
-l_int|0
-comma
+id|base
+suffix:colon
 id|RC_IOBASE2
 comma
-l_int|0
-comma
 )brace
 comma
 (brace
-l_int|0
-comma
+id|base
+suffix:colon
 id|RC_IOBASE3
 comma
-l_int|0
-comma
 )brace
 comma
 (brace
-l_int|0
-comma
+id|base
+suffix:colon
 id|RC_IOBASE4
-comma
-l_int|0
 comma
 )brace
 comma
@@ -361,17 +353,21 @@ macro_line|#ifdef RISCOM_PARANOIA_CHECK
 r_static
 r_const
 r_char
-op_star
 id|badmagic
+(braket
+)braket
 op_assign
+id|KERN_INFO
 l_string|&quot;rc: Warning: bad riscom port magic number for device %s in %s&bslash;n&quot;
 suffix:semicolon
 r_static
 r_const
 r_char
-op_star
 id|badinfo
+(braket
+)braket
 op_assign
+id|KERN_INFO
 l_string|&quot;rc: Warning: null riscom port for device %s in %s&bslash;n&quot;
 suffix:semicolon
 r_if
@@ -627,6 +623,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;rc%d: Timeout waiting for CCR.&bslash;n&quot;
 comma
 id|board_No
@@ -638,11 +635,11 @@ id|bp
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  RISCom/8 probe functions.&n; */
-DECL|function|rc_check_io_range
+DECL|function|rc_request_io_range
 r_static
 r_inline
 r_int
-id|rc_check_io_range
+id|rc_request_io_range
 c_func
 (paren
 r_struct
@@ -672,77 +669,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|check_region
-c_func
-(paren
-id|RC_TO_ISA
-c_func
-(paren
-id|rc_ioport
-(braket
-id|i
-)braket
-)paren
-op_plus
-id|bp-&gt;base
-comma
-l_int|1
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;rc%d: Skipping probe at 0x%03x. I/O address in use.&bslash;n&quot;
-comma
-id|board_No
-c_func
-(paren
-id|bp
-)paren
-comma
-id|bp-&gt;base
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|rc_request_io_range
-r_static
-r_inline
-r_void
-id|rc_request_io_range
-c_func
-(paren
-r_struct
-id|riscom_board
-op_star
-r_const
-id|bp
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|RC_NIOPORT
-suffix:semicolon
-id|i
-op_increment
-)paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -761,6 +688,61 @@ l_int|1
 comma
 l_string|&quot;RISCom/8&quot;
 )paren
+)paren
+(brace
+r_goto
+id|out_release
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+id|out_release
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;rc%d: Skipping probe at 0x%03x. IO address in use.&bslash;n&quot;
+comma
+id|board_No
+c_func
+(paren
+id|bp
+)paren
+comma
+id|bp-&gt;base
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_decrement
+id|i
+op_ge
+l_int|0
+)paren
+(brace
+id|release_region
+c_func
+(paren
+id|RC_TO_ISA
+c_func
+(paren
+id|rc_ioport
+(braket
+id|i
+)braket
+)paren
+op_plus
+id|bp-&gt;base
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|rc_release_io_range
@@ -1065,7 +1047,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rc_check_io_range
+id|rc_request_io_range
 c_func
 (paren
 id|bp
@@ -1150,6 +1132,7 @@ l_int|0xa5
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;rc%d: RISCom/8 Board at 0x%03x not found.&bslash;n&quot;
 comma
 id|board_No
@@ -1161,8 +1144,8 @@ comma
 id|bp-&gt;base
 )paren
 suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|out_release
 suffix:semicolon
 )brace
 multiline_comment|/* It&squot;s time to find IRQ for this board */
@@ -1306,7 +1289,9 @@ id|GIVR_IT_TX
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: RISCom/8 Board at 0x%03x not found.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;rc%d: RISCom/8 Board at 0x%03x not &quot;
+l_string|&quot;found.&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -1317,8 +1302,8 @@ comma
 id|bp-&gt;base
 )paren
 suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|out_release
 suffix:semicolon
 )brace
 )brace
@@ -1333,7 +1318,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: Can&squot;t find IRQ for RISCom/8 board at 0x%03x.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;rc%d: Can&squot;t find IRQ for RISCom/8 board &quot;
+l_string|&quot;at 0x%03x.&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -1344,16 +1331,10 @@ comma
 id|bp-&gt;base
 )paren
 suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|out_release
 suffix:semicolon
 )brace
-id|rc_request_io_range
-c_func
-(paren
-id|bp
-)paren
-suffix:semicolon
 id|bp-&gt;irq
 op_assign
 id|irqs
@@ -1365,7 +1346,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: RISCom/8 Rev. %c board detected at 0x%03x, IRQ %d.&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;rc%d: RISCom/8 Rev. %c board detected at &quot;
+l_string|&quot;0x%03x, IRQ %d.&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -1395,6 +1378,17 @@ id|bp-&gt;irq
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|out_release
+suffix:colon
+id|rc_release_io_range
+c_func
+(paren
+id|bp
+)paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * &n; *  Interrupt processing routines.&n; * &n; */
@@ -1524,6 +1518,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;rc%d: %s interrupt from invalid port %d&bslash;n&quot;
 comma
 id|board_No
@@ -1606,7 +1601,9 @@ id|TTY_FLIPBUF_SIZE
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: port %d: Working around flip buffer overflow.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;rc%d: port %d: Working around flip &quot;
+l_string|&quot;buffer overflow.&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -1650,7 +1647,8 @@ macro_line|#if 0&t;&t;
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: port %d: Overrun. Total %ld overruns.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;rc%d: port %d: Overrun. Total %ld overruns&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -1718,7 +1716,9 @@ id|RCSR_TOUT
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: port %d: Receiver timeout. Hardware problems ?&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;rc%d: port %d: Receiver timeout. &quot;
+l_string|&quot;Hardware problems ?&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -1748,6 +1748,7 @@ id|RCSR_BREAK
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;rc%d: port %d: Handling break...&bslash;n&quot;
 comma
 id|board_No
@@ -1945,7 +1946,9 @@ id|TTY_FLIPBUF_SIZE
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: port %d: Working around flip buffer overflow.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;rc%d: port %d: Working around &quot;
+l_string|&quot;flip buffer overflow.&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -2787,7 +2790,9 @@ id|RC_BSR_TOUT
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: Got timeout. Hardware error ?&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;rc%d: Got timeout. Hardware &quot;
+l_string|&quot;error?&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -2854,7 +2859,9 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: Bad receive ack 0x%02x.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;rc%d: Bad receive ack &quot;
+l_string|&quot;0x%02x.&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -2906,7 +2913,9 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: Bad transmit ack 0x%02x.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;rc%d: Bad transmit ack &quot;
+l_string|&quot;0x%02x.&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -2952,7 +2961,9 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: Bad modem ack 0x%02x.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;rc%d: Bad modem ack &quot;
+l_string|&quot;0x%02x.&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -4264,6 +4275,7 @@ macro_line|#ifdef RC_REPORT_OVERRUN
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;rc%d: port %d: Total %ld overruns were detected.&bslash;n&quot;
 comma
 id|board_No
@@ -4290,6 +4302,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;rc%d: port %d: FIFO hits [ &quot;
 comma
 id|board_No
@@ -4480,7 +4493,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: rc_shutdown_port: bad board count: %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;rc%d: rc_shutdown_port: &quot;
+l_string|&quot;bad board count: %d&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -5354,16 +5369,9 @@ c_func
 id|filp
 )paren
 )paren
-(brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
+r_goto
+id|out
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|bp
 op_assign
 id|port_Board
@@ -5391,6 +5399,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;rc%d: rc_close: bad port count;&quot;
 l_string|&quot; tty-&gt;count is 1, port count is %d&bslash;n&quot;
 comma
@@ -5420,7 +5429,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;rc%d: rc_close: bad port count for tty%d: %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;rc%d: rc_close: bad port count &quot;
+l_string|&quot;for tty%d: %d&bslash;n&quot;
 comma
 id|board_No
 c_func
@@ -5447,16 +5458,9 @@ c_cond
 (paren
 id|port-&gt;count
 )paren
-(brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
+r_goto
+id|out
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|port-&gt;flags
 op_or_assign
 id|ASYNC_CLOSING
@@ -5688,6 +5692,8 @@ op_amp
 id|port-&gt;close_wait
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|restore_flags
 c_func
 (paren
@@ -6207,16 +6213,9 @@ id|SERIAL_XMIT_SIZE
 op_minus
 l_int|1
 )paren
-(brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
+r_goto
+id|out
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|port-&gt;xmit_buf
 (braket
 id|port-&gt;xmit_head
@@ -6234,6 +6233,8 @@ suffix:semicolon
 id|port-&gt;xmit_cnt
 op_increment
 suffix:semicolon
+id|out
+suffix:colon
 id|restore_flags
 c_func
 (paren
@@ -6737,6 +6738,7 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
+r_return
 id|put_user
 c_func
 (paren
@@ -6744,9 +6746,6 @@ id|result
 comma
 id|value
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|rc_set_modem_info
@@ -6771,9 +6770,6 @@ id|value
 )paren
 (brace
 r_int
-id|error
-suffix:semicolon
-r_int
 r_int
 id|arg
 suffix:semicolon
@@ -6792,8 +6788,9 @@ c_func
 id|port
 )paren
 suffix:semicolon
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -6801,14 +6798,10 @@ id|arg
 comma
 id|value
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 r_switch
 c_cond
@@ -7175,36 +7168,9 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-id|error
-suffix:semicolon
-id|error
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|newinfo
-comma
-r_sizeof
-(paren
-id|tmp
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
 id|copy_from_user
 c_func
 (paren
@@ -7218,6 +7184,10 @@ r_sizeof
 id|tmp
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 macro_line|#if 0&t;
 r_if
@@ -7456,36 +7426,6 @@ c_func
 id|port
 )paren
 suffix:semicolon
-r_int
-id|error
-suffix:semicolon
-id|error
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|retinfo
-comma
-r_sizeof
-(paren
-id|tmp
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
 id|memset
 c_func
 (paren
@@ -7554,6 +7494,7 @@ id|tmp.xmit_fifo_size
 op_assign
 id|CD180_NFIFO
 suffix:semicolon
+r_return
 id|copy_to_user
 c_func
 (paren
@@ -7567,8 +7508,11 @@ r_sizeof
 id|tmp
 )paren
 )paren
-suffix:semicolon
-r_return
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
@@ -7608,9 +7552,6 @@ id|riscom_port
 op_star
 )paren
 id|tty-&gt;driver_data
-suffix:semicolon
-r_int
-id|error
 suffix:semicolon
 r_int
 id|retval
@@ -7683,8 +7624,7 @@ l_int|4
 )paren
 suffix:semicolon
 multiline_comment|/* 1/4 second */
-r_return
-l_int|0
+r_break
 suffix:semicolon
 r_case
 id|TCSBRKP
@@ -7735,8 +7675,7 @@ op_div
 l_int|4
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_break
 suffix:semicolon
 r_case
 id|TIOCGSOFTCAR
@@ -7767,8 +7706,9 @@ suffix:semicolon
 r_case
 id|TIOCSSOFTCAR
 suffix:colon
-id|retval
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -7781,14 +7721,10 @@ op_star
 )paren
 id|arg
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
 )paren
 r_return
-id|retval
+op_minus
+id|EFAULT
 suffix:semicolon
 id|tty-&gt;termios-&gt;c_cflag
 op_assign
@@ -7810,40 +7746,11 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_break
 suffix:semicolon
 r_case
 id|TIOCMGET
 suffix:colon
-id|error
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
 r_return
 id|rc_get_modem_info
 c_func
@@ -8818,6 +8725,7 @@ id|GFP_KERNEL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;rc: Couldn&squot;t get free page.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -9027,7 +8935,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;rc: Couldn&squot;t register RISCom/8 driver, error = %d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;rc: Couldn&squot;t register RISCom/8 driver, &quot;
+l_string|&quot;error = %d&bslash;n&quot;
 comma
 id|error
 )paren
@@ -9071,7 +8981,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;rc: Couldn&squot;t register RISCom/8 callout driver, error = %d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;rc: Couldn&squot;t register RISCom/8 callout &quot;
+l_string|&quot;driver, error = %d&bslash;n&quot;
 comma
 id|error
 )paren
@@ -9399,6 +9311,31 @@ id|riscom8_setup
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;rc: SDL RISCom/8 card driver v1.1, (c) D.Gorodchanin &quot;
+l_string|&quot;1994-1996.&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|no_boards_msg
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;rc: No RISCom/8 boards detected.&bslash;n&quot;
+suffix:semicolon
 multiline_comment|/* &n; * This routine must be called by kernel at boot time &n; */
 DECL|function|riscom8_init
 r_static
@@ -9421,7 +9358,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;rc: SDL RISCom/8 card driver v1.0, (c) D.Gorodchanin 1994-1996.&bslash;n&quot;
+id|banner
 )paren
 suffix:semicolon
 r_if
@@ -9489,7 +9426,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;rc: No RISCom/8 boards detected.&bslash;n&quot;
+id|no_boards_msg
 )paren
 suffix:semicolon
 r_return

@@ -238,7 +238,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|autofs_sbi
-r_extern
+r_static
 r_inline
 r_struct
 id|autofs_sb_info

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/char/hwc_tty.c&n; *    HWC line mode terminal driver.&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;peschke@fh-brandenburg.de&gt;&n; *&n; *  Thanks to Martin Schwidefsky.&n; */
+multiline_comment|/*&n; *  drivers/s390/char/hwc_tty.c&n; *    HWC line mode terminal driver.&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&n; *  Thanks to Martin Schwidefsky.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;hwc_rw.h&quot;
+macro_line|#include &quot;ctrlchar.h&quot;
 DECL|macro|HWC_TTY_PRINT_HEADER
 mdefine_line|#define HWC_TTY_PRINT_HEADER &quot;hwc tty driver: &quot;
 DECL|macro|HWC_TTY_BUF_SIZE
@@ -768,21 +769,17 @@ id|hwc_tty_init
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_3215_CONSOLE) || defined(CONFIG_3270_CONSOLE)
 r_if
 c_cond
 (paren
-id|MACHINE_IS_VM
+op_logical_neg
+id|CONSOLE_IS_HWC
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
+id|ctrlchar_init
 (paren
-id|MACHINE_IS_P390
 )paren
-r_return
 suffix:semicolon
 id|memset
 (paren

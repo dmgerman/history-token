@@ -119,6 +119,8 @@ id|x
 suffix:colon
 l_string|&quot;memory&quot;
 comma
+l_string|&quot;cc&quot;
+comma
 l_string|&quot;0&quot;
 comma
 l_string|&quot;1&quot;
@@ -192,6 +194,8 @@ id|x
 suffix:colon
 l_string|&quot;memory&quot;
 comma
+l_string|&quot;cc&quot;
+comma
 l_string|&quot;0&quot;
 comma
 l_string|&quot;1&quot;
@@ -243,6 +247,8 @@ id|ptr
 suffix:colon
 l_string|&quot;memory&quot;
 comma
+l_string|&quot;cc&quot;
+comma
 l_string|&quot;0&quot;
 )paren
 suffix:semicolon
@@ -289,6 +295,8 @@ id|ptr
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 comma
 l_string|&quot;0&quot;
 )paren
@@ -341,15 +349,15 @@ mdefine_line|#define __save_flags(x) &bslash;&n;        __asm__ __volatile__(&qu
 DECL|macro|__restore_flags
 mdefine_line|#define __restore_flags(x) &bslash;&n;        __asm__ __volatile__(&quot;ssm   %0&quot; : : &quot;m&quot; (x) : &quot;memory&quot;)
 DECL|macro|__load_psw
-mdefine_line|#define __load_psw(psw) &bslash;&n;        __asm__ __volatile__(&quot;lpswe %0&quot; : : &quot;m&quot; (psw));
+mdefine_line|#define __load_psw(psw) &bslash;&n;        __asm__ __volatile__(&quot;lpswe %0&quot; : : &quot;m&quot; (psw) : &quot;cc&quot; );
 DECL|macro|__ctl_load
 mdefine_line|#define __ctl_load(array, low, high) ({ &bslash;&n;&t;__asm__ __volatile__ ( &bslash;&n;&t;&t;&quot;   la    1,%0&bslash;n&quot; &bslash;&n;&t;&t;&quot;   bras  2,0f&bslash;n&quot; &bslash;&n;                &quot;   lctlg 0,0,0(1)&bslash;n&quot; &bslash;&n;&t;&t;&quot;0: ex    %1,0(2)&quot; &bslash;&n;&t;&t;: : &quot;m&quot; (array), &quot;a&quot; (((low)&lt;&lt;4)+(high)) : &quot;1&quot;, &quot;2&quot; ); &bslash;&n;&t;})
 DECL|macro|__ctl_store
 mdefine_line|#define __ctl_store(array, low, high) ({ &bslash;&n;&t;__asm__ __volatile__ ( &bslash;&n;&t;&t;&quot;   la    1,%0&bslash;n&quot; &bslash;&n;&t;&t;&quot;   bras  2,0f&bslash;n&quot; &bslash;&n;&t;&t;&quot;   stctg 0,0,0(1)&bslash;n&quot; &bslash;&n;&t;&t;&quot;0: ex    %1,0(2)&quot; &bslash;&n;&t;&t;: &quot;=m&quot; (array) : &quot;a&quot; (((low)&lt;&lt;4)+(high)): &quot;1&quot;, &quot;2&quot; ); &bslash;&n;&t;})
 DECL|macro|__ctl_set_bit
-mdefine_line|#define __ctl_set_bit(cr, bit) ({ &bslash;&n;        __u8 dummy[24]; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;    la    1,%0&bslash;n&quot;       /* align to 8 byte */ &bslash;&n;                &quot;    aghi  1,7&bslash;n&quot; &bslash;&n;                &quot;    nill  1,0xfff8&bslash;n&quot; &bslash;&n;                &quot;    bras  2,0f&bslash;n&quot;       /* skip indirect insns */ &bslash;&n;                &quot;    stctg 0,0,0(1)&bslash;n&quot; &bslash;&n;                &quot;    lctlg 0,0,0(1)&bslash;n&quot; &bslash;&n;                &quot;0:  ex    %1,0(2)&bslash;n&quot;    /* execute stctl */ &bslash;&n;                &quot;    lg    0,0(1)&bslash;n&quot; &bslash;&n;                &quot;    ogr   0,%2&bslash;n&quot;       /* set the bit */ &bslash;&n;                &quot;    stg   0,0(1)&bslash;n&quot; &bslash;&n;                &quot;1:  ex    %1,6(2)&quot;      /* execute lctl */ &bslash;&n;                : &quot;=m&quot; (dummy) : &quot;a&quot; (cr*17), &quot;a&quot; (1L&lt;&lt;(bit)) &bslash;&n;                : &quot;0&quot;, &quot;1&quot;, &quot;2&quot;); &bslash;&n;        })
+mdefine_line|#define __ctl_set_bit(cr, bit) ({ &bslash;&n;        __u8 dummy[24]; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;    la    1,%0&bslash;n&quot;       /* align to 8 byte */ &bslash;&n;                &quot;    aghi  1,7&bslash;n&quot; &bslash;&n;                &quot;    nill  1,0xfff8&bslash;n&quot; &bslash;&n;                &quot;    bras  2,0f&bslash;n&quot;       /* skip indirect insns */ &bslash;&n;                &quot;    stctg 0,0,0(1)&bslash;n&quot; &bslash;&n;                &quot;    lctlg 0,0,0(1)&bslash;n&quot; &bslash;&n;                &quot;0:  ex    %1,0(2)&bslash;n&quot;    /* execute stctl */ &bslash;&n;                &quot;    lg    0,0(1)&bslash;n&quot; &bslash;&n;                &quot;    ogr   0,%2&bslash;n&quot;       /* set the bit */ &bslash;&n;                &quot;    stg   0,0(1)&bslash;n&quot; &bslash;&n;                &quot;1:  ex    %1,6(2)&quot;      /* execute lctl */ &bslash;&n;                : &quot;=m&quot; (dummy) : &quot;a&quot; (cr*17), &quot;a&quot; (1L&lt;&lt;(bit)) &bslash;&n;                : &quot;cc&quot;, &quot;0&quot;, &quot;1&quot;, &quot;2&quot;); &bslash;&n;        })
 DECL|macro|__ctl_clear_bit
-mdefine_line|#define __ctl_clear_bit(cr, bit) ({ &bslash;&n;        __u8 dummy[24]; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;    la    1,%0&bslash;n&quot;       /* align to 8 byte */ &bslash;&n;                &quot;    aghi  1,7&bslash;n&quot; &bslash;&n;                &quot;    nill  1,0xfff8&bslash;n&quot; &bslash;&n;                &quot;    bras  2,0f&bslash;n&quot;       /* skip indirect insns */ &bslash;&n;                &quot;    stctg 0,0,0(1)&bslash;n&quot; &bslash;&n;                &quot;    lctlg 0,0,0(1)&bslash;n&quot; &bslash;&n;                &quot;0:  ex    %1,0(2)&bslash;n&quot;    /* execute stctl */ &bslash;&n;                &quot;    lg    0,0(1)&bslash;n&quot; &bslash;&n;                &quot;    ngr   0,%2&bslash;n&quot;       /* set the bit */ &bslash;&n;                &quot;    stg   0,0(1)&bslash;n&quot; &bslash;&n;                &quot;1:  ex    %1,6(2)&quot;      /* execute lctl */ &bslash;&n;                : &quot;=m&quot; (dummy) : &quot;a&quot; (cr*17), &quot;a&quot; (~(1L&lt;&lt;(bit))) &bslash;&n;                : &quot;0&quot;, &quot;1&quot;, &quot;2&quot;); &bslash;&n;        })
+mdefine_line|#define __ctl_clear_bit(cr, bit) ({ &bslash;&n;        __u8 dummy[24]; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;    la    1,%0&bslash;n&quot;       /* align to 8 byte */ &bslash;&n;                &quot;    aghi  1,7&bslash;n&quot; &bslash;&n;                &quot;    nill  1,0xfff8&bslash;n&quot; &bslash;&n;                &quot;    bras  2,0f&bslash;n&quot;       /* skip indirect insns */ &bslash;&n;                &quot;    stctg 0,0,0(1)&bslash;n&quot; &bslash;&n;                &quot;    lctlg 0,0,0(1)&bslash;n&quot; &bslash;&n;                &quot;0:  ex    %1,0(2)&bslash;n&quot;    /* execute stctl */ &bslash;&n;                &quot;    lg    0,0(1)&bslash;n&quot; &bslash;&n;                &quot;    ngr   0,%2&bslash;n&quot;       /* set the bit */ &bslash;&n;                &quot;    stg   0,0(1)&bslash;n&quot; &bslash;&n;                &quot;1:  ex    %1,6(2)&quot;      /* execute lctl */ &bslash;&n;                : &quot;=m&quot; (dummy) : &quot;a&quot; (cr*17), &quot;a&quot; (~(1L&lt;&lt;(bit))) &bslash;&n;                : &quot;cc&quot;, &quot;0&quot;, &quot;1&quot;, &quot;2&quot;); &bslash;&n;        })
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x)&t;((x) = __cli())

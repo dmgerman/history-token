@@ -41,7 +41,7 @@ mdefine_line|#define SND_TUNNEL&t;&t;0x40
 multiline_comment|/*&n; *&t;FIXME: ignores network encryption for now..&n; */
 macro_line|#ifdef CONFIG_NET_SECURITY
 DECL|function|ipsec_sk_policy
-r_extern
+r_static
 id|__inline__
 r_int
 id|ipsec_sk_policy
@@ -90,7 +90,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|function|ipsec_sk_policy
-r_extern
+r_static
 id|__inline__
 r_int
 id|ipsec_sk_policy

@@ -767,7 +767,7 @@ mdefine_line|#define isapnp_for_each_dev(dev) &bslash;&n;&t;for(dev = pci_dev_g(
 macro_line|#else /* !CONFIG_ISAPNP */
 multiline_comment|/* lowlevel configuration */
 DECL|function|isapnp_present
-r_extern
+r_static
 r_inline
 r_int
 id|isapnp_present
@@ -781,7 +781,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|isapnp_cfg_begin
-r_extern
+r_static
 r_inline
 r_int
 id|isapnp_cfg_begin
@@ -800,7 +800,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|isapnp_cfg_end
-r_extern
+r_static
 r_inline
 r_int
 id|isapnp_cfg_end
@@ -815,7 +815,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|isapnp_read_byte
-r_extern
+r_static
 r_inline
 r_int
 r_char
@@ -832,7 +832,7 @@ l_int|0xff
 suffix:semicolon
 )brace
 DECL|function|isapnp_read_word
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -849,7 +849,7 @@ l_int|0xffff
 suffix:semicolon
 )brace
 DECL|function|isapnp_read_dword
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -866,7 +866,7 @@ l_int|0xffffffff
 suffix:semicolon
 )brace
 DECL|function|isapnp_write_byte
-r_extern
+r_static
 r_inline
 r_void
 id|isapnp_write_byte
@@ -884,7 +884,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|isapnp_write_word
-r_extern
+r_static
 r_inline
 r_void
 id|isapnp_write_word
@@ -902,7 +902,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|isapnp_write_dword
-r_extern
+r_static
 r_inline
 r_void
 id|isapnp_write_dword
@@ -920,7 +920,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|isapnp_wake
-r_extern
+r_static
 r_inline
 r_void
 id|isapnp_wake
@@ -934,7 +934,7 @@ id|csn
 suffix:semicolon
 )brace
 DECL|function|isapnp_device
-r_extern
+r_static
 r_inline
 r_void
 id|isapnp_device
@@ -948,7 +948,7 @@ id|device
 suffix:semicolon
 )brace
 DECL|function|isapnp_activate
-r_extern
+r_static
 r_inline
 r_void
 id|isapnp_activate
@@ -962,7 +962,7 @@ id|device
 suffix:semicolon
 )brace
 DECL|function|isapnp_deactivate
-r_extern
+r_static
 r_inline
 r_void
 id|isapnp_deactivate
@@ -977,7 +977,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* manager */
 DECL|function|isapnp_find_card
-r_extern
+r_static
 r_inline
 r_struct
 id|pci_bus
@@ -1004,7 +1004,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|isapnp_find_dev
-r_extern
+r_static
 r_inline
 r_struct
 id|pci_dev
@@ -1036,7 +1036,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|isapnp_probe_cards
-r_extern
+r_static
 r_inline
 r_int
 id|isapnp_probe_cards
@@ -1073,7 +1073,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|isapnp_probe_devs
-r_extern
+r_static
 r_inline
 r_int
 id|isapnp_probe_devs
@@ -1110,7 +1110,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|isapnp_resource_change
-r_extern
+r_static
 r_inline
 r_void
 id|isapnp_resource_change
@@ -1133,7 +1133,7 @@ id|size
 suffix:semicolon
 )brace
 DECL|function|isapnp_activate_dev
-r_extern
+r_static
 r_inline
 r_int
 id|isapnp_activate_dev

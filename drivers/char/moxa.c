@@ -2763,6 +2763,7 @@ id|ENOMEM
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* This test is guarded by the BuffSem so no longer needed&n;&t;&t;   delete me in 2.5 */
 r_if
 c_cond
 (paren

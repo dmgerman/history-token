@@ -19,7 +19,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|function|wait_on_buffer
-r_extern
+r_static
 r_inline
 r_void
 id|wait_on_buffer
@@ -51,7 +51,7 @@ id|bh
 suffix:semicolon
 )brace
 DECL|function|lock_buffer
-r_extern
+r_static
 r_inline
 r_void
 id|lock_buffer
@@ -95,7 +95,7 @@ id|bh
 suffix:semicolon
 multiline_comment|/*&n; * super-block locking. Again, interrupts may only unlock&n; * a super-block (although even this isn&squot;t done right now.&n; * nfs may need it).&n; */
 DECL|function|lock_super
-r_extern
+r_static
 r_inline
 r_void
 id|lock_super
@@ -116,7 +116,7 @@ id|sb-&gt;s_lock
 suffix:semicolon
 )brace
 DECL|function|unlock_super
-r_extern
+r_static
 r_inline
 r_void
 id|unlock_super

@@ -1,6 +1,6 @@
 multiline_comment|/* &n; * File...........: linux/drivers/s390/ccwcache.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Martin Schiwdefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000a&n; &n; * History of changes&n; * 11/14/00 redesign by Martin Schwidefsky&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,98))
 macro_line|#include &lt;linux/spinlock.h&gt;

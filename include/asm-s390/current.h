@@ -33,6 +33,9 @@ l_string|&quot;=&amp;r&quot;
 (paren
 id|current
 )paren
+suffix:colon
+suffix:colon
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return

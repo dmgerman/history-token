@@ -1606,6 +1606,12 @@ id|new_mm-&gt;context.segments
 op_assign
 id|ldt
 suffix:semicolon
+id|new_mm-&gt;context.cpuvalid
+op_assign
+op_complement
+l_int|0UL
+suffix:semicolon
+multiline_comment|/* valid on all CPU&squot;s - they can&squot;t have stale data */
 )brace
 multiline_comment|/*&n; * Save a segment.&n; */
 DECL|macro|savesegment

@@ -4910,6 +4910,11 @@ id|VIA_INTR_MASK
 )paren
 (brace
 macro_line|#ifdef CONFIG_MIDI_VIA82CXXX
+r_if
+c_cond
+(paren
+id|card-&gt;midi_devc
+)paren
 id|uart401intr
 c_func
 (paren

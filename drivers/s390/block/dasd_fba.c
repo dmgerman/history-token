@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;&t;/* HDIO_GETGEO                      */
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/ccwcache.h&gt;

@@ -1,7 +1,11 @@
-multiline_comment|/*&n; *  drivers/s390/char/hwc.h&n; * &n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;peschke@fh-brandenburg.de&gt;&n; *&n; * &n; * &n; */
+multiline_comment|/*&n; *  drivers/s390/char/hwc.h&n; * &n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&n; * &n; * &n; */
 macro_line|#ifndef __HWC_H__
 DECL|macro|__HWC_H__
 mdefine_line|#define __HWC_H__
+DECL|macro|HWC_EXT_INT_PARAM_ADDR
+mdefine_line|#define HWC_EXT_INT_PARAM_ADDR&t;0xFFFFFFF8
+DECL|macro|HWC_EXT_INT_PARAM_PEND
+mdefine_line|#define HWC_EXT_INT_PARAM_PEND 0x00000001
 DECL|macro|ET_OpCmd
 mdefine_line|#define ET_OpCmd&t;&t;0x01
 DECL|macro|ET_Msg
@@ -12,6 +16,8 @@ DECL|macro|ET_PMsgCmd
 mdefine_line|#define ET_PMsgCmd&t;&t;0x09
 DECL|macro|ET_CntlProgOpCmd
 mdefine_line|#define ET_CntlProgOpCmd&t;0x20
+DECL|macro|ET_CntlProgIdent
+mdefine_line|#define ET_CntlProgIdent&t;0x0B
 DECL|macro|ET_OpCmd_Mask
 mdefine_line|#define ET_OpCmd_Mask&t;0x80000000
 DECL|macro|ET_Msg_Mask
@@ -22,6 +28,8 @@ DECL|macro|ET_PMsgCmd_Mask
 mdefine_line|#define ET_PMsgCmd_Mask&t;0x00800000
 DECL|macro|ET_CtlProgOpCmd_Mask
 mdefine_line|#define ET_CtlProgOpCmd_Mask&t;0x00000001
+DECL|macro|ET_CtlProgIdent_Mask
+mdefine_line|#define ET_CtlProgIdent_Mask&t;0x00200000
 DECL|macro|GMF_DOM
 mdefine_line|#define GMF_DOM&t;&t;0x8000
 DECL|macro|GMF_SndAlrm
@@ -354,6 +362,8 @@ comma
 id|ET_Msg_Mask
 op_or
 id|ET_PMsgCmd_Mask
+op_or
+id|ET_CtlProgIdent_Mask
 )brace
 suffix:semicolon
 r_typedef

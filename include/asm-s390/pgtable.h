@@ -762,6 +762,8 @@ c_func
 id|pte
 )paren
 )paren
+suffix:colon
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
@@ -840,6 +842,8 @@ op_star
 id|ptep
 )paren
 )paren
+suffix:colon
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return

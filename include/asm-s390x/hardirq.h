@@ -6,37 +6,48 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-multiline_comment|/* No irq_cpustat_t for s390, the data is held directly in S390_lowcore */
-multiline_comment|/*&n; * Simple wrappers reducing source bloat.  S390 specific because each&n; * cpu stores its data in S390_lowcore (PSA) instead of using a cache&n; * aligned array element like most architectures.&n; */
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|softirq_active
-mdefine_line|#define softirq_active(cpu)&t;(safe_get_cpu_lowcore(cpu).__softirq_active)
-DECL|macro|softirq_mask
-mdefine_line|#define softirq_mask(cpu)&t;(safe_get_cpu_lowcore(cpu).__softirq_mask)
-DECL|macro|local_irq_count
-mdefine_line|#define local_irq_count(cpu)&t;(safe_get_cpu_lowcore(cpu).__local_irq_count)
-DECL|macro|local_bh_count
-mdefine_line|#define local_bh_count(cpu)&t;(safe_get_cpu_lowcore(cpu).__local_bh_count)
-DECL|macro|syscall_count
-mdefine_line|#define syscall_count(cpu)&t;(safe_get_cpu_lowcore(cpu).__syscall_count)
-macro_line|#else&t;/* CONFIG_SMP */
-multiline_comment|/* Optimize away the cpu calculation, it is always current PSA */
-DECL|macro|softirq_active
-mdefine_line|#define softirq_active(cpu)&t;((void)(cpu), S390_lowcore.__softirq_active)
-DECL|macro|softirq_mask
-mdefine_line|#define softirq_mask(cpu)&t;((void)(cpu), S390_lowcore.__softirq_mask)
-DECL|macro|local_irq_count
-mdefine_line|#define local_irq_count(cpu)&t;((void)(cpu), S390_lowcore.__local_irq_count)
-DECL|macro|local_bh_count
-mdefine_line|#define local_bh_count(cpu)&t;((void)(cpu), S390_lowcore.__local_bh_count)
-DECL|macro|syscall_count
-mdefine_line|#define syscall_count(cpu)&t;((void)(cpu), S390_lowcore.__syscall_count)
-macro_line|#endif&t;/* CONFIG_SMP */
-multiline_comment|/*&n; * Are we in an interrupt context? Either doing bottom half&n; * or hardware interrupt processing?&n; * Special definitions for s390, always access current PSA.&n; */
+multiline_comment|/* entry.S is sensitive to the offsets of these fields */
+r_typedef
+r_struct
+(brace
+DECL|member|__softirq_pending
+r_int
+r_int
+id|__softirq_pending
+suffix:semicolon
+DECL|member|__local_irq_count
+r_int
+r_int
+id|__local_irq_count
+suffix:semicolon
+DECL|member|__local_bh_count
+r_int
+r_int
+id|__local_bh_count
+suffix:semicolon
+DECL|member|__syscall_count
+r_int
+r_int
+id|__syscall_count
+suffix:semicolon
+DECL|member|__ksoftirqd_task
+r_struct
+id|task_struct
+op_star
+id|__ksoftirqd_task
+suffix:semicolon
+multiline_comment|/* waitqueue is too large */
+DECL|typedef|irq_cpustat_t
+)brace
+id|____cacheline_aligned
+id|irq_cpustat_t
+suffix:semicolon
+macro_line|#include &lt;linux/irq_cpustat.h&gt;&t;/* Standard mappings for irq_cpustat_t above */
+multiline_comment|/*&n; * Are we in an interrupt context? Either doing bottom half&n; * or hardware interrupt processing?&n; */
 DECL|macro|in_interrupt
-mdefine_line|#define in_interrupt() ((S390_lowcore.__local_irq_count + S390_lowcore.__local_bh_count) != 0)
+mdefine_line|#define in_interrupt() ({ int __cpu = smp_processor_id(); &bslash;&n;&t;(local_irq_count(__cpu) + local_bh_count(__cpu) != 0); })
 DECL|macro|in_irq
-mdefine_line|#define in_irq() (S390_lowcore.__local_irq_count != 0)
+mdefine_line|#define in_irq() (local_irq_count(smp_processor_id()) != 0)
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|hardirq_trylock
 mdefine_line|#define hardirq_trylock(cpu)&t;(local_irq_count(cpu) == 0)

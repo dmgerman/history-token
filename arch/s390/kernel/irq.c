@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -407,6 +407,12 @@ suffix:semicolon
 DECL|variable|global_irq_lock
 id|atomic_t
 id|global_irq_lock
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 DECL|variable|global_irq_count
 id|atomic_t
@@ -682,13 +688,13 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Duh, we have to loop. Release the lock to avoid deadlocks */
-id|clear_bit
+id|atomic_set
 c_func
 (paren
-l_int|0
-comma
 op_amp
 id|global_irq_lock
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_for
@@ -783,15 +789,16 @@ id|global_bh_count
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* this works even though global_irq_lock not&n;                           a long, but is arch-specific --RR */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|test_and_set_bit
+id|atomic_compare_and_swap
 c_func
 (paren
 l_int|0
+comma
+l_int|1
 comma
 op_amp
 id|global_irq_lock
@@ -877,18 +884,21 @@ r_int
 id|cpu
 )paren
 (brace
-multiline_comment|/* this works even though global_irq_lock not a long, but is&n;&t;   arch-specific --RR */
 r_if
 c_cond
 (paren
-id|test_and_set_bit
+id|atomic_compare_and_swap
 c_func
 (paren
 l_int|0
 comma
+l_int|1
+comma
 op_amp
 id|global_irq_lock
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* do we already hold the lock? */
@@ -909,8 +919,6 @@ suffix:semicolon
 multiline_comment|/* Uhhuh.. Somebody else got it. Wait.. */
 r_do
 (brace
-r_do
-(brace
 id|check_smp_invalidate
 c_func
 (paren
@@ -921,28 +929,18 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|test_bit
+id|atomic_compare_and_swap
 c_func
 (paren
 l_int|0
 comma
-op_amp
-id|global_irq_lock
-)paren
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|test_and_set_bit
-c_func
-(paren
-l_int|0
+l_int|1
 comma
 op_amp
 id|global_irq_lock
 )paren
+op_ne
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1354,6 +1352,34 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__global_restore_flags
+)paren
+suffix:semicolon
+DECL|variable|global_irq_holder
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|global_irq_holder
+)paren
+suffix:semicolon
+DECL|variable|global_irq_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|global_irq_lock
+)paren
+suffix:semicolon
+DECL|variable|global_irq_count
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|global_irq_count
+)paren
+suffix:semicolon
+DECL|variable|global_bh_count
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|global_bh_count
 )paren
 suffix:semicolon
 macro_line|#endif

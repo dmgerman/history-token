@@ -1,43 +1,52 @@
 multiline_comment|/*&n; *  include/asm-s390/chandev.h&n; *&n; *    Copyright (C) 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; * &n; *  Generic channel device initialisation support. &n; */
+macro_line|#ifndef __S390_CHANDEV_H
+DECL|macro|__S390_CHANDEV_H
+mdefine_line|#define __S390_CHANDEV_H
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+multiline_comment|/* Setting this flag to true causes a device name to be built based on the read_devno of the device */
+multiline_comment|/* this is exported so external code can look at this flags setting */
+r_extern
+r_int
+id|chandev_use_devno_names
+suffix:semicolon
 multiline_comment|/* chandev_type is a bitmask for registering &amp; describing device types. */
 r_typedef
 r_enum
 (brace
-DECL|enumerator|none
-id|none
+DECL|enumerator|chandev_type_none
+id|chandev_type_none
 op_assign
 l_int|0x0
 comma
-DECL|enumerator|ctc
-id|ctc
+DECL|enumerator|chandev_type_ctc
+id|chandev_type_ctc
 op_assign
 l_int|0x1
 comma
-DECL|enumerator|escon
-id|escon
+DECL|enumerator|chandev_type_escon
+id|chandev_type_escon
 op_assign
 l_int|0x2
 comma
-DECL|enumerator|lcs
-id|lcs
+DECL|enumerator|chandev_type_lcs
+id|chandev_type_lcs
 op_assign
 l_int|0x4
 comma
-DECL|enumerator|osad
-id|osad
+DECL|enumerator|chandev_type_osad
+id|chandev_type_osad
 op_assign
 l_int|0x8
 comma
-DECL|enumerator|qeth
-id|qeth
+DECL|enumerator|chandev_type_qeth
+id|chandev_type_qeth
 op_assign
 l_int|0x10
 comma
-DECL|enumerator|claw
-id|claw
+DECL|enumerator|chandev_type_claw
+id|chandev_type_claw
 op_assign
 l_int|0x20
 comma
@@ -48,67 +57,30 @@ suffix:semicolon
 r_typedef
 r_enum
 (brace
-DECL|enumerator|no_category
-id|no_category
+DECL|enumerator|chandev_category_none
+id|chandev_category_none
 comma
-DECL|enumerator|network_device
-id|network_device
+DECL|enumerator|chandev_category_network_device
+id|chandev_category_network_device
 comma
-DECL|enumerator|serial_device
-id|serial_device
+DECL|enumerator|chandev_category_serial_device
+id|chandev_category_serial_device
 comma
 DECL|typedef|chandev_category
 )brace
 id|chandev_category
 suffix:semicolon
-multiline_comment|/*&n; * The chandev_probeinfo structure is passed to the device driver with configuration&n; * info for which irq&squot;s &amp; ports to use when attempting to probe the device.&n; */
 r_typedef
 r_struct
 (brace
-DECL|member|read_irq
+DECL|member|irq
 r_int
-id|read_irq
+id|irq
 suffix:semicolon
-DECL|member|write_irq
-r_int
-id|write_irq
-suffix:semicolon
-DECL|member|read_devno
+DECL|member|devno
 id|u16
-id|read_devno
+id|devno
 suffix:semicolon
-DECL|member|write_devno
-id|u16
-id|write_devno
-suffix:semicolon
-DECL|member|port_protocol_no
-id|s16
-id|port_protocol_no
-suffix:semicolon
-multiline_comment|/* -1 don&squot;t care */
-DECL|member|hint_port_no
-id|u8
-id|hint_port_no
-suffix:semicolon
-multiline_comment|/* lcs specific */
-DECL|member|max_port_no
-id|u8
-id|max_port_no
-suffix:semicolon
-multiline_comment|/* lcs specific */
-DECL|member|chan_type
-id|chandev_type
-id|chan_type
-suffix:semicolon
-DECL|member|checksum_received_ip_pkts
-id|u8
-id|checksum_received_ip_pkts
-suffix:semicolon
-DECL|member|use_hw_stats
-id|u8
-id|use_hw_stats
-suffix:semicolon
-multiline_comment|/* where available e.g. lcs */
 DECL|member|cu_type
 id|u16
 id|cu_type
@@ -129,6 +101,133 @@ id|u8
 id|dev_model
 suffix:semicolon
 multiline_comment|/* device model */
+DECL|member|pim
+id|u8
+id|pim
+suffix:semicolon
+multiline_comment|/* path installed mask */
+DECL|member|chpid
+id|u8
+id|chpid
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* CHPID 0-7 (if available) */
+DECL|typedef|chandev_subchannel_info
+)brace
+id|chandev_subchannel_info
+suffix:semicolon
+DECL|macro|CLAW_NAMELEN
+mdefine_line|#define CLAW_NAMELEN 9
+multiline_comment|/* CLAW specific parameters other drivers should ignore these fields */
+r_typedef
+r_struct
+(brace
+DECL|member|host_name
+r_char
+id|host_name
+(braket
+id|CLAW_NAMELEN
+)braket
+suffix:semicolon
+multiline_comment|/* local host name */
+DECL|member|adapter_name
+r_char
+id|adapter_name
+(braket
+id|CLAW_NAMELEN
+)braket
+suffix:semicolon
+multiline_comment|/* workstation adapter name */
+DECL|member|api_type
+r_char
+id|api_type
+(braket
+id|CLAW_NAMELEN
+)braket
+suffix:semicolon
+multiline_comment|/* API type either TCPIP or API */
+DECL|typedef|chandev_claw_info
+)brace
+id|chandev_claw_info
+suffix:semicolon
+multiline_comment|/*&n; * The chandev_probeinfo structure is passed to the device driver with configuration&n; * info for which irq&squot;s &amp; ports to use when attempting to probe the device.&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|read
+id|chandev_subchannel_info
+id|read
+suffix:semicolon
+DECL|member|write
+id|chandev_subchannel_info
+id|write
+suffix:semicolon
+DECL|member|data
+id|chandev_subchannel_info
+id|data
+suffix:semicolon
+multiline_comment|/* memory_usage_in_k is the suggested memory the driver should attempt to use for io */
+multiline_comment|/* buffers -1 means use the driver default the driver should set this field to the */
+multiline_comment|/* amount of memory it actually uses when returning this probeinfo to the channel */
+multiline_comment|/* device layer with chandev_initdevice */
+DECL|member|memory_usage_in_k
+id|s32
+id|memory_usage_in_k
+suffix:semicolon
+DECL|member|claw
+id|chandev_claw_info
+id|claw
+suffix:semicolon
+DECL|member|data_exists
+id|u8
+id|data_exists
+suffix:semicolon
+multiline_comment|/* whether this device has a data channel */
+DECL|member|cu_dev_info_inconsistent
+id|u8
+id|cu_dev_info_inconsistent
+suffix:semicolon
+multiline_comment|/* either ctc or we possibly had a bad sense_id */
+DECL|member|chpid_info_inconsistent
+id|u8
+id|chpid_info_inconsistent
+suffix:semicolon
+multiline_comment|/* either ctc or schib info bad */
+DECL|member|port_protocol_no
+id|s16
+id|port_protocol_no
+suffix:semicolon
+multiline_comment|/* 0 by default, set specifically when forcing */
+DECL|member|hint_port_no
+id|u8
+id|hint_port_no
+suffix:semicolon
+multiline_comment|/* lcs specific */
+DECL|member|max_port_no
+id|u8
+id|max_port_no
+suffix:semicolon
+multiline_comment|/* lcs/qeth specific */
+DECL|member|chan_type
+id|chandev_type
+id|chan_type
+suffix:semicolon
+DECL|member|checksum_received_ip_pkts
+id|u8
+id|checksum_received_ip_pkts
+suffix:semicolon
+DECL|member|use_hw_stats
+id|u8
+id|use_hw_stats
+suffix:semicolon
+multiline_comment|/* where available e.g. lcs */
+DECL|member|device_forced
+id|u8
+id|device_forced
+suffix:semicolon
+multiline_comment|/* indicates the device hasn&squot;t been autodetected */
 DECL|member|parmstr
 r_char
 op_star
@@ -207,31 +306,32 @@ suffix:semicolon
 r_typedef
 r_enum
 (brace
-DECL|enumerator|good
-id|good
+DECL|enumerator|chandev_status_good
+id|chandev_status_good
+comma
+DECL|enumerator|chandev_status_not_oper
+id|chandev_status_not_oper
+comma
+DECL|enumerator|chandev_status_first_msck
+id|chandev_status_first_msck
 op_assign
-l_int|0
+id|chandev_status_not_oper
 comma
-DECL|enumerator|not_oper
-id|not_oper
+DECL|enumerator|chandev_status_no_path
+id|chandev_status_no_path
 comma
-DECL|enumerator|first_msck
-id|first_msck
-op_assign
-id|not_oper
+DECL|enumerator|chandev_status_revalidate
+id|chandev_status_revalidate
 comma
-DECL|enumerator|no_path
-id|no_path
+DECL|enumerator|chandev_status_gone
+id|chandev_status_gone
 comma
-DECL|enumerator|revalidate
-id|revalidate
+DECL|enumerator|chandev_status_last_msck
+id|chandev_status_last_msck
 comma
-DECL|enumerator|gone
-id|gone
-comma
-DECL|enumerator|last_msck
-id|last_msck
-comma
+DECL|enumerator|chandev_status_all_chans_good
+id|chandev_status_all_chans_good
+multiline_comment|/* pseudo machine check to indicate all channels are healthy */
 DECL|typedef|chandev_msck_status
 )brace
 id|chandev_msck_status
@@ -251,7 +351,7 @@ id|probeinfo
 suffix:semicolon
 DECL|typedef|chandev_shutdownfunc
 r_typedef
-r_void
+r_int
 (paren
 op_star
 id|chandev_shutdownfunc
@@ -275,12 +375,12 @@ op_star
 id|device
 )paren
 suffix:semicolon
-DECL|typedef|chandev_reoperfunc
+DECL|typedef|chandev_msck_notification_func
 r_typedef
 r_void
 (paren
 op_star
-id|chandev_reoperfunc
+id|chandev_msck_notification_func
 )paren
 (paren
 r_void
@@ -288,10 +388,13 @@ op_star
 id|device
 comma
 r_int
-id|msck_for_read_chan
+id|msck_irq
 comma
 id|chandev_msck_status
 id|prevstatus
+comma
+id|chandev_msck_status
+id|newstatus
 )paren
 suffix:semicolon
 multiline_comment|/* A driver should call chandev_register_and_probe when ready to be probed,&n; * after registeration the drivers probefunction will be called asynchronously&n; * when more devices become available at normal task time.&n; * The shutdownfunc parameter is used so that the channel layer&n; * can request a driver to close unregister itself &amp; release its interrupts.&n; * repoper func is used when a device becomes operational again after being temporarily&n; * not operational the previous status is sent in the prevstatus variable.&n; * This can be used in cases when the default handling isn&squot;t quite adequete&n; * e.g. if a ssch is needed to reinitialize long running channel programs.&n; */
@@ -305,8 +408,8 @@ comma
 id|chandev_shutdownfunc
 id|shutdownfunc
 comma
-id|chandev_reoperfunc
-id|reoperfunc
+id|chandev_msck_notification_func
+id|msck_notfunc
 comma
 id|chandev_type
 id|chan_type
@@ -352,6 +455,117 @@ id|chandev_unregfunc
 id|unreg_dev
 )paren
 suffix:semicolon
+multiline_comment|/* This function builds a device name &amp; copies it into destnamebuff suitable for calling &n;   init_trdev or whatever &amp; it honours the use_devno_names flag, it is used by chandev_initnetdevice &n;   setting the buildfullname flag to TRUE will cause it to always build a full unique name based &n;   on basename either honouring the chandev_use_devno_names flag if set or starting at index &n;   0 &amp; checking the namespace of the channel device layer itself for a free index, this&n;   may be useful when one doesn&squot;t have control of the name an upper layer may choose.&n;   It returns NULL on error.&n;*/
+r_char
+op_star
+id|chandev_build_device_name
+c_func
+(paren
+id|chandev_probeinfo
+op_star
+id|probeinfo
+comma
+r_char
+op_star
+id|destnamebuff
+comma
+r_char
+op_star
+id|basename
+comma
+r_int
+id|buildfullname
+)paren
+suffix:semicolon
+multiline_comment|/* chandev_init_netdev registers with the normal network device layer */
+multiline_comment|/* it doesn&squot;t update any of the chandev internal structures. */
+multiline_comment|/* i.e. it is optional */
+multiline_comment|/* it was part of chandev_initnetdevice but I separated it as */
+multiline_comment|/* chandev_initnetdevice may make too many assumptions for some users */
+multiline_comment|/* chandev_initnetdevice = chandev_initdevice followed by chandev_init_netdev */
+macro_line|#if LINUX_VERSION_CODE&gt;=KERNEL_VERSION(2,3,0)
+r_struct
+id|net_device
+op_star
+id|chandev_init_netdev
+c_func
+(paren
+id|chandev_probeinfo
+op_star
+id|probeinfo
+comma
+r_char
+op_star
+id|basename
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|sizeof_priv
+comma
+r_struct
+id|net_device
+op_star
+(paren
+op_star
+id|init_netdevfunc
+)paren
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|sizeof_priv
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
+r_struct
+id|device
+op_star
+id|chandev_init_netdev
+c_func
+(paren
+id|chandev_probeinfo
+op_star
+id|probeinfo
+comma
+r_char
+op_star
+id|basename
+comma
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_int
+id|sizeof_priv
+comma
+r_struct
+id|device
+op_star
+(paren
+op_star
+id|init_netdevfunc
+)paren
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_int
+id|sizeof_priv
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* chandev_initnetdevice registers a network device with the channel layer. &n; * It returns the device structure if successful,if dev=NULL it kmallocs it, &n; * On device initialisation failure it will kfree it under ALL curcumstances&n; * i.e. if dev is not NULL on entering this routine it MUST be malloced with kmalloc. &n; * The base name is tr ( e.g. tr0 without the 0 ), for token ring eth for ethernet,&n; *  ctc or escon for ctc device drivers.&n; * If valid function pointers are given they will be called to setup,&n; * register &amp; unregister the device. &n; * An example of setup is eth_setup in drivers/net/net_init.c.&n; * An example of init_dev is init_trdev(struct net_device *dev)&n; * &amp; an example of unregister is unregister_trdev, &n; * unregister_netdev should be used for escon &amp; ctc&n; * as there is no network unregister_ctcdev in the kernel.&n;*/
 macro_line|#if LINUX_VERSION_CODE&gt;=KERNEL_VERSION(2,3,0)
 r_struct
@@ -466,4 +680,67 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* chandev_add &amp; delete model shouldn&squot;t normally be needed by drivers except if */
+multiline_comment|/* someone is developing a driver which the channel device layer doesn&squot;t know about */
+r_void
+id|chandev_add_model
+c_func
+(paren
+id|chandev_type
+id|chan_type
+comma
+id|s32
+id|cu_type
+comma
+id|s16
+id|cu_model
+comma
+id|s32
+id|dev_type
+comma
+id|s16
+id|dev_model
+comma
+id|u8
+id|max_port_no
+comma
+r_int
+id|auto_msck_recovery
+comma
+id|u8
+id|default_checksum_received_ip_pkts
+comma
+id|u8
+id|default_use_hw_stats
+)paren
+suffix:semicolon
+r_void
+id|chandev_del_model
+c_func
+(paren
+id|s32
+id|cu_type
+comma
+id|s16
+id|cu_model
+comma
+id|s32
+id|dev_type
+comma
+id|s16
+id|dev_model
+)paren
+suffix:semicolon
+multiline_comment|/* modules should use chandev_persist to see if they should stay loaded */
+multiline_comment|/* this is useful for debugging purposes where you may wish to examine */
+multiline_comment|/* /proc/s390dbf/ entries */
+r_int
+id|chandev_persist
+c_func
+(paren
+id|chandev_type
+id|chan_type
+)paren
+suffix:semicolon
+macro_line|#endif /* __S390_CHANDEV_H */
 eof

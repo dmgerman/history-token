@@ -16,7 +16,7 @@ mdefine_line|#define Dprintk(x...)
 macro_line|#endif
 multiline_comment|/*&n; * Basic functions accessing APICs.&n; */
 DECL|function|apic_write
-r_extern
+r_static
 id|__inline
 r_void
 id|apic_write
@@ -50,7 +50,7 @@ id|v
 suffix:semicolon
 )brace
 DECL|function|apic_write_atomic
-r_extern
+r_static
 id|__inline
 r_void
 id|apic_write_atomic
@@ -85,7 +85,7 @@ id|v
 suffix:semicolon
 )brace
 DECL|function|apic_read
-r_extern
+r_static
 id|__inline
 r_int
 r_int
@@ -164,7 +164,7 @@ DECL|macro|apic_write_around
 macro_line|# define apic_write_around(x,y) apic_write_atomic((x),(y))
 macro_line|#endif
 DECL|function|ack_APIC_irq
-r_extern
+r_static
 r_inline
 r_void
 id|ack_APIC_irq

@@ -39,7 +39,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|function|get_pgd_slow
-r_extern
+r_static
 id|__inline__
 id|pgd_t
 op_star
@@ -213,7 +213,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|function|get_pgd_slow
-r_extern
+r_static
 id|__inline__
 id|pgd_t
 op_star
@@ -288,7 +288,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|get_pgd_fast
-r_extern
+r_static
 id|__inline__
 id|pgd_t
 op_star
@@ -360,7 +360,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|free_pgd_fast
-r_extern
+r_static
 id|__inline__
 r_void
 id|free_pgd_fast
@@ -399,7 +399,7 @@ op_increment
 suffix:semicolon
 )brace
 DECL|function|free_pgd_slow
-r_extern
+r_static
 id|__inline__
 r_void
 id|free_pgd_slow
@@ -594,7 +594,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|pte_free_fast
-r_extern
+r_static
 id|__inline__
 r_void
 id|pte_free_fast
@@ -633,7 +633,7 @@ op_increment
 suffix:semicolon
 )brace
 DECL|function|pte_free_slow
-r_extern
+r_static
 id|__inline__
 r_void
 id|pte_free_slow
@@ -886,7 +886,7 @@ id|NR_CPUS
 suffix:semicolon
 macro_line|#endif
 DECL|function|flush_tlb_pgtables
-r_extern
+r_static
 r_inline
 r_void
 id|flush_tlb_pgtables

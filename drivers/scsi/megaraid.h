@@ -13,7 +13,7 @@ mdefine_line|#define IN_RESET&t;&t;0x20000000L
 DECL|macro|IN_QUEUE
 mdefine_line|#define IN_QUEUE&t;&t;0x10000000L
 DECL|macro|BOARD_QUARTZ
-mdefine_line|#define BOARD_QUARTZ&t;&t;0x08000000L
+mdefine_line|#define BOARD_QUARTZ&t;0x08000000L
 DECL|macro|BOARD_40LD
 mdefine_line|#define BOARD_40LD&t;   &t;0x04000000L
 DECL|macro|BOARD_64BIT
@@ -41,7 +41,7 @@ mdefine_line|#define M_RD_IOCTL_CMD_NEW&t;&t;0x81
 DECL|macro|M_RD_DRIVER_IOCTL_INTERFACE
 mdefine_line|#define M_RD_DRIVER_IOCTL_INTERFACE&t;0x82
 DECL|macro|MEGARAID_VERSION
-mdefine_line|#define MEGARAID_VERSION &quot;v1.15d (Release Date: Wed May 30 17:30:41 EDT 2001)&quot;
+mdefine_line|#define MEGARAID_VERSION &quot;v1.17a (Release Date: Fri Jul 13 18:44:01 EDT 2001)&quot;
 DECL|macro|MEGARAID_IOCTL_VERSION
 mdefine_line|#define MEGARAID_IOCTL_VERSION &t;114
 multiline_comment|/* Methods */
@@ -83,17 +83,19 @@ DECL|macro|FROMTO_DEVICE
 mdefine_line|#define FROMTO_DEVICE&t;&t;0x2
 multiline_comment|/* Mailbox commands */
 DECL|macro|MEGA_MBOXCMD_LREAD
-mdefine_line|#define MEGA_MBOXCMD_LREAD      0x01
+mdefine_line|#define MEGA_MBOXCMD_LREAD&t;&t;0x01
 DECL|macro|MEGA_MBOXCMD_LWRITE
-mdefine_line|#define MEGA_MBOXCMD_LWRITE     0x02
+mdefine_line|#define MEGA_MBOXCMD_LWRITE&t;&t;0x02
 DECL|macro|MEGA_MBOXCMD_LREAD64
-mdefine_line|#define MEGA_MBOXCMD_LREAD64    0xA7
+mdefine_line|#define MEGA_MBOXCMD_LREAD64&t;&t;0xA7
 DECL|macro|MEGA_MBOXCMD_LWRITE64
-mdefine_line|#define MEGA_MBOXCMD_LWRITE64   0xA8
+mdefine_line|#define MEGA_MBOXCMD_LWRITE64&t;&t;0xA8
 DECL|macro|MEGA_MBOXCMD_PASSTHRU
-mdefine_line|#define MEGA_MBOXCMD_PASSTHRU   0x03
+mdefine_line|#define MEGA_MBOXCMD_PASSTHRU&t;&t;0x03
+DECL|macro|MEGA_MBOXCMD_EXTPASSTHRU
+mdefine_line|#define MEGA_MBOXCMD_EXTPASSTHRU&t;0xE3
 DECL|macro|MEGA_MBOXCMD_ADAPTERINQ
-mdefine_line|#define MEGA_MBOXCMD_ADAPTERINQ 0x05
+mdefine_line|#define MEGA_MBOXCMD_ADAPTERINQ&t;&t;0x05
 multiline_comment|/* Offsets into Mailbox */
 DECL|macro|COMMAND_PORT
 mdefine_line|#define COMMAND_PORT       &t;0x00
@@ -860,6 +862,8 @@ DECL|macro|M_RD_BULK_DATA_ONLY
 mdefine_line|#define M_RD_BULK_DATA_ONLY&t;     &t;0x0004
 DECL|macro|M_RD_SGLIST_ONLY
 mdefine_line|#define M_RD_SGLIST_ONLY&t;&t;0x0008
+DECL|macro|M_RD_EPTHRU_WITH_BULK_DATA
+mdefine_line|#define M_RD_EPTHRU_WITH_BULK_DATA   &t;0x0010
 macro_line|#endif
 multiline_comment|/********************************************&n; * ENQUIRY3&n; ********************************************/
 multiline_comment|/*&n; * Utilities declare this strcture size as 1024 bytes. So more fields can&n; * be added in future.&n; */
@@ -1248,6 +1252,122 @@ DECL|typedef|mega_passthru
 )brace
 id|mega_passthru
 suffix:semicolon
+multiline_comment|/*&n; * Extended passthru: support CDB &gt; 10 bytes&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|timeout
+id|u8
+id|timeout
+suffix:colon
+l_int|3
+suffix:semicolon
+multiline_comment|/* 0=6sec/1=60sec/2=10min/3=3hrs */
+DECL|member|ars
+id|u8
+id|ars
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|rsvd1
+id|u8
+id|rsvd1
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|cd_rom
+id|u8
+id|cd_rom
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|rsvd2
+id|u8
+id|rsvd2
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|islogical
+id|u8
+id|islogical
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|logdrv
+id|u8
+id|logdrv
+suffix:semicolon
+multiline_comment|/* if islogical == 1 */
+DECL|member|channel
+id|u8
+id|channel
+suffix:semicolon
+multiline_comment|/* if islogical == 0 */
+DECL|member|target
+id|u8
+id|target
+suffix:semicolon
+multiline_comment|/* if islogical == 0 */
+DECL|member|queuetag
+id|u8
+id|queuetag
+suffix:semicolon
+multiline_comment|/* unused */
+DECL|member|queueaction
+id|u8
+id|queueaction
+suffix:semicolon
+multiline_comment|/* unused */
+DECL|member|cdblen
+id|u8
+id|cdblen
+suffix:semicolon
+DECL|member|rsvd3
+id|u8
+id|rsvd3
+suffix:semicolon
+DECL|member|cdb
+id|u8
+id|cdb
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|numsgelements
+id|u8
+id|numsgelements
+suffix:semicolon
+DECL|member|status
+id|u8
+id|status
+suffix:semicolon
+DECL|member|reqsenselen
+id|u8
+id|reqsenselen
+suffix:semicolon
+DECL|member|reqsensearea
+id|u8
+id|reqsensearea
+(braket
+id|MAX_REQ_SENSE_LEN
+)braket
+suffix:semicolon
+DECL|member|rsvd4
+id|u8
+id|rsvd4
+suffix:semicolon
+DECL|member|dataxferaddr
+id|u32
+id|dataxferaddr
+suffix:semicolon
+DECL|member|dataxferlen
+id|u32
+id|dataxferlen
+suffix:semicolon
+DECL|typedef|mega_ext_passthru
+)brace
+id|mega_ext_passthru
+suffix:semicolon
 DECL|struct|_mega_mailbox
 r_struct
 id|_mega_mailbox
@@ -1571,6 +1691,10 @@ DECL|member|dma_passthruhandle64
 id|dma_addr_t
 id|dma_passthruhandle64
 suffix:semicolon
+DECL|member|dma_ext_passthruhandle64
+id|dma_addr_t
+id|dma_ext_passthruhandle64
+suffix:semicolon
 DECL|member|dma_bounce_buffer
 id|dma_addr_t
 id|dma_bounce_buffer
@@ -1587,10 +1711,19 @@ id|mega_passthru
 op_star
 id|pthru
 suffix:semicolon
+DECL|member|epthru
+id|mega_ext_passthru
+op_star
+id|epthru
+suffix:semicolon
 macro_line|#else
 DECL|member|pthru
 id|mega_passthru
 id|pthru
+suffix:semicolon
+DECL|member|epthru
+id|mega_ext_passthru
+id|epthru
 suffix:semicolon
 macro_line|#endif
 DECL|member|SCpnt
@@ -1885,6 +2018,18 @@ comma
 op_star
 id|proc_mbox
 suffix:semicolon
+DECL|member|support_ext_cdb
+r_int
+id|support_ext_cdb
+suffix:semicolon
+DECL|member|boot_ldrv_enabled
+r_int
+id|boot_ldrv_enabled
+suffix:semicolon
+DECL|member|boot_ldrv
+r_int
+id|boot_ldrv
+suffix:semicolon
 DECL|typedef|mega_host_config
 )brace
 id|mega_host_config
@@ -2161,6 +2306,59 @@ DECL|macro|IS_BIOS_ENABLED
 mdefine_line|#define&t;&t;IS_BIOS_ENABLED&t;&t;0x62
 DECL|macro|GET_BIOS
 mdefine_line|#define&t;&t;GET_BIOS&t;&t;0x01
+DECL|macro|CHNL_CLASS
+mdefine_line|#define&t;&t;CHNL_CLASS&t;&t;0xA9
+DECL|macro|GET_CHNL_CLASS
+mdefine_line|#define&t;&t;GET_CHNL_CLASS&t;0x00
+DECL|macro|SET_CHNL_CLASS
+mdefine_line|#define&t;&t;SET_CHNL_CLASS&t;0x01
+DECL|macro|CH_RAID
+mdefine_line|#define&t;&t;CH_RAID&t;&t;&t;0x01
+DECL|macro|CH_SCSI
+mdefine_line|#define&t;&t;CH_SCSI&t;&t;&t;0x00
+DECL|macro|BIOS_PVT_DATA
+mdefine_line|#define BIOS_PVT_DATA&t;&t;0x40
+DECL|macro|GET_BIOS_PVT_DATA
+mdefine_line|#define GET_BIOS_PVT_DATA&t;0x00
+macro_line|#pragma pack(1)
+DECL|struct|private_bios_data
+r_struct
+id|private_bios_data
+(brace
+DECL|member|geometry
+id|u8
+id|geometry
+suffix:colon
+l_int|4
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t;&t;&t;&t; * bits 0-3 - BIOS geometry&n;&t;&t;&t;&t;&t;&t;&t; * 0x0001 - 1GB&n;&t;&t;&t;&t;&t;&t;&t; * 0x0010 - 2GB&n;&t;&t;&t;&t;&t;&t;&t; * 0x1000 - 8GB&n;&t;&t;&t;&t;&t;&t;&t; * Others values are invalid&n;&t;&t;&t;&t;&t;&t;&t; */
+DECL|member|unused
+id|u8
+id|unused
+suffix:colon
+l_int|4
+suffix:semicolon
+multiline_comment|/* bits 4-7 are unused */
+DECL|member|boot_ldrv
+id|u8
+id|boot_ldrv
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t;&t;&t;&t; * logical drive set as boot drive&n;&t;&t;&t;&t;&t;&t;&t; * 0..7 - for 8LD cards&n;&t;&t;&t;&t;&t;&t;&t; * 0..39 - for 40LD cards&n;&t;&t;&t;&t;&t;&t;&t; */
+DECL|member|rsvd
+id|u8
+id|rsvd
+(braket
+l_int|12
+)braket
+suffix:semicolon
+DECL|member|cksum
+id|u16
+id|cksum
+suffix:semicolon
+multiline_comment|/* 0-(sum of first 13 bytes of this structure) */
+)brace
+suffix:semicolon
+macro_line|#pragma pack()
 multiline_comment|/*================================================================&n; *&n; *                    Function prototypes&n; *&n; *================================================================&n; */
 r_const
 r_char
@@ -2570,5 +2768,79 @@ id|proc_dir_entry
 op_star
 )paren
 suffix:semicolon
+r_static
+r_int
+id|mega_support_ext_cdb
+c_func
+(paren
+id|mega_host_config
+op_star
+)paren
+suffix:semicolon
+r_static
+id|mega_passthru
+op_star
+id|mega_prepare_passthru
+c_func
+(paren
+id|mega_host_config
+op_star
+comma
+id|mega_scb
+op_star
+comma
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
+id|mega_ext_passthru
+op_star
+id|mega_prepare_extpassthru
+c_func
+(paren
+id|mega_host_config
+op_star
+comma
+id|mega_scb
+op_star
+comma
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|mega_enum_raid_scsi
+c_func
+(paren
+id|mega_host_config
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|mega_partsize
+c_func
+(paren
+id|Disk
+op_star
+comma
+id|kdev_t
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|mega_get_boot_ldrv
+c_func
+(paren
+id|mega_host_config
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif
+multiline_comment|/* vi: set ts=4: */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/cris/mm/fault.c&n; *&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:  Bjorn Wesen &n; * &n; *  $Log: fault.c,v $&n; *  Revision 1.16  2001/06/13 00:06:08  bjornw&n; *  current_pgd should be volatile&n; *&n; *  Revision 1.15  2001/06/13 00:02:23  bjornw&n; *  Use a separate variable to store the current pgd to avoid races in schedule&n; *&n; *  Revision 1.14  2001/05/16 17:41:07  hp&n; *  Last comment tweak further tweaked.&n; *&n; *  Revision 1.13  2001/05/15 00:58:44  hp&n; *  Expand a bit on the comment why we compare address &gt;= TASK_SIZE rather&n; *  than &gt;= VMALLOC_START.&n; *&n; *  Revision 1.12  2001/04/04 10:51:14  bjornw&n; *  mmap_sem is grabbed for reading&n; *&n; *  Revision 1.11  2001/03/23 07:36:07  starvik&n; *  Corrected according to review remarks&n; *&n; *  Revision 1.10  2001/03/21 16:10:11  bjornw&n; *  CRIS_FRAME_FIXUP not needed anymore, use FRAME_NORMAL&n; *&n; *  Revision 1.9  2001/03/05 13:22:20  bjornw&n; *  Spell-fix and fix in vmalloc_fault handling&n; *&n; *  Revision 1.8  2000/11/22 14:45:31  bjornw&n; *  * 2.4.0-test10 removed the set_pgdir instantaneous kernel global mapping&n; *    into all processes. Instead we fill in the missing PTE entries on demand.&n; *&n; *  Revision 1.7  2000/11/21 16:39:09  bjornw&n; *  fixup switches frametype&n; *&n; *  Revision 1.6  2000/11/17 16:54:08  bjornw&n; *  More detailed siginfo reporting&n; *&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/cris/mm/fault.c&n; *&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:  Bjorn Wesen &n; * &n; *  $Log: fault.c,v $&n; *  Revision 1.18  2001/07/18 22:14:32  bjornw&n; *  Enable interrupts in the bulk of do_page_fault&n; *&n; *  Revision 1.17  2001/07/18 13:07:23  bjornw&n; *  * Detect non-existant PTE&squot;s in vmalloc pmd synchronization&n; *  * Remove comment about fast-paths for VMALLOC_START etc, because all that&n; *    was totally bogus anyway it turned out :)&n; *  * Fix detection of vmalloc-area synchronization&n; *  * Add some comments&n; *&n; *  Revision 1.16  2001/06/13 00:06:08  bjornw&n; *  current_pgd should be volatile&n; *&n; *  Revision 1.15  2001/06/13 00:02:23  bjornw&n; *  Use a separate variable to store the current pgd to avoid races in schedule&n; *&n; *  Revision 1.14  2001/05/16 17:41:07  hp&n; *  Last comment tweak further tweaked.&n; *&n; *  Revision 1.13  2001/05/15 00:58:44  hp&n; *  Expand a bit on the comment why we compare address &gt;= TASK_SIZE rather&n; *  than &gt;= VMALLOC_START.&n; *&n; *  Revision 1.12  2001/04/04 10:51:14  bjornw&n; *  mmap_sem is grabbed for reading&n; *&n; *  Revision 1.11  2001/03/23 07:36:07  starvik&n; *  Corrected according to review remarks&n; *&n; *  Revision 1.10  2001/03/21 16:10:11  bjornw&n; *  CRIS_FRAME_FIXUP not needed anymore, use FRAME_NORMAL&n; *&n; *  Revision 1.9  2001/03/05 13:22:20  bjornw&n; *  Spell-fix and fix in vmalloc_fault handling&n; *&n; *  Revision 1.8  2000/11/22 14:45:31  bjornw&n; *  * 2.4.0-test10 removed the set_pgdir instantaneous kernel global mapping&n; *    into all processes. Instead we fill in the missing PTE entries on demand.&n; *&n; *  Revision 1.7  2000/11/21 16:39:09  bjornw&n; *  fixup switches frametype&n; *&n; *  Revision 1.6  2000/11/17 16:54:08  bjornw&n; *  More detailed siginfo reporting&n; *&n; *&n; */
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -73,7 +73,7 @@ id|pgd_t
 op_star
 id|current_pgd
 suffix:semicolon
-multiline_comment|/* fast TLB-fill fault handler */
+multiline_comment|/* fast TLB-fill fault handler&n; * this is called from entry.S with interrupts disabled&n; */
 r_void
 DECL|function|handle_mmu_bus_fault
 id|handle_mmu_bus_fault
@@ -105,13 +105,6 @@ id|acc
 comma
 id|inv
 suffix:semicolon
-r_struct
-id|mm_struct
-op_star
-id|mm
-op_assign
-id|current-&gt;active_mm
-suffix:semicolon
 id|pmd_t
 op_star
 id|pmd
@@ -121,8 +114,6 @@ id|pte
 suffix:semicolon
 r_int
 id|errcode
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -232,6 +223,11 @@ id|we_excp
 comma
 id|cause
 )paren
+suffix:semicolon
+multiline_comment|/* Note: the reason we don&squot;t set errcode&squot;s r/w flag here&n;&t; * using the &squot;we&squot; flag, is because the latter is only given&n;&t; * if there is a write-protection exception, not given as a&n;&t; * general r/w access mode flag. It is currently not possible&n;&t; * to get this from the MMU (TODO: check if this is the case&n;&t; * for LXv2).&n;&t; * &n;&t; * The page-fault code won&squot;t care, but there will be two page-&n;&t; * faults instead of one for the case of a write to a non-tabled&n;&t; * page (miss, then write-protection).&n;&t; */
+id|errcode
+op_assign
+l_int|0
 suffix:semicolon
 id|D
 c_func
@@ -550,7 +546,7 @@ suffix:semicolon
 )brace
 id|errcode
 op_assign
-l_int|0x01
+l_int|1
 op_or
 (paren
 id|we
@@ -638,16 +634,36 @@ id|tsk
 op_assign
 id|current
 suffix:semicolon
-multiline_comment|/*&n;         * We fault-in kernel-space virtual memory on-demand. The&n;         * &squot;reference&squot; page table is init_mm.pgd.&n;         *&n;         * NOTE! We MUST NOT take any locks for this case. We may&n;         * be in an interrupt or a critical region, and should&n;         * only copy the information from the master page table,&n;         * nothing more.&n;&t; *&n;&t; * NOTE2: This is done so that, when updating the vmalloc&n;&t; * mappings we don&squot;t have to walk all processes pgdirs and&n;&t; * add the high mappings all at once. Instead we do it as they&n;&t; * are used.&n;&t; *&n;&t; * TODO: On CRIS, we have a PTE Global bit which should be set in&n;&t; * all the PTE&squot;s related to vmalloc in all processes - that means if&n;&t; * we switch process and a vmalloc PTE is still in the TLB, it won&squot;t&n;&t; * need to be reloaded. It&squot;s an optimization.&n;&t; *&n;&t; * Linux/CRIS&squot;s kernel is not page-mapped, so the comparision below&n;&t; * should really be &gt;= VMALLOC_START, however, kernel fixup errors&n;&t; * will be handled more quickly by going through vmalloc_fault and then&n;&t; * into bad_area_nosemaphore than falling through the find_vma user-mode&n;&t; * tests.  As an aside can be mentioned that the difference in&n;&t; * compiled code is neglibible; the instruction is the same, just a&n;&t; * comparison with a different address of the same size.&n;         */
+multiline_comment|/*&n;         * We fault-in kernel-space virtual memory on-demand. The&n;         * &squot;reference&squot; page table is init_mm.pgd.&n;         *&n;         * NOTE! We MUST NOT take any locks for this case. We may&n;         * be in an interrupt or a critical region, and should&n;         * only copy the information from the master page table,&n;         * nothing more.&n;&t; *&n;&t; * NOTE2: This is done so that, when updating the vmalloc&n;&t; * mappings we don&squot;t have to walk all processes pgdirs and&n;&t; * add the high mappings all at once. Instead we do it as they&n;&t; * are used. However vmalloc&squot;ed page entries have the PAGE_GLOBAL&n;&t; * bit set so sometimes the TLB can use a lingering entry.&n;&t; *&n;&t; * This verifies that the fault happens in kernel space&n;         * and that the fault was not a protection error (error_code &amp; 1).&n;         */
 r_if
 c_cond
 (paren
 id|address
 op_ge
-id|TASK_SIZE
+id|VMALLOC_START
+op_logical_and
+op_logical_neg
+(paren
+id|error_code
+op_amp
+l_int|1
+)paren
+op_logical_and
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
 )paren
 r_goto
 id|vmalloc_fault
+suffix:semicolon
+multiline_comment|/* we can and should enable interrupts at this point */
+id|sti
+c_func
+(paren
+)paren
 suffix:semicolon
 id|mm
 op_assign
@@ -1129,7 +1145,7 @@ suffix:semicolon
 id|vmalloc_fault
 suffix:colon
 (brace
-multiline_comment|/*&n;                 * Synchronize this task&squot;s top level page-table&n;                 * with the &squot;reference&squot; page table.&n;&t;&t; *&n;&t;&t; * Use current_pgd instead of tsk-&gt;active_mm-&gt;pgd&n;&t;&t; * since the latter might be unavailable if this&n;&t;&t; * code is executed in a misfortunately run irq&n;                 */
+multiline_comment|/*&n;                 * Synchronize this task&squot;s top level page-table&n;                 * with the &squot;reference&squot; page table.&n;&t;&t; *&n;&t;&t; * Use current_pgd instead of tsk-&gt;active_mm-&gt;pgd&n;&t;&t; * since the latter might be unavailable if this&n;&t;&t; * code is executed in a misfortunately run irq&n;&t;&t; * (like inside schedule() between switch_mm and&n;&t;&t; *  switch_to...).&n;                 */
 r_int
 id|offset
 op_assign
@@ -1153,6 +1169,10 @@ comma
 op_star
 id|pmd_k
 suffix:semicolon
+id|pte_t
+op_star
+id|pte_k
+suffix:semicolon
 id|pgd
 op_assign
 id|current_pgd
@@ -1165,44 +1185,7 @@ id|init_mm.pgd
 op_plus
 id|offset
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pgd_present
-c_func
-(paren
-op_star
-id|pgd
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pgd_present
-c_func
-(paren
-op_star
-id|pgd_k
-)paren
-)paren
-r_goto
-id|bad_area_nosemaphore
-suffix:semicolon
-id|set_pgd
-c_func
-(paren
-id|pgd
-comma
-op_star
-id|pgd_k
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
+multiline_comment|/* Since we&squot;re two-level, we don&squot;t need to do both&n;&t;&t; * set_pgd and set_pmd (they do the same thing). If&n;&t;&t; * we go three-level at some point, do the right thing&n;&t;&t; * with pgd_present and set_pgd here. &n;&t;&t; * &n;&t;&t; * Also, since the vmalloc area is global, we don&squot;t&n;&t;&t; * need to copy individual PTE&squot;s, it is enough to&n;&t;&t; * copy the pgd pointer into the pte page of the&n;&t;&t; * root task. If that is there, we&squot;ll find our pte if&n;&t;&t; * it exists.&n;&t;&t; */
 id|pmd
 op_assign
 id|pmd_offset
@@ -1245,6 +1228,31 @@ comma
 op_star
 id|pmd_k
 )paren
+suffix:semicolon
+multiline_comment|/* Make sure the actual PTE exists as well to&n;&t;&t; * catch kernel vmalloc-area accesses to non-mapped&n;&t;&t; * addresses. If we don&squot;t do this, this will just&n;&t;&t; * silently loop forever.&n;&t;&t; */
+id|pte_k
+op_assign
+id|pte_offset
+c_func
+(paren
+id|pmd_k
+comma
+id|address
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_present
+c_func
+(paren
+op_star
+id|pte_k
+)paren
+)paren
+r_goto
+id|no_context
 suffix:semicolon
 r_return
 suffix:semicolon

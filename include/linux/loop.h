@@ -223,7 +223,7 @@ id|real_block
 )paren
 suffix:semicolon
 DECL|function|lo_do_transfer
-r_extern
+r_static
 r_inline
 r_int
 id|lo_do_transfer

@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -15831,6 +15831,17 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; *   Write the overlay mask if clips are wanted.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|vw.clipcount
+OG
+l_int|2048
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -414,7 +414,7 @@ l_int|4
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
+r_static
 id|__inline__
 r_struct
 id|nlmsghdr

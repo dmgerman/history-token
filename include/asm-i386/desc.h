@@ -128,7 +128,7 @@ id|addr
 )paren
 suffix:semicolon
 DECL|function|clear_LDT
-r_extern
+r_static
 r_inline
 r_void
 id|clear_LDT
@@ -168,7 +168,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * load one particular LDT into the current CPU&n; */
 DECL|function|load_LDT
-r_extern
+r_static
 r_inline
 r_void
 id|load_LDT

@@ -188,7 +188,7 @@ multiline_comment|/*&n;   Need to run gcc with optimizations on to get these to&
 multiline_comment|/* Multiply two fixed-point 32 bit numbers, producing a 32 bit result.&n;   The answer is the ms word of the product. */
 multiline_comment|/* Some versions of gcc make it difficult to stop eax from being clobbered.&n;   Merely specifying that it is used doesn&squot;t work...&n; */
 DECL|function|mul_32_32
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -241,7 +241,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Add the 12 byte Xsig x2 to Xsig dest, with no checks for overflow. */
 DECL|function|add_Xsig_Xsig
-r_extern
+r_static
 r_inline
 r_void
 id|add_Xsig_Xsig
@@ -376,7 +376,7 @@ suffix:semicolon
 multiline_comment|/* Add the 12 byte Xsig x2 to Xsig dest, adjust exp if overflow occurs. */
 multiline_comment|/* Note: the constraints in the asm statement didn&squot;t always work properly&n;   with gcc 2.5.8.  Changing from using edi to using ecx got around the&n;   problem, but keep fingers crossed! */
 DECL|function|add_two_Xsig
-r_extern
+r_static
 r_inline
 r_void
 id|add_two_Xsig
@@ -590,7 +590,7 @@ suffix:semicolon
 multiline_comment|/* Negate (subtract from 1.0) the 12 byte Xsig */
 multiline_comment|/* This is faster in a loop on my 386 than using the &quot;neg&quot; instruction. */
 DECL|function|negate_Xsig
-r_extern
+r_static
 r_inline
 r_void
 id|negate_Xsig

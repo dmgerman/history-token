@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/char/hwc_con.c&n; *    HWC line mode console driver&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;peschke@fh-brandenburg.de&gt;&n; */
+multiline_comment|/*&n; *  drivers/s390/char/hwc_con.c&n; *    HWC line mode console driver&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &quot;ctrlchar.h&quot;
 macro_line|#include &quot;hwc_rw.h&quot;
 macro_line|#ifdef CONFIG_HWC_CONSOLE
 DECL|macro|hwc_console_major
@@ -172,25 +171,13 @@ id|hwc_console_init
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_3215_CONSOLE) || defined(CONFIG_3270_CONSOLE)
 r_if
 c_cond
 (paren
-id|MACHINE_IS_VM
+op_logical_neg
+id|MACHINE_HAS_HWC
 )paren
 r_return
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|MACHINE_IS_P390
-)paren
-r_return
-suffix:semicolon
-id|ctrlchar_init
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -203,6 +190,11 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef CONFIG_HWC_CONSOLE
+r_if
+c_cond
+(paren
+id|CONSOLE_IS_HWC
+)paren
 id|register_console
 (paren
 op_amp

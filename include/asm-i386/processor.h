@@ -263,7 +263,7 @@ DECL|macro|X86_EFLAGS_ID
 mdefine_line|#define X86_EFLAGS_ID&t;0x00200000 /* CPUID detection flag */
 multiline_comment|/*&n; * Generic CPUID function&n; */
 DECL|function|cpuid
-r_extern
+r_static
 r_inline
 r_void
 id|cpuid
@@ -327,7 +327,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * CPUID functions returning a single datum&n; */
 DECL|function|cpuid_eax
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -370,7 +370,7 @@ id|eax
 suffix:semicolon
 )brace
 DECL|function|cpuid_ebx
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -418,7 +418,7 @@ id|ebx
 suffix:semicolon
 )brace
 DECL|function|cpuid_ecx
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -466,7 +466,7 @@ id|ecx
 suffix:semicolon
 )brace
 DECL|function|cpuid_edx
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -1287,7 +1287,7 @@ id|mm
 suffix:semicolon
 multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
 DECL|function|thread_saved_pc
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -1403,7 +1403,7 @@ DECL|macro|MICROCODE_IOCFREE
 mdefine_line|#define MICROCODE_IOCFREE&t;_IO(&squot;6&squot;,0)
 multiline_comment|/* REP NOP (PAUSE) is a good thing to insert into busy-wait loops. */
 DECL|function|rep_nop
-r_extern
+r_static
 r_inline
 r_void
 id|rep_nop

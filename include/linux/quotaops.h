@@ -142,7 +142,7 @@ id|iattr
 suffix:semicolon
 multiline_comment|/*&n; * Operations supported for diskquotas.&n; */
 DECL|function|DQUOT_INIT
-r_extern
+r_static
 id|__inline__
 r_void
 id|DQUOT_INIT
@@ -174,7 +174,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|DQUOT_DROP
-r_extern
+r_static
 id|__inline__
 r_void
 id|DQUOT_DROP
@@ -214,7 +214,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|DQUOT_PREALLOC_BLOCK
-r_extern
+r_static
 id|__inline__
 r_int
 id|DQUOT_PREALLOC_BLOCK
@@ -273,7 +273,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|DQUOT_ALLOC_BLOCK
-r_extern
+r_static
 id|__inline__
 r_int
 id|DQUOT_ALLOC_BLOCK
@@ -332,7 +332,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|DQUOT_ALLOC_INODE
-r_extern
+r_static
 id|__inline__
 r_int
 id|DQUOT_ALLOC_INODE
@@ -386,7 +386,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|DQUOT_FREE_BLOCK
-r_extern
+r_static
 id|__inline__
 r_void
 id|DQUOT_FREE_BLOCK
@@ -430,7 +430,7 @@ id|sb-&gt;s_blocksize
 suffix:semicolon
 )brace
 DECL|function|DQUOT_FREE_INODE
-r_extern
+r_static
 id|__inline__
 r_void
 id|DQUOT_FREE_INODE
@@ -464,7 +464,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|DQUOT_TRANSFER
-r_extern
+r_static
 id|__inline__
 r_int
 id|DQUOT_TRANSFER

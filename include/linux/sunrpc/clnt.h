@@ -532,7 +532,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|rpc_set_timeout

@@ -12,6 +12,6 @@ mdefine_line|#define __initfunc(__arginit) &bslash;&n;        __arginit __init; 
 multiline_comment|/* For assembly routines&n; * need to define ?&n; */
 multiline_comment|/*&n;#define __INIT          .section        &quot;.text.init&quot;,#alloc,#execinstr&n;#define __FINIT .previous&n;#define __INITDATA      .section        &quot;.data.init&quot;,#alloc,#write&n;*/
 DECL|macro|__cacheline_aligned
-mdefine_line|#define __cacheline_aligned __attribute__ ((__aligned__(16)))
+mdefine_line|#define __cacheline_aligned __attribute__ ((__aligned__(256)))
 macro_line|#endif
 eof

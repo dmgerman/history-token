@@ -1,4 +1,7 @@
 multiline_comment|/*&n; *  include/asm-s390/queue.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&n; *  A little set of queue utilies.&n; */
+macro_line|#ifndef __ASM_QUEUE_H
+DECL|macro|__ASM_QUEUE_H
+mdefine_line|#define __ASM_QUEUE_H
 macro_line|#include &lt;linux/stddef.h&gt;
 DECL|struct|queue
 r_typedef
@@ -80,22 +83,18 @@ op_star
 id|member
 )paren
 (brace
-id|queue
-op_star
-id|tail
-op_assign
-id|qhead-&gt;tail
-suffix:semicolon
-id|member-&gt;next
-op_assign
-l_int|NULL
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|member
 )paren
 (brace
+id|queue
+op_star
+id|tail
+op_assign
+id|qhead-&gt;tail
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -654,4 +653,5 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* __ASM_QUEUE_H */
 eof

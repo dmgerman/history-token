@@ -26,7 +26,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|dmi_printk
 mdefine_line|#define dmi_printk(x)
-singleline_comment|//#define dmi_printk(x) printk(x)
+singleline_comment|//#define dmi_printk(x) printk x
 DECL|function|dmi_string
 r_static
 r_char
@@ -58,6 +58,17 @@ id|bp
 op_add_assign
 id|dm-&gt;length
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|s
+)paren
+(brace
+r_return
+l_string|&quot;&quot;
+suffix:semicolon
+)brace
 id|s
 op_decrement
 suffix:semicolon

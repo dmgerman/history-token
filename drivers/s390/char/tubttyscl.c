@@ -269,11 +269,11 @@ id|tubp
 (brace
 r_extern
 r_int
-id|tubscrollparm
+id|tubscrolltime
 suffix:semicolon
 id|tubp-&gt;tty_scrolltime
 op_assign
-id|tubscrollparm
+id|tubscrolltime
 suffix:semicolon
 r_if
 c_cond

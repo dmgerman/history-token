@@ -8,7 +8,7 @@ DECL|macro|BOOTPARAM_OFFSET
 mdefine_line|#define BOOTPARAM_OFFSET 0xc000
 multiline_comment|/* apps/bootblocktool is used to read and write the parameters,&n; * and it has nothing to do with the partition table. &n; */
 multiline_comment|/* the partitiontable consists of some &quot;jump over&quot; code, a head and&n; * then the actual entries.&n; * tools/mkptable is used to generate the ptable. &n; */
-multiline_comment|/* The partition table starts with code to &quot;jump over&quot; it: */
+multiline_comment|/* The partition table starts with code to &quot;jump over&quot; it.  The ba&n;   instruction and delay-slot is modified elsewhere (for example the&n;   mkptable script); don&squot;t change this to fill the delay-slot.  */
 DECL|macro|PARTITIONTABLE_CODE_START
 mdefine_line|#define PARTITIONTABLE_CODE_START { &bslash;&n; 0x0f, 0x05, /* nop 0 */&bslash;&n; 0x25, 0xf0, /* di  2 */&bslash;&n; 0xed, 0xff  /* ba  4 */ }
 multiline_comment|/* The actual offset depend on the number of entries */
@@ -95,7 +95,7 @@ mdefine_line|#define PARTITIONTABLE_END_MARKER_SIZE 4
 multiline_comment|/*#define PARTITION_TYPE_RESCUE 0x0000?*/
 multiline_comment|/* Not used, maybe it should? */
 DECL|macro|PARTITION_TYPE_PARAM
-mdefine_line|#define PARTITION_TYPE_PARAM  0x0001 /* Hmm.. */
+mdefine_line|#define PARTITION_TYPE_PARAM  0x0001
 DECL|macro|PARTITION_TYPE_KERNEL
 mdefine_line|#define PARTITION_TYPE_KERNEL 0x0002
 DECL|macro|PARTITION_TYPE_JFFS

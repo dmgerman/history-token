@@ -1484,7 +1484,7 @@ id|len
 suffix:semicolon
 )brace
 DECL|function|__memcpy3d
-r_extern
+r_static
 id|__inline__
 r_void
 op_star

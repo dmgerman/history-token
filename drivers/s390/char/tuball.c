@@ -18,10 +18,9 @@ suffix:semicolon
 DECL|variable|tubscrolltime
 r_int
 id|tubscrolltime
-suffix:semicolon
-DECL|variable|tubscrollparm
-r_int
-id|tubscrollparm
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 DECL|variable|tubxcorrect
 r_int
@@ -339,7 +338,6 @@ comma
 l_int|0x7f
 )brace
 suffix:semicolon
-r_static
 r_int
 id|tub3270_init
 c_func
@@ -349,7 +347,7 @@ r_void
 suffix:semicolon
 macro_line|#ifndef MODULE
 multiline_comment|/*&n; * Can&squot;t have this driver a module &amp; support console at the same time&n; */
-macro_line|#ifdef CONFIG_3270_CONSOLE
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
 r_static
 id|kdev_t
 id|tub3270_con_device
@@ -426,14 +424,6 @@ l_int|NULL
 multiline_comment|/* next */
 )brace
 suffix:semicolon
-DECL|variable|tub3270_con_devno
-r_int
-id|tub3270_con_devno
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* set by tub3270_con_setup() */
 DECL|variable|tub3270_con_bcb
 id|bcb_t
 id|tub3270_con_bcb
@@ -465,6 +455,14 @@ id|tty3270_con_driver
 suffix:semicolon
 multiline_comment|/* for /dev/console at 4, 64 */
 macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+DECL|variable|tub3270_con_devno
+r_int
+id|tub3270_con_devno
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* set by tub3270_con_setup() */
 DECL|function|__initfunc
 id|__initfunc
 c_func
@@ -482,18 +480,6 @@ op_star
 id|ints
 )paren
 )paren
-macro_line|#else
-r_static
-r_int
-id|__init
-id|tub3270_con_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-macro_line|#endif
 (brace
 r_int
 id|vdev
@@ -525,26 +511,9 @@ id|tub3270_con_devno
 op_assign
 id|vdev
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
 r_return
 suffix:semicolon
-macro_line|#else
-r_return
-l_int|1
-suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0))
-id|__setup
-c_func
-(paren
-l_string|&quot;condev=&quot;
-comma
-id|tub3270_con_setup
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
 DECL|function|__initfunc
 id|__initfunc
 (paren
@@ -559,21 +528,11 @@ r_int
 id|kmem_end
 )paren
 )paren
-macro_line|#else
-r_void
-id|__init
-id|tub3270_con_init
-c_func
-(paren
-r_void
-)paren
-macro_line|#endif
 (brace
 id|tub3270_con_bcb.bc_len
 op_assign
 l_int|65536
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
 r_if
 c_cond
 (paren
@@ -608,15 +567,28 @@ suffix:semicolon
 r_return
 id|kmem_start
 suffix:semicolon
+)brace
 macro_line|#else
+DECL|macro|tub3270_con_devno
+mdefine_line|#define tub3270_con_devno console_device
+DECL|function|tub3270_con_init
+r_void
+id|__init
+id|tub3270_con_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|tub3270_con_bcb.bc_len
+op_assign
+l_int|65536
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|MACHINE_IS_VM
-op_logical_and
-op_logical_neg
-id|MACHINE_IS_P390
+id|CONSOLE_IS_3270
 )paren
 r_return
 suffix:semicolon
@@ -639,8 +611,8 @@ op_amp
 id|tub3270_con
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#endif
 r_static
 id|kdev_t
 DECL|function|tub3270_con_device
@@ -660,6 +632,8 @@ c_func
 id|IBM_TTY3270_MAJOR
 comma
 id|conp-&gt;index
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -771,6 +745,8 @@ id|obcb
 comma
 op_amp
 id|tub3270_con_bcb
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -849,6 +825,8 @@ id|tub3270_con_bcb
 comma
 op_amp
 id|tubp-&gt;tty_bcb
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -864,35 +842,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_3270_CONSOLE */
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
-DECL|function|__initfunc
-id|__initfunc
-c_func
-(paren
-r_void
-id|tub3270_initfunc
-c_func
-(paren
-r_void
-)paren
-)paren
-macro_line|#else
-r_void
-id|__init
-id|tub3270_initfunc
-c_func
-(paren
-r_void
-)paren
-macro_line|#endif
-(brace
-id|tub3270_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
+macro_line|#endif /* CONFIG_TN3270_CONSOLE */
 macro_line|#else /* If generated as a MODULE */
 multiline_comment|/*&n; * module init:  find tubes; get a major nbr&n; */
 r_int
@@ -979,7 +929,6 @@ id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * tub3270_init() called by kernel or module initialization&n; */
-r_static
 r_int
 DECL|function|tub3270_init
 id|tub3270_init
@@ -995,22 +944,6 @@ r_int
 id|i
 comma
 id|rc
-suffix:semicolon
-multiline_comment|/*&n;&t; * Initialize default scrolltime to either -1 or the&n;&t; * module parameter tubscrolltime.&n;&t; */
-r_if
-c_cond
-(paren
-id|tubscrolltime
-)paren
-id|tubscrollparm
-op_assign
-id|tubscrolltime
-suffix:semicolon
-r_else
-id|tubscrollparm
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Copy and correct ebcdic - ascii translate tables&n;&t; */
 id|memcpy
@@ -1102,6 +1035,47 @@ l_int|0
 r_return
 id|rc
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fs3270_init
+c_func
+(paren
+)paren
+op_logical_or
+id|tty3270_init
+c_func
+(paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;fs3270_init() or tty3270_init() failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|fs3270_fini
+c_func
+(paren
+)paren
+suffix:semicolon
+id|tty3270_fini
+c_func
+(paren
+)paren
+suffix:semicolon
+id|tubfiniminors
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -1150,7 +1124,8 @@ id|d.status
 )paren
 r_continue
 suffix:semicolon
-macro_line|#ifdef CONFIG_3270_CONSOLE
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
 r_if
 c_cond
 (paren
@@ -1176,7 +1151,34 @@ op_assign
 l_int|0x3270
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_3270_CONSOLE */
+macro_line|#else
+r_if
+c_cond
+(paren
+id|d.sid_data.cu_type
+op_eq
+l_int|0x3215
+op_logical_and
+id|CONSOLE_IS_3270
+)paren
+(brace
+id|cpcmd
+c_func
+(paren
+l_string|&quot;TERM CONMODE 3270&quot;
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|d.sid_data.cu_type
+op_assign
+l_int|0x3270
+suffix:semicolon
+)brace
+macro_line|#endif /* LINUX_VERSION_CODE */
+macro_line|#endif /* CONFIG_TN3270_CONSOLE */
 r_if
 c_cond
 (paren
@@ -1209,32 +1211,6 @@ OL
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|tubnummins
-op_eq
-l_int|1
-)paren
-(brace
-multiline_comment|/* if first time */
-id|tubfiniminors
-c_func
-(paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;No kernel memory available&quot;
-l_string|&quot; for 3270 tube devices.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -1267,47 +1243,6 @@ id|rc
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|fs3270_init
-c_func
-(paren
-)paren
-op_logical_or
-id|tty3270_init
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;fs3270_init() or tty3270_init() failed&bslash;n&quot;
-)paren
-suffix:semicolon
-id|fs3270_fini
-c_func
-(paren
-)paren
-suffix:semicolon
-id|tty3270_fini
-c_func
-(paren
-)paren
-suffix:semicolon
-id|tubfiniminors
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1325,6 +1260,9 @@ comma
 id|bcb_t
 op_star
 id|ob
+comma
+r_int
+id|fromuser
 )paren
 (brace
 r_int
@@ -1434,6 +1372,52 @@ id|len2
 op_assign
 id|len1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fromuser
+)paren
+(brace
+id|len2
+op_sub_assign
+id|copy_from_user
+c_func
+(paren
+id|ob-&gt;bc_buf
+op_plus
+id|ob-&gt;bc_wr
+comma
+id|ib-&gt;bc_buf
+op_plus
+id|ib-&gt;bc_rd
+comma
+id|len2
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len2
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+)paren
+id|rc
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_else
 id|memcpy
 c_func
 (paren
@@ -1782,6 +1766,8 @@ c_func
 id|tubp-&gt;tty_bcb.bc_len
 comma
 id|GFP_KERNEL
+op_or
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -1841,7 +1827,13 @@ id|minor
 op_assign
 id|tubp
 suffix:semicolon
-macro_line|#ifdef CONFIG_3270_CONSOLE
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
+r_if
+c_cond
+(paren
+id|CONSOLE_IS_3270
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1876,6 +1868,10 @@ comma
 id|devstat_t
 op_star
 )paren
+suffix:semicolon
+id|tub3270_con_devno
+op_assign
+id|dp-&gt;devno
 suffix:semicolon
 id|tubp-&gt;cmd
 op_assign
@@ -1929,7 +1925,16 @@ id|tubp
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_3270_CONSOLE */
+)brace
+macro_line|#endif /* CONFIG_TN3270_CONSOLE */
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|fs3270_devfs_register
+c_func
+(paren
+id|tubp
+)paren
+suffix:semicolon
+macro_line|#endif
 id|TUBUNLOCK
 c_func
 (paren
@@ -2008,6 +2013,14 @@ id|tubpp
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|fs3270_devfs_unregister
+c_func
+(paren
+id|tubp
+)paren
+suffix:semicolon
+macro_line|#endif
 id|tubdelbyirq
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/char/hwc_rw.h&n; *    interface to the HWC-read/write driver &n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;peschke@fh-brandenburg.de&gt;&n; */
+multiline_comment|/*&n; *  drivers/s390/char/hwc_rw.h&n; *    interface to the HWC-read/write driver &n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; */
 macro_line|#ifndef __HWC_RW_H__
 DECL|macro|__HWC_RW_H__
 mdefine_line|#define __HWC_RW_H__
@@ -35,6 +35,59 @@ DECL|typedef|hwc_high_level_calls_t
 )brace
 id|hwc_high_level_calls_t
 suffix:semicolon
+r_struct
+id|_hwc_request
+suffix:semicolon
+DECL|typedef|hwc_callback_t
+r_typedef
+r_void
+id|hwc_callback_t
+(paren
+r_struct
+id|_hwc_request
+op_star
+)paren
+suffix:semicolon
+DECL|struct|_hwc_request
+r_typedef
+r_struct
+id|_hwc_request
+(brace
+DECL|member|block
+r_void
+op_star
+id|block
+suffix:semicolon
+DECL|member|word
+id|u32
+id|word
+suffix:semicolon
+DECL|member|callback
+id|hwc_callback_t
+op_star
+id|callback
+suffix:semicolon
+DECL|member|data
+r_void
+op_star
+id|data
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+DECL|typedef|hwc_request_t
+id|hwc_request_t
+suffix:semicolon
+DECL|macro|HWC_ASCEBC
+mdefine_line|#define HWC_ASCEBC(x) ((MACHINE_IS_VM ? _ascebc[x] : _ascebc_500[x]))
+DECL|macro|HWC_EBCASC_STR
+mdefine_line|#define HWC_EBCASC_STR(s,c) ((MACHINE_IS_VM ? EBCASC(s,c) : EBCASC_500(s,c)))
+DECL|macro|HWC_ASCEBC_STR
+mdefine_line|#define HWC_ASCEBC_STR(s,c) ((MACHINE_IS_VM ? ASCEBC(s,c) : ASCEBC_500(s,c)))
 DECL|macro|IN_HWCB
 mdefine_line|#define IN_HWCB      1
 DECL|macro|IN_WRITE_BUF
@@ -272,6 +325,14 @@ r_int
 id|hwc_unregister_calls
 (paren
 id|hwc_high_level_calls_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|hwc_send
+(paren
+id|hwc_request_t
 op_star
 )paren
 suffix:semicolon

@@ -20,6 +20,8 @@ macro_line|#include &lt;asm/mathemu.h&gt;
 macro_line|#if CONFIG_REMOTE_DEBUG
 macro_line|#include &lt;asm/gdb-stub.h&gt;
 macro_line|#endif
+macro_line|#include &lt;asm/cpcmd.h&gt;
+macro_line|#include &lt;asm/s390_ext.h&gt;
 multiline_comment|/* Called from entry.S only */
 r_extern
 r_void
@@ -74,6 +76,38 @@ r_extern
 id|pgm_check_handler_t
 id|do_page_fault
 suffix:semicolon
+macro_line|#ifdef CONFIG_PFAULT
+r_extern
+r_int
+id|pfault_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pfault_fini
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pfault_interrupt
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+id|__u16
+id|error_code
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|die_lock
 id|spinlock_t
 id|die_lock
@@ -480,11 +514,6 @@ id|do_sig
 op_assign
 l_int|0
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|location
 op_assign
 (paren
@@ -601,11 +630,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|data_exception
 id|asmlinkage
@@ -630,11 +654,6 @@ r_int
 id|do_sig
 op_assign
 l_int|0
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 id|location
 op_assign
@@ -707,11 +726,6 @@ comma
 id|regs
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -878,6 +892,57 @@ op_assign
 op_amp
 id|do_page_fault
 suffix:semicolon
+macro_line|#ifdef CONFIG_PFAULT
+r_if
+c_cond
+(paren
+id|MACHINE_IS_VM
+)paren
+(brace
+multiline_comment|/* request the 0x2603 external interrupt */
+r_if
+c_cond
+(paren
+id|register_external_interrupt
+c_func
+(paren
+l_int|0x2603
+comma
+id|pfault_interrupt
+)paren
+op_ne
+l_int|0
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Couldn&squot;t request external interrupt 0x2603&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Try to get pfault pseudo page faults going.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|pfault_init
+c_func
+(paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* Tough luck, no pfault. */
+id|unregister_external_interrupt
+c_func
+(paren
+l_int|0x2603
+comma
+id|pfault_interrupt
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 )brace
 DECL|function|handle_per_exception
 r_void

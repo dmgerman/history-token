@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&t;SMP locks primitives for building ix86 locks&n; *&t;(not yet used).&n; *&n; *&t;&t;Alan Cox, alan@redhat.com, 1995&n; */
 multiline_comment|/*&n; *&t;This would be much easier but far less clear and easy&n; *&t;to borrow for other processors if it was just assembler.&n; */
 DECL|function|prim_spin_lock
-r_extern
+r_static
 id|__inline__
 r_void
 id|prim_spin_lock
@@ -108,7 +108,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Release a spin lock&n; */
 DECL|function|prim_spin_unlock
-r_extern
+r_static
 id|__inline__
 r_int
 id|prim_spin_unlock
@@ -152,7 +152,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Non blocking lock grab&n; */
 DECL|function|prim_spin_lock_nb
-r_extern
+r_static
 id|__inline__
 r_int
 id|prim_spin_lock_nb
@@ -192,7 +192,7 @@ multiline_comment|/* We got the lock */
 )brace
 multiline_comment|/*&n; *&t;These wrap the locking primitives up for usage&n; */
 DECL|function|spinlock
-r_extern
+r_static
 id|__inline__
 r_void
 id|spinlock
@@ -245,7 +245,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|spinunlock
-r_extern
+r_static
 id|__inline__
 r_void
 id|spinunlock
@@ -301,7 +301,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|spintestlock
-r_extern
+r_static
 id|__inline__
 r_void
 id|spintestlock
@@ -322,7 +322,7 @@ id|sp
 suffix:semicolon
 )brace
 DECL|function|spintestunlock
-r_extern
+r_static
 id|__inline__
 r_void
 id|spintestunlock

@@ -24,7 +24,7 @@ DECL|macro|INVALID_PAGEID
 mdefine_line|#define INVALID_PAGEID 63
 DECL|macro|NO_CONTEXT
 mdefine_line|#define NO_CONTEXT -1
-multiline_comment|/* The TLB can host up to 64 different mm contexts at the same time.&n; * The running context is R_MMU_CONTEXT, and each TLB entry contains a&n; * page_id that has to match to give a hit. In page_id_map, we keep track&n; * of which mm&squot;s we have assigned which page_id&squot;s, so that we know when&n; * to invalidate TLB entries.&n; *&n; * The last page_id is never running - it is used as an invalid page_id&n; * so we can make TLB entries that will never match.&n; */
+multiline_comment|/* The TLB can host up to 64 different mm contexts at the same time.&n; * The running context is R_MMU_CONTEXT, and each TLB entry contains a&n; * page_id that has to match to give a hit. In page_id_map, we keep track&n; * of which mm&squot;s we have assigned which page_id&squot;s, so that we know when&n; * to invalidate TLB entries.&n; *&n; * The last page_id is never running - it is used as an invalid page_id&n; * so we can make TLB entries that will never match.&n; *&n; * Notice that we need to make the flushes atomic, otherwise an interrupt&n; * handler that uses vmalloced memory might cause a TLB load in the middle&n; * of a flush causing.&n; */
 DECL|variable|page_id_map
 r_struct
 id|mm_struct
@@ -48,12 +48,24 @@ DECL|function|flush_tlb_all
 id|flush_tlb_all
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
 id|i
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* the vpn of i &amp; 0xf is so we dont write similar TLB entries&n;&t; * in the same 4-way entry group. details.. &n;&t; */
+id|save_and_cli
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* flush needs to be atomic */
 r_for
 c_loop
 (paren
@@ -167,6 +179,12 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|D
 c_func
 (paren
@@ -198,6 +216,10 @@ id|page_id
 op_assign
 id|mm-&gt;context
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|D
 c_func
 (paren
@@ -224,6 +246,13 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* mark the TLB entries that match the page_id as invalid.&n;&t; * here we could also check the _PAGE_GLOBAL bit and NOT flush&n;&t; * global pages. is it worth the extra I/O ? &n;&t; */
+id|save_and_cli
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* flush needs to be atomic */
 r_for
 c_loop
 (paren
@@ -353,6 +382,12 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* invalidate a single page */
 r_void
@@ -384,6 +419,10 @@ id|mm-&gt;context
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|D
 c_func
@@ -418,6 +457,13 @@ id|PAGE_MASK
 suffix:semicolon
 multiline_comment|/* perhaps not necessary */
 multiline_comment|/* invalidate those TLB entries that match both the mm context&n;&t; * and the virtual address requested &n;&t; */
+id|save_and_cli
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* flush needs to be atomic */
 r_for
 c_loop
 (paren
@@ -552,6 +598,12 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* invalidate a page range */
 r_void
@@ -580,6 +632,10 @@ id|mm-&gt;context
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|D
 c_func
@@ -621,6 +677,13 @@ id|PAGE_MASK
 suffix:semicolon
 multiline_comment|/* dito */
 multiline_comment|/* invalidate those TLB entries that match both the mm context&n;&t; * and the virtual address range&n;&t; */
+id|save_and_cli
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* flush needs to be atomic */
 r_for
 c_loop
 (paren
@@ -774,7 +837,94 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 )brace
+multiline_comment|/* dump the entire TLB for debug purposes */
+macro_line|#if 0
+r_void
+id|dump_tlb_all
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;TLB dump. LO is: pfn | reserved | global | valid | kernel | we  |&bslash;n&quot;
+)paren
+suffix:semicolon
+id|save_and_cli
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NUM_TLB_ENTRIES
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+op_star
+id|R_TLB_SELECT
+op_assign
+(paren
+id|IO_FIELD
+c_func
+(paren
+id|R_TLB_SELECT
+comma
+id|index
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Entry %d: HI 0x%08lx, LO 0x%08lx&bslash;n&quot;
+comma
+id|i
+comma
+op_star
+id|R_TLB_HI
+comma
+op_star
+id|R_TLB_LO
+)paren
+suffix:semicolon
+)brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * Initialize the context related info for a new mm_struct&n; * instance.&n; */
 r_int
 DECL|function|init_new_context
