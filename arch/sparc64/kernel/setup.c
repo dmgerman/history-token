@@ -2421,15 +2421,6 @@ r_break
 suffix:semicolon
 )brace
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|serial_console
-)paren
-id|conswitchp
-op_assign
-l_int|NULL
-suffix:semicolon
 id|paging_init
 c_func
 (paren
