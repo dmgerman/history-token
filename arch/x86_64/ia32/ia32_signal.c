@@ -482,14 +482,11 @@ id|from-&gt;si_ptr
 suffix:semicolon
 id|to-&gt;si_ptr
 op_assign
+id|compat_ptr
+c_func
 (paren
-r_void
-op_star
-)paren
-(paren
-id|u64
-)paren
 id|ptr32
+)paren
 suffix:semicolon
 r_return
 id|err
@@ -699,14 +696,11 @@ id|EFAULT
 suffix:semicolon
 id|uss.ss_sp
 op_assign
+id|compat_ptr
+c_func
 (paren
-r_void
-op_star
-)paren
-(paren
-id|u64
-)paren
 id|ptr
+)paren
 suffix:semicolon
 )brace
 id|seg
@@ -2357,6 +2351,7 @@ suffix:semicolon
 multiline_comment|/* Return stub is in 32bit vsyscall page */
 (brace
 r_void
+id|__user
 op_star
 id|restorer
 op_assign
@@ -2832,6 +2827,7 @@ id|give_sigsegv
 suffix:semicolon
 (brace
 r_void
+id|__user
 op_star
 id|restorer
 op_assign

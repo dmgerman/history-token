@@ -1081,6 +1081,7 @@ id|sa.sa_handler
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 l_int|2

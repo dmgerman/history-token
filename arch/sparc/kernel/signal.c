@@ -1984,6 +1984,7 @@ c_func
 )paren
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|sig_address
 suffix:semicolon

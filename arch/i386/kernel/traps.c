@@ -1738,11 +1738,11 @@ suffix:semicolon
 DECL|macro|DO_ERROR
 mdefine_line|#define DO_ERROR(trapnr, signr, str, name) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;do_trap(trapnr, signr, str, 0, regs, error_code, NULL); &bslash;&n;}
 DECL|macro|DO_ERROR_INFO
-mdefine_line|#define DO_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void *)siaddr; &bslash;&n;&t;do_trap(trapnr, signr, str, 0, regs, error_code, &amp;info); &bslash;&n;}
+mdefine_line|#define DO_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void __user *)siaddr; &bslash;&n;&t;do_trap(trapnr, signr, str, 0, regs, error_code, &amp;info); &bslash;&n;}
 DECL|macro|DO_VM86_ERROR
 mdefine_line|#define DO_VM86_ERROR(trapnr, signr, str, name) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;do_trap(trapnr, signr, str, 1, regs, error_code, NULL); &bslash;&n;}
 DECL|macro|DO_VM86_ERROR_INFO
-mdefine_line|#define DO_VM86_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void *)siaddr; &bslash;&n;&t;do_trap(trapnr, signr, str, 1, regs, error_code, &amp;info); &bslash;&n;}
+mdefine_line|#define DO_VM86_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void __user *)siaddr; &bslash;&n;&t;do_trap(trapnr, signr, str, 1, regs, error_code, &amp;info); &bslash;&n;}
 id|DO_VM86_ERROR_INFO
 c_func
 (paren
@@ -2552,12 +2552,14 @@ ques
 c_cond
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|tsk-&gt;thread.eip
 suffix:colon
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;eip
@@ -2637,6 +2639,7 @@ id|math_error
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|eip
 )paren
@@ -2835,6 +2838,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;eip
@@ -2847,6 +2851,7 @@ id|simd_math_error
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|eip
 )paren
@@ -3033,6 +3038,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;eip

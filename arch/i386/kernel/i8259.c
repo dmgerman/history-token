@@ -1024,6 +1024,7 @@ id|math_error
 c_func
 (paren
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -1051,6 +1052,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;eip

@@ -14,6 +14,7 @@ id|sival_int
 suffix:semicolon
 DECL|member|sival_ptr
 r_void
+id|__user
 op_star
 id|sival_ptr
 suffix:semicolon
@@ -183,6 +184,7 @@ r_struct
 (brace
 DECL|member|_addr
 r_void
+id|__user
 op_star
 id|_addr
 suffix:semicolon

@@ -2366,6 +2366,7 @@ id|uss
 )paren
 (brace
 r_void
+id|__user
 op_star
 id|ss_sp
 suffix:semicolon
