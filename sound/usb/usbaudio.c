@@ -5159,6 +5159,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* we need a sync pipe in async OUT or adaptive IN mode */
+multiline_comment|/* check the number of EP, since some devices have broken&n;&t; * descriptors which fool us.  if it has only one EP,&n;&t; * assume it as adaptive-out or sync-in.&n;&t; */
 id|attr
 op_assign
 id|fmt-&gt;ep_attr
@@ -5167,6 +5168,7 @@ id|EP_ATTR_MASK
 suffix:semicolon
 r_if
 c_cond
+(paren
 (paren
 (paren
 id|is_playback
@@ -5185,15 +5187,16 @@ op_eq
 id|EP_ATTR_ADAPTIVE
 )paren
 )paren
+op_logical_and
+id|altsd-&gt;bNumEndpoints
+op_ge
+l_int|2
+)paren
 (brace
-multiline_comment|/* check endpoint */
+multiline_comment|/* check sync-pipe endpoint */
 r_if
 c_cond
 (paren
-id|altsd-&gt;bNumEndpoints
-OL
-l_int|2
-op_logical_or
 id|get_endpoint
 c_func
 (paren
@@ -9676,7 +9679,7 @@ l_int|1
 suffix:colon
 id|pcm_format
 op_assign
-id|SNDRV_PCM_FORMAT_U8
+id|SNDRV_PCM_FORMAT_S8
 suffix:semicolon
 r_break
 suffix:semicolon
