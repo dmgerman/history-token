@@ -1072,16 +1072,6 @@ r_char
 op_star
 id|name
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: Probing PCI hardware on bus (%04x:%02x)&bslash;n&quot;
-comma
-id|domain
-comma
-id|bus
-)paren
-suffix:semicolon
 id|controller
 op_assign
 id|alloc_pci_controller
