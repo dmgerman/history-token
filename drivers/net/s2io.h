@@ -100,6 +100,7 @@ DECL|macro|INTR_DBG
 mdefine_line|#define&t;INTR_DBG&t;4
 multiline_comment|/* Global variable that defines the present debug level of the driver. */
 DECL|variable|debug_level
+r_static
 r_int
 id|debug_level
 op_assign

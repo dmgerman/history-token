@@ -687,6 +687,19 @@ id|device
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+r_static
+r_void
+id|el3_poll_controller
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_EISA
 DECL|variable|el3_eisa_ids
 r_struct
@@ -1183,6 +1196,12 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|el3_poll_controller
+suffix:semicolon
+macro_line|#endif
 id|SET_ETHTOOL_OPS
 c_func
 (paren
@@ -4518,6 +4537,44 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+multiline_comment|/*&n; * Polling receive - used by netconsole and other diagnostic tools&n; * to allow network i/o with interrupts disabled.&n; */
+DECL|function|el3_poll_controller
+r_static
+r_void
+id|el3_poll_controller
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|el3_interrupt
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_static
 r_struct
 id|net_device_stats
