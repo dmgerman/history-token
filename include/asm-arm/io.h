@@ -8,6 +8,13 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/arch/hardware.h&gt;
+multiline_comment|/*&n; * ISA I/O bus memory addresses are 1:1 with the physical address.&n; */
+DECL|macro|isa_virt_to_bus
+mdefine_line|#define isa_virt_to_bus virt_to_phys
+DECL|macro|isa_page_to_bus
+mdefine_line|#define isa_page_to_bus page_to_phys
+DECL|macro|isa_bus_to_virt
+mdefine_line|#define isa_bus_to_virt phys_to_virt
 multiline_comment|/*&n; * Generic IO read/write.  These perform native-endian accesses.  Note&n; * that some architectures will want to re-define __raw_{read,write}w.&n; */
 r_extern
 r_void

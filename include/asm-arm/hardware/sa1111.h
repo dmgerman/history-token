@@ -632,208 +632,45 @@ DECL|macro|WAKE_POL1
 mdefine_line|#define WAKE_POL1&t;__CCREG(SA1111_WAKE_POL1)
 macro_line|#endif  /* LANGUAGE == C */
 multiline_comment|/*&n; * PS/2 Trackpad and Mouse Interfaces&n; *&n; * Registers   (prefix kbd applies to trackpad interface, mse to mouse)&n; *    KBDCR     Control Register&n; *    KBDSTAT       Status Register&n; *    KBDDATA       Transmit/Receive Data register&n; *    KBDCLKDIV     Clock Division Register&n; *    KBDPRECNT     Clock Precount Register&n; *    KBDTEST1      Test register 1&n; *    KBDTEST2      Test register 2&n; *    KBDTEST3      Test register 3&n; *    KBDTEST4      Test register 4&n; *    MSECR&n; *    MSESTAT&n; *    MSEDATA&n; *    MSECLKDIV&n; *    MSEPRECNT&n; *    MSETEST1&n; *    MSETEST2&n; *    MSETEST3&n; *    MSETEST4&n; *&n; */
-DECL|macro|_KBD
-mdefine_line|#define _KBD( x )   _SA1111( 0x0A00 )
-DECL|macro|_MSE
-mdefine_line|#define _MSE( x )   _SA1111( 0x0C00 )
-DECL|macro|_KBDCR
-mdefine_line|#define _KBDCR&t;    _SA1111( 0x0A00 )
-DECL|macro|_KBDSTAT
-mdefine_line|#define _KBDSTAT    _SA1111( 0x0A04 )
-DECL|macro|_KBDDATA
-mdefine_line|#define _KBDDATA    _SA1111( 0x0A08 )
-DECL|macro|_KBDCLKDIV
-mdefine_line|#define _KBDCLKDIV  _SA1111( 0x0A0C )
-DECL|macro|_KBDPRECNT
-mdefine_line|#define _KBDPRECNT  _SA1111( 0x0A10 )
-DECL|macro|_MSECR
-mdefine_line|#define _MSECR&t;    _SA1111( 0x0C00 )
-DECL|macro|_MSESTAT
-mdefine_line|#define _MSESTAT    _SA1111( 0x0C04 )
-DECL|macro|_MSEDATA
-mdefine_line|#define _MSEDATA    _SA1111( 0x0C08 )
-DECL|macro|_MSECLKDIV
-mdefine_line|#define _MSECLKDIV  _SA1111( 0x0C0C )
-DECL|macro|_MSEPRECNT
-mdefine_line|#define _MSEPRECNT  _SA1111( 0x0C10 )
-macro_line|#if ( LANGUAGE == C )
-DECL|macro|KBDCR
-mdefine_line|#define KBDCR&t;&t;__CCREG(0x0a00)
-DECL|macro|KBDSTAT
-mdefine_line|#define KBDSTAT&t;&t;__CCREG(0x0a04)
-DECL|macro|KBDDATA
-mdefine_line|#define KBDDATA&t;&t;__CCREG(0x0a08)
-DECL|macro|KBDCLKDIV
-mdefine_line|#define KBDCLKDIV&t;__CCREG(0x0a0c)
-DECL|macro|KBDPRECNT
-mdefine_line|#define KBDPRECNT&t;__CCREG(0x0a10)
-DECL|macro|MSECR
-mdefine_line|#define MSECR&t;&t;__CCREG(0x0c00)
-DECL|macro|MSESTAT
-mdefine_line|#define MSESTAT&t;&t;__CCREG(0x0c04)
-DECL|macro|MSEDATA
-mdefine_line|#define MSEDATA&t;&t;__CCREG(0x0c08)
-DECL|macro|MSECLKDIV
-mdefine_line|#define MSECLKDIV&t;__CCREG(0x0c0c)
-DECL|macro|MSEPRECNT
-mdefine_line|#define MSEPRECNT&t;__CCREG(0x0c10)
-DECL|macro|KBDCR_ENA
-mdefine_line|#define KBDCR_ENA        0x08
-DECL|macro|KBDCR_FKD
-mdefine_line|#define KBDCR_FKD        0x02
-DECL|macro|KBDCR_FKC
-mdefine_line|#define KBDCR_FKC        0x01
-DECL|macro|KBDSTAT_TXE
-mdefine_line|#define KBDSTAT_TXE      0x80
-DECL|macro|KBDSTAT_TXB
-mdefine_line|#define KBDSTAT_TXB      0x40
-DECL|macro|KBDSTAT_RXF
-mdefine_line|#define KBDSTAT_RXF      0x20
-DECL|macro|KBDSTAT_RXB
-mdefine_line|#define KBDSTAT_RXB      0x10
-DECL|macro|KBDSTAT_ENA
-mdefine_line|#define KBDSTAT_ENA      0x08
-DECL|macro|KBDSTAT_RXP
-mdefine_line|#define KBDSTAT_RXP      0x04
-DECL|macro|KBDSTAT_KBD
-mdefine_line|#define KBDSTAT_KBD      0x02
-DECL|macro|KBDSTAT_KBC
-mdefine_line|#define KBDSTAT_KBC      0x01
-DECL|macro|KBDCLKDIV_DivVal
-mdefine_line|#define KBDCLKDIV_DivVal     Fld(4,0)
-DECL|macro|MSECR_ENA
-mdefine_line|#define MSECR_ENA        0x08
-DECL|macro|MSECR_FKD
-mdefine_line|#define MSECR_FKD        0x02
-DECL|macro|MSECR_FKC
-mdefine_line|#define MSECR_FKC        0x01
-DECL|macro|MSESTAT_TXE
-mdefine_line|#define MSESTAT_TXE      0x80
-DECL|macro|MSESTAT_TXB
-mdefine_line|#define MSESTAT_TXB      0x40
-DECL|macro|MSESTAT_RXF
-mdefine_line|#define MSESTAT_RXF      0x20
-DECL|macro|MSESTAT_RXB
-mdefine_line|#define MSESTAT_RXB      0x10
-DECL|macro|MSESTAT_ENA
-mdefine_line|#define MSESTAT_ENA      0x08
-DECL|macro|MSESTAT_RXP
-mdefine_line|#define MSESTAT_RXP      0x04
-DECL|macro|MSESTAT_MSD
-mdefine_line|#define MSESTAT_MSD      0x02
-DECL|macro|MSESTAT_MSC
-mdefine_line|#define MSESTAT_MSC      0x01
-DECL|macro|MSECLKDIV_DivVal
-mdefine_line|#define MSECLKDIV_DivVal     Fld(4,0)
-DECL|macro|KBDTEST1_CD
-mdefine_line|#define KBDTEST1_CD      0x80
-DECL|macro|KBDTEST1_RC1
-mdefine_line|#define KBDTEST1_RC1         0x40
-DECL|macro|KBDTEST1_MC
-mdefine_line|#define KBDTEST1_MC      0x20
-DECL|macro|KBDTEST1_C
-mdefine_line|#define KBDTEST1_C       Fld(2,3)
-DECL|macro|KBDTEST1_T2
-mdefine_line|#define KBDTEST1_T2      0x40
-DECL|macro|KBDTEST1_T1
-mdefine_line|#define KBDTEST1_T1      0x20
-DECL|macro|KBDTEST1_T0
-mdefine_line|#define KBDTEST1_T0      0x10
-DECL|macro|KBDTEST2_TICBnRES
-mdefine_line|#define KBDTEST2_TICBnRES    0x08
-DECL|macro|KBDTEST2_RKC
-mdefine_line|#define KBDTEST2_RKC         0x04
-DECL|macro|KBDTEST2_RKD
-mdefine_line|#define KBDTEST2_RKD         0x02
-DECL|macro|KBDTEST2_SEL
-mdefine_line|#define KBDTEST2_SEL         0x01
-DECL|macro|KBDTEST3_ms_16
-mdefine_line|#define KBDTEST3_ms_16       0x80
-DECL|macro|KBDTEST3_us_64
-mdefine_line|#define KBDTEST3_us_64       0x40
-DECL|macro|KBDTEST3_us_16
-mdefine_line|#define KBDTEST3_us_16       0x20
-DECL|macro|KBDTEST3_DIV8
-mdefine_line|#define KBDTEST3_DIV8        0x10
-DECL|macro|KBDTEST3_DIn
-mdefine_line|#define KBDTEST3_DIn         0x08
-DECL|macro|KBDTEST3_CIn
-mdefine_line|#define KBDTEST3_CIn         0x04
-DECL|macro|KBDTEST3_KD
-mdefine_line|#define KBDTEST3_KD      0x02
-DECL|macro|KBDTEST3_KC
-mdefine_line|#define KBDTEST3_KC      0x01
-DECL|macro|KBDTEST4_BC12
-mdefine_line|#define KBDTEST4_BC12        0x80
-DECL|macro|KBDTEST4_BC11
-mdefine_line|#define KBDTEST4_BC11        0x40
-DECL|macro|KBDTEST4_TRES
-mdefine_line|#define KBDTEST4_TRES        0x20
-DECL|macro|KBDTEST4_CLKOE
-mdefine_line|#define KBDTEST4_CLKOE       0x10
-DECL|macro|KBDTEST4_CRES
-mdefine_line|#define KBDTEST4_CRES        0x08
-DECL|macro|KBDTEST4_RXB
-mdefine_line|#define KBDTEST4_RXB         0x04
-DECL|macro|KBDTEST4_TXB
-mdefine_line|#define KBDTEST4_TXB         0x02
-DECL|macro|KBDTEST4_SRX
-mdefine_line|#define KBDTEST4_SRX         0x01
-DECL|macro|MSETEST1_CD
-mdefine_line|#define MSETEST1_CD      0x80
-DECL|macro|MSETEST1_RC1
-mdefine_line|#define MSETEST1_RC1         0x40
-DECL|macro|MSETEST1_MC
-mdefine_line|#define MSETEST1_MC      0x20
-DECL|macro|MSETEST1_C
-mdefine_line|#define MSETEST1_C       Fld(2,3)
-DECL|macro|MSETEST1_T2
-mdefine_line|#define MSETEST1_T2      0x40
-DECL|macro|MSETEST1_T1
-mdefine_line|#define MSETEST1_T1      0x20
-DECL|macro|MSETEST1_T0
-mdefine_line|#define MSETEST1_T0      0x10
-DECL|macro|MSETEST2_TICBnRES
-mdefine_line|#define MSETEST2_TICBnRES    0x08
-DECL|macro|MSETEST2_RKC
-mdefine_line|#define MSETEST2_RKC         0x04
-DECL|macro|MSETEST2_RKD
-mdefine_line|#define MSETEST2_RKD         0x02
-DECL|macro|MSETEST2_SEL
-mdefine_line|#define MSETEST2_SEL         0x01
-DECL|macro|MSETEST3_ms_16
-mdefine_line|#define MSETEST3_ms_16       0x80
-DECL|macro|MSETEST3_us_64
-mdefine_line|#define MSETEST3_us_64       0x40
-DECL|macro|MSETEST3_us_16
-mdefine_line|#define MSETEST3_us_16       0x20
-DECL|macro|MSETEST3_DIV8
-mdefine_line|#define MSETEST3_DIV8        0x10
-DECL|macro|MSETEST3_DIn
-mdefine_line|#define MSETEST3_DIn         0x08
-DECL|macro|MSETEST3_CIn
-mdefine_line|#define MSETEST3_CIn         0x04
-DECL|macro|MSETEST3_KD
-mdefine_line|#define MSETEST3_KD      0x02
-DECL|macro|MSETEST3_KC
-mdefine_line|#define MSETEST3_KC      0x01
-DECL|macro|MSETEST4_BC12
-mdefine_line|#define MSETEST4_BC12        0x80
-DECL|macro|MSETEST4_BC11
-mdefine_line|#define MSETEST4_BC11        0x40
-DECL|macro|MSETEST4_TRES
-mdefine_line|#define MSETEST4_TRES        0x20
-DECL|macro|MSETEST4_CLKOE
-mdefine_line|#define MSETEST4_CLKOE       0x10
-DECL|macro|MSETEST4_CRES
-mdefine_line|#define MSETEST4_CRES        0x08
-DECL|macro|MSETEST4_RXB
-mdefine_line|#define MSETEST4_RXB         0x04
-DECL|macro|MSETEST4_TXB
-mdefine_line|#define MSETEST4_TXB         0x02
-DECL|macro|MSETEST4_SRX
-mdefine_line|#define MSETEST4_SRX         0x01
-macro_line|#endif  /* LANGUAGE == C */
+DECL|macro|SA1111_KBD
+mdefine_line|#define SA1111_KBD&t;&t;0x0a00
+DECL|macro|SA1111_MSE
+mdefine_line|#define SA1111_MSE&t;&t;0x0c00
+multiline_comment|/*&n; * These are offsets from the above bases.&n; */
+DECL|macro|SA1111_PS2CR
+mdefine_line|#define SA1111_PS2CR&t;&t;0x0000
+DECL|macro|SA1111_PS2STAT
+mdefine_line|#define SA1111_PS2STAT&t;&t;0x0004
+DECL|macro|SA1111_PS2DATA
+mdefine_line|#define SA1111_PS2DATA&t;&t;0x0008
+DECL|macro|SA1111_PS2CLKDIV
+mdefine_line|#define SA1111_PS2CLKDIV&t;0x000c
+DECL|macro|SA1111_PS2PRECNT
+mdefine_line|#define SA1111_PS2PRECNT&t;0x0010
+DECL|macro|PS2CR_ENA
+mdefine_line|#define PS2CR_ENA&t;&t;0x08
+DECL|macro|PS2CR_FKD
+mdefine_line|#define PS2CR_FKD&t;&t;0x02
+DECL|macro|PS2CR_FKC
+mdefine_line|#define PS2CR_FKC&t;&t;0x01
+DECL|macro|PS2STAT_STP
+mdefine_line|#define PS2STAT_STP&t;&t;0x0100
+DECL|macro|PS2STAT_TXE
+mdefine_line|#define PS2STAT_TXE&t;&t;0x0080
+DECL|macro|PS2STAT_TXB
+mdefine_line|#define PS2STAT_TXB&t;&t;0x0040
+DECL|macro|PS2STAT_RXF
+mdefine_line|#define PS2STAT_RXF&t;&t;0x0020
+DECL|macro|PS2STAT_RXB
+mdefine_line|#define PS2STAT_RXB&t;&t;0x0010
+DECL|macro|PS2STAT_ENA
+mdefine_line|#define PS2STAT_ENA&t;&t;0x0008
+DECL|macro|PS2STAT_RXP
+mdefine_line|#define PS2STAT_RXP&t;&t;0x0004
+DECL|macro|PS2STAT_KBD
+mdefine_line|#define PS2STAT_KBD&t;&t;0x0002
+DECL|macro|PS2STAT_KBC
+mdefine_line|#define PS2STAT_KBC&t;&t;0x0001
 multiline_comment|/*&n; * PCMCIA Interface&n; *&n; * Registers&n; *    PCSR&t;Status Register&n; *    PCCR&t;Control Register&n; *    PCSSR&t;Sleep State Register&n; */
 DECL|macro|_PCCR
 mdefine_line|#define _PCCR&t;&t;_SA1111( 0x1800 )
