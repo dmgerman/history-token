@@ -170,6 +170,10 @@ r_void
 id|hw_regs_t
 id|hw
 suffix:semicolon
+id|ide_hwif_t
+op_star
+id|hwif
+suffix:semicolon
 r_int
 id|index
 op_assign
@@ -213,7 +217,8 @@ c_func
 op_amp
 id|hw
 comma
-l_int|NULL
+op_amp
+id|hwif
 )paren
 suffix:semicolon
 r_break
@@ -249,7 +254,8 @@ c_func
 op_amp
 id|hw
 comma
-l_int|NULL
+op_amp
+id|hwif
 )paren
 suffix:semicolon
 r_break
@@ -285,7 +291,8 @@ c_func
 op_amp
 id|hw
 comma
-l_int|NULL
+op_amp
+id|hwif
 )paren
 suffix:semicolon
 r_if
@@ -366,6 +373,10 @@ op_minus
 l_int|1
 )paren
 (brace
+id|hwif-&gt;mmio
+op_assign
+l_int|2
+suffix:semicolon
 r_if
 c_cond
 (paren
