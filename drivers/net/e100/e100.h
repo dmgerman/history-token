@@ -1531,6 +1531,8 @@ DECL|macro|IPCB_INSERTVLAN_ENABLE
 mdefine_line|#define IPCB_INSERTVLAN_ENABLE &t;&t;BIT_1
 DECL|macro|IPCB_IP_ACTIVATION_DEFAULT
 mdefine_line|#define IPCB_IP_ACTIVATION_DEFAULT      IPCB_HARDWAREPARSING_ENABLE
+DECL|macro|FOLD_CSUM
+mdefine_line|#define FOLD_CSUM(_XSUM)  ((((_XSUM &lt;&lt; 16) | (_XSUM &gt;&gt; 16)) + _XSUM) &gt;&gt; 16)
 multiline_comment|/* Transmit Buffer Descriptor (TBD)*/
 DECL|struct|_tbd_t
 r_typedef
@@ -2373,6 +2375,15 @@ id|u16
 id|ip_lbytes
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PM
+DECL|member|pci_state
+id|u32
+id|pci_state
+(braket
+l_int|16
+)braket
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|E100_AUTONEG
@@ -2511,6 +2522,38 @@ r_struct
 id|e100_private
 op_star
 id|bdp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|e100_deisolate_driver
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+comma
+id|u8
+id|recover
+comma
+id|u8
+id|full_reset
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|e100_hw_reset_recover
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+comma
+id|u32
+id|reset_cmd
 )paren
 suffix:semicolon
 macro_line|#endif
