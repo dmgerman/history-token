@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * UHCI-specific debugging code. Invaluable when something&n; * goes wrong, but don&squot;t get in my face.&n; *&n; * Kernel visible pointers are surrounded in []&squot;s and bus&n; * visible pointers are surrounded in ()&squot;s&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999-2001 Johannes Erdfelt&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/debugfs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;uhci-hcd.h&quot;
@@ -2948,18 +2948,18 @@ suffix:semicolon
 )brace
 DECL|macro|MAX_OUTPUT
 mdefine_line|#define MAX_OUTPUT&t;(64 * 1024)
-DECL|variable|uhci_proc_root
+DECL|variable|uhci_debugfs_root
 r_static
 r_struct
-id|proc_dir_entry
+id|dentry
 op_star
-id|uhci_proc_root
+id|uhci_debugfs_root
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|struct|uhci_proc
+DECL|struct|uhci_debug
 r_struct
-id|uhci_proc
+id|uhci_debug
 (brace
 DECL|member|size
 r_int
@@ -2978,10 +2978,10 @@ id|uhci
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|uhci_proc_open
+DECL|function|uhci_debug_open
 r_static
 r_int
-id|uhci_proc_open
+id|uhci_debug_open
 c_func
 (paren
 r_struct
@@ -2995,27 +2995,15 @@ op_star
 id|file
 )paren
 (brace
-r_const
-r_struct
-id|proc_dir_entry
-op_star
-id|dp
-op_assign
-id|PDE
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 r_struct
 id|uhci_hcd
 op_star
 id|uhci
 op_assign
-id|dp-&gt;data
+id|inode-&gt;u.generic_ip
 suffix:semicolon
 r_struct
-id|uhci_proc
+id|uhci_debug
 op_star
 id|up
 suffix:semicolon
@@ -3111,10 +3099,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|uhci_proc_lseek
+DECL|function|uhci_debug_lseek
 r_static
 id|loff_t
-id|uhci_proc_lseek
+id|uhci_debug_lseek
 c_func
 (paren
 r_struct
@@ -3130,7 +3118,7 @@ id|whence
 )paren
 (brace
 r_struct
-id|uhci_proc
+id|uhci_debug
 op_star
 id|up
 suffix:semicolon
@@ -3207,10 +3195,10 @@ r_new
 )paren
 suffix:semicolon
 )brace
-DECL|function|uhci_proc_read
+DECL|function|uhci_debug_read
 r_static
 id|ssize_t
-id|uhci_proc_read
+id|uhci_debug_read
 c_func
 (paren
 r_struct
@@ -3232,7 +3220,7 @@ id|ppos
 )paren
 (brace
 r_struct
-id|uhci_proc
+id|uhci_debug
 op_star
 id|up
 op_assign
@@ -3254,10 +3242,10 @@ id|up-&gt;size
 )paren
 suffix:semicolon
 )brace
-DECL|function|uhci_proc_release
+DECL|function|uhci_debug_release
 r_static
 r_int
-id|uhci_proc_release
+id|uhci_debug_release
 c_func
 (paren
 r_struct
@@ -3272,7 +3260,7 @@ id|file
 )paren
 (brace
 r_struct
-id|uhci_proc
+id|uhci_debug
 op_star
 id|up
 op_assign
@@ -3294,33 +3282,32 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|uhci_proc_operations
+DECL|variable|uhci_debug_operations
 r_static
 r_struct
 id|file_operations
-id|uhci_proc_operations
+id|uhci_debug_operations
 op_assign
 (brace
 dot
 id|open
 op_assign
-id|uhci_proc_open
+id|uhci_debug_open
 comma
 dot
 id|llseek
 op_assign
-id|uhci_proc_lseek
+id|uhci_debug_lseek
 comma
 dot
 id|read
 op_assign
-id|uhci_proc_read
+id|uhci_debug_read
 comma
-singleline_comment|//&t;write:&t;&t;uhci_proc_write,
 dot
 id|release
 op_assign
-id|uhci_proc_release
+id|uhci_debug_release
 comma
 )brace
 suffix:semicolon

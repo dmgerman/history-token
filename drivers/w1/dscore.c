@@ -3608,7 +3608,11 @@ id|i
 comma
 id|endpoint-&gt;bEndpointAddress
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 comma
 (paren
 id|endpoint-&gt;bEndpointAddress

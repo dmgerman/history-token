@@ -4042,7 +4042,11 @@ id|bluetooth-&gt;bulk_in_buffer_size
 op_assign
 id|buffer_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|bluetooth-&gt;bulk_in_endpointAddress
 op_assign
@@ -4111,7 +4115,11 @@ id|endpoint-&gt;bEndpointAddress
 suffix:semicolon
 id|bluetooth-&gt;bulk_out_buffer_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 op_star
 l_int|2
 suffix:semicolon
@@ -4153,7 +4161,11 @@ id|bluetooth-&gt;interrupt_in_buffer_size
 op_assign
 id|buffer_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|bluetooth-&gt;interrupt_in_endpointAddress
 op_assign

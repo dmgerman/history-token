@@ -6025,7 +6025,11 @@ op_increment
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idVendor
+)paren
 op_eq
 id|vdata
 (braket
@@ -6034,7 +6038,11 @@ id|i
 dot
 id|vendor
 op_logical_and
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idProduct
+)paren
 op_eq
 id|vdata
 (braket
@@ -6043,12 +6051,10 @@ id|i
 dot
 id|prod_id
 )paren
-(brace
 id|vend_idx
 op_assign
 id|i
 suffix:semicolon
-)brace
 )brace
 macro_line|#ifdef VERBOSE_USB_DEBUG&t;
 id|printk
@@ -6667,7 +6673,11 @@ id|USB_INT
 suffix:semicolon
 id|packet_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 singleline_comment|// remember max packet size
 macro_line|#ifdef VERBOSE_USB_DEBUG
@@ -6738,7 +6748,11 @@ id|USB_BULK
 suffix:semicolon
 id|packet_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 singleline_comment|// remember max packet size
 macro_line|#ifdef VERBOSE_USB_DEBUG
@@ -6807,7 +6821,11 @@ id|USB_ISOC
 suffix:semicolon
 id|iso_packet_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 singleline_comment|// remember max packet size
 macro_line|#ifdef VERBOSE_USB_DEBUG
@@ -6874,7 +6892,11 @@ id|cidx
 dot
 id|usb_packet_maxlen
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 id|context-&gt;fifos
 (braket
