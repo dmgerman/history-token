@@ -31773,12 +31773,6 @@ c_func
 id|tp
 )paren
 suffix:semicolon
-id|tg3_init_rings
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
 id|tg3_init_hw
 c_func
 (paren
@@ -31960,12 +31954,6 @@ op_complement
 id|TG3_FLAG_PAUSE_TX
 suffix:semicolon
 id|tg3_halt
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
-id|tg3_init_rings
 c_func
 (paren
 id|tp
