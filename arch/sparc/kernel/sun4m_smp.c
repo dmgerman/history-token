@@ -71,14 +71,6 @@ id|NR_CPUS
 suffix:semicolon
 r_extern
 r_int
-r_int
-id|cpu_offset
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
-r_int
 r_char
 id|boot_cpu_id
 suffix:semicolon
@@ -489,7 +481,6 @@ op_lshift
 id|mid
 )paren
 suffix:semicolon
-multiline_comment|/* XXX cpu_offset is broken -Keith */
 r_for
 c_loop
 (paren
@@ -505,37 +496,6 @@ id|i
 op_increment
 )paren
 (brace
-id|cpu_offset
-(braket
-id|i
-)braket
-op_assign
-(paren
-r_char
-op_star
-)paren
-op_amp
-(paren
-id|cpu_data
-c_func
-(paren
-id|i
-)paren
-)paren
-op_minus
-(paren
-r_char
-op_star
-)paren
-op_amp
-(paren
-id|cpu_data
-c_func
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
 id|__cpu_number_map
 (braket
 id|i
@@ -1785,10 +1745,6 @@ r_int
 id|o7
 )paren
 suffix:semicolon
-DECL|macro|prof_multiplier
-mdefine_line|#define prof_multiplier(__cpu)&t;&t;cpu_data(__cpu).multiplier
-DECL|macro|prof_counter
-mdefine_line|#define prof_counter(__cpu)&t;&t;cpu_data(__cpu).counter
 DECL|function|smp4m_percpu_timer_interrupt
 r_void
 id|smp4m_percpu_timer_interrupt

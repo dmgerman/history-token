@@ -636,7 +636,11 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() hard_smp_processor_id()
+mdefine_line|#define smp_processor_id()&t;(current_thread_info()-&gt;cpu)
+DECL|macro|prof_multiplier
+mdefine_line|#define prof_multiplier(__cpu)&t;&t;cpu_data(__cpu).multiplier
+DECL|macro|prof_counter
+mdefine_line|#define prof_counter(__cpu)&t;&t;cpu_data(__cpu).counter
 macro_line|#endif /* !(__ASSEMBLY__) */
 multiline_comment|/* Sparc specific messages. */
 DECL|macro|MSG_CROSS_CALL
