@@ -6,9 +6,16 @@ mdefine_line|#define edstring(ed_type) ({ char *temp; &bslash;&n;&t;switch (ed_t
 DECL|macro|pipestring
 mdefine_line|#define pipestring(pipe) edstring(usb_pipetype(pipe))
 multiline_comment|/* debug| print the main components of an URB     &n; * small: 0) header + data packets 1) just header&n; */
-DECL|function|urb_print
 r_static
 r_void
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
+DECL|function|urb_print
 id|urb_print
 (paren
 r_struct
@@ -1077,20 +1084,6 @@ id|ohci_dump_status
 id|controller
 )paren
 suffix:semicolon
-macro_line|#ifdef OHCI_VERBOSE_DEBUG
-r_if
-c_cond
-(paren
-id|verbose
-)paren
-id|ohci_dump_periodic
-(paren
-id|controller
-comma
-l_string|&quot;hcca&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2728,7 +2721,7 @@ id|bus
 (brace
 id|device_create_file
 (paren
-id|bus-&gt;hcd.parent
+id|bus-&gt;hcd.controller
 comma
 op_amp
 id|dev_attr_async
@@ -2736,7 +2729,7 @@ id|dev_attr_async
 suffix:semicolon
 id|device_create_file
 (paren
-id|bus-&gt;hcd.parent
+id|bus-&gt;hcd.controller
 comma
 op_amp
 id|dev_attr_periodic
@@ -2765,7 +2758,7 @@ id|bus
 (brace
 id|device_remove_file
 (paren
-id|bus-&gt;hcd.parent
+id|bus-&gt;hcd.controller
 comma
 op_amp
 id|dev_attr_async
@@ -2773,7 +2766,7 @@ id|dev_attr_async
 suffix:semicolon
 id|device_remove_file
 (paren
-id|bus-&gt;hcd.parent
+id|bus-&gt;hcd.controller
 comma
 op_amp
 id|dev_attr_periodic

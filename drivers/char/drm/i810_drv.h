@@ -128,6 +128,10 @@ r_int
 r_int
 id|counter
 suffix:semicolon
+DECL|member|dma_status_page
+id|dma_addr_t
+id|dma_status_page
+suffix:semicolon
 DECL|member|mmap_buffer
 id|drm_buf_t
 op_star

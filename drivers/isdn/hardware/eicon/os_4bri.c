@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: os_4bri.c,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $ */
+multiline_comment|/* $Id: os_4bri.c,v 1.1.2.3 2001/02/14 21:10:19 armin Exp $ */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;debuglib.h&quot;
 macro_line|#include &quot;cardtype.h&quot;
@@ -7,7 +7,7 @@ macro_line|#include &quot;pc.h&quot;
 macro_line|#include &quot;pr_pc.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;dsp_defs.h&quot;
-macro_line|#include &quot;di.h&quot; 
+macro_line|#include &quot;di.h&quot;
 macro_line|#include &quot;io.h&quot;
 macro_line|#include &quot;xdi_msg.h&quot;
 macro_line|#include &quot;xdi_adapter.h&quot;
@@ -32,6 +32,7 @@ multiline_comment|/*&n;**  IMPORTS&n;*/
 r_extern
 r_void
 id|prepare_qBri_functions
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -40,6 +41,7 @@ suffix:semicolon
 r_extern
 r_void
 id|prepare_qBri2_functions
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -48,6 +50,7 @@ suffix:semicolon
 r_extern
 r_void
 id|diva_xdi_display_adapter_features
+c_func
 (paren
 r_int
 id|card
@@ -56,6 +59,7 @@ suffix:semicolon
 r_extern
 r_void
 id|diva_add_slave_adapter
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -65,6 +69,7 @@ suffix:semicolon
 r_extern
 r_int
 id|qBri_FPGA_download
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -73,6 +78,7 @@ suffix:semicolon
 r_extern
 r_void
 id|start_qBri_hardware
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -81,6 +87,7 @@ suffix:semicolon
 r_extern
 r_int
 id|diva_card_read_xlog
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -151,6 +158,7 @@ suffix:semicolon
 r_static
 r_int
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -160,6 +168,7 @@ suffix:semicolon
 r_static
 r_int
 id|_4bri_get_serial_number
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -169,6 +178,7 @@ suffix:semicolon
 r_static
 r_int
 id|diva_4bri_cmd_card_proc
+c_func
 (paren
 r_struct
 id|_diva_os_xdi_adapter
@@ -186,6 +196,7 @@ suffix:semicolon
 r_static
 r_int
 id|diva_4bri_cleanup_slave_adapters
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -195,6 +206,7 @@ suffix:semicolon
 r_static
 r_int
 id|diva_4bri_write_fpga_image
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -211,6 +223,7 @@ suffix:semicolon
 r_static
 r_int
 id|diva_4bri_reset_adapter
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -219,6 +232,7 @@ suffix:semicolon
 r_static
 r_int
 id|diva_4bri_write_sdram_block
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -241,6 +255,7 @@ suffix:semicolon
 r_static
 r_int
 id|diva_4bri_start_adapter
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -255,6 +270,7 @@ suffix:semicolon
 r_static
 r_int
 id|check_qBri_interrupt
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -263,16 +279,18 @@ suffix:semicolon
 r_static
 r_int
 id|diva_4bri_stop_adapter
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
 id|a
 )paren
 suffix:semicolon
+DECL|function|_4bri_is_rev_2_card
 r_static
 r_int
-DECL|function|_4bri_is_rev_2_card
 id|_4bri_is_rev_2_card
+c_func
 (paren
 r_int
 id|card_ordinal
@@ -311,10 +329,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|_4bri_is_rev_2_bri_card
 r_static
 r_int
-DECL|function|_4bri_is_rev_2_bri_card
 id|_4bri_is_rev_2_bri_card
+c_func
 (paren
 r_int
 id|card_ordinal
@@ -348,9 +367,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;**  BAR0 - MEM - 0x100    - CONFIG MEM&n;**  BAR1 - I/O - 0x100    - UNUSED&n;**  BAR2 - MEM - MQ_MEMORY_SIZE (MQ2_MEMORY_SIZE on Rev.2) - SDRAM&n;**  BAR3 - MEM - 0x2000 (0x10000 on Rev.2)   - CNTRL&n;**&n;**  Called by master adapter, that will initialize and add slave adapters&n;*/
-r_int
 DECL|function|diva_4bri_init_card
+r_int
 id|diva_4bri_init_card
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -404,6 +424,7 @@ r_int
 id|v2
 op_assign
 id|_4bri_is_rev_2_card
+c_func
 (paren
 id|a-&gt;CardOrdinal
 )paren
@@ -412,6 +433,7 @@ r_int
 id|tasks
 op_assign
 id|_4bri_is_rev_2_bri_card
+c_func
 (paren
 id|a-&gt;CardOrdinal
 )paren
@@ -445,12 +467,14 @@ r_if
 c_cond
 (paren
 id|_4bri_is_rev_2_bri_card
+c_func
 (paren
 id|a-&gt;CardOrdinal
 )paren
 )paren
 (brace
 id|memcpy
+c_func
 (paren
 id|bar_length
 comma
@@ -466,6 +490,7 @@ suffix:semicolon
 r_else
 (brace
 id|memcpy
+c_func
 (paren
 id|bar_length
 comma
@@ -482,6 +507,7 @@ suffix:semicolon
 r_else
 (brace
 id|memcpy
+c_func
 (paren
 id|bar_length
 comma
@@ -510,12 +536,13 @@ comma
 id|factor
 )paren
 )paren
-multiline_comment|/*&n;    Get Serial Number&n;    The serial number of 4BRI is accessible in accordance with PCI spec&n;    via command register located in configuration space, also we do not&n;    have to map any BAR before we can access it&n;  */
+multiline_comment|/*&n;&t;   Get Serial Number&n;&t;   The serial number of 4BRI is accessible in accordance with PCI spec&n;&t;   via command register located in configuration space, also we do not&n;&t;   have to map any BAR before we can access it&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|_4bri_get_serial_number
+c_func
 (paren
 id|a
 )paren
@@ -529,6 +556,7 @@ l_string|&quot;A: 4BRI can&squot;t ger Serial Number&quot;
 )paren
 )paren
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|a
 )paren
@@ -540,7 +568,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Set properties&n;  */
+multiline_comment|/*&n;&t;   Set properties&n;&t; */
 id|a-&gt;xdi_adapter.Properties
 op_assign
 id|CardProperties
@@ -563,7 +591,7 @@ comma
 id|a-&gt;resources.pci.func
 )paren
 )paren
-multiline_comment|/*&n;    First initialization step: get and check hardware resoures.&n;    Do not map resources and do not access card at this step&n;  */
+multiline_comment|/*&n;&t;   First initialization step: get and check hardware resoures.&n;&t;   Do not map resources and do not access card at this step&n;&t; */
 r_for
 c_loop
 (paren
@@ -585,6 +613,7 @@ id|bar
 )braket
 op_assign
 id|divasa_get_pci_bar
+c_func
 (paren
 id|a-&gt;resources.pci.bus
 comma
@@ -642,6 +671,7 @@ op_assign
 id|byte
 )paren
 id|divasa_get_pci_irq
+c_func
 (paren
 id|a-&gt;resources.pci.bus
 comma
@@ -679,7 +709,7 @@ id|a-&gt;resources.pci.bar
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/*&n;    Map all MEMORY BAR&squot;s&n;  */
+multiline_comment|/*&n;&t;   Map all MEMORY BAR&squot;s&n;&t; */
 r_for
 c_loop
 (paren
@@ -710,6 +740,7 @@ id|bar
 )braket
 op_assign
 id|divasa_remap_pci_bar
+c_func
 (paren
 id|a-&gt;resources.pci.bar
 (braket
@@ -742,6 +773,7 @@ id|bar
 )paren
 )paren
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|a
 )paren
@@ -755,8 +787,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;    Register I/O port&n;  */
+multiline_comment|/*&n;&t;   Register I/O port&n;&t; */
 id|sprintf
+c_func
 (paren
 op_amp
 id|a-&gt;port_name
@@ -776,6 +809,7 @@ r_if
 c_cond
 (paren
 id|diva_os_register_io_port
+c_func
 (paren
 l_int|1
 comma
@@ -805,6 +839,7 @@ l_string|&quot;A: 4BRI: can&squot;t register bar[1]&quot;
 )paren
 )paren
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|a
 )paren
@@ -834,12 +869,12 @@ id|a-&gt;resources.pci.bar
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/*&n;    Set cleanup pointer for base adapter only, so slave adapter&n;    will be unable to get cleanup&n;  */
+multiline_comment|/*&n;&t;   Set cleanup pointer for base adapter only, so slave adapter&n;&t;   will be unable to get cleanup&n;&t; */
 id|a-&gt;interface.cleanup_adapter_proc
 op_assign
 id|diva_4bri_cleanup_adapter
 suffix:semicolon
-multiline_comment|/*&n;    Create slave adapters&n;  */
+multiline_comment|/*&n;&t;   Create slave adapters&n;&t; */
 r_if
 c_cond
 (paren
@@ -863,6 +898,7 @@ id|diva_os_xdi_adapter_t
 op_star
 )paren
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -876,6 +912,7 @@ id|a
 )paren
 (brace
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|a
 )paren
@@ -902,6 +939,7 @@ id|diva_os_xdi_adapter_t
 op_star
 )paren
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -915,6 +953,7 @@ id|a
 )paren
 (brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -932,6 +971,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|a
 )paren
@@ -958,6 +998,7 @@ id|diva_os_xdi_adapter_t
 op_star
 )paren
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -971,6 +1012,7 @@ id|a
 )paren
 (brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -981,6 +1023,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1005,6 +1048,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|a
 )paren
@@ -1017,6 +1061,7 @@ l_int|1
 suffix:semicolon
 )brace
 id|memset
+c_func
 (paren
 id|a-&gt;slave_adapters
 (braket
@@ -1033,6 +1078,7 @@ id|a
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|a-&gt;slave_adapters
 (braket
@@ -1049,6 +1095,7 @@ id|a
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|a-&gt;slave_adapters
 (braket
@@ -1102,13 +1149,14 @@ id|a-&gt;slave_adapters
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/*&n;    Allocate slave list&n;  */
+multiline_comment|/*&n;&t;   Allocate slave list&n;&t; */
 id|quadro_list
 op_assign
 (paren
 id|PADAPTER_LIST_ENTRY
 )paren
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -1150,6 +1198,7 @@ op_increment
 )paren
 (brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1168,6 +1217,7 @@ l_int|0
 suffix:semicolon
 )brace
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|a
 )paren
@@ -1180,6 +1230,7 @@ l_int|1
 suffix:semicolon
 )brace
 id|memset
+c_func
 (paren
 id|quadro_list
 comma
@@ -1192,7 +1243,7 @@ id|quadro_list
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Set interfaces&n;  */
+multiline_comment|/*&n;&t;   Set interfaces&n;&t; */
 id|a-&gt;xdi_adapter.QuadroList
 op_assign
 id|quadro_list
@@ -1315,6 +1366,7 @@ suffix:semicolon
 id|diva_current-&gt;xdi_adapter.e_tbl
 op_assign
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -1334,11 +1386,13 @@ id|diva_current-&gt;xdi_adapter.e_tbl
 )paren
 (brace
 id|diva_4bri_cleanup_slave_adapters
+c_func
 (paren
 id|a
 )paren
 suffix:semicolon
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|a
 )paren
@@ -1363,6 +1417,7 @@ op_increment
 )paren
 (brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1381,6 +1436,7 @@ l_int|1
 suffix:semicolon
 )brace
 id|memset
+c_func
 (paren
 id|diva_current-&gt;xdi_adapter.e_tbl
 comma
@@ -1398,6 +1454,7 @@ r_if
 c_cond
 (paren
 id|diva_os_initialize_spin_lock
+c_func
 (paren
 op_amp
 id|diva_current-&gt;xdi_adapter.isr_spin_lock
@@ -1407,11 +1464,13 @@ l_string|&quot;isr&quot;
 )paren
 (brace
 id|diva_4bri_cleanup_slave_adapters
+c_func
 (paren
 id|a
 )paren
 suffix:semicolon
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|a
 )paren
@@ -1436,6 +1495,7 @@ op_increment
 )paren
 (brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1457,6 +1517,7 @@ r_if
 c_cond
 (paren
 id|diva_os_initialize_spin_lock
+c_func
 (paren
 op_amp
 id|diva_current-&gt;xdi_adapter.data_spin_lock
@@ -1466,11 +1527,13 @@ l_string|&quot;data&quot;
 )paren
 (brace
 id|diva_4bri_cleanup_slave_adapters
+c_func
 (paren
 id|a
 )paren
 suffix:semicolon
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|a
 )paren
@@ -1495,6 +1558,7 @@ op_increment
 )paren
 (brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1513,8 +1577,11 @@ l_int|1
 suffix:semicolon
 )brace
 id|strcpy
+c_func
 (paren
-id|diva_current-&gt;xdi_adapter.req_soft_isr.dpc_thread_name
+id|diva_current-&gt;xdi_adapter.req_soft_isr
+dot
+id|dpc_thread_name
 comma
 l_string|&quot;kdivas4brid&quot;
 )paren
@@ -1535,11 +1602,13 @@ id|diva_current-&gt;xdi_adapter
 )paren
 (brace
 id|diva_4bri_cleanup_slave_adapters
+c_func
 (paren
 id|a
 )paren
 suffix:semicolon
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|a
 )paren
@@ -1564,6 +1633,7 @@ op_increment
 )paren
 (brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1581,7 +1651,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     Do not initialize second DPC - only one thread will be created&n;    */
+multiline_comment|/*&n;&t;&t;   Do not initialize second DPC - only one thread will be created&n;&t;&t; */
 id|diva_current-&gt;xdi_adapter.isr_soft_isr.object
 op_assign
 id|diva_current-&gt;xdi_adapter.req_soft_isr.object
@@ -1594,6 +1664,7 @@ id|v2
 )paren
 (brace
 id|prepare_qBri2_functions
+c_func
 (paren
 op_amp
 id|a-&gt;xdi_adapter
@@ -1603,13 +1674,14 @@ suffix:semicolon
 r_else
 (brace
 id|prepare_qBri_functions
+c_func
 (paren
 op_amp
 id|a-&gt;xdi_adapter
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Set up hardware related pointers&n;  */
+multiline_comment|/*&n;&t;   Set up hardware related pointers&n;&t; */
 id|a-&gt;xdi_adapter.cfg
 op_assign
 (paren
@@ -1682,7 +1754,7 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* BAR2 SDRAM  */
-multiline_comment|/*&n;    ctlReg contains the register address for the MIPS CPU reset control&n;  */
+multiline_comment|/*&n;&t;   ctlReg contains the register address for the MIPS CPU reset control&n;&t; */
 id|a-&gt;xdi_adapter.ctlReg
 op_assign
 id|a-&gt;resources.pci.addr
@@ -1691,7 +1763,7 @@ l_int|3
 )braket
 suffix:semicolon
 multiline_comment|/* BAR3 CNTRL  */
-multiline_comment|/*&n;    prom contains the register address for FPGA and EEPROM programming&n;  */
+multiline_comment|/*&n;&t;   prom contains the register address for FPGA and EEPROM programming&n;&t; */
 id|a-&gt;xdi_adapter.prom
 op_assign
 op_amp
@@ -1700,7 +1772,7 @@ id|a-&gt;xdi_adapter.reset
 l_int|0x6E
 )braket
 suffix:semicolon
-multiline_comment|/*&n;    reset contains the base address for the PLX 9054 register set&n;  */
+multiline_comment|/*&n;&t;   reset contains the base address for the PLX 9054 register set&n;&t; */
 id|a-&gt;xdi_adapter.reset
 (braket
 id|PLX9054_INTCSR
@@ -1709,7 +1781,7 @@ op_assign
 l_int|0x00
 suffix:semicolon
 multiline_comment|/* disable PCI interrupts */
-multiline_comment|/*&n;    Replicate addresses to all instances, set shared memory&n;    address for all instances&n;  */
+multiline_comment|/*&n;&t;   Replicate addresses to all instances, set shared memory&n;&t;   address for all instances&n;&t; */
 r_for
 c_loop
 (paren
@@ -1849,19 +1921,22 @@ l_int|24
 )paren
 )paren
 op_or
-id|a-&gt;xdi_adapter.serialNo
+id|a
+op_member_access_from_pointer
+id|xdi_adapter.serialNo
 suffix:semicolon
 id|Slave-&gt;cardType
 op_assign
 id|a-&gt;xdi_adapter.cardType
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Set IRQ handler&n;  */
+multiline_comment|/*&n;&t;   Set IRQ handler&n;&t; */
 id|a-&gt;xdi_adapter.irq_info.irq_nr
 op_assign
 id|a-&gt;resources.pci.irq
 suffix:semicolon
 id|sprintf
+c_func
 (paren
 id|a-&gt;xdi_adapter.irq_info.irq_name
 comma
@@ -1877,6 +1952,7 @@ r_if
 c_cond
 (paren
 id|diva_os_register_irq
+c_func
 (paren
 id|a
 comma
@@ -1887,11 +1963,13 @@ id|a-&gt;xdi_adapter.irq_info.irq_name
 )paren
 (brace
 id|diva_4bri_cleanup_slave_adapters
+c_func
 (paren
 id|a
 )paren
 suffix:semicolon
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|a
 )paren
@@ -1916,6 +1994,7 @@ op_increment
 )paren
 (brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1937,7 +2016,7 @@ id|a-&gt;xdi_adapter.irq_info.registered
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;    Add three slave adapters&n;  */
+multiline_comment|/*&n;&t;   Add three slave adapters&n;&t; */
 r_if
 c_cond
 (paren
@@ -1947,6 +2026,7 @@ l_int|1
 )paren
 (brace
 id|diva_add_slave_adapter
+c_func
 (paren
 id|adapter_list
 (braket
@@ -1955,6 +2035,7 @@ l_int|1
 )paren
 suffix:semicolon
 id|diva_add_slave_adapter
+c_func
 (paren
 id|adapter_list
 (braket
@@ -1963,6 +2044,7 @@ l_int|2
 )paren
 suffix:semicolon
 id|diva_add_slave_adapter
+c_func
 (paren
 id|adapter_list
 (braket
@@ -1990,10 +2072,11 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;**  Cleanup function will be called for master adapter only&n;**  this is garanteed by design: cleanup callback is set&n;**  by master adapter only&n;*/
+DECL|function|diva_4bri_cleanup_adapter
 r_static
 r_int
-DECL|function|diva_4bri_cleanup_adapter
 id|diva_4bri_cleanup_adapter
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -2003,7 +2086,7 @@ id|a
 r_int
 id|bar
 suffix:semicolon
-multiline_comment|/*&n;    Stop adapter if running&n;  */
+multiline_comment|/*&n;&t;   Stop adapter if running&n;&t; */
 r_if
 c_cond
 (paren
@@ -2011,12 +2094,13 @@ id|a-&gt;xdi_adapter.Initialized
 )paren
 (brace
 id|diva_4bri_stop_adapter
+c_func
 (paren
 id|a
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Remove IRQ handler&n;  */
+multiline_comment|/*&n;&t;   Remove IRQ handler&n;&t; */
 r_if
 c_cond
 (paren
@@ -2024,6 +2108,7 @@ id|a-&gt;xdi_adapter.irq_info.registered
 )paren
 (brace
 id|diva_os_remove_irq
+c_func
 (paren
 id|a
 comma
@@ -2035,13 +2120,14 @@ id|a-&gt;xdi_adapter.irq_info.registered
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;    Free DPC&squot;s and spin locks on all adapters&n;  */
+multiline_comment|/*&n;&t;   Free DPC&squot;s and spin locks on all adapters&n;&t; */
 id|diva_4bri_cleanup_slave_adapters
+c_func
 (paren
 id|a
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Unmap all BARS&n;  */
+multiline_comment|/*&n;&t;   Unmap all BARS&n;&t; */
 r_for
 c_loop
 (paren
@@ -2080,8 +2166,11 @@ id|bar
 )paren
 (brace
 id|divasa_unmap_pci_bar
+c_func
 (paren
-id|a-&gt;resources.pci.addr
+id|a-&gt;resources.pci
+dot
+id|addr
 (braket
 id|bar
 )braket
@@ -2104,7 +2193,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;    Unregister I/O&n;  */
+multiline_comment|/*&n;&t;   Unregister I/O&n;&t; */
 r_if
 c_cond
 (paren
@@ -2120,6 +2209,7 @@ l_int|1
 )paren
 (brace
 id|diva_os_register_io_port
+c_func
 (paren
 l_int|0
 comma
@@ -2129,8 +2219,11 @@ l_int|1
 )braket
 comma
 id|_4bri_is_rev_2_card
+c_func
 (paren
-id|a-&gt;CardOrdinal
+id|a
+op_member_access_from_pointer
+id|CardOrdinal
 )paren
 ques
 c_cond
@@ -2173,6 +2266,7 @@ id|a-&gt;slave_list
 )paren
 (brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -2190,10 +2284,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|_4bri_get_serial_number
 r_static
 r_int
-DECL|function|_4bri_get_serial_number
 id|_4bri_get_serial_number
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -2276,6 +2371,7 @@ id|j
 )paren
 (brace
 id|PCIwrite
+c_func
 (paren
 id|Bus
 comma
@@ -2295,11 +2391,13 @@ id|hdev
 )paren
 suffix:semicolon
 id|diva_os_wait
+c_func
 (paren
 l_int|1
 )paren
 suffix:semicolon
 id|PCIread
+c_func
 (paren
 id|Bus
 comma
@@ -2356,6 +2454,7 @@ l_int|0
 suffix:semicolon
 )brace
 id|PCIread
+c_func
 (paren
 id|Bus
 comma
@@ -2481,10 +2580,11 @@ id|serNo
 suffix:semicolon
 )brace
 multiline_comment|/*&n;**  Release resources of slave adapters&n;*/
+DECL|function|diva_4bri_cleanup_slave_adapters
 r_static
 r_int
-DECL|function|diva_4bri_cleanup_slave_adapters
 id|diva_4bri_cleanup_slave_adapters
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -2571,37 +2671,56 @@ id|diva_current
 )paren
 (brace
 id|diva_os_destroy_spin_lock
+c_func
 (paren
 op_amp
-id|diva_current-&gt;xdi_adapter.isr_spin_lock
+id|diva_current
+op_member_access_from_pointer
+id|xdi_adapter
+dot
+id|isr_spin_lock
 comma
 l_string|&quot;unload&quot;
 )paren
 suffix:semicolon
 id|diva_os_destroy_spin_lock
+c_func
 (paren
 op_amp
-id|diva_current-&gt;xdi_adapter.data_spin_lock
+id|diva_current
+op_member_access_from_pointer
+id|xdi_adapter
+dot
+id|data_spin_lock
 comma
 l_string|&quot;unload&quot;
 )paren
 suffix:semicolon
 id|diva_os_cancel_soft_isr
+c_func
 (paren
 op_amp
-id|diva_current-&gt;xdi_adapter.req_soft_isr
+id|diva_current-&gt;xdi_adapter
+dot
+id|req_soft_isr
 )paren
 suffix:semicolon
 id|diva_os_cancel_soft_isr
+c_func
 (paren
 op_amp
-id|diva_current-&gt;xdi_adapter.isr_soft_isr
+id|diva_current-&gt;xdi_adapter
+dot
+id|isr_soft_isr
 )paren
 suffix:semicolon
 id|diva_os_remove_soft_isr
+c_func
 (paren
 op_amp
-id|diva_current-&gt;xdi_adapter.req_soft_isr
+id|diva_current-&gt;xdi_adapter
+dot
+id|req_soft_isr
 )paren
 suffix:semicolon
 id|diva_current-&gt;xdi_adapter.isr_soft_isr.object
@@ -2615,10 +2734,13 @@ id|diva_current-&gt;xdi_adapter.e_tbl
 )paren
 (brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
-id|diva_current-&gt;xdi_adapter.e_tbl
+id|diva_current-&gt;xdi_adapter
+dot
+id|e_tbl
 )paren
 suffix:semicolon
 )brace
@@ -2646,6 +2768,7 @@ r_static
 r_int
 DECL|function|diva_4bri_cmd_card_proc
 id|diva_4bri_cmd_card_proc
+c_func
 (paren
 r_struct
 id|_diva_os_xdi_adapter
@@ -2711,6 +2834,7 @@ suffix:semicolon
 id|a-&gt;xdi_mbox.data
 op_assign
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -2759,6 +2883,7 @@ suffix:semicolon
 id|a-&gt;xdi_mbox.data
 op_assign
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -2804,7 +2929,7 @@ op_logical_neg
 id|a-&gt;xdi_adapter.ControllerNumber
 )paren
 (brace
-multiline_comment|/*&n;          Only master adapter can access hardware config&n;        */
+multiline_comment|/*&n;&t;&t;&t;   Only master adapter can access hardware config&n;&t;&t;&t; */
 id|a-&gt;xdi_mbox.data_length
 op_assign
 r_sizeof
@@ -2817,6 +2942,7 @@ suffix:semicolon
 id|a-&gt;xdi_mbox.data
 op_assign
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -2908,6 +3034,7 @@ suffix:semicolon
 id|a-&gt;xdi_mbox.data
 op_assign
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -3008,6 +3135,7 @@ id|a-&gt;xdi_adapter.ControllerNumber
 id|ret
 op_assign
 id|diva_4bri_write_fpga_image
+c_func
 (paren
 id|a
 comma
@@ -3021,7 +3149,11 @@ id|cmd
 l_int|1
 )braket
 comma
-id|cmd-&gt;command_data.write_fpga.image_length
+id|cmd-&gt;command_data
+dot
+id|write_fpga
+dot
+id|image_length
 )paren
 suffix:semicolon
 )brace
@@ -3040,6 +3172,7 @@ id|a-&gt;xdi_adapter.ControllerNumber
 id|ret
 op_assign
 id|diva_4bri_reset_adapter
+c_func
 (paren
 op_amp
 id|a-&gt;xdi_adapter
@@ -3061,11 +3194,18 @@ id|a-&gt;xdi_adapter.ControllerNumber
 id|ret
 op_assign
 id|diva_4bri_write_sdram_block
+c_func
 (paren
 op_amp
 id|a-&gt;xdi_adapter
 comma
-id|cmd-&gt;command_data.write_sdram.offset
+id|cmd
+op_member_access_from_pointer
+id|command_data
+dot
+id|write_sdram
+dot
+id|offset
 comma
 (paren
 id|byte
@@ -3077,9 +3217,17 @@ id|cmd
 l_int|1
 )braket
 comma
-id|cmd-&gt;command_data.write_sdram.length
+id|cmd
+op_member_access_from_pointer
+id|command_data
+dot
+id|write_sdram
+dot
+id|length
 comma
-id|a-&gt;xdi_adapter.MemorySize
+id|a-&gt;xdi_adapter
+dot
+id|MemorySize
 )paren
 suffix:semicolon
 )brace
@@ -3098,13 +3246,18 @@ id|a-&gt;xdi_adapter.ControllerNumber
 id|ret
 op_assign
 id|diva_4bri_start_adapter
+c_func
 (paren
 op_amp
 id|a-&gt;xdi_adapter
 comma
-id|cmd-&gt;command_data.start.offset
+id|cmd-&gt;command_data
+dot
+id|start.offset
 comma
-id|cmd-&gt;command_data.start.features
+id|cmd-&gt;command_data
+dot
+id|start.features
 )paren
 suffix:semicolon
 )brace
@@ -3157,6 +3310,7 @@ id|a-&gt;xdi_adapter.ControllerNumber
 id|ret
 op_assign
 id|diva_4bri_stop_adapter
+c_func
 (paren
 id|a
 )paren
@@ -3170,6 +3324,7 @@ suffix:colon
 id|ret
 op_assign
 id|diva_card_read_xlog
+c_func
 (paren
 id|a
 )paren
@@ -3213,10 +3368,13 @@ id|a-&gt;xdi_adapter.MemorySize
 id|a-&gt;xdi_mbox.data
 op_assign
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
-id|a-&gt;xdi_mbox.data_length
+id|a-&gt;xdi_mbox
+dot
+id|data_length
 )paren
 suffix:semicolon
 r_if
@@ -3240,11 +3398,15 @@ suffix:semicolon
 id|dword
 id|len
 op_assign
-id|a-&gt;xdi_mbox.data_length
+id|a-&gt;xdi_mbox
+dot
+id|data_length
 suffix:semicolon
 id|src
 op_add_assign
-id|cmd-&gt;command_data.read_sdram.offset
+id|cmd-&gt;command_data
+dot
+id|read_sdram.offset
 suffix:semicolon
 r_while
 c_loop
@@ -3298,10 +3460,11 @@ id|ret
 )paren
 suffix:semicolon
 )brace
+DECL|function|xdiLoadFile
 r_void
 op_star
-DECL|function|xdiLoadFile
 id|xdiLoadFile
+c_func
 (paren
 r_char
 op_star
@@ -3349,18 +3512,20 @@ id|ret
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|diva_os_set_qBri_functions
+r_void
 id|diva_os_set_qBri_functions
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
 )paren
 (brace
 )brace
-r_void
 DECL|function|diva_os_set_qBri2_functions
+r_void
 id|diva_os_set_qBri2_functions
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -3371,6 +3536,7 @@ r_static
 r_int
 DECL|function|diva_4bri_write_fpga_image
 id|diva_4bri_write_fpga_image
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -3398,6 +3564,7 @@ suffix:semicolon
 id|ret
 op_assign
 id|qBri_FPGA_download
+c_func
 (paren
 op_amp
 id|a-&gt;xdi_adapter
@@ -3423,10 +3590,11 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|function|diva_4bri_reset_adapter
 r_static
 r_int
-DECL|function|diva_4bri_reset_adapter
 id|diva_4bri_reset_adapter
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -3477,7 +3645,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Forget all entities on all adapters&n;  */
+multiline_comment|/*&n;&t;   Forget all entities on all adapters&n;&t; */
 r_for
 c_loop
 (paren
@@ -3517,6 +3685,7 @@ id|Slave-&gt;e_tbl
 )paren
 (brace
 id|memset
+c_func
 (paren
 id|Slave-&gt;e_tbl
 comma
@@ -3548,6 +3717,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|memset
+c_func
 (paren
 op_amp
 id|Slave-&gt;a.IdTable
@@ -3564,6 +3734,7 @@ id|Slave-&gt;a.IdTable
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 op_amp
 id|Slave-&gt;a.IdTypeTable
@@ -3580,6 +3751,7 @@ id|Slave-&gt;a.IdTypeTable
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 op_amp
 id|Slave-&gt;a.FlowControlIdTable
@@ -3596,6 +3768,7 @@ id|Slave-&gt;a.FlowControlIdTable
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 op_amp
 id|Slave-&gt;a.FlowControlSkipTable
@@ -3612,6 +3785,7 @@ id|Slave-&gt;a.FlowControlSkipTable
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 op_amp
 id|Slave-&gt;a.misc_flags_table
@@ -3628,6 +3802,7 @@ id|Slave-&gt;a.misc_flags_table
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 op_amp
 id|Slave-&gt;a.rx_stream
@@ -3644,6 +3819,7 @@ id|Slave-&gt;a.rx_stream
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 op_amp
 id|Slave-&gt;a.tx_stream
@@ -3660,6 +3836,7 @@ id|Slave-&gt;a.tx_stream
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 op_amp
 id|Slave-&gt;a.tx_pos
@@ -3676,6 +3853,7 @@ id|Slave-&gt;a.tx_pos
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 op_amp
 id|Slave-&gt;a.rx_pos
@@ -3702,6 +3880,7 @@ r_static
 r_int
 DECL|function|diva_4bri_write_sdram_block
 id|diva_4bri_write_sdram_block
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -3794,6 +3973,7 @@ r_static
 r_int
 DECL|function|diva_4bri_start_adapter
 id|diva_4bri_start_adapter
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -3818,13 +3998,14 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;    start adapter&n;  */
+multiline_comment|/*&n;&t;   start adapter&n;&t; */
 id|start_qBri_hardware
+c_func
 (paren
 id|IoAdapter
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    wait for signature in shared memory (max. 3 seconds)&n;  */
+multiline_comment|/*&n;&t;   wait for signature in shared memory (max. 3 seconds)&n;&t; */
 id|signature
 op_assign
 (paren
@@ -3856,6 +4037,7 @@ id|i
 )paren
 (brace
 id|diva_os_wait
+c_func
 (paren
 l_int|10
 )paren
@@ -3932,7 +4114,9 @@ id|IoAdapter-&gt;QuadroList-&gt;QuadroAdapter
 id|i
 )braket
 op_member_access_from_pointer
-id|a.protocol_capabilities
+id|a
+dot
+id|protocol_capabilities
 op_assign
 id|IoAdapter-&gt;features
 suffix:semicolon
@@ -4026,6 +4210,7 @@ r_if
 c_cond
 (paren
 id|check_qBri_interrupt
+c_func
 (paren
 id|IoAdapter
 )paren
@@ -4088,6 +4273,7 @@ id|word
 id|features
 suffix:semicolon
 id|diva_xdi_display_adapter_features
+c_func
 (paren
 id|IoAdapter-&gt;ANum
 )paren
@@ -4133,6 +4319,7 @@ l_string|&quot;4BRI&quot;
 )paren
 )paren
 id|diva_xdi_didd_register_adapter
+c_func
 (paren
 id|IoAdapter-&gt;QuadroList-&gt;QuadroAdapter
 (braket
@@ -4161,10 +4348,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|check_qBri_interrupt
 r_static
 r_int
-DECL|function|check_qBri_interrupt
 id|check_qBri_interrupt
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -4205,12 +4393,15 @@ id|PLX9054_INTCSR
 op_assign
 id|PLX9054_INT_ENABLE
 suffix:semicolon
-multiline_comment|/*&n;    interrupt test&n;  */
+multiline_comment|/*&n;&t;   interrupt test&n;&t; */
 id|a-&gt;ReadyInt
 op_assign
 l_int|1
 suffix:semicolon
-id|a-&gt;ram_out
+id|a
+op_member_access_from_pointer
+id|ram_out
+c_func
 (paren
 id|a
 comma
@@ -4265,7 +4456,7 @@ r_volatile
 op_star
 id|qBriIrq
 suffix:semicolon
-multiline_comment|/*&n;    Reset on-board interrupt register&n;  */
+multiline_comment|/*&n;&t;   Reset on-board interrupt register&n;&t; */
 id|IoAdapter-&gt;IrqCount
 op_assign
 l_int|0
@@ -4279,11 +4470,15 @@ op_star
 )paren
 (paren
 op_amp
-id|IoAdapter-&gt;ctlReg
+id|IoAdapter
+op_member_access_from_pointer
+id|ctlReg
 (braket
 id|_4bri_is_rev_2_card
 (paren
-id|IoAdapter-&gt;cardType
+id|IoAdapter
+op_member_access_from_pointer
+id|cardType
 )paren
 ques
 c_cond
@@ -4323,12 +4518,13 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* SUPPORT_INTERRUPT_TEST_ON_4BRI */
+macro_line|#endif&t;&t;&t;&t;/* SUPPORT_INTERRUPT_TEST_ON_4BRI */
 )brace
+DECL|function|diva_4bri_clear_interrupts
 r_static
 r_void
-DECL|function|diva_4bri_clear_interrupts
 id|diva_4bri_clear_interrupts
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -4341,48 +4537,63 @@ op_assign
 op_amp
 id|a-&gt;xdi_adapter
 suffix:semicolon
-multiline_comment|/*&n;    clear any pending interrupt&n;  */
-id|IoAdapter-&gt;disIrq
+multiline_comment|/*&n;&t;   clear any pending interrupt&n;&t; */
+id|IoAdapter
+op_member_access_from_pointer
+id|disIrq
+c_func
 (paren
 id|IoAdapter
 )paren
 suffix:semicolon
-id|IoAdapter-&gt;tst_irq
+id|IoAdapter
+op_member_access_from_pointer
+id|tst_irq
+c_func
 (paren
 op_amp
 id|IoAdapter-&gt;a
 )paren
 suffix:semicolon
-id|IoAdapter-&gt;clr_irq
+id|IoAdapter
+op_member_access_from_pointer
+id|clr_irq
+c_func
 (paren
 op_amp
 id|IoAdapter-&gt;a
 )paren
 suffix:semicolon
-id|IoAdapter-&gt;tst_irq
+id|IoAdapter
+op_member_access_from_pointer
+id|tst_irq
+c_func
 (paren
 op_amp
 id|IoAdapter-&gt;a
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    kill pending dpcs&n;  */
+multiline_comment|/*&n;&t;   kill pending dpcs&n;&t; */
 id|diva_os_cancel_soft_isr
+c_func
 (paren
 op_amp
 id|IoAdapter-&gt;req_soft_isr
 )paren
 suffix:semicolon
 id|diva_os_cancel_soft_isr
+c_func
 (paren
 op_amp
 id|IoAdapter-&gt;isr_soft_isr
 )paren
 suffix:semicolon
 )brace
+DECL|function|diva_4bri_stop_adapter
 r_static
 r_int
-DECL|function|diva_4bri_stop_adapter
 id|diva_4bri_stop_adapter
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -4461,7 +4672,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Disconnect Adapters from DIDD&n;  */
+multiline_comment|/*&n;&t;   Disconnect Adapters from DIDD&n;&t; */
 r_for
 c_loop
 (paren
@@ -4493,7 +4704,7 @@ id|i
 op_assign
 l_int|100
 suffix:semicolon
-multiline_comment|/*&n;    Stop interrupts&n;  */
+multiline_comment|/*&n;&t;   Stop interrupts&n;&t; */
 id|a-&gt;clear_interrupts_proc
 op_assign
 id|diva_4bri_clear_interrupts
@@ -4502,7 +4713,10 @@ id|IoAdapter-&gt;a.ReadyInt
 op_assign
 l_int|1
 suffix:semicolon
-id|IoAdapter-&gt;a.ram_inc
+id|IoAdapter-&gt;a
+dot
+id|ram_inc
+c_func
 (paren
 op_amp
 id|IoAdapter-&gt;a
@@ -4514,6 +4728,7 @@ suffix:semicolon
 r_do
 (brace
 id|diva_os_sleep
+c_func
 (paren
 l_int|10
 )paren
@@ -4535,6 +4750,7 @@ id|a-&gt;clear_interrupts_proc
 )paren
 (brace
 id|diva_4bri_clear_interrupts
+c_func
 (paren
 id|a
 )paren
@@ -4557,8 +4773,11 @@ id|IoAdapter-&gt;a.ReadyInt
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;    Stop and reset adapter&n;  */
-id|IoAdapter-&gt;stop
+multiline_comment|/*&n;&t;   Stop and reset adapter&n;&t; */
+id|IoAdapter
+op_member_access_from_pointer
+id|stop
+c_func
 (paren
 id|IoAdapter
 )paren

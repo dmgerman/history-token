@@ -110,7 +110,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;generic&quot;
+l_string|&quot;usb&quot;
 comma
 dot
 id|bus
@@ -1249,7 +1249,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef&t;CONFIG_HOTPLUG
-multiline_comment|/*&n; * USB hotplugging invokes what /proc/sys/kernel/hotplug says&n; * (normally /sbin/hotplug) when USB devices get added or removed.&n; *&n; * This invokes a user mode policy agent, typically helping to load driver&n; * or other modules, configure the device, and more.  Drivers can provide&n; * a MODULE_DEVICE_TABLE to help with module loading subtasks.&n; *&n; * Some synchronization is important: removes can&squot;t start processing&n; * before the add-device processing completes, and vice versa.  That keeps&n; * a stack of USB-related identifiers stable while they&squot;re in use.  If we&n; * know that agents won&squot;t complete after they return (such as by forking&n; * a process that completes later), it&squot;s enough to just waitpid() for the&n; * agent -- as is currently done.&n; *&n; * The reason: we know we&squot;re called either from khubd (the typical case)&n; * or from root hub initialization (init, kapmd, modprobe, etc).  In both&n; * cases, we know no other thread can recycle our address, since we must&n; * already have been serialized enough to prevent that.&n; */
+multiline_comment|/*&n; * USB hotplugging invokes what /proc/sys/kernel/hotplug says&n; * (normally /sbin/hotplug) when USB devices get added or removed.&n; *&n; * This invokes a user mode policy agent, typically helping to load driver&n; * or other modules, configure the device, and more.  Drivers can provide&n; * a MODULE_DEVICE_TABLE to help with module loading subtasks.&n; *&n; * We&squot;re called either from khubd (the typical case) or from root hub&n; * (init, kapmd, modprobe, rmmod, etc), but the agents need to handle&n; * delays in event delivery.  Use sysfs (and DEVPATH) to make sure the&n; * device (and this configuration!) are still present.&n; */
 DECL|function|usb_hotplug
 r_static
 r_int
@@ -1458,7 +1458,7 @@ op_add_assign
 id|length
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* per-device configuration hacks are common */
+multiline_comment|/* per-device configurations are common */
 id|envp
 (braket
 id|i
@@ -1583,7 +1583,7 @@ id|alt
 op_assign
 id|intf-&gt;act_altsetting
 suffix:semicolon
-multiline_comment|/* a simple/common case: one config, one interface, one driver&n;&t;&t; * with current altsetting being a reasonable setting.&n;&t;&t; * everything needs a smart agent and usbfs; or can rely on&n;&t;&t; * device-specific binding policies.&n;&t;&t; */
+multiline_comment|/* 2.4 only exposed interface zero.  in 2.5, hotplug&n;&t;&t; * agents are called for all interfaces, and can use&n;&t;&t; * $DEVPATH/bInterfaceNumber if necessary.&n;&t;&t; */
 id|envp
 (braket
 id|i
@@ -2631,6 +2631,52 @@ suffix:semicolon
 r_int
 id|j
 suffix:semicolon
+multiline_comment|/*&n;&t; * Set the driver for the usb device to point to the &quot;generic&quot; driver.&n;&t; * This prevents the main usb device from being sent to the usb bus&n;&t; * probe function.  Yes, it&squot;s a hack, but a nice one :)&n;&t; *&n;&t; * Do it asap, so more driver model stuff (like the device.h message&n;&t; * utilities) can be used in hcd submit/unlink code paths.&n;&t; */
+id|usb_generic_driver.bus
+op_assign
+op_amp
+id|usb_bus_type
+suffix:semicolon
+id|dev-&gt;dev.parent
+op_assign
+id|parent
+suffix:semicolon
+id|dev-&gt;dev.driver
+op_assign
+op_amp
+id|usb_generic_driver
+suffix:semicolon
+id|dev-&gt;dev.bus
+op_assign
+op_amp
+id|usb_bus_type
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;dev.bus_id
+(braket
+l_int|0
+)braket
+op_eq
+l_int|0
+)paren
+id|sprintf
+(paren
+op_amp
+id|dev-&gt;dev.bus_id
+(braket
+l_int|0
+)braket
+comma
+l_string|&quot;%d-%s&quot;
+comma
+id|dev-&gt;bus-&gt;busnum
+comma
+id|dev-&gt;devpath
+)paren
+suffix:semicolon
+multiline_comment|/* USB device state == default ... it&squot;s not usable yet */
 multiline_comment|/* USB 2.0 section 5.5.3 talks about ep0 maxpacket ...&n;&t; * it&squot;s fixed size except for full speed devices.&n;&t; */
 r_switch
 c_cond
@@ -2889,6 +2935,7 @@ op_assign
 id|dev-&gt;descriptor.bMaxPacketSize0
 suffix:semicolon
 )brace
+multiline_comment|/* USB device state == addressed ... still not usable */
 id|err
 op_assign
 id|usb_get_device_descriptor
@@ -3049,6 +3096,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* USB device state == configured ... tell the world! */
 id|dbg
 c_func
 (paren
@@ -3083,51 +3131,7 @@ id|dev-&gt;descriptor.iSerialNumber
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Set the driver for the usb device to point to the &quot;generic&quot; driver.&n;&t; * This prevents the main usb device from being sent to the usb bus&n;&t; * probe function.  Yes, it&squot;s a hack, but a nice one :)&n;&t; */
-id|usb_generic_driver.bus
-op_assign
-op_amp
-id|usb_bus_type
-suffix:semicolon
-id|dev-&gt;dev.parent
-op_assign
-id|parent
-suffix:semicolon
-id|dev-&gt;dev.driver
-op_assign
-op_amp
-id|usb_generic_driver
-suffix:semicolon
-id|dev-&gt;dev.bus
-op_assign
-op_amp
-id|usb_bus_type
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;dev.bus_id
-(braket
-l_int|0
-)braket
-op_eq
-l_int|0
-)paren
-id|sprintf
-(paren
-op_amp
-id|dev-&gt;dev.bus_id
-(braket
-l_int|0
-)braket
-comma
-l_string|&quot;%d-%s&quot;
-comma
-id|dev-&gt;bus-&gt;busnum
-comma
-id|dev-&gt;devpath
-)paren
-suffix:semicolon
+multiline_comment|/* put into sysfs, with device and config specific files */
 id|err
 op_assign
 id|device_register
@@ -3144,7 +3148,6 @@ id|err
 r_return
 id|err
 suffix:semicolon
-multiline_comment|/* add the USB device specific driverfs files */
 id|usb_create_driverfs_dev_files
 (paren
 id|dev

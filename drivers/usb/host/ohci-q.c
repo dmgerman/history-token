@@ -339,6 +339,7 @@ id|ed
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
 id|dbg
 (paren
 l_string|&quot;%s: link %sed %p branch %d [%dus.], interval %d&quot;
@@ -365,6 +366,7 @@ comma
 id|ed-&gt;interval
 )paren
 suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -881,6 +883,7 @@ id|ed-&gt;load
 op_div
 id|ed-&gt;interval
 suffix:semicolon
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
 id|dbg
 (paren
 l_string|&quot;%s: unlink %sed %p branch %d [%dus.], interval %d&quot;
@@ -907,6 +910,7 @@ comma
 id|ed-&gt;interval
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* unlink an ed from one of the HC chains. &n; * just the link to the ed is unlinked.&n; * the link from the ed still points to another operational ed or 0&n; * so the HC can eventually finish the processing of the unlinked ed&n; */
 DECL|function|ed_deschedule

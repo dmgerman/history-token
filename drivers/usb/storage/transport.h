@@ -151,8 +151,6 @@ DECL|macro|USB_STOR_XFER_STALLED
 mdefine_line|#define USB_STOR_XFER_STALLED&t;&t;2  /* endpoint stalled&t;&t;    */
 DECL|macro|USB_STOR_XFER_ERROR
 mdefine_line|#define USB_STOR_XFER_ERROR&t;&t;3  /* transfer died in the middle   */
-DECL|macro|USB_STOR_XFER_ABORTED
-mdefine_line|#define USB_STOR_XFER_ABORTED&t;&t;4  /* transfer canceled             */
 multiline_comment|/*&n; * Transport return codes&n; */
 DECL|macro|USB_STOR_TRANSPORT_GOOD
 mdefine_line|#define USB_STOR_TRANSPORT_GOOD&t;   0   /* Transport good, command good&t;   */

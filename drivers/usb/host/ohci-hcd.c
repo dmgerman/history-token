@@ -579,7 +579,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
 id|urb_print
 (paren
 id|urb
@@ -1435,7 +1435,7 @@ id|usb_register_root_hub
 (paren
 id|udev
 comma
-id|ohci-&gt;parent_dev
+id|ohci-&gt;hcd.controller
 )paren
 op_ne
 l_int|0

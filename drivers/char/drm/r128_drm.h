@@ -350,6 +350,8 @@ DECL|macro|DRM_IOCTL_R128_FULLSCREEN
 mdefine_line|#define DRM_IOCTL_R128_FULLSCREEN&t;DRM_IOW( 0x50, drm_r128_fullscreen_t)
 DECL|macro|DRM_IOCTL_R128_CLEAR2
 mdefine_line|#define DRM_IOCTL_R128_CLEAR2&t;&t;DRM_IOW( 0x51, drm_r128_clear2_t)
+DECL|macro|DRM_IOCTL_R128_GETPARAM
+mdefine_line|#define DRM_IOCTL_R128_GETPARAM&t;&t;DRM_IOW( 0x52, drm_r128_getparam_t)
 DECL|struct|drm_r128_init
 r_typedef
 r_struct
@@ -798,6 +800,27 @@ suffix:semicolon
 DECL|typedef|drm_r128_fullscreen_t
 )brace
 id|drm_r128_fullscreen_t
+suffix:semicolon
+multiline_comment|/* 2.3: An ioctl to get parameters that aren&squot;t available to the 3d&n; * client any other way.  &n; */
+DECL|macro|R128_PARAM_IRQ_NR
+mdefine_line|#define R128_PARAM_IRQ_NR            1
+DECL|struct|drm_r128_getparam
+r_typedef
+r_struct
+id|drm_r128_getparam
+(brace
+DECL|member|param
+r_int
+id|param
+suffix:semicolon
+DECL|member|value
+r_int
+op_star
+id|value
+suffix:semicolon
+DECL|typedef|drm_r128_getparam_t
+)brace
+id|drm_r128_getparam_t
 suffix:semicolon
 macro_line|#endif
 eof

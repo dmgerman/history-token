@@ -321,37 +321,13 @@ id|USB_STOR_XFER_GOOD
 (brace
 id|US_DEBUGP
 (paren
-l_string|&quot;Freecom readdata xpot failure: r=%d, p=%d&bslash;n&quot;
+l_string|&quot;Freecom readdata xport failure: r=%d, p=%d&bslash;n&quot;
 comma
 id|result
 comma
 id|partial
 )paren
 suffix:semicolon
-multiline_comment|/* has the current command been aborted? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;freecom_readdata(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
@@ -523,37 +499,13 @@ id|USB_STOR_XFER_GOOD
 (brace
 id|US_DEBUGP
 (paren
-l_string|&quot;Freecom writedata xpot failure: r=%d, p=%d&bslash;n&quot;
+l_string|&quot;Freecom writedata xport failure: r=%d, p=%d&bslash;n&quot;
 comma
 id|result
 comma
 id|partial
 )paren
 suffix:semicolon
-multiline_comment|/* has the current command been aborted? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;freecom_writedata(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
@@ -772,30 +724,6 @@ comma
 id|partial
 )paren
 suffix:semicolon
-multiline_comment|/* we canceled this transfer */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;freecom_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
@@ -827,30 +755,6 @@ comma
 id|partial
 )paren
 suffix:semicolon
-multiline_comment|/* we canceled this transfer */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;freecom_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -967,30 +871,6 @@ comma
 id|partial
 )paren
 suffix:semicolon
-multiline_comment|/* we canceled this transfer */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;freecom_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
@@ -1022,30 +902,6 @@ comma
 id|partial
 )paren
 suffix:semicolon
-multiline_comment|/* we canceled this transfer */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;freecom_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1295,28 +1151,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-(paren
-l_string|&quot;freecom_transport: transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|partial
 op_ne
 l_int|4
@@ -1432,28 +1266,6 @@ op_amp
 id|partial
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-(paren
-l_string|&quot;freecom_transport: transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

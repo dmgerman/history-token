@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * usblp.c  Version 0.12&n; *&n; * Copyright (c) 1999 Michael Gee&t;&lt;michael@linuxspecific.com&gt;&n; * Copyright (c) 1999 Pavel Machek&t;&lt;pavel@suse.cz&gt;&n; * Copyright (c) 2000 Randy Dunlap&t;&lt;randy.dunlap@intel.com&gt;&n; * Copyright (c) 2000 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; # Copyright (c) 2001 Pete Zaitcev&t;&lt;zaitcev@redhat.com&gt;&n; # Copyright (c) 2001 David Paschal&t;&lt;paschal@rcsis.com&gt;&n; *&n; * USB Printer Device Class driver for USB printers and printer cables&n; *&n; * Sponsored by SuSE&n; *&n; * ChangeLog:&n; *&t;v0.1 - thorough cleaning, URBification, almost a rewrite&n; *&t;v0.2 - some more cleanups&n; *&t;v0.3 - cleaner again, waitqueue fixes&n; *&t;v0.4 - fixes in unidirectional mode&n; *&t;v0.5 - add DEVICE_ID string support&n; *&t;v0.6 - never time out&n; *&t;v0.7 - fixed bulk-IN read and poll (David Paschal)&n; *&t;v0.8 - add devfs support&n; *&t;v0.9 - fix unplug-while-open paths&n; *&t;v0.10- remove sleep_on, fix error on oom (oliver@neukum.org)&n; *&t;v0.11 - add proto_bias option (Pete Zaitcev)&n; *&t;v0.12 - add hpoj.sourceforge.net ioctls (David Paschal)&n; */
+multiline_comment|/*&n; * usblp.c  Version 0.13&n; *&n; * Copyright (c) 1999 Michael Gee&t;&lt;michael@linuxspecific.com&gt;&n; * Copyright (c) 1999 Pavel Machek&t;&lt;pavel@suse.cz&gt;&n; * Copyright (c) 2000 Randy Dunlap&t;&lt;rddunlap@osdl.org&gt;&n; * Copyright (c) 2000 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; # Copyright (c) 2001 Pete Zaitcev&t;&lt;zaitcev@redhat.com&gt;&n; # Copyright (c) 2001 David Paschal&t;&lt;paschal@rcsis.com&gt;&n; *&n; * USB Printer Device Class driver for USB printers and printer cables&n; *&n; * Sponsored by SuSE&n; *&n; * ChangeLog:&n; *&t;v0.1 - thorough cleaning, URBification, almost a rewrite&n; *&t;v0.2 - some more cleanups&n; *&t;v0.3 - cleaner again, waitqueue fixes&n; *&t;v0.4 - fixes in unidirectional mode&n; *&t;v0.5 - add DEVICE_ID string support&n; *&t;v0.6 - never time out&n; *&t;v0.7 - fixed bulk-IN read and poll (David Paschal)&n; *&t;v0.8 - add devfs support&n; *&t;v0.9 - fix unplug-while-open paths&n; *&t;v0.10- remove sleep_on, fix error on oom (oliver@neukum.org)&n; *&t;v0.11 - add proto_bias option (Pete Zaitcev)&n; *&t;v0.12 - add hpoj.sourceforge.net ioctls (David Paschal)&n; *&t;v0.13 - alloc space for statusbuf (&lt;status&gt; not on stack);&n; *&t;&t;use usb_buffer_alloc() for read buf &amp; write buf;&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,7 +15,7 @@ macro_line|#undef DEBUG
 macro_line|#include &lt;linux/usb.h&gt;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.12&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.13&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Michael Gee, Pavel Machek, Vojtech Pavlik, Randy Dunlap, Pete Zaitcev, David Paschal&quot;
 DECL|macro|DRIVER_DESC
@@ -85,6 +85,9 @@ DECL|macro|USBLP_LAST_PROTOCOL
 mdefine_line|#define USBLP_LAST_PROTOCOL&t;3
 DECL|macro|USBLP_MAX_PROTOCOLS
 mdefine_line|#define USBLP_MAX_PROTOCOLS&t;(USBLP_LAST_PROTOCOL+1)
+multiline_comment|/*&n; * some arbitrary status buffer size;&n; * need a status buffer that is allocated via kmalloc(), not on stack&n; */
+DECL|macro|STATUS_BUF_SIZE
+mdefine_line|#define STATUS_BUF_SIZE&t;&t;8
 DECL|struct|usblp
 r_struct
 id|usblp
@@ -107,12 +110,24 @@ id|semaphore
 id|sem
 suffix:semicolon
 multiline_comment|/* locks this struct, especially &quot;dev&quot; */
-DECL|member|buf
+DECL|member|writebuf
 r_char
 op_star
-id|buf
+id|writebuf
 suffix:semicolon
-multiline_comment|/* writeurb-&gt;transfer_buffer */
+multiline_comment|/* write transfer_buffer */
+DECL|member|readbuf
+r_char
+op_star
+id|readbuf
+suffix:semicolon
+multiline_comment|/* read transfer_buffer */
+DECL|member|statusbuf
+r_char
+op_star
+id|statusbuf
+suffix:semicolon
+multiline_comment|/* status transfer_buffer */
 DECL|member|readurb
 DECL|member|writeurb
 r_struct
@@ -938,8 +953,7 @@ id|usblp_read_status
 (paren
 id|usblp
 comma
-op_amp
-id|status
+id|usblp-&gt;statusbuf
 )paren
 suffix:semicolon
 r_if
@@ -964,6 +978,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|status
+op_assign
+op_star
+id|usblp-&gt;statusbuf
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1277,14 +1296,36 @@ comma
 id|usblp-&gt;minor
 )paren
 suffix:semicolon
-id|kfree
+id|usb_buffer_free
 (paren
-id|usblp-&gt;writeurb-&gt;transfer_buffer
+id|usblp-&gt;dev
+comma
+id|USBLP_BUF_SIZE
+comma
+id|usblp-&gt;writebuf
+comma
+id|usblp-&gt;writeurb-&gt;transfer_dma
+)paren
+suffix:semicolon
+id|usb_buffer_free
+(paren
+id|usblp-&gt;dev
+comma
+id|USBLP_BUF_SIZE
+comma
+id|usblp-&gt;readbuf
+comma
+id|usblp-&gt;writeurb-&gt;transfer_dma
 )paren
 suffix:semicolon
 id|kfree
 (paren
 id|usblp-&gt;device_id_string
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|usblp-&gt;statusbuf
 )paren
 suffix:semicolon
 id|usb_free_urb
@@ -3387,22 +3428,39 @@ r_goto
 id|abort_minor
 suffix:semicolon
 )brace
-multiline_comment|/* Malloc write/read buffers in one chunk.  We somewhat wastefully&n;&t; * malloc both regardless of bidirectionality, because the&n;&t; * alternate setting can be changed later via an ioctl. */
+id|usblp-&gt;writebuf
+op_assign
+id|usblp-&gt;readbuf
+op_assign
+l_int|NULL
+suffix:semicolon
+id|usblp-&gt;writeurb-&gt;transfer_flags
+op_assign
+id|URB_NO_DMA_MAP
+suffix:semicolon
+id|usblp-&gt;readurb-&gt;transfer_flags
+op_assign
+id|URB_NO_DMA_MAP
+suffix:semicolon
+multiline_comment|/* Malloc write &amp; read buffers.  We somewhat wastefully&n;&t; * malloc both regardless of bidirectionality, because the&n;&t; * alternate setting can be changed later via an ioctl. */
 r_if
 c_cond
 (paren
 op_logical_neg
 (paren
-id|usblp-&gt;buf
+id|usblp-&gt;writebuf
 op_assign
-id|kmalloc
+id|usb_buffer_alloc
 c_func
 (paren
-l_int|2
-op_star
+id|dev
+comma
 id|USBLP_BUF_SIZE
 comma
 id|GFP_KERNEL
+comma
+op_amp
+id|usblp-&gt;writeurb-&gt;transfer_dma
 )paren
 )paren
 )paren
@@ -3410,7 +3468,67 @@ id|GFP_KERNEL
 id|err
 c_func
 (paren
-l_string|&quot;out of memory for buf&quot;
+l_string|&quot;out of memory for write buf&quot;
+)paren
+suffix:semicolon
+r_goto
+id|abort_minor
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|usblp-&gt;readbuf
+op_assign
+id|usb_buffer_alloc
+c_func
+(paren
+id|dev
+comma
+id|USBLP_BUF_SIZE
+comma
+id|GFP_KERNEL
+comma
+op_amp
+id|usblp-&gt;readurb-&gt;transfer_dma
+)paren
+)paren
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;out of memory for read buf&quot;
+)paren
+suffix:semicolon
+r_goto
+id|abort_minor
+suffix:semicolon
+)brace
+multiline_comment|/* Allocate buffer for printer status */
+id|usblp-&gt;statusbuf
+op_assign
+id|kmalloc
+c_func
+(paren
+id|STATUS_BUF_SIZE
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|usblp-&gt;statusbuf
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;out of memory for statusbuf&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3606,6 +3724,60 @@ c_cond
 id|usblp
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|usblp-&gt;writebuf
+)paren
+id|usb_buffer_free
+(paren
+id|usblp-&gt;dev
+comma
+id|USBLP_BUF_SIZE
+comma
+id|usblp-&gt;writebuf
+comma
+id|usblp-&gt;writeurb-&gt;transfer_dma
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usblp-&gt;readbuf
+)paren
+id|usb_buffer_free
+(paren
+id|usblp-&gt;dev
+comma
+id|USBLP_BUF_SIZE
+comma
+id|usblp-&gt;readbuf
+comma
+id|usblp-&gt;writeurb-&gt;transfer_dma
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usblp-&gt;statusbuf
+)paren
+id|kfree
+c_func
+(paren
+id|usblp-&gt;statusbuf
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usblp-&gt;device_id_string
+)paren
+id|kfree
+c_func
+(paren
+id|usblp-&gt;device_id_string
+)paren
+suffix:semicolon
 id|usb_free_urb
 c_func
 (paren
@@ -3616,28 +3788,6 @@ id|usb_free_urb
 c_func
 (paren
 id|usblp-&gt;readurb
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|usblp-&gt;buf
-)paren
-id|kfree
-c_func
-(paren
-id|usblp-&gt;buf
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|usblp-&gt;device_id_string
-)paren
-id|kfree
-c_func
-(paren
-id|usblp-&gt;device_id_string
 )paren
 suffix:semicolon
 id|kfree
@@ -4120,7 +4270,7 @@ dot
 id|epwrite-&gt;bEndpointAddress
 )paren
 comma
-id|usblp-&gt;buf
+id|usblp-&gt;writebuf
 comma
 l_int|0
 comma
@@ -4167,9 +4317,7 @@ dot
 id|epread-&gt;bEndpointAddress
 )paren
 comma
-id|usblp-&gt;buf
-op_plus
-id|USBLP_BUF_SIZE
+id|usblp-&gt;readbuf
 comma
 id|USBLP_BUF_SIZE
 comma

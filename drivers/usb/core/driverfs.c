@@ -498,6 +498,12 @@ id|bDeviceProtocol
 comma
 l_string|&quot;%02x&bslash;n&quot;
 )paren
+id|usb_descriptor_attr
+(paren
+id|bNumConfigurations
+comma
+l_string|&quot;%d&bslash;n&quot;
+)paren
 DECL|function|usb_create_driverfs_dev_files
 r_void
 id|usb_create_driverfs_dev_files
@@ -516,6 +522,7 @@ op_assign
 op_amp
 id|udev-&gt;dev
 suffix:semicolon
+multiline_comment|/* current configuration&squot;s attributes */
 id|device_create_file
 (paren
 id|dev
@@ -548,6 +555,7 @@ op_amp
 id|dev_attr_bMaxPower
 )paren
 suffix:semicolon
+multiline_comment|/* device attributes */
 id|device_create_file
 (paren
 id|dev
@@ -601,9 +609,19 @@ id|device_create_file
 id|dev
 comma
 op_amp
+id|dev_attr_bNumConfigurations
+)paren
+suffix:semicolon
+multiline_comment|/* speed varies depending on how you connect the device */
+id|device_create_file
+(paren
+id|dev
+comma
+op_amp
 id|dev_attr_speed
 )paren
 suffix:semicolon
+singleline_comment|// FIXME iff there are other speed configs, show how many
 r_if
 c_cond
 (paren
