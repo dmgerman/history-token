@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/apollodma.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* note only works for 16 Bit 1 page DMA&squot;s */
 DECL|variable|next_free_xlat_entry
 r_static
@@ -120,14 +121,14 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#endif
-id|outw
+id|out_be16
 c_func
 (paren
+id|xlat_map_entry
+comma
 id|start_map_addr
 op_plus
 id|i
-comma
-id|xlat_map_entry
 )paren
 suffix:semicolon
 )brace
