@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand.c&n; *&n; *  Overview:&n; *   This is the generic MTD driver for NAND flash devices. It should be&n; *   capable of working with almost all NAND chips currently available.&n; *   Basic support for AG-AND chips is provided.&n; *   &n; *&t;Additional technical information is available on&n; *&t;http://www.linux-mtd.infradead.org/tech/nand.html&n; *&t;&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; * &t;&t;  2002 Thomas Gleixner (tglx@linutronix.de)&n; *&n; *  02-08-2004  tglx: support for strange chips, which cannot auto increment &n; *&t;&t;pages on read / read_oob&n; *&n; *  03-17-2004  tglx: Check ready before auto increment check. Simon Bayes&n; *&t;&t;pointed this out, as he marked an auto increment capable chip&n; *&t;&t;as NOAUTOINCR in the board driver.&n; *&t;&t;Make reads over block boundaries work too&n; *&n; *  04-14-2004&t;tglx: first working version for 2k page size chips&n; *  &n; *  05-19-2004  tglx: Basic support for Renesas AG-AND chips&n; *&n; *  09-24-2004  tglx: add support for hardware controllers (e.g. ECC) shared&n; *&t;&t;among multiple independend devices. Suggestions and initial patch&n; *&t;&t;from Ben Dooks &lt;ben-mtd@fluff.org&gt;&n; *&n; * Credits:&n; *&t;David Woodhouse for adding multichip support  &n; *&t;&n; *&t;Aleph One Ltd. and Toby Churchill Ltd. for supporting the&n; *&t;rework for 2K page size chips&n; *&n; * TODO:&n; *&t;Enable cached programming for 2k page size chips&n; *&t;Check, if mtd-&gt;ecctype should be set to MTD_ECC_HW&n; *&t;if we have HW ecc support.&n; *&t;The AG-AND chips have nice features for speed improvement,&n; *&t;which are not supported yet. Read / program 4 pages in one go.&n; *&n; * $Id: nand_base.c,v 1.121 2004/10/06 19:53:11 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand.c&n; *&n; *  Overview:&n; *   This is the generic MTD driver for NAND flash devices. It should be&n; *   capable of working with almost all NAND chips currently available.&n; *   Basic support for AG-AND chips is provided.&n; *   &n; *&t;Additional technical information is available on&n; *&t;http://www.linux-mtd.infradead.org/tech/nand.html&n; *&t;&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; * &t;&t;  2002 Thomas Gleixner (tglx@linutronix.de)&n; *&n; *  02-08-2004  tglx: support for strange chips, which cannot auto increment &n; *&t;&t;pages on read / read_oob&n; *&n; *  03-17-2004  tglx: Check ready before auto increment check. Simon Bayes&n; *&t;&t;pointed this out, as he marked an auto increment capable chip&n; *&t;&t;as NOAUTOINCR in the board driver.&n; *&t;&t;Make reads over block boundaries work too&n; *&n; *  04-14-2004&t;tglx: first working version for 2k page size chips&n; *  &n; *  05-19-2004  tglx: Basic support for Renesas AG-AND chips&n; *&n; *  09-24-2004  tglx: add support for hardware controllers (e.g. ECC) shared&n; *&t;&t;among multiple independend devices. Suggestions and initial patch&n; *&t;&t;from Ben Dooks &lt;ben-mtd@fluff.org&gt;&n; *&n; * Credits:&n; *&t;David Woodhouse for adding multichip support  &n; *&t;&n; *&t;Aleph One Ltd. and Toby Churchill Ltd. for supporting the&n; *&t;rework for 2K page size chips&n; *&n; * TODO:&n; *&t;Enable cached programming for 2k page size chips&n; *&t;Check, if mtd-&gt;ecctype should be set to MTD_ECC_HW&n; *&t;if we have HW ecc support.&n; *&t;The AG-AND chips have nice features for speed improvement,&n; *&t;which are not supported yet. Read / program 4 pages in one go.&n; *&n; * $Id: nand_base.c,v 1.126 2004/12/13 11:22:25 lavinen Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -3117,7 +3117,7 @@ suffix:semicolon
 id|u_char
 id|ecc_code
 (braket
-l_int|8
+l_int|32
 )braket
 suffix:semicolon
 r_int
@@ -3281,33 +3281,11 @@ id|mtd-&gt;oobblock
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* Hardware ecc 8 byte / 512 byte data */
-r_case
-id|NAND_ECC_HW8_512
+r_default
 suffix:colon
 id|eccbytes
-op_add_assign
-l_int|2
-suffix:semicolon
-multiline_comment|/* Hardware ecc 6 byte / 512 byte data */
-r_case
-id|NAND_ECC_HW6_512
-suffix:colon
-id|eccbytes
-op_add_assign
-l_int|3
-suffix:semicolon
-multiline_comment|/* Hardware ecc 3 byte / 256 data */
-multiline_comment|/* Hardware ecc 3 byte / 512 byte data */
-r_case
-id|NAND_ECC_HW3_256
-suffix:colon
-r_case
-id|NAND_ECC_HW3_512
-suffix:colon
-id|eccbytes
-op_add_assign
-l_int|3
+op_assign
+id|this-&gt;eccbytes
 suffix:semicolon
 r_for
 c_loop
@@ -3418,21 +3396,6 @@ id|this-&gt;eccsize
 suffix:semicolon
 )brace
 r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|printk
-(paren
-id|KERN_WARNING
-l_string|&quot;Invalid NAND_ECC_MODE %d&bslash;n&quot;
-comma
-id|this-&gt;eccmode
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Write out OOB data */
@@ -4174,8 +4137,6 @@ l_int|1
 suffix:semicolon
 r_int
 id|eccbytes
-op_assign
-l_int|3
 suffix:semicolon
 r_int
 id|compareecc
@@ -4340,48 +4301,24 @@ id|ecc
 op_assign
 id|this-&gt;eccsize
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|eccmode
-)paren
-(brace
-r_case
-id|NAND_ECC_HW6_512
-suffix:colon
-multiline_comment|/* Hardware ECC 6 byte / 512 byte data  */
 id|eccbytes
 op_assign
-l_int|6
+id|this-&gt;eccbytes
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|NAND_ECC_HW8_512
-suffix:colon
-multiline_comment|/* Hardware ECC 8 byte / 512 byte data  */
-id|eccbytes
-op_assign
-l_int|8
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|NAND_ECC_NONE
-suffix:colon
-id|compareecc
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 r_if
 c_cond
+(paren
+(paren
+id|eccmode
+op_eq
+id|NAND_ECC_NONE
+)paren
+op_logical_or
 (paren
 id|this-&gt;options
 op_amp
 id|NAND_HWECC_SYNDROME
+)paren
 )paren
 id|compareecc
 op_assign
@@ -4645,22 +4582,10 @@ id|i
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|NAND_ECC_HW3_256
+r_default
 suffix:colon
-multiline_comment|/* Hardware ECC 3 byte /256 byte data */
-r_case
-id|NAND_ECC_HW3_512
-suffix:colon
-multiline_comment|/* Hardware ECC 3 byte /512 byte data */
-r_case
-id|NAND_ECC_HW6_512
-suffix:colon
-multiline_comment|/* Hardware ECC 6 byte / 512 byte data  */
-r_case
-id|NAND_ECC_HW8_512
-suffix:colon
-multiline_comment|/* Hardware ECC 8 byte / 512 byte data  */
+(brace
+)brace
 r_for
 c_loop
 (paren
@@ -4823,21 +4748,6 @@ suffix:semicolon
 )brace
 )brace
 r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|printk
-(paren
-id|KERN_WARNING
-l_string|&quot;Invalid NAND_ECC_MODE %d&bslash;n&quot;
-comma
-id|this-&gt;eccmode
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* read oobdata */
@@ -9897,12 +9807,56 @@ op_assign
 l_int|256
 suffix:semicolon
 multiline_comment|/* set default eccsize */
+id|this-&gt;eccbytes
+op_assign
+l_int|3
+suffix:semicolon
 r_switch
 c_cond
 (paren
 id|this-&gt;eccmode
 )paren
 (brace
+r_case
+id|NAND_ECC_HW12_2048
+suffix:colon
+r_if
+c_cond
+(paren
+id|mtd-&gt;oobblock
+OL
+l_int|2048
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;2048 byte HW ECC not possible on %d byte page size, fallback to SW ECC&bslash;n&quot;
+comma
+id|mtd-&gt;oobblock
+)paren
+suffix:semicolon
+id|this-&gt;eccmode
+op_assign
+id|NAND_ECC_SOFT
+suffix:semicolon
+id|this-&gt;calculate_ecc
+op_assign
+id|nand_calculate_ecc
+suffix:semicolon
+id|this-&gt;correct_data
+op_assign
+id|nand_correct_data
+suffix:semicolon
+)brace
+r_else
+id|this-&gt;eccsize
+op_assign
+l_int|2048
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|NAND_ECC_HW3_512
 suffix:colon
@@ -9938,39 +9892,19 @@ id|this-&gt;correct_data
 op_assign
 id|nand_correct_data
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 r_else
 id|this-&gt;eccsize
 op_assign
 l_int|512
 suffix:semicolon
-multiline_comment|/* set eccsize to 512 and fall through for function check */
+multiline_comment|/* set eccsize to 512 */
+r_break
+suffix:semicolon
 r_case
 id|NAND_ECC_HW3_256
 suffix:colon
-r_if
-c_cond
-(paren
-id|this-&gt;calculate_ecc
-op_logical_and
-id|this-&gt;correct_data
-op_logical_and
-id|this-&gt;enable_hwecc
-)paren
 r_break
-suffix:semicolon
-id|printk
-(paren
-id|KERN_WARNING
-l_string|&quot;No ECC functions supplied, Hardware ECC not possible&bslash;n&quot;
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
 r_case
 id|NAND_ECC_NONE
@@ -10016,6 +9950,63 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Check hardware ecc function availability and adjust number of ecc bytes per &n;&t; * calculation step&n;&t;*/
+r_switch
+c_cond
+(paren
+id|this-&gt;eccmode
+)paren
+(brace
+r_case
+id|NAND_ECC_HW12_2048
+suffix:colon
+id|this-&gt;eccbytes
+op_add_assign
+l_int|4
+suffix:semicolon
+r_case
+id|NAND_ECC_HW8_512
+suffix:colon
+id|this-&gt;eccbytes
+op_add_assign
+l_int|2
+suffix:semicolon
+r_case
+id|NAND_ECC_HW6_512
+suffix:colon
+id|this-&gt;eccbytes
+op_add_assign
+l_int|3
+suffix:semicolon
+r_case
+id|NAND_ECC_HW3_512
+suffix:colon
+r_case
+id|NAND_ECC_HW3_256
+suffix:colon
+r_if
+c_cond
+(paren
+id|this-&gt;calculate_ecc
+op_logical_and
+id|this-&gt;correct_data
+op_logical_and
+id|this-&gt;enable_hwecc
+)paren
+r_break
+suffix:semicolon
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;No ECC functions supplied, Hardware ECC not possible&bslash;n&quot;
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|mtd-&gt;eccsize
 op_assign
 id|this-&gt;eccsize
@@ -10027,6 +10018,17 @@ c_cond
 id|this-&gt;eccmode
 )paren
 (brace
+r_case
+id|NAND_ECC_HW12_2048
+suffix:colon
+id|this-&gt;eccsteps
+op_assign
+id|mtd-&gt;oobblock
+op_div
+l_int|2048
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|NAND_ECC_HW3_512
 suffix:colon

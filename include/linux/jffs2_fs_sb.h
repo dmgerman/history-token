@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.45 2003/10/08 11:46:27 dwmw2 Exp $ */
+multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.48 2004/11/20 10:41:12 dwmw2 Exp $ */
 macro_line|#ifndef _JFFS2_FS_SB
 DECL|macro|_JFFS2_FS_SB
 mdefine_line|#define _JFFS2_FS_SB
@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 DECL|macro|JFFS2_SB_FLAG_RO
 mdefine_line|#define JFFS2_SB_FLAG_RO 1
 DECL|macro|JFFS2_SB_FLAG_MOUNTING
@@ -65,7 +66,7 @@ r_struct
 id|semaphore
 id|alloc_sem
 suffix:semicolon
-multiline_comment|/* Used to protect all the following &n;&t;&t;&t;&t;&t;   fields, and also to protect against&n;&t;&t;&t;&t;&t;   out-of-order writing of nodes.&n;&t;&t;&t;&t;&t;   And GC.&n;&t;&t;&t;&t;&t;*/
+multiline_comment|/* Used to protect all the following &n;&t;&t;&t;&t;&t;   fields, and also to protect against&n;&t;&t;&t;&t;&t;   out-of-order writing of nodes. And GC. */
 DECL|member|cleanmarker_size
 r_uint32
 id|cleanmarker_size
@@ -267,7 +268,7 @@ r_struct
 id|semaphore
 id|erase_free_sem
 suffix:semicolon
-macro_line|#ifdef CONFIG_JFFS2_FS_NAND
+macro_line|#if defined CONFIG_JFFS2_FS_NAND || defined CONFIG_JFFS2_FS_NOR_ECC
 multiline_comment|/* Write-behind buffer for NAND flash */
 DECL|member|wbuf
 r_int
@@ -293,6 +294,12 @@ id|jffs2_inodirty
 op_star
 id|wbuf_inodes
 suffix:semicolon
+DECL|member|wbuf_sem
+r_struct
+id|rw_semaphore
+id|wbuf_sem
+suffix:semicolon
+multiline_comment|/* Protects the write buffer */
 multiline_comment|/* Information about out-of-band area usage... */
 DECL|member|oobinfo
 r_struct

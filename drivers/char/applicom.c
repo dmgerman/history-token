@@ -1,6 +1,6 @@
 multiline_comment|/* Derived from Applicom driver ac.c for SCO Unix                            */
 multiline_comment|/* Ported by David Woodhouse, Axiom (Cambridge) Ltd.                         */
-multiline_comment|/* dwmw2@redhat.com  30/8/98                                                 */
+multiline_comment|/* dwmw2@infradead.org 30/8/98                                               */
 multiline_comment|/* $Id: ac.c,v 1.30 2000/03/22 16:03:57 dwmw2 Exp $&t;&t;&t;     */
 multiline_comment|/* This module is for Linux 2.1 and 2.2 series kernels.                      */
 multiline_comment|/*****************************************************************************/

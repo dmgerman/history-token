@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: cmdlinepart.c,v 1.16 2004/11/16 18:28:59 dwmw2 Exp $&n; *&n; * Read flash partition table from command line&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; *&n; * The format for the command line is as follows:&n; * &n; * mtdparts=&lt;mtddef&gt;[;&lt;mtddef]&n; * &lt;mtddef&gt;  := &lt;mtd-id&gt;:&lt;partdef&gt;[,&lt;partdef&gt;]&n; * &lt;partdef&gt; := &lt;size&gt;[@offset][&lt;name&gt;][ro]&n; * &lt;mtd-id&gt;  := unique name used in mapping driver/device (mtd-&gt;name)&n; * &lt;size&gt;    := standard linux memsize OR &quot;-&quot; to denote all remaining space&n; * &lt;name&gt;    := &squot;(&squot; NAME &squot;)&squot;&n; * &n; * Examples:&n; * &n; * 1 NOR Flash, with 1 single writable partition:&n; * edb7312-nor:-&n; * &n; * 1 NOR Flash with 2 partitions, 1 NAND with one&n; * edb7312-nor:256k(ARMboot)ro,-(root);edb7312-nand:-(home)&n; */
+multiline_comment|/*&n; * $Id: cmdlinepart.c,v 1.17 2004/11/26 11:18:47 lavinen Exp $&n; *&n; * Read flash partition table from command line&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; *&n; * The format for the command line is as follows:&n; * &n; * mtdparts=&lt;mtddef&gt;[;&lt;mtddef]&n; * &lt;mtddef&gt;  := &lt;mtd-id&gt;:&lt;partdef&gt;[,&lt;partdef&gt;]&n; * &lt;partdef&gt; := &lt;size&gt;[@offset][&lt;name&gt;][ro]&n; * &lt;mtd-id&gt;  := unique name used in mapping driver/device (mtd-&gt;name)&n; * &lt;size&gt;    := standard linux memsize OR &quot;-&quot; to denote all remaining space&n; * &lt;name&gt;    := &squot;(&squot; NAME &squot;)&squot;&n; * &n; * Examples:&n; * &n; * 1 NOR Flash, with 1 single writable partition:&n; * edb7312-nor:-&n; * &n; * 1 NOR Flash with 2 partitions, 1 NAND with one&n; * edb7312-nor:256k(ARMboot)ro,-(root);edb7312-nand:-(home)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -1118,9 +1118,8 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * This is the handler for our kernel parameter, called from &n; * main.c::checksetup(). Note that we can not yet kmalloc() anything,&n; * so we only save the commandline for later processing.&n; */
+multiline_comment|/* &n; * This is the handler for our kernel parameter, called from &n; * main.c::checksetup(). Note that we can not yet kmalloc() anything,&n; * so we only save the commandline for later processing.&n; *&n; * This function needs to be visible for bootloaders.&n; */
 DECL|function|mtdpart_setup
-r_static
 r_int
 id|mtdpart_setup
 c_func
