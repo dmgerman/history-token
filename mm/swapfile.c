@@ -305,6 +305,7 @@ id|si-&gt;highest_bit
 )paren
 (brace
 r_int
+r_int
 id|nr
 suffix:semicolon
 r_for
