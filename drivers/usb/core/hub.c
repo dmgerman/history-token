@@ -714,9 +714,7 @@ l_int|0
 comma
 id|HUB_CLEAR_TT_BUFFER
 comma
-id|USB_DIR_IN
-op_or
-id|USB_RECIP_OTHER
+id|USB_RT_PORT
 comma
 id|devinfo
 comma
