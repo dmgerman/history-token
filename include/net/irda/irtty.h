@@ -102,6 +102,11 @@ op_star
 id|dongle
 suffix:semicolon
 multiline_comment|/* Dongle driver */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* For serializing operations */
 DECL|member|new_speed
 id|__u32
 id|new_speed

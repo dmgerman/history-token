@@ -234,11 +234,7 @@ id|irport_cb
 op_star
 id|irport
 suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
-multiline_comment|/* For serializing operations */
+multiline_comment|/* Locking : half of our operations are done with irport, so we&n;&t; * use the irport spinlock to make sure *everything* is properly&n;&t; * synchronised - Jean II */
 DECL|member|new_speed
 id|__u32
 id|new_speed

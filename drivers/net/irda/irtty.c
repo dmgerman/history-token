@@ -307,12 +307,13 @@ r_void
 r_int
 id|status
 suffix:semicolon
+multiline_comment|/* Probably no need to lock here because all operations done in&n;&t; * open()/close() which are already safe - Jean II */
 id|irtty
 op_assign
 id|hashbin_new
 c_func
 (paren
-id|HB_LOCAL
+id|HB_NOLOCK
 )paren
 suffix:semicolon
 r_if
@@ -620,6 +621,13 @@ r_sizeof
 r_struct
 id|irtty_cb
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|self-&gt;lock
 )paren
 suffix:semicolon
 id|self-&gt;tty
@@ -1006,6 +1014,10 @@ op_star
 )paren
 id|tty-&gt;disc_data
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* First make sure we&squot;re connected. */
 id|ASSERT
 c_func
@@ -1083,6 +1095,31 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|self
+op_assign
+id|hashbin_remove
+c_func
+(paren
+id|irtty
+comma
+(paren
+r_int
+)paren
+id|self
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* Protect access to self-&gt;task and self-&gt;?x_buff - Jean II */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Remove speed changing task if any */
 r_if
 c_cond
@@ -1103,21 +1140,6 @@ id|self-&gt;magic
 op_assign
 l_int|0
 suffix:semicolon
-id|self
-op_assign
-id|hashbin_remove
-c_func
-(paren
-id|irtty
-comma
-(paren
-r_int
-)paren
-id|self
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1138,6 +1160,15 @@ id|kfree
 c_func
 (paren
 id|self-&gt;rx_buff.head
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|kfree
@@ -1198,6 +1229,7 @@ id|cflag
 op_or_assign
 id|CREAD
 suffix:semicolon
+multiline_comment|/* This is unsafe, but currently under discussion - Jean II */
 id|self-&gt;tty-&gt;termios-&gt;c_cflag
 op_assign
 id|cflag
@@ -1367,6 +1399,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* This is unsafe, but currently under discussion - Jean II */
 id|self-&gt;tty-&gt;termios-&gt;c_cflag
 op_assign
 id|cflag
@@ -1404,6 +1437,10 @@ r_struct
 id|irtty_cb
 op_star
 id|self
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|__u32
 id|speed
@@ -1451,6 +1488,16 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Protect access to self-&gt;task - Jean II */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Check if busy */
 r_if
 c_cond
@@ -1471,6 +1518,15 @@ id|__FUNCTION__
 l_string|&quot;(), busy!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|MSECS_TO_JIFFIES
 c_func
@@ -1483,6 +1539,15 @@ r_else
 id|self-&gt;task
 op_assign
 id|task
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -1870,6 +1935,7 @@ suffix:colon
 r_case
 id|TCGETA
 suffix:colon
+multiline_comment|/* Unsure about locking here, to check - Jean II */
 r_return
 id|n_tty_ioctl
 c_func
@@ -1936,11 +2002,6 @@ id|dongle-&gt;set_dtr_rts
 op_assign
 id|irtty_set_dtr_rts
 suffix:semicolon
-multiline_comment|/* Bind dongle */
-id|self-&gt;dongle
-op_assign
-id|dongle
-suffix:semicolon
 multiline_comment|/* Now initialize the dongle!  */
 id|dongle-&gt;issue
 op_member_access_from_pointer
@@ -1967,6 +2028,11 @@ l_int|NULL
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+multiline_comment|/* Make dongle available to driver only now to avoid&n;&t;&t; * race conditions - Jean II */
+id|self-&gt;dongle
+op_assign
+id|dongle
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2106,6 +2172,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+singleline_comment|// Are we in interrupt context ? What locking is done ? - Jean II
+singleline_comment|//spin_lock_irqsave(&amp;self-&gt;lock, flags);
 multiline_comment|/* Read the characters out of the buffer */
 r_while
 c_loop
@@ -2208,6 +2276,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+singleline_comment|//spin_unlock_irqrestore(&amp;self-&gt;lock, flags);
 )brace
 multiline_comment|/*&n; * Function irtty_change_speed_complete (task)&n; *&n; *    Called when the change speed operation completes&n; *&n; */
 DECL|function|irtty_change_speed_complete
@@ -2314,6 +2383,10 @@ suffix:semicolon
 id|__s32
 id|speed
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|self
 op_assign
 (paren
@@ -2335,7 +2408,7 @@ l_int|0
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* Lock transmit buffer */
+multiline_comment|/* Lock transmit buffer&n;&t; * this serialise operations, no need to spinlock - Jean II */
 id|netif_stop_queue
 c_func
 (paren
@@ -2410,6 +2483,16 @@ op_assign
 id|speed
 suffix:semicolon
 )brace
+multiline_comment|/* Protect access to self-&gt;tx_buff - Jean II */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Init tx buffer*/
 id|self-&gt;tx_buff.data
 op_assign
@@ -2473,6 +2556,15 @@ suffix:semicolon
 id|self-&gt;tx_buff.len
 op_sub_assign
 id|actual
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|dev_kfree_skb
 c_func
@@ -2541,6 +2633,10 @@ id|actual
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* &n;&t; *  First make sure we&squot;re connected. &n;&t; */
 id|ASSERT
 c_func
@@ -2562,6 +2658,17 @@ id|IRTTY_MAGIC
 comma
 r_return
 suffix:semicolon
+)paren
+suffix:semicolon
+multiline_comment|/* Protected via netif_stop_queue(dev); - Jean II */
+multiline_comment|/* Protect access to self-&gt;tx_buff - Jean II */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Finished with frame?  */
@@ -2598,6 +2705,15 @@ id|self-&gt;tx_buff.len
 op_sub_assign
 id|actual
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -2621,6 +2737,16 @@ op_complement
 l_int|1
 op_lshift
 id|TTY_DO_WRITE_WAKEUP
+)paren
+suffix:semicolon
+multiline_comment|/* Don&squot;t change speed with irq off */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -2723,6 +2849,7 @@ id|tty_struct
 op_star
 id|tty
 suffix:semicolon
+singleline_comment|//unsigned long flags;
 id|mm_segment_t
 id|fs
 suffix:semicolon
@@ -2744,6 +2871,8 @@ id|tty
 op_assign
 id|self-&gt;tty
 suffix:semicolon
+multiline_comment|/* Was protected in ioctl handler, but the serial driver doesn&squot;t&n;&t; * like it. This may need to change. - Jean II */
+singleline_comment|//spin_lock_irqsave(&amp;self-&gt;lock, flags);
 macro_line|#ifdef TIOCM_OUT2 /* Not defined for ARM */
 id|arg
 op_assign
@@ -2785,6 +2914,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* This is probably unsafe, but currently under discussion - Jean II */
 r_if
 c_cond
 (paren
@@ -2824,6 +2954,7 @@ c_func
 id|fs
 )paren
 suffix:semicolon
+singleline_comment|//spin_unlock_irqrestore(&amp;self-&gt;lock, flags);
 r_return
 l_int|0
 suffix:semicolon
@@ -2847,6 +2978,10 @@ r_struct
 id|irtty_cb
 op_star
 id|self
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|self
 op_assign
@@ -2884,6 +3019,16 @@ id|mode
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* Protect access to self-&gt;rx_buff - Jean II */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* save status for driver */
 id|self-&gt;mode
 op_assign
@@ -2901,6 +3046,15 @@ suffix:semicolon
 id|self-&gt;rx_buff.state
 op_assign
 id|OUTSIDE_FRAME
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -3409,10 +3563,6 @@ op_star
 id|dongle
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|ret
 op_assign
 l_int|0
@@ -3473,7 +3623,7 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/* Locking :&n;&t; * irda_device_dongle_init() can&squot;t be locked.&n;&t; * irda_task_execute() doesn&squot;t need to be locked (but&n;&t; * irtty_change_speed() should protect itself).&n;&t; * As this driver doesn&squot;t have spinlock protection, keep&n;&t; * old fashion locking :-(&n;&t; * Jean II&n;&t; */
+multiline_comment|/* Locking :&n;&t; * irda_device_dongle_init() can&squot;t be locked.&n;&t; * irda_task_execute() doesn&squot;t need to be locked (but&n;&t; * irtty_change_speed() should protect itself).&n;&t; * Other calls protect themselves.&n;&t; * Jean II&n;&t; */
 r_switch
 c_cond
 (paren
@@ -3676,17 +3826,6 @@ id|EPERM
 suffix:semicolon
 r_else
 (brace
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|irtty_set_dtr_rts
 c_func
 (paren
@@ -3695,12 +3834,6 @@ comma
 id|irq-&gt;ifr_dtr
 comma
 id|irq-&gt;ifr_rts
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -3726,29 +3859,12 @@ id|EPERM
 suffix:semicolon
 r_else
 (brace
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|irtty_set_mode
 c_func
 (paren
 id|dev
 comma
 id|irq-&gt;ifr_mode
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace

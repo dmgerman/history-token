@@ -674,6 +674,13 @@ id|w83977af_ir
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* Need to store self somewhere */
 id|dev_self
 (braket
@@ -2482,15 +2489,13 @@ id|ADCR1
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NETWINDER_TX_DMA_PROBLEMS
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|self-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|disable_dma
@@ -2589,9 +2594,12 @@ c_func
 id|self-&gt;io.dma
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|self-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3094,15 +3102,13 @@ op_assign
 id|self-&gt;rx_buff.head
 suffix:semicolon
 macro_line|#ifdef CONFIG_NETWINDER_RX_DMA_PROBLEMS
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|self-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|disable_dma
@@ -3230,9 +3236,12 @@ c_func
 id|self-&gt;io.dma
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|self-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -5138,16 +5147,13 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/* Disable interrupts &amp; save flags */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|self-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_switch
@@ -5248,9 +5254,12 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|self-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon

@@ -1920,6 +1920,10 @@ id|irq
 comma
 id|version
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -2196,13 +2200,6 @@ r_sizeof
 r_struct
 id|ircc_cb
 )paren
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|self-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* Max DMA buffer size needed = (data_size + 6) * (window_size) + 6; */
@@ -2498,6 +2495,16 @@ comma
 id|driver_name
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t allow irport to change under us - Jean II */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;irport-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Initialize QoS for this device */
 id|irda_init_max_qos_capabilies
 c_func
@@ -2599,6 +2606,15 @@ c_func
 id|self-&gt;irport
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;irport-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|self-&gt;pmdev
 op_assign
 id|pm_register
@@ -2635,7 +2651,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function ircc_change_speed (self, baud)&n; *&n; *    Change the speed of the device&n; *&n; */
+multiline_comment|/*&n; * Function ircc_change_speed (self, baud)&n; *&n; *    Change the speed of the device&n; *&n; * This function should be called with irq off and spin-lock.&n; */
 DECL|function|ircc_change_speed
 r_static
 r_void
@@ -2896,6 +2912,7 @@ OG
 l_int|115200
 )paren
 (brace
+multiline_comment|/* No need to lock, already locked - Jean II */
 id|irport_stop
 c_func
 (paren
@@ -2928,6 +2945,7 @@ op_assign
 op_amp
 id|irport_hard_xmit
 suffix:semicolon
+multiline_comment|/* No need to lock, already locked - Jean II */
 id|irport_start
 c_func
 (paren
@@ -3194,6 +3212,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure tests *&amp; speed change are atomic */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;irport-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Note : you should make sure that speed changes are not going&n;&t; * to corrupt any outgoing frame. Look at nsc-ircc for the gory&n;&t; * details - Jean II */
 multiline_comment|/* Check if we need to change the speed after this frame */
 id|speed
 op_assign
@@ -3236,6 +3265,15 @@ comma
 id|speed
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;irport-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
@@ -3252,15 +3290,6 @@ op_assign
 id|speed
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -3349,7 +3378,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|self-&gt;lock
+id|self-&gt;irport-&gt;lock
 comma
 id|flags
 )paren
@@ -4312,6 +4341,7 @@ OL
 l_int|576000
 )paren
 (brace
+multiline_comment|/* Will spinlock itself - Jean II */
 id|irport_interrupt
 c_func
 (paren
@@ -4333,7 +4363,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|self-&gt;lock
+id|self-&gt;irport-&gt;lock
 )paren
 suffix:semicolon
 id|register_bank
@@ -4442,7 +4472,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|self-&gt;lock
+id|self-&gt;irport-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -4798,10 +4828,6 @@ op_star
 id|self
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4810,27 +4836,11 @@ id|self-&gt;io-&gt;suspended
 )paren
 r_return
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* The code was doing a &quot;cli()&quot; here, but this can&squot;t be right.&n;&t; * If you need protection, do it in net_open with a spinlock&n;&t; * or give a good reason. - Jean II */
 id|ircc_net_open
 c_func
 (paren
 id|self-&gt;netdev
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 id|MESSAGE
@@ -4956,6 +4966,7 @@ id|iobase
 op_assign
 id|self-&gt;irport-&gt;io.fir_base
 suffix:semicolon
+multiline_comment|/* This will destroy irport */
 id|irport_close
 c_func
 (paren
