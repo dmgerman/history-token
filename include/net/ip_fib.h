@@ -4,6 +4,7 @@ DECL|macro|_NET_IP_FIB_H
 mdefine_line|#define _NET_IP_FIB_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;net/flow.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 DECL|struct|kern_rta
 r_struct
 id|kern_rta
@@ -405,11 +406,11 @@ op_star
 id|table
 )paren
 suffix:semicolon
-DECL|member|tb_get_info
+DECL|member|tb_seq_show
 r_int
 (paren
 op_star
-id|tb_get_info
+id|tb_seq_show
 )paren
 (paren
 r_struct
@@ -417,15 +418,10 @@ id|fib_table
 op_star
 id|table
 comma
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
-comma
-r_int
-id|first
-comma
-r_int
-id|count
+id|seq
 )paren
 suffix:semicolon
 DECL|member|tb_select_default
@@ -467,13 +463,13 @@ r_extern
 r_struct
 id|fib_table
 op_star
-id|local_table
+id|ip_fib_local_table
 suffix:semicolon
 r_extern
 r_struct
 id|fib_table
 op_star
-id|main_table
+id|ip_fib_main_table
 suffix:semicolon
 DECL|function|fib_get_table
 r_static
@@ -496,10 +492,10 @@ op_ne
 id|RT_TABLE_LOCAL
 )paren
 r_return
-id|main_table
+id|ip_fib_main_table
 suffix:semicolon
 r_return
-id|local_table
+id|ip_fib_local_table
 suffix:semicolon
 )brace
 DECL|function|fib_new_table
@@ -545,24 +541,24 @@ id|res
 r_if
 c_cond
 (paren
-id|local_table
+id|ip_fib_local_table
 op_member_access_from_pointer
 id|tb_lookup
 c_func
 (paren
-id|local_table
+id|ip_fib_local_table
 comma
 id|flp
 comma
 id|res
 )paren
 op_logical_and
-id|main_table
+id|ip_fib_main_table
 op_member_access_from_pointer
 id|tb_lookup
 c_func
 (paren
-id|main_table
+id|ip_fib_main_table
 comma
 id|flp
 comma
@@ -611,12 +607,12 @@ id|res.nh_scope
 op_eq
 id|RT_SCOPE_LINK
 )paren
-id|main_table
+id|ip_fib_main_table
 op_member_access_from_pointer
 id|tb_select_default
 c_func
 (paren
-id|main_table
+id|ip_fib_main_table
 comma
 id|flp
 comma
@@ -625,10 +621,10 @@ id|res
 suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_IP_MULTIPLE_TABLES */
-DECL|macro|local_table
-mdefine_line|#define local_table (fib_tables[RT_TABLE_LOCAL])
-DECL|macro|main_table
-mdefine_line|#define main_table (fib_tables[RT_TABLE_MAIN])
+DECL|macro|ip_fib_local_table
+mdefine_line|#define ip_fib_local_table (fib_tables[RT_TABLE_LOCAL])
+DECL|macro|ip_fib_main_table
+mdefine_line|#define ip_fib_main_table (fib_tables[RT_TABLE_MAIN])
 r_extern
 r_struct
 id|fib_table
@@ -1111,9 +1107,14 @@ id|r
 suffix:semicolon
 r_extern
 r_void
-id|fib_node_get_info
+id|fib_node_seq_show
 c_func
 (paren
+r_struct
+id|seq_file
+op_star
+id|seq
+comma
 r_int
 id|type
 comma
@@ -1130,10 +1131,6 @@ id|prefix
 comma
 id|u32
 id|mask
-comma
-r_char
-op_star
-id|buffer
 )paren
 suffix:semicolon
 r_extern
