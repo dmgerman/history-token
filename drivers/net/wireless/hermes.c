@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &quot;hermes.h&quot;
 id|MODULE_DESCRIPTION
@@ -616,14 +617,25 @@ id|hw
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;hermes @ %p: &quot;
-l_string|&quot;Card removed while issuing command.&bslash;n&quot;
+l_string|&quot;Card removed while issuing command &quot;
+l_string|&quot;0x%04x.&bslash;n&quot;
 comma
 id|hw-&gt;iobase
+comma
+id|cmd
 )paren
 suffix:semicolon
 id|err
@@ -633,15 +645,26 @@ id|ENODEV
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;hermes @ %p: Error %d issuing command.&bslash;n&quot;
+l_string|&quot;hermes @ %p: &quot;
+l_string|&quot;Error %d issuing command 0x%04x.&bslash;n&quot;
 comma
 id|hw-&gt;iobase
 comma
 id|err
+comma
+id|cmd
 )paren
 suffix:semicolon
 r_goto
@@ -712,10 +735,12 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;hermes @ %p: &quot;
-l_string|&quot;Card removed while waiting for command completion.&bslash;n&quot;
+l_string|&quot;hermes @ %p: Card removed &quot;
+l_string|&quot;while waiting for command 0x%04x completion.&bslash;n&quot;
 comma
 id|hw-&gt;iobase
+comma
+id|cmd
 )paren
 suffix:semicolon
 id|err
@@ -742,10 +767,12 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;hermes @ %p: &quot;
-l_string|&quot;Timeout waiting for command completion.&bslash;n&quot;
+l_string|&quot;hermes @ %p: Timeout waiting for &quot;
+l_string|&quot;command 0x%04x completion.&bslash;n&quot;
 comma
 id|hw-&gt;iobase
+comma
+id|cmd
 )paren
 suffix:semicolon
 id|err
@@ -1686,10 +1713,12 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;hermes @ %p: &quot;
-l_string|&quot;hermes_read_ltv(): rid  (0x%04x) does not match type (0x%04x)&bslash;n&quot;
+l_string|&quot;hermes @ %p: %s(): &quot;
+l_string|&quot;rid (0x%04x) does not match type (0x%04x)&bslash;n&quot;
 comma
 id|hw-&gt;iobase
+comma
+id|__FUNCTION__
 comma
 id|rid
 comma

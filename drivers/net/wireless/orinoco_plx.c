@@ -147,10 +147,20 @@ c_cond
 (paren
 id|err
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Cannot enable PCI device&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 multiline_comment|/* Resource 2 is mapped to the PCMCIA space */
 id|attr_mem
 op_assign
@@ -175,13 +185,14 @@ op_logical_neg
 id|attr_mem
 )paren
 r_goto
-id|out
+id|fail_resources
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;orinoco_plx: CIS: &quot;
+id|PFX
+l_string|&quot;CIS: &quot;
 )paren
 suffix:semicolon
 r_for
@@ -252,7 +263,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;orinoco_plx: The CIS value of Prism2 PC card is invalid.&bslash;n&quot;
+id|PFX
+l_string|&quot;The CIS value of Prism2 PC &quot;
+l_string|&quot;card is unexpected&bslash;n&quot;
 )paren
 suffix:semicolon
 id|err
@@ -267,7 +280,7 @@ id|attr_mem
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|fail_resources
 suffix:semicolon
 )brace
 multiline_comment|/* PCMCIA COR is the first byte following CIS: this write should&n;&t; * enable I/O mode and select level-triggered interrupts */
@@ -315,13 +328,14 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;orinoco_plx: Error setting COR value (reg=%x)&bslash;n&quot;
+id|PFX
+l_string|&quot;Error setting COR value (reg=%x)&bslash;n&quot;
 comma
 id|reg
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|fail_resources
 suffix:semicolon
 )brace
 multiline_comment|/* bjoern: We need to tell the card to enable interrupts, in&n;&t;   case the serial eprom didn&squot;t do this already. See the&n;&t;   PLX9052 data book, p8-1 and 8-24 for reference. */
@@ -356,7 +370,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;orinoco_plx: &quot;
+id|PFX
 l_string|&quot;Local Interrupt already enabled&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -401,16 +415,16 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;orinoco_plx: &quot;
+id|PFX
 l_string|&quot;Couldn&squot;t enable Local Interrupts&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|fail_resources
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* and 3 to the PCMCIA slot I/O address space */
+multiline_comment|/* Resource 3 is mapped to the PCMCIA I/O address space */
 id|pccard_ioaddr
 op_assign
 id|pci_resource_start
@@ -450,7 +464,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;orinoco_plx: I/O resource 0x%lx @ 0x%lx busy&bslash;n&quot;
+id|PFX
+l_string|&quot;I/O resource 0x%lx @ 0x%lx busy&bslash;n&quot;
 comma
 id|pccard_iolen
 comma
@@ -463,7 +478,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 r_goto
-id|out
+id|fail_resources
 suffix:semicolon
 )brace
 id|mem
@@ -491,7 +506,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|out1
+id|fail_map
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate network device */
@@ -512,13 +527,21 @@ op_logical_neg
 id|dev
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Cannot allocate network device&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|out2
+id|fail_alloc
 suffix:semicolon
 )brace
 id|priv
@@ -548,6 +571,25 @@ op_amp
 id|pdev-&gt;dev
 )paren
 suffix:semicolon
+id|hermes_struct_init
+c_func
+(paren
+op_amp
+id|priv-&gt;hw
+comma
+id|mem
+comma
+id|HERMES_16BIT_REGSPACING
+)paren
+suffix:semicolon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+id|dev
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -565,27 +607,6 @@ comma
 id|pdev-&gt;irq
 comma
 id|pccard_ioaddr
-)paren
-suffix:semicolon
-id|hermes_struct_init
-c_func
-(paren
-op_amp
-(paren
-id|priv-&gt;hw
-)paren
-comma
-id|mem
-comma
-id|HERMES_16BIT_REGSPACING
-)paren
-suffix:semicolon
-id|pci_set_drvdata
-c_func
-(paren
-id|pdev
-comma
-id|dev
 )paren
 suffix:semicolon
 id|err
@@ -615,7 +636,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;Error allocating IRQ %d.&bslash;n&quot;
+l_string|&quot;Cannot allocate IRQ %d&bslash;n&quot;
 comma
 id|pdev-&gt;irq
 )paren
@@ -626,7 +647,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 r_goto
-id|out3
+id|fail_irq
 suffix:semicolon
 )brace
 id|dev-&gt;irq
@@ -646,13 +667,23 @@ c_cond
 (paren
 id|err
 )paren
-r_goto
-id|out4
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Cannot register network device&bslash;n&quot;
+)paren
 suffix:semicolon
+r_goto
+id|fail
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
-id|out4
+id|fail
 suffix:colon
 id|free_irq
 c_func
@@ -662,7 +693,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|out3
+id|fail_irq
 suffix:colon
 id|free_netdev
 c_func
@@ -670,7 +701,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|out2
+id|fail_alloc
 suffix:colon
 id|pci_iounmap
 c_func
@@ -680,7 +711,7 @@ comma
 id|mem
 )paren
 suffix:semicolon
-id|out1
+id|fail_map
 suffix:colon
 id|release_region
 c_func
@@ -690,20 +721,12 @@ comma
 id|pccard_iolen
 )paren
 suffix:semicolon
-id|out
+id|fail_resources
 suffix:colon
 id|pci_disable_device
 c_func
 (paren
 id|pdev
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-id|PFX
-l_string|&quot;init_one(), FAIL!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

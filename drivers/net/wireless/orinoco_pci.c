@@ -77,13 +77,6 @@ comma
 id|HERMES_PCI_COR_MASK
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;Reset done&quot;
-)paren
-suffix:semicolon
 id|timeout
 op_assign
 id|jiffies
@@ -108,12 +101,6 @@ id|timeout
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;.&quot;
-)paren
-suffix:semicolon
 id|mdelay
 c_func
 (paren
@@ -121,12 +108,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;;&bslash;n&quot;
-)paren
-suffix:semicolon
 singleline_comment|//mdelay(HERMES_PCI_COR_ONT);
 multiline_comment|/* Give time for the card to recover from this hard effort */
 id|hermes_write_regn
@@ -137,13 +118,6 @@ comma
 id|PCI_COR
 comma
 l_int|0x0000
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;Clear Reset&quot;
 )paren
 suffix:semicolon
 id|timeout
@@ -170,12 +144,6 @@ id|timeout
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;.&quot;
-)paren
-suffix:semicolon
 id|mdelay
 c_func
 (paren
@@ -183,12 +151,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;;&bslash;n&quot;
-)paren
-suffix:semicolon
 singleline_comment|//mdelay(HERMES_PCI_COR_OFFT);
 multiline_comment|/* The card is ready when it&squot;s no longer busy */
 id|timeout
@@ -274,19 +236,6 @@ op_minus
 id|ETIMEDOUT
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;pci_cor : reg = 0x%X - %lX - %lX&bslash;n&quot;
-comma
-id|reg
-comma
-id|timeout
-comma
-id|jiffies
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -357,10 +306,19 @@ c_cond
 (paren
 id|err
 )paren
-r_return
-op_minus
-id|EIO
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Cannot enable PCI device&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 multiline_comment|/* Resource 0 is mapped to the hermes registers */
 id|pci_iorange
 op_assign
@@ -398,9 +356,19 @@ c_cond
 op_logical_neg
 id|pci_iorange
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Cannot remap hardware registers&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|fail
 suffix:semicolon
+)brace
 multiline_comment|/* Allocate network device */
 id|dev
 op_assign
@@ -471,28 +439,6 @@ op_amp
 id|pdev-&gt;dev
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-id|PFX
-l_string|&quot;Detected Orinoco/Prism2 PCI device at %s, mem:0x%lX to 0x%lX -&gt; 0x%p, irq:%d&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|pdev
-)paren
-comma
-id|dev-&gt;mem_start
-comma
-id|dev-&gt;mem_end
-comma
-id|pci_ioaddr
-comma
-id|pdev-&gt;irq
-)paren
-suffix:semicolon
 id|hermes_struct_init
 c_func
 (paren
@@ -510,6 +456,26 @@ c_func
 id|pdev
 comma
 id|dev
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+id|PFX
+l_string|&quot;Detected device %s, mem:0x%lx-0x%lx, irq %d&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
+comma
+id|dev-&gt;mem_start
+comma
+id|dev-&gt;mem_end
+comma
+id|pdev-&gt;irq
 )paren
 suffix:semicolon
 id|err
@@ -539,7 +505,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;Error allocating IRQ %d.&bslash;n&quot;
+l_string|&quot;Cannot allocate IRQ %d&bslash;n&quot;
 comma
 id|pdev-&gt;irq
 )paren
@@ -574,9 +540,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Failed to start the card&bslash;n&quot;
-comma
-id|dev-&gt;name
+id|PFX
+l_string|&quot;Initial reset failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|err
@@ -611,9 +576,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Failed to register net device&bslash;n&quot;
-comma
-id|dev-&gt;name
+id|PFX
+l_string|&quot;Failed to register net device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto

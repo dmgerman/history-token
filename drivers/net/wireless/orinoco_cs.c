@@ -1268,7 +1268,7 @@ c_func
 id|KERN_ERR
 id|PFX
 l_string|&quot;GetNextTuple(): No matching &quot;
-l_string|&quot;CIS configuration, maybe you need the &quot;
+l_string|&quot;CIS configuration.  Maybe you need the &quot;
 l_string|&quot;ignore_cis_vcc=1 parameter.&bslash;n&quot;
 )paren
 suffix:semicolon

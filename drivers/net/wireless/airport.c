@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
@@ -680,7 +679,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;wrong interrupt/addresses in OF tree&bslash;n&quot;
+l_string|&quot;Wrong interrupt/addresses in OF tree&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -715,7 +714,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;can&squot;t allocate device datas&bslash;n&quot;
+l_string|&quot;Cannot allocate network device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -827,7 +826,7 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;Airport at physical address %lx&bslash;n&quot;
+l_string|&quot;Physical address %lx&bslash;n&quot;
 comma
 id|phys_addr
 )paren
@@ -856,6 +855,7 @@ id|card-&gt;vaddr
 id|printk
 c_func
 (paren
+id|KERN_ERR
 id|PFX
 l_string|&quot;ioremap() failed&bslash;n&quot;
 )paren
@@ -916,7 +916,7 @@ id|orinoco_interrupt
 comma
 l_int|0
 comma
-l_string|&quot;Airport&quot;
+id|dev-&gt;name
 comma
 id|dev
 )paren
@@ -970,7 +970,7 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;card registered for interface %s&bslash;n&quot;
+l_string|&quot;Card registered for interface %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren

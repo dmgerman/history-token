@@ -438,10 +438,11 @@ c_cond
 id|priv-&gt;hw_unavailable
 )paren
 (brace
-id|printk
+id|DEBUG
 c_func
 (paren
-id|KERN_DEBUG
+l_int|1
+comma
 l_string|&quot;orinoco_lock() called with hw_unavailable (dev=%p)&bslash;n&quot;
 comma
 id|priv-&gt;ndev

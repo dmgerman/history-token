@@ -1426,11 +1426,20 @@ c_cond
 id|err
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Error %d writing Tx descriptor to BAP&bslash;n&quot;
+l_string|&quot;%s: Error %d writing Tx descriptor &quot;
+l_string|&quot;to BAP&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -1573,11 +1582,20 @@ c_cond
 id|err
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Error %d writing packet header to BAP&bslash;n&quot;
+l_string|&quot;%s: Error %d writing packet &quot;
+l_string|&quot;header to BAP&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -3472,12 +3490,14 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Unknown information frame received &quot;
-l_string|&quot;(type %04x).&bslash;n&quot;
+l_string|&quot;%s: Unknown information frame received: &quot;
+l_string|&quot;type 0x%04x, length %d&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|type
+comma
+id|len
 )paren
 suffix:semicolon
 multiline_comment|/* We don&squot;t actually do anything about it */
@@ -3512,7 +3532,7 @@ c_func
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_DEBUG
 l_string|&quot;%s: Information frame lost.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5458,7 +5478,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Multicast list is longer than mc_count&bslash;n&quot;
+l_string|&quot;%s: Multicast list is &quot;
+l_string|&quot;longer than mc_count&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 id|err
@@ -6632,7 +6655,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Station identity %04x:%04x:%04x:%04x&bslash;n&quot;
+l_string|&quot;%s: Station identity  %04x:%04x:%04x:%04x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -11197,7 +11220,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Fixed fragmentation not &bslash;&n;supported on this firmware. Using MWO robust instead.&bslash;n&quot;
+l_string|&quot;%s: Fixed fragmentation is &quot;
+l_string|&quot;not supported on this firmware. &quot;
+l_string|&quot;Using MWO robust instead.&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -13313,7 +13338,7 @@ id|AF_UNIX
 suffix:semicolon
 )brace
 multiline_comment|/* Copy stats */
-multiline_comment|/* In theory, we should disable irqs while copying the stats&n;&t;&t; * because the rx path migh update it in the middle...&n;&t;&t; * Bah, who care ? - Jean II */
+multiline_comment|/* In theory, we should disable irqs while copying the stats&n;&t;&t; * because the rx path might update it in the middle...&n;&t;&t; * Bah, who care ? - Jean II */
 id|memcpy
 c_func
 (paren
