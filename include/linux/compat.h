@@ -516,6 +516,30 @@ r_int
 id|vlen
 )paren
 suffix:semicolon
+r_int
+id|compat_do_execve
+c_func
+(paren
+r_char
+op_star
+id|filename
+comma
+id|compat_uptr_t
+id|__user
+op_star
+id|argv
+comma
+id|compat_uptr_t
+id|__user
+op_star
+id|envp
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* _LINUX_COMPAT_H */
 eof
