@@ -3445,24 +3445,6 @@ r_return
 id|priv-&gt;qinfo
 suffix:semicolon
 )brace
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Tom Zerucha, Michael Griffith&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;Driver for the Qlogic FAS SCSI controllers&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *&t;The driver template is also needed for PCMCIA&n; */
 DECL|variable|qlogicfas_driver_template
 id|Scsi_Host_Template
@@ -3615,6 +3597,24 @@ id|priv-&gt;shost
 )paren
 suffix:semicolon
 )brace
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Tom Zerucha, Michael Griffith&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Driver for the Qlogic FAS SCSI controllers&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|qlogicfas_init
 id|module_init
 c_func

@@ -1813,6 +1813,24 @@ id|dev_list
 )paren
 suffix:semicolon
 )brace
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Tom Zerucha, Michael Griffith&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Driver for the PCMCIA Qlogic FAS SCSI controllers&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|init_qlogic_cs
 id|module_init
 c_func
