@@ -3307,6 +3307,27 @@ id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 multiline_comment|/* try to compute the actual residue, based on how much data&n;&t; * was really transferred and what the device tells us */
+r_if
+c_cond
+(paren
+id|residue
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|us-&gt;flags
+op_amp
+id|US_FL_IGNORE_RESIDUE
+)paren
+op_logical_or
+id|srb-&gt;sc_data_direction
+op_eq
+id|DMA_TO_DEVICE
+)paren
+(brace
 id|residue
 op_assign
 id|min
@@ -3330,6 +3351,8 @@ r_int
 id|residue
 )paren
 suffix:semicolon
+)brace
+)brace
 multiline_comment|/* based on the status code, we report good or bad */
 r_switch
 c_cond

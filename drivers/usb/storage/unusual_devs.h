@@ -793,6 +793,31 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* Reported by Iacopo Spalletti &lt;avvisi@spalletti.it&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x052b
+comma
+l_int|0x1807
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Tekom Technologies, Inc&quot;
+comma
+l_string|&quot;300_CAMERA&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
+)paren
+comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
 id|UNUSUAL_DEV
 c_func
@@ -2580,6 +2605,31 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* Reported by Rastislav Stanik &lt;rs_kernel@yahoo.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0ea0
+comma
+l_int|0x6828
+comma
+l_int|0x0110
+comma
+l_int|0x0110
+comma
+l_string|&quot;USB&quot;
+comma
+l_string|&quot;Flash Disk&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
+)paren
+comma
 multiline_comment|/* Reported by Kevin Cernekee &lt;kpc-usbdev@gelato.uiuc.edu&gt;&n; * Tested on hardware version 1.10.&n; * Entry is needed only for the initializer function override.&n; */
 id|UNUSUAL_DEV
 c_func
@@ -2628,6 +2678,31 @@ comma
 l_int|NULL
 comma
 id|US_FL_MODE_XLATE
+)paren
+comma
+multiline_comment|/* Reported by Kotrla Vitezslav &lt;kotrla@ceb.cz&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x1370
+comma
+l_int|0x6828
+comma
+l_int|0x0110
+comma
+l_int|0x0110
+comma
+l_string|&quot;SWISSBIT&quot;
+comma
+l_string|&quot;Black Silver&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
 )paren
 comma
 macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55
