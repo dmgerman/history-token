@@ -4218,6 +4218,13 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+DECL|variable|sys_open
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|sys_open
+)paren
+suffix:semicolon
 macro_line|#ifndef __alpha__
 multiline_comment|/*&n; * For backward compatibility?  Maybe this should be moved&n; * into arch/i386 instead?&n; */
 DECL|function|sys_creat

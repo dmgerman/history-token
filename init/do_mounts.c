@@ -236,7 +236,7 @@ id|name
 suffix:semicolon
 id|fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 id|path
@@ -258,7 +258,7 @@ id|fail
 suffix:semicolon
 id|len
 op_assign
-id|read
+id|sys_read
 c_func
 (paren
 id|fd
@@ -268,7 +268,7 @@ comma
 l_int|32
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 id|fd
@@ -413,7 +413,7 @@ id|name
 suffix:semicolon
 id|fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 id|path
@@ -435,7 +435,7 @@ id|fail
 suffix:semicolon
 id|len
 op_assign
-id|read
+id|sys_read
 c_func
 (paren
 id|fd
@@ -445,7 +445,7 @@ comma
 l_int|32
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 id|fd
@@ -1404,7 +1404,7 @@ suffix:colon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Allow the user to distinguish between failed open&n;&t;&t; * and bad superblock on root device.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Allow the user to distinguish between failed sys_open&n;&t;&t; * and bad superblock on root device.&n;&t;&t; */
 id|__bdevname
 c_func
 (paren
@@ -1579,7 +1579,7 @@ id|args
 suffix:semicolon
 id|fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 l_string|&quot;/dev/root&quot;
@@ -1609,7 +1609,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 id|fd
@@ -1627,7 +1627,7 @@ id|buf
 suffix:semicolon
 id|fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 l_string|&quot;/dev/console&quot;
@@ -1678,7 +1678,7 @@ op_amp
 id|termios
 )paren
 suffix:semicolon
-id|read
+id|sys_read
 c_func
 (paren
 id|fd
@@ -1707,7 +1707,7 @@ op_amp
 id|termios
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 id|fd

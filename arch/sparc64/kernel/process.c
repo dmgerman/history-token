@@ -1,7 +1,5 @@
 multiline_comment|/*  $Id: process.c,v 1.131 2002/02/09 19:49:30 davem Exp $&n; *  arch/sparc64/kernel/process.c&n; *&n; *  Copyright (C) 1995, 1996 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996       Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997, 1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -12,7 +10,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
@@ -32,6 +29,7 @@ macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/fpumacro.h&gt;
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;asm/cpudata.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/* #define VERBOSE_SHOWREGS */
 multiline_comment|/*&n; * Nothing special yet...&n; */
 DECL|function|default_idle

@@ -650,7 +650,7 @@ id|minor
 suffix:semicolon
 id|fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 id|name
@@ -706,7 +706,7 @@ comma
 id|minor
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 id|fd
@@ -991,7 +991,7 @@ comma
 id|minor
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 id|fd
@@ -1168,7 +1168,7 @@ r_else
 r_int
 id|fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 l_string|&quot;/dev/md0&quot;
@@ -1196,7 +1196,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 id|fd

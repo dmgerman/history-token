@@ -4,8 +4,6 @@ macro_line|#if defined(CONFIG_AMIGA) || defined(CONFIG_APUS)
 DECL|macro|USE_BOTTOM_HALF
 mdefine_line|#define USE_BOTTOM_HALF
 macro_line|#endif
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -30,7 +28,6 @@ macro_line|#ifdef USE_BOTTOM_HALF
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/unistd.h&gt;
 multiline_comment|/* The controller registers can be found in the Z2 config area at these&n; * offsets:&n; */
 DECL|macro|OKTAGON_ESP_ADDR
 mdefine_line|#define OKTAGON_ESP_ADDR 0x03000

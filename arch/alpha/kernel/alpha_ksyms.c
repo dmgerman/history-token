@@ -27,9 +27,6 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/vga.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;asm/unistd.h&gt;
 r_extern
 r_struct
 id|hwrpb_struct

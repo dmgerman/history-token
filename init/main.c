@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -32,6 +31,7 @@ macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 multiline_comment|/*&n; * This is one of the first .c files built. Error out early&n; * if we have compiler trouble..&n; */
@@ -2047,7 +2047,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|open
+id|sys_open
 c_func
 (paren
 l_string|&quot;/dev/console&quot;
@@ -2068,7 +2068,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|dup
+id|sys_dup
 c_func
 (paren
 l_int|0
@@ -2077,7 +2077,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|dup
+id|sys_dup
 c_func
 (paren
 l_int|0
