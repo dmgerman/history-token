@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Sony Programmable I/O Control Device driver for VAIO&n; *&n; * Copyright (C) 2001-2004 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2001 Michael Ashley &lt;m.ashley@unsw.edu.au&gt;&n; *&n; * Copyright (C) 2001 Junichi Morita &lt;jun1m@mars.dti.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Takaya Kinjo &lt;t-kinjo@tc4.so-net.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * Sony Programmable I/O Control Device driver for VAIO&n; *&n; * Copyright (C) 2001-2005 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2005 Narayanan R S &lt;nars@kadamba.org&gt;&n;&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2001 Michael Ashley &lt;m.ashley@unsw.edu.au&gt;&n; *&n; * Copyright (C) 2001 Junichi Morita &lt;jun1m@mars.dti.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Takaya Kinjo &lt;t-kinjo@tc4.so-net.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#ifndef _SONYPI_H_
 DECL|macro|_SONYPI_H_
 mdefine_line|#define _SONYPI_H_
@@ -150,6 +150,14 @@ DECL|macro|SONYPI_IOCGBLUE
 mdefine_line|#define SONYPI_IOCGBLUE&t;&t;_IOR(&squot;v&squot;, 8, __u8)
 DECL|macro|SONYPI_IOCSBLUE
 mdefine_line|#define SONYPI_IOCSBLUE&t;&t;_IOW(&squot;v&squot;, 9, __u8)
+multiline_comment|/* get/set fan state on/off */
+DECL|macro|SONYPI_IOCGFAN
+mdefine_line|#define SONYPI_IOCGFAN&t;&t;_IOR(&squot;v&squot;, 10, __u8)
+DECL|macro|SONYPI_IOCSFAN
+mdefine_line|#define SONYPI_IOCSFAN&t;&t;_IOW(&squot;v&squot;, 11, __u8)
+multiline_comment|/* get temperature (C) */
+DECL|macro|SONYPI_IOCGTEMP
+mdefine_line|#define SONYPI_IOCGTEMP&t;&t;_IOR(&squot;v&squot;, 12, __u8)
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* used only for communication between v4l and sonypi */
 DECL|macro|SONYPI_COMMAND_GETCAMERA
