@@ -19,6 +19,8 @@ mdefine_line|#define PCI_DEVICE_ID_HINT 0x8013
 multiline_comment|/*&n; * Some combi chips, which can be used on the PCI bus or the VL bus can be in&n; * some systems acessed either through the PCI config space or through the&n; * hosts IO bus.  If the corresponding initialization driver is using the host&n; * IO space to deal with them please define the following.&n; */
 DECL|macro|ATA_PCI_IGNORE
 mdefine_line|#define&t;ATA_PCI_IGNORE&t;((void *)-1)
+DECL|macro|IDE_NO_DRIVER
+mdefine_line|#define IDE_NO_DRIVER&t;((void *)-2)
 macro_line|#ifdef CONFIG_BLK_DEV_AEC62XX
 r_extern
 r_int
@@ -3431,7 +3433,7 @@ l_int|NULL
 comma
 l_int|NULL
 comma
-l_int|NULL
+id|IDE_NO_DRIVER
 comma
 l_int|NULL
 comma
@@ -5148,6 +5150,28 @@ macro_line|#endif
 r_if
 c_cond
 (paren
+id|d-&gt;init_hwif
+op_eq
+id|IDE_NO_DRIVER
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: detected chipset, but driver not compiled in!&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|d-&gt;init_hwif
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|pci_enable_device
 c_func
 (paren
@@ -6423,6 +6447,7 @@ DECL|function|ide_scan_pcibus
 r_void
 id|__init
 id|ide_scan_pcibus
+c_func
 (paren
 r_int
 id|scan_direction
@@ -6445,12 +6470,14 @@ c_func
 (paren
 id|dev
 )paren
+(brace
 id|scan_pcidev
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -6459,12 +6486,14 @@ c_func
 (paren
 id|dev
 )paren
+(brace
 id|scan_pcidev
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 eof

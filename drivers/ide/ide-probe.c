@@ -2761,6 +2761,8 @@ id|drive-&gt;queue
 suffix:semicolon
 r_int
 id|max_sectors
+op_assign
+l_int|255
 suffix:semicolon
 id|q-&gt;queuedata
 op_assign
@@ -2807,12 +2809,6 @@ id|ide_pdc4030
 id|max_sectors
 op_assign
 l_int|127
-suffix:semicolon
-r_else
-macro_line|#else
-id|max_sectors
-op_assign
-l_int|255
 suffix:semicolon
 macro_line|#endif
 id|blk_queue_max_sectors

@@ -163,6 +163,7 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_MODES
 multiline_comment|/*&n; * Constant tables for PIO mode programming:&n; */
 DECL|variable|ide_pio_timings
 r_const
@@ -558,6 +559,7 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* default maximum number of failures */
 DECL|macro|IDE_DEFAULT_MAX_FAILURES
 mdefine_line|#define IDE_DEFAULT_MAX_FAILURES&t;1
@@ -617,6 +619,7 @@ id|MAX_HWIFS
 )braket
 suffix:semicolon
 multiline_comment|/* master data repository */
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_MODES
 multiline_comment|/*&n; * This routine searches the ide_pio_blacklist for an entry&n; * matching the start/whole of the supplied model name.&n; *&n; * Returns -1 if no match found.&n; * Otherwise returns the recommended PIO mode from ide_pio_blacklist[].&n; */
 DECL|function|ide_scan_pio_blacklist
 r_int
@@ -675,6 +678,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * This routine returns the recommended PIO settings for a given drive,&n; * based on the drive-&gt;id information and the ide_pio_blacklist[].&n; * This is used by most chipset support modules when &quot;auto-tuning&quot;.&n; */
 multiline_comment|/*&n; * Drive PIO mode auto selection&n; */
 DECL|function|ide_get_best_pio_mode
@@ -1122,6 +1126,7 @@ id|ide_hwif_t
 op_star
 id|hwif
 comma
+r_int
 r_int
 id|index
 )paren
@@ -7805,6 +7810,7 @@ DECL|function|get_info_ptr
 id|ide_drive_t
 op_star
 id|get_info_ptr
+c_func
 (paren
 id|kdev_t
 id|i_rdev
@@ -9158,19 +9164,15 @@ suffix:semicolon
 id|ide_hwif_t
 id|old_hwif
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|ide_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 r_if
 c_cond
 (paren
@@ -9283,7 +9285,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * All clear?  Then blow away the buffer cache&n;&t; */
-id|spin_lock_irqsave
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -9393,7 +9395,7 @@ id|hwif
 )paren
 suffix:semicolon
 macro_line|#endif
-id|spin_unlock_irqrestore
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
@@ -9841,13 +9843,15 @@ id|old_hwif.straight8
 suffix:semicolon
 m_abort
 suffix:colon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ide_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs */
 )brace
 multiline_comment|/*&n; * Setup hw_regs_t structure described by parameters.  You&n; * may set up the hw structure yourself OR use this routine to&n; * do it for you.&n; */
 DECL|function|ide_setup_ports
@@ -10000,7 +10004,7 @@ id|hwifp
 )paren
 (brace
 r_int
-id|index
+id|h
 comma
 id|retry
 op_assign
@@ -10015,16 +10019,16 @@ r_do
 r_for
 c_loop
 (paren
-id|index
+id|h
 op_assign
 l_int|0
 suffix:semicolon
-id|index
+id|h
 OL
 id|MAX_HWIFS
 suffix:semicolon
 op_increment
-id|index
+id|h
 )paren
 (brace
 id|hwif
@@ -10032,7 +10036,7 @@ op_assign
 op_amp
 id|ide_hwifs
 (braket
-id|index
+id|h
 )braket
 suffix:semicolon
 r_if
@@ -10055,16 +10059,16 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|index
+id|h
 op_assign
 l_int|0
 suffix:semicolon
-id|index
+id|h
 OL
 id|MAX_HWIFS
 suffix:semicolon
 op_increment
-id|index
+id|h
 )paren
 (brace
 id|hwif
@@ -10072,7 +10076,7 @@ op_assign
 op_amp
 id|ide_hwifs
 (braket
-id|index
+id|h
 )braket
 suffix:semicolon
 r_if
@@ -10106,16 +10110,16 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|index
+id|h
 op_assign
 l_int|0
 suffix:semicolon
-id|index
+id|h
 OL
 id|MAX_HWIFS
 suffix:semicolon
-id|index
 op_increment
+id|h
 )paren
 id|ide_unregister
 c_func
@@ -10123,7 +10127,7 @@ c_func
 op_amp
 id|ide_hwifs
 (braket
-id|index
+id|h
 )braket
 )paren
 suffix:semicolon
@@ -10239,7 +10243,7 @@ id|hwif-&gt;present
 )paren
 ques
 c_cond
-id|index
+id|h
 suffix:colon
 op_minus
 l_int|1
@@ -15656,6 +15660,13 @@ c_func
 id|drive_is_flashcard
 )paren
 suffix:semicolon
+DECL|variable|ide_timer_expiry
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ide_timer_expiry
+)paren
+suffix:semicolon
 DECL|variable|ide_intr
 id|EXPORT_SYMBOL
 c_func
@@ -16307,7 +16318,7 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULES)
+macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 macro_line|# if defined(__mc68000__) || defined(CONFIG_APUS)
 r_if
 c_cond
