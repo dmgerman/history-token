@@ -5163,11 +5163,11 @@ id|IDE_SECTOR_OFFSET
 )paren
 )paren
 suffix:semicolon
-)brace
 id|addr
 op_increment
 suffix:semicolon
 multiline_comment|/* since the return value is (maxlba - 1), we add 1 */
+)brace
 r_return
 id|addr
 suffix:semicolon
@@ -5338,11 +5338,11 @@ l_int|24
 op_or
 id|low
 suffix:semicolon
-)brace
 id|addr
 op_increment
 suffix:semicolon
 multiline_comment|/* since the return value is (maxlba - 1), we add 1 */
+)brace
 r_return
 id|addr
 suffix:semicolon
@@ -5544,10 +5544,10 @@ id|IDE_SECTOR_OFFSET
 )paren
 )paren
 suffix:semicolon
-)brace
 id|addr_set
 op_increment
 suffix:semicolon
+)brace
 r_return
 id|addr_set
 suffix:semicolon
@@ -5833,6 +5833,9 @@ l_int|24
 )paren
 op_or
 id|low
+suffix:semicolon
+id|addr_set
+op_increment
 suffix:semicolon
 )brace
 r_return
