@@ -269,13 +269,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DUMMY_CONSOLE
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SERIAL_8250
 id|mpc85xx_early_serial_map
 c_func

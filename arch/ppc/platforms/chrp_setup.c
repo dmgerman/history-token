@@ -934,14 +934,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Setup the console operations&n;&t; */
-macro_line|#ifdef CONFIG_DUMMY_CONSOLE
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Get the event scan rate for the rtas so we know how&n;&t; * often it expects a heartbeat. -- Cort&n;&t; */
 r_if
 c_cond

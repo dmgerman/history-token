@@ -775,13 +775,6 @@ op_assign
 id|Root_SDA2
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DUMMY_CONSOLE
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren

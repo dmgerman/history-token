@@ -2909,12 +2909,6 @@ op_assign
 op_amp
 id|vga_con
 suffix:semicolon
-macro_line|#elif defined(CONFIG_DUMMY_CONSOLE)
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * First, see if we can get this information from the residual data.&n; * This is important on some IBM PReP systems.  If we cannot, we let the&n; * TODC code handle doing this.&n; */
