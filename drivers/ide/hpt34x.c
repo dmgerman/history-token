@@ -311,6 +311,7 @@ r_extern
 r_char
 op_star
 id|ide_xfer_verbose
+c_func
 (paren
 id|byte
 id|xfer_rate
@@ -320,8 +321,10 @@ DECL|function|hpt34x_clear_chipset
 r_static
 r_void
 id|hpt34x_clear_chipset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -435,8 +438,10 @@ DECL|function|hpt34x_tune_chipset
 r_static
 r_int
 id|hpt34x_tune_chipset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -659,7 +664,8 @@ r_void
 id|config_chipset_for_pio
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -876,8 +882,10 @@ DECL|function|hpt34x_tune_drive
 r_static
 r_void
 id|hpt34x_tune_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma

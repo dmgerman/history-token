@@ -716,6 +716,16 @@ id|dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_CMD_643
 )paren
+op_logical_or
+(paren
+id|dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_SERVERWORKS
+op_logical_and
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SERVERWORKS_CSB5IDE
+)paren
 )paren
 (brace
 id|outb
@@ -2256,13 +2266,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ATA: %s: controller on PCI slot %s dev %02x&bslash;n&quot;
+l_string|&quot;ATA: %s: controller, PCI slot %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|dev-&gt;slot_name
-comma
-id|dev-&gt;devfn
 )paren
 suffix:semicolon
 id|setup_pci_device
@@ -2289,13 +2297,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ATA: %s: controller on PCI slot %s dev %02x&bslash;n&quot;
+l_string|&quot;ATA: %s: controller, PCI slot %s&bslash;n&quot;
 comma
 id|dev2-&gt;name
 comma
 id|dev2-&gt;slot_name
-comma
-id|dev2-&gt;devfn
 )paren
 suffix:semicolon
 id|setup_pci_device
@@ -2408,13 +2414,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ATA: %s: controller on PCI slot %s dev %02x&bslash;n&quot;
+l_string|&quot;ATA: %s: controller, PCI slot %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|dev-&gt;slot_name
-comma
-id|dev-&gt;devfn
 )paren
 suffix:semicolon
 id|setup_pci_device
@@ -2508,13 +2512,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ATA: %s: controller on PCI slot %s dev %02x&bslash;n&quot;
+l_string|&quot;ATA: %s: controller, PCI slot %s&bslash;n&quot;
 comma
 id|dev2-&gt;name
 comma
 id|dev2-&gt;slot_name
-comma
-id|dev2-&gt;devfn
 )paren
 suffix:semicolon
 id|setup_pci_device
@@ -2619,7 +2621,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ATA: %s: controller on PCI slot %s&bslash;n&quot;
+l_string|&quot;ATA: %s: controller, PCI slot %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2747,7 +2749,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ATA: %s: controller on PCI slot %s&bslash;n&quot;
+l_string|&quot;ATA: %s: controller, PCI slot %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2778,7 +2780,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ATA: %s: controller on PCI slot %s&bslash;n&quot;
+l_string|&quot;ATA: %s: controller, PCI slot %s&bslash;n&quot;
 comma
 id|dev2-&gt;name
 comma
@@ -2884,7 +2886,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ATA: unknown interface: %s, on PCI slot %s&bslash;n&quot;
+l_string|&quot;ATA: unknown interface: %s, PCI slot %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -3118,13 +3120,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ATA: %s (%04x:%04x) on PCI slot %s&bslash;n&quot;
+l_string|&quot;ATA: %s, PCI slot %s&bslash;n&quot;
 comma
 id|dev-&gt;name
-comma
-id|vendor
-comma
-id|device
 comma
 id|dev-&gt;slot_name
 )paren

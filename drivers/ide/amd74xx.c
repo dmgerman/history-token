@@ -1567,7 +1567,8 @@ r_int
 id|amd_set_drive
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -1576,7 +1577,8 @@ r_char
 id|speed
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|peer
 op_assign
@@ -1770,12 +1772,12 @@ r_void
 id|amd74xx_tune_drive
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
-r_int
-r_char
+id|u8
 id|pio
 )paren
 (brace

@@ -313,8 +313,10 @@ multiline_comment|/*&n; * Set a new transfer mode at the drive&n; */
 DECL|function|cs5530_set_xfer_mode
 r_int
 id|cs5530_set_xfer_mode
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -404,8 +406,10 @@ DECL|function|cs5530_tuneproc
 r_static
 r_void
 id|cs5530_tuneproc
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -524,8 +528,10 @@ DECL|function|cs5530_config_dma
 r_static
 r_int
 id|cs5530_config_dma
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -551,7 +557,8 @@ id|unit
 op_assign
 id|drive-&gt;select.b.unit
 suffix:semicolon
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|mate
 op_assign
