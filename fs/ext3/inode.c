@@ -3694,7 +3694,11 @@ c_func
 (paren
 id|handle
 comma
-id|page-&gt;buffers
+id|page_buffers
+c_func
+(paren
+id|page
+)paren
 comma
 id|from
 comma
@@ -3939,7 +3943,11 @@ c_func
 (paren
 id|handle
 comma
-id|page-&gt;buffers
+id|page_buffers
+c_func
+(paren
+id|page
+)paren
 comma
 id|from
 comma
@@ -4010,7 +4018,11 @@ c_func
 (paren
 id|handle
 comma
-id|page-&gt;buffers
+id|page_buffers
+c_func
+(paren
+id|page
+)paren
 comma
 id|from
 comma
@@ -4286,7 +4298,7 @@ suffix:semicolon
 r_struct
 id|buffer_head
 op_star
-id|page_buffers
+id|page_bufs
 suffix:semicolon
 id|handle_t
 op_star
@@ -4411,7 +4423,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|page_buffers
+id|page_bufs
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -4427,7 +4439,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|page-&gt;buffers
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
 )paren
 id|create_empty_buffers
 c_func
@@ -4437,16 +4453,20 @@ comma
 id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
-id|page_buffers
+id|page_bufs
 op_assign
-id|page-&gt;buffers
+id|page_buffers
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 id|walk_page_buffers
 c_func
 (paren
 id|handle
 comma
-id|page_buffers
+id|page_bufs
 comma
 l_int|0
 comma
@@ -4468,7 +4488,7 @@ comma
 id|ext3_get_block
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The page can become unlocked at any point now, and&n;&t; * truncate can then come in and change things.  So we&n;&t; * can&squot;t touch *page from now on.  But *page_buffers is&n;&t; * safe due to elevated refcount.&n;&t; */
+multiline_comment|/*&n;&t; * The page can become unlocked at any point now, and&n;&t; * truncate can then come in and change things.  So we&n;&t; * can&squot;t touch *page from now on.  But *page_bufs is&n;&t; * safe due to elevated refcount.&n;&t; */
 id|handle
 op_assign
 id|ext3_journal_current_handle
@@ -4495,7 +4515,7 @@ c_func
 (paren
 id|handle
 comma
-id|page_buffers
+id|page_bufs
 comma
 l_int|0
 comma
@@ -4853,7 +4873,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|page-&gt;buffers
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
 )paren
 id|create_empty_buffers
 c_func
@@ -4866,7 +4890,11 @@ suffix:semicolon
 multiline_comment|/* Find the buffer that contains &quot;offset&quot; */
 id|bh
 op_assign
-id|page-&gt;buffers
+id|page_buffers
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 id|pos
 op_assign

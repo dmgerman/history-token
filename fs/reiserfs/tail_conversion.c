@@ -636,7 +636,11 @@ id|page
 r_if
 c_cond
 (paren
-id|page-&gt;buffers
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
 )paren
 (brace
 id|tail_index
@@ -655,7 +659,11 @@ l_int|0
 suffix:semicolon
 id|head
 op_assign
-id|page-&gt;buffers
+id|page_buffers
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 id|bh
 op_assign

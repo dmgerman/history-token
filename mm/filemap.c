@@ -405,10 +405,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;buffers
+id|PagePrivate
+c_func
+(paren
+id|page
+)paren
 op_logical_and
 op_logical_neg
-id|try_to_free_buffers
+id|try_to_release_page
 c_func
 (paren
 id|page
@@ -576,7 +580,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;buffers
+id|PagePrivate
+c_func
+(paren
+id|page
+)paren
 )paren
 id|do_flushpage
 c_func
@@ -587,6 +595,7 @@ id|partial
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * AKPM: the PagePrivate test here seems a bit bogus.  It bypasses the&n; * mapping&squot;s -&gt;flushpage, which may still want to be called.&n; */
 DECL|function|truncate_complete_page
 r_static
 r_void
@@ -604,7 +613,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|page-&gt;buffers
+id|PagePrivate
+c_func
+(paren
+id|page
+)paren
 op_logical_or
 id|do_flushpage
 c_func
@@ -1058,7 +1071,7 @@ id|unlocked
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * The page is locked and we hold the mapping lock as well&n;&t; * so both page_count(page) and page-&gt;buffers stays constant here.&n;&t; */
+multiline_comment|/*&n;&t; * The page is locked and we hold the mapping lock as well&n;&t; * so both page_count(page) and page_buffers stays constant here.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1072,7 +1085,11 @@ l_int|1
 op_plus
 op_logical_neg
 op_logical_neg
-id|page-&gt;buffers
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
 )paren
 (brace
 multiline_comment|/* Restart after this page */
@@ -1115,7 +1132,11 @@ r_else
 r_if
 c_cond
 (paren
-id|page-&gt;buffers
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
 )paren
 (brace
 multiline_comment|/* Restart after this page */
@@ -1533,7 +1554,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|page-&gt;buffers
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
 )paren
 r_continue
 suffix:semicolon
@@ -1578,7 +1603,11 @@ multiline_comment|/* The buffers could have been free&squot;d while we waited fo
 r_if
 c_cond
 (paren
-id|page-&gt;buffers
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
 )paren
 id|retval
 op_or_assign

@@ -203,7 +203,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;buffers
+id|PagePrivate
+c_func
+(paren
+id|page
+)paren
 )paren
 id|BUG
 c_func
@@ -1250,7 +1254,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;buffers
+id|PagePrivate
+c_func
+(paren
+id|page
+)paren
 )paren
 id|BUG
 c_func

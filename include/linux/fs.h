@@ -574,6 +574,15 @@ id|offset
 suffix:semicolon
 DECL|macro|touch_buffer
 mdefine_line|#define touch_buffer(bh)&t;mark_page_accessed(bh-&gt;b_page)
+multiline_comment|/* If we *know* page-&gt;private refers to buffer_heads */
+DECL|macro|page_buffers
+mdefine_line|#define page_buffers(page)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!PagePrivate(page))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;((struct buffer_head *)(page)-&gt;private);&t;&bslash;&n;&t;})
+DECL|macro|page_has_buffers
+mdefine_line|#define page_has_buffers(page)&t;PagePrivate(page)
+DECL|macro|set_page_buffers
+mdefine_line|#define set_page_buffers(page, buffers)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SetPagePrivate(page);&t;&t;&t;&t;&bslash;&n;&t;&t;page-&gt;private = (unsigned long)buffers;&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|clear_page_buffers
+mdefine_line|#define clear_page_buffers(page)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ClearPagePrivate(page);&t;&t;&t;&t;&bslash;&n;&t;&t;page-&gt;private = 0;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#include &lt;linux/pipe_fs_i.h&gt;
 multiline_comment|/* #include &lt;linux/umsdos_fs_i.h&gt; */
 multiline_comment|/*&n; * Attribute flags.  These should be or-ed together to figure out what&n; * has been changed!&n; */
