@@ -43,6 +43,24 @@ DECL|macro|DECODER_STATUS_NTSC
 mdefine_line|#define&t;DECODER_STATUS_NTSC&t;8&t;/* auto detected */
 DECL|macro|DECODER_STATUS_SECAM
 mdefine_line|#define&t;DECODER_STATUS_SECAM&t;16&t;/* auto detected */
+DECL|struct|video_decoder_init
+r_struct
+id|video_decoder_init
+(brace
+DECL|member|len
+r_int
+r_char
+id|len
+suffix:semicolon
+DECL|member|data
+r_const
+r_int
+r_char
+op_star
+id|data
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|DECODER_GET_CAPABILITIES
 mdefine_line|#define&t;DECODER_GET_CAPABILITIES _IOR(&squot;d&squot;, 1, struct video_decoder_capability)
 DECL|macro|DECODER_GET_STATUS
@@ -57,6 +75,12 @@ DECL|macro|DECODER_ENABLE_OUTPUT
 mdefine_line|#define&t;DECODER_ENABLE_OUTPUT&t;_IOW(&squot;d&squot;, 6, int)&t;/* boolean output enable control */
 DECL|macro|DECODER_SET_PICTURE
 mdefine_line|#define&t;DECODER_SET_PICTURE   &t;_IOW(&squot;d&squot;, 7, struct video_picture)
+DECL|macro|DECODER_SET_GPIO
+mdefine_line|#define&t;DECODER_SET_GPIO&t;_IOW(&squot;d&squot;, 8, int)&t;/* switch general purpose pin */
+DECL|macro|DECODER_INIT
+mdefine_line|#define&t;DECODER_INIT&t;&t;_IOW(&squot;d&squot;, 9, struct video_decoder_init)&t;/* init internal registers at once */
+DECL|macro|DECODER_SET_VBI_BYPASS
+mdefine_line|#define&t;DECODER_SET_VBI_BYPASS&t;_IOW(&squot;d&squot;, 10, int)&t;/* switch vbi bypass */
 DECL|macro|DECODER_DUMP
 mdefine_line|#define&t;DECODER_DUMP&t;&t;_IO(&squot;d&squot;, 192)&t;&t;/* debug hook */
 macro_line|#endif

@@ -2069,10 +2069,13 @@ r_case
 id|PCI_DEVICE_ID_INTEL_82801EB_0
 suffix:colon
 r_case
-id|PCI_DEVICE_ID_INTEL_ESB_0
+id|PCI_DEVICE_ID_INTEL_ESB_1
 suffix:colon
 r_case
 id|PCI_DEVICE_ID_INTEL_ICH6_0
+suffix:colon
+r_case
+id|PCI_DEVICE_ID_INTEL_ICH6_1
 suffix:colon
 id|r-&gt;name
 op_assign

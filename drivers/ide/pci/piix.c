@@ -233,7 +233,7 @@ r_case
 id|PCI_DEVICE_ID_INTEL_ESB_2
 suffix:colon
 r_case
-id|PCI_DEVICE_ID_INTEL_ICH6_2
+id|PCI_DEVICE_ID_INTEL_ICH6_19
 suffix:colon
 id|p
 op_add_assign
@@ -1126,7 +1126,7 @@ r_case
 id|PCI_DEVICE_ID_INTEL_ESB_2
 suffix:colon
 r_case
-id|PCI_DEVICE_ID_INTEL_ICH6_2
+id|PCI_DEVICE_ID_INTEL_ICH6_19
 suffix:colon
 id|mode
 op_assign
@@ -2612,7 +2612,7 @@ r_case
 id|PCI_DEVICE_ID_INTEL_ESB_2
 suffix:colon
 r_case
-id|PCI_DEVICE_ID_INTEL_ICH6_2
+id|PCI_DEVICE_ID_INTEL_ICH6_19
 suffix:colon
 (brace
 r_int
@@ -3492,7 +3492,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_ICH6_2
+id|PCI_DEVICE_ID_INTEL_ICH6_19
 comma
 id|PCI_ANY_ID
 comma

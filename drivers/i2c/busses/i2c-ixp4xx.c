@@ -1,16 +1,21 @@
-multiline_comment|/*&n; * drivers/i2c/i2c-adap-ixp42x.c&n; *&n; * Intel&squot;s IXP42x XScale NPU chipsets (IXP420, 421, 422, 425) do not have&n; * an on board I2C controller but provide 16 GPIO pins that are often&n; * used to create an I2C bus. This driver provides an i2c_adapter &n; * interface that plugs in under algo_bit and drives the GPIO pins&n; * as instructed by the alogorithm driver.&n; *&n; * Author: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * Copyright (c) 2003-2004 MontaVista Software Inc.&n; *&n; * This file is licensed under the terms of the GNU General Public &n; * License version 2. This program is licensed &quot;as is&quot; without any &n; * warranty of any kind, whether express or implied.&n; *&n; * NOTE: Since different platforms will use different GPIO pins for&n; *       I2C, this driver uses an IXP42x-specific platform_data&n; *       pointer to pass the GPIO numbers to the driver. This &n; *       allows us to support all the different IXP42x platforms&n; *       w/o having to put #ifdefs in this driver.&n; *&n; *       See arch/arm/mach-ixp42x/ixdp425.c for an example of building a &n; *       device list and filling in the ixp42x_i2c_pins data structure &n; *       that is passed as the platform_data to this driver.&n; */
+multiline_comment|/*&n; * drivers/i2c/i2c-adap-ixp4xx.c&n; *&n; * Intel&squot;s IXP4xx XScale NPU chipsets (IXP420, 421, 422, 425) do not have&n; * an on board I2C controller but provide 16 GPIO pins that are often&n; * used to create an I2C bus. This driver provides an i2c_adapter &n; * interface that plugs in under algo_bit and drives the GPIO pins&n; * as instructed by the alogorithm driver.&n; *&n; * Author: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * Copyright (c) 2003-2004 MontaVista Software Inc.&n; *&n; * This file is licensed under the terms of the GNU General Public &n; * License version 2. This program is licensed &quot;as is&quot; without any &n; * warranty of any kind, whether express or implied.&n; *&n; * NOTE: Since different platforms will use different GPIO pins for&n; *       I2C, this driver uses an IXP4xx-specific platform_data&n; *       pointer to pass the GPIO numbers to the driver. This &n; *       allows us to support all the different IXP4xx platforms&n; *       w/o having to put #ifdefs in this driver.&n; *&n; *       See arch/arm/mach-ixp4xx/ixdp425.c for an example of building a &n; *       device list and filling in the ixp4xx_i2c_pins data structure &n; *       that is passed as the platform_data to this driver.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
-macro_line|#include &lt;asm/hardware.h&gt;&t;/* Pick up IXP42x-specific bits */
-DECL|function|ixp42x_scl_pin
+macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
+macro_line|#include &lt;asm/hardware.h&gt;&t;/* Pick up IXP4xx-specific bits */
+DECL|function|ixp4xx_scl_pin
 r_static
 r_inline
 r_int
-id|ixp42x_scl_pin
+id|ixp4xx_scl_pin
 c_func
 (paren
 r_void
@@ -22,7 +27,7 @@ r_return
 (paren
 (paren
 r_struct
-id|ixp42x_i2c_pins
+id|ixp4xx_i2c_pins
 op_star
 )paren
 id|data
@@ -31,11 +36,11 @@ op_member_access_from_pointer
 id|scl_pin
 suffix:semicolon
 )brace
-DECL|function|ixp42x_sda_pin
+DECL|function|ixp4xx_sda_pin
 r_static
 r_inline
 r_int
-id|ixp42x_sda_pin
+id|ixp4xx_sda_pin
 c_func
 (paren
 r_void
@@ -47,7 +52,7 @@ r_return
 (paren
 (paren
 r_struct
-id|ixp42x_i2c_pins
+id|ixp4xx_i2c_pins
 op_star
 )paren
 id|data
@@ -56,10 +61,10 @@ op_member_access_from_pointer
 id|sda_pin
 suffix:semicolon
 )brace
-DECL|function|ixp42x_bit_setscl
+DECL|function|ixp4xx_bit_setscl
 r_static
 r_void
-id|ixp42x_bit_setscl
+id|ixp4xx_bit_setscl
 c_func
 (paren
 r_void
@@ -73,7 +78,7 @@ id|val
 id|gpio_line_set
 c_func
 (paren
-id|ixp42x_scl_pin
+id|ixp4xx_scl_pin
 c_func
 (paren
 id|data
@@ -85,7 +90,7 @@ suffix:semicolon
 id|gpio_line_config
 c_func
 (paren
-id|ixp42x_scl_pin
+id|ixp4xx_scl_pin
 c_func
 (paren
 id|data
@@ -94,16 +99,16 @@ comma
 id|val
 ques
 c_cond
-id|IXP425_GPIO_IN
+id|IXP4XX_GPIO_IN
 suffix:colon
-id|IXP425_GPIO_OUT
+id|IXP4XX_GPIO_OUT
 )paren
 suffix:semicolon
 )brace
-DECL|function|ixp42x_bit_setsda
+DECL|function|ixp4xx_bit_setsda
 r_static
 r_void
-id|ixp42x_bit_setsda
+id|ixp4xx_bit_setsda
 c_func
 (paren
 r_void
@@ -117,7 +122,7 @@ id|val
 id|gpio_line_set
 c_func
 (paren
-id|ixp42x_sda_pin
+id|ixp4xx_sda_pin
 c_func
 (paren
 id|data
@@ -129,7 +134,7 @@ suffix:semicolon
 id|gpio_line_config
 c_func
 (paren
-id|ixp42x_sda_pin
+id|ixp4xx_sda_pin
 c_func
 (paren
 id|data
@@ -138,16 +143,16 @@ comma
 id|val
 ques
 c_cond
-id|IXP425_GPIO_IN
+id|IXP4XX_GPIO_IN
 suffix:colon
-id|IXP425_GPIO_OUT
+id|IXP4XX_GPIO_OUT
 )paren
 suffix:semicolon
 )brace
-DECL|function|ixp42x_bit_getscl
+DECL|function|ixp4xx_bit_getscl
 r_static
 r_int
-id|ixp42x_bit_getscl
+id|ixp4xx_bit_getscl
 c_func
 (paren
 r_void
@@ -161,19 +166,19 @@ suffix:semicolon
 id|gpio_line_config
 c_func
 (paren
-id|ixp42x_scl_pin
+id|ixp4xx_scl_pin
 c_func
 (paren
 id|data
 )paren
 comma
-id|IXP425_GPIO_IN
+id|IXP4XX_GPIO_IN
 )paren
 suffix:semicolon
 id|gpio_line_get
 c_func
 (paren
-id|ixp42x_scl_pin
+id|ixp4xx_scl_pin
 c_func
 (paren
 id|data
@@ -187,10 +192,10 @@ r_return
 id|scl
 suffix:semicolon
 )brace
-DECL|function|ixp42x_bit_getsda
+DECL|function|ixp4xx_bit_getsda
 r_static
 r_int
-id|ixp42x_bit_getsda
+id|ixp4xx_bit_getsda
 c_func
 (paren
 r_void
@@ -204,19 +209,19 @@ suffix:semicolon
 id|gpio_line_config
 c_func
 (paren
-id|ixp42x_sda_pin
+id|ixp4xx_sda_pin
 c_func
 (paren
 id|data
 )paren
 comma
-id|IXP425_GPIO_IN
+id|IXP4XX_GPIO_IN
 )paren
 suffix:semicolon
 id|gpio_line_get
 c_func
 (paren
-id|ixp42x_sda_pin
+id|ixp4xx_sda_pin
 c_func
 (paren
 id|data
@@ -230,13 +235,13 @@ r_return
 id|sda
 suffix:semicolon
 )brace
-DECL|struct|ixp42x_i2c_data
+DECL|struct|ixp4xx_i2c_data
 r_struct
-id|ixp42x_i2c_data
+id|ixp4xx_i2c_data
 (brace
 DECL|member|gpio_pins
 r_struct
-id|ixp42x_i2c_pins
+id|ixp4xx_i2c_pins
 op_star
 id|gpio_pins
 suffix:semicolon
@@ -252,10 +257,10 @@ id|algo_data
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|ixp42x_i2c_remove
+DECL|function|ixp4xx_i2c_remove
 r_static
 r_int
-id|ixp42x_i2c_remove
+id|ixp4xx_i2c_remove
 c_func
 (paren
 r_struct
@@ -276,7 +281,7 @@ id|dev
 )paren
 suffix:semicolon
 r_struct
-id|ixp42x_i2c_data
+id|ixp4xx_i2c_data
 op_star
 id|drv_data
 op_assign
@@ -313,10 +318,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ixp42x_i2c_probe
+DECL|function|ixp4xx_i2c_probe
 r_static
 r_int
-id|ixp42x_i2c_probe
+id|ixp4xx_i2c_probe
 c_func
 (paren
 r_struct
@@ -340,14 +345,14 @@ id|dev
 )paren
 suffix:semicolon
 r_struct
-id|ixp42x_i2c_pins
+id|ixp4xx_i2c_pins
 op_star
 id|gpio
 op_assign
 id|plat_dev-&gt;dev.platform_data
 suffix:semicolon
 r_struct
-id|ixp42x_i2c_data
+id|ixp4xx_i2c_data
 op_star
 id|drv_data
 op_assign
@@ -357,7 +362,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|ixp42x_i2c_data
+id|ixp4xx_i2c_data
 )paren
 comma
 id|GFP_KERNEL
@@ -383,7 +388,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|ixp42x_i2c_data
+id|ixp4xx_i2c_data
 )paren
 )paren
 suffix:semicolon
@@ -398,19 +403,19 @@ id|gpio
 suffix:semicolon
 id|drv_data-&gt;algo_data.setsda
 op_assign
-id|ixp42x_bit_setsda
+id|ixp4xx_bit_setsda
 suffix:semicolon
 id|drv_data-&gt;algo_data.setscl
 op_assign
-id|ixp42x_bit_setscl
+id|ixp4xx_bit_setscl
 suffix:semicolon
 id|drv_data-&gt;algo_data.getsda
 op_assign
-id|ixp42x_bit_getsda
+id|ixp4xx_bit_getsda
 suffix:semicolon
 id|drv_data-&gt;algo_data.getscl
 op_assign
-id|ixp42x_bit_getscl
+id|ixp4xx_bit_getscl
 suffix:semicolon
 id|drv_data-&gt;algo_data.udelay
 op_assign
@@ -426,7 +431,7 @@ l_int|100
 suffix:semicolon
 id|drv_data-&gt;adapter.id
 op_assign
-id|I2C_HW_B_IXP425
+id|I2C_HW_B_IXP4XX
 comma
 id|drv_data-&gt;adapter.algo_data
 op_assign
@@ -443,7 +448,7 @@ c_func
 (paren
 id|gpio-&gt;scl_pin
 comma
-id|IXP425_GPIO_IN
+id|IXP4XX_GPIO_IN
 )paren
 suffix:semicolon
 id|gpio_line_config
@@ -451,7 +456,7 @@ c_func
 (paren
 id|gpio-&gt;sda_pin
 comma
-id|IXP425_GPIO_IN
+id|IXP4XX_GPIO_IN
 )paren
 suffix:semicolon
 id|gpio_line_set
@@ -519,17 +524,17 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|ixp42x_i2c_driver
+DECL|variable|ixp4xx_i2c_driver
 r_static
 r_struct
 id|device_driver
-id|ixp42x_i2c_driver
+id|ixp4xx_i2c_driver
 op_assign
 (brace
 dot
 id|name
 op_assign
-l_string|&quot;IXP42X-I2C&quot;
+l_string|&quot;IXP4XX-I2C&quot;
 comma
 dot
 id|bus
@@ -540,20 +545,20 @@ comma
 dot
 id|probe
 op_assign
-id|ixp42x_i2c_probe
+id|ixp4xx_i2c_probe
 comma
 dot
 id|remove
 op_assign
-id|ixp42x_i2c_remove
+id|ixp4xx_i2c_remove
 comma
 )brace
 suffix:semicolon
-DECL|function|ixp42x_i2c_init
+DECL|function|ixp4xx_i2c_init
 r_static
 r_int
 id|__init
-id|ixp42x_i2c_init
+id|ixp4xx_i2c_init
 c_func
 (paren
 r_void
@@ -564,15 +569,15 @@ id|driver_register
 c_func
 (paren
 op_amp
-id|ixp42x_i2c_driver
+id|ixp4xx_i2c_driver
 )paren
 suffix:semicolon
 )brace
-DECL|function|ixp42x_i2c_exit
+DECL|function|ixp4xx_i2c_exit
 r_static
 r_void
 id|__exit
-id|ixp42x_i2c_exit
+id|ixp4xx_i2c_exit
 c_func
 (paren
 r_void
@@ -582,28 +587,28 @@ id|driver_unregister
 c_func
 (paren
 op_amp
-id|ixp42x_i2c_driver
+id|ixp4xx_i2c_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|ixp42x_i2c_init
+DECL|variable|ixp4xx_i2c_init
 id|module_init
 c_func
 (paren
-id|ixp42x_i2c_init
+id|ixp4xx_i2c_init
 )paren
 suffix:semicolon
-DECL|variable|ixp42x_i2c_exit
+DECL|variable|ixp4xx_i2c_exit
 id|module_exit
 c_func
 (paren
-id|ixp42x_i2c_exit
+id|ixp4xx_i2c_exit
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;GPIO-based I2C driver for IXP42x systems&quot;
+l_string|&quot;GPIO-based I2C adapter for IXP4xx systems&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

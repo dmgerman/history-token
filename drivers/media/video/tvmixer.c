@@ -1363,7 +1363,7 @@ id|i
 comma
 id|minor
 suffix:semicolon
-macro_line|#ifdef I2C_ADAP_CLASS_TV_ANALOG
+macro_line|#ifdef I2C_CLASS_TV_ANALOG
 r_if
 c_cond
 (paren
@@ -1373,7 +1373,7 @@ id|client-&gt;adapter
 op_member_access_from_pointer
 r_class
 op_amp
-id|I2C_ADAP_CLASS_TV_ANALOG
+id|I2C_CLASS_TV_ANALOG
 )paren
 )paren
 r_return
