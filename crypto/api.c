@@ -644,7 +644,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;%s: blocksize %Zd exceeds max. &quot;
-l_string|&quot;size %Zd&bslash;n&quot;
+l_string|&quot;size %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
