@@ -2160,9 +2160,7 @@ op_assign
 id|htonl
 c_func
 (paren
-l_int|8
-op_star
-l_int|1024
+id|NFSSVC_MAXBLKSIZE
 )paren
 suffix:semicolon
 multiline_comment|/* max transfer size */
