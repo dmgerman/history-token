@@ -2688,9 +2688,6 @@ r_struct
 id|wl3501_resync_req
 id|signal
 suffix:semicolon
-id|u16
-id|ptr
-suffix:semicolon
 r_int
 id|rc
 op_assign
@@ -2714,6 +2711,7 @@ id|this
 )paren
 )paren
 (brace
+id|u16
 id|ptr
 op_assign
 id|wl3501_get_tx_buffer
@@ -2786,9 +2784,6 @@ id|chan_time
 r_struct
 id|wl3501_scan_req
 id|signal
-suffix:semicolon
-id|u16
-id|ptr
 suffix:semicolon
 r_int
 id|rc
@@ -2865,6 +2860,7 @@ id|this
 )paren
 )paren
 (brace
+id|u16
 id|ptr
 op_assign
 id|wl3501_get_tx_buffer
@@ -2938,9 +2934,6 @@ r_struct
 id|wl3501_join_req
 id|signal
 suffix:semicolon
-id|u16
-id|ptr
-suffix:semicolon
 id|signal.next_blk
 op_assign
 l_int|0
@@ -3003,6 +2996,7 @@ id|this
 )paren
 )paren
 (brace
+id|u16
 id|ptr
 op_assign
 id|wl3501_get_tx_buffer
@@ -3076,9 +3070,6 @@ r_int
 id|rc
 op_assign
 l_int|1
-suffix:semicolon
-id|u16
-id|ptr
 suffix:semicolon
 id|signal.next_blk
 op_assign
@@ -3255,6 +3246,7 @@ id|this
 )paren
 )paren
 (brace
+id|u16
 id|ptr
 op_assign
 id|wl3501_get_tx_buffer
