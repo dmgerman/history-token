@@ -8,12 +8,17 @@ DECL|macro|__init
 mdefine_line|#define __init&t;&t;__attribute__ ((__section__ (&quot;.init.text&quot;)))
 DECL|macro|__initdata
 mdefine_line|#define __initdata&t;__attribute__ ((__section__ (&quot;.init.data&quot;)))
-DECL|macro|__exit
-mdefine_line|#define __exit&t;&t;__attribute__ ((__section__(&quot;.exit.text&quot;)))
 DECL|macro|__exitdata
 mdefine_line|#define __exitdata&t;__attribute__ ((__section__(&quot;.exit.data&quot;)))
 DECL|macro|__exit_call
 mdefine_line|#define __exit_call&t;__attribute__ ((unused,__section__ (&quot;.exitcall.exit&quot;)))
+macro_line|#ifdef MODULE
+DECL|macro|__exit
+mdefine_line|#define __exit&t;&t;__attribute__ ((__section__(&quot;.exit.text&quot;)))
+macro_line|#else
+DECL|macro|__exit
+mdefine_line|#define __exit&t;&t;__attribute__ ((unused,__section__(&quot;.exit.text&quot;)))
+macro_line|#endif
 multiline_comment|/* For assembly routines */
 DECL|macro|__INIT
 mdefine_line|#define __INIT&t;&t;.section&t;&quot;.init.text&quot;,&quot;ax&quot;
@@ -164,6 +169,13 @@ mdefine_line|#define __devexit_p(x) x
 macro_line|#else
 DECL|macro|__devexit_p
 mdefine_line|#define __devexit_p(x) NULL
+macro_line|#endif
+macro_line|#ifdef MODULE
+DECL|macro|__exit_p
+mdefine_line|#define __exit_p(x) x
+macro_line|#else
+DECL|macro|__exit_p
+mdefine_line|#define __exit_p(x) NULL
 macro_line|#endif
 macro_line|#endif /* _LINUX_INIT_H */
 eof
