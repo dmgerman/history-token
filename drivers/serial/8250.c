@@ -8233,9 +8233,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|port-&gt;type
-op_eq
-id|PORT_UNKNOWN
+op_logical_neg
+id|port-&gt;ops
 )paren
 r_return
 op_minus
