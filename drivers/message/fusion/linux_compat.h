@@ -135,7 +135,7 @@ multiline_comment|/* This block snipped from lk-2.2.18/include/linux/sched.h { *
 multiline_comment|/*&n; * Used prior to schedule_timeout calls..&n; */
 DECL|macro|__set_current_state
 mdefine_line|#define __set_current_state(state_value)&t;do { current-&gt;state = state_value; } while (0)
-macro_line|#ifdef __SMP__
+macro_line|#ifdef CONFIG_SMP
 DECL|macro|set_current_state
 mdefine_line|#define set_current_state(state_value)&t;&t;do { __set_current_state(state_value); mb(); } while (0)
 macro_line|#else

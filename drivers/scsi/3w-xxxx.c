@@ -5,7 +5,7 @@ id|MODULE_AUTHOR
 l_string|&quot;3ware Inc.&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef __SMP__
+macro_line|#ifdef CONFIG_SMP
 id|MODULE_DESCRIPTION
 (paren
 l_string|&quot;3ware Storage Controller Linux Driver (SMP)&quot;

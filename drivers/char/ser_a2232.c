@@ -2620,7 +2620,7 @@ id|a2232memory
 op_star
 id|mem
 suffix:semicolon
-macro_line|#ifdef __SMP__
+macro_line|#ifdef CONFIG_SMP
 r_return
 op_minus
 id|ENODEV
