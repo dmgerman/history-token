@@ -3604,7 +3604,6 @@ c_cond
 op_logical_neg
 id|err
 )paren
-suffix:semicolon
 id|zd-&gt;mac_enabled
 op_assign
 l_int|1
@@ -3677,7 +3676,6 @@ c_cond
 (paren
 id|err
 )paren
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
