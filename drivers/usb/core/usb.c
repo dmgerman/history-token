@@ -2899,11 +2899,6 @@ id|dev-&gt;dev.dma_mask
 op_assign
 id|parent-&gt;dma_mask
 suffix:semicolon
-multiline_comment|/* it&squot;s not usable yet */
-id|dev-&gt;state
-op_assign
-id|USB_STATE_DEFAULT
-suffix:semicolon
 multiline_comment|/* USB 2.0 section 5.5.3 talks about ep0 maxpacket ...&n;&t; * it&squot;s fixed size except for full speed devices.&n;&t; */
 r_switch
 c_cond

@@ -3121,6 +3121,15 @@ comma
 id|USB_PORT_FEAT_C_RESET
 )paren
 suffix:semicolon
+id|dev-&gt;state
+op_assign
+id|status
+ques
+c_cond
+id|USB_STATE_NOTATTACHED
+suffix:colon
+id|USB_STATE_DEFAULT
+suffix:semicolon
 r_return
 id|status
 suffix:semicolon
