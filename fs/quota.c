@@ -1309,6 +1309,7 @@ id|cmd
 comma
 r_const
 r_char
+id|__user
 op_star
 id|special
 comma
