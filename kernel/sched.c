@@ -4177,6 +4177,31 @@ id|p
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * task_curr - is this task currently executing on a CPU?&n; * @p: the task in question.&n; */
+DECL|function|task_curr
+r_int
+id|task_curr
+c_func
+(paren
+id|task_t
+op_star
+id|p
+)paren
+(brace
+r_return
+id|cpu_curr
+c_func
+(paren
+id|task_cpu
+c_func
+(paren
+id|p
+)paren
+)paren
+op_eq
+id|p
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * idle_cpu - is a given cpu idle currently?&n; * @cpu: the processor in question.&n; */
 DECL|function|idle_cpu
 r_int
