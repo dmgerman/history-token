@@ -12610,7 +12610,7 @@ c_func
 id|alsa_card_es1968_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-es1968=enable,index,id,&n;&t;&t;&t; total_bufsize,&n;&t;&t;&t; pcm_substreams_p,&n;&t;&t;&t; pcm_substreams_c,&n;&t;&t;&t; clock&n;*/
+multiline_comment|/* format is: snd-es1968=enable,index,id,&n;&t;&t;&t; total_bufsize,&n;&t;&t;&t; pcm_substreams_p,&n;&t;&t;&t; pcm_substreams_c,&n;&t;&t;&t; clock,&n;&t;&t;&t; use_pm&n;*/
 DECL|function|alsa_card_es1968_setup
 r_static
 r_int
@@ -12742,6 +12742,21 @@ id|str
 comma
 op_amp
 id|clock
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|use_pm
 (braket
 id|nr_dev
 )braket
