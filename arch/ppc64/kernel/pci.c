@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -69,21 +70,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|hose_head
-r_struct
-id|pci_controller
-op_star
-id|hose_head
-suffix:semicolon
-DECL|variable|hose_tail
-r_struct
-id|pci_controller
-op_star
-op_star
-id|hose_tail
-op_assign
-op_amp
-id|hose_head
+DECL|variable|hose_list
+id|LIST_HEAD
+c_func
+(paren
+id|hose_list
+)paren
 suffix:semicolon
 DECL|variable|pci_dma_ops
 r_struct
@@ -735,15 +727,15 @@ op_assign
 id|global_phb_number
 op_increment
 suffix:semicolon
-op_star
-id|hose_tail
-op_assign
-id|hose
-suffix:semicolon
-id|hose_tail
-op_assign
+id|list_add_tail
+c_func
+(paren
 op_amp
-id|hose-&gt;next
+id|hose-&gt;list_node
+comma
+op_amp
+id|hose_list
+)paren
 suffix:semicolon
 r_return
 id|hose
@@ -936,6 +928,9 @@ r_struct
 id|pci_controller
 op_star
 id|hose
+comma
+op_star
+id|tmp
 suffix:semicolon
 r_struct
 id|pci_bus
@@ -957,18 +952,17 @@ l_string|&quot;PCI: Probing PCI hardware&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Scan all of the recorded PCI controllers.  */
-r_for
-c_loop
+id|list_for_each_entry_safe
+c_func
 (paren
 id|hose
-op_assign
-id|hose_head
-suffix:semicolon
-id|hose
-suffix:semicolon
-id|hose
-op_assign
-id|hose-&gt;next
+comma
+id|tmp
+comma
+op_amp
+id|hose_list
+comma
+id|list_node
 )paren
 (brace
 id|hose-&gt;last_busno

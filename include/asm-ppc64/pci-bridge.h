@@ -78,12 +78,6 @@ id|phb_types
 id|type
 suffix:semicolon
 multiline_comment|/* Type of hardware */
-DECL|member|next
-r_struct
-id|pci_controller
-op_star
-id|next
-suffix:semicolon
 DECL|member|bus
 r_struct
 id|pci_bus
@@ -94,6 +88,11 @@ DECL|member|arch_data
 r_void
 op_star
 id|arch_data
+suffix:semicolon
+DECL|member|list_node
+r_struct
+id|list_head
+id|list_node
 suffix:semicolon
 DECL|member|first_busno
 r_int

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &quot;delegation.h&quot;
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_FILE
 r_static
@@ -434,6 +435,18 @@ id|file
 )paren
 (brace
 r_struct
+id|nfs_open_context
+op_star
+id|ctx
+op_assign
+(paren
+r_struct
+id|nfs_open_context
+op_star
+)paren
+id|file-&gt;private_data
+suffix:semicolon
+r_struct
 id|inode
 op_star
 id|inode
@@ -492,9 +505,9 @@ id|status
 (brace
 id|status
 op_assign
-id|file-&gt;f_error
+id|ctx-&gt;error
 suffix:semicolon
-id|file-&gt;f_error
+id|ctx-&gt;error
 op_assign
 l_int|0
 suffix:semicolon
@@ -503,6 +516,15 @@ c_cond
 (paren
 op_logical_neg
 id|status
+op_logical_and
+op_logical_neg
+id|nfs_have_delegation
+c_func
+(paren
+id|inode
+comma
+id|FMODE_READ
+)paren
 )paren
 id|__nfs_revalidate_inode
 c_func
@@ -861,6 +883,18 @@ id|datasync
 )paren
 (brace
 r_struct
+id|nfs_open_context
+op_star
+id|ctx
+op_assign
+(paren
+r_struct
+id|nfs_open_context
+op_star
+)paren
+id|file-&gt;private_data
+suffix:semicolon
+r_struct
 id|inode
 op_star
 id|inode
@@ -904,9 +938,9 @@ id|status
 (brace
 id|status
 op_assign
-id|file-&gt;f_error
+id|ctx-&gt;error
 suffix:semicolon
-id|file-&gt;f_error
+id|ctx-&gt;error
 op_assign
 l_int|0
 suffix:semicolon
