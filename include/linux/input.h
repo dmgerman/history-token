@@ -863,6 +863,14 @@ DECL|macro|KEY_TEEN
 mdefine_line|#define KEY_TEEN&t;&t;0x19e
 DECL|macro|KEY_TWEN
 mdefine_line|#define KEY_TWEN&t;&t;0x19f
+DECL|macro|KEY_DEL_EOL
+mdefine_line|#define KEY_DEL_EOL&t;&t;0x1c0
+DECL|macro|KEY_DEL_EOS
+mdefine_line|#define KEY_DEL_EOS&t;&t;0x1c1
+DECL|macro|KEY_INS_LINE
+mdefine_line|#define KEY_INS_LINE&t;&t;0x1c2
+DECL|macro|KEY_DEL_LINE
+mdefine_line|#define KEY_DEL_LINE&t;&t;0x1c3
 DECL|macro|KEY_MAX
 mdefine_line|#define KEY_MAX&t;&t;&t;0x1ff
 multiline_comment|/*&n; * Relative axes&n; */
