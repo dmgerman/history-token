@@ -81,17 +81,6 @@ id|fixup
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Returns 0 if exception not found and fixup otherwise.  */
-r_extern
-r_int
-r_int
-id|search_exception_table
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * These are the main single-value transfer routines.  They automatically&n; * use the right size if we just have the right pointer type.&n; */
 DECL|function|__put_user_asm_8
 r_extern

@@ -1382,11 +1382,15 @@ macro_line|#endif
 )brace
 r_else
 (brace
-r_int
-r_int
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|fixup
+suffix:semicolon
 id|fixup
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|regs-&gt;psw.addr
@@ -1399,7 +1403,7 @@ id|fixup
 )paren
 id|regs-&gt;psw.addr
 op_assign
-id|fixup
+id|fixup-&gt;fixup
 suffix:semicolon
 r_else
 id|die

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -349,8 +350,10 @@ suffix:semicolon
 r_int
 id|user_address
 suffix:semicolon
-r_int
-r_int
+r_const
+r_struct
+id|exception_table_entry
+op_star
 id|fixup
 suffix:semicolon
 r_int
@@ -692,25 +695,23 @@ suffix:semicolon
 id|no_context
 suffix:colon
 multiline_comment|/* Are we prepared to handle this kernel fault?  */
-r_if
-c_cond
-(paren
-(paren
 id|fixup
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|regs-&gt;psw.addr
 )paren
-)paren
-op_ne
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fixup
 )paren
 (brace
 id|regs-&gt;psw.addr
 op_assign
-id|fixup
+id|fixup-&gt;fixup
 suffix:semicolon
 r_return
 suffix:semicolon
