@@ -4206,11 +4206,7 @@ id|usb_host_interface
 op_star
 id|interface
 op_assign
-op_amp
-id|intf-&gt;altsetting
-(braket
-id|intf-&gt;act_altsetting
-)braket
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 r_const
 r_struct
