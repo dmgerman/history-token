@@ -106,15 +106,6 @@ op_star
 id|sa
 )paren
 suffix:semicolon
-DECL|macro|APPLETALK_DEBUG
-macro_line|#undef APPLETALK_DEBUG
-macro_line|#ifdef APPLETALK_DEBUG
-DECL|macro|DPRINT
-mdefine_line|#define DPRINT(x)&t;&t;print(x)
-macro_line|#else
-DECL|macro|DPRINT
-mdefine_line|#define DPRINT(x)
-macro_line|#endif /* APPLETALK_DEBUG */
 macro_line|#ifdef CONFIG_SYSCTL
 r_extern
 r_inline
@@ -411,7 +402,7 @@ r_return
 id|s
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Try to find a socket matching ADDR in the socket list,&n; * if found then return it.  If not, insert SK into the&n; * socket list.&n; *&n; * This entire operation must execute atomically.&n; */
+multiline_comment|/**&n; * atalk_find_or_insert_socket - Try to find a socket matching ADDR&n; * @sk - socket to insert in the list if it is not there already&n; * @sat - address to search for&n; *&n; * Try to find a socket matching ADDR in the socket list, if found then return&n; * it. If not, insert SK into the socket list.&n; *&n; * This entire operation must execute atomically.&n; */
 DECL|function|atalk_find_or_insert_socket
 r_static
 r_struct
@@ -927,7 +918,7 @@ op_amp
 id|atalk_sockets_lock
 )paren
 suffix:semicolon
-multiline_comment|/* The data in question runs from begin to begin+len */
+multiline_comment|/* The data in question runs from begin to begin + len */
 op_star
 id|start
 op_assign
@@ -1110,6 +1101,10 @@ r_struct
 id|atalk_iface
 op_star
 id|iface
+suffix:semicolon
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+id|iface
 op_assign
 id|kmalloc
 c_func
@@ -1129,8 +1124,8 @@ c_cond
 op_logical_neg
 id|iface
 )paren
-r_return
-l_int|NULL
+r_goto
+id|out_mem
 suffix:semicolon
 id|iface-&gt;dev
 op_assign
@@ -1171,10 +1166,17 @@ op_amp
 id|atalk_iface_lock
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|iface
+suffix:semicolon
+id|out_mem
+suffix:colon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Perform phase 2 AARP probing on our tentative address */
@@ -1315,14 +1317,12 @@ op_increment
 id|atif-&gt;address.s_node
 op_assign
 (paren
-(paren
 id|nodect
 op_plus
 id|probe_node
 )paren
 op_amp
 l_int|0xFF
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1545,14 +1545,12 @@ op_increment
 id|proxy_addr-&gt;s_node
 op_assign
 (paren
-(paren
 id|nodect
 op_plus
 id|probe_node
 )paren
 op_amp
 l_int|0xFF
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2227,6 +2225,9 @@ id|riface
 suffix:semicolon
 r_int
 id|retval
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fixme: Raise/Lower a routing change semaphore for these&n;&t; * operations.&n;&t; */
 multiline_comment|/* Validate the request */
@@ -2236,13 +2237,7 @@ c_cond
 id|ta-&gt;sat_family
 op_ne
 id|AF_APPLETALK
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
+op_logical_or
 (paren
 op_logical_neg
 id|devhint
@@ -2251,9 +2246,9 @@ id|ga-&gt;sat_family
 op_ne
 id|AF_APPLETALK
 )paren
-r_return
-op_minus
-id|EINVAL
+)paren
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* Now walk the routing table and make our decisions */
 id|write_lock_bh
@@ -2418,7 +2413,7 @@ op_logical_neg
 id|riface
 )paren
 r_goto
-id|out
+id|out_unlock
 suffix:semicolon
 id|devhint
 op_assign
@@ -2439,8 +2434,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|atalk_route
+op_star
+id|rt
 )paren
 comma
 id|GFP_ATOMIC
@@ -2490,7 +2485,7 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|out
+id|out_unlock
 suffix:colon
 id|write_unlock_bh
 c_func
@@ -2499,6 +2494,8 @@ op_amp
 id|atalk_router_lock
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|retval
 suffix:semicolon
@@ -2777,11 +2774,6 @@ multiline_comment|/* Discard any use of this */
 id|atalk_dev_down
 c_func
 (paren
-(paren
-r_struct
-id|net_device
-op_star
-)paren
 id|ptr
 )paren
 suffix:semicolon
@@ -4488,7 +4480,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Pick a source port when one is not given. If we can&n; * find a suitable free one, we insert the socket into&n; * the tables using it.&n; *&n; * This whole operation must be atomic.&n; */
+multiline_comment|/**&n; * atalk_pick_and_bind_port - Pick a source port when one is not given&n; * @sk - socket to insert into the tables&n; * @sat - address to search for&n; *&n; * Pick a source port when one is not given. If we can find a suitable free&n; * one, we insert the socket into the tables using it.&n; *&n; * This whole operation must be atomic.&n; */
 DECL|function|atalk_pick_and_bind_port
 r_static
 r_int
@@ -4670,9 +4662,6 @@ r_struct
 id|sockaddr_at
 id|sat
 suffix:semicolon
-r_int
-id|n
-suffix:semicolon
 r_struct
 id|at_addr
 op_star
@@ -4682,6 +4671,12 @@ id|atalk_find_primary
 c_func
 (paren
 )paren
+suffix:semicolon
+r_int
+id|n
+op_assign
+op_minus
+id|EADDRNOTAVAIL
 suffix:semicolon
 r_if
 c_cond
@@ -4697,9 +4692,8 @@ c_func
 id|ATADDR_ANYNET
 )paren
 )paren
-r_return
-op_minus
-id|EADDRNOTAVAIL
+r_goto
+id|out
 suffix:semicolon
 id|at-&gt;src_net
 op_assign
@@ -4727,19 +4721,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|n
-OL
-l_int|0
 )paren
-r_return
-id|n
-suffix:semicolon
 id|sk-&gt;zapped
 op_assign
 l_int|0
 suffix:semicolon
+id|out
+suffix:colon
 r_return
-l_int|0
+id|n
 suffix:semicolon
 )brace
 multiline_comment|/* Set the address &squot;our end&squot; of the connection */
@@ -5276,7 +5268,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Receive a packet (in skb) from device dev. This has come from the SNAP&n; * decoder, and on entry skb-&gt;h.raw is the DDP header, skb-&gt;len is the DDP&n; * header, skb-&gt;len is the DDP length. The physical headers have been&n; * extracted. PPP should probably pass frames marked as for this layer.&n; * [ie ARPHRD_ETHERTALK]&n; */
+multiline_comment|/**&n; * atalk_rcv - Receive a packet (in skb) from device dev&n; * @skb - packet received&n; * @dev - network device where the packet comes from&n; * @pt - packet type&n; *&n; * Receive a packet (in skb) from device dev. This has come from the SNAP&n; * decoder, and on entry skb-&gt;h.raw is the DDP header, skb-&gt;len is the DDP&n; * header, skb-&gt;len is the DDP length. The physical headers have been&n; * extracted. PPP should probably pass frames marked as for this layer.&n; * [ie ARPHRD_ETHERTALK]&n; */
 DECL|function|atalk_rcv
 r_static
 r_int
@@ -5537,6 +5529,7 @@ id|DDP_MAXHOPS
 r_goto
 id|freeit
 suffix:semicolon
+multiline_comment|/* FIXME: use skb-&gt;cb to be able to use shared skbs */
 id|ddphv.deh_hops
 op_increment
 suffix:semicolon
@@ -5572,6 +5565,7 @@ r_int
 comma
 id|origlen
 comma
+(paren
 id|rt-&gt;dev-&gt;hard_header_len
 op_plus
 id|ddp_dl-&gt;header_length
@@ -5579,8 +5573,10 @@ op_plus
 id|ddphv.deh_len
 )paren
 )paren
+)paren
 suffix:semicolon
 multiline_comment|/* Mend the byte order */
+multiline_comment|/* FIXME: use skb-&gt;cb to be able to use shared skbs */
 op_star
 (paren
 (paren
@@ -5780,7 +5776,7 @@ id|out
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * Which socket - atalk_search_socket() looks for a *full match*&n;&t; * of the &lt;net,node,port&gt; tuple.&n;&t; */
+multiline_comment|/*&n;&t; * Which socket - atalk_search_socket() looks for a *full match*&n;&t; * of the &lt;net, node, port&gt; tuple.&n;&t; */
 id|tosat.sat_addr.s_net
 op_assign
 id|ddp-&gt;deh_dnet
@@ -5835,8 +5831,10 @@ l_int|0
 r_goto
 id|freeit
 suffix:semicolon
-r_goto
 id|out
+suffix:colon
+r_return
+l_int|0
 suffix:semicolon
 id|freeit
 suffix:colon
@@ -5846,10 +5844,8 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+r_goto
 id|out
-suffix:colon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Receive a LocalTalk frame. We make some demands on the caller here.&n; * Caller must provide enough headroom on the packet to pull the short&n; * header and append a long one.&n; */
@@ -5875,16 +5871,6 @@ op_star
 id|pt
 )paren
 (brace
-r_struct
-id|ddpehdr
-op_star
-id|ddp
-suffix:semicolon
-r_struct
-id|at_addr
-op_star
-id|ap
-suffix:semicolon
 multiline_comment|/* Expand any short form frames */
 r_if
 c_cond
@@ -5897,7 +5883,15 @@ op_eq
 l_int|1
 )paren
 (brace
+r_struct
+id|ddpehdr
+op_star
+id|ddp
+suffix:semicolon
 multiline_comment|/* Find our address */
+r_struct
+id|at_addr
+op_star
 id|ap
 op_assign
 id|atalk_find_dev_addr
@@ -5920,17 +5914,9 @@ r_struct
 id|ddpshdr
 )paren
 )paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
+r_goto
+id|freeit
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * The push leaves us with a ddephdr not an shdr, and&n;&t;&t; * handily the port bytes in the right place preset.&n;&t;&t; */
 id|skb_push
 c_func
@@ -5946,6 +5932,7 @@ op_minus
 l_int|4
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: use skb-&gt;cb to be able to use shared skbs */
 id|ddp
 op_assign
 (paren
@@ -6035,6 +6022,17 @@ id|dev
 comma
 id|pt
 )paren
+suffix:semicolon
+id|freeit
+suffix:colon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|atalk_sendmsg
@@ -6886,8 +6884,6 @@ r_struct
 id|ddpehdr
 op_star
 id|ddp
-op_assign
-l_int|NULL
 suffix:semicolon
 r_int
 id|copied
@@ -6906,8 +6902,6 @@ suffix:semicolon
 r_struct
 id|sk_buff
 op_star
-id|skb
-suffix:semicolon
 id|skb
 op_assign
 id|skb_recv_datagram
@@ -6937,6 +6931,7 @@ id|skb
 r_return
 id|err
 suffix:semicolon
+multiline_comment|/* FIXME: use skb-&gt;cb to be able to use shared skbs */
 id|ddp
 op_assign
 (paren
@@ -7115,7 +7110,6 @@ r_return
 id|err
 ques
 c_cond
-id|err
 suffix:colon
 id|copied
 suffix:semicolon
@@ -7191,7 +7185,7 @@ r_case
 id|TIOCINQ
 suffix:colon
 (brace
-multiline_comment|/* These two are safe on a single CPU system as only&n;&t;&t;&t; * user tasks fiddle here */
+multiline_comment|/*&n;&t;&t;&t; * These two are safe on a single CPU system as only&n;&t;&t;&t; * user tasks fiddle here&n;&t;&t;&t; */
 r_struct
 id|sk_buff
 op_star
@@ -7328,8 +7322,8 @@ multiline_comment|/* proxy AARP */
 r_case
 id|SIOCDARP
 suffix:colon
-multiline_comment|/* proxy AARP */
 (brace
+multiline_comment|/* proxy AARP */
 r_int
 id|ret
 suffix:semicolon
@@ -7479,17 +7473,6 @@ id|atalk_create
 comma
 )brace
 suffix:semicolon
-DECL|variable|atalk_dgram_ops
-r_static
-r_struct
-id|proto_ops
-id|SOCKOPS_WRAPPED
-c_func
-(paren
-id|atalk_dgram_ops
-)paren
-op_assign
-(brace
 dot
 id|family
 op_assign
@@ -7586,55 +7569,61 @@ comma
 id|PF_APPLETALK
 )paren
 suffix:semicolon
-DECL|variable|ddp_notifier
 r_static
 r_struct
 id|notifier_block
 id|ddp_notifier
 op_assign
 (brace
+dot
+id|notifier_call
+op_assign
 id|ddp_device_event
 comma
-l_int|NULL
-comma
-l_int|0
 )brace
 suffix:semicolon
-DECL|variable|ltalk_packet_type
 r_struct
 id|packet_type
 id|ltalk_packet_type
 op_assign
 (brace
-l_int|0
+dot
+id|type
+op_assign
+id|__constant_htons
+c_func
+(paren
+id|ETH_P_LOCALTALK
+)paren
 comma
-l_int|NULL
-comma
+dot
+id|func
+op_assign
 id|ltalk_rcv
 comma
-l_int|NULL
-comma
-l_int|NULL
 )brace
 suffix:semicolon
-DECL|variable|ppptalk_packet_type
 r_struct
 id|packet_type
 id|ppptalk_packet_type
 op_assign
 (brace
-l_int|0
+dot
+id|type
+op_assign
+id|__constant_htons
+c_func
+(paren
+id|ETH_P_PPPTALK
+)paren
 comma
-l_int|NULL
-comma
+dot
+id|func
+op_assign
 id|atalk_rcv
 comma
-l_int|NULL
-comma
-l_int|NULL
 )brace
 suffix:semicolon
-DECL|variable|ddp_snap_id
 r_static
 r_char
 id|ddp_snap_id
@@ -7654,21 +7643,18 @@ l_int|0x9B
 )brace
 suffix:semicolon
 multiline_comment|/* Export symbols for use by drivers when AppleTalk is a module */
-DECL|variable|aarp_send_ddp
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|aarp_send_ddp
 )paren
 suffix:semicolon
-DECL|variable|atrtr_get_dev
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|atrtr_get_dev
 )paren
 suffix:semicolon
-DECL|variable|atalk_find_dev_addr
 id|EXPORT_SYMBOL
 c_func
 (paren
@@ -7676,7 +7662,6 @@ id|atalk_find_dev_addr
 )paren
 suffix:semicolon
 multiline_comment|/* Called by proto.c on kernel start up */
-DECL|function|atalk_init
 r_static
 r_int
 id|__init
@@ -7719,27 +7704,11 @@ id|KERN_CRIT
 l_string|&quot;Unable to register DDP with SNAP.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ltalk_packet_type.type
-op_assign
-id|htons
-c_func
-(paren
-id|ETH_P_LOCALTALK
-)paren
-suffix:semicolon
 id|dev_add_pack
 c_func
 (paren
 op_amp
 id|ltalk_packet_type
-)paren
-suffix:semicolon
-id|ppptalk_packet_type.type
-op_assign
-id|htons
-c_func
-(paren
-id|ETH_P_PPPTALK
 )paren
 suffix:semicolon
 id|dev_add_pack
@@ -7816,7 +7785,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|atalk_init
 id|module_init
 c_func
 (paren
@@ -7825,7 +7793,6 @@ id|atalk_init
 suffix:semicolon
 macro_line|#ifdef MODULE
 multiline_comment|/*&n; * Note on MOD_{INC,DEC}_USE_COUNT:&n; *&n; * Use counts are incremented/decremented when&n; * sockets are created/deleted.&n; *&n; * AppleTalk interfaces are not incremented until atalkd is run&n; * and are only decremented when they are downed.&n; *&n; * Ergo, before the AppleTalk module can be removed, all AppleTalk&n; * sockets be closed from user space.&n; */
-DECL|function|atalk_exit
 r_static
 r_void
 id|__exit
@@ -7907,7 +7874,6 @@ id|PF_APPLETALK
 )paren
 suffix:semicolon
 )brace
-DECL|variable|atalk_exit
 id|module_exit
 c_func
 (paren
