@@ -6876,6 +6876,42 @@ comma
 id|mod
 )paren
 suffix:semicolon
+multiline_comment|/* Informative for users. */
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot; %s&quot;
+comma
+id|mod-&gt;state
+op_eq
+id|MODULE_STATE_GOING
+ques
+c_cond
+l_string|&quot;Unloading&quot;
+suffix:colon
+id|mod-&gt;state
+op_eq
+id|MODULE_STATE_COMING
+ques
+c_cond
+l_string|&quot;Loading&quot;
+suffix:colon
+l_string|&quot;Live&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Used by oprofile and other similar tools. */
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot; 0x%p&quot;
+comma
+id|mod-&gt;module_core
+)paren
+suffix:semicolon
 id|seq_printf
 c_func
 (paren
